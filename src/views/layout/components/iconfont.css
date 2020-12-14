@@ -1,0 +1,53 @@
+@font-face {font-family: "iconfont";
+  src: url('iconfont.eot?t=1581327609035'); /* IE9 */
+  src: url('iconfont.eot?t=1581327609035#iefix') format('embedded-opentype'),
+  url('iconfont.ttf?t=1581327609035') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-caiwuguanli:before {
+  content: "\e604";
+}
+
+.icon-sms:before {
+  content: "\e71e";
+}
+
+.icon-yingxiao:before {
+  content: "\e7c0";
+}
+
+.icon-neirong:before {
+  content: "\e600";
+}
+
+.icon-shangcheng:before {
+  content: "\e7a8";
+}
+
+.icon-icon-liucheng:before {
+  content: "\e62e";
+}
+
+.icon-liaotian1:before {
+  content: "\e630";
+}
+
+.icon-zuzhi:before {
+  content: "\e669";
+}
+
+.icon-oabangong:before {
+  content: "\e615";
+}
+
+.icon-neirong-copy:before {
+  content: "\e7c1";
+}
