@@ -1,22 +1,16 @@
 <template>
   <div class="menu-wrapper">
-    <!-- <template>
+    <template>
       <router-link to="/">
         <div class="logo" :class="{'has-logo': isCollapse}">
           <img v-if="isCollapse" src="../../../../assets/image/logo1.png" alt="" />
           <img v-else src="../../../../assets/image/logo2.png" alt="" />
         </div>
       </router-link> 
-    </template> -->
+    </template>
     <template v-for="item in routes" v-if="!item.hidden&&item.children">
 
-      <router-link v-if="hasOneShowingChildren(item.children) && !item.children[0].children&&!item.alwaysShow&&!item.path" to="/" :key="item.children[0].name">
-        <el-menu-item :index="item.path+'/'+item.children[0].path" class="logo" :class="{'submenu-title-noDropdown-logo':!isNest, 'has-logo': isCollapse}">
-          <img v-if="isCollapse" src="../../../../assets/image/logo1.png" alt="" />
-          <img v-else src="../../../../assets/image/logo2.png" alt="" />
-        </el-menu-item>
-      </router-link>
-      <router-link v-else-if="hasOneShowingChildren(item.children) && !item.children[0].children&&!item.alwaysShow" :to="item.path+'/'+item.children[0].path"
+      <router-link v-if="hasOneShowingChildren(item.children) && !item.children[0].children&&!item.alwaysShow" :to="item.path+'/'+item.children[0].path"
         :key="item.children[0].name">
         <el-menu-item :index="item.path+'/'+item.children[0].path" :class="{'submenu-title-noDropdown':!isNest}">
           <svg-icon v-if="item.children[0].meta&&item.children[0].meta.icon" :icon-class="item.children[0].meta.icon"></svg-icon>
