@@ -49,7 +49,8 @@ export const constantRouterMap = [
       component: _import('xm/core/xmProject/XmProjectMng'),
       name: 'dashboard',
       meta: { title: 'dashboard', icon: 'home-page', noCache: true }
-    }]
+    }],
+    hidden: true
   }
 ]
 
