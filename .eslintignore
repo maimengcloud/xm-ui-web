@@ -1,7 +1,7 @@
 build/*.js
 config/*.js
 src/assets
-/node_modules/
+node_modules/
 /static/
 /zTree_v3/
 /*.js/
