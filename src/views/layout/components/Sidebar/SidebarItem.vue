@@ -4,7 +4,12 @@
       <router-link to="/">
         <div class="logo" :class="{'has-logo': isCollapse}">
           <img v-if="isCollapse" src="../../../../assets/image/logo1.png" alt="" />
-          <img v-else src="../../../../assets/image/logo2.png" alt="" />
+          <div class="logo-text" v-else>
+            <img src="../../../../assets/image/logo1.png" alt="" />
+            <div class="systemName">唛盟云</div>
+            <div class="name">项目管理系统</div>
+          </div>
+
         </div>
       </router-link> 
     </template>
@@ -78,12 +83,33 @@ export default {
   .logo {
     height: 56px;
     width: 100%;
-    padding: 0 20px;
+    // padding: 0 20px;
     display: flex;
     align-items: center;
     justify-content: center;
     img {
       width: 100%;
+    }
+    .logo-text {
+      display: flex;
+      align-items: center;
+      justify-content: left;
+      color: #fff;
+      img {
+        width: 30%;
+      }
+      .systemName {
+        font-size: 14px;
+        font-weight: bold;
+        font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+      }
+      .name {
+        font-size: 12px;
+        font-weight: bold;
+        transform: scale(0.7);
+        margin-left: -8px;
+        
+      }
     }
   }
   .has-logo {
