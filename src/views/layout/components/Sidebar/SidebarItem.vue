@@ -93,10 +93,10 @@ export default {
     .logo-text {
       display: flex;
       align-items: center;
-      justify-content: left;
+      justify-content: center;
       color: #fff;
       img {
-        width: 30%;
+        width: 35%;
       }
       .systemName {
         font-size: 14px;
@@ -106,9 +106,10 @@ export default {
       .name {
         font-size: 12px;
         font-weight: bold;
-        transform: scale(0.7);
-        margin-left: -8px;
-        
+        transform: scale(0.8);
+        // transform-origin: (left, center);
+        transform-origin: left center;
+        margin-left: 2px;
       }
     }
   }
