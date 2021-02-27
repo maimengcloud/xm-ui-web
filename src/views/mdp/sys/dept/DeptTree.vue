@@ -1,17 +1,21 @@
 <template>
 	<section>
-		 				<el-button v-if="userInfo.isSuperAdmin==true||userInfo.isPlatformAdmin==true" @click.native="showBranchSelect">点击切换机构</el-button>
-						<el-input  v-model="deptFilterText" v-if="showFilter==true" placeholder="分类名称、编号过滤" auto-complete="off"></el-input>
+		<el-row> 
+			<el-col :span="24">
+				<el-input :class="workShop.isSuperAdmin==true||workShop.isPlatformAdmin==true?'filter-input-admin':'filter-input-common'" v-model="deptFilterText" v-if=" showFilter!=false " placeholder="编号、名称过滤" auto-complete="off"></el-input>
+				<el-button type="warning" icon="el-icon-star-off" v-if="workShop.isSuperAdmin==true||workShop.isPlatformAdmin==true" @click.native="showBranchSelect">机构</el-button>
+			</el-col>
+			<el-col :span="24">
 						<el-tree v-loading="listLoading"
 						  class="filter-tree"
-						  :data="deptTreeData"
+						  :data="treeData"
 						  :props="defaultDeptTreeProps"
 						  :filter-node-method="filterDeptNode"
 						  :show-checkbox="showCheckbox"
 						  :default-expand-all="defaultExpandAll"
 						  :expand-on-click-node="expandOnClickNode"
 						  :indent="indent"
-						  :node-key="nodeKey_"
+						  :node-key="'deptid'" 
 						  :default-expanded-keys="defaultExpandedKeys"
   						  :default-checked-keys="defaultCheckedKeys"
   						  auto-expand-parent
@@ -19,15 +23,17 @@
 						  @check-change="handleCheckChange"
 						  @current-change="handleCurrentChange"
 						  @node-click="handleNodeClick"
+						  :check-on-click-node="true"
 						  check-strictly
 						  :render-content="renderContent"
-						  :check-on-click-node="true"
 						  ref="deptTree">
 						</el-tree>
-		<el-dialog title="机构选择" :visible.sync="branchVisible"  width="50%"  :close-on-click-modal="false" append-to-body>
+			</el-col>
+		<el-dialog title="机构选择" :visible.sync="branchVisible"  width="50%" top="20" :close-on-click-modal="false" append-to-body>
 			<branch-select :visible="branchVisible"  @cancel="branchVisible=false" @row-click="branchRowClick"></branch-select>
 		</el-dialog>
 					 
+		</el-row>
 	</section>
 </template>
 
@@ -73,22 +79,22 @@
 	    			return [this.value];
 	    		}
 	    		return this.checkedKeys;
-	    	},
-	    	nodeKey_(){
-	    		return this.nodeKey?this.nodeKey:'deptid'
-	    	},
+	    	}, 
 	    	 ...mapGetters([
-			      'userInfo'
-			    ])
+			      'workShop'
+				]),
+			treeData(){
+				return this.translateDataToTree(this.depts)
+			}
 	    },
-	    props: ['value','branchId','visible','nodeKey','showCount','showRoot','countTips','showFilter','rootKey','multiple','checkedKeys','refresh','defaultExpandAll','expandOnClickNode','showCheckbox','indent'],
+	    props: ['value','branchId','visible', 'showCount','showRoot','countTips','showFilter', 'multiple','checkedKeys','refresh','defaultExpandAll','expandOnClickNode','showCheckbox','indent'],
 		data() {
 			return { 
 				deptFilterText: '',
-				deptTreeData:[], 
+				depts:[], 
 				defaultDeptTreeProps:{
 					
-					id:this.nodeKey_,
+					id:'deptid',
 					label:'deptName',
 					children: 'children'
 				},  
@@ -105,13 +111,13 @@
 				if( this.multiple===undefined || this.multiple===false||this.multiple==='false'){
 					if(checked==true){
 						if(checkedKeys.length>1){ 
-							this.$refs.deptTree.setCheckedKeys([data[this.nodeKey_]]);
+							this.$refs.deptTree.setCheckedKeys([data['deptid']]);
 							this.$emit('check-change',data,checked,indeterminate);
-							this.deptid=data[this.nodeKey_];
+							this.deptid=data['deptid'];
 						}else{
 							this.$emit('check-change',data,checked,indeterminate);
-							this.deptid=data[this.nodeKey_];
-						} 
+							this.deptid=data['deptid'];
+						}
 					}else{
 						if(checkedKeys.length==0){
 							this.deptid='';
@@ -136,45 +142,87 @@
 					
 				} 
 				this.$emit('branch-row-click',row, event, column);//  @branch-row-click="rowClick"
+			}, 
+			translateDataToTree(data) {  
+				if(!data){
+					return [];
+				}
+				let parents = data.filter(value =>{ 
+					//如果我的上级为空，则我是最上级
+					if(value.pdeptid == 'undefined' || value.pdeptid == null  || value.pdeptid == '' || value.pdeptid == 'A0'){
+						return true;
+
+						//如果我的上级不在列表中，我作为最上级
+					}else if(data.some(i=>value.pdeptid==i.deptid)){
+						return false;
+					}else {
+						return true
+					}
+				 
+				}) 
+				let children = data.filter(value =>{
+					if(data.some(i=>value.pdeptid==i.deptid)){
+						return true;
+					}else{
+						return false;
+					} 
+				})  
+				let translator = (parents, children) => {
+					parents.forEach((parent) => {
+						children.forEach((current, index) => {
+							if (current.pdeptid === parent.deptid) {
+								let temp = JSON.parse(JSON.stringify(children))
+								temp.splice(index, 1)
+								translator([current], temp)
+								typeof parent.children !== 'undefined' ? parent.children.push(current) : parent.children = [current]
+							}
+						}
+						)
+					}
+					)
+				}
+
+				translator(parents, children)
+
+				return parents
 			},
 			//获取分类树列表
 			getDeptTreeData(refresh) {
-
-				let id='';
-				if(this.rootKey!='' && this.rootKey!=null){
-					id=this.rootKey;
-				}
+ 
 				let params = { 
-					id: id
-				};
- 				if(refresh){
- 					params.refresh=true;
- 				}
+				}; 
  				params.branchId=this.branchId
- 				if(this.userInfo.isSuperAdmin==true || this.userInfo.isPlatformAdmin==true){
+ 				if(this.workShop.isSuperAdmin==true || this.workShop.isPlatformAdmin==true){
  					if(this.branch!=null){
  						params.branchId=this.branch.id
+ 					}else if(params.branchId==null || params.branchId==''){
+ 						params.branchId=this.workShop.branchId
  					}
+ 				}else{
+ 					if(params.branchId==null || params.branchId==''){
+ 						params.branchId=this.workShop.branchId
+					 }
+					 params.autoDetectParentDeptid="1"
  				}
 				this.listLoading = true;
 				listTreeDept(params).then((res) => {
 					var tips=res.data.tips;
+					var data=res.data.data;
 					if(tips.isOk==true){ 
-						if( this.showRoot===undefined || this.showRoot===false||this.showRoot==='false'){
-							let tree=res.data.data;
-							if(tree==null){
-								this.deptTreeData=[];
+						if( this.showRoot===undefined || this.showRoot===false||this.showRoot==='false'){ 
+							if(data==null){
+								this.depts=[];
 							}else{
 								if(this.branch!=null){
 									res.data.data.branchId=this.branch.id
 									res.data.data.deptName=this.branch.branchName+'(机构)'
 									res.data.data.isBranch=true
 								}else {
-									res.data.data.branchId=this.userInfo.branchId
-									res.data.data.deptName=this.userInfo.branchName+'(机构)'
+									res.data.data.branchId=this.workShop.branchId
+									res.data.data.deptName=this.workShop.branchName+'(机构)'
 									res.data.data.isBranch=true
 								}
-								this.deptTreeData=tree.children;
+								this.depts=data
 							}
 							
 						}else{
@@ -183,11 +231,11 @@
 								res.data.data.deptName=this.branch.branchName+'(机构)'
 								res.data.data.isBranch=true
 							}else {
-								res.data.data.branchId=this.userInfo.branchId
-								res.data.data.deptName=this.userInfo.branchName+'(机构)'
+								res.data.data.branchId=this.workShop.branchId
+								res.data.data.deptName=this.workShop.branchName+'(机构)'
 								res.data.data.isBranch=true
 							}
-							this.deptTreeData=[res.data.data];
+							this.depts=data;
 						}
 						
 					}else{
@@ -199,8 +247,15 @@
 				});
 			}, 
 			filterDeptNode(value, data) {
-		        if (!value) return true;
-		        return data.name.indexOf(value) !== -1;
+				if (!value) return true;
+				if( data.deptid.indexOf(value)>=0 || data.deptName.indexOf(value)>=0  ){
+					return true;
+				}else{
+					if( data.pdeptid &&  data.pdeptid.indexOf(value)>=0){
+						return true;
+					}
+				}
+				return false;
 		     },
 		     renderContent(h, { node, data, store }) {
 		    	 var countMsg='';	
@@ -229,5 +284,14 @@
 </script>
 
 <style scoped>
+.filter-tree{
+	margin-top: 14px;
+}
+.filter-input-admin{
+	width:60%;
+}
 
+.filter-input-common{
+	width:100%;
+}
 </style>
