@@ -2,29 +2,32 @@ import axios from '@/utils/request'
 
 import config from '@/common/config'
 
-let base=config.getSysBasePath();
+let base=config.getOauth2LoginBasePath();
 
-export function loginByUsername(username, password) {
+//let base='';
+export function loginByUsername(username, password,deptid) {
   const data = {
-    displayUserid: username,
-    password: password,
-    loginType:'password'
+    userloginid: username,
+    password: password, 
+    authType:'password_display_userid',
+    deptid:deptid
   }
   return axios({
-    url: base+'/common/login',
+    url: base+'/login/token?grantType=password',
     method: 'post',
     data
   })
 }
-export function loginByPhoneno(phoneno, smsCode,isAdmin) {
+export function loginByPhoneno(phoneno, smsCode,isAdmin,deptid) {
   const data = {
-    phoneno: phoneno,
-    smsCode: smsCode,
-    loginType:'sms',
-    isAdmin:true
+    userloginid: phoneno,
+    password: smsCode, 
+    authType:'sms',
+    isAdmin:true,
+    deptid:deptid
   }
   return axios({
-    url: base+'/common/login',
+    url: base+'/login/token?grantType=password',
     method: 'post',
     data
   })
@@ -39,17 +42,33 @@ export function logout() {
 }
 
 export function getUserInfo(params) {
+  if( !params || !params.scopes ){
+    params={
+      scopes:['userInfo','roles','posts','menus','qxs','depts','branchs']
+    }
+  }
+  const data=params;
   return axios({
-    url: base+'/sys/pub/login/user/info/all',
-    method: 'get',
-    params:  params
+    url: base+'/user/info',
+    method: 'post',
+    data
   })
 }
-
-export function createShortToken(params) { 
-  return axios.post(  base+'/sys/pub/login/createShortToken', params )
+export function getUserDepts(userid) {
+  if( !userid ){
+    params={
+      userid:userid
+    }
+  }else{
+    return 
+  }
+  const data= { params: params };
+  return axios({
+    url: base+'/user/depts',
+    method: 'get',
+    data
+  })
 }
-
 export function switchDept(params) { 
-	  return axios.post(  base+'/sys/pub/login/user/switch', params )
+	  return axios.post(  base+'/login/switch', params )
 	}

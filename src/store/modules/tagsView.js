@@ -6,19 +6,12 @@ const tagsView = {
   mutations: {
     ADD_VISITED_VIEWS: (state, view) => {
       if (state.visitedViews.some(v => v.path === view.path)) return
-      var page ={
+      state.visitedViews.push({
         name: view.name,
         path: view.path,
-        title: view.meta.title || 'no-name', 
-      }
-      if(view.query){
-        page.query=view.query;
-      }
-      if(view.params){
-          page.params=view.params;
-      }
-      state.visitedViews.push(page)
-     
+        title: view.meta.title || 'no-name',
+        query:view.query
+      })
       if (!view.meta.noCache) {
         state.cachedViews.push(view.name)
       }

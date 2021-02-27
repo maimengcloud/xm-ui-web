@@ -4,7 +4,7 @@ import { getToken, setToken, removeToken } from '@/utils/auth'
 const user = {
   state: {
     userInfo: {
-      userid:'a',
+      userid:'',
       jsessionid:'',
       displayUserid:'',
       username:'',
@@ -21,10 +21,7 @@ const user = {
       isPlatformAdmin:false,
       isBranchAdmin:false,
       isShopAdmin:false,
-      isLocationAdmin:false,
-      isProjectAdmin:false,
-      isProductAdmin:false,
-      isTestAdmin:false,
+      isLocationAdmin:false
     },
 	workShop:{},
     status: '',
@@ -104,7 +101,7 @@ const user = {
     LoginByUsername({ commit }, userInfo) {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
-        loginByUsername(username, userInfo.password).then(res => {
+        loginByUsername(username, userInfo.password,userInfo.deptid).then(res => {
         	if(res.data.tips.isOk==true){
         		let data = res.data
                 let userInfo=data.userInfo;
@@ -126,37 +123,13 @@ const user = {
               		  if(role.roleid=='locationAdmin'){
               			  userInfo.isLocationAdmin=true
               		  }
-              		  if(role.roleid=='projectAdmin'){
-              			  userInfo.isProjectAdmin=true
-              		  }
-              		  if(role.roleid=='teamAdmin'){
-              			  userInfo.isTeamAdmin=true
-              		  }
-              		  if(role.roleid=='productAdmin'){
-              			  userInfo.isProductAdmin=true
-              		  }
-              		  if(role.roleid=='productTeamAdmin'){
-              			  userInfo.isProductTeamAdmin=true
-              		  }
-              		  if(role.roleid=='testAdmin'){
-              			  userInfo.isTestAdmin=true
-              		  }
-              		  if(role.roleid=='testTeamAdmin'){
-              			  userInfo.isTestTeamAdmin=true
-              		  }
-              		  if(role.roleid=='tester'){
-              			  userInfo.isTester=true
-              		  }
-              		  if(role.roleid=='iterationAdmin'){
-              			  userInfo.isIterationAdmin=true
-              		  } 
               	  });
                 }
                 commit('SET_USER_INFO', userInfo)
                 commit('SET_ROLES', roles)
                 commit('SET_QXS', data.qxs)
-                commit('SET_TOKEN', data.userToken)
-                setToken( data.userToken)
+                commit('SET_TOKEN', data.data.accessToken.tokenValue)
+                setToken( data.data.accessToken.tokenValue)
         	} 
             resolve(res) 
         }).catch(error => {
@@ -167,59 +140,35 @@ const user = {
     // 用户名登录
     LoginByPhoneno({ commit }, userInfo) { 
       return new Promise((resolve, reject) => {
-        loginByPhoneno(userInfo.phoneno, userInfo.smsCode, userInfo.isAdmin).then(res => {
+        loginByPhoneno(userInfo.phoneno, userInfo.smsCode, userInfo.isAdmin,userInfo.deptid).then(res => {
         	if(res.data.tips.isOk==true){
         		let data = res.data
                 let userInfo=data.userInfo;
                 let roles=data.roles;
                 if(roles!=null && roles.length>0){
               	  roles.forEach(role=>{
-					if(role.roleid=='superAdmin'){
-						userInfo.isSuperAdmin=true
-					}
-					if(role.roleid=='platformAdmin'){
-						userInfo.isPlatformAdmin=true
-					}
-					if(role.roleid=='branchAdmin'){
-						userInfo.isBranchAdmin=true
-					}
-					if(role.roleid=='shopAdmin'){
-						userInfo.isShopAdmin=true
-					}
-					if(role.roleid=='locationAdmin'){
-						userInfo.isLocationAdmin=true
-					}
-					if(role.roleid=='projectAdmin'){
-						userInfo.isProjectAdmin=true
-					}
-					if(role.roleid=='teamAdmin'){
-						userInfo.isTeamAdmin=true
-					}
-					if(role.roleid=='productAdmin'){
-						userInfo.isProductAdmin=true
-					}
-					if(role.roleid=='productTeamAdmin'){
-						userInfo.isProductTeamAdmin=true
-					}
-					if(role.roleid=='testAdmin'){
-						userInfo.isTestAdmin=true
-					}
-					if(role.roleid=='testTeamAdmin'){
-						userInfo.isTestTeamAdmin=true
-					}
-					if(role.roleid=='tester'){
-						userInfo.isTester=true
-					}
-					if(role.roleid=='iterationAdmin'){
-						userInfo.isIterationAdmin=true
-					} 
+              		  if(role.roleid=='superAdmin'){
+              			  userInfo.isSuperAdmin=true
+              		  }
+              		  if(role.roleid=='platformAdmin'){
+              			  userInfo.isPlatformAdmin=true
+              		  }
+              		  if(role.roleid=='branchAdmin'){
+              			  userInfo.isBranchAdmin=true
+              		  }
+              		  if(role.roleid=='shopAdmin'){
+              			  userInfo.isShopAdmin=true
+              		  }
+              		  if(role.roleid=='locationAdmin'){
+              			  userInfo.isLocationAdmin=true
+              		  }
               	  });
                 }
                 commit('SET_USER_INFO', userInfo)
                 commit('SET_ROLES', roles)
                 commit('SET_QXS', data.qxs)
-                commit('SET_TOKEN', data.userToken)
-                setToken( data.userToken)
+                commit('SET_TOKEN', data.data.accessToken.tokenValue)
+                setToken( data.data.accessToken.tokenValue)
         	} 
             resolve(res) 
         }).catch(error => {
@@ -238,45 +187,21 @@ const user = {
 				  
 	              if(roles!=null && roles.length>0){
 	            	  roles.forEach(role=>{
-						if(role.roleid=='superAdmin'){
-							userInfo.isSuperAdmin=true
-						}
-						if(role.roleid=='platformAdmin'){
-							userInfo.isPlatformAdmin=true
-						}
-						if(role.roleid=='branchAdmin'){
-							userInfo.isBranchAdmin=true
-						}
-						if(role.roleid=='shopAdmin'){
-							userInfo.isShopAdmin=true
-						}
-						if(role.roleid=='locationAdmin'){
-							userInfo.isLocationAdmin=true
-						}
-						if(role.roleid=='projectAdmin'){
-							userInfo.isProjectAdmin=true
-						}
-						if(role.roleid=='teamAdmin'){
-							userInfo.isTeamAdmin=true
-						}
-						if(role.roleid=='productAdmin'){
-							userInfo.isProductAdmin=true
-						}
-						if(role.roleid=='productTeamAdmin'){
-							userInfo.isProductTeamAdmin=true
-						}
-						if(role.roleid=='testAdmin'){
-							userInfo.isTestAdmin=true
-						}
-						if(role.roleid=='testTeamAdmin'){
-							userInfo.isTestTeamAdmin=true
-						}
-						if(role.roleid=='tester'){
-							userInfo.isTester=true
-						}
-						if(role.roleid=='iterationAdmin'){
-							userInfo.isIterationAdmin=true
-						} 
+	            		  if(role.roleid=='superAdmin'){
+	            			  userInfo.isSuperAdmin=true
+	            		  }
+	            		  if(role.roleid=='platformAdmin'){
+	            			  userInfo.isPlatformAdmin=true
+	            		  }
+	            		  if(role.roleid=='branchAdmin'){
+	            			  userInfo.isBranchAdmin=true
+	            		  }
+	            		  if(role.roleid=='shopAdmin'){
+	            			  userInfo.isShopAdmin=true
+	            		  }
+	            		  if(role.roleid=='locationAdmin'){
+	            			  userInfo.isLocationAdmin=true
+	            		  }
 	            	  });
 	              } 
 				 
@@ -308,7 +233,12 @@ const user = {
 						  }
 					  })
 				  })
-				  
+				  depts.forEach(d=>{
+            var branch=branchs.find(b=>b.branchId==d.branchId)
+            if(branch){
+              d.branchName=branch.branchName
+            }
+          })
 				  commit('SET_MYBRANCHS',branchs);
 				  commit('SET_MYDEPTS',depts);
 				  commit('SET_MYLOCATIONS',locations); 
@@ -317,8 +247,8 @@ const user = {
 				  commit('SET_USER_INFO',userInfo);
 				  commit('SET_ROLES', roles) 
 		          commit('SET_QXS', qxs)
-		          commit('SET_TOKEN', res.data.userToken);
-				  commit('SET_WORK_SHOP',JSON.parse(JSON.stringify(userInfo)));
+		          //commit('SET_TOKEN', res.data.access_token);
+				  commit('SET_WORK_SHOP',userInfo);
 		          commit('SET_IS_LOAD_OK', true)
 			  }
     		  resolve(res); 
@@ -326,7 +256,7 @@ const user = {
               reject(error)
           }); 
     	  /**
-        getUserInfo(state.userToken).then(response => {
+        getUserInfo(state.access_token).then(response => {
           if (!response.data) { // 由于mockjs 不支持自定义状态码只能这样hack
             reject('error')
           }
@@ -355,45 +285,21 @@ const user = {
 				  
 	              if(roles!=null && roles.length>0){
 	            	  roles.forEach(role=>{
-						if(role.roleid=='superAdmin'){
-							userInfo.isSuperAdmin=true
-						}
-						if(role.roleid=='platformAdmin'){
-							userInfo.isPlatformAdmin=true
-						}
-						if(role.roleid=='branchAdmin'){
-							userInfo.isBranchAdmin=true
-						}
-						if(role.roleid=='shopAdmin'){
-							userInfo.isShopAdmin=true
-						}
-						if(role.roleid=='locationAdmin'){
-							userInfo.isLocationAdmin=true
-						}
-						if(role.roleid=='projectAdmin'){
-							userInfo.isProjectAdmin=true
-						}
-						if(role.roleid=='teamAdmin'){
-							userInfo.isTeamAdmin=true
-						}
-						if(role.roleid=='productAdmin'){
-							userInfo.isProductAdmin=true
-						}
-						if(role.roleid=='productTeamAdmin'){
-							userInfo.isProductTeamAdmin=true
-						}
-						if(role.roleid=='testAdmin'){
-							userInfo.isTestAdmin=true
-						}
-						if(role.roleid=='testTeamAdmin'){
-							userInfo.isTestTeamAdmin=true
-						}
-						if(role.roleid=='tester'){
-							userInfo.isTester=true
-						}
-						if(role.roleid=='iterationAdmin'){
-							userInfo.isIterationAdmin=true
-						} 
+	            		  if(role.roleid=='superAdmin'){
+	            			  userInfo.isSuperAdmin=true
+	            		  }
+	            		  if(role.roleid=='platformAdmin'){
+	            			  userInfo.isPlatformAdmin=true
+	            		  }
+	            		  if(role.roleid=='branchAdmin'){
+	            			  userInfo.isBranchAdmin=true
+	            		  }
+	            		  if(role.roleid=='shopAdmin'){
+	            			  userInfo.isShopAdmin=true
+	            		  }
+	            		  if(role.roleid=='locationAdmin'){
+	            			  userInfo.isLocationAdmin=true
+	            		  }
 	            	  });
 	              } 
 				 
@@ -434,7 +340,7 @@ const user = {
 				  commit('SET_USER_INFO',userInfo);
 				  commit('SET_ROLES', roles) 
 		          commit('SET_QXS', qxs)
-              commit('SET_TOKEN', res.data.userToken)
+              commit('SET_TOKEN', res.data.access_token)
               commit('SET_WORK_SHOP',JSON.parse(JSON.stringify(userInfo)));
 		          commit('SET_IS_LOAD_OK', true)
 			  }
@@ -450,8 +356,8 @@ const user = {
     //   return new Promise((resolve, reject) => {
     //     commit('SET_CODE', code)
     //     loginByThirdparty(state.status, state.email, state.code).then(response => {
-    //       commit('SET_TOKEN', response.data.userToken)
-    //       setToken(response.data.userToken)
+    //       commit('SET_TOKEN', response.data.access_token)
+    //       setToken(response.data.access_token)
     //       resolve()
     //     }).catch(error => {
     //       reject(error)
@@ -493,7 +399,7 @@ const user = {
             const data = response.data
             commit('SET_USER_INFO', data.userInfo)
             commit('SET_ROLES', data.roles)
-            commit('SET_TOKEN', data.userToken)
+            commit('SET_TOKEN', data.access_token)
             setToken(data.userInfo.jsessionid)
           resolve()
         })

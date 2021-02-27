@@ -5,14 +5,21 @@
         <h3 class="title">{{$t('login.title')}}</h3>
         <lang-select class="set-language"></lang-select>
       </div>
-      <el-form-item prop="username">
+      <el-form-item prop="authType">
         <span class="svg-container svg-container_login">
           <svg-icon icon-class="user" />
         </span>
-        <el-input name="username" type="text"   v-model="loginForm.username" autoComplete="on" placeholder="用户编号" />
+          <el-radio v-model="loginForm.authType" label="password">账户密码登录</el-radio>
+          <el-radio v-model="loginForm.authType" label="sms">短信验证码快速登录</el-radio>
+      </el-form-item>
+      <el-form-item prop="username" v-if="loginForm.authType=='password'">
+        <span class="svg-container svg-container_login">
+          <svg-icon icon-class="user" />
+        </span>
+        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="用户编号" />
       </el-form-item>
 
-      <el-form-item prop="password">
+      <el-form-item prop="password" v-if="loginForm.authType=='password'">
         <span class="svg-container">
           <svg-icon icon-class="password" />
         </span>
@@ -20,6 +27,18 @@
         <span class="show-pwd" @click="showPwd">
           <svg-icon icon-class="eye" />
         </span>
+      </el-form-item>
+      <el-form-item prop="phoneno" v-if="loginForm.authType=='sms'">
+        <span class="svg-container svg-container_login">
+          <svg-icon icon-class="user" />
+        </span>
+        <el-input name="phoneno" type="text" v-model="loginForm.phoneno" autoComplete="on" placeholder="手机号码" />
+      </el-form-item>
+      <el-form-item prop="smsCode" v-if="loginForm.authType=='sms'">
+        <span class="svg-container svg-container_login">
+          <svg-icon icon-class="user" />
+        </span>
+        <el-input name="smsCode" type="text" v-model="loginForm.smsCode" autoComplete="on" placeholder="短信验证码" /><el-button @click.prevent="sendPhonenoSmsCode">发送验证码</el-button>
       </el-form-item>
       <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">{{$t('login.logIn')}}</el-button>
 
@@ -37,9 +56,9 @@
 	<el-dialog
 	  title="请选择一个部门进行登陆"
 	  :visible.sync="deptSelectVisible"
-	  :width="screenWidth<500?'90%':'500px'" append-to-body> 
+	  width="screenWidth<500?'90%':'500px" append-to-body> 
 	  <el-row class="app-container">
-	  	<el-col :span=20   v-for="d in myDepts">
+	  	<el-col :span=20   v-for="(d,index) in myDepts" :key="index">
 		  <el-col :span=20><el-radio v-model="userDeptid" :label="d.deptid">{{d.deptName}}({{d.branchName}})   </el-radio> </el-col> 
 		</el-col> 
 	  </el-row >
@@ -69,6 +88,8 @@
 
 <script>
 import { isvalidUsername } from '@/utils/validate';
+import { sendSmsCode,validateSmsCode } from '@/api/sms/sms';
+import { getUserDepts } from '@/api/login';
 import LangSelect from '@/components/LangSelect';
 import SocialSign from './socialsignin';
 import BranchAdd from './BranchAdd';
@@ -96,13 +117,17 @@ export default {
     return {
       loginForm: {
         username: '',
-        password: ''
+        password: '',
+        authType:'password',//password/sms 分别为账户密码、短信验证码快捷登录
+        phoneno:'',//手机号码
+        smsCode:'',//短信验证码
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       }, 
       passwordType: 'password',
+      
       loading: false,
       showTpLoginDialog: false, //显示第三方登陆对话框
 	  deptSelectVisible:false,//显示选择部门对话框
@@ -118,33 +143,64 @@ export default {
         this.passwordType = 'password'
       }
     },
+    sendPhonenoSmsCode(){
+      var params={
+        phoneno:this.loginForm.phoneno,
+        scene:"login"
+      }
+      sendSmsCode(params).then(res=>{
+        if(res.data.tips.isOk){
+          this.$message.info(res.data.tips.msg);
+        }else{
+          this.$message.error(res.data.tips.msg);
+        }
+      })
+    },
     handleLogin() {
+
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
           let params={
         		  username:this.loginForm.username,
-        		  password:md5(this.loginForm.password)
+              password:md5(this.loginForm.password),
+              deptid:this.userDeptid,
+              authType:this.loginForm.authType,
+              phoneno:this.loginForm.phoneno,
+              smsCode:this.loginForm.smsCode
           }
-          this.$store.dispatch('LoginByUsername',params).then(res => {
+          var dispatchName="LoginByUsername"
+          if(this.loginForm.authType=='sms'){
+            dispatchName="LoginByPhoneno"
+          }
+          this.$store.dispatch(dispatchName,params).then(res => {
         	  this.loading = false
             if(res.data.tips.isOk==true){
             	console.log(this.$store);
             	 this.loading = true;
                 this.$store.dispatch('GetUserInfo').then((res2)=>{
-                	this.userDeptid=res2.data.userInfo.deptid
+                	//this.userDeptid=res2.data.userInfo.deptid
                 	this.loading = false
                 	if(res2.data.tips.isOk==true){
                 		if(this.$store.state.user.myBranchs==null ||this.$store.state.user.myBranchs.length==0||this.$store.state.user.myDepts==null || this.$store.state.user.myDepts.length<=0){ 
                         	//this.$message.error("亲，您不在任何一个公司或者部门中，需要【先创建公司】\n 或者请【管理员加您进入公司】哦"); 
                         	this.addBranchFormVisible=true;
-                        }else if(this.$store.state.user.myDepts.length>1){
-                        	//this.$message.info("亲，您在多个部门中任职，我分不清您要登陆哪个部门，请选择一个部门登陆吧");  
-                        	this.deptSelectVisible=true;
+                        }else if(this.$store.state.user.myDepts.length>1 ){
+                        	//this.$message.info("亲，您在多个部门中任职，我分不清您要登陆哪个部门，请选择一个部门登陆吧"); 
+                          if( !this.userDeptid ){
+                            this.userDeptid=res2.data.userInfo.deptid 
+                            this.deptSelectVisible=true; 
+                          }else{
+                        	  this.rolesChecked();
+                          }
                         	//this.$router.push({ path: 'mdp/sys/branch/BranchAdd' })
-                        }else{
+                        }else if(this.$store.state.user.myDepts.length==1){
                         	//进行角色身份验证
+                          this.userDeptid=res2.data.userInfo.deptid
                         	this.rolesChecked();
+                        }else{
+                          this.rolesChecked();
+
                         }
                 	}else{
                 		this.$message.error(res2.data.tips.msg);
@@ -168,18 +224,15 @@ export default {
       })
     },
     deptChecked() {
-    	if(this.userDeptid==''){
-    		this.$message.error("亲，请选择登陆的部门")
+    	if( !this.userDeptid){
+    		this.$message.error("请选择登陆的部门")
     		return
     	}
     	
     	let depts=this.myDepts.filter(d=>d.deptid==this.userDeptid)   
     	if(this.$store.state.user.userInfo.deptid!=this.userDeptid){
-        	this.$store.dispatch('SwitchDept', depts[0]).then(() => {
-        		this.deptSelectVisible = false
-        		//进行角色身份验证
-      			this.rolesChecked();
-        	})
+        	this.handleLogin();
+          return;
     	}else{
     		this.rolesChecked();
     	}
@@ -263,7 +316,7 @@ $light_gray:#eee;
       border-radius: 0px;
       padding: 12px 5px 12px 15px;
       color: $light_gray;
-      height: 47px; 
+      height: 47px;
     }
   }
   .el-form-item {

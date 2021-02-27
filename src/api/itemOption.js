@@ -38,7 +38,7 @@ export const listOption = params => {
     });
     return new Promise((resolve,reject) => { 
         if(noExistsParams.length>0){ 
-            axios.post(`${base}/mdp/common/itemOption/list/byItemCode`,   noExistsParams ).then(res=>{
+            axios.post(`${base}/mdp/meta/itemOption/list/byItemCode`,   noExistsParams ).then(res=>{
                 var tips = res.data.tips;
                 if(tips.isOk){
                     var data=res.data.data;
@@ -84,7 +84,7 @@ export const listOptionByItemIds = params => {
     });
     return new Promise((resolve,reject) => { 
         if(noExistsParams.length>0){ 
-            axios.post(`${base}/mdp/common/itemOption/listItemOptionByItemIds`,   noExistsParams ).then(res=>{
+            axios.post(`${base}/mdp/meta/itemOption/listItemOptionByItemIds`,   noExistsParams ).then(res=>{
                 var tips = res.data.tips;
                 if(tips.isOk){
                     var data=res.data.data;

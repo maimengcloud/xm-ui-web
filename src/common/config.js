@@ -8,6 +8,9 @@
 var sysName = 'oa协同办公系统'// 系统名称，用于展示
 
 export default {
+  getOauth2LoginBasePath:function(){
+    return "/oauth2client"
+  },
 
   getBaseDomainUrl:function(){
     return "https://www.qingqinkj.com"

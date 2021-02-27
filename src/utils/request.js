@@ -30,7 +30,13 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(config => {
   // Do something before request is sent 
-    config.headers['Authorization'] = 'userToken '+getToken() // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
+    var token=getToken();
+    if(token==null ||token=='' ||token=="" || token ==undefined ){
+      return config;
+    }else{
+      config.headers['Authorization'] = 'Bearer '+token // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
+    }
+    
   return config
 }, error => {
   // Do something with request error
@@ -51,7 +57,7 @@ service.interceptors.response.use(
 	return response
   }, 
   error => {
-    console.log('err' + error)// for debug
+    console.log(error)// for debug
     if(error.response){
     	switch (error.response.status) {
 	        case 401:

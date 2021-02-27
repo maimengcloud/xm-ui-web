@@ -46,7 +46,6 @@ router.beforeEach((to, from, next) => {
 		}
   	if(outUrl.indexOf("${curlDomain}")>=0){
 			var curlDomain=window.location.protocol+"//"+window.location.host; //   返回https://mp.csdn.net
-			//var curlDomain="https://www.qingqinkj.com"
   		outUrl=outUrl.replace("${curlDomain}",curlDomain);
 		}
 		var indexOfHttp=outUrl.indexOf("://");
@@ -60,15 +59,15 @@ router.beforeEach((to, from, next) => {
 	return;
   } 
    if(to!=null && to.fullPath!=null){
-	var userToken=getQueryVariable("userToken",to.fullPath);
-	if(userToken!=null){
-		setToken(userToken);
+	var accessToken=getQueryVariable("accessToken",to.fullPath);
+	if(accessToken!=null){
+		setToken(accessToken);
 	}
    }
   if (getToken()) { // determine if there has token
     /* has token*/
     if (to.path === '/login') {
-      next({ path: '/' })
+		next()//
       NProgress.done() // if current page is dashboard will not trigger	afterEach hook, so manually handle it
     } else {
     	if(store.getters.isLoadOk==false ){
@@ -144,10 +143,10 @@ function getQueryVariable(variable,url){
        }
        return null;
 }
-var userToken=getQueryVariable('userToken'); 
-if(userToken!=null){ 
-	//alert(userToken);
-	setToken(userToken);
+var accessToken=getQueryVariable('accessToken'); 
+if(accessToken!=null){ 
+	//alert(access_token);
+	setToken(accessToken);
 }
 router.afterEach(() => {
   NProgress.done() // finish progress bar

@@ -14,96 +14,7 @@ let base=config.getSysBasePath();
 export const listItemOption = params => { return axios.get(`${base}/mdp/meta/itemOption/list`, { params: params }); };
 
 //普通查询 条件之间and关系 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
-export const listOption = params => { 
-    var date=new Date();
-    var dateStr=date.getFullYear()+"-"+date.getMonth()+"-"+date.getDay() 
-    var result={
-        data:{
-            tips:{
-                isOk:true,
-            },
-            data:{
-
-            }
-        }
-    }
-    var noExistsParams=params.filter(i=>{
-        var key=i.categoryId+"-"+i.itemCode+"-"+dateStr;
-        var options = localStorage.getItem(key);
-        if(options){ 
-            result.data.data[i.itemCode]=JSON.parse(options)
-            return false
-        }return true;
-    });
-    return new Promise((resolve,reject) => { 
-        if(noExistsParams.length>0){ 
-            axios.post(`${base}/mdp/common/itemOption/list/byItemCode`,   noExistsParams ).then(res=>{
-                var tips = res.data.tips;
-                if(tips.isOk){
-                    var data=res.data.data;
-                    noExistsParams.forEach(k=>{
-                        var key=k.categoryId+"-"+k.itemCode+"-"+dateStr;
-                        localStorage.setItem(key, JSON.stringify(data[k.itemCode]));
-                        result.data.data[k.itemCode]= data[k.itemCode]
-                    })
-                }else{
-                    result.data.tips=tips;
-                }
-                resolve(result); 
-            }).catch(e=>reject(e));
-        }else{
-            resolve(result); 
-        }  
-        
-  });
-
-};
-export const listOptionByItemIds = params => { 
-    var date=new Date();
-    var dateStr=date.getFullYear()+"-"+date.getMonth()+"-"+date.getDay() 
-    var result={
-        data:{
-            tips:{
-                isOk:true,
-            },
-            data:{
-
-            }
-        }
-    }
-    var noExistsParams=params.filter(i=>{
-        var key=i+"-"+dateStr;
-        var options = localStorage.getItem(key);
-
-        if(options){ 
-            var optionsJson=JSON.parse(options);
-            result.data.data[i]=optionsJson
-            return false
-        }return true;
-    });
-    return new Promise((resolve,reject) => { 
-        if(noExistsParams.length>0){ 
-            axios.post(`${base}/mdp/common/itemOption/listItemOptionByItemIds`,   noExistsParams ).then(res=>{
-                var tips = res.data.tips;
-                if(tips.isOk){
-                    var data=res.data.data;
-                    noExistsParams.forEach(k=>{
-                        var key= k+"-"+dateStr;
-                        localStorage.setItem(key, JSON.stringify(data[k]));
-                        result.data.data[k]= data[k]
-                    })
-                }else{
-                    result.data.tips=tips;
-                }
-                resolve(result); 
-            }).catch(e=>reject(e));
-        }else{
-            resolve(result); 
-        }  
-        
-  });
-
-}; 
+export const listOption = params => { return axios.post(`${base}/mdp/meta/itemOption/list/byItemCode`,   params ); };
 
 //params={id:''} 返回 {optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'} 
 export const getSysParam = params => { return axios.post(`${base}/mdp/meta/itemOption/sysParam`,   params ); };
@@ -124,4 +35,4 @@ export const addItemOption = params => { return axios.post(`${base}/mdp/meta/ite
 
 
 //刷新缓存
-export const refresh = params => { return axios.post(`${base}/mdp/common/itemOption/refresh`, params); };
+export const refresh = params => { return axios.post(`${base}/mdp/meta/itemOption/refresh`, params); };
