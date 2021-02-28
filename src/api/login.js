@@ -1,38 +1,93 @@
 import axios from '@/utils/request'
+import { getToken, setToken, removeToken,getCacheUserInfo,setCacheUserInfo,removeCacheUserInfo} from '@/utils/auth'
+
 
 import config from '@/common/config'
 
 let base=config.getOauth2LoginBasePath();
 
 //let base='';
-export function loginByUsername(username, password,deptid) {
+export function doLoginByUserloginid(userloginid, password,grantType,authType,deptid) {
+  removeToken();
   const data = {
-    userloginid: username,
+    userloginid: userloginid,
     password: password, 
-    authType:'password_display_userid',
+    authType:authType,
     deptid:deptid
   }
   return axios({
-    url: base+'/login/token?grantType=password',
+    url: base+'/login/token?grantType='+grantType,
     method: 'post',
     data
   })
 }
-export function loginByPhoneno(phoneno, smsCode,isAdmin,deptid) {
+export function checkUserid(userid ) {
+  removeToken();
   const data = {
-    userloginid: phoneno,
-    password: smsCode, 
-    authType:'sms',
-    isAdmin:true,
-    deptid:deptid
+    userid: userid
   }
   return axios({
-    url: base+'/login/token?grantType=password',
+    url: base+'/user/check/userid',
+    method: 'post',
+    data
+  })
+}
+export function checkDisplayUserid(displayUserid ) {
+  removeToken();
+  const data = {
+    displayUserid: displayUserid
+  }
+  return axios({
+    url: base+'/user/check/displayUserid',
+    method: 'post',
+    data
+  })
+}
+
+export function checkPhoneno(phoneno ) {
+  removeToken();
+  const data = {
+    phoneno: phoneno
+  }
+  return axios({
+    url: base+'/user/check/phoneno',
+    method: 'post',
+    data
+  })
+}
+export function doRegister( userInfo ) {
+  removeToken();
+  const data = {
+    username:userInfo.username,
+    userid:userInfo.displayUserid,
+    displayUserid:userInfo.displayUserid,
+    password:userInfo.password,
+    phoneno:userInfo.phoneno,
+    smsCode:userInfo.smsCode,
+    deptid:userInfo.deptid
+  }
+  return axios({
+    url: base+'/user/register',
+    method: 'post',
+    data
+  })
+}
+
+export function resetPasswordByPhoneno( userInfo ) {
+  removeToken();
+  const data = {  
+    newPassword:userInfo.newPassword,
+    phoneno:userInfo.phoneno,
+    smsCode:userInfo.smsCode, 
+  }
+  return axios({
+    url: base+'/user/password/reset?type=sms',
     method: 'post',
     data
   })
 }
 export function logout() {
+  removeToken();
   /**
   return axios({
     url: base+'/logout',
@@ -54,21 +109,3 @@ export function getUserInfo(params) {
     data
   })
 }
-export function getUserDepts(userid) {
-  if( !userid ){
-    params={
-      userid:userid
-    }
-  }else{
-    return 
-  }
-  const data= { params: params };
-  return axios({
-    url: base+'/user/depts',
-    method: 'get',
-    data
-  })
-}
-export function switchDept(params) { 
-	  return axios.post(  base+'/login/switch', params )
-	}

@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 const app = {
   state: {
     sidebar: {
-      opened: !+Cookies.get('sidebarStatus')
+      opened: Cookies.get('sidebarStatus')==1?true:false
     },
     language: Cookies.get('language') || 'zh'
   },
@@ -11,10 +11,10 @@ const app = {
     TOGGLE_SIDEBAR: (state,toOpen) => {
       if(toOpen==true){
         Cookies.set('sidebarStatus', 1)
-        state.sidebar.opened =1
+        state.sidebar.opened =true
       }else if(toOpen==false){
         Cookies.set('sidebarStatus', 0)
-        state.sidebar.opened =0
+        state.sidebar.opened =false
       }else{
         if (state.sidebar.opened) {
           Cookies.set('sidebarStatus', 1)

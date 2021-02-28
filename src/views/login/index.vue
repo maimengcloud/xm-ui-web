@@ -1,57 +1,54 @@
 <template>
   <div class="login-container">
-    <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
+    <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm">
+ 
       <div class="title-container">
-        <h3 class="title">{{$t('login.title')}}</h3>
+        <div class="logo">
+          <img src="../../assets/image/logo1.png" alt="" />  
+          <div class="logo-text"> 
+            <div class="systemName">{{$t('login.title')}}</div> 
+          </div> 
+        </div> 
         <lang-select class="set-language"></lang-select>
       </div>
-      <el-form-item prop="authType">
-        <span class="svg-container svg-container_login">
-          <svg-icon icon-class="user" />
-        </span>
-          <el-radio v-model="loginForm.authType" label="password">账户密码登录</el-radio>
-          <el-radio v-model="loginForm.authType" label="sms">短信验证码快速登录</el-radio>
+      <el-form-item prop="authType">  
+          <el-radio-group v-model="loginForm.authType">
+            <el-radio label="password_display_userid">账户密码登录</el-radio>
+            <el-radio label="sms">短信验证码快速登录</el-radio> 
+          </el-radio-group>
       </el-form-item>
-      <el-form-item prop="username" v-if="loginForm.authType=='password'">
-        <span class="svg-container svg-container_login">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="用户编号" />
+      <el-form-item prop="displayUserid" v-show="loginForm.authType=='password_display_userid'"> 
+        <el-input name="displayUserid" type="text" v-model="loginForm.displayUserid" autoComplete="on" placeholder="用户编号" >
+          <template slot="prepend">账号</template>
+        </el-input>
       </el-form-item>
 
-      <el-form-item prop="password" v-if="loginForm.authType=='password'">
-        <span class="svg-container">
-          <svg-icon icon-class="password" />
-        </span>
-        <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="password" />
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon icon-class="eye" />
-        </span>
+      <el-form-item prop="password" v-show="loginForm.authType=='password_display_userid'"> 
+        <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="password">
+          <template slot="prepend">密码</template>
+          <span slot="append" class="show-pwd" @click="showPwd">
+            <svg-icon icon-class="eye" />
+          </span>
+        </el-input>
       </el-form-item>
-      <el-form-item prop="phoneno" v-if="loginForm.authType=='sms'">
-        <span class="svg-container svg-container_login">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input name="phoneno" type="text" v-model="loginForm.phoneno" autoComplete="on" placeholder="手机号码" />
+      <el-form-item prop="phoneno" v-show="loginForm.authType=='sms'"> 
+        <el-input name="phoneno" type="text" v-model="loginForm.phoneno" autoComplete="on" placeholder="手机号码">
+          <template slot="prepend">手机号码&nbsp;&nbsp;&nbsp;</template>
+          <el-button slot="append" @click.prevent="sendPhonenoSmsCode">发送验证码</el-button>
+        </el-input>
       </el-form-item>
-      <el-form-item prop="smsCode" v-if="loginForm.authType=='sms'">
-        <span class="svg-container svg-container_login">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input name="smsCode" type="text" v-model="loginForm.smsCode" autoComplete="on" placeholder="短信验证码" /><el-button @click.prevent="sendPhonenoSmsCode">发送验证码</el-button>
+      <el-form-item prop="smsCode" v-show="loginForm.authType=='sms'"> 
+        <el-input name="smsCode" type="text" v-model="loginForm.smsCode" autoComplete="on" placeholder="短信验证码">
+          <template slot="prepend">短信验证码</template>
+          <template slot="append">六位验证码</template>
+        </el-input>
       </el-form-item>
       <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">{{$t('login.logIn')}}</el-button>
-
-      <div class="tips">
-        <span> </span>
-        <span> </span>
-      </div>
-      <div class="tips">
-        <span style="margin-right:18px;"> </span>
-        <span> </span>
-      </div>
-
-      <el-button class="thirdparty-button" type="primary" @click="showTpLoginDialog=true">{{$t('login.thirdparty')}}</el-button>
+      <el-row> 
+          <el-button type="success" plain round @click="showRegisterDialog=true">新用户注册</el-button> 
+          <el-button type="warning" plain round @click="showResetPasswordDialog=true">忘记密码</el-button>  
+          <el-button type="primary" plain round @click="showTpLoginDialog=true">{{$t('login.thirdparty')}}</el-button> 
+      </el-row> 
     </el-form>
 	<el-dialog
 	  title="请选择一个部门进行登陆"
@@ -78,7 +75,14 @@
       <br/>
       <social-sign />
     </el-dialog>
-    
+    	<!-- 注册窗口 -->
+    <el-dialog title="新用户注册" :visible.sync="showRegisterDialog" append-to-body>  
+      <register />
+    </el-dialog>
+    	<!-- 重置密码窗口 -->
+    <el-dialog title="重置密码" :visible.sync="showResetPasswordDialog" append-to-body>  
+      <reset-password />
+    </el-dialog>
 	<!--新增 Branch 管理端机构表（机构下面若干部门）界面-->
 	<el-dialog title="新增机构" :visible.sync="addBranchFormVisible"  width="50%"  :close-on-click-modal="false" append-to-body>
 		<branch-add  :visible="addBranchFormVisible" @cancel="addBranchFormVisible=false" @submit="afterAddBranchSubmit"></branch-add>
@@ -86,53 +90,88 @@
   </div>
 </template>
 
-<script>
-import { isvalidUsername } from '@/utils/validate';
-import { sendSmsCode,validateSmsCode } from '@/api/sms/sms';
-import { getUserDepts } from '@/api/login';
+<script> 
+import { sendSmsCode } from '@/api/sms/sms';
 import LangSelect from '@/components/LangSelect';
 import SocialSign from './socialsignin';
+import Register from './register';
+import ResetPassword from './resetPassword';
+
 import BranchAdd from './BranchAdd';
 import { mapGetters } from 'vuex'; 
 import md5 from 'js-md5';
 
 export default {
-  components: { LangSelect, SocialSign, BranchAdd },
+  components: { LangSelect, SocialSign, BranchAdd,Register,ResetPassword},
   name: 'login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!isvalidUsername(value)) {
-        callback(new Error('请输入正确的用户账号'))
+    const validateDisplayUserid = (rule, value, callback) => {
+      if (this.loginForm.authType=='password_display_userid') {
+        if(value.length<=6){
+          callback(new Error('请输入6位以上用户账号'))
+        }else{
+          callback()
+        } 
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('密码必须大于六位'))
+      if (this.loginForm.authType=='password_display_userid') {
+        if(value.length<6){
+          callback(new Error('密码最少为六位'))
+        }else{
+          callback()
+        } 
       } else {
         callback()
-      }
+      } 
+    }
+    const validatePhoneno = (rule, value, callback) => {
+      if (this.loginForm.authType=='sms') {
+        if(value.length !=11 ){
+          callback(new Error('手机号码必须为11位号码'))
+        }else{
+          callback()
+        } 
+      } else {
+        callback()
+      }  
+    }
+    const validateSmsCode = (rule, value, callback) => {
+      if (this.loginForm.authType=='sms') {
+        if(value.length !=6 ){
+          callback(new Error('请输入6位短信验证码'))
+        }else{
+          callback()
+        } 
+      } else {
+        callback()
+      } 
     }
     return {
       loginForm: {
-        username: '',
+        displayUserid: '',
         password: '',
-        authType:'password',//password/sms 分别为账户密码、短信验证码快捷登录
+        authType:'password_display_userid',//password/sms/password_display_userid 分别为账户密码、短信验证码快捷登录
         phoneno:'',//手机号码
         smsCode:'',//短信验证码
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        displayUserid: [{ required: true, trigger: 'blur', validator: validateDisplayUserid }],
+        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
+        phoneno: [{ required: true, trigger: 'blur', validator: validatePhoneno }],
+        smsCode: [{ required: true, trigger: 'blur', validator: validateSmsCode }],
       }, 
       passwordType: 'password',
       
       loading: false,
+      showResetPasswordDialog:false,//显示忘记密码重置密码窗口
       showTpLoginDialog: false, //显示第三方登陆对话框
-	  deptSelectVisible:false,//显示选择部门对话框
-	  userDeptid:'',//选中的部门编号 
-	  addBranchFormVisible:false,  //显示添加机构对话框 
+      showRegisterDialog: false,//显示注册窗口
+	    deptSelectVisible:false,//显示选择部门对话框
+	    userDeptid:'',//选中的部门编号 
+	    addBranchFormVisible:false,  //显示添加机构对话框 
     }
   },
   methods: {
@@ -162,18 +201,28 @@ export default {
         if (valid) {
           this.loading = true
           let params={
-        		  username:this.loginForm.username,
+        		  displayUserid:this.loginForm.displayUserid,
               password:md5(this.loginForm.password),
               deptid:this.userDeptid,
               authType:this.loginForm.authType,
               phoneno:this.loginForm.phoneno,
               smsCode:this.loginForm.smsCode
           }
-          var dispatchName="LoginByUsername"
-          if(this.loginForm.authType=='sms'){
-            dispatchName="LoginByPhoneno"
+          var loginParams={ }
+          if(params.authType=='password_display_userid'){
+            loginParams.userloginid=params.displayUserid
+            loginParams.password=params.password
+            loginParams.grantType="password"
+            loginParams.authType='password_display_userid' 
+            loginParams.deptid=params.deptid
+          }else if(params.authType=='sms'){
+            loginParams.userloginid=params.phoneno
+            loginParams.password=params.smsCode
+            loginParams.grantType="password"
+            loginParams.authType="sms"
+            loginParams.deptid=params.deptid
           }
-          this.$store.dispatch(dispatchName,params).then(res => {
+          this.$store.dispatch("LoginByUserloginid",loginParams).then(res => {
         	  this.loading = false
             if(res.data.tips.isOk==true){
             	console.log(this.$store);
@@ -298,47 +347,20 @@ export default {
   }
 }
 </script>
-
-<style rel="stylesheet/scss" lang="scss">
-$bg:#2d3a4b;
-$light_gray:#eee;
-
-/* reset element-ui css */
-.login-container {
-  .el-input {
-    display: inline-block;
-    height: 47px;
-    width: 85%;
-    input {
-      background: transparent;
-      border: 0px;
-      -webkit-appearance: none;
-      border-radius: 0px;
-      padding: 12px 5px 12px 15px;
-      color: $light_gray;
-      height: 47px;
-    }
-  }
-  .el-form-item {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    color: #454545;
-  }
-}
-</style>
+ 
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 $bg:#2d3a4b;
 $dark_gray:#889aa4;
 $light_gray:#ef1010;
 
-.login-container {
-  position: fixed;
+.login-container { 
+  position:absolute;
   height: 100%;
   width: 100%;
   background-color: $bg;
-  background:url(../../assets/image/yxin_login_backgroup_pc.png) no-repeat;
+  background-size: 100%;
+  background:url(../../assets/image/yxin_login_backgroup_pc.png) center center;
   .login-form {
     position: absolute;
     left: 0;
@@ -346,9 +368,8 @@ $light_gray:#ef1010;
     max-width: 520px;
     padding: 35px 35px 15px 35px;
     margin: 180px auto;
-    border-radius: 20px;
-  	opacity: 0.9;
-  	background-color:#f5f7faa3;
+    border-radius: 20px; 
+  	background-color:#f5f7faee;
   }
   .tips {
     font-size: 14px;
@@ -381,7 +402,7 @@ $light_gray:#ef1010;
       font-weight: bold;
     }
     .set-language {
-      color: #fff;
+      color: rgb(95, 41, 221);
       position: absolute;
       top: 5px;
       right: 0px;
@@ -400,6 +421,34 @@ $light_gray:#ef1010;
     position: absolute;
     right: 35px;
     bottom: 28px;
+  }
+  .register-button {
+    position: absolute; 
+    bottom: 28px;
+  }
+}
+.logo {
+  height: 100px;
+  width: 100%;
+  // padding: 0 20px;
+  display: flex;
+  align-items: left;
+  justify-content: center;
+  img {
+    height: 100%;
+  }
+  .logo-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $light_gray; 
+    .systemName {
+      font-size: 35px;
+      font-weight: 400;
+      color: $light_gray; 
+      text-align: center;
+      font-weight: bold;
+    } 
   }
 }
 </style>
