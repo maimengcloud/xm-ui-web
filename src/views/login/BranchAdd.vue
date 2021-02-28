@@ -5,10 +5,12 @@
 			<!--新增界面 Branch 管理端机构表（机构下面若干部门）--> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
 				<el-form-item label="" prop="branchName">
-					<el-tag>亲，您不在任何一个公司或者部门中，需要【先创建公司】 或者请【管理员加您进入公司】哦</el-tag>
+					<el-tag>您不在任何一个公司或者部门中，需要【先创建公司】 或者请【管理员加您进入公司】</el-tag>
 				</el-form-item>
 				<el-form-item label="机构名称" prop="branchName">
-					<el-input v-model="addForm.branchName" auto-complete="off"></el-input>
+					<el-input v-model="addForm.branchName" auto-complete="off">
+						<el-button slot="append" @click.prevent="checkBranchExists">查询机构是否存在</el-button> 
+					</el-input>
 				</el-form-item> 
 
 				<el-form-item label="行业分类" prop="industryCategory"> 
@@ -52,7 +54,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import { listOption } from '@/api/itemOption';//下拉框数据查询
-	import { addBranch } from '@/api/branch';
+	import { addBranchNoAuth,listBranchNoAuth } from '@/api/branch';
 	import { mapGetters } from 'vuex'
 	
 	export default {
@@ -102,7 +104,7 @@
 							console.log("dddddddddddddddddddddddddddddddddddddddddddddddd")
 							console.log(this.userInfo)
 							params.cuserid=this.userInfo.userid
-							addBranch(params).then((res) => {
+							addBranchNoAuth(params).then((res) => {
 								this.load.add=false
 								var tips=res.data.tips;
 								if(tips.isOk){
@@ -114,6 +116,24 @@
 						});
 					}
 				});
+			},
+			checkBranchExists:function(){
+				if(this.addForm.branchName.length>=2){
+					var params={
+						key:this.addForm.branchName
+					}
+					listBranchNoAuth(params).then(res=>{
+						if(res.data.tips.isOk){
+							if(res.data.total<=0){
+								this.$message({ message: "该公司名未注册，可以使用", type: 'success' }); 
+								return;
+							}else{
+								this.$message({ message: "该公司名已注册，不可以使用", type: 'error' }); 
+								return;
+							}
+						}
+					})
+				}
 			}
 			/**begin 在下面加自定义方法,记得补上面的一个逗号**/
 				

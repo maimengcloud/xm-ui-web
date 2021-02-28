@@ -11,7 +11,7 @@ let base=config.getSysBasePath();
  **/
  
 //普通查询 条件之间and关系  
-export const listBranch = params => { return axios.get(`${base}/mdp/sys/branch/list`, { params: params }); };
+export const listBranchNoAuth = params => { return axios.get(`${base}/mdp/sys/branch/listBranchNoAuth`, { params: params }); };
 
 //模糊查询管理端机构表（机构下面若干部门） 条件之间or关系  
 //export const listBranchKey = params => { return axios.get(`${base}/mdp/sys/branch/listKey`, { params: params }); };
@@ -26,4 +26,4 @@ export const batchDelBranch = params => { return axios.post(`${base}/mdp/sys/bra
 export const editBranch = params => { return axios.post(`${base}/mdp/sys/branch/edit`, params); };
 
 //新增一条管理端机构表（机构下面若干部门）
-export const addBranch = params => { return axios.post(`${base}/mdp/sys/branch/add`, params); };
+export const addBranchNoAuth = params => { return axios.post(`${base}/mdp/sys/branch/addBranchNoAuth`, params); };
