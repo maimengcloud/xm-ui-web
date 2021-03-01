@@ -128,8 +128,10 @@ const user = {
                 commit('SET_USER_INFO', userInfo)
                 commit('SET_ROLES', roles)
                 commit('SET_QXS', data.qxs)
-                commit('SET_TOKEN', data.data.accessToken.tokenValue)
+                commit('SET_TOKEN', data.data.accessToken.tokenValue) 
+                commit('SET_IS_LOAD_OK', false)
                 setToken( data.data.accessToken.tokenValue)
+                removeCacheUserInfo();
         	} 
             resolve(res) 
         }).catch(error => {
@@ -254,7 +256,8 @@ const user = {
           commit('SET_MYBRANCHS', [])
           commit('SET_MYSHOPS', [])
           commit('SET_MYPOSTS', [])
-          commit('SET_USER_INFO', {})
+          commit('SET_USER_INFO', {}) 
+          commit('SET_IS_LOAD_OK', false)
            removeToken()
            removeCacheUserInfo();
            resolve()

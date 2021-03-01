@@ -57,14 +57,15 @@ export default {
       width: 50px;
       height: 50px;
       vertical-align: middle;
-      margin-left:-2px;
+      margin-left:-4px;
     }
     & .sidebar-title {
       display: inline-block;
       margin: 0;
       color: #fff; 
       line-height: 50px;
-      font-size: 14px;
+      font-weight: 400;
+      font-size: 16px;
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
       vertical-align: middle;
     }
@@ -74,7 +75,7 @@ export default {
     .sidebar-logo {
       width: 40px;
       height: 40px; 
-      margin-left: -2px;
+      margin-left: -4px;
     }
   }
 }
