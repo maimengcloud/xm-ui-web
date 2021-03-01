@@ -2,6 +2,8 @@ import Cookies from 'js-cookie'
 
 const TokenKey = 'token'
 
+const UserInfoKey='userInfo'
+
 export function getToken() {
   return localStorage.getItem(TokenKey)
 }
@@ -15,15 +17,13 @@ export function removeToken() {
 }
 
 export function getCacheUserInfo(){
-  var userInfo= localStorage.getItem(localStorage.getItem(TokenKey));
+  var userInfo= localStorage.getItem(UserInfoKey);
   return JSON.parse(userInfo);
 }
-export function setCacheUserInfo(userInfo){
-  var tokenValue=localStorage.getItem(TokenKey)
-  localStorage.setItem(tokenValue, JSON.stringify(userInfo)) 
+export function setCacheUserInfo(userInfo){ 
+  localStorage.setItem(UserInfoKey, JSON.stringify(userInfo)) 
   return;
 }
-export function removeCacheUserInfo() {
-  var tokenValue=localStorage.getItem(TokenKey)
-  return localStorage.removeItem(tokenValue)
+export function removeCacheUserInfo() { 
+  return localStorage.removeItem(UserInfoKey)
 }

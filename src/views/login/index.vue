@@ -231,7 +231,8 @@ export default {
                 	//this.userDeptid=res2.data.userInfo.deptid
                 	this.loading = false
                 	if(res2.data.tips.isOk==true){
-                		if(this.$store.state.user.myBranchs==null ||this.$store.state.user.myBranchs.length==0||this.$store.state.user.myDepts==null || this.$store.state.user.myDepts.length<=0){ 
+                		    if(this.$store.state.user.myBranchs==null ||this.$store.state.user.myBranchs.length==0||this.$store.state.user.myDepts==null || this.$store.state.user.myDepts.length<=0){ 
+                        //if(1==1){
                         	//this.$message.error("亲，您不在任何一个公司或者部门中，需要【先创建公司】\n 或者请【管理员加您进入公司】哦"); 
                         	this.addBranchFormVisible=true;
                         }else if(this.$store.state.user.myDepts.length>1 ){
@@ -303,13 +304,7 @@ export default {
     
     afterAddBranchSubmit(branch){
     	this.addBranchFormVisible=false;
-    	this.loading=true
-        this.$store.dispatch('GetUserInfo').then((res)=>{
-        	this.userDeptid=res.data.userInfo.deptid 
-        	this.loading = false;
-        	//角色身份验证
-    		this.rolesChecked();
-        }); 
+      this.handleLogin();
     },
     afterQRScan() {
       // const hash = window.location.hash.slice(1)
