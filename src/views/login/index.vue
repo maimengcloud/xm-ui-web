@@ -6,7 +6,7 @@
         <div class="logo">
           <img src="../../assets/image/logo1.png" alt="" />  
           <div class="logo-text"> 
-            <div class="systemName">{{$t('login.title')}}</div> 
+            <div class="main-title">{{$t('login.title')}}</div> 
           </div> 
         </div> 
         <lang-select class="set-language"></lang-select>
@@ -437,7 +437,7 @@ $light_gray:#ef1010;
     align-items: center;
     justify-content: center;
     color: $light_gray; 
-    .systemName {
+    .main-title {
       font-size: 35px;
       font-weight: 400;
       color: $light_gray; 

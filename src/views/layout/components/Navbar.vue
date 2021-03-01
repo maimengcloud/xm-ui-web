@@ -6,16 +6,17 @@
 
     <div class="right-menu">
       <div class="hidden-sm-and-down" style="float:left;display:flex;align-items: center;height:100%;">				
-        <el-tooltip class="item" effect="dark" :content="workShop.branchId+'-'+workShop.shopId+'-'+workShop.locationId" placement="top-start">
-				<el-tag>{{workShop.branchName}}-{{workShop.locationName}}</el-tag>
+        <el-tooltip v-if="workShop.locationName" class="item" effect="dark" :content="workShop.branchId+' '+workShop.shopId+' '+workShop.locationId" placement="top-start">
+				  <el-tag>{{workShop.branchName}} {{workShop.locationName}}</el-tag>
+				</el-tooltip>
+        <el-tooltip v-else class="item" effect="dark" :content="workShop.branchId+' '+workShop.deptid" placement="top-start">
+				  <el-tag>{{workShop.branchName}} {{workShop.deptName}}</el-tag>
 				</el-tooltip>
 				<el-button @click="showSelectShopMethod" type="primary" v-if="workShop.isSuperAdmin||workShop.isPlatFormAdmin">切换商户</el-button>
 			</div>
      <error-log class="errLog-container right-menu-item hidden-sm-and-down"></error-log>
-		
-      <el-tooltip class="hidden-sm-and-down" effect="dark" :content="$t('navbar.screenfull')" placement="bottom">
-        <screenfull class="screenfull right-menu-item"></screenfull>
-      </el-tooltip>
+		 
+        <screenfull class="screenfull right-menu-item"></screenfull> 
 
       <lang-select class="international right-menu-item hidden-sm-and-down"></lang-select>
 

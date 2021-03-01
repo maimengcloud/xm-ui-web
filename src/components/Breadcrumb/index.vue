@@ -6,7 +6,7 @@
         <router-link v-else :to="item.redirect||item.path">{{generateTitle(item.meta.title)}}</router-link>
       </el-breadcrumb-item>
     </transition-group>
-    <el-button @click="drawer = true" type="primary" style="margin-left: 16px;"> <i class="el-icon-menu" style="margin-right:5px"></i>全部应用</el-button>
+    <el-button @click="drawer = true" type="primary" round plain style="margin-left: 16px;"> <i class="el-icon-menu" style="margin-right:5px"></i>全部应用</el-button>
     <div class="drawer-box">
         <el-drawer
         :visible.sync="drawer"

@@ -1,20 +1,6 @@
 <template>
-  <div class="menu-wrapper">
-    <template>
-      <router-link to="/">
-        <div class="logo" :class="{'has-logo': isCollapse}">
-          <img v-if="isCollapse" src="../../../../assets/image/logo1.png" alt="" />
-          <div class="logo-text" v-else>
-            <img src="../../../../assets/image/logo1.png" alt="" />
-            <div class="systemName">唛盟云</div>
-            <div class="name">项目管理系统</div>
-          </div>
-
-        </div>
-      </router-link> 
-    </template>
-    <template v-for="item in routes" v-if="!item.hidden&&item.children">
-
+  <div class="menu-wrapper"> 
+    <template v-for="item in routes" v-if="!item.hidden&&item.children"> 
       <router-link v-if="hasOneShowingChildren(item.children) && !item.children[0].children&&!item.alwaysShow" :to="item.path+'/'+item.children[0].path"
         :key="item.children[0].name">
         <el-menu-item :index="item.path+'/'+item.children[0].path" :class="{'submenu-title-noDropdown':!isNest}">
@@ -39,8 +25,7 @@
             </el-menu-item>
           </router-link>
         </template>
-      </el-submenu>
-
+      </el-submenu> 
     </template>
   </div>
 </template>
@@ -80,46 +65,6 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-  .logo {
-    height: 56px;
-    width: 100%;
-    // padding: 0 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    img {
-      width: 100%;
-    }
-    .logo-text {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      img {
-        width: 35%;
-      }
-      .systemName {
-        font-size: 14px;
-        font-weight: bold;
-        font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-      }
-      .name {
-        font-size: 12px;
-        font-weight: bold;
-        transform: scale(0.8);
-        // transform-origin: (left, center);
-        transform-origin: left center;
-        margin-left: 2px;
-      }
-    }
-  }
-  .has-logo {
-    width: 100%;
-    padding: 0;
-    img {
-      width: 80%;
-    }
-  }
   #app .hideSidebar .submenu-title-noDropdown-logo {
     padding: 0 !important;
   }

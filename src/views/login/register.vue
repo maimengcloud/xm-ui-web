@@ -86,35 +86,35 @@ export default {
   name: 'login',
   data() {
     const validateDisplayUserid = (rule, value, callback) => { 
-        if(value.length<=6){
+        if( !value || value.length<=6){
           callback(new Error('请输入6位以上用户账号'))
         }else{
           callback()
         }  
     }
     const validatePassword = (rule, value, callback) => { 
-        if(value.length<6){
+        if( !value || value.length<6){
           callback(new Error('密码最少为六位'))
         }else{
           callback()
         }  
     }
     const validatePhoneno = (rule, value, callback) => { 
-        if(value.length !=11 ){
+        if( !value || value.length !=11 ){
           callback(new Error('手机号码必须为11位号码'))
         }else{
           callback()
         }  
     }
     const validateSmsCode = (rule, value, callback) => { 
-        if(value.length !=6 ){
+        if( !value || value.length !=6 ){
           callback(new Error('请输入6位短信验证码'))
         }else{
           callback()
         }  
     }
     const validateUsername = (rule, value, callback) => { 
-        if(value.length <2 ){
+        if( !value || value.length <2 ){
           callback(new Error('请输入用户名称'))
         }else{
           callback()

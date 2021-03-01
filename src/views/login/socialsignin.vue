@@ -17,8 +17,8 @@ export default {
   methods: {
     wechatHandleClick(thirdpart) {
       this.$store.commit('SET_AUTH_TYPE', thirdpart)
-      const appid = 'wx0c261f0d6052439c'
-      const redirect_uri = encodeURIComponent('xxx/redirect?redirect=' + window.location.origin + '/authredirect')
+      const appid = 'wx406faa04557b40c8'
+      const redirect_uri = encodeURIComponent('https://www.qingqinkj.com/api/m1/wxpub/wxpub/msg/notify?redirectUri=' + window.location.origin + '/authredirect&authId=wx_pub_test_001')
       const url = 'https://open.weixin.qq.com/connect/qrconnect?appid=' + appid + '&redirect_uri=' + redirect_uri + '&response_type=code&scope=snsapi_login#wechat_redirect'
       openWindow(url, thirdpart, 540, 540)
     },
