@@ -443,6 +443,7 @@
 }
 .xm-task>.el-menu-demo{
 	height: 50px;
+	padding-left: 10px;
 	background: #fafbfc;
 }
 .xm-task>.el-menu-demo>li{

@@ -307,7 +307,6 @@
 .app-container{
 	display: flex;
 	padding: 10px;
-	padding-left: 0;
 	background: #e8edf7;
 }
 .project-handle{

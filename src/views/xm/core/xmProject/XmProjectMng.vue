@@ -23,12 +23,13 @@
 					<el-menu-item index="7-2">选项2</el-menu-item>
 					<el-menu-item index="7-3">选项3</el-menu-item>
 				</el-submenu> -->
-				<el-checkbox  v-model="finishFlag">未结束</el-checkbox>
-				<el-tag v-if="filters.productId" closable @close="onProductClose">{{filters.productName}}</el-tag><el-button type="warning" @click.native="productSelectVisible=true">选产品</el-button>
-				
-				<div class="changebtn"> 
-					<el-button :loading="load.list" :class="{'changebtn-active':showType}" plain type="text" @click="showType=true" icon="el-icon-menu"></el-button>
-					<el-button :loading="load.list" :class="{'changebtn-active':!showType}" plain type="text" @click="showType=false" icon="el-icon-more"></el-button>
+				<div >
+					<el-checkbox  v-model="finishFlag">未结束</el-checkbox>
+					<el-tag v-if="filters.productId" closable @close="onProductClose">{{filters.productName}}</el-tag><el-button v-else type="text" plain  @click.native="productSelectVisible=true">选产品</el-button>
+					<div class="changebtn">
+					<el-button :loading="load.list" v-if="!showType" :class="{'changebtn-active':showType}" plain type="text" @click="showType=true" icon="el-icon-menu"></el-button>
+					<el-button :loading="load.list" v-else :class="{'changebtn-active':!showType}" plain type="text" @click="showType=false" icon="el-icon-more"></el-button>
+					</div>
 				</div>
 			</el-menu>
 		</el-row>
@@ -628,7 +629,7 @@
 }
 .changebtn{
 	float: right;
-	padding: 0 10px;
+	padding: 2px 10px;
 	display: flex;
 	align-items: center;
 	line-height: 0;
@@ -651,6 +652,7 @@
 .el-menu-demo{
 	border: 0 !important;
 	height: 50px;
+	padding-left: 10px;
 	background-color: #fafbfc;
 }
 .el-menu-demo>.el-menu-item,

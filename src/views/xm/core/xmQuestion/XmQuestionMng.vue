@@ -656,6 +656,7 @@
 }
 .xm-question>.el-menu-demo{
 	height: 50px;
+	padding-left: 10px;
 	background: #fafbfc;
 }
 .xm-question>.el-menu-demo>li{
