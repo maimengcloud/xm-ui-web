@@ -123,7 +123,7 @@
 	export default { 
 		computed: {
 			...mapGetters([
-				'userInfo'
+				'userInfo','roles'
 			]),  
 		},
 		props:['xmQuestion','visible',"selProject"],
@@ -253,7 +253,7 @@
 			handleQuestion:function(tardgetBugStatus){
 				var oldBugStatus=this.editForm.bugStatus;  
 				if(tardgetBugStatus=="closed"){ 
-					if( !this.userInfo.isTestAdmin && !this.userInfo.isTester && !this.userInfo.isTestTeamAdmin ){
+					if( !this.roles.some(i=>i.roleid=='testAdmin') && !this.roles.some(i=>i.roleid=='tester') && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
 						this.$message({message:"只有测试经理、测试组长、测试员可以关闭bug",type:"error"});
 						return ;
 					}

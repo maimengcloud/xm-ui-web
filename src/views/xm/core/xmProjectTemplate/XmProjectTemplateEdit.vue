@@ -150,7 +150,7 @@
 	export default { 
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 				]), 
 			
 			autoParams:function(){

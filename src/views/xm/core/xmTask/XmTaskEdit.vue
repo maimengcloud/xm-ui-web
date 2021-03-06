@@ -170,7 +170,7 @@
 	export default { 
 		computed: {
 			...mapGetters([
-				'userInfo'
+				'userInfo','roles'
 			]),   
 		},
 		props:['xmTask','visible','xmProject','projectPhase',"parentTask"],
@@ -253,7 +253,7 @@
 			},
 			//新增提交XmTask xm_task 父组件监听@submit="afterAddSubmit"
 			editSubmit: function () {
-				if( !this.userInfo.isProjectAdmin && !this.userInfo.isTeamAdmin){
+				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin')){
 					this.$message.error("只有项目经理、小组长可以操作"); 
 					return;
 				}

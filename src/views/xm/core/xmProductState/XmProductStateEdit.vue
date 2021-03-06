@@ -131,7 +131,7 @@
 	export default { 
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 		    ])
 		},
 		props:['xmProductState','visible'],

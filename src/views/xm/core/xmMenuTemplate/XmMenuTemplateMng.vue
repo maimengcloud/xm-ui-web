@@ -103,7 +103,7 @@
 		props:['isSelectMenu'],
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 			]),
 			
       xmMenuTemplatesTreeData() {

@@ -56,7 +56,7 @@
 		props: ["visible","taskId"],
 		computed: {
 			...mapGetters([
-				'userInfo'
+				'userInfo','roles'
 			]),
 		},
 		watch:{

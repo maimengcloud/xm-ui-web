@@ -41,7 +41,7 @@
 	export default { 
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 		    ])
 		},
 		props:['xmIterationMenu','visible'],
@@ -81,7 +81,7 @@
 			},
 			//编辑提交XmIterationMenu 迭代定义父组件监听@submit="afterEditSubmit"
 			editSubmit: function () {
-				if(!this.userInfo.isIterationAdmin){
+				if(!this.roles.some(i=>i.roleid=='iterationAdmin')){
 					this.$message({ message: "只有迭代管理员可以操作", type:  'error' }); 
 					return ;
 				}

@@ -92,7 +92,7 @@
 		props: ["selProject"],
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 		    ])
 		},
 		data() {

@@ -81,7 +81,7 @@
 		props:['xmType','selProjectTemplate','simple','isSelect'],
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 			]), 
 			xmProjectPhaseTemplateTreeData(){ 
 				return this.translateDataToTree(this.xmProjectPhaseTemplates);

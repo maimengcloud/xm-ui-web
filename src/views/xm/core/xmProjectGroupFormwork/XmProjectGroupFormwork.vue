@@ -111,7 +111,7 @@
 	export default {
 		computed: {
 			...mapGetters([
-				'workShop','userInfo'
+				'workShop','userInfo','roles'
 			])
 		},
 		//

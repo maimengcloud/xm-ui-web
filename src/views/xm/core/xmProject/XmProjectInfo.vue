@@ -89,7 +89,7 @@
 		props: ["selProject","visible"],
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 				]), 
 		}, 
 		watch:{

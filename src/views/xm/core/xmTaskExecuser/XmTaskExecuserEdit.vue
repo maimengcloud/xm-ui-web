@@ -77,7 +77,7 @@
 	export default { 
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 		    ])
 		},
 		props:['xmTaskExecuser','visible',"execUserList","xmTask"],

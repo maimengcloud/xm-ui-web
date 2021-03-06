@@ -27,7 +27,7 @@ module.exports = {
                 '^/api/m1/workflow': '/workflow'
               }
           }, 
-          */
+          **/
         '/api': {
             target: 'https://www.qingqinkj.com',
             changeOrigin: true,

@@ -22,7 +22,7 @@ export default {
   props:["id","user","projectId","taskId","quoteId","replyId"],
   computed: {
     ...mapGetters([
-      'userInfo',
+      'userInfo','roles',
     ]),
   },
   data() {

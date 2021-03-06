@@ -73,7 +73,7 @@
 	export default { 
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 		    ])
 		},
 		props:['multiSelect'],
@@ -184,7 +184,7 @@
 			},
 			//显示新增界面 XmTestCase 测试用例
 			showAdd: function () { 
-				if( !this.userInfo.isTestAdmin && !this.userInfo.isTester && !this.userInfo.isTestTeamAdmin ){
+				if( !this.roles.some(i=>i.roleid=='testAdmin') && !this.roles.some(i=>i.roleid=='tester') && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
 					this.$message({message:"只有测试经理、测试组长、测试员可以操作",type:"error"});
 					return ;
 				}
@@ -205,11 +205,11 @@
 			}, 
 			//删除xmTestCase
 			handleDel: function (row,index) { 
-				if( !this.userInfo.isTestAdmin && !this.userInfo.isTester && !this.userInfo.isTestTeamAdmin ){
+				if( !this.roles.some(i=>i.roleid=='testAdmin') && !this.roles.some(i=>i.roleid=='tester') && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
 					this.$message({message:"只有测试经理、测试组长、测试员可以操作",type:"error"});
 					return ;
 				}
-				if(!this.userInfo.isTestAdmin){
+				if(!this.roles.some(i=>i.roleid=='testAdmin')){
 					this.$message({ message: "只有测试管理员才能删除测试用例", type: 'error' });
 					return;
 				}
@@ -231,11 +231,11 @@
 			},
 			//批量删除xmTestCase
 			batchDel: function () {
-				if( !this.userInfo.isTestAdmin && !this.userInfo.isTester && !this.userInfo.isTestTeamAdmin ){
+				if( !this.roles.some(i=>i.roleid=='testAdmin') && !this.roles.some(i=>i.roleid=='tester') && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
 					this.$message({message:"只有测试经理、测试组长、测试员可以操作",type:"error"});
 					return ;
 				}
-				if(!this.userInfo.isTestAdmin){
+				if(!this.roles.some(i=>i.roleid=='testAdmin')){
 					this.$message({ message: "只有测试管理员才能删除测试用例", type: 'error' });
 					return;
 				}

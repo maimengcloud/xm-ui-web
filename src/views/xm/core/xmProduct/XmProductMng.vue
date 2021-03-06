@@ -93,7 +93,7 @@
 		props:['simple','isSelectProduct','selProject'],
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 		    ])
 		},
 		data() {
@@ -222,7 +222,7 @@
 			},
 			//显示新增界面 XmProduct 产品表
 			showAdd: function () {
-				if(!this.userInfo.isProductAdmin){
+				if(!this.roles.some(i=>i.roleid=='productAdmin')){
 					this.$message({ message: "只有产品经理能够创建产品", type: 'error'}); 
 					return false;
 				}
@@ -244,7 +244,7 @@
 			}, 
 			//删除xmProduct
 			handleDel: function (row,index) { 
-				if(!this.userInfo.isProductAdmin){
+				if(!this.roles.some(i=>i.roleid=='productAdmin')){
 					this.$message({ message: "只有产品经理能够删除产品", type: 'error'}); 
 					return false;
 				}
@@ -266,7 +266,7 @@
 			},
 			//批量删除xmProduct
 			batchDel: function () {
-				if(!this.userInfo.isProductAdmin){
+				if(!this.roles.some(i=>i.roleid=='productAdmin')){
 					this.$message({ message: "只有产品经理能够删除产品", type: 'error'}); 
 					return false;
 				}

@@ -57,7 +57,7 @@
 	export default { 
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 		    ])
 		},
 		props:["projectId","objType","objId","simple" ,"visible"],

@@ -166,7 +166,7 @@
 	export default { 
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
         ]),
 		},
 		props:['selProject'],
@@ -326,7 +326,7 @@
 			}, 
 			//删除xmTestCaseExec
 			handleDel: function (row,index) {  
-				if( !this.userInfo.isTestAdmin  && !this.userInfo.isTestTeamAdmin ){
+				if( !this.roles.some(i=>i.roleid=='testAdmin')  && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
 					this.$message({message:"只有测试经理、测试组长可以操作",type:"error"});
 					return ;
 				}
@@ -348,7 +348,7 @@
 			},
 			//批量删除xmTestCaseExec
 			batchDel: function () { 
-				if( !this.userInfo.isTestAdmin  && !this.userInfo.isTestTeamAdmin ){
+				if( !this.roles.some(i=>i.roleid=='testAdmin')  && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
 					this.$message({message:"只有测试经理、测试组长可以操作",type:"error"});
 					return ;
 				}
@@ -408,7 +408,7 @@
 
 			},
 			showCase(){
-				if( !this.userInfo.isTestAdmin   && !this.userInfo.isTestTeamAdmin ){
+				if( !this.roles.some(i=>i.roleid=='testAdmin')   && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
 					this.$message({message:"只有测试经理、测试组长可以操作",type:"error"});
 					return ;
 				}
@@ -476,7 +476,7 @@
 				this.getXmTestCaseExecs();
 			},	
 			showBatchEdit:function(){ 
-				if( !this.userInfo.isTestAdmin && !this.userInfo.isTester && !this.userInfo.isTestTeamAdmin ){
+				if( !this.roles.some(i=>i.roleid=='testAdmin') && !this.roles.some(i=>i.roleid=='tester') && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
 					this.$message({message:"只有测试经理、测试组长、测试员可以操作",type:"error"});
 					return ;
 				}
@@ -490,7 +490,7 @@
 			},
 			batchEditXmTestCaseExec:function(){
 				
-				if( !this.userInfo.isTestAdmin && !this.userInfo.isTester && !this.userInfo.isTestTeamAdmin ){
+				if( !this.roles.some(i=>i.roleid=='testAdmin') && !this.roles.some(i=>i.roleid=='tester') && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
 					this.$message({message:"只有测试经理、测试组长、测试员可以操作",type:"error"});
 					return ;
 				}

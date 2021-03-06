@@ -67,7 +67,7 @@
 		props:['simple','isSelectProduct'],
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 		    ])
 		},
 		data() {

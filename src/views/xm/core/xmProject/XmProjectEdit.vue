@@ -168,7 +168,7 @@
 	export default { 
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 				]), 
 			
 			autoParams:function(){
@@ -353,7 +353,7 @@
 			},
 			//编辑提交XmProject xm_project父组件监听@submit="afterEditSubmit"
 			editSubmit: function () {
-				if(!this.userInfo.isProjectAdmin){
+				if(!this.roles.some(i=>i.roleid=='projectAdmin')){
 					this.$message({ message: "只有项目经理可以修改项目", type: 'error' }); 
 					return;
 				}
@@ -483,7 +483,7 @@
 				return msg;
 			},
 			sendToProcessApprova:function(row,bizKey){ 
-				if(!this.userInfo.isProjectAdmin){
+				if(!this.roles.some(i=>i.roleid=='projectAdmin')){
 					this.$message({ message: "只有项目经理可以发起流程", type: 'error' }); 
 					return;
 				}

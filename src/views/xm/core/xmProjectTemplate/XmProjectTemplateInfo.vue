@@ -31,7 +31,7 @@
 		props: ["selProjectTemplate"],
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 				]), 
 		}, 
 		watch:{

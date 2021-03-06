@@ -138,7 +138,7 @@
 		props:[ 'selProject'],
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 			]),
 			
 			xmMenusTreeData(){ 
@@ -299,7 +299,7 @@
 			}, 
 			//批量删除xmMenu
 			batchDel: function () {
-				if(!this.userInfo.isProductAdmin && !this.userInfo.isProductTeamAdmin){
+				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
 					this.$message({ message: "只有产品经理、产品组长能够修改故事", type: 'error'}); 
 					return false;
 				}
@@ -393,7 +393,7 @@
 
 			},
 			showBatchEdit:function(){
-				if(!this.userInfo.isProductAdmin && !this.userInfo.isProductTeamAdmin){
+				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
 					this.$message({ message: "只有产品经理、产品组长能够修改故事", type: 'error'}); 
 					return false;
 				}

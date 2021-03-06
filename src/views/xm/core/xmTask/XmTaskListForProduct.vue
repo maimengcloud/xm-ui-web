@@ -111,7 +111,7 @@
 	export default { 
 		computed: {
 			...mapGetters([
-				'userInfo'
+				'userInfo','roles'
 			]),  
 			tasksTreeData() {
 				 return this.translateDataToTree(this.xmTasks);

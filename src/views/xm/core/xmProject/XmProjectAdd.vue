@@ -160,7 +160,7 @@
 	export default { 
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 				]), 
 			
 			autoParams:function(){
@@ -344,7 +344,7 @@
 			},
 			//编辑提交XmProject xm_project父组件监听@submit="afterEditSubmit"
 			addSubmit: function () {
-				if(!this.userInfo.isProjectAdmin){
+				if(!this.roles.some(i=>i.roleid=='projectAdmin')){
 					this.$message({ message: "只有项目经理可以建立项目", type: 'error' }); 
 					return;
 				}

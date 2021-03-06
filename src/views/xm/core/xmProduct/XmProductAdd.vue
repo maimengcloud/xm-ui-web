@@ -44,7 +44,7 @@
 	export default { 
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 		    ])
 		},
 		props:['xmProduct','visible'],
@@ -93,7 +93,7 @@
 			},
 			//新增提交XmProduct 产品表 父组件监听@submit="afterAddSubmit"
 			addSubmit: function () {
-				if(!this.userInfo.isProductAdmin){
+				if(!this.roles.some(i=>i.roleid=='productAdmin')){
 					this.$message({ message: "只有产品经理能够创建产品", type: 'error'}); 
 					return false;
 				}

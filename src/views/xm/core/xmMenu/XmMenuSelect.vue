@@ -68,7 +68,7 @@
 		props:['isSelectMenu','excludeIterationId','multi','visible'],
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 			]),
 			
 			xmMenusTreeData(){ 

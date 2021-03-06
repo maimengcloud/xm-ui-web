@@ -107,7 +107,7 @@
 	export default { 
 		computed: {
 			...mapGetters([
-				'userInfo'
+				'userInfo','roles'
 			]),  
 		},
 		props:['xmQuestion','visible',"selProject",'qtype','xmTestCaseExec','xmTestCase'],

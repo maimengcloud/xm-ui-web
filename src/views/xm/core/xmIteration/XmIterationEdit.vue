@@ -50,7 +50,7 @@
 	export default { 
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 		    ])
 		},
 		props:['xmIteration','visible'],
@@ -92,7 +92,7 @@
 			},
 			//新增提交XmIteration 迭代定义 父组件监听@submit="afterAddSubmit"
 			editSubmit: function () {
-				if(!this.userInfo.isIterationAdmin){
+				if(!this.roles.some(i=>i.roleid=='iterationAdmin')){
 					this.$message({ message: "只有迭代管理员可以修改迭代", type:  'error' }); 
 					return ;
 				}

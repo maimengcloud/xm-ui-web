@@ -193,7 +193,7 @@
 		props:['selProject'],
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 			]),
 			
       xmMenusTreeData() {
@@ -344,7 +344,7 @@
 			},
 			//显示新增界面 XmMenu xm_project_menu
 			showAdd: function () { 
-				if(!this.userInfo.isProductAdmin && !this.userInfo.isProductTeamAdmin){
+				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
 					this.$message({ message: "只有产品经理、产品组长能够修改故事", type: 'error'}); 
 					return false;
 				}
@@ -357,7 +357,7 @@
 				//this.addForm=Object.assign({}, this.editForm);
 			},
 			showSubAdd:function(row){
-				if(!this.userInfo.isProductAdmin && !this.userInfo.isProductTeamAdmin){
+				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
 					this.$message({ message: "只有产品经理、产品组长能够修改故事", type: 'error'}); 
 					return false;
 				}
@@ -702,7 +702,7 @@
 			},
 			showImportFromMenuTemplate(row){
 				
-				if(!this.userInfo.isProductAdmin && !this.userInfo.isProductTeamAdmin){
+				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
 					this.$message({ message: "只有产品经理、产品组长能够修改故事", type: 'error'}); 
 					return false;
 				}
@@ -780,7 +780,7 @@
 			},
 			toBatchEdit(){
 				
-				if(!this.userInfo.isProductAdmin && !this.userInfo.isProductTeamAdmin){
+				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
 					this.$message({ message: "只有产品经理、产品组长能够修改故事", type: 'error'}); 
 					return false;
 				}
@@ -797,7 +797,7 @@
 			},
 			batchSaveMenu(){
 				
-				if(!this.userInfo.isProductAdmin && !this.userInfo.isProductTeamAdmin){
+				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
 					this.$message({ message: "只有产品经理、产品组长能够修改故事", type: 'error'}); 
 					return false;
 				}
@@ -846,7 +846,7 @@
 			},
 			showTaskList(row){ 
 				
-				if(!this.userInfo.isProductAdmin && !this.userInfo.isProductTeamAdmin){
+				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
 					this.$message({ message: "只有产品经理、产品组长能够修改故事", type: 'error'}); 
 					return false;
 				}

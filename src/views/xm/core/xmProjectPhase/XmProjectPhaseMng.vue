@@ -261,7 +261,7 @@
 	export default { 
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 			]),
       projectPhaseTreeData() {
         let xmProjectPhases = JSON.parse(JSON.stringify(this.xmProjectPhases || []));
@@ -486,7 +486,7 @@
 			//显示编辑界面 XmProjectPhase xm_project_phase
 			showEdit: function ( row,index ) {
 				
-				if( !this.userInfo.isProjectAdmin && !this.userInfo.isTeamAdmin ){
+				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
 					this.$message({ message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
 					return; 
 				}
@@ -496,7 +496,7 @@
 			//显示新增界面 XmProjectPhase xm_project_phase
 			showAdd: function () { 
 				
-				if( !this.userInfo.isProjectAdmin && !this.userInfo.isTeamAdmin ){
+				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
 					this.$message({ message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
 					return; 
 				}
@@ -508,7 +508,7 @@
 			},
 			
 			showSubAdd: function (parentProjectPhase) {  
-				if( !this.userInfo.isProjectAdmin && !this.userInfo.isTeamAdmin ){
+				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
 					this.$message({ message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
 					return; 
 				}
@@ -620,7 +620,7 @@
 			//删除xmProjectPhase
 			handleDel: function (row,index) { 
 				
-				if( !this.userInfo.isProjectAdmin && !this.userInfo.isTeamAdmin ){
+				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
 					this.$message({ message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
 					return; 
 				}
@@ -652,7 +652,7 @@
 			//批量删除xmProjectPhase
 			batchDel: function () {
 				
-				if( !this.userInfo.isProjectAdmin && !this.userInfo.isTeamAdmin ){
+				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
 					this.$message({ message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
 					return; 
 				}
@@ -684,7 +684,7 @@
 			},
 			showPhaseTemplate: function(parentPhase){
 				
-				if( !this.userInfo.isProjectAdmin && !this.userInfo.isTeamAdmin ){
+				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
 					this.$message({ message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
 					return; 
 				}
@@ -788,7 +788,7 @@
 			
 			sendToProcessApprova:function(row,bizKey){   
 				
-				if( !this.userInfo.isProjectAdmin && !this.userInfo.isTeamAdmin ){
+				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
 					this.$message({ message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
 					return; 
 				}
@@ -875,7 +875,7 @@
 			},  
 			handleCommand(command) { 
 				
-				if( !this.userInfo.isProjectAdmin && !this.userInfo.isTeamAdmin ){
+				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
 					this.$message({ message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
 					return; 
 				}
@@ -1040,7 +1040,7 @@
 			},
 			saveBatchEdit:function(){
 				
-				if( !this.userInfo.isProjectAdmin && !this.userInfo.isTeamAdmin ){
+				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
 					this.$message({ message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
 					return; 
 				}
@@ -1373,7 +1373,7 @@
 			},
 			showMenu:function(parentPhase){
 				
-				if( !this.userInfo.isProjectAdmin && !this.userInfo.isTeamAdmin ){
+				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
 					this.$message({ message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
 					return; 
 				}
@@ -1399,7 +1399,7 @@
 			},
 			handlePopover:function(row,opType){
 				
-				if( !this.userInfo.isProjectAdmin && !this.userInfo.isTeamAdmin ){
+				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
 					this.$message({ message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
 					return; 
 				}

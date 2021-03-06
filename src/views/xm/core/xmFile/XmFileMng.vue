@@ -85,7 +85,7 @@
 	export default { 
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 				]),
 				Files() {
 					if(this.selProject != undefined){

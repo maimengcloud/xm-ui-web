@@ -69,7 +69,7 @@
 	export default { 
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 		    ]),
 		  'allMonths': function(){
 			  var bizzMonths=this.bizzMonths.map(i=>this.bizzYear+"-"+i);

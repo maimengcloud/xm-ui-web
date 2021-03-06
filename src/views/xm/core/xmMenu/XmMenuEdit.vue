@@ -43,7 +43,7 @@
 	export default { 
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 		    ])
 		},
 		props:['xmMenu','visible','parentMenu','product'],
@@ -93,7 +93,7 @@
 			//新增提交XmMenu 项目故事表 父组件监听@submit="afterAddSubmit"
 			editSubmit: function () {
 				
-				if(!this.userInfo.isProductAdmin && !this.userInfo.isProductTeamAdmin){
+				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
 					this.$message({ message: "只有产品经理、产品组长能够修改故事", type: 'error'}); 
 					return false;
 				}

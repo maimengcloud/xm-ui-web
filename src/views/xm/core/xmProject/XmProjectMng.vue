@@ -190,7 +190,7 @@
 		props:['dataScope'],
 		computed: {
 			...mapGetters([
-				'userInfo'
+				'userInfo','roles'
 			]),
 			ScreenData() {
 				const key = this.menukey;

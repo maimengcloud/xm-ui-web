@@ -111,7 +111,7 @@
 	export default { 
 		computed: {
 			...mapGetters([
-				'userInfo'
+				'userInfo','roles'
 			]),
 			//任务工时
 			TaskTime() {

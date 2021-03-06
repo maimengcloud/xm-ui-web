@@ -32,7 +32,7 @@
 	export default { 
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 		    ])
 		},
 		props:['xmMenuTemplate','visible','parentMenu','product'],

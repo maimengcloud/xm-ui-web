@@ -60,7 +60,7 @@ import TabPane from '../../../example/tab/components/tabPane.vue';
 	export default { 
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 		    ])
 		},
 		props:['xmIteration'],

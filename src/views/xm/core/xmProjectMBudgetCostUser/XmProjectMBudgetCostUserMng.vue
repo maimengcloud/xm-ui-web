@@ -104,7 +104,7 @@
 	export default { 
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 		    ])
 		},
 		props:["selProject",'budgetCostUser','fieldName','queryType','visible'],

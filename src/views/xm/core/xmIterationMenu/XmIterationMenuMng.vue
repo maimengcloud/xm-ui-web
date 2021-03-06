@@ -48,7 +48,7 @@
 	export default { 
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 		    ]),
 			xmIterationMenusTreeData(){ 
 				return this.translateDataToTree(this.xmIterationMenus);
@@ -166,7 +166,7 @@
 			},
 			//显示新增界面 XmIterationMenu 迭代定义
 			showAdd: function () {
-				if(!this.userInfo.isIterationAdmin){
+				if(!this.roles.some(i=>i.roleid=='iterationAdmin')){
 					this.$message({ message: "只有迭代管理员可以操作", type:  'error' }); 
 					return ;
 				}
@@ -187,7 +187,7 @@
 			}, 
 			//删除xmIterationMenu
 			handleDel: function (row,index) { 
-				if(!this.userInfo.isIterationAdmin){
+				if(!this.roles.some(i=>i.roleid=='iterationAdmin')){
 					this.$message({ message: "只有迭代管理员可以操作", type:  'error' }); 
 					return ;
 				}
@@ -209,7 +209,7 @@
 			},
 			//批量删除xmIterationMenu
 			batchDel: function () {
-				if(!this.userInfo.isIterationAdmin){
+				if(!this.roles.some(i=>i.roleid=='iterationAdmin')){
 					this.$message({ message: "只有迭代管理员可以操作", type:  'error' }); 
 					return ;
 				}

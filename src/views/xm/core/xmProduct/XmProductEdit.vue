@@ -44,7 +44,7 @@
 	export default { 
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 		    ])
 		},
 		props:['xmProduct','visible'],
@@ -118,7 +118,7 @@
 				});
 			},
 			selectUser(){
-				if(!this.userInfo.isProductAdmin){
+				if(!this.roles.some(i=>i.roleid=='productAdmin')){
 					this.$message({ message: "你不是产品经理，不能修改产品负责人", type:  'error' });  
 					return;
 				}
@@ -132,7 +132,7 @@
 				this.userSelectVisible=false
 			},
 			clearPmUser:function(){
-				if(!this.userInfo.isProductAdmin){
+				if(!this.roles.some(i=>i.roleid=='productAdmin')){
 					this.$message({ message: "你不是产品经理，不能修改产品负责人", type:  'error' });  
 					return;
 				}

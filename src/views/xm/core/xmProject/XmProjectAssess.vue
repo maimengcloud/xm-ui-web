@@ -56,7 +56,7 @@
 		props: ["selProject"],
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 				]),
 				Leader() {
 					return this.selProject.leader.filter(i=>i.leadType == "负责人");

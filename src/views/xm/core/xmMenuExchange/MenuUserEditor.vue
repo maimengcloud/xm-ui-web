@@ -23,7 +23,7 @@ export default {
   props:['id',"productId","menuId",'user'],
   computed: {
     ...mapGetters([
-      'userInfo',
+      'userInfo','roles',
     ]),
   },
   data() {

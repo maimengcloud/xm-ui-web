@@ -170,7 +170,7 @@
 	export default { 
 		computed: {
 			...mapGetters([
-				'userInfo'
+				'userInfo','roles'
 			]),   
 		},
 		props:['xmTask','visible','xmProject','projectPhase',"parentTask"],

@@ -466,7 +466,7 @@
 	export default { 
 		computed: {
 			...mapGetters([
-				'userInfo'
+				'userInfo','roles'
 			]),
 			currentProject(){
 				if(this.filters.selProject){
@@ -872,7 +872,7 @@
 			},
 			showTaskTemplate:function(){
 				
-				if( !this.userInfo.isProjectAdmin && !this.userInfo.isTeamAdmin){
+				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin')){
 					this.$message.error("只有项目经理、小组长可以操作"); 
 					return;
 				}
@@ -884,7 +884,7 @@
 			},
 			showSubAdd(row) { 
 				
-				if( !this.userInfo.isProjectAdmin && !this.userInfo.isTeamAdmin){
+				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin')){
 					this.$message.error("只有项目经理、小组长可以操作"); 
 					return;
 				}
@@ -895,7 +895,7 @@
 			//显示新增界面 XmTask xm_task
 			showAdd: function () {
 				
-				if( !this.userInfo.isProjectAdmin && !this.userInfo.isTeamAdmin){
+				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin')){
 					this.$message.error("只有项目经理、小组长可以操作"); 
 					return;
 				}
@@ -921,7 +921,7 @@
 			//删除xmTask
 			handleDel: function (row,index) { 
 				
-				if( !this.userInfo.isProjectAdmin && !this.userInfo.isTeamAdmin){
+				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin')){
 					this.$message.error("只有项目经理、小组长可以操作"); 
 					return;
 				}
@@ -944,7 +944,7 @@
 			//批量删除xmTask
 			batchDel: function () {
 				
-				if( !this.userInfo.isProjectAdmin && !this.userInfo.isTeamAdmin){
+				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin')){
 					this.$message.error("只有项目经理、小组长可以操作"); 
 					return;
 				}
@@ -989,7 +989,7 @@
 			},
 			showMenu:function(parentTask){
 				
-				if( !this.userInfo.isProjectAdmin && !this.userInfo.isTeamAdmin){
+				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin')){
 					this.$message.error("只有项目经理、小组长可以操作"); 
 					return;
 				}
@@ -1279,7 +1279,7 @@
 			},
 			showBatchEdit:function(){
 				
-				if( !this.userInfo.isProjectAdmin && !this.userInfo.isTeamAdmin){
+				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin')){
 					this.$message.error("只有项目经理、小组长可以操作"); 
 					return; 
 				}
@@ -1290,7 +1290,7 @@
 				this.batchEditVisible=true
 			},
 			saveBatchEdit:function(){
-				if( !this.userInfo.isProjectAdmin && !this.userInfo.isTeamAdmin){
+				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin')){
 					this.$message.error("只有项目经理、小组长可以操作"); 
 					return;
 				}
@@ -1450,7 +1450,7 @@
 			},
 			handlePopover:function(row,opType){
 				
-				if( !this.userInfo.isProjectAdmin && !this.userInfo.isTeamAdmin){
+				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin')){
 					this.$message.error("只有项目经理、小组长可以操作"); 
 					return; 
 				}

@@ -91,7 +91,7 @@
 	export default { 
 		computed: {
 		    ...mapGetters([
-		      'userInfo'
+		      'userInfo','roles'
 			]),
 			
 			xmIterationTreeData(){ 
@@ -232,7 +232,7 @@
 			},
 			//显示新增界面 XmIteration 迭代定义
 			showAdd: function () {
-				if(!this.userInfo.isIterationAdmin){
+				if(!this.roles.some(i=>i.roleid=='iterationAdmin')){
 					this.$message({ message: "只有迭代管理员可以新增迭代", type:  'error' }); 
 					return ;
 				}
@@ -259,7 +259,7 @@
 			}, 
 			//删除xmIteration
 			handleDel: function (row,index) { 
-				if(!this.userInfo.isIterationAdmin){
+				if(!this.roles.some(i=>i.roleid=='iterationAdmin')){
 					this.$message({ message: "只有迭代管理员可以删除迭代", type:  'error' }); 
 					return ;
 				}
@@ -281,7 +281,7 @@
 			},
 			//批量删除xmIteration
 			batchDel: function () {
-				if(!this.userInfo.isIterationAdmin){
+				if(!this.roles.some(i=>i.roleid=='iterationAdmin')){
 					this.$message({ message: "只有迭代管理员可以删除迭代", type:  'error' }); 
 					return ;
 				}

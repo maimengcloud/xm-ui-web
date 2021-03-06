@@ -113,7 +113,7 @@ import { months } from 'moment';
 		props: ["selProject"],
 		computed: {
 			...mapGetters([
-				'userInfo'
+				'userInfo','roles'
 			]),
 			selYearMonths:function(){
 				var selYear=this.selYear;
