@@ -3,7 +3,7 @@
 		<el-row>
 		<el-tree
 			class="filter-tree"
-			:data="treeData"
+			:data="categoryTreeData"
 			:props="defaultTreeProps"
 			:filter-node-method="filterNode"
 			:show-checkbox="showCheckbox"
@@ -99,6 +99,10 @@
 		  }
 	    },
 	    computed:{
+			
+			categoryTreeData() {
+				 return this.translateDataToTree(this.treeData);
+			},
 	    	defaultExpandedKeys(){
 	    		return this.defaultCheckedKeys;
 	    	},
@@ -281,7 +285,7 @@
 				listTreeCategory(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk==true){ 
-						this.treeData=[res.data.data];
+						this.treeData=res.data.data;
 						console.log("this.treeData----"+JSON.stringify(this.treeData));
 					}else{
 						this.$message({ message: tips.msg, type: 'error'});
@@ -308,7 +312,49 @@
 					//return h('span',"@contextmenu.prevent='contextmenu('"+node.id+"')',"+node.label+"("+(data.children==null?0:data.children.length)+countMsg+")") ;
 				}
 			        
-			  }
+			  },
+			translateDataToTree(data2) { 
+				var data=JSON.parse(JSON.stringify(data2));
+
+				let parents = data.filter(value =>{ 
+					//如果我的上级为空，则我是最上级
+					if(value.pid == 'undefined' || value.pid == null  || value.pid == ''){
+						return true;
+
+						//如果我的上级不在列表中，我作为最上级
+					}else if(data.some(i=>value.pid==i.id)){
+						return false;
+					}else {
+						return true
+					}
+				 
+				}) 
+				let children = data.filter(value =>{
+					if(data.some(i=>value.pid==i.id)){
+						return true;
+					}else{
+						return false;
+					} 
+				})  
+				let translator = (parents, children) => {
+					parents.forEach((parent) => {
+						children.forEach((current, index) => {
+							if (current.pid === parent.id) {
+								let temp = JSON.parse(JSON.stringify(children))
+								temp.splice(index, 1)
+								translator([current], temp)
+								typeof parent.children !== 'undefined' ? parent.children.push(current) : parent.children = [current]
+							}
+						}
+						)
+					}
+					)
+				}
+
+				translator(parents, children)
+
+				return parents
+			},
 		},
 		mounted() { 
 			this.nodeid=this.value;
