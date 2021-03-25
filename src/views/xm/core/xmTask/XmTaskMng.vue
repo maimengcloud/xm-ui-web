@@ -988,6 +988,10 @@
 				this.skillVisible = true;
 			},
 			showMenu:function(parentTask){
+				if(this.projectPhase==null){
+					this.$message.error("请先选中阶段计划"); 
+					return;
+				}
 				
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin')){
 					this.$message.error("只有项目经理、小组长可以操作"); 

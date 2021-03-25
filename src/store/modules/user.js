@@ -101,7 +101,7 @@ const user = {
     LoginByUserloginid({ commit }, loginParams) { 
       removeToken();
       return new Promise((resolve, reject) => {
-        doLoginByUserloginid(loginParams.userloginid, loginParams.password,loginParams.grantType,loginParams.authType,loginParams.deptid).then(res => {
+        doLoginByUserloginid(loginParams.userloginid, loginParams.password,loginParams.grantType,loginParams.authType,loginParams.branchId,loginParams.deptid).then(res => {
         	if(res.data.tips.isOk==true){
         		let data = res.data
                 let userInfo=data.userInfo;

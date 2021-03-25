@@ -171,6 +171,7 @@ export default {
       showRegisterDialog: false,//显示注册窗口
 	    deptSelectVisible:false,//显示选择部门对话框
 	    userDeptid:'',//选中的部门编号 
+      userBranchId:'',//选中的部门对应的机构号
 	    addBranchFormVisible:false,  //显示添加机构对话框 
     }
   },
@@ -206,7 +207,8 @@ export default {
               deptid:this.userDeptid,
               authType:this.loginForm.authType,
               phoneno:this.loginForm.phoneno,
-              smsCode:this.loginForm.smsCode
+              smsCode:this.loginForm.smsCode,
+              branchId:this.userBranchId,
           }
           var loginParams={ }
           if(params.authType=='password_display_userid'){
@@ -214,13 +216,15 @@ export default {
             loginParams.password=params.password
             loginParams.grantType="password"
             loginParams.authType='password_display_userid' 
-            loginParams.deptid=params.deptid
+            //loginParams.deptid=params.deptid
+            loginParams.branchId=params.branchId
           }else if(params.authType=='sms'){
             loginParams.userloginid=params.phoneno
             loginParams.password=params.smsCode
             loginParams.grantType="password"
             loginParams.authType="sms"
-            loginParams.deptid=params.deptid
+            //loginParams.deptid=params.deptid
+            loginParams.branchId=params.branchId
           }
           this.$store.dispatch("LoginByUserloginid",loginParams).then(res => {
         	  this.loading = false
@@ -279,8 +283,10 @@ export default {
     		return
     	}
     	
-    	let depts=this.myDepts.filter(d=>d.deptid==this.userDeptid)   
+    	
     	if(this.$store.state.user.userInfo.deptid!=this.userDeptid){
+          let depts=this.myDepts.filter(d=>d.deptid==this.userDeptid)
+          this.userBranchId=depts[0].branchId
         	this.handleLogin();
           return;
     	}else{
