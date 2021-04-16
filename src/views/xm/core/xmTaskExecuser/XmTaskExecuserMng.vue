@@ -47,12 +47,12 @@
 					<template slot-scope="scope">
 						<el-tag type="primary" v-if="scope.row.status=='0'">候选中</el-tag>
 						<el-tag type="success" v-else-if="scope.row.status=='1'">执行中</el-tag>
-						<el-tag type="success" v-else-if="scope.row.status=='2'">验收中</el-tag>
+						<el-tag type="warning" v-else-if="scope.row.status=='2'">验收中</el-tag>
 						<el-tag type="success" v-else-if="scope.row.status=='3'">已验收</el-tag>
-						<el-tag type="warning" v-else-if="scope.row.status=='4'">验收不通过</el-tag>
-						<el-tag type="info" v-else-if="scope.row.status=='5'">其它</el-tag>
-						<el-tag type="success" v-else-if="scope.row.status=='6'">已付款</el-tag>
-						<el-tag type="danger" v-else-if="scope.row.status=='7'">放弃任务</el-tag>
+						<el-tag type="danger" v-else-if="scope.row.status=='4'">验收不通过</el-tag>
+						<el-tag type="warning" v-else-if="scope.row.status=='5'">结算中</el-tag>
+						<el-tag type="success" v-else-if="scope.row.status=='6'">已结算完毕</el-tag>
+						<el-tag type="info" v-else-if="scope.row.status=='7'">已放弃任务</el-tag>
 						<el-tag type="danger" v-else-if="scope.row.status=='8'">黑名单</el-tag>
 						<el-tag type="primary" v-else>新建</el-tag>
 					</template>
@@ -82,15 +82,15 @@
 						<el-button type="primary" v-if="scope.row.status=='4'" @click="toTest(scope.row)">再申请验收</el-button>
 
  						<!--结算状态0未结算1已部分结算2无需结算4已申请结算5结算失败6已全部结算-->
-						<el-button type="success"  v-if="scope.row.status=='3' && scope.row.settleStatus!='2' && scope.row.settleStatus!='4' && scope.row.settleStatus!='6' " @click="settle" >申请结算</el-button> 
+						<el-button type="primary"  v-if="scope.row.status=='3' && scope.row.settleStatus!='2' && scope.row.settleStatus!='4' && scope.row.settleStatus!='6' " @click="settle" >申请结算</el-button> 
 						<el-button type="success"  v-if="scope.row.status=='2' " @click="testSuccess(scope.row)" >验收通过</el-button>  
-						<el-button type="danger"  v-if="scope.row.status=='2' " @click="testFail(scope.row)" >验收不通过</el-button>  
+						<el-button type="warning"  v-if="scope.row.status=='2' " @click="testFail(scope.row)" >验收不通过</el-button>  
 
- 						<el-button type="success" v-if="scope.row.status=='7' " @click="becomeCandidate(scope.row)">成为候选人</el-button>  
+ 						<el-button type="primary" v-if="scope.row.status=='7' " @click="becomeCandidate(scope.row)">成为候选人</el-button>  
 						<el-button type="danger" v-if="scope.row.status=='7' " @click="handleDel(scope.row)">删除</el-button>   
 						<el-button type="warning" v-if="scope.row.status=='0'"  @click="showQuotePrice(scope.row)">修改报价信息</el-button> 
-						<el-button type="success" v-if="scope.row.status=='0'"   @click="execute(scope.row)">成为执行人</el-button> 
-						<el-button type="danger" v-if="scope.row.status!='7' " @click="leave(scope.row)">离开任务</el-button> 
+						<el-button type="primary" v-if="scope.row.status=='0'"   @click="execute(scope.row)">成为执行人</el-button> 
+						<el-button type="warning" v-if="scope.row.status!='7' " @click="leave(scope.row)">离开任务</el-button> 
 						<el-button type="primary" v-if="scope.row.status=='3' || scope.row.status=='6' "  @click="showSettleList(scope.row)">结算清单</el-button> 
  
 						<!-- <el-button type="danger" @click="handleDel(scope.row,scope.$index)">删</el-button> -->
