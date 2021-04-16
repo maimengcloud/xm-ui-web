@@ -124,8 +124,8 @@ import { months } from 'moment';
 				var map={};
 				var secMap={};
 				this.sumXmProjectMCostUsers.forEach(i=>{
-					i.key=i.projectId+"_"+i.subjectId+"_"+i.userid+"_"+i.username;
-					i.monthKey=i.key+"_"+i.bizzMonth;
+					i.key=i.projectId+"_"+i.subjectId+"_"+i.userid;
+					i.monthKey=i.key+"_"+i.bizMonth;
 					secMap[i.monthKey]=i;
 					map[i.key]=i;
 				});
@@ -136,7 +136,7 @@ import { months } from 'moment';
 					this.selYearMonths.forEach(i=>{
 						var val=secMap[key+"_"+i];
 						if( val !=null && val !=undefined ){
-							row[i]=val.cost;
+							row[i]=val.actCostAmount;
 						}else{
 							row[i]=0;
 						}
