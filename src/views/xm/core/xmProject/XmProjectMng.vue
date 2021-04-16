@@ -561,7 +561,7 @@
 					},
 				}
 				let jsonParmas=encodeURIComponent(JSON.stringify(params));//对方要 decodeURIComponent
-				this.$router.push({path:'/mdp/workflow/re/procdef/ProcdefListForBizStart',query:{params:jsonParmas}}); 
+				this.$router.push({name:'ProcdefListForBizStart',params:jsonParmas}); 
 			}, 
 			handleCommand(command) { 
 				if(command.type=='sendToProcessApprova'){

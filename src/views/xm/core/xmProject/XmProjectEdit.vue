@@ -524,50 +524,55 @@
 					//延期审核
 					params.mainTitle='关于项目【'+row.name+"】修改基本信息的申请";
 					params.mainContext='项目编号：'+row.code+','+'项目名称：'+row.name+',此次变更不涉及预算调整';
-					params.restUrl=config.getOaBasePath()+"/xm/xmProject/processApprova"; 
+					params.restUrl=config.getXmBasePath()+"/xm/core/xmProject/processApprova"; 
 					params.flowVars.data=row
-					this.html2canvas(document.querySelector(".editForm"),row,params);
+					//this.html2canvas(document.querySelector(".editForm"),row,params);
+					this.$router.push({name:'ProcdefListForBizStart',params:params}); 
 				}else if(bizKey=="xm_project_delay_approva"){
 					//延期审核
 					params.mainTitle='关于项目【'+row.name+"】延期的审批申请";
 					params.mainContext='项目编号：'+row.code+','+'项目名称：'+row.name+',项目结束时间由'+this.selProject.endTime+'变更为:'+row.endTime+',此次变更不涉及预算调整';
-					params.restUrl=config.getOaBasePath()+"/xm/xmProject/processApprova"; 
+					params.restUrl=config.getXmBasePath()+"/xm/core/xmProject/processApprova"; 
 					params.flowVars.data.endTime=row.endTime
-					this.html2canvas(document.querySelector(".editForm"),row,params);
+					//this.html2canvas(document.querySelector(".editForm"),row,params);
+					this.$router.push({name:'ProcdefListForBizStart',params:params}); 
 				}else if(bizKey=="xm_project_start_approva"){
 					//立项审核
 					params.mainTitle='关于项目【'+row.name+"】立项的审批申请";
 					params.mainContext='项目编号：'+row.code+','+'项目名称：'+row.name+',项目周期：'+row.startTime+'~'+row.endTime
 										+',预估及考核毛利率:'+row.budgetMarginRate+',预估总成本:'+row.planTotalCost+',总收入:'+row.totalReceivables
 										+',合同金额:'+row.contractAmt+'详细如下(截图)：'; 
-					params.restUrl=config.getOaBasePath()+"/xm/xmProject/processApprova"; 
+					params.restUrl=config.getXmBasePath()+"/xm/core/xmProject/processApprova"; 
 					params.flowVars.data=row
-					this.html2canvas(document.querySelector(".editForm"),row,params);
-
+					//this.html2canvas(document.querySelector(".editForm"),row,params);
+					this.$router.push({name:'ProcdefListForBizStart',params:params}); 
 				}else if(bizKey=="xm_project_over_approva"){
 					//结项审核
 					params.mainTitle='关于项目【'+row.name+"】结项的审批申请";
 					params.mainContext='项目编号：'+row.code+','+'项目名称：'+row.name+',项目周期：'+row.startTime+'~'+row.endTime
 										+',预估及考核毛利率:'+row.budgetMarginRate+',预估总成本:'+row.planTotalCost+',总收入:'+row.totalReceivables
 										+',合同金额:'+row.contractAmt+'详细如下(截图)：';
-					params.restUrl=config.getOaBasePath()+"/xm/xmProject/processApprova"; 
-					this.html2canvas(document.querySelector(".editForm"),row,params);
+					params.restUrl=config.getXmBasePath()+"/xm/core/xmProject/processApprova"; 
+					//this.html2canvas(document.querySelector(".editForm"),row,params);
+					this.$router.push({name:'ProcdefListForBizStart',params:params}); 
 				}else if(bizKey=="xm_project_pause_approva"){
 					//结项审核
 					params.mainTitle='关于项目【'+row.name+"】暂停的审批申请";
 					params.mainContext='项目编号：'+row.code+','+'项目名称：'+row.name+',项目周期：'+row.startTime+'~'+row.endTime
 										+',预估及考核毛利率:'+row.budgetMarginRate+',预估总成本:'+row.planTotalCost+',总收入:'+row.totalReceivables
 										+',合同金额:'+row.contractAmt+'详细如下(截图)：';
-					params.restUrl=config.getOaBasePath()+"/xm/xmProject/processApprova"; 
-					this.html2canvas(document.querySelector(".editForm"),row,params);
+					params.restUrl=config.getXmBasePath()+"/xm/core/xmProject/processApprova"; 
+					this.$router.push({name:'ProcdefListForBizStart',params:params}); 
+					//this.html2canvas(document.querySelector(".editForm"),row,params);
 				}else if(bizKey=="xm_project_restart_approva"){
 					//结项审核
 					params.mainTitle='关于项目【'+row.name+"】重新启动的审批申请";
 					params.mainContext='项目编号：'+row.code+','+'项目名称：'+row.name+',项目周期：'+row.startTime+'~'+row.endTime
 										+',预估及考核毛利率:'+row.budgetMarginRate+',预估总成本:'+row.planTotalCost+',总收入:'+row.totalReceivables
 										+',合同金额:'+row.contractAmt+'详细如下(截图)：';
-					params.restUrl=config.getOaBasePath()+"/xm/xmProject/processApprova"; 
-					this.html2canvas(document.querySelector(".editForm"),row,params);
+					params.restUrl=config.getXmBasePath()+"/xm/core/xmProject/processApprova"; 
+					//this.html2canvas(document.querySelector(".editForm"),row,params);
+					this.$router.push({name:'ProcdefListForBizStart',params:params}); 
 				}else if(bizKey=="xm_project_budget_change_approva"){
 					//预算变更审核
 					params.mainTitle='关于项目【'+row.name+"】预算变更的审批申请";
@@ -576,9 +581,10 @@
 										+',合同金额:'+this.selProject.contractAmt
 										+',<br>变更后数据:预估及考核毛利率:'+row.budgetMarginRate+',预估总成本:'+row.planTotalCost+',总收入:'+row.totalReceivables
 										+',合同金额:'+row.contractAmt;
-					params.restUrl=config.getOaBasePath()+"/xm/xmProject/processApprova"; 
+					params.restUrl=config.getXmBasePath()+"/xm/core/xmProject/processApprova"; 
 					params.flowVars.data=row
-					this.html2canvas(document.querySelector(".editForm"),row,params);
+					//this.html2canvas(document.querySelector(".editForm"),row,params);
+					this.$router.push({name:'ProcdefListForBizStart',params:params}); 
 				}else {
 					this.$message.error("不支持的审批事项");
 					return;
@@ -628,6 +634,7 @@
 				 this.dateRanger=[this.editForm.startTime,this.editForm.endTime]
 				listOption([{categoryId:'all',itemCode:'projectType'},{categoryId:'all',itemCode:'urgencyLevel'},{categoryId:'all',itemCode:'priority'},{categoryId:'all',itemCode:'projectStatus'}] ).then(res=>{
 					if(res.data.tips.isOk){ 
+						debugger
 						this.options['projectType']=res.data.data.projectType
 						this.options['urgencyLevel']=res.data.data.urgencyLevel
 						this.options['priority']=res.data.data.priority
