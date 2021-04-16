@@ -1,166 +1,175 @@
 <template>
 	<section>
-		<el-row class="app-container">  
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
-			<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus">查询</el-button>
-			<el-button  v-if=" batchEditVisible==false && isPmUser"  type="primary" @click="handleExport">导出</el-button> 
- 		    <el-button v-if="  batchEditVisible==false && isPmUser" type="success" @click="showAdd">+故事</el-button>
-			<el-button  v-if=" batchEditVisible==true && isPmUser"  type="success" @click="showImportFromMenuTemplate">+批量导入故事</el-button> 
-			<el-button  v-if=" batchEditVisible==false && isPmUser"  type="success" @click="toBatchEdit">批量修改</el-button> 
-			<el-button  v-if=" batchEditVisible==true && isPmUser"  type="warning" @click="batchSaveMenu">保存</el-button> 
-			<el-button  v-if=" batchEditVisible==true && isPmUser" type="success"  @click="handlePopover(null,'add')" >+故事</el-button>
-			<el-button  v-if=" batchEditVisible==true  && isPmUser"  type="primary"  @click="noBatchEdit">返回</el-button>  
-			 
-			<el-button  v-if=" batchEditVisible==false "   type="warning"   @click="loadTasksToXmMenuState">刷新统计数据</el-button>  
+		<el-row>
+			<el-row >  
+				<el-col v-show="!batchEditVisible" :span="filters.product?6:24" class="app-container">
+					<xm-product-mng :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-mng>
+				</el-col>
+				<el-col v-show="filters.product" :span="!batchEditVisible? 18:24" >
+					<el-row class="app-container">  
+						<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
+							<template slot="append">
+								<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
+							</template>
+						</el-input> 
+						
+						<el-button  v-if=" batchEditVisible==false && isPmUser"  type="primary" @click="handleExport" icon="el-icon-download">导出</el-button> 
+						<el-button v-if="  batchEditVisible==false && isPmUser" type="success" @click="showAdd" icon="el-icon-plus">故事</el-button>
+						<el-button  v-if=" batchEditVisible==true && isPmUser"  type="success" @click="showImportFromMenuTemplate" icon="el-icon-upload2">模板导入</el-button> 
+						<el-button  v-if=" batchEditVisible==false && isPmUser"  type="success" @click="toBatchEdit" icon="el-icon-edit">修改</el-button> 
+						<el-button  v-if=" batchEditVisible==true && isPmUser"  type="warning" @click="batchSaveMenu" icon="el-icon-finished">保存</el-button> 
+						<el-button  v-if=" batchEditVisible==true && isPmUser" type="success"  @click="handlePopover(null,'add')" icon="el-icon-plus">故事</el-button>
+						<el-button  v-if=" batchEditVisible==true  && isPmUser"  type="primary"  @click="noBatchEdit" icon="el-icon-back">返回</el-button>  
+						
+						<el-button  v-if=" batchEditVisible==false "   type="warning"   @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">刷新统计数据</el-button>  
 
-			<el-button v-if=" batchEditVisible==true && isPmUser " type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
-		</el-row>
-		
-		<el-row class="app-container">  
-			<el-col v-show="!batchEditVisible" :span="6">
-				<xm-product-mng :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-mng>
-			</el-col>
-			<el-col v-show="batchEditVisible" :span="!selProject && !batchEditVisible? 18:24">
-				<el-table :data="xmMenusTreeData" class="drag-table" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-					<el-table-column sortable type="selection" width="45"></el-table-column>
-					<el-table-column sortable prop="seqNo"  label="序号" min-width="100">
-						<template slot-scope="scope">
-							<div style="display:flex;width:100%;">
-								<el-popover
-									placement="top"
-									width="400"
-									trigger="click">
-									<div style="text-align: center; margin: 0">
-                    <div :ref="'menu_'+scope.$index" :data-menu-id="scope.row.menuId"></div>
-										<el-button type="primary" size="mini"   @click="handlePopover(scope.row,'highestPmenuId')">成为顶级节点</el-button> 
-										<el-button type="danger" size="mini"   @click="handlePopover(scope.row,'delete')">删除当前行</el-button> 
-										<el-button type="success" size="mini"   @click="handlePopover(scope.row,'addSub')">增加子行</el-button> 
+						<el-button v-if=" batchEditVisible==true && isPmUser " type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
+					</el-row>
+					<el-row v-show="batchEditVisible" class="app-container">
+						
+						<el-table :data="xmMenusTreeData" class="drag-table" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+							<el-table-column sortable type="selection" width="45"></el-table-column>
+							<el-table-column sortable prop="seqNo"  label="序号" min-width="100">
+								<template slot-scope="scope">
+									<div style="display:flex;width:100%;">
+										<el-popover
+											placement="top"
+											width="400"
+											trigger="click">
+											<div style="text-align: center; margin: 0">
+												<div :ref="'menu_'+scope.$index" :data-menu-id="scope.row.menuId"></div>
+												<el-button type="primary" size="mini"   @click="handlePopover(scope.row,'highestPmenuId')">成为顶级节点</el-button> 
+												<el-button type="danger" size="mini"   @click="handlePopover(scope.row,'delete')">删除当前行</el-button> 
+												<el-button type="success" size="mini"   @click="handlePopover(scope.row,'addSub')">增加子行</el-button> 
+											</div>
+											<el-button slot="reference" :type="scope.row.opType?'success':'plain'"  size="mini" icon="el-icon-more" circle></el-button> 
+										</el-popover>
+										<el-input   style="width:100%;"   v-model="scope.row.seqNo"  @change="fieldChange(scope.row,'seqNo')"></el-input>
 									</div>
-									<el-button slot="reference" :type="scope.row.opType?'success':'plain'"  size="mini" icon="el-icon-edit" circle></el-button> 
-								</el-popover>
-								<el-input   style="width:100%;"   v-model="scope.row.seqNo"  @change="fieldChange(scope.row,'seqNo')"></el-input>
-							</div>
- 						</template>
-					
-					</el-table-column>  
-					<el-table-column prop="menuName" label="故事名称" min-width="140" > 
-						<template slot-scope="scope">
-							<el-input    v-model="scope.row.menuName"  @change="fieldChange(scope.row,'menuName')"></el-input>
- 						</template>
-					</el-table-column> 
-					<el-table-column prop="mmUsername" label="负责人" min-width="100" > 
-						<template slot-scope="scope"> 
-							<el-tag v-if="scope.row.mmUserid" closable @close="clearPmUser(scope.row)">{{scope.row.mmUsername}}</el-tag>
-							<el-tag v-else>未配置</el-tag> 
-							<el-button @click="selectUser(scope.row)">选人</el-button>
-  						</template>
-					</el-table-column> 
-					<el-table-column prop="remark" label="描述" min-width="140" > 
-						<template slot-scope="scope">
+								</template>
+							
+							</el-table-column>  
+							<el-table-column prop="menuName" label="故事名称" min-width="140" > 
+								<template slot-scope="scope">
+									<el-input    v-model="scope.row.menuName"  @change="fieldChange(scope.row,'menuName')"></el-input>
+								</template>
+							</el-table-column> 
+							<el-table-column prop="mmUsername" label="负责人" min-width="100" > 
+								<template slot-scope="scope"> 
+									<el-tag v-if="scope.row.mmUserid" closable @close="clearPmUser(scope.row)">{{scope.row.mmUsername}}</el-tag>
+									<el-tag v-else>未配置</el-tag> 
+									<el-button @click="selectUser(scope.row)">选人</el-button>
+								</template>
+							</el-table-column> 
+							<el-table-column prop="remark" label="描述" min-width="140" > 
+								<template slot-scope="scope">
 
-							<el-input    v-model="scope.row.remark" type="textarea"  @change="fieldChange(scope.row,'remark')"></el-input>
- 						</template>
-					</el-table-column>  
-				</el-table>
-				<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+									<el-input    v-model="scope.row.remark" type="textarea"  @change="fieldChange(scope.row,'remark')"></el-input>
+								</template>
+							</el-table-column>  
+						</el-table>
+						<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+						
+					</el-row>
+					<el-row v-show="!batchEditVisible" class="app-container">
+						<el-table :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+							<el-table-column sortable type="selection" width="40"></el-table-column> 
+							<el-table-column prop="menuName" label="故事名称" min-width="140" > 
+								<template slot-scope="scope">
+									<el-link type="primary"  @click="showMenuExchange(scope.row)">{{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}}</el-link>
+								</template>
+							</el-table-column> 
+							<el-table-column prop="mmUsername" label="负责人" min-width="80" >  
+							</el-table-column> 
+							<el-table-column prop="finishRate" label="总体进度" width="100" > 
+								<template slot-scope="scope">
+									{{scope.row.finishRate}}%
+								</template>
+							</el-table-column> 
+							<el-table-column prop="remark" label="描述" min-width="140" > 
+								<template slot-scope="scope">
+									<el-popover
+										v-if="scope.row.remark && scope.row.remark.length>20"
+										placement="top-start"
+										title="故事备注"
+										width="400"
+										trigger="click" >
+										<div v-html="scope.row.remark">
+										</div> 
+										<el-button slot="reference">{{scope.row.remark?scope.row.remark.substr(0,20)+"...":""}}</el-button>
+									</el-popover> 
+									<div v-else v-html="scope.row.remark"> 
+									</div>
+								</template>
+							</el-table-column> 
+							<el-table-column label="操作"   width="320" fixed="right"  >
+								<template slot-scope="scope">
+									
+									<el-button type="success"  @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus"></el-button>
+									<el-button v-if="!selProject"  type="primary" @click="showTaskListForMenu(scope.row,scope.$index)"  icon="el-icon-s-operation">任务</el-button>
+									<el-button v-if="selProject"  type="primary" @click="showTasks(scope.row,scope.$index)"  icon="el-icon-s-operation">任务</el-button> 
+									<el-button   type="primary" @click="toIterationList(scope.row,scope.$index)"  icon="el-icon-document-copy">迭代</el-button>
+										<el-popover style="padding-left:10px;"
+											v-if="isPmUser"
+											placement="top-start"
+											width="450"
+											trigger="click" > 
+											<el-button type="primary"   @click="showEdit(scope.row)" icon="el-icon-edit"></el-button> 
+											<el-button type="success" @click="showImportFromMenuTemplate(scope.row)" icon="el-icon-upload2">模板导入</el-button> 
+											<el-button v-if=" batchEditVisible==false"   type="warning"   @click="showTaskList(scope.row)" icon="el-icon-s-operation">去关联任务</el-button>   
+											<el-button type="danger"   @click="handleDel(scope.row)" icon="el-icon-delete" circle></el-button> 
+
+											<el-button slot="reference" icon="el-icon-more" circle></el-button>
+										</el-popover> 
+								</template>
+							</el-table-column>
+						</el-table>
+						<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+						
+					</el-row>
+				</el-col>
+				<!--编辑 XmMenu xm_project_menu界面-->
+				<el-dialog title="编辑故事" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+					<xm-menu-edit :xm-menu="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-menu-edit>
+				</el-dialog>
+		
+				<!--新增 XmMenu xm_project_menu界面-->
+				<el-dialog title="新增故事" :visible.sync="addFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+					<xm-menu-add  :product="filters.product"   :parent-menu="parentMenu"  :xm-menu="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-menu-add>
+				</el-dialog> 
+				<el-dialog title="故事模板" :visible.sync="menuTemplateVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+					<xm-menu-template-mng  :is-select-menu="true"  :visible="menuTemplateVisible" @cancel="menuTemplateVisible=false" @selected-menus="onSelectedMenuTemplates"></xm-menu-template-mng>
+				</el-dialog> 
 				
-			</el-col>
-			<el-col v-show="!batchEditVisible" :span="!batchEditVisible? 18:24">
-				<el-table :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-					<el-table-column sortable type="selection" width="40"></el-table-column> 
-					<el-table-column prop="menuName" label="故事名称" min-width="140" > 
-						<template slot-scope="scope">
- 							<el-link type="primary"  @click="showMenuExchange(scope.row)">{{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}}</el-link>
-						</template>
-					</el-table-column> 
-					<el-table-column prop="mmUsername" label="负责人" min-width="80" >  
-					</el-table-column> 
-					<el-table-column prop="finishRate" label="总体进度" width="100" > 
-						<template slot-scope="scope">
- 							{{scope.row.finishRate}}%
-						</template>
-					</el-table-column> 
-					<el-table-column prop="remark" label="描述" min-width="140" > 
-						<template slot-scope="scope">
-							<el-popover
-							  	v-if="scope.row.remark && scope.row.remark.length>20"
-								placement="top-start"
-								title="故事备注"
-								width="400"
-								trigger="click" >
-								<div v-html="scope.row.remark">
-								</div> 
- 								 <el-button slot="reference">{{scope.row.remark?scope.row.remark.substr(0,20)+"...":""}}</el-button>
-							</el-popover> 
-							<div v-else v-html="scope.row.remark"> 
-							</div>
-						</template>
-					</el-table-column> 
-					<el-table-column label="操作"   width="300" fixed="right"  >
-						<template slot-scope="scope">
-							<el-button v-if="!selProject"  type="primary" @click="showTaskListForMenu(scope.row,scope.$index)">任务</el-button>
-							<el-button v-if="selProject"  type="primary" @click="showTasks(scope.row,scope.$index)">任务</el-button> 
-							<el-button   type="primary" @click="toIterationList(scope.row,scope.$index)">迭代</el-button>
- 								<el-popover style="padding-left:10px;"
-									v-if="isPmUser"
-									placement="top-start"
- 									width="700"
-									trigger="click" > 
-									<el-button type="primary"   @click="showEdit(scope.row)">去修改</el-button> 
-									<el-button type="success"  @click="showSubAdd( scope.row,scope.$index)">+子故事</el-button>
-									<el-button type="success" @click="showImportFromMenuTemplate(scope.row)">从模板导入子故事</el-button> 
-									<el-button v-if=" batchEditVisible==false"   type="warning"   @click="showTaskList(scope.row)">去关联任务</el-button>   
-									<el-button type="danger"   @click="handleDel(scope.row)">删除</el-button> 
-
-									<el-button slot="reference">更多操作</el-button>
-								</el-popover> 
- 						</template>
-					</el-table-column>
-				</el-table>
-				<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+				<el-dialog title="故事谈论" :visible.sync=" menuDetailVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+					<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="false" :xm-menu="editForm" ></xm-menu-rich-detail>
+				</el-dialog> 
 				
-			</el-col>
-			<!--编辑 XmMenu xm_project_menu界面-->
-			<el-dialog title="编辑故事" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
-				  <xm-menu-edit :xm-menu="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-menu-edit>
-			</el-dialog>
-	
-			<!--新增 XmMenu xm_project_menu界面-->
-			<el-dialog title="新增故事" :visible.sync="addFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
-				<xm-menu-add  :product="filters.product"   :parent-menu="parentMenu"  :xm-menu="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-menu-add>
-			</el-dialog> 
-			<el-dialog title="故事模板" :visible.sync="menuTemplateVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
-				<xm-menu-template-mng  :is-select-menu="true"  :visible="menuTemplateVisible" @cancel="menuTemplateVisible=false" @selected-menus="onSelectedMenuTemplates"></xm-menu-template-mng>
-			</el-dialog> 
-			
-			<el-dialog title="故事谈论" :visible.sync=" menuDetailVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
-				<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="false" :xm-menu="editForm" ></xm-menu-rich-detail>
-			</el-dialog> 
-			
-			<el-dialog title="选中任务" :visible.sync="selectTaskVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
-				<xm-task-list  :sel-project="selProject" :is-multi-select="true"  @tasks-selected="onSelectedTasks"></xm-task-list>
-			</el-dialog> 
-			<el-dialog title="查看任务" :visible.sync="taskListForMenuVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
-				<xm-task-list-for-menu   :is-multi-select="true" :menu-id="editForm.menuId"></xm-task-list-for-menu>
-			</el-dialog> 
-			<el-dialog
-				append-to-body
-				title="任务"
-				:visible.sync="taskMngVisible"
-				fullscreen>
-				<xm-task-mng :sel-project="selProject"   :menu-id="editForm.menuId" :menu-name="editForm.menuName"></xm-task-mng> 
-			</el-dialog>
-			<el-dialog
-				append-to-body
-				title="故事关联的迭代查询"
-				:visible.sync="iterationVisible"
-				>
-					<xm-iteration-mng :simple="true" :product-id="editForm.productId" :menu-id="editForm.menuId" ></xm-iteration-mng>
-			</el-dialog>
+				<el-dialog title="选中任务" :visible.sync="selectTaskVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+					<xm-task-list  :sel-project="selProject" :is-multi-select="true"  @tasks-selected="onSelectedTasks"></xm-task-list>
+				</el-dialog> 
+				<el-dialog title="查看任务" :visible.sync="taskListForMenuVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+					<xm-task-list-for-menu   :is-multi-select="true" :menu-id="editForm.menuId"></xm-task-list-for-menu>
+				</el-dialog> 
+				<el-dialog
+					append-to-body
+					title="任务"
+					:visible.sync="taskMngVisible"
+					fullscreen>
+					<xm-task-mng :sel-project="selProject"   :menu-id="editForm.menuId" :menu-name="editForm.menuName"></xm-task-mng> 
+				</el-dialog>
+				<el-dialog
+					append-to-body
+					title="故事关联的迭代查询"
+					:visible.sync="iterationVisible"
+					>
+						<xm-iteration-mng :simple="true" :product-id="editForm.productId" :menu-id="editForm.menuId" ></xm-iteration-mng>
+				</el-dialog>
 
-			<el-dialog title="选择员工" :visible.sync="userSelectVisible" width="60%" append-to-body>
-				<users-select  @confirm="onUserSelected" ref="usersSelect"></users-select>
-			</el-dialog>	
+				<el-dialog title="选择员工" :visible.sync="userSelectVisible" width="60%" append-to-body>
+					<users-select  @confirm="onUserSelected" ref="usersSelect"></users-select>
+				</el-dialog>	
+			</el-row>
 		</el-row>
 	</section>
 </template>

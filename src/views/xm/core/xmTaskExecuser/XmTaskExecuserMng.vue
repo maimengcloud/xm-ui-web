@@ -43,7 +43,7 @@
 				</el-table-column>  
 				<el-table-column prop="startTime" label="开工时间" min-width="80" ></el-table-column>
 				<el-table-column prop="endTime" label="完工时间" min-width="80" ></el-table-column>
-				<el-table-column prop="status" label="状态" min-width="80"  :formatter="formatterOption"> 
+				<el-table-column prop="status" label="状态" min-width="80"> 
 					<template slot-scope="scope">
 						<el-tag type="primary" v-if="scope.row.status=='0'">候选中</el-tag>
 						<el-tag type="success" v-else-if="scope.row.status=='1'">执行中</el-tag>
@@ -60,7 +60,18 @@
 				<el-table-column  sortable  prop="quoteAmount" label="报价金额" min-width="80" ></el-table-column>
 				<el-table-column  sortable  prop="quoteWeekday" label="报价工期" min-width="80" ></el-table-column>
 				<el-table-column  sortable prop="matchScore" label="匹配指数" min-width="80" ></el-table-column>    
-				<el-table-column prop="settleStatus" label="结算状态" min-width="80"  :formatter="formatterOption"> </el-table-column>
+				<el-table-column prop="settleStatus" label="结算状态" min-width="80"> 
+					<template slot-scope="scope"> 
+						<el-tag type="success" v-if="scope.row.settleStatus=='1'">已部分结算</el-tag>
+						<el-tag type="success" v-else-if="scope.row.settleStatus=='2'">无需结算</el-tag> 
+						<el-tag type="warning" v-else-if="scope.row.settleStatus=='4'">结算审批中</el-tag>
+						<el-tag type="danger" v-else-if="scope.row.settleStatus=='5'">结算失败</el-tag>
+						<el-tag type="success" v-else-if="scope.row.settleStatus=='6'">已全部结算完毕</el-tag> 
+						<el-tooltip v-else content="验收通过后可以申请结算">
+							<el-tag type="primary" >未开始结算</el-tag>
+						</el-tooltip>
+					</template>
+				 </el-table-column>
 				<el-table-column  sortable prop="settleAmount" label="结算金额" min-width="80" ></el-table-column>
 				<el-table-column  sortable prop="settleWorkload" label="结算工作量" min-width="80" ></el-table-column> 
 				<el-table-column  sortable prop="settleTime" label="结算时间" min-width="80" ></el-table-column> 
@@ -71,7 +82,7 @@
 						<el-button type="primary" v-if="scope.row.status=='4'" @click="toTest(scope.row)">再申请验收</el-button>
 
  						<!--结算状态0未结算1已部分结算2无需结算4已申请结算5结算失败6已全部结算-->
-						<el-button type="success"  v-if="scope.row.status=='3' " @click="settle" >申请结算</el-button> 
+						<el-button type="success"  v-if="scope.row.status=='3' && scope.row.settleStatus!='2' && scope.row.settleStatus!='4' && scope.row.settleStatus!='6' " @click="settle" >申请结算</el-button> 
 						<el-button type="success"  v-if="scope.row.status=='2' " @click="testSuccess(scope.row)" >验收通过</el-button>  
 						<el-button type="danger"  v-if="scope.row.status=='2' " @click="testFail(scope.row)" >验收不通过</el-button>  
 
@@ -658,10 +669,11 @@
 							projectId:projectId,
 							taskId:taskId,
 							userid:row.userid,
-							settleAmount:row.settleAmount,
-							settleWorkload:row.settleWorkload,
+							settleAmount:this.settleForm.settleAmount,
+							settleWorkload:this.settleForm.settleWorkload,
 							id:row.id,
-							branchId:branchId
+							branchId:branchId,
+							username:row.username
 						}
 					}, 
 				}
@@ -669,9 +681,10 @@
 				if(bizKey=="xm_task_execuser_settle_approva"){
 					//延期审核 
 					params.mainTitle='['+row.username+']发起关于任务【'+projectName+'-'+taskName+"】结算申请";
-					params.mainContext='项目编号：'+projectId+','+'项目名称：'+projectName+',任务名称:'+taskName+',结算金额为:'+row.settleAmount+',结算工作量为：'+row.settleWorkload;
-					params.restUrl=config.getOaBasePath()+"/xm/xmTaskExecuser/processApprova"; 
-					this.html2canvas(document.querySelector(".settleForm"),row,params);
+					params.mainContext='项目编号：'+projectId+','+'项目名称：'+projectName+',任务名称:'+taskName+',结算金额为:'+this.settleForm.settleAmount+',结算工作量为：'+this.settleForm.settleWorkload;
+					params.restUrl=config.getXmBasePath()+"/xm/core/xmTaskExecuser/processApprova"; 
+					this.$router.push({name:'ProcdefListForBizStart',params:params}); 
+					//this.html2canvas(document.querySelector(".settleForm"),row,params);
 				}else {
 					this.$message.error("不支持的审批事项");
 					return;
