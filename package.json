@@ -11,9 +11,7 @@
     "build:sit": "cross-env NODE_ENV=production env_config=sit node build/build.js",
     "build:m1prod": "cross-env NODE_ENV=production env_config=m1prod node build/build.js",
     "lint": "eslint --ext .js,.vue src",
-    "test": "npm run lint",
-    "copy": "node copy/copy.js",
-    "copyDistToStatic": "node copy/copyDistToStatic.js"
+    "test": "npm run lint"
   },
   "dependencies": {
     "@jiaminghi/data-view": "^2.10.0",
