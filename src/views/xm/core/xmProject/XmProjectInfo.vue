@@ -22,11 +22,19 @@
 						<el-radio-button label="合同管理"></el-radio-button>
 						<el-radio-button label="环境清单"></el-radio-button> 
 					</el-radio-group>
-					
+					<el-popover
+						placement="top-start"
+						title="更多操作"
+						width="400"
+						trigger="hover"
+						content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+						  
 						<el-button type="primary" @click="toArchive" round>论坛</el-button>
 						<el-button type="success" @click="toIm" round>即聊</el-button> 
 						<el-button type="warning" @click="toHelpMe" round>客服</el-button>
-						<el-button type="primary" @click="handleExport" round v-if="exportArr.includes(infotype)">导出</el-button>
+						<el-button type="primary" @click="handleExport" round v-if="exportArr.includes(infotype)">导出</el-button> 
+						<el-button size="mini" slot="reference" icon="el-icon-more" circle></el-button>
+					</el-popover>
 				</div>
 				<div class="info-detail">
 					<xm-task-mng v-if="infotype=='任务'" ref="xmTaskMng" :sel-project="selProject" ></xm-task-mng>
@@ -410,7 +418,7 @@
 }
 .info-type{
 	background: #fafbfc;
-	border-bottom: 1px solid #efefef;
+	border-bottom: 1px solid #efefef; 
 }
 .info-type>div{
 	padding-left: 10px;

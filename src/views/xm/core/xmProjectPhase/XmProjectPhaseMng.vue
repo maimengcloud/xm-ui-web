@@ -29,7 +29,7 @@
 		<el-table ref="selectPhaseTable" v-show="simple==true" :data="projectPhaseTreeData"    :show-summary="false"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  			<el-table-column prop="phaseName" label="阶段名称" min-width="160" > 
 				 <template slot="header" slot-scope="scope">
-					<div>阶段名称 <el-tag sime="mini" v-if="editForm.id" closable @close="clearSelectPhase()">{{editForm.seqNo}}&nbsp;{{editForm.phaseName}}</el-tag></div>
+					<div>阶段名称 <el-tag size="mini" v-if="editForm.id" closable @close="clearSelectPhase()">{{editForm.seqNo}}&nbsp;{{editForm.phaseName}}</el-tag></div>
 				</template>
 				<template slot-scope="scope">  
 					{{scope.row.seqNo}} &nbsp;&nbsp;{{scope.row.phaseName}}
