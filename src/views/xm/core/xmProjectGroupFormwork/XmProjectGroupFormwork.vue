@@ -1,7 +1,7 @@
 <template>
 	<section>
 		<el-row class="app-container">
-				<el-col :span="20">
+				<el-col :span="16">
 					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="plain" @click="showGroupFormwork">从模板导入项目团队组</el-button>
 					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="primary" @click="groupConfirm">保存</el-button>
 					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="warning" @click="showGroupState">查看团队进度</el-button>
@@ -9,12 +9,105 @@
 					<el-button v-else type="primary" @click="userConfirm">确认选择用户</el-button>
 					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="plain" @click="xmRecordVisible=true">查看团队变化日志</el-button>
 					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="plain" @click="doSearchImGroupsByProjectId">查看绑定即聊情况</el-button>
- 
+ 					
+					<el-popover
+						placement="bottom"
+						title="标题"
+						width="400"
+						trigger="click" > 
+						<el-row>
+							<el-row>
+								项目经理：每个项目的主责任人。由项目立项时指定。团队中内部管理组的组长视为项目经理。
+								权限
+								    项目：立项、项目预算、项目进度、项目成本、项目合同、项目延期、项目预算变更等
+									团队：建立项目管理组、建立业务组、指定组长、组员管理（加人、减人、指派组长）等
+									进度计划：建立阶段计划、阶段计划预算管理、基于阶段计划细化任务、迭代计划制定与执行等
+									任务：建立任务、删除任务、指派责任人、任务预算变更、任务提交测试、测试结果反馈、任务结算
+									质量：审核测试方案、定时查看质量报告
+									风险：风险预测、风险应对措施管理等
+									需求：确保任务与用户故事的关联关系正确、范围正确，及时跟进用户故事的变化。 
+							</el-row>
+								项目管理者：比如项目经理、技术经理、项目副经理、技术副经理等具有全项目范围管理权限的管理人员。由项目经理指派。
+								权限：
+								    团队：建立项目管理组、建立业务组、指定组长、组员管理（加人、减人、指派组长）等
+									进度计划：建立阶段计划、细化阶段计划、阶段计划管理、阶段预算管理等 
+									任务：建立任务、删除任务、指派责任人、任务预算变更、任务提交测试、测试结果反馈、任务结算
+									质量：审核测试方案、定时查看质量报告等
+									风险：风险预测、风险应对措施管理等
+									需求：确保任务与用户故事的关联关系正确、范围正确，及时跟进用户故事的变化。
+									
+							<el-row>
+								组长：每个小组的组长，由项目管理者指定
+								权限：
+								    团队：组员管理（加人、减人）
+									进度计划：建立阶段计划、细化阶段计划、阶段计划管理、阶段预算管理、定期查看小组的工作进度情况、各成员的进度情况跟踪
+									任务：建立任务、删除任务、指派责任人、任务预算变更、任务提交测试、测试结果反馈、任务结算
+									质量：审核测试方案、定时查看质量报告等
+									风险：风险预测、风险应对措施管理等
+									需求：确保任务与用户故事的关联关系正确、范围正确，及时跟进用户故事的变化。
+							</el-row> 
+							<el-row>
+								任务责任人：每个任务的责任人，由组长、项目管理者指定
+								权限：
+								    团队：对任务的候选人、执行人进行统一管理、跟踪
+									进度计划：定期查看负责的任务的进度情况、各成员的进度情况跟踪
+									任务：任务预算变更、任务提交测试、测试结果反馈、任务结算
+									质量：审核测试方案、定时查看质量报告等
+									风险：风险预测、风险应对措施管理等
+									需求：确保任务与用户故事的关联关系正确、范围正确，及时跟进用户故事的变化。
+							</el-row> 
+							
+							<el-row>
+								任务候选人：每个任务的候选人，由任务责任人、组长、项目管理者指定或者由用户自行加入。
+								权限：
+								    团队：查看团队成员、加入任务候选人队列、退出任务候选人队列、不能加入具体的小组
+									进度计划：定期查看已关注的任务的进度情况
+									任务：关注任务、取消关注任务、查询任务、加入任务候选人队列、退出候选人队列等 
+									需求：查看相关的故事及其滚动信息
+							</el-row> 
+							
+							<el-row>
+								任务执行人：每个任务的具体执行人，由任务责任人、组长、项目管理者指定。
+								权限：
+								    团队：查看团队成员、加入业务小组、退出小组
+									进度计划：定期查看已执行的任务的进度情况
+									任务：关注任务、取消关注任务、查询任务、加入任务候选人队列、退出候选人队列、提交测试、提交结算申请等
+									需求：查看相关的故事及其滚动信息
+							</el-row> 
+							
+							<el-row>
+								产品经理：每个任务的具体执行人，由任务责任人、组长、项目管理者指定。
+								权限：
+								    团队：查看团队成员、加入业务小组、退出小组
+									进度计划：定期查看已执行的任务的进度情况
+									任务：关注任务、取消关注任务、查询任务、加入任务候选人队列、退出候选人队列、提交测试、提交结算申请等
+									需求：查看相关的故事及其滚动信息
+							</el-row> 
+							
+							<el-row>
+								测试经理：每个任务的具体执行人，由任务责任人、组长、项目管理者指定。
+								权限：
+								    团队：查看团队成员、加入业务小组、退出小组
+									进度计划：定期查看已执行的任务的进度情况
+									任务：关注任务、取消关注任务、查询任务、加入任务候选人队列、退出候选人队列、提交测试、提交结算申请等
+									需求：查看相关的故事及其滚动信息
+							</el-row> 
+							
+							<el-row>
+								开发者：每个任务的具体执行人，由任务责任人、组长、项目管理者指定。
+								权限：
+								    团队：查看团队成员、加入业务小组、退出小组
+									进度计划：定期查看已执行的任务的进度情况
+									任务：关注任务、取消关注任务、查询任务、加入任务候选人队列、退出候选人队列、提交测试、提交结算申请等
+									需求：查看相关的故事及其滚动信息
+							</el-row> 
+						</el-row>
+						<el-button slot="reference">角色说明</el-button>
+					</el-popover>
 				</el-col>
-				<el-col :span="4" class="hidden-sm-and-down">
+				<el-col :span="8" class="hidden-sm-and-down">
 					<el-tooltip  v-if="isSelectSingleUser!='1' && isSelectMultiUser !='1'" content="黄色表示组长"><span class="addXmProjectGroupFormworkSquare"></span></el-tooltip>
-					<el-tooltip  v-else content="黄色表示选中"><span class="addXmProjectGroupFormworkSquare"></span></el-tooltip>
-					<el-tooltip content="白色表示普通组员"><span class="closeXmProjectGroupFormworkSquare"></span></el-tooltip>
+					<el-tooltip  v-else content="黄色表示选中"><span class="addXmProjectGroupFormworkSquare">选中</span></el-tooltip>
 				</el-col> 
 		</el-row>
 		 <el-row class="app-container" v-loading="load.list" v-if="!isSelectSingleUser && !isSelectMultiUser">
