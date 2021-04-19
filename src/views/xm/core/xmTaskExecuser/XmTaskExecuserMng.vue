@@ -4,7 +4,7 @@
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTaskExecusers">查询</el-button>
 			<el-button type="primary"  @click="toJoin">我要加入</el-button> 
-			<el-button type="primary"  @click="showAdd">新增候选人</el-button>  
+			<el-button type="primary"  @click="showAdd">邀请他人加入</el-button>  
 			<!-- <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button>  -->
 		</div>
 		<el-row class="app-container"> 
@@ -36,13 +36,16 @@
 						</el-form>
 					</template>
 				</el-table-column>
-				<el-table-column prop="username" label="姓名" min-width="120" >
+				<el-table-column prop="username" label="姓名" min-width="100" >
 					<template slot-scope="scope">
-						<el-tag :type="scope.row.isLeader=='1'?'warning':'success'">{{scope.row.isLeader=='1'?'负责人':'队员'}}</el-tag>{{scope.row.username}}
+						{{scope.row.username}}
 					</template>
 				</el-table-column>  
-				<el-table-column prop="startTime" label="开工时间" min-width="80" ></el-table-column>
-				<el-table-column prop="endTime" label="完工时间" min-width="80" ></el-table-column>
+				<el-table-column prop="startTime" label="开始~结束时间" width="200" show-overflow-tooltip >
+					<template slot-scope="scope">
+						{{scope.row.startTime}} ~ {{scope.row.endTime}}
+					</template>
+				</el-table-column> 
 				<el-table-column prop="status" label="状态" min-width="80"> 
 					<template slot-scope="scope">
 						<el-tag type="primary" v-if="scope.row.status=='0'">候选中</el-tag>

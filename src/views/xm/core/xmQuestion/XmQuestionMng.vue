@@ -34,15 +34,27 @@
 				<el-table-column sortable type="index" width="45"></el-table-column> 
 				<el-table-column prop="name" label="问题名称"  min-width="200"> 
 					<template slot-scope="scope">
-						<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.id}}-{{scope.row.name}}</el-link>
+						<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.id}}</el-link> &nbsp;{{scope.row.name}}
 					</template>
 				</el-table-column>
-				<el-table-column prop="bugStatus" label="状态" width="100" :formatter="formatterOption"></el-table-column> 
+				<el-table-column prop="bugStatus" label="状态" width="100" :formatter="formatterOption">
+					<template slot-scope="scope">
+						<el-tag type="info" v-if="scope.row.bugStatus=='create' ">创建</el-tag> 
+						<el-tag type="primary" v-else-if="scope.row.bugStatus=='active'">激活</el-tag> 
+						<el-tag type="warning" v-else-if="scope.row.bugStatus=='confirm'">确认</el-tag>
+						<el-tag type="warning" v-else-if="scope.row.bugStatus=='confirmed'">已确认</el-tag>
+						<el-tag type="success" v-else-if="scope.row.bugStatus=='solve'">解决</el-tag> 
+						<el-tag type="success" v-else-if="scope.row.bugStatus=='resolved'">已解决</el-tag>
+						<el-tag type="success" v-else-if="scope.row.bugStatus=='close'">关闭</el-tag> 
+						<el-tag type="success" v-else-if="scope.row.bugStatus=='closed'">已关闭</el-tag>
+						<el-tag v-else>{{scope.row.bugStatus}}</el-tag>  
+					</template>
+				</el-table-column> 
 				<el-table-column prop="bugSeverity" label="严重程度" width="100" :formatter="formatterOption"></el-table-column> 
 				<el-table-column prop="priority" label="紧急程度" width="100" :formatter="formatterOption"></el-table-column> 
 				<el-table-column prop="solution" label="解决方案" width="100" :formatter="formatterOption"></el-table-column>
 				<el-table-column prop="handlerUsername" width="200" label="指派给" > 
-					<template slot="header" slot-scope="scope">
+					<template slot="header">
 						指派给<el-button @click="showGroupUsers('handlerUsername')"  icon="el-icon-search" circle size="mini"></el-button>
  					</template>
 				</el-table-column>
