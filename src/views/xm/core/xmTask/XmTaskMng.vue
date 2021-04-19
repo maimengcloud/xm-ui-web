@@ -93,7 +93,7 @@
 							</el-table-column> 
 							<el-table-column sortable label="预算" prop="budgetCost" width="120" >
 								<template slot-scope="scope">
-									<el-tag  type= 'info' >{{parseFloat(scope.row.budgetCost/10000).toFixed(2)}}万,{{scope.row.budgetWorkload}}人时</el-tag>
+									<div>{{parseFloat(scope.row.budgetCost/10000).toFixed(2)}}万,{{scope.row.budgetWorkload}}人时</div>
 								</template>
 							</el-table-column>
 							<el-table-column sortable label="责任人" prop="createUserid" min-width="120" show-overflow-tooltip>
