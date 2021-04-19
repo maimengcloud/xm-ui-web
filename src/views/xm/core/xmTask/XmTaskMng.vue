@@ -77,9 +77,9 @@
 									
 								</template>
 							</el-table-column> 
-							<el-table-column v-if="!filters.selProject" prop="projectName" label="项目"  min-width="120"> 
+							<el-table-column  prop="projectName" label="项目"  min-width="120"> 
 								
-								<template slot="header" slot-scope="scope">
+								<template slot="header">
 									项目<el-button @click="showProjectList"  icon="el-icon-search" circle size="mini"></el-button>
 								</template>
 								<template slot-scope="scope">
@@ -94,6 +94,12 @@
 							<el-table-column sortable label="预算" prop="budgetCost" width="120" >
 								<template slot-scope="scope">
 									<el-tag  type= 'info' >{{parseFloat(scope.row.budgetCost/10000).toFixed(2)}}万,{{scope.row.budgetWorkload}}人时</el-tag>
+								</template>
+							</el-table-column>
+							<el-table-column sortable label="责任人" prop="createUserid" min-width="120" show-overflow-tooltip>
+								<template slot-scope="scope"> 
+									<el-link         v-if="scope.row.createUserid!=null && scope.row.createUserid !='' "  @click.stop="showGroupUserSelect(scope.row)">{{scope.row.createUsername}}</el-link>   
+									<el-link    type="warning"     v-if="scope.row.createUsername==null || scope.row.createUsername ==''" @click.stop="showGroupUserSelect(scope.row)"  >去设置</el-link>  
 								</template>
 							</el-table-column>
 							<el-table-column sortable label="执行人" prop="exeUserids" min-width="120" show-overflow-tooltip>
@@ -232,9 +238,10 @@
 				</div>
 				<div class="exector extra">
 					<div class="field-label">任务负责人</div>
-					<el-tag  v-if="editForm.executorUserid" style="margin-left:10px;border-radius:30px;"  >{{editForm.executorUsername}}</el-tag>
+					<el-tag  v-if="editForm.createUserid" style="margin-left:10px;border-radius:30px;"  >{{editForm.createUsername}}</el-tag>
 					<el-tag  v-else style="margin-left:10px;border-radius:30px;"  >未设置</el-tag> 
-					<el-button  @click="showExecusers(editForm)">设置负责人</el-button> 				</div>
+					<el-button  @click="showGroupUserSelect(editForm)">设置负责人</el-button> 				
+				</div>
 				<div class="exector extra">
 					<div class="field-label">任务执行人</div><el-tag   style="margin-left:10px;border-radius:30px;"  >{{editForm.exeUsernames}}</el-tag>
 					<el-button  @click="showExecusers(editForm)">查看队员情况</el-button>
@@ -325,6 +332,9 @@
 		<el-dialog append-to-body title="故事明细" :visible.sync="menuDetailVisible" width="80%"    :close-on-click-modal="false">
 			<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="true" :xm-menu="{menuId:editForm.menuId,menuName:editForm.menuName}" ></xm-menu-rich-detail>
 		</el-dialog>
+		<el-dialog append-to-body title="选择负责人" :visible.sync="groupUserSelectVisible" width="80%"    :close-on-click-modal="false">
+			<xm-project-group-select :visible="groupUserSelectVisible" :sel-project="selProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-project-group-select>
+		</el-dialog> 
 	</section>
 </template>
 
@@ -333,7 +343,7 @@
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { getTask ,listXmTask,editXmTask,editRate, delXmTask, batchDelXmTask,batchImportTaskFromTemplate,batchSaveBudget } from '@/api/xm/core/xmTask'; 
+	import { getTask ,listXmTask,editXmTask,editRate, delXmTask, batchDelXmTask,batchImportTaskFromTemplate,batchSaveBudget,setTaskCreateUser} from '@/api/xm/core/xmTask'; 
 	import  XmTaskAdd from './XmTaskAdd';//新增界面
 	import  XmTaskEdit from './XmTaskEdit';//修改界面
 	import  XmTaskMngBatch from './XmTaskMngBatch';//修改界面
@@ -356,6 +366,7 @@
 	import XmMenuRichDetail from '../xmMenu/XmMenuRichDetail';
 
   import XmGantt from '../components/xm-gantt';  
+import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 
 	export default { 
 		computed: {
@@ -578,6 +589,7 @@
 				menuDetailVisible:false,
 				pickerOptions:  util.pickerOptions(),
 				gstcVisible:false,
+				groupUserSelectVisible:false,//选择负责人
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -1409,6 +1421,27 @@
 				this.filters.selProject=null;
 				this.getXmTasks()
       },  
+	  showGroupUserSelect:function(task){
+		  this.editForm=task;
+		  this.groupUserSelectVisible=true;
+	  },
+	  groupUserSelectConfirm:function(users){
+		  if( users==null || users.length==0 ){
+			  this.groupUserSelectVisible=false;
+			  return
+		  }
+		  this.editForm.createUserid=users[0].userid
+		  this.editForm.createUsername=users[0].username
+		  setTaskCreateUser(this.editForm).then(res=>{
+			  var tips = res.data.tips;
+			  if(tips.isOk){
+				 this.$message.success("设置成功"); 
+		  		 this.groupUserSelectVisible=false;
+			  }else{
+					this.$message.error(tips.msg);
+			  }
+		  })
+	  },
       // 判断前后两个数据是否存在同一回路里面
       // dict 为字典；sId拖拽到menuId; ePmeuId 是放置位置的祖先 menuId;
       judgePmenuId(dict, sId, ePmeuId) {
@@ -1465,7 +1498,8 @@
 			xmSkillMng,
 			skillMng,
 			xmProjectPhaseMng,
-			xmTaskTemplateMng, XmProjectList,xmExchangeMng,xmMenuSelect,XmMenuRichDetail,XmGantt,XmTaskMngBatch 
+			xmTaskTemplateMng, XmProjectList,xmExchangeMng,xmMenuSelect,XmMenuRichDetail,XmGantt,XmTaskMngBatch,
+XmProjectGroupSelect 
 		    //在下面添加其它组件
 		},
 		mounted() {

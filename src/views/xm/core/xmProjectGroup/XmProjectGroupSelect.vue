@@ -1,11 +1,14 @@
 <template>
 	<section>
 		<el-row class="app-container">
-				<el-col :span="20"> 
+				<el-col :span="16"> 
 					<el-button   type="primary" @click="userConfirm">确认选择用户</el-button> 
 				</el-col>
-				<el-col :span="4" class="hidden-sm-and-down">
+				<el-col :span="8" class="hidden-sm-and-down">
  					<el-tooltip    content="黄色表示选中"><span class="addXmProjectGroupFormworkSquare"></span></el-tooltip>
+					 <el-button @click="selectProjectVisible=true">切换项目</el-button> 
+					 {{this.filters.selProject?"当前项目：":""}}<el-tag type="primary" v-if="this.filters.selProject">{{this.filters.selProject.name}}</el-tag>
+					 <el-tag v-else type="warning">未选择项目</el-tag>
  				</el-col> 
 		</el-row>  
 		<el-row class="app-container" v-loading="load.list" >

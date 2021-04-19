@@ -44,6 +44,10 @@ export const batchSaveBudget = params => { return axios.post(`${base}/xm/core/xm
 
 export const batchRelTasksWithMenu = params => { return axios.post(`${base}/xm/core/xmTask/batchRelTasksWithMenu`, params); }; 
 
+export const setTaskCreateUser = params => { return axios.post(`${base}/xm/core/xmTask/setTaskCreateUser`, params); };
+
+
+
 
 
 
