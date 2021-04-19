@@ -73,7 +73,7 @@
 							> 
 							<el-table-column sortable prop="name" label="任务名称(点击详情)"  min-width="240"> 
 								<template slot-scope="scope">
-									<el-link    @click.stop="showDrawer(scope.row)">{{scope.row.sortLevel}}&nbsp;{{scope.row.name}}</el-link> 
+									{{scope.row.sortLevel}}&nbsp;<el-link  type="primary"  @click.stop="showDrawer(scope.row)">{{scope.row.name}}</el-link> 
 									
 								</template>
 							</el-table-column> 
