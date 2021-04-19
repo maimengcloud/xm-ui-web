@@ -73,7 +73,7 @@
 							> 
 							<el-table-column sortable prop="name" label="任务名称(点击详情)"  min-width="240"> 
 								<template slot-scope="scope">
-									<el-link    @click.stop="showDrawer(scope.row)"  type="primary">{{scope.row.sortLevel}}&nbsp;{{scope.row.name}}</el-link> 
+									<el-link    @click.stop="showDrawer(scope.row)">{{scope.row.sortLevel}}&nbsp;{{scope.row.name}}</el-link> 
 									
 								</template>
 							</el-table-column> 
@@ -104,8 +104,10 @@
 							</el-table-column>
 							<el-table-column sortable label="执行人" prop="exeUserids" min-width="120" show-overflow-tooltip>
 								<template slot-scope="scope"> 
-									<el-link         v-if="scope.row.exeUsernames!=null && scope.row.exeUsernames !='' "  @click.stop="showExecusers(scope.row)">{{scope.row.exeUsernames}}</el-link>   
-									<el-link    type="warning"     v-if="scope.row.exeUsernames==null || scope.row.exeUsernames ==''" @click.stop="showExecusers(scope.row)"  >去抢任务</el-link>  
+									<el-link     type="danger"    v-if="scope.row.exeUsernames!=null && scope.row.exeUsernames !='' && scope.row.exeUsernames.indexOf('验收不过')>=0"  @click.stop="showExecusers(scope.row)">{{scope.row.exeUsernames}}</el-link> 
+									<el-link     type="success"    v-else-if="scope.row.exeUsernames!=null && scope.row.exeUsernames !='' && scope.row.exeUsernames.indexOf('已验收')>=0"  @click.stop="showExecusers(scope.row)">{{scope.row.exeUsernames}}</el-link>     
+									<el-link     type="info"    v-else-if="scope.row.exeUsernames!=null && scope.row.exeUsernames !='' "  @click.stop="showExecusers(scope.row)">{{scope.row.exeUsernames}}</el-link>   
+									<el-link    type="primary"     v-if="scope.row.exeUsernames==null || scope.row.exeUsernames ==''" @click.stop="showExecusers(scope.row)"  >去抢任务</el-link>  
 								</template>
 							</el-table-column>
 							<el-table-column sortable prop="rate" label="进度" width="100">
@@ -122,9 +124,9 @@
 										<div>
 											<div>{{getDateString(scope.row.startTime)}}~{{getDateString(scope.row.endTime)}}</div> 
 										</div>
-										<div style="margin-left: 5px;color: #d92b2f !important;color:#bb6f2a;">
-											{{calcTaskStateByTime(scope.row.startTime,scope.row.endTime)}}
-										</div>
+										<div v-for="(item,index) in [calcTaskStateByTime(scope.row.startTime,scope.row.endTime,scope.row)]" :key="index ">
+											<el-tag :type="item.type">{{item.desc}}</el-tag>
+										</div> 
 									</div>
 
 								</template>
@@ -141,7 +143,7 @@
 							<el-table-column label="任务技能需求" prop="taskSkillNames" min-width="120" show-overflow-tooltip >
 								<template slot-scope="scope"> 
 									<el-link         v-if="scope.row.taskSkillNames!=null && scope.row.taskSkillNames !='' "  @click.stop="showSkill(scope.row)">{{scope.row.taskSkillNames}}</el-link>
-									<el-link         v-else @click.stop="showSkill(scope.row)" type="success" >去补充</el-link> 
+									<el-link         v-else @click.stop="showSkill(scope.row)" type="primary" >去补充</el-link> 
 								</template>
 							</el-table-column>
 							<!--
@@ -710,19 +712,50 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			},
-			calcTaskStateByTime(startTime,endTime){
+			calcTaskStateByTime(startTime,endTime,row){ 
+				var obj={
+					type:'', 
+					desc:''
+				}
 				if(startTime==null || startTime=="" || endTime==null || endTime ==""){
-					return "未配置日期"
+					obj={
+						type:'info', 
+						desc:"未配置日期"
+					}  
+					return obj;
 				}
 				var curDate=new Date();
 				var start=new Date(startTime);
 				var end=new Date(endTime);
-				if(this.getDaysBetween(curDate, start)<=0){
-					return this.toFixed(this.getDaysBetween(start,curDate))+"天后开始";
-				}else if( this.getDaysBetween(curDate, start) > 0 &&  this.getDaysBetween(curDate, end) <= 0 ){
-					return this.toFixed(this.getDaysBetween(end, curDate))+"天后结束";
-				}else if( this.getDaysBetween(curDate, end) > 0 ){
-					return "逾期"+( this.toFixed(this.getDaysBetween(curDate, end)) )+"天";
+				var rate=row.rate;
+				var isOver=row.rate>=100;
+				var days=this.getDaysBetween(curDate, start);
+				if(days<=0){ 
+					obj={
+						type:'info', 
+						desc:this.toFixed(this.getDaysBetween(start,curDate))+"天后开始"
+					}  
+					return obj;
+				}else if( this.getDaysBetween(curDate, start) > 0 &&  this.getDaysBetween(curDate, end) <= 0 ){ 
+					obj={
+						type:'primary', 
+						desc:this.toFixed(this.getDaysBetween(end, curDate))+"天后结束"
+					}  
+					return obj;
+				}else if( this.getDaysBetween(curDate, end) > 0 ){ 
+					if(!isOver){
+						obj={
+							type:'danger', 
+							desc:"逾期"+( this.toFixed(this.getDaysBetween(curDate, end)) )+"天"
+						}
+					}else{
+						obj={
+							type:'success', 
+							desc:"完工"+( this.toFixed(this.getDaysBetween(curDate, end)) )+"天"
+						}	
+					}
+					
+					return obj;
 				}
 			},
 			/**
