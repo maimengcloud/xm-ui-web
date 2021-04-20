@@ -42,3 +42,5 @@ export const calcSomePhaseActDataFromTasks = params => { return axios.post(`${ba
 
 export const loadTasksToXmProjectPhase = params => { return axios.post(`${base}/xm/core/xmProjectPhase/loadTasksToXmProjectPhase`, params); };
 
+//修改负责人
+export const setPhaseMngUser = params => { return axios.post(`${base}/xm/core/xmProjectPhase/setPhaseMngUser`, params); };

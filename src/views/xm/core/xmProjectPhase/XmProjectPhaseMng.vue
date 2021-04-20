@@ -36,8 +36,8 @@
 				</el-table-column>   
 				<el-table-column  prop="mngUsername" label="责任人" min-width="80" > 
 					<template  slot-scope="scope">
-						<el-button  v-if="!scope.row.mngUserid"  v-model="scope.row.mngUsername" @click="setMngUser" icon="el-icon-setting">去设置</el-button>  
-						<el-link v-else type="primary" icon="el-icon-setting" @click="setMngUser">{{scope.row.mngUsername}}</el-link>
+						<el-button  v-if="!scope.row.mngUserid"  v-model="scope.row.mngUsername" @click="groupUserSelectVisible=true" icon="el-icon-setting">去设置</el-button>  
+						<el-link v-else type="primary" icon="el-icon-setting" @click="groupUserSelectVisible=true">{{scope.row.mngUsername}}</el-link>
 					</template>
 				</el-table-column>
 				<el-table-column  prop="beginDate" label="起止时间" min-width="150" >
@@ -126,8 +126,11 @@
 			</el-dialog> 
 			<el-dialog :title="editForm==null?'操作日志':editForm.phaseName+'操作日志'" center   :visible.sync="xmRecordVisible"  width="50%"  :close-on-click-modal="false" append-to-body>
 				<xm-record :obj-type="'phase'"  :visible="xmRecordVisible" :project-id="selProject.id" :obj-id="editForm.id"   :simple="1"></xm-record>
-			</el-dialog>
-			
+			</el-dialog> 
+			<el-dialog append-to-body title="选择负责人" :visible.sync="groupUserSelectVisible" width="80%"    :close-on-click-modal="false">
+				<xm-project-group-select :visible="groupUserSelectVisible" :sel-project="selProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-project-group-select>
+				 
+			</el-dialog> 
 			<el-dialog append-to-body title="故事选择" :visible.sync="menuVisible" width="80%"    :close-on-click-modal="false">
 				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
 			</el-dialog>
@@ -142,7 +145,7 @@
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { listXmProjectPhase, delXmProjectPhase, batchDelXmProjectPhase,batchImportFromTemplate,batchSaveBudget,loadTasksToXmProjectPhase  } from '@/api/xm/core/xmProjectPhase';
+	import { listXmProjectPhase, delXmProjectPhase, batchDelXmProjectPhase,batchImportFromTemplate,batchSaveBudget,loadTasksToXmProjectPhase,setPhaseMngUser  } from '@/api/xm/core/xmProjectPhase';
 	import  XmProjectPhaseAdd from './XmProjectPhaseAdd';//新增界面
 	import  XmProjectPhaseEdit from './XmProjectPhaseEdit';//修改界面 
   import XmGantt from '../components/xm-gantt';
@@ -151,7 +154,9 @@
 
 	import {sn} from '@/common/js/sequence'
 	import { mapGetters } from 'vuex'
-import XmProjectPhaseBatch from './XmProjectPhaseBatch.vue'; 
+import XmProjectPhaseBatch from './XmProjectPhaseBatch'; 
+import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
+
   
 	export default { 
 		computed: {
@@ -298,6 +303,7 @@ import XmProjectPhaseBatch from './XmProjectPhaseBatch.vue';
 				menuVisible:false,//由故事自动创建阶段计划
         pickerOptions: util.pickerOptions('date'),
         gstcVisible:false,
+		groupUserSelectVisible:false,//选择负责人
         ganrrColumns: {
           children: 'children',
           name: 'phaseName',
@@ -305,6 +311,7 @@ import XmProjectPhaseBatch from './XmProjectPhaseBatch.vue';
           pid: 'parentPhaseId',
           startDate: 'beginDate',
           endDate: 'endDate',
+		  
         },
 				/**end 自定义属性请在上面加 请加备注**/
 			}
@@ -1235,13 +1242,30 @@ import XmProjectPhaseBatch from './XmProjectPhaseBatch.vue';
 				}else{
 					this.batchEditVisible=false;
 				}
-			}
+			},
+			groupUserSelectConfirm:function(users){
+				if( users==null || users.length==0 ){
+					this.groupUserSelectVisible=false;
+					return
+				}
+				this.editForm.mngUserid=users[0].userid
+				this.editForm.mngUsername=users[0].username
+				setPhaseMngUser(this.editForm).then(res=>{
+					var tips = res.data.tips;
+					if(tips.isOk){
+						this.$message.success("设置成功"); 
+						this.groupUserSelectVisible=false;
+					}else{
+							this.$message.error(tips.msg);
+					}
+				})
+			},
 		},//end methods
 		components: { 
 		    'xm-project-phase-add':XmProjectPhaseAdd,
 		    'xm-project-phase-edit':XmProjectPhaseEdit,
 			
-      XmProjectPhaseTemplateMng,xmMenuSelect,XmGantt,XmProjectPhaseBatch
+      XmProjectPhaseTemplateMng,xmMenuSelect,XmGantt,XmProjectPhaseBatch,XmProjectGroupSelect
         //在下面添加其它组件
 		},
 		mounted() { 

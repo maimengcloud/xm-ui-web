@@ -50,11 +50,7 @@
 						<el-input    v-model="scope.row.phaseName"    @change="fieldChange(scope.row,'phaseName')"></el-input>  
 					</template>
 				</el-table-column>  
-				<el-table-column  prop="mngUsername" label="责任人" min-width="80" > 
-					<template  slot-scope="scope">
-						<el-button  v-if="!scope.row.mngUserid"  v-model="scope.row.mngUsername" @click="setMngUser" icon="el-icon-setting">去设置</el-button>  
-						<el-link v-else type="primary" icon="el-icon-setting">{{scope.row.mngUsername}}</el-link>
-					</template>
+				<el-table-column  prop="mngUsername" label="责任人" min-width="80" >  
 				</el-table-column>
 				<el-table-column  prop="beginDate" label="起始时间"  width="200" >
 					<template slot-scope="scope">  
