@@ -39,9 +39,9 @@
 						项目<el-button @click="showProjectList"  icon="el-icon-search" circle size="mini"></el-button>
  					</template>
 				</el-table-column> 
-				<el-table-column prop="caseName" label="用例" min-width="100" >
+				<el-table-column prop="caseName" label="用例(点击详情)" min-width="100" show-overflow-tooltip>
 					<template slot-scope="scope"> 
-						<el-link @click="showCaseDetail(scope.row)">[{{scope.row.caseId}}]{{scope.row.caseName}}</el-link>
+						{{scope.row.caseId}}&nbsp;<el-link type="primary" @click="showCaseDetail(scope.row)">{{scope.row.caseName}}</el-link>
 					</template>
 				</el-table-column>
 				<el-table-column prop="menuName" label="故事" min-width="100" >
@@ -63,12 +63,12 @@
 						<el-button  v-if=" batchEditVisible==true "   type="warning"   @click="showGroupUsers(scope.row)">选人</el-button>  
 					</template>
 				</el-table-column>
-				<el-table-column prop="startTime" label="起止时间" min-width="100" >
+				<el-table-column prop="startTime" label="起止时间" min-width="100" show-overflow-tooltip>
 					<template slot-scope="scope">
-						<div>
+						<div v-if="batchEditVisible">
 							<el-date-picker  style="width:100%;"
 								v-model="scope.row.startTime"
-								:disabled="!batchEditVisible"
+								
 								align="right"
 								type="date"
 								value-format="yyyy-MM-dd HH:mm:ss"
@@ -86,7 +86,8 @@
 								placeholder="选择日期"
 								:picker-options="pickerOptions" @change="fieldChange(scope.row,'endTime')">
 							</el-date-picker>  
-						</div>  
+						</div> 
+						<div v-else>{{scope.row.startTime?scope.row.startTime.substr(0,10):""}} ~ {{scope.row.endTime?scope.row.endTime.substr(0,10):""}}</div> 
 					</template>
 				</el-table-column> 
   				<el-table-column prop="execStatus" label="状态" width="100" :formatter="formatterExecStatus" > 
@@ -98,10 +99,10 @@
 							  </el-select>
 					  	</template> 
 				 </el-table-column>
-				<el-table-column v-if="!batchEditVisible" label="操作" width="240" fixed="right">
+				<el-table-column v-if="!batchEditVisible" label="操作" width="260" fixed="right">
 					<template scope="scope">
- 						<el-button type="warning" @click="showAddBug(scope.row,scope.$index)" icon="el-icon-plus">登记bug</el-button>
-						<el-button type="success" @click="showBugs(scope.row,scope.$index)" icon="el-icon-s-data">bug列表</el-button>
+ 						<el-button type="primary" @click="showAddBug(scope.row,scope.$index)" icon="el-icon-plus">登记bug</el-button>
+						<el-button  @click="showBugs(scope.row,scope.$index)" icon="el-icon-s-data">查bug</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
