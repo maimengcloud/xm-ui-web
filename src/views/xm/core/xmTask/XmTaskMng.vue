@@ -30,10 +30,12 @@
 							<el-tag v-if=" !selProject && filters.selProject" :closable="!selProject"  @click="showProjectList" @close="clearProject">项目:{{this.filters.selProject.name}}</el-tag>
 							<el-tag v-if=" !selProject && !filters.selProject" @click="showProjectList" type="plian">未选项目，点我</el-tag>
 
-							<el-input  style="width:200px;" v-model="searchTask" placeholder="任务名称"></el-input> 
-
-							<el-button    @click="searchXmTasks" type="primary">查询</el-button> 
-							<el-button  v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showAdd" type="primary" round>新建任务</el-button>  
+							<el-input  style="width:200px;" v-model="searchTask" placeholder="任务名称">
+								<template slot="append">
+									<el-button    @click="searchXmTasks" type="primary" icon="el-icon-search"></el-button> 
+								</template>
+							</el-input>  
+							<el-button  v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showAdd" type="primary" icon="el-icon-plus" round></el-button>  
 							<el-popover
 								placement="top-start"
 								title=""
@@ -68,6 +70,7 @@
 							fit
 							border
 							default-expand-all
+							max-height="650"
 							:tree-props="{children: 'children', hasChildren: 'hasChildren'}"
 							row-key="id"
 							> 
@@ -349,13 +352,12 @@
 	import  XmTaskAdd from './XmTaskAdd';//新增界面
 	import  XmTaskEdit from './XmTaskEdit';//修改界面
 	import  XmTaskMngBatch from './XmTaskMngBatch';//修改界面
-	import { mapGetters } from 'vuex';
-	import headEditor from '../components/headEditor';
+	import { mapGetters } from 'vuex'; 
 	import xmExecuserMng from '../xmTaskExecuser/XmTaskExecuserMng';
 	import xmSkillMng from '../xmTaskSkill/XmTaskSkillMng';
 	import skillMng from "@/views/xm/core/skill/skillMng";
 	import {batchAddSkill } from '@/api/xm/core/xmTaskSkill';
-	import xmProjectPhaseMng from '../xmProjectPhase/XmProjectPhaseMng';
+	import xmProjectPhaseMng from '../xmProjectPhase/XmProjectPhaseSelect';
 	import {sn} from '@/common/js/sequence' 
 	import xmTaskTemplateMng from '../xmTaskTemplate/XmTaskTemplateMng'; 
 	import xmExchangeMng from '../xmExchange/XmExchangeMng'; 

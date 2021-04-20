@@ -25,9 +25,8 @@
 
 						<el-button v-if=" batchEditVisible==true && isPmUser " type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
 					</el-row>
-					<el-row v-show="batchEditVisible" class="app-container">
-						<div>123456789</div>
-						<el-table :data="xmMenusTreeData" class="drag-table" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+					<el-row v-show="batchEditVisible" class="app-container"> 
+						<el-table max-height="650" :data="xmMenusTreeData" class="drag-table" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 							<el-table-column sortable type="selection" width="45"></el-table-column>
 							<el-table-column sortable prop="seqNo"  label="序号" min-width="100">
 								<template slot-scope="scope">
@@ -72,7 +71,7 @@
 						
 					</el-row>
 					<el-row v-show="!batchEditVisible" class="app-container">
-						<el-table :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+						<el-table  max-height="650" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 							<el-table-column sortable type="selection" width="40"></el-table-column> 
 							<el-table-column prop="menuName" label="故事名称" min-width="140" > 
 								<template slot-scope="scope">
@@ -245,7 +244,7 @@
 				xmMenus: [],//查询结果
 				pageInfo:{//分页数据
 					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
-					pageSize:10,//每页数据
+					pageSize:50,//每页数据
 					count:false,//是否需要重新计算总记录数
 					pageNum:1,//当前页码、从1开始计算
 					orderFields:[],//排序列 如 ['sex','student_id']，必须为数据库字段
