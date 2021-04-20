@@ -191,7 +191,7 @@
 				</el-row>  
 			</el-col>
 		</el-row>
-		<el-row  v-show="batchEditVisible" >
+		<el-row  v-if="batchEditVisible" >
 			<xm-task-mng-batch :sel-project="selProject" :sel-project-phase="currentProjectPhase" :visible="batchEditVisible" @back="batchEditBack"></xm-task-mng-batch>
 		</el-row>
 		<el-dialog
