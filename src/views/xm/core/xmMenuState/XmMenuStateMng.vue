@@ -13,7 +13,7 @@
 					<el-table-column sortable type="selection" width="40"></el-table-column>
  					<el-table-column prop="menuName" label="故事名称" min-width="150" >
 						<template slot-scope="scope"> 
-							<el-link @click="toMenu(scope.row)">  {{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}} </el-link><el-button v-if="scope.row.projectId" type="text" @click="showTasks(scope.row)">任务</el-button><el-tag v-else type="warning">未关联任务</el-tag>
+							<el-link @click="toMenu(scope.row)">  {{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}} </el-link>
 						</template>
 					</el-table-column>  
 					<el-table-column prop="planStatus" label="计划状态" width="100" :formatter="formatterOption"></el-table-column> 
@@ -51,6 +51,12 @@
 						<template slot-scope="scope"> 
 							<el-tag v-if="scope.row.onlineStatus=='0'|| !scope.row.onlineStatus" type="info">未上线</el-tag>
 							<el-tag v-if="scope.row.onlineStatus=='1'" type="success">已上线</el-tag>
+						</template>
+					</el-table-column>
+					<el-table-column label="操作" width="100" fixed="right"  >
+						<template slot-scope="scope">
+							<el-button v-if="scope.row.projectId" type="text" @click="showTasks(scope.row)"  icon="el-icon-tickets">查看任务</el-button>
+							<el-tag v-else type="warning">未关联任务</el-tag>
 						</template>
 					</el-table-column>
 				</el-table>

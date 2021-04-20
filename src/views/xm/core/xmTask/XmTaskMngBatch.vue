@@ -8,11 +8,11 @@
 				<span style="margin-left:10px;font-size:14px;">内部人力总预算：</span><el-tag :type="taskBudgetData.surplusPhaseBudgetInnerUserAt>0?'warning':'danger'">{{(projectPhase.phaseBudgetInnerUserAt/10000).toFixed(2)}}万，剩{{(taskBudgetData.surplusPhaseBudgetInnerUserAt/10000).toFixed(2)}}万</el-tag>  
 				<span style="margin-left:10px;font-size:14px;">外购人力总预算：</span><el-tag :type="taskBudgetData.surplusPhaseBudgetOutUserAt>0?'warning':'danger'">{{(projectPhase.phaseBudgetOutUserAt/10000).toFixed(2)}}万，剩{{(taskBudgetData.surplusPhaseBudgetOutUserAt/10000).toFixed(2)}}万</el-tag>   
 				<div style="line-height:50px;float:right;margin-right:10px;"> 
-					<el-button type="danger"   @click="batchDel" v-loading="load.edit">批量删除</el-button>   
- 					<el-button type="warning"   @click="saveBatchEdit" v-loading="load.edit">批量保存</el-button>
-					<el-button type="success"  @click="handlePopover(null,'add')" >+任务</el-button>
-					<el-button type="primary"   @click="searchXmTasks" v-loading="load.list">查询</el-button>  
-					<el-button     @click="noBatchEdit" v-loading="load.edit">返回</el-button>  
+					<el-button type="danger"   @click="batchDel" v-loading="load.edit" icon="el-icon-delete">批量删除</el-button>   
+ 					<el-button type="warning"   @click="saveBatchEdit" v-loading="load.edit" icon="el-icon-finished">批量保存</el-button>
+					<el-button type="success"  @click="handlePopover(null,'add')" icon="el-icon-plus" >+任务</el-button>
+					<el-button type="primary"   @click="searchXmTasks" v-loading="load.list" icon="el-icon-search">查询</el-button>  
+					<el-button     @click="noBatchEdit" v-loading="load.edit" icon="el-icon-back">返回</el-button>  
 				</div>
 			</el-row> 
 			<el-row> 

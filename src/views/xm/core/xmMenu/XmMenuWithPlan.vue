@@ -17,7 +17,7 @@
 					<el-table-column sortable type="selection" width="40"></el-table-column>
  					<el-table-column prop="menuName" label="故事名称" min-width="150" >
 						<template slot-scope="scope"> 
-							<el-link @click="toMenu(scope.row)">  {{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}} </el-link><el-button v-if="scope.row.projectId" type="text" @click="showTasks(scope.row)">任务</el-button><el-tag v-else type="warning">未关联任务</el-tag>
+							{{scope.row.seqNo}}&nbsp;<el-link type="primary" @click="toMenu(scope.row)">  {{scope.row.menuName}} </el-link>
 						</template>
 					</el-table-column>  
 					<el-table-column prop="planStatus" label="计划状态" width="100" :formatter="formatterOption"></el-table-column> 
@@ -57,6 +57,12 @@
 							<el-tag v-if="scope.row.onlineStatus=='1'" type="success">已上线</el-tag>
 						</template>
 					</el-table-column>
+					<el-table-column label="操作" width="100" fixed="right"  >
+						<template slot-scope="scope">
+							<el-button v-if="scope.row.projectId" type="text" @click="showTasks(scope.row)"  icon="el-icon-tickets">查看任务</el-button>
+							<el-tag v-else type="warning">未关联任务</el-tag>
+						</template>
+					</el-table-column>
 				</el-table>
 				<el-pagination v-if="!gstcVisible"  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
       <xm-gantt v-if="gstcVisible" :tree-data="xmMenusTreeData" :project-phase="selProject" :columns="ganrrColumns"></xm-gantt>
@@ -67,7 +73,7 @@
  
  					<el-table-column prop="menuName" label="故事名称" min-width="150" >
 						<template slot-scope="scope"> 
-							 {{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}} <el-button v-if="scope.row.projectId" type="text" @click="showTasks(scope.row)">任务</el-button><el-tag v-else type="warning">未关联任务</el-tag>
+							 {{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}} 
 						</template>
 					</el-table-column>  
 					<el-table-column prop="chargeUsername" label="负责人" min-width="80" >
@@ -99,6 +105,12 @@
 							</el-select>
 						</template>
 					</el-table-column> 
+					<el-table-column label="操作" width="100" fixed="right"  >
+						<template slot-scope="scope">
+							<el-button v-if="scope.row.projectId" type="text" @click="showTasks(scope.row)"  icon="el-icon-tickets">查看任务</el-button>
+							<el-tag v-else type="warning">未关联任务</el-tag>
+						</template>
+					</el-table-column>
  				</el-table>
 				<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		</el-row>
