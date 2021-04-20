@@ -168,10 +168,8 @@
 					})
 				}
 				
-				const tasksTreeData = this.translateDataToTree(xmTasks);
-				if (this.batchEditVisible) {
-				this.rowDrop();
-				}
+				const tasksTreeData = this.translateDataToTree(xmTasks); 
+				this.rowDrop(); 
         
 				 return tasksTreeData;
 			},
@@ -1084,7 +1082,9 @@
         // 目标元素
         let target = document.querySelector('.drag-table2 .el-table__body-wrapper .el-table__body tbody');
           console.log('rowDrop--target==', target);
-
+		if(target==null){
+			return;
+		}
         let rows = 0;//行数
         setTimeout(function () {
           rows = target.childElementCount

@@ -1,32 +1,39 @@
 <template>
 	<section>
-		<el-row class="app-container">
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
-			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterationMenus">查询</el-button>
-			<el-button type="primary" @click="showAdd">加入更多故事</el-button>
-			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
 
-		</el-row>
-		<el-row class="app-container"> 
-			<el-col :span="8">
+		<el-row > 
+			<el-col :span="8" class="app-container">
 				<xm-iteration-mng :simple="true" @row-click="onIterationRowClick" @clear-select="onIterationClearSelect"></xm-iteration-mng>
 			</el-col>
 			<el-col :span="16">
-				<!--列表 XmIterationMenu 迭代定义-->
-				<el-table :data="xmIterationMenusTreeData"  default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-					<el-table-column  type="selection" width="45"></el-table-column> 
-					 <el-table-column prop="menuName" label="故事名称" min-width="140" > 
-						<template slot-scope="scope">
- 							<el-link>{{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}}</el-link> 
+				<el-row class="app-container">
+					<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
+						<template slot="append">
+							<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterationMenus" icon="el-icon-search"></el-button>
 						</template>
-					</el-table-column> 
- 					<el-table-column label="操作" width="160" fixed="right">
-						<template slot-scope="scope">
-							<el-button type="danger" @click="handleDel(scope.row,scope.$index)">移出迭代</el-button>
-						</template>
-					</el-table-column>
-				</el-table>
-				<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+					</el-input> 
+					
+					<el-button type="primary" @click="showAdd" icon="el-icon-plus">加入更多故事到迭代计划</el-button>
+					<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete">批量将故事移出迭代计划</el-button> 
+
+				</el-row>
+				<el-row class="app-container">
+					<!--列表 XmIterationMenu 迭代定义-->
+					<el-table :data="xmIterationMenusTreeData"  default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+						<el-table-column  type="selection" width="45"></el-table-column> 
+						<el-table-column prop="menuName" label="故事名称" min-width="140" > 
+							<template slot-scope="scope">
+								{{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}}
+							</template>
+						</el-table-column> 
+						<el-table-column label="操作" width="160" fixed="right">
+							<template slot-scope="scope">
+								<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete">移出迭代计划</el-button>
+							</template>
+						</el-table-column>
+					</el-table>
+					<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+				</el-row>
 			</el-col> 
 			<el-dialog append-to-body title="故事选择" :visible.sync="menuVisible" width="80%"    :close-on-click-modal="false">
 				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true" :exclude-iteration-id="iteration?iteration.id:''"  @menus-selected="onSelectedMenus" ></xm-menu-select>
@@ -62,7 +69,7 @@
 				xmIterationMenus: [],//查询结果
 				pageInfo:{//分页数据
 					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
-					pageSize:10,//每页数据
+					pageSize:20,//每页数据
 					count:false,//是否需要重新计算总记录数
 					pageNum:1,//当前页码、从1开始计算
 					orderFields:[],//排序列 如 ['sex','student_id']，必须为数据库字段

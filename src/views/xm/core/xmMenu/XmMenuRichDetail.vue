@@ -18,7 +18,8 @@
 				</el-form>
 			</el-col>
 			<el-col :span="8">
-				<xm-iteration-mng v-if="visible" :simple="true" :product-id="editForm.productId" :menu-id="editForm.menuId" ></xm-iteration-mng> 
+				<el-button v-if="iterationVisible==false" @click="iterationVisible=true" icon="el-icon-search">查看迭代计划</el-button>
+				<xm-iteration-mng v-if="iterationVisible" :simple="true" :product-id="editForm.productId" :menu-id="editForm.menuId" ></xm-iteration-mng> 
 			</el-col>
 		</el-row>
 		<el-row>
@@ -48,6 +49,7 @@
 	      'xmMenu':function( xmMenu ) {
 	      },
 	      'visible':function(visible) { 
+			  this.iterationVisible=false;
 	      	if(this.visible==true){
 				 this.editForm = Object.assign(this.editForm,this.xmMenu);
 
@@ -79,7 +81,8 @@
 				//编辑界面数据  XmMenu 项目故事表
 				editForm: {
 						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'',mmUserid:'',mmUsername:''
-				}
+				},
+				iterationVisible:false,
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				
 				/**end 在上面加自定义属性**/

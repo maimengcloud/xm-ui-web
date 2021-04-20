@@ -2,17 +2,20 @@
 	<section>
 		<el-row v-if="!simple" class="app-container">
       <el-checkbox v-model="gstcVisible"  >甘特图</el-checkbox>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
-			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterations">查询</el-button>
-			<el-button type="primary" @click="showAdd">+迭代</el-button>
+			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
+				<template slot="append"> 
+					<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterations" icon="el-icon-search"></el-button>
+				</template>
+			</el-input> 
+			<el-button type="primary" @click="showAdd" icon="el-icon-plus">新增一个迭代计划</el-button>
  		</el-row>
 		<el-row v-if="!simple" class="app-container"> 
 			<!--列表 XmIteration 迭代定义-->
-			<el-table v-if="!gstcVisible" :data="xmIterationTreeData" row-key="id"  default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table max-height="650" v-if="!gstcVisible" :data="xmIterationTreeData" row-key="id"  default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column type="selection" aria-disabled width="55"></el-table-column> 
 				<el-table-column prop="iterationName" label="迭代名称" min-width="160" >
 					 <template slot-scope="scope">  
-						<el-link type="primary" @click="showEdit( scope.row,scope.$index)"> {{scope.row.seqNo}} &nbsp;&nbsp;{{scope.row.iterationName}} </el-link>
+						{{scope.row.seqNo}} &nbsp;&nbsp;<el-link type="primary" @click="showEdit( scope.row,scope.$index)"> {{scope.row.iterationName}} </el-link>
 					 </template> 
 				</el-table-column>
 				<el-table-column prop="finishRate" label="总进度" min-width="80" >
@@ -28,10 +31,10 @@
 				<el-table-column prop="actWorkload" label="实际工作量" min-width="80" ></el-table-column>
 				<el-table-column label="操作" width="400" fixed="right">
 					<template slot-scope="scope">
-						<el-button type="primary" @click="showSubAdd( scope.row,scope.$index)">+子迭代</el-button>
-						<el-button type="warning" @click="loadTasksToXmIterationState( scope.row)">刷新</el-button>
-						<el-button type="success" @click="showIterationState( scope.row)">报告</el-button>
-						<el-button type="danger" @click="handleDel(scope.row,scope.$index)">删</el-button>
+						<el-button type="primary" @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus"></el-button>
+						<el-button type="warning" @click="loadTasksToXmIterationState( scope.row)" icon="el-icon-s-data">刷新</el-button>
+						<el-button type="success" @click="showIterationState( scope.row)" icon="el-icon-s-data">报告</el-button>
+						<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"></el-button>
 
 
 						
