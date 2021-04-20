@@ -31,19 +31,25 @@
 				<el-table-column   sortable type="selection" width="40"></el-table-column>
  				<el-table-column prop="phaseName" label="阶段名称" min-width="160" > 
 					 <template slot-scope="scope">  
-						<el-link @click="showEdit(scope.row)"> {{scope.row.seqNo}} &nbsp;&nbsp;{{scope.row.phaseName}}</el-link>
+						{{scope.row.seqNo}} &nbsp;&nbsp;<el-link type="primary" @click="showEdit(scope.row)"> {{scope.row.phaseName}}</el-link>
 					 </template>
-				</el-table-column>  
+				</el-table-column>   
+				<el-table-column  prop="mngUsername" label="责任人" min-width="80" > 
+					<template  slot-scope="scope">
+						<el-button  v-if="!scope.row.mngUserid"  v-model="scope.row.mngUsername" @click="setMngUser" icon="el-icon-setting">去设置</el-button>  
+						<el-link v-else type="primary" icon="el-icon-setting" @click="setMngUser">{{scope.row.mngUsername}}</el-link>
+					</template>
+				</el-table-column>
 				<el-table-column  prop="beginDate" label="起止时间" min-width="150" >
 					<template slot-scope="scope">  
-								{{formatDate(scope.row.beginDate)}}~{{formatDate(scope.row.endDate)}}  <br/> 
+								{{formatDate(scope.row.beginDate)}}~{{formatDate(scope.row.endDate)}}  
 								<div v-for="item in [calcTaskStateByTime(scope.row.beginDate,scope.row.endDate,scope.row.actRate,scope.phaseStatus)]" :key="item.status"><el-tag :type="item.status">{{item.remark}}</el-tag></div> 
 					</template>
 				</el-table-column>
 				<el-table-column prop="actRate" label="进度.状态" width="100">
 					<template slot-scope="scope"> 
-							<el-tag > {{ (scope.row.actRate!=null?scope.row.actRate:0)+'%'}} </el-tag>  <br/> 
-							<el-tag > {{ formateOption('xmPhaseStatus',scope.row.phaseStatus)}} </el-tag>  
+							<el-tag :type="scope.row.actRate>=100?'success':'primary'"> {{ (scope.row.actRate!=null?scope.row.actRate:0)+'%'}} </el-tag> 
+							<!--<el-tag > {{ formateOption('xmPhaseStatus',scope.row.phaseStatus)}} </el-tag>  -->
 					</template>
 				</el-table-column>
 				<el-table-column  prop="phaseBudgetHours" label="工时.人时" min-width="200" > 
@@ -74,8 +80,7 @@
 						<el-tag v-else-if="scope.row.flowState=='4'">已取消</el-tag> 
 						</el-tooltip> 
 					</template>
-				</el-table-column>
-				<el-table-column  prop="remark" label="备注" min-width="80" >  </el-table-column> 
+				</el-table-column> 
 				<el-table-column  label="操作" width="100" fixed="right">
 					<template slot-scope="scope"> 
 						<el-dropdown @command="handleCommand" :hide-on-click="false">
@@ -977,7 +982,7 @@ import XmProjectPhaseBatch from './XmProjectPhaseBatch.vue';
 				}
 				
 			},
-			calcTaskStateByTime(startTime,endTime,actRate,phaseStatus){
+			calcTaskStateByTime(startTime,endTime,actRate,phaseStatus){ 
 				if(startTime==null || startTime=="" || endTime==null || endTime ==""){
 					return  {remark:"未配置日期",status:'warning'}
 				}
@@ -988,8 +993,12 @@ import XmProjectPhaseBatch from './XmProjectPhaseBatch.vue';
 					return {remark:this.toFixed(this.getDaysBetween(start,curDate))+"天后开始",status:'primary'};
 				}else if( this.getDaysBetween(curDate, start) > 0 &&  this.getDaysBetween(curDate, end) <= 0 ){
 					return {remark: this.toFixed(this.getDaysBetween(end, curDate))+"天后结束",status:'primary'};
-				}else if( this.getDaysBetween(curDate, end) > 0 ){
-					return {remark:"逾期"+( this.toFixed(this.getDaysBetween(curDate, end)) )+"天",status:'danger'};
+				}else if( this.getDaysBetween(curDate, end) > 0 ){ 
+					if(actRate>=100){
+						return {remark:"已完工"+( this.toFixed(this.getDaysBetween(curDate, end)) )+"天",status:'success'};
+					}else{ 
+						return {remark:"逾期"+( this.toFixed(this.getDaysBetween(curDate, end)) )+"天",status:'danger'};
+					}
 				}
 			},
 			/**
