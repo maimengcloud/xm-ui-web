@@ -244,14 +244,14 @@
 				<div class="exector extra">
 					<div class="field-label">任务负责人</div>
 					<el-tag  v-if="editForm.createUserid" style="margin-left:10px;border-radius:30px;"  >{{editForm.createUsername}}</el-tag>
-					<el-tag  v-else style="margin-left:10px;border-radius:30px;"  >未设置</el-tag> 
-					<el-button  @click="showGroupUserSelect(editForm)">设置负责人</el-button> 				
+					<el-tag  v-else style="margin-left:10px;border-radius:30px;"  icon="el-icon-right" >未设置</el-tag> 
+					<el-button  @click="showGroupUserSelect(editForm)" icon="el-icon-setting">设置负责人</el-button> 				
 				</div>
 				<div class="exector extra">
 					<div class="field-label">任务执行人</div><el-tag   style="margin-left:10px;border-radius:30px;"  >{{editForm.exeUsernames}}</el-tag>
-					<el-button  @click="showExecusers(editForm)">查看队员情况</el-button>
+					<el-button  @click="showExecusers(editForm)" icon="el-icon-s-data">查看队员情况</el-button>
 
-					<el-button type="primary" @click="toJoin">我要加入</el-button>
+					<el-button type="primary" @click="toJoin" icon="el-icon-plus">我要加入</el-button>
 				</div>
 				<div class="skill extra">
 					<div class="field-label">技能要求</div><el-tag   style="margin-left:10px;border-radius:30px;">{{editForm.taskSkillNames?editForm.taskSkillNames:'无'}}</el-tag>
@@ -774,16 +774,19 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			},
 
 			editProgress(rate) {
-				if(this.userInfo.userid!=this.editForm.executorUserid){
-					this.$message({ message: "你不是该任务的主负责人，不能更新进度", type: 'error' }); 
+				var isCreate=this.userInfo.userid==this.editForm.createUserid
+				var isExec=this.userInfo.userid==this.editForm.executorUserid
+				if( !isCreate && !isExec ){
+					this.$message({ message: "你不是该任务的执行人、主负责人，不能更新进度", type: 'error' }); 
 					return;
-				}
+				} 
 				if(rate){
 					this.editForm.rate=rate
 				}
 				let params = {
 					id: this.editForm.id,
 					rate: this.editForm.rate,
+					projectId:this.editForm.projectId,
 					parentTaskid: this.editForm.parentTaskid,
 				}
 				if(this.editForm.rate==0){

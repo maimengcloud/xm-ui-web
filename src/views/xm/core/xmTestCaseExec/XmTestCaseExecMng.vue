@@ -100,8 +100,8 @@
 				 </el-table-column>
 				<el-table-column v-if="!batchEditVisible" label="操作" width="240" fixed="right">
 					<template scope="scope">
- 						<el-button type="warning" @click="showAddBug(scope.row,scope.$index)">登记bug</el-button>
-						<el-button type="success" @click="showBugs(scope.row,scope.$index)">bug列表</el-button>
+ 						<el-button type="warning" @click="showAddBug(scope.row,scope.$index)" icon="el-icon-plus">登记bug</el-button>
+						<el-button type="success" @click="showBugs(scope.row,scope.$index)" icon="el-icon-s-data">bug列表</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
