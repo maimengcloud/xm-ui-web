@@ -5,7 +5,7 @@
 				<el-menu-item class="showall" index="">全部状态</el-menu-item>
 				<el-menu-item v-for="(b,index) in options['bugStatus']" :index="b.optionValue" :key="index">{{b.optionName}}</el-menu-item> 
 				<div style="line-height:50px;float:right;margin-right:10px;">
-					<el-button @click="showAdd" type="success">{{qtype=='risk'?'新建风险':'新建问题'}}</el-button>
+					<el-button @click="showAdd" type="primary"  icon="el-icon-plus">{{qtype=='risk'?'新建风险':'新建问题'}}</el-button>
 				</div>
 			</el-menu> 
 			<el-menu active-text-color="#00abfc" :default-active="filters.solution"  @select="changeSolution" class="el-menu-demo" mode="horizontal">
@@ -24,13 +24,17 @@
 						<el-tag v-if="!filters.selProject" @click="showProjectList(true)" type="success">未选项目，点我</el-tag>
 						指派给:<el-tag v-if="!filters.handlerUsername" @click="showGroupUsers('handlerUsername')">未选，点我</el-tag><el-tag v-if="filters.handlerUsername" closable @close="clearHandler"  @click="showGroupUsers('handlerUsername')">{{filters.handlerUsername}}</el-tag>
 					
-					<el-input style="width:200px;" v-model="filters.key" placeholder="问题名称"></el-input> 
-					<el-button @click="searchXmQuestions" type="primary">查询</el-button>
-					<el-button @click="handleExport" type="primary">导出</el-button>
+					<el-input style="width:200px;" v-model="filters.key" placeholder="问题名称">
+						<template slot="append">
+							<el-button @click="searchXmQuestions" type="primary" icon="el-icon-search"></el-button>
+						</template>
+					</el-input> 
+					
+					<el-button @click="handleExport" type="primary" icon="el-icon-download">导出</el-button>
 				</div>
 			</el-menu> 
 			<!--列表 XmQuestion xm_question-->
-			<el-table :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table max-height="650" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="index" width="45"></el-table-column> 
 				<el-table-column prop="name" label="问题名称"  min-width="200"> 
 					<template slot-scope="scope">

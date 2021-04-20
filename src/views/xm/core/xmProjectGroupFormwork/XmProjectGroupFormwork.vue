@@ -2,14 +2,14 @@
 	<section>
 		<el-row class="app-container">
 				<el-col :span="16">
-					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="plain" @click="showGroupFormwork">从模板导入项目团队组</el-button>
-					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="primary" @click="groupConfirm">保存</el-button>
-					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="warning" @click="showGroupState">查看团队进度</el-button>
+					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="primary" @click="showGroupFormwork" icon="el-icon-plus">从模板导入项目团队组</el-button>
+					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="primary" @click="groupConfirm" icon="el-icon-finished">保存</el-button>
+					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="plain" @click="showGroupState" icon="el-icon-s-data">查看团队进度</el-button>
 
-					<el-button v-else type="primary" @click="userConfirm">确认选择用户</el-button>
-					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="plain" @click="xmRecordVisible=true">查看团队变化日志</el-button>
-					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="plain" @click="doSearchImGroupsByProjectId">查看绑定即聊情况</el-button>
- 					<el-button @click="groupRoleDescVisible=true">角色说明</el-button>
+					<el-button v-else type="primary" @click="userConfirm" icon="el-icon-finished">确认选择用户</el-button>
+					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="plain" @click="xmRecordVisible=true" icon="el-icon-document">查看团队变化日志</el-button>
+					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="plain" @click="doSearchImGroupsByProjectId" icon="el-icon-document">查看绑定即聊情况</el-button>
+ 					<el-button @click="groupRoleDescVisible=true" icon="el-icon-document">角色说明</el-button>
 					
 				</el-col>
 				<el-col :span="8" class="hidden-sm-and-down">

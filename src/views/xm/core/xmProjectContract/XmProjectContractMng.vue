@@ -1,10 +1,14 @@
 <template>
 	<section>
 		<el-row class="app-container">
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
-			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectContracts">查询</el-button>
-			<el-button type="primary" @click="showAdd">添加合同</el-button>
-			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
+			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
+				<template slot="append">
+					<el-button  v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectContracts" icon="el-icon-search"></el-button>
+				</template>
+			</el-input> 
+			
+			<el-button type="primary" @click="showAdd" icon="el-icon-plus">添加合同</el-button>
+			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true"  icon="el-icon-delete">批量删除</el-button> 
 		</el-row>
 		<el-row class="app-container"> 
 			<!--列表 XmProjectContract xm_project_contract-->

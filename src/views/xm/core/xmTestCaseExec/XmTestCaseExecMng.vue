@@ -26,8 +26,8 @@
 						<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTestCaseExecs" icon="el-icon-search"></el-button>  
 					</template>
 				</el-input>  
-				<el-button v-if="batchEditVisible" type="warning" @click="batchEditXmTestCaseExec">批量保存</el-button>  
-				<el-button v-if="batchEditVisible" type="success" @click="noBatchEdit" icon="el-icon-back">返回</el-button>  
+				<el-button v-if="batchEditVisible" type="warning" @click="batchEditXmTestCaseExec"  icon="el-icon-finished">批量保存</el-button>  
+				<el-button v-if="batchEditVisible"  @click="noBatchEdit" icon="el-icon-back">返回</el-button>  
 		</el-row>
 		<el-row class="app-container"> 
 			<!--列表 XmTestCaseExec xm_test_case_exec-->

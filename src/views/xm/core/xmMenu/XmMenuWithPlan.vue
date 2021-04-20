@@ -2,15 +2,18 @@
 	<section>
 		<el-row class="app-container">  
       <el-checkbox v-model="gstcVisible"  >甘特图</el-checkbox>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
-			<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus">查询</el-button>
-			<el-button   type="warning" v-if=" batchEditVisible!=true " v-loading="load.edit" :disabled="load.edit==true" v-on:click="loadTasksToXmMenuPlan">根据任务汇总更新数据</el-button>			
-			<el-button type="primary" v-if=" batchEditVisible!=true " @click="showBatchEdit" v-loading="load.edit">批量修改</el-button> 
-			<el-button type="primary" v-if=" batchEditVisible==true "  @click="saveBatchEdit" v-loading="load.edit">批量保存</el-button>
-			<el-button type="primary" v-if=" batchEditVisible==true "  @click="noBatchEdit" v-loading="load.edit">返回</el-button>  
+			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
+				<template slot="append"> 
+					<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
+				</template>
+			</el-input> 
+			<el-button   type="warning" v-if=" batchEditVisible!=true " v-loading="load.edit" :disabled="load.edit==true" v-on:click="loadTasksToXmMenuPlan" icon="el-icon-s-data">根据任务汇总更新数据</el-button>			
+			<el-button type="primary" v-if=" batchEditVisible!=true " @click="showBatchEdit" v-loading="load.edit" icon="el-icon-edit">批量修改</el-button> 
+			<el-button type="primary" v-if=" batchEditVisible==true "  @click="saveBatchEdit" v-loading="load.edit" icon="el-icon-finished">批量保存</el-button>
+			<el-button  v-if=" batchEditVisible==true "  @click="noBatchEdit" v-loading="load.edit" icon="el-icon-back">返回</el-button>  
   		</el-row>
 		<el-row class="app-container" v-show="!batchEditVisible">    
-				<el-table v-if="!gstcVisible" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+				<el-table max-height="650" v-if="!gstcVisible" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 					<el-table-column sortable type="selection" width="40"></el-table-column>
  					<el-table-column prop="menuName" label="故事名称" min-width="150" >
 						<template slot-scope="scope"> 

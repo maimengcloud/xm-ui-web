@@ -2,17 +2,17 @@
 	<section>
 		<el-row  class="app-container" v-if="simple!==true">
 
-			<el-button v-if="batchEditVisible==false" type="success" @click="showAdd" v-loading="load.add">添加计划</el-button>
-			<el-button v-if="batchEditVisible==false" type="success" @click="showPhaseTemplate" v-loading="load.add">由模板导入计划</el-button>
-			<el-button v-if="batchEditVisible==false" type="success" @click="showMenu" v-loading="load.add">由故事批量创建</el-button>
+			<el-button v-if="batchEditVisible==false" type="primary" @click="showAdd" v-loading="load.add" icon="el-icon-plus">添加计划</el-button>
+			<el-button v-if="batchEditVisible==false" type="primary" @click="showPhaseTemplate" v-loading="load.add" icon="el-icon-plus">由模板导入计划</el-button>
+			<el-button v-if="batchEditVisible==false" type="primary" @click="showMenu" v-loading="load.add" icon="el-icon-plus">由故事批量创建</el-button>
 
-			<el-button v-if="batchEditVisible==false" type="warning" @click="loadTasksToXmProjectPhase(sels)" v-loading="load.edit">由任务汇总实际数据</el-button> 
-			<el-button type="success" v-if="batchEditVisible==false" @click="batchEditVisible=true" v-loading="load.edit">批量修改</el-button>
-			<el-button v-if="batchEditVisible==true" type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button>  
-			<el-button type="warning" v-if="batchEditVisible==true" @click="saveBatchEdit" v-loading="load.edit">批量保存</el-button>
+			<el-button v-if="batchEditVisible==false" type="warning" @click="loadTasksToXmProjectPhase(sels)" v-loading="load.edit" icon="el-icon-s-data">由任务汇总实际数据</el-button> 
+			<el-button type="success" v-if="batchEditVisible==false" @click="batchEditVisible=true" v-loading="load.edit" icon="el-icon-edit">批量修改</el-button>
+			<el-button v-if="batchEditVisible==true" type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete">批量删除</el-button>  
+			<el-button type="warning" v-if="batchEditVisible==true" @click="saveBatchEdit" v-loading="load.edit" icon="el-icon-finished">批量保存</el-button>
 			
-			<el-button  v-if=" batchEditVisible==true" type="success"  @click="handlePopover(null,'add')" >+计划</el-button>
-			<el-button type="primary" v-if="batchEditVisible==true" @click="noBatchEdit" v-loading="load.edit">返回</el-button>
+			<el-button  v-if=" batchEditVisible==true" type="success"  @click="handlePopover(null,'add')" icon="el-icon-plus"></el-button>
+			<el-button  v-if="batchEditVisible==true" @click="noBatchEdit" v-loading="load.edit" icon="el-icon-back">返回</el-button>
 			
 		</el-row>
 		<el-row class="app-container"  v-if="simple!==true">  
@@ -22,11 +22,15 @@
 					<span style="margin-left:10px;font-size:14px;">外购人力总预算：</span><el-tag  :type="phaseBudgetData.surplusPlanOutUserAt>0?'warning':'danger'">{{toFixed(selProject.planOutUserAt/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanOutUserAt/10000,2)}}万</el-tag>  
 					<div  v-if="batchEditVisible!=true" style=" float:right;margin-right:10px;" >
 					  <el-checkbox v-model="gstcVisible"  >甘特图</el-checkbox>
-						<el-input   v-model="filters.key" style="width:200px;" placeholder="模糊查询"></el-input> 
-						<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectPhases">查询</el-button>
+						<el-input   v-model="filters.key" style="width:200px;" placeholder="模糊查询">
+							<template slot="append">
+								<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectPhases" icon="el-icon-search"></el-button>
+							</template>
+						</el-input> 
+						
 					</div> 
  		</el-row>
-		<el-table ref="selectPhaseTable" v-show="simple==true" :data="projectPhaseTreeData"    :show-summary="false"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+		<el-table max-height="650" ref="selectPhaseTable" v-show="simple==true" :data="projectPhaseTreeData"    :show-summary="false"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  			<el-table-column prop="phaseName" label="阶段名称" min-width="160" > 
 				 <template slot="header" slot-scope="scope">
 					<div>阶段名称 <el-tag size="mini" v-if="editForm.id" closable @close="clearSelectPhase()">{{editForm.seqNo}}&nbsp;{{editForm.phaseName}}</el-tag></div>
@@ -39,7 +43,7 @@
 		<el-pagination v-show="simple==true"  layout="total,  prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		<el-row class="app-container" v-show="simple!=true"> 
 			<!--列表 XmProjectPhase xm_project_phase-->
-			<el-table v-show="!gstcVisible && batchEditVisible==false && simple!==true"  default-expand-all :data="projectPhaseTreeData"  :summary-method="getSummariesForNoBatchEdit"  :show-summary="true"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table max-height="650" v-show="!gstcVisible && batchEditVisible==false && simple!==true"  default-expand-all :data="projectPhaseTreeData"  :summary-method="getSummariesForNoBatchEdit"  :show-summary="true"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column   sortable type="selection" width="40"></el-table-column>
  				<el-table-column prop="phaseName" label="阶段名称" min-width="160" > 
 					 <template slot-scope="scope">  

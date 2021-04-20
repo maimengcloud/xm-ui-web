@@ -43,13 +43,13 @@
 								trigger="hover" >
 								<el-row>
 									<el-col :span="24" style="padding-top:5px;">
-										<el-button type="primary" v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showBatchEdit" v-loading="load.edit">批量修改任务</el-button>
+										<el-button type="primary" v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showBatchEdit" v-loading="load.edit" icon="el-icon-edit">批量修改任务</el-button>
 									</el-col>
 									<el-col  :span="24"  style="padding-top:5px;">
-										<el-button v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showTaskTemplate" type="success">从模板快速导入任务</el-button>
+										<el-button v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showTaskTemplate" type="success" icon="el-icon-plus">从模板快速导入任务</el-button>
 									</el-col>
 									<el-col  :span="24"  style="padding-top:5px;">
-										<el-button v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showMenu" type="success">由故事快速创建任务</el-button> 
+										<el-button v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showMenu" type="success" icon="el-icon-plus">由故事快速创建任务</el-button> 
 									</el-col> 
 								</el-row>
 								<el-button  slot="reference" icon="el-icon-more" circle></el-button>
@@ -533,7 +533,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				xmTasks: [],//查询结果
 				pageInfo:{//分页数据
 					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
-					pageSize:10,//每页数据
+					pageSize:20,//每页数据
 					count:false,//是否需要重新计算总记录数
 					pageNum:1,//当前页码、从1开始计算
 					orderFields:['create_time'],//排序列 如 ['sex','student_id']，必须为数据库字段

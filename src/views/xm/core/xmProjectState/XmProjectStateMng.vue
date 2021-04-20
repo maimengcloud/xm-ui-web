@@ -1,15 +1,19 @@
 <template>
 	<section>
 		<el-row class="app-container">
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
+			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
+				<template slot="append">
+					<el-button  v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectStates" icon="el-icon-search"></el-button>
+				</template>
+			</el-input> 
 			<el-tag v-if="!this.selProject && this.filters.selProject " closable  @close="closeSelectProject">{{this.filters.selProject.name}}</el-tag><el-button v-if="!this.selProject"  @click="showProjectList" type="plian">选项目</el-button>
-			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectStates">查询</el-button>
- 			<el-button type="success" @click="loadTasksToXmProjectState">刷新数据</el-button> 
-			<el-button type="success" @click="loadTasksSettleToXmProjectState">刷新结算数据</el-button>  
+			
+ 			<el-button type="success" @click="loadTasksToXmProjectState" icon="el-icon-s-data">刷新数据</el-button> 
+			<el-button type="success" @click="loadTasksSettleToXmProjectState" icon="el-icon-s-data">刷新结算数据</el-button>  
 		</el-row> 
 		<el-row class="app-container"> 
 			<!--列表 XmProjectState 项目指标日统计表-->
-			<el-table :data="xmProjectStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table max-height="650" :data="xmProjectStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>
 				<el-table-column sortable type="index" width="45">  </el-table-column> 
 				<el-table-column   type="expand" width="45">
