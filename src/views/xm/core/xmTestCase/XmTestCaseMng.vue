@@ -2,15 +2,18 @@
 	<section>
 		<el-row class="app-container">
 			
- 			<el-button type="success" v-if="!multiSelect" @click="showAdd">+测试用例</el-button>
-			<el-button type="warning" v-if="multiSelect" @click="selected">确认选中</el-button> 
-			<el-button v-if="!multiSelect " type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
-		</el-row>
-		<el-row class="app-container">
+
 			<div>
 				已选故事：<el-tag v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 未选,点我</el-tag><el-tag @click="showMenu" v-for="(item,index) in filters.menus" :key="index" closable @close="clearFiltersMneu(item)">{{item.menuName}}</el-tag>
-				<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
-				<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTestCases">查询</el-button>
+				<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
+					<template slot="append"> 
+						<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTestCases" icon="el-icon-search"></el-button>
+					</template>
+				</el-input> 
+				<el-button type="success" v-if="!multiSelect" circle icon="el-icon-plus" @click="showAdd"></el-button>
+				<el-button type="warning" v-if="multiSelect" @click="selected">确认选中</el-button> 
+				<el-button v-if="!multiSelect " type="danger" icon="el-icon-delete" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
+
 			</div>
 		</el-row>
 		<el-row class="app-container"> 

@@ -26,7 +26,7 @@
 						<el-button v-if=" batchEditVisible==true && isPmUser " type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
 					</el-row>
 					<el-row v-show="batchEditVisible" class="app-container">
-						
+						<div>123456789</div>
 						<el-table :data="xmMenusTreeData" class="drag-table" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 							<el-table-column sortable type="selection" width="45"></el-table-column>
 							<el-table-column sortable prop="seqNo"  label="序号" min-width="100">
@@ -76,7 +76,7 @@
 							<el-table-column sortable type="selection" width="40"></el-table-column> 
 							<el-table-column prop="menuName" label="故事名称" min-width="140" > 
 								<template slot-scope="scope">
-									<el-link type="primary"  @click="showMenuExchange(scope.row)">{{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}}</el-link>
+									{{scope.row.seqNo}}&nbsp;&nbsp;<el-link type="primary"  @click="showMenuExchange(scope.row)">{{scope.row.menuName}}</el-link>
 								</template>
 							</el-table-column> 
 							<el-table-column prop="mmUsername" label="负责人" min-width="80" >  
@@ -96,7 +96,7 @@
 										trigger="click" >
 										<div v-html="scope.row.remark">
 										</div> 
-										<el-button slot="reference">{{scope.row.remark?scope.row.remark.substr(0,20)+"...":""}}</el-button>
+										<div slot="reference">{{scope.row.remark?scope.row.remark.substr(0,20)+"...":""}}</div>
 									</el-popover> 
 									<div v-else v-html="scope.row.remark"> 
 									</div>
@@ -185,7 +185,7 @@
 	
 	import  XmMenuAdd from './XmMenuAdd';//新增界面
 	import  XmMenuEdit from './XmMenuEdit';//修改界面
-	import  XmProductMng from '../xmProduct/XmProductMng';//新增界面
+	import  XmProductMng from '../xmProduct/XmProductSelect';//新增界面
 	import  XmMenuTemplateMng from '../xmMenuTemplate/XmMenuTemplateMng';//新增界面
 	import XmMenuRichDetail from './XmMenuRichDetail';
 	import XmTaskList from '../xmTask/XmTaskList';

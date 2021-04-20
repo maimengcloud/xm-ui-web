@@ -1,48 +1,52 @@
 <template>
 	<section>
-		<el-row class="app-container">  
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
-			<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus">查询</el-button>
-			<el-button   type="warning" v-if="multi"  v-on:click="multiSelectedConfirm">确认选择</el-button>
-
- 		</el-row>
 		
-		<el-row class="app-container">  
-			<el-col  :span="6">
+		
+		<el-row>  
+			<el-col  :span="6"  class="app-container">
 				<xm-product-mng @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-mng>
 			</el-col>
-			<el-col :span="18">
-				<el-table :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-					 <el-table-column v-if="multi" type="selection" width="50"></el-table-column>  
-					 <el-table-column prop="menuName" label="故事名称" min-width="140" > 
-						<template slot-scope="scope">
- 							<el-link @click="toMenu(scope.row)">{{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}}</el-link> 
+			<el-col :span="18" >
+				<el-row  class="app-container">  
+					<el-input v-model="filters.key" style="width: 30%;" placeholder="模糊查询">
+						<template slot="append">
+							<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
 						</template>
-					</el-table-column> 
-					 <el-table-column prop="mmUsername" label="负责人" min-width="100" > </el-table-column>
-					<el-table-column prop="remark" label="描述" min-width="140" > 
-						<template slot-scope="scope">
-							  <el-popover
-							  	v-if="scope.row.remark && scope.row.remark.length>20"
-								placement="top-start"
-								title="故事备注"
-								width="400"
-								trigger="click"
-								:content="scope.row.remark">
-								<el-button slot="reference">{{scope.row.remark?scope.row.remark.substr(0,20)+"...":""}}</el-button>
-							</el-popover> 
-							<div v-else v-html="scope.row.remark"></div>
-						</template>
-					</el-table-column> 
-					<el-table-column label="操作"  v-if="!multi" width="200" fixed="right"  >
-						<template slot-scope="scope">
- 							<el-button    type="primary" @click="selectedMenu( scope.row,scope.$index)">选择</el-button>
-
-						</template>
-					</el-table-column>
-				</el-table>
-				<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
-				
+					</el-input>  
+					<el-button   type="warning" v-if="multi"  v-on:click="multiSelectedConfirm">确认选择</el-button>
+				</el-row>
+				<el-row class="app-container">
+					<el-table :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+						<el-table-column v-if="multi" type="selection" width="50"></el-table-column>  
+						<el-table-column prop="menuName" label="故事名称" min-width="140" > 
+							<template slot-scope="scope">
+								{{scope.row.seqNo}}&nbsp;&nbsp;<el-link @click="toMenu(scope.row)">{{scope.row.menuName}}</el-link> 
+							</template>
+						</el-table-column> 
+						<el-table-column prop="mmUsername" label="负责人" min-width="100" > </el-table-column>
+						<el-table-column prop="remark" label="描述" min-width="140" > 
+							<template slot-scope="scope">
+								<el-popover
+									v-if="scope.row.remark && scope.row.remark.length>20"
+									placement="top-start"
+									title="故事备注"
+									width="400"
+									trigger="click"
+									:content="scope.row.remark">
+									<div slot="reference">{{scope.row.remark?scope.row.remark.substr(0,20)+"...":""}}</div>
+								</el-popover> 
+								<div v-else v-html="scope.row.remark"></div>
+							</template>
+						</el-table-column> 
+						<el-table-column label="操作"  v-if="!multi" width="200" fixed="right"  >
+							<template slot-scope="scope"> 
+								<el-button    type="primary" @click="selectedMenu( scope.row,scope.$index)">选择</el-button> 
+							</template>
+						</el-table-column>
+					</el-table>
+					<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+					
+				</el-row>
 			</el-col>  
 			
 			<el-dialog title="故事谈论" :visible.sync=" menuDetailVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
@@ -57,7 +61,7 @@
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { listXmMenu  } from '@/api/xm/core/xmMenu';
- 	import  XmProductMng from '../xmProduct/XmProductMng';//新增界面
+ 	import  XmProductMng from '../xmProduct/XmProductSelect';//新增界面
  	import XmMenuRichDetail from './XmMenuRichDetail';
 
 	import {sn} from '@/common/js/sequence'

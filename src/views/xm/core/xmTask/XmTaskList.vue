@@ -1,65 +1,66 @@
 <template>
 	<section>
 		<el-row class="xm-task"> 
-			<el-menu  active-text-color="#00abfc" :default-active="filters.taskType" @select="changeTaskType" class="el-menu-demo" mode="horizontal">
-				<el-menu-item index="all">全部任务类型</el-menu-item>
-				<el-menu-item v-for="(i,index) in options.taskType" :index="i.optionValue" :key="index">{{i.optionName}}</el-menu-item>
-				<el-tag>{{filters.selProject?filters.selProject.name:'未选择项目'}}</el-tag><el-button type="success" v-if="!selProject" @click="selectProjectVisible=true">选择项目</el-button>
-				<el-button v-if="isMultiSelect" @click="selectedTasks" type="primary">确认选择</el-button>
-			</el-menu> 
-			<el-row>
-				已选择：<el-tag v-for="(item,index) in sels" :key="index" closable @close="clearSelectTask(item)">{{item.sortLevel}}&nbsp;{{item.name}}</el-tag>
-			</el-row>
 			<el-row>
 				<el-col :span="4" v-if=" filters.selProject">
 					<xm-project-phase-mng   :sel-project="filters.selProject" :simple="true" @row-click="projectPhaseRowClick"></xm-project-phase-mng>
 				</el-col>
 				<el-col :span=" filters.selProject?20:24">
-					<el-table
-						ref="taskTable"
-						show-summary
-						:data="tasksTreeData"
-						@sort-change="sortChange"
-						v-loading="load.list"
-						@row-click="rowClick"
-						@selection-change="selsChange" 
-						highlight-current-row
-						stripe
-						fit
-						default-expand-all 
-						:tree-props="{children: 'children', hasChildren: 'hasChildren'}"
-						row-key="id"
-						>
- 						<el-table-column v-show="isMultiSelect" reserve-selection sortable width="50" type="selection"></el-table-column>
-						<el-table-column prop="name" label="任务名称"  min-width="260" >
-							<template slot-scope="scope">
-								{{scope.row.sortLevel}}&nbsp;{{scope.row.name}}
-							</template>
-						</el-table-column> 
-						<el-table-column prop="menuName" min-width="150" label="故事"></el-table-column>
-						<el-table-column   prop="startTime" label="任务起止时间" min-width="260">
-							<template slot-scope="scope">
-								 
-								<div  style="display:flex;align-items:center;">
-									<div>
-										<div>{{getDateString(scope.row.startTime)}}~{{getDateString(scope.row.endTime)}}</div> 
+					<el-row>
+						<el-menu  active-text-color="#00abfc" :default-active="filters.taskType" @select="changeTaskType" class="el-menu-demo" mode="horizontal">
+							<el-menu-item index="all">全部任务类型</el-menu-item>
+							<el-menu-item v-for="(i,index) in options.taskType" :index="i.optionValue" :key="index">{{i.optionName}}</el-menu-item>
+							<el-tag>{{filters.selProject?filters.selProject.name:'未选择项目'}}</el-tag><el-button type="success" v-if="!selProject" @click="selectProjectVisible=true">选择项目</el-button>
+							<el-button v-if="isMultiSelect" @click="selectedTasks" type="primary">确认选择</el-button>
+						</el-menu>  
+					</el-row>
+					<el-row>
+						<el-table
+							ref="taskTable"
+							show-summary
+							:data="tasksTreeData"
+							@sort-change="sortChange"
+							v-loading="load.list"
+							@row-click="rowClick"
+							@selection-change="selsChange" 
+							highlight-current-row
+							stripe
+							fit
+							default-expand-all 
+							:tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+							row-key="id"
+							>
+							<el-table-column v-show="isMultiSelect" reserve-selection sortable width="50" type="selection"></el-table-column>
+							<el-table-column prop="name" label="任务名称"  min-width="260" >
+								<template slot-scope="scope">
+									{{scope.row.sortLevel}}&nbsp;{{scope.row.name}}
+								</template>
+							</el-table-column> 
+							<el-table-column prop="menuName" min-width="150" label="故事"></el-table-column>
+							<el-table-column   prop="startTime" label="任务起止时间" min-width="260">
+								<template slot-scope="scope">
+									
+									<div  style="display:flex;align-items:center;">
+										<div>
+											<div>{{getDateString(scope.row.startTime)}}~{{getDateString(scope.row.endTime)}}</div> 
+										</div>
+										<div style="margin-left: 5px;color: #d92b2f !important;color:#bb6f2a;">
+											{{calcTaskStateByTime(scope.row.startTime,scope.row.endTime)}}
+										</div>
 									</div>
-									<div style="margin-left: 5px;color: #d92b2f !important;color:#bb6f2a;">
-										{{calcTaskStateByTime(scope.row.startTime,scope.row.endTime)}}
-									</div>
-								</div>
 
-							</template>
-						</el-table-column>
-						 
-						<el-table-column   v-if="!isMultiSelect"  header-align="center" label="操作" fixed="right" width="200">
-							<template slot-scope="scope">
-								<el-button   size="mini" type="primary" @click.stop="selectedTask(scope.row)" >选择</el-button> 	
-							</template>
-						</el-table-column>
-					</el-table>
-					<el-pagination layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
-					
+								</template>
+							</el-table-column>
+							
+							<el-table-column   v-if="!isMultiSelect"  header-align="center" label="操作" fixed="right" width="200">
+								<template slot-scope="scope">
+									<el-button   size="mini" type="primary" @click.stop="selectedTask(scope.row)" >选择</el-button> 	
+								</template>
+							</el-table-column>
+						</el-table>
+						<el-pagination layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+						
+					</el-row>
 				</el-col>
 			</el-row> 
 		</el-row>

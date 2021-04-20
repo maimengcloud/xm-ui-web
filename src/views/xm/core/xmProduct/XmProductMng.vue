@@ -1,20 +1,24 @@
 <template>
 	<section>
-		<el-row v-if="simple!=true" class="app-container">
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
-			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProducts">查询</el-button>
-			<el-button type="primary" @click="showAdd">+产品</el-button>
+		<el-row  class="app-container">
+			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
+				<template slot="append">
+					
+					<el-button v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProducts" icon="el-icon-search"></el-button>
+				</template>
+			</el-input> 
+			<el-button type="primary" @click="showAdd" icon="el-icon-plus"></el-button>
 
-			<el-button v-if="isSelectProduct!=true" type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
+			<el-button  type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button> 
 		</el-row>
-		<el-row  v-show="simple!=true" class="app-container"> 
+		<el-row  class="app-container"> 
 			<!--列表 XmProduct 产品表-->
-			<el-table   :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table  max-height="750" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column   sortable type="selection" width="40"></el-table-column>
 				<el-table-column sortable type="index" width="40"></el-table-column>
  				<el-table-column prop="productName" label="产品名称" min-width="150" > 
 					<template slot-scope="scope">
-						<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.id}}-{{scope.row.productName}}</el-link>
+						{{scope.row.id}}&nbsp;&nbsp;<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.productName}}</el-link>
 					</template>
 				</el-table-column>
 				<el-table-column  prop="finishRate" label="进度" min-width="80" >
@@ -27,33 +31,17 @@
 				<el-table-column prop="actWorkload" label="实际工作量.人时" min-width="80" ></el-table-column> 
  				<el-table-column  label="操作" width="460" fixed="right">
 					<template slot-scope="scope"> 
-						<el-button v-if="isSelectProduct!=true" type="warning" @click="loadTasksToXmProductState(scope.row)">刷新</el-button>
-						<el-button v-if="isSelectProduct!=true" type="warning" @click="showProductState(scope.row)">报告</el-button> 
-						<el-button v-if="isSelectProduct!=true" type="success" @click="toIterationList(scope.row)">迭代</el-button>  
- 						<el-button v-if="isSelectProduct==true"  @click="selectedProduct( scope.row,scope.$index)">选择</el-button> 
-						<el-button v-if="isSelectProduct!=true" type="success" @click="toProjectList(scope.row)">项目</el-button> 
-						<el-button v-if="isSelectProduct!=true" type="success" @click="toTaskList(scope.row)">任务</el-button>
+						<el-button  type="warning" @click="loadTasksToXmProductState(scope.row)">刷新</el-button>
+						<el-button  type="warning" @click="showProductState(scope.row)">报告</el-button> 
+						<el-button  type="success" @click="toIterationList(scope.row)">迭代</el-button>   
+						<el-button type="success" @click="toProjectList(scope.row)">项目</el-button> 
+						<el-button  type="success" @click="toTaskList(scope.row)">任务</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>  
 		</el-row>
-		
-		<el-row  v-show="simple==true" > 
-			<!--列表 XmProduct 产品表-->
-			<el-table   :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
- 				<el-table-column sortable type="index" width="40"></el-table-column>
-				<el-table-column  prop="id" label="产品编号" min-width="80" ></el-table-column>
-				<el-table-column prop="productName" label="产品名称" min-width="80" ></el-table-column> 
-				
-				<el-table-column v-if="isSelectProduct==true"  label="操作" width="160" fixed="right"  >
-					<template slot-scope="scope"> 
-						<el-button  @click="selectedProduct( scope.row,scope.$index)">选择</el-button> 
-					</template>
-				</el-table-column>
-			</el-table>
-			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>  
-		</el-row>
+		 
 					<!--编辑 XmProduct 产品表界面-->
 			<el-dialog title="编辑产品" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
 				  <xm-product-edit :xm-product="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-product-edit>
@@ -90,7 +78,7 @@
 
 	
 	export default { 
-		props:['simple','isSelectProduct','selProject'],
+		props:['selProject'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'

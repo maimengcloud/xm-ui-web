@@ -1,29 +1,41 @@
 <template>
 	<section>
 		<el-row class="app-container"> 
-  			<el-button v-if="!batchEditVisible" type="primary" @click="showCase">由用例创建执行计划</el-button>
-			<el-button v-if="!batchEditVisible" type="primary" @click="showBatchEdit">批量修改</el-button>  
-			<el-button v-if="!batchEditVisible" type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
-			<el-button v-if="batchEditVisible" type="warning" @click="batchEditXmTestCaseExec">批量保存</el-button>  
-			<el-button v-if="batchEditVisible" type="success" @click="noBatchEdit">返回</el-button>   
+  			
 		</el-row> 
 		<el-row class="app-container" v-if="!batchEditVisible">
 			<div >
-        <el-checkbox v-model="gstcVisible"  >甘特图</el-checkbox>
+        		<el-checkbox v-model="gstcVisible"  >甘特图</el-checkbox>
 				{{selProject?"":"已选项目："}}<el-tag type="success" v-if="this.filters.selProject && !selProject " closable @close="clearProject"  @click="showProjectList">{{ this.filters.selProject.name }}</el-tag>
 				<el-tag type="success" v-if="!this.filters.selProject" @click="showProjectList">未选，点我</el-tag>
 				已选故事：<el-tag v-if=" !filters.menus || filters.menus.length==0" @click="showMenu">未选,点我</el-tag><el-tag v-for="(item,index) in filters.menus" @click="showMenu" :key="index" closable @close="clearFiltersMneu(item)">{{item.menuName}}</el-tag>
-				<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
-				<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTestCaseExecs">查询</el-button>  
-			</div>
+				<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
+					<template slot="append">
+						<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTestCaseExecs" icon="el-icon-search"></el-button>  
+					</template>
+				</el-input> 
+				<el-button  type="primary" @click="showCase" icon="el-icon-plus">由用例创建执行计划</el-button>
+				<el-button  type="primary" @click="showBatchEdit" icon="el-icon-edit">批量修改</el-button>  
+				<el-button   type="danger" v-loading="load.del" @click="batchDel" icon="el-icon-delete" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
+				
+			</div> 
+		</el-row>
+		<el-row class="app-container" v-if="batchEditVisible"> 
+				<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
+					<template slot="append">
+						<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTestCaseExecs" icon="el-icon-search"></el-button>  
+					</template>
+				</el-input>  
+				<el-button v-if="batchEditVisible" type="warning" @click="batchEditXmTestCaseExec">批量保存</el-button>  
+				<el-button v-if="batchEditVisible" type="success" @click="noBatchEdit" icon="el-icon-back">返回</el-button>  
 		</el-row>
 		<el-row class="app-container"> 
 			<!--列表 XmTestCaseExec xm_test_case_exec-->
-			<el-table v-if="!gstcVisible" :data="xmTestCaseExecs" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table max-height="650" v-if="!gstcVisible" :data="xmTestCaseExecs" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>
 				<el-table-column sortable type="index" width="45"></el-table-column>
  				<el-table-column prop="projectName" label="项目名称" min-width="100" >
-					<template slot="header" slot-scope="scope">
+					<template slot="header">
 						项目<el-button @click="showProjectList"  icon="el-icon-search" circle size="mini"></el-button>
  					</template>
 				</el-table-column> 
@@ -40,14 +52,14 @@
 				</el-table-column>
 				
 				<el-table-column prop="taskName" label="任务" min-width="100" >
-					<template slot-scope="scope"> 
-						<el-tag>{{scope.row.taskName?scope.row.taskName:'未关联任务'}}</el-tag>
+					<template slot-scope="scope">  
+						{{scope.row.taskName?scope.row.taskName:'未关联任务'}}
 						<el-button  v-if=" batchEditVisible==true "   type="warning"   @click="showSelectTask(scope.row)">选任务</el-button>  
 					</template>
 				</el-table-column> 
 				<el-table-column prop="execUsername" label="执行人姓名" min-width="100" >
-					<template slot-scope="scope"> 
-						<el-tag>{{scope.row.execUsername?scope.row.execUsername:'未设置'}}</el-tag>
+					<template slot-scope="scope">  
+						{{scope.row.execUsername?scope.row.execUsername:'未设置'}}
 						<el-button  v-if=" batchEditVisible==true "   type="warning"   @click="showGroupUsers(scope.row)">选人</el-button>  
 					</template>
 				</el-table-column>
