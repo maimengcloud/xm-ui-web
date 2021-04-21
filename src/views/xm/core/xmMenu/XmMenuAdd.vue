@@ -3,8 +3,15 @@
 		<el-row class="app-container">
 			<!--新增界面 XmMenu 项目故事表--> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
+				<el-form-item v-if="parentMenu" label="上级故事" prop="pmenuId">
+					 {{parentMenu.seqNo}} &nbsp; &nbsp; {{parentMenu.menuName}}
+				</el-form-item> 
+				<el-form-item v-if="!parentMenu" label="上级故事" prop="pmenuId">
+					无上级
+				</el-form-item> 
 				<el-form-item label="序号" prop="seqNo">
 					<el-input v-model="addForm.seqNo" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input>
+					<span v-if="parentMenu" style="color:red;">建议：{{parentMenu.seqNo}}.1 </span> 
 				</el-form-item> 
 				<el-form-item label="故事名称" prop="menuName">
 					<el-input v-model="addForm.menuName" placeholder="故事名称" ></el-input>

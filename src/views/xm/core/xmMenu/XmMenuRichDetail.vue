@@ -1,7 +1,7 @@
 <template>
 	<section>
 		<el-row class="app-container"> 
-			<el-col :span="16"> 
+			<el-col :span="14"> 
 				<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
 					<el-form-item label="序号" prop="seqNo" v-if="xmMenu.seqNo">
 						 {{editForm.seqNo}}
@@ -17,14 +17,17 @@
 					</el-form-item>  
 				</el-form>
 			</el-col>
-			<el-col :span="8">
-				<el-button v-if="iterationVisible==false" @click="iterationVisible=true" icon="el-icon-search">查看迭代计划</el-button>
-				<xm-iteration-mng v-if="iterationVisible" :simple="true" :product-id="editForm.productId" :menu-id="editForm.menuId" ></xm-iteration-mng> 
+			<el-col :span="10">
+				<el-row>
+					<el-button v-if="iterationVisible==false" @click="iterationVisible=true" icon="el-icon-search">查看迭代计划</el-button>
+					<xm-iteration-mng v-if="iterationVisible" :simple="true" :product-id="editForm.productId" :menu-id="editForm.menuId" ></xm-iteration-mng> 
+				</el-row> 
+				<el-row style="padding-top:12px;">
+					<el-button v-if="exchangeMngVisible==false" @click="exchangeMngVisible=true" icon="el-icon-search">查看评论</el-button>
+					<xm-menu-exchange-mng  v-if="exchangeMngVisible" :visible="exchangeMngVisible" :xm-menu="xmMenu" :simple="true"></xm-menu-exchange-mng>
+				</el-row>
 			</el-col>
-		</el-row>
-		<el-row>
-			<xm-menu-exchange-mng  v-if="visible" :visible="visible" :xm-menu="xmMenu" :simple="true"></xm-menu-exchange-mng>
-		</el-row>
+		</el-row> 
 	</section>
 </template>
 
@@ -50,6 +53,7 @@
 	      },
 	      'visible':function(visible) { 
 			  this.iterationVisible=false;
+			  this.exchangeMngVisible=false;
 	      	if(this.visible==true){
 				 this.editForm = Object.assign(this.editForm,this.xmMenu);
 
@@ -83,6 +87,7 @@
 						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'',mmUserid:'',mmUsername:''
 				},
 				iterationVisible:false,
+				exchangeMngVisible:false,
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				
 				/**end 在上面加自定义属性**/
