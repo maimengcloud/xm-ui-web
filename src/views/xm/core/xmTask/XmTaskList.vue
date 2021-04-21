@@ -29,6 +29,7 @@
 							default-expand-all 
 							:tree-props="{children: 'children', hasChildren: 'hasChildren'}"
 							row-key="id"
+							max-height="700"
 							>
 							<el-table-column v-show="isMultiSelect" reserve-selection sortable width="50" type="selection"></el-table-column>
 							<el-table-column prop="name" label="任务名称"  min-width="260" >
@@ -44,9 +45,9 @@
 										<div>
 											<div>{{getDateString(scope.row.startTime)}}~{{getDateString(scope.row.endTime)}}</div> 
 										</div>
-										<div style="margin-left: 5px;color: #d92b2f !important;color:#bb6f2a;">
-											{{calcTaskStateByTime(scope.row.startTime,scope.row.endTime)}}
-										</div>
+										<div v-for="(item,index) in [calcTaskStateByTime(scope.row.startTime,scope.row.endTime,scope.row)]" :key="index ">
+											<el-tag :type="item.type">{{item.desc}}</el-tag>
+										</div> 
 									</div>
 
 								</template>
@@ -78,7 +79,7 @@
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { getTask ,listXmTask,editXmTask,editRate, delXmTask, batchDelXmTask,batchImportTaskFromTemplate,batchSaveBudget } from '@/api/xm/core/xmTask'; 
 	import { mapGetters } from 'vuex'; 
-	import xmProjectPhaseMng from '../xmProjectPhase/XmProjectPhaseMng'; 
+	import xmProjectPhaseMng from '../xmProjectPhase/XmProjectPhaseSelect'; 
 	import XmProjectList from '../xmProject/XmProjectList';
 
 	export default { 
@@ -248,19 +249,50 @@
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			},
-			calcTaskStateByTime(startTime,endTime){
+			calcTaskStateByTime(startTime,endTime,row){
+				var obj={
+					type:'', 
+					desc:''
+				}
 				if(startTime==null || startTime=="" || endTime==null || endTime ==""){
-					return "未配置日期"
+					obj={
+						type:'info', 
+						desc:"未配置日期"
+					}  
+					return obj;
 				}
 				var curDate=new Date();
 				var start=new Date(startTime);
 				var end=new Date(endTime);
-				if(this.getDaysBetween(curDate, start)<=0){
-					return this.toFixed(this.getDaysBetween(start,curDate))+"天后开始";
-				}else if( this.getDaysBetween(curDate, start) > 0 &&  this.getDaysBetween(curDate, end) <= 0 ){
-					return this.toFixed(this.getDaysBetween(end, curDate))+"天后结束";
-				}else if( this.getDaysBetween(curDate, end) > 0 ){
-					return "逾期"+( this.toFixed(this.getDaysBetween(curDate, end)) )+"天";
+				var rate=row.rate;
+				var isOver=row.rate>=100;
+				var days=this.getDaysBetween(curDate, start);
+				if(days<=0){ 
+					obj={
+						type:'info', 
+						desc:this.toFixed(this.getDaysBetween(start,curDate))+"天后开始"
+					}  
+					return obj;
+				}else if( this.getDaysBetween(curDate, start) > 0 &&  this.getDaysBetween(curDate, end) <= 0 ){ 
+					obj={
+						type:'primary', 
+						desc:this.toFixed(this.getDaysBetween(end, curDate))+"天后结束"
+					}  
+					return obj;
+				}else if( this.getDaysBetween(curDate, end) > 0 ){ 
+					if(!isOver){
+						obj={
+							type:'danger', 
+							desc:"逾期"+( this.toFixed(this.getDaysBetween(curDate, end)) )+"天"
+						}
+					}else{
+						obj={
+							type:'success', 
+							desc:"完工"+( this.toFixed(this.getDaysBetween(curDate, end)) )+"天"
+						}	
+					}
+					
+					return obj;
 				}
 			},
 			/**

@@ -73,11 +73,11 @@
 				<xm-group-mng  :sel-project="filters.selProject" :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-mng>
 			</el-dialog> 
 			
-			<el-dialog title="选中任务" :visible.sync="selectTaskVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+			<el-dialog title="选中任务" :visible.sync="selectTaskVisible" fullscreen  width="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-task-list  :sel-project="filters.selProject"   @task-selected="onSelectedTask"></xm-task-list>
 			</el-dialog> 	
 			
-			<el-dialog append-to-body title="故事选择" :visible.sync="selectMenuVisible" width="80%"    :close-on-click-modal="false">
+			<el-dialog append-to-body title="故事选择" :visible.sync="selectMenuVisible" width="80%" fullscreen   :close-on-click-modal="false">
 				<xm-menu-select :is-select-menu="true"  @selected="onSelectedMenu" :sel-project="filters.selProject"></xm-menu-select>
 			</el-dialog>
 			

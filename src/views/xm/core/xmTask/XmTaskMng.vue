@@ -6,57 +6,55 @@
 			</el-col>
 			<el-col :span="isTaskCenter!='1' && currentProject?20:24"  class="app-container">
 				<el-row> 
-					<el-menu active-text-color="#00abfc" :default-active="selkey" @select="changeSelKey" class="el-menu-demo" mode="horizontal">
-						<el-menu-item class="showall" index="all">全部状态</el-menu-item>
-						<el-menu-item  index="work">未完成</el-menu-item>
-						<el-menu-item  index="finish">已完成</el-menu-item>
-						<el-menu-item  index="myFocus">我关注</el-menu-item> 
-						<el-menu-item  index="myExecuserStatus0">我排队</el-menu-item>
-						<el-menu-item  index="myExecuserStatus1">我执行</el-menu-item>
-						<el-menu-item  index="myExecuserStatus2">我提交</el-menu-item>
-						<el-menu-item  index="myExecuserStatus3">我的验收成功</el-menu-item>
-						<el-menu-item  index="myExecuserStatus4">我的验收失败</el-menu-item>
-						<el-menu-item  index="myExecuserStatus5">我的付款中</el-menu-item>
-						<el-menu-item  index="myExecuserStatus6">我的付款成功</el-menu-item>
-						<el-menu-item  index="myExecuserStatus7">我放弃的</el-menu-item> 
-					</el-menu>   
-				</el-row>
-				<el-row> 
-					<el-menu  active-text-color="#00abfc" :default-active="filters.taskType" @select="changeTaskType" class="el-menu-demo" mode="horizontal">
-						<el-menu-item index="all">全部类型</el-menu-item> 
-						<el-menu-item  v-for="(i,index) in options.taskType" :index="i.optionValue" :key="index">{{i.optionName}}</el-menu-item> 
-						<div style="line-height:50px;float:right;margin-right:10px;">
-							<el-checkbox v-model="gstcVisible"  >甘特图</el-checkbox>
-							<el-tag v-if=" !selProject && filters.selProject" :closable="!selProject"  @click="showProjectList" @close="clearProject">项目:{{this.filters.selProject.name}}</el-tag>
-							<el-tag v-if=" !selProject && !filters.selProject" @click="showProjectList" type="plian">未选项目，点我</el-tag>
+					<el-select v-model="filters.selKey" placeholder="请选择任务状态" clearable @change="changeSelKey"> 
+						<el-option class="showall" value="all" label="全部状态">全部状态</el-option>
+						<el-option  value="work" label="未完成">未完成</el-option>
+						<el-option  value="finish" label="已完成">已完成</el-option>
+						<el-option  value="myFocus" label="我关注">我关注</el-option> 
+						<el-option  value="myExecuserStatus0" label="我排队">我排队</el-option>
+						<el-option  value="myExecuserStatus1" label="我执行">我执行</el-option>
+						<el-option  value="myExecuserStatus2" label="我提交">我提交</el-option>
+						<el-option  value="myExecuserStatus3" label="我的验收成功">我的验收成功</el-option>
+						<el-option  value="myExecuserStatus4" label="我的验收失败">我的验收失败</el-option>
+						<el-option  value="myExecuserStatus5" label="我的付款中">我的付款中</el-option>
+						<el-option  value="myExecuserStatus6" label="我的付款成功">我的付款成功</el-option>
+						<el-option  value="myExecuserStatus7" label="我放弃的">我放弃的</el-option> 
+					</el-select>  
+					<el-select v-model="filters.taskType" placeholder="请选择任务类型" clearable @change="changeTaskType"> 
+						<el-option class="showall" value="all"  label="全部类型">全部类型</el-option>
+						<el-option  v-for="(i,index) in options.taskType" :value="i.optionValue" :label="i.optionName" :key="index">{{i.optionName}}</el-option> 
+					</el-select> 
+					<div style="line-height:50px;float:right;margin-right:10px;">
+						<el-checkbox v-model="gstcVisible"  >甘特图</el-checkbox>
+						<el-tag v-if=" !selProject && filters.selProject" :closable="!selProject"  @click="showProjectList" @close="clearProject">项目:{{this.filters.selProject.name}}</el-tag>
+						<el-tag v-if=" !selProject && !filters.selProject" @click="showProjectList" type="plian">未选项目，点我</el-tag>
 
-							<el-input  style="width:200px;" v-model="searchTask" placeholder="任务名称">
-								<template slot="append">
-									<el-button    @click="searchXmTasks" type="primary" icon="el-icon-search"></el-button> 
-								</template>
-							</el-input>  
-							<el-button  v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showAdd" type="primary" icon="el-icon-plus" round></el-button>  
-							<el-popover
-								placement="top-start"
-								title=""
-								width="200"
-								trigger="hover" >
-								<el-row>
-									<el-col :span="24" style="padding-top:5px;">
-										<el-button type="primary" v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showBatchEdit" v-loading="load.edit" icon="el-icon-edit">批量修改任务</el-button>
-									</el-col>
-									<el-col  :span="24"  style="padding-top:5px;">
-										<el-button v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showTaskTemplate" type="success" icon="el-icon-plus">从模板快速导入任务</el-button>
-									</el-col>
-									<el-col  :span="24"  style="padding-top:5px;">
-										<el-button v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showMenu" type="success" icon="el-icon-plus">由故事快速创建任务</el-button> 
-									</el-col> 
-								</el-row>
-								<el-button  slot="reference" icon="el-icon-more" circle></el-button>
-							</el-popover> 
-						</div> 
-					</el-menu> 
-				</el-row>
+						<el-input  style="width:200px;" v-model="searchTask" placeholder="任务名称">
+							<template slot="append">
+								<el-button    @click="searchXmTasks" type="primary" icon="el-icon-search"></el-button> 
+							</template>
+						</el-input>  
+						<el-button  v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showAdd" type="primary" icon="el-icon-plus" round></el-button>  
+						<el-popover
+							placement="top-start"
+							title=""
+							width="200"
+							trigger="hover" >
+							<el-row>
+								<el-col :span="24" style="padding-top:5px;">
+									<el-button type="primary" v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showBatchEdit" v-loading="load.edit" icon="el-icon-edit">批量修改任务</el-button>
+								</el-col>
+								<el-col  :span="24"  style="padding-top:5px;">
+									<el-button v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showTaskTemplate" type="success" icon="el-icon-plus">从模板快速导入任务</el-button>
+								</el-col>
+								<el-col  :span="24"  style="padding-top:5px;">
+									<el-button v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showMenu" type="success" icon="el-icon-plus">由故事快速创建任务</el-button> 
+								</el-col> 
+							</el-row>
+							<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+						</el-popover> 
+					</div>  
+				</el-row> 
 				<el-row> 
 						<el-table v-if="!gstcVisible"
 							show-summary

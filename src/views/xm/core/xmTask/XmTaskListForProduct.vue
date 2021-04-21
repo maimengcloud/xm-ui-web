@@ -13,7 +13,7 @@
 					<xm-project-phase-mng   :sel-project="filters.selProject" :simple="true" @row-click="projectPhaseRowClick"></xm-project-phase-mng>
 				</el-col>
 				<el-col :span=" filters.selProject?20:24">
-					<el-table
+					<el-table max-height="650"
 						ref="taskTable"
 						show-summary
 						:data="tasksTreeData"
@@ -46,7 +46,7 @@
 						<el-table-column label="执行人" prop="exeUsernames" min-width="120" >
 							<template slot-scope="scope"> 
 								<el-link         v-if="scope.row.exeUsernames!=null && scope.row.exeUsernames !='' "  @click.stop="showExecusers(scope.row)">{{scope.row.exeUsernames}}</el-link>   
-								<el-link    type="warning"     v-if="scope.row.exeUsernames==null || scope.row.exeUsernames ==''" @click.stop="showExecusers(scope.row)"  >去抢任务</el-link>  
+								<el-link         v-if="scope.row.exeUsernames==null || scope.row.exeUsernames ==''"   >无人参与</el-link>  
 							</template>
 						</el-table-column>
 						<el-table-column prop="rate" label="进度" width="100">
@@ -57,18 +57,18 @@
 							</template>
 						</el-table-column>
 						<el-table-column   prop="startTime" label="任务起止时间" width="300">
-							<template slot-scope="scope">
-								 
-								<div  style="display:flex;align-items:center;">
-									<div>
-										<div>{{getDateString(scope.row.startTime)}}~{{getDateString(scope.row.endTime)}}</div> 
+								<template slot-scope="scope">
+									
+									<div  style="display:flex;align-items:center;">
+										<div>
+											<div>{{getDateString(scope.row.startTime)}}~{{getDateString(scope.row.endTime)}}</div> 
+										</div>
+										<div v-for="(item,index) in [calcTaskStateByTime(scope.row.startTime,scope.row.endTime,scope.row)]" :key="index ">
+											<el-tag :type="item.type">{{item.desc}}</el-tag>
+										</div> 
 									</div>
-									<div style="margin-left: 5px;color: #d92b2f !important;color:#bb6f2a;">
-										{{calcTaskStateByTime(scope.row.startTime,scope.row.endTime)}}
-									</div>
-								</div>
 
-							</template>
+								</template>
 						</el-table-column>
 						<!--
 						<el-table-column label="外购" prop="taskOut" width="80">
@@ -105,7 +105,7 @@
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { getTask ,listXmTask,editXmTask,editRate, delXmTask, batchDelXmTask,batchImportTaskFromTemplate,batchSaveBudget } from '@/api/xm/core/xmTask'; 
 	import { mapGetters } from 'vuex'; 
-	import xmProjectPhaseMng from '../xmProjectPhase/XmProjectPhaseMng'; 
+	import xmProjectPhaseMng from '../xmProjectPhase/XmProjectPhaseSelect'; 
 	import XmProjectList from '../xmProject/XmProjectList';
 
 	export default { 
@@ -267,19 +267,50 @@
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			},
-			calcTaskStateByTime(startTime,endTime){
+			calcTaskStateByTime(startTime,endTime,row){
+				var obj={
+					type:'', 
+					desc:''
+				}
 				if(startTime==null || startTime=="" || endTime==null || endTime ==""){
-					return "未配置日期"
+					obj={
+						type:'info', 
+						desc:"未配置日期"
+					}  
+					return obj;
 				}
 				var curDate=new Date();
 				var start=new Date(startTime);
 				var end=new Date(endTime);
-				if(this.getDaysBetween(curDate, start)<=0){
-					return this.toFixed(this.getDaysBetween(start,curDate))+"天后开始";
-				}else if( this.getDaysBetween(curDate, start) > 0 &&  this.getDaysBetween(curDate, end) <= 0 ){
-					return this.toFixed(this.getDaysBetween(end, curDate))+"天后结束";
-				}else if( this.getDaysBetween(curDate, end) > 0 ){
-					return "逾期"+( this.toFixed(this.getDaysBetween(curDate, end)) )+"天";
+				var rate=row.rate;
+				var isOver=row.rate>=100;
+				var days=this.getDaysBetween(curDate, start);
+				if(days<=0){ 
+					obj={
+						type:'info', 
+						desc:this.toFixed(this.getDaysBetween(start,curDate))+"天后开始"
+					}  
+					return obj;
+				}else if( this.getDaysBetween(curDate, start) > 0 &&  this.getDaysBetween(curDate, end) <= 0 ){ 
+					obj={
+						type:'primary', 
+						desc:this.toFixed(this.getDaysBetween(end, curDate))+"天后结束"
+					}  
+					return obj;
+				}else if( this.getDaysBetween(curDate, end) > 0 ){ 
+					if(!isOver){
+						obj={
+							type:'danger', 
+							desc:"逾期"+( this.toFixed(this.getDaysBetween(curDate, end)) )+"天"
+						}
+					}else{
+						obj={
+							type:'success', 
+							desc:"完工"+( this.toFixed(this.getDaysBetween(curDate, end)) )+"天"
+						}	
+					}
+					
+					return obj;
 				}
 			},
 			/**

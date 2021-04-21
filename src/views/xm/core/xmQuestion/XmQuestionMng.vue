@@ -1,25 +1,23 @@
 <template>
 	<section>
 		<el-row   class="xm-question">
-			<el-menu active-text-color="#00abfc" :default-active="filters.bugStatus"  @select="changeBugStatus" class="el-menu-demo" mode="horizontal">
-				<el-menu-item class="showall" index="">全部状态</el-menu-item>
-				<el-menu-item v-for="(b,index) in options['bugStatus']" :index="b.optionValue" :key="index">{{b.optionName}}</el-menu-item> 
-				<div style="line-height:50px;float:right;margin-right:10px;">
-					<el-button @click="showAdd" type="primary"  icon="el-icon-plus">{{qtype=='risk'?'新建风险':'新建问题'}}</el-button>
-				</div>
-			</el-menu> 
-			<el-menu active-text-color="#00abfc" :default-active="filters.solution"  @select="changeSolution" class="el-menu-demo" mode="horizontal">
-				<el-menu-item class="showall" index="">全部方案</el-menu-item>
-				<el-menu-item v-for="(b,index) in options['bugSolution']" :index="b.optionValue" :key="index">{{b.optionName}}</el-menu-item>  
-			</el-menu> 
-			<el-menu active-text-color="#00abfc" :default-active="filters.bugSeverity" @select="changeBugSeverity"  class="el-menu-demo" mode="horizontal">
-				<el-menu-item class="showall" index="">严重程度</el-menu-item>
-				<el-menu-item v-for="(b,index) in options['bugSeverity']" :index="b.optionValue" :key="index">{{b.optionName}}</el-menu-item>   
-			</el-menu> 
-			<el-menu active-text-color="#00abfc" :default-active="filters.priority"  @select="changePriority" class="el-menu-demo" mode="horizontal">
-				<el-menu-item class="showall" index="">紧急程度</el-menu-item> 
-				<el-menu-item v-for="(b,index) in options['urgencyLevel']" :index="b.optionValue" :key="index">{{b.optionName}}</el-menu-item> 
-				<div style="line-height:50px;float:right;margin-right:10px;">  
+			<el-row class="app-container">
+			  	<el-select v-model="filters.bugStatus" placeholder="请选择状态" clearable @change="changeBugStatus">
+					<el-option v-for="(b,index) in options['bugStatus']" :value="b.optionValue"  :key="index" :label="b.optionName">{{b.optionName}}
+					</el-option>
+				</el-select>
+				<el-select v-model="filters.priority" placeholder="请选择紧急程度" clearable @change="changePriority">
+					<el-option v-for="(b,index) in options['urgencyLevel']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
+					</el-option>
+				</el-select>
+				<el-select v-model="filters.solution" placeholder="请选择解决方案" clearable @change="changeSolution">
+					<el-option v-for="(b,index) in options['bugSolution']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
+					</el-option>
+				</el-select>
+				<el-select v-model="filters.bugSeverity" placeholder="请选择严重程度" clearable @change="changeBugSeverity">
+					<el-option v-for="(b,index) in options['bugSeverity']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
+					</el-option>
+				</el-select> 
 						<el-tag v-if="filters.selProject && !selProject" closable @close="clearProject" @click="showProjectList(true)">{{ filters.selProject.name }}</el-tag>
 						<el-tag v-if="!filters.selProject" @click="showProjectList(true)" type="success">未选项目，点我</el-tag>
 						指派给:<el-tag v-if="!filters.handlerUsername" @click="showGroupUsers('handlerUsername')">未选，点我</el-tag><el-tag v-if="filters.handlerUsername" closable @close="clearHandler"  @click="showGroupUsers('handlerUsername')">{{filters.handlerUsername}}</el-tag>
@@ -30,67 +28,67 @@
 						</template>
 					</el-input> 
 					
-					<el-button @click="handleExport" type="primary" icon="el-icon-download">导出</el-button>
-				</div>
-			</el-menu> 
-			<!--列表 XmQuestion xm_question-->
-			<el-table max-height="750" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-				<el-table-column sortable type="index" width="45"></el-table-column> 
-				<el-table-column prop="name" label="问题名称"  min-width="200"> 
-					<template slot-scope="scope">
-						<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.id}}</el-link> &nbsp;{{scope.row.name}}
-					</template>
-				</el-table-column>
-				<el-table-column prop="bugStatus" label="状态" width="100" :formatter="formatterOption">
-					<template slot-scope="scope">
-						<el-tag type="info" v-if="scope.row.bugStatus=='create' ">创建</el-tag> 
-						<el-tag type="primary" v-else-if="scope.row.bugStatus=='active'">激活</el-tag> 
-						<el-tag type="warning" v-else-if="scope.row.bugStatus=='confirm'">确认</el-tag>
-						<el-tag type="warning" v-else-if="scope.row.bugStatus=='confirmed'">已确认</el-tag>
-						<el-tag type="success" v-else-if="scope.row.bugStatus=='solve'">解决</el-tag> 
-						<el-tag type="success" v-else-if="scope.row.bugStatus=='resolved'">已解决</el-tag>
-						<el-tag type="success" v-else-if="scope.row.bugStatus=='close'">关闭</el-tag> 
-						<el-tag type="success" v-else-if="scope.row.bugStatus=='closed'">已关闭</el-tag>
-						<el-tag v-else>{{scope.row.bugStatus}}</el-tag>  
-					</template>
-				</el-table-column> 
-				<el-table-column prop="bugSeverity" label="严重程度" width="100" :formatter="formatterOption"></el-table-column> 
-				<el-table-column prop="priority" label="紧急程度" width="100" :formatter="formatterOption"></el-table-column> 
-				<el-table-column prop="solution" label="解决方案" width="100" :formatter="formatterOption"></el-table-column>
-				<el-table-column prop="handlerUsername" width="200" label="指派给" > 
-					<template slot="header">
-						指派给<el-button @click="showGroupUsers('handlerUsername')"  icon="el-icon-search" circle size="mini"></el-button>
- 					</template>
-				</el-table-column>
-				<el-table-column prop="endTime" label="到期时间" width="120" :formatter="formatterDate"></el-table-column>
-				
-				<el-table-column prop="bizFlowState" label="升级处理" width="120" >
-					<template slot-scope="scope">
-						
-						<el-tooltip  v-if="scope.row.flowState!='' && scope.row.flowState!=null" :content="showApprovaInfo(scope.row)" placement="bottom" effect="light"> 
-						<el-tag v-if="scope.row.flowState=='0' || scope.row.flowState==null ">未发审</el-tag> 
-						<el-tag v-else-if="scope.row.flowState=='1'">审核中</el-tag> 
-						<el-tag v-else-if="scope.row.flowState=='2'">已通过</el-tag>
-						<el-tag v-else-if="scope.row.flowState=='3'">未通过</el-tag>
-						<el-tag v-else-if="scope.row.flowState=='4'">已取消</el-tag> 
-						</el-tooltip> 
-						<el-button icon="el-icon-star-on" v-if="!scope.row.flowState"    @click="handleCommand({type:'sendToProcessApprova',data:scope.row,bizKey:'xm_question_up_approva'})">{{qtype=='risk'?'升级':'升级'}}</el-button>
-					</template>
-				</el-table-column>
-				<el-table-column style="text-align:center;" class="el-icon-s-operation" align="center" width="100" fixed="right"  >
-					<!-- <template slot="header" slot-scope="scope"><div class="el-icon-s-operation"></div></template> -->
-					<template slot-scope="scope">
-						<!-- <el-popover style="min-width:0 !important;" popper-class="autowidth" placement="left"	trigger="hover"> -->
-							<el-button-group> 
-								<el-button size="small" type="primary"   @click.stop="showEdit(scope.row)">{{showSolveName(scope.row)}}</el-button> 
-							</el-button-group>
-							<!-- <el-button slot="reference" class="see-more" type="text" icon="el-icon-more"></el-button>
-						</el-popover>	 -->
-					</template>
-				</el-table-column>
-			</el-table>
-			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
-		
+					<el-button @click="handleExport" type="primary" icon="el-icon-download">导出</el-button> 
+			 </el-row>
+			 <el-row class="app-container">
+				<!--列表 XmQuestion xm_question-->
+				<el-table max-height="650" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+					<el-table-column sortable type="index" width="45"></el-table-column> 
+					<el-table-column prop="name" label="问题名称"  min-width="200"> 
+						<template slot-scope="scope">
+							<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.id}}</el-link> &nbsp;{{scope.row.name}}
+						</template>
+					</el-table-column>
+					<el-table-column prop="bugStatus" label="状态" width="100" :formatter="formatterOption">
+						<template slot-scope="scope">
+							<el-tag type="info" v-if="scope.row.bugStatus=='create' ">创建</el-tag> 
+							<el-tag type="primary" v-else-if="scope.row.bugStatus=='active'">激活</el-tag> 
+							<el-tag type="warning" v-else-if="scope.row.bugStatus=='confirm'">确认</el-tag>
+							<el-tag type="warning" v-else-if="scope.row.bugStatus=='confirmed'">已确认</el-tag>
+							<el-tag type="success" v-else-if="scope.row.bugStatus=='solve'">解决</el-tag> 
+							<el-tag type="success" v-else-if="scope.row.bugStatus=='resolved'">已解决</el-tag>
+							<el-tag type="success" v-else-if="scope.row.bugStatus=='close'">关闭</el-tag> 
+							<el-tag type="success" v-else-if="scope.row.bugStatus=='closed'">已关闭</el-tag>
+							<el-tag v-else>{{scope.row.bugStatus}}</el-tag>  
+						</template>
+					</el-table-column> 
+					<el-table-column prop="bugSeverity" label="严重程度" width="100" :formatter="formatterOption"></el-table-column> 
+					<el-table-column prop="priority" label="紧急程度" width="100" :formatter="formatterOption"></el-table-column> 
+					<el-table-column prop="solution" label="解决方案" width="100" :formatter="formatterOption"></el-table-column>
+					<el-table-column prop="handlerUsername" width="200" label="指派给" > 
+						<template slot="header">
+							指派给<el-button @click="showGroupUsers('handlerUsername')"  icon="el-icon-search" circle size="mini"></el-button>
+						</template>
+					</el-table-column>
+					<el-table-column prop="endTime" label="到期时间" width="120" :formatter="formatterDate"></el-table-column>
+					
+					<el-table-column prop="bizFlowState" label="升级处理" width="120" >
+						<template slot-scope="scope">
+							
+							<el-tooltip  v-if="scope.row.flowState!='' && scope.row.flowState!=null" :content="showApprovaInfo(scope.row)" placement="bottom" effect="light"> 
+							<el-tag v-if="scope.row.flowState=='0' || scope.row.flowState==null ">未发审</el-tag> 
+							<el-tag v-else-if="scope.row.flowState=='1'">审核中</el-tag> 
+							<el-tag v-else-if="scope.row.flowState=='2'">已通过</el-tag>
+							<el-tag v-else-if="scope.row.flowState=='3'">未通过</el-tag>
+							<el-tag v-else-if="scope.row.flowState=='4'">已取消</el-tag> 
+							</el-tooltip> 
+							<el-button icon="el-icon-star-on" v-if="!scope.row.flowState"    @click="handleCommand({type:'sendToProcessApprova',data:scope.row,bizKey:'xm_question_up_approva'})">{{qtype=='risk'?'升级':'升级'}}</el-button>
+						</template>
+					</el-table-column>
+					<el-table-column style="text-align:center;" class="el-icon-s-operation" align="center" width="100" fixed="right"  >
+						<!-- <template slot="header" slot-scope="scope"><div class="el-icon-s-operation"></div></template> -->
+						<template slot-scope="scope">
+							<!-- <el-popover style="min-width:0 !important;" popper-class="autowidth" placement="left"	trigger="hover"> -->
+								<el-button-group> 
+									<el-button size="small" type="primary"   @click.stop="showEdit(scope.row)">{{showSolveName(scope.row)}}</el-button> 
+								</el-button-group>
+								<!-- <el-button slot="reference" class="see-more" type="text" icon="el-icon-more"></el-button>
+							</el-popover>	 -->
+						</template>
+					</el-table-column>
+				</el-table>
+				<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+			 </el-row>
 			<!--编辑 XmQuestion xm_question界面-->
 			<el-dialog title="编辑问题"   :visible.sync="editFormVisible" fullscreen  width="100%"  append-to-body   :close-on-click-modal="false">
 					<xm-question-edit :sel-project=" {id:editForm.projectId,name:editForm.projectName} " :xm-question="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-question-edit>

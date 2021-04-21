@@ -135,13 +135,13 @@
 				<xm-task-list  :sel-project="filters.selProject"   @task-selected="onSelectedTask"></xm-task-list>
 			</el-dialog> 	
 			 
-			<el-dialog title="查看用例" :visible.sync="caseVisible"  width="80%"  append-to-body  :close-on-click-modal="false">
+			<el-dialog title="查看用例" :visible.sync="caseVisible"  width="80%" fullscreen append-to-body  :close-on-click-modal="false">
 				<xm-test-case-mng  :case-id="editForm.caseId" :visible="caseVisible"   ></xm-test-case-mng>
 			</el-dialog> 
 			<el-dialog title="测试用例" :visible.sync="caseVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 				  <xm-test-case-edit :xm-test-case="xmTestCase"   :visible="caseVisible" @cancel="caseVisible=false" ></xm-test-case-edit>
 			</el-dialog>
-			<el-dialog title="问题列表" :visible.sync="bugsVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+			<el-dialog title="问题列表" :visible.sync="bugsVisible"  width="80%"  append-to-body  fullscreen :close-on-click-modal="false">
 				  <xm-question-mng :xm-test-case="xmTestCase" :xm-test-case-exec="editForm" :sel-project="filters.selProject" :visible="bugsVisible" @cancel="bugsVisible=false" ></xm-question-mng>
 			</el-dialog>
 			
