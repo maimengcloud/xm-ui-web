@@ -95,7 +95,7 @@
 										trigger="click" >
 										<div v-html="scope.row.remark">
 										</div> 
-										<div slot="reference">{{scope.row.remark?scope.row.remark.substr(0,20)+"...":""}}</div>
+										<div slot="reference">{{scope.row.remark?scope.row.remark.substr(0,18)+"...":""}}</div>
 									</el-popover> 
 									<div v-else v-html="scope.row.remark"> 
 									</div>

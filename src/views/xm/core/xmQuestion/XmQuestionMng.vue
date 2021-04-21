@@ -1,7 +1,8 @@
 <template>
 	<section>
 		<el-row   class="xm-question">
-			<el-row class="app-container">
+			<el-row class="app-container"> 
+
 			  	<el-select v-model="filters.bugStatus" placeholder="请选择状态" clearable @change="changeBugStatus">
 					<el-option v-for="(b,index) in options['bugStatus']" :value="b.optionValue"  :key="index" :label="b.optionName">{{b.optionName}}
 					</el-option>
@@ -17,18 +18,36 @@
 				<el-select v-model="filters.bugSeverity" placeholder="请选择严重程度" clearable @change="changeBugSeverity">
 					<el-option v-for="(b,index) in options['bugSeverity']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
 					</el-option>
-				</el-select> 
-						<el-tag v-if="filters.selProject && !selProject" closable @close="clearProject" @click="showProjectList(true)">{{ filters.selProject.name }}</el-tag>
-						<el-tag v-if="!filters.selProject" @click="showProjectList(true)" type="success">未选项目，点我</el-tag>
-						指派给:<el-tag v-if="!filters.handlerUsername" @click="showGroupUsers('handlerUsername')">未选，点我</el-tag><el-tag v-if="filters.handlerUsername" closable @close="clearHandler"  @click="showGroupUsers('handlerUsername')">{{filters.handlerUsername}}</el-tag>
-					
-					<el-input style="width:200px;" v-model="filters.key" placeholder="问题名称">
-						<template slot="append">
-							<el-button @click="searchXmQuestions" type="primary" icon="el-icon-search"></el-button>
-						</template>
-					</el-input> 
-					
-					<el-button @click="handleExport" type="primary" icon="el-icon-download">导出</el-button> 
+				</el-select>  
+				<el-input style="width:300px;" v-model="filters.key" placeholder="问题名称">
+					<template slot="append">
+						<el-button @click="searchXmQuestions" type="primary" icon="el-icon-search"></el-button>
+					</template>
+				</el-input>  
+				<el-button type="primary" icon="el-icon-plus" @click="showAdd">
+				</el-button>
+				<el-popover
+					placement="top-start"
+					title=""
+					width="400"
+					trigger="hover" >
+					<el-row>
+						<el-col :span="24"  style="padding-top:12px;">
+							<el-tag v-if="filters.selProject && !selProject" closable @close="clearProject" @click="showProjectList(true)">{{ filters.selProject.name }}</el-tag>
+							<el-tag v-if="!filters.selProject" @click="showProjectList(true)" type="success">未选项目，点我</el-tag>
+						
+						</el-col>
+						<el-col :span="24" style="padding-top:12px;">
+							指派给:<el-tag v-if="!filters.handlerUsername" @click="showGroupUsers('handlerUsername')">未选，点我</el-tag>
+							<el-tag v-if="filters.handlerUsername" closable @close="clearHandler"  @click="showGroupUsers('handlerUsername')">{{filters.handlerUsername}}</el-tag>
+						</el-col>
+						<el-col :span="24"  style="padding-top:12px;">
+							<el-button @click="handleExport"   icon="el-icon-download">导出</el-button>
+						</el-col> 
+					</el-row>
+					<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+				</el-popover> 
+
 			 </el-row>
 			 <el-row class="app-container">
 				<!--列表 XmQuestion xm_question-->
@@ -36,7 +55,7 @@
 					<el-table-column sortable type="index" width="45"></el-table-column> 
 					<el-table-column prop="name" label="问题名称"  min-width="200"> 
 						<template slot-scope="scope">
-							<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.id}}</el-link> &nbsp;{{scope.row.name}}
+							{{scope.row.id}}&nbsp;<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.name}}</el-link> 
 						</template>
 					</el-table-column>
 					<el-table-column prop="bugStatus" label="状态" width="100" :formatter="formatterOption">

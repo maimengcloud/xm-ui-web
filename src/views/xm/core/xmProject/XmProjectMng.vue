@@ -23,17 +23,28 @@
 					<el-menu-item index="7-2">选项2</el-menu-item>
 					<el-menu-item index="7-3">选项3</el-menu-item>
 				</el-submenu> -->
-				
+				<el-popover
+					placement="top-start"
+					title=""
+					width="200"
+					trigger="hover" >
+					<el-row>
+						<el-col :span="24" style="padding-top:5px;">
+							<el-checkbox  v-model="finishFlag">未结束</el-checkbox>
+						</el-col>
+						<el-col  :span="24"  style="padding-top:5px;">
+							<el-tag v-if="filters.productId" closable @close="onProductClose">{{filters.productName}}</el-tag><el-button v-else type="text" plain  @click.native="productSelectVisible=true">按产品过滤</el-button>
+						</el-col>
+						<el-col  :span="24"  style="padding-top:5px;">
+							<el-button :loading="load.list" v-if="!showType" :class="{'changebtn-active':showType}" plain type="text" @click="showType=true" icon="el-icon-menu"></el-button>
+							<el-button :loading="load.list" v-else :class="{'changebtn-active':!showType}" plain type="text" @click="showType=false" icon="el-icon-more"></el-button>
+						</el-col> 
+					</el-row>
+					<el-button  circle slot="reference" icon="el-icon-more"></el-button>
+				</el-popover>
 			</el-menu>
-		</el-row>
-		<el-row style="padding-left:10px;"> 
-					<el-checkbox  v-model="finishFlag">未结束</el-checkbox>
-					<el-tag v-if="filters.productId" closable @close="onProductClose">{{filters.productName}}</el-tag><el-button v-else type="text" plain  @click.native="productSelectVisible=true">选产品</el-button>
-					 
-					<el-button :loading="load.list" v-if="!showType" :class="{'changebtn-active':showType}" plain type="text" @click="showType=true" icon="el-icon-menu"></el-button>
-					<el-button :loading="load.list" v-else :class="{'changebtn-active':!showType}" plain type="text" @click="showType=false" icon="el-icon-more"></el-button>
-					 
-		</el-row>
+			 
+		</el-row> 
 		<el-row class="app-container"> 
 			<!--列表 XmProject xm_project-->
 			<el-row v-show="showType" v-loading="load.list">
@@ -206,6 +217,9 @@
 				console.log("shotType_change");
 				this.xmProjects = [];
 				this.getXmProjects();
+			},
+			"finishFlag":function(val){
+				this.searchXmProjects();
 			}
 		},
 		data() {

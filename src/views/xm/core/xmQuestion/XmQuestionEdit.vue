@@ -2,101 +2,113 @@
 	<section>
 		<el-row class="xm-question">
 			<!--新增界面 XmQuestion xm_question--> 
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
-				<el-row>
-					<el-col :span="12">
-						<el-form-item label="问题标题" prop="name">
-							{{editForm.name}} 
-						</el-form-item>  
-						<el-form-item label="隶属项目" prop="projectName">
-							{{selProject.name}}
-						</el-form-item> 
-						<el-form-item label="隶属任务" prop="taskName">
-							<el-tag v-if="editForm.taskId!='' && editForm.taskId!=null " closable @close="handleCloseTaskTag">{{editForm.taskName}}</el-tag><el-button @click="showSelectTask">选任务</el-button>
-						</el-form-item>  
-						<el-form-item label="优先级别" prop="priority">
-							<el-radio-group v-model="editForm.priority">
-								<el-radio v-for="(i,index) in options['urgencyLevel']" :label="i.optionValue" :key="index">{{i.optionName}}</el-radio> 
-							</el-radio-group> 
-						</el-form-item> 
-						<el-form-item label="严重程度" prop="bugSeverity">
-							<el-radio-group v-model="editForm.bugSeverity">
-								<el-radio v-for="(i,index) in options['bugSeverity']" :label="i.optionValue" :key="index">{{i.optionName}}</el-radio> 
-							</el-radio-group>  
-						</el-form-item> 
-						<el-form-item label="解决方案" prop="solution">
-							<el-radio-group v-model="editForm.solution">
-								<el-radio v-for="(i,index) in options['bugSolution']" :label="i.optionValue" :key="index">{{i.optionName}}</el-radio> 
-							</el-radio-group>   
-						</el-form-item> 
-						<el-form-item label="到期时间" prop="endTime">
-							<el-date-picker :clearable="false" style="width:100%;" type="date" placeholder="选择日期" v-model="editForm.endTime" value-format="yyyy-MM-dd" format="yyyy-MM-dd"></el-date-picker>
-						</el-form-item> 
-						<el-form-item label="提出人" prop="askUsername">
-							提出： {{editForm.askUsername}}  创建人：	{{userInfo.username}}  时间：{{formateDate(new Date()).substr(0,10)}}
-						</el-form-item> 
-						<el-form-item label="指派给" prop="handlerUsername">
-							{{editForm.handlerUsername}}  <el-button @click="sendToAsk">指派给提出人</el-button><el-button @click="sendToCreater">指派给创建人</el-button><el-button @click="showGroupUsers('handlerUsername')">选其它人</el-button>
-						</el-form-item> 
-						
-						<el-form-item label="问题描述" prop="description">
-							<div v-html="editForm.description"></div>
-						</el-form-item> 
-					</el-col>
-					<el-col :span="12">
-					
-												
-						<el-form-item>
-							<el-col :span="24">测试步骤</el-col>
-							<el-col :span="24">
-									<vue-editor :id="'opStep'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.opStep" ref="opStep"></vue-editor>  
-							</el-col>
-							<el-col :span="24" offset="0">预期结果</el-col> 
-							<el-col :span="24" offset="0">  
-									<vue-editor :id="'expectResult'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.expectResult"  ref="expectResult"></vue-editor>  
-							</el-col> 
-						</el-form-item>
-					</el-col>
-				</el-row>
-				<el-form-item label="流转信息">
-					 <!--列表 XmQuestionHandle xm_question_handle-->
-					<el-table :data="xmQuestionHandles"   highlight-current-row v-loading="load.list" border   style="width: 100%;">
-						<el-table-column sortable type="index" width="40"></el-table-column>  
-						<el-table-column  label="处理意见"  prop="receiptMessage"  min-width="350" >
-							<template slot-scope="scope">
-								<div v-html="scope.row.receiptMessage"></div>
-							</template>
-						</el-table-column> 
-						<el-table-column prop="handlerUsername" label="指派动作" min-width="300"  >
-							<template slot-scope="scope">
-								时间：{{scope.row.receiptTime}},由{{scope.row.handlerUsername}} 指派给 {{scope.row.targetUsername}}  
-							</template>
-						</el-table-column>				
-						<el-table-column prop="handleStatus" label="状态"  min-width="80"   :formatter="formatterOption"></el-table-column>  
-						<el-table-column prop="handleSolution" label="解决方案"  min-width="100"   :formatter="formatterOption"></el-table-column>
+			<el-row>
+				
+					<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
+						<el-col :span="12"> 
+								<el-form-item label="问题标题" prop="name">
+									{{editForm.name}} 
+								</el-form-item>  
+								<el-form-item label="隶属项目" prop="projectName">
+									{{selProject.name}}
+								</el-form-item> 
+								<el-form-item label="隶属任务" prop="taskName">
+									<el-tag v-if="editForm.taskId!='' && editForm.taskId!=null " closable @close="handleCloseTaskTag">{{editForm.taskName}}</el-tag><el-button @click="showSelectTask">选任务</el-button>
+								</el-form-item>  
+								<el-form-item label="优先级别" prop="priority">
+									<el-radio-group v-model="editForm.priority">
+										<el-radio v-for="(i,index) in options['urgencyLevel']" :label="i.optionValue" :key="index">{{i.optionName}}</el-radio> 
+									</el-radio-group> 
+								</el-form-item> 
+								<el-form-item label="严重程度" prop="bugSeverity">
+									<el-radio-group v-model="editForm.bugSeverity">
+										<el-radio v-for="(i,index) in options['bugSeverity']" :label="i.optionValue" :key="index">{{i.optionName}}</el-radio> 
+									</el-radio-group>  
+								</el-form-item> 
+								<el-form-item label="解决方案" prop="solution">
+									<el-radio-group v-model="editForm.solution">
+										<el-radio v-for="(i,index) in options['bugSolution']" :label="i.optionValue" :key="index">{{i.optionName}}</el-radio> 
+									</el-radio-group>   
+								</el-form-item> 
+								<el-form-item label="到期时间" prop="endTime">
+									<el-date-picker :clearable="false" style="width:100%;" type="date" placeholder="选择日期" v-model="editForm.endTime" value-format="yyyy-MM-dd" format="yyyy-MM-dd"></el-date-picker>
+								</el-form-item> 
+								<el-form-item label="提出人" prop="askUsername">
+									提出： {{editForm.askUsername}}  创建人：	{{userInfo.username}}  时间：{{formateDate(new Date()).substr(0,10)}}
+								</el-form-item> 
+								<el-form-item label="指派给" prop="handlerUsername">
+									{{editForm.handlerUsername}}  <el-button @click="sendToAsk">指派给提出人</el-button><el-button @click="sendToCreater">指派给创建人</el-button><el-button @click="showGroupUsers('handlerUsername')">选其它人</el-button>
+								</el-form-item> 
+						</el-col>	
+						<el-col :span="12">
+							<el-row class="app-container">
+								<el-col :span="24" class="label-font">测试步骤</el-col>
+								<el-col :span="24" style="padding-top:12px;">
+									<div  v-html="editForm.opStep"></div> 
+								</el-col>
+							</el-row>
+							<el-row class="app-container">
+								<el-col :span="24"  class="label-font">预期结果</el-col> 
+								<el-col :span="24" style="padding-top:12px;">  
+									<div  v-html="editForm.expectResult"></div> 
+								</el-col> 
+							</el-row>
+							<el-row class="app-container">
+								<el-col :span="24"  class="label-font">流转信息 
+									<el-button icon="el-icon-search" v-if="flowInfoVisible==false" @click="showFlowInfo" >查询流转信息</el-button>
+									<el-button icon="el-icon-search" v-else @click="flowInfoVisible=false" >隐藏流转信息</el-button>
+								</el-col> 
+								<el-col :span="24" style="padding-top:12px;">  
+								<!--列表 XmQuestionHandle xm_question_handle--> 
+									
+									<el-table v-show="flowInfoVisible" max-height="300" :data="xmQuestionHandles"   highlight-current-row v-loading="load.list" border   style="width: 100%;">
+										<el-table-column sortable type="index" width="40"></el-table-column>  
+										<el-table-column  label="处理意见"  prop="receiptMessage"  min-width="200" >
+											<template slot-scope="scope">
+												<div v-html="scope.row.receiptMessage"></div>
+											</template>
+										</el-table-column> 
+										<el-table-column prop="handlerUsername" label="指派动作" width="250"  >
+											<template slot-scope="scope">
+												<el-tag>{{scope.row.handlerUsername}}</el-tag> 指派给 <el-tag> {{scope.row.targetUsername}}  </el-tag><br><span style="font-size:8px;">{{scope.row.receiptTime}}</span>
+											</template>
+										</el-table-column>				
+										<el-table-column prop="handleStatus" label="状态"  width="80"   :formatter="formatterOption"></el-table-column>  
+										<el-table-column prop="handleSolution" label="解决方案"  width="100"   :formatter="formatterOption"></el-table-column>
 
-					</el-table>
-				</el-form-item> 
-				<el-form-item label="处理意见" prop="description"> 
-        			<vue-editor :id="'description_'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.receiptMessage"></vue-editor>
-				</el-form-item> 
-        			
-				<el-form-item class="add-btns">
-					<el-col style="text-align:center;" :span="24"> 
-						<el-button @click.native="handleCancel">取消</el-button>  
-						<el-button v-if="editForm.bugStatus=='active'" v-loading="load.edit" type="primary" @click.native="handleQuestion('confirmed')" :disabled="load.edit==true">确认</el-button>  
-						<el-button v-if="editForm.bugStatus=='active'" v-loading="load.edit" type="primary" @click.native="handleQuestion('active')" :disabled="load.edit==true">不是问题</el-button>  
-						<el-button v-if="editForm.bugStatus=='active'" v-loading="load.edit" type="primary" @click.native="handleQuestion('resolved')" :disabled="load.edit==true">直接解决</el-button>  
-						<el-button v-if="editForm.bugStatus=='active'" v-loading="load.edit" type="primary" @click.native="handleQuestion('closed')" :disabled="load.edit==true">直接关闭</el-button>  
-						<el-button v-if="editForm.bugStatus=='confirmed'" v-loading="load.edit" type="primary" @click.native="handleQuestion('resolved')" :disabled="load.edit==true">解决</el-button> 
-						<el-button v-if="editForm.bugStatus=='confirmed'" v-loading="load.edit" type="primary" @click.native="handleQuestion('closed')" :disabled="load.edit==true">关闭</el-button>  
-						<el-button v-if="editForm.bugStatus=='resolved'" v-loading="load.edit" type="primary" @click.native="handleQuestion('closed')" :disabled="load.edit==true">关闭</el-button>    
-						<el-button v-if="editForm.bugStatus=='resolved'" v-loading="load.edit" type="primary" @click.native="handleQuestion('active')" :disabled="load.edit==true">重新激活</el-button>   
-						<el-button v-if="editForm.bugStatus=='closed'" v-loading="load.edit" type="primary" @click.native="handleQuestion('active')" :disabled="load.edit==true">重新激活</el-button>    
-
-					</el-col>
-				</el-form-item> 
-			</el-form>
+									</el-table> 
+								</el-col>
+							</el-row> 
+						</el-col>
+						<el-col :span="24">
+							<el-form-item label="问题描述" prop="description">
+								<div  v-html="editForm.description"></div>
+							</el-form-item> 
+						</el-col>
+						<el-col :span="24"> 
+							<el-form-item label="处理意见" prop="description">
+								<vue-editor :id="'description_'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.receiptMessage"></vue-editor>
+							</el-form-item>  
+						</el-col>		  
+					</el-form>  
+			</el-row>
+			
+			
+			
+			<el-row class="app-container">
+				<el-col style="text-align:center;" :span="24"> 
+					<el-button @click.native="handleCancel">取消</el-button>  
+					<el-button v-if="editForm.bugStatus=='active'" v-loading="load.edit" type="primary" @click.native="handleQuestion('confirmed')" :disabled="load.edit==true">确认</el-button>  
+					<el-button v-if="editForm.bugStatus=='active'" v-loading="load.edit" type="primary" @click.native="handleQuestion('active')" :disabled="load.edit==true">不是问题</el-button>  
+					<el-button v-if="editForm.bugStatus=='active'" v-loading="load.edit" type="primary" @click.native="handleQuestion('resolved')" :disabled="load.edit==true">直接解决</el-button>  
+					<el-button v-if="editForm.bugStatus=='active'" v-loading="load.edit" type="primary" @click.native="handleQuestion('closed')" :disabled="load.edit==true">直接关闭</el-button>  
+					<el-button v-if="editForm.bugStatus=='confirmed'" v-loading="load.edit" type="primary" @click.native="handleQuestion('resolved')" :disabled="load.edit==true">解决</el-button> 
+					<el-button v-if="editForm.bugStatus=='confirmed'" v-loading="load.edit" type="primary" @click.native="handleQuestion('closed')" :disabled="load.edit==true">关闭</el-button>  
+					<el-button v-if="editForm.bugStatus=='resolved'" v-loading="load.edit" type="primary" @click.native="handleQuestion('closed')" :disabled="load.edit==true">关闭</el-button>    
+					<el-button v-if="editForm.bugStatus=='resolved'" v-loading="load.edit" type="primary" @click.native="handleQuestion('active')" :disabled="load.edit==true">重新激活</el-button>   
+					<el-button v-if="editForm.bugStatus=='closed'" v-loading="load.edit" type="primary" @click.native="handleQuestion('active')" :disabled="load.edit==true">重新激活</el-button>    
+				</el-col>
+			</el-row> 
 			<el-dialog title="选中用户" :visible.sync="selectUserVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-group-mng  :sel-project="selProject" :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-mng>
 			</el-dialog> 
@@ -133,9 +145,11 @@
 	      },
 	      'visible':function(visible) {
 	      	if(visible==true){
-				  this.getXmQuestionHandle();
+				  //this.getXmQuestionHandle();
 	      		//从新打开页面时某些数据需要重新加载，可以在这里添加
-	      	}
+	      	}else{
+			  this.flowInfoVisible=false;
+			}
 	      } 
 	    },
 		data() {
@@ -170,6 +184,7 @@
 				userFieldName:'',
 				xmQuestionHandles:[],
 				selectTaskVisible:false,
+				flowInfoVisible:false,
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data
@@ -325,6 +340,10 @@
 
 				this.editForm.handlerUsername=this.editForm.askUsername
 				this.editForm.handlerUserid=this.editForm.askUserid
+			},
+			showFlowInfo:function(){
+				this.flowInfoVisible=true;
+				this.getXmQuestionHandle();
 			}
 			/**end 在上面加自定义方法**/
 			
@@ -345,7 +364,7 @@
 					this.options['urgencyLevel']=res.data.data.urgencyLevel
 				}
 			});
-			this.getXmQuestionHandle();
+			//this.getXmQuestionHandle();
 			/**在下面写其它函数***/
 			
 		}//end mounted
@@ -368,5 +387,9 @@
 }
 .add-btns >>> .el-form-item__content{
 	margin-left: 0 !important;
+}
+.label-font{
+	font-weight: 700;
+	font-size: 14px;
 }
 </style>
