@@ -14,28 +14,28 @@
 		<el-row  class="app-container"> 
 			<!--列表 XmProduct 产品表-->
 			<el-table  max-height="750" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-				<el-table-column   sortable type="selection" width="40"></el-table-column>
-				<el-table-column sortable type="index" width="40"></el-table-column>
+				<el-table-column   sortable type="selection" width="55"></el-table-column>
+				<el-table-column sortable type="index" width="55"></el-table-column>
  				<el-table-column prop="productName" label="产品名称" min-width="150" > 
 					<template slot-scope="scope">
 						{{scope.row.id}}&nbsp;&nbsp;<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.productName}}</el-link>
 					</template>
 				</el-table-column>
-				<el-table-column  prop="finishRate" label="进度" min-width="80" >
+				<el-table-column  prop="finishRate" label="进度" width="80" >
 					<template slot-scope="scope">
 						{{scope.row.finishRate}}%
 					</template>
 				</el-table-column>
-				<el-table-column prop="pmUsername" label="产品经理" min-width="80" ></el-table-column> 
-				<el-table-column prop="planWorkload" label="预计工作量.人时" min-width="80" ></el-table-column>
-				<el-table-column prop="actWorkload" label="实际工作量.人时" min-width="80" ></el-table-column> 
- 				<el-table-column  label="操作" width="460" fixed="right">
+				<el-table-column prop="pmUsername" label="产品经理" width="100" ></el-table-column> 
+				<el-table-column prop="planWorkload" label="预计工作量.人时" width="120" ></el-table-column>
+				<el-table-column prop="actWorkload" label="实际工作量.人时" width="120" ></el-table-column> 
+ 				<el-table-column  label="操作" width="540" fixed="right">
 					<template slot-scope="scope"> 
-						<el-button  type="warning" @click="loadTasksToXmProductState(scope.row)">刷新</el-button>
-						<el-button  type="warning" @click="showProductState(scope.row)">报告</el-button> 
-						<el-button  type="success" @click="toIterationList(scope.row)">迭代</el-button>   
-						<el-button type="success" @click="toProjectList(scope.row)">项目</el-button> 
-						<el-button  type="success" @click="toTaskList(scope.row)">任务</el-button>
+						<el-button  type="warning" @click="loadTasksToXmProductState(scope.row)" icon="el-icon-s-data">刷新</el-button>
+						<el-button  type="warning" @click="showProductState(scope.row)" icon="el-icon-s-data">报告</el-button> 
+						<el-button  type="success" @click="toIterationList(scope.row)" icon="el-icon-document">迭代</el-button>   
+						<el-button type="success" @click="toProjectList(scope.row)"  icon="el-icon-document">项目</el-button> 
+						<el-button  type="success" @click="toTaskList(scope.row)"  icon="el-icon-tickets">任务</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
