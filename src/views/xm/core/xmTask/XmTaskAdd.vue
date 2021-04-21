@@ -6,15 +6,19 @@
 				<el-form-item label="项目名称">
 					<span>{{addForm.projectName}}</span>
 				</el-form-item>
-				<el-form-item v-if="addForm.parentTaskname!=null && addForm.parentTaskname!=''" label="父任务名称">
-					<span>{{addForm.parentTaskname}}</span>
+				<el-form-item v-if="parentTask!=null" label="父任务名称">
+					<span>{{parentTask.sortLevel}}</span>&nbsp;&nbsp;<span>{{parentTask.name}}</span>
+				</el-form-item>
+				
+				<el-form-item v-else label="父任务名称">
+					无上级
 				</el-form-item>
 				<el-form-item label="任务名称" prop="name">
 					<el-input v-model="addForm.name" placeholder="任务名称" ></el-input>
 				</el-form-item>
 				
 				<el-form-item label="排序号" prop="sortLevel">
-					<el-input  v-model="addForm.sortLevel"    placeholder="如1.0或者1.2.3等" ></el-input>
+					<el-input  v-model="addForm.sortLevel"    placeholder="如1.0或者1.2.3等" ></el-input><span v-if="parentTask" style="color:red">建议：{{parentTask.sortLevel}}.1</span>
 				</el-form-item>
 				<el-form-item  label="计划类型" prop="planType"> 
 					<el-select v-model=" addForm.planType">
