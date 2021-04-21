@@ -18,14 +18,18 @@
 		</el-row>
 		<el-row class="app-container"> 
 			<!--列表 XmTestCase 测试用例-->
-			<el-table :data="xmTestCases" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table max-height="700" :data="xmTestCases" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>
 				<el-table-column sortable type="index" width="45"></el-table-column>
-				<el-table-column prop="caseName" label="标题" min-width="80" ></el-table-column>
+				<el-table-column prop="caseName" label="标题" min-width="80" >
+					<template scope="scope">
+						{{scope.row.id}}&nbsp;&nbsp;<el-link type="primay" @click="showEdit(scope.row)">{{scope.row.caseName}}</el-link>
+					</template>
+				</el-table-column>
 				<el-table-column prop="id" label="编号" min-width="80" ></el-table-column> 
 				<el-table-column prop="caseRemark" label="备注" min-width="80" ></el-table-column> 
  				<el-table-column  prop="menuName" label="故事名" min-width="80" > 
-					<template slot="header" slot-scope="scope">
+					<template slot="header">
 						故事<el-button @click="showMenu"  icon="el-icon-search" circle size="mini"></el-button>
  					</template>
 				 </el-table-column>
@@ -39,8 +43,8 @@
 				</el-table-column>
 				<el-table-column v-if="!multiSelect" label="操作" width="160" fixed="right">
 					<template scope="scope">
-						<el-button  @click="showEdit( scope.row,scope.$index)">改</el-button>
-						<el-button type="danger" @click="handleDel(scope.row,scope.$index)">删</el-button>
+						<el-button type="primary"  @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"></el-button>
+						<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"></el-button>
 					</template>
 				</el-table-column>
 			</el-table>
