@@ -189,8 +189,9 @@
 					console.log(this.addForm.handlerUserid);
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
-							this.load.add=true
+							this.load.add=true 
 							let params = Object.assign({}, this.addForm); 
+							params.expectResult=params.expectResult.replace("<p>\n<br>\n<\p>","");
 							addXmQuestion(params).then((res) => {
 								this.load.add=false
 								var tips=res.data.tips;
