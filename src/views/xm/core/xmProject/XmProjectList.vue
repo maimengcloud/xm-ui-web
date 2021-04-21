@@ -1,10 +1,15 @@
 <template>
 	<section>
-		<el-row style="background:#e9e9e9 !important;" :className="'sub-navbar'">
-			 <el-input v-model="filters.key" style="width:30%;"></el-input> <el-button @click="searchXmProjects">查询</el-button>
+		<el-row>
+			 <el-input v-model="filters.key" style="width:30%;" placeholder="请输入关键字进行查找项目">
+				<template slot="append">
+					 <el-button @click="searchXmProjects" icon="el-icon-search"></el-button>
+				 </template>
+			</el-input>
 		</el-row>
 		<el-row class="app-container">   
 			<el-table   stripe :data="xmProjects"  highlight-current-row v-loading="load.list"   style="width: 100%;">
+				<el-table-column  type="index" label="序号" width="55" ></el-table-column>
 				<el-table-column prop="code" label="项目编号" min-width="80" ></el-table-column>
 				<el-table-column prop="name" label="标题名称" min-width="80" ></el-table-column> 
 				<el-table-column label="操作" width="245" fixed="right">

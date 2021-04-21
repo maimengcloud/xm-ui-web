@@ -3,11 +3,17 @@
 		<el-row class="app-container">
 			<!--新增界面 XmProjectPhase xm_project_phase--> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
+				<el-form-item v-if="parentProjectPhase" label="上级" prop="phaseName">
+					{{parentProjectPhase.seqNo}} &nbsp;&nbsp;{{parentProjectPhase.phaseName}}
+				</el-form-item>  
+				<el-form-item v-else label="上级" prop="phaseName">
+					无上级
+				</el-form-item>
 				<el-form-item label="阶段名称" prop="phaseName">
 					<el-input v-model="addForm.phaseName" placeholder="阶段名称" ></el-input>
 				</el-form-item>  
 				<el-form-item label="序号" prop="seqNo">
-					<el-input v-model="addForm.seqNo"   placeholder="排序序号，值越小越靠前，如1.0,2.0等"></el-input> 
+					<el-input v-model="addForm.seqNo"   placeholder="排序序号，值越小越靠前，如1.0,2.0等"></el-input> <span v-if="parentProjectPhase" style="color:red;">建议：{{parentProjectPhase.seqNo}}.1</span>
 				</el-form-item> 
 				<el-form-item label="备注" prop="remark">
 					<el-input v-model="addForm.remark" placeholder="备注" ></el-input>
