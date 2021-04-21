@@ -1,7 +1,7 @@
 <template>
 	<section>
-		<el-row style="background:#e9e9e9 !important;" :className="'sub-navbar'">
-			<el-menu active-text-color="#00abfc" :default-active="menukey" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+		<el-row>
+			<el-menu   active-text-color="#00abfc" :default-active="menukey" class="el-menu-demo" mode="horizontal" @select="handleSelect">
 				<el-menu-item index="all">全部</el-menu-item>
 				<el-menu-item index="compete">我参与</el-menu-item>
 				<el-menu-item index="leader">我管理</el-menu-item>
@@ -11,27 +11,28 @@
 				<el-menu-item index="myFocus">我关注</el-menu-item>
 				<el-menu-item index="myExecuserStatus0">我排队</el-menu-item>
 				<el-menu-item index="myExecuserStatus1">我执行</el-menu-item>
-				<el-menu-item index="myExecuserStatus2">我的提交验收</el-menu-item>
-				<el-menu-item index="myExecuserStatus3">我的验收成功</el-menu-item>
-				<el-menu-item index="myExecuserStatus4">我的验收失败</el-menu-item>
-				<el-menu-item index="myExecuserStatus5">我的付款中</el-menu-item>
-				<el-menu-item index="myExecuserStatus6">我的付款成功</el-menu-item>
-				<el-menu-item index="myExecuserStatus7">我放弃的</el-menu-item>
+				<el-menu-item index="myExecuserStatus2">我提交验收</el-menu-item>
+				<el-menu-item index="myExecuserStatus3">我验收成功</el-menu-item>
+				<el-menu-item index="myExecuserStatus4">我验收失败</el-menu-item>
+				<el-menu-item index="myExecuserStatus5">我付款中</el-menu-item>
+				<el-menu-item index="myExecuserStatus6">我付款成功</el-menu-item>
+				<el-menu-item index="myExecuserStatus7">我放弃</el-menu-item>
 				<!-- <el-submenu index="7">
 					<template slot="title">更多筛选</template>
 					<el-menu-item index="7-1">选项1</el-menu-item>
 					<el-menu-item index="7-2">选项2</el-menu-item>
 					<el-menu-item index="7-3">选项3</el-menu-item>
 				</el-submenu> -->
-				<div >
+				
+			</el-menu>
+		</el-row>
+		<el-row style="padding-left:10px;"> 
 					<el-checkbox  v-model="finishFlag">未结束</el-checkbox>
 					<el-tag v-if="filters.productId" closable @close="onProductClose">{{filters.productName}}</el-tag><el-button v-else type="text" plain  @click.native="productSelectVisible=true">选产品</el-button>
-					<div class="changebtn">
+					 
 					<el-button :loading="load.list" v-if="!showType" :class="{'changebtn-active':showType}" plain type="text" @click="showType=true" icon="el-icon-menu"></el-button>
 					<el-button :loading="load.list" v-else :class="{'changebtn-active':!showType}" plain type="text" @click="showType=false" icon="el-icon-more"></el-button>
-					</div>
-				</div>
-			</el-menu>
+					 
 		</el-row>
 		<el-row class="app-container"> 
 			<!--列表 XmProject xm_project-->
@@ -177,7 +178,7 @@
 	import { mapGetters } from 'vuex'
 	import xmTaskMng from '../xmTask/XmTaskMng'; 
 	import xmProjectInfo from './XmProjectInfo'; 
-	import XmProductMng from '../xmProduct/XmProductMng';
+	import XmProductMng from '../xmProduct/XmProductSelect';
 
 	if(!Vue.component("xm-project-info")){
 		
