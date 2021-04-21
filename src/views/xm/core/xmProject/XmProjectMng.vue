@@ -23,7 +23,7 @@
 					<el-menu-item index="7-2">选项2</el-menu-item>
 					<el-menu-item index="7-3">选项3</el-menu-item>
 				</el-submenu> -->
-				<el-popover
+				<el-popover 
 					placement="top-start"
 					title=""
 					width="200"
@@ -40,7 +40,7 @@
 							<el-button :loading="load.list" v-else :class="{'changebtn-active':!showType}" plain type="text" @click="showType=false" icon="el-icon-more"></el-button>
 						</el-col> 
 					</el-row>
-					<el-button  circle slot="reference" icon="el-icon-more"></el-button>
+					<el-button type="text"  slot="reference" icon="el-icon-more"></el-button>
 				</el-popover>
 			</el-menu>
 			 
