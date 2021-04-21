@@ -3,11 +3,20 @@
 		<el-row class="app-container">
 			<!--新增界面 XmIteration 迭代定义--> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">  
+				<el-form-item v-if="parentIteration" label="上级迭代" prop="pid">
+					 {{parentIteration.seqNo}}&nbsp;&nbsp;{{parentIteration.iterationName}}
+				</el-form-item> 
+				<el-form-item v-else label="上级迭代" prop="pid">
+					 无上级
+				</el-form-item> 
+				<el-form-item label="迭代名称" prop="iterationName">
+					<el-input v-model="addForm.iterationName" placeholder="迭代名称" ></el-input>
+				</el-form-item> 
 				<el-form-item label="迭代名称" prop="iterationName">
 					<el-input v-model="addForm.iterationName" placeholder="迭代名称" ></el-input>
 				</el-form-item> 
 				<el-form-item label="序号" prop="seqNo">
-					<el-input v-model="addForm.seqNo" placeholder="如1.0，2.0，1.1.1等" ></el-input>
+					<el-input v-model="addForm.seqNo" placeholder="如1.0，2.0，1.1.1等" ></el-input> <span v-if="parentIteration" style="color:red;">建议：{{parentIteration.seqNo}}.1</span>
 				</el-form-item> 
 				<el-form-item label="开始时间" prop="startTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="addForm.startTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
