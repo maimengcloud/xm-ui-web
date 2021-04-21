@@ -19,7 +19,7 @@
 				</el-row>
 				<el-row class="app-container">
 					<!--列表 XmIterationMenu 迭代定义-->
-					<el-table :data="xmIterationMenusTreeData"  default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+					<el-table max-height="750" :data="xmIterationMenusTreeData"  default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column  type="selection" width="45"></el-table-column> 
 						<el-table-column prop="menuName" label="故事名称" min-width="140" > 
 							<template slot-scope="scope">

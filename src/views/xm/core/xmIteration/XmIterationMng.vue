@@ -11,7 +11,7 @@
  		</el-row>
 		<el-row v-if="!simple" class="app-container"> 
 			<!--列表 XmIteration 迭代定义-->
-			<el-table max-height="650" v-if="!gstcVisible" :data="xmIterationTreeData" row-key="id"  default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table max-height="750" v-if="!gstcVisible" :data="xmIterationTreeData" row-key="id"  default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column type="selection" aria-disabled width="55"></el-table-column> 
 				<el-table-column prop="iterationName" label="迭代名称" min-width="160" >
 					 <template slot-scope="scope">  
@@ -62,7 +62,7 @@
 		
 		<el-row v-if="simple "> 
 			<!--列表 XmIteration 迭代定义-->
-			<el-table :data="xmIterationTreeData" row-key="id"  default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table max-height="750" :data="xmIterationTreeData" row-key="id"  default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
    				<el-table-column prop="iterationName" label="迭代名称" min-width="160" >
 					<template slot="header" slot-scope="scope">
 						迭代名称 <el-tag size="mini" v-if="editForm.iterationName" closable @close="clearSelectIteration()">{{editForm.seqNo}}&nbsp;{{editForm.iterationName}}</el-tag>

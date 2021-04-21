@@ -82,10 +82,21 @@ export default {
         { path: 'xmMenu/XmMenuMng', component: _import('xm/core/xmMenu/XmMenuMng'), name: 'XmMenuMng', meta: { title: '故事管理' }},
          { path: 'xmMenuExchange/XmMenuExchangeMng', component: _import('xm/core/xmMenuExchange/XmMenuExchangeMng'), name: 'XmMenuExchangeMng', meta: { title: '互动评论' }}, 
         { path: 'xmMenuTemplate/XmMenuTemplateMng', component: _import('xm/core/xmMenuTemplate/XmMenuTemplateMng'), name: 'XmMenuTemplateMng', meta: { title: '故事模板' }},
+      ]
+    },
+    {
+      path: '/xm/core',
+      component: Layout,
+      name: '迭代管理',
+      iconCls: 'fa el-icon-menu',
+      meta: {
+        title: '迭代管理',
+        icon: 'project'
+      },
+      // leaf: true,//只有一个节点
+      children: [  
         { path: 'xmIteration/XmIterationMng', component: _import('xm/core/xmIteration/XmIterationMng'), name: 'XmIterationMng', meta: { title: '迭代管理' }},
         { path: 'xmIterationMenu/XmIterationMenuMng', component: _import('xm/core/xmIterationMenu/XmIterationMenuMng'), name: 'XmIterationMenuMng', meta: { title: '故事迭代' }},
-
-
       ]
     }
   ]

@@ -23,11 +23,9 @@
 						<el-radio-button label="环境清单"></el-radio-button> 
 					</el-radio-group>
 					<el-popover
-						placement="top-start"
-						title="更多操作"
+						placement="top-start" 
 						width="400"
-						trigger="hover"
-						content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+						trigger="hover" >
 						  
 						<el-button type="primary" @click="toArchive" round>论坛</el-button>
 						<el-button type="success" @click="toIm" round>即聊</el-button> 
@@ -314,7 +312,8 @@
 <style scoped>
 .app-container{
 	display: flex;
-	padding: 10px;
+	margin-top: -28px;
+	padding: 2px;
 	background: #e8edf7;
 }
 .project-handle{

@@ -34,7 +34,7 @@
 				</div>
 			</el-menu> 
 			<!--列表 XmQuestion xm_question-->
-			<el-table max-height="650" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table max-height="750" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="index" width="45"></el-table-column> 
 				<el-table-column prop="name" label="问题名称"  min-width="200"> 
 					<template slot-scope="scope">

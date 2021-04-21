@@ -66,11 +66,13 @@
 							@row-click="rowClick"
 							@selection-change="selsChange" 
 							highlight-current-row
+							current-row-key="id"
 							stripe
 							fit
 							border
+							size="mini"
 							default-expand-all
-							max-height="650"
+							max-height="600"
 							:tree-props="{children: 'children', hasChildren: 'hasChildren'}"
 							row-key="id"
 							> 
@@ -80,13 +82,13 @@
 									
 								</template>
 							</el-table-column> 
-							<el-table-column  prop="projectName" label="项目"  min-width="120"> 
+							<el-table-column v-if=" !selProject || !selProject.id" prop="projectName" label="项目"  min-width="120"> 
 								
 								<template slot="header">
 									项目<el-button @click="showProjectList"  icon="el-icon-search" circle size="mini"></el-button>
 								</template>
 								<template slot-scope="scope">
-									<el-link      @click.stop="toMenu(scope.row)">{{scope.row.projectName}}</el-link> 
+									{{scope.row.projectName}} 
 								</template>
 							</el-table-column> 
 							<el-table-column sortable prop="menuId" label="故事"  min-width="120"> 
@@ -105,7 +107,7 @@
 									<el-link    type="warning"     v-if="scope.row.createUsername==null || scope.row.createUsername ==''" @click.stop="showGroupUserSelect(scope.row)"  >去设置</el-link>  
 								</template>
 							</el-table-column>
-							<el-table-column sortable label="执行人" prop="exeUserids" min-width="120" show-overflow-tooltip>
+							<el-table-column sortable label="执行人" prop="exeUserids" width="120" show-overflow-tooltip>
 								<template slot-scope="scope"> 
 									<el-link     type="danger"    v-if="scope.row.exeUsernames!=null && scope.row.exeUsernames !='' && scope.row.exeUsernames.indexOf('验收不过')>=0"  @click.stop="showExecusers(scope.row)">{{scope.row.exeUsernames}}</el-link> 
 									<el-link     type="success"    v-else-if="scope.row.exeUsernames!=null && scope.row.exeUsernames !='' && scope.row.exeUsernames.indexOf('已验收')>=0"  @click.stop="showExecusers(scope.row)">{{scope.row.exeUsernames}}</el-link>     
