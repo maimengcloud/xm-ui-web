@@ -48,6 +48,7 @@ service.interceptors.request.use(config => {
 service.interceptors.response.use(                                       
   response => {
 	if(response.data && response.data.tips && response.data.tips.msg == 'Full authentication is required to access this resource'){ 
+    Message.closeAll()
 		 Message.error('会话过期，请重新登陆')
 		 //response.data.tips.msg="会话过期，请重新登陆";
 		 store.dispatch('FedLogOut').then(() => { 
@@ -62,6 +63,7 @@ service.interceptors.response.use(
     	switch (error.response.status) {
 	        case 401:
 	            // 返回 401 清除token信息并跳转到登录页面
+              Message.closeAll()
 	        	 Message.error('会话过期，请重新登陆')
 				     store.dispatch('FedLogOut').then(() => { 
 		            router.replace({path: '/login'})

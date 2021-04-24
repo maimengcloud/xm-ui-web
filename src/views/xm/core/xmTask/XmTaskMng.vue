@@ -316,14 +316,14 @@
 			<xm-skill-mng :visible="skillVisible" :task-id="currTaskId" :task-name="currTaskName"></xm-skill-mng>
 		</el-dialog> -->
 
-		<el-dialog  :title="'任务'+currTaskName+'的技能要求'" :visible.sync="skillVisible" width="600" append-to-body  :close-on-click-modal="false">
+		<el-dialog  :title="'任务'+currTaskName+'的技能要求'" :visible.sync="skillVisible" width="80%" append-to-body  :close-on-click-modal="false">
 			<skill-mng :task-skills="taskSkills" :jump="true" @select-confirm="onTaskSkillsSelected"></skill-mng>
 		</el-dialog>
-		<el-dialog  :title="'技能条件'" :visible.sync="showSkillSearchVisible" width="600" append-to-body  :close-on-click-modal="false">
+		<el-dialog  :title="'技能条件'" :visible.sync="showSkillSearchVisible" width="70%" append-to-body  :close-on-click-modal="false">
 			<skill-mng :task-skills="filters.skillTags" :jump="true" @select-confirm="onTaskSkillsSearchSelected"></skill-mng>
 		</el-dialog>
 		
-		<el-dialog  title="任务模板" :visible.sync="taskTemplateVisible" width="80%" append-to-body  :close-on-click-modal="false">
+		<el-dialog  title="任务模板" :visible.sync="taskTemplateVisible" width="70%" append-to-body  :close-on-click-modal="false">
 			<xm-task-template-mng :is-select="true" @select-confirm="onTaskTemplatesSelected"></xm-task-template-mng>
 		</el-dialog>
 		

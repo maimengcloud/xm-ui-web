@@ -4,7 +4,7 @@
       <el-row>
         <el-col :span="10"> 
           <el-button type="primary" v-if="jump==true" @click="selectConfirm" icon="el-icon-finished">确认选择</el-button>
-          <el-button type="primary" @click="getAllHrSkill" v-loading="sectionLoading" icon="el-icon-search">查询</el-button>
+          <el-button  @click="getAllHrSkill" v-loading="sectionLoading" icon="el-icon-search">刷新标签</el-button>
         </el-col> 
         <el-col :span="14">
           <el-checkbox 
@@ -18,7 +18,7 @@
             placeholder="回车直接快速添加技能分类"
             @keyup.enter.native="addTagCategorySubmitMethod"
           ></el-input>
-          <el-button type="primary"  @click="addTagCategorySubmitMethod" icon="el-icon-finished">保持</el-button>
+          <el-button type="primary"  @click="addTagCategorySubmitMethod" icon="el-icon-finished">保存分类</el-button>
           <el-tooltip content="黄色表示已经有的技能">
             <span class="addTagSquare"></span>
           </el-tooltip>
