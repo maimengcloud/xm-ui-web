@@ -31,9 +31,9 @@
 						<el-tag v-if=" !selProject && filters.selProject" :closable="!selProject"  @click="showProjectList" @close="clearProject">项目:{{this.filters.selProject.name}}</el-tag>
 						<el-tag v-if=" !selProject && !filters.selProject" @click="showProjectList" type="plian">未选项目，点我</el-tag>
 
-						<el-input  style="width:200px;" v-model="searchTask" placeholder="任务名称">
+						<el-input  style="width:200px;" v-model="filters.key" placeholder="任务名称">
 							<template slot="append">
-								<el-button    @click="searchXmTasks" type="primary" icon="el-icon-search"></el-button> 
+								<el-button    @click="searchXmTasks" type="primary" icon="el-icon-search" v-loading="load.list"></el-button> 
 							</template>
 						</el-input>  
 						<el-button  v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showAdd" type="primary" icon="el-icon-plus" round></el-button>  
@@ -316,10 +316,10 @@
 			<xm-skill-mng :visible="skillVisible" :task-id="currTaskId" :task-name="currTaskName"></xm-skill-mng>
 		</el-dialog> -->
 
-		<el-dialog  :title="'任务'+currTaskName+'的技能要求'" :visible.sync="skillVisible" width="80%" append-to-body  :close-on-click-modal="false">
+		<el-dialog  :title="'任务'+currTaskName+'的技能要求'" :visible.sync="skillVisible" width="60%" append-to-body  :close-on-click-modal="false">
 			<skill-mng :task-skills="taskSkills" :jump="true" @select-confirm="onTaskSkillsSelected"></skill-mng>
 		</el-dialog>
-		<el-dialog  :title="'技能条件'" :visible.sync="showSkillSearchVisible" width="70%" append-to-body  :close-on-click-modal="false">
+		<el-dialog  :title="'技能条件'" :visible.sync="showSkillSearchVisible" width="60%" append-to-body  :close-on-click-modal="false">
 			<skill-mng :task-skills="filters.skillTags" :jump="true" @select-confirm="onTaskSkillsSearchSelected"></skill-mng>
 		</el-dialog>
 		
@@ -569,8 +569,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'',sortLevel:'',executorUserid:'',executorUsername:'',
 					preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',
 					rate:'',budgetCost:'',budgetWorkload:'',actCost:'',actWorkload:'',taskState:'',taskType:'',taskClass:'',toTaskCenter:'',actStartTime:'',actEndTime:'',
-				},
-				searchTask: '',
+				}, 
 				/**begin 自定义属性请在下面加 请加备注**/
 				taskStateList: ["待领取","已领取执行中","已完工","已结算"],   
 
@@ -704,6 +703,9 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				if(this.filters.skillTags && this.filters.skillTags.length>0){
 					params.skillIds=this.filters.skillTags.map(i=>i.skillId)
 				} 
+				if(this.filters.key){
+					params.key='%'+this.filters.key+'%'
+				}
 				getTask(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 
