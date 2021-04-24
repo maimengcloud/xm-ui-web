@@ -1,36 +1,34 @@
 <template>
   <section>
-    <el-row class="app-container" style="margin-left:-20px;margin-right:-20px;">
+    <el-row class="app-container">
       <el-row>
-        <el-col :span="6">
-          <el-input
-            style="width:99%;"
-            v-model="needAddTagCategoryNameInputValue"
-            placeholder="技能分类，回车直接添加"
-            @keyup.enter.native="addTagCategorySubmitMethod"
-          ></el-input>
-        </el-col>
+        <el-col :span="10"> 
+          <el-button type="primary" v-if="jump==true" @click="selectConfirm" icon="el-icon-finished">确认选择</el-button>
+          <el-button type="primary" @click="getAllHrSkill" v-loading="sectionLoading" icon="el-icon-search">查询</el-button>
+        </el-col> 
         <el-col :span="14">
-          <el-checkbox
-            v-if="userInfo.isPlatformAdmin||userInfo.isSuperAdmin"
+          <el-checkbox 
             v-model="isPub"
             true-label="1"
             false-label="0"
           >公共分类</el-checkbox>
-          <el-button type="primary" v-if="jump==true" @click="selectConfirm">确认</el-button>
-          <el-button type="primary" @click="getAllHrSkill" v-loading="sectionLoading">查询</el-button>
-        </el-col>
-        <el-col :span="4" class="hidden-sm-and-down">
+          <el-input
+            style="width:50%;"
+            v-model="needAddTagCategoryNameInputValue"
+            placeholder="回车直接快速添加技能分类"
+            @keyup.enter.native="addTagCategorySubmitMethod"
+          ></el-input>
+          <el-button type="primary"  @click="addTagCategorySubmitMethod" icon="el-icon-finished">保持</el-button>
           <el-tooltip content="黄色表示已经有的技能">
             <span class="addTagSquare"></span>
           </el-tooltip>
           <el-tooltip content="白色表示尚未拥有的技能">
             <span class="closeTagSquare"></span>
           </el-tooltip>
-        </el-col>
+        </el-col> 
       </el-row>
     </el-row>
-    <el-row class="app-container">
+    <el-row class="app-container max-height-box">
       <el-row v-for="(item,index) in convertSkills" :key="item.categoryId">
         <h3>
           <div>
@@ -150,7 +148,8 @@ export default {
                     checked: skill.checked ? true : false,
                     skillId: skill.skillId,
                     skillName: skill.skillName,
-                    pubTag: skill.pubSkill,
+                    pubSkill: skill.pubSkill,
+                    pubc:skill.pupc,
                   };
                   if (
                     this.skillIds &&
@@ -176,7 +175,7 @@ export default {
                       checked: false,
                       skillId: skill.skillId,
                       skillName: skill.skillName,
-                      pubTag: skill.pubSkill,
+                      pubSkill: skill.pubSkill,
                     },
                   ],
                 };
@@ -207,16 +206,7 @@ export default {
     },
     //添加技能分类的方法
     addTagCategorySubmitMethod() {
-      let that = this;
-      if (!(this.userInfo.isPlatformAdmin || this.userInfo.isSuperAdmin)) {
-        if (this.isPub == "1") {
-          this.$message({
-            message: "你不是平台管理员不能添加公共技能分类",
-            type: "error",
-          });
-          return;
-        }
-      }
+      let that = this; 
 
       if (
         this.convertSkills.some(
@@ -272,20 +262,7 @@ export default {
         shopId: this.workShop.shopId,
         branchId: this.workShop.branchId,
         id: categoryId,
-      };
-      if (!this.userInfo.isPlatformAdmin && !this.userInfo.isSuperAdmin) {
-        if (
-          this.convertSkills.some(
-            (i) => i.pubc == "1" && i.categoryId == categoryId
-          )
-        ) {
-          this.$message({
-            message: "公共分类不允许删除",
-            type: "error",
-          });
-          return;
-        }
-      }
+      }; 
       this.$confirm(
         "此操作将永久删除该技能分类, 并连同该技能分类下面的技能也删除，是否继续?",
         "提示",
@@ -319,16 +296,7 @@ export default {
       this.convertSkills[index].showAddButtonVisible = true;
     },
     //添加技能的方法
-    addTagMethod(index) {
-      if (!this.userInfo.isPlatformAdmin && !this.userInfo.isSuperAdmin) {
-        if (this.isPub == "1") {
-          this.$message({
-            message: "不是平台管理员，不允许增加公共技能",
-            type: "error",
-          });
-          return;
-        }
-      }
+    addTagMethod(index) { 
       if (
         this.convertSkills.some((i) => {
           return i.values.some(
@@ -394,19 +362,7 @@ export default {
     },
     //删除技能的方法
     delTagMethod(skillId, index, valueIndex) {
-      if (!this.userInfo.isPlatformAdmin && !this.userInfo.isSuperAdmin) {
-        if (
-          this.convertSkills[index].values.some(
-            (i) => i.pubSkill == "1" && i.skillId == skillId
-          )
-        ) {
-          this.$message({
-            message: "公共技能不允许删除",
-            type: "error",
-          });
-          return;
-        }
-      }
+ 
       let that = this;
 
       let params = {
@@ -562,5 +518,10 @@ export default {
     transform: rotate(360deg);
     box-shadow: 0px 0px 10px #fff;
   }
+}
+.max-height-box{
+  max-height: 600px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 </style>

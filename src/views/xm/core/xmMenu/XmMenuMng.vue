@@ -329,7 +329,9 @@
 						return;
 						//params.xxx=xxxxx
 					} 
-				
+				if(!params.productId){
+					params.branchId=this.userInfo.branchId
+				}
 				let callback= (res)=>{
 					var tips=res.data.tips;
 					if(tips.isOk){ 

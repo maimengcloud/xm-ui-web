@@ -213,6 +213,9 @@
 				if(this.menuId){
 					params.menuId=this.menuId
 				}
+				if(!this.productId && !this.menuId){
+					params.branchId=this.userInfo.branchId
+				}
 				
 				this.load.list = true;
 				listXmIterationWithState(params).then((res) => {

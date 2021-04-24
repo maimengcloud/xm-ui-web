@@ -176,6 +176,9 @@
 					}
 					
 				}
+				if(!params.menuId){
+					params.branchId=this.userInfo.branchId
+				}
 				this.load.list = true;
 				listXmMenuExchange(params).then((res) => {
 					var tips=res.data.tips;
