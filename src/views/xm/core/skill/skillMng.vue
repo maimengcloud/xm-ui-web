@@ -46,7 +46,7 @@
             :key="valueIndex"
             @click="clickTagMethod(index,valueIndex)"
           >
-            {{v.skillName +(v.pubSkill=='1'?'(公共)':'')}}
+            {{v.skillName +(v.pubSkill=='1'?'':'')}}
             <i
               class="el-icon-close closeStyle"
               @click.stop="delTagMethod(v.skillId,index,valueIndex)"
@@ -301,6 +301,7 @@ export default {
         this.convertSkills.some((i) => {
           return i.values.some(
             (skill) =>
+              skill.categoryId==i.categoryId &&
               skill.skillName ==
               this.convertSkills[index].showAddButtonInputValue
           );

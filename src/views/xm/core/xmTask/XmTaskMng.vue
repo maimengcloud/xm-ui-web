@@ -24,6 +24,8 @@
 						<el-option class="showall" value="all"  label="全部类型">全部类型</el-option>
 						<el-option  v-for="(i,index) in options.taskType" :value="i.optionValue" :label="i.optionName" :key="index">{{i.optionName}}</el-option> 
 					</el-select> 
+					<el-button v-if=" !filters.skillTags || filters.skillTags.length==0" icon="el-icon-search" @click="showSkillSelect">选择标签</el-button>
+					<el-tag closable v-for=" (skill,index) in filters.skillTags" :key="index"  @click="showSkillSelect" @close="skillTagClear(skill)">{{skill.skillName}}</el-tag>
 					<div style="line-height:50px;float:right;margin-right:10px;">
 						<el-checkbox v-model="gstcVisible"  >甘特图</el-checkbox>
 						<el-tag v-if=" !selProject && filters.selProject" :closable="!selProject"  @click="showProjectList" @close="clearProject">项目:{{this.filters.selProject.name}}</el-tag>
@@ -306,7 +308,7 @@
 			<xm-task-add :xm-project="currentProject" :project-phase="currentProjectPhase"   :xm-task="addForm" :parent-task="parentTask" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-task-add>
 		</el-dialog>
 
-		<el-dialog :title="'任务：'+currTaskName+'——执行人'" :visible.sync="execUserVisible" fullscreen width="80%" append-to-body  :close-on-click-modal="false">
+		<el-dialog :title="'任务'+currTaskName+'的执行人'" :visible.sync="execUserVisible" fullscreen width="80%" append-to-body  :close-on-click-modal="false">
 			<xm-execuser-mng :visible="execUserVisible" :xm-task="editForm"  :is-my="isMy"  @after-add-submit="afterExecuserSubmit" @after-edit-submit="afterExecuserSubmit" @after-delete-submit="afterExecuserSubmit" ref="execuserMng"></xm-execuser-mng>
 		</el-dialog>
 
@@ -314,8 +316,11 @@
 			<xm-skill-mng :visible="skillVisible" :task-id="currTaskId" :task-name="currTaskName"></xm-skill-mng>
 		</el-dialog> -->
 
-		<el-dialog  :title="'任务：'+currTaskName+'——技能要求'" :visible.sync="skillVisible" width="50%" append-to-body  :close-on-click-modal="false">
+		<el-dialog  :title="'任务'+currTaskName+'的技能要求'" :visible.sync="skillVisible" width="600" append-to-body  :close-on-click-modal="false">
 			<skill-mng :task-skills="taskSkills" :jump="true" @select-confirm="onTaskSkillsSelected"></skill-mng>
+		</el-dialog>
+		<el-dialog  :title="'技能条件'" :visible.sync="showSkillSearchVisible" width="600" append-to-body  :close-on-click-modal="false">
+			<skill-mng :task-skills="filters.skillTags" :jump="true" @select-confirm="onTaskSkillsSearchSelected"></skill-mng>
 		</el-dialog>
 		
 		<el-dialog  title="任务模板" :visible.sync="taskTemplateVisible" width="80%" append-to-body  :close-on-click-modal="false">
@@ -529,6 +534,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					key: '',
 					isMyTask: '0',//0不区分我的，1 时我的任务
 					selProject:null,
+					skillTags:[],
 				},
 				xmTasks: [],//查询结果
 				pageInfo:{//分页数据
@@ -594,6 +600,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				pickerOptions:  util.pickerOptions(),
 				gstcVisible:false,
 				groupUserSelectVisible:false,//选择负责人
+				showSkillSearchVisible:false,//按技能查询
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -694,6 +701,9 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				if(this.menuId){
 					params.menuId=this.menuId
 				}
+				if(this.filters.skillTags && this.filters.skillTags.length>0){
+					params.skillIds=this.filters.skillTags.map(i=>i.skillId)
+				} 
 				getTask(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 
@@ -928,6 +938,13 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				this.editForm=row;
 				this.skillVisible = true;
 			},
+			showSkillSelect(){ 
+				this.showSkillSearchVisible=true; 
+			},
+			skillTagClear(skill){
+				this.filters.skillTags=this.filters.skillTags.filter(i=>i.skillId!=skill.skillId)
+				this.searchXmTasks();
+			},
 			showMenu:function(parentTask){
 				if(this.projectPhase==null){
 					this.$message.error("请先选中阶段计划"); 
@@ -1062,7 +1079,12 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					 this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
 				 }).catch(e=>{this.taskTemplateVisible=false;});
 			},
-			onTaskSkillsSelected(skills) {
+			onTaskSkillsSearchSelected(skills){ 
+				this.showSkillSearchVisible=false;
+				this.filters.skillTags=skills;
+				this.searchXmTasks()
+			},
+			onTaskSkillsSelected(skills) { 
 				skills.forEach(i=>{
 					i.taskId=this.editForm.id
 					i.taskName=this.editForm.name 
@@ -1078,7 +1100,8 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 						this.getXmTasks();
 					}
 					this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
-				}).catch( err  => this.load.add=false);
+				}).catch( err  => this.load.add=false); 
+				
 			},
 
 			handleSelect(key, keyPath) {
