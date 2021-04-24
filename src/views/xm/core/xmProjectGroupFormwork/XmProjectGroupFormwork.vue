@@ -1,18 +1,16 @@
 <template>
 	<section>
 		<el-row class="app-container">
-				<el-col :span="16">
-					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="primary" @click="showGroupFormwork" icon="el-icon-plus">从模板导入项目团队组</el-button>
+				<el-col :span="24">
+					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="primary" @click="showGroupFormwork" icon="el-icon-plus">导入项目组</el-button>
 					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="primary" @click="groupConfirm" icon="el-icon-finished">保存</el-button>
-					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="plain" @click="showGroupState" icon="el-icon-s-data">查看团队进度</el-button>
+					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="plain" @click="showGroupState" icon="el-icon-s-data">小组进度</el-button>
 
 					<el-button v-else type="primary" @click="userConfirm" icon="el-icon-finished">确认选择用户</el-button>
-					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="plain" @click="xmRecordVisible=true" icon="el-icon-document">查看团队变化日志</el-button>
-					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="plain" @click="doSearchImGroupsByProjectId" icon="el-icon-document">查看绑定即聊情况</el-button>
+					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="plain" @click="xmRecordVisible=true" icon="el-icon-document">变化日志</el-button>
+					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="plain" @click="doSearchImGroupsByProjectId" icon="el-icon-document">绑定即聊情况</el-button>
  					<el-button @click="groupRoleDescVisible=true" icon="el-icon-document">角色说明</el-button>
-					
-				</el-col>
-				<el-col :span="8" class="hidden-sm-and-down">
+ 
 					<el-tooltip  v-if="isSelectSingleUser!='1' && isSelectMultiUser !='1'" content="黄色表示组长"><span class="addXmProjectGroupFormworkSquare"></span></el-tooltip>
 					<el-tooltip  v-else content="黄色表示选中"><span class="addXmProjectGroupFormworkSquare">选中</span></el-tooltip>
 				</el-col> 
@@ -51,32 +49,33 @@
 			append-to-body
 			:visible.sync="groupSelectVisible"
 			width="50%">
+			<el-row>
+				<el-button  v-if="setTemplateVisible==false"  @click="getXmProjectGroupFormworks" v-loading="load.list" icon="el-icon-search">刷新</el-button>
+				<el-button  v-if="setTemplateVisible==false" type="primary"  @click="groupNameConfirm" icon="el-icon-finished">确认选择</el-button>
+				<el-select  v-if="setTemplateVisible==true"  style="width:20%;" placeholder="请选择小组类型"   v-model="projectGroupType" value-key="optionValue">
+					<el-option
+						v-for="(item,i) in options.projectGroupType"
+						:key="i"
+						:label="item.optionName"
+						:value="item">
+					</el-option>
+				</el-select>
+				<el-input style="width:40%" v-show="setTemplateVisible" v-model="needAddGroupNameValue" placeholder="输入组名，回车直接添加" @keyup.enter.native="addGroupName">
+					
+					<el-button  slot="append" @click.stop="addGroupName" icon="el-icon-plus"></el-button>
+				</el-input>
+				<el-button  v-if="setTemplateVisible==false"  @click.stop="setTemplateVisible=true" icon="el-icon-right">维护模板</el-button>
+				<el-button  v-else @click.stop="setTemplateVisible=false" icon="el-icon-back">返回</el-button>
+
+			</el-row>
 			<el-table ref="groupTable" @selection-change="addIsSels" @row-click.self="changesels" :data="convertXmProjectGroupFormworks"  v-loading="load.list">
 				<el-table-column type="selection" aria-disabled width="55"></el-table-column>
-				<el-table-column align="center" prop="groupName" label="团队名" width="200"></el-table-column>
-				<el-table-column align="center">
-					<template slot="header" slot-scope="scope">
-						<el-button type="primary" size="mini" @click="getXmProjectGroupFormworks" v-loading="load.list">刷新</el-button>
-						<el-button type="primary" size="mini" @click="groupNameConfirm" >确认选择</el-button>
-					</template>
+				<el-table-column align="center" prop="groupName" label="小组模板" width="200"></el-table-column>
+				<el-table-column   align="center" label="操作"> 
 					<template slot-scope="scope">
-						<el-button size="mini" type="danger" @click.stop="deleteGroup(scope.$index, scope.row)">删除</el-button>
+						<el-button  v-show="setTemplateVisible==true" type="danger" @click.stop="deleteGroup(scope.$index, scope.row)" icon="el-icon-delete"></el-button>
 					</template>
-				</el-table-column>
-				<el-table-column align="center">
-					<template slot="header" slot-scope="scope">
-						
-						<el-select style="width:50%;" placeholder="小组类型" v-model="projectGroupType" value-key="optionValue">
-							<el-option
-								v-for="(item,i) in options.projectGroupType"
-								:key="i"
-								:label="item.optionName"
-								:value="item">
-							</el-option>
-						</el-select>
-						<el-input v-model="needAddGroupNameValue" placeholder="团队名，回车直接添加" @keyup.enter.native="addGroupName"></el-input>
-					</template>
-				</el-table-column>
+				</el-table-column> 
 			</el-table>
 		</el-dialog>
 		<el-drawer append-to-body
@@ -246,6 +245,7 @@
 				imGroups:[],
 				imGroupVisible:false,
 				groupRoleDescVisible:false,
+				setTemplateVisible:false,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		}, //end data
@@ -302,6 +302,10 @@
 					return false;
 				}
 				if(!this.needAddGroupNameValue) {
+					this.$message({
+						message:"小组名称不能为空",
+						type:   'error'
+					});
 					return;
 				}
 				if(this.convertXmProjectGroupFormworks.some(i=>i.groupName==this.needAddGroupNameValue.trim())){
@@ -328,14 +332,7 @@
 					var data=res.data.data;
 					if (tips.isOk) {
 						that.needAddGroupNameValue = '';
-						let json = { 
-							"groupName": data.groupName,
-							"groupUsers": [],
-							"pgTypeId":data.pgTypeId,
-							"pgTypeName":data.pgTypeName,
-              				"isPub":data.isPub
-						}
-						this.convertXmProjectGroupFormworks.push(json);
+						this.getXmProjectGroupFormworks()
 					}
 					this.$message({
 						message: tips.msg,
@@ -346,17 +343,9 @@
 
 			//ok
 			deleteGroup(index,row){
-				if(!this.userInfo.isPlatformAdmin && !this.userInfo.isSuperAdmin){
-					if(row.isPub == "1"){
-						this.$message({
-								message:"公共团队名不允许删除",
-								type:   'error'
-						});
-						return;
-					}
-				}
+				 
 				let that = this;
-				let params = {"id": row.id };
+				let params =row
 				if (!params.id) {return;}
 				this.$confirm('此操作将永久删除该团队名, 是否继续?', '提示', {
 					confirmButtonText: '确定',
