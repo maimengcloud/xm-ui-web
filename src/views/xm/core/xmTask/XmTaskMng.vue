@@ -24,14 +24,14 @@
 						<el-option class="showall" value="all"  label="全部类型">全部类型</el-option>
 						<el-option  v-for="(i,index) in options.taskType" :value="i.optionValue" :label="i.optionName" :key="index">{{i.optionName}}</el-option> 
 					</el-select> 
-					<el-button v-if=" !filters.skillTags || filters.skillTags.length==0" icon="el-icon-search" @click="showSkillSelect">选择标签</el-button>
+					<el-button  class="hidden-md-and-down"  v-if=" !filters.skillTags || filters.skillTags.length==0" icon="el-icon-search" @click="showSkillSelect">选择标签</el-button>
 					<el-tag closable v-for=" (skill,index) in filters.skillTags" :key="index"  @click="showSkillSelect" @close="skillTagClear(skill)">{{skill.skillName}}</el-tag>
-					<div style="line-height:50px;float:right;margin-right:10px;">
-						<el-checkbox v-model="gstcVisible"  >甘特图</el-checkbox>
-						<el-tag v-if=" !selProject && filters.selProject" :closable="!selProject"  @click="showProjectList" @close="clearProject">项目:{{this.filters.selProject.name}}</el-tag>
-						<el-tag v-if=" !selProject && !filters.selProject" @click="showProjectList" type="plian">未选项目，点我</el-tag>
+					<div style=" float:right;margin-right:10px;">
+						<el-checkbox v-model="gstcVisible"  class="hidden-md-and-down" >甘特图</el-checkbox>
+						<el-tag  class="hidden-md-and-down" v-if=" !selProject && filters.selProject" :closable="!selProject"  @click="showProjectList" @close="clearProject">项目:{{this.filters.selProject.name}}</el-tag>
+						<el-tag  class="hidden-md-and-down" v-if=" !selProject && !filters.selProject" @click="showProjectList" type="plian">未选项目，点我</el-tag>
 
-						<el-input  style="width:200px;" v-model="filters.key" placeholder="任务名称">
+						<el-input   style="width:200px;" v-model="filters.key" placeholder="任务名称">
 							<template slot="append">
 								<el-button    @click="searchXmTasks" type="primary" icon="el-icon-search" v-loading="load.list"></el-button> 
 							</template>
@@ -41,7 +41,7 @@
 							placement="top-start"
 							title=""
 							width="200"
-							trigger="hover" >
+							trigger="click" >
 							<el-row>
 								<el-col :span="24" style="padding-top:5px;">
 									<el-button type="primary" v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showBatchEdit" v-loading="load.edit" icon="el-icon-edit">批量修改任务</el-button>
@@ -53,11 +53,20 @@
 									<el-button v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showMenu" type="success" icon="el-icon-plus">由故事快速创建任务</el-button> 
 								</el-col> 
 							</el-row>
+							<el-row>
+								<el-col :span="24" style="padding-top:5px;">
+									<el-checkbox v-model="gstcVisible"  class="hidden-lg-and-up" >甘特图</el-checkbox>
+								</el-col>
+								<el-col  :span="24"  style="padding-top:5px;">
+									<el-button  class="hidden-lg-and-up"  v-if=" !filters.skillTags || filters.skillTags.length==0" icon="el-icon-search" @click="showSkillSelect">选择标签</el-button>
+					
+								</el-col> 
+							</el-row>
 							<el-button  slot="reference" icon="el-icon-more" circle></el-button>
 						</el-popover> 
 					</div>  
 				</el-row> 
-				<el-row> 
+				<el-row style="padding-top:12px;"> 
 						<el-table v-if="!gstcVisible"
 							show-summary
 							:data="tasksTreeData"
@@ -187,7 +196,7 @@
 								</template>
 							</el-table-column>
 						</el-table>
-						<el-pagination v-if="!gstcVisible" layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+						<el-pagination  v-if="!gstcVisible" layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 						<xm-gantt v-if="gstcVisible" :tree-data="tasksTreeData" :project-phase="{startTime: currentProjectPhase.beginDate, endTime: currentProjectPhase.endDate}" :useRealTime="true"></xm-gantt>
 					 
 				</el-row>  

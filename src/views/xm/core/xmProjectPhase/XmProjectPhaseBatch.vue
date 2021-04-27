@@ -6,21 +6,21 @@
 			
 			<el-button  type="success"  @click="handlePopover(null,'add')" icon="el-icon-plus"></el-button>
 			<el-button  @click="noBatchEdit" v-loading="load.edit" icon="el-icon-back">返回</el-button>
-			
+			<div  style=" float:right;margin-right:10px;" > 
+				<el-input   v-model="filters.key" style="width:200px;" placeholder="模糊查询">
+					<template slot="append">
+						<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectPhases" icon="el-icon-search"></el-button>
+					</template>
+				</el-input> 
+				
+			</div> 
 		</el-row>
 		<el-row class="app-container"  >  
  					<span style="margin-left:10px;font-size:14px;">项目总预算：</span><el-tag type='success'> {{toFixed(selProject.planTotalCost/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanCostAt/10000,2)}}万</el-tag> 
 					<span style="margin-left:10px;font-size:14px;">非人力总预算：</span><el-tag :type="phaseBudgetData.surplusPlanNouserAt>0?'warning':'danger'">{{toFixed(selProject.planNouserAt/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanNouserAt/10000,2)}}万</el-tag>  
 					<span style="margin-left:10px;font-size:14px;">内部人力总预算：</span><el-tag  :type="phaseBudgetData.surplusPlanInnerUserAt>0?'warning':'danger'">{{toFixed(selProject.planInnerUserAt/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanInnerUserAt/10000,2)}}万</el-tag>  
 					<span style="margin-left:10px;font-size:14px;">外购人力总预算：</span><el-tag  :type="phaseBudgetData.surplusPlanOutUserAt>0?'warning':'danger'">{{toFixed(selProject.planOutUserAt/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanOutUserAt/10000,2)}}万</el-tag>  
-					<div  style=" float:right;margin-right:10px;" > 
-						<el-input   v-model="filters.key" style="width:200px;" placeholder="模糊查询">
-							<template slot="append">
-								<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectPhases" icon="el-icon-search"></el-button>
-							</template>
-						</el-input> 
-						
-					</div> 
+
  		</el-row> 
  		<el-row class="app-container" >   
 			<!--列表 XmProjectPhase xm_project_phase-->
@@ -34,8 +34,8 @@
 								width="400"
 								trigger="click">
 								<div style="text-align: center; margin: 0">
-                  <div :ref="'phase_'+scope.$index" :data-phase-id="scope.row.id"></div>
-                  <el-button type="primary" size="mini"   @click="handlePopover(scope.row,'highestPmenuId')">成为顶级节点</el-button> 
+									<div :ref="'phase_'+scope.$index" :data-phase-id="scope.row.id"></div>
+									<el-button type="primary" size="mini"   @click="handlePopover(scope.row,'highestPmenuId')">成为顶级节点</el-button> 
 									<el-button type="danger" size="mini"   @click="handlePopover(scope.row,'delete')">删除当前行</el-button> 
 									<el-button type="success" size="mini"   @click="handlePopover(scope.row,'addSub')">增加子行</el-button> 
 								</div>
@@ -49,9 +49,7 @@
 					<template  slot-scope="scope">
 						<el-input    v-model="scope.row.phaseName"    @change="fieldChange(scope.row,'phaseName')"></el-input>  
 					</template>
-				</el-table-column>  
-				<el-table-column  prop="mngUsername" label="责任人" min-width="80" >  
-				</el-table-column>
+				</el-table-column>   
 				<el-table-column  prop="beginDate" label="起始时间"  width="200" >
 					<template slot-scope="scope">  
 						<div>

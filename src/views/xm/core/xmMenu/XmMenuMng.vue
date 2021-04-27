@@ -2,10 +2,10 @@
 	<section>
 		<el-row>
 			<el-row >  
-				<el-col v-show="!batchEditVisible" :span="filters.product?6:24" class="app-container">
+				<el-col v-show="!batchEditVisible&& !filters.product" :span="24" class="app-container">
 					<xm-product-mng :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-mng>
 				</el-col>
-				<el-col v-show="filters.product" :span="!batchEditVisible? 18:24" >
+				<el-col v-show="filters.product" :span="24" >
 					<el-row class="app-container">  
 						<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
 							<template slot="append">

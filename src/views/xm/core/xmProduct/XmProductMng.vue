@@ -1,13 +1,13 @@
 <template>
 	<section>
 		<el-row  class="app-container">
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
+			<el-input v-model="filters.key" style="width: 40%;" placeholder="模糊查询">
 				<template slot="append">
 					
 					<el-button v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProducts" icon="el-icon-search"></el-button>
 				</template>
 			</el-input> 
-			<el-button type="primary" @click="showAdd" icon="el-icon-plus"></el-button>
+			<el-button type="primary" @click="showAdd" icon="el-icon-plus">产品</el-button>
 
 			<el-button  type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button> 
 		</el-row>
@@ -27,15 +27,40 @@
 					</template>
 				</el-table-column>
 				<el-table-column prop="pmUsername" label="产品经理" width="100" ></el-table-column> 
-				<el-table-column prop="planWorkload" label="预计工作量.人时" width="120" ></el-table-column>
-				<el-table-column prop="actWorkload" label="实际工作量.人时" width="120" ></el-table-column> 
- 				<el-table-column  label="操作" width="540" fixed="right">
+				<el-table-column prop="planWorkload" label="预计工作量.人时" width="150" ></el-table-column>
+				<el-table-column prop="actWorkload" label="实际工作量.人时" width="150" ></el-table-column> 
+ 				<el-table-column  label="操作" width="200" fixed="right">
 					<template slot-scope="scope"> 
-						<el-button  type="warning" @click="loadTasksToXmProductState(scope.row)" icon="el-icon-s-data">刷新</el-button>
-						<el-button  type="warning" @click="showProductState(scope.row)" icon="el-icon-s-data">报告</el-button> 
-						<el-button  type="success" @click="toIterationList(scope.row)" icon="el-icon-document">迭代</el-button>   
-						<el-button type="success" @click="toProjectList(scope.row)"  icon="el-icon-document">项目</el-button> 
-						<el-button  type="success" @click="toTaskList(scope.row)"  icon="el-icon-tickets">任务</el-button>
+						<el-button  type="primary" @click="toIterationList(scope.row)" icon="el-icon-document">迭代计划</el-button>  
+						<el-popover
+							placement="top-start"
+							title=""
+							width="200"
+							trigger="click" >
+							<el-row>
+								<el-col :span="24"  style="padding-top:12px;">
+									<el-button  type="warning" @click="loadTasksToXmProductState(scope.row)" icon="el-icon-s-data">执行统计任务</el-button>
+								</el-col>
+								<el-col :span="24" style="padding-top:12px;">
+									<el-button  type="warning" @click="showProductState(scope.row)" icon="el-icon-s-data">产品报告</el-button> 
+								</el-col>
+								<el-col :span="24" class="hidden-lg-and-up" style="padding-top:12px;">
+									<el-button type="success" @click="toProjectList(scope.row)"  icon="el-icon-document">关联项目查询</el-button> 
+								</el-col> 
+								<el-col :span="24" class="hidden-lg-and-up" style="padding-top:12px;">
+									<el-button  type="success" @click="toIterationList(scope.row)" icon="el-icon-document">迭代计划管理</el-button>   
+								</el-col> 
+								<el-col :span="24"  style="padding-top:12px;">
+									<el-button  type="success" @click="toTaskList(scope.row)"  icon="el-icon-tickets">关联任务查询</el-button>
+								</el-col> 
+							</el-row>
+							<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+						</el-popover> 
+						
+						
+						
+						
+						
 					</template>
 				</el-table-column>
 			</el-table>

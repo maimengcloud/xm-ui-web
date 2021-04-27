@@ -1,7 +1,7 @@
 <template>
 	<section>
 		<el-row>
-			<el-menu   active-text-color="#00abfc" :default-active="menukey" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+			<el-menu  active-text-color="#00abfc" :default-active="menukey" class="el-menu-demo" mode="horizontal" @select="handleSelect">
 				<el-menu-item index="all">全部</el-menu-item>
 				<el-menu-item index="compete">我参与</el-menu-item>
 				<el-menu-item index="leader">我管理</el-menu-item>
@@ -12,11 +12,11 @@
 				<el-menu-item index="myExecuserStatus0">我排队</el-menu-item>
 				<el-menu-item index="myExecuserStatus1">我执行</el-menu-item>
 				<el-menu-item index="myExecuserStatus2">我提交验收</el-menu-item>
-				<el-menu-item index="myExecuserStatus3">我验收成功</el-menu-item>
-				<el-menu-item index="myExecuserStatus4">我验收失败</el-menu-item>
-				<el-menu-item index="myExecuserStatus5">我付款中</el-menu-item>
-				<el-menu-item index="myExecuserStatus6">我付款成功</el-menu-item>
-				<el-menu-item index="myExecuserStatus7">我放弃</el-menu-item>
+				<el-menu-item class="hidden-md-and-down" index="myExecuserStatus3">我验收成功</el-menu-item>
+				<el-menu-item class="hidden-md-and-down" index="myExecuserStatus4">我验收失败</el-menu-item>
+				<el-menu-item class="hidden-md-and-down" index="myExecuserStatus5">我付款中</el-menu-item>
+				<el-menu-item class="hidden-lg-and-down" index="myExecuserStatus6">我付款成功</el-menu-item>
+				<el-menu-item class="hidden-lg-and-down" index="myExecuserStatus7">我放弃</el-menu-item>
 				<!-- <el-submenu index="7">
 					<template slot="title">更多筛选</template>
 					<el-menu-item index="7-1">选项1</el-menu-item>
@@ -39,16 +39,24 @@
 							<el-button :loading="load.list" v-if="!showType" :class="{'changebtn-active':showType}" plain type="text" @click="showType=true" icon="el-icon-menu"></el-button>
 							<el-button :loading="load.list" v-else :class="{'changebtn-active':!showType}" plain type="text" @click="showType=false" icon="el-icon-more"></el-button>
 						</el-col> 
+						
+						<el-col  :span="24"  style="padding-top:5px; ">
+							<el-button class="hidden-lg-and-up hidden-btn"  style="margin-left:10px;"  @click="handleSelect('myExecuserStatus3')">我验收成功</el-button>
+							<el-button class="hidden-lg-and-up hidden-btn"    @click="handleSelect('myExecuserStatus4')">我验收失败</el-button>
+							<el-button class="hidden-lg-and-up hidden-btn"   @click="handleSelect('myExecuserStatus5')">我付款中</el-button>
+							<el-button class="hidden-xl-and-up hidden-btn"    @click="handleSelect('myExecuserStatus6')">我付款成功</el-button>
+							<el-button class="hidden-xl-and-up hidden-btn"    @click="handleSelect('myExecuserStatus7')">我放弃</el-button>
+						</el-col> 
 					</el-row>
 					<el-button type="text"  slot="reference" icon="el-icon-more"></el-button>
 				</el-popover>
 			</el-menu>
 			 
 		</el-row> 
-		<el-row class="app-container"> 
+		<el-row  class="app-container"> 
 			<!--列表 XmProject xm_project-->
 			<el-row v-show="showType" v-loading="load.list">
-				<el-col v-cloak v-for="(p,i) in ScreenData" :key="i" :xl="4" :lg="6" :md="8" :sm="12">
+				<el-col  v-cloak v-for="(p,i) in ScreenData" :key="i" :xl="4" :lg="6" :md="8" :sm="12">
 					<el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always">
 						<div class="project-name" title="这是项目名称">{{p.name}}</div>
 						<div class="project-id eui-text-truncate">{{p.code}}</div>
@@ -766,5 +774,9 @@
 }
 [v-cloak]{
 	display: none;
+}
+.hidden-btn{
+	margin-top: 5px;
+	margin-bottom: 5px;
 }
 </style>

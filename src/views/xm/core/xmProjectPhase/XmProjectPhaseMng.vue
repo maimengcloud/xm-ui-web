@@ -2,28 +2,51 @@
 	<section>
 		<el-row  class="app-container" v-show="batchEditVisible==false">
 
-			<el-button  type="primary" @click="showAdd" v-loading="load.add" icon="el-icon-plus">添加计划</el-button>
-			<el-button  type="primary" @click="showPhaseTemplate" v-loading="load.add" icon="el-icon-plus">由模板导入计划</el-button>
-			<el-button  type="primary" @click="showMenu" v-loading="load.add" icon="el-icon-plus">由故事批量创建</el-button>
-
-			<el-button  type="warning" @click="loadTasksToXmProjectPhase(sels)" v-loading="load.edit" icon="el-icon-s-data">由任务汇总实际数据</el-button> 
-			<el-button type="success"  @click="batchEditVisible=true" v-loading="load.edit" icon="el-icon-edit">批量修改</el-button>
+			<el-button  type="primary" @click="showAdd" v-loading="load.add" icon="el-icon-plus">添加计划</el-button> 
+			<el-button   @click="showMenu" v-loading="load.add" icon="el-icon-plus">由故事批量创建</el-button> 
+			<el-button  class="hidden-md-and-down"  @click="showPhaseTemplate" v-loading="load.add" icon="el-icon-plus">由模板导入计划</el-button> 
+			<el-button  class="hidden-md-and-down"  @click="loadTasksToXmProjectPhase(sels)" v-loading="load.edit" icon="el-icon-s-data">由任务汇总实际数据</el-button> 
+			<el-button   @click="batchEditVisible=true" v-loading="load.edit" icon="el-icon-edit">批量修改</el-button>
+			<div  v-if="batchEditVisible!=true" style=" float:right;margin-right:10px;" >
+				<el-checkbox v-model="gstcVisible"  >甘特图</el-checkbox>
+				<el-input   v-model="filters.key" style="width:200px;" placeholder="模糊查询">
+					<template slot="append">
+						<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectPhases" icon="el-icon-search"></el-button>
+					</template>
+				</el-input> 
+				<el-popover
+					placement="top-start"
+					title=""
+					width="200"
+					trigger="click" >
+					<el-row>
+						<el-col :span="24" style="padding-top:5px;">
+							<el-button  type="primary" @click="showPhaseTemplate" v-loading="load.add" icon="el-icon-plus">由模板导入计划</el-button>
+						</el-col>
+						<el-col  :span="24"  style="padding-top:5px;">
+							<el-button  type="primary" @click="showMenu" v-loading="load.add" icon="el-icon-plus">由故事批量创建</el-button> 
+						</el-col>
+						<el-col  :span="24"  style="padding-top:5px;">
+							<el-button  type="warning" @click="loadTasksToXmProjectPhase(sels)" v-loading="load.edit" icon="el-icon-s-data">由任务汇总实际数据</el-button> 
+						</el-col>  
+						<el-col :span="24" style="padding-top:5px;">
+							<el-checkbox v-model="gstcVisible"  class="hidden-lg-and-up" >甘特图</el-checkbox>
+						</el-col>
+						<el-col  :span="24"  style="padding-top:5px;"> 
+			
+						</el-col> 
+					</el-row>
+					<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+				</el-popover> 
+			</div> 
 			
 		</el-row>
-		<el-row class="app-container"  v-show="batchEditVisible==false">  
+		<el-row class="app-container hidden-md-and-down"     v-show="batchEditVisible==false">  
  					<span style="margin-left:10px;font-size:14px;">项目总预算：</span><el-tag type='success'> {{toFixed(selProject.planTotalCost/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanCostAt/10000,2)}}万</el-tag> 
 					<span style="margin-left:10px;font-size:14px;">非人力总预算：</span><el-tag :type="phaseBudgetData.surplusPlanNouserAt>0?'warning':'danger'">{{toFixed(selProject.planNouserAt/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanNouserAt/10000,2)}}万</el-tag>  
 					<span style="margin-left:10px;font-size:14px;">内部人力总预算：</span><el-tag  :type="phaseBudgetData.surplusPlanInnerUserAt>0?'warning':'danger'">{{toFixed(selProject.planInnerUserAt/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanInnerUserAt/10000,2)}}万</el-tag>  
 					<span style="margin-left:10px;font-size:14px;">外购人力总预算：</span><el-tag  :type="phaseBudgetData.surplusPlanOutUserAt>0?'warning':'danger'">{{toFixed(selProject.planOutUserAt/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanOutUserAt/10000,2)}}万</el-tag>  
-					<div  v-if="batchEditVisible!=true" style=" float:right;margin-right:10px;" >
-					  <el-checkbox v-model="gstcVisible"  >甘特图</el-checkbox>
-						<el-input   v-model="filters.key" style="width:200px;" placeholder="模糊查询">
-							<template slot="append">
-								<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectPhases" icon="el-icon-search"></el-button>
-							</template>
-						</el-input> 
-						
-					</div> 
+
  		</el-row> 
  		<el-row class="app-container" v-show="batchEditVisible==false"> 
 			<!--列表 XmProjectPhase xm_project_phase-->
@@ -36,13 +59,13 @@
 				</el-table-column>   
 				<el-table-column  prop="mngUsername" label="责任人" min-width="80" > 
 					<template  slot-scope="scope">
-						<el-button  v-if="!scope.row.mngUserid"  v-model="scope.row.mngUsername" @click="groupUserSelectVisible=true" icon="el-icon-setting">去设置</el-button>  
-						<el-link v-else type="primary" icon="el-icon-setting" @click="groupUserSelectVisible=true">{{scope.row.mngUsername}}</el-link>
+						<el-button type="text" v-if="!scope.row.mngUserid"  v-model="scope.row.mngUsername" @click="groupUserSelectVisible=true" icon="el-icon-setting">去设置</el-button>  
+						<el-link v-else type="primary"   @click="groupUserSelectVisible=true">{{scope.row.mngUsername}}</el-link>
 					</template>
 				</el-table-column>
 				<el-table-column  prop="beginDate" label="起止时间" min-width="150" >
 					<template slot-scope="scope">  
-								{{formatDate(scope.row.beginDate)}}~{{formatDate(scope.row.endDate)}}  
+								<font class="hidden-md-and-down" >{{formatDate(scope.row.beginDate)}}<br>{{formatDate(scope.row.endDate)}}  </font>
 								<div v-for="item in [calcTaskStateByTime(scope.row.beginDate,scope.row.endDate,scope.row.actRate,scope.phaseStatus)]" :key="item.status"><el-tag :type="item.status">{{item.remark}}</el-tag></div> 
 					</template>
 				</el-table-column>
@@ -54,16 +77,10 @@
 				</el-table-column>
 				<el-table-column  prop="phaseBudgetHours" label="工时.人时" min-width="200" > 
 					<template slot-scope="scope">  
-						计划：{{getFloatValue(scope.row.phaseBudgetOutUserCnt)+getFloatValue(scope.row.phaseBudgetInnerUserCnt)}}人,{{scope.row.phaseBudgetHours}}小时,{{scope.row.phaseBudgetWorkload}}人时 <br/> 
-						实际：{{scope.row.actStaffNu}}人,{{scope.row.actHours}}小时,{{scope.row.phaseActWorkload}}人时
+						计划：{{scope.row.phaseBudgetWorkload}} <br/> 
+						实际：{{scope.row.phaseActWorkload}} 
 					</template>
-				</el-table-column> 
-				<el-table-column  prop="phaseBudgetNouserAt" label="成本.元" min-width="300" > 
-					<template slot-scope="scope">  
-						计划：非人力:{{scope.row.phaseBudgetNouserAt}},内购人力:{{scope.row.phaseBudgetInnerUserAt}},外购人力:{{scope.row.phaseBudgetOutUserAt}} <br/> 
-						实际：非人力:{{scope.row.actNouserAt}},内购人力:{{scope.row.actInnerUserAt}},外购人力:{{scope.row.actOutUserAt}}
-					</template>
-				</el-table-column> 
+				</el-table-column>  
 				<el-table-column  prop="phaseBudgetCostAt" label="成本合计.元" min-width="120" > 
 					<template slot-scope="scope">  
 						计划：{{scope.row.phaseBudgetCostAt}} <br/> 

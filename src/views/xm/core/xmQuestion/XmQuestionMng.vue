@@ -7,11 +7,11 @@
 					<el-option v-for="(b,index) in options['bugStatus']" :value="b.optionValue"  :key="index" :label="b.optionName">{{b.optionName}}
 					</el-option>
 				</el-select>
-				<el-select v-model="filters.priority" placeholder="请选择紧急程度" clearable @change="changePriority">
+				<el-select class="hidden-md-and-down" v-model="filters.priority" placeholder="请选择紧急程度" clearable @change="changePriority">
 					<el-option v-for="(b,index) in options['urgencyLevel']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
 					</el-option>
 				</el-select>
-				<el-select v-model="filters.solution" placeholder="请选择解决方案" clearable @change="changeSolution">
+				<el-select class="hidden-md-and-down" v-model="filters.solution" placeholder="请选择解决方案" clearable @change="changeSolution">
 					<el-option v-for="(b,index) in options['bugSolution']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
 					</el-option>
 				</el-select>
@@ -30,7 +30,7 @@
 					placement="top-start"
 					title=""
 					width="400"
-					trigger="hover" >
+					trigger="click" >
 					<el-row>
 						<el-col :span="24"  style="padding-top:12px;">
 							<el-tag v-if="filters.selProject && !selProject" closable @close="clearProject" @click="showProjectList(true)">{{ filters.selProject.name }}</el-tag>
@@ -41,6 +41,18 @@
 							指派给:<el-tag v-if="!filters.handlerUsername" @click="showGroupUsers('handlerUsername')">未选，点我</el-tag>
 							<el-tag v-if="filters.handlerUsername" closable @close="clearHandler"  @click="showGroupUsers('handlerUsername')">{{filters.handlerUsername}}</el-tag>
 						</el-col>
+						<el-col :span="24" class="hidden-lg-and-up" style="padding-top:12px;">
+							<el-select   v-model="filters.priority" placeholder="请选择紧急程度" clearable @change="changePriority">
+								<el-option v-for="(b,index) in options['urgencyLevel']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
+								</el-option>
+							</el-select>
+						</el-col> 
+						<el-col :span="24" class="hidden-lg-and-up" style="padding-top:12px;">
+							<el-select  v-model="filters.solution" placeholder="请选择解决方案" clearable @change="changeSolution">
+								<el-option v-for="(b,index) in options['bugSolution']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
+								</el-option>
+							</el-select>
+						</el-col> 
 						<el-col :span="24"  style="padding-top:12px;">
 							<el-button @click="handleExport"   icon="el-icon-download">导出</el-button>
 						</el-col> 

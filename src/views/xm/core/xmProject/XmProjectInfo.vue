@@ -7,7 +7,7 @@
 						<el-radio-button label="任务"></el-radio-button>
 						<el-radio-button label="阶段计划"></el-radio-button>
 						<el-radio-button label="团队"></el-radio-button>
-						<el-radio-button label="风险"></el-radio-button>
+						<el-radio-button class="hidden-sm-and-down" label="风险"></el-radio-button>
 						<el-radio-button label="问题"></el-radio-button>
 						<el-radio-button label="测试计划"></el-radio-button> 
 						<el-radio-button label="文档"></el-radio-button>
@@ -15,12 +15,12 @@
 						<el-radio-button label="故事监控"></el-radio-button>
 						<el-radio-button label="项目监控"></el-radio-button> 
 						<el-radio-button label="详情"></el-radio-button>
-						<el-radio-button label="考核"></el-radio-button>
-						<el-radio-button label="日志"></el-radio-button>
-						<el-radio-button label="费用"></el-radio-button>
-						<el-radio-button label="预算"></el-radio-button>
-						<el-radio-button label="合同管理"></el-radio-button>
-						<el-radio-button label="环境清单"></el-radio-button> 
+						<el-radio-button class="hidden-sm-and-down" label="考核"></el-radio-button>
+						<el-radio-button class="hidden-md-and-down" label="日志"></el-radio-button>
+						<el-radio-button class="hidden-md-and-down" label="费用"></el-radio-button>
+						<el-radio-button class="hidden-md-and-down" label="预算"></el-radio-button>
+						<el-radio-button class="hidden-lg-and-down" label="合同管理"></el-radio-button>
+						<el-radio-button class="hidden-lg-and-down" label="环境清单"></el-radio-button> 
 					</el-radio-group>
 					<el-popover
 						placement="top-start" 
