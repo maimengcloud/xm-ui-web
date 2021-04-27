@@ -13,17 +13,33 @@
 							</template>
 						</el-input> 
 						
-						<el-button  v-if=" batchEditVisible==false && isPmUser"  type="primary" @click="handleExport" icon="el-icon-download">导出</el-button> 
-						<el-button v-if="  batchEditVisible==false && isPmUser" type="success" @click="showAdd" icon="el-icon-plus">故事</el-button>
-						<el-button  v-if=" batchEditVisible==true && isPmUser"  type="success" @click="showImportFromMenuTemplate" icon="el-icon-upload2">模板导入</el-button> 
-						<el-button  v-if=" batchEditVisible==false && isPmUser"  type="success" @click="toBatchEdit" icon="el-icon-edit">修改</el-button> 
-						<el-button  v-if=" batchEditVisible==true && isPmUser"  type="warning" @click="batchSaveMenu" icon="el-icon-finished">保存</el-button> 
-						<el-button  v-if=" batchEditVisible==true && isPmUser" type="success"  @click="handlePopover(null,'add')" icon="el-icon-plus">故事</el-button>
-						<el-button  v-if=" batchEditVisible==true  && isPmUser"  type="primary"  @click="noBatchEdit" icon="el-icon-back">返回</el-button>  
 						
-						<el-button  v-if=" batchEditVisible==false "   type="warning"   @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">刷新统计数据</el-button>  
+						<el-button  v-if="  batchEditVisible==false " type="primary" @click="showAdd" icon="el-icon-plus">故事</el-button>
+						<el-button  v-if=" batchEditVisible==false"   @click="toBatchEdit" icon="el-icon-edit">批量修改</el-button> 
+						<el-button  v-if=" batchEditVisible==true "  type="warning" @click="batchSaveMenu" icon="el-icon-finished">保存</el-button> 
+						<el-button  v-if=" batchEditVisible==true" type="success"  @click="handlePopover(null,'add')" icon="el-icon-plus">故事</el-button>
+						<el-button  v-if=" batchEditVisible==true "    @click="noBatchEdit" icon="el-icon-back">返回</el-button>  
+						<el-button  v-if=" batchEditVisible==false && filters.product "    @click="toSelectProduct" icon="el-icon-back">返回</el-button> 
+						<el-button  v-if=" batchEditVisible==false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">刷新统计数据</el-button>  
 
-						<el-button v-if=" batchEditVisible==true && isPmUser " type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
+						<el-button v-if=" batchEditVisible==true  " type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
+						
+						<el-popover
+							placement="top-start"
+							title=""
+							width="200"
+							trigger="click" >
+							<el-row>
+								<el-col :span="24" style="padding-top:5px;">
+									<el-button  v-if=" batchEditVisible==false "  type="primary" @click="handleExport" icon="el-icon-download">导出</el-button> 
+								</el-col>
+								<el-col  :span="24"  style="padding-top:5px;"> 
+									<el-button  v-if=" batchEditVisible==true "  type="success" @click="showImportFromMenuTemplate" icon="el-icon-upload2">由模板快速导入</el-button> 
+								</el-col> 
+							</el-row> 
+							<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+						</el-popover> 
+					
 					</el-row>
 					<el-row v-show="batchEditVisible" class="app-container"> 
 						<el-table max-height="650" :data="xmMenusTreeData" class="drag-table" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
@@ -101,22 +117,31 @@
 									</div>
 								</template>
 							</el-table-column> 
-							<el-table-column label="操作"   width="320" fixed="right"  >
+							<el-table-column label="操作"   width="200" fixed="right"  >
 								<template slot-scope="scope">
-									
-									<el-button type="success"  @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus"></el-button>
-									<el-button v-if="!selProject"  type="primary" @click="showTaskListForMenu(scope.row,scope.$index)"  icon="el-icon-s-operation">任务</el-button>
-									<el-button v-if="selProject"  type="primary" @click="showTasks(scope.row,scope.$index)"  icon="el-icon-s-operation">任务</el-button> 
-									<el-button   type="primary" @click="toIterationList(scope.row,scope.$index)"  icon="el-icon-document-copy">迭代</el-button>
+									<el-button type="primary"   @click="showEdit(scope.row)" icon="el-icon-edit"></el-button> 
+									<el-button type="primary"  @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus"></el-button> 
+										
 										<el-popover style="padding-left:10px;"
 											v-if="isPmUser"
 											placement="top-start"
-											width="450"
+											width="200"
 											trigger="click" > 
-											<el-button type="primary"   @click="showEdit(scope.row)" icon="el-icon-edit"></el-button> 
-											<el-button type="success" @click="showImportFromMenuTemplate(scope.row)" icon="el-icon-upload2">模板导入</el-button> 
-											<el-button v-if=" batchEditVisible==false"   type="warning"   @click="showTaskList(scope.row)" icon="el-icon-s-operation">去关联任务</el-button>   
-											<el-button type="danger"   @click="handleDel(scope.row)" icon="el-icon-delete" circle></el-button> 
+											<el-row>
+												<el-col :span="24" style="padding-top:5px;">
+													<el-button type="success" @click="showImportFromMenuTemplate(scope.row)" icon="el-icon-upload2">由模板快速导入</el-button> 
+												</el-col>
+												<el-col  :span="24"  style="padding-top:5px;"> 
+													<el-button type="danger"   @click="handleDel(scope.row)" icon="el-icon-delete" circle></el-button>   
+												</el-col> 
+												<el-col  :span="24"  style="padding-top:5px;"> 
+													<el-button v-if="!selProject"  type="primary" @click="showTaskListForMenu(scope.row,scope.$index)"  icon="el-icon-s-operation">查看任务</el-button>
+													<el-button v-if="selProject"  type="primary" @click="showTasks(scope.row,scope.$index)"  icon="el-icon-s-operation">查看任务</el-button> 
+												</el-col> 
+												<el-col  :span="24"  style="padding-top:5px;"> 
+													<el-button   type="primary" @click="toIterationList(scope.row,scope.$index)"  icon="el-icon-document-copy">查看迭代计划</el-button>
+												</el-col> 
+											</el-row>  
 
 											<el-button slot="reference" icon="el-icon-more" circle></el-button>
 										</el-popover> 
@@ -994,6 +1019,9 @@
 				 row.mmUserid=''
 				 row.mmUsername=''
 				 this.fieldChange(row,"mmUsername");
+			},
+			toSelectProduct(){
+				this.filters.product=null;
 			}
 		},//end methods
 		components: { 
