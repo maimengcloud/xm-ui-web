@@ -76,6 +76,14 @@
 					this.addForm.branchId=this.userInfo.branchId
 					this.cuserid=this.userInfo.userid
 					this.cusername=this.userInfo.username
+					if(this.parentIteration){
+						if(this.parentIteration.children){
+							this.addForm.seqNo=this.parentIteration.seqNo+"."+(this.parentIteration.children.length+1)
+						}else{
+							this.addForm.seqNo=this.parentIteration.seqNo+"."+1
+						}
+						
+					}
 				}
 	      	}
 	      } 
@@ -160,6 +168,16 @@
 				this.addForm.branchId=this.userInfo.branchId
 				this.cuserid=this.userInfo.userid
 				this.cusername=this.userInfo.username
+
+				
+				if(this.parentIteration){
+					if(this.parentIteration.children){
+						this.addForm.seqNo=this.parentIteration.seqNo+"."+(this.parentIteration.children.length+1)
+					}else{
+						this.addForm.seqNo=this.parentIteration.seqNo+"."+1
+					}
+					
+				}
 			}
 			/**在下面写其它函数***/
 			

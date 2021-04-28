@@ -195,6 +195,13 @@
 					this.addForm.projectName=this.xmProject.name
 					this.addForm.projectPhaseId=this.projectPhase.id
 					this.addForm.projectPhaseName=this.projectPhase.phaseName   
+					if(this.parentTask ){
+						if(this.parentTask.children){
+							this.addForm.sortLevel=this.parentTask.sortLevel+"."+(this.parentTask.children.length+1)
+						}else{
+							this.addForm.sortLevel=this.parentTask.sortLevel+"."+1
+						}
+					}
 					this.addForm.id = sn(); 
 					//从新打开页面时某些数据需要重新加载，可以在这里添加
 				}
@@ -429,6 +436,13 @@
 			this.addForm.projectName=this.xmProject.name 
 			this.addForm.projectPhaseId=this.projectPhase.id
 			this.addForm.projectPhaseName=this.projectPhase.phaseName
+			if(this.parentTask ){
+				if(this.parentTask.children){
+					this.addForm.sortLevel=this.parentTask.sortLevel+"."+(this.parentTask.children.length+1)
+				}else{
+					this.addForm.sortLevel=this.parentTask.sortLevel+"."+1
+				}
+			}
 			this.addForm.id = sn();
 			listOption([{categoryId:'all',itemCode:'planType'},{categoryId:'all',itemCode:'taskType'},{categoryId:'all',itemCode:'urgencyLevel'},{categoryId:'all',itemCode:'priority'},{categoryId:'all',itemCode:'xmTaskSettleSchemel'}]).then(res=>{
 				this.options=res.data.data;

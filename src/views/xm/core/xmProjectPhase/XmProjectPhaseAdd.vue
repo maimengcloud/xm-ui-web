@@ -187,7 +187,15 @@
 	      },
 	      'visible':function(visible) { 
 	      	if(visible==true){
-	      		//从新打开页面时某些数据需要重新加载，可以在这里添加
+	      		//从新打开页面时某些数据需要重新加载，可以在这里添加 
+				if(this.parentProjectPhase){
+					if(this.parentProjectPhase.children){
+						this.addForm.seqNo=this.parentProjectPhase.seqNo+"."+(this.parentProjectPhase.children.length+1)
+					}else{
+						this.addForm.seqNo=this.parentProjectPhase.seqNo+"."+1
+					}
+					
+				}
 	      	}
 		  },
 	    },
@@ -369,6 +377,14 @@
 			this.addForm=Object.assign(this.addForm, this.xmProjectPhase);  
 			/**在下面写其它函数***/
 			
+			if(this.parentProjectPhase){
+				if(this.parentProjectPhase.children){
+					this.addForm.seqNo=this.parentProjectPhase.seqNo+"."+(this.parentProjectPhase.children.length+1)
+				}else{
+					this.addForm.seqNo=this.parentProjectPhase.seqNo+"."+1
+				}
+				
+			}
 			listOption([{categoryId:'all',itemCode:'planType'},{categoryId:'all',itemCode:'taskType'}]).then(res=>{
 				this.options=res.data.data;
 			})

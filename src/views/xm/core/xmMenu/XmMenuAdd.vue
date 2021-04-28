@@ -11,7 +11,7 @@
 				</el-form-item> 
 				<el-form-item label="序号" prop="seqNo">
 					<el-input v-model="addForm.seqNo" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input>
-					<span v-if="parentMenu" style="color:red;">建议：{{parentMenu.seqNo}}.1 </span> 
+					<span v-if="parentMenu" style="color:red;">建议：{{parentMenu.seqNo}}.{{parentMenu.children?parentMenu.children.length+1:1}} </span> 
 				</el-form-item> 
 				<el-form-item label="故事名称" prop="menuName">
 					<el-input v-model="addForm.menuName" placeholder="故事名称" ></el-input>
@@ -62,6 +62,14 @@
 	      },
 	      'visible':function(visible) { 
 	      	if(visible==true){
+				  if(this.parentMenu){
+					  if(this.parentMenu.children){
+						    this.addForm.seqNo=this.parentMenu.seqNo+"."+(this.parentMenu.children.length+1)
+					  }else{
+						  this.addForm.seqNo=this.parentMenu.seqNo+"."+1
+					  }
+					  
+				  }
 	      		//从新打开页面时某些数据需要重新加载，可以在这里添加
 	      	}
 	      } 
@@ -161,6 +169,14 @@
 			this.addForm.mmUserid=this.userInfo.userid
 			this.addForm.mmUsername=this.userInfo.username
 			this.addForm.remark="作为   ，我需要   ，以便我能够   。"
+			if(this.parentMenu){
+				if(this.parentMenu.children){
+					this.addForm.seqNo=this.parentMenu.seqNo+"."+(this.parentMenu.children.length+1)
+				}else{
+					this.addForm.seqNo=this.parentMenu.seqNo+"."+1
+				}
+				
+			}
 			/**在下面写其它函数***/
 			
 		}//end mounted
