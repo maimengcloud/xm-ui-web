@@ -7,7 +7,7 @@
 					<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterations" icon="el-icon-search"></el-button>
 				</template>
 			</el-input> 
-			<el-button type="primary" @click="showAdd" icon="el-icon-plus">新增一个迭代计划</el-button>
+			<el-button type="primary" @click="showAdd" icon="el-icon-plus">迭代计划</el-button>
  		</el-row>
 		<el-row v-if="!simple" class="app-container"> 
 			<!--列表 XmIteration 迭代定义-->

@@ -10,8 +10,8 @@
 						<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTestCases" icon="el-icon-search"></el-button>
 					</template>
 				</el-input> 
-				<el-button type="success" v-if="!multiSelect" circle icon="el-icon-plus" @click="showAdd"></el-button>
-				<el-button type="warning" v-if="multiSelect" @click="selected">确认选中</el-button> 
+				<el-button type="primary" v-if="!multiSelect" circle icon="el-icon-plus" @click="showAdd"></el-button>
+				<el-button type="primary" v-if="multiSelect" @click="selected">确认选中</el-button> 
 				<el-button v-if="!multiSelect " type="danger" icon="el-icon-delete" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
 
 			</div>
@@ -21,13 +21,12 @@
 			<el-table max-height="700" :data="xmTestCases" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>
 				<el-table-column sortable type="index" width="45"></el-table-column>
-				<el-table-column prop="caseName" label="标题" min-width="80" >
+				<el-table-column prop="caseName" label="标题" min-width="100" >
 					<template scope="scope">
-						{{scope.row.id}}&nbsp;&nbsp;<el-link type="primay" @click="showEdit(scope.row)">{{scope.row.caseName}}</el-link>
+						{{scope.row.id}}&nbsp;&nbsp;<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.caseName}}</el-link>
 					</template>
 				</el-table-column>
-				<el-table-column prop="id" label="编号" min-width="80" ></el-table-column> 
-				<el-table-column prop="caseRemark" label="备注" min-width="80" ></el-table-column> 
+ 				<el-table-column prop="caseRemark" label="备注" min-width="80" ></el-table-column> 
  				<el-table-column  prop="menuName" label="故事名" min-width="80" > 
 					<template slot="header">
 						故事<el-button @click="showMenu"  icon="el-icon-search" circle size="mini"></el-button>

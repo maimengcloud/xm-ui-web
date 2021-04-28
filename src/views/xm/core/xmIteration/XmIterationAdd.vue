@@ -8,10 +8,7 @@
 				</el-form-item> 
 				<el-form-item v-else label="上级迭代" prop="pid">
 					 无上级
-				</el-form-item> 
-				<el-form-item label="迭代名称" prop="iterationName">
-					<el-input v-model="addForm.iterationName" placeholder="迭代名称" ></el-input>
-				</el-form-item> 
+				</el-form-item>  
 				<el-form-item label="迭代名称" prop="iterationName">
 					<el-input v-model="addForm.iterationName" placeholder="迭代名称" ></el-input>
 				</el-form-item> 

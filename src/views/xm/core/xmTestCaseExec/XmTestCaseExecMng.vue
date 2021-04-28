@@ -10,10 +10,10 @@
 						<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTestCaseExecs" icon="el-icon-search"></el-button>  
 					</template>
 				</el-input> 
-				<el-button  type="primary" @click="showCase" icon="el-icon-plus">由用例创建执行计划</el-button>
-				<el-button  type="primary" @click="showBatchEdit" icon="el-icon-edit">批量修改</el-button>  
-				<el-button   type="danger" v-loading="load.del" @click="batchDel" icon="el-icon-delete" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
-				
+				<el-button  type="primary" @click="showCase" icon="el-icon-plus">由用例创建计划</el-button>
+				<el-button   @click="showBatchEdit" icon="el-icon-right">批量修改</el-button>  
+				<!--<el-button   type="danger" v-loading="load.del" @click="batchDel" icon="el-icon-delete" :disabled="this.sels.length===0 || load.del==true"></el-button> 
+				-->
 		</el-row>
 		<el-row class="app-container" v-else> 
 				<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
@@ -26,7 +26,7 @@
 		</el-row>
 		<el-row class="app-container"> 
 			<!--列表 XmTestCaseExec xm_test_case_exec-->
-			<el-table max-height="750" v-if="!gstcVisible" :data="xmTestCaseExecs" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table max-height="650" v-if="!gstcVisible" :data="xmTestCaseExecs" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>
 				<el-table-column sortable type="index" width="45"></el-table-column>
  				<el-table-column prop="projectName" label="项目名称" min-width="100" >
@@ -94,15 +94,16 @@
 							  </el-select>
 					  	</template> 
 				 </el-table-column>
-				<el-table-column v-if="!batchEditVisible" label="操作" width="260" fixed="right">
+				<el-table-column v-if="!batchEditVisible" label="操作" width="300" fixed="right">
 					<template scope="scope">
- 						<el-button type="primary" @click="showAddBug(scope.row,scope.$index)" icon="el-icon-plus">登记bug</el-button>
+ 						<el-button type="primary" @click="showAddBug(scope.row,scope.$index)" icon="el-icon-plus">bug</el-button>
 						<el-button  @click="showBugs(scope.row,scope.$index)" icon="el-icon-s-data">查bug</el-button>
+						<el-button type="danger" @click="handleDel(scope.row,$index)" icon="el-icon-delete"></el-button>
 					</template>
 				</el-table-column>
 			</el-table>
 			<el-pagination v-if="!gstcVisible"  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
-      <xm-gantt v-if="gstcVisible" :tree-data="xmTestCaseExecs" :project-phase="selProject" :columns="ganrrColumns" :useRealTime="false"></xm-gantt>
+      		<xm-gantt v-if="gstcVisible" :tree-data="xmTestCaseExecs" :project-phase="selProject" :columns="ganrrColumns" :useRealTime="false"></xm-gantt>
 		
 			<!--编辑 XmTestCaseExec xm_test_case_exec界面-->
 			<el-dialog title="编辑xm_test_case_exec" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">

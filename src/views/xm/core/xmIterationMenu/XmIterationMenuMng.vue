@@ -11,11 +11,8 @@
 						<template slot="append">
 							<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterationMenus" icon="el-icon-search"></el-button>
 						</template>
-					</el-input> 
-					
-					<el-button type="primary" @click="showAdd" icon="el-icon-plus">加入更多故事到迭代计划</el-button>
-					<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete">批量将故事移出迭代计划</el-button> 
-
+					</el-input>  
+					<el-button type="primary" @click="showAdd" icon="el-icon-plus">加入更多故事到迭代计划</el-button> 
 				</el-row>
 				<el-row class="app-container">
 					<!--列表 XmIterationMenu 迭代定义-->
@@ -28,7 +25,7 @@
 						</el-table-column> 
 						<el-table-column label="操作" width="160" fixed="right">
 							<template slot-scope="scope">
-								<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete">移出迭代计划</el-button>
+								<el-button type="primary" @click="handleDel(scope.row,scope.$index)" icon="el-icon-right">移出</el-button>
 							</template>
 						</el-table-column>
 					</el-table>
