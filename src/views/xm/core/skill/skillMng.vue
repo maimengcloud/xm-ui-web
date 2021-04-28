@@ -194,6 +194,7 @@ export default {
             }
             console.log(convert);
             this.convertSkills = convert;
+            localStorage.setItem("skill_"+this.userInfo.branchId,JSON.stringify(convert))
           } else {
             this.$message({
               message: tips.msg,
@@ -420,7 +421,13 @@ export default {
     //在下面添加其它组件
   },
   mounted() {
-    this.getAllHrSkill();
+    var localSkills=localStorage.getItem("skill_"+this.userInfo.branchId)
+    if(localSkills){
+      this.convertSkills=JSON.parse(localSkills)
+    }else{
+      this.getAllHrSkill();
+    }
+    
     // this.$nextTick(() => {
     // 	this.getAllHrSkill();
     // });

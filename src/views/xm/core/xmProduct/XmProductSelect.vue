@@ -5,6 +5,15 @@
 			<el-table  max-height="650" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  				<el-table-column sortable type="index" width="55"></el-table-column>				
 				 <el-table-column prop="productName"  label="产品名称" min-width="150" > 
+					 <template slot="header" slot-scope="scope">
+						 <div>
+						 产品名称 <el-input v-model="filters.key" style="width:60%;" placeholder="按产品名称模糊搜索">
+							 <template slot="append">
+							 <el-button icon="el-icon-search" @click="searchXmProducts"></el-button>
+							 </template>
+						 </el-input>
+						 </div>
+					 </template>
 					<template slot-scope="scope">
 						{{scope.row.id}}&nbsp;&nbsp;<el-link type="primary">{{scope.row.productName}}</el-link>
 					</template>
@@ -114,7 +123,7 @@
 					params.orderBy= orderBys.join(",")
 				}
 				if(this.filters.key!==""){
-					//params.xxx=this.filters.key
+					params.key=this.filters.key
 				}else{
 					//params.xxx=xxxxx
 				}
