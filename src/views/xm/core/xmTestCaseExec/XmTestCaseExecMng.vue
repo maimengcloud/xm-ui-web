@@ -1,10 +1,6 @@
 <template>
 	<section>
-		<el-row class="app-container"> 
-  			
-		</el-row> 
 		<el-row class="app-container" v-if="!batchEditVisible">
-			<div >
         		<el-checkbox v-model="gstcVisible"  >甘特图</el-checkbox>
 				{{selProject?"":"已选项目："}}<el-tag type="success" v-if="this.filters.selProject && !selProject " closable @close="clearProject"  @click="showProjectList">{{ this.filters.selProject.name }}</el-tag>
 				<el-tag type="success" v-if="!this.filters.selProject" @click="showProjectList">未选，点我</el-tag>
@@ -18,16 +14,15 @@
 				<el-button  type="primary" @click="showBatchEdit" icon="el-icon-edit">批量修改</el-button>  
 				<el-button   type="danger" v-loading="load.del" @click="batchDel" icon="el-icon-delete" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
 				
-			</div> 
 		</el-row>
-		<el-row class="app-container" v-if="batchEditVisible"> 
+		<el-row class="app-container" v-else> 
 				<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
 					<template slot="append">
 						<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTestCaseExecs" icon="el-icon-search"></el-button>  
 					</template>
 				</el-input>  
-				<el-button v-if="batchEditVisible" type="warning" @click="batchEditXmTestCaseExec"  icon="el-icon-finished">批量保存</el-button>  
-				<el-button v-if="batchEditVisible"  @click="noBatchEdit" icon="el-icon-back">返回</el-button>  
+				<el-button  type="warning" @click="batchEditXmTestCaseExec"  icon="el-icon-finished">批量保存</el-button>  
+				<el-button   @click="noBatchEdit" icon="el-icon-back">返回</el-button>  
 		</el-row>
 		<el-row class="app-container"> 
 			<!--列表 XmTestCaseExec xm_test_case_exec-->

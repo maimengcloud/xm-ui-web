@@ -119,8 +119,9 @@
 							</el-table-column> 
 							<el-table-column label="操作"   width="200" fixed="right"  >
 								<template slot-scope="scope">
-									<el-button type="primary"   @click="showEdit(scope.row)" icon="el-icon-edit"></el-button> 
-									<el-button type="primary"  @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus"></el-button> 
+									
+									<el-button type="primary"  @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" circle></el-button> 
+									<el-button    @click="showEdit(scope.row)" icon="el-icon-edit" circle></el-button> 
 										
 										<el-popover style="padding-left:10px;"
 											v-if="isPmUser"

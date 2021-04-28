@@ -194,7 +194,7 @@ export default {
             }
             console.log(convert);
             this.convertSkills = convert;
-            localStorage.setItem("skill_"+this.userInfo.branchId,JSON.stringify(convert))
+            this.setSkillsToLocal();
           } else {
             this.$message({
               message: tips.msg,
@@ -245,6 +245,7 @@ export default {
               pubc: res.data.data.isPub,
             };
             this.convertSkills.push(json);
+            this.setSkillsToLocal();
           }
           this.$message({
             message: tips.msg,
@@ -281,6 +282,7 @@ export default {
               var tips = res.data.tips;
               if (tips.isOk) {
                 this.convertSkills.splice(index, 1);
+                this.setSkillsToLocal();
                 /*this.getTags();*/
               }
               this.$message({
@@ -354,6 +356,7 @@ export default {
             };
             this.convertSkills[index].showAddButtonInputValue = "";
             this.convertSkills[index].values.push(json);
+            this.setSkillsToLocal();
           }
           this.$message({
             message: tips.msg,
@@ -387,6 +390,7 @@ export default {
               var tips = res.data.tips;
               if (tips.isOk) {
                 this.convertSkills[index].values.splice(valueIndex, 1);
+                this.setSkillsToLocal();
                 /*this.getTags();*/
               }
               this.$message({
@@ -414,6 +418,9 @@ export default {
         }
       });
       this.$emit("select-confirm", selectSkills);
+    },
+    setSkillsToLocal(){
+      localStorage.setItem("skill_"+this.userInfo.branchId,JSON.stringify(this.convertSkills))
     },
   }, //end methods
   components: {

@@ -7,8 +7,9 @@
 					<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
 				</template>
 			</el-input> 
-			<el-button   type="warning" v-if=" batchEditVisible!=true " v-loading="load.edit" :disabled="load.edit==true" v-on:click="loadTasksToXmMenuPlan" icon="el-icon-s-data">根据任务汇总更新数据</el-button>			
 			<el-button type="primary" v-if=" batchEditVisible!=true " @click="showBatchEdit" v-loading="load.edit" icon="el-icon-edit">批量修改</el-button> 
+			<el-button    v-if=" batchEditVisible!=true " v-loading="load.edit" :disabled="load.edit==true" v-on:click="loadTasksToXmMenuPlan" icon="el-icon-s-data">根据任务汇总更新数据</el-button>			
+
 			<el-button type="primary" v-if=" batchEditVisible==true "  @click="saveBatchEdit" v-loading="load.edit" icon="el-icon-finished">批量保存</el-button>
 			<el-button  v-if=" batchEditVisible==true "  @click="noBatchEdit" v-loading="load.edit" icon="el-icon-back">返回</el-button>  
   		</el-row>

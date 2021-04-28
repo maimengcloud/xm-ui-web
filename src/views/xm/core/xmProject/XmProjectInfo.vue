@@ -25,13 +25,24 @@
 					<el-popover
 						placement="top-start" 
 						width="400"
-						trigger="hover" >
-						  
-						<el-button type="primary" @click="toArchive" round>论坛</el-button>
-						<el-button type="success" @click="toIm" round>即聊</el-button> 
-						<el-button type="warning" @click="toHelpMe" round>客服</el-button>
-						<el-button type="primary" @click="handleExport" round v-if="exportArr.includes(infotype)">导出</el-button> 
-						<el-button size="mini" slot="reference" icon="el-icon-more" circle></el-button>
+						trigger="click" >
+						<el-row>
+							<el-button type="primary" @click="toArchive" round>论坛</el-button>
+							<el-button type="success" @click="toIm" round>即聊</el-button> 
+							<el-button type="warning" @click="toHelpMe" round>客服</el-button>
+							<el-button type="primary" @click="handleExport" round v-if="exportArr.includes(infotype)">导出</el-button> 
+						</el-row>
+						<el-row style="padding-top:12px;">
+							<el-button class="hidden-md-and-up" @click="setInfotype('考核')">考核</el-button>
+							<el-button class="hidden-lg-and-up" @click="setInfotype('日志')">日志</el-button>
+							<el-button class="hidden-lg-and-up" @click="setInfotype('费用')">费用</el-button>
+							<el-button class="hidden-lg-and-up" @click="setInfotype('预算')">预算</el-button> 
+						</el-row>
+						<el-row style="padding-top:12px;"> 
+							<el-button class="hidden-xl-and-up" @click="setInfotype('合同管理')">合同管理</el-button>
+							<el-button class="hidden-xl-and-up" @click="setInfotype('环境清单')">环境清单</el-button> 
+						</el-row>
+						<el-button  slot="reference" icon="el-icon-more" circle></el-button>
 					</el-popover>
 				</div>
 				<div class="info-detail">
@@ -164,7 +175,9 @@
 				
 				
       },
-      
+      setInfotype(infotype){
+		  this.infotype=infotype;
+	  },
       handleExport() {
         this.downloadLoading = true
         let list = [];
