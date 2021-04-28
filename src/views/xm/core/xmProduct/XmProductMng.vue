@@ -13,7 +13,7 @@
 		</el-row>
 		<el-row  class="app-container"> 
 			<!--列表 XmProduct 产品表-->
-			<el-table  max-height="750" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table   :max-height="tableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column   sortable type="selection" width="55"></el-table-column>
 				<el-table-column sortable type="index" width="55"></el-table-column>
  				<el-table-column prop="productName" label="产品名称" min-width="150" > 
@@ -84,7 +84,7 @@
 				title="产品关联的迭代查询"
 				:visible.sync="iterationVisible"
 				 >
-					<xm-iteration-mng :simple="true" :product-id="editForm.id" ></xm-iteration-mng>
+					<xm-iteration-mng :simple="true" :visible="iterationVisible" :product-id="editForm.id" ></xm-iteration-mng>
 			</el-dialog>
 	</section>
 </template>
@@ -140,6 +140,7 @@
 				},
 				iterationVisible:false,
 				productStateVisible:false,
+				tableHeight:500,
 				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -336,6 +337,7 @@
 		},
 		mounted() { 
 			this.$nextTick(() => {
+				this.tableHeight = window.innerHeight - 250; 
 				this.getXmProducts();
         	}); 
 		}

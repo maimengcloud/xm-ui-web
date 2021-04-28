@@ -280,6 +280,7 @@
 				valueChangeRows:[],
 				batchEditVisible:false,
 				menuVisible:false,//由故事自动创建阶段计划
+				tableHeight:500,
         pickerOptions: util.pickerOptions('date'),
         gstcVisible:false,
         ganrrColumns: {
@@ -1209,6 +1210,7 @@
 		mounted() { 
        
 			this.$nextTick(() => {
+				this.tableHeight = window.innerHeight - 250; 
 				if(this.selProject){
 					this.getXmProjectPhases();
 				}

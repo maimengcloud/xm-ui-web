@@ -317,6 +317,7 @@
 				menuDetailVisible:false,
 				pickerOptions:  util.pickerOptions(),
 				gstcVisible:false,
+				tableHeight:500,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -1270,6 +1271,7 @@
 				this.getXmTasks();
 			}
 			this.$nextTick(()=>{ 
+				this.tableHeight = window.innerHeight - 250; 
 				listOption([{categoryId:'all',itemCode:'planType'}
 				,{categoryId:'all',itemCode:'taskType'}
 				,{categoryId:'all',itemCode:'urgencyLevel'}

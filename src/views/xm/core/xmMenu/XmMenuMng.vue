@@ -42,7 +42,7 @@
 					
 					</el-row>
 					<el-row v-show="batchEditVisible" class="app-container"> 
-						<el-table max-height="650" :data="xmMenusTreeData" class="drag-table" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+						<el-table  :max-height="tableHeight" :data="xmMenusTreeData" class="drag-table" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 							<el-table-column sortable type="selection" width="45"></el-table-column>
 							<el-table-column sortable prop="seqNo"  label="序号" min-width="100">
 								<template slot-scope="scope">
@@ -87,7 +87,7 @@
 						
 					</el-row>
 					<el-row v-show="!batchEditVisible" class="app-container">
-						<el-table  max-height="700" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+						<el-table   :max-height="tableHeight" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 							<el-table-column sortable type="selection" width="40"></el-table-column> 
 							<el-table-column prop="menuName" label="故事名称" min-width="140" > 
 								<template slot-scope="scope">
@@ -301,6 +301,7 @@
 				taskListForMenuVisible:false,
 				iterationVisible:false,
 				userSelectVisible:false,
+				tableHeight:500,
  				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -1041,6 +1042,7 @@
 		},
 		mounted() { 
 			this.$nextTick(() => {
+				this.tableHeight = window.innerHeight - 250; 
 				this.getXmMenus();
           }); 
       // 阻止默认行为

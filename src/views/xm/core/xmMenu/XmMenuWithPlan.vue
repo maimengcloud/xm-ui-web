@@ -14,7 +14,7 @@
 			<el-button  v-if=" batchEditVisible==true "  @click="noBatchEdit" v-loading="load.edit" icon="el-icon-back">返回</el-button>  
   		</el-row>
 		<el-row class="app-container" v-show="!batchEditVisible">    
-				<el-table max-height="650" v-if="!gstcVisible" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+				<el-table  :max-height="tableHeight" v-if="!gstcVisible" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 					<el-table-column sortable type="selection" width="40"></el-table-column>
  					<el-table-column prop="menuName" label="故事名称" min-width="150" >
 						<template slot-scope="scope"> 
@@ -205,6 +205,7 @@
 				menuDetailVisible:false,
 				/**begin 自定义属性请在下面加 请加备注**/
 				gstcVisible:false,
+				tableHeight:500,
 				ganrrColumns: {
           children: 'children',
           name: 'menuName',
@@ -488,6 +489,7 @@
 		},
 		mounted() {  
 			this.$nextTick(() => {
+				this.tableHeight = window.innerHeight - 250; 
 				this.getXmMenus();
 			}); 
 				listOption([{categoryId:'all',itemCode:'xmMenuPlanStatus'} ]).then(res=>{

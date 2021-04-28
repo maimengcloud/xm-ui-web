@@ -145,7 +145,7 @@
 			<skill-mng :task-skills="taskSkills" :jump="true" @select-confirm="onTaskSkillsSelected"></skill-mng>
 		</el-dialog>
 
-		<el-dialog append-to-body title="故事选择" :visible.sync="menuVisible" width="80%"    :close-on-click-modal="false">
+		<el-dialog append-to-body title="故事选择" :visible.sync="menuVisible" fullscreen   :close-on-click-modal="false">
 			<xm-menu-select :is-select-menu="true"  @selected="onMenuSelected" :sel-project="xmProject"></xm-menu-select>
 		</el-dialog>
 		

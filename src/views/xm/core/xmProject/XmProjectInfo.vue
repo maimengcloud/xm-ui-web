@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<el-row class="app-container"> 
+		<el-row class="app-container" > 
 			<div class="project-info" v-loading.lock="load.list || load.edit">
 				<div class="info-type">
 					<el-radio-group v-model="infotype" size="medium">
@@ -42,7 +42,7 @@
 							<el-button class="hidden-xl-and-up" @click="setInfotype('合同管理')">合同管理</el-button>
 							<el-button class="hidden-xl-and-up" @click="setInfotype('环境清单')">环境清单</el-button> 
 						</el-row>
-						<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+						<el-button type="text" slot="reference" icon="el-icon-d-arrow-right"></el-button>
 					</el-popover>
 				</div>
 				<div class="info-detail">
@@ -326,6 +326,8 @@
 .app-container{
 	display: flex;
 	margin-top: -28px;
+	margin-left: 1px;
+	margin-right:1px;
 	padding: 2px;
 	background: #e8edf7;
 }
@@ -423,7 +425,7 @@
 	font-weight: bold;
 }
 .project-info{
-	width: 75%;
+	width: 100%;
 	flex-grow: 1;
 	/* height: 820px; */
 	background: #fff;
@@ -445,7 +447,9 @@
 	color: #409EFF !important;
 	border: 1px solid #409EFF;
 }
-
+.info-detail{
+	 max-height: 100%;
+}
 /* 超过宽度则用...代替 */
 .truncate{
 	overflow: hidden;

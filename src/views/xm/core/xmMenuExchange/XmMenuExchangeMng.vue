@@ -52,7 +52,7 @@
 
 			</div>
 			
-		<el-dialog append-to-body title="故事选择" :visible.sync="xmMenuVisible" width="80%"    :close-on-click-modal="false">
+		<el-dialog append-to-body title="故事选择" :visible.sync="xmMenuVisible" fullscreen   :close-on-click-modal="false">
 			<xm-menu-select :is-select-menu="true"  @selected="onMenuSelected"></xm-menu-select>
 		</el-dialog>
 		</el-row>
@@ -115,6 +115,7 @@
 					menuId:'',menuName:'',productId:'',remark:'',id:'',pid:'',cuserid:'',cusername:'',ctime:'',cbranchId:'',adopt:'',adoptUserid:'',adoptUsername:'',adoptTime:'',closed:'',puserid:'',pusername:'',premark:'',notifyUserids:'',notifyChannels:'',notifyUsernames:'',cuserHeadImg:'',replyType:''
 				},
 				xmMenuVisible:false,
+				tableHeight:500,
 				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/

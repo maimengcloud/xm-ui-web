@@ -1,17 +1,17 @@
 <template>
 	<section>  
 		<el-row>
-		<el-table max-height="750" ref="selectPhaseTable" :data="projectPhaseTreeData"    :show-summary="false"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+		<el-table  :max-height="tableHeight" ref="selectPhaseTable" :data="projectPhaseTreeData"    :show-summary="false"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  			<el-table-column prop="phaseName" label="阶段名称" min-width="160" > 
 				 <template slot="header" slot-scope="scope">
-					<div>阶段名称 <el-tag size="mini" v-if="editForm.id" closable @close="clearSelectPhase()">{{editForm.seqNo}}&nbsp;{{editForm.phaseName}}</el-tag></div>
+					<div>阶段  <el-tag size="mini" v-if="editForm.id" closable @close="clearSelectPhase()"> {{editForm.phaseName}}</el-tag></div>
 				</template>
 				<template slot-scope="scope">  
 					{{scope.row.seqNo}} &nbsp;&nbsp;{{scope.row.phaseName}}
 				</template>
 			</el-table-column>   
 		</el-table>
-		<el-pagination  class="hidden-md-and-down"   layout="total,  prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+		<el-pagination    class="hidden-md-and-down"   layout=" sizes,  prev, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		</el-row>
 	</section>
 </template>
@@ -108,6 +108,7 @@
 				menuVisible:false,//由故事自动创建阶段计划
         pickerOptions: util.pickerOptions('date'),
         gstcVisible:false,
+		tableHeight:500,
         ganrrColumns: {
           children: 'children',
           name: 'phaseName',
@@ -416,6 +417,7 @@
 		mounted() { 
        
 			this.$nextTick(() => {
+				this.tableHeight = window.innerHeight - 250; 
 				if(this.selProject){
 					this.getXmProjectPhases();
 				}

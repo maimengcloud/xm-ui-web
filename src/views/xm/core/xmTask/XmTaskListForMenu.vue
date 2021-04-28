@@ -20,7 +20,7 @@
 						default-expand-all
 						:tree-props="{children: 'children', hasChildren: 'hasChildren'}"
 						row-key="id"
-						max-height="450"
+						 :max-height="tableHeight"
 						>
  						<el-table-column v-show="isMultiSelect" sortable width="50" type="selection"></el-table-column>
 						<el-table-column prop="name" label="任务名称"  min-width="260" >
@@ -151,6 +151,7 @@
 
 				selkey: "all",       
  				pickerOptions:  util.pickerOptions(),
+				tableHeight:500,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -397,6 +398,7 @@
 		},
 		mounted() {
 			this.$nextTick(()=>{ 
+				this.tableHeight = window.innerHeight - 250; 
 				this.getXmTasks(); 
 			});
 				listOption([{categoryId:'all',itemCode:'planType'},{categoryId:'all',itemCode:'taskType'},{categoryId:'all',itemCode:'urgencyLevel'},{categoryId:'all',itemCode:'priority'}]).then(res=>{

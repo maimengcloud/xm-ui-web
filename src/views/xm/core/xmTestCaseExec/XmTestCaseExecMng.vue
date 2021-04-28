@@ -26,7 +26,7 @@
 		</el-row>
 		<el-row class="app-container"> 
 			<!--列表 XmTestCaseExec xm_test_case_exec-->
-			<el-table max-height="650" v-if="!gstcVisible" :data="xmTestCaseExecs" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table  :max-height="tableHeight" v-if="!gstcVisible" :data="xmTestCaseExecs" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>
 				<el-table-column sortable type="index" width="45"></el-table-column>
  				<el-table-column prop="projectName" label="项目名称" min-width="100" >
@@ -120,7 +120,7 @@
 			<el-dialog title="选中项目" :visible.sync="selectProjectVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
 			</el-dialog> 
-			<el-dialog append-to-body title="故事选择" :visible.sync="menuVisible" width="80%"    :close-on-click-modal="false">
+			<el-dialog append-to-body title="故事选择" :visible.sync="menuVisible" fullscreen     :close-on-click-modal="false">
 				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"   @menus-selected="onSelectedMenus" ></xm-menu-select>
 			</el-dialog>
 			
@@ -241,6 +241,7 @@
             endDate: 'endTime',
 
           },
+			tableHeight:500,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -631,6 +632,7 @@
 		mounted() { 
 			this.filters.selProject=this.selProject; 
 			this.$nextTick(() => {
+				this.tableHeight = window.innerHeight - 250; 
 				this.getXmTestCaseExecs();
         	}); 
         	/** 举例，

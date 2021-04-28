@@ -2,17 +2,12 @@
 	<section>  
 		<el-row > 
 			<!--列表 XmProduct 产品表-->
-			<el-table  max-height="650" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table   :max-height="tableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  				<el-table-column sortable type="index" width="55"></el-table-column>				
 				 <el-table-column prop="productName"  label="产品名称" min-width="150" > 
-					 <template slot="header" slot-scope="scope">
-						 <div>
-						 产品名称 <el-input v-model="filters.key" style="width:60%;" placeholder="按产品名称模糊搜索">
-							 <template slot="append">
-							 <el-button icon="el-icon-search" @click="searchXmProducts"></el-button>
-							 </template>
-						 </el-input>
-						 </div>
+					 <template slot="header" slot-scope="scope"> 
+						 产品名称 <el-input size="mini" v-model="filters.key" style="width:60%;"  placeholder="输入文字回车键搜索" @keyup.enter.native="searchXmProducts"> 
+						 </el-input> 
 					 </template>
 					<template slot-scope="scope">
 						{{scope.row.id}}&nbsp;&nbsp;<el-link type="primary">{{scope.row.productName}}</el-link>
@@ -24,7 +19,7 @@
 					</template>
 				</el-table-column>
 			</el-table>
-			<el-pagination class="hidden-md-and-down" layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>  
+			<el-pagination  layout="total, prev, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>  
 		</el-row> 
 	</section>
 </template>
@@ -75,6 +70,7 @@
 				},
 				iterationVisible:false,
 				productStateVisible:false,
+				tableHeight:500,
 				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -164,6 +160,7 @@
 		},
 		mounted() { 
 			this.$nextTick(() => {
+				this.tableHeight = window.innerHeight - 250; 
 				this.getXmProducts();
         	}); 
 		}

@@ -36,7 +36,7 @@
 								<el-button    @click="searchXmTasks" type="primary" icon="el-icon-search" v-loading="load.list"></el-button> 
 							</template>
 						</el-input>  
-						<el-button  v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showAdd" type="primary" icon="el-icon-plus" round></el-button>  
+						<el-button  v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showAdd" type="primary" icon="el-icon-plus" circle></el-button>  
 						<el-popover
 							placement="top-start"
 							title=""
@@ -79,13 +79,14 @@
 							stripe
 							fit
 							border
+							tooltip-effect="light"
 							size="mini"
 							default-expand-all
-							max-height="600"
+							:max-height="tableHeight"
 							:tree-props="{children: 'children', hasChildren: 'hasChildren'}"
 							row-key="id"
 							> 
-							<el-table-column sortable prop="name" label="任务名称(点击详情)"  min-width="240"> 
+							<el-table-column sortable prop="name" label="任务名称(点击详情)"  min-width="240" show-overflow-tooltip> 
 								<template slot-scope="scope">
 									{{scope.row.sortLevel}}&nbsp;<el-link  type="primary"  @click.stop="showDrawer(scope.row)">{{scope.row.name}}</el-link> 
 									
@@ -164,7 +165,7 @@
 							<el-table-column prop="description" label="任务描述" min-width="160" > 
 							</el-table-column>
 							-->
-							<el-table-column  v-if=" isTaskCenter!='1'"   header-align="center" fixed="right"  label="操作"  width="100">
+							<el-table-column  v-if=" isTaskCenter!='1'"   header-align="center" fixed="right"  label="操作"  width="80">
 								<template slot-scope="scope">
 									<!--
 									<el-button-group>
@@ -344,7 +345,7 @@
 			<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
 		</el-dialog> 
 		
-		<el-dialog append-to-body title="故事选择" :visible.sync="menuVisible" width="80%"    :close-on-click-modal="false">
+		<el-dialog append-to-body title="故事选择" :visible.sync="menuVisible" fullscreen   :close-on-click-modal="false">
 			<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
 		</el-dialog>
 		
@@ -609,6 +610,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				gstcVisible:false,
 				groupUserSelectVisible:false,//选择负责人
 				showSkillSearchVisible:false,//按技能查询
+				tableHeight:500,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -1582,7 +1584,7 @@ XmProjectGroupSelect
 			this.$nextTick(()=>{
 				
 				this.getXmTasks();
-
+				this.tableHeight = window.innerHeight - 250; 
 				listOption([{categoryId:'all',itemCode:'planType'}
 				,{categoryId:'all',itemCode:'taskType'}
 				,{categoryId:'all',itemCode:'urgencyLevel'}

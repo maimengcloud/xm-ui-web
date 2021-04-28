@@ -1,7 +1,7 @@
 <template>
 	<section>
 		<el-row>
-			<el-menu  active-text-color="#00abfc" :default-active="menukey" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+			<el-menu  active-text-color="#00abfc" :default-active="menukey"   mode="horizontal" @select="handleSelect">
 				<el-menu-item index="all">全部</el-menu-item>
 				<el-menu-item index="compete">我参与</el-menu-item>
 				<el-menu-item index="leader">我管理</el-menu-item>
@@ -23,7 +23,7 @@
 					<el-menu-item index="7-2">选项2</el-menu-item>
 					<el-menu-item index="7-3">选项3</el-menu-item>
 				</el-submenu> -->
-				<el-popover 
+				<el-popover
 					placement="top-start"
 					title=""
 					width="200"
@@ -48,7 +48,7 @@
 							<el-button class="hidden-xl-and-up hidden-btn"    @click="handleSelect('myExecuserStatus7')">我放弃</el-button>
 						</el-col> 
 					</el-row>
-					<el-button type="text"  slot="reference" icon="el-icon-more"></el-button>
+					<el-button type="text" class="right-btn" slot="reference" icon="el-icon-d-arrow-right"></el-button>
 				</el-popover>
 			</el-menu>
 			 
@@ -269,6 +269,7 @@
 				finishFlag: false,
 				xmRecordVisible: false,
 				productSelectVisible:false,
+				tableHeight:500,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -638,6 +639,7 @@
 				this.filters.productName=this.$route.params.productName;
 			}
 			this.$nextTick(() => {
+				this.tableHeight = window.innerHeight - 200; 
 				this.showInfo = false;
 				this.getXmProjects();
 			}); 
@@ -778,5 +780,8 @@
 .hidden-btn{
 	margin-top: 5px;
 	margin-bottom: 5px;
+}
+.right-btn{
+	margin-top: 12px;
 }
 </style>

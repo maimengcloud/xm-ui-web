@@ -13,7 +13,7 @@
 					<xm-project-phase-mng   :sel-project="filters.selProject" :simple="true" @row-click="projectPhaseRowClick"></xm-project-phase-mng>
 				</el-col>
 				<el-col :span=" filters.selProject?20:24">
-					<el-table max-height="650"
+					<el-table  :max-height="tableHeight"
 						ref="taskTable"
 						show-summary
 						:data="tasksTreeData"
@@ -172,6 +172,7 @@
  				projectPhase: null,
  				pickerOptions:  util.pickerOptions(), 
 				selectProjectVisible:false,
+				tableHeight:500,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -458,6 +459,7 @@
 		},
 		mounted() { 
 			this.$nextTick(()=>{ 
+				this.tableHeight = window.innerHeight - 250; 
 				this.getXmTasks(); 
 			});
 				listOption([{categoryId:'all',itemCode:'planType'},{categoryId:'all',itemCode:'taskType'},{categoryId:'all',itemCode:'urgencyLevel'},{categoryId:'all',itemCode:'priority'}]).then(res=>{

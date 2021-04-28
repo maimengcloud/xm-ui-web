@@ -18,7 +18,7 @@
 		</el-row>
 		<el-row class="app-container"> 
 			<!--列表 XmTestCase 测试用例-->
-			<el-table max-height="700" :data="xmTestCases" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table  :max-height="tableHeight" :data="xmTestCases" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>
 				<el-table-column sortable type="index" width="45"></el-table-column>
 				<el-table-column prop="caseName" label="标题" min-width="100" >
@@ -59,7 +59,7 @@
 				<xm-test-case-add :xm-test-case="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-test-case-add>
 			</el-dialog> 
 		</el-row>
-		<el-dialog append-to-body title="故事选择" :visible.sync="menuVisible" width="80%"    :close-on-click-modal="false">
+		<el-dialog append-to-body title="故事选择" :visible.sync="menuVisible"    fullscreen   :close-on-click-modal="false">
 			<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true" :exclude-iteration-id="iteration?iteration.id:''"  @menus-selected="onSelectedMenus" ></xm-menu-select>
 		</el-dialog>
 	</section>
@@ -117,6 +117,7 @@
 				},
 				/**begin 自定义属性请在下面加 请加备注**/ 
 				menuVisible:false,
+				tableHeight:500,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -299,6 +300,7 @@
 		mounted() { 
 			this.$nextTick(() => {
 				this.getXmTestCases();
+				this.tableHeight = window.innerHeight - 250; 
         	}); 
         	/** 举例，
     		listOption([{categoryId:'all',itemCode:'sex'},{categoryId:'all',itemCode:'grade'}] ).then(res=>{

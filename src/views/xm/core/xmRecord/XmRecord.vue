@@ -7,7 +7,7 @@
 		</el-row>
 		<el-row class="app-container"> 
 			<!--列表 XmRecord xm_record-->
-			<el-table :data="xmRecords" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table :max-height="tableHeight" :data="xmRecords" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="index" width="40"></el-table-column>
 				<el-table-column prop="projectId" label="项目编号" v-if="!simple" min-width="80" ></el-table-column>  
 				<el-table-column prop="taskId" label="对象主键编号" v-if="!simple" min-width="80" ></el-table-column> 
@@ -98,6 +98,7 @@
 				editForm: {
 					id:'',projectId:'',operUserid:'',operUsername:'',operTime:'',objType:'',action:'',oldValue:'',newValue:'',remarks:'',taskId:'',reqNo:'',branchId:'',ip:''
 				},
+				tableHeight:500,
 				/**begin 自定义属性请在下面加 请加备注**/
 				objTypeOptions: [{key:"all",name:"全部"},{key:"task",name:"任务"},{"key":"project" ,name:"项目"},{key:"budget",name:"预算"},{key:"cost",name:"成本"},{key:"phase",name:"阶段计划"},{"key":"group",name:"团队"}]
 				/**end 自定义属性请在上面加 请加备注**/
@@ -254,7 +255,7 @@
 			}
 			
 			this.$nextTick(() => {
-
+				this.tableHeight = window.innerHeight - 250; 
 				this.getXmRecords();
         	}); 
 		}

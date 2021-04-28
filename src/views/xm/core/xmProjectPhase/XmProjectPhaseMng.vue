@@ -50,7 +50,7 @@
  		</el-row> 
  		<el-row class="app-container" v-show="batchEditVisible==false"> 
 			<!--列表 XmProjectPhase xm_project_phase-->
-			<el-table max-height="650" v-show="!gstcVisible "  default-expand-all :data="projectPhaseTreeData"  :summary-method="getSummariesForNoBatchEdit"  :show-summary="true"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table :max-height="tableHeight" v-show="!gstcVisible "  default-expand-all :data="projectPhaseTreeData"  :summary-method="getSummariesForNoBatchEdit"  :show-summary="true"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column   sortable type="selection" width="40"></el-table-column>
  				<el-table-column prop="phaseName" label="阶段名称" min-width="160" > 
 					 <template slot-scope="scope">  
@@ -148,7 +148,7 @@
 				<xm-project-group-select :visible="groupUserSelectVisible" :sel-project="selProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-project-group-select>
 				 
 			</el-dialog> 
-			<el-dialog append-to-body title="故事选择" :visible.sync="menuVisible" width="80%"    :close-on-click-modal="false">
+			<el-dialog append-to-body title="故事选择" :visible.sync="menuVisible" fullscreen    :close-on-click-modal="false">
 				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
 			</el-dialog>
 		</el-row>
@@ -318,6 +318,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				valueChangeRows:[],
 				batchEditVisible:false,
 				menuVisible:false,//由故事自动创建阶段计划
+				tableHeight:500,
         pickerOptions: util.pickerOptions('date'),
         gstcVisible:false,
 		groupUserSelectVisible:false,//选择负责人
@@ -330,6 +331,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
           endDate: 'endDate',
 		  
         },
+		tableHeight:500,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -1066,8 +1068,8 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				var phaseActWorkload=this.phaseBudgetData.phaseActWorkload 
 				var budgetCost=this.phaseBudgetData.phaseBudgetNouserAt+this.phaseBudgetData.phaseBudgetInnerUserAt+this.phaseBudgetData.phaseBudgetOutUserAt
 				var actCost=this.phaseBudgetData.actInnerUserAt+this.phaseBudgetData.actNouserAt+this.phaseBudgetData.actOutUserAt
-				sums[5]='预算工作量:'+budgetWorkload+'人时,实际:'+phaseActWorkload+'人时' 
-				sums[6]='预算金额:'+budgetCost.toFixed(0)+'元,'+(budgetCost/10000).toFixed(2)+'万元,实际:'+actCost.toFixed(0)+'元,'+(actCost/10000).toFixed(2)+'万元'
+				sums[5]='预算:'+budgetWorkload+',实际:'+phaseActWorkload+'' 
+				sums[6]='预算:'+budgetCost.toFixed(0)+',实际:'+actCost.toFixed(0)+''
 
 				return sums;
 			},
@@ -1293,6 +1295,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					this.getXmProjectPhases();
 				}
 				
+				this.tableHeight = window.innerHeight - 300; 
 				listOption([
 					{categoryId:'all',itemCode:'xmPhaseStatus'} 
 				]).then(res=>{

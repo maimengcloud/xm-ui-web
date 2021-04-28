@@ -2,21 +2,21 @@
 	<section>
 		
 		
-		<el-row>  
-			<el-col  :span="6"  class="app-container">
+		<el-row class="top">  
+			<el-col  :span="6"  >
 				<xm-product-mng @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-mng>
 			</el-col>
-			<el-col :span="18" >
-				<el-row  class="app-container">  
+			<el-col :span="18"  style="padding-left:12px;" >
+				<el-row  >  
 					<el-input v-model="filters.key" style="width: 30%;" placeholder="模糊查询">
 						<template slot="append">
 							<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
 						</template>
 					</el-input>  
-					<el-button   type="warning" v-if="multi"  v-on:click="multiSelectedConfirm">确认选择</el-button>
+					<el-button   type="primary" v-if="multi"  v-on:click="multiSelectedConfirm">确认选择</el-button>
 				</el-row>
-				<el-row class="app-container">
-					<el-table max-height="750" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+				<el-row style="padding-top:12px;">
+					<el-table :max-height="tableHeight" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column v-if="multi" type="selection" width="50"></el-table-column>  
 						<el-table-column prop="menuName" label="故事名称" min-width="140" > 
 							<template slot-scope="scope">
@@ -118,7 +118,7 @@
 				},
  				menuDetailVisible:false,
 				/**begin 自定义属性请在下面加 请加备注**/
-					
+				tableHeight:500,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -266,7 +266,8 @@
 		},
 		mounted() {  
 			this.$nextTick(() => {
-				this.getXmMenus();
+				this.getXmMenus(); 
+            	this.tableHeight = window.innerHeight - 250; 
         	}); 
 		}
 	}
@@ -274,5 +275,7 @@
 </script>
 
 <style scoped>
-
+.top{
+	margin-top:-30px;
+}
 </style>

@@ -16,7 +16,7 @@
 				</el-row>
 				<el-row class="app-container">
 					<!--列表 XmIterationMenu 迭代定义-->
-					<el-table max-height="750" :data="xmIterationMenusTreeData"  default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+					<el-table  :max-height="tableHeight" :data="xmIterationMenusTreeData"  default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column  type="selection" width="45"></el-table-column> 
 						<el-table-column prop="menuName" label="故事名称" min-width="140" > 
 							<template slot-scope="scope">
@@ -32,7 +32,7 @@
 					<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 				</el-row>
 			</el-col> 
-			<el-dialog append-to-body title="故事选择" :visible.sync="menuVisible" width="80%"    :close-on-click-modal="false">
+			<el-dialog append-to-body title="故事选择" :visible.sync="menuVisible" fullscreen   :close-on-click-modal="false">
 				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true" :exclude-iteration-id="iteration?iteration.id:''"  @menus-selected="onSelectedMenus" ></xm-menu-select>
 			</el-dialog>
 		</el-row>
@@ -91,6 +91,7 @@
 				},
 				iteration:null,
 				menuVisible:false,
+				tableHeight:500,
 				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -322,6 +323,7 @@
 		},
 		mounted() { 
 			this.$nextTick(() => {
+				this.tableHeight = window.innerHeight - 250; 
 				this.getXmIterationMenus();
         	}); 
         	/** 举例，

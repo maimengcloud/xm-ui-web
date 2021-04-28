@@ -63,7 +63,7 @@
 			 </el-row>
 			 <el-row class="app-container">
 				<!--列表 XmQuestion xm_question-->
-				<el-table max-height="650" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+				<el-table :max-height="tableHeight" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 					<el-table-column sortable type="index" width="45"></el-table-column> 
 					<el-table-column prop="name" label="问题名称"  min-width="200"> 
 						<template slot-scope="scope">
@@ -224,6 +224,7 @@
 				selectUserVisible:false,
 				selectProjectVisible:false,
 				nextAction:'',
+				tableHeight:500,
 				cloumns: [
 					{
 						key: 'name',
@@ -262,7 +263,9 @@
 					}
 				]
 				/**end 自定义属性请在上面加 请加备注**/
+				
 			}
+
 		},//end data
 		methods: { 
 			handleSizeChange(pageSize) { 
@@ -679,6 +682,7 @@
 				this.filters.selProject=this.selProject
 			}
 			this.$nextTick(() => {
+				this.tableHeight = window.innerHeight-250; 
 				this.getXmQuestions();
 			}); 
 				listOption([{categoryId:'all',itemCode:'bugSeverity'},{categoryId:'all',itemCode:'bugSolution'},{categoryId:'all',itemCode:'bugStatus'},{categoryId:'all',itemCode:'bugType'},{categoryId:'all',itemCode:'urgencyLevel'}] ).then(res=>{

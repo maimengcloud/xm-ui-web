@@ -191,6 +191,7 @@
 				valueChangeRows:[],
 				selGroups:null,
 				menuDetailVisible:false,
+				tableHeight:500,
 				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -455,6 +456,7 @@
 		},
 		mounted() {  
 			this.$nextTick(() => {
+				this.tableHeight = window.innerHeight - 250; 
 				this.getXmMenus();
 			}); 
 				listOption([{categoryId:'all',itemCode:'xmMenuStateStatus'} ]).then(res=>{

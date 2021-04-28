@@ -13,7 +13,7 @@
 		</el-row> 
 		<el-row class="app-container"> 
 			<!--列表 XmProjectState 项目指标日统计表-->
-			<el-table max-height="750" :data="xmProjectStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table  :max-height="tableHeight" :data="xmProjectStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>
 				<el-table-column sortable type="index" width="45">  </el-table-column> 
 				<el-table-column   type="expand" width="45">
