@@ -5,12 +5,12 @@
 				<xm-project-phase-mng  :sel-project="currentProject" :simple="true" @row-click="projectPhaseRowClick" @clear-select="clearSelectPhase"></xm-project-phase-mng>
 			</el-col>
 			<el-col :span="isTaskCenter!='1' && currentProject?20:24"  class="app-container">
-				<el-row> 
-					<el-select v-model="filters.selKey" placeholder="请选择任务状态" clearable @change="changeSelKey"> 
+				<el-row>
+					<el-select v-model="filters.selKey" placeholder="请选择任务状态" clearable @change="changeSelKey">
 						<el-option class="showall" value="all" label="全部状态">全部状态</el-option>
 						<el-option  value="work" label="未完成">未完成</el-option>
 						<el-option  value="finish" label="已完成">已完成</el-option>
-						<el-option  value="myFocus" label="我关注">我关注</el-option> 
+						<el-option  value="myFocus" label="我关注">我关注</el-option>
 						<el-option  value="myExecuserStatus0" label="我排队">我排队</el-option>
 						<el-option  value="myExecuserStatus1" label="我执行">我执行</el-option>
 						<el-option  value="myExecuserStatus2" label="我提交">我提交</el-option>
@@ -18,12 +18,12 @@
 						<el-option  value="myExecuserStatus4" label="我的验收失败">我的验收失败</el-option>
 						<el-option  value="myExecuserStatus5" label="我的付款中">我的付款中</el-option>
 						<el-option  value="myExecuserStatus6" label="我的付款成功">我的付款成功</el-option>
-						<el-option  value="myExecuserStatus7" label="我放弃的">我放弃的</el-option> 
-					</el-select>  
-					<el-select v-model="filters.taskType" placeholder="请选择任务类型" clearable @change="changeTaskType"> 
+						<el-option  value="myExecuserStatus7" label="我放弃的">我放弃的</el-option>
+					</el-select>
+					<el-select v-model="filters.taskType" placeholder="请选择任务类型" clearable @change="changeTaskType">
 						<el-option class="showall" value="all"  label="全部类型">全部类型</el-option>
-						<el-option  v-for="(i,index) in options.taskType" :value="i.optionValue" :label="i.optionName" :key="index">{{i.optionName}}</el-option> 
-					</el-select> 
+						<el-option  v-for="(i,index) in options.taskType" :value="i.optionValue" :label="i.optionName" :key="index">{{i.optionName}}</el-option>
+					</el-select>
 					<el-button  class="hidden-md-and-down"  v-if=" !filters.skillTags || filters.skillTags.length==0" icon="el-icon-search" @click="showSkillSelect">选择标签</el-button>
 					<el-tag closable v-for=" (skill,index) in filters.skillTags" :key="index"  @click="showSkillSelect" @close="skillTagClear(skill)">{{skill.skillName}}</el-tag>
 					<div style=" float:right;margin-right:10px;">
@@ -33,10 +33,10 @@
 
 						<el-input   style="width:200px;" v-model="filters.key" placeholder="任务名称">
 							<template slot="append">
-								<el-button    @click="searchXmTasks" type="primary" icon="el-icon-search" v-loading="load.list"></el-button> 
+								<el-button    @click="searchXmTasks" type="primary" icon="el-icon-search" v-loading="load.list"></el-button>
 							</template>
-						</el-input>  
-						<el-button  v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showAdd" type="primary" icon="el-icon-plus" circle></el-button>  
+						</el-input>
+						<el-button  v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showAdd" type="primary" icon="el-icon-plus" circle></el-button>
 						<el-popover
 							placement="top-start"
 							title=""
@@ -50,8 +50,8 @@
 									<el-button v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showTaskTemplate" type="success" icon="el-icon-plus">从模板快速导入任务</el-button>
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
-									<el-button v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showMenu" type="success" icon="el-icon-plus">由故事快速创建任务</el-button> 
-								</el-col> 
+									<el-button v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showMenu" type="success" icon="el-icon-plus">由故事快速创建任务</el-button>
+								</el-col>
 							</el-row>
 							<el-row>
 								<el-col :span="24" style="padding-top:5px;">
@@ -59,21 +59,21 @@
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
 									<el-button  class="hidden-lg-and-up"  v-if=" !filters.skillTags || filters.skillTags.length==0" icon="el-icon-search" @click="showSkillSelect">选择标签</el-button>
-					
-								</el-col> 
+
+								</el-col>
 							</el-row>
 							<el-button  slot="reference" icon="el-icon-more" circle></el-button>
-						</el-popover> 
-					</div>  
-				</el-row> 
-				<el-row style="padding-top:12px;"> 
+						</el-popover>
+					</div>
+				</el-row>
+				<el-row style="padding-top:12px;">
 						<el-table v-if="!gstcVisible"
 							show-summary
 							:data="tasksTreeData"
 							@sort-change="sortChange"
 							v-loading="load.list"
 							@row-click="rowClick"
-							@selection-change="selsChange" 
+							@selection-change="selsChange"
 							highlight-current-row
 							current-row-key="id"
 							stripe
@@ -85,63 +85,72 @@
 							:max-height="tableHeight"
 							:tree-props="{children: 'children', hasChildren: 'hasChildren'}"
 							row-key="id"
-							> 
-							<el-table-column sortable prop="name" label="任务名称(点击详情)"  min-width="240" show-overflow-tooltip> 
+							>
+							<el-table-column sortable prop="name" label="任务名称(点击详情)"  min-width="240" show-overflow-tooltip>
 								<template slot-scope="scope">
-									{{scope.row.sortLevel}}&nbsp;<el-link  type="primary"  @click.stop="showDrawer(scope.row)">{{scope.row.name}}</el-link> 
-									
+									{{scope.row.sortLevel}}&nbsp;<el-link  type="primary"  @click.stop="showDrawer(scope.row)">{{scope.row.name}}</el-link>
+
 								</template>
-							</el-table-column> 
-							<el-table-column v-if=" !selProject || !selProject.id" prop="projectName" label="项目"  min-width="120"> 
-								
+							</el-table-column>
+							<el-table-column v-if=" !selProject || !selProject.id" prop="projectName" label="项目"  min-width="120">
+
 								<template slot="header">
 									项目<el-button @click="showProjectList"  icon="el-icon-search" circle size="mini"></el-button>
 								</template>
 								<template slot-scope="scope">
-									{{scope.row.projectName}} 
+									{{scope.row.projectName}}
 								</template>
-							</el-table-column> 
-							<el-table-column sortable prop="menuId" label="故事"  min-width="120"> 
+							</el-table-column>
+							<el-table-column  prop="menuId" label="故事"  min-width="120">
+								<template slot="header">
+									故事<el-button @click="showMenuStory"  icon="el-icon-search" circle size="mini"></el-button>
+								</template>
 								<template slot-scope="scope">
-									<el-link      @click.stop="toMenu(scope.row)">{{scope.row.menuName?scope.row.menuName:'去关联故事'}}</el-link> 
+									<el-link      @click.stop="toMenu(scope.row)">{{scope.row.menuName?scope.row.menuName:'去关联故事'}}</el-link>
 								</template>
-							</el-table-column> 
+							</el-table-column>
 							<el-table-column sortable label="预算" prop="budgetCost" width="120" >
 								<template slot-scope="scope">
 									<div>{{parseFloat(scope.row.budgetCost/10000).toFixed(2)}}万,{{scope.row.budgetWorkload}}人时</div>
 								</template>
 							</el-table-column>
-							<el-table-column sortable label="责任人" prop="createUserid" min-width="120" show-overflow-tooltip>
-								<template slot-scope="scope"> 
-									<el-link         v-if="scope.row.createUserid!=null && scope.row.createUserid !='' "  @click.stop="showGroupUserSelect(scope.row)">{{scope.row.createUsername}}</el-link>   
-									<el-link    type="warning"     v-if="scope.row.createUsername==null || scope.row.createUsername ==''" @click.stop="showGroupUserSelect(scope.row)"  >去设置</el-link>  
+							<el-table-column  label="责任人" prop="createUserid" min-width="120" show-overflow-tooltip>
+							  <template slot="header">
+							  	责任人<el-button @click="showMenuGroupUser"  icon="el-icon-search" circle size="mini"></el-button>
+							  </template>
+								<template slot-scope="scope">
+									<el-link         v-if="scope.row.createUserid!=null && scope.row.createUserid !='' "  @click.stop="showGroupUserSelect(scope.row)">{{scope.row.createUsername}}</el-link>
+									<el-link    type="warning"     v-if="scope.row.createUsername==null || scope.row.createUsername ==''" @click.stop="showGroupUserSelect(scope.row)"  >去设置</el-link>
 								</template>
 							</el-table-column>
-							<el-table-column sortable label="执行人" prop="exeUserids" width="120" show-overflow-tooltip>
-								<template slot-scope="scope"> 
-									<el-link     type="danger"    v-if="scope.row.exeUsernames!=null && scope.row.exeUsernames !='' && scope.row.exeUsernames.indexOf('验收不过')>=0"  @click.stop="showExecusers(scope.row)">{{scope.row.exeUsernames}}</el-link> 
-									<el-link     type="success"    v-else-if="scope.row.exeUsernames!=null && scope.row.exeUsernames !='' && scope.row.exeUsernames.indexOf('已验收')>=0"  @click.stop="showExecusers(scope.row)">{{scope.row.exeUsernames}}</el-link>     
-									<el-link     type="info"    v-else-if="scope.row.exeUsernames!=null && scope.row.exeUsernames !='' "  @click.stop="showExecusers(scope.row)">{{scope.row.exeUsernames}}</el-link>   
-									<el-link    type="primary"     v-if="scope.row.exeUsernames==null || scope.row.exeUsernames ==''" @click.stop="showExecusers(scope.row)"  >去抢任务</el-link>  
+							<el-table-column  label="执行人" prop="exeUserids" width="120" show-overflow-tooltip>
+							  <template slot="header">
+							  	执行人<el-button @click="showMenuExecutor"  icon="el-icon-search" circle size="mini"></el-button>
+							  </template>
+								<template slot-scope="scope">
+									<el-link     type="danger"    v-if="scope.row.exeUsernames!=null && scope.row.exeUsernames !='' && scope.row.exeUsernames.indexOf('验收不过')>=0"  @click.stop="showExecusers(scope.row)">{{scope.row.exeUsernames}}</el-link>
+									<el-link     type="success"    v-else-if="scope.row.exeUsernames!=null && scope.row.exeUsernames !='' && scope.row.exeUsernames.indexOf('已验收')>=0"  @click.stop="showExecusers(scope.row)">{{scope.row.exeUsernames}}</el-link>
+									<el-link     type="info"    v-else-if="scope.row.exeUsernames!=null && scope.row.exeUsernames !='' "  @click.stop="showExecusers(scope.row)">{{scope.row.exeUsernames}}</el-link>
+									<el-link    type="primary"     v-if="scope.row.exeUsernames==null || scope.row.exeUsernames ==''" @click.stop="showExecusers(scope.row)"  >去抢任务</el-link>
 								</template>
 							</el-table-column>
 							<el-table-column sortable prop="rate" label="进度" width="100">
 								<template slot-scope="scope">
 									<div>
-									<el-tag style="border-radius:30px;"> {{ (scope.row.rate!=null?scope.row.rate:0)+'%'}} </el-tag>  
+									<el-tag style="border-radius:30px;"> {{ (scope.row.rate!=null?scope.row.rate:0)+'%'}} </el-tag>
 									</div>
 								</template>
 							</el-table-column>
 							<el-table-column sortable  prop="startTime" label="任务起止时间" width="300">
 								<template slot-scope="scope">
-									
+
 									<div  style="display:flex;align-items:center;">
 										<div>
-											<div>{{getDateString(scope.row.startTime)}}~{{getDateString(scope.row.endTime)}}</div> 
+											<div>{{getDateString(scope.row.startTime)}}~{{getDateString(scope.row.endTime)}}</div>
 										</div>
 										<div v-for="(item,index) in [calcTaskStateByTime(scope.row.startTime,scope.row.endTime,scope.row)]" :key="index ">
 											<el-tag :type="item.type">{{item.desc}}</el-tag>
-										</div> 
+										</div>
 									</div>
 
 								</template>
@@ -149,20 +158,20 @@
 							<!--
 							<el-table-column label="外购" prop="taskOut" width="80">
 								<template slot-scope="scope">
-									<el-checkbox  :disabled="true" v-model="scope.row.taskOut" :false-label="0" :true-label="1"  ></el-checkbox> 
+									<el-checkbox  :disabled="true" v-model="scope.row.taskOut" :false-label="0" :true-label="1"  ></el-checkbox>
 								</template>
-							</el-table-column>   
-							<el-table-column label="结算方案" prop="settleSchemel" width="120" :formatter="formatterOption"> 
-							</el-table-column>  
+							</el-table-column>
+							<el-table-column label="结算方案" prop="settleSchemel" width="120" :formatter="formatterOption">
+							</el-table-column>
 							-->
 							<el-table-column label="任务技能需求" prop="taskSkillNames" min-width="120" show-overflow-tooltip >
-								<template slot-scope="scope"> 
+								<template slot-scope="scope">
 									<el-link         v-if="scope.row.taskSkillNames!=null && scope.row.taskSkillNames !='' "  @click.stop="showSkill(scope.row)">{{scope.row.taskSkillNames}}</el-link>
-									<el-link         v-else @click.stop="showSkill(scope.row)" type="primary" >去补充</el-link> 
+									<el-link         v-else @click.stop="showSkill(scope.row)" type="primary" >去补充</el-link>
 								</template>
 							</el-table-column>
 							<!--
-							<el-table-column prop="description" label="任务描述" min-width="160" > 
+							<el-table-column prop="description" label="任务描述" min-width="160" >
 							</el-table-column>
 							-->
 							<el-table-column  v-if=" isTaskCenter!='1'"   header-align="center" fixed="right"  label="操作"  width="80">
@@ -170,37 +179,37 @@
 									<!--
 									<el-button-group>
 										<el-button     @click.stop="showSubAdd(scope.row)" type="primary">+子任务</el-button>
-										<el-button      @click.stop="showEdit(scope.row,scope.$index)" type="primary">编辑</el-button>  
+										<el-button      @click.stop="showEdit(scope.row,scope.$index)" type="primary">编辑</el-button>
 										<el-button    v-if="isEmpty(scope.row.children) " type="primary" @click.stop="handleDel(scope.row,scope.$index)">删除</el-button>
 									</el-button-group>
 									-->
 								<el-dropdown @command="handleCommand">
-									<span class="el-dropdown-link"> 
+									<span class="el-dropdown-link">
 										更多<i class="el-icon-setting"></i>
 									</span>
 									<el-dropdown-menu slot="dropdown">
 										<el-dropdown-item :command="{type:'showSubAdd',data:scope.row}">+子任务</el-dropdown-item>
-										<el-dropdown-item :command="{type:'showTaskTemplate',data:scope.row}">+从模板批量导入子任务</el-dropdown-item> 
-										<el-dropdown-item :command="{type:'showMenu',data:scope.row}">+由故事创建子任务</el-dropdown-item> 
+										<el-dropdown-item :command="{type:'showTaskTemplate',data:scope.row}">+从模板批量导入子任务</el-dropdown-item>
+										<el-dropdown-item :command="{type:'showMenu',data:scope.row}">+由故事创建子任务</el-dropdown-item>
 
-										<el-dropdown-item :command="{type:'showDrawer',data:scope.row}">明细</el-dropdown-item>   
-										<el-dropdown-item :command="{type:'showEdit',data:scope.row}">编辑</el-dropdown-item>  
-										<el-dropdown-item :command="{type:'showExecusers',data:scope.row}" >执行人管理</el-dropdown-item> 
-										<el-dropdown-item :command="{type:'showSkill',data:scope.row}">技能管理</el-dropdown-item> 
+										<el-dropdown-item :command="{type:'showDrawer',data:scope.row}">明细</el-dropdown-item>
+										<el-dropdown-item :command="{type:'showEdit',data:scope.row}">编辑</el-dropdown-item>
+										<el-dropdown-item :command="{type:'showExecusers',data:scope.row}" >执行人管理</el-dropdown-item>
+										<el-dropdown-item :command="{type:'showSkill',data:scope.row}">技能管理</el-dropdown-item>
 										<el-dropdown-item v-if="  isTaskCenter=='1' && selkey=='myFocus'"    :command="{type:'focusOrUnfocus',data:scope.row}">取关</el-dropdown-item>
-										<el-dropdown-item v-if="  isTaskCenter=='1' && selkey!='myFocus'"    :command="{type:'focusOrUnfocus',data:scope.row}">关注</el-dropdown-item>  
-										<el-dropdown-item :command="{type:'showDrawer',data:scope.row}">讨论</el-dropdown-item>  
-										<el-dropdown-item :command="{type:'showDrawer',data:scope.row}">日志</el-dropdown-item>  
-										<el-dropdown-item :command="{type:'handleDel',data:scope.row}" >删除</el-dropdown-item>  
+										<el-dropdown-item v-if="  isTaskCenter=='1' && selkey!='myFocus'"    :command="{type:'focusOrUnfocus',data:scope.row}">关注</el-dropdown-item>
+										<el-dropdown-item :command="{type:'showDrawer',data:scope.row}">讨论</el-dropdown-item>
+										<el-dropdown-item :command="{type:'showDrawer',data:scope.row}">日志</el-dropdown-item>
+										<el-dropdown-item :command="{type:'handleDel',data:scope.row}" >删除</el-dropdown-item>
 									</el-dropdown-menu>
 								</el-dropdown>
 								</template>
 							</el-table-column>
 						</el-table>
-						<el-pagination  v-if="!gstcVisible" layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+						<el-pagination  v-if="!gstcVisible" layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 						<xm-gantt v-if="gstcVisible" :tree-data="tasksTreeData" :project-phase="{startTime: currentProjectPhase.beginDate, endTime: currentProjectPhase.endDate}" :useRealTime="true"></xm-gantt>
-					 
-				</el-row>  
+
+				</el-row>
 			</el-col>
 		</el-row>
 		<el-row  v-if="batchEditVisible" >
@@ -221,15 +230,15 @@
 			<div style="font-size: 12px;overflow-x:hidden">
 				<div class="task-header extra">
 					<div class="title">
-						{{editForm.name}} <el-tag style="border-radius:30px;">{{taskStateList[parseInt(editForm.taskState)] }}</el-tag> 
+						{{editForm.name}} <el-tag style="border-radius:30px;">{{taskStateList[parseInt(editForm.taskState)] }}</el-tag>
 								<el-link v-if="  isTaskCenter=='1' && selkey=='myFocus'"  type="warning"  @click.stop="focusOrUnfocus(editForm)">去取关</el-link>
-								<el-link v-if="  isTaskCenter=='1' && selkey!='myFocus'"  type="success"  @click.stop="focusOrUnfocus(editForm)">去关注</el-link>  
+								<el-link v-if="  isTaskCenter=='1' && selkey!='myFocus'"  type="success"  @click.stop="focusOrUnfocus(editForm)">去关注</el-link>
 					</div>
 					<div class="compact">
 						<el-tag v-if="editForm.level!='' && editForm.level!=null"   style="border-radius:30px;">{{formateOption('urgencyLevel',editForm.level)}}</el-tag>
-						[{{formateOption('taskType',editForm.taskType)}}] 
+						[{{formateOption('taskType',editForm.taskType)}}]
 						<span> {{editForm.projectName}} </span>
-							- 
+							-
 							<span> {{editForm.createUsername}} </span>
 							创建于 {{editForm.createTime}}
 					</div>
@@ -237,7 +246,7 @@
 						{{editForm.remarks}}
 					</div>
 				</div>
-				
+
 				<div class="exector extra">
 					<div class="field-label">用户故事</div><el-tag  v-if="editForm.menuName" style="margin-left:10px;border-radius:30px;"  >{{editForm.menuName}}</el-tag>
 				</div>
@@ -249,15 +258,15 @@
 						<el-button      style="font-size:12px;" @click="editProgress(40)">完成40%</el-button>
 						<el-button      style="font-size:12px;" @click="editProgress(60)">完成60%</el-button>
 						<el-button      style="font-size:12px;" @click="editProgress(80)">完成80%</el-button>
-						<el-button      style="font-size:12px;" @click="editProgress(99)">完成99%</el-button> 
-						<el-button      style="font-size:12px;" @click="editProgress(100)">完成100%</el-button> 
-					
+						<el-button      style="font-size:12px;" @click="editProgress(99)">完成99%</el-button>
+						<el-button      style="font-size:12px;" @click="editProgress(100)">完成100%</el-button>
+
 				</div>
 				<div class="exector extra">
 					<div class="field-label">任务负责人</div>
 					<el-tag  v-if="editForm.createUserid" style="margin-left:10px;border-radius:30px;"  >{{editForm.createUsername}}</el-tag>
-					<el-tag  v-else style="margin-left:10px;border-radius:30px;"  icon="el-icon-right" >未设置</el-tag> 
-					<el-button  @click="showGroupUserSelect(editForm)" icon="el-icon-setting">设置负责人</el-button> 				
+					<el-tag  v-else style="margin-left:10px;border-radius:30px;"  icon="el-icon-right" >未设置</el-tag>
+					<el-button  @click="showGroupUserSelect(editForm)" icon="el-icon-setting">设置负责人</el-button>
 				</div>
 				<div class="exector extra">
 					<div class="field-label">任务执行人</div><el-tag   style="margin-left:10px;border-radius:30px;"  >{{editForm.exeUsernames}}</el-tag>
@@ -270,7 +279,7 @@
 				</div>
 				<div class="extra">
 					<div class="field-label">任务周期</div>{{getDateString(editForm.startTime)+' ~ '+ getDateString(editForm.endTime)}} 共{{taskTime}}天
-				</div> 
+				</div>
 				<div v-if="editForm.children" class="extra">
 					<div class="field-label">子任务</div><el-tag   style="margin-left:10px;border-radius:30px;" v-for="(item,i) in editForm.children" :key="i">{{item.sortLevel}}{{item.name}}</el-tag>
 				</div>
@@ -289,7 +298,7 @@
 				<div class="extra">
 					<div class="field-label">预算工作量</div>{{editForm.budgetWorkload}} 人时
 				</div>
-				
+
 				<div class="extra">
 					<div class="field-label">任务描述</div>{{editForm.description}}
 				</div>
@@ -306,8 +315,8 @@
 
 			<div v-if="drawerkey == '1' && drawerVisible==true" style="overflow-x:hidden">
 				 <xm-exchange-mng :xm-task="editForm"></xm-exchange-mng>
-			</div>		 
-		</el-dialog> 
+			</div>
+		</el-dialog>
 		<!--编辑 XmTask xm_task界面-->
 		<el-dialog title="编辑任务" :visible.sync="editFormVisible" style="margin-top:3vh;" width="80%" append-to-body  :close-on-click-modal="false">
 				<xm-task-edit :xm-project="currentProject" :xm-task="editForm" :project-phase="currentProjectPhase" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-task-edit>
@@ -332,29 +341,38 @@
 		<el-dialog  :title="'技能条件'" :visible.sync="showSkillSearchVisible" width="60%" append-to-body  :close-on-click-modal="false">
 			<skill-mng :task-skills="filters.skillTags" :jump="true" @select-confirm="onTaskSkillsSearchSelected"></skill-mng>
 		</el-dialog>
-		
+
 		<el-dialog  title="任务模板" :visible.sync="taskTemplateVisible" width="70%" append-to-body  :close-on-click-modal="false">
 			<xm-task-template-mng :is-select="true" @select-confirm="onTaskTemplatesSelected"></xm-task-template-mng>
 		</el-dialog>
-		
+
 		<el-dialog   :title="currentProject==null?'项目明细':currentProject.name" center :fullscreen="true" :visible.sync="projectInfoVisible"  width="50%"  :close-on-click-modal="false" append-to-body>
 			<xm-project-info :sel-project="currentProject" @changeShowInfo="changeShowInfo" @submit="changeShowInfo"></xm-project-info>
 		</el-dialog>
-		
+
 		<el-dialog title="选中项目" :visible.sync="selectProjectVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 			<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
-		</el-dialog> 
-		
+		</el-dialog>
+
 		<el-dialog append-to-body title="故事选择" :visible.sync="menuVisible" fullscreen   :close-on-click-modal="false">
 			<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
 		</el-dialog>
-		
+    <el-dialog append-to-body title="故事选择" :visible.sync="menuStory" width="80%"    :close-on-click-modal="false">
+    	<xm-menu-select :visible="menuStory" :is-select-menu="true" :multi="true" @menus-selected="onSelectedStory"></xm-menu-select>
+    </el-dialog>
+
+    <el-dialog append-to-body title="选择负责人" :visible.sync="menuGroupUser" width="80%"    :close-on-click-modal="false">
+    	<xm-project-group-select :visible="menuGroupUser" :sel-project="selProject" :isSelectSingleUser="1" @user-confirm="seleConfirm" ></xm-project-group-select>
+    </el-dialog>
+    <el-dialog append-to-body title="选择执行人" :visible.sync="menuExecutor" width="80%"    :close-on-click-modal="false">
+    	<xm-project-group-select :visible="menuExecutor" :sel-project="selProject" :isSelectSingleUser="1" @user-confirm="seleExecutor" ></xm-project-group-select>
+    </el-dialog>
 		<el-dialog append-to-body title="故事明细" :visible.sync="menuDetailVisible" width="80%"    :close-on-click-modal="false">
 			<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="true" :xm-menu="{menuId:editForm.menuId,menuName:editForm.menuName}" ></xm-menu-rich-detail>
 		</el-dialog>
 		<el-dialog append-to-body title="选择负责人" :visible.sync="groupUserSelectVisible" width="80%"    :close-on-click-modal="false">
 			<xm-project-group-select :visible="groupUserSelectVisible" :sel-project="selProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-project-group-select>
-		</el-dialog> 
+		</el-dialog>
 	</section>
 </template>
 
@@ -363,31 +381,31 @@
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { getTask ,listXmTask,editXmTask,editRate, delXmTask, batchDelXmTask,batchImportTaskFromTemplate,batchSaveBudget,setTaskCreateUser} from '@/api/xm/core/xmTask'; 
+	import { getTask ,listXmTask,editXmTask,editRate, delXmTask, batchDelXmTask,batchImportTaskFromTemplate,batchSaveBudget,setTaskCreateUser} from '@/api/xm/core/xmTask';
 	import  XmTaskAdd from './XmTaskAdd';//新增界面
 	import  XmTaskEdit from './XmTaskEdit';//修改界面
 	import  XmTaskMngBatch from './XmTaskMngBatch';//修改界面
-	import { mapGetters } from 'vuex'; 
+	import { mapGetters } from 'vuex';
 	import xmExecuserMng from '../xmTaskExecuser/XmTaskExecuserMng';
 	import xmSkillMng from '../xmTaskSkill/XmTaskSkillMng';
 	import skillMng from "@/views/xm/core/skill/skillMng";
 	import {batchAddSkill } from '@/api/xm/core/xmTaskSkill';
 	import xmProjectPhaseMng from '../xmProjectPhase/XmProjectPhaseSelect';
-	import {sn} from '@/common/js/sequence' 
-	import xmTaskTemplateMng from '../xmTaskTemplate/XmTaskTemplateMng'; 
-	import xmExchangeMng from '../xmExchange/XmExchangeMng'; 
+	import {sn} from '@/common/js/sequence'
+	import xmTaskTemplateMng from '../xmTaskTemplate/XmTaskTemplateMng';
+	import xmExchangeMng from '../xmExchange/XmExchangeMng';
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
 
 	import { addXmMyFocus , delXmMyFocus } from '@/api/xm/core/xmMyFocus';
-	
+
 	import XmProjectList from '../xmProject/XmProjectList';
 
 	import XmMenuRichDetail from '../xmMenu/XmMenuRichDetail';
 
-  import XmGantt from '../components/xm-gantt';  
+  import XmGantt from '../components/xm-gantt';
 import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 
-	export default { 
+	export default {
 		computed: {
 			...mapGetters([
 				'userInfo','roles'
@@ -404,7 +422,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 						return currentProject
 					}else{
 						return null;
-					} 
+					}
 				}
 			},
 			currentProjectPhase(){
@@ -421,7 +439,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 						return projectPhase
 					}else{
 						return null;
-					} 
+					}
 				}
 			},
 			curUser() {
@@ -461,22 +479,22 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					xmTasks.push(c);
 				})
 				}
-				
-				const tasksTreeData = this.translateDataToTree(xmTasks); 
-        
+
+				const tasksTreeData = this.translateDataToTree(xmTasks);
+
 				 return tasksTreeData;
 			},
-			
-			taskBudgetData(){ 
+
+			taskBudgetData(){
 				var rows=this.xmTasks
 				var surplusPhaseBudgetCostAt = this.getFloatValue(this.projectPhase.phaseBudgetInnerUserAt)+ this.getFloatValue(this.projectPhase.phaseBudgetOutUserAt)+ this.getFloatValue(this.projectPhase.phaseBudgetNouserAt)
 				var surplusPhaseBudgetInnerUserAt=this.getFloatValue(this.projectPhase.phaseBudgetInnerUserAt)
 				var surplusPhaseBudgetOutUserAt=this.getFloatValue(this.projectPhase.phaseBudgetOutUserAt)
-				var surplusPhaseBudgetNouserAt=this.getFloatValue(this.projectPhase.phaseBudgetNouserAt) 
+				var surplusPhaseBudgetNouserAt=this.getFloatValue(this.projectPhase.phaseBudgetNouserAt)
 				var surplusPhaseBudgetUserAt=this.getFloatValue(this.projectPhase.phaseBudgetInnerUserAt)+this.getFloatValue(this.projectPhase.phaseBudgetOutUserAt)
 
 				var total={
-					surplusPhaseBudgetCostAt: surplusPhaseBudgetCostAt, 
+					surplusPhaseBudgetCostAt: surplusPhaseBudgetCostAt,
 					surplusPhaseBudgetInnerUserAt: surplusPhaseBudgetInnerUserAt,
 					surplusPhaseBudgetOutUserAt: surplusPhaseBudgetOutUserAt,
 					surplusPhaseBudgetNouserAt: surplusPhaseBudgetNouserAt,
@@ -488,7 +506,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					taskBudgetUserAt: 0,
 
 
-				}; 
+				};
 				//phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetInnerUserAt:'',phaseBudgetOutUserAt
 				rows.forEach((row2)=>{
 					var row=row2;
@@ -508,27 +526,27 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 						row.taskBudgetOutUserAt=0
 						row.taskBudgetInnerUserAt=budgetCost
 						row.taskBudgetNouserAt=0;
-					}  
+					}
 					total.taskBudgetNouserAt=total.taskBudgetNouserAt+row.taskBudgetNouserAt
 					total.taskBudgetInnerUserAt=total.taskBudgetInnerUserAt+ row.taskBudgetInnerUserAt
 					total.taskBudgetOutUserAt=total.taskBudgetOutUserAt+ row.taskBudgetOutUserAt
 				})
-				total.taskBudgetUserAt=total.taskBudgetInnerUserAt+total.taskBudgetOutUserAt  
-				total.surplusPhaseBudgetCostAt=total.surplusPhaseBudgetCostAt-total.taskBudgetNouserAt-total.taskBudgetUserAt 
+				total.taskBudgetUserAt=total.taskBudgetInnerUserAt+total.taskBudgetOutUserAt
+				total.surplusPhaseBudgetCostAt=total.surplusPhaseBudgetCostAt-total.taskBudgetNouserAt-total.taskBudgetUserAt
 				total.surplusPhaseBudgetInnerUserAt=total.surplusPhaseBudgetInnerUserAt-total.taskBudgetInnerUserAt
 				total.surplusPhaseBudgetOutUserAt=total.surplusPhaseBudgetOutUserAt-total.taskBudgetOutUserAt
-				total.surplusPhaseBudgetNouserAt=total.surplusPhaseBudgetNouserAt-total.taskBudgetNouserAt 
+				total.surplusPhaseBudgetNouserAt=total.surplusPhaseBudgetNouserAt-total.taskBudgetNouserAt
 				total.surplusPhaseBudgetUserAt=total.surplusPhaseBudgetUserAt-total.taskBudgetUserAt
 				return total;
 
 			}
 		},
 		props: ["selProject","isTaskCenter","isMy",'menuId','menuName'],
-		watch: { 
-			"selProject": function(oval,val) { 
+		watch: {
+			"selProject": function(oval,val) {
 				this.filters.selProject=this.selProject;
 				 this.changeSelKey("all");
-			}, 
+			},
 			'menuId':function(menuId){
 				this.getXmTasks()
 			},
@@ -545,6 +563,9 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					isMyTask: '0',//0不区分我的，1 时我的任务
 					selProject:null,
 					skillTags:[],
+          menus:[],
+          createUserid:'',//负责人
+          executorUserid:''//执行人
 				},
 				xmTasks: [],//查询结果
 				pageInfo:{//分页数据
@@ -563,8 +584,8 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					planType:[],
 					priority:[],
 					xmTaskSettleSchemel:[],
-				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
-				
+				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
+
 				addFormVisible: false,//新增xmTask界面是否显示
 				//新增xmTask界面初始化数据
 				addForm: {
@@ -572,19 +593,19 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',
 					rate:'',budgetCost:'',budgetWorkload:'',actCost:'',actWorkload:'',taskState:'',taskType:'',taskClass:'',toTaskCenter:'',actStartTime:'',actEndTime:'',
 				},
-				
+
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmTask界面初始化数据
 				editForm: {
 					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'',sortLevel:'',executorUserid:'',executorUsername:'',
 					preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',
 					rate:'',budgetCost:'',budgetWorkload:'',actCost:'',actWorkload:'',taskState:'',taskType:'',taskClass:'',toTaskCenter:'',actStartTime:'',actEndTime:'',
-				}, 
+				},
 				/**begin 自定义属性请在下面加 请加备注**/
-				taskStateList: ["待领取","已领取执行中","已完工","已结算"],   
+				taskStateList: ["待领取","已领取执行中","已完工","已结算"],
 
 				selkey: "all",
-				drawerVisible: false, 
+				drawerVisible: false,
 				progress_show: true,
 				isChild: false,
 				oldrate: "",
@@ -608,6 +629,9 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				menuDetailVisible:false,
 				pickerOptions:  util.pickerOptions(),
 				gstcVisible:false,
+        menuStory:false,//故事查询
+        menuGroupUser:false,//负责人查询
+        menuExecutor:false,//执行人查询
 				groupUserSelectVisible:false,//选择负责人
 				showSkillSearchVisible:false,//按技能查询
 				tableHeight:500,
@@ -615,7 +639,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			}
 		},//end data
 		methods: {
-			 
+
 			changeSelKey(index){
 				this.selkey = index;
 				this.getXmTasks();
@@ -624,8 +648,8 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				this.filters.taskType = index;
 				this.getXmTasks();
 			},
-			handleSizeChange(pageSize) { 
-				this.pageInfo.pageSize=pageSize; 
+			handleSizeChange(pageSize) {
+				this.pageInfo.pageSize=pageSize;
 				this.getXmTasks();
 			},
 			handleCurrentChange(pageNum) {
@@ -651,16 +675,16 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					}else{
 						dir='desc';
 					}
-					 
-					this.pageInfo.orderFields=[util.toLine(obj.prop)]; 
+
+					this.pageInfo.orderFields=[util.toLine(obj.prop)];
 					this.pageInfo.orderDirs=[dir];
 				}
-				
+
 
 				this.getXmTasks();
 			},
 			searchXmTasks(){
-				 this.pageInfo.count=true; 
+				 this.pageInfo.count=true;
 				 this.getXmTasks();
 			},
 			//获取列表 XmTask xm_task
@@ -673,14 +697,14 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				};
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
-					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
+					for(var i=0;i<this.pageInfo.orderFields.length;i++){
 						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
-					}  
+					}
 					params.orderBy= orderBys.join(",")
 				}
 				if(this.filters.key!==""){
 					//params.xxx=this.filters.key
-				} 
+				}
 				if(this.filters.taskType!="all" && this.filters.taskType!="" && this.filters.taskType!=null){
 					params.taskType=this.filters.taskType
 				}
@@ -695,11 +719,11 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				}else if(this.selkey.indexOf("myExecuserStatus")>=0){
 					params.userid=this.userInfo.userid
 					params.myExecuserStatus=this.selkey.substring("myExecuserStatus".length)
-				} 
+				}
 				this.load.list = true;
 				if(this.filters.selProject){
 					params.projectId = this.filters.selProject.id;
-				} 
+				}
 				params.workexec="true";
 				if(this.projectPhase){{
 					params.projectPhaseId=this.projectPhase.id
@@ -711,42 +735,53 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				if(this.menuId){
 					params.menuId=this.menuId
 				}
+        if(this.filters.menus && this.filters.menus.length==1){
+        	params.menuId=this.filters.menus[0].menuId
+        }else if(this.filters.menus && this.filters.menus.length>1){
+          params.menus=this.filters.menus.map(i=>i.menus)
+        }
 				if(this.filters.skillTags && this.filters.skillTags.length>0){
 					params.skillIds=this.filters.skillTags.map(i=>i.skillId)
-				} 
+				}
 				if(this.filters.key){
 					params.key='%'+this.filters.key+'%'
 				}
+        if(this.filters.createUserid){
+          params.createUserid=this.filters.createUserid
+        }
+        if(this.filters.executorUserid){
+          params.executorUserid=this.filters.executorUserid
+        }
 				getTask(params).then((res) => {
 					var tips=res.data.tips;
-					if(tips.isOk){ 
+					if(tips.isOk){
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
 						var xmTasks=res.data.data;
-						this.xmTasks=xmTasks;  
+						this.xmTasks=xmTasks;
 						if(this.editForm!=null){
 							var index=this.xmTasks.findIndex(i=>i.id==this.editForm.id);
 							if(index>=0){
 								this.editForm=this.xmTasks[index]
 							}
 						}
-						
+
 					}else{
 						this.$message({ message: tips.msg, type: 'error' });
 					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			},
-			calcTaskStateByTime(startTime,endTime,row){ 
+			calcTaskStateByTime(startTime,endTime,row){
 				var obj={
-					type:'', 
+					type:'',
 					desc:''
 				}
 				if(startTime==null || startTime=="" || endTime==null || endTime ==""){
 					obj={
-						type:'info', 
+						type:'info',
 						desc:"未配置日期"
-					}  
+					}
 					return obj;
 				}
 				var curDate=new Date();
@@ -755,40 +790,40 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				var rate=row.rate;
 				var isOver=row.rate>=100;
 				var days=this.getDaysBetween(curDate, start);
-				if(days<=0){ 
+				if(days<=0){
 					obj={
-						type:'info', 
+						type:'info',
 						desc:this.toFixed(this.getDaysBetween(start,curDate))+"天后开始"
-					}  
+					}
 					return obj;
-				}else if( this.getDaysBetween(curDate, start) > 0 &&  this.getDaysBetween(curDate, end) <= 0 ){ 
+				}else if( this.getDaysBetween(curDate, start) > 0 &&  this.getDaysBetween(curDate, end) <= 0 ){
 					obj={
-						type:'primary', 
+						type:'primary',
 						desc:this.toFixed(this.getDaysBetween(end, curDate))+"天后结束"
-					}  
+					}
 					return obj;
-				}else if( this.getDaysBetween(curDate, end) > 0 ){ 
+				}else if( this.getDaysBetween(curDate, end) > 0 ){
 					if(!isOver){
 						obj={
-							type:'danger', 
+							type:'danger',
 							desc:"逾期"+( this.toFixed(this.getDaysBetween(curDate, end)) )+"天"
 						}
 					}else{
 						obj={
-							type:'success', 
+							type:'success',
 							desc:"完工"+( this.toFixed(this.getDaysBetween(curDate, end)) )+"天"
-						}	
+						}
 					}
-					
+
 					return obj;
 				}
 			},
 			/**
 			 * 计算两个日期之间的天数
 			 * @param dateString1  开始日期 yyyy-MM-dd
-			 * @param dateString2  结束日期 yyyy-MM-dd 
+			 * @param dateString2  结束日期 yyyy-MM-dd
 			 */
-			  getDaysBetween(startDate,endDate){  
+			  getDaysBetween(startDate,endDate){
 				if (startDate==endDate){
 					return 0;
 				}
@@ -800,9 +835,9 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				var isCreate=this.userInfo.userid==this.editForm.createUserid
 				var isExec=this.userInfo.userid==this.editForm.executorUserid
 				if( !isCreate && !isExec ){
-					this.$message({ message: "你不是该任务的执行人、主负责人，不能更新进度", type: 'error' }); 
+					this.$message({ message: "你不是该任务的执行人、主负责人，不能更新进度", type: 'error' });
 					return;
-				} 
+				}
 				if(rate){
 					this.editForm.rate=rate
 				}
@@ -813,7 +848,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					parentTaskid: this.editForm.parentTaskid,
 				}
 				if(this.editForm.rate==0){
-						this.$message({ message: "不允许更新为0", type: 'error' }); 
+						this.$message({ message: "不允许更新为0", type: 'error' });
 						return;
 				}
 				this.load.edit = true;
@@ -835,36 +870,36 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				console.log("editForm",this.editForm);
 			},
 			showTaskTemplate:function(){
-				
+
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin')){
-					this.$message.error("只有项目经理、小组长可以操作"); 
+					this.$message.error("只有项目经理、小组长可以操作");
 					return;
 				}
 				if(this.currentProjectPhase==null){
-					this.$message({ message: "请先选择项目阶段计划", type: 'error' }); 
+					this.$message({ message: "请先选择项目阶段计划", type: 'error' });
 					return false;
 				}
 				this.taskTemplateVisible=true;
 			},
-			showSubAdd(row) { 
-				
+			showSubAdd(row) {
+
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin')){
-					this.$message.error("只有项目经理、小组长可以操作"); 
+					this.$message.error("只有项目经理、小组长可以操作");
 					return;
 				}
-				this.parentTask=row; 
+				this.parentTask=row;
 				this.editForm=row;
 				this.showAdd();
 			},
 			//显示新增界面 XmTask xm_task
 			showAdd: function () {
-				
+
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin')){
-					this.$message.error("只有项目经理、小组长可以操作"); 
+					this.$message.error("只有项目经理、小组长可以操作");
 					return;
 				}
 				if(!this.currentProjectPhase){
-					this.$message({ message: "请先选择项目阶段计划", type: 'error' }); 
+					this.$message({ message: "请先选择项目阶段计划", type: 'error' });
 					return;
 				}
 				this.addFormVisible = true;
@@ -881,47 +916,47 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			//选择行xmTask
 			selsChange: function (sels) {
 				this.sels = sels;
-			}, 
+			},
 			//删除xmTask
-			handleDel: function (row,index) { 
-				
+			handleDel: function (row,index) {
+
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin')){
-					this.$message.error("只有项目经理、小组长可以操作"); 
+					this.$message.error("只有项目经理、小组长可以操作");
 					return;
 				}
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					let params = Object.assign({},row);
 					delXmTask(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if(tips.isOk){ 
+						if(tips.isOk){
 							this.pageInfo.count=true;
 							this.getXmTasks();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
 			//批量删除xmTask
 			batchDel: function () {
-				
+
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin')){
-					this.$message.error("只有项目经理、小组长可以操作"); 
+					this.$message.error("只有项目经理、小组长可以操作");
 					return;
 				}
 				this.$confirm('确认删除选中记录吗？', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					batchDelXmTask(this.sels).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if( tips.isOk ){ 
+						if( tips.isOk ){
 							this.pageInfo.count=true;
-							this.getXmTasks(); 
+							this.getXmTasks();
 						}
 						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
@@ -931,13 +966,13 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				this.editForm=row;
 				// this.$emit('row-click',row,);//  @row-click="rowClick"
 			},
-			
+
 			showDrawer: function(row){
 				this.editForm=row;
 				this.drawerVisible = !this.drawerVisible;
 				// this.$emit('row-click',row,);//  @row-click="rowClick"
 			},
-			 
+
 			isEmpty(str) {
 				return str == null || "" == str;
 			},
@@ -947,31 +982,40 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				this.execUserVisible = true;
 			},
 
-			showSkill(row){ 
+			showSkill(row){
 				this.editForm=row;
 				this.skillVisible = true;
 			},
-			showSkillSelect(){ 
-				this.showSkillSearchVisible=true; 
+			showSkillSelect(){
+				this.showSkillSearchVisible=true;
 			},
+      showMenuStory(){
+      	this.menuStory=true;
+      },
+      showMenuGroupUser(){
+        this.menuGroupUser=true
+      },
+      showMenuExecutor(){
+        this.menuExecutor=true
+      },
 			skillTagClear(skill){
 				this.filters.skillTags=this.filters.skillTags.filter(i=>i.skillId!=skill.skillId)
 				this.searchXmTasks();
 			},
 			showMenu:function(parentTask){
 				if(this.projectPhase==null){
-					this.$message.error("请先选中阶段计划"); 
+					this.$message.error("请先选中阶段计划");
 					return;
 				}
-				
+
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin')){
-					this.$message.error("只有项目经理、小组长可以操作"); 
+					this.$message.error("只有项目经理、小组长可以操作");
 					return;
 				}
-				this.parentTask=parentTask; 
+				this.parentTask=parentTask;
 				this.menuVisible=true;
 
-			}, 
+			},
 			onSelectedMenus(menus){
 				if(menus==null || menus.length==0){
 					this.menuVisible=false;
@@ -981,15 +1025,23 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				menus2.forEach(i=>{
 					i.id=i.menuId
 					i.parentTaskid=i.pmenuId
-					i.name=i.menuName 
+					i.name=i.menuName
 				})
 				this.onTaskTemplatesSelected(menus2);
 				this.menuVisible=false;
-				 
+
 			},
+      onSelectedStory(menus){//根据故事查询
+        if(menus==null || menus.length==0){
+        	this.menuStory=false;
+        	return;
+        }
+        this.filters.menus=menus;
+        //this.pageInfo.count=true;
+        this.getXmTasks();
+        this.menuStory=false;
+      },
 			onTaskTemplatesSelected(taskTemplates) {
-				   
-				 ///////////////////
 				if(taskTemplates==null || taskTemplates.length==0){
 					this.taskTemplateVisible=false;
 					this.parentTask=null
@@ -1008,7 +1060,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					}else {
 						return true
 					}
-				 
+
 				})
 				if(this.parentTask!=null &&  this.parentTask!=undefined){
 					parents.forEach(i=>i.parentTaskid=this.parentTask.id);
@@ -1020,15 +1072,15 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 						return true;
 					}else{
 						return false;
-					} 
-				}) 
+					}
+				})
 				let translator = (parents, children) => {
 					parents.forEach((parent) => {
 						var newId=sn();
 						var myChildren=[];
 						if(children!=null && children.length>0){
 							myChildren=children.filter(current=>current.parentTaskid===parent.id);
-						}  
+						}
 						myChildren.forEach((current, index) => {
 							 current.parentTaskid=newId;
 							 var mySubChildren=children.filter(c=>c.parentTaskid===current.id);
@@ -1046,18 +1098,18 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					if(this.projectPhase==null){
 
 						i.projectPhaseId=this.parentTask.projectPhaseId
-						i.projectPhaseName=this.parentTask.projectPhaseName 
+						i.projectPhaseName=this.parentTask.projectPhaseName
 						i.sortLevel=i.sortLevel?i.sortLevel:this.parentTask.sortLevel
 						i.taskType=i.taskType?i.taskType:this.parentTask.taskType
 						i.taskClass=i.taskClass?i.taskClass:this.parentTask.taskClass
 
-						
+
 					}else{
 						i.projectPhaseId=this.projectPhase.id
-						i.projectPhaseName=this.projectPhase.phaseName 
+						i.projectPhaseName=this.projectPhase.phaseName
 						i.sortLevel=i.sortLevel?i.sortLevel:this.projectPhase.seqNo
 						i.taskType=i.taskType?i.taskType:this.projectPhase.taskType
-					} 
+					}
 					i.budgetCost=0
 					i.budgetWorkload=80;
 					i.level=i.level?i.level:'3'
@@ -1071,7 +1123,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					i.toTaskCenter=i.toTaskCenter?i.toTaskCenter:"1"
 					i.settleSchemel=i.settleSchemel?i.settleSchemel:"quotePrice"
 					i.createUserid=this.userInfo.userid
-					i.createUsername=this.userInfo.username 
+					i.createUsername=this.userInfo.username
 					const createTime = new Date();
 					var startTime=new Date();
 					const endTime=new Date();
@@ -1092,15 +1144,15 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					 this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
 				 }).catch(e=>{this.taskTemplateVisible=false;});
 			},
-			onTaskSkillsSearchSelected(skills){ 
+			onTaskSkillsSearchSelected(skills){
 				this.showSkillSearchVisible=false;
 				this.filters.skillTags=skills;
 				this.searchXmTasks()
 			},
-			onTaskSkillsSelected(skills) { 
+			onTaskSkillsSelected(skills) {
 				skills.forEach(i=>{
 					i.taskId=this.editForm.id
-					i.taskName=this.editForm.name 
+					i.taskName=this.editForm.name
 					i.taskSkillId=i.skillId
 					i.taskSkillName=i.skillName
 					i.skillRemarks=i.skillRemarks
@@ -1112,15 +1164,15 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 						this.skillVisible = false;
 						this.getXmTasks();
 					}
-					this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
-				}).catch( err  => this.load.add=false); 
-				
+					this.$message({ message: tips.msg, type: tips.isOk?'success':'error' });
+				}).catch( err  => this.load.add=false);
+
 			},
 
 			handleSelect(key, keyPath) {
 				this.drawerkey = key;
 			},
-			translateDataToTree(data2) { 
+			translateDataToTree(data2) {
 				var data=JSON.parse(JSON.stringify(data2));
 
 				let parents = data.filter(value =>{
@@ -1139,15 +1191,15 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					}else {
 						return true
 					}
-				 
-				}) 
+
+				})
 				let children = data.filter(value =>{
 					if(data.some(i=>value.parentTaskid==i.id)){
 						return true;
 					}else{
 						return false;
-					} 
-				})  
+					}
+				})
 				let translator = (parents, children) => {
 					parents.forEach((parent) => {
 						children.forEach((current, index) => {
@@ -1192,10 +1244,10 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					}
 				}else{
 					return value
-				} 
+				}
 			},
-			
-			formatterOption: function(row,column,cellValue, index){ 
+
+			formatterOption: function(row,column,cellValue, index){
 				var columnName=column.property;
 				var key="";
 				if(columnName=='settleSchemel'){
@@ -1223,7 +1275,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					}else{
 						return parseFloat(floatValue).toFixed(0);
 					}
-					
+
 				}
 			},
 			decrease:function(){
@@ -1232,44 +1284,44 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				}else{
 					this.editForm.rate=parseFloat(this.editForm.rate)-20
 				}
-				
+
 			},
 			increase:function(){
 				if(parseFloat(this.editForm.rate)+20 >100){
 					this.editForm.rate=100;
 				}else{
 					this.editForm.rate=parseFloat(this.editForm.rate)+20
-				} 
+				}
 			},
-			
+
 			focusOrUnfocus:function(row){
 				if(this.selkey=="myFocus"){
 					delXmMyFocus({projectId:row.projectId,focusType:'task',taskId:row.id,taskName:row.name,userid:this.userInfo.userid,username:this.userInfo.username}).then(res=>{
 						var tips=res.data.tips;
 						if(tips.isOk){
-							this.getXmTasks(); 
-						} 
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+							this.getXmTasks();
+						}
+						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' });
 					})
 				}else{
 					addXmMyFocus({projectId:row.projectId,projectName:row.projectName,focusType:'task',taskId:row.id,taskName:row.name,userid:this.userInfo.userid,username:this.userInfo.username}).then(res=>{
 						var tips=res.data.tips;
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' });
 					})
 				}
 			},
 			showBatchEdit:function(){
-				
+
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin')){
-					this.$message.error("只有项目经理、小组长可以操作"); 
-					return; 
+					this.$message.error("只有项目经理、小组长可以操作");
+					return;
 				}
 				if(this.projectPhase==null ){
 					this.$message({ message:"请选择阶段计划再编辑", type: 'error'});
 					return ;
 				}
 				this.batchEditVisible=true
-			}, 
+			},
 			fieldChange:function(row,fieldName, nextReplace){
 				if(nextReplace) {
 					row.nextReplace = nextReplace;
@@ -1277,29 +1329,29 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				console.log('fieldChange--row.opType==', row.opType);
 				if(fieldName=='startTime' || fieldName=='endTime'){
 					if(row.startTime && row.endTime){
-						
+
 						var start=new Date(row.startTime);
 						var end=new Date(row.endTime);
 						var days=this.getDaysBetween(end,start)
 						if(row.taskOut=='1' && this.projectPhase.phaseBudgetOutUserPrice && !row.budgetWorkload ){
 							row.budgetWorkload=parseFloat((days*8).toFixed(2))
-							row.budgetCost=row.budgetWorkload*this.projectPhase.phaseBudgetOutUserPrice 
-						}else if( row.taskOut!='1' && this.projectPhase.phaseBudgetInnerUserPrice && !row.budgetWorkload){ 
+							row.budgetCost=row.budgetWorkload*this.projectPhase.phaseBudgetOutUserPrice
+						}else if( row.taskOut!='1' && this.projectPhase.phaseBudgetInnerUserPrice && !row.budgetWorkload){
 							row.budgetWorkload=parseFloat((days*8).toFixed(2))
-							row.budgetCost=row.budgetWorkload*this.projectPhase.phaseBudgetInnerUserPrice 
+							row.budgetCost=row.budgetWorkload*this.projectPhase.phaseBudgetInnerUserPrice
 						}
 					}
 				}
 				if(fieldName=='budgetWorkload' || fieldName=='taskOut'){
 					if(row.taskOut=='1' && this.projectPhase.phaseBudgetOutUserPrice ){
-						row.budgetCost=row.budgetWorkload*this.projectPhase.phaseBudgetOutUserPrice 
+						row.budgetCost=row.budgetWorkload*this.projectPhase.phaseBudgetOutUserPrice
 					}else if( row.taskOut!='1' && this.projectPhase.phaseBudgetInnerUserPrice){
-						row.budgetCost=row.budgetWorkload*this.projectPhase.phaseBudgetInnerUserPrice  
+						row.budgetCost=row.budgetWorkload*this.projectPhase.phaseBudgetInnerUserPrice
 					}
 				}
 				if(row.opType){
 					var index=this.valueChangeRows.findIndex(i=>i.id==row.id);
-					
+
 					if(index>=0){
 						this.valueChangeRows.splice(index,1);
 						this.valueChangeRows.push(row)
@@ -1310,7 +1362,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 
 					var oneRow=this.valueChangeRows.find(i=>i.id==row.id);
 					if( oneRow  ){
-						if(oneRow.nextReplace){ 
+						if(oneRow.nextReplace){
 							var index=this.valueChangeRows.findIndex(i=>i.id==row.id);
 							this.valueChangeRows.splice(index,1);
 							this.valueChangeRows.push(row)
@@ -1320,7 +1372,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					}else{
 						this.valueChangeRows.push(row)
 					}
-				} 
+				}
 			},
 			getRowSum(row){
 				var budgetCost=this.getFloatValue(row.budgetCost);
@@ -1332,11 +1384,11 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					 row.taskBudgetOutUserAt=0
 					 row.taskBudgetInnerUserAt=budgetCost
 					 row.taskBudgetNouserAt=0;
-				} 
+				}
 				return budgetCost;
 			},
 			getFloatValue(value,digit){
-				
+
 				if(isNaN(value)){
 					return 0;
 				}
@@ -1349,11 +1401,10 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				this.selectProjectVisible=true;
 			},
 			onPorjectConfirm:function(project){
-				this.filters.selProject=project
 				this.selectProjectVisible=false;
 				this.getXmTasks();
-			},  
-			handleCommand(command) { 
+			},
+			handleCommand(command) {
 				if(command.type=='showSubAdd'){
 					this.showSubAdd(command.data);
 				}else if(command.type=='showTaskTemplate'){
@@ -1378,17 +1429,17 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			},
 			toMenu(task){
 				this.editForm=task
-				if(task.menuId){ 
-					this.menuDetailVisible=true 
+				if(task.menuId){
+					this.menuDetailVisible=true
 				}else{
 					this.showEdit(task);
 				}
 			},
 			handlePopover:function(row,opType){
-				
+
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin')){
-					this.$message.error("只有项目经理、小组长可以操作"); 
-					return; 
+					this.$message.error("只有项目经理、小组长可以操作");
+					return;
 				}
 				if('add'==opType){
 					var subRow=JSON.parse(JSON.stringify(this.addForm));
@@ -1402,18 +1453,18 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					if(this.projectPhase==null){
 
 						subRow.projectPhaseId=this.parentTask.projectPhaseId
-						subRow.projectPhaseName=this.parentTask.projectPhaseName 
+						subRow.projectPhaseName=this.parentTask.projectPhaseName
 						subRow.sortLevel=subRow.sortLevel?subRow.sortLevel:this.parentTask.sortLevel
 						subRow.taskType=subRow.taskType?subRow.taskType:this.parentTask.taskType
 						subRow.taskClass=subRow.taskClass?subRow.taskClass:this.parentTask.taskClass
 
-						
+
 					}else{
 						subRow.projectPhaseId=this.projectPhase.id
-						subRow.projectPhaseName=this.projectPhase.phaseName 
+						subRow.projectPhaseName=this.projectPhase.phaseName
 						subRow.sortLevel=subRow.sortLevel?subRow.sortLevel:this.projectPhase.seqNo
 						subRow.taskType=subRow.taskType?subRow.taskType:this.projectPhase.taskType
-					} 
+					}
 					subRow.budgetCost=0
 					subRow.budgetWorkload=80;
 					subRow.level=subRow.level?subRow.level:'3'
@@ -1427,7 +1478,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					subRow.toTaskCenter=subRow.toTaskCenter?subRow.toTaskCenter:"1"
 					subRow.settleSchemel=subRow.settleSchemel?subRow.settleSchemel:"quotePrice"
 					subRow.createUserid=this.userInfo.userid
-					subRow.createUsername=this.userInfo.username 
+					subRow.createUsername=this.userInfo.username
 					const createTime = new Date();
 					var startTime=new Date();
 					const endTime=new Date();
@@ -1452,7 +1503,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 						if(row.children && row.children.length>0){
 							this.$message.error("请先删除子元素");
 							return;
-						}else{ 
+						}else{
 
 							var index=this.xmTasks.findIndex(i=>i.id==row.id)
 							var indexValueChanges=this.valueChangeRows.findIndex(i=>i.id==row.id)
@@ -1463,22 +1514,22 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 						this.$message.error("只能删除未保存的行");
 						return;
 					}
-					 
-				} else if ('highestPmenuId' === opType) {  
+
+				} else if ('highestPmenuId' === opType) {
 					if (row.id) {
 						this.xmTasks.find(d => {
-							
-							if (d.id === row.id) { 
+
+							if (d.id === row.id) {
 								d.parentTaskid = '';
-								this.fieldChange(d,'seqNo'); 
+								this.fieldChange(d,'seqNo');
 							}
 						});
 					}
-				} 
+				}
 			},
-			afterExecuserSubmit(){ 
+			afterExecuserSubmit(){
 
-				this.getXmTasks(); 
+				this.getXmTasks();
 			},
 			toJoin(){
 				if(this.editForm.exeUserids && this.editForm.exeUserids.indexOf(this.userInfo.userid)>=0){
@@ -1494,7 +1545,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			clearProject(){
 				this.filters.selProject=null;
 				this.getXmTasks()
-      },  
+      },
 	  showGroupUserSelect:function(task){
 		  this.editForm=task;
 		  this.groupUserSelectVisible=true;
@@ -1509,13 +1560,32 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 		  setTaskCreateUser(this.editForm).then(res=>{
 			  var tips = res.data.tips;
 			  if(tips.isOk){
-				 this.$message.success("设置成功"); 
+				 this.$message.success("设置成功");
 		  		 this.groupUserSelectVisible=false;
 			  }else{
 					this.$message.error(tips.msg);
 			  }
 		  })
 	  },
+    //查询时选择责任人
+    seleConfirm(groupUser){
+      if(groupUser&&groupUser.length!==0){
+        this.filters.createUserid=groupUser[0].userid;
+      }else{
+        this.filters.createUserid='';
+      }
+      this.searchXmTasks();
+      this.menuGroupUser=false;
+    },
+    seleExecutor(executor){
+      if(executor&&executor.length!==0){
+        this.filters.executorUserid=executor[0].userid;
+      }else{
+        this.filters.executorUserid='';
+      }
+      this.searchXmTasks();
+      this.menuExecutor=false;
+    },
       // 判断前后两个数据是否存在同一回路里面
       // dict 为字典；sId拖拽到menuId; ePmeuId 是放置位置的祖先 menuId;
       judgePmenuId(dict, sId, ePmeuId) {
@@ -1552,10 +1622,10 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
             })
           } else {
             console.log('形成闭合回路--拖拽不更新');
-            
+
           }
         }
-			}, 
+			},
 			batchEditBack:function(needReload){
 				if(needReload==true){
 					this.searchXmTasks();
@@ -1563,36 +1633,34 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				this.batchEditVisible=false;
 			}
 			/**end 自定义函数请在上面加**/
-			
+
 		},//end methods
-		components: { 
+		components: {
 		    'xm-task-add':XmTaskAdd,
-		    'xm-task-edit':XmTaskEdit, 
+		    'xm-task-edit':XmTaskEdit,
 			xmExecuserMng,
 			xmSkillMng,
 			skillMng,
 			xmProjectPhaseMng,
 			xmTaskTemplateMng, XmProjectList,xmExchangeMng,xmMenuSelect,XmMenuRichDetail,XmGantt,XmTaskMngBatch,
-XmProjectGroupSelect 
+XmProjectGroupSelect
 		    //在下面添加其它组件
 		},
 		mounted() {
-			
 			if(this.selProject){
 				this.filters.selProject=this.selProject
 			}
 			this.$nextTick(()=>{
-				
 				this.getXmTasks();
-				this.tableHeight = window.innerHeight - 250; 
+				this.tableHeight = window.innerHeight - 250;
 				listOption([{categoryId:'all',itemCode:'planType'}
 				,{categoryId:'all',itemCode:'taskType'}
 				,{categoryId:'all',itemCode:'urgencyLevel'}
 				,{categoryId:'all',itemCode:'xmTaskSettleSchemel'}
 				,{categoryId:'all',itemCode:'priority'}]).then(res=>{
 					this.options=res.data.data;
-				})		
-     		 }); 
+				})
+     		 });
 		}
 	}
 
@@ -1655,7 +1723,7 @@ XmProjectGroupSelect
 .xm-task .progress-disable >>> .el-progress-bar__inner{
 	background-color: #ccc !important;
 }
- 
+
 
 small{
 	font-size: 12px;
@@ -1704,8 +1772,8 @@ small{
 }
 </style>
 <style lang="scss" scoped>
- .el-table{ 
-	 box-sizing: border-box; 
+ .el-table{
+	 box-sizing: border-box;
 	/deep/ .cell {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;

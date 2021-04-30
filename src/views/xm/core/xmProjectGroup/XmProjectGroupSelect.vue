@@ -60,7 +60,7 @@
 				}else{ 
 					this.xmProjectGroupFormworkSels = [];
 				}
-				this.applyData();
+				// this.applyData();
 			},
 			'visible': function(visible) {
 				if (visible == true) {
