@@ -3,15 +3,15 @@
 		<el-row   class="xm-question">
 			<el-row class="app-container"> 
 
-			  	<el-select v-model="filters.bugStatus" placeholder="请选择状态" clearable @change="changeBugStatus">
+			  	<el-select v-model="filters.bugStatus" placeholder="请选择状态" style="width:15%;" clearable @change="changeBugStatus">
 					<el-option v-for="(b,index) in options['bugStatus']" :value="b.optionValue"  :key="index" :label="b.optionName">{{b.optionName}}
 					</el-option>
 				</el-select>
-				<el-select class="hidden-md-and-down" v-model="filters.priority" placeholder="请选择紧急程度" clearable @change="changePriority">
+				<el-select class="hidden-md-and-down" v-model="filters.priority" placeholder="紧急程度"  style="width:15%;" clearable @change="changePriority">
 					<el-option v-for="(b,index) in options['urgencyLevel']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
 					</el-option>
 				</el-select>
-				<el-select class="hidden-md-and-down" v-model="filters.solution" placeholder="请选择解决方案" clearable @change="changeSolution">
+				<el-select class="hidden-md-and-down" v-model="filters.solution" placeholder="解决方案" clearable @change="changeSolution">
 					<el-option v-for="(b,index) in options['bugSolution']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
 					</el-option>
 				</el-select>
@@ -19,7 +19,7 @@
 					<el-option v-for="(b,index) in options['bugSeverity']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
 					</el-option>
 				</el-select>  
-				<el-input style="width:300px;" v-model="filters.key" placeholder="问题名称">
+				<el-input style="width:250px;" v-model="filters.key" placeholder="问题名称">
 					<template slot="append">
 						<el-button @click="searchXmQuestions" type="primary" icon="el-icon-search"></el-button>
 					</template>
