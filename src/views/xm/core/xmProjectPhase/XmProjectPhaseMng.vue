@@ -52,18 +52,18 @@
 			<!--列表 XmProjectPhase xm_project_phase-->
 			<el-table :max-height="tableHeight" v-show="!gstcVisible "  default-expand-all :data="projectPhaseTreeData"  :summary-method="getSummariesForNoBatchEdit"  :show-summary="true"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column   sortable type="selection" width="40"></el-table-column>
- 				<el-table-column prop="phaseName" label="阶段名称" min-width="160" > 
+ 				<el-table-column prop="phaseName" label="阶段名称" min-width="150" > 
 					 <template slot-scope="scope">  
 						{{scope.row.seqNo}} &nbsp;&nbsp;<el-link type="primary" @click="showEdit(scope.row)"> {{scope.row.phaseName}}</el-link>
 					 </template>
 				</el-table-column>   
-				<el-table-column  prop="mngUsername" label="责任人" min-width="80" > 
+				<el-table-column  prop="mngUsername" label="责任人" width="80" > 
 					<template  slot-scope="scope">
 						<el-button type="text" v-if="!scope.row.mngUserid"  v-model="scope.row.mngUsername" @click="groupUserSelectVisible=true" icon="el-icon-setting">去设置</el-button>  
 						<el-link v-else type="primary"   @click="groupUserSelectVisible=true">{{scope.row.mngUsername}}</el-link>
 					</template>
 				</el-table-column>
-				<el-table-column  prop="beginDate" label="起止时间" min-width="150" >
+				<el-table-column  prop="beginDate" label="起止时间" min-width="120" >
 					<template slot-scope="scope">  
 								<font class="hidden-md-and-down" >{{formatDate(scope.row.beginDate)}}<br>{{formatDate(scope.row.endDate)}}  </font>
 								<div v-for="item in [calcTaskStateByTime(scope.row.beginDate,scope.row.endDate,scope.row.actRate,scope.phaseStatus)]" :key="item.status"><el-tag :type="item.status">{{item.remark}}</el-tag></div> 
@@ -75,19 +75,19 @@
 							<!--<el-tag > {{ formateOption('xmPhaseStatus',scope.row.phaseStatus)}} </el-tag>  -->
 					</template>
 				</el-table-column>
-				<el-table-column  prop="phaseBudgetHours" label="工时.人时" min-width="200" > 
+				<el-table-column  prop="phaseBudgetHours" label="工时.人时" width="150" > 
 					<template slot-scope="scope">  
-						计划：{{scope.row.phaseBudgetWorkload}} <br/> 
-						实际：{{scope.row.phaseActWorkload}} 
+						计划&nbsp;{{scope.row.phaseBudgetWorkload}} <br/> 
+						实际&nbsp;{{scope.row.phaseActWorkload}} 
 					</template>
 				</el-table-column>  
-				<el-table-column  prop="phaseBudgetCostAt" label="成本合计.元" min-width="120" > 
+				<el-table-column  prop="phaseBudgetCostAt" label="成本合计.元" width="150" > 
 					<template slot-scope="scope">  
-						计划：{{scope.row.phaseBudgetCostAt}} <br/> 
-						实际：{{scope.row.actCostAt}}
+						计划&nbsp;{{scope.row.phaseBudgetCostAt}} <br/> 
+						实际&nbsp;{{scope.row.actCostAt}}
 					</template> 
 				</el-table-column>     
-				<el-table-column  prop="bizFlowState" label="审批状态" min-width="80" >  
+				<el-table-column  prop="bizFlowState" label="审批状态" width="100" >  
 					<template slot-scope="scope">
 						<el-tooltip  :content="showApprovaInfo(scope.row)" placement="bottom" effect="light">
 						<el-tag v-if="scope.row.flowState=='0'|| !scope.row.flowState">未发审</el-tag> 
@@ -124,7 +124,7 @@
 			</el-table>
       		<xm-gantt v-if="gstcVisible && batchEditVisible==false" :tree-data="projectPhaseTreeData" :project-phase="selProject" :columns="ganrrColumns" :useRealTime="false"></xm-gantt>
 			
-			<el-row v-if="gstcVisible">
+			<el-row>
 				<el-pagination layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[1,2,10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 			</el-row>
 
@@ -1068,8 +1068,8 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				var phaseActWorkload=this.phaseBudgetData.phaseActWorkload 
 				var budgetCost=this.phaseBudgetData.phaseBudgetNouserAt+this.phaseBudgetData.phaseBudgetInnerUserAt+this.phaseBudgetData.phaseBudgetOutUserAt
 				var actCost=this.phaseBudgetData.actInnerUserAt+this.phaseBudgetData.actNouserAt+this.phaseBudgetData.actOutUserAt
-				sums[5]='预算:'+budgetWorkload+',实际:'+phaseActWorkload+'' 
-				sums[6]='预算:'+budgetCost.toFixed(0)+',实际:'+actCost.toFixed(0)+''
+				sums[5]='计 '+budgetWorkload+',实 '+phaseActWorkload+'' 
+				sums[6]='计 '+budgetCost.toFixed(0)+',实 '+actCost.toFixed(0)+''
 
 				return sums;
 			},
