@@ -11,7 +11,8 @@
 						<el-option  value="work" label="未完成">未完成</el-option>
 						<el-option  value="finish" label="已完成">已完成</el-option>
 						<el-option  value="myFocus" label="我关注">我关注</el-option>
-						<el-option  value="myExecuserStatus0" label="我排队">我排队</el-option>
+						<el-option  value="myExecuserStatus0" label="我排队">我排队</el-option> 
+						<el-option  value="myCreate" label="我是责任人">我是责任人</el-option>
 						<el-option  value="myExecuserStatus1" label="我执行">我执行</el-option>
 						<el-option  value="myExecuserStatus2" label="我提交">我提交</el-option>
 						<el-option  value="myExecuserStatus3" label="我的验收成功">我的验收成功</el-option>
@@ -715,6 +716,9 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					params.rate = 100;
 				} else if(this.selkey=="myFocus"){
 					params.myFocus="1"
+					params.userid=this.userInfo.userid
+				} else if(this.selkey=="myCreate"){
+					params.createUserid=this.userInfo.userid
 					params.userid=this.userInfo.userid
 				}else if(this.selkey.indexOf("myExecuserStatus")>=0){
 					params.userid=this.userInfo.userid
