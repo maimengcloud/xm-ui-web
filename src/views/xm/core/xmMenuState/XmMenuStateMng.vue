@@ -17,37 +17,62 @@
 						</template>
 					</el-table-column>  
 					<el-table-column prop="planStatus" label="计划状态" width="100" :formatter="formatterOption"></el-table-column> 
- 					<el-table-column prop="chargeUsername" label="负责人" min-width="120" ></el-table-column>   
-					<el-table-column prop="onlineTime" label="上线时间" min-width="120" >
+ 					<el-table-column prop="chargeUsername" label="负责人" width="120" ></el-table-column>   
+					<el-table-column prop="onlineTime" label="上线时间" width="120" >
 						<template slot-scope="scope"> 
 							{{getDateString(scope.row.planStartTime)}} 
 						</template>
 					</el-table-column>  
- 					<el-table-column prop="planStartTime" label="开始时间~结束时间" min-width="200" >
+ 					<el-table-column prop="planStartTime" label="开始时间~结束时间" width="200" >
 						<template slot-scope="scope">
 							 计划：{{getDateString(scope.row.planStartTime)}}~{{getDateString(scope.row.planEndTime)}}<br>
 							 实际：{{getDateString(scope.row.actStartTime)}}~{{getDateString(scope.row.actEndTime)}}
 						</template>
 					</el-table-column> 
-					<el-table-column prop="planWorkload" label="工作量.人时" min-width="120" >
+					<el-table-column prop="planWorkload" label="工作量.人时" width="120" >
 						<template slot-scope="scope">
 							 计划：{{scope.row.planWorkload}}<br>
 							 实际：{{scope.row.actWorkload}}
 						</template> 
 					</el-table-column> 
-					<el-table-column prop="planCostAmount" label="成本.元" min-width="120" >
+					<el-table-column prop="planCostAmount" label="成本.元" width="120" >
 						<template slot-scope="scope">
 							 计划：{{scope.row.planCostAmount}}<br>
 							 实际：{{scope.row.actCostAmount}}
 						</template> 
 					</el-table-column> 
-					<el-table-column prop="finishRate" label="完成比例%"  min-width="200" >
+					<el-table-column prop="finishRate" label="进度"  width="80" >
 						<template slot-scope="scope">
-							总体:{{scope.row.finishRate}}%,需求：{{scope.row.demandRate}}%,设计：{{scope.row.designRate}}%<br>
-							开发:{{scope.row.devRate}}% ,sit ：{{scope.row.sitRate}}%,uat :{{scope.row.uatRate}}%
+							
+							<el-popover
+								placement="bottom"
+								title="进度情况"
+								width="200"
+								trigger="click" >
+								<el-row>
+									总体:{{scope.row.finishRate}}%
+								</el-row>
+								<el-row>
+									需求：{{scope.row.demandRate}}%
+								</el-row>
+								<el-row>
+									设计：{{scope.row.designRate}}%
+								</el-row>
+								<el-row>
+									开发:{{scope.row.devRate}}%
+								</el-row>
+								<el-row>
+									sit ：{{scope.row.sitRate}}%
+								</el-row>
+								<el-row>
+									uat :{{scope.row.uatRate}}%
+								</el-row> 
+								<el-button type="text" slot="reference">{{scope.row.finishRate}}%</el-button>
+							</el-popover>
+							
 						</template> 
 					</el-table-column>   
-					<el-table-column prop="onlineStatus" label="上线状态" min-width="80" >
+					<el-table-column prop="onlineStatus" label="上线状态" width="80" >
 						<template slot-scope="scope"> 
 							<el-tag v-if="scope.row.onlineStatus=='0'|| !scope.row.onlineStatus" type="info">未上线</el-tag>
 							<el-tag v-if="scope.row.onlineStatus=='1'" type="success">已上线</el-tag>
