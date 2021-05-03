@@ -3,16 +3,26 @@
 		<el-row class="app-container"> 
 			<el-col :span="14"> 
 				<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
-					<el-form-item label="序号" prop="seqNo" v-if="xmMenu.seqNo">
-						 {{editForm.seqNo}}
-					</el-form-item> 
-					<el-form-item label="故事名称" prop="menuName">
-						{{editForm.menuName}} 
+					<el-form-item label="名称" prop="menuName" >
+						 {{editForm.seqNo}} &nbsp; {{editForm.menuName}} 
 					</el-form-item>  
 					<el-form-item label="负责人" prop="menuName">
 						{{editForm.mmUsername}} 
 					</el-form-item>  
-					<el-form-item label="备注" prop="remark">
+					    
+					<el-form-item label="需求链接" prop="demandUrl">
+						{{editForm.demandUrl}}  
+					</el-form-item>  
+					<el-form-item label="代码链接" prop="codeUrl">
+						{{editForm.codeUrl}}  
+					</el-form-item>  
+					<el-form-item label="设计链接" prop="designUrl">
+						{{editForm.designUrl}}  
+					</el-form-item>   
+					<el-form-item label="操作手册链接" prop="operDocUrl">
+						{{editForm.operDocUrl}}  
+					</el-form-item>  
+					<el-form-item label="概述" prop="remark">
 						{{editForm.remark}}  
 					</el-form-item>  
 				</el-form>

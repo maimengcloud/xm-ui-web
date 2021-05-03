@@ -13,8 +13,20 @@
 					 <el-tag v-if="editForm.mmUserid" closable @close="clearPmUser">{{editForm.mmUsername}}</el-tag>
 					 <el-tag v-else>未配置</el-tag> 
 					 <el-button @click="selectUser">选负责人</el-button>
+				</el-form-item>   
+				<el-form-item label="需求链接" prop="demandUrl"> 
+					<el-input v-model="editForm.demandUrl" placeholder="需求链接" ></el-input> 
 				</el-form-item>  
-				<el-form-item label="备注" prop="remark">
+				<el-form-item label="代码链接" prop="codeUrl">
+					<el-input v-model="editForm.codeUrl" placeholder="代码链接" ></el-input>  
+				</el-form-item>  
+				<el-form-item label="设计链接" prop="designUrl">
+					<el-input v-model="editForm.designUrl" placeholder="设计链接" ></el-input>  
+				</el-form-item>   
+				<el-form-item label="操作手册链接" prop="operDocUrl">
+					<el-input v-model="editForm.operDocUrl" placeholder="操作手册链接" ></el-input>  
+				</el-form-item>  
+				<el-form-item label="概述" prop="remark">
 					<el-input type="textarea" v-model="editForm.remark" :autosize="{ minRows: 4, maxRows: 20}"  placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
 				</el-form-item> 
 				<el-form-item>
