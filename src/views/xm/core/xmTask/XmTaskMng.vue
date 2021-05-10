@@ -25,6 +25,7 @@
 						<el-option class="showall" value="all"  label="全部类型">全部类型</el-option>
 						<el-option  v-for="(i,index) in options.taskType" :value="i.optionValue" :label="i.optionName" :key="index">{{i.optionName}}</el-option>
 					</el-select>
+					<el-checkbox v-model="filters.taskOut">众包</el-checkbox>
 					<el-button  class="hidden-md-and-down"  v-if=" !filters.skillTags || filters.skillTags.length==0" icon="el-icon-search" @click="showSkillSelect">选择标签</el-button>
 					<el-tag closable v-for=" (skill,index) in filters.skillTags" :key="index"  @click="showSkillSelect" @close="skillTagClear(skill)">{{skill.skillName}}</el-tag>
 					<div style=" float:right;margin-right:10px;">
@@ -564,6 +565,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					isMyTask: '0',//0不区分我的，1 时我的任务
 					selProject:null,
 					skillTags:[],
+					taskOut:'1',//1只查众包任务，0//只查本机构任务
           menus:[],
           createUserid:'',//负责人
           executorUserid:''//执行人
@@ -739,23 +741,26 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				if(this.menuId){
 					params.menuId=this.menuId
 				}
-        if(this.filters.menus && this.filters.menus.length==1){
-        	params.menuId=this.filters.menus[0].menuId
-        }else if(this.filters.menus && this.filters.menus.length>1){
-          params.menus=this.filters.menus.map(i=>i.menus)
-        }
+				if(this.filters.menus && this.filters.menus.length==1){
+					params.menuId=this.filters.menus[0].menuId
+				}else if(this.filters.menus && this.filters.menus.length>1){
+				params.menus=this.filters.menus.map(i=>i.menus)
+				}
 				if(this.filters.skillTags && this.filters.skillTags.length>0){
 					params.skillIds=this.filters.skillTags.map(i=>i.skillId)
 				}
 				if(this.filters.key){
 					params.key='%'+this.filters.key+'%'
 				}
-        if(this.filters.createUserid){
-          params.createUserid=this.filters.createUserid
-        }
-        if(this.filters.executorUserid){
-          params.executorUserid=this.filters.executorUserid
-        }
+				if(this.filters.taskOut){
+					params.taskOut=this.filters.taskOut
+				}
+				if(this.filters.createUserid){
+				params.createUserid=this.filters.createUserid
+				}
+				if(this.filters.executorUserid){
+				params.executorUserid=this.filters.executorUserid
+				}
 				getTask(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){
