@@ -25,7 +25,7 @@
 						<el-option class="showall" value="all"  label="全部类型">全部类型</el-option>
 						<el-option  v-for="(i,index) in options.taskType" :value="i.optionValue" :label="i.optionName" :key="index">{{i.optionName}}</el-option>
 					</el-select>
-					<el-checkbox v-model="filters.taskOut">众包</el-checkbox>
+					<el-checkbox v-model="filters.taskOut"   true-label="1" false-label="">众包</el-checkbox>
 					<el-button  class="hidden-md-and-down"  v-if=" !filters.skillTags || filters.skillTags.length==0" icon="el-icon-search" @click="showSkillSelect">选择标签</el-button>
 					<el-tag closable v-for=" (skill,index) in filters.skillTags" :key="index"  @click="showSkillSelect" @close="skillTagClear(skill)">{{skill.skillName}}</el-tag>
 					<div style=" float:right;margin-right:10px;">
@@ -565,7 +565,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					isMyTask: '0',//0不区分我的，1 时我的任务
 					selProject:null,
 					skillTags:[],
-					taskOut:'1',//1只查众包任务，0//只查本机构任务
+					taskOut:'',//1只查众包任务，0//只查本机构任务
           menus:[],
           createUserid:'',//负责人
           executorUserid:''//执行人
