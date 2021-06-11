@@ -633,7 +633,7 @@
 			this.filters.selProject=this.selProject; 
 			this.$nextTick(() => {
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=70; 
+				var subHeight=70/1000 * window.innerHeight; 
 				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.getXmTestCaseExecs();
         	}); 

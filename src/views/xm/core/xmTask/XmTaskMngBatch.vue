@@ -1271,7 +1271,12 @@
 				this.getXmTasks();
 			}
 			this.$nextTick(()=>{ 
-				this.tableHeight = window.innerHeight - 250; 
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=85/1000 * window.innerHeight;
+				if(this.isTaskCenter){
+					subHeight=50/1000 * window.innerHeight;
+				}
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				listOption([{categoryId:'all',itemCode:'planType'}
 				,{categoryId:'all',itemCode:'taskType'}
 				,{categoryId:'all',itemCode:'urgencyLevel'}

@@ -21,8 +21,9 @@
 						:tree-props="{children: 'children', hasChildren: 'hasChildren'}"
 						row-key="id"
 						 :max-height="tableHeight"
+						 ref="table"
 						>
- 						<el-table-column v-show="isMultiSelect" sortable width="50" type="selection"></el-table-column>
+ 						<el-table-column v-show="isMultiSelect" sortable width="60" type="selection"></el-table-column>
 						<el-table-column prop="name" label="任务名称"  min-width="260" >
 							<template slot-scope="scope">
 								{{scope.row.sortLevel}}&nbsp;{{scope.row.name}}
@@ -398,7 +399,12 @@
 		},
 		mounted() {
 			this.$nextTick(()=>{ 
-				this.tableHeight = window.innerHeight - 250; 
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=85/1000 * window.innerHeight;
+				if(this.isTaskCenter){
+					subHeight=50/1000 * window.innerHeight;
+				}
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.getXmTasks(); 
 			});
 				listOption([{categoryId:'all',itemCode:'planType'},{categoryId:'all',itemCode:'taskType'},{categoryId:'all',itemCode:'urgencyLevel'},{categoryId:'all',itemCode:'priority'}]).then(res=>{

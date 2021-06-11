@@ -1664,9 +1664,9 @@ XmProjectGroupSelect
 			this.$nextTick(()=>{
 				this.getXmTasks();     
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=85;
+				var subHeight=85/1000 * window.innerHeight;
 				if(this.isTaskCenter){
-					subHeight=50;
+					subHeight=50/1000 * window.innerHeight;
 				}
 				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				// 监听窗口大小变化
