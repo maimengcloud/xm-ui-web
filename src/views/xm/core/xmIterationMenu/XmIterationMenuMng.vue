@@ -16,7 +16,7 @@
 				</el-row>
 				<el-row class="app-container">
 					<!--列表 XmIterationMenu 迭代定义-->
-					<el-table  :max-height="tableHeight" :data="xmIterationMenusTreeData"  default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+					<el-table ref="table" :max-height="tableHeight" :data="xmIterationMenusTreeData"  default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column  type="selection" width="45"></el-table-column> 
 						<el-table-column prop="menuName" label="故事名称" min-width="140" > 
 							<template slot-scope="scope">
@@ -323,7 +323,9 @@
 		},
 		mounted() { 
 			this.$nextTick(() => {
-				this.tableHeight = window.innerHeight - 250; 
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=65; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.getXmIterationMenus();
         	}); 
         	/** 举例，

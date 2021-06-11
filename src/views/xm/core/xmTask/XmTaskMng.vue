@@ -85,8 +85,10 @@
 							size="mini"
 							default-expand-all
 							:max-height="tableHeight"
+							:height="tableHeight"
 							:tree-props="{children: 'children', hasChildren: 'hasChildren'}"
 							row-key="id"
+							ref="table"
 							>
 							<el-table-column sortable prop="name" label="任务名称(点击详情)"  min-width="240" show-overflow-tooltip>
 								<template slot-scope="scope">
@@ -1660,8 +1662,20 @@ XmProjectGroupSelect
 				this.filters.selProject=this.selProject
 			}
 			this.$nextTick(()=>{
-				this.getXmTasks();
-				this.tableHeight = window.innerHeight - 250;
+				this.getXmTasks();     
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=85;
+				if(this.isTaskCenter){
+					subHeight=50;
+				}
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
+				// 监听窗口大小变化
+				/**
+				let self = this;
+				window.onresize = function() {
+					self.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight;  
+				}
+ 				*/
 				listOption([{categoryId:'all',itemCode:'planType'}
 				,{categoryId:'all',itemCode:'taskType'}
 				,{categoryId:'all',itemCode:'urgencyLevel'}

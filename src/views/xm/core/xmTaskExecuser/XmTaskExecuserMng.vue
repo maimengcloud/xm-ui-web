@@ -9,7 +9,7 @@
 		</div>
 		<el-row class="app-container"> 
 			<!--列表 XmTaskExecuser xm_task_execuser-->
-			<el-table :data="xmTaskExecusers" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :max-height="tableHeight" :data="xmTaskExecusers" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="selection" width="40"></el-table-column> <!-- :selectable="checkSelectable" -->
 				<el-table-column sortable type="index" width="40"></el-table-column>
 				<el-table-column type="expand">
@@ -270,6 +270,7 @@
 				],  
 				execuserAddType:'add',//add为新增 join为当前登陆者加入
 				pickerOptions:  util.pickerOptions('datarange'),
+				tableHeight:500,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -781,6 +782,9 @@
 		},
 		mounted() { 
 			this.$nextTick(() => {
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=50; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.getXmTaskExecusers();
 				}); 
 				

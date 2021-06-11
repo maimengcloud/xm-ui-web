@@ -50,7 +50,7 @@
  		</el-row> 
  		<el-row class="app-container" v-show="batchEditVisible==false"> 
 			<!--列表 XmProjectPhase xm_project_phase-->
-			<el-table :max-height="tableHeight" v-show="!gstcVisible "  default-expand-all :data="projectPhaseTreeData"  :summary-method="getSummariesForNoBatchEdit"  :show-summary="true"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :max-height="tableHeight" v-show="!gstcVisible "  default-expand-all :data="projectPhaseTreeData"  :summary-method="getSummariesForNoBatchEdit"  :show-summary="true"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column   sortable type="selection" width="40"></el-table-column>
  				<el-table-column prop="phaseName" label="阶段名称" min-width="150" > 
 					 <template slot-scope="scope">  
@@ -1295,7 +1295,9 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					this.getXmProjectPhases();
 				}
 				
-				this.tableHeight = window.innerHeight - 300; 
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=65; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				listOption([
 					{categoryId:'all',itemCode:'xmPhaseStatus'} 
 				]).then(res=>{

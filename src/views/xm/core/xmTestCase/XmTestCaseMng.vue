@@ -1,8 +1,6 @@
 <template>
 	<section>
-		<el-row class="app-container">
-			
-
+		<el-row class="app-container"> 
 			<div>
 				已选故事：<el-tag v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 未选,点我</el-tag><el-tag @click="showMenu" v-for="(item,index) in filters.menus" :key="index" closable @close="clearFiltersMneu(item)">{{item.menuName}}</el-tag>
 				<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
@@ -18,7 +16,7 @@
 		</el-row>
 		<el-row class="app-container"> 
 			<!--列表 XmTestCase 测试用例-->
-			<el-table  :max-height="tableHeight" :data="xmTestCases" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :max-height="tableHeight" :data="xmTestCases" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>
 				<el-table-column sortable type="index" width="45"></el-table-column>
 				<el-table-column prop="caseName" label="标题" min-width="100" >
@@ -300,7 +298,9 @@
 		mounted() { 
 			this.$nextTick(() => {
 				this.getXmTestCases();
-				this.tableHeight = window.innerHeight - 250; 
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=65; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
         	}); 
         	/** 举例，
     		listOption([{categoryId:'all',itemCode:'sex'},{categoryId:'all',itemCode:'grade'}] ).then(res=>{

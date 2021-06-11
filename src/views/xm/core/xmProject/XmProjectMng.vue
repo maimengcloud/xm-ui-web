@@ -89,7 +89,7 @@
 				</el-col>
 			</el-row>
 
-			<el-table v-cloak v-show="!showType" stripe :data="ScreenData" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" v-cloak v-show="!showType" stripe :data="ScreenData" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column prop="code" label="项目编号" min-width="120" ></el-table-column>
 				<el-table-column prop="name" label="标题" min-width="200" >
 					<template slot-scope="scope">
@@ -639,7 +639,9 @@
 				this.filters.productName=this.$route.params.productName;
 			}
 			this.$nextTick(() => {
-				this.tableHeight = window.innerHeight - 200; 
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=65; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.showInfo = false;
 				this.getXmProjects();
 			}); 

@@ -7,7 +7,7 @@
 		</el-row>
 		<el-row class="app-container"> 
 			<!--列表 XmRecord xm_record-->
-			<el-table :max-height="tableHeight" :data="xmRecords" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :max-height="tableHeight" :data="xmRecords" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="index" width="40"></el-table-column>
 				<el-table-column prop="projectId" label="项目编号" v-if="!simple" min-width="80" ></el-table-column>  
 				<el-table-column prop="taskId" label="对象主键编号" v-if="!simple" min-width="80" ></el-table-column> 
@@ -255,7 +255,9 @@
 			}
 			
 			this.$nextTick(() => {
-				this.tableHeight = window.innerHeight - 250; 
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=50; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.getXmRecords();
         	}); 
 		}

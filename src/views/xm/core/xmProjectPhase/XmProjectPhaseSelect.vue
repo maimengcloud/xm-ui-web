@@ -1,7 +1,7 @@
 <template>
 	<section>  
 		<el-row>
-		<el-table  :max-height="tableHeight" ref="selectPhaseTable" :data="projectPhaseTreeData"    :show-summary="false"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+		<el-table :max-height="tableHeight" ref="selectPhaseTable" :data="projectPhaseTreeData"    :show-summary="false"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  			<el-table-column prop="phaseName" label="阶段名称" min-width="160" > 
 				 <template slot="header" slot-scope="scope">
 					<div>阶段  <el-tag size="mini" v-if="editForm.id" closable @close="clearSelectPhase()"> {{editForm.phaseName}}</el-tag></div>
@@ -417,7 +417,9 @@
 		mounted() { 
        
 			this.$nextTick(() => {
-				this.tableHeight = window.innerHeight - 250; 
+				var clientRect=this.$refs.selectPhaseTable.$el.getBoundingClientRect();
+				var subHeight=65; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.selectPhaseTable.$el.offsetTop-subHeight; 
 				if(this.selProject){
 					this.getXmProjectPhases();
 				}

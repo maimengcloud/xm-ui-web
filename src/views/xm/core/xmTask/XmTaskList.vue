@@ -438,7 +438,9 @@
 		mounted() {
 			this.filters.selProject=this.selProject
 			this.$nextTick(()=>{ 
-				this.tableHeight = window.innerHeight - 250; 
+				var clientRect=this.$refs.taskTable.$el.getBoundingClientRect();
+				var subHeight=85; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.taskTable.$el.offsetTop-subHeight; 
 				this.getXmTasks(); 
 			});
 				listOption([{categoryId:'all',itemCode:'planType'},{categoryId:'all',itemCode:'taskType'},{categoryId:'all',itemCode:'urgencyLevel'},{categoryId:'all',itemCode:'priority'}]).then(res=>{

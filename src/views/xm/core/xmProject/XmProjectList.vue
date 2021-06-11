@@ -8,7 +8,7 @@
 			</el-input>
 		</el-row>
 		<el-row class="app-container">   
-			<el-table   stripe :data="xmProjects"  highlight-current-row v-loading="load.list"   style="width: 100%;">
+			<el-table ref="table" :max-height="tableHeight"  stripe :data="xmProjects"  highlight-current-row v-loading="load.list"   style="width: 100%;">
 				<el-table-column  type="index" label="序号" width="55" ></el-table-column>
 				<el-table-column prop="code" label="项目编号" min-width="80" ></el-table-column>
 				<el-table-column prop="name" label="标题名称" min-width="80" ></el-table-column> 
@@ -156,6 +156,9 @@
 		},
 		mounted() { 
 			this.$nextTick(() => {
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=50; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.showInfo = false;
 				this.getXmProjects();
       }); 

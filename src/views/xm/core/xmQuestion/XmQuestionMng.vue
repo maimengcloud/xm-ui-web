@@ -1,8 +1,6 @@
 <template>
-	<section>
-		<el-row   class="xm-question">
-			<el-row class="app-container"> 
-
+	<section> 
+			<el-row class="app-container">  
 			  	<el-select v-model="filters.bugStatus" placeholder="请选择状态" style="width:15%;" clearable @change="changeBugStatus">
 					<el-option v-for="(b,index) in options['bugStatus']" :value="b.optionValue"  :key="index" :label="b.optionName">{{b.optionName}}
 					</el-option>
@@ -63,7 +61,7 @@
 			 </el-row>
 			 <el-row class="app-container">
 				<!--列表 XmQuestion xm_question-->
-				<el-table :max-height="tableHeight" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+				<el-table ref="table" :max-height="tableHeight" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 					<el-table-column sortable type="index" width="45"></el-table-column> 
 					<el-table-column prop="name" label="问题名称"  min-width="200"> 
 						<template slot-scope="scope">
@@ -135,8 +133,7 @@
 			</el-dialog> 
 			<el-dialog title="选中项目" :visible.sync="selectProjectVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
-			</el-dialog> 
-		</el-row>
+			</el-dialog>  
  
 	</section>
 </template>
@@ -682,7 +679,9 @@
 				this.filters.selProject=this.selProject
 			}
 			this.$nextTick(() => {
-				this.tableHeight = window.innerHeight-250; 
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=65; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.getXmQuestions();
 			}); 
 				listOption([{categoryId:'all',itemCode:'bugSeverity'},{categoryId:'all',itemCode:'bugSolution'},{categoryId:'all',itemCode:'bugStatus'},{categoryId:'all',itemCode:'bugType'},{categoryId:'all',itemCode:'urgencyLevel'}] ).then(res=>{

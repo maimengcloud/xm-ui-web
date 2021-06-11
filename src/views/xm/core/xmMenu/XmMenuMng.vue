@@ -42,7 +42,7 @@
 					
 					</el-row>
 					<el-row v-show="batchEditVisible" class="app-container"> 
-						<el-table  :max-height="tableHeight" :data="xmMenusTreeData" class="drag-table" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+						<el-table ref="table" :max-height="tableHeight" :data="xmMenusTreeData" class="drag-table" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 							<el-table-column sortable type="selection" width="45"></el-table-column>
 							<el-table-column sortable prop="seqNo"  label="序号" min-width="100">
 								<template slot-scope="scope">
@@ -1042,7 +1042,9 @@
 		},
 		mounted() { 
 			this.$nextTick(() => {
-				this.tableHeight = window.innerHeight - 250; 
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=65; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.getXmMenus();
           }); 
       // 阻止默认行为
