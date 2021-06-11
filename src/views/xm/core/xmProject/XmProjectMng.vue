@@ -55,7 +55,7 @@
 		</el-row> 
 		<el-row  class="app-container"> 
 			<!--列表 XmProject xm_project-->
-			<el-row v-show="showType" v-loading="load.list">
+			<el-row v-show="showType" v-loading="load.list" class="project-box">
 				<el-col  v-cloak v-for="(p,i) in ScreenData" :key="i" :xl="4" :lg="6" :md="8" :sm="12">
 					<el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always">
 						<div class="project-name" title="这是项目名称">{{p.name}}</div>
@@ -269,7 +269,7 @@
 				finishFlag: false,
 				xmRecordVisible: false,
 				productSelectVisible:false,
-				tableHeight:500,
+				tableHeight:300,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -785,5 +785,29 @@
 }
 .right-btn{
 	margin-top: 12px;
+} 
+@media only screen and (max-height: 2400px) {
+	.project-box{
+		max-height: 1600x;
+		overflow-y: auto;
+	}
+}
+@media only screen and (max-height: 1200px) {
+	.project-box{
+		max-height: 800px;
+		overflow-y: auto;
+	}
+}
+@media only screen and (max-height: 980px) {
+	.project-box{
+		max-height: 600px;
+		overflow-y: auto;
+	}
+}
+@media only screen and (max-height: 640px) {
+	.project-box{
+		max-height: 300px;
+		overflow-y: auto;
+	}
 }
 </style>

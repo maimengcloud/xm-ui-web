@@ -318,20 +318,19 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				valueChangeRows:[],
 				batchEditVisible:false,
 				menuVisible:false,//由故事自动创建阶段计划
-				tableHeight:500,
-        pickerOptions: util.pickerOptions('date'),
-        gstcVisible:false,
-		groupUserSelectVisible:false,//选择负责人
-        ganrrColumns: {
-          children: 'children',
-          name: 'phaseName',
-          id: 'id',
-          pid: 'parentPhaseId',
-          startDate: 'beginDate',
-          endDate: 'endDate',
-		  
-        },
-		tableHeight:500,
+				tableHeight:200,
+				pickerOptions: util.pickerOptions('date'),
+				gstcVisible:false,
+				groupUserSelectVisible:false,//选择负责人
+				ganrrColumns: {
+				children: 'children',
+				name: 'phaseName',
+				id: 'id',
+				pid: 'parentPhaseId',
+				startDate: 'beginDate',
+				endDate: 'endDate',
+				
+				},
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -1291,13 +1290,13 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
       console.log('mounted--his.selProject==', this.selProject);
       
 			this.$nextTick(() => {
+				 
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=100/1000 * window.innerHeight; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				if(this.selProject){
 					this.getXmProjectPhases();
 				}
-				
-				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=65/1000 * window.innerHeight; 
-				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				listOption([
 					{categoryId:'all',itemCode:'xmPhaseStatus'} 
 				]).then(res=>{

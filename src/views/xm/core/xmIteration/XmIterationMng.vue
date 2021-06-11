@@ -149,7 +149,7 @@
 				parentIteration:null,
         iterationStateVisible:false,
         gstcVisible:false,
-		tableHeight:500,
+		tableHeight:300,
         ganrrColumns: {
           children: 'children',
           name: 'iterationName',

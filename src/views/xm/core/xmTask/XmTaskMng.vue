@@ -639,7 +639,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
         menuExecutor:false,//执行人查询
 				groupUserSelectVisible:false,//选择负责人
 				showSkillSearchVisible:false,//按技能查询
-				tableHeight:500,
+				tableHeight:300,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -1663,8 +1663,8 @@ XmProjectGroupSelect
 			}
 			this.$nextTick(()=>{
 				this.getXmTasks();     
-				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=85/1000 * window.innerHeight;
+				var clientRect=this.$refs.table.$el.getBoundingClientRect(); 
+				var subHeight=150/1000 * window.innerHeight;
 				if(this.isTaskCenter){
 					subHeight=50/1000 * window.innerHeight;
 				}

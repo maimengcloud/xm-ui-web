@@ -147,7 +147,7 @@
  				projectPhase: null,
  				pickerOptions:  util.pickerOptions(), 
 				selectProjectVisible:false,
-				tableHeight:500,
+				tableHeight:300,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data

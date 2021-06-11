@@ -229,7 +229,7 @@
 				menuDetailVisible:false,
 				/**begin 自定义属性请在下面加 请加备注**/
 				gstcVisible:false,
-				tableHeight:500,
+				tableHeight:300,
 				ganrrColumns: {
           children: 'children',
           name: 'menuName',

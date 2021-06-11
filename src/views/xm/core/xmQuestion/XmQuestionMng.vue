@@ -221,7 +221,7 @@
 				selectUserVisible:false,
 				selectProjectVisible:false,
 				nextAction:'',
-				tableHeight:500,
+				tableHeight:300,
 				cloumns: [
 					{
 						key: 'name',

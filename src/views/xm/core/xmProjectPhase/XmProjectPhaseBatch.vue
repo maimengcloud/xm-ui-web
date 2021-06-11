@@ -280,7 +280,7 @@
 				valueChangeRows:[],
 				batchEditVisible:false,
 				menuVisible:false,//由故事自动创建阶段计划
-				tableHeight:500,
+				tableHeight:300,
         pickerOptions: util.pickerOptions('date'),
         gstcVisible:false,
         ganrrColumns: {

@@ -108,7 +108,7 @@
 				menuVisible:false,//由故事自动创建阶段计划
         pickerOptions: util.pickerOptions('date'),
         gstcVisible:false,
-		tableHeight:500,
+		tableHeight:300,
         ganrrColumns: {
           children: 'children',
           name: 'phaseName',
@@ -418,7 +418,7 @@
        
 			this.$nextTick(() => {
 				var clientRect=this.$refs.selectPhaseTable.$el.getBoundingClientRect();
-				var subHeight=65/1000 * window.innerHeight; 
+				var subHeight=150/1000 * window.innerHeight; 
 				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.selectPhaseTable.$el.offsetTop-subHeight; 
 				if(this.selProject){
 					this.getXmProjectPhases();

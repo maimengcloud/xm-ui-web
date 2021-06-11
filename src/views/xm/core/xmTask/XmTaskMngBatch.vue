@@ -317,7 +317,7 @@
 				menuDetailVisible:false,
 				pickerOptions:  util.pickerOptions(),
 				gstcVisible:false,
-				tableHeight:500,
+				tableHeight:300,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
