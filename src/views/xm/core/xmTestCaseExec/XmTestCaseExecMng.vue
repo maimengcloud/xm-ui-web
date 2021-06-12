@@ -2,9 +2,10 @@
 	<section>
 		<el-row class="app-container" v-if="!batchEditVisible">
         		<el-checkbox v-model="gstcVisible"  >甘特图</el-checkbox>
-				{{selProject?"":"已选项目："}}<el-tag type="success" v-if="this.filters.selProject && !selProject " closable @close="clearProject"  @click="showProjectList">{{ this.filters.selProject.name }}</el-tag>
-				<el-tag type="success" v-if="!this.filters.selProject" @click="showProjectList">未选，点我</el-tag>
-				已选故事：<el-tag v-if=" !filters.menus || filters.menus.length==0" @click="showMenu">未选,点我</el-tag><el-tag v-for="(item,index) in filters.menus" @click="showMenu" :key="index" closable @close="clearFiltersMneu(item)">{{item.menuName}}</el-tag>
+				<el-tag type="primary" v-if="this.filters.selProject && !selProject " closable @close="clearProject"  @click="showProjectList">{{ this.filters.selProject.name }}</el-tag>
+				<el-button   v-if="!this.filters.selProject" @click="showProjectList">选择项目</el-button>
+				<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 选择故事</el-button>
+				<el-tag v-else   closable @close="clearFiltersMneu(filters.menus[0])">{{filters.menus[0].menuName.substr(0,5)}}等({{filters.menus.length}})个</el-tag>
 				<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
 					<template slot="append">
 						<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTestCaseExecs" icon="el-icon-search"></el-button>  

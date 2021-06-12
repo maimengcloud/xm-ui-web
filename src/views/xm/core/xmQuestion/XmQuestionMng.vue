@@ -30,11 +30,11 @@
 					<el-row>
 						<el-col :span="24"  style="padding-top:12px;">
 							<el-tag v-if="filters.selProject && !selProject" closable @close="clearProject" @click="showProjectList(true)">{{ filters.selProject.name }}</el-tag>
-							<el-tag v-if="!filters.selProject" @click="showProjectList(true)" type="success">未选项目，点我</el-tag>
+							<el-button v-if="!filters.selProject" @click="showProjectList(true)" >选择项目</el-button>
 						
 						</el-col>
 						<el-col :span="24" style="padding-top:12px;">
-							指派给:<el-tag v-if="!filters.handlerUsername" @click="showGroupUsers('handlerUsername')">未选，点我</el-tag>
+							<el-button v-if="!filters.handlerUsername" @click="showGroupUsers('handlerUsername')">选择指派人</el-button>
 							<el-tag v-if="filters.handlerUsername" closable @close="clearHandler"  @click="showGroupUsers('handlerUsername')">{{filters.handlerUsername}}</el-tag>
 						</el-col>
 						<el-col :span="24" class="hidden-lg-and-up" style="padding-top:12px;">
