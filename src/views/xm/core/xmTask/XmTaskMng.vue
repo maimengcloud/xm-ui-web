@@ -27,11 +27,11 @@
 					</el-select>
 					<el-checkbox v-model="filters.taskOut"   true-label="1" false-label="">众包</el-checkbox>
 					<el-button  class="hidden-md-and-down"  v-if=" !filters.skillTags || filters.skillTags.length==0" icon="el-icon-search" @click="showSkillSelect">选择标签</el-button>
-					<el-tag closable v-for=" (skill,index) in filters.skillTags" :key="index"  @click="showSkillSelect" @close="skillTagClear(skill)">{{skill.skillName}}</el-tag>
+					<el-tag class="hidden-md-and-down" closable v-for=" (skill,index) in filters.skillTags" :key="index"  @click="showSkillSelect" @close="skillTagClear(skill)">{{skill.skillName}}</el-tag>
 					<div style=" float:right;margin-right:10px;">
 						<el-checkbox v-model="gstcVisible"  class="hidden-md-and-down" >甘特图</el-checkbox>
 						<el-tag  class="hidden-md-and-down" v-if=" !selProject && filters.selProject" :closable="!selProject"  @click="showProjectList" @close="clearProject">项目:{{this.filters.selProject.name}}</el-tag>
-						<el-tag  class="hidden-md-and-down" v-if=" !selProject && !filters.selProject" @click="showProjectList" type="plian">未选项目，点我</el-tag>
+						<el-button  class="hidden-md-and-down" v-if=" !selProject && !filters.selProject" @click="showProjectList" type="plian">选项目</el-button>
 
 						<el-input   style="width:200px;" v-model="filters.key" placeholder="任务名称">
 							<template slot="append">
@@ -56,11 +56,16 @@
 								</el-col>
 							</el-row>
 							<el-row>
+								<el-col :span="24" style="padding-top:5px;"  class="hidden-lg-and-up" >
+									<el-tag  class="hidden-md-and-down" v-if=" !selProject && filters.selProject" :closable="!selProject"  @click="showProjectList" @close="clearProject">项目:{{this.filters.selProject.name}}</el-tag>
+									<el-button v-else  class="hidden-md-and-down"  @click="showProjectList" type="plian">选项目</el-button>
+								</el-col> 			
 								<el-col :span="24" style="padding-top:5px;">
 									<el-checkbox v-model="gstcVisible"  class="hidden-lg-and-up" >甘特图</el-checkbox>
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
 									<el-button  class="hidden-lg-and-up"  v-if=" !filters.skillTags || filters.skillTags.length==0" icon="el-icon-search" @click="showSkillSelect">选择标签</el-button>
+									<el-tag v-else class="hidden-lg-and-up" closable v-for=" (skill,index) in filters.skillTags" :key="index"  @click="showSkillSelect" @close="skillTagClear(skill)">{{skill.skillName}}</el-tag>
 
 								</el-col>
 							</el-row>
