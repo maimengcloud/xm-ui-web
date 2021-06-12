@@ -28,6 +28,7 @@
 					</el-option>
 				</el-select> -->
 				<el-table
+					:max-height="tableHeight"
 					v-if="showType == '人力'"
 					:data="sumXmProjectMBudgetCostUsersConvert"
 					highlight-current-row
@@ -55,6 +56,7 @@
 				</el-table>
 
 				<el-table
+					:max-height="tableHeight"
 					v-if="showType == '非人力'"
 					:data="sumXmProjectMBudgetCostNousersConvert" 
 					highlight-current-row
@@ -212,6 +214,7 @@ import { months } from 'moment';
 				sumXmProjectMBudgetCostNousers:[],
 				budgetCostNouser:null, 
 				budgetCostNouserVisible:false,
+				tableHeight:300,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -303,6 +306,9 @@ import { months } from 'moment';
 		mounted() { 
 			this.showType = "人力";
 				this.$nextTick(() => { 
+					//var clientRect=this.$refs.table.$el.getBoundingClientRect();
+					var subHeight=500/1000 * window.innerHeight; 
+					this.tableHeight =  window.innerHeight-subHeight; 
 			  }); 
 			  this.selProjectBudget=Object.assign({},this.selProject);
 		}

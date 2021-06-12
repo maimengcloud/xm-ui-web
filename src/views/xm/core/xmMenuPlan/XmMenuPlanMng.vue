@@ -8,7 +8,7 @@
 		</el-row>
 		<el-row class="app-container"> 
 			<!--列表 XmMenuPlan 功能计划表,无需前端维护，所有数据由汇总统计得出-->
-			<el-table :data="xmMenuPlans" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :max-height="tableHeight" :data="xmMenuPlans" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>
 				<el-table-column sortable type="index" width="45"></el-table-column>
 				<el-table-column prop="projectId" label="项目编号" min-width="80" ></el-table-column>
@@ -124,9 +124,9 @@
 				//编辑xmMenuPlan界面初始化数据
 				editForm: {
 					projectId:'',id:'',projectName:'',menuId:'',planStartTime:'',planEndTime:'',actStartTime:'',actEndTime:'',planWorkload:'',actWorkload:'',planCostAmount:'',actCostAmount:'',finishRate:'',demandRate:'',designRate:'',devRate:'',uatRate:'',sitRate:'',onlineStatus:'',onlineTime:'',planStatus:'',chargeUserid:'',chargeUsername:'',menuStatus:'',ctime:'',ltime:'',cuserid:'',cusername:'',calcTime:'',menuName:'',planWorkhours:'',planWorkerCnt:'',closedBugs:'',activeBugs:'',confirmedBugs:'',resolvedBugs:'',testCases:'',execCases:'',designCases:'',finishCases:'',iterationCnt:'',taskCnt:'',finishTaskCnt:'',productId:'',productName:'',bugCnt:''
-				}
+				},
 				/**begin 自定义属性请在下面加 请加备注**/
-					
+				tableHeight:300,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -265,6 +265,9 @@
 		},
 		mounted() { 
 			this.$nextTick(() => {
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=80/1000 * window.innerHeight; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.getXmMenuPlans();
         	}); 
         	/** 举例，

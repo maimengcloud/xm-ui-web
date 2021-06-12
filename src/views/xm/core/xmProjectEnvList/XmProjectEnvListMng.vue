@@ -9,7 +9,7 @@
 		</div>
 		<el-row class="app-container"> 
 			<!--列表 XmProjectEnvList xm_project_env_list-->
-			<el-table :data="xmProjectEnvLists" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :max-height="tableHeight" :data="xmProjectEnvLists" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="selection" width="40"></el-table-column>
 				<el-table-column prop="ipAddress" label="ip地址" min-width="80" ></el-table-column>
 				<el-table-column prop="port" label="访问端口" min-width="80" ></el-table-column>
@@ -135,6 +135,7 @@
 					name: this.selProject.name,
 				},
 
+				tableHeight:300,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -317,6 +318,10 @@
 		},
 		mounted() { 
 			this.$nextTick(() => {
+				
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=80/1000 * window.innerHeight; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				console.log(this.currProject);
 				this.getXmProjectEnvLists();
 			});

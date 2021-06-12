@@ -8,7 +8,7 @@
 		</el-row>
 		<el-row class="app-container"> 
 			<!--列表 XmProjectGroupUserCandidate xm_project_group_user_candidate-->
-			<el-table :data="xmProjectGroupUserCandidates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :max-height="tableHeight" :data="xmProjectGroupUserCandidates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="selection" width="40"></el-table-column>
 				<el-table-column sortable type="index" width="40"></el-table-column>
 				<el-table-column prop="id" label="主键" min-width="80" ></el-table-column>
@@ -84,9 +84,10 @@
 				//编辑xmProjectGroupUserCandidate界面初始化数据
 				editForm: {
 					id:'',groupId:'',userid:'',username:'',isHead:'',createTime:'',candidateStatus:'',outTime:''
-				}
+				},
 				/**begin 自定义属性请在下面加 请加备注**/
-					
+				
+				tableHeight:300,	
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -226,6 +227,10 @@
 		},
 		mounted() { 
 			this.$nextTick(() => {
+				
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=80/1000 * window.innerHeight; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.getXmProjectGroupUserCandidates();
         	}); 
 		}

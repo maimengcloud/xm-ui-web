@@ -24,7 +24,7 @@
  		</el-row> 
  		<el-row class="app-container" >   
 			<!--列表 XmProjectPhase xm_project_phase-->
-			<el-table  class="drag-table" default-expand-all :summary-method="getSummariesForBatchEdit" :data="projectPhaseTreeData"    :show-summary="true"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :max-height="tableHeight" class="drag-table" default-expand-all :summary-method="getSummariesForBatchEdit" :data="projectPhaseTreeData"    :show-summary="true"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column    type="selection" width="50"></el-table-column>
 				<el-table-column  prop="seqNo" label="序号" width="150">
 					<template  slot-scope="scope">
@@ -1210,7 +1210,9 @@
 		mounted() { 
        
 			this.$nextTick(() => {
-				this.tableHeight = window.innerHeight - 250; 
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=140/1000 * window.innerHeight; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				if(this.selProject){
 					this.getXmProjectPhases();
 				}

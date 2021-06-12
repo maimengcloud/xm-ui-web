@@ -7,7 +7,7 @@
  		</el-row>
 		<el-row class="app-container"> 
 			<!--列表 XmProjectGroupState 功能状态表,无需前端维护，所有数据由汇总统计得出-->
-			<el-table :data="xmProjectGroupStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :max-height="tableHeight" :data="xmProjectGroupStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  				<el-table-column sortable type="index" width="45"></el-table-column> 
   				<el-table-column prop="groupName" label="团队名称" min-width="80" ></el-table-column>   
 				<el-table-column prop="finishRate" label="总体进度" min-width="80" ></el-table-column>    
@@ -88,9 +88,10 @@
 				//编辑xmProjectGroupState界面初始化数据
 				editForm: {
 					id:'',planStartTime:'',planEndTime:'',actStartTime:'',actEndTime:'',planWorkload:'',actWorkload:'',planCostAmount:'',actCostAmount:'',finishRate:'',demandRate:'',designRate:'',devRate:'',uatRate:'',sitRate:'',ctime:'',calcTime:'',planWorkhours:'',planWorkerCnt:'',closedBugs:'',activeBugs:'',confirmedBugs:'',resolvedBugs:'',testCases:'',execCases:'',designCases:'',finishCases:'',iterationCnt:'',taskCnt:'',finishTaskCnt:'',bizDate:'',bugCnt:'',groupId:'',projectId:'',projectName:'',groupName:''
-				}
+				},
 				/**begin 自定义属性请在下面加 请加备注**/
-					
+				
+				tableHeight:300,	
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -241,6 +242,10 @@
 		},
 		mounted() { 
 			this.$nextTick(() => {
+				
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=80/1000 * window.innerHeight; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.getXmProjectGroupStates();
         	}); 
         	/** 举例，

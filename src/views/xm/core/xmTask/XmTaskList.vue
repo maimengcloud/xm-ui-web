@@ -439,7 +439,10 @@
 			this.filters.selProject=this.selProject
 			this.$nextTick(()=>{ 
 				var clientRect=this.$refs.taskTable.$el.getBoundingClientRect();
-				var subHeight=85; 
+				var subHeight=85/1000 * window.innerHeight;
+				if(this.selProject){
+					subHeight=100/1000 * window.innerHeight;
+				}
 				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.taskTable.$el.offsetTop-subHeight; 
 				this.getXmTasks(); 
 			});

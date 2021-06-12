@@ -6,7 +6,7 @@
 		</el-row>
 		<el-row class="app-container"> 
 			<!--列表 XmProjectMCostUser xm_project_m_budget_cost_user-->
-			<el-table :data="xmProjectMCostUsers" show-summary @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :max-height="tableHeight" :data="xmProjectMCostUsers" show-summary @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="selection" width="40"></el-table-column>
 				<el-table-column sortable type="index" width="40"></el-table-column>   
 				<el-table-column prop="username" label="用户名" min-width="80" >
@@ -127,6 +127,7 @@
 				editForm: {
 					subjectId:'',projectId:'',userid:'',createTime:'',sendCostTime:'',username:'',projectName:'',remark:'',id:'',taskId:'',taskName:'',actWorkload:'',bizzStartDate:'',bizzEndDate:'',bizProcInstId:'',bizFlowState:'',projectPhaseId:'',actCostAmount:'',costType:'',bizMonth:'',bizDate:'',subjectName:'',projectPhaseName:''
 				},
+				tableHeight:300,
 				/**begin 自定义属性请在下面加 请加备注**/ 
 				/**end 自定义属性请在上面加 请加备注**/
 			}
@@ -238,6 +239,10 @@
 		},
 		mounted() { 
 			this.$nextTick(() => {
+				debugger
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=160/1000 * window.innerHeight; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.getXmProjectMCostUsers();
 			}); 
 			

@@ -68,7 +68,7 @@
 				<el-button  v-else @click.stop="setTemplateVisible=false" icon="el-icon-back">返回</el-button>
 
 			</el-row>
-			<el-table ref="groupTable" @selection-change="addIsSels" @row-click.self="changesels" :data="convertXmProjectGroupFormworks"  v-loading="load.list">
+			<el-table ref="groupTable" :max-height="tableHeight" @selection-change="addIsSels" @row-click.self="changesels" :data="convertXmProjectGroupFormworks"  v-loading="load.list">
 				<el-table-column type="selection" aria-disabled width="55"></el-table-column>
 				<el-table-column align="center" prop="groupName" label="小组模板" width="200"></el-table-column>
 				<el-table-column   align="center" label="操作"> 
@@ -246,6 +246,7 @@
 				imGroupVisible:false,
 				groupRoleDescVisible:false,
 				setTemplateVisible:false,
+				tableHeight:300,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		}, //end data
@@ -552,6 +553,10 @@
 		},
 		mounted() {
 			this.$nextTick(() => {
+				
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=80/1000 * window.innerHeight; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				if(this.selGroups){
 					this.selGroups.forEach(i=>{
 						if(i.groupUsers){

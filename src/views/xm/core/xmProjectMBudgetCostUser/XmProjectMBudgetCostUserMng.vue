@@ -1,22 +1,27 @@
 <template>
 	<section>
 		<el-row class="app-container">
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
-			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectMBudgetCostUsers">查询</el-button>
-			<el-button type="primary" v-if="batchEditVisible==false"  @click="showAdd">+明细</el-button>
-			<el-button type="primary" v-if="batchEditVisible==false" @click="batchEditVisible=true">批量修改</el-button> 
-			<el-button type="primary" v-if="batchEditVisible==true" @click="batchSave">批量保存</el-button>  
-			<el-button type="primary" v-if="batchEditVisible==true" @click="noBatchEdit">返回</el-button> 
-			<el-button type="danger" v-if="batchEditVisible==false"  v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button>  
-				<span style="margin-left:10px;font-size:14px;">项目总预算：</span><el-tag type='success'> {{selProject.planTotalCost}}</el-tag> 
+			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
+				<template slot="append">
+					<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectMBudgetCostUsers" icon="el-icon-search">查询</el-button>
+				</template>
+			</el-input>  
+			<el-button type="primary" v-if="batchEditVisible==false"  @click="showAdd" icon="el-icon-plus"></el-button>
+			<el-button  v-if="batchEditVisible==false" @click="batchEditVisible=true" icon="el-icon-edit"></el-button> 
+			<el-button type="primary" v-if="batchEditVisible==true" @click="batchSave" icon="el-icon-finish">保存</el-button>  
+			<el-button   v-if="batchEditVisible==true" @click="noBatchEdit" icon="el-icon-back">返回</el-button> 
+			<el-button type="danger" v-if="batchEditVisible==false"  v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true"  icon="el-icon-delete"></el-button>  
+			<font class="hidden-md-and-down">
+				<span  style="margin-left:10px;font-size:14px;">项目总预算：</span><el-tag type='success'> {{selProject.planTotalCost}}</el-tag> 
 				<span style="margin-left:10px;font-size:14px;">非人力总预算：</span><el-tag type='warning'>{{selProject.planNouserAt}}</el-tag>  
 				<span style="margin-left:10px;font-size:14px;">内部人力总预算：</span><el-tag type='warning'>{{selProject.planInnerUserAt}}</el-tag>  
 				<span style="margin-left:10px;font-size:14px;">外购人力总预算：</span><el-tag type='warning'>{{selProject.planOutUserAt}}</el-tag>  
+			</font>
 		</el-row>
 		<el-row class="app-container"> 
 			<!--列表 XmProjectMBudgetCostUser xm_project_m_budget_cost_user-->
-			<el-table :data="xmProjectMBudgetCostUsers" show-summary @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-				<el-table-column sortable type="selection" width="40"></el-table-column>
+			<el-table ref="table" :max-height="tableHeight" :data="xmProjectMBudgetCostUsers" show-summary @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+				<el-table-column sortable type="selection" width="60"></el-table-column>
 				<el-table-column sortable type="index" width="40"></el-table-column>   
 				<el-table-column prop="username" label="用户名" min-width="80" >
 					<template slot-scope="scope">
@@ -150,6 +155,7 @@
 				/**begin 自定义属性请在下面加 请加备注**/
 				batchEditVisible:false,	
 				valueChangeRows:[],
+				tableHeight:300,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -343,6 +349,10 @@
 		},
 		mounted() { 
 			this.$nextTick(() => {
+				debugger
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=100/1000 * window.innerHeight; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.getXmProjectMBudgetCostUsers();
 			}); 
 			

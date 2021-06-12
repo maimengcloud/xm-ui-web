@@ -1043,7 +1043,7 @@
 		},
 		mounted() { 
 			this.$nextTick(() => {
-				var subHeight=300/1000 * window.innerHeight
+				var subHeight=350/1000 * window.innerHeight
 				if(this.selProject){
 					subHeight=400/1000 * window.innerHeight
 				}

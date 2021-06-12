@@ -400,7 +400,7 @@
 		mounted() {
 			this.$nextTick(()=>{ 
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=85/1000 * window.innerHeight;
+				var subHeight=140/1000 * window.innerHeight;
 				if(this.isTaskCenter){
 					subHeight=50/1000 * window.innerHeight;
 				}

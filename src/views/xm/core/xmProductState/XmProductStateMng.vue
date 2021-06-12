@@ -6,7 +6,7 @@
 		</el-row>
 		<el-row class="app-container"> 
 			<!--列表 XmProductState 功能状态表,无需前端维护，所有数据由汇总统计得出-->
-			<el-table :data="xmProductStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :max-height="tableHeight" :data="xmProductStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  				<el-table-column sortable type="index" width="45"></el-table-column> 
  				<el-table-column prop="productName" label="产品名称" min-width="80" ></el-table-column> 
 				<el-table-column prop="calcTime" label="汇总时间" min-width="80" ></el-table-column>
@@ -82,9 +82,9 @@
 				//编辑xmProductState界面初始化数据
 				editForm: {
 					id:'',planStartTime:'',planEndTime:'',actStartTime:'',actEndTime:'',planWorkload:'',actWorkload:'',planCostAmount:'',actCostAmount:'',finishRate:'',demandRate:'',designRate:'',devRate:'',uatRate:'',sitRate:'',ctime:'',ltime:'',cuserid:'',cusername:'',calcTime:'',planWorkhours:'',planWorkerCnt:'',closedBugs:'',activeBugs:'',confirmedBugs:'',resolvedBugs:'',productId:'',productName:'',testCases:'',execCases:'',designCases:'',finishCases:'',projectCnt:'',iterationCnt:'',taskCnt:'',finishTaskCnt:''
-				}
+				},
 				/**begin 自定义属性请在下面加 请加备注**/
-					
+				tableHeight:300,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -224,6 +224,10 @@
 		},
 		mounted() { 
 			this.$nextTick(() => {
+				
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=80/1000 * window.innerHeight; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.getXmProductStates();
         	}); 
         	/** 举例，
