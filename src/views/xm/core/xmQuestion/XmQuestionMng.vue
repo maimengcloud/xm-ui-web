@@ -9,15 +9,13 @@
 					<el-option v-for="(b,index) in options['urgencyLevel']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
 					</el-option>
 				</el-select>
-				<el-select class="hidden-md-and-down" v-model="filters.solution" placeholder="解决方案" clearable @change="changeSolution">
-					<el-option v-for="(b,index) in options['bugSolution']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
-					</el-option>
-				</el-select>
-				<el-select v-model="filters.bugSeverity" placeholder="请选择严重程度" clearable @change="changeBugSeverity">
+				<el-select class="hidden-md-and-down" v-model="filters.bugSeverity" placeholder="请选择严重程度" clearable @change="changeBugSeverity">
 					<el-option v-for="(b,index) in options['bugSeverity']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
 					</el-option>
 				</el-select>  
-				<el-input style="width:250px;" v-model="filters.key" placeholder="问题名称">
+				<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 选择故事</el-button>
+				<el-tag v-else   closable @close="clearFiltersMneu(filters.menus[0])">{{filters.menus[0].menuName.substr(0,5)}}等({{filters.menus.length}})个</el-tag>
+				<el-input style="width:200px;" v-model="filters.key" placeholder="问题名称">
 					<template slot="append">
 						<el-button @click="searchXmQuestions" type="primary" icon="el-icon-search"></el-button>
 					</template>
@@ -45,7 +43,7 @@
 								</el-option>
 							</el-select>
 						</el-col> 
-						<el-col :span="24" class="hidden-lg-and-up" style="padding-top:12px;">
+						<el-col :span="24"  style="padding-top:12px;">
 							<el-select  v-model="filters.solution" placeholder="请选择解决方案" clearable @change="changeSolution">
 								<el-option v-for="(b,index) in options['bugSolution']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
 								</el-option>
@@ -81,6 +79,7 @@
 							<el-tag v-else>{{scope.row.bugStatus}}</el-tag>  
 						</template>
 					</el-table-column> 
+					<el-table-column prop="menuName" label="故事" width="100" show-overflow-tooltip></el-table-column> 
 					<el-table-column prop="bugSeverity" label="严重程度" width="100" :formatter="formatterOption"></el-table-column> 
 					<el-table-column prop="priority" label="紧急程度" width="100" :formatter="formatterOption"></el-table-column> 
 					<el-table-column prop="solution" label="解决方案" width="100" :formatter="formatterOption"></el-table-column>
@@ -134,7 +133,10 @@
 			<el-dialog title="选中项目" :visible.sync="selectProjectVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
 			</el-dialog>  
- 
+			
+			<el-dialog append-to-body title="故事选择" :visible.sync="menuVisible"    fullscreen   :close-on-click-modal="false">
+				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"   @menus-selected="onSelectedMenus" ></xm-menu-select>
+			</el-dialog>
 	</section>
 </template>
 
@@ -149,6 +151,7 @@
 	import  XmQuestionEdit from './XmQuestionEdit';//修改界面
 	import { mapGetters } from 'vuex'
 	
+	import xmMenuSelect from '../xmMenu/XmMenuSelect';
 	import XmGroupMng from '../xmProjectGroup/XmProjectGroupMng';
 	import XmProjectList from '../xmProject/XmProjectList';
 
@@ -184,6 +187,7 @@
 					handlerUserid:'',
 					handlerUsername:'',
 					selProject:null,
+					menus:[],
 				},
 				xmQuestions: [],//查询结果
 				pageInfo:{//分页数据
@@ -258,7 +262,8 @@
 						type: 'time',
 						name: '到期时间'
 					}
-				]
+				],
+				menuVisible:false,
 				/**end 自定义属性请在上面加 请加备注**/
 				
 			}
@@ -321,6 +326,11 @@
 				if( this.filters.handlerUserid!=null && this.filters.handlerUserid!=""){
 					params.handlerUserid=this.filters.handlerUserid
 				} 
+				if(this.filters.menus && this.filters.menus.length==1){
+					params.menuId=this.filters.menus[0].menuId
+ 				}else if(this.filters.menus && this.filters.menus.length>1){
+					params.menuIds=this.filters.menus.map(i=>i.menuId)
+ 				}
 				this.load.list = true;
 				if(this.filters.selProject){ 	
 					params.projectId = this.filters.selProject.id; 
@@ -344,7 +354,26 @@
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			},
+			
+			showMenu(){
+				this.menuVisible=true;
+			},
+			
+			onSelectedMenus(menus){
+				if(!menus || menus.length==0){
+					this.menuVisible=false
+					return;
+				}
+				this.menuVisible=false
 
+				this.filters.menus=menus;
+				this.searchXmQuestions();
+			},
+			clearFiltersMneu(menu){
+				var index=this.filters.menus.findIndex(i=>i.menuId==menu.menuId)
+				this.filters.menus.splice(index,1);
+				this.searchXmQuestions();
+			},
 			//显示编辑界面 XmQuestion xm_question
 			showEdit: function ( row,index ) {
 				this.editFormVisible = true;  
@@ -564,7 +593,7 @@
 						this.filters.handlerUsername=user.username 
 				} 
 				this.selectUserVisible=false
-				this.getXmQuestions(); 
+				this.searchXmQuestions(); 
 
 			}, 
 			showProjectList:function(clear){ 
@@ -576,7 +605,7 @@
 			onPorjectConfirm:function(project){
 				this.filters.selProject=project
 				this.selectProjectVisible=false;
-				this.getXmQuestions();
+				this.searchXmQuestions();
 				if(this.nextAction=='showAdd'){
 					this.showAdd()
 				}else if(this.nextAction=='showGroupUsers'){
@@ -653,13 +682,13 @@
 			clearProject(){
 				this.filters.selProject=null
 				this.nextAction=""
-				this.getXmQuestions()
+				this.searchXmQuestions()
 			},
 			clearHandler(){
 				
 				this.filters.handlerUserid=''
 				this.filters.handlerUsername=''; 
-				this.getXmQuestions();
+				this.searchXmQuestions();
 				this.nextAction=""
 			},
 			handleCommand(command) {  
@@ -671,7 +700,7 @@
 		components: { 
 				'xm-question-add':XmQuestionAdd,
 				'xm-question-edit':XmQuestionEdit,
-				XmGroupMng,XmProjectList
+				XmGroupMng,XmProjectList,xmMenuSelect,
 				//在下面添加其它组件
 		},
 		mounted() { 

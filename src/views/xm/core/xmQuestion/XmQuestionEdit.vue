@@ -98,6 +98,7 @@
 			<el-row class="app-container">
 				<el-col style="text-align:center;" :span="24"> 
 					<el-button @click.native="handleCancel">取消</el-button>  
+					<el-button v-if="editForm.bugStatus !='closed'" v-loading="load.edit" type="primary" @click.native="handleQuestion(editForm.bugStatus)" :disabled="load.edit==true">暂存</el-button>
 					<el-button v-if="editForm.bugStatus=='active'" v-loading="load.edit" type="primary" @click.native="handleQuestion('confirmed')" :disabled="load.edit==true">确认</el-button>  
 					<el-button v-if="editForm.bugStatus=='active'" v-loading="load.edit" type="primary" @click.native="handleQuestion('active')" :disabled="load.edit==true">不是问题</el-button>  
 					<el-button v-if="editForm.bugStatus=='active'" v-loading="load.edit" type="primary" @click.native="handleQuestion('resolved')" :disabled="load.edit==true">直接解决</el-button>  
