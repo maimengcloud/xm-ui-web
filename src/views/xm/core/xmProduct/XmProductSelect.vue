@@ -6,8 +6,54 @@
  				<el-table-column sortable type="index" width="55"></el-table-column>				
 				 <el-table-column prop="productName"  label="产品名称" min-width="150" > 
 					 <template slot="header" slot-scope="scope"> 
-						 产品名称 <el-input size="mini" v-model="filters.key" style="width:60%;"  placeholder="输入文字回车键搜索" @keyup.enter.native="searchXmProducts"> 
-						 </el-input> 
+						 产品名称 
+						 <el-popover
+							placement="top-start"
+							title=""
+							width="200"
+							trigger="click" >
+							<el-row>
+								<el-col :span="24" style="padding-top:5px;">
+									<font class="more-label-font">
+										产品查询范围：
+									</font>
+									<el-select size="mini" v-model="filters.queryScope" style="width:100%;"   placeholder="产品查询范围">
+										<el-option label="全公司" value="branchId"></el-option>
+										<el-option label="我相关" value="compete"></el-option>
+										<el-option label="产品编号" value="productId"></el-option>
+										<el-option label="智能匹配" value=""></el-option>
+									</el-select>
+								</el-col>
+								<el-col  :span="24"  style="padding-top:5px;">
+									<font class="more-label-font" v-if="filters.queryScope=='branchId'">
+										查询{{userInfo.branchName}}机构下所有的产品
+									</font>
+									<font class="more-label-font" v-else-if="filters.queryScope=='productId'">
+										产品编号精确查找：
+									</font>
+									<font class="more-label-font" v-else-if="filters.queryScope=='compete'">
+										自动计算与{{userInfo.username}}有关的产品
+									</font> 
+									<font class="more-label-font" v-else>
+										智能匹配
+									</font>
+									<el-input v-if="filters.queryScope=='productId'" size="mini" v-model="filters.id" style="width:100%;"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">  
+						 			</el-input> 
+								</el-col>
+								
+								<el-col  :span="24"  style="padding-top:5px;">
+									<font class="more-label-font">
+										模糊查询关键字:
+									</font> 
+									<el-input  size="mini" v-model="filters.key" style="width:100%;"  placeholder="输入产品名字关键字">  
+						 			</el-input> 
+								</el-col>
+								<el-col  :span="24"  style="padding-top:5px;">
+									<el-button size="mini" @click="searchXmProducts" >查询</el-button>
+								</el-col>
+							</el-row> 
+							<el-button  slot="reference" size="mini"  icon="el-icon-more" circle></el-button>
+						</el-popover>  
 					 </template>
 					<template slot-scope="scope">
 						{{scope.row.id}}&nbsp;&nbsp;<el-link type="primary">{{scope.row.productName}}</el-link>
@@ -42,7 +88,9 @@
 		data() {
 			return {
 				filters: {
-					key: ''
+					key: '',
+					queryScope:'compete',
+					id:'',//产品编号
 				},
 				xmProducts: [],//查询结果
 				pageInfo:{//分页数据
@@ -71,6 +119,7 @@
 				iterationVisible:false,
 				productStateVisible:false,
 				tableHeight:300,
+				
 				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -119,14 +168,28 @@
 					params.orderBy= orderBys.join(",")
 				}
 				if(this.filters.key!==""){
-					params.key=this.filters.key
+					params.key="%"+this.filters.key+"%"
 				}else{
 					//params.xxx=xxxxx
 				}
 				if(this.selProject){
 					params.projectId=this.selProject.id
 				}
-				params.branchId=this.userInfo.branchId
+				params.queryScope=this.filters.queryScope
+				if(this.filters.queryScope=='productId'){
+					if(!this.filters.id){
+						this.$message({ message:"您选择了按产品编号精确查找模式，请输入产品编号", type: 'error' });
+						return;
+					}
+					params.id=this.filters.id
+					
+				}
+				if(this.filters.queryScope=="branchId"){
+					params.branchId=this.userInfo.branchId
+					params.projectId=null;
+				}
+				
+
 				this.load.list = true;
 				listXmProductWithState(params).then((res) => {
 					var tips=res.data.tips;
@@ -172,4 +235,9 @@
 
 <style scoped>
 
+.more-label-font{
+	text-align:center;
+	float:left;
+	padding-top:10px;
+}
 </style>

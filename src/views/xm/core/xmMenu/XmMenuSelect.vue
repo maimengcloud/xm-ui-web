@@ -171,7 +171,9 @@
 					return;
 					//params.xxx=xxxxx
 				} 
-				
+				if( this.filters.key){
+					params.key="%"+this.filters.key+"%"
+				}
 				if(this.excludeIterationId){
 					params.excludeIterationId=this.excludeIterationId
 				}

@@ -234,9 +234,10 @@
 					}  
 					params.orderBy= orderBys.join(",")
 				}
-				if(this.filters.key!==""){
-					//params.xxx=this.filters.key
-				} 
+
+				if(this.filters.key){
+					params.key='%'+this.filters.key+'%'
+				}
 				if(this.filters.taskType!="all" && this.filters.taskType!="" && this.filters.taskType!=null){
 					params.taskType=this.filters.taskType
 				} 

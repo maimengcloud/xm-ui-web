@@ -360,6 +360,10 @@
 				if(!params.productId){
 					params.branchId=this.userInfo.branchId
 				}
+				
+				if( this.filters.key){
+					params.key="%"+this.filters.key+"%"
+				}
 				let callback= (res)=>{
 					var tips=res.data.tips;
 					if(tips.isOk){ 

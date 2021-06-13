@@ -150,10 +150,9 @@
 					}  
 					params.orderBy= orderBys.join(",")
 				}
-				if(this.filters.key!==""){
-					//params.xxx=this.filters.key
-				}else{
-					//params.xxx=xxxxx
+				
+				if(this.filters.key){
+					params.key='%'+this.filters.key+'%'
 				}
 				this.load.list = true;
 				listXmQuestion(params).then((res) => {

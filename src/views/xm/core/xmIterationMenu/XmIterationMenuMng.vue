@@ -138,11 +138,9 @@
 						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
 					}  
 					params.orderBy= orderBys.join(",")
-				}
-				if(this.filters.key!==""){
-					//params.xxx=this.filters.key
-				}else{
-					//params.xxx=xxxxx
+				} 
+				if(this.filters.key){
+					params.key='%'+this.filters.key+'%'
 				}
 				if(this.iteration){
 					params.iterationId=this.iteration.id

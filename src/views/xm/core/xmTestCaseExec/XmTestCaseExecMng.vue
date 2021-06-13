@@ -299,6 +299,10 @@
  				}else{
 					//params.xxx=xxxxx
 				}
+				
+				if(this.filters.key){
+					params.key='%'+this.filters.key+'%'
+				}
 				this.load.list = true;
 				listXmTestCaseExec(params).then((res) => {
 					var tips=res.data.tips;

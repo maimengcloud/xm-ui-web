@@ -62,7 +62,7 @@
 		
 		<el-row v-if="simple "> 
 			<!--列表 XmIteration 迭代定义-->
-			<el-table  :max-height="tableHeight" :data="xmIterationTreeData" row-key="id"  default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :max-height="tableHeight" :data="xmIterationTreeData" row-key="id"  default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
    				<el-table-column prop="iterationName" label="迭代名称" min-width="160" >
 					<template slot="header" slot-scope="scope">
 						迭代名称 <el-tag size="mini" v-if="editForm.iterationName" closable @close="clearSelectIteration()">{{editForm.seqNo}}&nbsp;{{editForm.iterationName}}</el-tag>
@@ -203,11 +203,9 @@
 					}  
 					params.orderBy= orderBys.join(",")
 				}
-				if(this.filters.key!==""){
-					//params.xxx=this.filters.key
-				}else{
-					//params.xxx=xxxxx
-				}
+				if(this.filters.key){
+					params.key= "%"+this.filters.key+"%"
+				} 
 				if(this.productId){
 					params.productId=this.productId
 				}

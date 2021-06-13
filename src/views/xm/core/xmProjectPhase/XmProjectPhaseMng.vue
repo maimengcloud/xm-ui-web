@@ -377,10 +377,9 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					}  
 					params.orderBy= orderBys.join(",")
 				}
-				if(this.filters.key!==""){
-					//params.xxx=this.filters.key
-				}else{
-					//params.xxx=xxxxx
+
+				if(this.filters.key){
+					params.key='%'+this.filters.key+'%'
 				}
 				if(this.selProject!=null && this.selProject!=undefined){
 					params.projectId=this.selProject.id

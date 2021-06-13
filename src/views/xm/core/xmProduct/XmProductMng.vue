@@ -206,10 +206,9 @@
 					}  
 					params.orderBy= orderBys.join(",")
 				}
+				
 				if(this.filters.key!==""){
-					//params.xxx=this.filters.key
-				}else{
-					//params.xxx=xxxxx
+					params.key="%"+this.filters.key+"%"
 				}
 				if(this.selProject){
 					params.projectId=this.selProject.id

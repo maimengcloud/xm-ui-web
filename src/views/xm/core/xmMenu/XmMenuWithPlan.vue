@@ -292,6 +292,9 @@
 					params.projectId=this.selProject.id
 				}
 				
+				if( this.filters.key){
+					params.key="%"+this.filters.key+"%"
+				}
 				this.load.list = true;
 				listXmMenuWithPlan(params).then((res) => {
 					var tips=res.data.tips;

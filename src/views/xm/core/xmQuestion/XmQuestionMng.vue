@@ -350,6 +350,10 @@
 				if(this.xmTestCase){
 					params.caseId=this.xmTestCase.id
 				}
+				
+				if(this.filters.key){
+					params.key='%'+this.filters.key+'%'
+				}
 				params.qtype=this.qtype
 				listXmQuestion(params).then((res) => {
 					var tips=res.data.tips;

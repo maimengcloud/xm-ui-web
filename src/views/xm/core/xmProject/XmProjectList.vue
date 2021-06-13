@@ -116,10 +116,9 @@
 					total: this.pageInfo.total,
 					count:this.pageInfo.count,
 				};
-				if(this.filters.key!==""){
-					//params.xxx=this.filters.key
-				}else{
-					//params.xxx=xxxxx
+
+				if(this.filters.key){
+					params.key='%'+this.filters.key+'%'
 				}
 				this.load.list = true; 
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
