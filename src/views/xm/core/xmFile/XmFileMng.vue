@@ -13,7 +13,7 @@
 				</div>
 			</el-menu> 
 			<!--列表 XmFile xm_file-->
-			<el-table :data="Files" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :max-height="tableHeight" :data="xmFiles" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="selection" width="40"></el-table-column>
 				<el-table-column prop="name" label="文档标题" ></el-table-column>
 				<el-table-column prop="createUsername" label="创建人" ></el-table-column>
@@ -87,11 +87,7 @@
 		    ...mapGetters([
 		      'userInfo','roles'
 				]),
-				Files() {
-					if(this.selProject != undefined){
-						const file = this.selProject.file.filter(i=>i.name.indexOf(this.searchFile) != -1);
-						return file;
-					}
+				Files() {  
 					return [];
 				},
 		},
@@ -129,6 +125,7 @@
 				InfoVisible: false,
 				selFile: {},
 				searchFile: '',
+				tableHeight:300,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -275,6 +272,9 @@
 		},
 		mounted() { 
 			this.$nextTick(() => {
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=100/1000 * window.innerHeight; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.getXmFiles();
 			}); 
 		}

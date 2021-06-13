@@ -27,17 +27,17 @@
 					</el-select>
 					<el-checkbox v-model="filters.taskOut"   true-label="1" false-label="">众包</el-checkbox>
 					<el-button  class="hidden-md-and-down"  v-if=" !filters.skillTags || filters.skillTags.length==0" icon="el-icon-search" @click="showSkillSelect">选择标签</el-button>
-					<el-tag class="hidden-md-and-down" closable v-for=" (skill,index) in filters.skillTags" :key="index"  @click="showSkillSelect" @close="skillTagClear(skill)">{{skill.skillName}}</el-tag>
-					<div style=" float:right;margin-right:10px;">
-						<el-checkbox v-model="gstcVisible"  class="hidden-md-and-down" >甘特图</el-checkbox>
-						<el-tag  class="hidden-md-and-down" v-if=" !selProject && filters.selProject" :closable="!selProject"  @click="showProjectList" @close="clearProject">项目:{{this.filters.selProject.name}}</el-tag>
-						<el-button  class="hidden-md-and-down" v-if=" !selProject && !filters.selProject" @click="showProjectList" type="plian">选项目</el-button>
-
+					<el-tag class="hidden-md-and-down" closable v-for=" (skill,index) in filters.skillTags" :key="index"  @click="showSkillSelect" @close="skillTagClear(skill)">{{skill.skillName}}</el-tag> 
+						<font v-if="!selProject">
+							<el-tag  class="hidden-md-and-down" v-if=" filters.selProject" closable  @click="showProjectList" @close="clearProject">{{this.filters.selProject.name}}</el-tag>
+							<el-button  class="hidden-md-and-down" v-else  @click="showProjectList" type="plian">选项目</el-button>
+						</font>
 						<el-input   style="width:200px;" v-model="filters.key" placeholder="任务名称">
 							<template slot="append">
 								<el-button    @click="searchXmTasks" type="primary" icon="el-icon-search" v-loading="load.list"></el-button>
 							</template>
 						</el-input>
+						<el-checkbox v-model="gstcVisible"  class="hidden-md-and-down" >甘特图</el-checkbox>
 						<el-button  v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showAdd" type="primary" icon="el-icon-plus" circle></el-button>
 						<el-popover
 							placement="top-start"
@@ -56,22 +56,40 @@
 								</el-col>
 							</el-row>
 							<el-row>
-								<el-col :span="24" style="padding-top:5px;"  class="hidden-lg-and-up" >
-									<el-tag  class="hidden-md-and-down" v-if=" !selProject && filters.selProject" :closable="!selProject"  @click="showProjectList" @close="clearProject">项目:{{this.filters.selProject.name}}</el-tag>
-									<el-button v-else  class="hidden-md-and-down"  @click="showProjectList" type="plian">选项目</el-button>
-								</el-col> 			
+								<el-col :span="24" style="padding-top:5px;" v-if="!selProject" >
+									<font class="more-label-font">项目:</font><el-tag    v-if="  filters.selProject "  closable  @click="showProjectList" @close="clearProject">{{this.filters.selProject.name}}</el-tag>
+									<el-button v-else    @click="showProjectList" type="plian">选项目</el-button>
+								</el-col> 		
 								<el-col :span="24" style="padding-top:5px;">
-									<el-checkbox v-model="gstcVisible"  class="hidden-lg-and-up" >甘特图</el-checkbox>
-								</el-col>
+									 <font class="more-label-font">故事:</font>
+									<font  v-if="  filters.menus && filters.menus.length>0">
+										<el-tag  v-for="(item,index) in filters.menus" :key="index"  closable     @close="clearFiltersMenu(item)">{{item.menuName.substr(0,10)}}</el-tag>
+									</font>
+									<el-button v-else    @click="showMenuStory" type="plian">选故事</el-button>
+								</el-col> 	
+								<el-col :span="24" style="padding-top:5px;">
+									<font class="more-label-font">责任人:</font>
+									 <el-tag    v-if="  filters.createUser "  closable    @close="clearFiltersCreateUser">{{this.filters.createUser.username}}</el-tag> 
+									<el-button v-else    @click="showMenuGroupUser" type="plian">选责任人</el-button>
+								</el-col> 
+								<el-col :span="24" style="padding-top:5px;">
+									<font class="more-label-font">执行人:</font>
+									 <el-tag    v-if="  filters.executor "  closable   @close="clearFiltersExecutor">{{this.filters.executor.username}}</el-tag> 
+									<el-button v-else    @click="showMenuExecutor" type="plian">选执行人</el-button>
+								</el-col> 		
 								<el-col  :span="24"  style="padding-top:5px;">
-									<el-button  class="hidden-lg-and-up"  v-if=" !filters.skillTags || filters.skillTags.length==0" icon="el-icon-search" @click="showSkillSelect">选择标签</el-button>
-									<el-tag v-else class="hidden-lg-and-up" closable v-for=" (skill,index) in filters.skillTags" :key="index"  @click="showSkillSelect" @close="skillTagClear(skill)">{{skill.skillName}}</el-tag>
+									<font class="more-label-font">标签:</font>
+									<el-button    v-if=" !filters.skillTags || filters.skillTags.length==0" icon="el-icon-search" @click="showSkillSelect">选择标签</el-button>
+									<el-tag v-else   closable v-for=" (skill,index) in filters.skillTags" :key="index"  @click="showSkillSelect" @close="skillTagClear(skill)">{{skill.skillName}}</el-tag>
 
+								</el-col>
+								
+								<el-col :span="24" style="padding-top:5px;">
+									<el-checkbox v-model="gstcVisible" >甘特图</el-checkbox>
 								</el-col>
 							</el-row>
 							<el-button  slot="reference" icon="el-icon-more" circle></el-button>
-						</el-popover>
-					</div>
+						</el-popover> 
 				</el-row>
 				<el-row style="padding-top:12px;">
 						<el-table v-if="!gstcVisible"
@@ -573,9 +591,9 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					selProject:null,
 					skillTags:[],
 					taskOut:'',//1只查众包任务，0//只查本机构任务
-          menus:[],
-          createUserid:'',//负责人
-          executorUserid:''//执行人
+					menus:[],
+					createUser:null,//负责人
+					executor:null//执行人
 				},
 				xmTasks: [],//查询结果
 				pageInfo:{//分页数据
@@ -639,9 +657,9 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				menuDetailVisible:false,
 				pickerOptions:  util.pickerOptions(),
 				gstcVisible:false,
-        menuStory:false,//故事查询
-        menuGroupUser:false,//负责人查询
-        menuExecutor:false,//执行人查询
+				menuStory:false,//故事查询
+				menuGroupUser:false,//负责人查询
+				menuExecutor:false,//执行人查询
 				groupUserSelectVisible:false,//选择负责人
 				showSkillSearchVisible:false,//按技能查询
 				tableHeight:300,
@@ -672,6 +690,18 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			},
 			changeShowInfo(){
 				this.projectInfoVisible=false;
+			},
+			clearFiltersCreateUser(){
+				this.filters.createUser=null
+				this.searchXmTasks()
+			},
+			clearFiltersExecutor(){
+				this.filters.executor=null
+				this.searchXmTasks()
+			},
+			clearFiltersMenu(menu){
+				this.filters.menus=this.filters.menus.filter(i=>i.menuId!=menu.menuId)
+				this.searchXmTasks()
 			},
 			// 表格排序 obj.order=ascending/descending,需转化为 asc/desc ; obj.prop=表格中的排序字段,字段驼峰命名
 			sortChange( obj ){
@@ -751,7 +781,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				if(this.filters.menus && this.filters.menus.length==1){
 					params.menuId=this.filters.menus[0].menuId
 				}else if(this.filters.menus && this.filters.menus.length>1){
-				params.menus=this.filters.menus.map(i=>i.menus)
+					params.menuIds=this.filters.menus.map(i=>i.menuId)
 				}
 				if(this.filters.skillTags && this.filters.skillTags.length>0){
 					params.skillIds=this.filters.skillTags.map(i=>i.skillId)
@@ -762,11 +792,11 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				if(this.filters.taskOut){
 					params.taskOut=this.filters.taskOut
 				}
-				if(this.filters.createUserid){
-				params.createUserid=this.filters.createUserid
+				if(this.filters.createUser){
+				params.createUserid=this.filters.createUser.userid
 				}
-				if(this.filters.executorUserid){
-				params.executorUserid=this.filters.executorUserid
+				if(this.filters.executor){
+				params.executorUserid=this.filters.executor.userid
 				}
 				getTask(params).then((res) => {
 					var tips=res.data.tips;
@@ -1048,6 +1078,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 
 			},
       onSelectedStory(menus){//根据故事查询
+	  debugger;
         if(menus==null || menus.length==0){
         	this.menuStory=false;
         	return;
@@ -1417,6 +1448,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				this.selectProjectVisible=true;
 			},
 			onPorjectConfirm:function(project){
+				this.filters.selProject=project
 				this.selectProjectVisible=false;
 				this.getXmTasks();
 			},
@@ -1584,20 +1616,22 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 		  })
 	  },
     //查询时选择责任人
-    seleConfirm(groupUser){
-      if(groupUser&&groupUser.length!==0){
-        this.filters.createUserid=groupUser[0].userid;
+    seleConfirm(groupUsers){  
+		debugger;
+      if(groupUsers&&groupUsers.length>0){
+        this.filters.createUser=groupUsers[0];
       }else{
-        this.filters.createUserid='';
+        this.filters.createUser=null;
       }
       this.searchXmTasks();
       this.menuGroupUser=false;
     },
-    seleExecutor(executor){
-      if(executor&&executor.length!==0){
-        this.filters.executorUserid=executor[0].userid;
+    seleExecutor(executors){
+		
+      if(executors&&executors.length>0){
+        this.filters.executor=executors[0];
       }else{
-        this.filters.executorUserid='';
+        this.filters.executor=null;
       }
       this.searchXmTasks();
       this.menuExecutor=false;
@@ -1797,6 +1831,11 @@ small{
 .clearfix::after {
 	clear: both;
 	content: "";
+}
+.more-label-font{
+	text-align:center;
+	float:left;
+	padding-top:10px;
 }
 </style>
 <style lang="scss" scoped>

@@ -14,7 +14,7 @@
 					</el-option>
 				</el-select>  
 				<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 选择故事</el-button>
-				<el-tag v-else   closable @close="clearFiltersMneu(filters.menus[0])">{{filters.menus[0].menuName.substr(0,5)}}等({{filters.menus.length}})个</el-tag>
+				<el-tag v-else   closable @close="clearFiltersMenu(filters.menus[0])">{{filters.menus[0].menuName.substr(0,5)}}等({{filters.menus.length}})个</el-tag>
 				<el-input style="width:200px;" v-model="filters.key" placeholder="问题名称">
 					<template slot="append">
 						<el-button @click="searchXmQuestions" type="primary" icon="el-icon-search"></el-button>
@@ -28,22 +28,31 @@
 					width="400"
 					trigger="click" >
 					<el-row>
-						<el-col :span="24"  style="padding-top:12px;">
+						<el-col :span="24"  style="padding-top:12px;" v-if="!selProject">
+							<font class="more-label-font">项目:</font>
 							<el-tag v-if="filters.selProject && !selProject" closable @close="clearProject" @click="showProjectList(true)">{{ filters.selProject.name }}</el-tag>
-							<el-button v-if="!filters.selProject" @click="showProjectList(true)" >选择项目</el-button>
+							<el-button v-else @click="showProjectList(true)" >选择项目</el-button>
 						
 						</el-col>
 						<el-col :span="24" style="padding-top:12px;">
-							<el-button v-if="!filters.handlerUsername" @click="showGroupUsers('handlerUsername')">选择指派人</el-button>
-							<el-tag v-if="filters.handlerUsername" closable @close="clearHandler"  @click="showGroupUsers('handlerUsername')">{{filters.handlerUsername}}</el-tag>
-						</el-col>
-						<el-col :span="24" class="hidden-lg-and-up" style="padding-top:12px;">
+							<font class="more-label-font">指派给:</font>
+							<el-button v-if="!filters.handlerUsername" @click="showGroupUsers('handlerUsername')">选择被指派人</el-button>
+							<el-tag v-else closable @close="clearHandler"  @click="showGroupUsers('handlerUsername')">{{filters.handlerUsername}}</el-tag>
+						</el-col> 
+						<el-col :span="24" style="padding-top:5px;">
+								<font class="more-label-font">故事:</font>
+							<font  v-if="  filters.menus && filters.menus.length>0">
+								<el-tag  v-for="(item,index) in filters.menus" :key="index"  closable  @close="clearFiltersMenu(item)">{{item.menuName.substr(0,10)}}</el-tag>
+							</font>
+							<el-button v-else    @click="showMenu" type="plian">选故事</el-button>
+						</el-col> 
+						<el-col :span="24" class="hidden-lg-and-up" style="padding-top:12px;"> 
 							<el-select   v-model="filters.priority" placeholder="请选择紧急程度" clearable @change="changePriority">
 								<el-option v-for="(b,index) in options['urgencyLevel']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
 								</el-option>
 							</el-select>
 						</el-col> 
-						<el-col :span="24"  style="padding-top:12px;">
+						<el-col :span="24"  style="padding-top:12px;"> 
 							<el-select  v-model="filters.solution" placeholder="请选择解决方案" clearable @change="changeSolution">
 								<el-option v-for="(b,index) in options['bugSolution']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
 								</el-option>
@@ -134,8 +143,8 @@
 				<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
 			</el-dialog>  
 			
-			<el-dialog append-to-body title="故事选择" :visible.sync="menuVisible"    fullscreen   :close-on-click-modal="false">
-				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"   @menus-selected="onSelectedMenus" ></xm-menu-select>
+			<el-dialog append-to-body title="故事选择" :visible.sync="menuVisible"    width="80%"   :close-on-click-modal="false">
+				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
 			</el-dialog>
 	</section>
 </template>
@@ -369,7 +378,7 @@
 				this.filters.menus=menus;
 				this.searchXmQuestions();
 			},
-			clearFiltersMneu(menu){
+			clearFiltersMenu(menu){
 				var index=this.filters.menus.findIndex(i=>i.menuId==menu.menuId)
 				this.filters.menus.splice(index,1);
 				this.searchXmQuestions();
@@ -775,5 +784,11 @@
 }
 * >>> .autowidth{
 	min-width: 0px !important;
+}
+
+.more-label-font{
+	text-align:center;
+	float:left;
+	padding-top:10px;
 }
 </style>

@@ -58,8 +58,8 @@
 				<xm-test-case-add :xm-test-case="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-test-case-add>
 			</el-dialog> 
 		</el-row>
-		<el-dialog append-to-body title="故事选择" :visible.sync="menuVisible"    fullscreen   :close-on-click-modal="false">
-			<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true" :exclude-iteration-id="iteration?iteration.id:''"  @menus-selected="onSelectedMenus" ></xm-menu-select>
+		<el-dialog append-to-body title="故事选择" :visible.sync="menuVisible"    width="80%"   :close-on-click-modal="false">
+			<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
 		</el-dialog>
 	</section>
 </template>

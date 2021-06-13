@@ -31,7 +31,7 @@
 				<el-table-column  type="selection" width="45"></el-table-column>
 				<el-table-column sortable type="index" width="45"></el-table-column>
  				<el-table-column prop="projectName" label="项目名称" min-width="100" >
-					<template slot="header">
+					<template slot="header" v-if="!selProject">
 						项目<el-button @click="showProjectList"  icon="el-icon-search" circle size="mini"></el-button>
  					</template>
 				</el-table-column> 
