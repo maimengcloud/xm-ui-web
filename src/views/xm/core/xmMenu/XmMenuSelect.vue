@@ -8,7 +8,7 @@
 			</el-col>
 			<el-col :span="18"  style="padding-left:12px;" >
 				<el-row  >  
-					<el-checkbox v-if="excludeIterationId" v-model="filters.excludeIterationAll" true-label="1" false-label="">排除已加入其它迭代的故事</el-checkbox>
+					<el-checkbox class="hidden-md-and-down" v-if="excludeIterationId" v-model="filters.excludeIterationAll" true-label="1" false-label="">排除已加入其它迭代的故事</el-checkbox>
 					<el-date-picker
 						v-model="dateRanger" 
 						type="daterange"
