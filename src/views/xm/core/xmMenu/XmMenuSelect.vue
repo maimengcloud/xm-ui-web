@@ -2,17 +2,75 @@
 	<section>
 		
 		
-		<el-row class="top">  
+		<el-row>  
 			<el-col  :span="6"  >
 				<xm-product-mng @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-mng>
 			</el-col>
 			<el-col :span="18"  style="padding-left:12px;" >
 				<el-row  >  
-					<el-input v-model="filters.key" style="width: 30%;" placeholder="模糊查询">
+					<el-checkbox v-if="excludeIterationId" v-model="filters.excludeIterationAll" true-label="1" false-label="">排除已加入其它迭代的故事</el-checkbox>
+					<el-date-picker
+						v-model="dateRanger" 
+						type="daterange"
+						align="right"
+						unlink-panels
+						range-separator="至"
+						start-placeholder="创建日期"
+						end-placeholder="创建日期"
+						value-format="yyyy-MM-dd"
+						:default-time="['00:00:00','23:59:59']"
+						:picker-options="pickerOptions"
+					></el-date-picker>
+					<el-input v-model="filters.key" closable style="width: 20%;" placeholder="模糊查询">
 						<template slot="append">
 							<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
 						</template>
 					</el-input>  
+					<el-popover
+						placement="top-start"
+						title=""
+						width="400"
+						trigger="click" >
+						<el-row> 
+							<el-col  :span="24"  style="padding-top:5px;">
+								<el-checkbox v-if="excludeIterationId" v-model="filters.excludeIterationAll" true-label="1" false-label="">排除已加入其它迭代的故事</el-checkbox>
+							</el-col>
+							<el-col :span="24"  style="padding-top:5px;">
+								<font class="more-label-font">创建时间:</font>  
+								<el-date-picker
+									v-model="dateRanger" 
+									type="daterange"
+									align="right"
+									unlink-panels
+									range-separator="至"
+									start-placeholder="开始日期"
+									end-placeholder="完成日期"
+									value-format="yyyy-MM-dd"
+									:default-time="['00:00:00','23:59:59']"
+									:picker-options="pickerOptions"
+								></el-date-picker>   
+							</el-col>   
+							<el-col  :span="24"  style="padding-top:5px;">
+								<font class="more-label-font">
+									责任人:
+								</font>  
+								<el-tag v-if="filters.mmUser" closable @close="clearFiltersMmUser()">{{filters.mmUser.username}}</el-tag> 
+								<el-button v-else @click="selectFiltersMmUser()">选责任人</el-button>
+								<el-button   @click="setFiltersMmUserAsMySelf()">我的</el-button>
+							</el-col>
+							<el-col  :span="24"  style="padding-top:5px;">
+								<font class="more-label-font">
+									故事名称:
+								</font> 
+								<el-input  size="mini" v-model="filters.key" style="width:100%;"  placeholder="输入故事名字关键字" clearable>  
+								</el-input> 
+							</el-col>
+							<el-col  :span="24"  style="padding-top:5px;">
+								<el-button type="primary" size="mini" @click="searchXmMenus" >查询</el-button>
+ 							</el-col> 
+						</el-row> 
+						<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+					</el-popover> 
 					<el-button   type="primary" v-if="multi"  v-on:click="multiSelectedConfirm">确认选择</el-button>
 				</el-row>
 				<el-row style="padding-top:12px;">
@@ -23,7 +81,10 @@
 								{{scope.row.seqNo}}&nbsp;&nbsp;<el-link @click="toMenu(scope.row)">{{scope.row.menuName}}</el-link> 
 							</template>
 						</el-table-column>   
-						<el-table-column label="操作"  v-if="!multi" width="200" fixed="right"  >
+						<el-table-column prop="mmUsername" label="责任人" width="140" > 
+							 
+						</el-table-column> 
+						<el-table-column label="操作"    width="200" fixed="right"  >
 							<template slot-scope="scope"> 
 								<el-button    type="primary" @click="selectedMenu( scope.row,scope.$index)">选择</el-button> 
 							</template>
@@ -34,6 +95,9 @@
 				</el-row>
 			</el-col>  
 			
+			<el-dialog title="选择员工" :visible.sync="selectFiltersMmUserVisible" width="60%" append-to-body>
+				<users-select  @confirm="onFiltersMmUserSelected" ref="selectFiltersMmUser"></users-select>
+			</el-dialog>
 			<el-dialog title="故事谈论" :visible.sync=" menuDetailVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="false" :xm-menu="editForm" ></xm-menu-rich-detail>
 			</el-dialog> 
@@ -48,6 +112,7 @@
 	import { listXmMenu  } from '@/api/xm/core/xmMenu';
  	import  XmProductMng from '../xmProduct/XmProductSelect';//新增界面
  	import XmMenuRichDetail from './XmMenuRichDetail';
+	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
 
 	import {sn} from '@/common/js/sequence'
 
@@ -72,10 +137,15 @@
 			}
 		},
 		data() {
+			const beginDate = new Date();
+			const endDate = new Date();
+			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 6 );
 			return {
 				filters: {
 					key: '',
 					product:null,
+					excludeIterationAll:'1',
+					mmUser:null,
 				},
 				xmMenus: [],//查询结果
 				pageInfo:{//分页数据
@@ -102,8 +172,14 @@
 						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:''
 				},
  				menuDetailVisible:false,
+				 selectFiltersMmUserVisible:false,
 				/**begin 自定义属性请在下面加 请加备注**/
 				tableHeight:300,
+				dateRanger: [
+					util.formatDate.format(beginDate, "yyyy-MM-dd"),
+					util.formatDate.format(endDate, "yyyy-MM-dd")
+				],  
+				pickerOptions:  util.pickerOptions('datarange'),
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -149,6 +225,7 @@
 					}  
 					params.orderBy= orderBys.join(",")
 				} 
+				
 				if( this.filters.product!==null && this.filters.product.id!=''){
 					params.productId=this.filters.product.id
 				}else {
@@ -156,12 +233,27 @@
 					return;
 					//params.xxx=xxxxx
 				} 
+				
+				if(!this.dateRanger || this.dateRanger.length==0){
+					this.$message({ message: "创建日期范围不能为空", type: 'error' });
+					return;
+				} 
+				
+				if(this.filters.mmUser){
+					params.mmUserid=this.filters.mmUser.userid;
+				}
+				params.ctimeStart=this.dateRanger[0]+" 00:00:00"
+				params.ctimeEnd=this.dateRanger[1]+" 23:59:59" 
 				if( this.filters.key){
 					params.key="%"+this.filters.key+"%"
 				}
-				if(this.excludeIterationId){
+				if(this.excludeIterationId ){
 					params.excludeIterationId=this.excludeIterationId
-				}
+					if(this.filters.excludeIterationAll){
+						params.excludeIterationAll=this.filters.excludeIterationAll
+					}
+				} 
+				
 				this.load.list = true;
 				listXmMenu(params).then((res) => {
 					var tips=res.data.tips;
@@ -234,6 +326,7 @@
 			/**begin 自定义函数请在下面加**/
 			selectedMenu:function(row){
 				this.$emit("selected",row)
+				this.$emit("menus-selected",[row])
 			},
 			multiSelectedConfirm(){
 				this.$emit("menus-selected",this.sels)
@@ -241,13 +334,33 @@
 			toMenu:function(row){
 				this.editForm=row
 				this.menuDetailVisible=true;
+			}, 
+			clearFiltersMmUser:function(){
+				 this.filters.mmUser=null;
+				  this.searchXmMenus();
+			},			
+			selectFiltersMmUser(){
+				this.selectFiltersMmUserVisible=true;
 			},
-				
+			onFiltersMmUserSelected(users){
+				debugger;
+				 if(users && users.length>0){
+					 this.filters.mmUser=users[0]
+				 }else{
+					 this.filters.mmUser=null;
+				 }
+				 this.selectFiltersMmUserVisible=false;
+				 this.searchXmMenus();
+			},
+			setFiltersMmUserAsMySelf(){
+				this.filters.mmUser=this.userInfo;
+				this.searchXmMenus();
+			},		
 			/**end 自定义函数请在上面加**/
 			
 		},//end methods
 		components: { 
- 			XmProductMng,XmMenuRichDetail
+ 			XmProductMng,XmMenuRichDetail,UsersSelect
  		    
 		    //在下面添加其它组件
 		},
@@ -264,6 +377,12 @@
 </script>
 
 <style scoped>
+
+.more-label-font{
+	text-align:center;
+	float:left;
+	padding-top:10px;
+}
 .top{
 	margin-top:-30px;
 }
