@@ -1,20 +1,36 @@
 <template>
-	<section>
-		<el-row class="xm-task"> 
+	<section> 
 			<el-row>
 				<el-col :span="4" v-if=" filters.selProject">
-					<xm-project-phase-mng   :sel-project="filters.selProject" :simple="true" @row-click="projectPhaseRowClick"></xm-project-phase-mng>
+					<xm-project-phase-mng   :sel-project="filters.selProject" :simple="true" @row-click="projectPhaseRowClick" @clear-select="clearSelectPhase"></xm-project-phase-mng>
 				</el-col>
 				<el-col :span=" filters.selProject?20:24">
-					<el-row>
-						<el-menu  active-text-color="#00abfc" :default-active="filters.taskType" @select="changeTaskType" class="el-menu-demo" mode="horizontal">
-							<el-menu-item index="all">全部任务类型</el-menu-item>
-							<el-menu-item v-for="(i,index) in options.taskType" :index="i.optionValue" :key="index">{{i.optionName}}</el-menu-item>
-							<el-tag>{{filters.selProject?filters.selProject.name:'未选择项目'}}</el-tag><el-button type="success" v-if="!selProject" @click="selectProjectVisible=true">选择项目</el-button>
-							<el-button v-if="isMultiSelect" @click="selectedTasks" type="primary">确认选择</el-button>
-						</el-menu>  
+					<el-row class="app-container">
+						<el-tag>{{filters.selProject?filters.selProject.name:'未选择项目'}}</el-tag><el-button type="success" v-if="!selProject" @click="selectProjectVisible=true">选择项目</el-button>
+						<el-select v-model="filters.taskType" placeholder="请选择任务类型" clearable @change="changeTaskType">
+							<el-option class="showall" value="all"  label="全部类型">全部类型</el-option>
+							<el-option  v-for="(i,index) in options.taskType" :value="i.optionValue" :label="i.optionName" :key="index">{{i.optionName}}</el-option>
+						</el-select>  
+						<el-date-picker
+							v-model="dateRanger" 
+							type="daterange"
+							align="right"
+							unlink-panels
+							range-separator="至"
+							start-placeholder="开始日期"
+							end-placeholder="完成日期"
+							value-format="yyyy-MM-dd"
+							:default-time="['00:00:00','23:59:59']"
+							:picker-options="pickerOptions"
+						></el-date-picker> 
+						<el-input v-model="filters.key" style="width:20%;">
+							<template slot="append">
+								<el-button @click="searchXmTasks" icon="el-icon-search">查询</el-button>
+							</template>
+						</el-input>
+						<el-button v-if="isMultiSelect" @click="selectedTasks" type="primary">确认选择</el-button>
 					</el-row>
-					<el-row>
+					<el-row  class="app-container">
 						<el-table
 							ref="taskTable"
 							show-summary
@@ -26,12 +42,13 @@
 							highlight-current-row
 							stripe
 							fit
+							border
 							default-expand-all 
 							:tree-props="{children: 'children', hasChildren: 'hasChildren'}"
 							row-key="id"
 							 :max-height="tableHeight"
 							>
-							<el-table-column v-show="isMultiSelect" reserve-selection sortable width="50" type="selection"></el-table-column>
+							<el-table-column v-show="isMultiSelect" reserve-selection sortable width="70" type="selection"></el-table-column>
 							<el-table-column prop="name" label="任务名称"  min-width="260" >
 								<template slot-scope="scope">
 									{{scope.row.sortLevel}}&nbsp;{{scope.row.name}}
@@ -63,8 +80,7 @@
 						
 					</el-row>
 				</el-col>
-			</el-row> 
-		</el-row>
+			</el-row>  
 		
 		<el-dialog title="选中项目" :visible.sync="selectProjectVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 			<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
@@ -103,16 +119,20 @@
 			}, 
 		},
 		data() {
+			const beginDate = new Date();
+			const endDate = new Date();
+			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 3 );
 			return {
 				filters: {
 					key: '',
+					taskType:'all',
 					isMyTask: '0',//0不区分我的，1 时我的任务
 					selProject:null,
 				},
 				xmTasks: [],//查询结果
 				pageInfo:{//分页数据
 					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
-					pageSize:10,//每页数据
+					pageSize:20,//每页数据
 					count:false,//是否需要重新计算总记录数
 					pageNum:1,//当前页码、从1开始计算
 					orderFields:['create_time'],//排序列 如 ['sex','student_id']，必须为数据库字段
@@ -144,10 +164,14 @@
 				},  
 
 				selkey: "all",   
- 				projectPhase: null,
- 				pickerOptions:  util.pickerOptions(), 
+ 				projectPhase: null, 
 				selectProjectVisible:false,
 				tableHeight:300,
+				dateRanger: [
+					util.formatDate.format(beginDate, "yyyy-MM-dd"),
+					util.formatDate.format(endDate, "yyyy-MM-dd")
+				],  
+				pickerOptions:  util.pickerOptions('datarange'),
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -209,7 +233,11 @@
 					}  
 					params.orderBy= orderBys.join(",")
 				}
-
+				
+				if(!this.dateRanger || this.dateRanger.length==0){
+					this.$message({ message: "创建日期范围不能为空", type: 'error' });
+					return;
+				} 
 				if(this.filters.key){
 					params.key='%'+this.filters.key+'%'
 				}
@@ -238,6 +266,8 @@
 					params.userid=this.userInfo.userid
 					params.isMy="1"
 				}
+				params.createTimeStart=this.dateRanger[0]+" 00:00:00"
+				params.createTimeEnd=this.dateRanger[1]+" 23:59:59"
 				getTask(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 
@@ -429,7 +459,10 @@
 				this.getXmTasks();
 			},  
 			/**end 自定义函数请在上面加**/
-			
+			clearSelectPhase(){
+				this.projectPhase=null;
+				this.searchXmTasks();
+			}
 		},//end methods
 		components: {  
 			  

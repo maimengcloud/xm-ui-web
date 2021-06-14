@@ -20,7 +20,17 @@
 			 
 		}, 
 		watch: {
-			 
+			 "$route":function(to,from){
+				if(this.$route.params.productId){
+					this.filters.xmProduct={
+						id:this.$route.params.productId,
+						productName:this.$route.params.productName
+					} 
+				}else{
+					return null;
+				}
+				 
+			 }
 		},
 		data() {
 			return {
@@ -40,10 +50,14 @@
 		},
 		mounted() {
 			if(this.$route.params){
-				this.filters.xmProduct={
-					id:this.$route.params.productId,
-					productName:this.$route.params.productName
-				} 
+				if(this.$route.params.productId){
+					this.filters.xmProduct={
+						id:this.$route.params.productId,
+						productName:this.$route.params.productName
+					} 
+				}else{
+					return null;
+				}
 			}
 		}
 	}

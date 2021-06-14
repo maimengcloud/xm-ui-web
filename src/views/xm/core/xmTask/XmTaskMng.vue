@@ -57,7 +57,7 @@
 							</el-row>
 							<el-row> 
 								<el-col :span="24" style="padding-top:5px;">
-									<font class="more-label-font">产品:</font><el-tag    v-if="  filters.product "  closable    @close="clearProduct">{{this.filters.product.productName}}</el-tag>
+									<font class="more-label-font">产品:</font><el-tag    v-if="  filters.product "  :closable="!xmProduct"    @close="clearProduct">{{this.filters.product.productName}}</el-tag>
 									<el-button size="mini" v-else    @click="showProductVisible" type="plian">选产品</el-button>
 								</el-col> 
 								<el-col :span="24" style="padding-top:5px;" v-if="!selProject" >
@@ -470,15 +470,8 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				if(this.filters.selProject){
 					return this.filters.selProject;
 				}else{
-					var currentProject={};
-					if(this.editForm && this.editForm.id){
-						currentProject.id=this.editForm.projectId
-						currentProject.taskType=this.editForm.taskType
-						currentProject.name=this.editForm.projectName
-						return currentProject
-					}else{
-						return null;
-					}
+					return null;
+					 
 				}
 			},
 			currentProjectPhase(){
@@ -597,7 +590,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 
 			}
 		},
-		props: ["selProject","isTaskCenter","isMy",'menuId','menuName'],
+		props: ["selProject","isTaskCenter","isMy",'menuId','menuName','xmProduct'],
 		watch: {
 			"selProject": function(oval,val) {
 				this.filters.selProject=this.selProject;
@@ -610,6 +603,9 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				if(drawerVisible==false){
 					this.drawerkey=""
 				}
+			},
+			'xmProduct':function(){
+				this.filters.product=this.xmProduct;
 			}
 		},
 		data() {
@@ -1767,7 +1763,9 @@ XmProjectGroupSelect,XmProductSelect
 			if(this.selProject){
 				this.filters.selProject=this.selProject
 			}
-			 
+			if(this.xmProduct){
+				this.filters.product=this.xmProduct;
+			}
 			this.$nextTick(()=>{
 				this.getXmTasks();     
 				var clientRect=this.$refs.table.$el.getBoundingClientRect(); 
