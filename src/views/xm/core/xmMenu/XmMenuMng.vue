@@ -7,7 +7,7 @@
 				</el-col>
 				<el-col v-show="filters.product" :span="24" >
 					<el-row class="app-container">  
-						<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
+						<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询" clearable>
 							<template slot="append">
 								<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
 							</template>
@@ -27,14 +27,45 @@
 						<el-popover
 							placement="top-start"
 							title=""
-							width="200"
+							width="400"
 							trigger="click" >
 							<el-row>
-								<el-col :span="24" style="padding-top:5px;">
-									<el-button  v-if=" batchEditVisible==false "  type="primary" @click="handleExport" icon="el-icon-download">导出</el-button> 
-								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;"> 
 									<el-button  v-if=" batchEditVisible==true "  type="success" @click="showImportFromMenuTemplate" icon="el-icon-upload2">由模板快速导入</el-button> 
+								</el-col>  
+								<el-col :span="24"  style="padding-top:5px;">
+									<font class="more-label-font">创建时间:</font>  
+									<el-date-picker
+										v-model="dateRanger" 
+										type="daterange"
+										align="right"
+										unlink-panels
+										range-separator="至"
+										start-placeholder="开始日期"
+										end-placeholder="完成日期"
+										value-format="yyyy-MM-dd"
+										:default-time="['00:00:00','23:59:59']"
+										:picker-options="pickerOptions"
+									></el-date-picker>   
+								</el-col>   
+								<el-col  :span="24"  style="padding-top:5px;">
+									<font class="more-label-font">
+										责任人:
+									</font>  
+									<el-tag v-if="filters.mmUser" closable @close="clearFiltersMmUser()">{{filters.mmUser.username}}</el-tag> 
+									<el-button v-else @click="selectFiltersMmUser()">选责任人</el-button>
+									<el-button   @click="setFiltersMmUserAsMySelf()">我的</el-button>
+								</el-col>
+								<el-col  :span="24"  style="padding-top:5px;">
+									<font class="more-label-font">
+										故事名称:
+									</font> 
+									<el-input  size="mini" v-model="filters.key" style="width:100%;"  placeholder="输入故事名字关键字" clearable>  
+									</el-input> 
+								</el-col>
+								<el-col  :span="24"  style="padding-top:5px;">
+									<el-button type="primary" size="mini" @click="searchXmMenus" >查询</el-button>
+									<el-button size="mini" v-if=" batchEditVisible==false "  @click="handleExport" icon="el-icon-download">导出</el-button> 
 								</el-col> 
 							</el-row> 
 							<el-button  slot="reference" icon="el-icon-more" circle></el-button>
@@ -193,6 +224,9 @@
 						<xm-iteration-mng :simple="true" :product-id="editForm.productId" :menu-id="editForm.menuId" ></xm-iteration-mng>
 				</el-dialog>
 
+				<el-dialog title="选择员工" :visible.sync="selectFiltersMmUserVisible" width="60%" append-to-body>
+					<users-select  @confirm="onFiltersMmUserSelected" ref="selectFiltersMmUser"></users-select>
+				</el-dialog>	
 				<el-dialog title="选择员工" :visible.sync="userSelectVisible" width="60%" append-to-body>
 					<users-select  @confirm="onUserSelected" ref="usersSelect"></users-select>
 				</el-dialog>	
@@ -263,10 +297,14 @@
 		watch:{ 
     	},
 		data() {
+			const beginDate = new Date();
+			const endDate = new Date();
+			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 3 );
 			return {
 				filters: {
 					key: '',
 					product:null,
+					mmUser:null,
 				},
 				xmMenus: [],//查询结果
 				pageInfo:{//分页数据
@@ -302,7 +340,13 @@
 				taskListForMenuVisible:false,
 				iterationVisible:false,
 				userSelectVisible:false,
+				selectFiltersMmUserVisible:false,
 				tableHeight:300,
+				dateRanger: [
+					util.formatDate.format(beginDate, "yyyy-MM-dd"),
+					util.formatDate.format(endDate, "yyyy-MM-dd")
+				],  
+				pickerOptions:  util.pickerOptions('datarange'),
  				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -364,6 +408,16 @@
 				if( this.filters.key){
 					params.key="%"+this.filters.key+"%"
 				}
+				 
+				if(!this.dateRanger || this.dateRanger.length==0){
+					this.$message({ message: "创建日期范围不能为空", type: 'error' });
+					return;
+				} 
+				if(this.filters.mmUser){
+					params.mmUserid=this.filters.mmUser.userid;
+				}
+				params.ctimeStart=this.dateRanger[0]+" 00:00:00"
+				params.ctimeEnd=this.dateRanger[1]+" 23:59:59" 
 				let callback= (res)=>{
 					var tips=res.data.tips;
 					if(tips.isOk){ 
@@ -1027,6 +1081,27 @@
 				 row.mmUsername=''
 				 this.fieldChange(row,"mmUsername");
 			},
+			clearFiltersMmUser:function(){
+				 this.filters.mmUser=null;
+				  this.searchXmMenus();
+			},			
+			selectFiltersMmUser(){
+				this.selectFiltersMmUserVisible=true;
+			},
+			onFiltersMmUserSelected(users){
+				debugger;
+				 if(users && users.length>0){
+					 this.filters.mmUser=users[0]
+				 }else{
+					 this.filters.mmUser=null;
+				 }
+				 this.selectFiltersMmUserVisible=false;
+				 this.searchXmMenus();
+			},
+			setFiltersMmUserAsMySelf(){
+				this.filters.mmUser=this.userInfo;
+				this.searchXmMenus();
+			},								 
 			toSelectProduct(){
 				this.filters.product=null;
 			}
@@ -1071,6 +1146,12 @@
 </script>
 
 <style lang="scss" scoped>
+
+.more-label-font{
+	text-align:center;
+	float:left;
+	padding-top:10px;
+}
  .el-table{ 
 	 box-sizing: border-box; 
 	/deep/ .cell {

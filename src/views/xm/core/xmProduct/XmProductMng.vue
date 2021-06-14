@@ -289,8 +289,7 @@
 				}
 				if(this.selProject){
 					params.projectId=this.selProject.id
-				}
-				params.branchId=this.userInfo.branchId
+				} 
 				this.load.list = true;
 				listXmProductWithState(params).then((res) => {
 					var tips=res.data.tips;
