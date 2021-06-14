@@ -114,9 +114,7 @@
 						</template>
 					</el-table-column> 
 					<el-table-column prop="menuName" label="故事" width="100" show-overflow-tooltip></el-table-column> 
-					<el-table-column prop="bugSeverity" label="严重程度" width="100" :formatter="formatterOption"></el-table-column> 
-					<el-table-column prop="priority" label="紧急程度" width="100" :formatter="formatterOption"></el-table-column> 
-					<el-table-column prop="solution" label="解决方案" width="100" :formatter="formatterOption"></el-table-column>
+					<el-table-column prop="bugSeverity" label="严重程度" width="100" :formatter="formatterOption"></el-table-column>  
 					<el-table-column prop="handlerUsername" width="200" label="指派给" > 
 						<template slot="header">
 							指派给<el-button @click="showGroupUsers('handlerUsername')"  icon="el-icon-search" circle size="mini"></el-button>
