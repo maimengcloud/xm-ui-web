@@ -42,50 +42,74 @@
 						<el-popover
 							placement="top-start"
 							title=""
-							width="200"
+							width="400"
 							trigger="click" >
 							<el-row>
 								<el-col :span="24" style="padding-top:5px;">
-									<el-button type="primary" v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showBatchEdit" v-loading="load.edit" icon="el-icon-edit">批量修改任务</el-button>
+									<el-button type="primary" size="mini" v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showBatchEdit" v-loading="load.edit" icon="el-icon-edit">批量修改任务</el-button>
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
-									<el-button v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showTaskTemplate" type="success" icon="el-icon-plus">从模板快速导入任务</el-button>
+									<el-button size="mini" v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showTaskTemplate" type="success" icon="el-icon-plus">从模板快速导入任务</el-button>
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
-									<el-button v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showMenu" type="success" icon="el-icon-plus">由故事快速创建任务</el-button>
+									<el-button size="mini" v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showMenu" type="success" icon="el-icon-plus">由故事快速创建任务</el-button>
 								</el-col>
 							</el-row>
-							<el-row>
+							<el-row> 
+								<el-col :span="24" style="padding-top:5px;">
+									<font class="more-label-font">产品:</font><el-tag    v-if="  filters.product "  closable    @close="clearProduct">{{this.filters.product.productName}}</el-tag>
+									<el-button size="mini" v-else    @click="showProductVisible" type="plian">选产品</el-button>
+								</el-col> 
 								<el-col :span="24" style="padding-top:5px;" v-if="!selProject" >
 									<font class="more-label-font">项目:</font><el-tag    v-if="  filters.selProject "  closable  @click="showProjectList" @close="clearProject">{{this.filters.selProject.name}}</el-tag>
-									<el-button v-else    @click="showProjectList" type="plian">选项目</el-button>
+									<el-button size="mini" v-else    @click="showProjectList" type="plian">选项目</el-button>
 								</el-col> 		
 								<el-col :span="24" style="padding-top:5px;">
 									 <font class="more-label-font">故事:</font>
 									<font  v-if="  filters.menus && filters.menus.length>0">
 										<el-tag  v-for="(item,index) in filters.menus" :key="index"  closable     @close="clearFiltersMenu(item)">{{item.menuName.substr(0,10)}}</el-tag>
 									</font>
-									<el-button v-else    @click="showMenuStory" type="plian">选故事</el-button>
+									<el-button size="mini" v-else    @click="showMenuStory" type="plian">选故事</el-button>
 								</el-col> 	
 								<el-col :span="24" style="padding-top:5px;">
 									<font class="more-label-font">责任人:</font>
 									 <el-tag    v-if="  filters.createUser "  closable    @close="clearFiltersCreateUser">{{this.filters.createUser.username}}</el-tag> 
-									<el-button v-else    @click="showMenuGroupUser" type="plian">选责任人</el-button>
+									<el-button size="mini" v-else    @click="showMenuGroupUser" type="plian">选责任人</el-button>
+									<el-button size="mini" v-if=" !filters.createUser || filters.createUser.userid!=userInfo.userid" @click="setFiltersCreateUserAsMySelf">我的</el-button> 
 								</el-col> 
 								<el-col :span="24" style="padding-top:5px;">
 									<font class="more-label-font">执行人:</font>
 									 <el-tag    v-if="  filters.executor "  closable   @close="clearFiltersExecutor">{{this.filters.executor.username}}</el-tag> 
-									<el-button v-else    @click="showMenuExecutor" type="plian">选执行人</el-button>
-								</el-col> 		
+									<el-button size="mini" v-else    @click="showMenuExecutor" type="plian">选执行人</el-button>
+									<el-button size="mini" v-if=" !filters.executor || filters.executor.userid!=userInfo.userid" @click="setFiltersExecutorAsMySelf">我的</el-button> 
+								</el-col> 		 
+								<el-col  :span="24"  style="padding-top:5px;">
+									<font class="more-label-font">创建时间:</font>  
+									<el-date-picker
+										v-model="dateRanger" 
+										type="daterange"
+										align="right"
+										unlink-panels
+										range-separator="至"
+										start-placeholder="开始日期"
+										end-placeholder="完成日期"
+										value-format="yyyy-MM-dd"
+										:default-time="['00:00:00','23:59:59']"
+										:picker-options="pickerOptions"
+									></el-date-picker>   
+								</el-col>  
 								<el-col  :span="24"  style="padding-top:5px;">
 									<font class="more-label-font">标签:</font>
-									<el-button    v-if=" !filters.skillTags || filters.skillTags.length==0" icon="el-icon-search" @click="showSkillSelect">选择标签</el-button>
+									<el-button size="mini"   v-if=" !filters.skillTags || filters.skillTags.length==0" icon="el-icon-search" @click="showSkillSelect">选择标签</el-button>
 									<el-tag v-else   closable v-for=" (skill,index) in filters.skillTags" :key="index"  @click="showSkillSelect" @close="skillTagClear(skill)">{{skill.skillName}}</el-tag>
 
 								</el-col>
 								
 								<el-col :span="24" style="padding-top:5px;">
 									<el-checkbox v-model="gstcVisible" >甘特图</el-checkbox>
+								</el-col>
+								<el-col :span="24" style="padding-top:5px;">
+									<el-button size="mini" type="primary" icon="el-icon-search" @click="searchXmTasks">查询</el-button>
 								</el-col>
 							</el-row>
 							<el-button  slot="reference" icon="el-icon-more" circle></el-button>
@@ -400,6 +424,10 @@
 		<el-dialog append-to-body title="选择负责人" :visible.sync="groupUserSelectVisible" width="80%"    :close-on-click-modal="false">
 			<xm-project-group-select :visible="groupUserSelectVisible" :sel-project="selProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-project-group-select>
 		</el-dialog>
+			
+		<el-dialog title="选择产品" :visible.sync="productSelectVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+				<xm-product-select   :isSelectProduct="true" :selProject="filters.selProject" :visible="productSelectVisible" @cancel="productSelectVisible=false" @selected="onProductSelected"></xm-product-select>
+		</el-dialog>
 	</section>
 </template>
 
@@ -428,6 +456,7 @@
 	import XmProjectList from '../xmProject/XmProjectList';
 
 	import XmMenuRichDetail from '../xmMenu/XmMenuRichDetail';
+	import  XmProductSelect from '../xmProduct/XmProductSelect';//修改界面
 
   import XmGantt from '../components/xm-gantt';
 import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
@@ -584,6 +613,9 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			}
 		},
 		data() {
+			const beginDate = new Date();
+			const endDate = new Date();
+			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 3 );
 			return {
 				filters: {
 					key: '',
@@ -663,6 +695,12 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				groupUserSelectVisible:false,//选择负责人
 				showSkillSearchVisible:false,//按技能查询
 				tableHeight:300,
+				productSelectVisible:false,
+				dateRanger: [
+					util.formatDate.format(beginDate, "yyyy-MM-dd"),
+					util.formatDate.format(endDate, "yyyy-MM-dd")
+				],  
+				pickerOptions:  util.pickerOptions('datarange'),
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -742,9 +780,10 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					}
 					params.orderBy= orderBys.join(",")
 				}
-				if(this.filters.key!==""){
-					//params.xxx=this.filters.key
-				}
+				if(!this.dateRanger || this.dateRanger.length==0){
+					this.$message({ message: "创建日期范围不能为空", type: 'error' });
+					return;
+				} 
 				if(this.filters.taskType!="all" && this.filters.taskType!="" && this.filters.taskType!=null){
 					params.taskType=this.filters.taskType
 				}
@@ -798,6 +837,12 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				if(this.filters.executor){
 				params.executorUserid=this.filters.executor.userid
 				}
+				if(this.filters.product){
+					params.productId=this.filters.product.id
+				}
+				
+				params.createTimeStart=this.dateRanger[0]+" 00:00:00"
+				params.createTimeEnd=this.dateRanger[1]+" 23:59:59"
 				getTask(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){
@@ -1444,13 +1489,26 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				}
 				return parseFloat(value);
 			},
+			
+			clearProduct(){
+				this.filters.product=null;
+				this.searchXmTasks();
+			},
+			showProductVisible(){ 
+				this.productSelectVisible=true;
+			},
+			onProductSelected(product){
+				this.filters.product=product;
+				this.productSelectVisible=false;
+				this.searchXmTasks();
+			},
 			showProjectList:function(){
 				this.selectProjectVisible=true;
 			},
 			onPorjectConfirm:function(project){
 				this.filters.selProject=project
 				this.selectProjectVisible=false;
-				this.getXmTasks();
+				this.searchXmTasks();
 			},
 			handleCommand(command) {
 				if(command.type=='showSubAdd'){
@@ -1681,7 +1739,16 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					this.searchXmTasks();
 				}
 				this.batchEditVisible=false;
+			},
+			setFiltersCreateUserAsMySelf(){
+				this.filters.createUser=this.userInfo;
+				this.searchXmTasks();
+			},
+			setFiltersExecutorAsMySelf(){
+				this.filters.executor=this.userInfo;
+				this.searchXmTasks();
 			}
+												 
 			/**end 自定义函数请在上面加**/
 
 		},//end methods
@@ -1693,13 +1760,14 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			skillMng,
 			xmProjectPhaseMng,
 			xmTaskTemplateMng, XmProjectList,xmExchangeMng,xmMenuSelect,XmMenuRichDetail,XmGantt,XmTaskMngBatch,
-XmProjectGroupSelect
+XmProjectGroupSelect,XmProductSelect
 		    //在下面添加其它组件
 		},
 		mounted() {
 			if(this.selProject){
 				this.filters.selProject=this.selProject
 			}
+			 
 			this.$nextTick(()=>{
 				this.getXmTasks();     
 				var clientRect=this.$refs.table.$el.getBoundingClientRect(); 

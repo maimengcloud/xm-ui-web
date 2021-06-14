@@ -22,22 +22,7 @@
 							<template slot-scope="scope">
 								{{scope.row.seqNo}}&nbsp;&nbsp;<el-link @click="toMenu(scope.row)">{{scope.row.menuName}}</el-link> 
 							</template>
-						</el-table-column> 
-						<el-table-column prop="mmUsername" label="负责人" min-width="100" > </el-table-column>
-						<el-table-column prop="remark" label="描述" min-width="140" > 
-							<template slot-scope="scope">
-								<el-popover
-									v-if="scope.row.remark && scope.row.remark.length>20"
-									placement="top-start"
-									title="故事备注"
-									width="400"
-									trigger="click"
-									:content="scope.row.remark">
-									<div slot="reference">{{scope.row.remark?scope.row.remark.substr(0,18)+"...":""}}</div>
-								</el-popover> 
-								<div v-else v-html="scope.row.remark"></div>
-							</template>
-						</el-table-column> 
+						</el-table-column>   
 						<el-table-column label="操作"  v-if="!multi" width="200" fixed="right"  >
 							<template slot-scope="scope"> 
 								<el-button    type="primary" @click="selectedMenu( scope.row,scope.$index)">选择</el-button> 
