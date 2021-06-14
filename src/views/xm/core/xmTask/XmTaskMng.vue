@@ -6,8 +6,8 @@
 			</el-col>
 			<el-col :span="isTaskCenter!='1' && currentProject?20:24"  class="app-container">
 				<el-row>
-					<el-select v-model="filters.selKey" placeholder="请选择任务状态" clearable @change="changeSelKey">
-						<el-option class="showall" value="all" label="全部状态">全部状态</el-option>
+					<el-select v-model="selkey" placeholder="请选择任务状态" clearable @change="changeSelKey">
+						<el-option class="showall" value="" label="全部状态">全部状态</el-option>
 						<el-option  value="work" label="未完成">未完成</el-option>
 						<el-option  value="finish" label="已完成">已完成</el-option>
 						<el-option  value="myFocus" label="我关注">我关注</el-option>
@@ -22,7 +22,7 @@
 						<el-option  value="myExecuserStatus7" label="我放弃的">我放弃的</el-option>
 					</el-select>
 					<el-select v-model="filters.taskType" placeholder="请选择任务类型" clearable @change="changeTaskType">
-						<el-option class="showall" value="all"  label="全部类型">全部类型</el-option>
+						<el-option class="showall" value=""  label="全部类型">全部类型</el-option>
 						<el-option  v-for="(i,index) in options.taskType" :value="i.optionValue" :label="i.optionName" :key="index">{{i.optionName}}</el-option>
 					</el-select>
 					<el-checkbox v-model="filters.taskOut"   true-label="1" false-label="">众包</el-checkbox>
@@ -614,14 +614,15 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 3 );
 			return {
 				filters: {
-					key: '',
+					key: '', 
 					isMyTask: '0',//0不区分我的，1 时我的任务
 					selProject:null,
 					skillTags:[],
 					taskOut:'',//1只查众包任务，0//只查本机构任务
 					menus:[],
 					createUser:null,//负责人
-					executor:null//执行人
+					executor:null,//执行人
+					taskType:'',
 				},
 				xmTasks: [],//查询结果
 				pageInfo:{//分页数据
@@ -660,7 +661,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				/**begin 自定义属性请在下面加 请加备注**/
 				taskStateList: ["待领取","已领取执行中","已完工","已结算"],
 
-				selkey: "all",
+				selkey: "",
 				drawerVisible: false,
 				progress_show: true,
 				isChild: false,
@@ -704,7 +705,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 
 			changeSelKey(index){
 				this.selkey = index;
-				this.getXmTasks();
+				this.searchXmTasks();
 			},
 			changeTaskType(index){
 				this.filters.taskType = index;

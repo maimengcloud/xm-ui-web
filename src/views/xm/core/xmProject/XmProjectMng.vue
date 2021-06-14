@@ -26,27 +26,44 @@
 				<el-popover
 					placement="top-start"
 					title=""
-					width="200"
-					trigger="hover" >
+					width="400"
+					trigger="click" >
 					<el-row>
 						<el-col :span="24" style="padding-top:5px;">
-							<el-checkbox  v-model="finishFlag">未结束</el-checkbox>
+							<el-checkbox  v-model="finishFlag">只查未结束项目</el-checkbox>
 						</el-col>
 						<el-col  :span="24"  style="padding-top:5px;">
-							<el-tag v-if="filters.productId" closable @close="onProductClose">{{filters.productName}}</el-tag><el-button v-else type="text" plain  @click.native="productSelectVisible=true">按产品过滤</el-button>
+							<font v-if="filters.productId" class="more-label-font">产品:</font>  <el-tag v-if="filters.productId" closable @close="onProductClose">{{filters.productName}}</el-tag><el-button v-else    @click.native="productSelectVisible=true" size="mini">选择产品</el-button>
 						</el-col>
-						<el-col  :span="24"  style="padding-top:5px;">
-							<el-button :loading="load.list" v-if="!showType" :class="{'changebtn-active':showType}" plain type="text" @click="showType=true" icon="el-icon-menu"></el-button>
-							<el-button :loading="load.list" v-else :class="{'changebtn-active':!showType}" plain type="text" @click="showType=false" icon="el-icon-more"></el-button>
-						</el-col> 
-						
+						<el-col  :span="24"  style="padding-top:5px;"> 
+							<el-checkbox  v-model="showType" :false-label="false" :true-label="true">直观展示</el-checkbox>
+						</el-col>  
 						<el-col  :span="24"  style="padding-top:5px; ">
-							<el-button class="hidden-lg-and-up hidden-btn"  style="margin-left:10px;"  @click="handleSelect('myExecuserStatus3')">我验收成功</el-button>
-							<el-button class="hidden-lg-and-up hidden-btn"    @click="handleSelect('myExecuserStatus4')">我验收失败</el-button>
-							<el-button class="hidden-lg-and-up hidden-btn"   @click="handleSelect('myExecuserStatus5')">我付款中</el-button>
-							<el-button class="hidden-xl-and-up hidden-btn"    @click="handleSelect('myExecuserStatus6')">我付款成功</el-button>
-							<el-button class="hidden-xl-and-up hidden-btn"    @click="handleSelect('myExecuserStatus7')">我放弃</el-button>
+							<el-button size="mini" class="hidden-lg-and-up hidden-btn"  style="margin-left:10px;"  @click="handleSelect('myExecuserStatus3')">我验收成功</el-button>
+							<el-button size="mini" class="hidden-lg-and-up hidden-btn"    @click="handleSelect('myExecuserStatus4')">我验收失败</el-button>
+							<el-button size="mini" class="hidden-lg-and-up hidden-btn"   @click="handleSelect('myExecuserStatus5')">我付款中</el-button>
+							<el-button size="mini" class="hidden-xl-and-up hidden-btn"    @click="handleSelect('myExecuserStatus6')">我付款成功</el-button>
+							<el-button size="mini" class="hidden-xl-and-up hidden-btn"    @click="handleSelect('myExecuserStatus7')">我放弃</el-button>
 						</el-col> 
+								 
+						<el-col  :span="24"  style="padding-top:5px;">
+							<font class="more-label-font">创建时间:</font>  
+							<el-date-picker
+								v-model="dateRanger" 
+								type="daterange"
+								align="right"
+								unlink-panels
+								range-separator="至"
+								start-placeholder="开始日期"
+								end-placeholder="完成日期"
+								value-format="yyyy-MM-dd"
+								:default-time="['00:00:00','23:59:59']"
+								:picker-options="pickerOptions"
+							></el-date-picker>   
+						</el-col>  
+						<el-col :span="24" style="padding-top:5px;">
+							<el-button size="mini" type="primary" icon="el-icon-search" @click="searchXmProjects">查询</el-button>
+						</el-col>
 					</el-row>
 					<el-button type="text" class="right-btn" slot="reference" icon="el-icon-d-arrow-right"></el-button>
 				</el-popover>
@@ -223,14 +240,18 @@
 		watch: {
 			"showType": function(val){
 				console.log("shotType_change");
-				this.xmProjects = [];
-				this.getXmProjects();
+				//this.xmProjects = [];
+				//this.getXmProjects();
 			},
 			"finishFlag":function(val){
 				this.searchXmProjects();
 			}
 		},
 		data() {
+			
+			const beginDate = new Date();
+			const endDate = new Date();
+			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 12 );
 			return {
 				filters: {
 					key: '',
@@ -270,6 +291,11 @@
 				xmRecordVisible: false,
 				productSelectVisible:false,
 				tableHeight:300,
+				dateRanger: [
+					util.formatDate.format(beginDate, "yyyy-MM-dd"),
+					util.formatDate.format(endDate, "yyyy-MM-dd")
+				],  
+				pickerOptions:  util.pickerOptions('datarange'),
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -313,10 +339,12 @@
 				}else{
 					//params.xxx=xxxxx
 				}
-				this.load.list = true;
-				if(this.showType){
-					params = {};
-				}
+				
+				if(!this.dateRanger || this.dateRanger.length==0){
+					this.$message({ message: "创建日期范围不能为空", type: 'error' });
+					return;
+				} 
+				this.load.list = true; 
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
 					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
@@ -331,8 +359,9 @@
 				params = this.menuFilter(params);
 				if(this.filters.productId){
 					params.productId  = this.filters.productId
-				}
-				params.branchId = this.userInfo.branchId;
+				} 
+				params.createTimeStart=this.dateRanger[0]+" 00:00:00"
+				params.createTimeEnd=this.dateRanger[1]+" 23:59:59"
 				listXmProject(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 
@@ -809,5 +838,11 @@
 		max-height: 300px;
 		overflow-y: auto;
 	}
+}
+
+.more-label-font{
+	text-align:center;
+	float:left;
+	padding-top:10px;
 }
 </style>

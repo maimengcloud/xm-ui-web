@@ -10,7 +10,7 @@
 						 <el-popover
 							placement="top-start"
 							title=""
-							width="200"
+							width="400"
 							trigger="click" >
 							<el-row>
 								<el-col :span="24" style="padding-top:5px;">
@@ -18,38 +18,42 @@
 										产品查询范围：
 									</font>
 									<el-select size="mini" v-model="filters.queryScope" style="width:100%;"   placeholder="产品查询范围">
-										<el-option label="全公司" value="branchId"></el-option>
-										<el-option label="我相关" value="compete"></el-option>
-										<el-option label="产品编号" value="productId"></el-option>
-										<el-option label="智能匹配" value=""></el-option>
+										<el-option :label="userInfo.branchName+'机构下所有的产品'" value="branchId"></el-option>
+										<el-option label="我相关的产品" value="compete"></el-option>
+										<el-option label="按产品编号精确查找" value="productId"></el-option>
+										<el-option label="后台智能匹配" value=""></el-option>
 									</el-select>
 								</el-col>
-								<el-col  :span="24"  style="padding-top:5px;">
-									<font class="more-label-font" v-if="filters.queryScope=='branchId'">
-										查询{{userInfo.branchName}}机构下所有的产品
-									</font>
-									<font class="more-label-font" v-else-if="filters.queryScope=='productId'">
-										产品编号精确查找：
-									</font>
-									<font class="more-label-font" v-else-if="filters.queryScope=='compete'">
-										自动计算与{{userInfo.username}}有关的产品
-									</font> 
-									<font class="more-label-font" v-else>
-										智能匹配
-									</font>
+								<el-col  :span="24"  style="padding-top:5px;"> 
 									<el-input v-if="filters.queryScope=='productId'" size="mini" v-model="filters.id" style="width:100%;"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">  
 						 			</el-input> 
 								</el-col>
+								 
+								<el-col v-show="!selProject&&filters.queryScope!='productId'" :span="24"  style="padding-top:5px;">
+									<font class="more-label-font">创建时间:</font>  
+									<el-date-picker
+										v-model="dateRanger" 
+										type="daterange"
+										align="right"
+										unlink-panels
+										range-separator="至"
+										start-placeholder="开始日期"
+										end-placeholder="完成日期"
+										value-format="yyyy-MM-dd"
+										:default-time="['00:00:00','23:59:59']"
+										:picker-options="pickerOptions"
+									></el-date-picker>   
+								</el-col>  
 								
 								<el-col  :span="24"  style="padding-top:5px;">
 									<font class="more-label-font">
-										模糊查询关键字:
+										产品名称:
 									</font> 
 									<el-input  size="mini" v-model="filters.key" style="width:100%;"  placeholder="输入产品名字关键字">  
 						 			</el-input> 
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
-									<el-button size="mini" @click="searchXmProducts" >查询</el-button>
+									<el-button type="primary" size="mini" @click="searchXmProducts" >查询</el-button>
 								</el-col>
 							</el-row> 
 							<el-button  slot="reference" size="mini"  icon="el-icon-more" circle></el-button>
@@ -61,7 +65,7 @@
 				</el-table-column>
 				<el-table-column v-if="isSelectProduct==true"  label="操作" width="100" fixed="right"  >
 					<template slot-scope="scope"> 
-						<el-button  @click="selectedProduct( scope.row,scope.$index)">选择</el-button> 
+						<el-button type="primary" @click="selectedProduct( scope.row,scope.$index)">选择</el-button> 
 					</template>
 				</el-table-column>
 			</el-table>
@@ -86,6 +90,9 @@
 		    ])
 		},
 		data() {
+			const beginDate = new Date();
+			const endDate = new Date();
+			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 12 );
 			return {
 				filters: {
 					key: '',
@@ -119,6 +126,11 @@
 				iterationVisible:false,
 				productStateVisible:false,
 				tableHeight:300,
+				dateRanger: [
+					util.formatDate.format(beginDate, "yyyy-MM-dd"),
+					util.formatDate.format(endDate, "yyyy-MM-dd")
+				],  
+				pickerOptions:  util.pickerOptions('datarange'),
 				
 				/**begin 自定义属性请在下面加 请加备注**/
 					
@@ -188,7 +200,14 @@
 					params.branchId=this.userInfo.branchId
 					params.projectId=null;
 				}
-				
+				if(!this.selProject && this.filters.queryScope!='productId'){
+					if(!this.dateRanger || this.dateRanger.length==0){
+						this.$message({ message: "创建日期范围不能为空", type: 'error' });
+						return;
+					} 
+					params.ctimeStart=this.dateRanger[0]+" 00:00:00"
+					params.ctimeEnd=this.dateRanger[1]+" 23:59:59"
+				} 
 
 				this.load.list = true;
 				listXmProductWithState(params).then((res) => {
