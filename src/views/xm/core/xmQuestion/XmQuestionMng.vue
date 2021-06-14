@@ -13,6 +13,8 @@
 					<el-option v-for="(b,index) in options['bugSeverity']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
 					</el-option>
 				</el-select>  
+				<el-tag    v-if="  filters.product "  closable    @close="clearProduct">{{this.filters.product.productName}}</el-tag>
+				<el-button v-else    @click="showProductVisible" type="plian">选产品</el-button>
 				<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 选择故事</el-button>
 				<el-tag v-else   closable @close="clearFiltersMenu(filters.menus[0])">{{filters.menus[0].menuName.substr(0,5)}}等({{filters.menus.length}})个</el-tag>
 				<el-input style="width:200px;" v-model="filters.key" placeholder="问题名称">
@@ -28,6 +30,10 @@
 					width="400"
 					trigger="click" >
 					<el-row>
+						<el-col :span="24" style="padding-top:5px;">
+							<font class="more-label-font">产品:</font><el-tag    v-if="  filters.product "  closable    @close="clearProduct">{{this.filters.product.productName}}</el-tag>
+							<el-button v-else    @click="showProductVisible" type="plian">选产品</el-button>
+						</el-col> 
 						<el-col :span="24"  style="padding-top:12px;" v-if="!selProject">
 							<font class="more-label-font">项目:</font>
 							<el-tag v-if="filters.selProject && !selProject" closable @close="clearProject" @click="showProjectList(true)">{{ filters.selProject.name }}</el-tag>
@@ -36,8 +42,9 @@
 						</el-col>
 						<el-col :span="24" style="padding-top:12px;">
 							<font class="more-label-font">指派给:</font>
-							<el-button v-if="!filters.handlerUsername" @click="showGroupUsers('handlerUsername')">选择被指派人</el-button>
+							<el-button v-if="!filters.handlerUsername" @click="showGroupUsers('handlerUsername')">选择被指派人</el-button> 
 							<el-tag v-else closable @close="clearHandler"  @click="showGroupUsers('handlerUsername')">{{filters.handlerUsername}}</el-tag>
+							<el-button v-if="filters.handlerUserid!=userInfo.userid" @click="setFiltersHandlerAsMySelf">我的</el-button> 
 						</el-col> 
 						<el-col :span="24" style="padding-top:5px;">
 								<font class="more-label-font">故事:</font>
@@ -58,6 +65,24 @@
 								</el-option>
 							</el-select>
 						</el-col> 
+						<el-col  :span="24"  style="padding-top:5px;">
+							<font class="more-label-font">创建时间:</font>  
+							<el-date-picker
+								v-model="dateRanger" 
+								type="daterange"
+								align="right"
+								unlink-panels
+								range-separator="至"
+								start-placeholder="开始日期"
+								end-placeholder="完成日期"
+								value-format="yyyy-MM-dd"
+								:default-time="['00:00:00','23:59:59']"
+								:picker-options="pickerOptions"
+							></el-date-picker>   
+						</el-col>  
+						<el-col :span="24" style="padding-top:5px;">
+							<el-button size="mini" type="primary" icon="el-icon-search" @click="searchXmQuestions">查询</el-button>
+						</el-col>
 						<el-col :span="24"  style="padding-top:12px;">
 							<el-button @click="handleExport"   icon="el-icon-download">导出</el-button>
 						</el-col> 
@@ -146,6 +171,10 @@
 			<el-dialog append-to-body title="故事选择" :visible.sync="menuVisible"    width="80%"   :close-on-click-modal="false">
 				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
 			</el-dialog>
+			
+			<el-dialog title="选择产品" :visible.sync="productSelectVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+					<xm-product-select   :isSelectProduct="true" :selProject="filters.selProject" :visible="productSelectVisible" @cancel="productSelectVisible=false" @selected="onProductSelected"></xm-product-select>
+			</el-dialog>
 	</section>
 </template>
 
@@ -163,6 +192,8 @@
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
 	import XmGroupMng from '../xmProjectGroup/XmProjectGroupMng';
 	import XmProjectList from '../xmProject/XmProjectList';
+
+	import  XmProductSelect from '../xmProduct/XmProductSelect';//修改界面
 
 	export default { 
 		computed: {
@@ -186,6 +217,9 @@
 			}
 		},
 		data() {
+			const beginDate = new Date();
+			const endDate = new Date();
+			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 3 );
 			return {
 				filters: {
 					key: '',
@@ -197,6 +231,7 @@
 					handlerUsername:'',
 					selProject:null,
 					menus:[],
+					product:null,
 				},
 				xmQuestions: [],//查询结果
 				pageInfo:{//分页数据
@@ -232,7 +267,8 @@
 				}, 
 				/**begin 自定义属性请在下面加 请加备注**/  
 				selectUserVisible:false,
-				selectProjectVisible:false,
+				selectProjectVisible:false, 
+				productSelectVisible:false,
 				nextAction:'',
 				tableHeight:300,
 				cloumns: [
@@ -273,6 +309,11 @@
 					}
 				],
 				menuVisible:false,
+				dateRanger: [
+					util.formatDate.format(beginDate, "yyyy-MM-dd"),
+					util.formatDate.format(endDate, "yyyy-MM-dd")
+				],  
+				pickerOptions:  util.pickerOptions('datarange'),
 				/**end 自定义属性请在上面加 请加备注**/
 				
 			}
@@ -320,6 +361,12 @@
 					}  
 					params.orderBy= orderBys.join(",")
 				}
+				
+				
+				if(!this.dateRanger || this.dateRanger.length==0){
+					this.$message({ message: "创建日期范围不能为空", type: 'error' });
+					return;
+				}
 				if( this.filters.bugStatus!=null && this.filters.bugStatus!="" ){
 					params.bugStatus=this.filters.bugStatus
 				} 
@@ -340,6 +387,12 @@
  				}else if(this.filters.menus && this.filters.menus.length>1){
 					params.menuIds=this.filters.menus.map(i=>i.menuId)
  				}
+				 
+				if(this.filters.product){
+					params.productId=this.filters.product.id
+				}
+				params.createTimeStart=this.dateRanger[0]+" 00:00:00"
+				params.createTimeEnd=this.dateRanger[1]+" 23:59:59"
 				this.load.list = true;
 				if(this.filters.selProject){ 	
 					params.projectId = this.filters.selProject.id; 
@@ -368,6 +421,18 @@
 				}).catch( err => this.load.list = false );
 			},
 			
+			clearProduct(){
+				this.filters.product=null;
+				this.searchXmQuestions();
+			},
+			showProductVisible(){ 
+				this.productSelectVisible=true;
+			},
+			onProductSelected(product){
+				this.filters.product=product;
+				this.productSelectVisible=false;
+				this.searchXmQuestions();
+			},
 			showMenu(){
 				this.menuVisible=true;
 			},
@@ -709,17 +774,24 @@
 					this.sendToProcessApprova(command.data,command.bizKey);
 				}
 			}, 
+			setFiltersHandlerAsMySelf(){
+				this.filters.handlerUserid=this.userInfo.userid;
+				this.filters.handlerUsername=this.userInfo.username;
+				this.searchXmQuestions();
+			}
 		},//end methods
 		components: { 
 				'xm-question-add':XmQuestionAdd,
 				'xm-question-edit':XmQuestionEdit,
-				XmGroupMng,XmProjectList,xmMenuSelect,
+				XmGroupMng,XmProjectList,xmMenuSelect,XmProductSelect
 				//在下面添加其它组件
 		},
 		mounted() { 
 			if(this.selProject){
 				this.filters.selProject=this.selProject
 			}
+			this.filters.handlerUserid=this.userInfo.userid;
+			this.filters.handlerUsername=this.userInfo.username;
 			this.$nextTick(() => {
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
 				var subHeight=50/1000 * window.innerHeight; 

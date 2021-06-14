@@ -5,7 +5,7 @@
 				<el-tag type="primary" v-if="this.filters.selProject && !selProject " closable @close="clearProject"  @click="showProjectList">{{ this.filters.selProject.name }}</el-tag>
 				<el-button   v-if="!this.filters.selProject" @click="showProjectList">选择项目</el-button>
 				<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 选择故事</el-button>
-				<el-tag v-else   closable @close="clearFiltersMneu(filters.menus[0])">{{filters.menus[0].menuName.substr(0,5)}}等({{filters.menus.length}})个</el-tag>
+				<el-tag v-else   closable @close="clearFiltersMenu(filters.menus[0])">{{filters.menus[0].menuName.substr(0,5)}}等({{filters.menus.length}})个</el-tag>
 				<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
 					<template slot="append">
 						<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTestCaseExecs" icon="el-icon-search"></el-button>  
@@ -13,8 +13,59 @@
 				</el-input> 
 				<el-button  type="primary" @click="showCase" icon="el-icon-plus">由用例创建计划</el-button>
 				<el-button   @click="showBatchEdit" icon="el-icon-right">批量修改</el-button>  
-				<!--<el-button   type="danger" v-loading="load.del" @click="batchDel" icon="el-icon-delete" :disabled="this.sels.length===0 || load.del==true"></el-button> 
-				-->
+				<el-popover
+					placement="top-start"
+					title=""
+					width="400"
+					trigger="click" > 
+					<el-row>
+						<el-col :span="24" style="padding-top:5px;">
+							<font class="more-label-font">产品:</font><el-tag    v-if="  filters.product "  closable    @close="clearProduct">{{this.filters.product.productName}}</el-tag>
+							<el-button v-else    @click="showProductVisible" type="plian">选产品</el-button>
+						</el-col> 
+						<el-col :span="24" style="padding-top:5px;" v-if="!selProject" >
+							<font class="more-label-font">项目:</font><el-tag    v-if="  filters.selProject "  closable    @close="clearProject">{{this.filters.selProject.name}}</el-tag>
+							<el-button v-else    @click="showProjectList" type="plian">选项目</el-button>
+						</el-col> 		
+						<el-col :span="24" style="padding-top:5px;">
+								<font class="more-label-font">故事:</font>
+							<font  v-if="  filters.menus && filters.menus.length>0">
+								<el-tag  v-for="(item,index) in filters.menus" :key="index"  closable     @close="clearFiltersMenu(item)">{{item.menuName.substr(0,10)}}</el-tag>
+							</font>
+							<el-button v-else    @click="showMenu" type="plian">选故事</el-button>
+						</el-col> 	
+						<el-col :span="24" style="padding-top:5px;">
+							<font class="more-label-font">执行人:</font>
+								<el-tag    v-if="  filters.execUser "  closable    @close="clearFiltersExecUser">{{this.filters.execUser.username}}</el-tag> 
+							<el-button v-else    @click="showExecUsersForFilters" type="plian">选执行人</el-button>
+							<el-button v-if=" !filters.execUser || filters.execUser.userid!=userInfo.userid" @click="setFiltersHandlerAsMySelf">我的</el-button> 
+						</el-col> 	
+						<el-col  :span="24"  style="padding-top:5px;">
+							<font class="more-label-font">创建时间:</font>  
+							<el-date-picker
+								v-model="dateRanger" 
+								type="daterange"
+								align="right"
+								unlink-panels
+								range-separator="至"
+								start-placeholder="开始日期"
+								end-placeholder="完成日期"
+								value-format="yyyy-MM-dd"
+								:default-time="['00:00:00','23:59:59']"
+								:picker-options="pickerOptions"
+							></el-date-picker>   
+						</el-col>
+						
+						<el-col :span="24" style="padding-top:5px;">
+							<el-checkbox v-model="gstcVisible" >甘特图</el-checkbox>
+						</el-col>
+						
+						<el-col :span="24" style="padding-top:5px;">
+							<el-button size="mini" type="primary" icon="el-icon-search" @click="searchXmTestCaseExecs">查询</el-button>
+						</el-col>
+					</el-row>
+					<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+				</el-popover> 
 		</el-row>
 		<el-row class="app-container" v-else> 
 				<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
@@ -124,9 +175,11 @@
 			<el-dialog append-to-body title="故事选择" :visible.sync="menuVisible" fullscreen     :close-on-click-modal="false">
 				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"   @menus-selected="onSelectedMenus" ></xm-menu-select>
 			</el-dialog>
-			
+			<el-dialog title="选中用户" :visible.sync="selectUserForFiltersVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+				<xm-group-mng v-if="filters.selProject" :sel-project=" filters.selProject " :is-select-single-user="1" @user-confirm="onFiltersUserConfirm"></xm-group-mng>
+			</el-dialog> 
 			<el-dialog title="选中用户" :visible.sync="selectUserVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
-				<xm-group-mng  :sel-project=" filters.selProject " :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-mng>
+				<xm-group-mng v-if="filters.selProject" :sel-project=" filters.selProject " :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-mng>
 			</el-dialog> 
 			<el-dialog title="选中任务" :visible.sync="selectTaskVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-task-list  :sel-project="filters.selProject"   @task-selected="onSelectedTask"></xm-task-list>
@@ -142,6 +195,9 @@
 				  <xm-question-mng :xm-test-case="xmTestCase" :xm-test-case-exec="editForm" :sel-project="filters.selProject" :visible="bugsVisible" @cancel="bugsVisible=false" ></xm-question-mng>
 			</el-dialog>
 			
+			<el-dialog title="选择产品" :visible.sync="productSelectVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+				  <xm-product-select  :isSelectProduct="true" :selProject="filters.selProject" :visible="productSelectVisible" @cancel="productSelectVisible=false" @selected="onProductSelected"></xm-product-select>
+			</el-dialog>
 			<!--新增 XmQuestion xm_question界面-->
 			<el-dialog title="新增问题" :visible.sync="addBugVisible"  fullscreen width="100%"  append-to-body   :close-on-click-modal="false">
 				<xm-question-add :xm-test-case-exec="editForm" :xm-test-case="xmTestCase" :qtype="'bug'" :sel-project=" filters.selProject "   :visible="addBugVisible" @cancel="addBugVisible=false"></xm-question-add>
@@ -168,7 +224,8 @@
 	import XmTaskList from '../xmTask/XmTaskList';
 	import  XmTestCaseEdit from '../xmTestCase/XmTestCaseEdit';//修改界面
 	import  XmQuestionMng from '../xmQuestion/XmQuestionMng';//修改界面
-	import  XmQuestionAdd from '../xmQuestion/XmQuestionAdd';//修改界面
+	import  XmQuestionAdd from '../xmQuestion/XmQuestionAdd';//修改界面 
+	import  XmProductSelect from '../xmProduct/XmProductSelect';//修改界面
   import XmGantt from '../components/xm-gantt';
 
 	import { mapGetters } from 'vuex'
@@ -187,11 +244,17 @@
 			}
 		},
 		data() {
+			
+			const beginDate = new Date();
+			const endDate = new Date();
+			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 3 );
 			return {
 				filters: {
 					key: '',
 					selProject:null,
 					menus:[],
+					execUser:null,
+					product:null,
 				},
 				xmTestCaseExecs: [],//查询结果
 				pageInfo:{//分页数据
@@ -226,23 +289,29 @@
 				batchEditVisible:false,
 				valueChangeRows:[],
 				selectUserVisible:false,
+				selectUserForFiltersVisible:false,
 				selectTaskVisible:false,
 				caseVisible:false,
 				bugsVisible:false,
 				addBugVisible:false,
+				productSelectVisible:false,
 				nextAction:'',
-        pickerOptions:  util.pickerOptions(),
-        gstcVisible:false,
-        ganrrColumns: {
-            children: 'children',
-            name: 'projectName',
-            id: 'id',
-            pid: 'parentPhaseId',
-            startDate: 'startTime',
-            endDate: 'endTime',
+				dateRanger: [
+					util.formatDate.format(beginDate, "yyyy-MM-dd"),
+					util.formatDate.format(endDate, "yyyy-MM-dd")
+				],  
+				pickerOptions:  util.pickerOptions('datarange'),
+				gstcVisible:false,
+				ganrrColumns: {
+					children: 'children',
+					name: 'projectName',
+					id: 'id',
+					pid: 'parentPhaseId',
+					startDate: 'startTime',
+					endDate: 'endTime',
 
-          },
-			tableHeight:300,
+				},
+				tableHeight:300,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -288,9 +357,6 @@
 					}  
 					params.orderBy= orderBys.join(",")
 				}
-				if(this.filters.selProject){
-					params.projectId=this.filters.selProject.id
-				}
 				
 				if(this.filters.menus && this.filters.menus.length==1){
 					params.menuId=this.filters.menus[0].menuId
@@ -298,8 +364,23 @@
 					params.menuIds=this.filters.menus.map(i=>i.menuId)
  				}else{
 					//params.xxx=xxxxx
+				} 
+				if(!this.dateRanger || this.dateRanger.length==0){
+					this.$message({ message: "创建日期范围不能为空", type: 'error' });
+					return;
+				}
+				if(this.filters.product){
+					params.productId=this.filters.product.id
 				}
 				
+				if(this.filters.execUser){
+					params.execUserid=this.filters.execUser.userid
+				}
+				if(this.filters.selProject){
+					params.projectId=this.filters.selProject.id
+				}
+				params.createTimeStart=this.dateRanger[0]+" 00:00:00"
+				params.createTimeEnd=this.dateRanger[1]+" 23:59:59"
 				if(this.filters.key){
 					params.key='%'+this.filters.key+'%'
 				}
@@ -449,14 +530,22 @@
 				this.getXmTestCaseExecs();
 				if(this.nextAction=="showBatchEdit"){
 					this.showBatchEdit();
+					this.nextAction=""
 				}else if(this.nextAction=="showCase"){
 					this.showCase();
+					this.nextAction=""
 				}else if(this.nextAction=="showAddBug"){
 					this.showAddBug(this.editForm);
+					this.nextAction=""
 				}else if(this.nextAction=="showBugs"){
 					this.showBugs(this.editForm);
+					this.nextAction=""
 				}else if(this.nextAction=="showSelectTask"){
 					this.showSelectTask(this.editForm);
+					this.nextAction=""
+				}else if(this.nextAction=="showExecUsersForFilters"){
+					this.showExecUsersForFilters();
+					this.nextAction=""
 				}
 			},
 			formatterExecStatus(row,column,cellValue, index){
@@ -474,7 +563,18 @@
 			showMenu(){
 				this.menuVisible=true;
 			},
-			
+			clearProduct(){
+				this.filters.product=null;
+				this.searchXmTestCaseExecs();
+			},
+			showProductVisible(){
+				this.productSelectVisible=true;
+			},
+			onProductSelected(product){
+				this.filters.product=product;
+				this.productSelectVisible=false;
+				this.searchXmTestCaseExecs();
+			},
 			onSelectedMenus(menus){
 				if(!menus || menus.length==0){
 					this.menuVisible=false
@@ -485,7 +585,7 @@
 				this.filters.menus=menus;
 				this.getXmTestCaseExecs();
 			},
-			clearFiltersMneu(menu){
+			clearFiltersMenu(menu){
 				var index=this.filters.menus.findIndex(i=>i.menuId==menu.menuId)
 				this.filters.menus.splice(index,1);
 				this.getXmTestCaseExecs();
@@ -547,6 +647,31 @@
 			showGroupUsers:function(row){
 				this.editForm=row
  				this.selectUserVisible=true;
+			},
+			clearFiltersExecUser(){
+				this.filters.execUser=null;
+				this.searchXmTestCaseExecs();
+			},
+			showExecUsersForFilters:function(){ 
+				if(!this.filters.selProject){
+					this.nextAction="showExecUsersForFilters"
+					this.showProjectList();
+				}else{
+					this.selectUserForFiltersVisible=true;
+				}
+ 				
+			},
+			onFiltersUserConfirm:function(groupUsers){
+				if(groupUsers==null || groupUsers.length==0){
+					this.filters.execUser=null
+ 				}else{
+					this.filters.execUser=groupUsers[0]  
+				} 
+				if(this.nextAction=="showExecUsersForFilters"){
+					this.nextAction=""
+				}
+				this.selectUserForFiltersVisible=false
+				this.searchXmTestCaseExecs();
 			},
 			onUserConfirm:function(groupUsers){
 				if(groupUsers==null || groupUsers.length==0){
@@ -627,15 +752,20 @@
       },
 			/**end 自定义函数请在上面加**/
 			
+			setFiltersHandlerAsMySelf(){
+				this.filters.execUser=this.userInfo;
+				this.searchXmTestCaseExecs();
+			},
 		},//end methods
 		components: { 
 		    'xm-test-case-exec-add':XmTestCaseExecAdd,
 			'xm-test-case-exec-edit':XmTestCaseExecEdit, 
-			XmTestCaseMng,XmProjectList,xmMenuSelect,XmGroupMng,XmTaskList,XmTestCaseEdit,XmQuestionMng,XmQuestionAdd, XmGantt
+			XmTestCaseMng,XmProjectList,xmMenuSelect,XmGroupMng,XmTaskList,XmTestCaseEdit,XmQuestionMng,XmQuestionAdd, XmGantt,XmProductSelect
 		    //在下面添加其它组件
 		},
 		mounted() { 
 			this.filters.selProject=this.selProject; 
+			this.filters.execUser=this.userInfo;
 			this.$nextTick(() => {
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
 				var subHeight=65/1000 * window.innerHeight; 
@@ -658,4 +788,10 @@
 </script>
 
 <style lang="scss" scoped> 
+
+.more-label-font{
+	text-align:center;
+	float:left;
+	padding-top:10px;
+}
 </style>

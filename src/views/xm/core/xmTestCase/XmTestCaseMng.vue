@@ -2,8 +2,10 @@
 	<section>
 		<el-row class="app-container"> 
 			<div>
+				<el-tag    v-if="  filters.product "  closable    @close="clearProduct">{{this.filters.product.productName}}</el-tag>
+				<el-button v-else    @click="showProductVisible" type="plian">选产品</el-button>
 				<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 选择故事</el-button>
-				<el-tag v-else   closable @close="clearFiltersMneu(filters.menus[0])">{{filters.menus[0].menuName.substr(0,5)}}等({{filters.menus.length}})个</el-tag>
+				<el-tag v-else   closable @close=" clearFiltersMenu(filters.menus[0])">{{filters.menus[0].menuName.substr(0,5)}}等({{filters.menus.length}})个</el-tag>
 				<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
 					<template slot="append"> 
 						<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTestCases" icon="el-icon-search"></el-button>
@@ -12,7 +14,56 @@
 				<el-button type="primary" v-if="!multiSelect" circle icon="el-icon-plus" @click="showAdd"></el-button>
 				<el-button type="primary" v-if="multiSelect" @click="selected">确认选中</el-button> 
 				<el-button v-if="!multiSelect " type="danger" icon="el-icon-delete" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
-
+				
+				<el-popover
+					placement="top-start"
+					title=""
+					width="400"
+					trigger="click" > 
+					<el-row>
+						<el-col :span="24" style="padding-top:5px;">
+							<font class="more-label-font">产品:</font><el-tag    v-if="  filters.product "  closable    @close="clearProduct">{{this.filters.product.productName}}</el-tag>
+							<el-button v-else    @click="showProductVisible" type="plian">选产品</el-button>
+						</el-col> 
+						<el-col :span="24" style="padding-top:5px;" v-if="!selProject" >
+							<font class="more-label-font">项目:</font><el-tag    v-if="  filters.selProject "  closable    @close="clearProject">{{this.filters.selProject.name}}</el-tag>
+							<el-button v-else    @click="showProjectList" type="plian">选项目</el-button>
+						</el-col> 		
+						<el-col :span="24" style="padding-top:5px;">
+								<font class="more-label-font">故事:</font>
+							<font  v-if="  filters.menus && filters.menus.length>0">
+								<el-tag  v-for="(item,index) in filters.menus" :key="index"  closable     @close="clearFiltersMenu(item)">{{item.menuName.substr(0,10)}}</el-tag>
+							</font>
+							<el-button v-else    @click="showMenu" type="plian">选故事</el-button>
+						</el-col> 	
+						<el-col :span="24" style="padding-top:5px;">
+							<font class="more-label-font">更新人:</font>
+								<el-tag    v-if="  filters.luser "  closable    @close="clearFiltersExecUser">{{this.filters.luser.username}}</el-tag> 
+							<el-button v-else    @click="showExecUsersForFilters" type="plian">选更新人</el-button>
+							<el-button v-if=" !filters.luser || filters.luser.userid!=userInfo.userid" @click="setFiltersHandlerAsMySelf">我的</el-button> 
+						</el-col> 	
+						<el-col  :span="24"  style="padding-top:5px;">
+							<font class="more-label-font">创建时间:</font>  
+							<el-date-picker
+								v-model="dateRanger"
+								class="hidden-sm-and-down"
+								type="daterange"
+								align="right"
+								unlink-panels
+								range-separator="至"
+								start-placeholder="开始日期"
+								end-placeholder="完成日期"
+								value-format="yyyy-MM-dd"
+								:default-time="['00:00:00','23:59:59']"
+								:picker-options="pickerOptions"
+							></el-date-picker>   
+						</el-col>  
+						<el-col :span="24" style="padding-top:5px;">
+							<el-button size="mini" type="primary" icon="el-icon-search" @click="searchXmTestCases">查询</el-button>
+						</el-col>
+					</el-row>
+					<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+				</el-popover> 
 			</div>
 		</el-row>
 		<el-row class="app-container"> 
@@ -57,9 +108,19 @@
 			<el-dialog title="新增测试用例" :visible.sync="addFormVisible"  width="80%"  append-to-body  :close-on-click-modal="false">
 				<xm-test-case-add :xm-test-case="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-test-case-add>
 			</el-dialog> 
+			<el-dialog title="选中项目" :visible.sync="selectProjectVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+				<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
+			</el-dialog>  
+			<el-dialog title="选中用户" :visible.sync="selectUserForFiltersVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+				<xm-group-mng v-if="filters.selProject" :sel-project=" filters.selProject " :is-select-single-user="1" @user-confirm="onFiltersUserConfirm"></xm-group-mng>
+			</el-dialog> 
 		</el-row>
 		<el-dialog append-to-body title="故事选择" :visible.sync="menuVisible"    width="80%"   :close-on-click-modal="false">
 			<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
+		</el-dialog>
+		
+		<el-dialog title="选择产品" :visible.sync="productSelectVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+				<xm-product-select  :isSelectProduct="true" :selProject="filters.selProject" :visible="productSelectVisible" @cancel="productSelectVisible=false" @selected="onProductSelected"></xm-product-select>
 		</el-dialog>
 	</section>
 </template>
@@ -73,7 +134,10 @@
 	import  XmTestCaseEdit from './XmTestCaseEdit';//修改界面
 	import { mapGetters } from 'vuex'
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
+	import  XmProductSelect from '../xmProduct/XmProductSelect';//修改界面
 
+	import XmProjectList from '../xmProject/XmProjectList';
+	import XmGroupMng from '../xmProjectGroup/XmProjectGroupMng';
 	
 	export default { 
 		computed: {
@@ -83,10 +147,15 @@
 		},
 		props:['multiSelect'],
 		data() {
-			return {
+			const beginDate = new Date();
+			const endDate = new Date();
+			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 3 );			return {
 				filters: {
 					key: '',
 					menus:[],
+					product:null,
+					selProject:null,
+					luser:null,
 				},
 				xmTestCases: [],//查询结果
 				pageInfo:{//分页数据
@@ -110,6 +179,7 @@
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
+				productSelectVisible:false,
 				//编辑xmTestCase界面初始化数据
 				editForm: {
 					id:'',caseName:'',caseRemark:'',testStep:'',expectResult:'',menuId:'',menuName:'',ctime:'',ltime:'',luserid:'',lusername:'',cbranchId:'',moduleId:'',moduleName:'',caseStatus:''
@@ -117,6 +187,16 @@
 				/**begin 自定义属性请在下面加 请加备注**/ 
 				menuVisible:false,
 				tableHeight:300,
+				
+				selectProjectVisible:false,    
+				selectUserForFiltersVisible:false,   
+				productSelectVisible:false,
+				nextAction:'',
+				dateRanger: [
+					util.formatDate.format(beginDate, "yyyy-MM-dd"),
+					util.formatDate.format(endDate, "yyyy-MM-dd")
+				],  
+				pickerOptions:  util.pickerOptions('datarange'),
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -170,6 +250,22 @@
 					//params.xxx=xxxxx
 				}
 				
+				if(!this.dateRanger || this.dateRanger.length==0){
+					this.$message({ message: "创建日期范围不能为空", type: 'error' });
+					return;
+				}
+				if(this.filters.product){
+					params.productId=this.filters.product.id
+				}
+				if(this.filters.luser){
+					params.myUserid=this.filters.luser.userid
+				}
+				if(this.filters.selProject){
+					params.projectId=this.filters.selProject.id
+				} 
+				
+				params.ctimeStart=this.dateRanger[0]+" 00:00:00"
+				params.ctimeEnd=this.dateRanger[1]+" 23:59:59"
 				if(this.filters.key){
 					params.key='%'+this.filters.key+'%'
 				}
@@ -269,6 +365,18 @@
 			},
 			/**begin 自定义函数请在下面加**/
 			
+			clearProduct(){
+				this.filters.product=null;
+				this.searchXmTestCases();
+			},
+			showProductVisible(){
+				this.productSelectVisible=true;
+			},
+			onProductSelected(product){
+				this.filters.product=product;
+				this.productSelectVisible=false;
+				this.searchXmTestCases();
+			},
 			showMenu(){
 				this.menuVisible=true;
 			},
@@ -283,13 +391,61 @@
 				this.filters.menus=menus;
 				this.getXmTestCases();
 			},
-			clearFiltersMneu(menu){
+			 clearFiltersMenu(menu){
 				var index=this.filters.menus.findIndex(i=>i.menuId==menu.menuId)
 				this.filters.menus.splice(index,1);
 				this.getXmTestCases();
 			},
 			selected(){
 				this.$emit("selected",this.sels)
+			},
+			
+			clearProject(){
+				this.filters.selProject=null
+				this.searchXmTestCases()
+			},
+			showProjectList:function(){
+				this.selectProjectVisible=true;
+			},
+			onPorjectConfirm:function(project){
+				this.filters.selProject=project
+				this.selectProjectVisible=false;
+				this.searchXmTestCases();
+				 if(this.nextAction=="showExecUsersForFilters"){
+					this.showExecUsersForFilters();
+					this.nextAction=""
+				}
+			},
+			
+			clearFiltersExecUser(){
+				this.filters.luser=null;
+				this.searchXmTestCases();
+			},
+			showExecUsersForFilters:function(){ 
+				if(!this.filters.selProject){
+					this.nextAction="showExecUsersForFilters"
+					this.showProjectList();
+				}else{
+					this.selectUserForFiltersVisible=true;
+				}
+ 				
+			},
+			onFiltersUserConfirm:function(groupUsers){
+				if(groupUsers==null || groupUsers.length==0){
+					this.filters.luser=null
+ 				}else{
+					this.filters.luser=groupUsers[0]  
+				} 
+				if(this.nextAction=="showExecUsersForFilters"){
+					this.nextAction=""
+				}
+				this.selectUserForFiltersVisible=false
+				this.searchXmTestCases();
+			},
+			
+			setFiltersHandlerAsMySelf(){
+				this.filters.luser=this.userInfo; 
+				this.searchXmTestCases();
 			}
 			/**end 自定义函数请在上面加**/
 			
@@ -297,11 +453,12 @@
 		components: { 
 		    'xm-test-case-add':XmTestCaseAdd,
 			'xm-test-case-edit':XmTestCaseEdit, 
-			xmMenuSelect,
+			xmMenuSelect,XmProductSelect,XmProjectList,XmGroupMng
 		    //在下面添加其它组件
 		},
 		mounted() { 
 			this.$nextTick(() => {
+				this.filters.luser=this.userInfo; 
 				this.getXmTestCases();
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
 				var subHeight=65;  
@@ -324,4 +481,10 @@
 
 <style scoped>
 
+
+.more-label-font{
+	text-align:center;
+	float:left;
+	padding-top:10px;
+}
 </style>
