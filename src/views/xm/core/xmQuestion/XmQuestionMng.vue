@@ -41,9 +41,15 @@
 						
 						</el-col>
 						<el-col :span="24" style="padding-top:12px;">
+							<font class="more-label-font">创建者:</font>
+							<el-button v-if="!filters.createUser" @click="showGroupUsers('createUser')">选择创建人</el-button> 
+							<el-tag v-else closable @close="clearCreateUser"  @click="showGroupUsers('createUser')">{{filters.createUser.username}}</el-tag>
+							<el-button v-if="!filters.createUser||filters.createUser.userid!=userInfo.userid" @click="setFiltersCreateUserAsMySelf">我的</el-button> 
+						</el-col>
+						<el-col :span="24" style="padding-top:12px;">
 							<font class="more-label-font">指派给:</font>
-							<el-button v-if="!filters.handlerUsername" @click="showGroupUsers('handlerUsername')">选择被指派人</el-button> 
-							<el-tag v-else closable @close="clearHandler"  @click="showGroupUsers('handlerUsername')">{{filters.handlerUsername}}</el-tag>
+							<el-button v-if="!filters.handlerUsername" @click="showGroupUsers('handlerUser')">选择被指派人</el-button> 
+							<el-tag v-else closable @close="clearHandler"  @click="showGroupUsers('handlerUser')">{{filters.handlerUsername}}</el-tag>
 							<el-button v-if="filters.handlerUserid!=userInfo.userid" @click="setFiltersHandlerAsMySelf">我的</el-button> 
 						</el-col> 
 						<el-col :span="24" style="padding-top:5px;">
@@ -81,9 +87,7 @@
 							></el-date-picker>   
 						</el-col>  
 						<el-col :span="24" style="padding-top:5px;">
-							<el-button size="mini" type="primary" icon="el-icon-search" @click="searchXmQuestions">查询</el-button>
-						</el-col>
-						<el-col :span="24"  style="padding-top:12px;">
+							<el-button   type="primary" icon="el-icon-search" @click="searchXmQuestions">查询</el-button>
 							<el-button @click="handleExport"   icon="el-icon-download">导出</el-button>
 						</el-col> 
 					</el-row>
@@ -117,7 +121,7 @@
 					<el-table-column prop="bugSeverity" label="严重程度" width="100" :formatter="formatterOption"></el-table-column>  
 					<el-table-column prop="handlerUsername" width="200" label="指派给" > 
 						<template slot="header">
-							指派给<el-button @click="showGroupUsers('handlerUsername')"  icon="el-icon-search" circle size="mini"></el-button>
+							指派给<el-button @click="showGroupUsers('handlerUser')"  icon="el-icon-search" circle size="mini"></el-button>
 						</template>
 					</el-table-column>
 					<el-table-column prop="endTime" label="到期时间" width="120" :formatter="formatterDate"></el-table-column>
@@ -157,8 +161,7 @@
 			<!--新增 XmQuestion xm_question界面-->
 			<el-dialog title="新增问题"  :visible.sync="addFormVisible"  fullscreen width="100%"  append-to-body   :close-on-click-modal="false">
 				<xm-question-add :xm-test-case-exec="xmTestCaseExec" :xm-test-case="xmTestCase" :qtype="qtype" :sel-project=" filters.selProject " :xm-question="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-question-add>
-			</el-dialog> 
-			
+			</el-dialog>  
 			<el-dialog title="选中用户" v-if=" filters.selProject " :visible.sync="selectUserVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-group-mng  :sel-project=" filters.selProject " :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-mng>
 			</el-dialog> 
@@ -230,6 +233,8 @@
 					selProject:null,
 					menus:[],
 					product:null,
+					createUser:null,
+
 				},
 				xmQuestions: [],//查询结果
 				pageInfo:{//分页数据
@@ -312,6 +317,7 @@
 					util.formatDate.format(endDate, "yyyy-MM-dd")
 				],  
 				pickerOptions:  util.pickerOptions('datarange'),
+				userType:'',//createUser、handlerUser
 				/**end 自定义属性请在上面加 请加备注**/
 				
 			}
@@ -388,6 +394,9 @@
 				 
 				if(this.filters.product){
 					params.productId=this.filters.product.id
+				}
+				if(this.filters.createUser){
+					params.createUserid=this.filters.createUser.userid;
 				}
 				params.createTimeStart=this.dateRanger[0]+" 00:00:00"
 				params.createTimeEnd=this.dateRanger[1]+" 23:59:59"
@@ -593,9 +602,9 @@
 				}else if(row.bugStatus=='closed'){
 					return "激活"
 				}
-			},
-			
-			showGroupUsers:function(){ 
+			}, 
+			showGroupUsers:function(userType){ 
+				this.userType=userType;
 				if(this.filters.selProject==null || this.filters.selProject.id==''){
 					this.$message({ message: "请先选中项目", type: 'success' }); 
 					this.nextAction="showGroupUsers"
@@ -660,14 +669,24 @@
 			/**end 自定义函数请在上面加**/
 			
 			onUserConfirm:function(groupUsers){
-				if(groupUsers==null || groupUsers.length==0){ 
+				if(this.userType=='createUser'){
+					if(groupUsers==null || groupUsers.length==0){ 
+						this.filters.createUser=null 
+					}else{
+						var user=groupUsers[0] 
+						this.filters.createUser=user 
+					} 
+				}else{
+					if(groupUsers==null || groupUsers.length==0){ 
 						this.filters.handlerUserid=''
 						this.filters.handlerUsername=''; 
-				}else{
-					var user=groupUsers[0] 
-						this.filters.handlerUserid=user.userid
-						this.filters.handlerUsername=user.username 
-				} 
+					}else{
+						var user=groupUsers[0] 
+							this.filters.handlerUserid=user.userid
+							this.filters.handlerUsername=user.username 
+					} 
+				}
+				
 				this.selectUserVisible=false
 				this.searchXmQuestions(); 
 
@@ -681,11 +700,13 @@
 			onPorjectConfirm:function(project){
 				this.filters.selProject=project
 				this.selectProjectVisible=false;
-				this.searchXmQuestions();
+				
 				if(this.nextAction=='showAdd'){
 					this.showAdd()
 				}else if(this.nextAction=='showGroupUsers'){
-					this.showGroupUsers()
+					this.showGroupUsers(this.userType)
+				}else{
+					this.searchXmQuestions();
 				}
 			},
 			showApprovaInfo:function(row){
@@ -760,6 +781,11 @@
 				this.nextAction=""
 				this.searchXmQuestions()
 			},
+			clearCreateUser(){
+				this.filters.createUser=null; 
+				this.searchXmQuestions();
+				this.nextAction=""
+			},
 			clearHandler(){
 				
 				this.filters.handlerUserid=''
@@ -776,6 +802,10 @@
 				this.filters.handlerUserid=this.userInfo.userid;
 				this.filters.handlerUsername=this.userInfo.username;
 				this.searchXmQuestions();
+			}, 
+			setFiltersCreateUserAsMySelf(){
+				this.filters.createUser=this.userInfo
+ 				this.searchXmQuestions();
 			}
 		},//end methods
 		components: { 
