@@ -5,8 +5,22 @@
 				<el-col v-show="!batchEditVisible&& !filters.product" :span="24" class="app-container">
 					<xm-product-mng :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-mng>
 				</el-col>
+
 				<el-col v-show="filters.product" :span="24" >
 					<el-row class="app-container">  
+						<el-date-picker
+							v-model="dateRanger" 
+							type="daterange"
+							align="right"
+							class="hidden-md-and-down"
+							unlink-panels
+							range-separator="至"
+							start-placeholder="创建日期"
+							end-placeholder="创建日期"
+							value-format="yyyy-MM-dd"
+							:default-time="['00:00:00','23:59:59']"
+							:picker-options="pickerOptions"
+						></el-date-picker> 
 						<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询" clearable>
 							<template slot="append">
 								<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
@@ -15,12 +29,11 @@
 						
 						
 						<el-button  v-if="  batchEditVisible==false " type="primary" @click="showAdd" icon="el-icon-plus">故事</el-button>
-						<el-button  v-if=" batchEditVisible==false"   @click="toBatchEdit" icon="el-icon-edit">批量修改</el-button> 
+						<el-button  v-if=" batchEditVisible==false"   @click="toBatchEdit" icon="el-icon-edit">修改</el-button> 
 						<el-button  v-if=" batchEditVisible==true "  type="warning" @click="batchSaveMenu" icon="el-icon-finished">保存</el-button> 
 						<el-button  v-if=" batchEditVisible==true" type="success"  @click="handlePopover(null,'add')" icon="el-icon-plus">故事</el-button>
 						<el-button  v-if=" batchEditVisible==true "    @click="noBatchEdit" icon="el-icon-back">返回</el-button>  
 						<el-button  v-if=" batchEditVisible==false && filters.product "    @click="toSelectProduct" icon="el-icon-back">返回</el-button> 
-						<el-button  v-if=" batchEditVisible==false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">刷新统计数据</el-button>  
 
 						<el-button v-if=" batchEditVisible==true  " type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
 						
@@ -29,20 +42,29 @@
 							title=""
 							width="400"
 							trigger="click" >
-							<el-row>
-								<el-col  :span="24"  style="padding-top:5px;"> 
-									<el-button  v-if=" batchEditVisible==true "  type="success" @click="showImportFromMenuTemplate" icon="el-icon-upload2">由模板快速导入</el-button> 
-								</el-col>  
+							<el-row>  
+								<el-col  :span="24"  style="padding-top:5px;"  v-if="excludeIterationId">
+									<el-select  v-if="excludeIterationId" v-model="filters.itertaionFilterType" placeholder="是否加入过迭代？" clearable  >
+										<el-option   value="not-join"  label="未加入任何迭代的故事"></el-option>  
+										<el-option   value="join"  label="已加入迭代的故事"></el-option>  
+									</el-select>
+								</el-col>
+								<el-col  :span="24"  style="padding-top:5px;" v-else> 
+									<el-select  v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable >
+										<el-option   value="not-join"  label="未分配任何任务的故事"></el-option>  
+										<el-option   value="join"  label="已分配任务的故事"></el-option>  
+									</el-select> 
+								</el-col> 
 								<el-col :span="24"  style="padding-top:5px;">
-									<font class="more-label-font">创建时间:</font>  
+									<font class="more-label-font">创建日期:</font>  
 									<el-date-picker
 										v-model="dateRanger" 
 										type="daterange"
 										align="right"
 										unlink-panels
 										range-separator="至"
-										start-placeholder="开始日期"
-										end-placeholder="完成日期"
+										start-placeholder="创建日期"
+										end-placeholder="创建日期"
 										value-format="yyyy-MM-dd"
 										:default-time="['00:00:00','23:59:59']"
 										:picker-options="pickerOptions"
@@ -53,8 +75,8 @@
 										责任人:
 									</font>  
 									<el-tag v-if="filters.mmUser" closable @close="clearFiltersMmUser()">{{filters.mmUser.username}}</el-tag> 
-									<el-button v-else @click="selectFiltersMmUser()">选责任人</el-button>
-									<el-button   @click="setFiltersMmUserAsMySelf()">我的</el-button>
+									<el-button size="mini"  v-else @click="selectFiltersMmUser()">选责任人</el-button>
+									<el-button size="mini"   @click="setFiltersMmUserAsMySelf()">我的</el-button>
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
 									<font class="more-label-font">
@@ -64,8 +86,11 @@
 									</el-input> 
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
-									<el-button type="primary" size="mini" @click="searchXmMenus" >查询</el-button>
+									<el-button type="primary" size="mini" @click="searchXmMenus" icon="el-icon-search">查询</el-button>
 									<el-button size="mini" v-if=" batchEditVisible==false "  @click="handleExport" icon="el-icon-download">导出</el-button> 
+									<el-button size="mini"  v-if=" batchEditVisible==true "  type="success" @click="showImportFromMenuTemplate" icon="el-icon-upload2">由模板快速导入</el-button> 
+									
+									<el-button size="mini"  v-if=" batchEditVisible==false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">刷新统计数据</el-button>  
 								</el-col> 
 							</el-row> 
 							<el-button  slot="reference" icon="el-icon-more" circle></el-button>
@@ -305,6 +330,8 @@
 					key: '',
 					product:null,
 					mmUser:null,
+					itertaionFilterType:'',//join、not-join、''
+					taskFilterType:'',//join、not-join、''
 				},
 				xmMenus: [],//查询结果
 				pageInfo:{//分页数据
@@ -415,6 +442,17 @@
 				} 
 				if(this.filters.mmUser){
 					params.mmUserid=this.filters.mmUser.userid;
+				}
+				
+				if(this.excludeIterationId ){
+					params.excludeIterationId=this.excludeIterationId
+					if(this.filters.itertaionFilterType){
+						params.itertaionFilterType=this.filters.itertaionFilterType
+					}
+				}else{
+					if(this.filters.taskFilterType){
+						params.taskFilterType=this.filters.taskFilterType
+					}
 				}
 				params.ctimeStart=this.dateRanger[0]+" 00:00:00"
 				params.ctimeEnd=this.dateRanger[1]+" 23:59:59" 

@@ -40,13 +40,13 @@
 						trigger="click" >
 						<el-row> 
 							<el-col  :span="24"  style="padding-top:5px;"  v-if="excludeIterationId">
-								<el-select class="hidden-md-and-down" v-if="excludeIterationId" v-model="filters.itertaionFilterType" placeholder="是否加入过迭代？" clearable  >
+								<el-select   v-if="excludeIterationId" v-model="filters.itertaionFilterType" placeholder="是否加入过迭代？" clearable  >
 									<el-option   value="not-join"  label="未加入任何迭代的故事"></el-option>  
 									<el-option   value="join"  label="已加入迭代的故事"></el-option>  
 								</el-select>
 							</el-col>
 							<el-col  :span="24"  style="padding-top:5px;" v-else> 
-								<el-select class="hidden-md-and-down" v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable >
+								<el-select   v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable >
 									<el-option   value="not-join"  label="未分配任何任务的故事"></el-option>  
 									<el-option   value="join"  label="已分配任务的故事"></el-option>  
 								</el-select> 
@@ -271,8 +271,8 @@
 					}
 				}else{
 					if(this.filters.taskFilterType){
-					params.taskFilterType=this.filters.taskFilterType
-				}
+						params.taskFilterType=this.filters.taskFilterType
+					}
 				}
 				
 				this.load.list = true;
