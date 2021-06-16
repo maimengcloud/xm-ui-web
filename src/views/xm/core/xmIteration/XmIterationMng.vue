@@ -2,27 +2,80 @@
 	<section>
 		<el-row v-if="!simple" class="app-container">
       <el-checkbox v-model="gstcVisible"  >甘特图</el-checkbox>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
-				<template slot="append"> 
+			<el-input v-model="filters.key" style="width: 15%;" placeholder="模糊查询">
+				<template slot="append">
 					<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterations" icon="el-icon-search"></el-button>
 				</template>
-			</el-input> 
-			<el-button type="primary" @click="showAdd" icon="el-icon-plus">迭代计划</el-button>
+			</el-input>
+      <el-button type="primary" @click="showAdd" icon="el-icon-plus">迭代计划</el-button>
+      <el-col style="display: contents;color: #606266;font-size: 14px;">创建时间:</el-col>
+      <el-date-picker v-model="dateRanger" type="daterange" align="right" unlink-panels range-separator="至"
+        start-placeholder="开始日期" end-placeholder="完成日期" value-format="yyyy-MM-dd"
+        :default-time="['00:00:00','23:59:59']" :picker-options="pickerOptions">
+      </el-date-picker>
+      <el-col style="display: contents;color: #606266;font-size: 14px;">上线时间:</el-col>
+      <el-date-picker v-model="dateRangerOnline" type="daterange" align="right" unlink-panels range-separator="至"
+        start-placeholder="开始日期" end-placeholder="完成日期" value-format="yyyy-MM-dd"
+        :default-time="['00:00:00','23:59:59']" :picker-options="pickerOptions">
+      </el-date-picker>
+      <el-button type="primary" @click="getXmIterations" icon="el-icon-search">查询</el-button>
+     <el-popover
+      	placement="top-start"
+      	title=""
+      	width="400"
+      	trigger="click" >
+      	<el-row>
+      		<el-col  :span="24"  style="padding-top:5px;">
+      			<font class="more-label-font">创建时间:</font>
+      			<el-date-picker
+      				v-model="dateRanger"
+      				type="daterange"
+      				align="right"
+      				unlink-panels
+      				range-separator="至"
+      				start-placeholder="开始日期"
+      				end-placeholder="完成日期"
+      				value-format="yyyy-MM-dd"
+      				:default-time="['00:00:00','23:59:59']"
+      				:picker-options="pickerOptions"
+      			></el-date-picker>
+      		</el-col>
+      		<el-col  :span="24"  style="padding-top:5px;">
+      			<font class="more-label-font">上线时间:</font>
+      			<el-date-picker
+      				v-model="dateRangerOnline"
+      				type="daterange"
+      				align="right"
+      				unlink-panels
+      				range-separator="至"
+      				start-placeholder="开始日期"
+      				end-placeholder="完成日期"
+      				value-format="yyyy-MM-dd"
+      				:default-time="['00:00:00','23:59:59']"
+      				:picker-options="pickerOptions"
+      			></el-date-picker>
+      		</el-col>
+      		<el-col :span="24" style="padding-top:5px;">
+      			<el-button size="mini" type="primary" icon="el-icon-search" @click="getXmIterations">查询</el-button>
+      		</el-col>
+      	</el-row>
+      	<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+      </el-popover>
  		</el-row>
-		<el-row v-if="!simple" class="app-container"> 
+		<el-row v-if="!simple" class="app-container">
 			<!--列表 XmIteration 迭代定义-->
 			<el-table ref="table" :max-height="tableHeight" v-if="!gstcVisible" :data="xmIterationTreeData" row-key="id"  default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-				<el-table-column type="selection" aria-disabled width="55"></el-table-column> 
+				<el-table-column type="selection" aria-disabled width="55"></el-table-column>
 				<el-table-column prop="iterationName" label="迭代名称" min-width="160" >
-					 <template slot-scope="scope">  
+					 <template slot-scope="scope">
 						{{scope.row.seqNo}} &nbsp;&nbsp;<el-link type="primary" @click="showEdit( scope.row,scope.$index)"> {{scope.row.iterationName}} </el-link>
-					 </template> 
+					 </template>
 				</el-table-column>
 				<el-table-column prop="finishRate" label="总进度" min-width="80" >
 					<template slot-scope="scope">
 						 {{scope.row.finishRate}}%
 					</template>
-				</el-table-column> 
+				</el-table-column>
 				<el-table-column prop="startTime" label="开始时间" min-width="80" :formatter="formatterDate" ></el-table-column>
 				<el-table-column prop="endTime" label="结束时间" min-width="80" :formatter="formatterDate"></el-table-column>
 				<el-table-column prop="onlineTime" label="上线时间" min-width="80" :formatter="formatterDate"></el-table-column>
@@ -37,51 +90,51 @@
 						<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"></el-button>
 
 
-						
+
 					</template>
 				</el-table-column>
 			</el-table>
-			<el-pagination v-if="!gstcVisible" layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+			<el-pagination v-if="!gstcVisible" layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
       <xm-gantt v-if="gstcVisible" :tree-data="xmIterationTreeData" :project-phase="{startTime: '2020-06-01', endTime: '2020-12-30'}" :columns="ganrrColumns" :useRealTime="false"></xm-gantt>
-		
+
 			<!--编辑 XmIteration 迭代定义界面-->
 			<el-dialog title="编辑迭代定义" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
 				  <xm-iteration-edit :xm-iteration="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-iteration-edit>
 			</el-dialog>
-	
+
 			<!--新增 XmIteration 迭代定义界面-->
 			<el-dialog title="新增迭代定义" :visible.sync="addFormVisible"  width="50%"  append-to-body  :close-on-click-modal="false">
 				<xm-iteration-add :xm-iteration="addForm" :parent-iteration="parentIteration" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-iteration-add>
-			</el-dialog> 
-			
+			</el-dialog>
+
 			<!--新增 XmIteration 迭代定义界面-->
 			<el-dialog title="迭代报告" :visible.sync="iterationStateVisible" fullscreen  append-to-body  :close-on-click-modal="false">
 				<xm-iteration-state-mng :xm-iteration="editForm"   :visible="iterationStateVisible" @cancel="iterationStateVisible=false"></xm-iteration-state-mng>
-			</el-dialog> 
+			</el-dialog>
 		</el-row>
-		
-		<el-row v-if="simple "> 
+
+		<el-row v-if="simple ">
 			<!--列表 XmIteration 迭代定义-->
 			<el-table ref="table" :max-height="tableHeight" :data="xmIterationTreeData" row-key="id"  default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
    				<el-table-column prop="iterationName" label="迭代名称" min-width="160" >
 					<template slot="header" slot-scope="scope">
 						迭代名称 <el-tag size="mini" v-if="editForm.iterationName" closable @close="clearSelectIteration()">{{editForm.seqNo}}&nbsp;{{editForm.iterationName}}</el-tag>
-					</template> 
-					 <template slot-scope="scope">  
+					</template>
+					 <template slot-scope="scope">
 						 {{scope.row.seqNo}} &nbsp;&nbsp;{{scope.row.iterationName}}
-					 </template> 
-				</el-table-column>  
+					 </template>
+				</el-table-column>
 				<el-table-column prop="onlineTime" label="上线时间" min-width="80" :formatter="formatterDate"></el-table-column>
 			</el-table>
-			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
-		 
+			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+
 		</el-row>
 	</section>
 </template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import config from '@/common/config';//全局公共库 
+	import config from '@/common/config';//全局公共库
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { listXmIteration,listXmIterationWithState, delXmIteration, batchDelXmIteration,loadTasksToXmIterationState } from '@/api/xm/core/xmIteration';
 	import  XmIterationAdd from './XmIterationAdd';//新增界面
@@ -90,14 +143,14 @@
   import XmGantt from '../components/xm-gantt';
 
 	import { mapGetters } from 'vuex'
-	
-	export default { 
+
+	export default {
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
 			]),
-			
-			xmIterationTreeData(){ 
+
+			xmIterationTreeData(){
 				return this.translateDataToTree(this.xmIterations);
       },
 		},
@@ -107,13 +160,25 @@
 				if(visible==true){
 					this.getXmIterations();
 				}
-			} 
+			}
 		},
 		data() {
+      const beginDate = new Date();
+      const endDate = new Date();
+      beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 3 );
 			return {
 				filters: {
 					key: ''
 				},
+        pickerOptions:  util.pickerOptions('datarange'),
+        dateRanger: [
+        	util.formatDate.format(beginDate, "yyyy-MM-dd"),
+        	util.formatDate.format(endDate, "yyyy-MM-dd")
+        ],//创建时间选择范围
+        dateRangerOnline: [
+        	util.formatDate.format(beginDate, "yyyy-MM-dd"),
+        	util.formatDate.format(endDate, "yyyy-MM-dd")
+        ],//上线时间选择范围
 				xmIterations: [],//查询结果
 				pageInfo:{//分页数据
 					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
@@ -127,14 +192,14 @@
 				sels: [],//列表选中数据
 				options:{
 					//sex:[],
-				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
-				
+				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
+
 				addFormVisible: false,//新增xmIteration界面是否显示
 				//新增xmIteration界面初始化数据
 				addForm: {
 					id:'',branchId:'',iterationName:'',startTime:'',endTime:'',onlineTime:'',pid:'',adminUserid:'',adminUsername:'',ctime:'',budgetCost:'',budgetWorkload:'',distBudgetCost:'',distBudgetWorkload:'',actCost:'',actWorkload:'',actStaffNum:'',seqNo:'',
 				},
-				
+
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmIteration界面初始化数据
 				editForm: {
@@ -143,9 +208,9 @@
 				editFormInit: {
 					id:'',branchId:'',iterationName:'',startTime:'',endTime:'',onlineTime:'',pid:'',adminUserid:'',adminUsername:'',ctime:'',budgetCost:'',budgetWorkload:'',distBudgetCost:'',distBudgetWorkload:'',actCost:'',actWorkload:'',actStaffNum:'',seqNo:'',
 				},
-				
+
 				/**begin 自定义属性请在下面加 请加备注**/
-				valueChangeRows:[],	
+				valueChangeRows:[],
 				parentIteration:null,
         iterationStateVisible:false,
         gstcVisible:false,
@@ -161,9 +226,9 @@
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
-		methods: { 
-			handleSizeChange(pageSize) { 
-				this.pageInfo.pageSize=pageSize; 
+		methods: {
+			handleSizeChange(pageSize) {
+				this.pageInfo.pageSize=pageSize;
 				this.getXmIterations();
 			},
 			handleCurrentChange(pageNum) {
@@ -185,7 +250,7 @@
 				this.getXmIterations();
 			},
 			searchXmIterations(){
-				 this.pageInfo.count=true; 
+				 this.pageInfo.count=true;
 				 this.getXmIterations();
 			},
 			//获取列表 XmIteration 迭代定义
@@ -196,16 +261,24 @@
 					total: this.pageInfo.total,
 					count:this.pageInfo.count
 				};
+        if(!this.dateRanger || this.dateRanger.length==0){
+        	this.$message({ message: "创建日期范围不能为空", type: 'error' });
+        	return;
+        }
+        if(!this.dateRangerOnline || this.dateRangerOnline.length==0){
+        	this.$message({ message: "上线日期范围不能为空", type: 'error' });
+        	return;
+        }
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
-					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
+					for(var i=0;i<this.pageInfo.orderFields.length;i++){
 						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
-					}  
+					}
 					params.orderBy= orderBys.join(",")
 				}
 				if(this.filters.key){
 					params.key= "%"+this.filters.key+"%"
-				} 
+				}
 				if(this.productId){
 					params.productId=this.productId
 				}
@@ -215,17 +288,20 @@
 				if(!this.productId && !this.menuId){
 					params.branchId=this.userInfo.branchId
 				}
-				
+        params.createTimeStart=this.dateRanger[0]+" 00:00:00"
+        params.createTimeEnd=this.dateRanger[1]+" 23:59:59"
+        params.onlineTimeStart=this.dateRanger[0]+" 00:00:00"
+        params.onlineTimeEnd=this.dateRanger[1]+" 23:59:59"
 				this.load.list = true;
 				listXmIterationWithState(params).then((res) => {
 					var tips=res.data.tips;
-					if(tips.isOk){ 
+					if(tips.isOk){
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
 						this.xmIterations = res.data.data;
 					}else{
 						this.$message({ message: tips.msg, type: 'error' });
-					} 
+					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			},
@@ -238,10 +314,10 @@
 			//显示新增界面 XmIteration 迭代定义
 			showAdd: function () {
 				if(!this.roles.some(i=>i.roleid=='iterationAdmin')){
-					this.$message({ message: "只有迭代管理员可以新增迭代", type:  'error' }); 
+					this.$message({ message: "只有迭代管理员可以新增迭代", type:  'error' });
 					return ;
 				}
-				this.parentIteration=null 
+				this.parentIteration=null
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);
 			},
@@ -261,45 +337,45 @@
 			//选择行xmIteration
 			selsChange: function (sels) {
 				this.sels = sels;
-			}, 
+			},
 			//删除xmIteration
-			handleDel: function (row,index) { 
+			handleDel: function (row,index) {
 				if(!this.roles.some(i=>i.roleid=='iterationAdmin')){
-					this.$message({ message: "只有迭代管理员可以删除迭代", type:  'error' }); 
+					this.$message({ message: "只有迭代管理员可以删除迭代", type:  'error' });
 					return ;
 				}
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					let params = { id: row.id };
 					delXmIteration(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if(tips.isOk){ 
+						if(tips.isOk){
 							this.pageInfo.count=true;
 							this.getXmIterations();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
 			//批量删除xmIteration
 			batchDel: function () {
 				if(!this.roles.some(i=>i.roleid=='iterationAdmin')){
-					this.$message({ message: "只有迭代管理员可以删除迭代", type:  'error' }); 
+					this.$message({ message: "只有迭代管理员可以删除迭代", type:  'error' });
 					return ;
 				}
 				this.$confirm('确认删除选中记录吗？', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					batchDelXmIteration(this.sels).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if( tips.isOk ){ 
+						if( tips.isOk ){
 							this.pageInfo.count=true;
-							this.getXmIterations(); 
+							this.getXmIterations();
 						}
 						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
@@ -310,8 +386,8 @@
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
 			/**begin 自定义函数请在下面加**/
-			
-			translateDataToTree(data2) { 
+
+			translateDataToTree(data2) {
 				var data=JSON.parse(JSON.stringify(data2));
 				let parents = data.filter(value =>{
 					//如果我的上级为空，则我是最上级
@@ -324,14 +400,14 @@
 					}else {
 						return true
 					}
-				 
-				}) 
+
+				})
 				let children = data.filter(value =>{
 					if(data.some(i=>value.pid==i.id)){
 						return true;
 					}else{
 						return false;
-					} 
+					}
 				})
 				let translator = (parents, children) => {
 					parents.forEach((parent) => {
@@ -352,21 +428,21 @@
 
 				return parents
 			},
-			
-			clearSelectIteration(){ 
+
+			clearSelectIteration(){
 				this.editForm=this.editFormInit
 				this.$emit('clear-select',null );//  @row-click="rowClick"
 			},
 			fieldChange:function(row,fieldName){
-				 
+
 				if(this.valueChangeRows.some(i=>i.id==row.id)){
 					return;
 				}else{
 					this.valueChangeRows.push(row)
-				} 
-			},	
+				}
+			},
 			loadTasksToXmIterationState(row){
-				 
+
 				this.load.edit=true;
 				loadTasksToXmIterationState({id:row.id}).then(res=>{
 					this.load.edit=false;
@@ -389,24 +465,25 @@
 				}
       },
 			/**end 自定义函数请在上面加**/
-			
+
 		},//end methods
-		components: { 
+		components: {
 		    'xm-iteration-add':XmIterationAdd,
-			'xm-iteration-edit':XmIterationEdit, 
+			'xm-iteration-edit':XmIterationEdit,
 			XmIterationStateMng,XmGantt,
 		    //在下面添加其它组件
 		},
-		mounted() { 
+		mounted() {
 			this.$nextTick(() => {
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=65/1000 * window.innerHeight; 
-				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
+				var subHeight=65/1000 * window.innerHeight;
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight;
 				this.getXmIterations();
-        	}); 
+        	});
+          // console.log(this.dateRanger,this.dateRangerOnline);
         	/** 举例，
     		listOption([{categoryId:'all',itemCode:'sex'},{categoryId:'all',itemCode:'grade'}] ).then(res=>{
-				if(res.data.tips.isOk){ 
+				if(res.data.tips.isOk){
  					this.options=res.data.data
 				}
 			});
@@ -417,5 +494,9 @@
 </script>
 
 <style scoped>
-
+  .more-label-font{
+  	text-align:center;
+  	float:left;
+  	padding-top:10px;
+  }
 </style>
