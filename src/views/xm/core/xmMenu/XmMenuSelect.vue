@@ -8,7 +8,14 @@
 			</el-col>
 			<el-col :span="18"  style="padding-left:12px;" >
 				<el-row  >  
-					<el-checkbox class="hidden-md-and-down" v-if="excludeIterationId" v-model="filters.excludeIterationAll" true-label="1" false-label="">排除已加入其它迭代的故事</el-checkbox>
+ 					<el-select class="hidden-md-and-down" v-if="excludeIterationId" v-model="filters.itertaionFilterType" placeholder="是否加入过迭代？" clearable  >
+						<el-option   value="not-join"  label="未加入任何迭代的故事"></el-option>  
+						<el-option   value="join"  label="已加入迭代的故事"></el-option>  
+					</el-select>
+					<el-select class="hidden-md-and-down" v-else v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable  >
+						<el-option   value="not-join"  label="未分配任何任务的故事"></el-option>  
+						<el-option   value="join"  label="已分配任务的故事"></el-option>  
+					</el-select> 
 					<el-date-picker
 						v-model="dateRanger" 
 						type="daterange"
@@ -32,8 +39,17 @@
 						width="400"
 						trigger="click" >
 						<el-row> 
-							<el-col  :span="24"  style="padding-top:5px;">
-								<el-checkbox v-if="excludeIterationId" v-model="filters.excludeIterationAll" true-label="1" false-label="">排除已加入其它迭代的故事</el-checkbox>
+							<el-col  :span="24"  style="padding-top:5px;"  v-if="excludeIterationId">
+								<el-select class="hidden-md-and-down" v-if="excludeIterationId" v-model="filters.itertaionFilterType" placeholder="是否加入过迭代？" clearable  >
+									<el-option   value="not-join"  label="未加入任何迭代的故事"></el-option>  
+									<el-option   value="join"  label="已加入迭代的故事"></el-option>  
+								</el-select>
+							</el-col>
+							<el-col  :span="24"  style="padding-top:5px;" v-else> 
+								<el-select class="hidden-md-and-down" v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable >
+									<el-option   value="not-join"  label="未分配任何任务的故事"></el-option>  
+									<el-option   value="join"  label="已分配任务的故事"></el-option>  
+								</el-select> 
 							</el-col>
 							<el-col :span="24"  style="padding-top:5px;">
 								<font class="more-label-font">创建时间:</font>  
@@ -144,8 +160,9 @@
 				filters: {
 					key: '',
 					product:null,
-					excludeIterationAll:'1',
+					itertaionFilterType:'not-join',////join,not-join,''
 					mmUser:null,
+					taskFilterType:'',//join,not-join,''
 				},
 				xmMenus: [],//查询结果
 				pageInfo:{//分页数据
@@ -249,10 +266,14 @@
 				}
 				if(this.excludeIterationId ){
 					params.excludeIterationId=this.excludeIterationId
-					if(this.filters.excludeIterationAll){
-						params.excludeIterationAll=this.filters.excludeIterationAll
+					if(this.filters.itertaionFilterType){
+						params.itertaionFilterType=this.filters.itertaionFilterType
 					}
-				} 
+				}else{
+					if(this.filters.taskFilterType){
+					params.taskFilterType=this.filters.taskFilterType
+				}
+				}
 				
 				this.load.list = true;
 				listXmMenu(params).then((res) => {
