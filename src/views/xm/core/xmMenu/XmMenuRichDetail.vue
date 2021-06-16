@@ -30,7 +30,7 @@
 			<el-col :span="10">
 				<el-row>
 					<el-button v-if="iterationVisible==false" @click="iterationVisible=true" icon="el-icon-search">查看迭代计划</el-button>
-					<xm-iteration-mng v-if="iterationVisible" :simple="true" :product-id="editForm.productId" :menu-id="editForm.menuId" ></xm-iteration-mng> 
+					<xm-iteration-mng v-if="iterationVisible" :visible="iterationVisible" :product-id="editForm.productId" :menu-id="editForm.menuId" ></xm-iteration-mng> 
 				</el-row> 
 				<el-row style="padding-top:12px;">
 					<el-button v-if="exchangeMngVisible==false" @click="exchangeMngVisible=true" icon="el-icon-search">查看评论</el-button>
@@ -46,7 +46,7 @@
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { editXmMenu,listXmMenu } from '@/api/xm/core/xmMenu';
 	import { mapGetters } from 'vuex'
-	import  XmIterationMng from '../xmIteration/XmIterationMng';//修改界面
+	import  XmIterationMng from '../xmIteration/XmIterationSelect';//修改界面
 	import  XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng';//修改界面
 
 

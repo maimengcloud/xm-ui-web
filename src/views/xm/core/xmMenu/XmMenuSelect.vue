@@ -8,7 +8,7 @@
 			</el-col>
 			<el-col :span="18"  style="padding-left:12px;" >
 				<el-row  >  
- 					<el-select class="hidden-md-and-down" v-if="excludeIterationId" v-model="filters.itertaionFilterType" placeholder="是否加入过迭代？" clearable  >
+ 					<el-select class="hidden-md-and-down" v-if="excludeIterationId" v-model="filters.iterationFilterType" placeholder="是否加入过迭代？" clearable  >
 						<el-option   value="not-join"  label="未加入任何迭代的故事"></el-option>  
 						<el-option   value="join"  label="已加入迭代的故事"></el-option>  
 					</el-select>
@@ -39,13 +39,13 @@
 						width="400"
 						trigger="click" >
 						<el-row> 
-							<el-col  :span="24"  style="padding-top:5px;"  v-if="excludeIterationId">
-								<el-select   v-if="excludeIterationId" v-model="filters.itertaionFilterType" placeholder="是否加入过迭代？" clearable  >
+							<el-col  :span="24"  style="padding-top:5px;">
+								<el-select    v-model="filters.iterationFilterType" placeholder="是否加入过迭代？" clearable  >
 									<el-option   value="not-join"  label="未加入任何迭代的故事"></el-option>  
 									<el-option   value="join"  label="已加入迭代的故事"></el-option>  
 								</el-select>
 							</el-col>
-							<el-col  :span="24"  style="padding-top:5px;" v-else> 
+							<el-col  :span="24"  style="padding-top:5px;"> 
 								<el-select   v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable >
 									<el-option   value="not-join"  label="未分配任何任务的故事"></el-option>  
 									<el-option   value="join"  label="已分配任务的故事"></el-option>  
@@ -160,7 +160,7 @@
 				filters: {
 					key: '',
 					product:null,
-					itertaionFilterType:'not-join',////join,not-join,''
+					iterationFilterType:'',////join,not-join,''
 					mmUser:null,
 					taskFilterType:'',//join,not-join,''
 				},
@@ -263,17 +263,14 @@
 				params.ctimeEnd=this.dateRanger[1]+" 23:59:59" 
 				if( this.filters.key){
 					params.key="%"+this.filters.key+"%"
-				}
-				if(this.excludeIterationId ){
-					params.excludeIterationId=this.excludeIterationId
-					if(this.filters.itertaionFilterType){
-						params.itertaionFilterType=this.filters.itertaionFilterType
-					}
-				}else{
-					if(this.filters.taskFilterType){
-						params.taskFilterType=this.filters.taskFilterType
-					}
-				}
+				} 
+				params.excludeIterationId=this.excludeIterationId
+				if(this.filters.iterationFilterType){
+					params.iterationFilterType=this.filters.iterationFilterType
+				} 
+				if(this.filters.taskFilterType){
+					params.taskFilterType=this.filters.taskFilterType
+				} 
 				
 				this.load.list = true;
 				listXmMenu(params).then((res) => {
@@ -387,6 +384,9 @@
 		},
 		mounted() {  
 			this.$nextTick(() => {
+				if(this.excludeIterationId){
+					this.filters.iterationFilterType='not-join'
+				}
 				this.getXmMenus(); 
             	var clientRect=this.$refs.table.$el.getBoundingClientRect();
 				var subHeight=80/1000 * window.innerHeight; 

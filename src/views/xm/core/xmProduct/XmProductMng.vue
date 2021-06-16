@@ -1,7 +1,28 @@
 <template>
 	<section>
-		<el-row  class="app-container">
-			<el-input v-model="filters.key" style="width: 40%;" placeholder="模糊查询">
+		<el-row  class="app-container"> 
+			<el-select   v-model="filters.queryScope"    placeholder="产品查询范围">
+				<el-option :label="userInfo.branchName+'机构下所有的产品'" value="branchId"></el-option>
+				<el-option label="我相关的产品" value="compete"></el-option>
+				<el-option label="按产品编号精确查找" value="productId"></el-option>
+				<el-option label="后台智能匹配" value=""></el-option>
+			</el-select> 
+			<el-input v-if="filters.queryScope=='productId'" style="width:20%;"  v-model="filters.id"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">  
+			</el-input>  
+			<el-date-picker  v-show="!selProject&&filters.queryScope!='productId'"
+				v-model="dateRanger" 
+				type="daterange"
+				align="right" 
+				class="hidden-md-and-down"
+				unlink-panels
+				range-separator="至"
+				start-placeholder="开始日期"
+				end-placeholder="完成日期"
+				value-format="yyyy-MM-dd"
+				:default-time="['00:00:00','23:59:59']"
+				:picker-options="pickerOptions"
+			></el-date-picker>    
+			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
 				<template slot="append">
 					
 					<el-button v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProducts" icon="el-icon-search"></el-button>
@@ -128,7 +149,7 @@
 			<el-dialog
 				append-to-body
 				title="产品关联的迭代查询"
-				:visible.sync="iterationVisible"
+				:visible.sync="iterationVisible"  
 				 >
 					<xm-iteration-mng :simple="true" :visible="iterationVisible" :product-id="editForm.id" ></xm-iteration-mng>
 			</el-dialog>
@@ -144,7 +165,7 @@
 	import  XmProductAdd from './XmProductAdd';//新增界面
 	import  XmProductEdit from './XmProductEdit';//修改界面
 	import { mapGetters } from 'vuex'
-	import  XmIterationMng from '../xmIteration/XmIterationMng';//修改界面
+	import  XmIterationMng from '../xmIteration/XmIterationSelect';//修改界面
 	import  XmProductStateMng from '../xmProductState/XmProductStateMng';//修改界面
 
 	

@@ -8,6 +8,10 @@
 
 				<el-col v-show="filters.product" :span="24" >
 					<el-row class="app-container">  
+						<el-select  v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable >
+							<el-option   value="not-join"  label="未分配任何任务的故事"></el-option>  
+							<el-option   value="join"  label="已分配任务的故事"></el-option>  
+						</el-select> 
 						<el-date-picker
 							v-model="dateRanger" 
 							type="daterange"
@@ -43,13 +47,13 @@
 							width="400"
 							trigger="click" >
 							<el-row>  
-								<el-col  :span="24"  style="padding-top:5px;"  v-if="excludeIterationId">
-									<el-select  v-if="excludeIterationId" v-model="filters.itertaionFilterType" placeholder="是否加入过迭代？" clearable  >
+								<el-col  :span="24"  style="padding-top:5px;" >
+									<el-select   v-model="filters.iterationFilterType" placeholder="是否加入过迭代？" clearable  >
 										<el-option   value="not-join"  label="未加入任何迭代的故事"></el-option>  
 										<el-option   value="join"  label="已加入迭代的故事"></el-option>  
 									</el-select>
 								</el-col>
-								<el-col  :span="24"  style="padding-top:5px;" v-else> 
+								<el-col  :span="24"  style="padding-top:5px;"> 
 									<el-select  v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable >
 										<el-option   value="not-join"  label="未分配任何任务的故事"></el-option>  
 										<el-option   value="join"  label="已分配任务的故事"></el-option>  
@@ -244,9 +248,9 @@
 				<el-dialog
 					append-to-body
 					title="故事关联的迭代查询"
-					:visible.sync="iterationVisible"
+					:visible.sync="iterationVisible" 
 					>
-						<xm-iteration-mng :simple="true" :product-id="editForm.productId" :menu-id="editForm.menuId" ></xm-iteration-mng>
+						<xm-iteration-mng :visible="iterationVisible" :product-id="editForm.productId" :menu-id="editForm.menuId" ></xm-iteration-mng>
 				</el-dialog>
 
 				<el-dialog title="选择员工" :visible.sync="selectFiltersMmUserVisible" width="60%" append-to-body>
@@ -277,7 +281,7 @@
 	import XmTaskList from '../xmTask/XmTaskList';
 	import XmTaskMng from '../xmTask/XmTaskMng'; 
 	import XmTaskListForMenu from '../xmTask/XmTaskListForMenu';
-	import  XmIterationMng from '../xmIteration/XmIterationMng';//修改界面
+	import  XmIterationMng from '../xmIteration/XmIterationSelect';//修改界面
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
 
 	import {sn} from '@/common/js/sequence'
@@ -330,7 +334,7 @@
 					key: '',
 					product:null,
 					mmUser:null,
-					itertaionFilterType:'',//join、not-join、''
+					iterationFilterType:'',//join、not-join、''
 					taskFilterType:'',//join、not-join、''
 				},
 				xmMenus: [],//查询结果
@@ -442,18 +446,14 @@
 				} 
 				if(this.filters.mmUser){
 					params.mmUserid=this.filters.mmUser.userid;
-				}
-				
-				if(this.excludeIterationId ){
-					params.excludeIterationId=this.excludeIterationId
-					if(this.filters.itertaionFilterType){
-						params.itertaionFilterType=this.filters.itertaionFilterType
-					}
-				}else{
-					if(this.filters.taskFilterType){
-						params.taskFilterType=this.filters.taskFilterType
-					}
-				}
+				} 
+				params.excludeIterationId=this.excludeIterationId
+				if(this.filters.iterationFilterType){
+					params.iterationFilterType=this.filters.iterationFilterType
+				} 
+				if(this.filters.taskFilterType){
+					params.taskFilterType=this.filters.taskFilterType
+				} 
 				params.ctimeStart=this.dateRanger[0]+" 00:00:00"
 				params.ctimeEnd=this.dateRanger[1]+" 23:59:59" 
 				let callback= (res)=>{

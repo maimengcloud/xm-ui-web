@@ -1,68 +1,66 @@
 <template>
 	<section>
-		<el-row v-if="!simple" class="app-container">
-      <el-checkbox v-model="gstcVisible"  >甘特图</el-checkbox>
-			<el-input v-model="filters.key" style="width: 15%;" placeholder="模糊查询">
-				<template slot="append">
-					<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterations" icon="el-icon-search"></el-button>
-				</template>
-			</el-input>
-      <el-button type="primary" @click="showAdd" icon="el-icon-plus">迭代计划</el-button>
-      <el-col style="display: contents;color: #606266;font-size: 14px;">创建时间:</el-col>
-      <el-date-picker v-model="dateRanger" type="daterange" align="right" unlink-panels range-separator="至"
-        start-placeholder="开始日期" end-placeholder="完成日期" value-format="yyyy-MM-dd"
-        :default-time="['00:00:00','23:59:59']" :picker-options="pickerOptions">
-      </el-date-picker>
-      <el-col style="display: contents;color: #606266;font-size: 14px;">上线时间:</el-col>
-      <el-date-picker v-model="dateRangerOnline" type="daterange" align="right" unlink-panels range-separator="至"
-        start-placeholder="开始日期" end-placeholder="完成日期" value-format="yyyy-MM-dd"
-        :default-time="['00:00:00','23:59:59']" :picker-options="pickerOptions">
-      </el-date-picker>
-      <el-button type="primary" @click="getXmIterations" icon="el-icon-search">查询</el-button>
-     <el-popover
-      	placement="top-start"
-      	title=""
-      	width="400"
-      	trigger="click" >
-      	<el-row>
-      		<el-col  :span="24"  style="padding-top:5px;">
-      			<font class="more-label-font">创建时间:</font>
-      			<el-date-picker
-      				v-model="dateRanger"
-      				type="daterange"
-      				align="right"
-      				unlink-panels
-      				range-separator="至"
-      				start-placeholder="开始日期"
-      				end-placeholder="完成日期"
-      				value-format="yyyy-MM-dd"
-      				:default-time="['00:00:00','23:59:59']"
-      				:picker-options="pickerOptions"
-      			></el-date-picker>
-      		</el-col>
-      		<el-col  :span="24"  style="padding-top:5px;">
-      			<font class="more-label-font">上线时间:</font>
-      			<el-date-picker
-      				v-model="dateRangerOnline"
-      				type="daterange"
-      				align="right"
-      				unlink-panels
-      				range-separator="至"
-      				start-placeholder="开始日期"
-      				end-placeholder="完成日期"
-      				value-format="yyyy-MM-dd"
-      				:default-time="['00:00:00','23:59:59']"
-      				:picker-options="pickerOptions"
-      			></el-date-picker>
-      		</el-col>
-      		<el-col :span="24" style="padding-top:5px;">
-      			<el-button size="mini" type="primary" icon="el-icon-search" @click="getXmIterations">查询</el-button>
-      		</el-col>
-      	</el-row>
-      	<el-button  slot="reference" icon="el-icon-more" circle></el-button>
-      </el-popover>
+		<el-row class="app-container">
+      		<el-checkbox v-model="gstcVisible"  >甘特图</el-checkbox> 
+			<el-col style="display: contents;color: #606266;font-size: 14px;">上线时间:</el-col>
+			<el-date-picker v-model="dateRangerOnline" type="daterange" align="right" unlink-panels range-separator="至"
+				start-placeholder="开始日期" end-placeholder="完成日期" value-format="yyyy-MM-dd"
+				:default-time="['00:00:00','23:59:59']" :picker-options="pickerOptions">
+			</el-date-picker>
+				<el-input v-model="filters.key" style="width: 15%;" placeholder="模糊查询">
+					<template slot="append">
+						<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterations" icon="el-icon-search"></el-button>
+					</template>
+				</el-input>
+			<el-button type="primary" @click="showAdd" icon="el-icon-plus">迭代计划</el-button> 
+			<el-popover
+				placement="top-start"
+				title=""
+				width="400"
+				trigger="click" >
+				<el-row> 
+					<el-col :span="24" style="padding-top:5px;">
+						<font class="more-label-font">
+							迭代查询范围：
+						</font>
+						<el-select size="mini" v-model="filters.queryScope" style="width:100%;"   placeholder="迭代查询范围">
+							<el-option :label="userInfo.branchName+'机构下所有的迭代'" value="branchId"></el-option>
+							<el-option label="我相关的迭代" value="compete"></el-option>
+							<el-option label="按迭代编号精确查找" value="iterationId"></el-option>
+							<el-option label="后台智能匹配" value=""></el-option>
+						</el-select>
+					</el-col>
+					<el-col  :span="24"  style="padding-top:5px;"> 
+						<el-input v-if="filters.queryScope=='iterationId'" size="mini" v-model="filters.id" style="width:100%;"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">  
+						</el-input> 
+					</el-col>
+					<el-col  :span="24"  style="padding-top:5px;">
+						<font class="more-label-font">上线时间:</font>
+						<el-date-picker
+							v-model="dateRangerOnline"
+							type="daterange"
+							align="right"
+							unlink-panels
+							range-separator="至"
+							start-placeholder="开始日期"
+							end-placeholder="完成日期"
+							value-format="yyyy-MM-dd"
+							:default-time="['00:00:00','23:59:59']"
+							:picker-options="pickerOptions"
+						></el-date-picker>
+					</el-col>
+					
+					<el-col :span="24" style="padding-top:5px;">
+							<el-tag>默认只能查询本人创建的迭代、本人作为故事责任人参与的迭代</el-tag>
+					</el-col>
+					<el-col :span="24" style="padding-top:5px;">
+						<el-button size="mini" type="primary" icon="el-icon-search" @click="getXmIterations">查询</el-button>
+					</el-col>
+				</el-row>
+				<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+			</el-popover>
  		</el-row>
-		<el-row v-if="!simple" class="app-container">
+		<el-row  class="app-container">
 			<!--列表 XmIteration 迭代定义-->
 			<el-table ref="table" :max-height="tableHeight" v-if="!gstcVisible" :data="xmIterationTreeData" row-key="id"  default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column type="selection" aria-disabled width="55"></el-table-column>
@@ -95,7 +93,7 @@
 				</el-table-column>
 			</el-table>
 			<el-pagination v-if="!gstcVisible" layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
-      <xm-gantt v-if="gstcVisible" :tree-data="xmIterationTreeData" :project-phase="{startTime: '2020-06-01', endTime: '2020-12-30'}" :columns="ganrrColumns" :useRealTime="false"></xm-gantt>
+      		<xm-gantt v-if="gstcVisible" :tree-data="xmIterationTreeData" :project-phase="{startTime: '2020-06-01', endTime: '2020-12-30'}" :columns="ganrrColumns" :useRealTime="false"></xm-gantt>
 
 			<!--编辑 XmIteration 迭代定义界面-->
 			<el-dialog title="编辑迭代定义" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
@@ -111,24 +109,7 @@
 			<el-dialog title="迭代报告" :visible.sync="iterationStateVisible" fullscreen  append-to-body  :close-on-click-modal="false">
 				<xm-iteration-state-mng :xm-iteration="editForm"   :visible="iterationStateVisible" @cancel="iterationStateVisible=false"></xm-iteration-state-mng>
 			</el-dialog>
-		</el-row>
-
-		<el-row v-if="simple ">
-			<!--列表 XmIteration 迭代定义-->
-			<el-table ref="table" :max-height="tableHeight" :data="xmIterationTreeData" row-key="id"  default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-   				<el-table-column prop="iterationName" label="迭代名称" min-width="160" >
-					<template slot="header" slot-scope="scope">
-						迭代名称 <el-tag size="mini" v-if="editForm.iterationName" closable @close="clearSelectIteration()">{{editForm.seqNo}}&nbsp;{{editForm.iterationName}}</el-tag>
-					</template>
-					 <template slot-scope="scope">
-						 {{scope.row.seqNo}} &nbsp;&nbsp;{{scope.row.iterationName}}
-					 </template>
-				</el-table-column>
-				<el-table-column prop="onlineTime" label="上线时间" min-width="80" :formatter="formatterDate"></el-table-column>
-			</el-table>
-			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
-
-		</el-row>
+		</el-row> 
 	</section>
 </template>
 
@@ -154,7 +135,7 @@
 				return this.translateDataToTree(this.xmIterations);
       },
 		},
-		props:['simple','productId','menuId','visible'],
+		props:['productId','menuId','visible'],
 		watch:{
 			visible:function(visible){
 				if(visible==true){
@@ -163,22 +144,25 @@
 			}
 		},
 		data() {
-      const beginDate = new Date();
-      const endDate = new Date();
-      beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 3 );
+			const beginDate = new Date();
+			const endDate = new Date();
+			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 3 ); 
+			endDate.setTime(endDate.getTime() + 3600 * 1000 * 24 * 7 * 4 * 3 ); 
 			return {
 				filters: {
-					key: ''
+					key: '',
+					queryScope:'',//迭代查询范围 iterationId\branchId\compete\''
+					id:'',//迭代编号
 				},
-        pickerOptions:  util.pickerOptions('datarange'),
-        dateRanger: [
-        	util.formatDate.format(beginDate, "yyyy-MM-dd"),
-        	util.formatDate.format(endDate, "yyyy-MM-dd")
-        ],//创建时间选择范围
-        dateRangerOnline: [
-        	util.formatDate.format(beginDate, "yyyy-MM-dd"),
-        	util.formatDate.format(endDate, "yyyy-MM-dd")
-        ],//上线时间选择范围
+				pickerOptions:  util.pickerOptions('datarange'),
+				dateRanger: [
+					util.formatDate.format(beginDate, "yyyy-MM-dd"),
+					util.formatDate.format(endDate, "yyyy-MM-dd")
+				],//创建时间选择范围
+				dateRangerOnline: [
+					util.formatDate.format(beginDate, "yyyy-MM-dd"),
+					util.formatDate.format(endDate, "yyyy-MM-dd")
+				],//上线时间选择范围
 				xmIterations: [],//查询结果
 				pageInfo:{//分页数据
 					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
@@ -260,15 +244,11 @@
 					pageNum: this.pageInfo.pageNum,
 					total: this.pageInfo.total,
 					count:this.pageInfo.count
-				};
-        if(!this.dateRanger || this.dateRanger.length==0){
-        	this.$message({ message: "创建日期范围不能为空", type: 'error' });
-        	return;
-        }
-        if(!this.dateRangerOnline || this.dateRangerOnline.length==0){
-        	this.$message({ message: "上线日期范围不能为空", type: 'error' });
-        	return;
-        }
+				}; 
+				if(!this.dateRangerOnline || this.dateRangerOnline.length==0){
+					this.$message({ message: "上线日期范围不能为空", type: 'error' });
+					return;
+				}
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
 					for(var i=0;i<this.pageInfo.orderFields.length;i++){
@@ -284,14 +264,23 @@
 				}
 				if(this.menuId){
 					params.menuId=this.menuId
+				} 
+				if( !this.menuId && !this.productId ){
+					params.queryScope=this.filters.queryScope 
+					if(this.filters.queryScope=='iterationId'){
+						if(!this.filters.id){
+							this.$message({ message:"您选择了按迭代编号精确查找模式，请输入迭代编号", type: 'error' });
+							return;
+						}
+						params.id=this.filters.id
+						
+					}
+					if(this.filters.queryScope=="branchId"){
+						params.branchId=this.userInfo.branchId
+					}
+					params.onlineTimeStart=this.dateRangerOnline[0]+" 00:00:00"
+					params.onlineTimeEnd=this.dateRangerOnline[1]+" 23:59:59"
 				}
-				if(!this.productId && !this.menuId){
-					params.branchId=this.userInfo.branchId
-				}
-        params.createTimeStart=this.dateRanger[0]+" 00:00:00"
-        params.createTimeEnd=this.dateRanger[1]+" 23:59:59"
-        params.onlineTimeStart=this.dateRanger[0]+" 00:00:00"
-        params.onlineTimeEnd=this.dateRanger[1]+" 23:59:59"
 				this.load.list = true;
 				listXmIterationWithState(params).then((res) => {
 					var tips=res.data.tips;

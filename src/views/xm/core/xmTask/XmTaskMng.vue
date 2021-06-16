@@ -44,17 +44,7 @@
 							title=""
 							width="400"
 							trigger="click" >
-							<el-row>
-								<el-col :span="24" style="padding-top:5px;">
-									<el-button type="primary" size="mini" v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showBatchEdit" v-loading="load.edit" icon="el-icon-edit">批量修改任务</el-button>
-								</el-col>
-								<el-col  :span="24"  style="padding-top:5px;">
-									<el-button size="mini" v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showTaskTemplate" type="success" icon="el-icon-plus">从模板快速导入任务</el-button>
-								</el-col>
-								<el-col  :span="24"  style="padding-top:5px;">
-									<el-button size="mini" v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showMenu" type="success" icon="el-icon-plus">由故事快速创建任务</el-button>
-								</el-col>
-							</el-row>
+
 							<el-row> 
 								<el-col :span="24" style="padding-top:5px;">
 									<font class="more-label-font">产品:</font><el-tag    v-if="  filters.product "  :closable="!xmProduct"    @close="clearProduct">{{this.filters.product.productName}}</el-tag>
@@ -109,7 +99,18 @@
 									<el-checkbox v-model="gstcVisible" >甘特图</el-checkbox>
 								</el-col>
 								<el-col :span="24" style="padding-top:5px;">
-									<el-button size="mini" type="primary" icon="el-icon-search" @click="searchXmTasks">查询</el-button>
+									<el-button size="mini" type="primary" icon="el-icon-search" @click="searchXmTasks">查询</el-button> 
+								</el-col> 
+							</el-row>
+							<el-row>
+								<el-col :span="24" style="padding-top:5px;">
+									<el-button   size="mini" v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showBatchEdit" v-loading="load.edit" icon="el-icon-edit">批量修改任务</el-button>
+								</el-col>
+								<el-col  :span="24"  style="padding-top:5px;">
+									<el-button size="mini" v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showTaskTemplate"   icon="el-icon-plus">从模板快速导入任务</el-button>
+								</el-col>
+								<el-col  :span="24"  style="padding-top:5px;">
+									<el-button size="mini" v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showMenu"   icon="el-icon-plus">由故事快速创建任务</el-button>
 								</el-col>
 							</el-row>
 							<el-button  slot="reference" icon="el-icon-more" circle></el-button>
