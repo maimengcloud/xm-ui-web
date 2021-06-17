@@ -53,6 +53,14 @@
 						 			</el-input> 
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
+									<font class="more-label-font">
+										产品经理:
+									</font>  
+									<el-tag v-if="filters.pmUser" closable @click="selectFiltersPmUser" @close="clearFiltersPmUser()">{{filters.pmUser.username}}</el-tag> 
+									<el-button size="mini"  v-else @click="selectFiltersPmUser()">选责任人</el-button>
+									<el-button size="mini"   @click="setFiltersPmUserAsMySelf()">我的</el-button>
+								</el-col>
+								<el-col  :span="24"  style="padding-top:5px;">
 									<el-button type="primary" size="mini" @click="searchXmProducts" >查询</el-button>
 								</el-col>
 							</el-row> 
@@ -71,6 +79,10 @@
 			</el-table>
 			<el-pagination  layout="total, prev, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>  
 		</el-row> 
+			
+			<el-dialog title="选择员工" :visible.sync="selectFiltersPmUserVisible" width="60%" append-to-body>
+				<users-select  @confirm="onFiltersPmUserSelected" ref="usersSelect"></users-select>
+			</el-dialog>
 	</section>
 </template>
 
@@ -80,6 +92,7 @@
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { listXmProductWithState } from '@/api/xm/core/xmProduct';  
 	import { mapGetters } from 'vuex' 
+	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
 
 	
 	export default { 
@@ -98,6 +111,7 @@
 					key: '',
 					queryScope:'compete',
 					id:'',//产品编号
+					pmUser:null,//产品经理
 				},
 				xmProducts: [],//查询结果
 				pageInfo:{//分页数据
@@ -125,6 +139,7 @@
 				},
 				iterationVisible:false,
 				productStateVisible:false,
+				selectFiltersPmUserVisible:false,
 				tableHeight:300,
 				dateRanger: [
 					util.formatDate.format(beginDate, "yyyy-MM-dd"),
@@ -234,10 +249,32 @@
 			selectedProduct:function(row){
 				this.$emit('selected',row);
 			},
-			  
+			
+			/**begin 自定义函数请在下面加**/
+			clearFiltersPmUser:function(){
+				 this.filters.pmUser=null;
+				  this.searchXmProducts();
+			},			
+			selectFiltersPmUser(){
+				this.selectFiltersPmUserVisible=true;
+			},
+			onFiltersPmUserSelected(users){ 
+				 if(users && users.length>0){
+					 this.filters.pmUser=users[0]
+				 }else{
+					 this.filters.pmUser=null;
+				 }
+				 this.selectFiltersPmUserVisible=false;
+				 this.searchXmProducts();
+			},
+			setFiltersPmUserAsMySelf(){
+				this.filters.pmUser=this.userInfo;
+				this.searchXmProducts();
+			},	   
 			
 		},//end methods
 		components: {  
+			UsersSelect,
 		    //在下面添加其它组件
 		},
 		mounted() { 
@@ -257,6 +294,6 @@
 .more-label-font{
 	text-align:center;
 	float:left;
-	padding-top:10px;
+	padding-top:5px;
 }
 </style>

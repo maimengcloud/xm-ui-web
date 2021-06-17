@@ -1,10 +1,18 @@
 <template>
 	<section>
 		<el-row class="app-container">
-      		<el-checkbox v-model="gstcVisible"  >甘特图</el-checkbox> 
-			<el-col style="display: contents;color: #606266;font-size: 14px;">上线时间:</el-col>
+      		<el-checkbox v-model="gstcVisible"  class="hidden-md-and-down">甘特图</el-checkbox>  
+			  
+			<el-select  v-model="filters.queryScope"  placeholder="迭代查询范围">
+				<el-option :label="userInfo.branchName+'机构下所有的迭代'" value="branchId"></el-option>
+				<el-option label="我相关的迭代" value="compete"></el-option>
+				<el-option label="按迭代编号精确查找" value="iterationId"></el-option>
+				<el-option label="后台智能匹配" value=""></el-option>
+			</el-select>
+			<el-input v-if="filters.queryScope=='iterationId'"  v-model="filters.id" style="width:20%;"  placeholder="输入迭代编号" @keyup.enter.native="searchXmProducts"> </el-input> 
 			<el-date-picker v-model="dateRangerOnline" type="daterange" align="right" unlink-panels range-separator="至"
-				start-placeholder="开始日期" end-placeholder="完成日期" value-format="yyyy-MM-dd"
+				start-placeholder="上线日期" end-placeholder="上线日期" value-format="yyyy-MM-dd"
+				class="hidden-md-and-down"
 				:default-time="['00:00:00','23:59:59']" :picker-options="pickerOptions">
 			</el-date-picker>
 				<el-input v-model="filters.key" style="width: 15%;" placeholder="模糊查询">
@@ -55,6 +63,7 @@
 					</el-col>
 					<el-col :span="24" style="padding-top:5px;">
 						<el-button size="mini" type="primary" icon="el-icon-search" @click="getXmIterations">查询</el-button>
+						<el-checkbox v-model="gstcVisible">甘特图</el-checkbox>  
 					</el-col>
 				</el-row>
 				<el-button  slot="reference" icon="el-icon-more" circle></el-button>
@@ -486,6 +495,6 @@
   .more-label-font{
   	text-align:center;
   	float:left;
-  	padding-top:10px;
+  	padding-top:5px;
   }
 </style>

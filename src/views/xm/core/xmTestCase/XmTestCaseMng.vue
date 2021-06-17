@@ -485,6 +485,6 @@
 .more-label-font{
 	text-align:center;
 	float:left;
-	padding-top:10px;
+	padding-top:5px;
 }
 </style>

@@ -77,6 +77,14 @@
 						</el-input> 
 					</el-col>
 					<el-col  :span="24"  style="padding-top:5px;">
+						<font class="more-label-font">
+							产品经理:
+						</font>  
+						<el-tag v-if="filters.pmUser" closable @click="selectFiltersPmUser" @close="clearFiltersPmUser()">{{filters.pmUser.username}}</el-tag> 
+						<el-button size="mini"  v-else @click="selectFiltersPmUser()">选责任人</el-button>
+						<el-button size="mini"   @click="setFiltersPmUserAsMySelf()">我的</el-button>
+					</el-col>
+					<el-col  :span="24"  style="padding-top:5px;">
 						<el-button type="primary" size="mini" @click="searchXmProducts" >查询</el-button>
 					</el-col>
 				</el-row> 
@@ -153,6 +161,10 @@
 				 >
 					<xm-iteration-mng :simple="true" :visible="iterationVisible" :product-id="editForm.id" ></xm-iteration-mng>
 			</el-dialog>
+			
+			<el-dialog title="选择员工" :visible.sync="selectFiltersPmUserVisible" width="60%" append-to-body>
+				<users-select  @confirm="onFiltersPmUserSelected" ref="usersSelect"></users-select>
+			</el-dialog>
 	</section>
 </template>
 
@@ -168,6 +180,7 @@
 	import  XmIterationMng from '../xmIteration/XmIterationSelect';//修改界面
 	import  XmProductStateMng from '../xmProductState/XmProductStateMng';//修改界面
 
+	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
 	
 	export default { 
 		props:['selProject'],
@@ -184,7 +197,8 @@
 				filters: {
 					key: '',
 					queryScope:'compete',//compete/branchId/''/productId
-					id:'',//产品编号
+					id:'',//产品编号 
+					pmUser:null,//产品经理
 				},
 				xmProducts: [],//查询结果
 				pageInfo:{//分页数据
@@ -212,6 +226,7 @@
 				},
 				iterationVisible:false,
 				productStateVisible:false,
+				selectFiltersPmUserVisible:false,
 				tableHeight:300,
 				dateRanger: [
 					util.formatDate.format(beginDate, "yyyy-MM-dd"),
@@ -311,6 +326,9 @@
 				if(this.selProject){
 					params.projectId=this.selProject.id
 				} 
+				if(this.filters.pmUser){
+					params.pmUserid=this.filters.pmUser.userid
+				}
 				this.load.list = true;
 				listXmProductWithState(params).then((res) => {
 					var tips=res.data.tips;
@@ -419,8 +437,26 @@
 
 			},
 			/**begin 自定义函数请在下面加**/
-			
-				
+			clearFiltersPmUser:function(){
+				 this.filters.pmUser=null;
+				  this.searchXmProducts();
+			},			
+			selectFiltersPmUser(){
+				this.selectFiltersPmUserVisible=true;
+			},
+			onFiltersPmUserSelected(users){ 
+				 if(users && users.length>0){
+					 this.filters.pmUser=users[0]
+				 }else{
+					 this.filters.pmUser=null;
+				 }
+				 this.selectFiltersPmUserVisible=false;
+				 this.searchXmProducts();
+			},
+			setFiltersPmUserAsMySelf(){
+				this.filters.pmUser=this.userInfo;
+				this.searchXmProducts();
+			},	 
 			/**end 自定义函数请在上面加**/
 			
 		},//end methods
@@ -429,6 +465,7 @@
 		    'xm-product-edit':XmProductEdit,
 			XmIterationMng,
 			XmProductStateMng,
+			UsersSelect,
 		    //在下面添加其它组件
 		},
 		mounted() { 
@@ -449,6 +486,6 @@
 .more-label-font{
 	text-align:center;
 	float:left;
-	padding-top:10px;
+	padding-top:5px;
 }
 </style>
