@@ -10,7 +10,7 @@
 				<el-option label="后台智能匹配" value=""></el-option>
 			</el-select>
 			<el-input v-if="filters.queryScope=='iterationId'"  v-model="filters.id" style="width:20%;"  placeholder="输入迭代编号" @keyup.enter.native="searchXmProducts"> </el-input> 
-			<el-date-picker v-model="dateRangerOnline" type="daterange" align="right" unlink-panels range-separator="至"
+			<el-date-picker v-if="filters.queryScope!='iterationId'" v-model="dateRangerOnline" type="daterange" align="right" unlink-panels range-separator="至"
 				start-placeholder="上线日期" end-placeholder="上线日期" value-format="yyyy-MM-dd"
 				class="hidden-md-and-down"
 				:default-time="['00:00:00','23:59:59']" :picker-options="pickerOptions">
@@ -39,12 +39,12 @@
 						</el-select>
 					</el-col>
 					<el-col  :span="24"  style="padding-top:5px;"> 
-						<el-input v-if="filters.queryScope=='iterationId'" size="mini" v-model="filters.id" style="width:100%;"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">  
+						<el-input  v-if="filters.queryScope=='iterationId'" size="mini" v-model="filters.id" style="width:100%;"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">  
 						</el-input> 
 					</el-col>
-					<el-col  :span="24"  style="padding-top:5px;">
+					<el-col v-if="filters.queryScope!='iterationId'" :span="24"  style="padding-top:5px;">
 						<font class="more-label-font">上线时间:</font>
-						<el-date-picker
+						<el-date-picker size="mini"
 							v-model="dateRangerOnline"
 							type="daterange"
 							align="right"
@@ -57,7 +57,9 @@
 							:picker-options="pickerOptions"
 						></el-date-picker>
 					</el-col>
-					
+					<el-col :span="24" style="padding-top:5px;">
+							<font class="more-label-font">迭代名称:</font><el-input size="mini" v-model="filters.key" style="width: 60%;" placeholder="模糊查询"></el-input>
+					</el-col>
 					<el-col :span="24" style="padding-top:5px;">
 							<el-tag>默认只能查询本人创建的迭代、本人作为故事责任人参与的迭代</el-tag>
 					</el-col>
@@ -287,8 +289,11 @@
 					if(this.filters.queryScope=="branchId"){
 						params.branchId=this.userInfo.branchId
 					}
-					params.onlineTimeStart=this.dateRangerOnline[0]+" 00:00:00"
-					params.onlineTimeEnd=this.dateRangerOnline[1]+" 23:59:59"
+					if(this.filters.queryScope!="iterationId"){
+						params.onlineTimeStart=this.dateRangerOnline[0]+" 00:00:00"
+						params.onlineTimeEnd=this.dateRangerOnline[1]+" 23:59:59"
+					}
+					
 				}
 				this.load.list = true;
 				listXmIterationWithState(params).then((res) => {

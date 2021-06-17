@@ -32,13 +32,13 @@
 										<el-option label="后台智能匹配" value=""></el-option>
 									</el-select>
 								</el-col>
-								<el-col  :span="24"  style="padding-top:5px;"> 
-									<el-input v-if="filters.queryScope=='iterationId'" size="mini" v-model="filters.id" style="width:100%;"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">  
+								<el-col v-if="filters.queryScope=='iterationId'" :span="24"  style="padding-top:5px;"> 
+									<el-input  size="mini" v-model="filters.id" style="width:100%;"  placeholder="输入迭代编号" @keyup.enter.native="searchXmProducts">  
 									</el-input> 
 								</el-col>
-								<el-col  :span="24"  style="padding-top:5px;">
+								<el-col v-if="filters.queryScope!='iterationId'" :span="24"  style="padding-top:5px;">
 									<font class="more-label-font">上线时间:</font>
-									<el-date-picker
+									<el-date-picker size="mini"
 										v-model="dateRangerOnline"
 										type="daterange"
 										align="right"
@@ -50,6 +50,9 @@
 										:default-time="['00:00:00','23:59:59']"
 										:picker-options="pickerOptions"
 									></el-date-picker>
+								</el-col>
+								<el-col :span="24" style="padding-top:5px;">
+										<font class="more-label-font">迭代名称:</font><el-input size="mini" v-model="filters.key" style="width: 60%;" placeholder="模糊查询"></el-input>
 								</el-col>
 								
 								<el-col :span="24" style="padding-top:5px;">

@@ -23,6 +23,8 @@
 								{{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}}
 							</template>
 						</el-table-column> 
+						<el-table-column prop="mmUsername" label="责任人"  width="140" >  
+						</el-table-column> 
 						<el-table-column label="操作" width="160" fixed="right">
 							<template slot-scope="scope">
 								<el-button type="primary" @click="handleDel(scope.row,scope.$index)" icon="el-icon-right">移出</el-button>
