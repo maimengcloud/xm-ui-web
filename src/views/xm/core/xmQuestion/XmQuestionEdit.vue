@@ -14,7 +14,10 @@
 								</el-form-item> 
 								<el-form-item label="隶属任务" prop="taskName">
 									<el-tag v-if="editForm.taskId!='' && editForm.taskId!=null " closable @close="handleCloseTaskTag">{{editForm.taskName}}</el-tag><el-button @click="showSelectTask">选任务</el-button>
-								</el-form-item>  
+								</el-form-item>   
+								<el-form-item label="隶属故事" prop="menuName">
+									<el-tag v-if="editForm.menuId!='' && editForm.menuId!=null " closable @close="handleCloseMenuTag">{{editForm.menuName}}</el-tag><el-button @click="showSelectMenu">选故事</el-button>
+								</el-form-item>   
 								<el-form-item label="优先级别" prop="priority">
 									<el-radio-group v-model="editForm.priority">
 										<el-radio v-for="(i,index) in options['urgencyLevel']" :label="i.optionValue" :key="index">{{i.optionName}}</el-radio> 
@@ -34,7 +37,7 @@
 									<el-date-picker :clearable="false" style="width:100%;" type="date" placeholder="选择日期" v-model="editForm.endTime" value-format="yyyy-MM-dd" format="yyyy-MM-dd"></el-date-picker>
 								</el-form-item> 
 								<el-form-item label="提出人" prop="askUsername">
-									提出： {{editForm.askUsername}}  创建人：	{{userInfo.username}}  时间：{{formateDate(new Date()).substr(0,10)}}
+									提出： {{editForm.askUsername}}  创建人：	{{editForm.createUsername}}  创建时间：{{editForm.createTime}}
 								</el-form-item> 
 								<el-form-item label="指派给" prop="handlerUsername">
 									{{editForm.handlerUsername}}  <el-button @click="sendToAsk">指派给提出人</el-button><el-button @click="sendToCreater">指派给创建人</el-button><el-button @click="showGroupUsers('handlerUsername')">选其它人</el-button>
@@ -115,7 +118,11 @@
 			</el-dialog> 
 			<el-dialog title="选中任务" :visible.sync="selectTaskVisible"  width="80%" fullscreen  append-to-body   :close-on-click-modal="false">
 				<xm-task-list  :sel-project="selProject"   @task-selected="onSelectedTask"></xm-task-list>
-			</el-dialog> 				
+			</el-dialog> 	
+			
+			<el-dialog append-to-body title="故事选择" :visible.sync="selectMenuVisible"   fullscreen   :close-on-click-modal="false">
+				<xm-menu-select :is-select-menu="true"  @selected="onSelectedMenu" :sel-project="selProject"></xm-menu-select>
+			</el-dialog>			
 		</el-row>
 	</section>
 </template>
@@ -132,6 +139,7 @@
 	import XmGroupMng from '../xmProjectGroup/XmProjectGroupMng';
 	import VueEditor from '@/components/VueEditor';
 	import XmTaskList from '../xmTask/XmTaskList';
+	import xmMenuSelect from '../xmMenu/XmMenuSelect';	
 
 	export default { 
 		computed: {
@@ -186,6 +194,7 @@
 				xmQuestionHandles:[],
 				selectTaskVisible:false,
 				flowInfoVisible:false,
+				selectMenuVisible:false,
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data
@@ -345,13 +354,29 @@
 			showFlowInfo:function(){
 				this.flowInfoVisible=true;
 				this.getXmQuestionHandle();
-			}
+			},
 			/**end 在上面加自定义方法**/
 			
+			showSelectMenu:function(){
+				if(this.selProject==null){
+					this.$message({ message: "请先选项目", type: 'error' }); 
+					return ;
+				}
+				this.selectMenuVisible=true;
+			},
+			onSelectedMenu(menu){
+				this.editForm.menuId=menu.menuId
+				this.editForm.menuName=menu.menuName
+				this.selectMenuVisible=false;
+			},
+			handleCloseMenuTag:function(){
+				this.editForm.menuId=''
+				this.editForm.menuName=""
+			}, 
 		},//end method
 		components: {  
 				//在下面添加其它组件 'xm-question-edit':XmQuestionEdit
-				'upload': AttachmentUpload,XmGroupMng,VueEditor,XmTaskList
+				'upload': AttachmentUpload,XmGroupMng,VueEditor,XmTaskList,xmMenuSelect
 		},
 		mounted() {
 			console.log("question_add");
