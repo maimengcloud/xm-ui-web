@@ -8,7 +8,7 @@ export default {
 		{
 			path: '/mdp/workflow/ru',
 			component: Layout,
-			name: '任务中心',
+			name: '审批中心',
 			meta: {
 				title: 'TaskCenter',
 				icon: 'task'
@@ -27,7 +27,7 @@ export default {
 		{
 			path: '/mdp/workflow',
 			component: Layout,
-			name: '流程中心',
+			name: '审批管理',
 			iconCls: 'fa el-icon-menu',
 			meta: {
 				title: 'flowCenter',
@@ -53,7 +53,7 @@ export default {
 		{
 			path: '/mdp/workflow/hi',
 			component: Layout,
-			name: '历史流程',
+			name: '历史审批',
 			iconCls: 'fa el-icon-menu',
 			meta: {
 				title: 'procinstFlowCenter',
@@ -72,7 +72,7 @@ export default {
 		{
 			path: '/mdp/workflow',
 			component: Layout,
-			name: '模型中心',
+			name: '审批模型',
 			iconCls: 'fa el-icon-menu',
 			//leaf: true,//只有一个节点
 			meta: {
@@ -84,25 +84,10 @@ export default {
 				{ path: 'de/ModelMng', component: _import("mdp/workflow/de/model/ModelMng"), name: 'ModelMng', meta: { title: 'ModelMng' } },
 				{ path: 're/DeploymentMng', component: _import("mdp/workflow/re/deployment/DeploymentMng"), name: 'DeploymentMng', meta: { title: 'DeploymentMng' } },
 				{ path: 're/procdef/ProcdefSuspend', component: _import("mdp/workflow/re/procdef/ProcdefSuspend"), name: 'ProcdefSuspend', meta: { title: 'ProcdefSuspend' } },
-				{ path: 're/procdef/ProcdefListForParames', component: _import("mdp/workflow/re/procdef/ProcdefListForParames"), name: 'ProcdefListForParames', meta: { title: 'ProcdefListForParames' } },
-			]
-		},
-		{
-			path: '/mdp/workflow',
-			component: Layout,
-			name: '业务中心',
-			iconCls: 'fa el-icon-menu',
-			//leaf: true,//只有一个节点
-			meta: {
-				title: 'bizCenter',
-				icon: 'business'
-			},
-			children: [
-				{ path: 're/procdef/ProcdefListForParames', component: _import("mdp/workflow/re/procdef/ProcdefListForParames"), name: 'ProcdefListForParames', meta: { title: 'ProcdefListForParames' } },
-
+				{ path: 're/procdef/ProcdefListForParames', component: _import("mdp/workflow/re/procdef/ProcdefListForParames"), name: 'ProcdefListForParames', meta: { title: 'ProcdefListForParames' } }, 
 				{ path: 'biz/bizModel/BizModelMng', component: _import("mdp/workflow/biz/bizModel/BizModelMng"), name: 'BizModelMng', meta: { title: 'BizModelMng' } },
 			]
-		},
+		}, 
 		
 	]
 }
