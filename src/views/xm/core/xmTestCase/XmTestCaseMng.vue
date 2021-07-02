@@ -145,7 +145,7 @@
 		      'userInfo','roles'
 		    ])
 		},
-		props:['multiSelect'],
+		props:['multiSelect','selProject'],
 		data() {
 			const beginDate = new Date();
 			const endDate = new Date();
