@@ -382,8 +382,8 @@
 								this.$message({ message: "未配置节点审批人，无法提交，将自动加载默认配置，请稍后提交", type: 'error' }); 
 								return;
 							}else{
-								if(this.nodeInfos.some(i=>i.nodeUsers==null || i.nodeUsers.length==0)){
-									this.$message.error("请配置审批人再提交");
+								if(this.nodeInfos.some(i=>i.toCreater!='1' && (i.nodeUsers==null || i.nodeUsers.length==0))){
+									this.$message.error("还有节点未配置审批人，请配置审批人后再提交");
 									this.showNodeInfoDialog();
 									return;
 								}
