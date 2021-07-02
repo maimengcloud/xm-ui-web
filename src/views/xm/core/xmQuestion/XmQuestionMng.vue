@@ -27,7 +27,7 @@
 				<el-popover
 					placement="top-start"
 					title=""
-					width="400"
+					width="600"
 					trigger="click" >
 					<el-row>
 						<el-col :span="24" style="padding-top:5px;">
@@ -51,6 +51,17 @@
 							<el-button v-if="!filters.handlerUsername" @click="showGroupUsers('handlerUser')">选择被指派人</el-button> 
 							<el-tag v-else closable @close="clearHandler"  @click="showGroupUsers('handlerUser')">{{filters.handlerUsername}}</el-tag>
 							<el-button v-if="filters.handlerUserid!=userInfo.userid" @click="setFiltersHandlerAsMySelf">我的</el-button> 
+						</el-col> 
+						
+						<el-col :span="24" style="padding-top:12px;"> 
+							曾经由<el-button v-if="!filters.hisHandler||!filters.hisHandler.userid" @click="showGroupUsers('hisHandler')">执行人</el-button> 
+							<el-tag v-else closable @close="clearHisHandler"  @click="showGroupUsers('hisHandler')">{{filters.hisHandler.username}}</el-tag>
+							<el-button v-if="!filters.hisHandler||filters.hisHandler.userid!=userInfo.userid" @click="setFiltersHisHandlerAsMySelf">我的</el-button> 
+							变更状态为
+							<el-select v-model="filters.hisHandleStatus" placeholder="请选择状态"  clearable @change="changeHisHandleStatus">
+								<el-option v-for="(b,index) in options['bugStatus']" :value="b.optionValue"  :key="index" :label="b.optionName">{{b.optionName}}
+								</el-option>
+							</el-select>的问题
 						</el-col> 
 						<el-col :span="24" style="padding-top:5px;">
 								<font class="more-label-font">故事:</font>
@@ -237,6 +248,8 @@
 					menus:[],
 					product:null,
 					createUser:null,
+					hisHandler:null,
+					hisHandleStatus:null,
 
 				},
 				xmQuestions: [],//查询结果
@@ -401,6 +414,12 @@
 				if(this.filters.createUser){
 					params.createUserid=this.filters.createUser.userid;
 				}
+				if(this.filters.hisHandler){
+					params.hisHandlerUserid=this.filters.hisHandler.userid;
+				}
+				if(this.filters.hisHandleStatus){
+					params.hisHandleStatus=this.filters.hisHandleStatus
+				}
 				params.createTimeStart=this.dateRanger[0]+" 00:00:00"
 				params.createTimeEnd=this.dateRanger[1]+" 23:59:59"
 				this.load.list = true;
@@ -548,6 +567,10 @@
 				this.filters.bugStatus= val; 
 				this.getXmQuestions();
 			},
+			changeHisHandleStatus(val){
+				this.filters.hisHandleStatus= val; 
+				this.getXmQuestions();
+			},
 			changeBugSeverity(val){
 				this.filters.bugSeverity= val; 
 				this.getXmQuestions();
@@ -679,6 +702,13 @@
 						var user=groupUsers[0] 
 						this.filters.createUser=user 
 					} 
+				}else if(this.userType=='hisHandler'){
+					if(groupUsers==null || groupUsers.length==0){ 
+						this.filters.hisHandler=null 
+					}else{
+						var user=groupUsers[0] 
+						this.filters.hisHandler=user 
+					} 
 				}else{
 					if(groupUsers==null || groupUsers.length==0){ 
 						this.filters.handlerUserid=''
@@ -796,6 +826,12 @@
 				this.searchXmQuestions();
 				this.nextAction=""
 			},
+			clearHisHandler(){
+				
+				this.filters.hisHandler=null 
+				this.searchXmQuestions();
+				this.nextAction=""
+			},
 			handleCommand(command) {  
 				if(command.type=='sendToProcessApprova'){ 
 					this.sendToProcessApprova(command.data,command.bizKey);
@@ -809,7 +845,12 @@
 			setFiltersCreateUserAsMySelf(){
 				this.filters.createUser=this.userInfo
  				this.searchXmQuestions();
-			}
+			}, 
+			setFiltersHisHandlerAsMySelf(){
+				this.filters.hisHandler=this.userInfo
+ 				this.searchXmQuestions();
+			},
+			
 		},//end methods
 		components: { 
 				'xm-question-add':XmQuestionAdd,
