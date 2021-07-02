@@ -1,7 +1,11 @@
 <template>
 	<section>
-		<sticky  :className="'sub-navbar draft'">  
-			<el-input v-model="filters.key"  style="width:20%;" placeholder="模糊查询"></el-input> 
+		<el-row  class="app-container">  
+			<el-input v-model="filters.key"  style="width:20%;" placeholder="模糊查询">
+				<template slot="append"> 
+					<el-button type="primary"   v-on:click="searchProcdefs" icon="el-icon-search">查询</el-button> 
+				</template>
+			</el-input> 
 			<el-select v-model="filters.procCategory"   clearable filterable placeholder="请选择分类">
 		     <el-option
 		      v-for="item in categorys"
@@ -9,11 +13,10 @@
 		      :label="item"
 		      :value="item">
 		    </el-option>
-		  </el-select>
-			<el-button type="primary"   v-on:click="searchProcdefs">查询</el-button>   
+		  </el-select>   
 			<el-button   @click.native="showTagSelect(false)"  >标签查找</el-button>
 			<el-button   @click.native="showTagSelect(true)"  >打标签</el-button>
-	    </sticky>
+	    </el-row>
 		<el-row class="filters-show">
 			<font class="filters-label">已选条件:</font>
 			<el-tag  v-if="filters.tags"
@@ -57,7 +60,7 @@
 			<el-col :xs="24" :sm="24" :md="20" :lg="20" :xl="20"> 
 			
 			<!--列表 Procdef act_re_procdef-->
-			<el-table :data="procdefs"    highlight-current-row v-loading="listLoading" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table  ref="table" :max-height="tableHeight"  :data="procdefs"    highlight-current-row v-loading="listLoading" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column type="selection" width="40"></el-table-column>
 				<el-table-column type="index" width="40"></el-table-column> 
 				<el-table-column prop="category" label="分类" min-width="80" ></el-table-column>
@@ -152,6 +155,7 @@
 				categorys:[],
 				tagSelectVisible:false,
 				isBatchSetProcTags:false,
+				tableHeight:300,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -400,6 +404,11 @@
 		},
 		mounted() {
 			
+			this.$nextTick(()=>{ 
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=70/1000 * window.innerHeight; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
+			})
 			listCategorys({tenantId:this.userInfo.branchId}).then(res=>{
 				this.categorys=res.data.data
 			})

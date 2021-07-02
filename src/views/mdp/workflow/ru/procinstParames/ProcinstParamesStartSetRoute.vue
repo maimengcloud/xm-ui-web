@@ -43,13 +43,22 @@
 		    //在下面添加其它组件
 		},
 		mounted() {
-			console.log("this.$route.params-------------------"+JSON.stringify(this.$route.params));
-			if(this.$route.params){
+			var key="ProcinstParamesStartSetRoute"
+			if(this.$route.params.procdef){
 				this.flowStartVisible=true;
 				 this.procdef=this.$route.params.procdef
 				 if(this.$route.params.params){
 					 this.filters.params=this.$route.params.params
 				 }
+				 localStorage.setItem(key,JSON.stringify(this.$route.params));
+			}else{
+				var paramsStr= localStorage.getItem(key);
+				var params=JSON.parse(paramsStr);
+				this.procdef=params.procdef
+				if(params.params){
+					this.filters.params=params.params
+				} 
+
 			}
 			
 			 

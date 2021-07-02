@@ -1,10 +1,10 @@
 <template>
 	<section>
-		<el-row class="app-container">
-			<el-button @click="handleCancel">取消</el-button>
-			<el-button @click="confirm">确定</el-button>
+		<el-row>
+			<el-button @click="handleCancel" icon="el-icon-back">取消</el-button>
+			<el-button type="primary" @click="confirm" icon="el-icon-finished">确定</el-button>
 		</el-row>
-		<el-row class="app-container">  
+		<el-row style="padding-top:10px;">  
 			<!--新增界面 ProcinstParames 流程实例参数设置表-->   
 					  <el-table
 						:data="nodeInfoList"
@@ -23,8 +23,9 @@
 						min-width="250">
 							<template slot-scope="scope">
 								{{showAssigneeTips(scope.row)}} 
-								<el-button round v-if="scope.row.candidate=='1'" type="warning" @click.native="showCandidateSelectDialog(scope.row,'')" :loading="listLoading">选候选人</el-button> 
-								<el-button round v-if="scope.row.candidate!='1'" type="success" @click.native="showUserSelectDialog(scope.row,'')" :loading="listLoading">选人员</el-button>   
+								<el-button round v-if="scope.row.candidate=='1'  && scope.row.allowOverUser!='0'" type="warning" @click.native="showCandidateSelectDialog(scope.row,'')" :loading="listLoading">选候选人</el-button> 
+								<el-button  round v-if="scope.row.candidate!='1' && scope.row.allowOverUser!='0'" type="success" @click.native="showUserSelectDialog(scope.row,'')" :loading="listLoading">选人员</el-button>   
+								<el-button round v-if="scope.row.toCreater!='1'" type="primary" @click.native="setAssigneeAsStartUser(scope.row)">转发起人</el-button>  
 							</template>
 						</el-table-column>
 						<el-table-column
@@ -34,7 +35,7 @@
 						width="150">
 						
 							<template slot-scope="scope">
-								<el-checkbox v-model="scope.row.showNextAssignees" label="可手选" true-label="1" false-label="0" border></el-checkbox>   
+								<el-checkbox v-if="scope.row.allowOverUser!='0'" v-model="scope.row.showNextAssignees" label="可手选" true-label="1" false-label="0" border></el-checkbox>   
 							</template>
 						</el-table-column>
 						<el-table-column
@@ -42,7 +43,7 @@
 						label="候选任务"
 						width="120"> 
 							<template slot-scope="scope">
-								<el-checkbox v-model="scope.row.candidate" label="候选" true-label="1" false-label="0" border></el-checkbox>  
+								<el-checkbox v-if="scope.row.allowOverUser!='0'" v-model="scope.row.candidate" label="候选" true-label="1" false-label="0" border></el-checkbox>  
 							</template>
 						</el-table-column> 
 						
@@ -123,7 +124,7 @@
 		methods: {
 			// 取消按钮点击 父组件监听@cancel="addFormVisible=false" 监听
 			handleCancel:function(){
-				this.nodeInfoList=JSON.parse(JSON.stringify(this.nodeInfoListOld))
+				//this.nodeInfoList=JSON.parse(JSON.stringify(this.nodeInfoListOld))
 				this.$emit('cancel');
 			},
 			confirm:function(){
@@ -134,28 +135,38 @@
 				console.log("nodeInfo-----------"+JSON.stringify(nodeInfo));
 				 
 				this.nodeInfoSeleced.nodeUsers=nodeInfo.nodeUsers;
-				this.nodeInfoSeleced.groupIds=nodeInfo.groupIds
+				this.nodeInfoSeleced.groupIds=nodeInfo.groupIds 
+				this.nodeInfoSeleced.toCreater='0'
 
 			},
 			onUserSelected:function(users){
 				this.userSelectVisible=false; 
-				this.nodeInfoSeleced.nodeUsers=users 
+				this.nodeInfoSeleced.nodeUsers=users  
+				this.nodeInfoSeleced.toCreater='0'
 
 			},   
 			
 			showUserSelectDialog:function(nodeInfoSeleced,index){
-				console.log(nodeInfoSeleced);
+				if(nodeInfoSeleced.allowOverUser=='0'){
+					this.$message.error("当前节点不允许变更执行人")
+					return;
+				} 
 				this.userSelectVisible=true;
 				this.nodeInfoSeleced=nodeInfoSeleced;
 			},
 			showCandidateSelectDialog:function(nodeInfoSeleced,index){
-				console.log(nodeInfoSeleced);
+				if(nodeInfoSeleced.allowOverUser=='0'){
+					this.$message.error("当前节点不允许变更执行人")
+					return;
+				} 
 				this.candidateSelectVisible=true;
 				this.nodeInfoSeleced=nodeInfoSeleced;
 			},
 			showAssigneeTips(nodeInfo){
 				var tips=[];
-				if(nodeInfo.candidate=='1'){
+				if(nodeInfo.toCreater=='1'){
+					tips.push("流程发起人作为执行人")
+				}else if(nodeInfo.candidate=='1'){
 					if(nodeInfo.nodeUsers){
 						var userCount=nodeInfo.nodeUsers.length;
 						tips.push(userCount+"个候选用户");
@@ -164,15 +175,15 @@
 						var groupCount=nodeInfo.groupIds.split(",").length;
 						tips.push(groupCount+"个候选部门/岗位");
 					}
+					
 					if(tips.length==0){
 						tips.push("未配置任何候选人/候选部门/候选岗位");
 					}
 					
 				}else{
-					if(nodeInfo.nodeUsers){
- 
-							tips=tips.concat(nodeInfo.nodeUsers.map(i=>i.username)); 
-					}else{
+					if(nodeInfo.nodeUsers){ 
+						tips=tips.concat(nodeInfo.nodeUsers.map(i=>i.username)); 
+					}else{ 
 						tips.push("未配置任何任务执行人");
 					} 
 				}
@@ -225,7 +236,18 @@
 			showQxDialog:function(nodeInfo){
 				this.qxVisible=true;
 				this.nodeInfoSeleced=nodeInfo;
-			}, 
+			},
+			setAssigneeAsStartUser(nodeInfoSeleced){
+				if(nodeInfoSeleced.allowOverUser=='0'){
+					this.$message.error("当前节点不允许变更执行人")
+					return;
+				} 
+				this.nodeInfoSeleced=nodeInfoSeleced
+				this.nodeInfoSeleced.toCreater='1'
+				this.nodeInfoSeleced.candidate='0'
+				this.nodeInfoSeleced.showNextAssignees='0'
+				
+			}
 			  
 		},//end method
 		components: {  

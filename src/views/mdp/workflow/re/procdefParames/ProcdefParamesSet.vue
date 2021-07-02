@@ -99,7 +99,8 @@
 							<template slot-scope="scope">
 								{{showAssigneeTips(scope.row)}} 
 								<el-button round v-if="scope.row.candidate=='1'" type="warning" @click.native="showCandidateSelectDialog(scope.row,'')" :loading="addLoading">选候选人</el-button> 
-								<el-button round v-if="scope.row.candidate!='1'" type="success" @click.native="showUserSelectDialog(scope.row,'')" :loading="addLoading">选人员</el-button>   
+								<el-button round v-if="scope.row.candidate!='1' " type="success" @click.native="showUserSelectDialog(scope.row,'')" :loading="addLoading">选人员</el-button>  
+								<el-button round v-if="scope.row.toCreater!='1'" type="primary" @click.native="setAssigneeAsStartUser(scope.row)">转发起人</el-button>  
 							</template>
 						</el-table-column>
 						<el-table-column
@@ -466,6 +467,7 @@
 				 
 				this.actSelected.nodeUsers=actAssignee.nodeUsers;
 				this.actSelected.groupIds=actAssignee.groupIds
+				this.actSelected.toCreater='0'
 
 			},
 			onUserSelected:function(users){
@@ -477,6 +479,7 @@
 					}
 				})
 				this.actSelected.nodeUsers=users 
+				this.actSelected.toCreater='0'
 
 			}, 
 			onTagSelected:function(tags){
@@ -528,7 +531,9 @@
 			},
 			showAssigneeTips(actAssignee){
 				var tips=[];
-				if(actAssignee.candidate=='1'){
+				if(actAssignee.toCreater=='1'){
+					tips.push("流程发起人作为执行人")
+				} else if(actAssignee.candidate=='1'){
 					if(actAssignee.nodeUsers){
 						var userCount=actAssignee.nodeUsers.length;
 						tips.push(userCount+"个候选用户");
@@ -689,6 +694,17 @@
 			showNodeForm:function(nodeInfo){ 
 				this.actSelected=nodeInfo 
 				this.nodeFormVisible=true
+			},
+			setAssigneeAsStartUser(nodeInfo){
+				if(nodeInfo.allowOverUser=='0'){
+					this.$message.error("该节点不允许改变执行人")
+					return ;
+				} 
+				this.actSelected=nodeInfo
+				this.actSelected.toCreater='1'
+				this.actSelected.candidate='0'
+				this.actSelected.showNextAssignees='0'
+				
 			}
 		},//end method
 		components: {  

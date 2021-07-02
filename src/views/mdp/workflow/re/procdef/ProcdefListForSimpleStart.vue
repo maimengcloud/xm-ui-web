@@ -1,62 +1,55 @@
 <template>
 	<section>
-		<el-row v-if="flowStartVisible==false">
-		<sticky  :className="'sub-navbar draft'">  
-			<el-row>
-			<el-col :span="22">
-				<el-col :xs="8" :sm="8" :md="6" :lg="6" :xl="6">
-					<el-input v-model="filters.key"  style="width:100%;" placeholder="模糊查询"></el-input> 
-				</el-col> 
-				<el-col :xs="8" :sm="8" :md="6" :lg="6" :xl="6">
-					<el-button type="primary"   v-on:click="searchProcdefs">查询</el-button>  
-				</el-col>
-				 <el-tag type="info" v-if="this.procdefs.length==0">如果没有找到流程，请将业务编码【{{this.filters.params.bizKey}}】与流程进行关联</el-tag>
-			</el-col> 
-			</el-row>
-	    </sticky> 
-		<el-row class="app-container"> 
-			<el-col :xs="24" :sm="24" :md="21" :lg="21" :xl="21"> 
-				<!--列表 Procdef act_re_procdef-->
-				<el-table ref="procdefsTable" :data="procdefs"   highlight-current-row v-loading="listLoading" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-					<el-table-column type="selection" width="40"></el-table-column>
-					<el-table-column type="index" width="40"></el-table-column> 
-					<el-table-column sortable prop="category" label="分类" min-width="80" ></el-table-column>
-					<el-table-column sortable prop="name" label="流程名称" min-width="200"></el-table-column> 
-					<el-table-column sortable prop="tagNames" label="标签" min-width="150"  >
-						<template slot-scope="scope">
-							<el-tag v-for="tagName in (scope.row.tagNames?scope.row.tagNames.split(','):[])" :key="tagName">{{tagName}}</el-tag>
-						</template>
-					</el-table-column>
-					<el-table-column sortable prop="description" label="描述" min-width="200" ></el-table-column> 
-					<el-table-column sortable prop="version" label="版本" min-width="80" ></el-table-column>
-					<el-table-column label="操作" :min-width="screenWidth>=500?200:80"  fixed="right">
-						<template slot-scope="scope">
-							
-							<el-button v-show="isSelectModel"  @click="rowClick(scope.row,scope.$index)">选中</el-button>
-							<el-button type="primary" v-show="!isSelectModel"  @click="showFlowStart(scope.row,scope.$index)">发起</el-button>
-							<el-button   class="hidden-sm-and-down" @click="showDiagram( scope.row,scope.$index)">流程图</el-button>
-							
-						</template>
-					</el-table-column>
-				</el-table>
+		<el-row v-if="flowStartVisible==false"  class="app-container">
+			<el-row >    
+				<el-input v-model="filters.key"  style="width:30%;" placeholder="模糊查询">
+					<template slot="append"> 
+						<el-button type="primary" v-loading="listLoading" :disabled="listLoading" v-on:click="searchProcdefs" icon="el-icon-search">查询</el-button> 
+					</template>
+				</el-input>  
+				<el-tag type="info" v-if="this.procdefs.length==0">如果没有找到流程，请将业务编码【{{this.filters.params.bizKey}}】与流程进行关联</el-tag> 
+			</el-row> 
+			<el-row style="padding-top:10px;">  
+					<!--列表 Procdef act_re_procdef-->
+					<el-table ref="procdefsTable"  :max-height="tableHeight"  :data="procdefs"   highlight-current-row v-loading="listLoading" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+						<el-table-column type="selection" width="40"></el-table-column>
+						<el-table-column type="index" width="40"></el-table-column> 
+						<el-table-column sortable prop="category" label="分类" min-width="80" ></el-table-column>
+						<el-table-column sortable prop="name" label="流程名称" min-width="200"></el-table-column> 
+						<el-table-column sortable prop="tagNames" label="标签" min-width="150"  >
+							<template slot-scope="scope">
+								<el-tag v-for="tagName in (scope.row.tagNames?scope.row.tagNames.split(','):[])" :key="tagName">{{tagName}}</el-tag>
+							</template>
+						</el-table-column>
+						<el-table-column sortable prop="description" label="描述" min-width="200" ></el-table-column> 
+						<el-table-column sortable prop="version" label="版本" min-width="80" ></el-table-column>
+						<el-table-column label="操作" :min-width="screenWidth>=500?200:80"  fixed="right">
+							<template slot-scope="scope">
+								
+								<el-button v-show="isSelectModel"  @click="rowClick(scope.row,scope.$index)">选中</el-button>
+								<el-button type="primary" v-show="!isSelectModel"  @click="showFlowStart(scope.row,scope.$index)">发起</el-button>
+								<el-button   class="hidden-sm-and-down" @click="showDiagram( scope.row,scope.$index)">流程图</el-button>
+								
+							</template>
+						</el-table-column>
+					</el-table>
+					
+					<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;">
+					</el-pagination> 
 				
-				<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;">
-				</el-pagination>
-			</el-col>
-			
-			<!--流程图界面-->
-			<el-dialog title="流程图" :visible.sync="diagramVisible"  width="80%"  :close-on-click-modal="false">
-				  
-				<el-image   :fit="'contain'" :src="diagramUrl">
-					<div slot="error" class="image-slot">
-						<i class="el-icon-picture-outline"></i>
-					</div>
-					<div slot="placeholder" class="image-slot">
-						正在全力加载中。。。。。。。。。。<i class="el-icon-loading"></i>
-					</div>
-				</el-image>  
-			</el-dialog>
-		</el-row>
+				<!--流程图界面-->
+				<el-dialog title="流程图" :visible.sync="diagramVisible"  width="80%"  :close-on-click-modal="false">
+					
+					<el-image   :fit="'contain'" :src="diagramUrl">
+						<div slot="error" class="image-slot">
+							<i class="el-icon-picture-outline"></i>
+						</div>
+						<div slot="placeholder" class="image-slot">
+							正在全力加载中。。。。。。。。。。<i class="el-icon-loading"></i>
+						</div>
+					</el-image>  
+				</el-dialog>
+			</el-row>
 		</el-row>
 		<el-row v-else-if="flowStartVisible==true">
 			 <procinst-parames-start-set :procdef="addForm" :visible="flowStartVisible" :params="filters.params"    @cancel="startCancel"></procinst-parames-start-set>
@@ -141,6 +134,7 @@
 				categorys:[],
 				tagSelectVisible:false,
 				isBatchSetProcTags:false,
+				tableHeight:300,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -299,6 +293,12 @@
 				 this.filters.params=this.params; 
 				 this.searchProcdefs(); 
 			 }
+			 this.$nextTick(()=>{
+				 
+				var clientRect=this.$refs.procdefsTable.$el.getBoundingClientRect();
+				var subHeight=70/1000 * window.innerHeight; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.procdefsTable.$el.offsetTop-subHeight; 
+			 })
 			  
 			 
 		}

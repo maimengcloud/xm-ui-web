@@ -1,176 +1,139 @@
 <template>
   <section>
-    <sticky :className="'sub-navbar draft'">
-      <el-input v-model="filters.key" style="width:20%;" placeholder="模糊查询"></el-input>
-      <el-select v-model="filters.procCategory" clearable filterable placeholder="请选择分类">
-        <el-option v-for="item in categorys" :key="item" :label="item" :value="item"></el-option>
-      </el-select>
-      <el-button type="primary" v-on:click="searchProcdefs">查询</el-button>
-      <el-button type="primary" @click="handleDownload">导出数据</el-button>
-      <el-button @click.native="showTagSelect(false)">标签查找</el-button>
-      <el-button @click.native="showTagSelect(true)">打标签</el-button>
-    </sticky>
-    <el-row class="filters-show">
-      <font class="filters-label">已选条件:</font>
-      <el-tag
-        v-if="filters.tags"
-        :key="tag.tagId"
-        v-for="tag in filters.tags"
-        :type="''"
-        closable
-        :disable-transitions="false"
-        @close="handleFiltersTagClose(tag,'tags')"
-      >{{tag.tagName}}</el-tag>
-      <el-tag
-        v-if="filters.categoryTreeNodes"
-        :key="tag.id"
-        v-for="tag in filters.categoryTreeNodes"
-        :type="'info'"
-        closable
-        :disable-transitions="false"
-        @close="handleFiltersTagClose(tag,'categoryTreeNodes')"
-      >{{tag.name}}</el-tag>
+    <el-row class="app-container"> 
+        <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4" class="hidden-sm-and-down">
+          <category-tree
+            ref="categoryTree"
+            multiple
+            :expandOnClickNode="false"
+            :defaultExpandAll="true"
+            show-checkbox
+            :current-key="addForm.categoryId"
+            v-on:check-change="handleCategoryCheckChange"
+          ></category-tree>
+        </el-col>
+        <el-col :xs="24" :sm="24" :md="20" :lg="20" :xl="20"> 
+          <el-row>
+            <el-select v-model="filters.procCategory" clearable filterable placeholder="请选择分类">
+              <el-option v-for="item in categorys" :key="item" :label="item" :value="item"></el-option>
+            </el-select> 
+            <el-button @click.native="showTagSelect(false)">标签查找</el-button>
+            <el-input v-model="filters.key" style="width:20%;" placeholder="模糊查询">
+              <template slot="append"> 
+                <el-button type="primary"   v-on:click="searchProcdefs" icon="el-icon-search">查询</el-button> 
+              </template>
+            </el-input> 
+            <el-button type="primary" @click="handleDownload" icon="el-icon-download">导出数据</el-button>
+            <el-button @click.native="showTagSelect(true)">打标签</el-button>
+          </el-row> 
+          <!--列表 Procdef act_re_procdef-->
+          <el-row style="padding-top:10px;">
+          <el-table
+            ref="table" :max-height="tableHeight" 
+            :data="procdefs"
+            highlight-current-row
+            v-loading="listLoading"
+            border
+            @selection-change="selsChange"
+            @row-click="rowClick"
+            style="width: 100%;"
+          >
+            <el-table-column type="selection" width="40"></el-table-column>
+            <el-table-column type="index" width="40"></el-table-column>
+            <el-table-column sortable prop="category" label="分类" min-width="100" show-overflow-tooltip></el-table-column>
+            <el-table-column sortable prop="name" label="模型名称" min-width="150" show-overflow-tooltip></el-table-column>
+            <el-table-column
+              sortable
+              prop="suspensionState"
+              label="状态"
+              min-width="80"
+              show-overflow-tooltip
+              :formatter="formatterSuspensionState"
+            ></el-table-column>
 
-      <el-tag
-        v-if="filters.procCategory"
-        :type="'dangger'"
-        closable
-        :disable-transitions="false"
-        @close="handleFiltersTagClose('','procCategory')"
-      >{{filters.procCategory}}</el-tag>
-      <el-tag
-        v-if="filters.key"
-        :type="'success'"
-        closable
-        :disable-transitions="false"
-        @close="handleFiltersTagClose('','key')"
-      >{{filters.key}}</el-tag>
-    </el-row>
-    <el-row class="app-container">
-      <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4" class="hidden-sm-and-down">
-        <category-tree
-          ref="categoryTree"
-          multiple
-          :expandOnClickNode="false"
-          :defaultExpandAll="true"
-          show-checkbox
-          :current-key="addForm.categoryId"
-          v-on:check-change="handleCategoryCheckChange"
-        ></category-tree>
-      </el-col>
-      <el-col :xs="24" :sm="24" :md="20" :lg="20" :xl="20">
-        <!--列表 Procdef act_re_procdef-->
-        <el-table
-          :data="procdefs"
-          highlight-current-row
-          v-loading="listLoading"
-          border
-          @selection-change="selsChange"
-          @row-click="rowClick"
-          style="width: 100%;"
-        >
-          <el-table-column type="selection" width="40"></el-table-column>
-          <el-table-column type="index" width="40"></el-table-column>
-          <el-table-column sortable prop="category" label="分类" min-width="80" ></el-table-column>
-          <el-table-column sortable prop="name" label="模型名称" min-width="80" ></el-table-column>
-          <el-table-column
-            sortable
-            prop="suspensionState"
-            label="状态"
-            min-width="80"
-            
-            :formatter="formatterSuspensionState"
-          ></el-table-column>
-
-          <el-table-column prop="tagNames" label="标签" min-width="80" >
-            <template slot-scope="scope">
-              <el-tag
-                v-for="tagName in (scope.row.tagNames?scope.row.tagNames.split(','):[])"
-                :key="tagName"
-              >{{tagName}}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column sortable prop="key" label="业务编码" min-width="80" ></el-table-column>
-          <el-table-column sortable prop="version" label="版本" min-width="80" ></el-table-column>
-          <el-table-column
-            sortable
-            prop="deploymentId"
-            label="部署编号"
-            min-width="80"
-            
-          ></el-table-column>
-          <el-table-column
-            sortable
-            prop="resourceName"
-            label="模型文件名称"
-            min-width="80"
-            
-          ></el-table-column>
-          <el-table-column
-            sortable
-            prop="dgrmResourceName"
-            label="图片名称"
-            min-width="80"
-            
-          ></el-table-column>
-          <el-table-column
-            sortable
-            prop="description"
-            label="描述"
-            min-width="80"
-            
-          ></el-table-column>
-          <el-table-column label="操作" min-width="150" fixed="right" >
-            <template slot-scope="scope">
-              <el-button @click="showDiagram( scope.row,scope.$index)">流程图</el-button>
-              <el-button
-                v-if="scope.row.suspensionState=='1' "
-                type="danger"
-                @click="handleSuspend(scope.row,scope.$index)"
-              >挂起</el-button>
-              <el-button
-                v-if="scope.row.suspensionState!='1' "
-                @click="handleActivate(scope.row,scope.$index)"
-              >激活</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-        <el-pagination
-          layout="total, sizes, prev, pager, next"
-          @current-change="handleCurrentChange"
-          @size-change="handleSizeChange"
-          :page-sizes="[10,20, 50, 100, 500]"
-          :current-page="pageInfo.pageNum"
-          :page-size="pageInfo.pageSize"
-          :total="pageInfo.total"
-          style="float:right;"
-        ></el-pagination>
-        <!--流程图界面-->
-        <el-dialog
-          title="流程图"
-          :visible.sync="diagramVisible"
-          width="80%"
-          :close-on-click-modal="false"
-        >
-          <el-image :fit="'contain'" :src="diagramUrl">
-            <div slot="error" class="image-slot">
-              <i class="el-icon-picture-outline"></i>
-            </div>
-            <div slot="placeholder" class="image-slot">
-              正在全力加载中。。。。。。。。。。
-              <i class="el-icon-loading"></i>
-            </div>
-          </el-image>
-        </el-dialog>
-        <el-dialog append-to-body title="标签条件" :visible.sync="tagSelectVisible" width="60%">
-          <tag-mng
-            :tagIds="filters.tags?filters.tags.map(i=>i.tagId):[]"
-            :jump="true"
-            @select-confirm="onTagSelected"
-          ></tag-mng>
-        </el-dialog>
-      </el-col>
-    </el-row>
+            <el-table-column prop="tagNames" label="标签" min-width="80" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <el-tag
+                  v-for="tagName in (scope.row.tagNames?scope.row.tagNames.split(','):[])"
+                  :key="tagName"
+                >{{tagName}}</el-tag>
+              </template>
+            </el-table-column>
+            <el-table-column sortable prop="key" label="业务编码" min-width="80" show-overflow-tooltip></el-table-column>
+            <el-table-column sortable prop="version" label="版本" min-width="80" show-overflow-tooltip></el-table-column>
+            <el-table-column
+              sortable
+              prop="deploymentId"
+              label="部署编号"
+              min-width="80"
+              show-overflow-tooltip
+            ></el-table-column>
+            <el-table-column
+              sortable
+              prop="resourceName"
+              label="模型文件名称"
+              min-width="80"
+              show-overflow-tooltip
+            ></el-table-column> 
+            <el-table-column
+              sortable
+              prop="description"
+              label="描述"
+              min-width="80"
+              show-overflow-tooltip
+            ></el-table-column>
+            <el-table-column label="操作" width="200" fixed="right" >
+              <template slot-scope="scope">
+                <el-button @click="showDiagram( scope.row,scope.$index)">流程图</el-button>
+                <el-button
+                  v-if="scope.row.suspensionState=='1' "
+                  type="danger"
+                  @click="handleSuspend(scope.row,scope.$index)"
+                >挂起</el-button>
+                <el-button
+                  v-if="scope.row.suspensionState!='1' "
+                  @click="handleActivate(scope.row,scope.$index)"
+                >激活</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-pagination
+            layout="total, sizes, prev, pager, next"
+            @current-change="handleCurrentChange"
+            @size-change="handleSizeChange"
+            :page-sizes="[10,20, 50, 100, 500]"
+            :current-page="pageInfo.pageNum"
+            :page-size="pageInfo.pageSize"
+            :total="pageInfo.total"
+            style="float:right;"
+          ></el-pagination>
+          <!--流程图界面-->
+          <el-dialog
+            title="流程图"
+            :visible.sync="diagramVisible"
+            width="80%"
+            :close-on-click-modal="false"
+          >
+            <el-image :fit="'contain'" :src="diagramUrl">
+              <div slot="error" class="image-slot">
+                <i class="el-icon-picture-outline"></i>
+              </div>
+              <div slot="placeholder" class="image-slot">
+                正在全力加载中。。。。。。。。。。
+                <i class="el-icon-loading"></i>
+              </div>
+            </el-image>
+          </el-dialog>
+          <el-dialog append-to-body title="标签条件" :visible.sync="tagSelectVisible" width="60%">
+            <tag-mng
+              :tagIds="filters.tags?filters.tags.map(i=>i.tagId):[]"
+              :jump="true"
+              @select-confirm="onTagSelected"
+            ></tag-mng>
+          </el-dialog>
+          </el-row>
+        </el-col>
+      </el-row> 
   </section>
 </template>
 
@@ -242,7 +205,8 @@ export default {
       diagramUrl: "", //显示流程图的路径
       categorys: [],
       tagSelectVisible: false,
-      isBatchSetProcTags: false
+      isBatchSetProcTags: false,
+			tableHeight:300,
       /**end 自定义属性请在上面加 请加备注**/
     };
   }, //end data
@@ -616,6 +580,12 @@ export default {
     listCategorys({ tenantId: this.userInfo.branchId }).then(res => {
       this.categorys = res.data.data;
     });
+    
+    this.$nextTick(()=>{ 
+        var clientRect=this.$refs.table.$el.getBoundingClientRect();
+        var subHeight=70/1000 * window.innerHeight; 
+        this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
+    })
     this.getProcdefs();
   }
 };

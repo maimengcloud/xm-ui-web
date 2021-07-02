@@ -1,58 +1,63 @@
 <template>
-	<section>
-		<sticky  :className="'sub-navbar draft'">
-			<el-input v-model="filters.key" style="width:20%;"  placeholder="模糊查询"></el-input> 
-			<el-button type="primary"   v-on:click="searchModels">查询</el-button> 
-			<el-button
-				type="primary"
-				@click="handleDownload"
-			>导出数据</el-button>
-	    </sticky>
-		<el-row class="app-container"> 
-			<!--列表 Model act_de_model-->
-			<el-table :data="models"    highlight-current-row v-loading="listLoading" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-				<el-table-column type="index" width="40"></el-table-column> 
-				<el-table-column sortable prop="name" label="流程(点击查已发布版本)" min-width="300" >
-					<template slot-scope="scope">  
-							<el-link type="primary" @click="showDeploymentList( scope.row,scope.$index)">{{scope.row.name}} </el-link>
+	<section> 
+		<el-row  class="app-container">
+			<el-row>
+				<el-input v-model="filters.key" style="width:30%;"  placeholder="模糊查询">
+					<template slot="append"> 
+						<el-button type="primary"   v-on:click="searchModels" icon="el-icon-search">查询</el-button> 
 					</template>
-				</el-table-column> 
-				<el-table-column sortable prop="version" label="模型版本" min-width="80"  ></el-table-column> 
-				<el-table-column sortable prop="description" label="描述" width="120">
-					<template slot-scope="scope">
-						<el-popover
-						placement="top-start"
-						title="描述"
-						width="400"
-						trigger="click"
-						:content="scope.row.description">
-						<el-button slot="reference">详细描述</el-button>
-						</el-popover>
-					</template>
+				</el-input> 
+				<el-button 
+					@click="handleDownload"
+					icon="el-icon-download"
+				>导出数据</el-button>
+			</el-row>
+			<el-row style="padding-top:10px;"> 
+				<!--列表 Model act_de_model-->
+				<el-table  ref="table" :max-height="tableHeight" :data="models"    highlight-current-row v-loading="listLoading" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+					<el-table-column type="index" width="40"></el-table-column> 
+					<el-table-column  prop="name" label="流程(点击查已发布版本)" min-width="300" show-overflow-tooltip>
+						<template slot-scope="scope">  
+								<el-link type="primary" @click="showDeploymentList( scope.row,scope.$index)">{{scope.row.name}} </el-link>
+						</template>
+					</el-table-column> 
+					<el-table-column sortable prop="version" label="模型版本" min-width="80"   show-overflow-tooltip></el-table-column> 
+					<el-table-column  prop="description" label="描述" width="120" show-overflow-tooltip>
+						<template slot-scope="scope">
+							<el-popover
+							placement="top-start"
+							title="描述"
+							width="400"
+							trigger="click"
+							:content="scope.row.description">
+							<el-button slot="reference">详细描述</el-button>
+							</el-popover>
+						</template>
 
-				</el-table-column>
-				<el-table-column sortable prop="modelComment" label="备注" min-width="80"  ></el-table-column>
-				<el-table-column sortable prop="created" label="创建时间" min-width="120"  ></el-table-column>
-				<el-table-column sortable prop="lastUpdated" label="更新时间" min-width="120"  ></el-table-column>
-				<el-table-column sortable prop="lastUpdatedBy" label="更新人" min-width="120"  ></el-table-column>
-				<el-table-column label="操作" width="300"  fixed="right">
-					<template slot-scope="scope">
-						<el-button   @click="showDiagram( scope.row,scope.$index)">流程图</el-button>
-						<el-button   @click="deploy( scope.row,scope.$index)">发布新版</el-button> 
-						<el-button type="danger"  @click="handleDel(scope.row,scope.$index)">删</el-button>
-					</template>
-				</el-table-column>
-			</el-table>
-			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+					</el-table-column>
+					<el-table-column  prop="modelComment" label="备注" min-width="80"   show-overflow-tooltip></el-table-column>
+					<el-table-column sortable prop="created" label="创建时间" min-width="120"   show-overflow-tooltip></el-table-column>
+					<el-table-column sortable prop="lastUpdated" label="更新时间" min-width="120"   show-overflow-tooltip></el-table-column>
+					<el-table-column  prop="lastUpdatedBy" label="更新人" min-width="120"   show-overflow-tooltip></el-table-column>
+					<el-table-column label="操作" width="300"  fixed="right">
+						<template slot-scope="scope">
+							<el-button   @click="showDiagram( scope.row,scope.$index)">流程图</el-button>
+							<el-button   @click="deploy( scope.row,scope.$index)">发布新版</el-button> 
+							<el-button type="danger"  @click="handleDel(scope.row,scope.$index)">删</el-button>
+						</template>
+					</el-table-column>
+				</el-table>
+				<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 
-				<!--流程图界面-->
-			<el-dialog title="流程图" :visible.sync="diagramVisible"  width="80%"  :close-on-click-modal="false">
-				  <img :src="diagramUrl"></img>
-			</el-dialog>
+					<!--流程图界面-->
+				<el-dialog title="流程图" :visible.sync="diagramVisible"  width="80%"  :close-on-click-modal="false">
+					<img :src="diagramUrl"></img>
+				</el-dialog>
 
-			<el-dialog title="已发布的流程" :visible.sync="deploymentVisible"  width="80%"  :close-on-click-modal="false"> 
-				<deployment-mng :modelKey="editForm.modelKey"></deployment-mng>
-			</el-dialog>
+				<el-dialog title="已发布的流程" :visible.sync="deploymentVisible"  width="80%"  :close-on-click-modal="false"> 
+					<deployment-mng :modelKey="editForm.modelKey"></deployment-mng>
+				</el-dialog>
+			</el-row>
 		</el-row>
 	</section>
 </template>
@@ -110,6 +115,7 @@
 				companyDepts:[],	
 				deploymentVisible:false,
 				categorys:[],
+				tableHeight:300,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -377,7 +383,10 @@
 		},
 		mounted() { 
 			 
-			this.$nextTick(() => {
+			this.$nextTick(() => { 
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=70/1000 * window.innerHeight; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight;   
 				this.getModels();
         	});
 

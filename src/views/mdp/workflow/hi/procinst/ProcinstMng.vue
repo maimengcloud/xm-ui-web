@@ -1,255 +1,5 @@
 <template>
-  <section>
-    <sticky :className="'sub-navbar draft'">
-      <el-row>
-        <el-col :xs="22" :sm="22" :md="23" :lg="23" :xl="23">
-          <el-col :xs="8" :sm="8" :md="5" :lg="4" :xl="4">
-            <el-input v-model="filters.key" style="width:100%;" placeholder="模糊查询"></el-input>
-          </el-col>
-          <el-col :xs="8" :sm="8" :md="5" :lg="4" :xl="4">
-            <el-select
-              v-model="filters.procCategory"
-              style="width:99%;"
-              clearable
-              filterable
-              placeholder="请选择分类"
-            >
-              <el-option v-for="item in categorys" :key="item" :label="item" :value="item"></el-option>
-            </el-select>
-          </el-col>
-          <el-col :xs="8" :sm="8" :md="14" :lg="16" :xl="16">
-            <el-button type="primary" v-on:click="searchProcinsts">查询</el-button>
-            <el-button @click.native="showTagSelect(false)">标签查找</el-button>
-            <el-button @click.native="showTagSelect(true)">打标签</el-button>
-            <el-button type="primary" @click="handleDownload">导出数据</el-button>
-            <el-button v-if="isAll" :type="filters.allBtn?'success':''" v-on:click="searchAll">全部</el-button>
-            <el-button
-              :type="filters.otherParames.startUserId?'success':''"
-              v-on:click="searchMyStart"
-            >我发起</el-button>
-            <el-button
-              :type="filters.otherParames.partake?'success':''"
-              v-on:click="searchMyPartake"
-            >我参与</el-button>
-            <el-button
-              :type="filters.otherParames.sponsors?'success':''"
-              v-on:click="searchMySponsors"
-            >我主办</el-button>
-            <el-button
-              :type="filters.otherParames.monitors?'success':''"
-              v-on:click="searchMyMonitors"
-            >我监控</el-button>
-            <el-button
-              :type="filters.otherParames.isEnd==0?'success':''"
-              v-on:click="searchNotEnd"
-            >未结束</el-button>
-            <el-button :type="filters.otherParames.isEnd==1?'success':''" v-on:click="searchEnd">已结束</el-button>
-          </el-col>
-        </el-col>
-        <el-col :xs="2" :sm="2" :md="1" :lg="1" :xl="1">
-          <el-button @click="drawer = true" type="text">更多</el-button>
-
-          <el-drawer title="更多查询条件" :visible.sync="drawer" :with-header="false" append-to-body>
-            <el-row class="more-filter-item">
-              <el-button v-if="isAll" :type="filters.allBtn?'success':''" v-on:click="searchAll">全部</el-button>
-              <el-button
-                :type="filters.otherParames.startUserId?'success':''"
-                v-on:click="searchMyStart"
-              >我发起</el-button>
-              <el-button
-                :type="filters.otherParames.partake?'success':''"
-                v-on:click="searchMyPartake"
-              >我参与</el-button>
-              <el-button
-                :type="filters.otherParames.sponsors?'success':''"
-                v-on:click="searchMySponsors"
-              >我主办</el-button>
-              <el-button
-                :type="filters.otherParames.monitors?'success':''"
-                v-on:click="searchMyMonitors"
-              >我监控</el-button>
-              <el-button
-                :type="filters.otherParames.isEnd==0?'success':''"
-                v-on:click="searchNotEnd"
-              >未结束</el-button>
-              <el-button
-                :type="filters.otherParames.isEnd==1?'success':''"
-                v-on:click="searchEnd"
-              >已结束</el-button>
-              <el-button @click.native="showTagSelect(false)">标签查找</el-button>
-              <el-button @click.native="showTagSelect(true)">打标签</el-button>
-              <el-button @click.native="userSelectVisible=true">任务执行人</el-button>
-			  <el-button type="primary" @click="handleDownload">导出数据</el-button>
-              <el-col :span="24">
-                开始日期：
-                <el-date-picker
-                  v-model="filters.startTimeRanger"
-                  type="daterange"
-                  align="right"
-                  unlink-panels
-                  range-separator="至"
-                  start-placeholder="创建日期"
-                  end-placeholder="创建日期"
-                  value-format="yyyy-MM-dd"
-                  :default-time="['00:00:00','23:59:59']"
-                  :picker-options="pickerOptions"
-                ></el-date-picker>
-              </el-col>
-              <el-col :span="24">
-                计划完成：
-                <el-date-picker
-                  v-model="filters.planFinishTimeRanger"
-                  type="daterange"
-                  align="right"
-                  unlink-panels
-                  range-separator="至"
-                  start-placeholder="计划完成日期"
-                  end-placeholder="计划完成日期"
-                  value-format="yyyy-MM-dd"
-                  :default-time="['00:00:00','23:59:59']"
-                  :picker-options="pickerOptions"
-                ></el-date-picker>
-              </el-col>
-              <el-col :span="24">
-                实际完成：
-                <el-date-picker
-                  v-model="filters.endTimeRanger"
-                  type="daterange"
-                  align="right"
-                  unlink-panels
-                  range-separator="至"
-                  start-placeholder="实际完成日期"
-                  end-placeholder="实际完成日期"
-                  value-format="yyyy-MM-dd"
-                  :default-time="['00:00:00','23:59:59']"
-                  :picker-options="pickerOptions"
-                ></el-date-picker>
-              </el-col>
-            </el-row>
-            <category-tree
-              class="hidden-md-and-up"
-              ref="categoryTree"
-              multiple
-              :expandOnClickNode="false"
-              :defaultExpandAll="true"
-              show-checkbox
-              :current-key="addForm.categoryId"
-              v-on:check-change="handleCategoryCheckChange"
-            ></category-tree>
-          </el-drawer>
-        </el-col>
-      </el-row>
-    </sticky>
-    <el-row class="filters-show">
-      <font class="filters-label">已选条件:</font>
-      <el-date-picker
-        v-model="filters.startTimeRanger"
-        class="hidden-sm-and-down"
-        type="daterange"
-        align="right"
-        unlink-panels
-        range-separator="至"
-        start-placeholder="创建日期"
-        end-placeholder="创建日期"
-        value-format="yyyy-MM-dd"
-        :default-time="['00:00:00','23:59:59']"
-        :picker-options="pickerOptions"
-      ></el-date-picker>
-      <el-date-picker
-        v-model="filters.endTimeRanger"
-        class="hidden-sm-and-down"
-        type="daterange"
-        align="right"
-        unlink-panels
-        range-separator="至"
-        start-placeholder="实际完成日期"
-        end-placeholder="实际完成日期"
-        value-format="yyyy-MM-dd"
-        :default-time="['00:00:00','23:59:59']"
-        :picker-options="pickerOptions"
-      ></el-date-picker>
-      <el-tag
-        v-if="filters.tags"
-        :key="tag.tagId"
-        v-for="tag in filters.tags"
-        :type="''"
-        closable
-        :disable-transitions="false"
-        @close="handleFiltersTagClose(tag,'tags')"
-      >{{tag.tagName}}</el-tag>
-      <el-tag
-        v-if="filters.categoryTreeNodes"
-        :key="tag.id"
-        v-for="tag in filters.categoryTreeNodes"
-        :type="'info'"
-        closable
-        :disable-transitions="false"
-        @close="handleFiltersTagClose(tag,'categoryTreeNodes')"
-      >{{tag.name}}</el-tag>
-      <el-tag
-        v-if="filters.taskType=='0'"
-        :type="'warning'"
-        :disable-transitions="false"
-      >{{filters.taskType=='0'?'已领取':''}}</el-tag>
-      <el-tag
-        v-if="filters.taskType=='1'"
-        :type="'warning'"
-        :disable-transitions="false"
-      >{{filters.taskType=='1'?'待领取':''}}</el-tag>
-      <el-tag
-        v-if="filters.otherParames.partake"
-        :type="'warning'"
-        :disable-transitions="false"
-      >{{'我参与'}}</el-tag>
-      <el-tag
-        v-if="filters.otherParames.sponsors"
-        :type="'warning'"
-        :disable-transitions="false"
-      >{{'我主办'}}</el-tag>
-      <el-tag
-        v-if="filters.otherParames.monitors"
-        :type="'warning'"
-        :disable-transitions="false"
-      >{{'我监控'}}</el-tag>
-      <el-tag
-        v-if="filters.otherParames.isEnd=='1'"
-        :type="'warning'"
-        :disable-transitions="false"
-      >{{'已结束'}}</el-tag>
-      <el-tag
-        v-if="filters.otherParames.isEnd=='0'"
-        :type="'warning'"
-        :disable-transitions="false"
-      >{{'未结束'}}</el-tag>
-      <el-tag
-        v-if="filters.otherParames.startUserId"
-        :type="'warning'"
-        :disable-transitions="false"
-      >{{'我发起'}}</el-tag>
-
-      <el-tag
-        v-if="filters.procCategory"
-        :type="'dangger'"
-        closable
-        :disable-transitions="false"
-        @close="handleFiltersTagClose('','procCategory')"
-      >{{filters.procCategory}}</el-tag>
-      <el-tag
-        v-if="filters.key"
-        :type="'success'"
-        closable
-        :disable-transitions="false"
-        @close="handleFiltersTagClose('','key')"
-      >{{filters.key}}</el-tag>
-
-      <el-tag
-        v-if="filters.assignee"
-        :type="'success'"
-        closable
-        :disable-transitions="false"
-        @close="handleFiltersTagClose('','assignee')"
-      >{{filters.assignee.username}}</el-tag>
-    </el-row>
+  <section> 
     <el-row class="app-container">
       <el-col :xs="4" :sm="4" :md="3" :lg="3" :xl="3" class="hidden-sm-and-down">
         <category-tree
@@ -264,123 +14,280 @@
       </el-col>
       <el-col :xs="24" :sm="24" :md="21" :lg="21" :xl="21">
         <!--列表 Procinst act_hi_procinst-->
-        <el-table
-          :data="procinsts"
-          highlight-current-row
-          v-loading="listLoading"
-          border
-          @selection-change="selsChange"
-          @row-click="rowClick"
-          style="width: 100%;"
-        >
-          <el-table-column type="selection" width="40"></el-table-column>
-          <el-table-column type="index" width="40"></el-table-column>
-					<el-table-column sortable prop="mainTitle" label="流程(点击详情)" min-width="300" >
-						<template slot-scope="scope">  
-							 <el-link type="primary" @click="showEdit( scope.row,scope.$index)">{{scope.row.mainTitle}}</el-link>
+        <el-row> 
+					<el-select v-model="filters.filterType" clearable placeholder="查询范围" class="hidden-md-and-down">
+						<el-option value="" label="全部"> </el-option>
+						<el-option value="startUserId" label="我发起"> </el-option>
+						<el-option value="partake" label="我参与"> </el-option>
+						<el-option value="sponsors" label="我主办"> </el-option>
+						<el-option value="monitors" label="我监控"> </el-option>
+					</el-select>
+					
+					<el-date-picker
+						v-model="filters.startTimeRanger" class="hidden-sm-and-down"
+						type="daterange"
+						align="right"
+						unlink-panels
+						range-separator="至"
+						start-placeholder="创建日期"
+						end-placeholder="创建日期"
+						value-format="yyyy-MM-dd"
+						:default-time="['00:00:00','23:59:59']"
+						:picker-options="pickerOptions">
+					</el-date-picker>  
+					<el-input v-model="filters.key" style="width:20%;"     placeholder="模糊查询">
+						<template slot="append">
+							<el-button      v-on:click="searchProcinsts" icon="el-icon-search">查询</el-button>  
 						</template>
-					</el-table-column>
-          <el-table-column
-            sortable
-            prop="startDeptName"
-            label="发起部门"
-            min-width="180"
-            
-          ></el-table-column>
-          <el-table-column
-            sortable
-            prop="startUsername"
-            label="发起人"
-            min-width="120" 
-          ></el-table-column>
-          <el-table-column sortable prop="tagNames" label="标签" min-width="150">
-            <template slot-scope="scope">
-              <el-tag
-                v-for="tagName in (scope.row.tagNames?scope.row.tagNames.split(','):[])"
-                :key="tagName"
-              >{{tagName}}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column
-            sortable
-            prop="startTime"
-            label="发起时间"
-            min-width="120"
-            
-          ></el-table-column>
-          <el-table-column
-            sortable
-            prop="planFinishTime"
-            label="到期时间"
-            min-width="120"
-            
-          ></el-table-column>
-          <el-table-column
-            sortable
-            prop="endTime"
-            label="结束时间"
-            min-width="120"
-            
-          ></el-table-column>
-          <el-table-column
-            sortable
-            prop="duration"
-            label="执行时长"
-            min-width="120"
-            
-            :formatter="formatterDuration"
-          ></el-table-column>
+					</el-input>  
+					<el-popover 
+						placement="top"
+						width="375"
+						trigger="manual"
+						v-model="weixinContentVisible">
+						<p>{{weixinContent}}</p>
+						<div style="text-align: right; margin: 0"> 
+							<el-button size="mini" type="text" @click="doCopyWeixinUrl">拷贝链接</el-button>
+							<el-button type="primary" size="mini" @click="doCopyWeixinContent">拷贝内容</el-button>
+						</div> 
+						<el-button slot="reference"     class="hidden-sm-and-down"  v-on:click="showWeixin">微信催办</el-button>
+					</el-popover> 
 
-          <el-table-column
-            sortable
-            prop="sponsors"
-            label="主办"
-            min-width="80"
-            
-          ></el-table-column>
-          <el-table-column
-            sortable
-            prop="monitors"
-            label="监控"
-            min-width="80"
-            
-          ></el-table-column>
-          <el-table-column
-            sortable
-            prop="deleteReason"
-            label="删除原因"
-            min-width="120" 
-          ></el-table-column> 
-        </el-table>
-        <el-pagination
-          layout="total, prev, next"
-          @current-change="handleCurrentChange"
-          @size-change="handleSizeChange"
-          :page-sizes="[10,20, 50, 100, 500]"
-          :current-page="pageInfo.pageNum"
-          :page-size="pageInfo.pageSize"
-          :total="pageInfo.total"
-          style="float:right;"
-        ></el-pagination>
-        <!--编辑 Execution act_ru_execution界面-->
-        <el-dialog
-          title="任务详情"
-          fullscreen
-          :visible.sync="editFormVisible"
-          :width="dialogWidth()"
-          :close-on-click-modal="false"
-        >
-          <procinst-parames-execution-set
-            :companyEmployees="companyEmployees"
-            :companyDepts="companyDepts"
-            :taskInfo="editForm"
-            :procDefId="editForm.procDefId"
-            :procInstId="editForm.procInstId"
-            :visible="editFormVisible"
-            @cancel="editFormVisible=false"
-            @submit="afterEditSubmit"
-          ></procinst-parames-execution-set>
-        </el-dialog>
+					<el-popover
+					title="更多查询条件"
+					placement="top-start" 
+					width="400"
+					trigger="click"> 
+						<el-row class="more-filter-item">
+							<el-col :span="24">
+								<font class="more-label-font">
+									查询范围：
+								</font>
+								<el-select size="mini" v-model="filters.filterType"  placeholder="查询范围">
+									<el-option value="" label="全部"> </el-option>
+									<el-option value="startUserId" label="我发起"> </el-option>
+									<el-option value="partake" label="我参与"> </el-option>
+									<el-option value="sponsors" label="我主办"> </el-option>
+									<el-option value="monitors" label="我监控"> </el-option>
+								</el-select> 
+							</el-col>
+							<el-col :span="24">
+								<font class="more-label-font">
+									标签查找：
+								</font> 
+								<el-row v-show="filters.tags && filters.tags.length>0">
+									<el-tag  
+										:key="tag.tagId"
+										v-for="tag in filters.tags"
+										:type="''"
+										closable
+										:disable-transitions="false"
+										@click="showTagSelect(false)"
+										@close="handleFiltersTagClose(tag,'tags')">
+										{{tag.tagName}}
+									</el-tag>
+								</el-row>
+								<el-button v-if="filters.tags==null || filters.tags.length==0"  size="mini"   @click.native="showTagSelect(false)">选择标签</el-button>
+							</el-col>
+							<el-col :span="24"  >
+								<font class="more-label-font">
+									任务执行人：
+								</font>  
+								<el-tag v-if="filters.assignee"
+									:type="'success'"
+									closable
+									:disable-transitions="false" 
+									@click="userSelectVisible=true"
+									@close="handleFiltersTagClose('','assignee')">
+									{{filters.assignee.username}}
+								</el-tag>  
+								<el-button v-else size="mini"   @click.native="userSelectVisible=true" >选择执行人</el-button>   
+							</el-col>
+							<el-col :span="24"  > 
+								<el-button size="mini"  :type="filters.suspensionState=='2'?'success':''"   v-on:click="filters.suspensionState='2'">挂起的</el-button>
+								<el-button size="mini"  :type="filters.suspensionState=='1'?'success':''"   v-on:click="filters.suspensionState='1'">活动的</el-button>  
+	
+								
+							</el-col>
+							<el-col :span="24">
+								<font class="more-label-font">
+									开始日期：
+								</font>
+								<el-date-picker 
+									v-model="filters.startTimeRanger"  
+									type="daterange"
+									align="right"
+									unlink-panels
+									range-separator="至"
+									start-placeholder="创建日期"
+									end-placeholder="创建日期"
+									value-format="yyyy-MM-dd"
+									:default-time="['00:00:00','23:59:59']"
+									:picker-options="pickerOptions">
+								</el-date-picker> 
+							</el-col>
+							<el-col :span="24">
+								
+								<font class="more-label-font">
+									计划完成日期：
+								</font>
+								<el-date-picker 
+									v-model="filters.planFinishTimeRanger"  
+									type="daterange"
+									align="right"
+									unlink-panels
+									range-separator="至"
+									start-placeholder="计划完成日期"
+									end-placeholder="计划完成日期"
+									value-format="yyyy-MM-dd"
+									:default-time="['00:00:00','23:59:59']"
+									:picker-options="pickerOptions">
+								</el-date-picker> 
+							</el-col> 
+							<el-col :span="24">
+								<category-tree class="hidden-md-and-up"   ref="categoryTree" multiple :expandOnClickNode="false" :defaultExpandAll="true" show-checkbox  :current-key="addForm.categoryId"  v-on:check-change="handleCategoryCheckChange" ></category-tree>
+							</el-col> 
+							<el-col :span="24">
+								<el-checkbox size="mini"  v-model="showCalendar">按日历风格显示</el-checkbox>
+								<el-button size="mini"   type="primary"    v-on:click="searchExecutions" icon="el-icon-search">查询</el-button>   
+							</el-col>
+										
+							<el-col :span="24">   
+								<el-divider content-position="left">其它操作</el-divider>	
+								<el-button size="mini"     @click.native="showTagSelect(true)"  >给任务打标签</el-button> 
+								<el-button size="mini"  @click="handleDownload">导出数据</el-button>
+								<el-button size="mini"       v-on:click="showWeixinTask">微信催办</el-button> 
+								<el-button size="mini"      v-on:click="showSendSms">短信催办</el-button> 
+								<el-button size="mini"       v-on:click="showOaMsg">OAMSG催办</el-button>	
+							</el-col>
+						</el-row>
+						<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+					</el-popover>   
+        </el-row>
+        <el-row style="padding-top:10px;">
+          <el-table
+            ref="table"
+            :max-height="tableHeight"
+            :data="procinsts"
+            highlight-current-row
+            v-loading="listLoading"
+            border
+            @selection-change="selsChange"
+            @row-click="rowClick"
+            style="width: 100%;"
+          >
+            <el-table-column type="selection" width="40"></el-table-column>
+            <el-table-column type="index" width="40"></el-table-column>
+            <el-table-column sortable prop="mainTitle" label="流程(点击详情)" min-width="300" show-overflow-tooltip>
+              <template slot-scope="scope">  
+                <el-link type="primary" @click="showEdit( scope.row,scope.$index)">{{scope.row.mainTitle}}</el-link>
+              </template>
+            </el-table-column>
+            <el-table-column
+              sortable
+              prop="startDeptName"
+              label="发起部门"
+              min-width="180"
+              show-overflow-tooltip
+            ></el-table-column>
+            <el-table-column
+              sortable
+              prop="startUsername"
+              label="发起人"
+              min-width="120" 
+              show-overflow-tooltip
+            ></el-table-column>
+            <el-table-column sortable prop="tagNames" label="标签" min-width="150"
+              show-overflow-tooltip>
+              <template slot-scope="scope">
+                <el-tag
+                  v-for="tagName in (scope.row.tagNames?scope.row.tagNames.split(','):[])"
+                  :key="tagName"
+                >{{tagName}}</el-tag>
+              </template>
+            </el-table-column>
+            <el-table-column
+              sortable
+              prop="startTime"
+              label="发起时间"
+              min-width="120"
+              show-overflow-tooltip 
+            ></el-table-column>
+            <el-table-column
+              sortable
+              prop="planFinishTime"
+              label="到期时间"
+              min-width="120"
+              show-overflow-tooltip 
+            ></el-table-column>
+            <el-table-column
+              sortable
+              prop="endTime"
+              label="结束时间"
+              min-width="120"
+              show-overflow-tooltip 
+            ></el-table-column>
+            <el-table-column
+              sortable
+              prop="duration"
+              label="执行时长"
+              min-width="120"
+              show-overflow-tooltip 
+              :formatter="formatterDuration"
+            ></el-table-column>
+
+            <el-table-column
+              sortable
+              prop="sponsors"
+              label="主办"
+              min-width="80"
+              show-overflow-tooltip 
+            ></el-table-column>
+            <el-table-column
+              sortable
+              prop="monitors"
+              label="监控"
+              min-width="80"
+              show-overflow-tooltip 
+            ></el-table-column>
+            <el-table-column
+              sortable
+              prop="deleteReason"
+              label="删除原因"
+              min-width="120" 
+              show-overflow-tooltip 
+            ></el-table-column> 
+          </el-table>
+          <el-pagination
+            layout="total, prev, next"
+            @current-change="handleCurrentChange"
+            @size-change="handleSizeChange"
+            :page-sizes="[10,20, 50, 100, 500]"
+            :current-page="pageInfo.pageNum"
+            :page-size="pageInfo.pageSize"
+            :total="pageInfo.total"
+            style="float:right;"
+          ></el-pagination>
+          <!--编辑 Execution act_ru_execution界面-->
+          <el-dialog
+            title="任务详情"
+            fullscreen
+            :visible.sync="editFormVisible"
+            :width="dialogWidth()"
+            :close-on-click-modal="false"
+          >
+            <procinst-parames-execution-set
+              :companyEmployees="companyEmployees"
+              :companyDepts="companyDepts"
+              :taskInfo="editForm"
+              :procDefId="editForm.procDefId"
+              :procInstId="editForm.procInstId"
+              :visible="editFormVisible"
+              @cancel="editFormVisible=false"
+              @submit="afterEditSubmit"
+            ></procinst-parames-execution-set>
+          </el-dialog>
+        </el-row>
       </el-col>
 
       <el-dialog append-to-body title="选择员工" :visible.sync="userSelectVisible" width="60%">
@@ -449,7 +356,8 @@ export default {
         ],
         planFinishTimeRanger: [],
         endTimeRanger: [],
-        assignee: null
+        assignee: null, 
+				filterType:'',
       },
       pickerOptions: {
         shortcuts: [
@@ -566,7 +474,8 @@ export default {
       categorys: [],
       tagSelectVisible: false,
       isBatchSetProcTags: false,
-      userSelectVisible: false
+      userSelectVisible: false,
+      tableHeight:300,
       /**end 自定义属性请在上面加 请加备注**/
     };
   }, //end data
@@ -686,8 +595,18 @@ export default {
       if (this.filters.assignee != null) {
         params.assignee = this.filters.assignee.userid;
       }
-      if (this.filters.otherParames) {
-        params = Object.assign(params, this.filters.otherParames);
+      
+      if(this.filters.filterType=='startUserId'){
+        params.startUserId=this.userInfo.userid
+      }
+      if(this.filters.filterType=='partake'){
+        params.partake=this.userInfo.userid
+      }
+      if(this.filters.filterType=='sponsors'){
+        params.sponsors='%'+this.userInfo.userid+'%'
+      }
+      if(this.filters.filterType=='monitors'){
+        params.monitors='%'+this.userInfo.userid+'%'
       }
       if (this.filters.proccategory != "") {
         params.category = this.filters.proccategory;
@@ -1110,19 +1029,21 @@ export default {
       this.categorys = res.data.data;
     });
     this.$nextTick(() => {
-      if (this.isMyStart) {
-        this.searchMyStart();
-      } else if (this.isMyMonitors) {
-        this.searchMyMonitors();
-      } else if (this.isMySponsors) {
-        this.searchMySponsors();
-      } else if (this.isMyPartake) {
-        this.searchMyPartake();
-      } else if (this.isAll) {
-        this.searchAll();
-      } else {
-        this.getProcinsts();
-      }
+        var clientRect=this.$refs.table.$el.getBoundingClientRect();
+        var subHeight=70/1000 * window.innerHeight; 
+        this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight;   
+				if(this.isMyStart){
+					this.filters.filterType="startUserId"
+				}else if(this.isMyMonitors){
+					this.filters.filterType="monitors"
+				}else if(this.isMySponsors){
+					this.filters.filterType="sponsors"
+				}else if(this.isMyPartake){
+					this.filters.filterType="partake"
+				}else if(this.isAll){
+					
+				}  
+				this.getProcinsts();
     });
   }
 };
@@ -1150,4 +1071,10 @@ export default {
 .more-filter-item button {
   margin: 2px 2px;
 }
+
+  .more-label-font{
+  	text-align:center;
+  	float:left;
+  	padding-top:5px;
+  }
 </style>

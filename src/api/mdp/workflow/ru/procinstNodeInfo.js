@@ -13,6 +13,10 @@ let base = config.getWorkflowBasePath();
  
 //普通查询 条件之间and关系  
 export const listProcinstNodeInfo = params => { return axios.get(`${base}/mdp/workflow/ru/procinstNodeInfo/list`, { params: params }); };
+//普通查询 条件之间and关系  
+export const getNodeInfos = params => { return axios.get(`${base}/mdp/workflow/ru/procinstNodeInfo/getNodeInfos`, { params: params }); };
+//修改一条mdp_ru_procinst_node_info记录
+export const updateNodeInfos = params => { return axios.post(`${base}/mdp/workflow/ru/procinstNodeInfo/updateNodeInfos`, params); };
 
 //模糊查询mdp_ru_procinst_node_info 条件之间or关系  
 //export const listProcinstNodeInfoKey = params => { return axios.get(`${base}/mdp/workflow/ru/procinstNodeInfo/listKey`, { params: params }); };
@@ -28,6 +32,3 @@ export const editProcinstNodeInfo = params => { return axios.post(`${base}/mdp/w
 
 //新增一条mdp_ru_procinst_node_info
 export const addProcinstNodeInfo = params => { return axios.post(`${base}/mdp/workflow/ru/procinstNodeInfo/add`, params); };
-
-
-export const getNodeInfos = params => { return axios.get(`${base}/mdp/workflow/ru/procinstNodeInfo/getNodeInfos`, { params: params }); };

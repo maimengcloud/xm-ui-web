@@ -26,8 +26,7 @@
 		    ]), 
 		},
 		data() {
-			return {
-				paramsStr:'',
+			return { 
 				filters: { 
 
 					params:{
@@ -52,41 +51,56 @@
 		methods: {
 			 
 			  closeTab(){
+				  var key="ProcdefListForBizStart"
 				  this.$store.dispatch('delVisitedViews', this.$route)
+				  localStorage.removeItem(key)
 				  this.$router.back(-1);
+			  },
+			  dataInit(){ 
+				  this.$nextTick(()=>{
+					  var key="ProcdefListForBizStart"
+						if(this.$route.query && this.$route.query.params){
+							let paramsJsonStr=this.$route.query.params; 
+							let params= JSON.parse(decodeURIComponent(paramsJsonStr))
+							this.filters.params=params;
+							localStorage.setItem(key,JSON.stringify(params))
+							/** 传过来的参数格式
+							let extVars={formDataIds:[row.id],formId:row.formId}
+							let jsonExtVars=JSON.stringify(extVars); 
+							let params={ 
+									mainContext:'',
+									mainTitle:'',
+									bizUrl:process.env.BASE_API+config.getFormBasePath()+'/#/mdp/form/formData/FormDataMng?extVars='+jsonExtVars,
+									extVars:extVars
+							}
+							let jsonParmas=encodeURIComponent(JSON.stringify(params));//对方要 decodeURIComponent
+							this.$router.push({path:'/mdp/workflow/ru/execution/ExecutionMngForFormData',query:{params:jsonParmas}});
+							*/
+							
+						}else if(this.$route.params && this.$route.params.mainTitle){
+							this.filters.params=this.$route.params;
+							var paramsJsonStr=JSON.stringify(this.$route.params);
+							localStorage.setItem(key,paramsJsonStr)
+						}else{
+							var paramsJsonStr=localStorage.getItem(key);
+							if(paramsJsonStr){
+								this.filters.params=JSON.parse(paramsJsonStr);
+							} 
+						}  
+				  })
+				  
 			  }
 			
 		},//end methods
 		components: {  
 			//在下面添加其它组件 
 		},
-		activated:function(){ 
-			
-			if(this.$route.query && this.$route.query.params){
-				let paramsJsonStr=this.$route.query.params;
-
-				this.paramsStr=paramsJsonStr;
-				let params= JSON.parse(decodeURIComponent(paramsJsonStr))
-				this.filters.params=params;
-
-				/** 传过来的参数格式
-				let extVars={formDataIds:[row.id],formId:row.formId}
-				let jsonExtVars=JSON.stringify(extVars); 
-				let params={ 
-						mainContext:'',
-						mainTitle:'',
-						bizUrl:process.env.BASE_API+config.getFormBasePath()+'/#/mdp/form/formData/FormDataMng?extVars='+jsonExtVars,
-						extVars:extVars
-				}
-				let jsonParmas=encodeURIComponent(JSON.stringify(params));//对方要 decodeURIComponent
-				this.$router.push({path:'/mdp/workflow/ru/execution/ExecutionMngForFormData',query:{params:jsonParmas}});
-				 */
-				 
-			}else if(this.$route.params){
-				this.filters.params=this.$route.params;
-			}
+		activated:function(){  
+			this.dataInit();
 		},
 		mounted() { 
+			 this.dataInit();
+			
 		}
 	}
 

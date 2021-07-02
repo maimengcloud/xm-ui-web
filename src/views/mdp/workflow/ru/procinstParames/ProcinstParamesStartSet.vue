@@ -119,8 +119,8 @@
 					</el-col>
 				</el-form-item> 
 				<el-form-item> 
-							<el-button @click.native="handleCancel">取消</el-button>  
-							<el-button type="primary" @click.native="startHandle" :loading="addLoading">发起流程</el-button>   
+							<el-button @click.native="handleCancel" icon="el-icon-back">取消</el-button>  
+							<el-button type="primary" @click.native="startHandle" :loading="addLoading" icon="el-icon-finished">发起流程</el-button>   
 				</el-form-item> 
 			</el-form> 
 			</el-col>
@@ -134,8 +134,9 @@
 			<el-dialog append-to-body
 				title="配置审批人"
 				:visible.sync="nodeInfoVisible"
-				width="60%"> 
-				<procinst-node-info-set   :node-infos="nodeInfos"   :visible="nodeInfoVisible"   @cancel="onMainQxCancel"   @confirm="onNodeInfosConfirm"></procinst-node-info-set> 
+				fullscreen
+				> 
+				<procinst-node-info-set   :node-infos="nodeInfos"   :visible="nodeInfoVisible"   @cancel="onNodeInfosCancel"   @confirm="onNodeInfosConfirm"></procinst-node-info-set> 
 			</el-dialog>
 			<el-dialog
 				title="流程图"
@@ -547,6 +548,9 @@
 			onMainQxSelected:function(qxCode){
 				this.mainQxVisible=false;
 				this.addForm.mainQx=qxCode;
+			},
+			onNodeInfosCancel(){
+				this.nodeInfoVisible=false;
 			},
 			onNodeInfosConfirm:function(nodeInfos){
 				this.nodeInfoVisible=false;

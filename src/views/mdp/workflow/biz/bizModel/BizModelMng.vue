@@ -1,40 +1,43 @@
 <template>
 	<section>
-		<sticky :className="'sub-navbar draft'">
+		<el-row class="app-container">
 			<el-row>
-			<el-input v-model="filters.key" style="width:20%;" placeholder="模糊查询"></el-input> 
-			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchBizModels">查询</el-button>
-			<el-button type="primary" @click="showAdd">+业务模块</el-button>
-			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
-			</el-row>
-		</sticky>
-		<el-row class="app-container"> 
-			<!--列表 BizModel mdp_biz_model-->
-			<el-table :data="bizModels"  highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-				<el-table-column sortable type="selection" width="40"></el-table-column>
-				<el-table-column sortable type="index" width="40"></el-table-column>
-				<el-table-column sortable prop="bizName" label="业务名称" min-width="80" ></el-table-column>
-				<el-table-column sortable prop="bizKey" label="业务编码" min-width="80" ></el-table-column>
-				<el-table-column sortable prop="modelKey" label="模型编码" min-width="80" ></el-table-column>
-				<el-table-column sortable prop="modelName" label="模型名称" min-width="80" ></el-table-column> 
-				<el-table-column label="操作" width="160" fixed="right"  >
-					<template slot-scope="scope">
-						<el-button  @click="showEdit( scope.row,scope.$index)">改</el-button>
-						<el-button type="danger" @click="handleDel(scope.row,scope.$index)">删</el-button>
+				<el-input v-model="filters.key" style="width:30%;" placeholder="模糊查询">
+					<template slot="append"> 
+						<el-button type="primary"  v-loading="load.list" :disabled="load.list==true"  v-on:click="searchBizModels" icon="el-icon-search">查询</el-button> 
 					</template>
-				</el-table-column>
-			</el-table>
-			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+				</el-input>  
+				<el-button type="primary" @click="showAdd" icon="el-icon-plus">业务模块</el-button>
+				<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>  
+			</el-row>
+			<el-row style="padding-top:10px;"> 
+				<!--列表 BizModel mdp_biz_model-->
+				<el-table  ref="table" :max-height="tableHeight" :data="bizModels"  highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+					<el-table-column sortable type="selection" width="40"></el-table-column>
+					<el-table-column sortable type="index" width="40"></el-table-column>
+					<el-table-column sortable prop="bizName" label="业务名称" min-width="80" show-overflow-tooltip></el-table-column>
+					<el-table-column sortable prop="bizKey" label="业务编码" min-width="80"  show-overflow-tooltip></el-table-column>
+					<el-table-column sortable prop="modelKey" label="模型编码" min-width="80"  show-overflow-tooltip></el-table-column>
+					<el-table-column sortable prop="modelName" label="模型名称" min-width="80"  show-overflow-tooltip></el-table-column> 
+					<el-table-column label="操作" width="160" fixed="right"  >
+						<template slot-scope="scope">
+							<el-button  @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"></el-button>
+							<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"></el-button>
+						</template>
+					</el-table-column>
+				</el-table>
+				<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+			
+				<!--编辑 BizModel mdp_biz_model界面-->
+				<el-dialog title="修改业务模块" :visible.sync="editFormVisible"  width="50%"  :close-on-click-modal="false" append-to-body>
+					<biz-model-edit :disabled-select-model="!!modelKey" :biz-model="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></biz-model-edit>
+				</el-dialog>
 		
-			<!--编辑 BizModel mdp_biz_model界面-->
-			<el-dialog title="修改业务模块" :visible.sync="editFormVisible"  width="50%"  :close-on-click-modal="false" append-to-body>
-				  <biz-model-edit :disabled-select-model="!!modelKey" :biz-model="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></biz-model-edit>
-			</el-dialog>
-	
-			<!--新增 BizModel mdp_biz_model界面-->
-			<el-dialog title="新增业务模块" :visible.sync="addFormVisible"  width="50%"  :close-on-click-modal="false" append-to-body>
-				<biz-model-add :disabled-select-model="!!modelKey" :biz-model="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></biz-model-add>
-			</el-dialog> 
+				<!--新增 BizModel mdp_biz_model界面-->
+				<el-dialog title="新增业务模块" :visible.sync="addFormVisible"  width="50%"  :close-on-click-modal="false" append-to-body>
+					<biz-model-add :disabled-select-model="!!modelKey" :biz-model="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></biz-model-add>
+				</el-dialog> 
+			</el-row>
 		</el-row>
 	</section>
 </template>
@@ -94,7 +97,8 @@
 				//编辑bizModel界面初始化数据
 				editForm: {
 					bizName:'',bizKey:'',modelKey:'',modelName:'',id:'',branchId:''
-				}
+				},
+				tableHeight:300,
 				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -243,7 +247,10 @@
 			this.addForm.modelName=this.modelName
 			this.editForm.modelKey=this.modelKey
 			this.editForm.modelName=this.modelName
-			this.$nextTick(() => {
+			this.$nextTick(() => { 
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=70/1000 * window.innerHeight; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight;   
 				this.getBizModels();
         	}); 
 		}

@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<sticky  :className="'sub-navbar draft'">  
+		<el-row  class="app-container">  
 			<el-row>
 			<el-col :xs="22" :sm="22" :md="23" :lg="23" :xl="23"> 
 				<el-col :xs="8" :sm="8" :md="14" :lg="16" :xl="16">
@@ -46,7 +46,7 @@
 				</el-drawer> 
 			</el-col>
 			</el-row>
-	    </sticky>  
+	    </el-row>  
 		<el-row class="app-container"> 
 			<el-col   :span="24" v-if="executions.length==0"> 
 				<el-button  type="primary"  v-if="executions.length==0" v-loading="listLoading"  v-on:click="startProc">还没有发起审核或者流程已结束，点击发起流程</el-button> 

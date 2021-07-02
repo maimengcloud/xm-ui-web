@@ -1,86 +1,25 @@
 <template>
-  <section>
-    <sticky :className="'sub-navbar draft'">
-      <el-row>
-        <el-col :xs="22" :sm="22" :md="23" :lg="23" :xl="23">
-          <el-col :xs="8" :sm="8" :md="5" :lg="4" :xl="4">
-            <el-input v-model="filters.key" style="width:100%;" placeholder="模糊查询"></el-input>
-          </el-col>
-          <el-col :xs="8" :sm="8" :md="5" :lg="4" :xl="4">
-            <el-select
-              v-model="filters.procCategory"
-              style="width:99%;"
-              clearable
-              filterable
-              placeholder="流程分类"
-            >
-              <el-option v-for="item in categorys" :key="item" :label="item" :value="item"></el-option>
-            </el-select>
-          </el-col>
-          <el-col :xs="8" :sm="8" :md="14" :lg="16" :xl="16">
-            <el-button
-              v-show="assigneeToMe!==false"
-              :type="filters.taskType=='0'?'success':''"
-              v-on:click="searchAssigneeToMeTasks"
-            >已领取</el-button>
-            <el-button
-              v-show="assigneeToMe!==false"
-              :type="filters.taskType=='1'?'success':''"
-              v-on:click="searchMyCandidateUserTasks"
-            >待领取</el-button>
-
-            <el-button @click.native="showTagSelect(false)">标签查找</el-button>
-            <el-button @click.native="showTagSelect(true)">打标签</el-button>
-            <el-button type="primary" @click="handleDownload">导出数据</el-button>
-            <el-select
-              v-show="assigneeToMe===false && filters.taskType=='0'"
-              class="hidden-sm-and-down"
-              v-model="filters.assignee"
-              clearable
-              filterable
-              placeholder="请选择用户"
-            >
-              <el-option
-                v-for="item in companyEmployees"
-                :key="item.userid"
-                :label="item.username"
-                :value="item.userid"
-              >
-                <span style="float: left">{{ item.username }}</span>
-                <span style="float: right; color: #8492a6; font-size: 13px">{{ item.shortName }}</span>
-              </el-option>
-            </el-select>
-            <el-select
-              v-show="assigneeToMe===false && filters.taskType=='1'"
-              v-model="filters.candidateUser"
-              class="hidden-sm-and-down"
-              clearable
-              filterable
-              placeholder="请选择用户"
-            >
-              <el-option
-                v-for="item in companyEmployees"
-                :key="item.userid"
-                :label="item.username"
-                :value="item.userid"
-              >
-                <span style="float: left">{{ item.username }}</span>
-                <span style="float: right; color: #8492a6; font-size: 13px">{{ item.shortName }}</span>
-              </el-option>
-            </el-select>
-            <el-button
-              v-show="assigneeToMe===false"
-              :type="filters.taskType=='0'?'success':''"
-              v-on:click="searchAssigneeToAnyTasks"
-            >已领取</el-button>
-
-            <el-button
-              v-show="assigneeToMe===false"
-              :type="filters.taskType=='1'?'success':''"
-              class="hidden-sm-and-down"
-              v-on:click="searchAnyCandidateUserTasks"
-            >待领取</el-button>
-
+  <section> 
+    <el-row class="app-container">
+      <el-col :xs="4" :sm="4" :md="3" :lg="3" :xl="3" class="hidden-sm-and-down">
+        <category-tree
+          ref="categoryTree"
+          multiple
+          :expandOnClickNode="false"
+          :defaultExpandAll="true"
+          show-checkbox
+          :current-key="addForm.categoryId"
+          v-on:check-change="handleCategoryCheckChange"
+        ></category-tree>
+      </el-col>
+      <el-col :xs="24" :sm="24" :md="21" :lg="21" :xl="21">
+        <el-row>  
+            <el-button @click.native="showTagSelect(false)">标签 </el-button> 
+            <el-input v-model="filters.key" style="width:30%;" placeholder="模糊查询">
+              <template slot="append">
+                <el-button @click="searchAssigneeToMeTasks" icon="el-icon-search">查询</el-button>  
+              </template> 
+            </el-input>  
             <el-popover placement="top" width="375" trigger="manual" v-model="weixinContentVisible">
               <p>{{weixinContent}}</p>
               <div style="text-align: right; margin: 0">
@@ -104,27 +43,40 @@
               v-show="assigneeToMe===false"
               class="hidden-sm-and-down"
               v-on:click="showOaMsg"
-            >OAMSG催办</el-button>
-          </el-col>
-        </el-col>
-        <el-col :xs="2" :sm="2" :md="1" :lg="1" :xl="1">
+            >OAMSG催办</el-button> 
           <el-button @click="drawer = true" type="text">更多</el-button>
           <el-drawer title="更多查询条件" :visible.sync="drawer" :with-header="false" append-to-body>
-            <el-row class="more-filter-item">
-              <el-button
-                v-show="assigneeToMe!==false"
-                :type="filters.taskType=='0'?'success':''"
-                v-on:click="searchAssigneeToMeTasks"
-              >已领取</el-button>
-              <el-button
-                v-show="assigneeToMe!==false"
-                :type="filters.taskType=='1'?'success':''"
-                v-on:click="searchMyCandidateUserTasks"
-              >待领取</el-button>
-
-              <el-button @click.native="showTagSelect(false)">标签查找</el-button>
-              <el-button @click.native="showTagSelect(true)">打标签</el-button>
-			  <el-button type="primary" @click="handleDownload">导出数据</el-button>
+            <el-row class="more-filter-item"> 
+              <el-col :span="24">
+                 <el-select
+                    v-model="filters.procCategory"
+                    style="width:99%;"
+                    clearable
+                    filterable
+                    placeholder="流程分类"
+                  >
+                    <el-option v-for="item in categorys" :key="item" :label="item" :value="item"></el-option>
+                  </el-select>
+              </el-col>
+              
+							<el-col :span="24">
+								<font class="more-label-font">
+									标签查找：
+								</font> 
+								<el-row v-show="filters.tags && filters.tags.length>0">
+									<el-tag  
+										:key="tag.tagId"
+										v-for="tag in filters.tags"
+										:type="''"
+										closable
+										:disable-transitions="false"
+										@click="showTagSelect(false)"
+										@close="handleFiltersTagClose(tag,'tags')">
+										{{tag.tagName}}
+									</el-tag>
+								</el-row>
+								<el-button v-if="filters.tags==null || filters.tags.length==0"  size="mini"   @click.native="showTagSelect(false)">选择标签</el-button>
+							</el-col>
               <el-col :span="24">
                 开始日期：
                 <el-date-picker
@@ -154,120 +106,37 @@
                   :default-time="['00:00:00','23:59:59']"
                   :picker-options="pickerOptions"
                 ></el-date-picker>
+              </el-col>  
+              
+              <el-col :span="24"> 
+                 <category-tree
+                  class="hidden-md-and-up"
+                  ref="categoryTree"
+                  multiple
+                  :expandOnClickNode="false"
+                  :defaultExpandAll="true"
+                  show-checkbox
+                  :current-key="addForm.categoryId"
+                  v-on:check-change="handleCategoryCheckChange"
+                ></category-tree>
               </el-col>
               <el-col :span="24">
                 <el-checkbox v-model="showCalendar">按日历风格显示</el-checkbox>
+                <el-button type="primary" @click="searchAssigneeToMeTasks" icon="el-icon-search">查询</el-button>
+              </el-col>
+              <el-col :span="24">
+                <el-divider content-position="left">其它操作</el-divider>	 
+                <el-button @click.native="showTagSelect(true)">打标签</el-button>
+                <el-button   @click="handleDownload">导出数据</el-button>
               </el-col>
             </el-row>
-            <category-tree
-              class="hidden-md-and-up"
-              ref="categoryTree"
-              multiple
-              :expandOnClickNode="false"
-              :defaultExpandAll="true"
-              show-checkbox
-              :current-key="addForm.categoryId"
-              v-on:check-change="handleCategoryCheckChange"
-            ></category-tree>
-          </el-drawer>
-        </el-col>
+           
+          </el-drawer> 
       </el-row>
-    </sticky>
-    <el-row class="filters-show">
-      <font class="filters-label">已选条件:</font>
-      <el-date-picker
-        v-model="filters.startTimeRanger"
-        class="hidden-sm-and-down"
-        type="daterange"
-        align="right"
-        unlink-panels
-        range-separator="至"
-        start-placeholder="创建日期"
-        end-placeholder="创建日期"
-        value-format="yyyy-MM-dd"
-        :default-time="['00:00:00','23:59:59']"
-        :picker-options="pickerOptions"
-      ></el-date-picker>
-      <el-date-picker
-        v-model="filters.planFinishTimeRanger"
-        class="hidden-sm-and-down"
-        type="daterange"
-        align="right"
-        unlink-panels
-        range-separator="至"
-        start-placeholder="计划完成日期"
-        end-placeholder="计划完成日期"
-        value-format="yyyy-MM-dd"
-        :default-time="['00:00:00','23:59:59']"
-        :picker-options="pickerOptions"
-      ></el-date-picker>
-      <el-tag
-        v-if="filters.tags"
-        :key="tag.tagId"
-        v-for="tag in filters.tags"
-        :type="''"
-        closable
-        :disable-transitions="false"
-        @close="handleFiltersTagClose(tag,'tags')"
-      >{{tag.tagName}}</el-tag>
-      <el-tag
-        v-if="filters.categoryTreeNodes"
-        :key="tag.id"
-        v-for="tag in filters.categoryTreeNodes"
-        :type="'info'"
-        closable
-        :disable-transitions="false"
-        @close="handleFiltersTagClose(tag,'categoryTreeNodes')"
-      >{{tag.name}}</el-tag>
-      <el-tag
-        v-if="filters.taskType=='0'"
-        :type="'warning'"
-        :disable-transitions="false"
-      >{{filters.taskType=='0'?'已领取':''}}</el-tag>
-      <el-tag
-        v-if="filters.taskType=='1'"
-        :type="'warning'"
-        :disable-transitions="false"
-      >{{filters.taskType=='1'?'待领取':''}}</el-tag>
-
-      <el-tag
-        v-if="filters.procCategory"
-        :type="'dangger'"
-        closable
-        :disable-transitions="false"
-        @close="handleFiltersTagClose('','procCategory')"
-      >{{filters.procCategory}}</el-tag>
-      <el-tag
-        v-if="filters.key"
-        :type="'success'"
-        closable
-        :disable-transitions="false"
-        @close="handleFiltersTagClose('','key')"
-      >{{filters.key}}</el-tag>
-
-      <el-tag
-        :type="'success'"
-        :disable-transitions="false"
-        closable
-        @click="handleFiltersTagClose(showCalendar,'calendar')"
-        @close="handleFiltersTagClose(showCalendar,'calendar')"
-      >{{showCalendar==true?'切换列表':'切换日历'}}</el-tag>
-    </el-row>
-    <el-row class="app-container">
-      <el-col :xs="4" :sm="4" :md="3" :lg="3" :xl="3" class="hidden-sm-and-down">
-        <category-tree
-          ref="categoryTree"
-          multiple
-          :expandOnClickNode="false"
-          :defaultExpandAll="true"
-          show-checkbox
-          :current-key="addForm.categoryId"
-          v-on:check-change="handleCategoryCheckChange"
-        ></category-tree>
-      </el-col>
-      <el-col v-if="showCalendar==false" :xs="24" :sm="24" :md="21" :lg="21" :xl="21">
+      <el-row style="padding-top:10px;" v-if="showCalendar==false" >
         <!--列表 Task act_ru_task-->
         <el-table
+          ref="table"
           :data="tasks"
           highlight-current-row
           v-loading="listLoading"
@@ -275,6 +144,7 @@
           @selection-change="selsChange"
           @row-click="rowClick"
           style="width: 100%;"
+          :max-height="tableHeight"
         >
           <el-table-column
             type="selection"
@@ -283,11 +153,17 @@
             :class="'hidden-sm-and-down'"
           ></el-table-column>
           <el-table-column type="index" width="40" :class="'hidden-sm-and-down'"></el-table-column>
-          <el-table-column sortable prop="mainTitle" label="流程[任务](点击详情)" min-width="300"> 
+          <el-table-column sortable prop="mainTitle" label="流程(点击详情)" min-width="300" show-overflow-tooltip> 
 						<template slot-scope="scope">  
-							 <el-link type="primary" @click="showTaskDetail( scope.row,scope.$index)">{{scope.row.mainTitle}}【{{scope.row.taskName}}】</el-link>
+							 <el-link type="primary" @click="showTaskDetail( scope.row,scope.$index)">{{scope.row.mainTitle}}</el-link>
 						</template>
           </el-table-column> 
+          <el-table-column 
+            prop="taskName"
+            label="当前节点"
+            min-width="120"
+            show-overflow-tooltip
+          ></el-table-column>
           <el-table-column sortable prop="tagNames" label="标签" min-width="100">
             <template slot-scope="scope">
               <el-tag
@@ -301,13 +177,14 @@
             prop="startDeptName"
             label="发起部门"
             min-width="120"
-            
+            show-overflow-tooltip
           ></el-table-column>
           <el-table-column
             sortable
             prop="startUsername"
             label="发起人"
             min-width="100"
+            show-overflow-tooltip
           ></el-table-column>
           <el-table-column
             sortable
@@ -315,23 +192,23 @@
             prop="assigneeName"
             label="执行人"
             min-width="100"
+            show-overflow-tooltip
           ></el-table-column>
           <el-table-column
             sortable
             prop="createTime"
             label="创建时间"
             min-width="120"
-            
+            show-overflow-tooltip
           ></el-table-column>
           <el-table-column
             sortable
             prop="planFinishTime"
             label="到期时间"
             min-width="120"
-            
+            show-overflow-tooltip
           ></el-table-column>
-          <el-table-column
-            sortable
+          <el-table-column 
             v-if="assigneeToMe===false"
             prop="suspensionState"
             label="状态"
@@ -345,20 +222,21 @@
             label="代办"
             min-width="80"
             :formatter="formatterDelegation"
+            show-overflow-tooltip
           ></el-table-column>
           <el-table-column
             sortable
             prop="claimTime"
             label="委办时间"
             min-width="120"
-            
+            show-overflow-tooltip
           ></el-table-column>
           <el-table-column
             sortable
             prop="description"
             label="备注"
             min-width="80"
-            
+            show-overflow-tooltip
           ></el-table-column>
           <el-table-column
             sortable
@@ -366,6 +244,7 @@
             prop="dueDate"
             label="处理时长"
             min-width="80"
+            show-overflow-tooltip
           ></el-table-column>
           <el-table-column label="操作" width="100" fixed="right">
             <template slot-scope="scope">
@@ -384,6 +263,7 @@
           style="float:right;"
         ></el-pagination>
         <!--编辑 Execution act_ru_execution界面-->
+      </el-row>
       </el-col>
       <el-col v-if="showCalendar==true" :xs="24" :sm="24" :md="21" :lg="21" :xl="21">
         <el-calendar v-loading="listLoading"  v-model="filters.calendarDate">
@@ -739,7 +619,8 @@ export default {
       categorys: [],
       tagSelectVisible: false,
       drawer: false,
-      showCalendar: true
+      showCalendar: true,
+      tableHeight:300,
       /** end 自定义属性请在上面加 请加备注**/
     };
   }, // end data
@@ -1626,26 +1507,24 @@ export default {
     } else {
       this.showCalendar = false;
     }
-
+    this.$nextTick(()=>{
+      if(!this.showCalendar){
+        var clientRect=this.$refs.table.$el.getBoundingClientRect();
+        var subHeight=70/1000 * window.innerHeight; 
+        this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
+      }else{
+        var subHeight=70/1000 * window.innerHeight; 
+        this.tableHeight =  window.innerHeight -subHeight; 
+      }
+    })
+    
     this.myBranchDepts = this.myDepts.filter(i => {
       if (i.branchId == this.userInfo.branchId) {
         return true;
       } else {
         return false;
       }
-    });
-    console.log(
-      "this.assigneeToMe------------------------" + this.assigneeToMe !== false
-    );
-    console.log(
-      "this.assigneeToMe------------------------" + this.assigneeToMe != false
-    );
-    console.log(
-      "this.assigneeToMe------------------------" + !this.assigneeToMe
-    );
-    console.log(
-      "this.assigneeToMe------------------------" + this.assigneeToMe
-    );
+    }); 
 
     if (this.assigneeToMe !== false) {
       if (this.isClaim == undefined || this.isClaim === false) {

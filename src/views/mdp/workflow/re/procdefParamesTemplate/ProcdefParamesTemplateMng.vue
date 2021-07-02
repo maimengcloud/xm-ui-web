@@ -1,12 +1,15 @@
 <template>
 	<section>
-		<sticky :className="'sub-navbar draft'">
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
-			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchProcdefParamesTemplates">查询</el-button> 
-		</sticky>
+		<el-row class="app-container">
+			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
+				<template slot="append"> 
+					<el-button type="primary"   v-on:click="searchProcdefParamesTemplates" icon="el-icon-search">查询</el-button> 
+				</template>
+			</el-input>  
+		</el-row>
 		<el-row class="app-container"> 
 			<!--列表 ProcdefParamesTemplate mdp_re_procdef_parames_template-->
-			<el-table :data="procdefParamesTemplates"   highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table  ref="table" :max-height="tableHeight"  :data="procdefParamesTemplates"   highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				 
 				<el-table-column type="index" width="40"></el-table-column>  
 				<el-table-column sortable prop="mainTitle" label="流程标题" min-width="150" ></el-table-column> 
@@ -82,7 +85,8 @@
 				//编辑procdefParamesTemplate界面初始化数据
 				editForm: {
 					id:'',isRefForm:'',monitors:'',sponsors:'',formId:'',procDefId:'',userid:'',lastDate:'',mainContext:'',mainTitle:'',bizUrl:'',bizName:'',categoryId:'',branchId:'',formShowType:'',fp:'',sp:'',tp:'',pconfig:'',fo:'',fi:'',tagNames:'',tagIds:'',mainQx:'',modelKey:''
-				}
+				},
+				tableHeight:300,
 				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -225,7 +229,10 @@
 		    //在下面添加其它组件
 		},
 		mounted() { 
-			this.$nextTick(() => {
+			this.$nextTick(() => { 
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=70/1000 * window.innerHeight; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.getProcdefParamesTemplates();
         	}); 
 		}

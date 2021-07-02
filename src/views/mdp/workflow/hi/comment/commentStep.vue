@@ -1,26 +1,41 @@
 <template>
-	<section>
-		<el-row style="max-height:400px;overflow-y:scroll;overflow-x:hidden;">
-			<!--工具条1-->  
-			<!--如果有更多工具条,放开此注释
-			<el-col :span="24" class="toolbar"  style="padding-bottom: 0px;">
-				<el-col :span="4">
-				</el-col>
-			</el-col>
-			-->
-			 
-			 
-			<div  style="border:1px dashed #000"> 	
+	<section> 
+		<el-row style="max-height:400px;overflow-y:scroll;overflow-x:hidden;">  
+			<div  style="border:1px dashed #000;padding:10px;"> 	
 				  <div v-if="!comments || comments.length<=0" style="padding-left: 10px;">暂无信息</div>
-				  <el-steps :space="60"  direction="vertical">
-				    <el-step v-for="item in comments " :title="item.name"  >
-				    	<div slot="title"><el-col :span="24"> ><font v-if="screenWidth>500">任务:</font>{{item.name==''||item.name==null?'未知的节点名字':item.name}}  <font v-if="screenWidth>500">办理时间 :{{item.time}}</font><font v-if="screenWidth<500">{{formatTaskTime(item.time)}}</font></el-col> </div>
-				    	<div slot="description" style="color: #303133;"> 
-				    		<el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1"><div>{{item.username?item.username:item.userid}}></div></el-col><el-col :xs="16" :sm="18" :md="20" :lg="21" :xl="23"><div>{{item.message}}</div></el-col>
+				  <el-steps :space="60"  direction="vertical" process-status="process" finish-status="success">
+				    <el-step v-for="(item,index) in comments " :key="index" status="success">
+				    	<div slot="title">
+							<el-col :span="24"> 
+								{{item.name==''||item.name==null?item.message:item.name}}  
+								<font v-if="screenWidth>500"> &nbsp;&nbsp;{{item.time}}
+								</font>
+								<font v-if="screenWidth<500">{{formatTaskTime(item.time)}}</font>
+							</el-col> 
+						</div>
+				    	<div slot="description" style="color: #303133;">  
+								<div style="display: inline-block;">{{item.username?item.username:item.userid}}</div> 
+								 <el-divider style="display: inline-block;" direction="vertical"></el-divider>
+								<div style="display: inline-block;">{{item.message}}</div> 
+				    	</div>
+				    </el-step>
+					<el-step v-if="task && task.taskId"  status="process" icon="el-icon-edit">
+				    	<div slot="title">
+							<el-col :span="24"> 
+								{{task.taskName}}  <el-tag type="warning">当前节点</el-tag>
+								<font v-if="screenWidth>500"> &nbsp;&nbsp;{{task.startTime}}
+								</font>
+								<font v-if="screenWidth<500">{{formatTaskTime(task.startTime)}}</font>
+							</el-col> 
+						</div>
+				    	<div slot="description" style="color: #303133;">  
+								<div style="display: inline-block;">{{task.assigneeName?task.assigneeName:task.assignee}}</div> 
+								 <el-divider style="display: inline-block;" direction="vertical"></el-divider>
+								<div style="display: inline-block;">请尽快处理</div> 
 				    	</div>
 				    </el-step>
 				  </el-steps>
-				  </div> 
+			</div> 
 		</el-row>
 	</section>
 </template>
@@ -33,7 +48,7 @@
 	import { listDept } from '@/api/mdp/sys/dept';//下拉框数据查询
 	import moment from "moment";
 	export default {
-		props:['refresh','procInstId'],
+		props:['refresh','procInstId','task'],
 		watch: {
 	      'refresh':function(refresh) {  
 	    	  if(refresh==true){
@@ -47,7 +62,7 @@
 		computed:{
 			screenWidth:function(){
 				return screen.width;
-			}
+			}, 
 		},
 		data() {
 			return {
