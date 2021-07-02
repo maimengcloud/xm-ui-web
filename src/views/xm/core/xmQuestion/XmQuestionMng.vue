@@ -415,10 +415,22 @@
 					params.createUserid=this.filters.createUser.userid;
 				}
 				if(this.filters.hisHandler){
-					params.hisHandlerUserid=this.filters.hisHandler.userid;
+					if(this.filters.hisHandleStatus){
+						params.hisHandlerUserid=this.filters.hisHandler.userid;
+					}else{
+						this.$message({ message: "请选择曾经的问题状态", type: 'error' });
+						return;
+					}
+					
 				}
 				if(this.filters.hisHandleStatus){
-					params.hisHandleStatus=this.filters.hisHandleStatus
+					if(this.filters.hisHandler){
+						params.hisHandleStatus=this.filters.hisHandleStatus
+					}else{
+						this.$message({ message: "请选择曾经的执行人", type: 'error' });
+						return;
+					}
+					
 				}
 				params.createTimeStart=this.dateRanger[0]+" 00:00:00"
 				params.createTimeEnd=this.dateRanger[1]+" 23:59:59"
