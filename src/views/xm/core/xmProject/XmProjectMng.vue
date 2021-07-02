@@ -36,7 +36,7 @@
 							<font v-if="filters.productId" class="more-label-font">产品:</font>  <el-tag v-if="filters.productId" closable @close="onProductClose">{{filters.productName}}</el-tag><el-button v-else    @click.native="productSelectVisible=true" size="mini">选择产品</el-button>
 						</el-col>
 						<el-col  :span="24"  style="padding-top:5px;"> 
-							<el-checkbox  v-model="showType" :false-label="false" :true-label="true">直观展示</el-checkbox>
+							<el-checkbox  v-model="showType" false-label="false" true-label="true">直观展示</el-checkbox>
 						</el-col>  
 						<el-col  :span="24"  style="padding-top:5px; ">
 							<el-button size="mini" class="hidden-lg-and-up hidden-btn"  style="margin-left:10px;"  @click="handleSelect('myExecuserStatus3')">我验收成功</el-button>
