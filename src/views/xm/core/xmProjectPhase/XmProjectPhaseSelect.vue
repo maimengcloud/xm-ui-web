@@ -2,7 +2,7 @@
 	<section>  
 		<el-row>
 		<el-table :max-height="tableHeight" ref="selectPhaseTable" :data="projectPhaseTreeData"    :show-summary="false"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
- 			<el-table-column prop="phaseName" label="阶段名称" min-width="160" > 
+ 			<el-table-column prop="phaseName" label="阶段名称" min-width="160" show-overflow-tooltip> 
 				 <template slot="header" slot-scope="scope">
 					<div>阶段  <el-tag size="mini" v-if="editForm.id" closable @close="clearSelectPhase()"> {{editForm.phaseName}}</el-tag></div>
 				</template>
@@ -435,19 +435,5 @@
 
 </script>
 
-<style lang="scss" scoped>
- .el-table{ 
-	 box-sizing: border-box; 
-	/deep/ .cell {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;
-    word-break: break-all;
-    line-height: 23px;
-    padding-right: 10px;
-	display: flex;
-	 }
-}
+<style lang="scss" scoped> 
 </style>

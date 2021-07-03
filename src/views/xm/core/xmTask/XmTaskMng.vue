@@ -140,11 +140,11 @@
 							>
 							<el-table-column sortable prop="name" label="任务名称(点击详情)"  min-width="240" show-overflow-tooltip>
 								<template slot-scope="scope">
-									{{scope.row.sortLevel}}&nbsp;<el-link  type="primary"  @click.stop="showDrawer(scope.row)">{{scope.row.name}}</el-link>
+									<span>{{scope.row.sortLevel}}&nbsp;<el-link  type="primary"  @click.stop="showDrawer(scope.row)">{{scope.row.name}}</el-link></span>
 
 								</template>
 							</el-table-column>
-							<el-table-column v-if=" !selProject || !selProject.id" prop="projectName" label="项目"  min-width="120">
+							<el-table-column v-if=" !selProject || !selProject.id" prop="projectName" label="项目"  min-width="120" show-overflow-tooltip>
 
 								<template slot="header">
 									项目<el-button @click="showProjectList"  icon="el-icon-search" circle size="mini"></el-button>
@@ -153,7 +153,7 @@
 									{{scope.row.projectName}}
 								</template>
 							</el-table-column>
-							<el-table-column  prop="menuId" label="故事"  min-width="120">
+							<el-table-column  prop="menuId" label="故事"  min-width="120" show-overflow-tooltip>
 								<template slot="header">
 									故事<el-button @click="showMenuStory"  icon="el-icon-search" circle size="mini"></el-button>
 								</template>
@@ -1907,18 +1907,4 @@ small{
 }
 </style>
 <style lang="scss" scoped>
- .el-table{
-	 box-sizing: border-box;
-	/deep/ .cell {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;
-    word-break: break-all;
-    line-height: 23px;
-    padding-right: 10px;
-	display: flex;
-	 }
-}
 </style>

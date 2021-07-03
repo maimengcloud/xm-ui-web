@@ -81,7 +81,7 @@
 			<el-table ref="table"  :max-height="tableHeight" v-if="!gstcVisible" :data="xmTestCaseExecs" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>
 				<el-table-column sortable type="index" width="45"></el-table-column>
- 				<el-table-column prop="projectName" label="项目名称" min-width="100" >
+ 				<el-table-column prop="projectName" label="项目名称" min-width="100" show-overflow-tooltip>
 					<template slot="header" v-if="!selProject">
 						项目<el-button @click="showProjectList"  icon="el-icon-search" circle size="mini"></el-button>
  					</template>
@@ -91,20 +91,20 @@
 						{{scope.row.caseId}}&nbsp;<el-link type="primary" @click="showCaseDetail(scope.row)">{{scope.row.caseName}}</el-link>
 					</template>
 				</el-table-column>
-				<el-table-column prop="menuName" label="故事" min-width="100" >
+				<el-table-column prop="menuName" label="故事" min-width="100" show-overflow-tooltip>
 					<template slot="header" slot-scope="scope">
 						故事<el-button @click="showMenu"  icon="el-icon-search" circle size="mini"></el-button>
  					</template>
 
 				</el-table-column>
 				
-				<el-table-column prop="taskName" label="任务" min-width="100" >
+				<el-table-column prop="taskName" label="任务" min-width="100" show-overflow-tooltip>
 					<template slot-scope="scope">  
 						{{scope.row.taskName?scope.row.taskName:'未关联任务'}}
 						<el-button  v-if=" batchEditVisible==true "   type="warning"   @click="showSelectTask(scope.row)">选任务</el-button>  
 					</template>
 				</el-table-column> 
-				<el-table-column prop="execUsername" label="执行人姓名" min-width="100" >
+				<el-table-column prop="execUsername" label="执行人姓名" min-width="100" show-overflow-tooltip>
 					<template slot-scope="scope">  
 						{{scope.row.execUsername?scope.row.execUsername:'未设置'}}
 						<el-button  v-if=" batchEditVisible==true "   type="warning"   @click="showGroupUsers(scope.row)">选人</el-button>  

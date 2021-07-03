@@ -71,20 +71,20 @@
 			<el-table ref="table" :max-height="tableHeight" :data="xmTestCases" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>
 				<el-table-column sortable type="index" width="45"></el-table-column>
-				<el-table-column prop="caseName" label="标题" min-width="100" >
+				<el-table-column prop="caseName" label="标题" min-width="100" show-overflow-tooltip>
 					<template scope="scope">
 						{{scope.row.id}}&nbsp;&nbsp;<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.caseName}}</el-link>
 					</template>
 				</el-table-column>
- 				<el-table-column prop="caseRemark" label="备注" min-width="80" ></el-table-column> 
- 				<el-table-column  prop="menuName" label="故事名" min-width="80" > 
+ 				<el-table-column prop="caseRemark" label="备注" min-width="80" show-overflow-tooltip></el-table-column> 
+ 				<el-table-column  prop="menuName" label="故事名" min-width="80" show-overflow-tooltip> 
 					<template slot="header">
 						故事<el-button @click="showMenu"  icon="el-icon-search" circle size="mini"></el-button>
  					</template>
 				 </el-table-column>
-				<el-table-column v-if="!multiSelect" prop="ctime" label="创建时间" min-width="80" ></el-table-column>
-				<el-table-column v-if="!multiSelect" prop="lusername" label="更新人姓名" min-width="80" ></el-table-column>
- 				<el-table-column v-if="!multiSelect" prop="moduleName" label="模块名称" min-width="80" ></el-table-column>
+				<el-table-column v-if="!multiSelect" prop="ctime" label="创建时间" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column v-if="!multiSelect" prop="lusername" label="更新人姓名" min-width="80" show-overflow-tooltip></el-table-column>
+ 				<el-table-column v-if="!multiSelect" prop="moduleName" label="模块名称" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column v-if="!multiSelect" prop="caseStatus" label="用例状态" min-width="80" >
 					<template scope="scope">
 						<el-tag :type="scope.row.caseStatus=='1'?'success':'warning'">{{scope.row.caseStatus=="1"?"正常":"作废"}}</el-tag>

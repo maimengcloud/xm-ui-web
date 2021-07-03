@@ -1402,18 +1402,4 @@ small{
 }
 </style>
 <style lang="scss" scoped>
- .el-table{ 
-	 box-sizing: border-box; 
-	/deep/ .cell {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;
-    word-break: break-all;
-    line-height: 23px;
-    padding-right: 10px;
-	display: flex;
-	 }
-}
 </style>

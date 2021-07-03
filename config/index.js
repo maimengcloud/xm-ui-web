@@ -11,7 +11,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: { 
-      
+      /**  
     	'/api/m1/xm': {
             target: 'http://localhost:7067',
             changeOrigin: true,
@@ -19,7 +19,7 @@ module.exports = {
                 '^/api/m1/xm': '/xm'
               }
           }, 
-      /**    
+        
     	'/api/m1/workflow': {
             target: 'http://localhost:7080',
             changeOrigin: true,

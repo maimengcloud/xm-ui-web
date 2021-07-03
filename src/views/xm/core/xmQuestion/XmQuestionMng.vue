@@ -110,7 +110,7 @@
 				<!--列表 XmQuestion xm_question-->
 				<el-table ref="table" :max-height="tableHeight" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 					<el-table-column sortable type="index" width="45"></el-table-column> 
-					<el-table-column prop="name" label="问题名称"  min-width="200"> 
+					<el-table-column prop="name" label="问题名称"  min-width="200" show-overflow-tooltip> 
 						<template slot-scope="scope">
 							{{scope.row.id}}&nbsp;<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.name}}</el-link> 
 						</template>
