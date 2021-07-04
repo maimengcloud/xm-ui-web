@@ -94,8 +94,8 @@
 			</el-row>
 			<el-row style="padding-top:12px;"> 
 				<el-table ref="table" :max-height="tableHeight" :data="xmMenusTreeData" class="drag-table" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-					<el-table-column sortable type="selection" width="45"></el-table-column>
-					<el-table-column sortable prop="seqNo"  label="序号" min-width="100">
+					<el-table-column  type="selection" width="45"></el-table-column>
+					<el-table-column  prop="seqNo"  label="序号" min-width="100">
 						<template slot-scope="scope">
 							<div style="display:flex;width:100%;">
 								<el-popover
@@ -1087,7 +1087,10 @@
 				this.getXmMenus();
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
 				var subHeight=65/1000 * window.innerHeight; 
-				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight;  
+				if(this.selProject){
+					subHeight=110/1000 * window.innerHeight; 
+				} 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				
 				
           }); 

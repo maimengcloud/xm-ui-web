@@ -94,7 +94,7 @@
 				  
 		</el-row>
 		<el-row v-show="batchEditVisible">
-			<el-table :data="xmMenusTreeData"   row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table :max-height="tableHeight" :data="xmMenusTreeData"   row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  
  					<el-table-column prop="menuName" label="故事名称" min-width="150" >
 						<template slot-scope="scope"> 

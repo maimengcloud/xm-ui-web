@@ -202,7 +202,7 @@
 		</el-row>
 		
 		<el-row v-if="batchEditVisible && filters.product" :span="24">
-			<xm-menu-mng-batch  @no-batch-edit=noBatchEdit :product="filters.product"></xm-menu-mng-batch>
+			<xm-menu-mng-batch :sel-project="selProject"  @no-batch-edit="noBatchEdit" :product="filters.product"></xm-menu-mng-batch>
 		</el-row>
 	</section>
 </template>
@@ -813,9 +813,12 @@
 			if(this.filters.product==null){
 				this.productVisible=true;
 			}
-			this.$nextTick(() => {
+			this.$nextTick(() => { 
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=70/1000 * window.innerHeight; 
+				var subHeight=65/1000 * window.innerHeight; 
+				if(this.selProject){
+					subHeight=110/1000 * window.innerHeight; 
+				} 
 				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.getXmMenus();
           });  
