@@ -97,6 +97,21 @@
 								:picker-options="pickerOptions"
 							></el-date-picker>   
 						</el-col>  
+						<el-col  :span="24"  style="padding-top:5px;">
+							<font class="more-label-font">最后更新时间:</font>  
+							<el-date-picker
+								v-model="ltimeRanger" 
+								type="daterange"
+								align="right"
+								unlink-panels
+								range-separator="至"
+								start-placeholder="更新时间"
+								end-placeholder="更新时间"
+								value-format="yyyy-MM-dd"
+								:default-time="['00:00:00','23:59:59']"
+								:picker-options="pickerOptions"
+							></el-date-picker>   
+						</el-col>  
 						<el-col :span="24" style="padding-top:5px;">
 							<el-button   type="primary" icon="el-icon-search" @click="searchXmQuestions">查询</el-button>
 							<el-button @click="handleExport"   icon="el-icon-download">导出</el-button>
@@ -137,9 +152,9 @@
 						<template slot="header">
 							指派给<el-button @click="showGroupUsers('handlerUser')"  icon="el-icon-search" circle size="mini"></el-button>
 						</template>
-					</el-table-column> 
+					</el-table-column>  
+					<el-table-column prop="ltime" label="指派时间" width="120" :formatter="formatterDate"></el-table-column>
 					<el-table-column prop="createTime" label="创建时间" width="120" :formatter="formatterDate"></el-table-column>
-					
 					<el-table-column prop="bizFlowState" label="升级处理" width="120" >
 						<template slot-scope="scope">
 							
@@ -331,7 +346,11 @@
 				dateRanger: [
 					util.formatDate.format(beginDate, "yyyy-MM-dd"),
 					util.formatDate.format(endDate, "yyyy-MM-dd")
-				],  
+				], 
+				ltimeRanger:[ 
+					util.formatDate.format(beginDate, "yyyy-MM-dd"),
+					util.formatDate.format(endDate, "yyyy-MM-dd")
+				],
 				pickerOptions:  util.pickerOptions('datarange'),
 				userType:'',//createUser、handlerUser
 				/**end 自定义属性请在上面加 请加备注**/
@@ -434,6 +453,12 @@
 				}
 				params.createTimeStart=this.dateRanger[0]+" 00:00:00"
 				params.createTimeEnd=this.dateRanger[1]+" 23:59:59"
+
+				if(this.ltimeRanger && this.ltimeRanger.length>=2){
+					params.ltimeStart=this.ltimeRanger[0]+" 00:00:00"
+					params.ltimeEnd=this.ltimeRanger[1]+" 23:59:59"
+				}
+
 				this.load.list = true;
 				if(this.filters.selProject){ 	
 					params.projectId = this.filters.selProject.id; 
