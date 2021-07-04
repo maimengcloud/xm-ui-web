@@ -16,7 +16,7 @@
 				</el-input> 
 				<el-popover
 					placement="top-start"
-					title=""
+					title="更多查询条件或操作"
 					width="200"
 					trigger="click" >
 					<el-row>
@@ -36,7 +36,7 @@
 			
 						</el-col> 
 					</el-row>
-					<el-button  slot="reference">更多</el-button>
+					<el-button  slot="reference" icon="el-icon-more" circle></el-button>
 				</el-popover> 
 			</div> 
 			

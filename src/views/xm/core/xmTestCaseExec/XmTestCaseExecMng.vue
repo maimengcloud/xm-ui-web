@@ -15,7 +15,7 @@
 				<el-button   @click="showBatchEdit" icon="el-icon-right">批量修改</el-button>  
 				<el-popover
 					placement="top-start"
-					title=""
+					title="更多查询条件或操作"
 					width="400"
 					trigger="click" > 
 					<el-row>
@@ -64,7 +64,7 @@
 							<el-button size="mini" type="primary" icon="el-icon-search" @click="searchXmTestCaseExecs">查询</el-button>
 						</el-col>
 					</el-row>
-					<el-button  slot="reference">更多</el-button>
+					<el-button  slot="reference" icon="el-icon-more" circle></el-button>
 				</el-popover> 
 		</el-row>
 		<el-row class="app-container" v-else> 
