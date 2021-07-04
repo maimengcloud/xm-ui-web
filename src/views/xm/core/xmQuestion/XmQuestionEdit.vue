@@ -46,14 +46,20 @@
 						<el-col :span="12">
 							<el-row class="app-container">
 								<el-col :span="24" class="label-font">测试步骤</el-col>
-								<el-col :span="24" style="padding-top:12px;">
-									<div  v-html="editForm.opStep"></div> 
+								<el-col :span="24" >
+									<div class="wf-main-context-box" v-if="editForm.opStep">
+										<div style="padding:10px;"  class="wf-main-context"  v-html="editForm.opStep"></div> 
+									</div>
+									<font v-else>无</font>
 								</el-col>
 							</el-row>
 							<el-row class="app-container">
-								<el-col :span="24"  class="label-font">预期结果</el-col> 
-								<el-col :span="24" style="padding-top:12px;">  
-									<div  v-html="editForm.expectResult"></div> 
+								<el-col :span="24"  class="label-font" >预期结果</el-col> 
+								<el-col :span="24" >  
+									<div class="wf-main-context-box" v-if="editForm.expectResult">
+										<div  style="padding:10px;"  class="wf-main-context" v-html="editForm.expectResult"></div> 
+									</div>
+									<font v-else>无</font>
 								</el-col> 
 							</el-row>
 							<el-row class="app-container">
@@ -85,7 +91,20 @@
 						</el-col>
 						<el-col :span="24">
 							<el-form-item label="问题描述" prop="description">
-								<div  v-html="editForm.description"></div>
+								<div class="wf-main-context-box" v-if="editForm.description">
+									<div style="padding:10px;" class="wf-main-context" v-html="editForm.description"></div>
+								</div>
+								<font v-else>无</font>
+							</el-form-item> 
+						</el-col>
+						
+						<el-col :span="24">
+							<el-form-item label="上次处理意见" prop="lremark">
+								<div class="wf-main-context-box"  v-if="editForm.lremark">
+									<div style="padding:10px;"  class="wf-main-context" v-html="editForm.lremark"></div>
+								</div>
+								<font v-else>无</font>
+								
 							</el-form-item> 
 						</el-col>
 						<el-col :span="24"> 
@@ -283,6 +302,11 @@
 						return ;
 					}
 				}
+				//解决了直接转会创建人
+				if(tardgetBugStatus=='resolved'){
+					this.editForm.handlerUserid=this.editForm.createUserid
+					this.editForm.handlerUsername=this.editForm.createUsername;
+				}
 				this.editSubmit(tardgetBugStatus);
 			},
 			formatterOption: function(row,column,cellValue, index){ 
@@ -417,5 +441,19 @@
 .label-font{
 	font-weight: 700;
 	font-size: 14px;
+}
+
+
+ .wf-main-context-box {  
+	border:1px dashed #000;
+	margin-bottom: 10px;
+	margin-top: 10px; 
+}
+ .wf-main-context p { 
+	color: #585858;  
+}
+	
+.wf-main-context   p  > img {
+	max-width: 100%; 
 }
 </style>

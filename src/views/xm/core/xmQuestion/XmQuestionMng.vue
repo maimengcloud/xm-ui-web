@@ -148,13 +148,13 @@
 
 					<el-table-column prop="bugSeverity" label="严重程度" width="100" :formatter="formatterOption"></el-table-column>  
 					<el-table-column prop="createUsername" label="创建人" width="100" show-overflow-tooltip></el-table-column> 
-					<el-table-column prop="handlerUsername" width="200" label="指派给" > 
+					<el-table-column prop="handlerUsername" width="100" label="指派给"  show-overflow-tooltip> 
 						<template slot="header">
 							指派给<el-button @click="showGroupUsers('handlerUser')"  icon="el-icon-search" circle size="mini"></el-button>
 						</template>
 					</el-table-column>  
-					<el-table-column sortable prop="ltime" label="更新时间" width="120" :formatter="formatterDate" show-overflow-tooltip></el-table-column>
-					<el-table-column prop="lremark" label="更新说明" width="120" show-overflow-tooltip></el-table-column>
+					<el-table-column sortable prop="ltime" label="更新时间" width="120" show-overflow-tooltip></el-table-column>
+					<el-table-column prop="lremark" label="更新说明" width="100" show-overflow-tooltip></el-table-column>
 					<el-table-column prop="createTime" label="创建时间" width="120" :formatter="formatterDate" show-overflow-tooltip></el-table-column>
 					<el-table-column prop="bizFlowState" label="升级处理" width="120" >
 						<template slot-scope="scope">
