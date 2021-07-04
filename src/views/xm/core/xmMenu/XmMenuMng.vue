@@ -198,10 +198,7 @@
 
 				<el-dialog title="选择员工" :visible.sync="selectFiltersMmUserVisible" width="60%" append-to-body>
 					<users-select  @confirm="onFiltersMmUserSelected" ref="selectFiltersMmUser"></users-select>
-				</el-dialog>	
-				<el-dialog title="选择员工" :visible.sync="userSelectVisible" width="60%" append-to-body>
-					<users-select  @confirm="onUserSelected" ref="usersSelect"></users-select>
-				</el-dialog>	 
+				</el-dialog>	 	 
 		</el-row>
 		
 		<el-row v-if="batchEditVisible && filters.product" :span="24">
