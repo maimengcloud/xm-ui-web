@@ -153,8 +153,9 @@
 							指派给<el-button @click="showGroupUsers('handlerUser')"  icon="el-icon-search" circle size="mini"></el-button>
 						</template>
 					</el-table-column>  
-					<el-table-column prop="ltime" label="指派时间" width="120" :formatter="formatterDate"></el-table-column>
-					<el-table-column prop="createTime" label="创建时间" width="120" :formatter="formatterDate"></el-table-column>
+					<el-table-column sortable prop="ltime" label="更新时间" width="120" :formatter="formatterDate" show-overflow-tooltip></el-table-column>
+					<el-table-column prop="lremark" label="更新说明" width="120" show-overflow-tooltip></el-table-column>
+					<el-table-column prop="createTime" label="创建时间" width="120" :formatter="formatterDate" show-overflow-tooltip></el-table-column>
 					<el-table-column prop="bizFlowState" label="升级处理" width="120" >
 						<template slot-scope="scope">
 							
@@ -348,8 +349,6 @@
 					util.formatDate.format(endDate, "yyyy-MM-dd")
 				], 
 				ltimeRanger:[ 
-					util.formatDate.format(beginDate, "yyyy-MM-dd"),
-					util.formatDate.format(endDate, "yyyy-MM-dd")
 				],
 				pickerOptions:  util.pickerOptions('datarange'),
 				userType:'',//createUser、handlerUser
