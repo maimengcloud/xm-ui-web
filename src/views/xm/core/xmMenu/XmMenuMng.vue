@@ -1,13 +1,7 @@
 <template>
 	<section>
-		<el-row>
-			<el-row >  
-				<el-col v-show="!batchEditVisible&& !filters.product" :span="24" class="app-container">
-					<xm-product-mng :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-mng>
-				</el-col>
-
-				<el-col v-show="filters.product" :span="24" >
-					<el-row class="app-container">  
+		<el-row class="app-container" v-if=" !batchEditVisible"> 
+					<el-row>  
 						<el-select  v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable >
 							<el-option   value="not-join"  label="未分配任何任务的故事"></el-option>  
 							<el-option   value="join"  label="已分配任务的故事"></el-option>  
@@ -32,15 +26,9 @@
 						</el-input> 
 						
 						
-						<el-button  v-if="  batchEditVisible==false " type="primary" @click="showAdd" icon="el-icon-plus">故事</el-button>
-						<el-button  v-if=" batchEditVisible==false"   @click="toBatchEdit" icon="el-icon-edit">修改</el-button> 
-						<el-button  v-if=" batchEditVisible==true "  type="warning" @click="batchSaveMenu" icon="el-icon-finished">保存</el-button> 
-						<el-button  v-if=" batchEditVisible==true" type="success"  @click="handlePopover(null,'add')" icon="el-icon-plus">故事</el-button>
-						<el-button  v-if=" batchEditVisible==true "    @click="noBatchEdit" icon="el-icon-back">返回</el-button>  
-						<el-button  v-if=" batchEditVisible==false && filters.product "    @click="toSelectProduct" icon="el-icon-back">返回</el-button> 
-
-						<el-button v-if=" batchEditVisible==true  " type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
-						
+						<el-button    type="primary" @click="showAdd" icon="el-icon-plus">故事</el-button>
+						<el-button      @click="toBatchEdit" icon="el-icon-edit">修改</el-button>  
+ 						<el-button      @click="toSelectProduct" icon="el-icon-back">产品</el-button>  
 						<el-popover
 							placement="top-start"
 							title=""
@@ -101,120 +89,72 @@
 						</el-popover> 
 					
 					</el-row>
-					<el-row ref="table">
-						<el-row v-show="batchEditVisible" class="app-container"> 
-							<el-table ref="table1" :max-height="tableHeight" :data="xmMenusTreeData" class="drag-table" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-								<el-table-column sortable type="selection" width="45"></el-table-column>
-								<el-table-column sortable prop="seqNo"  label="序号" min-width="100">
-									<template slot-scope="scope">
-										<div style="display:flex;width:100%;">
-											<el-popover
-												placement="top"
-												width="400"
-												trigger="click">
-												<div style="text-align: center; margin: 0">
-													<div :ref="'menu_'+scope.$index" :data-menu-id="scope.row.menuId"></div>
-													<el-button type="primary" size="mini"   @click="handlePopover(scope.row,'highestPmenuId')">成为顶级节点</el-button> 
-													<el-button type="danger" size="mini"   @click="handlePopover(scope.row,'delete')">删除当前行</el-button> 
-													<el-button type="success" size="mini"   @click="handlePopover(scope.row,'addSub')">增加子行</el-button> 
-												</div>
-												<el-button slot="reference" :type="scope.row.opType?'success':'plain'"  size="mini" icon="el-icon-more" circle></el-button> 
-											</el-popover>
-											<el-input   style="width:100%;"   v-model="scope.row.seqNo"  @change="fieldChange(scope.row,'seqNo')"></el-input>
-										</div>
-									</template>
-								
-								</el-table-column>  
-								<el-table-column prop="menuName" label="故事名称" min-width="140" > 
-									<template slot-scope="scope">
-										<el-input    v-model="scope.row.menuName"  @change="fieldChange(scope.row,'menuName')"></el-input>
-									</template>
-								</el-table-column> 
-								<el-table-column prop="mmUsername" label="负责人" min-width="100" > 
-									<template slot-scope="scope"> 
-										<el-tag v-if="scope.row.mmUserid" closable @close="clearPmUser(scope.row)">{{scope.row.mmUsername}}</el-tag>
-										<el-tag v-else>未配置</el-tag> 
-										<el-button @click="selectUser(scope.row)">选人</el-button>
-									</template>
-								</el-table-column> 
-								<el-table-column prop="remark" label="描述" min-width="140" > 
-									<template slot-scope="scope">
-
-										<el-input    v-model="scope.row.remark" type="textarea"  @change="fieldChange(scope.row,'remark')"></el-input>
-									</template>
-								</el-table-column>  
-							</el-table>
-							<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
-							
-						</el-row>
-						<el-row v-show="!batchEditVisible" class="app-container">
-							<el-table  ref="table2" :max-height="tableHeight" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-								<el-table-column sortable type="selection" width="40"></el-table-column> 
-								<el-table-column prop="menuName" label="故事名称" min-width="140" > 
-									<template slot-scope="scope">
-										{{scope.row.seqNo}}&nbsp;&nbsp;<el-link type="primary"  @click="showMenuExchange(scope.row)">{{scope.row.menuName}}</el-link>
-									</template>
-								</el-table-column> 
-								<el-table-column prop="mmUsername" label="负责人" min-width="80" >  
-								</el-table-column> 
-								<el-table-column prop="finishRate" label="总体进度" width="100" > 
-									<template slot-scope="scope">
-										{{scope.row.finishRate}}%
-									</template>
-								</el-table-column> 
-								<el-table-column prop="remark" label="描述" min-width="140" > 
-									<template slot-scope="scope">
-										<el-popover
-											v-if="scope.row.remark && scope.row.remark.length>20"
-											placement="top-start"
-											title="故事备注"
-											width="400"
-											trigger="click" >
-											<div v-html="scope.row.remark">
-											</div> 
-											<div slot="reference">{{scope.row.remark?scope.row.remark.substr(0,18)+"...":""}}</div>
-										</el-popover> 
-										<div v-else v-html="scope.row.remark"> 
-										</div>
-									</template>
-								</el-table-column> 
-								<el-table-column label="操作"   width="200" fixed="right"  >
-									<template slot-scope="scope">
+					<el-row style="padding-top:12px;">  
+						<el-table  ref="table" :max-height="tableHeight" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick">
+							<el-table-column sortable type="selection" width="40"></el-table-column> 
+							<el-table-column prop="menuName" label="故事名称" min-width="160" show-overflow-tooltip> 
+								<template slot-scope="scope">
+									<span>{{scope.row.seqNo}}&nbsp;&nbsp;<el-link type="primary"  @click="showMenuExchange(scope.row)">{{scope.row.menuName}}</el-link></span>
+								</template>
+							</el-table-column> 
+							<el-table-column prop="mmUsername" label="负责人" min-width="80" show-overflow-tooltip>  
+							</el-table-column> 
+							<el-table-column prop="finishRate" label="总体进度" width="100" > 
+								<template slot-scope="scope">
+									{{scope.row.finishRate}}%
+								</template>
+							</el-table-column> 
+							<el-table-column prop="remark" label="描述" min-width="120" show-overflow-tooltip> 
+								<template slot-scope="scope">
+									<el-popover
+										v-if="scope.row.remark && scope.row.remark.length>20"
+										placement="top-start"
+										title="故事备注"
+										width="400"
+										trigger="click" >
+										<div v-html="scope.row.remark">
+										</div> 
+										<div slot="reference">{{scope.row.remark?scope.row.remark.substr(0,18)+"...":""}}</div>
+									</el-popover> 
+									<div v-else v-html="scope.row.remark"> 
+									</div>
+								</template>
+							</el-table-column> 
+							<el-table-column label="操作"   width="200" fixed="right"  >
+								<template slot-scope="scope">
+									
+									<el-button type="primary"  @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" circle></el-button> 
+									<el-button    @click="showEdit(scope.row)" icon="el-icon-edit" circle></el-button> 
 										
-										<el-button type="primary"  @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" circle></el-button> 
-										<el-button    @click="showEdit(scope.row)" icon="el-icon-edit" circle></el-button> 
-											
-											<el-popover style="padding-left:10px;"
-												v-if="isPmUser"
-												placement="top-start"
-												width="200"
-												trigger="click" > 
-												<el-row>
-													<el-col :span="24" style="padding-top:5px;">
-														<el-button type="success" @click="showImportFromMenuTemplate(scope.row)" icon="el-icon-upload2">由模板快速导入</el-button> 
-													</el-col>
-													<el-col  :span="24"  style="padding-top:5px;"> 
-														<el-button type="danger"   @click="handleDel(scope.row)" icon="el-icon-delete" circle></el-button>   
-													</el-col> 
-													<el-col  :span="24"  style="padding-top:5px;"> 
-														<el-button v-if="!selProject"  type="primary" @click="showTaskListForMenu(scope.row,scope.$index)"  icon="el-icon-s-operation">查看任务</el-button>
-														<el-button v-if="selProject"  type="primary" @click="showTasks(scope.row,scope.$index)"  icon="el-icon-s-operation">查看任务</el-button> 
-													</el-col> 
-													<el-col  :span="24"  style="padding-top:5px;"> 
-														<el-button   type="primary" @click="toIterationList(scope.row,scope.$index)"  icon="el-icon-document-copy">查看迭代计划</el-button>
-													</el-col> 
-												</el-row>  
+										<el-popover style="padding-left:10px;"
+											v-if="isPmUser"
+											placement="top-start"
+											width="200"
+											trigger="click" > 
+											<el-row>
+												<el-col :span="24" style="padding-top:5px;">
+													<el-button type="success" @click="showImportFromMenuTemplate(scope.row)" icon="el-icon-upload2">由模板快速导入</el-button> 
+												</el-col>
+												<el-col  :span="24"  style="padding-top:5px;"> 
+													<el-button type="danger"   @click="handleDel(scope.row)" icon="el-icon-delete" circle></el-button>   
+												</el-col> 
+												<el-col  :span="24"  style="padding-top:5px;"> 
+													<el-button v-if="!selProject"  type="primary" @click="showTaskListForMenu(scope.row,scope.$index)"  icon="el-icon-s-operation">查看任务</el-button>
+													<el-button v-if="selProject"  type="primary" @click="showTasks(scope.row,scope.$index)"  icon="el-icon-s-operation">查看任务</el-button> 
+												</el-col> 
+												<el-col  :span="24"  style="padding-top:5px;"> 
+													<el-button   type="primary" @click="toIterationList(scope.row,scope.$index)"  icon="el-icon-document-copy">查看迭代计划</el-button>
+												</el-col> 
+											</el-row>  
 
-												<el-button slot="reference" icon="el-icon-more" circle></el-button>
-											</el-popover> 
-									</template>
-								</el-table-column>
-							</el-table>
-							<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+											<el-button slot="reference" icon="el-icon-more" circle></el-button>
+										</el-popover> 
+								</template>
+							</el-table-column>
+						</el-table>
+						<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 							
-						</el-row>
-					</el-row>
-				</el-col>
+					</el-row> 
 				<!--编辑 XmMenu xm_project_menu界面-->
 				<el-dialog title="编辑故事" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
 					<xm-menu-edit :xm-menu="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-menu-edit>
@@ -232,6 +172,9 @@
 					<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="false" :xm-menu="editForm" ></xm-menu-rich-detail>
 				</el-dialog> 
 				
+				<el-dialog  title="选择产品" :visible.sync="productVisible"  width="60%"  append-to-body   :close-on-click-modal="false">
+					<xm-product-mng :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-mng>
+				</el-dialog> 
 				<el-dialog title="选中任务" :visible.sync="selectTaskVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 					<xm-task-list  :sel-project="selProject" :is-multi-select="true"  @tasks-selected="onSelectedTasks"></xm-task-list>
 				</el-dialog> 
@@ -258,8 +201,11 @@
 				</el-dialog>	
 				<el-dialog title="选择员工" :visible.sync="userSelectVisible" width="60%" append-to-body>
 					<users-select  @confirm="onUserSelected" ref="usersSelect"></users-select>
-				</el-dialog>	
-			</el-row>
+				</el-dialog>	 
+		</el-row>
+		
+		<el-row v-if="batchEditVisible && filters.product" :span="24">
+			<xm-menu-mng-batch  @no-batch-edit=noBatchEdit :product="filters.product"></xm-menu-mng-batch>
 		</el-row>
 	</section>
 </template>
@@ -275,6 +221,7 @@
 	
 	import  XmMenuAdd from './XmMenuAdd';//新增界面
 	import  XmMenuEdit from './XmMenuEdit';//修改界面
+	import  XmMenuMngBatch from './XmMenuMngBatch';//修改界面
 	import  XmProductMng from '../xmProduct/XmProductSelect';//新增界面
 	import  XmMenuTemplateMng from '../xmMenuTemplate/XmMenuTemplateMng';//新增界面
 	import XmMenuRichDetail from './XmMenuRichDetail';
@@ -286,7 +233,7 @@
 
 	import {sn} from '@/common/js/sequence'
 
-	import { mapGetters } from 'vuex'
+	import { mapGetters } from 'vuex' 
 	
 	export default { 
 		props:['selProject'],
@@ -307,10 +254,7 @@
           })
         }
         
-        const xmMenusTreeData = this.translateDataToTree(xmMenus);
-        if (this.batchEditVisible) {
-          this.rowDrop();
-        }
+        const xmMenusTreeData = this.translateDataToTree(xmMenus); 
         
 				 return xmMenusTreeData;
 			},
@@ -324,6 +268,11 @@
 			}
 		},
 		watch:{ 
+			'filters.product'(product){
+				if(product==null){
+					this.productVisible=true;
+				}
+			}
     	},
 		data() {
 			const beginDate = new Date();
@@ -378,6 +327,7 @@
 					util.formatDate.format(endDate, "yyyy-MM-dd")
 				],  
 				pickerOptions:  util.pickerOptions('datarange'),
+				productVisible:false,
  				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -518,6 +468,7 @@
 			}, 
 			onProductSelected:function(product){
 				this.filters.product=product
+				this.productVisible=false;
 				this.getXmMenus()
 			},
 			//删除xmMenu
@@ -567,160 +518,7 @@
 			
 			rowClick: function(row, event, column){
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
-      },
-            // 行拖拽
-      rowDrop() {
-        const _this = this
-        // 被拖动的元素的索引
-        let dragged = null;
-        // 被拖动的元素的索引
-        let draggedIndex = -1;
-
-        // 目标元素
-        let target = document.querySelector('.drag-table .el-table__body-wrapper .el-table__body tbody');
-        console.log('rowDrop--target==', target);
-        
-        let rows = 0;//行数
-        setTimeout(function () {
-          rows = target.childElementCount
-        console.log('rowDrop--rows==', rows);
-          for (let i = 0; i < target.childElementCount; i++) {
-            const child = target.children[i]
-            child.draggable = true
-            // child.style.cursor = 'copy'
-            child.ondragstart = function(e){
-              console.log('开始--ondragstart--e==', e);
-              
-              dragged = e.path[0]
-              draggedIndex = e.path[0].rowIndex
-              console.log('child'+i+'开始拖拽'+draggedIndex);
-              _this.cellMouseIndex = -1
-              dragged.style.cursor = 'grabbing'
-            }
-            child.ondragend = function(){
-              console.log('child'+i+'拖拽结束');
-            }
-          }
-        },0)
-
-        // 被拖动的元素正在那个容器里
-        let dragIndex = -1
-
-        target.ondragenter = function(e){
-          clearTimeout(loop)
-
-          // 由于被拖动的元素 经过tbody中的每一元素都会触发该事件, 但是我们只需要它正在那一行上就行了
-          if(e.path[0].nodeName === 'TD'){
-            // throughRow 表示被拖动的元素正在哪一行上
-            const throughRow = e.path.find(path => {
-              if(path.className.split(' ').includes('el-table__row')){
-                return path
-              }
-            })
-            if(dragIndex !== throughRow.rowIndex){
-              if(dragIndex > -1){
-                // 清除上次进入的容器的状态
-                const last = target.children[dragIndex];
-                clearClass(last)
-              }
-              // console.log('拖动进入目标元素'+selectRow.rowIndex);
-              // 不是自己或未文件夹时才改变状态
-              if(draggedIndex !== throughRow.rowIndex ){
-                // 改变本次进入的容器的状态
-                dragged.style.cursor = 'copy'
-                throughRow.style.height = 60+'px'
-                throughRow.style.backgroundColor = '#e9fdcf'
-              }
-              dragIndex = throughRow.rowIndex
-            }
-          }
-          leaveIndex = -1
-        }
-        target.ondragover = function(e){
-          // console.log('目标元素中拖拽...');
-          e.preventDefault();
-          leaveIndex = -1
-        }
-
-        let loop = null
-        let leaveIndex = -1 // 是否拖出了整个table, -1表示还在table内
-
-        target.ondragleave = function(e){
-          console.log('ondragleave--e==', e);
-
-          clearTimeout(loop)
-
-          if(e.path[0].nodeName){
-            const throughRow = e.path.find(path => {
-              if(path.className.split(' ').includes('el-table__row')){
-                return path;
-              }
-            })
-            if(throughRow && dragIndex !== throughRow.rowIndex){
-              // console.log('拖动离开目标元素'+selectRow.rowIndex);
-              // selectRow.style.height = 'unset'
-              // selectRow.style.backgroundColor = '#fff'
-              // dragIndex = selectRow.rowIndex
-            }
-            if(throughRow.rowIndex === 0 || throughRow.rowIndex === rows-1){
-              // 离开第一行或最后一行
-              leaveIndex = throughRow.rowIndex
-              loop = setTimeout(function () {
-                if(leaveIndex > -1){
-                  console.log("离开了",leaveIndex)
-                  const leave = target.children[leaveIndex];
-                  clearClass(leave)
-                  dragIndex = -1
-                }
-              },100)
-            }``
-          }
-        }
-        target.ondrop = function(){
-          console.log('ondrop--放下了'+draggedIndex);
-          // 清除上次进入的容器的状态
-          const last = target.children[dragIndex];
-          clearClass(last)
-          dragged.style.cursor = 'default'
-
-          console.log('ondrop--draggedIndex==', draggedIndex);
-          console.log('ondrop--dragIndex==', dragIndex);
-          
-
-          const form = _this.xmMenusTreeData[draggedIndex];
-          const to = _this.xmMenusTreeData[dragIndex];
-
-          const startId = _this.$refs['menu_'+draggedIndex].dataset.menuId;;
-          const endId = _this.$refs['menu_'+dragIndex].dataset.menuId;
-
-          if (startId !== endId) {
-            _this.changePmenuId(startId, endId)
-          }
-        }
-
-        let clearClass = function (node) {
-          if(node){
-            node.style.height = 'unset'
-            node.style.backgroundColor = '#fff'
-          }
-          dragged.style.cursor = 'grabbing'
-        }
-        // if(last && form.menuId !== to.menuId && to.isFolder){
-        //   // 移动文件/文件夹
-        //   _this.copyOrMoveApi('move', form.menuId, to.menuId)
-        // }
-      },
-      // 判断前后两个数据是否存在同一回路里面
-      // dict 为字典；sId拖拽到menuId; ePmeuId 是放置位置的祖先 menuId;
-      judgePmenuId(dict, sId, ePmeuId) {
-        if (sId === ePmeuId) {
-          return true;
-        } else if (dict[ePmeuId]) {
-          return this.judgePmenuId(dict, sId, dict[ePmeuId]);
-        } else {
-          return false;
-        }
-      },
+      }, 
       handleExport() {
         this.downloadLoading = true
         const pageNum = this.pageInfo.pageNum;
@@ -758,35 +556,7 @@
         })
         return dataList;
       },
-      changePmenuId(sId, eId) {
-        let dict = {};
-        this.xmMenus.forEach(d => {
-          dict[d.menuId] = d.pmenuId || '';
-        });
-        if (!dict[eId]) {
-          this.xmMenus.find(d => {
-            if (d.menuId === sId) {
-              d.pmenuId = eId;
-              console.log('更新关系1');
-              this.fieldChange(d,'pmenuId',true);
-            }
-          })
-        } else {
-          const isSynezesis = this.judgePmenuId(dict, sId, dict[eId]);
-          if (!isSynezesis) {
-            this.xmMenus.find(d => {
-              if (d.menuId === sId) {
-                d.pmenuId = eId;
-                console.log('更新关系2');
-                this.fieldChange(d,'pmenuId',true);
-              }
-            })
-          } else {
-            console.log('形成闭合回路--拖拽不更新');
-            
-          }
-        }
-			}, 
+       
 			
 			/**begin 自定义函数请在下面加**/
 			translateDataToTree(data2) { 
@@ -917,67 +687,15 @@
 				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
 					this.$message({ message: "只有产品经理、产品组长能够修改故事", type: 'error'}); 
 					return false;
-				}
-				this.valueChangeRows=[];
+				} 
 				this.batchEditVisible=true;
 
 			},
 			noBatchEdit(){
-				this.batchEditVisible=false;
-				if(this.valueChangeRows.length>0){
-					this.getXmMenus();
-				} 
-				this.valueChangeRows=[];
-			},
-			batchSaveMenu(){
-				
-				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$message({ message: "只有产品经理、产品组长能够修改故事", type: 'error'}); 
-					return false;
-				}
-				if(this.valueChangeRows.length==0){
-					this.$message.success("没有数据被修改");
-					return
-				}
-				batchEditXmMenu(this.valueChangeRows).then(res=>{
-					var tips=res.data.tips;
-					if(tips.isOk){
-						this.valueChangeRows=[]
-						this.getXmMenus()
-					}
-					this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
-				});
-			},
-			fieldChange:function(row,fieldName,nextReplace){
-				 
-				console.log('fieldChange--row==', row);
-				if(nextReplace){
-					row.nextReplace=nextReplace
-				}
-				if(row.opType){
-					var index=this.valueChangeRows.findIndex(i=>i.menuId==row.menuId);
-					
-					if(index>=0){
-						this.valueChangeRows.splice(index,1);
-						this.valueChangeRows.push(row)
-					}else{
-						this.valueChangeRows.push(row)
-					}
-				}else{
-					var oneRow=this.valueChangeRows.find(i=>i.menuId==row.menuId);
-					if( oneRow  ){
-						if(oneRow.nextReplace){ 
-							var index=this.valueChangeRows.findIndex(i=>i.menuId==row.menuId);
-							this.valueChangeRows.splice(index,1);
-							this.valueChangeRows.push(row)
-						}else{
-							return;
-						}
-					}else{
-						this.valueChangeRows.push(row)
-					}
-				} 
-			},
+				this.batchEditVisible=false; 
+				this.getXmMenus();
+			}, 
+			 
 			showTaskList(row){ 
 				
 				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
@@ -1033,57 +751,7 @@
 				this.editForm=row
 				this.taskListForMenuVisible=true
 			}, 
-			/**end 自定义函数请在上面加**/
-			handlePopover:function(row,opType){
-				if('add'==opType){
-					var subRow=JSON.parse(JSON.stringify(this.addForm));
-					subRow.pmenuId=null
-					subRow.menuId=sn();
-					subRow.seqNo="1"
-					subRow.opType=opType
-					subRow.productId=this.filters.product.id 
-					subRow.productName=this.filters.product.productName 
-					this.fieldChange(subRow,'seqNo');
-					this.xmMenus.unshift(subRow);
-				}else if('addSub'==opType){
-					var subRow=JSON.parse(JSON.stringify(row));
-					subRow.children=[];
-					subRow.pmenuId=row.menuId
-					subRow.menuId=sn();
-					subRow.seqNo=row.seqNo+".1"
-					subRow.opType=opType
-					this.fieldChange(subRow,'seqNo');
-					this.xmMenus.unshift(subRow);
-				}else if('delete'==opType){
-					if(row.opType && (row.opType=='addSub' || row.opType=='add')){
-						if(row.children && row.children.length>0){
-							this.$message.error("请先删除子元素");
-							return;
-						}else{ 
-
-							var index=this.xmMenus.findIndex(i=>i.menuId==row.menuId)
-							var indexValueChanges=this.valueChangeRows.findIndex(i=>i.menuId==row.menuId)
-							this.valueChangeRows.splice(indexValueChanges,1);
-							this.xmMenus.splice(index,1);
-						}
-					}else{
-						this.$message.error("只能删除未保存的行");
-						return;
-					}
-					 
-				} else if ('highestPmenuId' === opType) {  
-					if (row.pmenuId) {
-						this.xmMenus.find(d => {
-							
-							if (d.menuId === row.menuId) { 
-								d.pmenuId = '';
-								this.fieldChange(d,'seqNo', true); 
-							}
-						});
-					}
-				}
-            
-			},
+			 
 			loadTasksToXmMenuState: function () {  
 				this.load.edit=true;
 				if(!this.filters.product){
@@ -1103,22 +771,7 @@
 			selectUser(row){
 				this.editForm=row
 				this.userSelectVisible=true;
-			},
-			onUserSelected(users){
-				if(users && users.length>0){
-					this.editForm.mmUserid=users[0].userid
-					this.editForm.mmUsername=users[0].username
-					this.fieldChange(this.editForm,"mmUsername");
-
-				}
-				this.userSelectVisible=false
-			},
-			clearPmUser:function(row){
-				this.editForm=row
-				 row.mmUserid=''
-				 row.mmUsername=''
-				 this.fieldChange(row,"mmUsername");
-			},
+			}, 
 			clearFiltersMmUser:function(){
 				 this.filters.mmUser=null;
 				  this.searchXmMenus();
@@ -1140,8 +793,8 @@
 				this.filters.mmUser=this.userInfo;
 				this.searchXmMenus();
 			},								 
-			toSelectProduct(){
-				this.filters.product=null;
+			toSelectProduct(){ 
+				this.productVisible=true;
 			}
 		},//end methods
 		components: { 
@@ -1155,29 +808,20 @@
 			XmTaskListForMenu,
 			XmIterationMng,
 			UsersSelect,
+			XmMenuMngBatch,
 		    
 		    //在下面添加其它组件
 		},
 		mounted() { 
+			if(this.filters.product==null){
+				this.productVisible=true;
+			}
 			this.$nextTick(() => {
-				var subHeight=350/1000 * window.innerHeight
-				if(this.selProject){
-					subHeight=400/1000 * window.innerHeight
-				}
-				this.tableHeight =  window.innerHeight - subHeight
-				
-				let self = this;
-				window.onresize = function() {
-					self.tableHeight =  window.innerHeight - subHeight;
-				} 
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=70/1000 * window.innerHeight; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.getXmMenus();
-          }); 
-      // 阻止默认行为
-      document.body.ondrop = function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-      };
-      this.rowDrop();
+          });  
 		}
 	}
 
@@ -1189,19 +833,5 @@
 	text-align:center;
 	float:left;
 	padding-top:5px;
-}
- .el-table{ 
-	 box-sizing: border-box; 
-	/deep/ .cell {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;
-    word-break: break-all;
-    line-height: 23px;
-    padding-right: 10px;
-	display: flex;
-	 }
-}
+}   
 </style>

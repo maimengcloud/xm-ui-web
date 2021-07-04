@@ -68,7 +68,7 @@
 						</el-popover>  
 					 </template>
 					<template slot-scope="scope">
-						{{scope.row.id}}&nbsp;&nbsp;<el-link type="primary">{{scope.row.productName}}</el-link>
+						<font>{{scope.row.id}}&nbsp;&nbsp;<el-link type="primary">{{scope.row.productName}}</el-link></font>
 					</template>
 				</el-table-column>
 				<el-table-column v-if="isSelectProduct==true"  label="操作" width="100" fixed="right"  >
@@ -280,7 +280,7 @@
 		mounted() { 
 			this.$nextTick(() => {
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=65/1000 * window.innerHeight; 
+				var subHeight=70/1000 * window.innerHeight; 
 				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.getXmProducts();
         	}); 

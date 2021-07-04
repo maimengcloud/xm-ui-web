@@ -96,19 +96,19 @@
 			<el-table ref="table"  :max-height="tableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column   sortable type="selection" width="55"></el-table-column>
 				<el-table-column sortable type="index" width="55"></el-table-column>
- 				<el-table-column prop="productName" label="产品名称" min-width="150" > 
+ 				<el-table-column prop="productName" label="产品名称" min-width="200" show-overflow-tooltip> 
 					<template slot-scope="scope">
-						{{scope.row.id}}&nbsp;&nbsp;<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.productName}}</el-link>
+						<span>{{scope.row.id}}&nbsp;&nbsp;<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.productName}}</el-link></span>
 					</template>
 				</el-table-column>
-				<el-table-column  prop="finishRate" label="进度" width="80" >
+				<el-table-column  prop="finishRate" label="进度" width="80" show-overflow-tooltip>
 					<template slot-scope="scope">
 						{{scope.row.finishRate}}%
 					</template>
 				</el-table-column>
-				<el-table-column prop="pmUsername" label="产品经理" width="100" ></el-table-column> 
-				<el-table-column prop="planWorkload" label="预计工作量.人时" width="150" ></el-table-column>
-				<el-table-column prop="actWorkload" label="实际工作量.人时" width="150" ></el-table-column> 
+				<el-table-column prop="pmUsername" label="产品经理" width="120"  show-overflow-tooltip></el-table-column> 
+				<el-table-column prop="planWorkload" label="预计工作量.人时" width="150"  show-overflow-tooltip></el-table-column>
+				<el-table-column prop="actWorkload" label="实际工作量.人时" width="150"  show-overflow-tooltip></el-table-column> 
  				<el-table-column  label="操作" width="200" fixed="right">
 					<template slot-scope="scope"> 
 						<el-button  type="primary" @click="toIterationList(scope.row)" icon="el-icon-document">迭代计划</el-button>  
@@ -471,7 +471,7 @@
 		mounted() { 
 			this.$nextTick(() => {
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=65/1000 * window.innerHeight; 
+				var subHeight=70/1000 * window.innerHeight; 
 				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.getXmProducts();
         	}); 

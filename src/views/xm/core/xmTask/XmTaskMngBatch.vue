@@ -1,8 +1,8 @@
 <template>
 	<section>
-		<el-row class="xm-task" >
+		<el-row>
 			   
-			<el-row   class="el-menu-demo" style="padding-top:10px;" v-if="projectPhase">  
+			<el-row  style="padding-top:10px;" v-if="projectPhase">  
 				<span style="margin-left:10px;font-size:14px;">阶段总预算：</span><el-tag type='success'> {{((projectPhase.phaseBudgetNouserAt+projectPhase.phaseBudgetInnerUserAt+projectPhase.phaseBudgetOutUserAt)/10000).toFixed(2)}}万，剩{{(taskBudgetData.surplusPhaseBudgetCostAt/10000).toFixed(2)}}万</el-tag> 
 				<span style="margin-left:10px;font-size:14px;">非人力总预算：</span><el-tag :type="taskBudgetData.surplusPhaseBudgetNouserAt>0?'warning':'danger'">{{(projectPhase.phaseBudgetNouserAt/10000).toFixed(2)}}万，剩{{(taskBudgetData.surplusPhaseBudgetNouserAt/10000).toFixed(2)}}万</el-tag>  
 				<span style="margin-left:10px;font-size:14px;">内部人力总预算：</span><el-tag :type="taskBudgetData.surplusPhaseBudgetInnerUserAt>0?'warning':'danger'">{{(projectPhase.phaseBudgetInnerUserAt/10000).toFixed(2)}}万，剩{{(taskBudgetData.surplusPhaseBudgetInnerUserAt/10000).toFixed(2)}}万</el-tag>  

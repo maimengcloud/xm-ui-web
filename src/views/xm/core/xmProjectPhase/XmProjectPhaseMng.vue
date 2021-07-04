@@ -52,21 +52,21 @@
 			<!--列表 XmProjectPhase xm_project_phase-->
 			<el-table ref="table" :max-height="tableHeight" v-show="!gstcVisible "  default-expand-all :data="projectPhaseTreeData"  :summary-method="getSummariesForNoBatchEdit"  :show-summary="true"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column   sortable type="selection" width="40"></el-table-column>
- 				<el-table-column prop="phaseName" label="阶段名称" min-width="150" > 
+ 				<el-table-column prop="phaseName" label="阶段名称" min-width="150" show-overflow-tooltip> 
 					 <template slot-scope="scope">  
-						{{scope.row.seqNo}} &nbsp;&nbsp;<el-link type="primary" @click="showEdit(scope.row)"> {{scope.row.phaseName}}</el-link>
+						<span>{{scope.row.seqNo}} &nbsp;&nbsp;<el-link type="primary" @click="showEdit(scope.row)"> {{scope.row.phaseName}}</el-link></span>
 					 </template>
 				</el-table-column>   
-				<el-table-column  prop="mngUsername" label="责任人" width="80" > 
+				<el-table-column  prop="mngUsername" label="责任人" width="80" show-overflow-tooltip> 
 					<template  slot-scope="scope">
 						<el-button type="text" v-if="!scope.row.mngUserid"  v-model="scope.row.mngUsername" @click="groupUserSelectVisible=true" icon="el-icon-setting">去设置</el-button>  
 						<el-link v-else type="primary"   @click="groupUserSelectVisible=true">{{scope.row.mngUsername}}</el-link>
 					</template>
 				</el-table-column>
-				<el-table-column  prop="beginDate" label="起止时间" min-width="120" >
+				<el-table-column  prop="beginDate" label="起止时间" min-width="120" show-overflow-tooltip>
 					<template slot-scope="scope">  
 								<font class="hidden-md-and-down" >{{formatDate(scope.row.beginDate)}}<br>{{formatDate(scope.row.endDate)}}  </font>
-								<div v-for="item in [calcTaskStateByTime(scope.row.beginDate,scope.row.endDate,scope.row.actRate,scope.phaseStatus)]" :key="item.status"><el-tag :type="item.status">{{item.remark}}</el-tag></div> 
+								<font v-for="item in [calcTaskStateByTime(scope.row.beginDate,scope.row.endDate,scope.row.actRate,scope.phaseStatus)]" :key="item.status"><el-tag :type="item.status">{{item.remark}}</el-tag></font> 
 					</template>
 				</el-table-column>
 				<el-table-column prop="actRate" label="进度.状态" width="100">

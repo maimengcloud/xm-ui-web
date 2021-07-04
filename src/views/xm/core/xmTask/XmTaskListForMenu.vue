@@ -24,13 +24,13 @@
 						 ref="table"
 						>
  						<el-table-column v-show="isMultiSelect" sortable width="60" type="selection"></el-table-column>
-						<el-table-column prop="name" label="任务名称"  min-width="260" >
+						<el-table-column prop="name" label="任务名称"  min-width="260"  show-overflow-tooltip>
 							<template slot-scope="scope">
 								{{scope.row.sortLevel}}&nbsp;{{scope.row.name}}
 							</template>
 						</el-table-column> 
-						<el-table-column    prop="menuName" label="故事名"  min-width="160" > </el-table-column>
-						<el-table-column    prop="projectName" label="项目名称"  min-width="160" > 
+						<el-table-column    prop="menuName" label="故事名"  min-width="160"  show-overflow-tooltip> </el-table-column>
+						<el-table-column    prop="projectName" label="项目名称"  min-width="160"  show-overflow-tooltip> 
 						</el-table-column>  
 						 
 						<el-table-column label="预算" prop="budgetCost" width="120" >
@@ -47,7 +47,7 @@
 								</div>
 							</template>
 						</el-table-column>
-						<el-table-column   prop="startTime" label="任务起止时间" width="300">
+						<el-table-column   prop="startTime" label="任务起止时间" width="300"  show-overflow-tooltip>
 							<template slot-scope="scope">
 									
 									<div  style="display:flex;align-items:center;">
@@ -70,7 +70,7 @@
 						<el-table-column label="结算方案" prop="settleSchemel" width="120" :formatter="formatterOption"> 
 						</el-table-column>  
 						-->
-						<el-table-column label="任务技能需求" prop="taskSkillNames" min-width="120" > 
+						<el-table-column label="任务技能需求" prop="taskSkillNames" min-width="120"  show-overflow-tooltip> 
 						</el-table-column>
 						<el-table-column   v-if="isMultiSelect==false"  header-align="center" label="操作" fixed="right" width="100">
 							<template slot-scope="scope">

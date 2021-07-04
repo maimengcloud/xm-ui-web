@@ -75,9 +75,9 @@
 			<!--列表 XmIteration 迭代定义-->
 			<el-table ref="table" :max-height="tableHeight" v-if="!gstcVisible" :data="xmIterationTreeData" row-key="id"  default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column type="selection" aria-disabled width="55"></el-table-column>
-				<el-table-column prop="iterationName" label="迭代名称" min-width="160" >
+				<el-table-column prop="iterationName" label="迭代名称" min-width="160" show-overflow-tooltip>
 					 <template slot-scope="scope">
-						{{scope.row.seqNo}} &nbsp;&nbsp;<el-link type="primary" @click="showEdit( scope.row,scope.$index)"> {{scope.row.iterationName}} </el-link>
+						<span>{{scope.row.seqNo}} &nbsp;&nbsp;<el-link type="primary" @click="showEdit( scope.row,scope.$index)"> {{scope.row.iterationName}} </el-link></span>
 					 </template>
 				</el-table-column>
 				<el-table-column prop="finishRate" label="总进度" min-width="80" >
@@ -85,12 +85,12 @@
 						 {{scope.row.finishRate}}%
 					</template>
 				</el-table-column>
-				<el-table-column prop="startTime" label="开始时间" min-width="80" :formatter="formatterDate" ></el-table-column>
-				<el-table-column prop="endTime" label="结束时间" min-width="80" :formatter="formatterDate"></el-table-column>
-				<el-table-column prop="onlineTime" label="上线时间" min-width="80" :formatter="formatterDate"></el-table-column>
- 				<el-table-column prop="adminUsername" label="负责人姓名" min-width="80" ></el-table-column>
- 				<el-table-column prop="distBudgetWorkload" label="已分配工作量" min-width="80" ></el-table-column>
-				<el-table-column prop="actWorkload" label="实际工作量" min-width="80" ></el-table-column>
+				<el-table-column prop="startTime" label="开始时间" min-width="80" :formatter="formatterDate" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="endTime" label="结束时间" min-width="80" :formatter="formatterDate" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="onlineTime" label="上线时间" min-width="80" :formatter="formatterDate" show-overflow-tooltip></el-table-column>
+ 				<el-table-column prop="adminUsername" label="负责人姓名" min-width="80" show-overflow-tooltip></el-table-column>
+ 				<el-table-column prop="distBudgetWorkload" label="已分配工作量" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="actWorkload" label="实际工作量" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column label="操作" width="400" fixed="right">
 					<template slot-scope="scope">
 						<el-button type="primary" @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus"></el-button>

@@ -49,13 +49,13 @@
 							 :max-height="tableHeight"
 							>
 							<el-table-column v-show="isMultiSelect" reserve-selection sortable width="70" type="selection"></el-table-column>
-							<el-table-column prop="name" label="任务名称"  min-width="260" >
+							<el-table-column prop="name" label="任务名称"  min-width="260" show-overflow-tooltip>
 								<template slot-scope="scope">
 									{{scope.row.sortLevel}}&nbsp;{{scope.row.name}}
 								</template>
 							</el-table-column> 
-							<el-table-column prop="menuName" min-width="150" label="故事"></el-table-column>
-							<el-table-column   prop="startTime" label="任务起止时间" min-width="260">
+							<el-table-column prop="menuName" min-width="150" label="故事"  show-overflow-tooltip></el-table-column>
+							<el-table-column   prop="startTime" label="任务起止时间" min-width="260"  show-overflow-tooltip>
 								<template slot-scope="scope">
 									
 									<div  style="display:flex;align-items:center;">
