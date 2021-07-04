@@ -68,7 +68,7 @@
 						<el-checkbox v-model="gstcVisible">甘特图</el-checkbox>  
 					</el-col>
 				</el-row>
-				<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+				<el-button  slot="reference">更多</el-button>
 			</el-popover>
  		</el-row>
 		<el-row  class="app-container">

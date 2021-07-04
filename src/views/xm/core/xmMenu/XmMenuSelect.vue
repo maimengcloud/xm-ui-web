@@ -85,7 +85,7 @@
 								<el-button type="primary" size="mini" @click="searchXmMenus" >查询</el-button>
  							</el-col> 
 						</el-row> 
-						<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+						<el-button  slot="reference">更多</el-button>
 					</el-popover> 
 					<el-button   type="primary" v-if="multi"  v-on:click="multiSelectedConfirm">确认选择</el-button>
 				</el-row>

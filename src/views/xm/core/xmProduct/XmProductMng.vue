@@ -134,7 +134,7 @@
 									<el-button  type="success" @click="toTaskList(scope.row)"  icon="el-icon-tickets">关联任务查询</el-button>
 								</el-col> 
 							</el-row>
-							<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+							<el-button  slot="reference">更多</el-button>
 						</el-popover>  
 					</template>
 				</el-table-column>

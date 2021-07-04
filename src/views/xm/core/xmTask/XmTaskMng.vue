@@ -113,7 +113,7 @@
 									<el-button size="mini" v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showMenu"   icon="el-icon-plus">由故事快速创建任务</el-button>
 								</el-col>
 							</el-row>
-							<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+							<el-button  slot="reference">更多</el-button>
 						</el-popover> 
 				</el-row>
 				<el-row style="padding-top:12px;">

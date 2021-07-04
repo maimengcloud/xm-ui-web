@@ -36,7 +36,7 @@
 			
 						</el-col> 
 					</el-row>
-					<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+					<el-button  slot="reference">更多</el-button>
 				</el-popover> 
 			</div> 
 			
