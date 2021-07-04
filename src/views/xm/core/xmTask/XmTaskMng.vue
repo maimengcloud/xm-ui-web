@@ -1,10 +1,10 @@
 <template>
 	<section>
-		<el-row  v-show="batchEditVisible==false" >
-			<el-col v-if="isTaskCenter!='1' && currentProject " :span="4" class="app-container">
+		<el-row  v-show="batchEditVisible==false" class="app-container">
+			<el-col v-if="isTaskCenter!='1' && currentProject " :span="4" >
 				<xm-project-phase-mng  :sel-project="currentProject" :simple="true" @row-click="projectPhaseRowClick" @clear-select="clearSelectPhase"></xm-project-phase-mng>
 			</el-col>
-			<el-col :span="isTaskCenter!='1' && currentProject?20:24"  class="app-container">
+			<el-col :span="isTaskCenter!='1' && currentProject?20:24">
 				<el-row>
 					<el-select v-model="selkey" placeholder="请选择任务状态" clearable @change="changeSelKey">
 						<el-option class="showall" value="" label="全部状态">全部状态</el-option>

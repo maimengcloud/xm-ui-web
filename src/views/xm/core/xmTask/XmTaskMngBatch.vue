@@ -1,24 +1,23 @@
 <template>
 	<section>
-		<el-row>
-			   
-			<el-row  style="padding-top:10px;" v-if="projectPhase">  
-				<span style="margin-left:10px;font-size:14px;">阶段总预算：</span><el-tag type='success'> {{((projectPhase.phaseBudgetNouserAt+projectPhase.phaseBudgetInnerUserAt+projectPhase.phaseBudgetOutUserAt)/10000).toFixed(2)}}万，剩{{(taskBudgetData.surplusPhaseBudgetCostAt/10000).toFixed(2)}}万</el-tag> 
-				<span style="margin-left:10px;font-size:14px;">非人力总预算：</span><el-tag :type="taskBudgetData.surplusPhaseBudgetNouserAt>0?'warning':'danger'">{{(projectPhase.phaseBudgetNouserAt/10000).toFixed(2)}}万，剩{{(taskBudgetData.surplusPhaseBudgetNouserAt/10000).toFixed(2)}}万</el-tag>  
-				<span style="margin-left:10px;font-size:14px;">内部人力总预算：</span><el-tag :type="taskBudgetData.surplusPhaseBudgetInnerUserAt>0?'warning':'danger'">{{(projectPhase.phaseBudgetInnerUserAt/10000).toFixed(2)}}万，剩{{(taskBudgetData.surplusPhaseBudgetInnerUserAt/10000).toFixed(2)}}万</el-tag>  
-				<span style="margin-left:10px;font-size:14px;">外购人力总预算：</span><el-tag :type="taskBudgetData.surplusPhaseBudgetOutUserAt>0?'warning':'danger'">{{(projectPhase.phaseBudgetOutUserAt/10000).toFixed(2)}}万，剩{{(taskBudgetData.surplusPhaseBudgetOutUserAt/10000).toFixed(2)}}万</el-tag>   
-				<div style="line-height:50px;float:right;margin-right:10px;"> 
-					<el-button type="danger"   @click="batchDel" v-loading="load.edit" icon="el-icon-delete">批量删除</el-button>   
- 					<el-button type="warning"   @click="saveBatchEdit" v-loading="load.edit" icon="el-icon-finished">批量保存</el-button>
-					<el-button type="success"  @click="handlePopover(null,'add')" icon="el-icon-plus" >+任务</el-button>
-					<el-button type="primary"   @click="searchXmTasks" v-loading="load.list" icon="el-icon-search">查询</el-button>  
+		<el-row class="app-container"> 
+			<el-row    v-if="projectPhase">   
+ 					<el-button type="warning"   @click="saveBatchEdit" v-loading="load.edit" icon="el-icon-finished">保存</el-button>
+					<el-button type="success"  @click="handlePopover(null,'add')" icon="el-icon-plus" ></el-button>
+					<el-button type="primary"   @click="searchXmTasks" v-loading="load.list" icon="el-icon-search"></el-button>  
 					<el-button     @click="noBatchEdit" v-loading="load.edit" icon="el-icon-back">返回</el-button>  
-				</div>
+					<el-button type="danger"   @click="batchDel" v-loading="load.edit" icon="el-icon-delete"></el-button>    
+					<span class="hidden-lg-and-down" style="margin-left:10px;font-size:14px;">阶段总预算：</span><el-tag class="hidden-lg-and-down" type='success'> {{((projectPhase.phaseBudgetNouserAt+projectPhase.phaseBudgetInnerUserAt+projectPhase.phaseBudgetOutUserAt)/10000).toFixed(2)}}万，剩{{(taskBudgetData.surplusPhaseBudgetCostAt/10000).toFixed(2)}}万</el-tag> 
+					<span class="hidden-lg-and-down" style="margin-left:10px;font-size:14px;">非人力总预算：</span><el-tag class="hidden-lg-and-down" :type="taskBudgetData.surplusPhaseBudgetNouserAt>0?'warning':'danger'">{{(projectPhase.phaseBudgetNouserAt/10000).toFixed(2)}}万，剩{{(taskBudgetData.surplusPhaseBudgetNouserAt/10000).toFixed(2)}}万</el-tag>  
+					<span style="margin-left:10px;font-size:14px;">内部人力总预算：</span><el-tag :type="taskBudgetData.surplusPhaseBudgetInnerUserAt>0?'warning':'danger'">{{(projectPhase.phaseBudgetInnerUserAt/10000).toFixed(2)}}万，剩{{(taskBudgetData.surplusPhaseBudgetInnerUserAt/10000).toFixed(2)}}万</el-tag>  
+					<span style="margin-left:10px;font-size:14px;">外购人力总预算：</span><el-tag :type="taskBudgetData.surplusPhaseBudgetOutUserAt>0?'warning':'danger'">{{(projectPhase.phaseBudgetOutUserAt/10000).toFixed(2)}}万，剩{{(taskBudgetData.surplusPhaseBudgetOutUserAt/10000).toFixed(2)}}万</el-tag>   
+	
 			</el-row> 
-			<el-row> 
-				<el-col :span="24">
+			<el-row style="padding-top:12px;" >  
 						<!-- show-summary -->
 					<el-table
+						ref="table"
+						:max-height="tableHeight"
           				show-summary
             			class="drag-table2"
 						:data="tasksTreeData"
@@ -29,12 +28,13 @@
 						highlight-current-row
 						stripe
 						fit
+						border
 						default-expand-all
 						:tree-props="{children: 'children', hasChildren: 'hasChildren'}"
 						row-key="id"
 						>
-						<el-table-column sortable type="selection" width="45"></el-table-column> 
-  						<el-table-column sortable prop="sortLevel"  label="序号" width="150">
+						<el-table-column  type="selection" width="60"></el-table-column> 
+  						<el-table-column  prop="sortLevel"  label="序号" width="150">
  							<template slot-scope="scope">
 								<div style="display:flex;width:100%;">
 									<el-popover
@@ -120,8 +120,7 @@
 						</el-table-column> 
 					</el-table> 
 					<el-pagination layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
-					
-				</el-col>
+					 
 			</el-row>
 		</el-row> 
 	</section>
