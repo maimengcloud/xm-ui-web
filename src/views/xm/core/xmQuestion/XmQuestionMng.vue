@@ -836,7 +836,7 @@
 					params.mainContext='项目编号：'+row.projectId+','+'项目名称：'+row.projectName+',任务名称：'+row.taskName
 										+'<br>'+row.askUsername+'于'+row.createTime+'提出问题('+row.id+')：'+row.name
 										+'<br>问题描述：'+row.description;
-					params.restUrl=config.getXmBasePath()+"/xm/xmQuestion/processApprova"; 
+					params.restUrl=config.getXmBasePath()+"/xm/core/xmQuestion/processApprova"; 
 					this.$router.push({name:'ProcdefListForBizStart',params:params}); 				
 					
 				}else {

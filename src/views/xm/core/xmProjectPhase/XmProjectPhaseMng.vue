@@ -778,7 +778,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					mainTitle:mainTitle,
 					bizKey:bizKey,
 					bizUrl:bizUrl,
-					restUrl:config.getXmBasePath()+"/xm/xmProject/processApprova",
+					restUrl:config.getXmBasePath()+"/xm/core/xmProject/processApprova",
 					extVars:extVars,
 					flowVars:{
 						subscribeTaskEvent:'TASK_COMPLETED,TASK_CREATED',
