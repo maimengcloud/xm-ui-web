@@ -605,7 +605,7 @@
 					mainTitle:mainTitle,
 					bizKey:bizKey,
 					bizUrl:bizUrl,
-					restUrl:config.getOaBasePath()+"/xm/xmProject/processApprova",
+					restUrl:config.getXmBasePath()+"/xm/xmProject/processApprova",
 					extVars:extVars,
 					flowVars:{
 						subscribeTaskEvent:'TASK_COMPLETED,TASK_CREATED',
