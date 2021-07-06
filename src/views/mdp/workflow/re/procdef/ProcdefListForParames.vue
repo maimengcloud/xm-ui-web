@@ -1,37 +1,26 @@
 <template>
   <section>
-    <el-row class="app-container"> 
-      <el-row>
-        <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4" class="hidden-sm-and-down">
-          <category-tree
-            ref="categoryTree"
-            multiple
-            :expandOnClickNode="false"
-            :defaultExpandAll="true"
-            show-checkbox
-            :current-key="addForm.categoryId"
-            v-on:check-change="handleCategoryCheckChange"
-          ></category-tree>
-        </el-col>
-        <el-col :xs="24" :sm="24" :md="20" :lg="20" :xl="20">
-          <el-row> 
+    <el-row class="app-container">
+      <el-row> 
+        <el-col>
+          <el-row>
             <el-select v-model="filters.procCategory" clearable filterable placeholder="请选择分类">
               <el-option v-for="item in categorys" :key="item" :label="item" :value="item"></el-option>
             </el-select>
-            
-            <el-button @click.native="showTagSelect(false)">标签</el-button>
-            <el-input v-model="filters.key" style="width:20%;" placeholder="模糊查询">
-              <template slot="append"> 
-                <el-button type="primary"   v-on:click="searchProcdefs" icon="el-icon-search">查询</el-button> 
+
+            <el-input v-model="filters.key" style="width:270px;" placeholder="模糊查询">
+              <template slot="append">
+                <el-button type="primary"   v-on:click="searchProcdefs" icon="el-icon-search">查询</el-button>
               </template>
-            </el-input> 
-            <el-button type="primary" @click="handleDownload" 	icon="el-icon-download">导出数据</el-button>
-            <el-button @click.native="showTagSelect(true)">打标签</el-button>
-          </el-row> 
-          <el-row  style="padding-top:10px;">
+            </el-input>
+            <el-button @click.native="showTagSelect(false)" icon="el-icon-search" style="margin-left: 13px;" class="hidden-sm-and-down">标签</el-button>
+            <el-button @click.native="showTagSelect(true)" icon="el-icon-plus" class="hidden-sm-and-down">标签</el-button>
+            <el-button @click="handleDownload" 	icon="el-icon-download" class="hidden-md-and-down">导出数据</el-button>
+          </el-row>
+          <el-row  style="padding-top:20px;">
             <!--列表 Procdef act_re_procdef-->
             <el-table
-              ref="table" :max-height="tableHeight" 
+              ref="table" :max-height="tableHeight"
               :data="procdefs"
               highlight-current-row
               v-loading="listLoading"
@@ -44,10 +33,10 @@
               <el-table-column type="index" width="40"></el-table-column>
               <el-table-column sortable prop="category" label="分类" min-width="80" show-overflow-tooltip></el-table-column>
               <el-table-column sortable prop="name" label="流程(点击进入参数设置)" min-width="200"  show-overflow-tooltip>
-                <template slot-scope="scope">  
+                <template slot-scope="scope">
                     <el-link type="primary" @click="showProcdefParamesSet( scope.row,scope.$index)">{{scope.row.name}} </el-link>
                 </template>
-              </el-table-column>  
+              </el-table-column>
               <el-table-column sortable prop="version" label="版本" min-width="80"  show-overflow-tooltip></el-table-column>
               <el-table-column sortable prop="tagNames" label="标签" min-width="80"  show-overflow-tooltip>
                 <template slot-scope="scope">
@@ -62,7 +51,7 @@
                 prop="suspensionState"
                 label="状态"
                 min-width="80"
-                
+
                 :formatter="formatterSuspensionState"
               ></el-table-column>
               <el-table-column sortable prop="key" label="模型编码" min-width="180"  show-overflow-tooltip></el-table-column>
@@ -78,14 +67,14 @@
                       width="200"
                       trigger="click"
                       :content="scope.row.description">
-                      <el-button slot="reference">详细描述</el-button>
+                      <el-button slot="reference">详情</el-button>
                     </el-popover>
                   </template>
               </el-table-column>
               <el-table-column label="操作" width="220" fixed="right">
                 <template slot-scope="scope">
-                  <el-button type="primary" @click="showBizModelDialog(scope.row,scope.$index)">绑定业务</el-button>
                   <el-button @click="showDiagram( scope.row,scope.$index)">流程图</el-button>
+                  <el-button type="primary" @click="showBizModelDialog(scope.row,scope.$index)">绑定业务</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -607,10 +596,10 @@ export default {
     listCategorys({ tenantId: this.userInfo.branchId }).then(res => {
       this.categorys = res.data.data;
     });
-    this.$nextTick(()=>{ 
+    this.$nextTick(()=>{
         var clientRect=this.$refs.table.$el.getBoundingClientRect();
-        var subHeight=70/1000 * window.innerHeight; 
-        this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
+        var subHeight=70/1000 * window.innerHeight;
+        this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight;
     })
     this.getProcdefs();
   }
@@ -628,4 +617,19 @@ export default {
   color: black;
   font-weight: bold;
 }
+</style>
+
+
+<style>
+  .el-input-group__append, .el-input-group__prepend {
+      background-color: #409EFF!important;
+      color: #ffffff!important;
+      vertical-align: middle;
+      display: table-cell;
+      position: relative;
+      border: 1px solid #409EFF!important;
+      padding: 0 20px;
+      width: 1px;
+      white-space: nowrap;
+  }
 </style>

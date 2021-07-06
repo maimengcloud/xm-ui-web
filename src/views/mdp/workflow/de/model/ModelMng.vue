@@ -1,38 +1,28 @@
 <template>
-	<section> 
+	<section>
 		<el-row  class="app-container">
 			<el-row>
-				<el-input v-model="filters.key" style="width:30%;"  placeholder="模糊查询">
-					<template slot="append"> 
-						<el-button type="primary"   v-on:click="searchModels" icon="el-icon-search">查询</el-button> 
+				<el-input v-model="filters.key" style="width:270px;"  placeholder="模糊查询">
+					<template slot="append">
+						<el-button type="primary"   v-on:click="searchModels" icon="el-icon-search">查询</el-button>
 					</template>
-				</el-input> 
-				<el-button 
+				</el-input>
+				<el-button style="margin-left: 13px;"
 					@click="handleDownload"
 					icon="el-icon-download"
 				>导出数据</el-button>
 			</el-row>
-			<el-row style="padding-top:10px;"> 
+			<el-row style="padding-top:20px;">
 				<!--列表 Model act_de_model-->
 				<el-table  ref="table" :max-height="tableHeight" :data="models"    highlight-current-row v-loading="listLoading" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-					<el-table-column type="index" width="40"></el-table-column> 
+					<el-table-column type="index" width="40"></el-table-column>
 					<el-table-column  prop="name" label="流程(点击查已发布版本)" min-width="300" show-overflow-tooltip>
-						<template slot-scope="scope">  
+						<template slot-scope="scope">
 								<el-link type="primary" @click="showDeploymentList( scope.row,scope.$index)">{{scope.row.name}} </el-link>
 						</template>
-					</el-table-column> 
-					<el-table-column sortable prop="version" label="模型版本" min-width="80"   show-overflow-tooltip></el-table-column> 
-					<el-table-column  prop="description" label="描述" width="120" show-overflow-tooltip>
-						<template slot-scope="scope">
-							<el-popover
-							placement="top-start"
-							title="描述"
-							width="400"
-							trigger="click"
-							:content="scope.row.description">
-							<el-button slot="reference">详细描述</el-button>
-							</el-popover>
-						</template>
+					</el-table-column>
+					<el-table-column sortable prop="version" label="模型版本" min-width="100"   show-overflow-tooltip></el-table-column>
+					<el-table-column  prop="description" label="描述" width="120" show-overflow-tooltip> 
 
 					</el-table-column>
 					<el-table-column  prop="modelComment" label="备注" min-width="80"   show-overflow-tooltip></el-table-column>
@@ -42,8 +32,8 @@
 					<el-table-column label="操作" width="300"  fixed="right">
 						<template slot-scope="scope">
 							<el-button   @click="showDiagram( scope.row,scope.$index)">流程图</el-button>
-							<el-button   @click="deploy( scope.row,scope.$index)">发布新版</el-button> 
-							<el-button type="danger"  @click="handleDel(scope.row,scope.$index)">删</el-button>
+							<el-button   @click="deploy( scope.row,scope.$index)" type="primary" icon="el-icon-position"></el-button>
+							<el-button type="danger"  @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"></el-button>
 						</template>
 					</el-table-column>
 				</el-table>
@@ -54,7 +44,7 @@
 					<img :src="diagramUrl"></img>
 				</el-dialog>
 
-				<el-dialog title="已发布的流程" :visible.sync="deploymentVisible"  width="80%"  :close-on-click-modal="false"> 
+				<el-dialog title="已发布的流程" :visible.sync="deploymentVisible"  width="80%"  :close-on-click-modal="false">
 					<deployment-mng :modelKey="editForm.modelKey"></deployment-mng>
 				</el-dialog>
 			</el-row>
@@ -96,13 +86,13 @@
 				listLoading: false,//查询中...
 				sels: [],//列表选中数据
 				options:{},//下拉选择框的所有静态数据 options.sex,options.project
-				
+
 				addFormVisible: false,//新增model界面是否显示
 				//新增model界面初始化数据
 				addForm: {
 					id:'',name:'',modelKey:'',description:'',modelComment:'',created:'',createdBy:'',lastUpdated:'',lastUpdatedBy:'',version:'',modelEditorJson:'',thumbnail:'',modelType:''
 				},
-				
+
 				editFormVisible: false,//编辑界面是否显示
 				//编辑model界面初始化数据
 				editForm: {
@@ -112,7 +102,7 @@
 				diagramVisible:false,
 				diagramUrl:'',
 				companyEmployees:[],
-				companyDepts:[],	
+				companyDepts:[],
 				deploymentVisible:false,
 				categorys:[],
 				tableHeight:300,
@@ -128,9 +118,9 @@
 					return code[0].codeName
 				}else{
 					return codeValue
-				} 
+				}
 			},
-			handleSizeChange(pageSize) { 
+			handleSizeChange(pageSize) {
 				this.pageInfo.pageSize=pageSize;
 				this.pageInfo.total=0;
 				this.pageInfo.pageNum=1;
@@ -156,7 +146,7 @@
 			},
 			searchModels(){
 				 this.pageInfo.pageNum=1;
-				 this.pageInfo.total=0; 
+				 this.pageInfo.total=0;
 				 this.pageInfo.count=true
 				 this.getModels();
 			},
@@ -170,9 +160,9 @@
 				};
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
-					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
+					for(var i=0;i<this.pageInfo.orderFields.length;i++){
 						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
-					}  
+					}
 					params.orderBy= orderBys.join(",")
 				}
 				if(this.filters.key!==""){
@@ -182,17 +172,17 @@
 				listModel(params).then((res) => {
 					console.log(res)
 					var tips=res.data.tips;
-					if(tips.isOk){ 
-						this.pageInfo.total = res.data.total; 
+					if(tips.isOk){
+						this.pageInfo.total = res.data.total;
 				 		this.pageInfo.count=false
 						this.models = res.data.data;
 					}else{
 						this.$message({ message: tips.msg, type: 'error' });
-					} 
+					}
 					this.listLoading = false;
 				}).catch(() => {
 					this.listLoading = false;
-					
+
 				});
 			},
 
@@ -217,7 +207,7 @@
 			//选择行model
 			selsChange: function (sels) {
 				this.sels = sels;
-			}, 
+			},
 			//删除model
 			handleDel: function (row,index) {
 				this.$confirm('【不可逆操作】将永久删除该模型及有关的所有流程和任务，确认删除该记录吗?', '提示', {
@@ -228,17 +218,17 @@
 					delModel(params).then((res) => {
 						this.listLoading = false;
 						var tips=res.data.tips;
-						if(tips.isOk){ 
+						if(tips.isOk){
 							this.pageInfo.total=0;
 				 			this.pageInfo.count=true
 							this.getModels();
 						}
 						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' });
-						
+
 					});
 				}).catch(() => {
 					this.listLoading = false;
-					
+
 				});
 			},
 			//批量删除model
@@ -251,16 +241,16 @@
 					batchDelModel(ids).then((res) => {
 						this.listLoading = false;
 						var tips=res.data.tips;
-						if( tips.isOk ){ 
-							this.pageInfo.total=0; 
+						if( tips.isOk ){
+							this.pageInfo.total=0;
 				 			this.pageInfo.count=true
-							this.getModels(); 
+							this.getModels();
 						}
 						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
 					});
 				}).catch(() => {
 					this.listLoading = false;
-					
+
 				});
 			},
 			rowClick: function(row, event, column){
@@ -273,16 +263,16 @@
 				}).then(() => {
 					 deployModel(row).then(res=>{
 					 	var tips=res.data.tips;
-					 	if(tips.isOk){ 
-					 		this.getModels(); 
+					 	if(tips.isOk){
+					 		this.getModels();
 					 	}else{
 					 		this.$message({ message: tips.msg, type: 'error' });
 					 	}
-					 	
+
 					 });
 				}).catch(() => {
 					this.listLoading = false;
-					
+
 				});
 			},
 			unDeploy: function(row, index){
@@ -292,22 +282,22 @@
 					 unDeployModel(row).then(res=>{
 					 	var tips=res.data.tips;
 					 	if(tips.isOk){
-					 		this.getModels(); 
+					 		this.getModels();
 					 	}else{
 					 		this.$message({ message: tips.msg, type: 'error' });
 					 	}
-					 	
+
 					 });
 				}).catch(() => {
 					this.listLoading = false;
-					
+
 				});
-			},	
+			},
 			//显示编辑界面 Model act_de_model
 			showDiagram: function ( row,index ) {
 				this.diagramVisible = true;
 				this.diagramUrl="/"+process.env.BASE_API+"/"+process.env.VERSION+"/"+config.getWorkflowBasePath()+"/mdp/workflow/de/model/diagram/"+row.id
-			},  
+			},
 			showDeploymentList:function(row,index){
 				this.editForm=row
 				this.deploymentVisible=true;
@@ -375,18 +365,18 @@
 				);
 			}
 			/**end 自定义函数请在上面加**/
-			
+
 		},//end methods
-		components: {  
+		components: {
 		    'sticky': Sticky,DeploymentMng
 		    //在下面添加其它组件
 		},
-		mounted() { 
-			 
-			this.$nextTick(() => { 
+		mounted() {
+
+			this.$nextTick(() => {
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=70/1000 * window.innerHeight; 
-				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight;   
+				var subHeight=70/1000 * window.innerHeight;
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight;
 				this.getModels();
         	});
 
@@ -395,11 +385,11 @@
 			let optionsParams={code:'all',fieldNames:['sex']};
 			selectCacheOptions(optionsParams).then(res=>{
 				this.options=res.data.data;
-			}); 
+			});
 			**/
 			//给下拉列表初始化默认值
 			//this.addForm.xxx=getDefaultValue(this.options.xxx,'1');
-			
+
 			/**在下面写其它函数***/
 		}
 	}
@@ -408,4 +398,18 @@
 
 <style scoped>
 
+</style>
+
+<style>
+  .el-input-group__append, .el-input-group__prepend {
+      background-color: #409EFF!important;
+      color: #ffffff!important;
+      vertical-align: middle;
+      display: table-cell;
+      position: relative;
+      border: 1px solid #409EFF!important;
+      padding: 0 20px;
+      width: 1px;
+      white-space: nowrap;
+  }
 </style>

@@ -16,43 +16,7 @@
 		  </el-select>   
 			<el-button   @click.native="showTagSelect(false)"  >标签查找</el-button>
 			<el-button   @click.native="showTagSelect(true)"  >打标签</el-button>
-	    </el-row>
-		<el-row class="filters-show">
-			<font class="filters-label">已选条件:</font>
-			<el-tag  v-if="filters.tags"
-				:key="tag.tagId"
-				v-for="tag in filters.tags"
-				:type="''"
-				closable
-				:disable-transitions="false"
-				@close="handleFiltersTagClose(tag,'tags')">
-				{{tag.tagName}}
-			</el-tag>
-			<el-tag v-if="filters.categoryTreeNodes"
-				:key="tag.id"
-				v-for="tag in filters.categoryTreeNodes"
-				:type="'info'"
-				closable
-				:disable-transitions="false"
-				@close="handleFiltersTagClose(tag,'categoryTreeNodes')">
-				{{tag.name}}
-			</el-tag>
-			
-			<el-tag v-if="filters.procCategory"
-				:type="'dangger'"
-				closable
-				:disable-transitions="false"
-				@close="handleFiltersTagClose('','procCategory')" >
-				 {{filters.procCategory}}
-			</el-tag>
-			<el-tag v-if="filters.key"
-				:type="'success'"
-				closable
-				:disable-transitions="false" 
-				@close="handleFiltersTagClose('','key')">
-				 {{filters.key}}
-			</el-tag>   
-		</el-row>
+	    </el-row> 
 		<el-row class="app-container">
 			<el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4" class="hidden-sm-and-down">
 				<category-tree ref="categoryTree" multiple :expandOnClickNode="false" :defaultExpandAll="true" show-checkbox  :current-key="addForm.categoryId"  v-on:check-change="handleCategoryCheckChange" ></category-tree> 

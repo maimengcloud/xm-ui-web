@@ -71,20 +71,27 @@
 									placeholder="选择计划完成日期" >
 								</el-date-picker>
 								完成  <el-button   @click.native="updateFlowPlanFinishTime" :loading="addLoading" icon="el-icon-finished">保存日期</el-button>  
-
-										主办人：
-										<el-select disabled   value-key="userid"    v-model="sponsors" multiple placeholder="请选择">
-											<el-option
-											v-for="item in baseUserList"
-											:key="item.userid"
-											:label="item.username"
-											:value="item">
-											<span style="float: left">{{ item.username }}</span>
-											<span style="float: right; color: #8492a6; font-size: 14px">{{ item.shortName }}</span>
-											</el-option>
-										</el-select> 
-										<font class=" hidden-md-and-down">
-											监控人：
+								<el-popover
+									placement="top-start"
+									title="设置主办监控人"
+									width="400"
+									trigger="manual" v-model="sponsorsAndMonitorsVisible"> 
+									<el-row> 
+										<el-col :span="24" style="padding-top:5px;">
+											<font class="more-label-font">主办人:</font> 
+											<el-select disabled   value-key="userid"    v-model="sponsors" multiple placeholder="请选择">
+												<el-option
+												v-for="item in baseUserList"
+												:key="item.userid"
+												:label="item.username"
+												:value="item">
+												<span style="float: left">{{ item.username }}</span>
+												<span style="float: right; color: #8492a6; font-size: 14px">{{ item.shortName }}</span>
+												</el-option>
+											</el-select> 
+										</el-col> 
+										<el-col :span="24" style="padding-top:5px;">
+											<font class="more-label-font">监控人:</font>  
 											<el-select disabled   value-key="userid"   v-model="monitors" multiple placeholder="请选择">
 												<el-option
 												v-for="item in baseUserList"
@@ -95,7 +102,10 @@
 												<span style="float: right; color: #8492a6; font-size: 13px">{{ item.shortName }}</span>
 												</el-option>
 											</el-select> 
-										</font>
+										</el-col> 
+									</el-row>
+									<el-button  slot="reference" icon="el-icon-s-check" @click="showSponsorsAndMonitors">主办人、监控人查询</el-button>
+								</el-popover>  
 						</el-row>   
 						<el-row  v-if="addForm.isRefForm=='1' && addForm.formId && addForm.formShowType!='table'" style="padding-top:10px;">
 							<form-data-mng-for-flow-form :formShowType="addForm.formShowType"  :companyDepts="companyDepts" :companyEmployees="companyEmployees" :formId="addForm.formId"  :qxCode="qxCode"  :procInstId="procInstId" :flowStartUserid="addForm.userid" :submitEvent="formDataSubmitEvent" @submit="startSubmit"><div></div></form-data-mng-for-flow-form> 
@@ -369,9 +379,9 @@
 		      this.task.rejectActivity.taskId='' 
 	    	  this.$nextTick(() => {
 				  this.getProcinstParamess(); 
-				  this.listNodeInfos();
+				  //this.listNodeInfos();
 				}); 
-			  this.initBaseUserList();
+			  //this.initBaseUserList();
 	      }
 	    },	
 		data() {
@@ -598,7 +608,7 @@
 				showMainContextOnly:false,
 				nodeInfos:[],
 				nodeInfoVisible:false,
-
+				sponsorsAndMonitorsVisible:false,
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data
@@ -827,7 +837,7 @@
 				this.diagramUrl=config.getBaseDomainUrl()+config.getWorkflowBasePath()+'/mdp/workflow/ru/diagram/'+this.procDefId+'/'+this.procInstId
 				this.displayDiagram=true;
 			},
-			initBaseUserList(){
+			initBaseUserList(sponsorsAndMonitorsVisible){
 				var that=this;
 				var sponsors=that.addForm.sponsors?that.addForm.sponsors.split(',').map(i=>{return {userid:i,username:i}}):[];
 				var monitors=that.addForm.monitors?that.addForm.monitors.split(',').map(i=>{return {userid:i,username:i}}):[];
@@ -852,6 +862,7 @@
 							});
 						})
 					}
+					this.sponsorsAndMonitorsVisible=sponsorsAndMonitorsVisible
 				});
 			},
 			handleUploadChange(){
@@ -985,9 +996,14 @@
 				});
 			}, 
 			showNodeInfoDialog:function(){
-				this.nodeInfoVisible=true;
+				if(this.nodeInfos && this.nodeInfos.length>0){
+					this.nodeInfoVisible=true;
+				}else{
+					this.listNodeInfos(true)
+				}
+				
 			},
-			listNodeInfos(){
+			listNodeInfos(showNodeInfoDialog){
 				var params={procInstId:this.taskInfo.procInstId}
 				getNodeInfos(params).then(res=>{
 					if(res.data.tips.isOk){
@@ -1006,6 +1022,9 @@
 							}else{
 								this.actAssignee=null;
 							}   
+							if(showNodeInfoDialog){
+								this.nodeInfoVisible=true;
+							}
 						}
 					}
 				});
@@ -1050,6 +1069,13 @@
 				})
 				
 			},
+			showSponsorsAndMonitors(){
+				if( (this.monitors==null || this.monitors.length==0 || this.sponsors==null||this.sponsors.length==0) && this.sponsorsAndMonitorsVisible==false ){
+					this.initBaseUserList(true)
+				}else{
+					this.sponsorsAndMonitorsVisible=!this.sponsorsAndMonitorsVisible;
+				} 
+			}
 			/**end 在上面加自定义方法**/
 			
 		},//end method
@@ -1093,7 +1119,7 @@
 					this.qxCode= this.addForm.mainQx
 
 
-					this.initBaseUserList();
+					//this.initBaseUserList();
 			      	console.log("mountedxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
 					  console.log(this.taskInfo)
 					if(this.taskInfo.assignee==null || this.taskInfo.assignee==''){
@@ -1108,7 +1134,7 @@
 			    	  this.$nextTick(() => {
 			    		  this.getProcinstParamess();
 						});
-					this.listNodeInfos();
+					//this.listNodeInfos();
 			    }
 			/**在下面写其它函数***/
 			
@@ -1140,5 +1166,10 @@
 	
 .wf-main-context   p  > img {
 	max-width: 100%; 
+}
+.more-label-font{
+	text-align:center;
+	float:left;
+	padding-top:5px;
 }
 </style>

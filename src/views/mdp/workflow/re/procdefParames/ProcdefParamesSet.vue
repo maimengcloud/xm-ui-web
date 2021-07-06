@@ -1,14 +1,14 @@
 <template>
 	<section>
-		<el-row class="app-container">  
-			<!--新增界面 ProcinstParames 流程实例参数设置表--> 
+		<el-row class="app-container">
+			<!--新增界面 ProcinstParames 流程实例参数设置表-->
 			<el-col :span="24">
-			<!--新增界面 ProcdefParames 流程定义参数设置表--> 
-			<el-form :model="addForm"   label-width="120px" label-position="left" :rules="addFormRules" ref="addForm" v-loading="listLoading">  
+			<!--新增界面 ProcdefParames 流程定义参数设置表-->
+			<el-form :model="addForm"   label-width="120px" label-position="left" :rules="addFormRules" ref="addForm" v-loading="listLoading">
 				<el-form-item label="流程标题" prop="mainTitle">
 					<el-input v-model="addForm.mainTitle" auto-complete="off"></el-input>
-				</el-form-item> 
-				<el-form-item label="标签" prop="tagNames">
+				</el-form-item>
+				<el-form-item label="流程标签" prop="tagNames">
 					<font v-if="addForm.tagNames">
 					<el-tag  v-for="tag in (addForm.tagNames.split(','))" :key="tag"
 						:type="'warning'"
@@ -16,14 +16,14 @@
 						{{tag}}
 					</el-tag>
 					</font>
-						{{addForm.tagNames?'':'还没有标签，去打一个呗-->'}}
-					<el-button   @click.native="tagSelectVisible=true" :loading="addLoading">打标签</el-button>
-					<el-button  v-if="displayDiagram==false" @click="showDiagram()">流程图</el-button> 
+						{{addForm.tagNames?'':''}}
+					<el-button   @click.native="tagSelectVisible=true" :loading="addLoading" icon="el-icon-plus">标签</el-button>
+					<el-button  v-if="displayDiagram==false" @click="showDiagram()" icon="el-icon-view">流程图</el-button>
 				</el-form-item>
-				<el-col :span="12"> 
-					<el-form-item label="监控人" prop="monitors"> 
+				<el-col :span="12">
+					<el-form-item label="流程监控" prop="monitors">
 							<el-col :span="16">
-								<el-select style="width:100%" v-model="monitors" multiple clearable filterable placeholder="请选择">
+								<el-select style="width:100%" v-model="monitors" multiple clearable filterable placeholder="请选择人员">
 									<el-option
 									v-for="item in baseUserList"
 									:key="item.userid"
@@ -35,15 +35,15 @@
 								</el-select>
 							</el-col>
 							<el-col :span="8">
-								<el-button   @click.native="monitorsSelectVisible=true" :loading="addLoading">更多人员</el-button> 
+								<el-button   @click.native="monitorsSelectVisible=true" :loading="addLoading" icon="el-icon-more"></el-button>
 							</el-col>
-						
+
 					</el-form-item>
 				</el-col>
 				<el-col :span="12">
-					<el-form-item label="主办人" prop="sponsors">   
+					<el-form-item label="流程主办" prop="sponsors">
 							<el-col :span="16">
-								<el-select style="width:100%" v-model="sponsors" multiple  clearable filterable placeholder="请选择">
+								<el-select style="width:100%" v-model="sponsors" multiple  clearable filterable placeholder="请选择人员">
 									<el-option
 									v-for="item in baseUserList"
 									:key="item.userid"
@@ -55,16 +55,16 @@
 								</el-select>
 							</el-col>
 							<el-col :span="8">
-								<el-button   @click.native="sponsorsSelectVisible=true" :loading="addLoading">更多人员</el-button> 
-							</el-col> 
-					</el-form-item> 
-				</el-col> 
-				<el-form-item label="流程归档分类" prop="categoryId"> 
-					<el-col :span="14"> <category-tree  show-checkbox  :current-key="addForm.categoryId"  v-on:check-change="handleCategoryCheckChange" ></category-tree> 
-					</el-col> 
-				</el-form-item> 
-				<el-form-item label="关联智能表单" prop="isRefForm">
-					<el-col :span="10"> 
+								<el-button   @click.native="sponsorsSelectVisible=true" :loading="addLoading" icon="el-icon-more"></el-button>
+							</el-col>
+					</el-form-item>
+				</el-col>
+				<el-form-item label="归档分类" prop="categoryId">
+					<el-col :span="14"> <category-tree  show-checkbox  :current-key="addForm.categoryId"  v-on:check-change="handleCategoryCheckChange" ></category-tree>
+					</el-col>
+				</el-form-item>
+				<el-form-item label="关联表单" prop="isRefForm">
+					<el-col :span="10">
 					   <el-select style="width:100%" v-model="addForm.formId" clearable filterable  placeholder="请选择">
 					    <el-option
 					      v-for="item in formDefs"
@@ -74,13 +74,13 @@
 					    </el-option>
 					  </el-select>
 					</el-col>
-					<el-col :span="10" style="padding-left:5px;"> 
+					<el-col :span="10" style="padding-left:22px;">
 						<el-radio v-model="addForm.formShowType" label="form">表单形式展现</el-radio>
   						<el-radio v-model="addForm.formShowType" label="table">表格形式展现</el-radio>
 					</el-col>
-				</el-form-item>  
-				<form-data-mng-for-flow-form v-if="addForm.isRefForm=='1' && addForm.formId!=null && addForm.formId!=''" :formShowType="addForm.formShowType" :companyDepts="companyDepts" :companyEmployees="companyEmployees" :formId="addForm.formId" @formFieldsLoad="onFormFieldsLoad"><div></div></form-data-mng-for-flow-form> 
-				<el-form-item  label="审批人设置" prop="assignees">  
+				</el-form-item>
+				<form-data-mng-for-flow-form v-if="addForm.isRefForm=='1' && addForm.formId!=null && addForm.formId!=''" :formShowType="addForm.formShowType" :companyDepts="companyDepts" :companyEmployees="companyEmployees" :formId="addForm.formId" @formFieldsLoad="onFormFieldsLoad"><div></div></form-data-mng-for-flow-form>
+				<el-form-item  label="审批人设置" prop="assignees">
 					  <el-table
 						:data="nodeInfosSelectOptions"
 						border
@@ -97,10 +97,10 @@
 						label="已配置人员"
 						min-width="250">
 							<template slot-scope="scope">
-								{{showAssigneeTips(scope.row)}} 
-								<el-button round v-if="scope.row.candidate=='1'" type="warning" @click.native="showCandidateSelectDialog(scope.row,'')" :loading="addLoading">选候选人</el-button> 
-								<el-button round v-if="scope.row.candidate!='1' " type="success" @click.native="showUserSelectDialog(scope.row,'')" :loading="addLoading">选人员</el-button>  
-								<el-button round v-if="scope.row.toCreater!='1'" type="primary" @click.native="setAssigneeAsStartUser(scope.row)">转发起人</el-button>  
+								{{showAssigneeTips(scope.row)}}
+								<el-button round v-if="scope.row.candidate=='1'" size="mini" @click.native="showCandidateSelectDialog(scope.row,'')" :loading="addLoading">选候选人</el-button>
+								<el-button round v-if="scope.row.candidate!='1' " size="mini" @click.native="showUserSelectDialog(scope.row,'')" :loading="addLoading">选人员</el-button>
+								<el-button round v-if="scope.row.toCreater!='1'" size="mini" @click.native="setAssigneeAsStartUser(scope.row)">转发起人</el-button>
 							</template>
 						</el-table-column>
 						<el-table-column
@@ -108,64 +108,64 @@
 						prop="showNextAssignees"
 						label="手选执行人"
 						width="150">
-						
+
 							<template slot-scope="scope">
-								<el-checkbox v-model="scope.row.showNextAssignees" label="可手选" true-label="1" false-label="0" border></el-checkbox>   
+								<el-checkbox v-model="scope.row.showNextAssignees" label="可手选" true-label="1" false-label="0" border></el-checkbox>
 							</template>
 						</el-table-column>
 						<el-table-column
 						prop="candidate"
 						label="候选任务"
-						width="120"> 
+						width="120">
 							<template slot-scope="scope">
-								<el-checkbox v-model="scope.row.candidate" label="候选" true-label="1" false-label="0" border></el-checkbox>  
+								<el-checkbox v-model="scope.row.candidate" label="候选" true-label="1" false-label="0" border></el-checkbox>
 							</template>
-						</el-table-column> 
-						
+						</el-table-column>
+
 						<el-table-column
-						prop="qxCode" 
+						prop="qxCode"
 						label="权限配置"
 						min-width="100">
-							<template slot-scope="scope">  
-								<el-button   type="plain" @click.native="showQxDialog(scope.row)"  >配置权限</el-button>   
+							<template slot-scope="scope">
+								<el-button   type="plain" @click.native="showQxDialog(scope.row)"  >配置权限</el-button>
 							</template>
-						</el-table-column> 
-						
+						</el-table-column>
+
 						<el-table-column
-						prop="formId" 
+						prop="formId"
 						label="表单配置"
 						min-width="100">
-							<template slot-scope="scope">  
-								<el-button   type="plain" @click.native="showNodeForm(scope.row)"  >配置表单</el-button>   
+							<template slot-scope="scope">
+								<el-button   type="plain" @click.native="showNodeForm(scope.row)"  >配置表单</el-button>
 							</template>
-						</el-table-column> 
-					</el-table> 
+						</el-table-column>
+					</el-table>
 				</el-form-item>
 				<el-form-item label="流程正文" prop="mainContext">
-					<vue-editor :branch-id="userInfo.branchId" v-model="addForm.mainContext"></vue-editor>  
+					<vue-editor :branch-id="userInfo.branchId" v-model="addForm.mainContext"></vue-editor>
 				</el-form-item>
 				<el-form-item>
 					<attachment-upload :branch-id="userInfo.branchId" :deptid="userInfo.deptid" :archive-id="procdef.id" :category-id="addForm.categoryId"></attachment-upload>
 
 				</el-form-item>
-				
+
 				<el-form-item  label="流程权限" prop="mainQx">
 					 <el-button @click="showMainQxDialog">点击查看/设置流程权限</el-button>
 				</el-form-item>
-				<el-form-item> 
-							<el-button @click.native="handleCancel">取消</el-button>   
-							<el-button type="primary" @click.native="templateVisible=true" :loading="addLoading">导入模板</el-button> 
-							<el-button type="primary" @click.native="saveAsTemplate" :loading="addLoading">存为模板</el-button> 
-							<el-button type="primary" @click.native="addOrEditSubmit" :loading="addLoading">提交</el-button>   
-				</el-form-item> 
+				<el-form-item>
+              <el-button type="primary" @click.native="addOrEditSubmit" :loading="addLoading">提交</el-button>
+							<el-button @click.native="handleCancel">取消</el-button>
+							<el-button @click.native="templateVisible=true" :loading="addLoading">导入模板</el-button>
+							<el-button @click.native="saveAsTemplate" :loading="addLoading">存为模板</el-button>
+				</el-form-item>
 			</el-form>
-			</el-col>	
-			
-			<el-dialog 
+			</el-col>
+
+			<el-dialog
 				title="流程图"
 				:visible.sync="displayDiagram"
-				width="80%" append-to-body	> 
-				<el-image   :fit="'contain'" :src="diagramUrl"> 
+				width="80%" append-to-body	>
+				<el-image   :fit="'contain'" :src="diagramUrl">
 					<div slot="error" class="image-slot">
 						<i class="el-icon-picture-outline"></i>
 					</div>
@@ -173,64 +173,64 @@
 						正在全力加载中。。。。。。。。。。<i class="el-icon-loading"></i>
 					</div>
 				</el-image>
-				<span slot="footer" class="dialog-footer"> 
+				<span slot="footer" class="dialog-footer">
 					<el-button type="primary" @click="displayDiagram = false">关闭</el-button>
 				</span>
-			</el-dialog> 		 
-			 		 
+			</el-dialog>
+
 			<el-dialog append-to-body
 				title="模板导入"
 				:visible.sync="templateVisible"
-				width="60%"> 
-				<procdef-parames-template-mng :visible="templateVisible" :modelKey="procdef.key" :procDefId="procdef.id"  @cancel="templateVisible=false"   @confirm="onTemplateSelected"></procdef-parames-template-mng> 
+				width="60%">
+				<procdef-parames-template-mng :visible="templateVisible" :modelKey="procdef.key" :procDefId="procdef.id"  @cancel="templateVisible=false"   @confirm="onTemplateSelected"></procdef-parames-template-mng>
 			</el-dialog>
 			<el-dialog append-to-body
 				title="配置流程总体权限"
 				:visible.sync="mainQxVisible"
-				width="60%"> 
-				<act-qx-code-set :qxType="'mainQx'" :formFields="formFields" :visible="mainQxVisible" :qxCode="addForm.mainQx" @cancel="onMainQxCancel"   @confirm="onMainQxSelected"></act-qx-code-set> 
+				width="60%">
+				<act-qx-code-set :qxType="'mainQx'" :formFields="formFields" :visible="mainQxVisible" :qxCode="addForm.mainQx" @cancel="onMainQxCancel"   @confirm="onMainQxSelected"></act-qx-code-set>
 			</el-dialog>
 			<el-dialog append-to-body
 				title="配置流程节点权限"
 				:visible.sync="qxVisible"
-				width="60%"> 
-				<act-qx-code-set :formFields="formFields" :visible="qxVisible" :qxCode="actSelected ? actSelected.qxCode:''" @cancel="onQxCancel"   @confirm="onQxSelected"></act-qx-code-set> 
+				width="60%">
+				<act-qx-code-set :formFields="formFields" :visible="qxVisible" :qxCode="actSelected ? actSelected.qxCode:''" @cancel="onQxCancel"   @confirm="onQxSelected"></act-qx-code-set>
 			</el-dialog>
 			<el-dialog append-to-body
 				title="选择监控人"
 				:visible.sync="monitorsSelectVisible"
-				width="60%"> 
-				<users-select :select-userids="monitors.map(i=>i.userid)"   @confirm="onMonitorsSelected"></users-select> 
+				width="60%">
+				<users-select :select-userids="monitors.map(i=>i.userid)"   @confirm="onMonitorsSelected"></users-select>
 			</el-dialog>
 			<el-dialog append-to-body
 				title="设置标签"
 				:visible.sync="tagSelectVisible"
-				width="60%"> 
-				<tag-mng :tagIds="addForm.tagIds==null?null:addForm.tagIds.split(',')"  :jump="true" @select-confirm="onTagSelected"></tag-mng> 
+				width="60%">
+				<tag-mng :tagIds="addForm.tagIds==null?null:addForm.tagIds.split(',')"  :jump="true" @select-confirm="onTagSelected"></tag-mng>
 			</el-dialog>
 			<el-dialog append-to-body
 				title="选择候选人/候选部门/候选岗位"
 				:visible.sync="candidateSelectVisible"
-				width="60%"> 
-				<act-candidate-set :actAssignee="actSelected"  @confirm="onCandidateSelected"></act-candidate-set> 
+				width="60%">
+				<act-candidate-set :actAssignee="actSelected"  @confirm="onCandidateSelected"></act-candidate-set>
 			</el-dialog>
 			<el-dialog append-to-body
 				title="选择主办员工"
 				:visible.sync="sponsorsSelectVisible"
-				width="60%"> 
-				<users-select :select-userids="sponsors.map(i=>i.userid)"   @confirm="onSponsorsSelected"></users-select> 
+				width="60%">
+				<users-select :select-userids="sponsors.map(i=>i.userid)"   @confirm="onSponsorsSelected"></users-select>
 			</el-dialog>
 			<el-dialog append-to-body
 				title="选择审批员工"
 				:visible.sync="userSelectVisible"
-				width="60%"> 
-				<users-select :select-userids=" (actSelected && actSelected.nodeUsers)?actSelected.nodeUsers:[]"   @confirm="onUserSelected"></users-select> 
+				width="60%">
+				<users-select :select-userids=" (actSelected && actSelected.nodeUsers)?actSelected.nodeUsers:[]"   @confirm="onUserSelected"></users-select>
 			</el-dialog>
 			<el-dialog append-to-body
 				title="配置表单"
 				:visible.sync="nodeFormVisible"
-				width="80%"> 
-				<form-def-for-flow-node :visible="nodeFormVisible" :form-id=" (actSelected && actSelected.formId)?actSelected.formId:''" @cancel="onNodeFormCancel" :form-fields-json="actSelected?actSelected.formFieldsJson:null"  @submit="onFormDefForFlowNodeSubmit"></form-def-for-flow-node> 
+				width="80%">
+				<form-def-for-flow-node :visible="nodeFormVisible" :form-id=" (actSelected && actSelected.formId)?actSelected.formId:''" @cancel="onNodeFormCancel" :form-fields-json="actSelected?actSelected.formFieldsJson:null"  @submit="onFormDefForFlowNodeSubmit"></form-def-for-flow-node>
 			</el-dialog>
 		</el-row>
 	</section>
@@ -238,7 +238,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import config from '@/common/config';//全局公共库import 
+	import config from '@/common/config';//全局公共库import
 	//import { getCompanyEmployees,getCompanyDepts, selectCacheOptions,getDefaultValue,getCodeName } from '@/api/common/code';//下拉框数据查询
 	import { editProcdefParames,listProcdefParames, addProcdefParames } from '@/api/mdp/workflow/re/procdefParames';
 	import { listProcdefParamesTemplate, addOrUpdateTemplate } from '@/api/mdp/workflow/re/procdefParamesTemplate';
@@ -249,18 +249,18 @@
 	import { listUser,listUserNames } from '@/api/mdp/sys/user';
 	import { listDept } from '@/api/mdp/sys/dept';
 	import Sticky from '@/components/Sticky' // 粘性header组件
-	import { mapGetters } from 'vuex' 
-	import AttachmentUpload from '@/views/mdp/arc/archiveAttachment/AttachmentUpload';  
+	import { mapGetters } from 'vuex'
+	import AttachmentUpload from '@/views/mdp/arc/archiveAttachment/AttachmentUpload';
 	import VueEditor from '@/components/VueEditor/Index';
-	import UsersSelect from '@/views/mdp/sys/user/UsersSelect';  
-	import FormDefForFlowNode from '@/views/mdp/form/formDef/FormDefForFlowNode';  
-	
-	import ProcdefParamesTemplateMng from '@/views/mdp/workflow/re/ProcdefParamesTemplate/ProcdefParamesTemplateMng';  
-	
-	import TagMng from '@/views/mdp/arc/tag/TagMng';  
-	
-	import ActCandidateSet from '@/views/mdp/workflow/re/procdefParames/ActCandidateSet';  
-	import ActQxCodeSet from '@/views/mdp/workflow/re/procdefParames/ActQxCodeSet';  
+	import UsersSelect from '@/views/mdp/sys/user/UsersSelect';
+	import FormDefForFlowNode from '@/views/mdp/form/formDef/FormDefForFlowNode';
+
+	import ProcdefParamesTemplateMng from '@/views/mdp/workflow/re/ProcdefParamesTemplate/ProcdefParamesTemplateMng';
+
+	import TagMng from '@/views/mdp/arc/tag/TagMng';
+
+	import ActCandidateSet from '@/views/mdp/workflow/re/procdefParames/ActCandidateSet';
+	import ActQxCodeSet from '@/views/mdp/workflow/re/procdefParames/ActQxCodeSet';
 
 	export default {
 		name:'ProcdefParamesSet',
@@ -279,7 +279,7 @@
 	    	  		this.addForm.isRefForm="0"
 	    	  	}else{
 	    	  		this.addForm.isRefForm="1"
-	    	  	} 
+	    	  	}
 		      },
 	      'procdef':function( procdef ) {
 		        this.addForm.procDefId=procdef.id;
@@ -293,15 +293,15 @@
 		        this.sponsors=[];
 		        this.$nextTick(() => {
 					this.getProcdefParamess();
-					this.listBpmnActAssignees(); 
+					this.listBpmnActAssignees();
 	        	});
-		       
-		  }, 
-	      'visible':function(visible) {  
-	      	if(visible==true){ 
+
+		  },
+	      'visible':function(visible) {
+	      	if(visible==true){
 	      	}
-	      } 
-	    },	
+	      }
+	    },
 		data() {
 			return {
 				options:{},//下拉选择框的所有静态数据
@@ -328,9 +328,9 @@
 				formDefs:[],
 				diagramUrl:'',
 				nodeInfos:[],//id:'',actId:'',actName:'',procDefId:'',assignees:'',isMultiple:'' ,
-				nodeInfosSelectOptions:[],//id:'',actId:'',actName:'',procDefId:'',assignees:[],isMultiple:'' 
-				candidateSelectVisible:false, 
-				userSelectVisible:false, 
+				nodeInfosSelectOptions:[],//id:'',actId:'',actName:'',procDefId:'',assignees:[],isMultiple:''
+				candidateSelectVisible:false,
+				userSelectVisible:false,
 				actSelected:null,//选中的nodeInfos
 				sponsorsSelectVisible:false,
 				monitorsSelectVisible:false,
@@ -354,8 +354,8 @@
 				this.$refs.addForm.validate((valid) => {
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
-							this.addLoading = true; 
-							let params = Object.assign({}, this.addForm); 
+							this.addLoading = true;
+							let params = Object.assign({}, this.addForm);
 							params.sponsors=this.sponsors.map(i=>i.userid).join(',');
 							params.monitors=this.monitors.map(i=>i.userid).join(',');
 							if(params.branchId==null || params.branchId==''){
@@ -368,17 +368,17 @@
 							}
 							var nodeInfosNew=new Array();
 							this.nodeInfosSelectOptions.forEach(i=>{
-								let act=Object.assign({},i) 
+								let act=Object.assign({},i)
 								 if(act.showNextAssignees==null || act.showNextAssignees==''||!act.showNextAssignees){
 									act.showNextAssignees="0"
 								 }
 								 if(act.candidate==null || act.candidate==''||!act.candidate){
 									act.candidate="0"
-								 } 
+								 }
 								 if(act.isMultiple==null || act.isMultiple==''||!act.isMultiple){
 									act.isMultiple="0"
 								 }
-								 
+
 								 if(act.instanceCount==null || act.instanceCount==''||!act.instanceCount){
 									act.instanceCount="0"
 								 }
@@ -389,20 +389,20 @@
 								params.modelKey=this.procdef.key
 								addOrUpdateTemplate(params).then(res=>{
 									var tips=res.data.tips;
-									this.addLoading = false; 
-									this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+									this.addLoading = false;
+									this.$message({ message: tips.msg, type: tips.isOk?'success':'error' });
 								}).catch(e=>this.addLoading=false);
 								return;
 							}
 							if(params.id==''){
 								addProcdefParames({procdefParames:params,nodeInfos:nodeInfosNew}).then((res) => {
-									this.addLoading = false; 
+									this.addLoading = false;
 									var tips=res.data.tips;
 									if(tips.isOk){
 										this.$refs['addForm'].resetFields();
 										this.$emit('submit');//  @submit="afterAddSubmit"
 									}
-									this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+									this.$message({ message: tips.msg, type: tips.isOk?'success':'error' });
 								}).catch(() => {
 									this.addLoading = false;
 								});
@@ -414,20 +414,20 @@
 									changeTags="0"
 								}else{//修改过标签
 									changeTags="1"
-								} 
+								}
 								editProcdefParames({changeTags:changeTags,procdefParames:params,nodeInfos:nodeInfosNew}).then((res) => {
-									this.addLoading = false; 
+									this.addLoading = false;
 									var tips=res.data.tips;
 									if(tips.isOk){
 										this.$refs['addForm'].resetFields();
 										this.$emit('submit');//  @submit="afterAddSubmit"
 									}
-									this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+									this.$message({ message: tips.msg, type: tips.isOk?'success':'error' });
 								}).catch(() => {
 									this.addLoading = false;
 								});
 							}
-							
+
 						});
 					}
 				});
@@ -438,33 +438,33 @@
 				let params = {
 					procDefId: this.procdef.id
 				};
-				 
+
 				this.listLoading = true;
 				listProcdefParames(params).then((res) => {
 					var tips=res.data.tips;
-					if(tips.isOk){  
+					if(tips.isOk){
 						if(res.data.data.length>0){
 							console.log(res.data);
-							this.addForm=res.data.data[0]; 
+							this.addForm=res.data.data[0];
 							this.sponsors=this.addForm.sponsors==null?[]:this.addForm.sponsors.split(',').map(i=>{return {userid:i,username:i}});
 							this.monitors=this.addForm.monitors==null?[]:this.addForm.monitors.split(',').map(i=>{return {userid:i,username:i}});
 						}
-						
+
 						console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxx");
 						console.log(this.nodeInfosSelectOptions);
 					}else{
 						this.$message({ message: tips.msg, type: 'error' });
-					} 
+					}
 					this.listLoading = false;
 				}).catch(() => {
 					this.listLoading = false;
-					
+
 				});
-			},	 
+			},
 			onCandidateSelected:function(actAssignee){
 				this.candidateSelectVisible=false;
 				console.log("actAssignee-----------"+JSON.stringify(actAssignee));
-				 
+
 				this.actSelected.nodeUsers=actAssignee.nodeUsers;
 				this.actSelected.groupIds=actAssignee.groupIds
 				this.actSelected.toCreater='0'
@@ -478,18 +478,18 @@
 						this.baseUserList.push(i);
 					}
 				})
-				this.actSelected.nodeUsers=users 
+				this.actSelected.nodeUsers=users
 				this.actSelected.toCreater='0'
 
-			}, 
+			},
 			onTagSelected:function(tags){
 				this.tagSelectVisible=false;
 				console.log("tags"+JSON.stringify(tags));
-				this.addForm.tagIds=tags.map(t=>t.tagId).join(",");  
-				this.addForm.tagNames=tags.map(t=>t.tagName).join(",");  
+				this.addForm.tagIds=tags.map(t=>t.tagId).join(",");
+				this.addForm.tagNames=tags.map(t=>t.tagName).join(",");
 
-			}, 
-			
+			},
+
 			onMonitorsSelected:function(users){
 				this.monitorsSelectVisible=false;
 				console.log("posts-----------"+JSON.stringify(users));
@@ -501,7 +501,7 @@
 				this.monitors=users;
 
 			},
-			
+
 			onSponsorsSelected:function(users){
 				this.sponsorsSelectVisible=false;
 				users.forEach(i=>{
@@ -509,7 +509,7 @@
 						this.baseUserList.push(i);
 					}
 				})
-				console.log("posts-----------"+JSON.stringify(users));  
+				console.log("posts-----------"+JSON.stringify(users));
 				this.sponsors=users;
 			},
 			showMonitorsSelectDialog(){
@@ -517,8 +517,8 @@
 			},
 			showSponsorsSelectDialog(){
 
-			}, 
-			
+			},
+
 			showUserSelectDialog:function(actSelected,index){
 				console.log(actSelected);
 				this.userSelectVisible=true;
@@ -537,7 +537,7 @@
 					if(actAssignee.nodeUsers){
 						var userCount=actAssignee.nodeUsers.length;
 						tips.push(userCount+"个候选用户");
-					} 
+					}
 					if(actAssignee.groupIds){
 						var groupCount=actAssignee.groupIds.split(",").length;
 						tips.push(groupCount+"个候选部门/岗位");
@@ -545,14 +545,14 @@
 					if(tips.length==0){
 						tips.push("未配置任何候选人/候选部门/候选岗位");
 					}
-					
+
 				}else{
 					if(actAssignee.nodeUsers){
- 
-							tips=tips.concat(actAssignee.nodeUsers.map(i=>i.username)); 
+
+							tips=tips.concat(actAssignee.nodeUsers.map(i=>i.username));
 					}else{
 						tips.push("未配置任何任务执行人");
-					} 
+					}
 				}
 				return tips.join(",");
 			},
@@ -566,11 +566,11 @@
 				this.listLoading = true;
 				listFormDef(params).then((res) => {
 					var tips=res.data.tips;
-					if(tips.isOk){ 
+					if(tips.isOk){
 						this.formDefs = res.data.data;
 					}else{
 						this.$message({ message: tips.msg, type: 'error' });
-					} 
+					}
 					this.listLoading = false;
 				}).catch(() => {
 					this.listLoading = false;
@@ -578,7 +578,7 @@
 				});
 			},
 			handleCategoryCheckChange(data, checked, indeterminate){
-				console.log("555555555555555555555555555555555555555555"); 
+				console.log("555555555555555555555555555555555555555555");
 				this.addForm.categoryId=checked?data.id:'';
 				console.log(this.addForm.categoryId);
 			},
@@ -595,14 +595,14 @@
 					if(tips.isOk){
 						//this.nodeInfos=res.data.data
 						this.nodeInfos=res.data.data;
-						this.nodeInfosSelectOptions=this.nodeInfos; 
+						this.nodeInfosSelectOptions=this.nodeInfos;
 					}else{
 						this.$message({ message: tips.msg, type: 'error' });
 					}
 				});
 			},
 			/**end 在上面加自定义方法**/
-			
+
 			initBaseUserList(){
 				var that=this;
 				var sponsors=that.addForm.sponsors.split(',').map(i=>{return {userid:i,username:i}});
@@ -611,7 +611,7 @@
 				var currentUser={userid:this.userInfo.userid,username:this.userInfo.username}
 				that.baseUserList=sponsors.concat(monitors.filter(m=>!sponsors.some(s=>s.userid==m.userid)))
 				that.sponsors=sponsors;
-				that.monitors=monitors; 
+				that.monitors=monitors;
 				if(!that.baseUserList.some(i=>i.userid==currentUser.userid)){
 						that.baseUserList.push(currentUser);
 				}
@@ -620,7 +620,7 @@
 				}
 				listUserNames({userids:that.baseUserList.map(i=>i.userid),branchId:that.userInfo.branchId}).then(res=>{
 					if(res.data.tips.isOk){
-						that.baseUserList=res.data.data 
+						that.baseUserList=res.data.data
 						that.baseUserList.forEach(u=>{
 							that.monitors.forEach((m,index)=>{
 								if(m.userid==u.userid){
@@ -634,32 +634,32 @@
 							});
 						})
 					}
-					
+
 				});
 			},
 			onQxSelected:function(qxCode){
 				this.qxVisible=false;
 				this.actSelected.qxCode=qxCode;
 			},
-			
+
 			onQxCancel:function(){
-				this.qxVisible=false; 
+				this.qxVisible=false;
 			},
 			showQxDialog:function(act){
 				this.qxVisible=true;
 				this.actSelected=act;
 			},
-			
+
 			onMainQxSelected:function(qxCode){
 				this.mainQxVisible=false;
 				this.addForm.mainQx=qxCode;
 			},
-			
+
 			onMainQxCancel:function(){
-				this.mainQxVisible=false; 
+				this.mainQxVisible=false;
 			},
 			showMainQxDialog:function(){
-				this.mainQxVisible=true; 
+				this.mainQxVisible=true;
 			},
 			onFormFieldsLoad:function(formFields){
 				this.formFields=formFields;
@@ -691,23 +691,23 @@
 			onNodeFormCancel:function(){
 				this.nodeFormVisible=false;
 			},
-			showNodeForm:function(nodeInfo){ 
-				this.actSelected=nodeInfo 
+			showNodeForm:function(nodeInfo){
+				this.actSelected=nodeInfo
 				this.nodeFormVisible=true
 			},
 			setAssigneeAsStartUser(nodeInfo){
 				if(nodeInfo.allowOverUser=='0'){
 					this.$message.error("该节点不允许改变执行人")
 					return ;
-				} 
+				}
 				this.actSelected=nodeInfo
 				this.actSelected.toCreater='1'
 				this.actSelected.candidate='0'
 				this.actSelected.showNextAssignees='0'
-				
+
 			}
 		},//end method
-		components: {  
+		components: {
 		    //在下面添加其它组件 'procdef-parames-edit':ProcdefParamesEdit
 		    'form-data-mng-for-flow-form':FormDataMngForFlowForm,
 		    'vue-editor':VueEditor,
@@ -715,7 +715,7 @@
 			'sticky': Sticky,
 			AttachmentUpload,UsersSelect,ActCandidateSet,TagMng,ActQxCodeSet,ProcdefParamesTemplateMng,FormDefForFlowNode
 		},
-		mounted() { 
+		mounted() {
 				this.addForm=Object.assign(this.addForm, this.procdefParames);
 				this.addForm.procDefId=this.procdef.id;
 				this.addForm.mainTitle=this.procdef.name;
@@ -723,21 +723,21 @@
 				this.listBpmnActAssignees();
 				this.getFormDefs();
 				this.initBaseUserList();
-				 
-					 
-			
+
+
+
 			//加载下拉列表 如有需要去掉注释
 			/**
 			let optionsParams={code:'all',fieldNames:['sex']};
 			selectCacheOptions(optionsParams).then(res=>{
 				this.options=res.data.data;
-			}); 
+			});
 			**/
 			//给下拉列表初始化默认值
 			//this.addForm.xxx=getDefaultValue(this.options.xxx,'1');
-			
+
 			/**在下面写其它函数***/
-			
+
 		}//end mounted
 	}
 

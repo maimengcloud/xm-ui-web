@@ -28,13 +28,14 @@
 		data() {
 			return { 
 				filters: { 
-
+					params:null,
+					/** 
 					params:{
-						mainTitle:'xxxxxxx',
-						mainContext:'xxxx',
+						mainTitle:'',
+						mainContext:'',
 						bizUrl:'',//前端跳转  //自带参数，建议只带主键
-						bizKey:'company_regit',//用于选中流程模型并原样输出到restUrl
-						restUrl:'xxxxxxxx',//后端接口同步
+						bizKey:'',//用于选中流程模型并原样输出到restUrl
+						restUrl:'',//后端接口同步
 						formId:'',//form 表单编号
 						formDataId:'',//form表单对应的数据
 						extVars:{ //不用提交给工作流的变量池 
@@ -44,6 +45,7 @@
 						}
 
 					}
+					*/
 				}, 
 				/**end 自定义属性请在上面加 请加备注**/
 			}

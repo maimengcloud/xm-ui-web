@@ -4,18 +4,18 @@
       <el-row>
         <el-select v-model="filters.category" clearable filterable placeholder="请选择分类">
           <el-option v-for="item in categorys" :key="item" :label="item" :value="item"></el-option>
-        </el-select> 
-        <el-input v-model="filters.key" style="width:30%;" placeholder="模糊查询">
-          <template slot="append"> 
-            <el-button type="primary"   v-on:click="searchDeployments" icon="el-icon-search">查询</el-button> 
+        </el-select>
+        <el-input v-model="filters.key" style="width:270px;margin-right: 13px;" placeholder="模糊查询">
+          <template slot="append">
+            <el-button type="primary"   v-on:click="searchDeployments" icon="el-icon-search">查询</el-button>
           </template>
         </el-input>
-        <el-button @click="handleDownload" icon="el-icon-download">导出数据</el-button>
+        <el-button @click="handleDownload" icon="el-icon-download" style="">导出数据</el-button>
       </el-row>
-      <el-row style="padding-top:10px;">
+      <el-row style="padding-top:20px;">
         <!--列表 Deployment act_re_deployment-->
         <el-table
-          ref="table" :max-height="tableHeight" 
+          ref="table" :max-height="tableHeight"
           :data="deployments"
           highlight-current-row
           v-loading="listLoading"
@@ -26,7 +26,7 @@
         >
           <el-table-column type="selection" width="40"></el-table-column>
           <el-table-column type="index" width="40"></el-table-column>
-          
+
           <el-table-column sortable prop="category" label="分类" min-width="80" show-overflow-tooltip></el-table-column>
           <el-table-column sortable prop="key" label="业务编码" min-width="150"  show-overflow-tooltip></el-table-column>
           <el-table-column sortable prop="name" label="发布包名" min-width="300"  show-overflow-tooltip></el-table-column>
@@ -39,7 +39,7 @@
           ></el-table-column>
           <el-table-column label="操作" width="150" fixed="right">
             <template slot-scope="scope">
-              <el-button type="danger" @click="handleDel(scope.row,scope.$index)">取消发布</el-button>
+              <el-button type="danger" @click="handleDel(scope.row,scope.$index)">下架当前版本</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -381,10 +381,10 @@ export default {
       this.categorys = res.data.data;
     });
     this.$nextTick(() => {
-      
+
       var clientRect=this.$refs.table.$el.getBoundingClientRect();
-      var subHeight=70/1000 * window.innerHeight; 
-      this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
+      var subHeight=70/1000 * window.innerHeight;
+      this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight;
       this.getDeployments();
     });
   }
@@ -392,4 +392,18 @@ export default {
 </script>
 
 <style scoped>
+</style>
+
+<style>
+  .el-input-group__append, .el-input-group__prepend {
+      background-color: #409EFF!important;
+      color: #ffffff!important;
+      vertical-align: middle;
+      display: table-cell;
+      position: relative;
+      border: 1px solid #409EFF!important;
+      padding: 0 20px;
+      width: 1px;
+      white-space: nowrap;
+  }
 </style>

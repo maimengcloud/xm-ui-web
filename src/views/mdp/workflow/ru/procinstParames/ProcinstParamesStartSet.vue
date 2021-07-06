@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<el-row>
+		<el-row class="app-container">
 			
 			<!--新增界面 ProcinstParames 流程实例参数设置表--> 
 			<el-col :span="24"> 
@@ -31,49 +31,53 @@
 								placeholder="选择计划完成日期" >
 							</el-date-picker>
 						</el-col> <font style="margin-left:5px;">主办可以调整</font>
-					</el-form-item> 
-					<el-col :span="24">
-						<el-col :span="12">
-							<el-form-item label="发起部门" prop="deptid"> 
-									<el-select  style="width:99%;" v-model="addForm.deptid"  clearable filterable placeholder="请选择">
+					</el-form-item>  
+					<el-form-item label="发起部门" prop="deptid"> 
+						<el-select  v-model="addForm.deptid"  clearable filterable placeholder="请选择">
+							<el-option
+							v-for="item in myDepts"
+							:key="item.deptid"
+							:label="item.deptName"
+							:value="item.deptid">
+							</el-option>
+						</el-select>  
+
+						<el-popover
+							placement="top-start"
+							title="设置主办监控人"
+							width="400"
+							trigger="manual" v-model="sponsorsAndMonitorsVisible"> 
+							<el-row> 
+								<el-col :span="24" style="padding-top:5px;">
+									<font class="more-label-font">主办人:</font> 
+									<el-select disabled   value-key="userid"    v-model="sponsors" multiple placeholder="请选择">
 										<el-option
-										v-for="item in myDepts"
-										:key="item.deptid"
-										:label="item.deptName"
-										:value="item.deptid">
+										v-for="item in baseUserList"
+										:key="item.userid"
+										:label="item.username"
+										:value="item">
+										<span style="float: left">{{ item.username }}</span>
+										<span style="float: right; color: #8492a6; font-size: 14px">{{ item.shortName }}</span>
 										</el-option>
-									</el-select>    
-							</el-form-item> 
-						</el-col>
-					</el-col>
-					<el-col :span="12">
-						<el-form-item label="主办人" prop="sponsors" >   
-								<el-select   value-key="userid" style="width:99%"  v-model="sponsors" multiple placeholder="请选择">
-									<el-option
-									v-for="item in baseUserList"
-									:key="item.userid"
-									:label="item.username"
-									:value="item">
-									<span style="float: left">{{ item.username }}</span>
-									<span style="float: right; color: #8492a6; font-size: 13px">{{ item.shortName }}</span>
-									</el-option>
-								</el-select> 
-						</el-form-item>
-					</el-col>
-					<el-col :span="12"> 
-						<el-form-item label="监控人" prop="monitors"> 
-									<el-select  value-key="userid" style="width:99%" v-model="monitors" multiple placeholder="请选择">
+									</el-select> 
+								</el-col> 
+								<el-col :span="24" style="padding-top:5px;">
+									<font class="more-label-font">监控人:</font>  
+									<el-select disabled   value-key="userid"   v-model="monitors" multiple placeholder="请选择">
 										<el-option
-											v-for="item in baseUserList"
-											:key="item.userid"
-											:label="item.username"
-											:value="item">
-											<span style="float: left">{{ item.username }}</span>
-											<span style="float: right; color: #8492a6; font-size: 13px">{{ item.shortName }}</span>
+										v-for="item in baseUserList"
+										:key="item.userid"
+										:label="item.username"
+										:value="item">
+										<span style="float: left">{{ item.username }}</span>
+										<span style="float: right; color: #8492a6; font-size: 13px">{{ item.shortName }}</span>
 										</el-option>
-									</el-select>  
-						</el-form-item> 
-					</el-col> 
+									</el-select> 
+								</el-col> 
+							</el-row>
+							<el-button  slot="reference" icon="el-icon-s-check" @click="showSponsorsAndMonitors">主办人、监控人查询</el-button>
+						</el-popover>     
+					</el-form-item>  
 				<div  v-if="addForm.isRefForm=='1' && addForm.formId!=null && addForm.formId!='' && addForm.formShowType!='table' ">
 						<form-data-mng-for-flow-form :form-data-id="filters.formDataId" :qxCode="addForm.mainQx" :isFlowStart="true"    :form-id="addForm.formId" :submit-event="formDataSubmitEvent" @submit="startSubmit"><div></div></form-data-mng-for-flow-form> 
 				</div>
@@ -354,6 +358,7 @@
 				showAttachment:false,
 				nodeInfoVisible:false,
 				nodeInfos:[],
+				sponsorsAndMonitorsVisible:false,
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data
@@ -377,17 +382,7 @@
 								params.extVars=this.params.extVars
 								params.flowVars=this.params.flowVars
 							}
-							if(this.nodeInfos.length<=0){
-								this.listBpmnActAssignees(true);
-								this.$message({ message: "未配置节点审批人，无法提交，将自动加载默认配置，请稍后提交", type: 'error' }); 
-								return;
-							}else{
-								if(this.nodeInfos.some(i=>i.toCreater!='1' && (i.nodeUsers==null || i.nodeUsers.length==0))){
-									this.$message.error("还有节点未配置审批人，请配置审批人后再提交");
-									this.showNodeInfoDialog();
-									return;
-								}
-							}
+							 
 							this.addLoading = true; 
 							params.procinstParames.startDeptName=this.myDepts.filter(d=>d.deptid==this.addForm.deptid)[0].deptName;
 							params.procinstParames.startUsername=this.userInfo.username
@@ -450,7 +445,7 @@
 					
 				})
 			},
-			initBaseUserList(){
+			initBaseUserList(sponsorsAndMonitorsVisible){
 				var that=this;
 				var sponsors=[];
 				var monitors=[];
@@ -477,6 +472,7 @@
 					that.monitors=monitors
 					that.sponsors=sponsors
 					that.baseUserList=baseUserList 
+					this.sponsorsAndMonitorsVisible=sponsorsAndMonitorsVisible
 					return;
 				}else{
 					listUserNames({userids:baseUserList.map(i=>i.userid),branchId:that.userInfo.branchId}).then(res=>{
@@ -498,6 +494,7 @@
 							that.sponsors=sponsors
 							that.baseUserList=baseUserList
 						}
+						this.sponsorsAndMonitorsVisible=sponsorsAndMonitorsVisible
 					});
 				}
 				
@@ -564,7 +561,11 @@
 				this.mainQxVisible=true; 
 			},
 			showNodeInfoDialog:function(){
-				this.nodeInfoVisible=true;
+				if(this.nodeInfos==null || this.nodeInfos.length==0){
+					this.listBpmnActAssignees(true)
+				}else{
+					this.nodeInfoVisible=true;
+				} 
 			},
 			onFormFieldsLoad:function(formFields){
 				this.formFields=formFields;
@@ -616,6 +617,14 @@
 				this.addForm.tagNames=this.procdef.tagNames;
 				this.addForm.mainQx=this.procdef.mainQx;
 			},
+			
+			showSponsorsAndMonitors(){
+				if( (this.monitors==null || this.monitors.length==0 || this.sponsors==null||this.sponsors.length==0) && this.sponsorsAndMonitorsVisible==false ){
+					this.initBaseUserList(true)
+				}else{
+					this.sponsorsAndMonitorsVisible=!this.sponsorsAndMonitorsVisible;
+				} 
+			},
 			listBpmnActAssignees(nodeInfoVisible){
 				this.nodeInfos=[]; 
 				this.listLoading = true;
@@ -649,7 +658,7 @@
 			this.$nextTick(() => {
 				this.initByProcdef();//先procdef
 				this.initByParams();//再 params 以 如果有相同数据以params为准
-				this.listBpmnActAssignees();
+				//this.listBpmnActAssignees();
 				this.initBaseUserList();
         	}); 
 			/**在下面写其它函数***/
