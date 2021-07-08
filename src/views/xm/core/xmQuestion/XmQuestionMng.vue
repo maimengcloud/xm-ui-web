@@ -902,10 +902,7 @@
 			this.filters.handlerUsername=this.userInfo.username;
 			this.$nextTick(() => {
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=50/1000 * window.innerHeight; 
-				if(this.selProject){
-					subHeight=100/1000 * window.innerHeight; 
-				}
+				var subHeight=50/1000 * window.innerHeight;  
 				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.getXmQuestions();
 			}); 
