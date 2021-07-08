@@ -27,14 +27,14 @@
 				<el-form-item label="到期时间" prop="endTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="addForm.endTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
 				</el-form-item> 
-				<el-form-item label="问题描述" prop="remark">
-					<el-input v-model="addForm.remark" placeholder="问题描述" ></el-input>
+				<el-form-item label="缺陷描述" prop="remark">
+					<el-input v-model="addForm.remark" placeholder="缺陷描述" ></el-input>
 				</el-form-item> 
-				<el-form-item label="问题创建人编号" prop="createUserid">
-					<el-input v-model="addForm.createUserid" placeholder="问题创建人编号" ></el-input>
+				<el-form-item label="缺陷创建人编号" prop="createUserid">
+					<el-input v-model="addForm.createUserid" placeholder="缺陷创建人编号" ></el-input>
 				</el-form-item> 
-				<el-form-item label="问题创建人" prop="createUsername">
-					<el-input v-model="addForm.createUsername" placeholder="问题创建人" ></el-input>
+				<el-form-item label="缺陷创建人" prop="createUsername">
+					<el-input v-model="addForm.createUsername" placeholder="缺陷创建人" ></el-input>
 				</el-form-item> 
 				<el-form-item label="创建时间" prop="createTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="addForm.createTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>

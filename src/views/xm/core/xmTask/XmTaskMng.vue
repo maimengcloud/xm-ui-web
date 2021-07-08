@@ -1769,6 +1769,7 @@ XmProjectGroupSelect,XmProductSelect
 				this.filters.product=this.xmProduct;
 			}
 			this.$nextTick(()=>{
+				debugger
 				this.getXmTasks();     
 				var clientRect=this.$refs.table.$el.getBoundingClientRect(); 
 				var subHeight=140/1000 * window.innerHeight;

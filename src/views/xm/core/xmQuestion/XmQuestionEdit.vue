@@ -6,7 +6,7 @@
 				
 					<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
 						<el-col :span="12"> 
-								<el-form-item label="问题标题" prop="name">
+								<el-form-item label="缺陷标题" prop="name">
 									{{editForm.name}} 
 								</el-form-item>  
 								<el-form-item label="隶属项目" prop="projectName">
@@ -90,7 +90,7 @@
 							</el-row> 
 						</el-col>
 						<el-col :span="24">
-							<el-form-item label="问题描述" prop="description">
+							<el-form-item label="缺陷描述" prop="description">
 								<div class="wf-main-context-box" v-if="editForm.description">
 									<div style="padding:10px;" class="wf-main-context" v-html="editForm.description"></div>
 								</div>
@@ -122,7 +122,7 @@
 					<el-button @click.native="handleCancel">取消</el-button>  
 					<el-button v-if="editForm.bugStatus !='closed'" v-loading="load.edit" type="primary" @click.native="handleQuestion(editForm.bugStatus)" :disabled="load.edit==true">暂存</el-button>
 					<el-button v-if="editForm.bugStatus=='active'" v-loading="load.edit" type="primary" @click.native="handleQuestion('confirmed')" :disabled="load.edit==true">确认</el-button>  
-					<el-button v-if="editForm.bugStatus=='active'" v-loading="load.edit" type="primary" @click.native="handleQuestion('active')" :disabled="load.edit==true">不是问题</el-button>  
+					<el-button v-if="editForm.bugStatus=='active'" v-loading="load.edit" type="primary" @click.native="handleQuestion('active')" :disabled="load.edit==true">不是缺陷</el-button>  
 					<el-button v-if="editForm.bugStatus=='active'" v-loading="load.edit" type="primary" @click.native="handleQuestion('resolved')" :disabled="load.edit==true">直接解决</el-button>  
 					<el-button v-if="editForm.bugStatus=='active'" v-loading="load.edit" type="primary" @click.native="handleQuestion('closed')" :disabled="load.edit==true">直接关闭</el-button>  
 					<el-button v-if="editForm.bugStatus=='confirmed'" v-loading="load.edit" type="primary" @click.native="handleQuestion('resolved')" :disabled="load.edit==true">解决</el-button> 
@@ -192,7 +192,7 @@
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				editFormRules: {
 					name: [
-						{required: true, message: '问题标题不可为空', trigger: 'blur' }
+						{required: true, message: '缺陷标题不可为空', trigger: 'blur' }
 					],
 					askUsername: [
 						{required: true, message: '提出人不可为空', trigger: 'blur' }

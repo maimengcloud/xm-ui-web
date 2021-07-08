@@ -20,7 +20,7 @@
 				<el-table-column prop="handleStatus" label="create创建（active激活）–confirm确认（confirmed已确认）–solve解决（resolved已解决）–close关闭（closed已关闭）" min-width="80" ></el-table-column>
 				<el-table-column prop="bizProcInstId" label="当前流程实例编号" min-width="80" ></el-table-column>
 				<el-table-column prop="bizFlowState" label="当前流程状态0初始1审批中2审批通过3审批不通过4流程取消或者删除" min-width="80" ></el-table-column>
-				<el-table-column prop="questionId" label="问题编号" min-width="80" ></el-table-column>
+				<el-table-column prop="questionId" label="缺陷编号" min-width="80" ></el-table-column>
 				<el-table-column prop="lastUpdateTime" label="最后更新日期" min-width="80" ></el-table-column>
 				<el-table-column prop="createTime" label="创建时间" min-width="80" ></el-table-column>
 				<el-table-column prop="actWorkload" label="实际工时" min-width="80" ></el-table-column>

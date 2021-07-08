@@ -1,10 +1,10 @@
 <template>
 	<section>
 		<el-row class="app-container">
-			<!--新增界面 XmQuestionTag 问题标签关联表--> 
+			<!--新增界面 XmQuestionTag 缺陷标签关联表--> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
-				<el-form-item label="问题编号" prop="questionId">
-					<el-input v-model="addForm.questionId" placeholder="问题编号" ></el-input>
+				<el-form-item label="缺陷编号" prop="questionId">
+					<el-input v-model="addForm.questionId" placeholder="缺陷编号" ></el-input>
 				</el-form-item> 
 				<el-form-item label="标签编号" prop="tagId">
 					<el-input v-model="addForm.tagId" placeholder="标签编号" ></el-input>
@@ -61,7 +61,7 @@
 						//{ required: true, message: '主键不能为空', trigger: 'blur' }
 					]
 				},
-				//新增界面数据 问题标签关联表
+				//新增界面数据 缺陷标签关联表
 				addForm: {
 					questionId:'',tagId:'',tagName:'',ctime:'',id:''
 				}
@@ -76,7 +76,7 @@
 				this.$refs['addForm'].resetFields();
 				this.$emit('cancel');
 			},
-			//新增提交XmQuestionTag 问题标签关联表 父组件监听@submit="afterAddSubmit"
+			//新增提交XmQuestionTag 缺陷标签关联表 父组件监听@submit="afterAddSubmit"
 			addSubmit: function () {
 				
 				this.$refs.addForm.validate((valid) => {

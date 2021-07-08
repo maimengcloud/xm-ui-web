@@ -3,15 +3,15 @@
 		<el-row class="app-container">
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmQuestionTags">查询</el-button>
-			<el-button type="primary" @click="showAdd">+问题标签关联表</el-button>
+			<el-button type="primary" @click="showAdd">+缺陷标签关联表</el-button>
 			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
 		</el-row>
 		<el-row class="app-container"> 
-			<!--列表 XmQuestionTag 问题标签关联表-->
+			<!--列表 XmQuestionTag 缺陷标签关联表-->
 			<el-table :data="xmQuestionTags" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="selection" width="40"></el-table-column>
 				<el-table-column sortable type="index" width="40"></el-table-column>
-				<el-table-column prop="questionId" label="问题编号" min-width="80" ></el-table-column>
+				<el-table-column prop="questionId" label="缺陷编号" min-width="80" ></el-table-column>
 				<el-table-column prop="tagId" label="标签编号" min-width="80" ></el-table-column>
 				<el-table-column prop="tagName" label="标签名称" min-width="80" ></el-table-column>
 				<el-table-column prop="ctime" label="添加时间" min-width="80" ></el-table-column>
@@ -25,13 +25,13 @@
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		
-			<!--编辑 XmQuestionTag 问题标签关联表界面-->
-			<el-dialog title="编辑问题标签关联表" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<!--编辑 XmQuestionTag 缺陷标签关联表界面-->
+			<el-dialog title="编辑缺陷标签关联表" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
 				  <xm-question-tag-edit :xm-question-tag="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-question-tag-edit>
 			</el-dialog>
 	
-			<!--新增 XmQuestionTag 问题标签关联表界面-->
-			<el-dialog title="新增问题标签关联表" :visible.sync="addFormVisible"  width="50%"  append-to-body  :close-on-click-modal="false">
+			<!--新增 XmQuestionTag 缺陷标签关联表界面-->
+			<el-dialog title="新增缺陷标签关联表" :visible.sync="addFormVisible"  width="50%"  append-to-body  :close-on-click-modal="false">
 				<xm-question-tag-add :xm-question-tag="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-question-tag-add>
 			</el-dialog> 
 		</el-row>
@@ -114,7 +114,7 @@
 				 this.pageInfo.count=true; 
 				 this.getXmQuestionTags();
 			},
-			//获取列表 XmQuestionTag 问题标签关联表
+			//获取列表 XmQuestionTag 缺陷标签关联表
 			getXmQuestionTags() {
 				let params = {
 					pageSize: this.pageInfo.pageSize,
@@ -148,12 +148,12 @@
 				}).catch( err => this.load.list = false );
 			},
 
-			//显示编辑界面 XmQuestionTag 问题标签关联表
+			//显示编辑界面 XmQuestionTag 缺陷标签关联表
 			showEdit: function ( row,index ) {
 				this.editFormVisible = true;
 				this.editForm = Object.assign({}, row);
 			},
-			//显示新增界面 XmQuestionTag 问题标签关联表
+			//显示新增界面 XmQuestionTag 缺陷标签关联表
 			showAdd: function () {
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);

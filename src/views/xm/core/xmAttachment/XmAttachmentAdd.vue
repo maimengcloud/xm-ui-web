@@ -6,8 +6,8 @@
 				<el-form-item label="主键" prop="id">
 					<el-input v-model="addForm.id" placeholder="主键" ></el-input>
 				</el-form-item> 
-				<el-form-item label="附件来源类型，0任务，1问题，2文档" prop="originType">
-					<el-input v-model="addForm.originType" placeholder="附件来源类型，0任务，1问题，2文档" ></el-input>
+				<el-form-item label="附件来源类型，0任务，1缺陷，2文档" prop="originType">
+					<el-input v-model="addForm.originType" placeholder="附件来源类型，0任务，1缺陷，2文档" ></el-input>
 				</el-form-item> 
 				<el-form-item label="来源id" prop="originId">
 					<el-input v-model="addForm.originId" placeholder="来源id" ></el-input>

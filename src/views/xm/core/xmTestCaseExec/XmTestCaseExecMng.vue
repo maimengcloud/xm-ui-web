@@ -191,7 +191,7 @@
 			<el-dialog title="测试用例" :visible.sync="caseVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 				  <xm-test-case-edit :xm-test-case="xmTestCase"   :visible="caseVisible" @cancel="caseVisible=false" ></xm-test-case-edit>
 			</el-dialog>
-			<el-dialog title="问题列表" :visible.sync="bugsVisible"  width="80%"  append-to-body  fullscreen :close-on-click-modal="false">
+			<el-dialog title="缺陷列表" :visible.sync="bugsVisible"  width="80%"  append-to-body  fullscreen :close-on-click-modal="false">
 				  <xm-question-mng :xm-test-case="xmTestCase" :xm-test-case-exec="editForm" :sel-project="filters.selProject" :visible="bugsVisible" @cancel="bugsVisible=false" ></xm-question-mng>
 			</el-dialog>
 			
@@ -199,7 +199,7 @@
 				  <xm-product-select  :isSelectProduct="true" :selProject="filters.selProject" :visible="productSelectVisible" @cancel="productSelectVisible=false" @selected="onProductSelected"></xm-product-select>
 			</el-dialog>
 			<!--新增 XmQuestion xm_question界面-->
-			<el-dialog title="新增问题" :visible.sync="addBugVisible"  fullscreen width="100%"  append-to-body   :close-on-click-modal="false">
+			<el-dialog title="新增缺陷" :visible.sync="addBugVisible"  fullscreen width="100%"  append-to-body   :close-on-click-modal="false">
 				<xm-question-add :xm-test-case-exec="editForm" :xm-test-case="xmTestCase" :qtype="'bug'" :sel-project=" filters.selProject "   :visible="addBugVisible" @cancel="addBugVisible=false"></xm-question-add>
 			</el-dialog> 
 		</el-row>

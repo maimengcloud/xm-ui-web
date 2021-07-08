@@ -30,8 +30,8 @@
 				<el-form-item label="当前流程状态0初始1审批中2审批通过3审批不通过4流程取消或者删除" prop="bizFlowState">
 					<el-input v-model="addForm.bizFlowState" placeholder="当前流程状态0初始1审批中2审批通过3审批不通过4流程取消或者删除" ></el-input>
 				</el-form-item> 
-				<el-form-item label="问题编号" prop="questionId">
-					<el-input v-model="addForm.questionId" placeholder="问题编号" ></el-input>
+				<el-form-item label="缺陷编号" prop="questionId">
+					<el-input v-model="addForm.questionId" placeholder="缺陷编号" ></el-input>
 				</el-form-item> 
 				<el-form-item label="最后更新日期" prop="lastUpdateTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="addForm.lastUpdateTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>

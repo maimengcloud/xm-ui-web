@@ -12,7 +12,7 @@
 				<el-table-column sortable type="selection" width="40"></el-table-column>
 				<el-table-column sortable type="index" width="40"></el-table-column>
 				<el-table-column prop="id" label="主键" min-width="80" ></el-table-column>
-				<el-table-column prop="originType" label="附件来源类型，0任务，1问题，2文档" min-width="80" ></el-table-column>
+				<el-table-column prop="originType" label="附件来源类型，0任务，1缺陷，2文档" min-width="80" ></el-table-column>
 				<el-table-column prop="originId" label="来源id" min-width="80" ></el-table-column>
 				<el-table-column prop="name" label="附件名字" min-width="80" ></el-table-column>
 				<el-table-column prop="addr" label="附件地址" min-width="80" ></el-table-column>

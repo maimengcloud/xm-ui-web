@@ -18,7 +18,7 @@ export default {
 	      children: [
 	    	{ path: 'aqQuestion/AqQuestionMng',   name: 'AqQuestionMng', meta: { title: '咨询信息管理' ,openTab:true,outUrl:'${curlDomain}/arc/'+process.env.VERSION+'/#/mdp/arc/aq/aqQuestion/AqQuestionMng',menu:false} },
 	    	{ path: 'aqQuestion/AqQuestionAdd',   name: 'AqQuestionAdd', meta: { title: '发起咨询' ,openTab:true,outUrl:'${curlDomain}/arc/'+process.env.VERSION+'/#/mdp/arc/aq/aqQuestion/AqQuestionAdd',menu:false} }, 
-	      	{ path: 'aqFaq/AqFaqMng',  name: 'AqFaqMng', meta: { title: '常见问题管理' ,openTab:true,outUrl:'${curlDomain}/arc/'+process.env.VERSION+'/#/mdp/arc/aq/aqFaq/AqFaqMng',menu:false}},
+	      	{ path: 'aqFaq/AqFaqMng',  name: 'AqFaqMng', meta: { title: '常见缺陷管理' ,openTab:true,outUrl:'${curlDomain}/arc/'+process.env.VERSION+'/#/mdp/arc/aq/aqFaq/AqFaqMng',menu:false}},
 	      	
 	      ]
 		}, 

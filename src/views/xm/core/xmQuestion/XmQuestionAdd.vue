@@ -14,8 +14,8 @@
 						<el-form-item label="隶属故事" prop="menuName">
 							<el-tag v-if="addForm.menuId!='' && addForm.menuId!=null " closable @close="handleCloseMenuTag">{{addForm.menuName}}</el-tag><el-button @click="showSelectMenu">选故事</el-button>
 						</el-form-item>   
-						<el-form-item label="问题标题" prop="name">
-							<el-input v-model="addForm.name" placeholder="问题标题" ></el-input>
+						<el-form-item label="缺陷标题" prop="name">
+							<el-input v-model="addForm.name" placeholder="缺陷标题" ></el-input>
 						</el-form-item>  
 						<el-form-item label="优先级别" prop="priority">
 							<el-radio-group v-model="addForm.priority">
@@ -59,7 +59,7 @@
 						</el-form-item>
 					</el-col>
 				</el-row>
-				<el-form-item label="问题描述" prop="description"> 
+				<el-form-item label="缺陷描述" prop="description"> 
         			<vue-editor :id="'description_'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.description"></vue-editor>
 				</el-form-item>   
 				<el-form-item class="add-btns">
@@ -152,7 +152,7 @@
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				addFormRules: {
 					name: [
-						{required: true, message: '问题标题不可为空', trigger: 'blur' }
+						{required: true, message: '缺陷标题不可为空', trigger: 'blur' }
 					],
 					askUsername: [
 						{required: true, message: '提出人不可为空', trigger: 'blur' }

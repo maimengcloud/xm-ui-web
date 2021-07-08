@@ -17,7 +17,7 @@ export default {
       children: [
         
         { path: 'xmProject/XmProjectAdd', component: _import('xm/core/xmProject/XmProjectAdd'), name: 'xmProjectAdd', meta: { title: '项目立项' }},
-        { path: 'xmProject/XmProjectAllMng', component: _import('xm/core/xmProject/XmProjectAllMng'), name: 'xmProjectAllMng', meta: { title: '项目管理' }},
+        { path: 'xmProject/XmProjectAllMng', component: _import('xm/core/xmProject/XmProjectAllMng'), name: 'xmProjectAllMng', meta: { title: '项目总览' }},
         { path: 'xmProject/XmProjectMng', component: _import('xm/core/xmProject/XmProjectMng'), name: 'xmProjectMng', meta: { title: '项目(我的)' }},
         { path: 'xmProjectState/XmCockpit',   name: 'XmCockpit', meta: { title: '领导驾驶舱' ,openTab:true,outUrl:'${curlDomain}/xm/'+process.env.VERSION+'/#/datav/xm/branch/branchDatavFullScreen'}},
         { path: 'xmProjectState/XmProjectStateMng', component: _import('xm/core/xmProjectState/XmProjectStateMng'), name: 'XmProjectStateMng', meta: { title: '项目统计' }},
@@ -28,6 +28,17 @@ export default {
         { path: 'xmEnvList/XmEnvListMng', component: _import('xm/core/xmEnvList/XmEnvListMng'), name: 'XmEnvListMng', meta: { title: '环境清单' }},
 
       ]
+    },
+    {
+      path: '/xm/core/xmProject/XmProjectInfoRoute',
+      component: _import('xm/core/xmProject/XmProjectInfoRoute'),
+      name: 'XmProjectInfoRoute',
+      iconCls: 'fa el-icon-menu',
+      meta: {
+        title: '项目管理',
+        icon: 'project', 
+        hidden:true
+      }, 
     },
     {
       path: '/xm/core',
@@ -41,8 +52,8 @@ export default {
       // leaf: true,//只有一个节点
       children: [ 
         
-        { path: 'xmQuestion/XmQuestionAdd', component: _import('xm/core/xmQuestion/XmQuestionAdd'), name: 'XmQuestionAdd', meta: { title: '新建问题' }}, 
-        { path: 'xmQuestion/XmQuestionMng', component: _import('xm/core/xmQuestion/XmQuestionMng'), name: 'XmQuestionMng', meta: { title: '问题管理' }}, 
+        { path: 'xmQuestion/XmQuestionAdd', component: _import('xm/core/xmQuestion/XmQuestionAdd'), name: 'XmQuestionAdd', meta: { title: '新建缺陷' }}, 
+        { path: 'xmQuestion/XmQuestionMng', component: _import('xm/core/xmQuestion/XmQuestionMng'), name: 'XmQuestionMng', meta: { title: '缺陷管理' }}, 
         { path: 'xmTestCase/XmTestCaseMng', component: _import('xm/core/xmTestCase/XmTestCaseMng'), name: 'XmTestCaseMng', meta: { title: '测试设计' }}, 
         { path: 'xmTestCaseExec/XmTestCaseExecMng', component: _import('xm/core/xmTestCaseExec/XmTestCaseExecMng'), name: 'XmTestCaseExecMng', meta: { title: '测试执行' }}, 
 

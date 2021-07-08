@@ -11,8 +11,8 @@
 			<el-table :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="selection" width="40"></el-table-column>
 				<el-table-column sortable type="index" width="40"></el-table-column>
-				<el-table-column prop="id" label="问题编号" min-width="80" ></el-table-column>
-				<el-table-column prop="name" label="问题标题" min-width="80" ></el-table-column>
+				<el-table-column prop="id" label="缺陷编号" min-width="80" ></el-table-column>
+				<el-table-column prop="name" label="缺陷标题" min-width="80" ></el-table-column>
 				<el-table-column prop="projectId" label="项目编号" min-width="80" ></el-table-column>
 				<el-table-column prop="projectName" label="项目名称" min-width="80" ></el-table-column>
 				<el-table-column prop="taskId" label="任务编号" min-width="80" ></el-table-column>
@@ -23,10 +23,10 @@
 				<el-table-column prop="handlerUserid" label="处理人编号" min-width="80" ></el-table-column>
 				<el-table-column prop="handlerUsername" label="处理人" min-width="80" ></el-table-column>
 				<el-table-column prop="priority" label="优先级别" min-width="80" ></el-table-column>
-				<el-table-column prop="solution" label="解决方案3不是问题，4已解决，6延后处理" min-width="80" ></el-table-column>
-				<el-table-column prop="description" label="问题描述" min-width="80" ></el-table-column>
-				<el-table-column prop="createUserid" label="问题创建人编号" min-width="80" ></el-table-column>
-				<el-table-column prop="createUsername" label="问题创建人" min-width="80" ></el-table-column>
+				<el-table-column prop="solution" label="解决方案3不是缺陷，4已解决，6延后处理" min-width="80" ></el-table-column>
+				<el-table-column prop="description" label="缺陷描述" min-width="80" ></el-table-column>
+				<el-table-column prop="createUserid" label="缺陷创建人编号" min-width="80" ></el-table-column>
+				<el-table-column prop="createUsername" label="缺陷创建人" min-width="80" ></el-table-column>
 				<el-table-column prop="createTime" label="创建时间" min-width="80" ></el-table-column>
 				<el-table-column prop="status" label="状态，0未提交，2已领取，4已解决，5已关闭" min-width="80" ></el-table-column>
 				<el-table-column prop="bizProcInstId" label="当前流程实例编号" min-width="80" ></el-table-column>

@@ -17,7 +17,7 @@
 				<el-button v-else    @click="showProductVisible" type="plian">选产品</el-button>
 				<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 选择故事</el-button>
 				<el-tag v-else   closable @close="clearFiltersMenu(filters.menus[0])">{{filters.menus[0].menuName.substr(0,5)}}等({{filters.menus.length}})个</el-tag>
-				<el-input style="width:200px;" v-model="filters.key" placeholder="问题名称">
+				<el-input style="width:200px;" v-model="filters.key" placeholder="缺陷名称">
 					<template slot="append">
 						<el-button @click="searchXmQuestions" type="primary" icon="el-icon-search"></el-button>
 					</template>
@@ -61,7 +61,7 @@
 							<el-select v-model="filters.hisHandleStatus" placeholder="请选择状态"  clearable @change="changeHisHandleStatus">
 								<el-option v-for="(b,index) in options['bugStatus']" :value="b.optionValue"  :key="index" :label="b.optionName">{{b.optionName}}
 								</el-option>
-							</el-select>的问题
+							</el-select>的缺陷
 						</el-col> 
 						<el-col :span="24" style="padding-top:5px;">
 								<font class="more-label-font">故事:</font>
@@ -125,7 +125,7 @@
 				<!--列表 XmQuestion xm_question-->
 				<el-table ref="table" :max-height="tableHeight" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 					<el-table-column sortable type="index" width="45"></el-table-column> 
-					<el-table-column prop="name" label="问题名称"  min-width="200" show-overflow-tooltip> 
+					<el-table-column prop="name" label="缺陷名称"  min-width="200" show-overflow-tooltip> 
 						<template slot-scope="scope">
 							{{scope.row.id}}&nbsp;<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.name}}</el-link> 
 						</template>
@@ -184,12 +184,12 @@
 				<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 			 </el-row>
 			<!--编辑 XmQuestion xm_question界面-->
-			<el-dialog title="编辑问题"   :visible.sync="editFormVisible" fullscreen  width="100%"  append-to-body   :close-on-click-modal="false">
+			<el-dialog title="编辑缺陷"   :visible.sync="editFormVisible" fullscreen  width="100%"  append-to-body   :close-on-click-modal="false">
 					<xm-question-edit :sel-project=" {id:editForm.projectId,name:editForm.projectName} " :xm-question="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-question-edit>
 			</el-dialog>
 	
 			<!--新增 XmQuestion xm_question界面-->
-			<el-dialog title="新增问题"  :visible.sync="addFormVisible"  fullscreen width="100%"  append-to-body   :close-on-click-modal="false">
+			<el-dialog title="新增缺陷"  :visible.sync="addFormVisible"  fullscreen width="100%"  append-to-body   :close-on-click-modal="false">
 				<xm-question-add :xm-test-case-exec="xmTestCaseExec" :xm-test-case="xmTestCase" :qtype="qtype" :sel-project=" filters.selProject " :xm-question="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-question-add>
 			</el-dialog>  
 			<el-dialog title="选中用户" v-if=" filters.selProject " :visible.sync="selectUserVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
@@ -310,7 +310,7 @@
 					{
 						key: 'name',
 						type: 'text',
-						name: '问题名称'
+						name: '缺陷名称'
 					},
 					{
 						key: 'bugStatus',
@@ -436,7 +436,7 @@
 					if(this.filters.hisHandleStatus){
 						params.hisHandlerUserid=this.filters.hisHandler.userid;
 					}else{
-						this.$message({ message: "请选择曾经的问题状态", type: 'error' });
+						this.$message({ message: "请选择曾经的缺陷状态", type: 'error' });
 						return;
 					}
 					
@@ -832,10 +832,10 @@
 				} 
 				if(bizKey=="xm_question_up_approva"){
 					//预算变更审核
-					params.mainTitle='关于问题【'+row.name+"】升级的申请";
+					params.mainTitle='关于缺陷【'+row.name+"】升级的申请";
 					params.mainContext='项目编号：'+row.projectId+','+'项目名称：'+row.projectName+',任务名称：'+row.taskName
-										+'<br>'+row.askUsername+'于'+row.createTime+'提出问题('+row.id+')：'+row.name
-										+'<br>问题描述：'+row.description;
+										+'<br>'+row.askUsername+'于'+row.createTime+'提出缺陷('+row.id+')：'+row.name
+										+'<br>缺陷描述：'+row.description;
 					params.restUrl=config.getXmBasePath()+"/xm/core/xmQuestion/processApprova"; 
 					this.$router.push({name:'ProcdefListForBizStart',params:params}); 				
 					

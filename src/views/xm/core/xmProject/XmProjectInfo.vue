@@ -3,18 +3,18 @@
 		<el-row class="app-container" > 
 			<div class="project-info" v-loading.lock="load.list || load.edit">
 				<div class="info-type">
-					<el-radio-group v-model="infotype" size="medium">
+					<el-radio-group v-model="infotype" size="medium"> 
+						<el-radio-button label="项目概览"></el-radio-button> 
+						<el-radio-button label="用户故事"></el-radio-button>
 						<el-radio-button label="任务"></el-radio-button>
+						<el-radio-button label="缺陷"></el-radio-button>
 						<el-radio-button label="阶段计划"></el-radio-button>
 						<el-radio-button label="团队"></el-radio-button>
 						<el-radio-button class="hidden-sm-and-down" label="风险"></el-radio-button>
-						<el-radio-button label="问题"></el-radio-button>
 						<el-radio-button label="测试计划"></el-radio-button> 
 						<el-radio-button label="文档"></el-radio-button>
-						<el-radio-button label="用户故事"></el-radio-button>
 						<el-radio-button label="故事监控"></el-radio-button>
 						<el-radio-button label="项目监控"></el-radio-button> 
-						<el-radio-button label="详情"></el-radio-button>
 						<el-radio-button class="hidden-sm-and-down" label="考核"></el-radio-button>
 						<el-radio-button class="hidden-md-and-down" label="日志"></el-radio-button>
 						<el-radio-button class="hidden-md-and-down" label="费用"></el-radio-button>
@@ -50,13 +50,13 @@
 					<xm-project-phase-mng v-if="infotype=='阶段计划'" ref="xmProjectPhaseMng" :sel-project="selProject" ></xm-project-phase-mng>
 					<xm-group-mng v-if="infotype=='团队'" :sel-project="selProject"></xm-group-mng>  
 					<xm-question v-if="infotype=='风险'" :qtype="'risk'" :sel-project='selProject' ref="xmRisk"></xm-question>
-					<xm-question v-if="infotype=='问题'" :qtype="'bug'" :sel-project='selProject' ref="xmQuestion"></xm-question>
+					<xm-question v-if="infotype=='缺陷'" :qtype="'bug'" :sel-project='selProject' ref="xmQuestion"></xm-question>
 					<xm-test-case-exec-mng v-if="infotype=='测试计划'" :visible="infotype=='测试计划'"  :sel-project='selProject' ref="xmQuestion"></xm-test-case-exec-mng> 
 					<xm-file-mng v-if="infotype=='文档'" :sel-project="selProject"></xm-file-mng> 
 					<xm-menu-mng v-if="infotype=='用户故事'" :sel-project="selProject"></xm-menu-mng> 
 					<xm-menu-with-plan v-if="infotype=='故事监控'" ref="xmMenuWithPlan" :sel-project="selProject"></xm-menu-with-plan> 
 					<xm-project-state-mng v-if="infotype=='项目监控'" :sel-project="selProject"></xm-project-state-mng> 
-					<xm-detail v-if="infotype=='详情'" :sel-project="selProject" @submit="afterEditSubmit"></xm-detail>
+					<xm-detail v-if="infotype=='项目概览'" :sel-project="selProject" @submit="afterEditSubmit"></xm-detail>
 					<xm-project-kpi v-if="infotype=='考核'"  :sel-project="selProject"></xm-project-kpi>
 					<xm-record v-if="infotype=='日志'" :visible="infotype=='日志'" :sel-project="selProject"></xm-record>
 					<xm-cost v-if="infotype=='费用'" :sel-project="selProject"></xm-cost>
@@ -324,8 +324,7 @@
 
 <style scoped>
 .app-container{
-	display: flex;
-	margin-top: -28px;
+	display: flex; 
 	margin-left: 1px;
 	margin-right:1px;
 	padding: 2px;

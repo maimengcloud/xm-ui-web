@@ -80,7 +80,7 @@
 						<div class="project-info">
 							<div class="info-item">
 								<span class="item-total">{{p.totalBugCnt==null?0:p.totalBugCnt}}</span>
-								<span class="item-type">问题</span>
+								<span class="item-type">缺陷</span>
 							</div>
 							<div class="info-item">
 								<span class="item-total">{{p.totalFileCnt==null?0:p.totalFileCnt}}</span>
@@ -116,7 +116,7 @@
 				<el-table-column prop="totalTaskCnt" label="任务数" min-width="80" ></el-table-column>
 				<el-table-column prop="totalCompleteTaskCnt" label="任务完成" min-width="80" ></el-table-column>
 				<el-table-column prop="totalFileCnt" label="文档" min-width="80" ></el-table-column>
-				<el-table-column prop="totalBugCnt" label="问题" min-width="80" ></el-table-column>
+				<el-table-column prop="totalBugCnt" label="缺陷" min-width="80" ></el-table-column>
 				<el-table-column label="进度" min-width="80" >
 					<template slot-scope="scope">
 						{{scope.row.totalProgress}}%
@@ -483,7 +483,8 @@
 			//进入info界面
 			intoInfo(row) {
 				this.selectProject = row;
-				this.showInfo = true;
+				this.$router.push({ name:'XmProjectInfoRoute', params: row })
+				//this.showInfo = true;
 			},
 
 			//筛选项目
