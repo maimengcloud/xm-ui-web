@@ -783,7 +783,7 @@
 		mounted() { 
 			this.$nextTick(() => {
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=65/1000 * window.innerHeight;
+				var subHeight=50/1000 * window.innerHeight;
 				if(this.selProject){
 					subHeight=100/1000 * window.innerHeight;
 				}

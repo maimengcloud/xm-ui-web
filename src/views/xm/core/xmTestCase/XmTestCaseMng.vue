@@ -461,7 +461,7 @@
 				this.filters.luser=this.userInfo; 
 				this.getXmTestCases();
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=65;  
+				var subHeight=50;  
 				if(this.selProject){
 					subHeight=100/1000 * window.innerHeight;
 				}
