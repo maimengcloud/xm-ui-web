@@ -9,7 +9,7 @@
 		</div>
 		<el-row class="app-container"> 
 			<!--列表 XmTaskExecuser xm_task_execuser-->
-			<el-table ref="table" :max-height="tableHeight" :data="xmTaskExecusers" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :height="tableHeight" :data="xmTaskExecusers" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="selection" width="40"></el-table-column> <!-- :selectable="checkSelectable" -->
 				<el-table-column sortable type="index" width="40"></el-table-column>
 				<el-table-column type="expand">

@@ -28,7 +28,7 @@
 					</el-option>
 				</el-select> -->
 				<el-table
-					:max-height="tableHeight"
+					:height="tableHeight"
 					v-if="showType == '人力'"
 					:data="sumXmProjectMBudgetCostUsersConvert"
 					highlight-current-row
@@ -56,7 +56,7 @@
 				</el-table>
 
 				<el-table
-					:max-height="tableHeight"
+					:height="tableHeight"
 					v-if="showType == '非人力'"
 					:data="sumXmProjectMBudgetCostNousersConvert" 
 					highlight-current-row

@@ -1,71 +1,110 @@
 <template>
 	<section>
-		<el-row class="app-container" > 
-			<div class="project-info" v-loading.lock="load.list || load.edit">
-				<div class="info-type">
-					<el-radio-group v-model="infotype" size="medium"> 
-						<el-radio-button label="项目概览"></el-radio-button> 
-						<el-radio-button label="用户故事"></el-radio-button>
-						<el-radio-button label="任务"></el-radio-button>
-						<el-radio-button label="缺陷"></el-radio-button>
-						<el-radio-button label="阶段计划"></el-radio-button>
-						<el-radio-button label="团队"></el-radio-button>
-						<el-radio-button class="hidden-sm-and-down" label="风险"></el-radio-button>
-						<el-radio-button label="测试计划"></el-radio-button> 
-						<el-radio-button label="文档"></el-radio-button>
-						<el-radio-button label="故事监控"></el-radio-button>
-						<el-radio-button label="项目监控"></el-radio-button> 
-						<el-radio-button class="hidden-sm-and-down" label="考核"></el-radio-button>
-						<el-radio-button class="hidden-md-and-down" label="日志"></el-radio-button>
-						<el-radio-button class="hidden-md-and-down" label="费用"></el-radio-button>
-						<el-radio-button class="hidden-md-and-down" label="预算"></el-radio-button>
-						<el-radio-button class="hidden-lg-and-down" label="合同管理"></el-radio-button>
-						<el-radio-button class="hidden-lg-and-down" label="环境清单"></el-radio-button> 
-					</el-radio-group>
-					<el-popover
-						placement="top-start" 
-						width="400"
-						trigger="click" >
-						<el-row>
-							<el-button type="primary" @click="toArchive" round>论坛</el-button>
-							<el-button type="success" @click="toIm" round>即聊</el-button> 
-							<el-button type="warning" @click="toHelpMe" round>客服</el-button>
-							<el-button type="primary" @click="handleExport" round v-if="exportArr.includes(infotype)">导出</el-button> 
-						</el-row>
-						<el-row style="padding-top:12px;">
-							<el-button class="hidden-md-and-up" @click="setInfotype('考核')">考核</el-button>
-							<el-button class="hidden-lg-and-up" @click="setInfotype('日志')">日志</el-button>
-							<el-button class="hidden-lg-and-up" @click="setInfotype('费用')">费用</el-button>
-							<el-button class="hidden-lg-and-up" @click="setInfotype('预算')">预算</el-button> 
-						</el-row>
-						<el-row style="padding-top:12px;"> 
-							<el-button class="hidden-xl-and-up" @click="setInfotype('合同管理')">合同管理</el-button>
-							<el-button class="hidden-xl-and-up" @click="setInfotype('环境清单')">环境清单</el-button> 
-						</el-row>
-						<el-button type="text" slot="reference" icon="el-icon-d-arrow-right"></el-button>
-					</el-popover>
-				</div>
-				<div class="info-detail">
-					<xm-task-mng v-if="infotype=='任务'" ref="xmTaskMng" :sel-project="selProject" ></xm-task-mng>
-					<xm-project-phase-mng v-if="infotype=='阶段计划'" ref="xmProjectPhaseMng" :sel-project="selProject" ></xm-project-phase-mng>
-					<xm-group-mng v-if="infotype=='团队'" :sel-project="selProject"></xm-group-mng>  
-					<xm-question v-if="infotype=='风险'" :qtype="'risk'" :sel-project='selProject' ref="xmRisk"></xm-question>
-					<xm-question v-if="infotype=='缺陷'" :qtype="'bug'" :sel-project='selProject' ref="xmQuestion"></xm-question>
-					<xm-test-case-exec-mng v-if="infotype=='测试计划'" :visible="infotype=='测试计划'"  :sel-project='selProject' ref="xmQuestion"></xm-test-case-exec-mng> 
-					<xm-file-mng v-if="infotype=='文档'" :sel-project="selProject"></xm-file-mng> 
-					<xm-menu-mng v-if="infotype=='用户故事'" :sel-project="selProject"></xm-menu-mng> 
-					<xm-menu-with-plan v-if="infotype=='故事监控'" ref="xmMenuWithPlan" :sel-project="selProject"></xm-menu-with-plan> 
-					<xm-project-state-mng v-if="infotype=='项目监控'" :sel-project="selProject"></xm-project-state-mng> 
+		<el-row class="app-container app-height">   
+			<el-tabs :tab-position="tabPosition"  v-model="infotype" @tab-click="handleClick" stretch=true   class="tabs">
+				<el-tab-pane  name="项目概览" class="tab-pannel"> 
+					 <span slot="label"><i class="el-icon-s-data"></i>项目概览</span>
 					<xm-detail v-if="infotype=='项目概览'" :sel-project="selProject" @submit="afterEditSubmit"></xm-detail>
-					<xm-project-kpi v-if="infotype=='考核'"  :sel-project="selProject"></xm-project-kpi>
-					<xm-record v-if="infotype=='日志'" :visible="infotype=='日志'" :sel-project="selProject"></xm-record>
-					<xm-cost v-if="infotype=='费用'" :sel-project="selProject"></xm-cost>
+				</el-tab-pane>
+				<el-tab-pane label="迭代" name="迭代"> 
+					 <span slot="label"><i class="el-icon-document-copy"></i>迭代</span>
+					 <xm-iteration-mng v-if="infotype=='迭代'" ref="xmIterationMng" :sel-project="selProject" ></xm-iteration-mng> 
+				</el-tab-pane>
+				<el-tab-pane label="产品" name="产品">
+					 <span slot="label"><i class="el-icon-s-flag"></i>产品</span>
+					 <xm-product-mng v-if="infotype=='产品'" ref="xmProductMng" :sel-project="selProject" ></xm-product-mng> 
+				</el-tab-pane>
+				<el-tab-pane label="故事" name="用户故事">
+					 <span slot="label"><i class="el-icon-document"></i>故事</span>
+					<xm-menu-mng v-if="infotype=='用户故事'" :sel-project="selProject"></xm-menu-mng> 
+
+				</el-tab-pane>
+				<el-tab-pane label="任务" name="任务">
+					 <span slot="label"><i class="el-icon-s-operation"></i>任务</span>
+					<xm-task-mng v-if="infotype=='任务'" ref="xmTaskMng" :sel-project="selProject" ></xm-task-mng>
+
+				</el-tab-pane>
+				<el-tab-pane label="缺陷" name="缺陷">
+					 <span slot="label"><i class="el-icon-question"></i>缺陷</span>
+					 <xm-question v-if="infotype=='缺陷'" :qtype="'bug'" :sel-project='selProject' ref="xmQuestion"></xm-question>
+
+				</el-tab-pane>
+				<el-tab-pane label="团队" name="团队">
+					 <span slot="label"><i class="el-icon-user-solid"></i>团队</span>					
+					 <xm-group-mng v-if="infotype=='团队'" :sel-project="selProject"></xm-group-mng>  
+
+
+				</el-tab-pane>
+				<el-tab-pane label="文档" name="文档">
+					 <span slot="label"><i class="el-icon-document"></i>文档</span>
+					<xm-file-mng v-if="infotype=='文档'" :sel-project="selProject"></xm-file-mng> 
+
+				</el-tab-pane>
+				<el-tab-pane label="阶段计划" name="阶段计划">
+					 <span slot="label"><i class="el-icon-odometer"></i>阶段计划</span>
+					 <xm-project-phase-mng v-if="infotype=='阶段计划'" ref="xmProjectPhaseMng" :sel-project="selProject" ></xm-project-phase-mng>
+
+				</el-tab-pane>
+				<el-tab-pane label="测试计划" name="测试计划">
+					 <span slot="label"><i class="el-icon-odometer"></i>测试计划</span>
+					<xm-test-case-exec-mng v-if="infotype=='测试计划'" :visible="infotype=='测试计划'"  :sel-project='selProject' ref="xmQuestion"></xm-test-case-exec-mng> 
+
+				</el-tab-pane>
+				<el-tab-pane label="故事监控" name="故事监控">
+					 <span slot="label"><i class="el-icon-video-camera"></i>故事监控</span>
+ 					<xm-menu-with-plan v-if="infotype=='故事监控'" ref="xmMenuWithPlan" :sel-project="selProject"></xm-menu-with-plan> 
+
+				</el-tab-pane>
+				<el-tab-pane label="项目监控" name="项目监控">
+					 <span slot="label"><i class="el-icon-video-camera"></i>项目监控</span>
+					<xm-project-state-mng v-if="infotype=='项目监控'" :sel-project="selProject"></xm-project-state-mng> 
+
+				</el-tab-pane>
+				<el-tab-pane label="预算" name="预算">
+					 <span slot="label"><i class="el-icon-coin"></i>预算</span>
 					<xm-budget v-if="infotype=='预算'" :sel-project="selProject"></xm-budget>
+
+				</el-tab-pane>
+				<el-tab-pane label="费用" name="费用">
+					 <span slot="label"><i class="el-icon-coin"></i>费用</span>
+					 <xm-cost v-if="infotype=='费用'" :sel-project="selProject"></xm-cost>
+
+				</el-tab-pane>
+				<el-tab-pane label="考核" name="考核">
+					 <span slot="label"><i class="el-icon-view"></i>考核</span> 
+					 <xm-project-kpi v-if="infotype=='考核'"  :sel-project="selProject"></xm-project-kpi>
+
+				</el-tab-pane> 
+				<el-tab-pane label="日志" name="日志">
+					 <span slot="label"><i class="el-icon-edit-outline"></i>日志</span>
+					<xm-record v-if="infotype=='日志'" :visible="infotype=='日志'" :sel-project="selProject"></xm-record>
+
+				</el-tab-pane>
+				<el-tab-pane label="合同管理" name="合同管理">
+					 <span slot="label"><i class="el-icon-s-data"></i>合同管理</span>
 					<xm-contract v-if="infotype=='合同管理'" :sel-project="selProject"></xm-contract>
-					<xm-env-list v-if="infotype=='环境清单'" :sel-project="selProject"></xm-env-list> 
-				</div>
-			</div> 
-		</el-row>
+
+				</el-tab-pane> 
+				<el-tab-pane label="环境清单" name="环境清单">
+					 <span slot="label"><i class="el-icon-setting"></i>环境清单</span>
+					<xm-env-list v-if="infotype=='环境清单'" :sel-project="selProject"></xm-env-list>  
+				</el-tab-pane> 
+				<el-tab-pane label="风险" name="风险">
+					 <span slot="label"><i class="el-icon-question"></i>风险</span>
+					<xm-question v-if="infotype=='风险'" :qtype="'risk'" :sel-project='selProject' ref="xmRisk"></xm-question>
+				</el-tab-pane> 
+				<el-tab-pane label="论坛" name="论坛">
+					 <span slot="label"><i class="el-icon-date"></i>论坛</span> 
+				</el-tab-pane>
+				<el-tab-pane label="即聊" name="即聊">
+					 <span slot="label"><i class="el-icon-date"></i>即聊</span> 
+				</el-tab-pane>
+				<el-tab-pane label="客服" name="客服">
+					 <span slot="label"><i class="el-icon-date"></i>客服</span>
+
+				</el-tab-pane> 
+			</el-tabs> 
+		</el-row>  
 		
 		<el-dialog title="选中团队成员" :visible.sync="groupUserVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
 			<xm-project-group-select :sel-project="selProject" :visible="groupUserVisible" is-select-multi-user="1" @user-confirm="onUserSelected"></xm-project-group-select>
@@ -100,6 +139,8 @@
 	import xmMenuWithPlan from '../xmMenu/XmMenuWithPlan';
 	import xmProjectStateMng from '../xmProjectState/XmProjectStateMng';
 	import xmTestCaseExecMng from '../xmTestCaseExec/XmTestCaseExecMng';
+	import xmIterationMng from '../xmIteration/XmIterationMng';
+	import xmProductMng from '../xmProduct/XmProductMng';
 
 
 	export default { 
@@ -122,7 +163,8 @@
 		},
 		data() {
 			return { 
-				infotype:"任务",
+				tabPosition:'left',
+				infotype:"项目概览",
 				load:{list:false,edit:false},
         groupUserVisible:false,
         exportArr: ['任务', '阶段计划', '故事监控']
@@ -151,7 +193,9 @@
 						}
 				}); 
 			},
-			
+			handleMenuSelect(menuId){
+				this.infotype=menuId
+			},
 			onUserSelected:function(users){
 				if(this.groupUserVisible==true){
 					var query={}
@@ -312,6 +356,8 @@
 			xmProjectStateMng,
 			xmTestCaseExecMng,
 			xmProjectGroupSelect,
+			xmIterationMng,
+			xmProductMng
 			//在下面添加其它组件
 		},
 		mounted() { 
@@ -322,132 +368,16 @@
 	}
 </script>
 
-<style scoped>
-.app-container{
-	display: flex; 
-	margin-left: 1px;
-	margin-right:1px;
-	padding: 2px;
-	background: #e8edf7;
+<style scoped> 
+.tabs{  
+	height: calc(98vh);
 }
-.project-handle{
-	height: 820px;
-	display: flex;
-	align-items: center;
-}
-.project-list{
-	padding-left: 10px;
-	width: 310px;
-	min-width: 310px;
-	border-right: 1px solid #efefef;
-	flex-grow: 1;
-}
-.project-search{
-	display: flex;
-	height: 50px;
-	text-align: right;
-	padding: 7px 20px;
-	background: #fafbfc;
-}
-.search-btn{
-	padding: 10px;
-	border-radius: 0;
-	border-left: 0;
-}
-.search-btn-show{
-	color: #3a8ee6;
-	background-color: #ecf5ff;
-	outline: 0;
-}
-.project-show-end{
-	height: 50px;
-	background: skyblue;
-}
-.list{
-	height: 720px;
-	background: #fff;
-	font-size: 14px;
-	color: #666;
-}
-.list-item{
-	padding: 8px 16px;
-}
-.list-item:hover{
-	background: #f7f7f8;
-}
-.list-item:hover .project-btns{
-	display:block;
-
-}
-.item-info{
-	display: flex;
-	align-items: center;
-}
-.item-info>.content{
-	flex-grow: 1;
-}
-.item-info>.content>div:last-child{
-	margin-top: 2px;
-	color: #999;
-	font-size:12px;
-}
-.project-btns{
-	position: absolute;
-	top: 0;
-	right: 0;
-	display:none;
-	flex-grow: 1;
-	font-size: 12px;
-	text-align: right;
-}
-.project-btns>button{
-	padding: 0;
-	font-size: 12px;
-}
-.rate{
-	width: 40px;
-	text-align: right;
-}
-
-
-.show-project{
-	width: 10px;
-}
-.show-project>button{
-	padding-left: 0;
-	padding-right: 0;
-	width: 100%;
-}
-.show-project i{
-	margin-left: -4px;
-	font-size: 16px;
-	font-weight: bold;
-}
-.project-info{
-	width: 100%;
-	flex-grow: 1;
-	/* height: 820px; */
-	background: #fff;
-}
-.info-type{
-	background: #fafbfc;
-	border-bottom: 1px solid #efefef; 
-}
-.info-type>div{
-	padding-left: 10px;
-	line-height: 50px;
-}
-.info-type >>> .el-radio-button__inner{
-	background: transparent;
-	border: 0;
-	box-shadow: 0 0 0 0 !important;
-}
-.info-type .is-active >>> .el-radio-button__inner{
-	color: #409EFF !important;
-	border: 1px solid #409EFF;
-}
-.info-detail{
-	 max-height: 100%;
+.tab-pannel{ 
+	overflow: auto;   
+	height: calc(98vh);
+} 
+.app-height{
+	height: calc(100vh);
 }
 /* 超过宽度则用...代替 */
 .truncate{

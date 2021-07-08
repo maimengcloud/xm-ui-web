@@ -9,7 +9,7 @@
 				</div>
 			</el-menu>  
 			<!--列表 XmProjectKpi xm_project_kpi-->
-			<el-table ref="table" :max-height="tableHeight" :data="xmProjectKpis" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :height="tableHeight" :data="xmProjectKpis" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="index" width="40"></el-table-column> 
 				<el-table-column prop="kpiName" label="指标名称" min-width="80" ></el-table-column>
 				<el-table-column prop="minValue" label="正常值范围" min-width="80" >

@@ -46,7 +46,7 @@
 							default-expand-all 
 							:tree-props="{children: 'children', hasChildren: 'hasChildren'}"
 							row-key="id"
-							 :max-height="tableHeight"
+							 :height="tableHeight"
 							>
 							<el-table-column v-show="isMultiSelect" reserve-selection sortable width="70" type="selection"></el-table-column>
 							<el-table-column prop="name" label="任务名称"  min-width="260" show-overflow-tooltip>

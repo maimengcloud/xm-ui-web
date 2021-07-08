@@ -9,7 +9,7 @@
 		</div>
 		<el-row class="app-container"> 
 			<!--列表 XmProjectEnvList xm_project_env_list-->
-			<el-table ref="table" :max-height="tableHeight" :data="xmProjectEnvLists" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :height="tableHeight" :data="xmProjectEnvLists" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="selection" width="40"></el-table-column>
 				<el-table-column prop="ipAddress" label="ip地址" min-width="80" ></el-table-column>
 				<el-table-column prop="port" label="访问端口" min-width="80" ></el-table-column>

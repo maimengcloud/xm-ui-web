@@ -93,7 +93,7 @@
 		</el-row>
 		<el-row  class="app-container"> 
 			<!--列表 XmProduct 产品表-->
-			<el-table ref="table"  :max-height="tableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table"  :height="tableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column   sortable type="selection" width="55"></el-table-column>
 				<el-table-column sortable type="index" width="55"></el-table-column>
  				<el-table-column prop="productName" label="产品名称" min-width="200" show-overflow-tooltip> 

@@ -132,8 +132,7 @@
 							tooltip-effect="light"
 							size="mini"
 							default-expand-all
-							:max-height="tableHeight"
-							:height="tableHeight"
+							:height="tableHeight" 
 							:tree-props="{children: 'children', hasChildren: 'hasChildren'}"
 							row-key="id"
 							ref="table"
@@ -1772,10 +1771,7 @@ XmProjectGroupSelect,XmProductSelect
 				debugger
 				this.getXmTasks();     
 				var clientRect=this.$refs.table.$el.getBoundingClientRect(); 
-				var subHeight=140/1000 * window.innerHeight;
-				if(this.isTaskCenter){
-					subHeight=50/1000 * window.innerHeight;
-				}
+				var subHeight=50/1000 * window.innerHeight; 
 				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				// 监听窗口大小变化
 				/**

@@ -1,7 +1,7 @@
 <template>
 	<section>  
 		<el-row>
-		<el-table :max-height="tableHeight" ref="selectPhaseTable" :data="projectPhaseTreeData"    :show-summary="false"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+		<el-table :height="tableHeight" ref="selectPhaseTable" :data="projectPhaseTreeData"    :show-summary="false"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  			<el-table-column prop="phaseName" label="阶段名称" min-width="160" show-overflow-tooltip> 
 				 <template slot="header" slot-scope="scope">
 					<div>阶段  <el-tag size="mini" v-if="editForm.id" closable @close="clearSelectPhase()"> {{editForm.phaseName}}</el-tag></div>
@@ -11,7 +11,8 @@
 				</template>
 			</el-table-column>   
 		</el-table>
-		<el-pagination    class="hidden-md-and-down"   layout=" sizes,  prev, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+ 		<el-pagination    class="hidden-md-and-down"   layout="   prev,sizes, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+		
 		</el-row>
 	</section>
 </template>
@@ -418,7 +419,7 @@
        
 			this.$nextTick(() => {
 				var clientRect=this.$refs.selectPhaseTable.$el.getBoundingClientRect();
-				var subHeight=150/1000 * window.innerHeight; 
+				var subHeight=70/1000 * window.innerHeight; 
 				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.selectPhaseTable.$el.offsetTop-subHeight; 
 				if(this.selProject){
 					this.getXmProjectPhases();

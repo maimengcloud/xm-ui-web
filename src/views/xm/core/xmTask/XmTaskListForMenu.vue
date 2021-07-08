@@ -20,7 +20,7 @@
 						default-expand-all
 						:tree-props="{children: 'children', hasChildren: 'hasChildren'}"
 						row-key="id"
-						 :max-height="tableHeight"
+						 :height="tableHeight"
 						 ref="table"
 						>
  						<el-table-column v-show="isMultiSelect" sortable width="60" type="selection"></el-table-column>

@@ -68,7 +68,7 @@
 				<el-button  v-else @click.stop="setTemplateVisible=false" icon="el-icon-back">返回</el-button>
 
 			</el-row>
-			<el-table ref="groupTable" :max-height="tableHeight" @selection-change="addIsSels" @row-click.self="changesels" :data="convertXmProjectGroupFormworks"  v-loading="load.list">
+			<el-table ref="groupTable" :height="tableHeight" @selection-change="addIsSels" @row-click.self="changesels" :data="convertXmProjectGroupFormworks"  v-loading="load.list">
 				<el-table-column type="selection" aria-disabled width="55"></el-table-column>
 				<el-table-column align="center" prop="groupName" label="小组模板" width="200"></el-table-column>
 				<el-table-column   align="center" label="操作"> 

@@ -6,7 +6,7 @@
 		</el-row>
 		<el-row class="app-container"> 
 			<!--列表 XmProductState 功能状态表,无需前端维护，所有数据由汇总统计得出-->
-			<el-table ref="table" :max-height="tableHeight" :data="xmProductStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :height="tableHeight" :data="xmProductStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  				<el-table-column sortable type="index" width="45"></el-table-column> 
  				<el-table-column prop="productName" label="产品名称" min-width="80" ></el-table-column> 
 				<el-table-column prop="calcTime" label="汇总时间" min-width="80" ></el-table-column>

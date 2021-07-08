@@ -8,7 +8,7 @@
 		</el-row>
 		<el-row class="app-container"> 
 			<!--列表 XmProjectGroupUser xm_project_group_user-->
-			<el-table ref="table" :max-height="tableHeight" :data="xmProjectGroupUsers" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :height="tableHeight" :data="xmProjectGroupUsers" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="selection" width="40"></el-table-column>
 				<el-table-column sortable type="index" width="40"></el-table-column>
 				<el-table-column prop="id" label="主键" min-width="80" ></el-table-column>

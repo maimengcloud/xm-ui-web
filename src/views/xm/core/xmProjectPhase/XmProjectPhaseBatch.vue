@@ -24,7 +24,7 @@
  		</el-row> 
  		<el-row class="app-container" >   
 			<!--列表 XmProjectPhase xm_project_phase-->
-			<el-table ref="table" :max-height="tableHeight" class="drag-table" default-expand-all :summary-method="getSummariesForBatchEdit" :data="projectPhaseTreeData"    :show-summary="true"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :height="tableHeight" class="drag-table" default-expand-all :summary-method="getSummariesForBatchEdit" :data="projectPhaseTreeData"    :show-summary="true"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column    type="selection" width="50"></el-table-column>
 				<el-table-column  prop="seqNo" label="序号" width="150">
 					<template  slot-scope="scope">

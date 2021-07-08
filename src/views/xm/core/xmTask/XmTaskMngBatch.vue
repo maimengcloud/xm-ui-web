@@ -17,7 +17,7 @@
 						<!-- show-summary -->
 					<el-table
 						ref="table"
-						:max-height="tableHeight"
+						:height="tableHeight"
           				show-summary
             			class="drag-table2"
 						:data="tasksTreeData"

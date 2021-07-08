@@ -12,7 +12,7 @@
 		</el-row>
 		<el-row class="app-container"> 
 			<!--列表 XmProjectContract xm_project_contract-->
-			<el-table ref="table" :max-height="tableHeight" :data="xmProjectContracts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :height="tableHeight" :data="xmProjectContracts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<!-- ht_contract_card表 -->
 				<el-table-column prop="htSn" label="合同编号" min-width="80" ></el-table-column>
 				<el-table-column prop="htName" label="合同标题" min-width="80" ></el-table-column>

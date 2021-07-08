@@ -20,7 +20,7 @@
 		</el-row>
 		<el-row class="app-container"> 
 			<!--列表 XmProjectMBudgetCostNouser xm_project_m_budget_cost_nouser-->
-			<el-table ref="table" :max-height="tableHeight" :data="xmProjectMBudgetCostNousers"     show-summary @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :height="tableHeight" :data="xmProjectMBudgetCostNousers"     show-summary @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="selection" width="40"></el-table-column>
 				<el-table-column sortable type="index" width="40"></el-table-column>   
 				<el-table-column prop="subjectId" label="预算科目编号" min-width="80" >
