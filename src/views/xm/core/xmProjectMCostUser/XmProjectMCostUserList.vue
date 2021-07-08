@@ -241,7 +241,7 @@
 			this.$nextTick(() => {
 				debugger
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=160/1000 * window.innerHeight; 
+				var subHeight=50/1000 * window.innerHeight; 
 				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.getXmProjectMCostUsers();
 			}); 

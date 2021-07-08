@@ -1291,7 +1291,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			this.$nextTick(() => {
 				 
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=140/1000 * window.innerHeight; 
+				var subHeight=50/1000 * window.innerHeight; 
 				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				if(this.selProject){
 					this.getXmProjectPhases();
