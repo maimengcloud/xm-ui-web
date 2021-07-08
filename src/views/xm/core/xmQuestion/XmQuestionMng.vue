@@ -127,11 +127,6 @@
 					<el-table-column sortable type="index" width="45"></el-table-column> 
 					<el-table-column prop="name" label="缺陷名称"  min-width="200" show-overflow-tooltip> 
 						<template slot-scope="scope">
-							{{scope.row.id}}&nbsp;<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.name}}</el-link> 
-						</template>
-					</el-table-column>
-					<el-table-column prop="bugStatus" label="状态" width="100" :formatter="formatterOption">
-						<template slot-scope="scope">
 							<el-tag type="info" v-if="scope.row.bugStatus=='create' ">创建</el-tag> 
 							<el-tag type="primary" v-else-if="scope.row.bugStatus=='active'">激活</el-tag> 
 							<el-tag type="warning" v-else-if="scope.row.bugStatus=='confirm'">确认</el-tag>
@@ -141,8 +136,10 @@
 							<el-tag type="success" v-else-if="scope.row.bugStatus=='close'">关闭</el-tag> 
 							<el-tag type="success" v-else-if="scope.row.bugStatus=='closed'">已关闭</el-tag>
 							<el-tag v-else>{{scope.row.bugStatus}}</el-tag>  
+							<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.name}}</el-link> 
 						</template>
-					</el-table-column> 
+					</el-table-column>
+					
 					<el-table-column prop="menuName" label="故事" width="100" show-overflow-tooltip></el-table-column> 
 					
 
