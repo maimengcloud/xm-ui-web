@@ -56,19 +56,9 @@
           :disabled="isDisabled"
         >
           <el-button type="text" :class="{ change: isDisabled }">上传附件</el-button>
-          <!-- <el-button >查看附件</el-button> -->
         </el-upload>
       </el-col>
-
-      <el-col v-if="isUserInfo&&isUserInfo==1" :span="6" style="padding-right: 50px;">
-        <el-button v-if="fileList==[]||fileList.length==0" @click="showFile">显示附件</el-button>
-        <el-button v-else @click="hideFile">隐藏附件</el-button>
-        <!-- <el-button
-          @click="handleOnlinePeview"
-          :disabled="previewOnlineUrls.length<=0"
-        >预览{{previewOnlineUrls.length}}张图</el-button> -->
-      </el-col>
-      <el-col v-else :span="6" style="padding-right: 50px;">
+      <el-col :span="6" style="padding-right: 50px;">
         <el-button
           @click="handleOnlinePeview"
           :disabled="previewOnlineUrls.length<=0"
@@ -84,7 +74,7 @@ import {
   listArchiveAttachment,
   delArchiveAttachment
 } from "@/api/mdp/arc/archiveAttachment";
-import {listHrUserAccessory} from "@/api/oa/hr/user/hrUserAccessory";
+
 export default {
   props: [
     "branchId",
@@ -94,37 +84,22 @@ export default {
     "listType",
     "limit",
     "eliminate",
-    "isDisabled",
-    "userId",
-    "isUserInfo"
+    "isDisabled"
   ],
   watch: {
-    // archiveId: function(archiveId){
-    //   this.fileList = [];
-    //   console.log(1,archiveId);
-    //   // listHrUserAccessory({relevanceId:this.archiveId}).then(res => {
-    //   //   var files1 = res.data.data
-    //   //   files1.forEach(i => (i.name = i.name));
-    //   //   console.log(2,files1);
-    //   // });
-    // },
     archiveId: function(archiveId) {
       var that = this;
       this.$nextTick(_ => {
         this.fileList = [];
-        if(this.isUserInfo==1){
-        }else{
-          listArchiveAttachment({ archiveId: that.archiveId }).then(res => {
-            var files = res.data.data;
-            if (files && files.length > 0) {
-              files.forEach(i => {
-                i.name = i.name;
-                that.fileList.push(i);
-              });
-            }
-          });
-        }
-
+        listArchiveAttachment({ archiveId: this.archiveId }).then(res => {
+          var files = res.data.data;
+          if (files && files.length > 0) {
+            files.forEach(i => {
+              i.name = i.name;
+              that.fileList.push(i);
+            });
+          }
+        });
       });
     },
     eliminate: function(eliminate) {
@@ -153,7 +128,7 @@ export default {
       });
       previewOnlineUrls.forEach(i => {
         i.url =
-          config.getArcFileUploadBasePath() + "/" + i.accessory + "?name=" + i.name;
+          config.getArcFileUploadBasePath() + "/" + i.url + "?name=" + i.name;
       });
       console.log(
         "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx00000000000000000000000000000000000"
@@ -169,9 +144,7 @@ export default {
       fileList: [],
       showPreviewImage: false,
       showOnePreviewImage: false,
-      image: null,
-      isshow:false,
-      isshowtrue:false
+      image: null
       /**end 在上面加自定义属性**/
     }; //end return
   }, //end data
@@ -184,38 +157,15 @@ export default {
     handleSuccess(res, file) {
       if (res.tips.isOk) {
         file = Object.assign(file, res.data);
-        console.log(this.isshowtrue);
         this.fileList.push(res.data);
-        if(!this.isshowtrue){
-          this.fileList = [];
-        }
-        console.log(this.fileList);
         this.$emit('getCarFrontImageUrl',res.data.url)
         this.$emit('getCarBackImageUrl',res.data.url)
         this.$emit('getCarInnerImageUrl',res.data.url)
         this.$emit('uploadSuccess',file)
-        this.$message.success('上传附件成功');
       } else {
         this.$message.warning(res.tips.msg);
         return false;
       }
-    },
-    showFile(){
-      console.log(6,this.fileList);
-      this.isshowtrue = true;
-      listHrUserAccessory({relevanceId:this.archiveId,userid:this.userId}).then(res => {
-        var files = res.data.data;
-        files.forEach(i => (i.name = i.name));
-        this.fileList = files;
-        console.log(2,this.fileList);
-        if(this.fileList.length == 0||!this.fileList.length){
-          this.$message('暂无附件');
-        }
-      });
-    },
-    hideFile(){
-      this.isshowtrue = false;
-      this.fileList = [];
     },
     handleRemove(file, fileList) {
       if (!file.id || file.id == null || file.id == "") {
@@ -276,14 +226,13 @@ export default {
       var canDel = false;
       this.fileList.forEach(item => {
         if (item.name == file.name) {
-          if (item.canDel == "1"||item.type == "1") {
+          if (item.canDel == "1") {
             canDel = true;
             return;
           }
         }
       });
       if (canDel == false && file.id && file.id != null && file.id != "") {
-        console.log(66);
         this.$message.warning(file.name + "设置了不允许删除");
         return false;
       } else if (
@@ -303,13 +252,13 @@ export default {
         this.$message({ message: "文件已经存在", type: "warning" });
         return false;
       } else {
-        if (file.size > 1024 * 1024) {
+        if (file.size > 1024 * 1024 * 4) {
           //4M
           this.$message({
             message:
               "文件大小为" +
               file.size / (1024 * 1024) +
-              "M,大于1M，不允许上传。",
+              "M,大于4M，不允许上传。",
             type: "warning"
           });
           return false;
@@ -332,6 +281,12 @@ export default {
     if (!this.archiveId) {
       return;
     }
+
+    listArchiveAttachment({ archiveId: this.archiveId }).then(res => {
+      var files = res.data.data;
+      files.forEach(i => (i.name = i.name));
+      this.fileList = files;
+    });
     /**在下面写其它函数***/
   } //end mounted
 };
