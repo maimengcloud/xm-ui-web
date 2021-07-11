@@ -1,19 +1,17 @@
 <template>
   <section>
-    <el-row v-if="flowStartVisible==false" class="app-container">
-      <el-row>
+    <el-row v-if="flowStartVisible==false" class="page-container border">
+      <el-row class="page-header">
         <el-input v-model="filters.key" style="width:270px;" placeholder="模糊查询">
-          <template slot="append">
-            <el-button type="primary" v-loading="listLoading" :disabled="listLoading" v-on:click="searchProcdefs"
-              icon="el-icon-search">查询</el-button>
-          </template>
         </el-input>
+        <el-button type="primary" v-loading="listLoading" :disabled="listLoading" v-on:click="searchProcdefs"
+                   icon="el-icon-search">查询</el-button>
         <el-tag type="info" v-if="this.procdefs.length==0">如果没有找到流程，请将业务编码【{{this.filters.params.bizKey}}】与流程进行关联
         </el-tag>
       </el-row>
-      <el-row style="padding-top:20px;">
+      <el-row class="page-main">
         <!--列表 Procdef act_re_procdef-->
-        <el-table ref="procdefsTable" :max-height="tableHeight" :data="procdefs" highlight-current-row
+        <el-table ref="procdefsTable" :height="tableHeight" :data="procdefs" highlight-current-row
           v-loading="listLoading" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
           <el-table-column type="selection" width="40"></el-table-column>
           <el-table-column type="index" width="40"></el-table-column>
@@ -326,7 +324,7 @@
       this.$nextTick(() => {
 
         var clientRect = this.$refs.procdefsTable.$el.getBoundingClientRect();
-        var subHeight = 70 / 1000 * window.innerHeight;
+        var subHeight = 60 / 1000 * window.innerHeight;
         this.tableHeight = window.innerHeight - clientRect.y - this.$refs.procdefsTable.$el.offsetTop - subHeight;
       })
 

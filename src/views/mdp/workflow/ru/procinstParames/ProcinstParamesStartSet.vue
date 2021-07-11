@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<el-row class="app-container">
+		<el-row class="page-container border">
 			
 			<!--新增界面 ProcinstParames 流程实例参数设置表--> 
 			<el-col :span="24"> 

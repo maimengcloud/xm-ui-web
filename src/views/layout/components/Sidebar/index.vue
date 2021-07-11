@@ -1,5 +1,7 @@
 <template> 
-  <scroll-bar>
+  <section>
+  <logo :collapse="isCollapse"/>
+  <scroll-bar> 
     <el-menu
       mode="vertical"
       :show-timeout="200"
@@ -8,11 +10,11 @@
       background-color="#304156"
       text-color="#bfcbd9"
       active-text-color="#409EFF"
-    >
-      <logo :collapse="isCollapse"/>
+    > 
       <sidebar-item :routes="permission_routers"></sidebar-item>
     </el-menu>
   </scroll-bar>
+  </section>
 </template>
 
 <script>

@@ -1,7 +1,6 @@
 <template>
 	<section>
-		<el-row>
-			<!--新增界面 Item 数据项定义--> 
+		 <el-row class="page-container border padding"> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
 				<el-form-item label="编号" prop="id">
 					<el-tag>{{editForm.id}}</el-tag>

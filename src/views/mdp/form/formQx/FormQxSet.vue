@@ -1,7 +1,6 @@
 <template>
 	<section>
-		<el-row class="app-container"> 
-		<!--编辑界面 FormQx 表单权限--> 
+		 <el-row class="page-container border padding"> 
 			<el-form :model="editForm"  label-width="140px" :rules="editFormRules" ref="editForm">
 				<el-form-item label="表单" prop="formId">
 					 {{editForm.formId}}-{{formDef?formDef.formName:''}} 

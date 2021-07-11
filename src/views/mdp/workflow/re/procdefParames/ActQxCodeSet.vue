@@ -1,7 +1,6 @@
 <template>
 	<section>
-		<el-row class="app-container"> 
-			<el-form label-position="top" label-width="80px" :model="addForm" ref="addForm">
+		<el-row class="page-container border padding"> <el-form label-position="top" label-width="80px" :model="addForm" ref="addForm">
 				<el-form-item label="正文"> 
 					<el-checkbox v-model="qxCodeArr[0]" true-label="1" false-label="0">可看正文</el-checkbox>
 					<el-checkbox v-if="qxCodeArr[0]=='1'" v-model="qxCodeArr[1]" true-label="1" false-label="0">可修改正文</el-checkbox> 

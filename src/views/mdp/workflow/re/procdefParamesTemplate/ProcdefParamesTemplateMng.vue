@@ -1,15 +1,15 @@
 <template>
 	<section>
-		<el-row class="app-container">
+		<el-row class="page-container border">
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
 				<template slot="append"> 
 					<el-button type="primary"   v-on:click="searchProcdefParamesTemplates" icon="el-icon-search">查询</el-button> 
 				</template>
 			</el-input>  
 		</el-row>
-		<el-row class="app-container"> 
+		<el-row class="page-container border"> 
 			<!--列表 ProcdefParamesTemplate mdp_re_procdef_parames_template-->
-			<el-table  ref="table" :max-height="tableHeight"  :data="procdefParamesTemplates"   highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table  ref="table" :height="tableHeight"  :data="procdefParamesTemplates"   highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				 
 				<el-table-column type="index" width="40"></el-table-column>  
 				<el-table-column sortable prop="mainTitle" label="流程标题" min-width="150" ></el-table-column> 

@@ -1,10 +1,12 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
-
-    <breadcrumb class="breadcrumb-container hidden-sm-and-down"></breadcrumb>
-
+     
+    <!--<breadcrumb class="breadcrumb-container"></breadcrumb>-->
+    <top-modules class="modules-container"></top-modules> 
+    
     <div class="right-menu">
+      <!--
       <div class="hidden-sm-and-down" style="float:left;display:flex;align-items: center;height:100%;">				
         <el-tooltip v-if="workShop.locationName" class="item" effect="dark" :content="workShop.branchId+' '+workShop.shopId+' '+workShop.locationId" placement="top-start">
 				  <el-tag>{{workShop.branchName}} {{workShop.locationName}}</el-tag>
@@ -14,10 +16,11 @@
 				</el-tooltip>
 				<el-button @click="showSelectShopMethod" type="primary" v-if="workShop.isSuperAdmin||workShop.isPlatFormAdmin">切换商户</el-button>
 			</div>
+      -->
      <error-log class="errLog-container right-menu-item hidden-sm-and-down"></error-log>
 		 
-        <screenfull class="screenfull right-menu-item"></screenfull> 
-
+ 
+      <screenfull class="screenfull right-menu-item"></screenfull> 
       <lang-select class="international right-menu-item hidden-sm-and-down"></lang-select>
 
       <el-tooltip class="hidden-sm-and-down"  effect="dark" :content="$t('navbar.theme')" placement="bottom">
@@ -95,6 +98,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
+import TopModules from '@/components/TopModules'
 import Hamburger from '@/components/Hamburger'
 import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
@@ -109,7 +113,8 @@ export default {
     ErrorLog,
     Screenfull,
     LangSelect,
-    ThemePicker
+    ThemePicker,
+    TopModules
   },
   data:function(){
 	return {
@@ -230,11 +235,19 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>  
 @import './iconfont.css';
-.navbar {
+.navbar { 
   height: 50px;
   line-height: 50px;
   border-radius: 0px !important;
+  background-color: lightblue;
   .hamburger-container {
+    line-height: 58px;
+    height: 50px;
+    float: left;
+    padding: 0 10px;
+  }
+  
+  .modules-container {
     line-height: 58px;
     height: 50px;
     float: left;

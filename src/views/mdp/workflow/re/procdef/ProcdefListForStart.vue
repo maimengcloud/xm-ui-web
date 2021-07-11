@@ -1,16 +1,13 @@
 <template>
   <section>
-    <el-row class="app-container"> 
-      <el-col>
-        <el-row>
+    <el-row class="page-container border">
+        <el-row class="page-header">
           <el-select v-model="filters.procCategory" clearable filterable placeholder="请选择分类">
             <el-option v-for="item in categorys" :key="item" :label="item" :value="item"></el-option>
           </el-select>
           <el-input v-model="filters.key" style="width:270px;" placeholder="模糊查询">
-            <template slot="append">
-              <el-button type="primary" v-on:click="searchProcdefs" icon="el-icon-search">查询</el-button>
-            </template>
           </el-input>
+          <el-button type="primary" v-on:click="searchProcdefs" icon="el-icon-search">查询</el-button>
           <el-button @click.native="showTagSelect(false)" icon="el-icon-search" class="hidden-md-and-down">标签</el-button>
           <el-button @click.native="showTagSelect(true)" icon="el-icon-plus" class="hidden-md-and-down">标签</el-button>
 
@@ -26,9 +23,9 @@
               v-on:check-change="handleCategoryCheckChange"></category-tree>
           </el-drawer>
         </el-row>
-        <el-row style="padding-top:20px;">
+        <el-row class="page-main">
           <!--列表 Procdef act_re_procdef-->
-          <el-table ref="procdefsTable" :max-height="tableHeight" :data="procdefs" highlight-current-row
+          <el-table ref="procdefsTable" :height="tableHeight" :data="procdefs" highlight-current-row
             v-loading="listLoading" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
             <el-table-column type="selection" width="40"></el-table-column>
             <el-table-column type="index" width="40"></el-table-column>
@@ -86,7 +83,6 @@
               @select-confirm="onTagSelected"></tag-mng>
           </el-dialog>
         </el-row>
-      </el-col>
     </el-row>
   </section>
 </template>
@@ -600,7 +596,7 @@
 
       this.$nextTick(() => {
         var clientRect = this.$refs.procdefsTable.$el.getBoundingClientRect();
-        var subHeight = 70 / 1000 * window.innerHeight;
+        var subHeight = 60 / 1000 * window.innerHeight;
         this.tableHeight = window.innerHeight - clientRect.y - this.$refs.procdefsTable.$el.offsetTop - subHeight;
       })
       this.searchProcdefs();
@@ -614,34 +610,6 @@
 </script>
 
 <style scoped>
-  .filters-show {
-    margin-left: 20px;
-    margin-top: 10px;
-    margin-bottom: 0px;
-  }
-
-  .filters-label {
-    font-size: 14px;
-    color: black;
-    font-weight: bold;
-  }
-
-  .el-button+.el-button {
-    margin-left: 0px;
-  }
+   
 </style>
-
-<style>
-  .el-input-group__append,
-  .el-input-group__prepend {
-    background-color: #409EFF !important;
-    color: #ffffff !important;
-    vertical-align: middle;
-    display: table-cell;
-    position: relative;
-    border: 1px solid #409EFF !important;
-    padding: 0 20px;
-    width: 1px;
-    white-space: nowrap;
-  }
-</style>
+ 

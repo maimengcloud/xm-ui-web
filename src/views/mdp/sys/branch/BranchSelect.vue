@@ -4,7 +4,7 @@
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
 			<el-button type="primary" v-loading="load.list" v-on:click="searchBranchs">查询</el-button>
 		</sticky>
-		<el-row class="app-container"> 
+		<el-row class="page-container border"> 
 			<!--列表 Branch 管理端机构表（机构下面若干部门）-->
 			<el-table :data="branchs" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column type="index" width="60"></el-table-column>

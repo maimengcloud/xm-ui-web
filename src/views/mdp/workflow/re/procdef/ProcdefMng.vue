@@ -1,6 +1,6 @@
 <template>
-	<section>
-		<el-row  class="app-container">  
+	<section class="page-container border">
+		<el-row   class="page-header">  
 			<el-input v-model="filters.key"  style="width:20%;" placeholder="模糊查询">
 				<template slot="append"> 
 					<el-button type="primary"   v-on:click="searchProcdefs" icon="el-icon-search">查询</el-button> 
@@ -17,14 +17,14 @@
 			<el-button   @click.native="showTagSelect(false)"  >标签查找</el-button>
 			<el-button   @click.native="showTagSelect(true)"  >打标签</el-button>
 	    </el-row> 
-		<el-row class="app-container">
+		<el-row class="page-main">
 			<el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4" class="hidden-sm-and-down">
 				<category-tree ref="categoryTree" multiple :expandOnClickNode="false" :defaultExpandAll="true" show-checkbox  :current-key="addForm.categoryId"  v-on:check-change="handleCategoryCheckChange" ></category-tree> 
 			</el-col>
 			<el-col :xs="24" :sm="24" :md="20" :lg="20" :xl="20"> 
 			
 			<!--列表 Procdef act_re_procdef-->
-			<el-table  ref="table" :max-height="tableHeight"  :data="procdefs"    highlight-current-row v-loading="listLoading" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table  ref="table" :height="tableHeight"  :data="procdefs"    highlight-current-row v-loading="listLoading" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column type="selection" width="40"></el-table-column>
 				<el-table-column type="index" width="40"></el-table-column> 
 				<el-table-column prop="category" label="分类" min-width="80" ></el-table-column>

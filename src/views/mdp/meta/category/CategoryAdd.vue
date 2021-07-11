@@ -1,7 +1,6 @@
 <template>
 	<section>
-		<el-row>
-			<!--新增界面 Category 元数据分类--> 
+		 <el-row class="page-container border padding"> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
 				<el-form-item label="分类编号" prop="id">
 					<el-input v-model="addForm.id" auto-complete="off"></el-input><el-tag>为空，则后台自动生成</el-tag>

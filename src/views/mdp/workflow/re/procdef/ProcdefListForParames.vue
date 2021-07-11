@@ -1,26 +1,22 @@
 <template>
   <section>
-    <el-row class="app-container">
-      <el-row> 
-        <el-col>
-          <el-row>
+    <el-row class="page-container border">
+          <el-row class="page-header">
             <el-select v-model="filters.procCategory" clearable filterable placeholder="请选择分类">
               <el-option v-for="item in categorys" :key="item" :label="item" :value="item"></el-option>
             </el-select>
 
-            <el-input v-model="filters.key" style="width:270px;" placeholder="模糊查询">
-              <template slot="append">
-                <el-button type="primary"   v-on:click="searchProcdefs" icon="el-icon-search">查询</el-button>
-              </template>
+            <el-input v-model="filters.key" placeholder="模糊查询">
             </el-input>
+            <el-button type="primary"   v-on:click="searchProcdefs" icon="el-icon-search">查询</el-button>
             <el-button @click.native="showTagSelect(false)" icon="el-icon-search" style="margin-left: 13px;" class="hidden-sm-and-down">标签</el-button>
             <el-button @click.native="showTagSelect(true)" icon="el-icon-plus" class="hidden-sm-and-down">标签</el-button>
             <el-button @click="handleDownload" 	icon="el-icon-download" class="hidden-md-and-down">导出数据</el-button>
           </el-row>
-          <el-row  style="padding-top:20px;">
+          <el-row class="page-main">
             <!--列表 Procdef act_re_procdef-->
             <el-table
-              ref="table" :max-height="tableHeight"
+              ref="table" :height="tableHeight"
               :data="procdefs"
               highlight-current-row
               v-loading="listLoading"
@@ -141,8 +137,6 @@
               ></tag-mng>
             </el-dialog>
           </el-row>
-        </el-col>
-      </el-row>
     </el-row>
   </section>
 </template>

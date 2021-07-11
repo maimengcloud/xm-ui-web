@@ -1,7 +1,7 @@
 <template>
 	<section>
-		<el-row class="app-container">
-			<el-row>
+		<el-row class="page-container border">
+			<el-row class="page-header">
 				<el-input v-model="filters.key" style="width:30%;" placeholder="模糊查询">
 					<template slot="append">
 						<el-button type="primary"  v-loading="load.list" :disabled="load.list==true"  v-on:click="searchBizModels" icon="el-icon-search">查询</el-button>
@@ -10,9 +10,9 @@
 				<el-button @click="showAdd" icon="el-icon-plus" style="margin-left: 13px;">业务模块</el-button>
 				<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete">批量删除</el-button>
 			</el-row>
-			<el-row style="padding-top:20px;">
+			<el-row class="page-main">
 				<!--列表 BizModel mdp_biz_model-->
-				<el-table  ref="table" :max-height="tableHeight" :data="bizModels"  highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+				<el-table  ref="table" :height="tableHeight" :data="bizModels"  highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 					<el-table-column sortable type="selection" width="40"></el-table-column>
 					<el-table-column sortable type="index" width="40"></el-table-column>
 					<el-table-column sortable prop="bizName" label="业务名称" min-width="80" show-overflow-tooltip></el-table-column>

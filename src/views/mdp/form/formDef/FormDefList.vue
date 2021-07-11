@@ -32,7 +32,7 @@
 					  
 					
 		</sticky>
-		<el-row class="app-container">
+		<el-row class="page-container border">
 			
 			
 			<!--工具条2-->  

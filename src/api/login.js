@@ -7,14 +7,13 @@ import config from '@/common/config'
 let base=config.getOauth2LoginBasePath();
 
 //let base='';
-export function doLoginByUserloginid(userloginid, password,grantType,authType,branchId,deptid) {
+export function doLoginByUserloginid(userloginid, password,grantType,authType,deptid) {
   removeToken();
   const data = {
     userloginid: userloginid,
     password: password, 
     authType:authType,
-    deptid:deptid,
-    branchId:branchId,
+    deptid:deptid
   }
   return axios({
     url: base+'/login/token?grantType='+grantType,

@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<el-row class="app-container"> 
+		<el-row class="page-container border"> 
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchPosts">查询</el-button>
 			 
@@ -9,7 +9,7 @@
 		       <i class="el-icon-question"></i>
 		    </el-tooltip>
 		</el-row>
-		<el-row class="app-container"> 
+		<el-row class="page-container border"> 
 			<!--列表 Post sys_post-->
 			<el-table :data="posts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column type="selection" width="55"></el-table-column>

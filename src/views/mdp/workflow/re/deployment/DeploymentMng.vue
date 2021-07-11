@@ -1,7 +1,7 @@
 <template>
   <section>
-    <el-row class="app-container">
-      <el-row>
+    <el-row class="page-container border">
+      <el-row  class="page-header">
         <el-select v-model="filters.category" clearable filterable placeholder="请选择分类">
           <el-option v-for="item in categorys" :key="item" :label="item" :value="item"></el-option>
         </el-select>
@@ -12,10 +12,10 @@
         </el-input>
         <el-button @click="handleDownload" icon="el-icon-download" style="">导出数据</el-button>
       </el-row>
-      <el-row style="padding-top:20px;">
+      <el-row class="page-main">
         <!--列表 Deployment act_re_deployment-->
         <el-table
-          ref="table" :max-height="tableHeight"
+          ref="table" :height="tableHeight"
           :data="deployments"
           highlight-current-row
           v-loading="listLoading"

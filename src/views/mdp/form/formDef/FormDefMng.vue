@@ -46,7 +46,7 @@
 				 {{filters.user.username}}
 			</el-tag>    
 		</el-row>
-		<el-row  class="app-container"> 
+		<el-row  class="page-container border"> 
 			<el-col :xs="4" :sm="4" :md="3" :lg="3" :xl="3" class="hidden-sm-and-down">
 				<category-tree  ref="categoryTree" multiple :expandOnClickNode="false" :defaultExpandAll="true" show-checkbox  :current-key="addForm.categoryId"  v-on:check-change="handleCategoryCheckChange" ></category-tree> 
 			</el-col>

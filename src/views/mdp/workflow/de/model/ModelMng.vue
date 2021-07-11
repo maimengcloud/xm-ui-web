@@ -1,7 +1,7 @@
 <template>
 	<section>
-		<el-row  class="app-container">
-			<el-row>
+		<el-row  class="page-container border">
+			<el-row class="page-header">
 				<el-input v-model="filters.key" style="width:270px;"  placeholder="模糊查询">
 					<template slot="append">
 						<el-button type="primary"   v-on:click="searchModels" icon="el-icon-search">查询</el-button>
@@ -12,9 +12,9 @@
 					icon="el-icon-download"
 				>导出数据</el-button>
 			</el-row>
-			<el-row style="padding-top:20px;">
+			<el-row class="page-main">
 				<!--列表 Model act_de_model-->
-				<el-table  ref="table" :max-height="tableHeight" :data="models"    highlight-current-row v-loading="listLoading" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+				<el-table  ref="table" :height="tableHeight" :data="models"    highlight-current-row v-loading="listLoading" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 					<el-table-column type="index" width="40"></el-table-column>
 					<el-table-column  prop="name" label="流程(点击查已发布版本)" min-width="300" show-overflow-tooltip>
 						<template slot-scope="scope">

@@ -1,7 +1,6 @@
 <template>
 	<section>
-		<el-row class="app-container"> 
-		<!--新增界面 FormDef 表单定义-->  
+		 <el-row class="page-container border padding">  
 			<form-field ref="fields" :visible="visible" :form-def.sync="addForm" :fields.sync="fields" :load-from-db="0"></form-field>
 			<el-form  :model="addForm"  label-width="120px" :rules="addFormRules"  ref="addForm">
 		

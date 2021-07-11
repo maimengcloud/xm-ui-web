@@ -1,7 +1,6 @@
 <template>
 	<section>
-		<el-row class="app-container">
-			<!--新增界面 BizModel mdp_biz_model--> 
+		 <el-row class="page-container border padding"> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
 				<el-form-item label="业务名称" prop="bizName">
 					<el-input v-model="addForm.bizName" placeholder="业务名称" ></el-input>

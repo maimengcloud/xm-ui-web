@@ -1,12 +1,12 @@
 <template>
 	<section>
 		<el-row>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="名称 编号 手机号码 模糊查询"></el-input> 
+			<el-input v-model="filters.key" style="width: 20%;" placeholder="名称 编号 手机号码 模糊查询"></el-input>
 			<el-checkbox v-model="filters.isQueryByDept" :disabled="isSelectByDept" >按部门-{{this.deptTree.deptNodeSelected.deptName}}查</el-checkbox>
 			<el-button type="primary" v-loading="load.list" v-on:click="searchUsers">查询</el-button>
 			<el-button type="primary"   v-on:click="confirmUsers">确定</el-button>
-		</el-row> 
-		<el-row class="selected-tag">已选择：  
+		</el-row>
+		<el-row class="selected-tag">已选择：
 			<el-tag
 				v-for="sel in sels"
 				:key="sel.userid"
@@ -15,16 +15,16 @@
 			</el-tag>
 
 		</el-row>
-		<el-row class="app-container"> 
+		<el-row class="page-container border">
 			<el-col :span="6" style=" overflow-x:auto; height:600px;">
-				<dept-tree show-root default-expand-all show-checkbox :expand-on-click-node="false"  @node-click="handleLeftDeptNodeClick" @branch-row-click="branchRowClick"></dept-tree> 
+				<dept-tree show-root default-expand-all show-checkbox :expand-on-click-node="false"  @node-click="handleLeftDeptNodeClick" @branch-row-click="branchRowClick"></dept-tree>
 			</el-col>
-			<el-col :span="18">	
+			<el-col :span="18">
 				<!--列表 User sys_user-->
 				<el-table :row-key="'userid'"	 :data="users"     @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" style="width: 100%;" ref="userTable">
 					<el-table-column :reserve-selection="true"	type="selection" width="65"></el-table-column>
 					<el-table-column type="index" width="65"></el-table-column>
-					<el-table-column prop="username" sortable label="用户名称" min-width="120" ></el-table-column> 
+					<el-table-column prop="username" sortable label="用户名称" min-width="120" ></el-table-column>
 					<el-table-column prop="displayUserid" label="登录账号" min-width="150" ></el-table-column>
 					<el-table-column prop="sex" label="性别" width="80">
 						<template slot-scope="scope">
@@ -38,22 +38,22 @@
 							<el-tag v-if="scope.row.locked=='0'">√</el-tag>
 							<el-tag v-else>×</el-tag>
 						</template>
-					</el-table-column>  
+					</el-table-column>
 				</el-table>
 				<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 			</el-col>
-		</el-row> 
+		</el-row>
 	</section>
 </template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import Sticky from '@/components/Sticky' // 粘性header组件 
+	import Sticky from '@/components/Sticky' // 粘性header组件
 	import { listUser } from '@/api/mdp/sys/user';
-	import DeptTree from '@/views/mdp/sys/dept/DeptTree.vue'; 
-	import { mapGetters } from 'vuex' 
+	import DeptTree from '@/views/mdp/sys/dept/DeptTree.vue';
+	import { mapGetters } from 'vuex'
 	import md5 from 'js-md5';
-	
+
 	export default {
 		props:['isSingleUser','selectUserids','isSelectByDept'],
 	    computed: {
@@ -78,12 +78,12 @@
 						needSearch=true
 					}
 				}
-				if(needSearch==true){ 
+				if(needSearch==true){
 					this.$refs.userTable.clearSelection();
 					this.needSetTableUserChecked=true;
 					this.searchUsers()
 				}
-				
+
 			}
 		},
 		data() {
@@ -104,22 +104,22 @@
 				sels: [],//列表选中数据
 				allSels:[],//所有选中的数据
 				options:{sex:[],locked:[]},//下拉选择框的所有静态数据 options.sex,options.project
-				
+
 				addFormVisible: false,//新增user界面是否显示
 				//新增user界面初始化数据
 				addForm: {
 					unionid:'',displayUserid:'',userid:'',locked:'',startdate:'',nickname:'',username:'',phoneno:'',password:'',salt:'',fingerpassword1:'',fingerpassword2:'',fingerpassword3:'',fingerpassword4:'',pwdtype:'',headimgurl:'',country:'',city:'',province:'',address:'',sex:'',enddate:'',districtId:'',userId:'',userAccount:'',userPwd:'',userName:'',userDesc:''
 				},
-				
+
 				editFormVisible: false,//编辑界面是否显示
 				//编辑user界面初始化数据
-				editForm: { 
+				editForm: {
 					unionid:'',displayUserid:'',userid:'',locked:'',startdate:'',nickname:'',username:'',phoneno:'',password:'',salt:'',fingerpassword1:'',fingerpassword2:'',fingerpassword3:'',fingerpassword4:'',pwdtype:'',headimgurl:'',country:'',city:'',province:'',address:'',sex:'',enddate:'',districtId:'',userId:'',userAccount:'',userPwd:'',userName:'',userDesc:''
 				},
 				/**begin 自定义属性请在下面加 请加备注**/
 				deptTree:{//部门树相关参数设置
-					deptNodeSelected:{},//部门树被选中的节点数据	
-				}, 
+					deptNodeSelected:{},//部门树被选中的节点数据
+				},
 				editUserRoleFormVisible:false,//是否显示用户角色界面
 				editUserDeptFormVisible:false,//是否显示用户部门关系设置界面
 				branch: {},//选中的机构
@@ -127,10 +127,10 @@
 				/**end 自定义属性请在上面加 请加备注**/
 				//当前所选中的部门数据
 				currentSelectDeptData: {},
-				
+
 			}
-		},//end data 
-		
+		},//end data
+
 		methods: {
 			//获取代码对应的名称 用于数据反显 如 getCodeName(options.sex,'1');
 			getCodeName(options,codeValue){
@@ -140,12 +140,12 @@
 					return code[0].codeName
 				}else{
 					return codeValue
-				} 
+				}
 			},
-			handleSizeChange(pageSize) { 
+			handleSizeChange(pageSize) {
 				this.pageInfo.pageSize=pageSize;
 				this.pageInfo.count=true;
-				
+
 				this.getUsers();
 			},
 			handleCurrentChange(pageNum) {
@@ -172,12 +172,12 @@
 					this.$message({ message: "必须先选择一个部门", type: 'error' });
 					return;
 				}
-				 
+
 				 this.pageInfo.count=true;
 				 this.getUsers();
 			},
 			//获取列表 User sys_user
-			getUsers() { 
+			getUsers() {
 
 				let params = {
 					pageSize: this.pageInfo.pageSize,
@@ -186,9 +186,9 @@
 				};
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
-					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
+					for(var i=0;i<this.pageInfo.orderFields.length;i++){
 						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
-					}  
+					}
 					params.orderBy= orderBys.join(",")
 				}
 				if(this.filters.key!==""){
@@ -196,16 +196,16 @@
 				}
 				if(this.filters.isQueryByDept==true && this.deptTree.deptNodeSelected.deptid && this.deptTree.deptNodeSelected.isBranch!=true){
 					params.deptid=this.deptTree.deptNodeSelected.deptid;
-				} 
+				}
 				if(this.filters.isQueryByDept==true){
 					params.branchId=this.branch.id;
-				} 
+				}
 				if( !this.userInfo.isSuperAdmin && !this.userInfo.isPlatformAdmin){
 					params.branchId=this.userInfo.branchId;
-					if(params.deptid==null || params.deptid==""){ 
+					if(params.deptid==null || params.deptid==""){
 						//params.deptid=this.userInfo.deptid;
 					}
-				}  
+				}
 				if(this.needSetTableUserChecked==true){
 					params.userids=this.selectUserids;
 				}
@@ -214,17 +214,17 @@
 				this.load.list = true;
 				listUser(params).then((res) => {
 					var tips=res.data.tips;
-					if(tips.isOk){ 
+					if(tips.isOk){
 						this.pageInfo.total = res.data.total;this.pageInfo.count=false;
 						this.users = res.data.data;
 					}else{
 						this.$message({ message: tips.msg, type: 'error' });
-					} 
+					}
 					if(this.needSetTableUserChecked==true){
 						this.setTableUserChecked();
 						this.needSetTableUserChecked=false;
 					}
-					
+
 					this.load.list = false;
 				}).catch(() => {
 					this.load.list = false;
@@ -252,8 +252,8 @@
 			},
 			//选择行user
 			selsChange: function (sels) {
-				 this.sels=sels  
-			}, 
+				 this.sels=sels
+			},
 			setTableUserChecked(){
 				if(this.selectUserids.length<=0){
 					return;
@@ -261,13 +261,13 @@
 				this.selectUserids.forEach(u=>{
 					var selected=this.sels.find(i=>i.userid==u);
 					var user=this.users.find(i=>i.userid==u);
-					if(selected){ 
-						 
+					if(selected){
+
 					}else if(user){
 						this.$refs.userTable.toggleRowSelection(user,true);
 					}
-				}) 
-			},  
+				})
+			},
 			confirmUsers: function(){
 				if(this.sels.length<1){
 					this.$message({ message: "请选择一个用户", type: 'error' });
@@ -279,6 +279,10 @@
 						return;
 					}
 				}
+
+        // console.log(this.deptTree.deptNodeSelected)
+        // deptid
+
 				let returnData = this.sels.map(i=>{return {'userid':i.userid,'username':i.username,'sex':i.sex,'headimgurl':i.headimgurl,'email':i.email}});
 				if(this.isSelectByDept)	returnData.deptData = this.currentSelectDeptData;
 				this.$emit('confirm',returnData);
@@ -288,31 +292,31 @@
 					this.branch=row
 					this.deptTree.deptNodeSelected={}
 					this.searchUsers();
-					
-				}  
+
+				}
 			},
-			unselectUser:function(user){  
-				this.$refs.userTable.toggleRowSelection(user,false); 
+			unselectUser:function(user){
+				this.$refs.userTable.toggleRowSelection(user,false);
 			},
-			 
+
 			/**begin 自定义函数请在下面加**/
 			handleLeftDeptNodeClick(data, node,comp) {
 				if( node.level==1 ){
-					 this.branch={id:data.branchId,branchName:data.deptName} 
-				} 
+					 this.branch={id:data.branchId,branchName:data.deptName}
+				}
 				this.deptTree.deptNodeSelected=data;
 				//设置部门信息
 				this.currentSelectDeptData = data;
-				if(this.filters.isQueryByDept==true){ 
+				if(this.filters.isQueryByDept==true){
 					this.searchUsers();
 				}
-				
-		    }, 
+
+		    },
 			/**end 自定义函数请在上面加**/
-			
+
 		},//end methods
-		components: {  
-		    'dept-tree': DeptTree,  
+		components: {
+		    'dept-tree': DeptTree,
 		    //在下面添加其它组件
 		},
 		mounted() {
@@ -324,8 +328,8 @@
 			if(this.isSelectByDept) {
 				return;
 			}
-			this.getUsers(); 
-			
+			this.getUsers();
+
 		}
 	}
 
@@ -333,7 +337,7 @@
 
 <style scoped>
 .selected-tag {
-	margin-top: 14px; 
+	margin-top: 14px;
 	margin-left:14px;
 }
 </style>

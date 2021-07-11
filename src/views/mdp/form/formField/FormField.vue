@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<el-row class="app-container"> 
+		<el-row class="page-container border"> 
 		<el-col :span="10"> 
 			<draggable id="delDrg"  class="dragArea" :list="delFields" :options="{group:{ name:'g1'}, animation:150}"  :no-transition-on-drag="true" @start="drag=true" @end="drag=false">
 				<el-badge :value="selectedFields.length" class="item">

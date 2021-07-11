@@ -8,7 +8,7 @@
 			<el-button type="primary" @click="showAdd">+参数</el-button>
 			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0">批量删除</el-button> 
 		</sticky>  
-			<el-row  class="app-container">
+			<el-row  class="page-container border">
 			<!--列表 ItemOption 数据项取值列表-->
 			<el-table :data="itemOptions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column type="selection" width="55"></el-table-column>

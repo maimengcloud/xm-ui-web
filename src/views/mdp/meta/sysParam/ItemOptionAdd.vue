@@ -1,7 +1,6 @@
 <template>
 	<section>
-		<el-row>
-			<!--新增界面 ItemOption 数据项取值列表--> 
+		 <el-row class="page-container border padding"> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
 				<el-form-item label="参数代码" prop="id">
 					<el-input v-model="addForm.id" auto-complete="off"></el-input>

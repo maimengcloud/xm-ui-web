@@ -31,7 +31,7 @@
 					   <el-button v-if="filters.flowState!='1'" type="primary"    @click="showAdd">新增数据</el-button>
 						<el-button v-if=" filters.flowState!='1'" type="danger"     @click="batchDel" :disabled="this.sels.length===0">批量删除</el-button>  
 				</sticky> 
-				<el-row class="app-container">
+				<el-row class="page-container border">
 					<el-table v-if="filters.flowState=='0'" :data="formDatas"  @sort-change="sortChange" height="240" highlight-current-row v-loading="listLoading" border @selection-change="selsChange" style="width: 100%;">
 					<el-table-column type="selection" width="55" v-if="showBtn"></el-table-column>
 					<el-table-column type="index" width="60"></el-table-column> 

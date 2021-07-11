@@ -1,15 +1,13 @@
 <template>
-	<section>
-		<el-row   style="margin-left:-20px;">   
-			<el-row>
-				<el-button  type="text"  @click.native="handleCancel" icon="el-icon-back">取消</el-button>  
+	<section class="page-container page-full-height padding">
+		<el-row class="page-header">    
+				<el-button class="hidden-md-and-down"   type="text"  @click.native="handleCancel" icon="el-icon-back">取消</el-button>  
 				<el-button   type="text"  v-if="screenWidth>=500"  @click.native="handlePrint" icon="el-icon-printer">打印</el-button>    
-				<el-button   type="text"  v-if="isArchive"  @click.native="handleArchive"  icon="el-icon-s-grid">归档</el-button> 
-				<el-button   type="text"  v-if="task.taskId"   @click.native="addComment" :loading="addLoading" icon="el-icon-finished">只存办理意见</el-button>  
+				<el-button   type="text"  v-if="isArchive"  @click.native="handleArchive"  icon="el-icon-s-grid">归档</el-button>   
 				<el-button  type="text"   @click.native="tagSelectVisible=true" :loading="tagSetLoading"  icon="el-icon-finished">打标签</el-button> 
-				<el-button  type="text" v-if="displayDiagram==false" @click="showDiagram()" icon="el-icon-picture-outline">查看流程图</el-button>   
-				<el-button  type="text"  @click="showNodeInfoDialog"  icon="el-icon-s-check">配置审批人</el-button>
-				<el-button   type="text"  @click="showComment=!showComment"  icon="el-icon-document">{{showComment==false?"显示流转信息":"隐藏流转信息"}}</el-button>
+				<el-button  type="text" v-if="displayDiagram==false" @click="showDiagram()" icon="el-icon-picture-outline">流程图</el-button>   
+				<el-button  type="text"  @click="showNodeInfoDialog"  icon="el-icon-s-check">审批人</el-button>
+				<el-button class="hidden-md-and-down"  type="text"  @click="showComment=!showComment"  icon="el-icon-document">{{showComment==false?"显示流转信息":"隐藏流转信息"}}</el-button>
 				<el-button   type="text"  @click="showMainContext=!showMainContext"  icon="el-icon-document" class=" hidden-md-and-down">{{showMainContext==false?"显示正文":"隐藏正文"}}</el-button>
 				<el-button   type="text"  @click="showMainContextOnly=!showMainContextOnly"  icon="el-icon-finished" class=" hidden-sm-and-down">{{showMainContextOnly==false?"只看正文":"显示全部"}}</el-button>
 				<el-popover 
@@ -31,235 +29,229 @@
 							<attachment-upload  :branch-id="userInfo.branchId" :deptid="userInfo.deptid" :archive-id="taskInfo.paramsId" :category-id="taskInfo.categoryId"></attachment-upload>
 					</div> 
 					<el-button slot="reference"   type="text"    class="hidden-sm-and-down"  v-on:click="modelFilesVisible=!modelFilesVisible"  icon="el-icon-document-copy">流程附件</el-button>
-				</el-popover>
-			</el-row>
-	    </el-row>
-		<el-row v-show="showMainContextOnly==true">
-			<div style="padding: 20px;" v-html="addForm.mainContext"></div>
+				</el-popover> 
+	    </el-row> 
+		<el-row class="page-title padding-top"> 
+			<el-row  class="hidden-md-and-down"> 
+				<el-col class="wf-sub-title"> {{addForm.mainTitle}}</el-col> 
+			</el-row>   
+			<el-row  class="hidden-lg-and-up">
+				<el-col class="wf-title" v-if="addForm.mainTitle.length<30"> {{addForm.mainTitle}}</el-col> 
+				<el-col class="wf-sub-title" v-if="addForm.mainTitle.length>30"> {{addForm.mainTitle}}</el-col> 
+			</el-row>  
+			<el-row style="padding-top:10px;"> 
+				<el-col :span="24" class="wf-sub-sub-title">  
+					<font  v-if="addForm.tagNames" >
+					<el-tag v-for="tag in (addForm.tagNames.split(','))" :key="tag"
+						:type="'warning'"
+						:disable-transitions="false" >
+						{{tag}}
+					</el-tag>
+					</font>
+					发起部门: {{addForm.startDeptName}} &nbsp;&nbsp;&nbsp;
+					由&nbsp;{{addForm.startUsername}}&nbsp;于&nbsp;
+					{{addForm.startDate}} &nbsp;发起
+					</el-col>   
+			</el-row> 
 		</el-row>
-		<el-row v-show="showMainContextOnly==false">
-			 
-			<el-row> 
-			    <!--新增界面 ProcinstParames 流程实例参数设置表-->  
-					<el-form :model="addForm"  :label-width="labelWidth()" label-position="left" :rules="addFormRules" ref="addForm" > 
-						<el-row class=" hidden-sm-and-down">
-							<el-col class="wf-title"> {{addForm.mainTitle}}</el-col> 
-						</el-row> 
-						<el-row class="hidden-md-and-up">
-							<el-col class="wf-sub-title"> {{addForm.mainTitle}}</el-col> 
-						</el-row> 
-						<el-row> 
-							<el-col :span="24" class="wf-sub-title">  
-								<font  v-if="addForm.tagNames" >
-								<el-tag v-for="tag in (addForm.tagNames.split(','))" :key="tag"
-									:type="'warning'"
-									:disable-transitions="false" >
-									{{tag}}
-								</el-tag>
-								</font>
-								 发起部门: {{addForm.startDeptName}} &nbsp;&nbsp;&nbsp;
-								  由&nbsp;{{addForm.startUsername}}&nbsp;于&nbsp;
-								 {{addForm.startDate}} &nbsp;发起
-								 </el-col>   
-						</el-row>   
-						<el-row>   
-								预计
-								<el-date-picker style="width:20%;"
-									v-model="addForm.planFinishTime"
-									type="date" value-format="yyyy-MM-dd HH:mm:ss" 
-									:picker-options="pickerOptions"
-									placeholder="选择计划完成日期" >
-								</el-date-picker>
-								完成  <el-button   @click.native="updateFlowPlanFinishTime" :loading="addLoading" icon="el-icon-finished">保存日期</el-button>  
-								<el-popover
-									placement="top-start"
-									title="设置主办监控人"
-									width="400"
-									trigger="manual" v-model="sponsorsAndMonitorsVisible"> 
-									<el-row> 
-										<el-col :span="24" style="padding-top:5px;">
-											<font class="more-label-font">主办人:</font> 
-											<el-select disabled   value-key="userid"    v-model="sponsors" multiple placeholder="请选择">
-												<el-option
-												v-for="item in baseUserList"
-												:key="item.userid"
-												:label="item.username"
-												:value="item">
-												<span style="float: left">{{ item.username }}</span>
-												<span style="float: right; color: #8492a6; font-size: 14px">{{ item.shortName }}</span>
-												</el-option>
-											</el-select> 
-										</el-col> 
-										<el-col :span="24" style="padding-top:5px;">
-											<font class="more-label-font">监控人:</font>  
-											<el-select disabled   value-key="userid"   v-model="monitors" multiple placeholder="请选择">
-												<el-option
-												v-for="item in baseUserList"
-												:key="item.userid"
-												:label="item.username"
-												:value="item">
-												<span style="float: left">{{ item.username }}</span>
-												<span style="float: right; color: #8492a6; font-size: 13px">{{ item.shortName }}</span>
-												</el-option>
-											</el-select> 
-										</el-col> 
-									</el-row>
-									<el-button  slot="reference" icon="el-icon-s-check" @click="showSponsorsAndMonitors">主办人、监控人查询</el-button>
-								</el-popover>  
-						</el-row>   
-						<el-row  v-if="addForm.isRefForm=='1' && addForm.formId && addForm.formShowType!='table'" style="padding-top:10px;">
-							<form-data-mng-for-flow-form :formShowType="addForm.formShowType"  :companyDepts="companyDepts" :companyEmployees="companyEmployees" :formId="addForm.formId"  :qxCode="qxCode"  :procInstId="procInstId" :flowStartUserid="addForm.userid" :submitEvent="formDataSubmitEvent" @submit="startSubmit"><div></div></form-data-mng-for-flow-form> 
-						</el-row>
-						<el-row  v-if="actAssignee&&actAssignee.formId?true:false"  style="padding-top:10px;">
-							<form-data-for-flow-node :visible="actAssignee&&actAssignee.formId?true:false" :form-id="actAssignee.formId" :form-fields-json="actAssignee.formFieldsJson"  :submit-event="formDataSubmitEvent" @submit="startSubmit"><div></div></form-data-for-flow-node> 
-						</el-row>						
-
-						<el-row  v-if="addForm.mainContext && addForm.mainContext.length>0 && showMainContext"> 
-								<div  class="wf-main-context-box" v-if="screenWidth>=500">
-									<div style="padding: 20px;" class="wf-main-context" v-html="addForm.mainContext"></div>
-								</div>  
-							<div   class="wf-main-context-box" v-if="screenWidth<500">
-									<div style="padding: 20px;" v-html="addForm.mainContext"></div>
-							</div> 
-						</el-row>   
-						<el-row>
-							<comment-step :task="task"  :procInstId="procInstId" :refresh="refreshCommentList"   @get-comments="getComments"></comment-step>  
-						</el-row> 
-						<div v-if="task.taskId"> 
-							<el-form-item :label="'办理意见'" prop="commentMsg">
-								<el-row class=" hidden-md-and-down" style="padding-top:10px;">
-									<el-radio-group v-model="task.action">
-										<div v-if="task.action!='claim'">
-											<el-radio min-width="60px" v-show="taskInfo && taskInfo.delegation!='PENDING'" label="agree">同意&nbsp;&nbsp;&nbsp;&nbsp;</el-radio>
-											<el-radio v-show="taskInfo && taskInfo.delegation!='PENDING'" label="disAgree">不同意&nbsp;&nbsp;&nbsp;&nbsp;</el-radio>
-											<el-radio label="rejectToActivity">驳回&nbsp;&nbsp;&nbsp;&nbsp;</el-radio>
-											<el-radio label="sponsors">转主办&nbsp;&nbsp;&nbsp;&nbsp;</el-radio>
-											<el-radio label="rejectToStartUser">转发起人</el-radio>
-											<el-radio v-show="taskInfo && taskInfo.delegation!='RESOLVED'" label="transfer">请人代办</el-radio>
-											<el-radio label="delegate">请人协办,完成后返回给我</el-radio>
-											<el-radio v-show="taskInfo && taskInfo.delegation!='RESOLVED' && taskInfo.delegation=='PENDING'" label="resolve">返回给原执行人</el-radio>
-											<el-radio label="over">结束流程</el-radio>
-										</div>
-										<div v-else>
-											<el-radio label="claim">领取任务</el-radio>
-										</div>
-									</el-radio-group>
-								</el-row>
-								<el-row class=" hidden-lg-and-up" style="padding-top:10px;"> 
-									<el-select   v-model="task.action" placeholder="请选择办理意见" >
-										<div v-if="task.action!='claim'">
-											<el-option  v-show="taskInfo && taskInfo.delegation!='PENDING'" label="同意" value="agree">  </el-option>
-											<el-option  v-show="taskInfo && taskInfo.delegation!='PENDING'" label="不同意" value="disAgree">  </el-option>
-											<el-option  label="驳回" value="rejectToActivity">  </el-option>
-											<el-option label="转主办" value="sponsors">  </el-option>
-											<el-option   label="转发起人" value="rejectToStartUser">  </el-option>
-											<el-option  v-show="taskInfo && taskInfo.delegation!='RESOLVED'" label="请人代办" value="transfer">  </el-option>
-											<el-option   label="请人协办,完成后返回给我" value="delegate">  </el-option>
-											<el-option v-show="taskInfo && taskInfo.delegation!='RESOLVED' && taskInfo.delegation=='PENDING'"  label="返回给原执行人" value="resolve">  </el-option>
-											<el-option label="结束流程" value="over">  </el-option>
-										</div>
-										<div v-else>
-											<el-radio label="claim">领取任务</el-radio>
-										</div>
-									</el-select> 
-								</el-row>
-								<el-row style="padding-top:10px;">
-									<el-input  type="textarea" :rows="3" v-model="task.commentMsg" auto-complete="off" ></el-input>
-								</el-row> 
-							</el-form-item>   
-							<el-form-item v-show="task.action=='rejectToActivity'" label="驳回节点" prop="rejectToActivity"> 
-								<el-col :span="10">
-									<el-select   style="width:100%" value-key="taskId" v-model="task.rejectActivity" @change="rejectToActivitySelectChange" placeholder="请选择">
-									<el-option
-									v-for="item in comments"
-									:key="item.taskId"
-									:label="item.name"
-									:value="item">
-									<span style="float: left">{{ item.name }}</span>
-									<span style="float: right; color: #8492a6; font-size: 13px">{{ item.username }}-{{item.message}}</span>
-									</el-option>
-								</el-select>
-								</el-col>
-							</el-form-item> 
-							<el-form-item v-show="task.action=='transfer'||task.action=='delegate'||needAssignee!=''||(actAssignee&&actAssignee.showNextAssignees=='1')"  :label="nextAssigneeListLabel" prop="needAssignee"> 
-								<el-col :xs="24" :sm="18" :md="16" :lg="14" :xl="12">
-									<el-select    value-key="userid" style="width:80%" v-model="task.nextAssigneeList" multiple @change="nextAssigneeListSelectChange"  placeholder="如果不选则系统自动判断">
-									<el-option
-									v-for="item in baseUserList"
-									:key="item.userid"
-									:label="item.username"
-									:value="item">
-									<span style="float: left">{{ item.username }}</span>
-									<span style="float: right; color: #8492a6; font-size: 13px">{{ item.shortName }}</span>
-									</el-option>
-								</el-select>
-								<el-button   @click.native="showCommonUserSelectDialog" :loading="addLoading">更多人员</el-button>  
-								</el-col>
-							</el-form-item> 
-						</div> 
-						<el-row v-if="screenWidth<500" v-loading="listLoading" style="padding-top:10px;">
-							<el-col :span="24">
-									<el-button    @click.native="handleCancel">取消</el-button>  
-									<el-button  v-if="screenWidth>=500"  @click.native="handlePrint" >打印</el-button>    
-									<el-button  v-if="isArchive"  @click.native="handleArchive" >归档</el-button> 
-									<el-button  v-if="task.taskId"   @click.native="addComment" :loading="addLoading">只存意见</el-button>  
-									<el-button  v-if="task.action!='claim' && task.taskId"  @click.native="completeHandle" :loading="addLoading">提交任务</el-button>  
-									<el-button  v-if="task.action=='claim'"  @click.native="completeHandle" :loading="addLoading">领取任务</el-button>  
-									<el-button  v-if="task.action=='claim' && task.taskId  && sponsors.some(i=>i.userid==userInfo.userid)"  @click.native="addCandidateUsers" :loading="addLoading">添加候选人</el-button> 
-							</el-col>
-						</el-row>  
-						<el-form-item v-if="screenWidth>=500" v-loading="listLoading" style="padding-top:10px;">
-									<el-button    @click.native="handleCancel" icon="el-icon-back">取消</el-button>  
-									<el-button   v-if="screenWidth>=500"  @click.native="handlePrint" icon="el-icon-printer">打印</el-button>    
-									<el-button   v-if="isArchive"  @click.native="handleArchive" icon="el-icon-s-grid">归档</el-button> 
-									<el-button   v-if="task.taskId"   @click.native="addComment" :loading="addLoading" icon="el-icon-finished">只存办理意见</el-button>  
-									<el-button   v-if="task.action!='claim' && task.taskId" type="primary" @click.native="completeHandle" :loading="addLoading"  icon="el-icon-finished">提交任务</el-button>  
-									<el-button  v-if="task.action=='claim' && task.taskId"  @click.native="completeHandle" :loading="addLoading"  icon="el-icon-finished">领取任务</el-button>  
-									<el-button  v-if="task.action=='claim' && task.taskId  && sponsors.some(i=>i.userid==userInfo.userid)"  @click.native="showTaskCandidateSet" :loading="addLoading"  icon="el-icon-s-check">添加候选人</el-button> 
-						</el-form-item>  
-					</el-form> 
+		<el-row class="page-context" style="padding-top:10px;">
+			<el-row v-show="showMainContextOnly==true">
+				<div style="padding: 20px;" v-html="addForm.mainContext"></div>
 			</el-row>
-			<el-dialog 
-				title="流程图"
-				:visible.sync="displayDiagram"
-				width="80%" append-to-body	> 
-				<el-image   :fit="'contain'" :src="diagramUrl">
-					<div slot="error" class="image-slot">
-						<i class="el-icon-picture-outline"></i>
-					</div>
-					<div slot="placeholder" class="image-slot">
-						正在全力加载中。。。。。。。。。。<i class="el-icon-loading"></i>
-					</div>
-				</el-image>  
-				<span slot="footer" class="dialog-footer"> 
-					<el-button type="primary" @click="displayDiagram = false">关闭</el-button>
-				</span>
-			</el-dialog> 
-			<el-dialog append-to-body
-				title="查看审批人"
-				:visible.sync="nodeInfoVisible"
-				width="60%"> 
-				<procinst-node-info-set   :node-infos="nodeInfos"   :visible="nodeInfoVisible"   @cancel="onNodeInfosCancel"   @confirm="onNodeInfosConfirm"></procinst-node-info-set> 
-			</el-dialog>
-			<el-dialog append-to-body
-				title="设置标签"
-				:visible.sync="tagSelectVisible"
-				width="60%"> 
-				<tag-mng :tagIds="addForm.tagIds==null?null:addForm.tagIds.split(',')"  :jump="true" @select-confirm="onTagSelected"></tag-mng> 
-			</el-dialog>
-			
-			<el-dialog append-to-body
-				title="选择员工"
-				:visible.sync="userSelectVisible"
-				width="60%">  
-				<users-select :select-userids="task.nextAssigneeList.map(i=>i.userid)"   @confirm="onUserSelected"></users-select> 
-			</el-dialog> 
-			<el-dialog append-to-body
-				title="候选人/候选部门/候选岗位配置"
-				:visible.sync="selectCandidateSetVisible"
-				width="60%"> 
-				<task-candidate-set :taskId="taskInfo.taskId" :procInstId="taskInfo.procInstId" @confirm="selectCandidateSetVisible=false"></task-candidate-set> 
-			</el-dialog> 
+			<el-row v-show="showMainContextOnly==false">
+				
+				<el-row> 
+					<!--新增界面 ProcinstParames 流程实例参数设置表-->  
+						<el-form :model="addForm"  :label-width="labelWidth()" label-position="top" :rules="addFormRules" ref="addForm" >  
+							<el-row>   
+									预计
+									<el-date-picker style="width:20%;"
+										v-model="addForm.planFinishTime"
+										type="date" value-format="yyyy-MM-dd HH:mm:ss" 
+										:picker-options="pickerOptions"
+										placeholder="选择计划完成日期" >
+									</el-date-picker>
+									完成  <el-button   @click.native="updateFlowPlanFinishTime" :loading="addLoading" icon="el-icon-finished">保存日期</el-button>  
+									<el-popover
+										placement="top-start"
+										title="设置主办监控人"
+										width="400"
+										trigger="manual" v-model="sponsorsAndMonitorsVisible"> 
+										<el-row> 
+											<el-col :span="24" style="padding-top:5px;">
+												<font class="more-label-font">主办人:</font> 
+												<el-select disabled   value-key="userid"    v-model="sponsors" multiple placeholder="请选择">
+													<el-option
+													v-for="item in baseUserList"
+													:key="item.userid"
+													:label="item.username"
+													:value="item">
+													<span style="float: left">{{ item.username }}</span>
+													<span style="float: right; color: #8492a6; font-size: 14px">{{ item.shortName }}</span>
+													</el-option>
+												</el-select> 
+											</el-col> 
+											<el-col :span="24" style="padding-top:5px;">
+												<font class="more-label-font">监控人:</font>  
+												<el-select disabled   value-key="userid"   v-model="monitors" multiple placeholder="请选择">
+													<el-option
+													v-for="item in baseUserList"
+													:key="item.userid"
+													:label="item.username"
+													:value="item">
+													<span style="float: left">{{ item.username }}</span>
+													<span style="float: right; color: #8492a6; font-size: 13px">{{ item.shortName }}</span>
+													</el-option>
+												</el-select> 
+											</el-col> 
+										</el-row>
+										<el-button  slot="reference" icon="el-icon-s-check" @click="showSponsorsAndMonitors">主办人、监控人查询</el-button>
+									</el-popover>  
+							</el-row>   
+							<el-row  v-if="addForm.isRefForm=='1' && addForm.formId && addForm.formShowType!='table'" style="padding-top:10px;">
+								<form-data-mng-for-flow-form :formShowType="addForm.formShowType"  :companyDepts="companyDepts" :companyEmployees="companyEmployees" :formId="addForm.formId"  :qxCode="qxCode"  :procInstId="procInstId" :flowStartUserid="addForm.userid" :submitEvent="formDataSubmitEvent" @submit="startSubmit"><div></div></form-data-mng-for-flow-form> 
+							</el-row>
+							<el-row  v-if="actAssignee&&actAssignee.formId?true:false"  style="padding-top:10px;">
+								<form-data-for-flow-node :visible="actAssignee&&actAssignee.formId?true:false" :form-id="actAssignee.formId" :form-fields-json="actAssignee.formFieldsJson"  :submit-event="formDataSubmitEvent" @submit="startSubmit"><div></div></form-data-for-flow-node> 
+							</el-row>						
+
+							<el-row  v-if="addForm.mainContext && addForm.mainContext.length>0 && showMainContext"> 
+									<div  class="wf-main-context-box" v-if="screenWidth>=500">
+										<div style="padding: 20px;" class="wf-main-context" v-html="addForm.mainContext"></div>
+									</div>  
+								<div   class="wf-main-context-box" v-if="screenWidth<500">
+										<div style="padding: 20px;" v-html="addForm.mainContext"></div>
+								</div> 
+							</el-row>   
+							<el-row v-show="showComment">
+								<comment-step :task="task"  :procInstId="procInstId" :refresh="refreshCommentList"   @get-comments="getComments"></comment-step>  
+							</el-row> 
+							<div v-if="task.taskId"> 
+								<el-form-item :label="'办理意见'" prop="commentMsg">
+									<el-row class=" hidden-md-and-down">
+										<el-radio-group v-model="task.action">
+											<div v-if="task.action!='claim'">
+												<el-radio min-width="60px" v-show="taskInfo && taskInfo.delegation!='PENDING'" label="agree">同意&nbsp;&nbsp;&nbsp;&nbsp;</el-radio>
+												<el-radio v-show="taskInfo && taskInfo.delegation!='PENDING'" label="disAgree">不同意&nbsp;&nbsp;&nbsp;&nbsp;</el-radio>
+												<el-radio label="rejectToActivity">驳回&nbsp;&nbsp;&nbsp;&nbsp;</el-radio>
+												<el-radio label="sponsors">转主办&nbsp;&nbsp;&nbsp;&nbsp;</el-radio>
+												<el-radio label="rejectToStartUser">转发起人</el-radio>
+												<el-radio v-show="taskInfo && taskInfo.delegation!='RESOLVED'" label="transfer">请人代办</el-radio>
+												<el-radio label="delegate">请人协办,完成后返回给我</el-radio>
+												<el-radio v-show="taskInfo && taskInfo.delegation!='RESOLVED' && taskInfo.delegation=='PENDING'" label="resolve">返回给原执行人</el-radio>
+												<el-radio label="over">结束流程</el-radio>
+											</div>
+											<div v-else>
+												<el-radio label="claim">领取任务</el-radio>
+											</div>
+										</el-radio-group>
+									</el-row>
+									<el-row class=" hidden-lg-and-up"> 
+										<el-select   v-model="task.action" placeholder="请选择办理意见" >
+											<div v-if="task.action!='claim'">
+												<el-option  v-show="taskInfo && taskInfo.delegation!='PENDING'" label="同意" value="agree">  </el-option>
+												<el-option  v-show="taskInfo && taskInfo.delegation!='PENDING'" label="不同意" value="disAgree">  </el-option>
+												<el-option  label="驳回" value="rejectToActivity">  </el-option>
+												<el-option label="转主办" value="sponsors">  </el-option>
+												<el-option   label="转发起人" value="rejectToStartUser">  </el-option>
+												<el-option  v-show="taskInfo && taskInfo.delegation!='RESOLVED'" label="请人代办" value="transfer">  </el-option>
+												<el-option   label="请人协办,完成后返回给我" value="delegate">  </el-option>
+												<el-option v-show="taskInfo && taskInfo.delegation!='RESOLVED' && taskInfo.delegation=='PENDING'"  label="返回给原执行人" value="resolve">  </el-option>
+												<el-option label="结束流程" value="over">  </el-option>
+											</div>
+											<div v-else>
+												<el-radio label="claim">领取任务</el-radio>
+											</div>
+										</el-select> 
+									</el-row>
+									<el-row style="padding-top:10px;">
+										<el-input  type="textarea" :rows="3" v-model="task.commentMsg" auto-complete="off" ></el-input>
+									</el-row> 
+								</el-form-item>   
+								<el-form-item v-show="task.action=='rejectToActivity'" label="驳回节点" prop="rejectToActivity"> 
+									<el-col :span="10">
+										<el-select   style="width:100%" value-key="taskId" v-model="task.rejectActivity" @change="rejectToActivitySelectChange" placeholder="请选择">
+										<el-option
+										v-for="item in comments"
+										:key="item.taskId"
+										:label="item.name"
+										:value="item">
+										<span style="float: left">{{ item.name }}</span>
+										<span style="float: right; color: #8492a6; font-size: 13px">{{ item.username }}-{{item.message}}</span>
+										</el-option>
+									</el-select>
+									</el-col>
+								</el-form-item> 
+								<el-form-item v-show="task.action=='transfer'||task.action=='delegate'||needAssignee!=''||(actAssignee&&actAssignee.showNextAssignees=='1')"  :label="nextAssigneeListLabel" prop="needAssignee"> 
+									<el-col :xs="24" :sm="18" :md="16" :lg="14" :xl="12">
+										<el-select    value-key="userid"  v-model="task.nextAssigneeList" multiple @change="nextAssigneeListSelectChange"  placeholder="如果不选则系统自动判断">
+										<el-option
+										v-for="item in baseUserList"
+										:key="item.userid"
+										:label="item.username"
+										:value="item">
+										<span style="float: left">{{ item.username }}</span>
+										<span style="float: right; color: #8492a6; font-size: 13px">{{ item.shortName }}</span>
+										</el-option>
+									</el-select>
+									<el-button   @click.native="showCommonUserSelectDialog" :loading="addLoading">更多人员</el-button>  
+									</el-col>
+								</el-form-item> 
+							</div> 
+						</el-form> 
+				</el-row>
+				<el-dialog 
+					title="流程图"
+					:visible.sync="displayDiagram"
+					width="80%" append-to-body	> 
+					<el-image   :fit="'contain'" :src="diagramUrl">
+						<div slot="error" class="image-slot">
+							<i class="el-icon-picture-outline"></i>
+						</div>
+						<div slot="placeholder" class="image-slot">
+							正在全力加载中。。。。。。。。。。<i class="el-icon-loading"></i>
+						</div>
+					</el-image>  
+					<span slot="footer" class="dialog-footer"> 
+						<el-button type="primary" @click="displayDiagram = false">关闭</el-button>
+					</span>
+				</el-dialog> 
+				<el-dialog append-to-body
+					title="查看审批人"
+					:visible.sync="nodeInfoVisible"
+					width="60%"> 
+					<procinst-node-info-set   :node-infos="nodeInfos"   :visible="nodeInfoVisible"   @cancel="onNodeInfosCancel"   @confirm="onNodeInfosConfirm"></procinst-node-info-set> 
+				</el-dialog>
+				<el-dialog append-to-body
+					title="设置标签"
+					:visible.sync="tagSelectVisible"
+					width="60%"> 
+					<tag-mng :tagIds="addForm.tagIds==null?null:addForm.tagIds.split(',')"  :jump="true" @select-confirm="onTagSelected"></tag-mng> 
+				</el-dialog>
+				
+				<el-dialog append-to-body
+					title="选择员工"
+					:visible.sync="userSelectVisible"
+					width="60%">  
+					<users-select :select-userids="task.nextAssigneeList.map(i=>i.userid)"   @confirm="onUserSelected"></users-select> 
+				</el-dialog> 
+				<el-dialog append-to-body
+					title="候选人/候选部门/候选岗位配置"
+					:visible.sync="selectCandidateSetVisible"
+					width="60%"> 
+					<task-candidate-set :taskId="taskInfo.taskId" :procInstId="taskInfo.procInstId" @confirm="selectCandidateSetVisible=false"></task-candidate-set> 
+				</el-dialog> 
+			</el-row>
+		</el-row>
+		<el-row class="page-bottom">  
+			<el-button    @click.native="handleCancel" icon="el-icon-back">取消</el-button>  
+			<el-button   v-if="screenWidth>=500"  @click.native="handlePrint" icon="el-icon-printer">打印</el-button>    
+			<el-button   v-if="isArchive"  @click.native="handleArchive" icon="el-icon-s-grid">归档</el-button> 
+			<el-button   v-if="task.taskId"   @click.native="addComment" :loading="addLoading" icon="el-icon-finished">只存办理意见</el-button>  
+			<el-button   v-if="task.action!='claim' && task.taskId" type="primary" @click.native="completeHandle" :loading="addLoading"  icon="el-icon-finished">提交任务</el-button>  
+			<el-button  v-if="task.action=='claim' && task.taskId"  @click.native="completeHandle" :loading="addLoading"  icon="el-icon-finished">领取任务</el-button>  
+			<el-button  v-if="task.action=='claim' && task.taskId  && sponsors.some(i=>i.userid==userInfo.userid)"  @click.native="showTaskCandidateSet" :loading="addLoading"  icon="el-icon-s-check">添加候选人</el-button> 
+ 
 		</el-row>
 	</section>
 </template>
@@ -1143,18 +1135,23 @@
 
 </script>
 
-<style> 
+<style scoped> 
 .wf-title {
-	text-align: center;
-	font: outline;
-	font-size:2.5em; 
+	text-align: center; 
+	font-size:2.5em;  
+	overflow-x:auto;
+	overflow-y:auto;
+	
 }
 .wf-sub-title {
-	text-align: center;
-	font: outline; 
-	margin-top: 0.875em;
-	margin-bottom: 0.875em;
+	text-align: center;  
+	font-size:1.5em;  
+	overflow-x:auto;
+	overflow-y:auto;
 }  
+.wf-sub-sub-title{ 
+	text-align: center;  
+}
  .wf-main-context-box {  
 	border:1px dashed #000;
 	margin-bottom: 10px;
@@ -1171,5 +1168,17 @@
 	text-align:center;
 	float:left;
 	padding-top:5px;
+} 
+.page-title{
+	height: calc(10vh);
+	overflow-x:auto;
+	overflow-y:auto;
+}
+.page-context{
+	height: calc(70vh);
+	overflow: auto;
+}
+.page-bottom{
+	height: calc(5vh); 
 }
 </style>

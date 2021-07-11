@@ -1,13 +1,8 @@
 <template>
   <section>
-    <el-row class="app-container">
-      <!-- <el-col :xs="4" :sm="4" :md="3" :lg="3" :xl="3" class="hidden-md-and-down">
-        <category-tree ref="categoryTree" multiple :expandOnClickNode="false" :defaultExpandAll="true" show-checkbox
-          :current-key="addForm.categoryId" v-on:check-change="handleCategoryCheckChange"></category-tree>
-      </el-col> -->
-      <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+    <el-row class="page-container border"> 
         <!--列表 Procinst act_hi_procinst-->
-        <el-row>
+        <el-row class="page-header">
           <el-select v-model="filters.filterType" clearable placeholder="查询范围" class="hidden-lg-and-down">
             <el-option value="" label="全部"> </el-option>
             <el-option value="startUserId" label="我发起"> </el-option>
@@ -19,19 +14,18 @@
             <el-option v-for="item in categorys" :key="item" :label="item" :value="item"></el-option>
           </el-select>
 
-          <el-date-picker v-model="filters.startTimeRanger" class="hidden-sm-and-down" type="daterange" align="right"
+          <el-date-picker v-model="filters.startTimeRanger" class="hidden-sm-and-down" type="daterange" 
             unlink-panels range-separator="-" start-placeholder="创建日期" end-placeholder="创建日期" value-format="yyyy-MM-dd"
             :default-time="['00:00:00','23:59:59']" :picker-options="pickerOptions">
           </el-date-picker>
-          <el-input v-model="filters.key" style="width:270px;" placeholder="模糊查询">
-            <template slot="append">
-              <el-button v-on:click="searchProcinsts" icon="el-icon-search">查询</el-button>
-            </template>
-          </el-input>
-          <el-popover title="更多查询条件" placement="top-start" width="400" trigger="click">
-            <el-row class="more-filter-item">
-              <el-col :span="24">
-                <font class="more-label-font">
+          <el-input v-model="filters.key" placeholder="模糊查询">  </el-input>
+          <el-button type="primary" class="padding-left" v-on:click="searchProcinsts" icon="el-icon-search">查询</el-button>
+          <el-button class="padding-left"  icon="el-icon-more" @click="moreFilterVisible=true" circle></el-button>
+          <el-drawer title="更多查询条件" :visible.sync="moreFilterVisible"   append-to-body :size="400">
+            <el-row class="page-container more-filter">
+              <el-divider content-position="left">查询条件</el-divider>
+              <el-row>
+                <font >
                   查询范围
                 </font>
                 <el-select size="mini" v-model="filters.filterType" placeholder="查询范围">
@@ -41,17 +35,17 @@
                   <el-option value="sponsors" label="我主办"> </el-option>
                   <el-option value="monitors" label="我监控"> </el-option>
                 </el-select>
-              </el-col>
-              <el-col :span="24">
-                <font class="more-label-font">
+              </el-row>
+              <el-row>
+                <font >
                   分类
                 </font>
                 <el-select size="mini"  v-model="filters.procCategory" clearable filterable placeholder="选择分类" >
                   <el-option v-for="item in categorys" :key="item" :label="item" :value="item"></el-option>
                 </el-select>
-              </el-col>
-              <el-col :span="24">
-                <font class="more-label-font">
+              </el-row>
+              <el-row>
+                <font >
                   标签查找
                 </font>
                 <el-row v-show="filters.tags && filters.tags.length>0">
@@ -62,9 +56,9 @@
                 </el-row>
                 <el-button v-if="filters.tags==null || filters.tags.length==0" size="mini"
                   @click.native="showTagSelect(false)">选择标签</el-button>
-              </el-col>
-              <el-col :span="24">
-                <font class="more-label-font">
+              </el-row>
+              <el-row>
+                <font >
                   任务执行
                 </font>
                 <el-tag v-if="filters.assignee" :type="'success'" closable :disable-transitions="false"
@@ -72,47 +66,46 @@
                   {{filters.assignee.username}}
                 </el-tag>
                 <el-button v-else size="mini" @click.native="userSelectVisible=true">选择执行人</el-button>
-              </el-col>
-              <el-col :span="24">
-                <font class="more-label-font">
+              </el-row>
+              <el-row>
+                <font >
                   开始日期：
                 </font>
                 <el-date-picker v-model="filters.startTimeRanger" type="daterange" align="right" unlink-panels
                   range-separator="-" start-placeholder="创建日期" end-placeholder="创建日期" value-format="yyyy-MM-dd"
                   :default-time="['00:00:00','23:59:59']" :picker-options="pickerOptions">
                 </el-date-picker>
-              </el-col>
-              <el-col :span="24">
+              </el-row>
+              <el-row>
 
-                <font class="more-label-font">
+                <font >
                   计划完成日期：
                 </font>
                 <el-date-picker v-model="filters.planFinishTimeRanger" type="daterange" align="right" unlink-panels
                   range-separator="-" start-placeholder="计划完成日期" end-placeholder="计划完成日期" value-format="yyyy-MM-dd"
                   :default-time="['00:00:00','23:59:59']" :picker-options="pickerOptions">
                 </el-date-picker>
-              </el-col>
+              </el-row>
               <!-- <el-col :span="24">
                 <category-tree class="hidden-lg-and-up" ref="categoryTree" multiple :expandOnClickNode="false"
                   :defaultExpandAll="true" show-checkbox :current-key="addForm.categoryId"
                   v-on:check-change="handleCategoryCheckChange"></category-tree>
               </el-col> -->
 
-              <el-col :span="24" style="margin-top: 11px;">
+              <el-row>
                 <el-button size="mini" type="primary" v-on:click="searchProcinsts" icon="el-icon-search">查询</el-button>
-              </el-col>
+              </el-row>
 
-              <el-col :span="24">
+              <el-row>
                 <el-divider content-position="left">其它操作</el-divider>
                 <el-button size="mini" @click.native="showTagSelect(true)">给任务打标签</el-button>
                 <el-button size="mini" @click="handleDownload">导出数据</el-button>
-              </el-col>
+               </el-row>
             </el-row>
-            <el-button slot="reference" icon="el-icon-more" style="margin-left: 13px;" circle></el-button>
-          </el-popover>
+          </el-drawer>
         </el-row>
-        <el-row style="padding-top:20px;">
-          <el-table ref="table" :max-height="tableHeight" :data="procinsts" highlight-current-row
+        <el-row class="page-main">
+          <el-table ref="table" :height="tableHeight" :data="procinsts" highlight-current-row
             v-loading="listLoading" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
             <el-table-column type="selection" width="40"></el-table-column>
             <el-table-column type="index" width="40"></el-table-column>
@@ -149,15 +142,14 @@
             @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum"
             :page-size="pageInfo.pageSize" :total="pageInfo.total" style="float:right;"></el-pagination>
           <!--编辑 Execution act_ru_execution界面-->
-          <el-dialog title="任务详情" fullscreen :visible.sync="editFormVisible" :width="dialogWidth()"
+          <el-drawer title="任务详情"  :visible.sync="editFormVisible" :size="dialogWidth()" :withHeader="false"
             :close-on-click-modal="false">
             <procinst-parames-execution-set :companyEmployees="companyEmployees" :companyDepts="companyDepts"
               :taskInfo="editForm" :procDefId="editForm.procDefId" :procInstId="editForm.procInstId"
               :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit">
             </procinst-parames-execution-set>
-          </el-dialog>
-        </el-row>
-      </el-col>
+          </el-drawer>
+        </el-row> 
 
       <el-dialog append-to-body title="选择员工" :visible.sync="userSelectVisible" width="60%">
         <users-select :select-userids="filters.assignee?[filters.assignee.userid]:[]" @confirm="onUserSelected">
@@ -349,6 +341,7 @@
         isBatchSetProcTags: false,
         userSelectVisible: false,
         tableHeight: 300,
+        moreFilterVisible:false,
         /**end 自定义属性请在上面加 请加备注**/
       };
     }, //end data
@@ -365,10 +358,10 @@
       },
 
       dialogWidth: function() {
-        if (screen.width > 500) {
-          return "80%";
+        if (screen.width > 600) {
+          return "60%";
         } else {
-          return "100%";
+          return "80%";
         }
       },
       handleSizeChange(pageSize) {
@@ -917,7 +910,7 @@
       });
       this.$nextTick(() => {
         var clientRect = this.$refs.table.$el.getBoundingClientRect();
-        var subHeight = 70 / 1000 * window.innerHeight;
+        var subHeight = 60 / 1000 * window.innerHeight;
         this.tableHeight = window.innerHeight - clientRect.y - this.$refs.table.$el.offsetTop - subHeight;
         if (this.isMyStart) {
           this.filters.filterType = "startUserId"
@@ -937,43 +930,5 @@
 </script>
 
 <style scoped>
-  .filters-show {
-    margin-left: 20px;
-    margin-top: 10px;
-    margin-bottom: 0px;
-  }
-
-  .filters-label {
-    font-size: 14px;
-    color: black;
-    font-weight: bold;
-  }
-
-  .more-filter-item {
-    margin: 20px 0px;
-  }
-
-  .more-filter-item .el-col {
-    margin: 2px 2px;
-  }
-
-  .more-filter-item button {
-    margin: 2px 2px;
-  }
-
-  .more-label-font {
-    text-align: center;
-    float: left;
-    height: 28px;
-    line-height: 28px;
-    margin-right: 10px;
-  }
-
-  .el-popover__title {
-    color: #303133;
-    font-size: 18px;
-    line-height: 1;
-    margin-bottom: 12px;
-    margin-top: 11px;
-  }
+  
 </style>

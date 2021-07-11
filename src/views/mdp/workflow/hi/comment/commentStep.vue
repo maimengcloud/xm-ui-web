@@ -1,7 +1,7 @@
 <template>
 	<section> 
-		<el-row style="max-height:400px;overflow-y:scroll;overflow-x:hidden;">  
-			<div  style="border:1px dashed #000;padding:10px;"> 	
+		<el-row style="border:1px dashed #000;padding:10px;">  
+			<div  > 	
 				  <div v-if="!comments || comments.length<=0" style="padding-left: 10px;">暂无信息</div>
 				  <el-steps :space="60"  direction="vertical" process-status="process" finish-status="success">
 				    <el-step v-for="(item,index) in comments " :key="index" status="success">

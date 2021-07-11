@@ -1,8 +1,7 @@
 <template>
   <section>
-    <el-row class="app-container"> 
-      <el-col v-if="showCalendar==false">
-        <el-row>
+    <el-row class="page-container">  
+        <el-row class="page-header">
           <el-select v-model="filters.filterType" clearable placeholder="查询范围" class="hidden-md-and-down">
             <el-option value="" label="全部"> </el-option>
             <el-option value="startUserId" label="我发起"> </el-option>
@@ -13,30 +12,30 @@
           <el-select v-model="filters.procCategory" clearable filterable placeholder="选择分类" >
             <el-option v-for="item in categorys" :key="item" :label="item" :value="item"></el-option>
           </el-select>
-          <el-date-picker v-model="filters.startTimeRanger" class="" type="daterange" align="right"
+          <el-date-picker v-model="filters.startTimeRanger"  type="daterange" align="right"
             unlink-panels range-separator="-" start-placeholder="创建日期" end-placeholder="创建日期" value-format="yyyy-MM-dd"
             :default-time="['00:00:00','23:59:59']" :picker-options="pickerOptions">
           </el-date-picker>
-          <el-input v-model="filters.key" style="width:270px;" placeholder="模糊查询">
-            <template slot="append">
-
-              <el-button v-on:click="searchExecutions" icon="el-icon-search">查询</el-button>
-            </template>
+          <el-input v-model="filters.key"  placeholder="模糊查询"> 
           </el-input>
+          <el-button type="primary" v-on:click="searchExecutions"  icon="el-icon-search">查询</el-button>
+           <el-button  @click="moreFilterVisible=true" icon="el-icon-more" circle></el-button>
           <el-popover placement="top" width="375" trigger="manual" v-model="weixinContentVisible">
             <p>{{weixinContent}}</p>
             <div style="text-align: right; margin: 0">
               <el-button size="mini" type="text" @click="doCopyWeixinUrl">拷贝链接</el-button>
               <el-button type="primary" size="mini" @click="doCopyWeixinContent">拷贝内容</el-button>
             </div>
-            <el-button slot="reference" style="margin-left: 13px;" class="hidden-lg-and-down" icon="el-icon-alarm-clock " v-on:click="showWeixin">
+            <el-button slot="reference" class="hidden-lg-and-down" icon="el-icon-alarm-clock " v-on:click="showWeixin">
               微信催办</el-button>
           </el-popover>
+          
+          <el-drawer title="更多查询条件" :visible.sync="moreFilterVisible"   append-to-body :size="400">
+            <el-row class="page-container more-filter">
+              <el-divider content-position="left">查询条件</el-divider>
+              <el-row>
 
-          <el-popover title="更多查询条件" placement="top-start" width="400" trigger="click">
-            <el-row class="more-filter-item">
-              <el-col :span="24">
-                <font class="more-label-font">
+                <font>
                   查询范围
                 </font>
                 <el-select size="mini" v-model="filters.filterType" placeholder="查询范围">
@@ -46,17 +45,17 @@
                   <el-option value="sponsors" label="我主办"> </el-option>
                   <el-option value="monitors" label="我监控"> </el-option>
                 </el-select>
-              </el-col> 
-              <el-col :span="24">
-                <font class="more-label-font">
+              </el-row> 
+              <el-row >
+                <font>
                   流程分类
                 </font>
                 <el-select v-model="filters.procCategory" clearable filterable placeholder="选择分类">
                   <el-option v-for="item in categorys" :key="item" :label="item" :value="item"></el-option>
                 </el-select>
-              </el-col>
-              <el-col :span="24">
-                <font class="more-label-font">
+              </el-row>
+              <el-row >
+                <font>
                   标签查找
                 </font>
                 <el-row v-show="filters.tags && filters.tags.length>0">
@@ -67,9 +66,9 @@
                 </el-row>
                 <el-button v-if="filters.tags==null || filters.tags.length==0" size="mini"
                   @click.native="showTagSelect(false)">选择标签</el-button>
-              </el-col>
-              <el-col :span="24">
-                <font class="more-label-font">
+              </el-row>
+              <el-row >
+                <font>
                   任务执行
                 </font>
                 <el-tag v-if="filters.assignee" :type="'success'" closable :disable-transitions="false"
@@ -77,62 +76,58 @@
                   {{filters.assignee.username}}
                 </el-tag>
                 <el-button v-else size="mini" @click.native="userSelectVisible=true">选择执行人</el-button>
-              </el-col>
-              <el-col :span="24">
-                <font class="more-label-font">
+              </el-row>
+              <el-row >
+                <font>
                   流程状态
                 </font>
                 <el-button size="mini" :type="filters.suspensionState=='2'?'success':''"
                   v-on:click="filters.suspensionState='2'">挂起的</el-button>
                 <el-button size="mini" :type="filters.suspensionState=='1'?'success':''"
-                  v-on:click="filters.suspensionState='1'">活动的</el-button>
-
-
-              </el-col>
-              <el-col :span="24">
-                <font class="more-label-font">
+                  v-on:click="filters.suspensionState='1'">活动的</el-button> 
+              </el-row>
+              <el-row >
+                <font>
                   开始日期
                 </font>
                 <el-date-picker v-model="filters.startTimeRanger" type="daterange" align="right" unlink-panels
                   range-separator="-" start-placeholder="创建日期" end-placeholder="创建日期" value-format="yyyy-MM-dd"
                   :default-time="['00:00:00','23:59:59']" :picker-options="pickerOptions">
                 </el-date-picker>
-              </el-col>
-              <el-col :span="24">
+              </el-row>
+              <el-row >
 
-                <font class="more-label-font">
+                <font>
                   计划完成日期
                 </font>
                 <el-date-picker v-model="filters.planFinishTimeRanger" type="daterange" align="right" unlink-panels
                   range-separator="-" start-placeholder="计划完成日期" end-placeholder="计划完成日期" value-format="yyyy-MM-dd"
                   :default-time="['00:00:00','23:59:59']" :picker-options="pickerOptions">
                 </el-date-picker>
-              </el-col> 
-              <el-col :span="24">
-                <el-checkbox size="mini" v-model="showCalendar">按日历风格显示</el-checkbox>
-              </el-col>
-
-
-
-              <el-col :span="24" style="margin-top: 11px;">
+              </el-row>  
+              <el-row >
                 <el-button size="mini" type="primary" v-on:click="searchExecutions" icon="el-icon-search">查询</el-button>
-              </el-col>
+              </el-row>
 
-              <el-col :span="24">
+              <el-row >
                 <el-divider content-position="left">其它操作</el-divider>
+                <el-checkbox size="mini" v-model="showCalendar">按日历风格显示</el-checkbox>
                 <el-button size="mini" @click.native="showTagSelect(true)">添加标签</el-button>
-                <el-button size="mini" @click="handleDownload">导出数据</el-button>
+                <el-button size="mini" @click="handleDownload">导出数据</el-button> 
+              </el-row> 
+              <el-row >
+                <el-divider content-position="left">催办</el-divider> 
                 <el-button size="mini" v-on:click="showWeixinTask">微信催办</el-button>
                 <el-button size="mini" v-on:click="showSendSms">短信催办</el-button>
                 <el-button size="mini" v-on:click="showOaMsg">OAMSG催办</el-button>
-              </el-col>
+              </el-row>
             </el-row>
-            <el-button slot="reference" icon="el-icon-more" style="margin-left: 13px;" circle></el-button>
-          </el-popover>
+           
+          </el-drawer>
         </el-row>
         <!--列表 Execution act_ru_execution-->
-        <el-row style="padding-top:20px;">
-          <el-table ref="table" :max-height="tableHeight" :data="executions" highlight-current-row
+        <el-row v-if="showCalendar==false" class="page-main">
+          <el-table ref="table" :height="tableHeight" :data="executions" highlight-current-row
             v-loading="listLoading" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
             <el-table-column type="selection" width="40"></el-table-column>
             <el-table-column type="index" width="40"></el-table-column>
@@ -163,8 +158,7 @@
             <el-table-column prop="suspensionState" label="状态" min-width="80" :formatter="formatterSuspensionState">
             </el-table-column>
             <el-table-column label="操作" :width="screenWidth<500?80:160" fixed="right">
-              <template slot-scope="scope">
-                <el-button type="primary" @click="showTasksInfo( scope.row,scope.$index)">详情</el-button>
+              <template slot-scope="scope"> 
                 <el-dropdown @command="handleCommand" class="hidden-sm-and-down">
                   <span class="el-dropdown-link">
                     更多<i class="el-icon-arrow-down el-icon--right"></i>
@@ -185,12 +179,10 @@
           <el-pagination layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange"
             @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum"
             :page-size="pageInfo.pageSize" :total="pageInfo.total" style="float:right;"></el-pagination>
-        </el-row>
-      </el-col>
+        </el-row> 
+ 
 
-      <el-col v-if="showCalendar==true">
-
-        <el-calendar v-loading="listLoading" v-model="filters.calendarDate">
+        <el-calendar v-if="showCalendar==true" v-loading="listLoading" v-model="filters.calendarDate" class="page-main">
           <!-- 这里使用的是 2.5 slot 语法，对于新项目请使用 2.6 slot 语法-->
           <template slot="dateCell" slot-scope="{date, data}">
             <div :class="data.isSelected ? 'is-selected' : ''">
@@ -247,8 +239,7 @@
               </div>
             </div>
           </template>
-        </el-calendar>
-      </el-col>
+        </el-calendar> 
       <el-dialog append-to-body title="选择员工" :visible.sync="userSelectVisible" width="60%">
         <users-select :select-userids="filters.assignee?[filters.assignee.userid]:[]" @confirm="onUserSelected">
         </users-select>
@@ -265,13 +256,12 @@
           :visible="sendSmsVisible" @cancel="sendSmsVisible=false"></send-sms>
       </el-dialog>
       <!--编辑 Execution act_ru_execution界面-->
-      <el-dialog title="任务详情" :visible.sync="editFormVisible" fullscreen :width="dialogWidth()"
-        :close-on-click-modal="false">
+      <el-drawer title="任务详情" :visible.sync="editFormVisible"  :size="dialogWidth()" :withHeader="false">
         <procinst-parames-execution-set :companyEmployees="companyEmployees" :companyDepts="companyDepts"
           :taskInfo='editForm' :isArchive="isArchive" :procDefId="editForm.procDefId" :procInstId="editForm.procInstId"
           :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit">
         </procinst-parames-execution-set>
-      </el-dialog>
+      </el-drawer>
     </el-row>
   </section>
 </template>
@@ -500,6 +490,7 @@
         userSelectVisible: false,
         showCalendar: true,
         tableHeight: 300,
+        moreFilterVisible:false,
         /**end 自定义属性请在上面加 请加备注**/
       }
     }, //end data
@@ -630,7 +621,8 @@
         console.log("xxxxxxxxxxxxxx进来了");
         var task = Object.assign({}, row);
         this.editForm = task;
-
+        this.editFormVisible=true;
+        /**
         this.editForm = Object.assign({}, row);
         this.$router.push({
           name: 'ProcinstParamesExecutionSetRoute',
@@ -638,6 +630,7 @@
             taskInfo: task
           }
         });
+        */
       },
       //显示新增界面 Execution act_ru_execution
       showAdd: function() {
@@ -684,10 +677,10 @@
       },
 
       dialogWidth: function() {
-        if (screen.width > 500) {
-          return "80%";
+        if (screen.width > 600) {
+          return "60%";
         } else {
-          return "100%";
+          return "80%";
         }
       },
       //选择行execution
@@ -1244,10 +1237,10 @@
       this.$nextTick(() => {
         if (!this.showCalendar) {
           var clientRect = this.$refs.table.$el.getBoundingClientRect();
-          var subHeight = 70 / 1000 * window.innerHeight;
+          var subHeight = 60 / 1000 * window.innerHeight;
           this.tableHeight = window.innerHeight - clientRect.y - this.$refs.table.$el.offsetTop - subHeight;
         } else {
-          var subHeight = 70 / 1000 * window.innerHeight;
+          var subHeight = 60 / 1000 * window.innerHeight;
           this.tableHeight = window.innerHeight - subHeight;
         } 
       });
@@ -1272,94 +1265,5 @@
 </script>
 
 <style scoped>
-  .el-dropdown-link {
-    cursor: pointer;
-    color: #409EFF;
-  }
-
-  .el-icon-arrow-down {
-    font-size: 12px;
-  }
-
-  .filters-show {
-    margin-left: 20px;
-    margin-top: 10px;
-    margin-bottom: 0px;
-  }
-
-  .filters-label {
-    font-size: 14px;
-    color: black;
-    font-weight: bold;
-  }
-
-  .more-filter-item {
-    margin: 20px 0px;
-
-  }
-
-  .more-filter-item .el-col {
-    margin: 2px 2px;
-
-  }
-
-  .more-filter-item button {
-    margin: 2px 0px;
-  }
-
-  .more-label-font {
-    text-align: center;
-    float: left;
-    height: 28px;
-    line-height: 28px;
-    margin-right: 10px;
-  }
-
-  .el-divider--horizontal {
-    display: block;
-    height: 1px;
-    width: 100%;
-    margin: 24px 0;
-    padding-top: 20px;
-    margin-left: 0px;
-    background: #fff;
-  }
-
-  .el-divider__text.is-left {
-    left: 0px;
-  }
-
-  .el-divider__text {
-    padding: 0px 0px;
-  }
 </style>
-
-<style>
-  .el-input-group__append,
-  .el-input-group__prepend {
-    background-color: #409EFF !important;
-    color: #ffffff !important;
-    vertical-align: middle;
-    display: table-cell;
-    position: relative;
-    border: 1px solid #409EFF !important;
-    padding: 0 20px;
-    width: 1px;
-    white-space: nowrap;
-  }
-  .el-calendar__header {
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-      justify-content: space-between;
-      padding: 20px 0px;
-      padding-top: 0px;
-      border: none;
-  }
-  .el-calendar__body {
-      padding: 12px 20px 35px;
-      border: 1px solid #EBEEF5;
-  }
-</style>
+   

@@ -91,7 +91,7 @@
 						{{showCalendar==true?'切换列表':'切换日历'}}
 					</el-tag>   
 				</el-row>
-				<el-row class="app-container">
+				<el-row class="page-container border">
 					<el-col :xs="4" :sm="4" :md="3" :lg="3" :xl="3" class="hidden-sm-and-down">
 						<dept-tree ref="deptTree" show-root default-expand-all multiple show-checkbox :expand-on-click-node="false" v-on:check-change="handleDeptTreeCheckChange"></dept-tree> 
 					</el-col>

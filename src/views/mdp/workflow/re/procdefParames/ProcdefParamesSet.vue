@@ -1,7 +1,6 @@
 <template>
 	<section>
-		<el-row class="app-container">
-			<!--新增界面 ProcinstParames 流程实例参数设置表-->
+		 <el-row class="page-container border padding">
 			<el-col :span="24">
 			<!--新增界面 ProcdefParames 流程定义参数设置表-->
 			<el-form :model="addForm"   label-width="120px" label-position="left" :rules="addFormRules" ref="addForm" v-loading="listLoading">
