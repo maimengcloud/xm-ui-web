@@ -1,0 +1,110 @@
+//main-container全局样式
+.page-full-height{ 
+  height: calc(100vh); 
+}
+.page-height{
+  height: calc(90vh); 
+} 
+.page-container { 
+  .page-header{   
+    flex: 0 0 auto; 
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height: 60px;  
+    overflow-x: hidden;
+    background-color:rgb(182, 206, 214);
+    .el-button{
+      margin-left:10px;   
+    }
+    .el-input{ 
+      width:270px;
+      margin-left:10px;  
+    } 
+    .el-date-editor{
+      margin-left:10px;  
+    }
+  }
+  
+  .page-tips{ 
+    position:absolute;
+    font-size: 16px;  
+    bottom: 0px;
+    color: red;
+    padding-left: 10px;
+    flex: 0 0 auto; 
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height: 60px;  
+    overflow-x: hidden;
+    background-color:rgb(182, 206, 214); 
+  }
+  .page-main{  
+    padding-left: 10px;
+    padding-right: 10px; 
+    border:1px solid #e8e8e8;
+  }
+  .page-bottom{  
+    padding-left:5px; 
+    padding-right:5px;
+  }
+}
+
+.border{ 
+  border: 1px solid #e8e8e8;
+}
+.padding{
+  padding:10px;
+}
+.padding-top{
+  padding-top: 10px;
+}
+.padding-bottom{
+  padding-bottom: 10px;
+}
+.padding-left{
+  padding-left: 10px;
+}
+.border-top{
+  border-top: 1px solid #e8e8e8;
+} 
+.border-bottom{
+  border-bottom: 1px solid #e8e8e8;
+}
+.padding-right{
+  padding-right: 10px;
+} 
+.input-width{
+  width:270px;
+} 
+
+/**
+更多按钮
+**/
+.more-filter {
+  margin: 20px 0px; 
+  padding-left: 10px;
+  padding-right: 10px;
+  font{
+    text-align: center;
+    float: left;
+    height: 28px;
+    line-height: 28px;
+    margin-right: 10px;
+    margin-top: 2px;
+  }
+  .el-row {
+    padding-top: 10px;
+  }
+}
+.more-label-font {
+  text-align: center;
+  float: left;
+  height: 28px;
+  line-height: 28px;
+  margin-right: 10px;
+  margin-top: 2px;
+} 
