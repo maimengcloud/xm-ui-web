@@ -65,6 +65,14 @@ var topModules=
       moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
     },
     {
+      moduleName:"资产",
+      topModuleId:'oa',
+      link:"/oa/erp/pur/require/RequireMng",
+      icon: require("../../assets/image/platform/module-property.png"),
+      isHighlight:false,
+      moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
+    },
+    {
       moduleName:"项目",
       topModuleId:'xm',
       link:"/xm/core/xmProject/XmProjectMng",
@@ -73,10 +81,42 @@ var topModules=
       moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
     },
     {
-      moduleName:"资产",
-      topModuleId:'oa',
-      link:"/oa/erp/pur/require/RequireMng",
-      icon: require("../../assets/image/platform/module-property.png"),
+      moduleName:"产品",
+      topModuleId:'xm',
+      link:"/xm/core/xmProduct/XmProductMng",
+      icon: require("../../assets/image/platform/module-marketing.png"),
+      isHighlight:false,
+      moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
+    },
+    {
+      moduleName:"故事",
+      topModuleId:'xm',
+      link:"/xm/core/xmMenu/XmMenuMng",
+      icon: require("../../assets/image/platform/module-intelligentForms.png"),
+      isHighlight:false,
+      moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
+    },
+    {
+      moduleName:"迭代",
+      topModuleId:'xm',
+      link:"/xm/core/xmIteration/XmIterationMng",
+      icon: require("../../assets/image/platform/module-iteration.png"),
+      isHighlight:false,
+      moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
+    },
+    {
+      moduleName:"任务",
+      topModuleId:'xm',
+      link:"/xm/core/xmTask/XmMyTaskCenter",
+      icon: require("../../assets/image/platform/module-task.png"),
+      isHighlight:false,
+      moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
+    },
+    {
+      moduleName:"缺陷",
+      topModuleId:'xm',
+      link:"/xm/core/xmQuestion/XmQuestionMng",
+      icon: require("../../assets/image/platform/anti-fake.png"),
       isHighlight:false,
       moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
     },
