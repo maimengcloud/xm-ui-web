@@ -47,7 +47,7 @@
 					</el-tooltip>
 				</el-form-item>  
 				<el-form-item  label="所属故事" prop="menuId"> 
-					 {{editForm.menuName}} <el-button @click="menuVisible=true" round>选择归属故事</el-button>
+					 {{editForm.menuName}} <el-button @click="menuVisible=true" round>选择归属故事</el-button><el-button @click="toMenu" round>查看故事明细</el-button>
 				</el-form-item> 
 				<el-form-item prop="skill" label="技能要求">
 					<el-button class="useradd-icon" type="text" @click.stop="showSkill()" icon="el-icon-circle-plus-outline">增加</el-button>
@@ -56,7 +56,17 @@
 				<el-form-item label="任务描述" prop="description">
 					<el-input type="textarea" :autosize="{ minRows: 4, maxRows: 10}" v-model="editForm.description" placeholder="任务描述" ></el-input>
 				</el-form-item>  
-				<el-divider content-position="left" id="planInfo">进度计划</el-divider>  
+				<el-divider content-position="left" id="planInfo">进度计划</el-divider>   
+				<el-form-item label="任务负责人"> 
+					<el-tag  v-if="editForm.createUserid" style="margin-left:10px;border-radius:30px;"  >{{editForm.createUsername}}</el-tag>
+					<el-tag  v-else style="margin-left:10px;border-radius:30px;"  icon="el-icon-right" >未设置</el-tag>
+					<el-button  @click="showGroupUserSelect(editForm)" icon="el-icon-setting">设置负责人</el-button>
+				</el-form-item>
+				<el-form-item label="任务执行人">
+					<el-tag   style="margin-left:10px;border-radius:30px;"  >{{editForm.exeUsernames}}</el-tag>
+					<el-button  @click="showExecusers(editForm)" icon="el-icon-s-data">查看队员情况</el-button>
+					<el-button type="primary" @click="toJoin" icon="el-icon-plus">我要加入</el-button>
+				</el-form-item>
 				<el-form-item label="预计时间"> 
 						<el-tooltip content="计划类型">
 							<el-select v-model=" editForm.planType" style="width:20%;">
@@ -85,7 +95,9 @@
 				<el-form-item label="预估金额" prop="taskOut">
 					<el-checkbox v-model="editForm.taskOut" @change="onTaskOutChange" true-label="1" false-label="0">外包任务</el-checkbox> 
 					<el-input-number v-model="editForm.budgetCost" :precision="2" :step="1000" :min="0" placeholder="预算金额"></el-input-number>   元
-				</el-form-item>   
+				</el-form-item>    
+				<el-divider content-position="left" id="settleInfo">结算信息<font style="color:red">实际数据由后台自动补齐，无需手工添加</font></el-divider>  
+				
 				<el-form-item label="实际时间" prop="actStartTime">
 						<el-date-picker
 							v-model="actDateRanger"
@@ -103,12 +115,11 @@
 				</el-form-item>  
 				
 				<el-form-item label="实际工作量" prop="actWorkload">
-					<el-input-number v-model="editForm.actWorkload" :precision="2" :step="8" :min="0" placeholder="实际工作量"></el-input-number>  <el-tag>参考{{refActWorkload}}人时，{{this.toFixed(refActWorkload/8/20)}}人月</el-tag>     
+					<el-input-number v-model="editForm.actWorkload" :precision="2" :step="8" :min="0" placeholder="实际工作量"></el-input-number>  <el-tag>由后台自动计算，无需填写</el-tag>     
 				</el-form-item> 
 				<el-form-item label="实际金额" prop="actCost">
-					<el-input-number v-model="editForm.actCost" :precision="2" :step="1000" :min="0" placeholder="实际金额"></el-input-number>    
-				</el-form-item>  
-				<el-divider content-position="left" id="settleInfo">结算信息</el-divider>    
+					<el-input-number v-model="editForm.actCost" :precision="2" :step="1000" :min="0" placeholder="实际金额"></el-input-number>    <el-tag>由后台自动计算，无需填写</el-tag>  
+				</el-form-item>   
 				<el-form-item label="其它配置" prop="taskClass">
 					<el-checkbox v-model="editForm.taskClass" true-label="1" false-label="0">是否需要结算</el-checkbox>
 					<el-checkbox v-model="editForm.toTaskCenter" true-label="1" false-label="0">发布到互联网任务大厅</el-checkbox>  
@@ -141,7 +152,9 @@
 		<!-- <el-dialog append-to-body :title="'技能要求'" :visible.sync="skillVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 			<xm-skill-mng :visible="skillVisible" :task-id="editForm.id" @cancel="skillVisible=false" @getSkill="getSkill"></xm-skill-mng>
 		</el-dialog> -->
-
+		<el-dialog append-to-body title="选择负责人" :visible.sync="groupUserSelectVisible" width="80%"    :close-on-click-modal="false">
+			<xm-project-group-select :visible="groupUserSelectVisible" :sel-project="selProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-project-group-select>
+		</el-dialog>
 		<el-dialog append-to-body title="新增技能" :visible.sync="skillVisible" width="50%"    :close-on-click-modal="false">
 			<skill-mng :task-skills="taskSkills" :jump="true" @select-confirm="onTaskSkillsSelected"></skill-mng>
 		</el-dialog>
@@ -153,13 +166,21 @@
 		<el-dialog title="选中任务" :visible.sync="selectTaskVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 			<xm-task-list  :sel-project="xmProject"   @task-selected="onSelectedTask"></xm-task-list>
 		</el-dialog> 	
+		
+		<el-dialog :title="'任务'+editForm.name+'的执行人'" :visible.sync="execUserVisible" fullscreen width="80%" append-to-body  :close-on-click-modal="false">
+			<xm-execuser-mng :visible="execUserVisible" :xm-task="editForm"  :is-my="isMy"  @after-add-submit="afterExecuserSubmit" @after-edit-submit="afterExecuserSubmit" @after-delete-submit="afterExecuserSubmit" ref="execuserMng"></xm-execuser-mng>
+		</el-dialog>
+
+		<el-dialog append-to-body title="故事明细" :visible.sync="menuDetailVisible" width="80%"    :close-on-click-modal="false">
+			<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="true" :xm-menu="{menuId:editForm.menuId,menuName:editForm.menuName}" ></xm-menu-rich-detail>
+		</el-dialog>
 	</section>
 </template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询 
-	import {editXmTask } from '@/api/xm/core/xmTask';
+	import {editXmTask,setTaskCreateUser } from '@/api/xm/core/xmTask';
 	import { mapGetters } from 'vuex';
  	import {sn} from '@/common/js/sequence';
  	import xmSkillMng from '../xmTaskSkill/XmTaskSkillMng';
@@ -167,6 +188,9 @@
 	import {batchAddSkill } from '@/api/xm/core/xmTaskSkill';
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
 	import XmTaskList from '../xmTask/XmTaskList';
+	import XmExecuserMng from '../xmTaskExecuser/XmTaskExecuserMng';
+	import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
+	import XmMenuRichDetail from '../xmMenu/XmMenuRichDetail';
 
 	export default { 
 		computed: {
@@ -199,6 +223,8 @@
 					this.editForm=Object.assign(this.editForm, this.xmTask);    
 					this.budgetDateRanger=[this.editForm.startTime,this.editForm.endTime]
 					this.actDateRanger=[this.editForm.actStartTime,this.editForm.actEndTime] 
+					
+					this.setSkills()
 					//从新打开页面时某些数据需要重新加载，可以在这里添加
 				}
 			}, 
@@ -244,14 +270,16 @@
 					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'3',sortLevel:'0',executorUserid:'',executorUsername:'',
 					preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',taskOut:'0',
 					rate:'0',budgetCost:'',budgetWorkload:'',actCost:'',actWorkload:'',taskState:'0',taskClass:'0',toTaskCenter:'0',actStartTime:'',actEndTime:'',taskType:'kf',planType:'w2',settleSchemel:'quotePrice',
- 
-					skill: [],
+  
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
  				menuVisible:false,
+				menuDetailVisible:false,
 				skillVisible: false,
 				taskSkills: [],
 				selectTaskVisible:false,
+				execUserVisible:false,
+				groupUserSelectVisible:false,
 				budgetDateRanger: [
 					util.formatDate.format(beginDate, "yyyy-MM-dd HH:mm:ss"),
 					util.formatDate.format(endDate, "yyyy-MM-dd HH:mm:ss")
@@ -413,20 +441,72 @@
 			},
 			goAnchor :function(id){ 
        			document.querySelector("#"+id).scrollIntoView(true);
-    		}
+    		},
+			setSkills(){
+				if(this.editForm.taskSkillIds && this.editForm.taskSkillNames){
+					var skillNames=this.editForm.taskSkillNames.split(","); 
+					this.taskSkills=this.editForm.taskSkillIds.split(",").map((item,index)=>{
+						return {
+							taskId:this.editForm.id,
+							taskSkillId:item,
+							taskSkillName:skillNames[index]
+						}
+					})
+				}
+			},
+			
+			showExecusers() {
+				this.execUserVisible = true;
+			},
+			
+			toJoin(){
+				if(this.editForm.exeUserids && this.editForm.exeUserids.indexOf(this.userInfo.userid)>=0){
+					this.$message.success("你已经加入该任务了");
+					return;
+				}
+				this.execUserVisible=true;
+				this.$nextTick(()=>{
+					this.$refs.execuserMng.toJoin();
+
+				})
+			},
 			/**end 在上面加自定义方法**/
 			
+			showGroupUserSelect:function(){
+				this.groupUserSelectVisible=true;
+			},
+			groupUserSelectConfirm:function(users){
+				if( users==null || users.length==0 ){
+					this.groupUserSelectVisible=false;
+					return
+				}
+				this.editForm.createUserid=users[0].userid
+				this.editForm.createUsername=users[0].username
+				setTaskCreateUser(this.editForm).then(res=>{
+					var tips = res.data.tips;
+					if(tips.isOk){
+						this.$message.success("设置成功");
+						this.groupUserSelectVisible=false;
+					}else{
+							this.$message.error(tips.msg);
+					}
+				})
+			},
+			
+			toMenu(){
+				this.menuDetailVisible=true
+			},
 		},//end method
 		components: { 
  			xmSkillMng,
-			skillMng,xmMenuSelect,XmTaskList
+			skillMng,xmMenuSelect,XmTaskList,XmExecuserMng,XmProjectGroupSelect,XmMenuRichDetail
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},
 		mounted() { 
 			this.editForm=Object.assign(this.editForm, this.xmTask);  
 			this.budgetDateRanger=[this.editForm.startTime,this.editForm.endTime]
 			this.actDateRanger=[this.editForm.actStartTime,this.editForm.actEndTime] 
-
+			this.setSkills();
 			listOption([{categoryId:'all',itemCode:'planType'},{categoryId:'all',itemCode:'taskType'},{categoryId:'all',itemCode:'urgencyLevel'},{categoryId:'all',itemCode:'priority'},{categoryId:'all',itemCode:'xmTaskSettleSchemel'}]).then(res=>{
 				this.options=res.data.data;
 			})
