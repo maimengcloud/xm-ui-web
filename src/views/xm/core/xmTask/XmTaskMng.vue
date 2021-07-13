@@ -40,7 +40,7 @@
 						<el-checkbox v-model="gstcVisible"  class="hidden-md-and-down" >甘特图</el-checkbox>
 						<el-popover
 							placement="top-start"
-							title="标题"
+							title="选择创建任务的方式"
 							width="200"
 							trigger="hover"> 
 							<el-row> 
@@ -159,19 +159,17 @@
 							>
 							<el-table-column sortable prop="name" label="任务名称(点击详情)"  min-width="240" show-overflow-tooltip>
 								<template slot-scope="scope">
-									<span>{{scope.row.sortLevel}}&nbsp;<el-link  type="primary"  @click.stop="showDrawer(scope.row)">{{scope.row.name}}</el-link></span>
-
+									<span>
+										{{scope.row.sortLevel}}&nbsp;
+										<el-tag v-if="scope.row.level<='2'" type="info">轻微</el-tag>
+										<el-tag v-else-if="scope.row.level=='3'" type="warning">一般</el-tag> 
+										<el-tag v-else-if="scope.row.level=='4'" type="danger">紧急</el-tag> 
+										<el-tag v-else type="danger">特急</el-tag>
+										<el-link  type="primary"  @click.stop="showDrawer(scope.row)">{{scope.row.name}}</el-link>
+									</span>
+									<span></span>
 								</template>
-							</el-table-column>
-							<el-table-column v-if=" !selProject || !selProject.id" prop="projectName" label="项目"  min-width="120" show-overflow-tooltip>
-
-								<template slot="header">
-									项目<el-button @click="showProjectList"  icon="el-icon-search" circle size="mini"></el-button>
-								</template>
-								<template slot-scope="scope">
-									{{scope.row.projectName}}
-								</template>
-							</el-table-column>
+							</el-table-column> 
 							<el-table-column  prop="menuId" label="故事"  min-width="120" show-overflow-tooltip>
 								<template slot="header">
 									故事<el-button @click="showMenuStory"  icon="el-icon-search" circle size="mini"></el-button>
@@ -208,7 +206,7 @@
 							<el-table-column sortable prop="rate" label="进度" width="100">
 								<template slot-scope="scope">
 									<div>
-									<el-tag style="border-radius:30px;"> {{ (scope.row.rate!=null?scope.row.rate:0)+'%'}} </el-tag>
+									<el-tag style="border-radius:30px;" :type="scope.row.rate>=100?'success':'warning'"> {{ (scope.row.rate!=null?scope.row.rate:0)+'%'}} </el-tag>
 									</div>
 								</template>
 							</el-table-column>
@@ -389,7 +387,7 @@
 			</div>
 		</el-dialog>
 		<!--编辑 XmTask xm_task界面-->
-		<el-drawer title="编辑任务" :visible.sync="editFormVisible"  width="80%" append-to-body  :close-on-click-modal="false">
+		<el-drawer title="编辑任务" :visible.sync="editFormVisible"  :size="650" append-to-body  :close-on-click-modal="false">
 				<xm-task-edit :xm-project="currentProject" :xm-task="editForm" :project-phase="currentProjectPhase" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-task-edit>
 		</el-drawer>
 
@@ -1076,8 +1074,9 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			},
 
 			showDrawer: function(row){
+				this.editFormVisible =true;
 				this.editForm=row;
-				this.drawerVisible = !this.drawerVisible;
+				
 				// this.$emit('row-click',row,);//  @row-click="rowClick"
 			},
 

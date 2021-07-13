@@ -1,18 +1,42 @@
 <template>
 	<section class="page-container page-height padding">
-		<el-row >
+		<el-row class="page-main page-main-height">
 			<!--新增界面 XmTask xm_task--> 
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
-				<el-form-item label="项目名称">
-					<span>{{editForm.projectName}}</span>
-				</el-form-item>
+			<el-form :model="editForm"  label-width="100px" :rules="editFormRules" ref="editForm"> 
 				<el-form-item v-if="editForm.parentTaskname!=null && editForm.parentTaskname!=''" label="父任务名称">
 					<span>{{editForm.parentTaskname}}</span>
 				</el-form-item>
 				<el-form-item label="任务名称" prop="name">
-					<el-input v-model="editForm.name" placeholder="任务名称" ></el-input>
+					<el-row>
+					<el-col :span="24" style="padding-left:10px;">
+						<el-input v-model="editForm.name" placeholder="任务名称" ></el-input>
+						<el-tooltip content="归属项目"><el-tag>{{editForm.projectName}}</el-tag></el-tooltip>
+						<el-divider direction="vertical"></el-divider>
+						<el-tooltip content="上级" ><el-tag>{{editForm.parentTaskname?editForm.parentTaskname:"无上级"}}</el-tag></el-tooltip>
+					</el-col>
+					</el-row>
 				</el-form-item>
 				
+				<el-form-item label="参与流程">
+					<el-steps :active="calcTaskStep" align-center>
+						<el-step title="发布" description="任务创建成功后即发布"></el-step>
+						<el-step title="竞标" description="候选人参与竞标"></el-step>
+						<el-step title="执行" description="候选人中标成为执行人，执行任务"></el-step>
+						<el-step title="验收" description="任务完成后提交验收"></el-step>
+						<el-step title="结算" description="验收通过后，提交结算申请"></el-step>
+						<el-step title="企业付款" description="自动付款到个人钱包"></el-step> 
+						<el-step title="提现" description="个人对钱包中余额进行提现"></el-step> 
+					</el-steps>
+				</el-form-item> 
+				
+				<el-form-item label="任务状态" prop="taskState">
+					<el-steps :active="calcTaskStep" align-center>
+						<el-step title="待领取" description="任务创建成功后即为待领取"></el-step>
+						<el-step title="执行中" description="候选人被选定为执行人，任务自动变更为执行中"></el-step>
+						<el-step title="已完工待结算" description="验收通过算完工"></el-step>
+						<el-step title="已结算" description="结算完成，并且付款到个人钱包"></el-step> 
+					</el-steps>
+				</el-form-item> 
 				<el-form-item label="排序号" prop="sortLevel">
 					<el-input  v-model="editForm.sortLevel"    placeholder="如1.0或者1.2.3等" ></el-input>
 				</el-form-item>
@@ -121,19 +145,13 @@
 					<el-select v-model=" editForm.settleSchemel">
 						<el-option v-for="i in options.xmTaskSettleSchemel" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
 					</el-select>
-				</el-form-item>  
-				<!-- 
-				<el-form-item label="任务创建人">
-					<span>{{userInfo.username}}</span>
-				</el-form-item>
-				-->
-				<el-form-item>
-					<el-col :span="24" :offset="8"> 
-						<el-button @click.native="handleCancel">取消</el-button>  
-						<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>  
-					</el-col>
-				</el-form-item> 
+				</el-form-item>   
 			</el-form>
+		</el-row>
+		<el-row class="page-bottom">
+			<el-button @click.native="handleCancel">取消</el-button>  
+			<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>  
+					
 		</el-row>
  
 
@@ -172,6 +190,21 @@
 			...mapGetters([
 				'userInfo','roles'
 			]),   
+			calcTaskStep(){
+				if(!this.editForm.executorUserid){
+					return 1
+				}else if(this.editForm.exeUsernames.indexOf('执行中')>=0){
+					return 2
+				}else if(this.editForm.exeUsernames.indexOf('已验收')>=0){
+					return 3
+				}else if(this.editForm.exeUsernames.indexOf('已验收')>=0){
+					return 3
+				}else if(this.editForm.exeUsernames.indexOf('已验收')>=0){
+					return 3
+				} if(this.editForm.exeUsernames.indexOf('已结算')>=0){
+					return 4
+				}
+			}
 		},
 		props:['xmTask','visible','xmProject','projectPhase',"parentTask"],
 		watch: {
