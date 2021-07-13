@@ -5,68 +5,66 @@
 			<el-table ref="table" :height="tableHeight" :data="xmIterationTreeData" row-key="id"  default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
    				<el-table-column prop="iterationName" label="迭代名称" min-width="160" >
 					<template slot="header" slot-scope="scope">
-						<el-row>
-							迭代名称 <el-tag size="mini" v-if="editForm.iterationName" closable @close="clearSelectIteration()">{{editForm.seqNo}}&nbsp;{{editForm.iterationName}}</el-tag>
+					迭代名称 <el-popover v-if=" !menuId && !productId"
+						placement="top-start"
+						title=""
+						width="400"
+						trigger="click" >
+						<el-row>  
+							<el-col :span="24" style="padding-top:5px;">
+								<font class="more-label-font">
+									迭代查询范围：
+								</font>
+								<el-select size="mini" v-model="filters.queryScope" style="width:100%;"   placeholder="迭代查询范围">
+									<el-option :label="userInfo.branchName+'机构下所有的迭代'" value="branchId"></el-option>
+									<el-option label="我相关的迭代" value="compete"></el-option>
+									<el-option label="按迭代编号精确查找" value="iterationId"></el-option>
+									<el-option label="后台智能匹配" value=""></el-option>
+								</el-select>
+							</el-col>
+							<el-col v-if="filters.queryScope=='iterationId'" :span="24"  style="padding-top:5px;"> 
+								<el-input  size="mini" v-model="filters.id" style="width:100%;"  placeholder="输入迭代编号" @keyup.enter.native="searchXmProducts">  
+								</el-input> 
+							</el-col>
+							<el-col v-if="filters.queryScope!='iterationId'" :span="24"  style="padding-top:5px;">
+								<font class="more-label-font">上线时间:</font>
+								<el-date-picker size="mini"
+									v-model="dateRangerOnline"
+									type="daterange"
+									align="right"
+									unlink-panels
+									range-separator="至"
+									start-placeholder="开始日期"
+									end-placeholder="完成日期"
+									value-format="yyyy-MM-dd"
+									:default-time="['00:00:00','23:59:59']"
+									:picker-options="pickerOptions"
+								></el-date-picker>
+							</el-col>
+							<el-col :span="24" style="padding-top:5px;">
+									<font class="more-label-font">迭代名称:</font><el-input size="mini" v-model="filters.key" style="width: 60%;" placeholder="模糊查询"></el-input>
+							</el-col>
+							
+							<el-col :span="24" style="padding-top:5px;">
+									<el-tag>默认只能查询本人创建的迭代、本人作为故事责任人参与的迭代</el-tag>
+							</el-col>
+							<el-col :span="24" style="padding-top:5px;">
+								<el-button size="mini" type="primary" icon="el-icon-search" @click="getXmIterations">查询</el-button>
+							</el-col> 
 						</el-row>
-					</template>
+						<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+					</el-popover>
+				</template>
 					 <template slot-scope="scope">
-						 {{scope.row.seqNo}} &nbsp;&nbsp;{{scope.row.iterationName}}
+						 {{scope.row.seqNo}} &nbsp;&nbsp;{{scope.row.iterationName}}<br>
+						 <font class="font-class">{{formatterDate(scope.row,null,scope.row.startTime)}}~{{formatterDate(scope.row,null,scope.row.endTime)}} </font> 
+						 <el-tag type="warning">{{!scope.row.iphase?'未开始':scope.row.iphase}}</el-tag>
+						 <el-tooltip content="点击统计进度"><el-button size="mini" icon="el-icon-video-play" @click.stop="loadTasksToXmIterationState( scope.row)"></el-button></el-tooltip>
+  						 <div class="progress">
+						  <el-progress  :percentage="calcFinishRate(scope.row)"></el-progress>
+						 </div>
 					 </template>
-				</el-table-column>
-				<el-table-column prop="onlineTime" label="上线时间" min-width="80" :formatter="formatterDate">
-					<template slot="header" slot-scope="scope">
-						上线时间 <el-popover v-if=" !menuId && !productId"
-							placement="top-start"
-							title=""
-							width="400"
-							trigger="click" >
-							<el-row>  
-								<el-col :span="24" style="padding-top:5px;">
-									<font class="more-label-font">
-										迭代查询范围：
-									</font>
-									<el-select size="mini" v-model="filters.queryScope" style="width:100%;"   placeholder="迭代查询范围">
-										<el-option :label="userInfo.branchName+'机构下所有的迭代'" value="branchId"></el-option>
-										<el-option label="我相关的迭代" value="compete"></el-option>
-										<el-option label="按迭代编号精确查找" value="iterationId"></el-option>
-										<el-option label="后台智能匹配" value=""></el-option>
-									</el-select>
-								</el-col>
-								<el-col v-if="filters.queryScope=='iterationId'" :span="24"  style="padding-top:5px;"> 
-									<el-input  size="mini" v-model="filters.id" style="width:100%;"  placeholder="输入迭代编号" @keyup.enter.native="searchXmProducts">  
-									</el-input> 
-								</el-col>
-								<el-col v-if="filters.queryScope!='iterationId'" :span="24"  style="padding-top:5px;">
-									<font class="more-label-font">上线时间:</font>
-									<el-date-picker size="mini"
-										v-model="dateRangerOnline"
-										type="daterange"
-										align="right"
-										unlink-panels
-										range-separator="至"
-										start-placeholder="开始日期"
-										end-placeholder="完成日期"
-										value-format="yyyy-MM-dd"
-										:default-time="['00:00:00','23:59:59']"
-										:picker-options="pickerOptions"
-									></el-date-picker>
-								</el-col>
-								<el-col :span="24" style="padding-top:5px;">
-										<font class="more-label-font">迭代名称:</font><el-input size="mini" v-model="filters.key" style="width: 60%;" placeholder="模糊查询"></el-input>
-								</el-col>
-								
-								<el-col :span="24" style="padding-top:5px;">
-									 <el-tag>默认只能查询本人创建的迭代、本人作为故事责任人参与的迭代</el-tag>
-								</el-col>
-								<el-col :span="24" style="padding-top:5px;">
-									<el-button size="mini" type="primary" icon="el-icon-search" @click="getXmIterations">查询</el-button>
-								</el-col>
-								
-							</el-row>
-							<el-button  slot="reference" icon="el-icon-more" circle></el-button>
-						</el-popover>
-					</template>
-				</el-table-column>
+				</el-table-column> 
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 
@@ -323,9 +321,28 @@
 				}else{
 					return cellValue;
 				}
-      },
+      		},
 			/**end 自定义函数请在上面加**/
+			calcFinishRate(row){
+				if(row.finishRate){
+					return parseInt(row.finishRate);
+				}else{
+					return 0;
+				}
+			},
+			
+			loadTasksToXmIterationState(row){
 
+				this.load.edit=true;
+				loadTasksToXmIterationState({id:row.id}).then(res=>{
+					this.load.edit=false;
+					var tips =res.data.tips;
+					if(tips.isOk){
+						this.getXmIterations();
+					}
+					this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+				});
+			},
 		},//end methods
 		components: { 
 		    //在下面添加其它组件
@@ -343,10 +360,13 @@
 
 </script>
 
-<style scoped>
+<style rel="stylesheet/scss" lang="scss" scoped>
   .more-label-font{
   	text-align:center;
   	float:left;
-  	padding-top:5px;
+  	padding-top:5px; 
   }
+  .font-class{
+	  color: rgba(116, 85, 85, 0.493);
+  } 
 </style>

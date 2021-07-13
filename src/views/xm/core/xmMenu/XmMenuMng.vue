@@ -1,6 +1,10 @@
 <template>
 	<section>
 		<el-row class="app-container" v-if=" !batchEditVisible"> 
+			<el-col :span="6">
+				<xm-product-mng :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-mng>
+			</el-col>
+			<el-col :span="18">
 					<el-row>  
 						<el-select  v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable >
 							<el-option   value="not-join"  label="未分配任何任务的故事"></el-option>  
@@ -27,8 +31,7 @@
 						
 						
 						<el-button    type="primary" @click="showAdd" icon="el-icon-plus">故事</el-button>
-						<el-button      @click="toBatchEdit" icon="el-icon-edit">修改</el-button>  
- 						<el-button      @click="toSelectProduct" icon="el-icon-back">产品</el-button>  
+						<el-button      @click="toBatchEdit" icon="el-icon-edit">修改</el-button>   
 						<el-popover
 							placement="top-start"
 							title=""
@@ -94,38 +97,24 @@
 							<el-table-column sortable type="selection" width="40"></el-table-column> 
 							<el-table-column prop="menuName" label="故事名称" min-width="160" show-overflow-tooltip> 
 								<template slot-scope="scope">
-									<span>{{scope.row.seqNo}}&nbsp;&nbsp;<el-link type="primary"  @click="showMenuExchange(scope.row)">{{scope.row.menuName}}</el-link></span>
-								</template>
-							</el-table-column> 
-							<el-table-column prop="mmUsername" label="负责人" min-width="80" show-overflow-tooltip>  
-							</el-table-column> 
-							<el-table-column prop="finishRate" label="总体进度" width="100" > 
-								<template slot-scope="scope">
-									{{scope.row.finishRate}}%
-								</template>
-							</el-table-column> 
-							<el-table-column prop="remark" label="描述" min-width="120" show-overflow-tooltip> 
-								<template slot-scope="scope">
-									<el-popover
-										v-if="scope.row.remark && scope.row.remark.length>20"
-										placement="top-start"
-										title="故事备注"
-										width="400"
-										trigger="click" >
-										<div v-html="scope.row.remark">
-										</div> 
-										<div slot="reference">{{scope.row.remark?scope.row.remark.substr(0,18)+"...":""}}</div>
-									</el-popover> 
-									<div v-else v-html="scope.row.remark"> 
-									</div>
-								</template>
-							</el-table-column> 
-							<el-table-column label="操作"   width="200" fixed="right"  >
-								<template slot-scope="scope">
+									<span>{{scope.row.seqNo}}&nbsp;&nbsp;<el-link type="primary"  @click="showEdit(scope.row)">{{scope.row.menuName}}</el-link></span>
+									<font class="align-right">
+										<span><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag></span>
+										&nbsp;&nbsp;
+										<el-tooltip content="需求负责人"><span>{{scope.row.mmUsername}} </span> </el-tooltip> 
+										<el-tooltip content="任务负责人"><span>{{scope.row.chargeUsername}} </span> </el-tooltip> 
+										<el-popover 
+											placement="top-start"
+											title="故事备注"
+											width="400"
+											trigger="click" >
+											<div v-html="scope.row.remark">
+											</div> 
+											<el-tag slot="reference" icon="el-icon-chat-line-square">描述</el-tag>
+										</el-popover>
 									
-									<el-button type="primary"  @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" circle></el-button> 
-									<el-button    @click="showEdit(scope.row)" icon="el-icon-edit" circle></el-button> 
-										
+										<el-button type="primary"  @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" circle></el-button> 
+ 											
 										<el-popover style="padding-left:10px;"
 											v-if="isPmUser"
 											placement="top-start"
@@ -149,16 +138,17 @@
 
 											<el-button slot="reference" icon="el-icon-more" circle></el-button>
 										</el-popover> 
+									</font>
 								</template>
-							</el-table-column>
+							</el-table-column>   
 						</el-table>
 						<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 							
 					</el-row> 
 				<!--编辑 XmMenu xm_project_menu界面-->
-				<el-dialog title="编辑故事" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+				<el-drawer title="编辑故事" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
 					<xm-menu-edit :xm-menu="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-menu-edit>
-				</el-dialog>
+				</el-drawer>
 		
 				<!--新增 XmMenu xm_project_menu界面-->
 				<el-dialog title="新增故事" :visible.sync="addFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
@@ -198,7 +188,8 @@
 
 				<el-dialog title="选择员工" :visible.sync="selectFiltersMmUserVisible" width="60%" append-to-body>
 					<users-select  @confirm="onFiltersMmUserSelected" ref="selectFiltersMmUser"></users-select>
-				</el-dialog>	 	 
+				</el-dialog>	
+			</el-col> 	 
 		</el-row>
 		
 		<el-row v-if="batchEditVisible && filters.product" :span="24">
@@ -211,7 +202,7 @@
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { listXmMenu, delXmMenu, batchDelXmMenu,batchAddXmMenu,batchEditXmMenu,listXmMenuWithState } from '@/api/xm/core/xmMenu';
+	import { listXmMenu, delXmMenu, batchDelXmMenu,batchAddXmMenu,batchEditXmMenu,listXmMenuWithState,listXmMenuWithPlan } from '@/api/xm/core/xmMenu';
 	import { batchRelTasksWithMenu } from '@/api/xm/core/xmTask';
 	import { loadTasksToXmMenuState} from '@/api/xm/core/xmMenuState';
 
@@ -233,7 +224,7 @@
 	import { mapGetters } from 'vuex' 
 	
 	export default { 
-		props:['selProject'],
+		props:['selProject','xmIteration'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -393,14 +384,20 @@
 				} 
 				if(this.filters.mmUser){
 					params.mmUserid=this.filters.mmUser.userid;
-				} 
-				params.excludeIterationId=this.excludeIterationId
+				}  
 				if(this.filters.iterationFilterType){
 					params.iterationFilterType=this.filters.iterationFilterType
 				} 
+				if(this.xmIteration){
+					params.iterationFilterType='join'
+					params.iterationId=this.xmIteration.id
+				}
 				if(this.filters.taskFilterType){
 					params.taskFilterType=this.filters.taskFilterType
 				} 
+				if(this.selProject){
+					params.projectId=this.selProject.id
+				}
 				params.ctimeStart=this.dateRanger[0]+" 00:00:00"
 				params.ctimeEnd=this.dateRanger[1]+" 23:59:59" 
 				let callback= (res)=>{
@@ -415,7 +412,7 @@
 					this.load.list = false;
 				}
 				this.load.list = true;
-				listXmMenuWithState(params).then( callback ).catch( err => this.load.list = false );
+				listXmMenuWithPlan(params).then( callback ).catch( err => this.load.list = false );
 			},
 
 			//显示编辑界面 XmMenu xm_project_menu
@@ -809,10 +806,7 @@
 		    
 		    //在下面添加其它组件
 		},
-		mounted() { 
-			if(this.filters.product==null){
-				this.productVisible=true;
-			}
+		mounted() {   
 			this.$nextTick(() => { 
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
 				var subHeight=50/1000 * window.innerHeight;  
@@ -830,5 +824,8 @@
 	text-align:center;
 	float:left;
 	padding-top:5px;
-}   
+}
+.align-right{
+	float: right; 
+}
 </style>

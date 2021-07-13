@@ -1,72 +1,69 @@
 <template>
-	<section>
-		<el-row class="xm-question">
-			<!--新增界面 XmQuestion xm_question--> 
-			<el-row>
-				
-					<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
-						<el-col :span="12"> 
-								<el-form-item label="缺陷标题" prop="name">
-									{{editForm.name}} 
-								</el-form-item>  
-								<el-form-item label="隶属项目" prop="projectName">
-									{{selProject.name}}
-								</el-form-item> 
+	<section class="page-container page-full-height border padding">
+		<el-row > 
+			<el-row class="page-main page-main-height"> 
+					<el-form :model="editForm"  :rules="editFormRules" ref="editForm">  
+								<el-row class="padding-bottom">
+									<h2>{{editForm.name}}</h2>
+									<el-tooltip content="项目"><el-tag type="warning">{{selProject.name}} </el-tag></el-tooltip> 
+									<el-divider direction="vertical"></el-divider>
+									<el-tag>{{editForm.createUsername}} 于 {{editForm.createTime}} 创建 </el-tag>
+									<el-divider direction="vertical"></el-divider>
+									<el-date-picker :clearable="false" style="width:150px;" type="date" placeholder="到期日期" v-model="editForm.endTime" value-format="yyyy-MM-dd" format="yyyy-MM-dd"></el-date-picker>
+								</el-row>
+								<el-row class="padding-bottom">
+									<el-steps :active="calcBugStep" simple finish-status="success">
+										<el-step title="已激活,待确认" description="创建后自动激活、关闭后重新激活)"></el-step>
+										<el-step title="已确认,待解决" description="业务确认缺陷后变为已确认"></el-step>
+										<el-step title="已解决,待关闭" description="开发修复缺陷后，变成已解决"></el-step>
+										<el-step title="已关闭(可重新激活)" description="测试通过后变为已关闭，已关闭缺陷可以重新激活"></el-step> 
+									</el-steps>
+								</el-row>
 								<el-form-item label="隶属任务" prop="taskName">
-									<el-tag v-if="editForm.taskId!='' && editForm.taskId!=null " closable @close="handleCloseTaskTag">{{editForm.taskName}}</el-tag><el-button @click="showSelectTask">选任务</el-button>
+									<el-tag v-if="editForm.taskId!='' && editForm.taskId!=null " closable @close="handleCloseTaskTag" @click="showSelectTask">{{editForm.taskName}}</el-tag>&nbsp;&nbsp;<el-button @click="showSelectTask">选任务</el-button>
 								</el-form-item>   
 								<el-form-item label="隶属故事" prop="menuName">
-									<el-tag v-if="editForm.menuId!='' && editForm.menuId!=null " closable @close="handleCloseMenuTag">{{editForm.menuName}}</el-tag><el-button @click="showSelectMenu">选故事</el-button>
+									<el-tag v-if="editForm.menuId!='' && editForm.menuId!=null " closable @close="handleCloseMenuTag" @click="showSelectMenu">{{editForm.menuName}}</el-tag>&nbsp;&nbsp;<el-button @click="showSelectMenu">选故事</el-button>
 								</el-form-item>   
-								<el-form-item label="优先级别" prop="priority">
-									<el-radio-group v-model="editForm.priority">
-										<el-radio v-for="(i,index) in options['urgencyLevel']" :label="i.optionValue" :key="index">{{i.optionName}}</el-radio> 
-									</el-radio-group> 
-								</el-form-item> 
-								<el-form-item label="严重程度" prop="bugSeverity">
-									<el-radio-group v-model="editForm.bugSeverity">
-										<el-radio v-for="(i,index) in options['bugSeverity']" :label="i.optionValue" :key="index">{{i.optionName}}</el-radio> 
-									</el-radio-group>  
-								</el-form-item> 
-								<el-form-item label="解决方案" prop="solution">
-									<el-radio-group v-model="editForm.solution">
-										<el-radio v-for="(i,index) in options['bugSolution']" :label="i.optionValue" :key="index">{{i.optionName}}</el-radio> 
-									</el-radio-group>   
-								</el-form-item> 
-								<el-form-item label="到期时间" prop="endTime">
-									<el-date-picker :clearable="false" style="width:100%;" type="date" placeholder="选择日期" v-model="editForm.endTime" value-format="yyyy-MM-dd" format="yyyy-MM-dd"></el-date-picker>
-								</el-form-item> 
-								<el-form-item label="提出人" prop="askUsername">
-									提出： {{editForm.askUsername}}  创建人：	{{editForm.createUsername}}  创建时间：{{editForm.createTime}}
-								</el-form-item> 
+								<el-form-item label="缺陷属性" prop="priority">
+									<el-col :span="24">
+									<el-select v-model="editForm.priority" placeholder="请选择紧急程度">
+										<el-option v-for="(i,index) in options['urgencyLevel']" :label="i.optionName" :value="i.optionValue" :key="i.optionValue">{{i.optionName}}</el-option> 
+									</el-select> 
+								 
+									<el-select v-model="editForm.bugSeverity" placeholder="请选择严重程度">
+										<el-option v-for="(i,index) in options['bugSeverity']" :label="i.optionName" :value="i.optionValue" :key="i.optionValue">{{i.optionName}}</el-option> 
+									</el-select>  
+								 
+									<el-select v-model="editForm.solution" placeholder="请选择解决方案">
+										<el-option v-for="(i,index) in options['bugSolution']" :label="i.optionName" :value="i.optionValue" :key="i.optionValue">{{i.optionName}}</el-option> 
+									</el-select>   
+									</el-col>
+								</el-form-item>    
 								<el-form-item label="指派给" prop="handlerUsername">
-									{{editForm.handlerUsername}}  <el-button @click="sendToAsk">指派给提出人</el-button><el-button @click="sendToCreater">指派给创建人</el-button><el-button @click="showGroupUsers('handlerUsername')">选其它人</el-button>
-								</el-form-item> 
-						</el-col>	
-						<el-col :span="12">
-							<el-row class="app-container">
-								<el-col :span="24" class="label-font">测试步骤</el-col>
-								<el-col :span="24" >
+									{{editForm.handlerUsername}}   <el-button @click="sendToCreater">指派给创建人</el-button><el-button @click="showGroupUsers('handlerUsername')">选其它人</el-button>
+								</el-form-item>   
+							<el-form-item label="测试步骤" prop="opStep"> 
+								<el-col :span="24" v-if="editForm.expectResult">  
 									<div class="wf-main-context-box" v-if="editForm.opStep">
 										<div style="padding:10px;"  class="wf-main-context"  v-html="editForm.opStep"></div> 
 									</div>
-									<font v-else>无</font>
-								</el-col>
-							</el-row>
-							<el-row class="app-container">
-								<el-col :span="24"  class="label-font" >预期结果</el-col> 
-								<el-col :span="24" >  
-									<div class="wf-main-context-box" v-if="editForm.expectResult">
+								</el-col> 
+								<font v-else>无</font>
+							</el-form-item> 
+							<el-form-item label="预期结果" prop="expectResult">  
+								<el-col :span="24" v-if="editForm.expectResult">  
+									<div class="wf-main-context-box" >
 										<div  style="padding:10px;"  class="wf-main-context" v-html="editForm.expectResult"></div> 
 									</div>
-									<font v-else>无</font>
+									
 								</el-col> 
-							</el-row>
-							<el-row class="app-container">
-								<el-col :span="24"  class="label-font">流转信息 
+								<font v-else>无</font>
+							</el-form-item> 
+							<el-form-item label="流转信息">   
 									<el-button icon="el-icon-search" v-if="flowInfoVisible==false" @click="showFlowInfo" >查询流转信息</el-button>
 									<el-button icon="el-icon-search" v-else @click="flowInfoVisible=false" >隐藏流转信息</el-button>
-								</el-col> 
+								 
 								<el-col :span="24" style="padding-top:12px;">  
 								<!--列表 XmQuestionHandle xm_question_handle--> 
 									
@@ -87,38 +84,37 @@
 
 									</el-table> 
 								</el-col>
-							</el-row> 
-						</el-col>
-						<el-col :span="24">
+							</el-form-item>  
 							<el-form-item label="缺陷描述" prop="description">
 								<div class="wf-main-context-box" v-if="editForm.description">
-									<div style="padding:10px;" class="wf-main-context" v-html="editForm.description"></div>
+									<div  class="wf-main-context" v-html="editForm.description"></div>
 								</div>
 								<font v-else>无</font>
-							</el-form-item> 
-						</el-col>
-						
-						<el-col :span="24">
+							</el-form-item>  
 							<el-form-item label="上次处理意见" prop="lremark">
 								<div class="wf-main-context-box"  v-if="editForm.lremark">
-									<div style="padding:10px;"  class="wf-main-context" v-html="editForm.lremark"></div>
+									<div   class="wf-main-context" v-html="editForm.lremark"></div>
 								</div>
 								<font v-else>无</font>
 								
-							</el-form-item> 
-						</el-col>
-						<el-col :span="24"> 
+							</el-form-item>   
 							<el-form-item label="处理意见" prop="description">
 								<vue-editor :id="'description_'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.receiptMessage"></vue-editor>
-							</el-form-item>  
-						</el-col>		  
+							</el-form-item>   	  
 					</el-form>  
-			</el-row>
-			
-			
-			
-			<el-row class="app-container">
-				<el-col style="text-align:center;" :span="24"> 
+					
+				<el-dialog title="选中用户" :visible.sync="selectUserVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+					<xm-group-mng  :sel-project="selProject" :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-mng>
+				</el-dialog> 
+				<el-dialog title="选中任务" :visible.sync="selectTaskVisible"  width="80%" fullscreen  append-to-body   :close-on-click-modal="false">
+					<xm-task-list  :sel-project="selProject"   @task-selected="onSelectedTask"></xm-task-list>
+				</el-dialog> 	
+				
+				<el-dialog append-to-body title="故事选择" :visible.sync="selectMenuVisible"   fullscreen   :close-on-click-modal="false">
+					<xm-menu-select :is-select-menu="true"  @selected="onSelectedMenu" :sel-project="selProject"></xm-menu-select>
+				</el-dialog>	
+			</el-row> 
+			<el-row class="page-bottom page-bottom-height"> 
 					<el-button @click.native="handleCancel">取消</el-button>  
 					<el-button v-if="editForm.bugStatus !='closed'" v-loading="load.edit" type="primary" @click.native="handleQuestion(editForm.bugStatus)" :disabled="load.edit==true">暂存</el-button>
 					<el-button v-if="editForm.bugStatus=='active'" v-loading="load.edit" type="primary" @click.native="handleQuestion('confirmed')" :disabled="load.edit==true">确认</el-button>  
@@ -130,18 +126,7 @@
 					<el-button v-if="editForm.bugStatus=='resolved'" v-loading="load.edit" type="primary" @click.native="handleQuestion('closed')" :disabled="load.edit==true">关闭</el-button>    
 					<el-button v-if="editForm.bugStatus=='resolved'" v-loading="load.edit" type="primary" @click.native="handleQuestion('active')" :disabled="load.edit==true">重新激活</el-button>   
 					<el-button v-if="editForm.bugStatus=='closed'" v-loading="load.edit" type="primary" @click.native="handleQuestion('active')" :disabled="load.edit==true">重新激活</el-button>    
-				</el-col>
-			</el-row> 
-			<el-dialog title="选中用户" :visible.sync="selectUserVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
-				<xm-group-mng  :sel-project="selProject" :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-mng>
-			</el-dialog> 
-			<el-dialog title="选中任务" :visible.sync="selectTaskVisible"  width="80%" fullscreen  append-to-body   :close-on-click-modal="false">
-				<xm-task-list  :sel-project="selProject"   @task-selected="onSelectedTask"></xm-task-list>
-			</el-dialog> 	
-			
-			<el-dialog append-to-body title="故事选择" :visible.sync="selectMenuVisible"   fullscreen   :close-on-click-modal="false">
-				<xm-menu-select :is-select-menu="true"  @selected="onSelectedMenu" :sel-project="selProject"></xm-menu-select>
-			</el-dialog>			
+ 			</el-row> 		
 		</el-row>
 	</section>
 </template>
@@ -165,6 +150,20 @@
 			...mapGetters([
 				'userInfo','roles'
 			]),  
+			
+			calcBugStep(){ 
+				if(this.editForm.bugStatus=='active'){
+					return 1
+				}else if(this.editForm.bugStatus=='confirmed'){
+					return 2
+				}else if(this.editForm.bugStatus=='resolved'){
+					return 3
+				}else if(this.editForm.bugStatus=='closed'){
+					return 4
+				}else{
+					return 1;
+				}
+			}
 		},
 		props:['xmQuestion','visible',"selProject"],
 		watch: {
@@ -396,7 +395,7 @@
 			handleCloseMenuTag:function(){
 				this.editForm.menuId=''
 				this.editForm.menuName=""
-			}, 
+			},  
 		},//end method
 		components: {  
 				//在下面添加其它组件 'xm-question-edit':XmQuestionEdit
@@ -423,31 +422,10 @@
 </script>
 
 <style scoped>
-.xm-question{
-	padding: 10px;
-}
-.el-form-item{
-	margin-bottom: 15px;
-}
-.el-form-item__content{
-	margin-left: 0;
-}
-.el-form-item__content{
-	margin-left: 0;
-}
-.add-btns >>> .el-form-item__content{
-	margin-left: 0 !important;
-}
-.label-font{
-	font-weight: 700;
-	font-size: 14px;
-}
-
-
- .wf-main-context-box {  
+  .wf-main-context-box {  
 	border:1px dashed #000;
 	margin-bottom: 10px;
-	margin-top: 10px; 
+	margin-top: 30px; 
 }
  .wf-main-context p { 
 	color: #585858;  

@@ -369,9 +369,9 @@
 			</div>
 		</el-dialog>
 		<!--编辑 XmTask xm_task界面-->
-		<el-dialog title="编辑任务" :visible.sync="editFormVisible" style="margin-top:3vh;" width="80%" append-to-body  :close-on-click-modal="false">
+		<el-drawer title="编辑任务" :visible.sync="editFormVisible"  width="80%" append-to-body  :close-on-click-modal="false">
 				<xm-task-edit :xm-project="currentProject" :xm-task="editForm" :project-phase="currentProjectPhase" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-task-edit>
-		</el-dialog>
+		</el-drawer>
 
 		<!-- 新增 XmTask xm_task界面-->
 		<el-dialog class="xm-task-add" title="新增任务" :visible.sync="addFormVisible"  width="80%" append-to-body  :close-on-click-modal="false">

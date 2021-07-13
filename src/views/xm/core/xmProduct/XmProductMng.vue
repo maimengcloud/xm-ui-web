@@ -94,19 +94,18 @@
 		<el-row  class="app-container"> 
 			<!--列表 XmProduct 产品表-->
 			<el-table ref="table"  :height="tableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-				<el-table-column   sortable type="selection" width="55"></el-table-column>
-				<el-table-column sortable type="index" width="55"></el-table-column>
- 				<el-table-column prop="productName" label="产品名称" min-width="200" show-overflow-tooltip> 
+  				<el-table-column prop="productName" label="产品名称" min-width="300"> 
 					<template slot-scope="scope">
-						<span>{{scope.row.id}}&nbsp;&nbsp;<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.productName}}</el-link></span>
+						<span><el-link type="primary" @click="showEdit(scope.row)">{{scope.row.productName}}</el-link></span>
+						
+						<font class="align-right"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag>
+						
+						<el-tooltip content="产品经理"><el-tag v-if="scope.row.pmUsername">{{scope.row.pmUsername}}</el-tag></el-tooltip>
+						<el-tooltip content="点击统计进度"><el-button size="mini" icon="el-icon-video-play" @click.stop="loadTasksToXmProductState( scope.row)"></el-button></el-tooltip>
+
+						</font>
 					</template>
-				</el-table-column>
-				<el-table-column  prop="finishRate" label="进度" width="80" show-overflow-tooltip>
-					<template slot-scope="scope">
-						{{scope.row.finishRate}}%
-					</template>
-				</el-table-column>
-				<el-table-column prop="pmUsername" label="产品经理" width="120"  show-overflow-tooltip></el-table-column> 
+				</el-table-column> 
 				<el-table-column prop="planWorkload" label="预计工作量.人时" width="150"  show-overflow-tooltip></el-table-column>
 				<el-table-column prop="actWorkload" label="实际工作量.人时" width="150"  show-overflow-tooltip></el-table-column> 
  				<el-table-column  label="操作" width="200" fixed="right">
@@ -143,9 +142,9 @@
 		</el-row>
 		 
 					<!--编辑 XmProduct 产品表界面-->
-			<el-dialog title="编辑产品" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑产品" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
 				  <xm-product-edit :xm-product="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-product-edit>
-			</el-dialog>
+			</el-drawer>
 	
 			<!--新增 XmProduct 产品表界面-->
 			<el-dialog title="新增产品" :visible.sync="addFormVisible"  width="50%"  append-to-body  :close-on-click-modal="false">
@@ -487,5 +486,9 @@
 	text-align:center;
 	float:left;
 	padding-top:5px;
+}
+
+.align-right{
+	float: right; 
 }
 </style>

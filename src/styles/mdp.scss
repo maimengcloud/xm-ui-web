@@ -1,10 +1,20 @@
 //main-container全局样式
 .page-full-height{ 
-  height: calc(100vh); 
+  height: calc(100vh);  
 }
 .page-height{
-  height: calc(90vh); 
+  height: calc(90vh);   
 } 
+.page-main-height{
+  height: calc(80vh); 
+  overflow: auto;
+}
+.page-bottom-height{
+  
+  height: calc(10vh); 
+  overflow: auto;
+
+}
 .page-container { 
   .page-header{   
     flex: 0 0 auto; 
@@ -43,11 +53,14 @@
     background-color:rgb(182, 206, 214); 
   }
   .page-main{  
+    padding-top: 10px;
     padding-left: 10px;
     padding-right: 10px; 
+    padding-bottom: 10px;
     border:1px solid #e8e8e8;
   }
   .page-bottom{  
+    margin-top:5px;
     padding-left:5px; 
     padding-right:5px;
   }

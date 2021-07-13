@@ -3,8 +3,7 @@
 		<el-row > 
 			<!--列表 XmProduct 产品表-->
 			<el-table  ref="table" :height="tableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
- 				<el-table-column sortable type="index" width="55"></el-table-column>				
-				 <el-table-column prop="productName"  label="产品名称" min-width="150" > 
+ 				 <el-table-column prop="productName"  label="产品名称" min-width="150" > 
 					 <template slot="header" slot-scope="scope"> 
 						 产品名称 
 						 <el-popover
@@ -68,7 +67,13 @@
 						</el-popover>  
 					 </template>
 					<template slot-scope="scope">
-						<font>{{scope.row.id}}&nbsp;&nbsp;<el-link type="primary">{{scope.row.productName}}</el-link></font>
+						<font>{{scope.row.productName}}</font>
+						<font class="align-right"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag>
+						
+						<el-tooltip content="产品经理"><el-tag v-if="scope.row.pmUsername">{{scope.row.pmUsername}}</el-tag></el-tooltip>
+						<el-tooltip content="点击统计进度"><el-button size="mini" icon="el-icon-video-play" @click.stop="loadTasksToXmProductState( scope.row)"></el-button></el-tooltip>
+
+						</font>
 					</template>
 				</el-table-column>
 				<el-table-column v-if="isSelectProduct==true"  label="操作" width="100" fixed="right"  >
@@ -93,6 +98,7 @@
 	import { listXmProductWithState } from '@/api/xm/core/xmProduct';  
 	import { mapGetters } from 'vuex' 
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
+	import { loadTasksToXmProductState } from '@/api/xm/core/xmProductState'; 
 
 	
 	export default { 
@@ -272,6 +278,20 @@
 				this.searchXmProducts();
 			},	   
 			
+			loadTasksToXmProductState: function (row) {  
+				this.load.edit=true;
+				 
+				let params = { productId: row.id };
+				loadTasksToXmProductState(params).then((res) => {
+					this.load.edit=false;
+					var tips=res.data.tips;
+					if(tips.isOk){ 
+						this.pageInfo.count=true;
+						this.getXmProducts();
+					}
+					this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+				}).catch( err  => this.load.edit=false ); 
+			},
 		},//end methods
 		components: {  
 			UsersSelect,
@@ -295,5 +315,8 @@
 	text-align:center;
 	float:left;
 	padding-top:5px;
+}
+.align-right{
+	float: right; 
 }
 </style>

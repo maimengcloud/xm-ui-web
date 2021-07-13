@@ -2,10 +2,10 @@
 	<section>
 
 		<el-row > 
-			<el-col :span="8" class="app-container">
+			<el-col :span="8" class="app-container" v-if="!xmIteration">
 				<xm-iteration-mng :simple="true" @row-click="onIterationRowClick" @clear-select="onIterationClearSelect"></xm-iteration-mng>
 			</el-col>
-			<el-col :span="16">
+			<el-col :span="xmIteration?24:16">
 				<el-row class="app-container">
 					<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
 						<template slot="append">
@@ -52,6 +52,7 @@
 
 	
 	export default { 
+		props:['xmIteration'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -59,6 +60,11 @@
 			xmIterationMenusTreeData(){ 
 				return this.translateDataToTree(this.xmIterationMenus);
 			},
+		},
+		watch:{
+			'xmIteration':function(xmIteration){
+				this.onIterationRowClick(xmIteration)
+			}
 		},
 		data() {
 			return {
@@ -322,6 +328,9 @@
 		    //在下面添加其它组件
 		},
 		mounted() { 
+			if(this.xmIteration){
+				this.iteration=this.xmIteration
+			}
 			this.$nextTick(() => {
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
 				var subHeight=50/1000 * window.innerHeight; 
