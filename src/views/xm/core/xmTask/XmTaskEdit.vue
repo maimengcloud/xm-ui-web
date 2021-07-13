@@ -87,6 +87,11 @@
 							:default-time="['00:00:00','23:59:59']"
 							:picker-options="pickerOptions"
 						></el-date-picker> 
+						<div style="padding-top:10px;display: flex;align-items: center;">  
+								<el-input type="number" v-model="editForm.rate" min="0" max="100" style="width:100px;padding-right:10px;"></el-input> 
+								<el-progress style="width:300px;" :text-inside="true" :stroke-width="20" :percentage="editForm.rate" status="exception"></el-progress>
+						 
+						</div>
 				</el-form-item>   
 				<el-divider content-position="left" id="costInfo">工作量、成本</el-divider>  
 				<el-form-item label="预估工作量" prop="budgetWorkload">
