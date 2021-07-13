@@ -2,14 +2,13 @@
 	<section  class="page-container page-full-height">
 		<el-row>   
 			<el-menu :default-active="'项目概览'"   mode="horizontal"  @select="setInfotype"   class="menus" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
-				<el-menu-item  index="返回" > 
-					<span slot="title" @click.stop="goBack"><i class="el-icon-back" ></i></span>
-				</el-menu-item>
+ 
 				<el-menu-item  index="项目概览" > 
 					<span slot="title" >
+						<span slot="title" @click.stop="goBack"><i class="el-icon-back" ></i></span>
 						<i class="el-icon-s-data"></i>
-						<el-tag type="danger" v-if="selProject.name.length>=10">{{selProject.name.substring(0,10)}}</el-tag>
-						<el-tag type="danger" v-else>{{selProject.name}}</el-tag>
+						<font v-if="selProject.name.length>=10">{{selProject.name.substring(0,10)}}</font>
+						<font type="danger" v-else>{{selProject.name}}</font>
 						概览
 					</span> 
 				</el-menu-item>
