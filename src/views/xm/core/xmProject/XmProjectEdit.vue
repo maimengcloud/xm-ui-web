@@ -634,7 +634,7 @@
 				 this.dateRanger=[this.editForm.startTime,this.editForm.endTime]
 				listOption([{categoryId:'all',itemCode:'projectType'},{categoryId:'all',itemCode:'urgencyLevel'},{categoryId:'all',itemCode:'priority'},{categoryId:'all',itemCode:'projectStatus'}] ).then(res=>{
 					if(res.data.tips.isOk){ 
-						debugger
+						
 						this.options['projectType']=res.data.data.projectType
 						this.options['urgencyLevel']=res.data.data.urgencyLevel
 						this.options['priority']=res.data.data.priority
