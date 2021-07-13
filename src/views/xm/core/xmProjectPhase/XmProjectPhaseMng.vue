@@ -1,11 +1,28 @@
 <template>
 	<section>
 		<el-row  class="app-container" v-show="batchEditVisible==false">
-
-			<el-button  type="primary" @click="showAdd" v-loading="load.add" icon="el-icon-plus">添加计划</el-button> 
-			<el-button   @click="showMenu" v-loading="load.add" icon="el-icon-plus">由故事批量创建</el-button> 
-			<el-button  class="hidden-md-and-down"  @click="showPhaseTemplate" v-loading="load.add" icon="el-icon-plus">由模板导入计划</el-button> 
-			<el-button  class="hidden-md-and-down"  @click="loadTasksToXmProjectPhase(sels)" v-loading="load.edit" icon="el-icon-s-data">由任务汇总实际数据</el-button> 
+			<el-popover
+				placement="top-start"
+				title="标题"
+				width="200"
+				trigger="hover"> 
+				<el-row> 
+					
+					<el-col :span="24"  style="padding-top:5px;">
+						<el-button type="primary"  @click="showMenu" v-loading="load.add" icon="el-icon-plus">由故事批量创建(推荐)</el-button> 
+					</el-col>
+					<el-col :span="24"  style="padding-top:5px;">
+						<el-button   @click="showAdd" v-loading="load.add" icon="el-icon-plus">直接新建</el-button> 
+					</el-col>
+					<el-col :span="24"  style="padding-top:5px;">
+						<el-button   @click="showPhaseTemplate" v-loading="load.add" icon="el-icon-plus">由模板导入计划</el-button> 
+					</el-col>
+				</el-row>
+				<el-button slot="reference" type="primary" v-loading="load.add" icon="el-icon-plus" circle></el-button> 
+			</el-popover>
+			
+			 
+			<el-button  class="hidden-md-and-down"  @click="loadTasksToXmProjectPhase(sels)" v-loading="load.edit" icon="el-icon-s-data">由任务汇总进度数据</el-button> 
 			<el-button   @click="batchEditVisible=true" v-loading="load.edit" icon="el-icon-edit">批量修改</el-button>
 			<div  v-if="batchEditVisible!=true" style=" float:right;margin-right:10px;" >
 				<el-checkbox v-model="gstcVisible"  >甘特图</el-checkbox>

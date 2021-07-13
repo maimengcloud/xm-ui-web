@@ -38,7 +38,27 @@
 							</template>
 						</el-input>
 						<el-checkbox v-model="gstcVisible"  class="hidden-md-and-down" >甘特图</el-checkbox>
-						<el-button  v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showAdd" type="primary" icon="el-icon-plus" circle></el-button>
+						<el-popover
+							placement="top-start"
+							title="标题"
+							width="200"
+							trigger="hover"> 
+							<el-row> 
+								
+								<el-col :span="24" style="padding-top:5px;">
+									
+									<el-button size="mini" v-if=" isTaskCenter!='1'   && isMy!='1'" type="primary"  @click="showMenu"   icon="el-icon-plus">由故事快速创建任务(推荐)</el-button>
+								</el-col>
+								<el-col  :span="24"  style="padding-top:5px;">
+									<el-button size="mini" v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showTaskTemplate"   icon="el-icon-plus">从模板快速导入任务</el-button>
+								</el-col>
+								<el-col  :span="24"  style="padding-top:5px;">
+									<el-button  v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showAdd"  icon="el-icon-plus">直接创建</el-button>
+								</el-col>
+							</el-row>
+ 							<el-button slot="reference" v-if=" isTaskCenter!='1'   && isMy!='1'"  type="primary" icon="el-icon-plus" circle></el-button>
+						</el-popover>
+						
 						<el-popover
 							placement="top-start"
 							title=""
