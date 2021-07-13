@@ -1120,7 +1120,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 
 			},
       onSelectedStory(menus){//根据故事查询
-	  debugger;
+	  
         if(menus==null || menus.length==0){
         	this.menuStory=false;
         	return;
@@ -1672,7 +1672,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 	  },
     //查询时选择责任人
     seleConfirm(groupUsers){  
-		debugger;
+		
       if(groupUsers&&groupUsers.length>0){
         this.filters.createUser=groupUsers[0];
       }else{

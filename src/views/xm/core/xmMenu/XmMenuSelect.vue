@@ -361,7 +361,7 @@
 				this.selectFiltersMmUserVisible=true;
 			},
 			onFiltersMmUserSelected(users){
-				debugger;
+				
 				 if(users && users.length>0){
 					 this.filters.mmUser=users[0]
 				 }else{

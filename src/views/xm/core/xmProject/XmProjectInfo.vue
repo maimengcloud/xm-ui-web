@@ -1,7 +1,7 @@
 <template>
 	<section  class="page-container page-full-height">
 		<el-row>   
-			<el-menu :default-active="'项目概览'"   mode="horizontal"  @select="setInfotype"   class="menus" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+			<el-menu :default-active="infotype"   mode="horizontal"  @select="setInfotype"   class="menus" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
  
 				<el-menu-item  index="项目概览" > 
 					<span slot="title" >
