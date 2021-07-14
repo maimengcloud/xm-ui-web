@@ -46,7 +46,7 @@
 					</el-select> 
 					</el-tooltip>
 				</el-form-item>  
-				<el-form-item  label="所属故事" prop="menuId"> 
+				<el-form-item  label="所属故事" prop="menuId" id="menuInfo"> 
 					 {{editForm.menuName}} <el-button @click="menuVisible=true" round>选择归属故事</el-button><el-button @click="toMenu" round>查看故事明细</el-button>
 				</el-form-item> 
 				<el-form-item prop="skill" label="技能要求">
@@ -64,7 +64,7 @@
 				</el-form-item>
 				<el-form-item label="任务执行人">
 					<el-tag   style="margin-left:10px;border-radius:30px;"  >{{editForm.exeUsernames}}</el-tag>
-					<el-button  @click="showExecusers(editForm)" icon="el-icon-s-data">查看队员情况</el-button>
+					<el-button  @click="showExecusers(editForm)" icon="el-icon-s-data">候选人管理</el-button>
 					<el-button type="primary" @click="toJoin" icon="el-icon-plus">我要加入</el-button>
 				</el-form-item>
 				<el-form-item label="预计时间"> 
@@ -87,12 +87,11 @@
 							:default-time="['00:00:00','23:59:59']"
 							:picker-options="pickerOptions"
 						></el-date-picker> 
-						<div style="padding-top:10px;display: flex;align-items: center;">  
-								<el-input type="number" v-model="editForm.rate" min="0" max="100" style="width:100px;padding-right:10px;"></el-input> 
-								<el-progress style="width:300px;" :text-inside="true" :stroke-width="20" :percentage="editForm.rate" status="exception"></el-progress>
-						 
-						</div>
-				</el-form-item>   
+						<el-slider
+							v-model="editForm.rate"
+							show-input>
+						</el-slider> 
+ 				</el-form-item>   
 				<el-divider content-position="left" id="costInfo">工作量、成本</el-divider>  
 				<el-form-item label="预估工作量" prop="budgetWorkload">
 					<el-input-number v-model="editForm.budgetWorkload" @change="onBudgetWorkloadChange" :precision="2" :step="8" :min="0" placeholder="预计总工作量(人时,不包括下一级)"></el-input-number> <el-tag>人时，{{this.toFixed(editForm.budgetWorkload/8/20)}}人月</el-tag> 
@@ -173,7 +172,7 @@
 		</el-dialog> 	
 		
 		<el-dialog :title="'任务'+editForm.name+'的执行人'" :visible.sync="execUserVisible" fullscreen width="80%" append-to-body  :close-on-click-modal="false">
-			<xm-execuser-mng :visible="execUserVisible" :xm-task="editForm"  :is-my="isMy"  @after-add-submit="afterExecuserSubmit" @after-edit-submit="afterExecuserSubmit" @after-delete-submit="afterExecuserSubmit" ref="execuserMng"></xm-execuser-mng>
+			<xm-execuser-mng :visible="execUserVisible" :xm-task="editForm"  :is-my="isMy"  @after-add-submit="afterAddExecSubmit" @after-edit-submit="afterEditExecSubmit" @after-delete-submit="afterExecuserSubmit" ref="execuserMng"></xm-execuser-mng>
 		</el-dialog>
 
 		<el-dialog append-to-body title="故事明细" :visible.sync="menuDetailVisible" width="80%"    :close-on-click-modal="false">
@@ -500,6 +499,13 @@
 			
 			toMenu(){
 				this.menuDetailVisible=true
+			},
+			
+			afterAddExecSubmit(execForm){ 
+				this.$emit("after-add-submit",execForm);
+			},
+			afterEditExecSubmit(execForm){ 
+				this.$emit("after-edit-submit",execForm);
 			},
 		},//end method
 		components: { 

@@ -11,7 +11,7 @@
 						<el-option  value="work" label="未完成">未完成</el-option>
 						<el-option  value="finish" label="已完成">已完成</el-option>
 						<el-option  value="myFocus" label="我关注">我关注</el-option>
-						<el-option  value="myExecuserStatus0" label="我排队">我排队</el-option> 
+						<el-option  value="myExecuserStatus0" label="我排队">我排队</el-option>
 						<el-option  value="myCreate" label="我是责任人">我是责任人</el-option>
 						<el-option  value="myExecuserStatus1" label="我执行">我执行</el-option>
 						<el-option  value="myExecuserStatus2" label="我提交">我提交</el-option>
@@ -27,7 +27,7 @@
 					</el-select>
 					<el-checkbox v-model="filters.taskOut"   true-label="1" false-label="">众包</el-checkbox>
 					<el-button  class="hidden-md-and-down"  v-if=" !filters.skillTags || filters.skillTags.length==0" icon="el-icon-search" @click="showSkillSelect">选择标签</el-button>
-					<el-tag class="hidden-md-and-down" closable v-for=" (skill,index) in filters.skillTags" :key="index"  @click="showSkillSelect" @close="skillTagClear(skill)">{{skill.skillName}}</el-tag> 
+					<el-tag class="hidden-md-and-down" closable v-for=" (skill,index) in filters.skillTags" :key="index"  @click="showSkillSelect" @close="skillTagClear(skill)">{{skill.skillName}}</el-tag>
 						<font v-if="!selProject">
 							<el-tag  class="hidden-md-and-down" v-if=" filters.selProject" closable  @click="showProjectList" @close="clearProject">{{this.filters.selProject.name}}</el-tag>
 							<el-button  class="hidden-md-and-down" v-else  @click="showProjectList" type="plian">选项目</el-button>
@@ -42,11 +42,11 @@
 							placement="top-start"
 							title="选择创建任务的方式"
 							width="200"
-							trigger="hover"> 
-							<el-row> 
-								
+							trigger="hover">
+							<el-row>
+
 								<el-col :span="24" style="padding-top:5px;">
-									
+
 									<el-button size="mini" v-if=" isTaskCenter!='1'   && isMy!='1'" type="primary"  @click="showMenu"   icon="el-icon-plus">由故事快速创建任务(推荐)</el-button>
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
@@ -58,45 +58,45 @@
 							</el-row>
  							<el-button slot="reference" v-if=" isTaskCenter!='1'   && isMy!='1'"  type="primary" icon="el-icon-plus" circle></el-button>
 						</el-popover>
-						
+
 						<el-popover
 							placement="top-start"
 							title=""
 							width="400"
 							trigger="click" >
 
-							<el-row> 
+							<el-row>
 								<el-col :span="24" style="padding-top:5px;">
 									<font class="more-label-font">产品:</font><el-tag    v-if="  filters.product "  :closable="!xmProduct"    @close="clearProduct">{{this.filters.product.productName}}</el-tag>
 									<el-button size="mini" v-else    @click="showProductVisible" type="plian">选产品</el-button>
-								</el-col> 
+								</el-col>
 								<el-col :span="24" style="padding-top:5px;" v-if="!selProject" >
 									<font class="more-label-font">项目:</font><el-tag    v-if="  filters.selProject "  closable  @click="showProjectList" @close="clearProject">{{this.filters.selProject.name}}</el-tag>
 									<el-button size="mini" v-else    @click="showProjectList" type="plian">选项目</el-button>
-								</el-col> 		
+								</el-col>
 								<el-col :span="24" style="padding-top:5px;">
 									 <font class="more-label-font">故事:</font>
 									<font  v-if="  filters.menus && filters.menus.length>0">
 										<el-tag  v-for="(item,index) in filters.menus" :key="index"  closable     @close="clearFiltersMenu(item)">{{item.menuName.substr(0,10)}}</el-tag>
 									</font>
 									<el-button size="mini" v-else    @click="showMenuStory" type="plian">选故事</el-button>
-								</el-col> 	
+								</el-col>
 								<el-col :span="24" style="padding-top:5px;">
 									<font class="more-label-font">责任人:</font>
-									 <el-tag    v-if="  filters.createUser "  closable    @close="clearFiltersCreateUser">{{this.filters.createUser.username}}</el-tag> 
+									 <el-tag    v-if="  filters.createUser "  closable    @close="clearFiltersCreateUser">{{this.filters.createUser.username}}</el-tag>
 									<el-button size="mini" v-else    @click="showMenuGroupUser" type="plian">选责任人</el-button>
-									<el-button size="mini" v-if=" !filters.createUser || filters.createUser.userid!=userInfo.userid" @click="setFiltersCreateUserAsMySelf">我的</el-button> 
-								</el-col> 
+									<el-button size="mini" v-if=" !filters.createUser || filters.createUser.userid!=userInfo.userid" @click="setFiltersCreateUserAsMySelf">我的</el-button>
+								</el-col>
 								<el-col :span="24" style="padding-top:5px;">
 									<font class="more-label-font">执行人:</font>
-									 <el-tag    v-if="  filters.executor "  closable   @close="clearFiltersExecutor">{{this.filters.executor.username}}</el-tag> 
+									 <el-tag    v-if="  filters.executor "  closable   @close="clearFiltersExecutor">{{this.filters.executor.username}}</el-tag>
 									<el-button size="mini" v-else    @click="showMenuExecutor" type="plian">选执行人</el-button>
-									<el-button size="mini" v-if=" !filters.executor || filters.executor.userid!=userInfo.userid" @click="setFiltersExecutorAsMySelf">我的</el-button> 
-								</el-col> 		 
+									<el-button size="mini" v-if=" !filters.executor || filters.executor.userid!=userInfo.userid" @click="setFiltersExecutorAsMySelf">我的</el-button>
+								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
-									<font class="more-label-font">创建时间:</font>  
+									<font class="more-label-font">创建时间:</font>
 									<el-date-picker
-										v-model="dateRanger" 
+										v-model="dateRanger"
 										type="daterange"
 										align="right"
 										unlink-panels
@@ -106,21 +106,21 @@
 										value-format="yyyy-MM-dd"
 										:default-time="['00:00:00','23:59:59']"
 										:picker-options="pickerOptions"
-									></el-date-picker>   
-								</el-col>  
+									></el-date-picker>
+								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
 									<font class="more-label-font">标签:</font>
 									<el-button size="mini"   v-if=" !filters.skillTags || filters.skillTags.length==0" icon="el-icon-search" @click="showSkillSelect">选择标签</el-button>
 									<el-tag v-else   closable v-for=" (skill,index) in filters.skillTags" :key="index"  @click="showSkillSelect" @close="skillTagClear(skill)">{{skill.skillName}}</el-tag>
 
 								</el-col>
-								
+
 								<el-col :span="24" style="padding-top:5px;">
 									<el-checkbox v-model="gstcVisible" >甘特图</el-checkbox>
 								</el-col>
 								<el-col :span="24" style="padding-top:5px;">
-									<el-button size="mini" type="primary" icon="el-icon-search" @click="searchXmTasks">查询</el-button> 
-								</el-col> 
+									<el-button size="mini" type="primary" icon="el-icon-search" @click="searchXmTasks">查询</el-button>
+								</el-col>
 							</el-row>
 							<el-row>
 								<el-col :span="24" style="padding-top:5px;">
@@ -134,7 +134,7 @@
 								</el-col>
 							</el-row>
 							<el-button  slot="reference" icon="el-icon-more" circle></el-button>
-						</el-popover> 
+						</el-popover>
 				</el-row>
 				<el-row style="padding-top:12px;">
 						<el-table v-if="!gstcVisible"
@@ -152,62 +152,50 @@
 							tooltip-effect="light"
 							size="mini"
 							default-expand-all
-							:height="tableHeight" 
+							:height="tableHeight"
 							:tree-props="{children: 'children', hasChildren: 'hasChildren'}"
 							row-key="id"
 							ref="table"
 							>
-							<el-table-column sortable prop="name" label="任务名称(点击详情)"  min-width="240" show-overflow-tooltip>
+							<el-table-column sortable prop="name" label="任务名称(点击详情)"  min-width="440">
 								<template slot-scope="scope">
 									<span>
 										{{scope.row.sortLevel}}&nbsp;
+										<el-dropdown @command="handleCommand" v-if=" isTaskCenter!='1'   && isMy!='1'">
+											<span class="el-dropdown-link">
+												<el-button size="mini" circle><i class="el-icon-plus"></i></el-button>
+											</span>
+											<el-dropdown-menu slot="dropdown">
+												<el-dropdown-item :command="{type:'showMenu',data:scope.row}">+由故事创建子任务(推荐)</el-dropdown-item>
+												<el-dropdown-item :command="{type:'showSubAdd',data:scope.row}">+子任务</el-dropdown-item>
+												<el-dropdown-item :command="{type:'showTaskTemplate',data:scope.row}">+从模板批量导入子任务</el-dropdown-item>
+												<el-dropdown-item :command="{type:'handleDel',data:scope.row}" icon="el-icon-delete">删除</el-dropdown-item>
+											</el-dropdown-menu>
+										</el-dropdown>
 										<el-tag v-if="scope.row.level<='2'" type="info">轻微</el-tag>
-										<el-tag v-else-if="scope.row.level=='3'" type="warning">一般</el-tag> 
-										<el-tag v-else-if="scope.row.level=='4'" type="danger">紧急</el-tag> 
-										<el-tag v-else type="danger">特急</el-tag>
+										<el-tag v-else-if="scope.row.level=='3'" type="warning">一般</el-tag>
+										<el-tag v-else-if="scope.row.level=='4'" type="danger">紧急</el-tag>
+										<el-tag v-else type="danger">特急</el-tag> 
+										<span v-for="(item ,index) in [formatExeUsernames(scope.row)]" :key="index">
+
+											<el-tooltip :content="item.exeUsernames" ><el-link     :type="item.type"     @click.stop="showExecusers(scope.row)">{{item.showMsg}}</el-link></el-tooltip>
+											 
+										</span>
+ 										<el-tooltip content="进度"><el-link style="border-radius:30px;" :type="scope.row.rate>=100?'success':'warning'" @click="drawerVisible=true"> {{ (scope.row.rate!=null?scope.row.rate:0)+'%'}} </el-link></el-tooltip>
+										<el-tooltip content="预算金额、工时"><el-tag type="info">{{parseFloat(scope.row.budgetCost/10000).toFixed(2)}}万,{{scope.row.budgetWorkload}}人时</el-tag></el-tooltip>
 										<el-link  type="primary"  @click.stop="showDrawer(scope.row)">{{scope.row.name}}</el-link>
 									</span>
-									<span></span>
-								</template>
-							</el-table-column> 
-							<el-table-column  prop="menuId" label="故事"  min-width="120" show-overflow-tooltip>
-								<template slot="header">
-									故事<el-button @click="showMenuStory"  icon="el-icon-search" circle size="mini"></el-button>
-								</template>
-								<template slot-scope="scope">
-									<el-link      @click.stop="toMenu(scope.row)">{{scope.row.menuName?scope.row.menuName:'去关联故事'}}</el-link>
-								</template>
-							</el-table-column>
-							<el-table-column sortable label="预算" prop="budgetCost" width="120" >
-								<template slot-scope="scope">
-									<div>{{parseFloat(scope.row.budgetCost/10000).toFixed(2)}}万,{{scope.row.budgetWorkload}}人时</div>
-								</template>
-							</el-table-column>
-							<el-table-column  label="责任人" prop="createUserid" min-width="120" show-overflow-tooltip>
-							  <template slot="header">
-							  	责任人<el-button @click="showMenuGroupUser"  icon="el-icon-search" circle size="mini"></el-button>
-							  </template>
-								<template slot-scope="scope">
-									<el-link         v-if="scope.row.createUserid!=null && scope.row.createUserid !='' "  @click.stop="showGroupUserSelect(scope.row)">{{scope.row.createUsername}}</el-link>
-									<el-link    type="warning"     v-if="scope.row.createUsername==null || scope.row.createUsername ==''" @click.stop="showGroupUserSelect(scope.row)"  >去设置</el-link>
-								</template>
-							</el-table-column>
-							<el-table-column  label="执行人" prop="exeUserids" width="120" show-overflow-tooltip>
-							  <template slot="header">
-							  	执行人<el-button @click="showMenuExecutor"  icon="el-icon-search" circle size="mini"></el-button>
-							  </template>
-								<template slot-scope="scope">
-									<el-link     type="danger"    v-if="scope.row.exeUsernames!=null && scope.row.exeUsernames !='' && scope.row.exeUsernames.indexOf('验收不过')>=0"  @click.stop="showExecusers(scope.row)">{{scope.row.exeUsernames}}</el-link>
-									<el-link     type="success"    v-else-if="scope.row.exeUsernames!=null && scope.row.exeUsernames !='' && scope.row.exeUsernames.indexOf('已验收')>=0"  @click.stop="showExecusers(scope.row)">{{scope.row.exeUsernames}}</el-link>
-									<el-link     type="info"    v-else-if="scope.row.exeUsernames!=null && scope.row.exeUsernames !='' "  @click.stop="showExecusers(scope.row)">{{scope.row.exeUsernames}}</el-link>
-									<el-link    type="primary"     v-if="scope.row.exeUsernames==null || scope.row.exeUsernames ==''" @click.stop="showExecusers(scope.row)"  >去抢任务</el-link>
-								</template>
-							</el-table-column>
-							<el-table-column sortable prop="rate" label="进度" width="100">
-								<template slot-scope="scope">
-									<div>
-									<el-tag style="border-radius:30px;" :type="scope.row.rate>=100?'success':'warning'"> {{ (scope.row.rate!=null?scope.row.rate:0)+'%'}} </el-tag>
-									</div>
+									<font class="align-right">
+										<!--
+									<span>
+										<el-tooltip content="点击设置责任人"><el-link         v-if="scope.row.createUserid!=null && scope.row.createUserid !='' "  @click.stop="showGroupUserSelect(scope.row)">{{scope.row.createUsername}}</el-link></el-tooltip>
+										<el-tooltip content="点击设置责任人"><el-link    type="warning"     v-if="scope.row.createUsername==null || scope.row.createUsername ==''" @click.stop="showGroupUserSelect(scope.row)"  >去设置</el-link></el-tooltip>
+									</span>
+									-->
+									<span>
+
+									</span>
+									</font>
 								</template>
 							</el-table-column>
 							<el-table-column sortable  prop="startTime" label="任务起止时间" width="300">
@@ -224,54 +212,12 @@
 
 								</template>
 							</el-table-column>
-							<!--
-							<el-table-column label="外购" prop="taskOut" width="80">
-								<template slot-scope="scope">
-									<el-checkbox  :disabled="true" v-model="scope.row.taskOut" :false-label="0" :true-label="1"  ></el-checkbox>
+							<el-table-column  prop="menuId" label="故事"  width="120" show-overflow-tooltip>
+								<template slot="header">
+									故事<el-button @click="showMenuStory"  icon="el-icon-search" circle size="mini"></el-button>
 								</template>
-							</el-table-column>
-							<el-table-column label="结算方案" prop="settleSchemel" width="120" :formatter="formatterOption">
-							</el-table-column>
-							-->
-							<el-table-column label="任务技能需求" prop="taskSkillNames" min-width="120" show-overflow-tooltip >
 								<template slot-scope="scope">
-									<el-link         v-if="scope.row.taskSkillNames!=null && scope.row.taskSkillNames !='' "  @click.stop="showSkill(scope.row)">{{scope.row.taskSkillNames}}</el-link>
-									<el-link         v-else @click.stop="showSkill(scope.row)" type="primary" >去补充</el-link>
-								</template>
-							</el-table-column>
-							<!--
-							<el-table-column prop="description" label="任务描述" min-width="160" >
-							</el-table-column>
-							-->
-							<el-table-column  v-if=" isTaskCenter!='1'"   header-align="center" fixed="right"  label="操作"  width="80">
-								<template slot-scope="scope">
-									<!--
-									<el-button-group>
-										<el-button     @click.stop="showSubAdd(scope.row)" type="primary">+子任务</el-button>
-										<el-button      @click.stop="showEdit(scope.row,scope.$index)" type="primary">编辑</el-button>
-										<el-button    v-if="isEmpty(scope.row.children) " type="primary" @click.stop="handleDel(scope.row,scope.$index)">删除</el-button>
-									</el-button-group>
-									-->
-								<el-dropdown @command="handleCommand">
-									<span class="el-dropdown-link">
-										更多<i class="el-icon-setting"></i>
-									</span>
-									<el-dropdown-menu slot="dropdown">
-										<el-dropdown-item :command="{type:'showSubAdd',data:scope.row}">+子任务</el-dropdown-item>
-										<el-dropdown-item :command="{type:'showTaskTemplate',data:scope.row}">+从模板批量导入子任务</el-dropdown-item>
-										<el-dropdown-item :command="{type:'showMenu',data:scope.row}">+由故事创建子任务</el-dropdown-item>
-
-										<el-dropdown-item :command="{type:'showDrawer',data:scope.row}">明细</el-dropdown-item>
-										<el-dropdown-item :command="{type:'showEdit',data:scope.row}">编辑</el-dropdown-item>
-										<el-dropdown-item :command="{type:'showExecusers',data:scope.row}" >执行人管理</el-dropdown-item>
-										<el-dropdown-item :command="{type:'showSkill',data:scope.row}">技能管理</el-dropdown-item>
-										<el-dropdown-item v-if="  isTaskCenter=='1' && selkey=='myFocus'"    :command="{type:'focusOrUnfocus',data:scope.row}">取关</el-dropdown-item>
-										<el-dropdown-item v-if="  isTaskCenter=='1' && selkey!='myFocus'"    :command="{type:'focusOrUnfocus',data:scope.row}">关注</el-dropdown-item>
-										<el-dropdown-item :command="{type:'showDrawer',data:scope.row}">讨论</el-dropdown-item>
-										<el-dropdown-item :command="{type:'showDrawer',data:scope.row}">日志</el-dropdown-item>
-										<el-dropdown-item :command="{type:'handleDel',data:scope.row}" >删除</el-dropdown-item>
-									</el-dropdown-menu>
-								</el-dropdown>
+									<el-link      @click.stop="toMenu(scope.row)">{{scope.row.menuName?scope.row.menuName:'去关联故事'}}</el-link>
 								</template>
 							</el-table-column>
 						</el-table>
@@ -286,17 +232,9 @@
 		</el-row>
 		<el-dialog
 			v-if="drawerVisible == true"
-			width="70%"
+			width="600"
 			:visible.sync="drawerVisible"  append-to-body >
-			<!-- <template slot="title">
-				<div style="display:flex;">
-					<div style="border-radius:30px;">任务状态</div>
-				</div>
-				<span>任务名称：{{editForm.name}}</span>
-				<el-button v-if="progress_show"  @click="progress_show = !progress_show" type="text">查看任务明细</el-button>
-				<el-button v-if="!progress_show"  @click="progress_show = !progress_show" type="text">查看进度</el-button>
-			</template> -->
-			<div style="font-size: 12px;overflow-x:hidden">
+			<el-row style="font-size: 12px;overflow-x:hidden"> 
 				<div class="task-header extra">
 					<div class="title">
 						{{editForm.name}} <el-tag style="border-radius:30px;">{{taskStateList[parseInt(editForm.taskState)] }}</el-tag>
@@ -319,17 +257,23 @@
 				<div class="exector extra">
 					<div class="field-label">用户故事</div><el-tag  v-if="editForm.menuName" style="margin-left:10px;border-radius:30px;"  >{{editForm.menuName}}</el-tag>
 				</div>
-				<div class="progress extra" style="display:flex; flex-direction:row;">
+				<div class="progress extra">
 					<div class="field-label">任务进度</div>
-						<el-input v-model="editForm.rate" style="width:100px;" type="number" step="10" min="0" max="100"> </el-input>
-						<el-button      style="font-size:12px;" @click="editProgress(editForm.rate)">更新进度</el-button>
-						<el-button      style="font-size:12px;" @click="editProgress(20)">完成20%</el-button>
-						<el-button      style="font-size:12px;" @click="editProgress(40)">完成40%</el-button>
-						<el-button      style="font-size:12px;" @click="editProgress(60)">完成60%</el-button>
-						<el-button      style="font-size:12px;" @click="editProgress(80)">完成80%</el-button>
-						<el-button      style="font-size:12px;" @click="editProgress(99)">完成99%</el-button>
-						<el-button      style="font-size:12px;" @click="editProgress(100)">完成100%</el-button>
-
+						<el-row> 
+							<el-slider
+								v-model="editForm.rate"
+								show-input>
+							</el-slider>  
+						</el-row>
+						<el-row> 
+							<el-button   @click="editProgress(editForm.rate)">保存进度</el-button> 
+							<el-button      style="font-size:12px;" @click="editProgress(20)">完成20%</el-button>
+							<el-button      style="font-size:12px;" @click="editProgress(40)">完成40%</el-button>
+							<el-button      style="font-size:12px;" @click="editProgress(60)">完成60%</el-button>
+							<el-button      style="font-size:12px;" @click="editProgress(80)">完成80%</el-button>
+							<el-button      style="font-size:12px;" @click="editProgress(99)">完成99%</el-button>
+							<el-button      style="font-size:12px;" @click="editProgress(100)">完成100%</el-button>
+						</el-row>
 				</div>
 				<div class="exector extra">
 					<div class="field-label">任务负责人</div>
@@ -349,38 +293,7 @@
 				<div class="extra">
 					<div class="field-label">任务周期</div>{{getDateString(editForm.startTime)+' ~ '+ getDateString(editForm.endTime)}} 共{{taskTime}}天
 				</div>
-				<div v-if="editForm.children" class="extra">
-					<div class="field-label">子任务</div><el-tag   style="margin-left:10px;border-radius:30px;" v-for="(item,i) in editForm.children" :key="i">{{item.sortLevel}}{{item.name}}</el-tag>
-				</div>
-				<div v-else class="extra">
-					<div class="field-label">子任务</div>无子任务
-				</div>
-				<div class="extra">
-					<div class="field-label">前置任务</div>{{(editForm.preTaskid==''||editForm.preTaskid == null)?'无前置任务':editForm.preTaskname}}
-				</div>
-				<div class="extra">
-					<div class="field-label">里程碑</div>{{editForm.milestone == '0'? '否':'是'}}
-				</div>
-				<div class="extra">
-					<div class="field-label">预算金额</div>{{editForm.budgetCost}} 元
-				</div>
-				<div class="extra">
-					<div class="field-label">预算工作量</div>{{editForm.budgetWorkload}} 人时
-				</div>
-
-				<div class="extra">
-					<div class="field-label">任务描述</div>{{editForm.description}}
-				</div>
-				<div class="extra">
-					<div class="field-label"></div>
-				</div>
-
-
-				<el-menu :default-active="drawerkey" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-					<el-menu-item index="1">讨论 <el-tag   style="border-radius:30px;">10</el-tag></el-menu-item>
-					<el-menu-item index="2">操作日志 <el-tag   style="border-radius:30px;">10</el-tag></el-menu-item>
-				</el-menu>
-			</div>
+			</el-row>
 
 			<div v-if="drawerkey == '1' && drawerVisible==true" style="overflow-x:hidden">
 				 <xm-exchange-mng :xm-task="editForm"></xm-exchange-mng>
@@ -442,7 +355,7 @@
 		<el-dialog append-to-body title="选择负责人" :visible.sync="groupUserSelectVisible" width="80%"    :close-on-click-modal="false">
 			<xm-project-group-select :visible="groupUserSelectVisible" :sel-project="selProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-project-group-select>
 		</el-dialog>
-			
+
 		<el-dialog title="选择产品" :visible.sync="productSelectVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-product-select   :isSelectProduct="true" :selProject="filters.selProject" :visible="productSelectVisible" @cancel="productSelectVisible=false" @selected="onProductSelected"></xm-product-select>
 		</el-dialog>
@@ -489,7 +402,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					return this.filters.selProject;
 				}else{
 					return null;
-					 
+
 				}
 			},
 			currentProjectPhase(){
@@ -632,7 +545,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 3 );
 			return {
 				filters: {
-					key: '', 
+					key: '',
 					isMyTask: '0',//0不区分我的，1 时我的任务
 					selProject:null,
 					skillTags:[],
@@ -714,7 +627,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				dateRanger: [
 					util.formatDate.format(beginDate, "yyyy-MM-dd"),
 					util.formatDate.format(endDate, "yyyy-MM-dd")
-				],  
+				],
 				pickerOptions:  util.pickerOptions('datarange'),
 				/**end 自定义属性请在上面加 请加备注**/
 			}
@@ -798,7 +711,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				if(!this.dateRanger || this.dateRanger.length==0){
 					this.$message({ message: "创建日期范围不能为空", type: 'error' });
 					return;
-				} 
+				}
 				if(this.filters.taskType!="all" && this.filters.taskType!="" && this.filters.taskType!=null){
 					params.taskType=this.filters.taskType
 				}
@@ -855,7 +768,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				if(this.filters.product){
 					params.productId=this.filters.product.id
 				}
-				
+
 				params.createTimeStart=this.dateRanger[0]+" 00:00:00"
 				params.createTimeEnd=this.dateRanger[1]+" 23:59:59"
 				getTask(params).then((res) => {
@@ -1076,7 +989,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			showDrawer: function(row){
 				this.editFormVisible =true;
 				this.editForm=row;
-				
+
 				// this.$emit('row-click',row,);//  @row-click="rowClick"
 			},
 
@@ -1139,7 +1052,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 
 			},
       onSelectedStory(menus){//根据故事查询
-	  
+
         if(menus==null || menus.length==0){
         	this.menuStory=false;
         	return;
@@ -1505,12 +1418,12 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				}
 				return parseFloat(value);
 			},
-			
+
 			clearProduct(){
 				this.filters.product=null;
 				this.searchXmTasks();
 			},
-			showProductVisible(){ 
+			showProductVisible(){
 				this.productSelectVisible=true;
 			},
 			onProductSelected(product){
@@ -1690,8 +1603,8 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 		  })
 	  },
     //查询时选择责任人
-    seleConfirm(groupUsers){  
-		
+    seleConfirm(groupUsers){
+
       if(groupUsers&&groupUsers.length>0){
         this.filters.createUser=groupUsers[0];
       }else{
@@ -1701,7 +1614,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
       this.menuGroupUser=false;
     },
     seleExecutor(executors){
-		
+
       if(executors&&executors.length>0){
         this.filters.executor=executors[0];
       }else{
@@ -1763,8 +1676,44 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			setFiltersExecutorAsMySelf(){
 				this.filters.executor=this.userInfo;
 				this.searchXmTasks();
+			},
+			formatExeUsernames(row){
+				var exeUsernames=row.exeUsernames;
+				var respons={
+					type:'info',
+					executorUsername:row.executorUsername,
+					showMsg:'',
+					exeUsernames:exeUsernames,
+					executorUserid:row.executorUserid,
+				}
+				if(!row.executorUserid && exeUsernames){
+					var exeStatuss=exeUsernames.split(",")
+					respons.showMsg=exeStatuss.length+"人候选中"
+					return respons;
+				}else if(!row.executorUserid && !exeUsernames){
+					respons.showMsg="候选中"
+					return respons;
+				}
+				if(row.executorUserid && exeUsernames && exeUsernames.length>0){
+					var exeStatuss=exeUsernames.split(",").filter(i=>{
+						return i.indexOf(row.executorUsername)>=0
+					})
+					if(exeStatuss.length<=0){
+						respons.showMsg="去设置"
+						return respons;
+					}
+					respons.showMsg=exeStatuss.join(",")
+					if(respons.showMsg.indexOf('验收不过')>=0){
+						respons.type="danger"
+					}else if(respons.showMsg.indexOf('已验收')>=0){
+						respons.type="success"
+					}
+				}else{
+					respons.showMsg="去设置"
+				}
+				return respons
 			}
-												 
+
 			/**end 自定义函数请在上面加**/
 
 		},//end methods
@@ -1787,16 +1736,16 @@ XmProjectGroupSelect,XmProductSelect
 				this.filters.product=this.xmProduct;
 			}
 			this.$nextTick(()=>{
-				
-				this.getXmTasks();     
-				var clientRect=this.$refs.table.$el.getBoundingClientRect(); 
-				var subHeight=50/1000 * window.innerHeight; 
-				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
+
+				this.getXmTasks();
+				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				var subHeight=50/1000 * window.innerHeight;
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight;
 				// 监听窗口大小变化
 				/**
 				let self = this;
 				window.onresize = function() {
-					self.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight;  
+					self.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight;
 				}
  				*/
 				listOption([{categoryId:'all',itemCode:'planType'}
@@ -1813,70 +1762,16 @@ XmProjectGroupSelect,XmProductSelect
 </script>
 
 <style scoped>
-.xm-task{
-	width: 100%;
+.more-label-font{
+	text-align:center;
+	float:left;
+	padding-top:5px;
 }
-.xm-task>.el-menu-demo{
-	height: 50px;
-	padding-left: 10px;
-	background: #fafbfc;
+.align-right{
+	float: right;
 }
-.xm-task>.el-menu-demo>li{
-	height: 100%;
-	line-height: 50px;
-	color: #303133;
-}
-.xm-task>.el-menu-demo>li:hover{
-	background: transparent;
-}
-.xm-task>.el-menu-demo>.is-active{
-	background: transparent;
-}
-
-.xm-task-add >>> .el-dialog__body{
-	padding: 0 20px;
-}
-.xm-task >>> .el-drawer__close-btn{
-	display: none !important;
-}
-.xm-task >>> .el-drawer__header{
-	background-color: #fafbfc;
-	border-bottom: 1px solid #efefef;
-	padding: 8px 16px;
-}
-/* .xm-task .progress-form >>> .el-form-item__label{ */
-	/* line-height: 1.15; */
-/* } */
-.xm-task >>> .el-drawer__body{
-	overflow: auto;
-	padding: 0 20px;
-}
-.xm-task .el-progress--without-text{
-	display: flex;
-	align-items: center;
-}
-.xm-task >>> .el-progress-bar__inner{
-	transition: none !important;
-}
-.xm-task .progress-bar{
-	padding: 10px 0;
-}
-.xm-task .progress-btn{
-	line-height:0;
-	position:absolute;
-	top:7px;
-}
-.xm-task .progress-disable >>> .el-progress-bar__inner{
-	background-color: #ccc !important;
-}
-
-
-small{
-	font-size: 12px;
-	/* float:right; */
-	color: #6c757d!important;
-	margin-left:20px;
-}
+</style>
+<style lang="scss" scoped>
 
 .extra{
 	border-bottom: 1px solid #dedede;
@@ -1910,18 +1805,4 @@ small{
 	overflow-y: hidden;
 }
 
-
-
-.clearfix::after {
-	clear: both;
-	content: "";
-}
-.more-label-font{
-	text-align:center;
-	float:left;
-	padding-top:5px;
-}
-</style>
-<style lang="scss" scoped>
-  
 </style>
