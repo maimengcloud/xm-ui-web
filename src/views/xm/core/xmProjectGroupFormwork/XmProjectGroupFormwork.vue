@@ -157,14 +157,14 @@
 				<el-button @click="groupRoleDescVisible=false">关闭</el-button> 
 			</el-row> 
 		</el-drawer>
-		<el-drawer append-to-body title="选择员工" :visible.sync="userSelectVisible" width="60%">
+		<el-drawer append-to-body title="选择员工" :visible.sync="userSelectVisible" size="60%">
         	<users-select :select-userids="filters.ids?filters.ids.map(i=>i.id):[]" @confirm="onUserSelected" ref="usersSelect"></users-select>
       	</el-drawer>
 		  
-		<el-drawer v-if="selProject" :title="selProject==null?'操作日志':selProject.name+'团队操作日志'" center   :visible.sync="xmRecordVisible"  width="50%"  :close-on-click-modal="false" append-to-body>
+		<el-drawer v-if="selProject" :title="selProject==null?'操作日志':selProject.name+'团队操作日志'" center   :visible.sync="xmRecordVisible"  size="50%"  :close-on-click-modal="false" append-to-body>
 			<xm-record :obj-type="'group'" :visible="xmRecordVisible" :project-id="selProject.id"    :simple="1"></xm-record>
 		</el-drawer>
-		<el-drawer v-if="selProject" :title="selProject==null?'进度':selProject.name+'团队进度'" center   :visible.sync="xmProjectGroupStateVisible"  width="80%"  :close-on-click-modal="false" append-to-body>
+		<el-drawer v-if="selProject" :title="selProject==null?'进度':selProject.name+'团队进度'" center   :visible.sync="xmProjectGroupStateVisible"  size="80%"  :close-on-click-modal="false" append-to-body>
 			<xm-project-group-state-mng  :sel-project="selProject" :visible="xmProjectGroupStateVisible" ></xm-project-group-state-mng>
 		</el-drawer>
 	</section>

@@ -179,14 +179,14 @@
 			</el-table>
 			<el-pagination v-show="!showType" layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		</el-row>
-		<el-drawer title="项目编辑" :visible.sync="editFormVisible"  width="50%"  :close-on-click-modal="false" append-to-body>
+		<el-drawer title="项目编辑" :visible.sync="editFormVisible"  size="50%"  :close-on-click-modal="false" append-to-body>
 			<xm-project-edit :sel-project="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-edit>
 		</el-drawer>
-		<el-drawer :title="selectProject==null?'项目明细':selectProject.name" center :fullscreen="true" :visible.sync="showInfo"  width="50%"  :close-on-click-modal="false" append-to-body>
+		<el-drawer :title="selectProject==null?'项目明细':selectProject.name" center :fullscreen="true" :visible.sync="showInfo"  size="50%"  :close-on-click-modal="false" append-to-body>
 			<xm-project-info :sel-project="selectProject" :visible="showInfo" @changeShowInfo="changeShowInfo" @submit="changeShowInfo"></xm-project-info>
 		</el-drawer>
 		
-		<el-drawer v-if="selectProject" :title="selectProject==null?'操作日志':selectProject.name+'操作日志'" center   :visible.sync="xmRecordVisible"  width="50%"  :close-on-click-modal="false" append-to-body>
+		<el-drawer v-if="selectProject" :title="selectProject==null?'操作日志':selectProject.name+'操作日志'" center   :visible.sync="xmRecordVisible"  size="50%"  :close-on-click-modal="false" append-to-body>
 			<xm-record :obj-type="'project'" :project-id="selectProject.id"  :visible="xmRecordVisible" :simple="1"></xm-record>
 		</el-drawer>
 		

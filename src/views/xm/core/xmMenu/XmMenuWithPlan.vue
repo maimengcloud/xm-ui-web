@@ -155,7 +155,7 @@
 				<xm-task-mng :sel-project="selProject"   :menu-id="editForm.menuId"></xm-task-mng> 
 			</el-drawer>
 			
-			<el-drawer title="故事谈论" :visible.sync=" menuDetailVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="故事谈论" :visible.sync=" menuDetailVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="false" :xm-menu="editForm" ></xm-menu-rich-detail>
 			</el-drawer> 
 	</section>

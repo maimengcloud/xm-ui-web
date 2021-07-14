@@ -38,12 +38,12 @@
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		
 			<!--编辑 XmQuestionHandle xm_question_handle界面-->
-			<el-drawer title="编辑xm_question_handle" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑xm_question_handle" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				  <xm-question-handle-edit :xm-question-handle="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-question-handle-edit>
 			</el-drawer>
 	
 			<!--新增 XmQuestionHandle xm_question_handle界面-->
-			<el-drawer title="新增xm_question_handle" :visible.sync="addFormVisible"  width="50%"  append-to-body  :close-on-click-modal="false">
+			<el-drawer title="新增xm_question_handle" :visible.sync="addFormVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
 				<xm-question-handle-add :xm-question-handle="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-question-handle-add>
 			</el-drawer> 
 		</el-row>

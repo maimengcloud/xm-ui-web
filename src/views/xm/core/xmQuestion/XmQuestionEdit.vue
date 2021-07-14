@@ -103,10 +103,10 @@
 							</el-form-item>   	  
 					</el-form>  
 					
-				<el-drawer title="选中用户" :visible.sync="selectUserVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+				<el-drawer title="选中用户" :visible.sync="selectUserVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 					<xm-group-mng  :sel-project="selProject" :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-mng>
 				</el-drawer> 
-				<el-drawer title="选中任务" :visible.sync="selectTaskVisible"  width="80%" fullscreen  append-to-body   :close-on-click-modal="false">
+				<el-drawer title="选中任务" :visible.sync="selectTaskVisible"  size="80%" fullscreen  append-to-body   :close-on-click-modal="false">
 					<xm-task-list  :sel-project="selProject"   @task-selected="onSelectedTask"></xm-task-list>
 				</el-drawer> 	
 				

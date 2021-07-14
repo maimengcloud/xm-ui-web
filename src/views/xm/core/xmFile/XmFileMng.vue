@@ -34,12 +34,12 @@
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 			<!--编辑 XmFile xm_file界面-->
-			<el-drawer title="编辑文档" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑文档" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				  <xm-file-edit :xm-file="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-file-edit>
 			</el-drawer>
 
 			<!--新增 XmFile xm_file界面-->
-			<el-drawer title="新增文档" :visible.sync="addFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="新增文档" :visible.sync="addFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				<xm-file-add :xm-file="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-file-add>
 			</el-drawer> 
 		</el-row>

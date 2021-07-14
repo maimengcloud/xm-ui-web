@@ -107,12 +107,12 @@
       		<xm-gantt v-if="gstcVisible" :tree-data="xmIterationTreeData" :project-phase="{startTime: '2020-06-01', endTime: '2020-12-30'}" :columns="ganrrColumns" :useRealTime="false"></xm-gantt>
 
 			<!--编辑 XmIteration 迭代定义界面-->
-			<el-drawer title="编辑迭代定义" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑迭代定义" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				  <xm-iteration-edit :xm-iteration="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-iteration-edit>
 			</el-drawer>
 
 			<!--新增 XmIteration 迭代定义界面-->
-			<el-drawer title="新增迭代定义" :visible.sync="addFormVisible"  width="50%"  append-to-body  :close-on-click-modal="false">
+			<el-drawer title="新增迭代定义" :visible.sync="addFormVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
 				<xm-iteration-add :xm-iteration="addForm" :parent-iteration="parentIteration" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-iteration-add>
 			</el-drawer>
 

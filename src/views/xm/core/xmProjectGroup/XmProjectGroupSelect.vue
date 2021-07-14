@@ -25,7 +25,7 @@
 			</el-row>
 		</el-row>  
 		
-		<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+		<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 			<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
 		</el-drawer> 
 	</section>

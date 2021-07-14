@@ -176,18 +176,18 @@
 			<el-drawer title="新增缺陷"  :visible.sync="addFormVisible"   width="100%"  append-to-body   :close-on-click-modal="false">
 				<xm-question-add :xm-test-case-exec="xmTestCaseExec" :xm-test-case="xmTestCase" :qtype="qtype" :sel-project=" filters.selProject " :xm-question="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-question-add>
 			</el-drawer>
-			<el-drawer title="选中用户" v-if=" filters.selProject " :visible.sync="selectUserVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="选中用户" v-if=" filters.selProject " :visible.sync="selectUserVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-group-mng  :sel-project=" filters.selProject " :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-mng>
 			</el-drawer>
-			<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
 			</el-drawer>
 
-			<el-drawer append-to-body title="故事选择" :visible.sync="menuVisible"    width="80%"   :close-on-click-modal="false">
+			<el-drawer append-to-body title="故事选择" :visible.sync="menuVisible"    size="80%"   :close-on-click-modal="false">
 				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
 			</el-drawer>
 
-			<el-drawer title="选择产品" :visible.sync="productSelectVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="选择产品" :visible.sync="productSelectVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 					<xm-product-select   :isSelectProduct="true" :selProject="filters.selProject" :visible="productSelectVisible" @cancel="productSelectVisible=false" @selected="onProductSelected"></xm-product-select>
 			</el-drawer>
 	</section>

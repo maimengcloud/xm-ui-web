@@ -142,12 +142,12 @@
 		</el-row>
 		 
 					<!--编辑 XmProduct 产品表界面-->
-			<el-drawer title="编辑产品" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑产品" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				  <xm-product-edit :xm-product="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-product-edit>
 			</el-drawer>
 	
 			<!--新增 XmProduct 产品表界面-->
-			<el-drawer title="新增产品" :visible.sync="addFormVisible"  width="50%"  append-to-body  :close-on-click-modal="false">
+			<el-drawer title="新增产品" :visible.sync="addFormVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
 				<xm-product-add :xm-product="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-product-add>
 			</el-drawer> 
 			<el-drawer title="产品状态数据" :visible.sync="productStateVisible"  width="100%"  append-to-body  :close-on-click-modal="false">
@@ -161,7 +161,7 @@
 					<xm-iteration-mng :simple="true" :visible="iterationVisible" :product-id="editForm.id" ></xm-iteration-mng>
 			</el-drawer>
 			
-			<el-drawer title="选择员工" :visible.sync="selectFiltersPmUserVisible" width="60%" append-to-body>
+			<el-drawer title="选择员工" :visible.sync="selectFiltersPmUserVisible" size="60%" append-to-body>
 				<users-select  @confirm="onFiltersPmUserSelected" ref="usersSelect"></users-select>
 			</el-drawer>
 	</section>

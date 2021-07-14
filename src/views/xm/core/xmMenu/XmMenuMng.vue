@@ -162,7 +162,7 @@
 					<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="false" :xm-menu="editForm" ></xm-menu-rich-detail>
 				</el-drawer> 
 				
-				<el-drawer  title="选择产品" :visible.sync="productVisible"  width="60%"  append-to-body   :close-on-click-modal="false">
+				<el-drawer  title="选择产品" :visible.sync="productVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
 					<xm-product-mng :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-mng>
 				</el-drawer> 
 				<el-drawer title="选中任务" :visible.sync="selectTaskVisible"   size="80%"  append-to-body   :close-on-click-modal="false">
@@ -186,7 +186,7 @@
 						<xm-iteration-mng :visible="iterationVisible" :product-id="editForm.productId" :menu-id="editForm.menuId" ></xm-iteration-mng>
 				</el-drawer>
 
-				<el-drawer title="选择员工" :visible.sync="selectFiltersMmUserVisible" width="60%" append-to-body>
+				<el-drawer title="选择员工" :visible.sync="selectFiltersMmUserVisible" size="60%" append-to-body>
 					<users-select  @confirm="onFiltersMmUserSelected" ref="selectFiltersMmUser"></users-select>
 				</el-drawer>	
 			</el-col> 	 

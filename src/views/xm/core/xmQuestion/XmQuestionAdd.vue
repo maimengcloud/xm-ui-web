@@ -69,11 +69,11 @@
 					</el-col>
 				</el-form-item> 
 			</el-form>
-			<el-drawer title="选中用户" :visible.sync="selectUserVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="选中用户" :visible.sync="selectUserVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-group-mng  :sel-project="filters.selProject" :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-mng>
 			</el-drawer> 
 			
-			<el-drawer title="选中任务" :visible.sync="selectTaskVisible" fullscreen  width="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="选中任务" :visible.sync="selectTaskVisible" fullscreen  size="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-task-list  :sel-project="filters.selProject"   @task-selected="onSelectedTask"></xm-task-list>
 			</el-drawer> 	
 			
@@ -81,7 +81,7 @@
 				<xm-menu-select :is-select-menu="true"  @selected="onSelectedMenu" :sel-project="filters.selProject"></xm-menu-select>
 			</el-drawer>
 			
-			<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
 			</el-drawer> 
 		</el-row>

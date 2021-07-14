@@ -76,12 +76,12 @@
 				
 			</el-col>
 			<!--编辑 XmMenuTemplate xm_project_menu界面-->
-			<el-drawer title="编辑故事" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑故事" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				  <xm-menu-template-edit :xm-menu-template="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-menu-template-edit>
 			</el-drawer>
 	
 			<!--新增 XmMenuTemplate xm_project_menu界面-->
-			<el-drawer title="新增故事" :visible.sync="addFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="新增故事" :visible.sync="addFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				<xm-menu-template-add  :product="filters.product"   :parent-menu="parentMenu"  :xm-menu="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-menu-template-add>
 			</el-drawer> 
 		</el-row>

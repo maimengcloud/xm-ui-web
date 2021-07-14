@@ -158,44 +158,44 @@
       		<xm-gantt v-if="gstcVisible" :tree-data="xmTestCaseExecs" :project-phase="selProject" :columns="ganrrColumns" :useRealTime="false"></xm-gantt>
 		
 			<!--编辑 XmTestCaseExec xm_test_case_exec界面-->
-			<el-drawer title="编辑xm_test_case_exec" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑xm_test_case_exec" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				  <xm-test-case-exec-edit :xm-test-case-exec="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-test-case-exec-edit>
 			</el-drawer>
 	
 			<!--新增 XmTestCaseExec xm_test_case_exec界面-->
-			<el-drawer title="新增xm_test_case_exec" :visible.sync="addFormVisible"  width="50%"  append-to-body  :close-on-click-modal="false">
+			<el-drawer title="新增xm_test_case_exec" :visible.sync="addFormVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
 				<xm-test-case-exec-add :xm-test-case-exec="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-test-case-exec-add>
 			</el-drawer> 
-			<el-drawer title="选择用例" :visible.sync="xmTestCaseMngVisible"  width="50%"  append-to-body  :close-on-click-modal="false">
+			<el-drawer title="选择用例" :visible.sync="xmTestCaseMngVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
 				<xm-test-case-mng  :multi-select="true" :visible="xmTestCaseMngVisible"   @selected="onCaseSelected"></xm-test-case-mng>
 			</el-drawer> 
-			<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
 			</el-drawer> 
 			<el-drawer append-to-body title="故事选择" :visible.sync="menuVisible" fullscreen     :close-on-click-modal="false">
 				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"   @menus-selected="onSelectedMenus" ></xm-menu-select>
 			</el-drawer>
-			<el-drawer title="选中用户" :visible.sync="selectUserForFiltersVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="选中用户" :visible.sync="selectUserForFiltersVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-group-mng v-if="filters.selProject" :sel-project=" filters.selProject " :is-select-single-user="1" @user-confirm="onFiltersUserConfirm"></xm-group-mng>
 			</el-drawer> 
-			<el-drawer title="选中用户" :visible.sync="selectUserVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="选中用户" :visible.sync="selectUserVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-group-mng v-if="filters.selProject" :sel-project=" filters.selProject " :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-mng>
 			</el-drawer> 
-			<el-drawer title="选中任务" :visible.sync="selectTaskVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="选中任务" :visible.sync="selectTaskVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-task-list  :sel-project="filters.selProject"   @task-selected="onSelectedTask"></xm-task-list>
 			</el-drawer> 	
 			 
-			<el-drawer title="查看用例" :visible.sync="caseVisible"  width="80%" fullscreen append-to-body  :close-on-click-modal="false">
+			<el-drawer title="查看用例" :visible.sync="caseVisible"  size="80%" fullscreen append-to-body  :close-on-click-modal="false">
 				<xm-test-case-mng  :case-id="editForm.caseId" :visible="caseVisible"   ></xm-test-case-mng>
 			</el-drawer> 
-			<el-drawer title="测试用例" :visible.sync="caseVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="测试用例" :visible.sync="caseVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 				  <xm-test-case-edit :xm-test-case="xmTestCase"   :visible="caseVisible" @cancel="caseVisible=false" ></xm-test-case-edit>
 			</el-drawer>
-			<el-drawer title="缺陷列表" :visible.sync="bugsVisible"  width="80%"  append-to-body  fullscreen :close-on-click-modal="false">
+			<el-drawer title="缺陷列表" :visible.sync="bugsVisible"  size="80%"  append-to-body  fullscreen :close-on-click-modal="false">
 				  <xm-question-mng :xm-test-case="xmTestCase" :xm-test-case-exec="editForm" :sel-project="filters.selProject" :visible="bugsVisible" @cancel="bugsVisible=false" ></xm-question-mng>
 			</el-drawer>
 			
-			<el-drawer title="选择产品" :visible.sync="productSelectVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="选择产品" :visible.sync="productSelectVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 				  <xm-product-select  :isSelectProduct="true" :selProject="filters.selProject" :visible="productSelectVisible" @cancel="productSelectVisible=false" @selected="onProductSelected"></xm-product-select>
 			</el-drawer>
 			<!--新增 XmQuestion xm_question界面-->

@@ -46,12 +46,12 @@
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		
 			<!--编辑 XmProjectKpi xm_project_kpi界面-->
-			<el-drawer title="编辑xm_project_kpi" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑xm_project_kpi" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 					<xm-project-kpi-edit :xm-project-kpi="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-kpi-edit>
 			</el-drawer>
 
 			<!--新增 XmProjectKpi xm_project_kpi界面-->
-			<el-drawer title="新增xm_project_kpi" :visible.sync="addFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="新增xm_project_kpi" :visible.sync="addFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				<xm-project-kpi-add :xm-project-kpi="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-kpi-add>
 			</el-drawer>  
 		</el-row>

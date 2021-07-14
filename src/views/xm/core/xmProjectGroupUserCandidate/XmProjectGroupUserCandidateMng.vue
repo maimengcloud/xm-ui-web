@@ -29,12 +29,12 @@
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		
 			<!--编辑 XmProjectGroupUserCandidate xm_project_group_user_candidate界面-->
-			<el-drawer title="编辑xm_project_group_user_candidate" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑xm_project_group_user_candidate" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				  <xm-project-group-user-candidate-edit :xm-project-group-user-candidate="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-group-user-candidate-edit>
 			</el-drawer>
 	
 			<!--新增 XmProjectGroupUserCandidate xm_project_group_user_candidate界面-->
-			<el-drawer title="新增xm_project_group_user_candidate" :visible.sync="addFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="新增xm_project_group_user_candidate" :visible.sync="addFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				<xm-project-group-user-candidate-add :xm-project-group-user-candidate="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-group-user-candidate-add>
 			</el-drawer> 
 		</el-row>

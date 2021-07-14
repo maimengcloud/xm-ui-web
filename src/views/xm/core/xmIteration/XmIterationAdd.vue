@@ -39,7 +39,7 @@
 			</el-form>
 		</el-row>
 		
-		<el-drawer append-to-body title="选择员工" :visible.sync="userSelectVisible" width="60%">
+		<el-drawer append-to-body title="选择员工" :visible.sync="userSelectVisible" size="60%">
         	<users-select :select-userids="[]" @confirm="onUserSelected" ref="usersSelect"></users-select>
       	</el-drawer>
 	</section>

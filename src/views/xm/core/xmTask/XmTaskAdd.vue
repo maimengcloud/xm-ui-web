@@ -141,11 +141,11 @@
 		</el-row>
  
 
-		<!-- <el-drawer append-to-body :title="'技能要求'" :visible.sync="skillVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+		<!-- <el-drawer append-to-body :title="'技能要求'" :visible.sync="skillVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 			<xm-skill-mng :visible="skillVisible" :task-id="addForm.id" @cancel="skillVisible=false" @getSkill="getSkill"></xm-skill-mng>
 		</el-drawer> -->
 
-		<el-drawer append-to-body title="新增技能" :visible.sync="skillVisible" width="50%"    :close-on-click-modal="false">
+		<el-drawer append-to-body title="新增技能" :visible.sync="skillVisible" size="50%"    :close-on-click-modal="false">
 			<skill-mng :task-skills="taskSkills" :jump="true" @select-confirm="onTaskSkillsSelected"></skill-mng>
 		</el-drawer>
 
@@ -153,7 +153,7 @@
 			<xm-menu-select :is-select-menu="true"  @selected="onMenuSelected" :sel-project="xmProject"></xm-menu-select>
 		</el-drawer>
 		
-		<el-drawer title="选中任务" :visible.sync="selectTaskVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+		<el-drawer title="选中任务" :visible.sync="selectTaskVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 			<xm-task-list  :sel-project="xmProject"   @task-selected="onSelectedTask"></xm-task-list>
 		</el-drawer> 	
 	</section>

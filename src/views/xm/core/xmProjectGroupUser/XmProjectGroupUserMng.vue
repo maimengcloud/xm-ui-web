@@ -25,12 +25,12 @@
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		
 			<!--编辑 XmProjectGroupUser xm_project_group_user界面-->
-			<el-drawer title="编辑xm_project_group_user" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑xm_project_group_user" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				  <xm-project-group-user-edit :xm-project-group-user="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-group-user-edit>
 			</el-drawer>
 	
 			<!--新增 XmProjectGroupUser xm_project_group_user界面-->
-			<el-drawer title="新增xm_project_group_user" :visible.sync="addFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="新增xm_project_group_user" :visible.sync="addFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				<xm-project-group-user-add :xm-project-group-user="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-group-user-add>
 			</el-drawer> 
 		</el-row>

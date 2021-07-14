@@ -26,16 +26,16 @@
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		
 			<!--编辑 XmTaskSkill xm_task_skill界面-->
-			<el-drawer title="编辑技能" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑技能" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				  <xm-task-skill-edit :xm-task-skill="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-task-skill-edit>
 			</el-drawer>
 
-			<el-drawer append-to-body title="新增技能" :visible.sync="skillVisible" width="50%" append-to-body   :close-on-click-modal="false">
+			<el-drawer append-to-body title="新增技能" :visible.sync="skillVisible" size="50%" append-to-body   :close-on-click-modal="false">
 				<skill-mng :skillIds="skillIds" :jump="true" @select-confirm="onTagSelected"></skill-mng>
 			</el-drawer>
 	
 			<!--新增 XmTaskSkill xm_task_skill界面-->
-			<!-- <el-drawer title="新增技能" :visible.sync="addFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<!-- <el-drawer title="新增技能" :visible.sync="addFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				<xm-task-skill-add :xm-task-skill="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-task-skill-add>
 			</el-drawer>  -->
 		</el-row>

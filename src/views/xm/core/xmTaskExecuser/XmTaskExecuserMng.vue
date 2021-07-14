@@ -143,7 +143,7 @@
 					</el-form-item>
 				</el-form> 
 			</el-drawer>
-			<el-drawer append-to-body title="报价" :visible.sync="quotePriceVisible" width="60%" :close-on-click-modal="false">
+			<el-drawer append-to-body title="报价" :visible.sync="quotePriceVisible" size="60%" :close-on-click-modal="false">
 				<el-form :model="quotePriceForm" label-width="100px" ref="quotePriceForm">  
 					<el-form-item label="候选人名称">
 						<span>{{ quotePriceForm.username }}</span>
@@ -187,17 +187,17 @@
 			</el-drawer>
 		
 			<!--编辑 XmTaskExecuser xm_task_execuser界面-->
-			<el-drawer append-to-body title="编辑任务执行人" :visible.sync="editFormVisible"  width="50%"  :close-on-click-modal="false">
+			<el-drawer append-to-body title="编辑任务执行人" :visible.sync="editFormVisible"  size="50%"  :close-on-click-modal="false">
 				<xm-task-execuser-edit :exec-user-list="xmTaskExecusers" :xm-task="xmTask"   :xm-task-execuser="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-task-execuser-edit>
 			</el-drawer>
 	
 			<!--新增 XmTaskExecuser xm_task_execuser界面-->
-			<el-drawer append-to-body title="新增任务执行人" :visible.sync="addFormVisible"  width="50%"  :close-on-click-modal="false">
+			<el-drawer append-to-body title="新增任务执行人" :visible.sync="addFormVisible"  size="50%"  :close-on-click-modal="false">
 				<xm-task-execuser-add :exec-user-list="xmTaskExecusers" :xm-task="xmTask" :execuser-add-type="execuserAddType"  :xm-task-execuser="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-task-execuser-add>
 			</el-drawer> 
 			
 			<!--新增 XmTaskExecuser xm_task_execuser界面-->
-			<el-drawer append-to-body title="结算清单" :visible.sync="settleListVisible"  width="80%"  :close-on-click-modal="false">
+			<el-drawer append-to-body title="结算清单" :visible.sync="settleListVisible"  size="80%"  :close-on-click-modal="false">
 				<xm-project-m-cost-user-list :userid="editForm.userid" :project-id="this.editForm.projectId"   :task-id="editForm.taskId" :visible="settleListVisible" @cancel="settleListVisible=false" ></xm-project-m-cost-user-list>
 			</el-drawer> 
 		</el-row>

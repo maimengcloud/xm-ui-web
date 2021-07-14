@@ -302,7 +302,7 @@
 		</el-drawer>
 
 		<!-- 新增 XmTask xm_task界面-->
-		<el-drawer class="xm-task-add" title="新增任务" :visible.sync="addFormVisible"  width="80%" append-to-body  :close-on-click-modal="false">
+		<el-drawer class="xm-task-add" title="新增任务" :visible.sync="addFormVisible"  size="80%" append-to-body  :close-on-click-modal="false">
 			<xm-task-add :xm-project="currentProject" :project-phase="currentProjectPhase"   :xm-task="addForm" :parent-task="parentTask" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-task-add>
 		</el-drawer>
 
@@ -310,7 +310,7 @@
 			<xm-execuser-mng :visible="execUserVisible" :xm-task="editForm"  :is-my="isMy"  @after-add-submit="afterExecuserSubmit" @after-edit-submit="afterExecuserSubmit" @after-delete-submit="afterExecuserSubmit" ref="execuserMng"></xm-execuser-mng>
 		</el-drawer>
 
-		<!-- <el-drawer :title="'技能要求——'+currTaskName" :visible.sync="skillVisible"  width="80%" append-to-body  :close-on-click-modal="false">
+		<!-- <el-drawer :title="'技能要求——'+currTaskName" :visible.sync="skillVisible"  size="80%" append-to-body  :close-on-click-modal="false">
 			<xm-skill-mng :visible="skillVisible" :task-id="currTaskId" :task-name="currTaskName"></xm-skill-mng>
 		</el-drawer> -->
 
