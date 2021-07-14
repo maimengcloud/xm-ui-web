@@ -30,7 +30,7 @@
 						</el-input>
 						<el-button v-if="isMultiSelect" @click="selectedTasks" type="primary">确认选择</el-button>
 					</el-row>
-					<el-row  class="app-container">
+					<el-row  class="page-main">
 						<el-table
 							ref="taskTable"
 							show-summary

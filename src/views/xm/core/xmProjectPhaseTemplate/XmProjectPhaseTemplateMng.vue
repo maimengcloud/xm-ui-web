@@ -8,7 +8,7 @@
 			<el-button v-if="isSelect" type="primary" @click="selectedConfirm">确认选择</el-button> 
 		</el-row>
 		
-		<el-row class="app-container" v-if="!simple"> 
+		<el-row class="page-main" v-if="!simple"> 
 			<!--列表 XmProjectPhaseTemplate xm_phase_template-->
 			<el-table default-expand-all :data="xmProjectPhaseTemplateTreeData" @sort-change="sortChange" row-key="id"  :tree-props="{children: 'children', hasChildren: 'hasChildren'}" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="selection" width="40"></el-table-column> 

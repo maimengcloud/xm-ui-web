@@ -70,7 +70,7 @@
 			</el-menu>
 			 
 		</el-row> 
-		<el-row  class="app-container"> 
+		<el-row  class="page-main"> 
 			<!--列表 XmProject xm_project-->
 			<el-row v-show="showType" v-loading="load.list" class="project-box">
 				<el-col  v-cloak v-for="(p,i) in ScreenData" :key="i" :xl="4" :lg="6" :md="8" :sm="12">

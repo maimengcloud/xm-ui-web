@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<el-row  class="app-container" v-show="batchEditVisible==false"> 
+		<el-row  class="page-main" v-show="batchEditVisible==false"> 
 			<el-button  class="hidden-md-and-down"  @click="loadTasksToXmProjectPhase(sels)" v-loading="load.edit" icon="el-icon-s-data">由任务汇总进度数据</el-button> 
 			<el-button   @click="batchEditVisible=true" v-loading="load.edit" icon="el-icon-edit">批量修改</el-button>
 			<span  v-if="batchEditVisible!=true"   >
@@ -65,7 +65,7 @@
 					<span style="margin-left:10px;font-size:14px;">外购人力总预算：</span><el-tag  :type="phaseBudgetData.surplusPlanOutUserAt>0?'warning':'danger'">{{toFixed(selProject.planOutUserAt/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanOutUserAt/10000,2)}}万</el-tag>  
 
  		</el-row> 
- 		<el-row class="app-container" v-show="batchEditVisible==false"> 
+ 		<el-row class="page-main" v-show="batchEditVisible==false"> 
 			<!--列表 XmProjectPhase xm_project_phase-->
 			<el-table ref="table" :height="tableHeight" v-show="!gstcVisible "  default-expand-all :data="projectPhaseTreeData"  :summary-method="getSummariesForNoBatchEdit"  :show-summary="true"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
   				<el-table-column prop="phaseName" label="阶段名称" min-width="150" show-overflow-tooltip> 

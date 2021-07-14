@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<el-row  v-show="batchEditVisible==false" class="app-container">
+		<el-row  v-show="batchEditVisible==false" class="page-main">
 			<el-col v-if="isTaskCenter!='1' && currentProject " :span="4" >
 				<xm-project-phase-mng  :sel-project="currentProject" :simple="true" @row-click="projectPhaseRowClick" @clear-select="clearSelectPhase"></xm-project-phase-mng>
 			</el-col>

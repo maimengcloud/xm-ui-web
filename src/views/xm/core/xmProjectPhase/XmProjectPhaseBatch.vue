@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<el-row  class="app-container" >
+		<el-row  class="page-main" >
 			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete">批量删除</el-button>  
 			<el-button type="warning" @click="saveBatchEdit" v-loading="load.edit" icon="el-icon-finished">批量保存</el-button>
 			
@@ -15,14 +15,14 @@
 				
 			</div> 
 		</el-row>
-		<el-row class="app-container"  >  
+		<el-row class="page-main"  >  
  					<span style="margin-left:10px;font-size:14px;">项目总预算：</span><el-tag type='success'> {{toFixed(selProject.planTotalCost/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanCostAt/10000,2)}}万</el-tag> 
 					<span style="margin-left:10px;font-size:14px;">非人力总预算：</span><el-tag :type="phaseBudgetData.surplusPlanNouserAt>0?'warning':'danger'">{{toFixed(selProject.planNouserAt/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanNouserAt/10000,2)}}万</el-tag>  
 					<span style="margin-left:10px;font-size:14px;">内部人力总预算：</span><el-tag  :type="phaseBudgetData.surplusPlanInnerUserAt>0?'warning':'danger'">{{toFixed(selProject.planInnerUserAt/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanInnerUserAt/10000,2)}}万</el-tag>  
 					<span style="margin-left:10px;font-size:14px;">外购人力总预算：</span><el-tag  :type="phaseBudgetData.surplusPlanOutUserAt>0?'warning':'danger'">{{toFixed(selProject.planOutUserAt/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanOutUserAt/10000,2)}}万</el-tag>  
 
  		</el-row> 
- 		<el-row class="app-container" >   
+ 		<el-row class="page-main" >   
 			<!--列表 XmProjectPhase xm_project_phase-->
 			<el-table ref="table" :height="tableHeight" class="drag-table" default-expand-all :summary-method="getSummariesForBatchEdit" :data="projectPhaseTreeData"    :show-summary="true"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column    type="selection" width="50"></el-table-column>

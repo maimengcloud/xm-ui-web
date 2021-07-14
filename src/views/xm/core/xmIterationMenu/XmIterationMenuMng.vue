@@ -2,7 +2,7 @@
 	<section>
 
 		<el-row > 
-			<el-col :span="8" class="app-container" v-if="!xmIteration">
+			<el-col :span="8" class="page-main" v-if="!xmIteration">
 				<xm-iteration-mng :simple="true" @row-click="onIterationRowClick" @clear-select="onIterationClearSelect"></xm-iteration-mng>
 			</el-col>
 			<el-col :span="xmIteration?24:16">

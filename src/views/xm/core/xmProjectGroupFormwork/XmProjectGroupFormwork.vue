@@ -15,7 +15,7 @@
 					<el-tooltip  v-else content="黄色表示选中"><span class="addXmProjectGroupFormworkSquare">选中</span></el-tooltip>
 				</el-col> 
 		</el-row>
-		 <el-row class="app-container" v-loading="load.list" v-if="!isSelectSingleUser && !isSelectMultiUser">
+		 <el-row class="page-main" v-loading="load.list" v-if="!isSelectSingleUser && !isSelectMultiUser">
 			<el-row v-for="(item,index) in xmProjectGroupFormworkSels" :key="index">
 				<h3>
 					<div>{{item.groupName + "："}}<el-tag v-if="imGroupVisible==true && imGroups.some(g=>item.id==g.id) "   type="success">已绑定</el-tag><el-tag type="danger" v-else-if="imGroupVisible==true " @click="doCreateImGroup(item)">未绑定，点我去绑定</el-tag>
@@ -32,7 +32,7 @@
 			</el-row>
 		</el-row>
 		
-		<el-row class="app-container" v-loading="load.list" v-else>
+		<el-row class="page-main" v-loading="load.list" v-else>
 			<el-row v-for="(item,index) in xmProjectGroupFormworkSels" :key="index">
 				<h3>
 					<div>{{item.groupName + "："}} 

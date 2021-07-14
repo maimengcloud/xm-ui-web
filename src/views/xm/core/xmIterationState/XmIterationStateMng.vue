@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<el-row v-if="!xmIteration" class="app-container">
+		<el-row v-if="!xmIteration" class="page-main">
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterationStates">查询</el-button>
   		</el-row>

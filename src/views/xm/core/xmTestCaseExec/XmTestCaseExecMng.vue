@@ -67,7 +67,7 @@
 					<el-button  slot="reference" icon="el-icon-more" circle></el-button>
 				</el-popover> 
 		</el-row>
-		<el-row class="app-container" v-else> 
+		<el-row class="page-main" v-else> 
 				<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
 					<template slot="append">
 						<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTestCaseExecs" icon="el-icon-search"></el-button>  

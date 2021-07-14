@@ -1,12 +1,12 @@
 <template>
 	<section>
-		<el-row  class="app-container" v-if="xmMenu && !simple">
+		<el-row  class="page-main" v-if="xmMenu && !simple">
 			 <h1>{{xmMenu.menuName}}</h1> 
 			<el-divider></el-divider> 
 			<div v-html="xmMenu.remark"></div>
 			<el-divider></el-divider> 
 		</el-row>
-		<el-row  class="app-container" v-if="!xmMenu && !simple">
+		<el-row  class="page-main" v-if="!xmMenu && !simple">
 			 <h1 v-if="filters.xmMenu">{{filters.xmMenu.menuName}}</h1> <el-button @click="showSelectMenu">选择用户故事</el-button>
 			<el-divider v-if="filters.xmMenu"></el-divider> 
 			<div v-if="filters.xmMenu" v-html="filters.xmMenu.remark"></div>

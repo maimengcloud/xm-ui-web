@@ -13,7 +13,7 @@
 			<el-button type="primary" v-if=" batchEditVisible==true "  @click="saveBatchEdit" v-loading="load.edit" icon="el-icon-finished">批量保存</el-button>
 			<el-button  v-if=" batchEditVisible==true "  @click="noBatchEdit" v-loading="load.edit" icon="el-icon-back">返回</el-button>  
   		</el-row>
-		<el-row class="app-container" v-show="!batchEditVisible">    
+		<el-row class="page-main" v-show="!batchEditVisible">    
 				<el-table ref="table" :height="tableHeight" v-if="!gstcVisible" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 					<el-table-column sortable type="selection" width="40"></el-table-column>
  					<el-table-column prop="menuName" label="故事名称" min-width="150" >

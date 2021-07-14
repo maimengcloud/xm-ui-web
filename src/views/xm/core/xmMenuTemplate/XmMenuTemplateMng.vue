@@ -10,7 +10,7 @@
 			<el-button  v-if="isSelectMenu!=true && batchEditVisible==true"  type="primary" @click="batchSaveMenu">保存</el-button> 
 			<el-button  v-if="isSelectMenu!=true  && batchEditVisible==true "    @click="noBatchEdit">返回</el-button>  
 		</el-row>
-		<el-row class="app-container" >  
+		<el-row class="page-main" >  
 			<el-col  :span="6" v-show="!batchEditVisible">
 				<xm-product-template-mng @row-click="onProductSelected" ref="xmProductTemplateMng" :simple="true"></xm-product-template-mng>
 			</el-col>
