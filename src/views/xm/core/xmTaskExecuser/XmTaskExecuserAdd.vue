@@ -54,9 +54,9 @@
 			</el-form>
 		</el-row>
 		
-		<el-dialog title="选择员工" :visible.sync="userSelectVisible" width="60%" append-to-body>
+		<el-drawer title="选择员工" :visible.sync="userSelectVisible" width="60%" append-to-body>
        		 <users-select  @confirm="onUserSelected" ref="usersSelect"></users-select>
-      	</el-dialog>	
+      	</el-drawer>	
 
 	</section>
 </template>

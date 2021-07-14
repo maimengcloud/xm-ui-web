@@ -33,9 +33,9 @@
  				</el-form-item> 
 			</el-form>
 			
-		<el-dialog append-to-body title="故事选择" :visible.sync="menuVisible" fullscreen    :close-on-click-modal="false">
+		<el-drawer append-to-body title="故事选择" :visible.sync="menuVisible" fullscreen    :close-on-click-modal="false">
 			<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true" :exclude-iteration-id="iteration?iteration.id:''"  @menus-selected="onSelectedMenus" ></xm-menu-select>
-		</el-dialog>
+		</el-drawer>
 		</el-row>
 	</section>
 </template>

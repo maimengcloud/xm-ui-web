@@ -138,49 +138,49 @@
 					
 		</el-row> 
 			<!--编辑 XmMenu xm_project_menu界面-->
-			<el-dialog title="编辑故事" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑故事" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
 				<xm-menu-edit :xm-menu="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-menu-edit>
-			</el-dialog>
+			</el-drawer>
 	
 			<!--新增 XmMenu xm_project_menu界面-->
-			<el-dialog title="新增故事" :visible.sync="addFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="新增故事" :visible.sync="addFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
 				<xm-menu-add  :product="filters.product"   :parent-menu="parentMenu"  :xm-menu="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-menu-add>
-			</el-dialog> 
-			<el-dialog title="故事模板" :visible.sync="menuTemplateVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+			</el-drawer> 
+			<el-drawer title="故事模板" :visible.sync="menuTemplateVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-menu-template-mng  :is-select-menu="true"  :visible="menuTemplateVisible" @cancel="menuTemplateVisible=false" @selected-menus="onSelectedMenuTemplates"></xm-menu-template-mng>
-			</el-dialog> 
+			</el-drawer> 
 			
-			<el-dialog title="故事谈论" :visible.sync=" menuDetailVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="故事谈论" :visible.sync=" menuDetailVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="false" :xm-menu="editForm" ></xm-menu-rich-detail>
-			</el-dialog> 
+			</el-drawer> 
 			
-			<el-dialog title="选中任务" :visible.sync="selectTaskVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="选中任务" :visible.sync="selectTaskVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-task-list  :sel-project="selProject" :is-multi-select="true"  @tasks-selected="onSelectedTasks"></xm-task-list>
-			</el-dialog> 
-			<el-dialog title="查看任务" :visible.sync="taskListForMenuVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+			</el-drawer> 
+			<el-drawer title="查看任务" :visible.sync="taskListForMenuVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-task-list-for-menu   :is-multi-select="true" :menu-id="editForm.menuId"></xm-task-list-for-menu>
-			</el-dialog> 
-			<el-dialog
+			</el-drawer> 
+			<el-drawer
 				append-to-body
 				title="任务"
 				:visible.sync="taskMngVisible"
 				fullscreen>
 				<xm-task-mng :sel-project="selProject"   :menu-id="editForm.menuId" :menu-name="editForm.menuName"></xm-task-mng> 
-			</el-dialog>
-			<el-dialog
+			</el-drawer>
+			<el-drawer
 				append-to-body
 				title="故事关联的迭代查询"
 				:visible.sync="iterationVisible" 
 				>
 					<xm-iteration-mng :visible="iterationVisible" :product-id="editForm.productId" :menu-id="editForm.menuId" ></xm-iteration-mng>
-			</el-dialog>
+			</el-drawer>
 
-			<el-dialog title="选择员工" :visible.sync="selectFiltersMmUserVisible" width="60%" append-to-body>
+			<el-drawer title="选择员工" :visible.sync="selectFiltersMmUserVisible" width="60%" append-to-body>
 				<users-select  @confirm="onFiltersMmUserSelected" ref="selectFiltersMmUser"></users-select>
-			</el-dialog>	
-			<el-dialog title="选择员工" :visible.sync="userSelectVisible" width="60%" append-to-body>
+			</el-drawer>	
+			<el-drawer title="选择员工" :visible.sync="userSelectVisible" width="60%" append-to-body>
 				<users-select  @confirm="onUserSelected" ref="usersSelect"></users-select>
-			</el-dialog>	 
+			</el-drawer>	 
 		</el-row>
 	</section>
 </template>

@@ -38,14 +38,14 @@
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		
 			<!--编辑 XmProjectKpiHis xm_project_kpi_his界面-->
-			<el-dialog title="编辑xm_project_kpi_his" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑xm_project_kpi_his" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
 				  <xm-project-kpi-his-edit :xm-project-kpi-his="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-kpi-his-edit>
-			</el-dialog>
+			</el-drawer>
 	
 			<!--新增 XmProjectKpiHis xm_project_kpi_his界面-->
-			<el-dialog title="新增xm_project_kpi_his" :visible.sync="addFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="新增xm_project_kpi_his" :visible.sync="addFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
 				<xm-project-kpi-his-add :xm-project-kpi-his="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-kpi-his-add>
-			</el-dialog> 
+			</el-drawer> 
 		</el-row>
 	</section>
 </template>

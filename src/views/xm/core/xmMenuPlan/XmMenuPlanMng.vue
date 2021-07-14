@@ -67,14 +67,14 @@
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		
 			<!--编辑 XmMenuPlan 功能计划表,无需前端维护，所有数据由汇总统计得出界面-->
-			<el-dialog title="编辑功能计划表,无需前端维护，所有数据由汇总统计得出" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑功能计划表,无需前端维护，所有数据由汇总统计得出" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
 				  <xm-menu-plan-edit :xm-menu-plan="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-menu-plan-edit>
-			</el-dialog>
+			</el-drawer>
 	
 			<!--新增 XmMenuPlan 功能计划表,无需前端维护，所有数据由汇总统计得出界面-->
-			<el-dialog title="新增功能计划表,无需前端维护，所有数据由汇总统计得出" :visible.sync="addFormVisible"  width="50%"  append-to-body  :close-on-click-modal="false">
+			<el-drawer title="新增功能计划表,无需前端维护，所有数据由汇总统计得出" :visible.sync="addFormVisible"  width="50%"  append-to-body  :close-on-click-modal="false">
 				<xm-menu-plan-add :xm-menu-plan="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-menu-plan-add>
-			</el-dialog> 
+			</el-drawer> 
 		</el-row>
 	</section>
 </template>

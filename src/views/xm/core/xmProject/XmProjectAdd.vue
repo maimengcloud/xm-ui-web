@@ -135,13 +135,13 @@
 
 		</el-row>
 		
-			<el-dialog
+			<el-drawer
 				append-to-body
 				title="项目分组"
 				:visible.sync="groupSelectVisible"
 				width="80%">
 				<xm-project-group-formwork :sel-groups="xmProjectGroups" @select-confirm="onGroupSelected"></xm-project-group-formwork> 
-			</el-dialog> 
+			</el-drawer> 
 	</section>
 </template>
 

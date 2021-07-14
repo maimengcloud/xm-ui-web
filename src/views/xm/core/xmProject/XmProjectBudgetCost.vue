@@ -89,12 +89,12 @@
 				<xm-budget-user v-if="showType == '人力'" :sel-project="selProject"></xm-budget-user>
 				<xm-budget-nouser v-else  :sel-project="selProject"></xm-budget-nouser>
 			</div>
-			<el-dialog title="查看人力预算明细" :visible.sync="budgetCostUserVisible"  fullscreen  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="查看人力预算明细" :visible.sync="budgetCostUserVisible"  fullscreen  append-to-body   :close-on-click-modal="false">
 				<xm-budget-user :budget-cost-user="budgetCostUser" :visible="budgetCostUserVisible" :field-name="fieldName" :query-type="queryType" :sel-project="selProject"></xm-budget-user>
-			</el-dialog> 
-			<el-dialog title="查看非人力预算明细" :visible.sync="budgetCostNouserVisible"  fullscreen  append-to-body   :close-on-click-modal="false">
+			</el-drawer> 
+			<el-drawer title="查看非人力预算明细" :visible.sync="budgetCostNouserVisible"  fullscreen  append-to-body   :close-on-click-modal="false">
 				<xm-budget-nouser :budget-cost-nouser="budgetCostNouser" :visible="budgetCostNouserVisible" :field-name="fieldName" :query-type="queryType" :sel-project="selProject"></xm-budget-nouser>
-			</el-dialog> 
+			</el-drawer> 
 		</el-row>
 	</section>
 </template>

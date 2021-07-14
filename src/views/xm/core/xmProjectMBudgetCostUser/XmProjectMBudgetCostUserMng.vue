@@ -85,14 +85,14 @@
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		
 			<!--编辑 XmProjectMBudgetCostUser xm_project_m_budget_cost_user界面-->
-			<el-dialog title="编辑人力预算明细" :visible.sync="editFormVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑人力预算明细" :visible.sync="editFormVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 				  <xm-project-m-budget-cost-user-edit :xm-project-m-budget-cost-user="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-m-budget-cost-user-edit>
-			</el-dialog>
+			</el-drawer>
 	
 			<!--新增 XmProjectMBudgetCostUser xm_project_m_budget_cost_user界面-->
-			<el-dialog title="新增人力预算明细" :visible.sync="addFormVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="新增人力预算明细" :visible.sync="addFormVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-project-m-budget-cost-user-add :sel-project="selProject" :xm-project-m-budget-cost-user="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-m-budget-cost-user-add>
-			</el-dialog> 
+			</el-drawer> 
 		</el-row>
 	</section>
 </template>

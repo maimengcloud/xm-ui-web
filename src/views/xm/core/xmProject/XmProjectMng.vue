@@ -179,24 +179,24 @@
 			</el-table>
 			<el-pagination v-show="!showType" layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		</el-row>
-		<el-dialog title="项目编辑" :visible.sync="editFormVisible"  width="50%"  :close-on-click-modal="false" append-to-body>
+		<el-drawer title="项目编辑" :visible.sync="editFormVisible"  width="50%"  :close-on-click-modal="false" append-to-body>
 			<xm-project-edit :sel-project="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-edit>
-		</el-dialog>
-		<el-dialog :title="selectProject==null?'项目明细':selectProject.name" center :fullscreen="true" :visible.sync="showInfo"  width="50%"  :close-on-click-modal="false" append-to-body>
+		</el-drawer>
+		<el-drawer :title="selectProject==null?'项目明细':selectProject.name" center :fullscreen="true" :visible.sync="showInfo"  width="50%"  :close-on-click-modal="false" append-to-body>
 			<xm-project-info :sel-project="selectProject" :visible="showInfo" @changeShowInfo="changeShowInfo" @submit="changeShowInfo"></xm-project-info>
-		</el-dialog>
+		</el-drawer>
 		
-		<el-dialog v-if="selectProject" :title="selectProject==null?'操作日志':selectProject.name+'操作日志'" center   :visible.sync="xmRecordVisible"  width="50%"  :close-on-click-modal="false" append-to-body>
+		<el-drawer v-if="selectProject" :title="selectProject==null?'操作日志':selectProject.name+'操作日志'" center   :visible.sync="xmRecordVisible"  width="50%"  :close-on-click-modal="false" append-to-body>
 			<xm-record :obj-type="'project'" :project-id="selectProject.id"  :visible="xmRecordVisible" :simple="1"></xm-record>
-		</el-dialog>
+		</el-drawer>
 		
-		<el-dialog
+		<el-drawer
 			append-to-body
 			title="产品"
 			:visible.sync="productSelectVisible"
 			width="80%">
 			<xm-product-mng :is-select-product="true" @selected="onProductSelected"></xm-product-mng> 
-		</el-dialog>
+		</el-drawer>
 	</section> 
 
 </template>

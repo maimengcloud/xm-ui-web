@@ -52,17 +52,17 @@
 
 		</el-row>
 					<!--编辑 XmProjectPhaseTemplate xm_phase_template界面-->
-		<el-dialog title="编辑阶段" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+		<el-drawer title="编辑阶段" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
 				<xm-project-phase-template-edit  :xm-project-phase-template="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-phase-template-edit>
-		</el-dialog>
+		</el-drawer>
 
 		<!--新增 XmProjectPhaseTemplate xm_phase_template界面-->
-		<el-dialog title="新增阶段" :visible.sync="addFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+		<el-drawer title="新增阶段" :visible.sync="addFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
 			<xm-project-phase-template-add :sel-project-template="filters.projectTemplate" :xm-parent-phase-template="parentPhaseTemplate" :xm-project-phase-template="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-phase-template-add>
-		</el-dialog> 
-		<el-dialog title="项目模板" :visible.sync="projectTemplateVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+		</el-drawer> 
+		<el-drawer title="项目模板" :visible.sync="projectTemplateVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
 			<xm-project-template-list    :visible="addFormVisible" @cancel="projectTemplateVisible=false" @selected="onProjectTemplateSelected"></xm-project-template-list>
-		</el-dialog> 
+		</el-drawer> 
 	</section>
 </template>
 

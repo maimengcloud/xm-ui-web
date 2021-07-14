@@ -86,13 +86,13 @@
 			</el-form>
 		</el-row> 
 
-		<!-- <el-dialog append-to-body :title="'技能要求'" :visible.sync="skillVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+		<!-- <el-drawer append-to-body :title="'技能要求'" :visible.sync="skillVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 			<xm-skill-mng :visible="skillVisible" :task-id="addForm.id" @cancel="skillVisible=false" @getSkill="getSkill"></xm-skill-mng>
-		</el-dialog> -->
+		</el-drawer> -->
 
-		<el-dialog append-to-body title="新增技能" :visible.sync="skillVisible" width="50%"    :close-on-click-modal="false">
+		<el-drawer append-to-body title="新增技能" :visible.sync="skillVisible" width="50%"    :close-on-click-modal="false">
 			<skill-mng :task-skills="taskSkills" :jump="true" @select-confirm="onTaskSkillsSelected"></skill-mng>
-		</el-dialog>
+		</el-drawer>
 
 	</section>
 </template>

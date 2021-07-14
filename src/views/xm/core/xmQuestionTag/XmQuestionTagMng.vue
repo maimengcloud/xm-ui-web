@@ -26,14 +26,14 @@
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		
 			<!--编辑 XmQuestionTag 缺陷标签关联表界面-->
-			<el-dialog title="编辑缺陷标签关联表" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑缺陷标签关联表" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
 				  <xm-question-tag-edit :xm-question-tag="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-question-tag-edit>
-			</el-dialog>
+			</el-drawer>
 	
 			<!--新增 XmQuestionTag 缺陷标签关联表界面-->
-			<el-dialog title="新增缺陷标签关联表" :visible.sync="addFormVisible"  width="50%"  append-to-body  :close-on-click-modal="false">
+			<el-drawer title="新增缺陷标签关联表" :visible.sync="addFormVisible"  width="50%"  append-to-body  :close-on-click-modal="false">
 				<xm-question-tag-add :xm-question-tag="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-question-tag-add>
-			</el-dialog> 
+			</el-drawer> 
 		</el-row>
 	</section>
 </template>

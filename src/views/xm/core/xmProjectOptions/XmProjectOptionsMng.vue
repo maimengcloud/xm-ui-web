@@ -25,14 +25,14 @@
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		
 			<!--编辑 XmProjectOptions xm_project_options界面-->
-			<el-dialog title="编辑xm_project_options" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑xm_project_options" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
 				  <xm-project-options-edit :xm-project-options="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-options-edit>
-			</el-dialog>
+			</el-drawer>
 	
 			<!--新增 XmProjectOptions xm_project_options界面-->
-			<el-dialog title="新增xm_project_options" :visible.sync="addFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="新增xm_project_options" :visible.sync="addFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
 				<xm-project-options-add :xm-project-options="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-options-add>
-			</el-dialog> 
+			</el-drawer> 
 		</el-row>
 	</section>
 </template>

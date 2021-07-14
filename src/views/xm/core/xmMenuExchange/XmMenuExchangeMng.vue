@@ -52,9 +52,9 @@
 
 			</div>
 			
-		<el-dialog append-to-body title="故事选择" :visible.sync="xmMenuVisible" fullscreen   :close-on-click-modal="false">
+		<el-drawer append-to-body title="故事选择" :visible.sync="xmMenuVisible" fullscreen   :close-on-click-modal="false">
 			<xm-menu-select :is-select-menu="true"  @selected="onMenuSelected"></xm-menu-select>
-		</el-dialog>
+		</el-drawer>
 		</el-row>
 	</section>
 </template>

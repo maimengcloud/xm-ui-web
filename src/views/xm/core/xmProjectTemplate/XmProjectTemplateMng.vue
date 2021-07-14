@@ -37,17 +37,17 @@
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		
 			<!--编辑 XmProjectTemplate xm_project_template界面-->
-			<el-dialog title="编辑项目模板" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑项目模板" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
 				  <xm-project-template-edit :xm-project-template="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-template-edit>
-			</el-dialog>
+			</el-drawer>
 	
 			<!--新增 XmProjectTemplate xm_project_template界面-->
-			<el-dialog title="新增项目模板" :visible.sync="addFormVisible"  width="50%"  append-to-body  :close-on-click-modal="false">
+			<el-drawer title="新增项目模板" :visible.sync="addFormVisible"  width="50%"  append-to-body  :close-on-click-modal="false">
 				<xm-project-template-add :xm-project-template="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-template-add>
-			</el-dialog> 
-			<el-dialog :title="editForm==null?'项目模板明细':editForm.name" center :fullscreen="true" :visible.sync="projectTemplateInfoVisible"  width="50%"  :close-on-click-modal="false" append-to-body>
+			</el-drawer> 
+			<el-drawer :title="editForm==null?'项目模板明细':editForm.name" center :fullscreen="true" :visible.sync="projectTemplateInfoVisible"  width="50%"  :close-on-click-modal="false" append-to-body>
 				<xm-project-template-info :sel-project-template="editForm" @change-show-info="changeShowInfo" @submit="changeShowInfo"></xm-project-template-info>
-			</el-dialog>
+			</el-drawer>
 		</el-row>
 	</section>
 </template>

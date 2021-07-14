@@ -34,16 +34,16 @@
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		
 			<!--编辑 XmProjectEnvList xm_project_env_list界面-->
-			<el-dialog title="编辑项目环境清单" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑项目环境清单" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
 				  <xm-project-env-list-edit :xm-project-env-list="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-env-list-edit>
-			</el-dialog>
+			</el-drawer>
 	
 			<!--新增 XmProjectEnvList xm_project_env_list界面-->
-			<el-dialog title="新增项目环境清单" :visible.sync="addFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="新增项目环境清单" :visible.sync="addFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
 				<xm-project-env-list-add :curr-project="currProject" :xm-project-env-list="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-env-list-add>
-			</el-dialog>
+			</el-drawer>
 
-			<el-dialog title="环境清单" :visible.sync="importVisible" width="80%" append-to-body   :close-on-click-modal="false">
+			<el-drawer title="环境清单" :visible.sync="importVisible" width="80%" append-to-body   :close-on-click-modal="false">
 				<el-table :data="envList" highlight-current-row v-loading="load.list" border @current-change="handleCurrent" style="width: 100%;">
 					<el-table-column prop="ipAddress" label="内网ip地址" min-width="80" ></el-table-column>
 					<el-table-column prop="port" label="内网访问端口" min-width="80" ></el-table-column>
@@ -73,7 +73,7 @@
 						</template>
 					</el-table-column>
 				</el-table>
-			</el-dialog>
+			</el-drawer>
 		</el-row>
 	</section>
 </template>

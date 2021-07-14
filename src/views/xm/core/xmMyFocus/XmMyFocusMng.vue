@@ -29,14 +29,14 @@
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		
 			<!--编辑 XmMyFocus xm_my_focus界面-->
-			<el-dialog title="编辑xm_my_focus" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑xm_my_focus" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
 				  <xm-my-focus-edit :xm-my-focus="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-my-focus-edit>
-			</el-dialog>
+			</el-drawer>
 	
 			<!--新增 XmMyFocus xm_my_focus界面-->
-			<el-dialog title="新增xm_my_focus" :visible.sync="addFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="新增xm_my_focus" :visible.sync="addFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
 				<xm-my-focus-add :xm-my-focus="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-my-focus-add>
-			</el-dialog> 
+			</el-drawer> 
 		</el-row>
 	</section>
 </template>

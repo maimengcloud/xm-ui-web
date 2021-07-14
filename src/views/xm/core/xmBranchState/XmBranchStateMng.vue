@@ -75,14 +75,14 @@
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		
 			<!--编辑 XmBranchState 机构内所有项目指标汇总界面-->
-			<el-dialog title="编辑机构内所有项目指标汇总" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑机构内所有项目指标汇总" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
 				  <xm-branch-state-edit :xm-branch-state="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-branch-state-edit>
-			</el-dialog>
+			</el-drawer>
 	
 			<!--新增 XmBranchState 机构内所有项目指标汇总界面-->
-			<el-dialog title="新增机构内所有项目指标汇总" :visible.sync="addFormVisible"  width="50%"  append-to-body  :close-on-click-modal="false">
+			<el-drawer title="新增机构内所有项目指标汇总" :visible.sync="addFormVisible"  width="50%"  append-to-body  :close-on-click-modal="false">
 				<xm-branch-state-add :xm-branch-state="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-branch-state-add>
-			</el-dialog> 
+			</el-drawer> 
 		</el-row>
 	</section>
 </template>

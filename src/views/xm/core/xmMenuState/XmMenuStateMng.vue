@@ -129,24 +129,24 @@
 				<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		</el-row>
 		
-			<el-dialog
+			<el-drawer
 				append-to-body
 				title="项目分组"
 				:visible.sync="groupSelectVisible"
 				width="80%">
 				<xm-group-mng :sel-project="selProject"  :is-select-single-user="1"     @user-confirm="onUserSelected"></xm-group-mng> 
-			</el-dialog>
-			<el-dialog
+			</el-drawer>
+			<el-drawer
 				append-to-body
 				title="任务"
 				:visible.sync="taskMngVisible"
 				fullscreen>
 				<xm-task-mng :sel-project="selProject"   :menu-id="editForm.menuId"></xm-task-mng> 
-			</el-dialog>
+			</el-drawer>
 			
-			<el-dialog title="故事谈论" :visible.sync=" menuDetailVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="故事谈论" :visible.sync=" menuDetailVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="false" :xm-menu="editForm" ></xm-menu-rich-detail>
-			</el-dialog> 
+			</el-drawer> 
 	</section>
 </template>
 

@@ -62,14 +62,14 @@
 				
 			</el-col>
 			<!--编辑 XmTaskTemplate xm_task_template界面-->
-			<el-dialog title="编辑任务" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑任务" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
 				  <xm-task-template-edit :xm-task-template="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-task-template-edit>
-			</el-dialog>
+			</el-drawer>
 	
 			<!--新增 XmTaskTemplate xm_task_template界面-->
-			<el-dialog title="新增任务" :visible.sync="addFormVisible"  width="50%"  append-to-body  :close-on-click-modal="false">
+			<el-drawer title="新增任务" :visible.sync="addFormVisible"  width="50%"  append-to-body  :close-on-click-modal="false">
 				<xm-task-template-add :parent-task-template="parentTaskTemplate" :xm-project-phase-template="projectPhaseTemplate" :xm-task-template="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-task-template-add>
-			</el-dialog> 
+			</el-drawer> 
 		</el-row>
 	</section>
 </template>

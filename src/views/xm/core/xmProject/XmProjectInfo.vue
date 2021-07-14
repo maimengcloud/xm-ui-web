@@ -160,9 +160,9 @@
 			<xm-contract v-if="infotype=='合同管理'" :sel-project="selProject"></xm-contract>
 			<xm-env-list v-if="infotype=='环境清单'" :sel-project="selProject"></xm-env-list>  
 			<xm-question v-if="infotype=='风险'" :qtype="'risk'" :sel-project='selProject' ref="xmRisk"></xm-question>
-			<el-dialog title="选中团队成员" :visible.sync="groupUserVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="选中团队成员" :visible.sync="groupUserVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
 				<xm-project-group-select :sel-project="selProject" :visible="groupUserVisible" is-select-multi-user="1" @user-confirm="onUserSelected"></xm-project-group-select>
-			</el-dialog> 
+			</el-drawer> 
 		</el-row>  
 	</section>
 </template>

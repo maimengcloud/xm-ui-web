@@ -85,9 +85,9 @@
 			<el-pagination  layout="total, prev, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>  
 		</el-row> 
 			
-			<el-dialog title="选择员工" :visible.sync="selectFiltersPmUserVisible" width="60%" append-to-body>
+			<el-drawer title="选择员工" :visible.sync="selectFiltersPmUserVisible" width="60%" append-to-body>
 				<users-select  @confirm="onFiltersPmUserSelected" ref="usersSelect"></users-select>
-			</el-dialog>
+			</el-drawer>
 	</section>
 </template>
 

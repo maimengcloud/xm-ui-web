@@ -165,19 +165,19 @@
 				<xm-project-phase-add :parent-project-phase="parentProjectPhase" :xm-project-phase="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit" ></xm-project-phase-add>
 			</el-drawer> 
 			<!--阶段模板-->
-			<el-dialog title="阶段模板" :visible.sync="phaseTemplateVisible"  width="80%"  :close-on-click-modal="false" append-to-body>
+			<el-drawer title="阶段模板" :visible.sync="phaseTemplateVisible"  width="80%"  :close-on-click-modal="false" append-to-body>
 				<xm-project-phase-template-mng  :is-select="true"  :visible="phaseTemplateVisible" @cancel="phaseTemplateVisible=false" @selected-confirm="afterPhaseTemplateSelected" ></xm-project-phase-template-mng>
-			</el-dialog> 
-			<el-dialog :title="editForm==null?'操作日志':editForm.phaseName+'操作日志'" center   :visible.sync="xmRecordVisible"  width="50%"  :close-on-click-modal="false" append-to-body>
+			</el-drawer> 
+			<el-drawer :title="editForm==null?'操作日志':editForm.phaseName+'操作日志'" center   :visible.sync="xmRecordVisible"  width="50%"  :close-on-click-modal="false" append-to-body>
 				<xm-record :obj-type="'phase'"  :visible="xmRecordVisible" :project-id="selProject.id" :obj-id="editForm.id"   :simple="1"></xm-record>
-			</el-dialog> 
-			<el-dialog append-to-body title="选择负责人" :visible.sync="groupUserSelectVisible" width="80%"    :close-on-click-modal="false">
+			</el-drawer> 
+			<el-drawer append-to-body title="选择负责人" :visible.sync="groupUserSelectVisible" width="80%"    :close-on-click-modal="false">
 				<xm-project-group-select :visible="groupUserSelectVisible" :sel-project="selProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-project-group-select>
 				 
-			</el-dialog> 
-			<el-dialog append-to-body title="故事选择" :visible.sync="menuVisible" fullscreen    :close-on-click-modal="false">
+			</el-drawer> 
+			<el-drawer append-to-body title="故事选择" :visible.sync="menuVisible" fullscreen    :close-on-click-modal="false">
 				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
-			</el-dialog>
+			</el-drawer>
 		</el-row>
 		<el-row v-if="batchEditVisible==true">
 			<xm-project-phase-batch :sel-project="selProject" @back="batchEditBack"></xm-project-phase-batch>

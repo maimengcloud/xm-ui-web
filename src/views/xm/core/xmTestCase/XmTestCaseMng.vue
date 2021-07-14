@@ -100,28 +100,28 @@
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		
 			<!--编辑 XmTestCase 测试用例界面-->
-			<el-dialog title="编辑测试用例" :visible.sync="editFormVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑测试用例" :visible.sync="editFormVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 				  <xm-test-case-edit :xm-test-case="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-test-case-edit>
-			</el-dialog>
+			</el-drawer>
 	
 			<!--新增 XmTestCase 测试用例界面-->
-			<el-dialog title="新增测试用例" :visible.sync="addFormVisible"  width="80%"  append-to-body  :close-on-click-modal="false">
+			<el-drawer title="新增测试用例" :visible.sync="addFormVisible"  width="80%"  append-to-body  :close-on-click-modal="false">
 				<xm-test-case-add :xm-test-case="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-test-case-add>
-			</el-dialog> 
-			<el-dialog title="选中项目" :visible.sync="selectProjectVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+			</el-drawer> 
+			<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
-			</el-dialog>  
-			<el-dialog title="选中用户" :visible.sync="selectUserForFiltersVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+			</el-drawer>  
+			<el-drawer title="选中用户" :visible.sync="selectUserForFiltersVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-group-mng v-if="filters.selProject" :sel-project=" filters.selProject " :is-select-single-user="1" @user-confirm="onFiltersUserConfirm"></xm-group-mng>
-			</el-dialog> 
+			</el-drawer> 
 		</el-row>
-		<el-dialog append-to-body title="故事选择" :visible.sync="menuVisible"    width="80%"   :close-on-click-modal="false">
+		<el-drawer append-to-body title="故事选择" :visible.sync="menuVisible"    width="80%"   :close-on-click-modal="false">
 			<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
-		</el-dialog>
+		</el-drawer>
 		
-		<el-dialog title="选择产品" :visible.sync="productSelectVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+		<el-drawer title="选择产品" :visible.sync="productSelectVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-product-select  :isSelectProduct="true" :selProject="filters.selProject" :visible="productSelectVisible" @cancel="productSelectVisible=false" @selected="onProductSelected"></xm-product-select>
-		</el-dialog>
+		</el-drawer>
 	</section>
 </template>
 

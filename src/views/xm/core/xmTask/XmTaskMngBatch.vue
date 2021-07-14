@@ -1316,7 +1316,7 @@
 	background: transparent;
 }
 
-.xm-task-add >>> .el-dialog__body{
+.xm-task-add >>> .el-drawer__body{
 	padding: 0 20px;
 }
 .xm-task >>> .el-drawer__close-btn{

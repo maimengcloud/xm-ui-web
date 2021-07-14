@@ -153,31 +153,31 @@
 					
 		</el-row>
 
-		<!-- <el-dialog append-to-body :title="'技能要求'" :visible.sync="skillVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+		<!-- <el-drawer append-to-body :title="'技能要求'" :visible.sync="skillVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 			<xm-skill-mng :visible="skillVisible" :task-id="editForm.id" @cancel="skillVisible=false" @getSkill="getSkill"></xm-skill-mng>
-		</el-dialog> -->
-		<el-dialog append-to-body title="选择负责人" :visible.sync="groupUserSelectVisible" width="80%"    :close-on-click-modal="false">
+		</el-drawer> -->
+		<el-drawer append-to-body title="选择负责人" :visible.sync="groupUserSelectVisible" width="80%"    :close-on-click-modal="false">
 			<xm-project-group-select :visible="groupUserSelectVisible" :sel-project="selProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-project-group-select>
-		</el-dialog>
-		<el-dialog append-to-body title="新增技能" :visible.sync="skillVisible" width="50%"    :close-on-click-modal="false">
+		</el-drawer>
+		<el-drawer append-to-body title="新增技能" :visible.sync="skillVisible" width="50%"    :close-on-click-modal="false">
 			<skill-mng :task-skills="taskSkills" :jump="true" @select-confirm="onTaskSkillsSelected"></skill-mng>
-		</el-dialog>
+		</el-drawer>
 
-		<el-dialog append-to-body title="故事选择" :visible.sync="menuVisible" fullscreen   :close-on-click-modal="false">
+		<el-drawer append-to-body title="故事选择" :visible.sync="menuVisible" fullscreen   :close-on-click-modal="false">
 			<xm-menu-select :is-select-menu="true"  @selected="onMenuSelected" :sel-project="xmProject"></xm-menu-select>
-		</el-dialog>
+		</el-drawer>
 		
-		<el-dialog title="选中任务" :visible.sync="selectTaskVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+		<el-drawer title="选中任务" :visible.sync="selectTaskVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 			<xm-task-list  :sel-project="xmProject"   @task-selected="onSelectedTask"></xm-task-list>
-		</el-dialog> 	
+		</el-drawer> 	
 		
-		<el-dialog :title="'任务'+editForm.name+'的执行人'" :visible.sync="execUserVisible" fullscreen width="80%" append-to-body  :close-on-click-modal="false">
+		<el-drawer :title="'任务'+editForm.name+'的执行人'" :visible.sync="execUserVisible" fullscreen width="80%" append-to-body  :close-on-click-modal="false">
 			<xm-execuser-mng :visible="execUserVisible" :xm-task="editForm"  :is-my="isMy"  @after-add-submit="afterAddExecSubmit" @after-edit-submit="afterEditExecSubmit" @after-delete-submit="afterExecuserSubmit" ref="execuserMng"></xm-execuser-mng>
-		</el-dialog>
+		</el-drawer>
 
-		<el-dialog append-to-body title="故事明细" :visible.sync="menuDetailVisible" width="80%"    :close-on-click-modal="false">
+		<el-drawer append-to-body title="故事明细" :visible.sync="menuDetailVisible" width="80%"    :close-on-click-modal="false">
 			<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="true" :xm-menu="{menuId:editForm.menuId,menuName:editForm.menuName}" ></xm-menu-rich-detail>
-		</el-dialog>
+		</el-drawer>
 	</section>
 </template>
 

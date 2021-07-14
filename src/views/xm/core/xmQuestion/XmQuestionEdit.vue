@@ -103,16 +103,16 @@
 							</el-form-item>   	  
 					</el-form>  
 					
-				<el-dialog title="选中用户" :visible.sync="selectUserVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
+				<el-drawer title="选中用户" :visible.sync="selectUserVisible"  width="80%"  append-to-body   :close-on-click-modal="false">
 					<xm-group-mng  :sel-project="selProject" :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-mng>
-				</el-dialog> 
-				<el-dialog title="选中任务" :visible.sync="selectTaskVisible"  width="80%" fullscreen  append-to-body   :close-on-click-modal="false">
+				</el-drawer> 
+				<el-drawer title="选中任务" :visible.sync="selectTaskVisible"  width="80%" fullscreen  append-to-body   :close-on-click-modal="false">
 					<xm-task-list  :sel-project="selProject"   @task-selected="onSelectedTask"></xm-task-list>
-				</el-dialog> 	
+				</el-drawer> 	
 				
-				<el-dialog append-to-body title="故事选择" :visible.sync="selectMenuVisible"   fullscreen   :close-on-click-modal="false">
+				<el-drawer append-to-body title="故事选择" :visible.sync="selectMenuVisible"   fullscreen   :close-on-click-modal="false">
 					<xm-menu-select :is-select-menu="true"  @selected="onSelectedMenu" :sel-project="selProject"></xm-menu-select>
-				</el-dialog>	
+				</el-drawer>	
 			</el-row> 
 			<el-row class="page-bottom page-bottom-height"> 
 					<el-button @click.native="handleCancel">取消</el-button>  
