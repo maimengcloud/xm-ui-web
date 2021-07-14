@@ -1,6 +1,6 @@
 <template>
-	<section>
-		<el-row class="app-container"> 
+	<section class="page-container page-full-height padding border">
+		<el-row> 
 		<!--编辑界面 XmProjectTaskTypeState 按任务类型汇总--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
 				<el-form-item label="项目编号" prop="projectId">

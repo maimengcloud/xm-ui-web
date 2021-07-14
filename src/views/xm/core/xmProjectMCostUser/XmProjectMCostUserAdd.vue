@@ -1,6 +1,6 @@
 <template>
-	<section>
-		<el-row class="app-container"> 
+	<section class="page-container page-full-height padding border">
+		<el-row> 
 		<!--编辑界面 XmProjectMCostUser xm_project_m_budget_cost_user--> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm"> 
 				<el-form-item label="项目成员编号" prop="userid">

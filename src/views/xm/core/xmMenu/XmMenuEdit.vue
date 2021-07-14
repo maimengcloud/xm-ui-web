@@ -1,6 +1,6 @@
 <template>
-	<section>
-		<el-row class="app-container">
+	<section class="page-container page-full-height border padding">
+		<el-row class="page-main page-main-height">
 			<!--新增界面 XmMenu 项目故事表--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
 				<el-form-item label="序号" prop="seqNo">
@@ -28,18 +28,17 @@
 				</el-form-item>  
 				<el-form-item label="概述" prop="remark">
 					<el-input type="textarea" v-model="editForm.remark" :autosize="{ minRows: 4, maxRows: 20}"  placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
-				</el-form-item> 
-				<el-form-item>
-					<el-col :span="24" :offset="8"> 
-						<el-button @click.native="handleCancel">取消</el-button>  
-						<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>  
-					</el-col>
-				</el-form-item> 
+				</el-form-item>  
 			</el-form>
 			
 			<el-dialog title="选择员工" :visible.sync="userSelectVisible" width="60%" append-to-body>
 				<users-select  @confirm="onUserSelected" ref="usersSelect"></users-select>
 			</el-dialog>	
+		</el-row>
+		<el-row class="page-bottom">
+			
+						<el-button @click.native="handleCancel">取消</el-button>  
+						<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button> 
 		</el-row>
 	</section>
 </template>

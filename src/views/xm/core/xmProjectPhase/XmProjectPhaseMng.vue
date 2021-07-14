@@ -1,36 +1,16 @@
 <template>
 	<section>
-		<el-row  class="app-container" v-show="batchEditVisible==false">
-			<el-popover
-				placement="top-start"
-				title="标题"
-				width="200"
-				trigger="hover"> 
-				<el-row> 
-					
-					<el-col :span="24"  style="padding-top:5px;">
-						<el-button type="primary"  @click="showMenu" v-loading="load.add" icon="el-icon-plus">由故事批量创建(推荐)</el-button> 
-					</el-col>
-					<el-col :span="24"  style="padding-top:5px;">
-						<el-button   @click="showAdd" v-loading="load.add" icon="el-icon-plus">直接新建</el-button> 
-					</el-col>
-					<el-col :span="24"  style="padding-top:5px;">
-						<el-button   @click="showPhaseTemplate" v-loading="load.add" icon="el-icon-plus">由模板导入计划</el-button> 
-					</el-col>
-				</el-row>
-				<el-button slot="reference" type="primary" v-loading="load.add" icon="el-icon-plus" circle></el-button> 
-			</el-popover>
-			
-			 
+		<el-row  class="app-container" v-show="batchEditVisible==false"> 
 			<el-button  class="hidden-md-and-down"  @click="loadTasksToXmProjectPhase(sels)" v-loading="load.edit" icon="el-icon-s-data">由任务汇总进度数据</el-button> 
 			<el-button   @click="batchEditVisible=true" v-loading="load.edit" icon="el-icon-edit">批量修改</el-button>
-			<div  v-if="batchEditVisible!=true" style=" float:right;margin-right:10px;" >
+			<span  v-if="batchEditVisible!=true"   >
 				<el-checkbox v-model="gstcVisible"  >甘特图</el-checkbox>
 				<el-input   v-model="filters.key" style="width:200px;" placeholder="模糊查询">
 					<template slot="append">
 						<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectPhases" icon="el-icon-search"></el-button>
 					</template>
 				</el-input> 
+				<!--
 				<el-popover
 					placement="top-start"
 					title="更多查询条件或操作"
@@ -55,7 +35,27 @@
 					</el-row>
 					<el-button  slot="reference" icon="el-icon-more" circle></el-button>
 				</el-popover> 
-			</div> 
+				-->
+			</span> 
+			<el-popover
+				placement="top-start"
+				title="标题"
+				width="200"
+				trigger="hover"> 
+				<el-row> 
+					
+					<el-col :span="24"  style="padding-top:5px;">
+						<el-button type="primary"  @click="showMenu" v-loading="load.add" icon="el-icon-plus">由故事批量创建(推荐)</el-button> 
+					</el-col>
+					<el-col :span="24"  style="padding-top:5px;">
+						<el-button   @click="showAdd" v-loading="load.add" icon="el-icon-plus">直接新建</el-button> 
+					</el-col>
+					<el-col :span="24"  style="padding-top:5px;">
+						<el-button   @click="showPhaseTemplate" v-loading="load.add" icon="el-icon-plus">由模板导入计划</el-button> 
+					</el-col>
+				</el-row>
+				<el-button slot="reference" type="primary" v-loading="load.add" icon="el-icon-plus" circle></el-button> 
+			</el-popover>
 			
 		</el-row>
 		<el-row class="app-container hidden-md-and-down"     v-show="batchEditVisible==false">  
@@ -68,12 +68,44 @@
  		<el-row class="app-container" v-show="batchEditVisible==false"> 
 			<!--列表 XmProjectPhase xm_project_phase-->
 			<el-table ref="table" :height="tableHeight" v-show="!gstcVisible "  default-expand-all :data="projectPhaseTreeData"  :summary-method="getSummariesForNoBatchEdit"  :show-summary="true"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-				<el-table-column   sortable type="selection" width="40"></el-table-column>
- 				<el-table-column prop="phaseName" label="阶段名称" min-width="150" show-overflow-tooltip> 
+  				<el-table-column prop="phaseName" label="阶段名称" min-width="150" show-overflow-tooltip> 
 					 <template slot-scope="scope">  
 						<span>{{scope.row.seqNo}} &nbsp;&nbsp;<el-link type="primary" @click="showEdit(scope.row)"> {{scope.row.phaseName}}</el-link></span>
+						<font style="float:right;">
+						<span>
+							<el-button type="text" v-if="!scope.row.mngUserid"  v-model="scope.row.mngUsername" @click="groupUserSelectVisible=true" icon="el-icon-setting">去设置</el-button>  
+							<el-link v-else type="primary"   @click="groupUserSelectVisible=true">{{scope.row.mngUsername}}</el-link>
+						</span> 
+						<span>
+							<el-tag :type="scope.row.actRate>=100?'success':'primary'"> {{ (scope.row.actRate!=null?scope.row.actRate:0)+'%'}} </el-tag> 
+						</span>
+						<span>
+							<font class="hidden-md-and-down" >{{formatDate(scope.row.beginDate)}}<br>{{formatDate(scope.row.endDate)}}  </font>
+							<font v-for="item in [calcTaskStateByTime(scope.row.beginDate,scope.row.endDate,scope.row.actRate,scope.phaseStatus)]" :key="item.status"><el-tag :type="item.status">{{item.remark}}</el-tag></font> 
+						</span>
+						<span>
+							<el-dropdown @command="handleCommand" :hide-on-click="false">
+							<span class="el-dropdown-link">
+								<i class="el-icon-setting"></i>
+							</span>
+								<el-dropdown-menu slot="dropdown">
+									<el-dropdown-item :command="{type:'showSubAdd',data:scope.row}">+子阶段</el-dropdown-item>
+									<el-dropdown-item :command="{type:'showPhaseTemplate',data:scope.row}">+从模板批量导入子阶段</el-dropdown-item> 
+									<el-dropdown-item :command="{type:'showMenu',data:scope.row}">+由故事创建子阶段</el-dropdown-item> 
+
+									<el-dropdown-item :command="{type:'showEdit',data:scope.row}">编辑</el-dropdown-item>  
+									<el-dropdown-item :command="{type:'loadTasksToXmProjectPhase',data:scope.row}" >从任务汇总实际数据</el-dropdown-item>  
+									<el-dropdown-item :command="{type:'showLog',data:scope.row}">日志</el-dropdown-item>  
+									<el-dropdown-item :command="{type:'handleDel',data:scope.row}" >删除</el-dropdown-item>  
+									<el-dropdown-item icon="el-icon-success"   :command="{type:'sendToProcessApprova',row:scope.row,bizKey:'xm_project_start_approva'}">变更发审(审核通过后起效)</el-dropdown-item> 
+									<el-dropdown-item icon="el-icon-success"   :command="{type:'sendToProcessApprova',row:scope.row,bizKey:'xm_project_delete_approva'}">删除发审(审核通过后删除)</el-dropdown-item>  
+								</el-dropdown-menu>
+							</el-dropdown> 
+						</span>
+						</font>
 					 </template>
 				</el-table-column>   
+				<!--
 				<el-table-column  prop="mngUsername" label="责任人" width="80" show-overflow-tooltip> 
 					<template  slot-scope="scope">
 						<el-button type="text" v-if="!scope.row.mngUserid"  v-model="scope.row.mngUsername" @click="groupUserSelectVisible=true" icon="el-icon-setting">去设置</el-button>  
@@ -88,20 +120,20 @@
 				</el-table-column>
 				<el-table-column prop="actRate" label="进度.状态" width="100">
 					<template slot-scope="scope"> 
-							<el-tag :type="scope.row.actRate>=100?'success':'primary'"> {{ (scope.row.actRate!=null?scope.row.actRate:0)+'%'}} </el-tag> 
-							<!--<el-tag > {{ formateOption('xmPhaseStatus',scope.row.phaseStatus)}} </el-tag>  -->
+							<el-tag :type="scope.row.actRate>=100?'success':'primary'"> {{ (scope.row.actRate!=null?scope.row.actRate:0)+'%'}} </el-tag>  
 					</template>
 				</el-table-column>
-				<el-table-column  prop="phaseBudgetHours" label="工时.人时" width="150" > 
+				-->
+				<el-table-column  prop="phaseBudgetHours" label="工时(计划>实际).人时" width="150" > 
 					<template slot-scope="scope">  
-						计划&nbsp;{{scope.row.phaseBudgetWorkload}} <br/> 
-						实际&nbsp;{{scope.row.phaseActWorkload}} 
+						 {{scope.row.phaseBudgetWorkload}} <i class="el-icon-d-arrow-right"></i>
+						 {{scope.row.phaseActWorkload}} 
 					</template>
 				</el-table-column>  
-				<el-table-column  prop="phaseBudgetCostAt" label="成本合计.元" width="150" > 
+				<el-table-column  prop="phaseBudgetCostAt" label="成本(计划>实际).元" width="150" > 
 					<template slot-scope="scope">  
-						计划&nbsp;{{scope.row.phaseBudgetCostAt}} <br/> 
-						实际&nbsp;{{scope.row.actCostAt}}
+						 {{scope.row.phaseBudgetCostAt}} <i class="el-icon-d-arrow-right"></i>
+						 {{scope.row.actCostAt}}
 					</template> 
 				</el-table-column>     
 				<el-table-column  prop="bizFlowState" label="审批状态" width="100" >  
@@ -114,29 +146,7 @@
 						<el-tag v-else-if="scope.row.flowState=='4'">已取消</el-tag> 
 						</el-tooltip> 
 					</template>
-				</el-table-column> 
-				<el-table-column  label="操作" width="100" fixed="right">
-					<template slot-scope="scope"> 
-						<el-dropdown @command="handleCommand" :hide-on-click="false">
-							<span class="el-dropdown-link">
-								更多<i class="el-icon-setting"></i>
-							</span>
-							<el-dropdown-menu slot="dropdown">
-								<el-dropdown-item :command="{type:'showSubAdd',data:scope.row}">+子阶段</el-dropdown-item>
-								<el-dropdown-item :command="{type:'showPhaseTemplate',data:scope.row}">+从模板批量导入子阶段</el-dropdown-item> 
-								<el-dropdown-item :command="{type:'showMenu',data:scope.row}">+由故事创建子阶段</el-dropdown-item> 
-
-								<el-dropdown-item :command="{type:'showEdit',data:scope.row}">编辑</el-dropdown-item>  
-								<el-dropdown-item :command="{type:'loadTasksToXmProjectPhase',data:scope.row}" >从任务汇总实际数据</el-dropdown-item>  
-								<el-dropdown-item :command="{type:'showLog',data:scope.row}">日志</el-dropdown-item>  
-								<el-dropdown-item :command="{type:'handleDel',data:scope.row}" >删除</el-dropdown-item>  
-								<el-dropdown-item icon="el-icon-success"   :command="{type:'sendToProcessApprova',row:scope.row,bizKey:'xm_project_start_approva'}">变更发审(审核通过后起效)</el-dropdown-item> 
-								<el-dropdown-item icon="el-icon-success"   :command="{type:'sendToProcessApprova',row:scope.row,bizKey:'xm_project_delete_approva'}">删除发审(审核通过后删除)</el-dropdown-item>  
-							</el-dropdown-menu>
-						</el-dropdown> 
-							
-					</template>
-				</el-table-column> 
+				</el-table-column>  
 				
 			</el-table>
       		<xm-gantt v-if="gstcVisible && batchEditVisible==false" :tree-data="projectPhaseTreeData" :project-phase="selProject" :columns="ganrrColumns" :useRealTime="false"></xm-gantt>

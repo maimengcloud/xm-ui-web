@@ -1,6 +1,6 @@
 <template>
-	<section>
-		<el-row class="app-container">
+	<section class="page-container page-full-height padding border">
+		<el-row>
       		<el-checkbox v-model="gstcVisible"  class="hidden-md-and-down">甘特图</el-checkbox>  
 			  
 			<el-select  v-model="filters.queryScope"  placeholder="迭代查询范围">

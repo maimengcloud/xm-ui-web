@@ -1,6 +1,6 @@
 <template>
-	<section>
-		<el-row class="app-container">  
+	<section class="page-container page-full-height padding border">
+		<el-row>  
 			<el-row >  
 				<el-select class="hidden-lg-and-down" v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable >
 					<el-option   value="not-join"  label="未分配任何任务的故事"></el-option>  

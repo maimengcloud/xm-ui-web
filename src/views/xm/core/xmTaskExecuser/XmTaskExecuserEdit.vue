@@ -1,6 +1,6 @@
 <template>
-	<section>
-		<el-row class="app-container"> 
+	<section class="page-container page-full-height padding border">
+		<el-row> 
 		<!--编辑界面 XmTaskExecuser xm_task_execuser--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
 				<el-form-item label="执行人姓名" prop="username">

@@ -1,6 +1,6 @@
 <template>
-	<section>
-		<el-row class="app-container"> 
+	<section class="page-container page-full-height padding border">
+		<el-row> 
 			<div>
 				<el-tag    v-if="  filters.product "  closable    @close="clearProduct">{{this.filters.product.productName}}</el-tag>
 				<el-button v-else    @click="showProductVisible" type="plian">选产品</el-button>

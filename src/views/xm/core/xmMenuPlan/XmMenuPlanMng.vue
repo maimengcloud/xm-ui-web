@@ -1,6 +1,6 @@
 <template>
-	<section>
-		<el-row class="app-container">
+	<section class="page-container page-full-height padding border">
+		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenuPlans">查询</el-button>
 			<el-button type="primary" @click="showAdd">+功能计划表,无需前端维护，所有数据由汇总统计得出</el-button>

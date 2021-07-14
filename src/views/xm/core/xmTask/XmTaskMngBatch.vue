@@ -1,6 +1,6 @@
 <template>
-	<section>
-		<el-row class="app-container"> 
+	<section class="page-container page-full-height padding border">
+		<el-row> 
 			<el-row    v-if="projectPhase">   
  					<el-button type="warning"   @click="saveBatchEdit" v-loading="load.edit" icon="el-icon-finished">保存</el-button>
 					<el-button type="success"  @click="handlePopover(null,'add')" icon="el-icon-plus" ></el-button>

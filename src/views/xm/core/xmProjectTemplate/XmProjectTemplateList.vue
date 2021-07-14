@@ -1,6 +1,6 @@
 <template>
-	<section>
-		<el-row class="app-container">
+	<section class="page-container page-full-height padding border">
+		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>  
 			<el-select v-model="filters.xmType" @change="searchXmProjectTemplates">
 				<el-option v-for="i in this.options.projectType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>

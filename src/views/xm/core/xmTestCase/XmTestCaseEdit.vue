@@ -1,6 +1,6 @@
 <template>
-	<section>
-		<el-row class="app-container">
+	<section class="page-container page-full-height padding border">
+		<el-row>
 			<!--新增界面 XmTestCase 测试用例--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm"> 
 				<el-form-item label="标题" prop="caseName">

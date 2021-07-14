@@ -1,6 +1,6 @@
 <template>
-	<section>
-		<el-row class="app-container">
+	<section class="page-container page-full-height padding border">
+		<el-row>
 			<!--新增界面 XmQuestionTag 缺陷标签关联表--> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
 				<el-form-item label="缺陷编号" prop="questionId">

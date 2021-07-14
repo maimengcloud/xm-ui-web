@@ -1,6 +1,6 @@
 <template>
-	<section>
-		<el-row class="app-container">  
+	<section class="page-container page-full-height padding border">
+		<el-row>  
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
 			<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus">查询</el-button>
 			<el-button   type="warning" v-if=" batchEditVisible!=true " v-loading="load.edit" :disabled="load.edit==true" v-on:click="loadTasksToXmMenuState">根据任务汇总更新数据</el-button>			

@@ -1,6 +1,6 @@
 <template>
-	<section>
-		<el-row class="app-container"> 
+	<section class="page-container page-full-height padding border">
+		<el-row> 
 		<!--编辑界面 XmProject xm_project--> 
 			<div ref="editFormDiv">
 				<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm" class="editForm">  

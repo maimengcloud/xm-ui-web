@@ -10,20 +10,15 @@
 		<el-row class="app-container"> 
 			<!--列表 XmTaskExecuser xm_task_execuser-->
 			<el-table ref="table" :height="tableHeight" :data="xmTaskExecusers" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-				<el-table-column sortable type="selection" width="40"></el-table-column> <!-- :selectable="checkSelectable" -->
-				<el-table-column sortable type="index" width="40"></el-table-column>
-				<el-table-column type="expand">
+				 <el-table-column type="expand">
 					<template slot-scope="props">
 						<el-form label-position="left"  class="demo-table-expand">
-							<el-form-item label="报价金额">
-								<span>{{ props.row.name }}元</span>
+							<el-form-item label="报价">
+								工作量：<span>{{ props.row.quoteWorkload }} 人时</span> 金额：<span>{{ props.row.name }}元</span>
 							</el-form-item>
 							<el-form-item label="报价工期">
 								<span>{{ props.row.quoteWeekday }} 天 :{{props.row.quoteStartTime }}~{{props.row.quoteEndTime}}</span>
-							</el-form-item>
-							<el-form-item label="报价工作量">
-								<span>{{ props.row.quoteWorkload }} 人时</span>
-							</el-form-item>
+							</el-form-item> 
 							<el-form-item label="匹配指数">
 								<span>{{ props.row.matchScore }}</span>
 							</el-form-item>
@@ -33,37 +28,67 @@
 							<el-form-item label="备注说明">
 								<span>{{ props.row.remarks }}</span>
 							</el-form-item>  
+							<el-form-item  label="操作">
+								<el-button type="primary" v-if="props.row.status=='1'" @click="toTest(props.row)">申请验收</el-button>
+								<el-button type="primary" v-if="props.row.status=='4'" @click="toTest(props.row)">再申请验收</el-button>
+
+								<!--结算状态0未结算1已部分结算2无需结算4已申请结算5结算失败6已全部结算-->
+								<el-button type="primary"  v-if="props.row.status=='3' && props.row.settleStatus!='2' && props.row.settleStatus!='4' && props.row.settleStatus!='6' " @click="settle" >申请结算</el-button> 
+								<el-button type="success"  v-if="props.row.status=='2' " @click="testSuccess(props.row)" >验收通过</el-button>  
+								<el-button type="warning"  v-if="props.row.status=='2' " @click="testFail(props.row)" >验收不通过</el-button>  
+
+								<el-button type="primary" v-if="props.row.status=='7' " @click="becomeCandidate(props.row)">成为候选人</el-button>  
+								<el-button type="danger" v-if="props.row.status=='7' " @click="handleDel(props.row)">删除</el-button>   
+								<el-button type="warning" v-if="props.row.status=='0'"  @click="showQuotePrice(props.row)">修改报价信息</el-button> 
+								<el-button type="primary" v-if="props.row.status=='0'"   @click="execute(props.row)">成为执行人</el-button> 
+								<el-button type="warning" v-if="props.row.status!='7' " @click="leave(props.row)">离开任务</el-button> 
+								<el-button type="primary" v-if="props.row.status=='3' || props.row.status=='6' "  @click="showSettleList(props.row)">结算清单</el-button> 
+		
+							</el-form-item>
 						</el-form>
 					</template>
 				</el-table-column>
-				<el-table-column prop="username" label="姓名" min-width="100" >
+				<el-table-column prop="username" label="姓名" min-width="300" >
 					<template slot-scope="scope">
-						{{scope.row.username}}
+						<div>
+						{{scope.row.username}} <el-tag type="info">{{scope.row.quoteStartTime }}~{{scope.row.quoteEndTime}}</el-tag> <el-tooltip  content="报价金额"><el-tag type="danger">{{scope.row.quoteAmount}}元</el-tag></el-tooltip>
+						<el-popover trigger="hover" 
+							width="400" >
+							<el-row>
+									<el-button type="primary" v-if="scope.row.status=='1'" @click="toTest(scope.row)">申请验收</el-button>
+									<el-button type="primary" v-if="scope.row.status=='4'" @click="toTest(scope.row)">再申请验收</el-button>
+
+									<!--结算状态0未结算1已部分结算2无需结算4已申请结算5结算失败6已全部结算-->
+									<el-button type="primary"  v-if="scope.row.status=='3' && scope.row.settleStatus!='2' && scope.row.settleStatus!='4' && scope.row.settleStatus!='6' " @click="settle" >申请结算</el-button> 
+									<el-button type="success"  v-if="scope.row.status=='2' " @click="testSuccess(scope.row)" >验收通过</el-button>  
+									<el-button type="warning"  v-if="scope.row.status=='2' " @click="testFail(scope.row)" >验收不通过</el-button>  
+
+									<el-button type="primary" v-if="scope.row.status=='7' " @click="becomeCandidate(scope.row)">成为候选人</el-button>  
+									<el-button type="danger" v-if="scope.row.status=='7' " @click="handleDel(scope.row)">删除</el-button>   
+									<el-button type="warning" v-if="scope.row.status=='0'"  @click="showQuotePrice(scope.row)">修改报价信息</el-button> 
+									<el-button type="primary" v-if="scope.row.status=='0'"   @click="execute(scope.row)">成为执行人</el-button> 
+									<el-button type="warning" v-if="scope.row.status!='7' " @click="leave(scope.row)">离开任务</el-button> 
+									<el-button type="primary" v-if="scope.row.status=='3' || scope.row.status=='6' "  @click="showSettleList(scope.row)">结算清单</el-button> 
+								 
+							</el-row> 
+								<font slot="reference"> 
+										<el-link type="primary" v-if="scope.row.status=='0'">候选中({{formatToDoByStatus(scope.row)}})</el-link>
+										<el-link type="success" v-else-if="scope.row.status=='1'">执行中({{formatToDoByStatus(scope.row)}})</el-link>
+										<el-link type="warning" v-else-if="scope.row.status=='2'">验收中({{formatToDoByStatus(scope.row)}})</el-link>
+										<el-link type="success" v-else-if="scope.row.status=='3'">已验收({{formatToDoByStatus(scope.row)}})</el-link>
+										<el-link type="danger" v-else-if="scope.row.status=='4'">验收不通过({{formatToDoByStatus(scope.row)}})</el-link>
+										<el-link type="warning" v-else-if="scope.row.status=='5'">结算中({{formatToDoByStatus(scope.row)}})</el-link>
+										<el-link type="success" v-else-if="scope.row.status=='6'">已结算完毕({{formatToDoByStatus(scope.row)}})</el-link>
+										<el-link type="info" v-else-if="scope.row.status=='7'">已放弃任务({{formatToDoByStatus(scope.row)}})</el-link>
+										<el-link type="danger" v-else-if="scope.row.status=='8'">黑名单({{formatToDoByStatus(scope.row)}})</el-link>
+										<el-link type="primary" v-else>新建</el-link> 
+								</font>
+							
+						</el-popover>
+						</div>
 					</template>
-				</el-table-column>  
-				<el-table-column prop="startTime" label="开始~结束时间" width="200" show-overflow-tooltip >
-					<template slot-scope="scope">
-						{{scope.row.startTime}} ~ {{scope.row.endTime}}
-					</template>
-				</el-table-column> 
-				<el-table-column prop="status" label="状态" min-width="80"> 
-					<template slot-scope="scope">
-						<el-tag type="primary" v-if="scope.row.status=='0'">候选中</el-tag>
-						<el-tag type="success" v-else-if="scope.row.status=='1'">执行中</el-tag>
-						<el-tag type="warning" v-else-if="scope.row.status=='2'">验收中</el-tag>
-						<el-tag type="success" v-else-if="scope.row.status=='3'">已验收</el-tag>
-						<el-tag type="danger" v-else-if="scope.row.status=='4'">验收不通过</el-tag>
-						<el-tag type="warning" v-else-if="scope.row.status=='5'">结算中</el-tag>
-						<el-tag type="success" v-else-if="scope.row.status=='6'">已结算完毕</el-tag>
-						<el-tag type="info" v-else-if="scope.row.status=='7'">已放弃任务</el-tag>
-						<el-tag type="danger" v-else-if="scope.row.status=='8'">黑名单</el-tag>
-						<el-tag type="primary" v-else>新建</el-tag>
-					</template>
-				 </el-table-column>   
-				<el-table-column  sortable  prop="quoteAmount" label="报价金额" min-width="80" ></el-table-column>
-				<el-table-column  sortable  prop="quoteWeekday" label="报价工期" min-width="80" ></el-table-column>
-				<el-table-column  sortable prop="matchScore" label="匹配指数" min-width="80" ></el-table-column>    
-				<el-table-column prop="settleStatus" label="结算状态" min-width="80"> 
+				</el-table-column>   
+ 				<el-table-column prop="settleStatus" label="结算" min-width="80"> 
 					<template slot-scope="scope"> 
 						<el-tag type="success" v-if="scope.row.settleStatus=='1'">已部分结算</el-tag>
 						<el-tag type="success" v-else-if="scope.row.settleStatus=='2'">无需结算</el-tag> 
@@ -73,32 +98,18 @@
 						<el-tooltip v-else content="验收通过后可以申请结算">
 							<el-tag type="primary" >未开始结算</el-tag>
 						</el-tooltip>
+						<el-tooltip   content="结算金额">
+							{{scope.row.settleAmount}}
+						</el-tooltip>
+						<el-tooltip   content="结算工作量">
+							{{scope.row.settleWorkload}}
+						</el-tooltip>
+						<el-tooltip   content="结算时间">
+							{{scope.row.settleTime}}
+						</el-tooltip>
+						
 					</template>
-				 </el-table-column>
-				<el-table-column  sortable prop="settleAmount" label="结算金额" min-width="80" ></el-table-column>
-				<el-table-column  sortable prop="settleWorkload" label="结算工作量" min-width="80" ></el-table-column> 
-				<el-table-column  sortable prop="settleTime" label="结算时间" min-width="80" ></el-table-column> 
-				
-				<el-table-column label="操作" width="450" fixed="right">
-					<template slot-scope="scope"> 
-						<el-button type="primary" v-if="scope.row.status=='1'" @click="toTest(scope.row)">申请验收</el-button>
-						<el-button type="primary" v-if="scope.row.status=='4'" @click="toTest(scope.row)">再申请验收</el-button>
-
- 						<!--结算状态0未结算1已部分结算2无需结算4已申请结算5结算失败6已全部结算-->
-						<el-button type="primary"  v-if="scope.row.status=='3' && scope.row.settleStatus!='2' && scope.row.settleStatus!='4' && scope.row.settleStatus!='6' " @click="settle" >申请结算</el-button> 
-						<el-button type="success"  v-if="scope.row.status=='2' " @click="testSuccess(scope.row)" >验收通过</el-button>  
-						<el-button type="warning"  v-if="scope.row.status=='2' " @click="testFail(scope.row)" >验收不通过</el-button>  
-
- 						<el-button type="primary" v-if="scope.row.status=='7' " @click="becomeCandidate(scope.row)">成为候选人</el-button>  
-						<el-button type="danger" v-if="scope.row.status=='7' " @click="handleDel(scope.row)">删除</el-button>   
-						<el-button type="warning" v-if="scope.row.status=='0'"  @click="showQuotePrice(scope.row)">修改报价信息</el-button> 
-						<el-button type="primary" v-if="scope.row.status=='0'"   @click="execute(scope.row)">成为执行人</el-button> 
-						<el-button type="warning" v-if="scope.row.status!='7' " @click="leave(scope.row)">离开任务</el-button> 
-						<el-button type="primary" v-if="scope.row.status=='3' || scope.row.status=='6' "  @click="showSettleList(scope.row)">结算清单</el-button> 
- 
-						<!-- <el-button type="danger" @click="handleDel(scope.row,scope.$index)">删</el-button> -->
-					</template>
-				</el-table-column>
+				 </el-table-column> 
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 
@@ -769,7 +780,27 @@
 						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 
 					}) 
-			}, 
+			},  
+			formatToDoByStatus(row){
+				var status=row.status; 
+				var msg="点我操作"
+				if(status=='1'){
+					msg="请申请验收";
+				}else if( row.status=='3' &&  row.settleStatus!='2' &&  row.settleStatus!='4' &&  row.settleStatus!='6' ){
+					msg="请申请结算";
+				}else if(status=='2' ){
+					msg="请给出验收结论";
+				}else if(status=='7' ){
+					msg="申请成为候选人";
+				}else if(status=='0' ){
+					msg="申请成为执行人";
+				}else if( row.status=='3' ||  row.status=='6' ){
+					msg="查看结算清单";
+				} else if( row.status=='4'){
+					msg="再次申请验收";
+				}
+				return msg;	
+			}
 			/**end 自定义函数请在上面加**/
 			
 		},//end methods
@@ -806,5 +837,9 @@
 	height: 50px;
 	overflow: auto hidden;
 	line-height: 50px;
+}
+.badge {
+  margin-top: 7px;
+  padding-bottom: 10px;
 }
 </style>

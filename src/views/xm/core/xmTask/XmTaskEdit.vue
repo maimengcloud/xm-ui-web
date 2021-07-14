@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container page-height padding">
+	<section class="page-container page-full-height padding">
 		<el-row> 
 			<el-button type="text" @click="goAnchor('baseInfo')">基础信息</el-button> 
 			<el-button type="text" @click="goAnchor('planInfo')">进度计划</el-button> 

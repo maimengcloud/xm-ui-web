@@ -1,6 +1,6 @@
 <template>
-	<section>
-		<el-row class="app-container">
+	<section class="page-container page-full-height padding border">
+		<el-row>
 				<el-col :span="24">
 					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="primary" @click="showGroupFormwork" icon="el-icon-plus">导入项目组</el-button>
 					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="primary" @click="groupConfirm" icon="el-icon-finished">保存</el-button>

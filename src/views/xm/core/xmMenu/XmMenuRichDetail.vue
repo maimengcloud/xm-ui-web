@@ -1,6 +1,6 @@
 <template>
-	<section>
-		<el-row class="app-container"> 
+	<section class="page-container page-full-height padding border">
+		<el-row> 
 			<el-col :span="14"> 
 				<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
 					<el-form-item label="名称" prop="menuName" >

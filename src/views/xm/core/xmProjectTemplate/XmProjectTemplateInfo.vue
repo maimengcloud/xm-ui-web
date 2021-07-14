@@ -1,6 +1,6 @@
 <template>
-	<section>
-		<el-row class="app-container"> 
+	<section class="page-container page-full-height padding border">
+		<el-row> 
 			<div class="project-info" v-loading.lock="load.list || load.edit">
 				<div class="info-type">
 					<el-radio-group v-model="infotype" size="medium">
