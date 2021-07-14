@@ -7,7 +7,7 @@
 					<div>阶段  <el-tag size="mini" v-if="editForm.id" closable @close="clearSelectPhase()"> {{editForm.phaseName}}</el-tag></div>
 				</template>
 				<template slot-scope="scope">  
-					{{scope.row.seqNo}} &nbsp;&nbsp;{{scope.row.phaseName}}
+					{{scope.row.seqNo}} &nbsp;&nbsp;<el-tooltip v-if="scope.row.milestone=='1'" content="里程碑"><i  class="el-icon-star-on"></i></el-tooltip>{{scope.row.phaseName}}
 				</template>
 			</el-table-column>   
 		</el-table>
