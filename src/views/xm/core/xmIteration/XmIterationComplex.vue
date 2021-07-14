@@ -5,22 +5,22 @@
 				<xm-iteration-select :sel-project="selProject"  @row-click="onIterationRowClick" @clear-select="onIterationClearSelect"></xm-iteration-select>
 			</el-col>  
 			<el-col :span="iterationVisible==true?18:24" >  
-				<el-tabs type="border-card">  
-					<el-tab-pane label="产品、战略" lazy>   
+				<el-tabs type="border-card" @tab-click="tabClick">  
+					<el-tab-pane label="产品、战略"  lazy>   
 						<span v-show="iterationVisible==true" slot="label" ><i class="el-icon-d-arrow-left" @click.stop="iterationVisible=false"></i> 产品、战略</span>
 						<span v-show="iterationVisible==false" slot="label" ><i class="el-icon-d-arrow-right" @click.stop="iterationVisible=true"></i> 产品、战略</span> 
 						<xm-product-mng  v-if="xmIteration" :xm-iteration="xmIteration" :sel-project="selProject"></xm-product-mng>
 					</el-tab-pane>
-					<el-tab-pane label="需求" lazy>  
+					<el-tab-pane label="故事" lazy  >  
 						<xm-menu-mng v-if="xmIteration" :xm-iteration="xmIteration" :sel-project="selProject"></xm-menu-mng>
 					</el-tab-pane>
-					<el-tab-pane label="任务" lazy>
+					<el-tab-pane label="任务" lazy  >
 						<xm-task-mng v-if="xmIteration" :sel-project="selProject"></xm-task-mng>
 					</el-tab-pane>
-					<el-tab-pane label="缺陷" lazy> 
+					<el-tab-pane label="缺陷" lazy  > 
 						<xm-question-mng  v-if="xmIteration" :sel-project="selProject"></xm-question-mng>
 					</el-tab-pane>
-					<el-tab-pane label="迭代概览" lazy>
+					<el-tab-pane label="迭代概览" lazy  >
 						<xm-iteration-state-show v-if="xmIteration" :sel-project="selProject"></xm-iteration-state-show>
 					</el-tab-pane>
 				</el-tabs>
@@ -123,12 +123,18 @@ import XmQuestionMng from '../xmQuestion/XmQuestionMng.vue';
 		methods: {
 			 
 			/**end 自定义函数请在上面加**/ 
-			onIterationRowClick(iteration){
+			onIterationRowClick(iteration){ 
+
 				this.xmIteration=iteration 
 			},
 			
 			onIterationClearSelect(){
 				this.iteration=null; 
+			},
+			tabClick(tab){  
+				if(tab.label=='任务' || tab.label=='故事'){ 
+					this.iterationVisible=false;
+				}
 			}
 		},//end methods
 		components: { 
