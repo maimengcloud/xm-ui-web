@@ -151,9 +151,9 @@
 			</el-drawer >
 	
 			<!--新增 XmProjectPhase xm_project_phase界面-->
-			<el-dialog title="新增计划" :visible.sync="addFormVisible"  width="60%"  :close-on-click-modal="false" append-to-body>
+			<el-drawer title="新增计划" :visible.sync="addFormVisible"  :size="800"  :close-on-click-modal="false" append-to-body>
 				<xm-project-phase-add :parent-project-phase="parentProjectPhase" :xm-project-phase="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit" ></xm-project-phase-add>
-			</el-dialog> 
+			</el-drawer> 
 			<!--阶段模板-->
 			<el-dialog title="阶段模板" :visible.sync="phaseTemplateVisible"  width="80%"  :close-on-click-modal="false" append-to-body>
 				<xm-project-phase-template-mng  :is-select="true"  :visible="phaseTemplateVisible" @cancel="phaseTemplateVisible=false" @selected-confirm="afterPhaseTemplateSelected" ></xm-project-phase-template-mng>
