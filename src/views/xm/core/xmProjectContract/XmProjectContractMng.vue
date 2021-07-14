@@ -10,7 +10,7 @@
 			<el-button type="primary" @click="showAdd" icon="el-icon-plus">添加合同</el-button>
 			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true"  icon="el-icon-delete">批量删除</el-button> 
 		</el-row>
-		<el-row class="app-container"> 
+		<el-row class="page-main page-main-height"> 
 			<!--列表 XmProjectContract xm_project_contract-->
 			<el-table ref="table" :height="tableHeight" :data="xmProjectContracts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<!-- ht_contract_card表 -->
@@ -242,7 +242,7 @@
 			this.$nextTick(() => {
 				
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=50/1000 * window.innerHeight; 
+				var subHeight=70/1000 * window.innerHeight; 
 				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.getXmProjectContracts();
         	}); 

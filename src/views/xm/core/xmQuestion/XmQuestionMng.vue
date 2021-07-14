@@ -1,6 +1,6 @@
 <template>
-	<section>
-			<el-row class="app-container">
+	<section class="page-container padding">
+			<el-row class="page-header padding-bottom">
 			  	<el-select v-model="filters.bugStatus" placeholder="请选择状态" style="width:15%;" clearable @change="changeBugStatus">
 					<el-option v-for="(b,index) in options['bugStatus']" :value="b.optionValue"  :key="index" :label="b.optionName">{{b.optionName}}
 					</el-option>
@@ -121,7 +121,7 @@
 				</el-popover>
 
 			 </el-row>
-			 <el-row class="app-container">
+			 <el-row class="page-main">
 				<!--列表 XmQuestion xm_question-->
 				<el-table ref="table" :height="tableHeight" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 					<el-table-column  type="index" width="45"></el-table-column>
@@ -902,7 +902,7 @@
 			this.filters.handlerUsername=this.userInfo.username;
 			this.$nextTick(() => {
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=50/1000 * window.innerHeight;
+				var subHeight=70/1000 * window.innerHeight;
 				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight;
 				this.getXmQuestions();
 			});

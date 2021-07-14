@@ -307,7 +307,7 @@ import { months } from 'moment';
 			this.showType = "人力";
 				this.$nextTick(() => { 
 					//var clientRect=this.$refs.table.$el.getBoundingClientRect();
-					var subHeight=500/1000 * window.innerHeight; 
+					var subHeight=700/1000 * window.innerHeight; 
 					this.tableHeight =  window.innerHeight-subHeight; 
 			  }); 
 			  this.selProjectBudget=Object.assign({},this.selProject);

@@ -85,7 +85,7 @@
 			direction="ltr" 
 			ref="drawer"
 			>
-			<el-row class="app-container">
+			<el-row class="page-main page-main-height">
 				<el-collapse>
 					
 					<el-collapse-item title="项目经理：项目整体、团队、进度、质量、计划、风险、沟通管理等" name="3">

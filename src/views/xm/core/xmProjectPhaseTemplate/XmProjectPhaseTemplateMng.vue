@@ -1,6 +1,6 @@
 <template>
-	<section>
-		<el-row class="app-container" v-if="!simple">
+	<section class="page-container page-full-height padding border">
+		<el-row v-if="!simple">
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>  
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectPhaseTemplates">查询</el-button>
 			<el-button v-if="!selProjectTemplate" type="primary" @click="showProjectTemplate">选择项目模板</el-button>   

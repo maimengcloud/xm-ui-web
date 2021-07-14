@@ -4,7 +4,7 @@
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterationStates">查询</el-button>
   		</el-row>
-		<el-row class="app-container"> 
+		<el-row class="page-main page-main-height"> 
 			<!--列表 XmIterationState 迭代定义-->
 			<el-table :data="xmIterationStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  				<el-table-column sortable type="index" width="45"></el-table-column>

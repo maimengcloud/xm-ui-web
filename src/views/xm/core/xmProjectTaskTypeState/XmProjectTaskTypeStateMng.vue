@@ -6,7 +6,7 @@
 			<el-button type="primary" @click="showAdd">+按任务类型汇总</el-button>
 			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
 		</el-row>
-		<el-row class="app-container"> 
+		<el-row class="page-main page-main-height"> 
 			<!--列表 XmProjectTaskTypeState 按任务类型汇总-->
 			<el-table :data="xmProjectTaskTypeStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>

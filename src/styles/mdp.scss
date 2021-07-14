@@ -1,42 +1,26 @@
 //main-container全局样式
+
 .page-full-height{ 
   height: calc(100vh);  
 }
+.page-height{ 
+  height: calc(90vh);  
+}
+.page-height-90{
+  height: calc(90vh);   
+} 
 .page-height{
   height: calc(90vh);   
 } 
-.page-main-height{
-  height: calc(80vh); 
-  overflow: auto;
+.page-height-80{
+  height: calc(80vh);  
 }
-.page-bottom-height{
+.page-height-10{
   
-  height: calc(10vh); 
-  overflow: auto;
+  height: calc(10vh);  
 
 }
-.page-container { 
-  .page-header{   
-    flex: 0 0 auto; 
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    height: 60px;  
-    overflow-x: hidden;
-    background-color:rgb(182, 206, 214);
-    .el-button{
-      margin-left:10px;   
-    }
-    .el-input{ 
-      width:270px;
-      margin-left:10px;  
-    } 
-    .el-date-editor{
-      margin-left:10px;  
-    }
-  }
-  
+.page-container {   
   .page-tips{ 
     position:absolute;
     font-size: 16px;  
@@ -48,24 +32,16 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    height: 60px;  
-    overflow-x: hidden;
-    background-color:rgb(182, 206, 214); 
+    overflow-x: hidden; 
   }
-  .page-main{  
-    padding-top: 10px;
-    padding-left: 10px;
-    padding-right: 10px; 
-    padding-bottom: 10px;
-    border:1px solid #e8e8e8;
+  .page-header{
+
+  }
+  .page-main{    
   }
   .page-bottom{  
-    margin-top:5px;
-    padding-left:5px; 
-    padding-right:5px;
   }
-}
-
+} 
 .border{ 
   border: 1px solid #e8e8e8;
 }

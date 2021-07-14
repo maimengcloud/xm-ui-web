@@ -19,7 +19,7 @@
 				<span style="margin-left:10px;font-size:14px;">外购人力总成本：</span><el-tag type='warning'>{{selProject.planOutUserAt}}</el-tag>  
 			</font>
 		</el-row>
-		<el-row class="app-container"> 
+		<el-row class="page-main page-main-height"> 
 			<!--列表 XmProjectMCostUser xm_project_m_budget_cost_user-->
 			<el-table ref="table" :height="tableHeight" :data="xmProjectMCostUsers" show-summary @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="selection" width="60"></el-table-column>
@@ -351,7 +351,7 @@
 		mounted() { 
 			this.$nextTick(() => {
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=50/1000 * window.innerHeight; 
+				var subHeight=70/1000 * window.innerHeight; 
 				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.getXmProjectMCostUsers();
 			}); 

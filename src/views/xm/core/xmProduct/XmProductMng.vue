@@ -1,6 +1,6 @@
 <template>
-	<section>
-		<el-row  class="app-container"> 
+	<section class="page-container page-full-height padding border">
+    <el-row > 
 			<el-select   v-model="filters.queryScope"    placeholder="产品查询范围">
 				<el-option :label="userInfo.branchName+'机构下所有的产品'" value="branchId"></el-option>
 				<el-option label="我相关的产品" value="compete"></el-option>
@@ -470,7 +470,7 @@
 		mounted() { 
 			this.$nextTick(() => {
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=50/1000 * window.innerHeight; 
+				var subHeight=70/1000 * window.innerHeight; 
 				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.getXmProducts();
         	}); 

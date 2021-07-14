@@ -1,11 +1,11 @@
 <template>
-	<section>
-		<el-row class="app-container" v-if="!simple">
+	<section class="page-container page-full-height padding border">
+		<el-row v-if="!simple">
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
 			  <el-radio v-model="filters.objType" v-for="i in objTypeOptions" :label="i.key" :key="i.key">{{i.name}}</el-radio>
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmRecords">查询</el-button>  
 		</el-row>
-		<el-row class="app-container"> 
+		<el-row class="page-main page-main-height"> 
 			<!--列表 XmRecord xm_record-->
 			<el-table ref="table" :height="tableHeight" :data="xmRecords" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="index" width="40"></el-table-column>
@@ -256,7 +256,7 @@
 			
 			this.$nextTick(() => {
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=50/1000 * window.innerHeight; 
+				var subHeight=70/1000 * window.innerHeight; 
 				
 				if(this.projectId){
 					subHeight=100/1000 * window.innerHeight;

@@ -11,7 +11,7 @@
  			<el-button type="success" @click="loadTasksToXmProjectState" icon="el-icon-s-data">刷新数据</el-button> 
 			<el-button type="success" @click="loadTasksSettleToXmProjectState" icon="el-icon-s-data">刷新结算数据</el-button>  
 		</el-row> 
-		<el-row class="app-container"> 
+		<el-row class="page-main page-main-height"> 
 			<!--列表 XmProjectState 项目指标日统计表-->
 			<el-table ref="table" :height="tableHeight" :data="xmProjectStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>
@@ -425,7 +425,7 @@
 					this.filters.selProject=this.selProject
 				}
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=50/1000 * window.innerHeight; 
+				var subHeight=70/1000 * window.innerHeight; 
 				if(this.selProject){
 					subHeight=100/1000 * window.innerHeight;
 				}

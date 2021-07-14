@@ -1086,7 +1086,7 @@
 				this.filters.product=this.product
 				this.getXmMenus();
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=50/1000 * window.innerHeight; 
+				var subHeight=70/1000 * window.innerHeight; 
 				if(this.selProject){
 					subHeight=110/1000 * window.innerHeight; 
 				} 

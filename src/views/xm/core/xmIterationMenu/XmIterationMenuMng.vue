@@ -6,7 +6,7 @@
 				<xm-iteration-mng :simple="true" @row-click="onIterationRowClick" @clear-select="onIterationClearSelect"></xm-iteration-mng>
 			</el-col>
 			<el-col :span="xmIteration?24:16">
-				<el-row class="app-container">
+				<el-row class="page-main page-main-height">
 					<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
 						<template slot="append">
 							<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterationMenus" icon="el-icon-search"></el-button>
@@ -14,7 +14,7 @@
 					</el-input>  
 					<el-button type="primary" @click="showAdd" icon="el-icon-plus">加入更多故事到迭代计划</el-button> 
 				</el-row>
-				<el-row class="app-container">
+				<el-row class="page-main page-main-height">
 					<!--列表 XmIterationMenu 迭代定义-->
 					<el-table ref="table" :height="tableHeight" :data="xmIterationMenusTreeData"  default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column  type="selection" width="45"></el-table-column> 
@@ -333,7 +333,7 @@
 			}
 			this.$nextTick(() => {
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=50/1000 * window.innerHeight; 
+				var subHeight=70/1000 * window.innerHeight; 
 				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.getXmIterationMenus();
         	}); 

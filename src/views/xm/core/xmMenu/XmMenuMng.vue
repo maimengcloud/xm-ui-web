@@ -1,6 +1,6 @@
 <template>
-	<section>
-		<el-row class="app-container" v-if=" !batchEditVisible"> 
+	<section class="page-container page-full-height padding border">
+		<el-row v-if=" !batchEditVisible"> 
 			<el-col :span="6">
 				<xm-product-mng :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-mng>
 			</el-col>
@@ -809,7 +809,7 @@
 		mounted() {   
 			this.$nextTick(() => { 
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=50/1000 * window.innerHeight;  
+				var subHeight=70/1000 * window.innerHeight;  
 				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.getXmMenus();
           });  

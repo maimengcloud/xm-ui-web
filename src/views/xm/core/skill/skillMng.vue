@@ -1,6 +1,6 @@
 <template>
-  <section>
-    <el-row class="app-container">
+  <section class="page-container page-full-height padding border">
+    <el-row >
       <el-row>
         <el-col :span="10"> 
           <el-button type="primary" v-if="jump==true" @click="selectConfirm" icon="el-icon-finished">确认选择</el-button>
