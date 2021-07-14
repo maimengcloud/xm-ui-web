@@ -354,7 +354,7 @@
 						this.pageInfo.count=false;
 						this.xmProjectPhases = res.data.data;
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -364,7 +364,7 @@
 			showEdit: function ( row,index ) {
 				
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({ message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
 					return; 
 				}
 				this.editForm = Object.assign({}, row);
@@ -374,7 +374,7 @@
 			showAdd: function () { 
 				
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({ message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
 					return; 
 				}
 				this.parentProjectPhase=null;
@@ -386,7 +386,7 @@
 			
 			showSubAdd: function (parentProjectPhase) {  
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({ message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
 					return; 
 				}
 				var myrow=JSON.parse(JSON.stringify(parentProjectPhase))
@@ -486,7 +486,7 @@
 					if(tips.isOk){ 
 						this.getXmProjectPhases()
 					}else{ 
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					}
 				}).catch( err  => this.load.add=false );
 			},
@@ -498,16 +498,16 @@
 			handleDel: function (row,index) { 
 				
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({ message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
 					return; 
 				}
 				if(!!row.bizFlowState ){
-						this.$message({ message:"初始状态的计划可以直接删除，其它状态请发起审核流程进行删除", type: 'error' });
+						this.$message({showClose: true, message:"初始状态的计划可以直接删除，其它状态请发起审核流程进行删除", type: 'error' });
 						return;
 				}
 				
 				if(command.data.children && command.data.length>0){
-					this.$message({ message: "该计划存在子计划，不允许删除", type: 'error'}); 
+					this.$message({showClose: true, message: "该计划存在子计划，不允许删除", type: 'error'}); 
 					return;
 				}
 				this.$confirm('确认删除该记录吗?', '提示', {
@@ -522,7 +522,7 @@
 							this.pageInfo.count=true;
 							this.getXmProjectPhases();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -530,7 +530,7 @@
 			batchDel: function () {
 				
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({ message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
 					return; 
 				}
 				var phases=this.sels.filter(i=>{
@@ -555,14 +555,14 @@
 							this.pageInfo.count=true;
 							this.getXmProjectPhases(); 
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
 			showPhaseTemplate: function(parentPhase){
 				
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({ message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
 					return; 
 				}
 				this.parentProjectPhase=parentPhase
@@ -640,7 +640,7 @@
 					if(tips.isOk){
 						this.getXmProjectPhases()
 					}
-					this.$message({ message: tips.msg, type: tips.isOk?'success':'error'}); 
+					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'}); 
 				})
 			},
 			getFloatValue(value,digit){
@@ -767,23 +767,23 @@
 			saveBatchEdit:function(){
 				
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({ message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
 					return; 
 				}
 				if(this.valueChangeRows.length==0){
-					this.$message({ message:"没有改变任何数据，无需保存", type: 'success'});
+					this.$message({showClose: true, message:"没有改变任何数据，无需保存", type: 'success'});
 					return;
 				}else {
 					if(this.phaseBudgetData.surplusPlanInnerUserAt<0){
-						this.$message({ message:"内部人力预算不足，请调整", type: 'error'});
+						this.$message({showClose: true, message:"内部人力预算不足，请调整", type: 'error'});
 						return;
 					}
 					if(this.phaseBudgetData.surplusPlanOutUserAt<0){
-						this.$message({ message:"外购人力预算不足，请调整", type: 'error'});
+						this.$message({showClose: true, message:"外购人力预算不足，请调整", type: 'error'});
 						return;
 					}
 					if(this.phaseBudgetData.surplusPlanNouserAt<0){
-						this.$message({ message:"非人力预算不足请调整",type: 'error'});
+						this.$message({showClose: true, message:"非人力预算不足请调整",type: 'error'});
 						return;
 					}
 					
@@ -795,7 +795,7 @@
 							this.valueChangeRows=[]
 							this.getXmProjectPhases();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'}); 
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'}); 
 						
 					}).catch(e=>this.load.edit=false);
 				}
@@ -1104,7 +1104,7 @@
 			showMenu:function(parentPhase){
 				
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({ message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
 					return; 
 				}
 				this.parentProjectPhase=parentPhase
@@ -1130,7 +1130,7 @@
 			handlePopover:function(row,opType){
 				
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({ message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
 					return; 
 				}
 				if('add'==opType){

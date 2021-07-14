@@ -324,7 +324,7 @@
 									//this.$refs['editForm'].resetFields();
 									this.$emit('submit');//  @submit="aftereditSubmit"
 								}
-								this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err  => this.load.edit=false);
 						});
 					}
@@ -366,7 +366,7 @@
 						this.skillVisible = false; 
 						// this.getXmTasks();
 					}
-					this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 				}).catch( err  => this.load.add=false);
 			}, 
 			

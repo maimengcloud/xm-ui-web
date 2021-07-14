@@ -296,21 +296,21 @@
 			addGroupName() {
 				let that = this;
 				if(this.projectGroupType==null){
-					this.$message({
+					this.$message({showClose: true,
 						message:"项目小组类型为空，请选择小组类型后操作",
 						type:   'error'
 					});
 					return false;
 				}
 				if(!this.needAddGroupNameValue) {
-					this.$message({
+					this.$message({showClose: true,
 						message:"小组名称不能为空",
 						type:   'error'
 					});
 					return;
 				}
 				if(this.convertXmProjectGroupFormworks.some(i=>i.groupName==this.needAddGroupNameValue.trim())){
-					this.$message({
+					this.$message({showClose: true,
 						message:"团队名已经存在",
 						type:   'error'
 					});
@@ -335,7 +335,7 @@
 						that.needAddGroupNameValue = '';
 						this.getXmProjectGroupFormworks()
 					}
-					this.$message({
+					this.$message({showClose: true,
 						message: tips.msg,
 						type: tips.isOk ? 'success' : 'error'
 					});
@@ -395,7 +395,7 @@
 						this.convertXmProjectGroupFormworks = convert;
 						console.log("applyData");
 					} else {
-						this.$message({
+						this.$message({showClose: true,
 							message: tips.msg,
 							type: 'error'
 						});
@@ -427,7 +427,7 @@
 				if(this.isSelectSingleUser=='1'){
 					if(users.length>1){
 						
-						this.$message({
+						this.$message({showClose: true,
 							message: '只能选中一个用户',
 							type: 'error'
 						});
@@ -498,7 +498,7 @@
 					if(tips.isOk){
 						this.imGroups=res.data.data;
 					}
-					this.$message({
+					this.$message({showClose: true,
 						message: tips.msg,
 						type: tips.isOk ? 'success' : 'error'
 					});
@@ -530,7 +530,7 @@
 							params.id=params.groupId
 							this.imGroups.push(params);
 						} 
-						this.$message({
+						this.$message({showClose: true,
 							message: tips.msg,
 							type: tips.isOk ? 'success' : 'error'
 						});

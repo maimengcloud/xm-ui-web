@@ -173,7 +173,7 @@
     		if(this.branchId != undefined && this.branchId!= ''){
 				params.branchId = this.branchId;
         	}else{
-        		this.$message({ message: '请先选择分类，如果分类为空，请联系管理员添加分类', type: 'error' });
+        		this.$message({showClose: true, message: '请先选择分类，如果分类为空，请联系管理员添加分类', type: 'error' });
         		return;
         	}
 				this.listLoading = true;
@@ -183,12 +183,12 @@
 						this.categorys = [res.data.data];
 						gcategorys=Object.assign(this.categorys)
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					}
 					this.listLoading = false;
 				}).catch(() => {
 					this.listLoading = false;
-					this.$message({ message: '通讯异常', type: 'error' });
+					this.$message({showClose: true, message: '通讯异常', type: 'error' });
 				});
     	}, 
     	// 表格排序 obj.order=ascending/descending,需转化为 asc/desc ; obj.prop=表格中的排序字段,字段驼峰命名
@@ -239,13 +239,13 @@
 			//var jsonData = JSON.stringify(res, null, 4);
 			var tips= res.tips;
 			if(tips.isOk){
-				this.$message({ message: '上传成功', type: 'success' });
+				this.$message({showClose: true, message: '上传成功', type: 'success' });
 				this.getImages(); 
 			}else{
 				if(tips.msg=='该图片不支持'){
-				this.$message({ message: '该图片不支持', type: 'info' });
+				this.$message({showClose: true, message: '该图片不支持', type: 'info' });
 				}else{
-				this.$message({ message: '未知异常', type: 'error' });
+				this.$message({showClose: true, message: '未知异常', type: 'error' });
 				}
 			}
 		
@@ -262,14 +262,14 @@
 			  console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 			  console.log(file)
 			  if(this.uploadOptions.categoryId=='' || this.uploadOptions.categoryId==null){
-				  	this.$message({ message: "请选择分类", type: "warning" }); 
+				  	this.$message({showClose: true, message: "请选择分类", type: "warning" }); 
 				  	return false;
 				  	}
 			    if(file.size<=1024*2024){//1M
-			    	this.$message({ message: '小于2M的文件可直接上传图片库', type: 'success' });
+			    	this.$message({showClose: true, message: '小于2M的文件可直接上传图片库', type: 'success' });
 			    	return true;
 			    }else{
-			    	this.$message({ message: '为了良好的客户体验，大于2M的文件需经过裁剪压缩处理', type: 'warning' });
+			    	this.$message({showClose: true, message: '为了良好的客户体验，大于2M的文件需经过裁剪压缩处理', type: 'warning' });
 			    	return false;
 			    }
 			  	
@@ -279,7 +279,7 @@
 			    var that = this;
 			    //this.imageUrl = URL.createObjectURL(file.raw);
 			    if(file.raw.size<=1024*1024){//1M
-			    	//this.$message({ message: '小于1M的文件可直接上传图片库', type: 'success' });
+			    	//this.$message({showClose: true, message: '小于1M的文件可直接上传图片库', type: 'success' });
 			    	return true;
 					} 
 					return true;
@@ -329,7 +329,7 @@
 				//params.jsessionid=this.jsessionid;
 				this.listLoading = true;
 				if(this.branchId == undefined || this.branchId== ''){
-					this.$message({ message: '机构不能为空', type: 'warning' });
+					this.$message({showClose: true, message: '机构不能为空', type: 'warning' });
 					return;
 	        	}
 				params.branchId = this.branchId;
@@ -346,12 +346,12 @@
 						//在获取图片的时候，对url进行转换
 						/* this.converUrl(this.images); */
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.listLoading = false;
 				}).catch(() => {
 					this.listLoading = false;
-					this.$message({ message: '通讯异常', type: 'error' });
+					this.$message({showClose: true, message: '通讯异常', type: 'error' });
 				});
 			},
 			converUrl(url){
@@ -381,11 +381,11 @@
 			},
 			handleConfirm(){
 				if(this.images==null || this.images.length==0){
-					this.$message({ message: '请选择图片', type: 'error' });
+					this.$message({showClose: true, message: '请选择图片', type: 'error' });
 					return
 				}
 				if(this.selectImages==null || this.selectImages.length==0){
-					this.$message({ message: '请选择图片', type: 'error' });
+					this.$message({showClose: true, message: '请选择图片', type: 'error' });
 					return
 				}
 				if(this.multiple){
@@ -418,7 +418,7 @@
 					
 				};
 				if(this.categoryName==''){
-					this.$message({ message: '请输入分类名字', type: 'error' });
+					this.$message({showClose: true, message: '请输入分类名字', type: 'error' });
 					return
 				}
 				addImageCategory(params).then(res=>{
@@ -426,7 +426,7 @@
 						this.showAddCategoryForm=false
 						this.getImageCategorys()
 					}else{
-						this.$message({ message: res.data.tips.msg, type: 'error' });
+						this.$message({showClose: true, message: res.data.tips.msg, type: 'error' });
 					}
 				})
 			},

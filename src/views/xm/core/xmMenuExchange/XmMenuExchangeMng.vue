@@ -188,7 +188,7 @@
 						this.pageInfo.count=false;
 						this.xmMenuExchanges = res.data.data;
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -230,7 +230,7 @@
 							this.pageInfo.count=true;
 							this.getXmMenuExchanges();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -248,7 +248,7 @@
 							this.pageInfo.count=true;
 							this.getXmMenuExchanges(); 
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -301,7 +301,7 @@
 					if(tips.isOk){
 						this.xmMenuExchanges.unshift(res.data.data);
 					}
-					this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 				})
 			},
 			/**end 自定义函数请在上面加**/

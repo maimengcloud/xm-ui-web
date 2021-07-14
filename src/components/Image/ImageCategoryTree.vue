@@ -168,7 +168,7 @@
 						this.categoryTreeData=[res.data.data];
 						this.$refs.categoryTree.setCurrentKey(this.currentKey);
 					}else{
-						this.$message({ message: tips.msg, type: 'error'});
+						this.$message({showClose: true, message: tips.msg, type: 'error'});
 					} 
 					this.listLoading = false;
 				}).catch(() => {

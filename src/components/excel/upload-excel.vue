@@ -27,7 +27,7 @@ export default {
         return true
       }
 
-      this.$message({
+      this.$message({showClose: true,
         message: 'Please do not upload files larger than 1m in size.',
         type: 'warning'
       })

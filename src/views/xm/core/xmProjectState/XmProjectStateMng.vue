@@ -232,7 +232,7 @@
 						this.pageInfo.count=false;
 						this.xmProjectStates = res.data.data;
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -274,7 +274,7 @@
 							this.pageInfo.count=true;
 							this.getXmProjectStates();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -292,13 +292,13 @@
 							this.pageInfo.count=true;
 							this.getXmProjectStates(); 
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			}, 
 			loadProjectToXmProjectState: function () {
 				 	if(!this.filters.selProject){
-						 this.$message({ message: '请选择一个项目', type: 'error'});
+						 this.$message({showClose: true, message: '请选择一个项目', type: 'error'});
 						 return;
 					 } 
 					 
@@ -311,12 +311,12 @@
 							this.pageInfo.count=true;
 							this.getXmProjectStates(); 
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.edit=false ); 
 			}, 
 			loadBugsToXmProjectState: function () {
 				 	if(!this.filters.selProject){
-						 this.$message({ message: '请选择一个项目', type: 'error'});
+						 this.$message({showClose: true, message: '请选择一个项目', type: 'error'});
 						 return;
 					 } 
 					 
@@ -329,12 +329,12 @@
 							this.pageInfo.count=true;
 							this.getXmProjectStates(); 
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.edit=false ); 
 			},
 			loadTasksToXmProjectState: function () {
 				 	if(!this.filters.selProject){
-						 this.$message({ message: '请选择一个项目', type: 'error'});
+						 this.$message({showClose: true, message: '请选择一个项目', type: 'error'});
 						 return;
 					 } 
 					 
@@ -347,12 +347,12 @@
 							this.pageInfo.count=true;
 							this.getXmProjectStates(); 
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.edit=false ); 
 			},
 			loadTasksSettleToXmProjectState: function () {
 				 	if(!this.filters.selProject){
-						 this.$message({ message: '请选择一个项目', type: 'error'});
+						 this.$message({showClose: true, message: '请选择一个项目', type: 'error'});
 						 return;
 					 } 
 					 
@@ -365,7 +365,7 @@
 							this.pageInfo.count=true;
 							this.getXmProjectStates(); 
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.edit=false ); 
 			},
 			rowClick: function(row, event, column){

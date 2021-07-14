@@ -94,7 +94,7 @@
 			//新增提交XmProduct 产品表 父组件监听@submit="afterAddSubmit"
 			addSubmit: function () {
 				if(!this.roles.some(i=>i.roleid=='productAdmin')){
-					this.$message({ message: "只有产品经理能够创建产品", type: 'error'}); 
+					this.$message({showClose: true, message: "只有产品经理能够创建产品", type: 'error'}); 
 					return false;
 				}
 				
@@ -112,7 +112,7 @@
 									//this.$refs['addForm'].resetFields();
 									this.$emit('submit');//  @submit="afterAddSubmit"
 								}
-								this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err  => this.load.add=false);
 						});
 					}

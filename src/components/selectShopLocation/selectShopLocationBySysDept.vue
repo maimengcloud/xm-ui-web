@@ -72,7 +72,7 @@
 		methods: {
 			selectshopLocationBySysDeptIdMethodLike(){
 				if(this.currentSelectDeptObject.branchId==null||this.currentSelectDeptObject.branchId==''){
-					this.$message({
+					this.$message({showClose: true,
 						 message: "请选择机构和部门",
 						 type: "error"
 					});
@@ -131,7 +131,7 @@
 						this.pageInfo.count=false;
 						that.shopLocationTable = res.data.data;
 					}
-					// this.$message({
+					// this.$message({showClose: true,
 					// 	message: tips.msg,
 					// 	type: tips.isOk ? 'success' : 'error'
 					// });
@@ -148,7 +148,7 @@
 			},
 			checkSureMethod(){
 				if(this.multipleSelection.length<1){
-					this.$message({
+					this.$message({showClose: true,
 						 message: "必须选择某个门店",
 						 type: "error"
 					});

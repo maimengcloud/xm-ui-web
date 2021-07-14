@@ -129,7 +129,7 @@
 						this.xmProjects = res.data.data;
 						console.log(this.xmProjects);
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -143,7 +143,7 @@
 					var tips=res.data.tips;
 					if(tips.isOk){ 
 					}
-					this.$message({ message: tips.msg, type: tips.isOk?'success':'error' });
+					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 				}).catch( err => this.load.list = false);
 			},
 			//显示新增界面 XmProject xm_project

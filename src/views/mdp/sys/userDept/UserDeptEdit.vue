@@ -147,7 +147,7 @@
 									this.$refs['editForm'].resetFields();
 									this.$emit('submit');//  @submit="afterEditSubmit"
 								}
-								this.$message({ message: tips.msg, type: tips.isOk?'success':'error' });
+								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch((e) => {
 								console.log(e)
 								this.load.edit=false

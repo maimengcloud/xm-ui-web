@@ -235,7 +235,7 @@
 				}
 				
 				if(!this.dateRanger || this.dateRanger.length==0){
-					this.$message({ message: "创建日期范围不能为空", type: 'error' });
+					this.$message({showClose: true, message: "创建日期范围不能为空", type: 'error' });
 					return;
 				} 
 				if(this.filters.key){
@@ -252,7 +252,7 @@
 					if(this.filters.selProject){
 						params.projectId=this.filters.selProject.id
 					}else{
-						this.$message({ message: "请选择项目", type: 'error' });
+						this.$message({showClose: true, message: "请选择项目", type: 'error' });
 						this.load.list=false;
 						this.selectProjectVisible=true;
 						return;
@@ -276,7 +276,7 @@
 						var xmTasks=res.data.data;
 						this.xmTasks=xmTasks;  
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );

@@ -199,7 +199,7 @@
 					count:this.pageInfo.count
 				}; 
 				if(!this.dateRangerOnline || this.dateRangerOnline.length==0){
-					this.$message({ message: "上线日期范围不能为空", type: 'error' });
+					this.$message({showClose: true, message: "上线日期范围不能为空", type: 'error' });
 					return;
 				}
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
@@ -222,7 +222,7 @@
 					params.queryScope=this.filters.queryScope 
 					if(this.filters.queryScope=='iterationId'){
 						if(!this.filters.id){
-							this.$message({ message:"您选择了按迭代编号精确查找模式，请输入迭代编号", type: 'error' });
+							this.$message({showClose: true, message:"您选择了按迭代编号精确查找模式，请输入迭代编号", type: 'error' });
 							return;
 						}
 						params.id=this.filters.id
@@ -243,7 +243,7 @@
 						this.pageInfo.count=false;
 						this.xmIterations = res.data.data;
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -340,7 +340,7 @@
 					if(tips.isOk){
 						this.getXmIterations();
 					}
-					this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 				});
 			},
 		},//end methods

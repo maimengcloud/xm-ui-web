@@ -389,7 +389,7 @@
 								addOrUpdateTemplate(params).then(res=>{
 									var tips=res.data.tips;
 									this.addLoading = false;
-									this.$message({ message: tips.msg, type: tips.isOk?'success':'error' });
+									this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 								}).catch(e=>this.addLoading=false);
 								return;
 							}
@@ -401,7 +401,7 @@
 										this.$refs['addForm'].resetFields();
 										this.$emit('submit');//  @submit="afterAddSubmit"
 									}
-									this.$message({ message: tips.msg, type: tips.isOk?'success':'error' });
+									this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 								}).catch(() => {
 									this.addLoading = false;
 								});
@@ -421,7 +421,7 @@
 										this.$refs['addForm'].resetFields();
 										this.$emit('submit');//  @submit="afterAddSubmit"
 									}
-									this.$message({ message: tips.msg, type: tips.isOk?'success':'error' });
+									this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 								}).catch(() => {
 									this.addLoading = false;
 								});
@@ -452,7 +452,7 @@
 						console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxx");
 						console.log(this.nodeInfosSelectOptions);
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					}
 					this.listLoading = false;
 				}).catch(() => {
@@ -568,12 +568,12 @@
 					if(tips.isOk){
 						this.formDefs = res.data.data;
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					}
 					this.listLoading = false;
 				}).catch(() => {
 					this.listLoading = false;
-					this.$message({ message: '访问错误', type: 'error' });
+					this.$message({showClose: true, message: '访问错误', type: 'error' });
 				});
 			},
 			handleCategoryCheckChange(data, checked, indeterminate){
@@ -596,7 +596,7 @@
 						this.nodeInfos=res.data.data;
 						this.nodeInfosSelectOptions=this.nodeInfos;
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					}
 				});
 			},

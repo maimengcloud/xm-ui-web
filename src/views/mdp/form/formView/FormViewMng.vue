@@ -158,7 +158,7 @@
 						this.pageInfo.total = res.data.total;
 						this.formViews = res.data.data;
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.listLoading = false;
 				}).catch(() => {
@@ -203,7 +203,7 @@
 							this.pageInfo.total=0;
 							this.getFormViews();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 						
 					});
 				}).catch(() => {
@@ -225,7 +225,7 @@
 							this.pageInfo.total=0;
 							this.getFormViews(); 
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					});
 				}).catch(() => {
 					this.listLoading = false;

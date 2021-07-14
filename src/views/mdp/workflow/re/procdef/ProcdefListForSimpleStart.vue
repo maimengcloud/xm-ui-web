@@ -271,7 +271,7 @@
             }
             this.procdefs = res.data.data;
           } else {
-            this.$message({
+            this.$message({showClose: true,
               message: tips.msg,
               type: 'error'
             });

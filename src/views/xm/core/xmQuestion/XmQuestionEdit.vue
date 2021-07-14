@@ -237,7 +237,7 @@
 									this.$emit('submit');//  @submit="afterAddSubmit"
 									this.handleCancel();
 								}
-								this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err  => this.load.edit=false);
 						});
 					}
@@ -297,7 +297,7 @@
 				var oldBugStatus=this.editForm.bugStatus;  
 				if(tardgetBugStatus=="closed"){ 
 					if( !this.roles.some(i=>i.roleid=='testAdmin') && !this.roles.some(i=>i.roleid=='tester') && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
-						this.$message({message:"只有测试经理、测试组长、测试员可以关闭bug",type:"error"});
+						this.$message({showClose: true,message:"只有测试经理、测试组长、测试员可以关闭bug",type:"error"});
 						return ;
 					}
 				}
@@ -346,12 +346,12 @@
 					if(tips.isOk){
 						this.xmQuestionHandles=res.data.data;
 					}
-					this.$message({ message: tips.msg, type: tips.isOk?'success':'error' });  
+					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });  
 				}).catch( err  => this.load.list=false);
 			},
 			showSelectTask:function(){
 				if(this.selProject==null){
-					this.$message({ message: "请先选项目", type: 'error' }); 
+					this.$message({showClose: true, message: "请先选项目", type: 'error' }); 
 					return ;
 				}
 				this.selectTaskVisible=true;
@@ -382,7 +382,7 @@
 			
 			showSelectMenu:function(){
 				if(this.selProject==null){
-					this.$message({ message: "请先选项目", type: 'error' }); 
+					this.$message({showClose: true, message: "请先选项目", type: 'error' }); 
 					return ;
 				}
 				this.selectMenuVisible=true;

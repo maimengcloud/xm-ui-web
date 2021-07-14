@@ -397,7 +397,7 @@
 						}
 						
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -422,7 +422,7 @@
 					return;
 				}
 				if(this.currentProjectPhase==null){
-					this.$message({ message: "请先选择项目阶段计划", type: 'error' }); 
+					this.$message({showClose: true, message: "请先选择项目阶段计划", type: 'error' }); 
 					return false;
 				}
 				this.taskTemplateVisible=true;
@@ -445,7 +445,7 @@
 					return;
 				}
 				if(!this.currentProjectPhase){
-					this.$message({ message: "请先选择项目阶段计划", type: 'error' }); 
+					this.$message({showClose: true, message: "请先选择项目阶段计划", type: 'error' }); 
 					return;
 				}
 				this.addFormVisible = true;
@@ -482,7 +482,7 @@
 							this.pageInfo.count=true;
 							this.getXmTasks();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -504,7 +504,7 @@
 							this.pageInfo.count=true;
 							this.getXmTasks(); 
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -635,7 +635,7 @@
 
 					 }
 					 this.taskTemplateVisible=false;
-					 this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+					 this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 				 }).catch(e=>{this.taskTemplateVisible=false;});
 			},
 			onTaskSkillsSelected(skills) {
@@ -653,7 +653,7 @@
 						this.skillVisible = false;
 						this.getXmTasks();
 					}
-					this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 				}).catch( err  => this.load.add=false);
 			},
 
@@ -789,12 +789,12 @@
 						if(tips.isOk){
 							this.getXmTasks(); 
 						} 
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					})
 				}else{
 					addXmMyFocus({projectId:row.projectId,projectName:row.projectName,focusType:'task',taskId:row.id,taskName:row.name,userid:this.userInfo.userid,username:this.userInfo.username}).then(res=>{
 						var tips=res.data.tips;
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					})
 				}
 			}, 
@@ -805,19 +805,19 @@
 				}
 				console.log(JSON.stringify(this.taskBudgetData))
 				if(this.valueChangeRows.length==0){
-					this.$message({ message:"没有改变任何数据，无需保存", type: 'success'});
+					this.$message({showClose: true, message:"没有改变任何数据，无需保存", type: 'success'});
 					return;
 				}else {
 					if(this.taskBudgetData.surplusPhaseBudgetInnerUserAt<0){
-						this.$message({ message:"内部人力预算不足，请调整", type: 'error'});
+						this.$message({showClose: true, message:"内部人力预算不足，请调整", type: 'error'});
 						return;
 					}
 					if(this.taskBudgetData.surplusPhaseBudgetOutUserAt<0){
-						this.$message({ message:"外购人力预算不足，请调整", type: 'error'});
+						this.$message({showClose: true, message:"外购人力预算不足，请调整", type: 'error'});
 						return;
 					}
 					if(this.taskBudgetData.surplusPhaseBudgetNouserAt<0){
-						this.$message({ message:"非人力预算不足请调整",type: 'error'});
+						this.$message({showClose: true, message:"非人力预算不足请调整",type: 'error'});
 						return;
 					}
 					
@@ -829,7 +829,7 @@
 							this.valueChangeRows=[]
 							this.getXmTasks();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'}); 
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'}); 
 						
 					}).catch(e=>this.load.edit=false);
 				}

@@ -122,7 +122,7 @@
 			//新增提交XmMenu 项目故事表 父组件监听@submit="afterAddSubmit"
 			addSubmit: function () {
 				if(this.parentMenu==null && this.product ==null ){
-					this.$message({ message: '请选择产品/或者上级故事进行新增', type:'error' }); 
+					this.$message({showClose: true, message: '请选择产品/或者上级故事进行新增', type:'error' }); 
 					return;
 				}
 				this.$refs.addForm.validate((valid) => {
@@ -138,7 +138,7 @@
 								params.productId=this.product.id
 							}
 							if(params.productId==null|| params.productId==''){
-								this.$message({ message: '产品编号不能为空', type:'error' }); 
+								this.$message({showClose: true, message: '产品编号不能为空', type:'error' }); 
 								return;
 							}
 							addXmMenu(params).then((res) => {
@@ -147,7 +147,7 @@
 								if(tips.isOk){
  									this.$emit('submit');//  @submit="afterAddSubmit"
 								}
-								this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err  => this.load.add=false);
 						});
 					}

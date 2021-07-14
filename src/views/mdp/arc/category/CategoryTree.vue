@@ -288,7 +288,7 @@
 						this.treeData=res.data.data;
 						console.log("this.treeData----"+JSON.stringify(this.treeData));
 					}else{
-						this.$message({ message: tips.msg, type: 'error'});
+						this.$message({showClose: true, message: tips.msg, type: 'error'});
 					} 
 					this.listLoading = false;
 				}).catch(() => {

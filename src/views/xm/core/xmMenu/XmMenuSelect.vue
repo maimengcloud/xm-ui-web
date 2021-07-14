@@ -246,13 +246,13 @@
 				if( this.filters.product!==null && this.filters.product.id!=''){
 					params.productId=this.filters.product.id
 				}else {
-					this.$message({ message: "请先选择产品", type: 'success' });
+					this.$message({showClose: true, message: "请先选择产品", type: 'success' });
 					return;
 					//params.xxx=xxxxx
 				} 
 				
 				if(!this.dateRanger || this.dateRanger.length==0){
-					this.$message({ message: "创建日期范围不能为空", type: 'error' });
+					this.$message({showClose: true, message: "创建日期范围不能为空", type: 'error' });
 					return;
 				} 
 				
@@ -280,7 +280,7 @@
 						this.pageInfo.count=false;
 						this.xmMenus = res.data.data;
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );

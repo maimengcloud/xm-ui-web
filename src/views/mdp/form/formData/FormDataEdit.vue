@@ -78,7 +78,7 @@
 									this.$refs['editForm'].resetFields();
 									this.$emit('submit',formData);//  @submit="afterAddSubmit"
 								}
-								this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch(() => {
 								this.editLoading = false;
 							});

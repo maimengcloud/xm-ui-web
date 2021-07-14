@@ -283,7 +283,7 @@
             }
             this.convertTags = convert;
           } else {
-            this.$message({
+            this.$message({showClose: true,
               message: tips.msg,
               type: 'error'
             });
@@ -336,7 +336,7 @@
               this.pageInfo.count = true;
               this.getTags();
             }
-            this.$message({
+            this.$message({showClose: true,
               message: tips.msg,
               type: tips.isOk ? 'success' : 'error'
             });
@@ -357,7 +357,7 @@
               this.pageInfo.count = true;
               this.getTags();
             }
-            this.$message({
+            this.$message({showClose: true,
               message: tips.msg,
               type: tips.isOk ? 'success' : 'error'
             });
@@ -379,7 +379,7 @@
       addTagMethod(index) {
         if (!this.userInfo.isPlatformAdmin && !this.userInfo.isSuperAdmin) {
           if (this.isPub == '1') {
-            this.$message({
+            this.$message({showClose: true,
               message: "不是平台管理员，不允许增加公共标签",
               type: 'error'
             });
@@ -389,7 +389,7 @@
         if (this.convertTags.some(i => {
             return i.values.some(tag => tag.tagName == this.convertTags[index].showAddButtonInputValue)
           })) {
-          this.$message({
+          this.$message({showClose: true,
             message: "标签已经存在",
             type: 'error'
           });
@@ -397,7 +397,7 @@
         }
         if (!this.convertTags[index].pubc) {
           if (this.isPub == '1') {
-            this.$message({
+            this.$message({showClose: true,
               message: "该分类不是公共分类，不能添加公共标签",
               type: 'error'
             });
@@ -435,7 +435,7 @@
             this.convertTags[index].showAddButtonInputValue = '';
             this.convertTags[index].values.push(json);
           }
-          this.$message({
+          this.$message({showClose: true,
             message: tips.msg,
             type: tips.isOk ? 'success' : 'error'
           });
@@ -445,7 +445,7 @@
       delTagMethod(tagId, index, valueIndex) {
         if (!this.userInfo.isPlatformAdmin && !this.userInfo.isSuperAdmin) {
           if (this.convertTags[index].values.some(i => i.pubTag == '1' && i.tagId == tagId)) {
-            this.$message({
+            this.$message({showClose: true,
               message: "公共标签不允许删除",
               type: 'error'
             });
@@ -475,7 +475,7 @@
               this.convertTags[index].values.splice(valueIndex, 1);
               /*this.getTags();*/
             }
-            this.$message({
+            this.$message({showClose: true,
               message: tips.msg,
               type: tips.isOk ? 'success' : 'error'
             });
@@ -493,7 +493,7 @@
         let that = this;
         if (!(this.userInfo.isPlatformAdmin || this.userInfo.isSuperAdmin)) {
           if (this.isPub == '1') {
-            this.$message({
+            this.$message({showClose: true,
               message: "你不是平台管理员不能添加公共标签分类",
               type: 'error'
             });
@@ -502,7 +502,7 @@
         }
 
         if (this.convertTags.some(i => i.categoryName == this.needAddTagCategoryNameInputValue)) {
-          this.$message({
+          this.$message({showClose: true,
             message: "标签分类已经存在",
             type: 'error'
           });
@@ -533,7 +533,7 @@
             }
             this.convertTags.push(json);
           }
-          this.$message({
+          this.$message({showClose: true,
             message: tips.msg,
             type: tips.isOk ? 'success' : 'error'
           });
@@ -568,7 +568,7 @@
         }
         if (!this.userInfo.isPlatformAdmin && !this.userInfo.isSuperAdmin) {
           if (this.convertTags.some(i => i.pubc == '1' && i.categoryId == categoryId)) {
-            this.$message({
+            this.$message({showClose: true,
               message: "公共分类不允许删除",
               type: 'error'
             });
@@ -588,7 +588,7 @@
               this.convertTags.splice(index, 1);
               /*this.getTags();*/
             }
-            this.$message({
+            this.$message({showClose: true,
               message: tips.msg,
               type: tips.isOk ? 'success' : 'error'
             });

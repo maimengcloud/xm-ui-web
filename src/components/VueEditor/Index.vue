@@ -212,7 +212,7 @@
     },
     
 			handleUploadError : function(err, file, fileList){
-				this.$message({ message: "文件上传失败，请检查文件是否过大，建议图片文件控制在500K内", type: "warning" }); 
+				this.$message({showClose: true, message: "文件上传失败，请检查文件是否过大，建议图片文件控制在500K内", type: "warning" }); 
 			},
 		/**begin 在下面加自定义方法,记得补上面的一个逗号**/			
 		converUrl(url){
@@ -235,7 +235,7 @@
 			    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 			    console.log(file)
 			    if(file.raw.type.indexOf('image')<0){
-			    	this.$message({ message: "请选择图片文件", type: "warning" }); 
+			    	this.$message({showClose: true, message: "请选择图片文件", type: "warning" }); 
 			    	return false;
 			    }
 			    return true; 

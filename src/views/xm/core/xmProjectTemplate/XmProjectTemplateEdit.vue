@@ -322,7 +322,7 @@
 			//编辑提交XmProjectTemplate xm_project父组件监听@submit="afterEditSubmit"
 			editSubmit: function () {
 				if("0" != this.selProjectTemplate.status){
-					this.$message({ message: "只有初始状态的项目可以修改，如确实需要修改，请进行项目变更审批", type: 'error' }); 
+					this.$message({showClose: true, message: "只有初始状态的项目可以修改，如确实需要修改，请进行项目变更审批", type: 'error' }); 
 					return;
 				}
 				if (
@@ -332,12 +332,12 @@
 					this.editForm.startTime = this.dateRanger[0] + " 00:00:00";
 					this.editForm.endTime = this.dateRanger[1] + " 23:59:59";
 				}else{
-					this.$message({ message: "请输入开始日期和结束日期", type: 'error' }); 
+					this.$message({showClose: true, message: "请输入开始日期和结束日期", type: 'error' }); 
 					return;
 				}
 				
 				if(!this.editForm.productId){
-					this.$message({ message: "请选择归属产品", type: 'error' }); 
+					this.$message({showClose: true, message: "请选择归属产品", type: 'error' }); 
 					return;
 				}
 				this.$refs.editForm.validate((valid) => {
@@ -355,7 +355,7 @@
 									this.$refs['editForm'].resetFields();
 									this.$emit('submit',params);//  @submit="afterEditSubmit"
 								}
-								this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err =>this.load.edit=false);
 						});
 					}

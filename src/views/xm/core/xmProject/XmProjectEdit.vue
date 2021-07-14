@@ -354,11 +354,11 @@
 			//编辑提交XmProject xm_project父组件监听@submit="afterEditSubmit"
 			editSubmit: function () {
 				if(!this.roles.some(i=>i.roleid=='projectAdmin')){
-					this.$message({ message: "只有项目经理可以修改项目", type: 'error' }); 
+					this.$message({showClose: true, message: "只有项目经理可以修改项目", type: 'error' }); 
 					return;
 				}
 				if("0" != this.selProject.status){
-					this.$message({ message: "只有初始状态的项目可以修改，如确实需要修改，请进行项目变更审批", type: 'error' }); 
+					this.$message({showClose: true, message: "只有初始状态的项目可以修改，如确实需要修改，请进行项目变更审批", type: 'error' }); 
 					return;
 				}
 				if (
@@ -368,7 +368,7 @@
 					this.editForm.startTime = this.dateRanger[0] + " 00:00:00";
 					this.editForm.endTime = this.dateRanger[1] + " 23:59:59";
 				}else{
-					this.$message({ message: "请输入开始日期和结束日期", type: 'error' }); 
+					this.$message({showClose: true, message: "请输入开始日期和结束日期", type: 'error' }); 
 					return;
 				} 
 				this.$refs.editForm.validate((valid) => {
@@ -386,7 +386,7 @@
 									this.$refs['editForm'].resetFields();
 									this.$emit('submit',params);//  @submit="afterEditSubmit"
 								}
-								this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err =>this.load.edit=false);
 						});
 					}
@@ -402,7 +402,7 @@
 					if(tips.isOk){ 
 						this.xmProjectGroups = res.data.data; 
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -484,7 +484,7 @@
 			},
 			sendToProcessApprova:function(row,bizKey){ 
 				if(!this.roles.some(i=>i.roleid=='projectAdmin')){
-					this.$message({ message: "只有项目经理可以发起流程", type: 'error' }); 
+					this.$message({showClose: true, message: "只有项目经理可以发起流程", type: 'error' }); 
 					return;
 				}
 				// 传过来的参数格式

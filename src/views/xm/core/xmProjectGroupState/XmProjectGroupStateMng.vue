@@ -153,7 +153,7 @@
 						this.pageInfo.count=false;
 						this.xmProjectGroupStates = res.data.data;
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -195,7 +195,7 @@
 							this.pageInfo.count=true;
 							this.getXmProjectGroupStates();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -213,7 +213,7 @@
 							this.pageInfo.count=true;
 							this.getXmProjectGroupStates(); 
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -226,7 +226,7 @@
 					if(tips.isOk){
 						this.getXmProjectGroupStates();
 					}else{
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 
 					}
 				})

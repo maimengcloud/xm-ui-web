@@ -53,7 +53,7 @@
 						groups.push(group);
 					});
 					if(selGroups.length==0){
-						this.$message({ message: "最少保留一个小组", type: 'error' });
+						this.$message({showClose: true, message: "最少保留一个小组", type: 'error' });
 						this.load.edit=false
 						return;
 					}
@@ -61,9 +61,9 @@
 						var tips=res.data.tips; 
 						if(tips.isOk){ 
 							//this.groups = res.data.data; 
-							this.$message({ message: tips.msg, type: 'success' });
+							this.$message({showClose: true, message: tips.msg, type: 'success' });
 						}else{
-							this.$message({ message: tips.msg, type: 'error' });
+							this.$message({showClose: true, message: tips.msg, type: 'error' });
 						} 
 						this.getXmProjectGroup();
 						this.load.edit=false
@@ -81,7 +81,7 @@
 					if(tips.isOk){ 
 						this.groups = res.data.data;
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );

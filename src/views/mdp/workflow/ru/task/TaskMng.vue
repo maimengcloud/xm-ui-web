@@ -522,7 +522,7 @@
         this.pageInfo.count = true;
         this.filters.taskType = "1";
         if (this.filters.candidateUser == "") {
-          this.$message({
+          this.$message({showClose: true,
             message: "请先选择用户",
             type: "error"
           });
@@ -536,7 +536,7 @@
         this.pageInfo.count = true;
         this.filters.taskType = "2";
         if (this.filters.candidateGroups.length <= 0) {
-          this.$message({
+          this.$message({showClose: true,
             message: "请先选择部门",
             type: "error"
           });
@@ -550,7 +550,7 @@
         this.pageInfo.count = true;
         this.filters.taskType = "2";
         if (this.filters.candidateGroups.length <= 0) {
-          this.$message({
+          this.$message({showClose: true,
             message: "请先选择部门",
             type: "error"
           });
@@ -650,12 +650,12 @@
       },
       showSendSms: function() {
         if (this.sels.length > 1) {
-          this.$message({
+          this.$message({showClose: true,
             message: "一次只能给一个人发短信",
             type: "error"
           });
         } else if (this.sels.length < 1) {
-          this.$message({
+          this.$message({showClose: true,
             message: "请选择一条任务",
             type: "error"
           });
@@ -675,14 +675,14 @@
       },
       showWeixin: function() {
         if (this.sels.length > 1) {
-          this.$message({
+          this.$message({showClose: true,
             message: "一次只能给一个人发信",
             type: "error"
           });
           this.weixinContentVisible = false;
           return false;
         } else if (this.sels.length < 1) {
-          this.$message({
+          this.$message({showClose: true,
             message: "请选择一条任务",
             type: "error"
           });
@@ -722,13 +722,13 @@
       },
       showOaMsg: function() {
         if (this.sels.length > 1) {
-          this.$message({
+          this.$message({showClose: true,
             message: "一次只能给一个人发信",
             type: "error"
           });
           return false;
         } else if (this.sels.length < 1) {
-          this.$message({
+          this.$message({showClose: true,
             message: "请选择一条任务",
             type: "error"
           });
@@ -849,7 +849,7 @@
                   });
                   this.tasks = taskList;
                 } else {
-                  this.$message({
+                  this.$message({showClose: true,
                     message: tips.msg,
                     type: "error"
                   });
@@ -877,7 +877,7 @@
                   });
                   this.tasks = taskList;
                 } else {
-                  this.$message({
+                  this.$message({showClose: true,
                     message: tips.msg,
                     type: "error"
                   });
@@ -904,7 +904,7 @@
                   });
                   this.tasks = taskList;
                 } else {
-                  this.$message({
+                  this.$message({showClose: true,
                     message: tips.msg,
                     type: "error"
                   });
@@ -932,7 +932,7 @@
                   });
                   this.tasks = taskList;
                 } else {
-                  this.$message({
+                  this.$message({showClose: true,
                     message: tips.msg,
                     type: "error"
                   });
@@ -959,7 +959,7 @@
                   });
                   this.tasks = taskList;
                 } else {
-                  this.$message({
+                  this.$message({showClose: true,
                     message: tips.msg,
                     type: "error"
                   });
@@ -986,7 +986,7 @@
                   });
                   this.tasks = taskList;
                 } else {
-                  this.$message({
+                  this.$message({showClose: true,
                     message: tips.msg,
                     type: "error"
                   });
@@ -1049,7 +1049,7 @@
                 this.pageInfo.total = 0;
                 this.getTasks();
               }
-              this.$message({
+              this.$message({showClose: true,
                 message: tips.msg,
                 type: tips.isOk ? "success" : "error"
               });
@@ -1074,7 +1074,7 @@
                 this.pageInfo.total = 0;
                 this.getTasks();
               }
-              this.$message({
+              this.$message({showClose: true,
                 message: tips.msg,
                 type: tips.isOk ? "success" : "error"
               });

@@ -167,7 +167,7 @@
 										this.$refs['editForm'].resetFields();
 										this.$emit('submit');//  @submit="afterAddSubmit"
 									}
-									this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+									this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 								}).catch( err  => this.load.add=false);
 							}else{
 								editFormQx(params).then((res) => {
@@ -177,7 +177,7 @@
 										this.$refs['editForm'].resetFields();
 										this.$emit('submit');//  @submit="afterEditSubmit"
 									}
-									this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+									this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 								}).catch( err =>this.load.edit=false);
 							}
 							
@@ -236,7 +236,7 @@
 						}
 						
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );

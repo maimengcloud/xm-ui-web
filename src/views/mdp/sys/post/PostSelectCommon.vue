@@ -138,7 +138,7 @@
 						this.pageInfo.count=false;
 						this.posts = res.data.data;
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -179,7 +179,7 @@
 			confirmPostSelect(){
 				
 				if(this.sels.length<=0){
-					this.$message({ message:'请选择角色', type: 'error'});
+					this.$message({showClose: true, message:'请选择角色', type: 'error'});
 					return;
 				}
 				this.load.add=true;

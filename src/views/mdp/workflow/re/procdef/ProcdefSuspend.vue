@@ -375,7 +375,7 @@ export default {
             this.pageInfo.count = false;
             this.procdefs = res.data.data;
           } else {
-            this.$message({ message: tips.msg, type: "error" });
+            this.$message({showClose: true, message: tips.msg, type: "error" });
           }
           this.listLoading = false;
         })
@@ -405,7 +405,7 @@ export default {
               this.pageInfo.count = true;
               this.getProcdefs();
             }
-            this.$message({
+            this.$message({showClose: true,
               message: tips.msg,
               type: tips.isOk ? "success" : "error"
             });
@@ -431,7 +431,7 @@ export default {
               this.pageInfo.count = true;
               this.getProcdefs();
             }
-            this.$message({
+            this.$message({showClose: true,
               message: tips.msg,
               type: tips.isOk ? "success" : "error"
             });

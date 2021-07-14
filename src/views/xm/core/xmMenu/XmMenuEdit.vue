@@ -106,7 +106,7 @@
 			editSubmit: function () {
 				
 				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$message({ message: "只有产品经理、产品组长能够修改故事", type: 'error'}); 
+					this.$message({showClose: true, message: "只有产品经理、产品组长能够修改故事", type: 'error'}); 
 					return false;
 				}
 				this.$refs.editForm.validate((valid) => {
@@ -121,7 +121,7 @@
 								if(tips.isOk){
  									this.$emit('submit');//  @submit="afterAddSubmit"
 								}
-								this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err  => this.load.edit=false);
 						});
 					}

@@ -228,7 +228,7 @@
 						var xmTasks=res.data.data;
 						this.xmTasks=xmTasks;  
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );

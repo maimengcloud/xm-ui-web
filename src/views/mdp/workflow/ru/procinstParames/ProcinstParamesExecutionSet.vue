@@ -677,7 +677,7 @@
 			 
 			addComment:function(){
 				if(this.task.commentMsg==''){
-					this.$message({ message: "办理意见不能为空", type:'error' }); 
+					this.$message({showClose: true, message: "办理意见不能为空", type:'error' }); 
 					return;
 				}
 				this.addLoading = true; 
@@ -688,11 +688,11 @@
 						this.refreshCommentList=true
 						this.addLoading=false;
 						this.addForm.commentMsg=""
-						this.$message({ message:'保存办理意见成功', type:'success' }); 
+						this.$message({showClose: true, message:'保存办理意见成功', type:'success' }); 
 					}else{
 						this.refreshCommentList=false
 						this.addLoading=false;
-						this.$message({ message: res.data.tips.msg, type:'error' }); 
+						this.$message({showClose: true, message: res.data.tips.msg, type:'error' }); 
 					}
 				}).catch(e=>{
 					this.addLoading = false; 
@@ -746,7 +746,7 @@
 									this.needAssignee=''
 									this.needAssigneeMsg=''
 									this.needAssigneeNum=-1
-									this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+									this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 									this.handleCancel();
 								}else if(tips.tipscode=='need-mulit-assignee'){//need-mulit-assignee 需要一个或者多个 need-single-assignee 只需要一个
 									this.needAssignee=tips.tipscode
@@ -759,7 +759,7 @@
 									this.needAssigneeNum=1;
 									this.$refs.addForm.validateField('needAssignee');
 								}else{
-									this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+									this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 								}
 								
 							}).catch(() => {
@@ -816,7 +816,7 @@
 							this.addForm=Object.assign(this.addForm,this.defaultAddForm);
 						}
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.listLoading = false;
 				}).catch(() => {
@@ -883,7 +883,7 @@
 		                newImg.src = dataUrl;  
 		                var printWindow=window.open(newImg.src,"_blank");  
 		               if(printWindow==null){
-		            	   this.$message({ message: '无法打开打印窗口，请检查是否浏览器阻止弹出框', type: 'error' });
+		            	   this.$message({showClose: true, message: '无法打开打印窗口，请检查是否浏览器阻止弹出框', type: 'error' });
 		               }else{
 		                     
 		            	   this.$nextTick(() => {
@@ -1057,7 +1057,7 @@
 						this.nodeInfos=res.data.data;
 						this.nodeInfoVisible=false;
 					} 
-					this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 				})
 				
 			},

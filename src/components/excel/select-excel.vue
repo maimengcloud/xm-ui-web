@@ -93,7 +93,7 @@ export default {
           this.downloadLoading = false
         })
       } else {
-        this.$message({
+        this.$message({showClose: true,
           message: 'Please select at least one item',
           type: 'warning'
         })

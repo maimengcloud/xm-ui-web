@@ -307,7 +307,7 @@
 								let deptids=this.$refs['dept_'+item.fieldIdCamel][0].$refs.deptTree.getCheckedKeys(); 
 								if(item.isRequired=='1'){
 									if(!deptids||deptids.length<=0){
-										this.$message({ message: item.fieldTitle+'不能为空', type: 'error' }); 
+										this.$message({showClose: true, message: item.fieldTitle+'不能为空', type: 'error' }); 
 										checkOk=false;
 										return;
 									}
@@ -316,7 +316,7 @@
 							if(item.isMultiple=='1' && item.extFieldType!='dept'){
 								if(item.isRequired=='1'){
 									if(!this.multipleFieldsData[item.fieldIdCamel]||this.multipleFieldsData[item.fieldIdCamel].length<=0){
-										this.$message({ message: item.fieldTitle+'不能为空', type: 'error' }); 
+										this.$message({showClose: true, message: item.fieldTitle+'不能为空', type: 'error' }); 
 										checkOk=false;
 										return;
 									}
@@ -422,7 +422,7 @@
 							}
 							
 							this.$emit('submit',params);//  @submit="afterAddSubmit" 
-							//this.$message({ message: "检查通过2", type: 'success' }); 
+							//this.$message({showClose: true, message: "检查通过2", type: 'success' }); 
 							//console.log("params----------"+JSON.stringify(params));
 							//return params;
 							
@@ -434,7 +434,7 @@
 									this.$refs['editForm'].resetFields();
 									this.$emit('submit');//  @submit="afterAddSubmit"
 								}
-								this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch(() => {
 								this.editLoading = false;
 							});

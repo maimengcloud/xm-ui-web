@@ -211,7 +211,7 @@
 				params.queryScope=this.filters.queryScope
 				if(this.filters.queryScope=='productId'){
 					if(!this.filters.id){
-						this.$message({ message:"您选择了按产品编号精确查找模式，请输入产品编号", type: 'error' });
+						this.$message({showClose: true, message:"您选择了按产品编号精确查找模式，请输入产品编号", type: 'error' });
 						return;
 					}
 					params.id=this.filters.id
@@ -223,7 +223,7 @@
 				}
 				if(!this.selProject && this.filters.queryScope!='productId'){
 					if(!this.dateRanger || this.dateRanger.length==0){
-						this.$message({ message: "创建日期范围不能为空", type: 'error' });
+						this.$message({showClose: true, message: "创建日期范围不能为空", type: 'error' });
 						return;
 					} 
 					params.ctimeStart=this.dateRanger[0]+" 00:00:00"
@@ -238,7 +238,7 @@
 						this.pageInfo.count=false;
 						this.xmProducts = res.data.data;
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -289,7 +289,7 @@
 						this.pageInfo.count=true;
 						this.getXmProducts();
 					}
-					this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 				}).catch( err  => this.load.edit=false ); 
 			},
 		},//end methods

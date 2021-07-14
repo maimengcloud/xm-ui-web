@@ -149,7 +149,7 @@
 			//新增提交XmProjectMBudgetCostNouser xm_project_m_budget_cost_user 父组件监听@submit="afterAddSubmit"
 			addSubmit: function () {
 				if(this.bizzYear==null || this.bizzYear==''){
-					this.$message({ message:"请选择需要分摊的年份", type: 'error' }); 
+					this.$message({showClose: true, message:"请选择需要分摊的年份", type: 'error' }); 
 					return;
 				}
 				
@@ -169,7 +169,7 @@
 							batchAddXmProjectMBudgetCostNouser(list).then((res) => {
 								this.load.add=false
 								var tips=res.data.tips; 
-								this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err  => this.load.add=false);
 						});
 					}

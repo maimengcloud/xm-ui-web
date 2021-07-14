@@ -124,7 +124,7 @@
 			},
 			addImg(){
 				if(parseInt(this.limit)<=this.imageLists.length){
-					this.$message({ message: "图片数量已经超过", type: 'error' });
+					this.$message({showClose: true, message: "图片数量已经超过", type: 'error' });
 					return;
 				}
 				this.addFormVisible = true;

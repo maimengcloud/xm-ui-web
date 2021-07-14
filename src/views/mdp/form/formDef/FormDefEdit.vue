@@ -78,16 +78,16 @@
 				this.$refs.editForm.validate((valid) => {
 					if (valid) {
 						if(this.editForm.formName==''){
-							this.$message({ message: '表单名称不能为空', type: 'error' });
+							this.$message({showClose: true, message: '表单名称不能为空', type: 'error' });
 							return;
 						}
 						
 						if(this.editForm.formName==''){
-							this.$message({ message: '表单名称不能为空', type: 'error' });
+							this.$message({showClose: true, message: '表单名称不能为空', type: 'error' });
 							return;
 						}
 						if(this.editForm.categoryId==null || this.editForm.categoryId==''  ){
-							this.$message({ message: '归属分类不能为空', type: 'error' });
+							this.$message({showClose: true, message: '归属分类不能为空', type: 'error' });
 							return;
 						}
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
@@ -100,7 +100,7 @@
 									this.$refs['editForm'].resetFields();
 									this.$emit('submit');//  @submit="afterEditSubmit"
 								}
-								this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch(() => {
 								this.addLoading = false;
 							});
@@ -113,26 +113,26 @@
 				this.$refs.editForm.validate((valid) => {
 					if (valid) {
 						if(this.editForm.formName==''){
-							this.$message({ message: '表单名称不能为空', type: 'error' });
+							this.$message({showClose: true, message: '表单名称不能为空', type: 'error' });
 							return;
 						}
 						
 						if(this.editForm.formName==''){
-							this.$message({ message: '表单名称不能为空', type: 'error' });
+							this.$message({showClose: true, message: '表单名称不能为空', type: 'error' });
 							return;
 						}
 						if(this.editForm.categoryId==null || this.editForm.categoryId==''  ){
-							this.$message({ message: '归属分类不能为空', type: 'error' });
+							this.$message({showClose: true, message: '归属分类不能为空', type: 'error' });
 							return;
 						}
 						
 						if(this.fields.length==0  ){
-							this.$message({ message: '最少需要定义一个字段', type: 'error' });
+							this.$message({showClose: true, message: '最少需要定义一个字段', type: 'error' });
 							return;
 						}
 						
 						if(this.fields.length>15){
-							this.$message({ message: '最多支持15个字段', type: 'error' });
+							this.$message({showClose: true, message: '最多支持15个字段', type: 'error' });
 							return;
 						}
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
@@ -151,7 +151,7 @@
 									this.$refs['editForm'].resetFields();
 									this.$emit('submit');//  @submit="afterEditSubmit"
 								}
-								this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch(() => {
 								this.addLoading = false;
 							});

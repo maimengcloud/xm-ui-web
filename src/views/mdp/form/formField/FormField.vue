@@ -612,7 +612,7 @@
 							this.selectedFields = res.data.data;
 						}
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					}
 					this.addLoading=false;
 				}).catch(() => {

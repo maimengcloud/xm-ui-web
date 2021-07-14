@@ -178,7 +178,7 @@
 				if( this.filters.projectTemplate  ){
 					params.projectId=this.filters.projectTemplate.id
 				}else{
-					this.$message({ message: "请选择项目模板", type: 'error' });
+					this.$message({showClose: true, message: "请选择项目模板", type: 'error' });
 					return;
 				}
 				this.load.list = true;
@@ -189,7 +189,7 @@
 						this.pageInfo.count=false;
 						this.xmProjectPhaseTemplates = res.data.data;
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -239,7 +239,7 @@
 							this.pageInfo.count=true;
 							this.getXmProjectPhaseTemplates();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -257,7 +257,7 @@
 							this.pageInfo.count=true;
 							this.getXmProjectPhaseTemplates(); 
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},

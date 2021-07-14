@@ -94,7 +94,7 @@
 			//新增提交XmProduct 产品表 父组件监听@submit="afterAddSubmit"
 			editSubmit: function () {
 				if(this.userInfo.userid!=this.editForm.pmUserid){
-					this.$message({ message: "你不是该产品负责人，不能修改产品信息", type:  'error' });  
+					this.$message({showClose: true, message: "你不是该产品负责人，不能修改产品信息", type:  'error' });  
 					return;
 				}
 				this.$refs.editForm.validate((valid) => {
@@ -111,7 +111,7 @@
 									//this.$refs['editForm'].resetFields();
 									this.$emit('submit');//  @submit="afterAddSubmit"
 								}
-								this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err  => this.load.edit=false);
 						});
 					}
@@ -119,7 +119,7 @@
 			},
 			selectUser(){
 				if(!this.roles.some(i=>i.roleid=='productAdmin')){
-					this.$message({ message: "你不是产品经理，不能修改产品负责人", type:  'error' });  
+					this.$message({showClose: true, message: "你不是产品经理，不能修改产品负责人", type:  'error' });  
 					return;
 				}
 				this.userSelectVisible=true;
@@ -133,7 +133,7 @@
 			},
 			clearPmUser:function(){
 				if(!this.roles.some(i=>i.roleid=='productAdmin')){
-					this.$message({ message: "你不是产品经理，不能修改产品负责人", type:  'error' });  
+					this.$message({showClose: true, message: "你不是产品经理，不能修改产品负责人", type:  'error' });  
 					return;
 				}
 				this.editForm.pmUserid=''

@@ -386,7 +386,7 @@
 
 
 				if(!this.dateRanger || this.dateRanger.length==0){
-					this.$message({ message: "创建日期范围不能为空", type: 'error' });
+					this.$message({showClose: true, message: "创建日期范围不能为空", type: 'error' });
 					return;
 				}
 				if( this.filters.bugStatus!=null && this.filters.bugStatus!="" ){
@@ -420,7 +420,7 @@
 					if(this.filters.hisHandleStatus){
 						params.hisHandlerUserid=this.filters.hisHandler.userid;
 					}else{
-						this.$message({ message: "请选择曾经的缺陷状态", type: 'error' });
+						this.$message({showClose: true, message: "请选择曾经的缺陷状态", type: 'error' });
 						return;
 					}
 
@@ -429,7 +429,7 @@
 					if(this.filters.hisHandler){
 						params.hisHandleStatus=this.filters.hisHandleStatus
 					}else{
-						this.$message({ message: "请选择曾经的执行人", type: 'error' });
+						this.$message({showClose: true, message: "请选择曾经的执行人", type: 'error' });
 						return;
 					}
 
@@ -464,7 +464,7 @@
 						this.pageInfo.count=false;
 						this.xmQuestions = res.data.data;
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -510,7 +510,7 @@
 			showAdd: function () {
 				if(this.filters.selProject==null){
 
-					this.$message({ message: "请先选中项目", type: 'success' });
+					this.$message({showClose: true, message: "请先选中项目", type: 'success' });
 					this.nextAction="showAdd"
 					this.showProjectList();
 					return;
@@ -544,7 +544,7 @@
 							this.pageInfo.count=true;
 							this.getXmQuestions();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -561,7 +561,7 @@
 							this.pageInfo.count=true;
 							this.getXmQuestions();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -652,7 +652,7 @@
 			showGroupUsers:function(userType){
 				this.userType=userType;
 				if(this.filters.selProject==null || this.filters.selProject.id==''){
-					this.$message({ message: "请先选中项目", type: 'success' });
+					this.$message({showClose: true, message: "请先选中项目", type: 'success' });
 					this.nextAction="showGroupUsers"
 					this.showProjectList();
 					return;

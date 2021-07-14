@@ -157,12 +157,12 @@
 						this.pageInfo.total = res.data.data.total;this.pageInfo.count=false;
 						this.itemOptions = res.data.data;
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch(() => {
 					this.load.list = false;
-					//this.$message({ message: '通讯错误', type: 'error' });
+					//this.$message({showClose: true, message: '通讯错误', type: 'error' });
 				});
 			},
 
@@ -204,7 +204,7 @@
 							this.pageInfo.count=true;
 							this.getItemOptions();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					});
 				}).catch(() => {
 					this.load.del=false;
@@ -224,7 +224,7 @@
 							this.pageInfo.count=true;
 							this.getItemOptions(); 
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					});
 				}).catch(() => {
 					this.load.del=false;
@@ -259,7 +259,7 @@
 					if(tips.isOk){
 						this.itemOptions.push(res.data.data);
 					}
-					this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 				}).catch(() => {
 					this.load.add=false
 				});

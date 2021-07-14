@@ -122,7 +122,7 @@
 				if(this.isSelectSingleUser=='1'){
 					if(users.length>1){
 						
-						this.$message({
+						this.$message({showClose: true,
 							message: '只能选中一个用户',
 							type: 'error'
 						});
@@ -137,7 +137,7 @@
 					params.projectId=this.filters.selProject.id
 				}else{
 					this.selectProjectVisible=true;
-					this.$message({
+					this.$message({showClose: true,
 							message: '请选中项目',
 							type: 'success'
 						});
@@ -148,7 +148,7 @@
 					if(tips.isOk){
 						this.selGroups=res.data.data;
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					}
 				})
 			},

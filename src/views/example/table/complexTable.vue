@@ -237,7 +237,7 @@ export default {
       this.getList()
     },
     handleModifyStatus(row, status) {
-      this.$message({
+      this.$message({showClose: true,
         message: '操作成功',
         type: 'success'
       })

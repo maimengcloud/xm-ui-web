@@ -709,7 +709,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					params.orderBy= orderBys.join(",")
 				}
 				if(!this.dateRanger || this.dateRanger.length==0){
-					this.$message({ message: "创建日期范围不能为空", type: 'error' });
+					this.$message({showClose: true, message: "创建日期范围不能为空", type: 'error' });
 					return;
 				}
 				if(this.filters.taskType!="all" && this.filters.taskType!="" && this.filters.taskType!=null){
@@ -786,7 +786,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 						}
 
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -854,7 +854,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				var isCreate=this.userInfo.userid==this.editForm.createUserid
 				var isExec=this.userInfo.userid==this.editForm.executorUserid
 				if( !isCreate && !isExec ){
-					this.$message({ message: "你不是该任务的执行人、主负责人，不能更新进度", type: 'error' });
+					this.$message({showClose: true, message: "你不是该任务的执行人、主负责人，不能更新进度", type: 'error' });
 					return;
 				}
 				if(rate){
@@ -867,13 +867,13 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					parentTaskid: this.editForm.parentTaskid,
 				}
 				if(this.editForm.rate==0){
-						this.$message({ message: "不允许更新为0", type: 'error' });
+						this.$message({showClose: true, message: "不允许更新为0", type: 'error' });
 						return;
 				}
 				this.load.edit = true;
 				editRate(params).then((res) => {
 					var tips=res.data.tips;
-					this.$message({ message: tips.msg, type: tips.isOk?'success':'error' });
+					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 					this.getXmTasks();
 					this.load.edit = false;
 				}).catch( err =>{
@@ -895,7 +895,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					return;
 				}
 				if(this.currentProjectPhase==null){
-					this.$message({ message: "请先选择项目阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "请先选择项目阶段计划", type: 'error' });
 					return false;
 				}
 				this.taskTemplateVisible=true;
@@ -918,7 +918,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					return;
 				}
 				if(!this.currentProjectPhase){
-					this.$message({ message: "请先选择项目阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "请先选择项目阶段计划", type: 'error' });
 					return;
 				}
 				this.addFormVisible = true;
@@ -955,7 +955,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 							this.pageInfo.count=true;
 							this.getXmTasks();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -977,7 +977,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 							this.pageInfo.count=true;
 							this.getXmTasks();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -1162,7 +1162,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 
 					 }
 					 this.taskTemplateVisible=false;
-					 this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+					 this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 				 }).catch(e=>{this.taskTemplateVisible=false;});
 			},
 			onTaskSkillsSearchSelected(skills){
@@ -1185,7 +1185,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 						this.skillVisible = false;
 						this.getXmTasks();
 					}
-					this.$message({ message: tips.msg, type: tips.isOk?'success':'error' });
+					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 				}).catch( err  => this.load.add=false);
 
 			},
@@ -1322,12 +1322,12 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 						if(tips.isOk){
 							this.getXmTasks();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 					})
 				}else{
 					addXmMyFocus({projectId:row.projectId,projectName:row.projectName,focusType:'task',taskId:row.id,taskName:row.name,userid:this.userInfo.userid,username:this.userInfo.username}).then(res=>{
 						var tips=res.data.tips;
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 					})
 				}
 			},
@@ -1338,7 +1338,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					return;
 				}
 				if(this.projectPhase==null ){
-					this.$message({ message:"请选择阶段计划再编辑", type: 'error'});
+					this.$message({showClose: true, message:"请选择阶段计划再编辑", type: 'error'});
 					return ;
 				}
 				this.batchEditVisible=true

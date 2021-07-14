@@ -339,7 +339,7 @@
 						this.xmTaskExecusers = res.data.data;
 						this.$emit("loadExecUserList",this.xmTaskExecusers);
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -420,7 +420,7 @@
 							this.pageInfo.count=true;
 							this.afterDeleteSubmit();
  						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -437,7 +437,7 @@
 							this.pageInfo.count=true; 
 							this.afterDeleteSubmit();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -462,7 +462,7 @@
 							if(tips.isOk){
 								this.afterEditSubmit();
  							}
-							this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+							this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 						}).catch( err =>this.load.edit=false);
 					});
 				}
@@ -478,7 +478,7 @@
 							if(tips.isOk){
 								this.afterEditSubmit();
 							}
-							this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+							this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 						}).catch( err =>this.load.edit=false);
 					});
 				}else if(row.status=="1"){
@@ -511,7 +511,7 @@
 							this.$refs['settleForm'].resetFields();
 							this.afterEditSubmit();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err =>this.load.edit=false);
 				});
 			},
@@ -530,7 +530,7 @@
 							this.quotePriceVisible = false;
 							this.afterEditSubmit();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err =>this.load.edit=false);
 				});
 			},
@@ -586,7 +586,7 @@
 					if(tips.isOk){
 						this.getXmTaskExecusers();
 					}
-					this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 
 				})
 			},
@@ -598,7 +598,7 @@
 					if(tips.isOk){
 						this.getXmTaskExecusers();
 					}
-					this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 
 				})
 			},
@@ -610,7 +610,7 @@
 					if(tips.isOk){
 						this.getXmTaskExecusers();
 					}
-					this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 
 				})
 			},
@@ -752,7 +752,7 @@
 						if(tips.isOk){
 							this.afterEditSubmit();
 						} 
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 
 					}) 
 			}, 
@@ -766,7 +766,7 @@
 						if(tips.isOk){
 							this.afterEditSubmit(); 
 						} 
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 
 					}) 
 			}, 

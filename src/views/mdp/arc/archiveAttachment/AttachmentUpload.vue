@@ -249,12 +249,12 @@ export default {
     handleBeforeUpload(file) {
       let files = this.fileList.filter(i => i.name == file.name);
       if (files.length > 0) {
-        this.$message({ message: "文件已经存在", type: "warning" });
+        this.$message({showClose: true, message: "文件已经存在", type: "warning" });
         return false;
       } else {
         if (file.size > 1024 * 1024 * 4) {
           //4M
-          this.$message({
+          this.$message({showClose: true,
             message:
               "文件大小为" +
               file.size / (1024 * 1024) +

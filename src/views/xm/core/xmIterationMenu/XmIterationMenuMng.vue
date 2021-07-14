@@ -153,7 +153,7 @@
 				if(this.iteration){
 					params.iterationId=this.iteration.id
 				}else{
-					this.$message({ message: "请先在左边选择迭代", type: 'success' });
+					this.$message({showClose: true, message: "请先在左边选择迭代", type: 'success' });
 					return;
 				}
 				this.load.list = true;
@@ -164,7 +164,7 @@
 						this.pageInfo.count=false;
 						this.xmIterationMenus = res.data.data;
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -178,7 +178,7 @@
 			//显示新增界面 XmIterationMenu 迭代定义
 			showAdd: function () {
 				if(!this.roles.some(i=>i.roleid=='iterationAdmin')){
-					this.$message({ message: "只有迭代管理员可以操作", type:  'error' }); 
+					this.$message({showClose: true, message: "只有迭代管理员可以操作", type:  'error' }); 
 					return ;
 				}
 				this.menuVisible = true;
@@ -199,7 +199,7 @@
 			//删除xmIterationMenu
 			handleDel: function (row,index) { 
 				if(!this.roles.some(i=>i.roleid=='iterationAdmin')){
-					this.$message({ message: "只有迭代管理员可以操作", type:  'error' }); 
+					this.$message({showClose: true, message: "只有迭代管理员可以操作", type:  'error' }); 
 					return ;
 				}
 				this.$confirm('确认删除该记录吗?', '提示', {
@@ -214,14 +214,14 @@
 							this.pageInfo.count=true;
 							this.getXmIterationMenus();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
 			//批量删除xmIterationMenu
 			batchDel: function () {
 				if(!this.roles.some(i=>i.roleid=='iterationAdmin')){
-					this.$message({ message: "只有迭代管理员可以操作", type:  'error' }); 
+					this.$message({showClose: true, message: "只有迭代管理员可以操作", type:  'error' }); 
 					return ;
 				}
 				this.$confirm('确认删除选中记录吗？', '提示', {
@@ -235,7 +235,7 @@
 							this.pageInfo.count=true;
 							this.getXmIterationMenus(); 
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -307,7 +307,7 @@
 					if(tips.isOk){
 						this.getXmIterationMenus()
 					}
-					this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 				})
 			},
 			onIterationRowClick(iteration){

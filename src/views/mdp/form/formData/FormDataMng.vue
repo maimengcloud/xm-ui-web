@@ -430,7 +430,7 @@
 				} else{
 					
 					if(this.formDefSelected==null){
-						this.$message({ message: '请先选择表单', type: 'info' });
+						this.$message({showClose: true, message: '请先选择表单', type: 'info' });
 						return;
 					}
 					
@@ -460,7 +460,7 @@
 				
 				let tips=this.checkFormQueryQx(this.formQx,params.userid,params.deptid,this.userInfo.userid,this.userInfo.deptid,this.userInfo.roleid)
 				if(tips.isOk==false){
-					this.$message({ message: tips.msg, type: 'error' });
+					this.$message({showClose: true, message: tips.msg, type: 'error' });
 					return;
 				}
 				
@@ -484,7 +484,7 @@
 						this.pageInfo.count = false;
 						this.formDatas = res.data.data 
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.listLoading = false;
 				}).catch(() => {
@@ -497,7 +497,7 @@
 			showEdit: function ( row,index ) {
 				let tips=this.checkFormEditQx(this.formQx,row.userid,row.deptid,this.userInfo.userid,this.userInfo.deptid,this.userInfo.roleid)
 				if(tips.isOk==false){
-					this.$message({ message: tips.msg, type: 'error' });
+					this.$message({showClose: true, message: tips.msg, type: 'error' });
 					return;
 				}
 				this.editFormVisible = true;
@@ -523,16 +523,16 @@
 			//删除formData
 			handleDel: function (row,index) {
 				if(row.flowState=='1'){
-					this.$message({ message: '数据审核中，不允许删除', type: 'error' });
+					this.$message({showClose: true, message: '数据审核中，不允许删除', type: 'error' });
 					return;
 				}
 				if(row.flowState=='2'){
-					this.$message({ message: '数据已审核通过，不允许删除', type: 'error' });
+					this.$message({showClose: true, message: '数据已审核通过，不允许删除', type: 'error' });
 					return;
 				}
 				let tips=this.checkFormDelQx(this.formQx,row.userid,row.deptid,this.userInfo.userid,this.userInfo.deptid,this.userInfo.roleid)
 				if(tips.isOk==false){
-					this.$message({ message: tips.msg, type: 'error' });
+					this.$message({showClose: true, message: tips.msg, type: 'error' });
 					return;
 				}
 				this.$confirm('确认删除该记录吗?', '提示', {
@@ -547,7 +547,7 @@
 							this.pageInfo.total=0;
 							this.getFormDatas();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 						
 					});
 				}).catch(() => {
@@ -569,7 +569,7 @@
 							this.pageInfo.total=0;
 							this.getFormDatas(); 
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					});
 				}).catch(() => {
 					this.listLoading = false;
@@ -612,7 +612,7 @@
 						this.formFields = res.data.data;
 						this.getOptions2();
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					} 
 				}).catch(() => {
 					 

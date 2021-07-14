@@ -101,7 +101,7 @@
 									this.$refs['addForm'].resetFields();
 									this.$emit('submit');//  @submit="afterAddSubmit"
 								}
-								this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch(() => {
 								this.addLoading = false;
 							});
@@ -130,7 +130,7 @@
 						this.$emit('get-comments',this.comments)
 					}else{
 						
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					} 
 				}).catch(() => {
 					

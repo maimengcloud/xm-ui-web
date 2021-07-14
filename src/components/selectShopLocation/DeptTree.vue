@@ -196,7 +196,7 @@
 						}
 						
 					}else{
-						this.$message({ message: tips.msg, type: 'error'});
+						this.$message({showClose: true, message: tips.msg, type: 'error'});
 					} 
 					this.listLoading = false;
 				}).catch(() => {

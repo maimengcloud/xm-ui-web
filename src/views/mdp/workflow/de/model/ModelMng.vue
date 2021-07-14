@@ -177,7 +177,7 @@
 				 		this.pageInfo.count=false
 						this.models = res.data.data;
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					}
 					this.listLoading = false;
 				}).catch(() => {
@@ -223,7 +223,7 @@
 				 			this.pageInfo.count=true
 							this.getModels();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 
 					});
 				}).catch(() => {
@@ -246,7 +246,7 @@
 				 			this.pageInfo.count=true
 							this.getModels();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					});
 				}).catch(() => {
 					this.listLoading = false;
@@ -266,7 +266,7 @@
 					 	if(tips.isOk){
 					 		this.getModels();
 					 	}else{
-					 		this.$message({ message: tips.msg, type: 'error' });
+					 		this.$message({showClose: true, message: tips.msg, type: 'error' });
 					 	}
 
 					 });
@@ -284,7 +284,7 @@
 					 	if(tips.isOk){
 					 		this.getModels();
 					 	}else{
-					 		this.$message({ message: tips.msg, type: 'error' });
+					 		this.$message({showClose: true, message: tips.msg, type: 'error' });
 					 	}
 
 					 });

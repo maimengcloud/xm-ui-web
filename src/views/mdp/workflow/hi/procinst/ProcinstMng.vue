@@ -487,7 +487,7 @@
               this.pageInfo.count = false;
               this.procinsts = res.data.data;
             } else {
-              this.$message({
+              this.$message({showClose: true,
                 message: tips.msg,
                 type: "error"
               });
@@ -541,7 +541,7 @@
                 this.pageInfo.count = true;
                 this.getProcinsts();
               }
-              this.$message({
+              this.$message({showClose: true,
                 message: tips.msg,
                 type: tips.isOk ? "success" : "error"
               });
@@ -566,7 +566,7 @@
                 this.pageInfo.total = 0;
                 this.getProcinsts();
               }
-              this.$message({
+              this.$message({showClose: true,
                 message: tips.msg,
                 type: tips.isOk ? "success" : "error"
               });

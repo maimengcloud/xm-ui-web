@@ -274,7 +274,7 @@
 						this.pageInfo.count=false;
 						this.executions = res.data.data;
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.listLoading = false;
 				}).catch(() => {
@@ -318,7 +318,7 @@
 							this.pageInfo.total=0;
 							this.getTasks();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 						
 					});
 				}).catch(() => {
@@ -352,7 +352,7 @@
 							this.pageInfo.total=0;
 							this.getExecutions();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 						
 					});
 				}).catch(() => {
@@ -374,7 +374,7 @@
 							this.pageInfo.total=0;
 							this.getExecutions();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 						
 					});
 				}).catch(() => {
@@ -454,9 +454,9 @@
 			
 			showSendSms:function(){
 				if(this.sels.length>1){
- 					this.$message({ message: '一次只能给一个人发短信', type: 'error' });
+ 					this.$message({showClose: true, message: '一次只能给一个人发短信', type: 'error' });
 				}else if(this.sels.length<1){
-					this.$message({ message: '请选择一条任务', type: 'error' });
+					this.$message({showClose: true, message: '请选择一条任务', type: 'error' });
 				}else{
 					let task=this.sels[0];
 					this.smsBodyParams=[task.assigneeName,task.mainTitle+"-"+task.taskName,task.createTime,task.userid]
@@ -467,11 +467,11 @@
 			},
 			showWeixinTask:function(){
 				if(this.sels.length>1){
-					 this.$message({ message: '一次只能给一个人发信', type: 'error' });
+					 this.$message({showClose: true, message: '一次只能给一个人发信', type: 'error' });
 					 this.weixinContentVisible=false;
 					 return false;
 				}else if(this.sels.length<1){
-					this.$message({ message: '请选择一条任务', type: 'error' });
+					this.$message({showClose: true, message: '请选择一条任务', type: 'error' });
 					this.weixinContentVisible=false;
 					return false;
 				}else{
@@ -484,7 +484,7 @@
 							var userToken=res.data.userToken; 
 							this.weixinContent=task.assigneeName+"您好，您有任务【"+task.mainTitle+"-"+task.taskName +"】待处理，请登陆OA系统或者点击以下链接处理。"+url+"?userToken="+userToken;
 							this.$copyText(this.weixinContent).then(e=>{ 
-								this.$message({ message: '已拷贝内容，您可黏贴到微信中', type: 'success' });
+								this.$message({showClose: true, message: '已拷贝内容，您可黏贴到微信中', type: 'success' });
 							});
 						}
 					});
@@ -493,11 +493,11 @@
 			},
 			showWeixin:function(){
 				if(this.sels.length>1){
-					 this.$message({ message: '一次只能给一个人发信', type: 'error' });
+					 this.$message({showClose: true, message: '一次只能给一个人发信', type: 'error' });
 					 this.weixinContentVisible=false;
 					 return false;
 				}else if(this.sels.length<1){
-					this.$message({ message: '请选择一条任务', type: 'error' });
+					this.$message({showClose: true, message: '请选择一条任务', type: 'error' });
 					this.weixinContentVisible=false;
 					return false;
 				}else{
@@ -519,10 +519,10 @@
 			},
 			showOaMsg:function(){ 
 				if(this.sels.length>1){
-					 this.$message({ message: '一次只能给一个人发信', type: 'error' });
+					 this.$message({showClose: true, message: '一次只能给一个人发信', type: 'error' });
 					 return false;
 				}else if(this.sels.length<1){
-					this.$message({ message: '请选择一条任务', type: 'error' });
+					this.$message({showClose: true, message: '请选择一条任务', type: 'error' });
 					return false;
 				}else{
 					let task=this.sels[0];
