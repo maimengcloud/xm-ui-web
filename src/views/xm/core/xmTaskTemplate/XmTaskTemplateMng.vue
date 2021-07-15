@@ -10,7 +10,7 @@
 
 			<el-button v-if="!isSelect" type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
 		</el-row>
-		<el-row class="page-main page-main-height"> 
+		<el-row class="page-main page-height-90"> 
 			
 			<el-col :span="4" >
 				<xm-project-phase-template-mng   :sel-project-template="selProjectTemplate" :simple="true" @row-click="projectPhaseTemplateRowClick" @selected-project-template="onSelectedProjectTemplate" ref="projectPhaseTemplate"></xm-project-phase-template-mng>

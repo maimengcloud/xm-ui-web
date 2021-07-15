@@ -1,6 +1,6 @@
 <template>
-	<section>
-		<el-row  v-show="batchEditVisible==false" class="page-main">
+	<section class="page-container padding">
+		<el-row  v-show="batchEditVisible==false"> 
 			<el-col v-if="isTaskCenter!='1' && currentProject " :span="4" >
 				<xm-project-phase-mng  :sel-project="currentProject" :simple="true" @row-click="projectPhaseRowClick" @clear-select="clearSelectPhase"></xm-project-phase-mng>
 			</el-col>
@@ -136,7 +136,7 @@
 							<el-button  slot="reference" icon="el-icon-more" circle></el-button>
 						</el-popover>
 				</el-row>
-				<el-row style="padding-top:12px;">
+				<el-row style="padding-top:10px;">
 						<el-table v-if="!gstcVisible"
 							show-summary
 							:data="tasksTreeData"
@@ -302,7 +302,7 @@
 		</el-drawer>
 
 		<!-- 新增 XmTask xm_task界面-->
-		<el-drawer class="xm-task-add" title="新增任务" :visible.sync="addFormVisible"  size="80%" append-to-body  :close-on-click-modal="false">
+		<el-drawer class="xm-task-add" title="新增任务" :visible.sync="addFormVisible" :with-header="false"  size="80%" append-to-body  :close-on-click-modal="false">
 			<xm-task-add :xm-project="currentProject" :project-phase="currentProjectPhase"   :xm-task="addForm" :parent-task="parentTask" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-task-add>
 		</el-drawer>
 

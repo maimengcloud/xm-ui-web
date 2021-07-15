@@ -6,7 +6,7 @@
 			<el-button type="primary" @click="showAdd">+功能计划表,无需前端维护，所有数据由汇总统计得出</el-button>
 			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
 		</el-row>
-		<el-row class="page-main page-main-height"> 
+		<el-row class="page-main page-height-90"> 
 			<!--列表 XmMenuPlan 功能计划表,无需前端维护，所有数据由汇总统计得出-->
 			<el-table ref="table" :height="tableHeight" :data="xmMenuPlans" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>

@@ -1,9 +1,8 @@
 <template>
-	<section class="page-container page-full-height border padding">
-		<el-row > 
-			<el-row class="page-main page-main-height"> 
+	<section class="page-container padding border">  
+			<el-row class="page-main page-height-90 padding"> 
 					<el-form :model="editForm"  :rules="editFormRules" ref="editForm">  
-								<el-row class="padding-bottom">
+								<el-row>
 									<h2>{{editForm.name}}</h2>
 									<el-tooltip content="项目"><el-tag type="warning">{{selProject.name}} </el-tag></el-tooltip> 
 									<el-divider direction="vertical"></el-divider>
@@ -11,7 +10,7 @@
 									<el-divider direction="vertical"></el-divider>
 									<el-date-picker :clearable="false" style="width:150px;" type="date" placeholder="到期日期" v-model="editForm.endTime" value-format="yyyy-MM-dd" format="yyyy-MM-dd"></el-date-picker>
 								</el-row>
-								<el-row class="padding-bottom">
+								<el-row style="padding-bottom:10px;padding-top:10px;">
 									<el-steps :active="calcBugStep" simple finish-status="success">
 										<el-step title="已激活,待确认" description="创建后自动激活、关闭后重新激活)"></el-step>
 										<el-step title="已确认,待解决" description="业务确认缺陷后变为已确认"></el-step>
@@ -114,7 +113,7 @@
 					<xm-menu-select :is-select-menu="true"  @selected="onSelectedMenu" :sel-project="selProject"></xm-menu-select>
 				</el-drawer>	
 			</el-row> 
-			<el-row class="page-bottom page-bottom-height"> 
+			<el-row class="page-bottom page-height-10"> 
 					<el-button @click.native="handleCancel">取消</el-button>  
 					<el-button v-if="editForm.bugStatus !='closed'" v-loading="load.edit" type="primary" @click.native="handleQuestion(editForm.bugStatus)" :disabled="load.edit==true">暂存</el-button>
 					<el-button v-if="editForm.bugStatus=='active'" v-loading="load.edit" type="primary" @click.native="handleQuestion('confirmed')" :disabled="load.edit==true">确认</el-button>  
@@ -126,8 +125,7 @@
 					<el-button v-if="editForm.bugStatus=='resolved'" v-loading="load.edit" type="primary" @click.native="handleQuestion('closed')" :disabled="load.edit==true">关闭</el-button>    
 					<el-button v-if="editForm.bugStatus=='resolved'" v-loading="load.edit" type="primary" @click.native="handleQuestion('active')" :disabled="load.edit==true">重新激活</el-button>   
 					<el-button v-if="editForm.bugStatus=='closed'" v-loading="load.edit" type="primary" @click.native="handleQuestion('active')" :disabled="load.edit==true">重新激活</el-button>    
- 			</el-row> 		
-		</el-row>
+ 			</el-row> 		 
 	</section>
 </template>
 
@@ -425,7 +423,8 @@
   .wf-main-context-box {  
 	border:1px dashed #000;
 	margin-bottom: 10px;
-	margin-top: 30px; 
+	margin-top: 30px;  
+	padding:10px;
 }
  .wf-main-context p { 
 	color: #585858;  

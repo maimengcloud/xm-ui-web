@@ -1,6 +1,6 @@
 <template>
 	<section class="page-container page-full-height border padding">
-		<el-row class="page-main page-main-height">
+		<el-row class="page-main page-height-90">
 			<!--新增界面 XmMenu 项目故事表--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
 				<el-form-item label="序号" prop="seqNo">

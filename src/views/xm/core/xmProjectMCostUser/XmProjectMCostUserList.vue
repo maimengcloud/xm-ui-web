@@ -4,7 +4,7 @@
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectMCostUsers">查询</el-button>
 		</el-row>
-		<el-row class="page-main page-main-height"> 
+		<el-row class="page-main page-height-90"> 
 			<!--列表 XmProjectMCostUser xm_project_m_budget_cost_user-->
 			<el-table ref="table" :height="tableHeight" :data="xmProjectMCostUsers" show-summary @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="selection" width="40"></el-table-column>

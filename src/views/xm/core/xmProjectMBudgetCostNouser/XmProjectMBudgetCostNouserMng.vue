@@ -18,7 +18,7 @@
 				<span style="margin-left:10px;font-size:14px;">外购人力总预算：</span><el-tag type='warning'>{{selProject.planOutUserAt}}</el-tag>  
 			</font>
 		</el-row>
-		<el-row class="page-main page-main-height"> 
+		<el-row class="page-main page-height-90"> 
 			<!--列表 XmProjectMBudgetCostNouser xm_project_m_budget_cost_nouser-->
 			<el-table ref="table" :height="tableHeight" :data="xmProjectMBudgetCostNousers"     show-summary @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="selection" width="40"></el-table-column>

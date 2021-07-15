@@ -66,7 +66,7 @@
 				</el-popover> 
 			</div>
 		</el-row>
-		<el-row class="page-main page-main-height"> 
+		<el-row class="page-main page-height-90"> 
 			<!--列表 XmTestCase 测试用例-->
 			<el-table ref="table" :height="tableHeight" :data="xmTestCases" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>

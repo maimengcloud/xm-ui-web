@@ -5,7 +5,7 @@
 					<xm-project-phase-mng   :sel-project="filters.selProject" :simple="true" @row-click="projectPhaseRowClick" @clear-select="clearSelectPhase"></xm-project-phase-mng>
 				</el-col>
 				<el-col :span=" filters.selProject?20:24">
-					<el-row class="page-main page-main-height">
+					<el-row class="page-main page-height-90">
 						<el-tag>{{filters.selProject?filters.selProject.name:'未选择项目'}}</el-tag><el-button type="success" v-if="!selProject" @click="selectProjectVisible=true">选择项目</el-button>
 						<el-select v-model="filters.taskType" placeholder="请选择任务类型" clearable @change="changeTaskType">
 							<el-option class="showall" value="all"  label="全部类型">全部类型</el-option>

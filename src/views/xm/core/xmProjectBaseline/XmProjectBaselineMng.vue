@@ -6,7 +6,7 @@
 			<el-button type="primary" @click="showAdd">+xm_project_baseline</el-button>
 			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
 		</el-row>
-		<el-row class="page-main page-main-height"> 
+		<el-row class="page-main page-height-90"> 
 			<!--列表 XmProjectBaseline xm_project_baseline-->
 			<el-table :data="xmProjectBaselines" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="selection" width="40"></el-table-column>

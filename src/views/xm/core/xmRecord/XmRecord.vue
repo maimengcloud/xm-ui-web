@@ -5,7 +5,7 @@
 			  <el-radio v-model="filters.objType" v-for="i in objTypeOptions" :label="i.key" :key="i.key">{{i.name}}</el-radio>
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmRecords">查询</el-button>  
 		</el-row>
-		<el-row class="page-main page-main-height"> 
+		<el-row class="page-main page-height-90"> 
 			<!--列表 XmRecord xm_record-->
 			<el-table ref="table" :height="tableHeight" :data="xmRecords" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="index" width="40"></el-table-column>

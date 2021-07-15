@@ -1,6 +1,6 @@
 <template>
 	<section class="page-container page-full-height border">
-		<el-row class="page-main page-main-height">
+		<el-row class="page-main page-height-90">
 			<!--新增界面 XmProjectPhase xm_project_phase-->
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
 				<el-row class="border padding">

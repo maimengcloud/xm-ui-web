@@ -10,7 +10,7 @@
 			<el-button type="primary" @click="showAdd" icon="el-icon-plus">添加合同</el-button>
 			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true"  icon="el-icon-delete">批量删除</el-button> 
 		</el-row>
-		<el-row class="page-main page-main-height"> 
+		<el-row class="page-main page-height-90"> 
 			<!--列表 XmProjectContract xm_project_contract-->
 			<el-table ref="table" :height="tableHeight" :data="xmProjectContracts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<!-- ht_contract_card表 -->

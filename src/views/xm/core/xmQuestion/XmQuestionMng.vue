@@ -1,131 +1,132 @@
 <template>
 	<section class="page-container padding">
-			<el-row class="page-header padding-bottom">
-			  	<el-select v-model="filters.bugStatus" placeholder="请选择状态" style="width:15%;" clearable @change="changeBugStatus">
-					<el-option v-for="(b,index) in options['bugStatus']" :value="b.optionValue"  :key="index" :label="b.optionName">{{b.optionName}}
-					</el-option>
-				</el-select>
-				<el-select class="hidden-md-and-down" v-model="filters.priority" placeholder="紧急程度"  style="width:15%;" clearable @change="changePriority">
-					<el-option v-for="(b,index) in options['urgencyLevel']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
-					</el-option>
-				</el-select>
-				<el-select class="hidden-md-and-down" v-model="filters.bugSeverity" placeholder="请选择严重程度" clearable @change="changeBugSeverity">
-					<el-option v-for="(b,index) in options['bugSeverity']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
-					</el-option>
-				</el-select>
-				<el-tag    v-if="  filters.product "  closable    @close="clearProduct">{{this.filters.product.productName}}</el-tag>
-				<el-button v-else    @click="showProductVisible" type="plian">选产品</el-button>
-				<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 选择故事</el-button>
-				<el-tag v-else   closable @close="clearFiltersMenu(filters.menus[0])">{{filters.menus[0].menuName.substr(0,5)}}等({{filters.menus.length}})个</el-tag>
-				<el-input style="width:200px;" v-model="filters.key" placeholder="缺陷名称">
-					<template slot="append">
-						<el-button @click="searchXmQuestions" type="primary" icon="el-icon-search"></el-button>
-					</template>
-				</el-input>
-				<el-button type="primary" icon="el-icon-plus" @click="showAdd">
-				</el-button>
-				<el-popover
-					placement="top-start"
-					title="更多查询条件或操作"
-					width="600"
-					trigger="click" >
-					<el-row>
-						<el-col :span="24" style="padding-top:5px;">
-							<font class="more-label-font">产品:</font><el-tag    v-if="  filters.product "  closable    @close="clearProduct">{{this.filters.product.productName}}</el-tag>
-							<el-button v-else    @click="showProductVisible" type="plian">选产品</el-button>
-						</el-col>
-						<el-col :span="24"  style="padding-top:12px;" v-if="!selProject">
-							<font class="more-label-font">项目:</font>
-							<el-tag v-if="filters.selProject && !selProject" closable @close="clearProject" @click="showProjectList(true)">{{ filters.selProject.name }}</el-tag>
-							<el-button v-else @click="showProjectList(true)" >选择项目</el-button>
-
-						</el-col>
-						<el-col :span="24" style="padding-top:12px;">
-							<font class="more-label-font">创建者:</font>
-							<el-button v-if="!filters.createUser" @click="showGroupUsers('createUser')">选择创建人</el-button>
-							<el-tag v-else closable @close="clearCreateUser"  @click="showGroupUsers('createUser')">{{filters.createUser.username}}</el-tag>
-							<el-button v-if="!filters.createUser||filters.createUser.userid!=userInfo.userid" @click="setFiltersCreateUserAsMySelf">我的</el-button>
-						</el-col>
-						<el-col :span="24" style="padding-top:12px;">
-							<font class="more-label-font">指派给:</font>
-							<el-button v-if="!filters.handlerUsername" @click="showGroupUsers('handlerUser')">选择被指派人</el-button>
-							<el-tag v-else closable @close="clearHandler"  @click="showGroupUsers('handlerUser')">{{filters.handlerUsername}}</el-tag>
-							<el-button v-if="filters.handlerUserid!=userInfo.userid" @click="setFiltersHandlerAsMySelf">我的</el-button>
-						</el-col>
-
-						<el-col :span="24" style="padding-top:12px;">
-							曾经由<el-button v-if="!filters.hisHandler||!filters.hisHandler.userid" @click="showGroupUsers('hisHandler')">执行人</el-button>
-							<el-tag v-else closable @close="clearHisHandler"  @click="showGroupUsers('hisHandler')">{{filters.hisHandler.username}}</el-tag>
-							<el-button v-if="!filters.hisHandler||filters.hisHandler.userid!=userInfo.userid" @click="setFiltersHisHandlerAsMySelf">我的</el-button>
-							变更状态为
-							<el-select v-model="filters.hisHandleStatus" placeholder="请选择状态"  clearable @change="changeHisHandleStatus">
-								<el-option v-for="(b,index) in options['bugStatus']" :value="b.optionValue"  :key="index" :label="b.optionName">{{b.optionName}}
-								</el-option>
-							</el-select>的缺陷
-						</el-col>
-						<el-col :span="24" style="padding-top:5px;">
-								<font class="more-label-font">故事:</font>
-							<font  v-if="  filters.menus && filters.menus.length>0">
-								<el-tag  v-for="(item,index) in filters.menus" :key="index"  closable  @close="clearFiltersMenu(item)">{{item.menuName.substr(0,10)}}</el-tag>
-							</font>
-							<el-button v-else    @click="showMenu" type="plian">选故事</el-button>
-						</el-col>
-						<el-col :span="24" class="hidden-lg-and-up" style="padding-top:12px;">
-							<el-select   v-model="filters.priority" placeholder="请选择紧急程度" clearable @change="changePriority">
-								<el-option v-for="(b,index) in options['urgencyLevel']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
-								</el-option>
-							</el-select>
-						</el-col>
-						<el-col :span="24"  style="padding-top:12px;">
-							<el-select  v-model="filters.solution" placeholder="请选择解决方案" clearable @change="changeSolution">
-								<el-option v-for="(b,index) in options['bugSolution']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
-								</el-option>
-							</el-select>
-						</el-col>
-						<el-col  :span="24"  style="padding-top:5px;">
-							<font class="more-label-font">创建时间:</font>
-							<el-date-picker
-								v-model="dateRanger"
-								type="daterange"
-								align="right"
-								unlink-panels
-								range-separator="至"
-								start-placeholder="开始日期"
-								end-placeholder="完成日期"
-								value-format="yyyy-MM-dd"
-								:default-time="['00:00:00','23:59:59']"
-								:picker-options="pickerOptions"
-							></el-date-picker>
-						</el-col>
-						<el-col  :span="24"  style="padding-top:5px;">
-							<font class="more-label-font">最后更新时间:</font>
-							<el-date-picker
-								v-model="ltimeRanger"
-								type="daterange"
-								align="right"
-								unlink-panels
-								range-separator="至"
-								start-placeholder="更新时间"
-								end-placeholder="更新时间"
-								value-format="yyyy-MM-dd"
-								:default-time="['00:00:00','23:59:59']"
-								:picker-options="pickerOptions"
-							></el-date-picker>
-						</el-col>
-						<el-col :span="24" style="padding-top:5px;">
-							<el-button   type="primary" icon="el-icon-search" @click="searchXmQuestions">查询</el-button>
-							<el-button @click="handleExport"   icon="el-icon-download">导出</el-button>
-						</el-col>
-					</el-row>
-					<el-button  slot="reference" icon="el-icon-more" circle></el-button>
-				</el-popover>
-
-			 </el-row>
+			
 			 <el-row class="page-main">
 				<!--列表 XmQuestion xm_question-->
 				<el-table ref="table" :height="tableHeight" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-					<el-table-column  type="index" width="45"></el-table-column>
-					<el-table-column prop="name" label="缺陷名称"  min-width="200" show-overflow-tooltip>
+ 					<el-table-column prop="name" label="缺陷名称"  min-width="200">
+						<template slot="header" slot-scope="scope">
+							<el-row>
+							<el-select v-model="filters.bugStatus" placeholder="请选择状态" style="width:15%;" clearable @change="changeBugStatus">
+								<el-option v-for="(b,index) in options['bugStatus']" :value="b.optionValue"  :key="index" :label="b.optionName">{{b.optionName}}
+								</el-option>
+							</el-select>
+							<el-select class="hidden-md-and-down" v-model="filters.priority" placeholder="紧急程度"  style="width:15%;" clearable @change="changePriority">
+								<el-option v-for="(b,index) in options['urgencyLevel']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
+								</el-option>
+							</el-select>
+							<el-select class="hidden-md-and-down" v-model="filters.bugSeverity" placeholder="请选择严重程度" clearable @change="changeBugSeverity">
+								<el-option v-for="(b,index) in options['bugSeverity']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
+								</el-option>
+							</el-select>
+							<el-tag    v-if="  filters.product "  closable    @close="clearProduct">{{this.filters.product.productName}}</el-tag>
+							<el-button v-else    @click="showProductVisible" type="plian">选产品</el-button>
+							<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 选择故事</el-button>
+							<el-tag v-else   closable @close="clearFiltersMenu(filters.menus[0])">{{filters.menus[0].menuName.substr(0,5)}}等({{filters.menus.length}})个</el-tag>
+							<el-input style="width:200px;" v-model="filters.key" placeholder="缺陷名称">
+								<template slot="append">
+									<el-button @click="searchXmQuestions" type="primary" icon="el-icon-search"></el-button>
+								</template>
+							</el-input>
+							<el-button type="primary" icon="el-icon-plus" @click="showAdd">
+							</el-button>
+							<el-popover
+								placement="top-start"
+								title="更多查询条件或操作"
+								width="600"
+								trigger="click" >
+								<el-row>
+									<el-col :span="24" style="padding-top:5px;">
+										<font class="more-label-font">产品:</font><el-tag    v-if="  filters.product "  closable    @close="clearProduct">{{this.filters.product.productName}}</el-tag>
+										<el-button v-else    @click="showProductVisible" type="plian">选产品</el-button>
+									</el-col>
+									<el-col :span="24"  style="padding-top:12px;" v-if="!selProject">
+										<font class="more-label-font">项目:</font>
+										<el-tag v-if="filters.selProject && !selProject" closable @close="clearProject" @click="showProjectList(true)">{{ filters.selProject.name }}</el-tag>
+										<el-button v-else @click="showProjectList(true)" >选择项目</el-button>
+
+									</el-col>
+									<el-col :span="24" style="padding-top:12px;">
+										<font class="more-label-font">创建者:</font>
+										<el-button v-if="!filters.createUser" @click="showGroupUsers('createUser')">选择创建人</el-button>
+										<el-tag v-else closable @close="clearCreateUser"  @click="showGroupUsers('createUser')">{{filters.createUser.username}}</el-tag>
+										<el-button v-if="!filters.createUser||filters.createUser.userid!=userInfo.userid" @click="setFiltersCreateUserAsMySelf">我的</el-button>
+									</el-col>
+									<el-col :span="24" style="padding-top:12px;">
+										<font class="more-label-font">指派给:</font>
+										<el-button v-if="!filters.handlerUsername" @click="showGroupUsers('handlerUser')">选择被指派人</el-button>
+										<el-tag v-else closable @close="clearHandler"  @click="showGroupUsers('handlerUser')">{{filters.handlerUsername}}</el-tag>
+										<el-button v-if="filters.handlerUserid!=userInfo.userid" @click="setFiltersHandlerAsMySelf">我的</el-button>
+									</el-col>
+
+									<el-col :span="24" style="padding-top:12px;">
+										曾经由<el-button v-if="!filters.hisHandler||!filters.hisHandler.userid" @click="showGroupUsers('hisHandler')">执行人</el-button>
+										<el-tag v-else closable @close="clearHisHandler"  @click="showGroupUsers('hisHandler')">{{filters.hisHandler.username}}</el-tag>
+										<el-button v-if="!filters.hisHandler||filters.hisHandler.userid!=userInfo.userid" @click="setFiltersHisHandlerAsMySelf">我的</el-button>
+										变更状态为
+										<el-select v-model="filters.hisHandleStatus" placeholder="请选择状态"  clearable @change="changeHisHandleStatus">
+											<el-option v-for="(b,index) in options['bugStatus']" :value="b.optionValue"  :key="index" :label="b.optionName">{{b.optionName}}
+											</el-option>
+										</el-select>的缺陷
+									</el-col>
+									<el-col :span="24" style="padding-top:5px;">
+											<font class="more-label-font">故事:</font>
+										<font  v-if="  filters.menus && filters.menus.length>0">
+											<el-tag  v-for="(item,index) in filters.menus" :key="index"  closable  @close="clearFiltersMenu(item)">{{item.menuName.substr(0,10)}}</el-tag>
+										</font>
+										<el-button v-else    @click="showMenu" type="plian">选故事</el-button>
+									</el-col>
+									<el-col :span="24" class="hidden-lg-and-up" style="padding-top:12px;">
+										<el-select   v-model="filters.priority" placeholder="请选择紧急程度" clearable @change="changePriority">
+											<el-option v-for="(b,index) in options['urgencyLevel']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
+											</el-option>
+										</el-select>
+									</el-col>
+									<el-col :span="24"  style="padding-top:12px;">
+										<el-select  v-model="filters.solution" placeholder="请选择解决方案" clearable @change="changeSolution">
+											<el-option v-for="(b,index) in options['bugSolution']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
+											</el-option>
+										</el-select>
+									</el-col>
+									<el-col  :span="24"  style="padding-top:5px;">
+										<font class="more-label-font">创建时间:</font>
+										<el-date-picker
+											v-model="dateRanger"
+											type="daterange"
+											align="right"
+											unlink-panels
+											range-separator="至"
+											start-placeholder="开始日期"
+											end-placeholder="完成日期"
+											value-format="yyyy-MM-dd"
+											:default-time="['00:00:00','23:59:59']"
+											:picker-options="pickerOptions"
+										></el-date-picker>
+									</el-col>
+									<el-col  :span="24"  style="padding-top:5px;">
+										<font class="more-label-font">最后更新时间:</font>
+										<el-date-picker
+											v-model="ltimeRanger"
+											type="daterange"
+											align="right"
+											unlink-panels
+											range-separator="至"
+											start-placeholder="更新时间"
+											end-placeholder="更新时间"
+											value-format="yyyy-MM-dd"
+											:default-time="['00:00:00','23:59:59']"
+											:picker-options="pickerOptions"
+										></el-date-picker>
+									</el-col>
+									<el-col :span="24" style="padding-top:5px;">
+										<el-button   type="primary" icon="el-icon-search" @click="searchXmQuestions">查询</el-button>
+										<el-button @click="handleExport"   icon="el-icon-download">导出</el-button>
+									</el-col>
+								</el-row>
+								<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+							</el-popover> 
+						</el-row>
+						</template>
 						<template slot-scope="scope">
 							<div>
 							<span>
@@ -155,10 +156,9 @@
 									</el-tooltip>
 									<el-button icon="el-icon-upload2" v-if="!scope.row.flowState"    @click="handleCommand({type:'sendToProcessApprova',data:scope.row,bizKey:'xm_question_up_approva'})">{{qtype=='risk'?'升级':'升级'}}</el-button>
 								</span>
-                <el-badge :value="getBadge(scope.row)">
-								  <el-link type="primary" @click="showEdit(scope.row)">{{scope.row.name}}</el-link>
-                </el-badge>
-
+								<el-badge :value="getBadge(scope.row)">
+												<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.name}}</el-link>
+								</el-badge> 
 							</span>
 							</div>
 						</template>
@@ -905,7 +905,6 @@
 				var subHeight=70/1000 * window.innerHeight;
 				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight;
 				this.getXmQuestions();
-			});
 				listOption([{categoryId:'all',itemCode:'bugSeverity'},{categoryId:'all',itemCode:'bugSolution'},{categoryId:'all',itemCode:'bugStatus'},{categoryId:'all',itemCode:'bugType'},{categoryId:'all',itemCode:'urgencyLevel'}] ).then(res=>{
 					if(res.data.tips.isOk){
 						this.options['bugSeverity']=res.data.data.bugSeverity
@@ -915,6 +914,8 @@
 						this.options['urgencyLevel']=res.data.data.urgencyLevel
 					}
 				});
+			});
+				
 		}
 	}
 
