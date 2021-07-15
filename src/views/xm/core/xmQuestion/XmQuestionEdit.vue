@@ -102,8 +102,18 @@
 					<font v-else>无</font>
 					
 				</el-form-item>   
-				<el-form-item label="处理意见" prop="description">
-					<vue-editor :id="'description_'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.receiptMessage"></vue-editor>
+				<el-form-item label="处理意见" prop="receiptMessage">
+					
+					<el-tooltip content="点击切换为富文本编辑|普通文本">
+						<el-button icon="el-icon-refresh" @click="receiptMessageEditorVisible=!receiptMessageEditorVisible" type="text"></el-button>
+					</el-tooltip>
+					<div v-if="receiptMessageEditorVisible==false">
+						<el-input  style="width:100%;" v-model="editForm.receiptMessage" type="textarea" :rows="2"> </el-input>
+					</div>
+					<div v-else>
+						<vue-editor :id="'receiptMessage_'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.receiptMessage"></vue-editor>
+
+					</div> 
 				</el-form-item>   	  
 			</el-form>   
 			<el-drawer title="选中用户" :visible.sync="selectUserVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
@@ -215,6 +225,7 @@
 				selectTaskVisible:false,
 				flowInfoVisible:false,
 				selectMenuVisible:false,  
+				receiptMessageEditorVisible:false,
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data

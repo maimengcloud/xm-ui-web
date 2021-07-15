@@ -122,7 +122,7 @@
 			 </el-row>
 			 <el-row class="padding-top">
 				<!--列表 XmQuestion xm_question-->
-				<el-table ref="table" :height="tableHeight" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+				<el-table size="mini" ref="table" :height="tableHeight" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  					<el-table-column prop="name" label="缺陷名称"  min-width="200">
 						<template slot-scope="scope">
 							<div>
@@ -151,7 +151,7 @@
 									<el-tag v-else-if="scope.row.flowState=='3'">未通过</el-tag>
 									<el-tag v-else-if="scope.row.flowState=='4'">已取消</el-tag>
 									</el-tooltip>
-									<el-button icon="el-icon-upload2" v-if="!scope.row.flowState"    @click="handleCommand({type:'sendToProcessApprova',data:scope.row,bizKey:'xm_question_up_approva'})">{{qtype=='risk'?'升级':'升级'}}</el-button>
+									<el-button icon="el-icon-upload2" v-if="!scope.row.flowState" type="text"   @click="handleCommand({type:'sendToProcessApprova',data:scope.row,bizKey:'xm_question_up_approva'})">{{qtype=='risk'?'升级':'升级'}}</el-button>
 								</span>
 								<el-badge :value="getBadge(scope.row)">
 												<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.name}}</el-link>

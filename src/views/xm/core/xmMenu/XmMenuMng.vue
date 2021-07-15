@@ -93,7 +93,7 @@
 					
 					</el-row>
 					<el-row class="padding-top">  
-						<el-table  ref="table" :height="tableHeight" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick">
+						<el-table size="mini"  stripe fit border ref="table" :height="tableHeight" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
 							<el-table-column sortable type="selection" width="40"></el-table-column> 
 							<el-table-column prop="menuName" label="故事名称" min-width="160" show-overflow-tooltip> 
 								<template slot-scope="scope">
@@ -113,7 +113,7 @@
 											<el-tag slot="reference" icon="el-icon-chat-line-square">描述</el-tag>
 										</el-popover>
 									
-										<el-button type="primary"  @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" circle></el-button> 
+										<el-button  size="mini" type="primary"  @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" circle></el-button> 
  											
 										<el-popover style="padding-left:10px;"
 											v-if="isPmUser"
@@ -132,11 +132,11 @@
 													<el-button v-if="selProject"  type="primary" @click="showTasks(scope.row,scope.$index)"  icon="el-icon-s-operation">查看任务</el-button> 
 												</el-col> 
 												<el-col  :span="24"  style="padding-top:5px;"> 
-													<el-button   type="primary" @click="toIterationList(scope.row,scope.$index)"  icon="el-icon-document-copy">查看迭代计划</el-button>
+													<el-button  type="primary" @click="toIterationList(scope.row,scope.$index)"  icon="el-icon-document-copy">查看迭代计划</el-button>
 												</el-col> 
 											</el-row>  
 
-											<el-button slot="reference" icon="el-icon-more" circle></el-button>
+											<el-button  size="mini" slot="reference" icon="el-icon-more" circle></el-button>
 										</el-popover> 
 									</font>
 								</template>
