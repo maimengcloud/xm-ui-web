@@ -1,6 +1,6 @@
 <template>
-	<section>
-		<el-row  class="page-main" v-show="batchEditVisible==false"> 
+	<section class="padding">
+		<el-row v-show="batchEditVisible==false"> 
 			<el-button  class="hidden-md-and-down"  @click="loadTasksToXmProjectPhase(sels)" v-loading="load.edit" icon="el-icon-s-data">由任务汇总进度数据</el-button> 
 			<el-button   @click="batchEditVisible=true" v-loading="load.edit" icon="el-icon-edit">批量修改</el-button>
 			<span  v-if="batchEditVisible!=true"   >
@@ -58,51 +58,55 @@
 			</el-popover>
 			
 		</el-row>
-		<el-row class="app-container hidden-md-and-down"     v-show="batchEditVisible==false">  
+		<el-row class="padding-top hidden-md-and-down"     v-show="batchEditVisible==false">  
  					<span style="margin-left:10px;font-size:14px;">项目总预算：</span><el-tag type='success'> {{toFixed(selProject.planTotalCost/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanCostAt/10000,2)}}万</el-tag> 
 					<span style="margin-left:10px;font-size:14px;">非人力总预算：</span><el-tag :type="phaseBudgetData.surplusPlanNouserAt>0?'warning':'danger'">{{toFixed(selProject.planNouserAt/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanNouserAt/10000,2)}}万</el-tag>  
 					<span style="margin-left:10px;font-size:14px;">内部人力总预算：</span><el-tag  :type="phaseBudgetData.surplusPlanInnerUserAt>0?'warning':'danger'">{{toFixed(selProject.planInnerUserAt/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanInnerUserAt/10000,2)}}万</el-tag>  
 					<span style="margin-left:10px;font-size:14px;">外购人力总预算：</span><el-tag  :type="phaseBudgetData.surplusPlanOutUserAt>0?'warning':'danger'">{{toFixed(selProject.planOutUserAt/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanOutUserAt/10000,2)}}万</el-tag>  
 
  		</el-row> 
- 		<el-row class="page-main" v-show="batchEditVisible==false"> 
+ 		<el-row  class="padding-top" v-show="batchEditVisible==false"> 
 			<!--列表 XmProjectPhase xm_project_phase-->
 			<el-table ref="table" :height="tableHeight" v-show="!gstcVisible "  default-expand-all :data="projectPhaseTreeData"  :summary-method="getSummariesForNoBatchEdit"  :show-summary="true"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
   				<el-table-column prop="phaseName" label="阶段名称" min-width="150" show-overflow-tooltip> 
-					 <template slot-scope="scope">  
-						<span>{{scope.row.seqNo}} &nbsp;&nbsp;<el-link type="primary" @click="showEdit(scope.row)"> {{scope.row.phaseName}}</el-link></span>
-						<font style="float:right;">
+					 <template slot-scope="scope">   
 						<span>
-							<el-button type="text" v-if="!scope.row.mngUserid"  v-model="scope.row.mngUsername" @click="groupUserSelectVisible=true" icon="el-icon-setting">去设置</el-button>  
-							<el-link v-else type="primary"   @click="groupUserSelectVisible=true">{{scope.row.mngUsername}}</el-link>
-						</span> 
-						<span>
-							<el-tag :type="scope.row.actRate>=100?'success':'primary'"> {{ (scope.row.actRate!=null?scope.row.actRate:0)+'%'}} </el-tag> 
-						</span>
-						<span>
-							<font class="hidden-md-and-down" >{{formatDate(scope.row.beginDate)}}<br>{{formatDate(scope.row.endDate)}}  </font>
-							<font v-for="item in [calcTaskStateByTime(scope.row.beginDate,scope.row.endDate,scope.row.actRate,scope.phaseStatus)]" :key="item.status"><el-tag :type="item.status">{{item.remark}}</el-tag></font> 
-						</span>
-						<span>
-							<el-dropdown @command="handleCommand" :hide-on-click="false">
-							<span class="el-dropdown-link">
-								<i class="el-icon-setting"></i>
-							</span>
-								<el-dropdown-menu slot="dropdown">
-									<el-dropdown-item :command="{type:'showSubAdd',data:scope.row}">+子阶段</el-dropdown-item>
-									<el-dropdown-item :command="{type:'showPhaseTemplate',data:scope.row}">+从模板批量导入子阶段</el-dropdown-item> 
-									<el-dropdown-item :command="{type:'showMenu',data:scope.row}">+由故事创建子阶段</el-dropdown-item> 
+							{{scope.row.seqNo}} &nbsp;&nbsp; 
+							<span>
+								<el-dropdown @command="handleCommand" :hide-on-click="false">
+									<span class="el-dropdown-link">
+										<i class="el-icon-setting"></i>
+									</span>
+									<el-dropdown-menu slot="dropdown">
+										<el-dropdown-item :command="{type:'showSubAdd',data:scope.row}">+子阶段</el-dropdown-item>
+										<el-dropdown-item :command="{type:'showPhaseTemplate',data:scope.row}">+从模板批量导入子阶段</el-dropdown-item> 
+										<el-dropdown-item :command="{type:'showMenu',data:scope.row}">+由故事创建子阶段</el-dropdown-item> 
 
-									<el-dropdown-item :command="{type:'showEdit',data:scope.row}">编辑</el-dropdown-item>  
-									<el-dropdown-item :command="{type:'loadTasksToXmProjectPhase',data:scope.row}" >从任务汇总实际数据</el-dropdown-item>  
-									<el-dropdown-item :command="{type:'showLog',data:scope.row}">日志</el-dropdown-item>  
-									<el-dropdown-item :command="{type:'handleDel',data:scope.row}" >删除</el-dropdown-item>  
-									<el-dropdown-item icon="el-icon-success"   :command="{type:'sendToProcessApprova',row:scope.row,bizKey:'xm_project_start_approva'}">变更发审(审核通过后起效)</el-dropdown-item> 
-									<el-dropdown-item icon="el-icon-success"   :command="{type:'sendToProcessApprova',row:scope.row,bizKey:'xm_project_delete_approva'}">删除发审(审核通过后删除)</el-dropdown-item>  
-								</el-dropdown-menu>
-							</el-dropdown> 
+										<el-dropdown-item :command="{type:'showEdit',data:scope.row}">编辑</el-dropdown-item>  
+										<el-dropdown-item :command="{type:'loadTasksToXmProjectPhase',data:scope.row}" >从任务汇总实际数据</el-dropdown-item>  
+										<el-dropdown-item :command="{type:'showLog',data:scope.row}">日志</el-dropdown-item>  
+										<el-dropdown-item :command="{type:'handleDel',data:scope.row}" >删除</el-dropdown-item>  
+										<el-dropdown-item icon="el-icon-success"   :command="{type:'sendToProcessApprova',row:scope.row,bizKey:'xm_project_start_approva'}">变更发审(审核通过后起效)</el-dropdown-item> 
+										<el-dropdown-item icon="el-icon-success"   :command="{type:'sendToProcessApprova',row:scope.row,bizKey:'xm_project_delete_approva'}">删除发审(审核通过后删除)</el-dropdown-item>  
+									</el-dropdown-menu>
+								</el-dropdown> 
+							</span>
+							<span>
+								<el-button type="text" v-if="!scope.row.mngUserid"  v-model="scope.row.mngUsername" @click="groupUserSelectVisible=true" icon="el-icon-setting">去设置</el-button>  
+								<el-link v-else type="primary"   @click="groupUserSelectVisible=true">{{scope.row.mngUsername}}</el-link>
+							</span> 
+							<span>
+								<el-tag :type="scope.row.actRate>=100?'success':'primary'"> {{ (scope.row.actRate!=null?scope.row.actRate:0)+'%'}} </el-tag> 
+							</span>	
+							<el-link type="primary" @click="showEdit(scope.row)"> {{scope.row.phaseName}}</el-link>
 						</span>
-						</font>
+						
+						<font style="float:right;"> 
+							<span>
+								<font class="hidden-md-and-down" >{{formatDate(scope.row.beginDate)}}{{formatDate(scope.row.endDate)}}  </font>
+								<font v-for="item in [calcTaskStateByTime(scope.row.beginDate,scope.row.endDate,scope.row.actRate,scope.phaseStatus)]" :key="item.status"><el-tag :type="item.status">{{item.remark}}</el-tag></font> 
+							</span>
+						</font> 
 					 </template>
 				</el-table-column>   
 				<!--

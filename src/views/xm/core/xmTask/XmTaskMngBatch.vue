@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container page-full-height padding border">
+	<section class="page-container padding border">
 		<el-row> 
 			<el-row    v-if="projectPhase">   
  					<el-button type="warning"   @click="saveBatchEdit" v-loading="load.edit" icon="el-icon-finished">保存</el-button>

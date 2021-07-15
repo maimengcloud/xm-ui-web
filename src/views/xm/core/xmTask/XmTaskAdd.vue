@@ -1,12 +1,23 @@
 <template>
 	<section class="page-container padding">
-		<el-row class="page-header padding">
+		<el-row>
 			<el-button type="text" @click="goAnchor('baseInfoAdd')">基础信息</el-button>
 			<el-button type="text" @click="goAnchor('planInfoAdd')">进度计划</el-button>
 			<el-button type="text" @click="goAnchor('costInfoAdd')">工作量与成本</el-button>
 			<el-button type="text" @click="goAnchor('settleInfoAdd')">结算信息</el-button>
 			<el-button type="text" @click="goAnchor('menuInfoAdd')">故事明细</el-button>
 			<el-button type="text" @click="goAnchor('taskOutAdd')">众包</el-button>
+		</el-row>
+		<el-row>  
+			<el-steps :active="calcTaskStep" finish-status="success" simple>
+				<el-step title="发布" description="任务创建成功后即发布"></el-step>
+				<el-step title="竞标" description="候选人参与竞标，或者由责任人主动设置候选人"></el-step>
+				<el-step title="执行" description="候选人中标后，成为执行人，执行任务"></el-step>
+				<el-step title="验收" description="任务完成后提交验收，验收通过，即可进行结算"></el-step>
+				<el-step title="结算" description="提交结算申请审批流程，审批过程自动根据审批结果进行结算"></el-step>
+				<el-step title="企业付款" description="结算流程审批通过，自动付款到个人钱包"></el-step> 
+				<el-step title="提现" description="企业付款完成后，个人对钱包中余额进行提现"></el-step> 
+			</el-steps>
 		</el-row>
 		<el-row class="page-main page-height-80">
 			<!--新增界面 XmTask xm_task-->
@@ -521,12 +532,19 @@
 				this.addForm.taskType=this.parentTask.taskType
 				this.addForm.planType=this.parentTask.planType
 			}else{
-				this.addForm.taskType=this.projectPhase.taskType
+				if(this.projectPhase){
+					this.addForm.taskType=this.projectPhase.taskType
+				} 
  			}
-			this.addForm.projectId=this.xmProject.id
-			this.addForm.projectName=this.xmProject.name
-			this.addForm.projectPhaseId=this.projectPhase.id
-			this.addForm.projectPhaseName=this.projectPhase.phaseName
+			if(this.xmProject){
+				this.addForm.projectId=this.xmProject.id
+				this.addForm.projectName=this.xmProject.name
+			}
+			if(this.projectPhase){
+				this.addForm.projectPhaseId=this.projectPhase.id
+				this.addForm.projectPhaseName=this.projectPhase.phaseName
+			}
+			
 			if(this.parentTask ){
 				if(this.parentTask.children){
 					this.addForm.sortLevel=this.parentTask.sortLevel+"."+(this.parentTask.children.length+1)

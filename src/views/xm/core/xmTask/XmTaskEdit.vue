@@ -1,6 +1,6 @@
 <template>
 	<section class="page-container padding">
-		<el-row class="page-header padding"> 
+		<el-row> 
 			<el-button type="text" @click="goAnchor('baseInfo')">基础信息</el-button> 
 			<el-button type="text" @click="goAnchor('planInfo')">进度计划</el-button> 
 			<el-button type="text" @click="goAnchor('costInfo')">工作量与成本</el-button>
@@ -8,16 +8,22 @@
 			<el-button type="text" @click="goAnchor('menuInfo')">故事明细</el-button> 
 			<el-button type="text" @click="goAnchor('taskOut')">众包</el-button>  
 		</el-row>
+		<el-row> 
+			<el-steps :active="calcTaskStep" finish-status="success" simple>
+			<el-step title="发布" description="任务创建成功后即发布"></el-step>
+			<el-step title="竞标" description="候选人参与竞标，或者由责任人主动设置候选人"></el-step>
+			<el-step title="执行" description="候选人中标后，成为执行人，执行任务"></el-step>
+			<el-step title="验收" description="任务完成后提交验收，验收通过，即可进行结算"></el-step>
+			<el-step title="结算" description="提交结算申请审批流程，审批过程自动根据审批结果进行结算"></el-step>
+			<el-step title="企业付款" description="结算流程审批通过，自动付款到个人钱包"></el-step> 
+			<el-step title="提现" description="企业付款完成后，个人对钱包中余额进行提现"></el-step> 
+		</el-steps>
+		</el-row>
 		<el-row class="page-main page-height-80">
 			<!--新增界面 XmTask xm_task--> 
 			<el-form :model="editForm"  label-width="100px" :rules="editFormRules" ref="editForm">     
 				<el-card class="box-card" header="基础信息" id="baseInfo" shadow="hover"> 
-					<el-steps :active="calcTaskStep" align-center finish-status="success">
-						<el-step title="待领取"></el-step>
-						<el-step title="执行中"></el-step>
-						<el-step title="已完工待结算"></el-step>
-						<el-step title="已结算"></el-step> 
-					</el-steps> 
+
 					<el-form-item label="任务名称" prop="name">
 						<el-row>
 						<el-col :span="24" style="padding-left:10px;">
@@ -145,7 +151,7 @@
 
 					</el-form-item>   
 					<el-form-item label="众包流程" prop="taskOut">
-						 <el-steps :active="calcTaskStep" align-center>
+						 <el-steps :active="calcTaskStep" align-center finish-status="success" simple>
 							<el-step title="发布" description="任务创建成功后即发布"></el-step>
 							<el-step title="竞标" description="候选人参与竞标，或者由责任人主动设置候选人"></el-step>
 							<el-step title="执行" description="候选人中标后，成为执行人，执行任务"></el-step>

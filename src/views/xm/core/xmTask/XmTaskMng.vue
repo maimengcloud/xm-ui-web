@@ -1,10 +1,10 @@
 <template>
-	<section class="page-container padding">
+	<section class="padding">
 		<el-row  v-show="batchEditVisible==false"> 
 			<el-col v-if="isTaskCenter!='1' && currentProject " :span="4" >
 				<xm-project-phase-mng  :sel-project="currentProject" :simple="true" @row-click="projectPhaseRowClick" @clear-select="clearSelectPhase"></xm-project-phase-mng>
 			</el-col>
-			<el-col :span="isTaskCenter!='1' && currentProject?20:24">
+			<el-col :span="isTaskCenter!='1' && currentProject?20:24" class="padding-left">
 				<el-row>
 					<el-select v-model="selkey" placeholder="请选择任务状态" clearable @change="changeSelKey">
 						<el-option class="showall" value="" label="全部状态">全部状态</el-option>
@@ -136,7 +136,7 @@
 							<el-button  slot="reference" icon="el-icon-more" circle></el-button>
 						</el-popover>
 				</el-row>
-				<el-row style="padding-top:10px;">
+				<el-row class="padding-top">
 						<el-table v-if="!gstcVisible"
 							show-summary
 							:data="tasksTreeData"
@@ -297,12 +297,12 @@
 			</div>
 		</el-drawer>
 		<!--编辑 XmTask xm_task界面-->
-		<el-drawer title="编辑任务" :visible.sync="editFormVisible" :with-header="false" :size="650" append-to-body  :close-on-click-modal="false">
+		<el-drawer title="编辑任务" :visible.sync="editFormVisible" :with-header="false" :size="750" append-to-body  :close-on-click-modal="false">
 				<xm-task-edit :xm-project="currentProject" :xm-task="editForm" :project-phase="currentProjectPhase" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-task-edit>
 		</el-drawer>
 
 		<!-- 新增 XmTask xm_task界面-->
-		<el-drawer class="xm-task-add" title="新增任务" :visible.sync="addFormVisible" :with-header="false"  size="80%" append-to-body  :close-on-click-modal="false">
+		<el-drawer class="xm-task-add" title="新增任务" :visible.sync="addFormVisible" :with-header="false"  :size="750" append-to-body  :close-on-click-modal="false">
 			<xm-task-add :xm-project="currentProject" :project-phase="currentProjectPhase"   :xm-task="addForm" :parent-task="parentTask" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-task-add>
 		</el-drawer>
 

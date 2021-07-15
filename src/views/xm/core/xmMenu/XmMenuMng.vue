@@ -1,11 +1,11 @@
 <template>
-	<section class="page-container page-full-height padding border">
+	<section class="padding">
 		<el-row v-if=" !batchEditVisible"> 
 			<el-col :span="6">
 				<xm-product-mng :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-mng>
 			</el-col>
-			<el-col :span="18">
-					<el-row>  
+			<el-col :span="18" class="padding-left">
+					<el-row >  
 						<el-select  v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable >
 							<el-option   value="not-join"  label="未分配任何任务的故事"></el-option>  
 							<el-option   value="join"  label="已分配任务的故事"></el-option>  
@@ -92,7 +92,7 @@
 						</el-popover> 
 					
 					</el-row>
-					<el-row style="padding-top:12px;">  
+					<el-row class="padding-top">  
 						<el-table  ref="table" :height="tableHeight" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick">
 							<el-table-column sortable type="selection" width="40"></el-table-column> 
 							<el-table-column prop="menuName" label="故事名称" min-width="160" show-overflow-tooltip> 

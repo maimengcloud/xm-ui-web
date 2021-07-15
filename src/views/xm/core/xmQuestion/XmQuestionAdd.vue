@@ -1,10 +1,16 @@
 <template>
-	<section>
-		<el-row class="xm-question">
-			<!--新增界面 XmQuestion xm_question--> 
-			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
-				<el-row>
-					<el-col :span="12">
+	<section class="page-container page-full-height padding">
+		<el-row>
+			<el-steps :active="calcBugStep" simple finish-status="success">
+				<el-step title="已激活,待确认" description="创建后自动激活、关闭后重新激活)"></el-step>
+				<el-step title="已确认,待解决" description="业务确认缺陷后变为已确认"></el-step>
+				<el-step title="已解决,待关闭" description="开发修复缺陷后，变成已解决"></el-step>
+				<el-step title="已关闭(可重新激活)" description="测试通过后变为已关闭，已关闭缺陷可以重新激活"></el-step> 
+			</el-steps>
+		</el-row>
+		<el-row class="page-main page-height-80 padding"> 
+			<el-form :model="addForm"  :rules="addFormRules" ref="addForm"> 
+						
 						<el-form-item label="隶属项目" prop="projectName">
 							<el-tag :closable="!selProject" @close="clearProject">{{this.filters.selProject?this.filters.selProject.name:'未选项目'}}</el-tag><el-button v-if="!selProject" @click="showProjectList" type="plian">选项目</el-button> 
 						</el-form-item>
@@ -42,32 +48,19 @@
 						</el-form-item> 
 						<el-form-item label="指派给" prop="handlerUsername">
 							{{addForm.handlerUsername}} <el-button @click="sendToAsk">指派给提出人</el-button><el-button @click="sendToCreater">指派给创建人</el-button><el-button @click="showGroupUsers('handlerUsername')">选其它人</el-button>
-						</el-form-item>  
-					</el-col>
-					<el-col :span="12">
+						</el-form-item>   
 											
-						<el-form-item>
-							<el-col :span="24">测试步骤</el-col>
-							<el-col :span="24">
+						<el-form-item label="测试步骤" prop="opStep"> 
 									<vue-editor :id="'opStep'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.opStep" ref="opStep"></vue-editor>  
-							</el-col>
-							<el-col :span="24"  >预期结果</el-col>
-
-							<el-col :span="24"  >  
-									<vue-editor :id="'expectResult'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.expectResult"  ref="expectResult"></vue-editor>  
-							</el-col> 
-						</el-form-item>
-					</el-col>
-				</el-row>
+		 
+ 						</el-form-item>  
+											
+						<el-form-item label="预期结果" prop="expectResult">  
+									<vue-editor :id="'expectResult'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.expectResult"  ref="expectResult"></vue-editor>   
+						</el-form-item>  
 				<el-form-item label="缺陷描述" prop="description"> 
         			<vue-editor :id="'description_'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.description"></vue-editor>
-				</el-form-item>   
-				<el-form-item class="add-btns">
-					<el-col style="text-align:center;" :span="24"> 
-						<el-button @click.native="handleCancel">取消</el-button>  
-						<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">保存</el-button> 
-					</el-col>
-				</el-form-item> 
+				</el-form-item>    
 			</el-form>
 			<el-drawer title="选中用户" :visible.sync="selectUserVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-group-mng  :sel-project="filters.selProject" :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-mng>
@@ -84,6 +77,10 @@
 			<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
 			</el-drawer> 
+		</el-row>
+		<el-row> 
+			<el-button @click.native="handleCancel">取消</el-button>  
+			<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">保存</el-button> 
 		</el-row>
 	</section>
 </template>
@@ -381,19 +378,18 @@
 </script>
 
 <style scoped>
-.xm-question{
-	padding: 10px;
+
+  .wf-main-context-box {  
+	border:1px dashed #000;
+	margin-bottom: 10px;
+	margin-top: 30px;  
+	padding:10px;
 }
-.el-form-item{
-	margin-bottom: 15px;
+ .wf-main-context p { 
+	color: #585858;  
 }
-.el-form-item__content{
-	margin-left: 0;
-}
-.el-form-item__content{
-	margin-left: 0;
-}
-.add-btns >>> .el-form-item__content{
-	margin-left: 0 !important;
+	
+.wf-main-context   p  > img {
+	max-width: 100%; 
 }
 </style>
