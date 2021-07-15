@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container page-full-height padding border">
+	<section class="page-container">
 		<el-row v-loading="load.edit">
 			<xm-project-group-formwork :is-select-single-user="isSelectSingleUser" :is-select-multi-user="isSelectMultiUser" :visible="groupSelectVisible" :sel-project="selProject" :sel-groups="groups" @select-confirm="onGroupSelected" @user-confirm="onUserSelected"></xm-project-group-formwork> 
 		</el-row>

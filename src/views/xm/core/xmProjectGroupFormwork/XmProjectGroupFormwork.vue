@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container page-full-height padding border">
+	<section class="page-container padding">
 		<el-row>
 				<el-col :span="24">
 					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="primary" @click="showGroupFormwork" icon="el-icon-plus">导入项目组</el-button>
@@ -15,14 +15,14 @@
 					<el-tooltip  v-else content="黄色表示选中"><span class="addXmProjectGroupFormworkSquare">选中</span></el-tooltip>
 				</el-col> 
 		</el-row>
-		 <el-row class="page-main" v-loading="load.list" v-if="!isSelectSingleUser && !isSelectMultiUser">
+		 <el-row class="page-main page-height-80 padding" v-loading="load.list" v-if="!isSelectSingleUser && !isSelectMultiUser">
 			<el-row v-for="(item,index) in xmProjectGroupFormworkSels" :key="index">
 				<h3>
 					<div>{{item.groupName + "："}}<el-tag v-if="imGroupVisible==true && imGroups.some(g=>item.id==g.id) "   type="success">已绑定</el-tag><el-tag type="danger" v-else-if="imGroupVisible==true " @click="doCreateImGroup(item)">未绑定，点我去绑定</el-tag>
 						<i class="el-icon-close closeStyle" @click.stop="delGroup(item,index)"></i>
 					</div>
 				</h3>
-				<el-col :span="24" style="margin-left:30px;display:flex;flex-wrap: wrap;"> 
+				<el-col :span="23" style="margin-left:30px;display:flex;flex-wrap: wrap;margin-right:30px;"> 
 					<div  :class="v.isHead=='1'?'checkCopyButton':'copyButton'" v-for="(v,valueIndex) in item.groupUsers" :key="valueIndex" @click="toggleHead(index,valueIndex)">
 						{{v.username}}
 						<i class="el-icon-close closeStyle" @click.stop="delGroupUser(index,valueIndex)"></i>
@@ -32,13 +32,13 @@
 			</el-row>
 		</el-row>
 		
-		<el-row class="page-main" v-loading="load.list" v-else>
+		<el-row class="page-main page-height-80" v-loading="load.list" v-else>
 			<el-row v-for="(item,index) in xmProjectGroupFormworkSels" :key="index">
 				<h3>
 					<div>{{item.groupName + "："}} 
 					</div>
 				</h3>
-				<el-col :span="24" style="margin-left:30px;display:flex;flex-wrap: wrap;">  
+				<el-col :span="23" style="margin-left:30px;display:flex;flex-wrap: wrap;">  
 					<div  :class="v.isSelected=='1'?'checkCopyButton':'copyButton'" v-for="(v,valueIndex) in item.groupUsers" :key="valueIndex" @click="toggleHead(index,valueIndex)">
 							{{v.username}}
 					</div>  
