@@ -1,6 +1,6 @@
 <template>
 	<section class="page-container page-full-height padding border">
-		<el-row>
+		<el-row class="page-main page-height-80">
 			<!--新增界面 XmProduct 产品表--> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
 				<el-form-item label="产品编号" prop="id">
@@ -16,19 +16,17 @@
 				</el-form-item>  
 				<el-form-item label="备注" prop="remark">
 					<el-input v-model="addForm.remark" type="textarea" :autosize="{ minRows: 4, maxRows: 20}"  placeholder="备注" ></el-input>
-				</el-form-item> 
-				<el-form-item>
-					<el-col :span="24" :offset="8"> 
-						<el-button @click.native="handleCancel">取消</el-button>  
-						<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">提交</el-button>  
-					</el-col>
-				</el-form-item> 
+				</el-form-item>  
 			</el-form>
 			
 		
 		<el-drawer title="选择员工" :visible.sync="userSelectVisible" size="60%" append-to-body>
        		 <users-select  @confirm="onUserSelected" ref="usersSelect"></users-select>
       	</el-drawer>	
+		</el-row>
+		<el-row> 
+			<el-button @click.native="handleCancel">取消</el-button>  
+			<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">提交</el-button>   
 		</el-row>
 	</section>
 </template>

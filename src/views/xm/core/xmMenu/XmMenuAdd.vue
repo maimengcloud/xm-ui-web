@@ -1,6 +1,6 @@
 <template>
 	<section class="page-container page-full-height padding border">
-		<el-row>
+		<el-row class="page-main page-height-90">
 			<!--新增界面 XmMenu 项目故事表--> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
 				<el-form-item v-if="parentMenu" label="上级故事" prop="pmenuId">
@@ -35,18 +35,17 @@
 				</el-form-item>  
 				<el-form-item label="概述" prop="remark">
 					<el-input type="textarea" :autosize="{ minRows: 4, maxRows: 20}" v-model="addForm.remark" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
-				</el-form-item> 
-				<el-form-item>
-					<el-col :span="24" :offset="8"> 
-						<el-button @click.native="handleCancel">取消</el-button>  
-						<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">提交</el-button>  
-					</el-col>
-				</el-form-item> 
+				</el-form-item>  
 			</el-form>
 			
 			<el-drawer title="选择员工" :visible.sync="userSelectVisible" size="60%" append-to-body>
 				<users-select  @confirm="onUserSelected" ref="usersSelect"></users-select>
 			</el-drawer>	
+			
+		</el-row>
+		<el-row>
+			<el-button @click.native="handleCancel">取消</el-button>  
+			<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">提交</el-button>  
 		</el-row>
 	</section>
 </template>

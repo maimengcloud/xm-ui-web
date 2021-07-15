@@ -6,9 +6,7 @@
 			<el-button type="text" @click="goAnchor('costInfo')">工作量与成本</el-button>
 			<el-button type="text" @click="goAnchor('settleInfo')">结算信息</el-button>
 			<el-button type="text" @click="goAnchor('menuInfo')">故事明细</el-button> 
-			<el-button type="text" @click="goAnchor('taskOut')">众包</el-button>  
-		</el-row>
-		<el-row> 
+			<el-button type="text" @click="goAnchor('taskOut')">众包</el-button>   
 			<el-steps :active="calcTaskStep" finish-status="success" simple>
 			<el-step title="发布" description="任务创建成功后即发布"></el-step>
 			<el-step title="竞标" description="候选人参与竞标，或者由责任人主动设置候选人"></el-step>
@@ -19,7 +17,7 @@
 			<el-step title="提现" description="企业付款完成后，个人对钱包中余额进行提现"></el-step> 
 		</el-steps>
 		</el-row>
-		<el-row class="page-main page-height-80">
+		<el-row class="page-main page-height-70">
 			<!--新增界面 XmTask xm_task--> 
 			<el-form :model="editForm"  label-width="100px" :rules="editFormRules" ref="editForm">     
 				<el-card class="box-card" header="基础信息" id="baseInfo" shadow="hover"> 
@@ -164,7 +162,7 @@
 				 </el-card>  
 			</el-form>  
 		</el-row>
-		<el-row class="page-bottom padding">
+		<el-row class="padding">
 			<el-button @click.native="handleCancel">取消</el-button>  
 			<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>   	
 		</el-row>

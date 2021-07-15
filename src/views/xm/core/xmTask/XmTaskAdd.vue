@@ -1,14 +1,12 @@
 <template>
-	<section class="page-container padding">
+	<section class="page-container page-full-height padding">
 		<el-row>
 			<el-button type="text" @click="goAnchor('baseInfoAdd')">基础信息</el-button>
 			<el-button type="text" @click="goAnchor('planInfoAdd')">进度计划</el-button>
 			<el-button type="text" @click="goAnchor('costInfoAdd')">工作量与成本</el-button>
 			<el-button type="text" @click="goAnchor('settleInfoAdd')">结算信息</el-button>
 			<el-button type="text" @click="goAnchor('menuInfoAdd')">故事明细</el-button>
-			<el-button type="text" @click="goAnchor('taskOutAdd')">众包</el-button>
-		</el-row>
-		<el-row>  
+			<el-button type="text" @click="goAnchor('taskOutAdd')">众包</el-button> 
 			<el-steps :active="calcTaskStep" finish-status="success" simple>
 				<el-step title="发布" description="任务创建成功后即发布"></el-step>
 				<el-step title="竞标" description="候选人参与竞标，或者由责任人主动设置候选人"></el-step>
@@ -19,16 +17,10 @@
 				<el-step title="提现" description="企业付款完成后，个人对钱包中余额进行提现"></el-step> 
 			</el-steps>
 		</el-row>
-		<el-row class="page-main page-height-80">
+		<el-row class="page-main page-height-70">
 			<!--新增界面 XmTask xm_task-->
 			<el-form :model="addForm"  label-width="100px" :rules="addFormRules" ref="addForm">
-				<el-card class="box-card" header="基础信息" id="baseInfoAdd" shadow="hover">
-					<el-steps :active="calcTaskStep" align-center finish-status="success">
-						<el-step title="待领取"></el-step>
-						<el-step title="执行中"></el-step>
-						<el-step title="已完工待结算"></el-step>
-						<el-step title="已结算"></el-step>
-					</el-steps>
+				<el-card class="box-card" header="基础信息" id="baseInfoAdd" shadow="hover"> 
 					<el-form-item label="任务名称" prop="name">
 						<el-row>
 						<el-col :span="24" style="padding-left:10px;">

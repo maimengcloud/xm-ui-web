@@ -35,10 +35,9 @@
 				<users-select  @confirm="onUserSelected" ref="usersSelect"></users-select>
 			</el-drawer>	
 		</el-row>
-		<el-row class="page-bottom">
-			
-						<el-button @click.native="handleCancel">取消</el-button>  
-						<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button> 
+		<el-row class="page-bottom"> 
+			<el-button @click.native="handleCancel">取消</el-button>  
+			<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button> 
 		</el-row>
 	</section>
 </template>

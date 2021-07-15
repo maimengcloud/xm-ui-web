@@ -1,7 +1,7 @@
 <template>
 	<section class="page-container page-full-height padding">
 		<el-row>
-			<el-steps :active="calcBugStep" simple finish-status="success">
+			<el-steps simple finish-status="success">
 				<el-step title="已激活,待确认" description="创建后自动激活、关闭后重新激活)"></el-step>
 				<el-step title="已确认,待解决" description="业务确认缺陷后变为已确认"></el-step>
 				<el-step title="已解决,待关闭" description="开发修复缺陷后，变成已解决"></el-step>
@@ -9,57 +9,74 @@
 			</el-steps>
 		</el-row>
 		<el-row class="page-main page-height-80 padding"> 
-			<el-form :model="addForm"  :rules="addFormRules" ref="addForm"> 
-						
-						<el-form-item label="隶属项目" prop="projectName">
-							<el-tag :closable="!selProject" @close="clearProject">{{this.filters.selProject?this.filters.selProject.name:'未选项目'}}</el-tag><el-button v-if="!selProject" @click="showProjectList" type="plian">选项目</el-button> 
-						</el-form-item>
-						<el-form-item label="隶属任务" prop="taskName">
-							<el-tag v-if="addForm.taskId!='' && addForm.taskId!=null " closable @close="handleCloseTaskTag">{{addForm.taskName}}</el-tag><el-button @click="showSelectTask">选任务</el-button>
-						</el-form-item>
-						<el-form-item label="隶属故事" prop="menuName">
-							<el-tag v-if="addForm.menuId!='' && addForm.menuId!=null " closable @close="handleCloseMenuTag">{{addForm.menuName}}</el-tag><el-button @click="showSelectMenu">选故事</el-button>
-						</el-form-item>   
+			<el-form :model="addForm"  :rules="addFormRules" ref="addForm">  
 						<el-form-item label="缺陷标题" prop="name">
 							<el-input v-model="addForm.name" placeholder="缺陷标题" ></el-input>
-						</el-form-item>  
-						<el-form-item label="优先级别" prop="priority">
-							<el-radio-group v-model="addForm.priority">
-								<el-radio v-for="(i,index) in options['urgencyLevel']" :label="i.optionValue" :key="index">{{i.optionName}}</el-radio> 
-							</el-radio-group> 
-						</el-form-item> 
-						<el-form-item label="严重程度" prop="bugSeverity">
-							<el-radio-group v-model="addForm.bugSeverity">
-								<el-radio v-for="(i,index) in options['bugSeverity']" :label="i.optionValue" :key="index">{{i.optionName}}</el-radio> 
-							</el-radio-group>  
-						</el-form-item> 
-						<!--
-						<el-form-item label="解决方案" prop="solution">
-							<el-radio-group v-model="addForm.solution">
-								<el-radio v-for="(i,index) in options['bugSolution']" :label="i.optionValue" :key="index">{{i.optionName}}</el-radio> 
-							</el-radio-group>   
-						</el-form-item> 
-						-->
-						<el-form-item label="到期时间" prop="endTime">
-							<el-date-picker :clearable="false" style="width:100%;" type="date" placeholder="选择日期" v-model="addForm.endTime" value-format="yyyy-MM-dd" format="yyyy-MM-dd"></el-date-picker>
-						</el-form-item> 
+						</el-form-item>   
+						<el-form-item label="隶属" prop="taskName">
+							<el-tooltip content="隶属项目"><el-tag :closable="!selProject" @click="showProjectList" @close.stop="clearProject">{{this.filters.selProject?this.filters.selProject.name:'未关联项目'}}</el-tag></el-tooltip> 
+							<el-divider direction="vertical"></el-divider>
+							<el-tooltip content="隶属任务"><el-tag  closable @click="showSelectTask" @close.stop="handleCloseTaskTag">{{addForm.taskName?addForm.taskName:'未关联任务'}}</el-tag> </el-tooltip>
+							<el-divider direction="vertical"></el-divider>
+							<el-tooltip content="隶属故事"><el-tag  closable @click="showSelectMenu" @close.stop="handleCloseMenuTag">{{addForm.menuName?addForm.menuName:"未关联故事"}}</el-tag></el-tooltip>
+						</el-form-item>   
+						<el-form-item label="缺陷属性" prop="priority">
+							<el-col :span="24">
+							<el-select v-model="addForm.priority" placeholder="请选择紧急程度">
+								<el-option v-for="(i,index) in options['urgencyLevel']" :label="i.optionName" :value="i.optionValue" :key="i.optionValue">{{i.optionName}}</el-option> 
+							</el-select> 
+							
+							<el-select v-model="addForm.bugSeverity" placeholder="请选择严重程度">
+								<el-option v-for="(i,index) in options['bugSeverity']" :label="i.optionName" :value="i.optionValue" :key="i.optionValue">{{i.optionName}}</el-option> 
+							</el-select>  
+							
+							<el-select v-model="addForm.solution" placeholder="请选择解决方案">
+								<el-option v-for="(i,index) in options['bugSolution']" :label="i.optionName" :value="i.optionValue" :key="i.optionValue">{{i.optionName}}</el-option> 
+							</el-select>   
+							</el-col>
+						</el-form-item>    
 						<el-form-item label="提出人" prop="askUsername">
-							{{addForm.askUsername}} <el-button @click="showGroupUsers('askUsername')">选提出人</el-button>
+							<el-tag @click="showGroupUsers('askUsername')">{{addForm.askUsername?addForm.askUsername:'未关联提出人'}}</el-tag> 
+							<el-tooltip content="最晚解决时间"><el-date-picker :clearable="false" style="width:150px;" type="date" placeholder="选择日期" v-model="addForm.endTime" value-format="yyyy-MM-dd" format="yyyy-MM-dd"></el-date-picker></el-tooltip>
 						</el-form-item> 
 						<el-form-item label="指派给" prop="handlerUsername">
-							{{addForm.handlerUsername}} <el-button @click="sendToAsk">指派给提出人</el-button><el-button @click="sendToCreater">指派给创建人</el-button><el-button @click="showGroupUsers('handlerUsername')">选其它人</el-button>
+							{{addForm.handlerUsername}} <el-button @click="sendToAsk">指派给提出人</el-button><el-button @click="sendToCreater">指派给创建人</el-button><el-button @click="showGroupUsers('handlerUsername')">指派给其它人</el-button>
 						</el-form-item>   
 											
 						<el-form-item label="测试步骤" prop="opStep"> 
-									<vue-editor :id="'opStep'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.opStep" ref="opStep"></vue-editor>  
-		 
+							<el-tooltip content="点击切换为富文本编辑|普通文本">
+								<el-button icon="el-icon-refresh" @click="opStepEditorVisible=!opStepEditorVisible" type="text"></el-button>
+							</el-tooltip>
+							<div v-if="opStepEditorVisible==false">
+								<el-input  style="width:100%;" v-model="addForm.opStep" type="textarea" :rows="2"> </el-input>
+							</div>
+							<div v-else>
+								<vue-editor  :id="'opStep'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.opStep" ref="opStep"></vue-editor>   
+							</div>  
  						</el-form-item>  
 											
 						<el-form-item label="预期结果" prop="expectResult">  
-									<vue-editor :id="'expectResult'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.expectResult"  ref="expectResult"></vue-editor>   
+							<el-tooltip content="点击切换为富文本编辑|普通文本">
+								<el-button icon="el-icon-refresh" @click="expectResultEditorVisible=!expectResultEditorVisible" type="text"></el-button>
+							</el-tooltip>
+							<div v-if="expectResultEditorVisible==false">
+								<el-input  style="width:100%;" v-model="addForm.expectResult" type="textarea" :rows="2"> </el-input>
+							</div>
+							<div v-else>
+								<vue-editor v-if="expectResultEditorVisible==true" :id="'expectResult'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.expectResult"  ref="expectResult"></vue-editor>   
+							</div>   
 						</el-form-item>  
-				<el-form-item label="缺陷描述" prop="description"> 
-        			<vue-editor :id="'description_'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.description"></vue-editor>
+				<el-form-item label="缺陷描述" prop="description">  
+							<el-tooltip content="点击切换为富文本编辑|普通文本">
+								<el-button icon="el-icon-refresh" @click="descriptionEditorVisible=!descriptionEditorVisible" type="text"></el-button>
+							</el-tooltip>
+							<div v-if="descriptionEditorVisible==false">
+								<el-input  style="width:100%;" v-model="addForm.description" type="textarea" :rows="2"> </el-input>
+							</div>
+							<div v-else>
+								<vue-editor :id="'description_'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.description"></vue-editor>
+							</div> 
+        			
 				</el-form-item>    
 			</el-form>
 			<el-drawer title="选中用户" :visible.sync="selectUserVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
@@ -171,6 +188,10 @@
 				selectTaskVisible:false,
 				selectMenuVisible:false,
 				selectProjectVisible:false,
+				opStepEditorVisible:false,
+				expectResultEditorVisible:false,
+				descriptionEditorVisible:false,
+
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data
@@ -188,7 +209,19 @@
 						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
 							this.load.add=true 
 							let params = Object.assign({}, this.addForm); 
-							params.expectResult=params.expectResult.replace("<p>\n<br>\n<\p>","");
+
+							if(params.expectResult){
+								params.expectResult=params.expectResult.replace(/<p>\n<br>\n<\p>/g,"");
+								params.expectResult=params.expectResult.replace(/<p><br><\p>/g,"");
+							}
+							if(params.opStep){
+								params.opStep=params.opStep.replace(/<p>\n<br>\n<\p>/g,"");
+								params.opStep=params.opStep.replace("<p><br><\p>","");
+							}
+							if(params.description){
+								params.description=params.description.replace(/<p>\n<br>\n<\p>/g,"");
+								params.description=params.description.replace("<p><br><\p>","");
+							}
 							addXmQuestion(params).then((res) => {
 								this.load.add=false
 								var tips=res.data.tips;
@@ -377,7 +410,7 @@
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
   .wf-main-context-box {  
 	border:1px dashed #000;

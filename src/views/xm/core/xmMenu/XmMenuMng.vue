@@ -168,19 +168,22 @@
 				<el-drawer title="选中任务" :visible.sync="selectTaskVisible"   size="80%"  append-to-body   :close-on-click-modal="false">
 					<xm-task-list  :sel-project="selProject" :is-multi-select="true"  @tasks-selected="onSelectedTasks"></xm-task-list>
 				</el-drawer> 
-				<el-drawer title="查看任务" :visible.sync="taskListForMenuVisible"   size="80%"  append-to-body   :close-on-click-modal="false">
+				<el-drawer title="查看任务" :visible.sync="taskListForMenuVisible" :with-header="false"  size="80%"  append-to-body   :close-on-click-modal="false">
 					<xm-task-list-for-menu   :is-multi-select="true" :menu-id="editForm.menuId"></xm-task-list-for-menu>
 				</el-drawer> 
 				<el-drawer
 					append-to-body
 					title="任务"
 					:visible.sync="taskMngVisible"
-					fullscreen>
+					:with-header="false"
+					size="80%">
 					<xm-task-mng :sel-project="selProject"   :menu-id="editForm.menuId" :menu-name="editForm.menuName"></xm-task-mng> 
 				</el-drawer>
 				<el-drawer
 					append-to-body
-					title="故事关联的迭代查询"
+					title="故事关联的迭代查询" 
+					:with-header="false"
+					size="80%"
 					:visible.sync="iterationVisible" 
 					>
 						<xm-iteration-mng :visible="iterationVisible" :product-id="editForm.productId" :menu-id="editForm.menuId" ></xm-iteration-mng>
