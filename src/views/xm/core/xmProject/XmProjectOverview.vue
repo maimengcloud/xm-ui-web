@@ -1,7 +1,12 @@
 <template>
-  <section class="page-container page-height-90"> 
-    <el-row class="page-main page-height-75 padding" style="overflow-x: hidden;">
-        <el-row :gutter="10">
+  <section class="page-container padding">
+<!--    <el-row  class="page-header page-height-10">
+      <el-col :xs="22" :sm="22" :md="23" :lg="23" :xl="23">
+          <span >项目总览</span>
+      </el-col>
+    </el-row>-->
+    <el-row class="page-main page-height-75" style="overflow-x: hidden;">
+      <el-row :gutter="10" style="margin-bottom:10px">
           <el-col :span="8" >
             <el-card class="box-card" style="padding:0px ;height:425px">
               <div slot="header" class="clearfix">
@@ -22,7 +27,7 @@
                       <i class="el-icon-right"></i>
                     </div>
                     <div class="info">
-                      <div class="value" v-text="totalTask"></div>
+                      <div v-text="totalTask"></div>
                       <div class="title">总任务量</div>
                     </div>
                   </div>
@@ -33,7 +38,7 @@
                       <i class="el-icon-loading"></i>
                     </div>
                     <div class="info">
-                      <div class="value" v-text="notStart">
+                      <div v-text="notStart">
                       </div>
                       <div class="title">待完成</div>
                     </div>
@@ -45,7 +50,7 @@
                       <i class="el-icon-check"></i>
                     </div>
                     <div class="info">
-                      <div class="value" v-text="finish" >
+                      <div v-text="finish" >
                       </div>
                       <div class="title">已完成</div>
                     </div>
@@ -58,7 +63,7 @@
                     <i class="el-icon-date"></i>
                   </div>
                   <div class="info">
-                    <div class="value" v-text="startTime1+'~'+endTime1">
+                    <div v-text="taskStartTime+'~'+taskEndTime">
                     </div>
                     <div class="title">项目计划周期</div>
                   </div>
@@ -70,9 +75,7 @@
                     <i class="el-icon-star-off"></i>
                   </div>
                   <div class="info">
-                    <div class="value" v-text="'无参数'">
-                    </div>
-                    <div class="title">需求数</div>
+                    <div class="title"> 需求数： {{this.xmProjectState.menuCnt}}</div>
                   </div>
                 </div>
               </el-row>
@@ -82,9 +85,7 @@
                     <i class="el-icon-refresh"></i>
                   </div>
                   <div class="info">
-                    <div class="value" v-text="'无参数'">
-                    </div>
-                    <div class="title">迭代数</div>
+                    <div class="title"> 迭代数： {{(this.xmProjectState.iterationCnt==null?0:this.xmProjectState.iterationCnt)}} </div>
                   </div>
                 </div>
               </el-row>
@@ -93,11 +94,11 @@
                   <div class="icon2" style="background-color:  rgb(204, 204, 204);">
                     <i class="el-icon-alarm-clock"></i>
                   </div>
-                  <div class="value">
+                  <div>
                     <div class="info">
                       <el-progress v-if="progress1" :percentage="progress1"></el-progress>
                     </div>
-                    <div class="title">项目进度</div>
+                    <div class="title">任务进度</div>
                   </div>
                 </div>
               </el-row>
@@ -109,7 +110,7 @@
                 <span>所有工作项及其完成情况</span>
               </div>
               <div>
-                <div id="myChart1" :style="{width: '400px', height: '300px'}"></div>
+                <div id="allChart" :style="{width: '425px', height: '350px'}"></div>
               </div>
             </el-card>
           </el-col>
@@ -119,68 +120,121 @@
                 <span>缺陷情况</span>
               </div>
               <div>
-                <div id="myChart3" :style="{width: '400px', height: '300px'}"></div>
+                <div id="bugPieChart" :style="{width: '440px', height: '400px'}"></div>
               </div>
             </el-card>
           </el-col>
-          <el-col :span="8" >
+        </el-row>
+      <el-row :gutter="10" style="margin-bottom:10px">
+          <el-col :span="12" >
             <el-card class="box-card" style="padding:0px ;height:425px">
               <div slot="header" class="clearfix">
                 <span>任务每日状态趋势</span>
               </div>
               <div>
-                <div id="myChart2" :style="{width: '400px', height: '300px'}"></div>
+                <div id="taskChart" :style="{width: '630px', height: '320px'}"></div>
               </div>
             </el-card>
           </el-col>
-          <el-col :span="8" >
+          <el-col :span="12" >
             <el-card class="box-card" style="padding:0px ;height:425px">
               <div slot="header" class="clearfix">
                 <span>项目工时</span>
               </div>
               <div>
-                <el-row>
-                  <div class="item" style="margin-bottom:18px">
+                <el-row style="padding:25px;">
+                  <div class="item">
+                    <el-col :span="8">
                       <div>
-                        <div class="title" v-text="'可绑定工时'">200</div>
-                        <div style="text-align:center">预估工时</div>
+                        <div style="text-align:center;">
+                          <span style="font-size:24px;" v-text="this.xmProjectState.totalPlanWorkload"></span>
+                          <span style="font-size:5px;">h</span>
+                        </div>
+                        <div style="text-align:center;font-size:5px;">预估工时</div>
                       </div>
-                      <div style="margin-left:10px">
-                        <div class="title" v-text="'可绑定工时'">200</div>
-                        <div style="text-align:center">登记工时</div>
+                    </el-col>
+                    <el-col :span="8">
+                      <div>
+                        <div style="text-align:center;">
+                          <span style="font-size:24px;" v-text="this.xmProjectState.totalActWorkload"></span>
+                          <span style="font-size:5px;">h</span>
+                        </div>
+                        <div style="text-align:center;font-size:5px;">登记工时</div>
                       </div>
-                      <div style="margin-left:10px;border-left:2px solid gray"></div>
-                      <div style="margin-left:10px">
-                        <div class="title" v-text="'可绑定进度'">200</div>
-                        <div style="text-align:center">工时进度</div>
+                    </el-col>
+                    <el-col :span="8">
+                      <div>
+                        <div style="text-align:center;">
+                          <span style="font-size:24px;" v-text="workloadProgress"></span>
+                          <span style="font-size:5px;">%</span>
+                        </div>
+                        <div style="text-align:center;font-size:5px;">工时进度</div>
                       </div>
+                    </el-col>
                   </div>
-                  <div class="item" style="margin-bottom:18px">
-                    <div>
-                      <div class="title" v-text="'可绑定工时'">200</div>
-                      <div style="text-align:center">剩余工时</div>
-                    </div>
-                    <div style="margin-left:10px">
-                      <div class="title" v-text="'可绑定偏差'">200</div>
-                      <div style="text-align:center">预估偏差</div>
-                    </div>
-                    <div style="margin-left:10px;border-left:2px solid gray"></div>
-                    <div style="margin-left:10px">
-                      <div class="title" v-text="'1.08%'">200</div>
-                      <div style="text-align:center">预估偏差率</div>
-                    </div>
+                </el-row>
+                <el-row style="padding:25px;">
+                  <div class="item">
+                    <el-col :span="8">
+                      <div>
+                        <div style="text-align:center;">
+                          <span style="font-size:24px;" v-text="remainWorkload"></span>
+                          <span style="font-size:5px;">h</span>
+                        </div>
+                        <div style="text-align:center;font-size:5px;">剩余工时</div>
+                      </div>
+                    </el-col>
+                    <el-col :span="8">
+                      <div>
+                        <div style="text-align:center;">
+                          <span style="font-size:24px;" v-text="deviation"></span>
+                          <span style="font-size:5px;">h</span>
+                        </div>
+                        <div style="text-align:center;font-size:5px;">预估偏差</div>
+                      </div>
+                    </el-col>
+                    <el-col :span="8">
+                      <div>
+                        <div style="text-align:center;">
+                          <span style="font-size:24px;" v-text="deviationRate"></span>
+                          <span style="font-size:5px;">%</span>
+                        </div>
+                        <div style="text-align:center;font-size:5px;">预估偏差率</div>
+                      </div>
+                    </el-col>
                   </div>
                 </el-row>
                 <el-row>
-                  //预估工时
+                  <span style="margin-left:20px;">项目预计进度</span>
+                  <el-progress style="width: 600px;margin-left:20px;margin-top: 10px;margin-bottom: 20px;" :text-inside="true" :stroke-width="24" :percentage="planProgress"></el-progress>
                 </el-row>
                 <el-row>
-                  //实际工时
+                  <span style="margin-left:20px;">项目实际进度</span>
+                  <el-progress style="width: 600px;margin-left:20px;margin-top: 10px;" :text-inside="true" :stroke-width="24" :percentage="realProgress"></el-progress>
                 </el-row>
+
               </div>
             </el-card>
           </el-col>
         </el-row>
+      <el-row style="margin-bottom:10px">
+        <el-card class="box-card" style="padding:0px ;height:200px">
+          <div slot="header" class="clearfix" style="margin-bottom:10px">
+            <span>项目阶段</span>
+          </div>
+          <div>
+            <el-row style="padding:10px">
+              <el-steps :active="calcProjectStatusStep" finish-status="success">
+                <el-step  v-for="(i,index) in options['projectStatus']" :title="i.optionName" :key="index">
+                  <el-row slot="title" @click.native.stop="editForm.status=i.optionValue">
+                    {{i.optionName}}
+                  </el-row>
+                </el-step>
+              </el-steps>
+            </el-row>
+          </div>
+        </el-card>
+      </el-row>
     </el-row>
 
   </section>
@@ -191,34 +245,87 @@ import util from "@/common/js/util"; // 全局公共库
 //import Sticky from "@/components/Sticky"; // 粘性header组件
 import { mapGetters } from "vuex";
 import { listXmProjectState } from '@/api/xm/core/xmProjectState';
+import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 
 
 export default {
   computed: {
     ...mapGetters(["userInfo"]),
     finish: function (){
-      return this.selProject.totalCompleteTaskCnt;
+      return this.xmProjectState.totalCompleteTaskCnt;
     },
     notStart: function() {
-      return this.selProject.totalTaskCnt-this.selProject.totalCompleteTaskCnt;
+      return this.xmProjectState.totalTaskCnt-this.xmProjectState.totalCompleteTaskCnt;
     },
     totalTask: function() {
-      return this.selProject.totalTaskCnt;
+      return this.xmProjectState.totalTaskCnt;
     },
     progress1: function (){
-      return Math.round(this.selProject.totalCompleteTaskCnt/this.selProject.totalTaskCnt*100);
+      return Math.round(this.xmProjectState.totalCompleteTaskCnt/this.xmProjectState.totalTaskCnt*100);
     },
-    startTime1: function (){
+    taskStartTime: function (){
       return this.selProject.startTime.substring(0,10);
     },
-    endTime1: function (){
+    taskEndTime: function (){
       return this.selProject.endTime.substring(0,10);
     },
     taskMng: function (){
       return this.selProject.createUsername;
     },
+    workloadProgress:function (){
+      return Math.round(this.xmProjectState.totalActWorkload/this.xmProjectState.totalPlanWorkload*100);
+    },
+    deviation:function (){
+      let now = new Date();
+      let taskStartTime = new Date(this.selProject.startTime);
+      let taskEndTime = new Date(this.selProject.endTime);
+      if(now<=taskEndTime){
+        let allDays=taskEndTime-taskStartTime;
+        return this.xmProjectState.totalActWorkload - Math.round((now-taskStartTime)/allDays*this.xmProjectState.totalPlanWorkload)
+      }else{
+        return this.xmProjectState.totalActWorkload - this.xmProjectState.totalPlanWorkload;
+      }
+    },
+    deviationRate:function (){
+      return Math.round(this.deviation/this.xmProjectState.totalPlanWorkload*100);
+    },
+    remainWorkload:function (){
+      return this.xmProjectState.totalPlanWorkload - this.xmProjectState.totalActWorkload;
+    },
+    planProgress:function (){
+      let now = new Date();
+      let taskStartTime = new Date(this.selProject.startTime);
+      let taskEndTime = new Date(this.selProject.endTime);
+      if(now<=taskEndTime){
+        let allDays=taskEndTime-taskStartTime;
+        return Math.round((now-taskStartTime)/allDays*100)
+      }else{
+        return 100;
+      }
+    },
+    realProgress:function (){
+      if(this.xmProjectState.totalActWorkload < this.xmProjectState.totalPlanWorkload){
+        return Math.round(this.xmProjectState.totalActWorkload/this.xmProjectState.totalPlanWorkload*100)
+      }else{
+        return 100;
+      }
+    },
     xmProjectStateCpd(){
       return this.xmProjectState
+    },
+    calcProjectStatusStep(){
+      if(this.options['projectStatus'] && this.selProject){
+        var index=this.options['projectStatus'].findIndex(i=>{
+          if(i.optionValue==this.selProject.status){
+            return true;
+          }else{
+            return false;
+          }
+        })
+        return index+1;
+      }else{
+        return 0;
+      }
     }
 
   },
@@ -226,16 +333,22 @@ export default {
   props:['selProject'],
   watch:{
     xmProjectStateCpd:function(){
-      this.drawLine1();
-      this.drawLine2();
-      this.drawLine3();
+      this.drawAllBar();
+      this.drawTaskByDate();
+      this.drawPieBug();
     }
   },
   data() {
     return {
       isActive: true,
       load:{ list: false},
-      xmProjectState: []//查询结果
+      xmProjectState: [],//查询结果
+      options:{
+        projectType:[],
+        urgencyLevel:[],
+        priority:[],
+        projectStatus:[],
+      },//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
     };
   },
 
@@ -248,10 +361,9 @@ export default {
       };
       this.load.list = true;
       listXmProjectState(params).then((res) => {
-       
         let tips=res.data.tips;
         if(tips.isOk){
-          this.xmProjectState = res.data.data;
+          this.xmProjectState = res.data.data[0];
         }else{
           this.$message({showClose: true, message: tips.msg, type: 'error' });
         }
@@ -259,9 +371,9 @@ export default {
       }).catch( err => this.load.list = false );
     },
 
-    drawLine1() {
+    drawAllBar() {
       // 基于准备好的dom，初始化echarts实例
-      let myChart1 = this.$echarts.init(document.getElementById("myChart1"));
+      let allChart = this.$echarts.init(document.getElementById("allChart"));
       let option = {
         tooltip: {
           trigger: 'axis',
@@ -272,7 +384,7 @@ export default {
         grid: {
           left: '3%',
           right: '4%',
-          bottom: '3%',
+          bottom: '10%',
           containLabel: true
         },
         yAxis: {
@@ -286,7 +398,7 @@ export default {
           {
             data: [
               {
-                value: 90,
+                value: this.xmProjectState.menuCnt,
                 itemStyle: {
                   normal:{
                     color: '#99CCFF'
@@ -294,7 +406,7 @@ export default {
                 }
               },
               {
-                value: this.selProject.totalTaskCnt,
+                value: this.xmProjectState.totalTaskCnt,
                 itemStyle: {
                   normal:{
                     color: '#99CCFF'
@@ -302,7 +414,7 @@ export default {
                 }
               },
               {
-                value: this.selProject.totalBugCnt,
+                value: this.xmProjectState.totalBugCnt,
                 itemStyle: {
                   normal:{
                     color: '#99CCFF'
@@ -316,10 +428,10 @@ export default {
       };
 
       // 绘制图表
-      myChart1.setOption(option);
+      allChart.setOption(option);
     },
-    drawLine2() {
-      let myChart2 = this.$echarts.init(document.getElementById("myChart2"));
+    drawTaskByDate() {
+      let taskChart = this.$echarts.init(document.getElementById("taskChart"));
       let option = {
         tooltip: {
           trigger: 'axis'
@@ -329,9 +441,9 @@ export default {
           data: ['未开始', '进行中']
         },
         grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
+          left: '1%',
+          right: '3%',
+          bottom: '5%',
           containLabel: true
         },
         toolbox: {
@@ -384,13 +496,14 @@ export default {
       };
 
       // 绘制图表
-      myChart2.setOption(option);
+      taskChart.setOption(option);
     },
-    drawLine3() {
-      let myChart3 = this.$echarts.init(document.getElementById("myChart3"));
+    drawPieBug() {
+      let bugPieChart = this.$echarts.init(document.getElementById("bugPieChart"));
       let option = {
         tooltip: {
-          trigger: 'item'
+          trigger: 'item',
+          formatter: '{b} : {c} ({d}%)'
         },
         legend: {
           orient: 'vertical',
@@ -398,34 +511,35 @@ export default {
         },
         series: [
           {
+            center:['55%','40%'],
             type: 'pie',
-            radius: '50%',
+            radius: '68%',
             data: [
-              {value: this.selProject.totalClosedBugCnt,
+              {value: this.xmProjectState.totalClosedBugCnt,
                 itemStyle: {
                   normal:{
-                    color: '#99CC33'
+                    color: '#5470C6'
                   }
                 },
                 name: '已关闭'},
-              {value: this.selProject.totalResolvedBugCnt,
+              {value: this.xmProjectState.totalResolvedBugCnt,
                 itemStyle: {
                   normal:{
-                    color: '#FF9900'
+                    color: '#91CC75'
                   }
                 },
                 name: '已解决'},
-              {value: this.selProject.totalActiveBugCnt,
+              {value: this.xmProjectState.totalActiveBugCnt,
                 itemStyle: {
                   normal:{
-                    color: '#66CCCC'
+                    color: '#FAC858'
                   }
                 },
                 name: '已激活'},
-              {value: this.selProject.totalConfirmedBugCnt,
+              {value: this.xmProjectState.totalConfirmedBugCnt,
                 itemStyle: {
                   normal:{
-                    color: '#FF6666'
+                    color: '#EE6666'
                   }
                 },
                 name: '已确认'},
@@ -442,7 +556,7 @@ export default {
       };
 
       // 绘制图表
-      myChart3.setOption(option);
+      bugPieChart.setOption(option);
     }
   },
 
@@ -450,6 +564,16 @@ export default {
     this.$nextTick(() => {
       this.getXmProjectState();
     });
+    listOption([{categoryId:'all',itemCode:'projectType'},{categoryId:'all',itemCode:'urgencyLevel'},{categoryId:'all',itemCode:'priority'},{categoryId:'all',itemCode:'projectStatus'}] ).then(res=>{
+      if(res.data.tips.isOk){
+
+        this.options['projectType']=res.data.data.projectType
+        this.options['urgencyLevel']=res.data.data.urgencyLevel
+        this.options['priority']=res.data.data.priority
+        this.options['projectStatus']=res.data.data.projectStatus
+      }
+    });
+
   },
 
 };
@@ -545,7 +669,7 @@ export default {
 }
 
 .el-progress {
-  width: 220px;
+  width: 350px;
 }
 
 .value {
