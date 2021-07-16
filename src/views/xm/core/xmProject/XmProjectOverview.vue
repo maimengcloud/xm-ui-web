@@ -1,11 +1,11 @@
 <template>
-  <section>
+  <section class="page-container padding">
     <el-row  class="page-header">
       <el-col :xs="22" :sm="22" :md="23" :lg="23" :xl="23">
           <span >项目总览</span>
       </el-col>
     </el-row>
-    <div class="page-main">
+    <el-row class="page-main">
       <div class="statistics" v-show="isActive">
         <el-row :gutter="20">
           <el-col :span="8" class="col">
@@ -191,7 +191,7 @@
           </el-col>
         </el-row>
       </div>
-    </div>
+    </el-row>
 
   </section>
 </template>
@@ -226,12 +226,21 @@ export default {
     },
     taskMng: function (){
       return this.selProject.createUsername;
+    },
+    xmProjectStateCpd(){
+      return this.xmProjectState
     }
 
   },
 
   props:['selProject'],
-
+  watch:{
+    xmProjectStateCpd:function(){
+      this.drawLine1();
+      this.drawLine2();
+      this.drawLine3();
+    }
+  },
   data() {
     return {
       isActive: true,
@@ -248,6 +257,7 @@ export default {
       };
 
       listXmProjectState(params).then((res) => {
+        debugger;
         let tips=res.data.tips;
         if(tips.isOk){
           this.xmProjectState = res.data.data[0];
