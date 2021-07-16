@@ -1,14 +1,13 @@
 <template>
   <section class="page-container padding">
-    <el-row  class="page-header">
+    <el-row  class="page-header page-height-10">
       <el-col :xs="22" :sm="22" :md="23" :lg="23" :xl="23">
           <span >项目总览</span>
       </el-col>
     </el-row>
-    <el-row class="page-main">
-      <div class="statistics" v-show="isActive">
-        <el-row :gutter="20">
-          <el-col :span="8" class="col">
+    <el-row class="page-main page-height-75" style="overflow-x: hidden;">
+        <el-row :gutter="10">
+          <el-col :span="8" >
             <el-card class="box-card" style="padding:0px ;height:425px">
               <div slot="header" class="clearfix">
                 <span>项目信息</span>
@@ -109,7 +108,7 @@
               </el-row>
             </el-card>
           </el-col>
-          <el-col :span="8" class="col">
+          <el-col :span="8" >
             <el-card class="box-card" style="height:425px">
               <div slot="header" class="clearfix">
                 <span>所有工作项及其完成情况</span>
@@ -119,7 +118,7 @@
               </div>
             </el-card>
           </el-col>
-          <el-col :span="8" class="col">
+          <el-col :span="8" >
             <el-card class="box-card" style="height:425px">
               <div slot="header" class="clearfix">
                 <span>缺陷情况</span>
@@ -129,10 +128,7 @@
               </div>
             </el-card>
           </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
-          <el-col :span="12" class="col">
+          <el-col :span="8" >
             <el-card class="box-card" style="padding:0px ;height:425px">
               <div slot="header" class="clearfix">
                 <span>任务每日状态趋势</span>
@@ -142,7 +138,7 @@
               </div>
             </el-card>
           </el-col>
-          <el-col :span="12" class="col">
+          <el-col :span="8" >
             <el-card class="box-card" style="padding:0px ;height:425px">
               <div slot="header" class="clearfix">
                 <span>项目工时</span>
@@ -190,7 +186,6 @@
             </el-card>
           </el-col>
         </el-row>
-      </div>
     </el-row>
 
   </section>
@@ -200,7 +195,7 @@
 import util from "@/common/js/util"; // 全局公共库
 //import Sticky from "@/components/Sticky"; // 粘性header组件
 import { mapGetters } from "vuex";
-import { listXmProjectState } from "@/api/xm/core/xmProjectState";
+import { listXmProjectState } from '@/api/xm/core/xmProjectState';
 
 
 export default {
@@ -244,29 +239,44 @@ export default {
   data() {
     return {
       isActive: true,
-      xmProjectState: null,//查询结果
+      load:{ list: false},
+      xmProjectState: []//查询结果
     };
   },
 
   methods:{
     //获取对应的xmProjectsTate
-    getXmProjectState(){
+    /*getXmProjectState(){
       let params = {
         projectId:this.selProject.id,
         branchId:this.userInfo.branchId
       };
-
+      this.load.list = true;
       listXmProjectState(params).then((res) => {
         debugger;
         let tips=res.data.tips;
         if(tips.isOk){
-          this.xmProjectState = res.data.data[0];
+          this.xmProjectState = res.data.data;
         }else{
           this.$message({showClose: true, message: tips.msg, type: 'error' });
         }
+        this.load.list = false;
       }).catch( err => this.load.list = false );
-    },
+    },*/
 
+    getXmProjectState(){
+      var params = {
+        projectId:this.selProject.id
+      }
+      listXmProjectState(params).then(res=>{
+        var tips = res.data.tips;
+        if(tips.isOk){
+          if(res.data.data.length>0){
+            this.xmProjectState=res.data.data[0]
+          }
+        }
+      });
+    },
     drawLine1() {
       // 基于准备好的dom，初始化echarts实例
       let myChart1 = this.$echarts.init(document.getElementById("myChart1"));
@@ -458,11 +468,6 @@ export default {
     this.$nextTick(() => {
       this.getXmProjectState();
     });
-    this.drawLine1();
-    this.drawLine2();
-    this.drawLine3();
-    console.log("getXmProjectState():"+this.xmProjectState);
-    console.dir(this.xmProjectState, {depth:null});
   },
 
 };
