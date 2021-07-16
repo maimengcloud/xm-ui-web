@@ -17,7 +17,7 @@
 			<el-button   @click.native="showTagSelect(false)"  >标签查找</el-button>
 			<el-button   @click.native="showTagSelect(true)"  >打标签</el-button>
 	    </el-row> 
-		<el-row class="page-main">
+		<el-row class="page-main padding-top">
 			<el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4" class="hidden-sm-and-down">
 				<category-tree ref="categoryTree" multiple :expandOnClickNode="false" :defaultExpandAll="true" show-checkbox  :current-key="addForm.categoryId"  v-on:check-change="handleCategoryCheckChange" ></category-tree> 
 			</el-col>

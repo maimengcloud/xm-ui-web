@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<el-row  class="page-container border">
+		<el-row  class="page-container border padding">
 			<el-row class="page-header">
 				<el-input v-model="filters.key" style="width:270px;"  placeholder="模糊查询">
 					<template slot="append">
@@ -12,7 +12,7 @@
 					icon="el-icon-download"
 				>导出数据</el-button>
 			</el-row>
-			<el-row class="page-main">
+			<el-row class="page-main padding-top">
 				<!--列表 Model act_de_model-->
 				<el-table  ref="table" :height="tableHeight" :data="models"    highlight-current-row v-loading="listLoading" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 					<el-table-column type="index" width="40"></el-table-column>

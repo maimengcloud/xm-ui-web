@@ -1,7 +1,7 @@
 <template>
   <section>
-    <el-row v-if="flowStartVisible==false" class="page-container border">
-      <el-row class="page-header">
+    <el-row v-if="flowStartVisible==false" class="page-container border padding">
+      <el-row>
         <el-input v-model="filters.key" style="width:270px;" placeholder="模糊查询">
         </el-input>
         <el-button type="primary" v-loading="listLoading" :disabled="listLoading" v-on:click="searchProcdefs"
@@ -9,7 +9,7 @@
         <el-tag type="info" v-if="this.procdefs.length==0">如果没有找到流程，请将业务编码【{{this.filters.params.bizKey}}】与流程进行关联
         </el-tag>
       </el-row>
-      <el-row class="page-main">
+      <el-row class="page-main padding-top">
         <!--列表 Procdef act_re_procdef-->
         <el-table ref="procdefsTable" :height="tableHeight" :data="procdefs" highlight-current-row
           v-loading="listLoading" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
@@ -347,7 +347,7 @@
   }
 </style>
 
-<style>
+<style scoped>
   .el-input-group__append,
   .el-input-group__prepend {
     background-color: #409EFF !important;

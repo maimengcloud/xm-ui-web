@@ -1,7 +1,7 @@
 <template>
   <section>
-    <el-row class="page-container">  
-        <el-row class="page-header">
+    <el-row class="page-container padding">  
+        <el-row class="page-header ">
           <el-select v-model="filters.filterType" clearable placeholder="查询范围" class="hidden-md-and-down">
             <el-option value="" label="全部"> </el-option>
             <el-option value="startUserId" label="我发起"> </el-option>
@@ -16,7 +16,7 @@
             unlink-panels range-separator="-" start-placeholder="创建日期" end-placeholder="创建日期" value-format="yyyy-MM-dd"
             :default-time="['00:00:00','23:59:59']" :picker-options="pickerOptions">
           </el-date-picker>
-          <el-input v-model="filters.key"  placeholder="模糊查询"> 
+          <el-input v-model="filters.key" style="width:20%;" placeholder="模糊查询"> 
           </el-input>
           <el-button type="primary" v-on:click="searchExecutions"  icon="el-icon-search">查询</el-button>
            <el-button  @click="moreFilterVisible=true" icon="el-icon-more" circle></el-button>
@@ -126,7 +126,7 @@
           </el-drawer>
         </el-row>
         <!--列表 Execution act_ru_execution-->
-        <el-row v-if="showCalendar==false" class="page-main">
+        <el-row v-if="showCalendar==false" class="page-main padding-top">
           <el-table ref="table" :height="tableHeight" :data="executions" highlight-current-row
             v-loading="listLoading" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
             <el-table-column type="selection" width="40"></el-table-column>

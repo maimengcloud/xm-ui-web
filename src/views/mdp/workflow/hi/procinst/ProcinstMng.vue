@@ -1,6 +1,6 @@
 <template>
-  <section>
-    <el-row class="page-container border"> 
+  <section >
+    <el-row class="page-container padding"> 
         <!--列表 Procinst act_hi_procinst-->
         <el-row class="page-header">
           <el-select v-model="filters.filterType" clearable placeholder="查询范围" class="hidden-lg-and-down">
@@ -18,7 +18,7 @@
             unlink-panels range-separator="-" start-placeholder="创建日期" end-placeholder="创建日期" value-format="yyyy-MM-dd"
             :default-time="['00:00:00','23:59:59']" :picker-options="pickerOptions">
           </el-date-picker>
-          <el-input v-model="filters.key" placeholder="模糊查询">  </el-input>
+          <el-input v-model="filters.key" style="width:20%;" placeholder="模糊查询">  </el-input>
           <el-button type="primary" class="padding-left" v-on:click="searchProcinsts" icon="el-icon-search">查询</el-button>
           <el-button class="padding-left"  icon="el-icon-more" @click="moreFilterVisible=true" circle></el-button>
           <el-drawer title="更多查询条件" :visible.sync="moreFilterVisible"   append-to-body :size="400">
@@ -104,7 +104,7 @@
             </el-row>
           </el-drawer>
         </el-row>
-        <el-row class="page-main">
+        <el-row class="page-main padding-top">
           <el-table ref="table" :height="tableHeight" :data="procinsts" highlight-current-row
             v-loading="listLoading" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
             <el-table-column type="selection" width="40"></el-table-column>

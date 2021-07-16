@@ -1,7 +1,7 @@
 <template>
   <section>
-    <el-row class="page-container border">
-        <el-row class="page-header">
+    <el-row class="page-container border padding">
+        <el-row>
           <el-select v-model="filters.procCategory" clearable filterable placeholder="请选择分类">
             <el-option v-for="item in categorys" :key="item" :label="item" :value="item"></el-option>
           </el-select>
@@ -23,7 +23,7 @@
               v-on:check-change="handleCategoryCheckChange"></category-tree>
           </el-drawer>
         </el-row>
-        <el-row class="page-main">
+        <el-row class="page-main padding-top">
           <!--列表 Procdef act_re_procdef-->
           <el-table ref="procdefsTable" :height="tableHeight" :data="procdefs" highlight-current-row
             v-loading="listLoading" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">

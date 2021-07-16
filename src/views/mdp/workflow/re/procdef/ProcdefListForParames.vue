@@ -1,19 +1,19 @@
 <template>
   <section>
-    <el-row class="page-container border">
-          <el-row class="page-header">
+    <el-row class="page-container border padding">
+          <el-row>
             <el-select v-model="filters.procCategory" clearable filterable placeholder="请选择分类">
               <el-option v-for="item in categorys" :key="item" :label="item" :value="item"></el-option>
             </el-select>
 
-            <el-input v-model="filters.key" placeholder="模糊查询">
+            <el-input v-model="filters.key" style="width:20%;" placeholder="模糊查询">
             </el-input>
             <el-button type="primary"   v-on:click="searchProcdefs" icon="el-icon-search">查询</el-button>
             <el-button @click.native="showTagSelect(false)" icon="el-icon-search" style="margin-left: 13px;" class="hidden-sm-and-down">标签</el-button>
             <el-button @click.native="showTagSelect(true)" icon="el-icon-plus" class="hidden-sm-and-down">标签</el-button>
             <el-button @click="handleDownload" 	icon="el-icon-download" class="hidden-md-and-down">导出数据</el-button>
           </el-row>
-          <el-row class="page-main">
+          <el-row class="page-main padding-top">
             <!--列表 Procdef act_re_procdef-->
             <el-table
               ref="table" :height="tableHeight"

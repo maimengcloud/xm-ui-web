@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container page-full-height padding">
+	<section class="page-container padding">
 		<el-row class="page-header">    
 				<el-button class="hidden-md-and-down"   type="text"  @click.native="handleCancel" icon="el-icon-back">取消</el-button>  
 				<el-button   type="text"  v-if="screenWidth>=500"  @click.native="handlePrint" icon="el-icon-printer">打印</el-button>    
@@ -42,19 +42,19 @@
 			<el-row style="padding-top:10px;"> 
 				<el-col :span="24" class="wf-sub-sub-title">  
 					<font  v-if="addForm.tagNames" >
-					<el-tag v-for="tag in (addForm.tagNames.split(','))" :key="tag"
+					<el-tag  v-for="tag in (addForm.tagNames.split(','))" :key="tag"
 						:type="'warning'"
 						:disable-transitions="false" >
 						{{tag}}
 					</el-tag>
 					</font>
-					发起部门: {{addForm.startDeptName}} &nbsp;&nbsp;&nbsp;
-					由&nbsp;{{addForm.startUsername}}&nbsp;于&nbsp;
-					{{addForm.startDate}} &nbsp;发起
+					发起部门: <font class="name-font">{{addForm.startDeptName}} </font>&nbsp;&nbsp;&nbsp;
+					由&nbsp; <font class="name-font">{{addForm.startUsername}}</font>&nbsp;于&nbsp;
+					 <font class="name-font">{{addForm.startDate}}</font> &nbsp;发起
 					</el-col>   
 			</el-row> 
 		</el-row>
-		<el-row class="page-context" style="padding-top:10px;">
+		<el-row class="page-main page-height-75 padding-top">
 			<el-row v-show="showMainContextOnly==true">
 				<div style="padding: 20px;" v-html="addForm.mainContext"></div>
 			</el-row>
@@ -243,7 +243,7 @@
 				</el-dialog> 
 			</el-row>
 		</el-row>
-		<el-row class="page-bottom">  
+		<el-row>  
 			<el-button    @click.native="handleCancel" icon="el-icon-back">取消</el-button>  
 			<el-button   v-if="screenWidth>=500"  @click.native="handlePrint" icon="el-icon-printer">打印</el-button>    
 			<el-button   v-if="isArchive"  @click.native="handleArchive" icon="el-icon-s-grid">归档</el-button> 
@@ -1138,18 +1138,19 @@
 <style scoped> 
 .wf-title {
 	text-align: center; 
-	font-size:2.5em;  
+	font-size:1.2em;  
 	overflow-x:auto;
 	overflow-y:auto;
 	
 }
 .wf-sub-title {
 	text-align: center;  
-	font-size:1.5em;  
+	font-size:1.1em;  
 	overflow-x:auto;
 	overflow-y:auto;
 }  
 .wf-sub-sub-title{ 
+	font-size:0.6em;  
 	text-align: center;  
 }
  .wf-main-context-box {  
@@ -1168,17 +1169,11 @@
 	text-align:center;
 	float:left;
 	padding-top:5px;
-} 
-.page-title{
-	height: calc(10vh);
-	overflow-x:auto;
-	overflow-y:auto;
-}
-.page-context{
-	height: calc(70vh);
-	overflow: auto;
-}
+}  
 .page-bottom{
 	height: calc(5vh); 
+}
+.name-font{
+	color:lightseagreen;
 }
 </style>

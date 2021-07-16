@@ -1,7 +1,7 @@
 <template>
   <section>
-    <el-row class="page-container page-full-height">  
-        <el-row class="page-header"> 
+    <el-row class="page-container">  
+        <el-row class="page-header padding"> 
           <el-select v-model="filters.procCategory" clearable filterable placeholder="选择分类">
             <el-option v-for="item in categorys" :key="item" :label="item" :value="item"></el-option>
           </el-select>

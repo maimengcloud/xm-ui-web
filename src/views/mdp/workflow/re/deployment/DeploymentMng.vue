@@ -1,6 +1,6 @@
 <template>
   <section>
-    <el-row class="page-container border">
+    <el-row class="page-container border padding">
       <el-row  class="page-header">
         <el-select v-model="filters.category" clearable filterable placeholder="请选择分类">
           <el-option v-for="item in categorys" :key="item" :label="item" :value="item"></el-option>
@@ -12,7 +12,7 @@
         </el-input>
         <el-button @click="handleDownload" icon="el-icon-download" style="">导出数据</el-button>
       </el-row>
-      <el-row class="page-main">
+      <el-row class="page-main padding-top">
         <!--列表 Deployment act_re_deployment-->
         <el-table
           ref="table" :height="tableHeight"
