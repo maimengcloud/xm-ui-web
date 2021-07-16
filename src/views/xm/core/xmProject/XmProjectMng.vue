@@ -1,5 +1,5 @@
 <template>
-	<section>
+	<section class="page-container">
 		<el-row>
 			<el-menu  active-text-color="#00abfc" :default-active="menukey"   mode="horizontal" @select="handleSelect">
 				<el-menu-item index="all">全部</el-menu-item>
@@ -70,9 +70,9 @@
 			</el-menu>
 			 
 		</el-row> 
-		<el-row  class="page-main"> 
+		<el-row  class="page-main page-height-80"> 
 			<!--列表 XmProject xm_project-->
-			<el-row v-show="showType" v-loading="load.list" class="project-box">
+			<el-row v-show="showType" v-loading="load.list">
 				<el-col  v-cloak v-for="(p,i) in ScreenData" :key="i" :xl="4" :lg="6" :md="8" :sm="12">
 					<el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always">
 						<div class="project-name" title="这是项目名称">{{p.name}}</div>
