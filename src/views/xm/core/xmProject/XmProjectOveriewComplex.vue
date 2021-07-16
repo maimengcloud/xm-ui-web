@@ -61,10 +61,10 @@
           <template slot="title"> 
             <span slot="title">迭代变更</span>
           </template>    
-            <el-menu-item index="menu-change-review">
+            <el-menu-item index="iteration-change-review">
               <span slot="title">迭代计划评审</span> 
             </el-menu-item> 
-            <el-menu-item index="menu-change-border-review">  
+            <el-menu-item index="iteration-change-border-review">  
               <span slot="title">迭代上线申请</span> 
             </el-menu-item>  
         </el-submenu> 
