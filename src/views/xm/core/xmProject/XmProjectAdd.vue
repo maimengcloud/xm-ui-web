@@ -1,16 +1,14 @@
 <template>
-	<section class="page-container page-full-height padding border">
-		<el-row> 
+	<section class="page-container padding border">
+		<el-row class="page-main page-height-90"> 
 		<!--编辑界面 XmProject xm_project--> 
-			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">  
-					
-
-					<el-form-item label="项目名称" prop="name">
-						<el-input v-model="addForm.name" placeholder="项目名称" ></el-input>
-					</el-form-item> 
-					<el-form-item label="项目编号" prop="code">
-						<el-input v-model="addForm.code" placeholder="项目编号，不可为空" ></el-input>
-					</el-form-item> 
+			<el-form :model="addForm"  :rules="addFormRules" ref="addForm">   
+					<el-form-item label="项目编号|名称" prop="name">
+						<el-row>
+							<el-input v-model="addForm.code" style="width:20%;" placeholder="项目编号，不可为空" ></el-input>
+							<el-input style="width:50%;" v-model="addForm.name" placeholder="项目名称" ></el-input>
+						</el-row>
+					</el-form-item>  
 					<el-form-item label="项目类型" prop="xmType"> 
 					 	 <el-radio-group v-model="addForm.xmType">
 							<el-radio v-for="(i,index) in options['projectType']" :label="i.optionValue" :key="index">{{i.optionName}}</el-radio> 
@@ -28,11 +26,7 @@
 					</el-form-item>   
 					<el-form-item label="预算控制" prop="priority">
 					 	<el-checkbox  v-model="addForm.budgetCtrl"  true-label="1" false-label="0" >严格控制预算</el-checkbox> 注：在项目->阶段->任务 每个环节进行严格的预算控制
-					</el-form-item>   
-					<el-form-item label="项目团队" prop="groupUsername">
-						<el-button @click.native="showProjectGroups">团队维护</el-button>
-					</el-form-item>  
-					
+					</el-form-item>     
 					<el-form-item label="项目预估" >
 						   <el-tabs>
 								<el-tab-pane label="工作量及人力成本" name="planWorkload">
@@ -50,7 +44,7 @@
 											:default-time="['00:00:00','23:59:59']"
 											:picker-options="pickerOptions"
 										></el-date-picker>    
-										<el-input  style="width:150px;" type="number" v-model="addForm.planWorkingHours" :precision="2" :step="8" :min="0" placeholder="预计工时"></el-input><el-tag>参考工时{{autoParams.planWorkingHours}}小时,工作日{{autoParams.weekday}}天</el-tag> <el-button @click.native="fillPlanWorkingHoursToField" type="success">填充工时</el-button>
+										<el-input  style="width:150px;" type="number" v-model="addForm.planWorkingHours" :precision="2" :step="8" :min="0" placeholder="预计工时"></el-input><el-tag>参考工时{{autoParams.planWorkingHours}}小时,工作日{{autoParams.weekday}}天</el-tag>  
 										
 									</el-row>
 									<el-divider></el-divider>
@@ -65,19 +59,19 @@
 									<el-divider></el-divider>
 									<el-row>
 										<el-col :span="4">内购</el-col>
-										<el-col :span="4"><el-input style="width:150px;"  type="number" v-model="addForm.planInnerUserCnt" :precision="0" :step="1" :min="0" placeholder="内购人数"></el-input>  
+										<el-col :span="4"><el-input style="width:120px;"  type="number" v-model="addForm.planInnerUserCnt" :precision="0" :step="1" :min="0" placeholder="内购人数"></el-input>  
 										</el-col>
 										<el-col :span="4">{{autoParams.planInnerUserWorkload}}人时</el-col>
-										<el-col :span="4"><el-input  style="width:150px;" type="number" v-model="addForm.planInnerUserPrice" :precision="0" :step="1" :min="0" placeholder="预计内部人时单价"></el-input> </el-col>
+										<el-col :span="4"><el-input  style="width:120px;" type="number" v-model="addForm.planInnerUserPrice" :precision="0" :step="1" :min="0" placeholder="预计内部人时单价"></el-input> </el-col>
 										<el-col :span="8">{{this.toFixed(autoParams.planInnerUserAt)}}元,{{this.toFixed(autoParams.planInnerUserAt/10000)}} 万元</el-col>
 									</el-row>
 									<el-divider></el-divider>
 									<el-row>
 										<el-col :span="4">外购</el-col>
-										<el-col :span="4"><el-input  style="width:150px;" type="number" v-model="addForm.planOutUserCnt" :precision="0" :step="1" :min="0" placeholder="外购人数"></el-input>  
+										<el-col :span="4"><el-input  style="width:120px;" type="number" v-model="addForm.planOutUserCnt" :precision="0" :step="1" :min="0" placeholder="外购人数"></el-input>  
 										</el-col>
 										<el-col :span="4">{{autoParams.planOutUserWorkload}}人时</el-col>
-										<el-col :span="4"><el-input  style="width:150px;" type="number" v-model="addForm.planOutUserPrice" :precision="0" :step="1" :min="0" placeholder="预计外购人时单价"></el-input> </el-col>
+										<el-col :span="4"><el-input  style="width:120px;" type="number" v-model="addForm.planOutUserPrice" :precision="0" :step="1" :min="0" placeholder="预计外购人时单价"></el-input> </el-col>
 										<el-col :span="4">{{autoParams.planOutUserAt }} 元 {{autoParams.planOutUserAt/10000 }}万元</el-col>
 									
 									</el-row>
@@ -94,30 +88,27 @@
 								</el-tab-pane>
 								<el-tab-pane label="成本总览" name="planTotalCost">
 									<el-row>
-										内购：  <el-input style="width:150px;" type="number" v-model="addForm.planInnerUserAt" :precision="2" :step="1000" :min="0" placeholder="内部人力成本总预算"></el-input> <el-tag>参考{{this.toFixed(autoParams.planInnerUserAt)}}元，{{this.toFixed(autoParams.planInnerUserAt/10000)}}万元</el-tag>
-										外购：  <el-input style="width:150px;" type="number" v-model="addForm.planOutUserAt" :precision="2" :step="1000" :min="0" placeholder="外购人力成本总预算"></el-input> <el-tag>参考{{this.toFixed(autoParams.planOutUserAt)}}元，{{this.toFixed(autoParams.planOutUserAt/10000)}}万元</el-tag>
-										非人力：<el-input style="width:150px;" type="number" v-model="addForm.planNouserAt" :precision="2" :step="1000" :min="0" placeholder="人力成本总预算"></el-input> <el-tag>参考{{this.toFixed(autoParams.planNouserAt)}}元，{{this.toFixed( autoParams.planNouserAt/10000)}}万元</el-tag>
+										内购：  <el-input style="width:120px;" type="number" v-model="addForm.planInnerUserAt" :precision="2" :step="1000" :min="0" placeholder="内部人力成本总预算"></el-input> <el-tag> {{this.toFixed(autoParams.planInnerUserAt/10000)}}万元</el-tag>
+										外购：  <el-input style="width:120px;" type="number" v-model="addForm.planOutUserAt" :precision="2" :step="1000" :min="0" placeholder="外购人力成本总预算"></el-input> <el-tag> {{this.toFixed(autoParams.planOutUserAt/10000)}}万元</el-tag>
+										非人力：<el-input style="width:120px;" type="number" v-model="addForm.planNouserAt" :precision="2" :step="1000" :min="0" placeholder="人力成本总预算"></el-input> <el-tag> {{this.toFixed( autoParams.planNouserAt/10000)}}万元</el-tag>
 									</el-row>
 									<el-divider></el-divider>
 									<el-row>
-										合计： <el-input style="width:150px;" type="number" v-model="addForm.planTotalCost" :precision="2" :step="1000" :min="0" placeholder="总成本预算"></el-input> <el-tag>参考{{this.toFixed(autoParams.planTotalCost)}}元，{{this.toFixed(autoParams.planTotalCost/10000)}}万元</el-tag>
-										<el-button @click.native="fillPlanCostAtToField" type="success">使用参考值自动填充</el-button>
-									</el-row>
+										合计： <el-input style="width:150px;" type="number" v-model="addForm.planTotalCost" :precision="2" :step="1000" :min="0" placeholder="总成本预算"></el-input> <el-tag> {{this.toFixed(autoParams.planTotalCost/10000)}}万元</el-tag>
+ 									</el-row>
 								</el-tab-pane> 
 								<el-tab-pane label="合同收入" name="contractAmt">
 									<el-row> 
-										预计收款总额：<el-input style="width:150px;" type="number" v-model="addForm.totalReceivables" :precision="2" :step="1000" :min="0" placeholder="预计总收款金额"></el-input> <el-tag>参考{{this.toFixed(autoParams.totalReceivables)}}元，{{this.toFixed(autoParams.totalReceivables/10000)}}万元</el-tag>
-										合同总金额  ：<el-input style="width:150px;" type="number" v-model="addForm.contractAmt" :precision="2" :step="1000" :min="0" placeholder="合同总金额"></el-input> <el-tag>参考{{this.toFixed(autoParams.contractAmt)}}元，{{this.toFixed(autoParams.contractAmt/10000)}}万元</el-tag>
-										<el-button @click.native="fillTotalReceivablesToField" type="success">使用参考值自动填充</el-button>
-									</el-row>
+										预计收款总额：<el-input style="width:150px;" type="number" v-model="addForm.totalReceivables" :precision="2" :step="1000" :min="0" placeholder="预计总收款金额"></el-input> <el-tag> {{this.toFixed(autoParams.totalReceivables/10000)}}万</el-tag>
+										合同总金额  ：<el-input style="width:150px;" type="number" v-model="addForm.contractAmt" :precision="2" :step="1000" :min="0" placeholder="合同总金额"></el-input> <el-tag> {{this.toFixed(autoParams.contractAmt/10000)}}万</el-tag>
+ 									</el-row>
 								</el-tab-pane>  
 								<el-tab-pane label="毛利水平" name="budgetTaxRate">
 									<el-row> 
-										税率：<el-input style="width:150px;" type="number" v-model="addForm.taxRate" :precision="2" :step="0.01" :min="0" :max="0.99" placeholder="税率"></el-input> 
-										考核标准毛利率：<el-input style="width:150px;" type="number" v-model="addForm.budgetMarginRate" :precision="2" :step="0.01" :min="0" :max="0.99" placeholder="毛利率"></el-input> 
+										税率：<el-input style="width:120px;" type="number" v-model="addForm.taxRate" :precision="2" :step="0.01" :min="0" :max="0.99" placeholder="税率"></el-input> 
+										考核标准毛利率：<el-input style="width:120px;" type="number" v-model="addForm.budgetMarginRate" :precision="2" :step="0.01" :min="0" :max="0.99" placeholder="毛利率"></el-input> 
 										当前毛利率为：<el-tag>{{toFixed(parseFloat2(autoParams.currentBudgetMarginRate)*100,2)}}%</el-tag>
-										<el-button @click.native="fillBudgetMarginRateToField" type="success">使用预估值自动填充</el-button>
-									</el-row>
+ 									</el-row>
 								</el-tab-pane>  
 								
 							</el-tabs>
@@ -125,16 +116,14 @@
 					 
 					<el-form-item label="项目描述" prop="description">
 						<el-input type="textarea" :rows="6" v-model="addForm.description" placeholder="项目描述" ></el-input>
-					</el-form-item>    
-					<el-form-item> 
-						<el-col :span="24">  
-							<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">提交</el-button>  
-						</el-col> 
-					</el-form-item>  
+					</el-form-item>     
 			</el-form>  
 
 		</el-row>
-		
+		<el-row>
+			<el-button @click.native="handleCancel">取消</el-button>  
+			<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">提交</el-button>  
+		</el-row>
 			<el-drawer
 				append-to-body
 				title="项目分组"
@@ -271,7 +260,14 @@
 		  },
 		  'totalReceivables':function(){
 			  //this.addForm.budgetMarginRate=this.toFixed((this.addForm.totalReceivables-this.addForm.planTotalCost)/this.addForm.totalReceivables,4)
-		  }
+		  },
+		  
+		  autoParams(){ 
+			  this.fillPlanWorkingHoursToField()
+			  this.fillPlanCostAtToField();
+			  this.fillTotalReceivablesToField();
+			  this.fillBudgetMarginRateToField()
+		  },
 	    },
 		data() { 
 			 const beginDate = new Date();
@@ -338,8 +334,7 @@
 			},
 
 			// 取消按钮点击 父组件监听@cancel="addFormVisible=false" 监听
-			handleCancel:function(){
-				this.$refs['addForm'].resetFields();
+			handleCancel:function(){ 
 				this.$emit('cancel');
 			},
 			//编辑提交XmProject xm_project父组件监听@submit="afterEditSubmit"

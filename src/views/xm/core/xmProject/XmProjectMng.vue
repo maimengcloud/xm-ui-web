@@ -16,7 +16,7 @@
 				<el-menu-item class="hidden-md-and-down" index="myExecuserStatus4">我验收失败</el-menu-item>
 				<el-menu-item class="hidden-md-and-down" index="myExecuserStatus5">我付款中</el-menu-item>
 				<el-menu-item class="hidden-lg-and-down" index="myExecuserStatus6">我付款成功</el-menu-item>
-				<el-menu-item class="hidden-lg-and-down" index="myExecuserStatus7">我放弃</el-menu-item>
+				<el-menu-item class="hidden-lg-and-down" index="myExecuserStatus7">我放弃</el-menu-item> 
 				<!-- <el-submenu index="7">
 					<template slot="title">更多筛选</template>
 					<el-menu-item index="7-1">选项1</el-menu-item>
@@ -67,6 +67,7 @@
 					</el-row>
 					<el-button type="text" class="right-btn" slot="reference" icon="el-icon-d-arrow-right"></el-button>
 				</el-popover>
+				 <el-button type="primary" size="mini" @click="showAdd"  icon="el-icon-plus" circle></el-button>
 			</el-menu>
 			 
 		</el-row> 
@@ -179,7 +180,10 @@
 			</el-table>
 			<el-pagination v-show="!showType" layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		</el-row>
-		<el-drawer title="项目编辑" :visible.sync="editFormVisible"  size="50%"  :close-on-click-modal="false" append-to-body>
+		<el-drawer title="项目新增" :visible.sync="addFormVisible" :with-header="false" size="50%"  :close-on-click-modal="false" append-to-body>
+			<xm-project-add :sel-project="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-add>
+		</el-drawer>
+		<el-drawer title="项目编辑" :visible.sync="editFormVisible" :with-header="false"  size="50%"  :close-on-click-modal="false" append-to-body>
 			<xm-project-edit :sel-project="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-edit>
 		</el-drawer>
 		<el-drawer :title="selectProject==null?'项目明细':selectProject.name" center :fullscreen="true" :visible.sync="showInfo"  size="50%"  :close-on-click-modal="false" append-to-body>
