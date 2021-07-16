@@ -20,10 +20,10 @@
      <error-log class="errLog-container right-menu-item hidden-sm-and-down"></error-log>
 		 
  
-      <screenfull class="screenfull right-menu-item"></screenfull> 
-      <lang-select class="international right-menu-item hidden-sm-and-down"></lang-select>
+      <screenfull class="screenfull right-menu-item hidden-md-and-down"></screenfull> 
+      <lang-select class="international right-menu-item hidden-md-and-down"></lang-select>
 
-      <el-tooltip class="hidden-sm-and-down"  effect="dark" :content="$t('navbar.theme')" placement="bottom">
+      <el-tooltip class="hidden-md-and-down"  effect="dark" :content="$t('navbar.theme')" placement="bottom">
         <theme-picker class="theme-switch right-menu-item"></theme-picker>
       </el-tooltip>
 
