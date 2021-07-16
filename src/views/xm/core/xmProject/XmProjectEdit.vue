@@ -1,44 +1,35 @@
 <template>
-	<section class="page-container page-full-height padding border">
-		<el-row> 
+	<section class="page-container padding border">
+		<el-row class="padding-bottom">
+			<el-steps :active="calcProjectStatusStep" simple finish-status="success">
+ 				<el-step  v-for="(i,index) in options['projectStatus']" :title="i.optionName" :key="index">
+					 <el-row slot="title" @click.native.stop="editForm.status=i.optionValue">
+						 {{i.optionName}} 
+					 </el-row>
+				</el-step> 
+			</el-steps>
+		</el-row>
+		<el-row class="page-main page-height-70"> 
 		<!--编辑界面 XmProject xm_project--> 
 			<div ref="editFormDiv">
-				<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm" class="editForm">  
-						
-
-						<el-form-item label="项目名称" prop="name">
-							<el-input v-model="editForm.name" placeholder="项目名称" ></el-input>
-						</el-form-item> 
-						<el-form-item label="项目编号" prop="code">
-							<el-input v-model="editForm.code" placeholder="项目编号，不可为空" ></el-input>
-						</el-form-item> 
-						<el-form-item label="项目状态" prop="status"> 
-							<el-radio-group v-model="editForm.status">
-								<el-radio v-for="(i,index) in options['projectStatus']" :label="i.optionValue" :key="index">{{i.optionName}}</el-radio> 
-							</el-radio-group>  
-						</el-form-item> 
-						<el-form-item label="项目类型" prop="xmType"> 
-							<el-radio-group v-model="editForm.xmType">
-								<el-radio v-for="(i,index) in options['projectType']" :label="i.optionValue" :key="index">{{i.optionName}}</el-radio> 
-							</el-radio-group>  
-						</el-form-item> 
-						<el-form-item label="紧急程度" prop="urgent">
-							<el-radio-group v-model="editForm.urgent">
-								<el-radio v-for="(i,index) in options['urgencyLevel']" :label="i.optionValue" :key="index">{{i.optionName}}</el-radio> 
-							</el-radio-group>   
+				<el-form :model="editForm"  label-width="150px" :rules="editFormRules" ref="editForm" class="editForm">   
+						<el-form-item label="项目编号|名称" prop="name">
+							<el-input v-model="editForm.code" placeholder="项目编号，不可为空" style="width:20%;" ></el-input><el-input style="width:80%;" v-model="editForm.name" placeholder="项目名称" ></el-input>
 						</el-form-item>  
-						<el-form-item label="优先程度" prop="priority">
-							<el-radio-group v-model="editForm.priority">
-								<el-radio v-for="(i,index) in options['priority']" :label="i.optionValue" :key="index">{{i.optionName}}</el-radio> 
-							</el-radio-group> 
+						<el-form-item label="项目属性" prop="xmType"> 
+							<el-select v-model="editForm.xmType">
+								<el-option v-for="(i,index) in options['projectType']" :label="i.optionName" :value="i.optionValue" :key="index"></el-option> 
+							</el-select>   
+							<el-select v-model="editForm.urgent">
+								<el-option v-for="(i,index) in options['urgencyLevel']" :label="i.optionName" :value="i.optionValue" :key="index"></el-option> 
+							</el-select>    
+							<el-select v-model="editForm.priority">
+								<el-option v-for="(i,index) in options['priority']" :label="i.optionName" :value="i.optionValue" :key="index"></el-option> 
+							</el-select> 
 						</el-form-item>   
 						<el-form-item label="预算控制" prop="priority">
 							<el-checkbox  v-model="editForm.budgetCtrl"  true-label="1" false-label="0" >严格控制预算</el-checkbox> 注：在项目->阶段->任务 每个环节进行严格的预算控制
-						</el-form-item> 
-						<el-form-item label="项目团队" prop="groupUsername">
-							<el-button @click.native="showProjectGroups">团队维护</el-button>
 						</el-form-item>  
-						
 						<el-form-item label="工期及成本预估" >  
 							<el-row>
 								<el-date-picker
@@ -122,29 +113,20 @@
 						</el-form-item>  
 						<el-form-item label="项目描述" prop="description">
 							<el-input type="textarea" :rows="6" v-model="editForm.description" placeholder="项目描述" ></el-input>
-						</el-form-item>    
-						<el-form-item> 
-							<el-col :span="24">  
-								<el-button v-if="selProject.status=='0'" v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>  
-								<el-button icon="el-icon-watch" type="danger"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_baseinfo_change_approva'})">基本信息修改申请</el-button>  
-								<el-button icon="el-icon-watch" type="danger"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_delay_approva'})">延期申请</el-button> 
-								<el-button icon="el-icon-star-on"  type="success"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_start_approva'})">立项申请</el-button>
-								<el-button icon="el-icon-success"  type="success" @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_over_approva'})">结项申请</el-button>
-								<el-button icon="el-icon-edit" type="warning"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_budget_change_approva'})">预算变更申请</el-button>
-								<el-button icon="el-icon-video-pause" type="danger"   @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_pause_approva'})">项目暂停申请</el-button> 
-								<el-button icon="el-icon-video-play"  type="primary" @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_restart_approva'})">项目重新启动申请</el-button>
-
-							</el-col> 
-						</el-form-item> 
+						</el-form-item>     
 				</el-form>   
 			</div>
-			<el-drawer
-				append-to-body
-				title="项目分组"
-				:visible.sync="groupSelectVisible"
-				width="80%">
-				<xm-project-group-formwork :sel-groups="xmProjectGroups" @select-confirm="onGroupSelected"></xm-project-group-formwork> 
-			</el-drawer> 
+		</el-row>
+		<el-row> 
+			<el-button v-if="selProject.status=='0'" v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>  
+			<el-button icon="el-icon-watch" type="danger"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_baseinfo_change_approva'})">基本信息修改申请</el-button>  
+			<el-button icon="el-icon-watch" type="danger"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_delay_approva'})">延期申请</el-button> 
+			<el-button icon="el-icon-star-on"  type="success"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_start_approva'})">立项申请</el-button>
+			<el-button icon="el-icon-success"  type="success" @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_over_approva'})">结项申请</el-button>
+			<el-button icon="el-icon-edit" type="warning"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_budget_change_approva'})">预算变更申请</el-button>
+			<el-button icon="el-icon-video-pause" type="danger"   @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_pause_approva'})">项目暂停申请</el-button> 
+			<el-button icon="el-icon-video-play"  type="primary" @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_restart_approva'})">项目重新启动申请</el-button>
+ 
 		</el-row>
 	</section>
 </template>
@@ -263,6 +245,20 @@
 			totalReceivables:function(){
 				 return this.editForm.totalReceivables
 			},
+			calcProjectStatusStep(){
+				if(this.options['projectStatus'] && this.editForm){
+					var index=this.options['projectStatus'].findIndex(i=>{
+						if(i.optionValue==this.editForm.status){
+							return true;
+						}else{
+							return false;
+						}
+					})
+					return index+1;
+				}else{
+					return 0;
+				}
+			}
 		},
 		props:['selProject','visible'],
 		watch: { 

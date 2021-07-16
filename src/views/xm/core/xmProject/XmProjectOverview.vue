@@ -1,11 +1,6 @@
 <template>
-  <section class="page-container padding">
-    <el-row  class="page-header page-height-10">
-      <el-col :xs="22" :sm="22" :md="23" :lg="23" :xl="23">
-          <span >项目总览</span>
-      </el-col>
-    </el-row>
-    <el-row class="page-main page-height-75" style="overflow-x: hidden;">
+  <section class="page-container page-height-90"> 
+    <el-row class="page-main page-height-75 padding" style="overflow-x: hidden;">
         <el-row :gutter="10">
           <el-col :span="8" >
             <el-card class="box-card" style="padding:0px ;height:425px">
@@ -253,7 +248,7 @@ export default {
       };
       this.load.list = true;
       listXmProjectState(params).then((res) => {
-        debugger;
+       
         let tips=res.data.tips;
         if(tips.isOk){
           this.xmProjectState = res.data.data;
