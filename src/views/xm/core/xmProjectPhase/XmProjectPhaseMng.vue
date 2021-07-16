@@ -72,6 +72,9 @@
 					 <template slot-scope="scope">   
 						<span>
 							{{scope.row.seqNo}} &nbsp;&nbsp; 
+							<span v-show="scope.row.milestone=='1'">
+								<i class="el-icon-star-on"></i>
+							</span>
 							<span>
 								<el-dropdown @command="handleCommand" :hide-on-click="false">
 									<span class="el-dropdown-link">

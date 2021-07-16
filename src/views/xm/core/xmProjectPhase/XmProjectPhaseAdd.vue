@@ -8,7 +8,8 @@
 						<el-input v-model="addForm.phaseName" placeholder="阶段名称" ></el-input>
 					</el-form-item>
 					<el-form-item label="序号" prop="seqNo">
-						<el-input v-model="addForm.seqNo"   placeholder="排序序号，值越小越靠前，如1.0,2.0等"></el-input>
+						<el-input v-model="addForm.seqNo" style="width:50%;"  placeholder="排序序号，值越小越靠前，如1.0,2.0等"></el-input> 
+						<el-checkbox true-label="1" false-label="0" v-model="addForm.milestone">标记为里程碑</el-checkbox>
 					</el-form-item>
 					<el-form-item  label="计划类型" prop="planType">
 						<el-select v-model="addForm.planType">

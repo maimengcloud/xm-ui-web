@@ -82,7 +82,7 @@
 			title="角色说明" 
 			size="60%"
 			:visible.sync="groupRoleDescVisible"
-			direction="ltr" 
+			direction="rtl" 
 			ref="drawer"
 			>
 			<el-row class="page-main page-height-90">

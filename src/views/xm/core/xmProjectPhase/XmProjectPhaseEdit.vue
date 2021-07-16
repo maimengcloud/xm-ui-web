@@ -7,19 +7,20 @@
 					<el-form-item label="阶段名称" prop="phaseName">
 						<el-input v-model="editForm.phaseName" placeholder="阶段名称" ></el-input>
 					</el-form-item>  
-					<el-form-item label="序号" prop="seqNo">
-						<el-input v-model="editForm.seqNo"   placeholder="排序序号，值越小越靠前，如1.0,2.0等"></el-input> 
+					<el-form-item label="序号" prop="seqNo"> 
+						<el-input v-model="editForm.seqNo" style="width:50%;"  placeholder="排序序号，值越小越靠前，如1.0,2.0等"></el-input> 
+						<el-checkbox true-label="1" false-label="0" v-model="editForm.milestone">标记为里程碑</el-checkbox>
 					</el-form-item> 
+					<el-form-item  label="任务类型" prop="taskType"> 
+						<el-select v-model="editForm.taskType">
+							<el-option v-for="i in this.options.taskType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+						</el-select>
+					</el-form-item>  
 					<el-form-item  label="计划类型" prop="planType"> 
 						<el-select v-model="editForm.planType">
 							<el-option v-for="i in this.options.planType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
 						</el-select>
 					</el-form-item>
-					<el-form-item  label="任务类型" prop="taskType"> 
-						<el-select v-model="editForm.taskType">
-							<el-option v-for="i in this.options.taskType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
-						</el-select>
-					</el-form-item> 
 					<el-form-item label="备注" prop="remark">
 						<el-input type="textarea" rows="4" v-model="editForm.remark" placeholder="备注" ></el-input>
 					</el-form-item> 
