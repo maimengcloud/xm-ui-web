@@ -246,7 +246,7 @@ export default {
 
   methods:{
     //获取对应的xmProjectsTate
-    /*getXmProjectState(){
+    getXmProjectState(){
       let params = {
         projectId:this.selProject.id,
         branchId:this.userInfo.branchId
@@ -262,21 +262,8 @@ export default {
         }
         this.load.list = false;
       }).catch( err => this.load.list = false );
-    },*/
-
-    getXmProjectState(){
-      var params = {
-        projectId:this.selProject.id
-      }
-      listXmProjectState(params).then(res=>{
-        var tips = res.data.tips;
-        if(tips.isOk){
-          if(res.data.data.length>0){
-            this.xmProjectState=res.data.data[0]
-          }
-        }
-      });
     },
+
     drawLine1() {
       // 基于准备好的dom，初始化echarts实例
       let myChart1 = this.$echarts.init(document.getElementById("myChart1"));
