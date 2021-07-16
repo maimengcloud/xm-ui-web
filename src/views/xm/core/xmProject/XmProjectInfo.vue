@@ -1,169 +1,171 @@
 <template>
 	<section  class="page-container page-full-height">
-		<el-row>   
+		<el-row>
 			<el-menu :default-active="infotype"   mode="horizontal"  @select="setInfotype"   class="menus" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
- 
-				<el-menu-item  index="项目概览" > 
+
+				<el-menu-item  index="项目概览" >
 					<span slot="title" >
 						<span slot="title" @click.stop="goBack"><i class="el-icon-back" ></i></span>
 						<i class="el-icon-s-data"></i>
 						<font v-if="selProject.name.length>=10">{{selProject.name.substring(0,10)}}</font>
 						<font type="danger" v-else>{{selProject.name}}</font>
 						概览
-					</span> 
+					</span>
 				</el-menu-item>
-				<el-menu-item   index="迭代"> 
+				<el-menu-item   index="迭代">
 					 <span slot="title"><i class="el-icon-document-copy"></i>迭代</span>
-					
+
 				</el-menu-item>
 				<el-menu-item   index="产品">
 					 <span slot="title"><i class="el-icon-s-flag"></i>产品</span>
-					 
+
 				</el-menu-item>
 				<el-menu-item label="故事" index="用户故事">
 					 <span slot="title"><i class="el-icon-document"></i>故事</span>
-					
+
 
 				</el-menu-item>
 				<el-menu-item   index="任务">
 					 <span slot="title"><i class="el-icon-s-operation"></i>任务</span>
-					
+
 
 				</el-menu-item>
 				<el-menu-item  index="缺陷">
 					 <span slot="title"><i class="el-icon-question"></i>缺陷</span>
-					
+
 
 				</el-menu-item>
 				<el-menu-item  index="团队">
-					 <span slot="title"><i class="el-icon-user-solid"></i>团队</span>		 
+					 <span slot="title"><i class="el-icon-user-solid"></i>团队</span>
 				</el-menu-item>
 				<el-menu-item  index="文档">
-					 <span slot="title"><i class="el-icon-document"></i>文档</span> 
+					 <span slot="title"><i class="el-icon-document"></i>文档</span>
 				</el-menu-item>
 				<el-submenu index="规划与里程碑">
-					<template slot="title">规划与里程碑 </template> 
+					<template slot="title">规划与里程碑 </template>
 					<el-menu-item index="阶段计划及里程碑">
-					 <span slot="title"><i class="el-icon-odometer"></i>阶段计划及里程碑</span> 
-					</el-menu-item> 
+					 <span slot="title"><i class="el-icon-odometer"></i>阶段计划及里程碑</span>
+					</el-menu-item>
 					<el-menu-item  index="测试计划">
-						<span slot="title"><i class="el-icon-odometer"></i>测试计划</span> 
-					</el-menu-item> 
+						<span slot="title"><i class="el-icon-odometer"></i>测试计划</span>
+					</el-menu-item>
 				</el-submenu >
-				
+
 				<el-menu-item index="项目监控" class="hidden-lg-and-down">
-					<span slot="title"><i class="el-icon-video-camera"></i>项目监控</span> 
+					<span slot="title"><i class="el-icon-video-camera"></i>项目监控</span>
 				</el-menu-item>
 				<el-menu-item   index="故事监控" class="hidden-lg-and-down">
-					<span slot="title"><i class="el-icon-video-camera"></i>故事监控</span> 
+					<span slot="title"><i class="el-icon-video-camera"></i>故事监控</span>
 				</el-menu-item>
-				
+
 				<el-menu-item   index="合同管理" class="hidden-md-and-down">
-					<span slot="title"><i class="el-icon-s-data"></i>合同管理</span> 
-				</el-menu-item> 
+					<span slot="title"><i class="el-icon-s-data"></i>合同管理</span>
+				</el-menu-item>
 				<el-menu-item   index="预算" class="hidden-md-and-down">
 					<span slot="title"><i class="el-icon-coin"></i>预算</span>
-					
+
 
 				</el-menu-item>
 				<el-menu-item  index="费用" class="hidden-md-and-down">
 					<span slot="title"><i class="el-icon-coin"></i>费用</span>
-					
+
 
 				</el-menu-item>
 				<el-menu-item   index="考核" class="hidden-lg-and-down">
-					<span slot="title"><i class="el-icon-view"></i>考核</span> 
-					
+					<span slot="title"><i class="el-icon-view"></i>考核</span>
 
-				</el-menu-item> 
+
+				</el-menu-item>
 				<el-menu-item   index="日志" class="hidden-lg-and-down">
 					<span slot="title"><i class="el-icon-edit-outline"></i>日志</span>
-					
+
 
 				</el-menu-item>
 				<el-menu-item   index="环境清单" class="hidden-lg-and-down">
 					<span slot="title"><i class="el-icon-setting"></i>环境清单</span>
-					
-				</el-menu-item> 
+
+				</el-menu-item>
 				<el-menu-item   index="风险" class="hidden-lg-and-down">
-					<span slot="title"><i class="el-icon-question"></i>风险</span> 
-				</el-menu-item> 
-				<el-submenu index="更多">  
-					<template slot="title">更多 </template> 
+					<span slot="title"><i class="el-icon-question"></i>风险</span>
+				</el-menu-item>
+				<el-submenu index="更多">
+					<template slot="title">更多 </template>
 					<el-menu-item  index="故事监控" >
-						<span slot="title"><i class="el-icon-video-camera"></i>故事监控</span> 
+						<span slot="title"><i class="el-icon-video-camera"></i>故事监控</span>
 					</el-menu-item>
 					<el-menu-item   index="项目监控">
-						<span slot="title"><i class="el-icon-video-camera"></i>项目监控</span> 
+						<span slot="title"><i class="el-icon-video-camera"></i>项目监控</span>
 					</el-menu-item>
 					<el-menu-item   index="预算">
 						<span slot="title"><i class="el-icon-coin"></i>预算</span>
-						
+
 
 					</el-menu-item>
 					<el-menu-item   index="费用">
 						<span slot="title"><i class="el-icon-coin"></i>费用</span>
-						
+
 
 					</el-menu-item>
 					<el-menu-item   index="考核">
-						<span slot="title"><i class="el-icon-view"></i>考核</span> 
-						
+						<span slot="title"><i class="el-icon-view"></i>考核</span>
 
-					</el-menu-item> 
+
+					</el-menu-item>
 					<el-menu-item   index="日志">
 						<span slot="title"><i class="el-icon-edit-outline"></i>日志</span>
-						
+
 
 					</el-menu-item>
 					<el-menu-item   index="合同管理">
 						<span slot="title"><i class="el-icon-s-data"></i>合同管理</span>
-						
 
-					</el-menu-item> 
+
+					</el-menu-item>
 					<el-menu-item  index="环境清单">
 						<span slot="title"><i class="el-icon-setting"></i>环境清单</span>
-						
-					</el-menu-item> 
+
+					</el-menu-item>
 					<el-menu-item   index="风险">
-						<span slot="title"><i class="el-icon-question"></i>风险</span> 
-					</el-menu-item> 
+						<span slot="title"><i class="el-icon-question"></i>风险</span>
+					</el-menu-item>
 					<el-menu-item   index="论坛">
-						<span slot="title"><i class="el-icon-date"></i>论坛</span> 
+						<span slot="title"><i class="el-icon-date"></i>论坛</span>
 					</el-menu-item>
 					<el-menu-item   index="即聊">
-						<span slot="title"><i class="el-icon-date"></i>即聊</span> 
+						<span slot="title"><i class="el-icon-date"></i>即聊</span>
 					</el-menu-item>
 					<el-menu-item  index="客服">
 						<span slot="title"><i class="el-icon-date"></i>客服</span>
 
-					</el-menu-item> 
+					</el-menu-item>
 				</el-submenu>
-			</el-menu> 
-		
+			</el-menu>
+		  <xm-project-overview v-if="infotype=='项目概览'" :sel-project="selProject"></xm-project-overview>
+      <!--
 			<xm-detail v-if="infotype=='项目概览'" :sel-project="selProject" @submit="afterEditSubmit"></xm-detail>
-			 <xm-iteration-complex v-if="infotype=='迭代'" ref="xmIterationMng" :sel-project="selProject" ></xm-iteration-complex> 
-			 <xm-product-mng v-if="infotype=='产品'" ref="xmProductMng" :sel-project="selProject" ></xm-product-mng> 
-			 <xm-menu-mng v-if="infotype=='用户故事'" :sel-project="selProject"></xm-menu-mng> 
+			-->
+			 <xm-iteration-complex v-if="infotype=='迭代'" ref="xmIterationMng" :sel-project="selProject" ></xm-iteration-complex>
+			 <xm-product-mng v-if="infotype=='产品'" ref="xmProductMng" :sel-project="selProject" ></xm-product-mng>
+			 <xm-menu-mng v-if="infotype=='用户故事'" :sel-project="selProject"></xm-menu-mng>
 			 <xm-task-mng v-if="infotype=='任务'" ref="xmTaskMng" :sel-project="selProject" ></xm-task-mng>
 			  <xm-question v-if="infotype=='缺陷'" :qtype="'bug'" :sel-project='selProject' ref="xmQuestion"></xm-question>
-			  <xm-group-mng v-if="infotype=='团队'" :sel-project="selProject"></xm-group-mng>  
-			  <xm-file-mng v-if="infotype=='文档'" :sel-project="selProject"></xm-file-mng> 
+			  <xm-group-mng v-if="infotype=='团队'" :sel-project="selProject"></xm-group-mng>
+			  <xm-file-mng v-if="infotype=='文档'" :sel-project="selProject"></xm-file-mng>
 			  <xm-project-phase-mng v-if="infotype=='阶段计划及里程碑'" ref="xmProjectPhaseMng" :sel-project="selProject" ></xm-project-phase-mng>
-			  <xm-test-case-exec-mng v-if="infotype=='测试计划'" :visible="infotype=='测试计划'"  :sel-project='selProject' ref="xmQuestion"></xm-test-case-exec-mng> 
-			<xm-menu-with-plan v-if="infotype=='故事监控'" ref="xmMenuWithPlan" :sel-project="selProject"></xm-menu-with-plan> 
-			<xm-project-state-mng v-if="infotype=='项目监控'" :sel-project="selProject"></xm-project-state-mng> 
+			  <xm-test-case-exec-mng v-if="infotype=='测试计划'" :visible="infotype=='测试计划'"  :sel-project='selProject' ref="xmQuestion"></xm-test-case-exec-mng>
+			<xm-menu-with-plan v-if="infotype=='故事监控'" ref="xmMenuWithPlan" :sel-project="selProject"></xm-menu-with-plan>
+			<xm-project-state-mng v-if="infotype=='项目监控'" :sel-project="selProject"></xm-project-state-mng>
 			<xm-budget v-if="infotype=='预算'" :sel-project="selProject"></xm-budget>
 			 <xm-cost v-if="infotype=='费用'" :sel-project="selProject"></xm-cost>
 			<xm-project-kpi v-if="infotype=='考核'"  :sel-project="selProject"></xm-project-kpi>
 			<xm-record v-if="infotype=='日志'" :visible="infotype=='日志'" :sel-project="selProject"></xm-record>
 			<xm-contract v-if="infotype=='合同管理'" :sel-project="selProject"></xm-contract>
-			<xm-env-list v-if="infotype=='环境清单'" :sel-project="selProject"></xm-env-list>  
+			<xm-env-list v-if="infotype=='环境清单'" :sel-project="selProject"></xm-env-list>
 			<xm-question v-if="infotype=='风险'" :qtype="'risk'" :sel-project='selProject' ref="xmRisk"></xm-question>
 			<el-drawer title="选中团队成员" :visible.sync="groupUserVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				<xm-project-group-select :sel-project="selProject" :visible="groupUserVisible" is-select-multi-user="1" @user-confirm="onUserSelected"></xm-project-group-select>
-			</el-drawer> 
-		</el-row>  
+			</el-drawer>
+		</el-row>
 	</section>
 </template>
 
@@ -189,7 +191,7 @@
 	import xmBudget from './XmProjectBudgetCost';
 	import xmContract from '../xmProjectContract/XmProjectContractMng';
 	import xmEnvList from '../xmProjectEnvList/XmProjectEnvListMng';
-	import xmProjectPhaseMng from '../xmProjectPhase/XmProjectPhaseMng'; 
+	import xmProjectPhaseMng from '../xmProjectPhase/XmProjectPhaseMng';
 	import xmMenuMng from '../xmMenu/XmMenuMng';
 	import xmMenuWithPlan from '../xmMenu/XmMenuWithPlan';
 	import xmProjectStateMng from '../xmProjectState/XmProjectStateMng';
@@ -197,28 +199,29 @@
 	import xmIterationMng from '../xmIteration/XmIterationMng';
 	import xmProductMng from '../xmProduct/XmProductMng';
 	import XmIterationComplex from '../xmIteration/XmIterationComplex.vue';
+  import XmProjectOverview from "./XmProjectOverview";
 
 
-	export default { 
+	export default {
 		props: ["selProject","visible"],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
-				]), 
-		}, 
+				]),
+		},
 		watch:{
 			selProject:function(selProject){
 				var oldInfotype=this.infotype
 				this.infotype=''
 				this.$nextTick(()=>{
-					
+
 					this.infotype=oldInfotype
 				})
-			
+
 			}
 		},
 		data() {
-			return { 
+			return {
 				platformViewVisible:false,
 				tabPosition:'left',
 				infotype:"项目概览",
@@ -228,27 +231,27 @@
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
-		methods: { 
-			 
+		methods: {
+
 			afterEditSubmit:function(project){
 				this.$emit("submit",project)
 			},
-			toArchive:function(){ 
+			toArchive:function(){
 					this.$router.push({
 						path: "/mdp/arc/mate/archive/ArchiveMng"
-					});  
+					});
 			},
 			toIm:function(){
 				this.groupUserVisible=true
 			},
-			toHelpMe:function(){   
+			toHelpMe:function(){
 				this.$router.push({
 						path: "/mdp/im/messages/crmChat",
 						query:{
 							categoryId:'css',
 							sendContent:'咨询'
 						}
-				}); 
+				});
 			},
 			handleMenuSelect(menuId){
 				this.infotype=menuId
@@ -257,7 +260,7 @@
 				if(this.groupUserVisible==true){
 					var query={}
 					if(users){
-						if(  users.length==1 ){ 
+						if(  users.length==1 ){
 							var user=users[0]
 							query.toUserid=user.userid
 							query.toUsername=user.username
@@ -271,10 +274,10 @@
 					this.$router.push({
 						path: "/mdp/im/messages/messageChat",
 						query: query
-					});  
+					});
 				}
-				
-				
+
+
       },
       setInfotype(infotype){
 		  this.infotype=infotype;
@@ -302,10 +305,10 @@
           keyList = ['seqNo', 'menuName', 'planStatus', 'chargeUsername', 'onlineTime', 'planStartTime', 'actStartTime', 'planEndTime', 'actEndTime', 'planWorkload', 'actWorkload', 'planCostAmount', 'actCostAmount', 'finishRate', 'demandRate', 'designRate', 'devRate', 'sitRate', 'uatRate', 'onlineStatus'];
           list = this.$refs.xmMenuWithPlan.xmMenusTreeData;
           pageNum = this.$refs.xmMenuWithPlan.pageInfo.pageNum;
-        } 
+        }
         const filename = `${this.selProject.name}_${this.infotype}_第${pageNum}页`;
 				const data = this.formatJson(keyList, list);
-        
+
 				import('@/vendor/Export2Excel').then(excel => {
 					excel.export_json_to_excel({
 						header,
@@ -395,15 +398,16 @@
 			goBack(){
 				this.$router.back()
 			}
-			
+
 		},//end methods
-		components: { 
+		components: {
+      XmProjectOverview,
 			xmTaskMng,
 			xmProjectPhaseMng,
 			xmGroupMng,
 			xmExchange,
 			xmQuestion,
-			xmFileMng, 
+			xmFileMng,
 			xmDetail,
 			xmProjectKpi,
 			xmRecord,
@@ -421,19 +425,19 @@
 XmIterationComplex,
 			//在下面添加其它组件
 		},
-		mounted() { 
+		mounted() {
 			this.$nextTick(() => {
-			 
-      }); 
+
+      });
 		}
 	}
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped> 
+<style rel="stylesheet/scss" lang="scss" scoped>
  .menus{
 	 .el-menu-item{
 		 padding-left: 0px !important;
-	 }  
+	 }
  }
 /* 超过宽度则用...代替 */
 .truncate{
