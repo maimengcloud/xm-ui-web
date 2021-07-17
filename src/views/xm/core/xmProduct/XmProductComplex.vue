@@ -25,10 +25,7 @@
 					</el-tab-pane>
 					<el-tab-pane label="缺陷" lazy name="bugs" > 
 						<xm-question-mng v-show="xmProduct && showPanel=='bugs'"  :xm-product="xmProduct" :sel-project="selProject"></xm-question-mng>
-					</el-tab-pane>
-					<el-tab-pane label="迭代概览" lazy  name="iterationOverview">
-						<xm-iteration-state-show v-show="xmProduct && showPanel=='iterationOverview'"  :xm-product="xmProduct" :sel-project="selProject"></xm-iteration-state-show>
-					</el-tab-pane>
+					</el-tab-pane> 
 				</el-tabs>
 				<el-row>
 					

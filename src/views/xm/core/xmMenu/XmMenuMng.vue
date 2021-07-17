@@ -356,7 +356,7 @@
 				 this.getXmMenus();
 			},
 			//获取列表 XmMenu xm_project_menu
-			getXmMenus() {
+			getXmMenus() { 
 				let params = {
 					pageSize: this.pageInfo.pageSize,
 					pageNum: this.pageInfo.pageNum,
@@ -370,7 +370,7 @@
 					}  
 					params.orderBy= orderBys.join(",")
 				} 
-					if( this.filters.product!==null && this.filters.product.id!=''){
+					if( this.filters.product  && this.filters.product.id){
 						params.productId=this.filters.product.id
 					}else {
 						this.$message({showClose: true, message: "请先选择产品", type: 'success' });
@@ -422,7 +422,7 @@
 				if(!this.selProject){
 					listXmMenuWithState(params).then( callback ).catch( err => this.load.list = false );
 				}else{ 
-					listXmMenuWithPlan
+					listXmMenuWithPlan(params).then( callback ).catch( err => this.load.list = false );
 				}
 			},
 
