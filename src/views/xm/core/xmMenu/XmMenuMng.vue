@@ -5,7 +5,7 @@
 				<xm-product-mng :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-mng>
 			</el-col>
 			<el-col :span="18" class="padding-left">
-					<el-row >  
+					<el-row>  
 						<el-select  v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable >
 							<el-option   value="not-join"  label="未分配任何任务的故事"></el-option>  
 							<el-option   value="join"  label="已分配任务的故事"></el-option>  
@@ -23,12 +23,9 @@
 							:default-time="['00:00:00','23:59:59']"
 							:picker-options="pickerOptions"
 						></el-date-picker> 
-						<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询" clearable>
-							<template slot="append">
-								<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
-							</template>
+						<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询" clearable> 
 						</el-input> 
-						
+						<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
 						
 						<el-button    type="primary" @click="showAdd" icon="el-icon-plus">故事</el-button>
 						<el-button      @click="toBatchEdit" icon="el-icon-edit">修改</el-button>   
@@ -89,9 +86,9 @@
 								</el-col> 
 							</el-row> 
 							<el-button  slot="reference" icon="el-icon-more" circle></el-button>
-						</el-popover> 
+						</el-popover>  
+ 					</el-row>
 					
-					</el-row>
 					<el-row class="padding-top">  
 						<el-table size="mini"  stripe fit border ref="table" :height="tableHeight" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
 							<el-table-column sortable type="selection" width="40"></el-table-column> 

@@ -165,14 +165,14 @@
 
 .tips{
   position:absolute;
-  font-size: 10px;  
-  bottom: 0px;
+  font-size: 14px;  
+  bottom: -10px;
   color: red;
   padding-left: 10px;
   flex: 0 0 auto; 
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  align-items: center; 
+  align-items: bottom; 
   overflow-x: hidden; 
 }

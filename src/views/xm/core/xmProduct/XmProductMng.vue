@@ -5,7 +5,6 @@
 				<el-option :label="userInfo.branchName+'机构下所有的产品'" value="branchId"></el-option>
 				<el-option label="我相关的产品" value="compete"></el-option>
 				<el-option label="按产品编号精确查找" value="productId"></el-option>
-				<el-option label="后台智能匹配" value=""></el-option>
 			</el-select> 
 			<el-input v-if="filters.queryScope=='productId'" style="width:20%;"  v-model="filters.id"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">  
 			</el-input>  
@@ -38,21 +37,20 @@
 				trigger="click" >
 				<el-row>
 					<el-col :span="24" style="padding-top:5px;">
+						<el-divider content-position="left"><strong>查询条件</strong></el-divider> 
 						<font class="more-label-font">
 							产品查询范围：
 						</font>
 						<el-select size="mini" v-model="filters.queryScope" style="width:100%;"   placeholder="产品查询范围">
-							<el-option :label="userInfo.branchName+'机构下所有的产品'" value="branchId"></el-option>
+							<el-option :label="userInfo.branchName+'机构下的产品'" value="branchId"></el-option>
 							<el-option label="我相关的产品" value="compete"></el-option>
-							<el-option label="按产品编号精确查找" value="productId"></el-option>
-							<el-option label="后台智能匹配" value=""></el-option>
+							<el-option label="按产品编号精确查找" value="productId"></el-option> 
 						</el-select>
 					</el-col>
 					<el-col  :span="24"  style="padding-top:5px;"> 
 						<el-input v-if="filters.queryScope=='productId'" size="mini" v-model="filters.id" style="width:100%;"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">  
 						</el-input> 
 					</el-col>
-						
 					<el-col v-show="!selProject&&filters.queryScope!='productId'" :span="24"  style="padding-top:5px;">
 						<font class="more-label-font">创建时间:</font>  
 						<el-date-picker
@@ -68,7 +66,6 @@
 							:picker-options="pickerOptions"
 						></el-date-picker>   
 					</el-col>  
-					
 					<el-col  :span="24"  style="padding-top:5px;">
 						<font class="more-label-font">
 							产品名称:
@@ -84,7 +81,18 @@
 						<el-button size="mini"  v-else @click="selectFiltersPmUser()">选责任人</el-button>
 						<el-button size="mini"   @click="setFiltersPmUserAsMySelf()">我的</el-button>
 					</el-col>
-					<el-col  :span="24"  style="padding-top:5px;">
+					
+					<el-col v-if="selProject" :span="24"  style="padding-top:5px;">
+						<font class="more-label-font">
+							项目  <el-tag v-if="selProject">{{selProject?selProject.name:''}}</el-tag>
+						</font>  
+					</el-col> 
+					<el-col  v-if="xmIteration"  :span="24"  style="padding-top:5px;">
+						<font class="more-label-font">
+						    迭代 <el-tag v-if="xmIteration">{{xmIteration.iterationName}}</el-tag>
+						</font>  
+					</el-col>
+					<el-col  :span="24"  style="padding-top:10px;">
 						<el-button type="primary" size="mini" @click="searchXmProducts" >查询</el-button>
 					</el-col>
 				</el-row> 
@@ -182,7 +190,7 @@
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
 	
 	export default { 
-		props:['selProject'],
+		props:['selProject','xmIteration'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -307,18 +315,19 @@
 					
 				}
 				if(this.filters.queryScope=="branchId"){
-					params.branchId=this.userInfo.branchId
-					params.projectId=null;
+					params.branchId=this.userInfo.branchId 
 				}
-				if(!this.selProject && this.filters.queryScope!='productId'){
+				if(!this.selProject && !this.xmIteration && this.filters.queryScope!='productId' && this.filters.queryScope!='compete'){
 					if(!this.dateRanger || this.dateRanger.length==0){
 						this.$message({showClose: true, message: "创建日期范围不能为空", type: 'error' });
 						return;
 					} 
 					params.ctimeStart=this.dateRanger[0]+" 00:00:00"
 					params.ctimeEnd=this.dateRanger[1]+" 23:59:59"
+				}  
+				if(this.xmIteration){
+					 params.iterationId=this.xmIteration.id
 				} 
-				
 				if(this.filters.key!==""){
 					params.key="%"+this.filters.key+"%"
 				}

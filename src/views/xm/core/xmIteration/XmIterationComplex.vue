@@ -15,13 +15,13 @@
 						<xm-menu-mng v-if="xmIteration" :xm-iteration="xmIteration" :sel-project="selProject"></xm-menu-mng>
 					</el-tab-pane>
 					<el-tab-pane label="任务" lazy  >
-						<xm-task-mng v-if="xmIteration" :sel-project="selProject"></xm-task-mng>
+						<xm-task-mng v-if="xmIteration" :xm-iteration="xmIteration" :sel-project="selProject"></xm-task-mng>
 					</el-tab-pane>
 					<el-tab-pane label="缺陷" lazy  > 
-						<xm-question-mng  v-if="xmIteration" :sel-project="selProject"></xm-question-mng>
+						<xm-question-mng  v-if="xmIteration" :xm-iteration="xmIteration" :sel-project="selProject"></xm-question-mng>
 					</el-tab-pane>
 					<el-tab-pane label="迭代概览" lazy  >
-						<xm-iteration-state-show v-if="xmIteration" :sel-project="selProject"></xm-iteration-state-show>
+						<xm-iteration-state-show v-if="xmIteration" :xm-iteration="xmIteration" :sel-project="selProject"></xm-iteration-state-show>
 					</el-tab-pane>
 				</el-tabs>
 				<el-row>
