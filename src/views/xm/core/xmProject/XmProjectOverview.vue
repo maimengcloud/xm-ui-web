@@ -75,7 +75,7 @@
                     <i class="el-icon-star-off"></i>
                   </div>
                   <div class="info">
-                    <div class="title"> 需求数： {{this.xmProjectState.menuCnt}}</div>
+                    <div class="title"> 需求数： {{this.selProject.menuCnt}}</div>
                   </div>
                 </div>
               </el-row>
@@ -85,7 +85,7 @@
                     <i class="el-icon-refresh"></i>
                   </div>
                   <div class="info">
-                    <div class="title"> 迭代数： {{(this.xmProjectState.iterationCnt==null?0:this.xmProjectState.iterationCnt)}} </div>
+                    <div class="title"> 迭代数： {{(this.selProject.iterationCnt==null?0:this.selProject.iterationCnt)}} </div>
                   </div>
                 </div>
               </el-row>
@@ -120,7 +120,7 @@
                 <span>缺陷情况</span>
               </div>
               <div>
-                <div id="bugPieChart" :style="{width: '440px', height: '400px'}"></div>
+                <div id="bugPieChart" :style="{width: '425px', height: '400px'}"></div>
               </div>
             </el-card>
           </el-col>
@@ -147,7 +147,7 @@
                     <el-col :span="8">
                       <div>
                         <div style="text-align:center;">
-                          <span style="font-size:24px;" v-text="this.xmProjectState.totalPlanWorkload"></span>
+                          <span style="font-size:24px;" v-text="this.selProject.totalPlanWorkload"></span>
                           <span style="font-size:5px;">h</span>
                         </div>
                         <div style="text-align:center;font-size:5px;">预估工时</div>
@@ -156,7 +156,7 @@
                     <el-col :span="8">
                       <div>
                         <div style="text-align:center;">
-                          <span style="font-size:24px;" v-text="this.xmProjectState.totalActWorkload"></span>
+                          <span style="font-size:24px;" v-text="this.selProject.totalActWorkload"></span>
                           <span style="font-size:5px;">h</span>
                         </div>
                         <div style="text-align:center;font-size:5px;">登记工时</div>
@@ -244,7 +244,7 @@
 import util from "@/common/js/util"; // 全局公共库
 //import Sticky from "@/components/Sticky"; // 粘性header组件
 import { mapGetters } from "vuex";
-import { listXmProjectState } from '@/api/xm/core/xmProjectState';
+//import { listXmProjectState } from '@/api/xm/core/xmProjectState';
 import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 
 
@@ -252,16 +252,16 @@ export default {
   computed: {
     ...mapGetters(["userInfo"]),
     finish: function (){
-      return this.xmProjectState.totalCompleteTaskCnt;
+      return this.selProject.totalCompleteTaskCnt;
     },
     notStart: function() {
-      return this.xmProjectState.totalTaskCnt-this.xmProjectState.totalCompleteTaskCnt;
+      return this.selProject.totalTaskCnt-this.selProject.totalCompleteTaskCnt;
     },
     totalTask: function() {
-      return this.xmProjectState.totalTaskCnt;
+      return this.selProject.totalTaskCnt;
     },
     progress1: function (){
-      return Math.round(this.xmProjectState.totalCompleteTaskCnt/this.xmProjectState.totalTaskCnt*100);
+      return Math.round(this.selProject.totalCompleteTaskCnt/this.selProject.totalTaskCnt*100);
     },
     taskStartTime: function (){
       return this.selProject.startTime.substring(0,10);
@@ -273,7 +273,7 @@ export default {
       return this.selProject.createUsername;
     },
     workloadProgress:function (){
-      return Math.round(this.xmProjectState.totalActWorkload/this.xmProjectState.totalPlanWorkload*100);
+      return Math.round(this.selProject.totalActWorkload/this.selProject.totalPlanWorkload*100);
     },
     deviation:function (){
       let now = new Date();
@@ -281,16 +281,16 @@ export default {
       let taskEndTime = new Date(this.selProject.endTime);
       if(now<=taskEndTime){
         let allDays=taskEndTime-taskStartTime;
-        return this.xmProjectState.totalActWorkload - Math.round((now-taskStartTime)/allDays*this.xmProjectState.totalPlanWorkload)
+        return this.selProject.totalActWorkload - Math.round((now-taskStartTime)/allDays*this.selProject.totalPlanWorkload)
       }else{
-        return this.xmProjectState.totalActWorkload - this.xmProjectState.totalPlanWorkload;
+        return this.selProject.totalActWorkload - this.selProject.totalPlanWorkload;
       }
     },
     deviationRate:function (){
-      return Math.round(this.deviation/this.xmProjectState.totalPlanWorkload*100);
+      return Math.round(this.deviation/this.selProject.totalPlanWorkload*100);
     },
     remainWorkload:function (){
-      return this.xmProjectState.totalPlanWorkload - this.xmProjectState.totalActWorkload;
+      return this.selProject.totalPlanWorkload - this.selProject.totalActWorkload;
     },
     planProgress:function (){
       let now = new Date();
@@ -304,14 +304,14 @@ export default {
       }
     },
     realProgress:function (){
-      if(this.xmProjectState.totalActWorkload < this.xmProjectState.totalPlanWorkload){
-        return Math.round(this.xmProjectState.totalActWorkload/this.xmProjectState.totalPlanWorkload*100)
+      if(this.selProject.totalActWorkload < this.selProject.totalPlanWorkload){
+        return Math.round(this.selProject.totalActWorkload/this.selProject.totalPlanWorkload*100)
       }else{
         return 100;
       }
     },
     xmProjectStateCpd(){
-      return this.xmProjectState
+      return this.selProject
     },
     calcProjectStatusStep(){
       if(this.options['projectStatus'] && this.selProject){
@@ -342,7 +342,8 @@ export default {
     return {
       isActive: true,
       load:{ list: false},
-      xmProjectState: [],//查询结果
+      selProject:[],
+      //xmProjectState: [],//查询结果
       options:{
         projectType:[],
         urgencyLevel:[],
@@ -354,7 +355,7 @@ export default {
 
   methods:{
     //获取对应的xmProjectsTate
-    getXmProjectState(){
+    /*getXmProjectState(){
       let params = {
         projectId:this.selProject.id,
         branchId:this.userInfo.branchId
@@ -369,7 +370,7 @@ export default {
         }
         this.load.list = false;
       }).catch( err => this.load.list = false );
-    },
+    },*/
 
     drawAllBar() {
       // 基于准备好的dom，初始化echarts实例
@@ -398,7 +399,7 @@ export default {
           {
             data: [
               {
-                value: this.xmProjectState.menuCnt,
+                value: this.selProject.menuCnt,
                 itemStyle: {
                   normal:{
                     color: '#99CCFF'
@@ -406,7 +407,7 @@ export default {
                 }
               },
               {
-                value: this.xmProjectState.totalTaskCnt,
+                value: this.selProject.totalTaskCnt,
                 itemStyle: {
                   normal:{
                     color: '#99CCFF'
@@ -414,7 +415,7 @@ export default {
                 }
               },
               {
-                value: this.xmProjectState.totalBugCnt,
+                value: this.selProject.totalBugCnt,
                 itemStyle: {
                   normal:{
                     color: '#99CCFF'
@@ -511,32 +512,46 @@ export default {
         },
         series: [
           {
-            center:['55%','40%'],
+            center:['55%','40%'],//饼图位置
             type: 'pie',
-            radius: '68%',
+            radius: '68%',//饼图半径大小
+            label:{            //饼图图形上的文本标签
+              normal:{
+                show:true,
+                position:'inner', //标签的位置:内部
+                textStyle : {
+                  fontWeight : 120 ,
+                  fontSize: document.body.clientWidth / 150, //标签字体大小
+                  color: "#000000"
+                },
+                formatter:'{b} : {c} ({d}%)',//b：name,c:value,d:占比
+                alignTo:'edge',
+                margin:10
+              }
+            },
             data: [
-              {value: this.xmProjectState.totalClosedBugCnt,
+              {value: this.selProject.totalClosedBugCnt,
                 itemStyle: {
                   normal:{
                     color: '#5470C6'
                   }
                 },
                 name: '已关闭'},
-              {value: this.xmProjectState.totalResolvedBugCnt,
+              {value: this.selProject.totalResolvedBugCnt,
                 itemStyle: {
                   normal:{
                     color: '#91CC75'
                   }
                 },
                 name: '已解决'},
-              {value: this.xmProjectState.totalActiveBugCnt,
+              {value: this.selProject.totalActiveBugCnt,
                 itemStyle: {
                   normal:{
                     color: '#FAC858'
                   }
                 },
                 name: '已激活'},
-              {value: this.xmProjectState.totalConfirmedBugCnt,
+              {value: this.selProject.totalConfirmedBugCnt,
                 itemStyle: {
                   normal:{
                     color: '#EE6666'
@@ -562,17 +577,19 @@ export default {
 
   mounted() {
     this.$nextTick(() => {
-      this.getXmProjectState();
+      //this.getXmProjectState();
     });
     listOption([{categoryId:'all',itemCode:'projectType'},{categoryId:'all',itemCode:'urgencyLevel'},{categoryId:'all',itemCode:'priority'},{categoryId:'all',itemCode:'projectStatus'}] ).then(res=>{
       if(res.data.tips.isOk){
-
         this.options['projectType']=res.data.data.projectType
         this.options['urgencyLevel']=res.data.data.urgencyLevel
         this.options['priority']=res.data.data.priority
         this.options['projectStatus']=res.data.data.projectStatus
       }
     });
+    this.drawAllBar();
+    this.drawTaskByDate();
+    this.drawPieBug();
 
   },
 
