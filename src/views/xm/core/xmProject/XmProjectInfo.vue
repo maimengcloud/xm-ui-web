@@ -143,7 +143,7 @@
 		   
 		  	<xm-project-overiew-complex v-if="infotype=='项目概览'" :sel-project="selProject"></xm-project-overiew-complex> 
 			 <xm-iteration-complex v-if="infotype=='迭代'" ref="xmIterationMng" :sel-project="selProject" ></xm-iteration-complex>
-			 <xm-product-mng v-if="infotype=='产品'" ref="xmProductMng" :sel-project="selProject" ></xm-product-mng>
+			 <xm-product-complex v-if="infotype=='产品'" ref="xmProductComplex" :sel-project="selProject" ></xm-product-complex>
 			 <xm-menu-mng v-if="infotype=='用户故事'" :sel-project="selProject"></xm-menu-mng>
 			 <xm-task-mng v-if="infotype=='任务'" ref="xmTaskMng" :sel-project="selProject" ></xm-task-mng>
 			  <xm-question v-if="infotype=='缺陷'" :qtype="'bug'" :sel-project='selProject' ref="xmQuestion"></xm-question>
@@ -193,10 +193,10 @@
 	import xmMenuMng from '../xmMenu/XmMenuMng';
 	import xmMenuWithPlan from '../xmMenu/XmMenuWithPlan';
 	import xmProjectStateMng from '../xmProjectState/XmProjectStateMng';
-	import xmTestCaseExecMng from '../xmTestCaseExec/XmTestCaseExecMng'; 
-	import xmProductMng from '../xmProduct/XmProductMng';
+	import xmTestCaseExecMng from '../xmTestCaseExec/XmTestCaseExecMng';  
 	import XmIterationComplex from '../xmIteration/XmIterationComplex.vue'; 
 	import XmProjectOveriewComplex from './XmProjectOveriewComplex.vue';
+import XmProductComplex from '../xmProduct/XmProductComplex.vue';
 
 
 	export default {
@@ -416,9 +416,9 @@
 			xmProjectStateMng,
 			xmTestCaseExecMng,
 			xmProjectGroupSelect,
-			XmIterationComplex,
-			xmProductMng, 
+			XmIterationComplex, 
 			XmProjectOveriewComplex,
+			XmProductComplex,
 			//在下面添加其它组件
 		},
 		mounted() {

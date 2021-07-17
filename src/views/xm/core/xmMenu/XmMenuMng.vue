@@ -1,10 +1,10 @@
 <template>
 	<section class="padding">
 		<el-row v-if=" !batchEditVisible"> 
-			<el-col :span="6">
-				<xm-product-mng :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-mng>
+			<el-col :span="5" v-if="!xmProduct">
+				<xm-product-mng :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :xm-iteration="xmIteration" :simple="true"></xm-product-mng>
 			</el-col>
-			<el-col :span="18" class="padding-left">
+			<el-col :span="xmProduct?24:19" class="padding-left">
 					<el-row>  
 						<el-select  v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable >
 							<el-option   value="not-join"  label="未分配任何任务的故事"></el-option>  
@@ -224,7 +224,7 @@
 	import { mapGetters } from 'vuex' 
 	
 	export default { 
-		props:['selProject','xmIteration'],
+		props:['selProject','xmIteration','xmProduct'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -260,6 +260,13 @@
 				if(product==null){
 					this.productVisible=true;
 				}
+			},
+			xmIteration:function(){
+				this.getXmMenus()
+			},
+			xmProduct:function(){  
+					this.filters.product=this.xmProduct
+					this.getXmMenus() 
 			}
     	},
 		data() {
@@ -412,7 +419,11 @@
 					this.load.list = false;
 				}
 				this.load.list = true;
-				listXmMenuWithPlan(params).then( callback ).catch( err => this.load.list = false );
+				if(!this.selProject){
+					listXmMenuWithState(params).then( callback ).catch( err => this.load.list = false );
+				}else{ 
+					listXmMenuWithPlan
+				}
 			},
 
 			//显示编辑界面 XmMenu xm_project_menu
@@ -807,6 +818,10 @@
 		    //在下面添加其它组件
 		},
 		mounted() {   
+			this.filters.product=this.xmProduct
+			if(this.xmProduct){
+				this.productVisible=false;
+			}
 			this.$nextTick(() => { 
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
 				var subHeight=70/1000 * window.innerHeight;  

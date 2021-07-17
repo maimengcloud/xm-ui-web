@@ -153,8 +153,8 @@
 									</el-tooltip>
 									<el-button icon="el-icon-upload2" v-if="!scope.row.flowState" type="text"   @click="handleCommand({type:'sendToProcessApprova',data:scope.row,bizKey:'xm_question_up_approva'})">{{qtype=='risk'?'升级':'升级'}}</el-button>
 								</span>
-								<el-badge :value="getBadge(scope.row)">
-												<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.name}}</el-link>
+								<el-badge :value="getBadge(scope.row)" type="warning">
+									<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.name}}</el-link>
 								</el-badge> 
 							</span>
 							</div>
@@ -213,18 +213,20 @@
 				'userInfo','roles'
 			]),
 		},
-		props: ["selProject",'qtype','xmTestCaseExec','xmTestCase','visible'],
+		props: ["selProject",'qtype','xmTestCaseExec','xmTestCase','xmIteration','xmProduct'],
 		watch:{
 			selProject:function(selProject){
 				this.filters.selProject=this.selProject
 				//this.getXmQuestions();
+			}, 
+			qtype:function(){
+				this.getXmQuestions()
 			},
-			visible(visible){
-				if(visible==true){
-					this.getXmQuestions();
-				}
-			},
-			qtype(){
+			xmIteration:function(){
+				this.getXmQuestions()
+			}, 
+			xmProduct:function(){
+				this.filters.product=this.xmProduct
 				this.getXmQuestions()
 			}
 		},
@@ -448,6 +450,9 @@
 				}
 				if(this.xmTestCase){
 					params.caseId=this.xmTestCase.id
+				}
+				if(this.xmIteration){
+					params.iterationId=this.xmIteration.id
 				}
 
 				if(this.filters.key){
@@ -874,7 +879,15 @@
 				}
 				if(row.handlerUsername){
 					if(row.lremark){
-						msg='已指派给'+row.handlerUsername+','+row.lremark
+						var lremark=row.lremark;
+						lremark=lremark.replace(/<\w?>/g,""); 
+						lremark=lremark.replace(/<\/\w?>/g,"");
+						if(lremark.length<=10){
+							msg='已指派给'+row.handlerUsername+','+lremark
+						}else{
+							msg='已指派给'+row.handlerUsername+','+lremark.substr(0,10)+"..."
+						}
+						
 					}else{
 						msg='已指派给'+row.handlerUsername;
 					}
@@ -894,6 +907,9 @@
 		mounted() {
 			if(this.selProject){
 				this.filters.selProject=this.selProject
+			}
+			if(this.xmProduct){
+				this.filters.product=this.xmProduct
 			}
 			this.filters.handlerUserid=this.userInfo.userid;
 			this.filters.handlerUsername=this.userInfo.username;
@@ -931,5 +947,9 @@
 .badge {
   margin-top: 7px;
   padding-bottom: 10px;
+}
+.badge-item {
+  margin-top: 10px;
+  margin-right: 40px;
 }
 </style>

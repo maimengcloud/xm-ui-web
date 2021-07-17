@@ -27,9 +27,20 @@
 					<el-button v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProducts" icon="el-icon-search"></el-button>
 				</template>
 			</el-input> 
-			<el-button type="primary" @click="showAdd" icon="el-icon-plus">产品</el-button>
 
 			<el-button  type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button> 
+			<el-popover
+				placement="top-start"
+				title=""
+				width="400"
+				trigger="hover" >
+				<el-row>
+					<el-button type="primary" @click="showAdd" icon="el-icon-plus">产品</el-button> 
+					<el-tooltip content="项目与产品关联后，从项目视图可以查找到产品信息"><el-button type="primary" @click="showAdd" icon="el-icon-plus">将项目与产品关联</el-button> </el-tooltip>
+					<el-tooltip content="迭代与产品关联后，从迭代视图可以查找到产品信息，可以将故事加入到迭代中去"><el-button type="primary" @click="showAdd" icon="el-icon-plus">将迭代与产品关联</el-button> </el-tooltip>
+				</el-row> 
+				<el-button  slot="reference"   icon="el-icon-plus" circle></el-button>
+			</el-popover> 
 			<el-popover
 				placement="top-start"
 				title=""
@@ -171,7 +182,11 @@
 			
 			<el-drawer title="选择员工" :visible.sync="selectFiltersPmUserVisible" size="60%" append-to-body>
 				<users-select  @confirm="onFiltersPmUserSelected" ref="usersSelect"></users-select>
+			</el-drawer> 
+			<el-drawer title="选择项目" :visible.sync="projectVisible" size="60%" append-to-body>
+				<xm-project-list  @select="onProjectSelected"></xm-project-list>
 			</el-drawer>
+			
 	</section>
 </template>
 
@@ -188,6 +203,7 @@
 	import  XmProductStateMng from '../xmProductState/XmProductStateMng';//修改界面
 
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
+import XmProjectList from '../xmProject/XmProjectList.vue';
 	
 	export default { 
 		props:['selProject','xmIteration'],
@@ -195,6 +211,12 @@
 		    ...mapGetters([
 		      'userInfo','roles'
 		    ])
+		},
+		watch:{
+			 
+			xmIteration:function(){ 
+				this.getXmProducts(); 
+			}
 		},
 		data() {
 			const beginDate = new Date();
@@ -240,6 +262,7 @@
 					util.formatDate.format(endDate, "yyyy-MM-dd")
 				],  
 				pickerOptions:  util.pickerOptions('datarange'),
+				projectVisible:false,
 				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -465,6 +488,9 @@
 				this.filters.pmUser=this.userInfo;
 				this.searchXmProducts();
 			},	 
+			onProjectSelected(projects){
+
+			}
 			/**end 自定义函数请在上面加**/
 			
 		},//end methods
@@ -474,6 +500,7 @@
 			XmIterationMng,
 			XmProductStateMng,
 			UsersSelect,
+			XmProjectList,
 		    //在下面添加其它组件
 		},
 		mounted() { 

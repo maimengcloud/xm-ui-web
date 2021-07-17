@@ -294,10 +294,9 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 
 			}
 		},
-		props:['selProject'],
+		props:['selProject','xmIteration'],
 		watch:{
-			selProject:function(selProject,old){
-        console.log('this.selProject==', selProject);
+			selProject:function(selProject,old){ 
         
 				if(!selProject){
 					this.xmProjectPhases=[]
@@ -307,6 +306,9 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 						this.searchXmProjectPhases();
 					}
 				}
+			},
+			xmIteration(){
+				this.searchXmProjectPhases()
 			}
     },
 		data() {
@@ -418,6 +420,9 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				if(this.selProject!=null && this.selProject!=undefined){
 					params.projectId=this.selProject.id
 
+				}
+				if(this.xmIteration){
+					params.iterationId=this.xmIteration.id
 				}
 				this.load.list = true;
 				listXmProjectPhase(params).then((res) => {
