@@ -141,7 +141,7 @@
 				</el-submenu>
 			</el-menu>
 		   
-		  	<xm-project-overiew-complex v-if="infotype=='项目概览'" :sel-project="selProject"></xm-project-overiew-complex> 
+		  	<xm-project-overview-complex v-if="infotype=='项目概览'" :sel-project="selProject"></xm-project-overview-complex> 
 			 <xm-iteration-complex v-if="infotype=='迭代'" ref="xmIterationMng" :sel-project="selProject" ></xm-iteration-complex>
 			 <xm-product-complex v-if="infotype=='产品'" ref="xmProductComplex" :sel-project="selProject" ></xm-product-complex>
 			 <xm-menu-mng v-if="infotype=='用户故事'" :sel-project="selProject"></xm-menu-mng>
@@ -195,7 +195,7 @@
 	import xmProjectStateMng from '../xmProjectState/XmProjectStateMng';
 	import xmTestCaseExecMng from '../xmTestCaseExec/XmTestCaseExecMng';  
 	import XmIterationComplex from '../xmIteration/XmIterationComplex.vue'; 
-	import XmProjectOveriewComplex from './XmProjectOveriewComplex.vue';
+	import XmProjectOverviewComplex from './XmProjectOverviewComplex.vue';
 import XmProductComplex from '../xmProduct/XmProductComplex.vue';
 
 
@@ -417,7 +417,7 @@ import XmProductComplex from '../xmProduct/XmProductComplex.vue';
 			xmTestCaseExecMng,
 			xmProjectGroupSelect,
 			XmIterationComplex, 
-			XmProjectOveriewComplex,
+			XmProjectOverviewComplex,
 			XmProductComplex,
 			//在下面添加其它组件
 		},

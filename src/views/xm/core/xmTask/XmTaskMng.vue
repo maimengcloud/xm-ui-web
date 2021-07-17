@@ -534,8 +534,9 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			},
 			'xmProduct':function(){
 				this.filters.product=this.xmProduct;
+				this.getXmTasks(); 
 			}, 
-			xmIteration(){ 
+			xmIteration:function(){ 
 				this.getXmTasks(); 
 			}
 		},

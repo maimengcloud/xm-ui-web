@@ -6,9 +6,13 @@
 			</el-col>  
 			<el-col :span="iterationVisible==true?21:24" >  
 				<el-tabs type="border-card"  :v-model="showPanel" activate-name="iterationOverview" @tab-click="tabClick">  
-					<el-tab-pane label="产品、战略"   name="products">   
-						<span v-show="iterationVisible==true" slot="label" ><i class="el-icon-d-arrow-left" @click.stop="iterationVisible=false"></i> 产品、战略</span>
-						<span v-show="iterationVisible==false" slot="label" ><i class="el-icon-d-arrow-right" @click.stop="iterationVisible=true"></i> 产品、战略</span> 
+					
+					<el-tab-pane label="迭代概览" lazy  name="iterationOverview">
+						<span v-show="iterationVisible==true" slot="label" ><i class="el-icon-d-arrow-left" @click.stop="iterationVisible=false"></i> 迭代概览</span>
+						<span v-show="iterationVisible==false" slot="label" ><i class="el-icon-d-arrow-right" @click.stop="iterationVisible=true"></i> 迭代概览</span> 
+						<xm-iteration-state-show v-show="xmIteration && showPanel=='iterationOverview'"  :xm-iteration="xmIteration" :sel-project="selProject"></xm-iteration-state-show>
+					</el-tab-pane>
+					<el-tab-pane label="产品、战略"   name="products">    
 						<xm-product-mng  v-show="xmIteration && showPanel=='products'"   :xm-iteration="xmIteration" :sel-project="selProject"></xm-product-mng>
 					</el-tab-pane>
 					<el-tab-pane label="故事" lazy name="menus" >  
@@ -19,9 +23,6 @@
 					</el-tab-pane>
 					<el-tab-pane label="缺陷" lazy name="bugs" > 
 						<xm-question-mng v-show="xmIteration && showPanel=='bugs'"  :xm-iteration="xmIteration" :sel-project="selProject"></xm-question-mng>
-					</el-tab-pane>
-					<el-tab-pane label="迭代概览" lazy  name="iterationOverview">
-						<xm-iteration-state-show v-show="xmIteration && showPanel=='iterationOverview'"  :xm-iteration="xmIteration" :sel-project="selProject"></xm-iteration-state-show>
 					</el-tab-pane>
 				</el-tabs>
 				<el-row>
