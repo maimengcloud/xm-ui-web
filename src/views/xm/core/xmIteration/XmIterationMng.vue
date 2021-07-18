@@ -85,7 +85,7 @@
 				<el-table-column type="selection" aria-disabled width="55"></el-table-column>
 				<el-table-column prop="iterationName" label="迭代名称" min-width="160" show-overflow-tooltip>
 					 <template slot-scope="scope">
-						<span>{{scope.row.seqNo}} &nbsp;&nbsp;<el-link type="primary" @click="showEdit( scope.row,scope.$index)"> {{scope.row.iterationName}} </el-link></span>
+						<span>{{scope.row.seqNo}} &nbsp;&nbsp;<el-link type="primary" @click="intoInfo( scope.row,scope.$index)"> {{scope.row.iterationName}} </el-link></span>
 					 </template>
 				</el-table-column>
 				<el-table-column prop="finishRate" label="总进度" min-width="80" >
@@ -360,6 +360,13 @@ import XmIterationSelect from './XmIterationSelect.vue';
 			},
 			afterEditSubmit(){
 				this.editFormVisible=false;
+			},
+			
+			//进入info界面
+			intoInfo(row) {
+				this.editForm = row;
+				this.$router.push({ name:'XmIterationInfoRoute', params: row })
+				//this.showInfo = true;
 			},
 			//选择行xmIteration
 			selsChange: function (sels) {

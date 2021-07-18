@@ -3,27 +3,24 @@
 		<el-row>
 			<el-menu :default-active="infotype"   mode="horizontal"  @select="setInfotype"   class="menus" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
 
-				<el-menu-item  index="项目概览" >
+				<el-menu-item  index="迭代概览" >
 					<span slot="title" >
 						<span slot="title" @click.stop="goBack"><i class="el-icon-back" ></i></span>
 						<i class="el-icon-s-data"></i>
-						<font v-if="selProject.name.length>=10">{{selProject.name.substring(0,10)}}</font>
-						<font type="danger" v-else>{{selProject.name}}</font>
+						<font v-if="xmIteration.iterationName.length>=10">{{xmIteration.iterationName.substring(0,10)}}</font>
+						<font type="danger" v-else>{{xmIteration.iterationName}}</font>
 						概览
 					</span>
-				</el-menu-item>
-				<el-menu-item   index="迭代">
-					 <span slot="title"><i class="el-icon-document-copy"></i>迭代</span>
-
+				</el-menu-item> 
+				
+				<el-menu-item label="项目" index="项目">
+					 <span slot="title"><i class="el-icon-document"></i>项目</span> 
 				</el-menu-item>
 				<el-menu-item   index="产品">
-					 <span slot="title"><i class="el-icon-s-flag"></i>产品</span>
-
+					 <span slot="title"><i class="el-icon-s-flag"></i>产品</span> 
 				</el-menu-item>
 				<el-menu-item label="故事" index="用户故事">
-					 <span slot="title"><i class="el-icon-document"></i>故事</span>
-
-
+					 <span slot="title"><i class="el-icon-document"></i>故事</span>  
 				</el-menu-item>
 				<el-menu-item   index="任务">
 					 <span slot="title"><i class="el-icon-s-operation"></i>任务</span>
@@ -141,27 +138,28 @@
 				</el-submenu>
 			</el-menu>
 		   
-		  	<xm-project-overview-complex v-if="infotype=='项目概览'" :sel-project="selProject"></xm-project-overview-complex>  
-			 <xm-iteration-for-project-complex  v-if="infotype=='迭代'" ref="xmIterationMng" :sel-project="selProject"></xm-iteration-for-project-complex>
- 			 <xm-product-for-project-complex  v-if="infotype=='产品'" ref="xmProductComplex" :sel-project="selProject"></xm-product-for-project-complex>
-			 <xm-menu-mng v-if="infotype=='用户故事'" :sel-project="selProject"></xm-menu-mng>
-			 <xm-task-mng v-if="infotype=='任务'" ref="xmTaskMng" :sel-project="selProject" ></xm-task-mng>
-			  <xm-question v-if="infotype=='缺陷'" :qtype="'bug'" :sel-project='selProject' ref="xmQuestion"></xm-question>
-			  <xm-group-mng v-if="infotype=='团队'" :sel-project="selProject"></xm-group-mng>
-			  <xm-file-mng v-if="infotype=='文档'" :sel-project="selProject"></xm-file-mng>
-			  <xm-project-phase-mng v-if="infotype=='阶段计划及里程碑'" ref="xmProjectPhaseMng" :sel-project="selProject" ></xm-project-phase-mng>
-			  <xm-test-case-exec-mng v-if="infotype=='测试计划'" :visible="infotype=='测试计划'"  :sel-project='selProject' ref="xmQuestion"></xm-test-case-exec-mng>
-			<xm-menu-with-plan v-if="infotype=='故事监控'" ref="xmMenuWithPlan" :sel-project="selProject"></xm-menu-with-plan>
-			<xm-project-state-mng v-if="infotype=='项目监控'" :sel-project="selProject"></xm-project-state-mng>
-			<xm-budget v-if="infotype=='预算'" :sel-project="selProject"></xm-budget>
-			 <xm-cost v-if="infotype=='费用'" :sel-project="selProject"></xm-cost>
-			<xm-project-kpi v-if="infotype=='考核'"  :sel-project="selProject"></xm-project-kpi>
-			<xm-record v-if="infotype=='日志'" :visible="infotype=='日志'" :sel-project="selProject"></xm-record>
-			<xm-contract v-if="infotype=='合同管理'" :sel-project="selProject"></xm-contract>
-			<xm-env-list v-if="infotype=='环境清单'" :sel-project="selProject"></xm-env-list>
-			<xm-question v-if="infotype=='风险'" :qtype="'risk'" :sel-project='selProject' ref="xmRisk"></xm-question>
+		  	<xm-project-overview-complex v-if="infotype=='项目概览'" :xm-iteration="xmIteration"></xm-project-overview-complex>  
+  			
+			<xm-project-for-link v-if="infotype=='项目'" ref="xmProjectForLink" :xm-iteration="xmIteration"></xm-project-for-link>
+			 <xm-product-for-project-complex  v-if="infotype=='产品'" ref="xmProductComplex" :xm-iteration="xmIteration"></xm-product-for-project-complex>
+			 <xm-menu-mng v-if="infotype=='用户故事'" :xm-iteration="xmIteration"></xm-menu-mng>
+			 <xm-task-mng v-if="infotype=='任务'" ref="xmTaskMng" :xm-iteration="xmIteration" ></xm-task-mng>
+			  <xm-question v-if="infotype=='缺陷'" :qtype="'bug'" :xm-iteration='xmIteration' ref="xmQuestion"></xm-question>
+			  <xm-group-mng v-if="infotype=='团队'" :xm-iteration="xmIteration"></xm-group-mng>
+			  <xm-file-mng v-if="infotype=='文档'" :xm-iteration="xmIteration"></xm-file-mng>
+			  <xm-project-phase-mng v-if="infotype=='阶段计划及里程碑'" ref="xmProjectPhaseMng" :xm-iteration="xmIteration" ></xm-project-phase-mng>
+			  <xm-test-case-exec-mng v-if="infotype=='测试计划'" :visible="infotype=='测试计划'"  :xm-iteration='xmIteration' ref="xmQuestion"></xm-test-case-exec-mng>
+			<xm-menu-with-plan v-if="infotype=='故事监控'" ref="xmMenuWithPlan" :xm-iteration="xmIteration"></xm-menu-with-plan>
+			<xm-project-state-mng v-if="infotype=='项目监控'" :xm-iteration="xmIteration"></xm-project-state-mng>
+			<xm-budget v-if="infotype=='预算'" :xm-iteration="xmIteration"></xm-budget>
+			 <xm-cost v-if="infotype=='费用'" :xm-iteration="xmIteration"></xm-cost>
+			<xm-project-kpi v-if="infotype=='考核'"  :xm-iteration="xmIteration"></xm-project-kpi>
+			<xm-record v-if="infotype=='日志'" :visible="infotype=='日志'" :xm-iteration="xmIteration"></xm-record>
+			<xm-contract v-if="infotype=='合同管理'" :xm-iteration="xmIteration"></xm-contract>
+			<xm-env-list v-if="infotype=='环境清单'" :xm-iteration="xmIteration"></xm-env-list>
+			<xm-question v-if="infotype=='风险'" :qtype="'risk'" :xm-iteration='xmIteration' ref="xmRisk"></xm-question>
 			<el-drawer title="选中团队成员" :visible.sync="groupUserVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
-				<xm-project-group-select :sel-project="selProject" :visible="groupUserVisible" is-select-multi-user="1" @user-confirm="onUserSelected"></xm-project-group-select>
+				<xm-project-group-select :xm-iteration="xmIteration" :visible="groupUserVisible" is-select-multi-user="1" @user-confirm="onUserSelected"></xm-project-group-select>
 			</el-drawer>
 		</el-row>
 	</section>
@@ -197,17 +195,18 @@
 	import XmIterationForProjectComplex from '../xmIteration/XmIterationForProjectComplex.vue'; 
 	import XmProjectOverviewComplex from '../xmProject/XmProjectOverviewComplex.vue';
 	import XmProductForProjectComplex from '../xmProduct/XmProductForProjectComplex.vue';
+	import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
 
 
 	export default {
-		props: ["selProject","visible"],
+		props: ["xmIteration","visible"],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
 				]),
 		},
 		watch:{
-			selProject:function(selProject){
+			xmIteration:function(xmIteration){
 				var oldInfotype=this.infotype
 				this.infotype=''
 				this.$nextTick(()=>{
@@ -221,7 +220,7 @@
 			return {
 				platformViewVisible:false,
 				tabPosition:'left',
-				infotype:"项目概览",
+				infotype:"迭代概览",
 				load:{list:false,edit:false},
         groupUserVisible:false,
         exportArr: ['任务', '阶段计划', '故事监控']
@@ -303,7 +302,7 @@
           list = this.$refs.xmMenuWithPlan.xmMenusTreeData;
           pageNum = this.$refs.xmMenuWithPlan.pageInfo.pageNum;
         }
-        const filename = `${this.selProject.name}_${this.infotype}_第${pageNum}页`;
+        const filename = `${this.xmIteration.iterationName}_${this.infotype}_第${pageNum}页`;
 				const data = this.formatJson(keyList, list);
 
 				import('@/vendor/Export2Excel').then(excel => {
@@ -419,6 +418,7 @@
 			XmIterationForProjectComplex, 
 			XmProjectOverviewComplex,
 			XmProductForProjectComplex,
+			XmProjectForLink,
 			//在下面添加其它组件
 		},
 		mounted() {
