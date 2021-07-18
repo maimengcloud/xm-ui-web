@@ -14,8 +14,8 @@
 					<el-tab-pane label="迭代"   name="iterations">   
 						 <xm-iteration-mng v-show=" xmProduct && showPanel=='iterations'"   :xm-product="xmProduct" :sel-project="selProject"></xm-iteration-mng>
 					</el-tab-pane>
-					<el-tab-pane label="项目" lazy  name="projects" v-if="!selProject">
- 						<xm-project-list v-show="xmProduct && showPanel=='projects'"  :xm-product="xmProduct"></xm-project-list>
+					<el-tab-pane label="项目" lazy  name="projects"> 
+						<xm-product-project-for-link v-show="xmProduct && showPanel=='projects'"  :xm-product="xmProduct" :sel-project="selProject"></xm-product-project-for-link>
 					</el-tab-pane>
 					<el-tab-pane label="故事" lazy name="menus" >  
 						<xm-menu-mng v-show="xmProduct && showPanel=='menus'"   :xm-product="xmProduct" :sel-project="selProject"></xm-menu-mng>
@@ -49,8 +49,10 @@ import XmProductMng from './XmProductMng.vue';
 import XmTaskMng from '../xmTask/XmTaskMng.vue';
 import XmQuestionMng from '../xmQuestion/XmQuestionMng.vue';
 import XmProjectList from '../xmProject/XmProjectList.vue';
+import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
 
 import XmProductSelect from './XmProductSelect.vue';
+import XmProductProjectForLink from './XmProductProjectForLink.vue';
  
 
 	export default {
@@ -150,6 +152,8 @@ import XmProductSelect from './XmProductSelect.vue';
 			XmQuestionMng,
 			XmProductSelect,
 			XmProjectList,
+			XmProjectForLink,
+XmProductProjectForLink,
 		},
 		mounted() { 
 		this.$nextTick(() => {
