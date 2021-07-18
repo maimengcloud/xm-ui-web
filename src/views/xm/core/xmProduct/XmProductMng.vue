@@ -27,28 +27,16 @@
 					<el-button v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProducts" icon="el-icon-search"></el-button>
 				</template>
 			</el-input> 
-
-			<el-button  type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button> 
-			<el-popover
-				placement="top-start"
-				title=""
-				width="400"
-				trigger="hover" >
-				<el-row>
-					<el-button type="primary" @click="showAdd" icon="el-icon-plus">产品</el-button> 
-					<el-tooltip content="项目与产品关联后，从项目视图可以查找到产品信息"><el-button type="primary" @click="showAdd" icon="el-icon-plus">将项目与产品关联</el-button> </el-tooltip>
-					<el-tooltip content="迭代与产品关联后，从迭代视图可以查找到产品信息，可以将故事加入到迭代中去"><el-button type="primary" @click="showAdd" icon="el-icon-plus">将迭代与产品关联</el-button> </el-tooltip>
-				</el-row> 
-				<el-button  slot="reference"   icon="el-icon-plus" circle></el-button>
-			</el-popover> 
+			<el-button type="primary" @click="showAdd" icon="el-icon-plus">产品</el-button>  
 			<el-popover
 				placement="top-start"
 				title=""
 				width="400"
 				trigger="click" >
+				<el-divider content-position="left"><strong>查询条件</strong></el-divider> 
 				<el-row>
 					<el-col :span="24" style="padding-top:5px;">
-						<el-divider content-position="left"><strong>查询条件</strong></el-divider> 
+						
 						<font class="more-label-font">
 							产品查询范围：
 						</font>
@@ -107,6 +95,12 @@
 						<el-button type="primary" size="mini" @click="searchXmProducts" >查询</el-button>
 					</el-col>
 				</el-row> 
+				<el-divider content-position="left"><strong>更多操作</strong></el-divider> 
+				<el-row> 
+					<el-col :span="24" style="padding-top:5px;">
+						<el-button v-if="xmIteration" size="mini"  icon="el-icon-plus" @click="productSelectVisible=true">将更多产品加入迭代<strong>{{xmIteration.iterationName}}</strong></el-button>
+ 					</el-col>	
+				</el-row>
 				<el-button  slot="reference"   icon="el-icon-more" circle></el-button>
 			</el-popover> 
 		</el-row>
@@ -129,7 +123,7 @@
 				<el-table-column prop="actWorkload" label="实际工作量.人时" width="150"  show-overflow-tooltip></el-table-column> 
  				<el-table-column  label="操作" width="200" fixed="right">
 					<template slot-scope="scope"> 
-						<el-button  type="primary" @click="toIterationList(scope.row)" icon="el-icon-document">迭代计划</el-button>  
+						<el-tooltip v-if="xmIteration" :content="'将产品与迭代【'+ xmIteration.iterationName + '】脱钩'"><el-button   @click="doDelXmIterationProductLink( scope.row,scope.$index)" icon="el-icon-remove-outline">与迭代脱钩</el-button></el-tooltip>
 						<el-popover
 							placement="top-start"
 							title=""
@@ -137,20 +131,23 @@
 							trigger="click" >
 							<el-row>
 								<el-col :span="24"  style="padding-top:12px;">
-									<el-button  type="warning" @click="loadTasksToXmProductState(scope.row)" icon="el-icon-s-data">执行统计任务</el-button>
+									<el-button  type="warning" @click="loadTasksToXmProductState(scope.row)" icon="el-icon-s-data">从任务汇总统计进度</el-button>
 								</el-col>
 								<el-col :span="24" style="padding-top:12px;">
 									<el-button  type="warning" @click="showProductState(scope.row)" icon="el-icon-s-data">产品报告</el-button> 
 								</el-col>
-								<el-col :span="24" class="hidden-lg-and-up" style="padding-top:12px;">
-									<el-button type="success" @click="toProjectList(scope.row)"  icon="el-icon-document">关联项目查询</el-button> 
-								</el-col> 
-								<el-col :span="24" class="hidden-lg-and-up" style="padding-top:12px;">
-									<el-button  type="success" @click="toIterationList(scope.row)" icon="el-icon-document">迭代计划管理</el-button>   
+								<el-col :span="24" style="padding-top:12px;">
+									<el-button  type="primary" @click="toIterationList(scope.row)" icon="el-icon-document">关联迭代计划查询</el-button>  
 								</el-col> 
 								<el-col :span="24"  style="padding-top:12px;">
+									<el-button type="success" @click="toProjectList(scope.row)"  icon="el-icon-document">关联项目查询</el-button> 
+								</el-col>  
+								<el-col :span="24"  style="padding-top:12px;">
 									<el-button  type="success" @click="toTaskList(scope.row)"  icon="el-icon-tickets">关联任务查询</el-button>
-								</el-col> 
+								</el-col>  
+								<el-col :span="24" style="padding-top:12px;">
+									<el-button  type="danger" v-loading="load.del" @click="handleDel(scope.row)" :disabled="load.del==true" icon="el-icon-delete">删除</el-button>  					
+								</el-col>	 
 							</el-row>
 							<el-button  slot="reference" icon="el-icon-more" circle></el-button>
 						</el-popover>  
@@ -187,6 +184,12 @@
 				<xm-project-list  @select="onProjectSelected"></xm-project-list>
 			</el-drawer>
 			
+			<el-drawer title="选择产品" :visible.sync="productSelectVisible" size="60%" append-to-body> 
+				<xm-product-select  @row-click="onXmProductSelect"></xm-product-select>
+			</el-drawer>
+			<el-drawer title="迭代报告" :visible.sync="iterationSelectVisible" fullscreen  append-to-body  :close-on-click-modal="false">
+				<xm-iteration-select @row-click="onXmIterationSelect"></xm-iteration-select>
+			</el-drawer>
 	</section>
 </template>
 
@@ -195,6 +198,7 @@
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { listXmProduct,listXmProductWithState, delXmProduct, batchDelXmProduct } from '@/api/xm/core/xmProduct';
+	import { addXmIterationProductLink,delXmIterationProductLink } from '@/api/xm/core/xmIterationProductLink';
 	import { loadTasksToXmProductState } from '@/api/xm/core/xmProductState'; 
 	import  XmProductAdd from './XmProductAdd';//新增界面
 	import  XmProductEdit from './XmProductEdit';//修改界面
@@ -203,8 +207,10 @@
 	import  XmProductStateMng from '../xmProductState/XmProductStateMng';//修改界面
 
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
-import XmProjectList from '../xmProject/XmProjectList.vue';
-	
+	import XmProjectList from '../xmProject/XmProjectList.vue';
+	import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
+import XmProductSelect from './XmProductSelect.vue';
+
 	export default { 
 		props:['selProject','xmIteration'],
 		computed: {
@@ -213,7 +219,9 @@ import XmProjectList from '../xmProject/XmProjectList.vue';
 		    ])
 		},
 		watch:{
-			 
+			selProject:function(){
+				this.getXmProducts(); 
+			},
 			xmIteration:function(){ 
 				this.getXmProducts(); 
 			}
@@ -254,6 +262,7 @@ import XmProjectList from '../xmProject/XmProjectList.vue';
 					id:'',productName:'',branchId:'',remark:''
 				},
 				iterationVisible:false,
+				iterationSelectVisible:false,
 				productStateVisible:false,
 				selectFiltersPmUserVisible:false,
 				tableHeight:300,
@@ -263,6 +272,7 @@ import XmProjectList from '../xmProject/XmProjectList.vue';
 				],  
 				pickerOptions:  util.pickerOptions('datarange'),
 				projectVisible:false,
+				productSelectVisible:false,
 				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -388,10 +398,14 @@ import XmProjectList from '../xmProject/XmProjectList.vue';
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);
 			},
-			afterAddSubmit(){
+			afterAddSubmit(xmProduct){
 				this.addFormVisible=false;
 				this.pageInfo.count=true;
-				this.getXmProducts();
+				if(this.xmIteration){//如果是迭代试图进入的迭代界面，创建了产品直接添加产品与迭代的关系
+					this.onXmProductSelect(xmProduct);
+				}else{ 
+					this.getXmProducts();
+				}
 			},
 			afterEditSubmit(){
 				this.editFormVisible=false;
@@ -490,6 +504,37 @@ import XmProjectList from '../xmProject/XmProjectList.vue';
 			},	 
 			onProjectSelected(projects){
 
+			},
+			/**end 自定义函数请在上面加**/
+			onXmProductSelect:function(row){
+				var xmIteration=this.xmIteration;
+				var xmProduct=row;
+				this.$confirm('确认将产品【'+xmProduct.productName+'】加入迭代计划【'+xmIteration.iterationName+'】吗？', '提示', {
+					type: 'warning'
+				}).then(()=>{
+					addXmIterationProductLink({iterationId:xmIteration.id,productId:xmProduct.id}).then(res=>{
+						var tips =res.data.tips;
+						if(tips.isOk){
+							this.getXmProducts();
+						}
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+					})
+				})
+			},
+			doDelXmIterationProductLink(row){ 
+				var xmIteration=this.xmIteration;
+				var xmProduct=row;
+				this.$confirm('确认将产品【'+xmProduct.productName+'】与迭代【'+xmIteration.iterationName+'】进行脱钩吗？脱钩后，产品下的所有故事将从本迭代计划一并移出。', '提示', {
+					type: 'warning'
+				}).then(()=>{
+					delXmIterationProductLink({iterationId:xmIteration.id,productId:xmProduct.id}).then(res=>{
+						var tips =res.data.tips;
+						if(tips.isOk){
+							this.getXmProducts();
+						}
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+					})
+				})
 			}
 			/**end 自定义函数请在上面加**/
 			
@@ -501,6 +546,8 @@ import XmProjectList from '../xmProject/XmProjectList.vue';
 			XmProductStateMng,
 			UsersSelect,
 			XmProjectList,
+			XmIterationSelect,
+XmProductSelect,
 		    //在下面添加其它组件
 		},
 		mounted() { 

@@ -98,6 +98,9 @@
 					this.clearSelectIteration();
 					this.getXmIterations();
 				}
+			},
+			productId:function(){
+				this.getXmIterations();
 			}
 		},
 		data() {

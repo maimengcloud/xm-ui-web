@@ -111,6 +111,10 @@
 		watch:{
 			xmIteration(){
 				this.getXmProducts();
+			},
+			
+			selProject(){
+				this.getXmProducts();
 			}
 		},
 		data() {
@@ -217,6 +221,7 @@
 				if(this.xmIteration){
 					params.iterationId=this.xmIteration.id
 				}
+				 
 				params.queryScope=this.filters.queryScope
 				if(this.filters.queryScope=='productId'){
 					if(!this.filters.id){

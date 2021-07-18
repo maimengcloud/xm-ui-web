@@ -26,7 +26,9 @@
 				title=""
 				width="400"
 				trigger="click" >
+				<el-divider content-position="left"><strong>查询条件</strong></el-divider>
 				<el-row> 
+					
 					<el-col :span="24" style="padding-top:5px;">
 						<font class="more-label-font">
 							迭代查询范围：
@@ -68,6 +70,12 @@
 						<el-checkbox v-model="gstcVisible">甘特图</el-checkbox>  
 					</el-col>
 				</el-row>
+				<el-divider content-position="left"><strong>更多操作</strong></el-divider>
+				<el-row> 
+					<el-col :span="24" style="padding-top:5px;">
+						<el-button v-if="xmProduct" size="mini"  icon="el-icon-plus" @click="iterationSelectVisible=true">将更多迭代加入产品<strong>{{xmProduct.productName}}</strong></el-button>
+ 					</el-col>	
+				</el-row>
 				<el-button  slot="reference" icon="el-icon-more" circle></el-button>
 			</el-popover>
  		</el-row>
@@ -93,13 +101,8 @@
 				<el-table-column prop="actWorkload" label="实际工作量" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column label="操作" width="400" fixed="right">
 					<template slot-scope="scope">
-						<el-button type="primary" @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus"></el-button>
-						<el-button type="warning" @click="loadTasksToXmIterationState( scope.row)" icon="el-icon-s-data">刷新</el-button>
-						<el-button type="success" @click="showIterationState( scope.row)" icon="el-icon-s-data">报告</el-button>
-						<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"></el-button>
-
-
-
+						<el-tooltip v-if="xmProduct" :content="'将迭代与'+ xmProduct.productName + '脱钩'"><el-button   @click="doDelXmIterationProductLink( scope.row,scope.$index)" icon="el-icon-remove-outline">与产品脱钩</el-button></el-tooltip>
+						<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"></el-button> 
 					</template>
 				</el-table-column>
 			</el-table>
@@ -120,6 +123,10 @@
 			<el-drawer title="迭代报告" :visible.sync="iterationStateVisible" fullscreen  append-to-body  :close-on-click-modal="false">
 				<xm-iteration-state-mng :xm-iteration="editForm"   :visible="iterationStateVisible" @cancel="iterationStateVisible=false"></xm-iteration-state-mng>
 			</el-drawer>
+			
+			<el-drawer title="迭代报告" :visible.sync="iterationSelectVisible" fullscreen  append-to-body  :close-on-click-modal="false">
+				<xm-iteration-select @row-click="onXmIterationSelect"></xm-iteration-select>
+			</el-drawer>
 		</el-row> 
 	</section>
 </template>
@@ -129,12 +136,15 @@
 	import config from '@/common/config';//全局公共库
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { listXmIteration,listXmIterationWithState, delXmIteration, batchDelXmIteration,loadTasksToXmIterationState } from '@/api/xm/core/xmIteration';
+	import { addXmIterationProductLink,delXmIterationProductLink } from '@/api/xm/core/xmIterationProductLink';
+
 	import  XmIterationAdd from './XmIterationAdd';//新增界面
 	import  XmIterationEdit from './XmIterationEdit';//修改界面
 	import  XmIterationStateMng from '../xmIterationState/XmIterationStateMng';//修改界面
   import XmGantt from '../components/xm-gantt';
 
 	import { mapGetters } from 'vuex'
+import XmIterationSelect from './XmIterationSelect.vue';
 
 	export default {
 		computed: {
@@ -146,12 +156,18 @@
 				return this.translateDataToTree(this.xmIterations);
       },
 		},
-		props:['productId','menuId','visible'],
+		props:['xmProduct','selProject','menuId','visible'],
 		watch:{
 			visible:function(visible){
 				if(visible==true){
 					this.getXmIterations();
 				}
+			},
+			xmProduct:function(){
+				this.getXmIterations();
+			},
+			selProject:function(){
+				this.getXmIterations();
 			}
 		},
 		data() {
@@ -207,17 +223,18 @@
 				/**begin 自定义属性请在下面加 请加备注**/
 				valueChangeRows:[],
 				parentIteration:null,
-        iterationStateVisible:false,
-        gstcVisible:false,
-		tableHeight:300,
-        ganrrColumns: {
-          children: 'children',
-          name: 'iterationName',
-          id: 'id',
-          pid: 'pid',
-          startDate: 'startTime',
-          endDate: 'endTime',
-        }
+				iterationStateVisible:false,
+				iterationSelectVisible:false,
+				gstcVisible:false,
+				tableHeight:300,
+				ganrrColumns: {
+				children: 'children',
+				name: 'iterationName',
+				id: 'id',
+				pid: 'pid',
+				startDate: 'startTime',
+				endDate: 'endTime',
+				}
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -270,13 +287,16 @@
 				if(this.filters.key){
 					params.key= "%"+this.filters.key+"%"
 				}
-				if(this.productId){
-					params.productId=this.productId
+				if(this.xmProduct){
+					params.productId=this.xmProduct.id
+				}
+				if(this.selProject){
+					params.projectId=this.selProject.id
 				}
 				if(this.menuId){
 					params.menuId=this.menuId
 				} 
-				if( !this.menuId && !this.productId ){
+				if( !this.menuId && !this.xmProduct && !this.selProject){
 					params.queryScope=this.filters.queryScope 
 					if(this.filters.queryScope=='iterationId'){
 						if(!this.filters.id){
@@ -329,10 +349,14 @@
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);
 			},
-			afterAddSubmit(){
+			afterAddSubmit(xmIteration){
 				this.addFormVisible=false;
 				this.pageInfo.count=true;
-				this.getXmIterations();
+				if(this.xmProduct){//如果是产品试图界面添加的迭代，直接添加产品与迭代的关联关系
+					this.onXmIterationSelect(xmIteration);
+				}else{ 
+					this.getXmIterations();
+				} 
 			},
 			afterEditSubmit(){
 				this.editFormVisible=false;
@@ -467,13 +491,42 @@
 					return cellValue;
 				}
       },
-			/**end 自定义函数请在上面加**/
-
+			onXmIterationSelect:function(row){
+				var xmIteration=row;
+				var xmProduct=this.xmProduct;
+				this.$confirm('确认将产品【'+xmProduct.productName+'】加入迭代计划【'+xmIteration.iterationName+'】吗？', '提示', {
+					type: 'warning'
+				}).then(()=>{
+					addXmIterationProductLink({iterationId:xmIteration.id,productId:xmProduct.id}).then(res=>{
+						var tips =res.data.tips;
+						if(tips.isOk){ 
+							this.getXmIterations();
+						}
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+					})
+				})
+			},
+			doDelXmIterationProductLink(row){ 
+				var xmIteration=row;
+				var xmProduct=this.xmProduct;
+				this.$confirm('确认将产品【'+xmProduct.productName+'】与迭代【'+xmIteration.iterationName+'】进行脱钩吗？脱钩后，产品与迭代互相查看不到对方信息。', '提示', {
+					type: 'warning'
+				}).then(()=>{
+					delXmIterationProductLink({iterationId:xmIteration.id,productId:xmProduct.id}).then(res=>{
+						var tips =res.data.tips;
+						if(tips.isOk){
+							this.getXmIterations();
+						}
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+					})
+				})
+			}
 		},//end methods
 		components: {
 		    'xm-iteration-add':XmIterationAdd,
 			'xm-iteration-edit':XmIterationEdit,
 			XmIterationStateMng,XmGantt,
+			XmIterationSelect,
 		    //在下面添加其它组件
 		},
 		mounted() {

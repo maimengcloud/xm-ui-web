@@ -12,7 +12,7 @@
  						 
 					</el-tab-pane>
 					<el-tab-pane label="迭代"   name="iterations">   
-						 <xm-iteration-select v-show=" showPanel=='iterations'"   :xm-product="xmProduct" :sel-project="selProject"></xm-iteration-select>
+						 <xm-iteration-mng v-show=" xmProduct && showPanel=='iterations'"   :xm-product="xmProduct" :sel-project="selProject"></xm-iteration-mng>
 					</el-tab-pane>
 					<el-tab-pane label="项目" lazy  name="projects" v-if="!selProject">
  						<xm-project-list v-show="xmProduct && showPanel=='projects'"  :xm-product="xmProduct"></xm-project-list>
@@ -41,7 +41,7 @@
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询 
-	import XmIterationSelect from '../xmIteration/XmIterationSelect.vue'
+	import XmIterationMng from '../xmIteration/XmIterationMng.vue'
 	import XmMenuMng from '../xmMenu/XmMenuMng.vue'
 	import XmIterationStateShow from '../xmIterationState/XmIterationStateShow.vue'
 	import { mapGetters } from 'vuex' 
@@ -142,7 +142,7 @@ import XmProductSelect from './XmProductSelect.vue';
 		},//end methods
 		components: { 
 		    //在下面添加其它组件
-			XmIterationSelect,
+			XmIterationMng,
 			XmMenuMng,
 			XmIterationStateShow, 
 			XmProductMng,
