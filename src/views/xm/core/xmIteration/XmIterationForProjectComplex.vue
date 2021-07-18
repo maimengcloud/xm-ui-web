@@ -12,17 +12,20 @@
 						<span v-show="iterationVisible==false" slot="label" ><i class="el-icon-d-arrow-right" @click.stop="iterationVisible=true"></i> 迭代概览</span> 
 						<xm-iteration-state-show v-show="xmIteration && showPanel=='iterationOverview'"  :xm-iteration="xmIteration" :sel-project="selProject"></xm-iteration-state-show>
 					</el-tab-pane>
-					<el-tab-pane label="产品、战略"   name="products">    
-						<xm-product-mng  v-show="xmIteration && showPanel=='products'"   :xm-iteration="xmIteration" :sel-project="selProject"></xm-product-mng>
+					<el-tab-pane label="产品、战略"   name="products" v-if="!xmProduct">    
+						<xm-product-mng  v-show="xmIteration && showPanel=='products'"  :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-product-mng>
 					</el-tab-pane>
+					<el-tab-pane label="项目"   name="projects">    
+  						<xm-project-for-link v-show="xmIteration && showPanel=='projects'"  :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-project-for-link>
+					</el-tab-pane> 
 					<el-tab-pane label="故事" lazy name="menus" >  
-						<xm-menu-mng v-show="xmIteration && showPanel=='menus'"   :xm-iteration="xmIteration" :sel-project="selProject"></xm-menu-mng>
+						<xm-menu-mng v-show="xmIteration && showPanel=='menus'" :xm-product="xmProduct"  :xm-iteration="xmIteration" :sel-project="selProject"></xm-menu-mng>
 					</el-tab-pane>
 					<el-tab-pane label="任务" lazy name="tasks" >
-						<xm-task-mng v-show="xmIteration && showPanel=='tasks'"  :xm-iteration="xmIteration" :sel-project="selProject"></xm-task-mng>
+						<xm-task-mng v-show="xmIteration && showPanel=='tasks'" :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-task-mng>
 					</el-tab-pane>
 					<el-tab-pane label="缺陷" lazy name="bugs" > 
-						<xm-question-mng v-show="xmIteration && showPanel=='bugs'"  :xm-iteration="xmIteration" :sel-project="selProject"></xm-question-mng>
+						<xm-question-mng v-show="xmIteration && showPanel=='bugs'" :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-question-mng>
 					</el-tab-pane>
 				</el-tabs>
 				<el-row>
@@ -45,6 +48,7 @@
 	import XmIterationStateShow from '../xmIterationState/XmIterationStateShow.vue'
 	import { mapGetters } from 'vuex' 
 import XmProductMng from '../xmProduct/XmProductMng.vue';
+import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
 import XmTaskMng from '../xmTask/XmTaskMng.vue';
 import XmQuestionMng from '../xmQuestion/XmQuestionMng.vue';
  
@@ -55,7 +59,7 @@ import XmQuestionMng from '../xmQuestion/XmQuestionMng.vue';
 		      'userInfo','roles'
 			]), 
 		},
-		props:['visible','selProject'],
+		props:['visible','selProject','xmProduct'],
 		watch:{
 			visible:function(visible){
 				if(visible==true){ 
@@ -143,7 +147,8 @@ import XmQuestionMng from '../xmQuestion/XmQuestionMng.vue';
 			XmIterationStateShow, 
 			XmProductMng,
 			XmTaskMng,
-			XmQuestionMng
+			XmQuestionMng,
+			XmProjectForLink,
 		},
 		mounted() { 
 		this.$nextTick(() => {

@@ -1,331 +1,699 @@
 <template>
-	<section>  
-		<el-row > 
-			<!--列表 XmProduct 产品表-->
-			<el-table  ref="table" :height="tableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
- 				 <el-table-column prop="productName"  label="产品名称" min-width="150" > 
-					 <template slot="header" slot-scope="scope"> 
-						 产品名称 
-						 <el-popover
-							placement="top-start"
-							title=""
-							width="400"
-							trigger="click" >
-							<el-row>
-								<el-col :span="24" style="padding-top:5px;">
-									<font class="more-label-font">
-										产品查询范围：
-									</font>
-									<el-select size="mini" v-model="filters.queryScope" style="width:100%;"   placeholder="产品查询范围">
-										<el-option :label="userInfo.branchName+'机构下所有的产品'" value="branchId"></el-option>
-										<el-option label="我相关的产品" value="compete"></el-option>
-										<el-option label="按产品编号精确查找" value="productId"></el-option>
-										<el-option label="后台智能匹配" value=""></el-option>
-									</el-select>
-								</el-col>
-								<el-col  :span="24"  style="padding-top:5px;"> 
-									<el-input v-if="filters.queryScope=='productId'" size="mini" v-model="filters.id" style="width:100%;"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">  
-						 			</el-input> 
-								</el-col>
-								 
-								<el-col v-show="!selProject&&filters.queryScope!='productId'" :span="24"  style="padding-top:5px;">
-									<font class="more-label-font">创建时间:</font>  
-									<el-date-picker
-										v-model="dateRanger" 
-										type="daterange"
-										align="right"
-										unlink-panels
-										range-separator="至"
-										start-placeholder="开始日期"
-										end-placeholder="完成日期"
-										value-format="yyyy-MM-dd"
-										:default-time="['00:00:00','23:59:59']"
-										:picker-options="pickerOptions"
-									></el-date-picker>   
-								</el-col>  
-								
-								<el-col  :span="24"  style="padding-top:5px;">
-									<font class="more-label-font">
-										产品名称:
-									</font> 
-									<el-input  size="mini" v-model="filters.key" style="width:100%;"  placeholder="输入产品名字关键字">  
-						 			</el-input> 
-								</el-col>
-								<el-col  :span="24"  style="padding-top:5px;">
-									<font class="more-label-font">
-										产品经理:
-									</font>  
-									<el-tag v-if="filters.pmUser" closable @click="selectFiltersPmUser" @close="clearFiltersPmUser()">{{filters.pmUser.username}}</el-tag> 
-									<el-button size="mini"  v-else @click="selectFiltersPmUser()">选责任人</el-button>
-									<el-button size="mini"   @click="setFiltersPmUserAsMySelf()">我的</el-button>
-								</el-col>
-								<el-col  :span="24"  style="padding-top:5px;">
-									<el-button type="primary" size="mini" @click="searchXmProducts" >查询</el-button>
-								</el-col>
-							</el-row> 
-							<el-button  slot="reference" size="mini"  icon="el-icon-more" circle></el-button>
-						</el-popover>  
-					 </template>
-					<template slot-scope="scope">
-						<font>{{scope.row.productName}}</font>
-						<font class="align-right"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag>
-						
-						<el-tooltip content="产品经理"><el-tag v-if="scope.row.pmUsername">{{scope.row.pmUsername}}</el-tag></el-tooltip>
-						<el-tooltip content="点击统计进度，由任务进度汇总而成"><el-button size="mini" icon="el-icon-video-play" @click.stop="loadTasksToXmProductState( scope.row)"></el-button></el-tooltip>
+  <section class="page-container padding">
+<!--    <el-row  class="page-header page-height-10">
+      <el-col :xs="22" :sm="22" :md="23" :lg="23" :xl="23">
+          <span >项目总览</span>
+      </el-col>
+    </el-row>-->
+    <el-row class="page-main page-height-75" style="overflow-x: hidden;">
+      <el-row :gutter="10" style="margin-bottom:10px">
+          <el-col :span="8" >
+            <el-card class="box-card" style="padding:0px ;height:425px">
+              <div slot="header" class="clearfix">
+                <span>项目信息</span>
+              </div>
+              <el-row style="margin-bottom:18px">
+                <el-row>
+                  <span v-text="taskMng"></span>
+                </el-row>
+                <el-row>
+                  <span>项目负责人</span>
+                </el-row>
+              </el-row>
+              <el-row style="margin-bottom:18px">
+                <el-col :span="8" @click="">
+                  <div class="item">
+                    <div class="icon" style="background-color:  rgb(79, 140, 255);">
+                      <i class="el-icon-right"></i>
+                    </div>
+                    <div class="info">
+                      <div v-text="totalTask"></div>
+                      <div class="title">总任务量</div>
+                    </div>
+                  </div>
+                </el-col>
+                <el-col :span="8">
+                  <div class="item">
+                    <div class="icon" style="background-color:  rgb(255, 153, 51);">
+                      <i class="el-icon-loading"></i>
+                    </div>
+                    <div class="info">
+                      <div v-text="notStart">
+                      </div>
+                      <div class="title">待完成</div>
+                    </div>
+                  </div>
+                </el-col>
+                <el-col :span="8">
+                  <div class="item">
+                    <div class="icon" style="background-color:  rgb(0, 153, 51);">
+                      <i class="el-icon-check"></i>
+                    </div>
+                    <div class="info">
+                      <div v-text="finish" >
+                      </div>
+                      <div class="title">已完成</div>
+                    </div>
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row style="margin-bottom:18px">
+                <div class="item">
+                  <div class="icon2" style="background-color:  rgb(204, 204, 204);">
+                    <i class="el-icon-date"></i>
+                  </div>
+                  <div class="info">
+                    <div v-text="taskStartTime+'~'+taskEndTime">
+                    </div>
+                    <div class="title">项目计划周期</div>
+                  </div>
+                </div>
+              </el-row>
+              <el-row style="margin-bottom:18px">
+                <div class="item">
+                  <div class="icon2" style="background-color:  rgb(204, 204, 204);">
+                    <i class="el-icon-star-off"></i>
+                  </div>
+                  <div class="info">
+                    <div class="title"> 需求数： {{this.xmProjectState.menuCnt}}</div>
+                  </div>
+                </div>
+              </el-row>
+              <el-row style="margin-bottom:18px">
+                <div class="item">
+                  <div class="icon2" style="background-color:  rgb(204, 204, 204);">
+                    <i class="el-icon-refresh"></i>
+                  </div>
+                  <div class="info">
+                    <div class="title"> 迭代数： {{(this.xmProjectState.iterationCnt==null?0:this.xmProjectState.iterationCnt)}} </div>
+                  </div>
+                </div>
+              </el-row>
+              <el-row style="margin-bottom:18px">
+                <div class="item">
+                  <div class="icon2" style="background-color:  rgb(204, 204, 204);">
+                    <i class="el-icon-alarm-clock"></i>
+                  </div>
+                  <div>
+                    <div class="info">
+                      <el-progress v-if="progress1" :percentage="progress1"></el-progress>
+                    </div>
+                    <div class="title">任务进度</div>
+                  </div>
+                </div>
+              </el-row>
+            </el-card>
+          </el-col>
+          <el-col :span="8" >
+            <el-card class="box-card" style="height:425px">
+              <div slot="header" class="clearfix">
+                <span>所有工作项及其完成情况</span>
+              </div>
+              <div>
+                <div id="allChart" :style="{width: '425px', height: '350px'}"></div>
+              </div>
+            </el-card>
+          </el-col>
+          <el-col :span="8" >
+            <el-card class="box-card" style="height:425px">
+              <div slot="header" class="clearfix">
+                <span>缺陷情况</span>
+              </div>
+              <div>
+                <div id="bugPieChart" :style="{width: '440px', height: '400px'}"></div>
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
+      <el-row :gutter="10" style="margin-bottom:10px">
+          <el-col :span="12" >
+            <el-card class="box-card" style="padding:0px ;height:425px">
+              <div slot="header" class="clearfix">
+                <span>任务每日状态趋势</span>
+              </div>
+              <div>
+                <div id="taskChart" :style="{width: '630px', height: '320px'}"></div>
+              </div>
+            </el-card>
+          </el-col>
+          <el-col :span="12" >
+            <el-card class="box-card" style="padding:0px ;height:425px">
+              <div slot="header" class="clearfix">
+                <span>项目工时</span>
+              </div>
+              <div>
+                <el-row style="padding:25px;">
+                  <div class="item">
+                    <el-col :span="8">
+                      <div>
+                        <div style="text-align:center;">
+                          <span style="font-size:24px;" v-text="this.xmProjectState.totalPlanWorkload"></span>
+                          <span style="font-size:5px;">h</span>
+                        </div>
+                        <div style="text-align:center;font-size:5px;">预估工时</div>
+                      </div>
+                    </el-col>
+                    <el-col :span="8">
+                      <div>
+                        <div style="text-align:center;">
+                          <span style="font-size:24px;" v-text="this.xmProjectState.totalActWorkload"></span>
+                          <span style="font-size:5px;">h</span>
+                        </div>
+                        <div style="text-align:center;font-size:5px;">登记工时</div>
+                      </div>
+                    </el-col>
+                    <el-col :span="8">
+                      <div>
+                        <div style="text-align:center;">
+                          <span style="font-size:24px;" v-text="workloadProgress"></span>
+                          <span style="font-size:5px;">%</span>
+                        </div>
+                        <div style="text-align:center;font-size:5px;">工时进度</div>
+                      </div>
+                    </el-col>
+                  </div>
+                </el-row>
+                <el-row style="padding:25px;">
+                  <div class="item">
+                    <el-col :span="8">
+                      <div>
+                        <div style="text-align:center;">
+                          <span style="font-size:24px;" v-text="remainWorkload"></span>
+                          <span style="font-size:5px;">h</span>
+                        </div>
+                        <div style="text-align:center;font-size:5px;">剩余工时</div>
+                      </div>
+                    </el-col>
+                    <el-col :span="8">
+                      <div>
+                        <div style="text-align:center;">
+                          <span style="font-size:24px;" v-text="deviation"></span>
+                          <span style="font-size:5px;">h</span>
+                        </div>
+                        <div style="text-align:center;font-size:5px;">预估偏差</div>
+                      </div>
+                    </el-col>
+                    <el-col :span="8">
+                      <div>
+                        <div style="text-align:center;">
+                          <span style="font-size:24px;" v-text="deviationRate"></span>
+                          <span style="font-size:5px;">%</span>
+                        </div>
+                        <div style="text-align:center;font-size:5px;">预估偏差率</div>
+                      </div>
+                    </el-col>
+                  </div>
+                </el-row>
+                <el-row>
+                  <span style="margin-left:20px;">项目预计进度</span>
+                  <el-progress style="width: 600px;margin-left:20px;margin-top: 10px;margin-bottom: 20px;" :text-inside="true" :stroke-width="24" :percentage="planProgress"></el-progress>
+                </el-row>
+                <el-row>
+                  <span style="margin-left:20px;">项目实际进度</span>
+                  <el-progress style="width: 600px;margin-left:20px;margin-top: 10px;" :text-inside="true" :stroke-width="24" :percentage="realProgress"></el-progress>
+                </el-row>
 
-						</font>
-					</template>
-				</el-table-column>
-				<el-table-column v-if="isSelectProduct==true"  label="操作" width="100" fixed="right"  >
-					<template slot-scope="scope"> 
-						<el-button type="primary" @click="selectedProduct( scope.row,scope.$index)">选择</el-button> 
-					</template>
-				</el-table-column>
-			</el-table>
-			<el-pagination  layout="total, prev, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>  
-		</el-row> 
-			
-			<el-drawer title="选择员工" :visible.sync="selectFiltersPmUserVisible" size="60%" append-to-body>
-				<users-select  @confirm="onFiltersPmUserSelected" ref="usersSelect"></users-select>
-			</el-drawer>
-	</section>
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
+      <el-row style="margin-bottom:10px">
+        <el-card class="box-card" style="padding:0px ;height:200px">
+          <div slot="header" class="clearfix" style="margin-bottom:10px">
+            <span>项目阶段</span>
+          </div>
+          <div>
+            <el-row style="padding:10px">
+              <el-steps :active="calcProjectStatusStep" finish-status="success">
+                <el-step  v-for="(i,index) in options['projectStatus']" :title="i.optionName" :key="index">
+                  <el-row slot="title" @click.native.stop="editForm.status=i.optionValue">
+                    {{i.optionName}}
+                  </el-row>
+                </el-step>
+              </el-steps>
+            </el-row>
+          </div>
+        </el-card>
+      </el-row>
+    </el-row>
+
+  </section>
 </template>
 
 <script>
-	import util from '@/common/js/util';//全局公共库
-	//import Sticky from '@/components/Sticky' // 粘性header组件
-	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { listXmProductWithState } from '@/api/xm/core/xmProduct';  
-	import { mapGetters } from 'vuex' 
-	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
-	import { loadTasksToXmProductState } from '@/api/xm/core/xmProductState'; 
+import util from "@/common/js/util"; // 全局公共库
+//import Sticky from "@/components/Sticky"; // 粘性header组件
+import { mapGetters } from "vuex";
+import { listXmProjectState } from '@/api/xm/core/xmProjectState';
+import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 
-	
-	export default { 
-		props:['isSelectProduct','selProject','xmIteration'],
-		computed: {
-		    ...mapGetters([
-		      'userInfo','roles'
-		    ])
-		},
-		watch:{
-			xmIteration(){
-				this.getXmProducts();
-			}
-		},
-		data() {
-			const beginDate = new Date();
-			const endDate = new Date();
-			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 12 );
-			return {
-				filters: {
-					key: '',
-					queryScope:'compete',
-					id:'',//产品编号
-					pmUser:null,//产品经理
-				},
-				xmProducts: [],//查询结果
-				pageInfo:{//分页数据
-					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
-					pageSize:10,//每页数据
-					count:false,//是否需要重新计算总记录数
-					pageNum:1,//当前页码、从1开始计算
-					orderFields:[],//排序列 如 ['sex','student_id']，必须为数据库字段
-					orderDirs:[]//升序 asc,降序desc 如 性别 升序、学生编号降序 ['asc','desc']
-				},
-				load:{ list: false, edit: false, del: false, add: false },//查询中...
-				sels: [],//列表选中数据
-				options:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
-				
-				addFormVisible: false,//新增xmProduct界面是否显示
-				//新增xmProduct界面初始化数据
-				addForm: {
-					id:'',productName:'',branchId:'',remark:''
-				},
-				
-				editFormVisible: false,//编辑界面是否显示
-				//编辑xmProduct界面初始化数据
-				editForm: {
-					id:'',productName:'',branchId:'',remark:''
-				},
-				iterationVisible:false,
-				productStateVisible:false,
-				selectFiltersPmUserVisible:false,
-				tableHeight:300,
-				dateRanger: [
-					util.formatDate.format(beginDate, "yyyy-MM-dd"),
-					util.formatDate.format(endDate, "yyyy-MM-dd")
-				],  
-				pickerOptions:  util.pickerOptions('datarange'),
-				
-				/**begin 自定义属性请在下面加 请加备注**/
-					
-				/**end 自定义属性请在上面加 请加备注**/
-			}
-		},//end data
-		methods: { 
-			handleSizeChange(pageSize) { 
-				this.pageInfo.pageSize=pageSize; 
-				this.getXmProducts();
-			},
-			handleCurrentChange(pageNum) {
-				this.pageInfo.pageNum = pageNum;
-				this.getXmProducts();
-			},
-			// 表格排序 obj.order=ascending/descending,需转化为 asc/desc ; obj.prop=表格中的排序字段,字段驼峰命名
-			sortChange( obj ){
-				var dir='asc';
-				if(obj.order=='ascending'){
-					dir='asc'
-				}else{
-					dir='desc';
-				}
-				if(obj.prop=='xxx'){
-					this.pageInfo.orderFields=['xxx'];
-					this.pageInfo.orderDirs=[dir];
-				}
-				this.getXmProducts();
-			},
-			searchXmProducts(){
-				 this.pageInfo.count=true; 
-				 this.getXmProducts();
-			}, 
-			//获取列表 XmProduct 产品表
-			getXmProducts() {
-				let params = {
-					pageSize: this.pageInfo.pageSize,
-					pageNum: this.pageInfo.pageNum,
-					total: this.pageInfo.total,
-					count:this.pageInfo.count
-				};
-				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
-					let orderBys=[];
-					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
-						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
-					}  
-					params.orderBy= orderBys.join(",")
-				}
-				if(this.filters.key!==""){
-					params.key="%"+this.filters.key+"%"
-				}else{
-					//params.xxx=xxxxx
-				}
-				if(this.selProject){
-					params.projectId=this.selProject.id
-				}
-				
-				if(this.xmIteration){
-					params.iterationId=this.xmIteration.id
-				}
-				params.queryScope=this.filters.queryScope
-				if(this.filters.queryScope=='productId'){
-					if(!this.filters.id){
-						this.$message({showClose: true, message:"您选择了按产品编号精确查找模式，请输入产品编号", type: 'error' });
-						return;
-					}
-					params.id=this.filters.id
-					
-				}
-				if(this.filters.queryScope=="branchId"){
-					params.branchId=this.userInfo.branchId
-					params.projectId=null;
-				}
-				if(!this.selProject && !this.xmIteration && this.filters.queryScope!='productId'){
-					if(!this.dateRanger || this.dateRanger.length==0){
-						this.$message({showClose: true, message: "创建日期范围不能为空", type: 'error' });
-						return;
-					} 
-					params.ctimeStart=this.dateRanger[0]+" 00:00:00"
-					params.ctimeEnd=this.dateRanger[1]+" 23:59:59"
-				} 
 
-				this.load.list = true;
-				listXmProductWithState(params).then((res) => {
-					var tips=res.data.tips;
-					if(tips.isOk){ 
-						this.pageInfo.total = res.data.total;
-						this.pageInfo.count=false;
-						this.xmProducts = res.data.data;
-					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
-					} 
-					this.load.list = false;
-				}).catch( err => this.load.list = false );
-			},
- 
-			//选择行xmProduct
-			selsChange: function (sels) {
-				this.sels = sels;
-			}, 
-			 
-			rowClick: function(row, event, column){
-				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
-			},
-			selectedProduct:function(row){
-				this.$emit('selected',row);
-			},
-			
-			/**begin 自定义函数请在下面加**/
-			clearFiltersPmUser:function(){
-				 this.filters.pmUser=null;
-				  this.searchXmProducts();
-			},			
-			selectFiltersPmUser(){
-				this.selectFiltersPmUserVisible=true;
-			},
-			onFiltersPmUserSelected(users){ 
-				 if(users && users.length>0){
-					 this.filters.pmUser=users[0]
-				 }else{
-					 this.filters.pmUser=null;
-				 }
-				 this.selectFiltersPmUserVisible=false;
-				 this.searchXmProducts();
-			},
-			setFiltersPmUserAsMySelf(){
-				this.filters.pmUser=this.userInfo;
-				this.searchXmProducts();
-			},	   
-			
-			loadTasksToXmProductState: function (row) {  
-				this.load.edit=true;
-				 
-				let params = { productId: row.id };
-				loadTasksToXmProductState(params).then((res) => {
-					this.load.edit=false;
-					var tips=res.data.tips;
-					if(tips.isOk){ 
-						this.pageInfo.count=true;
-						this.getXmProducts();
-					}
-					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
-				}).catch( err  => this.load.edit=false ); 
-			},
-		},//end methods
-		components: {  
-			UsersSelect,
-		    //在下面添加其它组件
-		},
-		mounted() { 
-			this.$nextTick(() => {
-				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=70/1000 * window.innerHeight; 
-				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
-				this.getXmProducts();
-        	}); 
-		}
-	}
+export default {
+  computed: {
+    ...mapGetters(["userInfo"]),
+    finish: function (){
+      return this.xmProjectState.totalCompleteTaskCnt;
+    },
+    notStart: function() {
+      return this.xmProjectState.totalTaskCnt-this.xmProjectState.totalCompleteTaskCnt;
+    },
+    totalTask: function() {
+      return this.xmProjectState.totalTaskCnt;
+    },
+    progress1: function (){
+      return Math.round(this.xmProjectState.totalCompleteTaskCnt/this.xmProjectState.totalTaskCnt*100);
+    },
+    taskStartTime: function (){
+      return this.selProject.startTime.substring(0,10);
+    },
+    taskEndTime: function (){
+      return this.selProject.endTime.substring(0,10);
+    },
+    taskMng: function (){
+      return this.selProject.createUsername;
+    },
+    workloadProgress:function (){
+      return Math.round(this.xmProjectState.totalActWorkload/this.xmProjectState.totalPlanWorkload*100);
+    },
+    deviation:function (){
+      let now = new Date();
+      let taskStartTime = new Date(this.selProject.startTime);
+      let taskEndTime = new Date(this.selProject.endTime);
+      if(now<=taskEndTime){
+        let allDays=taskEndTime-taskStartTime;
+        return this.xmProjectState.totalActWorkload - Math.round((now-taskStartTime)/allDays*this.xmProjectState.totalPlanWorkload)
+      }else{
+        return this.xmProjectState.totalActWorkload - this.xmProjectState.totalPlanWorkload;
+      }
+    },
+    deviationRate:function (){
+      return Math.round(this.deviation/this.xmProjectState.totalPlanWorkload*100);
+    },
+    remainWorkload:function (){
+      return this.xmProjectState.totalPlanWorkload - this.xmProjectState.totalActWorkload;
+    },
+    planProgress:function (){
+      let now = new Date();
+      let taskStartTime = new Date(this.selProject.startTime);
+      let taskEndTime = new Date(this.selProject.endTime);
+      if(now<=taskEndTime){
+        let allDays=taskEndTime-taskStartTime;
+        return Math.round((now-taskStartTime)/allDays*100)
+      }else{
+        return 100;
+      }
+    },
+    realProgress:function (){
+      if(this.xmProjectState.totalActWorkload < this.xmProjectState.totalPlanWorkload){
+        return Math.round(this.xmProjectState.totalActWorkload/this.xmProjectState.totalPlanWorkload*100)
+      }else{
+        return 100;
+      }
+    },
+    xmProjectStateCpd(){
+      return this.xmProjectState
+    },
+    calcProjectStatusStep(){
+      if(this.options['projectStatus'] && this.selProject){
+        var index=this.options['projectStatus'].findIndex(i=>{
+          if(i.optionValue==this.selProject.status){
+            return true;
+          }else{
+            return false;
+          }
+        })
+        return index+1;
+      }else{
+        return 0;
+      }
+    }
 
+  },
+
+  props:['selProject'],
+  watch:{
+    xmProjectStateCpd:function(){
+      this.drawAllBar();
+      this.drawTaskByDate();
+      this.drawPieBug();
+    }
+  },
+  data() {
+    return {
+      isActive: true,
+      load:{ list: false},
+      xmProjectState: [],//查询结果
+      options:{
+        projectType:[],
+        urgencyLevel:[],
+        priority:[],
+        projectStatus:[],
+      },//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
+    };
+  },
+
+  methods:{
+    //获取对应的xmProjectsTate
+    getXmProjectState(){
+      let params = {
+        projectId:this.selProject.id,
+        branchId:this.userInfo.branchId
+      };
+      this.load.list = true;
+      listXmProjectState(params).then((res) => {
+        let tips=res.data.tips;
+        if(tips.isOk){
+          this.xmProjectState = res.data.data[0];
+        }else{
+          this.$message({showClose: true, message: tips.msg, type: 'error' });
+        }
+        this.load.list = false;
+      }).catch( err => this.load.list = false );
+    },
+
+    drawAllBar() {
+      // 基于准备好的dom，初始化echarts实例
+      let allChart = this.$echarts.init(document.getElementById("allChart"));
+      let option = {
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          }
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '10%',
+          containLabel: true
+        },
+        yAxis: {
+          type: 'value'
+        },
+        xAxis: {
+          type: 'category',
+          data: ['需求', '任务', '缺陷']
+        },
+        series: [
+          {
+            data: [
+              {
+                value: this.xmProjectState.menuCnt,
+                itemStyle: {
+                  normal:{
+                    color: '#99CCFF'
+                  }
+                }
+              },
+              {
+                value: this.xmProjectState.totalTaskCnt,
+                itemStyle: {
+                  normal:{
+                    color: '#99CCFF'
+                  }
+                }
+              },
+              {
+                value: this.xmProjectState.totalBugCnt,
+                itemStyle: {
+                  normal:{
+                    color: '#99CCFF'
+                  }
+                }
+              },
+            ],
+            type: 'bar'
+          }
+        ]
+      };
+
+      // 绘制图表
+      allChart.setOption(option);
+    },
+    drawTaskByDate() {
+      let taskChart = this.$echarts.init(document.getElementById("taskChart"));
+      let option = {
+        tooltip: {
+          trigger: 'axis'
+        },
+        color:['rgb(0, 153, 255)','#6699CC'],
+        legend: {
+          data: ['未开始', '进行中']
+        },
+        grid: {
+          left: '1%',
+          right: '3%',
+          bottom: '5%',
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [
+          {
+            name: '未开始',
+            type: 'line',
+            //stack: '总量',
+            data: [120, 132, 101, 134, 90, 230, 210],
+            areaStyle: {
+              normal:{
+                color:"rgb(153, 204, 255)" , //设置折线图颜色
+              }
+            },
+            lineStyle:{
+              normal:{
+                color:'rgb(0, 153, 255)'
+              }
+            },
+          },
+          {
+            name: '进行中',
+            type: 'line',
+            //stack: '总量',
+            data: [220, 182, 191, 234, 290, 330, 310],
+            areaStyle: {
+              normal:{
+                color:"rgb(153, 204, 255)", //设置折线图颜色
+              }
+            },
+            lineStyle:{
+              normal:{
+                color:'#6699CC'
+              }
+            },
+          },
+        ],
+      };
+
+      // 绘制图表
+      taskChart.setOption(option);
+    },
+    drawPieBug() {
+      let bugPieChart = this.$echarts.init(document.getElementById("bugPieChart"));
+      let option = {
+        tooltip: {
+          trigger: 'item',
+          formatter: '{b} : {c} ({d}%)'
+        },
+        legend: {
+          orient: 'vertical',
+          left: 'left',
+        },
+        series: [
+          {
+            center:['55%','40%'],
+            type: 'pie',
+            radius: '68%',
+            data: [
+              {value: this.xmProjectState.totalClosedBugCnt,
+                itemStyle: {
+                  normal:{
+                    color: '#5470C6'
+                  }
+                },
+                name: '已关闭'},
+              {value: this.xmProjectState.totalResolvedBugCnt,
+                itemStyle: {
+                  normal:{
+                    color: '#91CC75'
+                  }
+                },
+                name: '已解决'},
+              {value: this.xmProjectState.totalActiveBugCnt,
+                itemStyle: {
+                  normal:{
+                    color: '#FAC858'
+                  }
+                },
+                name: '已激活'},
+              {value: this.xmProjectState.totalConfirmedBugCnt,
+                itemStyle: {
+                  normal:{
+                    color: '#EE6666'
+                  }
+                },
+                name: '已确认'},
+            ],
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      };
+
+      // 绘制图表
+      bugPieChart.setOption(option);
+    }
+  },
+
+  mounted() {
+    this.$nextTick(() => {
+      this.getXmProjectState();
+    });
+    listOption([{categoryId:'all',itemCode:'projectType'},{categoryId:'all',itemCode:'urgencyLevel'},{categoryId:'all',itemCode:'priority'},{categoryId:'all',itemCode:'projectStatus'}] ).then(res=>{
+      if(res.data.tips.isOk){
+
+        this.options['projectType']=res.data.data.projectType
+        this.options['urgencyLevel']=res.data.data.urgencyLevel
+        this.options['priority']=res.data.data.priority
+        this.options['projectStatus']=res.data.data.projectStatus
+      }
+    });
+
+  },
+
+};
 </script>
 
-<style scoped>
-
-.more-label-font{
-	text-align:center;
-	float:left;
-	padding-top:5px;
+<style scoped lang="scss">
+.container {
+  margin: 10px;
 }
-.align-right{
-	float: right; 
+
+.header {
+  display: flex;
+  justify-content: flex-start;
+  padding: 10px;
+
+  span {
+    padding-right: 15px;
+  }
+}
+
+.col {
+  margin-bottom: 20px;
+}
+
+.icon {
+  color: #fff;
+  height: 30px;
+  width: 30px;
+  border-radius: 15px;
+  text-align: center;
+  line-height: 30px;
+  font-size: 20px;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.icon2 {
+  color: #000000;
+  height: 30px;
+  width: 30px;
+  border-radius: 15px;
+  text-align: center;
+  line-height: 30px;
+  font-size: 20px;
+  display: inline-block;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.item {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.card-font {
+  color: #000000;
+  font-size: 12px;
+
+  .el-col {
+    margin-bottom: 20px;
+  }
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+
+  .cal-header-boxs {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+
+    .cal-header-box {
+      padding: 5px;
+      height: 45px;
+      margin-left: 10px;
+    }
+
+    .box-icon {
+      text-align: center;
+    }
+
+    .box-info {
+      text-align: center;
+      font-size: 12px;
+      color: #000000;
+    }
+  }
+}
+
+.el-tag:hover {
+  cursor: pointer;
+}
+
+.el-progress {
+  width: 350px;
+}
+
+.value {
+  cursor: pointer;
+}
+
+.reference {
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+.click {
+  background: #e9f7ff;
+}
+
+.calendar-box {
+  display: flex;
+  justify-content: flex-start;
+}
+</style>
+
+<style>
+.app-container{
+  padding: 20px;
+  padding-bottom: 0;
 }
 </style>

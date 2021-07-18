@@ -56,7 +56,7 @@
 									<el-button  v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showAdd"  icon="el-icon-plus">直接创建</el-button>
 								</el-col>
 							</el-row>
- 							<el-button slot="reference" v-if=" isTaskCenter!='1'   && isMy!='1'"  type="primary" icon="el-icon-plus" circle></el-button>
+ 							<el-button slot="reference" v-if=" isTaskCenter!='1'   && isMy!='1' && !xmProduct && !xmIteration"  type="primary" icon="el-icon-plus" circle></el-button>
 						</el-popover>
 
 						<el-popover

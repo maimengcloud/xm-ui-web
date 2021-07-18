@@ -6,6 +6,10 @@
 					 <el-button @click="searchXmProjects" icon="el-icon-search"></el-button>
 				 </template>
 			</el-input>
+			
+			<el-button icon="el-icon-plus" @click="xmProjectListVisible=true" v-if="!xmIteration"> 
+				加入更多项目到产品中
+			</el-button>
 		</el-row>
 		<el-row class="page-main page-height-90">   
 			<el-table ref="table" :height="tableHeight"  stripe :data="xmProjects"  highlight-current-row v-loading="load.list"   style="width: 100%;">
@@ -15,9 +19,8 @@
 				<el-table-column label="操作" width="245" fixed="right">
 					<template slot-scope="scope">  
 							<el-button-group>
-								<el-button size="mini" type="primary" @click.stop="selectProject(scope.row)" >选中</el-button>  
-							</el-button-group>
-							 
+								<el-button v-if="!xmIteration" size="mini" type="primary" @click.stop="doDelXmProductProjectLink(scope.row)" >移出产品</el-button>  
+							</el-button-group> 
 							<!-- <el-button style="width:100%;" slot="reference" class="see-more" type="text" icon="el-icon-more"></el-button>
 						</el-popover> -->
 					</template>
@@ -25,6 +28,10 @@
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		</el-row> 
+		
+		<el-drawer title="选择项目" :visible.sync="xmProjectListVisible" size="60%" append-to-body>
+			<xm-project-list  @project-confirm="onXmProjectSelect"></xm-project-list>
+		</el-drawer> 
 	</section> 
 
 </template>
@@ -37,11 +44,13 @@
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { listXmProject,  } from '@/api/xm/core/xmProject';  
 	import { mapGetters } from 'vuex' 
-	
+ 	import { delXmProductProjectLink, addXmProductProjectLink,batchDelXmProductProjectLink } from '@/api/xm/core/xmProductProjectLink';
+import XmProjectList from './XmProjectList.vue';
+
 
 
 	export default {  
-		props:['xmProduct'],
+		props:['xmProduct','xmIteration'],
 		computed: {
 			...mapGetters([
 				'userInfo','roles'
@@ -49,6 +58,9 @@
 		}, 
 		watch:{
 			xmProduct:function(){
+				this.getXmProjects();
+			},
+			xmIteration:function(){
 				this.getXmProjects();
 			}
 		},
@@ -82,7 +94,7 @@
 				editForm: {
 					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:'',bizProcInstId:'',bizFlowState:'',planNouserAt:'',planInnerUserAt:'',planOutUserAt:'',locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:'',totalReceivables:'',budgetMarginRate:'',contractAmt:'',planInnerUserPrice:'',budgetOutUserPrice:'',planOutUserCnt:'',planInnerUserCnt:'',planWorkingHours:''
 				},
- 
+				xmProjectListVisible:false,
  
 				/**end 自定义属性请在上面加 请加备注**/
 			}
@@ -125,6 +137,10 @@
 				if(this.xmProduct){
 					params.productId=this.xmProduct.id
 				}
+				
+				if(this.xmIteration){
+					params.iterationId=this.xmIteration.id
+				}
 				if(this.filters.key){
 					params.key='%'+this.filters.key+'%'
 				}
@@ -153,11 +169,46 @@
 			selectProject:function(row){
 				this.editForm=row
 				this.$emit('project-confirm',this.editForm);
+			},
+			/**end 自定义函数请在上面加**/
+			onXmProjectSelect:function(row){
+				var xmProject=row;
+				var xmProduct=this.xmProduct;
+				this.$confirm('确认将项目【'+xmProject.name+'】加入产品【'+xmProduct.productName+'】吗？', '提示', {
+					type: 'warning'
+				}).then(()=>{
+					addXmProductProjectLink({projectId:xmProject.id,productId:xmProduct.id}).then(res=>{
+						var tips =res.data.tips;
+						if(tips.isOk){
+							this.getXmProjects();
+						}
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+					})
+				})
+			},
+			doDelXmProductProjectLink(row){
+				
+			var xmProduct=this.xmProduct;
+			var selProject=row;
+			this.$confirm('确认将项目【'+selProject.projectName+'】从产品【'+xmProduct.productName+'】移出吗？移出后，项目试图中将看不到该产品信息', '提示', {
+				type: 'warning'
+			}).then(()=>{
+				var params={productId:xmProduct.id,projectId:selProject.id}
+				delXmProductProjectLink(params).then(res=>{
+					var tips = res.data.tips;
+					if(tips.isOk){
+						this.getXmProjects();
+						this.$message({showClose: true, message: "移出成功", type: 'success' });
+					}
+				});
+			})
+				
 			}
 			/**end 自定义函数请在上面加**/
 			
 		},//end methods
-		components: {  
+		components: {
+XmProjectList  
 			 
 		    //在下面添加其它组件
 		},

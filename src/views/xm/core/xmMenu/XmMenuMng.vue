@@ -27,8 +27,8 @@
 						</el-input> 
 						<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
 						
-						<el-button    type="primary" @click="showAdd" icon="el-icon-plus">故事</el-button>
-						<el-button      @click="toBatchEdit" icon="el-icon-edit">修改</el-button>   
+						<el-button  v-if="!selProject&&!xmIteration"  type="primary" @click="showAdd" icon="el-icon-plus">故事</el-button>
+						<el-button  v-if="!selProject&&!xmIteration"    @click="toBatchEdit" icon="el-icon-edit">修改</el-button>   
 						<el-popover
 							placement="top-start"
 							title=""
@@ -110,7 +110,7 @@
 											<el-tag slot="reference" icon="el-icon-chat-line-square">描述</el-tag>
 										</el-popover>
 									
-										<el-button  size="mini" type="primary"  @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" circle></el-button> 
+										<el-button v-if="!selProject&&!xmIteration"   size="mini" type="primary"  @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" circle></el-button> 
  											
 										<el-popover style="padding-left:10px;"
 											v-if="isPmUser"

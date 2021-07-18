@@ -172,8 +172,8 @@
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { listXmProject,editStatus , delXmProject, batchDelXmProject } from '@/api/xm/core/xmProject';
-	import  XmProjectAdd from './XmProjectAdd';//新增界面
-	import  XmProjectEdit from './XmProjectEdit';//修改界面
+	import  XmProjectAdd from '../xmProject/XmProjectAdd';//新增界面
+	import  XmProjectEdit from '../xmProject/XmProjectEdit';//修改界面
 	import { mapGetters } from 'vuex';
 	import xmTaskMng from '../xmTask/XmTaskMng';
 	import xmGroupMng from '../xmProjectGroup/XmProjectGroupMng';
@@ -182,11 +182,11 @@
 	import xmExchange from '../xmExchange/XmExchangeMng';
 	import xmQuestion from '../xmQuestion/XmQuestionMng';
 	import xmFileMng from '../xmFile/XmFileMng';
-	import xmDetail from './XmProjectDetail';
+	import xmDetail from '../xmProject/XmProjectDetail';
 	import xmProjectKpi from '../xmProjectKpi/XmProjectKpiMng';
 	import xmRecord from '../xmRecord/XmRecordMng';
-	import xmCost from './XmProjectCost';
-	import xmBudget from './XmProjectBudgetCost';
+	import xmCost from '../xmProject/XmProjectCost';
+	import xmBudget from '../xmProject/XmProjectBudgetCost';
 	import xmContract from '../xmProjectContract/XmProjectContractMng';
 	import xmEnvList from '../xmProjectEnvList/XmProjectEnvListMng';
 	import xmProjectPhaseMng from '../xmProjectPhase/XmProjectPhaseMng';
@@ -195,7 +195,7 @@
 	import xmProjectStateMng from '../xmProjectState/XmProjectStateMng';
 	import xmTestCaseExecMng from '../xmTestCaseExec/XmTestCaseExecMng';  
 	import XmIterationForProjectComplex from '../xmIteration/XmIterationForProjectComplex.vue'; 
-	import XmProjectOverviewComplex from './XmProjectOverviewComplex.vue';
+	import XmProjectOverviewComplex from '../xmProject/XmProjectOverviewComplex.vue';
 	import XmProductForProjectComplex from '../xmProduct/XmProductForProjectComplex.vue';
 
 

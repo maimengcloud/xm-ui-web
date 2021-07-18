@@ -8,6 +8,7 @@
 			</el-select> 
 			<el-input v-if="filters.queryScope=='productId'" style="width:20%;"  v-model="filters.id"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">  
 			</el-input>  
+			
 			<el-date-picker  v-show="!selProject&&filters.queryScope!='productId'"
 				v-model="dateRanger" 
 				type="daterange"
@@ -27,11 +28,12 @@
 					<el-button v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProducts" icon="el-icon-search"></el-button>
 				</template>
 			</el-input> 
-			<el-button type="primary" @click="showAdd" icon="el-icon-plus">产品</el-button>  
+			<el-button v-if="xmIteration"   icon="el-icon-plus" @click="productSelectVisible=true">将更多产品加入迭代<strong>{{xmIteration.iterationName}}</strong></el-button>
+			<el-button type="primary" @click="showAdd" icon="el-icon-plus" v-if="!xmIteration">产品</el-button>  
 			<el-popover
 				placement="top-start"
 				title=""
-				width="400"
+				width="500"
 				trigger="click" >
 				<el-divider content-position="left"><strong>查询条件</strong></el-divider> 
 				<el-row>
@@ -103,6 +105,42 @@
 				</el-row>
 				<el-button  slot="reference"   icon="el-icon-more" circle></el-button>
 			</el-popover> 
+		</el-row>
+		<el-row  class="page-main page-height-80"> 
+			<!--列表 XmProject xm_project-->
+			<el-row v-show="showType" v-loading="load.list">
+				<el-col  v-cloak v-for="(p,i) in xmProducts" :key="i" :xl="4" :lg="6" :md="8" :sm="12">
+					<el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always">
+						<div class="project-name" title="这是产品名称">{{p.productName}}</div>
+						<div class="project-id eui-text-truncate">{{p.code}}</div>
+						<div class="project-info">
+							<div class="info-item">
+								<span class="item-total">{{p.totalBugCnt==null?0:p.totalBugCnt}}</span>
+								<span class="item-type">缺陷</span>
+							</div>
+							<div class="info-item">
+								<span class="item-total">{{p.totalFileCnt==null?0:p.totalFileCnt}}</span>
+								<span class="item-type">文档</span>
+							</div>
+							<div class="info-task">
+								<span>
+									<span class="item-total finish-task">{{p.totalCompleteTaskCnt==null?0:p.totalCompleteTaskCnt}}</span>
+									<span style="margin: 0 .25rem !important;">/</span>
+									<span class="item-type total-task">{{p.totalTaskCnt==null?0:p.totalTaskCnt}}</span>
+								</span>
+								<span class="item-type">任务完成</span>
+							</div>
+						</div>
+						<div class="project-rate">
+							<el-progress :percentage="(p.totalProgress==null?0:p.totalProgress)"></el-progress>
+						</div>
+						<div class="project-footer">
+							<div class="project-type">{{p.xmType}}</div>
+							<!--<div class="project-period">{{p.startTime.substr(0,10)}} ~{{p.endTime.substr(0,10)}}</div>-->
+						</div>
+					</el-card>
+				</el-col>
+			</el-row>
 		</el-row>
 		<el-row  class="padding-top"> 
 			<!--列表 XmProduct 产品表-->
@@ -273,6 +311,7 @@ import XmProductSelect from './XmProductSelect.vue';
 				pickerOptions:  util.pickerOptions('datarange'),
 				projectVisible:false,
 				productSelectVisible:false,
+				showType:true,
 				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -411,6 +450,13 @@ import XmProductSelect from './XmProductSelect.vue';
 				this.editFormVisible=false;
 				this.getXmProducts()
 			},
+			
+			//进入info界面
+			intoInfo(row) {
+				this.editForm = row;
+				this.$router.push({ name:'XmProductInfoRoute', params: row })
+				//this.showInfo = true;
+			},
 			//选择行xmProduct
 			selsChange: function (sels) {
 				this.sels = sels;
@@ -505,6 +551,9 @@ import XmProductSelect from './XmProductSelect.vue';
 			onProjectSelected(projects){
 
 			},
+			onXmIterationSelect(){
+
+			},
 			/**end 自定义函数请在上面加**/
 			onXmProductSelect:function(row){
 				var xmIteration=this.xmIteration;
@@ -547,7 +596,7 @@ import XmProductSelect from './XmProductSelect.vue';
 			UsersSelect,
 			XmProjectList,
 			XmIterationSelect,
-XmProductSelect,
+			XmProductSelect,
 		    //在下面添加其它组件
 		},
 		mounted() { 
@@ -574,4 +623,107 @@ XmProductSelect,
 .align-right{
 	float: right; 
 }
+</style>
+
+<style scoped>
+ 
+.project-card{
+	font-size: 12px;
+	color: #999;
+	margin: 10px 12px;
+}
+.project-card:hover{
+	border-color: #00abfc;
+}
+.project-card >>> .el-card__body{
+	padding: 20px 15px 10px;
+}
+.project-name{
+	font-size: 16px;
+	font-weight: 700;
+	color: #333;
+	height: 24px;
+}
+.project-id{
+	margin-top: 4px;
+	height: 18px;
+}
+.project-info{
+	display: flex;
+	margin-top: 8px;
+}
+.project-info>div{
+	display: flex;
+	flex-direction: column;
+}
+.info-item{
+	width: 15%;
+	text-align: center;
+}
+.info-item >>> span{
+	display: block;
+}
+.item-total{
+	font-size: 18px;
+	color: #666;
+}
+.info-task{
+	padding-left: 20px;
+	width: 70%;
+	border-left: 1px solid #efefef;
+}
+.finish-task{
+	color: #00abfc !important;
+}
+.project-rate{
+	margin: 15px 0;
+}
+.project-rate>.el-progress{
+	display: flex;
+	align-items: center;
+}
+.project-rate >>> .el-progress-bar{
+	padding-right: 0;
+	margin-right: 0;
+}
+.project-rate >>> .el-progress__text{
+	margin-left: 5px;
+}
+.project-footer{
+	display: flex;
+}
+.project-footer>div{
+	width: 30%;
+}
+.project-footer>div:not(:first-child){
+	width: 70%;
+}
+.project-period{
+	text-align: right;
+} 
+@media only screen and (max-height: 2400px) {
+	.project-box{
+		max-height: 1600x;
+		overflow-y: auto;
+	}
+}
+@media only screen and (max-height: 1200px) {
+	.project-box{
+		max-height: 800px;
+		overflow-y: auto;
+	}
+}
+@media only screen and (max-height: 980px) {
+	.project-box{
+		max-height: 600px;
+		overflow-y: auto;
+	}
+}
+@media only screen and (max-height: 640px) {
+	.project-box{
+		max-height: 300px;
+		overflow-y: auto;
+	}
+}
+
 </style>
