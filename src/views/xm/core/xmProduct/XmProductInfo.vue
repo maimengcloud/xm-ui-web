@@ -142,7 +142,7 @@
 		   
 		  	<xm-product-overview-complex v-if="infotype=='产品概览'" :xm-product="xmProduct"></xm-product-overview-complex>  
 			 <xm-iteration-for-project-complex  v-if="infotype=='迭代'" ref="xmIterationMng" :xm-product="xmProduct"></xm-iteration-for-project-complex>
- 			 <xm-project-for-link v-if="infotype=='项目'" ref="xmProjectForLink" :xm-product="xmProduct"></xm-project-for-link>
+ 			 <xm-project-complex v-if="infotype=='项目'" ref="xmProjectForLink" :xm-product="xmProduct"></xm-project-complex> 
 			  <xm-menu-mng v-if="infotype=='用户故事'" :xm-product="xmProduct"></xm-menu-mng>
 			 <xm-task-mng v-if="infotype=='任务'" ref="xmTaskMng" :xm-product="xmProduct" ></xm-task-mng>
 			  <xm-question v-if="infotype=='缺陷'" :qtype="'bug'" :xm-product='xmProduct' ref="xmQuestion"></xm-question>
@@ -173,6 +173,8 @@
 	import { listXmProject,editStatus , delXmProject, batchDelXmProject } from '@/api/xm/core/xmProject';
 	import  XmProjectAdd from '../xmProject/XmProjectAdd';//新增界面
 	import  XmProjectEdit from '../xmProject/XmProjectEdit';//修改界面
+	import  XmProjectComplex from '../xmProject/XmProjectComplex';//修改界面
+
 	import { mapGetters } from 'vuex';
 	import xmTaskMng from '../xmTask/XmTaskMng';
 	import xmGroupMng from '../xmProjectGroup/XmProjectGroupMng';
@@ -199,6 +201,7 @@
 import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
 
 
+
 	export default {
 		props: ["xmProduct","visible"],
 		computed: {
@@ -221,7 +224,7 @@ import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
 			return {
 				platformViewVisible:false,
 				tabPosition:'left',
-				infotype:"项目概览",
+				infotype:"产品概览",
 				load:{list:false,edit:false},
         groupUserVisible:false,
         exportArr: ['任务', '阶段计划', '故事监控']
@@ -419,6 +422,7 @@ import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
 			XmIterationForProjectComplex, 
 			XmProductOverviewComplex,
 			XmProductForProjectComplex,
+			XmProjectComplex,
 XmProjectForLink,
 			//在下面添加其它组件
 		},

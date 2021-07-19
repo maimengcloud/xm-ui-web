@@ -2,7 +2,7 @@
 	<section class="page-container border"> 
 		<el-row>
 			<el-col :span="iterationVisible==true?3:0" >
-				<xm-iteration-select :sel-project="selProject"  @row-click="onIterationRowClick" @clear-select="onIterationClearSelect"></xm-iteration-select>
+				<xm-iteration-select :sel-project="selProject" :product-id="xmProduct?xmProduct.id:null"  @row-click="onIterationRowClick" @clear-select="onIterationClearSelect"></xm-iteration-select>
 			</el-col>  
 			<el-col :span="iterationVisible==true?21:24" >  
 				<el-tabs type="border-card"  :v-model="showPanel" activate-name="iterationOverview" @tab-click="tabClick">  
@@ -11,11 +11,11 @@
 						<span v-show="iterationVisible==true" slot="label" ><i class="el-icon-d-arrow-left" @click.stop="iterationVisible=false"></i> 迭代概览</span>
 						<span v-show="iterationVisible==false" slot="label" ><i class="el-icon-d-arrow-right" @click.stop="iterationVisible=true"></i> 迭代概览</span> 
 						<xm-iteration-state-show v-show="xmIteration && showPanel=='iterationOverview'"  :xm-iteration="xmIteration" :sel-project="selProject"></xm-iteration-state-show>
-					</el-tab-pane>
+					</el-tab-pane> 
 					<el-tab-pane label="产品、战略"   name="products" v-if="!xmProduct">    
-						<xm-product-mng  v-show="xmIteration && showPanel=='products'"  :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-product-mng>
-					</el-tab-pane>
-					<el-tab-pane label="项目"   name="projects">    
+						 <xm-product-mng  v-show="xmIteration && showPanel=='products' && !xmProduct"    :xm-iteration="xmIteration" :sel-project="selProject"></xm-product-mng>
+ 					</el-tab-pane>  
+					<el-tab-pane label="项目"   name="projects" v-if="!selProject">    
   						<xm-project-for-link v-show="xmIteration && showPanel=='projects'"  :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-project-for-link>
 					</el-tab-pane> 
 					<el-tab-pane label="故事" lazy name="menus" >  
@@ -42,16 +42,17 @@
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { listXmIteration,listXmIterationWithState, delXmIteration, batchDelXmIteration,loadTasksToXmIterationState } from '@/api/xm/core/xmIteration';
-	import XmIterationSelect from './XmIterationSelect.vue'
+	import { delXmIterationProductLink } from '@/api/xm/core/xmIterationProductLink';
+
+ 	import XmIterationSelect from './XmIterationSelect.vue'
 	import XmMenuMng from '../xmMenu/XmMenuMng.vue'
 	import XmIterationStateShow from '../xmIterationState/XmIterationStateShow.vue'
 	import { mapGetters } from 'vuex' 
-import XmProductMng from '../xmProduct/XmProductMng.vue';
-import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
-import XmTaskMng from '../xmTask/XmTaskMng.vue';
-import XmQuestionMng from '../xmQuestion/XmQuestionMng.vue';
- 
+	import XmProductMng from '../xmProduct/XmProductMng.vue';
+	import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
+	import XmTaskMng from '../xmTask/XmTaskMng.vue';
+	import XmQuestionMng from '../xmQuestion/XmQuestionMng.vue';
+	
 
 	export default {
 		computed: {
@@ -138,6 +139,17 @@ import XmQuestionMng from '../xmQuestion/XmQuestionMng.vue';
 			},
 			tabClick(tab){  
 				 this.showPanel=tab.name
+			},
+			doDelXmIterationProductLink(){
+				this.$confirm('移出后，迭代试图将看不到该产品信息，确认将产品【'+this.xmProduct.productName+'】从迭代【'+this.xmIteration.iterationName+'】移出吗？', '提示', {}).then(() => { 
+					var params={iterationId:this.xmIteration.id,productId:this.xmProduct.id}
+					delXmIterationProductLink(params).then(res=>{
+						var tips = res.data.tips;
+						if(tips.isOk){
+							this.$message({showClose: true, message:"移出成功", type: tips.isOk?'success':'error' });  
+						}
+					})
+				})
 			}
 		},//end methods
 		components: { 
@@ -148,7 +160,7 @@ import XmQuestionMng from '../xmQuestion/XmQuestionMng.vue';
 			XmProductMng,
 			XmTaskMng,
 			XmQuestionMng,
-			XmProjectForLink,
+			XmProjectForLink, 
 		},
 		mounted() { 
 		this.$nextTick(() => {

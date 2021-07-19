@@ -267,6 +267,9 @@
 			xmProduct:function(){  
 					this.filters.product=this.xmProduct
 					this.getXmMenus() 
+			},
+			selProject:function(){
+				this.getXmMenus();
 			}
     	},
 		data() {

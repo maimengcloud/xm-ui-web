@@ -220,7 +220,7 @@
 				}
 				if(this.menuId){
 					params.menuId=this.menuId
-				} 
+				}  
 				if( !this.menuId && !this.productId ){
 					params.queryScope=this.filters.queryScope 
 					if(this.filters.queryScope=='iterationId'){
