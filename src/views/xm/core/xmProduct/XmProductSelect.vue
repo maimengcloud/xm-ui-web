@@ -68,11 +68,7 @@
 					 </template>
 					<template slot-scope="scope">
 						<font>{{scope.row.productName}}</font>
-						<font class="align-right"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag>
-						
-						<el-tooltip content="产品经理"><el-tag v-if="scope.row.pmUsername">{{scope.row.pmUsername}}</el-tag></el-tooltip>
-						<el-tooltip content="点击统计进度，由任务进度汇总而成"><el-button size="mini" icon="el-icon-video-play" @click.stop="loadTasksToXmProductState( scope.row)"></el-button></el-tooltip>
-
+						<font class="align-right"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{parseInt(scope.row.finishRate)}}%</el-tag> 
 						</font>
 					</template>
 				</el-table-column>

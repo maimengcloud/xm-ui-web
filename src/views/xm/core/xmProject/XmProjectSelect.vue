@@ -4,7 +4,8 @@
 			<el-table ref="table" :height="tableHeight"  stripe :data="xmProjects"  highlight-current-row v-loading="load.list"  @selection-change="selsChange" @row-click="rowClick" style="width: 100%;" >
  				<el-table-column prop="name" label="项目名称" min-width="80" >
 					 <template slot-scope="scope">
-						 {{scope.row.name}}&nbsp;&nbsp;{{parseInt(scope.row.totalProgress)}}%
+						 {{scope.row.name}}&nbsp;&nbsp;
+						 <font class="align-right"><el-tag :type="scope.row.totalProgress>=100?'success':'warning'">{{parseInt(scope.row.totalProgress)}}%</el-tag></font>
 					 </template>
 				</el-table-column>  
 			</el-table>
@@ -155,5 +156,9 @@
 
 </script>
 
+
 <style scoped> 
+.align-right{
+	float: right; 
+}
 </style>
