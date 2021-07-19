@@ -90,6 +90,7 @@
 import util from "@/common/js/util"; // 全局公共库
 //import Sticky from "@/components/Sticky"; // 粘性header组件
 import { mapGetters } from "vuex";
+import { listXmProjectState } from '@/api/xm/core/xmProjectState';
 import XmProjectOverview from './XmProjectOverview.vue';
 import XmProjectDetail from './XmProjectDetail.vue';
 

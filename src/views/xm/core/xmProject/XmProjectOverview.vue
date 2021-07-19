@@ -246,7 +246,6 @@ import util from "@/common/js/util"; // 全局公共库
 import { mapGetters } from "vuex";
 import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 
-
 export default {
   computed: {
     ...mapGetters(["userInfo"]),
