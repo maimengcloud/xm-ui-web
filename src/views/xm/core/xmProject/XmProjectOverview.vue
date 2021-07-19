@@ -1,10 +1,5 @@
 <template>
   <section class="page-container padding">
-<!--    <el-row  class="page-header page-height-10">
-      <el-col :xs="22" :sm="22" :md="23" :lg="23" :xl="23">
-          <span >项目总览</span>
-      </el-col>
-    </el-row>-->
     <el-row class="page-main page-height-75" style="overflow-x: hidden;">
       <el-row :gutter="10" style="margin-bottom:10px">
           <el-col :span="8" >
@@ -120,7 +115,7 @@
                 <span>缺陷情况</span>
               </div>
               <div>
-                <div id="bugPieChart" :style="{width: '425px', height: '400px'}"></div>
+                <div id="bugPieChart" :style="{width: '400px', height: '415px'}"></div>
               </div>
             </el-card>
           </el-col>
@@ -217,6 +212,38 @@
             </el-card>
           </el-col>
         </el-row>
+      <el-row :gutter="10" style="margin-bottom:10px">
+        <el-col :span="8" >
+          <el-card class="box-card" style="height:425px">
+            <div slot="header" class="clearfix">
+              <span>总预算情况</span>
+            </div>
+            <div>
+              <div id="planTotalCostPie" :style="{width: '400px', height: '415px'}"></div>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="8" >
+          <el-card class="box-card" style="height:425px">
+            <div slot="header" class="clearfix">
+              <span>工作量分布</span>
+            </div>
+            <div>
+              <div id="workloadDistribution" :style="{width: '400px', height: '415px'}"></div>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="8" >
+          <el-card class="box-card" style="height:425px">
+            <div slot="header" class="clearfix">
+              <span>所含产品和迭代情况</span>
+            </div>
+            <div>
+              <div id="iterationAndProduct" :style="{width: '400px', height: '415px'}"></div>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
       <el-row style="margin-bottom:10px">
         <el-card class="box-card" style="padding:0px ;height:200px">
           <div slot="header" class="clearfix" style="margin-bottom:10px">
@@ -334,6 +361,9 @@ export default {
       this.drawAllBar();
       this.drawTaskByDate();
       this.drawPieBug();
+      this.drawCostPie();
+      this.drawWorkload();
+      this.drawIterationProduct();
     }
   },
   data() {
@@ -341,7 +371,6 @@ export default {
       isActive: true,
       load:{ list: false},
       selProject:[],
-      //xmProjectState: [],//查询结果
       options:{
         projectType:[],
         urgencyLevel:[],
@@ -352,24 +381,6 @@ export default {
   },
 
   methods:{
-    //获取对应的xmProjectsTate
-    /*getXmProjectState(){
-      let params = {
-        projectId:this.selProject.id,
-        branchId:this.userInfo.branchId
-      };
-      this.load.list = true;
-      listXmProjectState(params).then((res) => {
-        let tips=res.data.tips;
-        if(tips.isOk){
-          this.xmProjectState = res.data.data[0];
-        }else{
-          this.$message({showClose: true, message: tips.msg, type: 'error' });
-        }
-        this.load.list = false;
-      }).catch( err => this.load.list = false );
-    },*/
-
     drawAllBar() {
       // 基于准备好的dom，初始化echarts实例
       let allChart = this.$echarts.init(document.getElementById("allChart"));
@@ -512,17 +523,17 @@ export default {
           {
             center:['55%','40%'],//饼图位置
             type: 'pie',
-            radius: '68%',//饼图半径大小
+            radius: '60%',//饼图半径大小
             label:{            //饼图图形上的文本标签
               normal:{
                 show:true,
-                position:'inner', //标签的位置:内部
+                position:'outer', //标签的位置:内部
                 textStyle : {
-                  fontWeight : 120 ,
-                  fontSize: document.body.clientWidth / 150, //标签字体大小
+                  fontWeight : 100 ,
+                  fontSize: document.body.clientWidth / 120, //标签字体大小
                   color: "#000000"
                 },
-                formatter:'{b} : {c} ({d}%)',//b：name,c:value,d:占比
+                formatter:'{b}\n{c}({d}%)',//b：name,c:value,d:占比
                 alignTo:'edge',
                 margin:10
               }
@@ -570,12 +581,198 @@ export default {
 
       // 绘制图表
       bugPieChart.setOption(option);
-    }
+    },
+    drawCostPie() {
+      let planTotalCostPie = this.$echarts.init(document.getElementById("planTotalCostPie"));
+      let option = {
+        tooltip: {
+          trigger: 'item',
+          formatter: '{b} : {c} ({d}%)'
+        },
+        legend: {
+          bottom: 10,
+          left: 'center',
+        },
+        series: [
+          {
+            center:['55%','40%'],//饼图位置
+            type: 'pie',
+            radius: '60%',//饼图半径大小
+            label:{            //饼图图形上的文本标签
+              normal:{
+                show:true,
+                position:'outer', //标签的位置:外部
+                textStyle : {
+                  fontWeight : 100 ,
+                  fontSize: document.body.clientWidth / 120, //标签字体大小
+                  color: "#000000"
+                },
+                formatter:'{b}\n{c}({d}%)',//b：name,c:value,d:占比
+                alignTo:'edge',
+                margin:10
+              }
+            },
+            data: [
+              {value: this.selProject.planNouserAt,
+                itemStyle: {
+                  normal:{
+                    color: '#FAC858'
+                  }
+                },
+                name: '非人力'},
+              {value: this.selProject.planInnerUserAt,
+                itemStyle: {
+                  normal:{
+                    color: '#73C0DE'
+                  }
+                },
+                name: '内部人力'},
+              {value: this.selProject.planOutUserAt,
+                itemStyle: {
+                  normal:{
+                    color: '#5470C6'
+                  }
+                },
+                name: '外购人力'},
+            ],
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      };
+
+      // 绘制图表
+      planTotalCostPie.setOption(option);
+    },
+    drawWorkload() {
+      let workloadDistribution = this.$echarts.init(document.getElementById("workloadDistribution"));
+      let option = {
+        tooltip: {
+          trigger: 'item',
+          formatter: '{b} :<br/> {c} ({d}%)'
+        },
+        legend: {
+          bottom: 10,
+          left: 'center',
+        },
+        series: [
+          {
+            center:['55%','40%'],//饼图位置
+            type: 'pie',
+            radius: '60%',//饼图半径大小
+            label:{            //饼图图形上的文本标签
+              normal:{
+                show:true,
+                position:'outer', //标签的位置:外部
+                textStyle : {
+                  fontWeight : 100 ,
+                  fontSize: document.body.clientWidth / 120, //标签字体大小
+                  color: "#000000"
+                },
+                formatter:'{b}\n{c}({d}%)',//b：name,c:value,d:占比
+                alignTo:'edge',
+                margin:10
+              }
+            },
+            data: [
+              {value: this.selProject.planInnerUserWorkload,
+                itemStyle: {
+                  normal:{
+                    color: '#91CC75'
+                  }
+                },
+                name: '内部人力工作量'},
+              {value: this.selProject.planOutUserWorkload,
+                itemStyle: {
+                  normal:{
+                    color: '#3BA272'
+                  }
+                },
+                name: '外购人力工作量'},
+            ],
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      };
+
+      // 绘制图表
+      workloadDistribution.setOption(option);
+    },
+    drawIterationProduct() {
+      let iterationAndProduct = this.$echarts.init(document.getElementById("iterationAndProduct"));
+      let option = {
+        tooltip: {
+          trigger: 'item',
+          formatter: '{b} :<br/> {c} ({d}%)'
+        },
+        legend: {
+          bottom: 10,
+          left: 'center',
+        },
+        series: [
+          {
+            center:['55%','40%'],//饼图位置
+            type: 'pie',
+            radius: '60%',//饼图半径大小
+            label:{            //饼图图形上的文本标签
+              normal:{
+                show:true,
+                position:'outer', //标签的位置:外部
+                textStyle : {
+                  fontWeight : 100 ,
+                  fontSize: document.body.clientWidth / 120, //标签字体大小
+                  color: "#000000"
+                },
+                formatter:'{b}\n{c}({d}%)',//b：name,c:value,d:占比
+                alignTo:'edge',
+                margin:10
+              }
+            },
+            data: [
+              {value: this.selProject.iterationCnt,
+                itemStyle: {
+                  normal:{
+                    color: '#EE6666'
+                  }
+                },
+                name: '迭代数'},
+              {value: this.selProject.productCnt,
+                itemStyle: {
+                  normal:{
+                    color: '#73C0DE'
+                  }
+                },
+                name: '产品数'},
+            ],
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      };
+
+      // 绘制图表
+      iterationAndProduct.setOption(option);
+    },
   },
 
   mounted() {
     this.$nextTick(() => {
-      //this.getXmProjectState();
     });
     listOption([{categoryId:'all',itemCode:'projectType'},{categoryId:'all',itemCode:'urgencyLevel'},{categoryId:'all',itemCode:'priority'},{categoryId:'all',itemCode:'projectStatus'}] ).then(res=>{
       if(res.data.tips.isOk){
@@ -588,6 +785,9 @@ export default {
     this.drawAllBar();
     this.drawTaskByDate();
     this.drawPieBug();
+    this.drawCostPie();
+    this.drawWorkload();
+    this.drawIterationProduct();
 
   },
 
