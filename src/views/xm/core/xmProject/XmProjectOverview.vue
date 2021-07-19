@@ -244,7 +244,6 @@
 import util from "@/common/js/util"; // 全局公共库
 //import Sticky from "@/components/Sticky"; // 粘性header组件
 import { mapGetters } from "vuex";
-//import { listXmProjectState } from '@/api/xm/core/xmProjectState';
 import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 
 
