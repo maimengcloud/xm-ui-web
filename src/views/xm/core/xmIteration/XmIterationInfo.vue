@@ -192,7 +192,7 @@
 	import xmProjectStateMng from '../xmProjectState/XmProjectStateMng';
 	import xmTestCaseExecMng from '../xmTestCaseExec/XmTestCaseExecMng';  
 	import XmIterationForProjectComplex from '../xmIteration/XmIterationForProjectComplex.vue'; 
-	import XmProjectOverviewComplex from '../xmProject/XmProjectOverviewComplex.vue';
+	import XmIterationOverviewComplex from '../xmIteration/XmIterationOverviewComplex.vue';
 	import XmProductForProjectComplex from '../xmProduct/XmProductForProjectComplex.vue';
 	import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
 
@@ -415,7 +415,7 @@
 			xmTestCaseExecMng,
 			xmProjectGroupSelect,
 			XmIterationForProjectComplex, 
-			XmProjectOverviewComplex,
+			XmIterationOverviewComplex,
 			XmProductForProjectComplex,
 			XmProjectForLink,
 			//在下面添加其它组件
