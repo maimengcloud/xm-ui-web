@@ -102,11 +102,20 @@
 
 	
 	export default { 
-		props:['isSelectProduct','selProject'],
+		props:['isSelectProduct','selProject','xmIteration'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
 		    ])
+		},
+		watch:{
+			xmIteration(){
+				this.getXmProducts();
+			},
+			
+			selProject(){
+				this.getXmProducts();
+			}
 		},
 		data() {
 			const beginDate = new Date();
@@ -208,6 +217,11 @@
 				if(this.selProject){
 					params.projectId=this.selProject.id
 				}
+				
+				if(this.xmIteration){
+					params.iterationId=this.xmIteration.id
+				}
+				 
 				params.queryScope=this.filters.queryScope
 				if(this.filters.queryScope=='productId'){
 					if(!this.filters.id){
@@ -221,7 +235,7 @@
 					params.branchId=this.userInfo.branchId
 					params.projectId=null;
 				}
-				if(!this.selProject && this.filters.queryScope!='productId'){
+				if(!this.selProject && !this.xmIteration && this.filters.queryScope!='productId'){
 					if(!this.dateRanger || this.dateRanger.length==0){
 						this.$message({showClose: true, message: "创建日期范围不能为空", type: 'error' });
 						return;

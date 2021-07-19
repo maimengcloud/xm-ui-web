@@ -1,27 +1,31 @@
 <template>
 	<section class="page-container border"> 
 		<el-row>
-			<el-col :span="iterationVisible==true?6:0" >
+			<el-col :span="iterationVisible==true?3:0" >
 				<xm-iteration-select :sel-project="selProject"  @row-click="onIterationRowClick" @clear-select="onIterationClearSelect"></xm-iteration-select>
 			</el-col>  
-			<el-col :span="iterationVisible==true?18:24" >  
-				<el-tabs type="border-card" @tab-click="tabClick">  
-					<el-tab-pane label="产品、战略"  lazy>   
-						<span v-show="iterationVisible==true" slot="label" ><i class="el-icon-d-arrow-left" @click.stop="iterationVisible=false"></i> 产品、战略</span>
-						<span v-show="iterationVisible==false" slot="label" ><i class="el-icon-d-arrow-right" @click.stop="iterationVisible=true"></i> 产品、战略</span> 
-						<xm-product-mng  v-if="xmIteration" :xm-iteration="xmIteration" :sel-project="selProject"></xm-product-mng>
+			<el-col :span="iterationVisible==true?21:24" >  
+				<el-tabs type="border-card"  :v-model="showPanel" activate-name="iterationOverview" @tab-click="tabClick">  
+					
+					<el-tab-pane label="迭代概览" lazy  name="iterationOverview">
+						<span v-show="iterationVisible==true" slot="label" ><i class="el-icon-d-arrow-left" @click.stop="iterationVisible=false"></i> 迭代概览</span>
+						<span v-show="iterationVisible==false" slot="label" ><i class="el-icon-d-arrow-right" @click.stop="iterationVisible=true"></i> 迭代概览</span> 
+						<xm-iteration-state-show v-show="xmIteration && showPanel=='iterationOverview'"  :xm-iteration="xmIteration" :sel-project="selProject"></xm-iteration-state-show>
 					</el-tab-pane>
-					<el-tab-pane label="故事" lazy  >  
-						<xm-menu-mng v-if="xmIteration" :xm-iteration="xmIteration" :sel-project="selProject"></xm-menu-mng>
+					<el-tab-pane label="产品、战略"   name="products" v-if="!xmProduct">    
+						<xm-product-mng  v-show="xmIteration && showPanel=='products'"  :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-product-mng>
 					</el-tab-pane>
-					<el-tab-pane label="任务" lazy  >
-						<xm-task-mng v-if="xmIteration" :sel-project="selProject"></xm-task-mng>
+					<el-tab-pane label="项目"   name="projects">    
+  						<xm-project-for-link v-show="xmIteration && showPanel=='projects'"  :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-project-for-link>
+					</el-tab-pane> 
+					<el-tab-pane label="故事" lazy name="menus" >  
+						<xm-menu-mng v-show="xmIteration && showPanel=='menus'" :xm-product="xmProduct"  :xm-iteration="xmIteration" :sel-project="selProject"></xm-menu-mng>
 					</el-tab-pane>
-					<el-tab-pane label="缺陷" lazy  > 
-						<xm-question-mng  v-if="xmIteration" :sel-project="selProject"></xm-question-mng>
+					<el-tab-pane label="任务" lazy name="tasks" >
+						<xm-task-mng v-show="xmIteration && showPanel=='tasks'" :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-task-mng>
 					</el-tab-pane>
-					<el-tab-pane label="迭代概览" lazy  >
-						<xm-iteration-state-show v-if="xmIteration" :sel-project="selProject"></xm-iteration-state-show>
+					<el-tab-pane label="缺陷" lazy name="bugs" > 
+						<xm-question-mng v-show="xmIteration && showPanel=='bugs'" :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-question-mng>
 					</el-tab-pane>
 				</el-tabs>
 				<el-row>
@@ -44,6 +48,7 @@
 	import XmIterationStateShow from '../xmIterationState/XmIterationStateShow.vue'
 	import { mapGetters } from 'vuex' 
 import XmProductMng from '../xmProduct/XmProductMng.vue';
+import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
 import XmTaskMng from '../xmTask/XmTaskMng.vue';
 import XmQuestionMng from '../xmQuestion/XmQuestionMng.vue';
  
@@ -54,7 +59,7 @@ import XmQuestionMng from '../xmQuestion/XmQuestionMng.vue';
 		      'userInfo','roles'
 			]), 
 		},
-		props:['visible','selProject'],
+		props:['visible','selProject','xmProduct'],
 		watch:{
 			visible:function(visible){
 				if(visible==true){ 
@@ -64,7 +69,7 @@ import XmQuestionMng from '../xmQuestion/XmQuestionMng.vue';
 		data() {
 			 return{
 				xmIteration:null,
-				showPanel:'menus',//menus,tasks,bugs,iterationStateShow
+				showPanel:'products',//menus,tasks,bugs,iterationStateShow
 				topModules:
 				[ 
 					{
@@ -132,9 +137,7 @@ import XmQuestionMng from '../xmQuestion/XmQuestionMng.vue';
 				this.iteration=null; 
 			},
 			tabClick(tab){  
-				if(tab.label=='任务' || tab.label=='故事'){ 
-					this.iterationVisible=false;
-				}
+				 this.showPanel=tab.name
 			}
 		},//end methods
 		components: { 
@@ -144,7 +147,8 @@ import XmQuestionMng from '../xmQuestion/XmQuestionMng.vue';
 			XmIterationStateShow, 
 			XmProductMng,
 			XmTaskMng,
-			XmQuestionMng
+			XmQuestionMng,
+			XmProjectForLink,
 		},
 		mounted() { 
 		this.$nextTick(() => {

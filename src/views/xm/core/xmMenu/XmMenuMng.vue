@@ -1,11 +1,11 @@
 <template>
 	<section class="padding">
 		<el-row v-if=" !batchEditVisible"> 
-			<el-col :span="6">
-				<xm-product-mng :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-mng>
+			<el-col :span="5" v-if="!xmProduct">
+				<xm-product-mng :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :xm-iteration="xmIteration" :simple="true"></xm-product-mng>
 			</el-col>
-			<el-col :span="18" class="padding-left">
-					<el-row >  
+			<el-col :span="xmProduct?24:19" class="padding-left">
+					<el-row>  
 						<el-select  v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable >
 							<el-option   value="not-join"  label="未分配任何任务的故事"></el-option>  
 							<el-option   value="join"  label="已分配任务的故事"></el-option>  
@@ -23,15 +23,12 @@
 							:default-time="['00:00:00','23:59:59']"
 							:picker-options="pickerOptions"
 						></el-date-picker> 
-						<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询" clearable>
-							<template slot="append">
-								<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
-							</template>
+						<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询" clearable> 
 						</el-input> 
+						<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
 						
-						
-						<el-button    type="primary" @click="showAdd" icon="el-icon-plus">故事</el-button>
-						<el-button      @click="toBatchEdit" icon="el-icon-edit">修改</el-button>   
+						<el-button  v-if="!selProject&&!xmIteration"  type="primary" @click="showAdd" icon="el-icon-plus">故事</el-button>
+						<el-button  v-if="!selProject&&!xmIteration"    @click="toBatchEdit" icon="el-icon-edit">修改</el-button>   
 						<el-popover
 							placement="top-start"
 							title=""
@@ -89,9 +86,9 @@
 								</el-col> 
 							</el-row> 
 							<el-button  slot="reference" icon="el-icon-more" circle></el-button>
-						</el-popover> 
+						</el-popover>  
+ 					</el-row>
 					
-					</el-row>
 					<el-row class="padding-top">  
 						<el-table size="mini"  stripe fit border ref="table" :height="tableHeight" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
 							<el-table-column sortable type="selection" width="40"></el-table-column> 
@@ -113,7 +110,7 @@
 											<el-tag slot="reference" icon="el-icon-chat-line-square">描述</el-tag>
 										</el-popover>
 									
-										<el-button  size="mini" type="primary"  @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" circle></el-button> 
+										<el-button v-if="!selProject&&!xmIteration"   size="mini" type="primary"  @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" circle></el-button> 
  											
 										<el-popover style="padding-left:10px;"
 											v-if="isPmUser"
@@ -227,7 +224,7 @@
 	import { mapGetters } from 'vuex' 
 	
 	export default { 
-		props:['selProject','xmIteration'],
+		props:['selProject','xmIteration','xmProduct'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -263,6 +260,13 @@
 				if(product==null){
 					this.productVisible=true;
 				}
+			},
+			xmIteration:function(){
+				this.getXmMenus()
+			},
+			xmProduct:function(){  
+					this.filters.product=this.xmProduct
+					this.getXmMenus() 
 			}
     	},
 		data() {
@@ -352,7 +356,7 @@
 				 this.getXmMenus();
 			},
 			//获取列表 XmMenu xm_project_menu
-			getXmMenus() {
+			getXmMenus() { 
 				let params = {
 					pageSize: this.pageInfo.pageSize,
 					pageNum: this.pageInfo.pageNum,
@@ -366,7 +370,7 @@
 					}  
 					params.orderBy= orderBys.join(",")
 				} 
-					if( this.filters.product!==null && this.filters.product.id!=''){
+					if( this.filters.product  && this.filters.product.id){
 						params.productId=this.filters.product.id
 					}else {
 						this.$message({showClose: true, message: "请先选择产品", type: 'success' });
@@ -415,7 +419,11 @@
 					this.load.list = false;
 				}
 				this.load.list = true;
-				listXmMenuWithPlan(params).then( callback ).catch( err => this.load.list = false );
+				if(!this.selProject){
+					listXmMenuWithState(params).then( callback ).catch( err => this.load.list = false );
+				}else{ 
+					listXmMenuWithPlan(params).then( callback ).catch( err => this.load.list = false );
+				}
 			},
 
 			//显示编辑界面 XmMenu xm_project_menu
@@ -810,6 +818,10 @@
 		    //在下面添加其它组件
 		},
 		mounted() {   
+			this.filters.product=this.xmProduct
+			if(this.xmProduct){
+				this.productVisible=false;
+			}
 			this.$nextTick(() => { 
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
 				var subHeight=70/1000 * window.innerHeight;  

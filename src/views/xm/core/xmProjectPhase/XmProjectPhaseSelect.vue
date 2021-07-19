@@ -49,10 +49,9 @@
       },
 			 
 		},
-		props:['selProject'],
+		props:['selProject','xmIteration'],
 		watch:{
-			selProject:function(selProject,old){
-        console.log('this.selProject==', selProject);
+			selProject:function(selProject,old){ 
         
 				if(!selProject){
 					this.xmProjectPhases=[]
@@ -62,6 +61,9 @@
 						this.searchXmProjectPhases();
 					}
 				}
+			},
+			xmIteration(){
+				this.searchXmProjectPhases();
 			}
     },
 		data() {
@@ -171,6 +173,10 @@
 				}
 				if(this.selProject!=null && this.selProject!=undefined){
 					params.projectId=this.selProject.id
+
+				}
+				if(this.xmIteration!=null && this.xmIteration!=undefined){
+					params.iterationId=this.xmIteration.id
 
 				}
 				this.load.list = true;

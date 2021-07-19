@@ -16,7 +16,7 @@ export default {
       // leaf: true,//只有一个节点
       children: [
         
-        { path: 'xmProject/XmProjectAdd', component: _import('xm/core/xmProject/XmProjectAdd'), name: 'xmProjectAdd', meta: { title: '项目立项' }},
+        { path: 'xmProject/XmProjectAdd', component: _import('xm/core/xmProject/XmProjectAdd'), name: 'xmProjectAdd',hidden:true, meta: { title: '项目立项' }},
         { path: 'xmProject/XmProjectAllMng', component: _import('xm/core/xmProject/XmProjectAllMng'), name: 'xmProjectAllMng', meta: { title: '项目总览' }},
         { path: 'xmProject/XmProjectMng', component: _import('xm/core/xmProject/XmProjectMng'), name: 'xmProjectMng', meta: { title: '项目(我的)' }},
         { path: 'xmProjectState/XmCockpit',   name: 'XmCockpit', meta: { title: '领导驾驶舱' ,openTab:true,outUrl:'${curlDomain}/xm/'+process.env.VERSION+'/#/datav/xm/branch/branchDatavFullScreen'}},
@@ -78,22 +78,45 @@ export default {
       ]
     },
     {
-      path: '/xm/core',
-      component: Layout,
-      name: '用户故事',
+      path: '/xm/core/xmProduct/XmProductInfoRoute',
+      component: _import('xm/core/xmProduct/XmProductInfoRoute'),
+      name: 'XmProductInfoRoute',
       iconCls: 'fa el-icon-menu',
       meta: {
-        title: '用户故事',
+        title: '产品管理',
+        icon: 'project', 
+        hidden:true
+      }, 
+    },
+    {
+      path: '/xm/core',
+      component: Layout,
+      name: '产品管理',
+      iconCls: 'fa el-icon-menu',
+      meta: {
+        title: '产品管理',
         icon: 'project'
       },
       // leaf: true,//只有一个节点
       children: [ 
  
-        { path: 'xmProduct/XmProductMng', component: _import('xm/core/xmProduct/XmProductMng'), name: 'XmProductMng', meta: { title: '产品管理' }}, 
+         { path: 'xmProduct/XmProductMng', component: _import('xm/core/xmProduct/XmProductMng'), name: 'XmProductMng', meta: { title: '产品管理' }}, 
+
         { path: 'xmMenu/XmMenuMng', component: _import('xm/core/xmMenu/XmMenuMng'), name: 'XmMenuMng', meta: { title: '故事管理' }},
          { path: 'xmMenuExchange/XmMenuExchangeMng', component: _import('xm/core/xmMenuExchange/XmMenuExchangeMng'), name: 'XmMenuExchangeMng', meta: { title: '互动评论' }}, 
         { path: 'xmMenuTemplate/XmMenuTemplateMng', component: _import('xm/core/xmMenuTemplate/XmMenuTemplateMng'), name: 'XmMenuTemplateMng', meta: { title: '故事模板' }},
       ]
+    },,
+    {
+      path: '/xm/core/xmIteration/XmIterationInfoRoute',
+      component: _import('xm/core/xmIteration/XmIterationInfoRoute'),
+      name: 'XmIterationInfoRoute',
+      iconCls: 'fa el-icon-menu',
+      meta: {
+        title: '迭代管理',
+        icon: 'project', 
+        hidden:true
+      }, 
     },
     {
       path: '/xm/core',
@@ -106,7 +129,7 @@ export default {
       },
       // leaf: true,//只有一个节点
       children: [  
-        { path: 'xmIteration/XmIterationMng', component: _import('xm/core/xmIteration/XmIterationMng'), name: 'XmIterationMng', meta: { title: '迭代管理' }},
+         { path: 'xmIteration/XmIterationMng', component: _import('xm/core/xmIteration/XmIterationMng'), name: 'XmIterationMng', meta: { title: '迭代管理' }},
         { path: 'xmIterationMenu/XmIterationMenuMng', component: _import('xm/core/xmIterationMenu/XmIterationMenuMng'), name: 'XmIterationMenuMng', meta: { title: '故事迭代' }},
       ]
     }

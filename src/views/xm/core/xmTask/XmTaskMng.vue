@@ -2,7 +2,7 @@
 	<section class="padding">
 		<el-row  v-show="batchEditVisible==false"> 
 			<el-col v-if="isTaskCenter!='1' && currentProject " :span="4" >
-				<xm-project-phase-mng  :sel-project="currentProject" :simple="true" @row-click="projectPhaseRowClick" @clear-select="clearSelectPhase"></xm-project-phase-mng>
+				<xm-project-phase-mng  :sel-project="currentProject" :xm-iteration="xmIteration" :simple="true" @row-click="projectPhaseRowClick" @clear-select="clearSelectPhase"></xm-project-phase-mng>
 			</el-col>
 			<el-col :span="isTaskCenter!='1' && currentProject?20:24" class="padding-left">
 				<el-row>
@@ -56,7 +56,7 @@
 									<el-button  v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showAdd"  icon="el-icon-plus">直接创建</el-button>
 								</el-col>
 							</el-row>
- 							<el-button slot="reference" v-if=" isTaskCenter!='1'   && isMy!='1'"  type="primary" icon="el-icon-plus" circle></el-button>
+ 							<el-button slot="reference" v-if=" isTaskCenter!='1'   && isMy!='1' && !xmProduct && !xmIteration"  type="primary" icon="el-icon-plus" circle></el-button>
 						</el-popover>
 
 						<el-popover
@@ -518,7 +518,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 
 			}
 		},
-		props: ["selProject","isTaskCenter","isMy",'menuId','menuName','xmProduct'],
+		props: ["selProject","isTaskCenter","isMy",'menuId','menuName','xmProduct',"xmIteration"],
 		watch: {
 			"selProject": function(oval,val) {
 				this.filters.selProject=this.selProject;
@@ -534,6 +534,10 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			},
 			'xmProduct':function(){
 				this.filters.product=this.xmProduct;
+				this.getXmTasks(); 
+			}, 
+			xmIteration:function(){ 
+				this.getXmTasks(); 
 			}
 		},
 		data() {
@@ -765,7 +769,9 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				if(this.filters.product){
 					params.productId=this.filters.product.id
 				}
-
+				if(this.xmIteration){
+					params.iterationId=this.xmIteration.id
+				}
 				params.createTimeStart=this.dateRanger[0]+" 00:00:00"
 				params.createTimeEnd=this.dateRanger[1]+" 23:59:59"
 				getTask(params).then((res) => {
