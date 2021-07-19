@@ -138,8 +138,7 @@
 				</el-submenu>
 			</el-menu>
 		   
-		  	<xm-project-overview-complex v-if="infotype=='项目概览'" :xm-iteration="xmIteration"></xm-project-overview-complex>  
-  			
+   			<xm-iteration-overview-complex  v-if="infotype=='迭代概览'" :xm-iteration="xmIteration"></xm-iteration-overview-complex>
 			<xm-project-for-link v-if="infotype=='项目'" ref="xmProjectForLink" :xm-iteration="xmIteration"></xm-project-for-link>
 			 <xm-product-for-project-complex  v-if="infotype=='产品'" ref="xmProductComplex" :xm-iteration="xmIteration"></xm-product-for-project-complex>
 			 <xm-menu-mng v-if="infotype=='用户故事'" :xm-iteration="xmIteration"></xm-menu-mng>
