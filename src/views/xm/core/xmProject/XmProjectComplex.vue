@@ -5,7 +5,7 @@
 				<xm-project-select   :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClearSelect"></xm-project-select>
 			</el-col>  
 			<el-col :span="projectVisible==true?21:24" >  
-				<el-tabs type="border-card"  :v-model="showPanel" activate-name="projectOverview" @tab-click="tabClick">  
+				<el-tabs type="border-card"  :value="showPanel" @tab-click="tabClick">  
 					<el-tab-pane label="项目概览"   name="projectOverview">   
 						<span v-show="projectVisible==true" slot="label" ><i class="el-icon-d-arrow-left" @click.stop="projectVisible=false"></i> 项目概览</span>
 						<span v-show="projectVisible==false" slot="label" ><i class="el-icon-d-arrow-right" @click.stop="projectVisible=true"></i> 项目概览</span> 
@@ -74,7 +74,7 @@ import XmProductProjectForLink from '../xmProduct/XmProductProjectForLink.vue';
 		data() {
 			 return{
 				selProject:null,
-				showPanel:'tasks',//menus,tasks,bugs,iterationStateShow
+				showPanel:'projectOverview',//menus,tasks,bugs,iterationStateShow
 				topModules:
 				[ 
 					{

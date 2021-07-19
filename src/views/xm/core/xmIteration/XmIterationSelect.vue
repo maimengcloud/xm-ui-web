@@ -58,8 +58,7 @@
 					 <template slot-scope="scope">
 						 {{scope.row.seqNo}} &nbsp;&nbsp;{{scope.row.iterationName}}<br>
 						 <font class="font-class">{{formatterDate(scope.row,null,scope.row.startTime)}}~{{formatterDate(scope.row,null,scope.row.endTime)}} </font> 
-						 <el-tag type="warning">{{!scope.row.iphase?'未开始':scope.row.iphase}}</el-tag>
-						 <el-tooltip content="点击统计进度，由任务汇总"><el-button size="mini" icon="el-icon-video-play" @click.stop="loadTasksToXmIterationState( scope.row)"></el-button></el-tooltip>
+						 <el-tag type="warning">{{!scope.row.iphase?'未开始':scope.row.iphase}}</el-tag> 
   						 <div class="progress">
 						  <el-progress  :percentage="calcFinishRate(scope.row)"></el-progress>
 						 </div>
