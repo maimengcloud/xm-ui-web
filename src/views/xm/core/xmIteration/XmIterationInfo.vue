@@ -139,7 +139,7 @@
 			</el-menu>
 		   
    			<xm-iteration-overview-complex  v-if="infotype=='迭代概览'" :xm-iteration="xmIteration"></xm-iteration-overview-complex>
-			<xm-project-for-link v-if="infotype=='项目'" ref="xmProjectForLink" :xm-iteration="xmIteration"></xm-project-for-link>
+ 			<xm-project-complex  v-if="infotype=='项目'" ref="xmProjectComplex" :xm-iteration="xmIteration"></xm-project-complex>
 			 <xm-product-for-project-complex  v-if="infotype=='产品'" ref="xmProductComplex" :xm-iteration="xmIteration"></xm-product-for-project-complex>
 			 <xm-menu-mng v-if="infotype=='用户故事'" :xm-iteration="xmIteration"></xm-menu-mng>
 			 <xm-task-mng v-if="infotype=='任务'" ref="xmTaskMng" :xm-iteration="xmIteration" ></xm-task-mng>
@@ -194,7 +194,7 @@
 	import XmIterationForProjectComplex from '../xmIteration/XmIterationForProjectComplex.vue'; 
 	import XmIterationOverviewComplex from '../xmIteration/XmIterationOverviewComplex.vue';
 	import XmProductForProjectComplex from '../xmProduct/XmProductForProjectComplex.vue';
-	import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
+ import XmProjectComplex from '../xmProject/XmProjectComplex.vue';
 
 
 	export default {
@@ -416,8 +416,8 @@
 			xmProjectGroupSelect,
 			XmIterationForProjectComplex, 
 			XmIterationOverviewComplex,
-			XmProductForProjectComplex,
-			XmProjectForLink,
+			XmProductForProjectComplex, 
+			XmProjectComplex,
 			//在下面添加其它组件
 		},
 		mounted() {

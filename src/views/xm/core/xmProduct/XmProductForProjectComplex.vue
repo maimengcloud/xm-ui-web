@@ -5,26 +5,26 @@
 				<xm-product-select :sel-project="selProject" :xm-iteration="xmIteration"  @row-click="onProductRowClick" @clear-select="onProductClearSelect"></xm-product-select>
 			</el-col>  
 			<el-col :span="productVisible==true?21:24" >  
-				<el-tabs type="border-card"  :v-model="showPanel" activate-name="productOverview" @tab-click="tabClick">  
+				<el-tabs type="border-card"  :value="showPanel"  @tab-click="tabClick">  
 					<el-tab-pane label="产品概览"   name="productOverview">   
 						<span v-show="productVisible==true" slot="label" ><i class="el-icon-d-arrow-left" @click.stop="productVisible=false"></i> 产品概览</span>
 						<span v-show="productVisible==false" slot="label" ><i class="el-icon-d-arrow-right" @click.stop="productVisible=true"></i> 产品概览</span> 
  						 
 					</el-tab-pane>
 					<el-tab-pane label="迭代"   name="iterations" v-if=" !xmIteration" >   
-						 <xm-iteration-mng v-show=" xmProduct && showPanel=='iterations' && !xmIteration"   :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-iteration-mng>
+						 <xm-iteration-mng v-if=" xmProduct && showPanel=='iterations' && !xmIteration"   :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-iteration-mng>
 					</el-tab-pane>
 					<el-tab-pane label="项目" lazy  name="projects" v-if="!selProject"> 
-						<xm-product-project-for-link v-show="xmProduct && showPanel=='projects'"  :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-product-project-for-link>
+						<xm-product-project-for-link v-if="xmProduct && showPanel=='projects'"  :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-product-project-for-link>
 					</el-tab-pane>
 					<el-tab-pane label="故事" lazy name="menus" >  
-						<xm-menu-mng v-show="xmProduct && showPanel=='menus'"   :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-menu-mng>
+						<xm-menu-mng v-if="xmProduct && showPanel=='menus'"   :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-menu-mng>
 					</el-tab-pane>
 					<el-tab-pane label="任务" lazy name="tasks" >
-						<xm-task-mng v-show="xmProduct && showPanel=='tasks'"  :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-task-mng>
+						<xm-task-mng v-if="xmProduct && showPanel=='tasks'"  :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-task-mng>
 					</el-tab-pane>
 					<el-tab-pane label="缺陷" lazy name="bugs" > 
-						<xm-question-mng v-show="xmProduct && showPanel=='bugs'"  :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-question-mng>
+						<xm-question-mng v-if="xmProduct && showPanel=='bugs'"  :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-question-mng>
 					</el-tab-pane> 
 				</el-tabs>
 				<el-row>
@@ -71,7 +71,7 @@ import XmProductProjectForLink from './XmProductProjectForLink.vue';
 		data() {
 			 return{
 				xmProduct:null,
-				showPanel:'iterations',//menus,tasks,bugs,iterationStateShow
+				showPanel:'productOverview',//menus,tasks,bugs,iterationStateShow
 				topModules:
 				[ 
 					{
