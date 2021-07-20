@@ -140,7 +140,7 @@
 			<el-table ref="table"  :height="tableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
   				<el-table-column prop="productName" label="产品名称" min-width="300">
 					<template slot-scope="scope">
-						<span><el-link type="primary" @click="intoInfo(p)">{{scope.row.productName}}</el-link></span>
+						<span><el-link type="primary" @click="intoInfo(scope.row)">{{scope.row.productName}}</el-link></span>
 
 						<font class="align-right"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag>
 
