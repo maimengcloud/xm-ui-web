@@ -1,15 +1,15 @@
 <template>
 	<section class="page-container page-full-height padding border">
 		<el-row>
-      		<el-checkbox v-model="gstcVisible"  class="hidden-md-and-down">甘特图</el-checkbox>  
-			  
+      		<el-checkbox v-model="gstcVisible"  class="hidden-md-and-down">甘特图</el-checkbox>
+
 			<el-select  v-model="filters.queryScope"  placeholder="迭代查询范围">
 				<el-option :label="userInfo.branchName+'机构下所有的迭代'" value="branchId"></el-option>
 				<el-option label="我相关的迭代" value="compete"></el-option>
 				<el-option label="按迭代编号精确查找" value="iterationId"></el-option>
 				<el-option label="后台智能匹配" value=""></el-option>
 			</el-select>
-			<el-input v-if="filters.queryScope=='iterationId'"  v-model="filters.id" style="width:20%;"  placeholder="输入迭代编号" @keyup.enter.native="searchXmProducts"> </el-input> 
+			<el-input v-if="filters.queryScope=='iterationId'"  v-model="filters.id" style="width:20%;"  placeholder="输入迭代编号" @keyup.enter.native="searchXmProducts"> </el-input>
 			<el-date-picker v-if="filters.queryScope!='iterationId'" v-model="dateRangerOnline" type="daterange" align="right" unlink-panels range-separator="至"
 				start-placeholder="上线日期" end-placeholder="上线日期" value-format="yyyy-MM-dd"
 				class="hidden-md-and-down"
@@ -20,15 +20,15 @@
 						<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterations" icon="el-icon-search"></el-button>
 					</template>
 				</el-input>
-			<el-button type="primary" @click="showAdd" icon="el-icon-plus">迭代计划</el-button> 
+			<el-button type="primary" @click="showAdd" icon="el-icon-plus">迭代计划</el-button>
 			<el-popover
 				placement="top-start"
 				title=""
 				width="400"
 				trigger="click" >
 				<el-divider content-position="left"><strong>查询条件</strong></el-divider>
-				<el-row> 
-					
+				<el-row>
+
 					<el-col :span="24" style="padding-top:5px;">
 						<font class="more-label-font">
 							迭代查询范围：
@@ -40,9 +40,9 @@
 							<el-option label="后台智能匹配" value=""></el-option>
 						</el-select>
 					</el-col>
-					<el-col  :span="24"  style="padding-top:5px;"> 
-						<el-input  v-if="filters.queryScope=='iterationId'" size="mini" v-model="filters.id" style="width:100%;"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">  
-						</el-input> 
+					<el-col  :span="24"  style="padding-top:5px;">
+						<el-input  v-if="filters.queryScope=='iterationId'" size="mini" v-model="filters.id" style="width:100%;"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">
+						</el-input>
 					</el-col>
 					<el-col v-if="filters.queryScope!='iterationId'" :span="24"  style="padding-top:5px;">
 						<font class="more-label-font">上线时间:</font>
@@ -67,16 +67,10 @@
 					</el-col>
 					<el-col :span="24" style="padding-top:5px;">
 						<el-button size="mini" type="primary" icon="el-icon-search" @click="getXmIterations">查询</el-button>
-						<el-checkbox v-model="gstcVisible">甘特图</el-checkbox>  
+						<el-checkbox v-model="gstcVisible">甘特图</el-checkbox>
 					</el-col>
 				</el-row>
-				<el-divider content-position="left"><strong>更多操作</strong></el-divider>
-				<el-row> 
-					<el-col :span="24" style="padding-top:5px;">
-						<el-button v-if="xmProduct" size="mini"  icon="el-icon-plus" @click="iterationSelectVisible=true">将更多迭代加入产品<strong>{{xmProduct.productName}}</strong></el-button>
- 					</el-col>	
-				</el-row>
-				<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+ 				<el-button  slot="reference" icon="el-icon-more" circle></el-button>
 			</el-popover>
  		</el-row>
 		<el-row  class="page-main">
@@ -101,8 +95,7 @@
 				<el-table-column prop="actWorkload" label="实际工作量" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column label="操作" width="400" fixed="right">
 					<template slot-scope="scope">
-						<el-tooltip v-if="xmProduct" :content="'将迭代与'+ xmProduct.productName + '脱钩'"><el-button   @click="doDelXmIterationProductLink( scope.row,scope.$index)" icon="el-icon-remove-outline">与产品脱钩</el-button></el-tooltip>
-						<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"></el-button> 
+ 						<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"></el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -123,11 +116,11 @@
 			<el-drawer title="迭代报告" :visible.sync="iterationStateVisible" fullscreen  append-to-body  :close-on-click-modal="false">
 				<xm-iteration-state-mng :xm-iteration="editForm"   :visible="iterationStateVisible" @cancel="iterationStateVisible=false"></xm-iteration-state-mng>
 			</el-drawer>
-			
+
 			<el-drawer title="迭代报告" :visible.sync="iterationSelectVisible" fullscreen  append-to-body  :close-on-click-modal="false">
 				<xm-iteration-select @row-click="onXmIterationSelect"></xm-iteration-select>
 			</el-drawer>
-		</el-row> 
+		</el-row>
 	</section>
 </template>
 
@@ -173,8 +166,8 @@ import XmIterationSelect from './XmIterationSelect.vue';
 		data() {
 			const beginDate = new Date();
 			const endDate = new Date();
-			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 3 ); 
-			endDate.setTime(endDate.getTime() + 3600 * 1000 * 24 * 7 * 4 * 3 ); 
+			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 3 );
+			endDate.setTime(endDate.getTime() + 3600 * 1000 * 24 * 7 * 4 * 3 );
 			return {
 				filters: {
 					key: '',
@@ -272,7 +265,7 @@ import XmIterationSelect from './XmIterationSelect.vue';
 					pageNum: this.pageInfo.pageNum,
 					total: this.pageInfo.total,
 					count:this.pageInfo.count
-				}; 
+				};
 				if(!this.dateRangerOnline || this.dateRangerOnline.length==0){
 					this.$message({showClose: true, message: "上线日期范围不能为空", type: 'error' });
 					return;
@@ -295,16 +288,16 @@ import XmIterationSelect from './XmIterationSelect.vue';
 				}
 				if(this.menuId){
 					params.menuId=this.menuId
-				} 
+				}
 				if( !this.menuId && !this.xmProduct && !this.selProject){
-					params.queryScope=this.filters.queryScope 
+					params.queryScope=this.filters.queryScope
 					if(this.filters.queryScope=='iterationId'){
 						if(!this.filters.id){
 							this.$message({showClose: true, message:"您选择了按迭代编号精确查找模式，请输入迭代编号", type: 'error' });
 							return;
 						}
 						params.id=this.filters.id
-						
+
 					}
 					if(this.filters.queryScope=="branchId"){
 						params.branchId=this.userInfo.branchId
@@ -313,7 +306,7 @@ import XmIterationSelect from './XmIterationSelect.vue';
 						params.onlineTimeStart=this.dateRangerOnline[0]+" 00:00:00"
 						params.onlineTimeEnd=this.dateRangerOnline[1]+" 23:59:59"
 					}
-					
+
 				}
 				this.load.list = true;
 				listXmIterationWithState(params).then((res) => {
@@ -354,14 +347,14 @@ import XmIterationSelect from './XmIterationSelect.vue';
 				this.pageInfo.count=true;
 				if(this.xmProduct){//如果是产品试图界面添加的迭代，直接添加产品与迭代的关联关系
 					this.onXmIterationSelect(xmIteration);
-				}else{ 
+				}else{
 					this.getXmIterations();
-				} 
+				}
 			},
 			afterEditSubmit(){
 				this.editFormVisible=false;
 			},
-			
+
 			//进入info界面
 			intoInfo(row) {
 				this.editForm = row;
@@ -506,14 +499,14 @@ import XmIterationSelect from './XmIterationSelect.vue';
 				}).then(()=>{
 					addXmIterationProductLink({iterationId:xmIteration.id,productId:xmProduct.id}).then(res=>{
 						var tips =res.data.tips;
-						if(tips.isOk){ 
+						if(tips.isOk){
 							this.getXmIterations();
 						}
 						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					})
 				})
 			},
-			doDelXmIterationProductLink(row){ 
+			doDelXmIterationProductLink(row){
 				var xmIteration=row;
 				var xmProduct=this.xmProduct;
 				this.$confirm('确认将产品【'+xmProduct.productName+'】与迭代【'+xmIteration.iterationName+'】进行脱钩吗？脱钩后，产品与迭代互相查看不到对方信息。', '提示', {
