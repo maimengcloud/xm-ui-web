@@ -90,6 +90,11 @@
 				}
 				this.getXmProjects();
 			},
+			
+			//选择行xmProject
+			selsChange: function (sels) {
+				this.sels = sels;
+			}, 
 			searchXmProjects(){
 				 this.pageInfo.count=true; 
 				 this.getXmProjects();
