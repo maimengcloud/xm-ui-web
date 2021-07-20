@@ -106,9 +106,9 @@
 				<el-button  slot="reference"   icon="el-icon-more" circle></el-button>
 			</el-popover> 
 		</el-row>
-		<el-row  class="page-main page-height-80"> 
+		<el-row  class="page-main page-height-80"  v-show="showType"> 
 			<!--列表 XmProject xm_project-->
-			<el-row v-show="showType" v-loading="load.list">
+			<el-row v-loading="load.list">
 				<el-col  v-cloak v-for="(p,i) in xmProducts" :key="i" :xl="4" :lg="6" :md="8" :sm="12">
 					<el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always">
 						<div class="project-name" title="这是产品名称">{{p.productName}}</div>
@@ -142,12 +142,12 @@
 				</el-col>
 			</el-row>
 		</el-row>
-		<el-row  class="padding-top"> 
+		<el-row  class="padding-top" v-show="!showType"> 
 			<!--列表 XmProduct 产品表-->
 			<el-table ref="table"  :height="tableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
   				<el-table-column prop="productName" label="产品名称" min-width="300"> 
 					<template slot-scope="scope">
-						<span><el-link type="primary" @click="showEdit(scope.row)">{{scope.row.productName}}</el-link></span>
+						<span><el-link type="primary" @click="intoInfo(p)">{{scope.row.productName}}</el-link></span>
 						
 						<font class="align-right"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag>
 						
@@ -192,9 +192,9 @@
 					</template>
 				</el-table-column>
 			</el-table>
-			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>  
-		</el-row>
-		 
+			</el-row>
+		 	<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>  
+		
 					<!--编辑 XmProduct 产品表界面-->
 			<el-drawer title="编辑产品" :visible.sync="editFormVisible"  size="50%" :with-header="false"  append-to-body   :close-on-click-modal="false">
 				  <xm-product-edit :xm-product="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-product-edit>
@@ -311,7 +311,7 @@ import XmProductSelect from './XmProductSelect.vue';
 				pickerOptions:  util.pickerOptions('datarange'),
 				projectVisible:false,
 				productSelectVisible:false,
-				showType:true,
+				showType:false,
 				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
