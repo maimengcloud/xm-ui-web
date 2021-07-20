@@ -206,7 +206,7 @@
               <span>产品相关联项目与迭代数</span>
             </div>
             <div>
-              <div id="projectAndIteration" :style="{width: '420px', height: '415px'}"></div>
+              <div id="projectAndIteration" :style="{width: '450px', height: '350px'}"></div>
             </div>
           </el-card>
         </el-col>
@@ -449,57 +449,39 @@ export default {
       let projectAndIteration = this.$echarts.init(document.getElementById("projectAndIteration"));
       let option = {
         tooltip: {
-          trigger: 'item',
-          formatter: '{b} :<br/> {c} ({d}%)'
+          trigger: 'axis',
+          formatter: '{b} : {c}',
+          axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+          },
         },
-        legend: {
-          bottom: 10,
-          left: 'center',
+        yAxis: {
+          type: 'category',
+          data: ['项目数', '迭代数']
         },
-        series: [
-          {
-            center:['55%','40%'],//饼图位置
-            type: 'pie',
-            radius: '60%',//饼图半径大小
-            label:{            //饼图图形上的文本标签
-              normal:{
-                show:true,
-                position:'outer', //标签的位置:外部
-                textStyle : {
-                  fontWeight : 100 ,
-                  fontSize: document.body.clientWidth / 120, //标签字体大小
-                  color: "#000000"
-                },
-                formatter:'{b}\n{c}({d}%)',//b：name,c:value,d:占比
-                alignTo:'edge',
-                margin:10
-              }
-            },
-            data: [
-              {value: this.xmProduct.iterationCnt,
-                itemStyle: {
-                  normal:{
-                    color: '#EE6666'
-                  }
-                },
-                name: '迭代数'},
-              {value: this.xmProduct.projectCnt,
-                itemStyle: {
-                  normal:{
-                    color: '#F4A460'
-                  }
-                },
-                name: '项目数'},
-            ],
-            emphasis: {
-              itemStyle: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
-              }
+        xAxis: {
+          type: 'value'
+        },
+        series: [{
+          label: {
+            normal:{
+              show: true,
+              position: 'inside',
+              color:'#000000',
             }
+          },
+          data: [this.xmProduct.projectCnt, this.xmProduct.iterationCnt],
+          type: 'bar',
+          showBackground: true,
+          itemStyle: {
+            normal:{
+              color: '#99CCFF'
+            }
+          },
+          backgroundStyle: {
+            color: '#FFFFFF'
           }
-        ]
+        }]
       };
 
       // 绘制图表
