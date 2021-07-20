@@ -1,6 +1,24 @@
 <template>
   <section class="page-container padding">
     <el-row class="page-main page-height-75" style="overflow-x: hidden;">
+      <el-row style="margin-bottom:10px">
+        <el-card class="box-card" style="padding:0px ;height:200px">
+          <div slot="header" class="clearfix" style="margin-bottom:10px">
+            <span>项目阶段</span>
+          </div>
+          <div>
+            <el-row style="padding:10px">
+              <el-steps :active="calcProjectStatusStep" finish-status="success">
+                <el-step  v-for="(i,index) in options['projectStatus']" :title="i.optionName" :key="index">
+                  <el-row slot="title" @click.native.stop="editForm.status=i.optionValue">
+                    {{i.optionName}}
+                  </el-row>
+                </el-step>
+              </el-steps>
+            </el-row>
+          </div>
+        </el-card>
+      </el-row>
       <el-row :gutter="10" style="margin-bottom:10px">
           <el-col :span="8" >
             <el-card class="box-card" style="padding:0px ;height:425px">
@@ -243,24 +261,6 @@
             </div>
           </el-card>
         </el-col>
-      </el-row>
-      <el-row style="margin-bottom:10px">
-        <el-card class="box-card" style="padding:0px ;height:200px">
-          <div slot="header" class="clearfix" style="margin-bottom:10px">
-            <span>项目阶段</span>
-          </div>
-          <div>
-            <el-row style="padding:10px">
-              <el-steps :active="calcProjectStatusStep" finish-status="success">
-                <el-step  v-for="(i,index) in options['projectStatus']" :title="i.optionName" :key="index">
-                  <el-row slot="title" @click.native.stop="editForm.status=i.optionValue">
-                    {{i.optionName}}
-                  </el-row>
-                </el-step>
-              </el-steps>
-            </el-row>
-          </div>
-        </el-card>
       </el-row>
     </el-row>
 

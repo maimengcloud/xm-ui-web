@@ -1,6 +1,22 @@
 <template>
   <section class="page-container padding">
     <el-row class="page-main page-height-75" style="overflow-x: hidden;">
+      <el-row style="margin-bottom:10px">
+        <el-card class="box-card" style="padding:0px ;height:200px">
+          <div slot="header" class="clearfix" style="margin-bottom:10px">
+            <span>产品阶段</span>
+          </div>
+          <div>
+            <el-row style="padding:10px">
+              <el-steps :active="this.xmProduct.pstatus+1" align-center>
+                <el-step title="未开始"></el-step>
+                <el-step title="研发中"></el-step>
+                <el-step title="已完成"></el-step>
+              </el-steps>
+            </el-row>
+          </div>
+        </el-card>
+      </el-row>
       <el-row :gutter="10" style="margin-bottom:10px">
           <el-col :span="8" >
             <el-card class="box-card" style="padding:0px ;height:425px">
