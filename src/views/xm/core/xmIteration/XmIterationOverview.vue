@@ -191,11 +191,11 @@
                 </el-row>
                 <el-row>
                   <span style="margin-left:20px;">项目预计进度</span>
-                  <el-progress style="width: 400px;margin-left:20px;margin-top: 10px;margin-bottom: 20px;" :text-inside="true" :stroke-width="24" :percentage="planProgress"></el-progress>
+                  <el-progress style="width: 90%;margin-left:20px;margin-top: 10px;margin-bottom: 20px;" :text-inside="true" :stroke-width="24" :percentage="planProgress"></el-progress>
                 </el-row>
                 <el-row>
                   <span style="margin-left:20px;">项目实际进度</span>
-                  <el-progress style="width: 400px;margin-left:20px;margin-top: 10px;" :text-inside="true" :stroke-width="24" :percentage="realProgress"></el-progress>
+                  <el-progress style="width: 90%;margin-left:20px;margin-top: 10px;" :text-inside="true" :stroke-width="24" :percentage="realProgress"></el-progress>
                 </el-row>
 
               </div>

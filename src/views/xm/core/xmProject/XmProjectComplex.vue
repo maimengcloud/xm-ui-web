@@ -1,53 +1,53 @@
 <template>
-	<section class="page-container border"> 
+	<section class="page-container border">
 		<el-row>
 			<el-col :span="projectVisible==true?3:0" >
 				<xm-project-select   :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClearSelect"></xm-project-select>
-			</el-col>  
-			<el-col :span="projectVisible==true?21:24" >  
-				<el-tabs type="border-card"  :value="showPanel" @tab-click="tabClick">  
-					<el-tab-pane label="项目概览"   name="projectOverview">   
+			</el-col>
+			<el-col :span="projectVisible==true?21:24" >
+				<el-tabs type="border-card"  :value="showPanel" @tab-click="tabClick">
+					<el-tab-pane label="项目概览"   name="projectOverview">
 						<span v-show="projectVisible==true" slot="label" ><i class="el-icon-d-arrow-left" @click.stop="projectVisible=false"></i> 项目概览</span>
-						<span v-show="projectVisible==false" slot="label" ><i class="el-icon-d-arrow-right" @click.stop="projectVisible=true"></i> 项目概览</span> 
- 						 
-					</el-tab-pane>
-					<el-tab-pane label="迭代"   name="iterations" v-if=" !xmIteration" >   
+						<span v-show="projectVisible==false" slot="label" ><i class="el-icon-d-arrow-right" @click.stop="projectVisible=true"></i> 项目概览</span>
+            <xm-project-overview v-if="selProject && showPanel=='projectOverview'" :xm-product="xmProduct"  :xm-iteration="xmIteration" :sel-project="selProject"></xm-project-overview>
+          </el-tab-pane>
+					<el-tab-pane label="迭代"   name="iterations" v-if=" !xmIteration" >
 						 <xm-iteration-mng v-if=" selProject && showPanel=='iterations' && !xmIteration"   :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-iteration-mng>
 					</el-tab-pane>
-					<el-tab-pane label="产品、战略"   name="products" v-if=" !xmProduct" >   
+					<el-tab-pane label="产品、战略"   name="products" v-if=" !xmProduct" >
 						 <xm-product-mng v-if=" selProject && showPanel=='products'"   :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-product-mng>
 					</el-tab-pane>
-					<el-tab-pane label="项目" lazy  name="projects" v-if="!selProject"> 
+					<el-tab-pane label="项目" lazy  name="projects" v-if="!selProject">
 						<xm-product-project-for-link v-if="selProject && showPanel=='projects'"  :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-product-project-for-link>
 					</el-tab-pane>
-					<el-tab-pane label="故事" lazy name="menus" >  
+					<el-tab-pane label="故事" lazy name="menus" >
 						<xm-menu-mng v-if="selProject && showPanel=='menus'"   :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-menu-mng>
 					</el-tab-pane>
 					<el-tab-pane label="任务" lazy name="tasks" >
 						<xm-task-mng v-if="selProject && showPanel=='tasks'"  :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-task-mng>
 					</el-tab-pane>
-					<el-tab-pane label="缺陷" lazy name="bugs" > 
+					<el-tab-pane label="缺陷" lazy name="bugs" >
 						<xm-question-mng v-if="selProject && showPanel=='bugs'"  :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-question-mng>
-					</el-tab-pane> 
+					</el-tab-pane>
 				</el-tabs>
 				<el-row>
-					
+
 				</el-row>
-				
+
 			</el-col>
 
-		</el-row> 
+		</el-row>
 	</section>
 </template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询 
+	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import XmIterationMng from '../xmIteration/XmIterationMng.vue'
 	import XmMenuMng from '../xmMenu/XmMenuMng.vue'
 	import XmIterationStateShow from '../xmIterationState/XmIterationStateShow.vue'
-	import { mapGetters } from 'vuex' 
+	import { mapGetters } from 'vuex'
 import XmProductMng from '../xmProduct/XmProductMng.vue';
 import XmTaskMng from '../xmTask/XmTaskMng.vue';
 import XmQuestionMng from '../xmQuestion/XmQuestionMng.vue';
@@ -56,18 +56,19 @@ import XmProjectForLink from './XmProjectForLink.vue';
 
 import XmProductSelect from '../xmProduct/XmProductSelect.vue';
 import XmProductProjectForLink from '../xmProduct/XmProductProjectForLink.vue';
- 
+import XmProjectOverview from "./XmProjectOverview";
+
 
 	export default {
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
-			]), 
+			]),
 		},
 		props:['visible','xmIteration','xmProduct'],
 		watch:{
 			visible:function(visible){
-				if(visible==true){ 
+				if(visible==true){
 				}
 			}
 		},
@@ -76,7 +77,7 @@ import XmProductProjectForLink from '../xmProduct/XmProductProjectForLink.vue';
 				selProject:null,
 				showPanel:'projectOverview',//menus,tasks,bugs,iterationStateShow
 				topModules:
-				[ 
+				[
 					{
 					moduleName:"项目",
 					topModuleId:'xm',
@@ -131,25 +132,25 @@ import XmProductProjectForLink from '../xmProduct/XmProductProjectForLink.vue';
 			}
 		},//end data
 		methods: {
-			 
-			/**end 自定义函数请在上面加**/ 
-			onProjectRowClick(xmProject){ 
 
-				this.selProject=xmProject 
+			/**end 自定义函数请在上面加**/
+			onProjectRowClick(xmProject){
+
+				this.selProject=xmProject
 			},
-			
+
 			onProjectClearSelect(){
-				this.selProject=null; 
+				this.selProject=null;
 			},
-			tabClick(tab){  
+			tabClick(tab){
 				 this.showPanel=tab.name
 			}
 		},//end methods
-		components: { 
+		components: {
 		    //在下面添加其它组件
 			XmIterationMng,
 			XmMenuMng,
-			XmIterationStateShow, 
+			XmIterationStateShow,
 			XmProductMng,
 			XmTaskMng,
 			XmQuestionMng,
@@ -157,12 +158,13 @@ import XmProductProjectForLink from '../xmProduct/XmProductProjectForLink.vue';
 			XmProjectSelect,
 			XmProjectForLink,
 			XmProductProjectForLink,
+      XmProjectOverview,
 		},
-		mounted() { 
+		mounted() {
 		this.$nextTick(() => {
-				 
+
         	});
-           
+
 		}
 	}
 
@@ -173,5 +175,5 @@ import XmProductProjectForLink from '../xmProduct/XmProductProjectForLink.vue';
   	text-align:center;
   	float:left;
   	padding-top:5px;
-  } 
+  }
 </style>
