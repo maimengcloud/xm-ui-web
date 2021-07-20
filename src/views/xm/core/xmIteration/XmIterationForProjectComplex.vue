@@ -23,7 +23,7 @@
 					</el-tab-pane>
 					<el-tab-pane label="任务" lazy name="tasks" >
 						<xm-task-mng v-if="xmIteration && showPanel=='tasks'" :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-task-mng>
-					</el-tab-pane>
+					</el-tab-pane> 
 					<el-tab-pane label="缺陷" lazy name="bugs" >
 						<xm-question-mng v-if="xmIteration && showPanel=='bugs'" :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-question-mng>
 					</el-tab-pane>

@@ -255,12 +255,7 @@
 				return false;
 			}
 		},
-		watch:{ 
-			'filters.product'(product){
-				if(product==null){
-					this.productVisible=true;
-				}
-			},
+		watch:{  
 			xmIteration:function(){
 				this.getXmMenus()
 			},
