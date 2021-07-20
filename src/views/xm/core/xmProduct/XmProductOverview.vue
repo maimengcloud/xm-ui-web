@@ -386,7 +386,7 @@ export default {
           {
             center:['55%','40%'],
             type: 'pie',
-            radius: '68%',
+            radius: '50%',
             label:{            //饼图图形上的文本标签
               normal:{
                 show:true,
@@ -455,11 +455,11 @@ export default {
             type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
           },
         },
-        yAxis: {
+        xAxis: {
           type: 'category',
           data: ['项目数', '迭代数']
         },
-        xAxis: {
+        yAxis: {
           type: 'value'
         },
         series: [{
@@ -502,7 +502,7 @@ export default {
           {
             center:['55%','40%'],//饼图位置
             type: 'pie',
-            radius: '60%',//饼图半径大小
+            radius: '50%',//饼图半径大小
             label:{            //饼图图形上的文本标签
               normal:{
                 show:true,
