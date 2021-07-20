@@ -6,6 +6,9 @@
         </el-menu-item>
         <el-menu-item index="detail">
           <span slot="title">项目详情</span>
+        </el-menu-item> 
+        <el-menu-item index="productProjectLink"> 
+          <span slot="title">配置可见产品</span>
         </el-menu-item>
         <el-submenu index="project-change">
           <template slot="title">
@@ -82,7 +85,8 @@
         </el-submenu>
       </el-menu>
        <xm-project-overview  v-if="showPanelName=='overview'" :sel-project="selProject"></xm-project-overview>
-        <xm-project-detail  v-if="showPanelName=='detail'" :sel-project="selProject"></xm-project-detail>
+        <xm-project-detail  v-if="showPanelName=='detail'" :sel-project="selProject"></xm-project-detail> 
+        <xm-product-project-link-mng v-if="showPanelName=='productProjectLink'" :sel-project="selProject"></xm-product-project-link-mng>
   </section>
 </template>
 
@@ -93,10 +97,11 @@ import { mapGetters } from "vuex";
 import { listXmProjectState } from '@/api/xm/core/xmProjectState';
 import XmProjectOverview from './XmProjectOverview.vue';
 import XmProjectDetail from './XmProjectDetail.vue';
+import XmProductProjectLinkMng from '../xmProductProjectLink/XmProductProjectLinkMng.vue';
 
 
 export default {
-  components: { XmProjectOverview, XmProjectDetail },
+  components: { XmProjectOverview, XmProjectDetail, XmProductProjectLinkMng },
   computed: {
     ...mapGetters(["userInfo"]),
   },
