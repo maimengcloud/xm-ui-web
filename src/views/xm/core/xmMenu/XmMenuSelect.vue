@@ -4,7 +4,7 @@
 		
 		<el-row>  
 			<el-col  :span="6"  >
-				<xm-product-mng @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-mng>
+				<xm-product-mng :xm-iteration="xmIteration" @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-mng>
 			</el-col>
 			<el-col :span="18"  style="padding-left:12px;" >
 				<el-row  >  
@@ -135,7 +135,7 @@
 	import { mapGetters } from 'vuex'
 	
 	export default { 
-		props:['isSelectMenu','excludeIterationId','multi','visible'],
+		props:['isSelectMenu','excludeIterationId','multi','visible','xmIteration'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -150,6 +150,9 @@
 				if(visible==true){
 					this.getXmMenus();
 				}
+			},
+			xmItertaion(){
+				this.getXmMenus();
 			}
 		},
 		data() {
