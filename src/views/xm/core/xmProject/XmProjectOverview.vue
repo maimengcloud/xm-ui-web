@@ -239,7 +239,7 @@
               <span>所含产品和迭代情况</span>
             </div>
             <div>
-              <div id="iterationAndProduct" :style="{width: '400px', height: '415px'}"></div>
+              <div id="iterationAndProduct" :style="{width: '450px', height: '350px'}"></div>
             </div>
           </el-card>
         </el-col>
@@ -713,57 +713,39 @@ export default {
       let iterationAndProduct = this.$echarts.init(document.getElementById("iterationAndProduct"));
       let option = {
         tooltip: {
-          trigger: 'item',
-          formatter: '{b} :<br/> {c} ({d}%)'
+          trigger: 'axis',
+          formatter: '{b} : {c}',
+          axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+          },
         },
-        legend: {
-          bottom: 10,
-          left: 'center',
+        yAxis: {
+          type: 'category',
+          data: ['产品数', '迭代数']
         },
-        series: [
-          {
-            center:['55%','40%'],//饼图位置
-            type: 'pie',
-            radius: '60%',//饼图半径大小
-            label:{            //饼图图形上的文本标签
-              normal:{
-                show:true,
-                position:'outer', //标签的位置:外部
-                textStyle : {
-                  fontWeight : 100 ,
-                  fontSize: document.body.clientWidth / 120, //标签字体大小
-                  color: "#000000"
-                },
-                formatter:'{b}\n{c}({d}%)',//b：name,c:value,d:占比
-                alignTo:'edge',
-                margin:10
-              }
-            },
-            data: [
-              {value: this.selProject.iterationCnt,
-                itemStyle: {
-                  normal:{
-                    color: '#EE6666'
-                  }
-                },
-                name: '迭代数'},
-              {value: this.selProject.productCnt,
-                itemStyle: {
-                  normal:{
-                    color: '#73C0DE'
-                  }
-                },
-                name: '产品数'},
-            ],
-            emphasis: {
-              itemStyle: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
-              }
+        xAxis: {
+          type: 'value'
+        },
+        series: [{
+          label: {
+            normal:{
+              show: true,
+              position: 'inside',
+              color:'#000000',
             }
+          },
+          data: [this.selProject.productCnt, this.selProject.iterationCnt],
+          type: 'bar',
+          showBackground: true,
+          itemStyle: {
+            normal:{
+              color: '#FFE4C4'
+            }
+          },
+          backgroundStyle: {
+            color: '#FFFFFF'
           }
-        ]
+        }]
       };
 
       // 绘制图表
