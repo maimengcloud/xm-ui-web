@@ -7,6 +7,10 @@
         <el-menu-item index="detail"> 
           <span slot="title">迭代详情</span>
         </el-menu-item>
+        <el-menu-item index="iterationProductLink"> 
+          <span slot="title">配置可见产品</span>
+        </el-menu-item>
+        
         <el-submenu index="project-change">
           <template slot="title"> 
             <span slot="title">项目变更</span>
@@ -82,7 +86,8 @@
         </el-submenu> 
       </el-menu>  
        <xm-iteration-overview  v-if="showPanelName=='overiew'" :xm-iteration="xmIteration"></xm-iteration-overview> 
-        <xm-iteration-edit v-if="showPanelName=='detail'" :xm-iteration="xmIteration"></xm-iteration-edit>
+        <xm-iteration-edit v-if="showPanelName=='detail'" :xm-iteration="xmIteration"></xm-iteration-edit> 
+      <xm-iteration-product-link-mng  v-if="showPanelName=='iterationProductLink'" :xm-iteration="xmIteration"></xm-iteration-product-link-mng>
   </section>
 </template>
 
@@ -92,10 +97,11 @@ import util from "@/common/js/util"; // 全局公共库
 import { mapGetters } from "vuex";
  import XmIterationOverview from './XmIterationOverview.vue';
 import XmIterationEdit from './XmIterationEdit.vue';
+ import XmIterationProductLinkMng from '../xmIterationProductLink/XmIterationProductLinkMng.vue';
 
 
 export default {
-  components: {XmIterationOverview,XmIterationEdit },
+  components: {XmIterationOverview,XmIterationEdit, XmIterationProductLinkMng },
   computed: {
     ...mapGetters(["userInfo"]), 
   },
