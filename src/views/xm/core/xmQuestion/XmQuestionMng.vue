@@ -217,7 +217,7 @@
 		watch:{
 			selProject:function(selProject){
 				this.filters.selProject=this.selProject
-				//this.getXmQuestions();
+				this.getXmQuestions();
 			}, 
 			qtype:function(){
 				this.getXmQuestions()

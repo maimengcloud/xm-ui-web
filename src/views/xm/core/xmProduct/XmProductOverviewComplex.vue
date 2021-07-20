@@ -2,49 +2,11 @@
   <section class="page-container page-height-90 padding-left padding-right">
       <el-menu mode="horizontal" default-active="overview"  @select="onMenuToolBarSelect">
         <el-menu-item index="overview">
-          <span slot="title">项目概览</span>
+          <span slot="title">产品概览</span>
         </el-menu-item>
         <el-menu-item index="detail">
-          <span slot="title">项目详情</span>
-        </el-menu-item>
-        <el-submenu index="project-change">
-          <template slot="title">
-            <span slot="title">项目变更</span>
-          </template>
-            <el-menu-item index="project-change-base-info">
-              <span slot="title">基础信息修改</span>
-            </el-menu-item>
-            <el-menu-item index="project-change-start">
-              <span slot="title">立项申请</span>
-            </el-menu-item>
-            <el-menu-item index="project-change-budget">
-              <span slot="title">预算+-</span>
-            </el-menu-item>
-            <el-menu-item index="project-change-cost">
-              <span slot="title">成本+-</span>
-            </el-menu-item>
-            <el-menu-item index="project-change-collection">
-              <span slot="title">收款</span>
-            </el-menu-item>
-            <el-menu-item index="project-change-conclusion">
-              <span slot="title">结项申请</span>
-            </el-menu-item>
-            <el-menu-item index="project-change-suspend">
-              <span slot="title">暂停申请</span>
-            </el-menu-item>
-            <el-menu-item index="project-change-activation">
-              <span slot="title">激活申请</span>
-            </el-menu-item>
-            <el-menu-item index="project-change-to-after-sales">
-              <span slot="title">转售后申请</span>
-            </el-menu-item>
-            <el-menu-item index="project-change-new-pm">
-              <span slot="title">项目经理变更申请</span>
-            </el-menu-item>
-            <el-menu-item index="project-change-new-leader">
-              <span slot="title">组长变更申请</span>
-            </el-menu-item>
-        </el-submenu>
+          <span slot="title">产品详情</span>
+        </el-menu-item> 
         <el-submenu index="menu-change">
           <template slot="title">
             <span slot="title">需求变更</span>

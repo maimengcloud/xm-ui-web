@@ -1,46 +1,33 @@
 <template>
-	<section class="app-container">
+	<section class="app-container"> 
 		<el-row>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
-			    <template slot="append">
-			        <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmIterationProductLinks" icon="el-icon-search">查询</el-button>
-			    </template>
-			</el-input>
-			<el-button type="primary" @click="showAdd" icon="el-icon-plus" circle> </el-button>
-			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete" circle></el-button>
+			<el-button v-if="xmIteration" @click="productVisible=true" icon="el-icon-plus" > 选择更多产品加入迭代 </el-button>
+			<el-button v-if="xmProduct" @click="iterationVisible=true" icon="el-icon-plus" > 选择更多迭代加入产品 </el-button>
 		</el-row>
 		<el-row style="padding-top:10px;">
 			<!--列表 XmIterationProductLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表-->
 			<el-table ref="xmIterationProductLink" :data="xmIterationProductLinks" :max-height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-				<el-table-column  type="selection" width="55"></el-table-column>
-				<el-table-column sortable type="index" width="55"></el-table-column>
-				<el-table-column prop="iterationId" label="迭代表主键" min-width="80" ></el-table-column>
-				<el-table-column prop="productId" label="产品表主键" min-width="80" ></el-table-column>
-				<el-table-column prop="ctime" label="创建时间" min-width="80" ></el-table-column>
-				<el-table-column prop="cuserid" label="创建人编号" min-width="80" ></el-table-column>
-				<el-table-column prop="cusername" label="创建人姓名" min-width="80" ></el-table-column>
-				<el-table-column prop="linkStatus" label="关联状态1关联0取消关联" min-width="80" ></el-table-column>
-				<el-table-column label="操作" width="120" fixed="right">
-				    <template slot="header">
-                        <el-button @click="showAdd" icon="el-icon-plus" circle> </el-button>
-                    </template>
+  				<el-table-column prop="iterationName" v-if="!xmIteration" label="包含的迭代名称" min-width="150" ></el-table-column>
+				<el-table-column prop="productName" v-if="!xmProduct" label="包含的产品名称" min-width="150" ></el-table-column>
+				<el-table-column prop="ctime" label="加入时间" min-width="80" ></el-table-column>
+ 				<el-table-column prop="cusername" label="操作者" min-width="80" ></el-table-column> 
+				<el-table-column label="操作" width="120" fixed="right"> 
 					<template scope="scope">
-						<el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" circle></el-button>
-						<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete" circle></el-button>
+ 						<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete" >移出</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
-		
-			<!--编辑 XmIterationProductLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表界面-->
-			<el-dialog title="编辑迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
-				  <xm-iteration-product-link-edit :xm-iteration-product-link="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-iteration-product-link-edit>
-			</el-dialog>
-	
-			<!--新增 XmIterationProductLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表界面-->
-			<el-dialog title="新增迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表" :visible.sync="addFormVisible"  width="50%"  append-to-body  :close-on-click-modal="false">
-				<xm-iteration-product-link-add :xm-iteration-product-link="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-iteration-product-link-add>
-			</el-dialog> 
+		 
+
+						 
+			<el-drawer title="选择产品" :visible.sync="productVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
+				 <xm-product-select @row-click="onProductSelect"></xm-product-select>
+			</el-drawer> 
+			
+			<el-drawer title="选择迭代" :visible.sync="iterationVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
+				<xm-iteration-select @row-click="onIterationSelect"></xm-iteration-select>
+			</el-drawer> 
 		</el-row>
 	</section>
 </template>
@@ -49,12 +36,23 @@
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库 
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { listXmIterationProductLink, delXmIterationProductLink, batchDelXmIterationProductLink } from '@/api/xm/core/xmIterationProductLink';
+	import { listXmIterationProductLink,addXmIterationProductLink, delXmIterationProductLink, batchDelXmIterationProductLink } from '@/api/xm/core/xmIterationProductLink';
 	import  XmIterationProductLinkAdd from './XmIterationProductLinkAdd';//新增界面
 	import  XmIterationProductLinkEdit from './XmIterationProductLinkEdit';//修改界面
 	import { mapGetters } from 'vuex'
+import XmProductSelect from '../xmProduct/XmProductSelect.vue';
+import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 	
 	export default { 
+		props:['xmIteration','xmProduct'],
+		watch:{
+			xmIteration(){
+				this.getXmIterationProductLinks();
+			},
+			xmProduct(){
+				this.getXmIterationProductLinks();
+			}
+		},
 		computed: {
 		    ...mapGetters([
 		      'userInfo','workSpace'
@@ -92,6 +90,8 @@
 					iterationId:'',productId:'',ctime:'',cuserid:'',cusername:'',linkStatus:''
 				},
 				maxTableHeight:300,
+				productVisible:false,
+				iterationVisible:false,	
 			}
 		},//end data
 		methods: { 
@@ -144,6 +144,13 @@
 					params.key="%"+this.filters.key+"%"
 				}
 
+				if(this.xmIteration){
+					params.iterationId=this.xmIteration.id
+				}
+				
+				if(this.xmProduct){
+					params.productId=this.xmProduct.id
+				}
 				this.load.list = true;
 				listXmIterationProductLink(params).then((res) => {
 					var tips=res.data.tips;
@@ -186,7 +193,7 @@
 					type: 'warning'
 				}).then(() => { 
 					this.load.del=true;
-					let params = { iterationId: row.iterationId };
+					let params = row;
 					delXmIterationProductLink(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
@@ -220,14 +227,50 @@
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
 			/**begin 自定义函数请在下面加**/
-			
-				
+			onProductSelect(product){
+				this.$confirm('确认建立与产品【'+product.productName+'】的关联关系吗？', '提示', {
+					type: 'warning'
+				}).then(() => { 
+					this.load.add=true;
+					this.addForm.iterationId=this.xmIteration.id;
+					this.addForm.productId= product.id;
+					addXmIterationProductLink(this.addForm).then((res) => {
+						this.load.del=false;
+						var tips=res.data.tips;
+						if( tips.isOk ){ 
+							this.pageInfo.count=true;
+							this.getXmIterationProductLinks(); 
+						}
+						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+					}).catch( err  => this.load.del=false );
+				});
+			},
+			onIterationSelect(iteration){
+				this.$confirm('确认建立与迭代【'+iteration.iterationName+'】的关联关系吗？', '提示', {
+					type: 'warning'
+				}).then(() => { 
+					this.load.del=true;
+					this.addForm.iterationId=iteration.id;
+					this.addForm.productId=this.xmProduct.id;
+					addXmIterationProductLink(this.addForm).then((res) => {
+						this.load.del=false;
+						var tips=res.data.tips;
+						if( tips.isOk ){ 
+							this.pageInfo.count=true;
+							this.getXmIterationProductLinks(); 
+						}
+						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+					}).catch( err  => this.load.del=false );
+				});
+			}	
 			/**end 自定义函数请在上面加**/
 			
 		},//end methods
 		components: { 
 		    'xm-iteration-product-link-add':XmIterationProductLinkAdd,
 		    'xm-iteration-product-link-edit':XmIterationProductLinkEdit,
+			XmProductSelect,
+			XmIterationSelect,
 		},
 		mounted() { 
 			this.$nextTick(() => {
