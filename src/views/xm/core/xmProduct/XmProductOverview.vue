@@ -91,9 +91,9 @@
                   </div>
                   <div>
                     <div class="info">
-                      <el-progress :percentage="taskProgress"></el-progress>
+                      <el-progress  :percentage="taskProgress"></el-progress>
                     </div>
-                    <div class="title">任务进度</div>
+                    <div class="title" style="width: 100%">任务进度</div>
                   </div>
                 </div>
               </el-row>
@@ -191,11 +191,11 @@
               </el-row>
               <el-row>
                 <span style="margin-left:20px;">工时预计进度</span>
-                <el-progress style="width: 400px;margin-left:20px;margin-top: 10px;margin-bottom: 20px;" :text-inside="true" :stroke-width="20" :percentage="planProgress"></el-progress>
+                <el-progress style="width: 90%;margin-left:20px;margin-top: 10px;margin-bottom: 20px;" :text-inside="true" :stroke-width="20" :percentage="planProgress"></el-progress>
               </el-row>
               <el-row>
                 <span style="margin-left:20px;">工时实际进度</span>
-                <el-progress style="width: 400px;margin-left:20px;margin-top: 10px;" :text-inside="true" :stroke-width="20" :percentage="realProgress"></el-progress>
+                <el-progress style="width: 90%;margin-left:20px;margin-top: 10px;" :text-inside="true" :stroke-width="20" :percentage="realProgress"></el-progress>
               </el-row>
             </div>
           </el-card>
@@ -303,7 +303,7 @@ export default {
       this.drawPieBug();
       this.drawProjectAndIteration();
       this.drawCasePie();
-    }
+    },
   },
   data() {
     return {
