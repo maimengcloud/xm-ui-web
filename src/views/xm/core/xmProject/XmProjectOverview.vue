@@ -269,7 +269,6 @@
 
 <script>
 import util from "@/common/js/util"; // 全局公共库
-//import Sticky from "@/components/Sticky"; // 粘性header组件
 import { mapGetters } from "vuex";
 import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 
@@ -369,8 +368,6 @@ export default {
   data() {
     return {
       isActive: true,
-      load:{ list: false},
-      selProject:[],
       options:{
         projectType:[],
         urgencyLevel:[],
@@ -739,7 +736,7 @@ export default {
           showBackground: true,
           itemStyle: {
             normal:{
-              color: '#FFE4C4'
+              color: '#87CEFA'
             }
           },
           backgroundStyle: {
