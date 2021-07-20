@@ -1,47 +1,34 @@
 <template>
 	<section class="app-container">
-		<el-row>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
-			    <template slot="append">
-			        <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmProductProjectLinks" icon="el-icon-search">查询</el-button>
-			    </template>
-			</el-input>
-			<el-button type="primary" @click="showAdd" icon="el-icon-plus" circle> </el-button>
-			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete" circle></el-button>
+		<el-row> 
+			<el-button v-if="selProject" @click="productVisible=true" icon="el-icon-plus" > 选择更多产品加入项目 </el-button>
+			<el-button v-if="xmProduct" @click="projectVisible=true" icon="el-icon-plus" > 选择更多项目加入产品 </el-button> 
 		</el-row>
 		<el-row style="padding-top:10px;">
 			<!--列表 XmProductProjectLink 产品与项目的关联关系表，一般由产品经理挂接项目到产品上-->
 			<el-table ref="xmProductProjectLink" :data="xmProductProjectLinks" :max-height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-				<el-table-column  type="selection" width="55"></el-table-column>
-				<el-table-column sortable type="index" width="55"></el-table-column>
-				<el-table-column prop="projectId" label="项目表中的主键" min-width="80" ></el-table-column>
-				<el-table-column prop="productId" label="产品表中的主键" min-width="80" ></el-table-column>
-				<el-table-column prop="ctime" label="创建时间" min-width="80" ></el-table-column>
-				<el-table-column prop="cuserid" label="创建人编号" min-width="80" ></el-table-column>
-				<el-table-column prop="cusername" label="创建人姓名" min-width="80" ></el-table-column>
-				<el-table-column prop="linkStatus" label="关联状态1关联0取消关联" min-width="80" ></el-table-column>
-				<el-table-column label="操作" width="120" fixed="right">
-				    <template slot="header">
-                        <el-button @click="showAdd" icon="el-icon-plus" circle> </el-button>
-                    </template>
+ 				<el-table-column prop="name" v-if="xmProduct" label="包含的项目名称" min-width="150" ></el-table-column>
+				<el-table-column prop="productName" v-if="selProject" label="包含的产品名称" min-width="150" ></el-table-column>
+				<el-table-column prop="ctime" label="加入时间" min-width="80" ></el-table-column> 
+				<el-table-column prop="cusername" label="操作者" min-width="80" ></el-table-column>
+ 				<el-table-column label="操作" width="120" fixed="right"> 
 					<template scope="scope">
-						<el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" circle></el-button>
-						<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete" circle></el-button>
+ 						<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete">移出</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
-		
-			<!--编辑 XmProductProjectLink 产品与项目的关联关系表，一般由产品经理挂接项目到产品上界面-->
-			<el-dialog title="编辑产品与项目的关联关系表，一般由产品经理挂接项目到产品上" :visible.sync="editFormVisible"  width="50%"  append-to-body   :close-on-click-modal="false">
-				  <xm-product-project-link-edit :xm-product-project-link="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-product-project-link-edit>
-			</el-dialog>
-	
-			<!--新增 XmProductProjectLink 产品与项目的关联关系表，一般由产品经理挂接项目到产品上界面-->
-			<el-dialog title="新增产品与项目的关联关系表，一般由产品经理挂接项目到产品上" :visible.sync="addFormVisible"  width="50%"  append-to-body  :close-on-click-modal="false">
-				<xm-product-project-link-add :xm-product-project-link="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-product-project-link-add>
-			</el-dialog> 
+		 
 		</el-row>
+		
+						 
+			<el-drawer title="选择产品" :visible.sync="productVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
+				 <xm-product-select @row-click="onProductSelect"></xm-product-select> 
+			</el-drawer> 
+			
+			<el-drawer title="选择项目" :visible.sync="projectVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
+ 				<xm-project-select @row-click="onProjectSelect"></xm-project-select>
+			</el-drawer> 
 	</section>
 </template>
 
@@ -49,16 +36,27 @@
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库 
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { listXmProductProjectLink, delXmProductProjectLink, batchDelXmProductProjectLink } from '@/api/xm/core/xmProductProjectLink';
+	import { listXmProductProjectLink,addXmProductProjectLink, delXmProductProjectLink, batchDelXmProductProjectLink } from '@/api/xm/core/xmProductProjectLink';
 	import  XmProductProjectLinkAdd from './XmProductProjectLinkAdd';//新增界面
 	import  XmProductProjectLinkEdit from './XmProductProjectLinkEdit';//修改界面
 	import { mapGetters } from 'vuex'
+import XmProductSelect from '../xmProduct/XmProductSelect.vue';
+import XmProjectSelect from '../xmProject/XmProjectSelect.vue';
 	
 	export default { 
+		props:['selProject','xmProduct'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','workSpace'
 		    ])
+		},
+		watch:{
+			selProject(){
+				this.getXmProductProjectLinks()
+			},
+			xmProduct(){
+				this.getXmProductProjectLinks()
+			}
 		},
 		data() {
 			return {
@@ -92,6 +90,8 @@
 					projectId:'',productId:'',ctime:'',cuserid:'',cusername:'',linkStatus:''
 				},
 				maxTableHeight:300,
+				productVisible:false,
+				projectVisible:false,
 			}
 		},//end data
 		methods: { 
@@ -143,7 +143,12 @@
 				if(this.filters.key){
 					params.key="%"+this.filters.key+"%"
 				}
-
+				if(this.selProject){
+					params.projectId=this.selProject.id
+				}
+				if(this.xmProduct){
+					params.productId=this.xmProduct.id
+				}
 				this.load.list = true;
 				listXmProductProjectLink(params).then((res) => {
 					var tips=res.data.tips;
@@ -186,7 +191,7 @@
 					type: 'warning'
 				}).then(() => { 
 					this.load.del=true;
-					let params = { projectId: row.projectId };
+					let params = { projectId: row.projectId,productId:row.productId };
 					delXmProductProjectLink(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
@@ -221,6 +226,43 @@
 			},
 			/**begin 自定义函数请在下面加**/
 			
+			/**begin 自定义函数请在下面加**/
+			onProductSelect(product){
+				this.$confirm('确认建立与产品【'+product.productName+'】的关联关系吗？', '提示', {
+					type: 'warning'
+				}).then(() => { 
+					this.load.add=true;
+					this.addForm.iterationId=this.xmIteration.id;
+					this.addForm.productId= product.id;
+					addXmProductProjectLink(this.addForm).then((res) => {
+						this.load.del=false;
+						var tips=res.data.tips;
+						if( tips.isOk ){ 
+							this.pageInfo.count=true;
+							this.getXmProductProjectLinks(); 
+						}
+						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+					}).catch( err  => this.load.del=false );
+				});
+			},
+			onProjectSelect(project){
+				this.$confirm('确认建立与项目【'+project.name+'】的关联关系吗？', '提示', {
+					type: 'warning'
+				}).then(() => { 
+					this.load.del=true;
+					this.addForm.projectId=project.id;
+					this.addForm.productId=this.xmProduct.id;
+					addXmProductProjectLink(this.addForm).then((res) => {
+						this.load.del=false;
+						var tips=res.data.tips;
+						if( tips.isOk ){ 
+							this.pageInfo.count=true;
+							this.getXmProductProjectLinks(); 
+						}
+						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+					}).catch( err  => this.load.del=false );
+				});
+			}	
 				
 			/**end 自定义函数请在上面加**/
 			
@@ -228,6 +270,8 @@
 		components: { 
 		    'xm-product-project-link-add':XmProductProjectLinkAdd,
 		    'xm-product-project-link-edit':XmProductProjectLinkEdit,
+			XmProductSelect,
+			XmProjectSelect,
 		},
 		mounted() { 
 			this.$nextTick(() => {
