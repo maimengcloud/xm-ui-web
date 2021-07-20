@@ -1,8 +1,8 @@
 <template>
 	<section class="app-container"> 
 		<el-row>
-			<el-button v-if="xmIteration" @click="productVisible=true" icon="el-icon-plus" > 选择更多产品加入迭代 </el-button>
-			<el-button v-if="xmProduct" @click="iterationVisible=true" icon="el-icon-plus" > 选择更多迭代加入产品 </el-button>
+			<el-button type="primary" v-if="xmIteration" @click="productVisible=true" icon="el-icon-plus" > 选择更多产品加入迭代 </el-button>
+			<el-button type="primary" v-if="xmProduct" @click="iterationVisible=true" icon="el-icon-plus" > 选择更多迭代加入产品 </el-button>
 		</el-row>
 		<el-row style="padding-top:10px;">
 			<!--列表 XmIterationProductLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表-->

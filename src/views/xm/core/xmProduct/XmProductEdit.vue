@@ -1,6 +1,6 @@
 <template>
-	<section class="page-container page-full-height padding border">
-		<el-row class="page-main page-height-80">
+	<section class="page-container padding border">
+		<el-row class="page-main">
 			<!--新增界面 XmProduct 产品表--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
 				<el-form-item label="产品编号" prop="id">

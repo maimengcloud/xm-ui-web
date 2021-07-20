@@ -5,6 +5,7 @@
 			<el-button   @click="batchEditVisible=true" v-loading="load.edit" icon="el-icon-edit">批量修改</el-button>
 			<span  v-if="batchEditVisible!=true"   >
 				<el-checkbox v-model="gstcVisible"  >甘特图</el-checkbox>
+				<el-checkbox v-model="filters.milestone" true-label="1" false-label=""  >里程碑</el-checkbox>
 				<el-input   v-model="filters.key" style="width:200px;" placeholder="模糊查询">
 					<template slot="append">
 						<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectPhases" icon="el-icon-search"></el-button>
@@ -58,7 +59,7 @@
 			</el-popover>
 			
 		</el-row>
-		<el-row class="padding-top hidden-md-and-down"     v-show="batchEditVisible==false">  
+		<el-row class="padding-top hidden-md-and-down"     v-if="batchEditVisible==false && !xmIteration && !xmProduct">  
  					<span style="margin-left:10px;font-size:14px;">项目总预算：</span><el-tag type='success'> {{toFixed(selProject.planTotalCost/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanCostAt/10000,2)}}万</el-tag> 
 					<span style="margin-left:10px;font-size:14px;">非人力总预算：</span><el-tag :type="phaseBudgetData.surplusPlanNouserAt>0?'warning':'danger'">{{toFixed(selProject.planNouserAt/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanNouserAt/10000,2)}}万</el-tag>  
 					<span style="margin-left:10px;font-size:14px;">内部人力总预算：</span><el-tag  :type="phaseBudgetData.surplusPlanInnerUserAt>0?'warning':'danger'">{{toFixed(selProject.planInnerUserAt/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanInnerUserAt/10000,2)}}万</el-tag>  
@@ -176,7 +177,7 @@
 				<xm-project-phase-template-mng  :is-select="true"  :visible="phaseTemplateVisible" @cancel="phaseTemplateVisible=false" @selected-confirm="afterPhaseTemplateSelected" ></xm-project-phase-template-mng>
 			</el-drawer> 
 			<el-drawer :title="editForm==null?'操作日志':editForm.phaseName+'操作日志'" center   :visible.sync="xmRecordVisible"  size="50%"  :close-on-click-modal="false" append-to-body>
-				<xm-record :obj-type="'phase'"  :visible="xmRecordVisible" :project-id="selProject.id" :obj-id="editForm.id"   :simple="1"></xm-record>
+				<xm-record :obj-type="'phase'"  :visible="xmRecordVisible" :project-id="selProject?selProject.id:null" :obj-id="editForm.id"   :simple="1"></xm-record>
 			</el-drawer> 
 			<el-drawer append-to-body title="选择负责人" :visible.sync="groupUserSelectVisible" size="80%"    :close-on-click-modal="false">
 				<xm-project-group-select :visible="groupUserSelectVisible" :sel-project="selProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-project-group-select>
@@ -231,6 +232,9 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				 return projectPhaseTreeData;
       },
 			phaseBudgetData(){ 
+				if( this.xmIteration || this.xmProduct){
+					return {}
+				}
 				var rows=this.xmProjectPhases
 				var surplusPlanCostAt = this.getFloatValue(this.selProject.planInnerUserAt)+ this.getFloatValue(this.selProject.planOutUserAt)+ this.getFloatValue(this.selProject.planNouserAt)
 				var surplusPlanInnerUserAt=this.getFloatValue(this.selProject.planInnerUserAt)
@@ -294,7 +298,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 
 			}
 		},
-		props:['selProject','xmIteration'],
+		props:['selProject','xmIteration','xmProduct'],
 		watch:{
 			selProject:function(selProject,old){ 
         
@@ -309,13 +313,17 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			},
 			xmIteration(){
 				this.searchXmProjectPhases()
+			},
+			xmProduct(){
+				this.searchXmProjectPhases()
 			}
     },
 		data() {
  
 			return {
 				filters: {
-					key: ''
+					key: '',
+					milestone:''
 				},
 				xmProjectPhases: [],//查询结果
 				pageInfo:{//分页数据
@@ -423,6 +431,13 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				}
 				if(this.xmIteration){
 					params.iterationId=this.xmIteration.id
+				}
+				if(this.xmProduct){
+					params.productId=this.xmProduct.id
+				}
+				
+				if(this.filters.milestone){
+					params.milestone=this.filters.milestone
 				}
 				this.load.list = true;
 				listXmProjectPhase(params).then((res) => {

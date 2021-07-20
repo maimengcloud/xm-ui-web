@@ -18,7 +18,7 @@
 		 <el-row class="page-main page-height-80 padding" v-loading="load.list" v-if="!isSelectSingleUser && !isSelectMultiUser">
 			<el-row v-for="(item,index) in xmProjectGroupFormworkSels" :key="index">
 				<h3>
-					<div>{{item.groupName + "："}}<el-tag v-if="imGroupVisible==true && imGroups.some(g=>item.id==g.id) "   type="success">已绑定</el-tag><el-tag type="danger" v-else-if="imGroupVisible==true " @click="doCreateImGroup(item)">未绑定，点我去绑定</el-tag>
+					<div><el-tooltip :content="'归属项目组【'+item.projectId+'】'"><font>{{item.groupName + "："}}</font></el-tooltip><el-tag v-if="imGroupVisible==true && imGroups.some(g=>item.id==g.id) "   type="success">已绑定</el-tag><el-tag type="danger" v-else-if="imGroupVisible==true " @click="doCreateImGroup(item)">未绑定，点我去绑定</el-tag>
 						<i class="el-icon-close closeStyle" @click.stop="delGroup(item,index)"></i>
 					</div>
 				</h3>
@@ -216,7 +216,6 @@
 					
 				}
 			},
- 
 		},
 
 		data() {

@@ -21,9 +21,15 @@
 		      'userInfo','roles'
 		    ])
 		},
-		props: ["selProject" ,"isSelectSingleUser","isSelectMultiUser"],
+		props: ["selProject" ,"isSelectSingleUser","isSelectMultiUser",'xmProduct','xmIteration'],
 		watch:{
 			selProject(){
+				this.getXmProjectGroup();
+			},
+			xmProduct(){
+				this.getXmProjectGroup();
+			},
+			xmIteration(){
 				this.getXmProjectGroup();
 			}
 		},
@@ -46,7 +52,7 @@
 							"id":i.id,
 							"groupName": i.groupName,
 							"groupUsers": i.groupUsers,
-							"projectId": this.selProject.id,
+							"projectId": i.projectId,
 							"pgTypeName": i.pgTypeName,
 							"pgTypeId": i.pgTypeId
 						};
@@ -73,9 +79,17 @@
 			},
 			getXmProjectGroup() {
 				this.load.list = true;
-				let params = {
-					projectId: this.selProject.id,
+				let params = { 
 				};
+				if(this.selProject){
+					params.projectId=this.selProject.id
+				}
+				if(this.xmIteration){
+					params.iterationId=this.xmIteration.id
+				}
+				if(this.xmProduct){
+					params.productId=this.xmProduct.id
+				}
 				getProjectGroup(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 

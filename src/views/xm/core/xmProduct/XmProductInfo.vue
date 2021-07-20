@@ -21,18 +21,12 @@
 				</el-menu-item>
 				<el-menu-item label="故事" index="用户故事">
 					 <span slot="title"><i class="el-icon-document"></i>故事</span>
-
-
 				</el-menu-item>
 				<el-menu-item   index="任务">
 					 <span slot="title"><i class="el-icon-s-operation"></i>任务</span>
-
-
 				</el-menu-item>
 				<el-menu-item  index="缺陷">
 					 <span slot="title"><i class="el-icon-question"></i>缺陷</span>
-
-
 				</el-menu-item>
 				<el-menu-item  index="团队">
 					 <span slot="title"><i class="el-icon-user-solid"></i>团队</span>
