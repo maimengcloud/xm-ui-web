@@ -1,12 +1,12 @@
 <template>
-	<section>
+	<section class="page-container padding">
 
 		<el-row > 
-			<el-col :span="8" class="page-main" v-if="!xmIteration">
+			<el-col :span="8"  v-if="!xmIteration">
 				<xm-iteration-mng :simple="true" @row-click="onIterationRowClick" @clear-select="onIterationClearSelect"></xm-iteration-mng>
 			</el-col>
 			<el-col :span="xmIteration?24:16">
-				<el-row class="page-main page-height-90">
+				<el-row>
 					<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
 						<template slot="append">
 							<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterationMenus" icon="el-icon-search"></el-button>
@@ -14,7 +14,7 @@
 					</el-input>  
 					<el-button type="primary" @click="showAdd" icon="el-icon-plus">加入更多故事到迭代计划</el-button> 
 				</el-row>
-				<el-row class="page-main page-height-90">
+				<el-row class="page-main padding-top">
 					<!--列表 XmIterationMenu 迭代定义-->
 					<el-table ref="table" :height="tableHeight" :data="xmIterationMenusTreeData"  default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column  type="selection" width="45"></el-table-column> 
@@ -34,7 +34,7 @@
 					<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 				</el-row>
 			</el-col> 
-			<el-drawer append-to-body title="故事选择" :visible.sync="menuVisible" with-header=false size="60%"   :close-on-click-modal="false">
+			<el-drawer append-to-body title="故事选择" :visible.sync="menuVisible"  size="60%"   :close-on-click-modal="false">
 				<xm-menu-select :xm-iteration="xmIteration" :visible="menuVisible" :is-select-menu="true" :multi="true" :exclude-iteration-id="iteration?iteration.id:''"  @menus-selected="onSelectedMenus" ></xm-menu-select>
 			</el-drawer>
 		</el-row>
@@ -58,7 +58,9 @@
 		      'userInfo','roles'
 		    ]),
 			xmIterationMenusTreeData(){ 
-				return this.translateDataToTree(this.xmIterationMenus);
+				var data= this.translateDataToTree(this.xmIterationMenus);
+				debugger
+				return data;
 			},
 		},
 		watch:{
