@@ -90,10 +90,10 @@
                     <i class="el-icon-alarm-clock"></i>
                   </div>
                   <div>
-                    <div class="info">
-                      <el-progress v-if="progress1" :percentage="progress1"></el-progress>
+                    <div class="progress-item">
+                      <el-progress :percentage="taskProgress"></el-progress>
+                      <div class="title">任务进度</div>
                     </div>
-                    <div class="title">任务进度</div>
                   </div>
                 </div>
               </el-row>
@@ -105,7 +105,7 @@
                 <span>所有工作项及其完成情况</span>
               </div>
               <div>
-                <div id="allChart" :style="{width: '425px', height: '350px'}"></div>
+                <div id="allChart" :style="{width: '100%', height: '350px'}"></div>
               </div>
             </el-card>
           </el-col>
@@ -115,7 +115,7 @@
                 <span>缺陷情况</span>
               </div>
               <div>
-                <div id="bugPieChart" :style="{width: '400px', height: '415px'}"></div>
+                <div id="bugPieChart" :style="{width: '100%', height: '410px'}"></div>
               </div>
             </el-card>
           </el-col>
@@ -127,7 +127,7 @@
                 <span>任务每日状态趋势</span>
               </div>
               <div>
-                <div id="taskChart" :style="{width: '630px', height: '320px'}"></div>
+                <div id="taskChart" :style="{width: '100%', height: '320px'}"></div>
               </div>
             </el-card>
           </el-col>
@@ -219,7 +219,7 @@
               <span>总预算情况</span>
             </div>
             <div>
-              <div id="planTotalCostPie" :style="{width: '400px', height: '415px'}"></div>
+              <div id="planTotalCostPie" :style="{width: '100%', height: '410px'}"></div>
             </div>
           </el-card>
         </el-col>
@@ -229,7 +229,7 @@
               <span>工作量分布</span>
             </div>
             <div>
-              <div id="workloadDistribution" :style="{width: '400px', height: '415px'}"></div>
+              <div id="workloadDistribution" :style="{width: '100%', height: '410px'}"></div>
             </div>
           </el-card>
         </el-col>
@@ -239,7 +239,7 @@
               <span>所含产品和迭代情况</span>
             </div>
             <div>
-              <div id="iterationAndProduct" :style="{width: '450px', height: '350px'}"></div>
+              <div id="iterationAndProduct" :style="{width: '100%', height: '350px'}"></div>
             </div>
           </el-card>
         </el-col>
@@ -284,7 +284,7 @@ export default {
     totalTask: function() {
       return this.selProject.totalTaskCnt;
     },
-    progress1: function (){
+    taskProgress: function (){
       return Math.round(this.selProject.totalCompleteTaskCnt/this.selProject.totalTaskCnt*100);
     },
     taskStartTime: function (){
@@ -403,6 +403,13 @@ export default {
         },
         series: [
           {
+            label: {
+              normal:{
+                show: true,
+                position: 'top',
+                color:'#000000',
+              }
+            },
             data: [
               {
                 value: this.selProject.menuCnt,
@@ -727,7 +734,7 @@ export default {
           label: {
             normal:{
               show: true,
-              position: 'inside',
+              position: 'top',
               color:'#000000',
             }
           },
@@ -820,6 +827,10 @@ export default {
 .item {
   display: flex;
   justify-content: flex-start;
+  position: relative;
+  .progress-item{
+    position:absolute; width:80%;
+  }
 }
 
 .card-font {
@@ -860,10 +871,6 @@ export default {
 
 .el-tag:hover {
   cursor: pointer;
-}
-
-.el-progress {
-  width: 350px;
 }
 
 .value {

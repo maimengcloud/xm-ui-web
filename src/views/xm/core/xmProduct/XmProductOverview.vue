@@ -90,10 +90,10 @@
                     <i class="el-icon-alarm-clock"></i>
                   </div>
                   <div>
-                    <div class="info">
+                    <div class="progress-item">
                       <el-progress  :percentage="taskProgress"></el-progress>
+                      <div class="title" style="width: 100%">任务进度</div>
                     </div>
-                    <div class="title" style="width: 100%">任务进度</div>
                   </div>
                 </div>
               </el-row>
@@ -105,7 +105,7 @@
                 <span>所有工作项及其完成情况</span>
               </div>
               <div>
-                <div id="allChart" :style="{width: '400px', height: '370px'}"></div>
+                <div id="allChart" :style="{width: '100%', height: '350px'}"></div>
               </div>
             </el-card>
           </el-col>
@@ -115,7 +115,7 @@
                 <span>缺陷情况</span>
               </div>
               <div>
-                <div id="bugPieChart" :style="{width: '450px', height: '410px'}"></div>
+                <div id="bugPieChart" :style="{width: '100%', height: '410px'}"></div>
               </div>
             </el-card>
           </el-col>
@@ -206,7 +206,7 @@
               <span>产品相关联项目与迭代数</span>
             </div>
             <div>
-              <div id="projectAndIteration" :style="{width: '450px', height: '350px'}"></div>
+              <div id="projectAndIteration" :style="{width: '100%', height: '350px'}"></div>
             </div>
           </el-card>
         </el-col>
@@ -216,7 +216,7 @@
               <span>案例情况</span>
             </div>
             <div>
-              <div id="casePie" :style="{width: '400px', height: '415px'}"></div>
+              <div id="casePie" :style="{width: '100%', height: '410px'}"></div>
             </div>
           </el-card>
         </el-col>
@@ -337,6 +337,13 @@ export default {
         },
         series: [
           {
+            label: {
+              normal:{
+                show: true,
+                position: 'top',
+                color:'#000000',
+              }
+            },
             data: [
               {
                 value: this.xmProduct.menuCnt,
@@ -466,7 +473,7 @@ export default {
           label: {
             normal:{
               show: true,
-              position: 'inside',
+              position: 'top',
               color:'#000000',
             }
           },
@@ -615,6 +622,10 @@ export default {
 .item {
   display: flex;
   justify-content: flex-start;
+  position: relative;
+  .progress-item{
+    position:absolute; width:80%;
+  };
 }
 
 .card-font {
@@ -655,10 +666,6 @@ export default {
 
 .el-tag:hover {
   cursor: pointer;
-}
-
-.el-progress {
-  width: 350px;
 }
 
 .value {
