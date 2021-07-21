@@ -7,7 +7,7 @@
             <el-row style="padding:10px">
               <el-steps :active="calcProjectStatusStep" finish-status="success">
                 <el-step  v-for="(i,index) in options['projectStatus']" :title="i.optionName" :key="index">
-                  <el-row slot="title" @click.native.stop="editForm.status=i.optionValue">
+                  <el-row slot="title">
                     {{i.optionName}}
                   </el-row>
                 </el-step>
