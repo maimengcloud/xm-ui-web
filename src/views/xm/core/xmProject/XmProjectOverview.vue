@@ -2,10 +2,7 @@
   <section class="page-container padding">
     <el-row class="page-main page-height-75" style="overflow-x: hidden;">
       <el-row style="margin-bottom:10px">
-        <el-card class="box-card" style="padding:0px ;height:200px">
-          <div slot="header" class="clearfix" style="margin-bottom:10px">
-            <span>项目阶段</span>
-          </div>
+        <el-card class="box-card" style="padding:0px ;height:100px">
           <div>
             <el-row style="padding:10px">
               <el-steps :active="calcProjectStatusStep" finish-status="success">
