@@ -9,7 +9,11 @@
 			<!--列表 XmProjectGroupState 功能状态表,无需前端维护，所有数据由汇总统计得出-->
 			<el-table ref="table" :height="tableHeight" :data="xmProjectGroupStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  				<el-table-column sortable type="index" width="45"></el-table-column> 
-  				<el-table-column prop="groupName" label="团队名称" min-width="80" ></el-table-column>   
+  				<el-table-column prop="groupName" label="团队名称" min-width="80" >
+					  <template slot-scope="scope">
+						  <el-link type="primary" @click="overviewVisible=true">{{scope.row.groupName}}</el-link>
+					  </template>
+				</el-table-column>   
 				<el-table-column prop="finishRate" label="总体进度" min-width="80" ></el-table-column>    
 				<el-table-column prop="planWorkload" label="计划工作量" min-width="80" ></el-table-column>
 				<el-table-column prop="actWorkload" label="实际工作量" min-width="80" ></el-table-column>
@@ -34,6 +38,15 @@
 		
 			 
 		</el-row>
+			<el-drawer
+				append-to-body
+				title="小组概览" 
+				:visible.sync="overviewVisible"
+				size="60%"
+				 >
+					<xm-project-group-state-overview :xm-project-group-state="editForm"></xm-project-group-state-overview>
+			</el-drawer>
+		
 	</section>
 </template>
 
@@ -43,6 +56,7 @@
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { listXmProjectGroupState, delXmProjectGroupState, batchDelXmProjectGroupState,loadTasksToXmProjectGroupState } from '@/api/xm/core/xmProjectGroupState'; 
 	import { mapGetters } from 'vuex'
+import XmProjectGroupStateOverview from './XmProjectGroupStateOverview.vue';
 	
 	export default { 
 		computed: {
@@ -92,6 +106,7 @@
 				/**begin 自定义属性请在下面加 请加备注**/
 				
 				tableHeight:300,	
+				overviewVisible:false,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -237,7 +252,8 @@
 			/**end 自定义函数请在上面加**/
 			
 		},//end methods
-		components: {  
+		components: {
+XmProjectGroupStateOverview  
 		    //在下面添加其它组件
 		},
 		mounted() { 
