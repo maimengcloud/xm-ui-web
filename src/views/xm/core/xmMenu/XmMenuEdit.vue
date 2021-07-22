@@ -1,8 +1,8 @@
 <template>
-	<section class="page-container page-full-height border padding">
+	<section class="page-container border padding">
 		<el-row class="page-main page-height-90">
-			<el-tab>
-				<el-tab-pane>
+			<el-tabs>
+				<el-tab-pane  label="故事详情">
 					<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
 						<el-form-item label="序号" prop="seqNo">
 							<el-input v-model="editForm.seqNo" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input>
@@ -32,10 +32,10 @@
 						</el-form-item>  
 					</el-form>
 				</el-tab-pane>
-				<el-tab-pane>
+				<el-tab-pane  label="概览">
 					<xm-menu-overview :xm-menu="xmMenu"></xm-menu-overview>
 				</el-tab-pane>
-			</el-tab>
+			</el-tabs>
 			<el-drawer title="选择员工" :visible.sync="userSelectVisible" size="60%" append-to-body>
 				<users-select  @confirm="onUserSelected" ref="usersSelect"></users-select>
 			</el-drawer>	
