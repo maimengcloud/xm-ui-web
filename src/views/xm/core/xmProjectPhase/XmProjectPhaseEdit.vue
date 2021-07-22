@@ -1,97 +1,106 @@
 <template>
 	<section class="page-container border padding">
+		
+		
 		<el-row class="page-main page-height-90">
-			<!--新增界面 XmProjectPhase xm_project_phase--> 
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
-				<el-row class="border padding">
-					<el-form-item label="阶段名称" prop="phaseName">
-						<el-input v-model="editForm.phaseName" placeholder="阶段名称" ></el-input>
-					</el-form-item>  
-					<el-form-item label="序号" prop="seqNo"> 
-						<el-input v-model="editForm.seqNo" style="width:50%;"  placeholder="排序序号，值越小越靠前，如1.0,2.0等"></el-input> 
-						<el-checkbox true-label="1" false-label="0" v-model="editForm.milestone">标记为里程碑</el-checkbox>
-					</el-form-item> 
-					<el-form-item  label="任务类型" prop="taskType"> 
-						<el-select v-model="editForm.taskType">
-							<el-option v-for="i in this.options.taskType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
-						</el-select>
-					</el-form-item>  
-					<el-form-item  label="计划类型" prop="planType"> 
-						<el-select v-model="editForm.planType">
-							<el-option v-for="i in this.options.planType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
-						</el-select>
-					</el-form-item>
-					<el-form-item label="备注" prop="remark">
-						<el-input type="textarea" rows="4" v-model="editForm.remark" placeholder="备注" ></el-input>
-					</el-form-item> 
-					 
-				</el-row>
-				<el-tabs v-model="activeName" class="border padding">
-					<el-tab-pane label="工作量及人力成本" name="phaseBudgetWorkload">
-						 <el-row>
-							<el-row class="padding-20 border">
-								<el-row class="padding">工作量计算方式：<font style="color:red">总工时 = 工作日天数 * 每日工时数 * 人数 </font> </el-row>
-								<el-row class="padding">金额计算方式：  <font style="color:red">总金额 = 总工时 * 工时单价 </font></el-row>
-							</el-row>
-							<el-row class="padding-20 border">
-								预计时间：<el-date-picker
-									v-model="dateRanger" 
-									type="daterange"
-									align="right"
-									unlink-panels
-									range-separator="至"
-									start-placeholder="计划开始日期"
-									end-placeholder="计划完成日期"
-									value-format="yyyy-MM-dd"
-									:default-time="['00:00:00','23:59:59']"
-									:picker-options="pickerOptions"
-								></el-date-picker>    
-								预估工期：<el-input  style="width:100px;" type="number" v-model="editForm.phaseBudgetHours" :precision="2" :step="8" :min="0" placeholder="预计工时"></el-input>小时
- 								<div class="tips"><font>工时{{autoParams.phaseBudgetHours}}小时,工作日{{autoParams.weekday}}天</font></div>
-							</el-row> 
-							<el-row class="padding-20 border">
-								<el-col :span="4">人员类型</el-col>
-								<el-col :span="4">人数</el-col>
-								<el-col :span="4">工作量(人时)</el-col>
-								<el-col :span="4">单价(元/人时)</el-col>
-								<el-col :span="8">总价(元)</el-col>
-								
-							</el-row> 
-							<el-row class="padding-20 border">
-								<el-col :span="4">内购</el-col>
-								<el-col :span="4"><el-input style="width:100px;"  type="number" v-model="editForm.phaseBudgetInnerUserCnt" :precision="0" :step="1" :min="0" placeholder="内购人数"></el-input>  
-								</el-col>
-								<el-col :span="4">{{autoParams.phaseBudgetInnerUserWorkload}}人时</el-col>
-								<el-col :span="4"><el-input  style="width:100px;" type="number" v-model="editForm.phaseBudgetInnerUserPrice" :precision="0" :step="1" :min="0" placeholder="预计内部人时单价"></el-input> </el-col>
-								<el-col :span="8">{{this.toFixed(autoParams.phaseBudgetInnerUserAt)}}元,{{this.toFixed(autoParams.phaseBudgetInnerUserAt/10000)}} 万元</el-col>
-							</el-row> 
-							<el-row class="padding-20 border">
-								<el-col :span="4">外购</el-col>
-								<el-col :span="4"><el-input  style="width:100px;" type="number" v-model="editForm.phaseBudgetOutUserCnt" :precision="0" :step="1" :min="0" placeholder="外购人数"></el-input>  
-								</el-col>
-								<el-col :span="4">{{autoParams.phaseBudgetOutUserWorkload}}人时</el-col>
-								<el-col :span="4"><el-input  style="width:100px;" type="number" v-model="editForm.phaseBudgetOutUserPrice" :precision="0" :step="1" :min="0" placeholder="预计外购人时单价"></el-input> </el-col>
-								<el-col :span="4">{{autoParams.phaseBudgetOutUserAt }} 元 {{autoParams.phaseBudgetOutUserAt/10000 }}万元</el-col>
+			<el-tabs>
+				<el-tab-pane>
+					<!--新增界面 XmProjectPhase xm_project_phase--> 
+					<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
+						<el-row class="border padding">
+							<el-form-item label="阶段名称" prop="phaseName">
+								<el-input v-model="editForm.phaseName" placeholder="阶段名称" ></el-input>
+							</el-form-item>  
+							<el-form-item label="序号" prop="seqNo"> 
+								<el-input v-model="editForm.seqNo" style="width:50%;"  placeholder="排序序号，值越小越靠前，如1.0,2.0等"></el-input> 
+								<el-checkbox true-label="1" false-label="0" v-model="editForm.milestone">标记为里程碑</el-checkbox>
+							</el-form-item> 
+							<el-form-item  label="任务类型" prop="taskType"> 
+								<el-select v-model="editForm.taskType">
+									<el-option v-for="i in this.options.taskType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+								</el-select>
+							</el-form-item>  
+							<el-form-item  label="计划类型" prop="planType"> 
+								<el-select v-model="editForm.planType">
+									<el-option v-for="i in this.options.planType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+								</el-select>
+							</el-form-item>
+							<el-form-item label="备注" prop="remark">
+								<el-input type="textarea" rows="4" v-model="editForm.remark" placeholder="备注" ></el-input>
+							</el-form-item> 
 							
-							</el-row > 
-							<el-row class="padding-20  border">
-								<el-col :span="4">合计</el-col>
-								<el-col :span="4"> {{autoParams.phaseBudgetOutUserCnt+autoParams.phaseBudgetInnerUserCnt}}
-								</el-col>
-								<el-col :span="4">{{autoParams.phaseBudgetOutUserWorkload+autoParams.phaseBudgetInnerUserWorkload  }}人时,{{ (autoParams.phaseBudgetOutUserWorkload+autoParams.phaseBudgetInnerUserWorkload)/8/20  }}人月 </el-col>
-								<el-col :span="4">{{ (parseFloat2(autoParams.phaseBudgetOutUserPrice) + parseFloat2(autoParams.phaseBudgetInnerUserPrice))/2}}元/人时</el-col>
-								<el-col :span="8">{{autoParams.phaseBudgetTotalCost}} 元，{{(autoParams.phaseBudgetTotalCost)/10000}} 万元</el-col>
-							</el-row>  
-							<el-row class="padding-20  border">
-								总计： {{parseFloat2(editForm.phaseBudgetInnerUserAt)+parseFloat2(editForm.phaseBudgetOutUserAt)+parseFloat2(editForm.phaseBudgetNouserAt)}}元 <el-tag>{{this.toFixed(autoParams.phaseBudgetTotalCost/10000)}}万元</el-tag>
-								
-							</el-row>
 						</el-row>
-					</el-tab-pane>  
-					<el-tab-pane v-if="activeName=='phaseBudgetWorkload'" label="收起" name="">
-					</el-tab-pane>
-				</el-tabs> 
-			</el-form>
+						<el-tabs v-model="activeName" class="border padding">
+							<el-tab-pane label="工作量及人力成本" name="phaseBudgetWorkload">
+								<el-row>
+									<el-row class="padding-20 border">
+										<el-row class="padding">工作量计算方式：<font style="color:red">总工时 = 工作日天数 * 每日工时数 * 人数 </font> </el-row>
+										<el-row class="padding">金额计算方式：  <font style="color:red">总金额 = 总工时 * 工时单价 </font></el-row>
+									</el-row>
+									<el-row class="padding-20 border">
+										预计时间：<el-date-picker
+											v-model="dateRanger" 
+											type="daterange"
+											align="right"
+											unlink-panels
+											range-separator="至"
+											start-placeholder="计划开始日期"
+											end-placeholder="计划完成日期"
+											value-format="yyyy-MM-dd"
+											:default-time="['00:00:00','23:59:59']"
+											:picker-options="pickerOptions"
+										></el-date-picker>    
+										预估工期：<el-input  style="width:100px;" type="number" v-model="editForm.phaseBudgetHours" :precision="2" :step="8" :min="0" placeholder="预计工时"></el-input>小时
+										<div class="tips"><font>工时{{autoParams.phaseBudgetHours}}小时,工作日{{autoParams.weekday}}天</font></div>
+									</el-row> 
+									<el-row class="padding-20 border">
+										<el-col :span="4">人员类型</el-col>
+										<el-col :span="4">人数</el-col>
+										<el-col :span="4">工作量(人时)</el-col>
+										<el-col :span="4">单价(元/人时)</el-col>
+										<el-col :span="8">总价(元)</el-col>
+										
+									</el-row> 
+									<el-row class="padding-20 border">
+										<el-col :span="4">内购</el-col>
+										<el-col :span="4"><el-input style="width:100px;"  type="number" v-model="editForm.phaseBudgetInnerUserCnt" :precision="0" :step="1" :min="0" placeholder="内购人数"></el-input>  
+										</el-col>
+										<el-col :span="4">{{autoParams.phaseBudgetInnerUserWorkload}}人时</el-col>
+										<el-col :span="4"><el-input  style="width:100px;" type="number" v-model="editForm.phaseBudgetInnerUserPrice" :precision="0" :step="1" :min="0" placeholder="预计内部人时单价"></el-input> </el-col>
+										<el-col :span="8">{{this.toFixed(autoParams.phaseBudgetInnerUserAt)}}元,{{this.toFixed(autoParams.phaseBudgetInnerUserAt/10000)}} 万元</el-col>
+									</el-row> 
+									<el-row class="padding-20 border">
+										<el-col :span="4">外购</el-col>
+										<el-col :span="4"><el-input  style="width:100px;" type="number" v-model="editForm.phaseBudgetOutUserCnt" :precision="0" :step="1" :min="0" placeholder="外购人数"></el-input>  
+										</el-col>
+										<el-col :span="4">{{autoParams.phaseBudgetOutUserWorkload}}人时</el-col>
+										<el-col :span="4"><el-input  style="width:100px;" type="number" v-model="editForm.phaseBudgetOutUserPrice" :precision="0" :step="1" :min="0" placeholder="预计外购人时单价"></el-input> </el-col>
+										<el-col :span="4">{{autoParams.phaseBudgetOutUserAt }} 元 {{autoParams.phaseBudgetOutUserAt/10000 }}万元</el-col>
+									
+									</el-row > 
+									<el-row class="padding-20  border">
+										<el-col :span="4">合计</el-col>
+										<el-col :span="4"> {{autoParams.phaseBudgetOutUserCnt+autoParams.phaseBudgetInnerUserCnt}}
+										</el-col>
+										<el-col :span="4">{{autoParams.phaseBudgetOutUserWorkload+autoParams.phaseBudgetInnerUserWorkload  }}人时,{{ (autoParams.phaseBudgetOutUserWorkload+autoParams.phaseBudgetInnerUserWorkload)/8/20  }}人月 </el-col>
+										<el-col :span="4">{{ (parseFloat2(autoParams.phaseBudgetOutUserPrice) + parseFloat2(autoParams.phaseBudgetInnerUserPrice))/2}}元/人时</el-col>
+										<el-col :span="8">{{autoParams.phaseBudgetTotalCost}} 元，{{(autoParams.phaseBudgetTotalCost)/10000}} 万元</el-col>
+									</el-row>  
+									<el-row class="padding-20  border">
+										总计： {{parseFloat2(editForm.phaseBudgetInnerUserAt)+parseFloat2(editForm.phaseBudgetOutUserAt)+parseFloat2(editForm.phaseBudgetNouserAt)}}元 <el-tag>{{this.toFixed(autoParams.phaseBudgetTotalCost/10000)}}万元</el-tag>
+										
+									</el-row>
+								</el-row>
+							</el-tab-pane>  
+							<el-tab-pane v-if="activeName=='phaseBudgetWorkload'" label="收起" name="">
+							</el-tab-pane>
+						</el-tabs> 
+					</el-form>
+				</el-tab-pane>
+				<el-tab-pane>
+					<xm-project-phase-overview :xm-project-phase="xmProjectPhase"></xm-project-phase-overview>
+				</el-tab-pane>
+			</el-tabs>
 		</el-row>
 		<el-row class="page-bottom">
 			<el-button @click.native="handleCancel">取消</el-button>  
@@ -105,7 +114,8 @@
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询 
 	import { editXmProjectPhase } from '@/api/xm/core/xmProjectPhase';
 	import { mapGetters } from 'vuex'
-	
+	import  XmProjectPhaseOverview from './XmProjectPhaseOverview';//新增界面
+
 	export default { 
 		computed: {
 		    ...mapGetters([
@@ -348,6 +358,7 @@
 			
 		},//end method
 		components: {  
+			XmProjectPhaseOverview,
 		    //在下面添加其它组件 'xm-project-phase-edit':XmProjectPhaseEdit
 		},
 		mounted() {
