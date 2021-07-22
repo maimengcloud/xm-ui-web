@@ -1,36 +1,41 @@
 <template>
 	<section class="page-container page-full-height border padding">
 		<el-row class="page-main page-height-90">
-			<!--新增界面 XmMenu 项目故事表--> 
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
-				<el-form-item label="序号" prop="seqNo">
-					<el-input v-model="editForm.seqNo" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input>
-				</el-form-item> 
-				<el-form-item label="故事名称" prop="menuName">
-					<el-input v-model="editForm.menuName" placeholder="故事名称" ></el-input>
-				</el-form-item>  
-				<el-form-item label="负责人" prop="mmUserid">
-					 <el-tag v-if="editForm.mmUserid" closable @close="clearPmUser">{{editForm.mmUsername}}</el-tag>
-					 <el-tag v-else>未配置</el-tag> 
-					 <el-button @click="selectUser">选负责人</el-button>
-				</el-form-item>   
-				<el-form-item label="需求链接" prop="demandUrl"> 
-					<el-input v-model="editForm.demandUrl" placeholder="需求链接" ></el-input> 
-				</el-form-item>  
-				<el-form-item label="代码链接" prop="codeUrl">
-					<el-input v-model="editForm.codeUrl" placeholder="代码链接" ></el-input>  
-				</el-form-item>  
-				<el-form-item label="设计链接" prop="designUrl">
-					<el-input v-model="editForm.designUrl" placeholder="设计链接" ></el-input>  
-				</el-form-item>   
-				<el-form-item label="操作手册链接" prop="operDocUrl">
-					<el-input v-model="editForm.operDocUrl" placeholder="操作手册链接" ></el-input>  
-				</el-form-item>  
-				<el-form-item label="概述" prop="remark">
-					<el-input type="textarea" v-model="editForm.remark" :autosize="{ minRows: 4, maxRows: 20}"  placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
-				</el-form-item>  
-			</el-form>
-			
+			<el-tab>
+				<el-tab-pane>
+					<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
+						<el-form-item label="序号" prop="seqNo">
+							<el-input v-model="editForm.seqNo" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input>
+						</el-form-item> 
+						<el-form-item label="故事名称" prop="menuName">
+							<el-input v-model="editForm.menuName" placeholder="故事名称" ></el-input>
+						</el-form-item>  
+						<el-form-item label="负责人" prop="mmUserid">
+							<el-tag v-if="editForm.mmUserid" closable @close="clearPmUser">{{editForm.mmUsername}}</el-tag>
+							<el-tag v-else>未配置</el-tag> 
+							<el-button @click="selectUser">选负责人</el-button>
+						</el-form-item>   
+						<el-form-item label="需求链接" prop="demandUrl"> 
+							<el-input v-model="editForm.demandUrl" placeholder="需求链接" ></el-input> 
+						</el-form-item>  
+						<el-form-item label="代码链接" prop="codeUrl">
+							<el-input v-model="editForm.codeUrl" placeholder="代码链接" ></el-input>  
+						</el-form-item>  
+						<el-form-item label="设计链接" prop="designUrl">
+							<el-input v-model="editForm.designUrl" placeholder="设计链接" ></el-input>  
+						</el-form-item>   
+						<el-form-item label="操作手册链接" prop="operDocUrl">
+							<el-input v-model="editForm.operDocUrl" placeholder="操作手册链接" ></el-input>  
+						</el-form-item>  
+						<el-form-item label="概述" prop="remark">
+							<el-input type="textarea" v-model="editForm.remark" :autosize="{ minRows: 4, maxRows: 20}"  placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
+						</el-form-item>  
+					</el-form>
+				</el-tab-pane>
+				<el-tab-pane>
+					<xm-menu-overview :xm-menu="xmMenu"></xm-menu-overview>
+				</el-tab-pane>
+			</el-tab>
 			<el-drawer title="选择员工" :visible.sync="userSelectVisible" size="60%" append-to-body>
 				<users-select  @confirm="onUserSelected" ref="usersSelect"></users-select>
 			</el-drawer>	
@@ -48,6 +53,7 @@
 	import { editXmMenu } from '@/api/xm/core/xmMenu';
 	import { mapGetters } from 'vuex'	
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
+import XmMenuOverview from './XmMenuOverview.vue';
 
 	
 	export default { 
@@ -146,7 +152,8 @@
 		},//end method
 		components: {  
 			//在下面添加其它组件 'xm-menu-edit':XmMenuEdit
-			UsersSelect
+			UsersSelect,
+			XmMenuOverview,
 		},
 		mounted() {
 			this.editForm=Object.assign(this.editForm, this.xmMenu);   
