@@ -4,7 +4,7 @@
 		
 		<el-row class="page-main page-height-90">
 			<el-tabs>
-				<el-tab-pane>
+				<el-tab-pane label="阶段计划详情">
 					<!--新增界面 XmProjectPhase xm_project_phase--> 
 					<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
 						<el-row class="border padding">
@@ -97,7 +97,7 @@
 						</el-tabs> 
 					</el-form>
 				</el-tab-pane>
-				<el-tab-pane>
+				<el-tab-pane label="阶段计划概览">
 					<xm-project-phase-overview :xm-project-phase="xmProjectPhase"></xm-project-phase-overview>
 				</el-tab-pane>
 			</el-tabs>
