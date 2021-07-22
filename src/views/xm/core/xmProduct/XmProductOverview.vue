@@ -5,7 +5,7 @@
         <el-card class="box-card" style="padding:0px ;height:100px">
           <div>
             <el-row style="padding:10px">
-              <el-steps :active="this.xmProduct.pstatus+1" align-center>
+              <el-steps :active="this.xmProduct.pstatus+1" align-center finish-status="success">
                 <el-step title="未开始"></el-step>
                 <el-step title="研发中"></el-step>
                 <el-step title="已完成"></el-step>
@@ -73,7 +73,7 @@
                   <div class="info">
                     <div v-text="productStartTime+'~'+productEndTime">
                     </div>
-                    <div class="title">项目计划周期</div>
+                    <div class="title">产品计划周期</div>
                   </div>
                 </div>
               </el-row>
@@ -115,7 +115,7 @@
           <el-col :span="8" >
             <el-card class="box-card" style="height:425px">
               <div slot="header" class="clearfix">
-                <span>所有工作项及其完成情况</span>
+                <span>所有工作项数量分布</span>
               </div>
               <div>
                 <div id="allChart" :style="{width: '100%', height: '350px'}"></div>
