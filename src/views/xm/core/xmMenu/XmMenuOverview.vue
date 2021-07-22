@@ -34,7 +34,7 @@
               </el-row>
             </el-row>
             <el-row style="margin-bottom:18px">
-              <el-col :span="12" @click="">
+              <el-col :span="8" @click="">
                 <div class="item">
                   <div class="icon" style="background-color:  rgb(79, 140, 255);">
                     <i class="el-icon-right"></i>
