@@ -254,7 +254,7 @@ export default {
       return this.xmIteration.taskCnt-this.xmIteration.finishTaskCnt;
     },
     taskProgress: function (){
-      return Math.round(this.xmIteration.finishTaskCnt/this.xmIteration.taskCnt*100);
+      return this.xmIteration.finishRate;
     },
     iterationStartTime: function (){
       return this.xmIteration.startTime.substring(0,10);

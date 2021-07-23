@@ -248,7 +248,7 @@
         return this.xmMenu.taskCnt-this.xmMenu.finishTaskCnt;
       },
       taskProgress: function (){
-        return Math.round(this.xmMenu.finishTaskCnt/this.xmMenu.taskCnt*100);
+        return this.xmMenu.finishRate;
       },
       menuStartTime: function (){
         if(this.xmMenu.planStartTime){

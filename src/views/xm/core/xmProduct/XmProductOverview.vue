@@ -250,7 +250,7 @@ export default {
       return this.xmProduct.taskCnt-this.xmProduct.finishTaskCnt;
     },
     taskProgress: function (){
-      return Math.round(this.xmProduct.finishTaskCnt/this.xmProduct.taskCnt*100);
+      return this.xmProduct.finishRate;
     },
     productStartTime: function (){
       if(this.xmProduct.planStartTime){

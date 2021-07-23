@@ -281,7 +281,7 @@ export default {
       return this.selProject.totalTaskCnt;
     },
     taskProgress: function (){
-      return Math.round(this.selProject.totalCompleteTaskCnt/this.selProject.totalTaskCnt*100);
+      return this.selProject.totalProgress;
     },
     taskStartTime: function (){
       return this.selProject.startTime.substring(0,10);

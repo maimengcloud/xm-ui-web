@@ -235,11 +235,11 @@ export default {
       return this.xmProjectPhase.taskCnt-this.xmProjectPhase.finishTaskCnt;
     },
     taskProgress: function (){
-      if(this.xmProjectPhase.taskCnt){
-        return Math.round(this.xmProjectPhase.finishTaskCnt/this.xmProjectPhase.taskCnt*100);
+      if(this.xmProjectPhase.actRate){
+        return this.xmProjectPhase.actRate;
       }else{
         return 0;
-      };
+      }
     },
     phaseBeginDate: function (){
       if(this.xmProjectPhase.beginDate){
