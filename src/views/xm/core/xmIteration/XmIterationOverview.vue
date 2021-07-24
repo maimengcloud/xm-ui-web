@@ -5,7 +5,7 @@
         <el-card class="box-card" style="padding:0px ;height:100px">
           <div>
             <el-row style="padding:10px">
-              <el-steps :active="this.xmIteration.iphase+1" align-center>
+              <el-steps :active="this.xmIteration.iphase+1" align-center finish-status="success">
                 <el-step title="未开始"></el-step>
                 <el-step title="需求评审"></el-step>
                 <el-step title="计划会"></el-step>
@@ -119,7 +119,7 @@
           <el-col :span="8" >
             <el-card class="box-card" style="height:425px">
               <div slot="header" class="clearfix">
-                <span>所有工作项及其完成情况</span>
+                <span>所有工作项数量分布</span>
               </div>
               <div>
                 <div id="allChart" :style="{width: '100%', height: '350px'}"></div>
@@ -254,7 +254,7 @@ export default {
       return this.xmIteration.taskCnt-this.xmIteration.finishTaskCnt;
     },
     taskProgress: function (){
-      return Math.round(this.xmIteration.finishTaskCnt/this.xmIteration.taskCnt*100);
+      return this.xmIteration.finishRate;
     },
     iterationStartTime: function (){
       return this.xmIteration.startTime.substring(0,10);

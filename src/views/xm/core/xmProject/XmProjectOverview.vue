@@ -117,7 +117,7 @@
           <el-col :span="8" >
             <el-card class="box-card" style="height:425px">
               <div slot="header" class="clearfix">
-                <span>所有工作项及其完成情况</span>
+                <span>所有工作项数量分布</span>
               </div>
               <div>
                 <div id="allChart" :style="{width: '100%', height: '350px'}"></div>
@@ -260,7 +260,6 @@
         </el-col>
       </el-row>
     </el-row>
-
   </section>
 </template>
 
@@ -282,7 +281,7 @@ export default {
       return this.selProject.totalTaskCnt;
     },
     taskProgress: function (){
-      return Math.round(this.selProject.totalCompleteTaskCnt/this.selProject.totalTaskCnt*100);
+      return this.selProject.totalProgress;
     },
     taskStartTime: function (){
       return this.selProject.startTime.substring(0,10);
