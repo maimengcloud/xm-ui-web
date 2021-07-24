@@ -4,7 +4,7 @@
 			<el-col v-if="isTaskCenter!='1' && currentProject " :span="4" >
 				<xm-project-phase-mng  :sel-project="currentProject" :xm-iteration="xmIteration" :simple="true" @row-click="projectPhaseRowClick" @clear-select="clearSelectPhase"></xm-project-phase-mng>
 			</el-col>
-			<el-col :span="isTaskCenter!='1' && currentProject?20:24" class="padding-left">
+			<el-col :span="isTaskCenter!='1' && currentProject?20:24" class="padding-left" :class="{'flex-box': showAglile}">
 				<el-row>
 					<el-select v-model="selkey" placeholder="请选择任务状态" clearable @change="changeSelKey">
 						<el-option class="showall" value="" label="全部状态">全部状态</el-option>
@@ -135,9 +135,14 @@
 							</el-row>
 							<el-button  slot="reference" icon="el-icon-more" circle></el-button>
 						</el-popover>
+						<el-button type="primary" @click="showAglile = true" v-if="!showAglile">敏捷看板</el-button>
+						<el-button type="primary" @click="showAglile = false" v-else>表格查看</el-button>
 				</el-row>
+		
 				<el-row class="padding-top">
-						<el-table v-if="!gstcVisible"
+					<template v-if="!gstcVisible">
+						<xm-task-agile-kanban v-if="showAglile" :xmTasks="xmTasks" @submit="afterEditSubmit"></xm-task-agile-kanban>
+						<el-table v-else
 							show-summary
 							:data="tasksTreeData"
 							@sort-change="sortChange"
@@ -221,7 +226,8 @@
 								</template>
 							</el-table-column>
 						</el-table>
-						<el-pagination  v-if="!gstcVisible" layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+						<el-pagination layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+					</template>
 						<xm-gantt v-if="gstcVisible" :tree-data="tasksTreeData" :project-phase="{startTime: currentProjectPhase.beginDate, endTime: currentProjectPhase.endDate}" :useRealTime="true"></xm-gantt>
 
 				</el-row>
@@ -368,6 +374,7 @@
 	import  XmTaskAdd from './XmTaskAdd';//新增界面
 	import  XmTaskEdit from './XmTaskEdit';//修改界面
 	import  XmTaskMngBatch from './XmTaskMngBatch';//修改界面
+	import  XmTaskAgileKanban from './XmTaskAgileKanban';//敏捷看板
 	import { mapGetters } from 'vuex';
 	import xmExecuserMng from '../xmTaskExecuser/XmTaskExecuserMng';
 	import xmSkillMng from '../xmTaskSkill/XmTaskSkillMng';
@@ -631,10 +638,10 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				],
 				pickerOptions:  util.pickerOptions('datarange'),
 				/**end 自定义属性请在上面加 请加备注**/
+				showAglile: false
 			}
 		},//end data
 		methods: {
-
 			changeSelKey(index){
 				this.selkey = index;
 				this.searchXmTasks();
@@ -1723,12 +1730,14 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 		components: {
 		    'xm-task-add':XmTaskAdd,
 		    'xm-task-edit':XmTaskEdit,
+			XmTaskAgileKanban,
 			xmExecuserMng,
 			xmSkillMng,
 			skillMng,
 			xmProjectPhaseMng,
 			xmTaskTemplateMng, XmProjectList,xmExchangeMng,xmMenuSelect,XmMenuRichDetail,XmGantt,XmTaskMngBatch,
-XmProjectGroupSelect,XmProductSelect
+XmProjectGroupSelect,XmProductSelect,
+XmTaskAgileKanban
 		    //在下面添加其它组件
 		},
 		mounted() {
