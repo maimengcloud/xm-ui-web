@@ -226,7 +226,7 @@
 								</template>
 							</el-table-column>
 						</el-table>
-						<el-pagination layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+						<el-pagination ref="pagination" layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 					</template>
 						<xm-gantt v-if="gstcVisible" :tree-data="tasksTreeData" :project-phase="{startTime: currentProjectPhase.beginDate, endTime: currentProjectPhase.endDate}" :useRealTime="true"></xm-gantt>
 
@@ -1750,9 +1750,10 @@ XmTaskAgileKanban
 			this.$nextTick(()=>{
 
 				this.getXmTasks();
+				var pagination = this.$refs.pagination.$el.offsetHeight;
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
 				var subHeight=70/1000 * window.innerHeight;
-				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight;
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight - pagination;
 				// 监听窗口大小变化
 				/**
 				let self = this;

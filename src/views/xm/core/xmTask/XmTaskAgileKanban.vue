@@ -259,10 +259,9 @@ export default {
 </script>
 <style lang='scss' scoped>
 .menu-box {
-	height: auto;
+	height: 100%;
   width: 100%;
-  overflow: scroll;
-	padding: 0 20px;
+  overflow: hidden;
 }
 .row {
   width: 2000px;
