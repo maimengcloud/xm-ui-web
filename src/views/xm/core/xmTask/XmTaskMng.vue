@@ -141,7 +141,7 @@
 		
 				<el-row class="padding-top">
 					<template v-if="!gstcVisible">
-						<xm-task-agile-kanban v-if="showAglile" :xmTasks="xmTasks" @submit="afterEditSubmit"></xm-task-agile-kanban>
+						<xm-task-agile-kanban :tableHeight="tableHeight" v-if="showAglile" :xmTasks="xmTasks" @submit="afterEditSubmit"></xm-task-agile-kanban>
 						<el-table v-else
 							show-summary
 							:data="tasksTreeData"

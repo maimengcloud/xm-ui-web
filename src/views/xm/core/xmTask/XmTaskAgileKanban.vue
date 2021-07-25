@@ -1,32 +1,70 @@
 <template>
   <section class="menu-box">
-		<!-- <div class="itxst">
-			<div class="col">
-					<div class="title">A列</div>
-					<draggable v-model="arr1" group="site" animation="300" dragClass="dragClass" ghostClass="ghostClass" chosenClass="chosenClass" @start="onStart" @end="onEnd">
-							<transition-group>
-									<div class="item" v-for="item in arr1" :key="item.id">{{item.name}}</div>
+		<el-table 
+			:data="menus"
+			header-cell-class-name="head-row"
+			border
+			:height="tableHeight"
+			style="width: 100%">
+			<el-table-column :label="'故事 ('+menus.length + ')'" class-name="menu-name" width="200">
+				<template slot-scope="scope">
+					<div class="menu">{{scope.row.name}}</div>
+				</template>
+			</el-table-column>
+			<template v-for="(type, tt) in taskType">
+				<el-table-column :label="type.label + '('+ type.number + ')'" :key="tt" width="450">
+					<template slot-scope="scope">
+						<draggable
+							:name="scope.row.menuId"
+							:sort="false"
+							@start="onStart" @end="onEnd"
+							:move="onMove"
+							:options="{group: scope.row.menuId}"
+							class="draggable"
+							animation="300"
+							scroll
+							scrollSensitivity="80"
+							scrollSpeed="80"
+						>
+							<transition-group class="transition-group" :data-menu-id="scope.row.menuId" :data-task-state="type.status">
+								<!-- <template v-if="drag.menuId && drag.menuId === scope.row.menuId && drag.taskState !== type.status">
+									<div class="drag-to-box">{{type.label}}</div>
+								</template> -->
+								<template
+									v-if="tasks && tasks[scope.row.menuId][tt].length"
+								>
+									<div
+										:data-menu-id="scope.row.menuId"
+										:data-task-id="task.id"
+										:data-task-state="task.taskState"
+										class="task"
+										v-for="(task, t) in tasks[scope.row.menuId][tt]"
+										:key="task.id"
+									>
+										<span>
+											{{task.sortLevel}}&nbsp;
+											<el-tag v-if="task.level<='2'" type="info">轻微</el-tag>
+											<el-tag v-else-if="task.level=='3'" type="warning">一般</el-tag>
+											<el-tag v-else-if="task.level=='4'" type="danger">紧急</el-tag>
+											<el-tag v-else type="danger">特急</el-tag> 
+											<span v-for="(item ,index) in [formatExeUsernames(task)]" :key="index">
+
+												<el-tooltip :content="item.exeUsernames" ><el-link     :type="item.type"     @click.stop="showExecusers(task)">{{item.showMsg}}</el-link></el-tooltip>
+												
+											</span>
+											<el-tooltip content="进度"><el-link style="border-radius:30px;" :type="task.rate>=100?'success':'warning'" @click="drawerVisible=true"> {{ (task.rate!=null?task.rate:0)+'%'}} </el-link></el-tooltip>
+											<el-tooltip content="预算金额、工时"><el-tag type="info">{{parseFloat(task.budgetCost/10000).toFixed(2)}}万,{{task.budgetWorkload}}人时</el-tag></el-tooltip>
+											<el-link  type="primary"  @click.stop="showDrawer(task)">{{task.name}}</el-link>
+										</span>
+									</div>
+								</template>
 							</transition-group>
-					</draggable>
-			</div>
-			<div class="col">
-					<div class="title">B列</div>
-					<draggable v-model="arr2" group="site" animation="100" dragClass="dragClass" ghostClass="ghostClass" chosenClass="chosenClass" @start="onStart" @end="onEnd">
-							<transition-group>
-									<div class="item" v-for="item in arr2" :key="item.id">{{item.name}}</div>
-							</transition-group>
-					</draggable>
-			</div>
-			<div class="col">
-					<div class="title">C列</div>
-					<draggable v-model="arr3" group="c" animation="100" dragClass="dragClass" ghostClass="ghostClass" chosenClass="chosenClass" @start="onStart" @end="onEnd">
-							<transition-group>
-									<div class="item" v-for="item in arr3" :key="item.id">{{item.name}}</div>
-							</transition-group>
-					</draggable>
-			</div>
-		</div> -->
-    <div class="row head-row">
+						</draggable>
+					</template>
+				</el-table-column>
+			</template>
+		</el-table>
+    <!-- <div class="row head-row">
       <div class="item">故事({{ menus.length }})</div>
 			<template v-for="(type, tt) in taskType">
       	<div class="item status" :key="tt">{{type.label}} ({{ type.number }})</div>
@@ -35,46 +73,29 @@
     <div class="menu-body">
       <div class="row menu—row" v-for="(menu, index) in menus" :key="index">
         <div class="item item-menu">
-        	<span>
-						{{menu.sortLevel}}&nbsp;
-						<!-- <el-dropdown @command="handleCommand" v-if=" isTaskCenter!='1'   && isMy!='1'">
-							<span class="el-dropdown-link">
-								<el-button size="mini" circle><i class="el-icon-plus"></i></el-button>
-							</span>
-							<el-dropdown-menu slot="dropdown">
-								<el-dropdown-item :command="{type:'showMenu',data:menu}">+由故事创建子任务(推荐)</el-dropdown-item>
-								<el-dropdown-item :command="{type:'showSubAdd',data:menu}">+子任务</el-dropdown-item>
-								<el-dropdown-item :command="{type:'showTaskTemplate',data:menu}">+从模板批量导入子任务</el-dropdown-item>
-								<el-dropdown-item :command="{type:'handleDel',data:menu}" icon="el-icon-delete">删除</el-dropdown-item>
-							</el-dropdown-menu>
-						</el-dropdown> -->
-						<el-tag v-if="menu.level<='2'" type="info">轻微</el-tag>
-						<el-tag v-else-if="menu.level=='3'" type="warning">一般</el-tag>
-						<el-tag v-else-if="menu.level=='4'" type="danger">紧急</el-tag>
-						<el-tag v-else type="danger">特急</el-tag> 
-						<span v-for="(item ,index) in [formatExeUsernames(menu)]" :key="index">
-
-							<el-tooltip :content="item.exeUsernames" ><el-link     :type="item.type"     @click.stop="showExecusers(menu)">{{item.showMsg}}</el-link></el-tooltip>
-								
-						</span>
-						<el-tooltip content="进度"><el-link style="border-radius:30px;" :type="menu.rate>=100?'success':'warning'" @click="drawerVisible=true"> {{ (menu.rate!=null?menu.rate:0)+'%'}} </el-link></el-tooltip>
-						<el-tooltip content="预算金额、工时"><el-tag type="info">{{parseFloat(menu.budgetCost/10000).toFixed(2)}}万,{{menu.budgetWorkload}}人时</el-tag></el-tooltip>
-						<el-link  type="primary"  @click.stop="showDrawer(menu)">{{menu.name}}</el-link>
-					</span>
+					{{menu.name}} {{menu.menuId}}
         </div>
         <div class="item status" v-for="(type, tt) in taskType" :key="tt">
           <draggable
 						v-model="tasks[menu.menuId][tt]"
             :name="menu.menuId"
-						@start="onStart" @end="onEnd" :move="onMove"
+						:sort="false"
+						@start="onStart" @end="onEnd" @unchoose="onUnchoose"
+						@change="handleRemove"
+						:move="onMove"
 						:options="{group: menu.menuId}"
 						class="draggable"
 						animation="300"
 						scroll
+						scrollSensitivity="80"
+						scrollSpeed="80"
           >
             <transition-group class="transition-group" :data-menu-id="menu.menuId" :data-task-state="type.status">
+							<template v-if="drag.menuId && drag.menuId === menu.menuId && drag.taskState !== type.status">
+								<div class="drag-to-box">{{type.label}}</div>
+							</template>
               <template
-                v-if="tasks && tasks[menu.menuId][tt].length"
+                v-else-if="tasks && tasks[menu.menuId][tt].length"
               >
                 <div
 									:data-menu-id="menu.menuId"
@@ -82,21 +103,10 @@
 									:data-task-state="task.taskState"
                   class="task"
                   v-for="(task, t) in tasks[menu.menuId][tt]"
-                  :key="t"
+                  :key="task.id"
                 >
 									<span>
 										{{task.sortLevel}}&nbsp;
-										<!-- <el-dropdown @command="handleCommand" v-if=" isTaskCenter!='1'   && isMy!='1'">
-											<span class="el-dropdown-link">
-												<el-button size="mini" circle><i class="el-icon-plus"></i></el-button>
-											</span>
-											<el-dropdown-menu slot="dropdown">
-												<el-dropdown-item :command="{type:'showMenu',data:task}">+由故事创建子任务(推荐)</el-dropdown-item>
-												<el-dropdown-item :command="{type:'showSubAdd',data:task}">+子任务</el-dropdown-item>
-												<el-dropdown-item :command="{type:'showTaskTemplate',data:task}">+从模板批量导入子任务</el-dropdown-item>
-												<el-dropdown-item :command="{type:'handleDel',data:task}" icon="el-icon-delete">删除</el-dropdown-item>
-											</el-dropdown-menu>
-										</el-dropdown> -->
 										<el-tag v-if="task.level<='2'" type="info">轻微</el-tag>
 										<el-tag v-else-if="task.level=='3'" type="warning">一般</el-tag>
 										<el-tag v-else-if="task.level=='4'" type="danger">紧急</el-tag>
@@ -116,7 +126,7 @@
           </draggable>
         </div>
       </div>
-    </div>
+    </div> -->
   </section>
 </template>
 
@@ -126,7 +136,7 @@ import { editXmTask } from '@/api/xm/core/xmTask';
 
 export default {
   name: "XmTaskAgileKanban",
-  props: ["xmTasks"],
+  props: ["xmTasks", "tableHeight"],
   data() {
     return {
       taskType: [
@@ -136,38 +146,14 @@ export default {
         { label: "已结算", status: 3, number: 0 },
       ],
       tasks: {},
-			drag: false,
-			arr1: [
-					{ id: 1, name: 'www.itxst.com' },
-					{ id: 2, name: 'www.jd.com' },
-					{ id: 3, name: 'www.baidu.com' },
-					{ id: 4, name: 'www.taobao.com' }
-			],
-			arr2: [
-					{ id: 1, name: 'www.google.com' },
-					{ id: 2, name: 'www.msn.com' },
-					{ id: 3, name: 'www.ebay.com' },
-					{ id: 4, name: 'www.yahoo.com' }
-			],
-			arr3: [
-					{ id: 1, name: 'item 1' },
-					{ id: 2, name: 'item 2' },
-					{ id: 3, name: 'item 3' },
-					{ id: 4, name: 'item 4' }
-			]
+			drag: {
+				menuId: '',
+				state: '',
+			},
     };
   },
   components: { draggable },
-  watch: {
-		tasks: {
-			handler(val, oldVal) {
-				console.log('tasks--val==', val);
-				console.log('tasks--oldVal==', oldVal);
-			},
-			deep: true,
-			immediate: true
-		}
-	},
+  watch: {},
   computed: {
     menus() {
       let xmTasks = JSON.parse(JSON.stringify(this.xmTasks || []));
@@ -182,9 +168,7 @@ export default {
         if (!menus.length || !menuIds[d.menuId]) {
           menus.push(d);
           menuIds[d.menuId] = true;
-        } else {
-					console.log('i==', i);
-				}
+        }
         if (!tasks[d.menuId]) {
 					tasks[d.menuId] = [[], [], [], []];
         }
@@ -192,30 +176,46 @@ export default {
 				this.taskType[parseInt(d.taskState)].number += 1;
 			});
       this.tasks = tasks;
-			console.log('this.tasks==', this.tasks);
       return menus;
     },
   },
   methods: {
+		onMove(e) {
+			console.log('onMove--e==', e);
+			let targetEl = { ...e.dragged.dataset };
+			let toEl = { ...e.to.dataset };
+			if (targetEl.menuId === toEl.menuId && targetEl.taskState !== toEl.taskState) {
+				console.log('onMove--true');
+				return true;
+			}
+			console.log('onMove--false');
+			return false;
+		},
     onStart(e) {
 			console.log('onStart--e==', e);
-			this.drag = true;
+			let targetEl = { ...e.item.dataset };
+			this.drag = { ...targetEl };
+			console.log('onStart--targetEl==', targetEl);
 		},
 		onEnd(e) {
 			console.log('onEnd--e==', e);
-      this.drag = false;
+      this.drag = {};
 			// targetEl：拖拽的任务数据; toEl拖拽后的位置.
 			let targetEl = { ...e.item.dataset };
 			let toEl = { ...e.to.dataset };
 			console.log('onEnd--targetEl==', targetEl, toEl);
 			if (targetEl.menuId === toEl.menuId && targetEl.taskState !== toEl.taskState) {
+				console.log('onEnd--拖拽有效更新状态');
 				let task = this.xmTasks.find(d => d.id === targetEl.taskId);
-				console.log('onEnd--task==', task);
 				const params = { ...task, taskState: toEl.taskState };
 				editXmTask(params).then(res => {
 					console.log('onEnd--editXmTask--res==', res);
 					this.$emit('submit');
 				})
+				console.log('onEnd--this.tasks==', this.tasks);
+			} else {
+				console.log('onEnd--false--this.tasks==', this.tasks);
+				return false
 			}
 		},
 		formatExeUsernames(row){
@@ -259,14 +259,16 @@ export default {
 </script>
 <style lang='scss' scoped>
 .menu-box {
+	height: auto;
   width: 100%;
   overflow: scroll;
+	padding: 0 20px;
 }
 .row {
   width: 2000px;
   display: flex;
   flex-direction: row;
-  overflow: scroll !important;
+  overflow: scroll;
   border-top: 1px solid #ccc;
   .item {
     width: 200px;
@@ -299,26 +301,43 @@ export default {
       width: 200px;
       height: 100px;
       margin: 10px 0 0 10px;
-      // padding: 10px;
       cursor: pointer;
       position: relative;
       overflow: hidden;
       border-radius: 3px;
-      // box-shadow: 0 2px 12px 0 rgb(48 48 48 / 5%), 0 2px 4px 0 rgb(48 48 48 / 10%);
-
       background-color: #fff;
     }
   }
 }
 
 .draggable {
+	display: flex;
+	flex-wrap: wrap;
 	min-height: 100px;
 	width: 100%;
+}
+.el-table {
+	/deep/ .el-table__row {
+		background: #f6f6f6;
+		.menu-name {
+			background: #fff !important;
+		}
+		td {
+			height: 100%;
+			vertical-align: top;
+		}
+
+	}
 }
 .transition-group {
 	display: flex;
 	flex-wrap: wrap;
 	min-height: 100px;
 	width: 100%;
+	.task {
+		width: 200px;
+		background: #fff;
+		margin: 10px 0 0 10px;
+	}
 }
 </style>
