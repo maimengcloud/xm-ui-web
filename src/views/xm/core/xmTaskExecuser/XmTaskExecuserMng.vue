@@ -1,49 +1,49 @@
 <template>
 	<section>
 		<div class="exec-navbar">
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
+			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTaskExecusers">查询</el-button>
-			<el-button type="primary"  @click="toJoin">我要加入</el-button> 
-			<el-button type="primary"  @click="showAdd">邀请他人加入</el-button>  
+			<el-button type="primary"  @click="toJoin">我要加入</el-button>
+			<el-button type="primary"  @click="showAdd">邀请他人加入</el-button>
 			<!-- <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button>  -->
 		</div>
-		<el-row class="page-main page-height-90"> 
+		<el-row class="page-main page-height-90">
 			<!--列表 XmTaskExecuser xm_task_execuser-->
 			<el-table ref="table" :height="tableHeight" :data="xmTaskExecusers" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				 <el-table-column type="expand">
 					<template slot-scope="props">
 						<el-form label-position="left"  class="demo-table-expand">
 							<el-form-item label="报价">
-								工作量：<span>{{ props.row.quoteWorkload }} 人时</span> 金额：<span>{{ props.row.name }}元</span>
+								工作量：<span>{{ props.row.quoteWorkload }} 人时</span> 金额：<span>{{ props.row.quoteAmount }}元</span>
 							</el-form-item>
 							<el-form-item label="报价工期">
 								<span>{{ props.row.quoteWeekday }} 天 :{{props.row.quoteStartTime }}~{{props.row.quoteEndTime}}</span>
-							</el-form-item> 
+							</el-form-item>
 							<el-form-item label="匹配指数">
 								<span>{{ props.row.matchScore }}</span>
 							</el-form-item>
 							<el-form-item label="技能说明">
 								<span>{{ props.row.skillRemark }}</span>
-							</el-form-item>  
+							</el-form-item>
 							<el-form-item label="备注说明">
 								<span>{{ props.row.remarks }}</span>
-							</el-form-item>  
+							</el-form-item>
 							<el-form-item  label="操作">
 								<el-button type="primary" v-if="props.row.status=='1'" @click="toTest(props.row)">申请验收</el-button>
 								<el-button type="primary" v-if="props.row.status=='4'" @click="toTest(props.row)">再申请验收</el-button>
 
 								<!--结算状态0未结算1已部分结算2无需结算4已申请结算5结算失败6已全部结算-->
-								<el-button type="primary"  v-if="props.row.status=='3' && props.row.settleStatus!='2' && props.row.settleStatus!='4' && props.row.settleStatus!='6' " @click="settle" >申请结算</el-button> 
-								<el-button type="success"  v-if="props.row.status=='2' " @click="testSuccess(props.row)" >验收通过</el-button>  
-								<el-button type="warning"  v-if="props.row.status=='2' " @click="testFail(props.row)" >验收不通过</el-button>  
+								<el-button type="primary"  v-if="props.row.status=='3' && props.row.settleStatus!='2' && props.row.settleStatus!='4' && props.row.settleStatus!='6' " @click="settle(props.row)" >申请结算</el-button>
+								<el-button type="success"  v-if="props.row.status=='2' " @click="testSuccess(props.row)" >验收通过</el-button>
+								<el-button type="warning"  v-if="props.row.status=='2' " @click="testFail(props.row)" >验收不通过</el-button>
 
-								<el-button type="primary" v-if="props.row.status=='7' " @click="becomeCandidate(props.row)">成为候选人</el-button>  
-								<el-button type="danger" v-if="props.row.status=='7' " @click="handleDel(props.row)">删除</el-button>   
-								<el-button type="warning" v-if="props.row.status=='0'"  @click="showQuotePrice(props.row)">修改报价信息</el-button> 
-								<el-button type="primary" v-if="props.row.status=='0'"   @click="execute(props.row)">成为执行人</el-button> 
-								<el-button type="warning" v-if="props.row.status!='7' " @click="leave(props.row)">离开任务</el-button> 
-								<el-button type="primary" v-if="props.row.status=='3' || props.row.status=='6' "  @click="showSettleList(props.row)">结算清单</el-button> 
-		
+								<el-button type="primary" v-if="props.row.status=='7' " @click="becomeCandidate(props.row)">成为候选人</el-button>
+								<el-button type="danger" v-if="props.row.status=='7' " @click="handleDel(props.row)">删除</el-button>
+								<el-button type="warning" v-if="props.row.status=='0'"  @click="showQuotePrice(props.row)">修改报价信息</el-button>
+								<el-button type="primary" v-if="props.row.status=='0'"   @click="execute(props.row)">成为执行人</el-button>
+								<el-button type="warning" v-if="props.row.status!='7' " @click="leave(props.row)">离开任务</el-button>
+								<el-button type="primary" v-if="props.row.status=='3' || props.row.status=='6' "  @click="showSettleList(props.row)">结算清单</el-button>
+
 							</el-form-item>
 						</el-form>
 					</template>
@@ -52,26 +52,26 @@
 					<template slot-scope="scope">
 						<div>
 						{{scope.row.username}} <el-tag type="info">{{scope.row.quoteStartTime }}~{{scope.row.quoteEndTime}}</el-tag> <el-tooltip  content="报价金额"><el-tag type="danger">{{scope.row.quoteAmount}}元</el-tag></el-tooltip>
-						<el-popover trigger="hover" 
+						<el-popover trigger="hover"
 							width="400" >
 							<el-row>
 									<el-button type="primary" v-if="scope.row.status=='1'" @click="toTest(scope.row)">申请验收</el-button>
 									<el-button type="primary" v-if="scope.row.status=='4'" @click="toTest(scope.row)">再申请验收</el-button>
 
 									<!--结算状态0未结算1已部分结算2无需结算4已申请结算5结算失败6已全部结算-->
-									<el-button type="primary"  v-if="scope.row.status=='3' && scope.row.settleStatus!='2' && scope.row.settleStatus!='4' && scope.row.settleStatus!='6' " @click="settle" >申请结算</el-button> 
-									<el-button type="success"  v-if="scope.row.status=='2' " @click="testSuccess(scope.row)" >验收通过</el-button>  
-									<el-button type="warning"  v-if="scope.row.status=='2' " @click="testFail(scope.row)" >验收不通过</el-button>  
+									<el-button type="primary"  v-if="scope.row.status=='3' && scope.row.settleStatus!='2' && scope.row.settleStatus!='4' && scope.row.settleStatus!='6' " @click="settle(scope.row)" >申请结算</el-button>
+									<el-button type="success"  v-if="scope.row.status=='2' " @click="testSuccess(scope.row)" >验收通过</el-button>
+									<el-button type="warning"  v-if="scope.row.status=='2' " @click="testFail(scope.row)" >验收不通过</el-button>
 
-									<el-button type="primary" v-if="scope.row.status=='7' " @click="becomeCandidate(scope.row)">成为候选人</el-button>  
-									<el-button type="danger" v-if="scope.row.status=='7' " @click="handleDel(scope.row)">删除</el-button>   
-									<el-button type="warning" v-if="scope.row.status=='0'"  @click="showQuotePrice(scope.row)">修改报价信息</el-button> 
-									<el-button type="primary" v-if="scope.row.status=='0'"   @click="execute(scope.row)">成为执行人</el-button> 
-									<el-button type="warning" v-if="scope.row.status!='7' " @click="leave(scope.row)">离开任务</el-button> 
-									<el-button type="primary" v-if="scope.row.status=='3' || scope.row.status=='6' "  @click="showSettleList(scope.row)">结算清单</el-button> 
-								 
-							</el-row> 
-								<font slot="reference"> 
+									<el-button type="primary" v-if="scope.row.status=='7' " @click="becomeCandidate(scope.row)">成为候选人</el-button>
+									<el-button type="danger" v-if="scope.row.status=='7' " @click="handleDel(scope.row)">删除</el-button>
+									<el-button type="warning" v-if="scope.row.status=='0'"  @click="showQuotePrice(scope.row)">修改报价信息</el-button>
+									<el-button type="primary" v-if="scope.row.status=='0'"   @click="execute(scope.row)">成为执行人</el-button>
+									<el-button type="warning" v-if="scope.row.status!='7' " @click="leave(scope.row)">离开任务</el-button>
+									<el-button type="primary" v-if="scope.row.status=='3' || scope.row.status=='6' "  @click="showSettleList(scope.row)">结算清单</el-button>
+
+							</el-row>
+								<font slot="reference">
 										<el-link type="primary" v-if="scope.row.status=='0'">候选中({{formatToDoByStatus(scope.row)}})</el-link>
 										<el-link type="success" v-else-if="scope.row.status=='1'">执行中({{formatToDoByStatus(scope.row)}})</el-link>
 										<el-link type="warning" v-else-if="scope.row.status=='2'">验收中({{formatToDoByStatus(scope.row)}})</el-link>
@@ -81,20 +81,20 @@
 										<el-link type="success" v-else-if="scope.row.status=='6'">已结算完毕({{formatToDoByStatus(scope.row)}})</el-link>
 										<el-link type="info" v-else-if="scope.row.status=='7'">已放弃任务({{formatToDoByStatus(scope.row)}})</el-link>
 										<el-link type="danger" v-else-if="scope.row.status=='8'">黑名单({{formatToDoByStatus(scope.row)}})</el-link>
-										<el-link type="primary" v-else>新建</el-link> 
+										<el-link type="primary" v-else>新建</el-link>
 								</font>
-							
+
 						</el-popover>
 						</div>
 					</template>
-				</el-table-column>   
- 				<el-table-column prop="settleStatus" label="结算" min-width="80"> 
-					<template slot-scope="scope"> 
+				</el-table-column>
+ 				<el-table-column prop="settleStatus" label="结算" min-width="80">
+					<template slot-scope="scope">
 						<el-tag type="success" v-if="scope.row.settleStatus=='1'">已部分结算</el-tag>
-						<el-tag type="success" v-else-if="scope.row.settleStatus=='2'">无需结算</el-tag> 
+						<el-tag type="success" v-else-if="scope.row.settleStatus=='2'">无需结算</el-tag>
 						<el-tag type="warning" v-else-if="scope.row.settleStatus=='4'">结算审批中</el-tag>
 						<el-tag type="danger" v-else-if="scope.row.settleStatus=='5'">结算失败</el-tag>
-						<el-tag type="success" v-else-if="scope.row.settleStatus=='6'">已全部结算完毕</el-tag> 
+						<el-tag type="success" v-else-if="scope.row.settleStatus=='6'">已全部结算完毕</el-tag>
 						<el-tooltip v-else content="验收通过后可以申请结算">
 							<el-tag type="primary" >未开始结算</el-tag>
 						</el-tooltip>
@@ -107,13 +107,13 @@
 						<el-tooltip   content="结算时间">
 							{{scope.row.settleTime}}
 						</el-tooltip>
-						
-					</template>
-				 </el-table-column> 
-			</el-table>
-			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 
-			<el-drawer append-to-body title="结算" :visible.sync="settleVisible" width="40%" :close-on-click-modal="false"> 
+					</template>
+				 </el-table-column>
+			</el-table>
+			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+
+			<el-drawer append-to-body title="结算" :visible.sync="settleVisible" width="40%" :close-on-click-modal="false">
 				<el-form :model="settleForm" label-width="100px" ref="settleForm" class="settleForm">
 					<el-form-item label="执行人名称">
 						<span>{{ editForm.username }}</span>
@@ -137,14 +137,14 @@
 						</el-select>
 					</el-form-item>
 					<el-form-item>
-						<el-button @click.native="handleSettleCancel">取消</el-button>   
-						<el-button v-loading="load.edit"  @click.native="fillQuotePriceToSettleForm" :disabled="load.edit==true">按报价信息填充</el-button>  
- 						<el-button icon="el-icon-success"  type="success" @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_task_execuser_settle_approva'})">结算申请</el-button>    
+						<el-button @click.native="handleSettleCancel">取消</el-button>
+						<el-button v-loading="load.edit"  @click.native="fillQuotePriceToSettleForm" :disabled="load.edit==true">按报价信息填充</el-button>
+ 						<el-button icon="el-icon-success"  type="success" @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_task_execuser_settle_approva'})">结算申请</el-button>
 					</el-form-item>
-				</el-form> 
+				</el-form>
 			</el-drawer>
 			<el-drawer append-to-body title="报价" :visible.sync="quotePriceVisible" size="60%" :close-on-click-modal="false">
-				<el-form :model="quotePriceForm" label-width="100px" ref="quotePriceForm">  
+				<el-form :model="quotePriceForm" label-width="100px" ref="quotePriceForm">
 					<el-form-item label="候选人名称">
 						<span>{{ quotePriceForm.username }}</span>
 					</el-form-item>
@@ -164,42 +164,42 @@
 							:default-time="['00:00:00','23:59:59']"
 							:picker-options="pickerOptions"
 						></el-date-picker>
-						</div> 
+						</div>
 						<el-tag>原来{{editForm.quoteWeekday}},任务要求{{xmTask.startTime}}~{{xmTask.endTime}}</el-tag>
-					</el-form-item>  
+					</el-form-item>
 					<el-form-item label="报价工作量" prop="quoteWorkload">
 						<el-input v-model="quotePriceForm.quoteWorkload" type="number" placeholder="报价工作量（人时）" ></el-input>
 						<el-tag>原来{{editForm.quoteWorkload}},任务预估{{xmTask.budgetWorkload}}</el-tag>
-					</el-form-item> 
+					</el-form-item>
 					<el-form-item label="报价金额" prop="quoteAmount">
 						<el-input v-model="quotePriceForm.quoteAmount" type="number" placeholder="报价金额" ></el-input>
 						<el-tag>原来{{editForm.quoteAmount}},任务预算{{xmTask.budgetCost}}</el-tag>
-					</el-form-item> 
+					</el-form-item>
 					<el-form-item label="擅长技能" prop="skillRemark">
 						<el-input type="textarea" :row="3" v-model="quotePriceForm.skillRemark" placeholder="擅长技能" ></el-input>
-					</el-form-item> 
-					<el-form-item> 
-						<el-button @click.native="quotePriceVisible=false">取消</el-button>  
-						<el-button v-loading="load.edit"   @click.native="fillTaskBudgetInfoToQuotePriceForm" :disabled="load.edit==true">按任务预算填充</el-button>  
- 						<el-button v-loading="load.edit" type="primary" @click.native="handleQuotePrice" :disabled="load.edit==true">提交</el-button>  
+					</el-form-item>
+					<el-form-item>
+						<el-button @click.native="quotePriceVisible=false">取消</el-button>
+						<el-button v-loading="load.edit"   @click.native="fillTaskBudgetInfoToQuotePriceForm" :disabled="load.edit==true">按任务预算填充</el-button>
+ 						<el-button v-loading="load.edit" type="primary" @click.native="handleQuotePrice" :disabled="load.edit==true">提交</el-button>
 					</el-form-item>
 				</el-form>
 			</el-drawer>
-		
+
 			<!--编辑 XmTaskExecuser xm_task_execuser界面-->
 			<el-drawer append-to-body title="编辑任务执行人" :visible.sync="editFormVisible"  size="50%"  :close-on-click-modal="false">
 				<xm-task-execuser-edit :exec-user-list="xmTaskExecusers" :xm-task="xmTask"   :xm-task-execuser="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-task-execuser-edit>
 			</el-drawer>
-	
+
 			<!--新增 XmTaskExecuser xm_task_execuser界面-->
 			<el-drawer append-to-body title="新增任务执行人" :visible.sync="addFormVisible"  size="50%"  :close-on-click-modal="false">
 				<xm-task-execuser-add :exec-user-list="xmTaskExecusers" :xm-task="xmTask" :execuser-add-type="execuserAddType"  :xm-task-execuser="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-task-execuser-add>
-			</el-drawer> 
-			
+			</el-drawer>
+
 			<!--新增 XmTaskExecuser xm_task_execuser界面-->
 			<el-drawer append-to-body title="结算清单" :visible.sync="settleListVisible"  size="80%"  :close-on-click-modal="false">
 				<xm-project-m-cost-user-list :userid="editForm.userid" :project-id="this.editForm.projectId"   :task-id="editForm.taskId" :visible="settleListVisible" @cancel="settleListVisible=false" ></xm-project-m-cost-user-list>
-			</el-drawer> 
+			</el-drawer>
 		</el-row>
 	</section>
 </template>
@@ -214,15 +214,15 @@
 	import  XmTaskExecuserAdd from './XmTaskExecuserAdd';//新增界面
 	import  XmTaskExecuserEdit from './XmTaskExecuserEdit';//修改界面
 	import XmProjectMCostUserList from '../xmProjectMCostUser/XmProjectMCostUserList';
-	import { mapGetters } from 'vuex' 
-	import html2canvas from 'html2canvas' 
-	import { uploadBase64 } from '@/api/mdp/arc/image'; 
+	import { mapGetters } from 'vuex'
+	import html2canvas from 'html2canvas'
+	import { uploadBase64 } from '@/api/mdp/arc/image';
 
-	export default { 
+	export default {
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
-				]), 
+				]),
 		},
 		props: ["visible","xmTask","isMy"],
 		watch: {
@@ -249,24 +249,24 @@
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				options:{ 
+				options:{
 					projectTaskExecuserStatus:[],
 					projectTaskSettleStatus:[],
-				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
-				
+				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
+
 				addFormVisible: false,//新增xmTaskExecuser界面是否显示
 				//新增xmTaskExecuser界面初始化数据
 				addForm: {
 					createTime:'',id:'',taskId:'',userid:'',startTime:'',endTime:'',status:'',remarks:'',settleAmount:'',settleWorkload:'',settleStatus:'',settleTime:'',createUserid:'',createUsername:'',username:'',matchScore:'',quoteWeekday:'',quoteAmount:'',quoteTime:'',bizProcInstId:'',bizFlowState:'',projectId:'',projectPhaseId:'',skillRemark:'',quoteWorkload:'',quoteStartTime:'',quoteEndTime:'',branchId:'',projectPhaseName:'',taskName:''
 				},
-				
+
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmTaskExecuser界面初始化数据
 				editForm: {
 					createTime:'',id:'',taskId:'',userid:'',startTime:'',endTime:'',status:'',remarks:'',settleAmount:'',settleWorkload:'',settleStatus:'',settleTime:'',createUserid:'',createUsername:'',username:'',matchScore:'',quoteWeekday:'',quoteAmount:'',quoteTime:'',bizProcInstId:'',bizFlowState:'',projectId:'',projectPhaseId:'',skillRemark:'',quoteWorkload:'',quoteStartTime:'',quoteEndTime:'',branchId:'',projectPhaseName:'',taskName:''
 				},
 				/**begin 自定义属性请在下面加 请加备注**/
- 
+
 				settleVisible: false,
 				settleForm: {
 					settleAmount: '',settleWorkload: '', settleStatus: '',
@@ -274,20 +274,20 @@
 				settleListVisible:false,
 				quotePriceForm: {
 					quoteAmount: '',quoteWorkload: '', skillRemark: '',quoteStartTime:'',quoteEndTime:'',id:'',userid:'',usernane:'',taskId:'',
-				}, 
+				},
 				quotePriceVisible:false,
 				readyAdd: [],
 				quoteDateRanger: [
-				],  
+				],
 				execuserAddType:'add',//add为新增 join为当前登陆者加入
 				pickerOptions:  util.pickerOptions('datarange'),
 				tableHeight:300,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
-		methods: { 
-			handleSizeChange(pageSize) { 
-				this.pageInfo.pageSize=pageSize; 
+		methods: {
+			handleSizeChange(pageSize) {
+				this.pageInfo.pageSize=pageSize;
 				this.getXmTaskExecusers();
 			},
 			handleCurrentChange(pageNum) {
@@ -309,7 +309,7 @@
 				this.getXmTaskExecusers();
 			},
 			searchXmTaskExecusers(){
-				 this.pageInfo.count=true; 
+				 this.pageInfo.count=true;
 				 this.getXmTaskExecusers();
 			},
 			//获取列表 XmTaskExecuser xm_task_execuser
@@ -322,9 +322,9 @@
 				};
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
-					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
+					for(var i=0;i<this.pageInfo.orderFields.length;i++){
 						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
-					}  
+					}
 					params.orderBy= orderBys.join(",")
 				}
 				if(this.filters.key!==""){
@@ -344,14 +344,14 @@
 				}
 				listXmTaskExecuser(params).then((res) => {
 					var tips=res.data.tips;
-					if(tips.isOk){ 
+					if(tips.isOk){
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
 						this.xmTaskExecusers = res.data.data;
 						this.$emit("loadExecUserList",this.xmTaskExecusers);
 					}else{
 						this.$message({showClose: true, message: tips.msg, type: 'error' });
-					} 
+					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			},
@@ -388,12 +388,12 @@
 				}
 				return count;
 			},
-			showQuotePrice(row){ 
+			showQuotePrice(row){
 				this.editForm=row
-				this.quotePriceForm=Object.assign({},row); 
+				this.quotePriceForm=Object.assign({},row);
 				this.quoteDateRanger=[];
 				this.quoteDateRanger.push(this.quotePriceForm.quoteStartTime);
-				this.quoteDateRanger.push(this.quotePriceForm.quoteEndTime); 
+				this.quoteDateRanger.push(this.quotePriceForm.quoteEndTime);
 				this.quotePriceVisible=true;
 			},
 			afterAddSubmit(){
@@ -408,30 +408,30 @@
 				this.getXmTaskExecusers();
 				this.$emit("after-edit-submit",this.editForm);
 			},
-			afterDeleteSubmit(){ 
+			afterDeleteSubmit(){
 				this.getXmTaskExecusers();
 				this.$emit("after-delete-submit");
 			},
 			//选择行xmTaskExecuser
-			selsChange: function (sels) { 
+			selsChange: function (sels) {
 				this.sels = sels;
-			}, 
+			},
 			//删除xmTaskExecuser
-			handleDel: function (row,index) { 
+			handleDel: function (row,index) {
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					let params = row;
 					params.taskName=this.xmTask.name;
 					delXmTaskExecuser(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if(tips.isOk){ 
+						if(tips.isOk){
 							this.pageInfo.count=true;
 							this.afterDeleteSubmit();
  						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -439,13 +439,13 @@
 			batchDel: function () {
 				this.$confirm('确认删除选中记录吗？', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					batchDelXmTaskExecuser(this.sels).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if( tips.isOk ){ 
-							this.pageInfo.count=true; 
+						if( tips.isOk ){
+							this.pageInfo.count=true;
 							this.afterDeleteSubmit();
 						}
 						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
@@ -457,15 +457,15 @@
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
 			/**begin 自定义函数请在下面加**/
-			
+
 			checkSelectable(row,index){
 				return row.status != 2;
 			},
-			leave(row) { 
+			leave(row) {
 				row.taskName=this.xmTask.name
 				var selExec = [row].filter(i=>i.status !="7");
 				if(selExec.length > 0){
-					this.$confirm('确定离开任务吗？', '提示', {}).then(() => { 
+					this.$confirm('确定离开任务吗？', '提示', {}).then(() => {
 						this.load.edit=true;
 						leaveTask(selExec).then((res) => {
 							this.load.edit=false
@@ -473,7 +473,7 @@
 							if(tips.isOk){
 								this.afterEditSubmit();
  							}
-							this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+							this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 						}).catch( err =>this.load.edit=false);
 					});
 				}
@@ -481,7 +481,7 @@
 			execute(row) {
 				row.taskName=this.xmTask.name
  				if( row && row.status=="0"){
-					this.$confirm('确定变更为执行人吗？', '提示', {}).then(() => { 
+					this.$confirm('确定变更为执行人吗？', '提示', {}).then(() => {
 						this.load.edit=true;
 						beExecutor(row).then((res) => {
 							this.load.edit=false
@@ -489,7 +489,7 @@
 							if(tips.isOk){
 								this.afterEditSubmit();
 							}
-							this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+							this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 						}).catch( err =>this.load.edit=false);
 					});
 				}else if(row.status=="1"){
@@ -503,8 +503,8 @@
 				}
 			},
 			settle(row) {
-				this.editForm=row 
-				this.settleVisible = true; 
+				this.editForm=row
+				this.settleVisible = true;
 			},
 
 			handleSettle() {
@@ -512,7 +512,7 @@
 				selExec.forEach(l=>{
 					l = Object.assign(l,this.settleForm);
 				});
-				this.$confirm('确定结算吗？', '提示', {}).then(() => { 
+				this.$confirm('确定结算吗？', '提示', {}).then(() => {
 					this.load.edit=true;
 					settleExec(selExec).then((res) => {
 						this.load.edit=false
@@ -522,17 +522,17 @@
 							this.$refs['settleForm'].resetFields();
 							this.afterEditSubmit();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err =>this.load.edit=false);
 				});
 			},
-			
+
 			handleQuotePrice() {
 				if(this.quoteDateRanger.length==2){
-					this.quotePriceForm.quoteStartTime=this.quoteDateRanger[0] 
+					this.quotePriceForm.quoteStartTime=this.quoteDateRanger[0]
 					this.quotePriceForm.quoteEndTime=this.quoteDateRanger[1]
 				}
-				this.$confirm('确定提交报价吗？', '提示', {}).then(() => { 
+				this.$confirm('确定提交报价吗？', '提示', {}).then(() => {
 					this.load.edit=true;
 					quotePrice(this.quotePriceForm).then((res) => {
 						this.load.edit=false
@@ -541,7 +541,7 @@
 							this.quotePriceVisible = false;
 							this.afterEditSubmit();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err =>this.load.edit=false);
 				});
 			},
@@ -556,17 +556,17 @@
 				if(!this.quotePriceForm.quoteWeekday){
 					this.quotePriceForm.quoteWeekday=this.getWeekday(new Date(this.quotePriceForm.quoteStartTime),new Date(this.quotePriceForm.quoteEndTime));
 				}
-				
+
 			},
 			fillQuotePriceToSettleForm(){
 				this.settleForm.settleAmount=this.editForm.quoteAmount
-				this.settleForm.settleWorkload=this.editForm.quoteWorkload 
+				this.settleForm.settleWorkload=this.editForm.quoteWorkload
 			},
 			handleSettleCancel() {
 				this.settleVisible = false;
 				this.$refs['settleForm'].resetFields();
 			},
-			formatterOption: function(row,column,cellValue, index){ 
+			formatterOption: function(row,column,cellValue, index){
 				var columnName=column.property;
 				var key="";
 				if(columnName=='status'){
@@ -597,11 +597,11 @@
 					if(tips.isOk){
 						this.getXmTaskExecusers();
 					}
-					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 
 				})
 			},
-			
+
 			testSuccess:function(row){
 				var params=row;
 				testSuccess(params).then(res=>{
@@ -609,11 +609,11 @@
 					if(tips.isOk){
 						this.getXmTaskExecusers();
 					}
-					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 
 				})
 			},
-			
+
 			testFail:function(row){
 				var params=row;
 				testFail(params).then(res=>{
@@ -621,7 +621,7 @@
 					if(tips.isOk){
 						this.getXmTaskExecusers();
 					}
-					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 
 				})
 			},
@@ -634,23 +634,27 @@
 				if(row.mainTitle!=null && row.mainTitle!=""){
 					msgFields.push("流程【"+row.mainTitle+"】");
 				}
-				
+
 				if(row.taskName!=null && row.taskName!=""){
 					msgFields.push("当前环节【"+row.taskName+"】");
 				}
-				
+
 				if(row.assigneeName!=null && row.assigneeName!=""){
 					msgFields.push("执行人【"+row.assigneeName+"】");
 				}
-				
+
 				if(row.commentMsg!=null && row.commentMsg!=""){
 					msgFields.push("审批意见【"+row.commentMsg+"】");
 				}
 				var msg=msgFields.join(",");
 				return msg;
 			},
-			sendToProcessApprova:function(row,bizKey){ 
+			sendToProcessApprova:function(row,bizKey){
 				// 传过来的参数格式
+        if(this.settleForm.settleAmount==0||this.settleForm.settleAmount==''){
+          this.$message.error("结算金额为空/0，不允许发审");
+          return;
+        }
 				if(row.flowState=='1'){
 					this.$message.error("审核中，不允许重复发审");
 					return;
@@ -663,11 +667,11 @@
 				var branchId=this.userInfo.branchId
 
 				let extVars={projectId:projectId,taskId,taskExecuserId:row.id}
-				let jsonExtVars=JSON.stringify(extVars); 
+				let jsonExtVars=JSON.stringify(extVars);
 
 				var currDomain=window.location.protocol+"//"+window.location.host;
-				var fullPath=this.$route.fullPath; 
-				var bizUrl=currDomain+'/#'+fullPath+'?extVars='+jsonExtVars 
+				var fullPath=this.$route.fullPath;
+				var bizUrl=currDomain+'/#'+fullPath+'?extVars='+jsonExtVars
 
 
 				let params={
@@ -690,24 +694,24 @@
 							branchId:branchId,
 							username:row.username
 						}
-					}, 
+					},
 				}
 
 				if(bizKey=="xm_task_execuser_settle_approva"){
-					//延期审核 
+					//延期审核
 					params.mainTitle='['+row.username+']发起关于任务【'+projectName+'-'+taskName+"】结算申请";
 					params.mainContext='项目编号：'+projectId+','+'项目名称：'+projectName+',任务名称:'+taskName+',结算金额为:'+this.settleForm.settleAmount+',结算工作量为：'+this.settleForm.settleWorkload;
-					params.restUrl=config.getXmBasePath()+"/xm/core/xmTaskExecuser/processApprova"; 
-					this.$router.push({name:'ProcdefListForBizStart',params:params}); 
+					params.restUrl=config.getXmBasePath()+"/xm/core/xmTaskExecuser/processApprova";
+					this.$router.push({name:'ProcdefListForBizStart',params:params});
 					//this.html2canvas(document.querySelector(".settleForm"),row,params);
 				}else {
 					this.$message.error("不支持的审批事项");
 					return;
-				} 
-				
+				}
+
 				//this.$store.dispatch('addVisitedViews', {path:'/mdp/workflow/re/procdef/ProcdefListForBizStart',query:{params:jsonParmas}})
 			},
-			handleCommand(command) {   
+			handleCommand(command) {
 				if(command.type=='sendToProcessApprova'){
 					this.sendToProcessApprova(command.data,command.bizKey);
 				}else if(command.type=='showQuotePrice'){
@@ -727,18 +731,18 @@
 				}else if(command.type=='toJoin'){
 					this.editForm=command.data
 					this.toJoin();
-				}  
+				}
 			},
 			html2canvas(doc,row,params){
 				this.load.edit=true;
 				this.hideAllBtn(doc,true);
 				html2canvas(doc).then(canvas => {
-					
-					let dataURL = canvas.toDataURL("image/png"); 
-					uploadBase64({fileData:dataURL,categoryId:'workflow',storedb:'0',branchId:row.branchId,name:row.name+'.png'}).then(res=>{ 
+
+					let dataURL = canvas.toDataURL("image/png");
+					uploadBase64({fileData:dataURL,categoryId:'workflow',storedb:'0',branchId:row.branchId,name:row.name+'.png'}).then(res=>{
 						this.hideAllBtn(doc,false);
-						params.mainContext=params.mainContext+'<br><img style="max-width:100%;" src="'+res.data.data.url+'"/>' 
-						this.$router.push({name:'ProcdefListForBizStart',params:params}); 
+						params.mainContext=params.mainContext+'<br><img style="max-width:100%;" src="'+res.data.data.url+'"/>'
+						this.$router.push({name:'ProcdefListForBizStart',params:params});
 						this.load.edit=false;
 					});
 
@@ -747,14 +751,14 @@
 			hideAllBtn:function(doc,hide) {
                 var btns = doc.getElementsByTagName('button');
                 for (var i = 0; i < btns.length; i++) {
-					if(hide==true){ 
+					if(hide==true){
                     	btns[i].style.display='none'
 					}else{
 						btns[i].style.display=''
 					}
                  }
 			},
-			becomeCandidate(row){  
+			becomeCandidate(row){
 					this.editForm=row
 					 var params=JSON.parse(JSON.stringify(row));
 					 params.status="0"
@@ -762,27 +766,27 @@
 						var tips = res.data.tips;
 						if(tips.isOk){
 							this.afterEditSubmit();
-						} 
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						}
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 
-					}) 
-			}, 
-			 
-			setNoLeader(row){ 
+					})
+			},
+
+			setNoLeader(row){
 					this.editForm=row
 					 var params=JSON.parse(JSON.stringify(row));
 					 params.isLeader="0"
 					becomeCandidate(params).then(res=>{
 						var tips = res.data.tips;
 						if(tips.isOk){
-							this.afterEditSubmit(); 
-						} 
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+							this.afterEditSubmit();
+						}
+						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 
-					}) 
-			},  
+					})
+			},
 			formatToDoByStatus(row){
-				var status=row.status; 
+				var status=row.status;
 				var msg="点我操作"
 				if(status=='1'){
 					msg="请申请验收";
@@ -799,32 +803,32 @@
 				} else if( row.status=='4'){
 					msg="再次申请验收";
 				}
-				return msg;	
+				return msg;
 			}
 			/**end 自定义函数请在上面加**/
-			
+
 		},//end methods
-		components: { 
+		components: {
 		    'xm-task-execuser-add':XmTaskExecuserAdd,
 		    'xm-task-execuser-edit':XmTaskExecuserEdit,
-			
+
 			XmProjectMCostUserList,
 		    //在下面添加其它组件
 		},
-		mounted() { 
+		mounted() {
 			this.$nextTick(() => {
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
 				var subHeight=70/1000 * window.innerHeight;
 				if(this.selProject){
 					subHeight=100/1000 * window.innerHeight;
 				}
-				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
+				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight;
 				this.getXmTaskExecusers();
-				}); 
-				
+				});
+
 			listOption([{categoryId:'all',itemCode:'projectTaskExecuserStatus'},{categoryId:'all',itemCode:'projectTaskSettleStatus'}]).then(res=>{
 				this.options=res.data.data;
-			})	
+			})
 		}
 	}
 
