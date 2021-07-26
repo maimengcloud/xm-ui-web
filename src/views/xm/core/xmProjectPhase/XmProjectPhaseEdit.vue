@@ -7,6 +7,17 @@
 				<el-tab-pane label="阶段计划详情">
 					<!--新增界面 XmProjectPhase xm_project_phase-->
 					<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
+            <el-row class="border padding">
+              <el-steps :active="parseInt(editForm.phaseStatus)" simple finish-status="success" align-center>
+                <el-step @click.native="on_click(0)" title="初始"></el-step>
+                <el-step @click.native="on_click(1)" title="执行中"></el-step>
+                <el-step @click.native="on_click(2)" title="完工"></el-step>
+                <el-step @click.native="on_click(3)" title="关闭"></el-step>
+                <el-step @click.native="on_click(4)" title="删除中"></el-step>
+                <el-step @click.native="on_click(5)" title="已删除"></el-step>
+                <el-step @click.native="on_click(6)" title="暂停"></el-step>
+              </el-steps>
+            </el-row>
 						<el-row class="border padding">
 							<el-form-item label="阶段名称" prop="phaseName">
 								<el-input v-model="editForm.phaseName" placeholder="阶段名称" ></el-input>
@@ -219,7 +230,7 @@
 				oldeditForm:{},
 				//新增界面数据 xm_project_phase
 				editForm: {
-					id:'',phaseName:'',remark:'',parentPhaseId:'',branchId:'',taskType:'kf',planType:'m1',projectId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetInnerUserAt:'',phaseBudgetOutUserAt:'',projectBaselineId:'',bizProcInstId:'',bizFlowState:'',phaseBudgetWorkload:'',totalActWorkload:'',totalActNouserAt:'',totalActInerUserAt:'',totalActOutUserAt:'',planType:'',taskType:'',seqNo:'1',phaseBudgetInnerUserCnt:'',phaseBudgetOutUserCnt:'',phaseBudgetInnerUserPrice:80,phaseBudgetOutUserPrice:100,phaseBudgetInnerUserWorkload:0,phaseBudgetOutUserWorkload:0
+					id:'',phaseName:'',remark:'',parentPhaseId:'',branchId:'',taskType:'kf',planType:'m1',projectId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetInnerUserAt:'',phaseBudgetOutUserAt:'',projectBaselineId:'',bizProcInstId:'',bizFlowState:'',phaseBudgetWorkload:'',totalActWorkload:'',totalActNouserAt:'',totalActInerUserAt:'',totalActOutUserAt:'',seqNo:'1',phaseBudgetInnerUserCnt:'',phaseBudgetOutUserCnt:'',phaseBudgetInnerUserPrice:80,phaseBudgetOutUserPrice:100,phaseBudgetInnerUserWorkload:0,phaseBudgetOutUserWorkload:0,phaseStatus:''
 				},
 				dateRanger: [
 				],
@@ -354,6 +365,9 @@
 				this.editForm.phaseBudgetTotalCost=this.toFixed(this.autoParams.phaseBudgetTotalCost)
 
 			},
+      on_click(status){
+        this.editForm.phaseStatus=status;
+      }
 			/**end 在上面加自定义方法**/
 
 		},//end method

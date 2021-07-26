@@ -4,6 +4,18 @@
 			<el-tabs>
 				<el-tab-pane  label="故事详情">
 					<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
+            <el-row class="padding-bottom">
+              <el-steps :active="parseInt(editForm.status)" simple finish-status="success" align-center>
+                <el-step @click.native="on_click(0)" title="初始"></el-step>
+                <el-step @click.native="on_click(1)" title="设计中"></el-step>
+                <el-step @click.native="on_click(2)" title="开发中"></el-step>
+                <el-step @click.native="on_click(3)" title="测试中"></el-step>
+                <el-step @click.native="on_click(4)" title="uat测试"></el-step>
+                <el-step @click.native="on_click(5)" title="已上线"></el-step>
+                <el-step @click.native="on_click(6)" title="已下线"></el-step>
+                <el-step @click.native="on_click(7)" title="已删除"></el-step>
+              </el-steps>
+            </el-row>
 						<el-form-item label="序号" prop="seqNo">
 							<el-input v-model="editForm.seqNo" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input>
 						</el-form-item>
@@ -144,9 +156,11 @@ import XmMenuOverview from './XmMenuOverview.vue';
 			clearPmUser:function(){
 				this.editForm.mmUserid=''
 				this.editForm.mmUsername=''
-			}
+			},
 			/**begin 在下面加自定义方法,记得补上面的一个逗号**/
-
+      on_click(status){
+        this.editForm.status=status;
+      }
 			/**end 在上面加自定义方法**/
 
 		},//end method
