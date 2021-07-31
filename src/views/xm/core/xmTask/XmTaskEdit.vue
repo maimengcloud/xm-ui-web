@@ -368,6 +368,8 @@
 			onMenuSelected:function(menu){
 				this.editForm.menuId=menu.menuId
 				this.editForm.menuName=menu.menuName
+				this.editForm.productId=menu.productId
+				this.editForm.productName=menu.productName
 				this.menuVisible=false;
 			},
 			onTaskSkillsSelected(skills) {

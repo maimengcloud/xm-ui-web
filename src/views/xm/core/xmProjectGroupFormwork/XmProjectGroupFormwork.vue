@@ -294,6 +294,13 @@
 			//ok
 			addGroupName() {
 				let that = this;
+				if(!this.selProject || !this.selProject.id){
+					this.$message({showClose: true,
+						message:"未知项目，不允许添加小组",
+						type:   'error'
+					});
+					return false;
+				}
 				if(this.projectGroupType==null){
 					this.$message({showClose: true,
 						message:"项目小组类型为空，请选择小组类型后操作",
@@ -439,6 +446,8 @@
 			groupNameConfirm() {
 				this.isSels.forEach(i=>{
 					if(!this.xmProjectGroupFormworkSels.some(j=>j.groupName == i.groupName)){
+						i.projectId=this.selProject.id
+						i.projectName=this.selProject.name
 						this.xmProjectGroupFormworkSels.push(i);
 					}
 				});
