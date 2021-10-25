@@ -9,7 +9,7 @@
         <vue-editor :id="id" :branch-id="userInfo.branchId" :category-id="projectId+'-'+taskId" v-model="content"></vue-editor>
       </div>
       <div style="margin-top:20px;"></div>
-    <el-button @click="publish" class="toolbar"   type="primary">发布</el-button> <el-button @click="clearContent" style="margin-right: 0.25rem;" class="toolbar"   type="plain">清空内容</el-button> 
+    <el-button @click="publish" class="toolbar"   type="primary">发布</el-button> <el-button @click="clearContent" style="margin-right: 0.25rem;" class="toolbar"   type="plain">清空内容</el-button>
     </div>
   </div>
 </template>
@@ -17,7 +17,7 @@
 <script>
 import util from '@/common/js/util';//全局公共库
 import { mapGetters } from 'vuex';
-import VueEditor from '@/components/VueEditor';
+import VueEditor from '@/components/Tinymce/index';
 import {sn} from '@/common/js/sequence';
 export default {
   props:['id',"projectId","taskId",'user'],
@@ -34,13 +34,13 @@ export default {
   methods: {
     publish() {
       let params = {
-        content: this.content, 
+        content: this.content,
       }
       if(!this.content){
          this.$message.error("请输入内容再提交");
          return;
-      } 
-      this.$emit('publish',params); 
+      }
+      this.$emit('publish',params);
     },
     clearContent(){
       this.content="";

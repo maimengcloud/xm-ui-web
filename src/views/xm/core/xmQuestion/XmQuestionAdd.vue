@@ -5,45 +5,45 @@
 				<el-step title="已激活,待确认" description="创建后自动激活、关闭后重新激活)"></el-step>
 				<el-step title="已确认,待解决" description="业务确认缺陷后变为已确认"></el-step>
 				<el-step title="已解决,待关闭" description="开发修复缺陷后，变成已解决"></el-step>
-				<el-step title="已关闭(可重新激活)" description="测试通过后变为已关闭，已关闭缺陷可以重新激活"></el-step> 
+				<el-step title="已关闭(可重新激活)" description="测试通过后变为已关闭，已关闭缺陷可以重新激活"></el-step>
 			</el-steps>
 		</el-row>
-		<el-row class="page-main page-height-80 padding"> 
-			<el-form :model="addForm"  :rules="addFormRules" ref="addForm">  
+		<el-row class="page-main page-height-80 padding">
+			<el-form :model="addForm"  :rules="addFormRules" ref="addForm">
 						<el-form-item label="缺陷标题" prop="name">
 							<el-input v-model="addForm.name" placeholder="缺陷标题" ></el-input>
-						</el-form-item>   
+						</el-form-item>
 						<el-form-item label="隶属" prop="taskName">
-							<el-tooltip content="隶属项目"><el-tag :closable="!selProject" @click="showProjectList" @close.stop="clearProject">{{this.filters.selProject?this.filters.selProject.name:'未关联项目'}}</el-tag></el-tooltip> 
+							<el-tooltip content="隶属项目"><el-tag :closable="!selProject" @click="showProjectList" @close.stop="clearProject">{{this.filters.selProject?this.filters.selProject.name:'未关联项目'}}</el-tag></el-tooltip>
 							<el-divider direction="vertical"></el-divider>
 							<el-tooltip content="隶属任务"><el-tag  closable @click="showSelectTask" @close.stop="handleCloseTaskTag">{{addForm.taskName?addForm.taskName:'未关联任务'}}</el-tag> </el-tooltip>
 							<el-divider direction="vertical"></el-divider>
 							<el-tooltip content="隶属故事"><el-tag  closable @click="showSelectMenu" @close.stop="handleCloseMenuTag">{{addForm.menuName?addForm.menuName:"未关联故事"}}</el-tag></el-tooltip>
-						</el-form-item>   
+						</el-form-item>
 						<el-form-item label="缺陷属性" prop="priority">
 							<el-col :span="24">
 							<el-select v-model="addForm.priority" placeholder="请选择紧急程度">
-								<el-option v-for="(i,index) in options['urgencyLevel']" :label="i.optionName" :value="i.optionValue" :key="i.optionValue">{{i.optionName}}</el-option> 
-							</el-select> 
-							
+								<el-option v-for="(i,index) in options['urgencyLevel']" :label="i.optionName" :value="i.optionValue" :key="i.optionValue">{{i.optionName}}</el-option>
+							</el-select>
+
 							<el-select v-model="addForm.bugSeverity" placeholder="请选择严重程度">
-								<el-option v-for="(i,index) in options['bugSeverity']" :label="i.optionName" :value="i.optionValue" :key="i.optionValue">{{i.optionName}}</el-option> 
-							</el-select>  
-							
+								<el-option v-for="(i,index) in options['bugSeverity']" :label="i.optionName" :value="i.optionValue" :key="i.optionValue">{{i.optionName}}</el-option>
+							</el-select>
+
 							<el-select v-model="addForm.solution" placeholder="请选择解决方案">
-								<el-option v-for="(i,index) in options['bugSolution']" :label="i.optionName" :value="i.optionValue" :key="i.optionValue">{{i.optionName}}</el-option> 
-							</el-select>   
+								<el-option v-for="(i,index) in options['bugSolution']" :label="i.optionName" :value="i.optionValue" :key="i.optionValue">{{i.optionName}}</el-option>
+							</el-select>
 							</el-col>
-						</el-form-item>    
+						</el-form-item>
 						<el-form-item label="提出人" prop="askUsername">
-							<el-tag @click="showGroupUsers('askUsername')">{{addForm.askUsername?addForm.askUsername:'未关联提出人'}}</el-tag> 
+							<el-tag @click="showGroupUsers('askUsername')">{{addForm.askUsername?addForm.askUsername:'未关联提出人'}}</el-tag>
 							<el-tooltip content="最晚解决时间"><el-date-picker :clearable="false" style="width:150px;" type="date" placeholder="选择日期" v-model="addForm.endTime" value-format="yyyy-MM-dd" format="yyyy-MM-dd"></el-date-picker></el-tooltip>
-						</el-form-item> 
+						</el-form-item>
 						<el-form-item label="指派给" prop="handlerUsername">
 							{{addForm.handlerUsername}} <el-button @click="sendToAsk">指派给提出人</el-button><el-button @click="sendToCreater">指派给创建人</el-button><el-button @click="showGroupUsers('handlerUsername')">指派给其它人</el-button>
-						</el-form-item>   
-											
-						<el-form-item label="测试步骤" prop="opStep"> 
+						</el-form-item>
+
+						<el-form-item label="测试步骤" prop="opStep">
 							<el-tooltip content="点击切换为富文本编辑|普通文本">
 								<el-button icon="el-icon-refresh" @click="opStepEditorVisible=!opStepEditorVisible" type="text"></el-button>
 							</el-tooltip>
@@ -51,11 +51,11 @@
 								<el-input  style="width:100%;" v-model="addForm.opStep" type="textarea" :rows="2"> </el-input>
 							</div>
 							<div v-else>
-								<vue-editor  :id="'opStep'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.opStep" ref="opStep"></vue-editor>   
-							</div>  
- 						</el-form-item>  
-											
-						<el-form-item label="预期结果" prop="expectResult">  
+								<vue-editor  :id="'opStep'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.opStep" ref="opStep"></vue-editor>
+							</div>
+ 						</el-form-item>
+
+						<el-form-item label="预期结果" prop="expectResult">
 							<el-tooltip content="点击切换为富文本编辑|普通文本">
 								<el-button icon="el-icon-refresh" @click="expectResultEditorVisible=!expectResultEditorVisible" type="text"></el-button>
 							</el-tooltip>
@@ -63,10 +63,10 @@
 								<el-input  style="width:100%;" v-model="addForm.expectResult" type="textarea" :rows="2"> </el-input>
 							</div>
 							<div v-else>
-								<vue-editor v-if="expectResultEditorVisible==true" :id="'expectResult'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.expectResult"  ref="expectResult"></vue-editor>   
-							</div>   
-						</el-form-item>  
-				<el-form-item label="缺陷描述" prop="description">  
+								<vue-editor v-if="expectResultEditorVisible==true" :id="'expectResult'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.expectResult"  ref="expectResult"></vue-editor>
+							</div>
+						</el-form-item>
+				<el-form-item label="缺陷描述" prop="description">
 							<el-tooltip content="点击切换为富文本编辑|普通文本">
 								<el-button icon="el-icon-refresh" @click="descriptionEditorVisible=!descriptionEditorVisible" type="text"></el-button>
 							</el-tooltip>
@@ -75,54 +75,54 @@
 							</div>
 							<div v-else>
 								<vue-editor :id="'description_'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.description"></vue-editor>
-							</div> 
-        			
-				</el-form-item>    
+							</div>
+
+				</el-form-item>
 			</el-form>
 			<el-drawer title="选中用户" :visible.sync="selectUserVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-group-mng  :sel-project="filters.selProject" :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-mng>
-			</el-drawer> 
-			
+			</el-drawer>
+
 			<el-drawer title="选中任务" :visible.sync="selectTaskVisible" fullscreen  size="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-task-list  :sel-project="filters.selProject"   @task-selected="onSelectedTask"></xm-task-list>
-			</el-drawer> 	
-			
+			</el-drawer>
+
 			<el-drawer append-to-body title="故事选择" :visible.sync="selectMenuVisible"   fullscreen   :close-on-click-modal="false">
 				<xm-menu-select :is-select-menu="true"  @selected="onSelectedMenu" :sel-project="filters.selProject"></xm-menu-select>
 			</el-drawer>
-			
+
 			<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
-			</el-drawer> 
+			</el-drawer>
 		</el-row>
-		<el-row> 
-			<el-button @click.native="handleCancel">取消</el-button>  
-			<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">保存</el-button> 
+		<el-row>
+			<el-button @click.native="handleCancel">取消</el-button>
+			<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">保存</el-button>
 		</el-row>
 	</section>
 </template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询 
+	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { addXmQuestion } from '@/api/xm/core/xmQuestion';
 	import { mapGetters } from 'vuex';
 	import AttachmentUpload from "@/views/mdp/arc/archiveAttachment/AttachmentUpload"; //上传组件
 	import {sn} from '@/common/js/sequence';
-	import VueEditor from '@/components/VueEditor';
+	import VueEditor from '@/components/Tinymce/index';
 
 	import XmGroupMng from '../xmProjectGroup/XmProjectGroupMng';
-	import xmMenuSelect from '../xmMenu/XmMenuSelect';	
+	import xmMenuSelect from '../xmMenu/XmMenuSelect';
 	import XmProjectList from '../xmProject/XmProjectList';
 
-	
+
 	import XmTaskList from '../xmTask/XmTaskList';
 
-	export default { 
+	export default {
 		computed: {
 			...mapGetters([
 				'userInfo','roles'
-			]),  
+			]),
 		},
 		props:['xmQuestion','visible',"selProject",'qtype','xmTestCaseExec','xmTestCase'],
 		watch: {
@@ -141,7 +141,7 @@
 		  },
 		  selProject:function(selProject){
 			  if(!selProject){
-				  this.filters.selProject=null; 
+				  this.filters.selProject=null;
 				  this.addForm.projectId=''
 				  this.addForm.projectName=''
 			  }else{
@@ -156,13 +156,13 @@
 				filters:{
 					selProject:null,
 				},
-				options:{ 
+				options:{
 					urgencyLevel:[],
 					bugSeverity:[],
 					bugSolution:[],
 					bugStatus:[],
 					bugType:[],
-				},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				addFormRules: {
 					name: [
@@ -181,8 +181,8 @@
 					qtype:'',
 					attachment: [],
 				},
-				/**begin 在下面加自定义属性,记得补上面的一个逗号**/ 
-				fileVisible: true, 
+				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
+				fileVisible: true,
 				selectUserVisible: false,
 				userFieldName:'',
 				selectTaskVisible:false,
@@ -197,7 +197,7 @@
 		},//end data
 		methods: {
 			// 取消按钮点击 父组件监听@cancel="addFormVisible=false" 监听
-			handleCancel:function(){ 
+			handleCancel:function(){
 				this.setDefaultData();
 				this.$emit('cancel');
 			},
@@ -206,9 +206,9 @@
 				this.$refs.addForm.validate((valid) => {
 					console.log(this.addForm.handlerUserid);
 					if (valid) {
-						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
-							this.load.add=true 
-							let params = Object.assign({}, this.addForm); 
+						this.$confirm('确认提交吗？', '提示', {}).then(() => {
+							this.load.add=true
+							let params = Object.assign({}, this.addForm);
 
 							if(params.expectResult){
 								params.expectResult=params.expectResult.replace(/<p>\n<br>\n<\p>/g,"");
@@ -229,13 +229,13 @@
 									this.$emit('submit');//  @submit="afterAddSubmit"
 									this.handleCancel();
 								}
-								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.add=false);
 						});
 					}
 				});
 			},
-			/**begin 在下面加自定义方法,记得补上面的一个逗号**/ 
+			/**begin 在下面加自定义方法,记得补上面的一个逗号**/
 			//上传附件
 			onChange : function(file,fileList){
 				let list = [];
@@ -253,12 +253,12 @@
 					this.addForm.attachment = list;
 					console.log(list);
 				}
-			}, 
+			},
 
 			setDefaultData() {
 				this.addForm.id = sn('bug_');
 				if(this.filters.selProject){
-					
+
 					this.addForm.projectId = this.filters.selProject.id;
 					this.addForm.projectName = this.filters.selProject.name;
 				}
@@ -300,12 +300,12 @@
 						this.addForm.handlerUserid=user.userid
 						this.addForm.handlerUsername=user.username
 					}
-				} 
+				}
 				this.selectUserVisible=false
 			},
 			showSelectTask:function(){
 				if(this.filters.selProject==null){
-					this.$message({showClose: true, message: "请先选项目", type: 'error' }); 
+					this.$message({showClose: true, message: "请先选项目", type: 'error' });
 					return ;
 				}
 				this.selectTaskVisible=true;
@@ -325,7 +325,7 @@
 			},
 			showSelectMenu:function(){
 				if(this.filters.selProject==null){
-					this.$message({showClose: true, message: "请先选项目", type: 'error' }); 
+					this.$message({showClose: true, message: "请先选项目", type: 'error' });
 					return ;
 				}
 				this.selectMenuVisible=true;
@@ -338,7 +338,7 @@
 			handleCloseMenuTag:function(){
 				this.addForm.menuId=''
 				this.addForm.menuName=""
-			}, 
+			},
 			sendToCreater(){
 				this.addForm.handlerUsername=this.addForm.createUsername
 				this.addForm.handlerUserid=this.addForm.createUserid
@@ -354,10 +354,10 @@
 				this.filters.selProject=project
 				this.addForm.projectId=project.id
 				this.addForm.projectName=project.name
-				this.selectProjectVisible=false; 
+				this.selectProjectVisible=false;
 			},
 			clearProject(){
-				this.filters.selProject=null  
+				this.filters.selProject=null
 				this.addForm.projectId=''
 				this.addForm.projectName=''
 			},
@@ -377,9 +377,9 @@
 				}
 			}
 			/**end 在上面加自定义方法**/
-			
+
 		},//end method
-		components: {  
+		components: {
 				//在下面添加其它组件 'xm-question-edit':XmQuestionEdit
 				'upload': AttachmentUpload,XmGroupMng,VueEditor,XmTaskList,xmMenuSelect,XmProjectList
 		},
@@ -395,7 +395,7 @@
 			this.setDefaultData();
 			this.initByExec();
 			listOption([{categoryId:'all',itemCode:'bugSeverity'},{categoryId:'all',itemCode:'bugSolution'},{categoryId:'all',itemCode:'bugStatus'},{categoryId:'all',itemCode:'bugType'},{categoryId:'all',itemCode:'urgencyLevel'}] ).then(res=>{
-				if(res.data.tips.isOk){ 
+				if(res.data.tips.isOk){
 					this.options['bugSeverity']=res.data.data.bugSeverity
 					this.options['bugSolution']=res.data.data.bugSolution
 					this.options['bugStatus']=res.data.data.bugStatus
@@ -404,7 +404,7 @@
 				}
 			});
 			/**在下面写其它函数***/
-			
+
 		}//end mounted
 	}
 
@@ -412,17 +412,17 @@
 
 <style lang="scss" scoped>
 
-  .wf-main-context-box {  
+  .wf-main-context-box {
 	border:1px dashed #000;
 	margin-bottom: 10px;
-	margin-top: 30px;  
+	margin-top: 30px;
 	padding:10px;
 }
- .wf-main-context p { 
-	color: #585858;  
+ .wf-main-context p {
+	color: #585858;
 }
-	
+
 .wf-main-context   p  > img {
-	max-width: 100%; 
+	max-width: 100%;
 }
 </style>

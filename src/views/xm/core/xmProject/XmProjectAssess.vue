@@ -31,13 +31,13 @@
 					<el-form-item label="项目考核" >
 						<el-input v-if="Eligible" style="width:auto !important;" v-model="selProject.assess" type="number" min="0"></el-input>
 						<span v-else>{{selProject.assess}}</span>
-					</el-form-item> 
+					</el-form-item>
 				</el-col>
 				<el-col :span="24">
 					<el-form-item label="考核备注" >
 						<vue-editor v-if="Eligible" :branch-id="userInfo.branchId" v-model="selProject.assessRemarks"></vue-editor>
 						<span v-else>{{selProject.assessRemarks}}</span>
-					</el-form-item> 
+					</el-form-item>
 				</el-col>
 			</el-form>
 		</el-row>
@@ -49,10 +49,10 @@
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { mapGetters } from 'vuex';
-	import VueEditor from '@/components/VueEditor';
+	import VueEditor from '@/components/Tinymce/index';
 	import { editAssess, listXmProject, delXmProject, batchDelXmProject } from '@/api/xm/core/xmProject';
 
-	export default { 
+	export default {
 		props: ["selProject"],
 		computed: {
 		    ...mapGetters([
@@ -83,7 +83,7 @@
 				},
 				xmProjects: [],//查询结果
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
-				
+
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmProject界面初始化数据
 				editForm: {
@@ -125,23 +125,23 @@
 				this.load.list = true;
 				listXmProject(params).then((res) => {
 					var tips=res.data.tips;
-					if(tips.isOk){ 
+					if(tips.isOk){
 						this.xmProjects = res.data.data;
 						console.log(this.xmProjects);
 					}else{
 						this.$message({showClose: true, message: tips.msg, type: 'error' });
-					} 
+					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			},
 
 			//显示编辑界面 XmProject xm_project
 			showEdit: function() {
-				let params = Object.assign({}, this.selProject); 
+				let params = Object.assign({}, this.selProject);
 				editAssess(params).then((res) => {
 					console.log(res);
 					var tips=res.data.tips;
-					if(tips.isOk){ 
+					if(tips.isOk){
 					}
 					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 				}).catch( err => this.load.list = false);
@@ -154,17 +154,17 @@
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			}
 			/**begin 自定义函数请在下面加**/
-			
+
 			/**end 自定义函数请在上面加**/
 		},//end methods
-		components: { 
+		components: {
 				//在下面添加其它组件
 			'vue-editor' :VueEditor,
 		},
-		mounted() { 
+		mounted() {
 			this.$nextTick(() => {
 				this.status = this.selProject.status;
-      }); 
+      });
 		}
 	}
 

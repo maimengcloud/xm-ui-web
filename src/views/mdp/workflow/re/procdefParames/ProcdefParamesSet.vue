@@ -250,7 +250,7 @@
 	import Sticky from '@/components/Sticky' // 粘性header组件
 	import { mapGetters } from 'vuex'
 	import AttachmentUpload from '@/views/mdp/arc/archiveAttachment/AttachmentUpload';
-	import VueEditor from '@/components/VueEditor/Index';
+	import VueEditor from '@/components/Tinymce/index';
 	import UsersSelect from '@/views/mdp/sys/user/UsersSelect';
 	import FormDefForFlowNode from '@/views/mdp/form/formDef/FormDefForFlowNode';
 

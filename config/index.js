@@ -10,23 +10,23 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: { 
-      
+    proxyTable: {
+      /**
     	'/api/m1/xm': {
             target: 'http://localhost:7067',
             changeOrigin: true,
             pathRewrite: {
                 '^/api/m1/xm': '/xm'
               }
-          }, 
-        /**  
+          },
+
     	'/api/m1/workflow': {
             target: 'http://localhost:7080',
             changeOrigin: true,
             pathRewrite: {
                 '^/api/m1/workflow': '/workflow'
               }
-          }, 
+          },
           **/
         '/api': {
             target: 'https://www.qingqinkj.com',
@@ -58,7 +58,7 @@ module.exports = {
      */
 
     // https://webpack.js.org/configuration/devtool/#development
-    devtool: '#cheap-source-map',
+    devtool: 'eval',
 
     // If you have problems debugging vue-files in devtools,
     // set this to false - it *may* help
@@ -90,7 +90,7 @@ module.exports = {
 
     productionSourceMap: false,
     // https://webpack.js.org/configuration/devtool/#production
-    devtool: '#source-map',
+    devtool: false,
 
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.

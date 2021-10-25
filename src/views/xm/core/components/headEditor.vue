@@ -16,7 +16,7 @@
 <script>
 import util from '@/common/js/util';//全局公共库
 import { mapGetters } from 'vuex';
-import VueEditor from '@/components/VueEditor';
+import VueEditor from '@/components/Tinymce/index';
 import {sn} from '@/common/js/sequence';
 export default {
   props:["id","user","projectId","taskId","quoteId","replyId"],
