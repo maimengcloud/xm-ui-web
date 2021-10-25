@@ -63,7 +63,7 @@
 </template>
 	
 <script>
-import vueCropper from 'vue-cropper'
+//import vueCropper from 'vue-cropper'
 import config from '@/common/config';//全局公共库import 
 import { uploadBase64 } from '@/api/mdp/arc/image'; 
 import screenfull from 'screenfull'
@@ -205,15 +205,15 @@ export default {
 		},
 		plusCjbk(){ 
 			if(this.crap==false){
-				this.$message({showClose: true, message: "请先开始裁剪", type: "warning" });
+				this.$message({ message: "请先开始裁剪", type: "warning" });
 				return;
 			} 
 			if(this.option.autoCropWidth+this.defaultImgHeight*0.1>800){
-				this.$message({showClose: true, message: "不能再放大", type: "warning" });
+				this.$message({ message: "不能再放大", type: "warning" });
 				return;
 			}
 			if(this.option.autoCropHeight+this.defaultImgHeight*0.1>800){
-				this.$message({showClose: true, message: "不能再放大", type: "warning" });
+				this.$message({ message: "不能再放大", type: "warning" });
 				return;
 			}
 
@@ -223,16 +223,16 @@ export default {
 		}, 
 		reduceCjbk(){
 			if(this.crap==false){
-				this.$message({showClose: true, message: "请先开始裁剪", type: "warning" });
+				this.$message({ message: "请先开始裁剪", type: "warning" });
 				return;
 			}
 			 
 			if(this.option.autoCropWidth-this.defaultImgWidth*0.1<=0){
-				this.$message({showClose: true, message: "不能再缩小", type: "warning" });
+				this.$message({ message: "不能再缩小", type: "warning" });
 				return;
 			}
 			if(this.option.autoCropHeight-this.defaultImgHeight*0.1<=0){
-				this.$message({showClose: true, message: "不能再缩小", type: "warning" });
+				this.$message({ message: "不能再缩小", type: "warning" });
 				return;
 			}
 			this.option.autoCropWidth=this.option.autoCropWidth-this.defaultImgWidth*0.1
@@ -241,7 +241,7 @@ export default {
 		},
 		recoveryCjbk(){
 			if(this.crap==false){
-				this.$message({showClose: true, message: "请先开始裁剪", type: "warning" });
+				this.$message({ message: "请先开始裁剪", type: "warning" });
 				return;
 			}
 			 
@@ -277,7 +277,7 @@ export default {
 			}
 			//var parm= this.$options.computed.uploadParams();
 			if(params.categoryId==''||params.categoryId==undefined){
-				this.$message({showClose: true, message: "分类不能为空", type: "warning" });
+				this.$message({ message: "分类不能为空", type: "warning" });
 				return;
 			}
 			if (type === 'blob') {
@@ -310,13 +310,13 @@ export default {
 							        		//this.refreshCrop ();
 							        		this.$emit('upload-success',image);
 							        	}else{
-							        		this.$message({showClose: true, message: "上传错误", type: "warning" });
+							        		this.$message({ message: "上传错误", type: "warning" });
 							        	}  
 							        }).catch(()=>{
 							        	this.$message.warning("上传失败");
 							        });
 					        }).catch(() => {
-					          this.$message({showClose: true,
+					          this.$message({
 					            type: 'info',
 					            message: '已取消'
 					          });          
@@ -332,13 +332,13 @@ export default {
 						        		//this.refreshCrop ();
 						        		this.$emit('upload-success',image);
 						        	}else{
-						        		this.$message({showClose: true, message: "上传错误", type: "warning" });
+						        		this.$message({ message: "上传错误", type: "warning" });
 						        	}  
 						        }).catch(()=>{
 						        	this.$message.warning("上传失败");
 						        });
 						}else{
-							this.$message({showClose: true, message: "图片太大,不允许上传，请重新裁剪后上传", type: "warning" });
+							this.$message({ message: "图片太大,不允许上传，请重新裁剪后上传", type: "warning" });
 						}
 						
 					} 
@@ -353,9 +353,9 @@ export default {
 		imgLoad(info){
 			this.imgLoading=false
 			if(info=='success'){
-				this.$message({showClose: true, message: "加载图片成功", type: "success" });
+				this.$message({ message: "加载图片成功", type: "success" });
 			}else{
-				this.$message({showClose: true, message: "加载图片失败", type: "error" });
+				this.$message({ message: "加载图片失败", type: "error" });
 			}
 			
 		},
@@ -398,20 +398,20 @@ export default {
 			//alert(jsonData);
 			/* var tips= res.tips;
 			if(tips.isOk){
-				this.$message({showClose: true, message: '上传成功', type: 'info' });
+				this.$message({ message: '上传成功', type: 'info' });
 				
 			}else{
 				if(tips.msg=='该图片不支持'){
-				this.$message({showClose: true, message: '该图片不支持', type: 'info' });
+				this.$message({ message: '该图片不支持', type: 'info' });
 				}else{
-				this.$message({showClose: true, message: '未知异常', type: 'info' });
+				this.$message({ message: '未知异常', type: 'info' });
 				}
 			} */
 		
 		  } 
 	},
 	components: {
-		'vue-cropper':vueCropper,
+		//'vue-cropper':vueCropper,
 	},
 	mounted () {
 		//this.changeImg()

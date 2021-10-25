@@ -1,7 +1,7 @@
 <template>
 	<section>
 	
-		<el-col :span="8" >
+		<el-col :span="8" v-if="!unShowPreview">
 		    <el-card :body-style="{ padding: '0px' }">
 		      <div class="avatar-uploader" @click="showAdd">
 		      	<div style="height: 178px;width: 186px;display: flex;">
@@ -9,14 +9,16 @@
 			       	<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 			    </div>
 		      </div>
-		      <span class="row-span" v-if="showTitle"><slot name="title" ></slot><i class="el-icon-zoom-in" @click="previewImg"></i></span>
-		    </el-card>
+		      <span class="row-span" v-if="showTitle"><slot name="title" ></slot><el-button><i class="el-icon-zoom-in" @click="previewImg">预览</i></el-button>&nbsp;&nbsp;<el-button type="text" class="el-icon-delete" @click="delImg">   删除 </el-button>
+			  </span>
+			  
+ 		    </el-card>
 		</el-col>
 		<el-dialog title="裁剪图片" :visible.sync="shearMngVisible" top="0px"  width="1100px"  :lock-scroll="false"  :close-on-click-modal="false" append-to-body> 
 		<shear-mng :visible="shearMngVisible" :imgWidth="myWidth" :imgHeight="myHeight" :image="image" :branch-id="branchId" :deptid="deptid" :category-id="image.categoryId" :remark="remark" @cancel="shearMngVisible=false" @upload-success="uploadSuccess"></shear-mng>
 		</el-dialog>
 		<el-dialog title="选择图片" :visible.sync="addFormVisible"  width="70%" :close-on-click-modal="false" append-to-body>
-			<upload-image :branch-id="branchId" :deptid="deptid" :visible="addFormVisible" @cancel="addFormVisible=false" @confirm="handleConfirm"></upload-image>
+			<upload-image :branch-id="branchId" :deptid="deptid" :visible="addFormVisible" @cancel="handleCancel" @confirm="handleConfirm"></upload-image>
 		</el-dialog>
 		<el-dialog :visible.sync="previewVisible" append-to-body>
   			<img width="100%" :src="imageUrl" alt>
@@ -32,7 +34,7 @@
 	import config from '@/common/config';//config
 	
 	export default {
-		props:['branchId','categoryId','remark','value','imgWidth','imgHeight','deptid','showTitle'],
+		props:['branchId','categoryId','remark','value','imgWidth','imgHeight','deptid','showTitle','unShowPreview'],
 		watch: {
 			'value':function(val){
 				this.imageUrl = this.converUrl(val);
@@ -59,6 +61,10 @@
 			}//end return
 		},//end data
 		methods: {
+			handleCancel(){
+				this.addFormVisible=false;
+				this.$emit("cancel")
+			},
 			showAdd: function () {
 				this.addFormVisible = true;
 			},
@@ -66,12 +72,14 @@
 				this.image=Object.assign(img);
 				//this.shearMngVisible=true;
 				this.uploadSuccess(this.image);
+				this.$emit("confirm",this.image)
 			},
 			//上传64图片后，指定回调父组件的方法,一般用于保存该图片的信息到另一张表
 			uploadSuccess(parm){
 					this.$emit('input',parm.url);
 					this.imageUrl = this.converUrl(parm.url);
 					this.shearMngVisible=false;
+					
 			},
 			/**begin 在下面加自定义方法,记得补上面的一个逗号**/			
 			converUrl(url){
@@ -85,6 +93,10 @@
 			},
 			previewImg(){
 				this.previewVisible=true;
+			},
+			delImg(){
+				this.$emit('input','');
+				this.imageUrl = ''; 
 			}
 			/**end 在上面加自定义方法**/
 		},//end method

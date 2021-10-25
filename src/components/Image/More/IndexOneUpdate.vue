@@ -2,7 +2,7 @@
 	<section>
 	<div class="SpeListOverFlow">
 		<draggable v-model="imageLists" :options="{group:'img'}" @start="drag=true" @end="drag=false">
-		<el-col :span="8" v-for="(o, index) in imageLists" >
+		<el-col :span="8" v-for="(o, index) in imageLists" :key="index">
 		    <el-card :body-style="{ padding: '0px' }">
 		      <div class="avatar-uploader" @click="selectedImage(index)">
 		      	<div style="height: 178px;width: 186px;display: flex;">
@@ -12,7 +12,23 @@
 		      </div>
 		      <span class="row-span" style="justify-content:center;align-items:center;display:flex;">
 		      	<span>{{index+1}},&nbsp;</span>		      	
-		      	<span v-show="!!valueName" style="height: 35px;">{{o[valueName]}}</span>
+		      	<span v-show="!!desName" style="height: 35px;">{{o[desName]}}</span> 
+				  	<el-popover
+						placement="top"
+						width="800"
+						trigger="click">
+						 <el-row class="padding-top"> 
+								图片标题：<el-input style="width:90%;" v-model="o[desName]" clearable></el-input>   
+						 </el-row>  
+						 <el-row class="padding-top">  
+								跳转链接：<el-input  style="width:90%;" v-model="o[valueName]" clearable></el-input>  
+						 </el-row> 
+						 
+						 <el-row class="padding-top">  
+								扩展信息：<el-input  style="width:90%;" v-model="o['ext']" clearable></el-input>  
+						 </el-row> 
+						<el-button type="text" slot="reference">编辑</el-button>
+					</el-popover>
 		      	<i class="el-icon-zoom-in" @click="previewImg(index)"></i>		      	 
 		      	<el-button type="text" class="button" @click="delImg(index)">删除</el-button>
 		      </span>
@@ -30,7 +46,7 @@
 		<shear-mng :visible="shearMngVisible" :imgWidth="imgWidth" :imgHeight="imgHeight" :image="image" :branch-id="branchId" :deptid="deptid" :category-id="image.categoryId" :remark="remark"  @cancel="shearMngVisible=false" @upload-success="uploadSuccess"></shear-mng>
 		</el-dialog>
 		<el-dialog title="选择图片" :visible.sync="addFormVisible"  width="70%" :close-on-click-modal="false" append-to-body>
-			<upload-image :branch-id="branchId" :dept-id="deptid" :visible="addFormVisible" @cancel="addFormVisible=false" @confirm="handleConfirm"></upload-image>
+			<upload-image  :multiple="true" :branch-id="branchId" :dept-id="deptid" :visible="addFormVisible" @cancel="addFormVisible=false" @confirm="handleConfirm"></upload-image>
 		</el-dialog>
 		<el-dialog :visible.sync="previewVisible" append-to-body>
   			<img width="100%" :src="imageUrl" alt>
@@ -49,11 +65,11 @@
 	export default {
 		props:['branchId','categoryId','remark','showAdd','limit','urlName','desName','value','valueName','deptid','imgWidth','imgHeight'],
 		watch: {
-			'value':function(val){
-				this.imageLists = val;
+			value(val){
+				this.imageLists=val
 			},
-			'imageLists':function(val){
-				this.$emit('input',val);
+			imageLists(val){
+				this.$emit("input",val)
 			}
 	    },	
 		data() {
@@ -67,48 +83,35 @@
 				imageLists:[],//存放图片信息的数组 {urlName:,desName:,opflag:add/del/edit,order:}
 				selectedImgIndex:this.value.length,
 				opflag:'',//add/del/edit
+				imageEditVisible:false,
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data
 		methods: {
 			selectedImage(index){
 				this.selectedImgIndex = index;//注意修改图片url后清空
+				this.image=this.imageLists[index]
 				this.opflag='edit';
 				this.addFormVisible = true;
 			},
-			 handleConfirm(img){
-				this.image=img;
-				this.uploadSuccess(this.image)
-				console.log(this.image);
+			 handleConfirm(imgs){ 
+				 this.selectedImgIndex=0 
+				 this.image=imgs[0] 
+				 this.imageLists=imgs.map(i=>{
+					 var img= {  ...i  }
+					 img[this.urlName]=i.url
+					 img[this.desName]=i.remark
+					 img[this.valueName]=i.url
+					 return img;
+				 })
 				//this.shearMngVisible=true; 
 			},
 			//上传64图片后，指定回调父组件的方法,一般用于保存该图片的信息到另一张表
-			uploadSuccess(parm){
-					//商品相册中，过滤添加图片和修改图片,获取图片url添加到该集合的指定url中
-				if(this.opflag=='edit'){
-					this.imageLists[this.selectedImgIndex][this.urlName] = parm.url;    //该方式修改图片后是否不会立即显示url。
-					//this.$emit('input',this.imageLists);
-					this.$emit('editImg',this.imageLists[this.selectedImgIndex]);
-					this.shearMngVisible=false; 
-				}else if(this.opflag=='add'){
-					//在此处为添加按钮
-						  //获取添加图片的信息,并且添加，删除是同时删除数据
-					var g={};
-					g[this.urlName]=parm.url;
-					if(this.desName!=null&&this.desName!=''&&this.desName!='undefined'){
-					g[this.desName]=parm.remark;
-					}
-					    this.imageLists.push(g);
-						this.shearMngVisible=false;
-						this.$emit('addImg',g);
-						//this.$emit('input',this.imageLists);		
-				}
-				//商品相册可以修改图片和添加图片
-					 /*this.imageUrl = this.converUrl(parm.url);
-					this.shearMngVisible=false; */
+			uploadSuccess(parms){
+					
 			},
 			/**begin 在下面加自定义方法,记得补上面的一个逗号**/			
-			converUrl(o){
+			converUrl(o){ 
 		    	 if(!o[this.urlName].indexOf('http')==0 && !o[this.urlName].indexOf('www')==0){
 		    		 return config.getArcImagePath()+"/"+o[this.urlName];
 		    	 }
@@ -127,7 +130,7 @@
 			},
 			addImg(){
 				if(parseInt(this.limit)<=this.imageLists.length){
-					this.$message({showClose: true, message: "图片数量已经超过", type: 'error' });
+					this.$message({ message: "图片数量已经超过", type: 'error' });
 					return;
 				}
 				this.addFormVisible = true;
@@ -142,6 +145,10 @@
 					this.$emit('delImg',returnDate);
 					
 				});
+			},
+			showEditImage(img,index){
+				this.image=img;
+				this.imageEditVisible=true;
 			}
 			/**end 在上面加自定义方法**/
 		},//end method

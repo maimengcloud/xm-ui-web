@@ -2,7 +2,7 @@
 	<section>
 	<div class="SpeListOverFlow">
 		<draggable v-model="imageLists" :options="{group:'img'}" @start="drag=true" @end="drag=false">
-		<el-col :span="8" v-for="(o, index) in imageLists" >
+		<el-col :span="8" v-for="(o, index) in imageLists" :key="index">
 		    <el-card :body-style="{ padding: '0px' }">
 		      <div class="avatar-uploader" @click="selectedImage(index)">
 		      	<div style="height: 178px;width: 186px;display: flex;">
@@ -126,7 +126,7 @@
 			},
 			addImg(){
 				if(parseInt(this.limit)<=this.imageLists.length){
-					this.$message({showClose: true, message: "图片数量已经超过", type: 'error' });
+					this.$message({ message: "图片数量已经超过", type: 'error' });
 					return;
 				}
 				this.addFormVisible = true;

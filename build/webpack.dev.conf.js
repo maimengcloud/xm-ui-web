@@ -5,7 +5,8 @@ const webpack = require('webpack')
 const config = require('../config')
 const merge = require('webpack-merge')
 const baseWebpackConfig = require('./webpack.base.conf')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin') 
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 
@@ -17,49 +18,49 @@ const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 
 const devWebpackConfig = merge(baseWebpackConfig, {
+  mode:'development',
   module: {
-    rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })
+    //rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })
   },
   // cheap-module-eval-source-map is faster for development
   devtool: config.dev.devtool,
 
   // these devServer options should be customized in /config/index.js
   devServer: {
-    clientLogLevel: 'warning',
     historyApiFallback: true,
     hot: true,
     compress: true,
     host: HOST || config.dev.host,
     port: PORT || config.dev.port,
     open: config.dev.autoOpenBrowser,
-    overlay: config.dev.errorOverlay
-      ? { warnings: false, errors: true }
-      : false,
-    publicPath: config.dev.assetsPublicPath,
-    proxy: config.dev.proxyTable,
-    quiet: true, // necessary for FriendlyErrorsPlugin
-    watchOptions: {
-      poll: config.dev.poll,
-    }
+    proxy: config.dev.proxyTable, 
+    client: {
+      overlay: {
+        errors: config.dev.errorOverlay,
+        warnings: false,
+      },
+    },
   },
   plugins: [
     new webpack.DefinePlugin({
+      'process.env.ASSET_PATH': resolve ("/assets/"), 
       'process.env': require('../config/dev.env')
     }),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin(), // HMR shows correct file names in console on update.
+    new webpack.HotModuleReplacementPlugin(), 
     new webpack.NoEmitOnErrorsPlugin(),
     // https://github.com/ampedandwired/html-webpack-plugin
-    new HtmlWebpackPlugin({
-      filename: 'index.html',
+    new HtmlWebpackPlugin({ 
       template: 'index.html',
       inject: true,
       favicon: resolve('favicon.ico'),
-      title: 'vue-element-admin',
-      path: config.dev.assetsPublicPath + config.dev.assetsSubDirectory
+      title: 'mdp-arc',
     }),
-    new webpack.ProvidePlugin({
-        'window.Quill': 'quill'
+    
+    // copy custom static assets
+    new CopyWebpackPlugin( {
+      patterns: [
+        { from: path.resolve(__dirname, '../static'), to: config.build.assetsSubDirectory }, 
+      ]
     })
   ]
 })
