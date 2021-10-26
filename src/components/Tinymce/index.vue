@@ -1,22 +1,25 @@
 <template>
   <div :class="{fullscreen:fullscreen}" class="tinymce-container editor-container">
-    <textarea :id="tinymceId" class="tinymce-textarea" />
+    <textarea :id="tinymceId" class="tinymce-textarea" /> 
 	<el-dialog id="editor-dialog" class="image-dialog" title="选择图片" :visible.sync="dialogVisible"   width="70%" :close-on-click-modal="false" append-to-body>
 		<upload-image  :multiple="true" :branch-id="userInfo.branchId" :dept-id="userInfo.deptid" :visible="dialogVisible" @cancel="dialogVisible=false" @confirm="handleConfirm"></upload-image>
-	</el-dialog>
+	</el-dialog> 
   </div>
 </template>
-<script>
-import config from '@/common/config';//全局公共库import
-import UploadImage from '@/components/Image/UploadImage';
-import { mapGetters } from 'vuex'
-import plugins from './plugins'
-import toolbar from './toolbar'
 
-export default {
+<script>
+
+
+import config from '@/common/config';//全局公共库import 
+import UploadImage from '@/components/Image/UploadImage';	
+import { mapGetters } from 'vuex' 
+import plugins from './plugins'
+import toolbar from './toolbar' 
+
+export default { 
   name: 'Tinymce',
   components: { UploadImage },
-  props: {
+  props: { 
     value: {
       type: String,
       default: ''
@@ -39,10 +42,10 @@ export default {
     }
   },
   data() {
-    return {
+    return { 
 		imageList:[],
 		dialogVisible:false,
-		editorHtmlData:this.value,
+		editorHtmlData:this.value, 
       tinymceId: 'vue-tinymce-'+new Date().getTime() + ((Math.random() * 1000).toFixed(0) + ''),
       fullscreen: false,
       languageTypeList: {
@@ -54,19 +57,19 @@ export default {
   computed: {
     language() {
       return this.languageTypeList[this.$store.getters.language]
-    },
+    }, 
 	...mapGetters([
 		'userInfo'
 	])
   },
   watch: {
-    value(val) {
+    value(val) { 
 		if(val==this.editorHtmlData){
 			return;
 		}
-		this.$nextTick(() =>  window.tinymce.get(this.tinymceId).setContent(val || ''))
+		this.$nextTick(() =>  window.tinymce.get(this.tinymceId).setContent(val || '')) 
     },
-	editorHtmlData(val) {
+	editorHtmlData(val) { 
 		this.$emit("input",val)
     },
     language() {
@@ -75,12 +78,12 @@ export default {
     }
   },
   mounted() {
-	  this.$nextTick(() => this.initTinymce())
+	  this.$nextTick(() => this.initTinymce()) 
   },
   /**
   activated() {
     this.initTinymce()
-
+	
   },
   deactivated() {
     this.destroyTinymce()
@@ -111,32 +114,33 @@ export default {
         imagetools_cors_hosts: ['www.qingqinkj.com', 'codepen.io'],
         default_link_target: '_blank',
         link_title: false,
+        convert_urls:false,
         fontsize_formats: "8pt 10pt 12pt 14pt 18pt 20pt 24pt 28pt 30pt 36pt 38pt 40pt 42pt 46pt 48pt",
         font_formats: "微软雅黑='微软雅黑';宋体='宋体';黑体='黑体';仿宋='仿宋';楷体='楷体';隶书='隶书';幼圆='幼圆';Andale Mono=andale mono,times;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Book Antiqua=book antiqua,palatino;Comic Sans MS=comic sans ms,sans-serif;Courier New=courier new,courier;Georgia=georgia,palatino;Helvetica=helvetica;Impact=impact,chicago;Symbol=symbol;Tahoma=tahoma,arial,helvetica,sans-serif;Terminal=terminal,monaco;Times New Roman=times new roman,times;Trebuchet MS=trebuchet ms,geneva;Verdana=verdana,geneva;Webdings=webdings;Wingdings=wingdings",
         nonbreaking_force_tab: true, // inserting nonbreaking space &nbsp; need Nonbreaking Space Plugin
-        init_instance_callback: editor => {
+        init_instance_callback: editor => { 
           if (_this.value) {
             editor.setContent(_this.value)
-          }
-          editor.on('NodeChange Change KeyUp SetContent', () => {
-			_this.editorHtmlData=editor.getContent()
+          } 
+          editor.on('NodeChange Change KeyUp SetContent', () => { 
+			_this.editorHtmlData=editor.getContent() 
           })
         },
         setup(editor) {
-
+			
           editor.on('FullscreenStateChanged', (e) => {
             _this.fullscreen = e.state
           })
-
+		   
 		  editor.addButton('imageList',{
 			  text:'图片库',
 			  icon:false,
 			  onclick:function(){
-				 _this.dialogVisible=true;
-          _this.$nextTick(()=>{
+				 _this.dialogVisible=true;  
+          _this.$nextTick(()=>{ 
             //document.getElementById("editor-dialog").style.zIndex="100000"
-          })
-
+          }) 
+           
 			  }
 		  })
         }
@@ -173,9 +177,9 @@ export default {
         //     console.log(err);
         //   });
         // },
-      })
+      }) 
 	  this.setContent(this.value)
-
+    
     },
     destroyTinymce() {
       const tinymce = window.tinymce.get(this.tinymceId)
@@ -186,13 +190,13 @@ export default {
         tinymce.destroy()
       }
     },
-    setContent(value) {
+    setContent(value) { 
       window.tinymce.get(this.tinymceId).setContent(value)
     },
     getContent() {
       window.tinymce.get(this.tinymceId).getContent()
     },
-	insertImage () {
+	insertImage () {  
 		let imageList = this.imageList;
 		let imageHtml = "";
 		(imageList || []).map(item => {
@@ -203,10 +207,10 @@ export default {
 		}
 		this.dialogVisible = false;
 	},
-
-	handleConfirm(imgs){
+	
+	handleConfirm(imgs){   
 		this.imageList=imgs//{url:xxx,remark:xxxx}
-		this.insertImage();
+		this.insertImage(); 
 	},
     imageSuccessCBK(arr) {
       const _this = this
@@ -247,4 +251,4 @@ export default {
   z-index:20000 !important;
 }
 
-</style>
+</style> 

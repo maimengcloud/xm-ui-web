@@ -68,7 +68,6 @@ const webpackConfig = merge(baseWebpackConfig, {
     }),
   ], 
   optimization: {
-      moduleIds:'hashed',
       minimize: true,
       minimizer:[
         new CssMinimizerPlugin({
@@ -83,11 +82,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         })
       ],
       splitChunks: {
-          chunks: 'all',
-          minSize: {
-              javascript: 80000,
-              webassembly: 80000,
-          },
+          chunks: 'all'
       },
   },
 })

@@ -250,7 +250,8 @@
 					pageSize: this.pageInfo.pageSize,
 					pageNum: this.pageInfo.pageNum,
 					total: this.pageInfo.total
-				};
+				}; 
+				
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
 					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
@@ -273,6 +274,7 @@
 					return;
 	        	}
 				params.branchId = this.branchId;
+				this.selectImages=[];
 				this.listLoading = true;
 				listImage(params).then((res) => {
 					var tips=res.data.tips;

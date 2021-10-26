@@ -54,8 +54,8 @@ var threadLoaderConfig={
       // 可以修改名称来创建其余选项都一样的池(pool)
       name: "my-pool"
     }
-}
-const publicCssLoaders=process.env.NODE_ENV === 'production'?[{loader:MiniCssExtractPlugin.loader,options:{publicPath:'../'}},'css-loader']:[ 'style-loader','css-loader']
+} 
+const publicCssLoaders=process.env.NODE_ENV === 'production'?[{loader:MiniCssExtractPlugin.loader,options:{publicPath:'../'}},'css-loader','postcss-loader']:[ 'style-loader','css-loader','postcss-loader']
 
 function resolve(dir) {
     return path.join(__dirname, '..', dir)
@@ -79,7 +79,7 @@ module.exports = {
     },
     output: {
         clean:true,
-        path: config.build.assetsRoot,
+        path: config.build.assetsRoot, 
         filename: 'js/[name].[contenthash].js',
         pathinfo: false,
         publicPath: process.env.NODE_ENV === 'production'
@@ -96,16 +96,15 @@ module.exports = {
     // 加载器
     module: {
         // https://doc.webpack-china.org/guides/migrating/#module-loaders-module-rules
-        rules: [
+        rules: [ 
             //...(config.dev.useEslint ? [createLintingRule()] : []),
             {
                 test: /\.vue$/,
-                //include: resolve('src'),
                 use:[
                     threadLoaderConfig,
                     {
                         loader: 'vue-loader',
-                        /**
+                        /** 
                         options:vueLoaderConfig,
                         */
                         options: {
@@ -115,30 +114,30 @@ module.exports = {
                                     { loader: 'cache-loader' },
                                     { loader: 'babel-loader', options: { presets: ['env'] } }
                                 ]
-                            },
+                            }, 
                             extractCSS: true,
-                            hotReload:true,
-
-                        },
+                            hotReload:true, 
+                           
+                        },     
                     }
                 ]
-
-
-            },
+                
+                
+            }, 
             {
                 test: /\.css$/,
                 use: publicCssLoaders,
-            },
+            }, 
             {
                 test: /\.(sa|sc)ss$/,
-                use: publicCssLoaders.concat([
+                use: publicCssLoaders.concat([  
                     // 将 Sass 编译成 CSS
                     'sass-loader',
                 ]),
-            },
+            }, 
             {
                 test: /\.less$/,
-                use: publicCssLoaders.concat([
+                use: publicCssLoaders.concat([ 
                     // 将 Sass 编译成 CSS
                     'less-loader',
                 ]),
@@ -149,7 +148,7 @@ module.exports = {
                     // 将 Sass 编译成 CSS
                     'stylus-loader',
                 ]),
-            },
+            }, 
             { // 配置Babel将ES6+ 转换为ES5
                 test: /\.js$/,
                 use:[
@@ -159,10 +158,10 @@ module.exports = {
                         options: {
                             presets: ['env'],
                             plugins: ['transform-runtime']
-                        },
+                        }, 
                     },
                 ],
-                include: resolve('src'),
+                include: resolve('src'), 
             },
             {
                 test: /\.svg$/,
@@ -181,7 +180,7 @@ module.exports = {
                 }
             },
             {
-                test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+                test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/, 
                 type: 'asset/resource',
                 generator: {
                     filename: 'media/[hash][ext][query]'
@@ -196,27 +195,23 @@ module.exports = {
             }
         ]
 
-    },
+    }, 
     plugins: [
         new VueLoaderPlugin(),
     ],
     optimization: {
         splitChunks: {
-            chunks: 'all',
-            minSize: 200000,
-            enforceSizeThreshold: 400000,
+            chunks: 'all',  
             cacheGroups: {
                 defaultVendors: {
                     test: /[\\/]node_modules[\\/]/,
                     priority: -10,
-                    reuseExistingChunk: true,
-                    enforceSizeThreshold: 400000,
+                    reuseExistingChunk: true, 
                 },
                 default: {
                     minChunks: 2,
                     priority: -20,
-                    reuseExistingChunk: true,
-                    enforceSizeThreshold: 400000,
+                    reuseExistingChunk: true, 
                 },
             },
         },
