@@ -176,3 +176,61 @@
   align-items: bottom; 
   overflow-x: hidden; 
 }
+.center{
+  text-align: center;
+  align-items: center; 
+}
+.page-center{    
+  margin:0 auto;
+  max-width: 95vw;
+}
+//富文本必须放在全局，否则不起作用
+.rich-context{   
+  padding-left: 5px;
+  padding-right: 5px; 
+  overflow: hidden;
+}
+.rich-context img{ 
+  max-width: 100%;
+  object-fit: scale-down;  
+}
+
+
+
+
+/*此处根据不同屏幕分配率显示不同的样式*/
+/*手机端*/
+@media only screen and (min-width: 0px) and (max-width: 768px) {  
+  .page-center{    
+    margin:0 auto;
+    max-width: 95vw;
+  }
+}
+/*ipad*/
+@media only screen and (min-width: 768px) and (max-width: 992px) { 
+  .page-center{    
+    margin:0 auto;
+    max-width: 95vw;
+  }
+}
+/*ipadpro*/
+@media only screen and (min-width: 992px) and (max-width: 1200px) {  
+  .page-center{    
+    margin:0 auto;
+    max-width: 95vw;
+  }
+}
+/*笔记本*/
+@media only screen and (min-width: 1200px) and (max-width: 1920px) {  
+  .page-center{    
+    margin:0 auto;
+    max-width: 90vw;
+  }
+}
+/*台式电脑*/
+@media only screen and (min-width: 1920px)   {  
+  .page-center{    
+    margin:0 auto;
+    max-width:80vw;
+  }
+}

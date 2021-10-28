@@ -1,6 +1,6 @@
 <template>
 	<section class="page-container padding border">
-		<el-row>
+		<el-row class="padding">
 			<font class="font">{{editForm.name}}</font>
 		</el-row>
 		<el-row class="padding-bottom">
@@ -71,7 +71,7 @@
 							<el-table-column sortable type="index" width="40"></el-table-column>
 							<el-table-column  label="处理意见"  prop="receiptMessage"  min-width="200" >
 								<template slot-scope="scope">
-									<div v-html="scope.row.receiptMessage"></div>
+									<div class="rich-context" v-html="scope.row.receiptMessage"></div>
 								</template>
 							</el-table-column>
 							<el-table-column prop="handlerUsername" label="指派动作" width="250"  >
@@ -116,14 +116,14 @@
 					</div>
 				</el-form-item>
 			</el-form>
-			<el-drawer title="选中用户" :visible.sync="selectUserVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="选中用户" :visible.sync="selectUserVisible"  size="70%"  append-to-body   :close-on-click-modal="false">
 				<xm-group-mng  :sel-project="selProject" :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-mng>
 			</el-drawer>
-			<el-drawer title="选中任务" :visible.sync="selectTaskVisible"  size="80%" fullscreen  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="选中任务" :visible.sync="selectTaskVisible"  size="70%"    append-to-body   :close-on-click-modal="false">
 				<xm-task-list  :sel-project="selProject"   @task-selected="onSelectedTask"></xm-task-list>
 			</el-drawer>
 
-			<el-drawer append-to-body title="故事选择" :visible.sync="selectMenuVisible"   fullscreen   :close-on-click-modal="false">
+			<el-drawer append-to-body title="故事选择" :visible.sync="selectMenuVisible"   size="70%"   :close-on-click-modal="false">
 				<xm-menu-select :is-select-menu="true"  @selected="onSelectedMenu" :sel-project="selProject"></xm-menu-select>
 			</el-drawer>
 		</el-row>

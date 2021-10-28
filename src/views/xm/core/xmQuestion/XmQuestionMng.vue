@@ -123,10 +123,34 @@
 			 <el-row class="padding-top">
 				<!--列表 XmQuestion xm_question-->
 				<el-table  ref="table" :height="tableHeight" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
- 					<el-table-column prop="name" label="缺陷名称"  min-width="200">
-						<template slot-scope="scope">
-							<div>
-							<span>
+ 					<el-table-column prop="name" label="缺陷名称"  min-width="150"  show-overflow-tooltip>
+						<template slot-scope="scope"> 
+								<el-link type="primary" @click="showEdit(scope.row)"> 
+									<el-tag type="info" v-if="scope.row.bugSeverity=='4' ">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
+									<el-tag type="primary" v-else-if="scope.row.bugSeverity=='3'">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
+									<el-tag type="warning" v-else-if="scope.row.bugSeverity=='2'">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
+									<el-tag type="danger" v-else-if="scope.row.bugSeverity=='1'">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
+									<el-tag v-else>{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag> 
+									{{scope.row.id}}&nbsp;&nbsp;{{scope.row.name}}
+								</el-link>   
+						</template>
+					</el-table-column>
+					<el-table-column prop="flowState" label="升级"  width="100"  show-overflow-tooltip>
+						<template slot-scope="scope">  
+							<el-tooltip  v-if="scope.row.flowState!='' && scope.row.flowState!=null" :content="showApprovaInfo(scope.row)" placement="bottom" effect="light">
+							<el-tag v-if="scope.row.flowState=='0' || scope.row.flowState==null ">未发审</el-tag>
+							<el-tag v-else-if="scope.row.flowState=='1'">审核中</el-tag>
+							<el-tag v-else-if="scope.row.flowState=='2'">已通过</el-tag>
+							<el-tag v-else-if="scope.row.flowState=='3'">未通过</el-tag>
+							<el-tag v-else-if="scope.row.flowState=='4'">已取消</el-tag>
+							</el-tooltip>
+							<el-button icon="el-icon-upload2" v-if="!scope.row.flowState" type="text"   @click="handleCommand({type:'sendToProcessApprova',data:scope.row,bizKey:'xm_question_up_approva'})">{{qtype=='risk'?'':''}}</el-button>
+ 							 
+						</template>
+					</el-table-column>
+					
+					<el-table-column prop="bugStatus" label="状态"  width="100">
+						<template slot-scope="scope"> 
  								<el-tag type="info" v-if="scope.row.bugStatus=='create' ">创建</el-tag>
 								<el-tag type="primary" v-else-if="scope.row.bugStatus=='active'">已激活</el-tag>
 								<el-tag type="warning" v-else-if="scope.row.bugStatus=='confirm'">确认</el-tag>
@@ -135,56 +159,41 @@
 								<el-tag type="success" v-else-if="scope.row.bugStatus=='resolved'">已解决</el-tag>
 								<el-tag type="success" v-else-if="scope.row.bugStatus=='close'">关闭</el-tag>
 								<el-tag type="success" v-else-if="scope.row.bugStatus=='closed'">已关闭</el-tag>
-								<el-tag v-else>{{scope.row.bugStatus}}</el-tag>
-  								<el-tag type="info" v-if="scope.row.bugSeverity=='4' ">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
-								<el-tag type="primary" v-else-if="scope.row.bugSeverity=='3'">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
-								<el-tag type="warning" v-else-if="scope.row.bugSeverity=='2'">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
-								<el-tag type="danger" v-else-if="scope.row.bugSeverity=='1'">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
-								<el-tag v-else>{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
-								<el-tooltip :content="scope.row.createUsername+'创建于'+scope.row.createTime+',  于'+scope.row.ltime+'指派给'+scope.row.handlerUsername"><el-tag type="info">{{scope.row.handlerUsername}}</el-tag></el-tooltip>
-
-								<span>
-									<el-tooltip  v-if="scope.row.flowState!='' && scope.row.flowState!=null" :content="showApprovaInfo(scope.row)" placement="bottom" effect="light">
-									<el-tag v-if="scope.row.flowState=='0' || scope.row.flowState==null ">未发审</el-tag>
-									<el-tag v-else-if="scope.row.flowState=='1'">审核中</el-tag>
-									<el-tag v-else-if="scope.row.flowState=='2'">已通过</el-tag>
-									<el-tag v-else-if="scope.row.flowState=='3'">未通过</el-tag>
-									<el-tag v-else-if="scope.row.flowState=='4'">已取消</el-tag>
-									</el-tooltip>
-									<el-button icon="el-icon-upload2" v-if="!scope.row.flowState" type="text"   @click="handleCommand({type:'sendToProcessApprova',data:scope.row,bizKey:'xm_question_up_approva'})">{{qtype=='risk'?'升级':'升级'}}</el-button>
-								</span>
-								<el-badge :value="getBadge(scope.row)" type="warning">
-									<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.name}}</el-link>
-								</el-badge> 
-							</span>
-							</div>
+								<el-tag v-else>{{scope.row.bugStatus}}</el-tag>   
 						</template>
+					</el-table-column>
+					<el-table-column prop="askUsername" label="创建人"  width="100" show-overflow-tooltip> 
+					</el-table-column>
+					
+					<el-table-column prop="createTime" label="创建时间"  width="100" show-overflow-tooltip> 
+					</el-table-column>
+					<el-table-column prop="handlerUsername" label="指派给"  width="100" show-overflow-tooltip> 
 					</el-table-column>
 					<el-table-column prop="menuName" label="故事" width="100" show-overflow-tooltip></el-table-column>
 				</el-table>
 				<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 			 </el-row>
 			<!--编辑 XmQuestion xm_question界面-->
-			<el-drawer  title="编辑缺陷"   :visible.sync="editFormVisible" :with-header="false"  :size="750"    :close-on-click-modal="false">
+			<el-drawer  title="编辑缺陷"   :visible.sync="editFormVisible" :with-header="false"  size="70%"    :close-on-click-modal="false">
 					<xm-question-edit :sel-project=" {id:editForm.projectId,name:editForm.projectName} " :xm-question="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-question-edit>
 			</el-drawer>
 
 			<!--新增 XmQuestion xm_question界面-->
-			<el-drawer title="新增缺陷"  :visible.sync="addFormVisible" :with-header="false" :size="750"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="新增缺陷"  :visible.sync="addFormVisible" :with-header="false" size="70%"  append-to-body   :close-on-click-modal="false">
 				<xm-question-add :xm-test-case-exec="xmTestCaseExec" :xm-test-case="xmTestCase" :qtype="qtype" :sel-project=" filters.selProject " :xm-question="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-question-add>
 			</el-drawer>
-			<el-drawer title="选中用户" v-if=" filters.selProject " :visible.sync="selectUserVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="选中用户" v-if=" filters.selProject " :visible.sync="selectUserVisible"  size="70%"  append-to-body   :close-on-click-modal="false">
 				<xm-group-mng  :sel-project=" filters.selProject " :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-mng>
 			</el-drawer>
-			<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  size="70%"  append-to-body   :close-on-click-modal="false">
 				<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
 			</el-drawer>
 
-			<el-drawer append-to-body title="故事选择" :visible.sync="menuVisible"    size="80%"   :close-on-click-modal="false">
+			<el-drawer append-to-body title="故事选择" :visible.sync="menuVisible"    size="70%"   :close-on-click-modal="false">
 				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
 			</el-drawer>
 
-			<el-drawer title="选择产品" :visible.sync="productSelectVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="选择产品" :visible.sync="productSelectVisible"  size="70%"  append-to-body   :close-on-click-modal="false">
 					<xm-product-select   :isSelectProduct="true" :selProject="filters.selProject" :visible="productSelectVisible" @cancel="productSelectVisible=false" @selected="onProductSelected"></xm-product-select>
 			</el-drawer>
 	</section>
