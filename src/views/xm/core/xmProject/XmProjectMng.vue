@@ -67,7 +67,7 @@
 					</el-row>
 					<el-button type="text" class="right-btn" slot="reference" icon="el-icon-d-arrow-right"></el-button>
 				</el-popover>
-				 <el-button type="primary"  @click="showAdd"  icon="el-icon-plus" circle></el-button>
+				 <el-button type="primary"  @click="showAdd"  icon="el-icon-plus"></el-button>
 			</el-menu>
 			 
 		</el-row> 

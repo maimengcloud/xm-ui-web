@@ -47,7 +47,7 @@
 											<el-button type="danger"    @click="handlePopover(scope.row,'delete')">删除当前行</el-button> 
 											<el-button type="success"    @click="handlePopover(scope.row,'addSub')">增加子行</el-button> 
 										</div>
-										<el-button slot="reference" :type="scope.row.opType?'success':'plain'"   icon="el-icon-edit" circle></el-button> 
+										<el-button slot="reference" :type="scope.row.opType?'success':'plain'"   icon="el-icon-edit"></el-button> 
 									</el-popover>
 									<el-input   style="width:100%;"   v-model="scope.row.sortLevel"  @change="fieldChange(scope.row,'sortLevel')"></el-input>
 								</div> 								

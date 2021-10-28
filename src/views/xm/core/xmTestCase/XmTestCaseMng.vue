@@ -11,7 +11,7 @@
 						<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTestCases" icon="el-icon-search"></el-button>
 					</template>
 				</el-input> 
-				<el-button type="primary" v-if="!multiSelect" circle icon="el-icon-plus" @click="showAdd"></el-button>
+				<el-button type="primary" v-if="!multiSelect" icon="el-icon-plus" @click="showAdd"></el-button>
 				<el-button type="primary" v-if="multiSelect" @click="selected">确认选中</el-button> 
 				<el-button v-if="!multiSelect " type="danger" icon="el-icon-delete" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
 				
@@ -62,7 +62,7 @@
 							<el-button  type="primary" icon="el-icon-search" @click="searchXmTestCases">查询</el-button>
 						</el-col>
 					</el-row>
-					<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+					<el-button  slot="reference" icon="el-icon-more"></el-button>
 				</el-popover> 
 			</div>
 		</el-row>
@@ -79,7 +79,7 @@
  				<el-table-column prop="caseRemark" label="备注" min-width="80" show-overflow-tooltip></el-table-column> 
  				<el-table-column  prop="menuName" label="故事名" min-width="80" show-overflow-tooltip> 
 					<template slot="header">
-						故事<el-button @click="showMenu"  icon="el-icon-search" circle ></el-button>
+						故事<el-button @click="showMenu"  icon="el-icon-search" ></el-button>
  					</template>
 				 </el-table-column>
 				<el-table-column v-if="!multiSelect" prop="ctime" label="创建时间" min-width="80" show-overflow-tooltip></el-table-column>

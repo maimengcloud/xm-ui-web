@@ -52,7 +52,7 @@
 								<el-button  type="primary" icon="el-icon-search" @click="getXmIterations">查询</el-button>
 							</el-col> 
 						</el-row>
-						<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+						<el-button  slot="reference" icon="el-icon-more"></el-button>
 					</el-popover>
 				</template>
 					 <template slot-scope="scope">

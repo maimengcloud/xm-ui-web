@@ -16,23 +16,9 @@
 						<el-option   value="not-join"  label="未分配任何任务的故事"></el-option>  
 						<el-option   value="join"  label="已分配任务的故事"></el-option>  
 					</el-select> 
-					<el-date-picker
-						v-model="dateRanger" 
-						type="daterange"
-						align="right"
-						unlink-panels
-						range-separator="至"
-						start-placeholder="创建日期"
-						end-placeholder="创建日期"
-						value-format="yyyy-MM-dd"
-						:default-time="['00:00:00','23:59:59']"
-						:picker-options="pickerOptions"
-					></el-date-picker>
-					<el-input v-model="filters.key" closable style="width: 20%;" placeholder="模糊查询">
-						<template slot="append">
-							<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
-						</template>
+					<el-input v-model="filters.key" closable style="width: 20%;" placeholder="故事名查询"> 
 					</el-input>  
+					<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
 					<el-popover
 						placement="top-start"
 						title=""
@@ -85,7 +71,7 @@
 								<el-button type="primary"  @click="searchXmMenus" >查询</el-button>
  							</el-col> 
 						</el-row> 
-						<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+						<el-button  slot="reference" icon="el-icon-more"></el-button>
 					</el-popover> 
 					<el-button   type="primary" v-if="multi"  v-on:click="multiSelectedConfirm">确认选择</el-button>
 				</el-row>

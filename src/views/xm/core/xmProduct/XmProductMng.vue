@@ -96,7 +96,7 @@
 						<el-button type="primary"  @click="searchXmProducts" >查询</el-button>
 					</el-col>
 				</el-row>
-				<el-button  slot="reference"   icon="el-icon-more" circle></el-button>
+				<el-button  slot="reference"   icon="el-icon-more"></el-button>
 			</el-popover>
 		</el-row>
 		<el-row  class="page-main page-height-80"  v-show="showType">
@@ -179,7 +179,7 @@
 									<el-button  type="danger" v-loading="load.del" @click="handleDel(scope.row)" :disabled="load.del==true" icon="el-icon-delete">删除</el-button>
 								</el-col>
 							</el-row>
-							<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+							<el-button  slot="reference" icon="el-icon-more"></el-button>
 						</el-popover>
 					</template>
 				</el-table-column>

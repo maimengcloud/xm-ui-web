@@ -339,10 +339,10 @@
 			<xm-project-list class="padding-left"   @project-confirm="onPorjectConfirm"></xm-project-list>
 		</el-drawer>
 
-		<el-drawer append-to-body title="故事选择" :visible.sync="menuVisible" size="60%"   :close-on-click-modal="false">
+		<el-drawer append-to-body title="故事选择" :visible.sync="menuVisible" size="70%"   :close-on-click-modal="false">
 			<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
 		</el-drawer>
-    <el-drawer append-to-body title="故事选择" :visible.sync="menuStory" size="60%"   :close-on-click-modal="false">
+    <el-drawer append-to-body title="故事选择" :visible.sync="menuStory" size="70%"   :close-on-click-modal="false">
     	<xm-menu-select :visible="menuStory" :is-select-menu="true" :multi="true" @menus-selected="onSelectedStory"></xm-menu-select>
     </el-drawer>
 

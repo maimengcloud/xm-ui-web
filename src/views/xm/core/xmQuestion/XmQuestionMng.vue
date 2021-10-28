@@ -117,7 +117,7 @@
 							<el-button @click="handleExport"   icon="el-icon-download">导出</el-button>
 						</el-col>
 					</el-row>
-					<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+					<el-button  slot="reference" icon="el-icon-more"></el-button>
 				</el-popover> 
 			 </el-row>
 			 <el-row class="padding-top">

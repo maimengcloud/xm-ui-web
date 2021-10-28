@@ -34,7 +34,7 @@
 			
 						</el-col> 
 					</el-row>
-					<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+					<el-button  slot="reference" icon="el-icon-more"></el-button>
 				</el-popover> 
 				-->
 			</span> 
@@ -55,7 +55,7 @@
 						<el-button   @click="showPhaseTemplate" v-loading="load.add" icon="el-icon-plus">由模板导入计划</el-button> 
 					</el-col>
 				</el-row>
-				<el-button slot="reference" type="primary" v-loading="load.add" icon="el-icon-plus" circle></el-button> 
+				<el-button slot="reference" type="primary" v-loading="load.add" icon="el-icon-plus"></el-button> 
 			</el-popover>
 			
 		</el-row>

@@ -88,7 +88,7 @@
 							<el-button   v-if=" batchEditVisible==false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">刷新统计数据</el-button>  
 						</el-col> 
 					</el-row> 
-					<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+					<el-button  slot="reference" icon="el-icon-more"></el-button>
 				</el-popover> 
 			
 			</el-row>
@@ -108,7 +108,7 @@
 										<el-button type="danger"    @click="handlePopover(scope.row,'delete')">删除当前行</el-button> 
 										<el-button type="success"    @click="handlePopover(scope.row,'addSub')">增加子行</el-button> 
 									</div>
-									<el-button slot="reference" :type="scope.row.opType?'success':'plain'"   icon="el-icon-more" circle></el-button> 
+									<el-button slot="reference" :type="scope.row.opType?'success':'plain'"   icon="el-icon-more"></el-button> 
 								</el-popover>
 								<el-input   style="width:100%;"   v-model="scope.row.seqNo"  @change="fieldChange(scope.row,'seqNo')"></el-input>
 							</div>

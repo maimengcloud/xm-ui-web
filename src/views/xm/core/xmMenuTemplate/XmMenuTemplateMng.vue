@@ -54,7 +54,7 @@
                     <div :ref="'menu_'+scope.$index" :data-menu-id="scope.row.menuId"></div>
 										<el-button type="primary"    @click="handlePopover(scope.row,'highestPmenuId')">成为顶级节点</el-button> 
 									</div>
-									<el-button slot="reference" :type="scope.row.opType?'success':'plain'"   icon="el-icon-edit" circle></el-button> 
+									<el-button slot="reference" :type="scope.row.opType?'success':'plain'"   icon="el-icon-edit"></el-button> 
               </el-popover>
 							<el-input style="width:100%;"    v-model="scope.row.seqNo" @change="fieldChange(scope.row,'seqNo')"></el-input>
               </div>
