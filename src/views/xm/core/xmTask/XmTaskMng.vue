@@ -202,7 +202,7 @@
 							</el-table-column>
 							<el-table-column  prop="menuId" label="故事"  width="120" show-overflow-tooltip>
 								<template slot="header">
-									故事<el-button @click="showMenuStory"  icon="el-icon-search" circle ></el-button>
+									故事 
 								</template>
 								<template slot-scope="scope">
 									<el-link      @click.stop="toMenu(scope.row)">{{scope.row.menuName?scope.row.menuName:'去关联故事'}}</el-link>
@@ -239,6 +239,7 @@
 			v-if="drawerVisible == true"
 			:size="600"
 			:visible.sync="drawerVisible"  append-to-body >
+			<el-row class="padding">
 			<el-row style="font-size: 12px;overflow-x:hidden"> 
 				<div class="task-header extra">
 					<div class="title">
@@ -300,6 +301,7 @@
 			<div v-if="drawerkey == '1' && drawerVisible==true" style="overflow-x:hidden">
 				 <xm-exchange-mng :xm-task="editForm"></xm-exchange-mng>
 			</div>
+			</el-row>
 		</el-drawer>
 		<!--编辑 XmTask xm_task界面-->
 		<el-drawer title="编辑任务" :visible.sync="editFormVisible" :with-header="false" :size="750" append-to-body  :close-on-click-modal="false">

@@ -1,12 +1,15 @@
 <template>
 	<section class="page-container padding">
-		<el-row> 
-			<el-button type="text" @click="goAnchor('baseInfo')">基础信息</el-button> 
-			<el-button type="text" @click="goAnchor('planInfo')">进度计划</el-button> 
-			<el-button type="text" @click="goAnchor('costInfo')">工作量与成本</el-button>
-			<el-button type="text" @click="goAnchor('settleInfo')">结算信息</el-button>
-			<el-button type="text" @click="goAnchor('menuInfo')">故事明细</el-button> 
-			<el-button type="text" @click="goAnchor('taskOut')">众包</el-button>   
+		<el-row class="padding"> 
+			快速导航：
+			<el-link type="text" @click="goAnchor('baseInfo')">&nbsp;&nbsp;&nbsp;基础信息&nbsp;&nbsp;&nbsp;</el-link> 
+			<el-link type="text" @click="goAnchor('planInfo')">&nbsp;&nbsp;&nbsp;进度计划&nbsp;&nbsp;&nbsp;</el-link> 
+			<el-link type="text" @click="goAnchor('costInfo')">&nbsp;&nbsp;&nbsp;工作量与成本&nbsp;&nbsp;&nbsp;</el-link>
+			<el-link type="text" @click="goAnchor('settleInfo')">&nbsp;&nbsp;&nbsp;结算信息&nbsp;&nbsp;&nbsp;</el-link>
+			<el-link type="text" @click="goAnchor('menuInfo')">&nbsp;&nbsp;&nbsp;故事明细&nbsp;&nbsp;&nbsp;</el-link> 
+			<el-link type="text" @click="goAnchor('taskOut')">&nbsp;&nbsp;&nbsp;众包&nbsp;&nbsp;&nbsp;</el-link>    
+		</el-row>
+		<el-row>  
 			<el-steps :active="calcTaskStep" finish-status="success" simple>
 			<el-step title="发布" description="任务创建成功后即发布"></el-step>
 			<el-step title="竞标" description="候选人参与竞标，或者由责任人主动设置候选人"></el-step>
@@ -50,7 +53,7 @@
 						</el-tooltip>
 					</el-form-item>  
 					<el-form-item  label="所属故事" prop="menuId" id="menuInfo"> 
-						{{editForm.menuName}} <el-button @click="menuVisible=true" round>选择归属故事</el-button><el-button @click="toMenu" round>查看故事明细</el-button>
+						{{editForm.menuName}} &nbsp;&nbsp;&nbsp; <el-link @click="menuVisible=true" type="primary">{{editForm.menuName?'更改归属故事':'设置归属故事'}}</el-link>&nbsp;&nbsp;&nbsp;<el-link v-if="editForm.menuName" @click="toMenu" type="primary">查看故事明细</el-link>
 					</el-form-item> 
 					<el-form-item prop="skill" label="技能要求">
 						<el-button class="useradd-icon" type="text" @click.stop="showSkill()" icon="el-icon-circle-plus-outline">增加</el-button>
@@ -173,11 +176,11 @@
 		<el-drawer append-to-body title="选择负责人" :visible.sync="groupUserSelectVisible" size="80%"    :close-on-click-modal="false">
 			<xm-project-group-select :visible="groupUserSelectVisible" :sel-project="xmProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-project-group-select>
 		</el-drawer>
-		<el-drawer append-to-body title="新增技能" :visible.sync="skillVisible" size="50%"    :close-on-click-modal="false">
+		<el-drawer append-to-body title="新增技能" :visible.sync="skillVisible" size="60%"    :close-on-click-modal="false">
 			<skill-mng :task-skills="taskSkills" :jump="true" @select-confirm="onTaskSkillsSelected"></skill-mng>
 		</el-drawer>
 
-		<el-drawer append-to-body title="故事选择" :visible.sync="menuVisible" fullscreen   :close-on-click-modal="false">
+		<el-drawer append-to-body title="故事选择" :visible.sync="menuVisible" size="80%"   :close-on-click-modal="false">
 			<xm-menu-select :is-select-menu="true"  @selected="onMenuSelected" :sel-project="xmProject"></xm-menu-select>
 		</el-drawer>
 		
