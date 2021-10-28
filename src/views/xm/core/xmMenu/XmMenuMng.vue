@@ -89,10 +89,9 @@
 						</el-popover>  
  					</el-row> 
 					<el-row v-if="filters.parentMenuList && filters.parentMenuList.length>0" class="padding-top padding-left">
-						上级故事:
-						<span v-for="(item ,index) in filters.parentMenuList" :key="index">
-							<el-tag   @close="clearParentMenu(item,index)" closable @click="clearParentMenu(item,index)">{{item.menuName}}</el-tag>/
-						</span>
+						<el-breadcrumb separator-class="el-icon-arrow-right">
+							<el-breadcrumb-item v-for="(item ,index) in filters.parentMenuList" :key="index"   ><el-tag :type="filters.parentMenu.menuId==item.menuId?'success':'info'"  @close="clearParentMenu(item,index)" closable @click="onParentMenuClick(item,index)">{{item.menuName}}</el-tag></el-breadcrumb-item> 
+						</el-breadcrumb> 
 					</el-row> 
 					<el-row class="padding-top">  
 						<el-table   stripe fit border ref="table" :max-height="tableHeight" :data="xmMenusTreeData"  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
@@ -836,16 +835,22 @@
 				this.searchXmMenus();
 			},
 			clearParentMenu(menu,index){
-				if(index==1){
+				if(index==0){
 					this.filters.parentMenu=null;
+					this.filters.parentMenuList=[];
 				}else{
 					this.filters.parentMenu=this.filters.parentMenuList[index-1];
-				}
-
-				this.filters.parentMenuList.splice(index,this.filters.parentMenuList.length-index)
+					this.filters.parentMenuList.splice(index,this.filters.parentMenuList.length-index)
+				} 
 				this.pageInfo.count=true
 				this.searchXmMenus();
-			}
+			},
+			onParentMenuClick(menu,index){
+				this.filters.parentMenu=this.filters.parentMenuList[index];
+				this.filters.parentMenuList.splice(index+1,this.filters.parentMenuList.length-index)
+				this.pageInfo.count=true
+				this.searchXmMenus();
+			},
 		},//end methods
 		components: { 
 		    'xm-menu-add':XmMenuAdd,
