@@ -59,6 +59,14 @@
 
 					</el-col>
 					<font v-else>无</font>
+				</el-form-item> 
+				<el-form-item label="缺陷描述" prop="description">
+					<el-col v-if="editForm.description" :span="24" >
+					<div class="wf-main-context-box" >
+						<div  class="wf-main-context" v-html="editForm.description"></div>
+					</div>
+					</el-col>
+					<font v-else>无</font>
 				</el-form-item>
 				<el-form-item label="流转信息">
 						<el-button   v-if="flowInfoVisible==false" @click="showFlowInfo" >查询流转信息</el-button>
@@ -81,14 +89,6 @@
 							</el-table-column>  
 						</el-table>
 					</el-col>
-				</el-form-item>
-				<el-form-item label="缺陷描述" prop="description">
-					<el-col v-if="editForm.description" :span="24" >
-					<div class="wf-main-context-box" >
-						<div  class="wf-main-context" v-html="editForm.description"></div>
-					</div>
-					</el-col>
-					<font v-else>无</font>
 				</el-form-item>
 				<el-form-item v-if="!flowInfoVisible" label="上次处理意见" prop="lremark">
 					<el-col v-if="editForm.lremark" :span="24" >
