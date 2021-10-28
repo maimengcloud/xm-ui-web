@@ -61,7 +61,7 @@
 						</el-col>
 						
 						<el-col :span="24" style="padding-top:5px;">
-							<el-button size="mini" type="primary" icon="el-icon-search" @click="searchXmTestCaseExecs">查询</el-button>
+							<el-button  type="primary" icon="el-icon-search" @click="searchXmTestCaseExecs">查询</el-button>
 						</el-col>
 					</el-row>
 					<el-button  slot="reference" icon="el-icon-more" circle></el-button>
@@ -83,7 +83,7 @@
 				<el-table-column sortable type="index" width="45"></el-table-column>
  				<el-table-column prop="projectName" label="项目名称" min-width="100" show-overflow-tooltip>
 					<template slot="header" v-if="!selProject">
-						项目<el-button @click="showProjectList"  icon="el-icon-search" circle size="mini"></el-button>
+						项目<el-button @click="showProjectList"  icon="el-icon-search" circle ></el-button>
  					</template>
 				</el-table-column> 
 				<el-table-column prop="caseName" label="用例(点击详情)" min-width="100" show-overflow-tooltip>
@@ -93,7 +93,7 @@
 				</el-table-column>
 				<el-table-column prop="menuName" label="故事" min-width="100" show-overflow-tooltip>
 					<template slot="header" slot-scope="scope">
-						故事<el-button @click="showMenu"  icon="el-icon-search" circle size="mini"></el-button>
+						故事<el-button @click="showMenu"  icon="el-icon-search" circle ></el-button>
  					</template>
 
 				</el-table-column>

@@ -11,8 +11,8 @@
           <el-popover placement="top" width="375" trigger="manual" v-model="weixinContentVisible">
             <p>{{weixinContent}}</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="doCopyWeixinUrl">拷贝链接</el-button>
-              <el-button type="primary" size="mini" @click="doCopyWeixinContent">拷贝内容</el-button>
+              <el-button  type="text" @click="doCopyWeixinUrl">拷贝链接</el-button>
+              <el-button type="primary"  @click="doCopyWeixinContent">拷贝内容</el-button>
             </div>
             <el-button slot="reference" v-show="assigneeToMe===false"
               v-on:click="showWeixin" class="hidden-sm-and-down">微信催办</el-button>
@@ -48,7 +48,7 @@
                     {{tag.tagName}}
                   </el-tag>
                 </el-row>
-                <el-button v-if="filters.tags==null || filters.tags.length==0" size="mini"
+                <el-button v-if="filters.tags==null || filters.tags.length==0" 
                   @click.native="showTagSelect(false)">选择标签</el-button>
               </el-row>
               <el-row>

@@ -43,11 +43,11 @@
 										trigger="click">
 										<div style="text-align: center; margin: 0">
                       						<div :ref="'task_'+scope.$index" :data-task-id="scope.row.id"></div>
-										  <el-button type="primary" size="mini"   @click="handlePopover(scope.row,'highestPmenuId')">成为顶级节点</el-button> 
-											<el-button type="danger" size="mini"   @click="handlePopover(scope.row,'delete')">删除当前行</el-button> 
-											<el-button type="success" size="mini"   @click="handlePopover(scope.row,'addSub')">增加子行</el-button> 
+										  <el-button type="primary"    @click="handlePopover(scope.row,'highestPmenuId')">成为顶级节点</el-button> 
+											<el-button type="danger"    @click="handlePopover(scope.row,'delete')">删除当前行</el-button> 
+											<el-button type="success"    @click="handlePopover(scope.row,'addSub')">增加子行</el-button> 
 										</div>
-										<el-button slot="reference" :type="scope.row.opType?'success':'plain'"  size="mini" icon="el-icon-edit" circle></el-button> 
+										<el-button slot="reference" :type="scope.row.opType?'success':'plain'"   icon="el-icon-edit" circle></el-button> 
 									</el-popover>
 									<el-input   style="width:100%;"   v-model="scope.row.sortLevel"  @change="fieldChange(scope.row,'sortLevel')"></el-input>
 								</div> 								

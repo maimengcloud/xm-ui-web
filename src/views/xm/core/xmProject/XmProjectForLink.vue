@@ -17,7 +17,7 @@
 				<el-table-column label="操作" width="245" fixed="right">
 					<template slot-scope="scope">  
 							<el-button-group>
-								<el-button v-if="!xmIteration" size="mini" type="primary" @click.stop="doDelXmProductProjectLink(scope.row)" >移出产品</el-button>  
+								<el-button v-if="!xmIteration"  type="primary" @click.stop="doDelXmProductProjectLink(scope.row)" >移出产品</el-button>  
 							</el-button-group> 
 							<!-- <el-button style="width:100%;" slot="reference" class="see-more" type="text" icon="el-icon-more"></el-button>
 						</el-popover> -->

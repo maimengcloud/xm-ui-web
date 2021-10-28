@@ -41,16 +41,16 @@
 						<el-popover
 							placement="top-start"
 							title="选择创建任务的方式"
-							width="200"
+							width="300"
 							trigger="hover">
 							<el-row>
 
 								<el-col :span="24" style="padding-top:5px;">
 
-									<el-button size="mini" v-if=" isTaskCenter!='1'   && isMy!='1'" type="primary"  @click="showMenu"   icon="el-icon-plus">由故事快速创建任务(推荐)</el-button>
+									<el-button  v-if=" isTaskCenter!='1'   && isMy!='1'"   @click="showMenu"   icon="el-icon-plus">由故事快速创建任务(推荐)</el-button>
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
-									<el-button size="mini" v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showTaskTemplate"   icon="el-icon-plus">从模板快速导入任务</el-button>
+									<el-button  v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showTaskTemplate"   icon="el-icon-plus">从模板快速导入任务</el-button>
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
 									<el-button  v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showAdd"  icon="el-icon-plus">直接创建</el-button>
@@ -68,30 +68,30 @@
 							<el-row>
 								<el-col :span="24" style="padding-top:5px;">
 									<font class="more-label-font">产品:</font><el-tag    v-if="  filters.product "  :closable="!xmProduct"    @close="clearProduct">{{this.filters.product.productName}}</el-tag>
-									<el-button size="mini" v-else    @click="showProductVisible" type="plian">选产品</el-button>
+									<el-button  v-else    @click="showProductVisible" type="plian">选产品</el-button>
 								</el-col>
 								<el-col :span="24" style="padding-top:5px;" v-if="!selProject" >
 									<font class="more-label-font">项目:</font><el-tag    v-if="  filters.selProject "  closable  @click="showProjectList" @close="clearProject">{{this.filters.selProject.name}}</el-tag>
-									<el-button size="mini" v-else    @click="showProjectList" type="plian">选项目</el-button>
+									<el-button  v-else    @click="showProjectList" type="plian">选项目</el-button>
 								</el-col>
 								<el-col :span="24" style="padding-top:5px;">
 									 <font class="more-label-font">故事:</font>
 									<font  v-if="  filters.menus && filters.menus.length>0">
 										<el-tag  v-for="(item,index) in filters.menus" :key="index"  closable     @close="clearFiltersMenu(item)">{{item.menuName.substr(0,10)}}</el-tag>
 									</font>
-									<el-button size="mini" v-else    @click="showMenuStory" type="plian">选故事</el-button>
+									<el-button  v-else    @click="showMenuStory" type="plian">选故事</el-button>
 								</el-col>
 								<el-col :span="24" style="padding-top:5px;">
 									<font class="more-label-font">责任人:</font>
 									 <el-tag    v-if="  filters.createUser "  closable    @close="clearFiltersCreateUser">{{this.filters.createUser.username}}</el-tag>
-									<el-button size="mini" v-else    @click="showMenuGroupUser" type="plian">选责任人</el-button>
-									<el-button size="mini" v-if=" !filters.createUser || filters.createUser.userid!=userInfo.userid" @click="setFiltersCreateUserAsMySelf">我的</el-button>
+									<el-button  v-else    @click="showMenuGroupUser" type="plian">选责任人</el-button>
+									<el-button  v-if=" !filters.createUser || filters.createUser.userid!=userInfo.userid" @click="setFiltersCreateUserAsMySelf">我的</el-button>
 								</el-col>
 								<el-col :span="24" style="padding-top:5px;">
 									<font class="more-label-font">执行人:</font>
 									 <el-tag    v-if="  filters.executor "  closable   @close="clearFiltersExecutor">{{this.filters.executor.username}}</el-tag>
-									<el-button size="mini" v-else    @click="showMenuExecutor" type="plian">选执行人</el-button>
-									<el-button size="mini" v-if=" !filters.executor || filters.executor.userid!=userInfo.userid" @click="setFiltersExecutorAsMySelf">我的</el-button>
+									<el-button  v-else    @click="showMenuExecutor" type="plian">选执行人</el-button>
+									<el-button  v-if=" !filters.executor || filters.executor.userid!=userInfo.userid" @click="setFiltersExecutorAsMySelf">我的</el-button>
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
 									<font class="more-label-font">创建时间:</font>
@@ -110,7 +110,7 @@
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
 									<font class="more-label-font">标签:</font>
-									<el-button size="mini"   v-if=" !filters.skillTags || filters.skillTags.length==0" icon="el-icon-search" @click="showSkillSelect">选择标签</el-button>
+									<el-button    v-if=" !filters.skillTags || filters.skillTags.length==0" icon="el-icon-search" @click="showSkillSelect">选择标签</el-button>
 									<el-tag v-else   closable v-for=" (skill,index) in filters.skillTags" :key="index"  @click="showSkillSelect" @close="skillTagClear(skill)">{{skill.skillName}}</el-tag>
 
 								</el-col>
@@ -119,18 +119,18 @@
 									<el-checkbox v-model="gstcVisible" >甘特图</el-checkbox>
 								</el-col>
 								<el-col :span="24" style="padding-top:5px;">
-									<el-button size="mini" type="primary" icon="el-icon-search" @click="searchXmTasks">查询</el-button>
+									<el-button  type="primary" icon="el-icon-search" @click="searchXmTasks">查询</el-button>
 								</el-col>
 							</el-row>
 							<el-row>
 								<el-col :span="24" style="padding-top:5px;">
-									<el-button   size="mini" v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showBatchEdit" v-loading="load.edit" icon="el-icon-edit">批量修改任务</el-button>
+									<el-button    v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showBatchEdit" v-loading="load.edit" icon="el-icon-edit">批量修改任务</el-button>
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
-									<el-button size="mini" v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showTaskTemplate"   icon="el-icon-plus">从模板快速导入任务</el-button>
+									<el-button  v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showTaskTemplate"   icon="el-icon-plus">从模板快速导入任务</el-button>
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
-									<el-button size="mini" v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showMenu"   icon="el-icon-plus">由故事快速创建任务</el-button>
+									<el-button  v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showMenu"   icon="el-icon-plus">由故事快速创建任务</el-button>
 								</el-col>
 							</el-row>
 							<el-button  slot="reference" icon="el-icon-more" circle></el-button>
@@ -155,74 +155,73 @@
 							fit
 							border
 							tooltip-effect="light"
-							size="mini"
+							
 							default-expand-all
-							:height="tableHeight"
+							:max-height="tableHeight"
 							:tree-props="{children: 'children', hasChildren: 'hasChildren'}"
 							row-key="id"
 							ref="table"
 							>
-							<el-table-column sortable prop="name" label="任务名称(点击详情)"  min-width="440">
+							<el-table-column sortable prop="name" label="任务名称(点击详情)"  min-width="250" show-overflow-tooltip>
+								<template slot-scope="scope">  
+ 										<el-link  type="primary"  @click.stop="showDrawer(scope.row)">
+											{{scope.row.sortLevel}}&nbsp; 
+											<el-tag v-if="scope.row.level<='2'" type="info">轻微</el-tag>
+											<el-tag v-else-if="scope.row.level=='3'" type="warning">一般</el-tag>
+											<el-tag v-else-if="scope.row.level=='4'" type="danger">紧急</el-tag>
+											<el-tag v-else type="danger">特急</el-tag>  
+											 {{scope.row.name}}</el-link> 
+								</template>
+							</el-table-column>
+							<el-table-column sortable prop="name" label="预算及工时"  width="150">
+								<template slot-scope="scope"> 
+ 										  {{'￥'+getAmountDesc(scope.row.budgetCost)}},{{scope.row.budgetWorkload}}人时 
+								</template>
+							</el-table-column>
+							<el-table-column sortable prop="rate" label="进度"  width="100">
+								<template slot-scope="scope"> 
+ 										 <el-link style="border-radius:30px;" :type="scope.row.rate>=100?'success':'warning'" @click="drawerVisible=true"> {{ (scope.row.rate!=null?scope.row.rate:0)+'%'}} </el-link>  
+								</template>
+							</el-table-column>
+							<el-table-column sortable prop="name" label="责任人"  width="120" show-overflow-tooltip>
+								<template slot-scope="scope"> 
+										<span v-for="(item ,index) in [formatExeUsernames(scope.row)]" :key="index"> 
+											 <el-link     :type="item.type"     @click.stop="showExecusers(scope.row)">{{item.showMsg}}</el-link>  
+										</span>   
+								</template>
+							</el-table-column>
+							<el-table-column sortable  prop="startTime" label="起止时间" width="120" show-overflow-tooltip>
+								<template slot-scope="scope"> 
+									{{getDateString(scope.row.startTime)}}&nbsp;~&nbsp;{{getDateString(scope.row.endTime)}}
+									<!--
+										<div v-for="(item,index) in [calcTaskStateByTime(scope.row.startTime,scope.row.endTime,scope.row)]" :key="index ">
+											<el-tag :type="item.type">{{getDateString(scope.row.startTime)}}~{{getDateString(scope.row.endTime)}} {{item.desc}}</el-tag>
+										</div>  
+									-->
+								</template>
+							</el-table-column>
+							<el-table-column  prop="menuId" label="故事"  width="120" show-overflow-tooltip>
+								<template slot="header">
+									故事<el-button @click="showMenuStory"  icon="el-icon-search" circle ></el-button>
+								</template>
 								<template slot-scope="scope">
-									<span>
-										{{scope.row.sortLevel}}&nbsp;
+									<el-link      @click.stop="toMenu(scope.row)">{{scope.row.menuName?scope.row.menuName:'去关联故事'}}</el-link>
+								</template>
+							</el-table-column>
+							
+							<el-table-column   label="操作"  width="200">
+								<template slot-scope="scope">  
 										<el-dropdown @command="handleCommand" v-if=" isTaskCenter!='1'   && isMy!='1'">
 											<span class="el-dropdown-link">
-												<el-button size="mini" circle><i class="el-icon-plus"></i></el-button>
+												<el-button  circle><i class="el-icon-plus"></i></el-button>
 											</span>
 											<el-dropdown-menu slot="dropdown">
 												<el-dropdown-item :command="{type:'showMenu',data:scope.row}">+由故事创建子任务(推荐)</el-dropdown-item>
 												<el-dropdown-item :command="{type:'showSubAdd',data:scope.row}">+子任务</el-dropdown-item>
 												<el-dropdown-item :command="{type:'showTaskTemplate',data:scope.row}">+从模板批量导入子任务</el-dropdown-item>
-												<el-dropdown-item :command="{type:'handleDel',data:scope.row}" icon="el-icon-delete">删除</el-dropdown-item>
 											</el-dropdown-menu>
-										</el-dropdown>
-										<el-tag v-if="scope.row.level<='2'" type="info">轻微</el-tag>
-										<el-tag v-else-if="scope.row.level=='3'" type="warning">一般</el-tag>
-										<el-tag v-else-if="scope.row.level=='4'" type="danger">紧急</el-tag>
-										<el-tag v-else type="danger">特急</el-tag> 
-										<span v-for="(item ,index) in [formatExeUsernames(scope.row)]" :key="index">
-
-											<el-tooltip :content="item.exeUsernames" ><el-link     :type="item.type"     @click.stop="showExecusers(scope.row)">{{item.showMsg}}</el-link></el-tooltip>
-											 
-										</span>
- 										<el-tooltip content="进度"><el-link style="border-radius:30px;" :type="scope.row.rate>=100?'success':'warning'" @click="drawerVisible=true"> {{ (scope.row.rate!=null?scope.row.rate:0)+'%'}} </el-link></el-tooltip>
-										<el-tooltip content="预算金额、工时"><el-tag type="info">{{parseFloat(scope.row.budgetCost/10000).toFixed(2)}}万,{{scope.row.budgetWorkload}}人时</el-tag></el-tooltip>
-										<el-link  type="primary"  @click.stop="showDrawer(scope.row)">{{scope.row.name}}</el-link>
-									</span>
-									<font class="align-right">
-										<!--
-									<span>
-										<el-tooltip content="点击设置责任人"><el-link         v-if="scope.row.createUserid!=null && scope.row.createUserid !='' "  @click.stop="showGroupUserSelect(scope.row)">{{scope.row.createUsername}}</el-link></el-tooltip>
-										<el-tooltip content="点击设置责任人"><el-link    type="warning"     v-if="scope.row.createUsername==null || scope.row.createUsername ==''" @click.stop="showGroupUserSelect(scope.row)"  >去设置</el-link></el-tooltip>
-									</span>
-									-->
-									<span>
-
-									</span>
-									</font>
-								</template>
-							</el-table-column>
-							<el-table-column sortable  prop="startTime" label="任务起止时间" width="300">
-								<template slot-scope="scope">
-
-									<div  style="display:flex;align-items:center;">
-										<div>
-											<div>{{getDateString(scope.row.startTime)}}~{{getDateString(scope.row.endTime)}}</div>
-										</div>
-										<div v-for="(item,index) in [calcTaskStateByTime(scope.row.startTime,scope.row.endTime,scope.row)]" :key="index ">
-											<el-tag :type="item.type">{{item.desc}}</el-tag>
-										</div>
-									</div>
-
-								</template>
-							</el-table-column>
-							<el-table-column  prop="menuId" label="故事"  width="120" show-overflow-tooltip>
-								<template slot="header">
-									故事<el-button @click="showMenuStory"  icon="el-icon-search" circle size="mini"></el-button>
-								</template>
-								<template slot-scope="scope">
-									<el-link      @click.stop="toMenu(scope.row)">{{scope.row.menuName?scope.row.menuName:'去关联故事'}}</el-link>
+										</el-dropdown>  
+										<el-button type="text" @click="handleDel(scope.row)" icon="el-icon-delete"></el-button>
 								</template>
 							</el-table-column>
 						</el-table>
@@ -1262,6 +1261,12 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				if(dateStr==null || dateStr=="" || dateStr==undefined){
 					return ""
 				}else{
+					debugger;
+					var now=new Date();
+					var years=now.getFullYear();
+					if(dateStr.indexOf(years)==0){
+						return dateStr.substr(5,5);
+					}
 					return dateStr.substr(0,10);
 				}
 			},
@@ -1722,6 +1727,18 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					respons.showMsg="去设置"
 				}
 				return respons
+			},
+			getAmountDesc(amount){
+				if(!amount){
+					return 0+"元";
+				}else{ 
+					if(amount>10000){
+						return parseFloat(scope.row.budgetCost/10000).toFixed(0)+"万元"
+					}else{
+						return amount+"元"
+					}
+				}
+				
 			}
 
 			/**end 自定义函数请在上面加**/

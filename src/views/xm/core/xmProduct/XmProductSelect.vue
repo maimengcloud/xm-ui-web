@@ -16,7 +16,7 @@
 									<font class="more-label-font">
 										产品查询范围：
 									</font>
-									<el-select size="mini" v-model="filters.queryScope" style="width:100%;"   placeholder="产品查询范围">
+									<el-select  v-model="filters.queryScope" style="width:100%;"   placeholder="产品查询范围">
 										<el-option :label="userInfo.branchName+'机构下所有的产品'" value="branchId"></el-option>
 										<el-option label="我相关的产品" value="compete"></el-option>
 										<el-option label="按产品编号精确查找" value="productId"></el-option>
@@ -24,7 +24,7 @@
 									</el-select>
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;"> 
-									<el-input v-if="filters.queryScope=='productId'" size="mini" v-model="filters.id" style="width:100%;"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">  
+									<el-input v-if="filters.queryScope=='productId'"  v-model="filters.id" style="width:100%;"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">  
 						 			</el-input> 
 								</el-col>
 								 
@@ -48,7 +48,7 @@
 									<font class="more-label-font">
 										产品名称:
 									</font> 
-									<el-input  size="mini" v-model="filters.key" style="width:100%;"  placeholder="输入产品名字关键字">  
+									<el-input   v-model="filters.key" style="width:100%;"  placeholder="输入产品名字关键字">  
 						 			</el-input> 
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
@@ -56,14 +56,14 @@
 										产品经理:
 									</font>  
 									<el-tag v-if="filters.pmUser" closable @click="selectFiltersPmUser" @close="clearFiltersPmUser()">{{filters.pmUser.username}}</el-tag> 
-									<el-button size="mini"  v-else @click="selectFiltersPmUser()">选责任人</el-button>
-									<el-button size="mini"   @click="setFiltersPmUserAsMySelf()">我的</el-button>
+									<el-button   v-else @click="selectFiltersPmUser()">选责任人</el-button>
+									<el-button    @click="setFiltersPmUserAsMySelf()">我的</el-button>
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
-									<el-button type="primary" size="mini" @click="searchXmProducts" >查询</el-button>
+									<el-button type="primary"  @click="searchXmProducts" >查询</el-button>
 								</el-col>
 							</el-row> 
-							<el-button  slot="reference" size="mini"  icon="el-icon-more" circle></el-button>
+							<el-button  slot="reference"   icon="el-icon-more" circle></el-button>
 						</el-popover>  
 					 </template>
 					<template slot-scope="scope">

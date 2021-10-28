@@ -67,12 +67,12 @@
       </el-table-column>
       <el-table-column align="center" :label="$t('table.actions')" width="230" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{$t('table.edit')}}</el-button>
-          <el-button v-if="scope.row.status!='published'" size="mini" type="success" @click="handleModifyStatus(scope.row,'published')">{{$t('table.publish')}}
+          <el-button type="primary"  @click="handleUpdate(scope.row)">{{$t('table.edit')}}</el-button>
+          <el-button v-if="scope.row.status!='published'"  type="success" @click="handleModifyStatus(scope.row,'published')">{{$t('table.publish')}}
           </el-button>
-          <el-button v-if="scope.row.status!='draft'" size="mini" @click="handleModifyStatus(scope.row,'draft')">{{$t('table.draft')}}
+          <el-button v-if="scope.row.status!='draft'"  @click="handleModifyStatus(scope.row,'draft')">{{$t('table.draft')}}
           </el-button>
-          <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{$t('table.delete')}}
+          <el-button v-if="scope.row.status!='deleted'"  type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{$t('table.delete')}}
           </el-button>
         </template>
       </el-table-column>

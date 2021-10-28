@@ -122,7 +122,7 @@
 			 </el-row>
 			 <el-row class="padding-top">
 				<!--列表 XmQuestion xm_question-->
-				<el-table size="mini" ref="table" :height="tableHeight" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+				<el-table  ref="table" :height="tableHeight" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  					<el-table-column prop="name" label="缺陷名称"  min-width="200">
 						<template slot-scope="scope">
 							<div>

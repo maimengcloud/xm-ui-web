@@ -15,7 +15,7 @@
 				<el-table-column label="操作" width="245" fixed="right">
 					<template slot-scope="scope">  
 							<el-button-group>
-								<el-button size="mini" type="primary" @click.stop="selectProject(scope.row)" >选中</el-button>  
+								<el-button  type="primary" @click.stop="selectProject(scope.row)" >选中</el-button>  
 							</el-button-group>
 							 
 							<!-- <el-button style="width:100%;" slot="reference" class="see-more" type="text" icon="el-icon-more"></el-button>

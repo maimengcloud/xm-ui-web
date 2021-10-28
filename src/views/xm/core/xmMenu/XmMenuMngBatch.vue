@@ -70,22 +70,22 @@
 								责任人:
 							</font>  
 							<el-tag v-if="filters.mmUser" closable @close="clearFiltersMmUser()">{{filters.mmUser.username}}</el-tag> 
-							<el-button size="mini"  v-else @click="selectFiltersMmUser()">选责任人</el-button>
-							<el-button size="mini"   @click="setFiltersMmUserAsMySelf()">我的</el-button>
+							<el-button   v-else @click="selectFiltersMmUser()">选责任人</el-button>
+							<el-button    @click="setFiltersMmUserAsMySelf()">我的</el-button>
 						</el-col>
 						<el-col  :span="24"  style="padding-top:5px;">
 							<font class="more-label-font">
 								故事名称:
 							</font> 
-							<el-input  size="mini" v-model="filters.key" style="width:100%;"  placeholder="输入故事名字关键字" clearable>  
+							<el-input   v-model="filters.key" style="width:100%;"  placeholder="输入故事名字关键字" clearable>  
 							</el-input> 
 						</el-col>
 						<el-col  :span="24"  style="padding-top:5px;">
-							<el-button type="primary" size="mini" @click="searchXmMenus" icon="el-icon-search">查询</el-button>
-							<el-button size="mini" v-if=" batchEditVisible==false "  @click="handleExport" icon="el-icon-download">导出</el-button> 
-							<el-button size="mini"  v-if=" batchEditVisible==true "  type="success" @click="showImportFromMenuTemplate" icon="el-icon-upload2">由模板快速导入</el-button> 
+							<el-button type="primary"  @click="searchXmMenus" icon="el-icon-search">查询</el-button>
+							<el-button  v-if=" batchEditVisible==false "  @click="handleExport" icon="el-icon-download">导出</el-button> 
+							<el-button   v-if=" batchEditVisible==true "  type="success" @click="showImportFromMenuTemplate" icon="el-icon-upload2">由模板快速导入</el-button> 
 							
-							<el-button size="mini"  v-if=" batchEditVisible==false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">刷新统计数据</el-button>  
+							<el-button   v-if=" batchEditVisible==false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">刷新统计数据</el-button>  
 						</el-col> 
 					</el-row> 
 					<el-button  slot="reference" icon="el-icon-more" circle></el-button>
@@ -104,11 +104,11 @@
 									trigger="click">
 									<div style="text-align: center; margin: 0">
 										<div :ref="'menu_'+scope.$index" :data-menu-id="scope.row.menuId"></div>
-										<el-button type="primary" size="mini"   @click="handlePopover(scope.row,'highestPmenuId')">成为顶级节点</el-button> 
-										<el-button type="danger" size="mini"   @click="handlePopover(scope.row,'delete')">删除当前行</el-button> 
-										<el-button type="success" size="mini"   @click="handlePopover(scope.row,'addSub')">增加子行</el-button> 
+										<el-button type="primary"    @click="handlePopover(scope.row,'highestPmenuId')">成为顶级节点</el-button> 
+										<el-button type="danger"    @click="handlePopover(scope.row,'delete')">删除当前行</el-button> 
+										<el-button type="success"    @click="handlePopover(scope.row,'addSub')">增加子行</el-button> 
 									</div>
-									<el-button slot="reference" :type="scope.row.opType?'success':'plain'"  size="mini" icon="el-icon-more" circle></el-button> 
+									<el-button slot="reference" :type="scope.row.opType?'success':'plain'"   icon="el-icon-more" circle></el-button> 
 								</el-popover>
 								<el-input   style="width:100%;"   v-model="scope.row.seqNo"  @change="fieldChange(scope.row,'seqNo')"></el-input>
 							</div>

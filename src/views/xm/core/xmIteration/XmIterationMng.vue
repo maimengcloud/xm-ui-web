@@ -33,7 +33,7 @@
 						<font class="more-label-font">
 							迭代查询范围：
 						</font>
-						<el-select size="mini" v-model="filters.queryScope" style="width:100%;"   placeholder="迭代查询范围">
+						<el-select  v-model="filters.queryScope" style="width:100%;"   placeholder="迭代查询范围">
 							<el-option :label="userInfo.branchName+'机构下所有的迭代'" value="branchId"></el-option>
 							<el-option label="我相关的迭代" value="compete"></el-option>
 							<el-option label="按迭代编号精确查找" value="iterationId"></el-option>
@@ -41,12 +41,12 @@
 						</el-select>
 					</el-col>
 					<el-col  :span="24"  style="padding-top:5px;">
-						<el-input  v-if="filters.queryScope=='iterationId'" size="mini" v-model="filters.id" style="width:100%;"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">
+						<el-input  v-if="filters.queryScope=='iterationId'"  v-model="filters.id" style="width:100%;"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">
 						</el-input>
 					</el-col>
 					<el-col v-if="filters.queryScope!='iterationId'" :span="24"  style="padding-top:5px;">
 						<font class="more-label-font">上线时间:</font>
-						<el-date-picker size="mini"
+						<el-date-picker 
 							v-model="dateRangerOnline"
 							type="daterange"
 							align="right"
@@ -60,13 +60,13 @@
 						></el-date-picker>
 					</el-col>
 					<el-col :span="24" style="padding-top:5px;">
-							<font class="more-label-font">迭代名称:</font><el-input size="mini" v-model="filters.key" style="width: 60%;" placeholder="模糊查询"></el-input>
+							<font class="more-label-font">迭代名称:</font><el-input  v-model="filters.key" style="width: 60%;" placeholder="模糊查询"></el-input>
 					</el-col>
 					<el-col :span="24" style="padding-top:5px;">
 							<el-tag>默认只能查询本人创建的迭代、本人作为故事责任人参与的迭代</el-tag>
 					</el-col>
 					<el-col :span="24" style="padding-top:5px;">
-						<el-button size="mini" type="primary" icon="el-icon-search" @click="getXmIterations">查询</el-button>
+						<el-button  type="primary" icon="el-icon-search" @click="getXmIterations">查询</el-button>
 						<el-checkbox v-model="gstcVisible">甘特图</el-checkbox>
 					</el-col>
 				</el-row>

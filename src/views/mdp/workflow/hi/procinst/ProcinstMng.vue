@@ -28,7 +28,7 @@
                 <font >
                   查询范围
                 </font>
-                <el-select size="mini" v-model="filters.filterType" placeholder="查询范围">
+                <el-select  v-model="filters.filterType" placeholder="查询范围">
                   <el-option value="" label="全部"> </el-option>
                   <el-option value="startUserId" label="我发起"> </el-option>
                   <el-option value="partake" label="我参与"> </el-option>
@@ -40,7 +40,7 @@
                 <font >
                   分类
                 </font>
-                <el-select size="mini"  v-model="filters.procCategory" clearable filterable placeholder="选择分类" >
+                <el-select   v-model="filters.procCategory" clearable filterable placeholder="选择分类" >
                   <el-option v-for="item in categorys" :key="item" :label="item" :value="item"></el-option>
                 </el-select>
               </el-row>
@@ -54,7 +54,7 @@
                     {{tag.tagName}}
                   </el-tag>
                 </el-row>
-                <el-button v-if="filters.tags==null || filters.tags.length==0" size="mini"
+                <el-button v-if="filters.tags==null || filters.tags.length==0" 
                   @click.native="showTagSelect(false)">选择标签</el-button>
               </el-row>
               <el-row>
@@ -65,7 +65,7 @@
                   @click="userSelectVisible=true" @close="handleFiltersTagClose('','assignee')">
                   {{filters.assignee.username}}
                 </el-tag>
-                <el-button v-else size="mini" @click.native="userSelectVisible=true">选择执行人</el-button>
+                <el-button v-else  @click.native="userSelectVisible=true">选择执行人</el-button>
               </el-row>
               <el-row>
                 <font >
@@ -93,13 +93,13 @@
               </el-col> -->
 
               <el-row>
-                <el-button size="mini" type="primary" v-on:click="searchProcinsts" icon="el-icon-search">查询</el-button>
+                <el-button  type="primary" v-on:click="searchProcinsts" icon="el-icon-search">查询</el-button>
               </el-row>
 
               <el-row>
                 <el-divider content-position="left">其它操作</el-divider>
-                <el-button size="mini" @click.native="showTagSelect(true)">给任务打标签</el-button>
-                <el-button size="mini" @click="handleDownload">导出数据</el-button>
+                <el-button  @click.native="showTagSelect(true)">给任务打标签</el-button>
+                <el-button  @click="handleDownload">导出数据</el-button>
                </el-row>
             </el-row>
           </el-drawer>

@@ -8,7 +8,7 @@
         <vue-editor :id="id" :branch-id="userInfo.branchId" v-model="msg"></vue-editor>
       </div>
       <div style="margin-top:20px;"></div>
-      <el-button @click="submitData" class="toolbar" size="mini" type="primary">发布</el-button>
+      <el-button @click="submitData" class="toolbar"  type="primary">发布</el-button>
     </div>
   </div>
 </template>

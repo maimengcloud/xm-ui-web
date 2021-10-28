@@ -23,18 +23,18 @@
 					<div class="comment-wrap">
 						<div class="comment-head">
 							<span>{{item.cusername}}</span> {{item.ctime}}
-							<el-button slot="reference" size="mini" type="text" style="font-size:12px;" @click="handleDel(item)"><i class="el-icon-delete-solid"></i>删除</el-button>
+							<el-button slot="reference"  type="text" style="font-size:12px;" @click="handleDel(item)"><i class="el-icon-delete-solid"></i>删除</el-button>
 							<el-popover
 								placement="bottom"
 								trigger="click">
 								<menu-user-editor :id="'userquote'+i+item.id" :user="{userid:item.cuserid,username:item.cusername,headimgurl:item.cuserHeadImg}" :product-id="item.productId" :menu-id="item.menuId" @publish="onPublishContent($event,item)"></menu-user-editor>
-								<el-button slot="reference" size="mini" type="text" style="font-size:12px;"><i class="el-icon-paperclip"></i>引用</el-button>
+								<el-button slot="reference"  type="text" style="font-size:12px;"><i class="el-icon-paperclip"></i>引用</el-button>
 							</el-popover>
 							<el-popover
 								placement="bottom"
 								trigger="click">
 								<menu-user-editor :id="'userreply'+i+item.id" :user="{userid:item.cuserid,username:item.cusername,headimgurl:item.cuserHeadImg}" :product-id="item.productId" :menu-id="item.menuId" @publish="onPublishContent($event,item)"></menu-user-editor>
-								<el-button slot="reference" size="mini" type="text" style="font-size:12px;"><i class="el-icon-s-comment"></i>回复</el-button>
+								<el-button slot="reference"  type="text" style="font-size:12px;"><i class="el-icon-s-comment"></i>回复</el-button>
 							</el-popover>
 							<small>{{item.createTime}}</small>
 						</div>

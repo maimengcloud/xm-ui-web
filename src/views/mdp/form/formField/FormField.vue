@@ -107,7 +107,7 @@
 				  			<el-input  v-model="metaItemSelected.itemName" :label="metaItemSelected.itemName" @focus="showItemOptionMng" placeholder="点击关联基础数据"> </el-input>
 				  		</el-col>  
 				  		<el-col :span="4">
-				  			<el-button size="mini" type="primary" icon="el-icon-delete" @click="deleteBaseData"></el-button>
+				  			<el-button  type="primary" icon="el-icon-delete" @click="deleteBaseData"></el-button>
 				  		</el-col>  
 				  	</el-form-item>
 				  	<el-form-item label="名称" prop="fieldTitle">
@@ -176,8 +176,8 @@
 
 				  </el-form>
 				  <div style="text-align: right; margin: 0">
-				    <el-button size="mini" type="text" @click="showPopover = false">取消</el-button>
-				    <el-button type="primary" size="mini" @click="showPopover = false">确定</el-button>
+				    <el-button  type="text" @click="showPopover = false">取消</el-button>
+				    <el-button type="primary"  @click="showPopover = false">确定</el-button>
 				  </div>
 				</el-popover>
 		</el-col>

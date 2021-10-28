@@ -78,11 +78,11 @@
 								<font class="more-label-font">
 									故事名称:
 								</font> 
-								<el-input  size="mini" v-model="filters.key" style="width:100%;"  placeholder="输入故事名字关键字" clearable>  
+								<el-input   v-model="filters.key" style="width:100%;"  placeholder="输入故事名字关键字" clearable>  
 								</el-input> 
 							</el-col>
 							<el-col  :span="24"  style="padding-top:5px;">
-								<el-button type="primary" size="mini" @click="searchXmMenus" >查询</el-button>
+								<el-button type="primary"  @click="searchXmMenus" >查询</el-button>
  							</el-col> 
 						</el-row> 
 						<el-button  slot="reference" icon="el-icon-more" circle></el-button>

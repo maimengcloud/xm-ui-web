@@ -59,7 +59,7 @@
 							></el-date-picker>   
 						</el-col>  
 						<el-col :span="24" style="padding-top:5px;">
-							<el-button size="mini" type="primary" icon="el-icon-search" @click="searchXmTestCases">查询</el-button>
+							<el-button  type="primary" icon="el-icon-search" @click="searchXmTestCases">查询</el-button>
 						</el-col>
 					</el-row>
 					<el-button  slot="reference" icon="el-icon-more" circle></el-button>
@@ -79,7 +79,7 @@
  				<el-table-column prop="caseRemark" label="备注" min-width="80" show-overflow-tooltip></el-table-column> 
  				<el-table-column  prop="menuName" label="故事名" min-width="80" show-overflow-tooltip> 
 					<template slot="header">
-						故事<el-button @click="showMenu"  icon="el-icon-search" circle size="mini"></el-button>
+						故事<el-button @click="showMenu"  icon="el-icon-search" circle ></el-button>
  					</template>
 				 </el-table-column>
 				<el-table-column v-if="!multiSelect" prop="ctime" label="创建时间" min-width="80" show-overflow-tooltip></el-table-column>

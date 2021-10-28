@@ -33,17 +33,17 @@
 							<el-checkbox  v-model="finishFlag">只查未结束项目</el-checkbox>
 						</el-col>
 						<el-col  :span="24"  style="padding-top:5px;">
-							<font v-if="filters.productId" class="more-label-font">产品:</font>  <el-tag v-if="filters.productId" closable @close="onProductClose">{{filters.productName}}</el-tag><el-button v-else    @click.native="productSelectVisible=true" size="mini">选择产品</el-button>
+							<font v-if="filters.productId" class="more-label-font">产品:</font>  <el-tag v-if="filters.productId" closable @close="onProductClose">{{filters.productName}}</el-tag><el-button v-else    @click.native="productSelectVisible=true" >选择产品</el-button>
 						</el-col>
 						<el-col  :span="24"  style="padding-top:5px;"> 
 							<el-checkbox  v-model="showType" false-label="false" true-label="true">直观展示</el-checkbox>
 						</el-col>  
 						<el-col  :span="24"  style="padding-top:5px; ">
-							<el-button size="mini" class="hidden-lg-and-up hidden-btn"  style="margin-left:10px;"  @click="handleSelect('myExecuserStatus3')">我验收成功</el-button>
-							<el-button size="mini" class="hidden-lg-and-up hidden-btn"    @click="handleSelect('myExecuserStatus4')">我验收失败</el-button>
-							<el-button size="mini" class="hidden-lg-and-up hidden-btn"   @click="handleSelect('myExecuserStatus5')">我付款中</el-button>
-							<el-button size="mini" class="hidden-xl-and-up hidden-btn"    @click="handleSelect('myExecuserStatus6')">我付款成功</el-button>
-							<el-button size="mini" class="hidden-xl-and-up hidden-btn"    @click="handleSelect('myExecuserStatus7')">我放弃</el-button>
+							<el-button  class="hidden-lg-and-up hidden-btn"  style="margin-left:10px;"  @click="handleSelect('myExecuserStatus3')">我验收成功</el-button>
+							<el-button  class="hidden-lg-and-up hidden-btn"    @click="handleSelect('myExecuserStatus4')">我验收失败</el-button>
+							<el-button  class="hidden-lg-and-up hidden-btn"   @click="handleSelect('myExecuserStatus5')">我付款中</el-button>
+							<el-button  class="hidden-xl-and-up hidden-btn"    @click="handleSelect('myExecuserStatus6')">我付款成功</el-button>
+							<el-button  class="hidden-xl-and-up hidden-btn"    @click="handleSelect('myExecuserStatus7')">我放弃</el-button>
 						</el-col> 
 								 
 						<el-col  :span="24"  style="padding-top:5px;">
@@ -62,12 +62,12 @@
 							></el-date-picker>   
 						</el-col>  
 						<el-col :span="24" style="padding-top:5px;">
-							<el-button size="mini" type="primary" icon="el-icon-search" @click="searchXmProjects">查询</el-button>
+							<el-button  type="primary" icon="el-icon-search" @click="searchXmProjects">查询</el-button>
 						</el-col>
 					</el-row>
 					<el-button type="text" class="right-btn" slot="reference" icon="el-icon-d-arrow-right"></el-button>
 				</el-popover>
-				 <el-button type="primary" size="mini" @click="showAdd"  icon="el-icon-plus" circle></el-button>
+				 <el-button type="primary"  @click="showAdd"  icon="el-icon-plus" circle></el-button>
 			</el-menu>
 			 
 		</el-row> 
@@ -146,16 +146,16 @@
 							trigger="hover"> -->
 							
 							<el-button-group> 
-								<el-button v-if="menukey=='myFocus'" size="mini" type="primary" @click.stop="focusOrUnfocus(scope.row)" >取消关注</el-button> 
-								<el-button v-else size="mini" type="primary" @click.stop="focusOrUnfocus(scope.row)" >关注</el-button>  
-								<el-button   size="mini" type="primary" @click.stop="xmRecordVisible=true" >日志</el-button> 
+								<el-button v-if="menukey=='myFocus'"  type="primary" @click.stop="focusOrUnfocus(scope.row)" >取消关注</el-button> 
+								<el-button v-else  type="primary" @click.stop="focusOrUnfocus(scope.row)" >关注</el-button>  
+								<el-button    type="primary" @click.stop="xmRecordVisible=true" >日志</el-button> 
 								<!-- 
-								<el-button size="mini" type="primary" @click.stop="statusChange(scope,'1')" v-if="scope.row.status==0 || scope.row.status == 2">提交审核</el-button>
-								<el-button size="mini" type="primary" @click.stop="statusChange(scope,'3')" v-if="scope.row.status==1">批准</el-button>
-								<el-button size="mini" type="primary" @click.stop="statusChange(scope,'2')" v-if="scope.row.status==1">退回</el-button>
-								<el-button size="mini" type="primary" @click.stop="statusChange(scope,'4')" v-if="scope.row.status==3">结束</el-button>
-								<el-button size="mini" type="primary" @click.stop="statusChange(scope,'3')" v-if="scope.row.status==4">重新启动</el-button>
-								<el-button size="mini" type="primary" @click.stop="handleDel(scope.row,scope.$index)" v-if="isLeader(scope.row.leader)">删除</el-button>
+								<el-button  type="primary" @click.stop="statusChange(scope,'1')" v-if="scope.row.status==0 || scope.row.status == 2">提交审核</el-button>
+								<el-button  type="primary" @click.stop="statusChange(scope,'3')" v-if="scope.row.status==1">批准</el-button>
+								<el-button  type="primary" @click.stop="statusChange(scope,'2')" v-if="scope.row.status==1">退回</el-button>
+								<el-button  type="primary" @click.stop="statusChange(scope,'4')" v-if="scope.row.status==3">结束</el-button>
+								<el-button  type="primary" @click.stop="statusChange(scope,'3')" v-if="scope.row.status==4">重新启动</el-button>
+								<el-button  type="primary" @click.stop="handleDel(scope.row,scope.$index)" v-if="isLeader(scope.row.leader)">删除</el-button>
 								-->
 							</el-button-group>
 							
