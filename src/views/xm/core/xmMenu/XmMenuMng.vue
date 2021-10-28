@@ -79,13 +79,15 @@
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
 									<el-button type="primary"  @click="searchXmMenus" icon="el-icon-search">查询</el-button>
-									<el-button  v-if=" batchEditVisible==false "  @click="handleExport" icon="el-icon-download">导出</el-button> 
-									<el-button   v-if=" batchEditVisible==true "  type="success" @click="showImportFromMenuTemplate" icon="el-icon-upload2">由模板快速导入</el-button> 
+									<el-button  v-if=" batchEditVisible==false "  @click="handleExport" icon="el-icon-download">导出</el-button>  
+ 								</el-col> 
+								<el-col  :span="24"  style="padding-top:5px;">
+ 									<el-button   v-if=" batchEditVisible==true "  type="success" @click="showImportFromMenuTemplate" icon="el-icon-upload2">由模板快速导入</el-button> 
 									
 									<el-button   v-if=" batchEditVisible==false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">由任务汇总统计数据</el-button>  
 								</el-col> 
 							</el-row> 
-							<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+							<el-button  slot="reference" icon="el-icon-more"></el-button>
 						</el-popover>  
  					</el-row> 
 					<el-row v-if="filters.parentMenuList && filters.parentMenuList.length>0" class="padding-top padding-left">
@@ -127,14 +129,14 @@
 										 <span>{{scope.row.mmUsername}} </span>  
 								</template>
 							</el-table-column> 
-							<el-table-column   label="操作"  width="160" show-overflow-tooltip> 
+							<el-table-column   label="操作"  width="260" show-overflow-tooltip> 
 								<template slot-scope="scope"> 
 										<el-tooltip v-if="!selProject&&!xmIteration" content="添加子故事">
-										<el-button     type="primary"  @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" circle></el-button> 
+										<el-button     type="primary"  @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus"></el-button> 
 										</el-tooltip>
 										
 										<el-tooltip  content="查看子故事">
-											<el-button        @click="searchSubMenus( scope.row,scope.$index)" icon="el-icon-right" circle></el-button> 
+											<el-button        @click="searchSubMenus( scope.row,scope.$index)" icon="el-icon-right"></el-button> 
 										</el-tooltip>
 										<el-popover style="padding-left:10px;"
 											v-if="isPmUser"
@@ -143,21 +145,21 @@
 											trigger="click" > 
 											<el-row>
 												<el-col :span="24" style="padding-top:5px;">
-													<el-button type="success" @click="showImportFromMenuTemplate(scope.row)" icon="el-icon-upload2">由模板快速导入子故事</el-button> 
+													<el-button  @click="showImportFromMenuTemplate(scope.row)" icon="el-icon-upload2">由模板快速导入子故事</el-button> 
 												</el-col>
 												<el-col  :span="24"  style="padding-top:5px;"> 
-													<el-button v-if="!selProject"  type="primary" @click="showTaskListForMenu(scope.row,scope.$index)"  icon="el-icon-s-operation">查看关联的任务</el-button>
-													<el-button v-if="selProject"  type="primary" @click="showTasks(scope.row,scope.$index)"  icon="el-icon-s-operation">查看关联的任务</el-button> 
+													<el-button v-if="!selProject"   @click="showTaskListForMenu(scope.row,scope.$index)"  icon="el-icon-s-operation">查看关联的任务</el-button>
+													<el-button v-if="selProject"   @click="showTasks(scope.row,scope.$index)"  icon="el-icon-s-operation">查看关联的任务</el-button> 
 												</el-col> 
 												<el-col  :span="24"  style="padding-top:5px;"> 
-													<el-button  type="primary" @click="toIterationList(scope.row,scope.$index)"  icon="el-icon-document-copy">查看关联的迭代计划</el-button>
+													<el-button   @click="toIterationList(scope.row,scope.$index)"  icon="el-icon-document-copy">查看关联的迭代计划</el-button>
 												</el-col>  
 												<el-col  :span="24"  style="padding-top:5px;"> 
-													<el-button type="danger"   @click="handleDel(scope.row)" icon="el-icon-delete">删除该故事</el-button>   
+													<el-button   @click="handleDel(scope.row)" icon="el-icon-delete">删除该故事</el-button>   
 												</el-col> 
 											</el-row>  
 
-											<el-button   slot="reference" icon="el-icon-more" circle></el-button>
+											<el-button   slot="reference" icon="el-icon-more"></el-button>
 										</el-popover>  
 								</template>
 							</el-table-column>   
