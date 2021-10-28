@@ -4,7 +4,7 @@
 			<el-col v-if="isTaskCenter!='1' && currentProject " :span="4" >
 				<xm-project-phase-mng  :sel-project="currentProject" :xm-iteration="xmIteration" :simple="true" @row-click="projectPhaseRowClick" @clear-select="clearSelectPhase"></xm-project-phase-mng>
 			</el-col>
-			<el-col :span="isTaskCenter!='1' && currentProject?20:24" class="padding-left" :class="{'flex-box': showAglile}">
+			<el-col :span="isTaskCenter!='1' && currentProject?20:24" class="padding-left" :class="{'flex-box': displayType=='agil'}">
 				<el-row>
 					<el-select v-model="selkey" placeholder="请选择任务状态" clearable @change="changeSelKey">
 						<el-option class="showall" value="" label="全部状态">全部状态</el-option>
@@ -21,23 +21,21 @@
 						<el-option  value="myExecuserStatus6" label="我的付款成功">我的付款成功</el-option>
 						<el-option  value="myExecuserStatus7" label="我放弃的">我放弃的</el-option>
 					</el-select>
-					<el-select v-model="filters.taskType" placeholder="请选择任务类型" clearable @change="changeTaskType">
+					<el-select class="hidden-md-and-down" v-model="filters.taskType" placeholder="请选择任务类型" clearable @change="changeTaskType">
 						<el-option class="showall" value=""  label="全部类型">全部类型</el-option>
 						<el-option  v-for="(i,index) in options.taskType" :value="i.optionValue" :label="i.optionName" :key="index">{{i.optionName}}</el-option>
 					</el-select>
-					<el-checkbox v-model="filters.taskOut"   true-label="1" false-label="">众包</el-checkbox>
+					<el-checkbox class="hidden-md-and-down" v-model="filters.taskOut"   true-label="1" false-label="">众包</el-checkbox>
 					<el-button  class="hidden-md-and-down"  v-if=" !filters.skillTags || filters.skillTags.length==0" icon="el-icon-search" @click="showSkillSelect">选择标签</el-button>
 					<el-tag class="hidden-md-and-down" closable v-for=" (skill,index) in filters.skillTags" :key="index"  @click="showSkillSelect" @close="skillTagClear(skill)">{{skill.skillName}}</el-tag>
 						<font v-if="!selProject">
 							<el-tag  class="hidden-md-and-down" v-if=" filters.selProject" closable  @click="showProjectList" @close="clearProject">{{this.filters.selProject.name}}</el-tag>
 							<el-button  class="hidden-md-and-down" v-else  @click="showProjectList" type="plian">选项目</el-button>
 						</font>
-						<el-input   style="width:200px;" v-model="filters.key" placeholder="任务名称">
-							<template slot="append">
-								<el-button    @click="searchXmTasks" type="primary" icon="el-icon-search" v-loading="load.list"></el-button>
-							</template>
+						<el-input   style="width:200px;" v-model="filters.key" placeholder="任务名称"> 
 						</el-input>
-						<el-checkbox v-model="gstcVisible"  class="hidden-md-and-down" >甘特图</el-checkbox>
+						<el-button    @click="searchXmTasks" type="primary" icon="el-icon-search" v-loading="load.list"></el-button>
+						
 						<el-popover
 							placement="top-start"
 							title="选择创建任务的方式"
@@ -56,7 +54,7 @@
 									<el-button  v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showAdd"  icon="el-icon-plus">直接创建</el-button>
 								</el-col>
 							</el-row>
- 							<el-button slot="reference" v-if=" isTaskCenter!='1'   && isMy!='1' && !xmProduct && !xmIteration"  type="primary" icon="el-icon-plus" circle></el-button>
+ 							<el-button slot="reference" v-if=" isTaskCenter!='1'   && isMy!='1' && !xmProduct && !xmIteration"  type="primary" icon="el-icon-plus"></el-button>
 						</el-popover>
 
 						<el-popover
@@ -113,11 +111,7 @@
 									<el-button    v-if=" !filters.skillTags || filters.skillTags.length==0" icon="el-icon-search" @click="showSkillSelect">选择标签</el-button>
 									<el-tag v-else   closable v-for=" (skill,index) in filters.skillTags" :key="index"  @click="showSkillSelect" @close="skillTagClear(skill)">{{skill.skillName}}</el-tag>
 
-								</el-col>
-
-								<el-col :span="24" style="padding-top:5px;">
-									<el-checkbox v-model="gstcVisible" >甘特图</el-checkbox>
-								</el-col>
+								</el-col> 
 								<el-col :span="24" style="padding-top:5px;">
 									<el-button  type="primary" icon="el-icon-search" @click="searchXmTasks">查询</el-button>
 								</el-col>
@@ -125,23 +119,28 @@
 							<el-row>
 								<el-col :span="24" style="padding-top:5px;">
 									<el-button    v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showBatchEdit" v-loading="load.edit" icon="el-icon-edit">批量修改任务</el-button>
-								</el-col>
-								<el-col  :span="24"  style="padding-top:5px;">
-									<el-button  v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showTaskTemplate"   icon="el-icon-plus">从模板快速导入任务</el-button>
-								</el-col>
-								<el-col  :span="24"  style="padding-top:5px;">
-									<el-button  v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showMenu"   icon="el-icon-plus">由故事快速创建任务</el-button>
-								</el-col>
+								</el-col> 
 							</el-row>
-							<el-button  slot="reference" icon="el-icon-more" circle></el-button>
+							<el-button  slot="reference">更多</el-button>
 						</el-popover>
-						<el-button type="primary" @click="showAglile = true" v-if="!showAglile">敏捷看板</el-button>
-						<el-button type="primary" @click="showAglile = false" v-else>表格查看</el-button>
+						
+						<el-popover
+							placement="top-start"
+							title="选择展示方式"
+							width="400"
+							trigger="hover">
+							<el-row>
+								<el-radio v-model="displayType" label="grant">甘特图</el-radio>
+								<el-radio v-model="displayType" label="agile">敏捷看板</el-radio>
+								<el-radio v-model="displayType" label="table">表格</el-radio> 
+							</el-row>
+ 							<el-button slot="reference">视图</el-button>
+						</el-popover> 
 				</el-row>
 		
 				<el-row class="padding-top">
-					<template v-if="!gstcVisible">
-						<xm-task-agile-kanban :tableHeight="tableHeight" v-if="showAglile" :xmTasks="xmTasks" @submit="afterEditSubmit"></xm-task-agile-kanban>
+					<template v-if="displayType!='grant'">
+						<xm-task-agile-kanban :tableHeight="tableHeight" v-if="displayType=='agile'" :xmTasks="xmTasks" @submit="afterEditSubmit"></xm-task-agile-kanban>
 						<el-table v-else
 							show-summary
 							:data="tasksTreeData"
@@ -213,7 +212,7 @@
 								<template slot-scope="scope">  
 										<el-dropdown @command="handleCommand" v-if=" isTaskCenter!='1'   && isMy!='1'">
 											<span class="el-dropdown-link">
-												<el-button  circle><i class="el-icon-plus"></i></el-button>
+												<el-button ><i class="el-icon-plus"></i></el-button>
 											</span>
 											<el-dropdown-menu slot="dropdown">
 												<el-dropdown-item :command="{type:'showMenu',data:scope.row}">+由故事创建子任务(推荐)</el-dropdown-item>
@@ -227,7 +226,7 @@
 						</el-table>
 						<el-pagination ref="pagination" layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 					</template>
-						<xm-gantt v-if="gstcVisible" :tree-data="tasksTreeData" :project-phase="{startTime: currentProjectPhase.beginDate, endTime: currentProjectPhase.endDate}" :useRealTime="true"></xm-gantt>
+					<xm-gantt v-if="displayType=='grant'" :tree-data="tasksTreeData" :project-phase="{startTime: currentProjectPhase.beginDate, endTime: currentProjectPhase.endDate}" :useRealTime="true"></xm-gantt>
 
 				</el-row>
 			</el-col>
@@ -313,7 +312,7 @@
 			<xm-task-add :xm-project="currentProject" :project-phase="currentProjectPhase"   :xm-task="addForm" :parent-task="parentTask" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-task-add>
 		</el-drawer>
 
-		<el-drawer :title="'任务'+currTaskName+'的执行人'" :visible.sync="execUserVisible" fullscreen :size="650" append-to-body  :close-on-click-modal="false">
+		<el-drawer :title="'任务'+currTaskName+'的执行人'" :visible.sync="execUserVisible"   :size="650" append-to-body  :close-on-click-modal="false">
 			<xm-execuser-mng :visible="execUserVisible" :xm-task="editForm"  :is-my="isMy"  @after-add-submit="afterExecuserSubmit" @after-edit-submit="afterExecuserSubmit" @after-delete-submit="afterExecuserSubmit" ref="execuserMng"></xm-execuser-mng>
 		</el-drawer>
 
@@ -328,7 +327,7 @@
 			<skill-mng :task-skills="filters.skillTags" :jump="true" @select-confirm="onTaskSkillsSearchSelected"></skill-mng>
 		</el-drawer>
 
-		<el-drawer  title="任务模板" :visible.sync="taskTemplateVisible" :size="650" append-to-body  :close-on-click-modal="false">
+		<el-drawer  title="任务模板" :visible.sync="taskTemplateVisible" size="60%" append-to-body  :close-on-click-modal="false">
 			<xm-task-template-mng :is-select="true" @select-confirm="onTaskTemplatesSelected"></xm-task-template-mng>
 		</el-drawer>
 
@@ -337,13 +336,13 @@
 		</el-drawer>
 
 		<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  :size="650"  append-to-body   :close-on-click-modal="false">
-			<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
+			<xm-project-list class="padding-left"   @project-confirm="onPorjectConfirm"></xm-project-list>
 		</el-drawer>
 
-		<el-drawer append-to-body title="故事选择" :visible.sync="menuVisible" fullscreen   :close-on-click-modal="false">
+		<el-drawer append-to-body title="故事选择" :visible.sync="menuVisible" size="60%"   :close-on-click-modal="false">
 			<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
 		</el-drawer>
-    <el-drawer append-to-body title="故事选择" :visible.sync="menuStory" size="100%"    :close-on-click-modal="false">
+    <el-drawer append-to-body title="故事选择" :visible.sync="menuStory" size="60%"   :close-on-click-modal="false">
     	<xm-menu-select :visible="menuStory" :is-select-menu="true" :multi="true" @menus-selected="onSelectedStory"></xm-menu-select>
     </el-drawer>
 
@@ -356,7 +355,7 @@
 		<el-drawer append-to-body title="故事明细" :visible.sync="menuDetailVisible" :size="650"    :close-on-click-modal="false">
 			<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="true" :xm-menu="{menuId:editForm.menuId,menuName:editForm.menuName}" ></xm-menu-rich-detail>
 		</el-drawer>
-		<el-drawer append-to-body title="选择负责人" :visible.sync="groupUserSelectVisible" :size="650"    :close-on-click-modal="false">
+		<el-drawer append-to-body title="选择负责人" :visible.sync="groupUserSelectVisible" size="60%"    :close-on-click-modal="false">
 			<xm-project-group-select :visible="groupUserSelectVisible" :sel-project="selProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-project-group-select>
 		</el-drawer>
 
@@ -625,7 +624,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				menuVisible:false,
 				menuDetailVisible:false,
 				pickerOptions:  util.pickerOptions(),
-				gstcVisible:false,
+				displayType:'table',
 				menuStory:false,//故事查询
 				menuGroupUser:false,//负责人查询
 				menuExecutor:false,//执行人查询
@@ -637,9 +636,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					util.formatDate.format(beginDate, "yyyy-MM-dd"),
 					util.formatDate.format(endDate, "yyyy-MM-dd")
 				],
-				pickerOptions:  util.pickerOptions('datarange'),
-				/**end 自定义属性请在上面加 请加备注**/
-				showAglile: false
+				pickerOptions:  util.pickerOptions('datarange'), 
 			}
 		},//end data
 		methods: {

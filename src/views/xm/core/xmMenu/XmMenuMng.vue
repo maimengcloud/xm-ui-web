@@ -98,7 +98,7 @@
 							<el-table-column sortable type="selection" width="40"></el-table-column> 
 							<el-table-column prop="menuName" label="故事名称" min-width="160" show-overflow-tooltip> 
 								<template slot-scope="scope">
-									<span>{{scope.row.seqNo}}&nbsp;&nbsp;<el-link type="primary"  @click="showEdit(scope.row)">{{scope.row.menuName}}</el-link></span>
+									 <el-link type="primary"  @click="showEdit(scope.row)">{{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}}</el-link> 
 									<font class="align-right">
   										<el-popover 
 											placement="top-start"
@@ -115,6 +115,11 @@
 							<el-table-column prop="finishRate" label="进度"  width="80" show-overflow-tooltip> 
 								<template slot-scope="scope"> 
 										<span v-if="scope.row.finishRate"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag></span>
+								</template>
+							</el-table-column> 
+							<el-table-column prop="ctime" label="创建日期"  width="100" show-overflow-tooltip> 
+								<template slot-scope="scope"> 
+										 <span>{{scope.row.ctime}} </span>  
 								</template>
 							</el-table-column> 
 							<el-table-column prop="menuName" label="负责人"  width="100" show-overflow-tooltip> 

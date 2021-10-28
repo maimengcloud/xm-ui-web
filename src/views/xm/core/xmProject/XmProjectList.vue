@@ -1,18 +1,16 @@
 <template>
 	<section>
 		<el-row>
-			 <el-input v-model="filters.key" style="width:30%;" placeholder="请输入关键字进行查找项目">
-				<template slot="append">
-					 <el-button @click="searchXmProjects" icon="el-icon-search"></el-button>
-				 </template>
-			</el-input>
+			 <el-input v-model="filters.key" style="width:60%;" placeholder="项目名称模糊查询"> 
+			</el-input> 
+			<el-button @click="searchXmProjects" icon="el-icon-search"></el-button>
 		</el-row>
 		<el-row class="page-main page-height-90">   
 			<el-table ref="table" :height="tableHeight"  stripe :data="xmProjects"  highlight-current-row v-loading="load.list"   style="width: 100%;">
 				<el-table-column  type="index" label="序号" width="55" ></el-table-column>
 				<el-table-column prop="code" label="项目编号" min-width="80" ></el-table-column>
-				<el-table-column prop="name" label="标题名称" min-width="80" ></el-table-column> 
-				<el-table-column label="操作" width="245" fixed="right">
+				<el-table-column prop="name" label="项目名称" min-width="120" ></el-table-column> 
+				<el-table-column label="操作" width="100" fixed="right">
 					<template slot-scope="scope">  
 							<el-button-group>
 								<el-button  type="primary" @click.stop="selectProject(scope.row)" >选中</el-button>  
