@@ -46,6 +46,10 @@ export const batchRelTasksWithMenu = params => { return axios.post(`${base}/xm/c
 
 export const setTaskCreateUser = params => { return axios.post(`${base}/xm/core/xmTask/setTaskCreateUser`, params); };
 
+export const editTime = params => { return axios.post(`${base}/xm/core/xmTask/editTime`, params); };
+
+
+
 
 
 

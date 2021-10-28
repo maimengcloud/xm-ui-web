@@ -191,7 +191,8 @@
 							</el-table-column>
 							<el-table-column sortable  prop="startTime" label="起止时间" width="120" show-overflow-tooltip>
 								<template slot-scope="scope"> 
-									{{getDateString(scope.row.startTime)}}&nbsp;~&nbsp;{{getDateString(scope.row.endTime)}}
+									<el-link @click="drawerVisible=true">{{getDateString(scope.row.startTime)}}&nbsp;~&nbsp;{{getDateString(scope.row.endTime)}}
+									</el-link>
 									<!--
 										<div v-for="(item,index) in [calcTaskStateByTime(scope.row.startTime,scope.row.endTime,scope.row)]" :key="index ">
 											<el-tag :type="item.type">{{getDateString(scope.row.startTime)}}~{{getDateString(scope.row.endTime)}} {{item.desc}}</el-tag>
@@ -262,8 +263,45 @@
 				<div class="exector extra">
 					<div class="field-label">用户故事</div><el-tag  v-if="editForm.menuName" style="margin-left:10px;border-radius:30px;"  >{{editForm.menuName}}</el-tag>
 				</div>
+				
+
+
+				<div class="exector extra">
+					<div class="field-label">计划时间</div> 
+							<el-date-picker
+								v-model="budgetDateRanger" 
+								class="hidden-sm-and-down"
+								type="daterange"
+								align="right"
+								unlink-panels
+								range-separator="至"
+								start-placeholder="计划开始日期"
+								end-placeholder="计划完成日期"
+								value-format="yyyy-MM-dd HH:mm:ss"
+								:default-time="['00:00:00','23:59:59']"
+								:picker-options="pickerOptions"
+							></el-date-picker>
+						 共{{taskTime}}天
+					</div> 
+					<div class="exector extra"> 
+						<div class="field-label">实际时间</div>
+							<el-date-picker
+								v-model="actDateRanger"
+								class="hidden-sm-and-down"
+								type="daterange"
+								align="right"
+								unlink-panels
+								range-separator="至"
+								start-placeholder="实际开始日期"
+								end-placeholder="实际完成日期"
+								value-format="yyyy-MM-dd HH:mm:ss"
+								:default-time="['00:00:00','23:59:59']"
+								:picker-options="pickerOptions"
+							></el-date-picker> 
+							<el-button   @click="editTime(editForm)">保存时间</el-button>  
+				</div> 
 				<div class="progress extra">
-					<div class="field-label">任务进度</div>
+					<div class="field-label"></div>
 						<el-row> 
 							<el-slider
 								v-model="editForm.rate"
@@ -271,12 +309,12 @@
 							</el-slider>  
 						</el-row>
 						<el-row> 
-							<el-button   @click="editProgress(editForm.rate)">保存进度</el-button>  
+							<el-button   @click="editProgress(editForm.rate)">完成{{editForm.rate}}%</el-button>  
 							<el-button      style="font-size:12px;" @click="editProgress(40)">完成40%</el-button> 
 							<el-button      style="font-size:12px;" @click="editProgress(80)">完成80%</el-button> 
 							<el-button      style="font-size:12px;" @click="editProgress(100)">完成100%</el-button>
 						</el-row>
-				</div>
+				</div> 
 				<div class="exector extra">
 					<div class="field-label">任务负责人</div>
 					<el-tag  v-if="editForm.createUserid" style="margin-left:10px;border-radius:30px;"  >{{editForm.createUsername}}</el-tag>
@@ -291,10 +329,7 @@
 				</div>
 				<div class="skill extra">
 					<div class="field-label">技能要求</div><el-tag   style="margin-left:10px;border-radius:30px;">{{editForm.taskSkillNames?editForm.taskSkillNames:'无'}}</el-tag>
-				</div>
-				<div class="extra">
-					<div class="field-label">任务周期</div>{{getDateString(editForm.startTime)+' ~ '+ getDateString(editForm.endTime)}} 共{{taskTime}}天
-				</div>
+				</div> 
 			</el-row>
 
 			<div v-if="drawerkey == '1' && drawerVisible==true" style="overflow-x:hidden">
@@ -370,7 +405,7 @@
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { getTask ,listXmTask,editXmTask,editRate, delXmTask, batchDelXmTask,batchImportTaskFromTemplate,batchSaveBudget,setTaskCreateUser} from '@/api/xm/core/xmTask';
+	import { getTask ,listXmTask,editXmTask,editRate,editTime, delXmTask, batchDelXmTask,batchImportTaskFromTemplate,batchSaveBudget,setTaskCreateUser} from '@/api/xm/core/xmTask';
 	import  XmTaskAdd from './XmTaskAdd';//新增界面
 	import  XmTaskEdit from './XmTaskEdit';//修改界面
 	import  XmTaskMngBatch from './XmTaskMngBatch';//修改界面
@@ -441,16 +476,21 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				}
 			},
 			taskTime() {
-				const s = new Date(this.editForm.startTime);
-				const sy = s.getFullYear();
-				const sm = s.getMonth();
-				const sd = s.getDate();
-				const e = new Date(this.editForm.endTime);
-				const ey = e.getFullYear();
-				const em = e.getMonth();
-				const ed = e.getDate();
-				let len = (new Date(ey,em,ed) - new Date(sy,sm,sd))/(24*3600*1000) + 1;
-				return len;
+				if(this.budgetDateRanger.length>1){
+					const s = new Date(this.budgetDateRanger[0]);
+					const sy = s.getFullYear();
+					const sm = s.getMonth();
+					const sd = s.getDate();
+					const e = new Date(this.budgetDateRanger[1]);
+					const ey = e.getFullYear();
+					const em = e.getMonth();
+					const ed = e.getDate();
+					let len = (new Date(ey,em,ed) - new Date(sy,sm,sd))/(24*3600*1000) + 1;
+					return len;
+				}else{
+					return 0;
+				}
+				
 			},
 			tasksTreeData() {
 				let xmTasks = JSON.parse(JSON.stringify(this.xmTasks || []));
@@ -637,6 +677,11 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					util.formatDate.format(endDate, "yyyy-MM-dd")
 				],
 				pickerOptions:  util.pickerOptions('datarange'), 
+				
+				budgetDateRanger: [
+				],
+				actDateRanger: [
+				],
 			}
 		},//end data
 		methods: {
@@ -990,7 +1035,17 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				});
 			},
 			rowClick: function(row){
-				this.editForm=row;
+				this.editForm=row; 
+				if(row.startTime && row.endTime){
+					this.budgetDateRanger=[row.startTime,row.endTime]
+				}else{
+					this.budgetDateRanger=[]
+				}
+				if(row.actStartTime && row.actEndTime){
+					this.actDateRanger=[row.actStartTime,row.actEndTime]
+				}else{
+					this.actDateRanger=[]
+				} 
 				// this.$emit('row-click',row,);//  @row-click="rowClick"
 			},
 
@@ -1259,8 +1314,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			getDateString(dateStr){
 				if(dateStr==null || dateStr=="" || dateStr==undefined){
 					return ""
-				}else{
-					debugger;
+				}else{ 
 					var now=new Date();
 					var years=now.getFullYear();
 					if(dateStr.indexOf(years)==0){
@@ -1738,6 +1792,20 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					}
 				}
 				
+			},
+			editTime(row){
+				var params={taskId:row.taskId,projectId:row.projectId,startTime:this.budgetDateRanger[0],endTime:this.budgetDateRanger[1],actStartTime:this.actDateRanger[0],actEndTime:this.actDateRanger[1]}
+				this.load.edit = true;
+				editTime(params).then((res) => {
+					var tips=res.data.tips;
+					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+					this.getXmTasks();
+					this.load.edit = false;
+				}).catch( err =>{
+					this.load.edit = false;
+					this.editForm.rate = this.oldrate;
+					this.drawerVisible = false;
+				});
 			}
 
 			/**end 自定义函数请在上面加**/
