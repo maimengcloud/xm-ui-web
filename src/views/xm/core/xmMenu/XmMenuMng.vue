@@ -67,40 +67,41 @@
 										责任人:
 									</font>  
 									<el-tag v-if="filters.mmUser" closable @close="clearFiltersMmUser()">{{filters.mmUser.username}}</el-tag> 
-									<el-button size="mini"  v-else @click="selectFiltersMmUser()">选责任人</el-button>
-									<el-button size="mini"   @click="setFiltersMmUserAsMySelf()">我的</el-button>
+									<el-button   v-else @click="selectFiltersMmUser()">选责任人</el-button>
+									<el-button    @click="setFiltersMmUserAsMySelf()">我的</el-button>
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
 									<font class="more-label-font">
 										故事名称:
 									</font> 
-									<el-input  size="mini" v-model="filters.key" style="width:100%;"  placeholder="输入故事名字关键字" clearable>  
+									<el-input   v-model="filters.key" style="width:100%;"  placeholder="输入故事名字关键字" clearable>  
 									</el-input> 
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
-									<el-button type="primary" size="mini" @click="searchXmMenus" icon="el-icon-search">查询</el-button>
-									<el-button size="mini" v-if=" batchEditVisible==false "  @click="handleExport" icon="el-icon-download">导出</el-button> 
-									<el-button size="mini"  v-if=" batchEditVisible==true "  type="success" @click="showImportFromMenuTemplate" icon="el-icon-upload2">由模板快速导入</el-button> 
+									<el-button type="primary"  @click="searchXmMenus" icon="el-icon-search">查询</el-button>
+									<el-button  v-if=" batchEditVisible==false "  @click="handleExport" icon="el-icon-download">导出</el-button> 
+									<el-button   v-if=" batchEditVisible==true "  type="success" @click="showImportFromMenuTemplate" icon="el-icon-upload2">由模板快速导入</el-button> 
 									
-									<el-button size="mini"  v-if=" batchEditVisible==false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">由任务汇总统计数据</el-button>  
+									<el-button   v-if=" batchEditVisible==false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">由任务汇总统计数据</el-button>  
 								</el-col> 
 							</el-row> 
 							<el-button  slot="reference" icon="el-icon-more" circle></el-button>
 						</el-popover>  
- 					</el-row>
-					
+ 					</el-row> 
+					<el-row v-if="filters.parentMenuList && filters.parentMenuList.length>0" class="padding-top padding-left">
+						上级故事:
+						<span v-for="(item ,index) in filters.parentMenuList" :key="index">
+							<el-tag   @close="clearParentMenu(item,index)" closable @click="clearParentMenu(item,index)">{{item.menuName}}</el-tag>/
+						</span>
+					</el-row> 
 					<el-row class="padding-top">  
-						<el-table size="mini"  stripe fit border ref="table" :height="tableHeight" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
+						<el-table   stripe fit border ref="table" :max-height="tableHeight" :data="xmMenusTreeData"  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
 							<el-table-column sortable type="selection" width="40"></el-table-column> 
 							<el-table-column prop="menuName" label="故事名称" min-width="160" show-overflow-tooltip> 
 								<template slot-scope="scope">
 									<span>{{scope.row.seqNo}}&nbsp;&nbsp;<el-link type="primary"  @click="showEdit(scope.row)">{{scope.row.menuName}}</el-link></span>
 									<font class="align-right">
-										<span><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag></span>
-										&nbsp;&nbsp;
-										<el-tooltip content="需求负责人"><span>{{scope.row.mmUsername}} </span> </el-tooltip> 
-										<el-tooltip content="任务负责人"><span>{{scope.row.chargeUsername}} </span> </el-tooltip> 
-										<el-popover 
+  										<el-popover 
 											placement="top-start"
 											title="故事备注"
 											width="400"
@@ -108,36 +109,55 @@
 											<div v-html="scope.row.remark">
 											</div> 
 											<el-tag slot="reference" icon="el-icon-chat-line-square">描述</el-tag>
-										</el-popover>
-									
-										<el-button v-if="!selProject&&!xmIteration"   size="mini" type="primary"  @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" circle></el-button> 
- 											
-										<el-popover style="padding-left:10px;"
-											v-if="isPmUser"
-											placement="top-start"
-											width="200"
-											trigger="click" > 
-											<el-row>
-												<el-col :span="24" style="padding-top:5px;">
-													<el-button type="success" @click="showImportFromMenuTemplate(scope.row)" icon="el-icon-upload2">由模板快速导入</el-button> 
-												</el-col>
-												<el-col  :span="24"  style="padding-top:5px;"> 
-													<el-button type="danger"   @click="handleDel(scope.row)" icon="el-icon-delete" circle></el-button>   
-												</el-col> 
-												<el-col  :span="24"  style="padding-top:5px;"> 
-													<el-button v-if="!selProject"  type="primary" @click="showTaskListForMenu(scope.row,scope.$index)"  icon="el-icon-s-operation">查看任务</el-button>
-													<el-button v-if="selProject"  type="primary" @click="showTasks(scope.row,scope.$index)"  icon="el-icon-s-operation">查看任务</el-button> 
-												</el-col> 
-												<el-col  :span="24"  style="padding-top:5px;"> 
-													<el-button  type="primary" @click="toIterationList(scope.row,scope.$index)"  icon="el-icon-document-copy">查看迭代计划</el-button>
-												</el-col> 
-											</el-row>  
-
-											<el-button  size="mini" slot="reference" icon="el-icon-more" circle></el-button>
 										</el-popover> 
 									</font>
 								</template>
 							</el-table-column>   
+							<el-table-column prop="finishRate" label="进度"  width="80" show-overflow-tooltip> 
+								<template slot-scope="scope"> 
+										<span v-if="scope.row.finishRate"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag></span>
+								</template>
+							</el-table-column> 
+							<el-table-column prop="menuName" label="负责人"  width="100" show-overflow-tooltip> 
+								<template slot-scope="scope"> 
+										 <span>{{scope.row.mmUsername}} </span>  
+								</template>
+							</el-table-column> 
+							<el-table-column   label="操作"  width="160" show-overflow-tooltip> 
+								<template slot-scope="scope"> 
+										<el-tooltip v-if="!selProject&&!xmIteration" content="添加子故事">
+										<el-button     type="primary"  @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" circle></el-button> 
+										</el-tooltip>
+										
+										<el-tooltip  content="查看子故事">
+											<el-button        @click="searchSubMenus( scope.row,scope.$index)" icon="el-icon-right" circle></el-button> 
+										</el-tooltip>
+										<el-popover style="padding-left:10px;"
+											v-if="isPmUser"
+											placement="top-start"
+											width="250"
+											trigger="click" > 
+											<el-row>
+												<el-col :span="24" style="padding-top:5px;">
+													<el-button type="success" @click="showImportFromMenuTemplate(scope.row)" icon="el-icon-upload2">由模板快速导入子故事</el-button> 
+												</el-col>
+												<el-col  :span="24"  style="padding-top:5px;"> 
+													<el-button v-if="!selProject"  type="primary" @click="showTaskListForMenu(scope.row,scope.$index)"  icon="el-icon-s-operation">查看关联的任务</el-button>
+													<el-button v-if="selProject"  type="primary" @click="showTasks(scope.row,scope.$index)"  icon="el-icon-s-operation">查看关联的任务</el-button> 
+												</el-col> 
+												<el-col  :span="24"  style="padding-top:5px;"> 
+													<el-button  type="primary" @click="toIterationList(scope.row,scope.$index)"  icon="el-icon-document-copy">查看关联的迭代计划</el-button>
+												</el-col>  
+												<el-col  :span="24"  style="padding-top:5px;"> 
+													<el-button type="danger"   @click="handleDel(scope.row)" icon="el-icon-delete">删除该故事</el-button>   
+												</el-col> 
+											</el-row>  
+
+											<el-button   slot="reference" icon="el-icon-more" circle></el-button>
+										</el-popover>  
+								</template>
+							</el-table-column>   
+							
 						</el-table>
 						<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 							
@@ -278,6 +298,9 @@
 					mmUser:null,
 					iterationFilterType:'',//join、not-join、''
 					taskFilterType:'',//join、not-join、''
+					
+					parentMenu:null,
+					parentMenuList:[],
 				},
 				xmMenus: [],//查询结果
 				pageInfo:{//分页数据
@@ -403,6 +426,10 @@
 				if(this.selProject){
 					params.projectId=this.selProject.id
 				}
+				
+				if(this.filters.parentMenu){
+					params.pmenuId=this.filters.parentMenu.menuId
+				}
 				params.ctimeStart=this.dateRanger[0]+" 00:00:00"
 				params.ctimeEnd=this.dateRanger[1]+" 23:59:59" 
 				let callback= (res)=>{
@@ -471,6 +498,8 @@
 			}, 
 			onProductSelected:function(product){
 				this.filters.product=product
+				this.filters.parentMenu=null;
+				this.filters.parentMenuList=[];
 				this.productVisible=false;
 				this.getXmMenus()
 			},
@@ -798,6 +827,24 @@
 			},								 
 			toSelectProduct(){ 
 				this.productVisible=true;
+			},
+			searchSubMenus(row,index){
+				
+				this.filters.parentMenu=row
+				this.filters.parentMenuList.push(row);
+				this.pageInfo.count=true;
+				this.searchXmMenus();
+			},
+			clearParentMenu(menu,index){
+				if(index==1){
+					this.filters.parentMenu=null;
+				}else{
+					this.filters.parentMenu=this.filters.parentMenuList[index-1];
+				}
+
+				this.filters.parentMenuList.splice(index,this.filters.parentMenuList.length-index)
+				this.pageInfo.count=true
+				this.searchXmMenus();
 			}
 		},//end methods
 		components: { 
