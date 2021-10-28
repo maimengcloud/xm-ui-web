@@ -1794,7 +1794,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				
 			},
 			editTime(row){
-				var params={taskId:row.taskId,projectId:row.projectId,startTime:this.budgetDateRanger[0],endTime:this.budgetDateRanger[1],actStartTime:this.actDateRanger[0],actEndTime:this.actDateRanger[1]}
+				var params={id:row.id,projectId:row.projectId,startTime:this.budgetDateRanger[0],endTime:this.budgetDateRanger[1],actStartTime:this.actDateRanger[0],actEndTime:this.actDateRanger[1]}
 				this.load.edit = true;
 				editTime(params).then((res) => {
 					var tips=res.data.tips;
