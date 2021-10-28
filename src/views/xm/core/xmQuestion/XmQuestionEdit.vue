@@ -61,27 +61,24 @@
 					<font v-else>无</font>
 				</el-form-item>
 				<el-form-item label="流转信息">
-						<el-button icon="el-icon-search" v-if="flowInfoVisible==false" @click="showFlowInfo" >查询流转信息</el-button>
-						<el-button icon="el-icon-search" v-else @click="flowInfoVisible=false" >隐藏流转信息</el-button>
+						<el-button   v-if="flowInfoVisible==false" @click="showFlowInfo" >查询流转信息</el-button>
+						<el-button   v-else @click="flowInfoVisible=false" >隐藏流转信息</el-button>
 
-					<el-col :span="24" style="padding-top:12px;">
+					<el-col :span="24" style="padding">
 					<!--列表 XmQuestionHandle xm_question_handle-->
 
-						<el-table v-show="flowInfoVisible" max-height="300" :data="xmQuestionHandles"   highlight-current-row v-loading="load.list" border   style="width: 100%;">
-							<el-table-column sortable type="index" width="40"></el-table-column>
-							<el-table-column  label="处理意见"  prop="receiptMessage"  min-width="200" >
+						<el-table v-show="flowInfoVisible"  :data="xmQuestionHandles" show-header=false  highlight-current-row v-loading="load.list" border   style="width: 100%;">
+							 
+							<el-table-column     prop="receiptMessage"  min-width="200" >
 								<template slot-scope="scope">
+									<el-row>
+										{{scope.$index+1}}&nbsp;&nbsp;&nbsp;<el-tag>{{scope.row.handlerUsername}}</el-tag> 指派给 <el-tag> {{scope.row.targetUsername}}  </el-tag><span style="font-size:8px;">指派时间：{{scope.row.receiptTime}}</span>
+									</el-row> 
+									<el-row>
 									<div class="rich-context" v-html="scope.row.receiptMessage"></div>
+									</el-row>
 								</template>
-							</el-table-column>
-							<el-table-column prop="handlerUsername" label="指派动作" width="250"  >
-								<template slot-scope="scope">
-									<el-tag>{{scope.row.handlerUsername}}</el-tag> 指派给 <el-tag> {{scope.row.targetUsername}}  </el-tag><br><span style="font-size:8px;">{{scope.row.receiptTime}}</span>
-								</template>
-							</el-table-column>
-							<el-table-column prop="handleStatus" label="状态"  width="80"   :formatter="formatterOption"></el-table-column>
-							<el-table-column prop="handleSolution" label="解决方案"  width="100"   :formatter="formatterOption"></el-table-column>
-
+							</el-table-column>  
 						</el-table>
 					</el-col>
 				</el-form-item>
@@ -93,14 +90,13 @@
 					</el-col>
 					<font v-else>无</font>
 				</el-form-item>
-				<el-form-item label="上次处理意见" prop="lremark">
+				<el-form-item v-if="!flowInfoVisible" label="上次处理意见" prop="lremark">
 					<el-col v-if="editForm.lremark" :span="24" >
 					<div class="wf-main-context-box"  >
 						<div   class="wf-main-context" v-html="editForm.lremark"></div>
 					</div>
 					</el-col>
-					<font v-else>无</font>
-
+					<font v-else>无</font> 
 				</el-form-item>
 				<el-form-item label="处理意见" prop="receiptMessage">
 
