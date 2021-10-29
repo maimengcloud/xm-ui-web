@@ -8,7 +8,7 @@
 					</span>
 				</el-menu-item>
 				<el-menu-item  index="项目概览" >
-					<span slot="title" style="font-size:18px;"> 
+					<span slot="title" style="font-size:18px;color:#ffd04b"> 
 						<font v-if="selProject.name.length>=15"><strong>项目:&nbsp;&nbsp;{{selProject.name.substring(0,15)}}</strong></font>
 						<font type="danger" v-else><strong>项目:&nbsp;&nbsp;{{selProject.name}}</strong></font> 
 					</span>
@@ -279,6 +279,10 @@
       },
       setInfotype(infotype){
 		  this.infotype=infotype;
+		  
+		  if(infotype=='返回'){
+				this.goBack()
+			}
 	  },
       handleExport() {
         this.downloadLoading = true

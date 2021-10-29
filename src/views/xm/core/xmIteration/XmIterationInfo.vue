@@ -3,13 +3,11 @@
 		<el-row>
 			<el-menu :default-active="infotype"   mode="horizontal"  @select="setInfotype"   class="menus" background-color="rgb(48, 65, 86)" text-color="rgb(191, 203, 217)" active-text-color="#409eff">
 
-				<el-menu-item  index="返回" >
-					<span slot="title" >
-						<span slot="title" @click.stop="goBack"><i class="el-icon-back" ></i></span> 
-					</span>
+				<el-menu-item  index="返回" > 
+						<span slot="title"><i class="el-icon-back" ></i></span>  
 				</el-menu-item> 
 				<el-menu-item  index="迭代概览" >
-					<span slot="title" style="font-size:18px;">
+					<span slot="title" style="font-size:18px;color:#409eff;">
  						<font v-if="xmIteration.iterationName.length>=15"><strong>迭代:&nbsp;&nbsp;{{xmIteration.iterationName.substring(0,15)}}</strong></font>
 						<font type="danger" v-else><strong>迭代:&nbsp;&nbsp;{{xmIteration.iterationName}}</strong></font> 
 					</span>
@@ -277,6 +275,10 @@
       },
       setInfotype(infotype){
 		  this.infotype=infotype;
+		  
+			if(infotype=='返回'){
+				this.goBack()
+			}
 	  },
       handleExport() {
         this.downloadLoading = true

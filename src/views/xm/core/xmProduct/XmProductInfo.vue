@@ -8,7 +8,7 @@
 					</span>
 				</el-menu-item>
 				<el-menu-item  index="产品概览" >
-					<span slot="title" style="font-size:18px;">
+					<span slot="title" style="font-size:18px;color:#409eff;">
   						<font v-if="xmProduct.productName.length>=15"> <strong> 产品:&nbsp;&nbsp;{{xmProduct.productName.substring(0,15)}}</strong></font>
 						<font type="danger" v-else> <strong>产品:&nbsp;&nbsp;{{xmProduct.productName}}</strong></font> 
 					</span>
@@ -276,6 +276,9 @@ import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
       },
       setInfotype(infotype){
 		  this.infotype=infotype;
+		  if(infotype=='返回'){
+				this.goBack()
+			}
 	  },
       handleExport() {
         this.downloadLoading = true
