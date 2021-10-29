@@ -1,290 +1,79 @@
+
 var categorys= 
-[
+[ 
   {
-    title:"日常应用",
+    moduleName:"唛盟项目管理系统",
+    moduleId:'maim',  
+    icon: require("@/assets/image/platform/module-maim.png"),
+    sysLink:"/xm/"+process.env.VERSION+"/",
+    topModuleId:'maim',isOpenSource:true,
     childrens:[
-    {
-      moduleName:"任务中心",
-      topModuleId:'oa',
-      link:"/mdp/workflow/ru/task/TaskListAssigneeToMe",
-      icon: require("../../assets/image/platform/module-task.png"),
-      isHighlight:false,
-      moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
-    },
-    {
-      moduleName:"流程中心",
-      topModuleId:'oa',
-      link:"/mdp/workflow/ru/execution/ExecutionListMyMonitors",
-      icon: require("../../assets/image/platform/module-flow.png"),
-      isHighlight:false,
-      moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
-    },
-    {
-      moduleName:"历史流程",
-      topModuleId:'oa',
-      link:"/mdp/workflow/hi/procinst/ProcinstListMyStart",
-      icon: require("../../assets/image/platform/module-historical.png"),
-      isHighlight:false,
-      moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
-    },
-    {
-      moduleName:"模型中心",
-      topModuleId:'oa',
-      link:"/mdp/workflow/de/ModelMng",
-      icon: require("../../assets/image/platform/module-odelCenter.png"),
-      isHighlight:false,
-      moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
-    },
-    {
-      moduleName:"智能表单",
-      topModuleId:'oa',
-      link:"/mdp/form/formDef/FormDefAdd",
-      icon: require("../../assets/image/platform/module-intelligentForms.png"),
-      isHighlight:false,
-      moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
-    },
-    {
-      moduleName:"新闻管理",
-      topModuleId:'arc',
-      link:"/mdp/arc/news/newsMng",
-      icon: require("../../assets/image/platform/module-news.png"),
-      isHighlight:false,
-      moduleType : '3', // 模块类型，1-系统类模块 2-系统外模块 3-系统外模块的模块
-    },
-    {
-      moduleName:"公告管理",
-      topModuleId:'arc',
-      link:"/mdp/arc/notice/noticeMng",
-      icon: require("../../assets/image/platform/module-notice.png"),
-      isHighlight:false,
-      moduleType : '3' // 模块类型，1-系统类模块 2-系统外模块 3-系统外模块的模块
-    },
-    ]
-  },
-  {
-    title:"通讯沟通",
-    childrens:[
-      {
-        moduleName:"通讯录",
-        topModuleId:'sys',
-        link:"/mdp/sys/user/deptUserMng",
-        icon: require("../../assets/image/platform/module-addressBook.png"),
-        isHighlight:false,
-        moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
-      },
-      {
-        moduleName:"内部邮件",
-        topModuleId:'oa',
-        link:"/oa/mail/mailEmail/MailEmailInbox",
-        icon: require("../../assets/image/platform/module-email1.png"),
-        isHighlight:false,
-        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
-      },
-      {
-        moduleName:"外部邮件",
-        topModuleId:'oa',
-        link:"/oa/mail/mailAccount/MailAccountMng",
-        icon: require("../../assets/image/platform/module-email2.png"),
-        isHighlight:false,
-        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
-      },
-      {
-        moduleName:"短信",
-        topModuleId:'sms',
-        link:"",
-        icon: require("../../assets/image/platform/module-note.png"),
-        isHighlight:false,
-        moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
-      },
-      {
-        moduleName:"聊天",
-        topModuleId:'im',
-        link:"",
-        icon: require("../../assets/image/platform/module-project.png"),
-        isHighlight:false,
-        moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
-      },
-    ]
-  },
-  {
-    title:"工作执行",
-    childrens:[
-      {
-        moduleName:"日程管理",
-        topModuleId:'oa',
-        link:"/oa/rc/rcScheduleMy/RcScheduleMyMng",
-        icon: require("../../assets/image/platform/module-schedule.png"),
-        isHighlight:false,
-        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
-      },
-      {
-        moduleName:"督办管理",
-        topModuleId:'oa',
-        link:"/oa/duban/dubanItem/DubanItem",
-        icon: require("../../assets/image/platform/module-supervise.png"),
-        isHighlight:false,
-        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
-      },
-      {
-        moduleName:"督办任务",
-        topModuleId:'oa',
-        link:"/oa/duban/dubanItemTask/HostDubanItemTask",
-        icon: require("../../assets/image/platform/module-supervisoryTask.png"),
-        isHighlight:false,
-        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
-      },
-    ]
-  },
-  {
-    title:"行政管理",
-    childrens:[
-      {
-        moduleName:"组织",
-        topModuleId:'sys',
-        link:"/mdp/sys/dept/DeptMng",
-        icon: require("../../assets/image/platform/module-organization.png"),
-        isHighlight:false,
-        moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
-      },
-      {
-        moduleName:"资产管理",
-        topModuleId:'oa',
-        link:"/oa/erp/pur/require/RequireMng",
-        icon: require("../../assets/image/platform/module-property.png"),
-        isHighlight:false,
-        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
-      },
-      {
-        moduleName:"会议管理",
-        topModuleId:'oa',
-        link:"/oa/meet/meetMeeting/MeetMeetingRequire",
-        icon: require("../../assets/image/platform/module-meeting.png"),
-        isHighlight:false,
-        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
-      },
-      {
-        moduleName:"印章中心",
-        topModuleId:'oa',
-        link:"/oa/sig/sigSignet/SigSignetMng",
-        icon: require("../../assets/image/platform/module-sealCenter.png"),
-        isHighlight:false,
-        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
-      },
-      {
-        moduleName:"车辆中心",
-        topModuleId:'oa',
-        link:"/oa/car/carOfficeCar/CarOfficeCarMng",
-        icon: require("../../assets/image/platform/module-car.png"),
-        isHighlight:false,
-        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
-      },
-      {
-        moduleName:"办公用品",
-        topModuleId:'oa',
-        link:"/oa/om/omCategory/OmCategoryMng",
-        icon: require("../../assets/image/platform/module-office.png"),
-        isHighlight:false,
-        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
-      },
-      
-    ]
-  },
-  {
-    title:"人事管理",
-    childrens:[
-      {
-        moduleName:"考勤管理",
-        topModuleId:'oa',
-        link:"/oa/kq/attendance/AttendanceMonth",
-        icon: require("../../assets/image/platform/module-attendance.png"),
-        isHighlight:false,
-        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
-      },
-      {
-        moduleName:"绩效考核",
-        topModuleId:'oa',
-        link:"/oa/jx/MyAssessment",
-        icon: require("../../assets/image/platform/module-performance.png"),
-        isHighlight:false,
-        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
-      },
-      {
-        moduleName:"档案信息",
-        topModuleId:'oa',
-        link:"/oa/hr/user/employeeInfo",
-        icon: require("../../assets/image/platform/module-record.png"),
-        isHighlight:false,
-        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
-      },
-    ]
-  },
-  {
-    title:"仓储管理",
-    childrens:[
-      {
-        moduleName:"合同管理",
-        topModuleId:'oa',
-        link:"/oa/ht/contractCard/ContractCardMng",
-        icon: require("../../assets/image/platform/module-contract.png"),
-        isHighlight:false,
-        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
-      }
-    ]
-  },
-  {
-    title:"业务管控",
-    childrens:[
-      {
-        moduleName:"业务中心",
-        topModuleId:'oa',
-        link:"/mdp/workflow/re/procdef/ProcdefListForParames",
-        icon: require("../../assets/image/platform/module-business.png"),
-        isHighlight:false,
-        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
-      },
-      {
-        moduleName:"客户管理",
-        topModuleId:'oa',
-        link:"/oa/crm/customer/CustomerIndex",
-        icon: require("../../assets/image/platform/module-customerCenter.png"),
-        isHighlight:false,
-        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
-      },
       {
         moduleName:"项目管理",
-        topModuleId:'xm',
-        link:"/xm/core/xmProject/XmProjectMng",
-        icon: require("../../assets/image/platform/module-project.png"),
+        moduleId:'maim-project',
+        topModuleId:'maim',isOpenSource:true,
+        sysLink:"/xm/"+process.env.VERSION+"/#/xm/core/xmProject/XmProjectMng",   
+        icon: require("@/assets/image/platform/module-project.png"),
         isHighlight:false,
         moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
       },
       {
-        moduleName:"费用管理",
-        topModuleId:'ac',
-        link:"",
-        icon: require("../../assets/image/platform/module-cost.png"),
+        moduleName:"测试管理 ",
+        moduleId:'maim-testhub',
+        topModuleId:'maim',isOpenSource:true,
+        sysLink:"/xm/"+process.env.VERSION+"/#/xm/core/xmQuestion/XmQuestionMng",  
+        icon: require("@/assets/image/platform/module-customerCenter.png"),
+        isHighlight:false,
+        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
+      },
+      {
+        moduleName:"产品规划",
+        moduleId:'maim-plan',
+        topModuleId:'maim',isOpenSource:true,
+        sysLink:"/xm/"+process.env.VERSION+"/#/xm/core/xmProduct/XmProductAllMng", 
+        icon: require("@/assets/image/platform/module-intelligentForms.png"),
+        isHighlight:false,
+        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
+      },
+      {
+        moduleName:"效能管理",
+        moduleId:'maim-performance',
+        topModuleId:'maim',isOpenSource:true,
+        sysLink:"/xm/"+process.env.VERSION+"/#/xm/core/xmProjectState/XmProjectStateMng", 
+        icon: require("@/assets/image/platform/module-cost.png"),
         isHighlight:false,
         moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
       }, 
       {
-        moduleName:"防伪",
-        topModuleId:'audit',
-        link:"/audit/base/productLifeCycle/productLifeCycleDetail/Safeguard",
-        icon: require("../../assets/image/platform/anti-fake.png"),
+        moduleName:"流水线",
+        moduleId:'maim-pipeline',
+        topModuleId:'maim',isOpenSource:true,
+        sysLink:"/xm/"+process.env.VERSION+"/#/mdp/workflow/ru/task/TaskListAssigneeToMe", 
+        icon: require("@/assets/image/platform/module-trace.png"),
         isHighlight:false,
         moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
       },{
-        moduleName:"溯源",
-        topModuleId:'audit',
-        link:"/audit/base/productLifeCycle/productLifeCycleDetail/ProductLifeCycleDetailMng",
-        icon: require("../../assets/image/platform/traceSource.png"),
+        moduleName:"组织架构",
+        moduleId:'maim-org',
+        topModuleId:'maim',isOpenSource:true,
+        sysLink:"/sys/"+process.env.VERSION+"/#/mdp/sys/dept/DeptMng", 
+        icon: require("@/assets/image/platform/module-organization.png"),
         isHighlight:false,
         moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
       },{
-        moduleName:"审计",
-        topModuleId:'audit',
-        link:"/audit/base/oper/operLog/OperLogMng",
-        icon: require("../../assets/image/platform/audit.png"),
+        moduleName:"知识库",
+        moduleId:'maim-wiki',
+        topModuleId:'maim',isOpenSource:true,
+        sysLink:"/arc/"+process.env.VERSION+"/#/mdp/arc/mate/archive/ArchiveMng",
+        icon: require("@/assets/image/platform/module-performance.png"), 
+        isHighlight:false,
+        moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
+      },{
+        moduleName:"众包",
+        moduleId:'maim-crowd',
+        topModuleId:'maim',isOpenSource:true,
+        sysLink:"/", 
+        icon: require("@/assets/image/platform/module-task.png"),
         isHighlight:false,
         moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
       },
@@ -292,97 +81,399 @@ var categorys=
     ]
   },
   {
-    title:"系统模块",
+    moduleName:"智慧协同办公系统",
+    moduleId:'oa',  
+    sysLink:"/oa/"+process.env.VERSION+"/",
+    icon: require("@/assets/image/platform/module-oa.png"),
+    topModuleId:'oa',isOpenSource:true,
     childrens:[
+      {
+        moduleName:"日程管理",
+        topModuleId:'oa',isOpenSource:true,
+        moduleId:'oa-rc',  
+        sysLink:"/oa/"+process.env.VERSION+"/#/oa/rc/rcSchedule/RcScheduleMng",
+        icon: require("@/assets/image/platform/module-schedule.png"),
+        isHighlight:false,
+        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
+      },
+      
+      {
+        moduleName:"督办管理",
+        topModuleId:'oa',isOpenSource:true,
+        moduleId:'oa-duban',  
+        sysLink:"/oa/"+process.env.VERSION+"/#/oa/duban/dubanItem/DutyDubanItem",
+        icon: require("@/assets/image/platform/module-supervise.png"),
+        isHighlight:false,
+        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
+      }, 
+      
+      /**
       {
         moduleName:"组织",
         topModuleId:'sys',
-        link:"",
-        icon: require("../../assets/image/platform/module-organization.png"),
+        moduleId:'oa-org',  
+        sysLink:"/mdp/sys/dept/DeptMng",
+        icon: require("@/assets/image/platform/module-organization.png"),
         isHighlight:false,
         moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
       },
+       */
       {
-        moduleName:"内容",
-        topModuleId:'arc',
-        link:"",
-        icon: require("../../assets/image/platform/module-content.png"),
+        moduleName:"资产管理",
+        topModuleId:'oa',isOpenSource:true,
+        moduleId:'oa-assets',  
+        sysLink:"/oa/"+process.env.VERSION+"/#/oa/erp/ass/assetDispose/assetDisposeMng",
+        icon: require("@/assets/image/platform/module-property.png"),
         isHighlight:false,
-        moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
+        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
       },
       {
-        moduleName:"流程",
-        topModuleId:'oa',
-        link:"",
-        icon: require("../../assets/image/platform/module-oa.png"),
+        moduleName:"会议管理",
+        topModuleId:'oa',isOpenSource:true,
+        moduleId:'oa-meet',  
+        sysLink:"/oa/"+process.env.VERSION+"/#/oa/meet/meetMeeting/MeetMeetingMng",
+        icon: require("@/assets/image/platform/module-meeting.png"),
         isHighlight:false,
-        moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
+        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
       },
       {
-        moduleName:"商城",
-        topModuleId:'mallm',
-        link:"",
-        icon: require("../../assets/image/platform/module-store.png"),
+        moduleName:"印章中心",
+        topModuleId:'oa',isOpenSource:true,
+        moduleId:'oa-sig',  
+        sysLink:"/oa/"+process.env.VERSION+"/#/oa/sig/sigSignet/SigSignetMng",
+        icon: require("@/assets/image/platform/module-sealCenter.png"),
         isHighlight:false,
-        moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
-      } ,
+        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
+      },
       {
-        moduleName:"营销",
-        topModuleId:'mk',
-        link:"",
-        icon: require("../../assets/image/platform/module-marketing.png"),
+        moduleName:"车辆中心",
+        topModuleId:'oa',isOpenSource:true,
+        moduleId:'oa-car',  
+        sysLink:"/oa/"+process.env.VERSION+"/#/oa/car/components/watch",
+        icon: require("@/assets/image/platform/module-car.png"),
+        isHighlight:false,
+        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
+      },
+      {
+        moduleName:"办公用品",
+        topModuleId:'oa',isOpenSource:true,
+        moduleId:'oa-om',  
+        sysLink:"/oa/"+process.env.VERSION+"/#/oa/om/omAppliance/OmApplianceMng",
+        icon: require("@/assets/image/platform/module-office.png"),
+        isHighlight:false,
+        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
+      }, 
+      
+      {
+        moduleName:"合同管理",
+        topModuleId:'oa',isOpenSource:true,
+        moduleId:'oa-ht',  
+        sysLink:"/oa/"+process.env.VERSION+"/#/oa/ht/contractCard/ContractCardMng",
+        icon: require("@/assets/image/platform/module-contract.png"),
+        isHighlight:false,
+        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
+      },
+      /** 归入财务，不单独显示
+      {
+        moduleName:"费用管理",
+        topModuleId:'ac',
+        moduleId:'oa-cost',  
+        sysLink:"/ac/"+process.env.VERSION+"/#/ac/cost/cost/require/RequireMng",
+        icon: require("@/assets/image/platform/module-cost.png"),
         isHighlight:false,
         moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
+      }, 
+       */
+      {
+        moduleName:"考勤管理",
+        topModuleId:'oa',isOpenSource:true,
+        moduleId:'oa-kq',  
+        sysLink:"/oa/"+process.env.VERSION+"/#/oa/kq/attendance/AttendanceMonth",
+        icon: require("@/assets/image/platform/module-attendance.png"),
+        isHighlight:false,
+        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
+      },
+      {
+        moduleName:"绩效考核",
+        topModuleId:'oa',isOpenSource:true,
+        moduleId:'oa-jx',  
+        sysLink:"/oa/"+process.env.VERSION+"/#/oa/jx/AssesssSatistical",
+        icon: require("@/assets/image/platform/module-performance.png"),
+        isHighlight:false,
+        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
+      },
+      {
+        moduleName:"档案信息",
+        topModuleId:'oa',isOpenSource:true,
+        moduleId:'oa-hr',  
+        sysLink:"/oa/"+process.env.VERSION+"/#/oa/hr/user/employeeInfo",
+        icon: require("@/assets/image/platform/module-record.png"),
+        isHighlight:false,
+        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
+      },
+      {
+        moduleName:"客户管理",
+        topModuleId:'oa',isOpenSource:true,
+        moduleId:'oa-crm',  
+        sysLink:"/oa/"+process.env.VERSION+"/#/oa/crm/customer/CustomerIndex",
+        icon: require("@/assets/image/platform/module-customerCenter.png"),
+        isHighlight:false,
+        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
       },
       {
         moduleName:"财务",
         topModuleId:'ac',
-        link:"",
-        icon: require("../../assets/image/platform/module-finance.png"),
+        moduleId:'oa-finance',  
+        sysLink:"/ac/"+process.env.VERSION+"/",
+        icon: require("@/assets/image/platform/module-finance.png"),
         isHighlight:false,
         moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
       },
-      {
-        moduleName:"短信",
-        topModuleId:'',
-        link:"sms",
-        icon: require("../../assets/image/platform/module-note.png"),
-        isHighlight:false,
-        moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
-      },
-      {
-        moduleName:"聊天",
-        topModuleId:'im',
-        link:"",
-        icon: require("../../assets/image/platform/module-project.png"),
-        isHighlight:false,
-        moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
-      },
-      {
-        moduleName:"防伪",
-        topModuleId:'audit',
-        link:"/audit/base/productLifeCycle/productLifeCycleDetail/Safeguard",
-        icon: require("../../assets/image/platform/anti-fake.png"),
-        isHighlight:false,
-        moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
-      },{
-        moduleName:"溯源",
-        topModuleId:'audit',
-        link:"/audit/base/productLifeCycle/productLifeCycleDetail/ProductLifeCycleDetailMng",
-        icon: require("../../assets/image/platform/traceSource.png"),
-        isHighlight:false,
-        moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
-      },{
-        moduleName:"审计",
-        topModuleId:'audit',
-        link:"/audit/base/oper/operLog/OperLogMng",
-        icon: require("../../assets/image/platform/audit.png"),
-        isHighlight:false,
-        moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
-      },
-      
     ]
   },
-  
+  {
+    moduleName:"内容管理与发布系统",
+    moduleId:'arc',  
+    icon: require("@/assets/image/platform/module-arc.png"),
+    sysLink:"/arc/"+process.env.VERSION+"/",
+    topModuleId:'arc',isOpenSource:true,
+    childrens:[
+      {
+        moduleName:"图片库",
+        topModuleId:'arc',isOpenSource:true,
+        moduleId:'arc-image',  
+        sysLink:"/arc/"+process.env.VERSION+"/#/mdp/arc/mate/image/ImageMng",
+        icon: require("@/assets/image/platform/module-image.png"),
+        isHighlight:false,
+        moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
+      },
+      {
+        moduleName:"视频库",
+        topModuleId:'arc',isOpenSource:true,
+        moduleId:'arc-video',  
+        sysLink:"/arc/"+process.env.VERSION+"/#/mdp/arc/mate/image/MovieMng",
+        icon: require("@/assets/image/platform/module-video.png"),
+        isHighlight:false,
+        moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
+      },
+      {
+        moduleName:"文章库",
+        topModuleId:'arc',isOpenSource:true,
+        moduleId:'arc-image',  
+        sysLink:"/arc/"+process.env.VERSION+"/#/mdp/arc/mate/archive/ArchiveMng",
+        icon: require("@/assets/image/platform/module-performance.png"),
+        isHighlight:false,
+        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
+      },
+      {
+        moduleName:"知识库",
+        topModuleId:'arc',isOpenSource:true,
+        moduleId:'arc-knowledge',  
+        sysLink:"/arc/"+process.env.VERSION+"/#/mdp/arc/knowledge/KnowledgeMng",
+        icon: require("@/assets/image/platform/module-performance.png"),
+        isHighlight:false,
+        moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
+      },
+      {
+        moduleName:"新闻中心",
+        topModuleId:'arc',isOpenSource:true,
+        moduleId:'arc-news',  
+        sysLink:"/arc/"+process.env.VERSION+"/#/mdp/arc/news/newsMng",
+        icon: require("@/assets/image/platform/module-news.png"),
+        isHighlight:false,
+        moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
+      },
+      {
+        moduleName:"公告中心",
+        topModuleId:'arc',isOpenSource:true,
+        moduleId:'arc-notice',  
+        sysLink:"/arc/"+process.env.VERSION+"/#/mdp/arc/platformnotice/NoticeMng",
+        icon: require("@/assets/image/platform/module-note.png"),
+        isHighlight:false,
+        moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
+      },
+      {
+        moduleName:"帮助中心",
+        topModuleId:'arc',isOpenSource:true,
+        moduleId:'arc-help',  
+        sysLink:"/arc/"+process.env.VERSION+"/#/mdp/arc/knowledge/KnowledgeMng",
+        icon: require("@/assets/image/platform/module-help.png"),
+        isHighlight:false,
+        moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
+      },
+      {
+        moduleName:"公文中心",
+        topModuleId:'arc',isOpenSource:true,
+        moduleId:'arc-doc',  
+        sysLink:"/arc/"+process.env.VERSION+"/#/mdp/arc/doc/documentCentre",
+        icon: require("@/assets/image/platform/module-performance.png"),
+        isHighlight:false,
+        moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
+      },
+    ]
+  },
+  {
+    moduleName:"电商定制系统",
+    moduleId:'mall',   
+    sysLink:"/mallm/"+process.env.VERSION+"/",
+    icon: require("@/assets/image/platform/module-mall.png"),
+    topModuleId:'mall',isOpenSource:true,
+    childrens:[
+      
+      {
+        moduleName:"商城",
+        topModuleId:'mall-shop',isOpenSource:true,
+        moduleId:'mall',  
+        sysLink:"/mallm/"+process.env.VERSION+"/",
+        icon: require("@/assets/image/platform/module-store.png"),
+        isHighlight:false,
+        moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
+      },
+      {
+        moduleName:"营销",
+        topModuleId:'mk',isOpenSource:true,
+        moduleId:'mk',  
+        sysLink:"/mk/"+process.env.VERSION+"/",
+        icon: require("@/assets/image/platform/module-marketing.png"),
+        isHighlight:false,
+        moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
+      },
+    ]
+  },
+  {
+    moduleName:"多功能快速开发平台",  
+    moduleId:'mdp',  
+    sysLink:"/gitlab/qqkj/mmcloud/mdp/mdp-modules",
+    icon: require("@/assets/image/platform/module-mdp.png"),
+    topModuleId:'mdp',isOpenSource:true,
+    childrens:[ 
+    {
+      moduleName:"代码生成",
+      topModuleId:'mdp',isOpenSource:true,
+      moduleId:'mdp-dev',  
+      sysLink:"/gitlab/qqkj/dev/mdp-code-generator",
+      icon: require("@/assets/image/platform/module-code.png"),
+      isHighlight:false,
+      moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
+    },
+    {
+      moduleName:"微服务",
+      topModuleId:'mdp',isOpenSource:true,
+      moduleId:'mdp-micro',  
+      sysLink:"/gitlab/qqkj/mmcloud/mdp/mdp-modules",
+      icon: require("@/assets/image/platform/module-historical.png"),
+      isHighlight:false,
+      moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
+    }, 
+    {
+      moduleName:"核心组件",
+      topModuleId:'mdp',isOpenSource:true,
+      moduleId:'mdp-core',  
+      sysLink:"/gitlab/qqkj/mmcloud/mdp/mdp-modules",
+      icon: require("@/assets/image/platform/module-news.png"),
+      isHighlight:false,
+      moduleType : '3', // 模块类型，1-系统类模块 2-系统外模块 3-系统外模块的模块
+    },
+    {
+      moduleName:"角色权限",
+      topModuleId:'mdp',isOpenSource:true,
+      moduleId:'mdp-qx',  
+      sysLink:"/sys/"+process.env.VERSION+"/#/mdp/sys/role/RoleMng",
+      icon: require("@/assets/image/platform/anti-fake.png"),
+      isHighlight:false,
+      moduleType : '3' // 模块类型，1-系统类模块 2-系统外模块 3-系统外模块的模块
+    },
+    {
+      moduleName:"元数据组件",
+      topModuleId:'mdp',isOpenSource:true,
+      moduleId:'mdp-meta',  
+      sysLink:"/sys/"+process.env.VERSION+"/#/mdp/meta/item/ItemMng",
+      icon: require("@/assets/image/platform/module-historical.png"),
+      isHighlight:false,
+      moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
+    },
+    {
+      moduleName:"安全组件",
+      topModuleId:'mdp',isOpenSource:true,
+      moduleId:'mdp-safe',  
+      sysLink:"/sys/"+process.env.VERSION+"/#/mdp/menu/menuDef/MenuDefMng",
+      icon: require("@/assets/image/platform/anti-fake.png"),
+      isHighlight:false,
+      moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
+    },
+    {
+      moduleName:"平台组件",
+      topModuleId:'mdp',isOpenSource:true,
+      moduleId:'mdp-plat',  
+      sysLink:"/sys/"+process.env.VERSION+"/#/mdp/plat/platform/PlatformMng",
+      icon: require("@/assets/image/platform/module-intelligentForms.png"),
+      isHighlight:false,
+      moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
+    },
+    {
+      moduleName:"短信组件",
+      topModuleId:'mdp',isOpenSource:true,
+      moduleId:'mdp-sms',  
+      sysLink:"/sms/"+process.env.VERSION+"/",
+      icon: require("@/assets/image/platform/module-note.png"),
+      isHighlight:false,
+      moduleType : '3', // 模块类型，1-系统类模块 2-系统外模块 3-系统外模块的模块
+    },
+    {
+      moduleName:"邮件组件",
+      topModuleId:'mdp',isOpenSource:true,
+      moduleId:'mdp-email',  
+      sysLink:"/oa/"+process.env.VERSION+"/#/oa/mail/outMailEmail/MailEmailInbox",
+      icon: require("@/assets/image/platform/module-email2.png"),
+      isHighlight:false,
+      moduleType : '3' // 模块类型，1-系统类模块 2-系统外模块 3-系统外模块的模块
+    },
+    {
+      moduleName:"消息队列",
+      topModuleId:'mdp',isOpenSource:true,
+      moduleId:'mdp-mq',  
+      sysLink:"/gitlab/qqkj/mmcloud/mdp/mdp-modules",
+      icon: require("@/assets/image/platform/module-notice.png"),
+      isHighlight:false,
+      moduleType : '3' // 模块类型，1-系统类模块 2-系统外模块 3-系统外模块的模块
+    },
+    {
+      moduleName:"即时通讯",
+      topModuleId:'mdp',isOpenSource:true,
+      moduleId:'mdp-im',  
+      sysLink:"/im/"+process.env.VERSION+"/",
+      icon: require("@/assets/image/platform/module-notice.png"),
+      isHighlight:false,
+      moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
+    },
+    {
+      moduleName:"审计组件",
+      topModuleId:'mdp',isOpenSource:true,
+      moduleId:'mdp-audit',  
+      sysLink:"/gitlab/qqkj/mmcloud/mdp/mdp-modules",
+      icon: require("@/assets/image/platform/audit.png"),
+      isHighlight:false,
+      moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
+    },
+    {
+      moduleName:"工作流",
+      moduleId:"mdp-workflow",
+      topModuleId:'mdp',isOpenSource:true,
+      sysLink:"/gitlab/qqkj/mmcloud/mdp/mdp-modules",
+      icon: require("@/assets/image/platform/module-flow.png"),
+      isHighlight:false,
+      moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
+    },
+    {
+      moduleName:"第三方",
+      moduleId:"mdp-tpa",
+      topModuleId:'mdp',isOpenSource:true,
+      sysLink:"/gitlab/qqkj/mmcloud/mdp/mdp-modules",
+      icon: require("@/assets/image/platform/module-note.png"),
+      isHighlight:false,
+      moduleType : '3', // 模块类型，1-系统类模块 2-系统外模块 3-系统外模块的模块
+    }
+    ]
+  }  
 ]
 export default categorys;

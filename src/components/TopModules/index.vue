@@ -18,7 +18,7 @@
           <div class="box-info">全部应用</div> 
         </div>
       </div> 
-
+      
       <div class="drawer-box">
           <el-drawer  
           :visible.sync="drawer"  
@@ -30,7 +30,7 @@
                 </el-input>
               </div>
               <div class="drawer-content-category" v-for="(item,index) in categorys" :key="index">
-                <div class="category-name" v-text="item.title"></div>
+                <div class="category-name" v-text="item.moduleName"></div>
                 <div class="category-list">
                   <div
                     class="category-item"
@@ -81,17 +81,13 @@ export default {
   methods: { 
     //路由跳转
     gotolink(module) {
-      if(module.topModuleId==process.env.CONTEXT){
+      
         this.drawer = false
-        this.$router.push({path:module.link});
-      } else{
-        this.jumpToOtherSystem(module);
-      }   
+        this.jumpToOtherSystem(module); 
     },
     //系统跳转
-    jumpToOtherSystem(module) {  
-        let href = window.location.protocol + "//" + window.location.host + "/" + module.topModuleId + "/"+ process.env.VERSION +"/#" + module.link; 
-        window.open(href, module.moduleName,null,true);
+    jumpToOtherSystem(module) {   
+        window.open(module.sysLink, module.moduleName,null,true);
         NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
 
       },
