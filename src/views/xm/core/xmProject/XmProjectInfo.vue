@@ -1,15 +1,16 @@
 <template>
 	<section  class="page-container page-full-height">
 		<el-row>
-			<el-menu :default-active="infotype"   mode="horizontal"  @select="setInfotype"   class="menus" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
-
+			<el-menu :default-active="infotype"   mode="horizontal"  @select="setInfotype"   class="menus" background-color="rgb(48, 65, 86)" text-color="rgb(191, 203, 217)" active-text-color="#ffd04b">
+				<el-menu-item  index="返回" >
+					<span slot="title" style="font-size:18px;">
+						<span slot="title" @click.stop="goBack"><i class="el-icon-back" ></i></span>  
+					</span>
+				</el-menu-item>
 				<el-menu-item  index="项目概览" >
-					<span slot="title" >
-						<span slot="title" @click.stop="goBack"><i class="el-icon-back" ></i></span>
-						<i class="el-icon-s-data"></i>
-						<font v-if="selProject.name.length>=10">{{selProject.name.substring(0,10)}}</font>
-						<font type="danger" v-else>{{selProject.name}}</font>
-						概览
+					<span slot="title" style="font-size:18px;"> 
+						<font v-if="selProject.name.length>=15"><strong>项目:&nbsp;&nbsp;{{selProject.name.substring(0,15)}}</strong></font>
+						<font type="danger" v-else><strong>项目:&nbsp;&nbsp;{{selProject.name}}</strong></font> 
 					</span>
 				</el-menu-item>
 				<el-menu-item   index="迭代">

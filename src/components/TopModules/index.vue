@@ -25,10 +25,12 @@
           :direction="direction">
           <div class="drawer">
             <div class="drawer-content">
+              <!--
               <div class="drawer-content-input">
                 <el-input placeholder="请输入中文" v-model.trim="key" clearable prefix-icon = "el-icon-search" size="small" style="width:60%">
                 </el-input>
               </div>
+              -->
               <div class="drawer-content-category" v-for="(item,index) in categorys" :key="index">
                 <div class="category-name" v-text="item.moduleName"></div>
                 <div class="category-list">

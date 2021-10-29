@@ -1,18 +1,19 @@
 <template>
 	<section  class="page-container page-full-height">
 		<el-row>
-			<el-menu :default-active="infotype"   mode="horizontal"  @select="setInfotype"   class="menus" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+			<el-menu :default-active="infotype"   mode="horizontal"  @select="setInfotype"   class="menus" background-color="rgb(48, 65, 86)" text-color="rgb(191, 203, 217)" active-text-color="#409eff">
 
-				<el-menu-item  index="迭代概览" >
+				<el-menu-item  index="返回" >
 					<span slot="title" >
-						<span slot="title" @click.stop="goBack"><i class="el-icon-back" ></i></span>
-						<i class="el-icon-s-data"></i>
-						<font v-if="xmIteration.iterationName.length>=10">{{xmIteration.iterationName.substring(0,10)}}</font>
-						<font type="danger" v-else>{{xmIteration.iterationName}}</font>
-						概览
+						<span slot="title" @click.stop="goBack"><i class="el-icon-back" ></i></span> 
 					</span>
 				</el-menu-item> 
-				
+				<el-menu-item  index="迭代概览" >
+					<span slot="title" style="font-size:18px;">
+ 						<font v-if="xmIteration.iterationName.length>=15"><strong>迭代:&nbsp;&nbsp;{{xmIteration.iterationName.substring(0,15)}}</strong></font>
+						<font type="danger" v-else><strong>迭代:&nbsp;&nbsp;{{xmIteration.iterationName}}</strong></font> 
+					</span>
+				</el-menu-item> 
 				<el-menu-item label="项目" index="项目">
 					 <span slot="title"><i class="el-icon-document"></i>项目</span> 
 				</el-menu-item>
