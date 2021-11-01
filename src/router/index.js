@@ -13,7 +13,7 @@ import routesForm from './routes_form'
 import routesXm from './routes_xm' 
 import routesDatavXm from './routes_datav_xm' 
 import routesArc from './routes_arc'
-import routesIm from './routes_im'
+import routesIm from './routes_im' 
 
 
 export { Layout }
@@ -49,9 +49,20 @@ export const constantRouterMap = [
       component: _import('xm/core/xmProject/XmProjectMng'),
       name: 'dashboard',
       meta: { title: 'dashboard', icon: 'home-page', noCache: true }
-    }],
+    },
+    {
+      path: 'updateUserInfo',
+      component: _import('mdp/sys/user/UpdateUserInfo'),
+      name: '账户设置',
+      meta: {
+        title: 'updateUserInfo',
+        icon: 'component'
+      }
+    }
+  ],
     hidden: true
-  }
+  }, 
+  
 ]
 
 export default new Router({

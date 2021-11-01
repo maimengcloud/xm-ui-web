@@ -225,6 +225,14 @@ export default {
       window.open(href, '_blank');
       NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
 
+    },
+    handleCommand(command){
+      if(command=='updateUserInfo'){
+        this.$router.push({path:'/updateUserInfo'})
+      }
+    },
+    goToIndex(){
+      this.$router.push({path:'/'})
     }
   },
   mounted() {
