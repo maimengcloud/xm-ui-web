@@ -17,50 +17,47 @@
 				<el-button @click="showSelectShopMethod" type="primary" v-if="workShop.isSuperAdmin||workShop.isPlatFormAdmin">切换商户</el-button>
 			</div>
       -->
-     <error-log class="errLog-container right-menu-item hidden-sm-and-down"></error-log>
-		 
- 
-      <screenfull class="screenfull right-menu-item hidden-md-and-down"></screenfull> 
-      <lang-select class="international right-menu-item hidden-md-and-down"></lang-select>
+     
+     <error-log v-if="false" class="errLog-container right-menu-item hidden-sm-and-down"></error-log>
 
-      <el-tooltip class="hidden-md-and-down"  effect="dark" :content="$t('navbar.theme')" placement="bottom">
+
+      <screenfull v-if="false" class="screenfull right-menu-item"></screenfull>
+      <lang-select v-if="false" class="international right-menu-item hidden-sm-and-down"></lang-select>
+
+      <el-tooltip v-if="false" class="hidden-sm-and-down"  effect="dark" :content="$t('navbar.theme')" placement="bottom">
         <theme-picker class="theme-switch right-menu-item"></theme-picker>
       </el-tooltip>
-
-      <el-dropdown class="avatar-container right-menu-item" trigger="click">
+       <el-divider direction="vertical" class="divider"></el-divider>
+      <el-dropdown class="avatar-container right-menu-item" trigger="hover" style="max-width:300px;" @command="handleCommand">
         <div class="avatar-wrapper">
           <img v-if="userInfo && userInfo.headimgurl && userInfo.headimgurl!=null && userInfo.headimgurl!=='' " class="user-avatar" :src="userInfo.headimgurl">
           <img v-else class="user-avatar" src="../../../assets/image/user_img.gif">
-          <i class="el-icon-caret-bottom"></i>
-        </div> 
-        <el-dropdown-menu  slot="dropdown">
-          <router-link to="/">
-            <el-dropdown-item>
-              {{$t('navbar.dashboard')}}
-            </el-dropdown-item>
-          </router-link> 
-          <el-dropdown-item divided>
-                                           用户名：{{userInfo.username}}
+          <span class="username">{{userInfo.username}}</span>
+        </div>
+        <el-dropdown-menu  slot="dropdown" style="width:400px;">
+          <el-dropdown-item divided command="updateUserInfo">
+                                <div>         用户名：{{userInfo.username}} <el-button style="float:right;"  type="text" icon="el-icon-setting">账户设置</el-button></div>
           </el-dropdown-item>
           <el-dropdown-item divided>
                                            公司：{{userInfo.branchName}}
-          </el-dropdown-item>  
-          <el-dropdown-item  divided> 
-          	<div style=" overflow-x:auto; height:150px;">
-      部门及岗位： <el-form>
-                       <el-form-item v-for="(item ,index) in deptPostsTree" :label="item.deptName" :key="index">
-                         <div v-if="item.children!=null && item.children.length>0">
+          </el-dropdown-item>
+          <el-dropdown-item  divided>
+          	<div style="height:250px;">
+                       <el-row v-for="(item ,index) in deptPostsTree" :label="item.deptName" :key="index">
+                          部门：{{item.deptName}}
+                           <br>
+                          岗位：
+
+                         <div v-if="item.children!=null && item.children.length>0" style="padding-left:40px;">
                        		<el-row  v-for="(post,idx) in item.children" :key="idx">
-                       		  <el-tag>{{post.postName}}</el-tag>
+                       		   {{post.postName}}
                        		</el-row>
                          </div>
-                       </el-form-item>
-                 </el-form>
-                 
+                       </el-row>
                </div>
           </el-dropdown-item>
-          <el-dropdown-item  divided> 
-          <div style=" overflow-x:auto; height:150px;">
+          <el-dropdown-item v-if="false" divided>
+          <div style=" overflow-x:auto; height:250px;">
       商户及门店： <el-form>
                        <el-form-item label-width="300"  v-for="item in shopLocationsTree" :label="item.shopName" :key="item.shopId">
                        		<el-row v-for="location in item.locations" :key="location.locationId">
@@ -74,23 +71,28 @@
                  </el-form>
                  </div>
           </el-dropdown-item>
-          <el-dropdown-item  divided> 
+          <el-dropdown-item  divided>
           <div style=" overflow-x:auto; height:150px;">
-  我拥有的角色：   <el-form>
-                       <el-form-item label="">
-                       		<el-row v-for="role in roles" :key="role.roleid"> 
-                       		   <el-tag v-if="role.roleid.indexOf('SCOPE')<0">{{role.rolename}}</el-tag>
-                       		</el-row> 
-                       </el-form-item>
-                 </el-form>
-                 </div>
+            我拥有的角色：
+                  <el-row style="padding-left:40px;" v-for="role in roles" :key="role.roleid">
+                       		   <span v-if="role.roleid.indexOf('SCOPE')<0">{{role.rolename}}</span>
+                       		</el-row>
+           </div>
           </el-dropdown-item>
-          
-          <el-dropdown-item divided>
-            <span @click="logout" style="display:block;">{{$t('navbar.logOut')}}</span>
-          </el-dropdown-item>
-        </el-dropdown-menu> 
+        </el-dropdown-menu>
       </el-dropdown>
+      <el-divider direction="vertical" class="divider"></el-divider>
+      <!--喇叭标记-->
+      <notice-msg-bar class="avatar-container"></notice-msg-bar>
+      <el-divider direction="vertical" class="divider"></el-divider>
+      <el-link class="logout" @click="goToIndex" icon="el-icon-s-home">
+        <span style="font-size: 17px">首页</span>
+      </el-link>
+      <el-divider direction="vertical" class="divider"></el-divider>
+      <el-link class="logout" @click="logout" icon="el-icon-switch-button">
+        <span style="font-size: 17px">退出</span>
+      </el-link>
+      <el-divider direction="vertical" class="divider"></el-divider>
     </div>
   </el-menu>
 </template>
@@ -104,6 +106,7 @@ import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
 import LangSelect from '@/components/LangSelect'
 import ThemePicker from '@/components/ThemePicker';
+import NoticeMsgBar from '@/components/NoticeMsgBar'
 //import selectShopLocationBySysDept from '@/views/mdp/app/selectShopLocationBySysDept/selectShopLocationBySysDept';
 
 export default {
@@ -114,7 +117,8 @@ export default {
     Screenfull,
     LangSelect,
     ThemePicker,
-    TopModules
+    TopModules,
+    NoticeMsgBar, 
   },
   data:function(){
 	return {
@@ -235,7 +239,7 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>  
 @import './iconfont.css';
-.navbar { 
+.navbar {
   height: 50px;
   line-height: 50px;
   border-radius: 0px !important;
@@ -246,7 +250,7 @@ export default {
     float: left;
     padding: 0 10px;
   }
-  
+
   .modules-container {
     line-height: 58px;
     height: 50px;
@@ -270,6 +274,9 @@ export default {
       display: inline-block;
       margin: 0 8px;
     }
+    .divider{
+      vertical-align: 4px;
+    }
     .screenfull {
       height: 20px;
     }
@@ -279,16 +286,29 @@ export default {
     .theme-switch {
       vertical-align: 15px;
     }
+    .logout{
+      height: 50px;
+      vertical-align: top;
+      /*margin-right: 10px;*/
+      color: #fff;
+      font-size: 30px;
+    }
     .avatar-container {
       height: 50px;
-      margin-right: 30px;
       .avatar-wrapper {
         cursor: pointer;
-        margin-top: 5px;
-        position: relative;
-        .user-avatar { 
-          height: 40px;
-          border-radius: 10px;
+        .user-avatar {
+          height: 30px;
+          width:30px;
+          border-radius: 50%;
+        }
+
+        .username{
+          line-height: 35px;
+          vertical-align: top;
+          /*margin-right: 20px;*/
+          color: #fff;
+          font-size: 17px;
         }
         .el-icon-caret-bottom {
           position: absolute;
@@ -313,7 +333,7 @@ export default {
 
   .big{
     display:flex;
-    flex-direction:column; 
+    flex-direction:column;
     align-items:center;
     margin-right: 20px;
   }

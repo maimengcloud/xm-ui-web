@@ -20,6 +20,7 @@ const getters = {
   addRouters: state => state.permission.addRouters,
   errorLogs: state => state.errorLog.logs,
   added: state => state.permission.added,
-  isLoadOk:state=>state.user.isLoadOk
+  isLoadOk:state=>state.user.isLoadOk,
+  noticeMsg:state=>state.noticeMsg.noticeMsg
 }
 export default getters
