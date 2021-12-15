@@ -71,12 +71,11 @@ export default new Router({
   routes: constantRouterMap
 })
 
-let allRoutes = []
-
-allRoutes = allRoutes.concat(routesWorkflow.routes).concat(routesForm.routes)
-allRoutes=allRoutes.concat(routesArc.routes);
-allRoutes=allRoutes.concat(routesIm.routes);
+let allRoutes = [] 
 allRoutes=allRoutes.concat(routesXm.routes); 
 allRoutes=allRoutes.concat(routesDatavXm.routes);
+allRoutes=allRoutes.concat(routesWorkflow.routes).concat(routesForm.routes)
+allRoutes=allRoutes.concat(routesArc.routes);
+allRoutes=allRoutes.concat(routesIm.routes);
 
 export const asyncRouterMap = allRoutes
