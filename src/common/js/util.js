@@ -185,15 +185,6 @@ export default {
           }
         },
         {
-          text: "前三周",
-          onClick(picker) {
-          const end = new Date();
-          const start = new Date();
-          start.setTime(start.getTime() - 3600 * 1000 * 24 * 7 * 3);
-          picker.$emit("pick", [start, end]);
-          }
-        }, 
-        {
           text: "前一个月",
           onClick(picker) {
           const end = new Date();
@@ -208,6 +199,15 @@ export default {
           const end = new Date();
           const start = new Date();
           start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+          picker.$emit("pick", [start, end]);
+          }
+        },
+        {
+          text: "前一年",
+          onClick(picker) {
+          const end = new Date();
+          const start = new Date();
+          start.setTime(start.getTime() - 3600 * 1000 * 24 * 360);
           picker.$emit("pick", [start, end]);
           }
         },
@@ -230,15 +230,6 @@ export default {
           }
         },
         {
-          text: "后三周",
-          onClick(picker) {
-          const end = new Date();
-          const start = new Date();
-          end.setTime(start.getTime() + 3600 * 1000 * 24 * 7 * 3);
-          picker.$emit("pick", [start, end]);
-          }
-        }, 
-        {
           text: "后一个月",
           onClick(picker) {
           const end = new Date();
@@ -253,6 +244,15 @@ export default {
           const end = new Date();
           const start = new Date();
           end.setTime(start.getTime() + 3600 * 1000 * 24 * 90);
+          picker.$emit("pick", [start, end]);
+          }
+        },
+        {
+          text: "后一年",
+          onClick(picker) {
+          const end = new Date();
+          const start = new Date();
+          end.setTime(start.getTime() + 3600 * 1000 * 24 * 360);
           picker.$emit("pick", [start, end]);
           }
         }

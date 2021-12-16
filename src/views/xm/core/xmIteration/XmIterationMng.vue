@@ -166,8 +166,8 @@ import XmIterationSelect from './XmIterationSelect.vue';
 		data() {
 			const beginDate = new Date();
 			const endDate = new Date();
-			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 3 );
-			endDate.setTime(endDate.getTime() + 3600 * 1000 * 24 * 7 * 4 * 3 );
+			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 12 );
+			endDate.setTime(endDate.getTime() + 3600 * 1000 * 24 * 7 * 4 * 12 );
 			return {
 				filters: {
 					key: '',
