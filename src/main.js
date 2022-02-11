@@ -21,7 +21,7 @@ import  'echarts/map/js/china.js'
 import * as filters from './filters' // global filters
 Vue.prototype.$echarts = echarts
 Vue.use(Element, {
-  size: 'medium', // set element-ui default size
+  size: 'small', // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)
 })
 
