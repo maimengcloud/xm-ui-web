@@ -19,13 +19,14 @@ import './permission' // permission control
 import echarts from 'echarts'
 import  'echarts/map/js/china.js'
 import * as filters from './filters' // global filters
+import Print from 'vue-print-nb'
+
 Vue.prototype.$echarts = echarts
+Vue.use(Print); //注册
 Vue.use(Element, {
   size: 'small', // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)
 })
-
-
 
 // register global utility filters.
 Object.keys(filters).forEach(key => {
