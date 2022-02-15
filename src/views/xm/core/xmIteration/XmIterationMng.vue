@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container page-full-height padding border">
+	<section class="page-container padding border">
 		<el-row>
       		<el-checkbox v-model="gstcVisible"  class="hidden-md-and-down">甘特图</el-checkbox>
 
@@ -15,11 +15,9 @@
 				class="hidden-md-and-down"
 				:default-time="['00:00:00','23:59:59']" :picker-options="pickerOptions">
 			</el-date-picker>
-				<el-input v-model="filters.key" style="width: 15%;" placeholder="模糊查询">
-					<template slot="append">
-						<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterations" icon="el-icon-search"></el-button>
-					</template>
+				<el-input v-model="filters.key" style="width: 15%;" placeholder="模糊查询"> 
 				</el-input>
+				<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterations" icon="el-icon-search"></el-button>
 			<el-button type="primary" @click="showAdd" icon="el-icon-plus">迭代计划</el-button>
 			<el-popover
 				placement="top-start"
@@ -77,14 +75,18 @@
 			<!--列表 XmIteration 迭代定义-->
 			<el-table ref="table" :height="tableHeight" v-if="!gstcVisible" :data="xmIterationTreeData" row-key="id"  default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column type="selection" aria-disabled width="55"></el-table-column>
-				<el-table-column prop="iterationName" label="迭代名称" min-width="160" show-overflow-tooltip>
+				<el-table-column prop="iterationName" label="迭代名称" min-width="260">
 					 <template slot-scope="scope">
-						<span>{{scope.row.seqNo}} &nbsp;&nbsp;<el-link type="primary" @click="intoInfo( scope.row,scope.$index)"> {{scope.row.iterationName}} </el-link></span>
+						 <el-link type="primary" @click="intoInfo( scope.row,scope.$index)"> {{scope.row.seqNo}} &nbsp;&nbsp;{{scope.row.iterationName}} </el-link>
 					 </template>
 				</el-table-column>
 				<el-table-column prop="finishRate" label="总进度" min-width="80" >
-					<template slot-scope="scope">
-						 {{scope.row.finishRate}}%
+					<template slot-scope="scope"> 
+						<font class="align-right"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag>
+
+ 						<el-tooltip content="点击统计进度，由任务汇总"><el-button  type="text" icon="el-icon-video-play" @click.stop="loadTasksToXmIterationState( scope.row)"></el-button></el-tooltip>
+
+						</font>
 					</template>
 				</el-table-column>
 				<el-table-column prop="startTime" label="开始时间" min-width="80" :formatter="formatterDate" show-overflow-tooltip></el-table-column>
@@ -93,7 +95,7 @@
  				<el-table-column prop="adminUsername" label="负责人姓名" min-width="80" show-overflow-tooltip></el-table-column>
  				<el-table-column prop="distBudgetWorkload" label="已分配工作量" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="actWorkload" label="实际工作量" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column label="操作" width="400" fixed="right">
+				<el-table-column label="操作" width="100" fixed="right">
 					<template slot-scope="scope">
  						<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"></el-button>
 					</template>
