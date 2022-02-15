@@ -673,8 +673,6 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				tableHeight:300,
 				productSelectVisible:false,
 				dateRanger: [
-					util.formatDate.format(beginDate, "yyyy-MM-dd"),
-					util.formatDate.format(endDate, "yyyy-MM-dd")
 				],
 				pickerOptions:  util.pickerOptions('datarange'), 
 				
@@ -759,9 +757,9 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					}
 					params.orderBy= orderBys.join(",")
 				}
-				if(!this.dateRanger || this.dateRanger.length==0){
-					this.$message({showClose: true, message: "创建日期范围不能为空", type: 'error' });
-					return;
+				if(this.dateRanger && this.dateRanger.length==2){ 
+					params.createTimeStart=this.dateRanger[0]+" 00:00:00"
+					params.createTimeEnd=this.dateRanger[1]+" 23:59:59"
 				}
 				if(this.filters.taskType!="all" && this.filters.taskType!="" && this.filters.taskType!=null){
 					params.taskType=this.filters.taskType
@@ -822,8 +820,6 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				if(this.xmIteration){
 					params.iterationId=this.xmIteration.id
 				}
-				params.createTimeStart=this.dateRanger[0]+" 00:00:00"
-				params.createTimeEnd=this.dateRanger[1]+" 23:59:59"
 				getTask(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){

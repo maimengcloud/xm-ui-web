@@ -8,26 +8,9 @@
 			</el-select>
 			<el-input v-if="filters.queryScope=='productId'" style="width:20%;"  v-model="filters.id"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">
 			</el-input>
-
-			<el-date-picker  v-show="!selProject&&filters.queryScope!='productId'"
-				v-model="dateRanger"
-				type="daterange"
-				align="right"
-				class="hidden-md-and-down"
-				unlink-panels
-				range-separator="至"
-				start-placeholder="开始日期"
-				end-placeholder="完成日期"
-				value-format="yyyy-MM-dd"
-				:default-time="['00:00:00','23:59:59']"
-				:picker-options="pickerOptions"
-			></el-date-picker>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
-				<template slot="append">
-
-					<el-button v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProducts" icon="el-icon-search"></el-button>
-				</template>
+			<el-input v-model="filters.key" style="width: 20%;" placeholder="名称查询" clearable>   
 			</el-input>
+			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProducts" icon="el-icon-search">查询</el-button>
  			<el-button type="primary" @click="showAdd" icon="el-icon-plus" v-if="!xmIteration">产品</el-button>
 			<el-popover
 				placement="top-start"
@@ -61,7 +44,7 @@
 							range-separator="至"
 							start-placeholder="开始日期"
 							end-placeholder="完成日期"
-							value-format="yyyy-MM-dd"
+							value-format="yyyy-MM-dd HH:mm:ss"
 							:default-time="['00:00:00','23:59:59']"
 							:picker-options="pickerOptions"
 						></el-date-picker>
@@ -138,49 +121,38 @@
 		<el-row  class="padding-top" v-show="!showType">
 			<!--列表 XmProduct 产品表-->
 			<el-table ref="table"  :height="tableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-  				<el-table-column prop="productName" label="产品名称" min-width="300">
+  				<el-table-column prop="productName" label="产品名称" min-width="200" sortable>
 					<template slot-scope="scope">
-						<span><el-link type="primary" @click="intoInfo(scope.row)">{{scope.row.productName}}</el-link></span>
-
+						<el-link type="primary" @click="intoInfo(scope.row)">{{scope.row.productName}}</el-link>
+					</template>
+				</el-table-column>
+				<el-table-column prop="finishRate" label="进度" width="120" sortable>
+					<template slot-scope="scope"> 
 						<font class="align-right"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag>
 
-						<el-tooltip content="产品经理"><el-tag v-if="scope.row.pmUsername">{{scope.row.pmUsername}}</el-tag></el-tooltip>
-						<el-tooltip content="点击统计进度，由任务汇总"><el-button  icon="el-icon-video-play" @click.stop="loadTasksToXmProductState( scope.row)"></el-button></el-tooltip>
+ 						<el-tooltip content="点击统计进度，由任务汇总"><el-button  type="text" icon="el-icon-video-play" @click.stop="loadTasksToXmProductState( scope.row)"></el-button></el-tooltip>
 
 						</font>
 					</template>
 				</el-table-column>
-				<el-table-column prop="planWorkload" label="预计工作量.人时" width="150"  show-overflow-tooltip></el-table-column>
-				<el-table-column prop="actWorkload" label="实际工作量.人时" width="150"  show-overflow-tooltip></el-table-column>
- 				<el-table-column  label="操作" width="200" fixed="right">
+				<el-table-column prop="pmUsername" label="产品经理" min-width="120" sortable>
+					<template slot-scope="scope"> 						
+						 <el-tag v-if="scope.row.pmUsername">{{scope.row.pmUsername}}</el-tag> 
+					</template>
+				</el-table-column>
+				
+				<el-table-column label="工作量(人时)" width="200">
+					<el-table-column prop="planWorkload" label="预计" width="100"  show-overflow-tooltip sortable></el-table-column>
+					<el-table-column prop="actWorkload" label="实际" width="100"  show-overflow-tooltip sortable></el-table-column>
+				</el-table-column>
+				
+ 				<el-table-column  label="操作" width="300" fixed="right">
 					<template slot-scope="scope">
-						<el-popover
-							placement="top-start"
-							title=""
-							width="200"
-							trigger="click" >
-							<el-row>
-								<el-col :span="24"  style="padding-top:12px;">
-									<el-button  type="warning" @click="loadTasksToXmProductState(scope.row)" icon="el-icon-s-data">从任务汇总统计进度</el-button>
-								</el-col>
-								<el-col :span="24" style="padding-top:12px;">
-									<el-button  type="warning" @click="showProductState(scope.row)" icon="el-icon-s-data">产品报告</el-button>
-								</el-col>
-								<el-col :span="24" style="padding-top:12px;">
-									<el-button  type="primary" @click="toIterationList(scope.row)" icon="el-icon-document">关联迭代计划查询</el-button>
-								</el-col>
-								<el-col :span="24"  style="padding-top:12px;">
-									<el-button type="success" @click="toProjectList(scope.row)"  icon="el-icon-document">关联项目查询</el-button>
-								</el-col>
-								<el-col :span="24"  style="padding-top:12px;">
-									<el-button  type="success" @click="toTaskList(scope.row)"  icon="el-icon-tickets">关联任务查询</el-button>
-								</el-col>
-								<el-col :span="24" style="padding-top:12px;">
-									<el-button  type="danger" v-loading="load.del" @click="handleDel(scope.row)" :disabled="load.del==true" icon="el-icon-delete">删除</el-button>
-								</el-col>
-							</el-row>
-							<el-button  slot="reference" icon="el-icon-more"></el-button>
-						</el-popover>
+						 			<el-button  type="text" @click="showProductState(scope.row)" icon="el-icon-s-data">报告</el-button>  
+									<el-button  type="text" @click="toIterationList(scope.row)" icon="el-icon-document">迭代</el-button>  
+									<el-button  type="text" @click="toProjectList(scope.row)"  icon="el-icon-document">项目</el-button>  
+									<el-button  type="text" @click="toTaskList(scope.row)"  icon="el-icon-tickets">任务</el-button>  
+									<el-button  type="text" v-loading="load.del" @click="handleDel(scope.row)" :disabled="load.del==true" icon="el-icon-delete">删除</el-button> 
 					</template>
 				</el-table-column>
 			</el-table>
@@ -296,9 +268,7 @@ import XmProductSelect from './XmProductSelect.vue';
 				productStateVisible:false,
 				selectFiltersPmUserVisible:false,
 				tableHeight:300,
-				dateRanger: [
-					util.formatDate.format(beginDate, "yyyy-MM-dd"),
-					util.formatDate.format(endDate, "yyyy-MM-dd")
+				dateRanger: [ 
 				],
 				pickerOptions:  util.pickerOptions('datarange'),
 				projectVisible:false,
@@ -381,13 +351,10 @@ import XmProductSelect from './XmProductSelect.vue';
 				if(this.filters.queryScope=="branchId"){
 					params.branchId=this.userInfo.branchId
 				}
-				if(!this.selProject && !this.xmIteration && this.filters.queryScope!='productId' && this.filters.queryScope!='compete'){
-					if(!this.dateRanger || this.dateRanger.length==0){
-						this.$message({showClose: true, message: "创建日期范围不能为空", type: 'error' });
-						return;
-					}
-					params.ctimeStart=this.dateRanger[0]+" 00:00:00"
-					params.ctimeEnd=this.dateRanger[1]+" 23:59:59"
+				if(this.dateRanger && this.dateRanger.length==2){
+					 
+					params.ctimeStart=this.dateRanger[0]
+					params.ctimeEnd=this.dateRanger[1]
 				}
 				if(this.xmIteration){
 					 params.iterationId=this.xmIteration.id
