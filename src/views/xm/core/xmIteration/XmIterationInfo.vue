@@ -140,7 +140,7 @@
    			<xm-iteration-overview-complex  v-if="infotype=='迭代概览'" :xm-iteration="xmIteration"></xm-iteration-overview-complex>
  			<xm-project-complex  v-if="infotype=='项目'" ref="xmProjectComplex" :xm-iteration="xmIteration"></xm-project-complex>
 			 <xm-product-for-project-complex  v-if="infotype=='产品'" ref="xmProductComplex" :xm-iteration="xmIteration"></xm-product-for-project-complex>
-			 <xm-menu-mng v-if="infotype=='用户故事'" :xm-iteration="xmIteration"></xm-menu-mng>
+			 <xm-menu-mng v-if="infotype=='用户故事'" :xm-iteration="xmIteration" :disabled-mng="false"></xm-menu-mng>
 			 <xm-task-mng v-if="infotype=='任务'" ref="xmTaskMng" :xm-iteration="xmIteration" ></xm-task-mng>
 			  <xm-question v-if="infotype=='缺陷'" :qtype="'bug'" :xm-iteration='xmIteration' ref="xmQuestion"></xm-question>
 			  <xm-group-mng v-if="infotype=='团队'" :xm-iteration="xmIteration"></xm-group-mng>
