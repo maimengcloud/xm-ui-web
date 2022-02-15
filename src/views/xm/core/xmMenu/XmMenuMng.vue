@@ -14,8 +14,8 @@
 						</el-input> 
 						<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
 						
-						<el-button  v-if="!selProject&&!xmIteration"  type="primary" @click="showAdd" icon="el-icon-plus">故事</el-button>
-						<el-button  v-if="!selProject&&!xmIteration"    @click="toBatchEdit" icon="el-icon-edit">修改</el-button>   
+						<el-button  v-if="!selProject&&!xmIteration&&disabledMng!=false"  type="primary" @click="showAdd" icon="el-icon-plus">故事</el-button>
+						<el-button  v-if="!selProject&&!xmIteration&&disabledMng!=false"    @click="toBatchEdit" icon="el-icon-edit">修改</el-button>   
 						<el-popover
 							placement="top-start"
 							title=""
@@ -118,8 +118,8 @@
 							</el-table-column> 
 							<el-table-column   label="操作"  width="260" show-overflow-tooltip> 
 								<template slot-scope="scope">   
-										<el-popover style="padding-left:10px;"
-											v-if="isPmUser"
+										<el-popover style="padding-left:10px;" 
+											v-if="disabledMng!=false"
 											placement="top-start"
 											width="250"
 											trigger="click" > 
@@ -137,7 +137,7 @@
 										<el-button v-if="!selProject" :disabled="scope.row.ntype=='1'"  type="text"  @click="showTaskListForMenu(scope.row,scope.$index)"  icon="el-icon-s-operation">任务</el-button>
 										<el-button v-if="selProject" :disabled="scope.row.ntype=='1'" type="text"  @click="showTasks(scope.row,scope.$index)"  icon="el-icon-s-operation">任务</el-button> 
 										<el-button  type="text" :disabled="scope.row.ntype=='1'" @click="toIterationList(scope.row,scope.$index)"  icon="el-icon-document-copy">迭代</el-button>
-										<el-button type="text" :disabled="scope.row.childrenCnt>0" @click="handleDel(scope.row)" icon="el-icon-delete">删除</el-button>   
+										<el-button type="text" v-if="disabledMng!=false" :disabled="scope.row.childrenCnt>0" @click="handleDel(scope.row)" icon="el-icon-delete">删除</el-button>   
  
 								</template>
 							</el-table-column>   
@@ -228,7 +228,7 @@
 	import { mapGetters } from 'vuex' 
 	
 	export default { 
-		props:['selProject','xmIteration','xmProduct'],
+		props:['selProject','xmIteration','xmProduct','disabledMng'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -396,6 +396,30 @@
 					params.isTop="1"
 				}
 				return params;
+			},
+			loadMenusLazy(row, treeNode, resolve) {  
+				if(row.children&&row.children.length>0){
+					resolve(row.children) 
+				}else{
+					var params={pmenuId:row.menuId}
+					params=this.getParams(params);
+					params.isTop=""
+					this.load.list = true;
+					var func=listXmMenuWithState
+					if(this.selProject&&this.selProject.id){
+						func=listXmMenuWithPlan
+					} 
+					func(params).then(res=>{
+						this.load.list = false
+						var tips = res.data.tips;
+						if(tips.isOk){
+							resolve(res.data.data) 
+						}else{
+							resolve([])
+						}
+					}).catch( err => this.load.list = false );  
+				}
+				
 			},
 			//获取列表 XmMenu xm_project_menu 
 			getXmMenus() { 
@@ -840,30 +864,6 @@
 				this.filters.parentMenuList.splice(index+1,this.filters.parentMenuList.length-index)
 				this.pageInfo.count=true
 				this.searchXmMenus();
-			},
-			loadMenusLazy(row, treeNode, resolve) {  
-				if(row.children&&row.children.length>0){
-					resolve(row.children) 
-				}else{
-					var params={pmenuId:row.menuId}
-					params=this.getParams(params);
-					params.isTop=""
-					this.load.list = true;
-					var func=listXmMenuWithState
-					if(this.selProject&&this.selProject.id){
-						func=listXmMenuWithPlan
-					} 
-					func(params).then(res=>{
-						this.load.list = false
-						var tips = res.data.tips;
-						if(tips.isOk){
-							resolve(res.data.data) 
-						}else{
-							resolve([])
-						}
-					}).catch( err => this.load.list = false );  
-				}
-				
 			}
 		},//end methods
 		components: { 

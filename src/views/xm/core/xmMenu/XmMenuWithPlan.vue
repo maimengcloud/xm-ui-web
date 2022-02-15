@@ -94,11 +94,11 @@
 				  
 		</el-row>
 		<el-row v-show="batchEditVisible">
-			<el-table :height="tableHeight" :data="xmMenusTreeData"   row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table  lazy :load="loadMenusLazy" :height="tableHeight" :data="xmMenusTreeData"   row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  
  					<el-table-column prop="menuName" label="故事名称" min-width="150" >
-						<template slot-scope="scope"> 
-							 {{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}} 
+						<template slot-scope="scope">  
+							 <el-link :icon="scope.row.ntype=='1'?'el-icon-folder-opened':''">{{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}}</el-link> 
 						</template>
 					</el-table-column>  
 					<el-table-column prop="chargeUsername" label="负责人" min-width="80" >
@@ -273,6 +273,68 @@
 				 this.pageInfo.count=true; 
 				 this.getXmMenus();
 			},
+			
+			getParams(params){
+
+				if(!params.productId){
+					params.branchId=this.userInfo.branchId
+				}
+				
+				if( this.filters.key){
+					params.key="%"+this.filters.key+"%"
+				}
+				 
+				if(this.filters.mmUser){
+					params.mmUserid=this.filters.mmUser.userid;
+				}  
+				if(this.filters.iterationFilterType){
+					params.iterationFilterType=this.filters.iterationFilterType
+				} 
+				if(this.xmIteration){
+					params.iterationFilterType='join'
+					params.iterationId=this.xmIteration.id
+				}
+				if(this.filters.taskFilterType){
+					params.taskFilterType=this.filters.taskFilterType
+				} 
+				if(this.selProject){
+					params.projectId=this.selProject.id
+				}
+				
+				if(this.filters.parentMenu){
+					params.pmenuId=this.filters.parentMenu.menuId
+				}
+				
+				if( this.dateRanger && this.dateRanger.length==2){
+					params.ctimeStart=this.dateRanger[0] 
+					params.ctimeEnd=this.dateRanger[1] 
+				} 
+				if(!(params.ctimeStart||params.pmenuId||params.projectId||params.iterationId||params.iterationFilterType||params.mmUserid||params.key||params.taskFilterType)){
+					params.isTop="1"
+				}
+				return params;
+			},
+			loadMenusLazy(row, treeNode, resolve) {  
+				if(row.children&&row.children.length>0){
+					resolve(row.children) 
+				}else{
+					var params={pmenuId:row.menuId}
+					params=this.getParams(params);
+					params.isTop=""
+					this.load.list = true;
+					var func=listXmMenuWithPlan 
+					func(params).then(res=>{
+						this.load.list = false
+						var tips = res.data.tips;
+						if(tips.isOk){
+							resolve(res.data.data) 
+						}else{
+							resolve([])
+						}
+					}).catch( err => this.load.list = false );  
+				}
+				
+			},
 			//获取列表 XmMenu xm_project_menu
 			getXmMenus() {
 				let params = {
@@ -287,14 +349,9 @@
 						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
 					}  
 					params.orderBy= orderBys.join(",")
-				}  
-				if(this.selProject){
-					params.projectId=this.selProject.id
-				}
+				}   
 				
-				if( this.filters.key){
-					params.key="%"+this.filters.key+"%"
-				}
+				params=this.getParams(params);
 				this.load.list = true;
 				listXmMenuWithPlan(params).then((res) => {
 					var tips=res.data.tips;

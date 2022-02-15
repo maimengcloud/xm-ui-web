@@ -76,11 +76,11 @@
 					<el-button   type="primary" v-if="multi"  v-on:click="multiSelectedConfirm">确认选择</el-button>
 				</el-row>
 				<el-row style="padding-top:12px;">
-					<el-table ref="table" :height="tableHeight" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+					<el-table ref="table"  lazy :load="loadMenusLazy" :height="tableHeight" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column v-if="multi" type="selection" width="50"></el-table-column>  
 						<el-table-column prop="menuName" label="故事名称" min-width="140" > 
 							<template slot-scope="scope">
-								{{scope.row.seqNo}}&nbsp;&nbsp;<el-link @click="toMenu(scope.row)">{{scope.row.menuName}}</el-link> 
+								<el-link :icon="scope.row.ntype=='1'?'el-icon-folder-opened':''" @click="toMenu(scope.row)">{{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}}</el-link> 
 							</template>
 						</el-table-column>   
 						<el-table-column prop="mmUsername" label="责任人" width="140" > 
@@ -213,6 +213,68 @@
 				 this.pageInfo.count=true; 
 				 this.getXmMenus();
 			},
+			
+			getParams(params){
+
+				if(!params.productId){
+					params.branchId=this.userInfo.branchId
+				}
+				
+				if( this.filters.key){
+					params.key="%"+this.filters.key+"%"
+				}
+				 
+				if(this.filters.mmUser){
+					params.mmUserid=this.filters.mmUser.userid;
+				}  
+				if(this.filters.iterationFilterType){
+					params.iterationFilterType=this.filters.iterationFilterType
+				} 
+				if(this.xmIteration){
+					params.iterationFilterType='join'
+					params.iterationId=this.xmIteration.id
+				}
+				if(this.filters.taskFilterType){
+					params.taskFilterType=this.filters.taskFilterType
+				} 
+				if(this.selProject){
+					params.projectId=this.selProject.id
+				}
+				
+				if(this.filters.parentMenu){
+					params.pmenuId=this.filters.parentMenu.menuId
+				}
+				
+				if( this.dateRanger && this.dateRanger.length==2){
+					params.ctimeStart=this.dateRanger[0] 
+					params.ctimeEnd=this.dateRanger[1] 
+				} 
+				if(!(params.ctimeStart||params.pmenuId||params.projectId||params.iterationId||params.iterationFilterType||params.mmUserid||params.key||params.taskFilterType)){
+					params.isTop="1"
+				}
+				return params;
+			},
+			loadMenusLazy(row, treeNode, resolve) {  
+				if(row.children&&row.children.length>0){
+					resolve(row.children) 
+				}else{
+					var params={pmenuId:row.menuId}
+					params=this.getParams(params);
+					params.isTop=""
+					this.load.list = true;
+					var func=listXmMenu 
+					func(params).then(res=>{
+						this.load.list = false
+						var tips = res.data.tips;
+						if(tips.isOk){
+							resolve(res.data.data) 
+						}else{
+							resolve([])
+						}
+					}).catch( err => this.load.list = false );  
+				}
+				
+			},
 			//获取列表 XmMenu xm_project_menu
 			getXmMenus() {
 				let params = {
@@ -237,25 +299,7 @@
 					//params.xxx=xxxxx
 				} 
 				
-				if( this.dateRanger && this.dateRanger.length==2){
-					params.ctimeStart=this.dateRanger[0]
-					params.ctimeEnd=this.dateRanger[1]
-				} 
-				
-				if(this.filters.mmUser){
-					params.mmUserid=this.filters.mmUser.userid;
-				}
-				
-				if( this.filters.key){
-					params.key="%"+this.filters.key+"%"
-				} 
-				params.excludeIterationId=this.excludeIterationId
-				if(this.filters.iterationFilterType){
-					params.iterationFilterType=this.filters.iterationFilterType
-				} 
-				if(this.filters.taskFilterType){
-					params.taskFilterType=this.filters.taskFilterType
-				} 
+				params=this.getParams(params)
 				
 				this.load.list = true;
 				listXmMenu(params).then((res) => {
