@@ -17,7 +17,7 @@
 						<el-button  v-if="!selProject&&!xmIteration&&disabledMng!=false"  type="primary" @click="showAdd" icon="el-icon-plus">故事</el-button>
 						<el-button  v-if="!selProject&&!xmIteration&&disabledMng!=false"    @click="toBatchEdit" icon="el-icon-edit">修改</el-button>   
 						
-						<el-button   v-if=" batchEditVisible==false&&disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总</el-button>  
+						<el-button   v-if=" batchEditVisible==false&&disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">进度</el-button>  
 						<el-popover
 							placement="top-start"
 							title=""
