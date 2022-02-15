@@ -8,7 +8,7 @@
 			<el-divider direction="vertical"></el-divider>
 			<el-tag>{{editForm.createUsername}} 于 {{editForm.createTime}} 创建 </el-tag>
 			<el-divider direction="vertical"></el-divider>
-			<el-date-picker :clearable="false" style="width:150px;" type="date" placeholder="到期日期" v-model="editForm.endTime" value-format="yyyy-MM-dd" format="yyyy-MM-dd"></el-date-picker>
+			<el-date-picker :clearable="false" style="width:150px;" type="date" placeholder="到期日期" v-model="editForm.endTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
 		</el-row>
 		<el-row class="padding-bottom">
 			<el-steps :active="calcBugStep" simple finish-status="success">

@@ -56,7 +56,7 @@
 								range-separator="至"
 								start-placeholder="开始日期"
 								end-placeholder="完成日期"
-								value-format="yyyy-MM-dd"
+								value-format="yyyy-MM-dd HH:mm:ss"
 								:default-time="['00:00:00','23:59:59']"
 								:picker-options="pickerOptions"
 							></el-date-picker>   
@@ -295,10 +295,7 @@
 				xmRecordVisible: false,
 				productSelectVisible:false,
 				tableHeight:300,
-				dateRanger: [
-					util.formatDate.format(beginDate, "yyyy-MM-dd"),
-					util.formatDate.format(endDate, "yyyy-MM-dd")
-				],  
+				dateRanger: [ ],  
 				pickerOptions:  util.pickerOptions('datarange'),
 				/**end 自定义属性请在上面加 请加备注**/
 			}
@@ -344,9 +341,8 @@
 					//params.xxx=xxxxx
 				}
 				
-				if(!this.dateRanger || this.dateRanger.length==0){
-					this.$message({showClose: true, message: "创建日期范围不能为空", type: 'error' });
-					return;
+				if(this.dateRanger&&this.dateRanger.length==2){
+					 
 				} 
 				this.load.list = true; 
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
@@ -364,8 +360,8 @@
 				if(this.filters.productId){
 					params.productId  = this.filters.productId
 				} 
-				params.createTimeStart=this.dateRanger[0]+" 00:00:00"
-				params.createTimeEnd=this.dateRanger[1]+" 23:59:59"
+				params.createTimeStart=this.dateRanger[0]
+				params.createTimeEnd=this.dateRanger[1]
 				listXmProject(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 

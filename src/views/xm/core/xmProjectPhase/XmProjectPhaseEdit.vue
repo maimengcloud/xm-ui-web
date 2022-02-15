@@ -57,7 +57,7 @@
 											range-separator="至"
 											start-placeholder="计划开始日期"
 											end-placeholder="计划完成日期"
-											value-format="yyyy-MM-dd"
+											value-format="yyyy-MM-dd HH:mm:ss"
 											:default-time="['00:00:00','23:59:59']"
 											:picker-options="pickerOptions"
 										></el-date-picker>
@@ -256,14 +256,14 @@
 				) {
 					if(this.dateRanger[0]){
 						if(this.dateRanger[0].length<=10){
-							this.editForm.beginDate = this.dateRanger[0] + " 00:00:00";
+							this.editForm.beginDate = this.dateRanger[0] ;
 						}else{
 							this.editForm.beginDate = this.dateRanger[0]
 						}
 					}
 					if(this.dateRanger[1]){
 						if(this.dateRanger[1].length<=10){
-							this.editForm.endDate = this.dateRanger[1] + " 23:59:59";
+							this.editForm.endDate = this.dateRanger[1] ;
 						}else{
 							this.editForm.endDate = this.dateRanger[1]
 						}

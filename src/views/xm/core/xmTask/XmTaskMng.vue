@@ -101,7 +101,7 @@
 										range-separator="至"
 										start-placeholder="开始日期"
 										end-placeholder="完成日期"
-										value-format="yyyy-MM-dd"
+										value-format="yyyy-MM-dd HH:mm:ss"
 										:default-time="['00:00:00','23:59:59']"
 										:picker-options="pickerOptions"
 									></el-date-picker>
@@ -758,8 +758,8 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					params.orderBy= orderBys.join(",")
 				}
 				if(this.dateRanger && this.dateRanger.length==2){ 
-					params.createTimeStart=this.dateRanger[0]+" 00:00:00"
-					params.createTimeEnd=this.dateRanger[1]+" 23:59:59"
+					params.createTimeStart=this.dateRanger[0]
+					params.createTimeEnd=this.dateRanger[1]
 				}
 				if(this.filters.taskType!="all" && this.filters.taskType!="" && this.filters.taskType!=null){
 					params.taskType=this.filters.taskType

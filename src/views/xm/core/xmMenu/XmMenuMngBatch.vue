@@ -15,7 +15,7 @@
 					range-separator="至"
 					start-placeholder="创建日期"
 					end-placeholder="创建日期"
-					value-format="yyyy-MM-dd"
+					value-format="yyyy-MM-dd HH:mm:ss"
 					:default-time="['00:00:00','23:59:59']"
 					:picker-options="pickerOptions"
 				></el-date-picker> 
@@ -60,7 +60,7 @@
 								range-separator="至"
 								start-placeholder="创建日期"
 								end-placeholder="创建日期"
-								value-format="yyyy-MM-dd"
+								value-format="yyyy-MM-dd HH:mm:ss"
 								:default-time="['00:00:00','23:59:59']"
 								:picker-options="pickerOptions"
 							></el-date-picker>   
@@ -298,10 +298,7 @@
 				userSelectVisible:false,
 				selectFiltersMmUserVisible:false,
 				tableHeight:300,
-				dateRanger: [
-					util.formatDate.format(beginDate, "yyyy-MM-dd"),
-					util.formatDate.format(endDate, "yyyy-MM-dd")
-				],  
+				dateRanger: [ ],  
 				pickerOptions:  util.pickerOptions('datarange'),
  				/**begin 自定义属性请在下面加 请加备注**/
 					
@@ -363,11 +360,6 @@
 				
 				if( this.filters.key){
 					params.key="%"+this.filters.key+"%"
-				}
-				 
-				if(!this.dateRanger || this.dateRanger.length==0){
-					this.$message({showClose: true, message: "创建日期范围不能为空", type: 'error' });
-					return;
 				} 
 				if(this.filters.mmUser){
 					params.mmUserid=this.filters.mmUser.userid;
@@ -378,9 +370,11 @@
 				} 
 				if(this.filters.taskFilterType){
 					params.taskFilterType=this.filters.taskFilterType
+				}  
+				if( this.dateRanger && this.dateRanger.length==2){
+					params.ctimeStart=this.dateRanger[0] 
+					params.ctimeEnd=this.dateRanger[1] 
 				} 
-				params.ctimeStart=this.dateRanger[0]+" 00:00:00"
-				params.ctimeEnd=this.dateRanger[1]+" 23:59:59" 
 				let callback= (res)=>{
 					var tips=res.data.tips;
 					if(tips.isOk){ 

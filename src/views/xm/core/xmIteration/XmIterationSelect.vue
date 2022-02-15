@@ -36,7 +36,7 @@
 									range-separator="至"
 									start-placeholder="开始日期"
 									end-placeholder="完成日期"
-									value-format="yyyy-MM-dd"
+									value-format="yyyy-MM-dd HH:mm:ss"
 									:default-time="['00:00:00','23:59:59']"
 									:picker-options="pickerOptions"
 								></el-date-picker>
@@ -114,9 +114,7 @@
 					id:'',//迭代编号
 				},
 				pickerOptions:  util.pickerOptions('datarange'), 
-				dateRangerOnline: [
-					util.formatDate.format(beginDate, "yyyy-MM-dd"),
-					util.formatDate.format(endDate, "yyyy-MM-dd")
+				dateRangerOnline: [ 
 				],//上线时间选择范围
 				xmIterations: [],//查询结果
 				pageInfo:{//分页数据
@@ -200,10 +198,6 @@
 					total: this.pageInfo.total,
 					count:this.pageInfo.count
 				}; 
-				if(!this.dateRangerOnline || this.dateRangerOnline.length==0){
-					this.$message({showClose: true, message: "上线日期范围不能为空", type: 'error' });
-					return;
-				}
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
 					for(var i=0;i<this.pageInfo.orderFields.length;i++){
@@ -233,10 +227,13 @@
 					if(this.filters.queryScope=="branchId"){
 						params.branchId=this.userInfo.branchId
 					}
-					params.onlineTimeStart=this.dateRangerOnline[0]+" 00:00:00"
-					params.onlineTimeEnd=this.dateRangerOnline[1]+" 23:59:59"
+					
 				}
 				
+				if(this.dateRangerOnline && this.dateRangerOnline.length==2){
+					params.onlineTimeStart=this.dateRangerOnline[0] 
+					params.onlineTimeEnd=this.dateRangerOnline[1] 
+				}
 				this.load.list = true;
 				listXmIterationWithState(params).then((res) => {
 					var tips=res.data.tips;

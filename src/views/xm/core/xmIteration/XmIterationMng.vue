@@ -11,7 +11,7 @@
 			</el-select>
 			<el-input v-if="filters.queryScope=='iterationId'"  v-model="filters.id" style="width:20%;"  placeholder="输入迭代编号" @keyup.enter.native="searchXmProducts"> </el-input>
 			<el-date-picker v-if="filters.queryScope!='iterationId'" v-model="dateRangerOnline" type="daterange" align="right" unlink-panels range-separator="至"
-				start-placeholder="上线日期" end-placeholder="上线日期" value-format="yyyy-MM-dd"
+				start-placeholder="上线日期" end-placeholder="上线日期" value-format="yyyy-MM-dd HH:mm:ss"
 				class="hidden-md-and-down"
 				:default-time="['00:00:00','23:59:59']" :picker-options="pickerOptions">
 			</el-date-picker>
@@ -54,7 +54,7 @@
 							range-separator="至"
 							start-placeholder="开始日期"
 							end-placeholder="完成日期"
-							value-format="yyyy-MM-dd"
+							value-format="yyyy-MM-dd HH:mm:ss"
 							:default-time="['00:00:00','23:59:59']"
 							:picker-options="pickerOptions"
 						></el-date-picker>
@@ -175,13 +175,8 @@ import XmIterationSelect from './XmIterationSelect.vue';
 					id:'',//迭代编号
 				},
 				pickerOptions:  util.pickerOptions('datarange'),
-				dateRanger: [
-					util.formatDate.format(beginDate, "yyyy-MM-dd"),
-					util.formatDate.format(endDate, "yyyy-MM-dd")
-				],//创建时间选择范围
-				dateRangerOnline: [
-					util.formatDate.format(beginDate, "yyyy-MM-dd"),
-					util.formatDate.format(endDate, "yyyy-MM-dd")
+				dateRanger: [ ],//创建时间选择范围
+				dateRangerOnline: [ 
 				],//上线时间选择范围
 				xmIterations: [],//查询结果
 				pageInfo:{//分页数据
@@ -265,11 +260,7 @@ import XmIterationSelect from './XmIterationSelect.vue';
 					pageNum: this.pageInfo.pageNum,
 					total: this.pageInfo.total,
 					count:this.pageInfo.count
-				};
-				if(!this.dateRangerOnline || this.dateRangerOnline.length==0){
-					this.$message({showClose: true, message: "上线日期范围不能为空", type: 'error' });
-					return;
-				}
+				}; 
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
 					for(var i=0;i<this.pageInfo.orderFields.length;i++){
@@ -302,11 +293,12 @@ import XmIterationSelect from './XmIterationSelect.vue';
 					if(this.filters.queryScope=="branchId"){
 						params.branchId=this.userInfo.branchId
 					}
-					if(this.filters.queryScope!="iterationId"){
-						params.onlineTimeStart=this.dateRangerOnline[0]+" 00:00:00"
-						params.onlineTimeEnd=this.dateRangerOnline[1]+" 23:59:59"
-					}
 
+				}
+				
+				if(this.filters.queryScope!="iterationId" && this.dateRangerOnline && dateRangerOnline.length==2){
+					params.onlineTimeStart=this.dateRangerOnline[0]
+					params.onlineTimeEnd=this.dateRangerOnline[1]
 				}
 				this.load.list = true;
 				listXmIterationWithState(params).then((res) => {

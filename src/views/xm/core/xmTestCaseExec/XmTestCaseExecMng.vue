@@ -50,7 +50,7 @@
 								range-separator="至"
 								start-placeholder="开始日期"
 								end-placeholder="完成日期"
-								value-format="yyyy-MM-dd"
+								value-format="yyyy-MM-dd HH:mm:ss"
 								:default-time="['00:00:00','23:59:59']"
 								:picker-options="pickerOptions"
 							></el-date-picker>   
@@ -296,10 +296,7 @@
 				addBugVisible:false,
 				productSelectVisible:false,
 				nextAction:'',
-				dateRanger: [
-					util.formatDate.format(beginDate, "yyyy-MM-dd"),
-					util.formatDate.format(endDate, "yyyy-MM-dd")
-				],  
+				dateRanger: [ ],  
 				pickerOptions:  util.pickerOptions('datarange'),
 				gstcVisible:false,
 				ganrrColumns: {
@@ -365,9 +362,10 @@
  				}else{
 					//params.xxx=xxxxx
 				} 
-				if(!this.dateRanger || this.dateRanger.length==0){
-					this.$message({showClose: true, message: "创建日期范围不能为空", type: 'error' });
-					return;
+				if(this.dateRanger&&this.dateRanger.length==2){ 
+					params.createTimeStart=this.dateRanger[0]
+					params.createTimeEnd=this.dateRanger[1]
+
 				}
 				if(this.filters.product){
 					params.productId=this.filters.product.id
@@ -379,8 +377,6 @@
 				if(this.filters.selProject){
 					params.projectId=this.filters.selProject.id
 				}
-				params.createTimeStart=this.dateRanger[0]+" 00:00:00"
-				params.createTimeEnd=this.dateRanger[1]+" 23:59:59"
 				if(this.filters.key){
 					params.key='%'+this.filters.key+'%'
 				}

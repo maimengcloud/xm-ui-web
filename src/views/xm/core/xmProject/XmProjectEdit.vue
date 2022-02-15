@@ -41,7 +41,7 @@
 									range-separator="至"
 									start-placeholder="计划开始日期"
 									end-placeholder="计划完成日期"
-									value-format="yyyy-MM-dd"
+									value-format="yyyy-MM-dd HH:mm:ss"
 									:default-time="['00:00:00','23:59:59']"
 									:picker-options="pickerOptions"
 								></el-date-picker>    
@@ -408,8 +408,8 @@
 					this.dateRanger != null &&
 					this.dateRanger.length == 2
 				) {
-					this.editForm.startTime = this.dateRanger[0] + " 00:00:00";
-					this.editForm.endTime = this.dateRanger[1] + " 23:59:59";
+					this.editForm.startTime = this.dateRanger[0] ;
+					this.editForm.endTime = this.dateRanger[1] ;
 				}else{
 					this.$message({showClose: true, message: "请输入开始日期和结束日期", type: 'error' }); 
 					return;

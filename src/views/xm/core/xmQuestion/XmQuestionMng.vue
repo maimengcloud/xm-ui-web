@@ -92,7 +92,7 @@
 								range-separator="至"
 								start-placeholder="开始日期"
 								end-placeholder="完成日期"
-								value-format="yyyy-MM-dd"
+								value-format="yyyy-MM-dd HH:mm:ss"
 								:default-time="['00:00:00','23:59:59']"
 								:picker-options="pickerOptions"
 							></el-date-picker>
@@ -107,7 +107,7 @@
 								range-separator="至"
 								start-placeholder="更新时间"
 								end-placeholder="更新时间"
-								value-format="yyyy-MM-dd"
+								value-format="yyyy-MM-dd HH:mm:ss"
 								:default-time="['00:00:00','23:59:59']"
 								:picker-options="pickerOptions"
 							></el-date-picker>
@@ -336,10 +336,7 @@
 					}
 				],
 				menuVisible:false,
-				dateRanger: [
-					util.formatDate.format(beginDate, "yyyy-MM-dd"),
-					util.formatDate.format(endDate, "yyyy-MM-dd")
-				],
+				dateRanger: [ ],
 				ltimeRanger:[
 				],
 				pickerOptions:  util.pickerOptions('datarange'),
@@ -393,9 +390,9 @@
 				}
 
 
-				if(!this.dateRanger || this.dateRanger.length==0){
-					this.$message({showClose: true, message: "创建日期范围不能为空", type: 'error' });
-					return;
+				if(this.dateRanger&&this.dateRanger.length==2){ 
+					params.createTimeStart=this.dateRanger[0]
+					params.createTimeEnd=this.dateRanger[1]
 				}
 				if( this.filters.bugStatus!=null && this.filters.bugStatus!="" ){
 					params.bugStatus=this.filters.bugStatus
@@ -442,12 +439,10 @@
 					}
 
 				}
-				params.createTimeStart=this.dateRanger[0]+" 00:00:00"
-				params.createTimeEnd=this.dateRanger[1]+" 23:59:59"
 
 				if(this.ltimeRanger && this.ltimeRanger.length>=2){
-					params.ltimeStart=this.ltimeRanger[0]+" 00:00:00"
-					params.ltimeEnd=this.ltimeRanger[1]+" 23:59:59"
+					params.ltimeStart=this.ltimeRanger[0]
+					params.ltimeEnd=this.ltimeRanger[1]
 				}
 
 				this.load.list = true;

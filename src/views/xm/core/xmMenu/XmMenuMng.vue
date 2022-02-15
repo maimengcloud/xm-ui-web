@@ -9,20 +9,7 @@
 						<el-select  v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable >
 							<el-option   value="not-join"  label="未分配任何任务的故事"></el-option>  
 							<el-option   value="join"  label="已分配任务的故事"></el-option>  
-						</el-select> 
-						<el-date-picker
-							v-model="dateRanger" 
-							type="daterange"
-							align="right"
-							class="hidden-md-and-down"
-							unlink-panels
-							range-separator="至"
-							start-placeholder="创建日期"
-							end-placeholder="创建日期"
-							value-format="yyyy-MM-dd"
-							:default-time="['00:00:00','23:59:59']"
-							:picker-options="pickerOptions"
-						></el-date-picker> 
+						</el-select>  
 						<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询" clearable> 
 						</el-input> 
 						<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
@@ -57,7 +44,7 @@
 										range-separator="至"
 										start-placeholder="创建日期"
 										end-placeholder="创建日期"
-										value-format="yyyy-MM-dd"
+										value-format="yyyy-MM-dd HH:mm:ss"
 										:default-time="['00:00:00','23:59:59']"
 										:picker-options="pickerOptions"
 									></el-date-picker>   
@@ -96,11 +83,11 @@
 						</el-breadcrumb> 
 					</el-row> 
 					<el-row class="padding-top">  
-						<el-table   stripe fit border ref="table" :max-height="tableHeight" :data="xmMenusTreeData"  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
+						<el-table lazy :load="loadMenusLazy"   stripe fit border ref="table" :max-height="tableHeight" :data="xmMenusTreeData"  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
 							<el-table-column sortable type="selection" width="40"></el-table-column> 
 							<el-table-column prop="menuName" label="故事名称" min-width="160" show-overflow-tooltip> 
 								<template slot-scope="scope">
-									 <el-link type="primary"  @click="showEdit(scope.row)">{{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}}</el-link> 
+									 <el-link type="primary"  @click="showEdit(scope.row)" :icon="scope.row.ntype=='1'?'el-icon-folder-opened':''">{{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}}</el-link> 
 									<font class="align-right">
   										<el-popover 
 											placement="top-start"
@@ -130,37 +117,28 @@
 								</template>
 							</el-table-column> 
 							<el-table-column   label="操作"  width="260" show-overflow-tooltip> 
-								<template slot-scope="scope"> 
-										<el-tooltip v-if="!selProject&&!xmIteration" content="添加子故事">
-										<el-button     type="primary"  @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus"></el-button> 
-										</el-tooltip>
-										
-										<el-tooltip  content="查看子故事">
-											<el-button        @click="searchSubMenus( scope.row,scope.$index)" icon="el-icon-right"></el-button> 
-										</el-tooltip>
+								<template slot-scope="scope">   
 										<el-popover style="padding-left:10px;"
 											v-if="isPmUser"
 											placement="top-start"
 											width="250"
 											trigger="click" > 
-											<el-row>
+											<el-row> 
+												<el-col :span="24" style="padding-top:5px;">
+													<el-button   @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus">直接添加子故事</el-button> 
+												</el-col>  
 												<el-col :span="24" style="padding-top:5px;">
 													<el-button  @click="showImportFromMenuTemplate(scope.row)" icon="el-icon-upload2">由模板快速导入子故事</el-button> 
-												</el-col>
-												<el-col  :span="24"  style="padding-top:5px;"> 
-													<el-button v-if="!selProject"   @click="showTaskListForMenu(scope.row,scope.$index)"  icon="el-icon-s-operation">查看关联的任务</el-button>
-													<el-button v-if="selProject"   @click="showTasks(scope.row,scope.$index)"  icon="el-icon-s-operation">查看关联的任务</el-button> 
 												</el-col> 
-												<el-col  :span="24"  style="padding-top:5px;"> 
-													<el-button   @click="toIterationList(scope.row,scope.$index)"  icon="el-icon-document-copy">查看关联的迭代计划</el-button>
-												</el-col>  
-												<el-col  :span="24"  style="padding-top:5px;"> 
-													<el-button   @click="handleDel(scope.row)" icon="el-icon-delete">删除该故事</el-button>   
-												</el-col> 
-											</el-row>  
-
-											<el-button   slot="reference" icon="el-icon-more"></el-button>
+											</el-row>   
+											<el-button type="primary" :disabled="scope.row.ntype!='1'"  slot="reference" icon="el-icon-plus"></el-button>
 										</el-popover>  
+
+										<el-button v-if="!selProject" :disabled="scope.row.ntype=='1'"  type="text"  @click="showTaskListForMenu(scope.row,scope.$index)"  icon="el-icon-s-operation">任务</el-button>
+										<el-button v-if="selProject" :disabled="scope.row.ntype=='1'" type="text"  @click="showTasks(scope.row,scope.$index)"  icon="el-icon-s-operation">任务</el-button> 
+										<el-button  type="text" :disabled="scope.row.ntype=='1'" @click="toIterationList(scope.row,scope.$index)"  icon="el-icon-document-copy">迭代</el-button>
+										<el-button type="text" :disabled="scope.row.childrenCnt>0" @click="handleDel(scope.row)" icon="el-icon-delete">删除</el-button>   
+ 
 								</template>
 							</el-table-column>   
 							
@@ -344,10 +322,7 @@
 				userSelectVisible:false,
 				selectFiltersMmUserVisible:false,
 				tableHeight:300,
-				dateRanger: [
-					util.formatDate.format(beginDate, "yyyy-MM-dd"),
-					util.formatDate.format(endDate, "yyyy-MM-dd")
-				],  
+				dateRanger: [ ],  
 				pickerOptions:  util.pickerOptions('datarange'),
 				productVisible:false,
  				/**begin 自定义属性请在下面加 请加备注**/
@@ -382,28 +357,8 @@
 				 this.pageInfo.count=true; 
 				 this.getXmMenus();
 			},
-			//获取列表 XmMenu xm_project_menu
-			getXmMenus() { 
-				let params = {
-					pageSize: this.pageInfo.pageSize,
-					pageNum: this.pageInfo.pageNum,
-					total: this.pageInfo.total,
-					count:this.pageInfo.count
-				};
-				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
-					let orderBys=[];
-					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
-						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
-					}  
-					params.orderBy= orderBys.join(",")
-				} 
-					if( this.filters.product  && this.filters.product.id){
-						params.productId=this.filters.product.id
-					}else {
-						this.$message({showClose: true, message: "请先选择产品", type: 'success' });
-						return;
-						//params.xxx=xxxxx
-					} 
+			getParams(params){
+
 				if(!params.productId){
 					params.branchId=this.userInfo.branchId
 				}
@@ -412,10 +367,6 @@
 					params.key="%"+this.filters.key+"%"
 				}
 				 
-				if(!this.dateRanger || this.dateRanger.length==0){
-					this.$message({showClose: true, message: "创建日期范围不能为空", type: 'error' });
-					return;
-				} 
 				if(this.filters.mmUser){
 					params.mmUserid=this.filters.mmUser.userid;
 				}  
@@ -436,8 +387,40 @@
 				if(this.filters.parentMenu){
 					params.pmenuId=this.filters.parentMenu.menuId
 				}
-				params.ctimeStart=this.dateRanger[0]+" 00:00:00"
-				params.ctimeEnd=this.dateRanger[1]+" 23:59:59" 
+				
+				if( this.dateRanger && this.dateRanger.length==2){
+					params.ctimeStart=this.dateRanger[0] 
+					params.ctimeEnd=this.dateRanger[1] 
+				} 
+				if(!(params.ctimeStart||params.pmenuId||params.projectId||params.iterationId||params.iterationFilterType||params.mmUserid||params.key||params.taskFilterType)){
+					params.isTop="1"
+				}
+				return params;
+			},
+			//获取列表 XmMenu xm_project_menu 
+			getXmMenus() { 
+				let params = {
+					pageSize: this.pageInfo.pageSize,
+					pageNum: this.pageInfo.pageNum,
+					total: this.pageInfo.total,
+					count:this.pageInfo.count
+				};
+				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
+					let orderBys=[];
+					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
+						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
+					}  
+					params.orderBy= orderBys.join(",")
+				} 
+				if( this.filters.product  && this.filters.product.id){
+					params.productId=this.filters.product.id
+				}else {
+					this.$message({showClose: true, message: "请先选择产品", type: 'success' });
+					return;
+				} 
+					
+				params=this.getParams(params);
+				//params.isTop="1" 
 				let callback= (res)=>{
 					var tips=res.data.tips;
 					if(tips.isOk){ 
@@ -858,6 +841,30 @@
 				this.pageInfo.count=true
 				this.searchXmMenus();
 			},
+			loadMenusLazy(row, treeNode, resolve) {  
+				if(row.children&&row.children.length>0){
+					resolve(row.children) 
+				}else{
+					var params={pmenuId:row.menuId}
+					params=this.getParams(params);
+					params.isTop=""
+					this.load.list = true;
+					var func=listXmMenuWithState
+					if(this.selProject&&this.selProject.id){
+						func=listXmMenuWithPlan
+					} 
+					func(params).then(res=>{
+						this.load.list = false
+						var tips = res.data.tips;
+						if(tips.isOk){
+							resolve(res.data.data) 
+						}else{
+							resolve([])
+						}
+					}).catch( err => this.load.list = false );  
+				}
+				
+			}
 		},//end methods
 		components: { 
 		    'xm-menu-add':XmMenuAdd,

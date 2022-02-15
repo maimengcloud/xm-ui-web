@@ -38,7 +38,7 @@
 										range-separator="至"
 										start-placeholder="开始日期"
 										end-placeholder="完成日期"
-										value-format="yyyy-MM-dd"
+										value-format="yyyy-MM-dd HH:mm:ss"
 										:default-time="['00:00:00','23:59:59']"
 										:picker-options="pickerOptions"
 									></el-date-picker>   
@@ -68,7 +68,7 @@
 					 </template>
 					<template slot-scope="scope">
 						<font>{{scope.row.productName}}</font>
-						<font class="align-right"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{parseInt(scope.row.finishRate)}}%</el-tag> 
+						<font class="align-right"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate?parseInt(scope.row.finishRate):0}}%</el-tag> 
 						</font>
 					</template>
 				</el-table-column>
@@ -152,10 +152,7 @@
 				productStateVisible:false,
 				selectFiltersPmUserVisible:false,
 				tableHeight:300,
-				dateRanger: [
-					util.formatDate.format(beginDate, "yyyy-MM-dd"),
-					util.formatDate.format(endDate, "yyyy-MM-dd")
-				],  
+				dateRanger: [ ],  
 				pickerOptions:  util.pickerOptions('datarange'),
 				
 				/**begin 自定义属性请在下面加 请加备注**/
@@ -232,12 +229,11 @@
 					params.projectId=null;
 				}
 				if(!this.selProject && !this.xmIteration && this.filters.queryScope!='productId'){
-					if(!this.dateRanger || this.dateRanger.length==0){
-						this.$message({showClose: true, message: "创建日期范围不能为空", type: 'error' });
-						return;
+					if(this.dateRanger&&this.dateRanger.length==2){
+						 
+						params.ctimeStart=this.dateRanger[0]
+						params.ctimeEnd=this.dateRanger[1]
 					} 
-					params.ctimeStart=this.dateRanger[0]+" 00:00:00"
-					params.ctimeEnd=this.dateRanger[1]+" 23:59:59"
 				} 
 
 				this.load.list = true;
