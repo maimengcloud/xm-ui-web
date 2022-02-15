@@ -296,7 +296,7 @@ import XmIterationSelect from './XmIterationSelect.vue';
 
 				}
 				
-				if(this.filters.queryScope!="iterationId" && this.dateRangerOnline && dateRangerOnline.length==2){
+				if(this.filters.queryScope!="iterationId" && this.dateRangerOnline && this.dateRangerOnline.length==2){
 					params.onlineTimeStart=this.dateRangerOnline[0]
 					params.onlineTimeEnd=this.dateRangerOnline[1]
 				}
