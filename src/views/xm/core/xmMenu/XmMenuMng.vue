@@ -16,6 +16,8 @@
 						
 						<el-button  v-if="!selProject&&!xmIteration&&disabledMng!=false"  type="primary" @click="showAdd" icon="el-icon-plus">故事</el-button>
 						<el-button  v-if="!selProject&&!xmIteration&&disabledMng!=false"    @click="toBatchEdit" icon="el-icon-edit">修改</el-button>   
+						
+						<el-button   v-if=" batchEditVisible==false&&disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总</el-button>  
 						<el-popover
 							placement="top-start"
 							title=""
@@ -71,7 +73,6 @@
 								<el-col  :span="24"  style="padding-top:5px;">
  									<el-button   v-if=" batchEditVisible==true "  type="success" @click="showImportFromMenuTemplate" icon="el-icon-upload2">由模板快速导入</el-button> 
 									
-									<el-button   v-if=" batchEditVisible==false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">由任务汇总统计数据</el-button>  
 								</el-col> 
 							</el-row> 
 							<el-button  slot="reference" icon="el-icon-more"></el-button>
