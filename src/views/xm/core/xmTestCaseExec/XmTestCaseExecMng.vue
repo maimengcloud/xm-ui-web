@@ -163,16 +163,16 @@
 			</el-drawer>
 	
 			<!--新增 XmTestCaseExec xm_test_case_exec界面-->
-			<el-drawer title="新增xm_test_case_exec" :visible.sync="addFormVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
+			<el-drawer title="新增xm_test_case_exec" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
 				<xm-test-case-exec-add :xm-test-case-exec="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-test-case-exec-add>
 			</el-drawer> 
-			<el-drawer title="选择用例" :visible.sync="xmTestCaseMngVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
+			<el-drawer title="选择用例" :visible.sync="xmTestCaseMngVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
 				<xm-test-case-mng  :multi-select="true" :visible="xmTestCaseMngVisible"   @selected="onCaseSelected"></xm-test-case-mng>
 			</el-drawer> 
 			<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
 			</el-drawer> 
-			<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible" fullscreen     :close-on-click-modal="false">
+			<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible" fullscreen  size="80%"    :close-on-click-modal="false">
 				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"   @menus-selected="onSelectedMenus" ></xm-menu-select>
 			</el-drawer>
 			<el-drawer title="选中用户" :visible.sync="selectUserForFiltersVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
@@ -199,7 +199,7 @@
 				  <xm-product-select  :isSelectProduct="true" :selProject="filters.selProject" :visible="productSelectVisible" @cancel="productSelectVisible=false" @selected="onProductSelected"></xm-product-select>
 			</el-drawer>
 			<!--新增 XmQuestion xm_question界面-->
-			<el-drawer title="新增缺陷" :visible.sync="addBugVisible"  fullscreen width="100%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="新增缺陷" :visible.sync="addBugVisible"   size="60%"  append-to-body   :close-on-click-modal="false">
 				<xm-question-add :xm-test-case-exec="editForm" :xm-test-case="xmTestCase" :qtype="'bug'" :sel-project=" filters.selProject "   :visible="addBugVisible" @cancel="addBugVisible=false"></xm-question-add>
 			</el-drawer> 
 		</el-row>
