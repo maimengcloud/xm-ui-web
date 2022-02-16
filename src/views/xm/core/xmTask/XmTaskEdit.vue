@@ -50,7 +50,9 @@
 						<el-tooltip content="任务类型"><el-select v-model=" editForm.taskType">
 							<el-option v-for="i in this.options.taskType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
 						</el-select> 
-						</el-tooltip>
+						</el-tooltip> 
+						<el-tag v-if="editForm.tagNames">{{editForm.tagNames?editForm.tagNames:''}} </el-tag>
+						<el-button type="text" icon="el-icon-plus" @click="tagSelectVisible=true">标签</el-button> 
 					</el-form-item>  
 					<el-form-item  label="所属需求" prop="menuId" id="menuInfo"> 
 						{{editForm.menuName}} &nbsp;&nbsp;&nbsp; <el-link @click="menuVisible=true" type="primary">{{editForm.menuName?'更改归属需求':'设置归属需求'}}</el-link>&nbsp;&nbsp;&nbsp;<el-link v-if="editForm.menuName" @click="toMenu" type="primary">查看需求明细</el-link>
@@ -195,6 +197,11 @@
 		<el-drawer append-to-body title="需求明细" :visible.sync="menuDetailVisible" size="80%"    :close-on-click-modal="false">
 			<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="true" :xm-menu="{menuId:editForm.menuId,menuName:editForm.menuName}" ></xm-menu-rich-detail>
 		</el-drawer>
+			
+		<el-dialog append-to-body title="标签" :visible.sync="tagSelectVisible" class="dialog-body" width="60%">
+			<tag-mng :tagIds="editForm.tagIds?editForm.tagIds.split(','):[]" :jump="true" @select-confirm="onTagSelected">
+			</tag-mng>
+		</el-dialog>
 	</section>
 </template>
 
@@ -212,6 +219,7 @@
 	import XmExecuserMng from '../xmTaskExecuser/XmTaskExecuserMng';
 	import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 	import XmMenuRichDetail from '../xmMenu/XmMenuRichDetail';
+	import TagMng from "@/views/mdp/arc/tag/TagMng";
 
 	export default { 
 		computed: {
@@ -317,6 +325,7 @@
 				actDateRanger: [
 				],  
 				pickerOptions:  util.pickerOptions('datarange'),
+				tagSelectVisible:false,
 				 /**end 在上面加自定义属性**/
 			}//end return
 		},//end data
@@ -534,11 +543,21 @@
 			},
 			afterEditExecSubmit(execForm){ 
 				this.$emit("after-edit-submit",execForm);
+			},     
+			onTagSelected(tags) {
+				this.tagSelectVisible = false; 
+				if(tags && tags.length>0){ 
+					this.editForm.tagIds=tags.map(i=>i.tagId).join(",")
+					this.editForm.tagNames=tags.map(i=>i.tagName).join(",")
+				}else{
+					this.editForm.tagIds=""
+					this.editForm.tagNames=""
+				}
 			},
 		},//end method
 		components: { 
  			xmSkillMng,
-			skillMng,xmMenuSelect,XmTaskList,XmExecuserMng,XmProjectGroupSelect,XmMenuRichDetail
+			skillMng,xmMenuSelect,XmTaskList,XmExecuserMng,XmProjectGroupSelect,XmMenuRichDetail,TagMng,
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},
 		mounted() { 
