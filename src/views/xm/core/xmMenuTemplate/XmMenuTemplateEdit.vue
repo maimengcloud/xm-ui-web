@@ -1,13 +1,13 @@
 <template>
 	<section class="page-container page-full-height padding border">
 		<el-row> 
-		<!--编辑界面 XmMenuTemplate 项目故事表--> 
+		<!--编辑界面 XmMenuTemplate 项目需求表--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
 				<el-form-item label="序号" prop="seqNo">
 					<el-input v-model="editForm.seqNo" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input>
 				</el-form-item> 
-				<el-form-item label="故事名称" prop="menuName">
-					<el-input v-model="editForm.menuName" placeholder="故事名称" ></el-input>
+				<el-form-item label="需求名称" prop="menuName">
+					<el-input v-model="editForm.menuName" placeholder="需求名称" ></el-input>
 				</el-form-item>  
 				<el-form-item label="备注" prop="remark">
 					<el-input type="textarea" v-model="editForm.remark" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
@@ -52,10 +52,10 @@
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				editFormRules: {
 					menuId: [
-						{ required: true, message: '故事编号不能为空', trigger: 'blur' }
+						{ required: true, message: '需求编号不能为空', trigger: 'blur' }
 					],
 					menuName: [
-						{ required: true, message: '故事编号不能为空', trigger: 'blur' }
+						{ required: true, message: '需求编号不能为空', trigger: 'blur' }
 					],
 					productId: [
 						{ required: true, message: '产品编号不能为空', trigger: 'blur' }
@@ -64,7 +64,7 @@
 						{ required: true, message: '序号不能为空', trigger: 'blur' }
 					],
 				},
-				//编辑界面数据  XmMenuTemplate 项目故事表
+				//编辑界面数据  XmMenuTemplate 项目需求表
 				editForm: {
 						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:''
 				}
@@ -79,7 +79,7 @@
 				this.$refs['editForm'].resetFields();
 				this.$emit('cancel');
 			},
-			//编辑提交XmMenuTemplate 项目故事表父组件监听@submit="afterEditSubmit"
+			//编辑提交XmMenuTemplate 项目需求表父组件监听@submit="afterEditSubmit"
 			editSubmit: function () {
 				this.$refs.editForm.validate((valid) => {
 					if (valid) {

@@ -16,7 +16,7 @@
 		<el-row class="page-main" v-show="!batchEditVisible">    
 				<el-table ref="table" :height="tableHeight" v-if="!gstcVisible" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 					<el-table-column sortable type="selection" width="40"></el-table-column>
- 					<el-table-column prop="menuName" label="故事名称" min-width="150" >
+ 					<el-table-column prop="menuName" label="需求名称" min-width="150" >
 						<template slot-scope="scope"> 
 							{{scope.row.seqNo}}&nbsp;<el-link type="primary" @click="toMenu(scope.row)">  {{scope.row.menuName}} </el-link>
 						</template>
@@ -96,7 +96,7 @@
 		<el-row v-show="batchEditVisible">
 			<el-table  lazy :load="loadMenusLazy" :height="tableHeight" :data="xmMenusTreeData"   row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  
- 					<el-table-column prop="menuName" label="故事名称" min-width="150" >
+ 					<el-table-column prop="menuName" label="需求名称" min-width="150" >
 						<template slot-scope="scope">  
 							 <el-link :icon="scope.row.ntype=='1'?'el-icon-folder-opened':''">{{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}}</el-link> 
 						</template>
@@ -155,7 +155,7 @@
 				<xm-task-mng :sel-project="selProject"   :menu-id="editForm.menuId"></xm-task-mng> 
 			</el-drawer>
 			
-			<el-drawer title="故事谈论" :visible.sync=" menuDetailVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="需求谈论" :visible.sync=" menuDetailVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="false" :xm-menu="editForm" ></xm-menu-rich-detail>
 			</el-drawer> 
 	</section>
@@ -401,7 +401,7 @@
 			//批量删除xmMenu
 			batchDel: function () {
 				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$message({showClose: true, message: "只有产品经理、产品组长能够修改故事", type: 'error'}); 
+					this.$message({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
 					return false;
 				}
 				
@@ -495,7 +495,7 @@
 			},
 			showBatchEdit:function(){
 				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$message({showClose: true, message: "只有产品经理、产品组长能够修改故事", type: 'error'}); 
+					this.$message({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
 					return false;
 				}
 				if(this.xmMenus.length==0 ){

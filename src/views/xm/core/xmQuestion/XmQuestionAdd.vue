@@ -18,7 +18,7 @@
 							<el-divider direction="vertical"></el-divider>
 							<el-tooltip content="隶属任务"><el-tag  closable @click="showSelectTask" @close.stop="handleCloseTaskTag">{{addForm.taskName?addForm.taskName:'未关联任务'}}</el-tag> </el-tooltip>
 							<el-divider direction="vertical"></el-divider>
-							<el-tooltip content="隶属故事"><el-tag  closable @click="showSelectMenu" @close.stop="handleCloseMenuTag">{{addForm.menuName?addForm.menuName:"未关联故事"}}</el-tag></el-tooltip>
+							<el-tooltip content="隶属需求"><el-tag  closable @click="showSelectMenu" @close.stop="handleCloseMenuTag">{{addForm.menuName?addForm.menuName:"未关联需求"}}</el-tag></el-tooltip>
 						</el-form-item>
 						<el-form-item label="缺陷属性" prop="priority">
 							<el-col :span="24">
@@ -87,7 +87,7 @@
 				<xm-task-list  :sel-project="filters.selProject"   @task-selected="onSelectedTask"></xm-task-list>
 			</el-drawer>
 
-			<el-drawer append-to-body title="故事选择" :visible.sync="selectMenuVisible"   size="70%"   :close-on-click-modal="false">
+			<el-drawer append-to-body title="需求选择" :visible.sync="selectMenuVisible"   size="70%"   :close-on-click-modal="false">
 				<xm-menu-select :is-select-menu="true"  @selected="onSelectedMenu" :sel-project="filters.selProject"></xm-menu-select>
 			</el-drawer>
 

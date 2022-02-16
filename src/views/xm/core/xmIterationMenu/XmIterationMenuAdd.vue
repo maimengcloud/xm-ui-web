@@ -9,8 +9,8 @@
 				<el-form-item label="对应的迭代编号" prop="iterationId">
 					<el-input v-model="addForm.iterationId" placeholder="对应的迭代编号" ></el-input>
 				</el-form-item> 
-				<el-form-item label="故事编号" prop="menuId">
-					<el-input v-model="addForm.menuId" placeholder="故事编号" ></el-input>
+				<el-form-item label="需求编号" prop="menuId">
+					<el-input v-model="addForm.menuId" placeholder="需求编号" ></el-input>
 				</el-form-item> 
 				<el-form-item label="产品编号" prop="productId">
 					<el-input v-model="addForm.productId" placeholder="产品编号" ></el-input>

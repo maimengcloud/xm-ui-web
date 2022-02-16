@@ -11,7 +11,7 @@
           <span slot="title">配置可见产品</span>
         </el-menu-item> 
         <el-menu-item index="iterationMenuMng">
-          <span slot="title">配置可见故事</span>
+          <span slot="title">配置可见需求</span>
         </el-menu-item>
         <el-submenu index="project-change">
           <template slot="title">

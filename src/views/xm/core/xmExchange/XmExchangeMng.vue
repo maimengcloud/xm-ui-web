@@ -124,7 +124,7 @@
 				 this.pageInfo.count=true; 
 				 this.getXmExchanges();
 			},
-			//获取列表 XmExchange 故事表
+			//获取列表 XmExchange 需求表
 			getXmExchanges() {
 				let params = {
 					pageSize: this.pageInfo.pageSize,
@@ -160,12 +160,12 @@
 				}).catch( err => this.load.list = false );
 			},
 
-			//显示编辑界面 XmExchange 故事表
+			//显示编辑界面 XmExchange 需求表
 			showEdit: function ( row,index ) {
 				this.editFormVisible = true;
 				this.editForm = Object.assign({}, row);
 			},
-			//显示新增界面 XmExchange 故事表
+			//显示新增界面 XmExchange 需求表
 			showAdd: function () {
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);

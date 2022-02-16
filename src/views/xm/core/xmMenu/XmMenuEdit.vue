@@ -2,7 +2,7 @@
 	<section class="page-container border padding">
 		<el-row class="page-main page-height-90">
 			<el-tabs>
-				<el-tab-pane  label="故事详情">
+				<el-tab-pane  label="需求详情">
 					<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
             <el-row class="padding-bottom">
               <el-steps :active="parseInt(editForm.status)" simple finish-status="success" align-center>
@@ -19,8 +19,8 @@
 						<el-form-item label="序号" prop="seqNo">
 							<el-input v-model="editForm.seqNo" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input>
 						</el-form-item>
-						<el-form-item label="故事名称" prop="menuName">
-							<el-input v-model="editForm.menuName" placeholder="故事名称" ></el-input>
+						<el-form-item label="需求名称" prop="menuName">
+							<el-input v-model="editForm.menuName" placeholder="需求名称" ></el-input>
 						</el-form-item>
 						<el-form-item label="负责人" prop="mmUserid">
 							<el-tag v-if="editForm.mmUserid" closable @close="clearPmUser">{{editForm.mmUsername}}</el-tag>
@@ -91,10 +91,10 @@ import XmMenuOverview from './XmMenuOverview.vue';
 				load:{ list: false, add: false, del: false, edit: false },//查询中...
 				editFormRules: {
 					menuId: [
-						//{ required: true, message: '故事编号不能为空', trigger: 'blur' }
+						//{ required: true, message: '需求编号不能为空', trigger: 'blur' }
 					],
 					menuName: [
-						{ required: true, message: '故事名称不能为空', trigger: 'blur' }
+						{ required: true, message: '需求名称不能为空', trigger: 'blur' }
 					],
 					seqNo: [
 						{ required: true, message: '序号不能为空', trigger: 'blur' }
@@ -103,7 +103,7 @@ import XmMenuOverview from './XmMenuOverview.vue';
 						{ required: true, message: '负责人不能为空', trigger: 'blur' }
 					],
 				},
-				//新增界面数据 项目故事表
+				//新增界面数据 项目需求表
 				editForm: {
 						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'1',mmUserid:'',mmUsername:''
 				},
@@ -118,11 +118,11 @@ import XmMenuOverview from './XmMenuOverview.vue';
 			handleCancel:function(){
  				this.$emit('cancel');
 			},
-			//新增提交XmMenu 项目故事表 父组件监听@submit="afterAddSubmit"
+			//新增提交XmMenu 项目需求表 父组件监听@submit="afterAddSubmit"
 			editSubmit: function () {
 
 				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$message({showClose: true, message: "只有产品经理、产品组长能够修改故事", type: 'error'});
+					this.$message({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'});
 					return false;
 				}
 				this.$refs.editForm.validate((valid) => {

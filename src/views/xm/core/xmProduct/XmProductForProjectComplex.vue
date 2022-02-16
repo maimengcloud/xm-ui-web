@@ -18,7 +18,7 @@
 					<el-tab-pane label="项目" lazy  name="projects" v-if="!selProject">
 						<xm-product-project-for-link v-if="xmProduct && showPanel=='projects'"  :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-product-project-for-link>
 					</el-tab-pane>
-					<el-tab-pane label="故事" lazy name="menus" >
+					<el-tab-pane label="需求" lazy name="menus" >
 						<xm-menu-mng v-if="xmProduct && showPanel=='menus'"   :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"  :disabled-mng="false"></xm-menu-mng>
 					</el-tab-pane>
 					<el-tab-pane label="任务" lazy name="tasks" >
@@ -93,7 +93,7 @@ import XmProductOverview from "./XmProductOverview";
 					moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
 					},
 					{
-					moduleName:"故事",
+					moduleName:"需求",
 					topModuleId:'xm',
 					link:"/xm/core/xmMenu/XmMenuMng",
 					icon: require("@/assets/image/platform/module-intelligentForms.png"),

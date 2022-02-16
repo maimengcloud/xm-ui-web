@@ -7,7 +7,7 @@
 			<el-divider></el-divider> 
 		</el-row>
 		<el-row  class="page-main" v-if="!xmMenu && !simple">
-			 <h1 v-if="filters.xmMenu">{{filters.xmMenu.menuName}}</h1> <el-button @click="showSelectMenu">选择用户故事</el-button>
+			 <h1 v-if="filters.xmMenu">{{filters.xmMenu.menuName}}</h1> <el-button @click="showSelectMenu">选择需求</el-button>
 			<el-divider v-if="filters.xmMenu"></el-divider> 
 			<div v-if="filters.xmMenu" v-html="filters.xmMenu.remark"></div>
 			<el-divider></el-divider> 
@@ -52,7 +52,7 @@
 
 			</div>
 			
-		<el-drawer append-to-body title="故事选择" :visible.sync="xmMenuVisible" fullscreen   :close-on-click-modal="false">
+		<el-drawer append-to-body title="需求选择" :visible.sync="xmMenuVisible" fullscreen   :close-on-click-modal="false">
 			<xm-menu-select :is-select-menu="true"  @selected="onMenuSelected"></xm-menu-select>
 		</el-drawer>
 		</el-row>
@@ -148,7 +148,7 @@
 				 this.pageInfo.count=true; 
 				 this.getXmMenuExchanges();
 			},
-			//获取列表 XmMenuExchange 故事表
+			//获取列表 XmMenuExchange 需求表
 			getXmMenuExchanges() {
 				let params = {
 					pageSize: this.pageInfo.pageSize,
@@ -194,12 +194,12 @@
 				}).catch( err => this.load.list = false );
 			},
 
-			//显示编辑界面 XmMenuExchange 故事表
+			//显示编辑界面 XmMenuExchange 需求表
 			showEdit: function ( row,index ) {
 				this.editFormVisible = true;
 				this.editForm = Object.assign({}, row);
 			},
-			//显示新增界面 XmMenuExchange 故事表
+			//显示新增界面 XmMenuExchange 需求表
 			showAdd: function () {
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);
@@ -263,7 +263,7 @@
 				params.remark=editor.content;
 
 				if(!parentXmMenuExchange && !this.xmMenu && !this.filters.xmMenu){
-					this.$message.error("请选择用户故事再发表评论")
+					this.$message.error("请选择需求再发表评论")
 					return;
 				}
 				params.id=sn()

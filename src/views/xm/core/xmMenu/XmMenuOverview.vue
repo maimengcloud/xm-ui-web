@@ -23,14 +23,14 @@
         <el-col :span="12" >
           <el-card class="box-card" style="padding:0px ;height:425px">
             <div slot="header" class="clearfix">
-              <span>故事信息</span>
+              <span>需求信息</span>
             </div>
             <el-row style="margin-bottom:18px">
               <el-row>
                 <span v-text="this.xmMenu.mmUsername"></span>
               </el-row>
               <el-row>
-                <span>故事管理员</span>
+                <span>需求管理员</span>
               </el-row>
             </el-row>
             <el-row style="margin-bottom:18px">
@@ -78,7 +78,7 @@
                 <div class="info">
                   <div v-text="menuStartTime+'~'+menuEndTime">
                   </div>
-                  <div class="title">故事计划周期</div>
+                  <div class="title">需求计划周期</div>
                 </div>
               </div>
             </el-row>

@@ -137,7 +137,7 @@ export default {
           unit: '个'
         },
         {
-          title: '故事',
+          title: '需求',
           number: {
             number: [this.xmBranchState.menuCnt],
             content: '{nt}',

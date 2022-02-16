@@ -45,7 +45,7 @@
 
 								<el-col :span="24" style="padding-top:5px;">
 
-									<el-button  v-if=" isTaskCenter!='1'   && isMy!='1'"   @click="showMenu"   icon="el-icon-plus">由故事快速创建任务(推荐)</el-button>
+									<el-button  v-if=" isTaskCenter!='1'   && isMy!='1'"   @click="showMenu"   icon="el-icon-plus">由需求快速创建任务(推荐)</el-button>
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
 									<el-button  v-if=" isTaskCenter!='1'   && isMy!='1'"  @click="showTaskTemplate"   icon="el-icon-plus">从模板快速导入任务</el-button>
@@ -73,11 +73,11 @@
 									<el-button  v-else    @click="showProjectList" type="plian">选项目</el-button>
 								</el-col>
 								<el-col :span="24" style="padding-top:5px;">
-									 <font class="more-label-font">故事:</font>
+									 <font class="more-label-font">需求:</font>
 									<font  v-if="  filters.menus && filters.menus.length>0">
 										<el-tag  v-for="(item,index) in filters.menus" :key="index"  closable     @close="clearFiltersMenu(item)">{{item.menuName.substr(0,10)}}</el-tag>
 									</font>
-									<el-button  v-else    @click="showMenuStory" type="plian">选故事</el-button>
+									<el-button  v-else    @click="showMenuStory" type="plian">选需求</el-button>
 								</el-col>
 								<el-col :span="24" style="padding-top:5px;">
 									<font class="more-label-font">责任人:</font>
@@ -200,12 +200,12 @@
 									-->
 								</template>
 							</el-table-column>
-							<el-table-column  prop="menuId" label="故事"  width="120" show-overflow-tooltip>
+							<el-table-column  prop="menuId" label="需求"  width="120" show-overflow-tooltip>
 								<template slot="header">
-									故事 
+									需求 
 								</template>
 								<template slot-scope="scope">
-									<el-link      @click.stop="toMenu(scope.row)">{{scope.row.menuName?scope.row.menuName:'去关联故事'}}</el-link>
+									<el-link      @click.stop="toMenu(scope.row)">{{scope.row.menuName?scope.row.menuName:'去关联需求'}}</el-link>
 								</template>
 							</el-table-column>
 							
@@ -216,7 +216,7 @@
 												<el-button ><i class="el-icon-plus"></i></el-button>
 											</span>
 											<el-dropdown-menu slot="dropdown">
-												<el-dropdown-item :command="{type:'showMenu',data:scope.row}">+由故事创建子任务(推荐)</el-dropdown-item>
+												<el-dropdown-item :command="{type:'showMenu',data:scope.row}">+由需求创建子任务(推荐)</el-dropdown-item>
 												<el-dropdown-item :command="{type:'showSubAdd',data:scope.row}">+子任务</el-dropdown-item>
 												<el-dropdown-item :command="{type:'showTaskTemplate',data:scope.row}">+从模板批量导入子任务</el-dropdown-item>
 											</el-dropdown-menu>
@@ -261,7 +261,7 @@
 				</div>
 
 				<div class="exector extra">
-					<div class="field-label">用户故事</div><el-tag  v-if="editForm.menuName" style="margin-left:10px;border-radius:30px;"  >{{editForm.menuName}}</el-tag>
+					<div class="field-label">需求</div><el-tag  v-if="editForm.menuName" style="margin-left:10px;border-radius:30px;"  >{{editForm.menuName}}</el-tag>
 				</div>
 				
 
@@ -374,10 +374,10 @@
 			<xm-project-list class="padding-left"   @project-confirm="onPorjectConfirm"></xm-project-list>
 		</el-drawer>
 
-		<el-drawer append-to-body title="故事选择" :visible.sync="menuVisible" size="70%"   :close-on-click-modal="false">
+		<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible" size="70%"   :close-on-click-modal="false">
 			<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
 		</el-drawer>
-    <el-drawer append-to-body title="故事选择" :visible.sync="menuStory" size="70%"   :close-on-click-modal="false">
+    <el-drawer append-to-body title="需求选择" :visible.sync="menuStory" size="70%"   :close-on-click-modal="false">
     	<xm-menu-select :visible="menuStory" :is-select-menu="true" :multi="true" @menus-selected="onSelectedStory"></xm-menu-select>
     </el-drawer>
 
@@ -387,7 +387,7 @@
     <el-drawer append-to-body title="选择执行人" :visible.sync="menuExecutor" :size="650"    :close-on-click-modal="false">
     	<xm-project-group-select :visible="menuExecutor" :sel-project="selProject" :isSelectSingleUser="1" @user-confirm="seleExecutor" ></xm-project-group-select>
     </el-drawer>
-		<el-drawer append-to-body title="故事明细" :visible.sync="menuDetailVisible" :size="650"    :close-on-click-modal="false">
+		<el-drawer append-to-body title="需求明细" :visible.sync="menuDetailVisible" :size="650"    :close-on-click-modal="false">
 			<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="true" :xm-menu="{menuId:editForm.menuId,menuName:editForm.menuName}" ></xm-menu-rich-detail>
 		</el-drawer>
 		<el-drawer append-to-body title="选择负责人" :visible.sync="groupUserSelectVisible" size="60%"    :close-on-click-modal="false">
@@ -665,7 +665,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				menuDetailVisible:false,
 				pickerOptions:  util.pickerOptions(),
 				displayType:'table',
-				menuStory:false,//故事查询
+				menuStory:false,//需求查询
 				menuGroupUser:false,//负责人查询
 				menuExecutor:false,//执行人查询
 				groupUserSelectVisible:false,//选择负责人
@@ -1110,7 +1110,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				this.menuVisible=false;
 
 			},
-      onSelectedStory(menus){//根据故事查询
+      onSelectedStory(menus){//根据需求查询
 
         if(menus==null || menus.length==0){
         	this.menuStory=false;

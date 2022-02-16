@@ -46,7 +46,7 @@
 							</el-col>
 							
 							<el-col :span="24" style="padding-top:5px;">
-									<el-tag>默认只能查询本人创建的迭代、本人作为故事责任人参与的迭代</el-tag>
+									<el-tag>默认只能查询本人创建的迭代、本人作为需求责任人参与的迭代</el-tag>
 							</el-col>
 							<el-col :span="24" style="padding-top:5px;">
 								<el-button  type="primary" icon="el-icon-search" @click="getXmIterations">查询</el-button>

@@ -15,7 +15,7 @@
 				</el-select>
 				<el-tag    v-if="  filters.product "  closable    @close="clearProduct">{{this.filters.product.productName}}</el-tag>
 				<el-button v-else    @click="showProductVisible" type="plian">选产品</el-button>
-				<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 选择故事</el-button>
+				<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 选择需求</el-button>
 				<el-tag v-else   closable @close="clearFiltersMenu(filters.menus[0])">{{filters.menus[0].menuName.substr(0,5)}}等({{filters.menus.length}})个</el-tag>
 				<el-input style="width:200px;" v-model="filters.key" placeholder="缺陷名称">
 					<template slot="append">
@@ -64,11 +64,11 @@
 							</el-select>的缺陷
 						</el-col>
 						<el-col :span="24" style="padding-top:5px;">
-								<font class="more-label-font">故事:</font>
+								<font class="more-label-font">需求:</font>
 							<font  v-if="  filters.menus && filters.menus.length>0">
 								<el-tag  v-for="(item,index) in filters.menus" :key="index"  closable  @close="clearFiltersMenu(item)">{{item.menuName.substr(0,10)}}</el-tag>
 							</font>
-							<el-button v-else    @click="showMenu" type="plian">选故事</el-button>
+							<el-button v-else    @click="showMenu" type="plian">选需求</el-button>
 						</el-col>
 						<el-col :span="24" class="hidden-lg-and-up" style="padding-top:12px;">
 							<el-select   v-model="filters.priority" placeholder="请选择紧急程度" clearable @change="changePriority">
@@ -169,7 +169,7 @@
 					</el-table-column>
 					<el-table-column prop="handlerUsername" label="指派给"  width="100" show-overflow-tooltip> 
 					</el-table-column>
-					<el-table-column prop="menuName" label="故事" width="100" show-overflow-tooltip></el-table-column>
+					<el-table-column prop="menuName" label="需求" width="100" show-overflow-tooltip></el-table-column>
 				</el-table>
 				<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 			 </el-row>
@@ -189,7 +189,7 @@
 				<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
 			</el-drawer>
 
-			<el-drawer append-to-body title="故事选择" :visible.sync="menuVisible"    size="70%"   :close-on-click-modal="false">
+			<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible"    size="70%"   :close-on-click-modal="false">
 				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
 			</el-drawer>
 

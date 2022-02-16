@@ -6,7 +6,7 @@
 			border
 			:height="tableHeight"
 			style="width: 100%">
-			<el-table-column :label="'故事 ('+menus.length + ')'" class-name="menu-name" width="200">
+			<el-table-column :label="'需求 ('+menus.length + ')'" class-name="menu-name" width="200">
 				<template slot-scope="scope">
 					<div class="menu">{{scope.row.name}}</div>
 				</template>
@@ -65,7 +65,7 @@
 			</template>
 		</el-table>
     <!-- <div class="row head-row">
-      <div class="item">故事({{ menus.length }})</div>
+      <div class="item">需求({{ menus.length }})</div>
 			<template v-for="(type, tt) in taskType">
       	<div class="item status" :key="tt">{{type.label}} ({{ type.number }})</div>
 			</template>

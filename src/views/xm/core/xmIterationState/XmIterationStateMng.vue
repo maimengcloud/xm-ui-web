@@ -28,7 +28,7 @@
 				<el-table-column prop="finishCases" label="完成用例总数" min-width="80" ></el-table-column>
 				<el-table-column prop="projectCnt" label="关联项目数" min-width="80" ></el-table-column>
 				<el-table-column prop="productCnt" label="关联产品数" min-width="80" ></el-table-column>
-				<el-table-column prop="menuCnt" label="关联故事数" min-width="80" ></el-table-column>
+				<el-table-column prop="menuCnt" label="关联需求数" min-width="80" ></el-table-column>
 				<el-table-column prop="taskCnt" label="关联任务数" min-width="80" ></el-table-column>
 				<el-table-column prop="finishTaskCnt" label="已完成的任务数" min-width="80" ></el-table-column> 
 			</el-table>

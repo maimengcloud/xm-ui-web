@@ -9,14 +9,14 @@
 			<el-col :span="18"  style="padding-left:12px;" >
 				<el-row  >  
  					<el-select class="hidden-md-and-down" v-if="excludeIterationId" v-model="filters.iterationFilterType" placeholder="是否加入过迭代？" clearable  >
-						<el-option   value="not-join"  label="未加入任何迭代的故事"></el-option>  
-						<el-option   value="join"  label="已加入迭代的故事"></el-option>  
+						<el-option   value="not-join"  label="未加入任何迭代的需求"></el-option>  
+						<el-option   value="join"  label="已加入迭代的需求"></el-option>  
 					</el-select>
 					<el-select class="hidden-md-and-down" v-else v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable  >
-						<el-option   value="not-join"  label="未分配任何任务的故事"></el-option>  
-						<el-option   value="join"  label="已分配任务的故事"></el-option>  
+						<el-option   value="not-join"  label="未分配任何任务的需求"></el-option>  
+						<el-option   value="join"  label="已分配任务的需求"></el-option>  
 					</el-select> 
-					<el-input v-model="filters.key" closable style="width: 20%;" placeholder="故事名查询"> 
+					<el-input v-model="filters.key" closable style="width: 20%;" placeholder="需求名查询"> 
 					</el-input>  
 					<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
 					<el-popover
@@ -27,14 +27,14 @@
 						<el-row> 
 							<el-col  :span="24"  style="padding-top:5px;">
 								<el-select    v-model="filters.iterationFilterType" placeholder="是否加入过迭代？" clearable  >
-									<el-option   value="not-join"  label="未加入任何迭代的故事"></el-option>  
-									<el-option   value="join"  label="已加入迭代的故事"></el-option>  
+									<el-option   value="not-join"  label="未加入任何迭代的需求"></el-option>  
+									<el-option   value="join"  label="已加入迭代的需求"></el-option>  
 								</el-select>
 							</el-col>
 							<el-col  :span="24"  style="padding-top:5px;"> 
 								<el-select   v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable >
-									<el-option   value="not-join"  label="未分配任何任务的故事"></el-option>  
-									<el-option   value="join"  label="已分配任务的故事"></el-option>  
+									<el-option   value="not-join"  label="未分配任何任务的需求"></el-option>  
+									<el-option   value="join"  label="已分配任务的需求"></el-option>  
 								</el-select> 
 							</el-col>
 							<el-col :span="24"  style="padding-top:5px;">
@@ -62,9 +62,9 @@
 							</el-col>
 							<el-col  :span="24"  style="padding-top:5px;">
 								<font class="more-label-font">
-									故事名称:
+									需求名称:
 								</font> 
-								<el-input   v-model="filters.key" style="width:100%;"  placeholder="输入故事名字关键字" clearable>  
+								<el-input   v-model="filters.key" style="width:100%;"  placeholder="输入需求名字关键字" clearable>  
 								</el-input> 
 							</el-col>
 							<el-col  :span="24"  style="padding-top:5px;">
@@ -78,7 +78,7 @@
 				<el-row style="padding-top:12px;">
 					<el-table ref="table"  lazy :load="loadMenusLazy" :height="tableHeight" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column v-if="multi" type="selection" width="50"></el-table-column>  
-						<el-table-column prop="menuName" label="故事名称" min-width="140" > 
+						<el-table-column prop="menuName" label="需求名称" min-width="140" > 
 							<template slot-scope="scope">
 								<el-link :icon="scope.row.ntype=='1'?'el-icon-folder-opened':''" @click="toMenu(scope.row)">{{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}}</el-link> 
 							</template>
@@ -100,7 +100,7 @@
 			<el-drawer title="选择员工" :visible.sync="selectFiltersMmUserVisible" size="60%" append-to-body>
 				<users-select  @confirm="onFiltersMmUserSelected" ref="selectFiltersMmUser"></users-select>
 			</el-drawer>
-			<el-drawer title="故事谈论" :visible.sync=" menuDetailVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="需求谈论" :visible.sync=" menuDetailVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="false" :xm-menu="editForm" ></xm-menu-rich-detail>
 			</el-drawer> 
 		</el-row>

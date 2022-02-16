@@ -20,10 +20,10 @@
 		</el-row>
 		<el-row class="page-main page-height-70">
 			<el-form :model="editForm"  :rules="editFormRules" ref="editForm">
-					<el-form-item label="隶属任务\故事" prop="taskName">
+					<el-form-item label="隶属任务\需求" prop="taskName">
 							 <el-tooltip content="隶属任务"><el-tag  closable @click="showSelectTask" @close.stop="handleCloseTaskTag">{{editForm.taskName?editForm.taskName:'未关联任务'}}</el-tag> </el-tooltip>
 							<el-divider direction="vertical"></el-divider>
-							<el-tooltip content="隶属故事"><el-tag  closable @click="showSelectMenu" @close.stop="handleCloseMenuTag">{{editForm.menuName?editForm.menuName:"未关联故事"}}</el-tag></el-tooltip>
+							<el-tooltip content="隶属需求"><el-tag  closable @click="showSelectMenu" @close.stop="handleCloseMenuTag">{{editForm.menuName?editForm.menuName:"未关联需求"}}</el-tag></el-tooltip>
 						</el-form-item>
 					<el-form-item label="缺陷属性" prop="priority">
 						<el-col :span="24">
@@ -119,7 +119,7 @@
 				<xm-task-list  :sel-project="selProject"   @task-selected="onSelectedTask"></xm-task-list>
 			</el-drawer>
 
-			<el-drawer append-to-body title="故事选择" :visible.sync="selectMenuVisible"   size="70%"   :close-on-click-modal="false">
+			<el-drawer append-to-body title="需求选择" :visible.sync="selectMenuVisible"   size="70%"   :close-on-click-modal="false">
 				<xm-menu-select :is-select-menu="true"  @selected="onSelectedMenu" :sel-project="selProject"></xm-menu-select>
 			</el-drawer>
 		</el-row>

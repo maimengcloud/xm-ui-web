@@ -29,7 +29,7 @@
 								{{scope.row.sortLevel}}&nbsp;{{scope.row.name}}
 							</template>
 						</el-table-column> 
-						<el-table-column    prop="menuName" label="故事名"  min-width="160"  show-overflow-tooltip> </el-table-column>
+						<el-table-column    prop="menuName" label="需求名"  min-width="160"  show-overflow-tooltip> </el-table-column>
 						<el-table-column    prop="projectName" label="项目名称"  min-width="160"  show-overflow-tooltip> 
 						</el-table-column>  
 						 

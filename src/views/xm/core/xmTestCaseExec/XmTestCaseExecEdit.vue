@@ -57,8 +57,8 @@
 				<el-form-item label="归属测试任务名称" prop="taskName">
 					<el-input v-model="editForm.taskName" placeholder="归属测试任务名称"></el-input>
 				</el-form-item> 
-				<el-form-item label="故事编号" prop="menuId">
-					<el-input v-model="editForm.menuId" placeholder="故事编号"></el-input>
+				<el-form-item label="需求编号" prop="menuId">
+					<el-input v-model="editForm.menuId" placeholder="需求编号"></el-input>
 				</el-form-item> 
 				<el-form-item> 
 					<el-col :span="24" :offset="8"> 

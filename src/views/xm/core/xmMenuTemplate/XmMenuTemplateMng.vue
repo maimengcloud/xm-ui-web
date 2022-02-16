@@ -3,7 +3,7 @@
 		<el-row>  
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
 			<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenuTemplates">查询</el-button>
-			<el-button v-if="isSelectMenu!=true" type="primary" @click="showProdcutAdd">+产品</el-button> <el-button type="primary" @click="showAdd">+顶级故事</el-button>
+			<el-button v-if="isSelectMenu!=true" type="primary" @click="showProdcutAdd">+产品</el-button> <el-button type="primary" @click="showAdd">+顶级需求</el-button>
 			<el-button v-if="isSelectMenu!=true" type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button>
 			<el-button v-if="isSelectMenu" type="primary" v-loading="load.del" @click="selectedMenusConfirm" :disabled="this.sels.length===0 || load.del==true">确认选择</el-button> 
  			<el-button  v-if="isSelectMenu!=true && batchEditVisible==false"  type="primary" @click="toBatchEdit">批量修改</el-button> 
@@ -17,7 +17,7 @@
 			<el-col v-show="!batchEditVisible" :span="batchEditVisible?24:18">
 				<el-table :data="xmMenuTemplatesTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 					<el-table-column sortable type="selection" width="40"></el-table-column> 
- 					<el-table-column prop="menuName" label="故事名称" min-width="120" > 
+ 					<el-table-column prop="menuName" label="需求名称" min-width="120" > 
 						<template slot-scope="scope">
  							<el-tag  >{{scope.row.seqNo}} &nbsp;&nbsp;{{scope.row.menuName}}</el-tag>
 						</template>
@@ -31,7 +31,7 @@
 					</el-table-column> 
 					<el-table-column label="操作" width="300" fixed="right"  v-if="isSelectMenu!=true">
 						<template slot-scope="scope">
-							<el-button    @click="showSubAdd( scope.row,scope.$index)">+子故事</el-button>
+							<el-button    @click="showSubAdd( scope.row,scope.$index)">+子需求</el-button>
 							<el-button   @click="showEdit( scope.row,scope.$index)">改</el-button>
 							<el-button   type="danger" @click="handleDel(scope.row,scope.$index)">删</el-button>
  
@@ -60,7 +60,7 @@
               </div>
              </template>
 					</el-table-column> 
- 					<el-table-column prop="menuName" label="故事名称" min-width="120" > 
+ 					<el-table-column prop="menuName" label="需求名称" min-width="120" > 
 						<template slot-scope="scope">
 							<el-input    v-model="scope.row.menuName" @change="fieldChange(scope.row,'menuName')"></el-input>
  						</template>
@@ -76,12 +76,12 @@
 				
 			</el-col>
 			<!--编辑 XmMenuTemplate xm_project_menu界面-->
-			<el-drawer title="编辑故事" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑需求" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				  <xm-menu-template-edit :xm-menu-template="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-menu-template-edit>
 			</el-drawer>
 	
 			<!--新增 XmMenuTemplate xm_project_menu界面-->
-			<el-drawer title="新增故事" :visible.sync="addFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="新增需求" :visible.sync="addFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				<xm-menu-template-add  :product="filters.product"   :parent-menu="parentMenu"  :xm-menu="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-menu-template-add>
 			</el-drawer> 
 		</el-row>
@@ -362,7 +362,7 @@
 			},
 			selectedMenusConfirm:function(){
 				if(this.sels.length==0){
-					this.$message.error("请选择故事");
+					this.$message.error("请选择需求");
 					return;
 				}
 				this.$emit("selected-menus",this.sels)

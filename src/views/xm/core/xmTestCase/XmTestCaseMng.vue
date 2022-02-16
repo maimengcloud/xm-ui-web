@@ -4,7 +4,7 @@
 			<div>
 				<el-tag    v-if="  filters.product "  closable    @close="clearProduct">{{this.filters.product.productName}}</el-tag>
 				<el-button v-else    @click="showProductVisible" type="plian">选产品</el-button>
-				<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 选择故事</el-button>
+				<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 选择需求</el-button>
 				<el-tag v-else   closable @close=" clearFiltersMenu(filters.menus[0])">{{filters.menus[0].menuName.substr(0,5)}}等({{filters.menus.length}})个</el-tag>
 				<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
 					<template slot="append"> 
@@ -30,11 +30,11 @@
 							<el-button v-else    @click="showProjectList" type="plian">选项目</el-button>
 						</el-col> 		
 						<el-col :span="24" style="padding-top:5px;">
-								<font class="more-label-font">故事:</font>
+								<font class="more-label-font">需求:</font>
 							<font  v-if="  filters.menus && filters.menus.length>0">
 								<el-tag  v-for="(item,index) in filters.menus" :key="index"  closable     @close="clearFiltersMenu(item)">{{item.menuName.substr(0,10)}}</el-tag>
 							</font>
-							<el-button v-else    @click="showMenu" type="plian">选故事</el-button>
+							<el-button v-else    @click="showMenu" type="plian">选需求</el-button>
 						</el-col> 	
 						<el-col :span="24" style="padding-top:5px;">
 							<font class="more-label-font">更新人:</font>
@@ -77,9 +77,9 @@
 					</template>
 				</el-table-column>
  				<el-table-column prop="caseRemark" label="备注" min-width="80" show-overflow-tooltip></el-table-column> 
- 				<el-table-column  prop="menuName" label="故事名" min-width="80" show-overflow-tooltip> 
+ 				<el-table-column  prop="menuName" label="需求名" min-width="80" show-overflow-tooltip> 
 					<template slot="header">
-						故事<el-button @click="showMenu"  icon="el-icon-search" ></el-button>
+						需求<el-button @click="showMenu"  icon="el-icon-search" ></el-button>
  					</template>
 				 </el-table-column>
 				<el-table-column v-if="!multiSelect" prop="ctime" label="创建时间" min-width="80" show-overflow-tooltip></el-table-column>
@@ -115,7 +115,7 @@
 				<xm-group-mng v-if="filters.selProject" :sel-project=" filters.selProject " :is-select-single-user="1" @user-confirm="onFiltersUserConfirm"></xm-group-mng>
 			</el-drawer> 
 		</el-row>
-		<el-drawer append-to-body title="故事选择" :visible.sync="menuVisible"    size="80%"   :close-on-click-modal="false">
+		<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible"    size="80%"   :close-on-click-modal="false">
 			<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
 		</el-drawer>
 		

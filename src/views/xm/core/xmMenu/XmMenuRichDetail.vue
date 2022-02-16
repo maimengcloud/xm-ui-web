@@ -80,10 +80,10 @@
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				editFormRules: {
 					menuId: [
-						{ required: true, message: '故事编号不能为空', trigger: 'blur' }
+						{ required: true, message: '需求编号不能为空', trigger: 'blur' }
 					],
 					menuName: [
-						{ required: true, message: '故事编号不能为空', trigger: 'blur' }
+						{ required: true, message: '需求编号不能为空', trigger: 'blur' }
 					],
 					productId: [
 						{ required: true, message: '产品编号不能为空', trigger: 'blur' }
@@ -92,7 +92,7 @@
 						{ required: true, message: '序号不能为空', trigger: 'blur' }
 					],
 				},
-				//编辑界面数据  XmMenu 项目故事表
+				//编辑界面数据  XmMenu 项目需求表
 				editForm: {
 						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'',mmUserid:'',mmUsername:''
 				},
@@ -109,7 +109,7 @@
 				this.$refs['editForm'].resetFields();
 				this.$emit('cancel');
 			},
-			//编辑提交XmMenu 项目故事表父组件监听@submit="afterEditSubmit"
+			//编辑提交XmMenu 项目需求表父组件监听@submit="afterEditSubmit"
 			editSubmit: function () {
 				this.$refs.editForm.validate((valid) => {
 					if (valid) {

@@ -1,13 +1,13 @@
 <template>
 	<section class="page-container page-full-height padding border">
 		<el-row> 
-		<!--编辑界面 XmExchange 故事表--> 
+		<!--编辑界面 XmExchange 需求表--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
-				<el-form-item label="故事编号" prop="taskId">
-					<el-input v-model="editForm.taskId" placeholder="故事编号"></el-input>
+				<el-form-item label="需求编号" prop="taskId">
+					<el-input v-model="editForm.taskId" placeholder="需求编号"></el-input>
 				</el-form-item> 
-				<el-form-item label="故事名称" prop="taskName">
-					<el-input v-model="editForm.taskName" placeholder="故事名称"></el-input>
+				<el-form-item label="需求名称" prop="taskName">
+					<el-input v-model="editForm.taskName" placeholder="需求名称"></el-input>
 				</el-form-item> 
 				<el-form-item label="归属产品编号" prop="projectId">
 					<el-input v-model="editForm.projectId" placeholder="归属产品编号"></el-input>
@@ -115,7 +115,7 @@
 						//{ required: true, message: '评论编号不能为空', trigger: 'blur' }
 					]
 				},
-				//编辑界面数据  XmExchange 故事表
+				//编辑界面数据  XmExchange 需求表
 				editForm: {
 					taskId:'',taskName:'',projectId:'',remark:'',id:'',pid:'',cuserid:'',cusername:'',ctime:'',cbranchId:'',adopt:'',adoptUserid:'',adoptUsername:'',adoptTime:'',closed:'',puserid:'',pusername:'',premark:'',notifyUserids:'',notifyChannels:'',notifyUsernames:'',cuserHeadImg:'',replyType:''
 				}
@@ -130,7 +130,7 @@
 				this.$refs['editForm'].resetFields();
 				this.$emit('cancel');
 			},
-			//编辑提交XmExchange 故事表父组件监听@submit="afterEditSubmit"
+			//编辑提交XmExchange 需求表父组件监听@submit="afterEditSubmit"
 			editSubmit: function () {
 				this.$refs.editForm.validate((valid) => {
 					if (valid) {

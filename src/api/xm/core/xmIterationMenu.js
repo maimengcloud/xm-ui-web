@@ -8,7 +8,7 @@ let base = config.getCoreBasePath();
 /**
  * 迭代定义
  *1    默认只开放普通查询，所有查询，只要上传	 分页参数 {currentPage:当前页码从1开始,pageSize:每页记录数,total:总记录【数如果是0后台会自动计算总记录数非0不会自动计算】}，后台都会自动按分页查询 其它 api用到再打开，没用到的api请注释掉，
- *2 查询、新增、修改的参数格式  params={id:'主键 主键',iterationId:'对应的迭代编号',menuId:'故事编号',productId:'产品编号',ctime:'关联时间',relStatus:'关联状态0不再关联1正常关联'}
+ *2 查询、新增、修改的参数格式  params={id:'主键 主键',iterationId:'对应的迭代编号',menuId:'需求编号',productId:'产品编号',ctime:'关联时间',relStatus:'关联状态0不再关联1正常关联'}
  **/
  
 //普通查询 条件之间and关系  

@@ -532,7 +532,7 @@ import XmProductSelect from './XmProductSelect.vue';
 			doDelXmIterationProductLink(row){
 				var xmIteration=this.xmIteration;
 				var xmProduct=row;
-				this.$confirm('确认将产品【'+xmProduct.productName+'】与迭代【'+xmIteration.iterationName+'】进行脱钩吗？脱钩后，产品下的所有故事将从本迭代计划一并移出。', '提示', {
+				this.$confirm('确认将产品【'+xmProduct.productName+'】与迭代【'+xmIteration.iterationName+'】进行脱钩吗？脱钩后，产品下的所有需求将从本迭代计划一并移出。', '提示', {
 					type: 'warning'
 				}).then(()=>{
 					delXmIterationProductLink({iterationId:xmIteration.id,productId:xmProduct.id}).then(res=>{

@@ -30,7 +30,7 @@
 				<el-table-column prop="totalStaffCnt" label="总参与人数" min-width="80" ></el-table-column> 
 
 				<el-table-column prop="productCnt" label="产品数" min-width="80" ></el-table-column>
-				<el-table-column prop="menuCnt" label="故事数" min-width="80" ></el-table-column>
+				<el-table-column prop="menuCnt" label="需求数" min-width="80" ></el-table-column>
 				<el-table-column prop="iterationCnt" label="迭代数" min-width="80" ></el-table-column>
 				<el-table-column prop="testCases" label="测试案例总数" min-width="80" ></el-table-column>
 				<el-table-column prop="totalBugCnt" label="bug数目" min-width="80" ></el-table-column>  

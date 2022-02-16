@@ -156,7 +156,7 @@
 				<el-form-item label="产品数" prop="productCnt">
 					<el-input-number v-model="addForm.productCnt" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
-				<el-form-item label="故事数" prop="menuCnt">
+				<el-form-item label="需求数" prop="menuCnt">
 					<el-input-number v-model="addForm.menuCnt" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
 				<el-form-item>

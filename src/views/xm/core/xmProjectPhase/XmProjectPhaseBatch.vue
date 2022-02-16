@@ -279,7 +279,7 @@
 				xmRecordVisible:false,
 				valueChangeRows:[],
 				batchEditVisible:false,
-				menuVisible:false,//由故事自动创建阶段计划
+				menuVisible:false,//由需求自动创建阶段计划
 				tableHeight:300,
         pickerOptions: util.pickerOptions('date'),
         gstcVisible:false,

@@ -6,7 +6,7 @@
 			<el-link type="text" @click="goAnchor('planInfo')">&nbsp;&nbsp;&nbsp;进度计划&nbsp;&nbsp;&nbsp;</el-link> 
 			<el-link type="text" @click="goAnchor('costInfo')">&nbsp;&nbsp;&nbsp;工作量与成本&nbsp;&nbsp;&nbsp;</el-link>
 			<el-link type="text" @click="goAnchor('settleInfo')">&nbsp;&nbsp;&nbsp;结算信息&nbsp;&nbsp;&nbsp;</el-link>
-			<el-link type="text" @click="goAnchor('menuInfo')">&nbsp;&nbsp;&nbsp;故事明细&nbsp;&nbsp;&nbsp;</el-link> 
+			<el-link type="text" @click="goAnchor('menuInfo')">&nbsp;&nbsp;&nbsp;需求明细&nbsp;&nbsp;&nbsp;</el-link> 
 			<el-link type="text" @click="goAnchor('taskOut')">&nbsp;&nbsp;&nbsp;众包&nbsp;&nbsp;&nbsp;</el-link>    
 		</el-row>
 		<el-row>  
@@ -52,8 +52,8 @@
 						</el-select> 
 						</el-tooltip>
 					</el-form-item>  
-					<el-form-item  label="所属故事" prop="menuId" id="menuInfo"> 
-						{{editForm.menuName}} &nbsp;&nbsp;&nbsp; <el-link @click="menuVisible=true" type="primary">{{editForm.menuName?'更改归属故事':'设置归属故事'}}</el-link>&nbsp;&nbsp;&nbsp;<el-link v-if="editForm.menuName" @click="toMenu" type="primary">查看故事明细</el-link>
+					<el-form-item  label="所属需求" prop="menuId" id="menuInfo"> 
+						{{editForm.menuName}} &nbsp;&nbsp;&nbsp; <el-link @click="menuVisible=true" type="primary">{{editForm.menuName?'更改归属需求':'设置归属需求'}}</el-link>&nbsp;&nbsp;&nbsp;<el-link v-if="editForm.menuName" @click="toMenu" type="primary">查看需求明细</el-link>
 					</el-form-item> 
 					<el-form-item prop="skill" label="技能要求">
 						<el-button class="useradd-icon" type="text" @click.stop="showSkill()" icon="el-icon-circle-plus-outline">增加</el-button>
@@ -180,7 +180,7 @@
 			<skill-mng :task-skills="taskSkills" :jump="true" @select-confirm="onTaskSkillsSelected"></skill-mng>
 		</el-drawer>
 
-		<el-drawer append-to-body title="故事选择" :visible.sync="menuVisible" size="80%"   :close-on-click-modal="false">
+		<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible" size="80%"   :close-on-click-modal="false">
 			<xm-menu-select :is-select-menu="true"  @selected="onMenuSelected" :sel-project="xmProject"></xm-menu-select>
 		</el-drawer>
 		
@@ -192,7 +192,7 @@
 			<xm-execuser-mng :visible="execUserVisible" :xm-task="editForm"   @after-add-submit="afterAddExecSubmit" @after-edit-submit="afterEditExecSubmit" @after-delete-submit="afterEditExecSubmit" ref="execuserMng"></xm-execuser-mng>
 		</el-drawer>
 
-		<el-drawer append-to-body title="故事明细" :visible.sync="menuDetailVisible" size="80%"    :close-on-click-modal="false">
+		<el-drawer append-to-body title="需求明细" :visible.sync="menuDetailVisible" size="80%"    :close-on-click-modal="false">
 			<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="true" :xm-menu="{menuId:editForm.menuId,menuName:editForm.menuName}" ></xm-menu-rich-detail>
 		</el-drawer>
 	</section>

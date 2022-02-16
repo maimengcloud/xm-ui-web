@@ -9,10 +9,10 @@
 				<el-form-item label="模块名称" prop="moduleName">
 					<el-input v-model="editForm.moduleName" placeholder="模块名称" ></el-input>
 				</el-form-item>
-				<el-form-item label="关联的故事" prop="menuId">
+				<el-form-item label="关联的需求" prop="menuId">
 					<el-tag v-if="editForm.menuId && editForm.menuId!=''"  @close="clearFiltersMneu">{{editForm.menuName}}</el-tag>
-					<el-tag v-else>还没关联任何故事</el-tag>
-					<el-button v-if="!editForm.menuId"  @click="showMenu">关联故事</el-button>
+					<el-tag v-else>还没关联任何需求</el-tag>
+					<el-button v-if="!editForm.menuId"  @click="showMenu">关联需求</el-button>
 				</el-form-item>
 				<el-form-item label="状态" prop="moduleName">
 					<el-radio v-model="editForm.caseStatus" label="1" placeholder="状态" >正常</el-radio>
@@ -35,7 +35,7 @@
  				</el-form-item>
 			</el-form>
 
-		<el-drawer append-to-body title="故事选择" :visible.sync="menuVisible" fullscreen   :close-on-click-modal="false">
+		<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible" fullscreen   :close-on-click-modal="false">
 			<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true" :exclude-iteration-id="iteration?iteration.id:''"  @menus-selected="onSelectedMenus" ></xm-menu-select>
 		</el-drawer>
 		</el-row>
@@ -73,7 +73,7 @@
 				load:{ list: false, add: false, del: false, edit: false },//查询中...
 				editFormRules: {
 					menuId: [
-						{ required: true, message: '故事不能为空', trigger: 'blur' }
+						{ required: true, message: '需求不能为空', trigger: 'blur' }
 					],
 					caseName: [
 						{ required: true, message: '标题不能为空', trigger: 'blur' }

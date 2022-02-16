@@ -6,7 +6,7 @@
 			<el-link type="text" @click="goAnchor('planInfo')">&nbsp;&nbsp;&nbsp;进度计划&nbsp;&nbsp;&nbsp;</el-link> 
 			<el-link type="text" @click="goAnchor('costInfo')">&nbsp;&nbsp;&nbsp;工作量与成本&nbsp;&nbsp;&nbsp;</el-link>
 			<el-link type="text" @click="goAnchor('settleInfo')">&nbsp;&nbsp;&nbsp;结算信息&nbsp;&nbsp;&nbsp;</el-link>
-			<el-link type="text" @click="goAnchor('menuInfo')">&nbsp;&nbsp;&nbsp;故事明细&nbsp;&nbsp;&nbsp;</el-link> 
+			<el-link type="text" @click="goAnchor('menuInfo')">&nbsp;&nbsp;&nbsp;需求明细&nbsp;&nbsp;&nbsp;</el-link> 
 			<el-link type="text" @click="goAnchor('taskOut')">&nbsp;&nbsp;&nbsp;众包&nbsp;&nbsp;&nbsp;</el-link>    
 		</el-row>
 		<el-row>  
@@ -54,8 +54,8 @@
 						</el-select>
 						</el-tooltip>
 					</el-form-item>
-					<el-form-item  label="所属故事" prop="menuId" id="menuInfoAdd">
-						{{addForm.menuName}} <el-button @click="menuVisible=true" round>选择归属故事</el-button>
+					<el-form-item  label="所属需求" prop="menuId" id="menuInfoAdd">
+						{{addForm.menuName}} <el-button @click="menuVisible=true" round>选择归属需求</el-button>
 					</el-form-item>
 					<el-form-item prop="skill" label="技能要求">
 						<el-button class="useradd-icon" type="text" @click.stop="showSkill()" icon="el-icon-circle-plus-outline">增加</el-button>
@@ -177,7 +177,7 @@
 			<skill-mng :task-skills="taskSkills" :jump="true" @select-confirm="onTaskSkillsSelected"></skill-mng>
 		</el-drawer>
 
-		<el-drawer append-to-body title="故事选择" :visible.sync="menuVisible" fullscreen   :close-on-click-modal="false">
+		<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible" fullscreen   :close-on-click-modal="false">
 			<xm-menu-select :is-select-menu="true"  @selected="onMenuSelected" :sel-project="xmProject"></xm-menu-select>
 		</el-drawer>
 
@@ -185,7 +185,7 @@
 			<xm-task-list  :sel-project="xmProject"   @task-selected="onSelectedTask"></xm-task-list>
 		</el-drawer>
 
-		<el-drawer append-to-body title="故事明细" :visible.sync="menuDetailVisible" size="80%"    :close-on-click-modal="false">
+		<el-drawer append-to-body title="需求明细" :visible.sync="menuDetailVisible" size="80%"    :close-on-click-modal="false">
 			<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="true" :xm-menu="{menuId:addForm.menuId,menuName:addForm.menuName}" ></xm-menu-rich-detail>
 		</el-drawer>
 	</section>

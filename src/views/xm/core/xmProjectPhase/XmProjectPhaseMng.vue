@@ -22,7 +22,7 @@
 							<el-button  type="primary" @click="showPhaseTemplate" v-loading="load.add" icon="el-icon-plus">由模板导入计划</el-button>
 						</el-col>
 						<el-col  :span="24"  style="padding-top:5px;">
-							<el-button  type="primary" @click="showMenu" v-loading="load.add" icon="el-icon-plus">由故事批量创建</el-button> 
+							<el-button  type="primary" @click="showMenu" v-loading="load.add" icon="el-icon-plus">由需求批量创建</el-button> 
 						</el-col>
 						<el-col  :span="24"  style="padding-top:5px;">
 							<el-button  type="warning" @click="loadTasksToXmProjectPhase(sels)" v-loading="load.edit" icon="el-icon-s-data">由任务汇总实际数据</el-button> 
@@ -46,7 +46,7 @@
 				<el-row> 
 					
 					<el-col :span="24"  style="padding-top:5px;">
-						<el-button type="primary"  @click="showMenu" v-loading="load.add" icon="el-icon-plus">由故事批量创建(推荐)</el-button> 
+						<el-button type="primary"  @click="showMenu" v-loading="load.add" icon="el-icon-plus">由需求批量创建(推荐)</el-button> 
 					</el-col>
 					<el-col :span="24"  style="padding-top:5px;">
 						<el-button   @click="showAdd" v-loading="load.add" icon="el-icon-plus">直接新建</el-button> 
@@ -84,7 +84,7 @@
 									<el-dropdown-menu slot="dropdown">
 										<el-dropdown-item :command="{type:'showSubAdd',data:scope.row}">+子阶段</el-dropdown-item>
 										<el-dropdown-item :command="{type:'showPhaseTemplate',data:scope.row}">+从模板批量导入子阶段</el-dropdown-item> 
-										<el-dropdown-item :command="{type:'showMenu',data:scope.row}">+由故事创建子阶段</el-dropdown-item> 
+										<el-dropdown-item :command="{type:'showMenu',data:scope.row}">+由需求创建子阶段</el-dropdown-item> 
 
 										<el-dropdown-item :command="{type:'showEdit',data:scope.row}">编辑</el-dropdown-item>  
 										<el-dropdown-item :command="{type:'loadTasksToXmProjectPhase',data:scope.row}" >从任务汇总实际数据</el-dropdown-item>  
@@ -183,7 +183,7 @@
 				<xm-project-group-select :visible="groupUserSelectVisible" :sel-project="selProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-project-group-select>
 				 
 			</el-drawer> 
-			<el-drawer append-to-body title="故事选择" :visible.sync="menuVisible" fullscreen    :close-on-click-modal="false">
+			<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible" fullscreen    :close-on-click-modal="false">
 				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
 			</el-drawer>
 		</el-row>
@@ -361,7 +361,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				xmRecordVisible:false,
 				valueChangeRows:[],
 				batchEditVisible:false,
-				menuVisible:false,//由故事自动创建阶段计划
+				menuVisible:false,//由需求自动创建阶段计划
 				tableHeight:200,
 				pickerOptions: util.pickerOptions('date'),
 				gstcVisible:false,

@@ -3,8 +3,8 @@
 		<el-row>  
 			<el-row >  
 				<el-select class="hidden-lg-and-down" v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable >
-					<el-option   value="not-join"  label="未分配任何任务的故事"></el-option>  
-					<el-option   value="join"  label="已分配任务的故事"></el-option>  
+					<el-option   value="not-join"  label="未分配任何任务的需求"></el-option>  
+					<el-option   value="join"  label="已分配任务的需求"></el-option>  
 				</el-select> 
 				<el-date-picker
 					v-model="dateRanger" 
@@ -27,7 +27,7 @@
 				
 				
 				<el-button    type="warning" @click="batchSaveMenu" icon="el-icon-finished">保存</el-button> 
-				<el-button   type="success"  @click="handlePopover(null,'add')" icon="el-icon-plus">故事</el-button>
+				<el-button   type="success"  @click="handlePopover(null,'add')" icon="el-icon-plus">需求</el-button>
 				<el-button      @click="noBatchEdit" icon="el-icon-back">返回</el-button>  
 
 				<el-button    type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button> 
@@ -40,14 +40,14 @@
 					<el-row>  
 						<el-col  :span="24"  style="padding-top:5px;" >
 							<el-select   v-model="filters.iterationFilterType" placeholder="是否加入过迭代？" clearable  >
-								<el-option   value="not-join"  label="未加入任何迭代的故事"></el-option>  
-								<el-option   value="join"  label="已加入迭代的故事"></el-option>  
+								<el-option   value="not-join"  label="未加入任何迭代的需求"></el-option>  
+								<el-option   value="join"  label="已加入迭代的需求"></el-option>  
 							</el-select>
 						</el-col>
 						<el-col  :span="24"  style="padding-top:5px;"> 
 							<el-select  v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable >
-								<el-option   value="not-join"  label="未分配任何任务的故事"></el-option>  
-								<el-option   value="join"  label="已分配任务的故事"></el-option>  
+								<el-option   value="not-join"  label="未分配任何任务的需求"></el-option>  
+								<el-option   value="join"  label="已分配任务的需求"></el-option>  
 							</el-select> 
 						</el-col> 
 						<el-col :span="24"  style="padding-top:5px;">
@@ -75,9 +75,9 @@
 						</el-col>
 						<el-col  :span="24"  style="padding-top:5px;">
 							<font class="more-label-font">
-								故事名称:
+								需求名称:
 							</font> 
-							<el-input   v-model="filters.key" style="width:100%;"  placeholder="输入故事名字关键字" clearable>  
+							<el-input   v-model="filters.key" style="width:100%;"  placeholder="输入需求名字关键字" clearable>  
 							</el-input> 
 						</el-col>
 						<el-col  :span="24"  style="padding-top:5px;">
@@ -115,7 +115,7 @@
 						</template>
 					
 					</el-table-column>  
-					<el-table-column prop="menuName" label="故事名称" min-width="140"  show-overflow-tooltip> 
+					<el-table-column prop="menuName" label="需求名称" min-width="140"  show-overflow-tooltip> 
 						<template slot-scope="scope">
 							<el-input    v-model="scope.row.menuName"  @change="fieldChange(scope.row,'menuName')"></el-input>
 						</template>
@@ -138,19 +138,19 @@
 					
 		</el-row> 
 			<!--编辑 XmMenu xm_project_menu界面-->
-			<el-drawer title="编辑故事" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑需求" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				<xm-menu-edit :xm-menu="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-menu-edit>
 			</el-drawer>
 	
 			<!--新增 XmMenu xm_project_menu界面-->
-			<el-drawer title="新增故事" :visible.sync="addFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="新增需求" :visible.sync="addFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				<xm-menu-add  :product="filters.product"   :parent-menu="parentMenu"  :xm-menu="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-menu-add>
 			</el-drawer> 
-			<el-drawer title="故事模板" :visible.sync="menuTemplateVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="需求模板" :visible.sync="menuTemplateVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-menu-template-mng  :is-select-menu="true"  :visible="menuTemplateVisible" @cancel="menuTemplateVisible=false" @selected-menus="onSelectedMenuTemplates"></xm-menu-template-mng>
 			</el-drawer> 
 			
-			<el-drawer title="故事谈论" :visible.sync=" menuDetailVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="需求谈论" :visible.sync=" menuDetailVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="false" :xm-menu="editForm" ></xm-menu-rich-detail>
 			</el-drawer> 
 			
@@ -169,7 +169,7 @@
 			</el-drawer>
 			<el-drawer
 				append-to-body
-				title="故事关联的迭代查询"
+				title="需求关联的迭代查询"
 				:visible.sync="iterationVisible" 
 				>
 					<xm-iteration-mng :visible="iterationVisible" :product-id="editForm.productId" :menu-id="editForm.menuId" ></xm-iteration-mng>
@@ -398,7 +398,7 @@
 			//显示新增界面 XmMenu xm_project_menu
 			showAdd: function () { 
 				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$message({showClose: true, message: "只有产品经理、产品组长能够修改故事", type: 'error'}); 
+					this.$message({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
 					return false;
 				}
 				if(this.filters.product==null){
@@ -411,7 +411,7 @@
 			},
 			showSubAdd:function(row){
 				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$message({showClose: true, message: "只有产品经理、产品组长能够修改故事", type: 'error'}); 
+					this.$message({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
 					return false;
 				}
 				this.editForm=row
@@ -442,7 +442,7 @@
 			//删除xmMenu
 			handleDel: function (row,index) { 
 				if(row.mmUserid!=this.userInfo.userid){
-					this.$message({showClose: true, message: "只能操作你负责的故事", type: 'error'}); 
+					this.$message({showClose: true, message: "只能操作你负责的需求", type: 'error'}); 
 					return false;
 				}
 				this.$confirm('确认删除该记录吗?', '提示', {
@@ -465,7 +465,7 @@
 			batchDel: function () {
 				var mmSels=this.sels.filter(i=>i.mmUserid!=this.userInfo.userid)
 				if(mmSels.length>0){
-					this.$message({showClose: true, message: "只能操作你负责的故事", type: 'error'}); 
+					this.$message({showClose: true, message: "只能操作你负责的需求", type: 'error'}); 
 					return false;
 				}
 				this.$confirm('确认删除选中记录吗？', '提示', {
@@ -643,9 +643,9 @@
       handleExport() {
         this.downloadLoading = true
         const pageNum = this.pageInfo.pageNum;
-        const header = ['故事名称', '负责人', '总体进度', '描述'];
+        const header = ['需求名称', '负责人', '总体进度', '描述'];
         const keyList = ['menuName', 'mmUsername', 'finishRate', 'remark'];
-        const filename = `故事管理_${this.filters.product.productName}_第${pageNum}页`;
+        const filename = `需求管理_${this.filters.product.productName}_第${pageNum}页`;
 				const data = this.formatJson(keyList, this.xmMenusTreeData);
 				import('@/vendor/Export2Excel').then(excel => {
 					excel.export_json_to_excel({
@@ -756,7 +756,7 @@
 			showImportFromMenuTemplate(row){
 				
 				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$message({showClose: true, message: "只有产品经理、产品组长能够修改故事", type: 'error'}); 
+					this.$message({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
 					return false;
 				}
 				if(!this.filters.product){
@@ -834,7 +834,7 @@
 			toBatchEdit(){
 				
 				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$message({showClose: true, message: "只有产品经理、产品组长能够修改故事", type: 'error'}); 
+					this.$message({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
 					return false;
 				}
 				this.valueChangeRows=[];
@@ -849,7 +849,7 @@
 			batchSaveMenu(){
 				
 				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$message({showClose: true, message: "只有产品经理、产品组长能够修改故事", type: 'error'}); 
+					this.$message({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
 					return false;
 				}
 				if(this.valueChangeRows.length==0){
@@ -898,7 +898,7 @@
 			showTaskList(row){ 
 				
 				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$message({showClose: true, message: "只有产品经理、产品组长能够修改故事", type: 'error'}); 
+					this.$message({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
 					return false;
 				}
 				this.editForm=row

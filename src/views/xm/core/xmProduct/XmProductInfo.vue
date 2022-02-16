@@ -20,8 +20,8 @@
 				<el-menu-item label="项目" index="项目">
 					 <span slot="title"><i class="el-icon-document"  ></i>项目</span> 
 				</el-menu-item>
-				<el-menu-item label="故事" index="用户故事">
-					 <span slot="title"><i class="el-icon-document"  ></i>故事</span>
+				<el-menu-item label="需求" index="需求">
+					 <span slot="title"><i class="el-icon-document"  ></i>需求</span>
 				</el-menu-item>
 				<el-menu-item   index="任务">
 					 <span slot="title"><i class="el-icon-s-operation"></i>任务</span>
@@ -48,8 +48,8 @@
 				<el-menu-item index="项目监控" class="hidden-lg-and-down">
 					<span slot="title"><i class="el-icon-video-camera"  ></i>项目监控</span>
 				</el-menu-item>
-				<el-menu-item   index="故事监控" class="hidden-lg-and-down">
-					<span slot="title"><i class="el-icon-video-camera"  ></i>故事监控</span>
+				<el-menu-item   index="需求监控" class="hidden-lg-and-down">
+					<span slot="title"><i class="el-icon-video-camera"  ></i>需求监控</span>
 				</el-menu-item>
 
 				<el-menu-item   index="合同管理" class="hidden-md-and-down">
@@ -84,8 +84,8 @@
 				</el-menu-item>
 				<el-submenu index="更多">
 					<template slot="title">更多 </template>
-					<el-menu-item  index="故事监控" >
-						<span slot="title"><i class="el-icon-video-camera"  ></i>故事监控</span>
+					<el-menu-item  index="需求监控" >
+						<span slot="title"><i class="el-icon-video-camera"  ></i>需求监控</span>
 					</el-menu-item>
 					<el-menu-item   index="项目监控">
 						<span slot="title"><i class="el-icon-video-camera"  ></i>项目监控</span>
@@ -138,14 +138,14 @@
 		  	<xm-product-overview-complex v-if="infotype=='产品概览'" :xm-product="xmProduct"></xm-product-overview-complex>  
 			 <xm-iteration-for-project-complex  v-if="infotype=='迭代'" ref="xmIterationMng" :xm-product="xmProduct"></xm-iteration-for-project-complex>
  			 <xm-project-complex v-if="infotype=='项目'" ref="xmProjectForLink" :xm-product="xmProduct"></xm-project-complex> 
-			  <xm-menu-mng v-if="infotype=='用户故事'" :xm-product="xmProduct"></xm-menu-mng>
+			  <xm-menu-mng v-if="infotype=='需求'" :xm-product="xmProduct"></xm-menu-mng>
 			 <xm-task-mng v-if="infotype=='任务'" ref="xmTaskMng" :xm-product="xmProduct" ></xm-task-mng>
 			  <xm-question v-if="infotype=='缺陷'" :qtype="'bug'" :xm-product='xmProduct' ref="xmQuestion"></xm-question>
 			  <xm-group-mng v-if="infotype=='团队'" :xm-product="xmProduct"></xm-group-mng>
 			  <xm-file-mng v-if="infotype=='文档'" :xm-product="xmProduct"></xm-file-mng>
 			  <xm-project-phase-mng v-if="infotype=='阶段计划及里程碑'" ref="xmProjectPhaseMng" :xm-product="xmProduct" ></xm-project-phase-mng>
 			  <xm-test-case-exec-mng v-if="infotype=='测试计划'" :visible="infotype=='测试计划'"  :xm-product='xmProduct' ref="xmQuestion"></xm-test-case-exec-mng>
-			<xm-menu-with-plan v-if="infotype=='故事监控'" ref="xmMenuWithPlan" :xm-product="xmProduct"></xm-menu-with-plan>
+			<xm-menu-with-plan v-if="infotype=='需求监控'" ref="xmMenuWithPlan" :xm-product="xmProduct"></xm-menu-with-plan>
 			<xm-project-state-mng v-if="infotype=='项目监控'" :xm-product="xmProduct"></xm-project-state-mng>
 			<xm-budget v-if="infotype=='预算'" :xm-product="xmProduct"></xm-budget>
 			 <xm-cost v-if="infotype=='费用'" :xm-product="xmProduct"></xm-cost>
@@ -222,7 +222,7 @@ import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
 				infotype:"产品概览",
 				load:{list:false,edit:false},
         groupUserVisible:false,
-        exportArr: ['任务', '阶段计划', '故事监控']
+        exportArr: ['任务', '阶段计划', '需求监控']
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -288,7 +288,7 @@ import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
         let pageNum = 1;
         let infotypeKey = '';
         if (this.infotype === '任务') {
-          header = ['序号', '任务名称', '故事', '预算(万)', '工作量（人时）', '执行人', '进度', '任务开始时间', '任务结束时间', '任务技能需求'];
+          header = ['序号', '任务名称', '需求', '预算(万)', '工作量（人时）', '执行人', '进度', '任务开始时间', '任务结束时间', '任务技能需求'];
           keyList = ['sortLevel', 'name', 'menuName', 'budgetCost', 'budgetWorkload', 'exeUsernames', 'rate', 'startTime', 'endTime', 'taskSkillNames'];
           list = this.$refs.xmTaskMng.tasksTreeData;
           pageNum = this.$refs.xmTaskMng.pageInfo.pageNum;
@@ -298,8 +298,8 @@ import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
           list = this.$refs.xmProjectPhaseMng.projectPhaseTreeData;
           pageNum = this.$refs.xmProjectPhaseMng.pageInfo.pageNum;
 
-        } else if (this.infotype === '故事监控') {
-          header = ['序号', '故事名称', '计划状态', '负责人', '上线时间', '计划开始时间', '实际开始时间', '计划结束时间', '实际结束时间', '计划工作量(人时)', '实际工作量(人时)', '计划成本(元)', '实际成本(元)', '总体完成比例%', '需求完成比例%', '设计完成比例%', '开发完成比例%', 'sit完成比例%', 'uat完成比例%', '上线状态'];
+        } else if (this.infotype === '需求监控') {
+          header = ['序号', '需求名称', '计划状态', '负责人', '上线时间', '计划开始时间', '实际开始时间', '计划结束时间', '实际结束时间', '计划工作量(人时)', '实际工作量(人时)', '计划成本(元)', '实际成本(元)', '总体完成比例%', '需求完成比例%', '设计完成比例%', '开发完成比例%', 'sit完成比例%', 'uat完成比例%', '上线状态'];
           keyList = ['seqNo', 'menuName', 'planStatus', 'chargeUsername', 'onlineTime', 'planStartTime', 'actStartTime', 'planEndTime', 'actEndTime', 'planWorkload', 'actWorkload', 'planCostAmount', 'actCostAmount', 'finishRate', 'demandRate', 'designRate', 'devRate', 'sitRate', 'uatRate', 'onlineStatus'];
           list = this.$refs.xmMenuWithPlan.xmMenusTreeData;
           pageNum = this.$refs.xmMenuWithPlan.pageInfo.pageNum;
@@ -356,7 +356,7 @@ import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
             }
           })
           return dataList;
-        } else if (this.infotype == '故事监控') {
+        } else if (this.infotype == '需求监控') {
           jsonData.forEach(v => {
             const row = filterVal.map(j => {
               let key = '';

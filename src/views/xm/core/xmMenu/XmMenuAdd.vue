@@ -1,20 +1,20 @@
 <template>
 	<section class="page-container page-full-height padding border">
 		<el-row class="page-main page-height-90">
-			<!--新增界面 XmMenu 项目故事表--> 
+			<!--新增界面 XmMenu 项目需求表--> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
-				<el-form-item v-if="parentMenu" label="上级故事" prop="pmenuId">
+				<el-form-item v-if="parentMenu" label="上级需求" prop="pmenuId">
 					 {{parentMenu.seqNo}} &nbsp; &nbsp; {{parentMenu.menuName}}
 				</el-form-item> 
-				<el-form-item v-if="!parentMenu" label="上级故事" prop="pmenuId">
+				<el-form-item v-if="!parentMenu" label="上级需求" prop="pmenuId">
 					无上级
 				</el-form-item> 
 				<el-form-item label="序号" prop="seqNo">
 					<el-input v-model="addForm.seqNo" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input>
 					<span v-if="parentMenu" style="color:red;">建议：{{parentMenu.seqNo}}.{{parentMenu.children?parentMenu.children.length+1:1}} </span> 
 				</el-form-item> 
-				<el-form-item label="故事名称" prop="menuName">
-					<el-input v-model="addForm.menuName" placeholder="故事名称" ></el-input>
+				<el-form-item label="需求名称" prop="menuName">
+					<el-input v-model="addForm.menuName" placeholder="需求名称" ></el-input>
 				</el-form-item>  
 				<el-form-item label="负责人" prop="mmUserid">
 					 <el-tag v-if="addForm.mmUserid" closable @close="clearPmUser">{{addForm.mmUsername}}</el-tag>
@@ -91,10 +91,10 @@
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				addFormRules: {
 					menuId: [
-						//{ required: true, message: '故事编号不能为空', trigger: 'blur' }
+						//{ required: true, message: '需求编号不能为空', trigger: 'blur' }
 					],					
 					menuName: [
-						{ required: true, message: '故事名称不能为空', trigger: 'blur' }
+						{ required: true, message: '需求名称不能为空', trigger: 'blur' }
 					],
 					seqNo: [
 						{ required: true, message: '序号不能为空', trigger: 'blur' }
@@ -103,7 +103,7 @@
 						{ required: true, message: '负责人不能为空', trigger: 'blur' }
 					],
 				},
-				//新增界面数据 项目故事表
+				//新增界面数据 项目需求表
 				addForm: {
 						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'1',mmUserid:'',mmUsername:''
 				},
@@ -118,10 +118,10 @@
 			handleCancel:function(){
  				this.$emit('cancel');
 			},
-			//新增提交XmMenu 项目故事表 父组件监听@submit="afterAddSubmit"
+			//新增提交XmMenu 项目需求表 父组件监听@submit="afterAddSubmit"
 			addSubmit: function () {
 				if(this.parentMenu==null && this.product ==null ){
-					this.$message({showClose: true, message: '请选择产品/或者上级故事进行新增', type:'error' }); 
+					this.$message({showClose: true, message: '请选择产品/或者上级需求进行新增', type:'error' }); 
 					return;
 				}
 				this.$refs.addForm.validate((valid) => {
