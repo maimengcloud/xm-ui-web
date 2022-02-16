@@ -14,7 +14,7 @@
 					</el-option>
 				</el-select>
 				
-				<el-input style="width:200px;" v-model="filters.key" placeholder="缺陷名称"> 
+				<el-input style="width:200px;" v-model="filters.key" placeholder="缺陷名称" clearable> 
 				</el-input>
 				<el-button @click="searchXmQuestions" type="primary" icon="el-icon-search"></el-button>
 				<el-button type="primary" icon="el-icon-plus" @click="showAdd">
