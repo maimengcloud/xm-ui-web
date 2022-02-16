@@ -9,7 +9,7 @@
 						<el-select  v-model="filters.status" placeholder="需求状态" clearable style="width: 100px;">
 							<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option> 
 						</el-select>   
-						<el-select  v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable >
+						<el-select  v-model="filters.taskFilterType" placeholder="是否分配任务" clearable style="width: 140px;">
 							<el-option   value="not-join"  label="未分配任何任务的需求"></el-option>  
 							<el-option   value="join"  label="已分配任务的需求"></el-option>  
 						</el-select>  
@@ -17,7 +17,9 @@
 						<el-input v-model="filters.key" style="width: 15%;" placeholder="模糊查询" clearable> 
 						</el-input> 
 						<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
-						
+						<el-button v-if="!filters.tags||filters.tags.length==0" @click.native="tagSelectVisible=true">标签</el-button>
+						<el-tag v-else @click="tagSelectVisible=true"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
+ 
 						<el-button  v-if="!selProject&&!xmIteration&&disabledMng!=false"  type="primary" @click="showAdd" icon="el-icon-plus">需求</el-button> 
 						
 						<el-button   v-if=" batchEditVisible==false&&disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>  
@@ -27,6 +29,12 @@
 							width="400"
 							trigger="click" >
 							<el-row>  
+								<el-col  :span="24"  style="padding-top:5px;" >
+									<font class="more-label-font">标签条件:</font>  
+									<el-button v-if="!filters.tags||filters.tags.length==0" @click.native="tagSelectVisible=true">标签</el-button>
+									<el-tag v-else @click="tagSelectVisible=true"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
+ 
+								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;" >
 									<el-select   v-model="filters.iterationFilterType" placeholder="是否加入过迭代？" clearable  >
 										<el-option   value="not-join"  label="未加入任何迭代的需求"></el-option>  
@@ -109,6 +117,9 @@
 								<template slot-scope="scope"> 
 										<span v-if="scope.row.finishRate"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag></span>
 								</template>
+							</el-table-column>
+							
+							<el-table-column prop="tagNames" label="标签"  width="100" show-overflow-tooltip> 
 							</el-table-column> 
 							<el-table-column prop="ctime" label="创建日期"  width="100" show-overflow-tooltip> 
 								<template slot-scope="scope"> 
@@ -292,7 +303,7 @@
 					mmUser:null,
 					iterationFilterType:'',//join、not-join、''
 					taskFilterType:'',//join、not-join、''
-					
+					tags:[],
 					parentMenu:null,
 					parentMenuList:[],
 				},
@@ -417,7 +428,10 @@
 					params.ctimeStart=this.dateRanger[0] 
 					params.ctimeEnd=this.dateRanger[1] 
 				} 
-				if(!(params.ctimeStart||params.pmenuId||params.projectId||params.iterationId||params.iterationFilterType||params.mmUserid||params.key||params.taskFilterType)){
+				if(this.filters.tags && this.filters.tags.length>0){
+					params.tagIdList=this.filters.tags.map(i=>i.tagId)
+				}
+				if(!(params.ctimeStart||params.pmenuId||params.projectId||params.iterationId||params.iterationFilterType||params.mmUserid||params.key||params.taskFilterType||params.tagIdList)){
 					params.isTop="1"
 				}
 				return params;
@@ -889,6 +903,21 @@
 				this.filters.parentMenuList.splice(index+1,this.filters.parentMenuList.length-index)
 				this.pageInfo.count=true
 				this.searchXmMenus();
+			}, 
+			clearFiltersTag(tag){
+				var index=this.filters.tags.findIndex(i=>i.tagId==tag.tagId)
+				this.filters.tags.splice(index,1);
+				this.searchXmMenus();
+			},
+			onTagSelected(tags){
+				
+				this.tagSelectVisible = false; 
+				if (!tags || tags.length == 0) { 
+					this.filters.tags=[]
+				}else{
+					this.filters.tags=tags
+				}
+				this.searchXmMenus();
 			}
 		},//end methods
 		components: { 
@@ -903,7 +932,7 @@
 			XmIterationMng,
 			UsersSelect,
 			XmMenuMngBatch,
-		    
+		    TagMng,
 		    //在下面添加其它组件
 		},
 		mounted() {   

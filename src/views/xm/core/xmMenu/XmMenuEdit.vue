@@ -9,11 +9,20 @@
 							<el-step v-for="(item,index) in dicts.menuStatus" @click.native="on_click(item.id)" :title="item.name" :key="index"></el-step> 
 						</el-steps>
 						</el-row>
-						
-						<el-form-item label="类型" prop="ntype">
-							<el-radio disabled v-model="editForm.ntype" label="1">需求集</el-radio>
-							<el-radio disabled v-model="editForm.ntype" label="0">需求</el-radio>
-						</el-form-item> 
+						<el-row class="padding-bottom">
+							<el-col :span="12">
+							<el-form-item label="类型" prop="ntype">
+								<el-radio disabled v-model="editForm.ntype" label="1">需求集</el-radio>
+								<el-radio disabled v-model="editForm.ntype" label="0">需求</el-radio>
+							</el-form-item>  
+							</el-col>
+							<el-col :span="12">
+							<el-form-item label="标签" prop="ntype">
+								{{editForm.tagNames?editForm.tagNames:''}} 
+								<el-button type="text" icon="el-icon-plus" @click="tagSelectVisible=true">标签</el-button> 
+							</el-form-item>  
+							</el-col>
+						</el-row>
 						<el-form-item label="名称" prop="menuName">
 							<el-input v-model="editForm.menuName" placeholder="名称" ></el-input>
 						</el-form-item>
@@ -55,6 +64,11 @@
 			<el-button @click.native="handleCancel">取消</el-button>
 			<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>
 		</el-row>
+			
+			<el-dialog append-to-body title="标签" :visible.sync="tagSelectVisible" class="dialog-body" width="60%">
+				<tag-mng :tagIds="editForm.tagIds?editForm.tagIds.split(','):[]" :jump="true" @select-confirm="onTagSelected">
+				</tag-mng>
+			</el-dialog>
 	</section>
 </template>
 
@@ -65,6 +79,7 @@
 	import { mapGetters } from 'vuex'
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
 import XmMenuOverview from './XmMenuOverview.vue';
+  	import TagMng from "@/views/mdp/arc/tag/TagMng";
 
 
 	export default {
@@ -122,6 +137,7 @@ import XmMenuOverview from './XmMenuOverview.vue';
 							{id:"9", name:"已删除"}, 
 					]
 				},
+				tagSelectVisible:false,
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 
 				/**end 在上面加自定义属性**/
@@ -172,9 +188,19 @@ import XmMenuOverview from './XmMenuOverview.vue';
 				this.editForm.mmUsername=''
 			},
 			/**begin 在下面加自定义方法,记得补上面的一个逗号**/
-      on_click(status){
-        this.editForm.status=status;
-      }
+			on_click(status){
+				this.editForm.status=status;
+			},
+			onTagSelected(tags) {
+				this.tagSelectVisible = false; 
+				if(tags && tags.length>0){ 
+					this.editForm.tagIds=tags.map(i=>i.tagId).join(",")
+					this.editForm.tagNames=tags.map(i=>i.tagName).join(",")
+				}else{
+					this.editForm.tagIds=""
+					this.editForm.tagNames=""
+				}
+			},
 			/**end 在上面加自定义方法**/
 
 		},//end method
@@ -182,6 +208,7 @@ import XmMenuOverview from './XmMenuOverview.vue';
 			//在下面添加其它组件 'xm-menu-edit':XmMenuEdit
 			UsersSelect,
 			XmMenuOverview,
+			TagMng,
 		},
 		mounted() {
 			this.editForm=Object.assign(this.editForm, this.xmMenu);
