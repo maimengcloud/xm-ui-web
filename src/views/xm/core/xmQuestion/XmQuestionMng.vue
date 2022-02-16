@@ -1,22 +1,25 @@
 <template>
 	<section class="padding">
 			<el-row>
-			  	<el-select v-model="filters.bugStatus" placeholder="请选择状态"   clearable @change="changeBugStatus">
+			  	<el-select v-model="filters.bugStatus" placeholder="状态" style="width:100px;"  clearable @change="changeBugStatus">
 					<el-option v-for="(b,index) in options['bugStatus']" :value="b.optionValue"  :key="index" :label="b.optionName">{{b.optionName}}
 					</el-option>
 				</el-select>
-				<el-select class="hidden-md-and-down" v-model="filters.priority" placeholder="紧急程度"   clearable @change="changePriority">
+				<el-select class="hidden-md-and-down" v-model="filters.priority" placeholder="紧急程度"  style="width:120px;"  clearable @change="changePriority">
 					<el-option v-for="(b,index) in options['urgencyLevel']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
 					</el-option>
 				</el-select>
-				<el-select class="hidden-md-and-down" v-model="filters.bugSeverity" placeholder="请选择严重程度" clearable @change="changeBugSeverity">
+				<el-select class="hidden-md-and-down" v-model="filters.bugSeverity" placeholder="严重程度"  style="width:120px;" clearable @change="changeBugSeverity">
 					<el-option v-for="(b,index) in options['bugSeverity']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
 					</el-option>
 				</el-select>
-				
 				<el-input style="width:200px;" v-model="filters.key" placeholder="缺陷名称" clearable> 
 				</el-input>
 				<el-button @click="searchXmQuestions" type="primary" icon="el-icon-search"></el-button>
+				
+				<el-button v-if="!filters.tags||filters.tags.length==0" @click.native="tagSelectVisible=true">标签</el-button>
+				<el-tag v-else @click="tagSelectVisible=true"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
+ 
 				<el-button type="primary" icon="el-icon-plus" @click="showAdd">
 				</el-button>
 				<el-popover
@@ -118,21 +121,7 @@
 					</el-row>
 					<el-button  slot="reference" icon="el-icon-more"></el-button>
 				</el-popover> 
-			 </el-row>
-			 <el-row>
-				 <el-tag  @click="showProductVisible"  v-if="  filters.product "  closable    @close="clearProduct">{{this.filters.product.productName}}</el-tag>
-				<el-button v-else    @click="showProductVisible" type="plian">产品</el-button> 
-				<el-tag v-if="filters.selProject && !selProject" closable @close="clearProject" @click="showProjectList(true)">{{ filters.selProject.name }}</el-tag>
-				<el-button v-else @click="showProjectList(true)" >选择项目</el-button>
-				<el-button v-if="!filters.tags||filters.tags.length==0" @click.native="tagSelectVisible=true">标签</el-button>
-				<el-tag v-else @click="tagSelectVisible=true"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
-			 	<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 需求</el-button>
-				<el-tag v-else  @click="showMenu"  closable @close="clearFiltersMenu(filters.menus[0])">{{filters.menus[0].menuName.substr(0,5)}}等({{filters.menus.length}})个</el-tag>
-			 	 
-				<el-button v-if="!filters.handlerUsername" @click="showGroupUsers('handlerUser')">选择被指派人</el-button>
-				<el-tag v-else closable @close="clearHandler"  @click="showGroupUsers('handlerUser')">指派给{{filters.handlerUsername}}的</el-tag>
-				<el-button v-if="filters.handlerUserid!=userInfo.userid" @click="setFiltersHandlerAsMySelf">指派给我的</el-button>
-			 </el-row>
+			 </el-row> 
 			 <el-row class="padding-top">
 				<!--列表 XmQuestion xm_question-->
 				<el-table  ref="table" :height="tableHeight" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">

@@ -6,18 +6,21 @@
 			</el-col>
 			<el-col :span="xmProduct?24:19" class="padding-left">
 					<el-row>  
+						<el-select  v-model="filters.status" placeholder="需求状态" clearable style="width: 100px;">
+							<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option> 
+						</el-select>   
 						<el-select  v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable >
 							<el-option   value="not-join"  label="未分配任何任务的需求"></el-option>  
 							<el-option   value="join"  label="已分配任务的需求"></el-option>  
 						</el-select>  
-						<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询" clearable> 
+						
+						<el-input v-model="filters.key" style="width: 15%;" placeholder="模糊查询" clearable> 
 						</el-input> 
 						<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
 						
-						<el-button  v-if="!selProject&&!xmIteration&&disabledMng!=false"  type="primary" @click="showAdd" icon="el-icon-plus">需求</el-button>
-						<el-button  v-if="!selProject&&!xmIteration&&disabledMng!=false"    @click="toBatchEdit" icon="el-icon-edit">修改</el-button>   
+						<el-button  v-if="!selProject&&!xmIteration&&disabledMng!=false"  type="primary" @click="showAdd" icon="el-icon-plus">需求</el-button> 
 						
-						<el-button   v-if=" batchEditVisible==false&&disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">进度</el-button>  
+						<el-button   v-if=" batchEditVisible==false&&disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>  
 						<el-popover
 							placement="top-start"
 							title=""
@@ -77,12 +80,7 @@
 							</el-row> 
 							<el-button  slot="reference" icon="el-icon-more"></el-button>
 						</el-popover>  
- 					</el-row> 
-					<el-row v-if="filters.parentMenuList && filters.parentMenuList.length>0" class="padding-top padding-left">
-						<el-breadcrumb separator-class="el-icon-arrow-right">
-							<el-breadcrumb-item v-for="(item ,index) in filters.parentMenuList" :key="index"   ><el-tag :type="filters.parentMenu.menuId==item.menuId?'success':'info'"  @close="clearParentMenu(item,index)" closable @click="onParentMenuClick(item,index)">{{item.menuName}}</el-tag></el-breadcrumb-item> 
-						</el-breadcrumb> 
-					</el-row> 
+					 </el-row>  
 					<el-row class="padding-top">  
 						<el-table lazy :load="loadMenusLazy"   stripe fit border ref="table" :max-height="tableHeight" :data="xmMenusTreeData"  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
 							<el-table-column sortable type="selection" width="40"></el-table-column> 
@@ -101,7 +99,12 @@
 										</el-popover> 
 									</font>
 								</template>
-							</el-table-column>   
+							</el-table-column>  
+							<el-table-column prop="status" label="状态"  width="80" show-overflow-tooltip> 
+								<template slot-scope="scope"> 
+									{{dicts.menuStatus.some(i=>i.id==scope.row.status)?dicts.menuStatus.find(i=>scope.row.status==i.id).name:''}}
+								</template>
+							</el-table-column>  
 							<el-table-column prop="finishRate" label="进度"  width="80" show-overflow-tooltip> 
 								<template slot-scope="scope"> 
 										<span v-if="scope.row.finishRate"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag></span>
@@ -304,7 +307,21 @@
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				options:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				dicts:{
+					menuStatus:[
+						
+							{id:"0", name:"初始"},
+							{id:"1", name:"待评审"},
+							{id:"2", name:"待设计"},
+							{id:"3", name:"待开发"},
+							{id:"4", name:"待SIT"},
+							{id:"5", name:"待UAT"},
+							{id:"6", name:"待上线"},
+							{id:"7", name:"运行中"},
+							{id:"8", name:"已下线"},
+							{id:"9", name:"已删除"}, 
+					]
+				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				
 				addFormVisible: false,//新增xmMenu界面是否显示
 				//新增xmMenu界面初始化数据
@@ -332,6 +349,7 @@
 				dateRanger: [ ],  
 				pickerOptions:  util.pickerOptions('datarange'),
 				productVisible:false,
+				tagSelectVisible:false,
  				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/

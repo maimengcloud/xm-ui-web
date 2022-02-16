@@ -4,16 +4,9 @@
 			<el-tabs>
 				<el-tab-pane  label="需求详情">
 					<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
-						<el-row class="padding-bottom">
+						<el-row class="padding-bottom"> 
 						<el-steps :active="parseInt(editForm.status)" simple finish-status="success" align-center>
-							<el-step @click.native="on_click(0)" title="初始"></el-step>
-							<el-step @click.native="on_click(1)" title="设计中"></el-step>
-							<el-step @click.native="on_click(2)" title="开发中"></el-step>
-							<el-step @click.native="on_click(3)" title="测试中"></el-step>
-							<el-step @click.native="on_click(4)" title="uat测试"></el-step>
-							<el-step @click.native="on_click(5)" title="已上线"></el-step>
-							<el-step @click.native="on_click(6)" title="已下线"></el-step>
-							<el-step @click.native="on_click(7)" title="已删除"></el-step>
+							<el-step v-for="(item,index) in dicts.menuStatus" @click.native="on_click(item.id)" :title="item.name" :key="index"></el-step> 
 						</el-steps>
 						</el-row>
 						
@@ -114,6 +107,21 @@ import XmMenuOverview from './XmMenuOverview.vue';
 						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'1',mmUserid:'',mmUsername:'',ntype:'0',childrenCnt:0,sinceVersion:''
 				},
 				userSelectVisible:false,
+				dicts:{
+					menuStatus:[
+						
+							{id:"0", name:"初始"},
+							{id:"1", name:"待评审"},
+							{id:"2", name:"待设计"},
+							{id:"3", name:"待开发"},
+							{id:"4", name:"待SIT"},
+							{id:"5", name:"待UAT"},
+							{id:"6", name:"待上线"},
+							{id:"7", name:"运行中"},
+							{id:"8", name:"已下线"},
+							{id:"9", name:"已删除"}, 
+					]
+				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 
 				/**end 在上面加自定义属性**/
