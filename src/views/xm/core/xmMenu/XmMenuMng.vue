@@ -200,6 +200,11 @@
 		<el-row v-if="batchEditVisible && filters.product" :span="24">
 			<xm-menu-mng-batch :sel-project="selProject"  @no-batch-edit="noBatchEdit" :product="filters.product"></xm-menu-mng-batch>
 		</el-row>
+		
+		<el-dialog append-to-body title="标签条件" :visible.sync="tagSelectVisible" class="dialog-body" width="60%">
+			<tag-mng :tagIds="filters.tags?filters.tags.map(i=>i.tagId):[]" :jump="true" @select-confirm="onTagSelected">
+			</tag-mng>
+		</el-dialog>
 	</section>
 </template>
 
@@ -223,6 +228,7 @@
 	import XmTaskListForMenu from '../xmTask/XmTaskListForMenu';
 	import  XmIterationMng from '../xmIteration/XmIterationSelect';//修改界面
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
+  	import TagMng from "@/views/mdp/arc/tag/TagMng";
 
 	import {sn} from '@/common/js/sequence'
 

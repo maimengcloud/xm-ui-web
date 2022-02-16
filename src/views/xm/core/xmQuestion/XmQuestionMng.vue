@@ -1,11 +1,11 @@
 <template>
 	<section class="padding">
 			<el-row>
-			  	<el-select v-model="filters.bugStatus" placeholder="请选择状态" style="width:15%;" clearable @change="changeBugStatus">
+			  	<el-select v-model="filters.bugStatus" placeholder="请选择状态"   clearable @change="changeBugStatus">
 					<el-option v-for="(b,index) in options['bugStatus']" :value="b.optionValue"  :key="index" :label="b.optionName">{{b.optionName}}
 					</el-option>
 				</el-select>
-				<el-select class="hidden-md-and-down" v-model="filters.priority" placeholder="紧急程度"  style="width:15%;" clearable @change="changePriority">
+				<el-select class="hidden-md-and-down" v-model="filters.priority" placeholder="紧急程度"   clearable @change="changePriority">
 					<el-option v-for="(b,index) in options['urgencyLevel']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
 					</el-option>
 				</el-select>
@@ -13,15 +13,10 @@
 					<el-option v-for="(b,index) in options['bugSeverity']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
 					</el-option>
 				</el-select>
-				<el-tag    v-if="  filters.product "  closable    @close="clearProduct">{{this.filters.product.productName}}</el-tag>
-				<el-button v-else    @click="showProductVisible" type="plian">选产品</el-button>
-				<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 选择需求</el-button>
-				<el-tag v-else   closable @close="clearFiltersMenu(filters.menus[0])">{{filters.menus[0].menuName.substr(0,5)}}等({{filters.menus.length}})个</el-tag>
-				<el-input style="width:200px;" v-model="filters.key" placeholder="缺陷名称">
-					<template slot="append">
-						<el-button @click="searchXmQuestions" type="primary" icon="el-icon-search"></el-button>
-					</template>
+				
+				<el-input style="width:200px;" v-model="filters.key" placeholder="缺陷名称"> 
 				</el-input>
+				<el-button @click="searchXmQuestions" type="primary" icon="el-icon-search"></el-button>
 				<el-button type="primary" icon="el-icon-plus" @click="showAdd">
 				</el-button>
 				<el-popover
@@ -37,8 +32,12 @@
 						<el-col :span="24"  style="padding-top:12px;" v-if="!selProject">
 							<font class="more-label-font">项目:</font>
 							<el-tag v-if="filters.selProject && !selProject" closable @close="clearProject" @click="showProjectList(true)">{{ filters.selProject.name }}</el-tag>
-							<el-button v-else @click="showProjectList(true)" >选择项目</el-button>
-
+							<el-button v-else @click="showProjectList(true)" >选择项目</el-button> 
+						</el-col>
+						<el-col :span="24"  style="padding-top:12px;">
+							<font class="more-label-font">需求:</font>
+							<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 需求</el-button>
+							<el-tag v-else  @click="showMenu"  closable @close="clearFiltersMenu(filters.menus[0])">{{filters.menus[0].menuName.substr(0,5)}}等({{filters.menus.length}})个</el-tag>
 						</el-col>
 						<el-col :span="24" style="padding-top:12px;">
 							<font class="more-label-font">创建者:</font>
@@ -120,12 +119,26 @@
 					<el-button  slot="reference" icon="el-icon-more"></el-button>
 				</el-popover> 
 			 </el-row>
+			 <el-row>
+				 <el-tag  @click="showProductVisible"  v-if="  filters.product "  closable    @close="clearProduct">{{this.filters.product.productName}}</el-tag>
+				<el-button v-else    @click="showProductVisible" type="plian">产品</el-button> 
+				<el-tag v-if="filters.selProject && !selProject" closable @close="clearProject" @click="showProjectList(true)">{{ filters.selProject.name }}</el-tag>
+				<el-button v-else @click="showProjectList(true)" >选择项目</el-button>
+				<el-button v-if="!filters.tags||filters.tags.length==0" @click.native="tagSelectVisible=true">标签</el-button>
+				<el-tag v-else @click="tagSelectVisible=true"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
+			 	<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 需求</el-button>
+				<el-tag v-else  @click="showMenu"  closable @close="clearFiltersMenu(filters.menus[0])">{{filters.menus[0].menuName.substr(0,5)}}等({{filters.menus.length}})个</el-tag>
+			 	 
+				<el-button v-if="!filters.handlerUsername" @click="showGroupUsers('handlerUser')">选择被指派人</el-button>
+				<el-tag v-else closable @close="clearHandler"  @click="showGroupUsers('handlerUser')">指派给{{filters.handlerUsername}}的</el-tag>
+				<el-button v-if="filters.handlerUserid!=userInfo.userid" @click="setFiltersHandlerAsMySelf">指派给我的</el-button>
+			 </el-row>
 			 <el-row class="padding-top">
 				<!--列表 XmQuestion xm_question-->
 				<el-table  ref="table" :height="tableHeight" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  					<el-table-column prop="name" label="缺陷名称"  min-width="150"  show-overflow-tooltip>
 						<template slot-scope="scope"> 
-								<el-link type="primary" @click="showEdit(scope.row)"> 
+								<el-link @click="showEdit(scope.row)"> 
 									<el-tag type="info" v-if="scope.row.bugSeverity=='4' ">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
 									<el-tag type="primary" v-else-if="scope.row.bugSeverity=='3'">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
 									<el-tag type="warning" v-else-if="scope.row.bugSeverity=='2'">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
@@ -135,20 +148,6 @@
 								</el-link>   
 						</template>
 					</el-table-column>
-					<el-table-column prop="flowState" label="升级"  width="100"  show-overflow-tooltip>
-						<template slot-scope="scope">  
-							<el-tooltip  v-if="scope.row.flowState!='' && scope.row.flowState!=null" :content="showApprovaInfo(scope.row)" placement="bottom" effect="light">
-							<el-tag v-if="scope.row.flowState=='0' || scope.row.flowState==null ">未发审</el-tag>
-							<el-tag v-else-if="scope.row.flowState=='1'">审核中</el-tag>
-							<el-tag v-else-if="scope.row.flowState=='2'">已通过</el-tag>
-							<el-tag v-else-if="scope.row.flowState=='3'">未通过</el-tag>
-							<el-tag v-else-if="scope.row.flowState=='4'">已取消</el-tag>
-							</el-tooltip>
-							<el-button icon="el-icon-upload2" v-if="!scope.row.flowState" type="text"   @click="handleCommand({type:'sendToProcessApprova',data:scope.row,bizKey:'xm_question_up_approva'})">{{qtype=='risk'?'':''}}</el-button>
- 							 
-						</template>
-					</el-table-column>
-					
 					<el-table-column prop="bugStatus" label="状态"  width="100">
 						<template slot-scope="scope"> 
  								<el-tag type="info" v-if="scope.row.bugStatus=='create' ">创建</el-tag>
@@ -167,7 +166,12 @@
 					
 					<el-table-column prop="createTime" label="创建时间"  width="100" show-overflow-tooltip> 
 					</el-table-column>
+					
+					<el-table-column prop="ltime" label="更新时间"  width="100" show-overflow-tooltip> 
+					</el-table-column>
 					<el-table-column prop="handlerUsername" label="指派给"  width="100" show-overflow-tooltip> 
+					</el-table-column>
+					<el-table-column prop="tagNames" label="标签"  width="100" show-overflow-tooltip> 
 					</el-table-column>
 					<el-table-column prop="menuName" label="需求" width="100" show-overflow-tooltip></el-table-column>
 				</el-table>
@@ -196,6 +200,11 @@
 			<el-drawer title="选择产品" :visible.sync="productSelectVisible"  size="70%"  append-to-body   :close-on-click-modal="false">
 					<xm-product-select   :isSelectProduct="true" :selProject="filters.selProject" :visible="productSelectVisible" @cancel="productSelectVisible=false" @selected="onProductSelected"></xm-product-select>
 			</el-drawer>
+			
+			<el-dialog append-to-body title="标签条件" :visible.sync="tagSelectVisible" class="dialog-body" width="60%">
+				<tag-mng :tagIds="filters.tags?filters.tags.map(i=>i.tagId):[]" :jump="true" @select-confirm="onTagSelected">
+				</tag-mng>
+			</el-dialog>
 	</section>
 </template>
 
@@ -215,6 +224,7 @@
 	import XmProjectList from '../xmProject/XmProjectList';
 
 	import  XmProductSelect from '../xmProduct/XmProductSelect';//修改界面
+  	import TagMng from "@/views/mdp/arc/tag/TagMng";
 
 	export default {
 		computed: {
@@ -258,6 +268,7 @@
 					createUser:null,
 					hisHandler:null,
 					hisHandleStatus:null,
+					tags:[],
 
 				},
 				xmQuestions: [],//查询结果
@@ -341,6 +352,7 @@
 				],
 				pickerOptions:  util.pickerOptions('datarange'),
 				userType:'',//createUser、handlerUser
+				tagSelectVisible:false,
 				/**end 自定义属性请在上面加 请加备注**/
 
 			}
@@ -462,6 +474,9 @@
 				if(this.filters.key){
 					params.key='%'+this.filters.key+'%'
 				}
+				if(this.filters.tags && this.filters.tags.length>0){
+					params.tagIdList=this.filters.tags.map(i=>i.tagId)
+				}
 				params.qtype=this.qtype
 				listXmQuestion(params).then((res) => {
 					var tips=res.data.tips;
@@ -505,6 +520,11 @@
 			clearFiltersMenu(menu){
 				var index=this.filters.menus.findIndex(i=>i.menuId==menu.menuId)
 				this.filters.menus.splice(index,1);
+				this.searchXmQuestions();
+			},
+			clearFiltersTag(tag){
+				var index=this.filters.tags.findIndex(i=>i.tagId==tag.tagId)
+				this.filters.tags.splice(index,1);
 				this.searchXmQuestions();
 			},
 			//显示编辑界面 XmQuestion xm_question
@@ -899,13 +919,23 @@
 					msg=row.createUsername+'创建的缺陷'
 				}
 				return msg;
+			},
+			
+			onTagSelected(tags) {
+				this.tagSelectVisible = false; 
+				if (!tags || tags.length == 0) { 
+					this.filters.tags=[]
+				}else{
+					this.filters.tags=tags
+				}
+				this.searchXmQuestions();
 			}
 
 		},//end methods
 		components: {
 				'xm-question-add':XmQuestionAdd,
 				'xm-question-edit':XmQuestionEdit,
-				XmGroupMng,XmProjectList,xmMenuSelect,XmProductSelect
+				XmGroupMng,XmProjectList,xmMenuSelect,XmProductSelect,TagMng,
 				//在下面添加其它组件
 		},
 		mounted() {

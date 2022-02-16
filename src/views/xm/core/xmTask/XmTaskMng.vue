@@ -397,6 +397,10 @@
 		<el-drawer title="选择产品" :visible.sync="productSelectVisible"  :size="650"  append-to-body   :close-on-click-modal="false">
 				<xm-product-select   :isSelectProduct="true" :selProject="filters.selProject" :visible="productSelectVisible" @cancel="productSelectVisible=false" @selected="onProductSelected"></xm-product-select>
 		</el-drawer>
+		<el-dialog append-to-body title="标签条件" :visible.sync="tagSelectVisible" class="dialog-body" width="60%">
+			<tag-mng :tagIds="filters.tags?filters.tags.map(i=>i.tagId):[]" :jump="true" @select-confirm="onTagSelected">
+			</tag-mng>
+		</el-dialog>
 	</section>
 </template>
 
@@ -427,6 +431,7 @@
 
 	import XmMenuRichDetail from '../xmMenu/XmMenuRichDetail';
 	import  XmProductSelect from '../xmProduct/XmProductSelect';//修改界面
+  import TagMng from "@/views/mdp/arc/tag/TagMng";
 
   import XmGantt from '../components/xm-gantt';
 import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
