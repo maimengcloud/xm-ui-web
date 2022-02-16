@@ -1,7 +1,7 @@
 <template>
 	<section class="page-container padding border">
 		<el-row class="padding">
-			<font class="font">{{editForm.name}}</font><el-button type="text" icon="el-icon-search" @click="flowInfoVisible=true">日志</el-button>
+			<font class="font">{{editForm.name}}</font>
 		</el-row>
 		<el-row class="padding-bottom">
 			<el-tooltip content="项目"><el-tag type="warning">{{selProject.name}} </el-tag></el-tooltip>
@@ -9,6 +9,12 @@
 			<el-tag>{{editForm.createUsername}} 于 {{editForm.createTime}} 创建 </el-tag>
 			<el-divider direction="vertical"></el-divider>
 			<el-date-picker :clearable="false" style="width:150px;" type="date" placeholder="到期日期" v-model="editForm.endTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
+		</el-row>
+		
+		<el-row class="padding-bottom">
+			{{editForm.tagNames?editForm.tagNames:''}} 
+			<el-button type="text" icon="el-icon-plus" @click="tagSelectVisible=true">标签</el-button>
+			<el-button type="text" icon="el-icon-search" @click="flowInfoVisible=true">日志</el-button>
 		</el-row>
 		<el-row class="padding-bottom">
 			<el-steps :active="calcBugStep" simple finish-status="success">
@@ -120,6 +126,11 @@
 			<el-dialog title="流转日志"  :visible.sync="flowInfoVisible"  width="60%"  append-to-body   :close-on-click-modal="false">
 				<xm-question-handle-mng :bug="editForm" :visible="flowInfoVisible"></xm-question-handle-mng>
 			</el-dialog>
+			
+			<el-dialog append-to-body title="标签" :visible.sync="tagSelectVisible" class="dialog-body" width="60%">
+				<tag-mng :tagIds="editForm.tagIds?editForm.tagIds.split(','):[]" :jump="true" @select-confirm="onTagSelected">
+				</tag-mng>
+			</el-dialog>
 	</section>
 </template>
 
@@ -136,6 +147,7 @@
 	import XmTaskList from '../xmTask/XmTaskList';
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
 	import  XmQuestionHandleMng from '../xmQuestionHandle/XmQuestionHandleMng';//修改界面
+  	import TagMng from "@/views/mdp/arc/tag/TagMng";
 
 	export default {
 		computed: {
@@ -206,6 +218,7 @@
 				flowInfoVisible:false,
 				selectMenuVisible:false,
 				receiptMessageEditorVisible:false,
+				tagSelectVisible:false,
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data
@@ -383,10 +396,20 @@
 				this.editForm.menuId=''
 				this.editForm.menuName=""
 			},
+			onTagSelected(tags) {
+				this.tagSelectVisible = false; 
+				if(tags && tags.length>0){ 
+					this.editForm.tagIds=tags.map(i=>i.tagId).join(",")
+					this.editForm.tagNames=tags.map(i=>i.tagName).join(",")
+				}else{
+					this.editForm.tagIds=""
+					this.editForm.tagNames=""
+				}
+			},
 		},//end method
 		components: {
 				//在下面添加其它组件 'xm-question-edit':XmQuestionEdit
-				'upload': AttachmentUpload,XmGroupMng,VueEditor,XmTaskList,xmMenuSelect,XmQuestionHandleMng,
+				'upload': AttachmentUpload,XmGroupMng,VueEditor,XmTaskList,xmMenuSelect,XmQuestionHandleMng,TagMng,
 		},
 		mounted() {
 			console.log("question_add");
