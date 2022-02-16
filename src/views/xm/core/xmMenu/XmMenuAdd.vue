@@ -3,19 +3,25 @@
 		<el-row class="page-main page-height-90">
 			<!--新增界面 XmMenu 项目需求表--> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
-				<el-form-item v-if="parentMenu" label="上级需求" prop="pmenuId">
-					 {{parentMenu.seqNo}} &nbsp; &nbsp; {{parentMenu.menuName}}
+				
+
+				<el-form-item v-if="parentMenu" label="所属需求集" prop="pmenuId"> 
+					<el-link type="primary"  :icon="'el-icon-folder-opened'">{{parentMenu.seqNo}} &nbsp; &nbsp; {{parentMenu.menuName}}</el-link> 
 				</el-form-item> 
-				<el-form-item v-if="!parentMenu" label="上级需求" prop="pmenuId">
-					无上级
+				<el-form-item v-if="!parentMenu" label="所属需求集" prop="pmenuId">
+					无归属需求集
 				</el-form-item> 
+				<el-form-item label="类型" prop="ntype">
+					 <el-radio v-model="addForm.ntype" label="1">需求集</el-radio>
+					<el-radio v-model="addForm.ntype" label="0">需求</el-radio>
+				</el-form-item> 
+				<el-form-item label="名称" prop="menuName">
+					<el-input v-model="addForm.menuName" placeholder="名称" ></el-input>
+				</el-form-item>   
 				<el-form-item label="序号" prop="seqNo">
 					<el-input v-model="addForm.seqNo" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input>
 					<span v-if="parentMenu" style="color:red;">建议：{{parentMenu.seqNo}}.{{parentMenu.children?parentMenu.children.length+1:1}} </span> 
 				</el-form-item> 
-				<el-form-item label="需求名称" prop="menuName">
-					<el-input v-model="addForm.menuName" placeholder="需求名称" ></el-input>
-				</el-form-item>  
 				<el-form-item label="负责人" prop="mmUserid">
 					 <el-tag v-if="addForm.mmUserid" closable @close="clearPmUser">{{addForm.mmUsername}}</el-tag>
 					 <el-tag v-else>未配置</el-tag> 
@@ -105,7 +111,7 @@
 				},
 				//新增界面数据 项目需求表
 				addForm: {
-						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'1',mmUserid:'',mmUsername:''
+						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'1',mmUserid:'',mmUsername:'',ntype:'0',childrenCnt:0,sinceVersion:''
 				},
 				userSelectVisible:false,
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
@@ -122,6 +128,10 @@
 			addSubmit: function () {
 				if(this.parentMenu==null && this.product ==null ){
 					this.$message({showClose: true, message: '请选择产品/或者上级需求进行新增', type:'error' }); 
+					return;
+				}
+				if(this.parentMenu && this.parentMenu.ntype=="0"){
+					 this.$message({showClose: true, message: '需求集下不能再建立子需求', type:'error' }); 
 					return;
 				}
 				this.$refs.addForm.validate((valid) => {

@@ -4,23 +4,29 @@
 			<el-tabs>
 				<el-tab-pane  label="需求详情">
 					<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
-            <el-row class="padding-bottom">
-              <el-steps :active="parseInt(editForm.status)" simple finish-status="success" align-center>
-                <el-step @click.native="on_click(0)" title="初始"></el-step>
-                <el-step @click.native="on_click(1)" title="设计中"></el-step>
-                <el-step @click.native="on_click(2)" title="开发中"></el-step>
-                <el-step @click.native="on_click(3)" title="测试中"></el-step>
-                <el-step @click.native="on_click(4)" title="uat测试"></el-step>
-                <el-step @click.native="on_click(5)" title="已上线"></el-step>
-                <el-step @click.native="on_click(6)" title="已下线"></el-step>
-                <el-step @click.native="on_click(7)" title="已删除"></el-step>
-              </el-steps>
-            </el-row>
+						<el-row class="padding-bottom">
+						<el-steps :active="parseInt(editForm.status)" simple finish-status="success" align-center>
+							<el-step @click.native="on_click(0)" title="初始"></el-step>
+							<el-step @click.native="on_click(1)" title="设计中"></el-step>
+							<el-step @click.native="on_click(2)" title="开发中"></el-step>
+							<el-step @click.native="on_click(3)" title="测试中"></el-step>
+							<el-step @click.native="on_click(4)" title="uat测试"></el-step>
+							<el-step @click.native="on_click(5)" title="已上线"></el-step>
+							<el-step @click.native="on_click(6)" title="已下线"></el-step>
+							<el-step @click.native="on_click(7)" title="已删除"></el-step>
+						</el-steps>
+						</el-row>
+						
+						<el-form-item label="类型" prop="ntype">
+							<el-radio disabled v-model="editForm.ntype" label="1">需求集</el-radio>
+							<el-radio disabled v-model="editForm.ntype" label="0">需求</el-radio>
+						</el-form-item> 
+						<el-form-item label="名称" prop="menuName">
+							<el-input v-model="editForm.menuName" placeholder="名称" ></el-input>
+						</el-form-item>
+						
 						<el-form-item label="序号" prop="seqNo">
 							<el-input v-model="editForm.seqNo" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input>
-						</el-form-item>
-						<el-form-item label="需求名称" prop="menuName">
-							<el-input v-model="editForm.menuName" placeholder="需求名称" ></el-input>
 						</el-form-item>
 						<el-form-item label="负责人" prop="mmUserid">
 							<el-tag v-if="editForm.mmUserid" closable @close="clearPmUser">{{editForm.mmUsername}}</el-tag>
@@ -105,7 +111,7 @@ import XmMenuOverview from './XmMenuOverview.vue';
 				},
 				//新增界面数据 项目需求表
 				editForm: {
-						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'1',mmUserid:'',mmUsername:''
+						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'1',mmUserid:'',mmUsername:'',ntype:'0',childrenCnt:0,sinceVersion:''
 				},
 				userSelectVisible:false,
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
