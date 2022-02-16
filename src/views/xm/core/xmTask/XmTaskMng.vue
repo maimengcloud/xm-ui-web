@@ -6,7 +6,7 @@
 			</el-col>
 			<el-col :span="isTaskCenter!='1' && currentProject?20:24" class="padding-left" :class="{'flex-box': displayType=='agil'}">
 				<el-row>
-					<el-select v-model="selkey" placeholder="请选择任务状态" clearable @change="changeSelKey">
+					<el-select v-model="selkey" placeholder="任务状态" clearable @change="changeSelKey" style="width:100px;" >
 						<el-option class="showall" value="" label="全部状态">全部状态</el-option>
 						<el-option  value="work" label="未完成">未完成</el-option>
 						<el-option  value="finish" label="已完成">已完成</el-option>
@@ -21,12 +21,12 @@
 						<el-option  value="myExecuserStatus6" label="我的付款成功">我的付款成功</el-option>
 						<el-option  value="myExecuserStatus7" label="我放弃的">我放弃的</el-option>
 					</el-select>
-					<el-select class="hidden-md-and-down" v-model="filters.taskType" placeholder="请选择任务类型" clearable @change="changeTaskType">
+					<el-select class="hidden-md-and-down" v-model="filters.taskType" placeholder="任务类型" style="width:100px;" clearable @change="changeTaskType">
 						<el-option class="showall" value=""  label="全部类型">全部类型</el-option>
 						<el-option  v-for="(i,index) in options.taskType" :value="i.optionValue" :label="i.optionName" :key="index">{{i.optionName}}</el-option>
 					</el-select>
 					<el-checkbox class="hidden-md-and-down" v-model="filters.taskOut"   true-label="1" false-label="">众包</el-checkbox>
-					<el-button  class="hidden-md-and-down"  v-if=" !filters.skillTags || filters.skillTags.length==0" icon="el-icon-search" @click="showSkillSelect">选择标签</el-button>
+					<el-button  class="hidden-md-and-down"  v-if=" !filters.skillTags || filters.skillTags.length==0" icon="el-icon-search" @click="showSkillSelect">技能</el-button>
 					<el-tag class="hidden-md-and-down" closable v-for=" (skill,index) in filters.skillTags" :key="index"  @click="showSkillSelect" @close="skillTagClear(skill)">{{skill.skillName}}</el-tag>
 						<font v-if="!selProject">
 							<el-tag  class="hidden-md-and-down" v-if=" filters.selProject" closable  @click="showProjectList" @close="clearProject">{{this.filters.selProject.name}}</el-tag>
@@ -355,10 +355,10 @@
 			<xm-skill-mng :visible="skillVisible" :task-id="currTaskId" :task-name="currTaskName"></xm-skill-mng>
 		</el-drawer> -->
 
-		<el-drawer  :title="'任务'+currTaskName+'的技能要求'" :visible.sync="skillVisible" :size="650" append-to-body  :close-on-click-modal="false">
+		<el-drawer  :title="'任务'+currTaskName+'的技能要求'" :visible.sync="skillVisible" :size="750" append-to-body  :close-on-click-modal="false">
 			<skill-mng :task-skills="taskSkills" :jump="true" @select-confirm="onTaskSkillsSelected"></skill-mng>
 		</el-drawer>
-		<el-drawer  :title="'技能条件'" :visible.sync="showSkillSearchVisible" :size="650" append-to-body  :close-on-click-modal="false">
+		<el-drawer  :title="'技能条件'" :visible.sync="showSkillSearchVisible" :size="750" append-to-body  :close-on-click-modal="false">
 			<skill-mng :task-skills="filters.skillTags" :jump="true" @select-confirm="onTaskSkillsSearchSelected"></skill-mng>
 		</el-drawer>
 
@@ -370,7 +370,7 @@
 			<xm-project-info :sel-project="currentProject" @changeShowInfo="changeShowInfo" @submit="changeShowInfo"></xm-project-info>
 		</el-drawer>
 
-		<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  :size="650"  append-to-body   :close-on-click-modal="false">
+		<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  :size="750"  append-to-body   :close-on-click-modal="false">
 			<xm-project-list class="padding-left"   @project-confirm="onPorjectConfirm"></xm-project-list>
 		</el-drawer>
 
