@@ -306,6 +306,7 @@
 					tags:[],
 					parentMenu:null,
 					parentMenuList:[],
+					status:'',
 				},
 				xmMenus: [],//查询结果
 				pageInfo:{//分页数据
@@ -424,6 +425,9 @@
 					params.pmenuId=this.filters.parentMenu.menuId
 				}
 				
+				if(this.filters.status){
+					params.status=this.filters.status
+				}
 				if( this.dateRanger && this.dateRanger.length==2){
 					params.ctimeStart=this.dateRanger[0] 
 					params.ctimeEnd=this.dateRanger[1] 
@@ -431,7 +435,7 @@
 				if(this.filters.tags && this.filters.tags.length>0){
 					params.tagIdList=this.filters.tags.map(i=>i.tagId)
 				}
-				if(!(params.ctimeStart||params.pmenuId||params.projectId||params.iterationId||params.iterationFilterType||params.mmUserid||params.key||params.taskFilterType||params.tagIdList)){
+				if(!(params.ctimeStart||params.pmenuId||params.projectId||params.iterationId||params.iterationFilterType||params.mmUserid||params.key||params.taskFilterType||params.tagIdList||params.status)){
 					params.isTop="1"
 				}
 				return params;
