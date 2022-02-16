@@ -1,7 +1,7 @@
 <template>
 	<section class="page-container padding border">
 		<el-row class="padding">
-			<font class="font">{{editForm.name}}</font>
+			<font class="font">{{editForm.name}}</font><el-button type="text" icon="el-icon-search" @click="flowInfoVisible=true">日志</el-button>
 		</el-row>
 		<el-row class="padding-bottom">
 			<el-tooltip content="项目"><el-tag type="warning">{{selProject.name}} </el-tag></el-tooltip>
@@ -67,29 +67,7 @@
 					</div>
 					</el-col>
 					<font v-else>无</font>
-				</el-form-item>
-				<el-form-item label="流转信息">
-						<el-button   v-if="flowInfoVisible==false" @click="showFlowInfo" >查询流转信息</el-button>
-						<el-button   v-else @click="flowInfoVisible=false" >隐藏流转信息</el-button>
-
-					<el-col :span="24" style="padding">
-					<!--列表 XmQuestionHandle xm_question_handle-->
-
-						<el-table v-show="flowInfoVisible"  :data="xmQuestionHandles" show-header=false  highlight-current-row v-loading="load.list" border   style="width: 100%;">
-							 
-							<el-table-column     prop="receiptMessage"  min-width="200" >
-								<template slot-scope="scope">
-									<el-row>
-										{{scope.$index+1}}&nbsp;&nbsp;&nbsp;<el-tag>{{scope.row.handlerUsername}}</el-tag> 指派给 <el-tag> {{scope.row.targetUsername}}  </el-tag><span style="font-size:8px;">指派时间：{{scope.row.receiptTime}}</span>
-									</el-row> 
-									<el-row>
-									<div class="rich-context" v-html="scope.row.receiptMessage"></div>
-									</el-row>
-								</template>
-							</el-table-column>  
-						</el-table>
-					</el-col>
-				</el-form-item>
+				</el-form-item> 
 				<el-form-item v-if="!flowInfoVisible" label="上次处理意见" prop="lremark">
 					<el-col v-if="editForm.lremark" :span="24" >
 					<div class="wf-main-context-box"  >
@@ -136,14 +114,19 @@
 				<el-button v-if="editForm.bugStatus=='resolved'" v-loading="load.edit" type="primary" @click.native="handleQuestion('active')" :disabled="load.edit==true">重新激活</el-button>
 				<el-button v-if="editForm.bugStatus=='closed'" v-loading="load.edit" type="primary" @click.native="handleQuestion('active')" :disabled="load.edit==true">重新激活</el-button>
 		</el-row>
+		
+
+			<!--新增 XmQuestion xm_question界面-->
+			<el-dialog title="流转日志"  :visible.sync="flowInfoVisible"  width="60%"  append-to-body   :close-on-click-modal="false">
+				<xm-question-handle-mng :bug="editForm" :visible="flowInfoVisible"></xm-question-handle-mng>
+			</el-dialog>
 	</section>
 </template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { editXmQuestion } from '@/api/xm/core/xmQuestion';
-	import { listXmQuestionHandle } from '@/api/xm/core/xmQuestionHandle';
+	import { editXmQuestion } from '@/api/xm/core/xmQuestion'; 
 	import { mapGetters } from 'vuex';
 	import AttachmentUpload from "@/views/mdp/arc/archiveAttachment/AttachmentUpload"; //上传组件
 	import {sn} from '@/common/js/sequence';
@@ -152,6 +135,7 @@
 	import VueEditor from '@/components/Tinymce/index';
 	import XmTaskList from '../xmTask/XmTaskList';
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
+	import  XmQuestionHandleMng from '../xmQuestionHandle/XmQuestionHandleMng';//修改界面
 
 	export default {
 		computed: {
@@ -232,10 +216,14 @@
 			},
 			//新增提交XmQuestion xm_question 父组件监听@submit="afterAddSubmit"
 			editSubmit: function (tardgetBugStatus) {
-				this.$refs.editForm.validate((valid) => {
-					console.log(this.editForm.handlerUserid);
+				this.$refs.editForm.validate((valid) => { 
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
+							//解决了直接转会创建人
+							if(tardgetBugStatus=='resolved'){
+								this.editForm.handlerUserid=this.editForm.createUserid
+								this.editForm.handlerUsername=this.editForm.createUsername;
+							}
 							this.load.edit=true
 							let params = Object.assign({}, this.editForm);
 							params.tardgetBugStatus=tardgetBugStatus;
@@ -316,17 +304,13 @@
 				this.selectUserVisible=false
 			},
 			handleQuestion:function(tardgetBugStatus){
+				
 				var oldBugStatus=this.editForm.bugStatus;
 				if(tardgetBugStatus=="closed"){
 					if( !this.roles.some(i=>i.roleid=='testAdmin') && !this.roles.some(i=>i.roleid=='tester') && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
 						this.$message({showClose: true,message:"只有测试经理、测试组长、测试员可以关闭bug",type:"error"});
 						return ;
 					}
-				}
-				//解决了直接转会创建人
-				if(tardgetBugStatus=='resolved'){
-					this.editForm.handlerUserid=this.editForm.createUserid
-					this.editForm.handlerUsername=this.editForm.createUsername;
 				}
 				this.editSubmit(tardgetBugStatus);
 			},
@@ -356,21 +340,7 @@
 					return cellValue;
 				}
 
-			},
-			getXmQuestionHandle:function(){
-				var params={
-					questionId:this.editForm.id
-				}
-				this.load.list=true
-				listXmQuestionHandle(params).then(res=>{
-					this.load.list=false
-					var tips = res.data.tips;
-					if(tips.isOk){
-						this.xmQuestionHandles=res.data.data;
-					}
-					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
-				}).catch( err  => this.load.list=false);
-			},
+			}, 
 			showSelectTask:function(){
 				if(this.selProject==null){
 					this.$message({showClose: true, message: "请先选项目", type: 'error' });
@@ -391,15 +361,10 @@
 				this.editForm.handlerUsername=this.editForm.createUsername
 				this.editForm.handlerUserid=this.editForm.createUserid
 			},
-			sendToAsk(){
-
+			sendToAsk(){ 
 				this.editForm.handlerUsername=this.editForm.askUsername
 				this.editForm.handlerUserid=this.editForm.askUserid
-			},
-			showFlowInfo:function(){
-				this.flowInfoVisible=true;
-				this.getXmQuestionHandle();
-			},
+			}, 
 			/**end 在上面加自定义方法**/
 
 			showSelectMenu:function(){
@@ -421,7 +386,7 @@
 		},//end method
 		components: {
 				//在下面添加其它组件 'xm-question-edit':XmQuestionEdit
-				'upload': AttachmentUpload,XmGroupMng,VueEditor,XmTaskList,xmMenuSelect
+				'upload': AttachmentUpload,XmGroupMng,VueEditor,XmTaskList,xmMenuSelect,XmQuestionHandleMng,
 		},
 		mounted() {
 			console.log("question_add");

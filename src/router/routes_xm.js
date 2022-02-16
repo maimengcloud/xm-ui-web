@@ -54,6 +54,7 @@ export default {
 
         { path: 'xmQuestion/XmQuestionAdd', component: _import('xm/core/xmQuestion/XmQuestionAdd'), name: 'XmQuestionAdd', meta: { title: '新建缺陷' }},
         { path: 'xmQuestion/XmQuestionMng', component: _import('xm/core/xmQuestion/XmQuestionMng'), name: 'XmQuestionMng', meta: { title: '缺陷管理' }},
+        { path: 'xmQuestion/XmQuestionMngMy', component: _import('xm/core/xmQuestion/XmQuestionMngMy'), name: 'XmQuestionMngMy', meta: { title: '我的缺陷' }},
         { path: 'xmTestCase/XmTestCaseMng', component: _import('xm/core/xmTestCase/XmTestCaseMng'), name: 'XmTestCaseMng', meta: { title: '测试设计' }},
         { path: 'xmTestCaseExec/XmTestCaseExecMng', component: _import('xm/core/xmTestCaseExec/XmTestCaseExecMng'), name: 'XmTestCaseExecMng', meta: { title: '测试执行' }},
 

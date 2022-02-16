@@ -232,7 +232,7 @@
 				'userInfo','roles'
 			]),
 		},
-		props: ["selProject",'qtype','xmTestCaseExec','xmTestCase','xmIteration','xmProduct'],
+		props: ["selProject",'qtype','xmTestCaseExec','xmTestCase','xmIteration','xmProduct','queryScene'],
 		watch:{
 			selProject:function(selProject){
 				this.filters.selProject=this.selProject
@@ -945,8 +945,11 @@
 			if(this.xmProduct){
 				this.filters.product=this.xmProduct
 			}
-			this.filters.handlerUserid=this.userInfo.userid;
-			this.filters.handlerUsername=this.userInfo.username;
+			if(this.queryScene=='my'){
+				this.filters.handlerUserid=this.userInfo.userid;
+				this.filters.handlerUsername=this.userInfo.username;
+			}
+			
 			this.$nextTick(() => {
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
 				var subHeight=70/1000 * window.innerHeight;
