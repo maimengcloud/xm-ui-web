@@ -28,15 +28,15 @@
 					<el-form-item label="缺陷属性" prop="priority">
 						<el-col :span="24">
 						<el-select v-model="editForm.priority" placeholder="请选择紧急程度">
-							<el-option v-for="(i,index) in options['urgencyLevel']" :label="i.optionName" :value="i.optionValue" :key="i.optionValue">{{i.optionName}}</el-option>
+							<el-option v-for="(i,index) in options['urgencyLevel']" :label="i.optionName" :value="i.optionValue" :key="index">{{i.optionName}}</el-option>
 						</el-select>
 
 						<el-select v-model="editForm.bugSeverity" placeholder="请选择严重程度">
-							<el-option v-for="(i,index) in options['bugSeverity']" :label="i.optionName" :value="i.optionValue" :key="i.optionValue">{{i.optionName}}</el-option>
+							<el-option v-for="(i,index) in options['bugSeverity']" :label="i.optionName" :value="i.optionValue" :key="index">{{i.optionName}}</el-option>
 						</el-select>
 
 						<el-select v-model="editForm.solution" placeholder="请选择解决方案">
-							<el-option v-for="(i,index) in options['bugSolution']" :label="i.optionName" :value="i.optionValue" :key="i.optionValue">{{i.optionName}}</el-option>
+							<el-option v-for="(i,index) in options['bugSolution']" :label="i.optionName" :value="i.optionValue" :key="index">{{i.optionName}}</el-option>
 						</el-select>
 						</el-col>
 					</el-form-item>
@@ -125,7 +125,7 @@
 		</el-row>
 		<el-row class="padding">
 				<el-button @click.native="handleCancel">取消</el-button>
-				<el-button v-if="editForm.bugStatus !='closed'" v-loading="load.edit" type="primary" @click.native="handleQuestion(editForm.bugStatus)" :disabled="load.edit==true">暂存</el-button>
+				<el-button v-if="editForm.bugStatus !='closed'" v-loading="load.edit" type="primary" @click.native="handleQuestion(editForm.bugStatus)" :disabled="load.edit==true">保存</el-button>
 				<el-button v-if="editForm.bugStatus=='active'" v-loading="load.edit" type="primary" @click.native="handleQuestion('confirmed')" :disabled="load.edit==true">确认</el-button>
 				<el-button v-if="editForm.bugStatus=='active'" v-loading="load.edit" type="primary" @click.native="handleQuestion('active')" :disabled="load.edit==true">不是缺陷</el-button>
 				<el-button v-if="editForm.bugStatus=='active'" v-loading="load.edit" type="primary" @click.native="handleQuestion('resolved')" :disabled="load.edit==true">直接解决</el-button>
