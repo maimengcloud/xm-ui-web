@@ -8,7 +8,7 @@
 				<el-input   v-model="filters.key" style="width:200px;" placeholder="模糊查询"> 
 				</el-input> 
 				<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectPhases" icon="el-icon-search">查询</el-button>
-				<el-button  class="hidden-md-and-down" v-loading="load.list" :disabled="load.list==true" v-on:click="calcKeyPaths" icon="el-icon-search">计算关键路径</el-button>
+				<el-button  class="hidden-md-and-down" v-loading="load.edit" :disabled="load.edit==true" v-on:click="calcKeyPaths" icon="el-icon-s-help">计算关键路径</el-button>
 				
 				<el-button  class="hidden-md-and-down"  @click="loadTasksToXmProjectPhase(sels)" v-loading="load.edit" icon="el-icon-s-data">由任务汇总进度数据</el-button> 
 				<el-button   @click="batchEditVisible=true" v-loading="load.edit" icon="el-icon-edit">批量修改</el-button>
@@ -76,6 +76,9 @@
 						<span>
 							<span v-show="scope.row.milestone=='1'">
 								<i class="el-icon-star-on"></i>
+							</span>
+							<span v-show="scope.row.isKeyPath=='1'"> 
+								<i class="el-icon-s-help"></i>
 							</span>
 							<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.seqNo}} &nbsp;&nbsp;  {{scope.row.phaseName}}  
 							</el-link>
