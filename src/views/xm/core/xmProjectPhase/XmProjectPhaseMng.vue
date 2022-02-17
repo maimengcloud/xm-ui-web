@@ -208,7 +208,7 @@
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { listXmProjectPhase, delXmProjectPhase, batchDelXmProjectPhase,batchImportFromTemplate,batchSaveBudget,loadTasksToXmProjectPhase,setPhaseMngUser  } from '@/api/xm/core/xmProjectPhase';
+	import { listXmProjectPhase,calcKeyPaths, delXmProjectPhase, batchDelXmProjectPhase,batchImportFromTemplate,batchSaveBudget,loadTasksToXmProjectPhase,setPhaseMngUser  } from '@/api/xm/core/xmProjectPhase';
 	import  XmProjectPhaseAdd from './XmProjectPhaseAdd';//新增界面
 	import  XmProjectPhaseEdit from './XmProjectPhaseEdit';//修改界面 
   import XmGantt from '../components/xm-gantt';
@@ -893,7 +893,9 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				if(phases && phases.length>0){
 					params.phaseIds=phases.map(i=>i.id);
 				}
+				 this.load.edit=true;
 				loadTasksToXmProjectPhase(params).then(res=>{
+					 this.load.edit=false;
 					var tips = res.data.tips
 					if(tips.isOk){
 						this.getXmProjectPhases()
@@ -905,7 +907,9 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				var params={
 					projectId:this.selProject.id,
  				}
+				 this.load.edit=true;
 				calcKeyPaths(params).then(res=>{
+					 this.load.edit=false;
 					var tips = res.data.tips
 					if(tips.isOk){
 						this.getXmProjectPhases()
