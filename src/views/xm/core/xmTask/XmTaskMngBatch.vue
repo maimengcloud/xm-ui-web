@@ -16,6 +16,7 @@
 			<el-row style="padding-top:12px;" >  
 						<!-- show-summary -->
 					<el-table
+						size="small"
 						ref="table"
 						:height="tableHeight"
           				show-summary
@@ -30,13 +31,12 @@
 						fit
 						border
 						default-expand-all
-						:tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+						:tree-props="{children: 'children', hasChildren: 'childrenCnt'}"
 						row-key="id"
 						>
 						<el-table-column  type="selection" width="60"></el-table-column> 
-  						<el-table-column  prop="sortLevel"  label="序号" width="150">
+  						<el-table-column  prop="sortLevel"  label="序号" width="300">
  							<template slot-scope="scope">
-								<div style="display:flex;width:100%;">
 									<el-popover
 										placement="top"
 										width="400"
@@ -49,8 +49,7 @@
 										</div>
 										<el-button slot="reference" :type="scope.row.opType?'success':'plain'"   icon="el-icon-edit"></el-button> 
 									</el-popover>
-									<el-input   style="width:100%;"   v-model="scope.row.sortLevel"  @change="fieldChange(scope.row,'sortLevel')"></el-input>
-								</div> 								
+									<el-input   style="width:100px;"   v-model="scope.row.sortLevel"  @change="fieldChange(scope.row,'sortLevel')"></el-input>	
 							</template>
 						</el-table-column>
 						<!-- <el-table-column sortable width="40" type="selection"></el-table-column> -->
@@ -59,28 +58,36 @@
 								<el-input   v-model="scope.row.name"  @change="fieldChange(scope.row,'name')"></el-input>  								
 							</template>
 						</el-table-column> 
-						<el-table-column   prop="startTime" label="任务起止时间" width="160">
+						<el-table-column   prop="startTime" label="任务起止时间" width="300">
 							<template slot-scope="scope">
-								<div>
-									<el-date-picker  style="width:100%;"
+								<el-row>
+									<el-col :span="12">
+									<el-date-picker 
 										v-model="scope.row.startTime"
-										align="right"
+										size="small"
+										style="width:99%;"
+										align="left"
 										type="date"
 										value-format="yyyy-MM-dd HH:mm:ss"
 										format="yyyy-MM-dd"
 										placeholder="选择日期"
 										:picker-options="pickerOptions" @change="fieldChange(scope.row,'startTime')">
 									</el-date-picker>  
-									<el-date-picker  style="width:100%;"
+									</el-col>
+									<el-col :span="12">
+									<el-date-picker 
 										v-model="scope.row.endTime"
+										size="small"
+										style="width:99%;"
 										align="right"
 										type="date"
 										value-format="yyyy-MM-dd HH:mm:ss"
 										format="yyyy-MM-dd"
 										placeholder="选择日期"
 										:picker-options="pickerOptions" @change="fieldChange(scope.row,'endTime')">
-									</el-date-picker>  
-								</div> 
+									</el-date-picker> 
+									</el-col> 
+								</el-row> 
 
 							</template>
 						</el-table-column> 
