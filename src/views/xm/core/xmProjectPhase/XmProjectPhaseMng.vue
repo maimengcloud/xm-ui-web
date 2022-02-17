@@ -85,7 +85,7 @@
 						<el-link v-else type="primary"   @click="groupUserSelectVisible=true">{{scope.row.mngUsername}}</el-link>
 					</template>
 				</el-table-column>
-				<el-table-column  prop="beginDate" label="起止时间" min-width="120" show-overflow-tooltip>
+				<el-table-column  prop="beginDate" label="起止时间" width="120" show-overflow-tooltip>
 					<template slot-scope="scope">  
 								<font class="hidden-md-and-down" >{{formatDate(scope.row.beginDate)}}<br>{{formatDate(scope.row.endDate)}}  </font> 
 					</template>
