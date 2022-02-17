@@ -92,20 +92,11 @@
 					<el-row class="padding-top">  
 						<el-table lazy :load="loadMenusLazy"   stripe fit border ref="table" :max-height="tableHeight" :data="xmMenusTreeData"  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
 							<el-table-column sortable type="selection" width="40"></el-table-column> 
-							<el-table-column prop="menuName" label="需求名称" min-width="160" show-overflow-tooltip> 
+							<el-table-column prop="menuName" label="需求名称" min-width="160"> 
 								<template slot-scope="scope">
-									 <el-link type="primary"  @click="showEdit(scope.row)" :icon="scope.row.ntype=='1'?'el-icon-folder-opened':''">{{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}}</el-link> 
-									<font class="align-right">
-  										<el-popover 
-											placement="top-start"
-											title="需求备注"
-											width="400"
-											trigger="click" >
-											<div v-html="scope.row.remark">
-											</div> 
-											<el-tag slot="reference" icon="el-icon-chat-line-square">描述</el-tag>
-										</el-popover> 
-									</font>
+									
+									 <el-link type="primary"  @click="showEdit(scope.row)" :icon="scope.row.ntype=='1'?'el-icon-folder-opened':''">{{scope.row.seqNo}}&nbsp;&nbsp;</el-link> 
+									 {{scope.row.menuName}}
 								</template>
 							</el-table-column>  
 							<el-table-column prop="status" label="状态"  width="80" show-overflow-tooltip> 
@@ -256,18 +247,9 @@
 			]),
 			
       xmMenusTreeData() {
-        let xmMenus = JSON.parse(JSON.stringify(this.xmMenus || []));
-        if (this.valueChangeRows && this.valueChangeRows.length) {
-          this.valueChangeRows.forEach(c => {
-            var index = xmMenus.findIndex(i=>i.id==c.id);
-            const oldRow = JSON.parse(JSON.stringify(xmMenus[index]));
-            xmMenus.splice(index,1);
-            c.parentTaskid = oldRow.parentTaskid;
-            xmMenus.push(c);
-          })
-        }
+        let xmMenus =this.xmMenus;
         
-        const xmMenusTreeData = this.translateDataToTree(xmMenus); 
+        let xmMenusTreeData = this.translateDataToTree(xmMenus); 
         
 				 return xmMenusTreeData;
 			},
@@ -440,10 +422,7 @@
 				}
 				return params;
 			},
-			loadMenusLazy(row, treeNode, resolve) {  
-				if(row.children&&row.children.length>0){
-					resolve(row.children) 
-				}else{
+			loadMenusLazy(row, treeNode, resolve) {   
 					var params={pmenuId:row.menuId}
 					params=this.getParams(params);
 					params.isTop=""
@@ -460,8 +439,7 @@
 						}else{
 							resolve([])
 						}
-					}).catch( err => this.load.list = false );  
-				}
+					}).catch( err => this.load.list = false );   
 				
 			},
 			//获取列表 XmMenu xm_project_menu 
@@ -472,6 +450,7 @@
 					total: this.pageInfo.total,
 					count:this.pageInfo.count
 				};
+				this.xmMenus=[]
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
 					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 

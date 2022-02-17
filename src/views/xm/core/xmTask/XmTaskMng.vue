@@ -379,7 +379,7 @@
                 min-width="250"
               >
                 <template slot-scope="scope">
-                  <el-link type="primary" @click.stop="showDrawer(scope.row)">
+                  <el-link type="primary" @click.stop="showDrawer(scope.row)" :icon="scope.row.ntype=='1'?'el-icon-folder-opened':''">
                     {{ scope.row.sortLevel }}&nbsp;
                     <el-tag v-if="scope.row.level <= '2'" type="info"
                       >轻微</el-tag
@@ -402,13 +402,16 @@
                 width="150"
               >
                 <template slot-scope="scope">
+                  <font v-if="scope.row.ntype!='1'">
                   {{ "￥" + getAmountDesc(scope.row.budgetCost) }},{{
                     scope.row.budgetWorkload
                   }}人时
+                  </font>
                 </template>
               </el-table-column>
               <el-table-column sortable prop="rate" label="进度" width="100">
                 <template slot-scope="scope">
+                   <font v-if="scope.row.ntype!='1'">
                   <el-link
                     style="border-radius: 30px"
                     :type="scope.row.rate >= 100 ? 'success' : 'warning'"
@@ -416,6 +419,7 @@
                   >
                     {{ (scope.row.rate != null ? scope.row.rate : 0) + "%" }}
                   </el-link>
+                  </font>
                 </template>
               </el-table-column>
               
@@ -429,6 +433,7 @@
                 show-overflow-tooltip
               >
                 <template slot-scope="scope">
+                  <font v-if="scope.row.ntype!='1'">
                   <span
                     v-for="(item, index) in [formatExeUsernames(scope.row)]"
                     :key="index"
@@ -439,6 +444,7 @@
                       >{{ item.showMsg }}</el-link
                     >
                   </span>
+                  </font>
                 </template>
               </el-table-column>
               <el-table-column
@@ -449,6 +455,7 @@
                 show-overflow-tooltip
               >
                 <template slot-scope="scope">
+                   <font v-if="scope.row.ntype!='1'">
                   <el-link @click="drawerVisible = true"
                     >{{ getDateString(scope.row.startTime) }}&nbsp;~&nbsp;{{
                       getDateString(scope.row.endTime)
@@ -459,6 +466,8 @@
 											<el-tag :type="item.type">{{getDateString(scope.row.startTime)}}~{{getDateString(scope.row.endTime)}} {{item.desc}}</el-tag>
 										</div>  
 									-->
+                  
+                  </font>
                 </template>
               </el-table-column>
               <el-table-column
@@ -469,9 +478,11 @@
               >
                 <template slot="header"> 需求 </template>
                 <template slot-scope="scope">
+                   <font v-if="scope.row.ntype!='1'">
                   <el-link @click.stop="toMenu(scope.row)">{{
                     scope.row.menuName ? scope.row.menuName : "去关联需求"
                   }}</el-link>
+                   </font>
                 </template>
               </el-table-column>
 

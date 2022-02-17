@@ -26,13 +26,13 @@
 				<el-card class="box-card" header="基础信息" id="baseInfo" shadow="hover"> 
 					
 					<el-form-item label="" prop="ntype">
-						<el-radio  v-model="editForm.ntype" label="1">需求集</el-radio>
-						<el-radio  v-model="editForm.ntype" label="0">需求</el-radio>
+						<el-radio  v-model="editForm.ntype" label="1">任务集</el-radio>
+						<el-radio  v-model="editForm.ntype" label="0">任务</el-radio>
 					</el-form-item>  
-					<el-form-item label="任务名称" prop="name">
+					<el-form-item label="名称" prop="name">
 						<el-row>
 						<el-col :span="24" style="padding-left:10px;">
-							<el-input v-model="editForm.name" placeholder="任务名称" ></el-input>
+							<el-input v-model="editForm.name" placeholder="名称" ></el-input>
 							<el-tooltip content="归属项目"><el-tag>{{editForm.projectName}}</el-tag></el-tooltip>
 							<el-divider direction="vertical"></el-divider>
 							<el-tooltip content="上级" ><el-tag>{{editForm.parentTaskname?editForm.parentTaskname:"无上级"}}</el-tag></el-tooltip>
@@ -43,6 +43,7 @@
 						<el-input  v-model="editForm.sortLevel" style="width:30%;"   placeholder="如1.0或者1.2.3等" ></el-input> <font style="color:red;">如1.0或者1.2.3等</font>
 						<el-checkbox v-model="editForm.milestone" :true-label="1" :false-label="0">标记为里程碑</el-checkbox>
 					</el-form-item> 
+					<div v-if="editForm.ntype!='1'">
 					<el-form-item label="前置任务"> 
 						<el-tag v-if="editForm.preTaskid"  @close="clearPreTask" closable >{{editForm.preTaskname}}</el-tag>
 						<el-button    @click.stop="selectTaskVisible=true"  >选前置任务</el-button> 
@@ -68,8 +69,10 @@
 					<el-form-item label="任务描述" prop="description">
 						<el-input type="textarea" :autosize="{ minRows: 4, maxRows: 10}" v-model="editForm.description" placeholder="任务描述" ></el-input>
 					</el-form-item>  
+					</div>
 				</el-card> 
- 				<el-card class="box-card" id="planInfo" header="进度计划" shadow="hover"> 
+				<div v-if="editForm.ntype!='1'">
+ 				<el-card class="box-card" id="planInfo" header="进度计划" shadow="hover" > 
 					<el-form-item label="任务负责人"> 
 						<el-tag  v-if="editForm.createUserid" style="margin-left:10px;border-radius:30px;"  >{{editForm.createUsername}}</el-tag>
 						<el-tag  v-else style="margin-left:10px;border-radius:30px;"  icon="el-icon-right" >未设置</el-tag>
@@ -169,6 +172,7 @@
 						</el-steps>
 					</el-form-item> 
 				 </el-card>  
+				</div>
 			</el-form>  
 		</el-row>
 		<el-row class="padding">
