@@ -214,7 +214,7 @@
 				}
 				if(!this.projectPhaseTemplate){
 
-					this.$message.error("请选择阶段")
+					this.$message.error("请选择计划")
 					return;
 				}
 				this.addFormVisible = true;

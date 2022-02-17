@@ -2,9 +2,9 @@
 	<section>  
 		<el-row>
 		<el-table :height="tableHeight" ref="selectPhaseTable" :data="projectPhaseTreeData"    :show-summary="false"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
- 			<el-table-column prop="phaseName" label="阶段名称" min-width="160" show-overflow-tooltip> 
+ 			<el-table-column prop="phaseName" label="计划名称" min-width="160" show-overflow-tooltip> 
 				 <template slot="header" slot-scope="scope">
-					<div>阶段  <el-tag  v-if="editForm.id" closable @close="clearSelectPhase()"> {{editForm.phaseName}}</el-tag></div>
+					<div>计划  <el-tag  v-if="editForm.id" closable @close="clearSelectPhase()"> {{editForm.phaseName}}</el-tag></div>
 				</template>
 				<template slot-scope="scope">  
 					{{scope.row.seqNo}} &nbsp;&nbsp;<el-tooltip v-if="scope.row.milestone=='1'" content="里程碑"><i  class="el-icon-star-on"></i></el-tooltip>{{scope.row.phaseName}}
@@ -108,7 +108,7 @@
 				xmRecordVisible:false,
 				valueChangeRows:[],
 				batchEditVisible:false,
-				menuVisible:false,//由需求自动创建阶段计划
+				menuVisible:false,//由需求自动创建计划
         pickerOptions: util.pickerOptions('date'),
         gstcVisible:false,
 		tableHeight:300,

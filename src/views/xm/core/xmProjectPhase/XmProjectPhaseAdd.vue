@@ -4,8 +4,8 @@
 			<!--新增界面 XmProjectPhase xm_project_phase-->
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
 				<el-row class="border padding">
-					<el-form-item label="阶段名称" prop="phaseName">
-						<el-input v-model="addForm.phaseName" placeholder="阶段名称" ></el-input>
+					<el-form-item label="计划名称" prop="phaseName">
+						<el-input v-model="addForm.phaseName" placeholder="计划名称" ></el-input>
 					</el-form-item>
 					<el-form-item label="序号" prop="seqNo">
 						<el-input v-model="addForm.seqNo" style="width:50%;"  placeholder="排序序号，值越小越靠前，如1.0,2.0等"></el-input> 
@@ -198,10 +198,10 @@
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				addFormRules: {
 					id: [
-						//{ required: true, message: '阶段主键不能为空', trigger: 'blur' }
+						//{ required: true, message: '计划主键不能为空', trigger: 'blur' }
 					],
 					phaseName: [
-						{ required: true, message: '阶段名称不能为空', trigger: 'blur' }
+						{ required: true, message: '计划名称不能为空', trigger: 'blur' }
 					],
 					planType: [
 						{ required: true, message: '请选择计划类型', trigger: 'blur' }

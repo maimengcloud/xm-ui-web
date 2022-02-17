@@ -12,10 +12,10 @@
 				<el-table-column sortable type="selection" width="40"></el-table-column>
 				<el-table-column sortable type="index" width="40"></el-table-column>
 				<el-table-column prop="baseCtime" label="基线建立时间" min-width="80" ></el-table-column>
-				<el-table-column prop="projectPhaseId" label="阶段主键" min-width="80" ></el-table-column>
-				<el-table-column prop="phaseName" label="阶段名称" min-width="80" ></el-table-column>
+				<el-table-column prop="projectPhaseId" label="计划主键" min-width="80" ></el-table-column>
+				<el-table-column prop="phaseName" label="计划名称" min-width="80" ></el-table-column>
 				<el-table-column prop="remark" label="备注" min-width="80" ></el-table-column>
-				<el-table-column prop="parentPhaseId" label="上级阶段编号" min-width="80" ></el-table-column>
+				<el-table-column prop="parentPhaseId" label="上级计划编号" min-width="80" ></el-table-column>
 				<el-table-column prop="branchId" label="机构编号" min-width="80" ></el-table-column>
 				<el-table-column prop="projectId" label="当前项目编号" min-width="80" ></el-table-column>
 				<el-table-column prop="beginDate" label="开始时间" min-width="80" ></el-table-column>

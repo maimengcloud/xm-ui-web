@@ -26,8 +26,8 @@
 				<el-table-column prop="totalCloseBugCnt" label="已关闭bug总数" min-width="80" ></el-table-column>
 				<el-table-column prop="totalResolveBugCnt" label="已解决bug总数" min-width="80" ></el-table-column>
 				<el-table-column prop="totalCompleteTaskCnt" label="已完成任务总数-来自任务表" min-width="80" ></el-table-column>
-				<el-table-column prop="totalPhaseCnt" label="项目阶段计划数" min-width="80" ></el-table-column>
-				<el-table-column prop="totalCompletePhaseCnt" label="项目阶段计划已完成数" min-width="80" ></el-table-column>
+				<el-table-column prop="totalPhaseCnt" label="项目计划数" min-width="80" ></el-table-column>
+				<el-table-column prop="totalCompletePhaseCnt" label="项目计划已完成数" min-width="80" ></el-table-column>
 				<el-table-column prop="totalNeedPayAmount" label="待付款总金额" min-width="80" ></el-table-column>
 				<el-table-column prop="totalFinishPayAmount" label="已付款总金额" min-width="80" ></el-table-column>
 				<el-table-column prop="totalNeedColAmount" label="待收款总金额" min-width="80" ></el-table-column>

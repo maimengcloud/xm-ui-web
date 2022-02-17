@@ -69,51 +69,16 @@
  		<el-row  class="padding-top" v-show="batchEditVisible==false"> 
 			<!--列表 XmProjectPhase xm_project_phase-->
 			<el-table ref="table" :height="tableHeight" v-show="!gstcVisible "  default-expand-all :data="projectPhaseTreeData"  :summary-method="getSummariesForNoBatchEdit"  :show-summary="true"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-  				<el-table-column prop="phaseName" label="阶段名称" min-width="150" show-overflow-tooltip> 
+  				<el-table-column prop="phaseName" label="计划名称" min-width="150" show-overflow-tooltip> 
 					 <template slot-scope="scope">   
 						<span>
-							{{scope.row.seqNo}} &nbsp;&nbsp; 
-							<span v-show="scope.row.milestone=='1'">
-								<i class="el-icon-star-on"></i>
-							</span>
-							<span>
-								<el-dropdown @command="handleCommand" :hide-on-click="false">
-									<span class="el-dropdown-link">
-										<i class="el-icon-setting"></i>
-									</span>
-									<el-dropdown-menu slot="dropdown">
-										<el-dropdown-item :command="{type:'showSubAdd',data:scope.row}">+子阶段</el-dropdown-item>
-										<el-dropdown-item :command="{type:'showPhaseTemplate',data:scope.row}">+从模板批量导入子阶段</el-dropdown-item> 
-										<el-dropdown-item :command="{type:'showMenu',data:scope.row}">+由需求创建子阶段</el-dropdown-item> 
-
-										<el-dropdown-item :command="{type:'showEdit',data:scope.row}">编辑</el-dropdown-item>  
-										<el-dropdown-item :command="{type:'loadTasksToXmProjectPhase',data:scope.row}" >从任务汇总实际数据</el-dropdown-item>  
-										<el-dropdown-item :command="{type:'showLog',data:scope.row}">日志</el-dropdown-item>  
-										<el-dropdown-item :command="{type:'handleDel',data:scope.row}" >删除</el-dropdown-item>  
-										<el-dropdown-item icon="el-icon-success"   :command="{type:'sendToProcessApprova',row:scope.row,bizKey:'xm_project_start_approva'}">变更发审(审核通过后起效)</el-dropdown-item> 
-										<el-dropdown-item icon="el-icon-success"   :command="{type:'sendToProcessApprova',row:scope.row,bizKey:'xm_project_delete_approva'}">删除发审(审核通过后删除)</el-dropdown-item>  
-									</el-dropdown-menu>
-								</el-dropdown> 
-							</span>
-							<span>
-								<el-button type="text" v-if="!scope.row.mngUserid"  v-model="scope.row.mngUsername" @click="groupUserSelectVisible=true" icon="el-icon-setting">去设置</el-button>  
-								<el-link v-else type="primary"   @click="groupUserSelectVisible=true">{{scope.row.mngUsername}}</el-link>
-							</span> 
-							<span>
-								<el-tag :type="scope.row.actRate>=100?'success':'primary'"> {{ (scope.row.actRate!=null?scope.row.actRate:0)+'%'}} </el-tag> 
-							</span>	
-							<el-link type="primary" @click="showEdit(scope.row)"> {{scope.row.phaseName}}</el-link>
+							
+							<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.seqNo}} &nbsp;&nbsp;  {{scope.row.phaseName}}  
+							</el-link>
+							<font v-for="item in [calcTaskStateByTime(scope.row.beginDate,scope.row.endDate,scope.row.actRate,scope.phaseStatus)]" :key="item.status"><el-tag :type="item.status">{{item.remark}}</el-tag></font> 
 						</span>
-						
-						<font style="float:right;"> 
-							<span>
-								<font class="hidden-md-and-down" >{{formatDate(scope.row.beginDate)}}{{formatDate(scope.row.endDate)}}  </font>
-								<font v-for="item in [calcTaskStateByTime(scope.row.beginDate,scope.row.endDate,scope.row.actRate,scope.phaseStatus)]" :key="item.status"><el-tag :type="item.status">{{item.remark}}</el-tag></font> 
-							</span>
-						</font> 
 					 </template>
 				</el-table-column>   
-				<!--
 				<el-table-column  prop="mngUsername" label="责任人" width="80" show-overflow-tooltip> 
 					<template  slot-scope="scope">
 						<el-button type="text" v-if="!scope.row.mngUserid"  v-model="scope.row.mngUsername" @click="groupUserSelectVisible=true" icon="el-icon-setting">去设置</el-button>  
@@ -122,28 +87,28 @@
 				</el-table-column>
 				<el-table-column  prop="beginDate" label="起止时间" min-width="120" show-overflow-tooltip>
 					<template slot-scope="scope">  
-								<font class="hidden-md-and-down" >{{formatDate(scope.row.beginDate)}}<br>{{formatDate(scope.row.endDate)}}  </font>
-								<font v-for="item in [calcTaskStateByTime(scope.row.beginDate,scope.row.endDate,scope.row.actRate,scope.phaseStatus)]" :key="item.status"><el-tag :type="item.status">{{item.remark}}</el-tag></font> 
+								<font class="hidden-md-and-down" >{{formatDate(scope.row.beginDate)}}<br>{{formatDate(scope.row.endDate)}}  </font> 
 					</template>
 				</el-table-column>
-				<el-table-column prop="actRate" label="进度.状态" width="100">
+				<el-table-column prop="actRate" label="进度" width="100">
 					<template slot-scope="scope"> 
 							<el-tag :type="scope.row.actRate>=100?'success':'primary'"> {{ (scope.row.actRate!=null?scope.row.actRate:0)+'%'}} </el-tag>  
 					</template>
 				</el-table-column>
-				-->
-				<el-table-column  prop="phaseBudgetHours" label="工时(计划>实际).人时" width="150" > 
-					<template slot-scope="scope">  
-						 {{scope.row.phaseBudgetWorkload}} <i class="el-icon-d-arrow-right"></i>
-						 {{scope.row.phaseActWorkload}} 
-					</template>
-				</el-table-column>  
-				<el-table-column  prop="phaseBudgetCostAt" label="成本(计划>实际).元" width="150" > 
-					<template slot-scope="scope">  
-						 {{scope.row.phaseBudgetCostAt}} <i class="el-icon-d-arrow-right"></i>
-						 {{scope.row.actCostAt}}
-					</template> 
-				</el-table-column>     
+			
+				<el-table-column  label="工作量(人时)" width="100"> 
+					<el-table-column  prop="phaseBudgetWorkload" label="预计" width="100" >  
+					</el-table-column>  
+					<el-table-column  prop="phaseActWorkload" label="实际" width="100" >  
+					</el-table-column> 
+				</el-table-column>
+				
+				<el-table-column  label="成本(元)" width="100"> 
+					<el-table-column  prop="phaseBudgetCostAt" label="预计" width="100" >  
+					</el-table-column>  
+					<el-table-column  prop="actCostAt" label="实际" width="100" >  
+					</el-table-column> 
+				</el-table-column>    
 				<el-table-column  prop="bizFlowState" label="审批状态" width="100" >  
 					<template slot-scope="scope">
 						<el-tooltip  :content="showApprovaInfo(scope.row)" placement="bottom" effect="light">
@@ -153,6 +118,48 @@
 						<el-tag v-else-if="scope.row.flowState=='3'">未通过</el-tag>
 						<el-tag v-else-if="scope.row.flowState=='4'">已取消</el-tag> 
 						</el-tooltip> 
+					</template>
+				</el-table-column>  
+				<el-table-column    label="操作" width="200" >  
+					<template slot-scope="scope">
+						<el-popover style="padding-left:10px;" 
+							placement="top-start"
+							width="250"
+							trigger="click" > 
+							<el-row> 
+								<el-col :span="24" style="padding-top:5px;">
+									<el-button   @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus">子计划</el-button> 
+								</el-col>  
+								<el-col :span="24" style="padding-top:5px;">
+									<el-button  @click="showPhaseTemplate(scope.row)" icon="el-icon-upload2">从模板批量导入子计划</el-button> 
+								</el-col> 
+								<el-col :span="24" style="padding-top:5px;">
+									<el-button  @click="showMenu(scope.row)" icon="el-icon-upload2">由需求创建子计划</el-button> 
+								</el-col> 
+							</el-row>   
+							<el-button type="text"  slot="reference" icon="el-icon-plus">添加</el-button>
+						</el-popover>   
+						<el-button type="text"  @click="showMenu(scope.row)" icon="el-icon-edit">编辑</el-button> 
+						<el-button type="text"  @click="handleDel(scope.row)" icon="el-icon-delete">删除</el-button>  
+						<el-button type="text"  @click="showLog(scope.row)" icon="el-icon-file">日志</el-button> 
+						<el-button type="text"  @click="loadTasksToXmProjectPhase(scope.row)" icon="el-icon-upload2">汇总进度</el-button> 
+							<span v-show="scope.row.milestone=='1'">
+								<i class="el-icon-star-on"></i>
+							</span>
+							<span>
+								<el-dropdown @command="handleCommand" :hide-on-click="false">
+
+										
+
+									<span class="el-dropdown-link">
+										<i class="el-icon-more"></i>
+									</span>
+									<el-dropdown-menu slot="dropdown"> 
+										<el-dropdown-item icon="el-icon-success"   :command="{type:'sendToProcessApprova',row:scope.row,bizKey:'xm_project_start_approva'}">变更发审(审核通过后起效)</el-dropdown-item> 
+										<el-dropdown-item icon="el-icon-success"   :command="{type:'sendToProcessApprova',row:scope.row,bizKey:'xm_project_delete_approva'}">删除发审(审核通过后删除)</el-dropdown-item>  
+									</el-dropdown-menu>
+								</el-dropdown> 
+							</span>
 					</template>
 				</el-table-column>  
 				
@@ -172,8 +179,8 @@
 			<el-drawer title="新增计划" :visible.sync="addFormVisible" :with-header="false" :size="800"  :close-on-click-modal="false" append-to-body>
 				<xm-project-phase-add :parent-project-phase="parentProjectPhase" :xm-project-phase="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit" ></xm-project-phase-add>
 			</el-drawer> 
-			<!--阶段模板-->
-			<el-drawer title="阶段模板" :visible.sync="phaseTemplateVisible"  size="80%"  :close-on-click-modal="false" append-to-body>
+			<!--计划模板-->
+			<el-drawer title="计划模板" :visible.sync="phaseTemplateVisible"  size="80%"  :close-on-click-modal="false" append-to-body>
 				<xm-project-phase-template-mng  :is-select="true"  :visible="phaseTemplateVisible" @cancel="phaseTemplateVisible=false" @selected-confirm="afterPhaseTemplateSelected" ></xm-project-phase-template-mng>
 			</el-drawer> 
 			<el-drawer :title="editForm==null?'操作日志':editForm.phaseName+'操作日志'" center   :visible.sync="xmRecordVisible"  size="50%"  :close-on-click-modal="false" append-to-body>
@@ -361,7 +368,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				xmRecordVisible:false,
 				valueChangeRows:[],
 				batchEditVisible:false,
-				menuVisible:false,//由需求自动创建阶段计划
+				menuVisible:false,//由需求自动创建计划
 				tableHeight:200,
 				pickerOptions: util.pickerOptions('date'),
 				gstcVisible:false,
@@ -457,7 +464,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			showEdit: function ( row,index ) {
 				
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
 					return; 
 				}
 				this.editForm = Object.assign({}, row);
@@ -467,7 +474,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			showAdd: function () { 
 				
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
 					return; 
 				}
 				this.parentProjectPhase=null;
@@ -479,7 +486,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			
 			showSubAdd: function (parentProjectPhase) {  
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
 					return; 
 				}
 				var myrow=JSON.parse(JSON.stringify(parentProjectPhase))
@@ -591,7 +598,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			handleDel: function (row,index) { 
 				
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
 					return; 
 				}
 				if(!!row.bizFlowState ){
@@ -623,7 +630,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			batchDel: function () {
 				
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
 					return; 
 				}
 				var phases=this.sels.filter(i=>{
@@ -655,7 +662,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			showPhaseTemplate: function(parentPhase){
 				
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
 					return; 
 				}
 				this.parentProjectPhase=parentPhase
@@ -759,7 +766,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			sendToProcessApprova:function(row,bizKey){   
 				
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
 					return; 
 				}
 				if(row.bizFlowState=='1'){
@@ -846,7 +853,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			handleCommand(command) { 
 				
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
 					return; 
 				}
  				if(command.type=='sendToProcessApprova'){
@@ -1011,7 +1018,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			saveBatchEdit:function(){
 				
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
 					return; 
 				}
 				if(this.valueChangeRows.length==0){
@@ -1207,7 +1214,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			showMenu:function(parentPhase){
 				
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
 					return; 
 				}
 				this.parentProjectPhase=parentPhase
@@ -1233,7 +1240,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			handlePopover:function(row,opType){
 				
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
 					return; 
 				}
 				if('add'==opType){

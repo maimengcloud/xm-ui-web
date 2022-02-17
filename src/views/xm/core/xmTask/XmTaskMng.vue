@@ -1637,7 +1637,7 @@ export default {
       if (this.currentProjectPhase == null) {
         this.$message({
           showClose: true,
-          message: "请先选择项目阶段计划",
+          message: "请先选择项目计划",
           type: "error",
         });
         return false;
@@ -1668,7 +1668,7 @@ export default {
       if (!this.currentProjectPhase) {
         this.$message({
           showClose: true,
-          message: "请先选择项目阶段计划",
+          message: "请先选择项目计划",
           type: "error",
         });
         return;
@@ -1804,7 +1804,7 @@ export default {
     },
     showMenu: function (parentTask) {
       if (this.projectPhase == null) {
-        this.$message.error("请先选中阶段计划");
+        this.$message.error("请先选中计划");
         return;
       }
 
@@ -2182,7 +2182,7 @@ export default {
       if (this.projectPhase == null) {
         this.$message({
           showClose: true,
-          message: "请选择阶段计划再编辑",
+          message: "请选择计划再编辑",
           type: "error",
         });
         return;

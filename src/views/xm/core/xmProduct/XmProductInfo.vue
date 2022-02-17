@@ -37,8 +37,8 @@
 				</el-menu-item>
 				<el-submenu index="规划与里程碑">
 					<template slot="title">规划与里程碑 </template>
-					<el-menu-item index="阶段计划及里程碑">
-					 <span slot="title"><i class="el-icon-odometer"  ></i>阶段计划及里程碑</span>
+					<el-menu-item index="计划及里程碑">
+					 <span slot="title"><i class="el-icon-odometer"  ></i>计划及里程碑</span>
 					</el-menu-item>
 					<el-menu-item  index="测试计划">
 						<span slot="title"><i class="el-icon-odometer"  ></i>测试计划</span>
@@ -143,7 +143,7 @@
 			  <xm-question v-if="infotype=='缺陷'" :qtype="'bug'" :xm-product='xmProduct' ref="xmQuestion"></xm-question>
 			  <xm-group-mng v-if="infotype=='团队'" :xm-product="xmProduct"></xm-group-mng>
 			  <xm-file-mng v-if="infotype=='文档'" :xm-product="xmProduct"></xm-file-mng>
-			  <xm-project-phase-mng v-if="infotype=='阶段计划及里程碑'" ref="xmProjectPhaseMng" :xm-product="xmProduct" ></xm-project-phase-mng>
+			  <xm-project-phase-mng v-if="infotype=='计划及里程碑'" ref="xmProjectPhaseMng" :xm-product="xmProduct" ></xm-project-phase-mng>
 			  <xm-test-case-exec-mng v-if="infotype=='测试计划'" :visible="infotype=='测试计划'"  :xm-product='xmProduct' ref="xmQuestion"></xm-test-case-exec-mng>
 			<xm-menu-with-plan v-if="infotype=='需求监控'" ref="xmMenuWithPlan" :xm-product="xmProduct"></xm-menu-with-plan>
 			<xm-project-state-mng v-if="infotype=='项目监控'" :xm-product="xmProduct"></xm-project-state-mng>
@@ -222,7 +222,7 @@ import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
 				infotype:"产品概览",
 				load:{list:false,edit:false},
         groupUserVisible:false,
-        exportArr: ['任务', '阶段计划', '需求监控']
+        exportArr: ['任务', '计划', '需求监控']
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -292,8 +292,8 @@ import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
           keyList = ['sortLevel', 'name', 'menuName', 'budgetCost', 'budgetWorkload', 'exeUsernames', 'rate', 'startTime', 'endTime', 'taskSkillNames'];
           list = this.$refs.xmTaskMng.tasksTreeData;
           pageNum = this.$refs.xmTaskMng.pageInfo.pageNum;
-        } else if (this.infotype === '阶段计划') {
-          header = ['序号', '阶段名称', '开始时间', '结束时间', '进度(%)', '状态', '计划人数', '实际人数', '计划工期', '实际工期',  '计划工作量（人时）', '实际工作量（人时）', '计划非人力成本(元)', '实际非人力成本(元)', '计划内购人力成本(元)', '实际内购人力成本(元)', '计划外购人力成本(元)', '实际外购人力成本(元)', '计划成本合计(元)', '实际成本合计(元)', '审批状态', '备注'];
+        } else if (this.infotype === '计划') {
+          header = ['序号', '计划名称', '开始时间', '结束时间', '进度(%)', '状态', '计划人数', '实际人数', '计划工期', '实际工期',  '计划工作量（人时）', '实际工作量（人时）', '计划非人力成本(元)', '实际非人力成本(元)', '计划内购人力成本(元)', '实际内购人力成本(元)', '计划外购人力成本(元)', '实际外购人力成本(元)', '计划成本合计(元)', '实际成本合计(元)', '审批状态', '备注'];
           keyList = ['seqNo', 'phaseName', 'beginDate', 'endDate', 'actRate', 'phaseStatus', 'phaseBudgetOutUserCnt', 'actStaffNu', 'phaseBudgetHours', 'actHours', 'phaseBudgetWorkload', 'phaseActWorkload', 'phaseBudgetNouserAt', 'actNouserAt', 'phaseBudgetInnerUserAt', 'actInnerUserAt', 'phaseBudgetOutUserAt', 'actOutUserAt', 'phaseBudgetCostAt', 'actCostAt', 'bizFlowState', 'remark'];
           list = this.$refs.xmProjectPhaseMng.projectPhaseTreeData;
           pageNum = this.$refs.xmProjectPhaseMng.pageInfo.pageNum;
@@ -331,7 +331,7 @@ import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
             }
           })
           return dataList;
-        } else if (this.infotype == '阶段计划') {
+        } else if (this.infotype == '计划') {
           const bizFlowStateDict = {
             0: '未发审',
             1: '审核中',

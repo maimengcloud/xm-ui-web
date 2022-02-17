@@ -100,7 +100,7 @@
 				},
 				tableHeight:300,
 				/**begin 自定义属性请在下面加 请加备注**/
-				objTypeOptions: [{key:"all",name:"全部"},{key:"task",name:"任务"},{"key":"project" ,name:"项目"},{key:"budget",name:"预算"},{key:"cost",name:"成本"},{key:"phase",name:"阶段计划"},{"key":"group",name:"团队"}]
+				objTypeOptions: [{key:"all",name:"全部"},{key:"task",name:"任务"},{"key":"project" ,name:"项目"},{key:"budget",name:"预算"},{key:"cost",name:"成本"},{key:"phase",name:"计划"},{"key":"group",name:"团队"}]
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data

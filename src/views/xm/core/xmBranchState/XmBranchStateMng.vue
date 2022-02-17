@@ -64,8 +64,8 @@
 				<el-table-column prop="totalPlanOutUserWorkload" label="外购人力总工作量" min-width="80" ></el-table-column>
 				<el-table-column prop="designCases" label="设计中案例总数" min-width="80" ></el-table-column>
 				<el-table-column prop="finishCases" label="完成案例总数" min-width="80" ></el-table-column> 
-				<el-table-column prop="totalPhaseCnt" label="项目阶段计划数" min-width="80" ></el-table-column>
-				<el-table-column prop="totalCompletePhaseCnt" label="项目阶段计划已完成数" min-width="80" ></el-table-column>
+				<el-table-column prop="totalPhaseCnt" label="项目计划数" min-width="80" ></el-table-column>
+				<el-table-column prop="totalCompletePhaseCnt" label="项目计划已完成数" min-width="80" ></el-table-column>
 				<el-table-column label="操作" width="160" fixed="right">
 					<template scope="scope">
 						<el-button  @click="showXmBranchDatav( scope.row,scope.$index)">大屏展示</el-button> 

@@ -42,10 +42,10 @@
 				<el-form-item label="已完成任务总数-来自任务表" prop="totalCompleteTaskCnt">
 					<el-input-number v-model="addForm.totalCompleteTaskCnt" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
-				<el-form-item label="项目阶段计划数" prop="totalPhaseCnt">
+				<el-form-item label="项目计划数" prop="totalPhaseCnt">
 					<el-input-number v-model="addForm.totalPhaseCnt" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
-				<el-form-item label="项目阶段计划已完成数" prop="totalCompletePhaseCnt">
+				<el-form-item label="项目计划已完成数" prop="totalCompletePhaseCnt">
 					<el-input-number v-model="addForm.totalCompletePhaseCnt" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
 				<el-form-item label="待付款总金额" prop="totalNeedPayAmount">
@@ -132,11 +132,11 @@
 				<el-form-item label="待付款总人数" prop="totalNeedPayUserCnt">
 					<el-input v-model="addForm.totalNeedPayUserCnt" placeholder="待付款总人数"></el-input>
 				</el-form-item> 
-				<el-form-item label="内部人力总工作量-应该大于或等于阶段计划内部人力总成本" prop="totalPlanInnerUserWorkload">
-					<el-input v-model="addForm.totalPlanInnerUserWorkload" placeholder="内部人力总工作量-应该大于或等于阶段计划内部人力总成本"></el-input>
+				<el-form-item label="内部人力总工作量-应该大于或等于计划内部人力总成本" prop="totalPlanInnerUserWorkload">
+					<el-input v-model="addForm.totalPlanInnerUserWorkload" placeholder="内部人力总工作量-应该大于或等于计划内部人力总成本"></el-input>
 				</el-form-item> 
-				<el-form-item label="外购人力总工作量-应该大于或等于阶段计划外购人力总成本" prop="totalPlanOutUserWorkload">
-					<el-input v-model="addForm.totalPlanOutUserWorkload" placeholder="外购人力总工作量-应该大于或等于阶段计划外购人力总成本"></el-input>
+				<el-form-item label="外购人力总工作量-应该大于或等于计划外购人力总成本" prop="totalPlanOutUserWorkload">
+					<el-input v-model="addForm.totalPlanOutUserWorkload" placeholder="外购人力总工作量-应该大于或等于计划外购人力总成本"></el-input>
 				</el-form-item> 
 				<el-form-item label="测试案例总数" prop="testCases">
 					<el-input-number v-model="addForm.testCases" :min="0" :max="200"></el-input-number>

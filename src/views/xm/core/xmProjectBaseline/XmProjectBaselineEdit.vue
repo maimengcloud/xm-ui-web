@@ -60,14 +60,14 @@
 				<el-form-item label="当前流程状态0初始1审批中2审批通过3审批不通过4流程取消或者删除" prop="bizFlowState">
 					<el-input v-model="editForm.bizFlowState" placeholder="当前流程状态0初始1审批中2审批通过3审批不通过4流程取消或者删除"></el-input>
 				</el-form-item> 
-				<el-form-item label="非人力成本总预算-应该大于或等于阶段计划非人力总成本" prop="planNouserAt">
-					<el-input v-model="editForm.planNouserAt" placeholder="非人力成本总预算-应该大于或等于阶段计划非人力总成本"></el-input>
+				<el-form-item label="非人力成本总预算-应该大于或等于计划非人力总成本" prop="planNouserAt">
+					<el-input v-model="editForm.planNouserAt" placeholder="非人力成本总预算-应该大于或等于计划非人力总成本"></el-input>
 				</el-form-item> 
-				<el-form-item label="内部人力成本总预算-应该大于或等于阶段计划内部人力总成本" prop="planInnerUserAt">
-					<el-input v-model="editForm.planInnerUserAt" placeholder="内部人力成本总预算-应该大于或等于阶段计划内部人力总成本"></el-input>
+				<el-form-item label="内部人力成本总预算-应该大于或等于计划内部人力总成本" prop="planInnerUserAt">
+					<el-input v-model="editForm.planInnerUserAt" placeholder="内部人力成本总预算-应该大于或等于计划内部人力总成本"></el-input>
 				</el-form-item> 
-				<el-form-item label="外购人力成本总预算-应该大于或等于阶段计划外购人力总成本" prop="planOutUserAt">
-					<el-input v-model="editForm.planOutUserAt" placeholder="外购人力成本总预算-应该大于或等于阶段计划外购人力总成本"></el-input>
+				<el-form-item label="外购人力成本总预算-应该大于或等于计划外购人力总成本" prop="planOutUserAt">
+					<el-input v-model="editForm.planOutUserAt" placeholder="外购人力成本总预算-应该大于或等于计划外购人力总成本"></el-input>
 				</el-form-item> 
 				<el-form-item label="是否锁定整个项目不允许变化0否1是" prop="locked">
 					<el-input v-model="editForm.locked" placeholder="是否锁定整个项目不允许变化0否1是"></el-input>
@@ -81,8 +81,8 @@
 				<el-form-item label="基线主键" prop="baselineId">
 					<el-input v-model="editForm.baselineId" placeholder="基线主键"></el-input>
 				</el-form-item> 
-				<el-form-item label="总预算工作量-应该大于或等于阶段计划总工作量" prop="planWorkload">
-					<el-input v-model="editForm.planWorkload" placeholder="总预算工作量-应该大于或等于阶段计划总工作量"></el-input>
+				<el-form-item label="总预算工作量-应该大于或等于计划总工作量" prop="planWorkload">
+					<el-input v-model="editForm.planWorkload" placeholder="总预算工作量-应该大于或等于计划总工作量"></el-input>
 				</el-form-item> 
 				<el-form-item label="总预计收款金额" prop="totalReceivables">
 					<el-input v-model="editForm.totalReceivables" placeholder="总预计收款金额"></el-input>
@@ -111,11 +111,11 @@
 				<el-form-item label="税率" prop="taxRate">
 					<el-input v-model="editForm.taxRate" placeholder="税率"></el-input>
 				</el-form-item> 
-				<el-form-item label="内部人力总工作量-应该大于或等于阶段计划内部人力总成本" prop="planInnerUserWorkload">
-					<el-input v-model="editForm.planInnerUserWorkload" placeholder="内部人力总工作量-应该大于或等于阶段计划内部人力总成本"></el-input>
+				<el-form-item label="内部人力总工作量-应该大于或等于计划内部人力总成本" prop="planInnerUserWorkload">
+					<el-input v-model="editForm.planInnerUserWorkload" placeholder="内部人力总工作量-应该大于或等于计划内部人力总成本"></el-input>
 				</el-form-item> 
-				<el-form-item label="外购人力总工作量-应该大于或等于阶段计划外购人力总成本" prop="planOutUserWorkload">
-					<el-input v-model="editForm.planOutUserWorkload" placeholder="外购人力总工作量-应该大于或等于阶段计划外购人力总成本"></el-input>
+				<el-form-item label="外购人力总工作量-应该大于或等于计划外购人力总成本" prop="planOutUserWorkload">
+					<el-input v-model="editForm.planOutUserWorkload" placeholder="外购人力总工作量-应该大于或等于计划外购人力总成本"></el-input>
 				</el-form-item> 
 				<el-form-item label="项目编号" prop="projectId">
 					<el-input v-model="editForm.projectId" placeholder="项目编号"></el-input>

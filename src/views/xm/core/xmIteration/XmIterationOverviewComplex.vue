@@ -77,7 +77,7 @@
 
         <el-submenu index="phase-change">
           <template slot="title">
-            <span slot="title">阶段计划变更</span>
+            <span slot="title">计划变更</span>
           </template>
             <el-menu-item index="phase-change-review">
               <span slot="title">计划评审</span>

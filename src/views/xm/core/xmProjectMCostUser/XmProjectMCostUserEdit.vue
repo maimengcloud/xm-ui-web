@@ -51,8 +51,8 @@
 				<el-form-item label="当前流程状态0初始1审批中2审批通过3审批不通过4流程取消或者删除" prop="bizFlowState">
 					<el-input v-model="editForm.bizFlowState" placeholder="当前流程状态0初始1审批中2审批通过3审批不通过4流程取消或者删除"></el-input>
 				</el-form-item> 
-				<el-form-item label="项目计划阶段编号" prop="projectPhaseId">
-					<el-input v-model="editForm.projectPhaseId" placeholder="项目计划阶段编号"></el-input>
+				<el-form-item label="项目计划计划编号" prop="projectPhaseId">
+					<el-input v-model="editForm.projectPhaseId" placeholder="项目计划计划编号"></el-input>
 				</el-form-item> 
 				<el-form-item label="金额" prop="actCostAmount">
 					<el-input v-model="editForm.actCostAmount" placeholder="金额"></el-input>
@@ -69,8 +69,8 @@
 				<el-form-item label="科目名称" prop="subjectName">
 					<el-input v-model="editForm.subjectName" placeholder="科目名称"></el-input>
 				</el-form-item> 
-				<el-form-item label="阶段名称" prop="projectPhaseName">
-					<el-input v-model="editForm.projectPhaseName" placeholder="阶段名称"></el-input>
+				<el-form-item label="计划名称" prop="projectPhaseName">
+					<el-input v-model="editForm.projectPhaseName" placeholder="计划名称"></el-input>
 				</el-form-item> 
 				<el-form-item> 
 					<el-col :span="24" :offset="8"> 

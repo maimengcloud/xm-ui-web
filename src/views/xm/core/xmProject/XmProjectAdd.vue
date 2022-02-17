@@ -25,7 +25,7 @@
 						</el-radio-group> 
 					</el-form-item>   
 					<el-form-item label="预算控制" prop="priority">
-					 	<el-checkbox  v-model="addForm.budgetCtrl"  true-label="1" false-label="0" >严格控制预算</el-checkbox> 注：在项目->阶段->任务 每个环节进行严格的预算控制
+					 	<el-checkbox  v-model="addForm.budgetCtrl"  true-label="1" false-label="0" >严格控制预算</el-checkbox> 注：在项目->计划->任务 每个环节进行严格的预算控制
 					</el-form-item>     
 					<el-form-item label="项目预估" >
 						   <el-tabs>

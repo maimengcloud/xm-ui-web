@@ -30,14 +30,14 @@
 				<el-table-column prop="planTotalCost" label="总预算" min-width="80" ></el-table-column>
 				<el-table-column prop="bizProcInstId" label="当前流程实例编号" min-width="80" ></el-table-column>
 				<el-table-column prop="bizFlowState" label="当前流程状态0初始1审批中2审批通过3审批不通过4流程取消或者删除" min-width="80" ></el-table-column>
-				<el-table-column prop="planNouserAt" label="非人力成本总预算-应该大于或等于阶段计划非人力总成本" min-width="80" ></el-table-column>
-				<el-table-column prop="planInnerUserAt" label="内部人力成本总预算-应该大于或等于阶段计划内部人力总成本" min-width="80" ></el-table-column>
-				<el-table-column prop="planOutUserAt" label="外购人力成本总预算-应该大于或等于阶段计划外购人力总成本" min-width="80" ></el-table-column>
+				<el-table-column prop="planNouserAt" label="非人力成本总预算-应该大于或等于计划非人力总成本" min-width="80" ></el-table-column>
+				<el-table-column prop="planInnerUserAt" label="内部人力成本总预算-应该大于或等于计划内部人力总成本" min-width="80" ></el-table-column>
+				<el-table-column prop="planOutUserAt" label="外购人力成本总预算-应该大于或等于计划外购人力总成本" min-width="80" ></el-table-column>
 				<el-table-column prop="locked" label="是否锁定整个项目不允许变化0否1是" min-width="80" ></el-table-column>
 				<el-table-column prop="baseTime" label="基线时间" min-width="80" ></el-table-column>
 				<el-table-column prop="baseRemark" label="基线备注" min-width="80" ></el-table-column>
 				<el-table-column prop="baselineId" label="基线主键" min-width="80" ></el-table-column>
-				<el-table-column prop="planWorkload" label="总预算工作量-应该大于或等于阶段计划总工作量" min-width="80" ></el-table-column>
+				<el-table-column prop="planWorkload" label="总预算工作量-应该大于或等于计划总工作量" min-width="80" ></el-table-column>
 				<el-table-column prop="totalReceivables" label="总预计收款金额" min-width="80" ></el-table-column>
 				<el-table-column prop="budgetMarginRate" label="预估毛利率" min-width="80" ></el-table-column>
 				<el-table-column prop="contractAmt" label="合同总金额" min-width="80" ></el-table-column>
@@ -47,8 +47,8 @@
 				<el-table-column prop="planInnerUserCnt" label="内部人数" min-width="80" ></el-table-column>
 				<el-table-column prop="planWorkingHours" label="预计工作小时数目" min-width="80" ></el-table-column>
 				<el-table-column prop="taxRate" label="税率" min-width="80" ></el-table-column>
-				<el-table-column prop="planInnerUserWorkload" label="内部人力总工作量-应该大于或等于阶段计划内部人力总成本" min-width="80" ></el-table-column>
-				<el-table-column prop="planOutUserWorkload" label="外购人力总工作量-应该大于或等于阶段计划外购人力总成本" min-width="80" ></el-table-column>
+				<el-table-column prop="planInnerUserWorkload" label="内部人力总工作量-应该大于或等于计划内部人力总成本" min-width="80" ></el-table-column>
+				<el-table-column prop="planOutUserWorkload" label="外购人力总工作量-应该大于或等于计划外购人力总成本" min-width="80" ></el-table-column>
 				<el-table-column prop="projectId" label="项目编号" min-width="80" ></el-table-column>
 				<el-table-column prop="ctime" label="创建时间" min-width="80" ></el-table-column>
 				<el-table-column label="操作" width="160" fixed="right"  >

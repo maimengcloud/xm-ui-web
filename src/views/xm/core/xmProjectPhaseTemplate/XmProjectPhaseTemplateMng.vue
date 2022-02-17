@@ -4,7 +4,7 @@
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>  
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectPhaseTemplates">查询</el-button>
 			<el-button v-if="!selProjectTemplate" type="primary" @click="showProjectTemplate">选择项目模板</el-button>   
-			<el-button v-if="!isSelect" type="primary" @click="showAdd">+项目阶段</el-button> 
+			<el-button v-if="!isSelect" type="primary" @click="showAdd">+项目计划</el-button> 
 			<el-button v-if="isSelect" type="primary" @click="selectedConfirm">确认选择</el-button> 
 		</el-row>
 		
@@ -12,7 +12,7 @@
 			<!--列表 XmProjectPhaseTemplate xm_phase_template-->
 			<el-table default-expand-all :data="xmProjectPhaseTemplateTreeData" @sort-change="sortChange" row-key="id"  :tree-props="{children: 'children', hasChildren: 'hasChildren'}" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="selection" width="40"></el-table-column> 
-				<el-table-column prop="phaseName" label="阶段名称" min-width="260" >
+				<el-table-column prop="phaseName" label="计划名称" min-width="260" >
 					
 					 <template slot-scope="scope">  
 						 {{scope.row.seqNo}} &nbsp;&nbsp;{{scope.row.phaseName}}
@@ -30,7 +30,7 @@
 					<template slot-scope="scope">
 						<el-button  @click="showEdit( scope.row,scope.$index)">改</el-button>
 						<el-button type="danger" @click="handleDel(scope.row,scope.$index)">删</el-button> 
-						<el-button  @click="showSubAdd( scope.row,scope.$index)">+子阶段</el-button> 
+						<el-button  @click="showSubAdd( scope.row,scope.$index)">+子计划</el-button> 
 					</template>
 				</el-table-column>
 			</el-table>
@@ -41,7 +41,7 @@
 		<el-row  v-if="simple"> 
 			<!--列表 XmProjectPhaseTemplate xm_phase_template-->
 			<el-table default-expand-all :data="xmProjectPhaseTemplateTreeData" @sort-change="sortChange" row-key="id"  :tree-props="{children: 'children', hasChildren: 'hasChildren'}" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
- 				<el-table-column prop="phaseName" label="阶段名称" min-width="180" > 
+ 				<el-table-column prop="phaseName" label="计划名称" min-width="180" > 
 					 <template slot-scope="scope">  
 						 {{scope.row.seqNo}} &nbsp;&nbsp;{{scope.row.phaseName}}
 					 </template> 
@@ -52,12 +52,12 @@
 
 		</el-row>
 					<!--编辑 XmProjectPhaseTemplate xm_phase_template界面-->
-		<el-drawer title="编辑阶段" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
+		<el-drawer title="编辑计划" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				<xm-project-phase-template-edit  :xm-project-phase-template="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-phase-template-edit>
 		</el-drawer>
 
 		<!--新增 XmProjectPhaseTemplate xm_phase_template界面-->
-		<el-drawer title="新增阶段" :visible.sync="addFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
+		<el-drawer title="新增计划" :visible.sync="addFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 			<xm-project-phase-template-add :sel-project-template="filters.projectTemplate" :xm-parent-phase-template="parentPhaseTemplate" :xm-project-phase-template="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-phase-template-add>
 		</el-drawer> 
 		<el-drawer title="项目模板" :visible.sync="projectTemplateVisible"  size="50%"  append-to-body   :close-on-click-modal="false">

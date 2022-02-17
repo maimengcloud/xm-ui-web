@@ -229,7 +229,7 @@
 									params.projectName=this.xmProjectPhaseTemplate.projectName
 									params.projectId=this.xmProjectPhaseTemplate.projectId
 								}else{
-									this.$message.error("任务归属的项目阶段不能为空");
+									this.$message.error("任务归属的项目计划不能为空");
 									return;
 								}
 							}

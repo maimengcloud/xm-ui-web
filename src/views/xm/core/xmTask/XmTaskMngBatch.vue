@@ -7,7 +7,7 @@
 					<el-button type="primary"   @click="searchXmTasks" v-loading="load.list" icon="el-icon-search"></el-button>  
 					<el-button     @click="noBatchEdit" v-loading="load.edit" icon="el-icon-back">返回</el-button>  
 					<el-button type="danger"   @click="batchDel" v-loading="load.edit" icon="el-icon-delete"></el-button>    
-					<span class="hidden-lg-and-down" style="margin-left:10px;font-size:14px;">阶段总预算：</span><el-tag class="hidden-lg-and-down" type='success'> {{((projectPhase.phaseBudgetNouserAt+projectPhase.phaseBudgetInnerUserAt+projectPhase.phaseBudgetOutUserAt)/10000).toFixed(2)}}万，剩{{(taskBudgetData.surplusPhaseBudgetCostAt/10000).toFixed(2)}}万</el-tag> 
+					<span class="hidden-lg-and-down" style="margin-left:10px;font-size:14px;">计划总预算：</span><el-tag class="hidden-lg-and-down" type='success'> {{((projectPhase.phaseBudgetNouserAt+projectPhase.phaseBudgetInnerUserAt+projectPhase.phaseBudgetOutUserAt)/10000).toFixed(2)}}万，剩{{(taskBudgetData.surplusPhaseBudgetCostAt/10000).toFixed(2)}}万</el-tag> 
 					<span class="hidden-lg-and-down" style="margin-left:10px;font-size:14px;">非人力总预算：</span><el-tag class="hidden-lg-and-down" :type="taskBudgetData.surplusPhaseBudgetNouserAt>0?'warning':'danger'">{{(projectPhase.phaseBudgetNouserAt/10000).toFixed(2)}}万，剩{{(taskBudgetData.surplusPhaseBudgetNouserAt/10000).toFixed(2)}}万</el-tag>  
 					<span style="margin-left:10px;font-size:14px;">内部人力总预算：</span><el-tag :type="taskBudgetData.surplusPhaseBudgetInnerUserAt>0?'warning':'danger'">{{(projectPhase.phaseBudgetInnerUserAt/10000).toFixed(2)}}万，剩{{(taskBudgetData.surplusPhaseBudgetInnerUserAt/10000).toFixed(2)}}万</el-tag>  
 					<span style="margin-left:10px;font-size:14px;">外购人力总预算：</span><el-tag :type="taskBudgetData.surplusPhaseBudgetOutUserAt>0?'warning':'danger'">{{(projectPhase.phaseBudgetOutUserAt/10000).toFixed(2)}}万，剩{{(taskBudgetData.surplusPhaseBudgetOutUserAt/10000).toFixed(2)}}万</el-tag>   
@@ -422,7 +422,7 @@
 					return;
 				}
 				if(this.currentProjectPhase==null){
-					this.$message({showClose: true, message: "请先选择项目阶段计划", type: 'error' }); 
+					this.$message({showClose: true, message: "请先选择项目计划", type: 'error' }); 
 					return false;
 				}
 				this.taskTemplateVisible=true;
@@ -445,7 +445,7 @@
 					return;
 				}
 				if(!this.currentProjectPhase){
-					this.$message({showClose: true, message: "请先选择项目阶段计划", type: 'error' }); 
+					this.$message({showClose: true, message: "请先选择项目计划", type: 'error' }); 
 					return;
 				}
 				this.addFormVisible = true;

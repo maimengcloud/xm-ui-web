@@ -45,7 +45,7 @@
 						</div>					
 					</template>
 				</el-table-column>
-				<el-table-column prop="phaseName" label="阶段名称"  width="200" >
+				<el-table-column prop="phaseName" label="计划名称"  width="200" >
 					<template  slot-scope="scope">
 						<el-input    v-model="scope.row.phaseName"    @change="fieldChange(scope.row,'phaseName')"></el-input>  
 					</template>
@@ -279,7 +279,7 @@
 				xmRecordVisible:false,
 				valueChangeRows:[],
 				batchEditVisible:false,
-				menuVisible:false,//由需求自动创建阶段计划
+				menuVisible:false,//由需求自动创建计划
 				tableHeight:300,
         pickerOptions: util.pickerOptions('date'),
         gstcVisible:false,
@@ -364,7 +364,7 @@
 			showEdit: function ( row,index ) {
 				
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
 					return; 
 				}
 				this.editForm = Object.assign({}, row);
@@ -374,7 +374,7 @@
 			showAdd: function () { 
 				
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
 					return; 
 				}
 				this.parentProjectPhase=null;
@@ -386,7 +386,7 @@
 			
 			showSubAdd: function (parentProjectPhase) {  
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
 					return; 
 				}
 				var myrow=JSON.parse(JSON.stringify(parentProjectPhase))
@@ -498,7 +498,7 @@
 			handleDel: function (row,index) { 
 				
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
 					return; 
 				}
 				if(!!row.bizFlowState ){
@@ -530,7 +530,7 @@
 			batchDel: function () {
 				
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
 					return; 
 				}
 				var phases=this.sels.filter(i=>{
@@ -562,7 +562,7 @@
 			showPhaseTemplate: function(parentPhase){
 				
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
 					return; 
 				}
 				this.parentProjectPhase=parentPhase
@@ -767,7 +767,7 @@
 			saveBatchEdit:function(){
 				
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
 					return; 
 				}
 				if(this.valueChangeRows.length==0){
@@ -1104,7 +1104,7 @@
 			showMenu:function(parentPhase){
 				
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
 					return; 
 				}
 				this.parentProjectPhase=parentPhase
@@ -1130,7 +1130,7 @@
 			handlePopover:function(row,opType){
 				
 				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作阶段计划", type: 'error' });
+					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
 					return; 
 				}
 				if('add'==opType){

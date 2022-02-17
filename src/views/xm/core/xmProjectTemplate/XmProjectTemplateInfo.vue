@@ -5,12 +5,12 @@
 				<div class="info-type">
 					<el-radio-group v-model="infotype" size="medium">
 						<el-radio-button label="任务"></el-radio-button>
-						<el-radio-button label="阶段计划"></el-radio-button> 
+						<el-radio-button label="计划"></el-radio-button> 
 					</el-radio-group> 
 				</div>
 				<div class="info-detail">
 					<xm-task-template-mng v-if="infotype=='任务'" :sel-project-template="selProjectTemplate" ></xm-task-template-mng>
-					<xm-project-phase-template-mng v-if="infotype=='阶段计划'" :sel-project-template="selProjectTemplate" ></xm-project-phase-template-mng> 
+					<xm-project-phase-template-mng v-if="infotype=='计划'" :sel-project-template="selProjectTemplate" ></xm-project-phase-template-mng> 
 				</div>
 			</div>
 		</el-row>

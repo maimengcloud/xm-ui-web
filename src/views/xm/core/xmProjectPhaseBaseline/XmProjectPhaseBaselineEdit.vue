@@ -6,17 +6,17 @@
 				<el-form-item label="基线建立时间" prop="baseCtime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.baseCtime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
 				</el-form-item> 
-				<el-form-item label="阶段主键" prop="projectPhaseId">
-					<el-input v-model="editForm.projectPhaseId" placeholder="阶段主键"></el-input>
+				<el-form-item label="计划主键" prop="projectPhaseId">
+					<el-input v-model="editForm.projectPhaseId" placeholder="计划主键"></el-input>
 				</el-form-item> 
-				<el-form-item label="阶段名称" prop="phaseName">
-					<el-input v-model="editForm.phaseName" placeholder="阶段名称"></el-input>
+				<el-form-item label="计划名称" prop="phaseName">
+					<el-input v-model="editForm.phaseName" placeholder="计划名称"></el-input>
 				</el-form-item> 
 				<el-form-item label="备注" prop="remark">
 					<el-input v-model="editForm.remark" placeholder="备注"></el-input>
 				</el-form-item> 
-				<el-form-item label="上级阶段编号" prop="parentPhaseId">
-					<el-input v-model="editForm.parentPhaseId" placeholder="上级阶段编号"></el-input>
+				<el-form-item label="上级计划编号" prop="parentPhaseId">
+					<el-input v-model="editForm.parentPhaseId" placeholder="上级计划编号"></el-input>
 				</el-form-item> 
 				<el-form-item label="机构编号" prop="branchId">
 					<el-input v-model="editForm.branchId" placeholder="机构编号"></el-input>

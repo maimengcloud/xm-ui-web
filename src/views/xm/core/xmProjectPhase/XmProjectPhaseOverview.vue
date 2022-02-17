@@ -22,14 +22,14 @@
         <el-col :span="12" >
           <el-card class="box-card" style="padding:0px ;height:425px">
             <div slot="header" class="clearfix">
-              <span>阶段信息</span>
+              <span>计划信息</span>
             </div>
             <el-row style="margin-bottom:18px">
               <el-row>
                 <span v-text="this.xmProjectPhase.mngUsername"></span>
               </el-row>
               <el-row>
-                <span>阶段管理员</span>
+                <span>计划管理员</span>
               </el-row>
             </el-row>
             <el-row style="margin-bottom:18px">
@@ -77,7 +77,7 @@
                 <div class="info">
                   <div v-text="phaseBeginDate+'~'+phaseEndDate">
                   </div>
-                  <div class="title">阶段计划周期</div>
+                  <div class="title">计划周期</div>
                 </div>
               </div>
             </el-row>
@@ -119,7 +119,7 @@
         <el-col :span="12" >
           <el-card class="box-card" style="padding:0px ;height:425px">
             <div slot="header" class="clearfix">
-              <span>阶段工时</span>
+              <span>计划工时</span>
             </div>
             <div>
               <el-row style="padding:25px;">

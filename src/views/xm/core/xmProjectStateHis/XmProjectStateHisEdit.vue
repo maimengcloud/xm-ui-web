@@ -48,10 +48,10 @@
 				<el-form-item label="已完成任务总数-来自任务表" prop="totalCompleteTaskCnt">
 					<el-input-number v-model="editForm.totalCompleteTaskCnt" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
-				<el-form-item label="项目阶段计划数" prop="totalPhaseCnt">
+				<el-form-item label="项目计划数" prop="totalPhaseCnt">
 					<el-input-number v-model="editForm.totalPhaseCnt" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
-				<el-form-item label="项目阶段计划已完成数" prop="totalCompletePhaseCnt">
+				<el-form-item label="项目计划已完成数" prop="totalCompletePhaseCnt">
 					<el-input-number v-model="editForm.totalCompletePhaseCnt" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
 				<el-form-item label="待付款总金额" prop="totalNeedPayAmount">
