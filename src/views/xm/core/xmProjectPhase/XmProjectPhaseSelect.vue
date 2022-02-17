@@ -1,9 +1,9 @@
 <template>
 	<section>  
 		<el-row>
-		<el-table :height="tableHeight" ref="selectPhaseTable" :data="projectPhaseTreeData"    :show-summary="false"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+		<el-table  lazy :load="loadXmProjectPhaseLazy" :height="tableHeight" ref="selectPhaseTable" :data="projectPhaseTreeData"    :show-summary="false"  row-key="id" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  			<el-table-column prop="phaseName" label="计划名称" min-width="160" show-overflow-tooltip> 
-				 <template slot="header" slot-scope="scope">
+				 <template slot="header">
 					<div>计划  <el-tag  v-if="editForm.id" closable @close="clearSelectPhase()"> {{editForm.phaseName}}</el-tag></div>
 				</template>
 				<template slot-scope="scope">  
@@ -150,6 +150,61 @@
 				 this.pageInfo.count=true; 
 				 this.getXmProjectPhases();
 			},
+			
+			getParams(params){
+
+				if(this.filters.key){
+					params.key='%'+this.filters.key+'%'
+				}
+				if(this.selProject!=null && this.selProject!=undefined){
+					params.projectId=this.selProject.id
+
+				}
+				if(this.xmIteration){
+					params.iterationId=this.xmIteration.id
+				}
+				if(this.xmProduct){
+					params.productId=this.xmProduct.id
+				}
+				
+				if(this.filters.milestone){
+					params.milestone=this.filters.milestone
+				}
+				
+				if(this.filters.isKeyPath){
+					params.isKeyPath=this.filters.isKeyPath
+				}
+
+				if(this.filters.phaseStatus){
+					params.phaseStatus=this.filters.phaseStatus
+				}
+				
+				if(!(params.isKeyPath||params.milestone||params.productId||params.iterationId||params.phaseStatus)){
+					params.isTop="1"
+				}
+				return params;
+			},
+			loadXmProjectPhaseLazy(row, treeNode, resolve) {  
+				if(row.children&&row.children.length>0){
+					resolve(row.children) 
+				}else{
+					var params={parentPhaseId:row.id}
+					params=this.getParams(params);
+					params.isTop=""
+					this.load.list = true;
+					var func=listXmProjectPhase 
+					func(params).then(res=>{
+						this.load.list = false
+						var tips = res.data.tips;
+						if(tips.isOk){
+							resolve(res.data.data) 
+						}else{
+							resolve([])
+						}
+					}).catch( err => this.load.list = false );  
+				}
+				
+			},
 			//获取列表 XmProjectPhase xm_project_phase
 			getXmProjectPhases() {
 				this.valueChangeRows=[]
@@ -166,19 +221,7 @@
 					}  
 					params.orderBy= orderBys.join(",")
 				}
-				if(this.filters.key!==""){
-					//params.xxx=this.filters.key
-				}else{
-					//params.xxx=xxxxx
-				}
-				if(this.selProject!=null && this.selProject!=undefined){
-					params.projectId=this.selProject.id
-
-				}
-				if(this.xmIteration!=null && this.xmIteration!=undefined){
-					params.iterationId=this.xmIteration.id
-
-				}
+				params=this.getParams(params)
 				this.load.list = true;
 				listXmProjectPhase(params).then((res) => {
 					var tips=res.data.tips;

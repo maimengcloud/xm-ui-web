@@ -5,44 +5,20 @@
 				<el-checkbox v-model="gstcVisible"  >甘特图</el-checkbox>
 				<el-checkbox v-model="filters.milestone" true-label="1" false-label=""  >里程碑</el-checkbox>
 				<el-checkbox v-model="filters.isKeyPath" true-label="1" false-label=""  >关键路径</el-checkbox>
+				<el-select v-model="filters.phaseStatus" placeholder="计划状态" clearable style="width:100px;">
+					<el-option :label="item.name" :value="item.id" v-for="(item,index) in options.xmPhaseStatus" :key="index"></el-option>
+				</el-select>
 				<el-input   v-model="filters.key" style="width:200px;" placeholder="模糊查询"> 
 				</el-input> 
 				<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectPhases" icon="el-icon-search">查询</el-button>
 				<el-button  class="hidden-md-and-down" v-loading="load.edit" :disabled="load.edit==true" v-on:click="calcKeyPaths" icon="el-icon-s-help">计算关键路径</el-button>
 				
 				<el-button  class="hidden-md-and-down"  @click="loadTasksToXmProjectPhase(sels)" v-loading="load.edit" icon="el-icon-s-data">由任务汇总进度数据</el-button> 
-				<el-button   @click="batchEditVisible=true" v-loading="load.edit" icon="el-icon-edit">批量修改</el-button>
-
-				<!--
-				<el-popover
-					placement="top-start"
-					title="更多查询条件或操作"
-					width="200"
-					trigger="click" >
-					<el-row>
-						<el-col :span="24" style="padding-top:5px;">
-							<el-button  type="primary" @click="showPhaseTemplate" v-loading="load.add" icon="el-icon-plus">由模板导入计划</el-button>
-						</el-col>
-						<el-col  :span="24"  style="padding-top:5px;">
-							<el-button  type="primary" @click="showMenu" v-loading="load.add" icon="el-icon-plus">由需求批量创建</el-button> 
-						</el-col>
-						<el-col  :span="24"  style="padding-top:5px;">
-							<el-button  type="warning" @click="loadTasksToXmProjectPhase(sels)" v-loading="load.edit" icon="el-icon-s-data">由任务汇总实际数据</el-button> 
-						</el-col>  
-						<el-col :span="24" style="padding-top:5px;">
-							<el-checkbox v-model="gstcVisible"  class="hidden-lg-and-up" >甘特图</el-checkbox>
-						</el-col>
-						<el-col  :span="24"  style="padding-top:5px;"> 
-			
-						</el-col> 
-					</el-row>
-					<el-button  slot="reference" icon="el-icon-more"></el-button>
-				</el-popover> 
-				-->
+				<el-button   @click="batchEditVisible=true" v-loading="load.edit" icon="el-icon-edit">批量修改</el-button> 
 			</span> 
 			<el-popover
 				placement="top-start"
-				title="标题"
+				title="添加计划"
 				width="200"
 				trigger="hover"> 
 				<el-row> 
@@ -59,6 +35,21 @@
 				</el-row>
 				<el-button slot="reference" type="primary" v-loading="load.add" icon="el-icon-plus"></el-button> 
 			</el-popover>
+			<el-popover
+					placement="top-start"
+					title="更多查询条件或操作"
+					width="200"
+					trigger="click" >
+					<el-row> 
+						<el-col  :span="24"  style="padding-top:5px;">
+							<el-button  class="hidden-md-and-down" v-loading="load.edit" :disabled="load.edit==true" v-on:click="calcKeyPaths" icon="el-icon-s-help">计算关键路径</el-button>
+						</el-col>
+						<el-col  :span="24"  style="padding-top:5px;">
+							<el-button  type="warning" @click="loadTasksToXmProjectPhase(sels)" v-loading="load.edit" icon="el-icon-s-data">由任务汇总进度数据</el-button> 
+						</el-col>    
+					</el-row>
+					<el-button  slot="reference" icon="el-icon-more"></el-button>
+				</el-popover>  
 			
 		</el-row>
 		<el-row class="padding-top hidden-md-and-down"     v-if="batchEditVisible==false && !xmIteration && !xmProduct">  
@@ -70,7 +61,7 @@
  		</el-row> 
  		<el-row  class="padding-top" v-show="batchEditVisible==false"> 
 			<!--列表 XmProjectPhase xm_project_phase-->
-			<el-table ref="table" :height="tableHeight" v-show="!gstcVisible "  default-expand-all :data="projectPhaseTreeData"  :summary-method="getSummariesForNoBatchEdit"  :show-summary="true"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table lazy :load="loadXmProjectPhaseLazy" ref="table" :height="tableHeight" v-show="!gstcVisible "  default-expand-all :data="projectPhaseTreeData"  :summary-method="getSummariesForNoBatchEdit"  :show-summary="true"  row-key="id" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
   				<el-table-column prop="phaseName" label="计划名称" min-width="150" show-overflow-tooltip> 
 					 <template slot-scope="scope">   
 						<span>
@@ -94,7 +85,7 @@
 				</el-table-column>
 				<el-table-column  prop="beginDate" label="起止时间" width="120" show-overflow-tooltip>
 					<template slot-scope="scope">  
-								<font class="hidden-md-and-down" >{{formatDate(scope.row.beginDate)}}<br>{{formatDate(scope.row.endDate)}}  </font> 
+								<font class="hidden-md-and-down" >{{formatDate(scope.row.beginDate)}}&nbsp;~&nbsp;{{formatDate(scope.row.endDate)}}  </font> 
 					</template>
 				</el-table-column>
 				<el-table-column prop="actRate" label="进度" width="100">
@@ -115,7 +106,12 @@
 					</el-table-column>  
 					<el-table-column  prop="actCostAt" label="实际" width="100" >  
 					</el-table-column> 
-				</el-table-column>    
+				</el-table-column> 
+				<el-table-column  prop="phaseStatus" label="计划状态" width="100" >  
+					<template slot-scope="scope">
+						 <font v-if="options.xmPhaseStatus.some(i=>i.id==scope.row.phaseStatus)">{{options.xmPhaseStatus.find(i=>i.id==scope.row.phaseStatus).name}}</font>
+					</template>
+				</el-table-column>     
 				<el-table-column  prop="bizFlowState" label="审批状态" width="100" >  
 					<template slot-scope="scope">
 						<el-tooltip  :content="showApprovaInfo(scope.row)" placement="bottom" effect="light">
@@ -147,21 +143,18 @@
 							<el-button type="text"  slot="reference" icon="el-icon-plus">添加</el-button>
 						</el-popover>   
 						<el-button type="text"  @click="showMenu(scope.row)" icon="el-icon-edit">编辑</el-button> 
-						<el-button type="text"  @click="handleDel(scope.row)" icon="el-icon-delete">删除</el-button>  
-						<el-button type="text"  @click="showLog(scope.row)" icon="el-icon-file">日志</el-button> 
-						<el-button type="text"  @click="loadTasksToXmProjectPhase([scope.row])" icon="el-icon-upload2">汇总进度</el-button> 
+						<el-button type="text"  @click="handleDel(scope.row)" icon="el-icon-delete">删除</el-button>   
 							<span v-show="scope.row.milestone=='1'">
 								<i class="el-icon-star-on"></i>
 							</span>
 							<span>
-								<el-dropdown @command="handleCommand" :hide-on-click="false">
-
-										
-
+								<el-dropdown @command="handleCommand" :hide-on-click="false"> 
 									<span class="el-dropdown-link">
 										<i class="el-icon-more"></i>
 									</span>
-									<el-dropdown-menu slot="dropdown"> 
+									<el-dropdown-menu slot="dropdown">
+										<el-dropdown-item icon="el-icon-search"   :command="{type:'showLog',row:scope.row}">日志</el-dropdown-item> 										
+  										<el-dropdown-item icon="el-icon-success"   :command="{type:'loadTasksToXmProjectPhase',row:scope.row}">从任务中汇总进度</el-dropdown-item> 
 										<el-dropdown-item icon="el-icon-success"   :command="{type:'sendToProcessApprova',row:scope.row,bizKey:'xm_project_start_approva'}">变更发审(审核通过后起效)</el-dropdown-item> 
 										<el-dropdown-item icon="el-icon-success"   :command="{type:'sendToProcessApprova',row:scope.row,bizKey:'xm_project_delete_approva'}">删除发审(审核通过后删除)</el-dropdown-item>  
 									</el-dropdown-menu>
@@ -190,10 +183,10 @@
 			<el-drawer title="计划模板" :visible.sync="phaseTemplateVisible"  size="80%"  :close-on-click-modal="false" append-to-body>
 				<xm-project-phase-template-mng  :is-select="true"  :visible="phaseTemplateVisible" @cancel="phaseTemplateVisible=false" @selected-confirm="afterPhaseTemplateSelected" ></xm-project-phase-template-mng>
 			</el-drawer> 
-			<el-drawer :title="editForm==null?'操作日志':editForm.phaseName+'操作日志'" center   :visible.sync="xmRecordVisible"  size="50%"  :close-on-click-modal="false" append-to-body>
+			<el-drawer :title="editForm==null?'操作日志':editForm.phaseName+'操作日志'" center   :visible.sync="xmRecordVisible"  size="800"  :close-on-click-modal="false" append-to-body>
 				<xm-record :obj-type="'phase'"  :visible="xmRecordVisible" :project-id="selProject?selProject.id:null" :obj-id="editForm.id"   :simple="1"></xm-record>
 			</el-drawer> 
-			<el-drawer append-to-body title="选择负责人" :visible.sync="groupUserSelectVisible" size="80%"    :close-on-click-modal="false">
+			<el-drawer append-to-body title="选择负责人" :visible.sync="groupUserSelectVisible" size="800"    :close-on-click-modal="false">
 				<xm-project-group-select :visible="groupUserSelectVisible" :sel-project="selProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-project-group-select>
 				 
 			</el-drawer> 
@@ -339,6 +332,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					key: '',
 					milestone:'',
 					isKeyPath:'',
+					phaseStatus:'',
 				},
 				xmProjectPhases: [],//查询结果
 				pageInfo:{//分页数据
@@ -351,8 +345,16 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				options:{
-					xmPhaseStatus:[],
+				options:{  
+					xmPhaseStatus:[
+						{id:'0',name:'初始'},
+						{id:'1',name:'执行中'},
+						{id:'2',name:'完工'},
+						{id:'3',name:'关闭'},
+						{id:'4',name:'删除中'},
+						{id:'5',name:'已删除'},
+						{id:'6',name:'暂停'}
+					]
 				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				
 				addFormVisible: false,//新增xmProjectPhase界面是否显示
@@ -420,22 +422,8 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				 this.pageInfo.count=true; 
 				 this.getXmProjectPhases();
 			},
-			//获取列表 XmProjectPhase xm_project_phase
-			getXmProjectPhases() {
-				this.valueChangeRows=[]
-				let params = {
-					pageSize: this.pageInfo.pageSize,
-					pageNum: this.pageInfo.pageNum,
-					total: this.pageInfo.total,
-					count:this.pageInfo.count
-				};
-				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
-					let orderBys=[];
-					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
-						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
-					}  
-					params.orderBy= orderBys.join(",")
-				}
+			
+			getParams(params){
 
 				if(this.filters.key){
 					params.key='%'+this.filters.key+'%'
@@ -458,6 +446,55 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				if(this.filters.isKeyPath){
 					params.isKeyPath=this.filters.isKeyPath
 				}
+
+				if(this.filters.phaseStatus){
+					params.phaseStatus=this.filters.phaseStatus
+				}
+				
+				if(!(params.isKeyPath||params.milestone||params.productId||params.iterationId||params.phaseStatus)){
+					params.isTop="1"
+				}
+				return params;
+			},
+			loadXmProjectPhaseLazy(row, treeNode, resolve) {  
+				if(row.children&&row.children.length>0){
+					resolve(row.children) 
+				}else{
+					var params={parentPhaseId:row.id}
+					params=this.getParams(params);
+					params.isTop=""
+					this.load.list = true;
+					var func=listXmProjectPhase 
+					func(params).then(res=>{
+						this.load.list = false
+						var tips = res.data.tips;
+						if(tips.isOk){
+							resolve(res.data.data) 
+						}else{
+							resolve([])
+						}
+					}).catch( err => this.load.list = false );  
+				}
+				
+			},
+			//获取列表 XmProjectPhase xm_project_phase
+			getXmProjectPhases() {
+				this.valueChangeRows=[]
+				let params = {
+					pageSize: this.pageInfo.pageSize,
+					pageNum: this.pageInfo.pageNum,
+					total: this.pageInfo.total,
+					count:this.pageInfo.count
+				};
+				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
+					let orderBys=[];
+					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
+						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
+					}  
+					params.orderBy= orderBys.join(",")
+				}
+
+				params=this.getParams(params)
 				this.load.list = true;
 				listXmProjectPhase(params).then((res) => {
 					var tips=res.data.tips;
@@ -1382,12 +1419,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				if(this.selProject){
 					this.getXmProjectPhases();
-				}
-				listOption([
-					{categoryId:'all',itemCode:'xmPhaseStatus'} 
-				]).then(res=>{
-					this.options=res.data.data;
-				})
+				} 
       });  
 			
 		}

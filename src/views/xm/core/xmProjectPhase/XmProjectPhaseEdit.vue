@@ -9,13 +9,7 @@
 					<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
             <el-row class="border padding">
               <el-steps :active="parseInt(editForm.phaseStatus)" simple finish-status="success" align-center>
-                <el-step @click.native="on_click(0)" title="初始"></el-step>
-                <el-step @click.native="on_click(1)" title="执行中"></el-step>
-                <el-step @click.native="on_click(2)" title="完工"></el-step>
-                <el-step @click.native="on_click(3)" title="关闭"></el-step>
-                <el-step @click.native="on_click(4)" title="删除中"></el-step>
-                <el-step @click.native="on_click(5)" title="已删除"></el-step>
-                <el-step @click.native="on_click(6)" title="暂停"></el-step>
+                <el-step v-for="(item,index) in statusList" @click.native="on_click(item.id)" :title="item.name" :key="index"></el-step> 
               </el-steps>
             </el-row>
 						<el-row class="border padding">
@@ -238,6 +232,15 @@
 				pickerOptions:  util.pickerOptions('datarange'),
 				activeName:'',
 				costVisible:false,
+				statusList:[
+					{id:'0',name:'初始'},
+					{id:'1',name:'执行中'},
+					{id:'2',name:'完工'},
+					{id:'3',name:'关闭'},
+					{id:'4',name:'删除中'},
+					{id:'5',name:'已删除'},
+					{id:'6',name:'暂停'}
+				]
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data
