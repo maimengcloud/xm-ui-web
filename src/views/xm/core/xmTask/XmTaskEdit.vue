@@ -24,7 +24,11 @@
 			<!--新增界面 XmTask xm_task--> 
 			<el-form :model="editForm"  label-width="100px" :rules="editFormRules" ref="editForm">     
 				<el-card class="box-card" header="基础信息" id="baseInfo" shadow="hover"> 
-
+					
+					<el-form-item label="" prop="ntype">
+						<el-radio disabled v-model="editForm.ntype" label="1">需求集</el-radio>
+						<el-radio disabled v-model="editForm.ntype" label="0">需求</el-radio>
+					</el-form-item>  
 					<el-form-item label="任务名称" prop="name">
 						<el-row>
 						<el-col :span="24" style="padding-left:10px;">
@@ -307,7 +311,7 @@
 				editForm: {
 					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'3',sortLevel:'0',executorUserid:'',executorUsername:'',
 					preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',taskOut:'0',
-					rate:0,budgetCost:'',budgetWorkload:'',actCost:'',actWorkload:'',taskState:'0',taskClass:'0',toTaskCenter:'0',actStartTime:'',actEndTime:'',taskType:'kf',planType:'w2',settleSchemel:'quotePrice',
+					rate:0,budgetCost:'',budgetWorkload:'',actCost:'',actWorkload:'',taskState:'0',taskClass:'0',toTaskCenter:'0',actStartTime:'',actEndTime:'',taskType:'kf',planType:'w2',settleSchemel:'quotePrice',ntype:'0',childrenCnt:0
   
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
