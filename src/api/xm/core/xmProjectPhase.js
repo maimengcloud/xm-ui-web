@@ -44,3 +44,6 @@ export const loadTasksToXmProjectPhase = params => { return axios.post(`${base}/
 
 //修改负责人
 export const setPhaseMngUser = params => { return axios.post(`${base}/xm/core/xmProjectPhase/setPhaseMngUser`, params); };
+
+
+export const calcKeyPaths = params => { return axios.post(`${base}/xm/core/xmProjectPhase/calcKeyPaths`, params); };

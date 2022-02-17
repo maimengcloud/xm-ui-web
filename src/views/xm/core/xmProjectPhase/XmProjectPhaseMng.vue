@@ -1,16 +1,18 @@
 <template>
 	<section class="padding">
 		<el-row v-show="batchEditVisible==false"> 
-			<el-button  class="hidden-md-and-down"  @click="loadTasksToXmProjectPhase(sels)" v-loading="load.edit" icon="el-icon-s-data">由任务汇总进度数据</el-button> 
-			<el-button   @click="batchEditVisible=true" v-loading="load.edit" icon="el-icon-edit">批量修改</el-button>
 			<span  v-if="batchEditVisible!=true"   >
 				<el-checkbox v-model="gstcVisible"  >甘特图</el-checkbox>
 				<el-checkbox v-model="filters.milestone" true-label="1" false-label=""  >里程碑</el-checkbox>
-				<el-input   v-model="filters.key" style="width:200px;" placeholder="模糊查询">
-					<template slot="append">
-						<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectPhases" icon="el-icon-search"></el-button>
-					</template>
+				<el-checkbox v-model="filters.isKeyPath" true-label="1" false-label=""  >关键路径</el-checkbox>
+				<el-input   v-model="filters.key" style="width:200px;" placeholder="模糊查询"> 
 				</el-input> 
+				<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectPhases" icon="el-icon-search">查询</el-button>
+				<el-button  class="hidden-md-and-down" v-loading="load.list" :disabled="load.list==true" v-on:click="calcKeyPaths" icon="el-icon-search">计算关键路径</el-button>
+				
+				<el-button  class="hidden-md-and-down"  @click="loadTasksToXmProjectPhase(sels)" v-loading="load.edit" icon="el-icon-s-data">由任务汇总进度数据</el-button> 
+				<el-button   @click="batchEditVisible=true" v-loading="load.edit" icon="el-icon-edit">批量修改</el-button>
+
 				<!--
 				<el-popover
 					placement="top-start"
@@ -72,7 +74,9 @@
   				<el-table-column prop="phaseName" label="计划名称" min-width="150" show-overflow-tooltip> 
 					 <template slot-scope="scope">   
 						<span>
-							
+							<span v-show="scope.row.milestone=='1'">
+								<i class="el-icon-star-on"></i>
+							</span>
 							<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.seqNo}} &nbsp;&nbsp;  {{scope.row.phaseName}}  
 							</el-link>
 							<font v-for="item in [calcTaskStateByTime(scope.row.beginDate,scope.row.endDate,scope.row.actRate,scope.phaseStatus)]" :key="item.status"><el-tag :type="item.status">{{item.remark}}</el-tag></font> 
@@ -142,7 +146,7 @@
 						<el-button type="text"  @click="showMenu(scope.row)" icon="el-icon-edit">编辑</el-button> 
 						<el-button type="text"  @click="handleDel(scope.row)" icon="el-icon-delete">删除</el-button>  
 						<el-button type="text"  @click="showLog(scope.row)" icon="el-icon-file">日志</el-button> 
-						<el-button type="text"  @click="loadTasksToXmProjectPhase(scope.row)" icon="el-icon-upload2">汇总进度</el-button> 
+						<el-button type="text"  @click="loadTasksToXmProjectPhase([scope.row])" icon="el-icon-upload2">汇总进度</el-button> 
 							<span v-show="scope.row.milestone=='1'">
 								<i class="el-icon-star-on"></i>
 							</span>
@@ -330,7 +334,8 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			return {
 				filters: {
 					key: '',
-					milestone:''
+					milestone:'',
+					isKeyPath:'',
 				},
 				xmProjectPhases: [],//查询结果
 				pageInfo:{//分页数据
@@ -445,6 +450,10 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				
 				if(this.filters.milestone){
 					params.milestone=this.filters.milestone
+				}
+				
+				if(this.filters.isKeyPath){
+					params.isKeyPath=this.filters.isKeyPath
 				}
 				this.load.list = true;
 				listXmProjectPhase(params).then((res) => {
@@ -877,9 +886,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				}  
 			},
 			//从任务中汇总进度/实际费用等数据
-			loadTasksToXmProjectPhase:function(phases){
-
-				var phaseIds=phases.map(i=>i.id)
+			loadTasksToXmProjectPhase:function(phases){ 
 				var params={
 					projectId:this.selProject.id,
  				}
@@ -887,6 +894,18 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					params.phaseIds=phases.map(i=>i.id);
 				}
 				loadTasksToXmProjectPhase(params).then(res=>{
+					var tips = res.data.tips
+					if(tips.isOk){
+						this.getXmProjectPhases()
+					}
+					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'}); 
+				})
+			},
+			calcKeyPaths(){
+				var params={
+					projectId:this.selProject.id,
+ 				}
+				calcKeyPaths(params).then(res=>{
 					var tips = res.data.tips
 					if(tips.isOk){
 						this.getXmProjectPhases()
