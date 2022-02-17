@@ -24,6 +24,10 @@
 			<!--新增界面 XmTask xm_task-->
 			<el-form :model="addForm"  label-width="100px" :rules="addFormRules" ref="addForm">
 				<el-card class="box-card" header="基础信息" id="baseInfoAdd" shadow="hover"> 
+					<el-form-item label="" prop="ntype">
+						<el-radio  v-model="addForm.ntype" label="1">任务集</el-radio>
+						<el-radio  v-model="addForm.ntype" label="0">任务</el-radio>
+					</el-form-item>  
 					<el-form-item label="任务名称" prop="name">
 						<el-row>
 						<el-col :span="24" style="padding-left:10px;">

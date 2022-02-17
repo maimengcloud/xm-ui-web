@@ -26,8 +26,8 @@
 				<el-card class="box-card" header="基础信息" id="baseInfo" shadow="hover"> 
 					
 					<el-form-item label="" prop="ntype">
-						<el-radio disabled v-model="editForm.ntype" label="1">需求集</el-radio>
-						<el-radio disabled v-model="editForm.ntype" label="0">需求</el-radio>
+						<el-radio  v-model="editForm.ntype" label="1">需求集</el-radio>
+						<el-radio  v-model="editForm.ntype" label="0">需求</el-radio>
 					</el-form-item>  
 					<el-form-item label="任务名称" prop="name">
 						<el-row>
