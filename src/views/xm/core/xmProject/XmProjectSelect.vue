@@ -27,6 +27,7 @@
 
 
 	export default {  
+		props:["xmIteration","xmProduct"],
 		computed: {
 			...mapGetters([
 				'userInfo','roles'
@@ -123,6 +124,12 @@
 					}  
 					params.orderBy= orderBys.join(",")
 				} 
+				if(this.xmIteration&&this.xmIteration.id){
+					params.iterationId=this.xmIteration.id
+				}
+				if(this.xmProduct&&this.xmProduct.id){
+					params.prodcutId=this.xmProduct.id
+				}
 				params.branchId = this.userInfo.branchId;
 				listXmProject(params).then((res) => {
 					var tips=res.data.tips;

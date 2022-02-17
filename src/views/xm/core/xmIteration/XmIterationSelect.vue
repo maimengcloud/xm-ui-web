@@ -90,7 +90,7 @@
 				return this.translateDataToTree(this.xmIterations);
       },
 		},
-		props:[ 'productId','menuId','visible'],
+		props:[ 'productId','menuId','visible','selProject'],
 		watch:{
 			visible:function(visible){
 				if(visible==true){
@@ -228,6 +228,9 @@
 						params.branchId=this.userInfo.branchId
 					}
 					
+				}
+				if(this.selProject && this.selProject.id){
+					params.projectId=this.selProject.id
 				}
 				
 				if(this.dateRangerOnline && this.dateRangerOnline.length==2){
