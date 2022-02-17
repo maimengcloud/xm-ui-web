@@ -190,7 +190,7 @@
 				<xm-project-group-select :visible="groupUserSelectVisible" :sel-project="selProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-project-group-select>
 				 
 			</el-drawer> 
-			<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible" fullscreen    :close-on-click-modal="false">
+			<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible" size="60%"    :close-on-click-modal="false">
 				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
 			</el-drawer>
 		</el-row>
