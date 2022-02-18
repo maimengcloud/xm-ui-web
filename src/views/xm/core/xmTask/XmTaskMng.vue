@@ -491,6 +491,7 @@
                   <el-dropdown
                     @command="handleCommand"
                     v-if="isTaskCenter != '1' && isMy != '1'"
+                    :disabled="scope.row.ntype!='1'"
                   >
                     <span class="el-dropdown-link">
                       <el-button><i class="el-icon-plus"></i></el-button>
