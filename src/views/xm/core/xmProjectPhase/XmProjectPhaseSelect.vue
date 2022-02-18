@@ -3,7 +3,7 @@
 		<el-row>
 		<el-table  lazy :load="loadXmProjectPhaseLazy" :height="tableHeight" ref="selectPhaseTable" :data="projectPhaseTreeData"    :show-summary="false"  row-key="id" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  			<el-table-column prop="phaseName" label="计划名称" min-width="160" show-overflow-tooltip> 
-				 <template slot="header">
+				 <template slot="header" slot-scope="scope">
 					<div>计划  <el-tag  v-if="editForm.id" closable @close="clearSelectPhase()"> {{editForm.phaseName}}</el-tag></div>
 				</template>
 				<template slot-scope="scope">  
@@ -32,18 +32,9 @@
 		      'userInfo','roles'
 			]),
       projectPhaseTreeData() {
-        let xmProjectPhases = JSON.parse(JSON.stringify(this.xmProjectPhases || []));
-        if (this.valueChangeRows && this.valueChangeRows.length) {
-          this.valueChangeRows.forEach(c => {
-            var index = xmProjectPhases.findIndex(i=>i.id==c.id);
-            const oldRow = JSON.parse(JSON.stringify(xmProjectPhases[index]));
-            xmProjectPhases.splice(index,1);
-            c.parentPhaseId = oldRow.parentPhaseId;
-            xmProjectPhases.push(c);
-          })
-        }
+        let xmProjectPhases =  this.xmProjectPhases  
         
-        const projectPhaseTreeData = this.translateDataToTree(xmProjectPhases); 
+        var projectPhaseTreeData = this.translateDataToTree(xmProjectPhases); 
 
 				 return projectPhaseTreeData;
       },
@@ -207,7 +198,6 @@
 			},
 			//获取列表 XmProjectPhase xm_project_phase
 			getXmProjectPhases() {
-				this.valueChangeRows=[]
 				let params = {
 					pageSize: this.pageInfo.pageSize,
 					pageNum: this.pageInfo.pageNum,
@@ -246,6 +236,7 @@
 				this.$emit('clear-select',null );//  @row-click="rowClick"
 			},
 			rowClick: function(row, event, column){
+				debugger;
 				var myrow=JSON.parse(JSON.stringify(row))
 				myrow.children=[];
 				this.parentProjectPhase=myrow

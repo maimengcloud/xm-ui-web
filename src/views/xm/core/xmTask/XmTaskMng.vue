@@ -2601,7 +2601,7 @@ export default {
         return 0 + "元";
       } else {
         if (amount > 10000) {
-          return parseFloat(scope.row.budgetCost / 10000).toFixed(0) + "万元";
+          return parseFloat(amount / 10000).toFixed(0) + "万元";
         } else {
           return amount + "元";
         }
