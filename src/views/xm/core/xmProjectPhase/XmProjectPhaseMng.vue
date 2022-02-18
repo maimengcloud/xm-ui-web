@@ -71,7 +71,7 @@
 							<span v-show="scope.row.isKeyPath=='1'"> 
 								<i class="el-icon-s-help"></i>
 							</span>
-							<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.seqNo}} &nbsp;&nbsp;  
+							<el-link :icon="scope.row.ntype=='1'?'el-icon-folder-opened':''" type="primary" @click="showEdit(scope.row)">{{scope.row.seqNo}} &nbsp;&nbsp;  
 							</el-link>
 							{{scope.row.phaseName}}  
 							<font v-for="item in [calcTaskStateByTime(scope.row.beginDate,scope.row.endDate,scope.row.actRate,scope.phaseStatus)]" :key="item.status"><el-tag :type="item.status">{{item.remark}}</el-tag></font> 
@@ -129,10 +129,11 @@
 						<el-popover style="padding-left:10px;" 
 							placement="top-start"
 							width="250"
+							v-if="scope.row.ntype=='1'"
 							trigger="click" > 
 							<el-row> 
 								<el-col :span="24" style="padding-top:5px;">
-									<el-button   @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus">子计划</el-button> 
+									<el-button   @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus">直接创建子计划</el-button> 
 								</el-col>  
 								<el-col :span="24" style="padding-top:5px;">
 									<el-button  @click="showPhaseTemplate(scope.row)" icon="el-icon-upload2">从模板批量导入子计划</el-button> 
@@ -141,14 +142,12 @@
 									<el-button  @click="showMenu(scope.row)" icon="el-icon-upload2">由需求创建子计划</el-button> 
 								</el-col> 
 							</el-row>   
-							<el-button type="text"  slot="reference" icon="el-icon-plus">添加</el-button>
+							<el-button type="text"  slot="reference" icon="el-icon-plus">子计划</el-button>
 						</el-popover>   
+						
 						<el-button type="text"  @click="showMenu(scope.row)" icon="el-icon-edit">编辑</el-button> 
-						<el-button type="text"  @click="handleDel(scope.row)" icon="el-icon-delete">删除</el-button>   
-							<span v-show="scope.row.milestone=='1'">
-								<i class="el-icon-star-on"></i>
-							</span>
-							<span>
+						<el-button type="text" :disabled="scope.row.childrenCnt>0"  @click="handleDel(scope.row)" icon="el-icon-delete">删除</el-button>   
+							<span v-if="scope.row.ntype!='1'">
 								<el-dropdown @command="handleCommand" :hide-on-click="false"> 
 									<span class="el-dropdown-link">
 										<i class="el-icon-more"></i>

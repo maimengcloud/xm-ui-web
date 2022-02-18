@@ -1013,15 +1013,14 @@ export default {
       } else {
         var projectPhase = {};
         if (
-          this.editForm &&
-          this.editForm.id !== null &&
-          this.editForm.id != null
+          this.editForm && this.editForm.id
         ) {
           projectPhase.id = this.editForm.projectPhaseId;
           projectPhase.phaseName = this.editForm.projectPhaseName;
           projectPhase.taskType = this.editForm.taskType;
           projectPhase.projectId = this.editForm.projectId;
           projectPhase.projectName = this.editForm.projectName;
+          projectPhase.ntype="0"
           return projectPhase;
         } else {
           return null;
@@ -1638,51 +1637,50 @@ export default {
       this.editForm = Object.assign({}, row);
       console.log("editForm", this.editForm);
     },
-    showTaskTemplate: function () {
-      if (
-        !this.roles.some((i) => i.roleid == "projectAdmin") &&
-        !this.roles.some((i) => i.roleid == "teamAdmin")
-      ) {
-        this.$message.error("只有项目经理、小组长可以操作");
+    showTaskTemplate: function (row) {
+      if(!this.checkCanAdd(row)){
         return;
-      }
-      if (this.currentProjectPhase == null) {
-        this.$message({
-          showClose: true,
-          message: "请先选择项目计划",
-          type: "error",
-        });
-        return false;
       }
       this.taskTemplateVisible = true;
     },
-    showSubAdd(row) {
-      if (
-        !this.roles.some((i) => i.roleid == "projectAdmin") &&
-        !this.roles.some((i) => i.roleid == "teamAdmin")
-      ) {
-        this.$message.error("只有项目经理、小组长可以操作");
+    checkCanAdd( parentTask){ 
+
+      if(parentTask && parentTask.projectPhaseId){
+        return true;
+      }
+      if(!parentTask||!parentTask.id){
+        if(this.projectPhase && this.projectPhase.ntype!='1'){
+          return true;
+        }
+      }
+        if (!this.projectPhase||!this.projectPhase.id) {
+          this.$message({
+            showClose: true,
+            message: "请在左边计划树中选择一个项目计划(不包括计划集)",
+            type: "error",
+          });
+          return false;
+        }else if(this.projectPhase.ntype=='1'){ 
+          this.$message({
+            showClose: true,
+            message: "您当前选中的计划【"+this.projectPhase.phaseName+"】是计划集，计划集下不能创建任务，请重新在右边计划树中选择一个计划",
+            type: "error",
+          });
+          return false;
+        }  
+        
+    },
+    showSubAdd(row) { 
+      if(!this.checkCanAdd(row)){
         return;
       }
       this.parentTask = row;
       this.editForm = row;
-      this.showAdd();
+      this.addFormVisible = true;
     },
     //显示新增界面 XmTask xm_task
-    showAdd: function () {
-      if (
-        !this.roles.some((i) => i.roleid == "projectAdmin") &&
-        !this.roles.some((i) => i.roleid == "teamAdmin")
-      ) {
-        this.$message.error("只有项目经理、小组长可以操作");
-        return;
-      }
-      if (!this.currentProjectPhase) {
-        this.$message({
-          showClose: true,
-          message: "请先选择项目计划",
-          type: "error",
-        });
+    showAdd: function () { 
+      if(!this.checkCanAdd()){
         return;
       }
       this.addFormVisible = true;
@@ -1814,17 +1812,8 @@ export default {
       );
       this.searchXmTasks();
     },
-    showMenu: function (parentTask) {
-      if (this.projectPhase == null) {
-        this.$message.error("请先选中计划");
-        return;
-      }
-
-      if (
-        !this.roles.some((i) => i.roleid == "projectAdmin") &&
-        !this.roles.some((i) => i.roleid == "teamAdmin")
-      ) {
-        this.$message.error("只有项目经理、小组长可以操作");
+    showMenu: function (parentTask) { 
+      if(!this.checkCanAdd(parentTask)){
         return;
       }
       this.parentTask = parentTask;
@@ -2062,7 +2051,12 @@ export default {
       return parents;
     },
     projectPhaseRowClick: function (projectPhase) {
-      this.projectPhase = projectPhase;
+       this.projectPhase = projectPhase;
+      if(projectPhase.ntype=='1'){
+        this.pageInfo.total=0;
+        this.xmTasks=[];
+        return;
+      } 
       this.getXmTasks();
     },
     clearSelectPhase: function () {
@@ -2183,14 +2177,7 @@ export default {
         });
       }
     },
-    showBatchEdit: function () {
-      if (
-        !this.roles.some((i) => i.roleid == "projectAdmin") &&
-        !this.roles.some((i) => i.roleid == "teamAdmin")
-      ) {
-        this.$message.error("只有项目经理、小组长可以操作");
-        return;
-      }
+    showBatchEdit: function () { 
       if (this.projectPhase == null) {
         this.$message({
           showClose: true,
