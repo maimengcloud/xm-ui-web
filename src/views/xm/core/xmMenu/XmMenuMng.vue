@@ -124,10 +124,11 @@
 							</el-table-column> 
 							<el-table-column   label="操作"  width="260" show-overflow-tooltip> 
 								<template slot-scope="scope">   
-										<el-popover style="padding-left:10px;" 
-											v-if="disabledMng!=false"
+									<el-row v-if="disabledMng!=false">
+										<el-popover style="padding-left:10px;"  
 											placement="top-start"
 											width="250"
+											v-if="scope.row.ntype=='1'"
 											trigger="click" > 
 											<el-row> 
 												<el-col :span="24" style="padding-top:5px;">
@@ -137,14 +138,15 @@
 													<el-button  @click="showImportFromMenuTemplate(scope.row)" icon="el-icon-upload2">由模板快速导入子需求</el-button> 
 												</el-col> 
 											</el-row>   
-											<el-button type="primary" :disabled="scope.row.ntype!='1'"  slot="reference" icon="el-icon-plus"></el-button>
-										</el-popover>  
-
-										<el-button v-if="!selProject" :disabled="scope.row.ntype=='1'"  type="text"  @click="showTaskListForMenu(scope.row,scope.$index)"  icon="el-icon-s-operation">任务</el-button>
-										<el-button v-if="selProject" :disabled="scope.row.ntype=='1'" type="text"  @click="showTasks(scope.row,scope.$index)"  icon="el-icon-s-operation">任务</el-button> 
-										<el-button  type="text" :disabled="scope.row.ntype=='1'" @click="toIterationList(scope.row,scope.$index)"  icon="el-icon-document-copy">迭代</el-button>
-										<el-button type="text" v-if="disabledMng!=false" :disabled="scope.row.childrenCnt>0" @click="handleDel(scope.row)" icon="el-icon-delete">删除</el-button>   
- 
+											<el-button type="text"    slot="reference" icon="el-icon-plus">添加子需求</el-button>
+										</el-popover>   
+										<font v-else>
+											<el-button v-if="!selProject"    type="text"  @click="showTaskListForMenu(scope.row,scope.$index)"  icon="el-icon-s-operation">任务</el-button>
+											<el-button v-if="selProject"   type="text"  @click="showTasks(scope.row,scope.$index)"  icon="el-icon-s-operation">任务</el-button> 
+											<el-button  type="text"   @click="toIterationList(scope.row,scope.$index)"  icon="el-icon-document-copy">迭代</el-button> 
+										</font>
+										<el-button type="text"  :disabled="scope.row.childrenCnt>0" @click="handleDel(scope.row)" icon="el-icon-delete">删除</el-button>   
+									</el-row>
 								</template>
 							</el-table-column>   
 							

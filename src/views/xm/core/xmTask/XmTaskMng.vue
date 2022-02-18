@@ -490,7 +490,7 @@
                 <template slot-scope="scope">
                   <el-dropdown
                     @command="handleCommand"
-                    v-if="isTaskCenter != '1' && isMy != '1'"
+                    v-if="isTaskCenter != '1' && isMy != '1' && scope.row.ntype=='1'"
                     :disabled="scope.row.ntype!='1'"
                   >
                     <span class="el-dropdown-link">
