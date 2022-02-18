@@ -18,7 +18,8 @@
 						<el-table-column  type="selection" width="45"></el-table-column> 
 						<el-table-column prop="menuName" label="需求名称" min-width="140" > 
 							<template slot-scope="scope">
-								<el-link type="primary"  :icon="scope.row.ntype=='1'?'el-icon-folder-opened':''">{{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}}</el-link> 
+								<el-link type="primary"  :icon="scope.row.ntype=='1'?'el-icon-folder-opened':''">{{scope.row.seqNo}}</el-link> 
+								&nbsp;&nbsp;{{scope.row.menuName}}
 							</template>
 						</el-table-column> 
 						<el-table-column prop="mmUsername" label="责任人"  width="140" >  

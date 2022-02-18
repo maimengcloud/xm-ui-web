@@ -122,7 +122,7 @@
 										 <span>{{scope.row.mmUsername}} </span>  
 								</template>
 							</el-table-column> 
-							<el-table-column   label="操作"  width="260" show-overflow-tooltip> 
+							<el-table-column   label="操作"  width="200"> 
 								<template slot-scope="scope">   
 									<el-row v-if="disabledMng!=false">
 										<el-popover style="padding-left:10px;"  
