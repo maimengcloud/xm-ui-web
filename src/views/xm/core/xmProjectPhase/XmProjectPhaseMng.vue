@@ -71,8 +71,9 @@
 							<span v-show="scope.row.isKeyPath=='1'"> 
 								<i class="el-icon-s-help"></i>
 							</span>
-							<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.seqNo}} &nbsp;&nbsp;  {{scope.row.phaseName}}  
+							<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.seqNo}} &nbsp;&nbsp;  
 							</el-link>
+							{{scope.row.phaseName}}  
 							<font v-for="item in [calcTaskStateByTime(scope.row.beginDate,scope.row.endDate,scope.row.actRate,scope.phaseStatus)]" :key="item.status"><el-tag :type="item.status">{{item.remark}}</el-tag></font> 
 						</span>
 					 </template>
@@ -171,22 +172,22 @@
 			</el-row>
 
 			<!--编辑 XmProjectPhase xm_project_phase界面-->
-			<el-drawer  title="编辑计划" :visible.sync="editFormVisible" :with-header="false" :size="800"  :close-on-click-modal="false" append-to-body>
+			<el-drawer  title="编辑计划" :visible.sync="editFormVisible" :with-header="false" size="60%"  :close-on-click-modal="false" append-to-body>
 				  <xm-project-phase-edit :xm-project-phase="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-phase-edit>
 			</el-drawer >
 	
 			<!--新增 XmProjectPhase xm_project_phase界面-->
-			<el-drawer title="新增计划" :visible.sync="addFormVisible" :with-header="false" :size="800"  :close-on-click-modal="false" append-to-body>
+			<el-drawer title="新增计划" :visible.sync="addFormVisible" :with-header="false" size="60%"  :close-on-click-modal="false" append-to-body>
 				<xm-project-phase-add :parent-project-phase="parentProjectPhase" :xm-project-phase="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit" ></xm-project-phase-add>
 			</el-drawer> 
 			<!--计划模板-->
 			<el-drawer title="计划模板" :visible.sync="phaseTemplateVisible"  size="80%"  :close-on-click-modal="false" append-to-body>
 				<xm-project-phase-template-mng  :is-select="true"  :visible="phaseTemplateVisible" @cancel="phaseTemplateVisible=false" @selected-confirm="afterPhaseTemplateSelected" ></xm-project-phase-template-mng>
 			</el-drawer> 
-			<el-drawer :title="editForm==null?'操作日志':editForm.phaseName+'操作日志'" center   :visible.sync="xmRecordVisible"  size="800"  :close-on-click-modal="false" append-to-body>
+			<el-drawer :title="editForm==null?'操作日志':editForm.phaseName+'操作日志'" center   :visible.sync="xmRecordVisible"  size="60%"  :close-on-click-modal="false" append-to-body>
 				<xm-record :obj-type="'phase'"  :visible="xmRecordVisible" :project-id="selProject?selProject.id:null" :obj-id="editForm.id"   :simple="1"></xm-record>
 			</el-drawer> 
-			<el-drawer append-to-body title="选择负责人" :visible.sync="groupUserSelectVisible" size="800"    :close-on-click-modal="false">
+			<el-drawer append-to-body title="选择负责人" :visible.sync="groupUserSelectVisible" size="60%"    :close-on-click-modal="false">
 				<xm-project-group-select :visible="groupUserSelectVisible" :sel-project="selProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-project-group-select>
 				 
 			</el-drawer> 

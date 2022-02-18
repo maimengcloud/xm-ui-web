@@ -391,8 +391,8 @@
                       >紧急</el-tag
                     >
                     <el-tag v-else type="danger">特急</el-tag>
-                    {{ scope.row.name }}</el-link
-                  >
+                    </el-link>
+                    {{ scope.row.name }}
                 </template>
               </el-table-column>
               <el-table-column

@@ -127,14 +127,15 @@
 				<el-table  ref="table" :height="tableHeight" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  					<el-table-column prop="name" label="缺陷名称"  min-width="150"  show-overflow-tooltip>
 						<template slot-scope="scope"> 
-								<el-link @click="showEdit(scope.row)"> 
+								<el-link @click="showEdit(scope.row)" type="primary"> 
 									<el-tag type="info" v-if="scope.row.bugSeverity=='4' ">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
 									<el-tag type="primary" v-else-if="scope.row.bugSeverity=='3'">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
 									<el-tag type="warning" v-else-if="scope.row.bugSeverity=='2'">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
 									<el-tag type="danger" v-else-if="scope.row.bugSeverity=='1'">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
 									<el-tag v-else>{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag> 
-									{{scope.row.id}}&nbsp;&nbsp;{{scope.row.name}}
+									{{scope.row.id}}&nbsp;&nbsp;
 								</el-link>   
+								{{scope.row.name}}
 						</template>
 					</el-table-column>
 					<el-table-column prop="bugStatus" label="状态"  width="100">
