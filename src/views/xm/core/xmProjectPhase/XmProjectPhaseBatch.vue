@@ -24,7 +24,7 @@
  		</el-row> 
  		<el-row class="padding-top" >   
 			<!--列表 XmProjectPhase xm_project_phase-->
-			<el-table ref="table" :height="tableHeight" class="drag-table" default-expand-all :summary-method="getSummariesForBatchEdit" :data="projectPhaseTreeData"    :show-summary="true"  row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table"  lazy :load="loadXmProjectPhaseLazy"  :height="tableHeight" class="drag-table" default-expand-all :summary-method="getSummariesForBatchEdit" :data="projectPhaseTreeData"    :show-summary="true"  row-key="id" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column    type="selection" width="50"></el-table-column>
 				<el-table-column  prop="seqNo" label="序号" width="150">
 					<template  slot-scope="scope">
@@ -321,6 +321,41 @@
 				 this.pageInfo.count=true; 
 				 this.getXmProjectPhases();
 			},
+			
+			
+			getParams(params){
+
+				if(this.filters.key){
+					params.key='%'+this.filters.key+'%'
+				}
+				if(this.selProject!=null && this.selProject!=undefined){
+					params.projectId=this.selProject.id
+
+				}    
+				params.isTop="1" 
+				return params;
+			},
+			loadXmProjectPhaseLazy(row, treeNode, resolve) {  
+				if(row.children&&row.children.length>0){
+					resolve(row.children) 
+				}else{
+					var params={parentPhaseId:row.id}
+					params=this.getParams(params);
+					params.isTop=""
+					this.load.list = true;
+					var func=listXmProjectPhase 
+					func(params).then(res=>{
+						this.load.list = false
+						var tips = res.data.tips;
+						if(tips.isOk){
+							resolve(res.data.data) 
+						}else{
+							resolve([])
+						}
+					}).catch( err => this.load.list = false );  
+				}
+				
+			},
 			//获取列表 XmProjectPhase xm_project_phase
 			getXmProjectPhases() {
 				this.valueChangeRows=[]
@@ -336,16 +371,8 @@
 						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
 					}  
 					params.orderBy= orderBys.join(",")
-				}
-				if(this.filters.key!==""){
-					//params.xxx=this.filters.key
-				}else{
-					//params.xxx=xxxxx
-				}
-				if(this.selProject!=null && this.selProject!=undefined){
-					params.projectId=this.selProject.id
-
-				}
+				} 
+				params=this.getParams(params)
 				this.load.list = true;
 				listXmProjectPhase(params).then((res) => {
 					var tips=res.data.tips;
