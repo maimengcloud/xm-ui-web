@@ -220,6 +220,8 @@
 					params.isMy="1"
 				}
 				params.menuId=this.menuId
+				
+				params.withParents="1"
 				getTask(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 

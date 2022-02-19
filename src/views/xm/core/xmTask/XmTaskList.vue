@@ -241,6 +241,8 @@
 				if(this.filters.taskType!="all" && this.filters.taskType!="" && this.filters.taskType!=null){
 					params.taskType=this.filters.taskType
 				} 
+				
+				params.withParents="1"
 				this.load.list = true;
 				if(this.selProject){
 					params.projectId = this.selProject.id;

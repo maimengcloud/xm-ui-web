@@ -389,6 +389,7 @@
 					params.projectPhaseId=this.projectPhase.id
 				}}
 				 
+				params.withParents="1"
 				getTask(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 

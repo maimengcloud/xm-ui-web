@@ -352,7 +352,8 @@
 					params.orderBy= orderBys.join(",")
 				}   
 				
-				params=this.getParams(params);
+				params=this.getParams(params); 
+				params.withParents="1"
 				this.load.list = true;
 				listXmMenuWithPlan(params).then((res) => {
 					var tips=res.data.tips;

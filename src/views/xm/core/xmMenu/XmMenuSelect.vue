@@ -301,7 +301,7 @@
 				} 
 				
 				params=this.getParams(params)
-				
+				params.withParents="1"
 				this.load.list = true;
 				listXmMenu(params).then((res) => {
 					var tips=res.data.tips;

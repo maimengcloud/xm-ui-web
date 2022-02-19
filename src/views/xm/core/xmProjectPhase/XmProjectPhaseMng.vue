@@ -494,7 +494,8 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					params.orderBy= orderBys.join(",")
 				}
 
-				params=this.getParams(params)
+				params=this.getParams(params) 
+				params.withParents="1"
 				this.load.list = true;
 				listXmProjectPhase(params).then((res) => {
 					var tips=res.data.tips;

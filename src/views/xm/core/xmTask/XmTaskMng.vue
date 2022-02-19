@@ -1489,6 +1489,8 @@ export default {
       if (this.filters.tags && this.filters.tags.length>0) {
         params.tagIdList = this.filters.tags.map(i=>i.tagId);
       }
+      
+			params.withParents="1"
       getTask(params)
         .then((res) => {
           var tips = res.data.tips;

@@ -182,6 +182,7 @@
 					var params={parentPhaseId:row.id}
 					params=this.getParams(params);
 					params.isTop=""
+					params.withParents="1"
 					this.load.list = true;
 					var func=listXmProjectPhase 
 					func(params).then(res=>{

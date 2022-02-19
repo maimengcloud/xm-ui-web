@@ -375,6 +375,8 @@
 					params.ctimeStart=this.dateRanger[0] 
 					params.ctimeEnd=this.dateRanger[1] 
 				} 
+				
+				params.withParents="1"
 				let callback= (res)=>{
 					var tips=res.data.tips;
 					if(tips.isOk){ 

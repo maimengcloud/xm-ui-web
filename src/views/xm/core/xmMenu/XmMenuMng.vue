@@ -468,6 +468,7 @@
 				} 
 					
 				params=this.getParams(params);
+				params.withParents="1"
 				//params.isTop="1" 
 				let callback= (res)=>{
 					var tips=res.data.tips;
