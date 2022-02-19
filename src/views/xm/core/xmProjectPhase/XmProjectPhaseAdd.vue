@@ -4,6 +4,11 @@
 			<!--新增界面 XmProjectPhase xm_project_phase-->
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
 				<el-row class="border padding">
+					
+					<el-form-item label="类型" prop="ntype">
+						<el-radio  v-model="addForm.ntype" label="1">计划集</el-radio>
+						<el-radio  v-model="addForm.ntype" label="0">计划</el-radio>
+					</el-form-item>  
 					<el-form-item label="计划名称" prop="phaseName">
 						<el-input v-model="addForm.phaseName" placeholder="计划名称" ></el-input>
 					</el-form-item>

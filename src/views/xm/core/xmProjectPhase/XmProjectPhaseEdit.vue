@@ -13,6 +13,11 @@
               </el-steps>
             </el-row>
 						<el-row class="border padding">
+							
+							<el-form-item label="类型" prop="ntype">
+								<el-radio disabled v-model="editForm.ntype" label="1">计划集</el-radio>
+								<el-radio disabled v-model="editForm.ntype" label="0">计划</el-radio>
+							</el-form-item>  
 							<el-form-item label="计划名称" prop="phaseName">
 								<el-input v-model="editForm.phaseName" placeholder="计划名称" ></el-input>
 							</el-form-item>
