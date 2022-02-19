@@ -182,7 +182,6 @@
 					var params={parentPhaseId:row.id}
 					params=this.getParams(params);
 					params.isTop=""
-					params.withParents="1"
 					this.load.list = true;
 					var func=listXmProjectPhase 
 					func(params).then(res=>{
@@ -213,6 +212,7 @@
 					params.orderBy= orderBys.join(",")
 				}
 				params=this.getParams(params)
+				params.withParents="1"
 				this.load.list = true;
 				listXmProjectPhase(params).then((res) => {
 					var tips=res.data.tips;
