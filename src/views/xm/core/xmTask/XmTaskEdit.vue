@@ -35,7 +35,7 @@
 							<el-input v-model="editForm.name" placeholder="名称" ></el-input>
 							<el-tooltip content="归属项目"><el-tag>{{editForm.projectName}}</el-tag></el-tooltip>
 							<el-divider direction="vertical"></el-divider>
-							<el-tooltip content="上级" ><el-tag>{{editForm.parentTaskname?editForm.parentTaskname:"无上级"}}</el-tag></el-tooltip>
+							<el-tooltip content="上级" ><el-tag>{{editForm.parentTaskid?(editForm.parentTaskname?editForm.parentTaskname:editForm.parentTaskid):"无上级"}}</el-tag></el-tooltip>
 						</el-col>
 						</el-row>
 					</el-form-item> 
