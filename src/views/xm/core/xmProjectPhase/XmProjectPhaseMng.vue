@@ -145,7 +145,7 @@
 							<el-button type="text"  slot="reference" icon="el-icon-plus">子计划</el-button>
 						</el-popover>   
 						
-						<el-button type="text"  @click="showMenu(scope.row)" icon="el-icon-edit">编辑</el-button> 
+						<el-button type="text"  @click="showEdit(scope.row)" icon="el-icon-edit">编辑</el-button> 
 						<el-button type="text" :disabled="scope.row.childrenCnt>0"  @click="handleDel(scope.row)" icon="el-icon-delete">删除</el-button>   
 							<span v-if="scope.row.ntype!='1'">
 								<el-dropdown @command="handleCommand" :hide-on-click="false"> 
