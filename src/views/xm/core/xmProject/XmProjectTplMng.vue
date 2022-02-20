@@ -28,7 +28,7 @@
 			<xm-project-info :sel-project="selectProject" :visible="showInfo" @changeShowInfo="changeShowInfo" @submit="changeShowInfo"></xm-project-info>
 		</el-drawer>
 		<el-dialog
-			title="提示"
+			title="通过复制创建新的模板或者新的项目"
 			:visible.sync="copyToVisible"
 			width="30%" > 
 			<el-form>
