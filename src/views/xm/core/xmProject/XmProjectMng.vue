@@ -3,7 +3,7 @@
 		<el-row>
 			<el-col :span="6" class="padding-top"> 
 				<el-row>
-					<xm-project-tpl-mng></xm-project-tpl-mng>
+					<xm-project-tpl-mng @copy="searchXmProjects"></xm-project-tpl-mng>
 				</el-row>
 			</el-col>
 			<el-col :span="18" class="border">
@@ -81,7 +81,7 @@
 						<el-col  v-cloak v-for="(p,i) in ScreenData" :key="i" :xl="8" :lg="8" :md="8" :sm="12">
 							<el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always">
 								<div class="project-name" title="这是项目名称">{{p.name}}</div>
-								<div class="project-id eui-text-truncate">{{p.code}}</div>
+								<div class="project-id eui-text-truncate">{{p.code}} <el-button style="float:right;" type="text" title="通过复制快速创建新项目" @click.stop="onCopyToBtnClick(p)" v-loading="load.add">复制</el-button></div>
 								<div class="project-info">
 									<div class="info-item">
 										<span class="item-total">{{p.totalBugCnt==null?0:p.totalBugCnt}}</span>
@@ -148,11 +148,11 @@
 								<!-- <el-popover
 									placement="left"
 									trigger="hover"> -->
-									
-									<el-button-group> 
+									 
 										<el-button v-if="menukey=='myFocus'"  type="primary" @click.stop="focusOrUnfocus(scope.row)" >取消关注</el-button> 
-										<el-button v-else  type="primary" @click.stop="focusOrUnfocus(scope.row)" >关注</el-button>  
-										<el-button    type="primary" @click.stop="xmRecordVisible=true" >日志</el-button> 
+										<el-button v-else  type="text" @click.stop="focusOrUnfocus(scope.row)" >关注</el-button>  
+										<el-button    type="text" @click.stop="xmRecordVisible=true" >日志</el-button> 
+										<el-button   type="text" title="通过复制快速创建新项目" @click.stop="onCopyToBtnClick(scope.row)" v-loading="load.add">复制</el-button>
 										<!-- 
 										<el-button  type="primary" @click.stop="statusChange(scope,'1')" v-if="scope.row.status==0 || scope.row.status == 2">提交审核</el-button>
 										<el-button  type="primary" @click.stop="statusChange(scope,'3')" v-if="scope.row.status==1">批准</el-button>
@@ -160,8 +160,7 @@
 										<el-button  type="primary" @click.stop="statusChange(scope,'4')" v-if="scope.row.status==3">结束</el-button>
 										<el-button  type="primary" @click.stop="statusChange(scope,'3')" v-if="scope.row.status==4">重新启动</el-button>
 										<el-button  type="primary" @click.stop="handleDel(scope.row,scope.$index)" v-if="isLeader(scope.row.leader)">删除</el-button>
-										-->
-									</el-button-group>
+										--> 
 									
 									<el-dropdown @command="handleCommand" :hide-on-click="false">
 										<span class="el-dropdown-link">
@@ -201,6 +200,32 @@
 			<xm-record :obj-type="'project'" :project-id="selectProject.id"  :visible="xmRecordVisible" :simple="1"></xm-record>
 		</el-drawer>
 		
+		<el-dialog
+			title="通过复制创建新的模板或者新的项目"
+			:visible.sync="copyToVisible"
+			width="30%" > 
+			<el-form>
+			<el-form-item label="项目名称">
+				<el-input v-model="xmProjectCopy.name" placeholder="新的项目名称"></el-input> 
+			</el-form-item>
+			<el-form-item  label="项目编码(留空则后台自动生成)"> 
+				<el-input v-model="xmProjectCopy.code"  placeholder="新的项目编码"></el-input>
+			</el-form-item>
+			<el-form-item  label="目标">
+				<el-radio v-model="xmProjectCopy.isTpl" label="0">复制为新的模板</el-radio>
+				<el-radio v-model="xmProjectCopy.isTpl" label="1">复制为新的项目</el-radio>
+			</el-form-item>
+			<el-form-item label="附加任务">
+				<el-checkbox v-model="xmProjectCopy.copyPhase" true-label="1" false-label="0">拷贝计划</el-checkbox> 
+				<el-checkbox v-model="xmProjectCopy.copyTask" true-label="1" false-label="0">拷贝任务</el-checkbox>  
+				<el-checkbox v-model="xmProjectCopy.copyGroup" true-label="1" false-label="0">拷贝项目组成员</el-checkbox>  
+			</el-form-item>
+			</el-form>
+			<span slot="footer" class="dialog-footer">
+				<el-button @click="copyToVisible = false">取 消</el-button>
+				<el-button type="primary" @click="onCopyToConfirm" :disabled="load.add" v-loading="load.add">确 定</el-button>
+			</span>
+		</el-dialog>
 		<el-drawer
 			append-to-body
 			title="产品"
@@ -218,7 +243,7 @@
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import config from "@/common/config"; //全局公共库
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { listXmProject, editStatus, delXmProject, batchDelXmProject } from '@/api/xm/core/xmProject'; 
+	import { listXmProject, editStatus, delXmProject, batchDelXmProject,copyTo } from '@/api/xm/core/xmProject'; 
 	import { addXmMyFocus , delXmMyFocus } from '@/api/xm/core/xmMyFocus';
 	import  XmProjectAdd from './XmProjectAdd';//新增界面
 	import  XmProjectEdit from './XmProjectEdit';//修改界面
@@ -305,6 +330,10 @@
 				tableHeight:300,
 				dateRanger: [ ],  
 				pickerOptions:  util.pickerOptions('datarange'),
+				xmProjectCopy:{
+					id:'',name:'',code:'',isTpl:'',copyPhase:'1',copyTask:'1',copyGrup:'0'
+				},
+				copyToVisible:false,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -659,7 +688,28 @@
 				this.filters.productId=''
 				this.filters.productName=''
 				this.getXmProjects()
-			}
+			},
+			
+			onCopyToBtnClick(row){
+				this.xmProjectCopy.id=row.id;
+				this.xmProjectCopy.name=row.name+"(复制)";
+				this.xmProjectCopy.isTpl=row.isTpl; 
+				this.copyToVisible=true;
+			},
+			onCopyToConfirm(){
+				this.load.add=true;
+				copyTo(this.xmProjectCopy).then(res=>{ 
+					this.load.add=false;
+					var tips = res.data.tips;
+					if(tips.isOk){
+						if(this.xmProjectCopy.isTpl=='0'){
+							this.searchXmProjects()
+						} 
+					}
+					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+
+				})
+			},
 			/**end 自定义函数请在上面加**/
 			
 		},//end methods

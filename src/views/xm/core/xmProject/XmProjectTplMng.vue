@@ -12,14 +12,14 @@
 						</el-table-column>  
 						<el-table-column  label="" width="100" fixed="right">
 							<template slot-scope="scope">
-								<el-button type="text" title="通过复制创建新的项目" @click="onCopyToBtnClick(scope.row)" :disabled="load.add" v-load="load.add">复制</el-button>
-								<el-button type="text" title="删除该模板" @click="handleDel(scope.row)" :disabled="load.del" v-load="load.del">删除</el-button>
+								<el-button type="text" title="通过复制创建新的项目" @click="onCopyToBtnClick(scope.row)" :disabled="load.add" v-loading="load.add">复制</el-button>
+								<el-button type="text" title="删除该模板" @click="handleDel(scope.row)" :disabled="load.del" v-load="loading.del">删除</el-button>
 							</template>
 						</el-table-column> 
 					</el-table>
 			</el-row>
  
-			<el-pagination  layout="total,  prev, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total"></el-pagination> 
+			<el-pagination  layout="total,  prev, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total"  style="float:right;"></el-pagination> 
 		</el-row> 
 		<el-drawer title="项目编辑" :visible.sync="editFormVisible" :with-header="false"  size="50%"  :close-on-click-modal="false" append-to-body>
 			<xm-project-edit :sel-project="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-edit>
@@ -50,7 +50,7 @@
 			</el-form>
 			<span slot="footer" class="dialog-footer">
 				<el-button @click="copyToVisible = false">取 消</el-button>
-				<el-button type="primary" @click="onCopyToConfirm">确 定</el-button>
+				<el-button type="primary" @click="onCopyToConfirm" :disabled="load.add" v-loading="load.add">确 定</el-button>
 			</span>
 		</el-dialog>
 	</section> 
@@ -339,12 +339,12 @@
 				copyTo(this.xmProjectCopy).then(res=>{
 					
 					this.load.add=false;
-					var tips = res.tips;
+					var tips = res.data.tips;
 					if(tips.isOk){
 						if(this.xmProjectCopy.isTpl){
 							this.searchXmProjects()
 						}
-						
+						this.$emit("copy",res.data.data)
 					}
 					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 
