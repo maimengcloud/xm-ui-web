@@ -13,7 +13,7 @@
 						<el-table-column  label="" width="100" fixed="right">
 							<template slot-scope="scope">
 								<el-button type="text" title="通过复制创建新的项目" @click="onCopyToBtnClick(scope.row)" :disabled="load.add" v-loading="load.add">复制</el-button>
-								<el-button type="text" title="删除该模板" @click="handleDel(scope.row)" :disabled="load.del" v-load="loading.del">删除</el-button>
+								<el-button type="text" title="删除该模板" @click="handleDel(scope.row)" :disabled="load.del" v-loading="load.del">删除</el-button>
 							</template>
 						</el-table-column> 
 					</el-table>
