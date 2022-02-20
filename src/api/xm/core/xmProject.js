@@ -35,3 +35,6 @@ export const editAssess = params => { return axios.post(`${base}/xm/core/xmProje
 export const editStatus = params => { return axios.post(`${base}/xm/core/xmProject/editStatus`, params); };
 
 export const editBudget = params => { return axios.post(`${base}/xm/core/xmProject/editBudget`, params); };
+
+
+export const copyTo = params => { return axios.post(`${base}/xm/core/xmProject/copyTo`, params); };

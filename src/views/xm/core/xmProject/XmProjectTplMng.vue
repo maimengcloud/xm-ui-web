@@ -63,7 +63,7 @@
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import config from "@/common/config"; //全局公共库
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { listXmProject, editStatus, delXmProject, batchDelXmProject } from '@/api/xm/core/xmProject'; 
+	import { listXmProject, editStatus, delXmProject, batchDelXmProject,copyTo } from '@/api/xm/core/xmProject'; 
 	import { addXmMyFocus , delXmMyFocus } from '@/api/xm/core/xmMyFocus'; 
 	import  XmProjectEdit from './XmProjectEdit';//修改界面
 	import { mapGetters } from 'vuex' 

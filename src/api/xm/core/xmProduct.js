@@ -29,3 +29,5 @@ export const editXmProduct = params => { return axios.post(`${base}/xm/core/xmPr
 
 //新增一条产品表
 export const addXmProduct = params => { return axios.post(`${base}/xm/core/xmProduct/add`, params); };
+//新增一条产品表
+export const copyTo = params => { return axios.post(`${base}/xm/core/xmProduct/copyTo`, params); };
