@@ -1,213 +1,58 @@
 <template>
-	<section class="page-container">
-		<el-row>
-			<el-col :span="6" class="padding-top"> 
-				<el-row>
-					<xm-project-tpl-mng></xm-project-tpl-mng>
-				</el-row>
-			</el-col>
-			<el-col :span="18" class="border">
-				<el-row>
-					<el-menu  active-text-color="#00abfc" :default-active="menukey"   mode="horizontal" @select="handleSelect">
-						<el-menu-item index="all">全部</el-menu-item>
-						<el-menu-item index="compete">我参与</el-menu-item>
-						<el-menu-item index="leader">我管理</el-menu-item>
-						<el-menu-item index="moniter">我监控</el-menu-item>
-						<el-menu-item index="approver">我审核</el-menu-item>
-						<el-menu-item index="create">我创建</el-menu-item>
-						<el-menu-item class="hidden-md-and-down" index="myFocus">我关注</el-menu-item>
-						<el-menu-item class="hidden-md-and-down" index="myExecuserStatus0">我排队</el-menu-item>
-						<el-menu-item class="hidden-md-and-down" index="myExecuserStatus1">我执行</el-menu-item>
-						<el-menu-item class="hidden-lg-and-down" index="myExecuserStatus2">我提交验收</el-menu-item>
-						<el-menu-item class="hidden-lg-and-down" index="myExecuserStatus3">我验收成功</el-menu-item>
-						<el-menu-item class="hidden-lg-and-down" index="myExecuserStatus4">我验收失败</el-menu-item>
-						<el-menu-item class="hidden-lg-and-down" index="myExecuserStatus5">我付款中</el-menu-item>
-						<el-menu-item class="hidden-lg-and-down" index="myExecuserStatus6">我付款成功</el-menu-item>
-						<el-menu-item class="hidden-lg-and-down" index="myExecuserStatus7">我放弃</el-menu-item> 
-						<!-- <el-submenu index="7">
-							<template slot="title">更多筛选</template>
-							<el-menu-item index="7-1">选项1</el-menu-item>
-							<el-menu-item index="7-2">选项2</el-menu-item>
-							<el-menu-item index="7-3">选项3</el-menu-item>
-						</el-submenu> -->
-						<el-popover
-							placement="top-start"
-							title="更多查询条件或操作"
-							width="400"
-							trigger="click" >
-							<el-row>
-								<el-col :span="24" style="padding-top:5px;">
-									<el-checkbox  v-model="finishFlag">只查未结束项目</el-checkbox>
-								</el-col>
-								<el-col  :span="24"  style="padding-top:5px;">
-									<font v-if="filters.productId" class="more-label-font">产品:</font>  <el-tag v-if="filters.productId" closable @close="onProductClose">{{filters.productName}}</el-tag><el-button v-else    @click.native="productSelectVisible=true" >选择产品</el-button>
-								</el-col>
-								<el-col  :span="24"  style="padding-top:5px;"> 
-									<font class="more-label-font">显示方式:</font>  
-									<el-radio  v-model="showType" :label="false">表格</el-radio>
-									<el-radio  v-model="showType" :label="true">卡片</el-radio>
-								</el-col>  
-								<el-col  :span="24"  style="padding-top:5px; ">  
-								</el-col> 
-										
-								<el-col  :span="24"  style="padding-top:5px;">
-									<font class="more-label-font">创建时间:</font>  
-									<el-date-picker
-										v-model="dateRanger" 
-										type="daterange"
-										align="right"
-										unlink-panels
-										range-separator="至"
-										start-placeholder="开始日期"
-										end-placeholder="完成日期"
-										value-format="yyyy-MM-dd HH:mm:ss"
-										:default-time="['00:00:00','23:59:59']"
-										:picker-options="pickerOptions"
-									></el-date-picker>   
-								</el-col>  
-								<el-col :span="24" style="padding-top:5px;">
-									<el-button  type="primary" icon="el-icon-search" @click="searchXmProjects">查询</el-button>
-								</el-col>
-							</el-row>
-							<el-button type="text" class="right-btn" slot="reference" icon="el-icon-d-arrow-right"></el-button>
-						</el-popover>
-						<el-button type="primary"  @click="showAdd"  icon="el-icon-plus"></el-button>
-					</el-menu>
-					
-				</el-row> 
-				<el-row  class="page-main page-height-80"> 
-					<!--列表 XmProject xm_project-->
-					<el-row v-show="showType" v-loading="load.list">
-						<el-col  v-cloak v-for="(p,i) in ScreenData" :key="i" :xl="4" :lg="6" :md="8" :sm="12">
-							<el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always">
-								<div class="project-name" title="这是项目名称">{{p.name}}</div>
-								<div class="project-id eui-text-truncate">{{p.code}}</div>
-								<div class="project-info">
-									<div class="info-item">
-										<span class="item-total">{{p.totalBugCnt==null?0:p.totalBugCnt}}</span>
-										<span class="item-type">缺陷</span>
-									</div>
-									<div class="info-item">
-										<span class="item-total">{{p.totalFileCnt==null?0:p.totalFileCnt}}</span>
-										<span class="item-type">文档</span>
-									</div>
-									<div class="info-task">
-										<span>
-											<span class="item-total finish-task">{{p.totalCompleteTaskCnt==null?0:p.totalCompleteTaskCnt}}</span>
-											<span style="margin: 0 .25rem !important;">/</span>
-											<span class="item-type total-task">{{p.totalTaskCnt==null?0:p.totalTaskCnt}}</span>
-										</span>
-										<span class="item-type">任务完成</span>
-									</div>
-								</div>
-								<div class="project-rate">
-									<el-progress :percentage="(p.totalProgress==null?0:p.totalProgress)"></el-progress>
-								</div>
-								<div class="project-footer">
-									<div class="project-type">{{p.xmType}}</div>
-									<div class="project-period">{{p.startTime.substr(0,10)}} ~{{p.endTime.substr(0,10)}}</div>
-								</div>
-							</el-card>
-						</el-col>
-					</el-row>
-
-					<el-table ref="table" v-cloak v-show="!showType" stripe :data="ScreenData" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-						<el-table-column prop="code" label="项目编号" min-width="120" ></el-table-column>
-						<el-table-column prop="name" label="标题" min-width="200" >
+	<section class="page-container"> 
+		<el-row  class="page-main page-height-80"> 
+			<!--列表 XmProject xm_project-->
+			<el-row  v-loading="load.list">
+				
+					<el-table ref="table" v-cloak  stripe :data="ScreenData" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+ 						<el-table-column prop="name" label="项目模板(学习/参考)" min-width="200" >
 							<template slot-scope="scope">
 								<el-link @click.stop="intoInfo(scope.row)">{{scope.row.name}}</el-link>
 							</template>
+						</el-table-column>  
+						<el-table-column  label="" width="100" fixed="right">
+							<template slot-scope="scope">
+								<el-button type="text" title="通过复制创建新的项目" @click="onCopyToBtnClick(scope.row)" :disabled="load.add" v-load="load.add">复制</el-button>
+								<el-button type="text" title="删除该模板" @click="handleDel(scope.row)" :disabled="load.del" v-load="load.del">删除</el-button>
+							</template>
 						</el-table-column> 
-						<el-table-column prop="totalTaskCnt" label="任务数" min-width="80" ></el-table-column>
-						<el-table-column prop="totalCompleteTaskCnt" label="任务完成" min-width="80" ></el-table-column>
-						<el-table-column prop="totalFileCnt" label="文档" min-width="80" ></el-table-column>
-						<el-table-column prop="totalBugCnt" label="缺陷" min-width="80" ></el-table-column>
-						<el-table-column label="进度" min-width="80" >
-							<template slot-scope="scope">
-								{{scope.row.totalProgress}}%
-							</template>
-						</el-table-column>
-						<el-table-column prop="startTime" label="起止时间" min-width="150" >
-							<template slot-scope="scope">
-								{{scope.row.startTime? scope.row.startTime.substr(0,10) : ""}}~{{scope.row.endTime? scope.row.endTime.substr(0,10) : ""}}
-							</template>
-						</el-table-column>
-						<el-table-column prop="bizFlowState" label="审批状态" min-width="80" >
-							<template slot-scope="scope">
-								<el-tooltip  v-if="scope.row.flowState!='' && scope.row.flowState!=null" :content="showApprovaInfo(scope.row)" placement="bottom" effect="light">
-								<el-tag v-if="scope.row.flowState=='0' || scope.row.flowState==null ">未发审</el-tag> 
-								<el-tag v-else-if="scope.row.flowState=='1'">审核中</el-tag> 
-								<el-tag v-else-if="scope.row.flowState=='2'">已通过</el-tag>
-								<el-tag v-else-if="scope.row.flowState=='3'">未通过</el-tag>
-								<el-tag v-else-if="scope.row.flowState=='4'">已取消</el-tag> 
-								</el-tooltip> 
-							</template>
-						</el-table-column>
-						<el-table-column label="操作" width="245" fixed="right">
-							<template slot-scope="scope">
-								<!-- <el-popover
-									placement="left"
-									trigger="hover"> -->
-									
-									<el-button-group> 
-										<el-button v-if="menukey=='myFocus'"  type="primary" @click.stop="focusOrUnfocus(scope.row)" >取消关注</el-button> 
-										<el-button v-else  type="primary" @click.stop="focusOrUnfocus(scope.row)" >关注</el-button>  
-										<el-button    type="primary" @click.stop="xmRecordVisible=true" >日志</el-button> 
-										<!-- 
-										<el-button  type="primary" @click.stop="statusChange(scope,'1')" v-if="scope.row.status==0 || scope.row.status == 2">提交审核</el-button>
-										<el-button  type="primary" @click.stop="statusChange(scope,'3')" v-if="scope.row.status==1">批准</el-button>
-										<el-button  type="primary" @click.stop="statusChange(scope,'2')" v-if="scope.row.status==1">退回</el-button>
-										<el-button  type="primary" @click.stop="statusChange(scope,'4')" v-if="scope.row.status==3">结束</el-button>
-										<el-button  type="primary" @click.stop="statusChange(scope,'3')" v-if="scope.row.status==4">重新启动</el-button>
-										<el-button  type="primary" @click.stop="handleDel(scope.row,scope.$index)" v-if="isLeader(scope.row.leader)">删除</el-button>
-										-->
-									</el-button-group>
-									
-									<el-dropdown @command="handleCommand" :hide-on-click="false">
-										<span class="el-dropdown-link">
-											更多<i class="el-icon-arrow-down el-icon--right"></i>
-										</span>
-										<el-dropdown-menu slot="dropdown">
-											<el-dropdown-item icon="el-icon-success"   :command="{type:'sendToProcessApprova',row:scope.row,bizKey:'xm_project_start_approva'}">立项发审(审核通过后起效)</el-dropdown-item> 
-											<el-dropdown-item icon="el-icon-success"   :command="{type:'sendToProcessApprova',row:scope.row,bizKey:'xm_project_delete_approva'}">删除发审(审核通过后删除)</el-dropdown-item> 
-											<el-dropdown-item icon="el-icon-success"   :command="{type:'showEdit',row:scope.row,bizKey:'xm_project_baseinfo_change_approva'}">基础信息变更发审(审核通过后生效)</el-dropdown-item> 
-											<el-dropdown-item icon="el-icon-success"   :command="{type:'showEdit',row:scope.row,bizKey:'xm_project_budget_change_approva'}">预算变更发审(审核通过后生效)</el-dropdown-item> 
-											<el-dropdown-item icon="el-icon-success"   :command="{type:'sendToProcessApprova',row:scope.row,bizKey:'xm_project_over_approva'}">项目结项发审(审核通过后生效)</el-dropdown-item> 
-											<el-dropdown-item icon="el-icon-success"   :command="{type:'sendToProcessApprova',row:scope.row,bizKey:'xm_project_suspension_approva'}">项目暂停发审(审核通过后生效)</el-dropdown-item> 
-											<el-dropdown-item icon="el-icon-success"   :command="{type:'sendToProcessApprova',row:scope.row,bizKey:'xm_project_restart_approva'}">项目重新启动发审(审核通过后生效)</el-dropdown-item>
-										</el-dropdown-menu>
-									</el-dropdown> 
-									<!-- <el-button style="width:100%;" slot="reference" class="see-more" type="text" icon="el-icon-more"></el-button>
-								</el-popover> -->
-							</template>
-						</el-table-column>
 					</el-table>
-					<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
-				</el-row>
-			</el-col>
-		</el-row>
-		
-		<el-drawer title="项目新增" :visible.sync="addFormVisible" :with-header="false" size="50%"  :close-on-click-modal="false" append-to-body>
-			<xm-project-add :sel-project="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-add>
-		</el-drawer>
+			</el-row>
+ 
+			<el-pagination  layout="total,  prev, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total"></el-pagination> 
+		</el-row> 
 		<el-drawer title="项目编辑" :visible.sync="editFormVisible" :with-header="false"  size="50%"  :close-on-click-modal="false" append-to-body>
 			<xm-project-edit :sel-project="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-edit>
 		</el-drawer>
 		<el-drawer :title="selectProject==null?'项目明细':selectProject.name" center :fullscreen="true" :visible.sync="showInfo"  size="50%"  :close-on-click-modal="false" append-to-body>
 			<xm-project-info :sel-project="selectProject" :visible="showInfo" @changeShowInfo="changeShowInfo" @submit="changeShowInfo"></xm-project-info>
 		</el-drawer>
-		
-		<el-drawer v-if="selectProject" :title="selectProject==null?'操作日志':selectProject.name+'操作日志'" center   :visible.sync="xmRecordVisible"  size="50%"  :close-on-click-modal="false" append-to-body>
-			<xm-record :obj-type="'project'" :project-id="selectProject.id"  :visible="xmRecordVisible" :simple="1"></xm-record>
-		</el-drawer>
-		
-		<el-drawer
-			append-to-body
-			title="产品"
-			:visible.sync="productSelectVisible"
-			width="80%">
-			<xm-product-mng :is-select-product="true" @selected="onProductSelected"></xm-product-mng> 
-		</el-drawer>
+		<el-dialog
+			title="提示"
+			:visible.sync="copyToVisible"
+			width="30%" > 
+			<el-form>
+			<el-form-item label="项目名称">
+				<el-input v-model="xmProjectCopy.name" placeholder="新的项目名称"></el-input> 
+			</el-form-item>
+			<el-form-item  label="项目编码(留空则后台自动生成)"> 
+				<el-input v-model="xmProjectCopy.code"  placeholder="新的项目编码"></el-input>
+			</el-form-item>
+			<el-form-item  label="目标">
+				<el-radio v-model="xmProjectCopy.isTpl" label="0">复制为新的模板</el-radio>
+				<el-radio v-model="xmProjectCopy.isTpl" label="1">复制为新的项目</el-radio>
+			</el-form-item>
+			<el-form-item label="附加任务">
+				<el-checkbox v-model="xmProjectCopy.copyPhase" true-label="1" false-label="0">拷贝计划</el-checkbox> 
+				<el-checkbox v-model="xmProjectCopy.copyTask" true-label="1" false-label="0">拷贝任务</el-checkbox>  
+				<el-checkbox v-model="xmProjectCopy.copyGroup" true-label="1" false-label="0">拷贝项目组成员</el-checkbox>  
+			</el-form-item>
+			</el-form>
+			<span slot="footer" class="dialog-footer">
+				<el-button @click="copyToVisible = false">取 消</el-button>
+				<el-button type="primary" @click="onCopyToConfirm">确 定</el-button>
+			</span>
+		</el-dialog>
 	</section> 
 
 </template>
@@ -219,14 +64,10 @@
 	import config from "@/common/config"; //全局公共库
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { listXmProject, editStatus, delXmProject, batchDelXmProject } from '@/api/xm/core/xmProject'; 
-	import { addXmMyFocus , delXmMyFocus } from '@/api/xm/core/xmMyFocus';
-	import  XmProjectAdd from './XmProjectAdd';//新增界面
+	import { addXmMyFocus , delXmMyFocus } from '@/api/xm/core/xmMyFocus'; 
 	import  XmProjectEdit from './XmProjectEdit';//修改界面
-	import { mapGetters } from 'vuex'
-	import xmTaskMng from '../xmTask/XmTaskMng'; 
-	import xmProjectInfo from './XmProjectInfo'; 
-	import XmProjectTplMng from './XmProjectTplMng'; 
-	import XmProductMng from '../xmProduct/XmProductSelect';
+	import { mapGetters } from 'vuex' 
+	import xmProjectInfo from './XmProjectInfo';  
 
 	if(!Vue.component("xm-project-info")){
 		
@@ -305,6 +146,10 @@
 				tableHeight:300,
 				dateRanger: [ ],  
 				pickerOptions:  util.pickerOptions('datarange'),
+				xmProjectCopy:{
+					id:'',name:'',code:'',isTpl:'',copyPhase:'1',copyTask:'1',copyGrup:'0'
+				},
+				copyToVisible:false,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -352,6 +197,7 @@
 				if(this.dateRanger&&this.dateRanger.length==2){
 					 
 				} 
+				params.isTpl="1"
 				this.load.list = true; 
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
@@ -481,6 +327,28 @@
 				const that = this;
 				//that.intoInfo(row.id);
 				// this.$emit('row-click',row, event, column);//  @row-click="rowClick"
+			},
+			onCopyToBtnClick(row){
+				this.xmProjectCopy.id=row.id;
+				this.xmProjectCopy.name=row.name+"(复制)";
+				this.xmProjectCopy.isTpl=row.isTpl; 
+				this.copyToVisible=true;
+			},
+			onCopyToConfirm(){
+				this.load.add=true;
+				copyTo(this.xmProjectCopy).then(res=>{
+					
+					this.load.add=false;
+					var tips = res.tips;
+					if(tips.isOk){
+						if(this.xmProjectCopy.isTpl){
+							this.searchXmProjects()
+						}
+						
+					}
+					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+
+				})
 			},
 			/**begin 自定义函数请在下面加**/
 			//是否负责人 是则true，否则false
@@ -664,12 +532,7 @@
 			
 		},//end methods
 		components: { 
-		    'xm-project-add':XmProjectAdd,
 		    'xm-project-edit':XmProjectEdit,
-			
-			XmProductMng,
-			xmTaskMng,
-			XmProjectTplMng,
 		    //在下面添加其它组件
 		},
 		mounted() { 
@@ -678,9 +541,6 @@
 				this.filters.productName=this.$route.params.productName;
 			}
 			this.$nextTick(() => {
-				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=70/1000 * window.innerHeight; 
-				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
 				this.showInfo = false;
 				this.getXmProjects();
 			}); 
