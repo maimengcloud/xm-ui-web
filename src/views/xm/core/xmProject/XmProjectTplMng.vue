@@ -349,11 +349,11 @@
 			},
 			onCopyToConfirm(){
 				this.load.add=true;
-				copyTo(this.xmProjectCopy).then(res=>{
-					
+				copyTo(this.xmProjectCopy).then(res=>{ 
 					this.load.add=false;
 					var tips = res.data.tips;
 					if(tips.isOk){
+						this.copyToVisible=false;
 						if(this.xmProjectCopy.isTpl){
 							this.searchXmProjects()
 						}
