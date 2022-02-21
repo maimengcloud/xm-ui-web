@@ -938,6 +938,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				loadTasksToXmProjectPhase(params).then(res=>{
 					 this.load.edit=false;
 					var tips = res.data.tips
+					this.xmProjectPhases=[]
 					if(tips.isOk){
 						this.getXmProjectPhases()
 					}
