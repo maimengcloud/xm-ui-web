@@ -401,25 +401,21 @@
                 label="预算及工时"
                 width="150"
               >
-                <template slot-scope="scope">
-                  <font v-if="scope.row.ntype!='1'">
+                <template slot-scope="scope"> 
                   {{ "￥" + getAmountDesc(scope.row.budgetCost) }},{{
                     scope.row.budgetWorkload
-                  }}人时
-                  </font>
+                  }}人时 
                 </template>
               </el-table-column>
               <el-table-column sortable prop="rate" label="进度" width="100">
-                <template slot-scope="scope">
-                   <font v-if="scope.row.ntype!='1'">
-                  <el-link
+                <template slot-scope="scope"> 
+                  <el-link :disabled="scope.row.ntype=='1'"
                     style="border-radius: 30px"
                     :type="scope.row.rate >= 100 ? 'success' : 'warning'"
                     @click="drawerVisible = true"
                   >
                     {{ (scope.row.rate != null ? scope.row.rate : 0) + "%" }}
-                  </el-link>
-                  </font>
+                  </el-link> 
                 </template>
               </el-table-column>
               
@@ -454,9 +450,8 @@
                 width="120"
                 show-overflow-tooltip
               >
-                <template slot-scope="scope">
-                   <font v-if="scope.row.ntype!='1'">
-                  <el-link @click="drawerVisible = true"
+                <template slot-scope="scope"> 
+                  <el-link @click="drawerVisible = true" :disabled="scope.row.ntype=='1'" 
                     >{{ getDateString(scope.row.startTime) }}&nbsp;~&nbsp;{{
                       getDateString(scope.row.endTime)
                     }}
@@ -466,8 +461,7 @@
 											<el-tag :type="item.type">{{getDateString(scope.row.startTime)}}~{{getDateString(scope.row.endTime)}} {{item.desc}}</el-tag>
 										</div>  
 									-->
-                  
-                  </font>
+                   
                 </template>
               </el-table-column>
               <el-table-column
