@@ -2,7 +2,7 @@
 	<section class="page-container padding">
 		<el-row>
 		<el-col :span="6"> 
-			<xm-product-tpl-mng @copy="searchXmProducts" ref="xmProductTplMngRef"></xm-product-tpl-mng>
+			<xm-product-tpl-mng @copy="searchXmProducts" ref="xmProductTplMngRef" show-type="simple"></xm-product-tpl-mng>
 		</el-col> 
 		<el-col :span="18" class="border">
 			<el-row>
