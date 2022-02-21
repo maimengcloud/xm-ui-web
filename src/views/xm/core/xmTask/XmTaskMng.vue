@@ -372,6 +372,12 @@
               row-key="id"
               ref="table"
             >
+              <el-table-column  
+                label="序号"
+                type="index"
+                width="80"
+              > 
+              </el-table-column>
               <el-table-column
                 sortable
                 prop="name"
