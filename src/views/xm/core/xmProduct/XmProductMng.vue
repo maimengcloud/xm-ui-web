@@ -127,6 +127,9 @@
 				<el-row  class="padding-top" v-show="!showType">
 					<!--列表 XmProduct 产品表-->
 					<el-table ref="table"  :height="tableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+						
+						<el-table-column type="index" width="60"> 
+						</el-table-column>
 						<el-table-column prop="productName" label="产品名称" min-width="200" sortable>
 							<template slot-scope="scope">
 								<el-link type="primary" @click="intoInfo(scope.row)">{{scope.row.productName}}</el-link>
