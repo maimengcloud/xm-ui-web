@@ -4,11 +4,11 @@
       <el-row style="margin-bottom:10px">
         <el-card class="box-card" style="padding:0px ;height:100px">
           <div>
-            <el-row style="padding:10px">
-              <el-steps :active="this.xmProduct.pstatus+1" align-center finish-status="success">
-                <el-step title="未开始"></el-step>
-                <el-step title="研发中"></el-step>
-                <el-step title="已完成"></el-step>
+            <el-row style="padding:10px"> 
+              <el-steps :active="calcXmProductPstatusStep" align-center finish-status="success">
+                <el-step  v-for="(i,index) in options['xmProductPstatus']" :title="i.optionName" :key="index" >
+                   
+                </el-step> 
               </el-steps>
             </el-row>
           </div>
@@ -242,6 +242,7 @@
 import util from "@/common/js/util"; // 全局公共库
 import { mapGetters } from "vuex";
 
+	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 
 export default {
   computed: {
@@ -307,6 +308,21 @@ export default {
     xmProductCpd(){
       return this.xmProduct;
     },
+    calcXmProductPstatusStep(){
+				if(this.options['xmProductPstatus']){
+					var index=this.options['xmProductPstatus'].findIndex(i=>{
+						if(i.optionValue==this.xmProductCpd.pstatus){
+							return true;
+						}else{
+							return false;
+						}
+					})
+					return index+1;
+				}else{
+					return 0;
+				}
+
+    }
   },
 
   props:['xmProduct'],
@@ -321,6 +337,9 @@ export default {
   data() {
     return {
       isActive: true,
+      options:{
+        xmProductPstatus:[]
+      }
     };
   },
 
@@ -577,6 +596,12 @@ export default {
   },
 
   mounted() {
+			
+			listOption([{categoryId:'all',itemCode:'xmProductPstatus'}] ).then(res=>{
+				if(res.data.tips.isOk){ 
+					this.options['xmProductPstatus']=res.data.data.xmProductPstatus   
+				}
+			});
     this.$nextTick(() => {
     });
     this.drawAllBar();

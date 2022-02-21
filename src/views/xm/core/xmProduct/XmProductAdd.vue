@@ -1,5 +1,14 @@
 <template>
 	<section class="page-container page-full-height padding border">
+		<el-row class="padding-bottom">
+			<el-steps :active="calcProjectStatusStep" simple finish-status="success">
+ 				<el-step  v-for="(i,index) in options['projectStatus']" :title="i.optionName" :key="index">
+					 <el-row slot="title" @click.native.stop="editForm.status=i.optionValue">
+						 {{i.optionName}} 
+					 </el-row>
+				</el-step> 
+			</el-steps>
+		</el-row>
 		<el-row class="page-main page-height-80">
 			<!--新增界面 XmProduct 产品表--> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
@@ -33,7 +42,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询 
+	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询 
 	import { addXmProduct } from '@/api/xm/core/xmProduct';
 	import { mapGetters } from 'vuex'	
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
@@ -58,7 +67,7 @@
 	    },
 		data() {
 			return {
-				options:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				options:{xmProductPstatus:[]},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				addFormRules: {
 					id: [
@@ -129,7 +138,7 @@
 			clearPmUser:function(){
 				this.addForm.pmUserid=''
 				this.addForm.pmUsername=''
-			}
+			},  
 			/**begin 在下面加自定义方法,记得补上面的一个逗号**/
 				
 			/**end 在上面加自定义方法**/
@@ -139,7 +148,7 @@
 			//在下面添加其它组件 'xm-product-edit':XmProductEdit
 			UsersSelect
 		},
-		mounted() {
+		mounted() { 
 			this.addForm=Object.assign(this.addForm, this.xmProduct);  
 			this.addForm.pmUserid=this.userInfo.userid
 			this.addForm.pmUsername=this.userInfo.username

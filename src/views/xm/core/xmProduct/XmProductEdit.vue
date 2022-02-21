@@ -1,11 +1,30 @@
 <template>
 	<section class="page-container padding border">
+		
+		<el-row class="padding-header">
+			<el-steps :active="calcXmProductPstatusStep" simple finish-status="success">
+ 				<el-step  v-for="(i,index) in options['xmProductPstatus']" :title="i.optionName" :key="index" @click.native.stop="editForm.pstatus=i.optionValue">
+					 <el-row slot="title" >
+						 {{i.optionName}} 
+					 </el-row>
+				</el-step> 
+			</el-steps>
+		</el-row>
 		<el-row class="page-main">
 			<!--新增界面 XmProduct 产品表--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
-				<el-form-item label="产品编号" prop="id">
-					<el-input v-model="editForm.id" placeholder="产品编号" ></el-input>
+				<el-form-item label="产品编码" prop="code">
+					<el-input v-model="editForm.code" placeholder="产品编码" ></el-input>
 				</el-form-item> 
+				<el-form-item label="产品名称" prop="productName">
+					<el-input v-model="editForm.productName" placeholder="产品名称" ></el-input>
+				</el-form-item>  
+				
+				<el-form-item label="状态" prop="pstatus">
+					<el-select v-model="editForm.pstatus" placeholder="状态" >
+						<el-option v-for="(item,index) in options['xmProductPstatus']" :label="item.optionName" :value="item.optionValue" :key="index"></el-option>
+					</el-select>
+				</el-form-item>  
 				<el-form-item label="产品名称" prop="productName">
 					<el-input v-model="editForm.productName" placeholder="产品名称" ></el-input>
 				</el-form-item>  
@@ -34,7 +53,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询 
+	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询 
 	import { editXmProduct } from '@/api/xm/core/xmProduct';
 	import { mapGetters } from 'vuex'	
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
@@ -44,7 +63,21 @@
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
-		    ])
+		    ]), 
+			calcXmProductPstatusStep(){
+				if(this.options['xmProductPstatus']){
+					var index=this.options['xmProductPstatus'].findIndex(i=>{
+						if(i.optionValue==this.editForm.pstatus){
+							return true;
+						}else{
+							return false;
+						}
+					})
+					return index+1;
+				}else{
+					return 0;
+				}
+			},
 		},
 		props:['xmProduct','visible'],
 		watch: {
@@ -59,7 +92,7 @@
 	    },
 		data() {
 			return {
-				options:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				options:{xmProductPstatus:[]},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, add: false, del: false, edit: false },//查询中...
 				editFormRules: {
 					id: [
@@ -76,7 +109,7 @@
 				},
 				//新增界面数据 产品表
 				editForm: {
-					id:'',productName:'',branchId:'',remark:'',pmUserid:'',pmUsername:'',ctime:''
+					id:'',productName:'',branchId:'',remark:'',pmUserid:'',pmUsername:'',ctime:'',pstatus:'0'
 				},
 				userSelectVisible:false,
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
@@ -148,6 +181,13 @@
 			UsersSelect
 		},
 		mounted() {
+			
+			
+			listOption([{categoryId:'all',itemCode:'xmProductPstatus'}] ).then(res=>{
+				if(res.data.tips.isOk){ 
+					this.options['xmProductPstatus']=res.data.data.xmProductPstatus   
+				}
+			});
 			this.editForm= this.xmProduct;   
 			/**在下面写其它函数***/
 			

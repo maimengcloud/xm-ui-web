@@ -132,6 +132,8 @@
 								<el-link type="primary" @click="intoInfo(scope.row)">{{scope.row.productName}}</el-link>
 							</template>
 						</el-table-column>
+						<el-table-column prop="pstatus" label="状态" width="120" sortable :formatter="formatPstatus"> 
+						</el-table-column>
 						<el-table-column prop="finishRate" label="进度" width="120" sortable>
 							<template slot-scope="scope"> 
 								<font class="align-right"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag>
@@ -232,7 +234,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { listXmProduct,listXmProductWithState, delXmProduct, batchDelXmProduct,copyTo } from '@/api/xm/core/xmProduct';
 	import { addXmIterationProductLink,delXmIterationProductLink } from '@/api/xm/core/xmIterationProductLink';
 	import { loadTasksToXmProductState } from '@/api/xm/core/xmProductState';
@@ -285,7 +287,9 @@ import XmProductSelect from './XmProductSelect.vue';
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				options:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
+				options:{
+					xmProductPstatus:[]
+				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
 
 				addFormVisible: false,//新增xmProduct界面是否显示
 				//新增xmProduct界面初始化数据
@@ -607,6 +611,14 @@ import XmProductSelect from './XmProductSelect.vue';
 
 				})
 			},
+			formatPstatus(row, column, cellValue, index){
+				var item=this.options.xmProductPstatus.find(i=>i.optionValue==cellValue)
+				if(item){
+					return item.optionName
+				}else{
+					return cellValue;
+				}
+			}
 			/**end 自定义函数请在上面加**/
 
 		},//end methods
@@ -623,6 +635,12 @@ import XmProductSelect from './XmProductSelect.vue';
 		    //在下面添加其它组件
 		},
 		mounted() {
+			
+			listOption([{categoryId:'all',itemCode:'xmProductPstatus'}] ).then(res=>{
+				if(res.data.tips.isOk){ 
+					this.options['xmProductPstatus']=res.data.data.xmProductPstatus   
+				}
+			});
 			this.$nextTick(() => {
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();
 				var subHeight=70/1000 * window.innerHeight;
