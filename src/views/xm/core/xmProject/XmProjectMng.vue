@@ -3,7 +3,7 @@
 		<el-row>
 			<el-col :span="6" class="padding-top"> 
 				<el-row>
-					<xm-project-tpl-mng @copy="searchXmProjects"></xm-project-tpl-mng>
+					<xm-project-tpl-mng @copy="searchXmProjects" ref="xmProjectTplMngRef"></xm-project-tpl-mng>
 				</el-row>
 			</el-col>
 			<el-col :span="18" class="border">
@@ -81,7 +81,10 @@
 						<el-col  v-cloak v-for="(p,i) in ScreenData" :key="i" :xl="8" :lg="8" :md="8" :sm="12">
 							<el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always">
 								<div class="project-name" title="这是项目名称">{{p.name}}</div>
-								<div class="project-id eui-text-truncate">{{p.code}} <el-button style="float:right;" type="text" title="通过复制快速创建新项目" @click.stop="onCopyToBtnClick(p)" v-loading="load.add">复制</el-button></div>
+								<div class="project-id eui-text-truncate">{{p.code}} 
+									<el-button style="float:right;" type="text" title="通过复制快速创建新项目" @click.stop="onCopyToBtnClick(p)" v-loading="load.add">复制</el-button>
+									<el-button style="float:right;" type="text" title="删除项目" @click.stop="handleDel(p)" v-loading="load.add">删除</el-button>
+								</div>
 								<div class="project-info">
 									<div class="info-item">
 										<span class="item-total">{{p.totalBugCnt==null?0:p.totalBugCnt}}</span>
@@ -222,7 +225,7 @@
 			</el-form-item>
 			</el-form>
 			<span slot="footer" class="dialog-footer">
-				<el-button @click="copyToVisible = false">取 消</el-button>
+				<el-button @click="copyToVisible = false;load.add=false">取 消</el-button>
 				<el-button type="primary" @click="onCopyToConfirm" :disabled="load.add" v-loading="load.add">确 定</el-button>
 			</span>
 		</el-dialog>
@@ -702,9 +705,12 @@
 					this.load.add=false;
 					var tips = res.data.tips;
 					if(tips.isOk){
+						this.copyToVisible=false;
 						if(this.xmProjectCopy.isTpl=='0'){
 							this.searchXmProjects()
-						} 
+						}else{
+							this.$refs.xmProjectTplMngRef.searchXmProjects()
+						}
 					}
 					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 
