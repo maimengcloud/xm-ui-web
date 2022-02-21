@@ -212,8 +212,8 @@
 				<el-input v-model="xmProjectCopy.code"  placeholder="新的项目编码"></el-input>
 			</el-form-item>
 			<el-form-item  label="目标">
-				<el-radio v-model="xmProjectCopy.isTpl" label="0">复制为新的模板</el-radio>
-				<el-radio v-model="xmProjectCopy.isTpl" label="1">复制为新的项目</el-radio>
+				<el-radio v-model="xmProjectCopy.isTpl" label="1">复制为新的模板</el-radio>
+				<el-radio v-model="xmProjectCopy.isTpl" label="0">复制为新的项目</el-radio>
 			</el-form-item>
 			<el-form-item label="附加任务">
 				<el-checkbox v-model="xmProjectCopy.copyPhase" true-label="1" false-label="0">拷贝计划</el-checkbox> 
