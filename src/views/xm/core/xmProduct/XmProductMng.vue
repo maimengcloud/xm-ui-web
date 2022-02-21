@@ -132,9 +132,9 @@
 								<el-link type="primary" @click="intoInfo(scope.row)">{{scope.row.productName}}</el-link>
 							</template>
 						</el-table-column>
-						<el-table-column prop="pstatus" label="状态" width="120" sortable :formatter="formatPstatus"> 
+						<el-table-column prop="pstatus" label="状态" width="100" sortable :formatter="formatPstatus"> 
 						</el-table-column>
-						<el-table-column prop="finishRate" label="进度" width="120" sortable>
+						<el-table-column prop="finishRate" label="进度" width="100" sortable>
 							<template slot-scope="scope"> 
 								<font class="align-right"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag>
 
@@ -143,7 +143,7 @@
 								</font>
 							</template>
 						</el-table-column>
-						<el-table-column prop="pmUsername" label="产品经理" min-width="120" sortable>
+						<el-table-column prop="pmUsername" label="产品经理" width="120" sortable show-overflow-tooltip>
 							<template slot-scope="scope"> 						
 								<el-tag v-if="scope.row.pmUsername">{{scope.row.pmUsername}}</el-tag> 
 							</template>
