@@ -1,197 +1,231 @@
 <template>
 	<section class="page-container padding">
-    <el-row>
-			<el-select   v-model="filters.queryScope"    placeholder="产品查询范围">
-				<el-option :label="userInfo.branchName+'机构下所有的产品'" value="branchId"></el-option>
-				<el-option label="我相关的产品" value="compete"></el-option>
-				<el-option label="按产品编号精确查找" value="productId"></el-option>
-			</el-select>
-			<el-input v-if="filters.queryScope=='productId'" style="width:20%;"  v-model="filters.id"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">
-			</el-input>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="名称查询" clearable>   
-			</el-input>
-			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProducts" icon="el-icon-search">查询</el-button>
- 			<el-button type="primary" @click="showAdd" icon="el-icon-plus" v-if="!xmIteration">产品</el-button>
-			<el-popover
-				placement="top-start"
-				title=""
-				width="500"
-				trigger="click" >
-				<el-divider content-position="left"><strong>查询条件</strong></el-divider>
+		<el-row>
+		<el-col :span="6"> 
+			<xm-product-tpl-mng @copy="searchXmProducts" ref="xmProductTplMngRef"></xm-product-tpl-mng>
+		</el-col> 
+		<el-col :span="18" class="border">
+			<el-row>
 				<el-row>
-					<el-col :span="24" style="padding-top:5px;">
+					<el-select   v-model="filters.queryScope"    placeholder="产品查询范围">
+						<el-option :label="userInfo.branchName+'机构下所有的产品'" value="branchId"></el-option>
+						<el-option label="我相关的产品" value="compete"></el-option>
+						<el-option label="按产品编号精确查找" value="productId"></el-option>
+					</el-select>
+					<el-input v-if="filters.queryScope=='productId'" style="width:20%;"  v-model="filters.id"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">
+					</el-input>
+					<el-input v-model="filters.key" style="width: 20%;" placeholder="名称查询" clearable>   
+					</el-input>
+					<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProducts" icon="el-icon-search">查询</el-button>
+					<el-button type="primary" @click="showAdd" icon="el-icon-plus" v-if="!xmIteration">产品</el-button>
+					<el-popover
+						placement="top-start"
+						title=""
+						width="500"
+						trigger="click" >
+						<el-divider content-position="left"><strong>查询条件</strong></el-divider>
+						<el-row>
+							<el-col :span="24" style="padding-top:5px;">
 
-						<font class="more-label-font">
-							产品查询范围：
-						</font>
-						<el-select  v-model="filters.queryScope" style="width:100%;"   placeholder="产品查询范围">
-							<el-option :label="userInfo.branchName+'机构下的产品'" value="branchId"></el-option>
-							<el-option label="我相关的产品" value="compete"></el-option>
-							<el-option label="按产品编号精确查找" value="productId"></el-option>
-						</el-select>
-					</el-col>
-					<el-col  :span="24"  style="padding-top:5px;">
-						<el-input v-if="filters.queryScope=='productId'"  v-model="filters.id" style="width:100%;"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">
-						</el-input>
-					</el-col>
-					<el-col v-show="!selProject&&filters.queryScope!='productId'" :span="24"  style="padding-top:5px;">
-						<font class="more-label-font">创建时间:</font>
-						<el-date-picker
-							v-model="dateRanger"
-							type="daterange"
-							align="right"
-							unlink-panels
-							range-separator="至"
-							start-placeholder="开始日期"
-							end-placeholder="完成日期"
-							value-format="yyyy-MM-dd HH:mm:ss"
-							:default-time="['00:00:00','23:59:59']"
-							:picker-options="pickerOptions"
-						></el-date-picker>
-					</el-col>
-					<el-col  :span="24"  style="padding-top:5px;">
-						<font class="more-label-font">
-							产品名称:
-						</font>
-						<el-input   v-model="filters.key" style="width:100%;"  placeholder="输入产品名字关键字">
-						</el-input>
-					</el-col>
-					<el-col  :span="24"  style="padding-top:5px;">
-						<font class="more-label-font">
-							产品经理:
-						</font>
-						<el-tag v-if="filters.pmUser" closable @click="selectFiltersPmUser" @close="clearFiltersPmUser()">{{filters.pmUser.username}}</el-tag>
-						<el-button   v-else @click="selectFiltersPmUser()">选责任人</el-button>
-						<el-button    @click="setFiltersPmUserAsMySelf()">我的</el-button>
-					</el-col>
+								<font class="more-label-font">
+									产品查询范围：
+								</font>
+								<el-select  v-model="filters.queryScope" style="width:100%;"   placeholder="产品查询范围">
+									<el-option :label="userInfo.branchName+'机构下的产品'" value="branchId"></el-option>
+									<el-option label="我相关的产品" value="compete"></el-option>
+									<el-option label="按产品编号精确查找" value="productId"></el-option>
+								</el-select>
+							</el-col>
+							<el-col  :span="24"  style="padding-top:5px;">
+								<el-input v-if="filters.queryScope=='productId'"  v-model="filters.id" style="width:100%;"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">
+								</el-input>
+							</el-col>
+							<el-col v-show="!selProject&&filters.queryScope!='productId'" :span="24"  style="padding-top:5px;">
+								<font class="more-label-font">创建时间:</font>
+								<el-date-picker
+									v-model="dateRanger"
+									type="daterange"
+									align="right"
+									unlink-panels
+									range-separator="至"
+									start-placeholder="开始日期"
+									end-placeholder="完成日期"
+									value-format="yyyy-MM-dd HH:mm:ss"
+									:default-time="['00:00:00','23:59:59']"
+									:picker-options="pickerOptions"
+								></el-date-picker>
+							</el-col>
+							<el-col  :span="24"  style="padding-top:5px;">
+								<font class="more-label-font">
+									产品名称:
+								</font>
+								<el-input   v-model="filters.key" style="width:100%;"  placeholder="输入产品名字关键字">
+								</el-input>
+							</el-col>
+							<el-col  :span="24"  style="padding-top:5px;">
+								<font class="more-label-font">
+									产品经理:
+								</font>
+								<el-tag v-if="filters.pmUser" closable @click="selectFiltersPmUser" @close="clearFiltersPmUser()">{{filters.pmUser.username}}</el-tag>
+								<el-button   v-else @click="selectFiltersPmUser()">选责任人</el-button>
+								<el-button    @click="setFiltersPmUserAsMySelf()">我的</el-button>
+							</el-col>
 
-					<el-col v-if="selProject" :span="24"  style="padding-top:5px;">
-						<font class="more-label-font">
-							项目  <el-tag v-if="selProject">{{selProject?selProject.name:''}}</el-tag>
-						</font>
-					</el-col>
-					<el-col  v-if="xmIteration"  :span="24"  style="padding-top:5px;">
-						<font class="more-label-font">
-						    迭代 <el-tag v-if="xmIteration">{{xmIteration.iterationName}}</el-tag>
-						</font>
-					</el-col>
-					<el-col  :span="24"  style="padding-top:10px;">
-						<el-button type="primary"  @click="searchXmProducts" >查询</el-button>
-					</el-col>
+							<el-col v-if="selProject" :span="24"  style="padding-top:5px;">
+								<font class="more-label-font">
+									项目  <el-tag v-if="selProject">{{selProject?selProject.name:''}}</el-tag>
+								</font>
+							</el-col>
+							<el-col  v-if="xmIteration"  :span="24"  style="padding-top:5px;">
+								<font class="more-label-font">
+									迭代 <el-tag v-if="xmIteration">{{xmIteration.iterationName}}</el-tag>
+								</font>
+							</el-col>
+							<el-col  :span="24"  style="padding-top:10px;">
+								<el-button type="primary"  @click="searchXmProducts" >查询</el-button>
+							</el-col>
+						</el-row>
+						<el-button  slot="reference"   icon="el-icon-more"></el-button>
+					</el-popover>
 				</el-row>
-				<el-button  slot="reference"   icon="el-icon-more"></el-button>
-			</el-popover>
-		</el-row>
-		<el-row  class="page-main page-height-80"  v-show="showType">
-			<!--列表 XmProject xm_project-->
-			<el-row v-loading="load.list">
-				<el-col  v-cloak v-for="(p,i) in xmProducts" :key="i" :xl="4" :lg="6" :md="8" :sm="12">
-					<el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always">
-						<div class="project-name" title="这是产品名称">{{p.productName}}</div>
-						<div class="project-id eui-text-truncate">{{p.code}}</div>
-						<div class="project-info">
-							<div class="info-item">
-								<span class="item-total">{{p.totalBugCnt==null?0:p.totalBugCnt}}</span>
-								<span class="item-type">缺陷</span>
-							</div>
-							<div class="info-item">
-								<span class="item-total">{{p.totalFileCnt==null?0:p.totalFileCnt}}</span>
-								<span class="item-type">文档</span>
-							</div>
-							<div class="info-task">
-								<span>
-									<span class="item-total finish-task">{{p.totalCompleteTaskCnt==null?0:p.totalCompleteTaskCnt}}</span>
-									<span style="margin: 0 .25rem !important;">/</span>
-									<span class="item-type total-task">{{p.totalTaskCnt==null?0:p.totalTaskCnt}}</span>
-								</span>
-								<span class="item-type">任务完成</span>
-							</div>
-						</div>
-						<div class="project-rate">
-							<el-progress :percentage="(p.totalProgress==null?0:p.totalProgress)"></el-progress>
-						</div>
-						<div class="project-footer">
-							<div class="project-type">{{p.xmType}}</div>
-							<!--<div class="project-period">{{p.startTime.substr(0,10)}} ~{{p.endTime.substr(0,10)}}</div>-->
-						</div>
-					</el-card>
-				</el-col>
+				<el-row  class="page-main page-height-80"  v-show="showType">
+					<!--列表 XmProject xm_project-->
+					<el-row v-loading="load.list">
+						<el-col  v-cloak v-for="(p,i) in xmProducts" :key="i" :xl="4" :lg="6" :md="8" :sm="12">
+							<el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always">
+								<div class="project-name" title="这是产品名称">{{p.productName}}</div>
+								<div class="project-id eui-text-truncate">{{p.code}}</div>
+								<div class="project-info">
+									<div class="info-item">
+										<span class="item-total">{{p.totalBugCnt==null?0:p.totalBugCnt}}</span>
+										<span class="item-type">缺陷</span>
+									</div>
+									<div class="info-item">
+										<span class="item-total">{{p.totalFileCnt==null?0:p.totalFileCnt}}</span>
+										<span class="item-type">文档</span>
+									</div>
+									<div class="info-task">
+										<span>
+											<span class="item-total finish-task">{{p.totalCompleteTaskCnt==null?0:p.totalCompleteTaskCnt}}</span>
+											<span style="margin: 0 .25rem !important;">/</span>
+											<span class="item-type total-task">{{p.totalTaskCnt==null?0:p.totalTaskCnt}}</span>
+										</span>
+										<span class="item-type">任务完成</span>
+									</div>
+								</div>
+								<div class="project-rate">
+									<el-progress :percentage="(p.totalProgress==null?0:p.totalProgress)"></el-progress>
+								</div>
+								<div class="project-footer">
+									<div class="project-type">{{p.xmType}}</div>
+									<!--<div class="project-period">{{p.startTime.substr(0,10)}} ~{{p.endTime.substr(0,10)}}</div>-->
+								</div>
+							</el-card>
+						</el-col>
+					</el-row>
+				</el-row>
+				<el-row  class="padding-top" v-show="!showType">
+					<!--列表 XmProduct 产品表-->
+					<el-table ref="table"  :height="tableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+						<el-table-column prop="productName" label="产品名称" min-width="200" sortable>
+							<template slot-scope="scope">
+								<el-link type="primary" @click="intoInfo(scope.row)">{{scope.row.productName}}</el-link>
+							</template>
+						</el-table-column>
+						<el-table-column prop="finishRate" label="进度" width="120" sortable>
+							<template slot-scope="scope"> 
+								<font class="align-right"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag>
+
+								<el-tooltip content="点击统计进度，由任务汇总"><el-button  type="text" icon="el-icon-video-play" @click.stop="loadTasksToXmProductState( scope.row)"></el-button></el-tooltip>
+
+								</font>
+							</template>
+						</el-table-column>
+						<el-table-column prop="pmUsername" label="产品经理" min-width="120" sortable>
+							<template slot-scope="scope"> 						
+								<el-tag v-if="scope.row.pmUsername">{{scope.row.pmUsername}}</el-tag> 
+							</template>
+						</el-table-column>
+						
+						<el-table-column label="工作量(人时)" width="200">
+							<el-table-column prop="planWorkload" label="预计" width="100"  show-overflow-tooltip sortable></el-table-column>
+							<el-table-column prop="actWorkload" label="实际" width="100"  show-overflow-tooltip sortable></el-table-column>
+						</el-table-column>
+						
+						<el-table-column  label="操作" width="350" fixed="right">
+							<template slot-scope="scope">
+											<el-button type="text" title="通过复制创建新的产品" @click="onCopyToBtnClick(scope.row)" :disabled="load.add" v-loading="load.add">复制</el-button>
+											<el-button  type="text" @click="showProductState(scope.row)" icon="el-icon-s-data">报告</el-button>  
+											<el-button  type="text" @click="toIterationList(scope.row)" icon="el-icon-document">迭代</el-button>  
+											<el-button  type="text" @click="toProjectList(scope.row)"  icon="el-icon-document">项目</el-button>  
+											<el-button  type="text" @click="toTaskList(scope.row)"  icon="el-icon-tickets">任务</el-button>  
+											<el-button  type="text" v-loading="load.del" @click="handleDel(scope.row)" :disabled="load.del==true" icon="el-icon-delete">删除</el-button> 
+							</template>
+						</el-table-column>
+					</el-table>
+					</el-row>
+					<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+
+							<!--编辑 XmProduct 产品表界面-->
+					<el-drawer title="编辑产品" :visible.sync="editFormVisible"  size="50%" :with-header="false"  append-to-body   :close-on-click-modal="false">
+						<xm-product-edit :xm-product="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-product-edit>
+					</el-drawer>
+
+					<!--新增 XmProduct 产品表界面-->
+					<el-drawer title="新增产品" :visible.sync="addFormVisible"  size="50%" :with-header="false" append-to-body  :close-on-click-modal="false">
+						<xm-product-add :xm-product="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-product-add>
+					</el-drawer>
+					<el-drawer title="产品状态数据" :visible.sync="productStateVisible"  width="100%"  append-to-body  :close-on-click-modal="false">
+						<xm-product-state-mng :xm-product="editForm" :visible="productStateVisible" @cancel="productStateVisible=false"></xm-product-state-mng>
+					</el-drawer>
+					<el-drawer
+						append-to-body
+						title="产品关联的迭代查询"
+						:visible.sync="iterationVisible"
+						>
+							<xm-iteration-mng :simple="true" :visible="iterationVisible" :product-id="editForm.id" ></xm-iteration-mng>
+					</el-drawer>
+
+					<el-drawer title="选择员工" :visible.sync="selectFiltersPmUserVisible" size="60%" append-to-body>
+						<users-select  @confirm="onFiltersPmUserSelected" ref="usersSelect"></users-select>
+					</el-drawer>
+					<el-drawer title="选择项目" :visible.sync="projectVisible" size="60%" append-to-body>
+						<xm-project-list  @select="onProjectSelected"></xm-project-list>
+					</el-drawer>
+
+					<el-drawer title="选择产品" :visible.sync="productSelectVisible" size="60%" append-to-body>
+						<xm-product-select  @row-click="onXmProductSelect"></xm-product-select>
+					</el-drawer>
+					<el-drawer title="迭代报告" :visible.sync="iterationSelectVisible" fullscreen  append-to-body  :close-on-click-modal="false">
+						<xm-iteration-select @row-click="onXmIterationSelect"></xm-iteration-select>
+					</el-drawer> 
+					<el-dialog
+						title="通过复制创建新的模板或者新的产品"
+						:visible.sync="copyToVisible"
+						width="30%" > 
+						<el-form>
+						<el-form-item label="产品名称">
+							<el-input v-model="xmProductCopy.productName" placeholder="新的产品名称"></el-input> 
+						</el-form-item>
+						<el-form-item  label="产品编码(留空则后台自动生成)"> 
+							<el-input v-model="xmProductCopy.code"  placeholder="新的产品编码"></el-input>
+						</el-form-item>
+						<el-form-item  label="目标">
+							<el-radio v-model="xmProductCopy.isTpl" label="1">复制为新的模板</el-radio>
+							<el-radio v-model="xmProductCopy.isTpl" label="0">复制为新的产品</el-radio>
+						</el-form-item>
+						<el-form-item label="附加任务">
+							<el-checkbox v-model="xmProductCopy.copyMenu" true-label="1" false-label="0">拷贝需求列表</el-checkbox>  
+						</el-form-item>
+						</el-form>
+						<span slot="footer" class="dialog-footer">
+							<el-button @click="copyToVisible = false">取 消</el-button>
+							<el-button type="primary" @click="onCopyToConfirm" :disabled="load.add" v-loading="load.add">确 定</el-button>
+						</span>
+					</el-dialog>
 			</el-row>
+		</el-col>
 		</el-row>
-		<el-row  class="padding-top" v-show="!showType">
-			<!--列表 XmProduct 产品表-->
-			<el-table ref="table"  :height="tableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-  				<el-table-column prop="productName" label="产品名称" min-width="200" sortable>
-					<template slot-scope="scope">
-						<el-link type="primary" @click="intoInfo(scope.row)">{{scope.row.productName}}</el-link>
-					</template>
-				</el-table-column>
-				<el-table-column prop="finishRate" label="进度" width="120" sortable>
-					<template slot-scope="scope"> 
-						<font class="align-right"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag>
-
- 						<el-tooltip content="点击统计进度，由任务汇总"><el-button  type="text" icon="el-icon-video-play" @click.stop="loadTasksToXmProductState( scope.row)"></el-button></el-tooltip>
-
-						</font>
-					</template>
-				</el-table-column>
-				<el-table-column prop="pmUsername" label="产品经理" min-width="120" sortable>
-					<template slot-scope="scope"> 						
-						 <el-tag v-if="scope.row.pmUsername">{{scope.row.pmUsername}}</el-tag> 
-					</template>
-				</el-table-column>
-				
-				<el-table-column label="工作量(人时)" width="200">
-					<el-table-column prop="planWorkload" label="预计" width="100"  show-overflow-tooltip sortable></el-table-column>
-					<el-table-column prop="actWorkload" label="实际" width="100"  show-overflow-tooltip sortable></el-table-column>
-				</el-table-column>
-				
- 				<el-table-column  label="操作" width="300" fixed="right">
-					<template slot-scope="scope">
-						 			<el-button  type="text" @click="showProductState(scope.row)" icon="el-icon-s-data">报告</el-button>  
-									<el-button  type="text" @click="toIterationList(scope.row)" icon="el-icon-document">迭代</el-button>  
-									<el-button  type="text" @click="toProjectList(scope.row)"  icon="el-icon-document">项目</el-button>  
-									<el-button  type="text" @click="toTaskList(scope.row)"  icon="el-icon-tickets">任务</el-button>  
-									<el-button  type="text" v-loading="load.del" @click="handleDel(scope.row)" :disabled="load.del==true" icon="el-icon-delete">删除</el-button> 
-					</template>
-				</el-table-column>
-			</el-table>
-			</el-row>
-		 	<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
-
-					<!--编辑 XmProduct 产品表界面-->
-			<el-drawer title="编辑产品" :visible.sync="editFormVisible"  size="50%" :with-header="false"  append-to-body   :close-on-click-modal="false">
-				  <xm-product-edit :xm-product="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-product-edit>
-			</el-drawer>
-
-			<!--新增 XmProduct 产品表界面-->
-			<el-drawer title="新增产品" :visible.sync="addFormVisible"  size="50%" :with-header="false" append-to-body  :close-on-click-modal="false">
-				<xm-product-add :xm-product="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-product-add>
-			</el-drawer>
-			<el-drawer title="产品状态数据" :visible.sync="productStateVisible"  width="100%"  append-to-body  :close-on-click-modal="false">
-				<xm-product-state-mng :xm-product="editForm" :visible="productStateVisible" @cancel="productStateVisible=false"></xm-product-state-mng>
-			</el-drawer>
-			<el-drawer
-				append-to-body
-				title="产品关联的迭代查询"
-				:visible.sync="iterationVisible"
-				 >
-					<xm-iteration-mng :simple="true" :visible="iterationVisible" :product-id="editForm.id" ></xm-iteration-mng>
-			</el-drawer>
-
-			<el-drawer title="选择员工" :visible.sync="selectFiltersPmUserVisible" size="60%" append-to-body>
-				<users-select  @confirm="onFiltersPmUserSelected" ref="usersSelect"></users-select>
-			</el-drawer>
-			<el-drawer title="选择项目" :visible.sync="projectVisible" size="60%" append-to-body>
-				<xm-project-list  @select="onProjectSelected"></xm-project-list>
-			</el-drawer>
-
-			<el-drawer title="选择产品" :visible.sync="productSelectVisible" size="60%" append-to-body>
-				<xm-product-select  @row-click="onXmProductSelect"></xm-product-select>
-			</el-drawer>
-			<el-drawer title="迭代报告" :visible.sync="iterationSelectVisible" fullscreen  append-to-body  :close-on-click-modal="false">
-				<xm-iteration-select @row-click="onXmIterationSelect"></xm-iteration-select>
-			</el-drawer>
 	</section>
 </template>
 
@@ -199,11 +233,12 @@
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { listXmProduct,listXmProductWithState, delXmProduct, batchDelXmProduct } from '@/api/xm/core/xmProduct';
+	import { listXmProduct,listXmProductWithState, delXmProduct, batchDelXmProduct,copyTo } from '@/api/xm/core/xmProduct';
 	import { addXmIterationProductLink,delXmIterationProductLink } from '@/api/xm/core/xmIterationProductLink';
 	import { loadTasksToXmProductState } from '@/api/xm/core/xmProductState';
 	import  XmProductAdd from './XmProductAdd';//新增界面
 	import  XmProductEdit from './XmProductEdit';//修改界面
+	import  XmProductTplMng from './XmProductTplMng';//修改界面
 	import { mapGetters } from 'vuex'
 	import  XmIterationMng from '../xmIteration/XmIterationSelect';//修改界面
 	import  XmProductStateMng from '../xmProductState/XmProductStateMng';//修改界面
@@ -274,6 +309,10 @@ import XmProductSelect from './XmProductSelect.vue';
 				projectVisible:false,
 				productSelectVisible:false,
 				showType:false,
+				xmProductCopy:{
+					id:'',productName:'',code:'',isTpl:'',copyMenu:'1'
+				},
+				copyToVisible:false,
 				/**begin 自定义属性请在下面加 请加备注**/
 
 				/**end 自定义属性请在上面加 请加备注**/
@@ -543,7 +582,31 @@ import XmProductSelect from './XmProductSelect.vue';
 						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					})
 				})
-			}
+			},
+			
+			onCopyToBtnClick(row){
+				this.xmProductCopy.id=row.id;
+				this.xmProductCopy.productName=row.productName+"(复制)";
+				this.xmProductCopy.isTpl=row.isTpl; 
+				this.copyToVisible=true;
+			},
+			onCopyToConfirm(){
+				this.load.add=true;
+				copyTo(this.xmProductCopy).then(res=>{ 
+					this.load.add=false;
+					var tips = res.data.tips;
+					if(tips.isOk){
+						this.copyToVisible=false;
+						if(this.xmProductCopy.isTpl=='0'){
+							this.searchXmProducts()
+						}else{
+							this.$refs.xmProductTplMngRef.searchXmProducts()
+						}
+					}
+					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+
+				})
+			},
 			/**end 自定义函数请在上面加**/
 
 		},//end methods
@@ -556,6 +619,7 @@ import XmProductSelect from './XmProductSelect.vue';
 			XmProjectList,
 			XmIterationSelect,
 			XmProductSelect,
+			XmProductTplMng,
 		    //在下面添加其它组件
 		},
 		mounted() {

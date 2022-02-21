@@ -128,7 +128,7 @@
 					params.iterationId=this.xmIteration.id
 				}
 				if(this.xmProduct&&this.xmProduct.id){
-					params.prodcutId=this.xmProduct.id
+					params.productId=this.xmProduct.id
 				}
 				params.branchId = this.userInfo.branchId;
 				listXmProject(params).then((res) => {
