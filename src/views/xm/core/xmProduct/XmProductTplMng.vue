@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container padding-left">  
+	<section class="page-container padding-left padding-top">  
 		<el-row v-if="showType!='simple'">
 			<el-checkbox v-model="filters.isMy" false-label="" true-label="1">我的模板</el-checkbox>
 			<el-input style="width:300px;" v-model="filters.key" placeholder="模板名字"></el-input>
