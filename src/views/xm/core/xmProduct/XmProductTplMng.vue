@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container padding">  
+	<section class="page-container padding-left">  
 		<el-row v-if="showType!='simple'">
 			<el-checkbox v-model="filters.isMy" false-label="" true-label="1">我的模板</el-checkbox>
 			<el-input style="width:300px;" v-model="filters.key" placeholder="模板名字"></el-input>
@@ -15,13 +15,13 @@
 		</el-row>
 		<el-row  class="page-main page-height-70" >
 			<!--列表 XmProduct 产品表-->
-			<el-table ref="table"  :height="tableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table"  :height="tableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list"  @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
   				
 				<el-table-column    label="序号" width="60" type="index"  v-if="showType!='simple'">  
 				</el-table-column> 
 				  <el-table-column prop="productName" label="产品模板(参考学习用)" min-width="200" sortable> 
 					<template slot-scope="scope">
-						<el-link type="primary" @click="intoInfo(scope.row)">{{scope.row.productName}}</el-link>
+						<el-link  @click="intoInfo(scope.row)">{{scope.row.productName}}</el-link>
 					</template>
 				</el-table-column> 
 				<el-table-column prop="code" v-if="showType!='simple'" label="产品编码" width="200" sortable>  
@@ -32,7 +32,7 @@
 				</el-table-column> 
 				<el-table-column prop="remark" v-if="showType!='simple'" label="备注" width="200" sortable>  
 				</el-table-column> 
-				<el-table-column  label="操作" width="100" fixed="right">
+				<el-table-column  label="" width="100" fixed="right">
 					<template slot-scope="scope">
 						<el-button type="text" title="通过复制创建新的项目" @click="onCopyToBtnClick(scope.row)" :disabled="load.add" v-loading="load.add">复制</el-button>
 						<el-button type="text" title="删除该模板" @click="handleDel(scope.row)" :disabled="load.del" v-loading="load.del">删除</el-button>

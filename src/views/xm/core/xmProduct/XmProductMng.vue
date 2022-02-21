@@ -1,10 +1,10 @@
 <template>
-	<section class="page-container padding">
+	<section class="page-container">
 		<el-row>
 		<el-col :span="6"> 
 			<xm-product-tpl-mng @copy="searchXmProducts" ref="xmProductTplMngRef" show-type="simple"></xm-product-tpl-mng>
 		</el-col> 
-		<el-col :span="18" class="border">
+		<el-col :span="18" class="padding-top padding-left border">
 			<el-row>
 				<el-row>
 					<el-select   v-model="filters.queryScope"    placeholder="产品查询范围">
@@ -126,7 +126,7 @@
 				</el-row>
 				<el-row  class="padding-top" v-show="!showType">
 					<!--列表 XmProduct 产品表-->
-					<el-table ref="table"  :height="tableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+					<el-table ref="table"  :height="tableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						
 						<el-table-column type="index" width="60"> 
 						</el-table-column>

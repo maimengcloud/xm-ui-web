@@ -1,13 +1,13 @@
 <template>
 	<section class="page-container">
 		<el-row>
-			<el-col :span="6" class="padding-top"> 
+			<el-col :span="6" class="padding-top  padding-left"> 
 				<el-row>
 					<xm-project-tpl-mng @copy="searchXmProjects" ref="xmProjectTplMngRef"></xm-project-tpl-mng>
 				</el-row>
 			</el-col>
 			<el-col :span="18" class="border">
-				<el-row>
+				<el-row class="padding-left">
 					<el-menu  active-text-color="#00abfc" :default-active="menukey"   mode="horizontal" @select="handleSelect">
 						<el-menu-item index="all">全部</el-menu-item>
 						<el-menu-item index="compete">我参与</el-menu-item>
