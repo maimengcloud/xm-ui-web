@@ -103,10 +103,10 @@ export default {
         { path: 'xmProduct/XmProductAllMng', component: _import('xm/core/xmProduct/XmProductAllMng'), name: 'XmProductAllMng', meta: { title: '产品总览' }},
 
          { path: 'xmProduct/XmProductMng', component: _import('xm/core/xmProduct/XmProductMng'), name: 'XmProductMng', meta: { title: '产品管理' }},
+         { path: 'xmProduct/XmProductTplMng', component: _import('xm/core/xmProduct/XmProductTplMng'), name: 'XmProductTplMng', meta: { title: '产品模板' }},
 
         { path: 'xmMenu/XmMenuMng', component: _import('xm/core/xmMenu/XmMenuMng'), name: 'XmMenuMng', meta: { title: '需求管理' }},
          { path: 'xmMenuExchange/XmMenuExchangeMng', component: _import('xm/core/xmMenuExchange/XmMenuExchangeMng'), name: 'XmMenuExchangeMng', meta: { title: '互动评论' }},
-        { path: 'xmMenuTemplate/XmMenuTemplateMng', component: _import('xm/core/xmMenuTemplate/XmMenuTemplateMng'), name: 'XmMenuTemplateMng', meta: { title: '需求模板' }},
       ]
     },
     {
