@@ -325,6 +325,15 @@
                   >批量修改任务</el-button
                 >
               </el-col>
+              <el-col :span="24" style="padding-top: 5px">
+                <el-button
+                  v-if="isTaskCenter != '1' && isMy != '1'"
+                  @click="batchDel"
+                  v-loading="load.edit"
+                  icon="el-icon-edit"
+                  >批量删除</el-button
+                >
+              </el-col>
             </el-row>
             <el-button slot="reference">更多</el-button>
           </el-popover>
@@ -373,9 +382,15 @@
               ref="table"
             >
               <el-table-column  
+                label="全选"
+                type="selection"
+                width="70"
+              > 
+              </el-table-column>
+              <el-table-column  
                 label="序号"
                 type="index"
-                width="80"
+                width="70"
               > 
               </el-table-column>
               <el-table-column
