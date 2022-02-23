@@ -15,6 +15,7 @@
 				
 				<el-button  class="hidden-md-and-down"  @click="loadTasksToXmProjectPhase(sels)" v-loading="load.edit" icon="el-icon-s-data">由任务汇总进度数据</el-button> 
 				<el-button   @click="batchEditVisible=true" v-loading="load.edit" icon="el-icon-edit">批量修改</el-button> 
+				<el-button   @click="batchDel" v-loading="load.del" icon="el-icon-delete">删除</el-button> 
 			</span> 
 			<el-popover
 				placement="top-start"
@@ -62,7 +63,10 @@
  		<el-row  class="padding-top" v-show="batchEditVisible==false"> 
 			<!--列表 XmProjectPhase xm_project_phase-->
 			<el-table lazy :load="loadXmProjectPhaseLazy" ref="table" :height="tableHeight" v-show="!gstcVisible "  default-expand-all :data="projectPhaseTreeData"  :summary-method="getSummariesForNoBatchEdit"  :show-summary="true"  row-key="id" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-  				<el-table-column prop="phaseName" label="计划名称" min-width="150" show-overflow-tooltip> 
+					
+				<el-table-column  type="selection"  width="80"> 
+				</el-table-column>
+				  <el-table-column prop="phaseName" label="计划名称" min-width="150" show-overflow-tooltip> 
 					 <template slot-scope="scope">   
 						<span>
 							<span v-show="scope.row.milestone=='1'">

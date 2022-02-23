@@ -1,6 +1,9 @@
 <template>
 	<section class="page-container padding">
 		<el-row>
+			<vue-okr-tree :data="okrTreeData"></vue-okr-tree>  
+		</el-row>
+		<el-row>
 				<el-col :span="24">
 					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="primary" @click="showGroupFormwork" icon="el-icon-plus">导入项目组</el-button>
 					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="primary" @click="groupConfirm" icon="el-icon-finished">保存</el-button>
@@ -185,15 +188,40 @@
 	import  XmProjectGroupStateMng from '../xmProjectGroupState/XmProjectGroupStateMng';//修改界面
 
 	import {mapGetters} from 'vuex' 
+	import {VueOkrTree} from 'vue-okr-tree';
+	import 'vue-okr-tree/dist/vue-okr-tree.css'
 
 	export default {
 		computed: {
 			...mapGetters([
 				'workShop','userInfo','roles'
-			])
+			]),
+			okrTreeData(){
+				var groups=this.xmProjectGroupFormworkSels; 
+				groups.forEach(i=>{
+					i.label=i.groupName
+					if(i.groupUsers){
+						var groupUsers=i.groupUsers;
+						groupUsers.forEach(i=>i.label=i.username)
+						i.children=groupUsers
+					}
+				})
+				var topLabel="组织架构"
+				if(this.xmProduct&&this.xmProduct.id){
+					topLabel=this.xmProduct.name+"-产品组织架构"
+				}else if(this.selProject && this.selProject.id){
+					topLabel=this.selProject.name+"-项目组织架构"
+				}
+				var data=[{
+					label:topLabel,
+					children:groups
+					}
+				]
+				return data;
+			}
 		},
 		//
-		props: ['visible',"selGroups",'selProject','isSelectSingleUser','isSelectMultiUser'],
+		props: ['visible',"selGroups",'selProject','isSelectSingleUser','isSelectMultiUser','xmProduct'],
 		watch: {
 			"selGroups": function(selGroups) {
 				if(this.selGroups){
@@ -556,7 +584,7 @@
 		}, //end methods
 		components: {
 			
-			UsersSelect,XmProjectGroupStateMng
+			UsersSelect,XmProjectGroupStateMng,VueOkrTree
 			//在下面添加其它组件
 		},
 		mounted() {

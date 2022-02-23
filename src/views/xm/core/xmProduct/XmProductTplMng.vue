@@ -141,7 +141,6 @@
 				pickerOptions:  util.pickerOptions('datarange'),
 				projectVisible:false,
 				productSelectVisible:false,
-				showType:false,
 				xmProductCopy:{
 					id:'',productName:'',code:'',isTpl:'',copyMenu:'1'
 				},

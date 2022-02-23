@@ -21,7 +21,8 @@
 						<el-tag v-else @click="tagSelectVisible=true"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
  
 						<el-button  v-if="!selProject&&!xmIteration&&disabledMng!=false"  type="primary" @click="showAdd" icon="el-icon-plus">需求</el-button> 
-						
+						<el-button  v-if="!selProject&&!xmIteration&&disabledMng!=false"  type="danger" @click="batchDel" icon="el-icon-delete">删除</el-button> 
+
 						<el-button   v-if=" batchEditVisible==false&&disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>  
 						<el-popover
 							placement="top-start"
