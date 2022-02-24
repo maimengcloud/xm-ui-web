@@ -83,7 +83,8 @@
 								<el-link type="primary" :icon="scope.row.ntype=='1'?'el-icon-folder-opened':''" @click="toMenu(scope.row)">{{scope.row.seqNo}}&nbsp;&nbsp;</el-link> 
 								{{scope.row.menuName}}
 							</template>
-						</el-table-column>   
+						</el-table-column> 
+						<el-table-column prop="iterationName" label="迭代" min-width="140" >   </el-table-column>
 						<el-table-column prop="mmUsername" label="责任人" width="140" > 
 							 
 						</el-table-column> 

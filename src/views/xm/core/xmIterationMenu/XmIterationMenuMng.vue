@@ -11,6 +11,7 @@
 					</el-input>  
 					<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterationMenus" icon="el-icon-search"></el-button>
 					<el-button type="primary" @click="showAdd" icon="el-icon-plus">加入更多需求到迭代计划</el-button> 
+					<el-button type="danger" @click="batchDel" icon="el-icon-right">批量移出</el-button> 
 				</el-row>
 				<el-row class="page-main padding-top padding-left">
 					<!--列表 XmIterationMenu 迭代定义-->
@@ -21,6 +22,8 @@
 								<el-link type="primary"  :icon="scope.row.ntype=='1'?'el-icon-folder-opened':''">{{scope.row.seqNo}}</el-link> 
 								&nbsp;&nbsp;{{scope.row.menuName}}
 							</template>
+						</el-table-column> 
+						<el-table-column prop="iterationName" label="迭代" min-width="120" >  
 						</el-table-column> 
 						<el-table-column prop="mmUsername" label="责任人"  width="140" >  
 						</el-table-column> 
@@ -198,16 +201,12 @@
 				this.sels = sels;
 			}, 
 			//删除xmIterationMenu
-			handleDel: function (row,index) { 
-				if(!this.roles.some(i=>i.roleid=='iterationAdmin')){
-					this.$message({showClose: true, message: "只有迭代管理员可以操作", type:  'error' }); 
-					return ;
-				}
-				this.$confirm('确认删除该记录吗?', '提示', {
+			handleDel: function (row,index) {  
+				this.$confirm('确认将该需求移出迭代吗?', '提示', {
 					type: 'warning'
 				}).then(() => { 
 					this.load.del=true;
-					let params = { id: row.id };
+					let params = { iterationId:row.iterationId,menuIds: [row.menuId] };
 					delXmIterationMenu(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
@@ -220,16 +219,19 @@
 				});
 			},
 			//批量删除xmIterationMenu
-			batchDel: function () {
-				if(!this.roles.some(i=>i.roleid=='iterationAdmin')){
-					this.$message({showClose: true, message: "只有迭代管理员可以操作", type:  'error' }); 
+			batchDel: function () { 
+				if(this.sels.length<=0){
+					this.$message({showClose: true, message:"请先选择一个或者多个需求", type: 'error' }); 
 					return ;
 				}
-				this.$confirm('确认删除选中记录吗？', '提示', {
+				this.$confirm('确认将需求移出迭代吗？', '提示', {
 					type: 'warning'
 				}).then(() => { 
 					this.load.del=true;
-					batchDelXmIterationMenu(this.sels).then((res) => {
+					var params={
+						iterationId:this.sels[0].iterationId,menuIds:this.sels.map(i=>i.menuId)
+					}
+					batchDelXmIterationMenu(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
 						if( tips.isOk ){ 
@@ -291,18 +293,13 @@
 				if(!menus || menus.length==0){
 					this.menuVisible=false
 					return;
-				}
-				var imenus=menus.map(i=>{
-					return {
-						productId:i.productId,
-						menuId:i.menuId,
-						menuName:i.menuName,
-						iterationId:this.iteration.id,
-						iterationName:this.iteration.iterationName
-					}
-				})
+				} 
 				 
-				batchAddXmIterationMenu(imenus).then(res=>{
+				 var params={
+					 menuIds:menus.map(i=>i.menuId),
+					iterationId:this.iteration.id
+				 }
+				batchAddXmIterationMenu(params).then(res=>{
 					this.menuVisible=false
 					var tips = res.data.tips
 					if(tips.isOk){
