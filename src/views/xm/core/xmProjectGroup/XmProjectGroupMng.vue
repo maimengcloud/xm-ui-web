@@ -1,8 +1,38 @@
 <template>
-	<section class="page-container">
-		<el-row v-loading="load.edit">
-			<xm-project-group-formwork :is-select-single-user="isSelectSingleUser" :is-select-multi-user="isSelectMultiUser" :visible="groupSelectVisible" :sel-project="selProject" :sel-groups="groups" @select-confirm="onGroupSelected" @user-confirm="onUserSelected"></xm-project-group-formwork> 
+	<section class="page-container padding"> 
+		
+		<el-row  v-if="!isSelectSingleUser && !isSelectMultiUser"> 
+					<el-button  type="primary" v-if="!groups||groups.length==0" @click="showGroupFormwork" icon="el-icon-plus">导入项目组</el-button>
+ 					<el-button  type="plain" @click="showGroupState" icon="el-icon-s-data">小组进度</el-button> 
+ 					<el-button  type="plain" @click="xmRecordVisible=true" icon="el-icon-document">变化日志</el-button>
+					<el-button  type="plain" @click="doSearchImGroupsByProjectId" icon="el-icon-document">绑定即聊情况</el-button>
+ 					<el-button @click="groupRoleDescVisible=true" icon="el-icon-document">角色说明</el-button> 
+  		</el-row> 
+		<el-row  v-else>  
+					<el-button   type="primary" @click="userConfirm" icon="el-icon-finished">确认选择用户</el-button>  
+		</el-row> 
+		<el-row>
+			<vue-okr-tree :data="okrTreeData" 
+				show-collapsable 
+				default-expand-all   
+				node-key="id"
+				current-lable-class-name="crrentClass" 
+				:render-content="renderContent"  
+  				@node-click="handleNodeClick"
+  				direction="horizontal"
+  			></vue-okr-tree>   
 		</el-row>
+		<el-dialog
+			title="操作"
+			:visible.sync="groupOperSelectVisible"
+			width="30%" >
+			<el-row>
+				<el-button @click="showAdd">新增一级小组</el-button>
+				<el-button @click="showAddSub(editForm)">新增下级小组</el-button>
+				<el-button type="primary" @click="showEdit(editForm)">小组明细</el-button> 
+				<el-button @click="handleDel(editForm)">删除小组</el-button>
+			</el-row> 
+		</el-dialog>
 	</section>
 </template>
 
@@ -12,14 +42,40 @@
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { updateGroup,getProjectGroup } from '@/api/xm/core/xmProjectGroup';
-	import { mapGetters } from 'vuex';
-	import XmProjectGroupFormwork from '../xmProjectGroupFormwork/XmProjectGroupFormwork';
+	import { mapGetters } from 'vuex'; 
+	import XmProjectGroupEdit from "./XmProjectGroupEdit"
 	
+	import {VueOkrTree} from 'vue-okr-tree';
+	import 'vue-okr-tree/dist/vue-okr-tree.css'
+
 	export default { 
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
-		    ])
+		    ]),
+			okrTreeData(){
+				var groups=this.groups; 
+				groups.forEach(i=>{
+					i.label=i.groupName
+					if(i.groupUsers){
+						var groupUsers=i.groupUsers;
+						groupUsers.forEach(i=>i.label=i.username)
+						i.children=groupUsers
+					}
+				})
+				var topLabel="组织架构"
+				if(this.xmProduct&&this.xmProduct.id){
+					topLabel=this.xmProduct.name+"-产品组织架构"
+				}else if(this.selProject && this.selProject.id){
+					topLabel=this.selProject.name+"-项目组织架构"
+				}
+				var data=[{
+					label:topLabel,
+					children:groups
+					}
+				]
+				return data;
+			}
 		},
 		props: ["selProject" ,"isSelectSingleUser","isSelectMultiUser",'xmProduct','xmIteration'],
 		watch:{
@@ -39,6 +95,13 @@
 				/**begin 自定义属性请在下面加 请加备注**/
 				groupSelectVisible: true,
 				groups:[],
+				editForm: {
+					id:'',groupName:'',projectId:''
+				},
+				addForm: {
+					id:'',groupName:'',projectId:''
+				},
+				groupOperSelectVisible:false,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -103,13 +166,35 @@
 			/**begin 自定义函数请在下面加**/
 			onUserSelected:function(users){
 				this.$emit("user-confirm",users);
+			},
+			
+			renderCurrentClass (node) {
+				return 'label-bg-blue'
+			},
+			handleNodeClick (data) {
+				this.groupOperSelectVisible=true;
+				this.editForm=data;
+			},
+			renderContent (h, node) {
+				return (
+				<div class={'diy-wrapper', node.isCurrent ? 'current-select' : ''}>
+					<div class={'diy-con-name',node.data.userid? 'el-icon-user':''}>{node.data.label}<div></div></div>
+					<div class="diy-con-content">
+						{node.data.leaderUsername?
+							(<div> {node.data.leaderUsername }</div> 
+							)
+						:   
+						    (<div>   </div>)
+						}
+					</div>
+				</div>
+				)
 			}
 			/**end 自定义函数请在上面加**/
 			
 		},//end methods
 		components: { 
-				
-				XmProjectGroupFormwork
+				 VueOkrTree,XmProjectGroupEdit,
 		    //在下面添加其它组件
 		},
 		mounted() { 

@@ -1,9 +1,6 @@
 <template>
 	<section class="page-container padding">
 		<el-row>
-			<vue-okr-tree :data="okrTreeData"></vue-okr-tree>  
-		</el-row>
-		<el-row>
 				<el-col :span="24">
 					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="primary" @click="showGroupFormwork" icon="el-icon-plus">导入项目组</el-button>
 					<el-button v-if="!isSelectSingleUser && !isSelectMultiUser" type="primary" @click="groupConfirm" icon="el-icon-finished">保存</el-button>
@@ -17,70 +14,19 @@
 					<el-tooltip  v-if="isSelectSingleUser!='1' && isSelectMultiUser !='1'" content="黄色表示组长"><span class="addXmProjectGroupFormworkSquare"></span></el-tooltip>
 					<el-tooltip  v-else content="黄色表示选中"><span class="addXmProjectGroupFormworkSquare">选中</span></el-tooltip>
 				</el-col> 
-		</el-row>
-		 <el-row class="page-main page-height-80 padding" v-loading="load.list" v-if="!isSelectSingleUser && !isSelectMultiUser">
-			<el-row v-for="(item,index) in xmProjectGroupFormworkSels" :key="index">
-				<h3>
-					<div><el-tooltip :content="'归属项目组【'+item.projectId+'】'"><font>{{item.groupName + "："}}</font></el-tooltip><el-tag v-if="imGroupVisible==true && imGroups.some(g=>item.id==g.id) "   type="success">已绑定</el-tag><el-tag type="danger" v-else-if="imGroupVisible==true " @click="doCreateImGroup(item)">未绑定，点我去绑定</el-tag>
-						<i class="el-icon-close closeStyle" @click.stop="delGroup(item,index)"></i>
-					</div>
-				</h3>
-				<el-col :span="23" style="margin-left:30px;display:flex;flex-wrap: wrap;margin-right:30px;"> 
-					<div  :class="v.isHead=='1'?'checkCopyButton':'copyButton'" v-for="(v,valueIndex) in item.groupUsers" :key="valueIndex" @click="toggleHead(index,valueIndex)">
-						{{v.username}}
-						<i class="el-icon-close closeStyle" @click.stop="delGroupUser(index,valueIndex)"></i>
-					</div> 
-					<div class="add" @click="addGroupUser(index)"><i class="el-icon-circle-plus-outline" style="font-size:35px;"></i></div>
-				</el-col>
-			</el-row>
-		</el-row>
+		</el-row> 
 		
-		<el-row class="page-main page-height-80" v-loading="load.list" v-else>
-			<el-row v-for="(item,index) in xmProjectGroupFormworkSels" :key="index">
-				<h3>
-					<div>{{item.groupName + "："}} 
-					</div>
-				</h3>
-				<el-col :span="23" style="margin-left:30px;display:flex;flex-wrap: wrap;">  
-					<div  :class="v.isSelected=='1'?'checkCopyButton':'copyButton'" v-for="(v,valueIndex) in item.groupUsers" :key="valueIndex" @click="toggleHead(index,valueIndex)">
-							{{v.username}}
-					</div>  
-				</el-col>
-			</el-row>
-		</el-row>
-		<el-drawer
-			append-to-body
-			:visible.sync="groupSelectVisible"
-			width="50%">
-			<el-row>
-				<el-button  v-if="setTemplateVisible==false"  @click="getXmProjectGroupFormworks" v-loading="load.list" icon="el-icon-search">刷新</el-button>
-				<el-button  v-if="setTemplateVisible==false" type="primary"  @click="groupNameConfirm" icon="el-icon-finished">确认选择</el-button>
-				<el-select  v-if="setTemplateVisible==true"  style="width:20%;" placeholder="请选择小组类型"   v-model="projectGroupType" value-key="optionValue">
-					<el-option
-						v-for="(item,i) in options.projectGroupType"
-						:key="i"
-						:label="item.optionName"
-						:value="item">
-					</el-option>
-				</el-select>
-				<el-input style="width:40%" v-show="setTemplateVisible" v-model="needAddGroupNameValue" placeholder="输入组名，回车直接添加" @keyup.enter.native="addGroupName">
-					
-					<el-button  slot="append" @click.stop="addGroupName" icon="el-icon-plus"></el-button>
-				</el-input>
-				<el-button  v-if="setTemplateVisible==false"  @click.stop="setTemplateVisible=true" icon="el-icon-right">维护模板</el-button>
-				<el-button  v-else @click.stop="setTemplateVisible=false" icon="el-icon-back">返回</el-button>
-
-			</el-row>
-			<el-table ref="groupTable" :height="tableHeight" @selection-change="addIsSels" @row-click.self="changesels" :data="convertXmProjectGroupFormworks"  v-loading="load.list">
-				<el-table-column type="selection" aria-disabled width="55"></el-table-column>
-				<el-table-column align="center" prop="groupName" label="小组模板" width="200"></el-table-column>
-				<el-table-column   align="center" label="操作"> 
-					<template slot-scope="scope">
-						<el-button  v-show="setTemplateVisible==true" type="danger" @click.stop="deleteGroup(scope.$index, scope.row)" icon="el-icon-delete"></el-button>
-					</template>
-				</el-table-column> 
-			</el-table>
-		</el-drawer>
+		<el-row>
+			<vue-okr-tree :data="okrTreeData" 
+				show-collapsable 
+				default-expand-all   
+				node-key="id"
+				current-lable-class-name="crrentClass" 
+				:render-content="renderContent"  
+  				@node-click="handleNodeClick"
+  				direction="horizontal"
+  			></vue-okr-tree>  
+		</el-row> 
 		<el-drawer append-to-body
 			title="角色说明" 
 			size="60%"
@@ -250,7 +196,8 @@
 			return {
 				sectionLoading: false,
 				filters: {
-					key: ''
+					key: '',
+					name:'dddddddddddddddddddddddddd'
 				},
 				load: {list: false,edit: false,del: false,add: false}, //查询中...
 				sels: [], //列表选中数据
@@ -578,6 +525,27 @@
 					});
 				}
 				
+			},
+			renderCurrentClass (node) {
+				return 'label-bg-blue'
+			},
+			handleNodeClick (data) {
+				alert(`我是${data.label},我被点击了`)
+			},
+			renderContent (h, node) {
+				return (
+				<div class={'diy-wrapper', node.isCurrent ? 'current-select' : ''}>
+					<div class={'diy-con-name',node.data.userid? 'el-icon-user':''}>{node.data.label}</div>
+					<div class="diy-con-content">
+						{node.data.leaderUsername?
+							(<div> {node.data.leaderUsername }</div> 
+							)
+						:   
+						    (<div>   </div>)
+						}
+					</div>
+				</div>
+				)
 			}
 			/**end 自定义函数请在上面加**/
 
@@ -611,98 +579,31 @@
 		}
 	}
 </script>
-
+<style>
+.label-class-blue{
+  color: #1989fa;
+}
+.label-bg-blue{
+  background: #1989fa;
+  color: #fff;
+}
+.diy-wrapper{
+  padding:10px
+}
+.no-padding{
+  padding: 0 !important;
+}
+.diy-wrapper.left-child{
+  border: 1px solid red;
+}
+.diy-con-name{
+	color: black;
+}
+.crrentClass{
+  border: 1px solid red;
+  color: blue;
+}
+</style>
 <style scoped>
-	.copyButton {
-		margin-left: 10px;
-		border-radius: 20px;
-		padding: 10px 1px;  
-		border: 1px solid rgb(220, 223, 230);
-		/* color:#039; */
-	}
-
-	.copyButton:hover {
-		color: #409eff;
-		border-color: #c6e2ff;
-		background-color: #ecf5ff;
-		cursor: default;
-	}
-
-	.checkCopyButton {
-		/*color: #fff;*/
-		margin-left: 10px;
-		border-radius: 20px;
-		padding: 10px 1px;  
-		border: 1px solid #FFA00A;
-		/*background-color: rgba(230, 162, 60, .1);*/
-		/* background-color: #f9f9f9; */
-		background-color: #fff;
-		/*border-color: rgba(230,162,60,.2);*/
-		color: #FFA00A;
-	}
-
-	.add {
-		display: flex;
-		align-items: center;
-		margin-left: 10px;
-		margin-top: 2px;
-	}
-
-	.add:hover {
-		cursor: pointer;
-		animation: myrotate 0.5s linear infinite;
-	}
-
-
-	.input-xmProjectGroupFormwork {
-		margin-left:10px;
-		margin-top: 2px;
-		align-self: center;
-	}
-	.closeStyle {
-		padding: 1px;
-	}
-
-	.closeStyle:hover {
-		cursor: pointer;
-		/* border-color:#f40; */
-		/* border: 1px solid #f40; */
-		background-color: #FFA00A;
-		color: #fff;
-		border-radius: 50%;
-		padding: 1px;
-		animation: myrotate 1s linear;
-	}
-
-	.addXmProjectGroupFormworkSquare {
-		width: 15px;
-		height: 15px;
-		display: inline-block;
-		background-color: #FFA00A;
-		animation: myrotate 2s linear infinite;
-	}
-
-	.closeXmProjectGroupFormworkSquare {
-		width: 15px;
-		height: 15px;
-		display: inline-block;
-		background-color: #fff;
-		animation: myrotate 2s linear infinite;
-	}
-	@keyframes myrotate {
-		0% {
-			transform: rotate(0deg);
-			box-shadow: 0px 0px 10px #fff;
-		}
-
-		50% {
-			transform: rotate(180deg);
-			box-shadow: 0px 0px 45px #fff;
-		}
-
-		100% {
-			transform: rotate(360deg);
-			box-shadow: 0px 0px 10px #fff;
-		}
-	}
+	 
 </style>
