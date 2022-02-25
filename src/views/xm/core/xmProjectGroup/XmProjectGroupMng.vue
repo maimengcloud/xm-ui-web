@@ -6,6 +6,7 @@
  					<el-button  type="plain" @click="xmRecordVisible=true" icon="el-icon-document">变化日志</el-button>
 					<el-button  type="plain" @click="doSearchImGroupsByProjectId" icon="el-icon-document">绑定即聊情况</el-button>
  					<el-button @click="groupRoleDescVisible=true" icon="el-icon-document">角色说明</el-button> 
+					 <font color="red">注意：点击架构图进行操作</font>
   		</el-row> 
 		<el-row  v-else>  
 					<el-button   type="primary" @click="userConfirm" icon="el-icon-finished">确认选择用户</el-button>  
@@ -35,27 +36,26 @@
 			<el-dialog
 				title="操作"
 				:visible.sync="groupOperSelectVisible"
-				append-to-body  :close-on-click-modal="false"
-				width="30%" >
+				append-to-body  :close-on-click-modal="true"
+				width="50%" >
 				<el-row v-if="currNodeType=='project'">   
-					<el-button @click="showAdd" icon="el-icon-plus">新增下级小组</el-button>   
+					<el-button type="primary" @click="showAdd" icon="el-icon-plus">新增下级小组</el-button>   
+					<el-button @click="showAddSub(editForm)" icon="el-icon-plus">通过模板批量导入下级小组</el-button>  
 				</el-row> 
 				<el-row v-if="currNodeType=='product'">  
-					
-					<el-button type="primary" @click="showEdit(editForm)" icon="el-icon-edit">修改小组信息</el-button> 
-					<el-button @click="showAddSub(editForm)" icon="el-icon-plus">新增下级小组</el-button>  
-					<el-button @click="userSelectVisible=true" icon="el-icon-plus" >新增组员</el-button> 
-					<el-button @click="handleDel(editForm)" icon="el-icon-delete">删除小组</el-button>
+					<el-button type="primary" @click="showAdd" icon="el-icon-plus">新增下级小组</el-button>   
+					<el-button @click="showAddSub(editForm)" icon="el-icon-plus">通过模板批量导入下级小组</el-button>  
 				</el-row> 
 				<el-row v-if="currNodeType=='group'">  
 					
-					<el-button type="primary" @click="showEdit(editForm)" icon="el-icon-edit">修改小组信息</el-button> 
-					<el-button @click="showAddSub(editForm)" icon="el-icon-plus">新增下级小组</el-button>  
+					<el-button type="primary" @click="showAddSub(editForm)" icon="el-icon-plus">新增下级小组</el-button>  
+					<el-button @click="showAddSub(editForm)" icon="el-icon-plus">通过模板批量导入下级小组</el-button>   
+					<el-button @click="showEdit(editForm)" icon="el-icon-edit">修改小组信息</el-button> 
 					<el-button @click="userSelectVisible=true" icon="el-icon-plus" >新增组员</el-button> 
 					<el-button @click="handleDel(editForm)" icon="el-icon-delete">删除小组</el-button>
 				</el-row> 
 				<el-row v-if="currNodeType=='groupUser'">  
-					<el-button type="danger" icon="el-icon-delete" @click="handleDel(editForm)">删除组员</el-button>
+					<el-button type="danger" icon="el-icon-delete" @click="handleDelGroupUser(editForm)">删除组员</el-button>
 				</el-row> 
 			</el-dialog>
 			
@@ -66,7 +66,7 @@
 				direction="rtl" 
 				ref="drawer"
 				>
-				<el-row class="page-main page-height-90">
+				<el-row class="page-main page-height-70 padding">
 					<el-collapse>
 						
 						<el-collapse-item title="项目经理：项目整体、团队、进度、质量、计划、风险、沟通管理等" name="3">
@@ -135,8 +135,11 @@
 							<div>结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
 						</el-collapse-item>
 					</el-collapse> 
-					<el-button @click="groupRoleDescVisible=false">关闭</el-button> 
+					
 				</el-row> 
+				<el-row class="padding">
+					<el-button  type="primary" @click="groupRoleDescVisible=false">关闭</el-button> 
+				</el-row>
 			</el-drawer>
 			<el-drawer append-to-body title="选择员工" :visible.sync="userSelectVisible" size="60%">
 				<users-select :select-userids="filters.ids?filters.ids.map(i=>i.id):[]" @confirm="onUserSelected" ref="usersSelect"></users-select>
@@ -163,6 +166,8 @@
 	import 'vue-okr-tree/dist/vue-okr-tree.css'
 	import { listImGroup} from '@/api/mdp/im/group/imGroup';
 	import { publishMessage} from '@/api/mdp/im/imPush';
+	
+	import { listXmProjectGroupUser, delXmProjectGroupUser, batchDelXmProjectGroupUser } from '@/api/xm/core/xmProjectGroupUser';
 
 
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
@@ -465,7 +470,7 @@
 			
 			//选择接收人
 			onUserSelected: function(groupUsers) {  
-				 
+				
 				this.userSelectVisible = false;
 			},
 			delGroupUser(index,vindex) { 
@@ -506,7 +511,26 @@
 					</div>
 				</div>
 				)
-			}
+			},
+			
+			//删除xmProjectGroupUser
+			handleDelGroupUser: function (row,index) { 
+				this.$confirm('确认删除该记录吗?', '提示', {
+					type: 'warning'
+				}).then(() => { 
+					this.load.del=true;
+					let params = row;
+					delXmProjectGroupUser(params).then((res) => {
+						this.load.del=false;
+						var tips=res.data.tips;
+						if(tips.isOk){ 
+							this.pageInfo.count=true;
+							this.getXmProjectGroups();
+						}
+						this.$message({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
+					}).catch( err  => this.load.del=false );
+				});
+			},
 		},//end methods
 		mounted() {
 			this.$nextTick(() => {
