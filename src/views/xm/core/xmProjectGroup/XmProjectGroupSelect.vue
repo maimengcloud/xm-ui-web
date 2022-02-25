@@ -35,7 +35,7 @@
 	import util from '@/common/js/util'; //全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-   	import {  getProjectGroup } from '@/api/xm/core/xmProjectGroup';
+   	import {  getGroups } from '@/api/xm/core/xmProjectGroup';
    	import XmProjectList from '../xmProject/XmProjectList';
 
 	import {mapGetters} from 'vuex' 
@@ -131,7 +131,7 @@
 				}
 				this.$emit("user-confirm",users);
 			},
-			getProjectGroup(){
+			getGroups(){
 				var params={};
 				if(this.filters.selProject){
 					params.projectId=this.filters.selProject.id
@@ -143,7 +143,7 @@
 						});
 					return;
 				}
-				getProjectGroup(params).then(res=>{
+				getGroups(params).then(res=>{
 					var tips = res.data.tips;
 					if(tips.isOk){
 						this.selGroups=res.data.data;
@@ -156,7 +156,7 @@
 			onPorjectConfirm:function(project){
 				this.filters.selProject=project
 				this.selectProjectVisible=false;
-				this.getProjectGroup();
+				this.getGroups();
 			},
 			 
 			/**end 自定义函数请在上面加**/
@@ -179,7 +179,7 @@
 				if(this.selProject){
 					this.filters.selProject=this.selProject
 				}
-				this.getProjectGroup();
+				this.getGroups();
 				listOption([{categoryId:'all',itemCode:'projectGroupType'}] ).then(res=>{
 					if(res.data.tips.isOk){ 
 						this.options['projectGroupType']=res.data.data.projectGroupType 

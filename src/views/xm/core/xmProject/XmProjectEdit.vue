@@ -141,7 +141,7 @@
 	
 	import XmProjectGroupFormwork from '../xmProjectGroupFormwork/XmProjectGroupFormwork';
  	
-	import { getProjectGroup } from '@/api/xm/core/xmProjectGroup';
+	import { getGroups } from '@/api/xm/core/xmProjectGroup';
 	import html2canvas from 'html2canvas'
 	
 	export default { 
@@ -440,7 +440,7 @@
 				let params = {};
 				params.projectId = this.editForm.id;
 				params.branchId = this.userInfo.branchId;
-				getProjectGroup(params).then((res) => {
+				getGroups(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 
 						this.xmProjectGroups = res.data.data; 

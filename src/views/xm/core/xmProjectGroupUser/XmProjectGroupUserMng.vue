@@ -1,56 +1,79 @@
 <template>
-	<section class="page-container page-full-height padding border">
+	<section class="page-container border padding">
 		<el-row>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
-			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectGroupUsers">查询</el-button>
-			<el-button type="primary" @click="showAdd">+xm_project_group_user</el-button>
-			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
+			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
+			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmProjectGroupUsers" icon="el-icon-search">查询</el-button>
+			<el-button type="primary" @click="showAdd" icon="el-icon-plus"> </el-button>
+			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>
 		</el-row>
-		<el-row class="page-main page-height-90"> 
+		<el-row class="padding-top">
 			<!--列表 XmProjectGroupUser xm_project_group_user-->
-			<el-table ref="table" :height="tableHeight" :data="xmProjectGroupUsers" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-				<el-table-column sortable type="selection" width="40"></el-table-column>
-				<el-table-column sortable type="index" width="40"></el-table-column>
-				<el-table-column prop="id" label="主键" min-width="80" ></el-table-column>
-				<el-table-column prop="groupId" label="团队编号" min-width="80" ></el-table-column>
-				<el-table-column prop="userid" label="团队成员编号" min-width="80" ></el-table-column>
-				<el-table-column prop="username" label="团队成员" min-width="80" ></el-table-column>
-				<el-table-column label="操作" width="160" fixed="right"  >
-					<template slot-scope="scope">
-						<el-button  @click="showEdit( scope.row,scope.$index)">改</el-button>
-						<el-button type="danger" @click="handleDel(scope.row,scope.$index)">删</el-button>
+			<el-table ref="xmProjectGroupUserTable" :data="xmProjectGroupUsers" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+				<el-table-column  type="selection" width="55" show-overflow-tooltip></el-table-column>
+				<el-table-column sortable type="index" width="55" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="joinTime" label="加入时间" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="groupId" label="团队编号" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="userid" label="团队成员编号" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="username" label="团队成员" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="outTime" label="离队时间" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="status" label="当前状态0参与中1已退出团队" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="obranchId" label="组员原归属机构编号" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="isPri" label="是否私人加入0否1是" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="seqNo" label="排序号--从1开始" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="projectId" label="项目编号" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="productId" label="产品编号" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="pgClass" label="0-项目，1-产品" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column label="操作" width="180" fixed="right">
+				    <template slot="header">
+                        <el-button @click="showAdd" icon="el-icon-plus" circle> </el-button>
+                    </template>
+					<template scope="scope">
+						<el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"></el-button>
+						<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"></el-button>
 					</template>
 				</el-table-column>
 			</el-table>
-			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
-		
-			<!--编辑 XmProjectGroupUser xm_project_group_user界面-->
-			<el-drawer title="编辑xm_project_group_user" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
-				  <xm-project-group-user-edit :xm-project-group-user="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-group-user-edit>
-			</el-drawer>
-	
-			<!--新增 XmProjectGroupUser xm_project_group_user界面-->
-			<el-drawer title="新增xm_project_group_user" :visible.sync="addFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
-				<xm-project-group-user-add :xm-project-group-user="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-group-user-add>
-			</el-drawer> 
+			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 		</el-row>
+		<el-row>
+			<!--编辑 XmProjectGroupUser xm_project_group_user界面-->
+			<el-drawer title="编辑xm_project_group_user" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
+				  <xm-project-group-user-edit op-type="edit" :xm-project-group-user="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-group-user-edit>
+			</el-drawer>
+
+			<!--新增 XmProjectGroupUser xm_project_group_user界面-->
+			<el-drawer title="新增xm_project_group_user" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
+				<xm-project-group-user-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-group-user-edit>
+			</el-drawer>
+	    </el-row>
 	</section>
 </template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	//import Sticky from '@/components/Sticky' // 粘性header组件
-	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import config from '@/common/config';//全局公共库 
+	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
 	import { listXmProjectGroupUser, delXmProjectGroupUser, batchDelXmProjectGroupUser } from '@/api/xm/core/xmProjectGroupUser';
-	import  XmProjectGroupUserAdd from './XmProjectGroupUserAdd';//新增界面
-	import  XmProjectGroupUserEdit from './XmProjectGroupUserEdit';//修改界面
+	import  XmProjectGroupUserEdit from './XmProjectGroupUserEdit';//新增修改界面
 	import { mapGetters } from 'vuex'
 	
-	export default { 
+	export default {
+	    name:'xmProjectGroupUserMng',
+		components: {
+		    XmProjectGroupUserEdit,
+		},
+		props:['visible'],
 		computed: {
-		    ...mapGetters([
-		      'userInfo','roles'
-		    ])
+		    ...mapGetters(['userInfo']),
+
+		},
+		watch:{
+            visible(val){
+                if(val==true){
+                    this.initData();
+                    this.searchXmProjectGroupUsers()
+                }
+            }
 		},
 		data() {
 			return {
@@ -68,23 +91,19 @@
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				options:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
-				
+				dicts:{
+				    //sex: [{id:'1',name:'男'},{id:'2',name:'女'}]
+				},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				addFormVisible: false,//新增xmProjectGroupUser界面是否显示
-				//新增xmProjectGroupUser界面初始化数据
 				addForm: {
-					id:'',groupId:'',userid:'',username:''
+					joinTime:'',groupId:'',userid:'',username:'',outTime:'',status:'',obranchId:'',isPri:'',seqNo:'',projectId:'',productId:'',pgClass:''
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
-				//编辑xmProjectGroupUser界面初始化数据
 				editForm: {
-					id:'',groupId:'',userid:'',username:''
+					joinTime:'',groupId:'',userid:'',username:'',outTime:'',status:'',obranchId:'',isPri:'',seqNo:'',projectId:'',productId:'',pgClass:''
 				},
-				/**begin 自定义属性请在下面加 请加备注**/
-				
-				tableHeight:300,	
-				/**end 自定义属性请在上面加 请加备注**/
+				maxTableHeight:300,
 			}
 		},//end data
 		methods: { 
@@ -98,14 +117,18 @@
 			},
 			// 表格排序 obj.order=ascending/descending,需转化为 asc/desc ; obj.prop=表格中的排序字段,字段驼峰命名
 			sortChange( obj ){
-				var dir='asc';
-				if(obj.order=='ascending'){
-					dir='asc'
+				if(obj.order==null){
+					this.pageInfo.orderFields=[];
+					this.pageInfo.orderDirs=[]; 
 				}else{
-					dir='desc';
-				}
-				if(obj.prop=='xxx'){
-					this.pageInfo.orderFields=['xxx'];
+					var dir='asc';
+					if(obj.order=='ascending'){
+						dir='asc'
+					}else{
+						dir='desc';
+					}
+					 
+					this.pageInfo.orderFields=[util.toLine(obj.prop)]; 
 					this.pageInfo.orderDirs=[dir];
 				}
 				this.getXmProjectGroupUsers();
@@ -129,11 +152,10 @@
 					}  
 					params.orderBy= orderBys.join(",")
 				}
-				if(this.filters.key!==""){
-					//params.xxx=this.filters.key
-				}else{
-					//params.xxx=xxxxx
+				if(this.filters.key){
+					params.key=this.filters.key
 				}
+
 				this.load.list = true;
 				listXmProjectGroupUser(params).then((res) => {
 					var tips=res.data.tips;
@@ -142,7 +164,7 @@
 						this.pageInfo.count=false;
 						this.xmProjectGroupUsers = res.data.data;
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$message({ showClose:true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -176,7 +198,7 @@
 					type: 'warning'
 				}).then(() => { 
 					this.load.del=true;
-					let params = { id: row.id };
+					let params = { groupId: row.groupId };
 					delXmProjectGroupUser(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
@@ -184,7 +206,7 @@
 							this.pageInfo.count=true;
 							this.getXmProjectGroupUsers();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$message({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -202,38 +224,35 @@
 							this.pageInfo.count=true;
 							this.getXmProjectGroupUsers(); 
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$message({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
 			rowClick: function(row, event, column){
+			    if(event.label!='操作' && event.type!='selection'){
+			        this.showEdit(row)
+			    }
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
-			}
-			/**begin 自定义函数请在下面加**/
-			
-				
-			/**end 自定义函数请在上面加**/
+			},
+            initData: function(){
+
+            },
 			
 		},//end methods
-		components: { 
-		    'xm-project-group-user-add':XmProjectGroupUserAdd,
-		    'xm-project-group-user-edit':XmProjectGroupUserEdit,
-		    
-		    //在下面添加其它组件
-		},
-		mounted() { 
+		mounted() {
 			this.$nextTick(() => {
-				
-				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=70/1000 * window.innerHeight; 
-				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
-				this.getXmProjectGroupUsers();
-        	}); 
+			    //initSimpleDicts('all',['sex','gradeLvl']).then(res=>this.dicts=res.data.data);
+			    this.initData()
+				this.searchXmProjectGroupUsers();
+                var table=document.querySelector('.el-table');
+                var top=util.getPositionTop(table)
+                this.maxTableHeight = window.innerHeight - top -60;
+
+        	});
 		}
 	}
 
 </script>
 
 <style scoped>
-
 </style>

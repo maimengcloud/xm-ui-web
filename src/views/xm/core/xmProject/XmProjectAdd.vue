@@ -144,7 +144,7 @@
 	
 	import XmProjectGroupFormwork from '../xmProjectGroupFormwork/XmProjectGroupFormwork';
  	
-	import { getProjectGroup } from '@/api/xm/core/xmProjectGroup';
+	import { getGroups } from '@/api/xm/core/xmProjectGroup';
 	
 	export default { 
 		computed: {

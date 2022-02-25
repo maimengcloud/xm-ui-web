@@ -1,10 +1,12 @@
 <template>
-	<section class="page-container page-full-height padding border">
-		<el-row> 
+	<section  class="page-container padding">
+	    <el-row class="page-header">
+	    </el-row>
+		<el-row class="page-main">
 		<!--编辑界面 XmProjectGroupUser xm_project_group_user--> 
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
-				<el-form-item label="主键" prop="id">
-					<el-input v-model="editForm.id" placeholder="主键"></el-input>
+			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">
+				<el-form-item label="加入时间" prop="joinTime">
+					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.joinTime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
 				</el-form-item> 
 				<el-form-item label="团队编号" prop="groupId">
 					<el-input v-model="editForm.groupId" placeholder="团队编号"></el-input>
@@ -15,93 +17,140 @@
 				<el-form-item label="团队成员" prop="username">
 					<el-input v-model="editForm.username" placeholder="团队成员"></el-input>
 				</el-form-item> 
-				<el-form-item> 
-					<el-col :span="24" :offset="8"> 
-						<el-button @click.native="handleCancel">取消</el-button>  
-						<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>  
-					</el-col> 
+				<el-form-item label="离队时间" prop="outTime">
+					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.outTime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
+				</el-form-item> 
+				<el-form-item label="当前状态0参与中1已退出团队" prop="status">
+					<el-input v-model="editForm.status" placeholder="当前状态0参与中1已退出团队"></el-input>
+				</el-form-item> 
+				<el-form-item label="组员原归属机构编号" prop="obranchId">
+					<el-input v-model="editForm.obranchId" placeholder="组员原归属机构编号"></el-input>
+				</el-form-item> 
+				<el-form-item label="是否私人加入0否1是" prop="isPri">
+					<el-input v-model="editForm.isPri" placeholder="是否私人加入0否1是"></el-input>
+				</el-form-item> 
+				<el-form-item label="排序号--从1开始" prop="seqNo">
+					<el-input-number v-model="editForm.seqNo" :min="0" :max="200"></el-input-number>
+				</el-form-item> 
+				<el-form-item label="项目编号" prop="projectId">
+					<el-input v-model="editForm.projectId" placeholder="项目编号"></el-input>
+				</el-form-item> 
+				<el-form-item label="产品编号" prop="productId">
+					<el-input v-model="editForm.productId" placeholder="产品编号"></el-input>
+				</el-form-item> 
+				<el-form-item label="0-项目，1-产品" prop="pgClass">
+					<el-input v-model="editForm.pgClass" placeholder="0-项目，1-产品"></el-input>
 				</el-form-item> 
 			</el-form>
+		</el-row>
+
+		<el-row   class="page-bottom bottom-fixed">
+		    <el-button @click.native="handleCancel">取消</el-button>
+            <el-button v-loading="load.edit" type="primary" @click.native="saveSubmit" :disabled="load.edit==true">提交</el-button>
 		</el-row>
 	</section>
 </template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { editXmProjectGroupUser } from '@/api/xm/core/xmProjectGroupUser';
+	import config from "@/common/config"; //全局公共库import
+	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
+	import { addXmProjectGroupUser,editXmProjectGroupUser } from '@/api/xm/core/xmProjectGroupUser';
 	import { mapGetters } from 'vuex'
 	
-	export default { 
+	export default {
+	    name:'xmProjectGroupUserEdit',
+	    components: {
+
+        },
 		computed: {
-		    ...mapGetters([
-		      'userInfo','roles'
-		    ])
+		    ...mapGetters([ 'userInfo'  ]),
+
 		},
-		props:['xmProjectGroupUser','visible'],
+		props:['xmProjectGroupUser','visible','opType'],
+
 		watch: {
 	      'xmProjectGroupUser':function( xmProjectGroupUser ) {
-	        this.editForm = xmProjectGroupUser;
+	        if(xmProjectGroupUser){
+	            this.editForm = xmProjectGroupUser;
+	        }
+
 	      },
 	      'visible':function(visible) { 
 	      	if(visible==true){
-	      		//从新打开页面时某些数据需要重新加载，可以在这里添加
+ 	      		this.initData()
 	      	}
 	      } 
 	    },
 		data() {
 			return {
-				options:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
-				load:{ list: false, edit: false, del: false, add: false },//查询中...
+			    currOpType:'add',//add/edit
+ 				load:{ list: false, edit: false, del: false, add: false },//查询中...
+				dicts:{},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				editFormRules: {
-					id: [
-						//{ required: true, message: '主键不能为空', trigger: 'blur' }
+					groupId: [
+						//{ required: true, message: '团队编号不能为空', trigger: 'blur' }
 					]
 				},
-				//编辑界面数据  XmProjectGroupUser xm_project_group_user
 				editForm: {
-					id:'',groupId:'',userid:'',username:''
-				}
-				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
-				
-				/**end 在上面加自定义属性**/
+					joinTime:'',groupId:'',userid:'',username:'',outTime:'',status:'',obranchId:'',isPri:'',seqNo:'',projectId:'',productId:'',pgClass:''
+				},
+
 			}//end return
 		},//end data
 		methods: {
 			// 取消按钮点击 父组件监听@cancel="editFormVisible=false" 监听
 			handleCancel:function(){
-				this.$refs['editForm'].resetFields();
+				this.$refs['editFormRef'].resetFields();
 				this.$emit('cancel');
 			},
-			//编辑提交XmProjectGroupUser xm_project_group_user父组件监听@submit="afterEditSubmit"
-			editSubmit: function () {
-				this.$refs.editForm.validate((valid) => {
+			//新增、编辑提交XmProjectGroupUser xm_project_group_user父组件监听@submit="afterEditSubmit"
+			saveSubmit: function () {
+				this.$refs.editFormRef.validate((valid) => {
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
 							this.load.edit=true
-							let params = Object.assign({}, this.editForm); 
-							editXmProjectGroupUser(params).then((res) => {
-								this.load.edit=false
-								var tips=res.data.tips;
-								if(tips.isOk){
-									this.$refs['editForm'].resetFields();
-									this.$emit('submit');//  @submit="afterEditSubmit"
-								}
-								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
-							}).catch( err =>this.load.edit=false);
+							let params = Object.assign({}, this.editForm);
+							var func=addXmProjectGroupUser
+							if(this.currOpType=='edit'){
+							    func=editXmProjectGroupUser
+							}
+							func(params).then((res) => {
+                                this.load.edit=false
+                                var tips=res.data.tips;
+                                if(tips.isOk){
+                                    this.editForm=res.data.data
+                                    this.initData()
+                                    this.currOpType="edit";
+                                    this.$emit('submit');//  @submit="afterAddSubmit"
+                                }
+                                this.$message({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
+                            }).catch( err =>this.load.edit=false);
 						});
+					}else{
+					    this.$message({ showClose:true, message: "表单验证不通过，请修改表单数据再提交", type: 'error' });
 					}
 				});
-			}
-			/**begin 在下面加自定义方法,记得补上面的一个逗号**/
-				
-			/**end 在上面加自定义方法**/
+			},
+			initData: function(){
+			    this.currOpType=this.opType
+			    if(this.xmProjectGroupUser){
+                    this.editForm = Object.assign({},this.xmProjectGroupUser);
+                }
+
+                if(this.opType=='edit'){
+
+                }else{
+
+                }
+            },
+
 		},//end method
-		components: {  
-		    //在下面添加其它组件 'xm-project-group-user-edit':XmProjectGroupUserEdit
-		},
 		mounted() {
-			this.editForm=Object.assign(this.editForm, this.xmProjectGroupUser);  
+		    this.$nextTick(() => {
+                //initSimpleDicts('all',['sex','gradeLvl']).then(res=>this.dicts=res.data.data);
+                this.initData()
+            });
 		}
 	}
 
