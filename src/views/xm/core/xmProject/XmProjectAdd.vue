@@ -141,9 +141,7 @@
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { addXmProject } from '@/api/xm/core/xmProject'; 
 	import { mapGetters } from 'vuex'; 
-	
-	import XmProjectGroupFormwork from '../xmProjectGroupFormwork/XmProjectGroupFormwork';
- 	
+	 
 	import { getGroups } from '@/api/xm/core/xmProjectGroup';
 	
 	export default { 
@@ -430,8 +428,7 @@
 
 			/**end 在上面加自定义方法**/
 		},//end method
-		components: { 
-			XmProjectGroupFormwork
+		components: {  
 		    //在下面添加其它组件 'xm-project-add':XmProjectEdit
 		},
 		mounted() { 

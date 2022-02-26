@@ -137,10 +137,7 @@
 	import { editXmProject } from '@/api/xm/core/xmProject'; 
 	import { uploadBase64 } from '@/api/mdp/arc/image'; 
 	
-	import { mapGetters } from 'vuex'; 
-	
-	import XmProjectGroupFormwork from '../xmProjectGroupFormwork/XmProjectGroupFormwork';
- 	
+	import { mapGetters } from 'vuex';  
 	import { getGroups } from '@/api/xm/core/xmProjectGroup';
 	import html2canvas from 'html2canvas'
 	
@@ -668,8 +665,7 @@
 			
 			/**end 在上面加自定义方法**/
 		},//end method
-		components: { 
-			XmProjectGroupFormwork,html2canvas
+		components: {  html2canvas
 		    //在下面添加其它组件 'xm-project-add':XmProjectEdit
 		},
 		mounted() { 
