@@ -796,7 +796,7 @@ export default {
         i.projectId = this.selProject.id;
         i.projectName = this.selProject.name;
         i.branchId = this.selProject.branchId;
-        i.phaseBudgetCostAt = 0;
+        i.phaseBudgetAt = 0;
         i.phaseBudgetNouserAt = 0;
         i.phaseBudgetInnerUserAt = 0;
         i.phaseBudgetOutUserAt = 0;
@@ -979,7 +979,7 @@ export default {
       let parents = data.filter((value) => {
         //如果我的上级为空，则我是最上级
         var calcData = this.getRowSum(value);
-        value.phaseBudgetCostAt = calcData.phaseBudgetCostAt;
+        value.phaseBudgetAt = calcData.phaseBudgetAt;
         value.actCostAt = calcData.actCostAt;
         if (
           value.parentPhaseId == "undefined" ||
@@ -1107,7 +1107,7 @@ export default {
       ) {
         row.actOutUserAt = 0;
       }
-      var phaseBudgetCostAt =
+      var phaseBudgetAt =
         parseFloat(row.phaseBudgetNouserAt) +
         parseFloat(row.phaseBudgetInnerUserAt) +
         parseFloat(row.phaseBudgetOutUserAt);
@@ -1116,7 +1116,7 @@ export default {
         parseFloat(row.actInnerUserAt) +
         parseFloat(row.actOutUserAt);
 
-      return { phaseBudgetCostAt: phaseBudgetCostAt, actCostAt: actCostAt };
+      return { phaseBudgetAt: phaseBudgetAt, actCostAt: actCostAt };
     },
     fieldChange: function (row, fieldName, nextReplace) {
       if (nextReplace) {
@@ -1684,7 +1684,7 @@ export default {
         subRow.projectId = this.selProject.id;
         subRow.projectName = this.selProject.name;
         subRow.branchId = this.selProject.branchId;
-        subRow.phaseBudgetCostAt = 0;
+        subRow.phaseBudgetAt = 0;
         subRow.phaseBudgetNouserAt = 0;
         subRow.phaseBudgetInnerUserAt = 0;
         subRow.phaseBudgetOutUserAt = 0;

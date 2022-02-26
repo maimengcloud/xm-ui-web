@@ -107,7 +107,7 @@
 				</el-table-column>
 				
 				<el-table-column  label="成本(元)" width="100"> 
-					<el-table-column  prop="phaseBudgetCostAt" label="预计" width="100" >  
+					<el-table-column  prop="phaseBudgetAt" label="预计" width="100" >  
 					</el-table-column>  
 					<el-table-column  prop="actCostAt" label="实际" width="100" >  
 					</el-table-column> 
@@ -206,6 +206,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
+	import treeTool from '@/common/js/treeTool';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { listXmProjectPhase,calcKeyPaths, delXmProjectPhase, batchDelXmProjectPhase,batchImportFromTemplate,batchSaveBudget,loadTasksToXmProjectPhase,setPhaseMngUser  } from '@/api/xm/core/xmProjectPhase';
@@ -226,22 +227,9 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 		    ...mapGetters([
 		      'userInfo','roles'
 			]),
-      projectPhaseTreeData() {
-        let xmProjectPhases = JSON.parse(JSON.stringify(this.xmProjectPhases || []));
-        if (this.valueChangeRows && this.valueChangeRows.length) {
-          this.valueChangeRows.forEach(c => {
-            var index = xmProjectPhases.findIndex(i=>i.id==c.id);
-            const oldRow = JSON.parse(JSON.stringify(xmProjectPhases[index]));
-            xmProjectPhases.splice(index,1);
-            c.parentPhaseId = oldRow.parentPhaseId;
-            xmProjectPhases.push(c);
-          })
-        }
-        
-        const projectPhaseTreeData = this.translateDataToTree(xmProjectPhases); 
-
-				 return projectPhaseTreeData;
-      },
+			projectPhaseTreeData() { 
+				return treeTool.translateDataToTree(this.xmProjectPhases,"parentPhaseId","id");
+			},
 			phaseBudgetData(){ 
 				if( this.xmIteration || this.xmProduct){
 					return {}
@@ -396,6 +384,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				endDate: 'endDate',
 				
 				},
+				maps:new Map(),
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -460,11 +449,9 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				}
 				return params;
 			},
-			loadXmProjectPhaseLazy(row, treeNode, resolve) {  
-				if(row.children&&row.children.length>0){
-					resolve(row.children) 
-				}else{
-					var params={parentPhaseId:row.id}
+			loadXmProjectPhaseLazy(tree, treeNode, resolve) {    
+				this.maps.set(tree.id, { tree, treeNode, resolve }) //储存数据
+					var params={parentPhaseId:tree.id}
 					params=this.getParams(params);
 					params.isTop=""
 					this.load.list = true;
@@ -477,10 +464,10 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 						}else{
 							resolve([])
 						}
-					}).catch( err => this.load.list = false );  
-				}
+					}).catch( err => this.load.list = false );   
 				
 			},
+
 			//获取列表 XmProjectPhase xm_project_phase
 			getXmProjectPhases() {
 				this.valueChangeRows=[]
@@ -521,7 +508,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
 					return; 
 				}
-				this.editForm = Object.assign({}, row);
+				this.editForm = row;
 				this.editFormVisible = true;
 			},
 			//显示新增界面 XmProjectPhase xm_project_phase
@@ -551,13 +538,22 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);
 			},
-			afterAddSubmit(){
+			afterAddSubmit(row){
 				this.addFormVisible=false;
 				this.pageInfo.count=true;
-				this.getXmProjectPhases();
+				if(!this.maps.get(row.parentPhaseId)){
+					this.searchXmProjectPhases()
+				}else{ 
+					treeTool.reloadChildren(this.$refs.table,this.maps,row.parentPhaseId,'parentPhaseId',this.loadXmProjectPhaseLazy)
+				} 
 			},
-			afterEditSubmit(){
-				this.editFormVisible=false;
+			afterEditSubmit(row){
+				this.editFormVisible=false;  
+				if(!this.maps.get(row.parentPhaseId)){
+					this.searchXmProjectPhases()
+				}else{ 
+					treeTool.reloadChildren(this.$refs.table,this.maps,row.parentPhaseId,'parentPhaseId',this.loadXmProjectPhaseLazy)
+				} 
 			},
 			afterPhaseTemplateSelected(phaseTemplates){
 				if(phaseTemplates==null || phaseTemplates.length==0){
@@ -612,7 +608,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					i.projectId=this.selProject.id
 					i.projectName=this.selProject.name
 					i.branchId=this.selProject.branchId
-					i.phaseBudgetCostAt=0
+					i.phaseBudgetAt=0
 					i.phaseBudgetNouserAt=0
 					i.phaseBudgetInnerUserAt=0
 					i.phaseBudgetOutUserAt=0 
@@ -739,7 +735,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				let parents = data.filter(value =>{
 					//如果我的上级为空，则我是最上级 
 					var calcData=this.getRowSum(value);
-					value.phaseBudgetCostAt=calcData.phaseBudgetCostAt
+					value.phaseBudgetAt=calcData.phaseBudgetAt
 					value.actCostAt=calcData.actCostAt
 					if(value.parentPhaseId == 'undefined' || value.parentPhaseId == null  || value.parentPhaseId == ''){
 						return true;
@@ -1001,10 +997,10 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				if(row.actOutUserAt==null ||  row.actOutUserAt=='' || row.actOutUserAt==undefined){
 					row.actOutUserAt=0;
 				}
-				var phaseBudgetCostAt=parseFloat(row.phaseBudgetNouserAt)+parseFloat(row.phaseBudgetInnerUserAt)+parseFloat(row.phaseBudgetOutUserAt)
+				var phaseBudgetAt=parseFloat(row.phaseBudgetNouserAt)+parseFloat(row.phaseBudgetInnerUserAt)+parseFloat(row.phaseBudgetOutUserAt)
 				var actCostAt=parseFloat(row.actNouserAt)+parseFloat(row.actInnerUserAt)+parseFloat(row.actOutUserAt)
 
-				return {phaseBudgetCostAt:phaseBudgetCostAt,actCostAt:actCostAt};
+				return {phaseBudgetAt:phaseBudgetAt,actCostAt:actCostAt};
 			},
 			fieldChange:function(row,fieldName, nextReplace){
         if (nextReplace) {
@@ -1322,7 +1318,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					subRow.projectId=this.selProject.id
 					subRow.projectName=this.selProject.name
 					subRow.branchId=this.selProject.branchId
-					subRow.phaseBudgetCostAt=0
+					subRow.phaseBudgetAt=0
 					subRow.phaseBudgetNouserAt=0
 					subRow.phaseBudgetInnerUserAt=0
 					subRow.phaseBudgetOutUserAt=0 

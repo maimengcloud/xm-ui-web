@@ -1,6 +1,19 @@
- 
-
+  
 export default {
+
+  reloadChildren: function(table,maps, parentId,parentIdName,loadChildren) {   
+    var lazyTreeNodeMap=table.store.states.lazyTreeNodeMap
+    if (maps.get(parentId)) {
+      const { tree, treeNode, resolve } = maps.get(parentId) 
+      if (tree) { // 重新执行父节点加载子级操作
+        loadChildren(tree, treeNode, resolve)
+        if (tree[parentIdName]) { // 若存在爷爷结点，则执行爷爷节点加载子级操作，防止最后一个子节点被删除后父节点不显示删除按钮
+          const a = maps.get(tree[parentIdName])
+          loadChildren(a.tree, a.treeNode, a.resolve)
+        }
+      }
+    } 
+  },
   /**
    * 将类表数据转换为如下树状结构的数据
    * {

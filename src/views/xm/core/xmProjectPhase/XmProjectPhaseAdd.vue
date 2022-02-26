@@ -191,7 +191,7 @@
 		  }, 
 		  autoParams:function(autoParams){
 			  this.fillphaseBudgetHoursToField()
-			  this.fillphaseBudgetCostAtToField()
+			  this.fillphaseBudgetAtToField()
 		  }
 	    },
 		data() {
@@ -307,7 +307,7 @@
 								var tips=res.data.tips;
 								if(tips.isOk){
 									//this.$refs['addForm'].resetFields();
-									this.$emit('submit');//  @submit="afteraddSubmit"
+									this.$emit('submit',res.data.data);//  @submit="afteraddSubmit"
 								}
 								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.add=false);
@@ -355,7 +355,7 @@
 				this.addForm.phaseBudgetHours=this.toFixed(this.autoParams.phaseBudgetHours)
 			},
 
-			fillphaseBudgetCostAtToField:function(){
+			fillphaseBudgetAtToField:function(){
 				this.addForm.phaseBudgetNouserAt=this.toFixed(this.autoParams.phaseBudgetNouserAt)
 				this.addForm.phaseBudgetOutUserAt=this.toFixed(this.autoParams.phaseBudgetOutUserAt )
 				this.addForm.phaseBudgetInnerUserAt=this.toFixed(this.autoParams.phaseBudgetInnerUserAt )
