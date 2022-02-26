@@ -41,6 +41,9 @@
 				<el-form-item label="0-项目，1-产品" prop="pgClass">
 					<el-input v-model="editForm.pgClass" placeholder="0-项目，1-产品"></el-input>
 				</el-form-item> 
+				<el-form-item label="原归属机构名称" prop="obranchName">
+					<el-input v-model="editForm.obranchName" placeholder="原归属机构名称"></el-input>
+				</el-form-item> 
 			</el-form>
 		</el-row>
 
@@ -93,7 +96,7 @@
 					]
 				},
 				editForm: {
-					joinTime:'',groupId:'',userid:'',username:'',outTime:'',status:'',obranchId:'',isPri:'',seqNo:'',projectId:'',productId:'',pgClass:''
+					joinTime:'',groupId:'',userid:'',username:'',outTime:'',status:'',obranchId:'',isPri:'',seqNo:'',projectId:'',productId:'',pgClass:'',obranchName:''
 				},
 
 			}//end return

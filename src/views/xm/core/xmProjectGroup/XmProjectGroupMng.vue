@@ -196,15 +196,30 @@
 				var groupsTree=treeTool.translateDataToTree(groups,'pgroupId','id')
 				var topLabel="组织架构"
 				var currNodeType=''
-				var topdata={}
+				var topdata={} 
 				if(this.xmProduct&&this.xmProduct.id){
 					topLabel=this.xmProduct.productName+"-产品组织架构"
 					currNodeType='product'
 					topdata=this.xmProduct
+					topdata.leaderUserid=this.xmProduct.pmUserid
+					topdata.leaderUsername=this.xmProduct.pmUsername
+					topdata.assUserid=this.xmProduct.assUserid
+					topdata.assUsername=this.xmProduct.assUsername
 				}else if(this.selProject && this.selProject.id){
 					topLabel=this.selProject.name+"-项目组织架构"
 					currNodeType='project'
 					topdata=this.selProject
+					topdata.leaderUserid=this.selProject.pmUserid
+					topdata.leaderUsername=this.selProject.pmUsername
+					topdata.assUserid=this.selProject.assUserid
+					topdata.assUsername=this.selProject.assUsername
+				}else if(this.xmIteration){
+					
+					topLabel=this.xmIteration.iterationName+"-迭代组织架构"
+					currNodeType='iteration'
+					topdata=this.xmIteration
+					topdata.leaderUserid=this.xmIteration.admUserid
+					topdata.leaderUsername=this.xmIteration.admUsername 
 				}
 				var data=[{
 					...topdata,
@@ -255,12 +270,12 @@
 				},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				addFormVisible: false,//新增xmProjectGroup界面是否显示
 				addForm: {
-					id:'',groupName:'',projectId:'',pgTypeId:'',pgTypeName:'',leaderUserid:'',leaderUsername:'',ctime:'',ltime:'',productId:'',branchId:'',pgClass:'',pgroupId:'',lvl:'',pidPaths:'',isTpl:'',assUserid:'',assUsername:'',childrenCnt:'',userCnt:'',qxCode:'',calcWorkload:'',ntype:''
+					id:'',groupName:'',projectId:'',pgTypeId:'',pgTypeName:'',leaderUserid:'',leaderUsername:'',ctime:'',ltime:'',productId:'',branchId:'',pgClass:'',pgroupId:'',lvl:'',pidPaths:'',isTpl:'',assUserid:'',assUsername:'',childrenCnt:'',userCnt:'',qxCode:'',calcWorkload:'',ntype:'',crowBranchId:'',crowBranchName:'',isCrow:''
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
 				editForm: {
-					id:'',groupName:'',projectId:'',pgTypeId:'',pgTypeName:'',leaderUserid:'',leaderUsername:'',ctime:'',ltime:'',productId:'',branchId:'',pgClass:'',pgroupId:'',lvl:'',pidPaths:'',isTpl:'',assUserid:'',assUsername:'',childrenCnt:'',userCnt:'',qxCode:'',calcWorkload:'',ntype:''
+					id:'',groupName:'',projectId:'',pgTypeId:'',pgTypeName:'',leaderUserid:'',leaderUsername:'',ctime:'',ltime:'',productId:'',branchId:'',pgClass:'',pgroupId:'',lvl:'',pidPaths:'',isTpl:'',assUserid:'',assUsername:'',childrenCnt:'',userCnt:'',qxCode:'',calcWorkload:'',ntype:'',crowBranchId:'',crowBranchName:'',isCrow:''
 				},
 				maxTableHeight:300,
 
@@ -575,8 +590,8 @@
 				<div class={'diy-wrapper', node.isCurrent ? 'current-select' : ''}>
 					<div class={'diy-con-name',node.data.userid? 'el-icon-user':''}>{node.data.label}<div></div></div>
 					<div class="diy-con-content">
-						{node.data.leaderUsername?
-							(<div> 负责人 {node.data.leaderUsername }</div> 
+						{node.data.leaderUsername||node.data.assUsername?
+							(<div> 负责人 {node.data.leaderUsername?node.data.leaderUsername:'' }  {node.data.assUsername?node.data.assUsername:''}</div> 
 							)
 						:   
 						    (<div>   </div>)
@@ -638,6 +653,7 @@
 	color: black;
 }
 .diy-con-content{
+	padding-top:5px;
 	color:dimgrey;
 	font-size: 12px;
 }

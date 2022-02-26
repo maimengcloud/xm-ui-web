@@ -6,8 +6,9 @@
 		<!--编辑界面 XmProjectGroup xm_project_group--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">   
 				<el-form-item label="小组名称" prop="groupName">
-					<el-input v-model="editForm.groupName" placeholder="团队名称"> 
-					</el-input>
+					<el-input v-model="editForm.groupName" placeholder="团队名称">
+						<template v-if="currOpType=='edit'" slot="append">{{editForm.lvl}}级</template>
+					</el-input>  
 				</el-form-item>   
 				<el-form-item label="负责人" prop="leaderUsername"> 
 					<el-form-item label="组长" prop="leaderUsername">
@@ -17,10 +18,7 @@
 						<el-input v-model="editForm.assUsername" placeholder="副组长姓名" @click.native="showUserSelect('ass')"></el-input>
 						<font color="red">如果没用副组长可以设置为项目助理、小组助理等，具有组长同等权限</font>
 					</el-form-item>  
-				</el-form-item>   
-				<el-form-item label="级别" prop="lvl" v-if="currOpType=='edit'">
-					{{editForm.lvl}}级
-				</el-form-item>       
+				</el-form-item>          
 			</el-form>
 		</el-row>
 
@@ -78,7 +76,7 @@
 					]
 				},
 				editForm: {
-					id:'',groupName:'',projectId:'',pgTypeId:'',pgTypeName:'',leaderUserid:'',leaderUsername:'',ctime:'',ltime:'',productId:'',branchId:'',pgClass:'',pgroupId:'',lvl:'',pidPaths:'',isTpl:'',assUserid:'',assUsername:'',childrenCnt:'',userCnt:'',qxCode:'',calcWorkload:'',ntype:''
+					id:'',groupName:'',projectId:'',pgTypeId:'',pgTypeName:'',leaderUserid:'',leaderUsername:'',ctime:'',ltime:'',productId:'',branchId:'',pgClass:'',pgroupId:'',lvl:'',pidPaths:'',isTpl:'',assUserid:'',assUsername:'',childrenCnt:'',userCnt:'',qxCode:'',calcWorkload:'',ntype:'',crowBranchId:'',crowBranchName:'',isCrow:''
 				},
 				
 				userType:"leader",

@@ -23,6 +23,7 @@
 				<el-table-column prop="projectId" label="项目编号" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="productId" label="产品编号" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="pgClass" label="0-项目，1-产品" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="obranchName" label="原归属机构名称" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column label="操作" width="180" fixed="right">
 				    <template slot="header">
                         <el-button @click="showAdd" icon="el-icon-plus" circle> </el-button>
@@ -96,12 +97,12 @@
 				},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				addFormVisible: false,//新增xmProjectGroupUser界面是否显示
 				addForm: {
-					joinTime:'',groupId:'',userid:'',username:'',outTime:'',status:'',obranchId:'',isPri:'',seqNo:'',projectId:'',productId:'',pgClass:''
+					joinTime:'',groupId:'',userid:'',username:'',outTime:'',status:'',obranchId:'',isPri:'',seqNo:'',projectId:'',productId:'',pgClass:'',obranchName:''
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
 				editForm: {
-					joinTime:'',groupId:'',userid:'',username:'',outTime:'',status:'',obranchId:'',isPri:'',seqNo:'',projectId:'',productId:'',pgClass:''
+					joinTime:'',groupId:'',userid:'',username:'',outTime:'',status:'',obranchId:'',isPri:'',seqNo:'',projectId:'',productId:'',pgClass:'',obranchName:''
 				},
 				maxTableHeight:300,
 			}
