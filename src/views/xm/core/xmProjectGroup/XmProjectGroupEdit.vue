@@ -4,76 +4,23 @@
 	    </el-row>
 		<el-row class="page-main">
 		<!--编辑界面 XmProjectGroup xm_project_group--> 
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">
-				<el-form-item label="主键" prop="id">
-					<el-input v-model="editForm.id" placeholder="主键"></el-input>
-				</el-form-item> 
-				<el-form-item label="团队名称" prop="groupName">
-					<el-input v-model="editForm.groupName" placeholder="团队名称"></el-input>
-				</el-form-item> 
-				<el-form-item label="项目编号-属于产品线则可为空" prop="projectId">
-					<el-input v-model="editForm.projectId" placeholder="项目编号-属于产品线则可为空"></el-input>
-				</el-form-item> 
-				<el-form-item label="项目团队类型编号" prop="pgTypeId">
-					<el-input v-model="editForm.pgTypeId" placeholder="项目团队类型编号"></el-input>
-				</el-form-item> 
-				<el-form-item label="团队类型名称" prop="pgTypeName">
-					<el-input v-model="editForm.pgTypeName" placeholder="团队类型名称"></el-input>
-				</el-form-item> 
-				<el-form-item label="团队负责人" prop="leaderUserid">
-					<el-input v-model="editForm.leaderUserid" placeholder="团队负责人"></el-input>
-				</el-form-item> 
-				<el-form-item label="负责人姓名" prop="leaderUsername">
-					<el-input v-model="editForm.leaderUsername" placeholder="负责人姓名"></el-input>
-				</el-form-item> 
-				<el-form-item label="创建时间" prop="ctime">
-					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.ctime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
-				</el-form-item> 
-				<el-form-item label="更新时间" prop="ltime">
-					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.ltime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
-				</el-form-item> 
-				<el-form-item label="产品编号，属于项目组的团队则可为空" prop="productId">
-					<el-input v-model="editForm.productId" placeholder="产品编号，属于项目组的团队则可为空"></el-input>
-				</el-form-item> 
-				<el-form-item label="机构编号" prop="branchId">
-					<el-input v-model="editForm.branchId" placeholder="机构编号"></el-input>
-				</el-form-item> 
-				<el-form-item label="团队类别0项目1产品" prop="pgClass">
-					<el-input v-model="editForm.pgClass" placeholder="团队类别0项目1产品"></el-input>
-				</el-form-item> 
-				<el-form-item label="上级团队编号" prop="pgroupId">
-					<el-input v-model="editForm.pgroupId" placeholder="上级团队编号"></el-input>
-				</el-form-item> 
-				<el-form-item label="级别0级1级2级3级4级" prop="lvl">
-					<el-input-number v-model="editForm.lvl" :min="0" :max="200"></el-input-number>
-				</el-form-item> 
-				<el-form-item label="上级编号路径逗号分割,0,开始，本组编号+逗号结束" prop="pidPaths">
-					<el-input v-model="editForm.pidPaths" placeholder="上级编号路径逗号分割,0,开始，本组编号+逗号结束"></el-input>
-				</el-form-item> 
-				<el-form-item label="是否为模板" prop="isTpl">
-					<el-input v-model="editForm.isTpl" placeholder="是否为模板"></el-input>
-				</el-form-item> 
-				<el-form-item label="副组长编号" prop="assUserid">
-					<el-input v-model="editForm.assUserid" placeholder="副组长编号"></el-input>
-				</el-form-item> 
-				<el-form-item label="副组长姓名" prop="assUsername">
-					<el-input v-model="editForm.assUsername" placeholder="副组长姓名"></el-input>
-				</el-form-item> 
-				<el-form-item label="下级团队数量" prop="childrenCnt">
-					<el-input-number v-model="editForm.childrenCnt" :min="0" :max="200"></el-input-number>
-				</el-form-item> 
-				<el-form-item label="组员数量" prop="userCnt">
-					<el-input-number v-model="editForm.userCnt" :min="0" :max="200"></el-input-number>
-				</el-form-item> 
-				<el-form-item label="权限码" prop="qxCode">
-					<el-input v-model="editForm.qxCode" placeholder="权限码"></el-input>
-				</el-form-item> 
-				<el-form-item label="是否计算工作量0否1是" prop="calcWorkload">
-					<el-input v-model="editForm.calcWorkload" placeholder="是否计算工作量0否1是"></el-input>
-				</el-form-item> 
-				<el-form-item label="节点类型0管理团队、1执行团队" prop="ntype">
-					<el-input v-model="editForm.ntype" placeholder="节点类型0管理团队、1执行团队"></el-input>
-				</el-form-item> 
+			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">   
+				<el-form-item label="小组名称" prop="groupName">
+					<el-input v-model="editForm.groupName" placeholder="团队名称"> 
+					</el-input>
+				</el-form-item>   
+				<el-form-item label="负责人" prop="leaderUsername"> 
+					<el-form-item label="组长" prop="leaderUsername">
+						<el-input v-model="editForm.leaderUsername" placeholder="组长人姓名" @click.native="showUserSelect('leader')"></el-input>
+					</el-form-item> 
+					<el-form-item label="副组长" prop="assUsername">
+						<el-input v-model="editForm.assUsername" placeholder="副组长姓名" @click.native="showUserSelect('ass')"></el-input>
+						<font color="red">如果没用副组长可以设置为项目助理、小组助理等，具有组长同等权限</font>
+					</el-form-item>  
+				</el-form-item>   
+				<el-form-item label="级别" prop="lvl" v-if="currOpType=='edit'">
+					{{editForm.lvl}}级
+				</el-form-item>       
 			</el-form>
 		</el-row>
 
@@ -81,8 +28,12 @@
 		    <el-button @click.native="handleCancel">取消</el-button>
             <el-button v-loading="load.edit" type="primary" @click.native="saveSubmit" :disabled="load.edit==true">提交</el-button>
 		</el-row>
+		
+			<el-drawer append-to-body title="选择员工" :visible.sync="userSelectVisible" size="60%">
+				<users-select isSingleUser=true   @confirm="onUserSelected" ref="usersSelect"></users-select>
+			</el-drawer>
 	</section>
-</template>
+</template> 
 
 <script>
 	import util from '@/common/js/util';//全局公共库
@@ -90,11 +41,12 @@
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
 	import { addXmProjectGroup,editXmProjectGroup } from '@/api/xm/core/xmProjectGroup';
 	import { mapGetters } from 'vuex'
+	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
 	
 	export default {
 	    name:'xmProjectGroupEdit',
 	    components: {
-
+			UsersSelect,
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
@@ -128,6 +80,9 @@
 				editForm: {
 					id:'',groupName:'',projectId:'',pgTypeId:'',pgTypeName:'',leaderUserid:'',leaderUsername:'',ctime:'',ltime:'',productId:'',branchId:'',pgClass:'',pgroupId:'',lvl:'',pidPaths:'',isTpl:'',assUserid:'',assUsername:'',childrenCnt:'',userCnt:'',qxCode:'',calcWorkload:'',ntype:''
 				},
+				
+				userType:"leader",
+				userSelectVisible:false
 
 			}//end return
 		},//end data
@@ -177,6 +132,28 @@
 
                 }
             },
+			showUserSelect(userType){
+				this.userType=userType
+				this.userSelectVisible=true;
+			},
+			
+			//选择接收人
+			onUserSelected: function(groupUsers) {  
+				this.userSelectVisible = false;
+				if(groupUsers==null||groupUsers.length==0){
+					return;
+				}
+				var user=groupUsers[0]
+				
+				if(this.userType=='leader'){ 
+					this.editForm.leaderUserid=user.userid
+					this.editForm.leaderUsername=user.username
+				}else{ 
+					this.editForm.assUserid=user.userid
+					this.editForm.assUsername=user.username
+				}
+				
+			}, 
 
 		},//end method
 		mounted() {

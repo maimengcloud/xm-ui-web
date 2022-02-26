@@ -576,7 +576,7 @@
 					<div class={'diy-con-name',node.data.userid? 'el-icon-user':''}>{node.data.label}<div></div></div>
 					<div class="diy-con-content">
 						{node.data.leaderUsername?
-							(<div> {node.data.leaderUsername }</div> 
+							(<div> 负责人 {node.data.leaderUsername }</div> 
 							)
 						:   
 						    (<div>   </div>)
@@ -617,6 +617,34 @@
 	}
 
 </script>
-
+<style>
+.label-class-blue{
+  color: #1989fa;
+}
+.label-bg-blue{
+  background: #1989fa;
+  color: #fff;
+}
+.diy-wrapper{
+  padding:10px
+}
+.no-padding{
+  padding: 0 !important;
+}
+.diy-wrapper.left-child{
+  border: 1px solid red;
+}
+.diy-con-name{
+	color: black;
+}
+.diy-con-content{
+	color:dimgrey;
+	font-size: 12px;
+}
+.crrentClass{
+  border: 1px solid red;
+  color: blue;
+}
+</style>
 <style scoped>
 </style>
