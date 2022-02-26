@@ -200,7 +200,7 @@
 				var currNodeType=''
 				var topdata={}
 				if(this.xmProduct&&this.xmProduct.id){
-					topLabel=this.xmProduct.name+"-产品组织架构"
+					topLabel=this.xmProduct.productName+"-产品组织架构"
 					currNodeType='product'
 					topdata=this.xmProduct
 				}else if(this.selProject && this.selProject.id){
