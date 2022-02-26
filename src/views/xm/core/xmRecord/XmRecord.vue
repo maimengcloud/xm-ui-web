@@ -1,21 +1,27 @@
 <template>
-	<section class="page-container page-full-height padding border">
+	<section class="page-container padding border">
 		<el-row v-if="!simple">
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
 			  <el-radio v-model="filters.objType" v-for="i in objTypeOptions" :label="i.key" :key="i.key">{{i.name}}</el-radio>
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmRecords">查询</el-button>  
 		</el-row>
-		<el-row class="page-main page-height-90"> 
+		<el-row class="page-main page-height-80"> 
 			<!--列表 XmRecord xm_record-->
 			<el-table ref="table" :height="tableHeight" :data="xmRecords" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="index" width="40"></el-table-column>
-				<el-table-column prop="projectId" label="项目编号" v-if="!simple" min-width="80" ></el-table-column>  
-				<el-table-column prop="taskId" label="对象主键编号" v-if="!simple" min-width="80" ></el-table-column> 
+				<el-table-column prop="projectId" label="项目/产品" v-if="!simple" min-width="80" >
+					<template slot-scope="scope">
+						{{scope.row.productId?scope.row.productId:scope.row.projectId}}
+					</template>
+				</el-table-column>   
+				<el-table-column prop="bizId" label="对象主键" v-if="!simple" min-width="80" show-overflow-tooltip ></el-table-column> 
+				<el-table-column prop="action" label="操作" min-width="80"></el-table-column> 
 				<el-table-column prop="operUsername" label="操作人名字" min-width="80" ></el-table-column>
 				<el-table-column prop="operTime" label="操作时间" min-width="80" ></el-table-column>
 				<el-table-column prop="objType" label="对象类型" min-width="80" :formatter="formatObjType"></el-table-column>
-				<el-table-column prop="action" label="操作" min-width="80"></el-table-column> 
-				<el-table-column prop="remarks" label="备注" min-width="80" ></el-table-column>  
+				<el-table-column prop="ip" label="ip" min-width="80"></el-table-column>
+				<el-table-column prop="reqNo" label="请求号" min-width="80"  show-overflow-tooltip></el-table-column>
+				<el-table-column prop="remarks" label="备注" min-width="80"  show-overflow-tooltip></el-table-column>  
 				<el-table-column type="expand">
 					<template slot-scope="props">
 						<el-form label-position="left"  inline class="demo-table-expand">    
@@ -40,10 +46,9 @@
 						</el-form>
 					</template>
 				</el-table-column> 
-			</el-table>
-			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
-		 
+			</el-table> 
 		</el-row>
+		<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 	</section>
 </template>
 
