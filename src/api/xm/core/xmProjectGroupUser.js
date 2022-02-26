@@ -28,3 +28,5 @@ export const editXmProjectGroupUser = params => { return axios.post(`${base}/xm/
 
 //新增一条xm_project_group_user
 export const addXmProjectGroupUser = params => { return axios.post(`${base}/xm/core/xmProjectGroupUser/add`, params); };
+//批量删除xm_project_group_user  params=[{groupId:'团队编号 主键',userid:'团队成员编号 主键'}]
+export const batchAddXmProjectGroupUser = params => { return axios.post(`${base}/xm/core/xmProjectGroupUser/batchAdd`, params); };

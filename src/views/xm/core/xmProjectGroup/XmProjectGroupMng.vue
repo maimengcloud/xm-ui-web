@@ -30,7 +30,7 @@
 
 			<!--新增 XmProjectGroup xm_project_group界面-->
 			<el-drawer title="新增xm_project_group" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
-				<xm-project-group-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-group-edit>
+				<xm-project-group-edit op-type="add" :xm-project-group="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-group-edit>
 			</el-drawer>
 			
 			<el-dialog
@@ -39,23 +39,23 @@
 				append-to-body  :close-on-click-modal="true"
 				width="50%" >
 				<el-row v-if="currNodeType=='project'">   
-					<el-button type="primary" @click="showAdd" icon="el-icon-plus">新增下级小组</el-button>   
-					<el-button @click="showAddSub(editForm)" icon="el-icon-plus">通过模板批量导入下级小组</el-button>  
+					<el-button type="primary" @click="showAdd" icon="el-icon-plus" v-loading="load.add">新增下级小组</el-button>   
+					<el-button @click="showAddSub(editForm)" icon="el-icon-plus"  v-loading="load.add">通过模板批量导入下级小组</el-button>  
 				</el-row> 
 				<el-row v-if="currNodeType=='product'">  
-					<el-button type="primary" @click="showAdd" icon="el-icon-plus">新增下级小组</el-button>   
-					<el-button @click="showAddSub(editForm)" icon="el-icon-plus">通过模板批量导入下级小组</el-button>  
+					<el-button type="primary" @click="showAdd" icon="el-icon-plus"  v-loading="load.add">新增下级小组</el-button>   
+					<el-button @click="showAddSub(editForm)" icon="el-icon-plus"  v-loading="load.add">通过模板批量导入下级小组</el-button>  
 				</el-row> 
 				<el-row v-if="currNodeType=='group'">  
 					
-					<el-button type="primary" @click="showAddSub(editForm)" icon="el-icon-plus">新增下级小组</el-button>  
-					<el-button @click="showAddSub(editForm)" icon="el-icon-plus">通过模板批量导入下级小组</el-button>   
-					<el-button @click="showEdit(editForm)" icon="el-icon-edit">修改小组信息</el-button> 
-					<el-button @click="userSelectVisible=true" icon="el-icon-plus" >新增组员</el-button> 
-					<el-button @click="handleDel(editForm)" icon="el-icon-delete">删除小组</el-button>
+					<el-button type="primary" @click="showAddSub(editForm)" icon="el-icon-plus"  v-loading="load.add">新增下级小组</el-button>  
+					<el-button @click="showAddSub(editForm)" icon="el-icon-plus"  v-loading="load.add">通过模板批量导入下级小组</el-button>   
+					<el-button @click="showEdit(editForm)" icon="el-icon-edit"  v-loading="load.edit">修改小组信息</el-button> 
+					<el-button @click="userSelectVisible=true" icon="el-icon-plus"  v-loading="load.add">新增组员</el-button> 
+					<el-button type="danger" @click="handleDel(editForm)" icon="el-icon-delete"  v-loading="load.del">删除小组</el-button>
 				</el-row> 
 				<el-row v-if="currNodeType=='groupUser'">  
-					<el-button type="danger" icon="el-icon-delete" @click="handleDelGroupUser(editForm)">删除组员</el-button>
+					<el-button type="danger" icon="el-icon-delete" @click="handleDelGroupUser(editForm)" v-loading="load.del">删除组员</el-button>
 				</el-row> 
 			</el-dialog>
 			
@@ -167,7 +167,7 @@
 	import { listImGroup} from '@/api/mdp/im/group/imGroup';
 	import { publishMessage} from '@/api/mdp/im/imPush';
 	
-	import { listXmProjectGroupUser, delXmProjectGroupUser, batchDelXmProjectGroupUser } from '@/api/xm/core/xmProjectGroupUser';
+	import { listXmProjectGroupUser, delXmProjectGroupUser, batchDelXmProjectGroupUser,batchAddXmProjectGroupUser } from '@/api/xm/core/xmProjectGroupUser';
 
 
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
@@ -358,16 +358,28 @@
 			},
 			//显示新增界面 XmProjectGroup xm_project_group
 			showAdd: function () {
+				if(this.xmProduct && this.xmProduct.id){
+					this.addForm.productId=this.xmProduct.id
+					this.addForm.pgClass="1" 
+					this.addForm.projectId=""
+				}else{
+					this.addForm.productId=""
+					this.addForm.pgClass="0"
+					this.addForm.projectId=this.selProject.id
+				}
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);
 			},
 			afterAddSubmit(){
 				this.addFormVisible=false;
 				this.pageInfo.count=true;
+				this.groupOperSelectVisible=false;
 				this.getXmProjectGroups();
 			},
 			afterEditSubmit(){
 				this.editFormVisible=false;
+				this.groupOperSelectVisible=false;
+				this.getXmProjectGroups();
 			},
 			//选择行xmProjectGroup
 			selsChange: function (sels) {
@@ -378,7 +390,8 @@
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
 				}).then(() => { 
-					this.load.del=true;
+					this.load.del=true; 
+					this.groupOperSelectVisible=false;
 					let params = { id: row.id };
 					delXmProjectGroup(params).then((res) => {
 						this.load.del=false;
@@ -400,6 +413,7 @@
 					this.load.del=true;
 					batchDelXmProjectGroup(this.sels).then((res) => {
 						this.load.del=false;
+						this.groupOperSelectVisible=false;
 						var tips=res.data.tips;
 						if( tips.isOk ){ 
 							this.pageInfo.count=true;
@@ -472,6 +486,38 @@
 			onUserSelected: function(groupUsers) {  
 				
 				this.userSelectVisible = false;
+				this.load.add=true;
+				if(groupUsers==null||groupUsers.length==0){
+					return;
+				}
+				var params=groupUsers.map(i=>{
+					var u={
+						userid:i.userid,
+						username:i.username,
+						groupId:this.editForm.id,
+					}
+					if(this.editForm.pgClass=='1'){
+						u.projectId=null
+						u.productId=this.xmProduct.id
+						u.pgClass=this.editForm.pgClass
+					}else{
+						u.projectId=this.selProject.id
+						u.productId=null
+						u.pgClass=this.editForm.pgClass
+					}
+					return u;
+				})
+				batchAddXmProjectGroupUser(params).then(res=>{
+					
+					this.load.add=false;
+					this.groupOperSelectVisible=false;
+					var tips = res.data.tips
+					if(tips.isOk){
+						this.searchXmProjectGroups()
+					}
+					this.$message({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error'}); 
+				})
+				
 			},
 			delGroupUser(index,vindex) { 
 			},
@@ -523,7 +569,8 @@
 					delXmProjectGroupUser(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if(tips.isOk){ 
+						if(tips.isOk){  
+							this.groupOperSelectVisible=false;
 							this.pageInfo.count=true;
 							this.getXmProjectGroups();
 						}
