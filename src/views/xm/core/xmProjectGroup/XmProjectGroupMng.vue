@@ -1,18 +1,14 @@
 <template>
-	<section class="page-container border padding">
+	<section class="page-container border padding" >
 		<el-row  v-if="!isSelectSingleUser && !isSelectMultiUser"> 
-					<el-button  type="primary" v-if="!xmProjectGroups||xmProjectGroups.length==0" @click="showAdd" icon="el-icon-plus">导入项目组</el-button>
  					<el-button  type="plain" @click="showGroupState" icon="el-icon-s-data">小组进度</el-button> 
  					<el-button  type="plain" @click="xmRecordVisible=true" icon="el-icon-document">变化日志</el-button>
 					<el-button  type="plain" @click="doSearchImGroupsByProjectId" icon="el-icon-document">绑定即聊情况</el-button>
  					<el-button @click="groupRoleDescVisible=true" icon="el-icon-document">角色说明</el-button> 
 					 <font color="red">注意：点击架构图进行操作</font>
   		</el-row> 
-		<el-row  v-else>  
-					<el-button   type="primary" @click="userConfirm" icon="el-icon-finished">确认选择用户</el-button>  
-		</el-row> 
-		<el-row>
-			<vue-okr-tree :data="okrTreeData" 
+		<el-row >
+			<vue-okr-tree :data="okrTreeData" v-loading="load.list"
 				show-collapsable 
 				default-expand-all   
 				node-key="id"
@@ -24,12 +20,12 @@
 		</el-row>
 		<el-row>
 			<!--编辑 XmProjectGroup xm_project_group界面-->
-			<el-drawer title="编辑xm_project_group" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑小组信息" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
 				  <xm-project-group-edit op-type="edit" :xm-project-group="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-group-edit>
 			</el-drawer>
 
 			<!--新增 XmProjectGroup xm_project_group界面-->
-			<el-drawer title="新增xm_project_group" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
+			<el-drawer title="新增小组信息" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
 				<xm-project-group-edit op-type="add" :xm-project-group="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-group-edit>
 			</el-drawer>
 			
@@ -157,6 +153,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
+	import treeTool from '@/common/js/treeTool';//全局公共库
 	import config from '@/common/config';//全局公共库 
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
 	import { listXmProjectGroup, delXmProjectGroup, batchDelXmProjectGroup,getGroups } from '@/api/xm/core/xmProjectGroup';
@@ -196,6 +193,7 @@
 						i.children=groupUsers
 					}
 				})
+				var groupsTree=treeTool.translateDataToTree(groups,'pgroupId','id')
 				var topLabel="组织架构"
 				var currNodeType=''
 				var topdata={}
@@ -212,7 +210,7 @@
 					...topdata,
 					label:topLabel,
 					currNodeType:currNodeType,
-					children:groups
+					children:groupsTree
 					}
 				]
 				return data;
@@ -359,34 +357,43 @@
 			//显示新增界面 XmProjectGroup xm_project_group
 			showAdd: function () {
 				if(this.xmProduct && this.xmProduct.id){
+					this.addForm.pgroupId=null
+					this.addForm.pgroupName=null
 					this.addForm.productId=this.xmProduct.id
 					this.addForm.pgClass="1" 
 					this.addForm.projectId=null
-				}else{
+					this.addFormVisible = true;
+				}else if(this.selProject  && this.selProject.id){ 
+					this.addForm.pgroupId=null
+					this.addForm.pgroupName=null
 					this.addForm.productId=null
 					this.addForm.pgClass="0"
 					this.addForm.projectId=this.selProject.id
+					this.addFormVisible = true;
+				}else{
+					 return;
 				}
-				this.addFormVisible = true;
+				
 				//this.addForm=Object.assign({}, this.editForm);
 			},
 			//显示新增界面 XmProjectGroup xm_project_group
 			showAddSub: function (row) {
-				if(this.xmProduct && this.xmProduct.id){
-					this.addForm.productId=this.xmProduct.id
+				if(!row){
+					return;
+				}
+				if("1"==row.pgClass){
+					this.addForm.productId=row.productId
 					this.addForm.pgClass="1" 
 					this.addForm.projectId=null
 				}else{
 					this.addForm.productId=null
 					this.addForm.pgClass="0"
-					this.addForm.projectId=this.selProject.id
-				}
-				if(row){
-					this.addForm.pgroupId=row.id
-					this.addForm.pgroupName=row.groupName
-					this.addForm.groupName=row.groupName+"-"+"下级小组xx"
-					this.addForm.id=null
-				}
+					this.addForm.projectId=row.projectId
+				} 
+				this.addForm.pgroupId=row.id
+				this.addForm.pgroupName=row.groupName
+				this.addForm.groupName=row.groupName+"-"+"下级小组xx"
+				this.addForm.id=null 
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);
 			},
@@ -518,10 +525,10 @@
 					}
 					if(this.editForm.pgClass=='1'){
 						u.projectId=null
-						u.productId=this.xmProduct.id
+						u.productId=this.editForm.productId
 						u.pgClass=this.editForm.pgClass
 					}else{
-						u.projectId=this.selProject.id
+						u.projectId=this.editForm.projectId
 						u.productId=null
 						u.pgClass=this.editForm.pgClass
 					}
@@ -538,9 +545,7 @@
 					this.$message({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error'}); 
 				})
 				
-			},
-			delGroupUser(index,vindex) { 
-			},
+			}, 
 			rowClick: function(row, event, column){
 			    if(event.label!='操作' && event.type!='selection'){
 			        this.showEdit(row)
