@@ -40,11 +40,11 @@
 				width="50%" >
 				<el-row v-if="currNodeType=='project'">   
 					<el-button type="primary" @click="showAdd" icon="el-icon-plus" v-loading="load.add">新增下级小组</el-button>   
-					<el-button @click="showAddSub(editForm)" icon="el-icon-plus"  v-loading="load.add">通过模板批量导入下级小组</el-button>  
+					<el-button @click="showAdd" icon="el-icon-plus"  v-loading="load.add">通过模板批量导入下级小组</el-button>  
 				</el-row> 
 				<el-row v-if="currNodeType=='product'">  
 					<el-button type="primary" @click="showAdd" icon="el-icon-plus"  v-loading="load.add">新增下级小组</el-button>   
-					<el-button @click="showAddSub(editForm)" icon="el-icon-plus"  v-loading="load.add">通过模板批量导入下级小组</el-button>  
+					<el-button @click="showAdd" icon="el-icon-plus"  v-loading="load.add">通过模板批量导入下级小组</el-button>  
 				</el-row> 
 				<el-row v-if="currNodeType=='group'">  
 					
@@ -361,11 +361,31 @@
 				if(this.xmProduct && this.xmProduct.id){
 					this.addForm.productId=this.xmProduct.id
 					this.addForm.pgClass="1" 
-					this.addForm.projectId=""
+					this.addForm.projectId=null
 				}else{
-					this.addForm.productId=""
+					this.addForm.productId=null
 					this.addForm.pgClass="0"
 					this.addForm.projectId=this.selProject.id
+				}
+				this.addFormVisible = true;
+				//this.addForm=Object.assign({}, this.editForm);
+			},
+			//显示新增界面 XmProjectGroup xm_project_group
+			showAddSub: function (row) {
+				if(this.xmProduct && this.xmProduct.id){
+					this.addForm.productId=this.xmProduct.id
+					this.addForm.pgClass="1" 
+					this.addForm.projectId=null
+				}else{
+					this.addForm.productId=null
+					this.addForm.pgClass="0"
+					this.addForm.projectId=this.selProject.id
+				}
+				if(row){
+					this.addForm.pgroupId=row.id
+					this.addForm.pgroupName=row.groupName
+					this.addForm.groupName=row.groupName+"-"+"下级小组xx"
+					this.addForm.id=null
 				}
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);
