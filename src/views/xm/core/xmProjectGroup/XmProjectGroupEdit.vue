@@ -18,7 +18,16 @@
 						<el-input v-model="editForm.assUsername" placeholder="副组长姓名" @click.native="showUserSelect('ass')"></el-input>
 						<font color="red">如果没用副组长可以设置为项目助理、小组助理等，具有组长同等权限</font>
 					</el-form-item>  
-				</el-form-item>          
+				</el-form-item>     
+				<el-form-item label="企业协作" prop="isCrow"> 
+					<el-form-item label="" prop="isCrow">
+						<el-checkbox v-model="editForm.isCrow" true-label="1" false-label="0">是否属于协作公司</el-checkbox>
+					</el-form-item> 
+					<el-form-item label="协作公司" prop="crowBranchName" v-if="editForm.isCrow">
+						<el-input v-model="editForm.crowBranchName" placeholder="协作公司名称" @click.native="branchVisible=true"></el-input>
+						<font color="red">如果该团队属于某协作公司，请选择协作公司。</font>
+					</el-form-item>  
+				</el-form-item>      
 			</el-form>
 		</el-row>
 
@@ -30,6 +39,10 @@
 			<el-drawer append-to-body title="选择员工" :visible.sync="userSelectVisible" size="60%">
 				<users-select isSingleUser=true   @confirm="onUserSelected" ref="usersSelect"></users-select>
 			</el-drawer>
+			
+		<el-drawer title="机构选择" :visible.sync="branchVisible"  size="50%" top="20" :close-on-click-modal="false" append-to-body>
+			<branch-select :visible="branchVisible"  @cancel="branchVisible=false" @row-click="branchRowClick"></branch-select>
+		</el-drawer>
 	</section>
 </template> 
 
@@ -40,11 +53,12 @@
 	import { addXmProjectGroup,editXmProjectGroup } from '@/api/xm/core/xmProjectGroup';
 	import { mapGetters } from 'vuex'
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
+	import  BranchSelect from '@/views/mdp/sys/branch/BranchSelect';//机构选择
 	
 	export default {
 	    name:'xmProjectGroupEdit',
 	    components: {
-			UsersSelect,
+			UsersSelect,BranchSelect,
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
@@ -80,7 +94,8 @@
 				},
 				
 				userType:"leader",
-				userSelectVisible:false
+				userSelectVisible:false,
+				branchVisible:false,
 
 			}//end return
 		},//end data
@@ -151,6 +166,11 @@
 					this.editForm.assUsername=user.username
 				}
 				
+			}, 
+			branchRowClick: function(row, event, column){
+				this.branchVisible=false
+				this.editForm.crowBranchId=row.id
+				this.editForm.crowBranchName=row.branchName
 			}, 
 
 		},//end method

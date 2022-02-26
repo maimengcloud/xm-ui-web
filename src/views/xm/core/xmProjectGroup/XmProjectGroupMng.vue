@@ -9,12 +9,12 @@
   		</el-row> 
 		<el-row >
 			<vue-okr-tree :data="okrTreeData" v-loading="load.list"
-				show-collapsable 
-				default-expand-all   
+				show-collapsable   
 				node-key="id"
 				current-lable-class-name="crrentClass" 
 				:render-content="renderContent"  
   				@node-click="handleNodeClick"
+				:default-expanded-keys="expandedKeys"
   				direction="horizontal"
   			></vue-okr-tree>   
 		</el-row>
@@ -35,17 +35,14 @@
 				append-to-body  :close-on-click-modal="true"
 				width="50%" >
 				<el-row v-if="currNodeType=='project'">   
-					<el-button type="primary" @click="showAdd" icon="el-icon-plus" v-loading="load.add">新增下级小组</el-button>   
-					<el-button @click="showAdd" icon="el-icon-plus"  v-loading="load.add">通过模板批量导入下级小组</el-button>  
+					<el-button type="primary" @click="showAdd" icon="el-icon-plus" v-loading="load.add">新增下级小组</el-button>  
 				</el-row> 
 				<el-row v-if="currNodeType=='product'">  
-					<el-button type="primary" @click="showAdd" icon="el-icon-plus"  v-loading="load.add">新增下级小组</el-button>   
-					<el-button @click="showAdd" icon="el-icon-plus"  v-loading="load.add">通过模板批量导入下级小组</el-button>  
+					<el-button type="primary" @click="showAdd" icon="el-icon-plus"  v-loading="load.add">新增下级小组</el-button>  
 				</el-row> 
 				<el-row v-if="currNodeType=='group'">  
 					
-					<el-button type="primary" @click="showAddSub(editForm)" icon="el-icon-plus"  v-loading="load.add">新增下级小组</el-button>  
-					<el-button @click="showAddSub(editForm)" icon="el-icon-plus"  v-loading="load.add">通过模板批量导入下级小组</el-button>   
+					<el-button type="primary" @click="showAddSub(editForm)" icon="el-icon-plus"  v-loading="load.add">新增下级小组</el-button>   
 					<el-button @click="showEdit(editForm)" icon="el-icon-edit"  v-loading="load.edit">修改小组信息</el-button> 
 					<el-button @click="userSelectVisible=true" icon="el-icon-plus"  v-loading="load.add">新增组员</el-button> 
 					<el-button type="danger" @click="handleDel(editForm)" icon="el-icon-delete"  v-loading="load.del">删除小组</el-button>
@@ -178,7 +175,17 @@
 		props:["visible","selProject" ,"isSelectSingleUser","isSelectMultiUser",'xmProduct','xmIteration'],
 		computed: {
 		    ...mapGetters(['userInfo']),
-			
+			expandedKeys(){  
+				var expandedKeys=[]  
+				if(this.xmProduct&&this.xmProduct.id){
+					 expandedKeys.push(this.xmProduct.id)
+				}else if(this.selProject && this.selProject.id){ 
+					 expandedKeys.push(this.selProject.id)
+				}else if(this.xmIteration){ 
+					 expandedKeys.push(this.xmIteration.id)
+				}
+				return expandedKeys; 
+			},
 			okrTreeData(){
 				var groups=this.xmProjectGroups; 
 				groups.forEach(i=>{
