@@ -184,11 +184,11 @@
 							</template>
 						</el-table-column>
 					</el-table>
-					<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+					
 				</el-row>
 			</el-col>
 		</el-row>
-		
+		<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		<el-drawer title="项目新增" :visible.sync="addFormVisible" :with-header="false" size="50%"  :close-on-click-modal="false" append-to-body>
 			<xm-project-add :sel-project="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-add>
 		</el-drawer>
