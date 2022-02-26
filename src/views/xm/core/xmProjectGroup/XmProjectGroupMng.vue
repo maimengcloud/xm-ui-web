@@ -362,6 +362,7 @@
 					this.addForm.productId=this.xmProduct.id
 					this.addForm.pgClass="1" 
 					this.addForm.projectId=null
+					this.addForm.groupName=this.xmProduct.productName+"-产品管理组"
 					this.addFormVisible = true;
 				}else if(this.selProject  && this.selProject.id){ 
 					this.addForm.pgroupId=null
@@ -369,6 +370,7 @@
 					this.addForm.productId=null
 					this.addForm.pgClass="0"
 					this.addForm.projectId=this.selProject.id
+					this.addForm.groupName=this.selProject.name+"-项目管理组"
 					this.addFormVisible = true;
 				}else{
 					 return;
