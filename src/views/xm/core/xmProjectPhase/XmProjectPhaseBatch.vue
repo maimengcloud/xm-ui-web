@@ -379,8 +379,8 @@ export default {
             row = changeRows[0];
           }
         }
-
-        total.phaseBudgetNouserAt =
+        if(row.lvl<=1){
+            total.phaseBudgetNouserAt =
           total.phaseBudgetNouserAt +
           this.getFloatValue(row.phaseBudgetNouserAt);
         total.phaseBudgetInnerUserAt =
@@ -404,6 +404,8 @@ export default {
           total.actNouserAt + this.getFloatValue(row.actNouserAt);
         total.actOutUserAt =
           total.actOutUserAt + this.getFloatValue(row.actOutUserAt);
+        }
+        
       });
       total.phaseBudgetUserAt =
         total.phaseBudgetInnerUserAt + total.phaseBudgetOutUserAt;
