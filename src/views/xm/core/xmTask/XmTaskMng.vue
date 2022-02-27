@@ -727,7 +727,7 @@
       title="编辑任务"
       :visible.sync="editFormVisible"
       :with-header="false"
-      :size="750"
+      :size="850"
       append-to-body
       :close-on-click-modal="false"
     >
@@ -749,7 +749,7 @@
       title="新增任务"
       :visible.sync="addFormVisible"
       :with-header="false"
-      :size="750"
+      :size="850"
       append-to-body
       :close-on-click-modal="false"
     >
