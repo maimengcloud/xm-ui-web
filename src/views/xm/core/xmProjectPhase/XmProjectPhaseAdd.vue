@@ -8,6 +8,9 @@
 					<el-form-item label="类型" prop="ntype">
 						<el-radio  v-model="addForm.ntype" label="1">计划集</el-radio>
 						<el-radio  v-model="addForm.ntype" label="0">计划</el-radio>
+						<font color="red">
+							<br>计划集只负责汇总数据，类似文件夹功能。计划集下可建立子计划集、子计划，但不能关联任务;<br>计划下不能建立子计划集，也不能建立子计划，但可以关联任务
+						</font>
 					</el-form-item>  
 					<el-form-item label="计划名称" prop="phaseName">
 						<el-input v-model="addForm.phaseName" placeholder="计划名称" ></el-input>

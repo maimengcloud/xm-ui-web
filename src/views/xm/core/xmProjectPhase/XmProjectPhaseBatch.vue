@@ -1,6 +1,7 @@
 <template>
   <section>
     <el-row>
+      <!--
       <el-button
         type="danger"
         v-loading="load.del"
@@ -9,6 +10,7 @@
         icon="el-icon-delete"
         >批量删除</el-button
       >
+      -->
       <el-button
         type="warning"
         @click="saveBatchEdit"
@@ -16,12 +18,13 @@
         icon="el-icon-finished"
         >批量保存</el-button
       >
-
+      <!--
       <el-button
         type="success"
         @click="handlePopover(null, 'add')"
         icon="el-icon-plus"
       ></el-button>
+      -->
       <el-button @click="noBatchEdit" v-loading="load.edit" icon="el-icon-back"
         >返回</el-button
       >
@@ -304,6 +307,7 @@
 
 <script>
 import util from "@/common/js/util"; //全局公共库
+import treeTool from "@/common/js/treeTool"; //全局公共库
 //import Sticky from '@/components/Sticky' // 粘性header组件
 import { listOption } from "@/api/mdp/meta/itemOption"; //下拉框数据查询
 import {
@@ -321,13 +325,8 @@ import { mapGetters } from "vuex";
 export default {
   computed: {
     ...mapGetters(["userInfo", "roles"]),
-    projectPhaseTreeData() {
-      debugger;
-      let xmProjectPhases = this.xmProjectPhases ? this.xmProjectPhases : [];
-
-      var projectPhaseTreeData = this.translateDataToTree(xmProjectPhases);
-      //this.rowDrop();
-
+    projectPhaseTreeData() {  
+      var projectPhaseTreeData = treeTool.translateDataToTree(this.xmProjectPhases,"parentPhaseId","id");  
       return projectPhaseTreeData;
     },
     phaseBudgetData() {
