@@ -16,8 +16,7 @@
 				<el-table-column  type="selection" width="45"></el-table-column>
 				<el-table-column sortable type="index" width="45"></el-table-column>
   				<el-table-column prop="name" label="模板名称" min-width="80" ></el-table-column> 
- 				<el-table-column prop="tcusername" label="模板创建人姓名" min-width="80" ></el-table-column>
-				<el-table-column prop="xmType" label="项目类型" min-width="80" ></el-table-column>  
+ 				<el-table-column prop="tcusername" label="模板创建人姓名" min-width="80" ></el-table-column> 
 				<el-table-column prop="description" label="项目描述" min-width="80" ></el-table-column>
  				<el-table-column prop="planTotalCost" label="总预算" min-width="80" ></el-table-column>
  				<el-table-column prop="planNouserAt" label="非人力预算" min-width="80" ></el-table-column>
@@ -244,7 +243,7 @@
 			},
 			changeShowInfo(){
 
-			}
+			},
 			/**begin 自定义函数请在下面加**/
 			
 				

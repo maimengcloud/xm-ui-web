@@ -12,18 +12,28 @@
 			<el-table :data="xmProjectTemplates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>
 				<el-table-column sortable type="index" width="45"></el-table-column>
-  				<el-table-column prop="name" label="模板名称" min-width="80" ></el-table-column> 
- 				<el-table-column prop="tcusername" label="模板创建人姓名" min-width="80" ></el-table-column>
-				<el-table-column prop="xmType" label="项目类型" min-width="80" ></el-table-column>  
-				<el-table-column prop="description" label="项目描述" min-width="80" ></el-table-column>
+  				<el-table-column prop="name" label="项目名称" min-width="150" ></el-table-column> 
+ 				<el-table-column prop="tcusername" label="创建人" min-width="80" ></el-table-column>
+				<el-table-column prop="xmType" label="项目类型" min-width="80" :formatter="formatXmType"></el-table-column>  
+ 				<el-table-column prop="planWorkload" label="总工作量" min-width="80" ></el-table-column> 
+				<el-table-column prop="taxRate" label="税率" min-width="80" >
+					<template slot-scope="scope">
+						{{scope.row.taxRate}}%
+					</template>
+
+				</el-table-column>
+				<el-table-column prop="budgetMarginRate" label="预估毛利率" min-width="80" >
+					<template slot-scope="scope">
+						{{scope.row.budgetMarginRate}}%
+					</template>
+				</el-table-column> 
+ 				<el-table-column  label="预算(元)" min-width="80" >
  				<el-table-column prop="planTotalCost" label="总预算" min-width="80" ></el-table-column>
- 				<el-table-column prop="planNouserAt" label="非人力预算" min-width="80" ></el-table-column>
-				<el-table-column prop="planInnerUserAt" label="内部预算" min-width="80" ></el-table-column>
-				<el-table-column prop="planOutUserAt" label="外购预算" min-width="80" ></el-table-column>
- 				<el-table-column prop="planWorkload" label="总工作量" min-width="80" ></el-table-column>
-				<el-table-column prop="totalReceivables" label="总预计收款金额" min-width="80" ></el-table-column>
-				<el-table-column prop="budgetMarginRate" label="预估毛利率" min-width="80" ></el-table-column> 
-				<el-table-column prop="taxRate" label="税率" min-width="80" ></el-table-column>
+ 				<el-table-column prop="planNouserAt" label="非人力" min-width="80" ></el-table-column>
+				<el-table-column prop="planInnerUserAt" label="内部" min-width="80" ></el-table-column>
+				<el-table-column prop="planOutUserAt" label="外购" min-width="80" ></el-table-column> 
+				</el-table-column>
+				<el-table-column prop="description" label="项目描述" min-width="80" show-overflow-tooltip ></el-table-column>
 				<el-table-column label="操作" width="160" fixed="right">
 					<template slot-scope="scope"> 
  						<el-button type="primary" @click="selectedProject(scope.row,scope.$index)">选中</el-button>
@@ -42,7 +52,7 @@
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库 
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { listXmProjectTemplate  } from '@/api/xm/core/xmProjectTemplate';
+	import { listXmProject  } from '@/api/xm/core/xmProject';
  	import { mapGetters } from 'vuex'
  	 
 	export default { 
@@ -135,8 +145,9 @@
 				if(this.filters.xmType){
 					params.xmType=this.filters.xmType
 				} 
+				params.isTpl="1"
 				this.load.list = true;
-				listXmProjectTemplate(params).then((res) => {
+				listXmProject(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 
 						this.pageInfo.total = res.data.total;
@@ -180,6 +191,18 @@
 			}, 
 			/**begin 自定义函数请在下面加**/
 			
+			formatXmType(row,column,cellValue){
+				if(this.options.projectType){
+					var xmType=this.options.projectType.find(i=>i.optionValue==cellValue)
+					if(xmType){
+						return xmType.optionName
+					}else{
+						return cellValue;
+					}
+				}else{	
+					return cellValue;
+				}
+			}
 				
 			/**end 自定义函数请在上面加**/
 			

@@ -465,22 +465,12 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			},
 
 			//显示编辑界面 XmProjectPhase xm_project_phase
-			showEdit: function ( row,index ) {
-				
-				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
-					return; 
-				}
+			showEdit: function ( row,index ) { 
 				this.editForm = row;
 				this.editFormVisible = true;
 			},
 			//显示新增界面 XmProjectPhase xm_project_phase
-			showAdd: function () { 
-				
-				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
-					return; 
-				}
+			showAdd: function () {  
 				this.parentProjectPhase=null;
 				this.addForm.projectId=this.selProject.id;
 				this.addForm.branchId=this.selProject.branchId;
@@ -488,11 +478,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				//this.addForm=Object.assign({}, this.editForm);
 			},
 			
-			showSubAdd: function (parentProjectPhase) {  
-				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
-					return; 
-				}
+			showSubAdd: function (parentProjectPhase) {   
 				var myrow=JSON.parse(JSON.stringify(parentProjectPhase))
 				myrow.children=[];
 				this.parentProjectPhase=myrow
@@ -596,11 +582,16 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					this.phaseTemplateVisible=false;
 					this.load.add=false
 					var tips =res.data.tips
+
 					if(tips.isOk){ 
-						this.getXmProjectPhases()
+						if( (this.parentProjectPhase && !this.maps.get(this.parentProjectPhase.id))|| !this.parentProjectPhase){
+							this.searchXmProjectPhases()
+						}else{ 
+							treeTool.reloadChildren(this.$refs.table,this.maps,this.parentProjectPhase.id,'parentPhaseId',this.loadXmProjectPhaseLazy)
+						} 
 					}else{ 
 						this.$message({showClose: true, message: tips.msg, type: 'error' });
-					}
+					} 
 				}).catch( err  => this.load.add=false );
 			},
 			//选择行xmProjectPhase
@@ -608,21 +599,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				this.sels = sels;
 			}, 
 			//删除xmProjectPhase
-			handleDel: function (row,index) { 
-				
-				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
-					return; 
-				}
-				if(!!row.bizFlowState ){
-						this.$message({showClose: true, message:"初始状态的计划可以直接删除，其它状态请发起审核流程进行删除", type: 'error' });
-						return;
-				}
-				
-				if(command.data.children && command.data.length>0){
-					this.$message({showClose: true, message: "该计划存在子计划，不允许删除", type: 'error'}); 
-					return;
-				}
+			handleDel: function (row,index) {   
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
 				}).then(() => { 
@@ -633,19 +610,18 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 						var tips=res.data.tips;
 						if(tips.isOk){ 
 							this.pageInfo.count=true;
-							this.getXmProjectPhases();
+							if(   !this.maps.get(row.parentPhaseId)){
+								this.searchXmProjectPhases()
+							}else{ 
+								treeTool.reloadChildren(this.$refs.table,this.maps,row.parentPhaseId,'parentPhaseId',this.loadXmProjectPhaseLazy)
+							}  
 						}
 						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
 			//批量删除xmProjectPhase
-			batchDel: function () {
-				
-				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
-					return; 
-				}
+			batchDel: function () { 
 				var phases=this.sels.filter(i=>{
 					if( i.bizFlowState==''|| i.bizFlowState==null || i.bizFlowState==undefined){
 						return true;
@@ -665,8 +641,21 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 						this.load.del=false;
 						var tips=res.data.tips;
 						if( tips.isOk ){ 
+							debugger;
 							this.pageInfo.count=true;
-							this.getXmProjectPhases(); 
+							var parents=phases.filter(i=>!phases.some(k=>k.id==i.parentPhaseId));
+							var isLoadAll=parents.some(i=>i.lvl<=1||!this.maps.get(i.parentPhaseId));
+							var needLoadChlidList=parents.filter(i=>i.lvl>1)
+							if(isLoadAll){
+								this.searchXmProjectPhases()
+							}
+							if(needLoadChlidList.length>0){
+								needLoadChlidList.forEach(i=>{
+									if( this.maps.get(i.parentPhaseId)){ 
+										treeTool.reloadChildren(this.$refs.table,this.maps,i.parentPhaseId,'parentPhaseId',this.loadXmProjectPhaseLazy)
+									} 
+								})
+							}
 						}
 						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
@@ -674,10 +663,6 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			},
 			showPhaseTemplate: function(parentPhase){
 				
-				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
-					return; 
-				}
 				this.parentProjectPhase=parentPhase
 				this.phaseTemplateVisible=true;
 			},
@@ -692,51 +677,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				this.editForm=myrow;
 				this.$emit('row-click',myrow, event, column);//  @row-click="rowClick"
 			},
-			/**begin 自定义函数请在下面加**/
-			translateDataToTree(data2) { 
-				var data=JSON.parse(JSON.stringify(data2));
-				let parents = data.filter(value =>{
-					//如果我的上级为空，则我是最上级 
-					var calcData=this.getRowSum(value);
-					value.phaseBudgetAt=calcData.phaseBudgetAt
-					value.actCostAt=calcData.actCostAt
-					if(value.parentPhaseId == 'undefined' || value.parentPhaseId == null  || value.parentPhaseId == ''){
-						return true;
-
-						//如果我的上级不在列表中，我作为最上级
-					}else if(data.some(i=>value.parentPhaseId==i.id)){
-						return false;
-					}else {
-						return true
-					}
-				 
-				}) 
-				let children = data.filter(value =>{
-					if(data.some(i=>value.parentPhaseId==i.id)){
-						return true;
-					}else{
-						return false;
-					} 
-				})  
-				let translator = (parents, children) => {
-					parents.forEach((parent) => {
-						children.forEach((current, index) => {
-							if (current.parentPhaseId === parent.id) {
-								let temp = JSON.parse(JSON.stringify(children))
-								temp.splice(index, 1)
-								translator([current], temp)
-								typeof parent.children !== 'undefined' ? parent.children.push(current) : parent.children = [current]
-							}
-						}
-						)
-					}
-					)
-				}
-
-				translator(parents, children)
-
-				return parents
-      },	
+			 
       getGanttTreeData(treeData, keys) { 
 				return this.handleGanttData(treeData, keys)
       },
@@ -777,11 +718,6 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			},
 			
 			sendToProcessApprova:function(row,bizKey){   
-				
-				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
-					return; 
-				}
 				if(row.bizFlowState=='1'){
 					this.$message.error("审核中，不允许重新发起");
 					return;
@@ -864,11 +800,6 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				this.$router.push({path:'/mdp/workflow/re/procdef/ProcdefListForBizStart',query:{params:jsonParmas}}); 
 			},  
 			handleCommand(command) { 
-				
-				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
-					return; 
-				}
  				if(command.type=='sendToProcessApprova'){
 					this.sendToProcessApprova(command.data,command.bizKey);
 				}else if(command.type=='showEdit'){
@@ -1044,11 +975,6 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
         }
 			},
 			saveBatchEdit:function(){
-				
-				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
-					return; 
-				}
 				if(this.valueChangeRows.length==0){
 					this.$message({showClose: true, message:"没有改变任何数据，无需保存", type: 'success'});
 					return;
@@ -1240,11 +1166,6 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				} 
 			},
 			showMenu:function(parentPhase){
-				
-				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
-					return; 
-				}
 				this.parentProjectPhase=parentPhase
 				this.menuVisible=true;
 			},
@@ -1266,11 +1187,6 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				 
 			},
 			handlePopover:function(row,opType){
-				
-				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin') ){
-					this.$message({showClose: true, message: "只有项目经理、小组组长可以操作计划", type: 'error' });
-					return; 
-				}
 				if('add'==opType){
 					var subRow=JSON.parse(JSON.stringify(this.addForm));
 					subRow.parentPhaseId=null
