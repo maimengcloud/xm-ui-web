@@ -640,8 +640,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					batchDelXmProjectPhase(phases).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if( tips.isOk ){ 
-							debugger;
+						if( tips.isOk ){  
 							this.pageInfo.count=true;
 							var parents=phases.filter(i=>!phases.some(k=>k.id==i.parentPhaseId));
 							var isLoadAll=parents.some(i=>i.lvl<=1||!this.maps.get(i.parentPhaseId));

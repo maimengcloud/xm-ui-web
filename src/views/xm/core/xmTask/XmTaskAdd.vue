@@ -26,7 +26,10 @@
 				<el-card class="box-card" header="基础信息" id="baseInfoAdd" shadow="hover"> 
 					<el-form-item label="" prop="ntype">
 						<el-radio  v-model="addForm.ntype" label="1">任务集</el-radio>
-						<el-radio  v-model="addForm.ntype" label="0">任务</el-radio>
+						<el-radio  v-model="addForm.ntype" label="0">任务</el-radio> 
+						<font color="red">
+							<br>任务集只负责汇总数据，类似文件夹功能。任务集下可建立子任务集、子任务,但不能关联需求;<br>任务下不能建立子任务集，也不能建立子任务，但可以关联需求
+						</font>
 					</el-form-item>  
 					<el-form-item label="名称" prop="name">
 						<el-row>
@@ -351,7 +354,7 @@
 								var tips=res.data.tips;
 								if(tips.isOk){
 									//this.$refs['addForm'].resetFields();
-									this.$emit('submit');//  @submit="afterAddSubmit"
+									this.$emit('submit',res.data.data);//  @submit="afterAddSubmit"
 								}
 								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.add=false);

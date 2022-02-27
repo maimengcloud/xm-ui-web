@@ -136,6 +136,7 @@
 <script>
 	import Vue from 'vue'
 	import util from '@/common/js/util';//全局公共库
+	import treeTool from '@/common/js/treeTool';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { getTask ,listXmTask,editXmTask,editRate, delXmTask, batchDelXmTask,batchImportTaskFromTemplate,batchSaveBudget } from '@/api/xm/core/xmTask'; 
@@ -163,20 +164,9 @@
 				}
 			}, 
 			tasksTreeData() {
-				let xmTasks = JSON.parse(JSON.stringify(this.xmTasks || []));
-				if (this.valueChangeRows && this.valueChangeRows.length) {
-					this.valueChangeRows.forEach(c => {
-						var index = xmTasks.findIndex(i=>i.id==c.id);
-						const oldRow = JSON.parse(JSON.stringify(xmTasks[index]));
-						xmTasks.splice(index,1);
-						c.parentTaskid = oldRow.parentTaskid;
-						xmTasks.push(c);
-					})
-				}
-				
-				const tasksTreeData = this.translateDataToTree(xmTasks); 
-				this.rowDrop(); 
-        
+				let xmTasks = JSON.parse(JSON.stringify(this.xmTasks || [])); 
+				const tasksTreeData = treeTool.translateDataToTree(xmTasks); 
+				//this.rowDrop(); 
 				 return tasksTreeData;
 			},
 			
@@ -388,7 +378,7 @@
 				if(this.projectPhase){{
 					params.projectPhaseId=this.projectPhase.id
 				}}
-				 
+				params.isTop="1"
 				params.withParents="1"
 				getTask(params).then((res) => {
 					var tips=res.data.tips;

@@ -28,6 +28,9 @@
 					<el-form-item label="" prop="ntype">
 						<el-radio  v-model="editForm.ntype" label="1">任务集</el-radio>
 						<el-radio  v-model="editForm.ntype" label="0">任务</el-radio>
+						<font color="red">
+							<br>任务集只负责汇总数据，类似文件夹功能。任务集下可建立子任务集、子任务,但不能关联需求;<br>任务下不能建立子任务集，也不能建立子任务，但可以关联需求
+						</font>
 					</el-form-item>  
 					<el-form-item label="名称" prop="name">
 						<el-row>
@@ -131,6 +134,7 @@
  				<el-card class="box-card" header="工作量、成本" id="costInfo"> 
 					<el-form-item label="预估工作量" prop="budgetWorkload">
 						<el-input-number v-model="editForm.budgetWorkload" @change="onBudgetWorkloadChange" :precision="2" :step="8" :min="0" placeholder="预计总工作量(人时,不包括下一级)"></el-input-number> <el-tag>人时，{{this.toFixed(editForm.budgetWorkload/8/20)}}人月</el-tag> 
+						<font color="red">人月单价：内购: {{projectPhase.phaseBudgetInnerUserPrice}} &nbsp;&nbsp; 外购: {{projectPhase.phaseBudgetOutUserPrice}}</font>
 					</el-form-item>  
 					<el-form-item label="预估金额" prop="taskOut">
 						<el-checkbox v-model="editForm.taskOut" @change="onTaskOutChange" true-label="1" false-label="0">是否为众包任务</el-checkbox> 
@@ -237,16 +241,19 @@
 			calcTaskStep(){
 				if(!this.editForm.executorUserid){
 					return 1
-				}else if(this.editForm.exeUsernames.indexOf('执行中')>=0){
-					return 2
-				}else if(this.editForm.exeUsernames.indexOf('已验收')>=0){
-					return 3
-				}else if(this.editForm.exeUsernames.indexOf('已验收')>=0){
-					return 3
-				}else if(this.editForm.exeUsernames.indexOf('已验收')>=0){
-					return 3
-				} if(this.editForm.exeUsernames.indexOf('已结算')>=0){
-					return 4
+				}else if(this.editForm.exeUsernames) {
+					
+					if(this.editForm.exeUsernames.indexOf('执行中')>=0){
+						return 3
+					}else if(this.editForm.exeUsernames.indexOf('已验收')>=0){
+						return 4
+					}else if(this.editForm.exeUsernames.indexOf('已验收')>=0){
+						return 4
+					}else if(this.editForm.exeUsernames.indexOf('已验收')>=0){
+						return 4
+					} if(this.editForm.exeUsernames.indexOf('已结算')>=0){
+						return 5
+					}
 				}
 			}
 		},
@@ -343,11 +350,7 @@
  				this.$emit('cancel');
 			},
 			//新增提交XmTask xm_task 父组件监听@submit="afterAddSubmit"
-			editSubmit: function () {
-				if( !this.roles.some(i=>i.roleid=='projectAdmin') && !this.roles.some(i=>i.roleid=='teamAdmin')){
-					this.$message.error("只有项目经理、小组长可以操作"); 
-					return;
-				}
+			editSubmit: function () { 
 				this.$refs.editForm.validate((valid) => {
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
@@ -365,7 +368,7 @@
 								var tips=res.data.tips;
 								if(tips.isOk){
 									//this.$refs['editForm'].resetFields();
-									this.$emit('submit');//  @submit="aftereditSubmit"
+									this.$emit('submit',res.data.data);//  @submit="aftereditSubmit"
 								}
 								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err  => this.load.edit=false);
@@ -410,6 +413,7 @@
 					if(tips.isOk){
 						this.skillVisible = false; 
 						// this.getXmTasks();
+						this.$emit("submit",this.editForm)
 					}
 					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 				}).catch( err  => this.load.add=false);
@@ -536,6 +540,7 @@
 					if(tips.isOk){
 						this.$message.success("设置成功");
 						this.groupUserSelectVisible=false;
+						this.$emit("submit",this.editForm)
 					}else{
 							this.$message.error(tips.msg);
 					}
@@ -547,9 +552,12 @@
 			},
 			
 			afterAddExecSubmit(execForm){ 
+				this.$emit("submit",this.editForm)
 				this.$emit("after-add-submit",execForm);
 			},
-			afterEditExecSubmit(execForm){ 
+			afterEditExecSubmit(execForm){  
+				debugger;
+				this.$emit("submit",this.editForm)
 				this.$emit("after-edit-submit",execForm);
 			},     
 			onTagSelected(tags) {

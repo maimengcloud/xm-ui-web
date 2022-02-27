@@ -364,6 +364,8 @@
             <el-table
               v-else
               show-summary
+              lazy
+              :load="loadXmTaskLazy"
               :data="tasksTreeData"
               @sort-change="sortChange"
               v-loading="load.list"
@@ -374,10 +376,9 @@
               stripe
               fit
               border
-              tooltip-effect="light"
-              default-expand-all
+              tooltip-effect="light" 
               :max-height="tableHeight"
-              :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+              :tree-props="{ children: 'children', hasChildren: 'childrenCnt' }"
               row-key="id"
               ref="table"
             >
@@ -736,6 +737,8 @@
         :project-phase="currentProjectPhase"
         :visible="editFormVisible"
         @cancel="editFormVisible = false"
+        @after-add-submit="afterEditSubmit"
+        @after-edit-submit="afterEditSubmit"
         @submit="afterEditSubmit"
       ></xm-task-edit>
     </el-drawer>
@@ -972,6 +975,7 @@
 <script>
 import Vue from "vue";
 import util from "@/common/js/util"; //全局公共库
+import treeTool from "@/common/js/treeTool"; //全局公共库
 //import Sticky from '@/components/Sticky' // 粘性header组件
 import { listOption } from "@/api/mdp/meta/itemOption"; //下拉框数据查询
 import {
@@ -1078,19 +1082,8 @@ export default {
       }
     },
     tasksTreeData() {
-      let xmTasks = JSON.parse(JSON.stringify(this.xmTasks || []));
-      if (this.valueChangeRows && this.valueChangeRows.length) {
-        this.valueChangeRows.forEach((c) => {
-          var index = xmTasks.findIndex((i) => i.id == c.id);
-          const oldRow = JSON.parse(JSON.stringify(xmTasks[index]));
-          xmTasks.splice(index, 1);
-          c.parentTaskid = oldRow.parentTaskid;
-          xmTasks.push(c);
-        });
-      }
-
-      const tasksTreeData = this.translateDataToTree(xmTasks);
-
+      let xmTasks = JSON.parse(JSON.stringify(this.xmTasks || []));  
+      const tasksTreeData = treeTool.translateDataToTree(xmTasks,"parentTaskid","id"); 
       return tasksTreeData;
     },
 
@@ -1348,6 +1341,7 @@ export default {
       budgetDateRanger: [],
       actDateRanger: [],
       tagSelectVisible: false,
+      maps:new Map(),
     };
   }, //end data
   methods: {
@@ -1431,79 +1425,8 @@ export default {
         }
         params.orderBy = orderBys.join(",");
       }
-      if (this.dateRanger && this.dateRanger.length == 2) {
-        params.createTimeStart = this.dateRanger[0];
-        params.createTimeEnd = this.dateRanger[1];
-      }
-      if (
-        this.filters.taskType != "all" &&
-        this.filters.taskType != "" &&
-        this.filters.taskType != null
-      ) {
-        params.taskType = this.filters.taskType;
-      }
-      if (this.selkey == "work") {
-        params.work = "work";
-      } else if (this.selkey == "finish") {
-        params.rate = 100;
-      } else if (this.selkey == "myFocus") {
-        params.myFocus = "1";
-        params.userid = this.userInfo.userid;
-      } else if (this.selkey == "myCreate") {
-        params.createUserid = this.userInfo.userid;
-        params.userid = this.userInfo.userid;
-      } else if (this.selkey.indexOf("myExecuserStatus") >= 0) {
-        params.userid = this.userInfo.userid;
-        params.myExecuserStatus = this.selkey.substring(
-          "myExecuserStatus".length
-        );
-      }
-      this.load.list = true;
-      if (this.filters.selProject) {
-        params.projectId = this.filters.selProject.id;
-      }
-      params.workexec = "true";
-      if (this.projectPhase) {
-        {
-          params.projectPhaseId = this.projectPhase.id;
-        }
-      }
-      if (this.isMy == "1") {
-        params.userid = this.userInfo.userid;
-        params.isMy = "1";
-      }
-      if (this.menuId) {
-        params.menuId = this.menuId;
-      }
-      if (this.filters.menus && this.filters.menus.length == 1) {
-        params.menuId = this.filters.menus[0].menuId;
-      } else if (this.filters.menus && this.filters.menus.length > 1) {
-        params.menuIds = this.filters.menus.map((i) => i.menuId);
-      }
-      if (this.filters.skillTags && this.filters.skillTags.length > 0) {
-        params.skillIds = this.filters.skillTags.map((i) => i.skillId);
-      }
-      if (this.filters.key) {
-        params.key = "%" + this.filters.key + "%";
-      }
-      if (this.filters.taskOut) {
-        params.taskOut = this.filters.taskOut;
-      }
-      if (this.filters.createUser) {
-        params.createUserid = this.filters.createUser.userid;
-      }
-      if (this.filters.executor) {
-        params.executorUserid = this.filters.executor.userid;
-      }
-      if (this.filters.product) {
-        params.productId = this.filters.product.id;
-      }
-      if (this.xmIteration) {
-        params.iterationId = this.xmIteration.id;
-      }
-      if (this.filters.tags && this.filters.tags.length>0) {
-        params.tagIdList = this.filters.tags.map(i=>i.tagId);
-      }
+      params=this.getParams(params)
+      params.isTop="1"
       
 			params.withParents="1"
       getTask(params)
@@ -1603,26 +1526,14 @@ export default {
     },
 
     editProgress(rate) {
-      var isCreate = this.userInfo.userid == this.editForm.createUserid;
-      var isExec = this.userInfo.userid == this.editForm.executorUserid;
-      if (!isCreate && !isExec) {
-        this.$message({
-          showClose: true,
-          message: "你不是该任务的执行人、主负责人，不能更新进度",
-          type: "error",
-        });
-        return;
-      }
-      if (rate) {
-        this.editForm.rate = rate;
-      }
+       
       let params = {
         id: this.editForm.id,
-        rate: this.editForm.rate,
+        rate: rate,
         projectId: this.editForm.projectId,
         parentTaskid: this.editForm.parentTaskid,
       };
-      if (this.editForm.rate == 0) {
+      if (rate == 0) {
         this.$message({
           showClose: true,
           message: "不允许更新为0",
@@ -1634,12 +1545,16 @@ export default {
       editRate(params)
         .then((res) => {
           var tips = res.data.tips;
+          if(tips.isOk){
+            var row=this.editForm  
+              this.getXmTasks()
+              treeTool.reloadChildren(this.$refs.table,this.maps,row.parentTaskid,'parentTaskid',this.loadXmTaskLazy) 
+          }
           this.$message({
             showClose: true,
             message: tips.msg,
             type: tips.isOk ? "success" : "error",
-          });
-          this.getXmTasks();
+          }); 
           this.load.edit = false;
         })
         .catch((err) => {
@@ -1702,28 +1617,24 @@ export default {
       }
       this.addFormVisible = true;
     },
-    afterAddSubmit() {
+    afterAddSubmit(row) {
       this.addFormVisible = false;
-      this.pageInfo.count = true;
-      this.getXmTasks();
+      this.pageInfo.count = true; 
+        this.getXmTasks()
+        treeTool.reloadChildren(this.$refs.table,this.maps,row.parentTaskid,'parentTaskid',this.loadXmTaskLazy) 
     },
     afterEditSubmit() {
       this.editFormVisible = false;
-      this.getXmTasks();
+      var row=this.editForm
+      this.getXmTasks()
+      treeTool.reloadChildren(this.$refs.table,this.maps,row.parentTaskid,'parentTaskid',this.loadXmTaskLazy) 
     },
     //选择行xmTask
     selsChange: function (sels) {
       this.sels = sels;
     },
     //删除xmTask
-    handleDel: function (row, index) {
-      if (
-        !this.roles.some((i) => i.roleid == "projectAdmin") &&
-        !this.roles.some((i) => i.roleid == "teamAdmin")
-      ) {
-        this.$message.error("只有项目经理、小组长可以操作");
-        return;
-      }
+    handleDel: function (row, index) { 
       this.$confirm("确认删除该记录吗?", "提示", {
         type: "warning",
       }).then(() => {
@@ -1734,8 +1645,9 @@ export default {
             this.load.del = false;
             var tips = res.data.tips;
             if (tips.isOk) {
-              this.pageInfo.count = true;
-              this.getXmTasks();
+              this.pageInfo.count = true;  
+              this.getXmTasks()
+              treeTool.reloadChildren(this.$refs.table,this.maps,row.parentTaskid,'parentTaskid',this.loadXmTaskLazy) 
             }
             this.$message({
               showClose: true,
@@ -1765,7 +1677,14 @@ export default {
             var tips = res.data.tips;
             if (tips.isOk) {
               this.pageInfo.count = true;
-              this.getXmTasks();
+              var parents=this.sels.filter(i=>!this.sels.some(k=>k.id==i.parentTaskid)); 
+							var needLoadChlidList=parents.filter(i=>i.lvl>1) 
+							this.searchXmTasks() 
+							if(needLoadChlidList.length>0){
+								needLoadChlidList.forEach(i=>{ 
+										treeTool.reloadChildren(this.$refs.table,this.maps,i.parentTaskid,'parentTaskid',this.loadXmTaskLazy) 
+								})
+							}
             }
             this.$message({
               showClose: true,
@@ -1793,6 +1712,7 @@ export default {
 
     showDrawer: function (row) {
       this.editFormVisible = true;
+      debugger;
       this.editForm = row;
 
       // this.$emit('row-click',row,);//  @row-click="rowClick"
@@ -1965,7 +1885,11 @@ export default {
         .then((res) => {
           var tips = res.data.tips;
           if (tips.isOk) {
-            this.getXmTasks();
+            this.getXmTasks(); 
+            if(this.parentTask && this.parentTask.id){
+              treeTool.reloadChildren(this.$refs.table,this.maps,this.parentTask.id,'parentTaskid',this.loadXmTaskLazy) 
+            }
+            
           }
           this.taskTemplateVisible = false;
           this.$message({
@@ -2011,62 +1935,7 @@ export default {
     handleSelect(key, keyPath) {
       this.drawerkey = key;
     },
-    translateDataToTree(data2) {
-      var data = JSON.parse(JSON.stringify(data2));
-
-      let parents = data.filter((value) => {
-        value.startDate = value.startTime
-          ? value.startTime.substr(0, 10)
-          : null;
-        value.endDate = value.endTime ? value.endTime.substr(0, 10) : null;
-        value.realStartDate = value.actStartTime
-          ? value.actStartTime.substr(0, 10)
-          : null;
-        value.realEndDate = value.actEndTime
-          ? value.actEndTime.substr(0, 10)
-          : null;
-        value.taskBudgetCostAt = this.getRowSum(value);
-        //如果我的上级为空，则我是最上级
-        if (
-          value.parentTaskid == "undefined" ||
-          value.parentTaskid == null ||
-          value.parentTaskid == ""
-        ) {
-          return true;
-
-          //如果我的上级不在列表中，我作为最上级
-        } else if (data.some((i) => value.parentTaskid == i.id)) {
-          return false;
-        } else {
-          return true;
-        }
-      });
-      let children = data.filter((value) => {
-        if (data.some((i) => value.parentTaskid == i.id)) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-      let translator = (parents, children) => {
-        parents.forEach((parent) => {
-          children.forEach((current, index) => {
-            if (current.parentTaskid === parent.id) {
-              let temp = JSON.parse(JSON.stringify(children));
-              temp.splice(index, 1);
-              translator([current], temp);
-              typeof parent.children !== "undefined"
-                ? parent.children.push(current)
-                : (parent.children = [current]);
-            }
-          });
-        });
-      };
-
-      translator(parents, children);
-
-      return parents;
-    },
+    
     projectPhaseRowClick: function (projectPhase) {
        this.projectPhase = projectPhase;
       if(projectPhase.ntype=='1'){
@@ -2198,78 +2067,13 @@ export default {
       if (this.projectPhase == null) {
         this.$message({
           showClose: true,
-          message: "请选择计划再编辑",
+          message: "请在左边选择计划再编辑",
           type: "error",
         });
         return;
       }
       this.batchEditVisible = true;
-    },
-    fieldChange: function (row, fieldName, nextReplace) {
-      if (nextReplace) {
-        row.nextReplace = nextReplace;
-      }
-      console.log("fieldChange--row.opType==", row.opType);
-      if (fieldName == "startTime" || fieldName == "endTime") {
-        if (row.startTime && row.endTime) {
-          var start = new Date(row.startTime);
-          var end = new Date(row.endTime);
-          var days = this.getDaysBetween(end, start);
-          if (
-            row.taskOut == "1" &&
-            this.projectPhase.phaseBudgetOutUserPrice &&
-            !row.budgetWorkload
-          ) {
-            row.budgetWorkload = parseFloat((days * 8).toFixed(2));
-            row.budgetCost =
-              row.budgetWorkload * this.projectPhase.phaseBudgetOutUserPrice;
-          } else if (
-            row.taskOut != "1" &&
-            this.projectPhase.phaseBudgetInnerUserPrice &&
-            !row.budgetWorkload
-          ) {
-            row.budgetWorkload = parseFloat((days * 8).toFixed(2));
-            row.budgetCost =
-              row.budgetWorkload * this.projectPhase.phaseBudgetInnerUserPrice;
-          }
-        }
-      }
-      if (fieldName == "budgetWorkload" || fieldName == "taskOut") {
-        if (row.taskOut == "1" && this.projectPhase.phaseBudgetOutUserPrice) {
-          row.budgetCost =
-            row.budgetWorkload * this.projectPhase.phaseBudgetOutUserPrice;
-        } else if (
-          row.taskOut != "1" &&
-          this.projectPhase.phaseBudgetInnerUserPrice
-        ) {
-          row.budgetCost =
-            row.budgetWorkload * this.projectPhase.phaseBudgetInnerUserPrice;
-        }
-      }
-      if (row.opType) {
-        var index = this.valueChangeRows.findIndex((i) => i.id == row.id);
-
-        if (index >= 0) {
-          this.valueChangeRows.splice(index, 1);
-          this.valueChangeRows.push(row);
-        } else {
-          this.valueChangeRows.push(row);
-        }
-      } else {
-        var oneRow = this.valueChangeRows.find((i) => i.id == row.id);
-        if (oneRow) {
-          if (oneRow.nextReplace) {
-            var index = this.valueChangeRows.findIndex((i) => i.id == row.id);
-            this.valueChangeRows.splice(index, 1);
-            this.valueChangeRows.push(row);
-          } else {
-            return;
-          }
-        } else {
-          this.valueChangeRows.push(row);
-        }
-      }
-    },
+    }, 
     getRowSum(row) {
       var budgetCost = this.getFloatValue(row.budgetCost);
       if (row.taskOut == "1") {
@@ -2343,117 +2147,12 @@ export default {
       } else {
         this.showEdit(task);
       }
-    },
-    handlePopover: function (row, opType) {
-      if (
-        !this.roles.some((i) => i.roleid == "projectAdmin") &&
-        !this.roles.some((i) => i.roleid == "teamAdmin")
-      ) {
-        this.$message.error("只有项目经理、小组长可以操作");
-        return;
-      }
-      if ("add" == opType) {
-        var subRow = JSON.parse(JSON.stringify(this.addForm));
-        subRow.parentTaskid = null;
-        subRow.id = sn();
-        subRow.sortLevel = "1";
-        subRow.opType = opType;
-        subRow.branchId = this.selProject.branchId;
-        subRow.projectId = this.selProject.id;
-        subRow.projectName = this.selProject.name;
-        if (this.projectPhase == null) {
-          subRow.projectPhaseId = this.parentTask.projectPhaseId;
-          subRow.projectPhaseName = this.parentTask.projectPhaseName;
-          subRow.sortLevel = subRow.sortLevel
-            ? subRow.sortLevel
-            : this.parentTask.sortLevel;
-          subRow.taskType = subRow.taskType
-            ? subRow.taskType
-            : this.parentTask.taskType;
-          subRow.taskClass = subRow.taskClass
-            ? subRow.taskClass
-            : this.parentTask.taskClass;
-        } else {
-          subRow.projectPhaseId = this.projectPhase.id;
-          subRow.projectPhaseName = this.projectPhase.phaseName;
-          subRow.sortLevel = subRow.sortLevel
-            ? subRow.sortLevel
-            : this.projectPhase.seqNo;
-          subRow.taskType = subRow.taskType
-            ? subRow.taskType
-            : this.projectPhase.taskType;
-        }
-        subRow.budgetCost = 0;
-        subRow.budgetWorkload = 80;
-        subRow.level = subRow.level ? subRow.level : "3";
-        subRow.planType = subRow.planType ? subRow.planType : "w2";
-        subRow.actCost = 0;
-        subRow.actWorkload = 0;
-        subRow.taskState = "0";
-        subRow.rate = 0;
-        subRow.taskOut = subRow.taskOut ? subRow.taskOut : "0";
-        subRow.taskClass = subRow.taskClass ? subRow.taskClass : "1";
-        subRow.toTaskCenter = subRow.toTaskCenter ? subRow.toTaskCenter : "1";
-        subRow.settleSchemel = subRow.settleSchemel
-          ? subRow.settleSchemel
-          : "quotePrice";
-        subRow.createUserid = this.userInfo.userid;
-        subRow.createUsername = this.userInfo.username;
-        const createTime = new Date();
-        var startTime = new Date();
-        const endTime = new Date();
-        endTime.setTime(startTime.getTime() + 3600 * 1000 * 24 * 7 * 2); //两周后
-        subRow.createTime = util.formatDate.format(
-          createTime,
-          "yyyy-MM-dd HH:mm:ss"
-        );
-        subRow.startTime = util.formatDate.format(
-          startTime,
-          "yyyy-MM-dd HH:mm:ss"
-        );
-        subRow.endTime = util.formatDate.format(endTime, "yyyy-MM-dd HH:mm:ss");
-
-        this.fieldChange(subRow, "sortLevel");
-        this.xmTasks.unshift(subRow);
-      } else if ("addSub" == opType) {
-        var subRow = JSON.parse(JSON.stringify(row));
-        subRow.children = [];
-        subRow.parentTaskid = row.id;
-        subRow.id = sn();
-        subRow.sortLevel = row.sortLevel + ".1";
-        subRow.opType = opType;
-        this.fieldChange(subRow, "sortLevel");
-        this.xmTasks.unshift(subRow);
-      } else if ("delete" == opType) {
-        if (row.opType && (row.opType == "addSub" || row.opType == "add")) {
-          if (row.children && row.children.length > 0) {
-            this.$message.error("请先删除子元素");
-            return;
-          } else {
-            var index = this.xmTasks.findIndex((i) => i.id == row.id);
-            var indexValueChanges = this.valueChangeRows.findIndex(
-              (i) => i.id == row.id
-            );
-            this.valueChangeRows.splice(indexValueChanges, 1);
-            this.xmTasks.splice(index, 1);
-          }
-        } else {
-          this.$message.error("只能删除未保存的行");
-          return;
-        }
-      } else if ("highestPmenuId" === opType) {
-        if (row.id) {
-          this.xmTasks.find((d) => {
-            if (d.id === row.id) {
-              d.parentTaskid = "";
-              this.fieldChange(d, "seqNo");
-            }
-          });
-        }
-      }
-    },
+    }, 
     afterExecuserSubmit() {
-      this.getXmTasks();
+      
+      var row=this.editForm 
+        this.getXmTasks() 
+        treeTool.reloadChildren(this.$refs.table,this.maps,row.parentTaskid,'parentTaskid',this.loadXmTaskLazy) 
     },
     toJoin() {
       if (
@@ -2511,46 +2210,8 @@ export default {
       }
       this.searchXmTasks();
       this.menuExecutor = false;
-    },
-    // 判断前后两个数据是否存在同一回路里面
-    // dict 为字典；sId拖拽到menuId; ePmeuId 是放置位置的祖先 menuId;
-    judgePmenuId(dict, sId, ePmeuId) {
-      if (sId === ePmeuId) {
-        return true;
-      } else if (dict[ePmeuId]) {
-        return this.judgePmenuId(dict, sId, dict[ePmeuId]);
-      } else {
-        return false;
-      }
-    },
-    changePmenuId(sId, eId) {
-      let dict = {};
-      this.xmTasks.forEach((d) => {
-        dict[d.id] = d.parentTaskid || "";
-      });
-      if (!dict[eId]) {
-        this.xmTasks.find((d) => {
-          if (d.id === sId) {
-            d.parentTaskid = eId;
-            console.log("更新关系1");
-            this.fieldChange(d, "pmenuId", true);
-          }
-        });
-      } else {
-        const isSynezesis = this.judgePmenuId(dict, sId, dict[eId]);
-        if (!isSynezesis) {
-          this.xmTasks.find((d) => {
-            if (d.id === sId) {
-              d.parentTaskid = eId;
-              console.log("更新关系2");
-              this.fieldChange(d, "pmenuId", true);
-            }
-          });
-        } else {
-          console.log("形成闭合回路--拖拽不更新");
-        }
-      }
-    },
+    }, 
+     
     batchEditBack: function (needReload) {
       if (needReload == true) {
         this.searchXmTasks();
@@ -2653,7 +2314,100 @@ export default {
         this.filters.tags=tags
       }
       this.searchXmTasks();
-    }
+    }, 
+    getParams(params) {
+      if (this.dateRanger && this.dateRanger.length == 2) {
+        params.createTimeStart = this.dateRanger[0];
+        params.createTimeEnd = this.dateRanger[1];
+      }
+      if (
+        this.filters.taskType != "all" &&
+        this.filters.taskType != "" &&
+        this.filters.taskType != null
+      ) {
+        params.taskType = this.filters.taskType;
+      }
+      if (this.selkey == "work") {
+        params.work = "work";
+      } else if (this.selkey == "finish") {
+        params.rate = 100;
+      } else if (this.selkey == "myFocus") {
+        params.myFocus = "1";
+        params.userid = this.userInfo.userid;
+      } else if (this.selkey == "myCreate") {
+        params.createUserid = this.userInfo.userid;
+        params.userid = this.userInfo.userid;
+      } else if (this.selkey.indexOf("myExecuserStatus") >= 0) {
+        params.userid = this.userInfo.userid;
+        params.myExecuserStatus = this.selkey.substring(
+          "myExecuserStatus".length
+        );
+      }
+      if (this.filters.selProject) {
+        params.projectId = this.filters.selProject.id;
+      }
+      params.workexec = "true";
+      if (this.projectPhase) {
+        {
+          params.projectPhaseId = this.projectPhase.id;
+        }
+      }
+      if (this.isMy == "1") {
+        params.userid = this.userInfo.userid;
+        params.isMy = "1";
+      }
+      if (this.menuId) {
+        params.menuId = this.menuId;
+      }
+      if (this.filters.menus && this.filters.menus.length == 1) {
+        params.menuId = this.filters.menus[0].menuId;
+      } else if (this.filters.menus && this.filters.menus.length > 1) {
+        params.menuIds = this.filters.menus.map((i) => i.menuId);
+      }
+      if (this.filters.skillTags && this.filters.skillTags.length > 0) {
+        params.skillIds = this.filters.skillTags.map((i) => i.skillId);
+      }
+      if (this.filters.key) {
+        params.key = "%" + this.filters.key + "%";
+      }
+      if (this.filters.taskOut) {
+        params.taskOut = this.filters.taskOut;
+      }
+      if (this.filters.createUser) {
+        params.createUserid = this.filters.createUser.userid;
+      }
+      if (this.filters.executor) {
+        params.executorUserid = this.filters.executor.userid;
+      }
+      if (this.filters.product) {
+        params.productId = this.filters.product.id;
+      }
+      if (this.xmIteration) {
+        params.iterationId = this.xmIteration.id;
+      }
+      if (this.filters.tags && this.filters.tags.length>0) {
+        params.tagIdList = this.filters.tags.map(i=>i.tagId);
+      }
+      return params;
+    }, 
+    loadXmTaskLazy(tree, treeNode, resolve) {    
+      this.maps.set(tree.id, { tree, treeNode, resolve }) //储存数据
+        var params={parentTaskid:tree.id}
+        params=this.getParams(params);
+        params.isTop=""
+        this.load.list = true;
+        var func=listXmTask 
+        func(params).then(res=>{
+          this.load.list = false
+          var tips = res.data.tips;
+          if(tips.isOk){
+            resolve(res.data.data) 
+          }else{
+            resolve([])
+          }
+        }).catch( err => this.load.list = false );   
+      
+    },
     /**end 自定义函数请在上面加**/
   }, //end methods
   components: {
