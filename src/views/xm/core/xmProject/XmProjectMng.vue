@@ -549,7 +549,8 @@
 					this.load.edit = false;
 				}).catch( err => this.load.edut = false );
 			},
-			changeShowInfo() {
+			changeShowInfo(project) {
+				this.editForm=project
 				this.xmProjects = [];
 				this.getXmProjects();
 				this.showInfo = false;

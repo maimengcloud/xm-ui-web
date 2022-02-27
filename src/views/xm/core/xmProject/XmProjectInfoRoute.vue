@@ -1,6 +1,6 @@
 <template>
 	<section>
-		 <xm-project-info v-if="selProject" :sel-project="selProject" :visible="showInfo"></xm-project-info>
+		 <xm-project-info v-if="selProject" :sel-project="selProject" :visible="showInfo" @submit="afterEditSubmit"></xm-project-info>
 	</section>
 </template>
 
@@ -26,7 +26,11 @@
 			}
 		},//end data
 		methods: { 
-			 
+			 afterEditSubmit(project){
+				this.selProject=project;
+				localStorage.setItem('xm-project-info-route',JSON.stringify(this.selProject));
+				this.$emit('submit',project)
+			 }
 			 
 			
 		},//end methods

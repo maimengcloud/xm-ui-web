@@ -85,7 +85,7 @@
         </el-submenu>
       </el-menu>
        <xm-project-overview  v-if="showPanelName=='overview'" :sel-project="selProject"></xm-project-overview>
-        <xm-project-detail  v-if="showPanelName=='detail'" :sel-project="selProject"></xm-project-detail> 
+        <xm-project-detail  v-if="showPanelName=='detail'" :sel-project="selProject" @submit="afterEditSubmit"></xm-project-detail> 
         <xm-product-project-link-mng v-if="showPanelName=='productProjectLink'" :sel-project="selProject"></xm-product-project-link-mng>
   </section>
 </template>
@@ -116,7 +116,9 @@ export default {
   },
 
   methods:{
-
+    afterEditSubmit(project){
+      this.$emit('submit',project)
+    },
     onMenuToolBarSelect(menuIndex){
       this.showPanelName=menuIndex;
     }

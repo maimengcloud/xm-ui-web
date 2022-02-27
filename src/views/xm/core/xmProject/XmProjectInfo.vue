@@ -142,7 +142,7 @@
 				</el-submenu>
 			</el-menu>
 		   
-		  	<xm-project-overview-complex v-if="infotype=='项目概览'" :sel-project="selProject"></xm-project-overview-complex>  
+		  	<xm-project-overview-complex v-if="infotype=='项目概览'" :sel-project="selProject" @submit="afterEditSubmit"></xm-project-overview-complex>  
 			 <xm-iteration-for-project-complex  v-if="infotype=='迭代'" ref="xmIterationMng" :sel-project="selProject"></xm-iteration-for-project-complex>
  			 <xm-product-for-project-complex  v-if="infotype=='产品'" ref="xmProductComplex" :sel-project="selProject"></xm-product-for-project-complex>
 			 <xm-menu-mng v-if="infotype=='需求'" :sel-project="selProject" :disabled-mng="false"></xm-menu-mng>
@@ -232,6 +232,7 @@
 		methods: {
 
 			afterEditSubmit:function(project){
+				this.selProject=Object.assign(this.selProject,project)
 				this.$emit("submit",project)
 			},
 			toArchive:function(){

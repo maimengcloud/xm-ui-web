@@ -27,9 +27,16 @@
 								<el-option v-for="(i,index) in options['priority']" :label="i.optionName" :value="i.optionValue" :key="index"></el-option> 
 							</el-select> 
 						</el-form-item>   
-						<el-form-item label="预算控制" prop="priority">
-							<el-checkbox  v-model="editForm.budgetCtrl"  true-label="1" false-label="0" >严格控制预算</el-checkbox> 注：在项目->计划->任务 每个环节进行严格的预算控制
+						<el-form-item label="总预算控制" prop="budgetCtrl">
+							<el-checkbox  v-model="editForm.budgetCtrl"  true-label="1" false-label="0" >控制总预算</el-checkbox> <font color="red">&nbsp;注：计划总预算不能大于项目总预算</font>
 						</el-form-item>  
+						<el-form-item label="计划明细预算控制" prop="phaseBudgetCtrl">
+							<el-checkbox  v-model="editForm.phaseBudgetCtrl"  true-label="1" false-label="0" >计划明细预算控制</el-checkbox><font color="red">&nbsp; 注：计划中下级总预算不能大于上级预算。计划明细预算大于任务预算汇总</font>
+						</el-form-item> 
+						
+						<el-form-item label="计划实际金额控制" prop="phaseActCtrl">
+							<el-checkbox  v-model="editForm.phaseActCtrl"  true-label="1" false-label="0" >计划实际金额控制</el-checkbox> <font color="red">&nbsp;注：计划中实际金额不能大于预算金额。任务实际金额不能大于计划预算金额</font>
+						</el-form-item> 
 						<el-form-item label="工期及成本预估" >  
 							<el-row>
 								<el-date-picker
@@ -421,10 +428,10 @@
 							params.planWorkload=this.autoParams.planWorkload
 							editXmProject(params).then((res) => {
 								this.load.edit=false;
-								var tips=res.data.tips;
-								if(tips.isOk){
-									this.$refs['editForm'].resetFields();
-									this.$emit('submit',params);//  @submit="afterEditSubmit"
+								var tips=res.data.tips; 
+								if(tips.isOk){ 
+									this.selProject=Object.assign(this.selProject,res.data.data)
+									this.$emit('submit',res.data.data);//  @submit="afterEditSubmit"
 								}
 								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err =>this.load.edit=false);
