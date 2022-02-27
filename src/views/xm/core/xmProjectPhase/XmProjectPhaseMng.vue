@@ -54,10 +54,11 @@
 			
 		</el-row>
 		<el-row class="padding-top hidden-md-and-down"     v-if="batchEditVisible==false && !xmIteration && !xmProduct">  
- 					<span style="margin-left:10px;font-size:14px;">项目总预算：</span><el-tag type='success'> {{toFixed(selProject.planTotalCost/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanCostAt/10000,2)}}万</el-tag> 
-					<span style="margin-left:10px;font-size:14px;">非人力总预算：</span><el-tag :type="phaseBudgetData.surplusPlanNouserAt>0?'warning':'danger'">{{toFixed(selProject.planNouserAt/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanNouserAt/10000,2)}}万</el-tag>  
-					<span style="margin-left:10px;font-size:14px;">内部人力总预算：</span><el-tag  :type="phaseBudgetData.surplusPlanInnerUserAt>0?'warning':'danger'">{{toFixed(selProject.planInnerUserAt/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanInnerUserAt/10000,2)}}万</el-tag>  
-					<span style="margin-left:10px;font-size:14px;">外购人力总预算：</span><el-tag  :type="phaseBudgetData.surplusPlanOutUserAt>0?'warning':'danger'">{{toFixed(selProject.planOutUserAt/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanOutUserAt/10000,2)}}万</el-tag>  
+ 					<span style="margin-left:10px;font-size:14px;">项目总预算：</span><el-tag type='success'> {{toFixed(phaseBudgetData.planTotalCost/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanCostAt/10000,2)}}万</el-tag> 
+					<span style="margin-left:10px;font-size:14px;">非人力总预算：</span><el-tag :type="phaseBudgetData.surplusPlanNouserAt>0?'warning':'danger'">{{toFixed(phaseBudgetData.planNouserAt/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanNouserAt/10000,2)}}万</el-tag>  
+					<span style="margin-left:10px;font-size:14px;">内部人力总预算：</span><el-tag  :type="phaseBudgetData.surplusPlanInnerUserAt>0?'warning':'danger'">{{toFixed(phaseBudgetData.planInnerUserAt/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanInnerUserAt/10000,2)}}万</el-tag>  
+					<span style="margin-left:10px;font-size:14px;">外购人力总预算：</span><el-tag  :type="phaseBudgetData.surplusPlanOutUserAt>0?'warning':'danger'">{{toFixed(phaseBudgetData.planOutUserAt/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanOutUserAt/10000,2)}}万</el-tag>  
+					<el-button @click="selectTotalProjectAndPhaseBudgetCost">刷新统计数据</el-button>
 
  		</el-row> 
  		<el-row  class="padding-top" v-show="batchEditVisible==false"> 
@@ -209,7 +210,7 @@
 	import treeTool from '@/common/js/treeTool';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { listXmProjectPhase,calcKeyPaths, delXmProjectPhase, batchDelXmProjectPhase,batchImportFromTemplate,batchSaveBudget,loadTasksToXmProjectPhase,setPhaseMngUser  } from '@/api/xm/core/xmProjectPhase';
+	import { listXmProjectPhase,calcKeyPaths, delXmProjectPhase, batchDelXmProjectPhase,batchImportFromTemplate,batchSaveBudget,loadTasksToXmProjectPhase,setPhaseMngUser,selectTotalProjectAndPhaseBudgetCost  } from '@/api/xm/core/xmProjectPhase';
 	import  XmProjectPhaseAdd from './XmProjectPhaseAdd';//新增界面
 	import  XmProjectPhaseEdit from './XmProjectPhaseEdit';//修改界面 
   import XmGantt from '../components/xm-gantt';
@@ -233,66 +234,27 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			phaseBudgetData(){ 
 				if( this.xmIteration || this.xmProduct){
 					return {}
-				}
-				var rows=this.xmProjectPhases
-				var surplusPlanCostAt = this.getFloatValue(this.selProject.planInnerUserAt)+ this.getFloatValue(this.selProject.planOutUserAt)+ this.getFloatValue(this.selProject.planNouserAt)
-				var surplusPlanInnerUserAt=this.getFloatValue(this.selProject.planInnerUserAt)
-				var surplusPlanOutUserAt=this.getFloatValue(this.selProject.planOutUserAt)
-				var surplusPlanNouserAt=this.getFloatValue(this.selProject.planNouserAt) 
-				var surplusPlanUserAt=this.getFloatValue(this.selProject.planInnerUserAt)+this.getFloatValue(this.selProject.planOutUserAt)
-
+				} 
+				var dbData=this.totalProjectAndPhaseBudgetCost;
+				var projectPlanTotalCost = this.getFloatValue(dbData.planTotalCost)
+				var phaseBudgetAt=this.getFloatValue(dbData.phaseBudgetAt) 
 				const total={
-					surplusPlanCostAt: surplusPlanCostAt, 
-					surplusPlanInnerUserAt: surplusPlanInnerUserAt,
-					surplusPlanOutUserAt: surplusPlanOutUserAt,
-					surplusPlanNouserAt: surplusPlanNouserAt,
-					surplusPlanUserAt: surplusPlanUserAt,
+					surplusPlanCostAt: projectPlanTotalCost-phaseBudgetAt, 
+					surplusPlanInnerUserAt: dbData.planInnerUserAt-dbData.phaseBudgetInnerUserAt,
+					surplusPlanOutUserAt: dbData.planOutUserAt-dbData.phaseBudgetOutUserAt,
+					surplusPlanNouserAt: dbData.planNouserAt-dbData.phaseBudgetNouserAt, 
 
-					phaseBudgetNouserAt:0,
-					phaseBudgetInnerUserAt:0,
-					phaseBudgetOutUserAt:0,
-					phaseBudgetUserAt: 0,
-
-					phaseBudgetInnerUserWorkload:0,
-					phaseBudgetOutUserWorkload:0,
-
-					phaseActWorkload:0,
-					actInnerUserAt:0,
-					actNouserAt:0,
-					actOutUserAt:0,
-
-
-
-				};
-				//phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetInnerUserAt:'',phaseBudgetOutUserAt
-				
-				rows.forEach((row2)=>{
-					var row=row2; 
-					if(this.valueChangeRows.length!=0){
-						var changeRows=this.valueChangeRows.filter(i=>i.id==row2.id);
-						if(changeRows && changeRows.length>0){
-							row=changeRows[0]
-						}
-					}
+					phaseBudgetNouserAt:dbData.phaseBudgetNouserAt,
+					phaseBudgetInnerUserAt:dbData.phaseBudgetInnerUserAt,
+					phaseBudgetOutUserAt:dbData.phaseBudgetOutUserAt,
+					phaseBudgetAt: phaseBudgetAt,
 					
-					total.phaseBudgetNouserAt=total.phaseBudgetNouserAt+this.getFloatValue(row.phaseBudgetNouserAt)
-					total.phaseBudgetInnerUserAt=total.phaseBudgetInnerUserAt+this.getFloatValue(row.phaseBudgetInnerUserAt)
-					total.phaseBudgetOutUserAt=total.phaseBudgetOutUserAt+this.getFloatValue(row.phaseBudgetOutUserAt)  
- 					total.phaseBudgetInnerUserWorkload=total.phaseBudgetInnerUserWorkload+this.getFloatValue(row.phaseBudgetInnerUserWorkload)
-					total.phaseBudgetOutUserWorkload=total.phaseBudgetOutUserWorkload+this.getFloatValue(row.phaseBudgetOutUserWorkload)  
+					planTotalCost: projectPlanTotalCost, 
+					planInnerUserAt: dbData.planInnerUserAt,
+					planOutUserAt: dbData.planOutUserAt,
+					planNouserAt: dbData.planNouserAt, 
 
-					
-					total.phaseActWorkload=total.phaseActWorkload+this.getFloatValue(row.phaseActWorkload)   
-					total.actInnerUserAt=total.actInnerUserAt+this.getFloatValue(row.actInnerUserAt)   
-					total.actNouserAt=total.actNouserAt+this.getFloatValue(row.actNouserAt)   
-					total.actOutUserAt=total.actOutUserAt+this.getFloatValue(row.actOutUserAt)  
-				})
-					total.phaseBudgetUserAt=total.phaseBudgetInnerUserAt+total.phaseBudgetOutUserAt  
-					total.surplusPlanCostAt=this.getFloatValue(total.surplusPlanCostAt-total.phaseBudgetNouserAt-total.phaseBudgetUserAt )
-					total.surplusPlanInnerUserAt=total.surplusPlanInnerUserAt-total.phaseBudgetInnerUserAt
-					total.surplusPlanOutUserAt=total.surplusPlanOutUserAt-total.phaseBudgetOutUserAt
-					total.surplusPlanNouserAt=total.surplusPlanNouserAt-total.phaseBudgetNouserAt 
-					total.surplusPlanUserAt=total.surplusPlanUserAt-total.phaseBudgetUserAt
+				}; 
 				return total;
 
 			}
@@ -385,6 +347,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				
 				},
 				maps:new Map(),
+				totalProjectAndPhaseBudgetCost:{},
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -1403,6 +1366,15 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					}
 				})
 			},
+			selectTotalProjectAndPhaseBudgetCost(){
+				selectTotalProjectAndPhaseBudgetCost({projectId:this.selProject.id}).then(res=>{ 
+					var tips = res.data.tips;
+					if(tips.isOk){ 
+						this.totalProjectAndPhaseBudgetCost=res.data.data;
+					}
+					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+				})
+			}
 		},//end methods
 		components: { 
 		    'xm-project-phase-add':XmProjectPhaseAdd,
@@ -1411,9 +1383,8 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
       XmProjectPhaseTemplateMng,xmMenuSelect,XmGantt,XmProjectPhaseBatch,XmProjectGroupSelect
         //在下面添加其它组件
 		},
-		mounted() { 
-      console.log('mounted--his.selProject==', this.selProject);
-      
+		mounted() {  
+			this.selectTotalProjectAndPhaseBudgetCost();
 			this.$nextTick(() => {
 				 
 				var clientRect=this.$refs.table.$el.getBoundingClientRect();

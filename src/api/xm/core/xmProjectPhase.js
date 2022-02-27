@@ -47,3 +47,7 @@ export const setPhaseMngUser = params => { return axios.post(`${base}/xm/core/xm
 
 
 export const calcKeyPaths = params => { return axios.post(`${base}/xm/core/xmProjectPhase/calcKeyPaths`, params); };
+
+
+export const selectTotalProjectAndPhaseBudgetCost = params => { return axios.post(`${base}/xm/core/xmProjectPhase/selectTotalProjectAndPhaseBudgetCost`, params); };
+
