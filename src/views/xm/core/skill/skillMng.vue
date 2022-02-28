@@ -7,7 +7,7 @@
           <el-button  @click="getAllHrSkill" v-loading="sectionLoading" icon="el-icon-search">刷新标签</el-button>
         </el-col> 
         <el-col :span="14"> 
-           <el-button type="primary"  @click="editVisible=true" icon="el-icon-edit">维护</el-button> 
+           <el-button type="text"  @click="editVisible=true" icon="el-icon-edit">管理技能</el-button> 
           <el-tooltip content="黄色表示已经有的技能">
             <span class="addTagSquare"></span>
           </el-tooltip>
