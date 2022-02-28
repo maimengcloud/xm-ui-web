@@ -64,7 +64,7 @@ import XmProjectGroupStateOverview from './XmProjectGroupStateOverview.vue';
 		      'userInfo','roles'
 		    ])
 		},
-		props:['selProject','visible'],
+		props:['selProject','visible','xmProduct','xmProjectGroup'],
 		watch:{
 			visible(visible){
 				if(visible==true){
@@ -159,6 +159,14 @@ import XmProjectGroupStateOverview from './XmProjectGroupStateOverview.vue';
 				}
 				if(this.selProject){
 					params.projectId=this.selProject.id
+				}
+				
+				if(this.xmProduct){
+					params.productId=this.xmProduct.id
+				}
+				
+				if(this.xmProjectGroup){
+					params.groupId=this.xmProjectGroup.id
 				}
 				this.load.list = true;
 				listXmProjectGroupState(params).then((res) => {
