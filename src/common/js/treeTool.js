@@ -1,7 +1,7 @@
   
 export default {
 
-  reloadChildren: function(table,maps, parentId,parentIdName,loadChildren) {   
+  reloadAllChildren: function(table,maps, parentId,parentIdName,loadChildren) {   
     var lazyTreeNodeMap=table.store.states.lazyTreeNodeMap
     if (maps.get(parentId)) {
       const { tree, treeNode, resolve } = maps.get(parentId)  
@@ -11,12 +11,54 @@ export default {
         if (tree[parentIdName]) { // 若存在爷爷结点，则执行爷爷节点加载子级操作，防止最后一个子节点被删除后父节点不显示删除按钮
           const a = maps.get(tree[parentIdName])
           if(a && a.tree){
-            this.reloadChildren(table,maps,tree[parentIdName],parentIdName,loadChildren)
+            this.reloadAllChildren(table,maps,tree[parentIdName],parentIdName,loadChildren)
           } 
         }
       }
     } 
   },
+
+  reloadChildrenByCount_:function(table,maps, parentId,parentIdName,loadChildren,toCount,currCount){
+    var lazyTreeNodeMap=table.store.states.lazyTreeNodeMap
+    if (maps.get(parentId)) {
+      const { tree, treeNode, resolve } = maps.get(parentId)  
+      lazyTreeNodeMap[parentId]=[]
+      if (tree) { // 重新执行父节点加载子级操作
+        loadChildren(tree, treeNode, resolve)
+        if(toCount==currCount+1){
+          return;
+        }
+        currCount=currCount+1;
+        if (tree[parentIdName]) { // 若存在爷爷结点，则执行爷爷节点加载子级操作，防止最后一个子节点被删除后父节点不显示删除按钮
+          const a = maps.get(tree[parentIdName])
+          if(a && a.tree){
+            this.reloadChildrenByCount_(table,maps,tree[parentIdName],parentIdName,loadChildren,toCount,currCount)
+          } 
+        }
+      }
+    } 
+  },
+
+  reloadChildren: function(table,maps, parentId,parentIdName,loadChildren,toCount) {  
+    if(!toCount){
+      this.reloadAllChildren(table,maps, parentId,parentIdName,loadChildren)
+    }else{
+      this.reloadParentByCount_(table,maps,parentId,parentIdName,loadChildren,toCount,0)
+    }
+     
+  }, 
+  reloadChildrenByOpType: function(table,maps, parentId,parentIdName,loadChildren,opType) {  
+    var lazyTreeNodeMap=table.store.states.lazyTreeNodeMap
+    if (maps.get(parentId)) {
+      const { tree, treeNode, resolve } = maps.get(parentId)   
+      if (tree) { // 重新执行父节点加载子级操作
+        var oldDatas=lazyTreeNodeMap[parentId]
+        lazyTreeNodeMap[parentId]=[]
+        loadChildren(tree, treeNode, resolve,oldDatas,opType) 
+      }
+    } 
+     
+  }, 
   /**
    * 将类表数据转换为如下树状结构的数据
    * {
@@ -65,7 +107,8 @@ export default {
             let temp = JSON.parse(JSON.stringify(children))
             temp.splice(index, 1)
             translator([current], temp)
-            typeof parent.children !== 'undefined' ? parent.children.push(current) : parent.children = [current]
+            typeof parent.children !== 'undefined'  && parent.children ? parent.children.push(current) : parent.children = [current]
+            parent.childrenCnt=parent.children.length
           }
         }
         )
