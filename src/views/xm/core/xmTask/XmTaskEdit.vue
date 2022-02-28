@@ -73,9 +73,8 @@
 						<el-input type="textarea" :autosize="{ minRows: 4, maxRows: 10}" v-model="editForm.description" placeholder="任务描述" ></el-input>
 					</el-form-item>  
 					</div>
-				</el-card> 
-				<div v-if="editForm.ntype!='1'">
- 				<el-card class="box-card" id="planInfo" header="进度计划" shadow="hover" > 
+				</el-card>  
+ 				<el-card class="box-card" id="planInfo" header="进度计划" shadow="hover" v-if="editForm.ntype!='1'"> 
 					<el-form-item label="任务负责人"> 
 						<el-tag  v-if="editForm.createUserid" style="margin-left:10px;border-radius:30px;"  >{{editForm.createUsername}}</el-tag>
 						<el-tag  v-else style="margin-left:10px;border-radius:30px;"  icon="el-icon-right" >未设置</el-tag>
@@ -140,14 +139,14 @@
 						<el-checkbox v-model="editForm.taskOut" @change="onTaskOutChange" true-label="1" false-label="0">是否为众包任务</el-checkbox> 
 						<el-input-number v-model="editForm.budgetCost" :precision="2" :step="1000" :min="0" placeholder="预算金额"></el-input-number>   元
 					</el-form-item>  
-					<el-form-item label="实际工作量" prop="actWorkload" shadow="hover">
-						<el-input-number v-model="editForm.actWorkload" :precision="2" :step="8" :min="0" placeholder="实际工作量"></el-input-number>  <el-tag>由后台自动计算，无需填写</el-tag>     
+					<el-form-item  label="实际工作量" prop="actWorkload" shadow="hover">
+						<el-input-number disabled v-model="editForm.actWorkload" :precision="2" :step="8" :min="0" placeholder="实际工作量"></el-input-number>  <el-tag>由后台自动计算，无需填写</el-tag>     
 					</el-form-item> 
 					<el-form-item label="实际金额" prop="actCost">
-						<el-input-number v-model="editForm.actCost" :precision="2" :step="1000" :min="0" placeholder="实际金额"></el-input-number>    <el-tag>由后台自动计算，无需填写</el-tag>  
+						<el-input-number disabled v-model="editForm.actCost" :precision="2" :step="1000" :min="0" placeholder="实际金额"></el-input-number>    <el-tag>由后台自动计算，无需填写</el-tag>  
 					</el-form-item>   
 				 </el-card>  
- 				<el-card class="box-card" header="结算信息" id="settleInfo" shadow="hover">   
+ 				<el-card class="box-card" header="结算信息" id="settleInfo" shadow="hover" v-if="editForm.ntype!='1'">   
 					<el-form-item label="是否结算" prop="taskClass">
 						<el-checkbox v-model="editForm.taskClass" true-label="1" false-label="0">是否需要结算</el-checkbox> 
 					</el-form-item>  
@@ -158,7 +157,7 @@
 					</el-form-item>   
 				 </el-card>
 				 
-				<el-card class="box-card" header="众包" id="taskOut">  
+				<el-card class="box-card" header="众包" id="taskOut" v-if="editForm.ntype!='1'">  
 					<el-form-item label="众包配置" prop="taskOut">
 						<el-checkbox v-model="editForm.taskOut" @change="onTaskOutChange" true-label="1" false-label="0">外包任务</el-checkbox> 
 						<el-checkbox v-model="editForm.toTaskCenter" true-label="1" false-label="0" id="taskOut">发布到互联网任务大厅</el-checkbox>  
@@ -175,8 +174,7 @@
 							<el-step title="提现" description="企业付款完成后，个人对钱包中余额进行提现"></el-step> 
 						</el-steps>
 					</el-form-item> 
-				 </el-card>  
-				</div>
+				 </el-card>   
 			</el-form>  
 		</el-row>
 		<el-row class="padding">

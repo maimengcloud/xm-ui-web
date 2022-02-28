@@ -1,58 +1,58 @@
 <template>
-  <section>
-    <!-- <sticky :className="'sub-navbar draft'" style="margin-left:-20px;margin-right:-20px;"> -->
-    <el-row>
+  <section> 
+    <el-row v-if="editVisible==false"> 
+      <el-col :span="14"> 
+        <el-button @click="getTags" v-loading="sectionLoading" style="">查询</el-button>
+        <el-button type="primary" v-if="jump==true" @click="selectConfirm">确认</el-button>  
+        <el-button type="text"  @click="editVisible=true" icon="el-icon-edit">管理标签</el-button>
+      </el-col> 
+    </el-row> 
+    <el-row v-else>
       <el-col :span="6">
         <el-input style="width:99%;" v-model="needAddTagCategoryNameInputValue" placeholder="标签分类，回车直接添加"
-          @keyup.enter.native="addTagCategorySubmitMethod"></el-input>
-
+          @keyup.enter.native="addTagCategorySubmitMethod"></el-input> 
       </el-col>
       <el-col :span="14">
         <el-checkbox v-if="userInfo.isPlatformAdmin||userInfo.isSuperAdmin" v-model="isPub" true-label='1'
           false-label='0'>公共分类</el-checkbox>
         <el-button @click="getTags" v-loading="sectionLoading" style="">查询</el-button>
-        <el-button type="primary" v-if="jump==true" @click="selectConfirm">确认</el-button>
+        <el-button type="primary"  @click="editVisible=false">确认</el-button>
 
 
-      </el-col>
-      <!-- <el-col :span="4" class="hidden-sm-and-down">
-			 	<el-tooltip content="黄色表示已经有的标签"><span class="addTagSquare"></span></el-tooltip>
-				 <el-tooltip content="白色表示尚未拥有的标签"><span class="closeTagSquare"></span></el-tooltip>
+      </el-col> 
+    </el-row> 
+    <el-row class="page-container border" v-if="editVisible==false">
 
-			</el-col> -->
+      <el-row v-for="(item,index) in convertTags" :key="item.categoryId" class="padding">
+        <h3>
+          <div>{{item.categoryName+(item.pubc=='1'?'(公共)':'')}} </div> 
+        </h3> 
+
+        <el-tag :key="valueIndex" v-for="(i,valueIndex) in item.values"   :disable-transitions="false"  
+            :color="i.checked?'':'#ffffff'" :effect="i.checked?'dark':'light'"  @click="clickTagMethod(index,valueIndex)">
+          {{i.tagName +(i.pubTag=='1'?'(公共)':'')}}
+        </el-tag> 
+      </el-row>
+
+
     </el-row>
-    </sticky>
-    <el-row class="page-container border">
+    <el-row class="page-container border" v-else>
 
-      <el-row v-for="(item,index) in convertTags" :key="item.categoryId">
+      <el-row v-for="(item,index) in convertTags" :key="item.categoryId" class="padding">
         <h3>
           <div>{{item.categoryName+(item.pubc=='1'?'(公共)':'')}}<i class="el-icon-close closeStyle"
               @click.stop="delTagCategoryMethod(item.categoryId,index)"></i></div>
 
-        </h3>
-        <!--el-icon-circle-close-->
+        </h3> 
 
-        <el-tag :key="tagName" v-for="(i,valueIndex) in item.values" closable :disable-transitions="false"
+        <el-tag :key="valueIndex" v-for="(i,valueIndex) in item.values" closable :disable-transitions="false"  
           @close="delTagMethod(i.tagId,index,valueIndex)" :color="i.checked?'':'#ffffff'" :effect="i.checked?'dark':'light'"  @click="clickTagMethod(index,valueIndex)">
           {{i.tagName +(i.pubTag=='1'?'(公共)':'')}}
         </el-tag>
         <el-input class="input-new-tag" v-if="item.showAddButtonVisible" v-model="item.showAddButtonInputValue"
           ref="saveTagInput" size="small" @keyup.enter.native="addTagMethod(index)" @blur="addTagMethod(index)">
         </el-input>
-        <el-button v-else class="button-new-tag" size="small" @click="showAddButtonMethod(index)">+ 标签</el-button>
-
-
-        <!-- <el-col :span="24" style="margin-left:30px;display:flex;flex-wrap: wrap;width: 100%;">
-					<div :class="v.checked?'checkCopyButton':''" v-for="(v,valueIndex) in item.values" :key="valueIndex"
-					 @click="clickTagMethod(index,valueIndex)">{{v.tagName +(v.pubTag=='1'?'(公共)':'')}}
-						<i class="el-icon-close closeStyle" @click.stop="delTagMethod(v.tagId,index,valueIndex)"></i>
-					</div>
-					<div class="input-tag" v-if="item.showAddButtonVisible">
-						<el-input style="200px;" v-model="item.showAddButtonInputValue" placeholder="请输入标签,回车即可" @keyup.enter.native="addTagMethod(index)" autofocus></el-input>
-
-          			</div>
-					<div v-else class="add" @click="showAddButtonMethod(index)"><i class="el-icon-circle-plus-outline" style="font-size:35px;"></i></div>
-				</el-col> -->
+        <el-button v-else class="button-new-tag" size="small" @click="showAddButtonMethod(index)">+ 标签</el-button> 
       </el-row>
 
 
@@ -62,9 +62,7 @@
 
 <script>
   import util from '@/common/js/util'; //全局公共库
-  import Sticky from '@/components/Sticky' // 粘性header组件
-  //import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-  import {
+   import {
     listTag,
     delTag,
     batchDelTag,
@@ -170,7 +168,8 @@
           isPub: '',
         },
         /**begin 自定义属性请在下面加 请加备注**/
-        isPub: '0'
+        isPub: '0',
+        editVisible:false,
         /**end 自定义属性请在上面加 请加备注**/
       }
     }, //end data
@@ -604,11 +603,7 @@
       /**end 自定义函数请在上面加**/
 
     }, //end methods
-    components: {
-      // 'mem-member-tag-add': MemMemberTagAdd,
-      // 'mem-member-tag-edit': MemMemberTagEdit,
-      // 'mem-member-mng':MemMemberMng,//User列表
-      'sticky': Sticky
+    components: { 
       //在下面添加其它组件
     },
     mounted() {

@@ -1,10 +1,24 @@
 <template>
   <section class="page-container page-full-height padding border">
     <el-row >
-      <el-row>
+      <el-row v-if="editVisible==false">
         <el-col :span="10"> 
           <el-button type="primary" v-if="jump==true" @click="selectConfirm" icon="el-icon-finished">确认选择</el-button>
           <el-button  @click="getAllHrSkill" v-loading="sectionLoading" icon="el-icon-search">刷新标签</el-button>
+        </el-col> 
+        <el-col :span="14"> 
+           <el-button type="primary"  @click="editVisible=true" icon="el-icon-edit">维护</el-button> 
+          <el-tooltip content="黄色表示已经有的技能">
+            <span class="addTagSquare"></span>
+          </el-tooltip>
+          <el-tooltip content="白色表示尚未拥有的技能">
+            <span class="closeTagSquare"></span>
+          </el-tooltip>
+        </el-col> 
+      </el-row>
+      <el-row v-else>
+        <el-col :span="10"> 
+          <el-button type="primary"  @click="editVisible=false" icon="el-icon-finished">确认</el-button> 
         </el-col> 
         <el-col :span="14">
           <el-checkbox 
@@ -28,8 +42,27 @@
         </el-col> 
       </el-row>
     </el-row>
-    <el-row class="app-container max-height-box">
-      <el-row v-for="(item,index) in convertSkills" :key="item.categoryId">
+    <el-row class="app-container max-height-box" v-if="editVisible==false">
+      <el-row v-for="(item,index) in convertSkills" :key="item.categoryId" class="padding">
+        <h3>
+          <div>
+            {{item.categoryName+(item.pubc=='1'?'(公共)':'')}} 
+          </div>
+        </h3>
+        <el-col :span="24" style="margin-left:30px;display:flex;flex-wrap: wrap;width: 100%;">
+          <div
+            :class="v.checked?'checkCopyButton':'copyButton'"
+            v-for="(v,valueIndex) in item.values"
+            :key="valueIndex"
+            @click="clickTagMethod(index,valueIndex)"
+          >
+            {{v.skillName +(v.pubSkill=='1'?'':'')}} 
+          </div>  
+        </el-col>
+      </el-row>
+    </el-row>
+    <el-row class="app-container max-height-box" v-else>
+      <el-row v-for="(item,index) in convertSkills" :key="item.categoryId" class="padding">
         <h3>
           <div>
             {{item.categoryName+(item.pubc=='1'?'(公共)':'')}}
@@ -41,7 +74,7 @@
         </h3>
         <el-col :span="24" style="margin-left:30px;display:flex;flex-wrap: wrap;width: 100%;">
           <div
-            :class="v.checked?'checkCopyButton':'copyButton'"
+            :class="'copyButton'"
             v-for="(v,valueIndex) in item.values"
             :key="valueIndex"
             @click="clickTagMethod(index,valueIndex)"
@@ -121,6 +154,7 @@ export default {
       convertSkills: [],
       needAddTagCategoryNameInputValue: "",
       isPub: "0",
+      editVisible:false,
     };
   }, //end data
   methods: {
