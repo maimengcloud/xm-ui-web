@@ -183,6 +183,9 @@
 					 expandedKeys.push(this.selProject.id)
 				}else if(this.xmIteration){ 
 					 expandedKeys.push(this.xmIteration.id)
+				}else{
+					var groupsLvl1=this.xmProjectGroups.filter(i=>i.lvl<=1)
+					expandedKeys.push(...groupsLvl1)
 				}
 				return expandedKeys; 
 			},
@@ -356,9 +359,12 @@
 				if(this.filters.key){
 					params.key=this.filters.key
 				}
-
+				var func=getGroups
 				this.load.list = true;
-				getGroups(params).then((res) => {
+				if( !params.productId && !params.projectId && !params.iterationId){
+					func=listXmProjectGroup
+				}
+				func(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 
 						this.pageInfo.total = res.data.total;

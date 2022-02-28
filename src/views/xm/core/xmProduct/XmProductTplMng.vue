@@ -3,14 +3,14 @@
 		<el-row v-if="showType!='simple'">
 			<el-checkbox v-model="filters.isMy" false-label="" true-label="1">我的模板</el-checkbox>
 			<el-input style="width:300px;" v-model="filters.key" placeholder="模板名字"></el-input>
-			<el-button @click="searchXmProjects" icon="el-icon-search"></el-button>
+			<el-button @click="searchXmProducts" icon="el-icon-search"></el-button>
 		</el-row>
 		<el-row v-if="showType=='simple'">
 			<el-row>
 				<el-checkbox v-model="filters.isMy" false-label="0" true-label="1">我的模板</el-checkbox>
 			</el-row>
 			<el-row>
-			<el-input style="width:80%;" v-model="filters.key" placeholder="模板名字"></el-input>&nbsp;&nbsp;<el-button @click="searchXmProjects" icon="el-icon-search"></el-button>
+			<el-input style="width:80%;" v-model="filters.key" placeholder="模板名字"></el-input>&nbsp;&nbsp;<el-button @click="searchXmProducts" icon="el-icon-search"></el-button>
 			</el-row>
 		</el-row>
 		<el-row  class="page-main page-height-70" >
