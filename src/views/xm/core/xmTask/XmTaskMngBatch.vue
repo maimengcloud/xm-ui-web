@@ -724,7 +724,15 @@ export default {
             var tips = res.data.tips;
             if (tips.isOk) {
               this.pageInfo.count = true;
-              this.getXmTasks();
+			  
+              var parents=this.sels.filter(i=>!this.sels.some(k=>k.id==i.parentTaskid)); 
+				var needLoadChlidList=parents.filter(i=>i.lvl>1) 
+				this.searchXmTasks() 
+				if(needLoadChlidList.length>0){
+					needLoadChlidList.forEach(i=>{ 
+							treeTool.reloadChildren(this.$refs.table,this.maps,i.parentTaskid,'parentTaskid',this.loadXmTaskLazy) 
+					})
+				} 
             }
             this.$message({
               showClose: true,
