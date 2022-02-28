@@ -41,10 +41,11 @@
 					<el-button type="primary" @click="showAdd" icon="el-icon-plus"  v-loading="load.add">新增下级小组</el-button>  
 				</el-row> 
 				<el-row v-if="currNodeType=='group'">  
-					
+					<el-button type="primary" @click="showGroupState" icon="el-icon-s-data"  v-loading="load.add">查看小组进度</el-button>   
 					<el-button type="primary" @click="showAddSub(editForm)" icon="el-icon-plus"  v-loading="load.add">新增下级小组</el-button>   
 					<el-button @click="showEdit(editForm)" icon="el-icon-edit"  v-loading="load.edit">修改小组信息</el-button> 
 					<el-button @click="userSelectVisible=true" icon="el-icon-plus"  v-loading="load.add">新增组员</el-button> 
+					<el-button @click="groupUserVisible=true" icon="el-icon-search"  v-loading="load.add">查看组员</el-button> 
 					<el-button type="danger" @click="handleDel(editForm)" icon="el-icon-delete"  v-loading="load.del">删除小组</el-button>
 				</el-row> 
 				<el-row v-if="currNodeType=='groupUser'">  
@@ -141,8 +142,12 @@
 			<el-drawer v-if="selProject" :title="selProject==null?'操作日志':selProject.name+'团队操作日志'" center   :visible.sync="xmRecordVisible"  size="50%"  :close-on-click-modal="false" append-to-body>
 				<xm-record :obj-type="'group'" :visible="xmRecordVisible" :project-id="selProject.id"    :simple="1"></xm-record>
 			</el-drawer>
-			<el-drawer v-if="selProject" :title="selProject==null?'进度':selProject.name+'团队进度'" center   :visible.sync="xmProjectGroupStateVisible"  size="80%"  :close-on-click-modal="false" append-to-body>
-				<xm-project-group-state-mng  :sel-project="selProject" :visible="xmProjectGroupStateVisible" ></xm-project-group-state-mng>
+			<el-drawer  title="小组进度数据查看" center   :visible.sync="xmProjectGroupStateVisible"  size="80%"  :close-on-click-modal="false" append-to-body>
+				<xm-project-group-state-mng  :sel-project="selProject" :xm-product="xmProduct" :xm-project-group="editForm" :visible="xmProjectGroupStateVisible" ></xm-project-group-state-mng>
+			</el-drawer>
+			
+			<el-drawer   center  :title="(editForm==null?editForm.groupName:'')+'小组成员管理'" :visible.sync="groupUserVisible"  size="80%"  :close-on-click-modal="false" append-to-body>
+				<xm-project-group-user-mng  :xm-project-group="editForm" :visible="groupUserVisible" ></xm-project-group-user-mng>
 			</el-drawer>
 	    </el-row>
 	</section>
@@ -166,11 +171,12 @@
 
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
 	import  XmProjectGroupStateMng from '../xmProjectGroupState/XmProjectGroupStateMng';//修改界面
+	import  XmProjectGroupUserMng from '../xmProjectGroupUser/XmProjectGroupUserMng';//修改界面
 	
 	export default {
 	    name:'xmProjectGroupMng',
 		components: {
-		    XmProjectGroupEdit,VueOkrTree,UsersSelect,XmProjectGroupStateMng,
+		    XmProjectGroupEdit,VueOkrTree,UsersSelect,XmProjectGroupStateMng,XmProjectGroupUserMng,
 		},
 		props:["visible","selProject" ,"isSelectSingleUser","isSelectMultiUser",'xmProduct','xmIteration'],
 		computed: {
@@ -298,6 +304,7 @@
 				groupRoleDescVisible:false, 
 				groupOperSelectVisible:false,
 				currNodeType:'',//project/product/iteration/group/groupUser
+				groupUserVisible:false,
 			}
 		},//end data
 		methods: { 

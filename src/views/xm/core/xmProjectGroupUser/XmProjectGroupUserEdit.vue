@@ -5,44 +5,31 @@
 		<el-row class="page-main">
 		<!--编辑界面 XmProjectGroupUser xm_project_group_user--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">
+				
+				<el-form-item :label="editForm.pgClass=='1'?'产品编号':'项目编号'" prop="pgClass">
+					{{editForm.projectId?editForm.projectId:''}}{{editForm.productId?editForm.productId:''}}
+				</el-form-item> 
+				<el-form-item label="小组名称" prop="groupName">
+					<el-input v-model="editForm.groupName" placeholder="小组名称"></el-input>
+				</el-form-item>  
+				<el-form-item label="组员姓名" prop="username">
+					<el-input v-model="editForm.username" placeholder="组员姓名"></el-input>
+				</el-form-item> 
+				<el-form-item label="" prop="status">
+					<el-checkbox v-model="editForm.status" true-label="1" false-label="0" placeholder="当前状态">是否已加入</el-checkbox>
+					<el-checkbox v-model="editForm.isPri" true-label="1" false-label="0" placeholder="是否私人加入">是否私人加入</el-checkbox>
+				</el-form-item>  
+				<el-form-item label="排序号" prop="seqNo">
+					<el-input-number v-model="editForm.seqNo" :min="0" :max="200"></el-input-number>
+				</el-form-item>   
+				<el-form-item label="原归属机构名称" prop="obranchName">
+					<el-input v-model="editForm.obranchName" placeholder="原归属机构名称"></el-input>
+				</el-form-item>  
 				<el-form-item label="加入时间" prop="joinTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.joinTime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
 				</el-form-item> 
-				<el-form-item label="团队编号" prop="groupId">
-					<el-input v-model="editForm.groupId" placeholder="团队编号"></el-input>
-				</el-form-item> 
-				<el-form-item label="团队成员编号" prop="userid">
-					<el-input v-model="editForm.userid" placeholder="团队成员编号"></el-input>
-				</el-form-item> 
-				<el-form-item label="团队成员" prop="username">
-					<el-input v-model="editForm.username" placeholder="团队成员"></el-input>
-				</el-form-item> 
-				<el-form-item label="离队时间" prop="outTime">
+				<el-form-item label="离组时间" prop="outTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.outTime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
-				</el-form-item> 
-				<el-form-item label="当前状态0参与中1已退出团队" prop="status">
-					<el-input v-model="editForm.status" placeholder="当前状态0参与中1已退出团队"></el-input>
-				</el-form-item> 
-				<el-form-item label="组员原归属机构编号" prop="obranchId">
-					<el-input v-model="editForm.obranchId" placeholder="组员原归属机构编号"></el-input>
-				</el-form-item> 
-				<el-form-item label="是否私人加入0否1是" prop="isPri">
-					<el-input v-model="editForm.isPri" placeholder="是否私人加入0否1是"></el-input>
-				</el-form-item> 
-				<el-form-item label="排序号--从1开始" prop="seqNo">
-					<el-input-number v-model="editForm.seqNo" :min="0" :max="200"></el-input-number>
-				</el-form-item> 
-				<el-form-item label="项目编号" prop="projectId">
-					<el-input v-model="editForm.projectId" placeholder="项目编号"></el-input>
-				</el-form-item> 
-				<el-form-item label="产品编号" prop="productId">
-					<el-input v-model="editForm.productId" placeholder="产品编号"></el-input>
-				</el-form-item> 
-				<el-form-item label="0-项目，1-产品" prop="pgClass">
-					<el-input v-model="editForm.pgClass" placeholder="0-项目，1-产品"></el-input>
-				</el-form-item> 
-				<el-form-item label="原归属机构名称" prop="obranchName">
-					<el-input v-model="editForm.obranchName" placeholder="原归属机构名称"></el-input>
 				</el-form-item> 
 			</el-form>
 		</el-row>
@@ -92,7 +79,7 @@
 				dicts:{},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				editFormRules: {
 					groupId: [
-						//{ required: true, message: '团队编号不能为空', trigger: 'blur' }
+						//{ required: true, message: '小组编号不能为空', trigger: 'blur' }
 					]
 				},
 				editForm: {
