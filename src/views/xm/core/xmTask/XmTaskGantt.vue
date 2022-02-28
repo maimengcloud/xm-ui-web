@@ -6,7 +6,7 @@
             :usePreColumn="true"
             :checkSource="true"
             :useRealTime="true"
-						:treeProps="{children: 'children', hasChildren: 'hasChildren',pid:'parentTaskid',pre:'preTaskid'}"
+						:treeProps="{children: 'children', hasChildren: 'childrenCnt',pid:'parentTaskid',pre:'preTaskid'}"
 						row-key="id"></wl-gantt>
   </section>
 </template>

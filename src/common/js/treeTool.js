@@ -53,10 +53,20 @@ export default {
       const { tree, treeNode, resolve } = maps.get(parentId)   
       if (tree) { // 重新执行父节点加载子级操作
         var oldDatas=lazyTreeNodeMap[parentId]
-        lazyTreeNodeMap[parentId]=[]
         loadChildren(tree, treeNode, resolve,oldDatas,opType) 
       }
     } 
+     
+  }, 
+  clearOpType: function(table,maps,parentId,parentIdName,loadChildren) {   
+    var lazyTreeNodeMap=table.store.states.lazyTreeNodeMap
+    if (maps.get(parentId)) {
+      const { tree, treeNode, resolve } = maps.get(parentId)   
+      if (tree) { // 重新执行父节点加载子级操作
+        var oldDatas=lazyTreeNodeMap[parentId]
+        loadChildren(tree, treeNode, resolve,oldDatas,"clearOpType") 
+      }
+    }  
      
   }, 
   /**

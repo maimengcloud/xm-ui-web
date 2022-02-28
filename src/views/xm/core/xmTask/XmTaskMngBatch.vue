@@ -117,11 +117,13 @@
                     :ref="'task_' + scope.$index"
                     :data-task-id="scope.row.id"
                   ></div>
+				  <!--
                   <el-button
                     type="primary"
                     @click="handlePopover(scope.row, 'highestPmenuId')"
                     >成为顶级节点</el-button
                   >
+				  -->
                   <el-button
                     type="danger"
                     @click="handlePopover(scope.row, 'delete')"
@@ -1114,7 +1116,13 @@ export default {
             this.load.edit = false;
             var tips = res.data.tips;
             if (tips.isOk) {
-              this.valueChangeRows = [];
+              
+			  var addOrSub=this.valueChangeRows.filter(i=>i.opType=='add'||i.opType=='addSub')
+			  addOrSub.forEach(i=>{
+				  treeTool.clearOpType(this.$refs.table,this.maps,i.parentTaskid,'parentTaskid',this.loadXmTaskLazy);
+			  }) 
+			  this.valueChangeRows = [];
+			  this.xmTasks=[]
               this.getXmTasks();
             }
             this.$message({
@@ -1609,6 +1617,11 @@ export default {
 		addSub.sort((a,b)=>a.sortLevel-b.sortLevel)
 		resolve(addSub)
 		return;
+	  }
+	  if(opType=='clearOpType'){
+		  oldDatas.forEach(i=>i.opType="")
+		  resolve(oldDatas)
+		  return;
 	  }
       var params = { parentTaskid: tree.id };
       params = this.getParams(params);
