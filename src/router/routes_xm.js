@@ -134,6 +134,21 @@ export default {
          { path: 'xmIteration/XmIterationMng', component: _import('xm/core/xmIteration/XmIterationMng'), name: 'XmIterationMng', meta: { title: '迭代管理' }},
         { path: 'xmIterationMenu/XmIterationMenuMng', component: _import('xm/core/xmIterationMenu/XmIterationMenuMng'), name: 'XmIterationMenuMng', meta: { title: '需求迭代' }},
       ]
+    }, 
+    {
+      path: '/xm/core',
+      component: Layout,
+      name: 'GroupMng',
+      iconCls: 'fa el-icon-menu',
+      meta: {
+        title: '团队管理',
+        icon: 'project'
+      },
+      // leaf: true,//只有一个节点
+      children: [
+         { path: 'xmProjectGroup/XmProjectGroupAllMng', component: _import('xm/core/xmProjectGroup/XmProjectGroupAllMng'), name: 'XmProjectGroupAllMng', meta: { title: '团队管理' }}, 
+         { path: 'xmProjectGroupUser/XmProjectGroupUserMng', component: _import('xm/core/xmProjectGroupUser/XmProjectGroupUserMng'), name: 'XmProjectGroupUserMng', meta: { title: '成员管理' }}, 
+      ]
     }
   ]
 }
