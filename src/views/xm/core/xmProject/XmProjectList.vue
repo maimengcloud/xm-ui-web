@@ -1,5 +1,5 @@
 <template>
-	<section>
+	<section class="padding">
 		<el-row>
 			 <el-input v-model="filters.key" style="width:60%;" placeholder="项目名称模糊查询"> 
 			</el-input> 

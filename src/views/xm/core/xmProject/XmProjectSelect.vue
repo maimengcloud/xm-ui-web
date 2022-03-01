@@ -1,6 +1,6 @@
 <template>
 	<section>  
-		<el-row class="page-main">   
+		<el-row class="page-main padding-left">   
 			<el-table ref="table" :height="maxTableHeight"  stripe :data="xmProjects"  highlight-current-row v-loading="load.list"  @selection-change="selsChange" @row-click="rowClick" style="width: 100%;" >
  				<el-table-column prop="name" label="项目名称" min-width="80" >
 					 <template slot-scope="scope">
