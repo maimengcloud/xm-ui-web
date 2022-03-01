@@ -377,7 +377,7 @@
               fit
               border
               tooltip-effect="light" 
-              :max-height="tableHeight"
+              :height="tableHeight"
               :tree-props="{ children: 'children', hasChildren: 'childrenCnt' }"
               row-key="id"
               ref="table"

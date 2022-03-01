@@ -6,7 +6,7 @@
 		</el-row>
 		<el-row style="padding-top:10px;">
 			<!--列表 XmIterationProductLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表-->
-			<el-table ref="xmIterationProductLink" :data="xmIterationProductLinks" :max-height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="xmIterationProductLink" :data="xmIterationProductLinks" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
   				<el-table-column prop="iterationName" v-if="!xmIteration" label="包含的迭代名称" min-width="150" ></el-table-column>
 				<el-table-column prop="productName" v-if="!xmProduct" label="包含的产品名称" min-width="150" ></el-table-column>
 				<el-table-column prop="ctime" label="加入时间" min-width="80" ></el-table-column>

@@ -6,7 +6,7 @@
 		</el-row>
 		<el-row style="padding-top:10px;">
 			<!--列表 XmProductProjectLink 产品与项目的关联关系表，一般由产品经理挂接项目到产品上-->
-			<el-table ref="xmProductProjectLink" :data="xmProductProjectLinks" :max-height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="xmProductProjectLink" :data="xmProductProjectLinks" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  				<el-table-column prop="name" v-if="xmProduct" label="包含的项目名称" min-width="150" ></el-table-column>
 				<el-table-column prop="productName" v-if="selProject" label="包含的产品名称" min-width="150" ></el-table-column>
 				<el-table-column prop="ctime" label="加入时间" min-width="80" ></el-table-column> 
