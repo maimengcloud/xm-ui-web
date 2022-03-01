@@ -121,7 +121,6 @@
                                 var tips=res.data.tips;
                                 if(tips.isOk){
                                     this.editForm=res.data.data
-                                    this.initData()
                                     this.currOpType="edit";
                                     this.$emit('submit',this.editForm);//  @submit="afterAddSubmit"
                                 }

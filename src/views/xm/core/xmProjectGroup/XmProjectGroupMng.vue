@@ -41,7 +41,6 @@
 				<el-row v-else-if="currNodeType=='product'">  
 					<el-button type="primary" @click="loadNexGroup" icon="el-icon-search" v-loading="load.add">加载下一级小组</el-button>  
 					<el-button type="primary" @click="showAdd" icon="el-icon-plus"  v-loading="load.add">新增下一级小组</el-button> 
-					<el-button type="primary" @click="showAdd" icon="el-icon-plus" v-loading="load.add">新增下一级小组</el-button>   
 				</el-row> 
 				<el-row v-else-if="currNodeType=='group'">  
 					<el-row>
@@ -178,7 +177,6 @@
 			<el-drawer title="选中产品" :visible.sync="selectProductVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-product-select :isSelectProduct="true"   @selected="onProductConfirm"></xm-product-select>
 			</el-drawer>    
-			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 	    </el-row>
 		
 	</section>
@@ -230,8 +228,11 @@ XmProductSelect,
 				return expandedKeys; 
 			},
 			okrTreeData(){
-				var groups=this.xmProjectGroups; 
+				var groups=JSON.parse(JSON.stringify(this.xmProjectGroups)); 
 				groups.forEach(i=>{
+					if(i.pgroupId==''){
+						i.pgroupId=null;
+					}
 					i.currNodeType='group'
 					i.label=i.groupName
 					if(i.groupUsers){
@@ -244,9 +245,9 @@ XmProductSelect,
 					}
 				})
 				var groupsTree=treeTool.translateDataToTree(groups,'pgroupId','id')
-				var topLabel="组织架构"
+				var topLabel=this.userInfo.branchName+"-组织架构"
 				var currNodeType='branch'
-				var topdata={} 
+				var topdata={id:this.userInfo.branchId,branchName:this.userInfo.branchName,branchId:this.userInfo.branchId} 
 				if(this.xmProduct&&this.xmProduct.id){
 					topLabel=this.xmProduct.productName+"-产品组织架构"
 					currNodeType='product'
@@ -323,6 +324,9 @@ XmProductSelect,
 					id:'',groupName:'',projectId:'',pgTypeId:'',pgTypeName:'',leaderUserid:'',leaderUsername:'',ctime:'',ltime:'',productId:'',branchId:'',pgClass:'',pgroupId:'',lvl:'',pidPaths:'',isTpl:'',assUserid:'',assUsername:'',childrenCnt:'',userCnt:'',qxCode:'',calcWorkload:'',ntype:'',crowBranchId:'',crowBranchName:'',isCrow:''
 				},
 				
+				addFormInit: {
+					id:'',groupName:'',projectId:'',pgTypeId:'',pgTypeName:'',leaderUserid:'',leaderUsername:'',ctime:'',ltime:'',productId:'',branchId:'',pgClass:'',pgroupId:'',lvl:'',pidPaths:'',isTpl:'',assUserid:'',assUsername:'',childrenCnt:'',userCnt:'',qxCode:'',calcWorkload:'',ntype:'',crowBranchId:'',crowBranchName:'',isCrow:''
+				},
 				editFormVisible: false,//编辑界面是否显示
 				editForm: {
 					id:'',groupName:'',projectId:'',pgTypeId:'',pgTypeName:'',leaderUserid:'',leaderUsername:'',ctime:'',ltime:'',productId:'',branchId:'',pgClass:'',pgroupId:'',lvl:'',pidPaths:'',isTpl:'',assUserid:'',assUsername:'',childrenCnt:'',userCnt:'',qxCode:'',calcWorkload:'',ntype:'',crowBranchId:'',crowBranchName:'',isCrow:''
@@ -380,7 +384,7 @@ XmProductSelect,
 				if(this.currNodeType=='branch'||this.currNodeType=='iteration'){
 					params.branchId=this.editForm.branchId
 					params.lvl=1
-				}else if(this.currNodeType=='product'){
+				}else if(this.currNodeType=='project'){
 					params.projectId=this.editForm.id
 					params.lvl=1
 				}else if(this.currNodeType=='product'){
@@ -459,7 +463,8 @@ XmProductSelect,
 			},
 			//显示新增界面 XmProjectGroup xm_project_group
 			showAdd: function () {
-				if(this.xmProduct && this.xmProduct.id){
+				this.addForm={...this.addFormInit}
+				if(this.currNodeType=='product'){
 					this.addForm.pgroupId=null
 					this.addForm.pgroupName=null
 					this.addForm.productId=this.xmProduct.id
@@ -467,7 +472,7 @@ XmProductSelect,
 					this.addForm.projectId=null
 					this.addForm.groupName=this.xmProduct.productName+"-产品管理组"
 					this.addFormVisible = true;
-				}else if(this.selProject  && this.selProject.id){ 
+				}else if(this.currNodeType=='project'){ 
 					this.addForm.pgroupId=null
 					this.addForm.pgroupName=null
 					this.addForm.productId=null
@@ -482,10 +487,12 @@ XmProductSelect,
 				//this.addForm=Object.assign({}, this.editForm);
 			},
 			//显示新增界面 XmProjectGroup xm_project_group
-			showAddSub: function (row) {
+			showAddSub: function (row) { 
+				
 				if(!row){
 					return;
 				}
+				this.addForm={...row}
 				if("1"==row.pgClass){
 					this.addForm.productId=row.productId
 					this.addForm.pgClass="1" 
@@ -710,6 +717,7 @@ XmProductSelect,
 				});
 			},
 			onPorjectConfirm(project){
+				this.addForm={...this.addFormInit}
 				this.addForm.projectId=project.id
 				this.addForm.groupName=project.name+"-管理小组"
 				this.addForm.projectName=project.name
@@ -718,6 +726,7 @@ XmProductSelect,
 				this.selectProjectVisible=false;
 			},
 			onProductConfirm(product){
+				this.addForm={...this.addFormInit}
 				this.addForm.productId=product.id
 				this.addForm.groupName=product.productName+"-管理小组"
 				this.addForm.projectName=product.productName
