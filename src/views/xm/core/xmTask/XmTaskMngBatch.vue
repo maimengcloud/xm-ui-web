@@ -1666,17 +1666,8 @@ export default {
     if (this.visible == true) {
       this.getXmTasks();
     }
-    this.$nextTick(() => {
-      var clientRect = this.$refs.table.$el.getBoundingClientRect();
-      var subHeight = (70 / 1000) * window.innerHeight;
-      if (this.isTaskCenter) {
-        subHeight = (50 / 1000) * window.innerHeight;
-      }
-      this.tableHeight =
-        window.innerHeight -
-        clientRect.y -
-        this.$refs.table.$el.offsetTop -
-        subHeight;
+    this.$nextTick(() => { 
+      this.tableHeight = util.calcTableMaxHeight('el-table'); 
       listOption([
         { categoryId: "all", itemCode: "planType" },
         { categoryId: "all", itemCode: "taskType" },

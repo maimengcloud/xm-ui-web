@@ -468,13 +468,8 @@
 		},
 		mounted() {
 			this.filters.selProject=this.selProject
-			this.$nextTick(()=>{ 
-				var clientRect=this.$refs.taskTable.$el.getBoundingClientRect();
-				var subHeight=85/1000 * window.innerHeight;
-				if(this.selProject){
-					subHeight=100/1000 * window.innerHeight;
-				}
-				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.taskTable.$el.offsetTop-subHeight; 
+			this.$nextTick(()=>{  
+				this.tableHeight = util.calcTableMaxHeight('el-table'); 
 				this.getXmTasks(); 
 			});
 				listOption([{categoryId:'all',itemCode:'planType'},{categoryId:'all',itemCode:'taskType'},{categoryId:'all',itemCode:'urgencyLevel'},{categoryId:'all',itemCode:'priority'}]).then(res=>{

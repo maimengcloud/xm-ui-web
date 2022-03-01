@@ -2440,23 +2440,8 @@ export default {
       this.filters.product = this.xmProduct;
     }
     this.$nextTick(() => {
-      this.getXmTasks();
-      var pagination = this.$refs.pagination.$el.offsetHeight;
-      var clientRect = this.$refs.table.$el.getBoundingClientRect();
-      var subHeight = (70 / 1000) * window.innerHeight;
-      this.tableHeight =
-        window.innerHeight -
-        clientRect.y -
-        this.$refs.table.$el.offsetTop -
-        subHeight -
-        pagination;
-      // 监听窗口大小变化
-      /**
-				let self = this;
-				window.onresize = function() {
-					self.tableHeight =  util.calcTableMaxHeight('el-table');
-				}
- 				*/
+      this.getXmTasks(); 
+      this.tableHeight = util.calcTableMaxHeight('el-table');  
       listOption([
         { categoryId: "all", itemCode: "planType" },
         { categoryId: "all", itemCode: "taskType" },

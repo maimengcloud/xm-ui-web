@@ -401,12 +401,7 @@
 		    //在下面添加其它组件
 		},
 		mounted() {
-			this.$nextTick(()=>{ 
-				
-				var subHeight=70/1000 * window.innerHeight;
-				if(this.isTaskCenter){
-					subHeight=50/1000 * window.innerHeight;
-				}
+			this.$nextTick(()=>{  
 				this.tableHeight =  util.calcTableMaxHeight('el-table'); 
 				this.getXmTasks(); 
 			});
