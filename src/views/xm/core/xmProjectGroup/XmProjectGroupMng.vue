@@ -142,8 +142,8 @@
 			<el-drawer v-if="selProject" :title="selProject==null?'操作日志':selProject.name+'团队操作日志'" center   :visible.sync="xmRecordVisible"  size="50%"  :close-on-click-modal="false" append-to-body>
 				<xm-record :obj-type="'group'" :visible="xmRecordVisible" :project-id="selProject.id"    :simple="1"></xm-record>
 			</el-drawer>
-			<el-drawer v-else-if="xmProduct&&!selProject" :title="xmProject==null?'操作日志':xmProject.productName+'团队操作日志'" center   :visible.sync="xmRecordVisible"  size="50%"  :close-on-click-modal="false" append-to-body>
-				<xm-record :obj-type="'group'" :visible="xmRecordVisible" :product-id="xmProject.id"    :simple="1"></xm-record>
+			<el-drawer v-else-if="xmProduct&&!selProject" :title="xmProduct==null?'操作日志':xmProduct.productName+'团队操作日志'" center   :visible.sync="xmRecordVisible"  size="50%"  :close-on-click-modal="false" append-to-body>
+				<xm-record :obj-type="'group'" :visible="xmRecordVisible" :product-id="xmProduct.id"    :simple="1"></xm-record>
 			</el-drawer>
 			
 			<el-drawer v-if="currNodeType=='group'&&editForm.groupName" :title="editForm.groupName+'小组进度数据查看'" center   :visible.sync="xmProjectGroupStateVisible"  size="80%"  :close-on-click-modal="false" append-to-body>
@@ -152,7 +152,7 @@
 			<el-drawer v-else-if="selProject" :title="selProject.name+'小组进度数据查看'" center   :visible.sync="xmProjectGroupStateVisible"  size="80%"  :close-on-click-modal="false" append-to-body>
 				<xm-project-group-state-mng  :sel-project="selProject"  :visible="xmProjectGroupStateVisible" ></xm-project-group-state-mng>
 			</el-drawer>
-			<el-drawer v-else-if="!selProject && xmProduct" :title="xmProduct.name+'小组进度数据查看'" center   :visible.sync="xmProjectGroupStateVisible"  size="80%"  :close-on-click-modal="false" append-to-body>
+			<el-drawer v-else-if="!selProject && xmProduct" :title="xmProduct.productName+'小组进度数据查看'" center   :visible.sync="xmProjectGroupStateVisible"  size="80%"  :close-on-click-modal="false" append-to-body>
 				<xm-project-group-state-mng   :xm-product="xmProduct"   :visible="xmProjectGroupStateVisible" ></xm-project-group-state-mng>
 			</el-drawer>
 			

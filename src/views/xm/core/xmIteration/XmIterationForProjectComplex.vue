@@ -143,7 +143,7 @@
 			tabClick(tab){
 				if(this.xmIteration==null || !this.xmIteration.id){
 					this.iterationVisible=true;
-					this.$notify({showClose: true, message:"请先选中左边迭代", type: 'warning', position: 'top-left' });
+					this.$notify({showClose: true, message:"请先选中左边迭代", type: 'warning' });
 				}
 				return false;
 				 this.showPanel=tab.name
@@ -175,7 +175,7 @@
 			
 				if(this.xmIteration==null || !this.xmIteration.id){
 					this.iterationVisible=true;
-					this.$notify({showClose: true, message:"请先选中左边迭代", type: 'warning', position: 'top-left' });
+					this.$notify({showClose: true, message:"请先选中左边迭代", type: 'warning' });
 				}
 		this.$nextTick(() => {
 

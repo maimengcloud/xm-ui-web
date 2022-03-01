@@ -1282,7 +1282,14 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				})
 			},
 			selectTotalProjectAndPhaseBudgetCost(){
-				selectTotalProjectAndPhaseBudgetCost({projectId:this.selProject.id}).then(res=>{ 
+				var params={  }
+				if(this.selProject && this.selProject.id){
+					params.projectId=this.selProject.id
+				}
+				if(this.xmProduct && this.xmProduct.id){
+					params.productId=this.xmProduct.id
+				} 
+				selectTotalProjectAndPhaseBudgetCost(params ).then(res=>{ 
 					var tips = res.data.tips;
 					if(tips.isOk){ 
 						this.totalProjectAndPhaseBudgetCost=res.data.data;

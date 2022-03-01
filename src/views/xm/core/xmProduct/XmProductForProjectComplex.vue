@@ -145,7 +145,7 @@ import XmProductOverview from "./XmProductOverview";
 			tabClick(tab){
 				if(this.xmProduct==null || !this.xmProduct.id){
 					this.productVisible=true;
-					this.$notify({showClose: true, message:"请先选中左边产品", type: 'warning', position: 'top-left'});
+					this.$notify({showClose: true, message:"请先选中左边产品", type: 'warning'});
 				}
 				 this.showPanel=tab.name
 			}
@@ -168,7 +168,7 @@ XmProductProjectForLink,
 			
 			if(this.xmProduct==null || !this.xmProduct.id){
 				this.productVisible=true;
-				this.$notify({showClose: true, message:"请先选中左边产品", type: 'warning', position: 'top-left'});
+				this.$notify({showClose: true, message:"请先选中左边产品", type: 'warning'});
 			}
 		this.$nextTick(() => {
 
