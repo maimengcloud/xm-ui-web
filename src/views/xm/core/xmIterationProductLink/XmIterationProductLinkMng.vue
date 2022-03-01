@@ -274,10 +274,8 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 		},
 		mounted() { 
 			this.$nextTick(() => {
-				this.getXmIterationProductLinks();
-                var clientRect=this.$refs.xmIterationProductLink.$el.getBoundingClientRect();
-                var subHeight=65/1000 * window.innerHeight;
-                this.maxTableHeight =  window.innerHeight -clientRect.y - this.$refs.xmIterationProductLink.$el.offsetTop-subHeight;
+				this.getXmIterationProductLinks(); 
+                this.maxTableHeight =  util.calcTableMaxHeight(".el-table")
         	}); 
         	/** 举例，
     		listOption([{categoryId:'all',itemCode:'sex'},{categoryId:'all',itemCode:'grade'}] ).then(res=>{

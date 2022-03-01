@@ -459,9 +459,9 @@
 		mounted() { 
        
 			this.$nextTick(() => {
-				var clientRect=this.$refs.selectPhaseTable.$el.getBoundingClientRect();
 				
-				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.selectPhaseTable.$el.offsetTop-subHeight; 
+				
+				this.tableHeight = util.calcTableMaxHeight(".el-table"); 
 				if(this.selProject){
 					this.getXmProjectPhases();
 				}

@@ -352,7 +352,7 @@
 		mounted() {
 			this.$nextTick(() => {
 				
-				var subHeight=70/1000 * window.innerHeight;
+				
 				this.tableHeight =  util.calcTableMaxHeight('el-table');
 				this.getXmIterations();
         	});

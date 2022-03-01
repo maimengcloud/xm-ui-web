@@ -275,10 +275,8 @@ import XmProjectSelect from '../xmProject/XmProjectSelect.vue';
 		},
 		mounted() { 
 			this.$nextTick(() => {
-				this.getXmProductProjectLinks();
-                var clientRect=this.$refs.xmProductProjectLink.$el.getBoundingClientRect();
-                var subHeight=65/1000 * window.innerHeight;
-                this.maxTableHeight =  window.innerHeight -clientRect.y - this.$refs.xmProductProjectLink.$el.offsetTop-subHeight;
+				this.getXmProductProjectLinks(); 
+                this.maxTableHeight =  util.calcTableMaxHeight(".el-table")
         	}); 
         	/** 举例，
     		listOption([{categoryId:'all',itemCode:'sex'},{categoryId:'all',itemCode:'grade'}] ).then(res=>{
