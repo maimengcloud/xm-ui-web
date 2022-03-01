@@ -123,7 +123,7 @@
                                     this.editForm=res.data.data
                                     this.initData()
                                     this.currOpType="edit";
-                                    this.$emit('submit');//  @submit="afterAddSubmit"
+                                    this.$emit('submit',this.editForm);//  @submit="afterAddSubmit"
                                 }
                                 this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
                             }).catch( err =>this.load.edit=false);

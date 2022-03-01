@@ -1,6 +1,6 @@
 <template>
 	<section class="page-container border padding" >
-		<el-row  v-if="!isSelectSingleUser && !isSelectMultiUser"> 
+		<el-row> 
  					<el-button  type="plain" @click="showGroupState" icon="el-icon-s-data">小组进度</el-button> 
  					<el-button  type="plain" @click="xmRecordVisible=true" icon="el-icon-document">变化日志</el-button>
 					<el-button  type="plain" @click="doSearchImGroupsByProjectId" icon="el-icon-document">绑定即聊情况</el-button>
@@ -11,10 +11,10 @@
 			<vue-okr-tree :data="okrTreeData" v-loading="load.list"
 				show-collapsable   
 				node-key="id"
+				default-expand-all
 				current-lable-class-name="crrentClass" 
 				:render-content="renderContent"  
   				@node-click="handleNodeClick"
-				:default-expanded-keys="expandedKeys"
   				direction="horizontal"
   			></vue-okr-tree>   
 		</el-row>
@@ -35,22 +35,35 @@
 				append-to-body  :close-on-click-modal="true"
 				width="50%" >
 				<el-row v-if="currNodeType=='project'">   
-					<el-button type="primary" @click="showAdd" icon="el-icon-plus" v-loading="load.add">新增下级小组</el-button>  
+					<el-button type="primary" @click="loadNexGroup" icon="el-icon-search" v-loading="load.add">加载下一级小组</el-button>  
+					<el-button @click="showAdd" icon="el-icon-plus" v-loading="load.add">新增下一级小组</el-button>  
 				</el-row> 
-				<el-row v-if="currNodeType=='product'">  
-					<el-button type="primary" @click="showAdd" icon="el-icon-plus"  v-loading="load.add">新增下级小组</el-button>  
+				<el-row v-else-if="currNodeType=='product'">  
+					<el-button type="primary" @click="loadNexGroup" icon="el-icon-search" v-loading="load.add">加载下一级小组</el-button>  
+					<el-button type="primary" @click="showAdd" icon="el-icon-plus"  v-loading="load.add">新增下一级小组</el-button> 
+					<el-button type="primary" @click="showAdd" icon="el-icon-plus" v-loading="load.add">新增下一级小组</el-button>   
 				</el-row> 
-				<el-row v-if="currNodeType=='group'">  
-					<el-button type="primary" @click="showGroupState" icon="el-icon-s-data"  v-loading="load.add">查看小组进度</el-button>   
-					<el-button type="primary" @click="showAddSub(editForm)" icon="el-icon-plus"  v-loading="load.add">新增下级小组</el-button>   
-					<el-button @click="showEdit(editForm)" icon="el-icon-edit"  v-loading="load.edit">修改小组信息</el-button> 
-					<el-button @click="userSelectVisible=true" icon="el-icon-plus"  v-loading="load.add">新增组员</el-button> 
-					<el-button @click="groupUserVisible=true" icon="el-icon-search"  v-loading="load.add">查看组员</el-button> 
-					<el-button type="danger" @click="handleDel(editForm)" icon="el-icon-delete"  v-loading="load.del">删除小组</el-button>
+				<el-row v-else-if="currNodeType=='group'">  
+					<el-row>
+						<el-button type="primary" @click="loadNexGroup" icon="el-icon-search" v-loading="load.add">加载下一级小组</el-button>  
+						<el-button   @click="showGroupState" icon="el-icon-s-data"  v-loading="load.add">查看小组进度</el-button>    
+						<el-button @click="groupUserVisible=true" icon="el-icon-search"  v-loading="load.add">查看组员</el-button> 
+					</el-row>
+					<el-row> 
+						<el-button   @click="showAddSub(editForm)" icon="el-icon-plus"  v-loading="load.add">新增下一级小组</el-button>   
+						<el-button @click="showEdit(editForm)" icon="el-icon-edit"  v-loading="load.edit">修改小组信息</el-button> 
+						<el-button @click="userSelectVisible=true" icon="el-icon-plus"  v-loading="load.add">新增组员</el-button> 
+						<el-button type="danger" @click="handleDel(editForm)" icon="el-icon-delete"  v-loading="load.del">删除小组</el-button>
+					</el-row>
 				</el-row> 
-				<el-row v-if="currNodeType=='groupUser'">  
+				<el-row v-else-if="currNodeType=='groupUser'">  
 					<el-button type="danger" icon="el-icon-delete" @click="handleDelGroupUser(editForm)" v-loading="load.del">删除组员</el-button>
 				</el-row> 
+				<el-row v-else>  
+					<el-button type="primary" @click="loadNexGroup" icon="el-icon-search" v-loading="load.add">加载下一级小组</el-button>  
+					<el-button type="primary" @click="selectProductVisible=true" icon="el-icon-plus" v-loading="load.add">新增产品小组</el-button>  
+					<el-button type="primary" @click="selectProjectVisible=true" icon="el-icon-plus" v-loading="load.add">新增项目小组</el-button>  
+				</el-row>
 			</el-dialog>
 			
 			<el-drawer append-to-body
@@ -159,7 +172,15 @@
 			<el-drawer  v-if="currNodeType=='group'&&editForm.groupName" center  :title="(editForm==null?editForm.groupName:'')+'小组成员管理'" :visible.sync="groupUserVisible"  size="80%"  :close-on-click-modal="false" append-to-body>
 				<xm-project-group-user-mng  :xm-project-group="editForm" :visible="groupUserVisible" ></xm-project-group-user-mng>
 			</el-drawer>
+			<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
+				<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
+			</el-drawer>   
+			<el-drawer title="选中产品" :visible.sync="selectProductVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
+				<xm-product-select :isSelectProduct="true"   @selected="onProductConfirm"></xm-product-select>
+			</el-drawer>    
+			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 	    </el-row>
+		
 	</section>
 </template>
 
@@ -182,11 +203,14 @@
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
 	import  XmProjectGroupStateMng from '../xmProjectGroupState/XmProjectGroupStateMng';//修改界面
 	import  XmProjectGroupUserMng from '../xmProjectGroupUser/XmProjectGroupUserMng';//修改界面
+	import XmProjectList from '../xmProject/XmProjectList';
+	import XmProductSelect from '../xmProduct/XmProductSelect.vue';
 	
 	export default {
 	    name:'xmProjectGroupMng',
 		components: {
-		    XmProjectGroupEdit,VueOkrTree,UsersSelect,XmProjectGroupStateMng,XmProjectGroupUserMng,
+		    XmProjectGroupEdit,VueOkrTree,UsersSelect,XmProjectGroupStateMng,XmProjectGroupUserMng,XmProjectList,
+XmProductSelect,
 		},
 		props:["visible","selProject" ,"isSelectSingleUser","isSelectMultiUser",'xmProduct','xmIteration'],
 		computed: {
@@ -221,7 +245,7 @@
 				})
 				var groupsTree=treeTool.translateDataToTree(groups,'pgroupId','id')
 				var topLabel="组织架构"
-				var currNodeType=''
+				var currNodeType='branch'
 				var topdata={} 
 				if(this.xmProduct&&this.xmProduct.id){
 					topLabel=this.xmProduct.productName+"-产品组织架构"
@@ -283,7 +307,7 @@
 				xmProjectGroups: [],//查询结果
 				pageInfo:{//分页数据
 					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
-					pageSize:10,//每页数据
+					pageSize:50,//每页数据
 					count:false,//是否需要重新计算总记录数
 					pageNum:1,//当前页码、从1开始计算
 					orderFields:[],//排序列 如 ['sex','student_id']，必须为数据库字段
@@ -315,6 +339,8 @@
 				groupOperSelectVisible:false,
 				currNodeType:'',//project/product/iteration/group/groupUser
 				groupUserVisible:false,
+				selectProjectVisible:false,
+				selectProductVisible:false,
 			}
 		},//end data
 		methods: { 
@@ -348,6 +374,37 @@
 				 this.pageInfo.count=true; 
 				 this.getXmProjectGroups();
 			},
+			loadNexGroup(){
+				debugger;
+				var params={}
+				if(this.currNodeType=='branch'||this.currNodeType=='iteration'){
+					params.branchId=this.editForm.branchId
+					params.lvl=1
+				}else if(this.currNodeType=='product'){
+					params.projectId=this.editForm.id
+					params.lvl=1
+				}else if(this.currNodeType=='product'){
+					params.productId=this.editForm.id
+					params.lvl=1
+				}else if(this.currNodeType=='group'){
+					params.pgroupId=this.editForm.id
+				}else if(this.currNodeType=='groupUser'){
+					return;
+				}
+				listXmProjectGroup(params).then((res) => {
+					var tips=res.data.tips;
+					if(tips.isOk){ 
+						this.pageInfo.total = res.data.total;
+						this.pageInfo.count=false;
+						var childrens = res.data.data;
+						childrens=childrens.filter(i=>!this.xmProjectGroups.some(k=>k.id==i.id))
+						this.xmProjectGroups.push(...childrens)
+					}else{
+						this.$notify({ showClose:true, message: tips.msg, type: 'error' });
+					} 
+					this.load.list = false;
+				}).catch( err => this.load.list = false );
+			},
 			//获取列表 XmProjectGroup xm_project_group
 			getXmProjectGroups() {
 				let params = {
@@ -380,6 +437,7 @@
 				this.load.list = true;
 				if( !params.productId && !params.projectId && !params.iterationId){
 					func=listXmProjectGroup
+					params.lvl=1
 				}
 				func(params).then((res) => {
 					var tips=res.data.tips;
@@ -444,11 +502,12 @@
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);
 			},
-			afterAddSubmit(){
+			afterAddSubmit(group){
 				this.addFormVisible=false;
-				this.pageInfo.count=true;
+				//this.pageInfo.count=true;
 				this.groupOperSelectVisible=false;
-				this.getXmProjectGroups();
+				this.xmProjectGroups.push(group)
+				//this.getXmProjectGroups();
 			},
 			afterEditSubmit(){
 				this.editFormVisible=false;
@@ -650,6 +709,22 @@
 					}).catch( err  => this.load.del=false );
 				});
 			},
+			onPorjectConfirm(project){
+				this.addForm.projectId=project.id
+				this.addForm.groupName=project.name+"-管理小组"
+				this.addForm.projectName=project.name
+				this.addForm.pgClass="0"
+				this.addFormVisible=true;
+				this.selectProjectVisible=false;
+			},
+			onProductConfirm(product){
+				this.addForm.productId=product.id
+				this.addForm.groupName=product.productName+"-管理小组"
+				this.addForm.projectName=product.productName
+				this.addForm.pgClass="1"
+				this.addFormVisible=true;
+				this.selectProductVisible=false;
+			}
 		},//end methods
 		mounted() {
 			this.$nextTick(() => {
