@@ -321,7 +321,7 @@
 				
 				
 				
-				this.tableHeight =  util.calcTableMaxHeight('el-table'); 
+				this.tableHeight =  util.calcTableMaxHeight(".el-table"); 
 				console.log(this.currProject);
 				this.getXmProjectEnvLists();
 			});

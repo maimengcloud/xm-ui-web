@@ -577,7 +577,7 @@
 			this.$nextTick(() => {
 				
 				
-				this.tableHeight =  util.calcTableMaxHeight('el-table');  
+				this.tableHeight =  util.calcTableMaxHeight(".el-table");  
 				this.getXmMenus();
 			}); 
 				listOption([{categoryId:'all',itemCode:'xmMenuPlanStatus'} ]).then(res=>{

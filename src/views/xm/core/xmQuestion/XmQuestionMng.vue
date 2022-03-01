@@ -943,7 +943,7 @@
 			this.$nextTick(() => {
 				
 				
-				this.tableHeight =  util.calcTableMaxHeight('el-table');
+				this.tableHeight =  util.calcTableMaxHeight(".el-table");
 				this.getXmQuestions();
 			});
 				listOption([{categoryId:'all',itemCode:'bugSeverity'},{categoryId:'all',itemCode:'bugSolution'},{categoryId:'all',itemCode:'bugStatus'},{categoryId:'all',itemCode:'bugType'},{categoryId:'all',itemCode:'urgencyLevel'}] ).then(res=>{

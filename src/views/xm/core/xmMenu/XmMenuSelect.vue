@@ -421,7 +421,7 @@
 				this.getXmMenus(); 
             	
 				
-				this.tableHeight =  util.calcTableMaxHeight('el-table'); 
+				this.tableHeight =  util.calcTableMaxHeight(".el-table"); 
         	}); 
 		}
 	}

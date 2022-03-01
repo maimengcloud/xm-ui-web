@@ -460,7 +460,7 @@
 				if(this.selProject){
 					subHeight=100/1000 * window.innerHeight;
 				}
-				this.tableHeight =  util.calcTableMaxHeight('el-table'); 
+				this.tableHeight =  util.calcTableMaxHeight(".el-table"); 
         	}); 
         	/** 举例，
     		listOption([{categoryId:'all',itemCode:'sex'},{categoryId:'all',itemCode:'grade'}] ).then(res=>{

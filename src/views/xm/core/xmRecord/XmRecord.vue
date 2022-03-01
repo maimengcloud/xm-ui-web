@@ -266,7 +266,7 @@
 				if(this.projectId){
 					subHeight=100/1000 * window.innerHeight;
 				}
-				this.tableHeight =  util.calcTableMaxHeight('el-table'); 
+				this.tableHeight =  util.calcTableMaxHeight(".el-table"); 
 				this.getXmRecords();
         	}); 
 		}

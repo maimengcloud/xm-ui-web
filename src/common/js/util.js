@@ -14,7 +14,8 @@ function padding(s, len) {
 export default {
 
   
-  calcTableMaxHeight(cssSelector) {     
+  calcTableMaxHeight(cssSelector) {    
+    debugger; 
     var table=document.querySelector(cssSelector);
     var innerHeight=window.innerHeight 
     var defaultInnerHeight=913;  

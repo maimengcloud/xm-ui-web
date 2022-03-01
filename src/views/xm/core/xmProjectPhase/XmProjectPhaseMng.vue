@@ -1304,7 +1304,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				 
 				
 				
-				this.tableHeight =  util.calcTableMaxHeight('el-table'); 
+				this.tableHeight =  util.calcTableMaxHeight(".el-table"); 
 				if(this.selProject){
 					this.getXmProjectPhases();
 				} 

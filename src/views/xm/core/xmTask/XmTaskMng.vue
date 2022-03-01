@@ -2441,7 +2441,7 @@ export default {
     }
     this.$nextTick(() => {
       this.getXmTasks(); 
-      this.tableHeight = util.calcTableMaxHeight('el-table');  
+      this.tableHeight = util.calcTableMaxHeight(".el-table");  
       listOption([
         { categoryId: "all", itemCode: "planType" },
         { categoryId: "all", itemCode: "taskType" },

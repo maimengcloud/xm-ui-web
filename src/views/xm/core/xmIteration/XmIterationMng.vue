@@ -527,7 +527,7 @@ import XmIterationSelect from './XmIterationSelect.vue';
 			this.$nextTick(() => {
 				
 				
-				this.tableHeight =  util.calcTableMaxHeight('el-table');
+				this.tableHeight =  util.calcTableMaxHeight(".el-table");
 				this.getXmIterations();
         	});
           // console.log(this.dateRanger,this.dateRangerOnline);

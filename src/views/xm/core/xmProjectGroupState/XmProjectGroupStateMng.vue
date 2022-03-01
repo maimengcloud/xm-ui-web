@@ -270,7 +270,7 @@ XmProjectGroupStateOverview
 
 				
 				
-				this.tableHeight =  util.calcTableMaxHeight('el-table');
+				this.tableHeight =  util.calcTableMaxHeight(".el-table");
 				this.getXmProjectGroupStates();
         	});
         	/** 举例，

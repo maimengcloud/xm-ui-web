@@ -819,7 +819,7 @@
 			this.$nextTick(() => {
 				
 				 
-				this.tableHeight =  util.calcTableMaxHeight('el-table');
+				this.tableHeight =  util.calcTableMaxHeight(".el-table");
 				this.getXmTaskExecusers();
 				});
 

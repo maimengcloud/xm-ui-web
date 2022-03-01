@@ -155,7 +155,7 @@
 			this.$nextTick(() => {
 				
 				
-				this.tableHeight =  util.calcTableMaxHeight('el-table'); 
+				this.tableHeight =  util.calcTableMaxHeight(".el-table"); 
 				this.showInfo = false;
 				this.getXmProjects();
       }); 

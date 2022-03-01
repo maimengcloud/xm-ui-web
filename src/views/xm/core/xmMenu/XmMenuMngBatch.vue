@@ -1086,7 +1086,7 @@
 				if(this.selProject){
 					subHeight=110/1000 * window.innerHeight; 
 				} 
-				this.tableHeight =  util.calcTableMaxHeight('el-table'); 
+				this.tableHeight =  util.calcTableMaxHeight(".el-table"); 
 				
 				
           }); 

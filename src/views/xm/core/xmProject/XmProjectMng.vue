@@ -78,7 +78,7 @@
 				</el-row> 
 				<el-row  class="page-main"> 
 					<!--列表 XmProject xm_project-->
-					<el-row v-show="showType" v-loading="load.list" style="overflow:auto;" class="page-height-70">
+					<el-row v-show="showType" v-loading="load.list" :style="{overflow:'auto'}" class="page-height-70">
 						<el-col  v-cloak v-for="(p,i) in ScreenData" :key="i" :xl="8" :lg="8" :md="8" :sm="12">
 							<el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always">
 								<div class="project-name" title="这是项目名称">{{p.name}}</div>
