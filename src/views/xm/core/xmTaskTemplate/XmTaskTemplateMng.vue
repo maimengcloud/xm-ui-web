@@ -11,9 +11,9 @@
 					<el-button v-if="!selProjectTemplate"  @click="showProjectTemplate">选择模板</el-button>   
 					<el-button v-if="isSelect" type="primary" @click="selectedConfirm">确认选择</el-button>  
 				</el-row>
-				<el-row class="page-main page-height-80">  
+				<el-row class="page-main">  
 						<!--列表 XmTaskTemplate xm_task_template select-confirm-->
-						<el-table :data="xmTaskTemplatesTreeData" row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+						<el-table :height="maxTableHeight" :data="xmTaskTemplatesTreeData" row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 							<el-table-column sortable type="selection" width="40"></el-table-column>
 							<el-table-column prop="name" label="任务名称" min-width="150" >						
 								<template slot-scope="scope">
@@ -74,7 +74,7 @@
 				xmTaskTemplates: [],//查询结果
 				pageInfo:{//分页数据
 					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
-					pageSize:10,//每页数据
+					pageSize:20,//每页数据
 					count:false,//是否需要重新计算总记录数
 					pageNum:1,//当前页码、从1开始计算
 					orderFields:[],//排序列 如 ['sex','student_id']，必须为数据库字段
@@ -97,6 +97,7 @@
 				},
 				parentTaskTemplate:null,
 				projectPhaseTemplate:null,
+				maxTableHeight:300,
 				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -277,7 +278,10 @@
 			if(this.selProjectTemplate){
 				this.filters.projectTemplate=this.selProjectTemplate
 			}
-			this.$nextTick(() => {
+			this.$nextTick(() => { 
+                
+                
+                this.maxTableHeight = util.calcTableMaxHeight('.el-table');
 				//this.getXmTaskTemplates();
         	}); 
 		}

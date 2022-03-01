@@ -1,7 +1,7 @@
 <template>
 	<section>  
-		<el-row class="page-main page-height-90">   
-			<el-table ref="table" :height="tableHeight"  stripe :data="xmProjects"  highlight-current-row v-loading="load.list"  @selection-change="selsChange" @row-click="rowClick" style="width: 100%;" >
+		<el-row class="page-main">   
+			<el-table ref="table" :height="maxTableHeight"  stripe :data="xmProjects"  highlight-current-row v-loading="load.list"  @selection-change="selsChange" @row-click="rowClick" style="width: 100%;" >
  				<el-table-column prop="name" label="项目名称" min-width="80" >
 					 <template slot-scope="scope">
 						 {{scope.row.name}}&nbsp;&nbsp;
@@ -58,7 +58,7 @@
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
-				tableHeight:300,
+				maxTableHeight:300,
 				//编辑xmProject界面初始化数据
 				editForm: {
 					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:'',bizProcInstId:'',bizFlowState:'',planNouserAt:'',planInnerUserAt:'',planOutUserAt:'',locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:'',totalReceivables:'',budgetMarginRate:'',contractAmt:'',planInnerUserPrice:'',budgetOutUserPrice:'',planOutUserCnt:'',planInnerUserCnt:'',planWorkingHours:''
@@ -156,10 +156,10 @@
 		    //在下面添加其它组件
 		},
 		mounted() { 
-			this.$nextTick(() => {
-				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=70/1000 * window.innerHeight; 
-				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
+			this.$nextTick(() => {  
+                
+                
+                this.maxTableHeight = window.innerHeight - top -100;
 				this.showInfo = false;
 				this.getXmProjects();
       }); 

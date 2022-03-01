@@ -552,8 +552,8 @@
 			}
 			this.$nextTick(() => {
 				
-                var table=document.querySelector('.el-table');
-                var top=util.getPositionTop(table)
+                
+                
                 this.maxTableHeight = window.innerHeight - top -100;
 				this.showInfo = false;
 				this.getXmProjects();

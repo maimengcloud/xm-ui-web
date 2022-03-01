@@ -252,9 +252,9 @@
 			    //initSimpleDicts('all',['sex','gradeLvl']).then(res=>this.dicts=res.data.data);
 			    this.initData()
 				this.searchXmProjectGroupUsers();
-                var table=document.querySelector('.el-table');
-                var top=util.getPositionTop(table)
-                this.maxTableHeight = window.innerHeight - top -60;
+                
+                
+                this.maxTableHeight = util.calcTableMaxHeight('.el-table');
 
         	});
 		}

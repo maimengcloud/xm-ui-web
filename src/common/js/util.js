@@ -13,15 +13,27 @@ function padding(s, len) {
 
 export default {
 
-  getPositionTop(node) {
+  
+  calcTableMaxHeight(cssSelector) {   
+    var table=document.querySelector(cssSelector);
+    var top=this.getPositionTop(table) 
+    var defaultInnerHeight=913; 
+    var innerHeight=window.innerHeight
+    if(top==0){
+      top=100/defaultInnerHeight*innerHeight
+    }
+    var maxTableHeight = innerHeight - top-80/defaultInnerHeight*innerHeight;
+    return maxTableHeight;
+  },
+  getPositionTop(node) { 
+
       if(!node){
-        return 150;
-      }
-      var top = node.offsetTop;
-      var parent = node.offsetParent;
-      while(parent != null) {
-          top += parent.offsetTop;
-          parent = parent.offsetParent;
+        return 0;
+      } 
+      var rect=node.getBoundingClientRect() 
+      var top=rect.top; 
+      if(top==0){
+        return 0;
       }
       return top;
   },

@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container page-full-height padding border">
+	<section class="page-container padding border">
 		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
 				<template slot="append">
@@ -11,9 +11,9 @@
  			<el-button type="success" @click="loadTasksToXmProjectState" icon="el-icon-s-data">刷新数据</el-button> 
 			<el-button type="success" @click="loadTasksSettleToXmProjectState" icon="el-icon-s-data">刷新结算数据</el-button>  
 		</el-row> 
-		<el-row class="page-main page-height-90"> 
+		<el-row class="page-main"> 
 			<!--列表 XmProjectState 项目指标日统计表-->
-			<el-table ref="table" :height="tableHeight" :data="xmProjectStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :height="maxTableHeight" :data="xmProjectStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>
 				<el-table-column sortable type="index" width="45">  </el-table-column> 
 				<el-table-column   type="expand" width="45">
@@ -173,7 +173,7 @@
 				},
 				selectProjectVisible:false,
 				/**begin 自定义属性请在下面加 请加备注**/
-				tableHeight:300,
+				maxTableHeight:300,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -421,22 +421,19 @@
 		},
 		mounted() { 
 			this.$nextTick(() => {
+				
 				if(this.selProject){
 					this.filters.selProject=this.selProject
-				}
-				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=70/1000 * window.innerHeight; 
-				if(this.selProject){
-					subHeight=100/1000 * window.innerHeight;
-				}
-				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
+				} 
+
 				this.getXmProjectStates();
 				listOption([{categoryId:'all',itemCode:'projectStatus'}] ).then(res=>{
 					if(res.data.tips.isOk){  
 						this.options['projectStatus']=res.data.data.projectStatus 
 						//this.editForm.projectStatus=this.options['projectStatus'][0].optionValue
 					}
-				});
+				}); 
+                this.maxTableHeight = util.calcTableMaxHeight('.el-table');
         	}); 
         	/** 举例，
     		listOption([{categoryId:'all',itemCode:'sex'},{categoryId:'all',itemCode:'grade'}] ).then(res=>{

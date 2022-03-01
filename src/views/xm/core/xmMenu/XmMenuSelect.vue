@@ -419,9 +419,9 @@
 					this.filters.iterationFilterType='not-join'
 				}
 				this.getXmMenus(); 
-            	var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=70/1000 * window.innerHeight; 
-				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
+            	
+				
+				this.tableHeight =  util.calcTableMaxHeight('el-table'); 
         	}); 
 		}
 	}

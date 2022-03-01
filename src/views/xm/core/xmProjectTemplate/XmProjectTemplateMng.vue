@@ -259,9 +259,9 @@
 		mounted() { 
 			this.$nextTick(() => {
 				
-                var table=document.querySelector('.el-table');
-                var top=util.getPositionTop(table)
-                this.maxTableHeight = window.innerHeight - top -60;
+                
+                
+                this.maxTableHeight = util.calcTableMaxHeight('.el-table');
 				this.getXmProjectTemplates();
 				listOption([{categoryId:'all',itemCode:'projectType'}] ).then(res=>{
 					if(res.data.tips.isOk){ 

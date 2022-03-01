@@ -260,13 +260,13 @@
 			}
 			
 			this.$nextTick(() => {
-				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=70/1000 * window.innerHeight; 
+				
+				
 				
 				if(this.projectId){
 					subHeight=100/1000 * window.innerHeight;
 				}
-				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
+				this.tableHeight =  util.calcTableMaxHeight('el-table'); 
 				this.getXmRecords();
         	}); 
 		}

@@ -455,12 +455,12 @@
 			this.$nextTick(() => {
 				this.filters.luser=this.userInfo; 
 				this.getXmTestCases();
-				var clientRect=this.$refs.table.$el.getBoundingClientRect();
+				
 				var subHeight=70;  
 				if(this.selProject){
 					subHeight=100/1000 * window.innerHeight;
 				}
-				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
+				this.tableHeight =  util.calcTableMaxHeight('el-table'); 
         	}); 
         	/** 举例，
     		listOption([{categoryId:'all',itemCode:'sex'},{categoryId:'all',itemCode:'grade'}] ).then(res=>{

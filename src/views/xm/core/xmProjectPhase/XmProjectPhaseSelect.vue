@@ -460,7 +460,7 @@
        
 			this.$nextTick(() => {
 				var clientRect=this.$refs.selectPhaseTable.$el.getBoundingClientRect();
-				var subHeight=70/1000 * window.innerHeight; 
+				
 				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.selectPhaseTable.$el.offsetTop-subHeight; 
 				if(this.selProject){
 					this.getXmProjectPhases();

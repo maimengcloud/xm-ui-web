@@ -2454,7 +2454,7 @@ export default {
       /**
 				let self = this;
 				window.onresize = function() {
-					self.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight;
+					self.tableHeight =  util.calcTableMaxHeight('el-table');
 				}
  				*/
       listOption([

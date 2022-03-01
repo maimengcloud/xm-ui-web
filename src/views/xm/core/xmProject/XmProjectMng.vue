@@ -78,7 +78,7 @@
 				</el-row> 
 				<el-row  class="page-main"> 
 					<!--列表 XmProject xm_project-->
-					<el-row v-show="showType" v-loading="load.list" style="overflow:auto;" class="page-height-80">
+					<el-row v-show="showType" v-loading="load.list" style="overflow:auto;" class="page-height-70">
 						<el-col  v-cloak v-for="(p,i) in ScreenData" :key="i" :xl="8" :lg="8" :md="8" :sm="12">
 							<el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always">
 								<div class="project-name" title="这是项目名称">{{p.name}}</div>
@@ -115,7 +115,7 @@
 						</el-col>
 					</el-row>
 
-					<el-table class="project-table" ref="table" :height="maxTableHeight" v-cloak v-show="!showType" stripe :data="ScreenData" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+					<el-table  ref="table" :height="maxTableHeight" v-cloak v-show="!showType" stripe :data="ScreenData" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column  type="index" label="序号" width="80" ></el-table-column>
 						<el-table-column prop="code" label="项目编号" min-width="120" ></el-table-column>
 						<el-table-column prop="name" label="标题" min-width="200" >
@@ -743,10 +743,8 @@
 				this.filters.productId=this.$route.params.productId;
 				this.filters.productName=this.$route.params.productName;
 			}
-			this.$nextTick(() => { 
-                var table=document.querySelector('.project-table .table');
-                var top=util.getPositionTop(table)
-                this.maxTableHeight = window.innerHeight - top -100;
+			this.$nextTick(() => {  
+                this.maxTableHeight = util.calcTableMaxHeight('.el-table');
 				this.showInfo = false;
 				this.getXmProjects();
 			}); 

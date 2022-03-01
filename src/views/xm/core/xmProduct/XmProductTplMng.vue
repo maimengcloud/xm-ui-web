@@ -425,11 +425,8 @@
 		    //在下面添加其它组件
 		},
 		mounted() {
-			this.$nextTick(() => { 
-				
-                var table=document.querySelector('.project-table .table');
-                var top=util.getPositionTop(table)
-                this.maxTableHeight = window.innerHeight - top -100;
+			this.$nextTick(() => {  
+                this.maxTableHeight = util.calcTableMaxHeight('.el-table');
 				this.getXmProducts();
         	});
 		}
