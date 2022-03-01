@@ -7,7 +7,7 @@
  					<el-button @click="groupRoleDescVisible=true" icon="el-icon-document">角色说明</el-button> 
 					 <font color="red">注意：点击架构图进行操作</font>
   		</el-row> 
-		<el-row >
+		<el-row class="page-height-70">
 			<vue-okr-tree :data="okrTreeData" v-loading="load.list"
 				show-collapsable   
 				node-key="id"

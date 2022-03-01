@@ -11,7 +11,7 @@
 					 <el-tag v-else type="warning">未选择项目</el-tag>
  				</el-col> 
 		</el-row>  
-		<el-row class="page-main" v-loading="load.list" >
+		<el-row class="page-main page-height-80" v-loading="load.list">
 			<el-row v-for="(item,index) in xmProjectGroupFormworkSels" :key="index" class="padding">
 				<h3>
 					<div>{{item.groupName + "："}} 
