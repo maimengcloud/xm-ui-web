@@ -3,7 +3,7 @@
 		<el-row>
 			<el-col :span="6" class="padding-top  padding-left" v-if="templateVisible"> 
 				<el-row>
-					<xm-project-tpl-mng @copy="searchXmProjects" ref="xmProjectTplMngRef"></xm-project-tpl-mng>
+					<xm-project-tpl-mng @copy="searchXmProjects" :show-type="'simple'" ref="xmProjectTplMngRef"></xm-project-tpl-mng>
 				</el-row>
 			</el-col>
 			<el-col :span="templateVisible?18:24" class="border">
@@ -76,9 +76,9 @@
 					</el-menu>
 					
 				</el-row> 
-				<el-row  class="page-main page-height-80"> 
+				<el-row  class="page-main"> 
 					<!--列表 XmProject xm_project-->
-					<el-row v-show="showType" v-loading="load.list">
+					<el-row v-show="showType" v-loading="load.list" style="overflow:auto;" class="page-height-80">
 						<el-col  v-cloak v-for="(p,i) in ScreenData" :key="i" :xl="8" :lg="8" :md="8" :sm="12">
 							<el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always">
 								<div class="project-name" title="这是项目名称">{{p.name}}</div>
@@ -115,7 +115,8 @@
 						</el-col>
 					</el-row>
 
-					<el-table ref="table" v-cloak v-show="!showType" stripe :data="ScreenData" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+					<el-table class="project-table" ref="table" :height="maxTableHeight" v-cloak v-show="!showType" stripe :data="ScreenData" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+						<el-table-column  type="index" label="序号" width="80" ></el-table-column>
 						<el-table-column prop="code" label="项目编号" min-width="120" ></el-table-column>
 						<el-table-column prop="name" label="标题" min-width="200" >
 							<template slot-scope="scope">
@@ -185,11 +186,11 @@
 							</template>
 						</el-table-column>
 					</el-table>
-					
+					<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 				</el-row>
 			</el-col>
 		</el-row>
-		<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+		
 		<el-drawer title="项目新增" :visible.sync="addFormVisible" :with-header="false" size="50%"  :close-on-click-modal="false" append-to-body>
 			<xm-project-add :sel-project="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-add>
 		</el-drawer>
@@ -331,7 +332,7 @@
 				finishFlag: false,
 				xmRecordVisible: false,
 				productSelectVisible:false,
-				tableHeight:300,
+				maxTableHeight:300,
 				dateRanger: [ ],  
 				pickerOptions:  util.pickerOptions('datarange'),
 				xmProjectCopy:{
@@ -742,10 +743,10 @@
 				this.filters.productId=this.$route.params.productId;
 				this.filters.productName=this.$route.params.productName;
 			}
-			this.$nextTick(() => {
-                var table=document.querySelector('.el-table');
+			this.$nextTick(() => { 
+                var table=document.querySelector('.project-table .table');
                 var top=util.getPositionTop(table)
-                this.maxTableHeight = window.innerHeight - top -60;
+                this.maxTableHeight = window.innerHeight - top -100;
 				this.showInfo = false;
 				this.getXmProjects();
 			}); 

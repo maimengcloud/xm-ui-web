@@ -1,23 +1,25 @@
 <template>
 	<section class="page-container"> 
-		<el-row v-if="showType!='simple'">
+		<el-row v-if="showType!='simple'" class="padding">
 			<el-checkbox v-model="filters.isMy" false-label="" true-label="1">我的模板</el-checkbox>
 			<el-input style="width:300px;" v-model="filters.key" placeholder="模板名字"></el-input>
 			<el-button @click="searchXmProjects" icon="el-icon-search"></el-button>
 		</el-row>
-		<el-row v-if="showType=='simple'">
-			<el-row>
-				<el-checkbox v-model="filters.isMy" false-label="0" true-label="1">我的模板</el-checkbox>
-			</el-row>
-			<el-row>
-			<el-input style="width:80%;" v-model="filters.key" placeholder="模板名字"></el-input>&nbsp;&nbsp;<el-button @click="searchXmProjects" icon="el-icon-search"></el-button>
-			</el-row>
+		<el-row v-if="showType=='simple'"> 
+					<el-col :span="24">
+					<el-checkbox v-model="filters.isMy" false-label="0" true-label="1">我的模板</el-checkbox> 
+					</el-col>
+					<el-col :span="16"><el-input  v-model="filters.key" placeholder="模板名字"></el-input>
+					</el-col>
+					<el-col :span="8">
+					&nbsp;&nbsp;<el-button @click="searchXmProjects" icon="el-icon-search"></el-button>
+					</el-col> 
 		</el-row>
-		<el-row  class="page-main page-height-70"> 
+		<el-row  class="page-main"> 
 			<!--列表 XmProject xm_project-->
 			<el-row  v-loading="load.list">
 				
-					<el-table ref="table" v-cloak  stripe :data="ScreenData" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+					<el-table :height="maxTableHeight" ref="table" v-cloak  stripe :data="ScreenData" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  						<el-table-column prop="name" label="项目模板(学习/参考)" min-width="200" >
 							<template slot-scope="scope">
 								<el-link @click.stop="intoInfo(scope.row)">{{scope.row.name}}</el-link>
@@ -91,7 +93,7 @@
 
 
 	export default { 
-		props:['dataScope'],
+		props:['dataScope','showType'],
 		computed: {
 			...mapGetters([
 				'userInfo','roles'
@@ -103,12 +105,7 @@
 				 
 			},
 		},
-		watch: {
-			"showType": function(val){
-				console.log("shotType_change");
-				//this.xmProjects = [];
-				//this.getXmProjects();
-			},
+		watch: { 
 			"finishFlag":function(val){
 				this.searchXmProjects();
 			}
@@ -149,8 +146,7 @@
 					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:'',bizProcInstId:'',bizFlowState:'',planNouserAt:'',planInnerUserAt:'',planOutUserAt:'',locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:'',totalReceivables:'',budgetMarginRate:'',contractAmt:'',planInnerUserPrice:'',budgetOutUserPrice:'',planOutUserCnt:'',planInnerUserCnt:'',planWorkingHours:'',budgetCtrl:'0',
 				},
 				/**begin 自定义属性请在下面加 请加备注**/
-				menukey: "all",
-				showType: true,
+				menukey: "all", 
 				showInfo: false,
 				selectProject: null,
 				finishFlag: false,
@@ -163,6 +159,7 @@
 					id:'',name:'',code:'',isTpl:'',copyPhase:'1',copyTask:'1',copyGrup:'0'
 				},
 				copyToVisible:false,
+				maxTableHeight:300,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -554,6 +551,10 @@
 				this.filters.productName=this.$route.params.productName;
 			}
 			this.$nextTick(() => {
+				
+                var table=document.querySelector('.el-table');
+                var top=util.getPositionTop(table)
+                this.maxTableHeight = window.innerHeight - top -100;
 				this.showInfo = false;
 				this.getXmProjects();
 			}); 

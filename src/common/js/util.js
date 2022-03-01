@@ -14,6 +14,9 @@ function padding(s, len) {
 export default {
 
   getPositionTop(node) {
+      if(!node){
+        return 150;
+      }
       var top = node.offsetTop;
       var parent = node.offsetParent;
       while(parent != null) {

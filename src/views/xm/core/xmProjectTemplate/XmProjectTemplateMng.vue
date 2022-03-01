@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container page-full-height padding border">
+	<section class="page-container padding border">
 		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
 			
@@ -10,9 +10,9 @@
 			<el-button type="primary" @click="showAdd">+项目模板</el-button>
 			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
 		</el-row>
-		<el-row class="page-main page-height-90"> 
+		<el-row class="page-main"> 
 			<!--列表 XmProjectTemplate xm_project_template-->
-			<el-table :data="xmProjectTemplates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table :height="maxTableHeight" :data="xmProjectTemplates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>
 				<el-table-column sortable type="index" width="45"></el-table-column>
   				<el-table-column prop="name" label="模板名称" min-width="80" ></el-table-column> 
@@ -108,6 +108,7 @@
 					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:'',bizProcInstId:'',bizFlowState:'',planNouserAt:'',planInnerUserAt:'',planOutUserAt:'',locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:'',totalReceivables:'',budgetMarginRate:'',contractAmt:'',planInnerUserPrice:'',planOutUserPrice:'',planOutUserCnt:'',planInnerUserCnt:'',planWorkingHours:'',taxRate:'',planInnerUserWorkload:'',planOutUserWorkload:'',productId:'',productName:'',templateId:'',tcuserid:'',tcusername:'',tremark:'',tctime:'',tcbranchId:'',shareScope:''
 				},
 				projectTemplateInfoVisible:false,
+				maxTableHeight:300,
 				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -257,6 +258,10 @@
 		},
 		mounted() { 
 			this.$nextTick(() => {
+				
+                var table=document.querySelector('.el-table');
+                var top=util.getPositionTop(table)
+                this.maxTableHeight = window.innerHeight - top -60;
 				this.getXmProjectTemplates();
 				listOption([{categoryId:'all',itemCode:'projectType'}] ).then(res=>{
 					if(res.data.tips.isOk){ 

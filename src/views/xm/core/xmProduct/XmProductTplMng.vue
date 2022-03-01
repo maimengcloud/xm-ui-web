@@ -5,21 +5,25 @@
 			<el-input style="width:300px;" v-model="filters.key" placeholder="模板名字"></el-input>
 			<el-button @click="searchXmProducts" icon="el-icon-search"></el-button>
 		</el-row>
-		<el-row v-if="showType=='simple'">
-			<el-row>
-				<el-checkbox v-model="filters.isMy" false-label="0" true-label="1">我的模板</el-checkbox>
-			</el-row>
-			<el-row>
-			<el-input style="width:80%;" v-model="filters.key" placeholder="模板名字"></el-input>&nbsp;&nbsp;<el-button @click="searchXmProducts" icon="el-icon-search"></el-button>
-			</el-row>
+		<el-row v-if="showType=='simple'"> 
+			<el-col :span="24">
+				<el-checkbox v-model="filters.isMy" false-label="0" true-label="1">我的模板</el-checkbox> 
+			</el-col>
+			<el-col :span="18">
+				<el-input  v-model="filters.key" placeholder="模板名字"></el-input>
+			</el-col>
+			<el-col :span="6">
+			 &nbsp;&nbsp;<el-button @click="searchXmProducts" icon="el-icon-search"></el-button>
+			</el-col>
+ 
 		</el-row>
-		<el-row  class="page-main page-height-70" >
+		<el-row  class="page-main" >
 			<!--列表 XmProduct 产品表-->
-			<el-table ref="table"  :height="tableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list"  @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table"  :height="maxTableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list"  @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
   				
 				<el-table-column    label="序号" width="60" type="index"  v-if="showType!='simple'">  
 				</el-table-column> 
-				  <el-table-column prop="productName" label="产品模板(参考学习用)" min-width="200" sortable> 
+				  <el-table-column prop="productName" label="产品模板(参考学习用)" min-width="200" sortable show-overflow-tooltip> 
 					<template slot-scope="scope">
 						<el-link  @click="intoInfo(scope.row)">{{scope.row.productName}}</el-link>
 					</template>
@@ -134,8 +138,7 @@
 				iterationVisible:false,
 				iterationSelectVisible:false,
 				productStateVisible:false,
-				selectFiltersPmUserVisible:false,
-				tableHeight:300,
+				selectFiltersPmUserVisible:false, 
 				dateRanger: [ 
 				],
 				pickerOptions:  util.pickerOptions('datarange'),
@@ -145,6 +148,7 @@
 					id:'',productName:'',code:'',isTpl:'',copyMenu:'1'
 				},
 				copyToVisible:false,
+				maxTableHeight:300,
 				/**begin 自定义属性请在下面加 请加备注**/
 
 				/**end 自定义属性请在上面加 请加备注**/
@@ -422,6 +426,10 @@
 		},
 		mounted() {
 			this.$nextTick(() => { 
+				
+                var table=document.querySelector('.project-table .table');
+                var top=util.getPositionTop(table)
+                this.maxTableHeight = window.innerHeight - top -100;
 				this.getXmProducts();
         	});
 		}
