@@ -4,9 +4,9 @@
 		<el-row class="padding-header">
 			<el-steps :active="calcXmProductPstatusStep" simple finish-status="success">
  				<el-step  v-for="(i,index) in options['xmProductPstatus']" :title="i.optionName" :key="index" @click.native.stop="editForm.pstatus=i.optionValue">
-					 <el-row slot="title" >
+					 <el-link slot="title" >
 						 {{i.optionName}} 
-					 </el-row>
+					 </el-link>
 				</el-step> 
 			</el-steps>
 		</el-row>

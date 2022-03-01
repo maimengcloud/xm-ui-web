@@ -2,10 +2,10 @@
 	<section class="page-container padding border">
 		<el-row class="padding-bottom">
 			<el-steps :active="calcProjectStatusStep" simple finish-status="success">
- 				<el-step  v-for="(i,index) in options['projectStatus']" :title="i.optionName" :key="index">
-					 <el-row slot="title" @click.native.stop="editForm.status=i.optionValue">
+ 				<el-step  v-for="(i,index) in options['projectStatus']" :title="i.optionName" :key="index" @click.native.stop="editForm.status=i.optionValue">
+					 <el-link slot="title" @click.native.stop="editForm.status=i.optionValue">
 						 {{i.optionName}} 
-					 </el-row>
+					 </el-link>
 				</el-step> 
 			</el-steps>
 		</el-row>
@@ -247,6 +247,7 @@
 				 return this.editForm.totalReceivables
 			},
 			calcProjectStatusStep(){
+				debugger;
 				if(this.options['projectStatus'] && this.editForm){
 					var index=this.options['projectStatus'].findIndex(i=>{
 						if(i.optionValue==this.editForm.status){
