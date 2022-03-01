@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container page-full-height padding border">
+	<section class="page-container  padding border">
 		<el-row v-if="!simple">
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>  
 			<el-input v-model="filters.projectName" style="width: 20%;" placeholder="点击选择项目" @click.native="showProjectTemplate"></el-input>  
@@ -9,7 +9,7 @@
 		
 		<el-row class="page-main" v-if="!simple"> 
 			<!--列表 XmProjectPhaseTemplate xm_phase_template-->
-			<el-table lazy :load="loadXmProjectPhaseLazy" :data="xmProjectPhaseTemplateTreeData" @sort-change="sortChange" row-key="id"  :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table :height="maxTableHeight" lazy :load="loadXmProjectPhaseLazy" :data="xmProjectPhaseTemplateTreeData" @sort-change="sortChange" row-key="id"  :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="selection" width="40"></el-table-column> 
 				<el-table-column prop="phaseName" label="计划名称" min-width="260" >
 					
@@ -53,7 +53,7 @@
 		</el-row>
 		<el-row  v-if="simple"> 
 			<!--列表 XmProjectPhaseTemplate xm_phase_template-->
-			<el-table default-expand-all :data="xmProjectPhaseTemplateTreeData" @sort-change="sortChange" row-key="id"  :tree-props="{children: 'children', hasChildren: 'hasChildren'}" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table lazy :load="loadXmProjectPhaseLazy"  default-expand-all :height="maxTableHeight" :data="xmProjectPhaseTemplateTreeData" @sort-change="sortChange" row-key="id"  :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  				<el-table-column prop="phaseName" label="计划名称" min-width="180" > 
 					 <template slot-scope="scope">  
 						 {{scope.row.seqNo}} &nbsp;&nbsp;{{scope.row.phaseName}}
@@ -144,6 +144,7 @@
 				},
 				parentPhaseTemplate:null,
 				projectTemplateVisible:false,
+				maxTableHeight:300,
 				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -297,6 +298,10 @@
 				this.filters.projectTemplate=this.selProjectTemplate
 			}
 			this.$nextTick(() => {
+				
+                var table=document.querySelector('.el-table');
+                var top=util.getPositionTop(table)
+                this.maxTableHeight = window.innerHeight - top -60;
 				this.getXmProjectPhases();   
 			}); 
 			

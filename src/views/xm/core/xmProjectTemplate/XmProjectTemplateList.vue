@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container page-full-height padding border">
+	<section class="page-container padding border">
 		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="项目模板名称查询"></el-input>  
 			<el-select v-model="filters.xmType" @change="searchXmProjectTemplates">
@@ -7,9 +7,9 @@
 			</el-select>
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectTemplates">查询</el-button> 
   		</el-row>
-		<el-row class="page-main page-height-80"> 
+		<el-row class="page-main"> 
 			<!--列表 XmProjectTemplate xm_project_template-->
-			<el-table :data="xmProjectTemplates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table :height="maxTableHeight" :data="xmProjectTemplates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>
 				<el-table-column sortable type="index" width="45"></el-table-column>
   				<el-table-column prop="name" label="项目名称" min-width="150" ></el-table-column> 
@@ -94,6 +94,7 @@
 					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:'',bizProcInstId:'',bizFlowState:'',planNouserAt:'',planInnerUserAt:'',planOutUserAt:'',locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:'',totalReceivables:'',budgetMarginRate:'',contractAmt:'',planInnerUserPrice:'',planOutUserPrice:'',planOutUserCnt:'',planInnerUserCnt:'',planWorkingHours:'',taxRate:'',planInnerUserWorkload:'',planOutUserWorkload:'',productId:'',productName:'',templateId:'',tcuserid:'',tcusername:'',tremark:'',tctime:'',tcbranchId:'',shareScope:''
 				},
 				projectTemplateInfoVisible:false,
+				maxTableHeight:false,
 				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -211,6 +212,10 @@
 		},
 		mounted() { 
 			this.$nextTick(() => {
+				
+                var table=document.querySelector('.el-table');
+                var top=util.getPositionTop(table)
+                this.maxTableHeight = window.innerHeight - top -60;
 				this.getXmProjectTemplates();
 				listOption([{categoryId:'all',itemCode:'projectType'}] ).then(res=>{
 					if(res.data.tips.isOk){ 
