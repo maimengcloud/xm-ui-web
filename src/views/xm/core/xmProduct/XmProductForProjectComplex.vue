@@ -6,12 +6,14 @@
 			</el-col>
 			<el-col :span="productVisible==true?21:24" >
 				<el-tabs type="border-card"  :value="showPanel"  @tab-click="tabClick">
+					<el-tab-pane>
+						<span v-show="productVisible==true" slot="label" @click.stop="productVisible=false" ><i class="el-icon-d-arrow-left" ></i> 隐藏左边</span>
+						<span v-show="productVisible==false" slot="label" @click.stop="productVisible=true"><i class="el-icon-d-arrow-right" ></i> 展开左边</span>
+					</el-tab-pane>
 					<el-tab-pane label="产品概览"   name="productOverview">
-						<span v-show="productVisible==true" slot="label" ><i class="el-icon-d-arrow-left" @click.stop="productVisible=false"></i> 产品概览</span>
-						<span v-show="productVisible==false" slot="label" ><i class="el-icon-d-arrow-right" @click.stop="productVisible=true"></i> 产品概览</span>
-            <xm-product-overview v-if="xmProduct && showPanel=='productOverview'"  :xm-product="xmProduct" :sel-project="selProject"></xm-product-overview>
+						 <xm-product-overview v-if="xmProduct && showPanel=='productOverview'"  :xm-product="xmProduct" :sel-project="selProject"></xm-product-overview>
 
-          </el-tab-pane>
+          			</el-tab-pane>
 					<el-tab-pane label="迭代"   name="iterations" v-if=" !xmIteration" >
 						 <xm-iteration-mng v-if=" xmProduct && showPanel=='iterations' && !xmIteration"   :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-iteration-mng>
 					</el-tab-pane>

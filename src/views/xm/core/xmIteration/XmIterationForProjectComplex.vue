@@ -6,10 +6,12 @@
 			</el-col>
 			<el-col :span="iterationVisible==true?21:24" >
 				<el-tabs type="border-card"  :value="showPanel" @tab-click="tabClick">
-
+					
+					<el-tab-pane  lazy @click.stop="iterationVisible=!iterationVisible">
+						<span @click.stop="iterationVisible=false" v-show="iterationVisible==true" slot="label" ><i class="el-icon-d-arrow-left" ></i>隐藏左边</span>
+						<span  @click.stop="iterationVisible=true" v-show="iterationVisible==false" slot="label" ><i class="el-icon-d-arrow-right"></i> 展开左边</span> 
+					</el-tab-pane>
 					<el-tab-pane label="迭代概览" lazy  name="iterationOverview">
-						<span v-show="iterationVisible==true" slot="label" ><i class="el-icon-d-arrow-left" @click.stop="iterationVisible=false"></i> 迭代概览</span>
-						<span v-show="iterationVisible==false" slot="label" ><i class="el-icon-d-arrow-right" @click.stop="iterationVisible=true"></i> 迭代概览</span>
 						<xm-iteration-overview v-if="xmIteration && showPanel=='iterationOverview'"  :xm-iteration="xmIteration" :sel-project="selProject"></xm-iteration-overview>
 					</el-tab-pane>
 					<el-tab-pane label="产品、战略"   name="products" v-if="!xmProduct">
