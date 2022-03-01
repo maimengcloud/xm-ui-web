@@ -461,7 +461,7 @@
 			this.$nextTick(() => {
 				
 				
-				this.tableHeight = util.calcTableMaxHeight(".el-table"); 
+				this.tableHeight =  util.calcTableMaxHeight(this.$refs.selectPhaseTable.$el); 
 				if(this.selProject){
 					this.getXmProjectPhases();
 				}

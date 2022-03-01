@@ -1768,14 +1768,8 @@ export default {
     //在下面添加其它组件
   },
   mounted() {
-    this.$nextTick(() => {
-      var clientRect = this.$refs.table.$el.getBoundingClientRect();
-      var subHeight = (70 / 1000) * window.innerHeight;
-      this.tableHeight =
-        window.innerHeight -
-        clientRect.y -
-        this.$refs.table.$el.offsetTop -
-        subHeight;
+    this.$nextTick(() => { 
+      this.tableHeight = util.calcTableMaxHeight(this.$refs.selectPhaseTable.$el)
       if (this.selProject) {
         this.getXmProjectPhases();
       }

@@ -1300,11 +1300,8 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 		},
 		mounted() {  
 			this.selectTotalProjectAndPhaseBudgetCost();
-			this.$nextTick(() => {
-				 
-				
-				
-				this.tableHeight =  util.calcTableMaxHeight(".el-table"); 
+			this.$nextTick(() => { 
+				this.tableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
 				if(this.selProject){
 					this.getXmProjectPhases();
 				} 
