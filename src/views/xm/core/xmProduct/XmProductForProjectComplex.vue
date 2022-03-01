@@ -4,11 +4,11 @@
 			<el-col :span="productVisible==true?3:0" >
 				<xm-product-select :sel-project="selProject" :xm-iteration="xmIteration"  @row-click="onProductRowClick" @clear-select="onProductClearSelect"></xm-product-select>
 			</el-col>
-			<el-col :span="productVisible==true?21:24" >
+			<el-col :span="productVisible==true?21:24" v-show="xmProduct && xmProduct.id">
 				<el-tabs type="border-card"  :value="showPanel"  @tab-click="tabClick">
 					<el-tab-pane>
-						<span v-show="productVisible==true" slot="label" @click.stop="productVisible=false" ><i class="el-icon-d-arrow-left" ></i> 隐藏左边</span>
-						<span v-show="productVisible==false" slot="label" @click.stop="productVisible=true"><i class="el-icon-d-arrow-right" ></i> 展开左边</span>
+						<span v-show="productVisible==true" slot="label" @click.stop="productVisible=false" ><i class="el-icon-d-arrow-left" ></i> 隐藏左边产品列表</span>
+						<span v-show="productVisible==false" slot="label" @click.stop="productVisible=true"><i class="el-icon-d-arrow-right" ></i> 展开左边产品列表</span>
 					</el-tab-pane>
 					<el-tab-pane label="产品概览"   name="productOverview">
 						 <xm-product-overview v-if="xmProduct && showPanel=='productOverview'"  :xm-product="xmProduct" :sel-project="selProject"></xm-product-overview>
@@ -140,9 +140,13 @@ import XmProductOverview from "./XmProductOverview";
 			},
 
 			onProductClearSelect(){
-				this.iteration=null;
+				this.xmProduct=null;
 			},
 			tabClick(tab){
+				if(this.xmProduct==null || !this.xmProduct.id){
+					this.productVisible=true;
+					this.$notify({showClose: true, message:"请先选中左边产品", type: 'warning', position: 'top-left'});
+				}
 				 this.showPanel=tab.name
 			}
 		},//end methods
@@ -161,6 +165,11 @@ XmProductProjectForLink,
       XmProductOverview,
 		},
 		mounted() {
+			
+			if(this.xmProduct==null || !this.xmProduct.id){
+				this.productVisible=true;
+				this.$notify({showClose: true, message:"请先选中左边产品", type: 'warning', position: 'top-left'});
+			}
 		this.$nextTick(() => {
 
         	});

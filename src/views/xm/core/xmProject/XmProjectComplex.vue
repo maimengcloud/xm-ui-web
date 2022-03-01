@@ -4,13 +4,15 @@
 			<el-col :span="projectVisible==true?3:0" >
 				<xm-project-select   :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClearSelect"></xm-project-select>
 			</el-col>
-			<el-col :span="projectVisible==true?21:24" >
+			<el-col :span="projectVisible==true?21:24" v-show="selProject && selProject.id">
 				<el-tabs type="border-card"  :value="showPanel" @tab-click="tabClick">
+					<el-tab-pane>
+						<span v-show="projectVisible==true" slot="label" @click.stop="projectVisible=false"><i class="el-icon-d-arrow-left" ></i> 隐藏左边项目列表</span>
+						<span v-show="projectVisible==false" slot="label" @click.stop="projectVisible=true"><i class="el-icon-d-arrow-right" ></i> 展开左边项目列表</span>
+ 					</el-tab-pane>
 					<el-tab-pane label="项目概览"   name="projectOverview">
-						<span v-show="projectVisible==true" slot="label" ><i class="el-icon-d-arrow-left" @click.stop="projectVisible=false"></i> 项目概览</span>
-						<span v-show="projectVisible==false" slot="label" ><i class="el-icon-d-arrow-right" @click.stop="projectVisible=true"></i> 项目概览</span>
-            <xm-project-overview v-if="selProject && showPanel=='projectOverview'" :xm-product="xmProduct"  :xm-iteration="xmIteration" :sel-project="selProject"></xm-project-overview>
-          </el-tab-pane>
+					 	<xm-project-overview v-if="selProject && showPanel=='projectOverview'" :xm-product="xmProduct"  :xm-iteration="xmIteration" :sel-project="selProject"></xm-project-overview>
+					</el-tab-pane>
 					<el-tab-pane label="迭代"   name="iterations" v-if=" !xmIteration" >
 						 <xm-iteration-mng v-if=" selProject && showPanel=='iterations' && !xmIteration"   :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-iteration-mng>
 					</el-tab-pane>
@@ -143,6 +145,10 @@ import XmProjectOverview from "./XmProjectOverview";
 				this.selProject=null;
 			},
 			tabClick(tab){
+				if(this.selProject==null || !this.selProject.id){
+					this.projectVisible=true;
+					this.$notify({showClose: true, message:"请先选中左边项目", type: 'warning', position: 'top-left'});
+				}
 				 this.showPanel=tab.name
 			}
 		},//end methods

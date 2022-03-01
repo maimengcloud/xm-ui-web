@@ -319,9 +319,9 @@
 		}
 	}
 
-</script>
-
+</script> 
 <style scoped>
+
 
 .more-label-font{
 	text-align:center;
