@@ -2,7 +2,7 @@
 	<section>  
 		<el-row > 
 			<!--列表 XmProduct 产品表-->
-			<el-table  ref="table" :height="maxTableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table  ref="table" :height="maxTableHeight" :data="xmProducts" :row-class-name="tableRowClassName" @sort-change="sortChange" :highlight-current-row="true" current-row-key="id" v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  				 <el-table-column prop="productName"  label="产品名称" min-width="150" > 
 					 <template slot="header" slot-scope="scope"> 
 						 产品名称 
@@ -63,7 +63,7 @@
 									<el-button type="primary"  @click="searchXmProducts" >查询</el-button>
 								</el-col>
 							</el-row> 
-							<el-button  slot="reference"   icon="el-icon-more"></el-button>
+							<el-button type="text" slot="reference"   icon="el-icon-more">更多条件</el-button>
 						</el-popover>  
 					 </template>
 					<template slot-scope="scope">
@@ -256,9 +256,11 @@
 			}, 
 			 
 			rowClick: function(row, event, column){
+				this.editForm=row
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
 			selectedProduct:function(row){
+				this.editForm=row
 				this.$emit('selected',row);
 			},
 			
@@ -298,6 +300,12 @@
 					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 				}).catch( err  => this.load.edit=false ); 
 			},
+			tableRowClassName({row, rowIndex}) {
+				if (row.id == this.editForm.id) { 
+					return 'success-row';
+				}
+				return '';
+			}
 		},//end methods
 		components: {  
 			UsersSelect,

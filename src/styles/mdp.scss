@@ -195,7 +195,13 @@
   object-fit: scale-down;  
 }
 
+.el-table .warning-row {
+  background: oldlace;
+}
 
+.el-table .success-row {
+  background: #f0f9eb;
+}
 
 
 /*此处根据不同屏幕分配率显示不同的样式*/
