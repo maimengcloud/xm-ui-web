@@ -1,10 +1,10 @@
 <template>
 	<section class="page-container">
 		<el-row>
-		<el-col :span="6"> 
+		<el-col :span="6" v-if="templateVisible"> 
 			<xm-product-tpl-mng @copy="searchXmProducts" ref="xmProductTplMngRef" show-type="simple"></xm-product-tpl-mng>
 		</el-col> 
-		<el-col :span="18" class="padding-top padding-left border">
+		<el-col :span="templateVisible?18:24" class="padding-top padding-left border">
 			<el-row>
 				<el-row>
 					<el-select   v-model="filters.queryScope"    placeholder="产品查询范围">
@@ -82,7 +82,7 @@
 								</font>
 							</el-col>
 							<el-col  :span="24"  style="padding-top:10px;">
-								<el-button type="primary"  @click="searchXmProducts" >查询</el-button>
+								<el-button type="primary"  @click="searchXmProducts" >查询</el-button><el-button type="text"  @click="templateVisible=!templateVisible" >{{templateVisible?"隐藏模板":"显示模板"}}</el-button>
 							</el-col>
 						</el-row>
 						<el-button  slot="reference"   icon="el-icon-more"></el-button>
@@ -320,6 +320,7 @@ import XmProductSelect from './XmProductSelect.vue';
 					id:'',productName:'',code:'',isTpl:'',copyMenu:'1'
 				},
 				copyToVisible:false,
+				templateVisible:false,
 				/**begin 自定义属性请在下面加 请加备注**/
 
 				/**end 自定义属性请在上面加 请加备注**/
@@ -421,6 +422,11 @@ import XmProductSelect from './XmProductSelect.vue';
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
 						this.xmProducts = res.data.data;
+						if(this.xmProducts==null || this.xmProducts.length==0){
+							this.templateVisible=true;
+						}else{
+							this.templateVisible=false;
+						}
 					}else{
 						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					}

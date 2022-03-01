@@ -1,12 +1,12 @@
 <template>
 	<section class="page-container">
 		<el-row>
-			<el-col :span="6" class="padding-top  padding-left"> 
+			<el-col :span="6" class="padding-top  padding-left" v-if="templateVisible"> 
 				<el-row>
 					<xm-project-tpl-mng @copy="searchXmProjects" ref="xmProjectTplMngRef"></xm-project-tpl-mng>
 				</el-row>
 			</el-col>
-			<el-col :span="18" class="border">
+			<el-col :span="templateVisible?18:24" class="border">
 				<el-row class="padding-left">
 					<el-menu  active-text-color="#00abfc" :default-active="menukey"   mode="horizontal" @select="handleSelect">
 						<el-menu-item index="all">全部</el-menu-item>
@@ -67,9 +67,10 @@
 								</el-col>  
 								<el-col :span="24" style="padding-top:5px;">
 									<el-button  type="primary" icon="el-icon-search" @click="searchXmProjects">查询</el-button>
+									<el-button type="text" @click="templateVisible=!templateVisible">{{templateVisible?'隐藏模板':'显示模板'}}</el-button>
 								</el-col>
 							</el-row>
-							<el-button type="text" class="right-btn" slot="reference" icon="el-icon-d-arrow-right"></el-button>
+							<el-button type="text" class="right-btn" slot="reference" icon="el-icon-d-arrow-right">更多</el-button>
 						</el-popover>
 						<el-button type="primary"  @click="showAdd"  icon="el-icon-plus"></el-button>
 					</el-menu>
@@ -337,6 +338,7 @@
 					id:'',name:'',code:'',isTpl:'',copyPhase:'1',copyTask:'1',copyGrup:'0'
 				},
 				copyToVisible:false,
+				templateVisible:false,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -409,6 +411,12 @@
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false; 
 						this.xmProjects = res.data.data;
+						
+						if(this.xmProjects==null || this.xmProjects.length==0){
+							this.templateVisible=true
+						}else{
+							this.templateVisible=false;
+						}
 					}else{
 						this.$message({showClose: true, message: tips.msg, type: 'error' });
 					} 
@@ -735,9 +743,9 @@
 				this.filters.productName=this.$route.params.productName;
 			}
 			this.$nextTick(() => {
-				var clientRect=this.$refs.table.$el.getBoundingClientRect();
-				var subHeight=70/1000 * window.innerHeight; 
-				this.tableHeight =  window.innerHeight -clientRect.y - this.$refs.table.$el.offsetTop-subHeight; 
+                var table=document.querySelector('.el-table');
+                var top=util.getPositionTop(table)
+                this.maxTableHeight = window.innerHeight - top -60;
 				this.showInfo = false;
 				this.getXmProjects();
 			}); 
