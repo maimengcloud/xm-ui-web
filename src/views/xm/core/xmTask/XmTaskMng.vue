@@ -361,7 +361,7 @@
               :xmTasks="xmTasks"
               @submit="afterEditSubmit"
             ></xm-task-agile-kanban>
-            <el-table
+            <el-table class="task-table"
               v-else
               show-summary
               lazy
@@ -2441,7 +2441,7 @@ export default {
     }
     this.$nextTick(() => {
       this.getXmTasks(); 
-      this.tableHeight = util.calcTableMaxHeight(".el-table");  
+      this.tableHeight = util.calcTableMaxHeight(".task-table");  
       listOption([
         { categoryId: "all", itemCode: "planType" },
         { categoryId: "all", itemCode: "taskType" },

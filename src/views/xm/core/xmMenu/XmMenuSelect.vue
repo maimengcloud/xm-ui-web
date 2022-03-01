@@ -76,7 +76,7 @@
 					<el-button   type="primary" v-if="multi"  v-on:click="multiSelectedConfirm">确认选择</el-button>
 				</el-row>
 				<el-row style="padding-top:12px;">
-					<el-table ref="table"  lazy :load="loadMenusLazy" :height="tableHeight" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+					<el-table ref="table" class="menu-table"  lazy :load="loadMenusLazy" :height="tableHeight" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column v-if="multi" type="selection" width="50"></el-table-column>  
 						<el-table-column prop="menuName" label="需求名称" min-width="140" > 
 							<template slot-scope="scope">
@@ -421,7 +421,7 @@
 				this.getXmMenus(); 
             	
 				
-				this.tableHeight =  util.calcTableMaxHeight(".el-table"); 
+				this.tableHeight =  util.calcTableMaxHeight(".menu-table"); 
         	}); 
 		}
 	}

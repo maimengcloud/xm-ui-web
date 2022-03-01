@@ -13,25 +13,24 @@ function padding(s, len) {
 
 export default {
 
-  
-  calcTableMaxHeight(cssSelector) {    
-    debugger; 
-    var table=document.querySelector(cssSelector);
+  calcTableMaxHeight(cssSelector) {     
+    var table=cssSelector;
+    if(typeof cssSelector == 'string'){
+      table=document.querySelector(cssSelector);
+    }
     var innerHeight=window.innerHeight 
     var defaultInnerHeight=913;  
     var pageHeight=90/defaultInnerHeight*innerHeight;
-    var top=100/defaultInnerHeight*innerHeight;
+    var top=200/defaultInnerHeight*innerHeight;
     if(table!=null){
       var rect=table.getBoundingClientRect()    
       if(rect && rect.top!=0){
         top=rect.top;
-      }
-    }else{
-      top=200/defaultInnerHeight*innerHeight;
+      } 
     } 
     var maxTableHeight =innerHeight-top-pageHeight;
     return maxTableHeight;
-  },
+  }, 
   getPositionTop(node) { 
 
       if(!node){
