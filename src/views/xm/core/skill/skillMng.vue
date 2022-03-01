@@ -230,7 +230,7 @@ export default {
             this.convertSkills = convert;
             this.setSkillsToLocal();
           } else {
-            this.$message({showClose: true,
+            this.$notify({showClose: true,
               message: tips.msg,
               type: "error",
             });
@@ -248,7 +248,7 @@ export default {
           (i) => i.categoryName == this.needAddTagCategoryNameInputValue
         )
       ) {
-        this.$message({showClose: true,
+        this.$notify({showClose: true,
           message: "技能分类已经存在",
           type: "error",
         });
@@ -281,7 +281,7 @@ export default {
             this.convertSkills.push(json);
             this.setSkillsToLocal();
           }
-          this.$message({showClose: true,
+          this.$notify({showClose: true,
             message: tips.msg,
             type: tips.isOk ? "success" : "error",
           });
@@ -319,7 +319,7 @@ export default {
                 this.setSkillsToLocal();
                 /*this.getTags();*/
               }
-              this.$message({showClose: true,
+              this.$notify({showClose: true,
                 message: tips.msg,
                 type: tips.isOk ? "success" : "error",
               });
@@ -344,7 +344,7 @@ export default {
           );
         })
       ) {
-        this.$message({showClose: true,
+        this.$notify({showClose: true,
           message: "技能已经存在",
           type: "error",
         });
@@ -352,7 +352,7 @@ export default {
       }
       if (!this.convertSkills[index].pubc) {
         if (this.isPub == "1") {
-          this.$message({showClose: true,
+          this.$notify({showClose: true,
             message: "该分类不是公共分类，不能添加公共技能",
             type: "error",
           });
@@ -392,7 +392,7 @@ export default {
             this.convertSkills[index].values.push(json);
             this.setSkillsToLocal();
           }
-          this.$message({showClose: true,
+          this.$notify({showClose: true,
             message: tips.msg,
             type: tips.isOk ? "success" : "error",
           });
@@ -427,7 +427,7 @@ export default {
                 this.setSkillsToLocal();
                 /*this.getTags();*/
               }
-              this.$message({showClose: true,
+              this.$notify({showClose: true,
                 message: tips.msg,
                 type: tips.isOk ? "success" : "error",
               });

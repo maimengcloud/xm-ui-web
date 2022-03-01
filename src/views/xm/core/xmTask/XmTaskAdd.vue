@@ -357,7 +357,7 @@
 									//this.$refs['addForm'].resetFields();
 									this.$emit('submit',res.data.data);//  @submit="afterAddSubmit"
 								}
-								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.add=false);
 						});
 					}
@@ -399,7 +399,7 @@
 						this.skillVisible = false;
 						// this.getXmTasks();
 					}
-					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 				}).catch( err  => this.load.add=false);
 			},
 
@@ -498,7 +498,7 @@
 
 			toJoin(){
 				if(this.addForm.exeUserids && this.addForm.exeUserids.indexOf(this.userInfo.userid)>=0){
-					this.$message.success("你已经加入该任务了");
+					this.$notify.success("你已经加入该任务了");
 					return;
 				}
 				this.execUserVisible=true;

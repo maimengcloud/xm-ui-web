@@ -120,7 +120,7 @@
 									this.$refs['editForm'].resetFields();
 									this.$emit('submit');//  @submit="afterEditSubmit"
 								}
-								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err =>this.load.edit=false);
 						});
 					}

@@ -215,7 +215,7 @@
 				if( this.filters.product!==null && this.filters.product.id!=''){
 					params.productId=this.filters.product.id
 				}else {
-					this.$message({showClose: true, message: "请先选择产品", type: 'error' });
+					this.$notify({showClose: true, message: "请先选择产品", type: 'error' });
 					return;
 					//params.xxx=xxxxx
 				} 
@@ -229,7 +229,7 @@
 						this.pageInfo.count=false;
 						this.xmMenuTemplates = res.data.data;
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -243,7 +243,7 @@
 			//显示新增界面 XmMenuTemplate xm_project_menu
 			showAdd: function () {
 				if(this.filters.product==null){
-					this.$message({showClose: true, message: "请先选择产品", type: 'error' });
+					this.$notify({showClose: true, message: "请先选择产品", type: 'error' });
 					return;
 				}
 				this.addFormVisible = true;
@@ -288,7 +288,7 @@
 							this.pageInfo.count=true;
 							this.getXmMenuTemplates();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -306,7 +306,7 @@
 							this.pageInfo.count=true;
 							this.getXmMenuTemplates(); 
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -362,7 +362,7 @@
 			},
 			selectedMenusConfirm:function(){
 				if(this.sels.length==0){
-					this.$message.error("请选择需求");
+					this.$notify.error("请选择需求");
 					return;
 				}
 				this.$emit("selected-menus",this.sels)
@@ -378,7 +378,7 @@
 			},
 			batchSaveMenu(){
 				if(this.valueChangeRows.length==0){
-					this.$message.success("没有数据被修改");
+					this.$notify.success("没有数据被修改");
 					return
 				}
 				batchEditXmMenuTemplate(this.valueChangeRows).then(res=>{
@@ -387,7 +387,7 @@
 						this.valueChangeRows=[]
 						this.getXmMenuTemplates()
 					}
-					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 				});
 			},
 			fieldChange:function(row,fieldName, nextReplace){

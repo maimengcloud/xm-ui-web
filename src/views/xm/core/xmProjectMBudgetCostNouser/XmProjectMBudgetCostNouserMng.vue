@@ -224,7 +224,7 @@
 						this.xmProjectMBudgetCostNousers = res.data.data;
 						this.valueChangeRows=[];
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -266,7 +266,7 @@
 							this.pageInfo.count=true;
 							this.getXmProjectMBudgetCostNousers();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -284,7 +284,7 @@
 							this.pageInfo.count=true;
 							this.getXmProjectMBudgetCostNousers(); 
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -296,7 +296,7 @@
 			batchSave:function(){
 				
 				if(this.valueChangeRows.length==0){
-					this.$message({showClose: true, message:"没有改变任何数据，无需保存", type: 'success'});
+					this.$notify({showClose: true, message:"没有改变任何数据，无需保存", type: 'success'});
 					return;
 				}else {  
 					this.load.edit=true;
@@ -307,7 +307,7 @@
 							this.valueChangeRows=[]
 							this.getXmProjectMBudgetCostNousers();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'}); 
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'}); 
 						
 					}).catch(e=>this.load.edit=false);
 				}

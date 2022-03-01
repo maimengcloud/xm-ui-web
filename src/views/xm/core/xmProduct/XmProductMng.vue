@@ -368,7 +368,7 @@ import XmProductSelect from './XmProductSelect.vue';
 						this.pageInfo.count=true;
 						this.getXmProducts();
 					}
-					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 				}).catch( err  => this.load.edit=false );
 			},
 			//获取列表 XmProduct 产品表
@@ -389,7 +389,7 @@ import XmProductSelect from './XmProductSelect.vue';
 				params.queryScope=this.filters.queryScope
 				if(this.filters.queryScope=='productId'){
 					if(!this.filters.id){
-						this.$message({showClose: true, message:"您选择了按产品编号精确查找模式，请输入产品编号", type: 'error' });
+						this.$notify({showClose: true, message:"您选择了按产品编号精确查找模式，请输入产品编号", type: 'error' });
 						return;
 					}
 					params.id=this.filters.id
@@ -428,7 +428,7 @@ import XmProductSelect from './XmProductSelect.vue';
 							this.templateVisible=false;
 						}
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -442,7 +442,7 @@ import XmProductSelect from './XmProductSelect.vue';
 			//显示新增界面 XmProduct 产品表
 			showAdd: function () {
 				if(!this.roles.some(i=>i.roleid=='productAdmin')){
-					this.$message({showClose: true, message: "只有产品经理能够创建产品", type: 'error'});
+					this.$notify({showClose: true, message: "只有产品经理能够创建产品", type: 'error'});
 					return false;
 				}
 				this.addFormVisible = true;
@@ -475,7 +475,7 @@ import XmProductSelect from './XmProductSelect.vue';
 			//删除xmProduct
 			handleDel: function (row,index) {
 				if(!this.roles.some(i=>i.roleid=='productAdmin')){
-					this.$message({showClose: true, message: "只有产品经理能够删除产品", type: 'error'});
+					this.$notify({showClose: true, message: "只有产品经理能够删除产品", type: 'error'});
 					return false;
 				}
 				this.$confirm('确认删除该记录吗?', '提示', {
@@ -490,19 +490,19 @@ import XmProductSelect from './XmProductSelect.vue';
 							this.pageInfo.count=true;
 							this.getXmProducts();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
 			//批量删除xmProduct
 			batchDel: function () {
 				if(!this.roles.some(i=>i.roleid=='productAdmin')){
-					this.$message({showClose: true, message: "只有产品经理能够删除产品", type: 'error'});
+					this.$notify({showClose: true, message: "只有产品经理能够删除产品", type: 'error'});
 					return false;
 				}
 				var mmSels=this.sels.filter(i=>i.pmUserid!=this.userInfo.userid)
 				if(mmSels.length>0){
-					this.$message({showClose: true, message: "只能删除你负责的产品", type: 'error'});
+					this.$notify({showClose: true, message: "只能删除你负责的产品", type: 'error'});
 					return false;
 				}
 				this.$confirm('确认删除选中记录吗？', '提示', {
@@ -516,7 +516,7 @@ import XmProductSelect from './XmProductSelect.vue';
 							this.pageInfo.count=true;
 							this.getXmProducts();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -577,7 +577,7 @@ import XmProductSelect from './XmProductSelect.vue';
 						if(tips.isOk){
 							this.getXmProducts();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					})
 				})
 			},
@@ -592,7 +592,7 @@ import XmProductSelect from './XmProductSelect.vue';
 						if(tips.isOk){
 							this.getXmProducts();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					})
 				})
 			},
@@ -616,7 +616,7 @@ import XmProductSelect from './XmProductSelect.vue';
 							this.$refs.xmProductTplMngRef.searchXmProducts()
 						}
 					}
-					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 
 				})
 			},

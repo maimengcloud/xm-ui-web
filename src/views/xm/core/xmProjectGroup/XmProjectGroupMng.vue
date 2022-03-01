@@ -388,7 +388,7 @@
 						this.pageInfo.count=false;
 						this.xmProjectGroups = res.data.data;
 					}else{
-						this.$message({ showClose:true, message: tips.msg, type: 'error' });
+						this.$notify({ showClose:true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -474,7 +474,7 @@
 							this.pageInfo.count=true;
 							this.getXmProjectGroups();
 						}
-						this.$message({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -493,7 +493,7 @@
 							this.pageInfo.count=true;
 							this.getXmProjectGroups(); 
 						}
-						this.$message({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -510,7 +510,7 @@
 					if(tips.isOk){
 						this.imGroups=res.data.data;
 					}
-					this.$message({showClose: true,
+					this.$notify({showClose: true,
 						message: tips.msg,
 						type: tips.isOk ? 'success' : 'error'
 					});
@@ -542,13 +542,13 @@
 							params.id=params.groupId
 							this.imGroups.push(params);
 						} 
-						this.$message({showClose: true,
+						this.$notify({showClose: true,
 							message: tips.msg,
 							type: tips.isOk ? 'success' : 'error'
 						});
 					})
 				}else{
-					that.$message({
+					that.$notify({
 						message: "组员为空，不允许绑定",
 						type:   'error'
 					});
@@ -589,7 +589,7 @@
 					if(tips.isOk){
 						this.searchXmProjectGroups()
 					}
-					this.$message({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error'}); 
+					this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error'}); 
 				})
 				
 			}, 
@@ -646,7 +646,7 @@
 							this.pageInfo.count=true;
 							this.getXmProjectGroups();
 						}
-						this.$message({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},

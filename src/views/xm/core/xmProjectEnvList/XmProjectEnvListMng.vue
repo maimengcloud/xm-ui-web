@@ -196,7 +196,7 @@
 						this.pageInfo.count=false;
 						this.xmProjectEnvLists = res.data.data;
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -238,7 +238,7 @@
 							this.pageInfo.count=true;
 							this.getXmProjectEnvLists();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -255,7 +255,7 @@
 							this.pageInfo.count=true;
 							this.getXmProjectEnvLists(); 
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -278,7 +278,7 @@
 						// console.log(this.envList);
 						// this.getXmProjectEnvLists();
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -302,7 +302,7 @@
 							this.importVisible = false;
 							this.getXmProjectEnvLists();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.add=false);
 				});
 			}

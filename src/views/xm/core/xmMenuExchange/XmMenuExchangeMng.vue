@@ -188,7 +188,7 @@
 						this.pageInfo.count=false;
 						this.xmMenuExchanges = res.data.data;
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -230,7 +230,7 @@
 							this.pageInfo.count=true;
 							this.getXmMenuExchanges();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -248,7 +248,7 @@
 							this.pageInfo.count=true;
 							this.getXmMenuExchanges(); 
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -263,7 +263,7 @@
 				params.remark=editor.content;
 
 				if(!parentXmMenuExchange && !this.xmMenu && !this.filters.xmMenu){
-					this.$message.error("请选择需求再发表评论")
+					this.$notify.error("请选择需求再发表评论")
 					return;
 				}
 				params.id=sn()
@@ -301,7 +301,7 @@
 					if(tips.isOk){
 						this.xmMenuExchanges.unshift(res.data.data);
 					}
-					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 				})
 			},
 			/**end 自定义函数请在上面加**/

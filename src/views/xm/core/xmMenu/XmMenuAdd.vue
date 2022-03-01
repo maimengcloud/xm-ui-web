@@ -127,11 +127,11 @@
 			//新增提交XmMenu 项目需求表 父组件监听@submit="afterAddSubmit"
 			addSubmit: function () {
 				if(this.parentMenu==null && this.product ==null ){
-					this.$message({showClose: true, message: '请选择产品/或者上级需求进行新增', type:'error' }); 
+					this.$notify({showClose: true, message: '请选择产品/或者上级需求进行新增', type:'error' }); 
 					return;
 				}
 				if(this.parentMenu && this.parentMenu.ntype=="0"){
-					 this.$message({showClose: true, message: '需求集下不能再建立子需求', type:'error' }); 
+					 this.$notify({showClose: true, message: '需求集下不能再建立子需求', type:'error' }); 
 					return;
 				}
 				this.$refs.addForm.validate((valid) => {
@@ -147,7 +147,7 @@
 								params.productId=this.product.id
 							}
 							if(params.productId==null|| params.productId==''){
-								this.$message({showClose: true, message: '产品编号不能为空', type:'error' }); 
+								this.$notify({showClose: true, message: '产品编号不能为空', type:'error' }); 
 								return;
 							}
 							addXmMenu(params).then((res) => {
@@ -156,7 +156,7 @@
 								if(tips.isOk){
  									this.$emit('submit');//  @submit="afterAddSubmit"
 								}
-								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err  => this.load.add=false);
 						});
 					}

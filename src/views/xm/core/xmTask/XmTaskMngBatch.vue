@@ -624,7 +624,7 @@ export default {
               }
             }
           } else {
-            this.$message({
+            this.$notify({
               showClose: true,
               message: tips.msg,
               type: "error",
@@ -649,7 +649,7 @@ export default {
 
     showTaskTemplate: function () {
       if (this.currentProjectPhase == null) {
-        this.$message({
+        this.$notify({
           showClose: true,
           message: "请先选择项目计划",
           type: "error",
@@ -666,7 +666,7 @@ export default {
     //显示新增界面 XmTask xm_task
     showAdd: function () {
       if (!this.currentProjectPhase) {
-        this.$message({
+        this.$notify({
           showClose: true,
           message: "请先选择项目计划",
           type: "error",
@@ -703,7 +703,7 @@ export default {
               this.pageInfo.count = true;
               this.getXmTasks();
             }
-            this.$message({
+            this.$notify({
               showClose: true,
               message: tips.msg,
               type: tips.isOk ? "success" : "error",
@@ -734,7 +734,7 @@ export default {
 					})
 				} 
             }
-            this.$message({
+            this.$notify({
               showClose: true,
               message: tips.msg,
               type: tips.isOk ? "success" : "error",
@@ -873,7 +873,7 @@ export default {
             this.getXmTasks();
           }
           this.taskTemplateVisible = false;
-          this.$message({
+          this.$notify({
             showClose: true,
             message: tips.msg,
             type: tips.isOk ? "success" : "error",
@@ -899,7 +899,7 @@ export default {
             this.skillVisible = false;
             this.getXmTasks();
           }
-          this.$message({
+          this.$notify({
             showClose: true,
             message: tips.msg,
             type: tips.isOk ? "success" : "error",
@@ -1059,7 +1059,7 @@ export default {
           if (tips.isOk) {
             this.getXmTasks();
           }
-          this.$message({
+          this.$notify({
             showClose: true,
             message: tips.msg,
             type: tips.isOk ? "success" : "error",
@@ -1076,7 +1076,7 @@ export default {
           username: this.userInfo.username,
         }).then((res) => {
           var tips = res.data.tips;
-          this.$message({
+          this.$notify({
             showClose: true,
             message: tips.msg,
             type: tips.isOk ? "success" : "error",
@@ -1086,7 +1086,7 @@ export default {
     },
     saveBatchEdit: function () {
       if (this.valueChangeRows.length == 0) {
-        this.$message({
+        this.$notify({
           showClose: true,
           message: "没有改变任何数据，无需保存",
           type: "success",
@@ -1094,7 +1094,7 @@ export default {
         return;
       } else {
         if (this.taskBudgetData.surplusPhaseBudgetInnerUserAt < 0) {
-          this.$message({
+          this.$notify({
             showClose: true,
             message: "内部人力预算不足，请调整",
             type: "error",
@@ -1102,7 +1102,7 @@ export default {
           return;
         }
         if (this.taskBudgetData.surplusPhaseBudgetOutUserAt < 0) {
-          this.$message({
+          this.$notify({
             showClose: true,
             message: "外购人力预算不足，请调整",
             type: "error",
@@ -1110,7 +1110,7 @@ export default {
           return;
         }
         if (this.taskBudgetData.surplusPhaseBudgetNouserAt < 0) {
-          this.$message({
+          this.$notify({
             showClose: true,
             message: "非人力预算不足请调整",
             type: "error",
@@ -1133,7 +1133,7 @@ export default {
 			  this.xmTasks=[]
               this.getXmTasks();
             }
-            this.$message({
+            this.$notify({
               showClose: true,
               message: tips.msg,
               type: tips.isOk ? "success" : "error",
@@ -1360,7 +1360,7 @@ export default {
       } else if ("delete" == opType) {
         if (row.opType && (row.opType == "addSub" || row.opType == "add")) {
           if (row.children && row.children.length > 0) {
-            this.$message.error("请先删除子元素");
+            this.$notify.error("请先删除子元素");
             return;
           } else {
             var index = this.xmTasks.findIndex((i) => i.id == row.id);
@@ -1377,7 +1377,7 @@ export default {
 			}
           }
         } else {
-          this.$message.error("只能删除未保存的行");
+          this.$notify.error("只能删除未保存的行");
           return;
         }
       } else if ("highestPmenuId" === opType) {
@@ -1399,7 +1399,7 @@ export default {
         this.editForm.exeUserids &&
         this.editForm.exeUserids.indexOf(this.userInfo.userid) >= 0
       ) {
-        this.$message.success("你已经加入该任务了");
+        this.$notify.success("你已经加入该任务了");
         return;
       }
       this.execUserVisible = true;

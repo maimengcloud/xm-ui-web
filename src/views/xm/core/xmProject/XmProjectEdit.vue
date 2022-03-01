@@ -401,11 +401,11 @@
 			//编辑提交XmProject xm_project父组件监听@submit="afterEditSubmit"
 			editSubmit: function () {
 				if(!this.roles.some(i=>i.roleid=='projectAdmin')){
-					this.$message({showClose: true, message: "只有项目经理可以修改项目", type: 'error' }); 
+					this.$notify({showClose: true, message: "只有项目经理可以修改项目", type: 'error' }); 
 					return;
 				}
 				if("0" != this.selProject.status){
-					this.$message({showClose: true, message: "只有初始状态的项目可以修改，如确实需要修改，请进行项目变更审批", type: 'error' }); 
+					this.$notify({showClose: true, message: "只有初始状态的项目可以修改，如确实需要修改，请进行项目变更审批", type: 'error' }); 
 					return;
 				}
 				if (
@@ -415,7 +415,7 @@
 					this.editForm.startTime = this.dateRanger[0] ;
 					this.editForm.endTime = this.dateRanger[1] ;
 				}else{
-					this.$message({showClose: true, message: "请输入开始日期和结束日期", type: 'error' }); 
+					this.$notify({showClose: true, message: "请输入开始日期和结束日期", type: 'error' }); 
 					return;
 				} 
 				this.$refs.editForm.validate((valid) => {
@@ -433,7 +433,7 @@
 									this.selProject=Object.assign(this.selProject,res.data.data)
 									this.$emit('submit',res.data.data);//  @submit="afterEditSubmit"
 								}
-								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err =>this.load.edit=false);
 						});
 					}
@@ -449,7 +449,7 @@
 					if(tips.isOk){ 
 						this.xmProjectGroups = res.data.data; 
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -531,12 +531,12 @@
 			},
 			sendToProcessApprova:function(row,bizKey){ 
 				if(!this.roles.some(i=>i.roleid=='projectAdmin')){
-					this.$message({showClose: true, message: "只有项目经理可以发起流程", type: 'error' }); 
+					this.$notify({showClose: true, message: "只有项目经理可以发起流程", type: 'error' }); 
 					return;
 				}
 				// 传过来的参数格式
 				if(row.flowState=='1'){
-					this.$message.error("审核中，不允许重复发审");
+					this.$notify.error("审核中，不允许重复发审");
 					return;
 				}
 				
@@ -633,7 +633,7 @@
 					//this.html2canvas(document.querySelector(".editForm"),row,params);
 					this.$router.push({name:'ProcdefListForBizStart',params:params}); 
 				}else {
-					this.$message.error("不支持的审批事项");
+					this.$notify.error("不支持的审批事项");
 					return;
 				} 
 				

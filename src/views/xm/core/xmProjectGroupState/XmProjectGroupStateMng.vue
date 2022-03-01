@@ -176,7 +176,7 @@ import XmProjectGroupStateOverview from './XmProjectGroupStateOverview.vue';
 						this.pageInfo.count=false;
 						this.xmProjectGroupStates = res.data.data;
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -218,7 +218,7 @@ import XmProjectGroupStateOverview from './XmProjectGroupStateOverview.vue';
 							this.pageInfo.count=true;
 							this.getXmProjectGroupStates();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -236,7 +236,7 @@ import XmProjectGroupStateOverview from './XmProjectGroupStateOverview.vue';
 							this.pageInfo.count=true;
 							this.getXmProjectGroupStates();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -250,7 +250,7 @@ import XmProjectGroupStateOverview from './XmProjectGroupStateOverview.vue';
 					if(tips.isOk){
 						this.getXmProjectGroupStates();
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 
 					}
 				})

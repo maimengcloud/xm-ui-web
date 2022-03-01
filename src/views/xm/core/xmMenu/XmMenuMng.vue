@@ -464,7 +464,7 @@
 				if( this.filters.product  && this.filters.product.id){
 					params.productId=this.filters.product.id
 				}else {
-					this.$message({showClose: true, message: "请先选择产品", type: 'success' });
+					this.$notify({showClose: true, message: "请先选择产品", type: 'success' });
 					return;
 				} 
 					
@@ -478,7 +478,7 @@
 						this.pageInfo.count=false;
 						this.xmMenus = res.data.data;
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}
@@ -498,11 +498,11 @@
 			//显示新增界面 XmMenu xm_project_menu
 			showAdd: function () { 
 				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$message({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
+					this.$notify({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
 					return false;
 				}
 				if(this.filters.product==null){
-					this.$message({showClose: true, message: "请先选择产品", type: 'error' });
+					this.$notify({showClose: true, message: "请先选择产品", type: 'error' });
 					return;
 				}
 				this.parentMenu=null;
@@ -511,7 +511,7 @@
 			},
 			showSubAdd:function(row){
 				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$message({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
+					this.$notify({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
 					return false;
 				}
 				this.editForm=row
@@ -545,7 +545,7 @@
 			//删除xmMenu
 			handleDel: function (row,index) { 
 				if(row.mmUserid!=this.userInfo.userid){
-					this.$message({showClose: true, message: "只能操作你负责的需求", type: 'error'}); 
+					this.$notify({showClose: true, message: "只能操作你负责的需求", type: 'error'}); 
 					return false;
 				}
 				this.$confirm('确认删除该记录吗?', '提示', {
@@ -560,7 +560,7 @@
 							this.pageInfo.count=true;
 							this.getXmMenus();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -568,7 +568,7 @@
 			batchDel: function () {
 				var mmSels=this.sels.filter(i=>i.mmUserid!=this.userInfo.userid)
 				if(mmSels.length>0){
-					this.$message({showClose: true, message: "只能操作你负责的需求", type: 'error'}); 
+					this.$notify({showClose: true, message: "只能操作你负责的需求", type: 'error'}); 
 					return false;
 				}
 				this.$confirm('确认删除选中记录吗？', '提示', {
@@ -582,7 +582,7 @@
 							this.pageInfo.count=true;
 							this.getXmMenus(); 
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -678,11 +678,11 @@
 			showImportFromMenuTemplate(row){
 				
 				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$message({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
+					this.$notify({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
 					return false;
 				}
 				if(!this.filters.product){
-					this.$message.error("请选择产品模板")
+					this.$notify.error("请选择产品模板")
 					return;
 				}
 				this.parentMenu=row
@@ -749,14 +749,14 @@
 					if(tips.isOk){ 
 						this.getXmMenus()
 					}else{ 
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					}
 				}).catch( err  => this.load.add=false );
 			},
 			toBatchEdit(){
 				
 				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$message({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
+					this.$notify({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
 					return false;
 				} 
 				this.batchEditVisible=true;
@@ -770,7 +770,7 @@
 			showTaskList(row){ 
 				
 				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$message({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
+					this.$notify({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
 					return false;
 				}
 				this.editForm=row
@@ -781,7 +781,7 @@
 				 
 				 
 				if(xmTasks==null || xmTasks.length==0){
-					this.$message.error("请最少选择一个任务进行关联");
+					this.$notify.error("请最少选择一个任务进行关联");
 					return;
 				}
 				var menu=this.editForm
@@ -798,7 +798,7 @@
 					if(tips.isOk){
 						this.getXmMenus()
 					}
-					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 				});
 			},
 			showMenuExchange:function(row){
@@ -826,7 +826,7 @@
 			loadTasksToXmMenuState: function () {  
 				this.load.edit=true;
 				if(!this.filters.product){
-					this.$message.error("请先选择产品");
+					this.$notify.error("请先选择产品");
 				}
 				let params = { productId: this.filters.product.id };
 				loadTasksToXmMenuState(params).then((res) => {
@@ -836,7 +836,7 @@
 						this.pageInfo.count=true;
 						this.getXmMenus();
 					}
-					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 				}).catch( err  => this.load.edit=false ); 
 			},
 			selectUser(row){

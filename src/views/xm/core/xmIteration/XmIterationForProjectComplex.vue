@@ -147,7 +147,7 @@
 					delXmIterationProductLink(params).then(res=>{
 						var tips = res.data.tips;
 						if(tips.isOk){
-							this.$message({showClose: true, message:"移出成功", type: tips.isOk?'success':'error' });
+							this.$notify({showClose: true, message:"移出成功", type: tips.isOk?'success':'error' });
 						}
 					})
 				})

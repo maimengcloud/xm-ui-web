@@ -153,11 +153,11 @@
 
 				
 				if(!params.projectId){
-					this.$message({showClose: true, message: "选择一个模板项目", type: 'error' });
+					this.$notify({showClose: true, message: "选择一个模板项目", type: 'error' });
 					return;
 				}
 				if(!params.projectPhaseId){
-					this.$message({showClose: true, message: "请在左边计划列表中选择一个计划", type: 'error' });
+					this.$notify({showClose: true, message: "请在左边计划列表中选择一个计划", type: 'error' });
 					return;
 				}
 				params.isTpl="1"
@@ -169,7 +169,7 @@
 						this.pageInfo.count=false;
 						this.xmTaskTemplates = res.data.data;
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -183,12 +183,12 @@
 			//显示新增界面 XmTaskTemplate xm_task_template
 			showAdd: function () {
 				if(!this.filters.projectTemplate){
-					this.$message.error("请选择模板")
+					this.$notify.error("请选择模板")
 					return;
 				}
 				if(!this.projectPhaseTemplate){
 
-					this.$message.error("请选择计划")
+					this.$notify.error("请选择计划")
 					return;
 				}
 				this.addFormVisible = true;
@@ -226,7 +226,7 @@
 							this.pageInfo.count=true;
 							this.getXmTaskTemplates();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -244,7 +244,7 @@
 							this.pageInfo.count=true;
 							this.getXmTaskTemplates(); 
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},

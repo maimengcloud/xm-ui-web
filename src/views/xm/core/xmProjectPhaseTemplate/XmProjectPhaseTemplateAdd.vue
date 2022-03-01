@@ -142,7 +142,7 @@
 			//新增提交XmProjectPhaseTemplate xm_phase_template 父组件监听@submit="afterAddSubmit"
 			addSubmit: function () { 
 				if(!this.selProjectTemplate){
-					this.$message.error("模板不能为空，请先选择项目模板")
+					this.$notify.error("模板不能为空，请先选择项目模板")
 					return;
 				}
 				this.$refs.addForm.validate((valid) => {
@@ -164,7 +164,7 @@
 									this.$refs['addForm'].resetFields();
 									this.$emit('submit');//  @submit="afterAddSubmit"
 								}
-								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err  => this.load.add=false);
 						});
 					}

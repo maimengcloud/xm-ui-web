@@ -159,7 +159,7 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 						this.pageInfo.count=false;
 						this.xmIterationProductLinks = res.data.data;
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$notify({ message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -201,7 +201,7 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 							this.pageInfo.count=true;
 							this.getXmIterationProductLinks();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -219,7 +219,7 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 							this.pageInfo.count=true;
 							this.getXmIterationProductLinks(); 
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({ message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -241,7 +241,7 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 							this.pageInfo.count=true;
 							this.getXmIterationProductLinks(); 
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({ message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -259,7 +259,7 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 							this.pageInfo.count=true;
 							this.getXmIterationProductLinks(); 
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({ message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			}	

@@ -418,7 +418,7 @@
 							this.templateVisible=false;
 						}
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -496,7 +496,7 @@
 							this.pageInfo.count=true;
 							this.getXmProjects();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -513,7 +513,7 @@
 							this.pageInfo.count=true;
 							this.getXmProjects(); 
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -553,7 +553,7 @@
 						this.ScreenData[scope.$index].status = val;
 						this.status = val;
 					}
-					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					this.load.edit = false;
 				}).catch( err => this.load.edut = false );
 			},
@@ -586,7 +586,7 @@
 			
 			sendToProcessApprova:function(row,bizKey){   
 				if(row.bizFlowState=='1'){
-					this.$message.error("审核中，不允许重新发起");
+					this.$notify.error("审核中，不允许重新发起");
 					return;
 				}
 				
@@ -604,14 +604,14 @@
 
 				if(bizKey=='xm_project_delete_approva'){
 					if(row.status!='0'){
-						this.$message.error("只有状态为初始化的项目可以删除");
+						this.$notify.error("只有状态为初始化的项目可以删除");
 						return;
 					}
 					mainTitle='关于删除项目【'+titleNames+"】的审批"
 					mainContext=mainTitle+',删除原因：';
 				} else if(bizKey=='xm_project_over_approva'){
 					if(row.status!='1'){
-						this.$message.error("只有状态为执行中的项目可以进行结项操作");
+						this.$notify.error("只有状态为执行中的项目可以进行结项操作");
 						return;
 					}
 					mainTitle='关于项目【'+titleNames+"】结项的审批"
@@ -619,34 +619,34 @@
 					
 				} else if(bizKey=='xm_project_restart_approva'){
 					if(row.status!='3'){
-						this.$message.error("只有状态为暂停的项目可以进行重新启动操作");
+						this.$notify.error("只有状态为暂停的项目可以进行重新启动操作");
 						return;
 					}
 					mainTitle='关于项目【'+titleNames+"】重新启动的审批"
 					mainContext=mainTitle;
 				} else if(bizKey=='xm_project_start_approva'){
 					if(row.status!='0'){
-						this.$message.error("只有状态为初始化的项目可以进行立项审批操作");
+						this.$notify.error("只有状态为初始化的项目可以进行立项审批操作");
 						return;
 					}
 					mainTitle='关于项目【'+titleNames+"】的立项审批"
 					mainContext=mainTitle
 				}  else if(bizKey=='xm_project_suspension_approva'){
 					if(row.status!='1'){
-						this.$message.error("只有状态为执行中的项目可以进行挂起操作");
+						this.$notify.error("只有状态为执行中的项目可以进行挂起操作");
 						return;
 					}
 					mainTitle='关于项目【'+titleNames+"】暂停的审批"
 					mainContext=mainTitle+'';
 				} else if(bizKey=='xm_project_budget_change_approva'){
 					if(row.status!='1'){
-						this.$message.error("只有状态为执行中的项目可以进行预算变更操作");
+						this.$notify.error("只有状态为执行中的项目可以进行预算变更操作");
 						return;
 					}
 					mainTitle='关于项目【'+titleNames+"】的预算变更审批"
 					mainContext=mainTitle+'';
 				} else{
-					this.$message.error("暂不支持的业务审批");
+					this.$notify.error("暂不支持的业务审批");
 					return;
 				} 
 
@@ -680,12 +680,12 @@
 						if(tips.isOk){
 							this.getXmProjects(); 
 						} 
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					})
 				}else{
 					addXmMyFocus({projectId:row.id,focusType:'project',projectName:row.name,userid:this.userInfo.userid,username:this.userInfo.username}).then(res=>{
 						var tips=res.data.tips;
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					})
 				}
 			},
@@ -721,7 +721,7 @@
 							this.$refs.xmProjectTplMngRef.searchXmProjects()
 						}
 					}
-					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 
 				})
 			},

@@ -218,7 +218,7 @@
 					params.queryScope=this.filters.queryScope 
 					if(this.filters.queryScope=='iterationId'){
 						if(!this.filters.id){
-							this.$message({showClose: true, message:"您选择了按迭代编号精确查找模式，请输入迭代编号", type: 'error' });
+							this.$notify({showClose: true, message:"您选择了按迭代编号精确查找模式，请输入迭代编号", type: 'error' });
 							return;
 						}
 						params.id=this.filters.id
@@ -245,7 +245,7 @@
 						this.pageInfo.count=false;
 						this.xmIterations = res.data.data;
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -342,7 +342,7 @@
 					if(tips.isOk){
 						this.getXmIterations();
 					}
-					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 				});
 			},
 		},//end methods

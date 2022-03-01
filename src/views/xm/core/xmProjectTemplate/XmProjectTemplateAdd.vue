@@ -318,7 +318,7 @@
 					this.addForm.startTime = this.dateRanger[0] ;
 					this.addForm.endTime = this.dateRanger[1] ;
 				}else{
-					this.$message({showClose: true, message: "请输入开始日期和结束日期", type: 'error' }); 
+					this.$notify({showClose: true, message: "请输入开始日期和结束日期", type: 'error' }); 
 					return;
 				} 
 				this.$refs.addForm.validate((valid) => {
@@ -337,7 +337,7 @@
 								if(tips.isOk){
 									this.$emit('submit',params);//  @submit="afterEditSubmit"
 								}
-								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err =>this.load.add=false);
 						});
 					}

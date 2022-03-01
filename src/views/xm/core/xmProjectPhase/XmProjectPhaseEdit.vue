@@ -284,20 +284,20 @@
 					}
 
 				}else{
-					this.$message({showClose: true, message: "请输入开始日期和结束日期", type: 'error' });
+					this.$notify({showClose: true, message: "请输入开始日期和结束日期", type: 'error' });
 					return;
 				}
 				if(!this.editForm.phaseBudgetInnerUserCnt){
-					this.$message({showClose: true, message: "内购人员数不能为空", type: 'error' });
+					this.$notify({showClose: true, message: "内购人员数不能为空", type: 'error' });
 					return;
 				}
 
 				if(!this.editForm.phaseBudgetHours){
-					this.$message({showClose: true, message: "工期不能为空", type: 'error' });
+					this.$notify({showClose: true, message: "工期不能为空", type: 'error' });
 					return;
 				}
 				if(!this.editForm.phaseBudgetInnerUserPrice){
-					this.$message({showClose: true, message: "内购单价不能为空", type: 'error' });
+					this.$notify({showClose: true, message: "内购单价不能为空", type: 'error' });
 					return;
 				}
 				this.$refs.editForm.validate((valid) => {
@@ -326,7 +326,7 @@
 									//this.$refs['editForm'].resetFields();
 									this.$emit('submit',res.data.data);//  @submit="aftereditSubmit"
 								}
-								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.edit=false);
 						});
 					}

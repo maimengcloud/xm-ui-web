@@ -152,7 +152,7 @@ import XmMenuOverview from './XmMenuOverview.vue';
 			editSubmit: function () {
 
 				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$message({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'});
+					this.$notify({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'});
 					return false;
 				}
 				this.$refs.editForm.validate((valid) => {
@@ -167,7 +167,7 @@ import XmMenuOverview from './XmMenuOverview.vue';
 								if(tips.isOk){
  									this.$emit('submit');//  @submit="afterAddSubmit"
 								}
-								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.edit=false);
 						});
 					}

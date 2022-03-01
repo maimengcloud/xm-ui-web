@@ -229,7 +229,7 @@
 									params.projectName=this.xmProjectPhaseTemplate.projectName
 									params.projectId=this.xmProjectPhaseTemplate.projectId
 								}else{
-									this.$message.error("任务归属的项目计划不能为空");
+									this.$notify.error("任务归属的项目计划不能为空");
 									return;
 								}
 							}
@@ -240,7 +240,7 @@
 									 
 									this.$emit('submit');//  @submit="afterAddSubmit"
 								}
-								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err  => this.load.add=false);
 						});
 					}

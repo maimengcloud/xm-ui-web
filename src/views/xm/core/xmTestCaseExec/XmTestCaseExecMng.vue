@@ -388,7 +388,7 @@
 						this.pageInfo.count=false;
 						this.xmTestCaseExecs = res.data.data;
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -419,7 +419,7 @@
 			//删除xmTestCaseExec
 			handleDel: function (row,index) {  
 				if( !this.roles.some(i=>i.roleid=='testAdmin')  && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
-					this.$message({showClose: true,message:"只有测试经理、测试组长可以操作",type:"error"});
+					this.$notify({showClose: true,message:"只有测试经理、测试组长可以操作",type:"error"});
 					return ;
 				}
 				this.$confirm('确认删除该记录吗?', '提示', {
@@ -434,14 +434,14 @@
 							this.pageInfo.count=true;
 							this.getXmTestCaseExecs();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
 			//批量删除xmTestCaseExec
 			batchDel: function () { 
 				if( !this.roles.some(i=>i.roleid=='testAdmin')  && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
-					this.$message({showClose: true,message:"只有测试经理、测试组长可以操作",type:"error"});
+					this.$notify({showClose: true,message:"只有测试经理、测试组长可以操作",type:"error"});
 					return ;
 				}
 				this.$confirm('确认删除选中记录吗？', '提示', {
@@ -455,7 +455,7 @@
 							this.pageInfo.count=true;
 							this.getXmTestCaseExecs(); 
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -492,7 +492,7 @@
 							this.pageInfo.count=true;
 							this.getXmTestCaseExecs(); 
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					})
 				}else{
 					this.xmTestCaseMngVisible=false;
@@ -501,11 +501,11 @@
 			},
 			showCase(){
 				if( !this.roles.some(i=>i.roleid=='testAdmin')   && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
-					this.$message({showClose: true,message:"只有测试经理、测试组长可以操作",type:"error"});
+					this.$notify({showClose: true,message:"只有测试经理、测试组长可以操作",type:"error"});
 					return ;
 				}
 				if(!this.filters.selProject){
-					this.$message({showClose: true,message:"请先选择项目",type:"success"});
+					this.$notify({showClose: true,message:"请先选择项目",type:"success"});
 					this.nextAction="showCase"
 					this.showProjectList();
 					return;
@@ -588,11 +588,11 @@
 			},	
 			showBatchEdit:function(){ 
 				if( !this.roles.some(i=>i.roleid=='testAdmin') && !this.roles.some(i=>i.roleid=='tester') && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
-					this.$message({showClose: true,message:"只有测试经理、测试组长、测试员可以操作",type:"error"});
+					this.$notify({showClose: true,message:"只有测试经理、测试组长、测试员可以操作",type:"error"});
 					return ;
 				}
 				if( !this.filters.selProject ){
-					this.$message({showClose: true, message:"请先选择项目", type: 'success'});
+					this.$notify({showClose: true, message:"请先选择项目", type: 'success'});
 					this.nextAction="showBatchEdit"
 					this.showProjectList();
 					return ;
@@ -602,11 +602,11 @@
 			batchEditXmTestCaseExec:function(){
 				
 				if( !this.roles.some(i=>i.roleid=='testAdmin') && !this.roles.some(i=>i.roleid=='tester') && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
-					this.$message({showClose: true,message:"只有测试经理、测试组长、测试员可以操作",type:"error"});
+					this.$notify({showClose: true,message:"只有测试经理、测试组长、测试员可以操作",type:"error"});
 					return ;
 				}
  				if(this.valueChangeRows.length==0){
-					this.$message({showClose: true, message:"没有改变任何数据，无需保存", type: 'success'});
+					this.$notify({showClose: true, message:"没有改变任何数据，无需保存", type: 'success'});
 					return;
 				}else { 
 					this.load.edit=true;
@@ -617,7 +617,7 @@
 							this.valueChangeRows=[]
 							this.getXmTestCaseExecs();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'}); 
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'}); 
 						
 					}).catch(e=>this.load.edit=false);
 				}
@@ -685,7 +685,7 @@
 			showSelectTask:function(row){
 				this.editForm=row
 				if(this.filters.selProject==null){
-					this.$message({showClose: true, message: "请先选项目", type: 'success' }); 
+					this.$notify({showClose: true, message: "请先选项目", type: 'success' }); 
 					this.nextAction="showSelectTask"
 					this.showProjectList();
 
@@ -707,14 +707,14 @@
 					this.xmTestCase=xmTestCase
 					this.caseVisible=true;
 				}else{
-					this.$message.success("该用例已不存在")
+					this.$notify.success("该用例已不存在")
 				}
 				
 			},
 			showBugs(row){
 				this.editForm=row
 				if(!this.filters.selProject){ 
-					this.$message({showClose: true, message: "请先选项目", type: 'success' }); 
+					this.$notify({showClose: true, message: "请先选项目", type: 'success' }); 
 					this.showProjectList();
 					this.nextAction="showBugs"
 					return ;
@@ -725,14 +725,14 @@
 					this.xmTestCase=xmTestCase 
 					this.bugsVisible=true;
 				}else{
-					this.$message.success("该用例已不存在")
+					this.$notify.success("该用例已不存在")
 				}
 			},
 			showAddBug(row){
 				this.editForm=row
 				if(!this.filters.selProject){
 					
-					this.$message({showClose: true, message: "请先选项目", type: 'success' }); 
+					this.$notify({showClose: true, message: "请先选项目", type: 'success' }); 
 					this.nextAction="showAddBug"
 					this.showProjectList();
 					return ;
@@ -743,7 +743,7 @@
 					this.xmTestCase=xmTestCase 
 					this.addBugVisible=true;
 				}else{
-					this.$message.success("该用例已不存在")
+					this.$notify.success("该用例已不存在")
 				} 
       },
 			/**end 自定义函数请在上面加**/

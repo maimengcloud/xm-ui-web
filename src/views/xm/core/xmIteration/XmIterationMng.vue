@@ -286,7 +286,7 @@ import XmIterationSelect from './XmIterationSelect.vue';
 					params.queryScope=this.filters.queryScope
 					if(this.filters.queryScope=='iterationId'){
 						if(!this.filters.id){
-							this.$message({showClose: true, message:"您选择了按迭代编号精确查找模式，请输入迭代编号", type: 'error' });
+							this.$notify({showClose: true, message:"您选择了按迭代编号精确查找模式，请输入迭代编号", type: 'error' });
 							return;
 						}
 						params.id=this.filters.id
@@ -310,7 +310,7 @@ import XmIterationSelect from './XmIterationSelect.vue';
 						this.pageInfo.count=false;
 						this.xmIterations = res.data.data;
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -324,7 +324,7 @@ import XmIterationSelect from './XmIterationSelect.vue';
 			//显示新增界面 XmIteration 迭代定义
 			showAdd: function () {
 				if(!this.roles.some(i=>i.roleid=='iterationAdmin')){
-					this.$message({showClose: true, message: "只有迭代管理员可以新增迭代", type:  'error' });
+					this.$notify({showClose: true, message: "只有迭代管理员可以新增迭代", type:  'error' });
 					return ;
 				}
 				this.parentIteration=null
@@ -362,7 +362,7 @@ import XmIterationSelect from './XmIterationSelect.vue';
 			//删除xmIteration
 			handleDel: function (row,index) {
 				if(!this.roles.some(i=>i.roleid=='iterationAdmin')){
-					this.$message({showClose: true, message: "只有迭代管理员可以删除迭代", type:  'error' });
+					this.$notify({showClose: true, message: "只有迭代管理员可以删除迭代", type:  'error' });
 					return ;
 				}
 				this.$confirm('确认删除该记录吗?', '提示', {
@@ -377,14 +377,14 @@ import XmIterationSelect from './XmIterationSelect.vue';
 							this.pageInfo.count=true;
 							this.getXmIterations();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
 			//批量删除xmIteration
 			batchDel: function () {
 				if(!this.roles.some(i=>i.roleid=='iterationAdmin')){
-					this.$message({showClose: true, message: "只有迭代管理员可以删除迭代", type:  'error' });
+					this.$notify({showClose: true, message: "只有迭代管理员可以删除迭代", type:  'error' });
 					return ;
 				}
 				this.$confirm('确认删除选中记录吗？', '提示', {
@@ -398,7 +398,7 @@ import XmIterationSelect from './XmIterationSelect.vue';
 							this.pageInfo.count=true;
 							this.getXmIterations();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -471,7 +471,7 @@ import XmIterationSelect from './XmIterationSelect.vue';
 					if(tips.isOk){
 						this.getXmIterations();
 					}
-					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 				});
 			},
 			showIterationState(row){
@@ -496,7 +496,7 @@ import XmIterationSelect from './XmIterationSelect.vue';
 						if(tips.isOk){
 							this.getXmIterations();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					})
 				})
 			},
@@ -511,7 +511,7 @@ import XmIterationSelect from './XmIterationSelect.vue';
 						if(tips.isOk){
 							this.getXmIterations();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					})
 				})
 			}

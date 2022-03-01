@@ -296,7 +296,7 @@
 				if( this.filters.product!==null && this.filters.product.id!=''){
 					params.productId=this.filters.product.id
 				}else {
-					this.$message({showClose: true, message: "请先选择产品", type: 'success' });
+					this.$notify({showClose: true, message: "请先选择产品", type: 'success' });
 					return;
 					//params.xxx=xxxxx
 				} 
@@ -311,7 +311,7 @@
 						this.pageInfo.count=false;
 						this.xmMenus = res.data.data;
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );

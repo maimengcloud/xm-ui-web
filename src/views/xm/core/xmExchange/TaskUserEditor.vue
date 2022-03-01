@@ -37,7 +37,7 @@ export default {
         content: this.content,
       }
       if(!this.content){
-         this.$message.error("请输入内容再提交");
+         this.$notify.error("请输入内容再提交");
          return;
       }
       this.$emit('publish',params);

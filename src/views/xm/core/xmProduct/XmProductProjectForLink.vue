@@ -48,7 +48,7 @@
 					delXmProductProjectLink(params).then(res=>{
 						var tips = res.data.tips;
 						if(tips.isOk){
-							this.$message({showClose: true, message: "脱钩成功", type: 'success' });
+							this.$notify({showClose: true, message: "脱钩成功", type: 'success' });
 						}
 					});
 				})

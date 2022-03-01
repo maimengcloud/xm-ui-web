@@ -192,7 +192,7 @@
 						this.pageInfo.count=true;
 						this.getXmProducts();
 					}
-					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 				}).catch( err  => this.load.edit=false );
 			},
 			//获取列表 XmProduct 产品表
@@ -225,7 +225,7 @@
 						this.pageInfo.count=false;
 						this.xmProducts = res.data.data;
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -239,7 +239,7 @@
 			//显示新增界面 XmProduct 产品表
 			showAdd: function () {
 				if(!this.roles.some(i=>i.roleid=='productAdmin')){
-					this.$message({showClose: true, message: "只有产品经理能够创建产品", type: 'error'});
+					this.$notify({showClose: true, message: "只有产品经理能够创建产品", type: 'error'});
 					return false;
 				}
 				this.addFormVisible = true;
@@ -283,19 +283,19 @@
 							this.pageInfo.count=true;
 							this.getXmProducts();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
 			//批量删除xmProduct
 			batchDel: function () {
 				if(!this.roles.some(i=>i.roleid=='productAdmin')){
-					this.$message({showClose: true, message: "只有产品经理能够删除产品", type: 'error'});
+					this.$notify({showClose: true, message: "只有产品经理能够删除产品", type: 'error'});
 					return false;
 				}
 				var mmSels=this.sels.filter(i=>i.pmUserid!=this.userInfo.userid)
 				if(mmSels.length>0){
-					this.$message({showClose: true, message: "只能删除你负责的产品", type: 'error'});
+					this.$notify({showClose: true, message: "只能删除你负责的产品", type: 'error'});
 					return false;
 				}
 				this.$confirm('确认删除选中记录吗？', '提示', {
@@ -309,7 +309,7 @@
 							this.pageInfo.count=true;
 							this.getXmProducts();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -370,7 +370,7 @@
 						if(tips.isOk){
 							this.getXmProducts();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					})
 				})
 			},
@@ -385,7 +385,7 @@
 						if(tips.isOk){
 							this.getXmProducts();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					})
 				})
 			},
@@ -409,7 +409,7 @@
 						this.$emit("copy",res.data.data)
 					}
 					
-					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 
 				})
 			},

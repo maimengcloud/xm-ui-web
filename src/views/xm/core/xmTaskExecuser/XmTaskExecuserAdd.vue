@@ -128,13 +128,13 @@
 			//新增提交XmTaskExecuser xm_task_execuser 父组件监听@submit="afterAddSubmit"
 			addSubmit: function () {
 				if(!this.addForm.userid){
-					this.$message.error("请选择一个人");
+					this.$notify.error("请选择一个人");
 					return 
 				}
 				const tf = this.execUserList.some(i=>{return i.userid == this.addForm.userid;});
 				const that = this;
 				if(tf){
-					this.$message.error(this.addForm.username+"已在任务中");
+					this.$notify.error(this.addForm.username+"已在任务中");
 					return;
 
 				}
@@ -159,7 +159,7 @@
 									if(tips.isOk){ 
 										this.$emit('submit');//  @submit="afterAddSubmit"
 									}
-									this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+									this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 								}).catch( err  => this.load.add=false);
 							});
 						}
@@ -173,7 +173,7 @@
 			//选择接收人
 			onUserSelected: function(users) { 
 				if(users.length>1){
-					this.$message({showClose: true, message: "只能选择一个人", type:'error' }); 
+					this.$notify({showClose: true, message: "只能选择一个人", type:'error' }); 
 					return;
 				}
 				if(users==null || users.length ==0 ){

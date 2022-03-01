@@ -362,7 +362,7 @@
 						this.pageInfo.count=false;
 						this.xmMenus = res.data.data;
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -383,7 +383,7 @@
 						this.pageInfo.count=true;
 						this.getXmMenus();
 					}
-					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 				}).catch( err  => this.load.edit=false ); 
 			},
 			//删除xmMenu
@@ -397,13 +397,13 @@
 						this.pageInfo.count=true;
 						this.getXmMenus();
 					}
-					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 				}).catch( err  => this.load.add=false ); 
 			}, 
 			//批量删除xmMenu
 			batchDel: function () {
 				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$message({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
+					this.$notify({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
 					return false;
 				}
 				
@@ -418,7 +418,7 @@
 							this.pageInfo.count=true;
 							this.getXmMenus(); 
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -497,11 +497,11 @@
 			},
 			showBatchEdit:function(){
 				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$message({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
+					this.$notify({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
 					return false;
 				}
 				if(this.xmMenus.length==0 ){
-					this.$message({showClose: true, message:"没有数据可以修改", type: 'error'});
+					this.$notify({showClose: true, message:"没有数据可以修改", type: 'error'});
 					return ;
 				}
 				 
@@ -509,7 +509,7 @@
 			},
 			saveBatchEdit:function(){ 
 				if(this.valueChangeRows.length==0){
-					this.$message({showClose: true, message:"没有改变任何数据，无需保存", type: 'success'});
+					this.$notify({showClose: true, message:"没有改变任何数据，无需保存", type: 'success'});
 					return;
 				}else {
 					 
@@ -521,7 +521,7 @@
 							this.valueChangeRows=[]
 							this.getXmMenus()
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'}); 
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'}); 
 						
 					}).catch(e=>this.load.edit=false);
 				}

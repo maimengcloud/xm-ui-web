@@ -458,7 +458,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 						this.pageInfo.count=false;
 						this.xmProjectPhases = res.data.data;
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -590,7 +590,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 							treeTool.reloadChildren(this.$refs.table,this.maps,this.parentProjectPhase.id,'parentPhaseId',this.loadXmProjectPhaseLazy)
 						} 
 					}else{ 
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					} 
 				}).catch( err  => this.load.add=false );
 			},
@@ -616,7 +616,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 								treeTool.reloadChildren(this.$refs.table,this.maps,row.parentPhaseId,'parentPhaseId',this.loadXmProjectPhaseLazy)
 							}  
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -656,7 +656,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 								})
 							}
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -718,7 +718,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			
 			sendToProcessApprova:function(row,bizKey){   
 				if(row.bizFlowState=='1'){
-					this.$message.error("审核中，不允许重新发起");
+					this.$notify.error("审核中，不允许重新发起");
 					return;
 				}
 				
@@ -736,14 +736,14 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 
 				if(bizKey=='xm_project_delete_approva'){
 					if(row.status!='0'){
-						this.$message.error("只有状态为初始化的项目可以删除");
+						this.$notify.error("只有状态为初始化的项目可以删除");
 						return;
 					}
 					mainTitle='关于删除项目【'+titleNames+"】的审批"
 					mainContext=mainTitle+',删除原因：';
 				} else if(bizKey=='xm_project_over_approva'){
 					if(row.status!='1'){
-						this.$message.error("只有状态为执行中的项目可以进行结项操作");
+						this.$notify.error("只有状态为执行中的项目可以进行结项操作");
 						return;
 					}
 					mainTitle='关于项目【'+titleNames+"】结项的审批"
@@ -751,34 +751,34 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					
 				} else if(bizKey=='xm_project_restart_approva'){
 					if(row.status!='3'){
-						this.$message.error("只有状态为暂停的项目可以进行重新启动操作");
+						this.$notify.error("只有状态为暂停的项目可以进行重新启动操作");
 						return;
 					}
 					mainTitle='关于项目【'+titleNames+"】重新启动的审批"
 					mainContext=mainTitle;
 				} else if(bizKey=='xm_project_start_approva'){
 					if(row.status!='0'){
-						this.$message.error("只有状态为初始化的项目可以进行立项审批操作");
+						this.$notify.error("只有状态为初始化的项目可以进行立项审批操作");
 						return;
 					}
 					mainTitle='关于项目【'+titleNames+"】的立项审批"
 					mainContext=mainTitle
 				}  else if(bizKey=='xm_project_suspension_approva'){
 					if(row.status!='1'){
-						this.$message.error("只有状态为执行中的项目可以进行挂起操作");
+						this.$notify.error("只有状态为执行中的项目可以进行挂起操作");
 						return;
 					}
 					mainTitle='关于项目【'+titleNames+"】暂停的审批"
 					mainContext=mainTitle+'';
 				} else if(bizKey=='xm_project_budget_change_approva'){
 					if(row.status!='1'){
-						this.$message.error("只有状态为执行中的项目可以进行预算变更操作");
+						this.$notify.error("只有状态为执行中的项目可以进行预算变更操作");
 						return;
 					}
 					mainTitle='关于项目【'+titleNames+"】的预算变更审批"
 					mainContext=mainTitle+'';
 				} else{
-					this.$message.error("暂不支持的业务审批");
+					this.$notify.error("暂不支持的业务审批");
 					return;
 				} 
 
@@ -835,7 +835,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					if(tips.isOk){
 						this.getXmProjectPhases()
 					}
-					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'}); 
+					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'}); 
 				})
 			},
 			calcKeyPaths(){
@@ -849,7 +849,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					if(tips.isOk){
 						this.getXmProjectPhases()
 					}
-					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'}); 
+					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'}); 
 				})
 			},
 			getFloatValue(value,digit){
@@ -975,19 +975,19 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 			},
 			saveBatchEdit:function(){
 				if(this.valueChangeRows.length==0){
-					this.$message({showClose: true, message:"没有改变任何数据，无需保存", type: 'success'});
+					this.$notify({showClose: true, message:"没有改变任何数据，无需保存", type: 'success'});
 					return;
 				}else {
 					if(this.phaseBudgetData.surplusPlanInnerUserAt<0){
-						this.$message({showClose: true, message:"内部人力预算不足，请调整", type: 'error'});
+						this.$notify({showClose: true, message:"内部人力预算不足，请调整", type: 'error'});
 						return;
 					}
 					if(this.phaseBudgetData.surplusPlanOutUserAt<0){
-						this.$message({showClose: true, message:"外购人力预算不足，请调整", type: 'error'});
+						this.$notify({showClose: true, message:"外购人力预算不足，请调整", type: 'error'});
 						return;
 					}
 					if(this.phaseBudgetData.surplusPlanNouserAt<0){
-						this.$message({showClose: true, message:"非人力预算不足请调整",type: 'error'});
+						this.$notify({showClose: true, message:"非人力预算不足请调整",type: 'error'});
 						return;
 					}
 					
@@ -999,7 +999,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 							this.valueChangeRows=[]
 							this.getXmProjectPhases();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'}); 
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'}); 
 						
 					}).catch(e=>this.load.edit=false);
 				}
@@ -1231,7 +1231,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				}else if('delete'==opType){
 					if(row.opType && (row.opType=='addSub' || row.opType=='add')){
 						if(row.children && row.children.length>0){
-							this.$message.error("请先删除子元素");
+							this.$notify.error("请先删除子元素");
 							return;
 						}else{ 
 
@@ -1251,7 +1251,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
               });
             }
 					}else{
-						this.$message.error("只能删除未保存的行");
+						this.$notify.error("只能删除未保存的行");
 						return;
 					}
 					 
@@ -1274,10 +1274,10 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				setPhaseMngUser(this.editForm).then(res=>{
 					var tips = res.data.tips;
 					if(tips.isOk){
-						this.$message.success("设置成功"); 
+						this.$notify.success("设置成功"); 
 						this.groupUserSelectVisible=false;
 					}else{
-							this.$message.error(tips.msg);
+							this.$notify.error(tips.msg);
 					}
 				})
 			},
@@ -1287,7 +1287,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					if(tips.isOk){ 
 						this.totalProjectAndPhaseBudgetCost=res.data.data;
 					}
-					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 				})
 			}
 		},//end methods

@@ -1447,7 +1447,7 @@ export default {
               }
             }
           } else {
-            this.$message({
+            this.$notify({
               showClose: true,
               message: tips.msg,
               type: "error",
@@ -1535,7 +1535,7 @@ export default {
         parentTaskid: this.editForm.parentTaskid,
       };
       if (rate == 0) {
-        this.$message({
+        this.$notify({
           showClose: true,
           message: "不允许更新为0",
           type: "error",
@@ -1551,7 +1551,7 @@ export default {
               this.getXmTasks()
               treeTool.reloadChildren(this.$refs.table,this.maps,row.parentTaskid,'parentTaskid',this.loadXmTaskLazy) 
           }
-          this.$message({
+          this.$notify({
             showClose: true,
             message: tips.msg,
             type: tips.isOk ? "success" : "error",
@@ -1587,14 +1587,14 @@ export default {
         }
       }
         if (!this.projectPhase||!this.projectPhase.id) {
-          this.$message({
+          this.$notify({
             showClose: true,
             message: "请在左边计划树中选择一个项目计划(不包括计划集)",
             type: "error",
           });
           return false;
         }else if(this.projectPhase.ntype=='1'){ 
-          this.$message({
+          this.$notify({
             showClose: true,
             message: "您当前选中的计划【"+this.projectPhase.phaseName+"】是计划集，计划集下不能创建任务，请重新在右边计划树中选择一个计划",
             type: "error",
@@ -1650,7 +1650,7 @@ export default {
               this.getXmTasks()
               treeTool.reloadChildren(this.$refs.table,this.maps,row.parentTaskid,'parentTaskid',this.loadXmTaskLazy) 
             }
-            this.$message({
+            this.$notify({
               showClose: true,
               message: tips.msg,
               type: tips.isOk ? "success" : "error",
@@ -1665,7 +1665,7 @@ export default {
         !this.roles.some((i) => i.roleid == "projectAdmin") &&
         !this.roles.some((i) => i.roleid == "teamAdmin")
       ) {
-        this.$message.error("只有项目经理、小组长可以操作");
+        this.$notify.error("只有项目经理、小组长可以操作");
         return;
       }
       this.$confirm("确认删除选中记录吗？", "提示", {
@@ -1687,7 +1687,7 @@ export default {
 								})
 							}
             }
-            this.$message({
+            this.$notify({
               showClose: true,
               message: tips.msg,
               type: tips.isOk ? "success" : "error",
@@ -1893,7 +1893,7 @@ export default {
             
           }
           this.taskTemplateVisible = false;
-          this.$message({
+          this.$notify({
             showClose: true,
             message: tips.msg,
             type: tips.isOk ? "success" : "error",
@@ -1924,7 +1924,7 @@ export default {
             this.skillVisible = false;
             this.getXmTasks();
           }
-          this.$message({
+          this.$notify({
             showClose: true,
             message: tips.msg,
             type: tips.isOk ? "success" : "error",
@@ -2039,7 +2039,7 @@ export default {
           if (tips.isOk) {
             this.getXmTasks();
           }
-          this.$message({
+          this.$notify({
             showClose: true,
             message: tips.msg,
             type: tips.isOk ? "success" : "error",
@@ -2056,7 +2056,7 @@ export default {
           username: this.userInfo.username,
         }).then((res) => {
           var tips = res.data.tips;
-          this.$message({
+          this.$notify({
             showClose: true,
             message: tips.msg,
             type: tips.isOk ? "success" : "error",
@@ -2066,7 +2066,7 @@ export default {
     },
     showBatchEdit: function () { 
       if (this.projectPhase == null) {
-        this.$message({
+        this.$notify({
           showClose: true,
           message: "请在左边选择计划再编辑",
           type: "error",
@@ -2160,7 +2160,7 @@ export default {
         this.editForm.exeUserids &&
         this.editForm.exeUserids.indexOf(this.userInfo.userid) >= 0
       ) {
-        this.$message.success("你已经加入该任务了");
+        this.$notify.success("你已经加入该任务了");
         return;
       }
       this.execUserVisible = true;
@@ -2186,10 +2186,10 @@ export default {
       setTaskCreateUser(this.editForm).then((res) => {
         var tips = res.data.tips;
         if (tips.isOk) {
-          this.$message.success("设置成功");
+          this.$notify.success("设置成功");
           this.groupUserSelectVisible = false;
         } else {
-          this.$message.error(tips.msg);
+          this.$notify.error(tips.msg);
         }
       });
     },
@@ -2287,7 +2287,7 @@ export default {
       editTime(params)
         .then((res) => {
           var tips = res.data.tips;
-          this.$message({
+          this.$notify({
             showClose: true,
             message: tips.msg,
             type: tips.isOk ? "success" : "error",

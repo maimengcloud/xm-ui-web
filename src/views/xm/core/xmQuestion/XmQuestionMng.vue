@@ -427,7 +427,7 @@
 					if(this.filters.hisHandleStatus){
 						params.hisHandlerUserid=this.filters.hisHandler.userid;
 					}else{
-						this.$message({showClose: true, message: "请选择曾经的缺陷状态", type: 'error' });
+						this.$notify({showClose: true, message: "请选择曾经的缺陷状态", type: 'error' });
 						return;
 					}
 
@@ -436,7 +436,7 @@
 					if(this.filters.hisHandler){
 						params.hisHandleStatus=this.filters.hisHandleStatus
 					}else{
-						this.$message({showClose: true, message: "请选择曾经的执行人", type: 'error' });
+						this.$notify({showClose: true, message: "请选择曾经的执行人", type: 'error' });
 						return;
 					}
 
@@ -475,7 +475,7 @@
 						this.pageInfo.count=false;
 						this.xmQuestions = res.data.data;
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -526,7 +526,7 @@
 			showAdd: function () {
 				if(this.filters.selProject==null){
 
-					this.$message({showClose: true, message: "请先选中项目", type: 'success' });
+					this.$notify({showClose: true, message: "请先选中项目", type: 'success' });
 					this.nextAction="showAdd"
 					this.showProjectList();
 					return;
@@ -560,7 +560,7 @@
 							this.pageInfo.count=true;
 							this.getXmQuestions();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -577,7 +577,7 @@
 							this.pageInfo.count=true;
 							this.getXmQuestions();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -668,7 +668,7 @@
 			showGroupUsers:function(userType){
 				this.userType=userType;
 				if(this.filters.selProject==null || this.filters.selProject.id==''){
-					this.$message({showClose: true, message: "请先选中项目", type: 'success' });
+					this.$notify({showClose: true, message: "请先选中项目", type: 'success' });
 					this.nextAction="showGroupUsers"
 					this.showProjectList();
 					return;
@@ -802,7 +802,7 @@
 			sendToProcessApprova:function(row,bizKey){
 				// 传过来的参数格式
 				if(row.flowState=='1'){
-					this.$message.error("已经发起，不允许重复发起");
+					this.$notify.error("已经发起，不允许重复发起");
 					return;
 				}
 				let extVars={projectId:row.projectId,branchId:this.userInfo.branchId,questionId:row.id}
@@ -840,7 +840,7 @@
 					this.$router.push({name:'ProcdefListForBizStart',params:params});
 
 				}else {
-					this.$message.error("不支持的审批事项");
+					this.$notify.error("不支持的审批事项");
 					return;
 				}
 				//this.$store.dispatch('addVisitedViews', {path:'/mdp/workflow/re/procdef/ProcdefListForBizStart',query:{params:jsonParmas}})

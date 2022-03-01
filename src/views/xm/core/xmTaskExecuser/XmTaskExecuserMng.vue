@@ -350,7 +350,7 @@
 						this.xmTaskExecusers = res.data.data;
 						this.$emit("loadExecUserList",this.xmTaskExecusers);
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -431,7 +431,7 @@
 							this.pageInfo.count=true;
 							this.afterDeleteSubmit();
  						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -448,7 +448,7 @@
 							this.pageInfo.count=true;
 							this.afterDeleteSubmit();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -473,7 +473,7 @@
 							if(tips.isOk){
 								this.afterEditSubmit();
  							}
-							this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+							this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 						}).catch( err =>this.load.edit=false);
 					});
 				}
@@ -489,17 +489,17 @@
 							if(tips.isOk){
 								this.afterEditSubmit();
 							}
-							this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+							this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 						}).catch( err =>this.load.edit=false);
 					});
 				}else if(row.status=="1"){
-					 this.$message.error("已是执行人，无需变更");
+					 this.$notify.error("已是执行人，无需变更");
 				}else if(row.status=="7"){
-					 this.$message.error("已离开任务，不允许变更执行人");
+					 this.$notify.error("已离开任务，不允许变更执行人");
 				}else if(row.status=="8"){
-					 this.$message.error("黑名单，不允许参与该任务");
+					 this.$notify.error("黑名单，不允许参与该任务");
 				}else{
-					 this.$message.error("已是执行人，无需变更");
+					 this.$notify.error("已是执行人，无需变更");
 				}
 			},
 			settle(row) {
@@ -522,7 +522,7 @@
 							this.$refs['settleForm'].resetFields();
 							this.afterEditSubmit();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err =>this.load.edit=false);
 				});
 			},
@@ -541,7 +541,7 @@
 							this.quotePriceVisible = false;
 							this.afterEditSubmit();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err =>this.load.edit=false);
 				});
 			},
@@ -597,7 +597,7 @@
 					if(tips.isOk){
 						this.getXmTaskExecusers();
 					}
-					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 
 				})
 			},
@@ -609,7 +609,7 @@
 					if(tips.isOk){
 						this.getXmTaskExecusers();
 					}
-					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 
 				})
 			},
@@ -621,7 +621,7 @@
 					if(tips.isOk){
 						this.getXmTaskExecusers();
 					}
-					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 
 				})
 			},
@@ -652,11 +652,11 @@
 			sendToProcessApprova:function(row,bizKey){
 				// 传过来的参数格式
         if(this.settleForm.settleAmount==0||this.settleForm.settleAmount==''){
-          this.$message.error("结算金额为空/0，不允许发审");
+          this.$notify.error("结算金额为空/0，不允许发审");
           return;
         }
 				if(row.flowState=='1'){
-					this.$message.error("审核中，不允许重复发审");
+					this.$notify.error("审核中，不允许重复发审");
 					return;
 				}
 
@@ -705,7 +705,7 @@
 					this.$router.push({name:'ProcdefListForBizStart',params:params});
 					//this.html2canvas(document.querySelector(".settleForm"),row,params);
 				}else {
-					this.$message.error("不支持的审批事项");
+					this.$notify.error("不支持的审批事项");
 					return;
 				}
 
@@ -767,7 +767,7 @@
 						if(tips.isOk){
 							this.afterEditSubmit();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 
 					})
 			},
@@ -781,7 +781,7 @@
 						if(tips.isOk){
 							this.afterEditSubmit();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 
 					})
 			},

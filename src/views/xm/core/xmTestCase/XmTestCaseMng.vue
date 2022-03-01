@@ -272,7 +272,7 @@
 						this.pageInfo.count=false;
 						this.xmTestCases = res.data.data;
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -286,7 +286,7 @@
 			//显示新增界面 XmTestCase 测试用例
 			showAdd: function () { 
 				if( !this.roles.some(i=>i.roleid=='testAdmin') && !this.roles.some(i=>i.roleid=='tester') && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
-					this.$message({showClose: true,message:"只有测试经理、测试组长、测试员可以操作",type:"error"});
+					this.$notify({showClose: true,message:"只有测试经理、测试组长、测试员可以操作",type:"error"});
 					return ;
 				}
 				this.addFormVisible = true;
@@ -307,11 +307,11 @@
 			//删除xmTestCase
 			handleDel: function (row,index) { 
 				if( !this.roles.some(i=>i.roleid=='testAdmin') && !this.roles.some(i=>i.roleid=='tester') && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
-					this.$message({showClose: true,message:"只有测试经理、测试组长、测试员可以操作",type:"error"});
+					this.$notify({showClose: true,message:"只有测试经理、测试组长、测试员可以操作",type:"error"});
 					return ;
 				}
 				if(!this.roles.some(i=>i.roleid=='testAdmin')){
-					this.$message({showClose: true, message: "只有测试管理员才能删除测试用例", type: 'error' });
+					this.$notify({showClose: true, message: "只有测试管理员才能删除测试用例", type: 'error' });
 					return;
 				}
 				this.$confirm('确认删除该记录吗?', '提示', {
@@ -326,18 +326,18 @@
 							this.pageInfo.count=true;
 							this.getXmTestCases();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
 			//批量删除xmTestCase
 			batchDel: function () {
 				if( !this.roles.some(i=>i.roleid=='testAdmin') && !this.roles.some(i=>i.roleid=='tester') && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
-					this.$message({showClose: true,message:"只有测试经理、测试组长、测试员可以操作",type:"error"});
+					this.$notify({showClose: true,message:"只有测试经理、测试组长、测试员可以操作",type:"error"});
 					return ;
 				}
 				if(!this.roles.some(i=>i.roleid=='testAdmin')){
-					this.$message({showClose: true, message: "只有测试管理员才能删除测试用例", type: 'error' });
+					this.$notify({showClose: true, message: "只有测试管理员才能删除测试用例", type: 'error' });
 					return;
 				}
 				this.$confirm('确认删除选中记录吗？', '提示', {
@@ -351,7 +351,7 @@
 							this.pageInfo.count=true;
 							this.getXmTestCases(); 
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},

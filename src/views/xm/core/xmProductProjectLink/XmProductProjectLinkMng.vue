@@ -157,7 +157,7 @@ import XmProjectSelect from '../xmProject/XmProjectSelect.vue';
 						this.pageInfo.count=false;
 						this.xmProductProjectLinks = res.data.data;
 					}else{
-						this.$message({ message: tips.msg, type: 'error' });
+						this.$notify({ message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -199,7 +199,7 @@ import XmProjectSelect from '../xmProject/XmProjectSelect.vue';
 							this.pageInfo.count=true;
 							this.getXmProductProjectLinks();
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -217,7 +217,7 @@ import XmProjectSelect from '../xmProject/XmProjectSelect.vue';
 							this.pageInfo.count=true;
 							this.getXmProductProjectLinks(); 
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({ message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -241,7 +241,7 @@ import XmProjectSelect from '../xmProject/XmProjectSelect.vue';
 							this.pageInfo.count=true;
 							this.getXmProductProjectLinks(); 
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({ message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -259,7 +259,7 @@ import XmProjectSelect from '../xmProject/XmProjectSelect.vue';
 							this.pageInfo.count=true;
 							this.getXmProductProjectLinks(); 
 						}
-						this.$message({ message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({ message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			}	

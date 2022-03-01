@@ -368,7 +368,7 @@
 									//this.$refs['editForm'].resetFields();
 									this.$emit('submit',res.data.data);//  @submit="aftereditSubmit"
 								}
-								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err  => this.load.edit=false);
 						});
 					}
@@ -413,7 +413,7 @@
 						// this.getXmTasks();
 						this.$emit("submit",this.editForm)
 					}
-					this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 				}).catch( err  => this.load.add=false);
 			}, 
 			
@@ -512,7 +512,7 @@
 			
 			toJoin(){
 				if(this.editForm.exeUserids && this.editForm.exeUserids.indexOf(this.userInfo.userid)>=0){
-					this.$message.success("你已经加入该任务了");
+					this.$notify.success("你已经加入该任务了");
 					return;
 				}
 				this.execUserVisible=true;
@@ -536,11 +536,11 @@
 				setTaskCreateUser(this.editForm).then(res=>{
 					var tips = res.data.tips;
 					if(tips.isOk){
-						this.$message.success("设置成功");
+						this.$notify.success("设置成功");
 						this.groupUserSelectVisible=false;
 						this.$emit("submit",this.editForm)
 					}else{
-							this.$message.error(tips.msg);
+							this.$notify.error(tips.msg);
 					}
 				})
 			},

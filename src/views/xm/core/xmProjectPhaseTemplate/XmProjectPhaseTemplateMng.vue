@@ -202,7 +202,7 @@
 				} 
 				this.getParams(params)
 				if(!params.projectId && !params.productId){ 
-					this.$message({showClose: true, message: "请选择项目模板/产品模板", type: 'error' });
+					this.$notify({showClose: true, message: "请选择项目模板/产品模板", type: 'error' });
 					return; 
 				}
 				params.isTop="1"
@@ -214,7 +214,7 @@
 						this.pageInfo.count=false;
 						this.xmProjectPhases = res.data.data;
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );

@@ -659,7 +659,7 @@ export default {
             this.pageInfo.count = false;
             this.xmProjectPhases = res.data.data;
           } else {
-            this.$message({
+            this.$notify({
               showClose: true,
               message: tips.msg,
               type: "error",
@@ -676,7 +676,7 @@ export default {
         !this.roles.some((i) => i.roleid == "projectAdmin") &&
         !this.roles.some((i) => i.roleid == "teamAdmin")
       ) {
-        this.$message({
+        this.$notify({
           showClose: true,
           message: "只有项目经理、小组组长可以操作计划",
           type: "error",
@@ -692,7 +692,7 @@ export default {
         !this.roles.some((i) => i.roleid == "projectAdmin") &&
         !this.roles.some((i) => i.roleid == "teamAdmin")
       ) {
-        this.$message({
+        this.$notify({
           showClose: true,
           message: "只有项目经理、小组组长可以操作计划",
           type: "error",
@@ -711,7 +711,7 @@ export default {
         !this.roles.some((i) => i.roleid == "projectAdmin") &&
         !this.roles.some((i) => i.roleid == "teamAdmin")
       ) {
-        this.$message({
+        this.$notify({
           showClose: true,
           message: "只有项目经理、小组组长可以操作计划",
           type: "error",
@@ -826,7 +826,7 @@ export default {
           if (tips.isOk) {
             this.getXmProjectPhases();
           } else {
-            this.$message({
+            this.$notify({
               showClose: true,
               message: tips.msg,
               type: "error",
@@ -845,7 +845,7 @@ export default {
         !this.roles.some((i) => i.roleid == "projectAdmin") &&
         !this.roles.some((i) => i.roleid == "teamAdmin")
       ) {
-        this.$message({
+        this.$notify({
           showClose: true,
           message: "只有项目经理、小组组长可以操作计划",
           type: "error",
@@ -853,7 +853,7 @@ export default {
         return;
       }
       if (!!row.bizFlowState) {
-        this.$message({
+        this.$notify({
           showClose: true,
           message: "初始状态的计划可以直接删除，其它状态请发起审核流程进行删除",
           type: "error",
@@ -862,7 +862,7 @@ export default {
       }
 
       if (command.data.children && command.data.length > 0) {
-        this.$message({
+        this.$notify({
           showClose: true,
           message: "该计划存在子计划，不允许删除",
           type: "error",
@@ -882,7 +882,7 @@ export default {
               this.pageInfo.count = true;
               this.getXmProjectPhases();
             }
-            this.$message({
+            this.$notify({
               showClose: true,
               message: tips.msg,
               type: tips.isOk ? "success" : "error",
@@ -897,7 +897,7 @@ export default {
         !this.roles.some((i) => i.roleid == "projectAdmin") &&
         !this.roles.some((i) => i.roleid == "teamAdmin")
       ) {
-        this.$message({
+        this.$notify({
           showClose: true,
           message: "只有项目经理、小组组长可以操作计划",
           type: "error",
@@ -939,7 +939,7 @@ export default {
               this.pageInfo.count = true;
               this.getXmProjectPhases();
             }
-            this.$message({
+            this.$notify({
               showClose: true,
               message: tips.msg,
               type: tips.isOk ? "success" : "error",
@@ -953,7 +953,7 @@ export default {
         !this.roles.some((i) => i.roleid == "projectAdmin") &&
         !this.roles.some((i) => i.roleid == "teamAdmin")
       ) {
-        this.$message({
+        this.$notify({
           showClose: true,
           message: "只有项目经理、小组组长可以操作计划",
           type: "error",
@@ -1040,7 +1040,7 @@ export default {
         if (tips.isOk) {
           this.getXmProjectPhases();
         }
-        this.$message({
+        this.$notify({
           showClose: true,
           message: tips.msg,
           type: tips.isOk ? "success" : "error",
@@ -1223,7 +1223,7 @@ export default {
         !this.roles.some((i) => i.roleid == "projectAdmin") &&
         !this.roles.some((i) => i.roleid == "teamAdmin")
       ) {
-        this.$message({
+        this.$notify({
           showClose: true,
           message: "只有项目经理、小组组长可以操作计划",
           type: "error",
@@ -1231,7 +1231,7 @@ export default {
         return;
       }
       if (this.valueChangeRows.length == 0) {
-        this.$message({
+        this.$notify({
           showClose: true,
           message: "没有改变任何数据，无需保存",
           type: "success",
@@ -1239,7 +1239,7 @@ export default {
         return;
       } else {
         if (this.phaseBudgetData.surplusPlanInnerUserAt < 0) {
-          this.$message({
+          this.$notify({
             showClose: true,
             message: "内部人力预算不足，请调整",
             type: "error",
@@ -1247,7 +1247,7 @@ export default {
           return;
         }
         if (this.phaseBudgetData.surplusPlanOutUserAt < 0) {
-          this.$message({
+          this.$notify({
             showClose: true,
             message: "外购人力预算不足，请调整",
             type: "error",
@@ -1255,7 +1255,7 @@ export default {
           return;
         }
         if (this.phaseBudgetData.surplusPlanNouserAt < 0) {
-          this.$message({
+          this.$notify({
             showClose: true,
             message: "非人力预算不足请调整",
             type: "error",
@@ -1272,7 +1272,7 @@ export default {
               this.valueChangeRows = [];
               this.getXmProjectPhases();
             }
-            this.$message({
+            this.$notify({
               showClose: true,
               message: tips.msg,
               type: tips.isOk ? "success" : "error",
@@ -1638,7 +1638,7 @@ export default {
         !this.roles.some((i) => i.roleid == "projectAdmin") &&
         !this.roles.some((i) => i.roleid == "teamAdmin")
       ) {
-        this.$message({
+        this.$notify({
           showClose: true,
           message: "只有项目经理、小组组长可以操作计划",
           type: "error",
@@ -1668,7 +1668,7 @@ export default {
         !this.roles.some((i) => i.roleid == "projectAdmin") &&
         !this.roles.some((i) => i.roleid == "teamAdmin")
       ) {
-        this.$message({
+        this.$notify({
           showClose: true,
           message: "只有项目经理、小组组长可以操作计划",
           type: "error",
@@ -1713,7 +1713,7 @@ export default {
         this.xmProjectPhases.unshift(subRow);
       } else if ("addSub" == opType) {
         if (row.ntype != "1") {
-          this.$message.error(
+          this.$notify.error(
             "【" + row.phaseName + "】不是计划集，不允许在其下增加子计划"
           );
           return;
@@ -1738,7 +1738,7 @@ export default {
       } else if ("delete" == opType) {
         if (row.opType && (row.opType == "addSub" || row.opType == "add")) {
           if (row.children && row.children.length > 0) {
-            this.$message.error("请先删除子元素");
+            this.$notify.error("请先删除子元素");
             return;
           } else {
             var index = this.xmProjectPhases.findIndex((i) => i.id == row.id);
@@ -1759,7 +1759,7 @@ export default {
           });
         }
       } else {
-        this.$message.error("只能删除未保存的行");
+        this.$notify.error("只能删除未保存的行");
         return;
       }
     },
