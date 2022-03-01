@@ -816,10 +816,8 @@
 		    //在下面添加其它组件
 		},
 		mounted() {
-			this.$nextTick(() => {
-				
-				 
-				this.tableHeight =  util.calcTableMaxHeight(".el-table");
+			this.$nextTick(() => { 
+				this.tableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
 				this.getXmTaskExecusers();
 				});
 

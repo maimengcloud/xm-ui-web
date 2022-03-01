@@ -275,7 +275,7 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 		mounted() { 
 			this.$nextTick(() => {
 				this.getXmIterationProductLinks(); 
-                this.maxTableHeight =  util.calcTableMaxHeight(".el-table")
+                this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.xmIterationProductLink.$el)
         	}); 
         	/** 举例，
     		listOption([{categoryId:'all',itemCode:'sex'},{categoryId:'all',itemCode:'grade'}] ).then(res=>{

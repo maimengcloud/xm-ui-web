@@ -15,7 +15,7 @@
 				</el-row>
 				<el-row class="page-main padding-top padding-left">
 					<!--列表 XmIterationMenu 迭代定义-->
-					<el-table ref="table" :height="tableHeight" :data="xmIterationMenusTreeData"  default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+					<el-table ref="table" :height="maxTableHeight" :data="xmIterationMenusTreeData"  default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column  type="selection" width="45"></el-table-column> 
 						<el-table-column prop="menuName" label="需求名称" min-width="140" > 
 							<template slot-scope="scope">
@@ -103,7 +103,7 @@
 				},
 				iteration:null,
 				menuVisible:false,
-				tableHeight:300,
+				maxTableHeight:300,
 				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -332,7 +332,7 @@
 			this.$nextTick(() => {
 				
 				
-				this.tableHeight =  util.calcTableMaxHeight(".el-table"); 
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
 				this.getXmIterationMenus();
         	}); 
         	/** 举例，

@@ -68,7 +68,7 @@
 		</el-row>
 		<el-row class="page-main "> 
 			<!--列表 XmTestCase 测试用例-->
-			<el-table ref="table" :height="tableHeight" :data="xmTestCases" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :height="maxTableHeight" :data="xmTestCases" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>
 				<el-table-column sortable type="index" width="45"></el-table-column>
 				<el-table-column prop="caseName" label="标题" min-width="100" show-overflow-tooltip>
@@ -79,7 +79,7 @@
  				<el-table-column prop="caseRemark" label="备注" min-width="80" show-overflow-tooltip></el-table-column> 
  				<el-table-column  prop="menuName" label="需求名" min-width="80" show-overflow-tooltip> 
 					<template slot="header">
-						需求<el-button @click="showMenu"  icon="el-icon-search" ></el-button>
+						需求<el-button type="text" @click="showMenu"  icon="el-icon-search" ></el-button>
  					</template>
 				 </el-table-column>
 				<el-table-column v-if="!multiSelect" prop="ctime" label="创建时间" min-width="80" show-overflow-tooltip></el-table-column>
@@ -186,7 +186,7 @@
 				},
 				/**begin 自定义属性请在下面加 请加备注**/ 
 				menuVisible:false,
-				tableHeight:300,
+				maxTableHeight:300,
 				
 				selectProjectVisible:false,    
 				selectUserForFiltersVisible:false,   
@@ -454,13 +454,8 @@
 		mounted() { 
 			this.$nextTick(() => {
 				this.filters.luser=this.userInfo; 
-				this.getXmTestCases();
-				
-				var subHeight=70;  
-				if(this.selProject){
-					subHeight=100/1000 * window.innerHeight;
-				}
-				this.tableHeight =  util.calcTableMaxHeight(".el-table"); 
+				this.getXmTestCases(); 
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
         	}); 
         	/** 举例，
     		listOption([{categoryId:'all',itemCode:'sex'},{categoryId:'all',itemCode:'grade'}] ).then(res=>{

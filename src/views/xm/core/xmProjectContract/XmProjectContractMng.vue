@@ -240,10 +240,7 @@
 		},
 		mounted() { 
 			this.$nextTick(() => {
-				
-				
-				
-				this.tableHeight =  util.calcTableMaxHeight(".el-table"); 
+				this.tableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);  
 				this.getXmProjectContracts();
         	}); 
 		}

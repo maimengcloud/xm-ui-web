@@ -2,7 +2,7 @@
 	<section class="page-container padding border">
 		<el-row class="page-main"> 
 			<!--列表 XmQuestionHandle xm_question_handle-->
-			<el-table :data="xmQuestionHandles" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :height="tableHeight" :data="xmQuestionHandles" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  				<el-table-column sortable type="index" width="60"></el-table-column>
  				<el-table-column prop="handlerUsername" label="指派" min-width="80" >
 					<template slot-scope="scope">
@@ -85,7 +85,8 @@
 				//编辑xmQuestionHandle界面初始化数据
 				editForm: {
 					id:'',handlerUserid:'',handlerUsername:'',handleSolution:'',receiptMessage:'',receiptTime:'',handleStatus:'',bizProcInstId:'',bizFlowState:'',questionId:'',lastUpdateTime:'',createTime:'',actWorkload:'',actCostAmount:'',urls:'',targetUserid:'',targetUsername:''
-				}
+				},
+				tableHeight:300,
 				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -228,6 +229,8 @@
 		},
 		mounted() { 
 			this.$nextTick(() => {
+				
+				this.tableHeight = util.calcTableMaxHeight(this.$refs.table.$el); 
 				this.getXmQuestionHandles();
         	}); 
 		}

@@ -6,7 +6,7 @@
   		</el-row>
 		<el-row class="page-main "> 
 			<!--列表 XmIterationState 迭代定义-->
-			<el-table :data="xmIterationStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :height="maxTableHeight" :data="xmIterationStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  				<el-table-column sortable type="index" width="45"></el-table-column>
  				<el-table-column prop="iterationName" label="迭代名称" min-width="80" ></el-table-column>
 				<el-table-column prop="finishRate" label="进度" min-width="80">
@@ -98,7 +98,7 @@
 				//编辑xmIterationState界面初始化数据
 				editForm: {
 					id:'',distBudgetCost:'',distBudgetWorkload:'',actCost:'',actWorkload:'',actStaffNum:'',finishRate:'',testCases:'',execCases:'',designCases:'',finishCases:'',projectCnt:'',productCnt:'',menuCnt:'',taskCnt:'',finishTaskCnt:'',calcTime:'',iterationName:'',budgetCost:'',budgetWorkload:'',iterationId:''
-				}
+				},maxTableHeight:300,
 				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -243,6 +243,7 @@
 		mounted() { 
 			this.$nextTick(() => {
 				this.getXmIterationStates();
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
         	}); 
         	/** 举例，
     		listOption([{categoryId:'all',itemCode:'sex'},{categoryId:'all',itemCode:'grade'}] ).then(res=>{

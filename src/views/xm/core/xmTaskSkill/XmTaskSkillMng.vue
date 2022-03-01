@@ -8,7 +8,7 @@
 		</el-row>
 		<el-row class="page-main "> 
 			<!--列表 XmTaskSkill xm_task_skill-->
-			<el-table :data="xmTaskSkills" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :height="tableHeight" :data="xmTaskSkills" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="selection" width="40"></el-table-column>
 				<el-table-column sortable type="index" width="40"></el-table-column>
 				<el-table-column prop="id" label="主键" min-width="80" ></el-table-column>
@@ -99,6 +99,7 @@
 				/**begin 自定义属性请在下面加 请加备注**/
 				skillVisible: false,
 				skillIds: [],
+				tableHeight:300,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -273,6 +274,7 @@
 		mounted() { 
 			this.$nextTick(() => {
 				this.getXmTaskSkills();
+				this.tableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
         	}); 
 		}
 	}

@@ -2,7 +2,7 @@
 	<section> 
 		<el-row>
 			<!--列表 XmIteration 迭代定义-->
-			<el-table ref="table" :height="tableHeight" :data="xmIterationTreeData" row-key="id"  default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :height="maxTableHeight" :data="xmIterationTreeData" row-key="id"  default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
    				<el-table-column prop="iterationName" label="迭代名称" min-width="160" >
 					<template slot="header" slot-scope="scope">
 					迭代名称 <el-popover v-if=" !menuId && !productId"
@@ -151,7 +151,7 @@
 				parentIteration:null,
 				iterationStateVisible:false,
 				gstcVisible:false,
-				tableHeight:300,
+				maxTableHeight:300,
 				ganrrColumns: {
 				children: 'children',
 				name: 'iterationName',
@@ -350,10 +350,8 @@
 		    //在下面添加其它组件
 		},
 		mounted() {
-			this.$nextTick(() => {
-				
-				
-				this.tableHeight =  util.calcTableMaxHeight(".el-table");
+			this.$nextTick(() => { 
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
 				this.getXmIterations();
         	});
            

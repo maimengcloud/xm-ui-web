@@ -126,7 +126,7 @@
 				</el-row>
 				<el-row  class="padding-top" v-show="!showType">
 					<!--列表 XmProduct 产品表-->
-					<el-table ref="table"  :height="tableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+					<el-table ref="table"  :height="maxTableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						
 						<el-table-column type="index" width="60"> 
 						</el-table-column>
@@ -309,7 +309,7 @@ import XmProductSelect from './XmProductSelect.vue';
 				iterationSelectVisible:false,
 				productStateVisible:false,
 				selectFiltersPmUserVisible:false,
-				tableHeight:300,
+				maxTableHeight:300,
 				dateRanger: [ 
 				],
 				pickerOptions:  util.pickerOptions('datarange'),
@@ -650,10 +650,8 @@ import XmProductSelect from './XmProductSelect.vue';
 					this.options['xmProductPstatus']=res.data.data.xmProductPstatus   
 				}
 			});
-			this.$nextTick(() => {
-				
-				
-				this.tableHeight =  util.calcTableMaxHeight('.el-table');
+			this.$nextTick(() => { 
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
 				this.getXmProducts();
         	});
 		}

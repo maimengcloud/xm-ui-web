@@ -152,14 +152,13 @@
 				finishFlag: false,
 				xmRecordVisible: false,
 				productSelectVisible:false,
-				tableHeight:300,
+				maxTableHeight:300,
 				dateRanger: [ ],  
 				pickerOptions:  util.pickerOptions('datarange'),
 				xmProjectCopy:{
 					id:'',name:'',code:'',isTpl:'',copyPhase:'1',copyTask:'1',copyGrup:'0'
 				},
-				copyToVisible:false,
-				maxTableHeight:300,
+				copyToVisible:false, 
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -550,11 +549,9 @@
 				this.filters.productId=this.$route.params.productId;
 				this.filters.productName=this.$route.params.productName;
 			}
-			this.$nextTick(() => {
+			this.$nextTick(() => {  
 				
-                
-                
-                this.maxTableHeight = window.innerHeight - top -100;
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);  
 				this.showInfo = false;
 				this.getXmProjects();
 			}); 

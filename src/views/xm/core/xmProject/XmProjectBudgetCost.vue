@@ -56,6 +56,7 @@
 				</el-table>
 
 				<el-table
+					ref="table"
 					:height="tableHeight"
 					v-if="showType == '非人力'"
 					:data="sumXmProjectMBudgetCostNousersConvert" 
@@ -305,10 +306,9 @@ import { months } from 'moment';
 		},
 		mounted() { 
 			this.showType = "人力";
-				this.$nextTick(() => { 
-					//
-					var subHeight=700/1000 * window.innerHeight; 
-					this.tableHeight =  window.innerHeight-subHeight; 
+				this.$nextTick(() => {  
+					
+				this.tableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
 			  }); 
 			  this.selProjectBudget=Object.assign({},this.selProject);
 		}

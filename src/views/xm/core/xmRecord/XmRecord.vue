@@ -259,14 +259,8 @@
 				this.filters.objType=this.objType
 			}
 			
-			this.$nextTick(() => {
-				
-				
-				
-				if(this.projectId){
-					subHeight=100/1000 * window.innerHeight;
-				}
-				this.tableHeight =  util.calcTableMaxHeight(".el-table"); 
+			this.$nextTick(() => { 
+				this.tableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
 				this.getXmRecords();
         	}); 
 		}

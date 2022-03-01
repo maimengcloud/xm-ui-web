@@ -91,7 +91,7 @@
 						</el-popover>  
 					 </el-row>  
 					<el-row class="padding-top">  
-						<el-table lazy :load="loadMenusLazy"  class="menu-mng-table" stripe fit border ref="table" :max-height="tableHeight" :data="xmMenusTreeData"  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
+						<el-table lazy :load="loadMenusLazy" stripe fit border ref="table" :max-height="maxTableHeight" :data="xmMenusTreeData"  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
 							<el-table-column sortable type="selection" width="40"></el-table-column> 
 							<el-table-column prop="menuName" label="需求名称" min-width="160"> 
 								<template slot-scope="scope">
@@ -342,7 +342,7 @@
 				iterationVisible:false,
 				userSelectVisible:false,
 				selectFiltersMmUserVisible:false,
-				tableHeight:300,
+				maxTableHeight:300,
 				dateRanger: [ ],  
 				pickerOptions:  util.pickerOptions('datarange'),
 				productVisible:false,
@@ -928,9 +928,7 @@
 				this.productVisible=false;
 			}
 			this.$nextTick(() => { 
-				
-				 
-				this.tableHeight =  util.calcTableMaxHeight(".menu-mng-table"); 
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
 				this.getXmMenus();
           });  
 		}

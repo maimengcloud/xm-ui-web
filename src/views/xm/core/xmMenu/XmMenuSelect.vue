@@ -76,7 +76,7 @@
 					<el-button   type="primary" v-if="multi"  v-on:click="multiSelectedConfirm">确认选择</el-button>
 				</el-row>
 				<el-row style="padding-top:12px;">
-					<el-table ref="table" class="menu-table"  lazy :load="loadMenusLazy" :height="tableHeight" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+					<el-table ref="table" class="menu-table"  lazy :load="loadMenusLazy" :height="maxTableHeight" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column v-if="multi" type="selection" width="50"></el-table-column>  
 						<el-table-column prop="menuName" label="需求名称" min-width="140" > 
 							<template slot-scope="scope">
@@ -182,7 +182,7 @@
  				menuDetailVisible:false,
 				 selectFiltersMmUserVisible:false,
 				/**begin 自定义属性请在下面加 请加备注**/
-				tableHeight:300,
+				maxTableHeight:300,
 				dateRanger: [ ],  
 				pickerOptions:  util.pickerOptions('datarange'),
 				/**end 自定义属性请在上面加 请加备注**/
@@ -418,10 +418,8 @@
 				if(this.excludeIterationId){
 					this.filters.iterationFilterType='not-join'
 				}
-				this.getXmMenus(); 
-            	
-				
-				this.tableHeight =  util.calcTableMaxHeight(".menu-table"); 
+				this.getXmMenus();  
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
         	}); 
 		}
 	}

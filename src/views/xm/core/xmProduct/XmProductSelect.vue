@@ -2,7 +2,7 @@
 	<section>  
 		<el-row > 
 			<!--列表 XmProduct 产品表-->
-			<el-table  ref="table" :height="tableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table  ref="table" :height="maxTableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  				 <el-table-column prop="productName"  label="产品名称" min-width="150" > 
 					 <template slot="header" slot-scope="scope"> 
 						 产品名称 
@@ -151,7 +151,7 @@
 				iterationVisible:false,
 				productStateVisible:false,
 				selectFiltersPmUserVisible:false,
-				tableHeight:300,
+				maxTableHeight:300,
 				dateRanger: [ ],  
 				pickerOptions:  util.pickerOptions('datarange'),
 				
@@ -304,10 +304,8 @@
 		    //在下面添加其它组件
 		},
 		mounted() { 
-			this.$nextTick(() => {
-				
-				
-				this.tableHeight =  util.calcTableMaxHeight(".el-table"); 
+			this.$nextTick(() => { 
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
 				this.getXmProducts();
         	}); 
 		}

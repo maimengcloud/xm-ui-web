@@ -432,8 +432,8 @@
 						this.options['projectStatus']=res.data.data.projectStatus 
 						//this.editForm.projectStatus=this.options['projectStatus'][0].optionValue
 					}
-				}); 
-                this.maxTableHeight = util.calcTableMaxHeight('.el-table');
+				});  
+                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el);
         	}); 
         	/** 举例，
     		listOption([{categoryId:'all',itemCode:'sex'},{categoryId:'all',itemCode:'grade'}] ).then(res=>{

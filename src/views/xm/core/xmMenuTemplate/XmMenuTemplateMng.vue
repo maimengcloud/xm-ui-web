@@ -15,7 +15,7 @@
 				<xm-product-template-mng @row-click="onProductSelected" ref="xmProductTemplateMng" :simple="true"></xm-product-template-mng>
 			</el-col>
 			<el-col v-show="!batchEditVisible" :span="batchEditVisible?24:18">
-				<el-table :data="xmMenuTemplatesTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+				<el-table ref="table" :height="maxTableHeight" :data="xmMenuTemplatesTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 					<el-table-column sortable type="selection" width="40"></el-table-column> 
  					<el-table-column prop="menuName" label="需求名称" min-width="120" > 
 						<template slot-scope="scope">
@@ -165,6 +165,7 @@
 				
 				batchEditVisible:false,
 				valueChangeRows:[],
+				maxTableHeight:300,
 				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -615,6 +616,7 @@
 		},
 		mounted() { 
 			this.$nextTick(() => {
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
 				this.getXmMenuTemplates();
           }); 
       // 阻止默认行为

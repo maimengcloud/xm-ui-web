@@ -8,7 +8,7 @@
 		</el-row>
 		<el-row class="page-main "> 
 			<!--列表 XmEnvList xm_env_list-->
-			<el-table ref="table" :height="tableHeight" :data="xmEnvLists" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :height="maxTableHeight" :data="xmEnvLists" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="selection" width="40"></el-table-column>
 				<el-table-column prop="ipAddress" label="内网ip地址" min-width="80" ></el-table-column>
 				<el-table-column prop="port" label="内网访问端口" min-width="80" ></el-table-column>
@@ -101,7 +101,7 @@
 				/**begin 自定义属性请在下面加 请加备注**/
 				
 				envStateList:["不可用","已启用","已过期"],
-				tableHeight:300,
+				maxTableHeight:300,
 				// 	{
 				// 		value: "0",
 				// 		label: "不可用",
@@ -257,7 +257,7 @@
 		},
 		mounted() { 
 			this.$nextTick(() => { 
-				this.tableHeight =  util.calcTableMaxHeight(".el-table");  
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
 				this.getXmEnvLists();
         	}); 
 		}

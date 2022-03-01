@@ -9,7 +9,7 @@
 			<el-button type="primary" v-if=" batchEditVisible==true "  @click="noBatchEdit" v-loading="load.edit">返回</el-button>  
   		</el-row>
 		<el-row class="page-main" v-show="!batchEditVisible">    
-				<el-table ref="table" :height="tableHeight" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+				<el-table ref="table" :height="maxTableHeight" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 					<el-table-column sortable type="selection" width="40"></el-table-column>
  					<el-table-column prop="menuName" label="需求名称" min-width="150" >
 						<template slot-scope="scope"> 
@@ -216,7 +216,7 @@
 				valueChangeRows:[],
 				selGroups:null,
 				menuDetailVisible:false,
-				tableHeight:300,
+				maxTableHeight:300,
 				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -480,10 +480,8 @@
 			XmGroupMng,XmTaskMng,XmMenuRichDetail
 		},
 		mounted() {  
-			this.$nextTick(() => {
-				
-				
-				this.tableHeight =  util.calcTableMaxHeight(".el-table"); 
+			this.$nextTick(() => { 
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
 				this.getXmMenus();
 			}); 
 				listOption([{categoryId:'all',itemCode:'xmMenuStateStatus'} ]).then(res=>{

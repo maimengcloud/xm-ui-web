@@ -7,7 +7,7 @@
  		</el-row>
 		<el-row class="page-main "> 
 			<!--列表 XmBranchState 机构内所有项目指标汇总-->
-			<el-table :data="xmBranchStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :height="maxTableHeight" :data="xmBranchStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  				<el-table-column sortable type="index" width="45"></el-table-column> 
 				<el-table-column prop="branchId" label="机构" min-width="120" >
 					<template scope="scope">
@@ -132,7 +132,8 @@
 				//编辑xmBranchState界面初始化数据
 				editForm: {
 					bizDate:'',totalFileCnt:'',totalBugCnt:'',totalTaskCnt:'',totalBudgetNouserAmount:'',id:'',totalStaffCnt:'',calcTime:'',calcStatus:'',totalCostNouserAmount:'',totalClosedBugCnt:'',totalResolvedBugCnt:'',totalCompleteTaskCnt:'',totalPhaseCnt:'',totalCompletePhaseCnt:'',totalNeedPayAmount:'',totalFinishPayAmount:'',totalNeedColAmount:'',totalFinishColAmount:'',totalCostUserAmount:'',totalBudgetInnerUserAmount:'',totalPlanWorkload:'',totalRiskCnt:'',totalCompleteRiskCnt:'',branchId:'',branchName:'',totalBudgetOutUserAmount:'',totalCompleteWorkload:'',totalCostInnerUserAmount:'',totalCostOutUserAmount:'',totalProgress:'',totalActiveBugCnt:'',totalConfirmedBugCnt:'',projectStatus:'',totalActWorkload:'',totalActOutWorkload:'',totalActInnerWorkload:'',totalTaskBudgetCostAt:'',totalTaskOutCnt:'',totalNeedPayCnt:'',totalFinishPayCnt:'',totalFinishPayUserCnt:'',totalNeedPayUserCnt:'',totalPlanInnerUserWorkload:'',totalPlanOutUserWorkload:'',testCases:'',execCases:'',designCases:'',finishCases:'',iterationCnt:'',productCnt:'',menuCnt:''
-				}
+				},
+				maxTableHeight:300,
 				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -290,6 +291,7 @@
 		},
 		mounted() { 
 			this.$nextTick(() => {
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
 				this.getXmBranchStates();
         	}); 
         	/** 举例，

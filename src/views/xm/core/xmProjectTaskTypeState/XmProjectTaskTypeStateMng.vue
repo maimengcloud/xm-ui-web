@@ -8,7 +8,7 @@
 		</el-row>
 		<el-row class="page-main "> 
 			<!--列表 XmProjectTaskTypeState 按任务类型汇总-->
-			<el-table :data="xmProjectTaskTypeStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :height="maxTableHeight" :data="xmProjectTaskTypeStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>
 				<el-table-column sortable type="index" width="45"></el-table-column>
 				<el-table-column prop="projectId" label="项目编号" min-width="80" ></el-table-column>
@@ -99,7 +99,8 @@
 				//编辑xmProjectTaskTypeState界面初始化数据
 				editForm: {
 					projectId:'',projectName:'',taskType:'',planWorkload:'',planAmount:'',actWorkload:'',actAmount:'',branchId:'',bizDate:'',calcTime:'',planOutUserAt:'',planInnerUserAt:'',actOutUserAt:'',actInnerUserAt:'',planOutUserWorkload:'',planInnerUserWorkload:'',actOutUserWorkload:'',actInnerUserWorkload:'',planNouserAt:'',actNouserAt:'',id:''
-				}
+				},
+				maxTableHeight:300,
 				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -240,6 +241,8 @@
 		},
 		mounted() { 
 			this.$nextTick(() => {
+				
+                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el);
 				this.getXmProjectTaskTypeStates();
         	}); 
         	/** 举例，

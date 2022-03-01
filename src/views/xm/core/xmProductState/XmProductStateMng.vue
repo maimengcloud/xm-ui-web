@@ -227,7 +227,7 @@
 				
 				
 				
-				this.tableHeight =  util.calcTableMaxHeight(".el-table"); 
+				this.tableHeight =  util.calcTableMaxHeight(this.$refs.table.$$el); 
 				this.getXmProductStates();
         	}); 
         	/** 举例，

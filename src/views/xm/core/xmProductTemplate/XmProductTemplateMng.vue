@@ -8,7 +8,7 @@
 		</el-row>
 		<el-row  v-show="simple!=true" class="page-main"> 
 			<!--列表 XmProductTemplate 产品表-->
-			<el-table   :data="xmProductTemplates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table  ref="table" :height="maxTableHeight" :data="xmProductTemplates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column   sortable type="selection" width="40"></el-table-column>
 				<el-table-column sortable type="index" width="40"></el-table-column>
 				<el-table-column  prop="id" label="产品编号" min-width="80" ></el-table-column>
@@ -29,7 +29,7 @@
 		
 		<el-row  v-show="simple==true" > 
 			<!--列表 XmProductTemplate 产品表-->
-			<el-table   :data="xmProductTemplates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :height="maxTableHeight"  :data="xmProductTemplates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  				<el-table-column sortable type="index" width="40"></el-table-column>
 				<el-table-column  prop="id" label="产品编号" min-width="80" ></el-table-column>
 				<el-table-column prop="productName" label="产品名称" min-width="80" ></el-table-column> 
@@ -246,7 +246,8 @@
 		    //在下面添加其它组件
 		},
 		mounted() { 
-			this.$nextTick(() => {
+			this.$nextTick(() => { 
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
 				this.getXmProductTemplates();
         	}); 
 		}

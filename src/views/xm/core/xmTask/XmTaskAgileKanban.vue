@@ -1,6 +1,7 @@
 <template>
   <section class="menu-box">
 		<el-table 
+			ref="table"
 			:data="menus"
 			header-cell-class-name="head-row"
 			border
@@ -255,6 +256,8 @@ export default {
 			return respons
 		}
   },
+  mounted(){ 	
+  }
 };
 </script>
 <style lang='scss' scoped>

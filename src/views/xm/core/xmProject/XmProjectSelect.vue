@@ -156,10 +156,8 @@
 		    //在下面添加其它组件
 		},
 		mounted() { 
-			this.$nextTick(() => {  
-                
-                
-                this.maxTableHeight = window.innerHeight - top -100;
+			this.$nextTick(() => {    
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);  
 				this.showInfo = false;
 				this.getXmProjects();
       }); 

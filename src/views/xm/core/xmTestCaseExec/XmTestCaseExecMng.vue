@@ -78,12 +78,12 @@
 		</el-row>
 		<el-row class="page-main "> 
 			<!--列表 XmTestCaseExec xm_test_case_exec-->
-			<el-table ref="table"  :height="tableHeight" v-if="!gstcVisible" :data="xmTestCaseExecs" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table"  :height="maxTableHeight" v-if="!gstcVisible" :data="xmTestCaseExecs" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>
 				<el-table-column sortable type="index" width="45"></el-table-column>
  				<el-table-column prop="projectName" label="项目名称" min-width="100" show-overflow-tooltip>
 					<template slot="header" v-if="!selProject">
-						项目<el-button @click="showProjectList"  icon="el-icon-search" ></el-button>
+						项目<el-button type="text" @click="showProjectList"  icon="el-icon-search" ></el-button>
  					</template>
 				</el-table-column> 
 				<el-table-column prop="caseName" label="用例(点击详情)" min-width="100" show-overflow-tooltip>
@@ -93,7 +93,7 @@
 				</el-table-column>
 				<el-table-column prop="menuName" label="需求" min-width="100" show-overflow-tooltip>
 					<template slot="header" slot-scope="scope">
-						需求<el-button @click="showMenu"  icon="el-icon-search" ></el-button>
+						需求<el-button type="text" @click="showMenu"  icon="el-icon-search" ></el-button>
  					</template>
 
 				</el-table-column>
@@ -308,7 +308,7 @@
 					endDate: 'endTime',
 
 				},
-				tableHeight:300,
+				maxTableHeight:300,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -763,12 +763,7 @@
 			this.filters.selProject=this.selProject; 
 			this.filters.execUser=this.userInfo;
 			this.$nextTick(() => {
-				
-				
-				if(this.selProject){
-					subHeight=100/1000 * window.innerHeight;
-				}
-				this.tableHeight =  util.calcTableMaxHeight(".el-table"); 
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
 				this.getXmTestCaseExecs();
         	}); 
         	/** 举例，

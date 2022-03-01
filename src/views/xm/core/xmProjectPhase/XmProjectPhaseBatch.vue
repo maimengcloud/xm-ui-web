@@ -1769,7 +1769,7 @@ export default {
   },
   mounted() {
     this.$nextTick(() => { 
-      this.tableHeight = util.calcTableMaxHeight(this.$refs.selectPhaseTable.$el)
+      this.tableHeight = util.calcTableMaxHeight(this.$refs.table.$el)
       if (this.selProject) {
         this.getXmProjectPhases();
       }

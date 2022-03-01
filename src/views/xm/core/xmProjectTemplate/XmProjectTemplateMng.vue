@@ -12,7 +12,7 @@
 		</el-row>
 		<el-row class="page-main"> 
 			<!--列表 XmProjectTemplate xm_project_template-->
-			<el-table :height="maxTableHeight" :data="xmProjectTemplates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" :height="maxTableHeight" :data="xmProjectTemplates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>
 				<el-table-column sortable type="index" width="45"></el-table-column>
   				<el-table-column prop="name" label="模板名称" min-width="80" ></el-table-column> 
@@ -257,11 +257,8 @@
  		    //在下面添加其它组件
 		},
 		mounted() { 
-			this.$nextTick(() => {
-				
-                
-                
-                this.maxTableHeight = util.calcTableMaxHeight('.el-table');
+			this.$nextTick(() => { 
+                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el);
 				this.getXmProjectTemplates();
 				listOption([{categoryId:'all',itemCode:'projectType'}] ).then(res=>{
 					if(res.data.tips.isOk){ 

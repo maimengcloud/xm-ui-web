@@ -744,7 +744,7 @@
 				this.filters.productName=this.$route.params.productName;
 			}
 			this.$nextTick(() => {  
-                this.maxTableHeight = util.calcTableMaxHeight('.el-table');
+                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el);
 				this.showInfo = false;
 				this.getXmProjects();
 			}); 
