@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container page-full-height padding border">
+	<section class="page-container  padding border">
 		<el-row> 
 			<div class="project-info" v-loading.lock="load.list || load.edit">
 				<div class="info-type">

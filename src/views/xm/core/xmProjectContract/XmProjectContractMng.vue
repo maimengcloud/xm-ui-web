@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container page-full-height padding border">
+	<section class="page-container  padding border">
 		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
 				<template slot="append">
@@ -10,7 +10,7 @@
 			<el-button type="primary" @click="showAdd" icon="el-icon-plus">添加合同</el-button>
 			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true"  icon="el-icon-delete">批量删除</el-button> 
 		</el-row>
-		<el-row class="page-main page-height-90"> 
+		<el-row class="page-main "> 
 			<!--列表 XmProjectContract xm_project_contract-->
 			<el-table ref="table" :height="tableHeight" :data="xmProjectContracts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<!-- ht_contract_card表 -->

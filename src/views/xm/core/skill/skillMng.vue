@@ -1,5 +1,5 @@
 <template>
-  <section class="page-container page-full-height padding border">
+  <section class="page-container  padding border">
     <el-row >
       <el-row v-if="editVisible==false">
         <el-col :span="10"> 

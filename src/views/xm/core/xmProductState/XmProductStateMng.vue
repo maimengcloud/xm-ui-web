@@ -1,10 +1,10 @@
 <template>
-	<section class="page-container page-full-height padding border">
+	<section class="page-container  padding border">
 		<el-row v-if="!xmProduct">
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProductStates">查询</el-button> 
 		</el-row>
-		<el-row class="page-main page-height-90"> 
+		<el-row class="page-main "> 
 			<!--列表 XmProductState 功能状态表,无需前端维护，所有数据由汇总统计得出-->
 			<el-table ref="table" :height="tableHeight" :data="xmProductStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  				<el-table-column sortable type="index" width="45"></el-table-column> 

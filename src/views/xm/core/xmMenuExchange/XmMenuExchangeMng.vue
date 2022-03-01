@@ -13,7 +13,7 @@
 			<el-divider></el-divider> 
 		</el-row>
 		
-		<el-row class="page-main page-height-90">
+		<el-row class="page-main ">
 		 <div style="overflow-x:hidden">
 				<menu-user-editor :id="'head'+filters.xmMenu.menuId" v-if="filters.xmMenu" :user="{userid:userInfo.userid,username:userInfo.username,headimgurl:userInfo.headimgurl}" :product-id="filters.xmMenu.productId" :menu-id="filters.xmMenu.menuId" @publish="onPublishContent"></menu-user-editor>
 				<div v-for="(item,i) in xmMenuExchanges" :key="i" class="comment-list clearfix">

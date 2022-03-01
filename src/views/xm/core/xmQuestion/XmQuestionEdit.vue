@@ -1,6 +1,6 @@
 <template>
 	<section class="page-container padding border"> 
-		<el-row class="page-main page-height-90">
+		<el-row class="page-main ">
 			<el-row class="padding">
 				<font class="font">{{editForm.name}}</font>
 			</el-row>

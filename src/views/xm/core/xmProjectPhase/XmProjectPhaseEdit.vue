@@ -2,7 +2,7 @@
 	<section class="page-container border padding">
 
 
-		<el-row class="page-main page-height-90">
+		<el-row class="page-main ">
 			<el-tabs>
 				<el-tab-pane label="计划详情">
 					<!--新增界面 XmProjectPhase xm_project_phase-->

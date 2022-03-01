@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container page-full-height padding border">
+	<section class="page-container  padding border">
 		<el-row>
 			<!--新增界面 XmBranchState 机构内所有项目指标汇总--> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">

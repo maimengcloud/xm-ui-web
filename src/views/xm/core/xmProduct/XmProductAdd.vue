@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container page-full-height padding border">
+	<section class="page-container  padding border">
 		<el-row class="padding-bottom">
 			<el-steps :active="calcProjectStatusStep" simple finish-status="success">
  				<el-step  v-for="(i,index) in options['projectStatus']" :title="i.optionName" :key="index">

@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container page-full-height padding">
+	<section class="page-container  padding">
 		<el-row class="padding"> 
 			快速导航：
 			<el-link type="text" @click="goAnchor('baseInfo')">&nbsp;&nbsp;&nbsp;基础信息&nbsp;&nbsp;&nbsp;</el-link> 

@@ -1,6 +1,6 @@
 <template>
 	<section> 
-		<el-row class="page-main page-height-90">
+		<el-row class="page-main ">
 		 <div style="overflow-x:hidden">
 				<task-user-editor :id="'head'"  :user="{userid:userInfo.userid,username:userInfo.username,headimgurl:userInfo.headimgurl}" :project-id="xmTask.projectId" :task-id="xmTask.taskId" @publish="onPublishContent"></task-user-editor>
 				<div v-for="(item,i) in xmExchanges" :key="i" class="comment-list clearfix">

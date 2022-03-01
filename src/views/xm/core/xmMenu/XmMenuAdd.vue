@@ -1,6 +1,6 @@
 <template>
-	<section class="page-container page-full-height padding border">
-		<el-row class="page-main page-height-90">
+	<section class="page-container  padding border">
+		<el-row class="page-main ">
 			<!--新增界面 XmMenu 项目需求表--> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
 				

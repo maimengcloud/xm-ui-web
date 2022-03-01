@@ -1,11 +1,11 @@
 <template>
-	<section class="page-container page-full-height padding border">
+	<section class="page-container  padding border">
 		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmBranchStates">查询</el-button>
 			<el-button type="warning" v-loading="load.edit" @click="loadProjectStateToXmBranchState">刷新数据</el-button>
  		</el-row>
-		<el-row class="page-main page-height-90"> 
+		<el-row class="page-main "> 
 			<!--列表 XmBranchState 机构内所有项目指标汇总-->
 			<el-table :data="xmBranchStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  				<el-table-column sortable type="index" width="45"></el-table-column> 

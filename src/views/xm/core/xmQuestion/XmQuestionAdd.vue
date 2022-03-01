@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container page-full-height padding">
+	<section class="page-container  padding">
 		<el-row>
 			<el-steps simple finish-status="success">
 				<el-step title="已激活,待确认" description="创建后自动激活、关闭后重新激活)"></el-step>

@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container page-full-height padding border">
+	<section class="page-container  padding border">
 		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
 				<template slot="append">
@@ -17,7 +17,7 @@
 				<span style="margin-left:10px;font-size:14px;">外购人力总成本：</span><el-tag type='warning'>{{selProject.planOutUserAt}}</el-tag>  
 			</font>
 		</el-row>
-		<el-row class="page-main page-height-90"> 
+		<el-row class="page-main "> 
 			<!--列表 XmProjectMCostNouser xm_project_m_budget_cost_nouser-->
 			<el-table ref="table" :height="tableHeight" :data="xmProjectMCostNousers"     show-summary @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="selection" width="40"></el-table-column>

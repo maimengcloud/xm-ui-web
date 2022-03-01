@@ -9,7 +9,7 @@
 				加入更多项目到产品中
 			</el-button>
 		</el-row>
-		<el-row class="page-main page-height-90">   
+		<el-row class="page-main ">   
 			<el-table ref="table" :height="tableHeight"  stripe :data="xmProjects"  highlight-current-row v-loading="load.list"   style="width: 100%;">
 				<el-table-column  type="index" label="序号" width="55" ></el-table-column>
 				<el-table-column prop="code" label="项目编号" min-width="80" ></el-table-column>

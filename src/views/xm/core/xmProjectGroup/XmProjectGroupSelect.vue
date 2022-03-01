@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container page-full-height padding border">
+	<section class="page-container  padding border">
 		<el-row>
 				<el-col :span="16"> 
 					<el-button   type="primary" @click="userConfirm" icon="el-icon-finished">确认选择用户</el-button> 

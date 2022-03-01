@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container page-full-height padding border">
+	<section class="page-container  padding border">
 		<el-row>  
 			<el-row >  
 				<el-select class="hidden-lg-and-down" v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable >

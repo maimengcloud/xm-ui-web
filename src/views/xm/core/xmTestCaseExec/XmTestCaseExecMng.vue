@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container page-full-height padding border">
+	<section class="page-container  padding border">
 		<el-row v-if="!batchEditVisible">
         		<el-checkbox v-model="gstcVisible"  >甘特图</el-checkbox>
 				<el-tag type="primary" v-if="this.filters.selProject && !selProject " closable @close="clearProject"  @click="showProjectList">{{ this.filters.selProject.name }}</el-tag>
@@ -76,7 +76,7 @@
 				<el-button  type="warning" @click="batchEditXmTestCaseExec"  icon="el-icon-finished">批量保存</el-button>  
 				<el-button   @click="noBatchEdit" icon="el-icon-back">返回</el-button>  
 		</el-row>
-		<el-row class="page-main page-height-90"> 
+		<el-row class="page-main "> 
 			<!--列表 XmTestCaseExec xm_test_case_exec-->
 			<el-table ref="table"  :height="tableHeight" v-if="!gstcVisible" :data="xmTestCaseExecs" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>

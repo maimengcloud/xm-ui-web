@@ -1,6 +1,6 @@
 <template>
 	<section class="page-container padding border">
-		<el-row class="page-main page-height-90"> 
+		<el-row class="page-main "> 
 		<!--编辑界面 XmProject xm_project--> 
 			<el-form :model="addForm"  :rules="addFormRules" ref="addForm">   
 					<el-form-item label="项目编号|名称" prop="name">

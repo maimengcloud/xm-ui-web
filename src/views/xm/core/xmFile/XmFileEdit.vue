@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container page-full-height padding border">
+	<section class="page-container  padding border">
 		<el-row>
 		<!--编辑界面 XmFile xm_file-->
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">

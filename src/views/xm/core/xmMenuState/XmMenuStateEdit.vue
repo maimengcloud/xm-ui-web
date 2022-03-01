@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container page-full-height padding border">
+	<section class="page-container  padding border">
 		<el-row> 
 		<!--编辑界面 XmMenuState 功能状态表,无需前端维护，所有数据由汇总统计得出--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">

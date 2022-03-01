@@ -1,5 +1,5 @@
 <template>
-	<section  class="page-container page-full-height">
+	<section  class="page-container ">
 		<el-row>
 			<el-menu :default-active="infotype"   mode="horizontal"  @select="setInfotype"   class="menus" background-color="rgb(48, 65, 86)" text-color="rgb(191, 203, 217)" active-text-color="#409eff">
 

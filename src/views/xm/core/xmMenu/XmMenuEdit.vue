@@ -1,6 +1,6 @@
 <template>
 	<section class="page-container border padding">
-		<el-row class="page-main page-height-90">
+		<el-row class="page-main ">
 			<el-tabs>
 				<el-tab-pane  label="需求详情">
 					<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">

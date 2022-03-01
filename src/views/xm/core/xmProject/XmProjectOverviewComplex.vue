@@ -1,5 +1,5 @@
 <template>
-  <section class="page-container page-height-90 padding-left padding-right">
+  <section class="page-container  padding-left padding-right">
       <el-menu mode="horizontal" default-active="overview"  @select="onMenuToolBarSelect">
         <el-menu-item index="overview">
           <span slot="title">项目概览</span>

@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container page-full-height padding border">
+	<section class="page-container  padding border">
 		<el-row>  
       <el-checkbox v-model="gstcVisible"  >甘特图</el-checkbox>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">

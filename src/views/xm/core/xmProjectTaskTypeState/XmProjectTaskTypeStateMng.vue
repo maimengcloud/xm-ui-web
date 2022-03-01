@@ -1,12 +1,12 @@
 <template>
-	<section class="page-container page-full-height padding border">
+	<section class="page-container  padding border">
 		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectTaskTypeStates">查询</el-button>
 			<el-button type="primary" @click="showAdd">+按任务类型汇总</el-button>
 			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
 		</el-row>
-		<el-row class="page-main page-height-90"> 
+		<el-row class="page-main "> 
 			<!--列表 XmProjectTaskTypeState 按任务类型汇总-->
 			<el-table :data="xmProjectTaskTypeStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>
