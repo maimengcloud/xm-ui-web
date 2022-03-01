@@ -4,7 +4,7 @@
 			<el-col :span="5" v-if="!xmProduct">
 				<xm-product-mng :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :xm-iteration="xmIteration" :simple="true"></xm-product-mng>
 			</el-col>
-			<el-col :span="xmProduct?24:19" class="padding-left">
+			<el-col :span="xmProduct?24:19" class="padding-left" v-show="filters.product && filters.product.id">
 					<el-row>  
 						<el-select  v-model="filters.status" placeholder="需求状态" clearable style="width: 100px;">
 							<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option> 
@@ -464,7 +464,7 @@
 				if( this.filters.product  && this.filters.product.id){
 					params.productId=this.filters.product.id
 				}else {
-					this.$notify({showClose: true, message: "请先选择产品", type: 'success' });
+					this.$notify({showClose: true, message: "请先选择产品", type: 'warning',position:'top-left' });
 					return;
 				} 
 					
@@ -924,9 +924,9 @@
 		},
 		mounted() {   
 			this.filters.product=this.xmProduct
-			if(this.xmProduct){
+			if(this.xmProduct && this.xmProduct.id){
 				this.productVisible=false;
-			}
+			} 
 			this.$nextTick(() => { 
 				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
 				this.getXmMenus();
