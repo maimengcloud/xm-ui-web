@@ -1,14 +1,11 @@
 <template>
 	<section class="page-container padding border">
 		<el-row>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
-				<template slot="append">
-					<el-button  v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectStates" icon="el-icon-search"></el-button>
-				</template>
-			</el-input> 
-			<el-tag v-if="!this.selProject && this.filters.selProject " closable  @close="closeSelectProject">{{this.filters.selProject.name}}</el-tag><el-button v-if="!this.selProject"  @click="showProjectList" type="plian">选项目</el-button>
-			
- 			<el-button type="success" @click="loadTasksToXmProjectState" icon="el-icon-s-data">刷新数据</el-button> 
+			<el-input style="width:20%;" v-model="filters.selProject.name" @click.native="onProjectInputClick" clearable @clear="closeSelectProject" placeholder="点击选择项目"></el-input> 
+ 			
+			<el-input v-model="filters.key" style="width: 20%;" placeholder="项目名称模糊查询">  </el-input> 
+			<el-button  v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectStates" icon="el-icon-search"></el-button>
+			 <el-button type="success" @click="loadTasksToXmProjectState" icon="el-icon-s-data">刷新数据</el-button> 
 			<el-button type="success" @click="loadTasksSettleToXmProjectState" icon="el-icon-s-data">刷新结算数据</el-button>  
 		</el-row> 
 		<el-row class="page-main"> 
@@ -108,9 +105,9 @@
 			<el-drawer title="新增项目指标日统计表" :visible.sync="addFormVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
 				<xm-project-state-add :xm-project-state="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-state-add>
 			</el-drawer> 
-					<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
-			<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
-		</el-drawer> 
+			<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  size="80%"  append-to-body   :close-on-click-modal="false" @close="nextCommand=null">
+				<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
+			</el-drawer>    
 		</el-row>
 	</section>
 </template>
@@ -134,7 +131,7 @@
 		props:['selProject'],
 		watch:{
 			selProject:function(selProject,old){
-				this.filters.selProject=this.selProject
+				this.filters.selProject={...this.selProject}
 				this.getXmProjectStates()
 			}
 		},
@@ -142,7 +139,7 @@
 			return {
 				filters: {
 					key: '',
-					selProject:null,
+					selProject:{name:'',id:''},
 				},
 				xmProjectStates: [],//查询结果
 				pageInfo:{//分页数据
@@ -174,6 +171,7 @@
 				selectProjectVisible:false,
 				/**begin 自定义属性请在下面加 请加备注**/
 				maxTableHeight:300,
+				nextCommand:null,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -297,8 +295,9 @@
 				});
 			}, 
 			loadProjectToXmProjectState: function () {
-				 	if(!this.filters.selProject){
-						 this.$notify({showClose: true, message: '请选择一个项目', type: 'error'});
+				 	if(!this.filters.selProject||!this.filters.selProject.id){
+						 this.$notify({showClose: true, message: '请选择一个项目', type: 'warning'}); 
+						 this.showProjectList(this.loadBugsToXmProjectState);
 						 return;
 					 } 
 					 
@@ -315,8 +314,9 @@
 					}).catch( err  => this.load.edit=false ); 
 			}, 
 			loadBugsToXmProjectState: function () {
-				 	if(!this.filters.selProject){
-						 this.$notify({showClose: true, message: '请选择一个项目', type: 'error'});
+				 	if(!this.filters.selProject||!this.filters.selProject.id){
+						 this.$notify({showClose: true, message: '请选择一个项目', type: 'warning'}); 
+						 this.showProjectList(this.loadBugsToXmProjectState);
 						 return;
 					 } 
 					 
@@ -333,8 +333,10 @@
 					}).catch( err  => this.load.edit=false ); 
 			},
 			loadTasksToXmProjectState: function () {
-				 	if(!this.filters.selProject){
-						 this.$notify({showClose: true, message: '请选择一个项目', type: 'error'});
+				 	if(!this.filters.selProject||!this.filters.selProject.id){
+						 this.$notify({showClose: true, message: '请选择一个项目', type: 'warning'});
+						 
+						 this.showProjectList(this.loadTasksToXmProjectState);
 						 return;
 					 } 
 					 
@@ -350,9 +352,10 @@
 						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.edit=false ); 
 			},
-			loadTasksSettleToXmProjectState: function () {
-				 	if(!this.filters.selProject){
-						 this.$notify({showClose: true, message: '请选择一个项目', type: 'error'});
+			loadTasksSettleToXmProjectState: function () { 
+				 	if(!this.filters.selProject||!this.filters.selProject.id){
+						 this.$notify({showClose: true, message: '请选择一个项目', type: 'warning'});
+						 this.showProjectList(this.loadTasksSettleToXmProjectState);
 						 return;
 					 } 
 					 
@@ -374,15 +377,25 @@
 			/**begin 自定义函数请在下面加**/
 			
 			onPorjectConfirm:function(project){
-				this.filters.selProject=project
-				this.selectProjectVisible=false;
-				this.getXmProjectStates();
+				this.filters.selProject={...project}
+				this.selectProjectVisible=false;  
+				if(this.nextCommand){
+					this.nextCommand();
+				}else{
+					this.searchXmProjectStates();
+				}
 			},
-			showProjectList:function(){ 
+			
+			onProjectInputClick:function(){  
 				this.selectProjectVisible=true; 
+				this.nextCommand=null;
 			},
-			closeSelectProject:function(){
-				this.filters.selProject=null
+			showProjectList:function(nextCommand){  
+				this.selectProjectVisible=true; 
+				this.nextCommand=nextCommand;
+			},
+			closeSelectProject:function(){ 
+				this.filters.selProject={name:'',id:''}  
 			},
 			
 			formatterOption: function(row,column,cellValue, index){ 
