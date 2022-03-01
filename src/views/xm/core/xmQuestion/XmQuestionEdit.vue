@@ -209,7 +209,7 @@
 				//新增界面数据 xm_question
 				editForm: {
 					id:'',name:'',projectId:'',projectName:'',taskId:'',taskName:'',endTime:'',askUserid:'',askUsername:'',handlerUserid:'',handlerUsername:'',priority:'',solution:'',processTime:'',receiptMessage:'',receiptTime:'',description:'',createUserid:'',createUsername:'',createTime:'',status:'',receiptMessage:'',
-					attachment: [],
+					attachment: [],iterationId:'',iterationName:'',productId:'',
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				fileVisible: true,
@@ -366,6 +366,13 @@
 			onSelectedTask(task){
 				this.editForm.taskId=task.id
 				this.editForm.taskName=task.name
+				if(!this.editForm.menuId){
+					this.editForm.menuId=task.menuId
+					this.editForm.menuName=task.menuName
+					this.editForm.productId=task.productId
+				} 
+				this.editForm.handlerUserid=task.executorUserid
+				this.editForm.handlerUsername=task.executorUsername
 				this.selectTaskVisible=false;
 			},
 			handleCloseTaskTag:function(){
@@ -392,6 +399,9 @@
 			onSelectedMenu(menu){
 				this.editForm.menuId=menu.menuId
 				this.editForm.menuName=menu.menuName
+				this.editForm.productId=menu.productId
+				this.editForm.iterationId=menu.iterationId
+				this.editForm.iterationName=menu.iterationName
 				this.selectMenuVisible=false;
 			},
 			handleCloseMenuTag:function(){

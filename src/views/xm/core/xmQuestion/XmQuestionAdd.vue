@@ -317,7 +317,11 @@
 				if(task.menuId){
 					this.addForm.menuId=task.menuId
 					this.addForm.menuName=task.menuName
+					this.addForm.productId=task.productId
 				}
+				
+				this.addForm.handlerUserid=task.executorUserid
+				this.addForm.handlerUsername=task.executorUsername 
 			},
 			handleCloseTaskTag:function(){
 				this.addForm.taskId=''
@@ -333,6 +337,9 @@
 			onSelectedMenu(menu){
 				this.addForm.menuId=menu.menuId
 				this.addForm.menuName=menu.menuName
+				this.addForm.iterationId=menu.iterationId
+				this.addForm.iterationName=menu.iterationName
+				this.addForm.productId=menu.productId
 				this.selectMenuVisible=false;
 			},
 			handleCloseMenuTag:function(){
