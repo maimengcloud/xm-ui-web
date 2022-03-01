@@ -73,7 +73,7 @@
 		<el-drawer title="新增计划" :visible.sync="addFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 			<xm-project-phase-template-add :sel-project-template="filters.projectTemplate" :xm-parent-phase-template="parentPhaseTemplate" :xm-project-phase-template="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-phase-template-add>
 		</el-drawer> 
-		<el-drawer title="项目模板" :visible.sync="projectTemplateVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
+		<el-drawer title="项目模板" :with-header="false" :visible.sync="projectTemplateVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 			<xm-project-template-list    :visible="addFormVisible" @cancel="projectTemplateVisible=false" @selected="onProjectTemplateSelected"></xm-project-template-list>
 		</el-drawer> 
 	</section>

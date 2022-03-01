@@ -1,13 +1,13 @@
 <template>
 	<section class="page-container page-full-height padding border">
 		<el-row>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>  
+			<el-input v-model="filters.key" style="width: 20%;" placeholder="项目模板名称查询"></el-input>  
 			<el-select v-model="filters.xmType" @change="searchXmProjectTemplates">
 				<el-option v-for="i in this.options.projectType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
 			</el-select>
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectTemplates">查询</el-button> 
   		</el-row>
-		<el-row class="page-main page-height-90"> 
+		<el-row class="page-main page-height-80"> 
 			<!--列表 XmProjectTemplate xm_project_template-->
 			<el-table :data="xmProjectTemplates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>
@@ -39,10 +39,9 @@
  						<el-button type="primary" @click="selectedProject(scope.row,scope.$index)">选中</el-button>
 					</template>
 				</el-table-column>
-			</el-table>
-			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
-		 
+			</el-table> 
 		</el-row>
+		<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 	</section>
 </template>
 

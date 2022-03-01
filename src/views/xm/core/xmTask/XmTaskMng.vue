@@ -814,9 +814,10 @@
     </el-drawer>
 
     <el-drawer
-      title="任务模板"
+      title="任务模板" 
+      :with-header="false"
       :visible.sync="taskTemplateVisible"
-      size="60%"
+      size="80%"
       append-to-body
       :close-on-click-modal="false"
     >
