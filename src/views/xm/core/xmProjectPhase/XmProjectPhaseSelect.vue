@@ -7,7 +7,7 @@
 					<div>计划  <el-tag  type="warning" v-if="editForm.id" closable @close="clearSelectPhase()"> {{editForm.phaseName}}</el-tag></div>
 				</template>
 				<template slot-scope="scope">  
-					<i v-if="scope.row.ntype=='1'" class="el-icon-folder-opened"></i>{{scope.row.seqNo}} &nbsp;&nbsp;<el-tooltip v-if="scope.row.milestone=='1'" content="里程碑"><i  class="el-icon-star-on"></i></el-tooltip>{{scope.row.phaseName}}
+					<i v-if="scope.row.ntype=='1'" class="el-icon-folder-opened"></i>{{scope.row.seqNo}} &nbsp;&nbsp;<el-tooltip v-if="scope.row.milestone=='1'" content="里程碑"><i  class="el-icon-star-on"></i></el-tooltip>{{scope.row.phaseName}}<el-tag :type="scope.row.actRate>=100?'success':'primary'"> {{ (scope.row.actRate!=null?scope.row.actRate:0)+'%'}} </el-tag>  
 				</template>
 			</el-table-column>   
 		</el-table>
