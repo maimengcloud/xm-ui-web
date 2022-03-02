@@ -111,7 +111,7 @@
 	import {sn} from '@/common/js/sequence';
 	import VueEditor from '@/components/Tinymce/index';
 
-	import XmGroupMng from '../xmProjectGroup/XmProjectGroupMng';
+	import XmGroupMng from '../xmProjectGroup/XmProjectGroupSelect';
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
 	import XmProjectList from '../xmProject/XmProjectList';
 

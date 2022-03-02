@@ -1,22 +1,27 @@
 <template>
 	<section class="page-container  padding border">
-		<el-row>
-				<el-col :span="16"> 
+		<el-row class="padding">
+				<el-col :span="8"> 
 					<el-button   type="primary" @click="userConfirm" icon="el-icon-finished">确认选择用户</el-button> 
 				</el-col>
 				<el-col :span="8" class="hidden-sm-and-down">
  					<el-tooltip    content="黄色表示选中"><span class="addXmProjectGroupFormworkSquare"></span></el-tooltip>
-					 <el-button @click="selectProjectVisible=true">切换项目</el-button> 
-					 {{this.filters.selProject?"当前项目：":""}}<el-tag type="primary" v-if="this.filters.selProject">{{this.filters.selProject.name}}</el-tag>
+					 <el-button @click="selectProjectVisible=true">选择项目团队</el-button> 
+					 {{this.filters.selProject?"当前项目：":""}}<el-tag type="primary" v-if="this.filters.selProject" closable @close="filters.selProject=null">{{this.filters.selProject.name}}</el-tag>
 					 <el-tag v-else type="warning">未选择项目</el-tag>
+ 				</el-col> 
+				<el-col :span="8" class="hidden-sm-and-down"> 
+					 <el-button @click="selectProductVisible=true">选择产品团队</el-button> 
+					 {{this.filters.xmProduct?"当前产品：":""}}<el-tag type="primary" v-if="this.filters.xmProduct&&this.filters.xmProduct.id" @close="filters.xmProduct=null">{{this.filters.xmProduct.productName}}</el-tag>
+					 <el-tag v-else type="warning">未选择产品</el-tag>
  				</el-col> 
 		</el-row>  
 		<el-row class="page-main page-height-80" v-loading="load.list">
-			<el-row v-for="(item,index) in xmProjectGroupFormworkSels" :key="index" class="padding">
-				<h3>
-					<div>{{item.groupName + "："}} 
+			<el-row v-for="(item,index) in xmProjectGroupFormworkSels" :key="index" class="padding ">
+				<h4>
+					<div class="padding-bottom">{{item.groupName + "："}} 
 					</div>
-				</h3>
+				</h4>
 				<el-col :span="24" style="margin-left:30px;display:flex;flex-wrap: wrap;">  
 					<div  :class="v.isSelected=='1'?'checkCopyButton':'copyButton'" v-for="(v,valueIndex) in item.groupUsers" :key="valueIndex" @click="toggleSelected(index,valueIndex)">
 							{{v.username}}
@@ -25,8 +30,13 @@
 			</el-row>
 		</el-row>  
 		
-		<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
+		<el-drawer title="选中项目团队" :visible.sync="selectProjectVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 			<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
+		</el-drawer> 
+		
+		
+		<el-drawer title="选中产品团队" :visible.sync="selectProductVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
+			<xm-product-select  :isSelectProduct="true"  @selected="onProductConfirm"></xm-product-select>
 		</el-drawer> 
 	</section>
 </template>
@@ -39,6 +49,7 @@
    	import XmProjectList from '../xmProject/XmProjectList';
 
 	import {mapGetters} from 'vuex' 
+import XmProductSelect from '../xmProduct/XmProductSelect.vue';
 
 	export default {
 		computed: {
@@ -47,7 +58,7 @@
 			])
 		},
 		//
-		props: ['visible','selProject','isSelectSingleUser','isSelectMultiUser'],
+		props: ['visible','selProject','isSelectSingleUser','isSelectMultiUser','xmProduct'],
 		watch: {
 			"selGroups": function(selGroups) {
 				if(this.selGroups){
@@ -69,6 +80,9 @@
 			},
 			selProject(selProject){
 				this.filters.selProject=selProject
+			},
+			xmProduct(xmProduct){
+				this.filters.xmProduct=this.xmProduct
 			}
  
 		},
@@ -78,6 +92,7 @@
 				filters: {
 					key: '',
 					selProject:null,
+					xmProduct:null,
 				},
 				selGroups:[],
 				load: {list: false,edit: false,del: false,add: false}, //查询中...
@@ -89,6 +104,7 @@
 				/**begin 自定义属性请在下面加 请加备注**/
 				xmProjectGroupFormworkSels: [],
 				selectProjectVisible:false,
+				selectProductVisible:false,
   				/**end 自定义属性请在上面加 请加备注**/
 			}
 		}, //end data
@@ -135,13 +151,18 @@
 				var params={};
 				if(this.filters.selProject){
 					params.projectId=this.filters.selProject.id
-				}else{
-					this.selectProjectVisible=true;
-					this.$notify({showClose: true,
-							message: '请选中项目',
-							type: 'success'
-						});
+				} 
+				if(this.filters.xmProduct && this.filters.xmProduct.id){
+					params.productId=this.filters.xmProduct.id
+				}
+				if(!params.projectId && !params.productId){
+					this.$notify({showClose:true,message:'产品团队或者项目团队最少选中一个',type:'error'})
 					return;
+				}
+				
+				if(params.projectId && params.productId){
+					params.productId=null
+					this.$notify({showClose:true,message:'产品团队或者项目团队只能选中一个，两个都选以项目团队为准',type:'warning'})
 				}
 				getGroups(params).then(res=>{
 					var tips = res.data.tips;
@@ -155,16 +176,24 @@
 			
 			onPorjectConfirm:function(project){
 				this.filters.selProject=project
+				this.filters.xmProduct=null;
 				this.selectProjectVisible=false;
 				this.getGroups();
 			},
 			 
+			
+			onProductConfirm:function(product){
+				this.filters.xmProduct=product
+				this.filters.selProject=null
+				this.selectProductVisible=false;
+				this.getGroups();
+			},
 			/**end 自定义函数请在上面加**/
 
 		}, //end methods
 		components: {
 			
-			XmProjectList			 
+			XmProjectList,XmProductSelect			 
 		},
 		mounted() {
 			this.$nextTick(() => {
@@ -179,18 +208,20 @@
 				if(this.selProject){
 					this.filters.selProject=this.selProject
 				}
-				this.getGroups();
-				listOption([{categoryId:'all',itemCode:'projectGroupType'}] ).then(res=>{
-					if(res.data.tips.isOk){ 
-						this.options['projectGroupType']=res.data.data.projectGroupType 
-					}
-				});
+				
+				if(this.xmProduct){
+					this.filters.xmProduct=this.xmProduct
+				}
+				this.getGroups(); 
 			});
 		}
 	}
 </script>
 
 <style scoped>
+.group-name{ 
+	color: rgb(107, 88, 88);
+}
 	.copyButton {
 		margin-left: 10px;
 		border-radius: 20px;
