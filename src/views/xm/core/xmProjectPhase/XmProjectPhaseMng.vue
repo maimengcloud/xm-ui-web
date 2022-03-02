@@ -42,6 +42,11 @@
 					width="200"
 					trigger="click" >
 					<el-row> 
+						
+						<el-select  v-model="filters.taskFilterType" placeholder="是否分配任务" clearable style="width: 140px;">
+							<el-option   value="not-join"  label="未分配任何任务的计划"></el-option>  
+							<el-option   value="join"  label="已分配任务的计划"></el-option>  
+						</el-select>  
 						<el-col  :span="24"  style="padding-top:5px;">
 							<el-button  class="hidden-md-and-down" v-loading="load.edit" :disabled="load.edit==true" v-on:click="calcKeyPaths" icon="el-icon-s-help">计算关键路径</el-button>
 						</el-col>
@@ -158,7 +163,8 @@
 										<i class="el-icon-more"></i>
 									</span>
 									<el-dropdown-menu slot="dropdown">
-										<el-dropdown-item icon="el-icon-search"   :command="{type:'showLog',row:scope.row}">日志</el-dropdown-item> 										
+										<el-dropdown-item icon="el-icon-edit"   :command="{type:'showTaskForBatchRelTasksWithPhase',row:scope.row}">批量关联任务</el-dropdown-item>	
+										<el-dropdown-item icon="el-icon-search"   :command="{type:'showLog',row:scope.row}">日志</el-dropdown-item> 									
   										<el-dropdown-item icon="el-icon-success"   :command="{type:'loadTasksToXmProjectPhase',row:scope.row}">从任务中汇总进度</el-dropdown-item> 
 										<el-dropdown-item icon="el-icon-success"   :command="{type:'sendToProcessApprova',row:scope.row,bizKey:'xm_project_start_approva'}">变更发审(审核通过后起效)</el-dropdown-item> 
 										<el-dropdown-item icon="el-icon-success"   :command="{type:'sendToProcessApprova',row:scope.row,bizKey:'xm_project_delete_approva'}">删除发审(审核通过后删除)</el-dropdown-item>  
@@ -198,6 +204,10 @@
 			<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible" size="60%"    :close-on-click-modal="false">
 				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
 			</el-drawer>
+			
+			<el-drawer append-to-body title="任务选择" :visible.sync="taskVisible" size="80%"    :close-on-click-modal="false">
+				<xm-task-list :visible="taskVisible"  :isMultiSelect="true" :sel-project="selProject"    @tasks-selected="onSelectedTasks" ></xm-task-list>
+			</el-drawer>
 		</el-row>
 		<el-row v-if="batchEditVisible==true">
 			<xm-project-phase-batch :sel-project="selProject" @back="batchEditBack"></xm-project-phase-batch>
@@ -210,6 +220,8 @@
 	import treeTool from '@/common/js/treeTool';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { batchRelTasksWithPhase  } from '@/api/xm/core/xmTask';
+
 	import { listXmProjectPhase,calcKeyPaths, delXmProjectPhase, batchDelXmProjectPhase,batchImportFromTemplate,batchSaveBudget,loadTasksToXmProjectPhase,setPhaseMngUser,selectTotalProjectAndPhaseBudgetCost  } from '@/api/xm/core/xmProjectPhase';
 	import  XmProjectPhaseAdd from './XmProjectPhaseAdd';//新增界面
 	import  XmProjectPhaseEdit from './XmProjectPhaseEdit';//修改界面 
@@ -221,6 +233,7 @@
 	import { mapGetters } from 'vuex'
 import XmProjectPhaseBatch from './XmProjectPhaseBatch'; 
 import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
+import XmTaskList from '../xmTask/XmTaskList.vue';
 
   
 	export default { 
@@ -348,6 +361,7 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				},
 				maps:new Map(),
 				totalProjectAndPhaseBudgetCost:{},
+				taskVisible:false,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -406,8 +420,11 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				if(this.filters.phaseStatus){
 					params.phaseStatus=this.filters.phaseStatus
 				}
+				if(this.filters.taskFilterType){
+					params.taskFilterType=this.filters.taskFilterType
+				}
 				
-				if(!(params.isKeyPath||params.milestone||params.productId||params.iterationId||params.phaseStatus)){
+				if(!(params.isKeyPath||params.milestone||params.productId||params.iterationId||params.phaseStatus||params.taskFilterType)){
 					params.isTop="1"
 				}
 				return params;
@@ -817,7 +834,9 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 					this.handleDel(command.data);
 				}  else if(command.type=='loadTasksToXmProjectPhase'){
 					this.loadTasksToXmProjectPhase([command.data]);
-				}  
+				} else if(command.type=='showTaskForBatchRelTasksWithPhase'){
+					this.taskVisible=true
+				}
 			},
 			//从任务中汇总进度/实际费用等数据
 			loadTasksToXmProjectPhase:function(phases){ 
@@ -1185,6 +1204,23 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 				this.menuVisible=false;
 				 
 			},
+
+			onSelectedTasks(tasks){
+				if(tasks==null || tasks.length==0){
+					return;
+				}
+				var params={
+					projectPhaseId:this.editForm.id,
+					taskIds:tasks.map(i=>i.id)
+				}
+				batchRelTasksWithPhase(params).then(res=>{
+					var tips = res.data.tips; 
+					if(tips.isOk){
+						this.taskVisible=false;
+					}
+					this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+				})
+			},
 			handlePopover:function(row,opType){
 				if('add'==opType){
 					var subRow=JSON.parse(JSON.stringify(this.addForm));
@@ -1302,7 +1338,8 @@ import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
 		    'xm-project-phase-add':XmProjectPhaseAdd,
 		    'xm-project-phase-edit':XmProjectPhaseEdit,
 			
-      XmProjectPhaseTemplateMng,xmMenuSelect,XmGantt,XmProjectPhaseBatch,XmProjectGroupSelect
+      XmProjectPhaseTemplateMng,xmMenuSelect,XmGantt,XmProjectPhaseBatch,XmProjectGroupSelect,
+XmTaskList
         //在下面添加其它组件
 		},
 		mounted() {  
