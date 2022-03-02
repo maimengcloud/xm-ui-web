@@ -3,7 +3,10 @@
 		<el-row > 
 			<!--列表 XmProduct 产品表-->
 			<el-table  ref="table" :height="maxTableHeight" :data="xmProducts" :row-class-name="tableRowClassName" @sort-change="sortChange" :highlight-current-row="true" current-row-key="id" v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
- 				 <el-table-column prop="productName"  label="产品名称" min-width="150" > 
+ 				 
+				<el-table-column  v-if="isSelectProduct==true"  label="序号" type="index" width="70"  >  </el-table-column>
+				<el-table-column  v-if="isSelectProduct==true"  label="产品编码" prop="id" min-width="100"  >  </el-table-column>
+				  <el-table-column prop="productName"  label="产品名称" min-width="150" > 
 					 <template slot="header" slot-scope="scope"> 
 						 产品名称 
 						 <el-popover
@@ -68,8 +71,6 @@
 					 </template>
 					<template slot-scope="scope">
 						<font>{{scope.row.productName}}</font>
-						<font class="align-right"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate?parseInt(scope.row.finishRate):0}}%</el-tag> 
-						</font>
 					</template>
 				</el-table-column>
 				<el-table-column v-if="isSelectProduct==true"  label="操作" width="100" fixed="right"  >
