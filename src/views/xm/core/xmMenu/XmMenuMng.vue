@@ -105,6 +105,8 @@
 									{{dicts.menuStatus.some(i=>i.id==scope.row.status)?dicts.menuStatus.find(i=>scope.row.status==i.id).name:''}}
 								</template>
 							</el-table-column>  
+							<el-table-column prop="iterationName" label="迭代"  width="80" show-overflow-tooltip>  
+							</el-table-column>  
 							<el-table-column prop="finishRate" label="进度"  width="80" show-overflow-tooltip> 
 								<template slot-scope="scope"> 
 										<span v-if="scope.row.finishRate"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag></span>
@@ -142,11 +144,9 @@
 											<el-button type="text"    slot="reference" icon="el-icon-plus">添加子需求</el-button>
 										</el-popover>   
 										<font v-else>
-											<el-button v-if="!selProject"    type="text"  @click="showTaskListForMenu(scope.row,scope.$index)"  icon="el-icon-s-operation">任务</el-button>
-											<el-button v-if="selProject"   type="text"  @click="showTasks(scope.row,scope.$index)"  icon="el-icon-s-operation">任务</el-button> 
-											<el-button  type="text"   @click="toIterationList(scope.row,scope.$index)"  icon="el-icon-document-copy">迭代</el-button> 
+											<el-button     type="text"  @click="showTaskListForMenu(scope.row,scope.$index)"  icon="el-icon-s-operation">查任务</el-button>
+											<el-button    type="text"  @click="showTaskList(scope.row,scope.$index)"  icon="el-icon-s-operation">关联任务</el-button> 
 										</font>
-										<el-button type="text"  :disabled="scope.row.childrenCnt>0" @click="handleDel(scope.row)" icon="el-icon-delete">删除</el-button>   
 									</el-row>
 								</template>
 							</el-table-column>   
@@ -676,11 +676,6 @@
 				this.$emit("selected",row)
 			},
 			showImportFromMenuTemplate(row){
-				
-				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$notify({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
-					return false;
-				}
 				if(!this.filters.product){
 					this.$notify.error("请选择产品模板")
 					return;
@@ -754,11 +749,6 @@
 				}).catch( err  => this.load.add=false );
 			},
 			toBatchEdit(){
-				
-				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$notify({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
-					return false;
-				} 
 				this.batchEditVisible=true;
 
 			},
@@ -768,11 +758,6 @@
 			}, 
 			 
 			showTaskList(row){ 
-				
-				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$notify({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
-					return false;
-				}
 				this.editForm=row
 				this.selectTaskVisible=true; 
 			}, 
@@ -784,19 +769,16 @@
 					this.$notify.error("请最少选择一个任务进行关联");
 					return;
 				}
-				var menu=this.editForm
-				xmTasks.forEach(i=>{
-					i.menuId=menu.menuId
-					i.menuName=menu.menuName
-					i.productId=menu.productId
-					i.productName=menu.productName
-				});
+				 
 				this.selectTaskVisible=false;
-
-				batchRelTasksWithMenu(xmTasks).then(res=>{
+				var params={
+					menuId:this.editForm.menuId,
+					taskIds:xmTasks.map(i=>i.id)
+				}
+				batchRelTasksWithMenu(params).then(res=>{
 					var tips = res.data.tips
 					if(tips.isOk){
-						this.getXmMenus()
+						//this.getXmMenus()
 					}
 					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 				});

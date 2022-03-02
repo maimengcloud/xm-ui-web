@@ -43,15 +43,27 @@
 							stripe
 							fit
 							border
-							default-expand-all 
-							:tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+							:tree-props="{children: 'children', hasChildren: 'childrenCnt'}"
 							row-key="id"
 							 :height="tableHeight"
 							>
-							<el-table-column v-show="isMultiSelect" reserve-selection sortable width="70" type="selection"></el-table-column>
+							<el-table-column v-show="isMultiSelect"  sortable width="70" type="selection"></el-table-column>
 							<el-table-column prop="name" label="任务名称"  min-width="260" show-overflow-tooltip>
 								<template slot-scope="scope">
-									{{scope.row.sortLevel}}&nbsp;{{scope.row.name}}
+								<el-link type="primary"  :icon="scope.row.ntype=='1'?'el-icon-folder-opened':''">
+									{{ scope.row.sortLevel }}&nbsp;
+									<el-tag v-if="scope.row.level <= '2'" type="info"
+									>轻微</el-tag
+									>
+									<el-tag v-else-if="scope.row.level == '3'" type="warning"
+									>一般</el-tag
+									>
+									<el-tag v-else-if="scope.row.level == '4'" type="danger"
+									>紧急</el-tag
+									>
+									<el-tag v-else type="danger">特急</el-tag>
+									</el-link>
+									{{ scope.row.name }}
 								</template>
 							</el-table-column> 
 							<el-table-column prop="menuName" min-width="150" label="需求"  show-overflow-tooltip></el-table-column>
@@ -91,6 +103,7 @@
 <script>
 	import Vue from 'vue'
 	import util from '@/common/js/util';//全局公共库
+	import treeTool from '@/common/js/treeTool';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { getTask ,listXmTask,editXmTask,editRate, delXmTask, batchDelXmTask,batchImportTaskFromTemplate,batchSaveBudget } from '@/api/xm/core/xmTask'; 
@@ -104,7 +117,10 @@
 				'userInfo','roles'
 			]),  
 			tasksTreeData() {
-				 return this.translateDataToTree(this.xmTasks);
+				debugger;
+				var d=JSON.parse(JSON.stringify(this.xmTasks))
+				 var data= treeTool.translateDataToTree(d,"parentTaskid","id");
+				 return data;
 			},
 			  
 		},
@@ -355,51 +371,7 @@
 
 			selectedTasks:function(){
 				this.$emit("tasks-selected", this.sels);
-			},
-			translateDataToTree(data2) { 
-				var data=JSON.parse(JSON.stringify(data2));
-
-				let parents = data.filter(value =>{
-
-					value.taskBudgetCostAt=this.getRowSum(value);
-					//如果我的上级为空，则我是最上级
-					if(value.parentTaskid == 'undefined' || value.parentTaskid == null  || value.parentTaskid == ''){
-						return true;
-
-						//如果我的上级不在列表中，我作为最上级
-					}else if(data.some(i=>value.parentTaskid==i.id)){
-						return false;
-					}else {
-						return true
-					}
-				 
-				}) 
-				let children = data.filter(value =>{
-					if(data.some(i=>value.parentTaskid==i.id)){
-						return true;
-					}else{
-						return false;
-					} 
-				})  
-				let translator = (parents, children) => {
-					parents.forEach((parent) => {
-						children.forEach((current, index) => {
-							if (current.parentTaskid === parent.id) {
-								let temp = JSON.parse(JSON.stringify(children))
-								temp.splice(index, 1)
-								translator([current], temp)
-								typeof parent.children !== 'undefined' ? parent.children.push(current) : parent.children = [current]
-							}
-						}
-						)
-					}
-					)
-				}
-
-				translator(parents, children)
-
-				return parents
-			},
+			}, 
 			projectPhaseRowClick:function(projectPhase){
 				this.projectPhase=projectPhase
 				this.getXmTasks();
