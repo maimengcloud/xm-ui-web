@@ -2,16 +2,18 @@
 	<section  class="page-container ">
 		<el-row>
 			<el-menu :default-active="infotype"   mode="horizontal"  @select="setInfotype"   class="menus" background-color="rgb(48, 65, 86)" text-color="rgb(191, 203, 217)" active-text-color="#409eff">
-				<el-menu-item  index="返回" >
-					<span slot="title" style="font-size:18px;">
-						<span slot="title" @click.stop="goBack"><i class="el-icon-back" ></i></span> 
-					</span>
+				<el-menu-item  index="返回" > 
+					<span slot="title" @click.stop="goBack"><i class="el-icon-back" ></i></span>  
 				</el-menu-item>
-				<el-menu-item  index="产品概览" >
-					<span slot="title" style="font-size:18px;color:#409eff;">
-  						<font v-if="xmProduct.productName.length>=15"> <strong> 产品:&nbsp;&nbsp;{{xmProduct.productName.substring(0,15)}}</strong></font>
-						<font type="danger" v-else> <strong>产品:&nbsp;&nbsp;{{xmProduct.productName}}</strong></font> 
-					</span>
+				<el-menu-item  index="产品概览" > 
+					<span slot="title" style="font-size:18px;color:#409eff;" class="hidden-md-and-down">
+  						<font v-if="xmProduct.productName.length>=15"> <strong> 产品:&nbsp;{{xmProduct.productName.substring(0,15)}}</strong></font>
+						<font type="danger" v-else> <strong>产品:&nbsp;{{xmProduct.productName}}</strong></font> 
+					</span> 
+					<span slot="title" style="color:#409eff;" class="hidden-lg-and-up">
+  						<font v-if="xmProduct.productName.length>=15"> 产品:&nbsp;{{xmProduct.productName.substring(0,15)}}</font>
+						<font type="danger" v-else> 产品:&nbsp;{{xmProduct.productName}}</font> 
+					</span> 
 				</el-menu-item>
 				<el-menu-item   index="迭代" class="hidden-sm-and-down">
 					 <span slot="title" ><i class="el-icon-document-copy"  ></i>迭代</span> 

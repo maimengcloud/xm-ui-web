@@ -27,8 +27,8 @@
       <el-tooltip v-if="false" class="hidden-sm-and-down"  effect="dark" :content="$t('navbar.theme')" placement="bottom">
         <theme-picker class="theme-switch right-menu-item"></theme-picker>
       </el-tooltip>
-       <el-divider direction="vertical" class="divider"></el-divider>
-      <el-dropdown class="avatar-container right-menu-item" trigger="hover" style="max-width:300px;" @command="handleCommand">
+       <el-divider direction="vertical" class="divider hidden-sm-and-down"></el-divider>
+      <el-dropdown class="avatar-container right-menu-item hidden-sm-and-down" trigger="hover" style="max-width:300px;" @command="handleCommand">
         <div class="avatar-wrapper">
           <img v-if="userInfo && userInfo.headimgurl && userInfo.headimgurl!=null && userInfo.headimgurl!=='' " class="user-avatar" :src="userInfo.headimgurl">
           <img v-else class="user-avatar" src="../../../assets/image/user_img.gif">
@@ -83,12 +83,12 @@
       </el-dropdown>
       <el-divider direction="vertical" class="divider"></el-divider>
       <!--喇叭标记-->
-      <notice-msg-bar class="avatar-container"></notice-msg-bar>
-      <el-divider direction="vertical" class="divider"></el-divider>
-      <el-link class="logout" @click="goToIndex" icon="el-icon-s-home">
+      <notice-msg-bar class="avatar-container hidden-sm-and-down" ></notice-msg-bar>
+      <el-divider direction="vertical" class="divider hidden-sm-and-down"></el-divider>
+      <el-link class="logout hidden-sm-and-down" @click="goToIndex" icon="el-icon-s-home">
         <span style="font-size: 17px">首页</span>
       </el-link>
-      <el-divider direction="vertical" class="divider"></el-divider>
+      <el-divider direction="vertical" class="divider hidden-sm-and-down"></el-divider>
       <el-link class="logout" @click="logout" icon="el-icon-switch-button">
         <span style="font-size: 17px">退出</span>
       </el-link>
