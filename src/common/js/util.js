@@ -19,9 +19,12 @@ export default {
     if(typeof cssSelector == 'string'){
       table=document.querySelector(cssSelector);
     }
-    var innerHeight=window.innerHeight 
+    var innerHeight=window.innerHeight  
     var defaultInnerHeight=913;  
-    var pageHeight=90/defaultInnerHeight*innerHeight; 
+    var pageHeight=90/defaultInnerHeight*innerHeight
+    if(innerHeight<defaultInnerHeight){
+      pageHeight=90
+    }
     var top=200/defaultInnerHeight*innerHeight;
     if(table!=null){
       var rect=table.getBoundingClientRect()    
