@@ -7,7 +7,7 @@
  					<el-button @click="groupRoleDescVisible=true" icon="el-icon-document">角色说明</el-button> 
 					 <font color="red">注意：点击架构图进行操作</font>
   		</el-row> 
-		<el-row class="">
+		<el-row ref="table" :style="{overflowX:'auto',height:maxTableHeight+'px'}">
 			<vue-okr-tree :data="okrTreeData" v-loading="load.list"
 				show-collapsable   
 				node-key="id"
@@ -738,6 +738,8 @@ XmProductSelect,
 		mounted() {
 			this.$nextTick(() => {
 			    //initSimpleDicts('all',['sex','gradeLvl']).then(res=>this.dicts=res.data.data);
+				
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
 			    this.initData()
 				this.searchXmProjectGroups(); 
 

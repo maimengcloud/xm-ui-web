@@ -124,7 +124,7 @@
 			 </el-row> 
 			 <el-row class="padding-top">
 				<!--列表 XmQuestion xm_question-->
-				<el-table  ref="table" :height="tableHeight" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+				<el-table  ref="table" :height="maxTableHeight" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  					<el-table-column prop="name" label="缺陷名称"  min-width="150">
 						<template slot-scope="scope"> 
 								<el-link @click="showEdit(scope.row)" type="primary"> 
@@ -298,7 +298,7 @@
 				selectProjectVisible:false,
 				productSelectVisible:false,
 				nextAction:'',
-				tableHeight:300,
+				maxTableHeight:300,
 				cloumns: [
 					{
 						key: 'name',
@@ -943,7 +943,7 @@
 			this.$nextTick(() => {
 				
 				
-				this.tableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
 				this.getXmQuestions();
 			});
 				listOption([{categoryId:'all',itemCode:'bugSeverity'},{categoryId:'all',itemCode:'bugSolution'},{categoryId:'all',itemCode:'bugStatus'},{categoryId:'all',itemCode:'bugType'},{categoryId:'all',itemCode:'urgencyLevel'}] ).then(res=>{
