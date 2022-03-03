@@ -259,8 +259,7 @@
 								this.load.edit=false
 								var tips=res.data.tips;
 								if(tips.isOk){
-									this.$emit('submit');//  @submit="afterAddSubmit"
-									this.handleCancel();
+									this.$emit('submit');//  @submit="afterAddSubmit" 
 								}
 								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.edit=false);
@@ -318,15 +317,7 @@
 				}
 				this.selectUserVisible=false
 			},
-			handleQuestion:function(tardgetBugStatus){
-				
-				var oldBugStatus=this.editForm.bugStatus;
-				if(tardgetBugStatus=="closed"){
-					if( !this.roles.some(i=>i.roleid=='testAdmin') && !this.roles.some(i=>i.roleid=='tester') && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
-						this.$notify({showClose: true,message:"只有测试经理、测试组长、测试员可以关闭bug",type:"error"});
-						return ;
-					}
-				}
+			handleQuestion:function(tardgetBugStatus){ 
 				this.editSubmit(tardgetBugStatus);
 			},
 			formatterOption: function(row,column,cellValue, index){
