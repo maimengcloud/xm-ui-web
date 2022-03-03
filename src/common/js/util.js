@@ -14,13 +14,14 @@ function padding(s, len) {
 export default {
 
   calcTableMaxHeight(cssSelector) {     
+    debugger;
     var table=cssSelector;
     if(typeof cssSelector == 'string'){
       table=document.querySelector(cssSelector);
     }
     var innerHeight=window.innerHeight 
     var defaultInnerHeight=913;  
-    var pageHeight=90/defaultInnerHeight*innerHeight;
+    var pageHeight=90/defaultInnerHeight*innerHeight; 
     var top=200/defaultInnerHeight*innerHeight;
     if(table!=null){
       var rect=table.getBoundingClientRect()    
@@ -28,7 +29,7 @@ export default {
         top=rect.top;
       } 
     } 
-    var maxTableHeight =innerHeight-top-pageHeight;
+    var maxTableHeight =innerHeight-top-pageHeight;  
     return maxTableHeight;
   }, 
   getPositionTop(node) { 
