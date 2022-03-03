@@ -13,11 +13,11 @@
 						<font type="danger" v-else> <strong>产品:&nbsp;&nbsp;{{xmProduct.productName}}</strong></font> 
 					</span>
 				</el-menu-item>
-				<el-menu-item   index="迭代">
+				<el-menu-item   index="迭代" class="hidden-sm-and-down">
 					 <span slot="title" ><i class="el-icon-document-copy"  ></i>迭代</span> 
 				</el-menu-item> 
 				
-				<el-menu-item label="项目" index="项目">
+				<el-menu-item label="项目" index="项目" class="hidden-sm-and-down">
 					 <span slot="title"><i class="el-icon-document"  ></i>项目</span> 
 				</el-menu-item>
 				<el-menu-item label="需求" index="需求">
@@ -32,56 +32,54 @@
 				<el-menu-item  index="团队">
 					 <span slot="title"><i class="el-icon-user-solid"  ></i>团队</span>
 				</el-menu-item>
-				<el-menu-item  index="文档">
-					 <span slot="title"><i class="el-icon-document"  ></i>文档</span>
-				</el-menu-item>
-				<el-submenu index="规划与里程碑">
-					<template slot="title">规划与里程碑 </template>
+				<el-submenu index="规划">
+					<template slot="title">规划</template>
 					<el-menu-item index="计划及里程碑">
-					 <span slot="title"><i class="el-icon-odometer"  ></i>计划及里程碑</span>
+					 <span slot="title"><i class="el-icon-odometer"></i>计划及里程碑</span>
 					</el-menu-item>
 					<el-menu-item  index="测试计划">
-						<span slot="title"><i class="el-icon-odometer"  ></i>测试计划</span>
+						<span slot="title"><i class="el-icon-odometer"></i>测试计划</span>
 					</el-menu-item>
 				</el-submenu >
-
-				<el-menu-item index="项目监控" class="hidden-lg-and-down">
-					<span slot="title"><i class="el-icon-video-camera"  ></i>项目监控</span>
-				</el-menu-item>
-				<el-menu-item   index="需求监控" class="hidden-lg-and-down">
-					<span slot="title"><i class="el-icon-video-camera"  ></i>需求监控</span>
-				</el-menu-item>
-
-				<el-menu-item   index="合同管理" class="hidden-md-and-down">
-					<span slot="title"><i class="el-icon-s-data"  ></i>合同管理</span>
-				</el-menu-item>
-				<el-menu-item   index="预算" class="hidden-lg-and-down">
-					<span slot="title"><i class="el-icon-coin"  ></i>预算</span>
-
-
-				</el-menu-item>
-				<el-menu-item  index="费用" class="hidden-lg-and-down">
-					<span slot="title"><i class="el-icon-coin"  ></i>费用</span>
-
-
-				</el-menu-item>
-				<el-menu-item   index="考核" class="hidden-lg-and-down">
-					<span slot="title"><i class="el-icon-view"  ></i>考核</span>
-
-
-				</el-menu-item>
-				<el-menu-item   index="日志" class="hidden-lg-and-down">
-					<span slot="title"><i class="el-icon-edit-outline"  ></i>日志</span>
-
-
-				</el-menu-item>
-				<el-menu-item   index="环境清单" class="hidden-lg-and-down">
-					<span slot="title"><i class="el-icon-setting"  ></i>环境清单</span>
-
-				</el-menu-item>
-				<el-menu-item   index="风险" class="hidden-lg-and-down">
-					<span slot="title"><i class="el-icon-question"  ></i>风险</span>
-				</el-menu-item>
+				<el-submenu index="财务" class="hidden-sm-and-down">
+					<template slot="title">财务</template> 
+						<el-menu-item   index="合同管理">
+							<span slot="title"><i class="el-icon-s-data"></i>合同管理</span>
+						</el-menu-item>
+						<el-menu-item   index="预算">
+							<span slot="title"><i class="el-icon-coin"></i>预算</span> 
+						</el-menu-item>
+						<el-menu-item  index="费用">
+							<span slot="title"><i class="el-icon-coin"></i>费用</span> 
+						</el-menu-item>
+				</el-submenu >
+				<el-submenu index="监控" class="hidden-sm-and-down">
+					<template slot="title">监控</template>
+						<el-menu-item   index="考核">
+							<span slot="title"><i class="el-icon-view"></i>考核</span> 
+						</el-menu-item>
+						<el-menu-item index="项目监控">
+							<span slot="title"><i class="el-icon-video-camera"></i>项目监控</span>
+						</el-menu-item>
+						<el-menu-item   index="需求监控">
+							<span slot="title"><i class="el-icon-video-camera"></i>需求监控</span>
+						</el-menu-item> 
+						<el-menu-item   index="风险">
+							<span slot="title"><i class="el-icon-question"></i>风险</span>
+						</el-menu-item>
+				</el-submenu >
+				<el-submenu index="知识" class="hidden-md-and-down">
+					<template slot="title">知识</template>
+						<el-menu-item  index="文档" >
+							<span slot="title"><i class="el-icon-document"></i>文档</span>
+						</el-menu-item> 
+						<el-menu-item   index="环境清单" >
+							<span slot="title"><i class="el-icon-setting"></i>环境清单</span> 
+						</el-menu-item>
+						<el-menu-item   index="日志">
+							<span slot="title"><i class="el-icon-edit-outline"></i>日志</span> 
+						</el-menu-item> 
+				</el-submenu > 
 				<el-submenu index="更多">
 					<template slot="title">更多 </template>
 					<el-menu-item  index="需求监控" >
@@ -439,7 +437,7 @@ XmProjectForLink,
  .menus{
 	 .el-menu-item{
 		 padding-left: 0px !important;
-	 }
+	 }  
  }
 /* 超过宽度则用...代替 */
 .truncate{
