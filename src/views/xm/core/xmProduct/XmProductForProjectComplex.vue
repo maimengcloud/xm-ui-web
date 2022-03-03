@@ -1,10 +1,10 @@
 <template>
 	<section class="page-container border">
 		<el-row>
-			<el-col :span="productVisible==true?3:0" >
+			<el-col :span="productVisible==true?4:0" >
 				<xm-product-select :sel-project="selProject" :xm-iteration="xmIteration"  @row-click="onProductRowClick" @clear-select="onProductClearSelect"></xm-product-select>
 			</el-col>
-			<el-col :span="productVisible==true?21:24" v-show="xmProduct && xmProduct.id">
+			<el-col :span="productVisible==true?20:24" v-show="xmProduct && xmProduct.id">
 				<el-tabs type="border-card"  :value="showPanel"  @tab-click="tabClick">
 					<el-tab-pane>
 						<span v-show="productVisible==true" slot="label" @click.stop="productVisible=false" ><i class="el-icon-d-arrow-left" ></i> 隐藏左边产品列表</span>

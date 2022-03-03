@@ -1,10 +1,10 @@
 <template>
 	<section class="page-container border">
 		<el-row>
-			<el-col :span="projectVisible==true?3:0" >
+			<el-col :span="projectVisible==true?4:0" >
 				<xm-project-select   :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClearSelect"></xm-project-select>
 			</el-col>
-			<el-col :span="projectVisible==true?21:24" v-show="selProject && selProject.id">
+			<el-col :span="projectVisible==true?20:24" v-show="selProject && selProject.id">
 				<el-tabs type="border-card"  :value="showPanel" @tab-click="tabClick">
 					<el-tab-pane>
 						<span v-show="projectVisible==true" slot="label" @click.stop="projectVisible=false"><i class="el-icon-d-arrow-left" ></i> 隐藏左边项目列表</span>

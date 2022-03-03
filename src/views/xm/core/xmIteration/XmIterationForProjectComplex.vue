@@ -1,10 +1,10 @@
 <template>
 	<section class="page-container border">
 		<el-row>
-			<el-col :span="iterationVisible==true?3:0" >
+			<el-col :span="iterationVisible==true?4:0" >
 				<xm-iteration-select :sel-project="selProject" :product-id="xmProduct?xmProduct.id:null"  @row-click="onIterationRowClick" @clear-select="onIterationClearSelect"></xm-iteration-select>
 			</el-col>
-			<el-col :span="iterationVisible==true?21:24" v-show="xmIteration && xmIteration.id">
+			<el-col :span="iterationVisible==true?20:24" v-show="xmIteration && xmIteration.id">
 				<el-tabs type="border-card"  :value="showPanel" @tab-click="tabClick">
 					
 					<el-tab-pane  lazy @click.stop="iterationVisible=!iterationVisible">

@@ -3,7 +3,7 @@
 		<el-row>
 			<!--列表 XmIteration 迭代定义-->
 			<el-table ref="table" :height="maxTableHeight" :data="xmIterationTreeData" row-key="id"  default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-   				<el-table-column prop="iterationName" label="迭代名称" min-width="160" >
+   				<el-table-column prop="iterationName" label="迭代名称" >
 					<template slot="header" slot-scope="scope">
 					迭代名称 <el-popover v-if=" !menuId && !productId"
 						placement="top-start"
@@ -56,16 +56,12 @@
 					</el-popover>
 				</template>
 					 <template slot-scope="scope">
-						 {{scope.row.seqNo}} &nbsp;&nbsp;{{scope.row.iterationName}}<br>
-						 <font class="font-class">{{formatterDate(scope.row,null,scope.row.startTime)}}~{{formatterDate(scope.row,null,scope.row.endTime)}} </font> 
-						 <el-tag type="warning">{{!scope.row.iphase?'未开始':scope.row.iphase}}</el-tag> 
-  						 <div class="progress">
-						  <el-progress  :percentage="calcFinishRate(scope.row)"></el-progress>
-						 </div>
+
+						 {{scope.row.iterationName}}  <font class="align-right" :color="calcFinishRate(scope.row)==100?'green':'#FF8C00'">{{calcFinishRate(scope.row)}}%</font>
 					 </template>
 				</el-table-column> 
 			</el-table>
-			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+			<el-pagination  layout="total, prev,  next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 
 		</el-row>
 	</section>
@@ -368,5 +364,9 @@
   }
   .font-class{
 	  color: rgba(116, 85, 85, 0.493);
-  } 
+  }
+  
+.align-right{
+	float: right; 
+}
 </style>

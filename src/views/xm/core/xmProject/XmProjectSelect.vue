@@ -1,15 +1,15 @@
 <template>
 	<section>  
 		<el-row class="page-main padding-left">   
-			<el-table ref="table" :height="maxTableHeight"  stripe :data="xmProjects"  highlight-current-row v-loading="load.list"  @selection-change="selsChange" @row-click="rowClick" style="width: 100%;" >
- 				<el-table-column prop="name" label="项目名称" min-width="80" >
+			<el-table ref="table" border :height="maxTableHeight"  stripe :data="xmProjects"  highlight-current-row v-loading="load.list"  @selection-change="selsChange" @row-click="rowClick" style="width: 100%;" >
+ 				<el-table-column prop="name" label="项目名称" >
 					 <template slot-scope="scope">
 						 {{scope.row.name}}&nbsp;&nbsp;
-						 <font class="align-right"><el-tag :type="scope.row.totalProgress>=100?'success':'warning'">{{parseInt(scope.row.totalProgress)}}%</el-tag></font>
+						 <font class="align-right" :color="scope.row.totalProgress==100?'green':'#FF8C00'">{{parseInt(scope.row.totalProgress)}}%</font>
 					 </template>
 				</el-table-column>  
 			</el-table>
-			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+			<el-pagination  layout="total, prev, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		</el-row> 
 	</section> 
 
