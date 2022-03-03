@@ -6,7 +6,7 @@
     </div>
     <div class="comment-wrap">
       <div class="clearfix">
-        <vue-editor :id="id" :branch-id="userInfo.branchId" :category-id="productId+'-'+menuId" v-model="content"></vue-editor>
+        <vue-editor :key="id" :branch-id="userInfo.branchId" :category-id="productId+'-'+menuId" v-model="content"></vue-editor>
       </div>
       <div style="margin-top:20px;"></div>
     <el-button @click="publish" class="toolbar"   type="primary">发布</el-button> <el-button @click="clearContent" style="margin-right: 0.25rem;" class="toolbar"   type="plain">清空内容</el-button>

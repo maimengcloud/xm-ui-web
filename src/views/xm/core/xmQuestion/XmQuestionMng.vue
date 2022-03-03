@@ -154,10 +154,10 @@
 					<el-table-column prop="askUsername" label="创建人"  width="100" show-overflow-tooltip> 
 					</el-table-column>
 					
-					<el-table-column prop="createTime" label="创建时间"  width="100" show-overflow-tooltip> 
+					<el-table-column prop="createTime" label="创建时间" sortable width="100" show-overflow-tooltip> 
 					</el-table-column>
 					
-					<el-table-column prop="ltime" label="更新时间"  width="100" show-overflow-tooltip> 
+					<el-table-column prop="ltime" label="更新时间" sortable  width="100" show-overflow-tooltip> 
 					</el-table-column>
 					<el-table-column prop="handlerUsername" label="指派给"  width="100" show-overflow-tooltip> 
 					</el-table-column>

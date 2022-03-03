@@ -62,17 +62,15 @@ export default {
       default: 360,
     },
   },
-  data() {
+  data() { 
+    var tinymceId="vue-tinymce-" + new Date().getTime() + ((Math.random() * 1000).toFixed(0) + "")
     return {
       uploadAction: config.getArcImagePath()+"/arc/image/upload", 
       uploadOptions:{branchId:'',categoryId:'uploadImm',fileName:'',remark:'',deptid:''},//当前选择上传图片的类型
       imageList: [],
       dialogVisible: false,
       editorHtmlData: this.value,
-      tinymceId:
-        "vue-tinymce-" +
-        new Date().getTime() +
-        ((Math.random() * 1000).toFixed(0) + ""),
+      tinymceId: tinymceId,
       fullscreen: false,
       languageTypeList: {
         en: "en",
@@ -99,7 +97,7 @@ export default {
       this.$emit("input", val);
     },
     language() {
-      this.destroyTinymce();
+      //this.destroyTinymce();
       //this.$nextTick(() => this.initTinymce())
     },
   },
@@ -119,16 +117,16 @@ export default {
   },
    */
   methods: {
-    initTinymce() { 
+    initTinymce() {  
       const _this = this;
       window.tinymce.init({
-        language: this.language,
-        selector: `#${this.tinymceId}`,
-        height: this.height,
+        language: _this.language,
+        selector: `#${_this.tinymceId}`,
+        height: _this.height,
         body_class: "panel-body ",
         object_resizing: false,
-        toolbar: this.toolbar.length > 0 ? this.toolbar : toolbar,
-        menubar: this.menubar,
+        toolbar: _this.toolbar.length > 0 ? _this.toolbar : toolbar,
+        menubar: _this.menubar,
         plugins: plugins,
         end_container_on_empty_block: true,
         powerpaste_word_import: "clean",
@@ -203,10 +201,10 @@ export default {
           
         // },
       });
-      this.setContent(this.value);
+      _this.setContent(_this.value);
     },
     destroyTinymce() {
-      const tinymce = window.tinymce.get(this.tinymceId);
+      var tinymce = window.tinymce.get(this.tinymceId);
       if (this.fullscreen) {
         tinymce.execCommand("mceFullScreen");
       }

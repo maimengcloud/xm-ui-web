@@ -2,7 +2,7 @@
 	<section class="padding"> 
 		<el-row class="page-main ">
 		 <div style="overflow-x:hidden">
-				<menu-user-editor :id="'head'+filters.xmMenu.menuId" v-if="filters.xmMenu" :user="{userid:userInfo.userid,username:userInfo.username,headimgurl:userInfo.headimgurl}" :product-id="filters.xmMenu.productId" :menu-id="filters.xmMenu.menuId" @publish="onPublishContent"></menu-user-editor>
+				<menu-user-editor key="head" :id="'head'+filters.xmMenu.menuId" v-if="filters.xmMenu" :user="{userid:userInfo.userid,username:userInfo.username,headimgurl:userInfo.headimgurl}" :product-id="filters.xmMenu.productId" :menu-id="filters.xmMenu.menuId" @publish="onPublishContent"></menu-user-editor>
 				<div v-for="(item,i) in xmMenuExchanges" :key="i" class="comment-list clearfix">
 					<div class="comment-avater">
 						<el-avatar icon="el-icon-user-solid"></el-avatar>
@@ -14,13 +14,13 @@
 							<el-popover
 								placement="bottom"
 								trigger="click">
-								<menu-user-editor :id="'userquote'+i+item.id" :user="{userid:item.cuserid,username:item.cusername,headimgurl:item.cuserHeadImg}" :product-id="item.productId" :menu-id="item.menuId" @publish="onPublishContent($event,item)"></menu-user-editor>
+								<menu-user-editor :key="'menu-'+i" :id="'menu-'+item.menuId+'-'+i" :user="{userid:item.cuserid,username:item.cusername,headimgurl:item.cuserHeadImg}" :product-id="item.productId" :menu-id="item.menuId" @publish="onPublishContent($event,item)"></menu-user-editor>
 								<el-button slot="reference"  type="text" style="font-size:12px;"><i class="el-icon-paperclip"></i>引用</el-button>
 							</el-popover>
 							<el-popover
 								placement="bottom"
 								trigger="click">
-								<menu-user-editor :id="'userreply'+i+item.id" :user="{userid:item.cuserid,username:item.cusername,headimgurl:item.cuserHeadImg}" :product-id="item.productId" :menu-id="item.menuId" @publish="onPublishContent($event,item)"></menu-user-editor>
+								<menu-user-editor :key="'userreply-'+i"  :id="'userreply'+i+item.id" :user="{userid:item.cuserid,username:item.cusername,headimgurl:item.cuserHeadImg}" :product-id="item.productId" :menu-id="item.menuId" @publish="onPublishContent($event,item)"></menu-user-editor>
 								<el-button slot="reference"  type="text" style="font-size:12px;"><i class="el-icon-s-comment"></i>回复</el-button>
 							</el-popover>
 							<small>{{item.createTime}}</small>
