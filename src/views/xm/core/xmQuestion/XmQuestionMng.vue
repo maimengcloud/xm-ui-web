@@ -191,10 +191,10 @@
 					<xm-product-select   :isSelectProduct="true" :selProject="filters.selProject" :visible="productSelectVisible" @cancel="productSelectVisible=false" @selected="onProductSelected"></xm-product-select>
 			</el-drawer>
 			
-			<el-dialog append-to-body title="标签条件" :visible.sync="tagSelectVisible" class="dialog-body" width="60%">
+			<el-drawer append-to-body title="标签条件" :visible.sync="tagSelectVisible"  :close-on-click-modal="false" size="60%">
 				<tag-mng :tagIds="filters.tags?filters.tags.map(i=>i.tagId):[]" :jump="true" @select-confirm="onTagSelected">
 				</tag-mng>
-			</el-dialog>
+			</el-drawer>
 	</section>
 </template>
 

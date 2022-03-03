@@ -125,14 +125,14 @@
 		
 
 			<!--新增 XmQuestion xm_question界面-->
-			<el-dialog title="流转日志"  :visible.sync="flowInfoVisible"  width="60%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="流转日志"  :visible.sync="flowInfoVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
 				<xm-question-handle-mng :bug="editForm" :visible="flowInfoVisible"></xm-question-handle-mng>
-			</el-dialog>
+			</el-drawer>
 			
-			<el-dialog append-to-body title="标签" :visible.sync="tagSelectVisible" class="dialog-body" width="60%">
+			<el-drawer append-to-body title="标签" :visible.sync="tagSelectVisible" class="dialog-body" size="60%">
 				<tag-mng :tagIds="editForm.tagIds?editForm.tagIds.split(','):[]" :jump="true" @select-confirm="onTagSelected">
 				</tag-mng>
-			</el-dialog>
+			</el-drawer>
 	</section>
 </template>
 
