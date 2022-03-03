@@ -42,7 +42,7 @@
         </el-col> 
       </el-row>
     </el-row>
-    <el-row class="page-height-75 overflow-y-auto" v-if="editVisible==false"   ref="table">
+    <el-row class="page-height-70 overflow-auto" v-if="editVisible==false"   ref="table">
       <el-row v-for="(item,index) in convertTags" :key="item.categoryId" class="padding">
         <h3>
           <div>
@@ -61,7 +61,7 @@
         </el-col>
       </el-row>
     </el-row>
-    <el-row class="page-height-75 overflow-auto" v-else  ref="table">
+    <el-row class="page-height-70 overflow-auto" v-else  ref="table">
       <el-row v-for="(item,index) in convertTags" :key="item.categoryId" class="padding">
         <h3>
           <div>
@@ -660,6 +660,7 @@
 <style scoped>
 .copyButton {
   margin-left: 5px;
+  margin-top:2px;
   border-radius: 20px;
   padding: 10px 1px;
   border: 1px solid rgb(220, 223, 230);
@@ -676,6 +677,7 @@
 .checkCopyButton {
   /*color: #fff;*/
   margin-left: 5px;
+  margin-top:2px;
   border-radius: 20px;
   padding: 10px 1px;
   border: 1px solid #ffa00a;

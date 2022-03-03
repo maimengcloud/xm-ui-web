@@ -15,9 +15,11 @@
 		</el-row>  
 		<el-row class="page-height-70 padding-top" v-loading="load.list">
 			<el-row v-for="(item,index) in xmProjectGroupFormworkSels" :key="index"> 
-					<div class="padding-top"> <font color="#ccc">{{item.groupName + "："}} </font>
+				<h3>
+					<div class="padding-top">{{item.groupName}}
 					</div> 
-				<el-col :span="24" style="margin-left:30px;display:flex;flex-wrap: wrap;font-size:12px;padding-top:5px;">  
+				</h3>
+				<el-col :span="24" style="margin-left:30px;display:flex;flex-wrap: wrap;width:100%;">  
 					<div  :class="v.isSelected=='1'?'checkCopyButton':'copyButton'" v-for="(v,valueIndex) in item.groupUsers" :key="valueIndex" @click="toggleSelected(index,valueIndex)">
 							{{v.username}}
 					</div>  
@@ -227,6 +229,7 @@ import XmProductSelect from '../xmProduct/XmProductSelect.vue';
 }
 	.copyButton {
 		margin-left: 10px;
+		margin-top:2px;
 		border-radius: 20px;
 		padding: 10px 1px;  
 		border: 1px solid rgb(220, 223, 230);
@@ -243,6 +246,7 @@ import XmProductSelect from '../xmProduct/XmProductSelect.vue';
 	.checkCopyButton {
 		/*color: #fff;*/
 		margin-left: 10px;
+		margin-top:2px;
 		border-radius: 20px;
 		padding: 10px 1px;  
 		border: 1px solid #FFA00A;

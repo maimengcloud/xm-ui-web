@@ -42,12 +42,12 @@
         </el-col> 
       </el-row>
     </el-row>
-    <el-row class="app-container page-height-80 overflow-auto" v-if="editVisible==false">
-      <el-row v-for="(item,index) in convertSkills" :key="item.categoryId" class="padding">
+    <el-row class="app-container page-height-70 overflow-auto" v-if="editVisible==false">
+      <el-row v-for="(item,index) in convertSkills" :key="item.categoryId" class="padding"> 
         <h3>
           <div>
             {{item.categoryName+(item.pubc=='1'?'(公共)':'')}} 
-          </div>
+          </div> 
         </h3>
         <el-col :span="24" style="margin-left:30px;display:flex;flex-wrap: wrap;width: 100%;">
           <div
@@ -61,17 +61,15 @@
         </el-col>
       </el-row>
     </el-row>
-    <el-row class="app-container page-height-80  overflow-auto" v-else>
-      <el-row v-for="(item,index) in convertSkills" :key="item.categoryId" class="padding">
-        <h3>
+    <el-row class="app-container page-height-70  overflow-auto" v-else>
+      <el-row v-for="(item,index) in convertSkills" :key="item.categoryId" class="padding"> 
           <div>
             {{item.categoryName+(item.pubc=='1'?'(公共)':'')}}
             <i
               class="el-icon-close closeStyle"
               @click.stop="delTagCategoryMethod(item.categoryId,index)"
             ></i>:
-          </div>
-        </h3>
+          </div> 
         <el-col :span="24" style="margin-left:30px;display:flex;flex-wrap: wrap;width: 100%;">
           <div
             :class="'copyButton'"
@@ -479,6 +477,7 @@ export default {
 <style scoped>
 .copyButton {
   margin-left: 5px;
+  margin-top:2px;
   border-radius: 20px;
   padding: 10px 1px;
   border: 1px solid rgb(220, 223, 230);
@@ -495,8 +494,9 @@ export default {
 .checkCopyButton {
   /*color: #fff;*/
   margin-left: 5px;
+  margin-top:2px;
   border-radius: 20px;
-  padding: 10px 1px;
+  padding: 2px 1px;
   border: 1px solid #ffa00a;
   /*background-color: rgba(230, 162, 60, .1);*/
   /* background-color: #f9f9f9; */
