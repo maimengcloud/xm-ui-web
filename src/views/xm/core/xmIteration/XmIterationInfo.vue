@@ -54,15 +54,15 @@
 					<span slot="title"><i class="el-icon-video-camera"></i>需求监控</span>
 				</el-menu-item>
 
-				<el-menu-item   index="合同管理" class="hidden-md-and-down">
+				<el-menu-item   index="合同管理" class="hidden-lg-and-down">
 					<span slot="title"><i class="el-icon-s-data"></i>合同管理</span>
 				</el-menu-item>
-				<el-menu-item   index="预算" class="hidden-md-and-down">
+				<el-menu-item   index="预算" class="hidden-lg-and-down">
 					<span slot="title"><i class="el-icon-coin"></i>预算</span>
 
 
 				</el-menu-item>
-				<el-menu-item  index="费用" class="hidden-md-and-down">
+				<el-menu-item  index="费用" class="hidden-lg-and-down">
 					<span slot="title"><i class="el-icon-coin"></i>费用</span>
 
 
@@ -91,6 +91,10 @@
 					</el-menu-item>
 					<el-menu-item   index="项目监控">
 						<span slot="title"><i class="el-icon-video-camera"></i>项目监控</span>
+					</el-menu-item>
+
+					<el-menu-item   index="合同管理">
+						<span slot="title"><i class="el-icon-s-data"></i>合同管理</span>
 					</el-menu-item>
 					<el-menu-item   index="预算">
 						<span slot="title"><i class="el-icon-coin"></i>预算</span>
