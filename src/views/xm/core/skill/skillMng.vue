@@ -42,7 +42,7 @@
         </el-col> 
       </el-row>
     </el-row>
-    <el-row class="app-container max-height-box" v-if="editVisible==false">
+    <el-row class="app-container page-height-80 overflow-auto" v-if="editVisible==false">
       <el-row v-for="(item,index) in convertSkills" :key="item.categoryId" class="padding">
         <h3>
           <div>
@@ -61,7 +61,7 @@
         </el-col>
       </el-row>
     </el-row>
-    <el-row class="app-container max-height-box" v-else>
+    <el-row class="app-container page-height-80  overflow-auto" v-else>
       <el-row v-for="(item,index) in convertSkills" :key="item.categoryId" class="padding">
         <h3>
           <div>
@@ -567,10 +567,5 @@ export default {
     transform: rotate(360deg);
     box-shadow: 0px 0px 10px #fff;
   }
-}
-.max-height-box{
-  max-height: 600px;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
+} 
 </style>

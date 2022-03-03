@@ -1,28 +1,23 @@
 <template>
-	<section class="page-container  padding border">
-		<el-row class="padding">
-				<el-col :span="8"> 
-					<el-button   type="primary" @click="userConfirm" icon="el-icon-finished">确认选择用户</el-button> 
+	<section class="border padding-left">
+		<el-row class="padding-top">
+				<el-col :span="6"> 
+					<el-button   type="primary" @click="userConfirm" icon="el-icon-finished">确认选择</el-button> 
 				</el-col>
-				<el-col :span="8" class="hidden-sm-and-down">
- 					<el-tooltip    content="黄色表示选中"><span class="addXmProjectGroupFormworkSquare"></span></el-tooltip>
-					 <el-button @click="selectProjectVisible=true">选择项目团队</el-button> 
-					 {{this.filters.selProject?"当前项目：":""}}<el-tag type="primary" v-if="this.filters.selProject" closable @close="filters.selProject=null">{{this.filters.selProject.name}}</el-tag>
-					 <el-tag v-else type="warning">未选择项目</el-tag>
- 				</el-col> 
-				<el-col :span="8" class="hidden-sm-and-down"> 
-					 <el-button @click="selectProductVisible=true">选择产品团队</el-button> 
-					 {{this.filters.xmProduct?"当前产品：":""}}<el-tag type="primary" v-if="this.filters.xmProduct&&this.filters.xmProduct.id" @close="filters.xmProduct=null">{{this.filters.xmProduct.productName}}</el-tag>
-					 <el-tag v-else type="warning">未选择产品</el-tag>
+				<el-col :span="18" class="hidden-sm-and-down">
+ 					<el-tooltip    content="黄色表示选中"><span class="addXmProjectGroupFormworkSquare"></span></el-tooltip> 
+					 {{this.filters.selProject?"项目：":""}}<el-tag type="primary" @click="selectProjectVisible=true" v-if="this.filters.selProject" closable @close="onProjectClose">{{this.filters.selProject.name}}</el-tag>
+					 <el-tag v-else type="warning" @click="selectProjectVisible=true"> 选择项目</el-tag>
+						&nbsp;&nbsp;
+ 					 {{this.filters.xmProduct?"产品：":""}}<el-tag type="primary" @click="selectProductVisible=true" v-if="this.filters.xmProduct&&this.filters.xmProduct.id" closable @close="onProductClose">{{this.filters.xmProduct.productName}}</el-tag>
+					 <el-tag v-else type="warning" @click="selectProductVisible=true">选择产品</el-tag>
  				</el-col> 
 		</el-row>  
-		<el-row class="page-main " v-loading="load.list">
-			<el-row v-for="(item,index) in xmProjectGroupFormworkSels" :key="index" class="padding ">
-				<h4>
-					<div class="padding-bottom">{{item.groupName + "："}} 
-					</div>
-				</h4>
-				<el-col :span="24" style="margin-left:30px;display:flex;flex-wrap: wrap;">  
+		<el-row class="page-height-70 padding-top" v-loading="load.list">
+			<el-row v-for="(item,index) in xmProjectGroupFormworkSels" :key="index"> 
+					<div class="padding-top"> <font color="#ccc">{{item.groupName + "："}} </font>
+					</div> 
+				<el-col :span="24" style="margin-left:30px;display:flex;flex-wrap: wrap;font-size:12px;padding-top:5px;">  
 					<div  :class="v.isSelected=='1'?'checkCopyButton':'copyButton'" v-for="(v,valueIndex) in item.groupUsers" :key="valueIndex" @click="toggleSelected(index,valueIndex)">
 							{{v.username}}
 					</div>  
@@ -188,6 +183,14 @@ import XmProductSelect from '../xmProduct/XmProductSelect.vue';
 				this.selectProductVisible=false;
 				this.getGroups();
 			},
+			onProjectClose(){
+				this.filters.selProject=null
+				this.getGroups();
+			},
+			onProductClose(){
+				this.filters.xmProduct=null
+				this.getGroups();
+			}
 			/**end 自定义函数请在上面加**/
 
 		}, //end methods

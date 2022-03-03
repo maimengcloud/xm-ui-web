@@ -183,7 +183,7 @@
 		<el-drawer append-to-body title="选择负责人" :visible.sync="groupUserSelectVisible" size="80%"    :close-on-click-modal="false">
 			<xm-project-group-select :visible="groupUserSelectVisible" :sel-project="xmProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-project-group-select>
 		</el-drawer>
-		<el-drawer append-to-body title="新增技能" :visible.sync="skillVisible" size="50%"    :close-on-click-modal="false">
+		<el-drawer append-to-body title="新增技能" :visible.sync="skillVisible" size="60%"    :close-on-click-modal="false">
 			<skill-mng :task-skills="taskSkills" :jump="true" @select-confirm="onTaskSkillsSelected"></skill-mng>
 		</el-drawer>
 

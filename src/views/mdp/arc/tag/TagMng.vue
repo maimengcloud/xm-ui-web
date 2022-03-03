@@ -1,5 +1,5 @@
 <template>  
-  <section class="page-container page-full-height padding border">
+  <section class="padding border">
     <el-row >
       <el-row v-if="editVisible==false">
         <el-col :span="10"> 
@@ -42,7 +42,7 @@
         </el-col> 
       </el-row>
     </el-row>
-    <el-row class="app-container max-height-box" v-if="editVisible==false">
+    <el-row class="page-height-75 overflow-y-auto" v-if="editVisible==false"   ref="table">
       <el-row v-for="(item,index) in convertTags" :key="item.categoryId" class="padding">
         <h3>
           <div>
@@ -61,7 +61,7 @@
         </el-col>
       </el-row>
     </el-row>
-    <el-row class="app-container max-height-box" v-else>
+    <el-row class="page-height-75 overflow-auto" v-else  ref="table">
       <el-row v-for="(item,index) in convertTags" :key="item.categoryId" class="padding">
         <h3>
           <div>
@@ -99,7 +99,7 @@
           </div>
         </el-col>
       </el-row>
-    </el-row>
+    </el-row> 
   </section>
 </template>
 
@@ -212,7 +212,7 @@
         },
         /**begin 自定义属性请在下面加 请加备注**/
         isPub: '0',
-        editVisible:false,
+        editVisible:false, 
         /**end 自定义属性请在上面加 请加备注**/
       }
     }, //end data
@@ -650,7 +650,7 @@
       //在下面添加其它组件
     },
     mounted() {
-      this.$nextTick(() => {
+      this.$nextTick(() => { 
         this.getTags();
       });
     }
@@ -748,10 +748,5 @@
     transform: rotate(360deg);
     box-shadow: 0px 0px 10px #fff;
   }
-}
-.max-height-box{
-  max-height: 600px;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
+} 
 </style>
