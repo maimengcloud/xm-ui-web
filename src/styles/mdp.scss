@@ -199,6 +199,17 @@
   background: #a9d6f0 !important; 
 }
 
+/*1.显示滚动条：当内容超出容器的时候，可以拖动：*/
+.el-drawer__body {
+  overflow: auto;
+  /* overflow-x: auto; */
+}
+
+/*2.隐藏滚动条，太丑了
+.el-drawer__container ::-webkit-scrollbar{
+  display: none;
+}
+*/
 /*此处根据不同屏幕分配率显示不同的样式*/
 /*手机端*/
 @media only screen and (min-width: 0px) and (max-width: 768px) {  
