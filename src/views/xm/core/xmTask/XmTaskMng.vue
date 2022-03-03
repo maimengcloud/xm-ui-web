@@ -445,8 +445,16 @@
               </el-table-column>
               <el-table-column
                 sortable
-                prop="name"
-                label="责任人"
+                prop="createUsername"
+                label="负责人"
+                width="120"
+                show-overflow-tooltip
+              > 
+              </el-table-column>
+              <el-table-column
+                sortable
+                prop="exeUsernames"
+                label="执行人"
                 width="120"
                 show-overflow-tooltip
               >

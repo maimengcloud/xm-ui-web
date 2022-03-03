@@ -180,7 +180,7 @@
 		<!-- <el-drawer append-to-body :title="'技能要求'" :visible.sync="skillVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 			<xm-skill-mng :visible="skillVisible" :task-id="addForm.id" @cancel="skillVisible=false" @getSkill="getSkill"></xm-skill-mng>
 		</el-drawer> -->
-		<el-drawer append-to-body title="选择负责人" :visible.sync="groupUserSelectVisible" size="80%"    :close-on-click-modal="false">
+		<el-drawer append-to-body title="选择负责人" :visible.sync="groupUserSelectVisible" size="60%"    :close-on-click-modal="false">
 			<xm-project-group-select :visible="groupUserSelectVisible" :sel-project="xmProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-project-group-select>
 		</el-drawer>
 		<el-drawer append-to-body title="新增技能" :visible.sync="skillVisible" size="60%"    :close-on-click-modal="false">
@@ -514,11 +514,14 @@
 			},
 			groupUserSelectConfirm:function(users){
 				if( users==null || users.length==0 ){
+					this.addForm.createUserid=""
+					this.createUsername=""
 					this.groupUserSelectVisible=false;
 					return
 				}
 				this.addForm.createUserid=users[0].userid
-				this.addForm.createUsername=users[0].username
+				this.addForm.createUsername=users[0].username 
+				this.groupUserSelectVisible=false;
 				 
 			},
 
