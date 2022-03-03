@@ -30,17 +30,9 @@
 		<el-row  v-show="simple==true" > 
 			<!--列表 XmProductTemplate 产品表-->
 			<el-table ref="table" :height="maxTableHeight"  :data="xmProductTemplates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
- 				<el-table-column sortable type="index" width="40"></el-table-column>
-				<el-table-column  prop="id" label="产品编号" min-width="80" ></el-table-column>
-				<el-table-column prop="productName" label="产品名称" min-width="80" ></el-table-column> 
-				
-				<el-table-column v-if="isSelectProduct==true"  label="操作" width="160" fixed="right"  >
-					<template slot-scope="scope"> 
-						<el-button  @click="selectedProduct( scope.row,scope.$index)">选择</el-button> 
-					</template>
-				</el-table-column>
+  				<el-table-column prop="productName" label="产品名称" min-width="80" ></el-table-column>   
 			</el-table>
-			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>  
+			<el-pagination  layout="total,  prev, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>  
 		</el-row>
 					<!--编辑 XmProductTemplate 产品表界面-->
 			<el-drawer title="编辑产品" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
@@ -58,7 +50,7 @@
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { listXmProductTemplate, delXmProductTemplate, batchDelXmProductTemplate } from '@/api/xm/core/xmProductTemplate';
+	import { listXmProduct } from '@/api/xm/core/xmProduct';
 	import  XmProductTemplateAdd from './XmProductTemplateAdd';//新增界面
 	import  XmProductTemplateEdit from './XmProductTemplateEdit';//修改界面
 	import { mapGetters } from 'vuex'
@@ -151,9 +143,10 @@
 				}else{
 					//params.xxx=xxxxx
 				}
+				params.isTpl="1"
 				params.branchId=this.userInfo.branchId
 				this.load.list = true;
-				listXmProductTemplate(params).then((res) => {
+				listXmProduct(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 
 						this.pageInfo.total = res.data.total;

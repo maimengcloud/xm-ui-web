@@ -1,18 +1,5 @@
 <template>
-	<section>
-		<el-row  class="page-main" v-if="xmMenu && !simple">
-			 <h1>{{xmMenu.menuName}}</h1> 
-			<el-divider></el-divider> 
-			<div v-html="xmMenu.remark"></div>
-			<el-divider></el-divider> 
-		</el-row>
-		<el-row  class="page-main" v-if="!xmMenu && !simple">
-			 <h1 v-if="filters.xmMenu">{{filters.xmMenu.menuName}}</h1> <el-button @click="showSelectMenu">选择需求</el-button>
-			<el-divider v-if="filters.xmMenu"></el-divider> 
-			<div v-if="filters.xmMenu" v-html="filters.xmMenu.remark"></div>
-			<el-divider></el-divider> 
-		</el-row>
-		
+	<section class="padding"> 
 		<el-row class="page-main ">
 		 <div style="overflow-x:hidden">
 				<menu-user-editor :id="'head'+filters.xmMenu.menuId" v-if="filters.xmMenu" :user="{userid:userInfo.userid,username:userInfo.username,headimgurl:userInfo.headimgurl}" :product-id="filters.xmMenu.productId" :menu-id="filters.xmMenu.menuId" @publish="onPublishContent"></menu-user-editor>
@@ -50,11 +37,7 @@
 				</div>
 				<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 
-			</div>
-			
-		<el-drawer append-to-body title="需求选择" :visible.sync="xmMenuVisible" fullscreen   :close-on-click-modal="false">
-			<xm-menu-select :is-select-menu="true"  @selected="onMenuSelected"></xm-menu-select>
-		</el-drawer>
+			</div> 
 		</el-row>
 	</section>
 </template>
@@ -66,8 +49,7 @@
 	import { listXmMenuExchange, delXmMenuExchange, batchDelXmMenuExchange,addXmMenuExchange } from '@/api/xm/core/xmMenuExchange'; 
 	import MenuUserEditor from './MenuUserEditor'
 	import { mapGetters } from 'vuex'
-	import {sn} from '@/common/js/sequence';
-	import XmMenuSelect from '../xmMenu/XmMenuSelect'
+	import {sn} from '@/common/js/sequence'; 
 
 	export default { 
 		computed: {
@@ -317,7 +299,7 @@
 		},//end methods
 		components: {  
 			//在下面添加其它组件
-			MenuUserEditor,XmMenuSelect
+			MenuUserEditor
 		},
 		mounted() { 
 			this.$nextTick(() => {

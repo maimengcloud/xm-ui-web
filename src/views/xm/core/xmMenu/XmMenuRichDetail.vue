@@ -27,11 +27,7 @@
 					</el-form-item>  
 				</el-form>
 			</el-col>
-			<el-col :span="10">
-				<el-row>
-					<el-button v-if="iterationVisible==false" @click="iterationVisible=true" icon="el-icon-search">查看迭代计划</el-button>
-					<xm-iteration-mng v-if="iterationVisible" :visible="iterationVisible" :product-id="editForm.productId" :menu-id="editForm.menuId" ></xm-iteration-mng> 
-				</el-row> 
+			<el-col :span="10"> 
 				<el-row style="padding-top:12px;">
 					<el-button v-if="exchangeMngVisible==false" @click="exchangeMngVisible=true" icon="el-icon-search">查看评论</el-button>
 					<xm-menu-exchange-mng  v-if="exchangeMngVisible" :visible="exchangeMngVisible" :xm-menu="xmMenu" :simple="true"></xm-menu-exchange-mng>
@@ -46,8 +42,7 @@
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { editXmMenu,listXmMenu } from '@/api/xm/core/xmMenu';
 	import { mapGetters } from 'vuex'
-	import  XmIterationMng from '../xmIteration/XmIterationSelect';//修改界面
-	import  XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng';//修改界面
+ 	import  XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng';//修改界面
 
 
 	
@@ -147,7 +142,7 @@
 		},//end method
 		components: {  
 			//在下面添加其它组件 'xm-menu-edit':XmMenuEdit
-			XmIterationMng,XmMenuExchangeMng
+			XmMenuExchangeMng
 		},
 		mounted() {
 			this.editForm=Object.assign(this.editForm, this.xmMenu);  

@@ -1,28 +1,24 @@
 <template>
-	<section class="page-container  padding border">
-		<el-row>  
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
-			<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenuTemplates">查询</el-button>
-			<el-button v-if="isSelectMenu!=true" type="primary" @click="showProdcutAdd">+产品</el-button> <el-button type="primary" @click="showAdd">+顶级需求</el-button>
-			<el-button v-if="isSelectMenu!=true" type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button>
-			<el-button v-if="isSelectMenu" type="primary" v-loading="load.del" @click="selectedMenusConfirm" :disabled="this.sels.length===0 || load.del==true">确认选择</el-button> 
- 			<el-button  v-if="isSelectMenu!=true && batchEditVisible==false"  type="primary" @click="toBatchEdit">批量修改</el-button> 
-			<el-button  v-if="isSelectMenu!=true && batchEditVisible==true"  type="primary" @click="batchSaveMenu">保存</el-button> 
-			<el-button  v-if="isSelectMenu!=true  && batchEditVisible==true "    @click="noBatchEdit">返回</el-button>  
-		</el-row>
-		<el-row class="page-main" >  
-			<el-col  :span="6" v-show="!batchEditVisible">
+	<section class="page-container border">
+		<el-row class="page-main">  
+			<el-col  :span="4" class="padding">
 				<xm-product-template-mng @row-click="onProductSelected" ref="xmProductTemplateMng" :simple="true"></xm-product-template-mng>
 			</el-col>
-			<el-col v-show="!batchEditVisible" :span="batchEditVisible?24:18">
-				<el-table ref="table" :height="maxTableHeight" :data="xmMenuTemplatesTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-col  :span="18" class="padding"> 
+				<el-row>  
+					<el-input v-model="filters.key" style="width: 20%;" placeholder="需求名字模糊查询"></el-input> 
+					<el-button    v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenuTemplates">查询</el-button>
+					<el-button type="primary" v-if="isSelectMenu" v-loading="load.del" @click="selectedMenusConfirm" :disabled="this.sels.length===0 || load.del==true">确认选择</el-button> 
+				</el-row>
+				<el-table lazy :load="loadMenusLazy" ref="table" :height="maxTableHeight" :data="xmMenuTemplatesTreeData"   row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 					<el-table-column sortable type="selection" width="40"></el-table-column> 
  					<el-table-column prop="menuName" label="需求名称" min-width="120" > 
 						<template slot-scope="scope">
- 							<el-tag  >{{scope.row.seqNo}} &nbsp;&nbsp;{{scope.row.menuName}}</el-tag>
+ 							<el-link type="primary"  @click="showEdit(scope.row)" :icon="scope.row.ntype=='1'?'el-icon-folder-opened':''">{{scope.row.seqNo}}&nbsp;&nbsp;</el-link> 
+									 {{scope.row.menuName}}
 						</template>
 					</el-table-column> 					
-					<el-table-column prop="remark" label="说明" min-width="120" >
+					<el-table-column prop="remark" label="说明" min-width="150" >
 						
 						<template slot-scope="scope">
 							<el-input type="textarea" v-if="batchEditVisible"  v-model="scope.row.remark" @change="fieldChange(scope.row,'remark')"></el-input>
@@ -39,41 +35,7 @@
 					</el-table-column>
 				</el-table>
 				<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
-				
-			</el-col>
-			<el-col v-show="batchEditVisible" :span="24">
-				<el-table :data="xmMenuTemplatesTreeData" class="drag-table" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
- 					<el-table-column sortable prop="seqNo" label="序号" min-width="100">
-						<template slot-scope="scope">
-              <div style="display:flex;width:100%;">
-              <el-popover
-									placement="top"
-									width="200"
-									trigger="click">
-									<div style="text-align: center; margin: 0">
-                    <div :ref="'menu_'+scope.$index" :data-menu-id="scope.row.menuId"></div>
-										<el-button type="primary"    @click="handlePopover(scope.row,'highestPmenuId')">成为顶级节点</el-button> 
-									</div>
-									<el-button slot="reference" :type="scope.row.opType?'success':'plain'"   icon="el-icon-edit"></el-button> 
-              </el-popover>
-							<el-input style="width:100%;"    v-model="scope.row.seqNo" @change="fieldChange(scope.row,'seqNo')"></el-input>
-              </div>
-             </template>
-					</el-table-column> 
- 					<el-table-column prop="menuName" label="需求名称" min-width="120" > 
-						<template slot-scope="scope">
-							<el-input    v-model="scope.row.menuName" @change="fieldChange(scope.row,'menuName')"></el-input>
- 						</template>
-					</el-table-column> 					
-					<el-table-column prop="remark" label="说明" min-width="120" >
-						
-						<template slot-scope="scope">
-							<el-input type="textarea"   v-model="scope.row.remark" @change="fieldChange(scope.row,'remark')"></el-input>
- 						</template>
-					</el-table-column>  
-				</el-table>
-				<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
-				
+				 
 			</el-col>
 			<!--编辑 XmMenuTemplate xm_project_menu界面-->
 			<el-drawer title="编辑需求" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
@@ -90,9 +52,10 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
+	import treeTool from '@/common/js/treeTool';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { listXmMenuTemplate, delXmMenuTemplate, batchDelXmMenuTemplate,batchEditXmMenuTemplate } from '@/api/xm/core/xmMenuTemplate';
+	import { listXmMenu, delXmMenuTemplate, batchDelXmMenuTemplate,batchEditXmMenuTemplate } from '@/api/xm/core/xmMenu';
 	import  XmMenuTemplateAdd from './XmMenuTemplateAdd';//新增界面
 	import  XmMenuTemplateEdit from './XmMenuTemplateEdit';//修改界面
 	import  XmProductTemplateMng from '../xmProductTemplate/XmProductTemplateMng';//新增界面
@@ -106,28 +69,12 @@
 		      'userInfo','roles'
 			]),
 			
-      xmMenuTemplatesTreeData() {
-        let xmMenuTemplates = JSON.parse(JSON.stringify(this.xmMenuTemplates || []));
-        if (this.valueChangeRows && this.valueChangeRows.length) {
-          this.valueChangeRows.forEach(c => {
-            var index = xmMenuTemplates.findIndex(i=>i.menuId==c.menuId);
-            const oldRow = JSON.parse(JSON.stringify(xmMenuTemplates[index]));
-            console.log('computed.oldRow==', oldRow);
-            
-            xmMenuTemplates.splice(index,1);
-            c.pmenuId = oldRow.pmenuId;
-
-            xmMenuTemplates.push(c);
-          })
-        }
-        
-        const xmMenuTemplatesTreeData = this.translateDataToTree(xmMenuTemplates);
-        if (this.batchEditVisible) {
-          this.rowDrop();
-        }
-        
-				 return xmMenuTemplatesTreeData;
-			},
+      		xmMenuTemplatesTreeData() { 
+				  var d=JSON.parse(JSON.stringify(this.xmMenuTemplates))
+        		const data = treeTool.translateDataToTree(d,"pmenuId","menuId");
+				return data
+			}
+         
 		},
 		watch:{ 
 		},
@@ -216,14 +163,14 @@
 				if( this.filters.product!==null && this.filters.product.id!=''){
 					params.productId=this.filters.product.id
 				}else {
-					this.$notify({showClose: true, message: "请先选择产品", type: 'error' });
+					this.$notify({showClose: true, message: "请先选择产品", type: 'warning' });
 					return;
 					//params.xxx=xxxxx
 				} 
 				
-				
+				params.itTop="1"	
 				this.load.list = true;
-				listXmMenuTemplate(params).then((res) => {
+				listXmMenu(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 
 						this.pageInfo.total = res.data.total;
@@ -244,7 +191,7 @@
 			//显示新增界面 XmMenuTemplate xm_project_menu
 			showAdd: function () {
 				if(this.filters.product==null){
-					this.$notify({showClose: true, message: "请先选择产品", type: 'error' });
+					this.$notify({showClose: true, message: "请先在左边选择产品", type: 'warning' });
 					return;
 				}
 				this.addFormVisible = true;
@@ -314,297 +261,29 @@
 			rowClick: function(row, event, column){
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
-			
-			/**begin 自定义函数请在下面加**/
-			translateDataToTree(data2) { 
-				var data=JSON.parse(JSON.stringify(data2));
-				let parents = data.filter(value =>{
-					//如果我的上级为空，则我是最上级 
-					if(value.pmenuId == 'undefined' || value.pmenuId == null  || value.pmenuId == ''){
-						return true;
-
-						//如果我的上级不在列表中，我作为最上级
-					}else if(data.some(i=>value.pmenuId==i.menuId)){
-						return false;
-					}else {
-						return true
-					}
-				 
-				}) 
-				let children = data.filter(value =>{
-					if(data.some(i=>value.pmenuId==i.menuId)){
-						return true;
-					}else{
-						return false;
-					} 
-				})  
-				let translator = (parents, children) => {
-					parents.forEach((parent) => {
-						children.forEach((current, index) => {
-							if (current.pmenuId === parent.menuId) {
-								let temp = JSON.parse(JSON.stringify(children))
-								temp.splice(index, 1)
-								translator([current], temp)
-								typeof parent.children !== 'undefined' ? parent.children.push(current) : parent.children = [current]
-							}
-						}
-						)
-					}
-					)
-				}
-
-				translator(parents, children)
-
-				return parents
-			},	
-			/**begin 自定义函数请在下面加**/
-			selectedMenu:function(row){
-				this.$emit("selected",row)
+			selectedMenusConfirm(){
+				this.$emit("selected-menus",this.sels);
 			},
-			selectedMenusConfirm:function(){
-				if(this.sels.length==0){
-					this.$notify.error("请选择需求");
-					return;
-				}
-				this.$emit("selected-menus",this.sels)
+			getParams(params){
+				return params;
 			},
-			toBatchEdit(){
-				this.valueChangeRows=[];
-				this.batchEditVisible=true;
-
-			},
-			noBatchEdit(){
-				this.batchEditVisible=false;
-				this.valueChangeRows=[];
-			},
-			batchSaveMenu(){
-				if(this.valueChangeRows.length==0){
-					this.$notify.success("没有数据被修改");
-					return
-				}
-				batchEditXmMenuTemplate(this.valueChangeRows).then(res=>{
-					var tips=res.data.tips;
-					if(tips.isOk){
-						this.valueChangeRows=[]
-						this.getXmMenuTemplates()
-					}
-					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
-				});
-			},
-			fieldChange:function(row,fieldName, nextReplace){
-        if(nextReplace){
-					row.nextReplace=nextReplace
-        }
-        var index=this.valueChangeRows.findIndex(i=>i.menuId==row.menuId);
-        // this.valueChangeRows.some(i=>i.menuId==row.menuId)
-				if(index < 0){
-          this.valueChangeRows.push(row)
-				}else{
-					var oneRow=this.valueChangeRows.find(i=>i.menuId==row.menuId);
-					if( oneRow  ){
-						if(oneRow.nextReplace){ 
-							var index=this.valueChangeRows.findIndex(i=>i.menuId==row.menuId);
-							this.valueChangeRows.splice(index,1);
-							this.valueChangeRows.push(row)
+			loadMenusLazy(row, treeNode, resolve) {   
+					var params={pmenuId:row.menuId}
+					params=this.getParams(params);
+					params.isTop=""
+					this.load.list = true;
+					var func=listXmMenu 
+					func(params).then(res=>{
+						this.load.list = false
+						var tips = res.data.tips;
+						if(tips.isOk){
+							resolve(res.data.data) 
 						}else{
-							return;
+							resolve([])
 						}
-					}else{
-						this.valueChangeRows.push(row)
-					}
-				} 
-      },
-      // 行拖拽
-      rowDrop() {
-        const _this = this
-        // 被拖动的元素的索引
-        let dragged = null;
-        // 被拖动的元素的索引
-        let draggedIndex = -1;
-
-        // 目标元素
-        let target = document.querySelector('.drag-table .el-table__body-wrapper .el-table__body tbody');
-
-        let rows = 0;//行数
-        setTimeout(function () {
-          rows = target.childElementCount
-          for (let i = 0; i < target.childElementCount; i++) {
-            const child = target.children[i]
-            child.draggable = true
-            // child.style.cursor = 'copy'
-            child.ondragstart = function(e){
-              console.log('开始--ondragstart--e==', e);
-              
-              dragged = e.path[0]
-              draggedIndex = e.path[0].rowIndex
-              console.log('child'+i+'开始拖拽'+draggedIndex);
-              _this.cellMouseIndex = -1
-              dragged.style.cursor = 'grabbing'
-            }
-            child.ondragend = function(){
-              console.log('child'+i+'拖拽结束');
-            }
-          }
-        },0)
-
-        // 被拖动的元素正在那个容器里
-        let dragIndex = -1
-
-        target.ondragenter = function(e){
-          clearTimeout(loop)
-
-          // 由于被拖动的元素 经过tbody中的每一元素都会触发该事件, 但是我们只需要它正在那一行上就行了
-          if(e.path[0].nodeName === 'TD'){
-            // throughRow 表示被拖动的元素正在哪一行上
-            const throughRow = e.path.find(path => {
-              if(path.className.split(' ').includes('el-table__row')){
-                return path
-              }
-            })
-            if(dragIndex !== throughRow.rowIndex){
-              if(dragIndex > -1){
-                // 清除上次进入的容器的状态
-                const last = target.children[dragIndex];
-                clearClass(last)
-              }
-              // console.log('拖动进入目标元素'+selectRow.rowIndex);
-              // 不是自己或未文件夹时才改变状态
-              if(draggedIndex !== throughRow.rowIndex ){
-                // 改变本次进入的容器的状态
-                dragged.style.cursor = 'copy'
-                throughRow.style.height = 60+'px'
-                throughRow.style.backgroundColor = '#e9fdcf'
-              }
-              dragIndex = throughRow.rowIndex
-            }
-          }
-          leaveIndex = -1
-        }
-        target.ondragover = function(e){
-          // console.log('目标元素中拖拽...');
-          e.preventDefault();
-          leaveIndex = -1
-        }
-
-        let loop = null
-        let leaveIndex = -1 // 是否拖出了整个table, -1表示还在table内
-
-        target.ondragleave = function(e){
-          console.log('ondragleave--e==', e);
-
-          clearTimeout(loop)
-
-          if(e.path[0].nodeName){
-            const throughRow = e.path.find(path => {
-              if(path.className.split(' ').includes('el-table__row')){
-                return path;
-              }
-            })
-            if(throughRow && dragIndex !== throughRow.rowIndex){
-              // console.log('拖动离开目标元素'+selectRow.rowIndex);
-              // selectRow.style.height = 'unset'
-              // selectRow.style.backgroundColor = '#fff'
-              // dragIndex = selectRow.rowIndex
-            }
-            if(throughRow.rowIndex === 0 || throughRow.rowIndex === rows-1){
-              // 离开第一行或最后一行
-              leaveIndex = throughRow.rowIndex
-              loop = setTimeout(function () {
-                if(leaveIndex > -1){
-                  console.log("离开了",leaveIndex)
-                  const leave = target.children[leaveIndex];
-                  clearClass(leave)
-                  dragIndex = -1
-                }
-              },100)
-            }``
-          }
-        }
-        target.ondrop = function(){
-          console.log('ondrop--放下了'+draggedIndex);
-          // 清除上次进入的容器的状态
-          const last = target.children[dragIndex];
-          clearClass(last)
-          dragged.style.cursor = 'default'
-
-          console.log('ondrop--draggedIndex==', draggedIndex);
-          console.log('ondrop--dragIndex==', dragIndex);
-
-          const startId = _this.$refs['menu_'+draggedIndex].dataset.menuId;;
-          const endId = _this.$refs['menu_'+dragIndex].dataset.menuId;
-
-          if (startId !== endId) {
-            _this.changePmenuId(startId, endId)
-          }
-        }
-
-        let clearClass = function (node) {
-          if(node){
-            node.style.height = 'unset'
-            node.style.backgroundColor = '#fff'
-          }
-          dragged.style.cursor = 'grabbing'
-        }
-        // if(last && form.menuId !== to.menuId && to.isFolder){
-        //   // 移动文件/文件夹
-        //   _this.copyOrMoveApi('move', form.menuId, to.menuId)
-        // }
-      },
-      // 判断前后两个数据是否存在同一回路里面
-      // dict 为字典；sId拖拽到menuId; ePmeuId 是放置位置的祖先 menuId;
-      judgePmenuId(dict, sId, ePmeuId) {
-        if (sId === ePmeuId) {
-          return true;
-        } else if (dict[ePmeuId]) {
-          return this.judgePmenuId(dict, sId, dict[ePmeuId]);
-        } else {
-          return false;
-        }
-      },
-      changePmenuId(sId, eId) {
-        let dict = {};
-        this.xmMenuTemplates.forEach(d => {
-          dict[d.menuId] = d.pmenuId || '';
-        });
-        if (!dict[eId]) {
-          this.xmMenuTemplates.find(d => {
-            if (d.menuId === sId) {
-              d.pmenuId = eId;
-              console.log('更新关系1');
-              this.fieldChange(d,'pmenuId',true);
-            }
-          })
-        } else {
-          const isSynezesis = this.judgePmenuId(dict, sId, dict[eId]);
-          if (!isSynezesis) {
-            this.xmMenuTemplates.find(d => {
-              if (d.menuId === sId) {
-                d.pmenuId = eId;
-                console.log('更新关系2');
-                this.fieldChange(d,'pmenuId',true);
-              }
-            })
-          } else {
-            console.log('形成闭合回路--拖拽不更新');
-            
-          }
-        }
-      }, 
-      handlePopover:function(row,opType){
-				if ('highestPmenuId' === opType) {  
-					if (row.pmenuId) {
-						this.xmMenuTemplates.find(d => {
-							
-							if (d.menuId === row.menuId) { 
-								d.pmenuId = '';
-								this.fieldChange(d,'seqNo', true); 
-							}
-						});
-					}
-				}
-			},
+					}).catch( err => this.load.list = false );   
 				
-			/**end 自定义函数请在上面加**/
+			},
 			
 		},//end methods
 		components: { 

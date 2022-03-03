@@ -19,9 +19,21 @@
 						<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
 						<el-button v-if="!filters.tags||filters.tags.length==0" @click.native="tagSelectVisible=true">标签</el-button>
 						<el-tag v-else @click="tagSelectVisible=true"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
- 
-						<el-button  v-if="!selProject&&!xmIteration&&disabledMng!=false"  type="primary" @click="showAdd" icon="el-icon-plus">需求</el-button> 
-						<el-button  v-if="!selProject&&!xmIteration&&disabledMng!=false"  type="danger" @click="batchDel" icon="el-icon-delete">删除</el-button> 
+						<el-popover style="padding-left:10px;"  
+							placement="top-start"
+							width="250" 
+							trigger="click" > 
+							<el-row> 
+								<el-col :span="24" style="padding-top:5px;">
+									<el-button   @click="showAdd" icon="el-icon-plus">直接添加子需求</el-button> 
+								</el-col>  
+								<el-col :span="24" style="padding-top:5px;">
+									<el-button  @click="showImportFromMenuTemplate()" icon="el-icon-upload2">由模板快速导入子需求</el-button> 
+								</el-col> 
+							</el-row>   
+							<el-button type="primary"    slot="reference" icon="el-icon-plus">添加子需求</el-button>
+						</el-popover>
+ 						<el-button  v-if="!selProject&&!xmIteration&&disabledMng!=false"  type="danger" @click="batchDel" icon="el-icon-delete">删除</el-button> 
 
 						<el-button   v-if=" batchEditVisible==false&&disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>  
 						<el-popover

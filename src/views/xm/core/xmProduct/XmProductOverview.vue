@@ -251,7 +251,7 @@ export default {
       return this.xmProduct.taskCnt-this.xmProduct.finishTaskCnt;
     },
     taskProgress: function (){
-      return this.xmProduct.finishRate;
+      return this.xmProduct.finishRate?parseInt(this.xmProduct.finishRate):0;
     },
     productStartTime: function (){
       if(this.xmProduct.planStartTime){
