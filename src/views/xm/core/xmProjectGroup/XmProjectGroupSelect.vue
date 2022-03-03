@@ -13,7 +13,7 @@
 					 <el-tag v-else type="warning" @click="selectProductVisible=true">选择产品</el-tag>
  				</el-col> 
 		</el-row>  
-		<el-row class="page-height-70 padding-top" v-loading="load.list">
+		<el-row class="padding-top" v-loading="load.list" :style="{overflowX:'auto',height:maxTableHeight+'px'}" ref="table">
 			<el-row v-for="(item,index) in xmProjectGroupFormworkSels" :key="index"> 
 				<h3>
 					<div class="padding-top">{{item.groupName}}
@@ -102,6 +102,7 @@ import XmProductSelect from '../xmProduct/XmProductSelect.vue';
 				xmProjectGroupFormworkSels: [],
 				selectProjectVisible:false,
 				selectProductVisible:false,
+				maxTableHeight:300,
   				/**end 自定义属性请在上面加 请加备注**/
 			}
 		}, //end data
@@ -201,7 +202,8 @@ import XmProductSelect from '../xmProduct/XmProductSelect.vue';
 			XmProjectList,XmProductSelect			 
 		},
 		mounted() {
-			this.$nextTick(() => {
+			this.$nextTick(() => { 
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
 				if(this.selGroups){
 					this.selGroups.forEach(i=>{
 						if(i.groupUsers){
