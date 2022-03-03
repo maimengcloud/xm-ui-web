@@ -50,25 +50,29 @@
 						<el-form-item label="概述" prop="remark">
 							<el-input type="textarea" v-model="editForm.remark" :autosize="{ minRows: 4, maxRows: 20}"  placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
 						</el-form-item>
-					</el-form>
+					</el-form> 
+					<el-row >
+						<el-button @click.native="handleCancel">取消</el-button>
+						<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>
+					</el-row>
 				</el-tab-pane>
 				<el-tab-pane  label="概览" lazy>
 					<xm-menu-overview :xm-menu="xmMenu"></xm-menu-overview>
+				</el-tab-pane>
+				
+				<el-tab-pane  label="需求评论" lazy>
+					<xm-menu-exchange-mng :xm-menu="xmMenu"></xm-menu-exchange-mng>
 				</el-tab-pane>
 			</el-tabs>
 			<el-drawer title="选择员工" :visible.sync="userSelectVisible" size="60%" append-to-body>
 				<users-select  @confirm="onUserSelected" ref="usersSelect"></users-select>
 			</el-drawer>
 		</el-row>
-		<el-row class="page-bottom">
-			<el-button @click.native="handleCancel">取消</el-button>
-			<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>
-		</el-row>
 			
-			<el-dialog append-to-body title="标签" :visible.sync="tagSelectVisible" class="dialog-body" width="60%">
+			<el-drawer append-to-body title="标签" :visible.sync="tagSelectVisible" class="dialog-body" size="60%">
 				<tag-mng :tagIds="editForm.tagIds?editForm.tagIds.split(','):[]" :jump="true" @select-confirm="onTagSelected">
 				</tag-mng>
-			</el-dialog>
+			</el-drawer>
 	</section>
 </template>
 
@@ -79,6 +83,7 @@
 	import { mapGetters } from 'vuex'
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
 import XmMenuOverview from './XmMenuOverview.vue';
+import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
   	import TagMng from "@/views/mdp/arc/tag/TagMng";
 
 
@@ -209,6 +214,7 @@ import XmMenuOverview from './XmMenuOverview.vue';
 			UsersSelect,
 			XmMenuOverview,
 			TagMng,
+			XmMenuExchangeMng,
 		},
 		mounted() {
 			this.editForm=Object.assign(this.editForm, this.xmMenu);

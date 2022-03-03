@@ -9,7 +9,7 @@
         <vue-editor :key="id" :branch-id="userInfo.branchId" :category-id="productId+'-'+menuId" v-model="content"></vue-editor>
       </div>
       <div style="margin-top:20px;"></div>
-    <el-button @click="publish" class="toolbar"   type="primary">发布</el-button> <el-button @click="clearContent" style="margin-right: 0.25rem;" class="toolbar"   type="plain">清空内容</el-button>
+    <el-button @click="publish" class="toolbar"   type="primary">发布</el-button> <el-button @click="clearContent" style="margin-right: 0.25rem;" class="toolbar"   type="plain">清空内容</el-button> <el-button @click="close" style="margin-right: 0.25rem;" class="toolbar"   type="plain">关闭窗口</el-button>
     </div>
   </div>
 </template>
@@ -32,18 +32,18 @@ export default {
     }
   },
   methods: {
-    publish() {
-      let params = {
-        content: this.content,
-      }
+    publish() { 
        if(!this.content){
          this.$notify.error("请输入内容再提交");
          return;
        }
-      this.$emit('publish',params);
+      this.$emit('publish',this.content);
     },
     clearContent(){
       this.content="";
+    },
+    close(){
+      this.$emit("close")
     }
   },
   mounted() {

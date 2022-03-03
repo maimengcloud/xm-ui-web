@@ -921,8 +921,7 @@
 			if(this.xmProduct && this.xmProduct.id){
 				this.productVisible=false;
 			} 
-			this.$nextTick(() => { 
-				debugger;
+			this.$nextTick(() => {  
 				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
 				this.getXmMenus();
           });  

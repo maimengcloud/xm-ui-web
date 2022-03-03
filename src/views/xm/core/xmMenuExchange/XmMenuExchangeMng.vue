@@ -1,31 +1,27 @@
 <template>
-	<section class="padding"> 
-		<el-row class="page-main ">
+	<section class="page-container padding"> 
+		<el-row>
+			<el-input style="width:20%;" v-model="filters.key" placeholder="需求名称、评论、评论人姓名模糊搜素" clearable></el-input >&nbsp;&nbsp;<el-input  style="width:20%;" v-model="filters.menuId" placeholder="需求编号查询" clearable></el-input>
+			<el-button type="primary" @click="searchXmMenuExchanges">查询</el-button>
+			<el-button type="primary" @click="headEditorVisible=true"  v-if="filters.xmMenu">发表需求建议</el-button>
+		</el-row>
+		<el-row class="page-main" :style="{overflowX:'auto',height:maxTableHeight+'px'}" ref="table">
 		 <div style="overflow-x:hidden">
-				<menu-user-editor key="head" :id="'head'+filters.xmMenu.menuId" v-if="filters.xmMenu" :user="{userid:userInfo.userid,username:userInfo.username,headimgurl:userInfo.headimgurl}" :product-id="filters.xmMenu.productId" :menu-id="filters.xmMenu.menuId" @publish="onPublishContent"></menu-user-editor>
-				<div v-for="(item,i) in xmMenuExchanges" :key="i" class="comment-list clearfix">
+				<menu-user-editor key="head" :id="'head'+filters.xmMenu.menuId" v-if="filters.xmMenu && headEditorVisible" :user="{userid:userInfo.userid,username:userInfo.username,headimgurl:userInfo.headimgurl}" :product-id="filters.xmMenu.productId" :menu-id="filters.xmMenu.menuId" @publish="onPublishContent"></menu-user-editor>
+ 				<div v-for="(item,i) in xmMenuExchanges" :key="i" class="comment-list clearfix">
 					<div class="comment-avater">
 						<el-avatar icon="el-icon-user-solid"></el-avatar>
 					</div>
 					<div class="comment-wrap">
 						<div class="comment-head">
-							<span>{{item.cusername}}</span> {{item.ctime}}
-							<el-button slot="reference"  type="text" style="font-size:12px;" @click="handleDel(item)"><i class="el-icon-delete-solid"></i>删除</el-button>
-							<el-popover
-								placement="bottom"
-								trigger="click">
-								<menu-user-editor :key="'menu-'+i" :id="'menu-'+item.menuId+'-'+i" :user="{userid:item.cuserid,username:item.cusername,headimgurl:item.cuserHeadImg}" :product-id="item.productId" :menu-id="item.menuId" @publish="onPublishContent($event,item)"></menu-user-editor>
-								<el-button slot="reference"  type="text" style="font-size:12px;"><i class="el-icon-paperclip"></i>引用</el-button>
-							</el-popover>
-							<el-popover
-								placement="bottom"
-								trigger="click">
-								<menu-user-editor :key="'userreply-'+i"  :id="'userreply'+i+item.id" :user="{userid:item.cuserid,username:item.cusername,headimgurl:item.cuserHeadImg}" :product-id="item.productId" :menu-id="item.menuId" @publish="onPublishContent($event,item)"></menu-user-editor>
-								<el-button slot="reference"  type="text" style="font-size:12px;"><i class="el-icon-s-comment"></i>回复</el-button>
-							</el-popover>
-							<small>{{item.createTime}}</small>
-						</div>
-
+							<span>{{item.cusername}}</span> <font style="font-size:12px;color:black;">需求:&nbsp;&nbsp;{{item.menuId}}{{item.menuName}}</font>&nbsp;&nbsp;{{item.ctime}} 
+							<el-button type="text" style="font-size:12px;" @click="handleDel(item)"><i class="el-icon-delete-solid"></i>删除</el-button>
+							
+							
+							<el-button  type="text" style="font-size:12px;" @click="showEditor(item,i)"><i class="el-icon-paperclip"></i>引用</el-button>
+							<el-button  type="text" style="font-size:12px;" @click="showEditor(item,i)"><i class="el-icon-s-comment"></i>回复</el-button>
+							<small>{{item.createTime}}</small>  
+						</div> 
 						<blockquote v-if="item.pid">
 							<div v-html="item.premark"></div>
 							<footer>—— {{item.pusername}}</footer>
@@ -33,12 +29,14 @@
 						<div class="comment-content" v-html="item.remark">
 							{{item.remark}}
 						</div> 
+						<menu-user-editor :key="'menu-'+i" :id="'menu-'+item.id" v-show="item.showEditor" :user="{userid:userInfo.userid,username:userInfo.username,headimgurl:userInfo.headimgurl}" :product-id="item.productId" :menu-id="item.menuId" @publish="onPublishContent($event,item)" @close="item.showEditor=false"></menu-user-editor>
 					</div>
 				</div>
-				<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+				
 
 			</div> 
 		</el-row>
+		<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 	</section>
 </template>
 
@@ -50,6 +48,8 @@
 	import MenuUserEditor from './MenuUserEditor'
 	import { mapGetters } from 'vuex'
 	import {sn} from '@/common/js/sequence'; 
+	
+	import VueEditor from '@/components/Tinymce/index';
 
 	export default { 
 		computed: {
@@ -69,6 +69,7 @@
 				filters: {
 					key: '',
 					xmMenu:null,
+					menuId:''
 				},
 				xmMenuExchanges: [],//查询结果
 				pageInfo:{//分页数据
@@ -90,14 +91,18 @@
 				addForm: {
 					menuId:'',menuName:'',productId:'',remark:'',id:'',pid:'',cuserid:'',cusername:'',ctime:'',cbranchId:'',adopt:'',adoptUserid:'',adoptUsername:'',adoptTime:'',closed:'',puserid:'',pusername:'',premark:'',notifyUserids:'',notifyChannels:'',notifyUsernames:'',cuserHeadImg:'',replyType:''
 				},
-				
+				addFormInit: {
+					menuId:'',menuName:'',productId:'',remark:'',id:'',pid:'',cuserid:'',cusername:'',ctime:'',cbranchId:'',adopt:'',adoptUserid:'',adoptUsername:'',adoptTime:'',closed:'',puserid:'',pusername:'',premark:'',notifyUserids:'',notifyChannels:'',notifyUsernames:'',cuserHeadImg:'',replyType:''
+				},
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmMenuExchange界面初始化数据
 				editForm: {
 					menuId:'',menuName:'',productId:'',remark:'',id:'',pid:'',cuserid:'',cusername:'',ctime:'',cbranchId:'',adopt:'',adoptUserid:'',adoptUsername:'',adoptTime:'',closed:'',puserid:'',pusername:'',premark:'',notifyUserids:'',notifyChannels:'',notifyUsernames:'',cuserHeadImg:'',replyType:''
 				},
 				xmMenuVisible:false,
-				tableHeight:300,
+				maxTableHeight:300,
+				content:'', 
+				headEditorVisible:false, 
 				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -146,7 +151,7 @@
 					params.orderBy= orderBys.join(",")
 				}
 				if(this.filters.key!==""){
-					//params.xxx=this.filters.key
+					params.key=this.filters.key
 				}else{
 					//params.xxx=xxxxx
 				}
@@ -159,6 +164,9 @@
 					}
 					
 				}
+				if(this.filters.menuId){
+					params.menuId=this.filters.menuId
+				}
 				if(!params.menuId){
 					params.branchId=this.userInfo.branchId
 				}
@@ -168,7 +176,9 @@
 					if(tips.isOk){ 
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
-						this.xmMenuExchanges = res.data.data;
+						var data=res.data.data;
+						data.forEach(i=>i.showEditor=false)
+						this.xmMenuExchanges = data;
 					}else{
 						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					} 
@@ -238,18 +248,26 @@
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
 			/**begin 自定义函数请在下面加**/
-			
-			onPublishContent:function(editor,parentXmMenuExchange){
+			showEditor(item,replyType){
+				this.editForm=item; 
 				
-				var params={};
-				params.remark=editor.content;
-
-				if(!parentXmMenuExchange && !this.xmMenu && !this.filters.xmMenu){
-					this.$notify.error("请选择需求再发表评论")
-					return;
-				}
-				params.id=sn()
-				if(this.xmMenu){
+				this.addForm={...this.addFOrmInit}
+				this.addForm.replyType=replyType;
+				item.showEditor=true; 
+			},
+			onPublishContent:function(content,item){ 
+				 debugger;
+				var params={...this.addForm} 
+				params.remark=content; 
+				if(item){ 
+					params.puserid=item.cuserid
+					params.premark=item.remark
+					params.pusername=item.cusername
+					params.productId=item.productId
+					params.menuId=item.menuId
+					params.menuName=item.menuName
+					params.pid=item.id
+				}else if(this.xmMenu){
 					params.menuId=this.xmMenu.menuId
 					params.productId=this.xmMenu.productId
 					params.menuName=this.xmMenu.menuName
@@ -260,28 +278,24 @@
 						params.menuName=this.filters.xmMenu.menuName
 					}else{
 						
-						params.menuId=parentXmMenuExchange.menuId
-						params.productId=parentXmMenuExchange.productId
-						params.menuName=parentXmMenuExchange.menuName
+						params.menuId=item.menuId
+						params.productId=item.productId
+						params.menuName=item.menuName
 					}
-				}
-				
-				
+				} 
 				params.cuserid=this.userInfo.userid
 				params.cusername=this.userInfo.username
 				params.cbranchId=this.userInfo.branchId
-				params.cuserHeadImg=this.userInfo.headimgurl
-				if(parentXmMenuExchange){
-					params.pid=parentXmMenuExchange.id
-					params.premark=parentXmMenuExchange.remark
-					params.puserid=parentXmMenuExchange.cuserid
-					params.pusername=parentXmMenuExchange.cusername
-				}
+				params.cuserHeadImg=this.userInfo.headimgurl 
 				
 				addXmMenuExchange(params).then(res=>{
 					var tips =res.data.tips;
 					if(tips.isOk){
-						this.xmMenuExchanges.unshift(res.data.data);
+						var data=res.data.data;
+						data.showEditor=false;
+						this.xmMenuExchanges.unshift(data);
+						this.editForm.showEditor=false; 
+						this.headEditorVisible=false;
 					}
 					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 				})
@@ -299,10 +313,12 @@
 		},//end methods
 		components: {  
 			//在下面添加其它组件
-			MenuUserEditor
+			MenuUserEditor,VueEditor
 		},
 		mounted() { 
 			this.$nextTick(() => {
+				
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
 				this.filters.xmMenu=this.xmMenu
 				this.getXmMenuExchanges();
         	}); 
