@@ -355,6 +355,10 @@
 				this.selectTaskVisible=true;
 			},
 			onSelectedTask(task){
+				if(task.ntype=='1'){
+					this.$notify({showClose: true, message: "您选择的【"+task.name+"】属于任务集，请重新选择。建议选择树中叶子节点", type: 'error' });
+					return;
+				}
 				this.editForm.taskId=task.id
 				this.editForm.taskName=task.name
 				if(!this.editForm.menuId){
@@ -388,6 +392,10 @@
 				this.selectMenuVisible=true;
 			},
 			onSelectedMenu(menu){
+				if(menu.ntype=='1'){
+					this.$notify({showClose: true, message: "您选择的【"+menu.menuName+"】属于需求集，请重新选择。建议选择树中叶子节点", type: 'error' });
+					return;
+				}
 				this.editForm.menuId=menu.menuId
 				this.editForm.menuName=menu.menuName
 				this.editForm.productId=menu.productId

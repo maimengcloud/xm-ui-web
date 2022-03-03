@@ -90,7 +90,7 @@
 						</el-table-column> 
 						<el-table-column label="操作"    width="100" fixed="right"  >
 							<template slot-scope="scope"> 
-								<el-button    type="primary" @click="selectedMenu( scope.row,scope.$index)">选择</el-button> 
+								<el-button  :disabled="scope.row.ntype=='1'"  type="primary" @click="selectedMenu( scope.row,scope.$index)">选择</el-button> 
 							</template>
 						</el-table-column>
 					</el-table>

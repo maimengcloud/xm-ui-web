@@ -70,7 +70,7 @@
 							
 							<el-table-column   v-if="!isMultiSelect"  header-align="center" label="操作" fixed="right" width="100">
 								<template slot-scope="scope">
-									<el-button    type="primary" @click.stop="selectedTask(scope.row)" >选择</el-button> 	
+									<el-button  :disabled="scope.row.ntype=='1'"  type="primary" @click.stop="selectedTask(scope.row)" >选择</el-button> 	
 								</template>
 							</el-table-column>
 						</el-table>

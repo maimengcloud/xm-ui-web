@@ -144,8 +144,8 @@
 											<el-button type="text"    slot="reference" icon="el-icon-plus">添加子需求</el-button>
 										</el-popover>   
 										<font v-else>
-											<el-button     type="text"  @click="showTaskListForMenu(scope.row,scope.$index)"  icon="el-icon-s-operation">查任务</el-button>
-											<el-button    type="text"  @click="showTaskList(scope.row,scope.$index)"  icon="el-icon-s-operation">关联任务</el-button> 
+											<el-button  :disabled="scope.row.ntype=='1'"   type="text"  @click="showTaskListForMenu(scope.row,scope.$index)"  icon="el-icon-s-operation">查任务</el-button>
+											<el-button  :disabled="scope.row.ntype=='1'"  type="text"  @click="showTaskList(scope.row,scope.$index)"  icon="el-icon-s-operation">关联任务</el-button> 
 										</font>
 									</el-row>
 								</template>

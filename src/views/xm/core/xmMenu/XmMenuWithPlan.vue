@@ -84,8 +84,8 @@
 					</el-table-column>
 					<el-table-column label="操作" width="100" fixed="right"  >
 						<template slot-scope="scope">
-							<el-button v-if="scope.row.projectId" type="text" @click="showTasks(scope.row)"  icon="el-icon-tickets">查看任务</el-button>
-							<el-tag v-else type="warning">未关联任务</el-tag>
+							<el-button :disabled="scope.row.ntype=='1'" v-if="scope.row.projectId" type="text" @click="showTasks(scope.row)"  icon="el-icon-tickets">查看任务</el-button>
+							<el-tag  v-else type="warning">{{scope.row.ntype=='1'?'无需关联任务':'未关联任务'}}</el-tag>
 						</template>
 					</el-table-column>
 				</el-table>
@@ -133,8 +133,8 @@
 					</el-table-column> 
 					<el-table-column label="操作" width="100" fixed="right"  >
 						<template slot-scope="scope">
-							<el-button v-if="scope.row.projectId" type="text" @click="showTasks(scope.row)"  icon="el-icon-tickets">查看任务</el-button>
-							<el-tag v-else type="warning">未关联任务</el-tag>
+							<el-button :disabled="scope.row.ntype=='1'" v-if="scope.row.projectId" type="text" @click="showTasks(scope.row)"  icon="el-icon-tickets">查看任务</el-button>
+							<el-tag v-else type="warning">{{scope.row.ntype=='1'?'无需关联任务':'未关联任务'}}</el-tag>
 						</template>
 					</el-table-column>
  				</el-table>
