@@ -9,7 +9,7 @@
 				</el-step> 
 			</el-steps>
 		</el-row>
-		<el-row class="page-main page-height-80">
+		<el-row class="page-main ">
 			<!--新增界面 XmProduct 产品表--> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
 				<el-form-item label="产品编号" prop="id">

@@ -88,7 +88,7 @@
 						<el-button  slot="reference"   icon="el-icon-more"></el-button>
 					</el-popover>
 				</el-row>
-				<el-row  class="page-main page-height-80"  v-show="showType">
+				<el-row  class="page-main "  v-show="showType">
 					<!--列表 XmProject xm_project-->
 					<el-row v-loading="load.list">
 						<el-col  v-cloak v-for="(p,i) in xmProducts" :key="i" :xl="4" :lg="6" :md="8" :sm="12">

@@ -20,7 +20,7 @@
 			<el-step title="提现" description="企业付款完成后，个人对钱包中余额进行提现"></el-step> 
 		</el-steps>
 		</el-row>
-		<el-row class="page-main page-height-70">
+		<el-row class="page-main ">
 			<!--新增界面 XmTask xm_task-->
 			<el-form :model="addForm"  label-width="100px" :rules="addFormRules" ref="addForm">
 				<el-card class="box-card" header="基础信息" id="baseInfoAdd" shadow="hover"> 

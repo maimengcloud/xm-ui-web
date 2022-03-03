@@ -7,7 +7,7 @@
  					<el-button @click="groupRoleDescVisible=true" icon="el-icon-document">角色说明</el-button> 
 					 <font color="red">注意：点击架构图进行操作</font>
   		</el-row> 
-		<el-row class="page-height-70">
+		<el-row class="">
 			<vue-okr-tree :data="okrTreeData" v-loading="load.list"
 				show-collapsable   
 				node-key="id"
@@ -72,7 +72,7 @@
 				direction="rtl" 
 				ref="drawer"
 				>
-				<el-row class="page-main page-height-70 padding">
+				<el-row class="page-main  padding">
 					<el-collapse>
 						
 						<el-collapse-item title="项目经理：项目整体、团队、进度、质量、计划、风险、沟通管理等" name="3">

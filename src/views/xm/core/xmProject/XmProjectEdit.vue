@@ -9,7 +9,7 @@
 				</el-step> 
 			</el-steps>
 		</el-row>
-		<el-row class="page-main page-height-70"> 
+		<el-row class="page-main "> 
 		<!--编辑界面 XmProject xm_project-->  
 			<div ref="editFormDiv">
 				<el-form :model="editForm"  label-width="150px" :rules="editFormRules" ref="editForm" class="editForm">   

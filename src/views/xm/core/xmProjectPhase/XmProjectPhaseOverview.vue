@@ -1,6 +1,6 @@
 <template>
   <section>
-    <el-row class="page-main page-height-70" style="overflow-x: hidden;">
+    <el-row class="page-main " style="overflow-x: hidden;">
       <el-row style="margin-bottom:10px">
         <el-card class="box-card" style="padding:0px ;height:100px">
           <div>

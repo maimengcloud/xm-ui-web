@@ -8,7 +8,7 @@
 				<el-step title="已关闭(可重新激活)" description="测试通过后变为已关闭，已关闭缺陷可以重新激活"></el-step>
 			</el-steps>
 		</el-row>
-		<el-row class="page-main page-height-80 padding">
+		<el-row class="page-main  padding">
 			<el-form :model="addForm"  :rules="addFormRules" ref="addForm">
 						<el-form-item label="缺陷标题" prop="name">
 							<el-input v-model="addForm.name" placeholder="缺陷标题" ></el-input>
