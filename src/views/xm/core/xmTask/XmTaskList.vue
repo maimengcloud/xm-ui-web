@@ -6,28 +6,14 @@
 				</el-col>
 				<el-col :span=" filters.selProject?20:24">
 					<el-row class="page-main ">
-						<el-tag>{{filters.selProject?filters.selProject.name:'未选择项目'}}</el-tag><el-button type="success" v-if="!selProject" @click="selectProjectVisible=true">选择项目</el-button>
+						&nbsp;&nbsp;<el-tag>{{filters.selProject?filters.selProject.name:'未选择项目'}}</el-tag><el-button type="success" v-if="!selProject" @click="selectProjectVisible=true">选择项目</el-button>
 						<el-select v-model="filters.taskType" placeholder="请选择任务类型" clearable @change="changeTaskType">
 							<el-option class="showall" value="all"  label="全部类型">全部类型</el-option>
 							<el-option  v-for="(i,index) in options.taskType" :value="i.optionValue" :label="i.optionName" :key="index">{{i.optionName}}</el-option>
-						</el-select>  
-						<el-date-picker
-							v-model="dateRanger" 
-							type="daterange"
-							align="right"
-							unlink-panels
-							range-separator="至"
-							start-placeholder="开始日期"
-							end-placeholder="完成日期"
-							value-format="yyyy-MM-dd HH:mm:ss"
-							:default-time="['00:00:00','23:59:59']"
-							:picker-options="pickerOptions"
-						></el-date-picker> 
-						<el-input v-model="filters.key" style="width:20%;">
-							<template slot="append">
-								<el-button @click="searchXmTasks" icon="el-icon-search">查询</el-button>
-							</template>
+						</el-select>   
+						<el-input v-model="filters.key" style="width:20%;" placeholder="任务、需求名称模糊查询">  
 						</el-input>
+						<el-button @click="searchXmTasks" icon="el-icon-search">查询</el-button> 
 						<el-button v-if="isMultiSelect" @click="selectedTasks" type="primary">确认选择</el-button>
 					</el-row>
 					<el-row  class="page-main">
@@ -82,7 +68,7 @@
 								</template>
 							</el-table-column>
 							
-							<el-table-column   v-if="!isMultiSelect"  header-align="center" label="操作" fixed="right" width="200">
+							<el-table-column   v-if="!isMultiSelect"  header-align="center" label="操作" fixed="right" width="100">
 								<template slot-scope="scope">
 									<el-button    type="primary" @click.stop="selectedTask(scope.row)" >选择</el-button> 	
 								</template>
