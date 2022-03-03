@@ -5,7 +5,7 @@
  				<el-table-column prop="name" label="项目名称" >
 					 <template slot-scope="scope">
 						 {{scope.row.name}}&nbsp;&nbsp;
-						 <font class="align-right" :color="scope.row.totalProgress==100?'green':'#FF8C00'">{{parseInt(scope.row.totalProgress)}}%</font>
+						 <font   :color="scope.row.totalProgress==100?'green':'#FF8C00'">{{parseInt(scope.row.totalProgress)}}%</font>
 					 </template>
 				</el-table-column>  
 			</el-table>

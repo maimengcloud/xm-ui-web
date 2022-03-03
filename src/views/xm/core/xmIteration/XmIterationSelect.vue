@@ -57,7 +57,7 @@
 				</template>
 					 <template slot-scope="scope">
 
-						 {{scope.row.iterationName}}  <font class="align-right" :color="calcFinishRate(scope.row)==100?'green':'#FF8C00'">{{calcFinishRate(scope.row)}}%</font>
+						 {{scope.row.iterationName}}  <font   :color="calcFinishRate(scope.row)==100?'green':'#FF8C00'">{{calcFinishRate(scope.row)}}%</font>
 					 </template>
 				</el-table-column> 
 			</el-table>
