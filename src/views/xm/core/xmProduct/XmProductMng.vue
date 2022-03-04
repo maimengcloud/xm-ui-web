@@ -172,12 +172,12 @@
 					<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 
 							<!--编辑 XmProduct 产品表界面-->
-					<el-drawer title="编辑产品" :visible.sync="editFormVisible"  size="50%" :with-header="false"  append-to-body   :close-on-click-modal="false">
+					<el-drawer title="编辑产品" :visible.sync="editFormVisible"  size="60%"   append-to-body   :close-on-click-modal="false">
 						<xm-product-edit :xm-product="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-product-edit>
 					</el-drawer>
 
 					<!--新增 XmProduct 产品表界面-->
-					<el-drawer title="新增产品" :visible.sync="addFormVisible"  size="50%" :with-header="false" append-to-body  :close-on-click-modal="false">
+					<el-drawer title="新增产品" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
 						<xm-product-add :xm-product="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-product-add>
 					</el-drawer>
 					<el-drawer title="产品状态数据" :visible.sync="productStateVisible"  width="100%"  append-to-body  :close-on-click-modal="false">

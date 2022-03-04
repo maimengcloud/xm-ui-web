@@ -109,7 +109,7 @@
 				},
 				//新增界面数据 产品表
 				editForm: {
-					id:'',productName:'',branchId:'',remark:'',pmUserid:'',pmUsername:'',ctime:'',pstatus:'0'
+					id:'',code:'',productName:'',branchId:'',remark:'',pmUserid:'',pmUsername:'',pstatus:'',ctime:'',admUserid:'',admUsername:'',assUserid:'',assUsername:'',del:'',locked:''
 				},
 				userSelectVisible:false,
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
