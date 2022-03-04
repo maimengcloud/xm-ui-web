@@ -25,14 +25,26 @@
 						<el-option v-for="(item,index) in options['xmProductPstatus']" :label="item.optionName" :value="item.optionValue" :key="index"></el-option>
 					</el-select>
 				</el-form-item>  
-				<el-form-item label="产品名称" prop="productName">
-					<el-input v-model="editForm.productName" placeholder="产品名称" ></el-input>
+				<el-row>
+					<el-col :span="8">
+				<el-form-item label="总监"  prop="admUserid">
+					<el-input readonly v-model="editForm.admUsername" @click.native="showUserVisible('admUserid')"></el-input>
+					<font style="font-size:12px;" color="red"></font> 
 				</el-form-item>  
-				<el-form-item label="产品经理" prop="pmUserid">
-					 <el-tag v-if="editForm.pmUserid" closable @close="clearPmUser">{{editForm.pmUsername}}</el-tag>
-					 <el-tag v-else>未配置</el-tag> 
-					 <el-button @click="selectUser">选产品经理</el-button>
+					</el-col>
+					<el-col :span="8">
+				<el-form-item label="产品经理" prop="pmUserid"> 
+					<el-input readonly v-model="editForm.pmUsername" @click.native="showUserVisible('pmUserid')"></el-input>
+					<font style="font-size:12px;" color="red"></font> 
+				</el-form-item> 
+					</el-col>
+					<el-col :span="8">
+				<el-form-item label="副经理、助理" prop="assUserid"> 
+					<el-input readonly v-model="editForm.assUsername" @click.native="showUserVisible('assUserid')"></el-input>
+					<font style="font-size:12px;" color="red"></font> 
 				</el-form-item>  
+					</el-col>
+				</el-row> 
 				<el-form-item label="备注" prop="remark">
 					<el-input v-model="editForm.remark" type="textarea" :autosize="{ minRows: 4, maxRows: 20}"  placeholder="备注" ></el-input>
 				</el-form-item>  
@@ -45,7 +57,6 @@
 		</el-row>
 		
 		<el-row> 
-			<el-button @click.native="handleCancel">取消</el-button>  
 			<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button> 
 		</el-row>
 	</section>
@@ -101,10 +112,18 @@
 					
 					productName: [
 						{ required: true, message: '产品名称不能为空', trigger: 'blur' }
+					], 
+					
+					code: [
+						{ required: true, message: '产品代号不能为空', trigger: 'change' }
 					],
 					
 					pmUserid: [
-						{ required: true, message: '产品经理不能为空', trigger: 'blur' }
+						{ required: true, message: '产品经理不能为空', trigger: 'change' }
+					],
+					
+					admUserid: [
+						{ required: true, message: '产品总监不能为空', trigger: 'change' }
 					]
 				},
 				//新增界面数据 产品表
@@ -124,11 +143,7 @@
 				this.$emit('cancel');
 			},
 			//新增提交XmProduct 产品表 父组件监听@submit="afterAddSubmit"
-			editSubmit: function () {
-				if(this.userInfo.userid!=this.editForm.pmUserid){
-					this.$notify({showClose: true, message: "你不是该产品负责人，不能修改产品信息", type:  'error' });  
-					return;
-				}
+			editSubmit: function () { 
 				this.$refs.editForm.validate((valid) => {
 					if (valid) {
 						
@@ -149,30 +164,31 @@
 					}
 				});
 			},
-			selectUser(){
-				if(!this.roles.some(i=>i.roleid=='productAdmin')){
-					this.$notify({showClose: true, message: "你不是产品经理，不能修改产品负责人", type:  'error' });  
-					return;
-				}
+			showUserVisible(userType){
+				this.currUserType=userType
 				this.userSelectVisible=true;
 			},
-			onUserSelected(users){
+			//选择人员
+			onUserSelected: function(users) {  
+				this.userSelectVisible = false;
+				var user={userid:'',username:''}; 
 				if(users && users.length>0){
-					this.editForm.pmUserid=users[0].userid
-					this.editForm.pmUsername=users[0].username
+					user=users[0]
 				}
-				this.userSelectVisible=false
-			},
-			clearPmUser:function(){
-				if(!this.roles.some(i=>i.roleid=='productAdmin')){
-					this.$notify({showClose: true, message: "你不是产品经理，不能修改产品负责人", type:  'error' });  
-					return;
+				 
+				if(this.currUserType=='admUserid'){ 
+					this.addForm.admUserid=user.userid
+					this.addForm.admUsername=user.username
+				}else if(this.currUserType=='assUserid'){ 
+					this.addForm.assUserid=user.userid
+					this.addForm.assUsername=user.username
+				}else if(this.currUserType=='pmUserid'){ 
+					this.addForm.pmUserid=user.userid
+					this.addForm.pmUsername=user.username
 				}
-				this.editForm.pmUserid=''
-				this.editForm.pmUsername=''
-			}
-			/**begin 在下面加自定义方法,记得补上面的一个逗号**/
+				this.currUserType="";
 				
+			},  
 			/**end 在上面加自定义方法**/
 			
 		},//end method
