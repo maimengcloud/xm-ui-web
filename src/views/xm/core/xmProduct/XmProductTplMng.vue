@@ -67,7 +67,10 @@
 				<el-radio v-model="xmProductCopy.isTpl" label="0">复制为新的产品</el-radio>
 			</el-form-item>
 			<el-form-item label="附加任务">
-				<el-checkbox v-model="xmProductCopy.copyMenu" true-label="1" false-label="0">拷贝需求列表</el-checkbox>  
+				<el-checkbox v-model="xmProductCopy.copyMenu" true-label="1" false-label="0">拷贝需求列表</el-checkbox>   
+				<el-checkbox v-model="xmProductCopy.copyPhase" true-label="1" false-label="0">拷贝计划</el-checkbox>  
+				<el-checkbox v-model="xmProductCopy.copyGroup" true-label="1" false-label="0">拷贝组织架构</el-checkbox>  
+				<el-checkbox v-model="xmProductCopy.copyGroupUser" true-label="1" false-label="0">拷贝产品组成员</el-checkbox>  
 			</el-form-item>
 			</el-form>
 			<span slot="footer" class="dialog-footer">
@@ -144,8 +147,8 @@
 				pickerOptions:  util.pickerOptions('datarange'),
 				projectVisible:false,
 				productSelectVisible:false,
-				xmProductCopy:{
-					id:'',productName:'',code:'',isTpl:'',copyMenu:'1'
+				xmProductCopy:{ 
+					id:'',productName:'',code:'',isTpl:'',copyMenu:'1',copyPhase:'1',copyGroup:'1',copyGroupUser:'0'
 				},
 				copyToVisible:false,
 				maxTableHeight:300,
@@ -272,36 +275,33 @@
 			//选择行xmProduct
 			selsChange: function (sels) {
 				this.sels = sels;
-			},
-			//删除xmProduct
-			handleDel: function (row,index) { 
-				this.$confirm('确认删除该记录吗?', '提示', {
-					type: 'warning'
-				}).then(() => {
-					this.load.del=true;
-					let params = { id: row.id };
-					delXmProduct(params).then((res) => {
-						this.load.del=false;
-						var tips=res.data.tips;
-						if(tips.isOk){
-							this.pageInfo.count=true;
-							this.getXmProducts();
-						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
-					}).catch( err  => this.load.del=false );
-				});
+			}, 
+			handleDel: function (row,index) {  
+				this.$prompt('将同步删除计划、组织、需求等，慎重起见，请输入产品代号:'+row.code, '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+				}).then(({ value }) => {
+					 if(value==row.code){
+						this.load.del=true;
+						let params = { id: row.id };
+						delXmProduct(params).then((res) => {
+							this.load.del=false;
+							var tips=res.data.tips;
+							if(tips.isOk){
+								this.pageInfo.count=true;
+								this.getXmProducts();
+							}
+							this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+						}).catch( err  => this.load.del=false );
+					 }else{
+						 this.$notify({showClose: true, message: "产品代号不正确", type: 'error' }); 
+					 }
+				}).catch(() => { 
+					return;    
+				}); 	
 			},
 			//批量删除xmProduct
-			batchDel: function () {
-				if(!this.roles.some(i=>i.roleid=='productAdmin')){
-					this.$notify({showClose: true, message: "只有产品经理能够删除产品", type: 'error'});
-					return false;
-				}
-				var mmSels=this.sels.filter(i=>i.pmUserid!=this.userInfo.userid)
-				if(mmSels.length>0){
-					this.$notify({showClose: true, message: "只能删除你负责的产品", type: 'error'});
-					return false;
-				}
+			batchDel: function () {   
 				this.$confirm('确认删除选中记录吗？', '提示', {
 					type: 'warning'
 				}).then(() => {
