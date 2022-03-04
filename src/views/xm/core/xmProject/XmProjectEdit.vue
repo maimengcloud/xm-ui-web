@@ -39,7 +39,27 @@
 								<font style="font-size:12px;" color="red">每条计划实际金额不能大于预算金额;每条计划的预算金额必须大于其关联的任务的实际金额合计。</font> 
 							</el-form-item> 
 						
-						</el-form-item>	 
+						</el-form-item>	  
+						<el-row>
+							<el-col :span="8">
+						<el-form-item label="总控"  prop="admUserid">
+							<el-input readonly v-model="editForm.admUsername" @click.native="showUserVisible('admUserid')"></el-input>
+							<font style="font-size:12px;" color="red"></font> 
+						</el-form-item>  
+							</el-col>
+							<el-col :span="8">
+						<el-form-item label="项目经理" prop="pmUserid"> 
+							<el-input readonly v-model="editForm.pmUsername" @click.native="showUserVisible('pmUserid')"></el-input>
+							<font style="font-size:12px;" color="red"></font> 
+						</el-form-item> 
+							</el-col>
+							<el-col :span="8">
+						<el-form-item label="副经理、助理" prop="assUserid"> 
+							<el-input readonly v-model="editForm.assUsername" @click.native="showUserVisible('assUserid')"></el-input>
+							<font style="font-size:12px;" color="red"></font> 
+						</el-form-item>  
+							</el-col>
+						</el-row>
 						<el-form-item label="工期及成本预估" >  
 							<el-row>
 								<el-date-picker
@@ -134,6 +154,11 @@
 				<el-button icon="el-icon-video-play"  type="primary" @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_restart_approva'})">项目重新启动申请</el-button>
 	 
 		</el-row>
+		
+		<el-drawer append-to-body title="选择员工" :visible.sync="userSelectVisible" size="60%">
+			<users-select isSingleUser=true   @confirm="onUserSelected" ref="usersSelect"></users-select>
+		</el-drawer>
+
 	</section>
 </template>
 
@@ -149,6 +174,8 @@
 	import { mapGetters } from 'vuex';  
 	import { getGroups } from '@/api/xm/core/xmProjectGroup';
 	import html2canvas from 'html2canvas'
+	
+	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
 	
 	export default { 
 		computed: {
@@ -296,27 +323,27 @@
 					if(this.selProject.planWorkingHours!=this.editForm.planWorkingHours){ 
 						var distance=this.selProject.planWorkingHours-this.editForm.planWorkingHours
 						var operType=distance>0?"-":"+";
-						this.changeTips.push("预计总工期: "+ this.selProject.planWorkingHours+" > " +this.editForm.planWorkingHours+"&nbsp;&nbsp;&nbsp;<strong>"+operType+Math.abs(distance)+"</strong>小时");
+						this.changeTips.push("预计总工期: "+ this.selProject.planWorkingHours+" > " +this.editForm.planWorkingHours+"&nbsp;&nbsp;&nbsp;<strong>"+operType+Math.abs(distance).toFixed(2)+"</strong>小时");
 					}
 					if(this.selProject.planTotalCost!=this.editForm.planTotalCost){ 
 						var distance=this.selProject.planTotalCost-this.editForm.planTotalCost
 						var operType=distance>0?"-":"+";
-						this.changeTips.push("预计总成本: "+ this.selProject.planTotalCost+" > " +this.editForm.planTotalCost+"&nbsp;&nbsp;&nbsp;<strong>"+operType+Math.abs(distance)+"</strong>元");
+						this.changeTips.push("预计总成本: "+ this.selProject.planTotalCost+" > " +this.editForm.planTotalCost+"&nbsp;&nbsp;&nbsp;<strong>"+operType+Math.abs(distance).toFixed(2)+"</strong>元");
 					}
 					if(this.selProject.budgetMarginRate!=this.editForm.budgetMarginRate){  
 						var distance=this.selProject.budgetMarginRate-this.editForm.budgetMarginRate
 						var operType=distance>0?"-":"+";
-						this.changeTips.push("毛利率: "+ this.selProject.budgetMarginRate+" > " +this.editForm.budgetMarginRate+"&nbsp;&nbsp;&nbsp;<strong>"+operType+Math.abs(distance)+"</strong>%");
+						this.changeTips.push("毛利率: "+ this.selProject.budgetMarginRate+" > " +this.editForm.budgetMarginRate+"&nbsp;&nbsp;&nbsp;<strong>"+operType+Math.abs(distance).toFixed(2)+"</strong>%");
 					}
 					if(this.selProject.totalReceivables!=this.editForm.totalReceivables){  
 						var distance=this.selProject.totalReceivables-this.editForm.totalReceivables
 						var operType=distance>0?"-":"+";
-						this.changeTips.push("预计总收款: "+ this.selProject.totalReceivables+" > " +this.editForm.totalReceivables+"&nbsp;&nbsp;&nbsp;<strong>"+operType+Math.abs(distance)+"</strong>元");
+						this.changeTips.push("预计总收款: "+ this.selProject.totalReceivables+" > " +this.editForm.totalReceivables+"&nbsp;&nbsp;&nbsp;<strong>"+operType+Math.abs(distance).toFixed(2)+"</strong>元");
 					}
 					if(this.selProject.contractAmt!=this.editForm.contractAmt){  
 						var distance=this.selProject.contractAmt-this.editForm.contractAmt
 						var operType=distance>0?"-":"+";
-						this.changeTips.push("合同金额: "+ this.selProject.contractAmt+" > " +this.editForm.contractAmt+"&nbsp;&nbsp;&nbsp;<strong>"+operType+Math.abs(distance)+"</strong>元");
+						this.changeTips.push("合同金额: "+ this.selProject.contractAmt+" > " +this.editForm.contractAmt+"&nbsp;&nbsp;&nbsp;<strong>"+operType+Math.abs(distance).toFixed(2)+"</strong>元");
 					}
 					
 					if(this.changeTips.length==0){
@@ -353,7 +380,7 @@
 					}], 
 					
 					code: [{
-						required: true, message: '项目编号不可为空', trigger: 'blur'
+						required: true, message: '项目代号不可为空', trigger: 'blur'
 					}],
 					xmType: [{
 						required: true, message: '项目类型不可为空', trigger: 'blur'
@@ -363,11 +390,17 @@
 					}],
 					priority: [{
 						required: true, message: '优先程度不可为空', trigger: 'blur'
+					}],
+					admUserid: [{
+						required: true, message: '项目总控不能为空', trigger: 'change'
+					}], 
+					pmUserid: [{
+						required: true, message: '项目经理不能为空', trigger: 'change'
 					}], 
 				},
 				//编辑界面数据  XmProject xm_project
 				editForm: {
-					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:0,bizProcInstId:'',bizFlowState:'',taxRate:0.06,planNouserAt:0,planInnerUserAt:0,planOutUserAt:0,locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:0,totalReceivables:0,budgetMarginRate:0.13,contractAmt:0,planInnerUserPrice:85,planOutUserPrice:100,planOutUserCnt:1,planInnerUserCnt:1,planWorkingHours:0,planInnerUserWorkload:0,planOutUserWorkload:0,budgetCtrl:'0',
+					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:0,bizProcInstId:'',bizFlowState:'',taxRate:0.06,planNouserAt:0,planInnerUserAt:0,planOutUserAt:0,locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:0,totalReceivables:0,budgetMarginRate:0.13,contractAmt:0,planInnerUserPrice:85,planOutUserPrice:100,planOutUserCnt:1,planInnerUserCnt:1,planWorkingHours:0,planInnerUserWorkload:0,planOutUserWorkload:0,budgetCtrl:'0',admUserid:'',admUsername:'',pmUserid:'',pmUsername:'',assUserid:'',assUsername:''
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				xmProjectGroups:[],
@@ -381,6 +414,7 @@
 				activateName:'planWorkload',
 				changeTips:[],//变化日志列表
 				maxTableHeight:300,
+				currUserType:'',
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data
@@ -440,6 +474,8 @@
 								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err =>this.load.edit=false);
 						});
+					}else{ 
+						this.$notify({showClose: true, message: "表单检查不通过，请修改后提交", type:'error'}); 
 					}
 				});
 			}, 
@@ -672,11 +708,36 @@
 						btns[i].style.display=''
 					}
                  }
-            }
+            }, 
+			showUserVisible(userType){
+				this.currUserType=userType
+				this.userSelectVisible=true;
+			},
+			//选择人员
+			onUserSelected: function(users) {  
+				this.userSelectVisible = false;
+				var user={userid:'',username:''}; 
+				if(users && users.length>0){
+					user=users[0]
+				}
+				 
+				if(this.currUserType=='admUserid'){ 
+					this.editForm.admUserid=user.userid
+					this.editForm.admUsername=user.username
+				}else if(this.currUserType=='assUserid'){ 
+					this.editForm.assUserid=user.userid
+					this.editForm.assUsername=user.username
+				}else if(this.currUserType=='pmUserid'){ 
+					this.editForm.pmUserid=user.userid
+					this.editForm.pmUsername=user.username
+				}
+				this.currUserType="";
+				
+			}, 
 			
 			/**end 在上面加自定义方法**/
 		},//end method
-		components: {  html2canvas
+		components: {  html2canvas,UsersSelect,
 		    //在下面添加其它组件 'xm-project-add':XmProjectEdit
 		},
 		mounted() { 

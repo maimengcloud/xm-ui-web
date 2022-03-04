@@ -301,24 +301,32 @@
 			//选择行xmProject
 			selsChange: function (sels) {
 				this.sels = sels;
-			}, 
-			//删除xmProject
-			handleDel: function (row,index) { 
-				this.$confirm('确认删除该记录吗?', '提示', {
-					type: 'warning'
-				}).then(() => { 
-					this.load.del=true;
-					let params = { id: row.id };
-					delXmProject(params).then((res) => {
-						this.load.del=false;
-						var tips=res.data.tips;
-						if(tips.isOk){ 
-							this.pageInfo.count=true;
-							this.getXmProjects();
-						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
-					}).catch( err  => this.load.del=false );
+			},  
+			handleDel: function (row,index) {  
+				this.$prompt('将同步删除计划、组织、任务等，慎重起见，请输入项目代号:'+row.code, '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+				}).then(({ value }) => {
+					 if(value==row.code){
+						 this.load.del=true;
+						let params = { id: row.id };
+						delXmProject(params).then((res) => {
+							this.load.del=false;
+							var tips=res.data.tips;
+							if(tips.isOk){ 
+								this.pageInfo.count=true;
+								this.getXmProjects();
+							}
+							this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						}).catch( err  => this.load.del=false ); 
+					 }else{
+						 this.$notify({showClose: true, message: "项目代号不正确", type: 'error' }); 
+					 }
+				}).catch(() => { 
+					return;    
 				});
+ 
+					
 			},
 			//批量删除xmProject
 			batchDel: function () {

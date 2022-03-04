@@ -1,6 +1,6 @@
 <template>
 	<section class="page-container padding border">
-		<el-row class="page-main "> 
+		<el-row class="page-main " :style="{overflowX:'auto',height:maxTableHeight+'px'}" ref="table"> 
 		<!--编辑界面 XmProject xm_project--> 
 			<el-form :model="addForm" label-width="150px" :rules="addFormRules" ref="addForm">    
 					<el-form-item label="项目代号" prop="code">
@@ -40,6 +40,26 @@
 						</el-form-item> 
 					
 					</el-form-item>	 
+						<el-row>
+							<el-col :span="8">
+						<el-form-item label="总控"  prop="admUserid">
+							<el-input readonly v-model="addForm.admUsername" @click.native="showUserVisible('admUserid')"></el-input>
+							<font style="font-size:12px;" color="red"></font> 
+						</el-form-item>  
+							</el-col>
+							<el-col :span="8">
+						<el-form-item label="项目经理" prop="pmUserid"> 
+							<el-input readonly v-model="addForm.pmUsername" @click.native="showUserVisible('pmUserid')"></el-input>
+							<font style="font-size:12px;" color="red"></font> 
+						</el-form-item> 
+							</el-col>
+							<el-col :span="8">
+						<el-form-item label="副经理、助理" prop="assUserid"> 
+							<el-input readonly v-model="addForm.assUsername" @click.native="showUserVisible('assUserid')"></el-input>
+							<font style="font-size:12px;" color="red"></font> 
+						</el-form-item>  
+							</el-col>
+						</el-row>
 					<el-form-item label="项目预估" >
 						   <el-tabs>
 								<el-tab-pane label="工作量及人力成本" name="planWorkload">
@@ -136,14 +156,10 @@
 		<el-row>
 			<el-button @click.native="handleCancel">取消</el-button>  
 			<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">提交</el-button>  
-		</el-row>
-			<el-drawer
-				append-to-body
-				title="项目分组"
-				:visible.sync="groupSelectVisible"
-				width="80%">
-				<xm-project-group-formwork :sel-groups="xmProjectGroups" @select-confirm="onGroupSelected"></xm-project-group-formwork> 
-			</el-drawer> 
+		</el-row>  
+		<el-drawer append-to-body title="选择员工" :visible.sync="userSelectVisible" size="60%">
+			<users-select isSingleUser=true   @confirm="onUserSelected" ref="usersSelect"></users-select>
+		</el-drawer>
 	</section>
 </template>
 
@@ -153,9 +169,9 @@
 
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { addXmProject,createProjectCode } from '@/api/xm/core/xmProject'; 
-	import { mapGetters } from 'vuex'; 
-	 
-	import { getGroups } from '@/api/xm/core/xmProjectGroup';
+	import { mapGetters } from 'vuex';  
+	
+	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
 	
 	export default { 
 		computed: {
@@ -297,25 +313,31 @@
 				load:{ list: false, add: false, del: false, edit: false },//查询中...
 				addFormRules: {
 					name: [{
-						required: true, message: '项目名称不可为空' , trigger: 'blur'
+						required: true, message: '项目名称不可为空' , trigger: 'change'
 					}], 
 					
 					code: [{
-						required: true, message: '项目编号不可为空', trigger: 'blur'
+						required: true, message: '项目代号不可为空', trigger: 'change'
 					}],
 					xmType: [{
-						required: true, message: '项目类型不可为空', trigger: 'blur'
+						required: true, message: '项目类型不可为空', trigger: 'change'
 					}],
 					urgent: [{
-						required: true, message: '紧急程度不可为空', trigger: 'blur'
+						required: true, message: '紧急程度不可为空', trigger: 'change'
 					}],
 					priority: [{
-						required: true, message: '优先程度不可为空', trigger: 'blur'
+						required: true, message: '优先程度不可为空', trigger: 'change'
+					}], 
+					admUserid: [{
+						required: true, message: '项目总控不能为空', trigger: 'change'
+					}], 
+					pmUserid: [{
+						required: true, message: '项目经理不能为空', trigger: 'change'
 					}], 
 				},
 				//编辑界面数据  XmProject xm_project
 				addForm: {
-					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:0,bizProcInstId:'',bizFlowState:'',taxRate:0.06,planNouserAt:0,planInnerUserAt:0,planOutUserAt:0,locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:0,totalReceivables:0,budgetMarginRate:0.13,contractAmt:0,planInnerUserPrice:85,planOutUserPrice:100,planOutUserCnt:1,planInnerUserCnt:1,planWorkingHours:0,planInnerUserWorkload:0,planOutUserWorkload:0,budgetCtrl:'0',
+					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:0,bizProcInstId:'',bizFlowState:'',taxRate:0.06,planNouserAt:0,planInnerUserAt:0,planOutUserAt:0,locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:0,totalReceivables:0,budgetMarginRate:0.13,contractAmt:0,planInnerUserPrice:85,planOutUserPrice:100,planOutUserCnt:1,planInnerUserCnt:1,planWorkingHours:0,planInnerUserWorkload:0,planOutUserWorkload:0,budgetCtrl:'0',admUserid:'',admUsername:'',pmUserid:'',pmUsername:'',assUserid:'',assUsername:''
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				xmProjectGroups:[],
@@ -325,6 +347,10 @@
  				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				dateRanger: [ ],  
 				 pickerOptions:  util.pickerOptions('datarange'),
+				 
+				currUserType:'',
+				userSelectVisible:false,
+				maxTableHeight:300,
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data
@@ -380,6 +406,8 @@
 								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err =>this.load.add=false);
 						});
+					}else{
+						this.$notify({showClose: true, message: "表单检查不通过，请修改后提交", type:'error'}); 
 					}
 				});
 			},  
@@ -446,14 +474,40 @@
 					}
 					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 				})
-			}
+			},
+			showUserVisible(userType){
+				this.currUserType=userType
+				this.userSelectVisible=true;
+			},
+			//选择人员
+			onUserSelected: function(users) {  
+				this.userSelectVisible = false;
+				var user={userid:'',username:''}; 
+				if(users && users.length>0){
+					user=users[0]
+				}
+				 
+				if(this.currUserType=='admUserid'){ 
+					this.addForm.admUserid=user.userid
+					this.addForm.admUsername=user.username
+				}else if(this.currUserType=='assUserid'){ 
+					this.addForm.assUserid=user.userid
+					this.addForm.assUsername=user.username
+				}else if(this.currUserType=='pmUserid'){ 
+					this.addForm.pmUserid=user.userid
+					this.addForm.pmUsername=user.username
+				}
+				this.currUserType="";
+				
+			}, 
 			/**end 在上面加自定义方法**/
 		},//end method
 		components: {  
-		    //在下面添加其它组件 'xm-project-add':XmProjectEdit
+		    UsersSelect,
 		},
-		mounted() { 
-			this.addForm.id=sn();
+		mounted() {  
+			
+			this.maxTableHeight=util.calcTableMaxHeight(this.$refs.table.$el);
 				listOption([{categoryId:'all',itemCode:'projectType'},{categoryId:'all',itemCode:'urgencyLevel'},{categoryId:'all',itemCode:'priority'},{categoryId:'all',itemCode:'projectStatus'}] ).then(res=>{
 					if(res.data.tips.isOk){ 
 						this.options['projectType']=res.data.data.projectType

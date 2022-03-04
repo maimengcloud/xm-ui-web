@@ -193,10 +193,10 @@
 			</el-col>
 		</el-row>
 		
-		<el-drawer title="项目新增" :visible.sync="addFormVisible" :with-header="false" size="50%"  :close-on-click-modal="false" append-to-body>
+		<el-drawer title="项目新增" :visible.sync="addFormVisible" :with-header="false" size="60%"  :close-on-click-modal="false" append-to-body>
 			<xm-project-add :sel-project="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-add>
 		</el-drawer>
-		<el-drawer title="项目编辑" :visible.sync="editFormVisible" :with-header="false"  size="50%"  :close-on-click-modal="false" append-to-body>
+		<el-drawer title="项目编辑" :visible.sync="editFormVisible" :with-header="false"  size="60%"  :close-on-click-modal="false" append-to-body>
 			<xm-project-edit :sel-project="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-edit>
 		</el-drawer>
 		<el-drawer :title="selectProject==null?'项目明细':selectProject.name" center :fullscreen="true" :visible.sync="showInfo"  size="50%"  :close-on-click-modal="false" append-to-body>
@@ -485,22 +485,31 @@
 				this.sels = sels;
 			}, 
 			//删除xmProject
-			handleDel: function (row,index) { 
-				this.$confirm('确认删除该记录吗?', '提示', {
-					type: 'warning'
-				}).then(() => { 
-					this.load.del=true;
-					let params = { id: row.id };
-					delXmProject(params).then((res) => {
-						this.load.del=false;
-						var tips=res.data.tips;
-						if(tips.isOk){ 
-							this.pageInfo.count=true;
-							this.getXmProjects();
-						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
-					}).catch( err  => this.load.del=false );
+			handleDel: function (row,index) {  
+				this.$prompt('将同步删除计划、组织、任务等，慎重起见，请输入项目代号:'+row.code, '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+				}).then(({ value }) => {
+					 if(value==row.code){
+						 this.load.del=true;
+						let params = { id: row.id };
+						delXmProject(params).then((res) => {
+							this.load.del=false;
+							var tips=res.data.tips;
+							if(tips.isOk){ 
+								this.pageInfo.count=true;
+								this.getXmProjects();
+							}
+							this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						}).catch( err  => this.load.del=false ); 
+					 }else{
+						 this.$notify({showClose: true, message: "项目代号不正确", type: 'error' }); 
+					 }
+				}).catch(() => { 
+					return;    
 				});
+ 
+					
 			},
 			//批量删除xmProject
 			batchDel: function () {
