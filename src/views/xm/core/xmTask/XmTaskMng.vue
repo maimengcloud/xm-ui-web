@@ -143,7 +143,13 @@
             icon="el-icon-search"
             v-loading="load.list"
           ></el-button>
-
+          <el-button type="danger"
+            v-if="isTaskCenter != '1' && isMy != '1'"
+            @click="batchDel"
+            v-loading="load.edit"
+            icon="el-icon-edit"
+            >删除</el-button
+          >
           <el-popover
             placement="top-start"
             title="选择创建任务的方式"
@@ -326,7 +332,7 @@
                 >
               </el-col>
               <el-col :span="24" style="padding-top: 5px">
-                <el-button
+                <el-button type="danger"
                   v-if="isTaskCenter != '1' && isMy != '1'"
                   @click="batchDel"
                   v-loading="load.edit"
@@ -459,7 +465,7 @@
                 show-overflow-tooltip
               >
                 <template slot-scope="scope">
-                  <font v-if="scope.row.ntype!='1'">
+                  <font>
                   <span
                     v-for="(item, index) in [formatExeUsernames(scope.row)]"
                     :key="index"
@@ -502,7 +508,7 @@
               >
                 <template slot="header"> 需求 </template>
                 <template slot-scope="scope">
-                   <font v-if="scope.row.ntype!='1'">
+                   <font>
                   <el-link @click.stop="toMenu(scope.row)">{{
                     scope.row.menuName ? scope.row.menuName : "去关联需求"
                   }}</el-link>
@@ -1668,14 +1674,7 @@ export default {
       });
     },
     //批量删除xmTask
-    batchDel: function () {
-      if (
-        !this.roles.some((i) => i.roleid == "projectAdmin") &&
-        !this.roles.some((i) => i.roleid == "teamAdmin")
-      ) {
-        this.$notify.error("只有项目经理、小组长可以操作");
-        return;
-      }
+    batchDel: function () { 
       this.$confirm("确认删除选中记录吗？", "提示", {
         type: "warning",
       }).then(() => {
@@ -1688,12 +1687,8 @@ export default {
               this.pageInfo.count = true;
               var parents=this.sels.filter(i=>!this.sels.some(k=>k.id==i.parentTaskid)); 
 							var needLoadChlidList=parents.filter(i=>i.lvl>1) 
-							this.searchXmTasks() 
-							if(needLoadChlidList.length>0){
-								needLoadChlidList.forEach(i=>{ 
-										treeTool.reloadChildren(this.$refs.table,this.maps,i.parentTaskid,'parentTaskid',this.loadXmTaskLazy) 
-								})
-							}
+							this.searchXmTasks()  
+							treeTool.reloadAllChildren(this.$refs.table,this.maps,this.sles,'parentTaskid',this.loadXmTaskLazy)  
             }
             this.$notify({
               showClose: true,
@@ -2236,6 +2231,7 @@ export default {
       this.searchXmTasks();
     },
     formatExeUsernames(row) {
+      debugger;
       var exeUsernames = row.exeUsernames;
       var respons = {
         type: "info",

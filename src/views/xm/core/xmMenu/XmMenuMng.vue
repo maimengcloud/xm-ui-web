@@ -103,7 +103,7 @@
 						</el-popover>  
 					 </el-row>  
 					<el-row class="padding-top">  
-						<el-table lazy :load="loadMenusLazy" stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData"  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
+						<el-table lazy :load="loadXmMenusLazy" stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
 							<el-table-column sortable type="selection" width="40"></el-table-column> 
 							<el-table-column prop="menuName" label="需求名称" min-width="160"> 
 								<template slot-scope="scope">
@@ -230,6 +230,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
+	import treeTool from '@/common/js/treeTool';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { listXmMenu, delXmMenu, batchDelXmMenu,batchAddXmMenu,batchEditXmMenu,listXmMenuWithState,listXmMenuWithPlan } from '@/api/xm/core/xmMenu';
@@ -261,11 +262,9 @@
 		      'userInfo','roles'
 			]),
 			
-      xmMenusTreeData() {
-        let xmMenus =this.xmMenus;
-        
-        let xmMenusTreeData = this.translateDataToTree(xmMenus); 
-        
+      xmMenusTreeData() {  
+				let xmMenus = JSON.parse(JSON.stringify(this.xmMenus || []));  
+				let xmMenusTreeData = treeTool.translateDataToTree(xmMenus,"pmenuId","id");  
 				 return xmMenusTreeData;
 			},
 			isPmUser(){
@@ -359,6 +358,7 @@
 				pickerOptions:  util.pickerOptions('datarange'),
 				productVisible:false,
 				tagSelectVisible:false,
+				maps:new Map(),
  				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -437,8 +437,10 @@
 				}
 				return params;
 			},
-			loadMenusLazy(row, treeNode, resolve) {   
-					var params={pmenuId:row.menuId}
+			loadXmMenusLazy(tree, treeNode, resolve) {   
+				
+      			this.maps.set(tree.menuId, { tree, treeNode, resolve }) //储存数据
+					var params={pmenuId:tree.menuId}
 					params=this.getParams(params);
 					params.isTop=""
 					this.load.list = true;
@@ -465,7 +467,7 @@
 					total: this.pageInfo.total,
 					count:this.pageInfo.count
 				};
-				this.xmMenus=[]
+				//this.xmMenus=[]
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
 					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
@@ -508,24 +510,12 @@
 				this.editForm = Object.assign({}, row);
 			},
 			//显示新增界面 XmMenu xm_project_menu
-			showAdd: function () { 
-				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$notify({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
-					return false;
-				}
-				if(this.filters.product==null){
-					this.$notify({showClose: true, message: "请先选择产品", type: 'error' });
-					return;
-				}
+			showAdd: function () {  
 				this.parentMenu=null;
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);
 			},
-			showSubAdd:function(row){
-				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$notify({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
-					return false;
-				}
+			showSubAdd:function(row){ 
 				this.editForm=row
 				this.parentMenu=row
 				this.addFormVisible=true
@@ -533,15 +523,17 @@
 			showProdcutAdd:function(){
 				this.$refs.xmProductMng.showAdd();
 			},
-			afterAddSubmit(){
+			afterAddSubmit(row){
 				this.addFormVisible=false;
 				this.pageInfo.count=true;
 				this.parentMenu=null;
 				this.getXmMenus();
+				treeTool.reloadChildren(this.$refs.table,this.maps,row.pmenuId,'pmenuId',this.loadXmMenusLazy) 
 			},
-			afterEditSubmit(){
+			afterEditSubmit(row){
 				this.editFormVisible=false;
-				this.getXmMenus();
+				this.getXmMenus(); 
+				treeTool.reloadChildren(this.$refs.table,this.maps,row.pmenuId,'pmenuId',this.loadXmMenusLazy) 
 			},
 			//选择行xmMenu
 			selsChange: function (sels) {
@@ -552,14 +544,11 @@
 				this.filters.parentMenu=null;
 				this.filters.parentMenuList=[];
 				this.productVisible=false;
+				this.xmMenus=[]
 				this.getXmMenus()
 			},
 			//删除xmMenu
-			handleDel: function (row,index) { 
-				if(row.mmUserid!=this.userInfo.userid){
-					this.$notify({showClose: true, message: "只能操作你负责的需求", type: 'error'}); 
-					return false;
-				}
+			handleDel: function (row,index) {  
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
 				}).then(() => { 
@@ -569,20 +558,18 @@
 						this.load.del=false;
 						var tips=res.data.tips;
 						if(tips.isOk){ 
-							this.pageInfo.count=true;
-							this.getXmMenus();
+							this.pageInfo.count=true; 
+							debugger;
+							treeTool.reloadChildren(this.$refs.table,this.maps,row.pmenuId,'pmenuId',this.loadXmMenusLazy) 
+							this.getXmMenus(); 
+							
 						}
 						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
 			//批量删除xmMenu
-			batchDel: function () {
-				var mmSels=this.sels.filter(i=>i.mmUserid!=this.userInfo.userid)
-				if(mmSels.length>0){
-					this.$notify({showClose: true, message: "只能操作你负责的需求", type: 'error'}); 
-					return false;
-				}
+			batchDel: function () { 
 				this.$confirm('确认删除选中记录吗？', '提示', {
 					type: 'warning'
 				}).then(() => { 
@@ -592,7 +579,8 @@
 						var tips=res.data.tips;
 						if( tips.isOk ){ 
 							this.pageInfo.count=true;
-							this.getXmMenus(); 
+							this.getXmMenus();     
+							treeTool.reloadAllChildren(this.$refs.table,this.maps,this.sels,'pmenuId',this.loadXmMenusLazy)  
 						}
 						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
@@ -639,50 +627,7 @@
         })
         return dataList;
       },
-       
-			
-			/**begin 自定义函数请在下面加**/
-			translateDataToTree(data2) { 
-				var data=JSON.parse(JSON.stringify(data2));
-				let parents = data.filter(value =>{
-					//如果我的上级为空，则我是最上级 
-					if(value.pmenuId == 'undefined' || value.pmenuId == null  || value.pmenuId == ''){
-						return true;
-
-						//如果我的上级不在列表中，我作为最上级
-					}else if(data.some(i=>value.pmenuId==i.menuId)){
-						return false;
-					}else {
-						return true
-					}
-				 
-				}) 
-				let children = data.filter(value =>{
-					if(data.some(i=>value.pmenuId==i.menuId)){
-						return true;
-					}else{
-						return false;
-					} 
-				})  
-				let translator = (parents, children) => {
-					parents.forEach((parent) => {
-						children.forEach((current, index) => {
-							if (current.pmenuId === parent.menuId) {
-								let temp = JSON.parse(JSON.stringify(children))
-								temp.splice(index, 1)
-								translator([current], temp)
-								typeof parent.children !== 'undefined' ? parent.children.push(current) : parent.children = [current]
-							}
-						}
-						)
-					}
-					)
-				}
-
-				translator(parents, children)
-
-				return parents
-			},	
+        
 			/**begin 自定义函数请在下面加**/
 			selectedMenu:function(row){
 				this.$emit("selected",row)
@@ -755,6 +700,9 @@
 					var tips =res.data.tips
 					if(tips.isOk){ 
 						this.getXmMenus()
+						if(this.parentMenu && this.parentMenu.menuId){
+							treeTool.reloadAllChildren(this.$refs.table,this.maps,this.parentMenu.menuId,'pmenuId',this.loadXmMenusLazy)  
+						}
 					}else{ 
 						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					}

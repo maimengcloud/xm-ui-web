@@ -170,7 +170,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 								this.load.edit=false
 								var tips=res.data.tips;
 								if(tips.isOk){
- 									this.$emit('submit');//  @submit="afterAddSubmit"
+ 									this.$emit('submit',res.data.data);//  @submit="afterAddSubmit"
 								}
 								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.edit=false);

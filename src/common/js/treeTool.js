@@ -1,52 +1,50 @@
   
 export default {
 
-  reloadAllChildren: function(table,maps, parentId,parentIdName,loadChildren) {   
-    var lazyTreeNodeMap=table.store.states.lazyTreeNodeMap
-    if (maps.get(parentId)) {
-      const { tree, treeNode, resolve } = maps.get(parentId)  
-      lazyTreeNodeMap[parentId]=[]
-      if (tree) { // 重新执行父节点加载子级操作
-        loadChildren(tree, treeNode, resolve)
-        if (tree[parentIdName]) { // 若存在爷爷结点，则执行爷爷节点加载子级操作，防止最后一个子节点被删除后父节点不显示删除按钮
-          const a = maps.get(tree[parentIdName])
-          if(a && a.tree){
-            this.reloadAllChildren(table,maps,tree[parentIdName],parentIdName,loadChildren)
-          } 
-        }
-      }
-    } 
-  },
 
-  reloadChildrenByCount_:function(table,maps, parentId,parentIdName,loadChildren,toCount,currCount){
-    var lazyTreeNodeMap=table.store.states.lazyTreeNodeMap
-    if (maps.get(parentId)) {
-      const { tree, treeNode, resolve } = maps.get(parentId)  
-      lazyTreeNodeMap[parentId]=[]
-      if (tree) { // 重新执行父节点加载子级操作
-        loadChildren(tree, treeNode, resolve)
-        if(toCount==currCount+1){
-          return;
-        }
-        currCount=currCount+1;
-        if (tree[parentIdName]) { // 若存在爷爷结点，则执行爷爷节点加载子级操作，防止最后一个子节点被删除后父节点不显示删除按钮
-          const a = maps.get(tree[parentIdName])
-          if(a && a.tree){
-            this.reloadChildrenByCount_(table,maps,tree[parentIdName],parentIdName,loadChildren,toCount,currCount)
-          } 
-        }
-      }
-    } 
-  },
-
-  reloadChildren: function(table,maps, parentId,parentIdName,loadChildren,toCount) {  
-    if(!toCount){
-      this.reloadAllChildren(table,maps, parentId,parentIdName,loadChildren)
-    }else{
-      this.reloadParentByCount_(table,maps,parentId,parentIdName,loadChildren,toCount,0)
-    }
+  reloadAllChildren: function(table,maps, rows,parentIdName,loadChildren,idMaps) {   
      
-  }, 
+     if(!rows||rows.length==0){
+      return;
+     }
+     if(!maps || maps.length==0){
+      return;
+     }
+     
+     if(!table){
+      return;
+     }
+     var lazyTreeNodeMap=table.store.states.lazyTreeNodeMap
+     var parentIds=rows.map(i=>i[parentIdName]) 
+     if(idMaps==null){
+      idMaps=new Map();
+     }
+     if(parentIds.length==0){
+      return;
+     }
+     parentIds.forEach(k=>{
+       if(!idMaps.has(k)){
+        idMaps.set(k,k);
+        if (maps.get(k)) {
+          const { tree, treeNode, resolve } = maps.get(k)  
+          lazyTreeNodeMap[k]=[]
+          if (tree) { // 重新执行父节点加载子级操作
+            loadChildren(tree, treeNode, resolve)
+            if(tree[parentIdName]){ 
+              this.reloadAllChildren(table,maps, [tree],parentIdName,loadChildren,idMaps)
+            }
+          }
+        } 
+       } 
+     }); 
+  },
+ 
+
+  reloadChildren: function(table,maps, parentId,parentIdName,loadChildren) {   
+      var params={};
+      params[parentIdName]=parentId;
+      this.reloadAllChildren(table,maps, [params],parentIdName,loadChildren)  
+  },  
   reloadChildrenByOpType: function(table,maps, parentId,parentIdName,loadChildren,opType) {  
     var lazyTreeNodeMap=table.store.states.lazyTreeNodeMap
     if (maps.get(parentId)) {

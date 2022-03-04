@@ -506,20 +506,14 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 			},
 			afterAddSubmit(row){
 				this.addFormVisible=false;
-				this.pageInfo.count=true;
-				if(!this.maps.get(row.parentPhaseId)){
-					this.searchXmProjectPhases()
-				}else{ 
-					treeTool.reloadChildren(this.$refs.table,this.maps,row.parentPhaseId,'parentPhaseId',this.loadXmProjectPhaseLazy)
-				} 
+				this.pageInfo.count=true; 
+				this.searchXmProjectPhases() 
+				treeTool.reloadChildren(this.$refs.table,this.maps,row.parentPhaseId,'parentPhaseId',this.loadXmProjectPhaseLazy) 
 			},
 			afterEditSubmit(row){
-				this.editFormVisible=false;  
-				if(!this.maps.get(row.parentPhaseId)){
-					this.searchXmProjectPhases()
-				}else{ 
-					treeTool.reloadChildren(this.$refs.table,this.maps,row.parentPhaseId,'parentPhaseId',this.loadXmProjectPhaseLazy)
-				} 
+				this.editFormVisible=false;   
+				this.searchXmProjectPhases() 
+				treeTool.reloadChildren(this.$refs.table,this.maps,row.parentPhaseId,'parentPhaseId',this.loadXmProjectPhaseLazy) 
 			},
 			afterPhaseTemplateSelected(phaseTemplates){
 				if(phaseTemplates==null || phaseTemplates.length==0){
@@ -600,10 +594,9 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 					this.load.add=false
 					var tips =res.data.tips
 
-					if(tips.isOk){ 
-						if( (this.parentProjectPhase && !this.maps.get(this.parentProjectPhase.id))|| !this.parentProjectPhase){
-							this.searchXmProjectPhases()
-						}else{ 
+					if(tips.isOk){  
+						this.searchXmProjectPhases() 
+						if(this.parentProjectPhase&&this.this.parentProjectPhase.id){
 							treeTool.reloadChildren(this.$refs.table,this.maps,this.parentProjectPhase.id,'parentPhaseId',this.loadXmProjectPhaseLazy)
 						} 
 					}else{ 
@@ -626,12 +619,9 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 						this.load.del=false;
 						var tips=res.data.tips;
 						if(tips.isOk){ 
-							this.pageInfo.count=true;
-							if(   !this.maps.get(row.parentPhaseId)){
-								this.searchXmProjectPhases()
-							}else{ 
-								treeTool.reloadChildren(this.$refs.table,this.maps,row.parentPhaseId,'parentPhaseId',this.loadXmProjectPhaseLazy)
-							}  
+							this.pageInfo.count=true; 
+							this.searchXmProjectPhases() 
+							treeTool.reloadChildren(this.$refs.table,this.maps,row.parentPhaseId,'parentPhaseId',this.loadXmProjectPhaseLazy) 
 						}
 						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
@@ -658,20 +648,10 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 						this.load.del=false;
 						var tips=res.data.tips;
 						if( tips.isOk ){  
-							this.pageInfo.count=true;
-							var parents=phases.filter(i=>!phases.some(k=>k.id==i.parentPhaseId));
-							var isLoadAll=parents.some(i=>i.lvl<=1||!this.maps.get(i.parentPhaseId));
-							var needLoadChlidList=parents.filter(i=>i.lvl>1)
-							if(isLoadAll){
-								this.searchXmProjectPhases()
-							}
-							if(needLoadChlidList.length>0){
-								needLoadChlidList.forEach(i=>{
-									if( this.maps.get(i.parentPhaseId)){ 
-										treeTool.reloadChildren(this.$refs.table,this.maps,i.parentPhaseId,'parentPhaseId',this.loadXmProjectPhaseLazy)
-									} 
-								})
-							}
+							this.pageInfo.count=true; 
+							this.searchXmProjectPhases() 
+							treeTool.reloadAllChildren(this.$refs.table,this.maps,phases,'parentPhaseId',this.loadXmProjectPhaseLazy)
+								 
 						}
 						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
