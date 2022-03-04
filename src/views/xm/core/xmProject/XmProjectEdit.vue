@@ -9,9 +9,7 @@
 				</el-step> 
 			</el-steps>
 		</el-row>
-		<el-row class="page-main "> 
-		<!--编辑界面 XmProject xm_project-->  
-			<div ref="editFormDiv">
+		<el-row class="page-main" ref="table" :style="{overflowX:'auto',height:maxTableHeight+'px'}">  
 				<el-form :model="editForm"  label-width="150px" :rules="editFormRules" ref="editForm" class="editForm">   
 						<el-form-item label="项目编号|名称" prop="name">
 							<el-input v-model="editForm.code" placeholder="项目编号，不可为空" style="width:20%;" ></el-input><el-input style="width:80%;" v-model="editForm.name" placeholder="项目名称" ></el-input>
@@ -27,17 +25,21 @@
 								<el-option v-for="(i,index) in options['priority']" :label="i.optionName" :value="i.optionValue" :key="index"></el-option> 
 							</el-select> 
 						</el-form-item>   
-						<el-form-item label="总预算控制" prop="budgetCtrl">
-							<el-checkbox  v-model="editForm.budgetCtrl"  true-label="1" false-label="0" ></el-checkbox> 
-							<font style="font-size:12px;" color="red">项目计划总预算不能大于项目总预算</font> 
-						</el-form-item>  
-						<el-form-item label="计划明细预算控制" prop="phaseBudgetCtrl">
-							<el-checkbox  v-model="editForm.phaseBudgetCtrl"  true-label="1" false-label="0" >项目计划中：下级计划总预算不能大于上级计划总预算；每条计划的预算金额必须大于其关联任务的预算合计。</el-checkbox> 
-						</el-form-item> 
+						<el-form-item label="预算控制"> 
+							<el-form-item prop="budgetCtrl">
+								<el-checkbox  v-model="editForm.budgetCtrl"  true-label="1" false-label="0" >总预算控制</el-checkbox>  
+								<font style="font-size:12px;" color="red">项目计划总预算不能大于项目总预算</font> 
+							</el-form-item>  
+							<el-form-item label="" prop="phaseBudgetCtrl">
+								<el-checkbox  v-model="editForm.phaseBudgetCtrl"  true-label="1" false-label="0" >项目计划预算控制</el-checkbox> 
+								<font style="font-size:12px;" color="red">下级计划总预算不能大于上级计划总预算；每条计划的预算金额必须大于其关联任务的预算合计。</font> 
+							</el-form-item> 
+							<el-form-item label="" prop="phaseActCtrl">
+								<el-checkbox  v-model="editForm.phaseActCtrl"  true-label="1" false-label="0" >实际金额控制</el-checkbox>  
+								<font style="font-size:12px;" color="red">每条计划实际金额不能大于预算金额;每条计划的预算金额必须大于其关联的任务的实际金额合计。</font> 
+							</el-form-item> 
 						
-						<el-form-item label="实际金额控制" prop="phaseActCtrl">
-							<el-checkbox  v-model="editForm.phaseActCtrl"  true-label="1" false-label="0" >项目计划中：每条计划实际金额不能大于预算金额;每条计划的预算金额必须大于其关联的任务的实际金额合计。</el-checkbox>  
-						</el-form-item> 
+						</el-form-item>	 
 						<el-form-item label="工期及成本预估" >  
 							<el-row>
 								<el-date-picker
@@ -119,8 +121,7 @@
 						<el-form-item label="项目描述" prop="description">
 							<el-input type="textarea" :rows="6" v-model="editForm.description" placeholder="项目描述" ></el-input>
 						</el-form-item>     
-				</el-form>   
-			</div>
+				</el-form>    
 		</el-row>
 		<el-row>  
 				<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>  
@@ -379,6 +380,7 @@
 				pickerOptions:  util.pickerOptions('datarange'),
 				activateName:'planWorkload',
 				changeTips:[],//变化日志列表
+				maxTableHeight:300,
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data
@@ -678,6 +680,7 @@
 		    //在下面添加其它组件 'xm-project-add':XmProjectEdit
 		},
 		mounted() { 
+			this.maxTableHeight=util.calcTableMaxHeight(this.$refs.table.$el);
 				 this.editForm=Object.assign({},this.selProject);
 				 this.dateRanger=[this.editForm.startTime,this.editForm.endTime]
 				listOption([{categoryId:'all',itemCode:'projectType'},{categoryId:'all',itemCode:'urgencyLevel'},{categoryId:'all',itemCode:'priority'},{categoryId:'all',itemCode:'projectStatus'}] ).then(res=>{
