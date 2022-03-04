@@ -28,14 +28,15 @@
 							</el-select> 
 						</el-form-item>   
 						<el-form-item label="总预算控制" prop="budgetCtrl">
-							<el-checkbox  v-model="editForm.budgetCtrl"  true-label="1" false-label="0" >控制总预算</el-checkbox> <font color="red">&nbsp;注：计划总预算不能大于项目总预算</font>
+							<el-checkbox  v-model="editForm.budgetCtrl"  true-label="1" false-label="0" ></el-checkbox> 
+							<font style="font-size:12px;" color="red">项目计划总预算不能大于项目总预算</font> 
 						</el-form-item>  
 						<el-form-item label="计划明细预算控制" prop="phaseBudgetCtrl">
-							<el-checkbox  v-model="editForm.phaseBudgetCtrl"  true-label="1" false-label="0" >计划明细预算控制</el-checkbox><font color="red">&nbsp; 注：计划中下级总预算不能大于上级预算。计划明细预算大于任务预算汇总</font>
+							<el-checkbox  v-model="editForm.phaseBudgetCtrl"  true-label="1" false-label="0" >项目计划中：下级计划总预算不能大于上级计划总预算；每条计划的预算金额必须大于其关联任务的预算合计。</el-checkbox> 
 						</el-form-item> 
 						
-						<el-form-item label="计划实际金额控制" prop="phaseActCtrl">
-							<el-checkbox  v-model="editForm.phaseActCtrl"  true-label="1" false-label="0" >计划实际金额控制</el-checkbox> <font color="red">&nbsp;注：计划中实际金额不能大于预算金额。任务实际金额不能大于计划预算金额</font>
+						<el-form-item label="实际金额控制" prop="phaseActCtrl">
+							<el-checkbox  v-model="editForm.phaseActCtrl"  true-label="1" false-label="0" >项目计划中：每条计划实际金额不能大于预算金额;每条计划的预算金额必须大于其关联的任务的实际金额合计。</el-checkbox>  
 						</el-form-item> 
 						<el-form-item label="工期及成本预估" >  
 							<el-row>

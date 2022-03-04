@@ -2,31 +2,44 @@
 	<section class="page-container padding border">
 		<el-row class="page-main "> 
 		<!--编辑界面 XmProject xm_project--> 
-			<el-form :model="addForm"  :rules="addFormRules" ref="addForm">   
-					<el-form-item label="项目编号|名称" prop="name">
-						<el-row>
-							<el-input v-model="addForm.code" style="width:20%;" placeholder="项目编号，不可为空" ></el-input>
-							<el-input style="width:50%;" v-model="addForm.name" placeholder="项目名称" ></el-input>
-						</el-row>
-					</el-form-item>  
-					<el-form-item label="项目类型" prop="xmType"> 
-					 	 <el-radio-group v-model="addForm.xmType">
-							<el-radio v-for="(i,index) in options['projectType']" :label="i.optionValue" :key="index">{{i.optionName}}</el-radio> 
-						</el-radio-group>  
-					</el-form-item> 
-					<el-form-item label="紧急程度" prop="urgent">
-					 	 <el-radio-group v-model="addForm.urgent">
-							<el-radio v-for="(i,index) in options['urgencyLevel']" :label="i.optionValue" :key="index">{{i.optionName}}</el-radio> 
-						</el-radio-group>   
-					</el-form-item>  
-					<el-form-item label="优先程度" prop="priority">
-					 	 <el-radio-group v-model="addForm.priority">
-							<el-radio v-for="(i,index) in options['priority']" :label="i.optionValue" :key="index">{{i.optionName}}</el-radio> 
-						</el-radio-group> 
+			<el-form :model="addForm" label-width="150px" :rules="addFormRules" ref="addForm">    
+					<el-form-item label="项目代号" prop="code">
+							<el-input v-model="addForm.code"  placeholder="项目代号，不可为空" >
+								<template slot="append">
+									<el-button type="text" @click="createProjectCode">自动生成</el-button>
+								</template>
+							</el-input>
+							 
+					</el-form-item>  					
+					<el-form-item label="名称" prop="name">  
+							<el-input  v-model="addForm.name" placeholder="项目名称" ></el-input> 
+					</el-form-item>    
+					<el-form-item label="项目属性" prop="xmType"> 
+						<el-select v-model="addForm.xmType">
+							<el-option v-for="(i,index) in options['projectType']" :label="i.optionName" :value="i.optionValue" :key="index"></el-option> 
+						</el-select>   
+						<el-select v-model="addForm.urgent">
+							<el-option v-for="(i,index) in options['urgencyLevel']" :label="i.optionName" :value="i.optionValue" :key="index"></el-option> 
+						</el-select>    
+						<el-select v-model="addForm.priority">
+							<el-option v-for="(i,index) in options['priority']" :label="i.optionName" :value="i.optionValue" :key="index"></el-option> 
+						</el-select> 
 					</el-form-item>   
-					<el-form-item label="预算控制" prop="priority">
-					 	<el-checkbox  v-model="addForm.budgetCtrl"  true-label="1" false-label="0" >严格控制预算</el-checkbox> 注：在项目->计划->任务 每个环节进行严格的预算控制
-					</el-form-item>     
+					<el-form-item label="预算控制"> 
+						<el-form-item prop="budgetCtrl">
+							<el-checkbox  v-model="addForm.budgetCtrl"  true-label="1" false-label="0" >总预算控制</el-checkbox>  
+							<font style="font-size:12px;" color="red">项目计划总预算不能大于项目总预算</font> 
+						</el-form-item>  
+						<el-form-item label="" prop="phaseBudgetCtrl">
+							<el-checkbox  v-model="addForm.phaseBudgetCtrl"  true-label="1" false-label="0" >项目计划预算控制</el-checkbox> 
+							<font style="font-size:12px;" color="red">下级计划总预算不能大于上级计划总预算；每条计划的预算金额必须大于其关联任务的预算合计。</font> 
+						</el-form-item> 
+						<el-form-item label="" prop="phaseActCtrl">
+							<el-checkbox  v-model="addForm.phaseActCtrl"  true-label="1" false-label="0" >实际金额控制</el-checkbox>  
+							<font style="font-size:12px;" color="red">每条计划实际金额不能大于预算金额;每条计划的预算金额必须大于其关联的任务的实际金额合计。</font> 
+						</el-form-item> 
+					
+					</el-form-item>	 
 					<el-form-item label="项目预估" >
 						   <el-tabs>
 								<el-tab-pane label="工作量及人力成本" name="planWorkload">
@@ -139,7 +152,7 @@
 	import {sn} from '@/common/js/sequence';//全局公共库
 
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { addXmProject } from '@/api/xm/core/xmProject'; 
+	import { addXmProject,createProjectCode } from '@/api/xm/core/xmProject'; 
 	import { mapGetters } from 'vuex'; 
 	 
 	import { getGroups } from '@/api/xm/core/xmProjectGroup';
@@ -425,7 +438,15 @@
 			fillBudgetMarginRateToField:function(){
 				this.addForm.budgetMarginRate=this.toFixed(this.autoParams.budgetMarginRate,4) 
 			}, 
-
+			createProjectCode(){
+				createProjectCode({}).then(res=>{
+					var tips=res.data.tips;
+					if(tips.isOk){
+						this.addForm.code=res.data.data
+					}
+					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+				})
+			}
 			/**end 在上面加自定义方法**/
 		},//end method
 		components: {  

@@ -5,10 +5,11 @@
 				<el-row>
 					<xm-project-tpl-mng @copy="searchXmProjects" :show-type="'simple'" ref="xmProjectTplMngRef"></xm-project-tpl-mng>
 				</el-row>
-			</el-col>
-			<el-col :span="templateVisible?18:24" class="border">
-				<el-row class="padding-left">
-					<el-menu  active-text-color="#00abfc" :default-active="menukey"   mode="horizontal" @select="handleSelect">
+			</el-col> 
+			<el-col :span="templateVisible?18:24" class="border"> 
+				<el-row class="padding-left"> 
+					<el-menu  active-text-color="#00abfc" :default-active="menukey"   mode="horizontal" @select="handleSelect"> 
+						
 						<el-menu-item index="all">全部</el-menu-item>
 						<el-menu-item index="compete">我参与</el-menu-item>
 						<el-menu-item index="leader">我管理</el-menu-item>
@@ -30,6 +31,7 @@
 							<el-menu-item index="7-2">选项2</el-menu-item>
 							<el-menu-item index="7-3">选项3</el-menu-item>
 						</el-submenu> -->
+						
 						<el-popover
 							placement="top-start"
 							title="更多查询条件或操作"
@@ -73,7 +75,7 @@
 							<el-button type="text" class="right-btn" slot="reference" icon="el-icon-d-arrow-right">更多</el-button>
 						</el-popover>
 						<el-button type="primary"  @click="showAdd"  icon="el-icon-plus"></el-button>
-					</el-menu>
+					</el-menu> 
 					
 				</el-row> 
 				<el-row  class="page-main"> 
@@ -213,8 +215,12 @@
 			<el-form-item label="项目名称">
 				<el-input v-model="xmProjectCopy.name" placeholder="新的项目名称"></el-input> 
 			</el-form-item>
-			<el-form-item  label="项目编码(留空则后台自动生成)"> 
-				<el-input v-model="xmProjectCopy.code"  placeholder="新的项目编码"></el-input>
+			<el-form-item  label="项目代号(留空则后台自动生成)"> 
+				<el-input v-model="xmProjectCopy.code"  placeholder="新的项目代号">
+					<template slot="append">
+						<el-button type="text" @click="createProjectCode">自动生成</el-button>
+					</template>
+				</el-input>
 			</el-form-item>
 			<el-form-item  label="目标">
 				<el-radio v-model="xmProjectCopy.isTpl" label="1">复制为新的模板</el-radio>
@@ -223,7 +229,8 @@
 			<el-form-item label="附加任务">
 				<el-checkbox v-model="xmProjectCopy.copyPhase" true-label="1" false-label="0">拷贝计划</el-checkbox> 
 				<el-checkbox v-model="xmProjectCopy.copyTask" true-label="1" false-label="0">拷贝任务</el-checkbox>  
-				<el-checkbox v-model="xmProjectCopy.copyGroup" true-label="1" false-label="0">拷贝项目组成员</el-checkbox>  
+				<el-checkbox v-model="xmProjectCopy.copyGroup" true-label="1" false-label="0">拷贝项目组织架构</el-checkbox>  
+				<el-checkbox v-model="xmProjectCopy.copyGroupUser" true-label="1" false-label="0">拷贝项目组成员</el-checkbox>  
 			</el-form-item>
 			</el-form>
 			<span slot="footer" class="dialog-footer">
@@ -248,7 +255,7 @@
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import config from "@/common/config"; //全局公共库
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { listXmProject, editStatus, delXmProject, batchDelXmProject,copyTo } from '@/api/xm/core/xmProject'; 
+	import { listXmProject, editStatus, delXmProject, batchDelXmProject,copyTo,createProjectCode } from '@/api/xm/core/xmProject'; 
 	import { addXmMyFocus , delXmMyFocus } from '@/api/xm/core/xmMyFocus';
 	import  XmProjectAdd from './XmProjectAdd';//新增界面
 	import  XmProjectEdit from './XmProjectEdit';//修改界面
@@ -336,10 +343,10 @@
 				dateRanger: [ ],  
 				pickerOptions:  util.pickerOptions('datarange'),
 				xmProjectCopy:{
-					id:'',name:'',code:'',isTpl:'',copyPhase:'1',copyTask:'1',copyGrup:'0'
+					id:'',name:'',code:'',isTpl:'',copyPhase:'1',copyTask:'1',copyGroup:'1',copyGroupUser:'0'
 				},
 				copyToVisible:false,
-				templateVisible:false,
+				templateVisible:true,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -411,13 +418,7 @@
 						console.log(res.data);
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false; 
-						this.xmProjects = res.data.data;
-						
-						if(this.xmProjects==null || this.xmProjects.length==0){
-							this.templateVisible=true
-						}else{
-							this.templateVisible=false;
-						}
+						this.xmProjects = res.data.data; 
 					}else{
 						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					} 
@@ -725,7 +726,16 @@
 					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 
 				})
-			},
+			}, 
+			createProjectCode(){
+				createProjectCode({}).then(res=>{
+					var tips=res.data.tips;
+					if(tips.isOk){
+						this.xmProjectCopy.code=res.data.data
+					}
+					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+				})
+			}
 			/**end 自定义函数请在上面加**/
 			
 		},//end methods

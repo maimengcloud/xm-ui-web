@@ -7,7 +7,7 @@
 		</el-row>
 		<el-row v-if="showType=='simple'"> 
 					<el-col :span="24">
-					<el-checkbox v-model="filters.isMy" false-label="0" true-label="1">我的模板</el-checkbox> 
+					<el-checkbox v-model="filters.isMy" false-label="0" true-label="1">我的模板</el-checkbox> <font style="font-size:10px;" color="red">通过复制快速创建新的项目</font>
 					</el-col>
 					<el-col :span="16"><el-input  v-model="filters.key" placeholder="模板名字"></el-input>
 					</el-col>
@@ -26,8 +26,8 @@
 							</template>
 						</el-table-column>  
 						<el-table-column  label="" width="100" fixed="right">
-							<template slot-scope="scope">
-								<el-button type="text" title="通过复制创建新的项目" @click="onCopyToBtnClick(scope.row)" :disabled="load.add" v-loading="load.add">复制</el-button>
+							<template slot-scope="scope"> 
+								<el-button type="text" title="通过复制创建新的项目" @click="onCopyToBtnClick(scope.row)" :disabled="load.add" v-loading="load.add">复制</el-button>								
 								<el-button type="text" title="删除该模板" @click="handleDel(scope.row)" :disabled="load.del" v-loading="load.del">删除</el-button>
 							</template>
 						</el-table-column> 
@@ -50,8 +50,12 @@
 			<el-form-item label="项目名称">
 				<el-input v-model="xmProjectCopy.name" placeholder="新的项目名称"></el-input> 
 			</el-form-item>
-			<el-form-item  label="项目编码(留空则后台自动生成)"> 
-				<el-input v-model="xmProjectCopy.code"  placeholder="新的项目编码"></el-input>
+			<el-form-item  label="项目代号(留空则后台自动生成)"> 
+				<el-input v-model="xmProjectCopy.code"  placeholder="新的项目代号"> 
+					<template slot="append">
+						<el-button type="text" @click="createProjectCode">自动生成</el-button>
+					</template>
+				</el-input>
 			</el-form-item>
 			<el-form-item  label="目标">
 				<el-radio v-model="xmProjectCopy.isTpl" label="1">复制为新的模板</el-radio>
@@ -60,7 +64,8 @@
 			<el-form-item label="附加任务">
 				<el-checkbox v-model="xmProjectCopy.copyPhase" true-label="1" false-label="0">拷贝计划</el-checkbox> 
 				<el-checkbox v-model="xmProjectCopy.copyTask" true-label="1" false-label="0">拷贝任务</el-checkbox>  
-				<el-checkbox v-model="xmProjectCopy.copyGroup" true-label="1" false-label="0">拷贝项目组成员</el-checkbox>  
+				<el-checkbox v-model="xmProjectCopy.copyGroup" true-label="1" false-label="0">拷贝项目组织架构</el-checkbox>  
+				<el-checkbox v-model="xmProjectCopy.copyGroupUser" true-label="1" false-label="0">拷贝项目组成员</el-checkbox>  
 			</el-form-item>
 			</el-form>
 			<span slot="footer" class="dialog-footer">
@@ -78,7 +83,7 @@
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import config from "@/common/config"; //全局公共库
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { listXmProject, editStatus, delXmProject, batchDelXmProject,copyTo } from '@/api/xm/core/xmProject'; 
+	import { listXmProject, editStatus, delXmProject, batchDelXmProject,copyTo,createProjectCode} from '@/api/xm/core/xmProject'; 
 	import { addXmMyFocus , delXmMyFocus } from '@/api/xm/core/xmMyFocus'; 
 	import  XmProjectEdit from './XmProjectEdit';//修改界面
 	import { mapGetters } from 'vuex' 
@@ -156,7 +161,7 @@
 				dateRanger: [ ],  
 				pickerOptions:  util.pickerOptions('datarange'),
 				xmProjectCopy:{
-					id:'',name:'',code:'',isTpl:'',copyPhase:'1',copyTask:'1',copyGrup:'0'
+					id:'',name:'',code:'',isTpl:'',copyPhase:'1',copyTask:'1',copyGroup:'1',copyGroupUser:'0'
 				},
 				copyToVisible:false, 
 				/**end 自定义属性请在上面加 请加备注**/
@@ -536,6 +541,15 @@
 				this.filters.productId=''
 				this.filters.productName=''
 				this.getXmProjects()
+			}, 
+			createProjectCode(){
+				createProjectCode({}).then(res=>{
+					var tips=res.data.tips;
+					if(tips.isOk){
+						this.xmProjectCopy.code=res.data.data
+					}
+					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+				})
 			}
 			/**end 自定义函数请在上面加**/
 			

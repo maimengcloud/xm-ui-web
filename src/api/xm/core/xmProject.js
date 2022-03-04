@@ -38,3 +38,7 @@ export const editBudget = params => { return axios.post(`${base}/xm/core/xmProje
 
 
 export const copyTo = params => { return axios.post(`${base}/xm/core/xmProject/copyTo`, params); };
+
+
+export const createProjectCode = params => { return axios.post(`${base}/xm/core/xmProject/createProjectCode`, params); };
+
