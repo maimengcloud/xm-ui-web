@@ -22,6 +22,7 @@ export default {
         { path: 'xmProjectState/XmCockpit',   name: 'XmCockpit', meta: { title: '领导驾驶舱' ,openTab:true,outUrl:'${curlDomain}/xm/'+process.env.VERSION+'/#/datav/xm/branch/branchDatavFullScreen'}},
         { path: 'xmProjectState/XmProjectStateMng', component: _import('xm/core/xmProjectState/XmProjectStateMng'), name: 'XmProjectStateMng', meta: { title: '项目统计' }},
         { path: 'xmBranchState/XmBranchStateMng', component: _import('xm/core/xmBranchState/XmBranchStateMng'), name: 'XmBranchStateMng', meta: { title: '所有项目汇总' }},
+        { path: 'xmProject/XmProjectRecycle', component: _import('xm/core/xmProject/XmProjectRecycle'), name: 'XmProjectRecycle', meta: { title: '项目回收站' }},
 
         { path: 'xmRecord/XmRecord', component: _import('xm/core/xmRecord/XmRecord'), name: 'XmRecord', meta: { title: '项目动态' }},
         { path: 'xmProject/XmProjectTplMng', component: _import('xm/core/xmProject/XmProjectTplMng'), name: 'XmProjectTplMng', meta: { title: '项目模板' }},
@@ -103,6 +104,8 @@ export default {
         { path: 'xmProduct/XmProductAllMng', component: _import('xm/core/xmProduct/XmProductAllMng'), name: 'XmProductAllMng', meta: { title: '产品总览' }},
 
          { path: 'xmProduct/XmProductMng', component: _import('xm/core/xmProduct/XmProductMng'), name: 'XmProductMng', meta: { title: '产品管理' }},
+         { path: 'xmProduct/XmProductRecycle', component: _import('xm/core/xmProduct/XmProductRecycle'), name: 'XmProductRecycle', meta: { title: '产品回收站' }},
+
          { path: 'xmProduct/XmProductTplMng', component: _import('xm/core/xmProduct/XmProductTplMng'), name: 'XmProductTplMng', meta: { title: '产品模板' }},
 
         { path: 'xmMenu/XmMenuMng', component: _import('xm/core/xmMenu/XmMenuMng'), name: 'XmMenuMng', meta: { title: '需求管理' }},

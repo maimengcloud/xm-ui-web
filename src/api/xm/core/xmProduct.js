@@ -33,3 +33,6 @@ export const addXmProduct = params => { return axios.post(`${base}/xm/core/xmPro
 export const copyTo = params => { return axios.post(`${base}/xm/core/xmProduct/copyTo`, params); };
 
 export const createProductCode = params => { return axios.post(`${base}/xm/core/xmProduct/createProductCode`, params); };
+
+
+export const unDelXmProduct = params => { return axios.post(`${base}/xm/core/xmProduct/unDel`, params); };

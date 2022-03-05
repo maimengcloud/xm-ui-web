@@ -42,3 +42,7 @@ export const copyTo = params => { return axios.post(`${base}/xm/core/xmProject/c
 
 export const createProjectCode = params => { return axios.post(`${base}/xm/core/xmProject/createProjectCode`, params); };
 
+
+export const unDelXmProject = params => { return axios.post(`${base}/xm/core/xmProject/unDel`, params); };
+
+
