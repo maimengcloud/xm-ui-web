@@ -6,50 +6,44 @@
 					<xm-project-tpl-mng @copy="searchXmProjects" :show-type="'simple'" ref="xmProjectTplMngRef"></xm-project-tpl-mng>
 				</el-row>
 			</el-col> 
-			<el-col :span="templateVisible?18:24" class="border"> 
+			<el-col :span="templateVisible?18:24" class="border padding-top"> 
 				<el-row class="padding-left"> 
-					<el-menu  active-text-color="#00abfc" :default-active="menukey"   mode="horizontal" @select="handleSelect"> 
-						
-						<el-menu-item index="all">全部</el-menu-item>
-						<el-menu-item index="compete">我参与</el-menu-item>
-						<el-menu-item index="leader">我管理</el-menu-item>
-						<el-menu-item index="moniter">我监控</el-menu-item>
-						<el-menu-item index="approver">我审核</el-menu-item>
-						<el-menu-item index="create">我创建</el-menu-item>
-						<el-menu-item class="hidden-md-and-down" index="myFocus">我关注</el-menu-item>
-						<el-menu-item class="hidden-md-and-down" index="myExecuserStatus0">我排队</el-menu-item>
-						<el-menu-item class="hidden-md-and-down" index="myExecuserStatus1">我执行</el-menu-item>
-						<el-menu-item class="hidden-lg-and-down" index="myExecuserStatus2">我提交验收</el-menu-item>
-						<el-menu-item class="hidden-lg-and-down" index="myExecuserStatus3">我验收成功</el-menu-item>
-						<el-menu-item class="hidden-lg-and-down" index="myExecuserStatus4">我验收失败</el-menu-item>
-						<el-menu-item class="hidden-lg-and-down" index="myExecuserStatus5">我付款中</el-menu-item>
-						<el-menu-item class="hidden-lg-and-down" index="myExecuserStatus6">我付款成功</el-menu-item>
-						<el-menu-item class="hidden-lg-and-down" index="myExecuserStatus7">我放弃</el-menu-item> 
-						<!-- <el-submenu index="7">
-							<template slot="title">更多筛选</template>
-							<el-menu-item index="7-1">选项1</el-menu-item>
-							<el-menu-item index="7-2">选项2</el-menu-item>
-							<el-menu-item index="7-3">选项3</el-menu-item>
-						</el-submenu> -->
-						
+					<el-select v-model="menukey" @change="handleSelect" clearable>
+						<el-option value="all" label="全部"></el-option>
+						<el-option value="compete"  label="我参与"></el-option>
+						<el-option value="leader"  label="我管理"></el-option>
+						<el-option value="moniter"  label="我监控"></el-option>
+						<el-option value="approver"  label="我审核"></el-option>
+						<el-option value="create"  label="我创建"></el-option>
+						<el-option class="hidden-md-and-down" value="myFocus"  label="我关注"></el-option>
+						<el-option class="hidden-md-and-down" value="myExecuserStatus0"  label="我排队"></el-option>
+						<el-option class="hidden-md-and-down" value="myExecuserStatus1"  label="我执行"></el-option>
+						<el-option class="hidden-lg-and-down" value="myExecuserStatus2"  label="我提交验收"></el-option>
+						<el-option class="hidden-lg-and-down" value="myExecuserStatus3"  label="我验收成功"></el-option>
+						<el-option class="hidden-lg-and-down" value="myExecuserStatus4"  label="我验收失败"></el-option>
+						<el-option class="hidden-lg-and-down" value="myExecuserStatus5"  label="我付款中"></el-option>
+						<el-option class="hidden-lg-and-down" value="myExecuserStatus6"  label="我付款成功"></el-option>
+						<el-option class="hidden-lg-and-down" value="myExecuserStatus7"  label="我放弃"></el-option> 
+					</el-select> 
+					<el-checkbox  v-model="finishFlag">未结束</el-checkbox>	
+					<el-input class="hidden-md-and-down" placeholder="选择产品" v-model="filters.productName" @click.native="productSelectVisible=true" clearable @clear="onProductClose"  style="width:15%;"></el-input>
+ 					<el-input v-model="filters.key" style="width:15%;" placeholder="项目名称模糊查询" clearable>
+					</el-input>
+					<el-button  type="primary" icon="el-icon-search" @click="searchXmProjects">查询</el-button>
 						<el-popover
 							placement="top-start"
 							title="更多查询条件或操作"
 							width="400"
 							trigger="click" >
-							<el-row>
-								<el-col :span="24" style="padding-top:5px;">
-									<el-checkbox  v-model="finishFlag">只查未结束项目</el-checkbox>
-								</el-col>
-								<el-col  :span="24"  style="padding-top:5px;">
-									<font v-if="filters.productId" class="more-label-font">产品:</font>  <el-tag v-if="filters.productId" closable @close="onProductClose">{{filters.productName}}</el-tag><el-button v-else    @click.native="productSelectVisible=true" >选择产品</el-button>
-								</el-col>
+							<el-row>  
 								<el-col  :span="24"  style="padding-top:5px;"> 
 									<font class="more-label-font">显示方式:</font>  
 									<el-radio  v-model="showType" :label="false">表格</el-radio>
 									<el-radio  v-model="showType" :label="true">卡片</el-radio>
 								</el-col>  
 								<el-col  :span="24"  style="padding-top:5px; ">  
+									<font v-if="filters.productId" class="more-label-font">产品:</font>  <el-tag v-if="filters.productId" closable @close="onProductClose">{{filters.productName}}</el-tag><el-button v-else    @click.native="productSelectVisible=true" >选择产品</el-button>
+
 								</el-col> 
 										
 								<el-col  :span="24"  style="padding-top:5px;">
@@ -72,7 +66,7 @@
 									<el-button type="text" @click="templateVisible=!templateVisible">{{templateVisible?'隐藏模板':'显示模板'}}</el-button>
 								</el-col>
 							</el-row>
-							<el-button type="text" class="right-btn" slot="reference" icon="el-icon-d-arrow-right">更多</el-button>
+							<el-button  slot="reference" icon="el-icon-more"></el-button>
 						</el-popover>
 						<el-popover style="padding-left:10px;"  
 							placement="top-start"
