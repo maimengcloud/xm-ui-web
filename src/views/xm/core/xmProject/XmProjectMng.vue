@@ -74,7 +74,29 @@
 							</el-row>
 							<el-button type="text" class="right-btn" slot="reference" icon="el-icon-d-arrow-right">更多</el-button>
 						</el-popover>
-						<el-button type="primary"  @click="showAdd"  icon="el-icon-plus"></el-button>
+						<el-popover style="padding-left:10px;"  
+							placement="top-start"
+							width="450" 
+							trigger="click" > 
+							<el-row> 
+								<el-col :span="24" style="padding-top:5px;">
+									<el-badge value="都适用">
+									<el-button   @click="showAdd" icon="el-icon-plus">直接添加新项目</el-button> 
+									</el-badge>
+								</el-col>  
+								<el-col :span="24" style="padding-top:5px;">
+									<el-badge value="进阶">
+									<el-button type="primary" icon="el-icon-plus">通过【产品-复制】一键创建新的项目</el-button> 
+									</el-badge>
+								</el-col> 
+								<el-col :span="24" style="padding-top:5px;">
+									<el-badge value="新手">
+									<el-button type="warning" @click="templateVisible=!templateVisible" icon="el-icon-plus">通过【模板-复制】一键创建新的项目</el-button> 
+									</el-badge>
+								</el-col> 
+							</el-row>   
+ 							<el-button type="primary" slot="reference"  icon="el-icon-plus">项目</el-button>
+							</el-popover> 
 					</el-menu> 
 					
 				</el-row> 

@@ -17,7 +17,30 @@
 					<el-input v-model="filters.key" style="width: 20%;" placeholder="名称查询" clearable>   
 					</el-input>
 					<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProducts" icon="el-icon-search">查询</el-button>
-					<el-button type="primary" @click="showAdd" icon="el-icon-plus" v-if="!xmIteration">产品</el-button>
+					
+					<el-popover style="padding-left:10px;"  
+							placement="top-start"
+							width="450" 
+							trigger="click" > 
+							<el-row> 
+								<el-col :span="24" style="padding-top:5px;">
+									<el-badge value="都适用">
+									<el-button   @click="showAdd" icon="el-icon-plus">直接添加新产品</el-button> 
+									</el-badge>
+								</el-col>  
+								<el-col :span="24" style="padding-top:5px;">
+									<el-badge value="进阶">
+									<el-button type="primary" icon="el-icon-plus">通过【产品-复制】一键创建新的产品</el-button> 
+									</el-badge>
+								</el-col> 
+								<el-col :span="24" style="padding-top:5px;">
+									<el-badge value="新手">
+									<el-button type="warning" @click="templateVisible=!templateVisible" icon="el-icon-plus">通过【模板-复制】一键创建新的产品</el-button> 
+									</el-badge>
+								</el-col> 
+							</el-row>   
+ 							<el-button type="primary" slot="reference"  icon="el-icon-plus" v-if="!xmIteration">产品</el-button>
+					</el-popover>
 					<el-popover
 						placement="top-start"
 						title=""
