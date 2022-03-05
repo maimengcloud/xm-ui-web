@@ -17,25 +17,37 @@
 			</el-col>
  
 		</el-row>
-		<el-row  class="page-main" >
+		<el-row  class="page-main" v-if="showType!='simple'">
 			<!--列表 XmProduct 产品表-->
 			<el-table ref="table"  :height="maxTableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list"  @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
   				
 				<el-table-column    label="序号" width="60" type="index"  v-if="showType!='simple'">  
 				</el-table-column> 
-				  <el-table-column prop="productName" label="产品模板(参考学习用)" min-width="200" sortable show-overflow-tooltip> 
+				  <el-table-column prop="productName" label="产品模板(参考学习用)" min-width="150" sortable show-overflow-tooltip> 
 					<template slot-scope="scope">
 						<el-link  @click="intoInfo(scope.row)">{{scope.row.productName}}</el-link>
 					</template>
 				</el-table-column> 
-				<el-table-column prop="code" v-if="showType!='simple'" label="产品编码" width="200" sortable>  
-				</el-table-column> 
-				<el-table-column prop="assistantUsername" v-if="showType!='simple'" label="创建人" width="200" sortable>  
-				</el-table-column> 
-				<el-table-column prop="ctime" v-if="showType!='simple'" label="创建时间" width="200" sortable>  
-				</el-table-column> 
-				<el-table-column prop="remark" v-if="showType!='simple'" label="备注" width="200" sortable>  
-				</el-table-column> 
+				<el-table-column prop="code" label="产品代号" min-width="100" sortable> 
+				</el-table-column>
+				<el-table-column prop="pstatus" label="状态" width="100" sortable :formatter="formatPstatus"> 
+				</el-table-column>
+				<el-table-column prop="finishRate" label="进度" width="100" sortable>
+					<template slot-scope="scope"> 
+						<font  ><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag> 
+						</font>
+					</template>
+				</el-table-column>
+				<el-table-column prop="pmUsername" label="产品经理" width="120" sortable show-overflow-tooltip>
+					<template slot-scope="scope"> 						
+						<el-tag v-if="scope.row.pmUsername">{{scope.row.pmUsername}}</el-tag> 
+					</template>
+				</el-table-column>
+				
+				<el-table-column label="工作量(人时)" width="200">
+					<el-table-column prop="planWorkload" label="预计" width="100"  show-overflow-tooltip sortable></el-table-column>
+					<el-table-column prop="actWorkload" label="实际" width="100"  show-overflow-tooltip sortable></el-table-column>
+				</el-table-column>
 				<el-table-column  label="" width="100" fixed="right">
 					<template slot-scope="scope">
 						<el-button type="text" title="通过复制创建新的项目" @click="onCopyToBtnClick(scope.row)" :disabled="load.add" v-loading="load.add">复制</el-button>
@@ -43,10 +55,28 @@
 					</template>
 				</el-table-column> 
 			</el-table>
-			</el-row> 
-		 	<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
-
-					<!--编辑 XmProduct 产品表界面-->
+			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+		</el-row> 
+		 	
+		<el-row  class="page-main" v-else>
+			<!--列表 XmProduct 产品表-->
+			<el-table ref="table"  :height="maxTableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list"  @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+  				
+				<el-table-column    label="序号" width="60" type="index">  
+				</el-table-column> 
+				  <el-table-column prop="productName" label="产品模板(参考学习用)" sortable show-overflow-tooltip> 
+					<template slot-scope="scope">
+						<el-link  @click="intoInfo(scope.row)">{{scope.row.productName}}</el-link>
+					</template>
+				</el-table-column>  
+				<el-table-column  label="操作" width="80" fixed="right">
+					<template slot-scope="scope">
+						<el-button type="text" title="通过复制创建新的项目" @click="onCopyToBtnClick(scope.row)" :disabled="load.add" v-loading="load.add">复制</el-button> 
+					</template>
+				</el-table-column> 
+			</el-table>
+			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+		</el-row>  
 			<el-drawer title="编辑产品" :visible.sync="editFormVisible"  size="50%" :with-header="false"  append-to-body   :close-on-click-modal="false">
 				  <xm-product-edit :xm-product="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-product-edit>
 			</el-drawer>

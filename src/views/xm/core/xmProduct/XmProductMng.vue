@@ -424,12 +424,7 @@ import XmProductSelect from './XmProductSelect.vue';
 					if(tips.isOk){
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
-						this.xmProducts = res.data.data;
-						if(this.xmProducts==null || this.xmProducts.length==0){
-							this.templateVisible=true;
-						}else{
-							this.templateVisible=false;
-						}
+						this.xmProducts = res.data.data; 
 					}else{
 						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					}

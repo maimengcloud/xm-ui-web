@@ -254,7 +254,7 @@
 				if(this.xmIteration){
 					params.iterationId=this.xmIteration.id
 				}
-				 
+				 params.del="1"
 				params.queryScope=this.filters.queryScope
 				if(this.filters.queryScope=='productId'){
 					if(!this.filters.id){
