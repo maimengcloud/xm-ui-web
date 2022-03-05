@@ -89,8 +89,13 @@
 			<el-form-item label="产品名称">
 				<el-input v-model="xmProductCopy.productName" placeholder="新的产品名称"></el-input> 
 			</el-form-item>
-			<el-form-item  label="产品编码(留空则后台自动生成)"> 
-				<el-input v-model="xmProductCopy.code"  placeholder="新的产品编码"></el-input>
+			<el-form-item  label="产品代号"> 
+				<el-input v-model="xmProductCopy.code"  placeholder="新的产品代号">
+					
+							<template slot="append">
+								<el-button type="text" @click="createProductCode">自动生成</el-button>
+							</template>
+				</el-input>
 			</el-form-item>
 			<el-form-item  label="目标">
 				<el-radio v-model="xmProductCopy.isTpl" label="1">复制为新的模板</el-radio>
@@ -115,7 +120,7 @@
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { listXmProduct,listXmProductWithState, delXmProduct, batchDelXmProduct,copyTo } from '@/api/xm/core/xmProduct';
+	import { listXmProduct,listXmProductWithState, delXmProduct, batchDelXmProduct,copyTo,createProductCode } from '@/api/xm/core/xmProduct';
 	import { addXmIterationProductLink,delXmIterationProductLink } from '@/api/xm/core/xmIterationProductLink';
 	import { loadTasksToXmProductState } from '@/api/xm/core/xmProductState';
  	import  XmProductEdit from './XmProductEdit';//修改界面
@@ -445,6 +450,16 @@
 					
 					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 
+				})
+			},
+			
+			createProductCode(){
+				createProductCode({}).then(res=>{
+					var tips=res.data.tips;
+					if(tips.isOk){
+						this.xmProductCopy.code=res.data.data
+					}
+					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 				})
 			},
 			/**end 自定义函数请在上面加**/
