@@ -368,7 +368,7 @@
 					id:'',name:'',code:'',isTpl:'',copyPhase:'1',copyTask:'1',copyGroup:'1',copyGroupUser:'0'
 				},
 				copyToVisible:false,
-				templateVisible:true,
+				templateVisible:false,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
