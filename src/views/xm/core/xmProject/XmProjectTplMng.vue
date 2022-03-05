@@ -50,7 +50,7 @@
 			<el-form-item label="项目名称">
 				<el-input v-model="xmProjectCopy.name" placeholder="新的项目名称"></el-input> 
 			</el-form-item>
-			<el-form-item  label="项目代号(留空则后台自动生成)"> 
+			<el-form-item  label="项目代号"> 
 				<el-input v-model="xmProjectCopy.code"  placeholder="新的项目代号"> 
 					<template slot="append">
 						<el-button type="text" @click="createProjectCode">自动生成</el-button>
@@ -356,7 +356,11 @@
 				this.xmProjectCopy.isTpl=row.isTpl; 
 				this.copyToVisible=true;
 			},
-			onCopyToConfirm(){
+			onCopyToConfirm(){ 
+				if(!this.xmProjectCopy.code){
+					this.$notify({showClose: true, message: '项目代号不能为空', type: 'error' });
+					return;
+				}
 				this.load.add=true;
 				copyTo(this.xmProjectCopy).then(res=>{ 
 					this.load.add=false;

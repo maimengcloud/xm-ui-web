@@ -607,7 +607,11 @@ import XmProductSelect from './XmProductSelect.vue';
 				this.xmProductCopy.isTpl=row.isTpl; 
 				this.copyToVisible=true;
 			},
-			onCopyToConfirm(){
+			onCopyToConfirm(){ 
+				if(!this.xmProductCopy.code){
+					this.$notify({showClose: true, message: '产品代号不能为空', type: 'error' });
+					return;
+				}
 				this.load.add=true;
 				copyTo(this.xmProductCopy).then(res=>{ 
 					this.load.add=false;
