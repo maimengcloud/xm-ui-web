@@ -1,11 +1,15 @@
 <template>
 	<section class="page-container border padding" >
 		<el-row> 
+					<el-input v-model="filters.groupNameKey" style="width:15%;" clearable placeholder="小组名称查询"></el-input> 
+					<el-input v-model="filters.mngUsernamekey" style="width:15%;" clearable placeholder="组长、副组长名称查询"></el-input> 
+					<el-input v-model="filters.groupUsernameKey" style="width:15%;" clearable placeholder="组员名称查询"></el-input>
+					<el-button type="primary" @click="searchXmProjectGroups">查询</el-button>
  					<el-button  type="plain" @click="showGroupState" icon="el-icon-s-data">小组进度</el-button> 
- 					<el-button  type="plain" @click="xmRecordVisible=true" icon="el-icon-document">变化日志</el-button>
-					<el-button  type="plain" @click="doSearchImGroupsByProjectId" icon="el-icon-document">绑定即聊情况</el-button>
- 					<el-button @click="groupRoleDescVisible=true" icon="el-icon-document">角色说明</el-button> 
-					 <font color="red">注意：点击架构图进行操作</font>
+ 					<el-button class="hidden-md-and-down" type="plain" @click="xmRecordVisible=true" icon="el-icon-document">变化日志</el-button>
+					<el-button class="hidden-md-and-down" type="plain" @click="doSearchImGroupsByProjectId" icon="el-icon-document">绑定即聊情况</el-button>
+ 					<el-button class="hidden-md-and-down" @click="groupRoleDescVisible=true" icon="el-icon-document">角色说明</el-button> 
+					 <font style="font-size:12px;" class="hidden-md-and-down" color="red">注意：点击架构图进行操作</font>
   		</el-row> 
 		<el-row ref="table" :style="{overflowX:'auto',height:maxTableHeight+'px'}">
 			<vue-okr-tree :data="okrTreeData" v-loading="load.list"
@@ -299,11 +303,14 @@ XmProductSelect,
 			xmIteration(){
 				this.getXmProjectGroup();
 			}
-		},
+		}, 
 		data() {
 			return {
 				filters: {
-					key: ''
+					key: '',
+					groupNameKey:'',
+					mngUsernamekey:'',
+					groupUsernameKey:'',
 				},
 				xmProjectGroups: [],//查询结果
 				pageInfo:{//分页数据
@@ -436,6 +443,15 @@ XmProductSelect,
 				}
 				if(this.filters.key){
 					params.key=this.filters.key
+				}
+				if(this.filters.groupNameKey){
+					params.groupNameKey=this.filters.groupNameKey
+				}
+				if(this.filters.groupUsernameKey){
+					params.groupUsernameKey=this.filters.groupUsernameKey
+				}
+				if(this.filters.mngUsernamekey){
+					params.mngUsernamekey=this.filters.mngUsernamekey
 				}
 				var func=getGroups
 				this.load.list = true;

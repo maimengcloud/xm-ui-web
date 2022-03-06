@@ -1,8 +1,10 @@
 <template>
 	<section class="page-container border padding">
 		<el-row>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
-			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmProjectGroupUsers" icon="el-icon-search">查询</el-button>
+ 			<el-input v-model="filters.groupNameKey" style="width:15%;" clearable placeholder="小组名称查询"></el-input> 
+			<el-input v-model="filters.mngUsernamekey" style="width:15%;" clearable placeholder="组长、副组长名称查询"></el-input> 
+			<el-input v-model="filters.groupUsernameKey" style="width:15%;" clearable placeholder="组员名称查询"></el-input>
+			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" @click="searchXmProjectGroupUsers" icon="el-icon-search">查询</el-button>
  			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>
 		</el-row>
 		<el-row class="padding-top">
@@ -82,7 +84,10 @@
 		data() {
 			return {
 				filters: {
-					key: ''
+					key: '',
+					groupNameKey:'',
+					mngUsernamekey:'',
+					groupUsernameKey:'',
 				},
 				xmProjectGroupUsers: [],//查询结果
 				pageInfo:{//分页数据
@@ -160,6 +165,15 @@
 					params.key=this.filters.key
 				}
 
+				if(this.filters.groupNameKey){
+					params.groupNameKey=this.filters.groupNameKey
+				}
+				if(this.filters.groupUsernameKey){
+					params.groupUsernameKey=this.filters.groupUsernameKey
+				}
+				if(this.filters.mngUsernamekey){
+					params.mngUsernamekey=this.filters.mngUsernamekey
+				}
 				if(this.xmProjectGroup){
 					params.groupId=this.xmProjectGroup.id
 				}
