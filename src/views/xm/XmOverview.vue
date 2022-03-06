@@ -5,25 +5,25 @@
           <el-col :span="8" >
             <el-card class="box-card" style="padding:0px ;height:425px">
               <div slot="header" class="clearfix">
-                <span>项目信息</span>
+                <span>数据汇总</span>
               </div>
               <el-row style="margin-bottom:18px">
                 <el-row>
                   <span v-text="taskMng"></span>
                 </el-row>
                 <el-row>
-                  <span>项目负责人</span>
+                  <span> </span>
                 </el-row>
               </el-row>
               <el-row style="margin-bottom:18px">
-                <el-col :span="8" @click="">
+                <el-col :span="8">
                   <div class="item">
                     <div class="icon" style="background-color:  rgb(79, 140, 255);">
                       <i class="el-icon-right"></i>
                     </div>
                     <div class="info">
-                      <div v-text="totalTask"></div>
-                      <div class="title">总任务量</div>
+                      <div v-text="xmBranchState.projectCnt"></div>
+                      <div class="title">总项目数</div>
                     </div>
                   </div>
                 </el-col>
@@ -33,9 +33,9 @@
                       <i class="el-icon-loading"></i>
                     </div>
                     <div class="info">
-                      <div v-text="notStart">
+                      <div v-text="xmBranchState.totalPhaseCnt">
                       </div>
-                      <div class="title">待完成</div>
+                      <div class="title">总计划数</div>
                     </div>
                   </div>
                 </el-col>
@@ -45,45 +45,53 @@
                       <i class="el-icon-check"></i>
                     </div>
                     <div class="info">
-                      <div v-text="finish" >
+                      <div v-text="xmBranchState.totalTaskCnt" >
                       </div>
-                      <div class="title">已完成</div>
+                      <div class="title">总任务数</div>
                     </div>
                   </div>
                 </el-col>
               </el-row> 
               <el-row style="margin-bottom:18px">
+                <el-col :span="8">
                 <div class="item">
                   <div class="icon2" style="background-color:  rgb(204, 204, 204);">
                     <i class="el-icon-star-off"></i>
                   </div>
-                  <div class="info">
-                    <div class="title"> 需求数： {{this.xmBranchState.menuCnt}}</div>
-                  </div>
-                </div>
-              </el-row>
-              <el-row style="margin-bottom:18px">
+                    <div class="info">
+                      <div v-text="xmBranchState.productCnt" >
+                      </div>
+                      <div class="title">总产品数</div>
+                    </div>
+                </div> 
+                
+                </el-col>
+                <el-col :span="8">
                 <div class="item">
                   <div class="icon2" style="background-color:  rgb(204, 204, 204);">
                     <i class="el-icon-refresh"></i>
-                  </div>
-                  <div class="info">
-                    <div class="title"> 迭代数： {{(this.xmBranchState.iterationCnt==null?0:this.xmBranchState.iterationCnt)}} </div>
-                  </div>
-                </div>
-              </el-row>
-              <el-row style="margin-bottom:18px">
+                  </div> 
+                    <div class="info">
+                      <div v-text="xmBranchState.iterationCnt" >
+                      </div>
+                      <div class="title">迭代数</div>
+                    </div> 
+                </div> 
+                
+                </el-col>
+                <el-col :span="8">
                 <div class="item">
                   <div class="icon2" style="background-color:  rgb(204, 204, 204);">
                     <i class="el-icon-alarm-clock"></i>
-                  </div>
-                  <div>
-                    <div class="progress-item">
-                      <el-progress :percentage="taskProgress"></el-progress>
-                      <div class="title">任务进度</div>
-                    </div>
-                  </div>
+                  </div> 
+                    <div class="info">
+                      <div v-text="xmBranchState.menuCnt" >
+                      </div>
+                      <div class="title">需求数</div>
+                    </div> 
                 </div>
+                
+                </el-col>
               </el-row>
             </el-card>
           </el-col>
