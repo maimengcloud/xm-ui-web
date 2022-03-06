@@ -26,121 +26,11 @@
 					 <span slot="title"><i class="el-icon-document"></i>需求</span>  
 				</el-menu-item>
 				<el-menu-item   index="任务">
-					 <span slot="title"><i class="el-icon-s-operation"></i>任务</span>
-
-
+					 <span slot="title"><i class="el-icon-s-operation"></i>任务</span> 
 				</el-menu-item>
 				<el-menu-item  index="缺陷">
-					 <span slot="title"><i class="el-icon-question"></i>缺陷</span>
-
-
-				</el-menu-item>
-				<el-menu-item  index="团队">
-					 <span slot="title"><i class="el-icon-user-solid"></i>团队</span>
-				</el-menu-item>
-				<el-submenu index="规划" class="hidden-sm-and-down">
-					<template slot="title">规划</template>
-					<el-menu-item index="计划及里程碑">
-					 <span slot="title"><i class="el-icon-odometer"></i>计划及里程碑</span>
-					</el-menu-item>
-					<el-menu-item  index="测试计划">
-						<span slot="title"><i class="el-icon-odometer"></i>测试计划</span>
-					</el-menu-item>
-				</el-submenu >
-				<el-submenu index="财务" class="hidden-sm-and-down">
-					<template slot="title">财务</template> 
-						<el-menu-item   index="合同管理">
-							<span slot="title"><i class="el-icon-s-data"></i>合同管理</span>
-						</el-menu-item>
-						<el-menu-item   index="预算">
-							<span slot="title"><i class="el-icon-coin"></i>预算</span> 
-						</el-menu-item>
-						<el-menu-item  index="费用">
-							<span slot="title"><i class="el-icon-coin"></i>费用</span> 
-						</el-menu-item>
-				</el-submenu >
-				<el-submenu index="监控" class="hidden-sm-and-down">
-					<template slot="title">监控</template>
-						<el-menu-item   index="考核">
-							<span slot="title"><i class="el-icon-view"></i>考核</span> 
-						</el-menu-item>
-						<el-menu-item index="项目监控">
-							<span slot="title"><i class="el-icon-video-camera"></i>项目监控</span>
-						</el-menu-item>
-						<el-menu-item   index="需求监控">
-							<span slot="title"><i class="el-icon-video-camera"></i>需求监控</span>
-						</el-menu-item> 
-						<el-menu-item   index="风险">
-							<span slot="title"><i class="el-icon-question"></i>风险</span>
-						</el-menu-item>
-				</el-submenu >
-				<el-submenu index="知识" class="hidden-md-and-down">
-					<template slot="title">知识</template>
-						<el-menu-item  index="文档" >
-							<span slot="title"><i class="el-icon-document"></i>文档</span>
-						</el-menu-item> 
-						<el-menu-item   index="环境清单" >
-							<span slot="title"><i class="el-icon-setting"></i>环境清单</span> 
-						</el-menu-item>
-						<el-menu-item   index="日志">
-							<span slot="title"><i class="el-icon-edit-outline"></i>日志</span> 
-						</el-menu-item> 
-				</el-submenu > 
-				<el-submenu index="更多">
-					<template slot="title">更多 </template>
-					<el-menu-item  index="需求监控" >
-						<span slot="title"><i class="el-icon-video-camera"></i>需求监控</span>
-					</el-menu-item>
-					<el-menu-item   index="项目监控">
-						<span slot="title"><i class="el-icon-video-camera"></i>项目监控</span>
-					</el-menu-item>
-
-					<el-menu-item   index="合同管理">
-						<span slot="title"><i class="el-icon-s-data"></i>合同管理</span>
-					</el-menu-item>
-					<el-menu-item   index="预算">
-						<span slot="title"><i class="el-icon-coin"></i>预算</span>
-
-
-					</el-menu-item>
-					<el-menu-item   index="费用">
-						<span slot="title"><i class="el-icon-coin"></i>费用</span>
-
-
-					</el-menu-item>
-					<el-menu-item   index="考核">
-						<span slot="title"><i class="el-icon-view"></i>考核</span>
-
-
-					</el-menu-item>
-					<el-menu-item   index="日志">
-						<span slot="title"><i class="el-icon-edit-outline"></i>日志</span>
-
-
-					</el-menu-item>
-					<el-menu-item   index="合同管理">
-						<span slot="title"><i class="el-icon-s-data"></i>合同管理</span>
-
-
-					</el-menu-item>
-					<el-menu-item  index="环境清单">
-						<span slot="title"><i class="el-icon-setting"></i>环境清单</span>
-
-					</el-menu-item>
-					<el-menu-item   index="风险">
-						<span slot="title"><i class="el-icon-question"></i>风险</span>
-					</el-menu-item>
-					<el-menu-item   index="论坛">
-						<span slot="title"><i class="el-icon-date"></i>论坛</span>
-					</el-menu-item>
-					<el-menu-item   index="即聊">
-						<span slot="title"><i class="el-icon-date"></i>即聊</span>
-					</el-menu-item>
-					<el-menu-item  index="客服">
-						<span slot="title"><i class="el-icon-date"></i>客服</span>
-
-					</el-menu-item>
-				</el-submenu>
+					 <span slot="title"><i class="el-icon-question"></i>缺陷</span> 
+				</el-menu-item> 
 			</el-menu>
 		   
    			<xm-iteration-overview-complex  v-if="infotype=='迭代概览'" :xm-iteration="xmIteration"></xm-iteration-overview-complex>
@@ -150,19 +40,7 @@
 			 <xm-task-mng v-if="infotype=='任务'" ref="xmTaskMng" :xm-iteration="xmIteration" ></xm-task-mng>
 			  <xm-question v-if="infotype=='缺陷'" :qtype="'bug'" :xm-iteration='xmIteration' ref="xmQuestion"></xm-question>
 			  <xm-group-mng v-if="infotype=='团队'" :xm-iteration="xmIteration"></xm-group-mng>
-			  <xm-file-mng v-if="infotype=='文档'" :xm-iteration="xmIteration"></xm-file-mng>
-			  <xm-project-phase-mng v-if="infotype=='计划及里程碑'" ref="xmProjectPhaseMng" :xm-iteration="xmIteration" ></xm-project-phase-mng>
-			  <xm-test-case-exec-mng v-if="infotype=='测试计划'" :visible="infotype=='测试计划'"  :xm-iteration='xmIteration' ref="xmQuestion"></xm-test-case-exec-mng>
-			<xm-menu-with-plan v-if="infotype=='需求监控'" ref="xmMenuWithPlan" :xm-iteration="xmIteration"></xm-menu-with-plan>
-			<xm-project-state-mng v-if="infotype=='项目监控'" :xm-iteration="xmIteration"></xm-project-state-mng>
-			<xm-budget v-if="infotype=='预算'" :xm-iteration="xmIteration"></xm-budget>
-			 <xm-cost v-if="infotype=='费用'" :xm-iteration="xmIteration"></xm-cost>
-			<xm-project-kpi v-if="infotype=='考核'"  :xm-iteration="xmIteration"></xm-project-kpi>
-			<xm-record v-if="infotype=='日志'" :visible="infotype=='日志'" :xm-iteration="xmIteration"></xm-record>
-			<xm-contract v-if="infotype=='合同管理'" :xm-iteration="xmIteration"></xm-contract>
-			<xm-env-list v-if="infotype=='环境清单'" :xm-iteration="xmIteration"></xm-env-list>
-			<xm-question v-if="infotype=='风险'" :qtype="'risk'" :xm-iteration='xmIteration' ref="xmRisk"></xm-question>
-			<el-drawer title="选中团队成员" :visible.sync="groupUserVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
+  			<el-drawer title="选中团队成员" :visible.sync="groupUserVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				<xm-project-group-select :xm-iteration="xmIteration" :visible="groupUserVisible" is-select-multi-user="1" @user-confirm="onUserSelected"></xm-project-group-select>
 			</el-drawer>
 		</el-row>

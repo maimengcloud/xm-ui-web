@@ -8,8 +8,11 @@
 					<el-form-item label="类型" prop="ntype">
 						<el-radio  v-model="addForm.ntype" label="1">计划集</el-radio>
 						<el-radio  v-model="addForm.ntype" label="0">计划</el-radio>
-						<font color="red">
+						<font color="red" v-if="addForm.phaseClass=='0'">
 							<br>计划集只负责汇总数据，类似文件夹功能。计划集下可建立子计划集、子计划，但不能关联任务;<br>计划下不能建立子计划集，也不能建立子计划，但可以关联任务
+						</font>
+						<font color="red" v-else-if="addForm.phaseClass=='1'">
+							<br>计划集只负责汇总数据，类似文件夹功能。计划集下可建立子计划集、子计划，但不能关联需求;<br>计划下不能建立子计划集，也不能建立子计划，但可以关联需求
 						</font>
 					</el-form-item>  
 					<el-form-item label="计划名称" prop="phaseName">
@@ -112,6 +115,7 @@
 	import util from '@/common/js/util';//全局公共库
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { addXmProjectPhase } from '@/api/xm/core/xmProjectPhase';
+	import { addXmProductPhase } from '@/api/xm/core/xmProductPhase';
 	import { mapGetters } from 'vuex'
 
 	export default {
@@ -305,7 +309,11 @@
 							}else{
 								params.parentPhaseId=this.parentProjectPhase.id
 							}
-							addXmProjectPhase(params).then((res) => {
+							var func=addXmProjectPhase;
+							if(addForm.phaseClass=='1'){
+								func=addXmProductPhase
+							}
+							func(params).then((res) => {
 								this.load.add=false
 								var tips=res.data.tips;
 								if(tips.isOk){

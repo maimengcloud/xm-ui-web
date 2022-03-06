@@ -126,6 +126,7 @@
 	import util from '@/common/js/util';//全局公共库
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { editXmProjectPhase } from '@/api/xm/core/xmProjectPhase';
+	import { editXmProductPhase } from '@/api/xm/core/xmProductPhase';
 	import { mapGetters } from 'vuex'
 	import  XmProjectPhaseOverview from './XmProjectPhaseOverview';//新增界面
 
@@ -319,7 +320,11 @@
 
 								params.phaseBudgetStaffNu= this.parseFloat2(params.phaseBudgetOutUserCnt) + this.parseFloat2(params.phaseBudgetInnerUserCnt)
 							}
-							editXmProjectPhase(params).then((res) => {
+							var func=editXmProjectPhase
+							if(this.editForm.phaseClass=="1"){
+								func=editXmProductPhase
+							}
+							func(params).then((res) => {
 								this.load.edit=false
 								var tips=res.data.tips;
 								if(tips.isOk){

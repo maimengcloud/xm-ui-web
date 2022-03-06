@@ -119,12 +119,29 @@
 							</el-table-column>  
 							<el-table-column prop="iterationName" label="迭代"  width="80" show-overflow-tooltip>  
 							</el-table-column>  
+							
+							<el-table-column prop="taskCnt" label="任务数"  width="80" show-overflow-tooltip>   
+								<template slot="header"> 
+									<el-tooltip   content="已完成 / 总数 注意：统计包括下级数据"><div>任务数<i class="el-icon-bangzhu"></i></div></el-tooltip>
+								</template>
+								<template slot-scope="scope"> 
+										<div>{{scope.row.finishTaskCnt}}/{{scope.row.taskCnt}}</div>
+								</template>
+							</el-table-column>  
 							<el-table-column prop="finishRate" label="进度"  width="80" show-overflow-tooltip> 
 								<template slot-scope="scope"> 
 										<span v-if="scope.row.finishRate"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag></span>
 								</template>
-							</el-table-column>
-							
+							</el-table-column>   
+							<el-table-column prop="bugs" label="缺陷"  width="100" show-overflow-tooltip>   
+								
+								<template slot="header"> 
+									<el-tooltip   content="已关闭缺陷数 / 总缺陷数 注意：统计包括下级数据"><div>缺陷<i class="el-icon-bangzhu"></i></div></el-tooltip>
+								</template>
+								<template slot-scope="scope"> 
+										 {{scope.row.closedBugs}}/{{scope.row.bugCnt}} 
+								</template>
+							</el-table-column>  
 							<el-table-column prop="tagNames" label="标签"  width="100" show-overflow-tooltip> 
 							</el-table-column> 
 							<el-table-column prop="ctime" label="创建日期"  width="100" show-overflow-tooltip> 

@@ -146,7 +146,7 @@
 			  <xm-question v-if="infotype=='缺陷'" :qtype="'bug'" :xm-product='xmProduct' ref="xmQuestion"></xm-question>
 			  <xm-group-mng v-if="infotype=='团队'" :xm-product="xmProduct"></xm-group-mng>
 			  <xm-file-mng v-if="infotype=='文档'" :xm-product="xmProduct"></xm-file-mng>
-			  <xm-project-phase-mng v-if="infotype=='计划及里程碑'" ref="xmProjectPhaseMng" :xm-product="xmProduct" ></xm-project-phase-mng>
+			  <xm-project-phase-for-product v-if="infotype=='计划及里程碑'" ref="xmProjectPhaseMng" :xm-product="xmProduct" ></xm-project-phase-for-product>
 			  <xm-test-case-exec-mng v-if="infotype=='测试计划'" :visible="infotype=='测试计划'"  :xm-product='xmProduct' ref="xmQuestion"></xm-test-case-exec-mng>
 			<xm-menu-with-plan v-if="infotype=='需求监控'" ref="xmMenuWithPlan" :xm-product="xmProduct"></xm-menu-with-plan>
 			<xm-project-state-mng v-if="infotype=='项目监控'" :xm-product="xmProduct"></xm-project-state-mng>
@@ -188,7 +188,7 @@
 	import xmBudget from '../xmProject/XmProjectBudgetCost';
 	import xmContract from '../xmProjectContract/XmProjectContractMng';
 	import xmEnvList from '../xmProjectEnvList/XmProjectEnvListMng';
-	import xmProjectPhaseMng from '../xmProjectPhase/XmProjectPhaseMng';
+	import xmProjectPhaseForProduct from '../xmProjectPhase/xmProjectPhaseForProduct';
 	import xmMenuMng from '../xmMenu/XmMenuMng';
 	import xmMenuWithPlan from '../xmMenu/XmMenuWithPlan';
 	import xmProjectStateMng from '../xmProjectState/XmProjectStateMng';
@@ -403,7 +403,7 @@ import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
 		},//end methods
 		components: { 
 			xmTaskMng,
-			xmProjectPhaseMng,
+			xmProjectPhaseForProduct,
 			xmGroupMng,
 			xmExchange,
 			xmQuestion,
