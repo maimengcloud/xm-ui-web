@@ -14,11 +14,11 @@
 							<el-option   value="join"  label="已分配任务的需求"></el-option>  
 						</el-select>  
 						
-						<el-input v-model="filters.key" style="width: 15%;" placeholder="模糊查询" clearable> 
+						<el-input v-model="filters.key" style="width: 15%;" placeholder="需求名称查询" clearable> 
 						</el-input> 
 						<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
-						<el-button v-if="!filters.tags||filters.tags.length==0" @click.native="tagSelectVisible=true">标签</el-button>
-						<el-tag v-else @click="tagSelectVisible=true"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
+						<el-button class="hidden-md-and-down" v-if="!filters.tags||filters.tags.length==0" @click.native="tagSelectVisible=true">标签</el-button>
+						<el-tag class="hidden-md-and-down" v-else @click="tagSelectVisible=true"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
 						<el-popover style="padding-left:10px;"  
 							placement="top-start"
 							width="250" 
@@ -31,11 +31,11 @@
 									<el-button  @click="showImportFromMenuTemplate()" icon="el-icon-upload2">由模板快速导入子需求</el-button> 
 								</el-col> 
 							</el-row>   
-							<el-button type="primary"    slot="reference" icon="el-icon-plus">添加子需求</el-button>
+							<el-button type="primary"    slot="reference" icon="el-icon-plus">需求</el-button>
 						</el-popover>
  						<el-button  v-if="!selProject&&!xmIteration&&disabledMng!=false"  type="danger" @click="batchDel" icon="el-icon-delete">删除</el-button> 
 
-						<el-button   v-if=" batchEditVisible==false&&disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>  
+						<el-button class="hidden-md-and-down"  v-if=" batchEditVisible==false&&disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>  
 						<el-popover
 							placement="top-start"
 							title=""
@@ -92,11 +92,10 @@
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
 									<el-button type="primary"  @click="searchXmMenus" icon="el-icon-search">查询</el-button>
-									<el-button  v-if=" batchEditVisible==false "  @click="handleExport" icon="el-icon-download">导出</el-button>  
  								</el-col> 
-								<el-col  :span="24"  style="padding-top:5px;">
- 									<el-button   v-if=" batchEditVisible==true "  type="success" @click="showImportFromMenuTemplate" icon="el-icon-upload2">由模板快速导入</el-button> 
-									
+								<el-col  :span="24"  style="padding-top:5px;"> 
+									<el-button  v-if=" batchEditVisible==false "  @click="handleExport" icon="el-icon-download">导出</el-button>  
+									<el-button   v-if=" batchEditVisible==false&&disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>   
 								</el-col> 
 							</el-row> 
 							<el-button  slot="reference" icon="el-icon-more"></el-button>
@@ -238,10 +237,10 @@
 			<xm-menu-mng-batch :sel-project="selProject"  @no-batch-edit="noBatchEdit" :product="filters.product"></xm-menu-mng-batch>
 		</el-row>
 		
-		<el-dialog append-to-body title="标签条件" :visible.sync="tagSelectVisible" class="dialog-body" width="60%">
+		<el-drawer append-to-body title="标签条件" :visible.sync="tagSelectVisible"  size="60%">
 			<tag-mng :tagIds="filters.tags?filters.tags.map(i=>i.tagId):[]" :jump="true" @select-confirm="onTagSelected">
 			</tag-mng>
-		</el-dialog>
+		</el-drawer>
 	</section>
 </template>
 
