@@ -100,12 +100,21 @@
 						<el-col  v-cloak v-for="(p,i) in ScreenData" :key="i" :xl="8" :lg="8" :md="8" :sm="12">
 							<el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always">
 								<div class="project-name" title="这是项目名称">{{p.name}}</div>
-								<div class="project-id eui-text-truncate">{{p.code}} 
-									<el-button style="float:right;" type="text" title="通过复制快速创建新项目" @click.stop="onCopyToBtnClick(p)" v-loading="load.add">复制</el-button>
-									<el-button style="float:right;" type="text" title="删除项目" @click.stop="handleDel(p)" v-loading="load.add">删除</el-button>
+								<div class="project-id"><span title="项目代号">{{p.code}} </span><font title="项目状态" :color="p.status=='7'?'green':'blue'">{{formatProjectStatus(p.status)}}</font>
+									<el-link type="danger" style="font-size:14px;float:right;margin-left:2px;"  title="删除项目" @click.stop="handleDel(p)" v-loading="load.add">删除</el-link>
+									<el-link type="primary" style="font-size:14px;float:right;margin-left:2px;"  title="通过复制快速创建新项目" @click.stop="onCopyToBtnClick(p)" v-loading="load.add">复制</el-link> 
+									<el-link type="warning" style="font-size:14px;float:right;margin-left:2px;"  title="统计项目的工作量、进度、需求、bugs等数据" @click.stop="loadTasksToXmProjectState(p)" v-loading="load.add">统计</el-link>
 								</div>
 								<div class="project-info"> 
 									
+									<div class="info-task"  title="已完成需求数 / 总需求数 ">
+										<span>
+											<span class="item-total finish-task">{{p.finishMenuCnt==null?0:p.finishMenuCnt}}</span>
+											<span style="margin: 0 .25rem !important;">/</span>
+											<span class="item-type total-task">{{p.menuCnt==null?0:p.menuCnt}}</span>
+										</span>
+										<span class="item-type">需求</span>
+									</div>
 									<div class="info-task" title="已完成 / 预算工作量 ，单位人天 ">
 										<span>
 											<span class="item-total finish-task">{{p.totalActWorkload==null?0:parseInt(p.totalActWorkload/8)}}</span>
@@ -135,8 +144,8 @@
 									<el-progress :percentage="(p.totalProgress==null?0:p.totalProgress)"></el-progress>
 								</div>
 								<div class="project-footer">
-									<div class="project-type">{{formatProjectStatus(p.status)}}</div>
-									<div class="project-period">{{p.startTime.substr(0,10)}} ~{{p.endTime.substr(0,10)}}</div>
+									<div class="project-type" title="项目经理">{{p.pmUsername?p.pmUsername:p.createUsername}}</div>
+									<div class="project-period">{{p.startTime?p.startTime.substr(0,10):''}} ~{{p.endTime?p.endTime.substr(0,10):''}}</div>
 								</div>
 							</el-card>
 						</el-col>
@@ -150,10 +159,20 @@
 								<el-link @click.stop="intoInfo(scope.row)">{{scope.row.name}}</el-link>
 							</template>
 						</el-table-column> 
-						<el-table-column prop="totalTaskCnt" label="任务数" min-width="80" ></el-table-column>
-						<el-table-column prop="totalCompleteTaskCnt" label="任务完成" min-width="80" ></el-table-column>
-						<el-table-column prop="totalFileCnt" label="文档" min-width="80" ></el-table-column>
-						<el-table-column prop="totalBugCnt" label="缺陷" min-width="80" ></el-table-column>
+						<el-table-column prop="menuCnt" label="需求数" min-width="80" >
+							<el-table-column prop="finishMenuCnt" label="已完成" min-width="80" ></el-table-column>
+							<el-table-column prop="menuCnt" label="总数" min-width="80" ></el-table-column>
+						</el-table-column> 
+						<el-table-column prop="totalTaskCnt" label="任务数" min-width="80" >
+							<el-table-column prop="totalCompleteTaskCnt" label="已完成" min-width="80" ></el-table-column>
+							<el-table-column prop="totalTaskCnt" label="总数" min-width="80" ></el-table-column>
+						</el-table-column>  
+ 						<el-table-column prop="totalBugCnt" label="缺陷" min-width="80" >
+							 <el-table-column prop="totalClosedBugCnt" label="已关闭" min-width="80" > 
+							</el-table-column>
+							<el-table-column prop="totalBugCnt" label="总数" min-width="80" > 
+							</el-table-column>
+						 </el-table-column>
 						<el-table-column label="进度" min-width="80" >
 							<template slot-scope="scope">
 								{{scope.row.totalProgress}}%
@@ -185,6 +204,8 @@
 										<el-button v-else  type="text" @click.stop="focusOrUnfocus(scope.row)" >关注</el-button>  
 										<el-button    type="text" @click.stop="xmRecordVisible=true" >日志</el-button> 
 										<el-button   type="text" title="通过复制快速创建新项目" @click.stop="onCopyToBtnClick(scope.row)" v-loading="load.add">复制</el-button>
+										<el-button   type="text" title="删除项目" @click.stop="handleDel(scope.row)" v-loading="load.del">删除</el-button>
+										handleDel
 										<!-- 
 										<el-button  type="primary" @click.stop="statusChange(scope,'1')" v-if="scope.row.status==0 || scope.row.status == 2">提交审核</el-button>
 										<el-button  type="primary" @click.stop="statusChange(scope,'3')" v-if="scope.row.status==1">批准</el-button>
@@ -281,6 +302,8 @@
 	import config from "@/common/config"; //全局公共库
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { listXmProject, editStatus, delXmProject, batchDelXmProject,copyTo,createProjectCode ,getDefOptions} from '@/api/xm/core/xmProject'; 
+	import {  loadTasksToXmProjectState , loadTasksSettleToXmProjectState} from '@/api/xm/core/xmProjectState';
+
 	import { addXmMyFocus , delXmMyFocus } from '@/api/xm/core/xmMyFocus';
 	import  XmProjectAdd from './XmProjectAdd';//新增界面
 	import  XmProjectEdit from './XmProjectEdit';//修改界面
@@ -554,9 +577,9 @@
 				});
 			},
 			rowClick: function(row, event, column){
-				const that = this;
-				//that.intoInfo(row.id);
-				// this.$emit('row-click',row, event, column);//  @row-click="rowClick"
+				const that = this; 
+				this.selectProject=row;
+				this.editform=row;
 			},
 			/**begin 自定义函数请在下面加**/
 			//是否负责人 是则true，否则false
@@ -786,6 +809,19 @@
 				}else{
 					return status;
 				}
+			},
+			loadTasksToXmProjectState(row){
+				
+					var params={projectId:row.id}
+				loadTasksToXmProjectState(params).then((res) => {
+						this.load.edit=false;
+						var tips=res.data.tips;
+						if( tips.isOk ){ 
+							this.pageInfo.count=true;
+							this.searchXmProjects(); 
+						}
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+					}).catch( err  => this.load.edit=false ); 
 			}
 			/**end 自定义函数请在上面加**/
 			
