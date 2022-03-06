@@ -238,7 +238,7 @@
           </el-col>
         </el-row>
       <el-row :gutter="10" style="margin-bottom:10px">
-          <el-col :span="12" >
+          <el-col :span="8" >
             <el-card class="box-card" style="padding:0px ;height:425px">
               <div slot="header" class="clearfix">
                 <span>任务每日状态趋势</span>
@@ -247,9 +247,7 @@
                 <div id="taskChart" :style="{width: '100%', height: '320px'}"></div>
               </div>
             </el-card>
-          </el-col> 
-        </el-row>
-      <el-row :gutter="10" style="margin-bottom:10px">
+          </el-col>  
         <el-col :span="8" >
           <el-card class="box-card" style="height:425px">
             <div slot="header" class="clearfix">
@@ -610,21 +608,21 @@ export default {
               }
             },
             data: [
-              {value: this.xmBranchState.planNouserAt,
+              {value: this.xmBranchState.totalBudgetNouserAmount,
                 itemStyle: {
                   normal:{
                     color: '#FAC858'
                   }
                 },
                 name: '非人力'},
-              {value: this.xmBranchState.planInnerUserAt,
+              {value: this.xmBranchState.totalBudgetInnerUserAmount,
                 itemStyle: {
                   normal:{
                     color: '#73C0DE'
                   }
                 },
                 name: '内部人力'},
-              {value: this.xmBranchState.planOutUserAt,
+              {value: this.xmBranchState.totalBudgetOutUserAmount,
                 itemStyle: {
                   normal:{
                     color: '#5470C6'
