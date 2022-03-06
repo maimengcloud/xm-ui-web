@@ -168,7 +168,7 @@
 
 	import config from "@/common/config"; //全局公共库
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { editXmProject } from '@/api/xm/core/xmProject'; 
+	import { editXmProject,getDefOptions } from '@/api/xm/core/xmProject'; 
 	import { uploadBase64 } from '@/api/mdp/arc/image'; 
 	
 	import { mapGetters } from 'vuex';  
@@ -275,8 +275,7 @@
 			totalReceivables:function(){
 				 return this.editForm.totalReceivables
 			},
-			calcProjectStatusStep(){
-				debugger;
+			calcProjectStatusStep(){ 
 				if(this.options['projectStatus'] && this.editForm){
 					var index=this.options['projectStatus'].findIndex(i=>{
 						if(i.optionValue==this.editForm.status){
@@ -367,12 +366,7 @@
 				filters: {
 					ids: [],
 				},
-				options:{ 
-					projectType:[],
-					urgencyLevel:[],
-					priority:[],
-					projectStatus:[], 
-				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				options: getDefOptions(),//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, add: false, del: false, edit: false },//查询中...
 				editFormRules: {
 					name: [{

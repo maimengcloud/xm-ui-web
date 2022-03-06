@@ -267,6 +267,7 @@
 import util from "@/common/js/util"; // 全局公共库
 import { mapGetters } from "vuex";
 import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import {  getDefOptions} from '@/api/xm/core/xmProject'; 
 
 export default {
   computed: {
@@ -365,12 +366,7 @@ export default {
     return {
       isActive: true,
       maxTableHeight:300,
-      options:{
-        projectType:[],
-        urgencyLevel:[],
-        priority:[],
-        projectStatus:[],
-      },//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
+      options: getDefOptions(),//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
     };
   },
 

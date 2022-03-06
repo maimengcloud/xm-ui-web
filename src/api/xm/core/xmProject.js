@@ -46,3 +46,75 @@ export const createProjectCode = params => { return axios.post(`${base}/xm/core/
 export const unDelXmProject = params => { return axios.post(`${base}/xm/core/xmProject/unDel`, params); };
 
 
+export const getDefOptions= ()=>{
+    
+    var options={
+    "projectStatus" : [ {
+        "optionValue" : "0",
+        "optionName" : "初始"
+        }, {
+        "optionValue" : "1",
+        "optionName" : "售前"
+        }, {
+        "optionValue" : "2",
+        "optionName" : "立项中"
+        }, {
+        "optionValue" : "3",
+        "optionName" : "实施中"
+        }, {
+        "optionValue" : "4",
+        "optionName" : "暂停中"
+        }, {
+        "optionValue" : "5",
+        "optionName" : "结项中"
+        }, {
+        "optionValue" : "6",
+        "optionName" : "已结项"
+        }, {
+        "optionValue" : "7",
+        "optionName" : "售后"
+        }, {
+        "optionValue" : "8",
+        "optionName" : "已完成"
+        }, {
+        "optionValue" : "9",
+        "optionName" : "已关闭"
+        } ],
+        "projectType" : [ {
+        "optionValue" : "0",
+        "optionName" : "it-新建-瀑布"
+        }, {
+        "optionValue" : "2",
+        "optionName" : "it-新建-敏捷"
+        }, {
+        "optionValue" : "1",
+        "optionName" : "it-存量-瀑布"
+        } ],
+        "priority" : [ {
+        "optionValue" : "zyx",
+        "optionName" : "最优先"
+        }, {
+        "optionValue" : "yb",
+        "optionName" : "一般优先"
+        }, {
+        "optionValue" : "ksh",
+        "optionName" : "可稍缓"
+        } ],
+        "urgencyLevel" : [ {
+        "optionValue" : "1",
+        "optionName" : "非常紧急"
+        }, {
+        "optionValue" : "3",
+        "optionName" : "一般紧急"
+        }, {
+        "optionValue" : "2",
+        "optionName" : "紧急"
+        }, {
+        "optionValue" : "4",
+        "optionName" : "低"
+        } ]
+        }
+        return options;
+}
+
+

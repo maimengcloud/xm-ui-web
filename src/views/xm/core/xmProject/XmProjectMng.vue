@@ -104,29 +104,38 @@
 									<el-button style="float:right;" type="text" title="通过复制快速创建新项目" @click.stop="onCopyToBtnClick(p)" v-loading="load.add">复制</el-button>
 									<el-button style="float:right;" type="text" title="删除项目" @click.stop="handleDel(p)" v-loading="load.add">删除</el-button>
 								</div>
-								<div class="project-info">
-									<div class="info-item">
-										<span class="item-total">{{p.totalBugCnt==null?0:p.totalBugCnt}}</span>
-										<span class="item-type">缺陷</span>
+								<div class="project-info"> 
+									
+									<div class="info-task" title="已完成 / 预算工作量 ，单位人天 ">
+										<span>
+											<span class="item-total finish-task">{{p.totalActWorkload==null?0:parseInt(p.totalActWorkload/8)}}</span>
+											<span style="margin: 0 .25rem !important;">/</span>
+											<span class="item-type total-task">{{p.totalPlanWorkload==null?0:parseInt(p.totalPlanWorkload/8)}}</span>
+										</span>
+										<span class="item-type">工作量</span>
 									</div>
-									<div class="info-item">
-										<span class="item-total">{{p.totalFileCnt==null?0:p.totalFileCnt}}</span>
-										<span class="item-type">文档</span>
-									</div>
-									<div class="info-task">
+									<div class="info-task"   title="已完成 / 总任务数 ">
 										<span>
 											<span class="item-total finish-task">{{p.totalCompleteTaskCnt==null?0:p.totalCompleteTaskCnt}}</span>
 											<span style="margin: 0 .25rem !important;">/</span>
 											<span class="item-type total-task">{{p.totalTaskCnt==null?0:p.totalTaskCnt}}</span>
 										</span>
-										<span class="item-type">任务完成</span>
+										<span class="item-type">任务</span>
+									</div>
+									<div class="info-task"  title="已关闭 / 总缺陷数 ">
+										<span>
+											<span class="item-total finish-task">{{p.totalClosedBugCnt==null?0:p.totalClosedBugCnt}}</span>
+											<span style="margin: 0 .25rem !important;">/</span>
+											<span class="item-type total-task">{{p.totalBugCnt==null?0:p.totalBugCnt}}</span>
+										</span>
+										<span class="item-type">缺陷</span>
 									</div>
 								</div>
 								<div class="project-rate">
 									<el-progress :percentage="(p.totalProgress==null?0:p.totalProgress)"></el-progress>
 								</div>
 								<div class="project-footer">
-									<div class="project-type">{{p.xmType}}</div>
+									<div class="project-type">{{formatProjectStatus(p.status)}}</div>
 									<div class="project-period">{{p.startTime.substr(0,10)}} ~{{p.endTime.substr(0,10)}}</div>
 								</div>
 							</el-card>
@@ -270,8 +279,8 @@
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import config from "@/common/config"; //全局公共库
-	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { listXmProject, editStatus, delXmProject, batchDelXmProject,copyTo,createProjectCode } from '@/api/xm/core/xmProject'; 
+	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { listXmProject, editStatus, delXmProject, batchDelXmProject,copyTo,createProjectCode ,getDefOptions} from '@/api/xm/core/xmProject'; 
 	import { addXmMyFocus , delXmMyFocus } from '@/api/xm/core/xmMyFocus';
 	import  XmProjectAdd from './XmProjectAdd';//新增界面
 	import  XmProjectEdit from './XmProjectEdit';//修改界面
@@ -334,7 +343,7 @@
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				options:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				options: getDefOptions(),//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				
 				addFormVisible: false,//新增xmProject界面是否显示
 				//新增xmProject界面初始化数据
@@ -765,6 +774,18 @@
 					}
 					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 				})
+			},
+			formatProjectStatus(status){
+				if(this.options['projectStatus'] && this.options['projectStatus'].length>0 ){
+					var sts=this.options['projectStatus'].find(i=>i.optionValue==status)
+					if(sts){
+						return sts.optionName
+					}else{
+						return status;
+					}
+				}else{
+					return status;
+				}
 			}
 			/**end 自定义函数请在上面加**/
 			
@@ -784,6 +805,15 @@
 				this.filters.productName=this.$route.params.productName;
 			}
 			this.$nextTick(() => {  
+				listOption([{categoryId:'all',itemCode:'projectType'},{categoryId:'all',itemCode:'urgencyLevel'},{categoryId:'all',itemCode:'priority'},{categoryId:'all',itemCode:'projectStatus'}] ).then(res=>{
+					if(res.data.tips.isOk){ 
+						
+						this.options['projectType']=res.data.data.projectType
+						this.options['urgencyLevel']=res.data.data.urgencyLevel
+						this.options['priority']=res.data.data.priority
+						this.options['projectStatus']=res.data.data.projectStatus  
+					}
+				});
                 this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table1.$el);
 				this.showInfo = false;
 				this.getXmProjects();
