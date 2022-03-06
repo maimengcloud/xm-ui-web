@@ -8,46 +8,75 @@
                 <span>数据汇总</span>
               </div>
               <el-row style="margin-bottom:18px">
-                <el-row>
-                  <span v-text="taskMng"></span>
-                </el-row>
-                <el-row>
-                  <span> </span>
-                </el-row>
-              </el-row>
-              <el-row style="margin-bottom:18px">
                 <el-col :span="8">
                   <div class="item">
                     <div class="icon" style="background-color:  rgb(79, 140, 255);">
-                      <i class="el-icon-right"></i>
+                      <i class="el-icon-alarm-clock"></i>
                     </div>
                     <div class="info">
-                      <div v-text="xmBranchState.projectCnt"></div>
-                      <div class="title">总项目数</div>
+                      <div v-text="xmBranchState.totalPlanWorkload"></div>
+                      <div class="title">项目总工时</div>
                     </div>
                   </div>
                 </el-col>
                 <el-col :span="8">
                   <div class="item">
                     <div class="icon" style="background-color:  rgb(255, 153, 51);">
-                      <i class="el-icon-loading"></i>
+                      <i class="el-icon-alarm-clock"></i>
                     </div>
                     <div class="info">
                       <div v-text="xmBranchState.totalPhaseCnt">
                       </div>
-                      <div class="title">总计划数</div>
+                      <div class="title">产品总工时</div>
                     </div>
                   </div>
                 </el-col>
                 <el-col :span="8">
                   <div class="item">
                     <div class="icon" style="background-color:  rgb(0, 153, 51);">
-                      <i class="el-icon-check"></i>
+                      <i class="el-icon-s-custom"></i>
+                    </div>
+                    <div class="info">
+                      <div v-text="xmBranchState.totalStaffCnt" >
+                      </div>
+                      <div class="title">总人数</div>
+                    </div>
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row style="margin-bottom:18px">
+                <el-col :span="8">
+                  <div class="item">
+                    <div class="icon" style="background-color:  rgb(79, 140, 255);">
+                      <i class="el-icon-s-unfold"></i>
+                    </div>
+                    <div class="info">
+                      <div v-text="xmBranchState.projectCnt"></div>
+                      <div class="title">项目数</div>
+                    </div>
+                  </div>
+                </el-col>
+                <el-col :span="8">
+                  <div class="item">
+                    <div class="icon" style="background-color:  rgb(255, 153, 51);">
+                      <i class="el-icon-date"></i>
+                    </div>
+                    <div class="info">
+                      <div v-text="xmBranchState.totalPhaseCnt">
+                      </div>
+                      <div class="title">计划数</div>
+                    </div>
+                  </div>
+                </el-col>
+                <el-col :span="8">
+                  <div class="item">
+                    <div class="icon" style="background-color:  rgb(0, 153, 51);">
+                      <i class="el-icon-s-operation"></i>
                     </div>
                     <div class="info">
                       <div v-text="xmBranchState.totalTaskCnt" >
                       </div>
-                      <div class="title">总任务数</div>
+                      <div class="title">任务数</div>
                     </div>
                   </div>
                 </el-col>
@@ -55,20 +84,20 @@
               <el-row style="margin-bottom:18px">
                 <el-col :span="8">
                 <div class="item">
-                  <div class="icon2" style="background-color:  rgb(204, 204, 204);">
+                  <div class="icon" style="background-color:  rgb(79, 140, 255);">
                     <i class="el-icon-star-off"></i>
                   </div>
                     <div class="info">
                       <div v-text="xmBranchState.productCnt" >
                       </div>
-                      <div class="title">总产品数</div>
+                      <div class="title">产品数</div>
                     </div>
                 </div> 
                 
                 </el-col>
                 <el-col :span="8">
                 <div class="item">
-                  <div class="icon2" style="background-color:  rgb(204, 204, 204);">
+                  <div class="icon" style="background-color:   rgb(255, 153, 51);">
                     <i class="el-icon-refresh"></i>
                   </div> 
                     <div class="info">
@@ -81,8 +110,8 @@
                 </el-col>
                 <el-col :span="8">
                 <div class="item">
-                  <div class="icon2" style="background-color:  rgb(204, 204, 204);">
-                    <i class="el-icon-alarm-clock"></i>
+                  <div class="icon" style="background-color:  rgb(0, 153, 51);">
+                    <i class="el-icon-loading"></i>
                   </div> 
                     <div class="info">
                       <div v-text="xmBranchState.menuCnt" >
