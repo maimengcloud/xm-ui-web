@@ -44,23 +44,24 @@ export const constantRouterMap = [
     path: '',
     component: Layout,
     redirect: 'dashboard',
+    meta:{title:'首页',icon: 'home-page'},
     children: [{
       path: 'dashboard',
       component: _import('xm/XmOverview'),
-      name: 'dashboard',
-      meta: { title: 'dashboard', icon: 'home-page', noCache: true }
+      name: '首页',
+      meta: { title: '首页', icon: 'home-page', noCache: true }
     },
     {
       path: 'updateUserInfo',
       component: _import('mdp/sys/user/UpdateUserInfo'),
       name: '账户设置',
       meta: {
-        title: 'updateUserInfo',
+        title: '修改个人信息',
         icon: 'component'
       }
     }
   ],
-    hidden: true
+    hidden: false
   }, 
   
 ]

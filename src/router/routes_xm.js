@@ -48,7 +48,7 @@ export default {
       iconCls: 'fa el-icon-menu',
       meta: {
         title: '测试管理',
-        icon: 'project'
+        icon: 'bug'
       },
       // leaf: true,//只有一个节点
       children: [
@@ -68,7 +68,7 @@ export default {
       iconCls: 'fa el-icon-menu',
       meta: {
         title: '项目任务',
-        icon: 'project'
+        icon: 'task'
       },
       // leaf: true,//只有一个节点
       children: [
@@ -86,7 +86,7 @@ export default {
       iconCls: 'fa el-icon-menu',
       meta: {
         title: '产品管理',
-        icon: 'project',
+        icon: 'product',
         hidden:true
       },
     },
@@ -97,7 +97,7 @@ export default {
       iconCls: 'fa el-icon-menu',
       meta: {
         title: '产品管理',
-        icon: 'project'
+        icon: 'international'
       },
       // leaf: true,//只有一个节点
       children: [
@@ -119,7 +119,7 @@ export default {
       iconCls: 'fa el-icon-menu',
       meta: {
         title: '迭代管理',
-        icon: 'project',
+        icon: 'flow',
         hidden:true
       },
     },
@@ -130,7 +130,7 @@ export default {
       iconCls: 'fa el-icon-menu',
       meta: {
         title: '迭代管理',
-        icon: 'project'
+        icon: 'flow'
       },
       // leaf: true,//只有一个节点
       children: [
@@ -145,7 +145,7 @@ export default {
       iconCls: 'fa el-icon-menu',
       meta: {
         title: '团队管理',
-        icon: 'project'
+        icon: 'user'
       },
       // leaf: true,//只有一个节点
       children: [
