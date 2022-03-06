@@ -3,7 +3,7 @@
     <div
       class="card-item"
       v-for="(card, i) in myData"
-      :key="card.title"
+      :key="i"
     >
       <div class="card-header">
         <div class="card-header-left">{{ card.title }}</div>

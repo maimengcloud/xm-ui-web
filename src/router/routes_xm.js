@@ -18,8 +18,7 @@ export default {
 
         { path: 'xmProject/XmProjectAdd', component: _import('xm/core/xmProject/XmProjectAdd'), name: 'xmProjectAdd',hidden:true, meta: { title: '项目立项' }},
         { path: 'xmProject/XmProjectAllMng', component: _import('xm/core/xmProject/XmProjectAllMng'), name: 'xmProjectAllMng', meta: { title: '项目总览' }},
-        { path: 'xmProject/XmProjectMng', component: _import('xm/core/xmProject/XmProjectMng'), name: 'xmProjectMng', meta: { title: '项目(我的)' }},
-        { path: 'xmProjectState/XmCockpit',   name: 'XmCockpit', meta: { title: '领导驾驶舱' ,openTab:true,outUrl:'${curlDomain}/xm/'+process.env.VERSION+'/#/datav/xm/branch/branchDatavFullScreen'}},
+        { path: 'xmProject/XmProjectMng', component: _import('xm/core/xmProject/XmProjectMng'), name: 'xmProjectMng', meta: { title: '项目(我的)' }}, 
         { path: 'xmProjectState/XmProjectStateMng', component: _import('xm/core/xmProjectState/XmProjectStateMng'), name: 'XmProjectStateMng', meta: { title: '项目统计' }},
         { path: 'xmBranchState/XmBranchStateMng', component: _import('xm/core/xmBranchState/XmBranchStateMng'), name: 'XmBranchStateMng', meta: { title: '所有项目汇总' }},
         { path: 'xmProject/XmProjectRecycle', component: _import('xm/core/xmProject/XmProjectRecycle'), name: 'XmProjectRecycle', meta: { title: '项目回收站' }},
