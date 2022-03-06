@@ -2,10 +2,10 @@
   <section class="page-container padding">
     <el-row class="page-main " :style="{overflowX: 'hidden',height:maxTableHeight+'px'}" ref="table"> 
       <el-row :gutter="10" style="margin-bottom:10px">
-          <el-col :span="12" >
+          <el-col :span="16" >
             <el-card class="box-card" style="padding:0px ;height:425px">
               <div slot="header" class="clearfix">
-                <span>数据汇总</span>
+                <span class="el-icon-s-data" style=" color: #3E68fe;">数据汇总</span>
               </div>
               <el-row style="margin-bottom:18px">
                 <el-col :span="8">
@@ -124,10 +124,72 @@
               </el-row>
             </el-card>
           </el-col>
-          <el-col :span="12" >
+          <el-col :span="8" >
+          <el-card class="box-card" style="height:425px">
+            <div slot="header" class="clearfix">
+              <span class="el-icon-document" style=" color: #3E68fe;">&nbsp;快捷菜单</span>
+            </div> 
+            <div class="menu"> 
+              <div class="menu-content">
+                <div class="quick-menu" @click="gotolink('/xm/core/xmProject/XmProjectAllMng')">
+                  <div class="quick-menu-icon-outer">
+                    <img src="../../assets/image/platform/module-project.png" />
+                  </div>
+                  <div class="quick-menu-text">项目管理</div>
+                </div> 
+                
+                <div class="quick-menu" @click="gotolink('/xm/core/xmProduct/XmProductAllMng')">
+                  <div class="quick-menu-icon-outer">
+                    <img src="../../assets/image/platform/module-attendance.png" />
+                  </div>
+                  <div class="quick-menu-text">产品管理</div>
+                </div> 
+                
+                <div class="quick-menu" @click="gotolink('/xm/core/xmMenu/XmMenuMng')">
+                  <div class="quick-menu-icon-outer">
+                    <img src="../../assets/image/platform/module-contract.png" />
+                  </div>
+                  <div class="quick-menu-text">需求管理</div>
+                </div> 
+                
+                <div class="quick-menu" @click="gotolink('/xm/core/xmQuestion/XmQuestionMng')">
+                  <div class="quick-menu-icon-outer">
+                    <img src="../../assets/image/platform/module-fake.png" />
+                  </div>
+                  <div class="quick-menu-text">缺陷管理</div>
+                </div> 
+                
+                <div class="quick-menu" @click="gotolink('/xm/core/xmProjectGroup/XmProjectGroupAllMng')">
+                  <div class="quick-menu-icon-outer">
+                    <img src="../../assets/image/platform/module-organization.png" />
+                  </div>
+                  <div class="quick-menu-text">团队管理</div>
+                </div> 
+                
+                <div class="quick-menu" @click="gotolink('/mdp/workflow/ru/task/TaskListAssigneeToMe')">
+                  <div class="quick-menu-icon-outer">
+                    <img src="../../assets/image/platform/module-task.png" />
+                  </div>
+                  <div class="quick-menu-text">待审事项</div>
+                </div> 
+                
+                <div class="quick-menu" @click="gotolink('/xm/core/xmTask/XmMyTaskCenter')">
+                  <div class="quick-menu-icon-outer">
+                    <img src="../../assets/image/platform/module-code.png" />
+                  </div>
+                  <div class="quick-menu-text">开发任务</div>
+                </div>  
+              </div>
+            </div>
+          </el-card>
+        </el-col> 
+        
+        </el-row>
+        <el-row :gutter="10" style="margin-bottom:10px">
+          <el-col :span="16" >
             <el-card class="box-card" style="padding:0px ;height:425px">
               <div slot="header" class="clearfix">
-                <span>项目进度</span>
+                <span class="el-icon-s-operation" style=" color: #3E68fe;">项目进度</span>
               </div>
               <div>
                 <el-row style="padding-top:15px;padding-left:25px;">
@@ -204,64 +266,67 @@
               </div>
             </el-card>
           </el-col>
-        </el-row>
-        <el-row :gutter="10" style="margin-bottom:10px">
           <el-col :span="8" >
             <el-card class="box-card" style="height:425px">
               <div slot="header" class="clearfix">
-                <span>工作量分布</span>
+                <span class="el-icon-document"  style=" color: #3E68fe;">工作量分布</span>
               </div>
               <div>
                 <div id="workloadDistribution" :style="{width: '100%', height: '410px'}"></div>
               </div>
             </el-card>
-          </el-col>
-          <el-col :span="8" >
-            <el-card class="box-card" style="height:425px">
-              <div slot="header" class="clearfix">
-                <span>工作项数量分布</span>
-              </div>
-              <div>
-                <div id="allChart" :style="{width: '100%', height: '350px'}"></div>
-              </div>
-            </el-card>
-          </el-col>
-          <el-col :span="8" >
-            <el-card class="box-card" style="height:425px">
-              <div slot="header" class="clearfix">
-                <span>缺陷情况</span>
-              </div>
-              <div>
-                <div id="bugPieChart" :style="{width: '100%', height: '410px'}"></div>
-              </div>
-            </el-card>
-          </el-col>
+          </el-col> 
         </el-row>
       <el-row :gutter="10" style="margin-bottom:10px">
-          <el-col :span="8" >
+
+          
+          <el-col :span="16" >
             <el-card class="box-card" style="padding:0px ;height:425px">
               <div slot="header" class="clearfix">
-                <span>任务每日状态趋势</span>
+                <span  class="el-icon-document"  style=" color: #3E68fe;">任务每日状态趋势</span>
               </div>
               <div>
                 <div id="taskChart" :style="{width: '100%', height: '320px'}"></div>
               </div>
             </el-card>
           </el-col>  
+         <el-col :span="8" >
+            <el-card class="box-card" style="height:425px">
+              <div slot="header" class="clearfix">
+                <span  class="el-icon-document"  style=" color: #3E68fe;">工作项数量分布</span>
+              </div>
+              <div>
+                <div id="allChart" :style="{width: '100%', height: '350px'}"></div>
+              </div>
+            </el-card>
+          </el-col> 
+      </el-row>
+      
+      <el-row :gutter="10" style="margin-bottom:10px"> 
         <el-col :span="8" >
           <el-card class="box-card" style="height:425px">
             <div slot="header" class="clearfix">
-              <span>总预算情况</span>
+              <span  class="el-icon-document"  style=" color: #3E68fe;">总预算情况</span>
             </div>
             <div>
               <div id="planTotalCostPie" :style="{width: '100%', height: '410px'}"></div>
             </div>
           </el-card>
         </el-col> 
+          <el-col :span="8" >
+            <el-card class="box-card" style="height:425px">
+              <div slot="header" class="clearfix">
+                <span  class="el-icon-document"  style=" color: #3E68fe;">缺陷情况</span>
+              </div>
+              <div>
+                <div id="bugPieChart" :style="{width: '100%', height: '410px'}"></div>
+              </div>
+            </el-card>
+          </el-col>
         <el-col :span="8" >
           <el-card class="box-card" style="height:425px">
             <div slot="header" class="clearfix">
-              <span>所含产品和迭代情况</span>
+              <span  class="el-icon-document"  style=" color: #3E68fe;">所含产品和迭代情况</span>
             </div>
             <div>
               <div id="iterationAndProduct" :style="{width: '100%', height: '350px'}"></div>
@@ -739,7 +804,12 @@ export default {
           this.xmBranchState=res.data.data[0]
         }
       });
-    }
+    },
+    
+    //路由跳转
+    gotolink(link) {
+      this.$router.replace(link);
+    },
   },
 
   mounted() {
@@ -875,4 +945,59 @@ export default {
   padding: 20px;
   padding-bottom: 0;
 }
+</style>
+<style scoped lang="scss" >
+ .menu {
+    background: white;
+    min-height: 280px;
+    margin-top: 10px;
+    .menu-content {
+      display: flex;
+      justify-content: flex-start;
+      padding: 10px;
+      flex-wrap: wrap;
+      .quick-menu {
+        height: 80px;
+        width: 60px;
+        margin-right: 15px;
+        cursor: pointer;
+        margin-bottom: 20px;
+        .quick-menu-icon-outer {
+          width: 52px;
+          height: 52px;
+          padding: 6px;
+          border: 1px solid transparent;
+          border-radius: 5px;
+          text-align: center;
+          line-height: 52px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          img {
+            width: 30px;
+            color: white;
+          }
+        }
+        .quick-menu-text {
+          height: 30px;
+          width: 60px;
+          line-height: 30px;
+          font-size: 12px;
+          color: #333;
+          float: left;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          text-align: center;
+        }
+      }
+      .quick-menu:hover {
+        opacity: 0.8;
+        .quick-menu-text {
+          color: rgb(3, 169, 244);
+        }
+      }
+    }
+  }
 </style>
