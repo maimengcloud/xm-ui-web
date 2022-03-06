@@ -2,7 +2,7 @@
   <section class="page-container padding">
     <el-row class="page-main " :style="{overflowX: 'hidden',height:maxTableHeight+'px'}" ref="table"> 
       <el-row :gutter="10" style="margin-bottom:10px">
-          <el-col :span="8" >
+          <el-col :span="12" >
             <el-card class="box-card" style="padding:0px ;height:425px">
               <div slot="header" class="clearfix">
                 <span>数据汇总</span>
@@ -25,7 +25,7 @@
                       <i class="el-icon-alarm-clock"></i>
                     </div>
                     <div class="info">
-                      <div v-text="xmBranchState.totalPhaseCnt">
+                      <div v-text="xmBranchState.productBudgetWorkload">
                       </div>
                       <div class="title">产品总工时</div>
                     </div>
@@ -124,50 +124,18 @@
               </el-row>
             </el-card>
           </el-col>
-          <el-col :span="8" >
-            <el-card class="box-card" style="height:425px">
-              <div slot="header" class="clearfix">
-                <span>所有工作项数量分布</span>
-              </div>
-              <div>
-                <div id="allChart" :style="{width: '100%', height: '350px'}"></div>
-              </div>
-            </el-card>
-          </el-col>
-          <el-col :span="8" >
-            <el-card class="box-card" style="height:425px">
-              <div slot="header" class="clearfix">
-                <span>缺陷情况</span>
-              </div>
-              <div>
-                <div id="bugPieChart" :style="{width: '100%', height: '410px'}"></div>
-              </div>
-            </el-card>
-          </el-col>
-        </el-row>
-      <el-row :gutter="10" style="margin-bottom:10px">
           <el-col :span="12" >
             <el-card class="box-card" style="padding:0px ;height:425px">
               <div slot="header" class="clearfix">
-                <span>任务每日状态趋势</span>
+                <span>项目进度</span>
               </div>
               <div>
-                <div id="taskChart" :style="{width: '100%', height: '320px'}"></div>
-              </div>
-            </el-card>
-          </el-col>
-          <el-col :span="12" >
-            <el-card class="box-card" style="padding:0px ;height:425px">
-              <div slot="header" class="clearfix">
-                <span>项目工时</span>
-              </div>
-              <div>
-                <el-row style="padding:25px;">
+                <el-row style="padding-top:15px;padding-left:25px;">
                   <div class="item">
                     <el-col :span="8">
                       <div>
                         <div style="text-align:center;">
-                          <span style="font-size:24px;" v-text="this.xmBranchState.totalPlanWorkload"></span>
+                          <span style="font-size:24px;" v-text="this.xmBranchState.estimateWorkload"></span>
                           <span style="font-size:5px;">h</span>
                         </div>
                         <div style="text-align:center;font-size:5px;">预估工时</div>
@@ -193,7 +161,7 @@
                     </el-col>
                   </div>
                 </el-row>
-                <el-row style="padding:25px;">
+                <el-row style="padding-top:15px;padding-left:25px;">
                   <div class="item">
                     <el-col :span="8">
                       <div>
@@ -237,6 +205,50 @@
             </el-card>
           </el-col>
         </el-row>
+        <el-row :gutter="10" style="margin-bottom:10px">
+          <el-col :span="8" >
+            <el-card class="box-card" style="height:425px">
+              <div slot="header" class="clearfix">
+                <span>工作量分布</span>
+              </div>
+              <div>
+                <div id="workloadDistribution" :style="{width: '100%', height: '410px'}"></div>
+              </div>
+            </el-card>
+          </el-col>
+          <el-col :span="8" >
+            <el-card class="box-card" style="height:425px">
+              <div slot="header" class="clearfix">
+                <span>工作项数量分布</span>
+              </div>
+              <div>
+                <div id="allChart" :style="{width: '100%', height: '350px'}"></div>
+              </div>
+            </el-card>
+          </el-col>
+          <el-col :span="8" >
+            <el-card class="box-card" style="height:425px">
+              <div slot="header" class="clearfix">
+                <span>缺陷情况</span>
+              </div>
+              <div>
+                <div id="bugPieChart" :style="{width: '100%', height: '410px'}"></div>
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
+      <el-row :gutter="10" style="margin-bottom:10px">
+          <el-col :span="12" >
+            <el-card class="box-card" style="padding:0px ;height:425px">
+              <div slot="header" class="clearfix">
+                <span>任务每日状态趋势</span>
+              </div>
+              <div>
+                <div id="taskChart" :style="{width: '100%', height: '320px'}"></div>
+              </div>
+            </el-card>
+          </el-col> 
+        </el-row>
       <el-row :gutter="10" style="margin-bottom:10px">
         <el-col :span="8" >
           <el-card class="box-card" style="height:425px">
@@ -247,17 +259,7 @@
               <div id="planTotalCostPie" :style="{width: '100%', height: '410px'}"></div>
             </div>
           </el-card>
-        </el-col>
-        <el-col :span="8" >
-          <el-card class="box-card" style="height:425px">
-            <div slot="header" class="clearfix">
-              <span>工作量分布</span>
-            </div>
-            <div>
-              <div id="workloadDistribution" :style="{width: '100%', height: '410px'}"></div>
-            </div>
-          </el-card>
-        </el-col>
+        </el-col> 
         <el-col :span="8" >
           <el-card class="box-card" style="height:425px">
             <div slot="header" class="clearfix">
@@ -303,37 +305,27 @@ export default {
       return this.xmBranchState.createUsername;
     },
     workloadProgress:function (){
-      return Math.round(this.xmBranchState.totalActWorkload/this.xmBranchState.totalPlanWorkload*100);
+      return Math.round(this.xmBranchState.totalActWorkload/this.xmBranchState.estimateWorkload*100);
     },
     deviation:function (){
-      let now = new Date();
-      let taskStartTime = new Date(this.xmBranchState.startTime);
-      let taskEndTime = new Date(this.xmBranchState.endTime);
-      if(now<=taskEndTime){
-        let allDays=taskEndTime-taskStartTime;
-        return this.xmBranchState.totalActWorkload - Math.round((now-taskStartTime)/allDays*this.xmBranchState.totalPlanWorkload)
-      }else{
-        return this.xmBranchState.totalActWorkload - this.xmBranchState.totalPlanWorkload;
-      }
+      return Math.round(this.xmBranchState.totalActWorkload-this.xmBranchState.estimateWorkload);
     },
     deviationRate:function (){
-      return Math.round(this.deviation/this.xmBranchState.totalPlanWorkload*100);
+      return Math.round((this.xmBranchState.totalActWorkload-this.xmBranchState.estimateWorkload)/this.xmBranchState.estimateWorkload*100);
     },
     remainWorkload:function (){
       return this.xmBranchState.totalPlanWorkload - this.xmBranchState.totalActWorkload;
     },
     planProgress:function (){
-      let now = new Date();
-      let taskStartTime = new Date(this.xmBranchState.startTime);
-      let taskEndTime = new Date(this.xmBranchState.endTime);
-      if(now<=taskEndTime){
-        let allDays=taskEndTime-taskStartTime;
-        return Math.round((now-taskStartTime)/allDays*100)
-      }else{
-        return 100;
+      if(!this.xmBranchState.totalPlanWorkload){
+        return 0;
       }
+      return parseInt( this.xmBranchState.estimateWorkload/this.xmBranchState.totalPlanWorkload*100)
     },
     realProgress:function (){
+      if(!this.xmBranchState.totalPlanWorkload){
+        return 0;
+      }
       if(this.xmBranchState.totalActWorkload < this.xmBranchState.totalPlanWorkload){
         return Math.round(this.xmBranchState.totalActWorkload/this.xmBranchState.totalPlanWorkload*100)
       }else{
@@ -685,14 +677,14 @@ export default {
               }
             },
             data: [
-              {value: this.xmBranchState.planInnerUserWorkload,
+              {value: this.xmBranchState.totalPlanInnerUserWorkload,
                 itemStyle: {
                   normal:{
                     color: '#91CC75'
                   }
                 },
                 name: '内部人力'},
-              {value: this.xmBranchState.planOutUserWorkload,
+              {value: this.xmBranchState.totalPlanOutUserWorkload,
                 itemStyle: {
                   normal:{
                     color: '#3BA272'
