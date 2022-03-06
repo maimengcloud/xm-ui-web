@@ -46,7 +46,7 @@ export const constantRouterMap = [
     redirect: 'dashboard',
     children: [{
       path: 'dashboard',
-      component: _import('xm/core/xmProject/XmProjectMng'),
+      component: _import('xm/XmOverview'),
       name: 'dashboard',
       meta: { title: 'dashboard', icon: 'home-page', noCache: true }
     },
