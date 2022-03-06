@@ -125,7 +125,8 @@
 			 <el-row class="padding-top">
 				<!--列表 XmQuestion xm_question-->
 				<el-table  ref="table" :height="maxTableHeight" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
- 					<el-table-column prop="name" label="缺陷名称"  min-width="150">
+ 					<el-table-column  label="序号" type="index" min-width="50"></el-table-column>
+					 <el-table-column prop="name" label="缺陷名称"  min-width="150" show-overflow-tooltip>
 						<template slot-scope="scope"> 
 								<el-link @click="showEdit(scope.row)" type="primary"> 
 									<el-tag type="info" v-if="scope.row.bugSeverity=='4' ">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
@@ -133,7 +134,7 @@
 									<el-tag type="warning" v-else-if="scope.row.bugSeverity=='2'">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
 									<el-tag type="danger" v-else-if="scope.row.bugSeverity=='1'">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
 									<el-tag v-else>{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag> 
-									{{scope.row.id}}&nbsp;&nbsp;
+									&nbsp;&nbsp;
 								</el-link>   
 								{{scope.row.name}}
 						</template>
@@ -164,6 +165,11 @@
 					<el-table-column prop="tagNames" label="标签"  width="100" show-overflow-tooltip> 
 					</el-table-column>
 					<el-table-column prop="menuName" label="需求" width="100" show-overflow-tooltip></el-table-column>
+					<el-table-column   v-if="!isMultiSelect"  header-align="center" label="操作" fixed="right" width="100">
+						<template slot-scope="scope">
+							<el-button  :disabled="scope.row.ntype=='1'"  type="primary" @click.stop="showEdit(scope.row)" >编辑</el-button> 	
+						</template>
+					</el-table-column>
 				</el-table>
 				<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 			 </el-row>
