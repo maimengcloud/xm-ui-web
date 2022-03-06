@@ -15,17 +15,19 @@
 						<el-option value="moniter"  label="我监控"></el-option>
 						<el-option value="approver"  label="我审核"></el-option>
 						<el-option value="create"  label="我创建"></el-option>
-						<el-option class="hidden-md-and-down" value="myFocus"  label="我关注"></el-option>
-						<el-option class="hidden-md-and-down" value="myExecuserStatus0"  label="我排队"></el-option>
-						<el-option class="hidden-md-and-down" value="myExecuserStatus1"  label="我执行"></el-option>
-						<el-option class="hidden-lg-and-down" value="myExecuserStatus2"  label="我提交验收"></el-option>
-						<el-option class="hidden-lg-and-down" value="myExecuserStatus3"  label="我验收成功"></el-option>
-						<el-option class="hidden-lg-and-down" value="myExecuserStatus4"  label="我验收失败"></el-option>
-						<el-option class="hidden-lg-and-down" value="myExecuserStatus5"  label="我付款中"></el-option>
-						<el-option class="hidden-lg-and-down" value="myExecuserStatus6"  label="我付款成功"></el-option>
-						<el-option class="hidden-lg-and-down" value="myExecuserStatus7"  label="我放弃"></el-option> 
+						<el-option  value="myFocus"  label="我关注"></el-option>
+						<el-option  value="myExecuserStatus0"  label="我排队"></el-option>
+						<el-option  value="myExecuserStatus1"  label="我执行"></el-option>
+						<el-option  value="myExecuserStatus2"  label="我提交验收"></el-option>
+						<el-option  value="myExecuserStatus3"  label="我验收成功"></el-option>
+						<el-option  value="myExecuserStatus4"  label="我验收失败"></el-option>
+						<el-option  value="myExecuserStatus5"  label="我付款中"></el-option>
+						<el-option  value="myExecuserStatus6"  label="我付款成功"></el-option>
+						<el-option  value="myExecuserStatus7"  label="我放弃"></el-option> 
 					</el-select> 
-					<el-checkbox  v-model="finishFlag">未结束</el-checkbox>	
+					<el-select  v-model="filters.status" clearable placeholder="项目状态">
+						<el-option v-for="(item,index) in options['projectStatus']" :value="item.optionValue" :label="item.optionName" :key="index"></el-option> 
+					</el-select>  
 					<el-input class="hidden-md-and-down" placeholder="选择产品" v-model="filters.productName" @click.native="productSelectVisible=true" clearable @clear="onProductClose"  style="width:15%;"></el-input>
  					<el-input v-model="filters.key" style="width:15%;" placeholder="项目名称模糊查询" clearable>
 					</el-input>
