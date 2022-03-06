@@ -6,9 +6,9 @@
 			</el-col>
 			<el-col :span="productVisible==true?20:24" v-show="xmProduct && xmProduct.id">
 				<el-tabs type="border-card"  :value="showPanel"  @tab-click="tabClick">
-					<el-tab-pane>
-						<span v-show="productVisible==true" slot="label" @click.stop="productVisible=false" ><i class="el-icon-d-arrow-left" ></i> 隐藏左边产品列表</span>
-						<span v-show="productVisible==false" slot="label" @click.stop="productVisible=true"><i class="el-icon-d-arrow-right" ></i> 展开左边产品列表</span>
+					<el-tab-pane disabled>
+						<el-button type="text" v-show="productVisible==true" slot="label" @click.stop="productVisible=false" ><i class="el-icon-d-arrow-left" ></i> 隐藏</el-button>
+						<el-button type="text" v-show="productVisible==false" slot="label" @click.stop="productVisible=true"><i class="el-icon-d-arrow-right" ></i> 展开</el-button>
 					</el-tab-pane>
 					<el-tab-pane label="产品概览"   name="productOverview">
 						 <xm-product-overview v-if="xmProduct && showPanel=='productOverview'"  :xm-product="xmProduct" :sel-project="selProject"></xm-product-overview>

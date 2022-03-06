@@ -5,17 +5,16 @@
 				<xm-iteration-select :sel-project="selProject" :product-id="xmProduct?xmProduct.id:null"  @row-click="onIterationRowClick" @clear-select="onIterationClearSelect"></xm-iteration-select>
 			</el-col>
 			<el-col :span="iterationVisible==true?20:24" v-show="xmIteration && xmIteration.id">
-				<el-tabs type="border-card"  :value="showPanel" @tab-click="tabClick">
-					
-					<el-tab-pane  lazy @click.stop="iterationVisible=!iterationVisible">
-						<span @click.stop="iterationVisible=false" v-show="iterationVisible==true" slot="label" ><i class="el-icon-d-arrow-left" ></i>隐藏左边迭代列表</span>
-						<span  @click.stop="iterationVisible=true" v-show="iterationVisible==false" slot="label" ><i class="el-icon-d-arrow-right"></i> 展开左边迭代列表</span> 
+				<el-tabs type="border-card"  :value="showPanel" @tab-click="tabClick"> 
+					<el-tab-pane  lazy @click.stop="iterationVisible=!iterationVisible" name="iterations" disabled>
+						<el-button type="text" @click.stop="iterationVisible=false" v-show="iterationVisible==true" slot="label" ><i class="el-icon-d-arrow-left" ></i>隐藏</el-button>
+						<el-button type="text" @click.stop="iterationVisible=true" v-show="iterationVisible==false" slot="label" ><i class="el-icon-d-arrow-right"></i> 展开</el-button> 
 					</el-tab-pane>
 					<el-tab-pane label="迭代概览" lazy  name="iterationOverview">
 						<xm-iteration-overview v-if="xmIteration && showPanel=='iterationOverview'"  :xm-iteration="xmIteration" :sel-project="selProject"></xm-iteration-overview>
 					</el-tab-pane>
 					<el-tab-pane label="产品、战略"   name="products" v-if="!xmProduct">
-						 <xm-product-mng  v-if="xmIteration && showPanel=='products' && !xmProduct"    :xm-iteration="xmIteration" :sel-project="selProject"></xm-product-mng>
+						 <xm-product-mng  v-if="xmIteration && showPanel=='products'"    :xm-iteration="xmIteration" :sel-project="selProject"></xm-product-mng>
  					</el-tab-pane>
 					<el-tab-pane label="项目"   name="projects" v-if="!selProject">
   						<xm-project-for-link v-if="xmIteration && showPanel=='projects'"  :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-project-for-link>
@@ -144,9 +143,14 @@
 				if(this.xmIteration==null || !this.xmIteration.id){
 					this.iterationVisible=true;
 					this.$notify({showClose: true, message:"请先选中左边迭代", type: 'warning' });
+					return;
+				} 
+				
+				if(tab.name=='iterations'){
+					this.iterationVisible=!this.iterationVisible;
+					return;
 				}
-				return false;
-				 this.showPanel=tab.name
+				this.showPanel=tab.name 
 			},
 			doDelXmIterationProductLink(){
 				this.$confirm('移出后，迭代试图将看不到该产品信息，确认将产品【'+this.xmProduct.productName+'】从迭代【'+this.xmIteration.iterationName+'】移出吗？', '提示', {}).then(() => {

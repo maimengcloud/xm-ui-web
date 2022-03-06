@@ -6,9 +6,9 @@
 			</el-col>
 			<el-col :span="projectVisible==true?20:24" v-show="selProject && selProject.id">
 				<el-tabs type="border-card"  :value="showPanel" @tab-click="tabClick">
-					<el-tab-pane>
-						<span v-show="projectVisible==true" slot="label" @click.stop="projectVisible=false"><i class="el-icon-d-arrow-left" ></i> 隐藏左边项目列表</span>
-						<span v-show="projectVisible==false" slot="label" @click.stop="projectVisible=true"><i class="el-icon-d-arrow-right" ></i> 展开左边项目列表</span>
+					<el-tab-pane disabled>
+						<el-button type="text" v-show="projectVisible==true" slot="label" @click.stop="projectVisible=false"><i class="el-icon-d-arrow-left" ></i> 隐藏</el-button>
+						<el-button type="text" v-show="projectVisible==false" slot="label" @click.stop="projectVisible=true"><i class="el-icon-d-arrow-right" ></i>展开</el-button>
  					</el-tab-pane>
 					<el-tab-pane label="项目概览"   name="projectOverview">
 					 	<xm-project-overview v-if="selProject && showPanel=='projectOverview'" :xm-product="xmProduct"  :xm-iteration="xmIteration" :sel-project="selProject"></xm-project-overview>
