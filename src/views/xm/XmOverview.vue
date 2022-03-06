@@ -332,21 +332,7 @@ export default {
     },
     xmBranchStateCpd(){
       return this.xmBranchState
-    },
-    calcProjectStatusStep(){
-      if(this.options['projectStatus'] && this.xmBranchState){
-        var index=this.options['projectStatus'].findIndex(i=>{
-          if(i.optionValue==this.xmBranchState.status){
-            return true;
-          }else{
-            return false;
-          }
-        })
-        return index+1;
-      }else{
-        return 0;
-      }
-    }
+    }, 
 
   }, 
   watch:{
@@ -749,7 +735,7 @@ export default {
     searchXmBranchState(){
       listXmBranchState({branchId:this.userInfo.branchId}).then(res=>{
         var tips=res.data.tips;
-        if(tips.isOk){
+        if(tips.isOk && res.data.data.length>0){
           this.xmBranchState=res.data.data[0]
         }
       });
