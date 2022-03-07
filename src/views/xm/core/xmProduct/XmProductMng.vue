@@ -5,7 +5,7 @@
 			<xm-product-tpl-mng @copy="searchXmProducts" ref="xmProductTplMngRef" show-type="simple"></xm-product-tpl-mng>
 		</el-col> 
 		<el-col :span="templateVisible?18:24" class="padding-top padding-left border">
-			<el-row>
+			<el-row >
 				<el-row>
 					<el-select   v-model="filters.queryScope"    placeholder="产品查询范围">
 						<el-option :label="userInfo.branchName+'机构下所有的产品'" value="branchId"></el-option>
@@ -30,7 +30,7 @@
 								</el-col>  
 								<el-col :span="24" style="padding-top:5px;">
 									<el-badge value="进阶">
-									<el-button type="primary" icon="el-icon-plus">通过【产品-复制】一键创建新的产品</el-button> 
+									<el-button type="primary" icon="el-icon-plus" >通过【产品-复制】一键创建新的产品</el-button> 
 									</el-badge>
 								</el-col> 
 								<el-col :span="24" style="padding-top:5px;">
@@ -39,7 +39,7 @@
 									</el-badge>
 								</el-col> 
 							</el-row>   
- 							<el-button type="primary" slot="reference"  icon="el-icon-plus" v-if="!xmIteration">产品</el-button>
+ 							<el-button type="primary" slot="reference"  icon="el-icon-plus" v-if="!xmIteration" id="guider-one" >产品</el-button>
 					</el-popover>
 					<el-popover
 						placement="top-start"
@@ -105,10 +105,12 @@
 								</font>
 							</el-col>
 							<el-col  :span="24"  style="padding-top:10px;">
-								<el-button type="primary"  @click="searchXmProducts" >查询</el-button><el-button type="text"  @click="templateVisible=!templateVisible" >{{templateVisible?"隐藏模板":"显示模板"}}</el-button>
+								<el-button type="primary"  @click="searchXmProducts" >查询</el-button>
+								<el-button type="text"  @click="templateVisible=!templateVisible" >{{templateVisible?"隐藏模板":"显示模板"}}</el-button>
+								<el-button type="text"  @click="guiderStart(true)" icon="el-icon-help">新手导航</el-button>
 							</el-col>
 						</el-row>
-						<el-button  slot="reference"   icon="el-icon-more"></el-button>
+						<el-button  slot="reference"   icon="el-icon-more" id="guider-two"></el-button>
 					</el-popover>
 				</el-row>
 				<el-row  class="page-main "  v-show="showType">
@@ -153,9 +155,9 @@
 						
 						<el-table-column type="index" width="60"> 
 						</el-table-column>
-						<el-table-column prop="productName" label="产品名称" min-width="200" sortable>
-							<template slot-scope="scope">
-								<el-link type="primary" @click="intoInfo(scope.row)">{{scope.row.productName}}</el-link>
+						<el-table-column prop="productName" label="产品名称" min-width="200" sortable >
+							<template slot-scope="scope" >
+								<el-link id="guider-three" type="primary" @click="intoInfo(scope.row)">{{scope.row.productName}}</el-link>
 							</template>
 						</el-table-column>
 						<el-table-column prop="pstatus" label="状态" width="100" sortable :formatter="formatPstatus"> 
@@ -164,7 +166,7 @@
 							<template slot-scope="scope"> 
 								<font  ><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag>
 
-								<el-tooltip content="点击统计进度，由任务汇总"><el-button  type="text" icon="el-icon-video-play" @click.stop="loadTasksToXmProductState( scope.row)"></el-button></el-tooltip>
+								<el-tooltip content="点击统计进度，由任务汇总"><el-button  id="guider-four" type="text" icon="el-icon-video-play" @click.stop="loadTasksToXmProductState( scope.row)"></el-button></el-tooltip>
 
 								</font>
 							</template>
@@ -182,7 +184,7 @@
 						
 						<el-table-column  label="操作" width="350" fixed="right">
 							<template slot-scope="scope">
-											<el-button type="text" title="通过复制创建新的产品" @click="onCopyToBtnClick(scope.row)" :disabled="load.add" v-loading="load.add">复制</el-button>
+											<el-button id="guider-five" type="text"  title="通过复制创建新的产品" @click="onCopyToBtnClick(scope.row)" :disabled="load.add" v-loading="load.add">复制</el-button>
 											<el-button  type="text" @click="showProductState(scope.row)" icon="el-icon-s-data">报告</el-button>  
 											<el-button  type="text" @click="toIterationList(scope.row)" icon="el-icon-document">迭代</el-button>  
 											<el-button  type="text" @click="toProjectList(scope.row)"  icon="el-icon-document">项目</el-button>  
@@ -259,7 +261,7 @@
 					</el-dialog>
 			</el-row>
 		</el-col>
-		</el-row>
+		</el-row> 
 	</section>
 </template>
 
@@ -280,7 +282,9 @@
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
 	import XmProjectList from '../xmProject/XmProjectList.vue';
 	import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
-import XmProductSelect from './XmProductSelect.vue';
+	import XmProductSelect from './XmProductSelect.vue'; 
+
+	import Guider from '@/components/Guider/Index.js';
 
 	export default {
 		props:['selProject','xmIteration'],
@@ -349,9 +353,7 @@ import XmProductSelect from './XmProductSelect.vue';
 					id:'',productName:'',code:'',isTpl:'',copyMenu:'1',copyPhase:'1',copyGroup:'1',copyGroupUser:'0'
 				},
 				copyToVisible:false,
-				templateVisible:false,
-				/**begin 自定义属性请在下面加 请加备注**/
-
+				templateVisible:false, 
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -401,7 +403,7 @@ import XmProductSelect from './XmProductSelect.vue';
 				}).catch( err  => this.load.edit=false );
 			},
 			//获取列表 XmProduct 产品表
-			getXmProducts() {
+			getXmProducts(callBack) {
 				let params = {
 					pageSize: this.pageInfo.pageSize,
 					pageNum: this.pageInfo.pageNum,
@@ -453,6 +455,11 @@ import XmProductSelect from './XmProductSelect.vue';
 						this.xmProducts = res.data.data; 
 					}else{
 						this.$notify({showClose: true, message: tips.msg, type: 'error' });
+					}
+					if(callBack){
+						this.$nextTick(()=>{
+							callBack();
+						}) 
 					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -669,7 +676,9 @@ import XmProductSelect from './XmProductSelect.vue';
 				})
 			},
 			/**end 自定义函数请在上面加**/
-
+			guiderStart(forceDisplayWhileClosed) { // 初始化引导页
+				Guider.startByName('xmProductMng',forceDisplayWhileClosed); 
+			},
 		},//end methods
 		components: {
 		    'xm-product-add':XmProductAdd,
@@ -680,7 +689,7 @@ import XmProductSelect from './XmProductSelect.vue';
 			XmProjectList,
 			XmIterationSelect,
 			XmProductSelect,
-			XmProductTplMng,
+			XmProductTplMng, 
 		    //在下面添加其它组件
 		},
 		mounted() {
@@ -692,9 +701,9 @@ import XmProductSelect from './XmProductSelect.vue';
 			});
 			this.$nextTick(() => { 
 				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
-				this.getXmProducts();
+				this.getXmProducts(this.guiderStart);  
         	});
-		}
+		},
 	}
 
 </script>

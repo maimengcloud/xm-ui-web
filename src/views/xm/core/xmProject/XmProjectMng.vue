@@ -32,6 +32,30 @@
  					<el-input v-model="filters.key" style="width:15%;" placeholder="项目名称模糊查询" clearable>
 					</el-input>
 					<el-button  type="primary" icon="el-icon-search" @click="searchXmProjects">查询</el-button>
+						<el-popover style="padding-left:10px;"  
+							placement="top-start"
+							width="450" 
+							trigger="click" > 
+							<el-row> 
+								<el-col :span="24" style="padding-top:5px;">
+									<el-badge value="都适用">
+									<el-button   @click="showAdd" icon="el-icon-plus">直接添加新项目</el-button> 
+									</el-badge>
+								</el-col>  
+								<el-col :span="24" style="padding-top:5px;">
+									<el-badge value="进阶">
+									<el-button type="primary" icon="el-icon-plus">通过【产品-复制】一键创建新的项目</el-button> 
+									</el-badge>
+								</el-col> 
+								<el-col :span="24" style="padding-top:5px;">
+									<el-badge value="新手">
+									<el-button type="warning" @click="templateVisible=!templateVisible" icon="el-icon-plus">通过【模板-复制】一键创建新的项目</el-button> 
+									</el-badge>
+								</el-col> 
+							</el-row>   
+ 							<el-button id="prj-plus-btn" type="primary" slot="reference"  icon="el-icon-plus">项目</el-button>
+							</el-popover>  
+					
 						<el-popover
 							placement="top-start"
 							title="更多查询条件或操作"
@@ -66,46 +90,23 @@
 								<el-col :span="24" style="padding-top:5px;">
 									<el-button  type="primary" icon="el-icon-search" @click="searchXmProjects">查询</el-button>
 									<el-button type="text" @click="templateVisible=!templateVisible">{{templateVisible?'隐藏模板':'显示模板'}}</el-button>
+									<el-button type="text"  @click="guiderStart(true)" icon="el-icon-help">新手导航</el-button>
+
 								</el-col>
 							</el-row>
-							<el-button  slot="reference" icon="el-icon-more"></el-button>
+							<el-button  slot="reference" icon="el-icon-more" id="prj-more-btn"></el-button>
 						</el-popover>
-						<el-popover style="padding-left:10px;"  
-							placement="top-start"
-							width="450" 
-							trigger="click" > 
-							<el-row> 
-								<el-col :span="24" style="padding-top:5px;">
-									<el-badge value="都适用">
-									<el-button   @click="showAdd" icon="el-icon-plus">直接添加新项目</el-button> 
-									</el-badge>
-								</el-col>  
-								<el-col :span="24" style="padding-top:5px;">
-									<el-badge value="进阶">
-									<el-button type="primary" icon="el-icon-plus">通过【产品-复制】一键创建新的项目</el-button> 
-									</el-badge>
-								</el-col> 
-								<el-col :span="24" style="padding-top:5px;">
-									<el-badge value="新手">
-									<el-button type="warning" @click="templateVisible=!templateVisible" icon="el-icon-plus">通过【模板-复制】一键创建新的项目</el-button> 
-									</el-badge>
-								</el-col> 
-							</el-row>   
- 							<el-button type="primary" slot="reference"  icon="el-icon-plus">项目</el-button>
-							</el-popover> 
-					</el-menu> 
-					
 				</el-row> 
 				<el-row  class="page-main"> 
 					<!--列表 XmProject xm_project-->
 					<el-row v-show="showType" v-loading="load.list" :style="{overflowX:'hidden',height:maxTableHeight+'px'}" ref="table1">
 						<el-col  v-cloak v-for="(p,i) in ScreenData" :key="i" :xl="8" :lg="8" :md="8" :sm="12">
-							<el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always">
+							<el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always" id="prj-view-box">
 								<div class="project-name" title="这是项目名称">{{p.name}}</div>
 								<div class="project-id"><span title="项目代号">{{p.code}} </span><font title="项目状态" :color="p.status=='7'?'green':'blue'">{{formatProjectStatus(p.status)}}</font>
-									<el-link type="danger" style="font-size:14px;float:right;margin-left:2px;"  title="删除项目" @click.stop="handleDel(p)" v-loading="load.add">删除</el-link>
-									<el-link type="primary" style="font-size:14px;float:right;margin-left:2px;"  title="通过复制快速创建新项目" @click.stop="onCopyToBtnClick(p)" v-loading="load.add">复制</el-link> 
-									<el-link type="warning" style="font-size:14px;float:right;margin-left:2px;"  title="统计项目的工作量、进度、需求、bugs等数据" @click.stop="loadTasksToXmProjectState(p)" v-loading="load.add">统计</el-link>
+									<el-link id="prj-del-btn" type="danger" style="font-size:14px;float:right;margin-left:2px;"  title="删除项目" @click.stop="handleDel(p)" v-loading="load.add">删除</el-link>
+									<el-link id="prj-copy-btn" type="primary" style="font-size:14px;float:right;margin-left:2px;"  title="通过复制快速创建新项目" @click.stop="onCopyToBtnClick(p)" v-loading="load.add">复制</el-link> 
+									<el-link id="prj-calc-btn" type="warning" style="font-size:14px;float:right;margin-left:2px;"  title="统计项目的工作量、进度、需求、bugs等数据" @click.stop="loadTasksToXmProjectState(p)" v-loading="load.add">统计</el-link>
 								</div>
 								<div class="project-info"> 
 									
@@ -322,6 +323,7 @@
 	}
 	
 
+	import Guider from '@/components/Guider/Index.js';
 
 	export default { 
 		props:['dataScope'],
@@ -428,7 +430,7 @@
 				 this.getXmProjects();
 			},
 			//获取列表 XmProject xm_project
-			getXmProjects() {
+			getXmProjects(callBack) {
 				let params = {
 					pageSize: this.pageInfo.pageSize,
 					pageNum: this.pageInfo.pageNum,
@@ -472,6 +474,11 @@
 					}else{
 						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					} 
+					if(callBack){
+						this.$nextTick(()=>{
+							callBack(); 
+						})
+					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			},
@@ -824,7 +831,11 @@
 						}
 						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.edit=false ); 
-			}
+			},
+			
+			guiderStart(forceDisplayWhileClosed) { // 初始化引导页
+				Guider.startByName('xmProjectMng',forceDisplayWhileClosed); 
+			},
 			/**end 自定义函数请在上面加**/
 			
 		},//end methods
@@ -854,7 +865,7 @@
 				});
                 this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table1.$el);
 				this.showInfo = false;
-				this.getXmProjects();
+				this.getXmProjects(this.guiderStart);
 			}); 
 		}, 
 	}

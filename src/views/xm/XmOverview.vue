@@ -130,55 +130,49 @@
               <span class="el-icon-document" style=" color: #3E68fe;">&nbsp;快捷菜单</span>
             </div> 
             <div class="menu"> 
-              <div class="menu-content">
-                <div class="quick-menu" @click="gotolink('/xm/core/xmProject/XmProjectAllMng')">
-                  <div class="quick-menu-icon-outer">
-                    <img src="../../assets/image/platform/module-project.png" />
-                  </div>
-                  <div class="quick-menu-text">项目管理</div>
-                </div> 
-                
-                <div class="quick-menu" @click="gotolink('/xm/core/xmProduct/XmProductAllMng')">
+              <div class="menu-content"> 
+                <div class="quick-menu" @click="gotolink('/xm/core/xmProduct/XmProductAllMng')" id="XmProductAllMng">
                   <div class="quick-menu-icon-outer">
                     <img src="../../assets/image/platform/module-attendance.png" />
                   </div>
                   <div class="quick-menu-text">产品管理</div>
-                </div> 
-                
-                <div class="quick-menu" @click="gotolink('/xm/core/xmMenu/XmMenuMng')">
+                </div>  
+                <div class="quick-menu" @click="gotolink('/xm/core/xmMenu/XmMenuMng')" id="XmMenuMng">
                   <div class="quick-menu-icon-outer">
                     <img src="../../assets/image/platform/module-contract.png" />
                   </div>
                   <div class="quick-menu-text">需求管理</div>
-                </div> 
-                
-                <div class="quick-menu" @click="gotolink('/xm/core/xmQuestion/XmQuestionMng')">
+                </div>  
+                <div class="quick-menu" @click="gotolink('/xm/core/xmProject/XmProjectAllMng')" id="XmProjectAllMng">
                   <div class="quick-menu-icon-outer">
-                    <img src="../../assets/image/platform/module-fake.png" />
+                    <img src="../../assets/image/platform/module-project.png" />
                   </div>
-                  <div class="quick-menu-text">缺陷管理</div>
-                </div> 
-                
-                <div class="quick-menu" @click="gotolink('/xm/core/xmProjectGroup/XmProjectGroupAllMng')">
-                  <div class="quick-menu-icon-outer">
-                    <img src="../../assets/image/platform/module-organization.png" />
-                  </div>
-                  <div class="quick-menu-text">团队管理</div>
-                </div> 
-                
-                <div class="quick-menu" @click="gotolink('/mdp/workflow/ru/task/TaskListAssigneeToMe')">
-                  <div class="quick-menu-icon-outer">
-                    <img src="../../assets/image/platform/module-task.png" />
-                  </div>
-                  <div class="quick-menu-text">待审事项</div>
-                </div> 
-                
-                <div class="quick-menu" @click="gotolink('/xm/core/xmTask/XmMyTaskCenter')">
+                  <div class="quick-menu-text">项目管理</div>
+                </div>  
+                <div class="quick-menu" @click="gotolink('/xm/core/xmTask/XmMyTaskCenter')" id="XmMyTaskCenter">
                   <div class="quick-menu-icon-outer">
                     <img src="../../assets/image/platform/module-code.png" />
                   </div>
                   <div class="quick-menu-text">开发任务</div>
                 </div>  
+                <div class="quick-menu" @click="gotolink('/xm/core/xmProjectGroup/XmProjectGroupAllMng')" id="XmProjectGroupAllMng">
+                  <div class="quick-menu-icon-outer">
+                    <img src="../../assets/image/platform/module-organization.png" />
+                  </div>
+                  <div class="quick-menu-text">团队管理</div>
+                </div>  
+                <div class="quick-menu" @click="gotolink('/xm/core/xmQuestion/XmQuestionMng')" id="XmQuestionMng">
+                  <div class="quick-menu-icon-outer">
+                    <img src="../../assets/image/platform/module-fake.png" />
+                  </div>
+                  <div class="quick-menu-text">缺陷管理</div>
+                </div> 
+                <div class="quick-menu" @click="gotolink('/mdp/workflow/ru/task/TaskListAssigneeToMe')" id="TaskListAssigneeToMe">
+                  <div class="quick-menu-icon-outer">
+                    <img src="../../assets/image/platform/module-task.png" />
+                  </div>
+                  <div class="quick-menu-text">待审事项</div>
+                </div> 
               </div>
             </div>
           </el-card>
@@ -343,6 +337,8 @@ import util from "@/common/js/util"; // 全局公共库
 import { mapGetters } from "vuex";
 import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询  
 	import { listXmBranchState,loadProjectStateToXmBranchState } from '@/api/xm/core/xmBranchState';
+  
+	import Guider from '@/components/Guider/Index.js';
 export default {
   computed: {
     ...mapGetters(["userInfo"]),
@@ -810,11 +806,17 @@ export default {
     gotolink(link) {
       this.$router.replace(link);
     },
+    
+    /**end 自定义函数请在上面加**/
+    guiderStart(forceDisplayWhileClosed) { // 初始化引导页
+      Guider.startByName('xmHomePage',forceDisplayWhileClosed); 
+    },
   },
 
   mounted() {
     this.$nextTick(() => {
-      this.maxTableHeight=util.calcTableMaxHeight(this.$refs.table.$el)
+      this.maxTableHeight=util.calcTableMaxHeight(this.$refs.table.$el) 
+      this.guiderStart();
     }); 
     this.drawAllBar();
     this.drawTaskByDate();

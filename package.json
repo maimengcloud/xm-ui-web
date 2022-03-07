@@ -20,6 +20,7 @@
     "codemirror": "5.32.0",
     "dayjs": "^1.8.29",
     "decimal.js": "^10.2.0",
+    "driver.js": "^0.9.8",
     "dropzone": "5.2.0",
     "echarts": "3.8.5",
     "element-ui": "^2.13.0",
