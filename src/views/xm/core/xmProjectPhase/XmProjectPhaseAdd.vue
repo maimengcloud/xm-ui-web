@@ -1,20 +1,9 @@
 <template>
-	<section class="page-container border padding">
+	<section class="page-container padding">
 		<el-row class="page-main ">
 			<!--新增界面 XmProjectPhase xm_project_phase-->
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
 				<el-row class="border padding">
-					
-					<el-form-item label="类型" prop="ntype">
-						<el-radio  v-model="addForm.ntype" label="1">计划集</el-radio>
-						<el-radio  v-model="addForm.ntype" label="0">计划</el-radio>
-						<font color="red" v-if="addForm.phaseClass=='0'">
-							<br>计划集只负责汇总数据，类似文件夹功能。计划集下可建立子计划集、子计划，但不能关联任务;<br>计划下不能建立子计划集，也不能建立子计划，但可以关联任务
-						</font>
-						<font color="red" v-else-if="addForm.phaseClass=='1'">
-							<br>计划集只负责汇总数据，类似文件夹功能。计划集下可建立子计划集、子计划，但不能关联需求;<br>计划下不能建立子计划集，也不能建立子计划，但可以关联需求
-						</font>
-					</el-form-item>  
 					<el-form-item label="计划名称" prop="phaseName">
 						<el-input v-model="addForm.phaseName" placeholder="计划名称" ></el-input>
 					</el-form-item>
@@ -227,7 +216,7 @@
 				}, 
 				//新增界面数据 xm_project_phase
 				addForm: {
-					id:'',phaseName:'',remark:'',parentPhaseId:'',branchId:'',taskType:'kf',planType:'m1',projectId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetInnerUserAt:'',phaseBudgetOutUserAt:'',projectBaselineId:'',bizProcInstId:'',bizFlowState:'',phaseBudgetWorkload:'',totalActWorkload:'',totalActNouserAt:'',totalActInerUserAt:'',totalActOutUserAt:'',planType:'',taskType:'',seqNo:'1',phaseBudgetInnerUserCnt:'',phaseBudgetOutUserCnt:'',phaseBudgetInnerUserPrice:80,phaseBudgetOutUserPrice:100,phaseBudgetInnerUserWorkload:0,phaseBudgetOutUserWorkload:0
+					id:'',phaseName:'',remark:'',parentPhaseId:'',branchId:'',taskType:'kf',planType:'m1',projectId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetInnerUserAt:'',phaseBudgetOutUserAt:'',projectBaselineId:'',bizProcInstId:'',bizFlowState:'',phaseBudgetWorkload:'',totalActWorkload:'',totalActNouserAt:'',totalActInerUserAt:'',totalActOutUserAt:'',planType:'',taskType:'',seqNo:'1',phaseBudgetInnerUserCnt:'',phaseBudgetOutUserCnt:'',phaseBudgetInnerUserPrice:80,phaseBudgetOutUserPrice:100,phaseBudgetInnerUserWorkload:0,phaseBudgetOutUserWorkload:0,ntype:'0'
 				},
 				dateRanger: [
 					util.formatDate.format(beginDate, "yyyy-MM-dd HH:mm:ss"),
@@ -384,8 +373,8 @@
 			/**在下面写其它函数***/
 
 			if(this.parentProjectPhase){
-				if(this.parentProjectPhase.children){
-					this.addForm.seqNo=this.parentProjectPhase.seqNo+"."+(this.parentProjectPhase.children.length+1)
+				if(this.parentProjectPhase.childrenCnt){
+					this.addForm.seqNo=this.parentProjectPhase.seqNo+"."+(this.parentProjectPhase.childrenCnt+1)
 				}else{
 					this.addForm.seqNo=this.parentProjectPhase.seqNo+"."+1
 				}

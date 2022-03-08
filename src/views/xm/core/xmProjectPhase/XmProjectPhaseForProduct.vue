@@ -153,12 +153,12 @@
 			</el-row>
 
 			<!--编辑 XmProjectPhase xm_project_phase界面-->
-			<el-drawer  title="编辑计划" :visible.sync="editFormVisible" :with-header="false" size="60%"  :close-on-click-modal="false" append-to-body>
+			<el-drawer  title="编辑计划" :visible.sync="editFormVisible"  size="60%"  :close-on-click-modal="false" append-to-body>
 				  <xm-project-phase-edit :xm-project-phase="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-phase-edit>
 			</el-drawer >
 	
 			<!--新增 XmProjectPhase xm_project_phase界面-->
-			<el-drawer title="新增计划" :visible.sync="addFormVisible" :with-header="false" size="60%"  :close-on-click-modal="false" append-to-body>
+			<el-drawer title="新增计划" :visible.sync="addFormVisible"  size="60%"  :close-on-click-modal="false" append-to-body>
 				<xm-project-phase-add :parent-project-phase="parentProjectPhase" :xm-project-phase="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit" ></xm-project-phase-add>
 			</el-drawer> 
 			<!--计划模板-->

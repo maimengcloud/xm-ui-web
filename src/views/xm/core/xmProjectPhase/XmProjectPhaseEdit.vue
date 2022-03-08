@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container border padding">
+	<section class="page-container padding">
 
 
 		<el-row class="page-main ">
@@ -13,14 +13,6 @@
               </el-steps>
             </el-row>
 						<el-row class="border padding">
-							
-							<el-form-item label="类型" prop="ntype">
-								<el-radio disabled v-model="editForm.ntype" label="1">计划集</el-radio>
-								<el-radio disabled v-model="editForm.ntype" label="0">计划</el-radio> 
-								<font color="red">
-									<br>计划集只负责汇总数据，类似文件夹功能。计划集下可建立子计划集、子计划，但不能关联任务;<br>计划下不能建立子计划集，也不能建立子计划，但可以关联任务
-								</font>
-							</el-form-item>  
 							<el-form-item label="计划名称" prop="phaseName">
 								<el-input v-model="editForm.phaseName" placeholder="计划名称" ></el-input>
 							</el-form-item>
@@ -228,15 +220,12 @@
 					],
 					seqNo: [
 						{ required: true, message: '序号不能为空', trigger: 'blur' }
-					],
-					ntype:[
-						{ required: true, message: '计划类型不能为空', trigger: 'blur' }
 					]
 				},
 				oldeditForm:{},
 				//新增界面数据 xm_project_phase
 				editForm: {
-					id:'',phaseName:'',remark:'',parentPhaseId:'',branchId:'',taskType:'kf',planType:'m1',projectId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetInnerUserAt:'',phaseBudgetOutUserAt:'',projectBaselineId:'',bizProcInstId:'',bizFlowState:'',phaseBudgetWorkload:'',totalActWorkload:'',totalActNouserAt:'',totalActInerUserAt:'',totalActOutUserAt:'',seqNo:'1',phaseBudgetInnerUserCnt:'',phaseBudgetOutUserCnt:'',phaseBudgetInnerUserPrice:80,phaseBudgetOutUserPrice:100,phaseBudgetInnerUserWorkload:0,phaseBudgetOutUserWorkload:0,phaseStatus:''
+					id:'',phaseName:'',remark:'',parentPhaseId:'',branchId:'',taskType:'kf',planType:'m1',projectId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetInnerUserAt:'',phaseBudgetOutUserAt:'',projectBaselineId:'',bizProcInstId:'',bizFlowState:'',phaseBudgetWorkload:'',totalActWorkload:'',totalActNouserAt:'',totalActInerUserAt:'',totalActOutUserAt:'',seqNo:'1',phaseBudgetInnerUserCnt:'',phaseBudgetOutUserCnt:'',phaseBudgetInnerUserPrice:80,phaseBudgetOutUserPrice:100,phaseBudgetInnerUserWorkload:0,phaseBudgetOutUserWorkload:0,phaseStatus:'',ntype:'0'
 				},
 				dateRanger: [
 				],
