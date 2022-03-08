@@ -793,11 +793,16 @@ export default {
       // 绘制图表
       iterationAndProduct.setOption(option);
     },
-    searchXmBranchState(){
+    searchXmBranchState(callBack){
       listXmBranchState({branchId:this.userInfo.branchId}).then(res=>{
         var tips=res.data.tips;
         if(tips.isOk && res.data.data.length>0){
           this.xmBranchState=res.data.data[0]
+        }
+        if(callBack){
+          this.$nextTick(()=>{
+            callBack();
+          })
         }
       });
     },
@@ -816,7 +821,6 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.maxTableHeight=util.calcTableMaxHeight(this.$refs.table.$el) 
-      this.guiderStart();
     }); 
     this.drawAllBar();
     this.drawTaskByDate();
@@ -824,7 +828,7 @@ export default {
     this.drawCostPie();
     this.drawWorkload();
     this.drawIterationProduct();
-    this.searchXmBranchState();
+    this.searchXmBranchState( this.guiderStart );
   },
 
 };

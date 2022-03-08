@@ -5,7 +5,8 @@ var xmHomePage=[
       title: ' ',
       description: '这里可以创建新产品，支持手工、复制现有项目、复制模板三种模式快速一键创建项目',
       position: 'left'
-    }
+    },
+    padding: 5,
     },
     {
     element: '#XmMenuMng',
@@ -70,7 +71,8 @@ var xmProductMng=[
       title: ' ',
       description: '这里可以创建新产品，支持手工、复制现有产品、复制模板三种模式快速一键创建产品',
       position: 'bottom'
-    }
+    },
+    padding: 5,
     },
     {
     element: '#guider-two',
@@ -118,7 +120,8 @@ var xmProjectMng=[
     title: ' ',
     description: '这里可以创建新项目，支持手工、复制现有项目、复制模板三种模式快速一键创建项目',
     position: 'bottom'
-  }
+  },
+  padding: 5,
   },
   {
   element: '#prj-more-btn',
