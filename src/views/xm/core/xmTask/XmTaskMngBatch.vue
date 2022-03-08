@@ -108,7 +108,7 @@
           :tree-props="{ children: 'children', hasChildren: 'childrenCnt' }"
           row-key="id"
         >
-          <el-table-column type="selection" width="60"></el-table-column>
+          <el-table-column type="selection" width="50"></el-table-column>
           <el-table-column prop="sortLevel" label="序号" width="300">
             <template slot-scope="scope">
               <el-popover placement="top" width="400" trigger="click">
@@ -146,21 +146,17 @@
                 v-model="scope.row.sortLevel"
                 @change="fieldChange(scope.row, 'sortLevel')"
               ></el-input>
-            </template>
-          </el-table-column>
-          <!-- <el-table-column sortable width="40" type="selection"></el-table-column> -->
-          <el-table-column prop="name" label="任务名称" min-width="150">
-            <template slot-scope="scope">
-              <el-input
+              <el-input style="width: 100%"
                 v-model="scope.row.name"
                 @change="fieldChange(scope.row, 'name')"
               ></el-input>
             </template>
           </el-table-column>
-          <el-table-column prop="startTime" label="任务起止时间" width="300">
+          <!-- <el-table-column sortable width="40" type="selection"></el-table-column> --> 
+          <el-table-column prop="startTime" label="任务起止时间" width="150">
             <template slot-scope="scope">
               <el-row>
-                <el-col :span="12">
+                <el-col :span="24">
                   <el-date-picker
                     v-model="scope.row.startTime"
                     size="small"
@@ -175,7 +171,7 @@
                   >
                   </el-date-picker>
                 </el-col>
-                <el-col :span="12">
+                <el-col :span="24">
                   <el-date-picker
                     v-model="scope.row.endTime"
                     size="small"
@@ -1791,4 +1787,18 @@ small {
 }
 </style>
 <style lang="scss" scoped>
+.el-table {
+  box-sizing: border-box;
+  /deep/ .cell {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    word-break: break-all;
+    line-height: 23px;
+    padding-right: 10px;
+    display: flex;
+  }
+}
 </style>

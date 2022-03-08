@@ -2050,15 +2050,7 @@ export default {
         });
       }
     },
-    showBatchEdit: function () { 
-      if (this.projectPhase == null) {
-        this.$notify({
-          showClose: true,
-          message: "请在左边选择计划再编辑",
-          type: "error",
-        });
-        return;
-      }
+    showBatchEdit: function () {  
       this.batchEditVisible = true;
     }, 
     getRowSum(row) {
