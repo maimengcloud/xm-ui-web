@@ -99,13 +99,8 @@
         style="width: 100%"
       >
         <el-table-column type="selection" width="50"></el-table-column>
-        <el-table-column prop="seqNo" label="序号" width="150">
-          <template slot-scope="scope">
-            <div style="display: flex; width: 100%">
-              <i
-                v-if="scope.row.ntype == '1'"
-                class="el-icon-folder-opened"
-              ></i>
+        <el-table-column prop="seqNo" label="序号/名称" min-width="200">
+          <template slot-scope="scope"> 
               <!-- 有问题，暂时不支持
 							<el-popover
 								placement="top"
@@ -122,23 +117,19 @@
 								<el-button slot="reference" :type="scope.row.opType?'success':'plain'"   icon="el-icon-edit"></el-button> 
 							</el-popover>
 							-->
+              
               <el-input
-                style="width: 100%"
+                style="width: 100px;"
                 v-model="scope.row.seqNo"
                 @change="fieldChange(scope.row, 'seqNo')"
               ></el-input>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column prop="phaseName" label="计划名称" width="200">
-          <template slot-scope="scope">
-            <el-input
+              <el-input  style="width: 100%"
               v-model="scope.row.phaseName"
               @change="fieldChange(scope.row, 'phaseName')"
-            ></el-input>
+            ></el-input> 
           </template>
-        </el-table-column>
-        <el-table-column prop="beginDate" label="起始时间" width="200">
+        </el-table-column> 
+        <el-table-column prop="beginDate" label="起始时间" width="160">
           <template slot-scope="scope">
             <div>
               <el-date-picker
@@ -171,25 +162,37 @@
         </el-table-column>
         <el-table-column
           prop="phaseBudgetHours"
+          label="工期.H"
+          width="100"
+        >
+          <template slot-scope="scope">
+            <el-row>  
+                <el-input-number 
+                  style="width: 100%"
+                  v-model="scope.row.phaseBudgetHours"
+                  :precision="1"
+                  :step="8"
+                  type="number"
+                  :controls="false"
+                  @change="fieldChange(scope.row, 'phaseBudgetHours')"
+                ></el-input-number> 
+            </el-row>
+          </template>
+        </el-table-column>
+        
+        <el-table-column
+          prop="phaseBudgetHours"
           label="预计工作量及成本"
           min-width="300"
         >
-          <template slot-scope="scope">
-            <el-row>
-              <el-col :span="4">
-                工期.小时：<br />
-                <el-input
-                  style="width: 90%"
-                  v-model="scope.row.phaseBudgetHours"
-                  :precision="2"
-                  step="8"
-                  type="number"
-                  @change="fieldChange(scope.row, 'phaseBudgetHours')"
-                ></el-input>
-              </el-col>
-              <el-col :span="20">
+        <el-table-column
+          prop="phaseBudgetHours"
+          label="人数"
+          min-width="100"
+        >
+          <template slot-scope="scope"> 
                 <el-row>
-                  <el-col :span="12">
+                  <el-col :span="24">
                     内购
                     <el-input
                       style="width: 80px"
@@ -201,35 +204,9 @@
                         fieldChange(scope.row, 'phaseBudgetInnerUserCnt')
                       "
                     ></el-input
-                    >人， 共{{
-                      (
-                        scope.row.phaseBudgetInnerUserCnt *
-                        scope.row.phaseBudgetHours
-                      ).toFixed(0)
-                    }}人时，
-                  </el-col>
-                  <el-col :span="12">
-                    <el-input
-                      style="width: 80px"
-                      v-model="scope.row.phaseBudgetInnerUserPrice"
-                      :precision="2"
-                      step="10"
-                      type="number"
-                      @change="
-                        fieldChange(scope.row, 'phaseBudgetInnerUserPrice')
-                      "
-                    ></el-input
-                    >元/人时， 共{{
-                      (
-                        scope.row.phaseBudgetInnerUserCnt *
-                        scope.row.phaseBudgetHours *
-                        scope.row.phaseBudgetInnerUserPrice
-                      ).toFixed(0)
-                    }}元
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="12">
+                    > 
+                  </el-col>  
+                  <el-col :span="24">
                     外购
                     <el-input
                       style="width: 80px"
@@ -239,35 +216,23 @@
                       type="number"
                       @change="fieldChange(scope.row, 'phaseBudgetOutUserCnt')"
                     ></el-input
-                    >人， 共{{
-                      (
-                        scope.row.phaseBudgetOutUserCnt *
-                        scope.row.phaseBudgetHours
-                      ).toFixed(0)
-                    }}人时，
-                  </el-col>
-                  <el-col :span="12">
-                    <el-input
-                      style="width: 80px"
-                      v-model="scope.row.phaseBudgetOutUserPrice"
-                      :precision="2"
-                      step="10"
-                      type="number"
-                      @change="
-                        fieldChange(scope.row, 'phaseBudgetOutUserPrice')
-                      "
-                    ></el-input
-                    >元/人时， 共{{
-                      (
-                        scope.row.phaseBudgetOutUserCnt *
-                        scope.row.phaseBudgetHours *
-                        scope.row.phaseBudgetOutUserPrice
-                      ).toFixed(0)
-                    }}元
-                  </el-col>
-                </el-row>
-              </el-col>
-            </el-row>
+                    > 
+                  </el-col>  
+                </el-row> 
+          </template>
+        </el-table-column> 
+        <el-table-column label="单价.元/人时" width="120">
+          <template slot-scope="scope">
+             <el-input
+                style="width: 80px"
+                v-model="scope.row.phaseBudgetOutUserPrice"
+                :precision="2"
+                step="10"
+                type="number"
+                @change="
+                  fieldChange(scope.row, 'phaseBudgetOutUserPrice')
+                "
+              ></el-input>
           </template>
         </el-table-column>
         <el-table-column label="预算合计" width="120">
@@ -281,6 +246,8 @@
             }}元
           </template>
         </el-table-column>
+        </el-table-column>
+
         <el-table-column prop="remark" label="备注" min-width="100">
           <template slot-scope="scope">
             <el-input
