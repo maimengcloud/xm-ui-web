@@ -158,7 +158,7 @@
 			<xm-env-list v-if="infotype=='环境清单'" :xm-product="xmProduct"></xm-env-list>
 			<xm-question v-if="infotype=='风险'" :qtype="'risk'" :xm-product='xmProduct' ref="xmRisk"></xm-question>
 			<el-drawer title="选中团队成员" :visible.sync="groupUserVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
-				<xm-project-group-select :xm-product="xmProduct" :visible="groupUserVisible" is-select-multi-user="1" @user-confirm="onUserSelected"></xm-project-group-select>
+				<xm-group-select :xm-product="xmProduct" :visible="groupUserVisible" is-select-multi-user="1" @user-confirm="onUserSelected"></xm-group-select>
 			</el-drawer>
 		</el-row>
 	</section>

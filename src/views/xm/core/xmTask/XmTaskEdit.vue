@@ -24,6 +24,10 @@
 			<!--新增界面 XmTask xm_task--> 
 			<el-form :model="editForm"  label-width="100px" :rules="editFormRules" ref="editForm">     
 				<el-card class="box-card" header="基础信息" id="baseInfo" shadow="hover">  
+					<el-form-item label="类型" prop="ntype">
+						 <el-radio v-model="editForm.ntype" label="1">计划项</el-radio>
+						 <el-radio v-model="editForm.ntype" label="0">任务</el-radio>
+					</el-form-item>
 					<el-form-item label="名称" prop="name">
 						<el-row>
 						<el-col :span="24" style="padding-left:10px;">
@@ -34,7 +38,7 @@
 						</el-col>
 						</el-row>
 					</el-form-item> 
-					<el-form-item label="排序号" prop="sortLevel"> 
+					<el-form-item label="序号" prop="sortLevel"> 
 						<el-input  v-model="editForm.sortLevel" style="width:30%;"   placeholder="如1.0或者1.2.3等" ></el-input> <font style="color:red;">如1.0或者1.2.3等</font>
 						<el-checkbox v-model="editForm.milestone" :true-label="1" :false-label="0">标记为里程碑</el-checkbox>
 					</el-form-item> 
@@ -73,7 +77,7 @@
 						<el-button  @click="showGroupUserSelect(editForm)" icon="el-icon-setting">设置负责人</el-button>
 					</el-form-item>
 					<el-form-item label="任务执行人">
-						<el-tag   style="margin-left:10px;border-radius:30px;"  >{{editForm.exeUsernames}}</el-tag>
+						<el-tag v-if="editForm.exeUsernames"  style="margin-left:10px;border-radius:30px;"  >{{editForm.exeUsernames}}</el-tag>
 						<el-button  @click="showExecusers(editForm)" icon="el-icon-s-data">候选人管理</el-button>
 						<el-button type="primary" @click="toJoin" icon="el-icon-plus">我要加入</el-button>
 					</el-form-item>
@@ -124,22 +128,29 @@
 
  				<el-card class="box-card" header="工作量、成本" id="costInfo"> 
 					<el-form-item label="预估工作量" prop="budgetWorkload">
-						<el-input-number v-model="editForm.budgetWorkload" @change="onBudgetWorkloadChange" :precision="2" :step="8" :min="0" placeholder="预计总工作量(人时,不包括下一级)"></el-input-number> <el-tag>人时，{{this.toFixed(editForm.budgetWorkload/8/20)}}人月</el-tag> 
-						<font color="red">人月单价：内购: {{projectPhase.phaseBudgetInnerUserPrice}} &nbsp;&nbsp; 外购: {{projectPhase.phaseBudgetOutUserPrice}}</font>
+						<el-input-number style="width:200px;"  v-model="editForm.budgetWorkload" @change="onBudgetWorkloadChange" :precision="2" :step="8" :min="0" placeholder="预计总工作量(人时,不包括下一级)"></el-input-number> <el-tag>人时，{{this.toFixed(editForm.budgetWorkload/8/20)}}人月</el-tag> 
+						 <br>
+						 <el-checkbox v-model="editForm.taskOut" @change="onTaskOutChange" true-label="1" false-label="0">是否为众包任务</el-checkbox> 
 					</el-form-item>  
 					<el-form-item label="预估金额" prop="taskOut">
-						<el-checkbox v-model="editForm.taskOut" @change="onTaskOutChange" true-label="1" false-label="0">是否为众包任务</el-checkbox> 
-						<el-input-number v-model="editForm.budgetCost" :precision="2" :step="1000" :min="0" placeholder="预算金额"></el-input-number>   元
+						<el-row v-if="editForm.taskOut!=='1'">
+							工时单价&nbsp;<el-input-number style="width:200px;"  v-model="editForm.uniInnerPrice" :precision="2" :step="10" :min="0" placeholder="工时单价"></el-input-number>   元/人时
+ 						</el-row> 
+						<el-row v-if="editForm.taskOut==='1'">
+ 							工时单价&nbsp;<el-input-number style="width:200px;" v-if="editForm.taskOut==='1'" v-model="editForm.uniOutPrice" :precision="2" :step="10" :min="0" placeholder="外发工时单价"></el-input-number>   元/人时
+						</el-row>
+						
+						预估金额&nbsp;<el-input-number style="width:200px;"  v-model="editForm.budgetCost" :precision="2" :step="1000" :min="0" placeholder="预算金额"></el-input-number>   元
 					</el-form-item>  
 					<el-form-item  label="实际工作量" prop="actWorkload" shadow="hover">
-						<el-input-number disabled v-model="editForm.actWorkload" :precision="2" :step="8" :min="0" placeholder="实际工作量"></el-input-number>  <el-tag>由后台自动计算，无需填写</el-tag>     
+						<el-input-number style="width:200px;"  disabled v-model="editForm.actWorkload" :precision="2" :step="8" :min="0" placeholder="实际工作量"></el-input-number>  <el-tag>由后台自动计算，无需填写</el-tag>     
 					</el-form-item> 
 					<el-form-item label="实际金额" prop="actCost">
-						<el-input-number disabled v-model="editForm.actCost" :precision="2" :step="1000" :min="0" placeholder="实际金额"></el-input-number>    <el-tag>由后台自动计算，无需填写</el-tag>  
+						<el-input-number  style="width:200px;"  disabled v-model="editForm.actCost" :precision="2" :step="1000" :min="0" placeholder="实际金额"></el-input-number>    <el-tag>由后台自动计算，无需填写</el-tag>  
 					</el-form-item>   
 				 </el-card>  
  				<el-card class="box-card" header="结算信息" id="settleInfo" shadow="hover" v-if="editForm.ntype!='1'">   
-					<el-form-item label="是否结算" prop="taskClass">
+					<el-form-item label="" prop="taskClass">
 						<el-checkbox v-model="editForm.taskClass" true-label="1" false-label="0">是否需要结算</el-checkbox> 
 					</el-form-item>  
 					<el-form-item v-if="editForm.taskClass=='1'" label="结算方案" prop="settlSchemel"> 
@@ -150,9 +161,8 @@
 				 </el-card>
 				 
 				<el-card class="box-card" header="众包" id="taskOut" v-if="editForm.ntype!='1'">  
-					<el-form-item label="众包配置" prop="taskOut">
-						<el-checkbox v-model="editForm.taskOut" @change="onTaskOutChange" true-label="1" false-label="0">外包任务</el-checkbox> 
-						<el-checkbox v-model="editForm.toTaskCenter" true-label="1" false-label="0" id="taskOut">发布到互联网任务大厅</el-checkbox>  
+					<el-form-item label="众包配置" prop="toTaskCenter"> 
+						<el-checkbox v-model="editForm.toTaskCenter" true-label="1" false-label="0" id="toTaskCenter">发布到互联网任务大厅</el-checkbox>  
 
 					</el-form-item>   
 					<el-form-item label="众包流程" prop="taskOut">
@@ -178,7 +188,7 @@
 			<xm-skill-mng :visible="skillVisible" :task-id="editForm.id" @cancel="skillVisible=false" @getSkill="getSkill"></xm-skill-mng>
 		</el-drawer> -->
 		<el-drawer append-to-body title="选择负责人"  :visible.sync="groupUserSelectVisible" size="60%"    :close-on-click-modal="false">
-			<xm-project-group-select :visible="groupUserSelectVisible" :sel-project="xmProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-project-group-select>
+			<xm-group-select :visible="groupUserSelectVisible" :sel-project="xmProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-group-select>
 		</el-drawer>
 		<el-drawer append-to-body title="新增技能"  :visible.sync="skillVisible" size="60%"    :close-on-click-modal="false">
 			<skill-mng :task-skills="taskSkills" :jump="true" @select-confirm="onTaskSkillsSelected"></skill-mng>

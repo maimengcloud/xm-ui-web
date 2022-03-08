@@ -1,6 +1,6 @@
 <template>
 	<section> 
-		 <xm-project-group-mng :data-scope="'all'"></xm-project-group-mng>
+		 <xm-group-mng :data-scope="'all'"></xm-group-mng>
 	</section>
 </template>
 

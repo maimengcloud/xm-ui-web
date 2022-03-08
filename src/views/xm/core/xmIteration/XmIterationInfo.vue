@@ -41,7 +41,7 @@
 			  <xm-question v-if="infotype=='缺陷'" :qtype="'bug'" :xm-iteration='xmIteration' ref="xmQuestion"></xm-question>
 			  <xm-group-mng v-if="infotype=='团队'" :xm-iteration="xmIteration"></xm-group-mng>
   			<el-drawer title="选中团队成员" :visible.sync="groupUserVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
-				<xm-project-group-select :xm-iteration="xmIteration" :visible="groupUserVisible" is-select-multi-user="1" @user-confirm="onUserSelected"></xm-project-group-select>
+				<xm-group-select :xm-iteration="xmIteration" :visible="groupUserVisible" is-select-multi-user="1" @user-confirm="onUserSelected"></xm-group-select>
 			</el-drawer>
 		</el-row>
 	</section>

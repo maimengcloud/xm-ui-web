@@ -169,7 +169,7 @@
 				<xm-record :obj-type="'phase'"  :visible="xmRecordVisible" :product-id="xmProduct?xmProduct.id:null" :obj-id="editForm.id"   :simple="1"></xm-record>
 			</el-drawer> 
 			<el-drawer append-to-body title="选择负责人" :visible.sync="groupUserSelectVisible" size="60%"    :close-on-click-modal="false">
-				<xm-project-group-select :visible="groupUserSelectVisible" :xm-product="xmProduct" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-project-group-select>
+				<xm-group-select :visible="groupUserSelectVisible" :xm-product="xmProduct" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-group-select>
 				 
 			</el-drawer> 
 			<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible" size="60%"    :close-on-click-modal="false">

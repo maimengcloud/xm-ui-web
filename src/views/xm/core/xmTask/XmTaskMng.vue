@@ -1,17 +1,8 @@
 <template>
   <section class="padding">
-    <el-row v-show="batchEditVisible == false">
-      <el-col v-if="isTaskCenter != '1' && currentProject" :span="4">
-        <xm-project-phase-mng
-          :sel-project="currentProject"
-          :xm-iteration="xmIteration"
-          :simple="true"
-          @row-click="projectPhaseRowClick"
-          @clear-select="clearSelectPhase"
-        ></xm-project-phase-mng>
-      </el-col>
+    <el-row v-show="batchEditVisible == false"> 
       <el-col
-        :span="isTaskCenter != '1' && currentProject ? 20 : 24"
+        :span="24"
         class="padding-left"
         :class="{ 'flex-box': displayType == 'agil' }"
       >
@@ -908,12 +899,12 @@
       :size="650"
       :close-on-click-modal="false"
     >
-      <xm-project-group-select
+      <xm-group-select
         :visible="menuGroupUser"
         :sel-project="selProject"
         :isSelectSingleUser="1"
         @user-confirm="seleConfirm"
-      ></xm-project-group-select>
+      ></xm-group-select>
     </el-drawer>
     <el-drawer
       append-to-body
@@ -922,12 +913,12 @@
       :size="650"
       :close-on-click-modal="false"
     >
-      <xm-project-group-select
+      <xm-group-select
         :visible="menuExecutor"
         :sel-project="selProject"
         :isSelectSingleUser="1"
         @user-confirm="seleExecutor"
-      ></xm-project-group-select>
+      ></xm-group-select>
     </el-drawer>
     <el-drawer
       append-to-body
@@ -949,12 +940,12 @@
       size="60%"
       :close-on-click-modal="false"
     >
-      <xm-project-group-select
+      <xm-group-select
         :visible="groupUserSelectVisible"
         :sel-project="selProject"
         :isSelectSingleUser="1"
         @user-confirm="groupUserSelectConfirm"
-      ></xm-project-group-select>
+      ></xm-group-select>
     </el-drawer>
 
     <el-drawer
@@ -1594,29 +1585,19 @@ export default {
     },
     checkCanAdd( parentTask){ 
 
-      if(parentTask && parentTask.projectPhaseId){
+      if(parentTask && parentTask.id){
+        if(parentTask.ntype=='0'){
+           this.$notify({
+              showClose: true,
+              message: "当前为任务节点，任务节点下不能再创建新的子项",
+              type: "error",
+            });
+            return false;
+        }
         return true;
       }
-      if(!parentTask||!parentTask.id){
-        if(this.projectPhase && this.projectPhase.ntype!='1'){
-          return true;
-        }
-      }
-        if (!this.projectPhase||!this.projectPhase.id) {
-          this.$notify({
-            showClose: true,
-            message: "请在左边计划树中选择一个项目计划(不包括计划集)",
-            type: "error",
-          });
-          return false;
-        }else if(this.projectPhase.ntype=='1'){ 
-          this.$notify({
-            showClose: true,
-            message: "您当前选中的计划【"+this.projectPhase.phaseName+"】是计划集，计划集下不能创建任务，请重新在右边计划树中选择一个计划",
-            type: "error",
-          });
-          return false;
-        }  
+      return true;
+       
         
     },
     showSubAdd(row) { 

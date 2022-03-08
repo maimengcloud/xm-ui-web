@@ -44,7 +44,7 @@
 				:visible.sync="overviewVisible"
 				size="60%"
 				 >
-					<xm-project-group-state-overview :xm-project-group-state="editForm"></xm-project-group-state-overview>
+					<xm-group-state-overview :xm-group-state="editForm"></xm-group-state-overview>
 			</el-drawer>
 
 	</section>

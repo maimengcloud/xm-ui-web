@@ -25,12 +25,12 @@
 		<el-row>
 			<!--编辑 XmGroup xm_group界面-->
 			<el-drawer title="编辑小组信息" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
-				  <xm-project-group-edit op-type="edit" :xm-project-group="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-group-edit>
+				  <xm-group-edit op-type="edit" :xm-group="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-group-edit>
 			</el-drawer>
 
 			<!--新增 XmGroup xm_group界面-->
 			<el-drawer title="新增小组信息" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
-				<xm-project-group-edit op-type="add" :xm-project-group="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-group-edit>
+				<xm-group-edit op-type="add" :xm-group="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-group-edit>
 			</el-drawer>
 			
 			<el-dialog
@@ -163,17 +163,17 @@
 			</el-drawer>
 			
 			<el-drawer v-if="currNodeType=='group'&&editForm.groupName" :title="editForm.groupName+'小组进度数据查看'" center   :visible.sync="xmGroupStateVisible"  size="80%"  :close-on-click-modal="false" append-to-body>
-				<xm-project-group-state-mng :xm-project-group="editForm"  :visible="xmGroupStateVisible" ></xm-project-group-state-mng>
+				<xm-group-state-mng :xm-group="editForm"  :visible="xmGroupStateVisible" ></xm-group-state-mng>
 			</el-drawer>
 			<el-drawer v-else-if="selProject" :title="selProject.name+'小组进度数据查看'" center   :visible.sync="xmGroupStateVisible"  size="80%"  :close-on-click-modal="false" append-to-body>
-				<xm-project-group-state-mng  :sel-project="selProject"  :visible="xmGroupStateVisible" ></xm-project-group-state-mng>
+				<xm-group-state-mng  :sel-project="selProject"  :visible="xmGroupStateVisible" ></xm-group-state-mng>
 			</el-drawer>
 			<el-drawer v-else-if="!selProject && xmProduct" :title="xmProduct.productName+'小组进度数据查看'" center   :visible.sync="xmGroupStateVisible"  size="80%"  :close-on-click-modal="false" append-to-body>
-				<xm-project-group-state-mng   :xm-product="xmProduct"   :visible="xmGroupStateVisible" ></xm-project-group-state-mng>
+				<xm-group-state-mng   :xm-product="xmProduct"   :visible="xmGroupStateVisible" ></xm-group-state-mng>
 			</el-drawer>
 			
 			<el-drawer  v-if="currNodeType=='group'&&editForm.groupName" center  :title="(editForm==null?editForm.groupName:'')+'小组成员管理'" :visible.sync="groupUserVisible"  size="80%"  :close-on-click-modal="false" append-to-body>
-				<xm-project-group-user-mng  :xm-project-group="editForm" :visible="groupUserVisible" ></xm-project-group-user-mng>
+				<xm-group-user-mng  :xm-group="editForm" :visible="groupUserVisible" ></xm-group-user-mng>
 			</el-drawer>
 			<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>

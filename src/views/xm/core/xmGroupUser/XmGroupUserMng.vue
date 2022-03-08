@@ -44,12 +44,12 @@
 		<el-row>
 			<!--编辑 XmGroupUser xm_group_user界面-->
 			<el-drawer title="编辑组员信息" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
-				  <xm-project-group-user-edit op-type="edit" :xm-project-group-user="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-group-user-edit>
+				  <xm-group-user-edit op-type="edit" :xm-group-user="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-group-user-edit>
 			</el-drawer>
 
 			<!--新增 XmGroupUser xm_group_user界面-->
 			<el-drawer title="新增组员信息" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
-				<xm-project-group-user-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-group-user-edit>
+				<xm-group-user-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-group-user-edit>
 			</el-drawer>
 	    </el-row>
 	</section>
