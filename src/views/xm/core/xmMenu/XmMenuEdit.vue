@@ -8,12 +8,14 @@
 						<el-steps :active="parseInt(editForm.status)" simple finish-status="success" align-center>
 							<el-step v-for="(item,index) in dicts.menuStatus" @click.native="on_click(item.id)" :title="item.name" :key="index"></el-step> 
 						</el-steps>
-						</el-row>
+						</el-row> 
+						<el-form-item label="名称" prop="menuName">
+							<el-input v-model="editForm.menuName" placeholder="名称" ></el-input>
+						</el-form-item>
 						<el-row class="padding-bottom">
 							<el-col :span="12">
-							<el-form-item label="类型" prop="ntype">
-								<el-radio disabled v-model="editForm.ntype" label="1">需求集</el-radio>
-								<el-radio disabled v-model="editForm.ntype" label="0">需求</el-radio>
+							<el-form-item label="序号" prop="seqNo">
+								<el-input v-model="editForm.seqNo" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input>
 							</el-form-item>  
 							</el-col>
 							<el-col :span="12">
@@ -22,14 +24,7 @@
 								<el-button type="text" icon="el-icon-plus" @click="tagSelectVisible=true">标签</el-button> 
 							</el-form-item>  
 							</el-col>
-						</el-row>
-						<el-form-item label="名称" prop="menuName">
-							<el-input v-model="editForm.menuName" placeholder="名称" ></el-input>
-						</el-form-item>
-						
-						<el-form-item label="序号" prop="seqNo">
-							<el-input v-model="editForm.seqNo" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input>
-						</el-form-item>
+						</el-row> 
 						<el-form-item label="负责人" prop="mmUserid">
 							<el-tag v-if="editForm.mmUserid" closable @close="clearPmUser">{{editForm.mmUsername}}</el-tag>
 							<el-tag v-else>未配置</el-tag>
