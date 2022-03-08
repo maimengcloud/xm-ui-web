@@ -23,15 +23,7 @@
 		<el-row class="page-main ">
 			<!--新增界面 XmTask xm_task--> 
 			<el-form :model="editForm"  label-width="100px" :rules="editFormRules" ref="editForm">     
-				<el-card class="box-card" header="基础信息" id="baseInfo" shadow="hover"> 
-					
-					<el-form-item label="" prop="ntype">
-						<el-radio  v-model="editForm.ntype" label="1">任务集</el-radio>
-						<el-radio  v-model="editForm.ntype" label="0">任务</el-radio>
-						<font color="red">
-							<br>任务集只负责汇总数据，类似文件夹功能。任务集下可建立子任务集、子任务,但不能关联需求;<br>任务下不能建立子任务集，也不能建立子任务，但可以关联需求
-						</font>
-					</el-form-item>  
+				<el-card class="box-card" header="基础信息" id="baseInfo" shadow="hover">  
 					<el-form-item label="名称" prop="name">
 						<el-row>
 						<el-col :span="24" style="padding-left:10px;">

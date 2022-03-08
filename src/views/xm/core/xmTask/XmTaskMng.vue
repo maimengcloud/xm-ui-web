@@ -391,13 +391,13 @@
               <el-table-column  
                 label="全选"
                 type="selection"
-                width="70"
+                width="50"
               > 
               </el-table-column>
               <el-table-column  
                 label="序号"
                 type="index"
-                width="70"
+                width="50"
               > 
               </el-table-column>
               <el-table-column
@@ -405,9 +405,10 @@
                 prop="name"
                 label="任务名称(点击详情)"
                 min-width="250"
+                show-overflow-tooltip
               >
                 <template slot-scope="scope">
-                  <el-link type="primary" @click.stop="showDrawer(scope.row)" :icon="scope.row.ntype=='1'?'el-icon-folder-opened':''">
+                  <span class="vlink" type="primary" @click.stop="showDrawer(scope.row)">
                     {{ scope.row.sortLevel }}&nbsp;
                     <el-tag v-if="scope.row.level <= '2'" type="info"
                       >轻微</el-tag
@@ -419,8 +420,9 @@
                       >紧急</el-tag
                     >
                     <el-tag v-else type="danger">特急</el-tag>
-                    </el-link>
-                    {{ scope.row.name }}
+                     {{ scope.row.name }}
+                    </span>
+                   
                 </template>
               </el-table-column>
               <el-table-column
