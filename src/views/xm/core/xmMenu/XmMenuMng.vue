@@ -104,22 +104,20 @@
 					<el-row class="padding-top">  
 						<el-table lazy :load="loadXmMenusLazy" stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
 							<el-table-column sortable type="selection" width="40"></el-table-column> 
-							<el-table-column prop="menuName" label="需求名称" min-width="160"> 
-								<template slot-scope="scope">
-									
-									 <el-link type="primary"  @click="showEdit(scope.row)" :icon="scope.row.ntype=='1'?'el-icon-folder-opened':''">{{scope.row.seqNo}}&nbsp;&nbsp;</el-link> 
-									 {{scope.row.menuName}}
+							<el-table-column prop="menuName" label="需求名称" min-width="260" show-overflow-tooltip> 
+								<template slot-scope="scope"> 
+									<font class="vlink" @click="showEdit(scope.row)">{{scope.row.seqNo}}      {{scope.row.menuName}} </font>
 								</template>
 							</el-table-column>  
-							<el-table-column prop="status" label="状态"  width="80" show-overflow-tooltip> 
+							<el-table-column prop="status" label="状态"  min-width="80" show-overflow-tooltip> 
 								<template slot-scope="scope"> 
 									{{dicts.menuStatus.some(i=>i.id==scope.row.status)?dicts.menuStatus.find(i=>scope.row.status==i.id).name:''}}
 								</template>
 							</el-table-column>  
-							<el-table-column prop="iterationName" label="迭代"  width="80" show-overflow-tooltip>  
+							<el-table-column prop="iterationName" label="迭代"  min-width="80" show-overflow-tooltip>  
 							</el-table-column>  
 							
-							<el-table-column prop="taskCnt" label="任务数"  width="80" show-overflow-tooltip>   
+							<el-table-column prop="taskCnt" label="任务数"  min-width="80" show-overflow-tooltip>   
 								<template slot="header"> 
 									<el-tooltip   content="已完成 / 总数 注意：统计包括下级数据"><div>任务数<i class="el-icon-bangzhu"></i></div></el-tooltip>
 								</template>
@@ -127,12 +125,12 @@
 										<div>{{scope.row.finishTaskCnt}}/{{scope.row.taskCnt}}</div>
 								</template>
 							</el-table-column>  
-							<el-table-column prop="finishRate" label="进度"  width="80" show-overflow-tooltip> 
+							<el-table-column prop="finishRate" label="进度"  min-width="80" show-overflow-tooltip> 
 								<template slot-scope="scope"> 
 										<span v-if="scope.row.finishRate"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag></span>
 								</template>
 							</el-table-column>   
-							<el-table-column prop="bugs" label="缺陷"  width="100" show-overflow-tooltip>   
+							<el-table-column prop="bugs" label="缺陷"  min-width="100" show-overflow-tooltip>   
 								
 								<template slot="header"> 
 									<el-tooltip   content="已关闭缺陷数 / 总缺陷数 注意：统计包括下级数据"><div>缺陷<i class="el-icon-bangzhu"></i></div></el-tooltip>
@@ -141,25 +139,24 @@
 										 {{scope.row.closedBugs}}/{{scope.row.bugCnt}} 
 								</template>
 							</el-table-column>  
-							<el-table-column prop="tagNames" label="标签"  width="100" show-overflow-tooltip> 
+							<el-table-column prop="tagNames" label="标签"  min-width="100" show-overflow-tooltip> 
 							</el-table-column> 
-							<el-table-column prop="ctime" label="创建日期"  width="100" show-overflow-tooltip> 
+							<el-table-column prop="ctime" label="创建日期"  min-width="100" show-overflow-tooltip> 
 								<template slot-scope="scope"> 
 										 <span>{{scope.row.ctime}} </span>  
 								</template>
 							</el-table-column> 
-							<el-table-column prop="menuName" label="负责人"  width="100" show-overflow-tooltip> 
+							<el-table-column prop="menuName" label="负责人"  min-width="100" show-overflow-tooltip> 
 								<template slot-scope="scope"> 
 										 <span>{{scope.row.mmUsername}} </span>  
 								</template>
 							</el-table-column> 
-							<el-table-column   label="操作"  width="200"> 
+							<el-table-column   label="操作"  width="200" fixed="right"> 
 								<template slot-scope="scope">   
 									<el-row v-if="disabledMng!=false">
 										<el-popover style="padding-left:10px;"  
 											placement="top-start"
 											width="250"
-											v-if="scope.row.ntype=='1'"
 											trigger="click" > 
 											<el-row> 
 												<el-col :span="24" style="padding-top:5px;">
@@ -169,11 +166,11 @@
 													<el-button  @click="showImportFromMenuTemplate(scope.row)" icon="el-icon-upload2">由模板快速导入子需求</el-button> 
 												</el-col> 
 											</el-row>   
-											<el-button type="text"    slot="reference" icon="el-icon-plus">添加子需求</el-button>
+											<el-button type="text"    slot="reference" icon="el-icon-plus">{{scope.row.ntype=='1'?'子需求':''}}</el-button>
 										</el-popover>   
-										<font v-else>
-											<el-button  :disabled="scope.row.ntype=='1'"   type="text"  @click="showTaskListForMenu(scope.row,scope.$index)"  icon="el-icon-s-operation">查任务</el-button>
-											<el-button  :disabled="scope.row.ntype=='1'"  type="text"  @click="showTaskList(scope.row,scope.$index)"  icon="el-icon-s-operation">关联任务</el-button> 
+										<font>
+											<el-button  v-if="scope.row.ntype!='1'"  type="text"  @click="showTaskListForMenu(scope.row,scope.$index)"  icon="el-icon-s-operation">查任务</el-button>
+											<el-button  v-if="scope.row.ntype!='1'"  type="text"  @click="showTaskList(scope.row,scope.$index)"  icon="el-icon-s-operation">关联任务</el-button> 
 										</font>
 									</el-row>
 								</template>
@@ -903,5 +900,6 @@
 }
 .align-right{
 	float: right; 
-}
+} 
+
 </style>
