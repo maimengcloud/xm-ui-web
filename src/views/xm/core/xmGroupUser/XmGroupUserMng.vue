@@ -4,12 +4,12 @@
  			<el-input v-model="filters.groupNameKey" style="width:15%;" clearable placeholder="小组名称查询"></el-input> 
 			<el-input v-model="filters.mngUsernamekey" style="width:15%;" clearable placeholder="组长、副组长名称查询"></el-input> 
 			<el-input v-model="filters.groupUsernameKey" style="width:15%;" clearable placeholder="组员名称查询"></el-input>
-			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" @click="searchXmProjectGroupUsers" icon="el-icon-search">查询</el-button>
+			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" @click="searchXmGroupUsers" icon="el-icon-search">查询</el-button>
  			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>
 		</el-row>
 		<el-row class="padding-top">
-			<!--列表 XmProjectGroupUser xm_group_user-->
-			<el-table ref="xmProjectGroupUserTable" :data="xmProjectGroupUsers" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<!--列表 XmGroupUser xm_group_user-->
+			<el-table ref="xmGroupUserTable" :data="xmGroupUsers" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55" ></el-table-column>
 				<el-table-column sortable type="index" width="55"></el-table-column>
 				
@@ -42,12 +42,12 @@
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 		</el-row>
 		<el-row>
-			<!--编辑 XmProjectGroupUser xm_group_user界面-->
+			<!--编辑 XmGroupUser xm_group_user界面-->
 			<el-drawer title="编辑组员信息" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
 				  <xm-project-group-user-edit op-type="edit" :xm-project-group-user="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-group-user-edit>
 			</el-drawer>
 
-			<!--新增 XmProjectGroupUser xm_group_user界面-->
+			<!--新增 XmGroupUser xm_group_user界面-->
 			<el-drawer title="新增组员信息" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
 				<xm-project-group-user-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-group-user-edit>
 			</el-drawer>
@@ -59,16 +59,16 @@
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库 
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
-	import { listXmProjectGroupUser, delXmProjectGroupUser, batchDelXmProjectGroupUser } from '@/api/xm/core/xmProjectGroupUser';
-	import  XmProjectGroupUserEdit from './XmProjectGroupUserEdit';//新增修改界面
+	import { listXmGroupUser, delXmGroupUser, batchDelXmGroupUser } from '@/api/xm/core/xmGroupUser';
+	import  XmGroupUserEdit from './XmGroupUserEdit';//新增修改界面
 	import { mapGetters } from 'vuex'
 	
 	export default {
-	    name:'xmProjectGroupUserMng',
+	    name:'xmGroupUserMng',
 		components: {
-		    XmProjectGroupUserEdit,
+		    XmGroupUserEdit,
 		},
-		props:['visible','xmProjectGroup'],
+		props:['visible','xmGroup'],
 		computed: {
 		    ...mapGetters(['userInfo']),
 
@@ -77,7 +77,7 @@
             visible(val){
                 if(val==true){
                     this.initData();
-                    this.searchXmProjectGroupUsers()
+                    this.searchXmGroupUsers()
                 }
             }
 		},
@@ -89,7 +89,7 @@
 					mngUsernamekey:'',
 					groupUsernameKey:'',
 				},
-				xmProjectGroupUsers: [],//查询结果
+				xmGroupUsers: [],//查询结果
 				pageInfo:{//分页数据
 					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
 					pageSize:10,//每页数据
@@ -103,7 +103,7 @@
 				dicts:{
 				    //sex: [{id:'1',name:'男'},{id:'2',name:'女'}]
 				},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
-				addFormVisible: false,//新增xmProjectGroupUser界面是否显示
+				addFormVisible: false,//新增xmGroupUser界面是否显示
 				addForm: {
 					joinTime:'',groupId:'',userid:'',username:'',outTime:'',status:'',obranchId:'',isPri:'',seqNo:'',projectId:'',productId:'',pgClass:'',obranchName:''
 				},
@@ -118,11 +118,11 @@
 		methods: { 
 			handleSizeChange(pageSize) { 
 				this.pageInfo.pageSize=pageSize; 
-				this.getXmProjectGroupUsers();
+				this.getXmGroupUsers();
 			},
 			handleCurrentChange(pageNum) {
 				this.pageInfo.pageNum = pageNum;
-				this.getXmProjectGroupUsers();
+				this.getXmGroupUsers();
 			},
 			// 表格排序 obj.order=ascending/descending,需转化为 asc/desc ; obj.prop=表格中的排序字段,字段驼峰命名
 			sortChange( obj ){
@@ -140,14 +140,14 @@
 					this.pageInfo.orderFields=[util.toLine(obj.prop)]; 
 					this.pageInfo.orderDirs=[dir];
 				}
-				this.getXmProjectGroupUsers();
+				this.getXmGroupUsers();
 			},
-			searchXmProjectGroupUsers(){
+			searchXmGroupUsers(){
 				 this.pageInfo.count=true; 
-				 this.getXmProjectGroupUsers();
+				 this.getXmGroupUsers();
 			},
-			//获取列表 XmProjectGroupUser xm_group_user
-			getXmProjectGroupUsers() {
+			//获取列表 XmGroupUser xm_group_user
+			getXmGroupUsers() {
 				let params = {
 					pageSize: this.pageInfo.pageSize,
 					pageNum: this.pageInfo.pageNum,
@@ -174,17 +174,17 @@
 				if(this.filters.mngUsernamekey){
 					params.mngUsernamekey=this.filters.mngUsernamekey
 				}
-				if(this.xmProjectGroup){
-					params.groupId=this.xmProjectGroup.id
+				if(this.xmGroup){
+					params.groupId=this.xmGroup.id
 				}
 
 				this.load.list = true;
-				listXmProjectGroupUser(params).then((res) => {
+				listXmGroupUser(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
-						this.xmProjectGroupUsers = res.data.data;
+						this.xmGroupUsers = res.data.data;
 					}else{
 						this.$notify({ showClose:true, message: tips.msg, type: 'error' });
 					} 
@@ -192,12 +192,12 @@
 				}).catch( err => this.load.list = false );
 			},
 
-			//显示编辑界面 XmProjectGroupUser xm_group_user
+			//显示编辑界面 XmGroupUser xm_group_user
 			showEdit: function ( row,index ) {
 				this.editFormVisible = true;
 				this.editForm = Object.assign({}, row);
 			},
-			//显示新增界面 XmProjectGroupUser xm_group_user
+			//显示新增界面 XmGroupUser xm_group_user
 			showAdd: function () {
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);
@@ -205,46 +205,46 @@
 			afterAddSubmit(){
 				this.addFormVisible=false;
 				this.pageInfo.count=true;
-				this.getXmProjectGroupUsers();
+				this.getXmGroupUsers();
 			},
 			afterEditSubmit(){
 				this.editFormVisible=false;
 			},
-			//选择行xmProjectGroupUser
+			//选择行xmGroupUser
 			selsChange: function (sels) {
 				this.sels = sels;
 			}, 
-			//删除xmProjectGroupUser
+			//删除xmGroupUser
 			handleDel: function (row,index) { 
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
 				}).then(() => { 
 					this.load.del=true;
 					let params = { userid:row.userid,groupId: row.groupId };
-					delXmProjectGroupUser(params).then((res) => {
+					delXmGroupUser(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
 						if(tips.isOk){ 
 							this.pageInfo.count=true;
-							this.getXmProjectGroupUsers();
+							this.getXmGroupUsers();
 						}
 						this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
-			//批量删除xmProjectGroupUser
+			//批量删除xmGroupUser
 			batchDel: function () {
 				
 				this.$confirm('确认删除选中记录吗？', '提示', {
 					type: 'warning'
 				}).then(() => { 
 					this.load.del=true;
-					batchDelXmProjectGroupUser(this.sels).then((res) => {
+					batchDelXmGroupUser(this.sels).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
 						if( tips.isOk ){ 
 							this.pageInfo.count=true;
-							this.getXmProjectGroupUsers(); 
+							this.getXmGroupUsers(); 
 						}
 						this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
@@ -265,7 +265,7 @@
 			this.$nextTick(() => {
 			    //initSimpleDicts('all',['sex','gradeLvl']).then(res=>this.dicts=res.data.data);
 			    this.initData()
-				this.searchXmProjectGroupUsers();
+				this.searchXmGroupUsers();
                 
                 
                 this.maxTableHeight = util.calcTableMaxHeight('.el-table');

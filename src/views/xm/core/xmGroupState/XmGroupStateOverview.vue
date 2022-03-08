@@ -10,7 +10,7 @@
             <el-row style="margin-bottom:18px">
               <el-row>
                 <span>团队名称:</span>
-                <span v-text="this.xmProjectGroupState.groupName"></span>
+                <span v-text="this.xmGroupState.groupName"></span>
               </el-row>
             </el-row>
             <el-row style="margin-bottom:18px">
@@ -20,7 +20,7 @@
                     <i class="el-icon-right"></i>
                   </div>
                   <div class="info">
-                    <div v-text="this.xmProjectGroupState.taskCnt"></div>
+                    <div v-text="this.xmGroupState.taskCnt"></div>
                     <div class="title">总任务量</div>
                   </div>
                 </div>
@@ -43,7 +43,7 @@
                     <i class="el-icon-check"></i>
                   </div>
                   <div class="info">
-                    <div v-text="this.xmProjectGroupState.finishTaskCnt" >
+                    <div v-text="this.xmGroupState.finishTaskCnt" >
                     </div>
                     <div class="title">已完成</div>
                   </div>
@@ -78,7 +78,7 @@
                   <i class="el-icon-refresh"></i>
                 </div>
                 <div class="info">
-                  <div class="title"> 关联迭代数： {{(this.xmProjectGroupState.iterationCnt)}} </div>
+                  <div class="title"> 关联迭代数： {{(this.xmGroupState.iterationCnt)}} </div>
                 </div>
               </div>
             </el-row>
@@ -120,7 +120,7 @@
                   <el-col :span="8">
                     <div>
                       <div style="text-align:center;">
-                        <span style="font-size:24px;" v-text="this.xmProjectGroupState.planWorkload"></span>
+                        <span style="font-size:24px;" v-text="this.xmGroupState.planWorkload"></span>
                         <span style="font-size:5px;">h</span>
                       </div>
                       <div style="text-align:center;font-size:5px;">计划工作量</div>
@@ -129,7 +129,7 @@
                   <el-col :span="8">
                     <div>
                       <div style="text-align:center;">
-                        <span style="font-size:24px;" v-text="this.xmProjectGroupState.actWorkload"></span>
+                        <span style="font-size:24px;" v-text="this.xmGroupState.actWorkload"></span>
                         <span style="font-size:5px;">h</span>
                       </div>
                       <div style="text-align:center;font-size:5px;">完成工作量</div>
@@ -215,64 +215,64 @@ export default {
   computed: {
     ...mapGetters(['userInfo','roles']),
     finishRate:function (){
-      return parseFloat(this.xmProjectGroupState.finishRate);
+      return parseFloat(this.xmGroupState.finishRate);
     },
     notStart: function() {
-      return this.xmProjectGroupState.taskCnt-this.xmProjectGroupState.finishTaskCnt;
+      return this.xmGroupState.taskCnt-this.xmGroupState.finishTaskCnt;
     },
     planStartTime: function (){
-      if(this.xmProjectGroupState.planStartTime){
-        return this.xmProjectGroupState.planStartTime.substring(0,10);
+      if(this.xmGroupState.planStartTime){
+        return this.xmGroupState.planStartTime.substring(0,10);
       } else{
         return '暂无';
       }
     },
     planEndTime: function (){
-      if(this.xmProjectGroupState.planEndTime){
-        return this.xmProjectGroupState.planEndTime.substring(0,10);
+      if(this.xmGroupState.planEndTime){
+        return this.xmGroupState.planEndTime.substring(0,10);
       } else{
         return '暂无';
       }
     },
     calcTime:function (){
-      if(this.xmProjectGroupState.calcTime){
-        return this.xmProjectGroupState.calcTime.substring(0,10);
+      if(this.xmGroupState.calcTime){
+        return this.xmGroupState.calcTime.substring(0,10);
       }else{
         return '暂无';
       }
     },
     workloadProgress:function (){
-      if(this.xmProjectGroupState && this.xmProjectGroupState.actWorkload){
-        return Math.round(this.xmProjectGroupState.actWorkload/this.xmProjectGroupState.planWorkload*100);
+      if(this.xmGroupState && this.xmGroupState.actWorkload){
+        return Math.round(this.xmGroupState.actWorkload/this.xmGroupState.planWorkload*100);
       }else{
         return 0;
       }
     },
     deviation:function (){
       let now = new Date();
-      let startTime = new Date(this.xmProjectGroupState.planStartTime);
-      let endTime = new Date(this.xmProjectGroupState.planEndTime);
+      let startTime = new Date(this.xmGroupState.planStartTime);
+      let endTime = new Date(this.xmGroupState.planEndTime);
       let allDays=endTime-startTime;
       if(now<=endTime && allDays){
-        return this.xmProjectGroupState.planWorkload - Math.round((now-startTime)/allDays*this.xmProjectGroupState.planWorkload)
+        return this.xmGroupState.planWorkload - Math.round((now-startTime)/allDays*this.xmGroupState.planWorkload)
       }else{
-        return this.xmProjectGroupState.actWorkload - this.xmProjectGroupState.planWorkload;
+        return this.xmGroupState.actWorkload - this.xmGroupState.planWorkload;
       }
     },
     deviationRate:function (){
-      if(this.xmProjectGroupState.planWorkload){
-        return Math.round(this.deviation/this.xmProjectGroupState.planWorkload*100);
+      if(this.xmGroupState.planWorkload){
+        return Math.round(this.deviation/this.xmGroupState.planWorkload*100);
       }else{
         return '暂无';
       }
     },
     remainWorkload:function (){
-      return this.xmProjectGroupState.planWorkload - this.xmProjectGroupState.actWorkload;
+      return this.xmGroupState.planWorkload - this.xmGroupState.actWorkload;
     },
     planProgress:function (){
       let now = new Date();
-      let startTime = new Date(this.xmProjectGroupState.planStartTime);
-      let endTime = new Date(this.xmProjectGroupState.planEndTime);
+      let startTime = new Date(this.xmGroupState.planStartTime);
+      let endTime = new Date(this.xmGroupState.planEndTime);
       let allDays=endTime-startTime;
       if(now<=endTime && allDays){
         return Math.round((now-startTime)/allDays*100);
@@ -281,21 +281,21 @@ export default {
       }
     },
     realProgress:function (){
-      if(this.xmProjectGroupState.actWorkload < this.xmProjectGroupState.planWorkload && this.xmProjectGroupState.planWorkload){
-        return Math.round(this.xmProjectGroupState.actWorkload/this.xmProjectGroupState.planWorkload*100);
+      if(this.xmGroupState.actWorkload < this.xmGroupState.planWorkload && this.xmGroupState.planWorkload){
+        return Math.round(this.xmGroupState.actWorkload/this.xmGroupState.planWorkload*100);
       }else{
         return 100;
       }
     },
-    xmProjectGroupStateCpd(){
-      return this.xmProjectGroupState
+    xmGroupStateCpd(){
+      return this.xmGroupState
     },
 
   },
 
-  props:['xmProjectGroupState'],
+  props:['xmGroupState'],
   watch:{
-    xmProjectGroupStateCpd:function(){
+    xmGroupStateCpd:function(){
       this.drawAllBar();
       this.drawPieBug();
     }
@@ -341,7 +341,7 @@ export default {
             },
             data: [
               {
-                value: this.xmProjectGroupState.testCases,
+                value: this.xmGroupState.testCases,
                 itemStyle: {
                   normal:{
                     color: '#99CCFF'
@@ -349,7 +349,7 @@ export default {
                 }
               },
               {
-                value: this.xmProjectGroupState.taskCnt,
+                value: this.xmGroupState.taskCnt,
                 itemStyle: {
                   normal:{
                     color: '#99CCFF'
@@ -357,7 +357,7 @@ export default {
                 }
               },
               {
-                value: this.xmProjectGroupState.bugCnt,
+                value: this.xmGroupState.bugCnt,
                 itemStyle: {
                   normal:{
                     color: '#99CCFF'
@@ -405,28 +405,28 @@ export default {
               }
             },
             data: [
-              {value: this.xmProjectGroupState.closedBugs,
+              {value: this.xmGroupState.closedBugs,
                 itemStyle: {
                   normal:{
                     color: '#5470C6'
                   }
                 },
                 name: '已关闭'},
-              {value: this.xmProjectGroupState.resolvedBugs,
+              {value: this.xmGroupState.resolvedBugs,
                 itemStyle: {
                   normal:{
                     color: '#91CC75'
                   }
                 },
                 name: '已解决'},
-              {value: this.xmProjectGroupState.activeBugs,
+              {value: this.xmGroupState.activeBugs,
                 itemStyle: {
                   normal:{
                     color: '#FAC858'
                   }
                 },
                 name: '已激活'},
-              {value: this.xmProjectGroupState.confirmedBugs,
+              {value: this.xmGroupState.confirmedBugs,
                 itemStyle: {
                   normal:{
                     color: '#EE6666'
@@ -478,21 +478,21 @@ export default {
               }
             },
             data: [
-              {value: this.xmProjectGroupState.execCases,
+              {value: this.xmGroupState.execCases,
                 itemStyle: {
                   normal:{
                     color: '#73C0DE'
                   }
                 },
                 name: '测试中案例'},
-              {value: this.xmProjectGroupState.designCases,
+              {value: this.xmGroupState.designCases,
                 itemStyle: {
                   normal:{
                     color: '#FAC858'
                   }
                 },
                 name: '设计中案例'},
-              {value: this.xmProjectGroupState.finishCases,
+              {value: this.xmGroupState.finishCases,
                 itemStyle: {
                   normal:{
                     color: '#91CC75'

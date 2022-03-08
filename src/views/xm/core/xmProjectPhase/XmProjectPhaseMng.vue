@@ -220,7 +220,7 @@
 	import {sn} from '@/common/js/sequence'
 	import { mapGetters } from 'vuex'
 import XmProjectPhaseBatch from './XmProjectPhaseBatch'; 
-import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
+import XmGroupSelect from '../xmGroup/XmGroupSelect.vue';
 import XmTaskList from '../xmTask/XmTaskList.vue';
 
   
@@ -1306,7 +1306,7 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 		    'xm-project-phase-add':XmProjectPhaseAdd,
 		    'xm-project-phase-edit':XmProjectPhaseEdit,
 			
-      XmProjectPhaseTemplateMng,xmMenuSelect,XmGantt,XmProjectPhaseBatch,XmProjectGroupSelect,
+      XmProjectPhaseTemplateMng,xmMenuSelect,XmGantt,XmProjectPhaseBatch,XmGroupSelect,
 XmTaskList
         //在下面添加其它组件
 		},

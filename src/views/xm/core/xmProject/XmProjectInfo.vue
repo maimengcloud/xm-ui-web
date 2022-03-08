@@ -172,8 +172,8 @@
 	import  XmProjectEdit from './XmProjectEdit';//修改界面
 	import { mapGetters } from 'vuex';
 	import xmTaskMng from '../xmTask/XmTaskMng';
-	import xmGroupMng from '../xmProjectGroup/XmProjectGroupMng';
-	import xmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect';
+	import xmGroupMng from '../xmGroup/XmGroupMng';
+	import xmGroupSelect from '../xmGroup/XmGroupSelect';
 
 	import xmExchange from '../xmExchange/XmExchangeMng';
 	import xmQuestion from '../xmQuestion/XmQuestionMng';
@@ -416,7 +416,7 @@
 			xmMenuWithPlan,
 			xmProjectStateMng,
 			xmTestCaseExecMng,
-			xmProjectGroupSelect,
+			xmGroupSelect,
 			XmIterationForProjectComplex, 
 			XmProjectOverviewComplex,
 			XmProductForProjectComplex,

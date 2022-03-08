@@ -8,7 +8,7 @@
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件 
 	import { mapGetters } from 'vuex'
- import XmProjectGroupMng from './XmProjectGroupMng.vue';
+ import XmGroupMng from './XmGroupMng.vue';
 	
 export default { 
 	computed: {
@@ -31,7 +31,7 @@ export default {
 		
 	},//end methods
 	components: {  
-		XmProjectGroupMng,
+		XmGroupMng,
 		//在下面添加其它组件
 	},
 	mounted() { 

@@ -168,7 +168,7 @@
 	import {  listXmMenuWithPlan } from '@/api/xm/core/xmMenu';
 	import { delXmMenuPlan, batchDelXmMenuPlan,batchAddPlanFromTasks, loadTasksToXmMenuPlan,batchEditXmMenuPlan} from '@/api/xm/core/xmMenuPlan'; 
 	
-	import XmGroupMng from '../xmProjectGroup/XmProjectGroupMng';
+	import XmGroupMng from '../xmGroup/XmGroupMng';
 	import XmTaskMng from '../xmTask/XmTaskMng'; 
    import XmMenuRichDetail from './XmMenuRichDetail';
   import XmGantt from '../components/xm-gantt';

@@ -12,21 +12,21 @@ let base = config.getCoreBasePath();
  **/
  
 //普通查询 条件之间and关系  
-export const listXmProjectGroupUser = params => { return axios.get(`${base}/xm/core/xmProjectGroupUser/list`, { params: params }); };
+export const listXmGroupUser = params => { return axios.get(`${base}/xm/core/xmGroupUser/list`, { params: params }); };
 
 //模糊查询xm_group_user 条件之间or关系  
-//export const listXmProjectGroupUserKey = params => { return axios.get(`${base}/xm/core/xmProjectGroupUser/listKey`, { params: params }); };
+//export const listXmGroupUserKey = params => { return axios.get(`${base}/xm/core/xmGroupUser/listKey`, { params: params }); };
 
 //删除一条xm_group_user params={groupId:'团队编号 主键',userid:'团队成员编号 主键'}
-export const delXmProjectGroupUser = params => { return axios.post(`${base}/xm/core/xmProjectGroupUser/del`,params); };
+export const delXmGroupUser = params => { return axios.post(`${base}/xm/core/xmGroupUser/del`,params); };
 
 //批量删除xm_group_user  params=[{groupId:'团队编号 主键',userid:'团队成员编号 主键'}]
-export const batchDelXmProjectGroupUser = params => { return axios.post(`${base}/xm/core/xmProjectGroupUser/batchDel`, params); };
+export const batchDelXmGroupUser = params => { return axios.post(`${base}/xm/core/xmGroupUser/batchDel`, params); };
 
 //修改一条xm_group_user记录
-export const editXmProjectGroupUser = params => { return axios.post(`${base}/xm/core/xmProjectGroupUser/edit`, params); };
+export const editXmGroupUser = params => { return axios.post(`${base}/xm/core/xmGroupUser/edit`, params); };
 
 //新增一条xm_group_user
-export const addXmProjectGroupUser = params => { return axios.post(`${base}/xm/core/xmProjectGroupUser/add`, params); };
+export const addXmGroupUser = params => { return axios.post(`${base}/xm/core/xmGroupUser/add`, params); };
 //批量删除xm_group_user  params=[{groupId:'团队编号 主键',userid:'团队成员编号 主键'}]
-export const batchAddXmProjectGroupUser = params => { return axios.post(`${base}/xm/core/xmProjectGroupUser/batchAdd`, params); };
+export const batchAddXmGroupUser = params => { return axios.post(`${base}/xm/core/xmGroupUser/batchAdd`, params); };

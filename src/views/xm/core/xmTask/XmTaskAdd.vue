@@ -205,7 +205,7 @@
 	import {batchAddSkill } from '@/api/xm/core/xmTaskSkill';
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
 	import XmTaskList from '../xmTask/XmTaskList';
-	import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
+	import XmGroupSelect from '../xmGroup/XmGroupSelect.vue';
 
 	export default {
 		computed: {
@@ -524,7 +524,7 @@
 		},//end method
 		components: {
  			xmSkillMng,
-			skillMng,xmMenuSelect,XmTaskList,XmProjectGroupSelect
+			skillMng,xmMenuSelect,XmTaskList,XmGroupSelect
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},
 		mounted() {

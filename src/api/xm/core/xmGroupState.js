@@ -12,22 +12,22 @@ let base = config.getCoreBasePath();
  **/
  
 //普通查询 条件之间and关系  
-export const listXmProjectGroupState = params => { return axios.get(`${base}/xm/core/xmProjectGroupState/list`, { params: params }); };
+export const listXmGroupState = params => { return axios.get(`${base}/xm/core/xmGroupState/list`, { params: params }); };
 
 //模糊查询功能状态表,无需前端维护，所有数据由汇总统计得出 条件之间or关系  
-//export const listXmProjectGroupStateKey = params => { return axios.get(`${base}/xm/core/xmProjectGroupState/listKey`, { params: params }); };
+//export const listXmGroupStateKey = params => { return axios.get(`${base}/xm/core/xmGroupState/listKey`, { params: params }); };
 
 //删除一条功能状态表,无需前端维护，所有数据由汇总统计得出 params={id:'主键 主键'}
-export const delXmProjectGroupState = params => { return axios.post(`${base}/xm/core/xmProjectGroupState/del`,params); };
+export const delXmGroupState = params => { return axios.post(`${base}/xm/core/xmGroupState/del`,params); };
 
 //批量删除功能状态表,无需前端维护，所有数据由汇总统计得出  params=[{id:'主键 主键'}]
-export const batchDelXmProjectGroupState = params => { return axios.post(`${base}/xm/core/xmProjectGroupState/batchDel`, params); };
+export const batchDelXmGroupState = params => { return axios.post(`${base}/xm/core/xmGroupState/batchDel`, params); };
 
 //修改一条功能状态表,无需前端维护，所有数据由汇总统计得出记录
-export const editXmProjectGroupState = params => { return axios.post(`${base}/xm/core/xmProjectGroupState/edit`, params); };
+export const editXmGroupState = params => { return axios.post(`${base}/xm/core/xmGroupState/edit`, params); };
 
 //新增一条功能状态表,无需前端维护，所有数据由汇总统计得出
-export const addXmProjectGroupState = params => { return axios.post(`${base}/xm/core/xmProjectGroupState/add`, params); };
+export const addXmGroupState = params => { return axios.post(`${base}/xm/core/xmGroupState/add`, params); };
 
-export const loadTasksToXmProjectGroupState = params => { return axios.post(`${base}/xm/core/xmProjectGroupState/loadTasksToXmProjectGroupState`, params); };
+export const loadTasksToXmGroupState = params => { return axios.post(`${base}/xm/core/xmGroupState/loadTasksToXmGroupState`, params); };
 

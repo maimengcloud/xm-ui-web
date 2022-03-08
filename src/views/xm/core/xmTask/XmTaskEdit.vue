@@ -219,7 +219,7 @@
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
 	import XmTaskList from '../xmTask/XmTaskList';
 	import XmExecuserMng from '../xmTaskExecuser/XmTaskExecuserMng';
-	import XmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect.vue';
+	import XmGroupSelect from '../xmGroup/XmGroupSelect.vue';
 	import XmMenuRichDetail from '../xmMenu/XmMenuRichDetail';
 	import TagMng from "@/views/mdp/arc/tag/TagMng";
 
@@ -563,7 +563,7 @@
 		},//end method
 		components: { 
  			xmSkillMng,
-			skillMng,xmMenuSelect,XmTaskList,XmExecuserMng,XmProjectGroupSelect,XmMenuRichDetail,TagMng,
+			skillMng,xmMenuSelect,XmTaskList,XmExecuserMng,XmGroupSelect,XmMenuRichDetail,TagMng,
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},
 		mounted() { 

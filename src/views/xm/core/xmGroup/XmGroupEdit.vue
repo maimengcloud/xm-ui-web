@@ -3,7 +3,7 @@
 	    <el-row class="page-header">
 	    </el-row>
 		<el-row class="page-main">
-		<!--编辑界面 XmProjectGroup xm_group--> 
+		<!--编辑界面 XmGroup xm_group--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">   
 				<el-form-item label="小组名称" prop="groupName">
 					<el-input v-model="editForm.groupName" placeholder="团队名称">
@@ -50,13 +50,13 @@
 	import util from '@/common/js/util';//全局公共库
 	import config from "@/common/config"; //全局公共库import
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
-	import { addXmProjectGroup,editXmProjectGroup } from '@/api/xm/core/xmProjectGroup';
+	import { addXmGroup,editXmGroup } from '@/api/xm/core/xmGroup';
 	import { mapGetters } from 'vuex'
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
 	import  BranchSelect from '@/views/mdp/sys/branch/BranchSelect';//机构选择
 	
 	export default {
-	    name:'xmProjectGroupEdit',
+	    name:'xmGroupEdit',
 	    components: {
 			UsersSelect,BranchSelect,
         },
@@ -64,12 +64,12 @@
 		    ...mapGetters([ 'userInfo'  ]),
 
 		},
-		props:['xmProjectGroup','visible','opType'],
+		props:['xmGroup','visible','opType'],
 
 		watch: {
-	      'xmProjectGroup':function( xmProjectGroup ) {
-	        if(xmProjectGroup){
-	            this.editForm = xmProjectGroup;
+	      'xmGroup':function( xmGroup ) {
+	        if(xmGroup){
+	            this.editForm = xmGroup;
 	        }
 
 	      },
@@ -105,16 +105,16 @@
 				this.$refs['editFormRef'].resetFields();
 				this.$emit('cancel');
 			},
-			//新增、编辑提交XmProjectGroup xm_group父组件监听@submit="afterEditSubmit"
+			//新增、编辑提交XmGroup xm_group父组件监听@submit="afterEditSubmit"
 			saveSubmit: function () {
 				this.$refs.editFormRef.validate((valid) => {
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
 							this.load.edit=true
 							let params = Object.assign({}, this.editForm);
-							var func=addXmProjectGroup
+							var func=addXmGroup
 							if(this.currOpType=='edit'){
-							    func=editXmProjectGroup
+							    func=editXmGroup
 							}
 							func(params).then((res) => {
                                 this.load.edit=false
@@ -134,8 +134,8 @@
 			},
 			initData: function(){
 			    this.currOpType=this.opType
-			    if(this.xmProjectGroup){
-                    this.editForm = Object.assign({},this.xmProjectGroup);
+			    if(this.xmGroup){
+                    this.editForm = Object.assign({},this.xmGroup);
                 }
 
                 if(this.opType=='edit'){

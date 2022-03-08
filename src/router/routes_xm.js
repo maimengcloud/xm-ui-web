@@ -148,8 +148,8 @@ export default {
       },
       // leaf: true,//只有一个节点
       children: [
-         { path: 'xmProjectGroup/XmProjectGroupAllMng', component: _import('xm/core/xmProjectGroup/XmProjectGroupAllMng'), name: 'XmProjectGroupAllMng', meta: { title: '团队管理' }}, 
-         { path: 'xmProjectGroupUser/XmProjectGroupUserMng', component: _import('xm/core/xmProjectGroupUser/XmProjectGroupUserMng'), name: 'XmProjectGroupUserMng', meta: { title: '成员管理' }}, 
+         { path: 'xmGroup/XmGroupAllMng', component: _import('xm/core/xmGroup/XmGroupAllMng'), name: 'XmGroupAllMng', meta: { title: '团队管理' }}, 
+         { path: 'xmGroupUser/XmGroupUserMng', component: _import('xm/core/xmGroupUser/XmGroupUserMng'), name: 'XmGroupUserMng', meta: { title: '成员管理' }}, 
       ]
     }
   ]

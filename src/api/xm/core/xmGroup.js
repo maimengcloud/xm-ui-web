@@ -12,24 +12,24 @@ let base = config.getCoreBasePath();
  **/
  
 //普通查询 条件之间and关系  
-export const listXmProjectGroup = params => { return axios.get(`${base}/xm/core/xmProjectGroup/list`, { params: params }); };
+export const listXmGroup = params => { return axios.get(`${base}/xm/core/xmGroup/list`, { params: params }); };
 
 //模糊查询xm_group 条件之间or关系  
-//export const listXmProjectGroupKey = params => { return axios.get(`${base}/xm/core/xmProjectGroup/listKey`, { params: params }); };
+//export const listXmGroupKey = params => { return axios.get(`${base}/xm/core/xmGroup/listKey`, { params: params }); };
 
 //删除一条xm_group params={id:'主键 主键'}
-export const delXmProjectGroup = params => { return axios.post(`${base}/xm/core/xmProjectGroup/del`,params); };
+export const delXmGroup = params => { return axios.post(`${base}/xm/core/xmGroup/del`,params); };
 
 //批量删除xm_group  params=[{id:'主键 主键'}]
-export const batchDelXmProjectGroup = params => { return axios.post(`${base}/xm/core/xmProjectGroup/batchDel`, params); };
+export const batchDelXmGroup = params => { return axios.post(`${base}/xm/core/xmGroup/batchDel`, params); };
 
 //修改一条xm_group记录
-export const editXmProjectGroup = params => { return axios.post(`${base}/xm/core/xmProjectGroup/edit`, params); };
+export const editXmGroup = params => { return axios.post(`${base}/xm/core/xmGroup/edit`, params); };
 
 //新增一条xm_group
-export const addXmProjectGroup = params => { return axios.post(`${base}/xm/core/xmProjectGroup/add`, params); };
+export const addXmGroup = params => { return axios.post(`${base}/xm/core/xmGroup/add`, params); };
 
-export const getGroups = params => { return axios.get(`${base}/xm/core/xmProjectGroup/getGroups`, { params: params }); };
+export const getGroups = params => { return axios.get(`${base}/xm/core/xmGroup/getGroups`, { params: params }); };
 
 
 

@@ -42,7 +42,7 @@ import cards from './cards'
 	import config from '@/common/config';//全局公共库 
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
   import { listXmProjectState  } from '@/api/xm/core/xmProjectState'; 
-  import { listXmProjectGroupState} from '@/api/xm/core/xmProjectGroupState';
+  import { listXmGroupState} from '@/api/xm/core/xmGroupState';
 	import { listXmProjectTaskTypeState } from '@/api/xm/core/xmProjectTaskTypeState';
   import { listXmRecord } from '@/api/xm/core/xmRecord';
   import { listXmProjectPhase } from '@/api/xm/core/xmProjectPhase';
@@ -192,10 +192,10 @@ export default {
       return digitalFlopData;
     },
     rankingBoardData(){
-      if( !this.xmProjectGroupStates || this.xmProjectGroupStates.length==0 ){
+      if( !this.xmGroupStates || this.xmGroupStates.length==0 ){
         return [];
       }
-      var rankingBoardData=this.xmProjectGroupStates.map(i=>{
+      var rankingBoardData=this.xmGroupStates.map(i=>{
         return {name:i.groupName,value:i.finishRate+'%'}
       })
       return rankingBoardData
@@ -274,7 +274,7 @@ export default {
         projectId:null,
       },
       xmProjectState:null,
-      xmProjectGroupStates:[],
+      xmGroupStates:[],
       xmProjectTaskTypeStates:[],
       xmRecords:[],
       xmProjectPhases:[],
@@ -291,7 +291,7 @@ export default {
         orderDirs:["desc"]//升序 asc,降序desc 如 性别 升序、学生编号降序 ['asc','desc']
       },
       
-      xmProjectGroupStatePageInfo:{//分页数据
+      xmGroupStatePageInfo:{//分页数据
         total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
         pageSize:5,//每页数据
         count:false,//是否需要重新计算总记录数
@@ -325,27 +325,27 @@ export default {
         }
       });
     },
-    getXmProjectGroupStates(){
+    getXmGroupStates(){
       let params = {
-					pageSize: this.xmProjectGroupStatePageInfo.pageSize,
-					pageNum: this.xmProjectGroupStatePageInfo.pageNum,
-					total: this.xmProjectGroupStatePageInfo.total,
-					count:this.xmProjectGroupStatePageInfo.count
+					pageSize: this.xmGroupStatePageInfo.pageSize,
+					pageNum: this.xmGroupStatePageInfo.pageNum,
+					total: this.xmGroupStatePageInfo.total,
+					count:this.xmGroupStatePageInfo.count
 				};
-				if(this.xmProjectGroupStatePageInfo.orderFields!=null && this.xmProjectGroupStatePageInfo.orderFields.length>0){
+				if(this.xmGroupStatePageInfo.orderFields!=null && this.xmGroupStatePageInfo.orderFields.length>0){
 					let orderBys=[];
-					for(var i=0;i<this.xmProjectGroupStatePageInfo.orderFields.length;i++){ 
-						orderBys.push(this.xmProjectGroupStatePageInfo.orderFields[i]+" "+this.xmProjectGroupStatePageInfo.orderDirs[i])
+					for(var i=0;i<this.xmGroupStatePageInfo.orderFields.length;i++){ 
+						orderBys.push(this.xmGroupStatePageInfo.orderFields[i]+" "+this.xmGroupStatePageInfo.orderDirs[i])
 					}  
 					params.orderBy= orderBys.join(",")
 				}  
       params.branchId=this.userInfo.branchId
       params.projectId=this.filters.projectId
-      listXmProjectGroupState(params).then(res=>{
+      listXmGroupState(params).then(res=>{
         var tips = res.data.tips;
         if(tips.isOk){
           if(res.data.data.length>0){
-             this.xmProjectGroupStates=res.data.data
+             this.xmGroupStates=res.data.data
           }
         }
       });
@@ -431,7 +431,7 @@ export default {
 				this.filters.projectId=this.$route.params.projectId;
 		}
     this.getXmProjectState();
-    this.getXmProjectGroupStates();
+    this.getXmGroupStates();
     this.getXmProjectTaskTypeStates();
     this.getXmRecords();
     this.getXmProjectPhases();

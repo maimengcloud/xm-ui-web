@@ -5,7 +5,7 @@
 					<el-button   type="primary" @click="userConfirm" icon="el-icon-finished">确认选择</el-button> 
 				</el-col>
 				<el-col :span="18" class="hidden-sm-and-down">
- 					<el-tooltip    content="黄色表示选中"><span class="addXmProjectGroupFormworkSquare"></span></el-tooltip> 
+ 					<el-tooltip    content="黄色表示选中"><span class="addXmGroupFormworkSquare"></span></el-tooltip> 
 					 {{this.filters.selProject?"项目：":""}}<el-tag type="primary" @click="selectProjectVisible=true" v-if="this.filters.selProject" closable @close="onProjectClose">{{this.filters.selProject.name}}</el-tag>
 					 <el-tag v-else type="warning" @click="selectProjectVisible=true"> 选择项目</el-tag>
 						&nbsp;&nbsp;
@@ -14,7 +14,7 @@
  				</el-col> 
 		</el-row>  
 		<el-row class="padding-top" v-loading="load.list" :style="{overflowX:'auto',height:maxTableHeight+'px'}" ref="table">
-			<el-row v-for="(item,index) in xmProjectGroupFormworkSels" :key="index"> 
+			<el-row v-for="(item,index) in xmGroupFormworkSels" :key="index"> 
 				<h3>
 					<div class="padding-top">{{item.groupName}}
 					</div> 
@@ -42,7 +42,7 @@
 	import util from '@/common/js/util'; //全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-   	import {  getGroups } from '@/api/xm/core/xmProjectGroup';
+   	import {  getGroups } from '@/api/xm/core/xmGroup';
    	import XmProjectList from '../xmProject/XmProjectList';
 
 	import {mapGetters} from 'vuex' 
@@ -64,9 +64,9 @@ import XmProductSelect from '../xmProduct/XmProductSelect.vue';
 							i.groupUsers.forEach(k=>k.isSelected="0")
 						} 
 					})
-					this.xmProjectGroupFormworkSels = JSON.parse(JSON.stringify(this.selGroups));
+					this.xmGroupFormworkSels = JSON.parse(JSON.stringify(this.selGroups));
 				}else{ 
-					this.xmProjectGroupFormworkSels = [];
+					this.xmGroupFormworkSels = [];
 				}
 				// this.applyData();
 			},
@@ -99,7 +99,7 @@ import XmProductSelect from '../xmProduct/XmProductSelect.vue';
 				}, //下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
 
 				/**begin 自定义属性请在下面加 请加备注**/
-				xmProjectGroupFormworkSels: [],
+				xmGroupFormworkSels: [],
 				selectProjectVisible:false,
 				selectProductVisible:false,
 				maxTableHeight:300,
@@ -109,21 +109,21 @@ import XmProductSelect from '../xmProduct/XmProductSelect.vue';
 		methods: {
 			toggleSelected(index,valueIndex) {
 				if(this.isSelectSingleUser=='1' || this.isSelectMultiUser=='1'){
-					if(this.xmProjectGroupFormworkSels[index].groupUsers[valueIndex].isSelected == '1'){
-						this.xmProjectGroupFormworkSels[index].groupUsers[valueIndex].isSelected ='0'
+					if(this.xmGroupFormworkSels[index].groupUsers[valueIndex].isSelected == '1'){
+						this.xmGroupFormworkSels[index].groupUsers[valueIndex].isSelected ='0'
 					}else{
-						this.xmProjectGroupFormworkSels[index].groupUsers[valueIndex].isSelected ='1'
+						this.xmGroupFormworkSels[index].groupUsers[valueIndex].isSelected ='1'
 					}
 				}
 				
 			}, 
 			//确认项目团队组成员
 			groupConfirm(){
-				this.$emit("select-confirm",this.xmProjectGroupFormworkSels);
+				this.$emit("select-confirm",this.xmGroupFormworkSels);
 			},
 			userConfirm(){
 				var users=[];
-				this.xmProjectGroupFormworkSels.forEach(i=>{
+				this.xmGroupFormworkSels.forEach(i=>{
 					if(i.groupUsers){
 						i.groupUsers.forEach(k=>{
 							if(k.isSelected=='1'){
@@ -210,7 +210,7 @@ import XmProductSelect from '../xmProduct/XmProductSelect.vue';
 							i.groupUsers.forEach(k=>k.isSelected="0")
 						} 
 					})
-					this.xmProjectGroupFormworkSels = JSON.parse(JSON.stringify(this.selGroups));
+					this.xmGroupFormworkSels = JSON.parse(JSON.stringify(this.selGroups));
 				}
 				if(this.selProject){
 					this.filters.selProject=this.selProject
@@ -272,7 +272,7 @@ import XmProductSelect from '../xmProduct/XmProductSelect.vue';
 	}
 
 
-	.input-xmProjectGroupFormwork {
+	.input-xmGroupFormwork {
 		margin-left:10px;
 		margin-top: 2px;
 		align-self: center;
@@ -292,7 +292,7 @@ import XmProductSelect from '../xmProduct/XmProductSelect.vue';
 		animation: myrotate 1s linear;
 	}
 
-	.addXmProjectGroupFormworkSquare {
+	.addXmGroupFormworkSquare {
 		width: 15px;
 		height: 15px;
 		display: inline-block;
@@ -300,7 +300,7 @@ import XmProductSelect from '../xmProduct/XmProductSelect.vue';
 		animation: myrotate 2s linear infinite;
 	}
 
-	.closeXmProjectGroupFormworkSquare {
+	.closeXmGroupFormworkSquare {
 		width: 15px;
 		height: 15px;
 		display: inline-block;

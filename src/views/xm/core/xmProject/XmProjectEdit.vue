@@ -172,7 +172,7 @@
 	import { uploadBase64 } from '@/api/mdp/arc/image'; 
 	
 	import { mapGetters } from 'vuex';  
-	import { getGroups } from '@/api/xm/core/xmProjectGroup';
+	import { getGroups } from '@/api/xm/core/xmGroup';
 	import html2canvas from 'html2canvas'
 	
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
@@ -397,7 +397,7 @@
 					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:0,bizProcInstId:'',bizFlowState:'',taxRate:0.06,planNouserAt:0,planInnerUserAt:0,planOutUserAt:0,locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:0,totalReceivables:0,budgetMarginRate:0.13,contractAmt:0,planInnerUserPrice:85,planOutUserPrice:100,planOutUserCnt:1,planInnerUserCnt:1,planWorkingHours:0,planInnerUserWorkload:0,planOutUserWorkload:0,budgetCtrl:'0',admUserid:'',admUsername:'',pmUserid:'',pmUsername:'',assUserid:'',assUsername:''
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
-				xmProjectGroups:[],
+				xmGroups:[],
 				userSelectType: "",
 				userSelectVisible: false,
 				groupSelectVisible:false,
@@ -417,7 +417,7 @@
 			//选择接收人 
  
 			showProjectGroups:function(){
-				this.getXmProjectGroups();
+				this.getXmGroups();
 				this.groupSelectVisible=true;
 			},
 			//项目团队选择
@@ -473,7 +473,7 @@
 					}
 				});
 			}, 
-			getXmProjectGroups() {
+			getXmGroups() {
 				this.load.list = true;
 				let params = {};
 				params.projectId = this.editForm.id;
@@ -481,7 +481,7 @@
 				getGroups(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 
-						this.xmProjectGroups = res.data.data; 
+						this.xmGroups = res.data.data; 
 					}else{
 						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					} 

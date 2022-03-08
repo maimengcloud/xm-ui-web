@@ -36,7 +36,7 @@ var xmHomePage=[
     padding: 5,
     },
     {
-    element: '#XmProjectGroupAllMng',
+    element: '#XmGroupAllMng',
     popover: {
       title: ' ',
       description: '这里可以快速创建项目、产品团队、快速管理团队成员。',

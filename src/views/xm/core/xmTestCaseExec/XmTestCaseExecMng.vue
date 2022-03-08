@@ -220,7 +220,7 @@
 	import  XmTestCaseMng from '../xmTestCase/XmTestCaseMng';//修改界面
 	import XmProjectList from '../xmProject/XmProjectList';
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
-	import XmGroupMng from '../xmProjectGroup/XmProjectGroupMng';
+	import XmGroupMng from '../xmGroup/XmGroupMng';
 	import XmTaskList from '../xmTask/XmTaskList';
 	import  XmTestCaseEdit from '../xmTestCase/XmTestCaseEdit';//修改界面
 	import  XmQuestionMng from '../xmQuestion/XmQuestionMng';//修改界面

@@ -1031,7 +1031,7 @@ import XmProductSelect from "../xmProduct/XmProductSelect"; //修改界面
 import TagMng from "@/views/mdp/arc/tag/TagMng";
 
 import XmGantt from "../components/xm-gantt";
-import XmProjectGroupSelect from "../xmProjectGroup/XmProjectGroupSelect.vue";
+import XmGroupSelect from "../xmGroup/XmGroupSelect.vue";
 
 export default {
   computed: {
@@ -2432,7 +2432,7 @@ export default {
     XmMenuRichDetail,
     XmGantt,
     XmTaskMngBatch,
-    XmProjectGroupSelect,
+    XmGroupSelect,
     XmProductSelect,
     XmTaskAgileKanban,
     TagMng,

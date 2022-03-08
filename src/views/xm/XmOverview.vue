@@ -155,7 +155,7 @@
                   </div>
                   <div class="quick-menu-text">开发任务</div>
                 </div>  
-                <div class="quick-menu" @click="gotolink('/xm/core/xmProjectGroup/XmProjectGroupAllMng')" id="XmProjectGroupAllMng">
+                <div class="quick-menu" @click="gotolink('/xm/core/xmGroup/XmGroupAllMng')" id="XmGroupAllMng">
                   <div class="quick-menu-icon-outer">
                     <img src="../../assets/image/platform/module-organization.png" />
                   </div>

@@ -175,8 +175,8 @@
 
 	import { mapGetters } from 'vuex';
 	import xmTaskMng from '../xmTask/XmTaskMng';
-	import xmGroupMng from '../xmProjectGroup/XmProjectGroupMng';
-	import xmProjectGroupSelect from '../xmProjectGroup/XmProjectGroupSelect';
+	import xmGroupMng from '../xmGroup/XmGroupMng';
+	import xmGroupSelect from '../xmGroup/XmGroupSelect';
 
 	import xmExchange from '../xmExchange/XmExchangeMng';
 	import xmQuestion from '../xmQuestion/XmQuestionMng';
@@ -419,7 +419,7 @@ import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
 			xmMenuWithPlan,
 			xmProjectStateMng,
 			xmTestCaseExecMng,
-			xmProjectGroupSelect,
+			xmGroupSelect,
 			XmIterationForProjectComplex, 
 			XmProductOverviewComplex,
 			XmProductForProjectComplex,

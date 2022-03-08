@@ -157,7 +157,7 @@
 
  	import { loadTasksToXmMenuState} from '@/api/xm/core/xmMenuState'; 
 	
-	import XmGroupMng from '../xmProjectGroup/XmProjectGroupMng';
+	import XmGroupMng from '../xmGroup/XmGroupMng';
 	import XmTaskMng from '../xmTask/XmTaskMng'; 
  	import XmMenuRichDetail from '../xmMenu/XmMenuRichDetail';
 

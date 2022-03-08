@@ -216,7 +216,7 @@
 	import { mapGetters } from 'vuex'
 
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
-	import XmGroupMng from '../xmProjectGroup/XmProjectGroupMng';
+	import XmGroupMng from '../xmGroup/XmGroupMng';
 	import XmProjectList from '../xmProject/XmProjectList';
 
 	import  XmProductSelect from '../xmProduct/XmProductSelect';//修改界面

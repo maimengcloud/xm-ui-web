@@ -340,7 +340,7 @@
 					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:0,bizProcInstId:'',bizFlowState:'',taxRate:0.06,planNouserAt:0,planInnerUserAt:0,planOutUserAt:0,locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:0,totalReceivables:0,budgetMarginRate:0.13,contractAmt:0,planInnerUserPrice:85,planOutUserPrice:100,planOutUserCnt:1,planInnerUserCnt:1,planWorkingHours:0,planInnerUserWorkload:0,planOutUserWorkload:0,budgetCtrl:'0',admUserid:'',admUsername:'',pmUserid:'',pmUsername:'',assUserid:'',assUsername:''
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
-				xmProjectGroups:[],
+				xmGroups:[],
 				userSelectType: "",
 				userSelectVisible: false,
 				groupSelectVisible:false,
@@ -363,7 +363,7 @@
 			},
 			//项目团队选择
 			onGroupSelected(groups){
-				this.xmProjectGroups=groups;
+				this.xmGroups=groups;
 				this.groupSelectVisible=false;
 			},
 
@@ -392,7 +392,7 @@
 						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
 							this.load.add=true
 							let params = Object.assign({}, this.addForm); 
-							params.groups=this.xmProjectGroups;
+							params.groups=this.xmGroups;
 							params.planInnerUserWorkload=this.autoParams.planInnerUserWorkload
 							
 							params.planOutUserWorkload=this.autoParams.planOutUserWorkload

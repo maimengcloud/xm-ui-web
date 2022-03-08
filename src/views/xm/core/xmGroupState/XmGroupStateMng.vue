@@ -2,12 +2,12 @@
 	<section class="page-container  padding border">
 		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
-			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectGroupStates">查询</el-button>
-			<el-button type="warning" v-loading="load.edit"  @click="loadTasksToXmProjectGroupState">刷新数据</el-button>
+			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmGroupStates">查询</el-button>
+			<el-button type="warning" v-loading="load.edit"  @click="loadTasksToXmGroupState">刷新数据</el-button>
  		</el-row>
 		<el-row class="page-main">
-			<!--列表 XmProjectGroupState 功能状态表,无需前端维护，所有数据由汇总统计得出-->
-			<el-table ref="table" :height="tableHeight" :data="xmProjectGroupStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<!--列表 XmGroupState 功能状态表,无需前端维护，所有数据由汇总统计得出-->
+			<el-table ref="table" :height="tableHeight" :data="xmGroupStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  				<el-table-column sortable type="index" width="45"></el-table-column>
   				<el-table-column prop="groupName" label="团队名称" min-width="80" >
 					  <template slot-scope="scope">
@@ -54,9 +54,9 @@
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { listXmProjectGroupState, delXmProjectGroupState, batchDelXmProjectGroupState,loadTasksToXmProjectGroupState } from '@/api/xm/core/xmProjectGroupState';
+	import { listXmGroupState, delXmGroupState, batchDelXmGroupState,loadTasksToXmGroupState } from '@/api/xm/core/xmGroupState';
 	import { mapGetters } from 'vuex'
-import XmProjectGroupStateOverview from './XmProjectGroupStateOverview.vue';
+import XmGroupStateOverview from './XmGroupStateOverview.vue';
 
 	export default {
 		computed: {
@@ -64,11 +64,11 @@ import XmProjectGroupStateOverview from './XmProjectGroupStateOverview.vue';
 		      'userInfo','roles'
 		    ])
 		},
-		props:['selProject','visible','xmProduct','xmProjectGroup'],
+		props:['selProject','visible','xmProduct','xmGroup'],
 		watch:{
 			visible(visible){
 				if(visible==true){
-					this.getXmProjectGroupStates();
+					this.getXmGroupStates();
 				}
 			}
 		},
@@ -77,7 +77,7 @@ import XmProjectGroupStateOverview from './XmProjectGroupStateOverview.vue';
 				filters: {
 					key: ''
 				},
-				xmProjectGroupStates: [],//查询结果
+				xmGroupStates: [],//查询结果
 				pageInfo:{//分页数据
 					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
 					pageSize:10,//每页数据
@@ -92,14 +92,14 @@ import XmProjectGroupStateOverview from './XmProjectGroupStateOverview.vue';
 					//sex:[],
 				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
 
-				addFormVisible: false,//新增xmProjectGroupState界面是否显示
-				//新增xmProjectGroupState界面初始化数据
+				addFormVisible: false,//新增xmGroupState界面是否显示
+				//新增xmGroupState界面初始化数据
 				addForm: {
 					id:'',planStartTime:'',planEndTime:'',actStartTime:'',actEndTime:'',planWorkload:'',actWorkload:'',planCostAmount:'',actCostAmount:'',finishRate:'',demandRate:'',designRate:'',devRate:'',uatRate:'',sitRate:'',ctime:'',calcTime:'',planWorkhours:'',planWorkerCnt:'',closedBugs:'',activeBugs:'',confirmedBugs:'',resolvedBugs:'',testCases:'',execCases:'',designCases:'',finishCases:'',iterationCnt:'',taskCnt:'',finishTaskCnt:'',bizDate:'',bugCnt:'',groupId:'',projectId:'',projectName:'',groupName:''
 				},
 
 				editFormVisible: false,//编辑界面是否显示
-				//编辑xmProjectGroupState界面初始化数据
+				//编辑xmGroupState界面初始化数据
 				editForm: {
 					id:'',planStartTime:'',planEndTime:'',actStartTime:'',actEndTime:'',planWorkload:'',actWorkload:'',planCostAmount:'',actCostAmount:'',finishRate:'',demandRate:'',designRate:'',devRate:'',uatRate:'',sitRate:'',ctime:'',calcTime:'',planWorkhours:'',planWorkerCnt:'',closedBugs:'',activeBugs:'',confirmedBugs:'',resolvedBugs:'',testCases:'',execCases:'',designCases:'',finishCases:'',iterationCnt:'',taskCnt:'',finishTaskCnt:'',bizDate:'',bugCnt:'',groupId:'',projectId:'',projectName:'',groupName:''
 				},
@@ -113,11 +113,11 @@ import XmProjectGroupStateOverview from './XmProjectGroupStateOverview.vue';
 		methods: {
 			handleSizeChange(pageSize) {
 				this.pageInfo.pageSize=pageSize;
-				this.getXmProjectGroupStates();
+				this.getXmGroupStates();
 			},
 			handleCurrentChange(pageNum) {
 				this.pageInfo.pageNum = pageNum;
-				this.getXmProjectGroupStates();
+				this.getXmGroupStates();
 			},
 			// 表格排序 obj.order=ascending/descending,需转化为 asc/desc ; obj.prop=表格中的排序字段,字段驼峰命名
 			sortChange( obj ){
@@ -131,14 +131,14 @@ import XmProjectGroupStateOverview from './XmProjectGroupStateOverview.vue';
 					this.pageInfo.orderFields=['xxx'];
 					this.pageInfo.orderDirs=[dir];
 				}
-				this.getXmProjectGroupStates();
+				this.getXmGroupStates();
 			},
-			searchXmProjectGroupStates(){
+			searchXmGroupStates(){
 				 this.pageInfo.count=true;
-				 this.getXmProjectGroupStates();
+				 this.getXmGroupStates();
 			},
-			//获取列表 XmProjectGroupState 功能状态表,无需前端维护，所有数据由汇总统计得出
-			getXmProjectGroupStates() {
+			//获取列表 XmGroupState 功能状态表,无需前端维护，所有数据由汇总统计得出
+			getXmGroupStates() {
 				let params = {
 					pageSize: this.pageInfo.pageSize,
 					pageNum: this.pageInfo.pageNum,
@@ -165,16 +165,16 @@ import XmProjectGroupStateOverview from './XmProjectGroupStateOverview.vue';
 					params.productId=this.xmProduct.id
 				}
 				
-				if(this.xmProjectGroup){
-					params.groupId=this.xmProjectGroup.id
+				if(this.xmGroup){
+					params.groupId=this.xmGroup.id
 				}
 				this.load.list = true;
-				listXmProjectGroupState(params).then((res) => {
+				listXmGroupState(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
-						this.xmProjectGroupStates = res.data.data;
+						this.xmGroupStates = res.data.data;
 					}else{
 						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					}
@@ -182,12 +182,12 @@ import XmProjectGroupStateOverview from './XmProjectGroupStateOverview.vue';
 				}).catch( err => this.load.list = false );
 			},
 
-			//显示编辑界面 XmProjectGroupState 功能状态表,无需前端维护，所有数据由汇总统计得出
+			//显示编辑界面 XmGroupState 功能状态表,无需前端维护，所有数据由汇总统计得出
 			showEdit: function ( row,index ) {
 				this.editFormVisible = true;
 				this.editForm = Object.assign({}, row);
 			},
-			//显示新增界面 XmProjectGroupState 功能状态表,无需前端维护，所有数据由汇总统计得出
+			//显示新增界面 XmGroupState 功能状态表,无需前端维护，所有数据由汇总统计得出
 			showAdd: function () {
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);
@@ -195,46 +195,46 @@ import XmProjectGroupStateOverview from './XmProjectGroupStateOverview.vue';
 			afterAddSubmit(){
 				this.addFormVisible=false;
 				this.pageInfo.count=true;
-				this.getXmProjectGroupStates();
+				this.getXmGroupStates();
 			},
 			afterEditSubmit(){
 				this.editFormVisible=false;
 			},
-			//选择行xmProjectGroupState
+			//选择行xmGroupState
 			selsChange: function (sels) {
 				this.sels = sels;
 			},
-			//删除xmProjectGroupState
+			//删除xmGroupState
 			handleDel: function (row,index) {
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
 				}).then(() => {
 					this.load.del=true;
 					let params = { id: row.id };
-					delXmProjectGroupState(params).then((res) => {
+					delXmGroupState(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
 						if(tips.isOk){
 							this.pageInfo.count=true;
-							this.getXmProjectGroupStates();
+							this.getXmGroupStates();
 						}
 						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
-			//批量删除xmProjectGroupState
+			//批量删除xmGroupState
 			batchDel: function () {
 
 				this.$confirm('确认删除选中记录吗？', '提示', {
 					type: 'warning'
 				}).then(() => {
 					this.load.del=true;
-					batchDelXmProjectGroupState(this.sels).then((res) => {
+					batchDelXmGroupState(this.sels).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
 						if( tips.isOk ){
 							this.pageInfo.count=true;
-							this.getXmProjectGroupStates();
+							this.getXmGroupStates();
 						}
 						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
@@ -244,11 +244,11 @@ import XmProjectGroupStateOverview from './XmProjectGroupStateOverview.vue';
 			  this.editForm=row
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
-			loadTasksToXmProjectGroupState(){
-				loadTasksToXmProjectGroupState({projectId:this.selProject.id}).then(res=>{
+			loadTasksToXmGroupState(){
+				loadTasksToXmGroupState({projectId:this.selProject.id}).then(res=>{
 					var tips = res.data.tips;
 					if(tips.isOk){
-						this.getXmProjectGroupStates();
+						this.getXmGroupStates();
 					}else{
 						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 
@@ -262,7 +262,7 @@ import XmProjectGroupStateOverview from './XmProjectGroupStateOverview.vue';
 
 		},//end methods
 		components: {
-XmProjectGroupStateOverview
+XmGroupStateOverview
 		    //在下面添加其它组件
 		},
 		mounted() {
@@ -271,7 +271,7 @@ XmProjectGroupStateOverview
 				
 				
 				this.tableHeight =  util.calcTableMaxHeight(".el-table");
-				this.getXmProjectGroupStates();
+				this.getXmGroupStates();
         	});
         	/** 举例，
     		listOption([{categoryId:'all',itemCode:'sex'},{categoryId:'all',itemCode:'grade'}] ).then(res=>{

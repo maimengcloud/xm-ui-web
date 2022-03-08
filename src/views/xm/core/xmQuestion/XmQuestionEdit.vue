@@ -144,7 +144,7 @@
 	import AttachmentUpload from "@/views/mdp/arc/archiveAttachment/AttachmentUpload"; //上传组件
 	import {sn} from '@/common/js/sequence';
 
-	import XmGroupMng from '../xmProjectGroup/XmProjectGroupSelect';
+	import XmGroupMng from '../xmGroup/XmGroupSelect';
 	import VueEditor from '@/components/Tinymce/index';
 	import XmTaskList from '../xmTask/XmTaskList';
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';

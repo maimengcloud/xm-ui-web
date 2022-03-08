@@ -137,7 +137,7 @@
 	import  XmProductSelect from '../xmProduct/XmProductSelect';//修改界面
 
 	import XmProjectList from '../xmProject/XmProjectList';
-	import XmGroupMng from '../xmProjectGroup/XmProjectGroupMng';
+	import XmGroupMng from '../xmGroup/XmGroupMng';
 	
 	export default { 
 		computed: {
