@@ -1,7 +1,7 @@
 <template>
 	<section class="page-container  padding border">
 		<el-row>
-			<!--新增界面 XmProjectGroupUserCandidate xm_project_group_user_candidate--> 
+			<!--新增界面 XmProjectGroupUserCandidate xm_group_user_candidate--> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
 				<el-form-item label="主键" prop="id">
 					<el-input v-model="addForm.id" placeholder="主键" ></el-input>
@@ -70,7 +70,7 @@
 						//{ required: true, message: '主键不能为空', trigger: 'blur' }
 					]
 				},
-				//新增界面数据 xm_project_group_user_candidate
+				//新增界面数据 xm_group_user_candidate
 				addForm: {
 					id:'',groupId:'',userid:'',username:'',isHead:'',createTime:'',candidateStatus:'',outTime:''
 				}
@@ -85,7 +85,7 @@
 				this.$refs['addForm'].resetFields();
 				this.$emit('cancel');
 			},
-			//新增提交XmProjectGroupUserCandidate xm_project_group_user_candidate 父组件监听@submit="afterAddSubmit"
+			//新增提交XmProjectGroupUserCandidate xm_group_user_candidate 父组件监听@submit="afterAddSubmit"
 			addSubmit: function () {
 				
 				this.$refs.addForm.validate((valid) => {

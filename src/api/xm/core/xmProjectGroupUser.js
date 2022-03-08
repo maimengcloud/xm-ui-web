@@ -6,7 +6,7 @@ let base = config.getCoreBasePath();
 
 
 /**
- * xm_project_group_user
+ * xm_group_user
  *1    默认只开放普通查询，所有查询，只要上传	 分页参数 {currentPage:当前页码从1开始,pageSize:每页记录数,total:总记录【数如果是0后台会自动计算总记录数非0不会自动计算】}，后台都会自动按分页查询 其它 api用到再打开，没用到的api请注释掉，
  *2 查询、新增、修改的参数格式  params={groupId:'团队编号 主键',userid:'团队成员编号 主键',joinTime:'加入时间',username:'团队成员',outTime:'离队时间',status:'当前状态0参与中1已退出团队',obranchId:'组员原归属机构编号',isPri:'是否私人加入0否1是',seqNo:'排序号--从1开始',projectId:'项目编号',productId:'产品编号',pgClass:'0-项目，1-产品'}
  **/
@@ -14,19 +14,19 @@ let base = config.getCoreBasePath();
 //普通查询 条件之间and关系  
 export const listXmProjectGroupUser = params => { return axios.get(`${base}/xm/core/xmProjectGroupUser/list`, { params: params }); };
 
-//模糊查询xm_project_group_user 条件之间or关系  
+//模糊查询xm_group_user 条件之间or关系  
 //export const listXmProjectGroupUserKey = params => { return axios.get(`${base}/xm/core/xmProjectGroupUser/listKey`, { params: params }); };
 
-//删除一条xm_project_group_user params={groupId:'团队编号 主键',userid:'团队成员编号 主键'}
+//删除一条xm_group_user params={groupId:'团队编号 主键',userid:'团队成员编号 主键'}
 export const delXmProjectGroupUser = params => { return axios.post(`${base}/xm/core/xmProjectGroupUser/del`,params); };
 
-//批量删除xm_project_group_user  params=[{groupId:'团队编号 主键',userid:'团队成员编号 主键'}]
+//批量删除xm_group_user  params=[{groupId:'团队编号 主键',userid:'团队成员编号 主键'}]
 export const batchDelXmProjectGroupUser = params => { return axios.post(`${base}/xm/core/xmProjectGroupUser/batchDel`, params); };
 
-//修改一条xm_project_group_user记录
+//修改一条xm_group_user记录
 export const editXmProjectGroupUser = params => { return axios.post(`${base}/xm/core/xmProjectGroupUser/edit`, params); };
 
-//新增一条xm_project_group_user
+//新增一条xm_group_user
 export const addXmProjectGroupUser = params => { return axios.post(`${base}/xm/core/xmProjectGroupUser/add`, params); };
-//批量删除xm_project_group_user  params=[{groupId:'团队编号 主键',userid:'团队成员编号 主键'}]
+//批量删除xm_group_user  params=[{groupId:'团队编号 主键',userid:'团队成员编号 主键'}]
 export const batchAddXmProjectGroupUser = params => { return axios.post(`${base}/xm/core/xmProjectGroupUser/batchAdd`, params); };

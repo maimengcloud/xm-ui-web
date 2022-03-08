@@ -3,7 +3,7 @@
 	    <el-row class="page-header">
 	    </el-row>
 		<el-row class="page-main">
-		<!--编辑界面 XmProjectGroupUser xm_project_group_user--> 
+		<!--编辑界面 XmProjectGroupUser xm_group_user--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">
 				
 				<el-form-item :label="editForm.pgClass=='1'?'产品编号':'项目编号'" prop="pgClass">
@@ -94,7 +94,7 @@
 				this.$refs['editFormRef'].resetFields();
 				this.$emit('cancel');
 			},
-			//新增、编辑提交XmProjectGroupUser xm_project_group_user父组件监听@submit="afterEditSubmit"
+			//新增、编辑提交XmProjectGroupUser xm_group_user父组件监听@submit="afterEditSubmit"
 			saveSubmit: function () {
 				this.$refs.editFormRef.validate((valid) => {
 					if (valid) {

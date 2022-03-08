@@ -3,11 +3,11 @@
 		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectGroupUserCandidates">查询</el-button>
-			<el-button type="primary" @click="showAdd">+xm_project_group_user_candidate</el-button>
+			<el-button type="primary" @click="showAdd">+xm_group_user_candidate</el-button>
 			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
 		</el-row>
 		<el-row class="page-main "> 
-			<!--列表 XmProjectGroupUserCandidate xm_project_group_user_candidate-->
+			<!--列表 XmProjectGroupUserCandidate xm_group_user_candidate-->
 			<el-table ref="table" :height="tableHeight" :data="xmProjectGroupUserCandidates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="selection" width="40"></el-table-column>
 				<el-table-column sortable type="index" width="40"></el-table-column>
@@ -28,13 +28,13 @@
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		
-			<!--编辑 XmProjectGroupUserCandidate xm_project_group_user_candidate界面-->
-			<el-drawer title="编辑xm_project_group_user_candidate" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
+			<!--编辑 XmProjectGroupUserCandidate xm_group_user_candidate界面-->
+			<el-drawer title="编辑xm_group_user_candidate" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				  <xm-project-group-user-candidate-edit :xm-project-group-user-candidate="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-group-user-candidate-edit>
 			</el-drawer>
 	
-			<!--新增 XmProjectGroupUserCandidate xm_project_group_user_candidate界面-->
-			<el-drawer title="新增xm_project_group_user_candidate" :visible.sync="addFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
+			<!--新增 XmProjectGroupUserCandidate xm_group_user_candidate界面-->
+			<el-drawer title="新增xm_group_user_candidate" :visible.sync="addFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				<xm-project-group-user-candidate-add :xm-project-group-user-candidate="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-group-user-candidate-add>
 			</el-drawer> 
 		</el-row>
@@ -118,7 +118,7 @@
 				 this.pageInfo.count=true; 
 				 this.getXmProjectGroupUserCandidates();
 			},
-			//获取列表 XmProjectGroupUserCandidate xm_project_group_user_candidate
+			//获取列表 XmProjectGroupUserCandidate xm_group_user_candidate
 			getXmProjectGroupUserCandidates() {
 				let params = {
 					pageSize: this.pageInfo.pageSize,
@@ -152,12 +152,12 @@
 				}).catch( err => this.load.list = false );
 			},
 
-			//显示编辑界面 XmProjectGroupUserCandidate xm_project_group_user_candidate
+			//显示编辑界面 XmProjectGroupUserCandidate xm_group_user_candidate
 			showEdit: function ( row,index ) {
 				this.editFormVisible = true;
 				this.editForm = Object.assign({}, row);
 			},
-			//显示新增界面 XmProjectGroupUserCandidate xm_project_group_user_candidate
+			//显示新增界面 XmProjectGroupUserCandidate xm_group_user_candidate
 			showAdd: function () {
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);

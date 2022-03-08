@@ -8,7 +8,7 @@
  			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>
 		</el-row>
 		<el-row class="padding-top">
-			<!--列表 XmProjectGroupUser xm_project_group_user-->
+			<!--列表 XmProjectGroupUser xm_group_user-->
 			<el-table ref="xmProjectGroupUserTable" :data="xmProjectGroupUsers" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55" ></el-table-column>
 				<el-table-column sortable type="index" width="55"></el-table-column>
@@ -42,12 +42,12 @@
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 		</el-row>
 		<el-row>
-			<!--编辑 XmProjectGroupUser xm_project_group_user界面-->
+			<!--编辑 XmProjectGroupUser xm_group_user界面-->
 			<el-drawer title="编辑组员信息" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
 				  <xm-project-group-user-edit op-type="edit" :xm-project-group-user="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-group-user-edit>
 			</el-drawer>
 
-			<!--新增 XmProjectGroupUser xm_project_group_user界面-->
+			<!--新增 XmProjectGroupUser xm_group_user界面-->
 			<el-drawer title="新增组员信息" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
 				<xm-project-group-user-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-group-user-edit>
 			</el-drawer>
@@ -146,7 +146,7 @@
 				 this.pageInfo.count=true; 
 				 this.getXmProjectGroupUsers();
 			},
-			//获取列表 XmProjectGroupUser xm_project_group_user
+			//获取列表 XmProjectGroupUser xm_group_user
 			getXmProjectGroupUsers() {
 				let params = {
 					pageSize: this.pageInfo.pageSize,
@@ -192,12 +192,12 @@
 				}).catch( err => this.load.list = false );
 			},
 
-			//显示编辑界面 XmProjectGroupUser xm_project_group_user
+			//显示编辑界面 XmProjectGroupUser xm_group_user
 			showEdit: function ( row,index ) {
 				this.editFormVisible = true;
 				this.editForm = Object.assign({}, row);
 			},
-			//显示新增界面 XmProjectGroupUser xm_project_group_user
+			//显示新增界面 XmProjectGroupUser xm_group_user
 			showAdd: function () {
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);

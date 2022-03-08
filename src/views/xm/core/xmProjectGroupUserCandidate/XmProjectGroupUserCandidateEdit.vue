@@ -1,7 +1,7 @@
 <template>
 	<section class="page-container  padding border">
 		<el-row> 
-		<!--编辑界面 XmProjectGroupUserCandidate xm_project_group_user_candidate--> 
+		<!--编辑界面 XmProjectGroupUserCandidate xm_group_user_candidate--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
 				<el-form-item label="主键" prop="id">
 					<el-input v-model="editForm.id" placeholder="主键"></el-input>
@@ -70,7 +70,7 @@
 						//{ required: true, message: '主键不能为空', trigger: 'blur' }
 					]
 				},
-				//编辑界面数据  XmProjectGroupUserCandidate xm_project_group_user_candidate
+				//编辑界面数据  XmProjectGroupUserCandidate xm_group_user_candidate
 				editForm: {
 					id:'',groupId:'',userid:'',username:'',isHead:'',createTime:'',candidateStatus:'',outTime:''
 				}
@@ -85,7 +85,7 @@
 				this.$refs['editForm'].resetFields();
 				this.$emit('cancel');
 			},
-			//编辑提交XmProjectGroupUserCandidate xm_project_group_user_candidate父组件监听@submit="afterEditSubmit"
+			//编辑提交XmProjectGroupUserCandidate xm_group_user_candidate父组件监听@submit="afterEditSubmit"
 			editSubmit: function () {
 				this.$refs.editForm.validate((valid) => {
 					if (valid) {

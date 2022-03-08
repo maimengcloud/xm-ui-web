@@ -3,7 +3,7 @@
 	    <el-row class="page-header">
 	    </el-row>
 		<el-row class="page-main">
-		<!--编辑界面 XmProjectGroup xm_project_group--> 
+		<!--编辑界面 XmProjectGroup xm_group--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">   
 				<el-form-item label="小组名称" prop="groupName">
 					<el-input v-model="editForm.groupName" placeholder="团队名称">
@@ -105,7 +105,7 @@
 				this.$refs['editFormRef'].resetFields();
 				this.$emit('cancel');
 			},
-			//新增、编辑提交XmProjectGroup xm_project_group父组件监听@submit="afterEditSubmit"
+			//新增、编辑提交XmProjectGroup xm_group父组件监听@submit="afterEditSubmit"
 			saveSubmit: function () {
 				this.$refs.editFormRef.validate((valid) => {
 					if (valid) {

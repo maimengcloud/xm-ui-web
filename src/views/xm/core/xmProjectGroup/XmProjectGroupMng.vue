@@ -23,12 +23,12 @@
   			></vue-okr-tree>   
 		</el-row>
 		<el-row>
-			<!--编辑 XmProjectGroup xm_project_group界面-->
+			<!--编辑 XmProjectGroup xm_group界面-->
 			<el-drawer title="编辑小组信息" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
 				  <xm-project-group-edit op-type="edit" :xm-project-group="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-group-edit>
 			</el-drawer>
 
-			<!--新增 XmProjectGroup xm_project_group界面-->
+			<!--新增 XmProjectGroup xm_group界面-->
 			<el-drawer title="新增小组信息" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
 				<xm-project-group-edit op-type="add" :xm-project-group="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-group-edit>
 			</el-drawer>
@@ -416,7 +416,7 @@ XmProductSelect,
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			},
-			//获取列表 XmProjectGroup xm_project_group
+			//获取列表 XmProjectGroup xm_group
 			getXmProjectGroups() {
 				let params = {
 					pageSize: this.pageInfo.pageSize,
@@ -472,12 +472,12 @@ XmProductSelect,
 				}).catch( err => this.load.list = false );
 			},
 
-			//显示编辑界面 XmProjectGroup xm_project_group
+			//显示编辑界面 XmProjectGroup xm_group
 			showEdit: function ( row,index ) {
 				this.editFormVisible = true;
 				this.editForm = Object.assign({}, row);
 			},
-			//显示新增界面 XmProjectGroup xm_project_group
+			//显示新增界面 XmProjectGroup xm_group
 			showAdd: function () {
 				this.addForm={...this.addFormInit}
 				if(this.currNodeType=='product'){
@@ -502,7 +502,7 @@ XmProductSelect,
 				
 				//this.addForm=Object.assign({}, this.editForm);
 			},
-			//显示新增界面 XmProjectGroup xm_project_group
+			//显示新增界面 XmProjectGroup xm_group
 			showAddSub: function (row) { 
 				
 				if(!row){
