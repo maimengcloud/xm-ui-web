@@ -80,8 +80,8 @@
 						<el-table-column v-if="multi" type="selection" width="50"></el-table-column>  
 						<el-table-column prop="menuName" label="需求名称" min-width="140" > 
 							<template slot-scope="scope">
-								<el-link type="primary" :icon="scope.row.ntype=='1'?'el-icon-folder-opened':''" @click="toMenu(scope.row)">{{scope.row.seqNo}}&nbsp;&nbsp;</el-link> 
-								{{scope.row.menuName}}
+								<span class="vlink"  @click="toMenu(scope.row)">{{scope.row.seqNo}}&nbsp;
+								{{scope.row.menuName}}</span> 
 							</template>
 						</el-table-column> 
 						<el-table-column prop="iterationName" label="迭代" min-width="140" >   </el-table-column>

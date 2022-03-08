@@ -18,7 +18,7 @@
 					<el-table-column sortable type="selection" width="40"></el-table-column>
  					<el-table-column prop="menuName" label="需求名称" min-width="150" >
 						<template slot-scope="scope"> 
-							{{scope.row.seqNo}}&nbsp;<el-link type="primary" @click="toMenu(scope.row)">  {{scope.row.menuName}} </el-link>
+							<span class="vlink" type="primary" @click="toMenu(scope.row)"> {{scope.row.seqNo}}&nbsp; {{scope.row.menuName}} </span>
 						</template>
 					</el-table-column>  
 					<el-table-column prop="planStatus" label="计划状态" width="80" :formatter="formatterOption"></el-table-column> 
