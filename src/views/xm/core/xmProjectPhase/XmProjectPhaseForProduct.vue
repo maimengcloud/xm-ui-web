@@ -15,7 +15,7 @@
 				
 				<el-button  class="hidden-md-and-down"  @click="loadMenusToXmProductPhase(sels)" v-loading="load.edit" icon="el-icon-s-data">由需求汇总进度数据</el-button> 
 				<el-button   @click="batchEditVisible=true" v-loading="load.edit" icon="el-icon-edit">批量修改</el-button> 
-				<el-button   @click="batchDel" v-loading="load.del" icon="el-icon-delete">删除</el-button> 
+				<el-button type="danger"   @click="batchDel" v-loading="load.del" icon="el-icon-delete">删除</el-button> 
 			</span> 
 			<el-popover
 				placement="top-start"
@@ -62,15 +62,15 @@
 				</el-table-column>
 				  <el-table-column prop="phaseName" label="计划名称" min-width="150" show-overflow-tooltip> 
 					 <template slot-scope="scope">   
-						<span>
+						<span class="vlink"   @click="showEdit(scope.row)">
 							<span v-show="scope.row.milestone=='1'">
 								<i class="el-icon-star-on"></i>
 							</span>
 							<span v-show="scope.row.isKeyPath=='1'"> 
 								<i class="el-icon-s-help"></i>
 							</span>
-							<el-link :icon="scope.row.ntype=='1'?'el-icon-folder-opened':''" type="primary" @click="showEdit(scope.row)">{{scope.row.seqNo}} &nbsp;&nbsp;  
-							</el-link>
+							{{scope.row.seqNo}} &nbsp; 
+							 
 							{{scope.row.phaseName}}  
 							<font v-for="item in [calcTaskStateByTime(scope.row.beginDate,scope.row.endDate,scope.row.actRate,scope.phaseStatus)]" :key="item.status"><el-tag :type="item.status">{{item.remark}}</el-tag></font> 
 						</span>
@@ -111,23 +111,11 @@
 						 <font v-if="options.xmPhaseStatus.some(i=>i.id==scope.row.phaseStatus)">{{options.xmPhaseStatus.find(i=>i.id==scope.row.phaseStatus).name}}</font>
 					</template>
 				</el-table-column>     
-				<el-table-column  prop="bizFlowState" label="审批状态" width="100" >  
-					<template slot-scope="scope">
-						<el-tooltip  :content="showApprovaInfo(scope.row)" placement="bottom" effect="light">
-						<el-tag v-if="scope.row.flowState=='0'|| !scope.row.flowState">未发审</el-tag> 
-						<el-tag v-else-if="scope.row.flowState=='1'">审核中</el-tag> 
-						<el-tag v-else-if="scope.row.flowState=='2'">已通过</el-tag>
-						<el-tag v-else-if="scope.row.flowState=='3'">未通过</el-tag>
-						<el-tag v-else-if="scope.row.flowState=='4'">已取消</el-tag> 
-						</el-tooltip> 
-					</template>
-				</el-table-column>  
 				<el-table-column    label="操作" width="200" >  
 					<template slot-scope="scope">
 						<el-popover style="padding-left:10px;" 
 							placement="top-start"
-							width="250"
-							v-if="scope.row.ntype=='1'"
+							width="250" 
 							trigger="click" > 
 							<el-row> 
 								<el-col :span="24" style="padding-top:5px;">
@@ -138,14 +126,12 @@
 								</el-col>  
 							</el-row>   
 							<el-button type="text"  slot="reference" icon="el-icon-plus">子计划</el-button>
-						</el-popover>   
-						
-						<el-button type="text"  @click="showEdit(scope.row)" icon="el-icon-edit">编辑</el-button> 
-						<el-button type="text" :disabled="scope.row.childrenCnt>0"  @click="handleDel(scope.row)" icon="el-icon-delete">删除</el-button>   
+						</el-popover>    
+						<el-button type="text"  @click="showEdit(scope.row)" icon="el-icon-edit">编辑</el-button>   
 							<span v-if="scope.row.ntype!='1'">
 								<el-dropdown @command="handleCommand" :hide-on-click="false"> 
 									<span class="el-dropdown-link">
-										<i class="el-icon-more"></i>
+										更多<i class="el-icon-arrow-down el-icon--right"></i>
 									</span>
 									<el-dropdown-menu slot="dropdown">
 										<el-dropdown-item icon="el-icon-edit"   :command="{type:'showTaskForBatchRelTasksWithPhase',row:scope.row}">批量关联需求</el-dropdown-item>	

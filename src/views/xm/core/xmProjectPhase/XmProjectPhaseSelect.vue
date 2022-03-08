@@ -4,11 +4,12 @@
 		<el-table  lazy :load="loadXmProjectPhaseLazy" :height="tableHeight" ref="selectPhaseTable" :data="projectPhaseTreeData"    :show-summary="false"  row-key="id" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  			<el-table-column prop="phaseName" label="计划名称"  show-overflow-tooltip> 
 				 <template slot="header" slot-scope="scope">
-					<div>计划  <el-tag  type="warning" v-if="editForm.id" closable @close="clearSelectPhase()"> {{editForm.phaseName}}</el-tag></div>
+					<span>计划  <el-tag  type="warning" v-if="editForm.id" closable @close="clearSelectPhase()"> <font class="hidden-md-and-down">{{editForm.phaseName}}</font><font class="hidden-lg-and-up" style="font-size:2px;">{{editForm.phaseName}}</font></el-tag></span>
 				</template>
 				<template slot-scope="scope">  
-					<i v-if="scope.row.ntype=='1'" class="el-icon-folder-opened"></i>{{scope.row.seqNo}} &nbsp;&nbsp;<el-tooltip v-if="scope.row.milestone=='1'" content="里程碑"><i  class="el-icon-star-on"></i></el-tooltip>{{scope.row.phaseName}}
+					<span class="vlink">{{scope.row.seqNo}} &nbsp;<el-tooltip v-if="scope.row.milestone=='1'" content="里程碑"><i  class="el-icon-star-on"></i></el-tooltip>{{scope.row.phaseName}}
 					<font  :color="scope.row.actRate>=100?'green':'#FF8C00'"> {{ (scope.row.actRate!=null?scope.row.actRate:0)+'%'}} </font>  
+					</span>
 				</template>
 			</el-table-column>   
 		</el-table>
