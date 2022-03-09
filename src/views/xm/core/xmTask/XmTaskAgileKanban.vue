@@ -64,70 +64,7 @@
 					</template>
 				</el-table-column>
 			</template>
-		</el-table>
-    <!-- <div class="row head-row">
-      <div class="item">需求({{ menus.length }})</div>
-			<template v-for="(type, tt) in taskState">
-      	<div class="item status" :key="tt">{{type.label}} ({{ type.number }})</div>
-			</template>
-    </div>
-    <div class="menu-body">
-      <div class="row menu—row" v-for="(menu, index) in menus" :key="index">
-        <div class="item item-menu">
-					{{menu.name}} {{menu.menuId}}
-        </div>
-        <div class="item status" v-for="(type, tt) in taskState" :key="tt">
-          <draggable
-						v-model="tasks[menu.menuId][tt]"
-            :name="menu.menuId"
-						:sort="false"
-						@start="onStart" @end="onEnd" @unchoose="onUnchoose"
-						@change="handleRemove"
-						:move="onMove"
-						:options="{group: menu.menuId}"
-						class="draggable"
-						animation="300"
-						scroll
-						scrollSensitivity="80"
-						scrollSpeed="80"
-          >
-            <transition-group class="transition-group" :data-menu-id="menu.menuId" :data-task-state="type.status">
-							<template v-if="drag.menuId && drag.menuId === menu.menuId && drag.taskState !== type.status">
-								<div class="drag-to-box">{{type.label}}</div>
-							</template>
-              <template
-                v-else-if="tasks && tasks[menu.menuId][tt].length"
-              >
-                <div
-									:data-menu-id="menu.menuId"
-									:data-task-id="task.id"
-									:data-task-state="task.taskState"
-                  class="task"
-                  v-for="(task, t) in tasks[menu.menuId][tt]"
-                  :key="task.id"
-                >
-									<span>
-										{{task.sortLevel}}&nbsp;
-										<el-tag v-if="task.level<='2'" type="info">轻微</el-tag>
-										<el-tag v-else-if="task.level=='3'" type="warning">一般</el-tag>
-										<el-tag v-else-if="task.level=='4'" type="danger">紧急</el-tag>
-										<el-tag v-else type="danger">特急</el-tag> 
-										<span v-for="(item ,index) in [formatExeUsernames(task)]" :key="index">
-
-											<el-tooltip :content="item.exeUsernames" ><el-link     :type="item.type"     @click.stop="showExecusers(task)">{{item.showMsg}}</el-link></el-tooltip>
-											 
-										</span>
- 										<el-tooltip content="进度"><el-link style="border-radius:30px;" :type="task.rate>=100?'success':'warning'" @click="drawerVisible=true"> {{ (task.rate!=null?task.rate:0)+'%'}} </el-link></el-tooltip>
-										<el-tooltip content="预算金额、工时"><el-tag type="info">{{parseFloat(task.budgetCost/10000).toFixed(2)}}万,{{task.budgetWorkload}}人时</el-tag></el-tooltip>
-										<el-link  type="primary"  @click.stop="showDrawer(task)">{{task.name}}</el-link>
-									</span>
-                </div>
-              </template>
-            </transition-group>
-          </draggable>
-        </div>
-      </div>
-    </div> -->
+		</el-table> 
   </section>
 </template>
 
@@ -203,20 +140,15 @@ export default {
       this.drag = {};
 			// targetEl：拖拽的任务数据; toEl拖拽后的位置.
 			let targetEl = { ...e.item.dataset };
-			let toEl = { ...e.to.dataset };
-			console.log('onEnd--targetEl==', targetEl, toEl);
+			let toEl = { ...e.to.dataset }; 
 			if (targetEl.menuId === toEl.menuId && targetEl.taskState !== toEl.taskState) {
-				console.log('onEnd--拖拽有效更新状态');
-				let task = this.xmTasks.find(d => d.id === targetEl.taskId);
+ 				let task = this.xmTasks.find(d => d.id === targetEl.taskId);
 				const params = { ...task, taskState: toEl.taskState };
-				editXmTask(params).then(res => {
-					console.log('onEnd--editXmTask--res==', res);
+				editXmTask(params).then(res => { 
 					//this.$emit('submit');
 				})
-				console.log('onEnd--this.tasks==', this.tasks);
-			} else {
-				console.log('onEnd--false--this.tasks==', this.tasks);
-				return false
+ 			} else {
+ 				return false
 			}
 		},
 		formatExeUsernames(row){
