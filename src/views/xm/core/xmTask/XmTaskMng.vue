@@ -154,7 +154,7 @@
             icon="el-icon-del"
             >删除</el-button
           >
-          <el-popover
+          <el-popover v-if="workItemType=='projectPlan'"
             placement="top-start"
             title="选择创建任务的方式"
             width="300"
@@ -524,9 +524,9 @@
 
               <el-table-column label="操作" width="100">
                 <template slot-scope="scope">
-                  <el-dropdown
+                  <el-dropdown 
                     @command="handleCommand"
-                    v-if="isTaskCenter != '1' && isMy != '1' && scope.row.ntype=='1'"
+                    v-if="isTaskCenter != '1' && isMy != '1' && scope.row.ntype=='1' && workItemType=='projectPlan'"
                     :disabled="scope.row.ntype!='1'"
                   >
                     <span class="el-dropdown-link">
