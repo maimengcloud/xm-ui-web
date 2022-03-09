@@ -256,7 +256,7 @@
 				item.showEditor=true; 
 			},
 			onPublishContent:function(content,item){ 
-				 ;
+				 debugger;
 				var params={...this.addForm} 
 				params.remark=content; 
 				if(item){ 

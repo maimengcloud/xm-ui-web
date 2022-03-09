@@ -2,6 +2,123 @@
   <section class="page-container padding border">
     <el-row>
       <el-row>
+        <el-select style="width: 100px" v-model="filters.taskState" placeholder="任务状态">
+									<el-option value="0" label="待领取"></el-option>
+									<el-option value="1" label="已领取执行中"></el-option>
+									<el-option value="2" label="已完工"></el-option>
+									<el-option value="3" label="已结算"></el-option> 
+          </el-select>
+          <el-select
+            v-model="selkey"
+            placeholder="场景"
+            clearable
+            @change="changeSelKey"
+            style="width: 100px"
+          >
+            <el-option class="showall" value="" label="全部场景"
+              >全部场景</el-option
+            >
+            <el-option value="work" label="未达到100%">未达到100%</el-option>
+            <el-option value="finish" label="已达100%">已达100%</el-option>
+            <el-option value="myFocus" label="我关注">我关注</el-option>
+            <el-option value="myExecuserStatus0" label="我排队"
+              >我排队</el-option
+            >
+            <el-option value="myCreate" label="我是责任人"
+              >我是责任人</el-option
+            >
+            <el-option value="myExecuserStatus1" label="我执行"
+              >我执行</el-option
+            >
+            <el-option value="myExecuserStatus2" label="我提交"
+              >我提交</el-option
+            >
+            <el-option value="myExecuserStatus3" label="我的验收成功"
+              >我的验收成功</el-option
+            >
+            <el-option value="myExecuserStatus4" label="我的验收失败"
+              >我的验收失败</el-option
+            >
+            <el-option value="myExecuserStatus5" label="我的付款中"
+              >我的付款中</el-option
+            >
+            <el-option value="myExecuserStatus6" label="我的付款成功"
+              >我的付款成功</el-option
+            >
+            <el-option value="myExecuserStatus7" label="我放弃的"
+              >我放弃的</el-option
+            >
+          </el-select>
+          <el-select
+            class="hidden-md-and-down"
+            v-model="filters.taskType"
+            placeholder="任务类型"
+            style="width: 100px"
+            clearable
+            @change="changeTaskType"
+          >
+            <el-option class="showall" value="" label="全部类型"
+              >全部类型</el-option
+            >
+            <el-option
+              v-for="(i, index) in options.taskType"
+              :value="i.optionValue"
+              :label="i.optionName"
+              :key="index"
+              >{{ i.optionName }}</el-option
+            >
+          </el-select>
+          <el-checkbox
+            class="hidden-md-and-down"
+            v-model="filters.taskOut"
+            true-label="1"
+            false-label=""
+            >众包</el-checkbox
+          > 
+          <el-button
+            v-if="!filters.tags || filters.tags.length == 0"
+            @click.native="tagSelectVisible = true"
+            >标签</el-button
+          >
+          <el-tag
+            v-else
+            @click="tagSelectVisible = true"
+            closable
+            @close="clearFiltersTag(filters.tags[0])"
+            >{{ filters.tags[0].tagName.substr(0, 5) }}等({{
+              filters.tags.length
+            }})个</el-tag
+          >
+
+          <font v-if="!selProject">
+            <el-tag
+              class="hidden-md-and-down"
+              v-if="filters.selProject"
+              closable
+              @click="showProjectList"
+              @close="clearProject"
+              >{{ this.filters.selProject.name }}</el-tag
+            >
+            <el-button
+              class="hidden-md-and-down"
+              v-else
+              @click="showProjectList"
+              type="plian"
+              >选项目</el-button
+            >
+          </font>
+          <el-input
+            style="width: 200px"
+            v-model="filters.key"
+            placeholder="任务名称"
+          >
+          </el-input> 
+        <el-button
+          type="primary"
+          @click="searchXmTasks"
+          v-loading="load.list"
+          icon="el-icon-search"
+        ></el-button>
         <el-button
           type="warning"
           @click="saveBatchEdit"
@@ -13,12 +130,6 @@
           type="success"
           @click="handlePopover(null, 'add')"
           icon="el-icon-plus"
-        ></el-button>
-        <el-button
-          type="primary"
-          @click="searchXmTasks"
-          v-loading="load.list"
-          icon="el-icon-search"
         ></el-button>
         <el-button
           @click="noBatchEdit"
@@ -300,6 +411,21 @@
 		<el-drawer append-to-body title="需求选择"  :visible.sync="menuVisible" size="80%"   :close-on-click-modal="false">
 			<xm-menu-select :is-select-menu="true"  @selected="onMenuSelected" :sel-project="xmProject"></xm-menu-select>
 		</el-drawer>
+    
+    <el-drawer
+      :title="'标签条件'"
+      :visible.sync="tagSelectVisible"
+      :size="750"
+      append-to-body
+      :close-on-click-modal="false"
+    >
+      <tag-mng
+        :tagIds="filters.tags ? filters.tags.map((i) => i.tagId) : []"
+        :jump="true"
+        @select-confirm="onTagSelected"
+      >
+      </tag-mng>
+    </el-drawer>
   </section>
 </template>
 
@@ -325,6 +451,8 @@ import { sn } from "@/common/js/sequence";
 import XmGroupSelect from "../xmGroup/XmGroupSelect.vue"; 
 import xmMenuSelect from '../xmMenu/XmMenuSelect';
 
+import TagMng from "@/views/mdp/arc/tag/TagMng";
+
 export default {
   computed: {
     ...mapGetters(["userInfo", "roles"]),
@@ -345,7 +473,7 @@ export default {
     },
  
   },
-  props: ["selProject",  "visible"],
+  props: ["selProject",  "visible","xmTasks"],
   watch: {
     selProject: function (oval, val) {
       this.filters.selProject = this.selProject;
@@ -363,6 +491,14 @@ export default {
         key: "",
         isMyTask: "0", //0不区分我的，1 时我的任务
         selProject: null,
+        skillTags: [],
+        taskOut: "", //1只查众包任务，0//只查本机构任务
+        menus: [],
+        createUser: null, //负责人
+        executor: null, //执行人
+        taskType: "",
+        tags: [],
+        taskState:'',//任务状态
       },
       xmTasks: [], //查询结果
       pageInfo: {
@@ -459,7 +595,7 @@ export default {
       /**begin 自定义属性请在下面加 请加备注**/
       taskStateList: ["待领取", "已领取执行中", "已完工", "已结算"],
 
-      selkey: "all",
+      selkey: "",
       drawerVisible: false,
       progress_show: true,
       isChild: false,
@@ -486,6 +622,8 @@ export default {
       tableHeight: 300,  
       batchExecUserSelectVisible:false,
       batchGroupUserSelectVisible:false,
+      
+      tagSelectVisible: false,
 
 	  maps:new Map(),
       /**end 自定义属性请在上面加 请加备注**/
@@ -860,13 +998,21 @@ export default {
       }
     },
     noBatchEdit() {
-      this.batchEditVisible = false;
-      if (this.valueChangeRows.length > 0) {
-        this.valueChangeRows = [];
-        this.$emit("back", true);
-      } else {
-        this.$emit("back", false);
+      if(this.valueChangeRows.length>0){
+        this.$confirm('有'+this.valueChangeRows.length+'条数据被更改，但未保存，确认放弃未保存的更改吗？', '提示', {}).then(() => {
+          this.batchEditVisible = false;
+          if (this.valueChangeRows.length > 0) {
+            this.valueChangeRows = [];
+            this.$emit("back", true);
+          } else {
+            this.$emit("back", false);
+          }
+        })
+      }else{
+          this.batchEditVisible = false;
+          this.$emit("back", false); 
       }
+      
     },
     fieldChange: function (row, fieldName, nextReplace) {
       if (nextReplace) {
@@ -1055,13 +1201,33 @@ export default {
     }, 
      
 
-    getParams(params) {
-      
-      if (this.filters.key) {
-        params.key=this.filters.key
+    getParams(params) { 
+      if (
+        this.filters.taskType != "all" &&
+        this.filters.taskType != "" &&
+        this.filters.taskType != null
+      ) {
+        params.taskType = this.filters.taskType;
       }
-
-      this.load.list = true;
+      if (this.selkey == "work") {
+        params.work = "work";
+      } else if (this.selkey == "finish") {
+        params.rate = 100;
+      } else if (this.selkey == "myFocus") {
+        params.myFocus = "1";
+        params.userid = this.userInfo.userid;
+      } else if (this.selkey == "myCreate") {
+        params.createUserid = this.userInfo.userid;
+        params.userid = this.userInfo.userid;
+      } else if (this.selkey.indexOf("myExecuserStatus") >= 0) {
+        params.userid = this.userInfo.userid;
+        params.myExecuserStatus = this.selkey.substring(
+          "myExecuserStatus".length
+        );
+      }
+      if(this.filters.taskState){
+        params.taskState=this.filters.taskState
+      }
       if (this.filters.selProject) {
         params.projectId = this.filters.selProject.id;
       }
@@ -1071,8 +1237,44 @@ export default {
           params.projectPhaseId = this.projectPhase.id;
         }
       }
+      if (this.isMy == "1") {
+        params.userid = this.userInfo.userid;
+        params.isMy = "1";
+      }
+      if (this.menuId) {
+        params.menuId = this.menuId;
+      }
+      if (this.filters.menus && this.filters.menus.length == 1) {
+        params.menuId = this.filters.menus[0].menuId;
+      } else if (this.filters.menus && this.filters.menus.length > 1) {
+        params.menuIds = this.filters.menus.map((i) => i.menuId);
+      }
+      if (this.filters.skillTags && this.filters.skillTags.length > 0) {
+        params.skillIds = this.filters.skillTags.map((i) => i.skillId);
+      }
+      if (this.filters.key) {
+        params.key = "%" + this.filters.key + "%";
+      }
+      if (this.filters.taskOut) {
+        params.taskOut = this.filters.taskOut;
+      }
+      if (this.filters.createUser) {
+        params.createUserid = this.filters.createUser.userid;
+      }
+      if (this.filters.executor) {
+        params.executorUserid = this.filters.executor.userid;
+      }
+      if (this.filters.product) {
+        params.productId = this.filters.product.id;
+      }
+      if (this.xmIteration) {
+        params.iterationId = this.xmIteration.id;
+      }
+      if (this.filters.tags && this.filters.tags.length>0) {
+        params.tagIdList = this.filters.tags.map(i=>i.tagId);
+      }
       return params;
-    },
+    }, 
     loadXmTaskLazy(tree, treeNode, resolve,oldDatas,opType) {
       this.maps.set(tree.id, { tree, treeNode, resolve }); //储存数据
 	  if( opType=='add'|| opType=='addSub'){
@@ -1165,10 +1367,25 @@ export default {
       })
     },
     
+    clearFiltersTag(tag){
+      var index=this.filters.tags.findIndex(i=>i.tagId==tag.tagId)
+      this.filters.tags.splice(index,1);
+      this.searchXmTasks();
+    },
+    onTagSelected(tags){
+      
+      this.tagSelectVisible = false; 
+      if (!tags || tags.length == 0) { 
+        this.filters.tags=[]
+      }else{
+        this.filters.tags=tags
+      }
+      this.searchXmTasks();
+    }, 
   }, //end methods
   components: {
     //在下面添加其它组件
-    XmGroupSelect,xmMenuSelect,
+    XmGroupSelect,xmMenuSelect,TagMng,
   },
   mounted() {
     if (this.selProject) {

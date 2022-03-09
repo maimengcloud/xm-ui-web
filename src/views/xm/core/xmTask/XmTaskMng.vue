@@ -1692,7 +1692,7 @@ export default {
 
     showDrawer: function (row) {
       this.editFormVisible = true;
-      ;
+      debugger;
       this.editForm = row;
 
       // this.$emit('row-click',row,);//  @row-click="rowClick"
@@ -2210,7 +2210,7 @@ export default {
       this.searchXmTasks();
     },
     formatExeUsernames(row) {
-      ;
+      debugger;
       var exeUsernames = row.exeUsernames;
       var respons = {
         type: "info",

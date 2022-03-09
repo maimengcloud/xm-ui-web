@@ -572,7 +572,7 @@
 						var tips=res.data.tips;
 						if(tips.isOk){ 
 							this.pageInfo.count=true; 
-							;
+							debugger;
 							treeTool.reloadChildren(this.$refs.table,this.maps,row.pmenuId,'pmenuId',this.loadXmMenusLazy) 
 							this.getXmMenus(); 
 							
