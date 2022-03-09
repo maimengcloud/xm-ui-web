@@ -1,7 +1,7 @@
 <template>
   <section class="page-container padding border">
     <el-row>
-      <el-row v-if="projectPhase">
+      <el-row>
         <el-button
           type="warning"
           @click="saveBatchEdit"
@@ -25,66 +25,7 @@
           v-loading="load.edit"
           icon="el-icon-back"
           >返回</el-button
-        >
-        <el-button
-          type="danger"
-          @click="batchDel"
-          v-loading="load.edit"
-          icon="el-icon-delete"
-        ></el-button>
-        <span
-          class="hidden-lg-and-down"
-          style="margin-left: 10px; font-size: 14px"
-          >计划总预算：</span
-        ><el-tag class="hidden-lg-and-down" type="success">
-          {{
-            (
-              (projectPhase.phaseBudgetNouserAt +
-                projectPhase.phaseBudgetInnerUserAt +
-                projectPhase.phaseBudgetOutUserAt) /
-              10000
-            ).toFixed(2)
-          }}万，剩{{
-            (taskBudgetData.surplusPhaseBudgetCostAt / 10000).toFixed(2)
-          }}万</el-tag
-        >
-        <span
-          class="hidden-lg-and-down"
-          style="margin-left: 10px; font-size: 14px"
-          >非人力总预算：</span
-        ><el-tag
-          class="hidden-lg-and-down"
-          :type="
-            taskBudgetData.surplusPhaseBudgetNouserAt > 0 ? 'warning' : 'danger'
-          "
-          >{{ (projectPhase.phaseBudgetNouserAt / 10000).toFixed(2) }}万，剩{{
-            (taskBudgetData.surplusPhaseBudgetNouserAt / 10000).toFixed(2)
-          }}万</el-tag
-        >
-        <span style="margin-left: 10px; font-size: 14px">内部人力总预算：</span
-        ><el-tag
-          :type="
-            taskBudgetData.surplusPhaseBudgetInnerUserAt > 0
-              ? 'warning'
-              : 'danger'
-          "
-          >{{
-            (projectPhase.phaseBudgetInnerUserAt / 10000).toFixed(2)
-          }}万，剩{{
-            (taskBudgetData.surplusPhaseBudgetInnerUserAt / 10000).toFixed(2)
-          }}万</el-tag
-        >
-        <span style="margin-left: 10px; font-size: 14px">外购人力总预算：</span
-        ><el-tag
-          :type="
-            taskBudgetData.surplusPhaseBudgetOutUserAt > 0
-              ? 'warning'
-              : 'danger'
-          "
-          >{{ (projectPhase.phaseBudgetOutUserAt / 10000).toFixed(2) }}万，剩{{
-            (taskBudgetData.surplusPhaseBudgetOutUserAt / 10000).toFixed(2)
-          }}万</el-tag
-        >
+        > 
       </el-row>
       <el-row style="padding-top: 12px">
         <!-- show-summary -->
@@ -109,8 +50,8 @@
           row-key="id"
         >
           <el-table-column type="selection" width="50"></el-table-column>
-          <el-table-column prop="sortLevel" label="序号" width="300">
-            <template slot-scope="scope">
+          <el-table-column prop="sortLevel" label="序号" width="350">
+            <template slot-scope="scope"> 
               <el-popover placement="top" width="400" trigger="click">
                 <div style="text-align: center; margin: 0">
                   <div
@@ -149,14 +90,22 @@
               <el-input style="width: 100%"
                 v-model="scope.row.name"
                 @change="fieldChange(scope.row, 'name')"
-              ></el-input>
+              ></el-input> 
             </template>
           </el-table-column>
-          <!-- <el-table-column sortable width="40" type="selection"></el-table-column> --> 
-          <el-table-column prop="startTime" label="任务起止时间" width="150">
-            <template slot-scope="scope">
-              <el-row>
-                <el-col :span="24">
+          <el-table-column  width="100" prop="createUsername">
+              <template slot="header">
+                <el-button type="text" icon="el-icon-user" title="批量修改负责人人" @click="showBatchCreateUserSelectVisible">负责人</el-button>
+              </template>
+          </el-table-column>
+          <el-table-column  width="100" prop="executorUsername">
+              <template slot="header">
+                <el-button type="text" icon="el-icon-user" title="批量修改执行人" @click="showBatchExecUserSelectVisible">执行人</el-button>
+              </template>
+          </el-table-column>
+          <el-table-column label="预估工作量与金额">
+          <el-table-column prop="startTime" label="起止时间" width="300">
+            <template slot-scope="scope"> 
                   <el-date-picker
                     v-model="scope.row.startTime"
                     size="small"
@@ -169,9 +118,7 @@
                     :picker-options="pickerOptions"
                     @change="fieldChange(scope.row, 'startTime')"
                   >
-                  </el-date-picker>
-                </el-col>
-                <el-col :span="24">
+                  </el-date-picker> 
                   <el-date-picker
                     v-model="scope.row.endTime"
                     size="small"
@@ -184,12 +131,10 @@
                     :picker-options="pickerOptions"
                     @change="fieldChange(scope.row, 'endTime')"
                   >
-                  </el-date-picker>
-                </el-col>
-              </el-row>
+                  </el-date-picker>  
             </template>
           </el-table-column>
-          <el-table-column label="预计工作量" prop="budgetWorkload" width="140">
+          <el-table-column label="工作量(人时)" prop="budgetWorkload" width="140">
             <template slot-scope="scope">
               <el-input
                 v-model="scope.row.budgetWorkload"
@@ -198,8 +143,37 @@
                 @change="fieldChange(scope.row, 'budgetWorkload')"
               ></el-input>
             </template>
+          </el-table-column><el-table-column label="单价.元/人时" prop="uniInnerPrice" width="150">
+            <template slot-scope="scope"> 
+               
+              <el-checkbox
+                v-model="scope.row.taskOut"
+                false-label="0"
+                true-label="1"
+                @change="fieldChange(scope.row, 'taskOut')"
+              >外购</el-checkbox> 
+              &nbsp;
+              <el-row> 
+              <el-col :span="24" v-if="scope.row.taskOut!='1'">
+               <el-input style="width:100%;"
+                v-model="scope.row.uniInnerPrice"
+                type="number"
+                ::precision="2"
+                @change="fieldChange(scope.row, 'uniInnerPrice')"
+              ></el-input> 
+              </el-col>
+              <el-col :span="24" v-else>
+                <el-input  style="width:100%;"
+                v-model="scope.row.uniOutPrice"
+                type="number"
+                ::precision="2"
+                @change="fieldChange(scope.row, 'uniOutPrice')"
+              ></el-input>
+              </el-col>
+              </el-row> 
+            </template>
           </el-table-column>
-          <el-table-column label="预算金额.元" prop="budgetCost" width="140">
+          <el-table-column label="金额.元" prop="budgetCost" width="140">
             <template slot-scope="scope">
               <el-input
                 v-model="scope.row.budgetCost"
@@ -209,28 +183,47 @@
               ></el-input>
             </template>
           </el-table-column>
-          <el-table-column prop="rate" label="进度" width="100">
-            <template slot-scope="scope">
-              <el-input
-                type="number"
-                :precision="0"
-                v-model="scope.row.rate"
-                min="0"
-                max="100"
-                @change="fieldChange(scope.row, 'rate')"
-              ></el-input>
-            </template>
-          </el-table-column>
-          <el-table-column label="外购" prop="taskOut" width="80">
-            <template slot-scope="scope">
-              <el-checkbox
-                v-model="scope.row.taskOut"
-                false-label="0"
-                true-label="1"
-                @change="fieldChange(scope.row, 'taskOut')"
-              ></el-checkbox>
-            </template>
-          </el-table-column>
+           </el-table-column>
+           <el-table-column label="实际工作量与应结算金额">
+            <el-table-column prop="rate" label="进度" width="100">
+              <template slot-scope="scope">
+                <el-input
+                  type="number"
+                  :precision="0"
+                  v-model="scope.row.rate"
+                  min="0"
+                  max="100"
+                  @change="fieldChange(scope.row, 'rate')"
+                ></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column prop="actWorkload" label="工作量.人时" width="100">
+              <template slot-scope="scope">
+                <el-input
+                  :disabled="scope.row.calcType=='1'"
+                  type="number"
+                  :precision="0"
+                  v-model="scope.row.actWorkload"
+                  min="0"
+                  max="100"
+                  @change="fieldChange(scope.row, 'actWorkload')"
+                ></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column prop="actCost" label="金额.元" width="100">
+              <template slot-scope="scope">
+                <el-input
+                  :disabled="scope.row.calcType=='1'"
+                  type="number"
+                  :precision="0"
+                  v-model="scope.row.actWorkload"
+                  min="0"
+                  max="100"
+                  @change="fieldChange(scope.row, 'actWorkload')"
+                ></el-input>
+              </template>
+            </el-table-column>
+           </el-table-column>
           <el-table-column label="结算方案" prop="settleSchemel" width="160">
             <template slot-scope="scope">
               <el-select
@@ -246,11 +239,12 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column prop="description" label="任务描述" min-width="150">
+          <el-table-column prop="description" label="任务描述" width="350">
             <template slot-scope="scope">
               <el-input
                 type="textarea"
                 v-model="scope.row.description"
+                :rows="1"
                 @change="fieldChange(scope.row, 'description')"
               ></el-input>
             </template>
@@ -268,6 +262,37 @@
         ></el-pagination>
       </el-row>
     </el-row>
+    
+    <el-drawer
+      append-to-body
+      title="选择执行人"
+      :visible.sync="batchExecUserSelectVisible"
+      :size="650"
+      :close-on-click-modal="false"
+    >
+      <xm-group-select
+        :visible="batchExecUserSelectVisible"
+        :sel-project="selProject"
+        :isSelectSingleUser="1"
+        @user-confirm="batchExecUserSelectConfirm"
+      ></xm-group-select>
+    </el-drawer>
+
+    <el-drawer
+      append-to-body
+      title="选择负责人"
+      :visible.sync="batchGroupUserSelectVisible"
+      :size="650"
+      :close-on-click-modal="false"
+    >
+      <xm-group-select
+        :visible="batchGroupUserSelectVisible"
+        :sel-project="selProject"
+        :isSelectSingleUser="1"
+        @user-confirm="batchCreateUserSelectConfirm"
+      ></xm-group-select>
+    </el-drawer>
+    
   </section>
 </template>
 
@@ -290,6 +315,9 @@ import {
 
 import { mapGetters } from "vuex";
 import { sn } from "@/common/js/sequence";
+
+import XmGantt from "../components/xm-gantt";
+import XmGroupSelect from "../xmGroup/XmGroupSelect.vue"; 
 
 export default {
   computed: {
@@ -542,7 +570,10 @@ export default {
       menuDetailVisible: false,
       pickerOptions: util.pickerOptions(),
       gstcVisible: false,
-      tableHeight: 300,
+      tableHeight: 300,  
+      batchExecUserSelectVisible:false,
+      batchGroupUserSelectVisible:false,
+
 	  maps:new Map(),
       /**end 自定义属性请在上面加 请加备注**/
     };
@@ -1089,30 +1120,7 @@ export default {
         });
         return;
       } else {
-        if (this.taskBudgetData.surplusPhaseBudgetInnerUserAt < 0) {
-          this.$notify({
-            showClose: true,
-            message: "内部人力预算不足，请调整",
-            type: "error",
-          });
-          return;
-        }
-        if (this.taskBudgetData.surplusPhaseBudgetOutUserAt < 0) {
-          this.$notify({
-            showClose: true,
-            message: "外购人力预算不足，请调整",
-            type: "error",
-          });
-          return;
-        }
-        if (this.taskBudgetData.surplusPhaseBudgetNouserAt < 0) {
-          this.$notify({
-            showClose: true,
-            message: "非人力预算不足请调整",
-            type: "error",
-          });
-          return;
-        }
+         
 
         this.load.edit = true;
         batchSaveBudget(this.valueChangeRows)
@@ -1647,10 +1655,66 @@ export default {
           }
         })
         .catch((err) => (this.load.list = false));
+    }, 
+    //查询时选择责任人
+    createUserSelectConfirm(groupUsers) {
+      if (groupUsers && groupUsers.length > 0) { 
+        this.editForm.createUserid = groupUsers[0].userid;
+        this.editForm.createUsername = groupUsers[0].username;
+      }else{
+        this.editForm.createUserid = "";
+        this.editForm.createUsername = "";
+      }
+      this.groupUserSelectVisible=false;
+    },
+    //查询时选择责任人
+    showBatchCreateUserSelectVisible() {
+       if(!this.sels||this.sels.length==0){
+         this.$notify({showClose:true,message:'请先选中一条或多条数据',type:'error'})
+         return;
+       }else{
+         this.batchGroupUserSelectVisible=true;
+       }
+    },
+    //查询时选择责任人
+    showBatchExecUserSelectVisible() {
+       if(!this.sels||this.sels.length==0){
+         this.$notify({showClose:true,message:'请先选中一条或多条数据',type:'error'})
+         return;
+       }else{
+         this.batchExecUserSelectVisible=true;
+       }
+    },
+     //查询时选择责任人
+    batchCreateUserSelectConfirm(groupUsers) {
+      var user={};
+      if (groupUsers && groupUsers.length > 0) { 
+        user=groupUsers[0]
+      } 
+      this.batchGroupUserSelectVisible=false;
+      this.sels.forEach(i=>{
+        i.createUserid=user.userid;
+        i.createUsername=user.username; 
+        this.fieldChange(i,"executorUsername")
+      })
+    },
+     //查询时选择责任人
+    batchExecUserSelectConfirm(groupUsers) {
+      var user={};
+      if (groupUsers && groupUsers.length > 0) { 
+        user=groupUsers[0]
+      } 
+      this.batchExecUserSelectVisible=false;
+      this.sels.forEach(i=>{
+        i.executorUserid=user.userid;
+        i.executorUsername=user.username;
+        this.fieldChange(i,"executorUsername")
+      })
     },
   }, //end methods
   components: {
     //在下面添加其它组件
+    XmGroupSelect,XmGantt,
   },
   mounted() {
     if (this.selProject) {

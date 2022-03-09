@@ -134,11 +134,18 @@
             icon="el-icon-search"
             v-loading="load.list"
           ></el-button>
+          <el-button  
+            v-if="isTaskCenter != '1' && isMy != '1'"
+            @click="showBatchEdit"
+            v-loading="load.edit"
+            icon="el-icon-edit"
+            >修改</el-button
+          >
           <el-button type="danger"
             v-if="isTaskCenter != '1' && isMy != '1'"
             @click="batchDel"
-            v-loading="load.edit"
-            icon="el-icon-edit"
+            v-loading="load.del"
+            icon="el-icon-del"
             >删除</el-button
           >
           <el-popover
@@ -1094,81 +1101,7 @@ export default {
       const tasksTreeData = treeTool.translateDataToTree(xmTasks,"parentTaskid","id"); 
       return tasksTreeData;
     },
-
-    taskBudgetData() {
-      var rows = this.xmTasks;
-      var surplusPhaseBudgetCostAt =
-        this.getFloatValue(this.projectPhase.phaseBudgetInnerUserAt) +
-        this.getFloatValue(this.projectPhase.phaseBudgetOutUserAt) +
-        this.getFloatValue(this.projectPhase.phaseBudgetNouserAt);
-      var surplusPhaseBudgetInnerUserAt = this.getFloatValue(
-        this.projectPhase.phaseBudgetInnerUserAt
-      );
-      var surplusPhaseBudgetOutUserAt = this.getFloatValue(
-        this.projectPhase.phaseBudgetOutUserAt
-      );
-      var surplusPhaseBudgetNouserAt = this.getFloatValue(
-        this.projectPhase.phaseBudgetNouserAt
-      );
-      var surplusPhaseBudgetUserAt =
-        this.getFloatValue(this.projectPhase.phaseBudgetInnerUserAt) +
-        this.getFloatValue(this.projectPhase.phaseBudgetOutUserAt);
-
-      var total = {
-        surplusPhaseBudgetCostAt: surplusPhaseBudgetCostAt,
-        surplusPhaseBudgetInnerUserAt: surplusPhaseBudgetInnerUserAt,
-        surplusPhaseBudgetOutUserAt: surplusPhaseBudgetOutUserAt,
-        surplusPhaseBudgetNouserAt: surplusPhaseBudgetNouserAt,
-        surplusPhaseBudgetUserAt: surplusPhaseBudgetUserAt,
-
-        taskBudgetNouserAt: 0,
-        taskBudgetInnerUserAt: 0,
-        taskBudgetOutUserAt: 0,
-        taskBudgetUserAt: 0,
-      };
-      //phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetInnerUserAt:'',phaseBudgetOutUserAt
-      rows.forEach((row2) => {
-        var row = row2;
-        if (this.valueChangeRows.length != 0) {
-          var changeRows = this.valueChangeRows.filter((i) => i.id == row2.id);
-          if (changeRows && changeRows.length > 0) {
-            row = changeRows[0];
-          }
-        }
-
-        var budgetCost = this.getFloatValue(row.budgetCost);
-        if (row.taskOut == "1") {
-          row.taskBudgetOutUserAt = budgetCost;
-          row.taskBudgetInnerUserAt = 0;
-          row.taskBudgetNouserAt = 0;
-        } else {
-          row.taskBudgetOutUserAt = 0;
-          row.taskBudgetInnerUserAt = budgetCost;
-          row.taskBudgetNouserAt = 0;
-        }
-        total.taskBudgetNouserAt =
-          total.taskBudgetNouserAt + row.taskBudgetNouserAt;
-        total.taskBudgetInnerUserAt =
-          total.taskBudgetInnerUserAt + row.taskBudgetInnerUserAt;
-        total.taskBudgetOutUserAt =
-          total.taskBudgetOutUserAt + row.taskBudgetOutUserAt;
-      });
-      total.taskBudgetUserAt =
-        total.taskBudgetInnerUserAt + total.taskBudgetOutUserAt;
-      total.surplusPhaseBudgetCostAt =
-        total.surplusPhaseBudgetCostAt -
-        total.taskBudgetNouserAt -
-        total.taskBudgetUserAt;
-      total.surplusPhaseBudgetInnerUserAt =
-        total.surplusPhaseBudgetInnerUserAt - total.taskBudgetInnerUserAt;
-      total.surplusPhaseBudgetOutUserAt =
-        total.surplusPhaseBudgetOutUserAt - total.taskBudgetOutUserAt;
-      total.surplusPhaseBudgetNouserAt =
-        total.surplusPhaseBudgetNouserAt - total.taskBudgetNouserAt;
-      total.surplusPhaseBudgetUserAt =
-        total.surplusPhaseBudgetUserAt - total.taskBudgetUserAt;
-      return total;
-    },
+ 
   },
   props: [
     "selProject",
@@ -1658,6 +1591,10 @@ export default {
     },
     //批量删除xmTask
     batchDel: function () { 
+      if(this.sels.length==0){
+        this.$notify.error("请先选中要删除的记录")
+        return;
+      }
       this.$confirm("确认删除选中记录吗？", "提示", {
         type: "warning",
       }).then(() => {
