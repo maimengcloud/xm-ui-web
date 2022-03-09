@@ -450,7 +450,7 @@
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
 			handleLeftCategoryNodeClick(row, node,comp) {
-				// debugger
+				// 
 				this.filters.queryByCategory=true;
 				// this.categoryTree.selected=data;
 				this.uploadOptions.categoryId=row.id;

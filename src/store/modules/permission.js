@@ -144,7 +144,7 @@ const permission = {
   actions: {
     GenerateRoutes({ commit }, {roles,menus}) {
       return new Promise(resolve => {  
-        debugger
+        
         initRouter({children:asyncRouterMap})
         let accessedRouters 
         if (roles.some(role => role.roleid==='superAdmin'||role.roleid==='platformAdmin')) {
