@@ -8,6 +8,13 @@
       >
         <el-row>
           <el-select
+            v-model="filters.taskState"
+            placeholder="任务状态"
+            clearable 
+            style="width: 100px"
+          > 
+          </el-select>
+          <el-select
             v-model="selkey"
             placeholder="任务状态"
             clearable
@@ -505,11 +512,11 @@
                 width="120"
                 show-overflow-tooltip
               >
-                <template slot="header"> 需求 </template>
+                <template slot="header">  <el-button type="text" icon="el-icon-link" title="批量关联需求" @click="showBatchRelTasksWithMenuVisible">关联需求</el-button> </template>
                 <template slot-scope="scope">
                    <font>
                   <el-link @click.stop="toMenu(scope.row)">{{
-                    scope.row.menuName ? scope.row.menuName : "去关联需求"
+                    scope.row.menuName ? scope.row.menuName : ""
                   }}</el-link>
                    </font>
                 </template>
@@ -872,6 +879,19 @@
     <el-drawer
       append-to-body
       title="需求选择"
+      :visible.sync="batchRelTasksWithMenuVisible"
+      size="70%"
+      :close-on-click-modal="false"
+    >
+      <xm-menu-select
+        :visible="batchRelTasksWithMenuVisible"
+        :is-select-menu="true" 
+         @selected="onBatchRelTasksWithMenu" 
+      ></xm-menu-select>
+    </el-drawer> 
+    <el-drawer
+      append-to-body
+      title="需求选择"
       :visible.sync="menuVisible"
       size="70%"
       :close-on-click-modal="false"
@@ -1003,6 +1023,7 @@ import {
   batchImportTaskFromTemplate,
   batchSaveBudget,
   setTaskCreateUser,
+  batchRelTasksWithMenu,
 } from "@/api/xm/core/xmTask";
 import XmTaskAdd from "./XmTaskAdd"; //新增界面
 import XmTaskEdit from "./XmTaskEdit"; //修改界面
@@ -1281,6 +1302,7 @@ export default {
       budgetDateRanger: [],
       actDateRanger: [],
       tagSelectVisible: false,
+      batchRelTasksWithMenuVisible:false,
       maps:new Map(),
     };
   }, //end data
@@ -1395,6 +1417,34 @@ export default {
           this.load.list = false;
         })
         .catch((err) => (this.load.list = false));
+    },
+    showBatchRelTasksWithMenuVisible(){
+      if(this.sels.length==0){
+        this.$notify.error("请先选中一条或者多条数据")
+        return;
+      }
+      this.batchRelTasksWithMenuVisible=true;
+    },
+    onBatchRelTasksWithMenu(menu){
+      var params={
+        menuId:menu.menuId,
+        taskIds:this.sels.map(i=>i.id)
+      }
+      this.load.edit=true;
+      this.batchRelTasksWithMenuVisible=false;
+      batchRelTasksWithMenu(params).then(res=>{
+        this.load.edit=false;
+        var tips=res.data.tips;
+        if(tips.isOk){ 
+          this.getXmTasks();  
+          treeTool.reloadAllChildren(this.$refs.table,this.maps,this.sels,'parentTaskid',this.loadXmTaskLazy) 
+        }
+        this.$notify({
+            showClose: true,
+            message: tips.msg,
+            type: tips.isOk ? "success" : "error",
+          }); 
+      })
     },
     calcTaskStateByTime(startTime, endTime, row) {
       var obj = {
@@ -1700,8 +1750,19 @@ export default {
         this.menuStory = false;
         return;
       }
-      this.filters.menus = menus;
-      //this.pageInfo.count=true;
+      this.filters.menus = menus; 
+      this.getXmTasks();
+      this.menuStory = false;
+    },
+    
+    onSelectedStoryForRel(menus) {
+      //根据需求查询
+
+      if (menus == null || menus.length == 0) {
+        this.menuStory = false;
+        return;
+      }
+      this.filters.menus = menus; 
       this.getXmTasks();
       this.menuStory = false;
     },

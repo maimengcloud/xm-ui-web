@@ -100,6 +100,11 @@
               <template slot="header">
                 <el-button type="text" icon="el-icon-user" title="批量修改执行人" @click="showBatchExecUserSelectVisible">执行人</el-button>
               </template>
+          </el-table-column> 
+          <el-table-column  width="100" prop="menuName">
+              <template slot="header">
+                <el-button type="text" icon="el-icon-link" title="批量关联需求" @click="showMenu">关联需求</el-button>
+              </template>
           </el-table-column>
           <el-table-column label="预估工作量与金额">
           <el-table-column prop="startTime" label="起止时间" width="300">
@@ -236,12 +241,6 @@
                 ></el-option>
               </el-select>
             </template>
-          </el-table-column>
-          
-          <el-table-column  width="100" prop="menuName">
-              <template slot="header">
-                <el-button type="text" icon="el-icon-link" title="批量关联需求" @click="showMenu">关联需求</el-button>
-              </template>
           </el-table-column>
           <el-table-column prop="description" label="任务描述" width="350">
             <template slot-scope="scope">
