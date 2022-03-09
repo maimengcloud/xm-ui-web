@@ -757,8 +757,8 @@
         :project-phase="currentProjectPhase"
         :visible="editFormVisible"
         @cancel="editFormVisible = false"
-        @after-add-submit="afterEditSubmit"
-        @after-edit-submit="afterEditSubmit"
+        @after-add-submit="afterExecEditSubmit"
+        @after-edit-submit="afterExecEditSubmit"
         @submit="afterEditSubmit"
       ></xm-task-edit>
     </el-drawer>
@@ -1605,6 +1605,12 @@ export default {
     },
     afterEditSubmit() {
       this.editFormVisible = false;
+      var row=this.editForm
+      this.getXmTasks()
+      treeTool.reloadChildren(this.$refs.table,this.maps,row.parentTaskid,'parentTaskid',this.loadXmTaskLazy) 
+    },
+    
+    afterExecEditSubmit() { 
       var row=this.editForm
       this.getXmTasks()
       treeTool.reloadChildren(this.$refs.table,this.maps,row.parentTaskid,'parentTaskid',this.loadXmTaskLazy) 

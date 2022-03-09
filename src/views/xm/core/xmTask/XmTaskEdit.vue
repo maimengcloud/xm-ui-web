@@ -1,30 +1,10 @@
 <template>
-	<section class="page-container padding">
-		<el-row class="padding"> 
-			快速导航：
-			<el-link type="text" @click="goAnchor('baseInfo')">&nbsp;&nbsp;&nbsp;基础信息&nbsp;&nbsp;&nbsp;</el-link> 
-			<el-link type="text" @click="goAnchor('planInfo')">&nbsp;&nbsp;&nbsp;进度计划&nbsp;&nbsp;&nbsp;</el-link> 
-			<el-link type="text" @click="goAnchor('costInfo')">&nbsp;&nbsp;&nbsp;工作量与成本&nbsp;&nbsp;&nbsp;</el-link>
-			<el-link type="text" @click="goAnchor('settleInfo')">&nbsp;&nbsp;&nbsp;结算信息&nbsp;&nbsp;&nbsp;</el-link>
-			<el-link type="text" @click="goAnchor('menuInfo')">&nbsp;&nbsp;&nbsp;需求明细&nbsp;&nbsp;&nbsp;</el-link> 
-			<el-link type="text" @click="goAnchor('taskOut')">&nbsp;&nbsp;&nbsp;众包&nbsp;&nbsp;&nbsp;</el-link>    
-		</el-row>
-		<el-row>  
-			<el-steps :active="calcTaskStep" finish-status="success" simple>
-			<el-step title="发布" description="任务创建成功后即发布"></el-step>
-			<el-step title="竞标" description="候选人参与竞标，或者由责任人主动设置候选人"></el-step>
-			<el-step title="执行" description="候选人中标后，成为执行人，执行任务"></el-step>
-			<el-step title="验收" description="任务完成后提交验收，验收通过，即可进行结算"></el-step>
-			<el-step title="结算" description="提交结算申请审批流程，审批过程自动根据审批结果进行结算"></el-step>
-			<el-step title="企业付款" description="结算流程审批通过，自动付款到个人钱包"></el-step> 
-			<el-step title="提现" description="企业付款完成后，个人对钱包中余额进行提现"></el-step> 
-		</el-steps>
-		</el-row>
+	<section class="page-container padding">  
 		<el-row class="page-main ">
 			<!--新增界面 XmTask xm_task--> 
 			<el-form :model="editForm"  label-width="100px" :rules="editFormRules" ref="editForm">     
 				<el-card class="box-card" header="基础信息" id="baseInfo" shadow="hover">  
-					<el-form-item label="类型" prop="ntype">
+					<el-form-item label="" prop="ntype">
 						 <el-radio v-model="editForm.ntype" label="1">计划项</el-radio>
 						 <el-radio v-model="editForm.ntype" label="0">任务</el-radio>
 					</el-form-item>
@@ -42,13 +22,13 @@
 						<el-input  v-model="editForm.sortLevel" style="width:30%;"   placeholder="如1.0或者1.2.3等" ></el-input> <font style="color:red;">如1.0或者1.2.3等</font>
 						<br/><el-checkbox v-model="editForm.milestone" :true-label="1" :false-label="0">标记为里程碑</el-checkbox>
 					</el-form-item>  
-					<el-form-item label="前置任务"> 
+					<el-form-item label="前置"> 
 						<el-tag v-if="editForm.preTaskid"  @close="clearPreTask" closable >{{editForm.preTaskname}}</el-tag>
-						<el-button    @click.stop="selectTaskVisible=true"  >选前置任务</el-button> 
+						<el-button    @click.stop="selectTaskVisible=true"  >选前置</el-button> 
 					</el-form-item>  
 					<el-row>
 						<el-col :span="8">
-							<el-form-item label="任务状态">  
+							<el-form-item label="状态">  
 								<el-select v-model="editForm.taskState">
 									<el-option value="0" label="待领取"></el-option>
 									<el-option value="1" label="已领取执行中"></el-option>
@@ -65,7 +45,7 @@
 							</el-form-item>  
 						</el-col>
 						<el-col :span="8">
-							<el-form-item  label="任务类型" prop="taskType">   
+							<el-form-item  label="类型" prop="taskType">   
 								<el-select v-model="editForm.taskType">
 									<el-option v-for="i in this.options.taskType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
 								</el-select>  
@@ -73,13 +53,13 @@
 						</el-col>
 					</el-row>
 					 
-					<el-form-item  label="所属需求" prop="menuId" id="menuInfo"> 
+					<el-form-item  label="所属需求" prop="menuId" id="menuInfo" v-if="editForm.ntype!='1'"> 
 						{{editForm.menuName}} &nbsp;&nbsp;&nbsp; <el-link @click="menuVisible=true" type="primary">{{editForm.menuName?'更改':'设置'}}</el-link>&nbsp;&nbsp;&nbsp;
 						<el-link v-if="editForm.menuName" @click="toMenu" type="primary">查看需求</el-link>
 					</el-form-item> 
 					<el-row>  
 						<el-col :span="12"> 
-							<el-form-item prop="skill" label="技能要求">
+							<el-form-item prop="skill" label="技能要求"  v-if="editForm.ntype!='1'">
 								<el-button class="useradd-icon" type="text" @click.stop="showSkill()" icon="el-icon-circle-plus-outline">增加</el-button>
 								<el-tag class="fs-ft" style="margin-right:10px" v-for="(item,i) in taskSkills" :key="i">{{item.taskSkillName}}</el-tag>
 							</el-form-item> 
@@ -92,20 +72,18 @@
 						</el-col>
 					</el-row> 
 
-					<el-form-item label="任务描述" prop="description">
-						<el-input type="textarea" :autosize="{ minRows: 4, maxRows: 10}" v-model="editForm.description" placeholder="任务描述" ></el-input>
+					<el-form-item :label="editForm.ntype=='1'?'计划描述':'任务描述'" prop="description">
+						<el-input type="textarea" :autosize="{ minRows: 4, maxRows: 10}" v-model="editForm.description" :placeholder="editForm.ntype=='1'?'计划描述':'任务描述'" ></el-input>
 					</el-form-item>   
 				</el-card>  
- 				<el-card class="box-card" id="planInfo" header="进度计划" shadow="hover" v-if="editForm.ntype!='1'"> 
-					<el-form-item label="任务负责人"> 
+ 				<el-card class="box-card" id="planInfo" header="进度预测" shadow="hover"> 
+					<el-form-item label="负责人"> 
 						<el-tag  v-if="editForm.createUserid" style="margin-left:10px;border-radius:30px;"  >{{editForm.createUsername}}</el-tag>
-						<el-tag  v-else style="margin-left:10px;border-radius:30px;"  icon="el-icon-right" >未设置</el-tag>
-						<el-button  @click="showGroupUserSelect(editForm)" icon="el-icon-setting">设置负责人</el-button>
-					</el-form-item>
-					<el-form-item label="任务执行人">
-						<el-tag v-if="editForm.exeUsernames"  style="margin-left:10px;border-radius:30px;"  >{{editForm.exeUsernames}}</el-tag>
-						<el-button  @click="showExecusers(editForm)" icon="el-icon-s-data">候选人管理</el-button>
-						<el-button type="primary" @click="toJoin" icon="el-icon-plus">我要加入</el-button>
+ 						<el-button  @click="showGroupUserSelect(editForm)" icon="el-icon-setting">设置负责人</el-button>
+					</el-form-item> 
+					<el-form-item label="执行人" prop="executorUsername">
+						<el-tag  v-if="editForm.executorUserid" style="margin-left:10px;border-radius:30px;"  >{{editForm.executorUsername}}</el-tag>
+ 						<el-button  @click="execGroupUserSelectVisible=true" icon="el-icon-setting">设置执行人</el-button>
 					</el-form-item>
 					<el-form-item label="预计时间"> 
 							<el-tooltip content="计划类型">
@@ -187,11 +165,10 @@
 				 </el-card>
 				 
 				<el-card class="box-card" header="众包" id="taskOut" v-if="editForm.ntype!='1'">  
-					<el-form-item label="众包配置" prop="toTaskCenter"> 
+					<el-form-item label="" prop="toTaskCenter"> 
 						<el-checkbox v-model="editForm.toTaskCenter" true-label="1" false-label="0" id="toTaskCenter">发布到互联网任务大厅</el-checkbox>  
-
 					</el-form-item>   
-					<el-form-item label="众包流程" prop="taskOut">
+					<el-form-item label="众包流程" prop="taskOut" v-if="editForm.taskOut=='1'">
 						 <el-steps :active="calcTaskStep" align-center finish-status="success" simple>
 							<el-step title="发布" description="任务创建成功后即发布"></el-step>
 							<el-step title="竞标" description="候选人参与竞标，或者由责任人主动设置候选人"></el-step>
@@ -213,6 +190,9 @@
 		<!-- <el-drawer append-to-body :title="'技能要求'" :visible.sync="skillVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 			<xm-skill-mng :visible="skillVisible" :task-id="editForm.id" @cancel="skillVisible=false" @getSkill="getSkill"></xm-skill-mng>
 		</el-drawer> -->
+		<el-drawer append-to-body title="选择执行人"  :visible.sync="execGroupUserSelectVisible" size="60%"    :close-on-click-modal="false">
+			<xm-group-select :visible="execGroupUserSelectVisible" :sel-project="xmProject" :isSelectSingleUser="1" @user-confirm="execGroupUserSelectConfirm"></xm-group-select>
+		</el-drawer>
 		<el-drawer append-to-body title="选择负责人"  :visible.sync="groupUserSelectVisible" size="60%"    :close-on-click-modal="false">
 			<xm-group-select :visible="groupUserSelectVisible" :sel-project="xmProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-group-select>
 		</el-drawer>
@@ -228,7 +208,7 @@
 			<xm-task-list  :sel-project="xmProject"   @task-selected="onSelectedTask"></xm-task-list>
 		</el-drawer> 	
 		
-		<el-drawer :title="'任务'+editForm.name+'的执行人'"  :visible.sync="execUserVisible" fullscreen size="60%" append-to-body  :close-on-click-modal="false">
+		<el-drawer :title="'任务'+editForm.name+'的候选人'"  :visible.sync="execUserVisible" fullscreen size="60%" append-to-body  :close-on-click-modal="false">
 			<xm-execuser-mng :visible="execUserVisible" :xm-task="editForm"   @after-add-submit="afterAddExecSubmit" @after-edit-submit="afterEditExecSubmit" @after-delete-submit="afterEditExecSubmit" ref="execuserMng"></xm-execuser-mng>
 		</el-drawer>
 
@@ -359,6 +339,7 @@
 				selectTaskVisible:false,
 				execUserVisible:false,
 				groupUserSelectVisible:false,
+				execGroupUserSelectVisible:false,
 				budgetDateRanger: [
 					util.formatDate.format(beginDate, "yyyy-MM-dd HH:mm:ss"),
 					util.formatDate.format(endDate, "yyyy-MM-dd HH:mm:ss")
@@ -556,21 +537,24 @@
 			},
 			groupUserSelectConfirm:function(users){
 				if( users==null || users.length==0 ){
-					this.groupUserSelectVisible=false;
+					this.groupUserSelectVisible=false; 
 					return
 				}
 				this.editForm.createUserid=users[0].userid
-				this.editForm.createUsername=users[0].username
-				setTaskCreateUser(this.editForm).then(res=>{
-					var tips = res.data.tips;
-					if(tips.isOk){
-						this.$notify.success("设置成功");
-						this.groupUserSelectVisible=false;
-						this.$emit("submit",this.editForm)
-					}else{
-							this.$notify.error(tips.msg);
-					}
-				})
+				this.editForm.createUsername=users[0].username 
+				this.groupUserSelectVisible=false; 
+			},
+			
+			execGroupUserSelectConfirm:function(users){
+				if( users==null || users.length==0 ){
+					this.execGroupUserSelectVisible=false; 
+					this.editForm.executorUserid='';
+					this.editForm.executorUsername=''
+					return
+				}
+				this.editForm.executorUserid=users[0].userid
+				this.editForm.executorUsername=users[0].username 
+				this.execGroupUserSelectVisible=false; 
 			},
 			
 			toMenu(){
@@ -578,12 +562,9 @@
 			},
 			
 			afterAddExecSubmit(execForm){ 
-				this.$emit("submit",this.editForm)
 				this.$emit("after-add-submit",execForm);
 			},
 			afterEditExecSubmit(execForm){  
-				debugger;
-				this.$emit("submit",this.editForm)
 				this.$emit("after-edit-submit",execForm);
 			},     
 			onTagSelected(tags) {
