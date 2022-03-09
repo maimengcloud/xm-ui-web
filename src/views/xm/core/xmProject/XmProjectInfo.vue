@@ -36,15 +36,9 @@
 				<el-menu-item  index="团队">
 					 <span slot="title"><i class="el-icon-user-solid"></i>团队</span>
 				</el-menu-item>
-				<el-submenu index="规划">
-					<template slot="title">规划</template>
-					<el-menu-item index="计划及里程碑">
-					 <span slot="title"><i class="el-icon-odometer"></i>计划及里程碑</span>
-					</el-menu-item>
-					<el-menu-item  index="测试计划">
-						<span slot="title"><i class="el-icon-odometer"></i>测试计划</span>
-					</el-menu-item>
-				</el-submenu >
+				<el-menu-item index="计划"> 
+					<span slot="title"><i class="el-icon-odometer"></i>计划</span>
+				</el-menu-item>
 				<el-submenu index="财务" class="hidden-sm-and-down">
 					<template slot="title">财务</template> 
 						<el-menu-item   index="合同管理">
@@ -145,7 +139,8 @@
 			  <xm-question v-if="infotype=='缺陷'" :qtype="'bug'" :sel-project='selProject' ref="xmQuestion"></xm-question>
 			  <xm-group-mng v-if="infotype=='团队'" :sel-project="selProject"></xm-group-mng>
 			  <xm-file-mng v-if="infotype=='文档'" :sel-project="selProject"></xm-file-mng>
-			  <xm-project-phase-mng v-if="infotype=='计划及里程碑'" ref="xmProjectPhaseMng" :sel-project="selProject" ></xm-project-phase-mng>
+			   <xm-task-mng v-if="infotype=='计划'" ref="projectPlan" work-item-type="projectPlan" :sel-project="selProject" ></xm-task-mng>
+			 <!-- <xm-project-phase-mng v-if="infotype=='计划'" ref="xmProjectPhaseMng" :sel-project="selProject" ></xm-project-phase-mng> -->
 			  <xm-test-case-exec-mng v-if="infotype=='测试计划'" :visible="infotype=='测试计划'"  :sel-project='selProject' ref="xmQuestion"></xm-test-case-exec-mng>
 			<xm-menu-with-plan v-if="infotype=='需求监控'" ref="xmMenuWithPlan" :sel-project="selProject"></xm-menu-with-plan>
 			<xm-project-state-mng v-if="infotype=='项目监控'" :sel-project="selProject"></xm-project-state-mng>
