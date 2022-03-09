@@ -6,26 +6,25 @@
         class="padding-left"
         :class="{ 'flex-box': displayType == 'agil' }"
       >
-        <el-row>
-          <el-select
-            v-model="filters.taskState"
-            placeholder="任务状态"
-            clearable 
-            style="width: 100px"
-          > 
+        <el-row>  
+					<el-select style="width: 100px" v-model="filters.taskState" placeholder="任务状态">
+									<el-option value="0" label="待领取"></el-option>
+									<el-option value="1" label="已领取执行中"></el-option>
+									<el-option value="2" label="已完工"></el-option>
+									<el-option value="3" label="已结算"></el-option> 
           </el-select>
           <el-select
             v-model="selkey"
-            placeholder="任务状态"
+            placeholder="场景"
             clearable
             @change="changeSelKey"
             style="width: 100px"
           >
-            <el-option class="showall" value="" label="全部状态"
-              >全部状态</el-option
+            <el-option class="showall" value="" label="全部场景"
+              >全部场景</el-option
             >
-            <el-option value="work" label="未完成">未完成</el-option>
-            <el-option value="finish" label="已完成">已完成</el-option>
+            <el-option value="work" label="未达到100%">未达到100%</el-option>
+            <el-option value="finish" label="已达100%">已达100%</el-option>
             <el-option value="myFocus" label="我关注">我关注</el-option>
             <el-option value="myExecuserStatus0" label="我排队"
               >我排队</el-option
@@ -429,6 +428,7 @@
                    
                 </template>
               </el-table-column>
+              
               <el-table-column
                 sortable
                 prop="name"
@@ -1169,6 +1169,7 @@ export default {
         executor: null, //执行人
         taskType: "",
         tags: [],
+        taskState:'',//任务状态
       },
       xmTasks: [], //查询结果
       pageInfo: {
@@ -2325,6 +2326,9 @@ export default {
         params.myExecuserStatus = this.selkey.substring(
           "myExecuserStatus".length
         );
+      }
+      if(this.filters.taskState){
+        params.taskState=this.filters.taskState
       }
       if (this.filters.selProject) {
         params.projectId = this.filters.selProject.id;
