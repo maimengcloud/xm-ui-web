@@ -40,35 +40,61 @@
 					</el-form-item> 
 					<el-form-item label="序号" prop="sortLevel"> 
 						<el-input  v-model="editForm.sortLevel" style="width:30%;"   placeholder="如1.0或者1.2.3等" ></el-input> <font style="color:red;">如1.0或者1.2.3等</font>
-						<el-checkbox v-model="editForm.milestone" :true-label="1" :false-label="0">标记为里程碑</el-checkbox>
-					</el-form-item> 
-					<div v-if="editForm.ntype!='1'">
+						<br/><el-checkbox v-model="editForm.milestone" :true-label="1" :false-label="0">标记为里程碑</el-checkbox>
+					</el-form-item>  
 					<el-form-item label="前置任务"> 
 						<el-tag v-if="editForm.preTaskid"  @close="clearPreTask" closable >{{editForm.preTaskname}}</el-tag>
 						<el-button    @click.stop="selectTaskVisible=true"  >选前置任务</el-button> 
-					</el-form-item>
-					<el-form-item  label="紧急程度" prop="planType">  
-						<el-select v-model="editForm.level">
-								<el-option v-for="i in options.urgencyLevel" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option> 
-						</el-select>  
-						<el-tooltip content="任务类型"><el-select v-model=" editForm.taskType">
-							<el-option v-for="i in this.options.taskType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
-						</el-select> 
-						</el-tooltip> 
-						<el-tag v-if="editForm.tagNames">{{editForm.tagNames?editForm.tagNames:''}} </el-tag>
-						<el-button type="text" icon="el-icon-plus" @click="tagSelectVisible=true">标签</el-button> 
 					</el-form-item>  
+					<el-row>
+						<el-col :span="8">
+							<el-form-item label="任务状态">  
+								<el-select v-model="editForm.taskState">
+									<el-option value="0" label="待领取"></el-option>
+									<el-option value="1" label="已领取执行中"></el-option>
+									<el-option value="2" label="已完工"></el-option>
+									<el-option value="3" label="已结算"></el-option>
+								</el-select>   
+							</el-form-item> 
+						</el-col>
+						<el-col :span="8">
+							<el-form-item  label="紧急程度" prop="level">  
+								<el-select v-model="editForm.level">
+										<el-option v-for="i in options.urgencyLevel" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option> 
+								</el-select>    
+							</el-form-item>  
+						</el-col>
+						<el-col :span="8">
+							<el-form-item  label="任务类型" prop="taskType">   
+								<el-select v-model="editForm.taskType">
+									<el-option v-for="i in this.options.taskType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+								</el-select>  
+							</el-form-item>   
+						</el-col>
+					</el-row>
+					 
 					<el-form-item  label="所属需求" prop="menuId" id="menuInfo"> 
-						{{editForm.menuName}} &nbsp;&nbsp;&nbsp; <el-link @click="menuVisible=true" type="primary">{{editForm.menuName?'更改归属需求':'设置归属需求'}}</el-link>&nbsp;&nbsp;&nbsp;<el-link v-if="editForm.menuName" @click="toMenu" type="primary">查看需求明细</el-link>
+						{{editForm.menuName}} &nbsp;&nbsp;&nbsp; <el-link @click="menuVisible=true" type="primary">{{editForm.menuName?'更改':'设置'}}</el-link>&nbsp;&nbsp;&nbsp;
+						<el-link v-if="editForm.menuName" @click="toMenu" type="primary">查看需求</el-link>
 					</el-form-item> 
-					<el-form-item prop="skill" label="技能要求">
-						<el-button class="useradd-icon" type="text" @click.stop="showSkill()" icon="el-icon-circle-plus-outline">增加</el-button>
-						<el-tag class="fs-ft" style="margin-right:10px" v-for="(item,i) in taskSkills" :key="i">{{item.taskSkillName}}</el-tag>
-					</el-form-item> 
+					<el-row>  
+						<el-col :span="12"> 
+							<el-form-item prop="skill" label="技能要求">
+								<el-button class="useradd-icon" type="text" @click.stop="showSkill()" icon="el-icon-circle-plus-outline">增加</el-button>
+								<el-tag class="fs-ft" style="margin-right:10px" v-for="(item,i) in taskSkills" :key="i">{{item.taskSkillName}}</el-tag>
+							</el-form-item> 
+						</el-col>
+						<el-col :span="12">
+							<el-form-item  label="标签" prop="tagNames">   
+								<el-tag v-if="editForm.tagNames">{{editForm.tagNames?editForm.tagNames:''}} </el-tag>
+								<el-button type="text" icon="el-icon-plus" @click="tagSelectVisible=true">标签</el-button> 
+							</el-form-item>   
+						</el-col>
+					</el-row> 
+
 					<el-form-item label="任务描述" prop="description">
 						<el-input type="textarea" :autosize="{ minRows: 4, maxRows: 10}" v-model="editForm.description" placeholder="任务描述" ></el-input>
-					</el-form-item>  
-					</div>
+					</el-form-item>   
 				</el-card>  
  				<el-card class="box-card" id="planInfo" header="进度计划" shadow="hover" v-if="editForm.ntype!='1'"> 
 					<el-form-item label="任务负责人"> 
