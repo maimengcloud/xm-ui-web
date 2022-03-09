@@ -584,8 +584,21 @@
         :sel-project="selProject"
         :sel-project-phase="currentProjectPhase"
         :visible="batchEditVisible"
+        :xmTasks="xmTasks"
         @back="batchEditBack"
       ></xm-task-mng-batch>
+      
+      <el-pagination
+        ref="pagination"
+        layout="total, sizes, prev, pager, next"
+        @current-change="handleCurrentChange"
+        @size-change="handleSizeChange"
+        :page-sizes="[10, 20, 50, 100, 500]"
+        :current-page="pageInfo.pageNum"
+        :page-size="pageInfo.pageSize"
+        :total="pageInfo.total"
+        style="float: right"
+      ></el-pagination>
     </el-row>
     <el-drawer
       v-if="drawerVisible == true"
@@ -2200,10 +2213,8 @@ export default {
       this.menuExecutor = false;
     }, 
      
-    batchEditBack: function (needReload) {
-      if (needReload == true) {
-        this.searchXmTasks();
-      }
+    batchEditBack: function (needReload) { 
+        this.searchXmTasks(); 
       this.batchEditVisible = false;
     },
     setFiltersCreateUserAsMySelf() {

@@ -1,124 +1,7 @@
 <template>
   <section class="page-container padding border">
     <el-row>
-      <el-row>
-        <el-select style="width: 100px" v-model="filters.taskState" placeholder="任务状态">
-									<el-option value="0" label="待领取"></el-option>
-									<el-option value="1" label="已领取执行中"></el-option>
-									<el-option value="2" label="已完工"></el-option>
-									<el-option value="3" label="已结算"></el-option> 
-          </el-select>
-          <el-select
-            v-model="selkey"
-            placeholder="场景"
-            clearable
-            @change="changeSelKey"
-            style="width: 100px"
-          >
-            <el-option class="showall" value="" label="全部场景"
-              >全部场景</el-option
-            >
-            <el-option value="work" label="未达到100%">未达到100%</el-option>
-            <el-option value="finish" label="已达100%">已达100%</el-option>
-            <el-option value="myFocus" label="我关注">我关注</el-option>
-            <el-option value="myExecuserStatus0" label="我排队"
-              >我排队</el-option
-            >
-            <el-option value="myCreate" label="我是责任人"
-              >我是责任人</el-option
-            >
-            <el-option value="myExecuserStatus1" label="我执行"
-              >我执行</el-option
-            >
-            <el-option value="myExecuserStatus2" label="我提交"
-              >我提交</el-option
-            >
-            <el-option value="myExecuserStatus3" label="我的验收成功"
-              >我的验收成功</el-option
-            >
-            <el-option value="myExecuserStatus4" label="我的验收失败"
-              >我的验收失败</el-option
-            >
-            <el-option value="myExecuserStatus5" label="我的付款中"
-              >我的付款中</el-option
-            >
-            <el-option value="myExecuserStatus6" label="我的付款成功"
-              >我的付款成功</el-option
-            >
-            <el-option value="myExecuserStatus7" label="我放弃的"
-              >我放弃的</el-option
-            >
-          </el-select>
-          <el-select
-            class="hidden-md-and-down"
-            v-model="filters.taskType"
-            placeholder="任务类型"
-            style="width: 100px"
-            clearable
-            @change="changeTaskType"
-          >
-            <el-option class="showall" value="" label="全部类型"
-              >全部类型</el-option
-            >
-            <el-option
-              v-for="(i, index) in options.taskType"
-              :value="i.optionValue"
-              :label="i.optionName"
-              :key="index"
-              >{{ i.optionName }}</el-option
-            >
-          </el-select>
-          <el-checkbox
-            class="hidden-md-and-down"
-            v-model="filters.taskOut"
-            true-label="1"
-            false-label=""
-            >众包</el-checkbox
-          > 
-          <el-button
-            v-if="!filters.tags || filters.tags.length == 0"
-            @click.native="tagSelectVisible = true"
-            >标签</el-button
-          >
-          <el-tag
-            v-else
-            @click="tagSelectVisible = true"
-            closable
-            @close="clearFiltersTag(filters.tags[0])"
-            >{{ filters.tags[0].tagName.substr(0, 5) }}等({{
-              filters.tags.length
-            }})个</el-tag
-          >
-
-          <font v-if="!selProject">
-            <el-tag
-              class="hidden-md-and-down"
-              v-if="filters.selProject"
-              closable
-              @click="showProjectList"
-              @close="clearProject"
-              >{{ this.filters.selProject.name }}</el-tag
-            >
-            <el-button
-              class="hidden-md-and-down"
-              v-else
-              @click="showProjectList"
-              type="plian"
-              >选项目</el-button
-            >
-          </font>
-          <el-input
-            style="width: 200px"
-            v-model="filters.key"
-            placeholder="任务名称"
-          >
-          </el-input> 
-        <el-button
-          type="primary"
-          @click="searchXmTasks"
-          v-loading="load.list"
-          icon="el-icon-search"
-        ></el-button>
+      <el-row>  
         <el-button
           type="warning"
           @click="saveBatchEdit"
@@ -363,17 +246,7 @@
               ></el-input>
             </template>
           </el-table-column>
-        </el-table>
-        <el-pagination
-          layout="total, sizes, prev, pager, next"
-          @current-change="handleCurrentChange"
-          @size-change="handleSizeChange"
-          :page-sizes="[10, 20, 50, 100, 500]"
-          :current-page="pageInfo.pageNum"
-          :page-size="pageInfo.pageSize"
-          :total="pageInfo.total"
-          style="float: right"
-        ></el-pagination>
+        </el-table> 
       </el-row>
     </el-row>
     
@@ -473,7 +346,7 @@ export default {
     },
  
   },
-  props: ["selProject",  "visible","workItemType"],
+  props: ["selProject",  "visible","workItemType","xmTasks"],
   watch: {
     selProject: function (oval, val) {
       this.filters.selProject = this.selProject;
@@ -481,7 +354,7 @@ export default {
     }, 
     visible: function (visible) {
       if (visible == true) {
-        this.searchXmTasks();
+       this.valueChangeRows=[]
       }
     },
   },
@@ -499,8 +372,7 @@ export default {
         taskType: "",
         tags: [],
         taskState:'',//任务状态
-      },
-      xmTasks: [], //查询结果
+      }, 
       pageInfo: {
         //分页数据
         total: 0, //服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
@@ -1398,10 +1270,7 @@ export default {
     }
     if (this.selProjectPhase) {
       this.projectPhase = this.selProjectPhase;
-    }
-    if (this.visible == true) {
-      this.getXmTasks();
-    }
+    } 
     this.$nextTick(() => { 
       this.tableHeight = util.calcTableMaxHeight(this.$refs.table.$el); 
       listOption([
