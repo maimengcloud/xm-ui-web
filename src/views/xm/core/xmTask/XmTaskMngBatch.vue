@@ -27,8 +27,7 @@
           size="small"
           ref="table"
           :height="tableHeight"  
-          :data="tasksTreeData"
-          @sort-change="sortChange"
+          :data="tasksTreeData" 
           v-loading="load.list"
           @row-click="rowClick"
           @selection-change="selsChange"
@@ -501,34 +500,7 @@ export default {
       /**end 自定义属性请在上面加 请加备注**/
     };
   }, //end data
-  methods: {
-    handleSizeChange(pageSize) {
-      this.pageInfo.pageSize = pageSize;
-      this.getXmTasks();
-    },
-    handleCurrentChange(pageNum) {
-      this.pageInfo.pageNum = pageNum;
-      this.getXmTasks();
-    },
-    // 表格排序 obj.order=ascending/descending,需转化为 asc/desc ; obj.prop=表格中的排序字段,字段驼峰命名
-    sortChange(obj) {
-      if (obj.order == null) {
-        this.pageInfo.orderFields = ["create_time"];
-        this.pageInfo.orderDirs = ["desc"];
-      } else {
-        var dir = "asc";
-        if (obj.order == "ascending") {
-          dir = "asc";
-        } else {
-          dir = "desc";
-        }
-
-        this.pageInfo.orderFields = [util.toLine(obj.prop)];
-        this.pageInfo.orderDirs = [dir];
-      }
-
-      this.getXmTasks();
-    },
+  methods: {  
     searchXmTasks() {
       this.pageInfo.count = true;
       this.getXmTasks();
@@ -863,7 +835,6 @@ export default {
 			  }) 
 			  this.valueChangeRows = [];
 			  this.xmTasks=[]
-              this.getXmTasks();
             }
             this.$notify({
               showClose: true,
