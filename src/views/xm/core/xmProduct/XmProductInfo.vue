@@ -33,16 +33,10 @@
 				</el-menu-item>
 				<el-menu-item  index="团队">
 					 <span slot="title"><i class="el-icon-user-solid"  ></i>团队</span>
-				</el-menu-item>
-				<el-submenu index="规划">
-					<template slot="title">规划</template>
-					<el-menu-item index="计划及里程碑">
-					 <span slot="title"><i class="el-icon-odometer"></i>计划及里程碑</span>
-					</el-menu-item>
-					<el-menu-item  index="测试计划">
-						<span slot="title"><i class="el-icon-odometer"></i>测试计划</span>
-					</el-menu-item>
-				</el-submenu >
+				</el-menu-item> 
+				<el-menu-item index="计划">
+					<span slot="title"><i class="el-icon-odometer"></i>计划</span>
+				</el-menu-item>  
 				<el-submenu index="财务" class="hidden-sm-and-down">
 					<template slot="title">财务</template> 
 						<el-menu-item   index="合同管理">
@@ -142,11 +136,12 @@
 			 <xm-iteration-for-project-complex  v-if="infotype=='迭代'" ref="xmIterationMng" :xm-product="xmProduct"></xm-iteration-for-project-complex>
  			 <xm-project-complex v-if="infotype=='项目'" ref="xmProjectForLink" :xm-product="xmProduct"></xm-project-complex> 
 			  <xm-menu-mng v-if="infotype=='需求'" :xm-product="xmProduct"></xm-menu-mng>
-			 <xm-task-mng v-if="infotype=='任务'" ref="xmTaskMng" :xm-product="xmProduct" ></xm-task-mng>
+			 <xm-task-mng v-if="infotype=='任务'" ref="xmTaskMng" :xm-product="xmProduct" key="task"></xm-task-mng>
 			  <xm-question v-if="infotype=='缺陷'" :qtype="'bug'" :xm-product='xmProduct' ref="xmQuestion"></xm-question>
 			  <xm-group-mng v-if="infotype=='团队'" :xm-product="xmProduct"></xm-group-mng>
 			  <xm-file-mng v-if="infotype=='文档'" :xm-product="xmProduct"></xm-file-mng>
-			  <xm-project-phase-for-product v-if="infotype=='计划及里程碑'" ref="xmProjectPhaseMng" :xm-product="xmProduct" ></xm-project-phase-for-product>
+			  <xm-task-mng v-if="infotype=='计划'" ref="projectPlan" work-item-type="projectPlan" :xm-product="xmProduct" key="projectPlan"></xm-task-mng> 
+			  <!--<xm-project-phase-for-product v-if="infotype=='计划'" ref="xmProjectPhaseMng" :xm-product="xmProduct" ></xm-project-phase-for-product> -->
 			  <xm-test-case-exec-mng v-if="infotype=='测试计划'" :visible="infotype=='测试计划'"  :xm-product='xmProduct' ref="xmQuestion"></xm-test-case-exec-mng>
 			<xm-menu-with-plan v-if="infotype=='需求监控'" ref="xmMenuWithPlan" :xm-product="xmProduct"></xm-menu-with-plan>
 			<xm-project-state-mng v-if="infotype=='项目监控'" :xm-product="xmProduct"></xm-project-state-mng>
