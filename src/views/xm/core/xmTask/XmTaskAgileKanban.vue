@@ -12,7 +12,7 @@
 					<div class="menu">{{scope.row.name}}</div>
 				</template>
 			</el-table-column>
-			<template v-for="(type, tt) in taskType">
+			<template v-for="(type, tt) in taskState">
 				<el-table-column :label="type.label + '('+ type.number + ')'" :key="tt" width="450">
 					<template slot-scope="scope">
 						<draggable
@@ -67,7 +67,7 @@
 		</el-table>
     <!-- <div class="row head-row">
       <div class="item">需求({{ menus.length }})</div>
-			<template v-for="(type, tt) in taskType">
+			<template v-for="(type, tt) in taskState">
       	<div class="item status" :key="tt">{{type.label}} ({{ type.number }})</div>
 			</template>
     </div>
@@ -76,7 +76,7 @@
         <div class="item item-menu">
 					{{menu.name}} {{menu.menuId}}
         </div>
-        <div class="item status" v-for="(type, tt) in taskType" :key="tt">
+        <div class="item status" v-for="(type, tt) in taskState" :key="tt">
           <draggable
 						v-model="tasks[menu.menuId][tt]"
             :name="menu.menuId"
@@ -140,7 +140,7 @@ export default {
   props: ["xmTasks", "tableHeight"],
   data() {
     return {
-      taskType: [
+      taskState: [
         { label: "待领取", status: 0, number: 0 },
         { label: "已领取执行中", status: 1, number: 0 },
         { label: "已完工", status: 2, number: 0 },
@@ -158,10 +158,10 @@ export default {
   computed: {
     menus() {
       let xmTasks = JSON.parse(JSON.stringify(this.xmTasks || []));
-			console.log('--xmTasks==', xmTasks);
+	  xmTasks=xmTasks.filter(i=>i.ntype=='0') 
 
       let menus = [], menuIds = {}, tasks = {};
-			this.taskType.map(d => {
+			this.taskState.map(d => {
 				d.number = 0;
 				return d;
 			})
@@ -174,7 +174,7 @@ export default {
 					tasks[d.menuId] = [[], [], [], []];
         }
         tasks[d.menuId][parseInt(d.taskState)].push(d);
-				this.taskType[parseInt(d.taskState)].number += 1;
+				this.taskState[parseInt(d.taskState)].number += 1;
 			});
       this.tasks = tasks;
       return menus;
@@ -211,7 +211,7 @@ export default {
 				const params = { ...task, taskState: toEl.taskState };
 				editXmTask(params).then(res => {
 					console.log('onEnd--editXmTask--res==', res);
-					this.$emit('submit');
+					//this.$emit('submit');
 				})
 				console.log('onEnd--this.tasks==', this.tasks);
 			} else {
