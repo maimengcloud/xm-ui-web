@@ -32,9 +32,7 @@
         <el-table
           size="small"
           ref="table"
-          :height="tableHeight"
-          show-summary
-          class="drag-table2"
+          :height="tableHeight"  
           :data="tasksTreeData"
           @sort-change="sortChange"
           v-loading="load.list"
@@ -49,8 +47,8 @@
           :tree-props="{ children: 'children', hasChildren: 'childrenCnt' }"
           row-key="id"
         >
-          <el-table-column type="selection" width="50"></el-table-column>
-          <el-table-column prop="sortLevel" label="序号" width="350">
+          <el-table-column type="selection" width="50" fixed="left"></el-table-column>
+          <el-table-column prop="sortLevel" label="序号/名称" width="350" fixed="left">
             <template slot-scope="scope"> 
               <el-popover placement="top" width="400" trigger="click">
                 <div style="text-align: center; margin: 0">
@@ -77,7 +75,7 @@
                   >
                 </div>
                 <el-button
-                  slot="reference"
+                  slot="reference" 
                   :type="scope.row.opType ? 'success' : 'plain'"
                   icon="el-icon-edit"
                 ></el-button>
@@ -239,6 +237,12 @@
               </el-select>
             </template>
           </el-table-column>
+          
+          <el-table-column  width="100" prop="menuName">
+              <template slot="header">
+                <el-button type="text" icon="el-icon-link" title="批量关联需求" @click="showMenu">关联需求</el-button>
+              </template>
+          </el-table-column>
           <el-table-column prop="description" label="任务描述" width="350">
             <template slot-scope="scope">
               <el-input
@@ -293,6 +297,10 @@
       ></xm-group-select>
     </el-drawer>
     
+
+		<el-drawer append-to-body title="需求选择"  :visible.sync="menuVisible" size="80%"   :close-on-click-modal="false">
+			<xm-menu-select :is-select-menu="true"  @selected="onMenuSelected" :sel-project="xmProject"></xm-menu-select>
+		</el-drawer>
   </section>
 </template>
 
@@ -314,10 +322,9 @@ import {
 } from "@/api/xm/core/xmTask";
 
 import { mapGetters } from "vuex";
-import { sn } from "@/common/js/sequence";
-
-import XmGantt from "../components/xm-gantt";
+import { sn } from "@/common/js/sequence"; 
 import XmGroupSelect from "../xmGroup/XmGroupSelect.vue"; 
+import xmMenuSelect from '../xmMenu/XmMenuSelect';
 
 export default {
   computed: {
@@ -327,116 +334,24 @@ export default {
     },
     currentProjectPhase() {
       return this.selProjectPhase;
-    },
-    progress_disable() {
-      if (
-        (this.isEmpty(this.editForm.preTaskid) ||
-          this.editForm.prerate == "100") &&
-        this.isEmpty(this.editForm.children)
-      ) {
-        return false;
-      } else {
-        return true;
-      }
-    },
+    }, 
     tasksTreeData() {
       let xmTasks = JSON.parse(JSON.stringify(this.xmTasks || []));
       const tasksTreeData = treeTool.translateDataToTree(
         xmTasks,
         "parentTaskid",
         "id"
-      );
-      //this.rowDrop();
+      ); 
       return tasksTreeData;
     },
-
-    taskBudgetData() {
-      var rows = this.xmTasks;
-      var surplusPhaseBudgetCostAt =
-        this.getFloatValue(this.projectPhase.phaseBudgetInnerUserAt) +
-        this.getFloatValue(this.projectPhase.phaseBudgetOutUserAt) +
-        this.getFloatValue(this.projectPhase.phaseBudgetNouserAt);
-      var surplusPhaseBudgetInnerUserAt = this.getFloatValue(
-        this.projectPhase.phaseBudgetInnerUserAt
-      );
-      var surplusPhaseBudgetOutUserAt = this.getFloatValue(
-        this.projectPhase.phaseBudgetOutUserAt
-      );
-      var surplusPhaseBudgetNouserAt = this.getFloatValue(
-        this.projectPhase.phaseBudgetNouserAt
-      );
-      var surplusPhaseBudgetUserAt =
-        this.getFloatValue(this.projectPhase.phaseBudgetInnerUserAt) +
-        this.getFloatValue(this.projectPhase.phaseBudgetOutUserAt);
-
-      var total = {
-        surplusPhaseBudgetCostAt: surplusPhaseBudgetCostAt,
-        surplusPhaseBudgetInnerUserAt: surplusPhaseBudgetInnerUserAt,
-        surplusPhaseBudgetOutUserAt: surplusPhaseBudgetOutUserAt,
-        surplusPhaseBudgetNouserAt: surplusPhaseBudgetNouserAt,
-        surplusPhaseBudgetUserAt: surplusPhaseBudgetUserAt,
-
-        taskBudgetNouserAt: 0,
-        taskBudgetInnerUserAt: 0,
-        taskBudgetOutUserAt: 0,
-        taskBudgetUserAt: 0,
-      };
-      //phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetInnerUserAt:'',phaseBudgetOutUserAt
-      rows.forEach((row2) => {
-        var row = row2;
-        if (this.valueChangeRows.length != 0) {
-          var changeRows = this.valueChangeRows.filter((i) => i.id == row2.id);
-          if (changeRows && changeRows.length > 0) {
-            row = changeRows[0];
-          }
-        }
-		if(row.lvl<=1){
-			 var budgetCost = this.getFloatValue(row.budgetCost);
-			if (row.taskOut == "1") {
-			row.taskBudgetOutUserAt = budgetCost;
-			row.taskBudgetInnerUserAt = 0;
-			row.taskBudgetNouserAt = 0;
-			} else {
-			row.taskBudgetOutUserAt = 0;
-			row.taskBudgetInnerUserAt = budgetCost;
-			row.taskBudgetNouserAt = 0;
-			}
-			total.taskBudgetNouserAt =
-			total.taskBudgetNouserAt + row.taskBudgetNouserAt;
-			total.taskBudgetInnerUserAt =
-			total.taskBudgetInnerUserAt + row.taskBudgetInnerUserAt;
-			total.taskBudgetOutUserAt =
-			total.taskBudgetOutUserAt + row.taskBudgetOutUserAt;
-		}
-       
-      });
-      total.taskBudgetUserAt =
-        total.taskBudgetInnerUserAt + total.taskBudgetOutUserAt;
-      total.surplusPhaseBudgetCostAt =
-        total.surplusPhaseBudgetCostAt -
-        total.taskBudgetNouserAt -
-        total.taskBudgetUserAt;
-      total.surplusPhaseBudgetInnerUserAt =
-        total.surplusPhaseBudgetInnerUserAt - total.taskBudgetInnerUserAt;
-      total.surplusPhaseBudgetOutUserAt =
-        total.surplusPhaseBudgetOutUserAt - total.taskBudgetOutUserAt;
-      total.surplusPhaseBudgetNouserAt =
-        total.surplusPhaseBudgetNouserAt - total.taskBudgetNouserAt;
-      total.surplusPhaseBudgetUserAt =
-        total.surplusPhaseBudgetUserAt - total.taskBudgetUserAt;
-      return total;
-    },
+ 
   },
-  props: ["selProject", "selProjectPhase", "visible"],
+  props: ["selProject",  "visible"],
   watch: {
     selProject: function (oval, val) {
       this.filters.selProject = this.selProject;
       //this.changeSelKey("all");
-    },
-    selProjectPhase: function (selProjectPhase) {
-      this.projectPhase = this.selProjectPhase;
-      //this.projectPhaseRowClick(selProjectPhase)
-    },
+    }, 
     visible: function (visible) {
       if (visible == true) {
         this.searchXmTasks();
@@ -558,8 +473,7 @@ export default {
 
       skillVisible: false,
       skillIds: [],
-      taskSkills: [],
-      projectPhase: null,
+      taskSkills: [], 
       taskTemplateVisible: false,
       parentTask: null,
       projectInfoVisible: false,
@@ -777,22 +691,7 @@ export default {
 
     isEmpty(str) {
       return str == null || "" == str;
-    },
-
-    onSelectedMenus(menus) {
-      if (menus == null || menus.length == 0) {
-        this.menuVisible = false;
-        return;
-      }
-      var menus2 = JSON.parse(JSON.stringify(menus));
-      menus2.forEach((i) => {
-        i.id = i.menuId;
-        i.parentTaskid = i.pmenuId;
-        i.name = i.menuName;
-      });
-      this.onTaskTemplatesSelected(menus2);
-      this.menuVisible = false;
-    },
+    }, 
     onTaskTemplatesSelected(taskTemplates) {
       ///////////////////
       if (taskTemplates == null || taskTemplates.length == 0) {
@@ -854,19 +753,11 @@ export default {
       taskTemplates2.forEach((i) => {
         i.branchId = this.selProject.branchId;
         i.projectId = this.selProject.id;
-        i.projectName = this.selProject.name;
-        if (this.projectPhase == null) {
-          i.projectPhaseId = this.parentTask.projectPhaseId;
-          i.projectPhaseName = this.parentTask.projectPhaseName;
+        i.projectName = this.selProject.name;  
           i.sortLevel = i.sortLevel ? i.sortLevel : this.parentTask.sortLevel;
           i.taskType = i.taskType ? i.taskType : this.parentTask.taskType;
           i.taskClass = i.taskClass ? i.taskClass : this.parentTask.taskClass;
-        } else {
-          i.projectPhaseId = this.projectPhase.id;
-          i.projectPhaseName = this.projectPhase.phaseName;
-          i.sortLevel = i.sortLevel ? i.sortLevel : this.projectPhase.seqNo;
-          i.taskType = i.taskType ? i.taskType : this.projectPhase.taskType;
-        }
+         
         i.budgetCost = 0;
         i.budgetWorkload = 80;
         i.level = i.level ? i.level : "3";
@@ -933,184 +824,7 @@ export default {
           });
         })
         .catch((err) => (this.load.add = false));
-    },
-
-    handleSelect(key, keyPath) {
-      this.drawerkey = key;
-    },
-    translateDataToTree(data2) {
-      var data = JSON.parse(JSON.stringify(data2));
-
-      let parents = data.filter((value) => {
-        value.startDate = value.startTime
-          ? value.startTime.substr(0, 10)
-          : null;
-        value.endDate = value.endTime ? value.endTime.substr(0, 10) : null;
-        value.realStartDate = value.actStartTime
-          ? value.actStartTime.substr(0, 10)
-          : null;
-        value.realEndDate = value.actEndTime
-          ? value.actEndTime.substr(0, 10)
-          : null;
-        value.taskBudgetCostAt = this.getRowSum(value);
-        //如果我的上级为空，则我是最上级
-        if (
-          value.parentTaskid == "undefined" ||
-          value.parentTaskid == null ||
-          value.parentTaskid == ""
-        ) {
-          return true;
-
-          //如果我的上级不在列表中，我作为最上级
-        } else if (data.some((i) => value.parentTaskid == i.id)) {
-          return false;
-        } else {
-          return true;
-        }
-      });
-      let children = data.filter((value) => {
-        if (data.some((i) => value.parentTaskid == i.id)) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-      let translator = (parents, children) => {
-        parents.forEach((parent) => {
-          children.forEach((current, index) => {
-            if (current.parentTaskid === parent.id) {
-              let temp = JSON.parse(JSON.stringify(children));
-              temp.splice(index, 1);
-              translator([current], temp);
-              typeof parent.children !== "undefined"
-                ? parent.children.push(current)
-                : (parent.children = [current]);
-            }
-          });
-        });
-      };
-
-      translator(parents, children);
-
-      return parents;
-    },
-    projectPhaseRowClick: function (projectPhase) {
-      this.projectPhase = projectPhase;
-      this.getXmTasks();
-    },
-    clearSelectPhase: function () {
-      this.projectPhase = null;
-      this.getXmTasks();
-    },
-    getDateString(dateStr) {
-      if (dateStr == null || dateStr == "" || dateStr == undefined) {
-        return "";
-      } else {
-        return dateStr.substr(0, 10);
-      }
-    },
-    formateOption: function (itemCode, value) {
-      if (this.options[itemCode]) {
-        var options = this.options[itemCode].filter(
-          (i) => i.optionValue == value
-        );
-        if (options && options.length > 0) {
-          return options[0].optionName;
-        } else {
-          return value;
-        }
-      } else {
-        return value;
-      }
-    },
-
-    formatterOption: function (row, column, cellValue, index) {
-      var columnName = column.property;
-      var key = "";
-      if (columnName == "settleSchemel") {
-        key = "xmTaskSettleSchemel";
-      } else {
-        return cellValue;
-      }
-      if (
-        this.options[key] == undefined ||
-        this.options[key] == null ||
-        this.options[key].length == 0
-      ) {
-        return cellValue;
-      }
-      var list = this.options[key].filter((i) => i.optionValue == cellValue);
-      if (list.length > 0) {
-        return list[0].optionName;
-      } else {
-        return cellValue;
-      }
-    },
-    toFixed(floatValue, xsd) {
-      if (floatValue == null || floatValue == "" || floatValue == undefined) {
-        return 0;
-      } else {
-        if (xsd) {
-          return parseFloat(floatValue).toFixed(xsd);
-        } else {
-          return parseFloat(floatValue).toFixed(0);
-        }
-      }
-    },
-    decrease: function () {
-      if (parseFloat(this.editForm.rate) - 20 < 0) {
-        this.editForm.rate = 0;
-      } else {
-        this.editForm.rate = parseFloat(this.editForm.rate) - 20;
-      }
-    },
-    increase: function () {
-      if (parseFloat(this.editForm.rate) + 20 > 100) {
-        this.editForm.rate = 100;
-      } else {
-        this.editForm.rate = parseFloat(this.editForm.rate) + 20;
-      }
-    },
-
-    focusOrUnfocus: function (row) {
-      if (this.selkey == "myFocus") {
-        delXmMyFocus({
-          projectId: row.projectId,
-          focusType: "task",
-          taskId: row.id,
-          taskName: row.name,
-          userid: this.userInfo.userid,
-          username: this.userInfo.username,
-        }).then((res) => {
-          var tips = res.data.tips;
-          if (tips.isOk) {
-            this.getXmTasks();
-          }
-          this.$notify({
-            showClose: true,
-            message: tips.msg,
-            type: tips.isOk ? "success" : "error",
-          });
-        });
-      } else {
-        addXmMyFocus({
-          projectId: row.projectId,
-          projectName: row.projectName,
-          focusType: "task",
-          taskId: row.id,
-          taskName: row.name,
-          userid: this.userInfo.userid,
-          username: this.userInfo.username,
-        }).then((res) => {
-          var tips = res.data.tips;
-          this.$notify({
-            showClose: true,
-            message: tips.msg,
-            type: tips.isOk ? "success" : "error",
-          });
-        });
-      }
-    },
+    }, 
     saveBatchEdit: function () {
       if (this.valueChangeRows.length == 0) {
         this.$notify({
@@ -1165,34 +879,31 @@ export default {
           var end = new Date(row.endTime);
           var days = this.getDaysBetween(end, start);
           if (
-            row.taskOut == "1" &&
-            this.projectPhase.phaseBudgetOutUserPrice &&
+            row.taskOut == "1" && row.uniOutPrice&&
             !row.budgetWorkload
           ) {
             row.budgetWorkload = parseFloat((days * 8).toFixed(2));
-            row.budgetCost =
-              row.budgetWorkload * this.projectPhase.phaseBudgetOutUserPrice;
+            row.budgetCost =  row.budgetWorkload * row.uniOutPrice;
           } else if (
             row.taskOut != "1" &&
-            this.projectPhase.phaseBudgetInnerUserPrice &&
+            row.uniInnerPrice &&
             !row.budgetWorkload
           ) {
             row.budgetWorkload = parseFloat((days * 8).toFixed(2));
             row.budgetCost =
-              row.budgetWorkload * this.projectPhase.phaseBudgetInnerUserPrice;
+              row.budgetWorkload * row.uniInnerPrice;
           }
         }
       }
       if (fieldName == "budgetWorkload" || fieldName == "taskOut") {
-        if (row.taskOut == "1" && this.projectPhase.phaseBudgetOutUserPrice) {
+        if (row.taskOut == "1" && row.uniOutPrice) {
           row.budgetCost =
-            row.budgetWorkload * this.projectPhase.phaseBudgetOutUserPrice;
+            row.budgetWorkload * row.uniOutPrice;
         } else if (
-          row.taskOut != "1" &&
-          this.projectPhase.phaseBudgetInnerUserPrice
+          row.taskOut != "1" && row.uniInnerPrice
         ) {
           row.budgetCost =
-            row.budgetWorkload * this.projectPhase.phaseBudgetInnerUserPrice;
+            row.budgetWorkload * row.uniInnerPrice
         }
       }
       if (row.opType) {
@@ -1218,68 +929,29 @@ export default {
           this.valueChangeRows.push(row);
         }
       }
-    },
-    getRowSum(row) {
-      var budgetCost = this.getFloatValue(row.budgetCost);
-      if (row.taskOut == "1") {
-        row.taskBudgetOutUserAt = budgetCost;
-        row.taskBudgetInnerUserAt = 0;
-        row.taskBudgetNouserAt = 0;
-      } else {
-        row.taskBudgetOutUserAt = 0;
-        row.taskBudgetInnerUserAt = budgetCost;
-        row.taskBudgetNouserAt = 0;
-      }
-      return budgetCost;
-    },
-    getFloatValue(value, digit) {
-      if (isNaN(value)) {
-        return 0;
-      }
-      if (value == null || value == "" || value == undefined) {
-        return 0;
-      }
-      return parseFloat(value);
-    },
-    showProjectList: function () {
-      this.selectProjectVisible = true;
-    },
-    onPorjectConfirm: function (project) {
-      this.filters.selProject = project;
-      this.selectProjectVisible = false;
-      this.getXmTasks();
-    },
-    handleCommand(command) {
-      if (command.type == "showSubAdd") {
-        this.showSubAdd(command.data);
-      } else if (command.type == "showTaskTemplate") {
-        this.parentTask = command.data;
-        this.showTaskTemplate(command.data);
-      } else if (command.type == "showMenu") {
-        this.parentTask = command.data;
-        this.showMenu(command.data);
-      } else if (command.type == "showDrawer") {
-        this.showDrawer(command.data);
-      } else if (command.type == "showEdit") {
-        this.showEdit(command.data);
-      } else if (command.type == "showExecusers") {
-        this.showExecusers(command.data);
-      } else if (command.type == "showSkill") {
-        this.showSkill(command.data);
-      } else if (command.type == "focusOrUnfocus") {
-        this.focusOrUnfocus(command.data);
-      } else if (command.type == "handleDel") {
-        this.handleDel(command.data);
+    },  
+    showMenu(){
+      if(this.sels.length==0){
+        this.$notify.error("请先选中一条或者多条记录")
+        return;
+      }else{
+        this.menuVisible=true;
       }
     },
-    toMenu(task) {
-      this.editForm = task;
-      if (task.menuId) {
-        this.menuDetailVisible = true;
-      } else {
-        this.showEdit(task);
+    onMenuSelected:function(menu){
+      this.menuVisible=false; 
+      if(!menu){
+        return;
+      }else{
+        this.sels.forEach(i=>{
+          i.menuId=menu.menuId;
+          i.menuName=menu.menuName;
+          i.productId=menu.productId;
+          //i.productName=menu.productName;
+        })
       }
-    },
+      
+    }, 
     handlePopover: function (row, opType) { 
       if ("add" == opType) {
         var subRow = JSON.parse(JSON.stringify(this.addForm));
@@ -1290,10 +962,7 @@ export default {
         subRow.opType = opType;
         subRow.branchId = this.selProject.branchId;
         subRow.projectId = this.selProject.id;
-        subRow.projectName = this.selProject.name;
-        if (this.projectPhase == null) {
-          subRow.projectPhaseId = this.parentTask.projectPhaseId;
-          subRow.projectPhaseName = this.parentTask.projectPhaseName;
+        subRow.projectName = this.selProject.name; 
           subRow.sortLevel = subRow.sortLevel
             ? subRow.sortLevel
             : this.parentTask.sortLevel;
@@ -1302,17 +971,7 @@ export default {
             : this.parentTask.taskType;
           subRow.taskClass = subRow.taskClass
             ? subRow.taskClass
-            : this.parentTask.taskClass;
-        } else {
-          subRow.projectPhaseId = this.projectPhase.id;
-          subRow.projectPhaseName = this.projectPhase.phaseName;
-          subRow.sortLevel = subRow.sortLevel
-            ? subRow.sortLevel
-            : this.projectPhase.seqNo;
-          subRow.taskType = subRow.taskType
-            ? subRow.taskType
-            : this.projectPhase.taskType;
-        }
+            : this.parentTask.taskClass; 
         subRow.budgetCost = 0;
         subRow.budgetWorkload = 80;
         subRow.level = subRow.level ? subRow.level : "3";
@@ -1394,213 +1053,8 @@ export default {
           });
         }
       }
-    },
-    afterExecuserSubmit() {
-      this.getXmTasks();
-    },
-    toJoin() {
-      if (
-        this.editForm.exeUserids &&
-        this.editForm.exeUserids.indexOf(this.userInfo.userid) >= 0
-      ) {
-        this.$notify.success("你已经加入该任务了");
-        return;
-      }
-      this.execUserVisible = true;
-      this.$nextTick(() => {
-        this.$refs.execuserMng.toJoin();
-      });
-    },
-    clearProject() {
-      this.filters.selProject = null;
-      this.getXmTasks();
-    },
-    // 行拖拽
-    rowDrop() {
-      console.log("rowDrop===");
-
-      const _this = this;
-      // 被拖动的元素的索引
-      let dragged = null;
-      // 被拖动的元素的索引
-      let draggedIndex = -1;
-
-      // 目标元素
-      let target = document.querySelector(
-        ".drag-table2 .el-table__body-wrapper .el-table__body tbody"
-      );
-      console.log("rowDrop--target==", target);
-      if (target == null) {
-        return;
-      }
-      let rows = 0; //行数
-      setTimeout(function () {
-        rows = target.childElementCount;
-        console.log("rowDrop--rows==", rows);
-
-        for (let i = 0; i < target.childElementCount; i++) {
-          const child = target.children[i];
-          child.draggable = true;
-          // child.style.cursor = 'copy'
-          child.ondragstart = function (e) {
-            console.log("开始--ondragstart--e==", e);
-
-            dragged = e.path[0];
-            draggedIndex = e.path[0].rowIndex;
-            console.log("child" + i + "开始拖拽" + draggedIndex);
-            _this.cellMouseIndex = -1;
-            dragged.style.cursor = "grabbing";
-          };
-          child.ondragend = function () {
-            console.log("child" + i + "拖拽结束");
-          };
-        }
-      }, 0);
-
-      // 被拖动的元素正在那个容器里
-      let dragIndex = -1;
-
-      target.ondragenter = function (e) {
-        clearTimeout(loop);
-
-        // 由于被拖动的元素 经过tbody中的每一元素都会触发该事件, 但是我们只需要它正在那一行上就行了
-        if (e.path[0].nodeName === "TD") {
-          // throughRow 表示被拖动的元素正在哪一行上
-          const throughRow = e.path.find((path) => {
-            if (path.className.split(" ").includes("el-table__row")) {
-              return path;
-            }
-          });
-          if (dragIndex !== throughRow.rowIndex) {
-            if (dragIndex > -1) {
-              // 清除上次进入的容器的状态
-              const last = target.children[dragIndex];
-              clearClass(last);
-            }
-            // console.log('拖动进入目标元素'+selectRow.rowIndex);
-            // 不是自己或未文件夹时才改变状态
-            if (draggedIndex !== throughRow.rowIndex) {
-              // 改变本次进入的容器的状态
-              dragged.style.cursor = "copy";
-              throughRow.style.height = 60 + "px";
-              throughRow.style.backgroundColor = "#e9fdcf";
-            }
-            dragIndex = throughRow.rowIndex;
-          }
-        }
-        leaveIndex = -1;
-      };
-      target.ondragover = function (e) {
-        // console.log('目标元素中拖拽...');
-        e.preventDefault();
-        leaveIndex = -1;
-      };
-
-      let loop = null;
-      let leaveIndex = -1; // 是否拖出了整个table, -1表示还在table内
-
-      target.ondragleave = function (e) {
-        console.log("ondragleave--e==", e);
-
-        clearTimeout(loop);
-
-        if (e.path[0].nodeName) {
-          const throughRow = e.path.find((path) => {
-            if (path.className.split(" ").includes("el-table__row")) {
-              return path;
-            }
-          });
-          if (throughRow && dragIndex !== throughRow.rowIndex) {
-            // console.log('拖动离开目标元素'+selectRow.rowIndex);
-            // selectRow.style.height = 'unset'
-            // selectRow.style.backgroundColor = '#fff'
-            // dragIndex = selectRow.rowIndex
-          }
-          if (throughRow.rowIndex === 0 || throughRow.rowIndex === rows - 1) {
-            // 离开第一行或最后一行
-            leaveIndex = throughRow.rowIndex;
-            loop = setTimeout(function () {
-              if (leaveIndex > -1) {
-                console.log("离开了", leaveIndex);
-                const leave = target.children[leaveIndex];
-                clearClass(leave);
-                dragIndex = -1;
-              }
-            }, 100);
-          }
-          ``;
-        }
-      };
-      target.ondrop = function () {
-        console.log("ondrop--放下了" + draggedIndex);
-        // 清除上次进入的容器的状态
-        const last = target.children[dragIndex];
-        clearClass(last);
-        dragged.style.cursor = "default";
-
-        console.log("ondrop--draggedIndex==", draggedIndex);
-        console.log("ondrop--dragIndex==", dragIndex);
-
-        const startId = _this.$refs["task_" + draggedIndex].dataset.taskId;
-        const endId = _this.$refs["task_" + dragIndex].dataset.taskId;
-
-        if (startId !== endId) {
-          _this.changePmenuId(startId, endId);
-        }
-      };
-
-      let clearClass = function (node) {
-        if (node) {
-          node.style.height = "unset";
-          node.style.backgroundColor = "#fff";
-        }
-        dragged.style.cursor = "grabbing";
-      };
-      // if(last && form.menuId !== to.menuId && to.isFolder){
-      //   // 移动文件/文件夹
-      //   _this.copyOrMoveApi('move', form.menuId, to.menuId)
-      // }
-    },
-    // 判断前后两个数据是否存在同一回路里面
-    // dict 为字典；sId拖拽到menuId; ePmeuId 是放置位置的祖先 menuId;
-    judgePmenuId(dict, sId, ePmeuId) {
-      if (sId === ePmeuId) {
-        return true;
-      } else if (dict[ePmeuId]) {
-        return this.judgePmenuId(dict, sId, dict[ePmeuId]);
-      } else {
-        return false;
-      }
-    },
-    changePmenuId(sId, eId) {
-      let dict = {};
-      this.xmTasks.forEach((d) => {
-        dict[d.id] = d.parentTaskid || "";
-      });
-      if (!dict[eId]) {
-        this.xmTasks.find((d) => {
-          if (d.id === sId) {
-            d.parentTaskid = eId;
-            console.log("更新关系1");
-            this.fieldChange(d, "pmenuId", true);
-          }
-        });
-      } else {
-        const isSynezesis = this.judgePmenuId(dict, sId, dict[eId]);
-        if (!isSynezesis) {
-          this.xmTasks.find((d) => {
-            if (d.id === sId) {
-              d.parentTaskid = eId;
-              console.log("更新关系2");
-              this.fieldChange(d, "pmenuId", true);
-            }
-          });
-        } else {
-          console.log("形成闭合回路--拖拽不更新");
-        }
-      }
-    },
-    /**end 自定义函数请在上面加**/
+    }, 
+     
 
     getParams(params) {
       
@@ -1711,10 +1165,11 @@ export default {
         this.fieldChange(i,"executorUsername")
       })
     },
+    
   }, //end methods
   components: {
     //在下面添加其它组件
-    XmGroupSelect,XmGantt,
+    XmGroupSelect,xmMenuSelect,
   },
   mounted() {
     if (this.selProject) {
@@ -1742,8 +1197,7 @@ export default {
     document.body.ondrop = function (event) {
       event.preventDefault();
       event.stopPropagation();
-    };
-    this.rowDrop();
+    }; 
   },
 };
 </script>

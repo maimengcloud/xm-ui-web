@@ -366,8 +366,7 @@
               @submit="afterEditSubmit"
             ></xm-task-agile-kanban>
             <el-table class="task-table"
-              v-else
-              show-summary
+              v-else 
               lazy
               :load="loadXmTaskLazy"
               :data="tasksTreeData"
