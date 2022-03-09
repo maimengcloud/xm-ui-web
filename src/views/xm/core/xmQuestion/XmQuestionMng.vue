@@ -128,15 +128,15 @@
  					<el-table-column  label="序号" type="index" min-width="50"></el-table-column>
 					 <el-table-column prop="name" label="缺陷名称"  min-width="150" show-overflow-tooltip>
 						<template slot-scope="scope"> 
-								<el-link @click="showEdit(scope.row)" type="primary"> 
+								<span class="vlink" @click="showEdit(scope.row)"> 
 									<el-tag type="info" v-if="scope.row.bugSeverity=='4' ">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
 									<el-tag type="primary" v-else-if="scope.row.bugSeverity=='3'">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
 									<el-tag type="warning" v-else-if="scope.row.bugSeverity=='2'">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
 									<el-tag type="danger" v-else-if="scope.row.bugSeverity=='1'">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
 									<el-tag v-else>{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag> 
-									&nbsp;&nbsp;
-								</el-link>   
-								{{scope.row.name}}
+									&nbsp;&nbsp;{{scope.row.name}}
+								</span>   
+								
 						</template>
 					</el-table-column>
 					<el-table-column prop="bugStatus" label="状态"  width="100">
