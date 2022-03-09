@@ -473,7 +473,7 @@ export default {
     },
  
   },
-  props: ["selProject",  "visible","xmTasks"],
+  props: ["selProject",  "visible","workItemType"],
   watch: {
     selProject: function (oval, val) {
       this.filters.selProject = this.selProject;
@@ -683,8 +683,13 @@ export default {
       }
 	  this.load.list=true
 	  params=this.getParams(params)
+    if(this.workItemType=='projectPlan'){
       params.isTop = "1";
       params.withParents = "1";
+    }else{ 
+      params.ntype="0"
+    }
+     
       getTask(params)
         .then((res) => {
           var tips = res.data.tips;

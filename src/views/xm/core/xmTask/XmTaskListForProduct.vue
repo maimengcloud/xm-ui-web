@@ -1,6 +1,6 @@
 <template>
 	<section>
-		 <xm-task-mng :xm-product="xmProduct"></xm-task-mng>
+		 <xm-task-mng :xm-product="xmProduct" work-item-type="task"></xm-task-mng>
 	</section>
 </template>
 

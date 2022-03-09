@@ -135,11 +135,11 @@
 			 <xm-iteration-for-project-complex  v-if="infotype=='迭代'" ref="xmIterationMng" :sel-project="selProject"></xm-iteration-for-project-complex>
  			 <xm-product-for-project-complex  v-if="infotype=='产品'" ref="xmProductComplex" :sel-project="selProject"></xm-product-for-project-complex>
 			 <xm-menu-mng v-if="infotype=='需求'" :sel-project="selProject" :disabled-mng="false"></xm-menu-mng>
-			 <xm-task-mng v-if="infotype=='任务'" ref="xmTaskMng" :sel-project="selProject" ></xm-task-mng>
+			 <xm-task-mng v-if="infotype=='任务'" ref="xmTaskMng" :sel-project="selProject"  key="task"></xm-task-mng>
 			  <xm-question v-if="infotype=='缺陷'" :qtype="'bug'" :sel-project='selProject' ref="xmQuestion"></xm-question>
 			  <xm-group-mng v-if="infotype=='团队'" :sel-project="selProject"></xm-group-mng>
 			  <xm-file-mng v-if="infotype=='文档'" :sel-project="selProject"></xm-file-mng>
-			   <xm-task-mng v-if="infotype=='计划'" ref="projectPlan" work-item-type="projectPlan" :sel-project="selProject" ></xm-task-mng>
+			   <xm-task-mng v-if="infotype=='计划'" ref="projectPlan" work-item-type="projectPlan" :sel-project="selProject" key="projectPlan"></xm-task-mng>
 			 <!-- <xm-project-phase-mng v-if="infotype=='计划'" ref="xmProjectPhaseMng" :sel-project="selProject" ></xm-project-phase-mng> -->
 			  <xm-test-case-exec-mng v-if="infotype=='测试计划'" :visible="infotype=='测试计划'"  :sel-project='selProject' ref="xmQuestion"></xm-test-case-exec-mng>
 			<xm-menu-with-plan v-if="infotype=='需求监控'" ref="xmMenuWithPlan" :sel-project="selProject"></xm-menu-with-plan>

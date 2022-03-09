@@ -221,7 +221,8 @@
 				}
 				params.menuId=this.menuId
 				
-				params.withParents="1"
+				params.ntype="0"
+				//params.withParents="1"
 				getTask(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 

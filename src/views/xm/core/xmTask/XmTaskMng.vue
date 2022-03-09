@@ -1131,6 +1131,7 @@ export default {
     "menuName",
     "xmProduct",
     "xmIteration",
+    "workItemType"
   ],
   watch: {
     selProject: function (oval, val) {
@@ -1388,10 +1389,14 @@ export default {
         }
         params.orderBy = orderBys.join(",");
       }
-      params=this.getParams(params)
-      params.isTop="1"
+      params=this.getParams(params) 
+      if(this.workItemType=='projectPlan'){
+        params.isTop="1" 
+			  params.withParents="1"
+      }else{
+        params.ntype="0"
+      }
       
-			params.withParents="1"
       getTask(params)
         .then((res) => {
           var tips = res.data.tips;
@@ -2300,6 +2305,7 @@ export default {
       this.searchXmTasks();
     }, 
     getParams(params) {
+      
       if (this.dateRanger && this.dateRanger.length == 2) {
         params.createTimeStart = this.dateRanger[0];
         params.createTimeEnd = this.dateRanger[1];
