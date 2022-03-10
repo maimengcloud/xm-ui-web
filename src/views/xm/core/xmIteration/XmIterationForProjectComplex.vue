@@ -8,7 +8,7 @@
 							<el-popover
 								placement="right"
 								width="400"
-								trigger="hover"> 
+								trigger="click"> 
 								<xm-iteration-select :auto-select="true" :sel-project="selProject" :product-id="xmProduct?xmProduct.id:null"  @row-click="onIterationRowClick" @clear-select="onIterationClearSelect"></xm-iteration-select>
  								<el-link type="warning" slot="reference"  icon="el-icon-search"><font style="font-size:14px;">{{xmIteration?xmIteration.iterationName:'选择迭代'}}</font></el-link> 
 							</el-popover> 

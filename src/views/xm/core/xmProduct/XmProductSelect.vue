@@ -99,7 +99,7 @@
 
 	
 	export default { 
-		props:['isSelectProduct','selProject','xmIteration'],
+		props:['isSelectProduct','selProject','xmIteration','autoSelect'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -244,6 +244,12 @@
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
 						this.xmProducts = res.data.data;
+						
+						if(this.autoSelect===true&&this.xmProducts.length>0){ 
+							var row=this.xmProducts[0];
+							this.$refs.table.setCurrentRow(row);
+							this.rowClick(row);
+						}
 					}else{
 						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					} 

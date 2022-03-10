@@ -8,7 +8,7 @@
 							<el-popover
 								placement="right"
 								width="400"
-								trigger="hover"> 
+								trigger="click"> 
 								<xm-project-select :auto-select="true"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClearSelect"></xm-project-select>
  								 <el-link type="warning" slot="reference" @click.stop="showProjectSelect" icon="el-icon-search"><font style="font-size:14px;">{{selProject?selProject.name:'选择项目'}}</font></el-link> 
 							</el-popover>
