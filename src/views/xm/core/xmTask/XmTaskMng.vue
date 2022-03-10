@@ -7,7 +7,7 @@
         :class="{ 'flex-box': displayType == 'agil' }"
       >
         <el-row>  
-					<el-select style="width: 100px" v-model="filters.taskState" placeholder="任务状态">
+					<el-select style="width: 100px" v-model="filters.taskState" placeholder="状态">
 									<el-option value="0" label="待领取"></el-option>
 									<el-option value="1" label="已领取执行中"></el-option>
 									<el-option value="2" label="已完工"></el-option>
@@ -57,7 +57,7 @@
           <el-select
             class="hidden-md-and-down"
             v-model="filters.taskType"
-            placeholder="任务类型"
+            placeholder="类型"
             style="width: 100px"
             clearable
             @change="changeTaskType"
@@ -131,7 +131,7 @@
           <el-input
             style="width: 200px"
             v-model="filters.key"
-            placeholder="任务名称"
+            placeholder="计划/任务名称"
           >
           </el-input>
           <el-button
@@ -156,7 +156,7 @@
           >
           <el-popover v-if="workItemType=='projectPlan'"
             placement="top-start"
-            title="选择创建任务的方式"
+            title="选择创建计划/任务的方式"
             width="300"
             trigger="hover"
           >
@@ -166,7 +166,7 @@
                   v-if="isTaskCenter != '1' && isMy != '1'"
                   @click="showMenu"
                   icon="el-icon-plus"
-                  >由需求快速创建任务(推荐)</el-button
+                  >由需求快速创建计划/任务(推荐)</el-button
                 >
               </el-col>
               <el-col :span="24" style="padding-top: 5px">
@@ -174,7 +174,7 @@
                   v-if="isTaskCenter != '1' && isMy != '1'"
                   @click="showTaskTemplate"
                   icon="el-icon-plus"
-                  >从模板快速导入任务</el-button
+                  >从模板快速导入计划/任务</el-button
                 >
               </el-col>
               <el-col :span="24" style="padding-top: 5px">
@@ -406,7 +406,7 @@
               <el-table-column
                 sortable
                 prop="name"
-                label="任务名称(点击详情)"
+                label="名称(点击详情)"
                 min-width="250"
                 show-overflow-tooltip
               >
@@ -535,15 +535,15 @@
                     <el-dropdown-menu slot="dropdown">
                       <el-dropdown-item
                         :command="{ type: 'showMenu', data: scope.row }"
-                        >+由需求创建子任务(推荐)</el-dropdown-item
+                        >+由需求创建子计划/任务(推荐)</el-dropdown-item
                       >
                       <el-dropdown-item
                         :command="{ type: 'showSubAdd', data: scope.row }"
-                        >+子任务</el-dropdown-item
+                        >+子计划/子任务</el-dropdown-item
                       >
                       <el-dropdown-item
                         :command="{ type: 'showTaskTemplate', data: scope.row }"
-                        >+从模板批量导入子任务</el-dropdown-item
+                        >+从模板批量导入子计划/子任务</el-dropdown-item
                       >
                     </el-dropdown-menu>
                   </el-dropdown>
@@ -708,7 +708,7 @@
             </el-row>
           </div>
           <div class="exector extra">
-            <div class="field-label">任务负责人</div>
+            <div class="field-label">负责人</div>
             <el-tag
               v-if="editForm.createUserid"
               style="margin-left: 10px; border-radius: 30px"
@@ -727,7 +727,7 @@
             >
           </div>
           <div class="exector extra">
-            <div class="field-label">任务执行人</div>
+            <div class="field-label">执行人</div>
             <el-tag style="margin-left: 10px; border-radius: 30px">{{
               editForm.exeUsernames
             }}</el-tag>
