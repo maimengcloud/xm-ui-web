@@ -172,11 +172,6 @@ import XmProjectOverview from "./XmProjectOverview";
       XmProjectOverview,
 		},
 		mounted() {
-			
-		if(this.selProject==null || !this.selProject.id){
-			this.projectVisible=true;
-			this.$notify({showClose: true, message:"请先选中左边项目", type: 'warning'});
-		}
 		this.$nextTick(() => {
 
         	});

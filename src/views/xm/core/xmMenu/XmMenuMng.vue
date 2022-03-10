@@ -495,7 +495,7 @@
 				if( this.filters.product  && this.filters.product.id){
 					params.productId=this.filters.product.id
 				}else {
-					this.$notify({showClose: true, message: "请先选择产品", type: 'warning'});
+					//this.$notify({showClose: true, message: "请先选择产品", type: 'warning'});
 					return;
 				} 
 					

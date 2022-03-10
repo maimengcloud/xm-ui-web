@@ -1,7 +1,7 @@
 <template>
 	<section class="page-container border">
 		<el-row> 
-			<el-col :span="24" v-show="xmProduct && xmProduct.id">
+			<el-col :span="24">
 				<el-tabs type="border-card"  :value="showPanel"  @tab-click="tabClick">
 					<el-tab-pane disabled> 
 						<div  slot="label">
@@ -168,12 +168,7 @@ import XmProductOverview from "./XmProductOverview";
 XmProductProjectForLink,
       XmProductOverview,
 		},
-		mounted() {
-			
-			if(this.xmProduct==null || !this.xmProduct.id){
-				this.productVisible=true;
-				this.$notify({showClose: true, message:"请先选中左边产品", type: 'warning'});
-			}
+		mounted() { 
 		this.$nextTick(() => {
 
         	});

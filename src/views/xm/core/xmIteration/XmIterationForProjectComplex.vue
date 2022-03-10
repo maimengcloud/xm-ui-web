@@ -179,12 +179,7 @@
 			XmQuestionMng,
 			XmProjectForLink,
 		},
-		mounted() {
-			
-				if(this.xmIteration==null || !this.xmIteration.id){
-					this.iterationVisible=true;
-					this.$notify({showClose: true, message:"请先选中左边迭代", type: 'warning' });
-				}
+		mounted() { 
 		this.$nextTick(() => {
 
         	});
