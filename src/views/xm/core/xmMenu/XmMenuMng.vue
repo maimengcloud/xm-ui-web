@@ -1,11 +1,15 @@
 <template>
 	<section class="padding">
-		<el-row v-if=" !batchEditVisible"> 
-			<el-col :span="5" v-if="!xmProduct">
-				<xm-product-mng :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :xm-iteration="xmIteration" :simple="true"></xm-product-mng>
-			</el-col>
-			<el-col :span="xmProduct?24:19" class="padding-left">
-					<el-row>  
+		<el-row v-if=" !batchEditVisible">  
+			<el-col :span="24" class="padding-left">
+					<el-row>   
+						<el-popover
+							placement="right"
+							width="400"
+							trigger="click"> 
+							<xm-product-select v-if="!xmProduct" :auto-select="true" :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :xm-iteration="xmIteration" :simple="true"></xm-product-select>
+								<el-link type="warning" slot="reference" v-if="!xmProduct" icon="el-icon-search"><font style="font-size:14px;">{{filters.product?filters.product.productName:'选择产品'}}</font></el-link> 
+						</el-popover> 
 						<el-select  v-model="filters.status" placeholder="需求状态" clearable style="width: 100px;">
 							<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option> 
 						</el-select>   
@@ -198,7 +202,7 @@
 				</el-drawer> 
 				
 				<el-drawer  title="选择产品" :visible.sync="productVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
-					<xm-product-mng :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-mng>
+					<xm-product-select :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-select>
 				</el-drawer> 
 				<el-drawer title="选中任务" :visible.sync="selectTaskVisible"   size="80%"  append-to-body   :close-on-click-modal="false">
 					<xm-task-list  :sel-project="selProject" :is-multi-select="true"  @tasks-selected="onSelectedTasks"></xm-task-list>
@@ -254,7 +258,7 @@
 	import  XmMenuAdd from './XmMenuAdd';//新增界面
 	import  XmMenuEdit from './XmMenuEdit';//修改界面
 	import  XmMenuMngBatch from './XmMenuMngBatch';//修改界面
-	import  XmProductMng from '../xmProduct/XmProductSelect';//新增界面
+	import  XmProductSelect from '../xmProduct/XmProductSelect';//新增界面
 	import  XmMenuTemplateMng from '../xmMenuTemplate/XmMenuTemplateMng';//新增界面
 	import XmMenuRichDetail from './XmMenuRichDetail';
 	import XmTaskList from '../xmTask/XmTaskList';
@@ -865,7 +869,7 @@
 		components: { 
 		    'xm-menu-add':XmMenuAdd,
 			'xm-menu-edit':XmMenuEdit,
-			XmProductMng,
+			XmProductSelect,
 			XmMenuTemplateMng,
 			XmMenuRichDetail,
 			XmTaskList,
