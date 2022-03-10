@@ -127,7 +127,7 @@
                   <el-col :span="8">
                     <div>
                       <div style="text-align:center;">
-                        <span style="font-size:24px;" v-text="this.xmPhase.phaseBudgetWorkload"></span>
+                        <span style="font-size:24px;" v-text="this.xmPhase.budgetWorkload"></span>
                         <span style="font-size:5px;">h</span>
                       </div>
                       <div style="text-align:center;font-size:5px;">预估工时</div>
@@ -136,7 +136,7 @@
                   <el-col :span="8">
                     <div>
                       <div style="text-align:center;">
-                        <span style="font-size:24px;" v-text="this.xmPhase.phaseActWorkload"></span>
+                        <span style="font-size:24px;" v-text="this.xmPhase.actWorkload"></span>
                         <span style="font-size:5px;">h</span>
                       </div>
                       <div style="text-align:center;font-size:5px;">登记工时</div>
@@ -263,7 +263,7 @@ export default {
       }
     },
     workloadProgress:function (){
-      return Math.round(this.xmPhase.phaseActWorkload/this.xmPhase.phaseBudgetWorkload*100);
+      return Math.round(this.xmPhase.actWorkload/this.xmPhase.budgetWorkload*100);
     },
     deviation:function (){
       let now = new Date();
@@ -271,16 +271,16 @@ export default {
       let endTime = new Date(this.xmPhase.endDate);
       if(now<=endTime){
         let allDays=endTime-startTime;
-        return this.xmPhase.phaseBudgetWorkload - Math.round((now-startTime)/allDays*this.xmPhase.phaseBudgetWorkload)
+        return this.xmPhase.budgetWorkload - Math.round((now-startTime)/allDays*this.xmPhase.budgetWorkload)
       }else{
-        return this.xmPhase.phaseActWorkload - this.xmPhase.phaseBudgetWorkload;
+        return this.xmPhase.actWorkload - this.xmPhase.budgetWorkload;
       }
     },
     deviationRate:function (){
-      return Math.round(this.deviation/this.xmPhase.phaseBudgetWorkload*100);
+      return Math.round(this.deviation/this.xmPhase.budgetWorkload*100);
     },
     remainWorkload:function (){
-      return this.xmPhase.phaseBudgetWorkload - this.xmPhase.phaseActWorkload;
+      return this.xmPhase.budgetWorkload - this.xmPhase.actWorkload;
     },
     planProgress:function (){
       let now = new Date();
@@ -294,8 +294,8 @@ export default {
       }
     },
     realProgress:function (){
-      if(this.xmPhase.phaseActWorkload < this.xmPhase.phaseBudgetWorkload){
-        return Math.round(this.xmPhase.phaseActWorkload/this.xmPhase.phaseBudgetWorkload*100)
+      if(this.xmPhase.actWorkload < this.xmPhase.budgetWorkload){
+        return Math.round(this.xmPhase.actWorkload/this.xmPhase.budgetWorkload*100)
       }else{
         return 100;
       }
@@ -350,21 +350,21 @@ export default {
               }
             },
             data: [
-              {value: this.xmPhase.phaseBudgetNouserAt,
+              {value: this.xmPhase.budgetNouserAt,
                 itemStyle: {
                   normal:{
                     color: '#5470C6'
                   }
                 },
                 name: '非人力'},
-              {value: this.xmPhase.phaseBudgetIuserAt,
+              {value: this.xmPhase.budgetIuserAt,
                 itemStyle: {
                   normal:{
                     color: '#73C0DE'
                   }
                 },
                 name: '内部人力'},
-              {value: this.xmPhase.phaseBudgetOuserAt,
+              {value: this.xmPhase.budgetOuserAt,
                 itemStyle: {
                   normal:{
                     color: '#99CCFF'
@@ -416,14 +416,14 @@ export default {
               }
             },
             data: [
-              {value: this.xmPhase.phaseBudgetIuserWorkload,
+              {value: this.xmPhase.budgetIuserWorkload,
                 itemStyle: {
                   normal:{
                     color: '#5470C6'
                   }
                 },
                 name: '内部人力'},
-              {value: this.xmPhase.phaseBudgetOuserWorkload,
+              {value: this.xmPhase.budgetOuserWorkload,
                 itemStyle: {
                   normal:{
                     color: '#73C0DE'

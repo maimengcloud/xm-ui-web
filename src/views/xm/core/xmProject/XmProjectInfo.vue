@@ -289,7 +289,7 @@
           pageNum = this.$refs.xmTaskMng.pageInfo.pageNum;
         } else if (this.infotype === '计划') {
           header = ['序号', '计划名称', '开始时间', '结束时间', '进度(%)', '状态', '计划人数', '实际人数', '计划工期', '实际工期',  '计划工作量（人时）', '实际工作量（人时）', '计划非人力成本(元)', '实际非人力成本(元)', '计划内购人力成本(元)', '实际内购人力成本(元)', '计划外购人力成本(元)', '实际外购人力成本(元)', '计划成本合计(元)', '实际成本合计(元)', '审批状态', '备注'];
-          keyList = ['seqNo', 'name', 'beginDate', 'endDate', 'actRate', 'phaseStatus', 'phaseBudgetOuserCnt', 'actStaffNu', 'phaseBudgetHours', 'actHours', 'phaseBudgetWorkload', 'phaseActWorkload', 'phaseBudgetNouserAt', 'actNouserAt', 'phaseBudgetIuserAt', 'actIuserAt', 'phaseBudgetOuserAt', 'actOuserAt', 'phaseBudgetCostAt', 'actCostAt', 'bizFlowState', 'remark'];
+          keyList = ['seqNo', 'name', 'beginDate', 'endDate', 'actRate', 'phaseStatus', 'budgetOuserCnt', 'actStaffNu', 'budgetHours', 'actHours', 'budgetWorkload', 'actWorkload', 'budgetNouserAt', 'actNouserAt', 'budgetIuserAt', 'actIuserAt', 'budgetOuserAt', 'actOuserAt', 'budgetCostAt', 'actCostAt', 'bizFlowState', 'remark'];
           list = this.$refs.xmPhaseMng.projectPhaseTreeData;
           pageNum = this.$refs.xmPhaseMng.pageInfo.pageNum;
 

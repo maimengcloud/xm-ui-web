@@ -22,23 +22,23 @@
 				<el-form-item label="备注" prop="remark">
 					<el-input v-model="editForm.remark" placeholder="备注" ></el-input>
 				</el-form-item> 
-				<el-form-item label="预计工时" prop="phaseBudgetHours">
-					<el-input-number v-model="editForm.phaseBudgetHours" :precision="2" :step="8" :min="0" placeholder="工时(不包括下一级)-应该大于或等于任务中总工时"></el-input-number><el-tag>参考工时{{autoParams.phaseBudgetHours}}小时,工作日{{autoParams.weekday}}天</el-tag> <el-button @click.native="fillToField" type="success">填充</el-button>
+				<el-form-item label="预计工时" prop="budgetHours">
+					<el-input-number v-model="editForm.budgetHours" :precision="2" :step="8" :min="0" placeholder="工时(不包括下一级)-应该大于或等于任务中总工时"></el-input-number><el-tag>参考工时{{autoParams.budgetHours}}小时,工作日{{autoParams.weekday}}天</el-tag> <el-button @click.native="fillToField" type="success">填充</el-button>
 				</el-form-item>  
-				<el-form-item label="预计人数" prop="phaseBudgetStaffNu">
-					<el-input-number v-model="editForm.phaseBudgetStaffNu" :precision="0" :step="1" :min="0" placeholder="投入人员数(不包括下一级)-应该大于或等于任务中总人数"></el-input-number> <el-tag>参考{{autoParams.phaseBudgetStaffNu}}人</el-tag>
+				<el-form-item label="预计人数" prop="budgetStaffNu">
+					<el-input-number v-model="editForm.budgetStaffNu" :precision="0" :step="1" :min="0" placeholder="投入人员数(不包括下一级)-应该大于或等于任务中总人数"></el-input-number> <el-tag>参考{{autoParams.budgetStaffNu}}人</el-tag>
 				</el-form-item>  
-				<el-form-item label="非人力成本总预算" prop="phaseBudgetNouserAt">
-					<el-input-number v-model="editForm.phaseBudgetNouserAt" :precision="2" :step="1000" :min="0" placeholder="非人力成本总预算(不包括下一级)-应该大于或等于任务中非人力总成本"></el-input-number> <el-tag>参考{{autoParams.phaseBudgetNouserAt}}元，{{this.toFixed( autoParams.phaseBudgetNouserAt/10000)}}万元</el-tag>
+				<el-form-item label="非人力成本总预算" prop="budgetNouserAt">
+					<el-input-number v-model="editForm.budgetNouserAt" :precision="2" :step="1000" :min="0" placeholder="非人力成本总预算(不包括下一级)-应该大于或等于任务中非人力总成本"></el-input-number> <el-tag>参考{{autoParams.budgetNouserAt}}元，{{this.toFixed( autoParams.budgetNouserAt/10000)}}万元</el-tag>
 				</el-form-item>  
-				<el-form-item label="预计总工作量" prop="phaseBudgetWorkload">
-					<el-input-number v-model="editForm.phaseBudgetWorkload" :precision="2" :step="8" :min="0" placeholder="预计总工作量(人时,不包括下一级)-应该大于或者等于任务中的预算总工作量"></el-input-number> <el-tag>参考{{autoParams.phaseBudgetWorkload}}人时，{{this.toFixed(autoParams.phaseBudgetWorkload/24/20)}}人月</el-tag>
+				<el-form-item label="预计总工作量" prop="budgetWorkload">
+					<el-input-number v-model="editForm.budgetWorkload" :precision="2" :step="8" :min="0" placeholder="预计总工作量(人时,不包括下一级)-应该大于或者等于任务中的预算总工作量"></el-input-number> <el-tag>参考{{autoParams.budgetWorkload}}人时，{{this.toFixed(autoParams.budgetWorkload/24/20)}}人月</el-tag>
 				</el-form-item> 
-				<el-form-item label="内部人力成本总预算" prop="phaseBudgetIuserAt">
-					<el-input-number v-model="editForm.phaseBudgetIuserAt" :precision="2" :step="1000" :min="0" placeholder="内部人力成本总预算(不包括下一级)-应该大于或等于任务中内部人力总成本"></el-input-number> <el-tag>参考{{autoParams.phaseBudgetIuserAt}}元，{{this.toFixed(autoParams.phaseBudgetIuserAt/10000)}}万元</el-tag>
+				<el-form-item label="内部人力成本总预算" prop="budgetIuserAt">
+					<el-input-number v-model="editForm.budgetIuserAt" :precision="2" :step="1000" :min="0" placeholder="内部人力成本总预算(不包括下一级)-应该大于或等于任务中内部人力总成本"></el-input-number> <el-tag>参考{{autoParams.budgetIuserAt}}元，{{this.toFixed(autoParams.budgetIuserAt/10000)}}万元</el-tag>
 				</el-form-item> 
-				<el-form-item label="外购人力成本总预算" prop="phaseBudgetOuserAt">
-					<el-input-number v-model="editForm.phaseBudgetOuserAt" :precision="2" :step="1000" :min="0" placeholder="外购人力成本总预算(不包括下一级)-应该大于或等于任务中外购总成本"></el-input-number> <el-tag>参考{{autoParams.phaseBudgetOuserAt}}元，{{this.toFixed(autoParams.phaseBudgetOuserAt/10000)}}万元</el-tag>
+				<el-form-item label="外购人力成本总预算" prop="budgetOuserAt">
+					<el-input-number v-model="editForm.budgetOuserAt" :precision="2" :step="1000" :min="0" placeholder="外购人力成本总预算(不包括下一级)-应该大于或等于任务中外购总成本"></el-input-number> <el-tag>参考{{autoParams.budgetOuserAt}}元，{{this.toFixed(autoParams.budgetOuserAt/10000)}}万元</el-tag>
 				</el-form-item>
 				<el-form-item>
 					<el-col :span="24" :offset="8"> 
@@ -64,27 +64,27 @@
 		    ]),
 			autoParams:function(){
 				
-				var defaultPlanWorkingStaffNu=this.editForm.phaseBudgetStaffNu;
+				var defaultPlanWorkingStaffNu=this.editForm.budgetStaffNu;
 				if(defaultPlanWorkingStaffNu==null || defaultPlanWorkingStaffNu=='' || defaultPlanWorkingStaffNu <=0 ){
 					defaultPlanWorkingStaffNu=1;
 				} 
-				var defaultPlanWorkingHours=this.editForm.phaseBudgetHours
+				var defaultPlanWorkingHours=this.editForm.budgetHours
 				if(defaultPlanWorkingHours==null || defaultPlanWorkingHours=='' || defaultPlanWorkingHours<=0){
 					defaultPlanWorkingHours=8
 				}
 				var autoParams={
-					phaseBudgetHours:defaultPlanWorkingHours,
-					phaseBudgetStaffNu: defaultPlanWorkingStaffNu,
-					phaseBudgetWorkload: defaultPlanWorkingHours * defaultPlanWorkingStaffNu
+					budgetHours:defaultPlanWorkingHours,
+					budgetStaffNu: defaultPlanWorkingStaffNu,
+					budgetWorkload: defaultPlanWorkingHours * defaultPlanWorkingStaffNu
 
 				}
-				 var phaseBudgetHours=defaultPlanWorkingHours; 
-				autoParams.weekday=parseInt(phaseBudgetHours/8)
-				autoParams.phaseBudgetHours=this.toFixed(phaseBudgetHours)
-				autoParams.phaseBudgetWorkload= this.toFixed(autoParams.phaseBudgetHours*defaultPlanWorkingStaffNu)
-				autoParams.phaseBudgetOuserAt=this.toFixed( autoParams.phaseBudgetWorkload * 100 * 0.6)
-				autoParams.phaseBudgetIuserAt=this.toFixed( autoParams.phaseBudgetWorkload * 100 * 0.4)
-				autoParams.phaseBudgetNouserAt=autoParams.phaseBudgetWorkload * 100 * 0.2
+				 var budgetHours=defaultPlanWorkingHours; 
+				autoParams.weekday=parseInt(budgetHours/8)
+				autoParams.budgetHours=this.toFixed(budgetHours)
+				autoParams.budgetWorkload= this.toFixed(autoParams.budgetHours*defaultPlanWorkingStaffNu)
+				autoParams.budgetOuserAt=this.toFixed( autoParams.budgetWorkload * 100 * 0.6)
+				autoParams.budgetIuserAt=this.toFixed( autoParams.budgetWorkload * 100 * 0.4)
+				autoParams.budgetNouserAt=autoParams.budgetWorkload * 100 * 0.2
 				return autoParams
 			}
 		},
@@ -122,7 +122,7 @@
 				},
 				//新增界面数据 xm_phase_template
 				 editForm: {
-					id:'',name:'',remark:'',parentPhaseId:'',branchId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',projectTypeId:'',projectTypeName:'',phaseBudgetNouserAt:'',phaseBudgetIuserAt:'',phaseBudgetOuserAt:'',phaseBudgetWorkload:'',"taskType":'',planType:'m1'
+					id:'',name:'',remark:'',parentPhaseId:'',branchId:'',beginDate:'',endDate:'',budgetHours:'',budgetStaffNu:'',projectTypeId:'',projectTypeName:'',budgetNouserAt:'',budgetIuserAt:'',budgetOuserAt:'',budgetWorkload:'',"taskType":'',planType:'m1'
 				}
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				

@@ -383,12 +383,12 @@
 				this.addForm.budgetWorkload=weekday * 8
 				var price=80;
 				if(this.addForm.taskOut=='1'){
-					if(this.projectPhase.phaseBudgetOuserPrice){
-						price=this.projectPhase.phaseBudgetOuserPrice
+					if(this.projectPhase.budgetOuserPrice){
+						price=this.projectPhase.budgetOuserPrice
 					}
 				}else{
-					if(this.projectPhase.phaseBudgetIuserPrice){
-						price=this.projectPhase.phaseBudgetIuserPrice
+					if(this.projectPhase.budgetIuserPrice){
+						price=this.projectPhase.budgetIuserPrice
 					}
 				}
 				this.addForm.budgetCost=this.addForm.budgetWorkload * price

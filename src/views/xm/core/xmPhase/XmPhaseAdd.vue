@@ -27,7 +27,7 @@
 
 				</el-row>
 				<el-tabs v-model="activeName" class="border padding">
-					<el-tab-pane label="工作量及人力成本" name="phaseBudgetWorkload">
+					<el-tab-pane label="工作量及人力成本" name="budgetWorkload">
 						 <el-row>
 							<el-row class="padding-20 border">
 								<el-row class="padding">工作量计算方式：<font style="color:red">总工时 = 工作日天数 * 每日工时数 * 人数 </font> </el-row>
@@ -46,8 +46,8 @@
 									:default-time="['00:00:00','23:59:59']"
 									:picker-options="pickerOptions"
 								></el-date-picker>
-								预估工期：<el-input  style="width:100px;" type="number" v-model="addForm.phaseBudgetHours" :precision="2" :step="8" :min="0" placeholder="预计工时"></el-input>小时
- 								<div class="tips"><font>工时{{autoParams.phaseBudgetHours}}小时,工作日{{autoParams.weekday}}天</font></div>
+								预估工期：<el-input  style="width:100px;" type="number" v-model="addForm.budgetHours" :precision="2" :step="8" :min="0" placeholder="预计工时"></el-input>小时
+ 								<div class="tips"><font>工时{{autoParams.budgetHours}}小时,工作日{{autoParams.weekday}}天</font></div>
 							</el-row>
 							<el-row class="padding-20 border">
 								<el-col :span="4">人员类型</el-col>
@@ -59,36 +59,36 @@
 							</el-row>
 							<el-row class="padding-20 border">
 								<el-col :span="4">内购</el-col>
-								<el-col :span="4"><el-input style="width:100px;"  type="number" v-model="addForm.phaseBudgetIuserCnt" :precision="0" :step="1" :min="0" placeholder="内购人数"></el-input>
+								<el-col :span="4"><el-input style="width:100px;"  type="number" v-model="addForm.budgetIuserCnt" :precision="0" :step="1" :min="0" placeholder="内购人数"></el-input>
 								</el-col>
-								<el-col :span="4">{{autoParams.phaseBudgetIuserWorkload}}人时</el-col>
-								<el-col :span="4"><el-input  style="width:100px;" type="number" v-model="addForm.phaseBudgetIuserPrice" :precision="0" :step="1" :min="0" placeholder="预计内部人时单价"></el-input> </el-col>
-								<el-col :span="8">{{this.toFixed(autoParams.phaseBudgetIuserAt)}}元,{{this.toFixed(autoParams.phaseBudgetIuserAt/10000)}} 万元</el-col>
+								<el-col :span="4">{{autoParams.budgetIuserWorkload}}人时</el-col>
+								<el-col :span="4"><el-input  style="width:100px;" type="number" v-model="addForm.budgetIuserPrice" :precision="0" :step="1" :min="0" placeholder="预计内部人时单价"></el-input> </el-col>
+								<el-col :span="8">{{this.toFixed(autoParams.budgetIuserAt)}}元,{{this.toFixed(autoParams.budgetIuserAt/10000)}} 万元</el-col>
 							</el-row>
 							<el-row class="padding-20 border">
 								<el-col :span="4">外购</el-col>
-								<el-col :span="4"><el-input  style="width:100px;" type="number" v-model="addForm.phaseBudgetOuserCnt" :precision="0" :step="1" :min="0" placeholder="外购人数"></el-input>
+								<el-col :span="4"><el-input  style="width:100px;" type="number" v-model="addForm.budgetOuserCnt" :precision="0" :step="1" :min="0" placeholder="外购人数"></el-input>
 								</el-col>
-								<el-col :span="4">{{autoParams.phaseBudgetOuserWorkload}}人时</el-col>
-								<el-col :span="4"><el-input  style="width:100px;" type="number" v-model="addForm.phaseBudgetOuserPrice" :precision="0" :step="1" :min="0" placeholder="预计外购人时单价"></el-input> </el-col>
-								<el-col :span="4">{{autoParams.phaseBudgetOuserAt }} 元 {{autoParams.phaseBudgetOuserAt/10000 }}万元</el-col>
+								<el-col :span="4">{{autoParams.budgetOuserWorkload}}人时</el-col>
+								<el-col :span="4"><el-input  style="width:100px;" type="number" v-model="addForm.budgetOuserPrice" :precision="0" :step="1" :min="0" placeholder="预计外购人时单价"></el-input> </el-col>
+								<el-col :span="4">{{autoParams.budgetOuserAt }} 元 {{autoParams.budgetOuserAt/10000 }}万元</el-col>
 
 							</el-row >
 							<el-row class="padding-20  border">
 								<el-col :span="4">合计</el-col>
-								<el-col :span="4"> {{autoParams.phaseBudgetOuserCnt+autoParams.phaseBudgetIuserCnt}}
+								<el-col :span="4"> {{autoParams.budgetOuserCnt+autoParams.budgetIuserCnt}}
 								</el-col>
-								<el-col :span="4">{{autoParams.phaseBudgetOuserWorkload+autoParams.phaseBudgetIuserWorkload  }}人时,{{ (autoParams.phaseBudgetOuserWorkload+autoParams.phaseBudgetIuserWorkload)/8/20  }}人月 </el-col>
-								<el-col :span="4">{{ (parseFloat2(autoParams.phaseBudgetOuserPrice) + parseFloat2(autoParams.phaseBudgetIuserPrice))/2}}元/人时</el-col>
-								<el-col :span="8">{{autoParams.phaseBudgetTotalCost}} 元，{{(autoParams.phaseBudgetTotalCost)/10000}} 万元</el-col>
+								<el-col :span="4">{{autoParams.budgetOuserWorkload+autoParams.budgetIuserWorkload  }}人时,{{ (autoParams.budgetOuserWorkload+autoParams.budgetIuserWorkload)/8/20  }}人月 </el-col>
+								<el-col :span="4">{{ (parseFloat2(autoParams.budgetOuserPrice) + parseFloat2(autoParams.budgetIuserPrice))/2}}元/人时</el-col>
+								<el-col :span="8">{{autoParams.budgetTotalCost}} 元，{{(autoParams.budgetTotalCost)/10000}} 万元</el-col>
 							</el-row>
 							<el-row class="padding-20  border">
-								总计： {{parseFloat2(addForm.phaseBudgetIuserAt)+parseFloat2(addForm.phaseBudgetOuserAt)+parseFloat2(addForm.phaseBudgetNouserAt)}}元 <el-tag>{{this.toFixed(autoParams.phaseBudgetTotalCost/10000)}}万元</el-tag>
+								总计： {{parseFloat2(addForm.budgetIuserAt)+parseFloat2(addForm.budgetOuserAt)+parseFloat2(addForm.budgetNouserAt)}}元 <el-tag>{{this.toFixed(autoParams.budgetTotalCost/10000)}}万元</el-tag>
 
 							</el-row>
 						</el-row>
 					</el-tab-pane>
-					<el-tab-pane v-if="activeName=='phaseBudgetWorkload'" label="收起" name="">
+					<el-tab-pane v-if="activeName=='budgetWorkload'" label="收起" name="">
 					</el-tab-pane>
 				</el-tabs>
 			</el-form>
@@ -115,31 +115,31 @@
 			autoParams:function(){
 
 
-				var phaseBudgetOuserPrice=this.toFixed(this.addForm.phaseBudgetOuserPrice)
-				var phaseBudgetIuserPrice=this.toFixed(this.addForm.phaseBudgetIuserPrice)
-				var phaseBudgetOuserCnt=this.toFixed(this.addForm.phaseBudgetOuserCnt)
-				var phaseBudgetIuserCnt=this.toFixed(this.addForm.phaseBudgetIuserCnt)
-				var phaseBudgetHours=this.toFixed(this.addForm.phaseBudgetHours )
-				var phaseBudgetNouserAt=this.toFixed(this.addForm.phaseBudgetNouserAt )
-  				if(phaseBudgetOuserPrice==null || phaseBudgetOuserPrice==''){
-					phaseBudgetOuserPrice=100
+				var budgetOuserPrice=this.toFixed(this.addForm.budgetOuserPrice)
+				var budgetIuserPrice=this.toFixed(this.addForm.budgetIuserPrice)
+				var budgetOuserCnt=this.toFixed(this.addForm.budgetOuserCnt)
+				var budgetIuserCnt=this.toFixed(this.addForm.budgetIuserCnt)
+				var budgetHours=this.toFixed(this.addForm.budgetHours )
+				var budgetNouserAt=this.toFixed(this.addForm.budgetNouserAt )
+  				if(budgetOuserPrice==null || budgetOuserPrice==''){
+					budgetOuserPrice=100
 				}
-				if(phaseBudgetIuserPrice==null || phaseBudgetIuserPrice==''){
-					phaseBudgetIuserPrice=80
+				if(budgetIuserPrice==null || budgetIuserPrice==''){
+					budgetIuserPrice=80
 				}
-				if(phaseBudgetOuserCnt==null || phaseBudgetOuserCnt==''){
-					phaseBudgetOuserCnt=0.0
+				if(budgetOuserCnt==null || budgetOuserCnt==''){
+					budgetOuserCnt=0.0
 				}
-				if(phaseBudgetIuserCnt==null || phaseBudgetIuserCnt==''){
-					phaseBudgetIuserCnt=0.0
-				}
-
-				if(phaseBudgetNouserAt==null || phaseBudgetNouserAt==''){
-					phaseBudgetNouserAt=0.0
+				if(budgetIuserCnt==null || budgetIuserCnt==''){
+					budgetIuserCnt=0.0
 				}
 
-				if(phaseBudgetHours==null || phaseBudgetHours==''){
-					phaseBudgetHours=0.0
+				if(budgetNouserAt==null || budgetNouserAt==''){
+					budgetNouserAt=0.0
+				}
+
+				if(budgetHours==null || budgetHours==''){
+					budgetHours=0.0
 				}
 				var autoParams={
 
@@ -147,22 +147,22 @@
 				 var weekday=1;
 				if(this.dateRanger!=null && this.dateRanger.length>=2 ){
 					weekday=this.getWeekday(new Date(this.dateRanger[0]),new Date(this.dateRanger[1]));
-					phaseBudgetHours=weekday * 8
+					budgetHours=weekday * 8
 
 			 	}
 				autoParams.weekday=weekday
-				autoParams.phaseBudgetHours=phaseBudgetHours
-				autoParams.phaseBudgetOuserPrice=phaseBudgetOuserPrice
-				autoParams.phaseBudgetIuserPrice=phaseBudgetIuserPrice
-				autoParams.phaseBudgetOuserCnt=phaseBudgetOuserCnt
-				autoParams.phaseBudgetIuserCnt=phaseBudgetIuserCnt
- 				autoParams.phaseBudgetIuserWorkload= phaseBudgetIuserCnt*phaseBudgetHours
-				autoParams.phaseBudgetOuserWorkload= phaseBudgetOuserCnt*phaseBudgetHours
-				autoParams.phaseBudgetWorkload=  phaseBudgetIuserCnt*phaseBudgetHours + phaseBudgetOuserCnt*phaseBudgetHours
-				autoParams.phaseBudgetOuserAt= phaseBudgetOuserCnt * phaseBudgetHours * phaseBudgetOuserPrice
-				autoParams.phaseBudgetIuserAt=  phaseBudgetIuserCnt * phaseBudgetHours * phaseBudgetIuserPrice
-				autoParams.phaseBudgetNouserAt= phaseBudgetNouserAt
- 				autoParams.phaseBudgetTotalCost=  autoParams.phaseBudgetOuserAt + autoParams.phaseBudgetIuserAt + autoParams.phaseBudgetNouserAt
+				autoParams.budgetHours=budgetHours
+				autoParams.budgetOuserPrice=budgetOuserPrice
+				autoParams.budgetIuserPrice=budgetIuserPrice
+				autoParams.budgetOuserCnt=budgetOuserCnt
+				autoParams.budgetIuserCnt=budgetIuserCnt
+ 				autoParams.budgetIuserWorkload= budgetIuserCnt*budgetHours
+				autoParams.budgetOuserWorkload= budgetOuserCnt*budgetHours
+				autoParams.budgetWorkload=  budgetIuserCnt*budgetHours + budgetOuserCnt*budgetHours
+				autoParams.budgetOuserAt= budgetOuserCnt * budgetHours * budgetOuserPrice
+				autoParams.budgetIuserAt=  budgetIuserCnt * budgetHours * budgetIuserPrice
+				autoParams.budgetNouserAt= budgetNouserAt
+ 				autoParams.budgetTotalCost=  autoParams.budgetOuserAt + autoParams.budgetIuserAt + autoParams.budgetNouserAt
 				return autoParams
 			},
 		},
@@ -185,8 +185,8 @@
 	      	}
 		  }, 
 		  autoParams:function(autoParams){
-			  this.fillphaseBudgetHoursToField()
-			  this.fillphaseBudgetAtToField()
+			  this.fillbudgetHoursToField()
+			  this.fillbudgetAtToField()
 		  }
 	    },
 		data() {
@@ -215,7 +215,7 @@
 				}, 
 				//新增界面数据 xm_project_phase
 				addForm: {
-					id:'',name:'',remark:'',parentPhaseId:'',branchId:'',taskType:'kf',planType:'m1',projectId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetIuserAt:'',phaseBudgetOuserAt:'',baselineId:'',bizProcInstId:'',bizFlowState:'',phaseBudgetWorkload:'',totalActWorkload:'',totalActNouserAt:'',totalActInerUserAt:'',totalActOuserAt:'',planType:'',taskType:'',seqNo:'1',phaseBudgetIuserCnt:'',phaseBudgetOuserCnt:'',phaseBudgetIuserPrice:80,phaseBudgetOuserPrice:100,phaseBudgetIuserWorkload:0,phaseBudgetOuserWorkload:0,ntype:'0'
+					id:'',name:'',remark:'',parentPhaseId:'',branchId:'',taskType:'kf',planType:'m1',projectId:'',beginDate:'',endDate:'',budgetHours:'',budgetStaffNu:'',ctime:'',budgetNouserAt:'',budgetIuserAt:'',budgetOuserAt:'',baselineId:'',bizProcInstId:'',bizFlowState:'',budgetWorkload:'',totalActWorkload:'',totalActNouserAt:'',totalActInerUserAt:'',totalActOuserAt:'',planType:'',taskType:'',seqNo:'1',budgetIuserCnt:'',budgetOuserCnt:'',budgetIuserPrice:80,budgetOuserPrice:100,budgetIuserWorkload:0,budgetOuserWorkload:0,ntype:'0'
 				},
 				dateRanger: [
 					util.formatDate.format(beginDate, "yyyy-MM-dd HH:mm:ss"),
@@ -260,16 +260,16 @@
 					this.$notify({showClose: true, message: "请输入开始日期和结束日期", type: 'error' });
 					return;
 				}
-				if(!this.addForm.phaseBudgetIuserCnt){
+				if(!this.addForm.budgetIuserCnt){
 					this.$notify({showClose: true, message: "内购人员数不能为空", type: 'error' });
 					return;
 				}
 
-				if(!this.addForm.phaseBudgetHours){
+				if(!this.addForm.budgetHours){
 					this.$notify({showClose: true, message: "工期不能为空", type: 'error' });
 					return;
 				}
-				if(!this.addForm.phaseBudgetIuserPrice){
+				if(!this.addForm.budgetIuserPrice){
 					this.$notify({showClose: true, message: "内购单价不能为空", type: 'error' });
 					return;
 				}
@@ -278,19 +278,19 @@
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
 							this.load.add=true
 							let params = Object.assign({}, this.addForm);
-							if(!params.phaseBudgetIuserAt){
-								params.phaseBudgetIuserAt= this.parseFloat2(params.phaseBudgetIuserCnt) * this.parseFloat2(params.phaseBudgetIuserPrice) * this.parseFloat2(params.phaseBudgetHours)
+							if(!params.budgetIuserAt){
+								params.budgetIuserAt= this.parseFloat2(params.budgetIuserCnt) * this.parseFloat2(params.budgetIuserPrice) * this.parseFloat2(params.budgetHours)
 							}
-							if( !params.phaseBudgetOuserAt ){
-								params.phaseBudgetOuserAt= this.parseFloat2(params.phaseBudgetOuserCnt) * this.parseFloat2(params.phaseBudgetOuserPrice) * this.parseFloat2(params.phaseBudgetHours)
+							if( !params.budgetOuserAt ){
+								params.budgetOuserAt= this.parseFloat2(params.budgetOuserCnt) * this.parseFloat2(params.budgetOuserPrice) * this.parseFloat2(params.budgetHours)
 							}
-							params.phaseBudgetIuserWorkload= this.parseFloat2(params.phaseBudgetIuserCnt) * this.parseFloat2(params.phaseBudgetHours)
-							params.phaseBudgetOuserWorkload= this.parseFloat2(params.phaseBudgetOuserCnt) * this.parseFloat2(params.phaseBudgetHours)
+							params.budgetIuserWorkload= this.parseFloat2(params.budgetIuserCnt) * this.parseFloat2(params.budgetHours)
+							params.budgetOuserWorkload= this.parseFloat2(params.budgetOuserCnt) * this.parseFloat2(params.budgetHours)
 
-							params.phaseBudgetWorkload= this.parseFloat2(params.phaseBudgetIuserWorkload) + this.parseFloat2(params.phaseBudgetOuserWorkload)
-							if( !params.phaseBudgetStaffNu ){
+							params.budgetWorkload= this.parseFloat2(params.budgetIuserWorkload) + this.parseFloat2(params.budgetOuserWorkload)
+							if( !params.budgetStaffNu ){
 
-								params.phaseBudgetStaffNu= this.parseFloat2(params.phaseBudgetOuserCnt) + this.parseFloat2(params.phaseBudgetIuserCnt)
+								params.budgetStaffNu= this.parseFloat2(params.budgetOuserCnt) + this.parseFloat2(params.budgetIuserCnt)
 							}
 							if(this.parentProjectPhase==null || this.parentProjectPhase==undefined){
 
@@ -350,15 +350,15 @@
 			fillToField:function(){
 				this.addForm=Object.assign(this.addForm,this.autoParams);
 			},
-			fillphaseBudgetHoursToField:function(){
-				this.addForm.phaseBudgetHours=this.toFixed(this.autoParams.phaseBudgetHours)
+			fillbudgetHoursToField:function(){
+				this.addForm.budgetHours=this.toFixed(this.autoParams.budgetHours)
 			},
 
-			fillphaseBudgetAtToField:function(){
-				this.addForm.phaseBudgetNouserAt=this.toFixed(this.autoParams.phaseBudgetNouserAt)
-				this.addForm.phaseBudgetOuserAt=this.toFixed(this.autoParams.phaseBudgetOuserAt )
-				this.addForm.phaseBudgetIuserAt=this.toFixed(this.autoParams.phaseBudgetIuserAt )
-				this.addForm.phaseBudgetTotalCost=this.toFixed(this.autoParams.phaseBudgetTotalCost)
+			fillbudgetAtToField:function(){
+				this.addForm.budgetNouserAt=this.toFixed(this.autoParams.budgetNouserAt)
+				this.addForm.budgetOuserAt=this.toFixed(this.autoParams.budgetOuserAt )
+				this.addForm.budgetIuserAt=this.toFixed(this.autoParams.budgetIuserAt )
+				this.addForm.budgetTotalCost=this.toFixed(this.autoParams.budgetTotalCost)
 
 			},
 			/**end 在上面加自定义方法**/

@@ -29,15 +29,15 @@
 				</el-table-column>
 				<el-table-column prop="remark" label="备注" min-width="80" show-overflow-tooltip></el-table-column> 
 				<el-table-column   label="预计工作量(人时)" min-width="80" show-overflow-tooltip>
-					<el-table-column prop="phaseBudgetHours" label="工时" min-width="80" ></el-table-column>
-					<el-table-column prop="phaseBudgetStaffNu" label="投入人员数" min-width="80" ></el-table-column> 
-					<el-table-column prop="phaseBudgetWorkload" label="总工作量" min-width="80" ></el-table-column> 
+					<el-table-column prop="budgetHours" label="工时" min-width="80" ></el-table-column>
+					<el-table-column prop="budgetStaffNu" label="投入人员数" min-width="80" ></el-table-column> 
+					<el-table-column prop="budgetWorkload" label="总工作量" min-width="80" ></el-table-column> 
 				</el-table-column> 
 				<el-table-column   label="成本预算(元)" min-width="80" show-overflow-tooltip>
-					<el-table-column prop="phaseBudgetAt" label="总预算" min-width="80" ></el-table-column>
-					<el-table-column prop="phaseBudgetNouserAt" label="非人力" min-width="80" ></el-table-column>
-					<el-table-column prop="phaseBudgetIuserAt" label="内部" min-width="80" ></el-table-column>
-					<el-table-column prop="phaseBudgetOuserAt" label="外购" min-width="80" ></el-table-column>
+					<el-table-column prop="budgetAt" label="总预算" min-width="80" ></el-table-column>
+					<el-table-column prop="budgetNouserAt" label="非人力" min-width="80" ></el-table-column>
+					<el-table-column prop="budgetIuserAt" label="内部" min-width="80" ></el-table-column>
+					<el-table-column prop="budgetOuserAt" label="外购" min-width="80" ></el-table-column>
 				</el-table-column> 
 				<el-table-column label="操作" width="260" fixed="right"  v-if="!isSelect" >
 					<template slot-scope="scope">
@@ -134,13 +134,13 @@
 				addFormVisible: false,//新增xmPhaseTemplate界面是否显示
 				//新增xmPhaseTemplate界面初始化数据
 				addForm: {
-					id:'',name:'',remark:'',parentPhaseId:'',branchId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',xmType:'',projectTypeName:'',phaseBudgetNouserAt:'',phaseBudgetIuserAt:'',phaseBudgetOuserAt:'',phaseBudgetWorkload:''
+					id:'',name:'',remark:'',parentPhaseId:'',branchId:'',beginDate:'',endDate:'',budgetHours:'',budgetStaffNu:'',xmType:'',projectTypeName:'',budgetNouserAt:'',budgetIuserAt:'',budgetOuserAt:'',budgetWorkload:''
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmPhaseTemplate界面初始化数据
 				editForm: {
-					id:'',name:'',remark:'',parentPhaseId:'',branchId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',xmType:'',projectTypeName:'',phaseBudgetNouserAt:'',phaseBudgetIuserAt:'',phaseBudgetOuserAt:'',phaseBudgetWorkload:''
+					id:'',name:'',remark:'',parentPhaseId:'',branchId:'',beginDate:'',endDate:'',budgetHours:'',budgetStaffNu:'',xmType:'',projectTypeName:'',budgetNouserAt:'',budgetIuserAt:'',budgetOuserAt:'',budgetWorkload:''
 				},
 				parentPhaseTemplate:null,
 				projectTemplateVisible:false,

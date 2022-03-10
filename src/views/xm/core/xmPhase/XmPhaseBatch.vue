@@ -50,30 +50,30 @@
       <span style="margin-left: 10px; font-size: 14px">项目总预算：</span
       ><el-tag type="success">
         {{ toFixed(selProject.planTotalCost / 10000, 2) }}万，剩{{
-          toFixed(phaseBudgetData.surplusPlanCostAt / 10000, 2)
+          toFixed(budgetData.surplusPlanCostAt / 10000, 2)
         }}万</el-tag
       >
       <span style="margin-left: 10px; font-size: 14px">非人力总预算：</span
       ><el-tag
-        :type="phaseBudgetData.surplusPlanNouserAt > 0 ? 'warning' : 'danger'"
+        :type="budgetData.surplusPlanNouserAt > 0 ? 'warning' : 'danger'"
         >{{ toFixed(selProject.planNouserAt / 10000, 2) }}万，剩{{
-          toFixed(phaseBudgetData.surplusPlanNouserAt / 10000, 2)
+          toFixed(budgetData.surplusPlanNouserAt / 10000, 2)
         }}万</el-tag
       >
       <span style="margin-left: 10px; font-size: 14px">内部人力总预算：</span
       ><el-tag
         :type="
-          phaseBudgetData.surplusPlanIuserAt > 0 ? 'warning' : 'danger'
+          budgetData.surplusPlanIuserAt > 0 ? 'warning' : 'danger'
         "
         >{{ toFixed(selProject.planIuserAt / 10000, 2) }}万，剩{{
-          toFixed(phaseBudgetData.surplusPlanIuserAt / 10000, 2)
+          toFixed(budgetData.surplusPlanIuserAt / 10000, 2)
         }}万</el-tag
       >
       <span style="margin-left: 10px; font-size: 14px">外购人力总预算：</span
       ><el-tag
-        :type="phaseBudgetData.surplusPlanOuserAt > 0 ? 'warning' : 'danger'"
+        :type="budgetData.surplusPlanOuserAt > 0 ? 'warning' : 'danger'"
         >{{ toFixed(selProject.planOuserAt / 10000, 2) }}万，剩{{
-          toFixed(phaseBudgetData.surplusPlanOuserAt / 10000, 2)
+          toFixed(budgetData.surplusPlanOuserAt / 10000, 2)
         }}万</el-tag
       >
     </el-row>
@@ -161,7 +161,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="phaseBudgetHours"
+          prop="budgetHours"
           label="工期.H"
           width="100"
         >
@@ -169,24 +169,24 @@
             <el-row>  
                 <el-input-number 
                   style="width: 100%"
-                  v-model="scope.row.phaseBudgetHours"
+                  v-model="scope.row.budgetHours"
                   :precision="1"
                   :step="8"
                   type="number"
                   :controls="false"
-                  @change="fieldChange(scope.row, 'phaseBudgetHours')"
+                  @change="fieldChange(scope.row, 'budgetHours')"
                 ></el-input-number> 
             </el-row>
           </template>
         </el-table-column>
         
         <el-table-column
-          prop="phaseBudgetHours"
+          prop="budgetHours"
           label="预计工作量及成本"
           min-width="300"
         >
         <el-table-column
-          prop="phaseBudgetHours"
+          prop="budgetHours"
           label="人数"
           min-width="100"
         >
@@ -196,12 +196,12 @@
                     内购
                     <el-input
                       style="width: 80px"
-                      v-model="scope.row.phaseBudgetIuserCnt"
+                      v-model="scope.row.budgetIuserCnt"
                       :precision="2"
                       step="1"
                       type="number"
                       @change="
-                        fieldChange(scope.row, 'phaseBudgetIuserCnt')
+                        fieldChange(scope.row, 'budgetIuserCnt')
                       "
                     ></el-input
                     > 
@@ -210,11 +210,11 @@
                     外购
                     <el-input
                       style="width: 80px"
-                      v-model="scope.row.phaseBudgetOuserCnt"
+                      v-model="scope.row.budgetOuserCnt"
                       :precision="2"
                       step="1"
                       type="number"
-                      @change="fieldChange(scope.row, 'phaseBudgetOuserCnt')"
+                      @change="fieldChange(scope.row, 'budgetOuserCnt')"
                     ></el-input
                     > 
                   </el-col>  
@@ -225,12 +225,12 @@
           <template slot-scope="scope">
              <el-input
                 style="width: 80px"
-                v-model="scope.row.phaseBudgetOuserPrice"
+                v-model="scope.row.budgetOuserPrice"
                 :precision="2"
                 step="10"
                 type="number"
                 @change="
-                  fieldChange(scope.row, 'phaseBudgetOuserPrice')
+                  fieldChange(scope.row, 'budgetOuserPrice')
                 "
               ></el-input>
           </template>
@@ -239,9 +239,9 @@
           <template slot-scope="scope">
             {{
               (
-                scope.row.phaseBudgetIuserAt +
-                scope.row.phaseBudgetOuserAt +
-                scope.row.phaseBudgetNouserAt
+                scope.row.budgetIuserAt +
+                scope.row.budgetOuserAt +
+                scope.row.budgetNouserAt
               ).toFixed(0)
             }}元
           </template>
@@ -296,7 +296,7 @@ export default {
       var projectPhaseTreeData = treeTool.translateDataToTree(this.xmPhases,"parentPhaseId","id");  
       return projectPhaseTreeData;
     },
-    phaseBudgetData() {
+    budgetData() {
       var rows = this.xmPhases;
       var surplusPlanCostAt =
         this.getFloatValue(this.selProject.planIuserAt) +
@@ -322,20 +322,20 @@ export default {
         surplusPlanNouserAt: surplusPlanNouserAt,
         surplusPlanUserAt: surplusPlanUserAt,
 
-        phaseBudgetNouserAt: 0,
-        phaseBudgetIuserAt: 0,
-        phaseBudgetOuserAt: 0,
-        phaseBudgetUserAt: 0,
+        budgetNouserAt: 0,
+        budgetIuserAt: 0,
+        budgetOuserAt: 0,
+        budgetUserAt: 0,
 
-        phaseBudgetIuserWorkload: 0,
-        phaseBudgetOuserWorkload: 0,
+        budgetIuserWorkload: 0,
+        budgetOuserWorkload: 0,
 
-        phaseActWorkload: 0,
+        actWorkload: 0,
         actIuserAt: 0,
         actNouserAt: 0,
         actOuserAt: 0,
       };
-      //phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetIuserAt:'',phaseBudgetOuserAt
+      //budgetHours:'',budgetStaffNu:'',ctime:'',budgetNouserAt:'',budgetIuserAt:'',budgetOuserAt
 
       rows.forEach((row2) => {
         var row = row2;
@@ -346,24 +346,24 @@ export default {
           }
         }
         if(row.lvl<=1){
-            total.phaseBudgetNouserAt =
-          total.phaseBudgetNouserAt +
-          this.getFloatValue(row.phaseBudgetNouserAt);
-        total.phaseBudgetIuserAt =
-          total.phaseBudgetIuserAt +
-          this.getFloatValue(row.phaseBudgetIuserAt);
-        total.phaseBudgetOuserAt =
-          total.phaseBudgetOuserAt +
-          this.getFloatValue(row.phaseBudgetOuserAt);
-        total.phaseBudgetIuserWorkload =
-          total.phaseBudgetIuserWorkload +
-          this.getFloatValue(row.phaseBudgetIuserWorkload);
-        total.phaseBudgetOuserWorkload =
-          total.phaseBudgetOuserWorkload +
-          this.getFloatValue(row.phaseBudgetOuserWorkload);
+            total.budgetNouserAt =
+          total.budgetNouserAt +
+          this.getFloatValue(row.budgetNouserAt);
+        total.budgetIuserAt =
+          total.budgetIuserAt +
+          this.getFloatValue(row.budgetIuserAt);
+        total.budgetOuserAt =
+          total.budgetOuserAt +
+          this.getFloatValue(row.budgetOuserAt);
+        total.budgetIuserWorkload =
+          total.budgetIuserWorkload +
+          this.getFloatValue(row.budgetIuserWorkload);
+        total.budgetOuserWorkload =
+          total.budgetOuserWorkload +
+          this.getFloatValue(row.budgetOuserWorkload);
 
-        total.phaseActWorkload =
-          total.phaseActWorkload + this.getFloatValue(row.phaseActWorkload);
+        total.actWorkload =
+          total.actWorkload + this.getFloatValue(row.actWorkload);
         total.actIuserAt =
           total.actIuserAt + this.getFloatValue(row.actIuserAt);
         total.actNouserAt =
@@ -373,21 +373,21 @@ export default {
         }
         
       });
-      total.phaseBudgetUserAt =
-        total.phaseBudgetIuserAt + total.phaseBudgetOuserAt;
+      total.budgetUserAt =
+        total.budgetIuserAt + total.budgetOuserAt;
       total.surplusPlanCostAt = this.getFloatValue(
         total.surplusPlanCostAt -
-          total.phaseBudgetNouserAt -
-          total.phaseBudgetUserAt
+          total.budgetNouserAt -
+          total.budgetUserAt
       );
       total.surplusPlanIuserAt =
-        total.surplusPlanIuserAt - total.phaseBudgetIuserAt;
+        total.surplusPlanIuserAt - total.budgetIuserAt;
       total.surplusPlanOuserAt =
-        total.surplusPlanOuserAt - total.phaseBudgetOuserAt;
+        total.surplusPlanOuserAt - total.budgetOuserAt;
       total.surplusPlanNouserAt =
-        total.surplusPlanNouserAt - total.phaseBudgetNouserAt;
+        total.surplusPlanNouserAt - total.budgetNouserAt;
       total.surplusPlanUserAt =
-        total.surplusPlanUserAt - total.phaseBudgetUserAt;
+        total.surplusPlanUserAt - total.budgetUserAt;
       return total;
     },
   },
@@ -437,22 +437,22 @@ export default {
         projectId: "",
         beginDate: "",
         endDate: "",
-        phaseBudgetHours: "",
-        phaseBudgetStaffNu: "",
+        budgetHours: "",
+        budgetStaffNu: "",
         ctime: "",
-        phaseBudgetNouserAt: "",
-        phaseBudgetIuserAt: "",
-        phaseBudgetOuserAt: "",
+        budgetNouserAt: "",
+        budgetIuserAt: "",
+        budgetOuserAt: "",
         baselineId: "",
         bizProcInstId: "",
         bizFlowState: "",
-        phaseBudgetIuserCnt: "",
-        phaseBudgetOuserCnt: "",
+        budgetIuserCnt: "",
+        budgetOuserCnt: "",
         seqNo: "",
-        phaseBudgetIuserPrice: 80,
-        phaseBudgetOuserPrice: 100,
-        phaseBudgetIuserWorkload: 0,
-        phaseBudgetOuserWorkload: 0,
+        budgetIuserPrice: 80,
+        budgetOuserPrice: 100,
+        budgetIuserWorkload: 0,
+        budgetOuserWorkload: 0,
       },
 
       editFormVisible: false, //编辑界面是否显示
@@ -466,22 +466,22 @@ export default {
         projectId: "",
         beginDate: "",
         endDate: "",
-        phaseBudgetHours: "",
-        phaseBudgetStaffNu: "",
+        budgetHours: "",
+        budgetStaffNu: "",
         ctime: "",
-        phaseBudgetNouserAt: "",
-        phaseBudgetIuserAt: "",
-        phaseBudgetOuserAt: "",
+        budgetNouserAt: "",
+        budgetIuserAt: "",
+        budgetOuserAt: "",
         baselineId: "",
         bizProcInstId: "",
         bizFlowState: "",
-        phaseBudgetIuserCnt: "",
-        phaseBudgetOuserCnt: "",
+        budgetIuserCnt: "",
+        budgetOuserCnt: "",
         seqNo: "",
-        phaseBudgetIuserPrice: 80,
-        phaseBudgetOuserPrice: 100,
-        phaseBudgetIuserWorkload: 0,
-        phaseBudgetOuserWorkload: 0,
+        budgetIuserPrice: 80,
+        budgetOuserPrice: 100,
+        budgetIuserWorkload: 0,
+        budgetOuserWorkload: 0,
       },
 
       editFormInit: {
@@ -495,22 +495,22 @@ export default {
         projectId: "",
         beginDate: "",
         endDate: "",
-        phaseBudgetHours: "",
-        phaseBudgetStaffNu: "",
+        budgetHours: "",
+        budgetStaffNu: "",
         ctime: "",
-        phaseBudgetNouserAt: "",
-        phaseBudgetIuserAt: "",
-        phaseBudgetOuserAt: "",
+        budgetNouserAt: "",
+        budgetIuserAt: "",
+        budgetOuserAt: "",
         baselineId: "",
         bizProcInstId: "",
         bizFlowState: "",
-        phaseBudgetIuserCnt: "",
-        phaseBudgetOuserCnt: "",
+        budgetIuserCnt: "",
+        budgetOuserCnt: "",
         seqNo: "",
-        phaseBudgetIuserPrice: 80,
-        phaseBudgetOuserPrice: 100,
-        phaseBudgetIuserWorkload: 0,
-        phaseBudgetOuserWorkload: 0,
+        budgetIuserPrice: 80,
+        budgetOuserPrice: 100,
+        budgetIuserWorkload: 0,
+        budgetOuserWorkload: 0,
       },
       parentProjectPhase: null,
       /**begin 自定义属性请在下面加 请加备注**/
@@ -764,19 +764,19 @@ export default {
         i.projectId = this.selProject.id;
         i.projectName = this.selProject.name;
         i.branchId = this.selProject.branchId;
-        i.phaseBudgetAt = 0;
-        i.phaseBudgetNouserAt = 0;
-        i.phaseBudgetIuserAt = 0;
-        i.phaseBudgetOuserAt = 0;
-        i.phaseBudgetWorkload = 0;
-        i.phaseBudgetStaffNu = 0;
-        i.phaseBudgetHours = 160;
-        i.phaseBudgetIuserWorkload = 0;
-        i.phaseBudgetOuserWorkload = 0;
-        i.phaseBudgetIuserPrice = this.selProject.planIuserPrice;
-        i.phaseBudgetOuserPrice = this.selProject.planOuserPrice;
-        i.phaseBudgetOuserCnt = 0;
-        i.phaseBudgetIuserCnt = 0;
+        i.budgetAt = 0;
+        i.budgetNouserAt = 0;
+        i.budgetIuserAt = 0;
+        i.budgetOuserAt = 0;
+        i.budgetWorkload = 0;
+        i.budgetStaffNu = 0;
+        i.budgetHours = 160;
+        i.budgetIuserWorkload = 0;
+        i.budgetOuserWorkload = 0;
+        i.budgetIuserPrice = this.selProject.planIuserPrice;
+        i.budgetOuserPrice = this.selProject.planOuserPrice;
+        i.budgetOuserCnt = 0;
+        i.budgetIuserCnt = 0;
         const ctime = new Date();
         var beginDate = new Date();
         const endDate = new Date();
@@ -947,7 +947,7 @@ export default {
       let parents = data.filter((value) => {
         //如果我的上级为空，则我是最上级
         var calcData = this.getRowSum(value);
-        value.phaseBudgetAt = calcData.phaseBudgetAt;
+        value.budgetAt = calcData.budgetAt;
         value.actCostAt = calcData.actCostAt;
         if (
           value.parentPhaseId == "undefined" ||
@@ -1030,27 +1030,27 @@ export default {
     },
     getRowSum(row) {
       if (
-        row.phaseBudgetNouserAt == null ||
-        row.phaseBudgetNouserAt == "" ||
-        row.phaseBudgetNouserAt == undefined
+        row.budgetNouserAt == null ||
+        row.budgetNouserAt == "" ||
+        row.budgetNouserAt == undefined
       ) {
-        row.phaseBudgetNouserAt = 0;
+        row.budgetNouserAt = 0;
       }
 
       if (
-        row.phaseBudgetIuserAt == null ||
-        row.phaseBudgetIuserAt == "" ||
-        row.phaseBudgetIuserAt == undefined
+        row.budgetIuserAt == null ||
+        row.budgetIuserAt == "" ||
+        row.budgetIuserAt == undefined
       ) {
-        row.phaseBudgetIuserAt = 0;
+        row.budgetIuserAt = 0;
       }
 
       if (
-        row.phaseBudgetOuserAt == null ||
-        row.phaseBudgetOuserAt == "" ||
-        row.phaseBudgetOuserAt == undefined
+        row.budgetOuserAt == null ||
+        row.budgetOuserAt == "" ||
+        row.budgetOuserAt == undefined
       ) {
-        row.phaseBudgetOuserAt = 0;
+        row.budgetOuserAt = 0;
       }
       if (
         row.actNouserAt == null ||
@@ -1075,16 +1075,16 @@ export default {
       ) {
         row.actOuserAt = 0;
       }
-      var phaseBudgetAt =
-        parseFloat(row.phaseBudgetNouserAt) +
-        parseFloat(row.phaseBudgetIuserAt) +
-        parseFloat(row.phaseBudgetOuserAt);
+      var budgetAt =
+        parseFloat(row.budgetNouserAt) +
+        parseFloat(row.budgetIuserAt) +
+        parseFloat(row.budgetOuserAt);
       var actCostAt =
         parseFloat(row.actNouserAt) +
         parseFloat(row.actIuserAt) +
         parseFloat(row.actOuserAt);
 
-      return { phaseBudgetAt: phaseBudgetAt, actCostAt: actCostAt };
+      return { budgetAt: budgetAt, actCostAt: actCostAt };
     },
     fieldChange: function (row, fieldName, nextReplace) {
       if (nextReplace) {
@@ -1093,73 +1093,73 @@ export default {
       console.log("fieldChange--row.opType==", row.opType);
 
       //{{formatDate(scope.row.beginDate)}}~{{formatDate(scope.row.endDate)}}  <br/>
-      if (!row.phaseBudgetIuserPrice) {
-        row.phaseBudgetIuserPrice = this.selProject.planIuserPrice;
+      if (!row.budgetIuserPrice) {
+        row.budgetIuserPrice = this.selProject.planIuserPrice;
       }
-      if (!row.phaseBudgetOuserPrice) {
-        row.phaseBudgetOuserPrice = this.selProject.planOuserPrice;
+      if (!row.budgetOuserPrice) {
+        row.budgetOuserPrice = this.selProject.planOuserPrice;
       }
-      if (!row.phaseBudgetIuserCnt) {
-        row.phaseBudgetIuserCnt = 0;
+      if (!row.budgetIuserCnt) {
+        row.budgetIuserCnt = 0;
       }
 
-      if (!row.phaseBudgetOuserPrice) {
-        row.phaseBudgetOuserPrice = this.selProject.planOuserPrice;
+      if (!row.budgetOuserPrice) {
+        row.budgetOuserPrice = this.selProject.planOuserPrice;
       }
-      if (!row.phaseBudgetOuserPrice) {
-        row.phaseBudgetOuserPrice = this.selProject.planOuserPrice;
+      if (!row.budgetOuserPrice) {
+        row.budgetOuserPrice = this.selProject.planOuserPrice;
       }
-      if (!row.phaseBudgetOuserCnt) {
-        row.phaseBudgetOuserCnt = 0;
+      if (!row.budgetOuserCnt) {
+        row.budgetOuserCnt = 0;
       }
       if (fieldName == "beginDate" || fieldName == "endDate") {
         if (row.beginDate && row.endDate) {
           var start = new Date(row.beginDate);
           var end = new Date(row.endDate);
           var days = this.getDaysBetween(end, start);
-          row.phaseBudgetHours = this.getFloatValue(days * 8).toFixed(2);
-          row.phaseBudgetIuserWorkload =
-            row.phaseBudgetHours * row.phaseBudgetIuserCnt;
-          row.phaseBudgetIuserAt =
-            row.phaseBudgetIuserWorkload * row.phaseBudgetIuserPrice;
-          row.phaseBudgetOuserWorkload =
-            row.phaseBudgetHours * row.phaseBudgetOuserCnt;
-          row.phaseBudgetOuserAt =
-            row.phaseBudgetOuserWorkload * row.phaseBudgetOuserPrice;
-          row.phaseBudgetWorkload =
-            row.phaseBudgetIuserWorkload + row.phaseBudgetOuserWorkload;
+          row.budgetHours = this.getFloatValue(days * 8).toFixed(2);
+          row.budgetIuserWorkload =
+            row.budgetHours * row.budgetIuserCnt;
+          row.budgetIuserAt =
+            row.budgetIuserWorkload * row.budgetIuserPrice;
+          row.budgetOuserWorkload =
+            row.budgetHours * row.budgetOuserCnt;
+          row.budgetOuserAt =
+            row.budgetOuserWorkload * row.budgetOuserPrice;
+          row.budgetWorkload =
+            row.budgetIuserWorkload + row.budgetOuserWorkload;
         }
-      } else if (fieldName == "phaseBudgetHours") {
-        row.phaseBudgetIuserWorkload =
-          row.phaseBudgetHours * row.phaseBudgetIuserCnt;
-        row.phaseBudgetIuserAt =
-          row.phaseBudgetIuserWorkload * row.phaseBudgetIuserPrice;
-        row.phaseBudgetOuserWorkload =
-          row.phaseBudgetHours * row.phaseBudgetOuserCnt;
-        row.phaseBudgetOuserAt =
-          row.phaseBudgetOuserWorkload * row.phaseBudgetOuserPrice;
-        row.phaseBudgetWorkload =
-          row.phaseBudgetIuserWorkload + row.phaseBudgetOuserWorkload;
+      } else if (fieldName == "budgetHours") {
+        row.budgetIuserWorkload =
+          row.budgetHours * row.budgetIuserCnt;
+        row.budgetIuserAt =
+          row.budgetIuserWorkload * row.budgetIuserPrice;
+        row.budgetOuserWorkload =
+          row.budgetHours * row.budgetOuserCnt;
+        row.budgetOuserAt =
+          row.budgetOuserWorkload * row.budgetOuserPrice;
+        row.budgetWorkload =
+          row.budgetIuserWorkload + row.budgetOuserWorkload;
       } else if (
-        fieldName == "phaseBudgetIuserPrice" ||
-        fieldName == "phaseBudgetIuserCnt"
+        fieldName == "budgetIuserPrice" ||
+        fieldName == "budgetIuserCnt"
       ) {
-        row.phaseBudgetIuserWorkload =
-          row.phaseBudgetHours * row.phaseBudgetIuserCnt;
-        row.phaseBudgetIuserAt =
-          row.phaseBudgetIuserWorkload * row.phaseBudgetIuserPrice;
-        row.phaseBudgetWorkload =
-          row.phaseBudgetIuserWorkload + row.phaseBudgetOuserWorkload;
+        row.budgetIuserWorkload =
+          row.budgetHours * row.budgetIuserCnt;
+        row.budgetIuserAt =
+          row.budgetIuserWorkload * row.budgetIuserPrice;
+        row.budgetWorkload =
+          row.budgetIuserWorkload + row.budgetOuserWorkload;
       } else if (
-        fieldName == "phaseBudgetOuserPrice" ||
-        fieldName == "phaseBudgetOuserCnt"
+        fieldName == "budgetOuserPrice" ||
+        fieldName == "budgetOuserCnt"
       ) {
-        row.phaseBudgetOuserWorkload =
-          row.phaseBudgetHours * row.phaseBudgetOuserCnt;
-        row.phaseBudgetOuserAt =
-          row.phaseBudgetOuserWorkload * row.phaseBudgetOuserPrice;
-        row.phaseBudgetWorkload =
-          row.phaseBudgetIuserWorkload + row.phaseBudgetOuserWorkload;
+        row.budgetOuserWorkload =
+          row.budgetHours * row.budgetOuserCnt;
+        row.budgetOuserAt =
+          row.budgetOuserWorkload * row.budgetOuserPrice;
+        row.budgetWorkload =
+          row.budgetIuserWorkload + row.budgetOuserWorkload;
       }
       if (row.opType) {
         var index = this.valueChangeRows.findIndex((i) => i.id == row.id);
@@ -1205,7 +1205,7 @@ export default {
         });
         return;
       } else {
-        if (this.phaseBudgetData.surplusPlanIuserAt < 0) {
+        if (this.budgetData.surplusPlanIuserAt < 0) {
           this.$notify({
             showClose: true,
             message: "内部人力预算不足，请调整",
@@ -1213,7 +1213,7 @@ export default {
           });
           return;
         }
-        if (this.phaseBudgetData.surplusPlanOuserAt < 0) {
+        if (this.budgetData.surplusPlanOuserAt < 0) {
           this.$notify({
             showClose: true,
             message: "外购人力预算不足，请调整",
@@ -1221,7 +1221,7 @@ export default {
           });
           return;
         }
-        if (this.phaseBudgetData.surplusPlanNouserAt < 0) {
+        if (this.budgetData.surplusPlanNouserAt < 0) {
           this.$notify({
             showClose: true,
             message: "非人力预算不足请调整",
@@ -1320,12 +1320,12 @@ export default {
       sums[4] = ""; // 工期 工作量 成本金额
 
       var workload =
-        this.phaseBudgetData.phaseBudgetIuserWorkload +
-        this.phaseBudgetData.phaseBudgetOuserWorkload;
+        this.budgetData.budgetIuserWorkload +
+        this.budgetData.budgetOuserWorkload;
       var cost =
-        this.phaseBudgetData.phaseBudgetNouserAt +
-        this.phaseBudgetData.phaseBudgetIuserAt +
-        this.phaseBudgetData.phaseBudgetOuserAt;
+        this.budgetData.budgetNouserAt +
+        this.budgetData.budgetIuserAt +
+        this.budgetData.budgetOuserAt;
       sums[4] =
         "工作量:" +
         workload.toFixed(0) +
@@ -1347,23 +1347,23 @@ export default {
       sums[5] = ""; //工作量 计划、实际
       sums[6] = ""; // 成本 计划、实际
       var budgetWorkload =
-        this.phaseBudgetData.phaseBudgetIuserWorkload +
-        this.phaseBudgetData.phaseBudgetOuserWorkload;
+        this.budgetData.budgetIuserWorkload +
+        this.budgetData.budgetOuserWorkload;
 
-      var phaseActWorkload = this.phaseBudgetData.phaseActWorkload;
+      var actWorkload = this.budgetData.actWorkload;
       var budgetCost =
-        this.phaseBudgetData.phaseBudgetNouserAt +
-        this.phaseBudgetData.phaseBudgetIuserAt +
-        this.phaseBudgetData.phaseBudgetOuserAt;
+        this.budgetData.budgetNouserAt +
+        this.budgetData.budgetIuserAt +
+        this.budgetData.budgetOuserAt;
       var actCost =
-        this.phaseBudgetData.actIuserAt +
-        this.phaseBudgetData.actNouserAt +
-        this.phaseBudgetData.actOuserAt;
+        this.budgetData.actIuserAt +
+        this.budgetData.actNouserAt +
+        this.budgetData.actOuserAt;
       sums[5] =
         "预算工作量:" +
         budgetWorkload +
         "人时,实际:" +
-        phaseActWorkload +
+        actWorkload +
         "人时";
       sums[6] =
         "预算金额:" +
@@ -1652,19 +1652,19 @@ export default {
         subRow.projectId = this.selProject.id;
         subRow.projectName = this.selProject.name;
         subRow.branchId = this.selProject.branchId;
-        subRow.phaseBudgetAt = 0;
-        subRow.phaseBudgetNouserAt = 0;
-        subRow.phaseBudgetIuserAt = 0;
-        subRow.phaseBudgetOuserAt = 0;
-        subRow.phaseBudgetWorkload = 0;
-        subRow.phaseBudgetStaffNu = 0;
-        subRow.phaseBudgetHours = 160;
-        subRow.phaseBudgetIuserWorkload = 0;
-        subRow.phaseBudgetOuserWorkload = 0;
-        subRow.phaseBudgetIuserPrice = this.selProject.planIuserPrice;
-        subRow.phaseBudgetOuserPrice = this.selProject.planOuserPrice;
-        subRow.phaseBudgetOuserCnt = 0;
-        subRow.phaseBudgetIuserCnt = 0;
+        subRow.budgetAt = 0;
+        subRow.budgetNouserAt = 0;
+        subRow.budgetIuserAt = 0;
+        subRow.budgetOuserAt = 0;
+        subRow.budgetWorkload = 0;
+        subRow.budgetStaffNu = 0;
+        subRow.budgetHours = 160;
+        subRow.budgetIuserWorkload = 0;
+        subRow.budgetOuserWorkload = 0;
+        subRow.budgetIuserPrice = this.selProject.planIuserPrice;
+        subRow.budgetOuserPrice = this.selProject.planOuserPrice;
+        subRow.budgetOuserCnt = 0;
+        subRow.budgetIuserCnt = 0;
         const ctime = new Date();
         var beginDate = new Date();
         const endDate = new Date();

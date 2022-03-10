@@ -82,17 +82,17 @@
 				addFormVisible: false,//新增xmPhase界面是否显示
 				//新增xmPhase界面初始化数据
 				addForm: {
-					id:'',name:'',remark:'',parentPhaseId:'',branchId:'',taskType:'kf',planType:'m1',projectId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetIuserAt:'',phaseBudgetOuserAt:'',baselineId:'',bizProcInstId:'',bizFlowState:'',phaseBudgetIuserCnt:'',phaseBudgetOuserCnt:'',seqNo:'',phaseBudgetIuserPrice:80,phaseBudgetOuserPrice:100,phaseBudgetIuserWorkload:0,phaseBudgetOuserWorkload:0
+					id:'',name:'',remark:'',parentPhaseId:'',branchId:'',taskType:'kf',planType:'m1',projectId:'',beginDate:'',endDate:'',budgetHours:'',budgetStaffNu:'',ctime:'',budgetNouserAt:'',budgetIuserAt:'',budgetOuserAt:'',baselineId:'',bizProcInstId:'',bizFlowState:'',budgetIuserCnt:'',budgetOuserCnt:'',seqNo:'',budgetIuserPrice:80,budgetOuserPrice:100,budgetIuserWorkload:0,budgetOuserWorkload:0
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmPhase界面初始化数据
 				editForm: {
-					id:'',name:'',remark:'',parentPhaseId:'',branchId:'',projectId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetIuserAt:'',phaseBudgetOuserAt:'',baselineId:'',bizProcInstId:'',bizFlowState:'',phaseBudgetIuserCnt:'',phaseBudgetOuserCnt:'',seqNo:'',phaseBudgetIuserPrice:80,phaseBudgetOuserPrice:100,phaseBudgetIuserWorkload:0,phaseBudgetOuserWorkload:0
+					id:'',name:'',remark:'',parentPhaseId:'',branchId:'',projectId:'',beginDate:'',endDate:'',budgetHours:'',budgetStaffNu:'',ctime:'',budgetNouserAt:'',budgetIuserAt:'',budgetOuserAt:'',baselineId:'',bizProcInstId:'',bizFlowState:'',budgetIuserCnt:'',budgetOuserCnt:'',seqNo:'',budgetIuserPrice:80,budgetOuserPrice:100,budgetIuserWorkload:0,budgetOuserWorkload:0
 				},
 				
 				editFormInit: {
-					id:'',name:'',remark:'',parentPhaseId:'',branchId:'',taskType:'kf',planType:'m1',projectId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetIuserAt:'',phaseBudgetOuserAt:'',baselineId:'',bizProcInstId:'',bizFlowState:'',phaseBudgetIuserCnt:'',phaseBudgetOuserCnt:'',seqNo:'',phaseBudgetIuserPrice:80,phaseBudgetOuserPrice:100,phaseBudgetIuserWorkload:0,phaseBudgetOuserWorkload:0
+					id:'',name:'',remark:'',parentPhaseId:'',branchId:'',taskType:'kf',planType:'m1',projectId:'',beginDate:'',endDate:'',budgetHours:'',budgetStaffNu:'',ctime:'',budgetNouserAt:'',budgetIuserAt:'',budgetOuserAt:'',baselineId:'',bizProcInstId:'',bizFlowState:'',budgetIuserCnt:'',budgetOuserCnt:'',seqNo:'',budgetIuserPrice:80,budgetOuserPrice:100,budgetIuserWorkload:0,budgetOuserWorkload:0
 				},
 				parentProjectPhase:null,
 				/**begin 自定义属性请在下面加 请加备注**/
@@ -347,8 +347,8 @@
 				sums[3]=''//开始结束时间
 				sums[4]=''// 工期 工作量 成本金额
  
-				var workload=this.phaseBudgetData.phaseBudgetIuserWorkload+this.phaseBudgetData.phaseBudgetOuserWorkload
-				var cost=this.phaseBudgetData.phaseBudgetNouserAt+this.phaseBudgetData.phaseBudgetIuserAt+this.phaseBudgetData.phaseBudgetOuserAt
+				var workload=this.budgetData.budgetIuserWorkload+this.budgetData.budgetOuserWorkload
+				var cost=this.budgetData.budgetNouserAt+this.budgetData.budgetIuserAt+this.budgetData.budgetOuserAt
 				sums[4]='工作量:'+workload.toFixed(0)+'人时,预算金额:'+cost.toFixed(0)+'元,'+(cost/10000).toFixed(2)+'万元'
 				return sums;
 			},
@@ -362,12 +362,12 @@
 				sums[4]=''//进度
 				sums[5]=''//工作量 计划、实际
 				sums[6]=''// 成本 计划、实际 
-				var budgetWorkload=this.phaseBudgetData.phaseBudgetIuserWorkload+this.phaseBudgetData.phaseBudgetOuserWorkload
+				var budgetWorkload=this.budgetData.budgetIuserWorkload+this.budgetData.budgetOuserWorkload
 				
-				var phaseActWorkload=this.phaseBudgetData.phaseActWorkload 
-				var budgetCost=this.phaseBudgetData.phaseBudgetNouserAt+this.phaseBudgetData.phaseBudgetIuserAt+this.phaseBudgetData.phaseBudgetOuserAt
-				var actCost=this.phaseBudgetData.actIuserAt+this.phaseBudgetData.actNouserAt+this.phaseBudgetData.actOuserAt
-				sums[5]='预算工作量:'+budgetWorkload+'人时,实际:'+phaseActWorkload+'人时' 
+				var actWorkload=this.budgetData.actWorkload 
+				var budgetCost=this.budgetData.budgetNouserAt+this.budgetData.budgetIuserAt+this.budgetData.budgetOuserAt
+				var actCost=this.budgetData.actIuserAt+this.budgetData.actNouserAt+this.budgetData.actOuserAt
+				sums[5]='预算工作量:'+budgetWorkload+'人时,实际:'+actWorkload+'人时' 
 				sums[6]='预算金额:'+budgetCost.toFixed(0)+'元,'+(budgetCost/10000).toFixed(2)+'万元,实际:'+actCost.toFixed(0)+'元,'+(actCost/10000).toFixed(2)+'万元'
 
 				return sums;
