@@ -33,6 +33,14 @@
 				'userInfo','roles'
 			]), 
 		}, 
+		watch:{
+			"xmIteration.id":function(val){
+				this.getXmProjects();
+			},
+			"xmProduct.id":function(val){
+				this.getXmProjects();
+			}
+		},
 		data() {
 			return {
 				filters: {

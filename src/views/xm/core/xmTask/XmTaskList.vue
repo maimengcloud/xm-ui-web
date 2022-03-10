@@ -1,12 +1,16 @@
 <template>
 	<section> 
-			<el-row>
-				<el-col :span="4" v-if=" filters.selProject">
-					<xm-phase-mng   :sel-project="filters.selProject" :simple="true" @row-click="projectPhaseRowClick" @clear-select="clearSelectPhase"></xm-phase-mng>
-				</el-col>
-				<el-col :span=" filters.selProject?20:24">
-					<el-row class="page-main ">
-						&nbsp;&nbsp;<el-tag>{{filters.selProject?filters.selProject.name:'未选择项目'}}</el-tag><el-button type="success" v-if="!selProject" @click="selectProjectVisible=true">选择项目</el-button>
+			<el-row> 
+				<el-col :span="24">
+					<el-row class="page-main padding-left">  
+						<el-popover
+							placement="right"
+							width="400"
+							trigger="click"> 
+							<xm-project-select v-if="!selProject||!selProject.id" :auto-select="true"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick"></xm-project-select>
+								<el-link type="warning" slot="reference" v-if="!selProject||!selProject.id"  icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link> 
+						</el-popover> 
+						
 						<el-select v-model="filters.taskType" placeholder="请选择任务类型" clearable @change="changeTaskType">
 							<el-option class="showall" value="all"  label="全部类型">全部类型</el-option>
 							<el-option  v-for="(i,index) in options.taskType" :value="i.optionValue" :label="i.optionName" :key="index">{{i.optionName}}</el-option>
@@ -79,10 +83,6 @@
 					</el-row>
 				</el-col>
 			</el-row>  
-		
-		<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
-			<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
-		</el-drawer> 
 	</section>
 </template>
 
@@ -93,9 +93,8 @@
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { getTask ,listXmTask,editXmTask,editRate, delXmTask, batchDelXmTask,batchImportTaskFromTemplate,batchSaveBudget } from '@/api/xm/core/xmTask'; 
-	import { mapGetters } from 'vuex'; 
-	import xmPhaseMng from '../xmPhase/XmPhaseSelect'; 
-	import XmProjectList from '../xmProject/XmProjectList';
+	import { mapGetters } from 'vuex';  
+	import XmProjectSelect from '../xmProject/XmProjectSelect';
 
 	export default { 
 		computed: {
@@ -110,7 +109,7 @@
 			},
 			  
 		},
-		props: ["selProject",'isMultiSelect'],
+		props: ["selProject",'isMultiSelect','xmProduct','xmIteration'],
 		watch: {
 			"selkey": function(val) {
 				// console.log("任务类型");
@@ -166,8 +165,7 @@
 				},  
 
 				selkey: "all",   
- 				projectPhase: null, 
-				selectProjectVisible:false,
+ 				projectPhase: null,  
 				tableHeight:300,
 				dateRanger: [ ],  
 				pickerOptions:  util.pickerOptions('datarange'),
@@ -249,20 +247,24 @@
 				if(this.selProject){
 					params.projectId = this.selProject.id;
 				} 
-				if(!this.selProject){
+				if(!params.projectId){
 					if(this.filters.selProject){
 						params.projectId=this.filters.selProject.id
-					}else{
-						this.$notify({showClose: true, message: "请选择项目", type: 'error' });
-						this.load.list=false;
-						this.selectProjectVisible=true;
-						return;
 					}
 				}
-				params.workexec="true";
-				if(this.projectPhase){{
-					params.phaseId=this.projectPhase.id
-				}}
+				if(this.xmProduct && this.xmProduct.id){
+					params.productId = this.xmProduct.id;
+				}
+				if(this.xmIteration && this.xmIteration.id){
+					params.iterationId=this.xmIteration.id
+				}
+				if(!params.projectId){ 
+					this.$notify({showClose: true, message: "请选择项目", type: 'error' });
+					this.load.list=false; 
+					return; 
+				}
+				 
+				params.workexec="true"; 
 				if(this.isMy=='1'){
 					params.userid=this.userInfo.userid
 					params.isMy="1"
@@ -409,24 +411,18 @@
 			clearSelectTask(task){
 				this.$refs.taskTable.toggleRowSelection(task)
 			},
-			onPorjectConfirm:function(project){
-				this.filters.selProject=project
-				this.selectProjectVisible=false;
+			onProjectRowClick:function(project){
+				this.filters.selProject=project 
 				this.getXmTasks();
 			},  
-			/**end 自定义函数请在上面加**/
-			clearSelectPhase(){
-				this.projectPhase=null;
-				this.searchXmTasks();
-			}
 		},//end methods
-		components: {  
-			  
-			xmPhaseMng, XmProjectList
+		components: {   
+			 XmProjectSelect
 		    //在下面添加其它组件
 		},
 		mounted() {
 			this.filters.selProject=this.selProject
+			debugger;
 			this.$nextTick(()=>{  
 				this.tableHeight = util.calcTableMaxHeight(this.$refs.taskTable.$el); 
 				this.getXmTasks(); 

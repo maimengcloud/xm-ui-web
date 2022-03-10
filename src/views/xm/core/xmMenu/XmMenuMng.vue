@@ -205,10 +205,10 @@
 					<xm-product-select :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-select>
 				</el-drawer> 
 				<el-drawer title="选中任务" :visible.sync="selectTaskVisible"   size="80%"  append-to-body   :close-on-click-modal="false">
-					<xm-task-list  :sel-project="selProject" :is-multi-select="true"  @tasks-selected="onSelectedTasks"></xm-task-list>
+					<xm-task-list :xm-product="filters.product" :sel-project="selProject" :is-multi-select="true"  @tasks-selected="onSelectedTasks"></xm-task-list>
 				</el-drawer> 
 				<el-drawer title="查看任务" :visible.sync="taskListForMenuVisible" :with-header="false"  size="80%"  append-to-body   :close-on-click-modal="false">
-					<xm-task-list-for-menu   :is-multi-select="true" :menu-id="editForm.menuId"></xm-task-list-for-menu>
+					<xm-task-list-for-menu  :xm-product="filters.product"  :is-multi-select="true" :menu-id="editForm.menuId"></xm-task-list-for-menu>
 				</el-drawer> 
 				<el-drawer
 					append-to-body
