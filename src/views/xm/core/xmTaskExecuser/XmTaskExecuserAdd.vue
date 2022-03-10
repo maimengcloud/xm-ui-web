@@ -110,7 +110,7 @@
 				},
 				//新增界面数据 xm_task_execuse
 				addForm: {
-					createTime:'',id:'',taskId:'',userid:'',startTime:'',endTime:'',status:'',remarks:'',settleAmount:'',settleWorkload:'',settleStatus:'',settleTime:'',createUserid:'',createUsername:'',username:'',matchScore:'',quoteWeekday:'',quoteAmount:'',quoteTime:'',bizProcInstId:'',bizFlowState:'',projectId:'',projectPhaseId:'',skillRemark:'',quoteWorkload:'',quoteStartTime:'',quoteEndTime:'',branchId:'',projectPhaseName:'',taskName:''
+					createTime:'',id:'',taskId:'',userid:'',startTime:'',endTime:'',status:'',remarks:'',settleAmount:'',settleWorkload:'',settleStatus:'',settleTime:'',createUserid:'',createUsername:'',username:'',matchScore:'',quoteWeekday:'',quoteAmount:'',quoteTime:'',bizProcInstId:'',bizFlowState:'',projectId:'',phaseId:'',skillRemark:'',quoteWorkload:'',quoteStartTime:'',quoteEndTime:'',branchId:'',projectPhaseName:'',taskName:''
 				},
 				userSelectVisible: false,
 				quoteDateRanger: [
@@ -146,7 +146,7 @@
 								let params = Object.assign({}, this.addForm); 
 								params.taskId = this.xmTask.id;
 								params.projectId=this.xmTask.projectId
-								params.projectPhaseId=this.xmTask.projectPhaseId
+								params.phaseId=this.xmTask.phaseId
 								params.projectName=this.xmTask.projectName
 								params.taskName=this.xmTask.name
 								if(this.quoteDateRanger.length>=2){

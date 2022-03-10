@@ -135,7 +135,7 @@
 				bizzMonthList:['01','02','03','04','05','06','07','08','09','10','11','12'],
 				//新增界面数据 xm_project_m_budget_cost_user
 				addForm: {
-					projectId:'',userid:'',budgetCost:'',id:'',remark:'',username:'',subjectId:'',bizzStartDate:'',bizzEndDate:'',bizzMonth:'',bizProcInstId:'',bizFlowState:'0',projectPhaseId:'',costType:'1',subjectName:''
+					projectId:'',userid:'',budgetCost:'',id:'',remark:'',username:'',subjectId:'',bizzStartDate:'',bizzEndDate:'',bizzMonth:'',bizProcInstId:'',bizFlowState:'0',phaseId:'',costType:'1',subjectName:''
 				}
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				

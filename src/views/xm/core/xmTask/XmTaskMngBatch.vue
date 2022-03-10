@@ -1082,7 +1082,7 @@ export default {
       params.workexec = "true";
       if (this.projectPhase) {
         {
-          params.projectPhaseId = this.projectPhase.id;
+          params.phaseId = this.projectPhase.id;
         }
       }
       if (this.isMy == "1") {

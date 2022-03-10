@@ -90,7 +90,7 @@
 				},
 				//编辑界面数据  XmProjectMCostNouser xm_project_m_budget_cost_nouser
 				addForm: {
-					projectId:'',budgetCost:'',id:'',remark:'',subjectId:'',bizzStartDate:'',bizzEndDate:'',bizProcInstId:'',bizFlowState:'',projectPhaseId:'',costType:'',bizzMonth:'',subjectName:''
+					projectId:'',budgetCost:'',id:'',remark:'',subjectId:'',bizzStartDate:'',bizzEndDate:'',bizProcInstId:'',bizFlowState:'',phaseId:'',costType:'',bizzMonth:'',subjectName:''
 				}
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				

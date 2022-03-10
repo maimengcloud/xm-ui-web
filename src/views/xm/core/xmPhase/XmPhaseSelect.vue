@@ -1,13 +1,13 @@
 <template>
 	<section>  
 		<el-row>
-		<el-table  lazy :load="loadXmProjectPhaseLazy" :height="tableHeight" ref="selectPhaseTable" :data="projectPhaseTreeData"    :show-summary="false"  row-key="id" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
- 			<el-table-column prop="phaseName" label="计划名称"  show-overflow-tooltip> 
+		<el-table  lazy :load="loadXmPhaseLazy" :height="tableHeight" ref="selectPhaseTable" :data="projectPhaseTreeData"    :show-summary="false"  row-key="id" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+ 			<el-table-column prop="name" label="计划名称"  show-overflow-tooltip> 
 				 <template slot="header" slot-scope="scope">
-					<span>计划  <el-tag  type="warning" v-if="editForm.id" closable @close="clearSelectPhase()"> <font class="hidden-md-and-down">{{editForm.phaseName}}</font><font class="hidden-lg-and-up" style="font-size:2px;">{{editForm.phaseName}}</font></el-tag></span>
+					<span>计划  <el-tag  type="warning" v-if="editForm.id" closable @close="clearSelectPhase()"> <font class="hidden-md-and-down">{{editForm.name}}</font><font class="hidden-lg-and-up" style="font-size:2px;">{{editForm.name}}</font></el-tag></span>
 				</template>
 				<template slot-scope="scope">  
-					<span class="vlink">{{scope.row.seqNo}} &nbsp;<el-tooltip v-if="scope.row.milestone=='1'" content="里程碑"><i  class="el-icon-star-on"></i></el-tooltip>{{scope.row.phaseName}}
+					<span class="vlink">{{scope.row.seqNo}} &nbsp;<el-tooltip v-if="scope.row.milestone=='1'" content="里程碑"><i  class="el-icon-star-on"></i></el-tooltip>{{scope.row.name}}
 					<font  :color="scope.row.actRate>=100?'green':'#FF8C00'"> {{ (scope.row.actRate!=null?scope.row.actRate:0)+'%'}} </font>  
 					</span>
 				</template>
@@ -22,7 +22,7 @@
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { listXmProjectPhase  } from '@/api/xm/core/xmProjectPhase'; 
+	import { listXmPhase  } from '@/api/xm/core/xmPhase'; 
 
 	import {sn} from '@/common/js/sequence'
 	import { mapGetters } from 'vuex'
@@ -33,9 +33,9 @@
 		      'userInfo','roles'
 			]),
       projectPhaseTreeData() {
-        let xmProjectPhases =  this.xmProjectPhases  
+        let xmPhases =  this.xmPhases  
         
-        var projectPhaseTreeData = this.translateDataToTree(xmProjectPhases); 
+        var projectPhaseTreeData = this.translateDataToTree(xmPhases); 
 
 				 return projectPhaseTreeData;
       },
@@ -46,16 +46,16 @@
 			selProject:function(selProject,old){ 
         
 				if(!selProject){
-					this.xmProjectPhases=[]
+					this.xmPhases=[]
 				}else{
 					if( ( !old && selProject.id) || (old && selProject.id!=old.id)){
 						
-						this.searchXmProjectPhases();
+						this.searchXmPhases();
 					}
 				}
 			},
 			xmIteration(){
-				this.searchXmProjectPhases();
+				this.searchXmPhases();
 			}
     },
 		data() {
@@ -64,7 +64,7 @@
 				filters: {
 					key: ''
 				},
-				xmProjectPhases: [],//查询结果
+				xmPhases: [],//查询结果
 				pageInfo:{//分页数据
 					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
 					pageSize:50,//每页数据
@@ -79,20 +79,20 @@
 					xmPhaseStatus:[],
 				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				
-				addFormVisible: false,//新增xmProjectPhase界面是否显示
-				//新增xmProjectPhase界面初始化数据
+				addFormVisible: false,//新增xmPhase界面是否显示
+				//新增xmPhase界面初始化数据
 				addForm: {
-					id:'',phaseName:'',remark:'',parentPhaseId:'',branchId:'',taskType:'kf',planType:'m1',projectId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetInnerUserAt:'',phaseBudgetOutUserAt:'',projectBaselineId:'',bizProcInstId:'',bizFlowState:'',phaseBudgetInnerUserCnt:'',phaseBudgetOutUserCnt:'',seqNo:'',phaseBudgetInnerUserPrice:80,phaseBudgetOutUserPrice:100,phaseBudgetInnerUserWorkload:0,phaseBudgetOutUserWorkload:0
+					id:'',name:'',remark:'',parentPhaseId:'',branchId:'',taskType:'kf',planType:'m1',projectId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetIuserAt:'',phaseBudgetOuserAt:'',baselineId:'',bizProcInstId:'',bizFlowState:'',phaseBudgetIuserCnt:'',phaseBudgetOuserCnt:'',seqNo:'',phaseBudgetIuserPrice:80,phaseBudgetOuserPrice:100,phaseBudgetIuserWorkload:0,phaseBudgetOuserWorkload:0
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
-				//编辑xmProjectPhase界面初始化数据
+				//编辑xmPhase界面初始化数据
 				editForm: {
-					id:'',phaseName:'',remark:'',parentPhaseId:'',branchId:'',projectId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetInnerUserAt:'',phaseBudgetOutUserAt:'',projectBaselineId:'',bizProcInstId:'',bizFlowState:'',phaseBudgetInnerUserCnt:'',phaseBudgetOutUserCnt:'',seqNo:'',phaseBudgetInnerUserPrice:80,phaseBudgetOutUserPrice:100,phaseBudgetInnerUserWorkload:0,phaseBudgetOutUserWorkload:0
+					id:'',name:'',remark:'',parentPhaseId:'',branchId:'',projectId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetIuserAt:'',phaseBudgetOuserAt:'',baselineId:'',bizProcInstId:'',bizFlowState:'',phaseBudgetIuserCnt:'',phaseBudgetOuserCnt:'',seqNo:'',phaseBudgetIuserPrice:80,phaseBudgetOuserPrice:100,phaseBudgetIuserWorkload:0,phaseBudgetOuserWorkload:0
 				},
 				
 				editFormInit: {
-					id:'',phaseName:'',remark:'',parentPhaseId:'',branchId:'',taskType:'kf',planType:'m1',projectId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetInnerUserAt:'',phaseBudgetOutUserAt:'',projectBaselineId:'',bizProcInstId:'',bizFlowState:'',phaseBudgetInnerUserCnt:'',phaseBudgetOutUserCnt:'',seqNo:'',phaseBudgetInnerUserPrice:80,phaseBudgetOutUserPrice:100,phaseBudgetInnerUserWorkload:0,phaseBudgetOutUserWorkload:0
+					id:'',name:'',remark:'',parentPhaseId:'',branchId:'',taskType:'kf',planType:'m1',projectId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetIuserAt:'',phaseBudgetOuserAt:'',baselineId:'',bizProcInstId:'',bizFlowState:'',phaseBudgetIuserCnt:'',phaseBudgetOuserCnt:'',seqNo:'',phaseBudgetIuserPrice:80,phaseBudgetOuserPrice:100,phaseBudgetIuserWorkload:0,phaseBudgetOuserWorkload:0
 				},
 				parentProjectPhase:null,
 				/**begin 自定义属性请在下面加 请加备注**/
@@ -106,7 +106,7 @@
 		tableHeight:300,
         ganrrColumns: {
           children: 'children',
-          name: 'phaseName',
+          name: 'name',
           id: 'id',
           pid: 'parentPhaseId',
           startDate: 'beginDate',
@@ -118,11 +118,11 @@
 		methods: { 
 			handleSizeChange(pageSize) { 
 				this.pageInfo.pageSize=pageSize; 
-				this.getXmProjectPhases();
+				this.getXmPhases();
 			},
 			handleCurrentChange(pageNum) {
 				this.pageInfo.pageNum = pageNum;
-				this.getXmProjectPhases();
+				this.getXmPhases();
 			},
 			// 表格排序 obj.order=ascending/descending,需转化为 asc/desc ; obj.prop=表格中的排序字段,字段驼峰命名
 			sortChange( obj ){
@@ -136,11 +136,11 @@
 					this.pageInfo.orderFields=['xxx'];
 					this.pageInfo.orderDirs=[dir];
 				}
-				this.getXmProjectPhases();
+				this.getXmPhases();
 			},
-			searchXmProjectPhases(){
+			searchXmPhases(){
 				 this.pageInfo.count=true; 
-				 this.getXmProjectPhases();
+				 this.getXmPhases();
 			},
 			
 			getParams(params){
@@ -176,7 +176,7 @@
 				}
 				return params;
 			},
-			loadXmProjectPhaseLazy(row, treeNode, resolve) {  
+			loadXmPhaseLazy(row, treeNode, resolve) {  
 				if(row.children&&row.children.length>0){
 					resolve(row.children) 
 				}else{
@@ -184,7 +184,7 @@
 					params=this.getParams(params);
 					params.isTop=""
 					this.load.list = true;
-					var func=listXmProjectPhase 
+					var func=listXmPhase 
 					func(params).then(res=>{
 						this.load.list = false
 						var tips = res.data.tips;
@@ -197,8 +197,8 @@
 				}
 				
 			},
-			//获取列表 XmProjectPhase xm_project_phase
-			getXmProjectPhases() {
+			//获取列表 XmPhase xm_project_phase
+			getXmPhases() {
 				let params = {
 					pageSize: this.pageInfo.pageSize,
 					pageNum: this.pageInfo.pageNum,
@@ -215,12 +215,12 @@
 				params=this.getParams(params)
 				params.withParents="1"
 				this.load.list = true;
-				listXmProjectPhase(params).then((res) => {
+				listXmPhase(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
-						this.xmProjectPhases = res.data.data;
+						this.xmPhases = res.data.data;
 					}else{
 						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					} 
@@ -228,7 +228,7 @@
 				}).catch( err => this.load.list = false );
 			},
  
-			//选择行xmProjectPhase
+			//选择行xmPhase
 			selsChange: function (sels) {
 				this.sels = sels;
 			}, 
@@ -347,8 +347,8 @@
 				sums[3]=''//开始结束时间
 				sums[4]=''// 工期 工作量 成本金额
  
-				var workload=this.phaseBudgetData.phaseBudgetInnerUserWorkload+this.phaseBudgetData.phaseBudgetOutUserWorkload
-				var cost=this.phaseBudgetData.phaseBudgetNouserAt+this.phaseBudgetData.phaseBudgetInnerUserAt+this.phaseBudgetData.phaseBudgetOutUserAt
+				var workload=this.phaseBudgetData.phaseBudgetIuserWorkload+this.phaseBudgetData.phaseBudgetOuserWorkload
+				var cost=this.phaseBudgetData.phaseBudgetNouserAt+this.phaseBudgetData.phaseBudgetIuserAt+this.phaseBudgetData.phaseBudgetOuserAt
 				sums[4]='工作量:'+workload.toFixed(0)+'人时,预算金额:'+cost.toFixed(0)+'元,'+(cost/10000).toFixed(2)+'万元'
 				return sums;
 			},
@@ -362,11 +362,11 @@
 				sums[4]=''//进度
 				sums[5]=''//工作量 计划、实际
 				sums[6]=''// 成本 计划、实际 
-				var budgetWorkload=this.phaseBudgetData.phaseBudgetInnerUserWorkload+this.phaseBudgetData.phaseBudgetOutUserWorkload
+				var budgetWorkload=this.phaseBudgetData.phaseBudgetIuserWorkload+this.phaseBudgetData.phaseBudgetOuserWorkload
 				
 				var phaseActWorkload=this.phaseBudgetData.phaseActWorkload 
-				var budgetCost=this.phaseBudgetData.phaseBudgetNouserAt+this.phaseBudgetData.phaseBudgetInnerUserAt+this.phaseBudgetData.phaseBudgetOutUserAt
-				var actCost=this.phaseBudgetData.actInnerUserAt+this.phaseBudgetData.actNouserAt+this.phaseBudgetData.actOutUserAt
+				var budgetCost=this.phaseBudgetData.phaseBudgetNouserAt+this.phaseBudgetData.phaseBudgetIuserAt+this.phaseBudgetData.phaseBudgetOuserAt
+				var actCost=this.phaseBudgetData.actIuserAt+this.phaseBudgetData.actNouserAt+this.phaseBudgetData.actOuserAt
 				sums[5]='预算工作量:'+budgetWorkload+'人时,实际:'+phaseActWorkload+'人时' 
 				sums[6]='预算金额:'+budgetCost.toFixed(0)+'元,'+(budgetCost/10000).toFixed(2)+'万元,实际:'+actCost.toFixed(0)+'元,'+(actCost/10000).toFixed(2)+'万元'
 
@@ -411,11 +411,11 @@
       },
       changePmenuId(sId, eId) {
         let dict = {};
-        this.xmProjectPhases.forEach(d => {
+        this.xmPhases.forEach(d => {
           dict[d.id] = d.parentPhaseId || '';
         });
         if (!dict[eId]) {
-          this.xmProjectPhases.find(d => {
+          this.xmPhases.find(d => {
             if (d.id === sId) {
               d.parentPhaseId = eId;
               console.log('更新关系1');
@@ -425,7 +425,7 @@
         } else {
           const isSynezesis = this.judgePmenuId(dict, sId, dict[eId]);
           if (!isSynezesis) {
-            this.xmProjectPhases.find(d => {
+            this.xmPhases.find(d => {
               if (d.id === sId) {
                 d.parentPhaseId = eId;
                 console.log('更新关系2');
@@ -464,7 +464,7 @@
 				
 				this.tableHeight =  util.calcTableMaxHeight(this.$refs.selectPhaseTable.$el); 
 				if(this.selProject){
-					this.getXmProjectPhases();
+					this.getXmPhases();
 				}
 				
 				listOption([

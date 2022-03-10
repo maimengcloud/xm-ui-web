@@ -131,7 +131,7 @@
 				return []
 			}, 
 		},
-		props:['xmTaskTemplate','visible','parentTaskTemplate','xmProjectPhaseTemplate'],
+		props:['xmTaskTemplate','visible','parentTaskTemplate','xmPhaseTemplate'],
 		watch: {
 			'xmTaskTemplate':function(  xmTaskTemplate ) {  
 			},
@@ -187,7 +187,7 @@
 				},
 				//新增界面数据 xm_task
 				addForm: {
-					 id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'',sortLevel:'',preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',rate:'',budgetCost:'',budgetWorkload:'',taskState:'',taskType:'',taskClass:'',toTaskCenter:'',projectPhaseId:'',projectPhaseName:'',taskSkillNames:'',taskSkillIds:'',taskOut:'',planType:'',settleSchemel:'',menuId:'',menuName:''
+					 id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'',sortLevel:'',preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',rate:'',budgetCost:'',budgetWorkload:'',taskState:'',taskType:'',taskClass:'',toTaskCenter:'',phaseId:'',projectPhaseName:'',taskSkillNames:'',taskSkillIds:'',taskOut:'',planType:'',settleSchemel:'',menuId:'',menuName:''
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				preTask:{},
@@ -223,11 +223,11 @@
 								params.parentTaskid=this.parentTaskTemplate.id
 								params.parentTaskname=this.parentTaskTemplate.name 
 							}else {
-								if(this.xmProjectPhaseTemplate){
-									params.projectPhaseId=this.xmProjectPhaseTemplate.id
-									params.projectPhaseName=this.xmProjectPhaseTemplate.phaseName
-									params.projectName=this.xmProjectPhaseTemplate.projectName
-									params.projectId=this.xmProjectPhaseTemplate.projectId
+								if(this.xmPhaseTemplate){
+									params.phaseId=this.xmPhaseTemplate.id
+									params.projectPhaseName=this.xmPhaseTemplate.name
+									params.projectName=this.xmPhaseTemplate.projectName
+									params.projectId=this.xmPhaseTemplate.projectId
 								}else{
 									this.$notify.error("任务归属的项目计划不能为空");
 									return;

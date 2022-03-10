@@ -48,8 +48,8 @@
 				<el-form-item label="当前流程状态0初始1审批中2审批通过3审批不通过4流程取消或者删除" prop="bizFlowState">
 					<el-input v-model="editForm.bizFlowState" placeholder="当前流程状态0初始1审批中2审批通过3审批不通过4流程取消或者删除"></el-input>
 				</el-form-item> 
-				<el-form-item label="项目计划计划编号" prop="projectPhaseId">
-					<el-input v-model="editForm.projectPhaseId" placeholder="项目计划计划编号"></el-input>
+				<el-form-item label="项目计划计划编号" prop="phaseId">
+					<el-input v-model="editForm.phaseId" placeholder="项目计划计划编号"></el-input>
 				</el-form-item> 
 				<el-form-item label="实际成本金额" prop="actCostAmount">
 					<el-input v-model="editForm.actCostAmount" placeholder="实际成本金额"></el-input>
@@ -114,7 +114,7 @@
 				},
 				//编辑界面数据  XmProjectMCostNouser xm_project_m_cost_nouser
 				editForm: {
-					projectId:'',userid:'',createTime:'',sendCostTime:'',username:'',projectName:'',remark:'',id:'',taskId:'',taskName:'',subjectId:'',bizzStartDate:'',bizzEndDate:'',bizProcInstId:'',bizFlowState:'',projectPhaseId:'',actCostAmount:'',costType:'',bizMonth:'',bizDate:'',subjectName:'',projectPhaseName:''
+					projectId:'',userid:'',createTime:'',sendCostTime:'',username:'',projectName:'',remark:'',id:'',taskId:'',taskName:'',subjectId:'',bizzStartDate:'',bizzEndDate:'',bizProcInstId:'',bizFlowState:'',phaseId:'',actCostAmount:'',costType:'',bizMonth:'',bizDate:'',subjectName:'',projectPhaseName:''
 				}
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				

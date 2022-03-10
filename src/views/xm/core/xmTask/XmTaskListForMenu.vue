@@ -374,12 +374,12 @@
 			getRowSum(row){
 				var budgetCost=this.getFloatValue(row.budgetCost);
 				if(row.taskOut=='1'){
-					 row.taskBudgetOutUserAt=budgetCost
-					 row.taskBudgetInnerUserAt=0
+					 row.taskBudgetOuserAt=budgetCost
+					 row.taskBudgetIuserAt=0
 					 row.taskBudgetNouserAt=0;
 				}else{
-					 row.taskBudgetOutUserAt=0
-					 row.taskBudgetInnerUserAt=budgetCost
+					 row.taskBudgetOuserAt=0
+					 row.taskBudgetIuserAt=budgetCost
 					 row.taskBudgetNouserAt=0;
 				} 
 				return budgetCost;

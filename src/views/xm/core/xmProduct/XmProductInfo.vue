@@ -141,7 +141,7 @@
 			  <xm-group-mng v-if="infotype=='团队'" :xm-product="xmProduct"></xm-group-mng>
 			  <xm-file-mng v-if="infotype=='文档'" :xm-product="xmProduct"></xm-file-mng>
 			  <xm-task-mng v-if="infotype=='计划'" ref="projectPlan" work-item-type="projectPlan" :xm-product="xmProduct" key="projectPlan"></xm-task-mng> 
-			  <!--<xm-project-phase-for-product v-if="infotype=='计划'" ref="xmProjectPhaseMng" :xm-product="xmProduct" ></xm-project-phase-for-product> -->
+			  <!--<xm-phase-for-product v-if="infotype=='计划'" ref="xmPhaseMng" :xm-product="xmProduct" ></xm-phase-for-product> -->
 			  <xm-test-case-exec-mng v-if="infotype=='测试计划'" :visible="infotype=='测试计划'"  :xm-product='xmProduct' ref="xmQuestion"></xm-test-case-exec-mng>
 			<xm-menu-with-plan v-if="infotype=='需求监控'" ref="xmMenuWithPlan" :xm-product="xmProduct"></xm-menu-with-plan>
 			<xm-project-state-mng v-if="infotype=='项目监控'" :xm-product="xmProduct"></xm-project-state-mng>
@@ -183,7 +183,7 @@
 	import xmBudget from '../xmProject/XmProjectBudgetCost';
 	import xmContract from '../xmProjectContract/XmProjectContractMng';
 	import xmEnvList from '../xmProjectEnvList/XmProjectEnvListMng';
-	import xmProjectPhaseForProduct from '../xmProjectPhase/xmProjectPhaseForProduct';
+	import xmPhaseForProduct from '../xmPhase/xmPhaseForProduct';
 	import xmMenuMng from '../xmMenu/XmMenuMng';
 	import xmMenuWithPlan from '../xmMenu/XmMenuWithPlan';
 	import xmProjectStateMng from '../xmProjectState/XmProjectStateMng';
@@ -292,9 +292,9 @@ import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
           pageNum = this.$refs.xmTaskMng.pageInfo.pageNum;
         } else if (this.infotype === '计划') {
           header = ['序号', '计划名称', '开始时间', '结束时间', '进度(%)', '状态', '计划人数', '实际人数', '计划工期', '实际工期',  '计划工作量（人时）', '实际工作量（人时）', '计划非人力成本(元)', '实际非人力成本(元)', '计划内购人力成本(元)', '实际内购人力成本(元)', '计划外购人力成本(元)', '实际外购人力成本(元)', '计划成本合计(元)', '实际成本合计(元)', '审批状态', '备注'];
-          keyList = ['seqNo', 'phaseName', 'beginDate', 'endDate', 'actRate', 'phaseStatus', 'phaseBudgetOutUserCnt', 'actStaffNu', 'phaseBudgetHours', 'actHours', 'phaseBudgetWorkload', 'phaseActWorkload', 'phaseBudgetNouserAt', 'actNouserAt', 'phaseBudgetInnerUserAt', 'actInnerUserAt', 'phaseBudgetOutUserAt', 'actOutUserAt', 'phaseBudgetCostAt', 'actCostAt', 'bizFlowState', 'remark'];
-          list = this.$refs.xmProjectPhaseMng.projectPhaseTreeData;
-          pageNum = this.$refs.xmProjectPhaseMng.pageInfo.pageNum;
+          keyList = ['seqNo', 'name', 'beginDate', 'endDate', 'actRate', 'phaseStatus', 'phaseBudgetOuserCnt', 'actStaffNu', 'phaseBudgetHours', 'actHours', 'phaseBudgetWorkload', 'phaseActWorkload', 'phaseBudgetNouserAt', 'actNouserAt', 'phaseBudgetIuserAt', 'actIuserAt', 'phaseBudgetOuserAt', 'actOuserAt', 'phaseBudgetCostAt', 'actCostAt', 'bizFlowState', 'remark'];
+          list = this.$refs.xmPhaseMng.projectPhaseTreeData;
+          pageNum = this.$refs.xmPhaseMng.pageInfo.pageNum;
 
         } else if (this.infotype === '需求监控') {
           header = ['序号', '需求名称', '计划状态', '负责人', '上线时间', '计划开始时间', '实际开始时间', '计划结束时间', '实际结束时间', '计划工作量(人时)', '实际工作量(人时)', '计划成本(元)', '实际成本(元)', '总体完成比例%', '需求完成比例%', '设计完成比例%', '开发完成比例%', 'sit完成比例%', 'uat完成比例%', '上线状态'];
@@ -341,7 +341,7 @@ import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
             const row = filterVal.map(j => {
               let key = '';
               if(j == 'phaseStatus') {
-                return this.$refs.xmProjectPhaseMng.formateOption('xmPhaseStatus', v.phaseStatus);
+                return this.$refs.xmPhaseMng.formateOption('xmPhaseStatus', v.phaseStatus);
               } else if(j == 'bizFlowState') {
                 return `${bizFlowStateDict[parseInt(v[j]) || 0]}`;
               } else {
@@ -398,7 +398,7 @@ import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
 		},//end methods
 		components: { 
 			xmTaskMng,
-			xmProjectPhaseForProduct,
+			xmPhaseForProduct,
 			xmGroupMng,
 			xmExchange,
 			xmQuestion,

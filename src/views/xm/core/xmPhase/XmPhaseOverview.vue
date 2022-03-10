@@ -5,7 +5,7 @@
         <el-card class="box-card" style="padding:0px ;height:100px">
           <div>
             <el-row style="padding:10px">
-              <el-steps :active="this.xmProjectPhase.phaseStatus" finish-status="success" align-center>
+              <el-steps :active="this.xmPhase.phaseStatus" finish-status="success" align-center>
                 <el-step title="初始"></el-step>
                 <el-step title="执行中"></el-step>
                 <el-step title="完工"></el-step>
@@ -26,7 +26,7 @@
             </div>
             <el-row style="margin-bottom:18px">
               <el-row>
-                <span v-text="this.xmProjectPhase.mngUsername"></span>
+                <span v-text="this.xmPhase.mngUsername"></span>
               </el-row>
               <el-row>
                 <span>计划管理员</span>
@@ -39,7 +39,7 @@
                     <i class="el-icon-right"></i>
                   </div>
                   <div class="info">
-                    <div v-text="this.xmProjectPhase.taskCnt"></div>
+                    <div v-text="this.xmPhase.taskCnt"></div>
                     <div class="title">总任务量</div>
                   </div>
                 </div>
@@ -62,7 +62,7 @@
                     <i class="el-icon-check"></i>
                   </div>
                   <div class="info">
-                    <div v-text="this.xmProjectPhase.finishTaskCnt" >
+                    <div v-text="this.xmPhase.finishTaskCnt" >
                     </div>
                     <div class="title">已完成</div>
                   </div>
@@ -97,7 +97,7 @@
                   <i class="el-icon-refresh"></i>
                 </div>
                 <div class="info">
-                  <div class="title"> 关联迭代数： {{(this.xmProjectPhase.iterationCnt)}} </div>
+                  <div class="title"> 关联迭代数： {{(this.xmPhase.iterationCnt)}} </div>
                 </div>
               </div>
             </el-row>
@@ -127,7 +127,7 @@
                   <el-col :span="8">
                     <div>
                       <div style="text-align:center;">
-                        <span style="font-size:24px;" v-text="this.xmProjectPhase.phaseBudgetWorkload"></span>
+                        <span style="font-size:24px;" v-text="this.xmPhase.phaseBudgetWorkload"></span>
                         <span style="font-size:5px;">h</span>
                       </div>
                       <div style="text-align:center;font-size:5px;">预估工时</div>
@@ -136,7 +136,7 @@
                   <el-col :span="8">
                     <div>
                       <div style="text-align:center;">
-                        <span style="font-size:24px;" v-text="this.xmProjectPhase.phaseActWorkload"></span>
+                        <span style="font-size:24px;" v-text="this.xmPhase.phaseActWorkload"></span>
                         <span style="font-size:5px;">h</span>
                       </div>
                       <div style="text-align:center;font-size:5px;">登记工时</div>
@@ -232,60 +232,60 @@ export default {
   computed: {
     ...mapGetters(['userInfo','roles']),
     notStart: function() {
-      return this.xmProjectPhase.taskCnt-this.xmProjectPhase.finishTaskCnt;
+      return this.xmPhase.taskCnt-this.xmPhase.finishTaskCnt;
     },
     taskProgress: function (){
-      if(this.xmProjectPhase.actRate){
-        return this.xmProjectPhase.actRate;
+      if(this.xmPhase.actRate){
+        return this.xmPhase.actRate;
       }else{
         return 0;
       }
     },
     phaseBeginDate: function (){
-      if(this.xmProjectPhase.beginDate){
-        return this.xmProjectPhase.beginDate.substring(0,10);
+      if(this.xmPhase.beginDate){
+        return this.xmPhase.beginDate.substring(0,10);
       } else{
         return '暂无';
       }
     },
     phaseEndDate: function (){
-      if(this.xmProjectPhase.endDate){
-        return this.xmProjectPhase.endDate.substring(0,10);
+      if(this.xmPhase.endDate){
+        return this.xmPhase.endDate.substring(0,10);
       } else{
         return '暂无';
       }
     },
     phaseCreateDate: function (){
-      if(this.xmProjectPhase.ctime){
-        return this.xmProjectPhase.ctime.substring(0,10);
+      if(this.xmPhase.ctime){
+        return this.xmPhase.ctime.substring(0,10);
       } else{
         return '暂无';
       }
     },
     workloadProgress:function (){
-      return Math.round(this.xmProjectPhase.phaseActWorkload/this.xmProjectPhase.phaseBudgetWorkload*100);
+      return Math.round(this.xmPhase.phaseActWorkload/this.xmPhase.phaseBudgetWorkload*100);
     },
     deviation:function (){
       let now = new Date();
-      let startTime = new Date(this.xmProjectPhase.beginDate);
-      let endTime = new Date(this.xmProjectPhase.endDate);
+      let startTime = new Date(this.xmPhase.beginDate);
+      let endTime = new Date(this.xmPhase.endDate);
       if(now<=endTime){
         let allDays=endTime-startTime;
-        return this.xmProjectPhase.phaseBudgetWorkload - Math.round((now-startTime)/allDays*this.xmProjectPhase.phaseBudgetWorkload)
+        return this.xmPhase.phaseBudgetWorkload - Math.round((now-startTime)/allDays*this.xmPhase.phaseBudgetWorkload)
       }else{
-        return this.xmProjectPhase.phaseActWorkload - this.xmProjectPhase.phaseBudgetWorkload;
+        return this.xmPhase.phaseActWorkload - this.xmPhase.phaseBudgetWorkload;
       }
     },
     deviationRate:function (){
-      return Math.round(this.deviation/this.xmProjectPhase.phaseBudgetWorkload*100);
+      return Math.round(this.deviation/this.xmPhase.phaseBudgetWorkload*100);
     },
     remainWorkload:function (){
-      return this.xmProjectPhase.phaseBudgetWorkload - this.xmProjectPhase.phaseActWorkload;
+      return this.xmPhase.phaseBudgetWorkload - this.xmPhase.phaseActWorkload;
     },
     planProgress:function (){
       let now = new Date();
-      let startTime = new Date(this.xmProjectPhase.beginDate);
-      let endTime = new Date(this.xmProjectPhase.endDate);
+      let startTime = new Date(this.xmPhase.beginDate);
+      let endTime = new Date(this.xmPhase.endDate);
       if(now<=endTime){
         let allDays=endTime-startTime;
         return Math.round((now-startTime)/allDays*100)
@@ -294,21 +294,21 @@ export default {
       }
     },
     realProgress:function (){
-      if(this.xmProjectPhase.phaseActWorkload < this.xmProjectPhase.phaseBudgetWorkload){
-        return Math.round(this.xmProjectPhase.phaseActWorkload/this.xmProjectPhase.phaseBudgetWorkload*100)
+      if(this.xmPhase.phaseActWorkload < this.xmPhase.phaseBudgetWorkload){
+        return Math.round(this.xmPhase.phaseActWorkload/this.xmPhase.phaseBudgetWorkload*100)
       }else{
         return 100;
       }
     },
-    xmProjectPhaseCpd(){
-      return this.xmProjectPhase
+    xmPhaseCpd(){
+      return this.xmPhase
     },
 
   },
 
-  props:['xmProjectPhase'],
+  props:['xmPhase'],
   watch:{
-    xmProjectPhaseCpd:function(){
+    xmPhaseCpd:function(){
       this.drawCostPie();
       this.drawWorkloadPie();
     }
@@ -350,21 +350,21 @@ export default {
               }
             },
             data: [
-              {value: this.xmProjectPhase.phaseBudgetNouserAt,
+              {value: this.xmPhase.phaseBudgetNouserAt,
                 itemStyle: {
                   normal:{
                     color: '#5470C6'
                   }
                 },
                 name: '非人力'},
-              {value: this.xmProjectPhase.phaseBudgetInnerUserAt,
+              {value: this.xmPhase.phaseBudgetIuserAt,
                 itemStyle: {
                   normal:{
                     color: '#73C0DE'
                   }
                 },
                 name: '内部人力'},
-              {value: this.xmProjectPhase.phaseBudgetOutUserAt,
+              {value: this.xmPhase.phaseBudgetOuserAt,
                 itemStyle: {
                   normal:{
                     color: '#99CCFF'
@@ -416,14 +416,14 @@ export default {
               }
             },
             data: [
-              {value: this.xmProjectPhase.phaseBudgetInnerUserWorkload,
+              {value: this.xmPhase.phaseBudgetIuserWorkload,
                 itemStyle: {
                   normal:{
                     color: '#5470C6'
                   }
                 },
                 name: '内部人力'},
-              {value: this.xmProjectPhase.phaseBudgetOutUserWorkload,
+              {value: this.xmPhase.phaseBudgetOuserWorkload,
                 itemStyle: {
                   normal:{
                     color: '#73C0DE'

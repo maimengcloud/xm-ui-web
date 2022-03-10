@@ -458,12 +458,12 @@
 				this.editForm.budgetWorkload=weekday * 8
 				var price=80;
 				if(this.editForm.taskOut=='1'){
-					if(this.projectPhase.phaseBudgetOutUserPrice){ 
-						price=this.projectPhase.phaseBudgetOutUserPrice
+					if(this.projectPhase.phaseBudgetOuserPrice){ 
+						price=this.projectPhase.phaseBudgetOuserPrice
 					} 
 				}else{
-					if(this.projectPhase.phaseBudgetInnerUserPrice){ 
-						price=this.projectPhase.phaseBudgetInnerUserPrice
+					if(this.projectPhase.phaseBudgetIuserPrice){ 
+						price=this.projectPhase.phaseBudgetIuserPrice
 					} 
 				}
 				this.editForm.budgetCost=this.editForm.budgetWorkload * price 
@@ -471,16 +471,16 @@
 			onBudgetWorkloadChange(){
  				var price=80;
 				if(this.editForm.taskOut=='1'){
-					if(	this.projectPhase && this.projectPhase.phaseBudgetOutUserPrice){ 
-						price=this.projectPhase.phaseBudgetOutUserPrice
-					}else if( this.xmProject && this.xmProject.planOutUserPrice){
-						price=this.xmProject.planOutUserPrice
+					if(	this.projectPhase && this.projectPhase.phaseBudgetOuserPrice){ 
+						price=this.projectPhase.phaseBudgetOuserPrice
+					}else if( this.xmProject && this.xmProject.planOuserPrice){
+						price=this.xmProject.planOuserPrice
 					}
 				}else{
-					if(	this.projectPhase && this.projectPhase.phaseBudgetInnerUserPrice){ 
-						price=this.projectPhase.phaseBudgetInnerUserPrice
-					}else if( this.xmProject && this.xmProject.planInnerUserPrice){
-						price=this.xmProject.planInnerUserPrice
+					if(	this.projectPhase && this.projectPhase.phaseBudgetIuserPrice){ 
+						price=this.projectPhase.phaseBudgetIuserPrice
+					}else if( this.xmProject && this.xmProject.planIuserPrice){
+						price=this.xmProject.planIuserPrice
 					} 
 				}
 				this.editForm.budgetCost=this.editForm.budgetWorkload * price 

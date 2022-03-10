@@ -5,7 +5,7 @@
 		<el-row class="page-main ">
 			<el-tabs>
 				<el-tab-pane label="计划详情">
-					<!--新增界面 XmProjectPhase xm_project_phase-->
+					<!--新增界面 XmPhase xm_project_phase-->
 					<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
             <el-row class="border padding">
               <el-steps :active="parseInt(editForm.phaseStatus)+1" simple finish-status="success" align-center>
@@ -13,8 +13,8 @@
               </el-steps>
             </el-row>
 						<el-row class="border padding">
-							<el-form-item label="计划名称" prop="phaseName">
-								<el-input v-model="editForm.phaseName" placeholder="计划名称" ></el-input>
+							<el-form-item label="计划名称" prop="name">
+								<el-input v-model="editForm.name" placeholder="计划名称" ></el-input>
 							</el-form-item>
 							<el-form-item label="序号" prop="seqNo">
 								<el-input v-model="editForm.seqNo" style="width:50%;"  placeholder="排序序号，值越小越靠前，如1.0,2.0等"></el-input>
@@ -68,31 +68,31 @@
 									</el-row>
 									<el-row class="padding-20 border">
 										<el-col :span="4">内购</el-col>
-										<el-col :span="4"><el-input style="width:100px;"  type="number" v-model="editForm.phaseBudgetInnerUserCnt" :precision="0" :step="1" :min="0" placeholder="内购人数"></el-input>
+										<el-col :span="4"><el-input style="width:100px;"  type="number" v-model="editForm.phaseBudgetIuserCnt" :precision="0" :step="1" :min="0" placeholder="内购人数"></el-input>
 										</el-col>
-										<el-col :span="4">{{autoParams.phaseBudgetInnerUserWorkload}}人时</el-col>
-										<el-col :span="4"><el-input  style="width:100px;" type="number" v-model="editForm.phaseBudgetInnerUserPrice" :precision="0" :step="1" :min="0" placeholder="预计内部人时单价"></el-input> </el-col>
-										<el-col :span="8">{{this.toFixed(autoParams.phaseBudgetInnerUserAt)}}元,{{this.toFixed(autoParams.phaseBudgetInnerUserAt/10000)}} 万元</el-col>
+										<el-col :span="4">{{autoParams.phaseBudgetIuserWorkload}}人时</el-col>
+										<el-col :span="4"><el-input  style="width:100px;" type="number" v-model="editForm.phaseBudgetIuserPrice" :precision="0" :step="1" :min="0" placeholder="预计内部人时单价"></el-input> </el-col>
+										<el-col :span="8">{{this.toFixed(autoParams.phaseBudgetIuserAt)}}元,{{this.toFixed(autoParams.phaseBudgetIuserAt/10000)}} 万元</el-col>
 									</el-row>
 									<el-row class="padding-20 border">
 										<el-col :span="4">外购</el-col>
-										<el-col :span="4"><el-input  style="width:100px;" type="number" v-model="editForm.phaseBudgetOutUserCnt" :precision="0" :step="1" :min="0" placeholder="外购人数"></el-input>
+										<el-col :span="4"><el-input  style="width:100px;" type="number" v-model="editForm.phaseBudgetOuserCnt" :precision="0" :step="1" :min="0" placeholder="外购人数"></el-input>
 										</el-col>
-										<el-col :span="4">{{autoParams.phaseBudgetOutUserWorkload}}人时</el-col>
-										<el-col :span="4"><el-input  style="width:100px;" type="number" v-model="editForm.phaseBudgetOutUserPrice" :precision="0" :step="1" :min="0" placeholder="预计外购人时单价"></el-input> </el-col>
-										<el-col :span="4">{{autoParams.phaseBudgetOutUserAt }} 元 {{autoParams.phaseBudgetOutUserAt/10000 }}万元</el-col>
+										<el-col :span="4">{{autoParams.phaseBudgetOuserWorkload}}人时</el-col>
+										<el-col :span="4"><el-input  style="width:100px;" type="number" v-model="editForm.phaseBudgetOuserPrice" :precision="0" :step="1" :min="0" placeholder="预计外购人时单价"></el-input> </el-col>
+										<el-col :span="4">{{autoParams.phaseBudgetOuserAt }} 元 {{autoParams.phaseBudgetOuserAt/10000 }}万元</el-col>
 
 									</el-row >
 									<el-row class="padding-20  border">
 										<el-col :span="4">合计</el-col>
-										<el-col :span="4"> {{autoParams.phaseBudgetOutUserCnt+autoParams.phaseBudgetInnerUserCnt}}
+										<el-col :span="4"> {{autoParams.phaseBudgetOuserCnt+autoParams.phaseBudgetIuserCnt}}
 										</el-col>
-										<el-col :span="4">{{autoParams.phaseBudgetOutUserWorkload+autoParams.phaseBudgetInnerUserWorkload  }}人时,{{ (autoParams.phaseBudgetOutUserWorkload+autoParams.phaseBudgetInnerUserWorkload)/8/20  }}人月 </el-col>
-										<el-col :span="4">{{ (parseFloat2(autoParams.phaseBudgetOutUserPrice) + parseFloat2(autoParams.phaseBudgetInnerUserPrice))/2}}元/人时</el-col>
+										<el-col :span="4">{{autoParams.phaseBudgetOuserWorkload+autoParams.phaseBudgetIuserWorkload  }}人时,{{ (autoParams.phaseBudgetOuserWorkload+autoParams.phaseBudgetIuserWorkload)/8/20  }}人月 </el-col>
+										<el-col :span="4">{{ (parseFloat2(autoParams.phaseBudgetOuserPrice) + parseFloat2(autoParams.phaseBudgetIuserPrice))/2}}元/人时</el-col>
 										<el-col :span="8">{{autoParams.phaseBudgetTotalCost}} 元，{{(autoParams.phaseBudgetTotalCost)/10000}} 万元</el-col>
 									</el-row>
 									<el-row class="padding-20  border">
-										总计： {{parseFloat2(editForm.phaseBudgetInnerUserAt)+parseFloat2(editForm.phaseBudgetOutUserAt)+parseFloat2(editForm.phaseBudgetNouserAt)}}元 <el-tag>{{this.toFixed(autoParams.phaseBudgetTotalCost/10000)}}万元</el-tag>
+										总计： {{parseFloat2(editForm.phaseBudgetIuserAt)+parseFloat2(editForm.phaseBudgetOuserAt)+parseFloat2(editForm.phaseBudgetNouserAt)}}元 <el-tag>{{this.toFixed(autoParams.phaseBudgetTotalCost/10000)}}万元</el-tag>
 
 									</el-row>
 								</el-row>
@@ -103,7 +103,7 @@
 					</el-form>
 				</el-tab-pane>
 				<el-tab-pane label="计划概览" lazy>
-					<xm-project-phase-overview :xm-project-phase="xmProjectPhase"></xm-project-phase-overview>
+					<xm-phase-overview :xm-phase="xmPhase"></xm-phase-overview>
 				</el-tab-pane>
 			</el-tabs>
 		</el-row>
@@ -117,10 +117,9 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { editXmProjectPhase } from '@/api/xm/core/xmProjectPhase';
-	import { editXmProductPhase } from '@/api/xm/core/xmProductPhase';
+	import { editXmPhase } from '@/api/xm/core/xmPhase'; 
 	import { mapGetters } from 'vuex'
-	import  XmProjectPhaseOverview from './XmProjectPhaseOverview';//新增界面
+	import  XmPhaseOverview from './XmPhaseOverview';//新增界面
 
 	export default {
 		computed: {
@@ -131,23 +130,23 @@
 			autoParams:function(){
 
 
-				var phaseBudgetOutUserPrice=this.toFixed(this.editForm.phaseBudgetOutUserPrice)
-				var phaseBudgetInnerUserPrice=this.toFixed(this.editForm.phaseBudgetInnerUserPrice)
-				var phaseBudgetOutUserCnt=this.toFixed(this.editForm.phaseBudgetOutUserCnt)
-				var phaseBudgetInnerUserCnt=this.toFixed(this.editForm.phaseBudgetInnerUserCnt)
+				var phaseBudgetOuserPrice=this.toFixed(this.editForm.phaseBudgetOuserPrice)
+				var phaseBudgetIuserPrice=this.toFixed(this.editForm.phaseBudgetIuserPrice)
+				var phaseBudgetOuserCnt=this.toFixed(this.editForm.phaseBudgetOuserCnt)
+				var phaseBudgetIuserCnt=this.toFixed(this.editForm.phaseBudgetIuserCnt)
 				var phaseBudgetHours=this.toFixed(this.editForm.phaseBudgetHours )
 				var phaseBudgetNouserAt=this.toFixed(this.editForm.phaseBudgetNouserAt )
-  				if(phaseBudgetOutUserPrice==null || phaseBudgetOutUserPrice==''){
-					phaseBudgetOutUserPrice=100
+  				if(phaseBudgetOuserPrice==null || phaseBudgetOuserPrice==''){
+					phaseBudgetOuserPrice=100
 				}
-				if(phaseBudgetInnerUserPrice==null || phaseBudgetInnerUserPrice==''){
-					phaseBudgetInnerUserPrice=80
+				if(phaseBudgetIuserPrice==null || phaseBudgetIuserPrice==''){
+					phaseBudgetIuserPrice=80
 				}
-				if(phaseBudgetOutUserCnt==null || phaseBudgetOutUserCnt==''){
-					phaseBudgetOutUserCnt=0.0
+				if(phaseBudgetOuserCnt==null || phaseBudgetOuserCnt==''){
+					phaseBudgetOuserCnt=0.0
 				}
-				if(phaseBudgetInnerUserCnt==null || phaseBudgetInnerUserCnt==''){
-					phaseBudgetInnerUserCnt=0.0
+				if(phaseBudgetIuserCnt==null || phaseBudgetIuserCnt==''){
+					phaseBudgetIuserCnt=0.0
 				}
 
 				if(phaseBudgetNouserAt==null || phaseBudgetNouserAt==''){
@@ -168,24 +167,24 @@
 			 	}
 				autoParams.weekday=weekday
 				autoParams.phaseBudgetHours=phaseBudgetHours
-				autoParams.phaseBudgetOutUserPrice=phaseBudgetOutUserPrice
-				autoParams.phaseBudgetInnerUserPrice=phaseBudgetInnerUserPrice
-				autoParams.phaseBudgetOutUserCnt=phaseBudgetOutUserCnt
-				autoParams.phaseBudgetInnerUserCnt=phaseBudgetInnerUserCnt
- 				autoParams.phaseBudgetInnerUserWorkload= phaseBudgetInnerUserCnt*phaseBudgetHours
-				autoParams.phaseBudgetOutUserWorkload= phaseBudgetOutUserCnt*phaseBudgetHours
-				autoParams.phaseBudgetWorkload=  phaseBudgetInnerUserCnt*phaseBudgetHours + phaseBudgetOutUserCnt*phaseBudgetHours
-				autoParams.phaseBudgetOutUserAt= phaseBudgetOutUserCnt * phaseBudgetHours * phaseBudgetOutUserPrice
-				autoParams.phaseBudgetInnerUserAt=  phaseBudgetInnerUserCnt * phaseBudgetHours * phaseBudgetInnerUserPrice
+				autoParams.phaseBudgetOuserPrice=phaseBudgetOuserPrice
+				autoParams.phaseBudgetIuserPrice=phaseBudgetIuserPrice
+				autoParams.phaseBudgetOuserCnt=phaseBudgetOuserCnt
+				autoParams.phaseBudgetIuserCnt=phaseBudgetIuserCnt
+ 				autoParams.phaseBudgetIuserWorkload= phaseBudgetIuserCnt*phaseBudgetHours
+				autoParams.phaseBudgetOuserWorkload= phaseBudgetOuserCnt*phaseBudgetHours
+				autoParams.phaseBudgetWorkload=  phaseBudgetIuserCnt*phaseBudgetHours + phaseBudgetOuserCnt*phaseBudgetHours
+				autoParams.phaseBudgetOuserAt= phaseBudgetOuserCnt * phaseBudgetHours * phaseBudgetOuserPrice
+				autoParams.phaseBudgetIuserAt=  phaseBudgetIuserCnt * phaseBudgetHours * phaseBudgetIuserPrice
 				autoParams.phaseBudgetNouserAt= phaseBudgetNouserAt
- 				autoParams.phaseBudgetTotalCost=  autoParams.phaseBudgetOutUserAt + autoParams.phaseBudgetInnerUserAt + autoParams.phaseBudgetNouserAt
+ 				autoParams.phaseBudgetTotalCost=  autoParams.phaseBudgetOuserAt + autoParams.phaseBudgetIuserAt + autoParams.phaseBudgetNouserAt
 				return autoParams
 			},
 		},
-		props:['xmProjectPhase','visible','parentProjectPhase'],
+		props:['xmPhase','visible','parentProjectPhase'],
 		watch: {
-	      'xmProjectPhase':function( xmProjectPhase ) {
-			this.editForm = xmProjectPhase;
+	      'xmPhase':function( xmPhase ) {
+			this.editForm = xmPhase;
 			this.dateRanger=[this.editForm.beginDate,this.editForm.endDate]
 	      },
 	      'visible':function(visible) {
@@ -209,7 +208,7 @@
 					id: [
 						//{ required: true, message: '计划主键不能为空', trigger: 'blur' }
 					],
-					phaseName: [
+					name: [
 						{ required: true, message: '计划名称不能为空', trigger: 'blur' }
 					],
 					planType: [
@@ -225,7 +224,7 @@
 				oldeditForm:{},
 				//新增界面数据 xm_project_phase
 				editForm: {
-					id:'',phaseName:'',remark:'',parentPhaseId:'',branchId:'',taskType:'kf',planType:'m1',projectId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetInnerUserAt:'',phaseBudgetOutUserAt:'',projectBaselineId:'',bizProcInstId:'',bizFlowState:'',phaseBudgetWorkload:'',totalActWorkload:'',totalActNouserAt:'',totalActInerUserAt:'',totalActOutUserAt:'',seqNo:'1',phaseBudgetInnerUserCnt:'',phaseBudgetOutUserCnt:'',phaseBudgetInnerUserPrice:80,phaseBudgetOutUserPrice:100,phaseBudgetInnerUserWorkload:0,phaseBudgetOutUserWorkload:0,phaseStatus:'',ntype:'0'
+					id:'',name:'',remark:'',parentPhaseId:'',branchId:'',taskType:'kf',planType:'m1',projectId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetIuserAt:'',phaseBudgetOuserAt:'',baselineId:'',bizProcInstId:'',bizFlowState:'',phaseBudgetWorkload:'',totalActWorkload:'',totalActNouserAt:'',totalActInerUserAt:'',totalActOuserAt:'',seqNo:'1',phaseBudgetIuserCnt:'',phaseBudgetOuserCnt:'',phaseBudgetIuserPrice:80,phaseBudgetOuserPrice:100,phaseBudgetIuserWorkload:0,phaseBudgetOuserWorkload:0,phaseStatus:'',ntype:'0'
 				},
 				dateRanger: [
 				],
@@ -251,7 +250,7 @@
 				//this.$refs['editForm'].resetFields();
 				this.$emit('cancel');
 			},
-			//新增提交XmProjectPhase xm_project_phase 父组件监听@submit="aftereditSubmit"
+			//新增提交XmPhase xm_project_phase 父组件监听@submit="aftereditSubmit"
 			editSubmit: function () {
 
 				if (
@@ -277,7 +276,7 @@
 					this.$notify({showClose: true, message: "请输入开始日期和结束日期", type: 'error' });
 					return;
 				}
-				if(!this.editForm.phaseBudgetInnerUserCnt){
+				if(!this.editForm.phaseBudgetIuserCnt){
 					this.$notify({showClose: true, message: "内购人员数不能为空", type: 'error' });
 					return;
 				}
@@ -286,7 +285,7 @@
 					this.$notify({showClose: true, message: "工期不能为空", type: 'error' });
 					return;
 				}
-				if(!this.editForm.phaseBudgetInnerUserPrice){
+				if(!this.editForm.phaseBudgetIuserPrice){
 					this.$notify({showClose: true, message: "内购单价不能为空", type: 'error' });
 					return;
 				}
@@ -295,23 +294,23 @@
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
 							this.load.edit=true
 							let params = Object.assign({}, this.editForm);
-							if(!params.phaseBudgetInnerUserAt){
-								params.phaseBudgetInnerUserAt= this.parseFloat2(params.phaseBudgetInnerUserCnt) * this.parseFloat2(params.phaseBudgetInnerUserPrice) * this.parseFloat2(params.phaseBudgetHours)
+							if(!params.phaseBudgetIuserAt){
+								params.phaseBudgetIuserAt= this.parseFloat2(params.phaseBudgetIuserCnt) * this.parseFloat2(params.phaseBudgetIuserPrice) * this.parseFloat2(params.phaseBudgetHours)
 							}
-							if( !params.phaseBudgetOutUserAt ){
-								params.phaseBudgetOutUserAt= this.parseFloat2(params.phaseBudgetOutUserCnt) * this.parseFloat2(params.phaseBudgetOutUserPrice) * this.parseFloat2(params.phaseBudgetHours)
+							if( !params.phaseBudgetOuserAt ){
+								params.phaseBudgetOuserAt= this.parseFloat2(params.phaseBudgetOuserCnt) * this.parseFloat2(params.phaseBudgetOuserPrice) * this.parseFloat2(params.phaseBudgetHours)
 							}
-							params.phaseBudgetInnerUserWorkload= this.parseFloat2(params.phaseBudgetInnerUserCnt) * this.parseFloat2(params.phaseBudgetHours)
-							params.phaseBudgetOutUserWorkload= this.parseFloat2(params.phaseBudgetOutUserCnt) * this.parseFloat2(params.phaseBudgetHours)
+							params.phaseBudgetIuserWorkload= this.parseFloat2(params.phaseBudgetIuserCnt) * this.parseFloat2(params.phaseBudgetHours)
+							params.phaseBudgetOuserWorkload= this.parseFloat2(params.phaseBudgetOuserCnt) * this.parseFloat2(params.phaseBudgetHours)
 
-							params.phaseBudgetWorkload= this.parseFloat2(params.phaseBudgetInnerUserWorkload) + this.parseFloat2(params.phaseBudgetOutUserWorkload)
+							params.phaseBudgetWorkload= this.parseFloat2(params.phaseBudgetIuserWorkload) + this.parseFloat2(params.phaseBudgetOuserWorkload)
 							if( !params.phaseBudgetStaffNu ){
 
-								params.phaseBudgetStaffNu= this.parseFloat2(params.phaseBudgetOutUserCnt) + this.parseFloat2(params.phaseBudgetInnerUserCnt)
+								params.phaseBudgetStaffNu= this.parseFloat2(params.phaseBudgetOuserCnt) + this.parseFloat2(params.phaseBudgetIuserCnt)
 							}
-							var func=editXmProjectPhase
+							var func=editXmPhase
 							if(this.editForm.phaseClass=="1"){
-								func=editXmProductPhase
+								func=editXmPhase
 							}
 							func(params).then((res) => {
 								this.load.edit=false
@@ -368,8 +367,8 @@
 
 			fillphaseBudgetAtToField:function(){
 				this.editForm.phaseBudgetNouserAt=this.toFixed(this.autoParams.phaseBudgetNouserAt)
-				this.editForm.phaseBudgetOutUserAt=this.toFixed(this.autoParams.phaseBudgetOutUserAt )
-				this.editForm.phaseBudgetInnerUserAt=this.toFixed(this.autoParams.phaseBudgetInnerUserAt )
+				this.editForm.phaseBudgetOuserAt=this.toFixed(this.autoParams.phaseBudgetOuserAt )
+				this.editForm.phaseBudgetIuserAt=this.toFixed(this.autoParams.phaseBudgetIuserAt )
 				this.editForm.phaseBudgetTotalCost=this.toFixed(this.autoParams.phaseBudgetTotalCost)
 
 			},
@@ -380,11 +379,11 @@
 
 		},//end method
 		components: {
-			XmProjectPhaseOverview,
-		    //在下面添加其它组件 'xm-project-phase-edit':XmProjectPhaseEdit
+			XmPhaseOverview,
+		    //在下面添加其它组件 'xm-phase-edit':XmPhaseEdit
 		},
 		mounted() {
-			this.editForm=Object.assign(this.editForm, this.xmProjectPhase);
+			this.editForm=Object.assign(this.editForm, this.xmPhase);
 			/**在下面写其它函数***/
 			this.dateRanger=[this.editForm.beginDate,this.editForm.endDate]
 			listOption([{categoryId:'all',itemCode:'planType'},{categoryId:'all',itemCode:'taskType'}]).then(res=>{

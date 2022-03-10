@@ -8,8 +8,8 @@
 				</el-radio-group>
 				<span style="margin-left:10px;font-size:14px;">项目总预算：</span> <el-tag type="success">{{selProjectBudget.planTotalCost}}</el-tag>
 				<span style="margin-left:10px;font-size:14px;">非人力总预算：</span><el-tag>{{selProjectBudget.planNouserAt}}</el-tag> 
-				<span style="margin-left:10px;font-size:14px;">内部人力总预算：</span><el-tag>{{selProjectBudget.planInnerUserAt}}</el-tag> 
-				<span style="margin-left:10px;font-size:14px;">外购人力总预算：</span><el-tag>{{selProjectBudget.planOutUserAt}}</el-tag> 
+				<span style="margin-left:10px;font-size:14px;">内部人力总预算：</span><el-tag>{{selProjectBudget.planIuserAt}}</el-tag> 
+				<span style="margin-left:10px;font-size:14px;">外购人力总预算：</span><el-tag>{{selProjectBudget.planOuserAt}}</el-tag> 
 			</div>
 			<div class="title-bar">
 				<el-radio-group v-model="showType" size="medium">
@@ -262,10 +262,10 @@ import { months } from 'moment';
 					return;
 				}  
 				var planTotalCost=this.getFloatValue(this.selProjectBudget.planTotalCost)
-				var planInnerUserAt=this.getFloatValue(this.selProjectBudget.planInnerUserAt)
-				var planOutUserAt=this.getFloatValue(this.selProjectBudget.planOutUserAt)
+				var planIuserAt=this.getFloatValue(this.selProjectBudget.planIuserAt)
+				var planOuserAt=this.getFloatValue(this.selProjectBudget.planOuserAt)
 				var planNouserAt=this.getFloatValue(this.selProjectBudget.planNouserAt)
-				this.selProjectBudget.planTotalCost=planInnerUserAt+planOutUserAt+planNouserAt
+				this.selProjectBudget.planTotalCost=planIuserAt+planOuserAt+planNouserAt
 				this.$confirm('确定修改项目总支出吗?', '提示', {
 					type: 'warning'
 				}).then(() => { 
@@ -275,8 +275,8 @@ import { months } from 'moment';
 						var tips=res.data.tips;
 						if(tips.isOk){
 							this.selProject.planTotalCost=this.selProjectBudget.planTotalCost
-							this.selProject.planInnerUserAt=this.selProjectBudget.planInnerUserAt 
-							this.selProject.planOutUserAt=this.selProjectBudget.planOutUserAt 
+							this.selProject.planIuserAt=this.selProjectBudget.planIuserAt 
+							this.selProject.planOuserAt=this.selProjectBudget.planOuserAt 
 							this.selProject.planNouserAt=this.selProjectBudget.planNouserAt 
 						}else{
 							this.selProjectBudget=Object.assign({},this.selProject)

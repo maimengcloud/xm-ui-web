@@ -617,14 +617,14 @@ export default {
                   }
                 },
                 name: '非人力'},
-              {value: this.selProject.planInnerUserAt,
+              {value: this.selProject.planIuserAt,
                 itemStyle: {
                   normal:{
                     color: '#73C0DE'
                   }
                 },
                 name: '内部人力'},
-              {value: this.selProject.planOutUserAt,
+              {value: this.selProject.planOuserAt,
                 itemStyle: {
                   normal:{
                     color: '#5470C6'
@@ -677,14 +677,14 @@ export default {
               }
             },
             data: [
-              {value: this.selProject.planInnerUserWorkload,
+              {value: this.selProject.planIuserWorkload,
                 itemStyle: {
                   normal:{
                     color: '#91CC75'
                   }
                 },
                 name: '内部人力'},
-              {value: this.selProject.planOutUserWorkload,
+              {value: this.selProject.planOuserWorkload,
                 itemStyle: {
                   normal:{
                     color: '#3BA272'

@@ -69,8 +69,8 @@
 				<el-form-item label="项目总人力成本" prop="totalCostUserAmount">
 					<el-input v-model="addForm.totalCostUserAmount" placeholder="项目总人力成本"></el-input>
 				</el-form-item> 
-				<el-form-item label="项目总内部人力预算-来自项目表" prop="totalBudgetInnerUserAmount">
-					<el-input v-model="addForm.totalBudgetInnerUserAmount" placeholder="项目总内部人力预算-来自项目表"></el-input>
+				<el-form-item label="项目总内部人力预算-来自项目表" prop="totalBudgetIuserAmount">
+					<el-input v-model="addForm.totalBudgetIuserAmount" placeholder="项目总内部人力预算-来自项目表"></el-input>
 				</el-form-item> 
 				<el-form-item label="项目总预算工作量-来自项目表" prop="totalPlanWorkload">
 					<el-input v-model="addForm.totalPlanWorkload" placeholder="项目总预算工作量-来自项目表"></el-input>
@@ -87,8 +87,8 @@
 				<el-form-item label="机构名称" prop="branchName">
 					<el-input v-model="addForm.branchName" placeholder="机构名称" ></el-input>
 				</el-form-item> 
-				<el-form-item label="项目总外购人力预算-来自项目表" prop="totalBudgetOutUserAmount">
-					<el-input v-model="addForm.totalBudgetOutUserAmount" placeholder="项目总外购人力预算-来自项目表"></el-input>
+				<el-form-item label="项目总外购人力预算-来自项目表" prop="totalBudgetOuserAmount">
+					<el-input v-model="addForm.totalBudgetOuserAmount" placeholder="项目总外购人力预算-来自项目表"></el-input>
 				</el-form-item> 
 				<el-form-item label="已完成工作量-来自计划中实际完成工作量" prop="totalCompleteWorkload">
 					<el-input v-model="addForm.totalCompleteWorkload" placeholder="已完成工作量-来自计划中实际完成工作量"></el-input>
@@ -141,7 +141,7 @@
 				},
 				//新增界面数据 xm_project_state_his
 				addForm: {
-					projectId:'',bizDate:'',totalFileCnt:'',totalBugCnt:'',totalTaskCnt:'',totalBudgetNouserAmount:'',projectName:'',stateId:'',totalStaffCnt:'',calCtime:'',calStatus:'',totalCostNouserAmount:'',totalCloseBugCnt:'',totalResolveBugCnt:'',totalCompleteTaskCnt:'',totalPhaseCnt:'',totalCompletePhaseCnt:'',totalNeedPayAmount:'',totalFinishPayAmount:'',totalNeedColAmount:'',totalFinishColAmount:'',totalCostUserAmount:'',totalBudgetInnerUserAmount:'',totalPlanWorkload:'',totalRiskCnt:'',totalCompleteRiskCnt:'',branchId:'',branchName:'',totalBudgetOutUserAmount:'',totalCompleteWorkload:'',id:''
+					projectId:'',bizDate:'',totalFileCnt:'',totalBugCnt:'',totalTaskCnt:'',totalBudgetNouserAmount:'',projectName:'',stateId:'',totalStaffCnt:'',calCtime:'',calStatus:'',totalCostNouserAmount:'',totalCloseBugCnt:'',totalResolveBugCnt:'',totalCompleteTaskCnt:'',totalPhaseCnt:'',totalCompletePhaseCnt:'',totalNeedPayAmount:'',totalFinishPayAmount:'',totalNeedColAmount:'',totalFinishColAmount:'',totalCostUserAmount:'',totalBudgetIuserAmount:'',totalPlanWorkload:'',totalRiskCnt:'',totalCompleteRiskCnt:'',branchId:'',branchName:'',totalBudgetOuserAmount:'',totalCompleteWorkload:'',id:''
 				}
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				

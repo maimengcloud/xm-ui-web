@@ -15,8 +15,8 @@
 			<font class="hidden-md-and-down">	
 				<span style="margin-left:10px;font-size:14px;">项目总成本：</span><el-tag type='success'> {{selProject.planTotalCost}}</el-tag> 
 				<span style="margin-left:10px;font-size:14px;">非人力总成本：</span><el-tag type='warning'>{{selProject.planNouserAt}}</el-tag>  
-				<span style="margin-left:10px;font-size:14px;">内部人力总成本：</span><el-tag type='warning'>{{selProject.planInnerUserAt}}</el-tag>  
-				<span style="margin-left:10px;font-size:14px;">外购人力总成本：</span><el-tag type='warning'>{{selProject.planOutUserAt}}</el-tag>  
+				<span style="margin-left:10px;font-size:14px;">内部人力总成本：</span><el-tag type='warning'>{{selProject.planIuserAt}}</el-tag>  
+				<span style="margin-left:10px;font-size:14px;">外购人力总成本：</span><el-tag type='warning'>{{selProject.planOuserAt}}</el-tag>  
 			</font>
 		</el-row>
 		<el-row class="page-main "> 
@@ -145,13 +145,13 @@
 				addFormVisible: false,//新增xmProjectMCostUser界面是否显示
 				//新增xmProjectMCostUser界面初始化数据
 				addForm: {
-					subjectId:'',projectId:'',userid:'',createTime:'',sendCostTime:'',username:'',projectName:'',remark:'',id:'',taskId:'',taskName:'',actWorkload:'',bizzStartDate:'',bizzEndDate:'',bizProcInstId:'',bizFlowState:'',projectPhaseId:'',actCostAmount:'',costType:'',bizMonth:'',bizDate:'',subjectName:'',projectPhaseName:''
+					subjectId:'',projectId:'',userid:'',createTime:'',sendCostTime:'',username:'',projectName:'',remark:'',id:'',taskId:'',taskName:'',actWorkload:'',bizzStartDate:'',bizzEndDate:'',bizProcInstId:'',bizFlowState:'',phaseId:'',actCostAmount:'',costType:'',bizMonth:'',bizDate:'',subjectName:'',projectPhaseName:''
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmProjectMCostUser界面初始化数据
 				editForm: {
-					subjectId:'',projectId:'',userid:'',createTime:'',sendCostTime:'',username:'',projectName:'',remark:'',id:'',taskId:'',taskName:'',actWorkload:'',bizzStartDate:'',bizzEndDate:'',bizProcInstId:'',bizFlowState:'',projectPhaseId:'',actCostAmount:'',costType:'',bizMonth:'',bizDate:'',subjectName:'',projectPhaseName:''
+					subjectId:'',projectId:'',userid:'',createTime:'',sendCostTime:'',username:'',projectName:'',remark:'',id:'',taskId:'',taskName:'',actWorkload:'',bizzStartDate:'',bizzEndDate:'',bizProcInstId:'',bizFlowState:'',phaseId:'',actCostAmount:'',costType:'',bizMonth:'',bizDate:'',subjectName:'',projectPhaseName:''
 				},
 				/**begin 自定义属性请在下面加 请加备注**/
 				batchEditVisible:false,	

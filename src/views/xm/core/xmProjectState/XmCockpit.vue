@@ -33,13 +33,13 @@
 				<el-table-column prop="totalNeedColAmount" label="待收款总金额" min-width="80" ></el-table-column>
 				<el-table-column prop="totalFinishColAmount" label="已收款总金额" min-width="80" ></el-table-column>
 				<el-table-column prop="totalCostUserAmount" label="项目总人力成本" min-width="80" ></el-table-column>
-				<el-table-column prop="totalBudgetInnerUserAmount" label="项目总内部人力预算-来自项目表" min-width="80" ></el-table-column>
+				<el-table-column prop="totalBudgetIuserAmount" label="项目总内部人力预算-来自项目表" min-width="80" ></el-table-column>
 				<el-table-column prop="totalPlanWorkload" label="项目总预算工作量-来自项目表" min-width="80" ></el-table-column>
 				<el-table-column prop="totalRiskCnt" label="项目风险总数" min-width="80" ></el-table-column>
 				<el-table-column prop="totalCompleteRiskCnt" label="已完成风险总数" min-width="80" ></el-table-column>
 				<el-table-column prop="branchId" label="机构编号" min-width="80" ></el-table-column>
 				<el-table-column prop="branchName" label="机构名称" min-width="80" ></el-table-column>
-				<el-table-column prop="totalBudgetOutUserAmount" label="项目总外购人力预算-来自项目表" min-width="80" ></el-table-column>
+				<el-table-column prop="totalBudgetOuserAmount" label="项目总外购人力预算-来自项目表" min-width="80" ></el-table-column>
 				<el-table-column prop="totalCompleteWorkload" label="已完成工作量-来自计划中实际完成工作量" min-width="80" ></el-table-column>
 				<el-table-column prop="todayNewBugCnt" label="今日新增bug数目" min-width="80" ></el-table-column>
 				<el-table-column prop="todayResolvedBugCnt" label="今日解决bug数目" min-width="80" ></el-table-column>
@@ -55,11 +55,11 @@
 				<el-table-column prop="todayNeedColAmount" label="今日需要收款金额" min-width="80" ></el-table-column>
 				<el-table-column prop="todayFinishColAmount" label="今日完成收款金额" min-width="80" ></el-table-column>
 				<el-table-column prop="todayCostUserAmount" label="今日人力成本金额" min-width="80" ></el-table-column>
-				<el-table-column prop="todayCostInnerUserAmount" label="今日内部人力成本金额" min-width="80" ></el-table-column>
-				<el-table-column prop="todayCostOutUserAmount" label="今日外购人力成本金额" min-width="80" ></el-table-column>
+				<el-table-column prop="todayCostIuserAmount" label="今日内部人力成本金额" min-width="80" ></el-table-column>
+				<el-table-column prop="todayCostOuserAmount" label="今日外购人力成本金额" min-width="80" ></el-table-column>
 				<el-table-column prop="todayCostNouserAmount" label="今日非人力成本金额" min-width="80" ></el-table-column>
-				<el-table-column prop="totalCostInnerUserAmount" label="项目总内部人力成本金额" min-width="80" ></el-table-column>
-				<el-table-column prop="totalCostOutUserAmount" label="项目总外购人力成本金额" min-width="80" ></el-table-column>
+				<el-table-column prop="totalCostIuserAmount" label="项目总内部人力成本金额" min-width="80" ></el-table-column>
+				<el-table-column prop="totalCostOuserAmount" label="项目总外购人力成本金额" min-width="80" ></el-table-column>
 				<el-table-column prop="todayNeedPayAmount" label="今日新增待付款总金额" min-width="80" ></el-table-column>
 				<el-table-column prop="todayFinishPayAmount" label="今日新增完成付款总金额" min-width="80" ></el-table-column>
 				<el-table-column prop="todayNewRiskCnt" label="今日新增项目风险总数" min-width="80" ></el-table-column>
@@ -142,13 +142,13 @@
 				addFormVisible: false,//新增xmProjectState界面是否显示
 				//新增xmProjectState界面初始化数据
 				addForm: {
-					projectId:'',bizDate:'',totalFileCnt:'',totalBugCnt:'',totalTaskCnt:'',totalBudgetNouserAmount:'',projectName:'',id:'',totalStaffCnt:'',calCtime:'',calStatus:'',totalCostNouserAmount:'',totalClosedBugCnt:'',totalResolvedBugCnt:'',totalCompleteTaskCnt:'',totalPhaseCnt:'',totalCompletePhaseCnt:'',totalNeedPayAmount:'',totalFinishPayAmount:'',totalNeedColAmount:'',totalFinishColAmount:'',totalCostUserAmount:'',totalBudgetInnerUserAmount:'',totalPlanWorkload:'',totalRiskCnt:'',totalCompleteRiskCnt:'',branchId:'',branchName:'',totalBudgetOutUserAmount:'',totalCompleteWorkload:'',todayNewBugCnt:'',todayResolvedBugCnt:'',todayClosedBugCnt:'',todayNewTaskCnt:'',todayCompleteTaskCnt:'',todayNewPhaseCnt:'',todayCompletePhaseCnt:'',todayNewStaffCnt:'',todaySubStaffCnt:'',todayNewPlanWorkload:'',todayNewActWorkload:'',todayNeedColAmount:'',todayFinishColAmount:'',todayCostUserAmount:'',todayCostInnerUserAmount:'',todayCostOutUserAmount:'',todayCostNouserAmount:'',totalCostInnerUserAmount:'',totalCostOutUserAmount:'',todayNeedPayAmount:'',todayFinishPayAmount:'',todayNewRiskCnt:'',todayCompleteRiskCnt:'',todayNewFileCnt:'',totalProgress:'',totalActiveBugCnt:'',totalConfirmedBugCnt:'',projectStatus:'',totalActWorkload:'',totalActOutWorkload:'',totalActInnerWorkload:'',totalTaskBudgetCostAt:'',totalTaskOutCnt:'',totalNeedPayCnt:'',totalFinishPayCnt:'',todayConfirmedBugCnt:'',todayActiveBugCnt:'',totalFinishPayUserCnt:'',totalNeedPayUserCnt:'',todayNeedPayUserCnt:'',todayFinishPayUserCnt:''
+					projectId:'',bizDate:'',totalFileCnt:'',totalBugCnt:'',totalTaskCnt:'',totalBudgetNouserAmount:'',projectName:'',id:'',totalStaffCnt:'',calCtime:'',calStatus:'',totalCostNouserAmount:'',totalClosedBugCnt:'',totalResolvedBugCnt:'',totalCompleteTaskCnt:'',totalPhaseCnt:'',totalCompletePhaseCnt:'',totalNeedPayAmount:'',totalFinishPayAmount:'',totalNeedColAmount:'',totalFinishColAmount:'',totalCostUserAmount:'',totalBudgetIuserAmount:'',totalPlanWorkload:'',totalRiskCnt:'',totalCompleteRiskCnt:'',branchId:'',branchName:'',totalBudgetOuserAmount:'',totalCompleteWorkload:'',todayNewBugCnt:'',todayResolvedBugCnt:'',todayClosedBugCnt:'',todayNewTaskCnt:'',todayCompleteTaskCnt:'',todayNewPhaseCnt:'',todayCompletePhaseCnt:'',todayNewStaffCnt:'',todaySubStaffCnt:'',todayNewPlanWorkload:'',todayNewActWorkload:'',todayNeedColAmount:'',todayFinishColAmount:'',todayCostUserAmount:'',todayCostIuserAmount:'',todayCostOuserAmount:'',todayCostNouserAmount:'',totalCostIuserAmount:'',totalCostOuserAmount:'',todayNeedPayAmount:'',todayFinishPayAmount:'',todayNewRiskCnt:'',todayCompleteRiskCnt:'',todayNewFileCnt:'',totalProgress:'',totalActiveBugCnt:'',totalConfirmedBugCnt:'',projectStatus:'',totalActWorkload:'',totalActOutWorkload:'',totalActInnerWorkload:'',totalTaskBudgetCostAt:'',totalTaskOutCnt:'',totalNeedPayCnt:'',totalFinishPayCnt:'',todayConfirmedBugCnt:'',todayActiveBugCnt:'',totalFinishPayUserCnt:'',totalNeedPayUserCnt:'',todayNeedPayUserCnt:'',todayFinishPayUserCnt:''
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmProjectState界面初始化数据
 				editForm: {
-					projectId:'',bizDate:'',totalFileCnt:'',totalBugCnt:'',totalTaskCnt:'',totalBudgetNouserAmount:'',projectName:'',id:'',totalStaffCnt:'',calCtime:'',calStatus:'',totalCostNouserAmount:'',totalClosedBugCnt:'',totalResolvedBugCnt:'',totalCompleteTaskCnt:'',totalPhaseCnt:'',totalCompletePhaseCnt:'',totalNeedPayAmount:'',totalFinishPayAmount:'',totalNeedColAmount:'',totalFinishColAmount:'',totalCostUserAmount:'',totalBudgetInnerUserAmount:'',totalPlanWorkload:'',totalRiskCnt:'',totalCompleteRiskCnt:'',branchId:'',branchName:'',totalBudgetOutUserAmount:'',totalCompleteWorkload:'',todayNewBugCnt:'',todayResolvedBugCnt:'',todayClosedBugCnt:'',todayNewTaskCnt:'',todayCompleteTaskCnt:'',todayNewPhaseCnt:'',todayCompletePhaseCnt:'',todayNewStaffCnt:'',todaySubStaffCnt:'',todayNewPlanWorkload:'',todayNewActWorkload:'',todayNeedColAmount:'',todayFinishColAmount:'',todayCostUserAmount:'',todayCostInnerUserAmount:'',todayCostOutUserAmount:'',todayCostNouserAmount:'',totalCostInnerUserAmount:'',totalCostOutUserAmount:'',todayNeedPayAmount:'',todayFinishPayAmount:'',todayNewRiskCnt:'',todayCompleteRiskCnt:'',todayNewFileCnt:'',totalProgress:'',totalActiveBugCnt:'',totalConfirmedBugCnt:'',projectStatus:'',totalActWorkload:'',totalActOutWorkload:'',totalActInnerWorkload:'',totalTaskBudgetCostAt:'',totalTaskOutCnt:'',totalNeedPayCnt:'',totalFinishPayCnt:'',todayConfirmedBugCnt:'',todayActiveBugCnt:'',totalFinishPayUserCnt:'',totalNeedPayUserCnt:'',todayNeedPayUserCnt:'',todayFinishPayUserCnt:''
+					projectId:'',bizDate:'',totalFileCnt:'',totalBugCnt:'',totalTaskCnt:'',totalBudgetNouserAmount:'',projectName:'',id:'',totalStaffCnt:'',calCtime:'',calStatus:'',totalCostNouserAmount:'',totalClosedBugCnt:'',totalResolvedBugCnt:'',totalCompleteTaskCnt:'',totalPhaseCnt:'',totalCompletePhaseCnt:'',totalNeedPayAmount:'',totalFinishPayAmount:'',totalNeedColAmount:'',totalFinishColAmount:'',totalCostUserAmount:'',totalBudgetIuserAmount:'',totalPlanWorkload:'',totalRiskCnt:'',totalCompleteRiskCnt:'',branchId:'',branchName:'',totalBudgetOuserAmount:'',totalCompleteWorkload:'',todayNewBugCnt:'',todayResolvedBugCnt:'',todayClosedBugCnt:'',todayNewTaskCnt:'',todayCompleteTaskCnt:'',todayNewPhaseCnt:'',todayCompletePhaseCnt:'',todayNewStaffCnt:'',todaySubStaffCnt:'',todayNewPlanWorkload:'',todayNewActWorkload:'',todayNeedColAmount:'',todayFinishColAmount:'',todayCostUserAmount:'',todayCostIuserAmount:'',todayCostOuserAmount:'',todayCostNouserAmount:'',totalCostIuserAmount:'',totalCostOuserAmount:'',todayNeedPayAmount:'',todayFinishPayAmount:'',todayNewRiskCnt:'',todayCompleteRiskCnt:'',todayNewFileCnt:'',totalProgress:'',totalActiveBugCnt:'',totalConfirmedBugCnt:'',projectStatus:'',totalActWorkload:'',totalActOutWorkload:'',totalActInnerWorkload:'',totalTaskBudgetCostAt:'',totalTaskOutCnt:'',totalNeedPayCnt:'',totalFinishPayCnt:'',todayConfirmedBugCnt:'',todayActiveBugCnt:'',totalFinishPayUserCnt:'',totalNeedPayUserCnt:'',todayNeedPayUserCnt:'',todayFinishPayUserCnt:''
 				}
 				/**begin 自定义属性请在下面加 请加备注**/
 					

@@ -69,8 +69,8 @@
 				<el-form-item label="项目总人力成本" prop="totalCostUserAmount">
 					<el-input v-model="editForm.totalCostUserAmount" placeholder="项目总人力成本"></el-input>
 				</el-form-item> 
-				<el-form-item label="项目总内部人力预算-来自项目表" prop="totalBudgetInnerUserAmount">
-					<el-input v-model="editForm.totalBudgetInnerUserAmount" placeholder="项目总内部人力预算-来自项目表"></el-input>
+				<el-form-item label="项目总内部人力预算-来自项目表" prop="totalBudgetIuserAmount">
+					<el-input v-model="editForm.totalBudgetIuserAmount" placeholder="项目总内部人力预算-来自项目表"></el-input>
 				</el-form-item> 
 				<el-form-item label="项目总预算工作量-来自项目表" prop="totalPlanWorkload">
 					<el-input v-model="editForm.totalPlanWorkload" placeholder="项目总预算工作量-来自项目表"></el-input>
@@ -87,17 +87,17 @@
 				<el-form-item label="机构名称" prop="branchName">
 					<el-input v-model="editForm.branchName" placeholder="机构名称"></el-input>
 				</el-form-item> 
-				<el-form-item label="项目总外购人力预算-来自项目表" prop="totalBudgetOutUserAmount">
-					<el-input v-model="editForm.totalBudgetOutUserAmount" placeholder="项目总外购人力预算-来自项目表"></el-input>
+				<el-form-item label="项目总外购人力预算-来自项目表" prop="totalBudgetOuserAmount">
+					<el-input v-model="editForm.totalBudgetOuserAmount" placeholder="项目总外购人力预算-来自项目表"></el-input>
 				</el-form-item> 
 				<el-form-item label="已完成工作量-来自计划中实际完成工作量" prop="totalCompleteWorkload">
 					<el-input v-model="editForm.totalCompleteWorkload" placeholder="已完成工作量-来自计划中实际完成工作量"></el-input>
 				</el-form-item> 
-				<el-form-item label="项目总内部人力成本金额" prop="totalCostInnerUserAmount">
-					<el-input v-model="editForm.totalCostInnerUserAmount" placeholder="项目总内部人力成本金额"></el-input>
+				<el-form-item label="项目总内部人力成本金额" prop="totalCostIuserAmount">
+					<el-input v-model="editForm.totalCostIuserAmount" placeholder="项目总内部人力成本金额"></el-input>
 				</el-form-item> 
-				<el-form-item label="项目总外购人力成本金额" prop="totalCostOutUserAmount">
-					<el-input v-model="editForm.totalCostOutUserAmount" placeholder="项目总外购人力成本金额"></el-input>
+				<el-form-item label="项目总外购人力成本金额" prop="totalCostOuserAmount">
+					<el-input v-model="editForm.totalCostOuserAmount" placeholder="项目总外购人力成本金额"></el-input>
 				</el-form-item> 
 				<el-form-item label="项目进度0~100之间，来自任务表" prop="totalProgress">
 					<el-input v-model="editForm.totalProgress" placeholder="项目进度0~100之间，来自任务表"></el-input>
@@ -138,11 +138,11 @@
 				<el-form-item label="待付款总人数" prop="totalNeedPayUserCnt">
 					<el-input v-model="editForm.totalNeedPayUserCnt" placeholder="待付款总人数"></el-input>
 				</el-form-item> 
-				<el-form-item label="内部人力总工作量-应该大于或等于计划内部人力总成本" prop="totalPlanInnerUserWorkload">
-					<el-input v-model="editForm.totalPlanInnerUserWorkload" placeholder="内部人力总工作量-应该大于或等于计划内部人力总成本"></el-input>
+				<el-form-item label="内部人力总工作量-应该大于或等于计划内部人力总成本" prop="totalPlanIuserWorkload">
+					<el-input v-model="editForm.totalPlanIuserWorkload" placeholder="内部人力总工作量-应该大于或等于计划内部人力总成本"></el-input>
 				</el-form-item> 
-				<el-form-item label="外购人力总工作量-应该大于或等于计划外购人力总成本" prop="totalPlanOutUserWorkload">
-					<el-input v-model="editForm.totalPlanOutUserWorkload" placeholder="外购人力总工作量-应该大于或等于计划外购人力总成本"></el-input>
+				<el-form-item label="外购人力总工作量-应该大于或等于计划外购人力总成本" prop="totalPlanOuserWorkload">
+					<el-input v-model="editForm.totalPlanOuserWorkload" placeholder="外购人力总工作量-应该大于或等于计划外购人力总成本"></el-input>
 				</el-form-item> 
 				<el-form-item label="测试用例总数" prop="testCases">
 					<el-input-number v-model="editForm.testCases" :min="0" :max="200"></el-input-number>
@@ -216,7 +216,7 @@
 				},
 				//编辑界面数据  XmProjectState 项目指标日统计表
 				editForm: {
-					projectId:'',bizDate:'',totalFileCnt:'',totalBugCnt:'',totalTaskCnt:'',totalBudgetNouserAmount:'',projectName:'',id:'',totalStaffCnt:'',calCtime:'',calStatus:'',totalCostNouserAmount:'',totalClosedBugCnt:'',totalResolvedBugCnt:'',totalCompleteTaskCnt:'',totalPhaseCnt:'',totalCompletePhaseCnt:'',totalNeedPayAmount:'',totalFinishPayAmount:'',totalNeedColAmount:'',totalFinishColAmount:'',totalCostUserAmount:'',totalBudgetInnerUserAmount:'',totalPlanWorkload:'',totalRiskCnt:'',totalCompleteRiskCnt:'',branchId:'',branchName:'',totalBudgetOutUserAmount:'',totalCompleteWorkload:'',totalCostInnerUserAmount:'',totalCostOutUserAmount:'',totalProgress:'',totalActiveBugCnt:'',totalConfirmedBugCnt:'',projectStatus:'',totalActWorkload:'',totalActOutWorkload:'',totalActInnerWorkload:'',totalTaskBudgetCostAt:'',totalTaskOutCnt:'',totalNeedPayCnt:'',totalFinishPayCnt:'',totalFinishPayUserCnt:'',totalNeedPayUserCnt:'',totalPlanInnerUserWorkload:'',totalPlanOutUserWorkload:'',testCases:'',execCases:'',designCases:'',finishCases:'',iterationCnt:'',productCnt:'',menuCnt:'',taskCnt:'',finishTaskCnt:''
+					projectId:'',bizDate:'',totalFileCnt:'',totalBugCnt:'',totalTaskCnt:'',totalBudgetNouserAmount:'',projectName:'',id:'',totalStaffCnt:'',calCtime:'',calStatus:'',totalCostNouserAmount:'',totalClosedBugCnt:'',totalResolvedBugCnt:'',totalCompleteTaskCnt:'',totalPhaseCnt:'',totalCompletePhaseCnt:'',totalNeedPayAmount:'',totalFinishPayAmount:'',totalNeedColAmount:'',totalFinishColAmount:'',totalCostUserAmount:'',totalBudgetIuserAmount:'',totalPlanWorkload:'',totalRiskCnt:'',totalCompleteRiskCnt:'',branchId:'',branchName:'',totalBudgetOuserAmount:'',totalCompleteWorkload:'',totalCostIuserAmount:'',totalCostOuserAmount:'',totalProgress:'',totalActiveBugCnt:'',totalConfirmedBugCnt:'',projectStatus:'',totalActWorkload:'',totalActOutWorkload:'',totalActInnerWorkload:'',totalTaskBudgetCostAt:'',totalTaskOutCnt:'',totalNeedPayCnt:'',totalFinishPayCnt:'',totalFinishPayUserCnt:'',totalNeedPayUserCnt:'',totalPlanIuserWorkload:'',totalPlanOuserWorkload:'',testCases:'',execCases:'',designCases:'',finishCases:'',iterationCnt:'',productCnt:'',menuCnt:'',taskCnt:'',finishTaskCnt:''
 				}
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				

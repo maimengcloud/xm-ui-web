@@ -1,10 +1,10 @@
 <template>
 	<section class="page-container  padding border">
 		<el-row>
-			<!--新增界面 XmProjectPhaseTemplate xm_phase_template--> 
+			<!--新增界面 XmPhaseTemplate xm_phase_template--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm"> 
-				<el-form-item label="计划名称" prop="phaseName">
-					<el-input v-model="editForm.phaseName" placeholder="计划名称" ></el-input>
+				<el-form-item label="计划名称" prop="name">
+					<el-input v-model="editForm.name" placeholder="计划名称" ></el-input>
 				</el-form-item> 
 				<el-form-item label="序号" prop="seqNo">
 					<el-input v-model="editForm.seqNo"   placeholder="排序序号，值越小越靠前，如1.0，2.0等"></el-input> 
@@ -34,11 +34,11 @@
 				<el-form-item label="预计总工作量" prop="phaseBudgetWorkload">
 					<el-input-number v-model="editForm.phaseBudgetWorkload" :precision="2" :step="8" :min="0" placeholder="预计总工作量(人时,不包括下一级)-应该大于或者等于任务中的预算总工作量"></el-input-number> <el-tag>参考{{autoParams.phaseBudgetWorkload}}人时，{{this.toFixed(autoParams.phaseBudgetWorkload/24/20)}}人月</el-tag>
 				</el-form-item> 
-				<el-form-item label="内部人力成本总预算" prop="phaseBudgetInnerUserAt">
-					<el-input-number v-model="editForm.phaseBudgetInnerUserAt" :precision="2" :step="1000" :min="0" placeholder="内部人力成本总预算(不包括下一级)-应该大于或等于任务中内部人力总成本"></el-input-number> <el-tag>参考{{autoParams.phaseBudgetInnerUserAt}}元，{{this.toFixed(autoParams.phaseBudgetInnerUserAt/10000)}}万元</el-tag>
+				<el-form-item label="内部人力成本总预算" prop="phaseBudgetIuserAt">
+					<el-input-number v-model="editForm.phaseBudgetIuserAt" :precision="2" :step="1000" :min="0" placeholder="内部人力成本总预算(不包括下一级)-应该大于或等于任务中内部人力总成本"></el-input-number> <el-tag>参考{{autoParams.phaseBudgetIuserAt}}元，{{this.toFixed(autoParams.phaseBudgetIuserAt/10000)}}万元</el-tag>
 				</el-form-item> 
-				<el-form-item label="外购人力成本总预算" prop="phaseBudgetOutUserAt">
-					<el-input-number v-model="editForm.phaseBudgetOutUserAt" :precision="2" :step="1000" :min="0" placeholder="外购人力成本总预算(不包括下一级)-应该大于或等于任务中外购总成本"></el-input-number> <el-tag>参考{{autoParams.phaseBudgetOutUserAt}}元，{{this.toFixed(autoParams.phaseBudgetOutUserAt/10000)}}万元</el-tag>
+				<el-form-item label="外购人力成本总预算" prop="phaseBudgetOuserAt">
+					<el-input-number v-model="editForm.phaseBudgetOuserAt" :precision="2" :step="1000" :min="0" placeholder="外购人力成本总预算(不包括下一级)-应该大于或等于任务中外购总成本"></el-input-number> <el-tag>参考{{autoParams.phaseBudgetOuserAt}}元，{{this.toFixed(autoParams.phaseBudgetOuserAt/10000)}}万元</el-tag>
 				</el-form-item>
 				<el-form-item>
 					<el-col :span="24" :offset="8"> 
@@ -54,7 +54,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询 
-	import {  editXmProjectPhaseTemplate } from '@/api/xm/core/xmProjectPhaseTemplate';
+	import {  editXmPhaseTemplate } from '@/api/xm/core/xmPhaseTemplate';
 	import { mapGetters } from 'vuex'
 	
 	export default { 
@@ -82,16 +82,16 @@
 				autoParams.weekday=parseInt(phaseBudgetHours/8)
 				autoParams.phaseBudgetHours=this.toFixed(phaseBudgetHours)
 				autoParams.phaseBudgetWorkload= this.toFixed(autoParams.phaseBudgetHours*defaultPlanWorkingStaffNu)
-				autoParams.phaseBudgetOutUserAt=this.toFixed( autoParams.phaseBudgetWorkload * 100 * 0.6)
-				autoParams.phaseBudgetInnerUserAt=this.toFixed( autoParams.phaseBudgetWorkload * 100 * 0.4)
+				autoParams.phaseBudgetOuserAt=this.toFixed( autoParams.phaseBudgetWorkload * 100 * 0.6)
+				autoParams.phaseBudgetIuserAt=this.toFixed( autoParams.phaseBudgetWorkload * 100 * 0.4)
 				autoParams.phaseBudgetNouserAt=autoParams.phaseBudgetWorkload * 100 * 0.2
 				return autoParams
 			}
 		},
-		props:['xmProjectPhaseTemplate','visible','xmParentPhaseTemplate'],
+		props:['xmPhaseTemplate','visible','xmParentPhaseTemplate'],
 		watch: {
-	      'xmProjectPhaseTemplate':function( xmProjectPhaseTemplate ) {
-	        this.editForm = xmProjectPhaseTemplate;
+	      'xmPhaseTemplate':function( xmPhaseTemplate ) {
+	        this.editForm = xmPhaseTemplate;
 	      },
 	      'visible':function(visible) { 
 	      	if(visible==true){
@@ -107,7 +107,7 @@
 					id: [
 						//{ required: true, message: '计划主键不能为空', trigger: 'blur' }
 					],				
-					phaseName: [
+					name: [
 						{ required: true, message: '计划名称不能为空', trigger: 'blur' }
 					],
 					planType: [
@@ -122,7 +122,7 @@
 				},
 				//新增界面数据 xm_phase_template
 				 editForm: {
-					id:'',phaseName:'',remark:'',parentPhaseId:'',branchId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',projectTypeId:'',projectTypeName:'',phaseBudgetNouserAt:'',phaseBudgetInnerUserAt:'',phaseBudgetOutUserAt:'',phaseBudgetWorkload:'',"taskType":'',planType:'m1'
+					id:'',name:'',remark:'',parentPhaseId:'',branchId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',projectTypeId:'',projectTypeName:'',phaseBudgetNouserAt:'',phaseBudgetIuserAt:'',phaseBudgetOuserAt:'',phaseBudgetWorkload:'',"taskType":'',planType:'m1'
 				}
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				
@@ -135,7 +135,7 @@
 				this.$refs['editForm'].resetFields();
 				this.$emit('cancel');
 			},
-			//新增提交XmProjectPhaseTemplate xm_phase_template 父组件监听@submit="afterAddSubmit"
+			//新增提交XmPhaseTemplate xm_phase_template 父组件监听@submit="afterAddSubmit"
 			 editSubmit: function () {
 				
 				this.$refs.editForm.validate((valid) => {
@@ -146,9 +146,9 @@
 							let params = Object.assign({}, this.editForm); 
 							if(this.xmParentPhaseTemplate){
 								params.parentPhaseId=this.xmParentPhaseTemplate.id
-								params.parentPhaseName=this.xmParentPhaseTemplate.phaseName
+								params.parentPhaseName=this.xmParentPhaseTemplate.name
 							}
-							 editXmProjectPhaseTemplate(params).then((res) => {
+							 editXmPhaseTemplate(params).then((res) => {
 								this.load.edit=false
 								var tips=res.data.tips;
 								if(tips.isOk){
@@ -192,10 +192,10 @@
 			
 		},//end method
 		components: {  
-		    //在下面添加其它组件 'xm-phase-template-edit':XmProjectPhaseTemplateEdit
+		    //在下面添加其它组件 'xm-phase-template-edit':XmPhaseTemplateEdit
 		},
 		mounted() {
-			this.editForm=Object.assign(this.editForm, this.xmProjectPhaseTemplate);  
+			this.editForm=Object.assign(this.editForm, this.xmPhaseTemplate);  
 			/**在下面写其它函数***/
 			listOption([{categoryId:'all',itemCode:'planType'},{categoryId:'all',itemCode:'taskType'}]).then(res=>{
 				this.options=res.data.data;

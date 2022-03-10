@@ -1047,7 +1047,7 @@ import xmExecuserMng from "../xmTaskExecuser/XmTaskExecuserMng";
 import xmSkillMng from "../xmTaskSkill/XmTaskSkillMng";
 import skillMng from "@/views/xm/core/skill/skillMng";
 import { batchAddSkill } from "@/api/xm/core/xmTaskSkill";
-import xmProjectPhaseMng from "../xmProjectPhase/XmProjectPhaseSelect";
+import xmPhaseMng from "../xmPhase/XmPhaseSelect";
 import { sn } from "@/common/js/sequence";
 import xmTaskTemplateMng from "../xmTaskTemplate/XmTaskTemplateMng";
 import xmExchangeMng from "../xmExchange/XmExchangeMng";
@@ -1082,8 +1082,8 @@ export default {
         if (
           this.editForm && this.editForm.id
         ) {
-          projectPhase.id = this.editForm.projectPhaseId;
-          projectPhase.phaseName = this.editForm.projectPhaseName;
+          projectPhase.id = this.editForm.phaseId;
+          projectPhase.name = this.editForm.projectPhaseName;
           projectPhase.taskType = this.editForm.taskType;
           projectPhase.projectId = this.editForm.projectId;
           projectPhase.projectName = this.editForm.projectName;
@@ -1853,14 +1853,14 @@ export default {
         i.projectId = this.selProject.id;
         i.projectName = this.selProject.name;
         if (this.projectPhase == null) {
-          i.projectPhaseId = this.parentTask.projectPhaseId;
+          i.phaseId = this.parentTask.phaseId;
           i.projectPhaseName = this.parentTask.projectPhaseName;
           i.sortLevel = i.sortLevel ? i.sortLevel : this.parentTask.sortLevel;
           i.taskType = i.taskType ? i.taskType : this.parentTask.taskType;
           i.taskClass = i.taskClass ? i.taskClass : this.parentTask.taskClass;
         } else {
-          i.projectPhaseId = this.projectPhase.id;
-          i.projectPhaseName = this.projectPhase.phaseName;
+          i.phaseId = this.projectPhase.id;
+          i.projectPhaseName = this.projectPhase.name;
           i.sortLevel = i.sortLevel ? i.sortLevel : this.projectPhase.seqNo;
           i.taskType = i.taskType ? i.taskType : this.projectPhase.taskType;
         }
@@ -2078,12 +2078,12 @@ export default {
     getRowSum(row) {
       var budgetCost = this.getFloatValue(row.budgetCost);
       if (row.taskOut == "1") {
-        row.taskBudgetOutUserAt = budgetCost;
-        row.taskBudgetInnerUserAt = 0;
+        row.taskBudgetOuserAt = budgetCost;
+        row.taskBudgetIuserAt = 0;
         row.taskBudgetNouserAt = 0;
       } else {
-        row.taskBudgetOutUserAt = 0;
-        row.taskBudgetInnerUserAt = budgetCost;
+        row.taskBudgetOuserAt = 0;
+        row.taskBudgetIuserAt = budgetCost;
         row.taskBudgetNouserAt = 0;
       }
       return budgetCost;
@@ -2353,7 +2353,7 @@ export default {
       params.workexec = "true";
       if (this.projectPhase) {
         {
-          params.projectPhaseId = this.projectPhase.id;
+          params.phaseId = this.projectPhase.id;
         }
       }
       if (this.isMy == "1") {
@@ -2424,7 +2424,7 @@ export default {
     xmExecuserMng,
     xmSkillMng,
     skillMng,
-    xmProjectPhaseMng,
+    xmPhaseMng,
     xmTaskTemplateMng,
     XmProjectList,
     xmExchangeMng,

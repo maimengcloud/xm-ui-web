@@ -33,29 +33,29 @@
 				<el-form-item label="计算日期" prop="calcTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="addForm.calcTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
 				</el-form-item> 
-				<el-form-item label="外购资金预算" prop="planOutUserAt">
-					<el-input v-model="addForm.planOutUserAt" placeholder="外购资金预算"></el-input>
+				<el-form-item label="外购资金预算" prop="planOuserAt">
+					<el-input v-model="addForm.planOuserAt" placeholder="外购资金预算"></el-input>
 				</el-form-item> 
-				<el-form-item label="内购资金预算" prop="planInnerUserAt">
-					<el-input v-model="addForm.planInnerUserAt" placeholder="内购资金预算"></el-input>
+				<el-form-item label="内购资金预算" prop="planIuserAt">
+					<el-input v-model="addForm.planIuserAt" placeholder="内购资金预算"></el-input>
 				</el-form-item> 
-				<el-form-item label="实际外购成本" prop="actOutUserAt">
-					<el-input v-model="addForm.actOutUserAt" placeholder="实际外购成本"></el-input>
+				<el-form-item label="实际外购成本" prop="actOuserAt">
+					<el-input v-model="addForm.actOuserAt" placeholder="实际外购成本"></el-input>
 				</el-form-item> 
-				<el-form-item label="实际内购成本" prop="actInnerUserAt">
-					<el-input v-model="addForm.actInnerUserAt" placeholder="实际内购成本"></el-input>
+				<el-form-item label="实际内购成本" prop="actIuserAt">
+					<el-input v-model="addForm.actIuserAt" placeholder="实际内购成本"></el-input>
 				</el-form-item> 
-				<el-form-item label="计划外购工作量" prop="planOutUserWorkload">
-					<el-input v-model="addForm.planOutUserWorkload" placeholder="计划外购工作量"></el-input>
+				<el-form-item label="计划外购工作量" prop="planOuserWorkload">
+					<el-input v-model="addForm.planOuserWorkload" placeholder="计划外购工作量"></el-input>
 				</el-form-item> 
-				<el-form-item label="计划内购工作量" prop="planInnerUserWorkload">
-					<el-input v-model="addForm.planInnerUserWorkload" placeholder="计划内购工作量"></el-input>
+				<el-form-item label="计划内购工作量" prop="planIuserWorkload">
+					<el-input v-model="addForm.planIuserWorkload" placeholder="计划内购工作量"></el-input>
 				</el-form-item> 
-				<el-form-item label="实际外购工作量" prop="actOutUserWorkload">
-					<el-input v-model="addForm.actOutUserWorkload" placeholder="实际外购工作量"></el-input>
+				<el-form-item label="实际外购工作量" prop="actOuserWorkload">
+					<el-input v-model="addForm.actOuserWorkload" placeholder="实际外购工作量"></el-input>
 				</el-form-item> 
-				<el-form-item label="实际内购工作量" prop="actInnerUserWorkload">
-					<el-input v-model="addForm.actInnerUserWorkload" placeholder="实际内购工作量"></el-input>
+				<el-form-item label="实际内购工作量" prop="actIuserWorkload">
+					<el-input v-model="addForm.actIuserWorkload" placeholder="实际内购工作量"></el-input>
 				</el-form-item> 
 				<el-form-item label="计划非人力成本" prop="planNouserAt">
 					<el-input v-model="addForm.planNouserAt" placeholder="计划非人力成本"></el-input>
@@ -111,7 +111,7 @@
 				},
 				//新增界面数据 按任务类型汇总
 				addForm: {
-					projectId:'',projectName:'',taskType:'',planWorkload:'',planAmount:'',actWorkload:'',actAmount:'',branchId:'',bizDate:'',calcTime:'',planOutUserAt:'',planInnerUserAt:'',actOutUserAt:'',actInnerUserAt:'',planOutUserWorkload:'',planInnerUserWorkload:'',actOutUserWorkload:'',actInnerUserWorkload:'',planNouserAt:'',actNouserAt:'',id:''
+					projectId:'',projectName:'',taskType:'',planWorkload:'',planAmount:'',actWorkload:'',actAmount:'',branchId:'',bizDate:'',calcTime:'',planOuserAt:'',planIuserAt:'',actOuserAt:'',actIuserAt:'',planOuserWorkload:'',planIuserWorkload:'',actOuserWorkload:'',actIuserWorkload:'',planNouserAt:'',actNouserAt:'',id:''
 				}
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				

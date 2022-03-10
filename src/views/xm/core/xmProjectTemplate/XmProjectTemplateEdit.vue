@@ -63,36 +63,36 @@
 							<el-divider></el-divider>
 							<el-row>
 								<el-col :span="4">内购</el-col>
-								<el-col :span="4"><el-input style="width:150px;"  type="number" v-model="editForm.planInnerUserCnt" :precision="0" :step="1" :min="0" placeholder="内购人数"></el-input>  
+								<el-col :span="4"><el-input style="width:150px;"  type="number" v-model="editForm.planIuserCnt" :precision="0" :step="1" :min="0" placeholder="内购人数"></el-input>  
 								</el-col>
-								<el-col :span="4">{{autoParams.planInnerUserWorkload}}人时</el-col>
-								<el-col :span="4"><el-input  style="width:150px;" type="number" v-model="editForm.planInnerUserPrice" :precision="0" :step="1" :min="0" placeholder="预计内部人时单价"></el-input> </el-col>
-								<el-col :span="8">{{this.toFixed(autoParams.planInnerUserAt)}}元,{{this.toFixed(autoParams.planInnerUserAt/10000)}} 万元</el-col>
+								<el-col :span="4">{{autoParams.planIuserWorkload}}人时</el-col>
+								<el-col :span="4"><el-input  style="width:150px;" type="number" v-model="editForm.planIuserPrice" :precision="0" :step="1" :min="0" placeholder="预计内部人时单价"></el-input> </el-col>
+								<el-col :span="8">{{this.toFixed(autoParams.planIuserAt)}}元,{{this.toFixed(autoParams.planIuserAt/10000)}} 万元</el-col>
 							</el-row>
 							<el-divider></el-divider>
 							<el-row>
 								<el-col :span="4">外购</el-col>
-								<el-col :span="4"><el-input  style="width:150px;" type="number" v-model="editForm.planOutUserCnt" :precision="0" :step="1" :min="0" placeholder="外购人数"></el-input>  
+								<el-col :span="4"><el-input  style="width:150px;" type="number" v-model="editForm.planOuserCnt" :precision="0" :step="1" :min="0" placeholder="外购人数"></el-input>  
 								</el-col>
-								<el-col :span="4">{{autoParams.planOutUserWorkload}}人时</el-col>
-								<el-col :span="4"><el-input  style="width:150px;" type="number" v-model="editForm.planOutUserPrice" :precision="0" :step="1" :min="0" placeholder="预计外购人时单价"></el-input> </el-col>
-								<el-col :span="4">{{autoParams.planOutUserAt }} 元 {{autoParams.planOutUserAt/10000 }}万元</el-col>
+								<el-col :span="4">{{autoParams.planOuserWorkload}}人时</el-col>
+								<el-col :span="4"><el-input  style="width:150px;" type="number" v-model="editForm.planOuserPrice" :precision="0" :step="1" :min="0" placeholder="预计外购人时单价"></el-input> </el-col>
+								<el-col :span="4">{{autoParams.planOuserAt }} 元 {{autoParams.planOuserAt/10000 }}万元</el-col>
 							
 							</el-row>
 							<el-divider></el-divider>
 							<el-row>
 								<el-col :span="4">合计</el-col>
-								<el-col :span="4"> {{autoParams.planOutUserCnt+autoParams.planInnerUserCnt}}
+								<el-col :span="4"> {{autoParams.planOuserCnt+autoParams.planIuserCnt}}
 								</el-col>
-								<el-col :span="4">{{autoParams.planOutUserWorkload+autoParams.planInnerUserWorkload  }}人时,{{ (autoParams.planOutUserWorkload+autoParams.planInnerUserWorkload)/8/20  }}人月 </el-col>
-								<el-col :span="4">平均：{{ (parseFloat2(autoParams.planOutUserPrice) + parseFloat2(autoParams.planInnerUserPrice))/2}}元/人时</el-col>
+								<el-col :span="4">{{autoParams.planOuserWorkload+autoParams.planIuserWorkload  }}人时,{{ (autoParams.planOuserWorkload+autoParams.planIuserWorkload)/8/20  }}人月 </el-col>
+								<el-col :span="4">平均：{{ (parseFloat2(autoParams.planOuserPrice) + parseFloat2(autoParams.planIuserPrice))/2}}元/人时</el-col>
 								<el-col :span="8">{{autoParams.planTotalCost}} 元，{{(autoParams.planTotalCost)/10000}} 万元</el-col>
 							</el-row> 
 						</el-form-item>
 						<el-form-item label="成本总览"> 
 							<el-row>
-								内购：  <el-input style="width:150px;" type="number" v-model="editForm.planInnerUserAt" :precision="2" :step="1000" :min="0" placeholder="内部人力成本总预算"></el-input> <el-tag>参考{{this.toFixed(autoParams.planInnerUserAt)}}元，{{this.toFixed(autoParams.planInnerUserAt/10000)}}万元</el-tag>
-								外购：  <el-input style="width:150px;" type="number" v-model="editForm.planOutUserAt" :precision="2" :step="1000" :min="0" placeholder="外购人力成本总预算"></el-input> <el-tag>参考{{this.toFixed(autoParams.planOutUserAt)}}元，{{this.toFixed(autoParams.planOutUserAt/10000)}}万元</el-tag>
+								内购：  <el-input style="width:150px;" type="number" v-model="editForm.planIuserAt" :precision="2" :step="1000" :min="0" placeholder="内部人力成本总预算"></el-input> <el-tag>参考{{this.toFixed(autoParams.planIuserAt)}}元，{{this.toFixed(autoParams.planIuserAt/10000)}}万元</el-tag>
+								外购：  <el-input style="width:150px;" type="number" v-model="editForm.planOuserAt" :precision="2" :step="1000" :min="0" placeholder="外购人力成本总预算"></el-input> <el-tag>参考{{this.toFixed(autoParams.planOuserAt)}}元，{{this.toFixed(autoParams.planOuserAt/10000)}}万元</el-tag>
 								非人力：<el-input style="width:150px;" type="number" v-model="editForm.planNouserAt" :precision="2" :step="1000" :min="0" placeholder="人力成本总预算"></el-input> <el-tag>参考{{this.toFixed(autoParams.planNouserAt)}}元，{{this.toFixed( autoParams.planNouserAt/10000)}}万元</el-tag>
 							</el-row>
 							<el-divider></el-divider>
@@ -156,25 +156,25 @@
 			autoParams:function(){
 				
 				 
-				var planOutUserPrice=this.toFixed(this.editForm.planOutUserPrice)
-				var planInnerUserPrice=this.toFixed(this.editForm.planInnerUserPrice)
-				var planOutUserCnt=this.toFixed(this.editForm.planOutUserCnt)
-				var planInnerUserCnt=this.toFixed(this.editForm.planInnerUserCnt)
+				var planOuserPrice=this.toFixed(this.editForm.planOuserPrice)
+				var planIuserPrice=this.toFixed(this.editForm.planIuserPrice)
+				var planOuserCnt=this.toFixed(this.editForm.planOuserCnt)
+				var planIuserCnt=this.toFixed(this.editForm.planIuserCnt)
 				var planWorkingHours=this.toFixed(this.editForm.planWorkingHours )
 				var planNouserAt=this.toFixed(this.editForm.planNouserAt ) 
 				var budgetMarginRate=this.toFixed(this.editForm.budgetMarginRate,4 ) 
 				var taxRate=this.toFixed(this.editForm.taxRate,4)
-				if(planOutUserPrice==null || planOutUserPrice==''){
-					planOutUserPrice=100
+				if(planOuserPrice==null || planOuserPrice==''){
+					planOuserPrice=100
 				}
-				if(planInnerUserPrice==null || planInnerUserPrice==''){
-					planInnerUserPrice=80
+				if(planIuserPrice==null || planIuserPrice==''){
+					planIuserPrice=80
 				}
-				if(planOutUserCnt==null || planOutUserCnt==''){
-					planOutUserCnt=0.0
+				if(planOuserCnt==null || planOuserCnt==''){
+					planOuserCnt=0.0
 				}
-				if(planInnerUserCnt==null || planInnerUserCnt==''){
-					planInnerUserCnt=0.0
+				if(planIuserCnt==null || planIuserCnt==''){
+					planIuserCnt=0.0
 				}
 				
 				if(planNouserAt==null || planNouserAt==''){
@@ -203,19 +203,19 @@
 			 	} 
 				autoParams.weekday=weekday
 				autoParams.planWorkingHours=planWorkingHours
-				autoParams.planOutUserPrice=planOutUserPrice
-				autoParams.planInnerUserPrice=planInnerUserPrice
-				autoParams.planOutUserCnt=planOutUserCnt
-				autoParams.planInnerUserCnt=planInnerUserCnt 
+				autoParams.planOuserPrice=planOuserPrice
+				autoParams.planIuserPrice=planIuserPrice
+				autoParams.planOuserCnt=planOuserCnt
+				autoParams.planIuserCnt=planIuserCnt 
 				autoParams.taxRate=taxRate 
-				autoParams.planInnerUserWorkload= planInnerUserCnt*planWorkingHours
-				autoParams.planOutUserWorkload= planOutUserCnt*planWorkingHours
-				autoParams.planWorkload=  planInnerUserCnt*planWorkingHours + planOutUserCnt*planWorkingHours
-				autoParams.planOutUserAt= planOutUserCnt * planWorkingHours * planOutUserPrice
-				autoParams.planInnerUserAt=  planInnerUserCnt * planWorkingHours * planInnerUserPrice
+				autoParams.planIuserWorkload= planIuserCnt*planWorkingHours
+				autoParams.planOuserWorkload= planOuserCnt*planWorkingHours
+				autoParams.planWorkload=  planIuserCnt*planWorkingHours + planOuserCnt*planWorkingHours
+				autoParams.planOuserAt= planOuserCnt * planWorkingHours * planOuserPrice
+				autoParams.planIuserAt=  planIuserCnt * planWorkingHours * planIuserPrice
 				autoParams.planNouserAt= planNouserAt
 				autoParams.budgetMarginRate=budgetMarginRate
-				autoParams.planTotalCost=  autoParams.planOutUserAt + autoParams.planInnerUserAt + autoParams.planNouserAt
+				autoParams.planTotalCost=  autoParams.planOuserAt + autoParams.planIuserAt + autoParams.planNouserAt
 				autoParams.totalReceivables=autoParams.planTotalCost/(1-budgetMarginRate)/ (1-taxRate)
 				autoParams.contractAmt =autoParams.totalReceivables
 				var totalReceivables=this.editForm.totalReceivables
@@ -236,8 +236,8 @@
 			},
 			planTotalAt:function(){
 				return {
-					planOutUserAt:this.editForm.planOutUserAt,
-					planInnerUserAt:this.editForm.planInnerUserAt,
+					planOuserAt:this.editForm.planOuserAt,
+					planIuserAt:this.editForm.planIuserAt,
 					planNouserAt:this.editForm.planNouserAt,  
 				}
 			},
@@ -255,7 +255,7 @@
 		  },
 		  'planTotalAt':{
 			  handler(planTotalAt){  
-				this.editForm.planTotalCost=this.toFixed(this.parseFloat2(planTotalAt.planOutUserAt)+this.parseFloat2(planTotalAt.planInnerUserAt)+this.parseFloat2(planTotalAt.planNouserAt))
+				this.editForm.planTotalCost=this.toFixed(this.parseFloat2(planTotalAt.planOuserAt)+this.parseFloat2(planTotalAt.planIuserAt)+this.parseFloat2(planTotalAt.planNouserAt))
 				//this.editForm.totalReceivables=this.toFixed(this.parseFloat2(this.editForm.planTotalCost) * (1+0.3)) 
 			  },
 			  deep:true
@@ -299,7 +299,7 @@
 				},
 				//编辑界面数据  XmProjectTemplate xm_project
 				editForm: {
-					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:0,bizProcInstId:'',bizFlowState:'',taxRate:0.06,planNouserAt:0,planInnerUserAt:0,planOutUserAt:0,locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:0,totalReceivables:0,budgetMarginRate:0.13,contractAmt:0,planInnerUserPrice:85,planOutUserPrice:100,planOutUserCnt:1,planInnerUserCnt:1,planWorkingHours:0,planInnerUserWorkload:0,planOutUserWorkload:0,
+					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:0,bizProcInstId:'',bizFlowState:'',taxRate:0.06,planNouserAt:0,planIuserAt:0,planOuserAt:0,locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:0,totalReceivables:0,budgetMarginRate:0.13,contractAmt:0,planIuserPrice:85,planOuserPrice:100,planOuserCnt:1,planIuserCnt:1,planWorkingHours:0,planIuserWorkload:0,planOuserWorkload:0,
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
  
@@ -342,8 +342,8 @@
 						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
 							this.load.edit=true
 							let params = Object.assign({}, this.editForm);  
-							params.planInnerUserWorkload=this.autoParams.planInnerUserWorkload 
-							params.planOutUserWorkload=this.autoParams.planOutUserWorkload
+							params.planIuserWorkload=this.autoParams.planIuserWorkload 
+							params.planOuserWorkload=this.autoParams.planOuserWorkload
 							params.planWorkload=this.autoParams.planWorkload
 							editXmProjectTemplate(params).then((res) => {
 								this.load.edit=false;
@@ -400,8 +400,8 @@
 			
 			fillPlanCostAtToField:function(){
 				this.editForm.planNouserAt=this.toFixed(this.autoParams.planNouserAt)
-				this.editForm.planOutUserAt=this.toFixed(this.autoParams.planOutUserAt )
-				this.editForm.planInnerUserAt=this.toFixed(this.autoParams.planInnerUserAt )
+				this.editForm.planOuserAt=this.toFixed(this.autoParams.planOuserAt )
+				this.editForm.planIuserAt=this.toFixed(this.autoParams.planIuserAt )
 				this.editForm.planTotalCost=this.toFixed(this.autoParams.planTotalCost)
 
 			},

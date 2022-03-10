@@ -2,7 +2,7 @@
 	<section class="page-container padding border">
 		<el-row>
 			<el-col :span="filters.projectTemplate&&filters.projectTemplate.id?6:0" >
-					<xm-project-phase-template-mng   :sel-project-template="filters.projectTemplate" :simple="true" @row-click="projectPhaseTemplateRowClick" @selected-project-template="onSelectedProjectTemplate" ref="projectPhaseTemplate"></xm-project-phase-template-mng>
+					<xm-phase-template-mng   :sel-project-template="filters.projectTemplate" :simple="true" @row-click="projectPhaseTemplateRowClick" @selected-project-template="onSelectedProjectTemplate" ref="projectPhaseTemplate"></xm-phase-template-mng>
 			</el-col>
 			<el-col :span="filters.projectTemplate&&filters.projectTemplate.id?18:24">
 				<el-row>
@@ -44,7 +44,7 @@
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { listXmTask  } from '@/api/xm/core/xmTask'; 
-	import xmProjectPhaseTemplateMng from '../xmProjectPhaseTemplate/XmProjectPhaseTemplateMng'; 
+	import xmPhaseTemplateMng from '../xmPhaseTemplate/XmPhaseTemplateMng'; 
 
 	import { mapGetters } from 'vuex'
 	
@@ -87,13 +87,13 @@
 				addFormVisible: false,//新增xmTaskTemplate界面是否显示
 				//新增xmTaskTemplate界面初始化数据
 				addForm: {
-					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'',sortLevel:'',preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',rate:'',budgetCost:'',budgetWorkload:'',taskState:'',taskType:'',taskClass:'',toTaskCenter:'',projectPhaseId:'',projectPhaseName:'',taskSkillNames:'',taskSkillIds:'',taskOut:'',planType:'',settleSchemel:'',menuId:'',menuName:''
+					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'',sortLevel:'',preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',rate:'',budgetCost:'',budgetWorkload:'',taskState:'',taskType:'',taskClass:'',toTaskCenter:'',phaseId:'',projectPhaseName:'',taskSkillNames:'',taskSkillIds:'',taskOut:'',planType:'',settleSchemel:'',menuId:'',menuName:''
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmTaskTemplate界面初始化数据
 				editForm: {
-					 id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'',sortLevel:'',preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',rate:'',budgetCost:'',budgetWorkload:'',taskState:'',taskType:'',taskClass:'',toTaskCenter:'',projectPhaseId:'',projectPhaseName:'',taskSkillNames:'',taskSkillIds:'',taskOut:'',planType:'',settleSchemel:'',menuId:'',menuName:''
+					 id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'',sortLevel:'',preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',rate:'',budgetCost:'',budgetWorkload:'',taskState:'',taskType:'',taskClass:'',toTaskCenter:'',phaseId:'',projectPhaseName:'',taskSkillNames:'',taskSkillIds:'',taskOut:'',planType:'',settleSchemel:'',menuId:'',menuName:''
 				},
 				parentTaskTemplate:null,
 				projectPhaseTemplate:null,
@@ -146,7 +146,7 @@
 					params.orderBy= orderBys.join(",")
 				}
 				if(this.projectPhaseTemplate){
-					params.projectPhaseId=this.projectPhaseTemplate.id
+					params.phaseId=this.projectPhaseTemplate.id
 				}
 				if(this.filters.projectTemplate){
 					params.projectId=this.filters.projectTemplate.id
@@ -157,7 +157,7 @@
 					this.$notify({showClose: true, message: "选择一个模板项目", type: 'error' });
 					return;
 				}
-				if(!params.projectPhaseId){
+				if(!params.phaseId){
 					this.$notify({showClose: true, message: "请在左边计划列表中选择一个计划", type: 'error' });
 					return;
 				}
@@ -271,7 +271,7 @@
 			
 		},//end methods
 		components: {  
-		    xmProjectPhaseTemplateMng,
+		    xmPhaseTemplateMng,
 		    //在下面添加其它组件
 		},
 		mounted() { 

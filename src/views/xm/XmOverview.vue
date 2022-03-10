@@ -662,14 +662,14 @@ export default {
                   }
                 },
                 name: '非人力'},
-              {value: this.xmBranchState.totalBudgetInnerUserAmount,
+              {value: this.xmBranchState.totalBudgetIuserAmount,
                 itemStyle: {
                   normal:{
                     color: '#73C0DE'
                   }
                 },
                 name: '内部人力'},
-              {value: this.xmBranchState.totalBudgetOutUserAmount,
+              {value: this.xmBranchState.totalBudgetOuserAmount,
                 itemStyle: {
                   normal:{
                     color: '#5470C6'
@@ -722,14 +722,14 @@ export default {
               }
             },
             data: [
-              {value: this.xmBranchState.totalPlanInnerUserWorkload,
+              {value: this.xmBranchState.totalPlanIuserWorkload,
                 itemStyle: {
                   normal:{
                     color: '#91CC75'
                   }
                 },
                 name: '内部人力'},
-              {value: this.xmBranchState.totalPlanOutUserWorkload,
+              {value: this.xmBranchState.totalPlanOuserWorkload,
                 itemStyle: {
                   normal:{
                     color: '#3BA272'

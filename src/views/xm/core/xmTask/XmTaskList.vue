@@ -2,7 +2,7 @@
 	<section> 
 			<el-row>
 				<el-col :span="4" v-if=" filters.selProject">
-					<xm-project-phase-mng   :sel-project="filters.selProject" :simple="true" @row-click="projectPhaseRowClick" @clear-select="clearSelectPhase"></xm-project-phase-mng>
+					<xm-phase-mng   :sel-project="filters.selProject" :simple="true" @row-click="projectPhaseRowClick" @clear-select="clearSelectPhase"></xm-phase-mng>
 				</el-col>
 				<el-col :span=" filters.selProject?20:24">
 					<el-row class="page-main ">
@@ -94,7 +94,7 @@
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { getTask ,listXmTask,editXmTask,editRate, delXmTask, batchDelXmTask,batchImportTaskFromTemplate,batchSaveBudget } from '@/api/xm/core/xmTask'; 
 	import { mapGetters } from 'vuex'; 
-	import xmProjectPhaseMng from '../xmProjectPhase/XmProjectPhaseSelect'; 
+	import xmPhaseMng from '../xmPhase/XmPhaseSelect'; 
 	import XmProjectList from '../xmProject/XmProjectList';
 
 	export default { 
@@ -261,7 +261,7 @@
 				}
 				params.workexec="true";
 				if(this.projectPhase){{
-					params.projectPhaseId=this.projectPhase.id
+					params.phaseId=this.projectPhase.id
 				}}
 				if(this.isMy=='1'){
 					params.userid=this.userInfo.userid
@@ -386,12 +386,12 @@
 			getRowSum(row){
 				var budgetCost=this.getFloatValue(row.budgetCost);
 				if(row.taskOut=='1'){
-					 row.taskBudgetOutUserAt=budgetCost
-					 row.taskBudgetInnerUserAt=0
+					 row.taskBudgetOuserAt=budgetCost
+					 row.taskBudgetIuserAt=0
 					 row.taskBudgetNouserAt=0;
 				}else{
-					 row.taskBudgetOutUserAt=0
-					 row.taskBudgetInnerUserAt=budgetCost
+					 row.taskBudgetOuserAt=0
+					 row.taskBudgetIuserAt=budgetCost
 					 row.taskBudgetNouserAt=0;
 				} 
 				return budgetCost;
@@ -422,7 +422,7 @@
 		},//end methods
 		components: {  
 			  
-			xmProjectPhaseMng, XmProjectList
+			xmPhaseMng, XmProjectList
 		    //在下面添加其它组件
 		},
 		mounted() {

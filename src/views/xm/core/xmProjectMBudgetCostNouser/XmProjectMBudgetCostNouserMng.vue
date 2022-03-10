@@ -14,8 +14,8 @@
 			<font class="hidden-md-and-down">
 				<span style="margin-left:10px;font-size:14px;">项目总预算：</span><el-tag type='success'> {{selProject.planTotalCost}}</el-tag> 
 				<span style="margin-left:10px;font-size:14px;">非人力总预算：</span><el-tag type='warning'>{{selProject.planNouserAt}}</el-tag>  
-				<span style="margin-left:10px;font-size:14px;">内部人力总预算：</span><el-tag type='warning'>{{selProject.planInnerUserAt}}</el-tag>  
-				<span style="margin-left:10px;font-size:14px;">外购人力总预算：</span><el-tag type='warning'>{{selProject.planOutUserAt}}</el-tag>  
+				<span style="margin-left:10px;font-size:14px;">内部人力总预算：</span><el-tag type='warning'>{{selProject.planIuserAt}}</el-tag>  
+				<span style="margin-left:10px;font-size:14px;">外购人力总预算：</span><el-tag type='warning'>{{selProject.planOuserAt}}</el-tag>  
 			</font>
 		</el-row>
 		<el-row class="page-main "> 
@@ -139,13 +139,13 @@
 				addFormVisible: false,//新增xmProjectMBudgetCostNouser界面是否显示
 				//新增xmProjectMBudgetCostNouser界面初始化数据
 				addForm: {
-					projectId:'',budgetCost:'',id:'',remark:'',subjectId:'',bizzStartDate:'',bizzEndDate:'',bizProcInstId:'',bizFlowState:'',projectPhaseId:'',costType:'',bizzMonth:''
+					projectId:'',budgetCost:'',id:'',remark:'',subjectId:'',bizzStartDate:'',bizzEndDate:'',bizProcInstId:'',bizFlowState:'',phaseId:'',costType:'',bizzMonth:''
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmProjectMBudgetCostNouser界面初始化数据
 				editForm: {
-					projectId:'',budgetCost:'',id:'',remark:'',subjectId:'',bizzStartDate:'',bizzEndDate:'',bizProcInstId:'',bizFlowState:'',projectPhaseId:'',costType:'',bizzMonth:''
+					projectId:'',budgetCost:'',id:'',remark:'',subjectId:'',bizzStartDate:'',bizzEndDate:'',bizProcInstId:'',bizFlowState:'',phaseId:'',costType:'',bizzMonth:''
 				},
 				/**begin 自定义属性请在下面加 请加备注**/
 				

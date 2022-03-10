@@ -9,9 +9,9 @@
 						:treeProps="{children: 'children', hasChildren: 'hasChildren',pid:'parentPhaseId', pre: 'finishTaskCnt'}"
 						:props="columns"
             row-key="id">
-            <!-- <el-table-column prop="phaseName" label="计划名称" min-width="160" > 
+            <!-- <el-table-column prop="name" label="计划名称" min-width="160" > 
               <template slot-scope="scope">
-                <span>{{scope.row.phaseName}}</span>
+                <span>{{scope.row.name}}</span>
               </template>
             </el-table-column> -->
       </wl-gantt>

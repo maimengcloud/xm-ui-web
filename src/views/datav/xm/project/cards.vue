@@ -38,7 +38,7 @@ export default {
        
        var cards= this.data.map(i=>{
            var card=JSON.parse(JSON.stringify(this.cardConfig))
-           card.title=i.phaseName 
+           card.title=i.name 
            card.total.number=[i.phaseBudgetWorkload];//累计工作量 人月
            card.num.number=[i.actRate];//当前进度
            //资金占比

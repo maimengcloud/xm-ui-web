@@ -19,14 +19,14 @@
 				<el-table-column prop="branchId" label="机构编号" min-width="80" ></el-table-column>
 				<el-table-column prop="bizDate" label="业务日期yyyy-MM-dd型" min-width="80" ></el-table-column>
 				<el-table-column prop="calcTime" label="计算日期" min-width="80" ></el-table-column>
-				<el-table-column prop="planOutUserAt" label="外购资金预算" min-width="80" ></el-table-column>
-				<el-table-column prop="planInnerUserAt" label="内购资金预算" min-width="80" ></el-table-column>
-				<el-table-column prop="actOutUserAt" label="实际外购成本" min-width="80" ></el-table-column>
-				<el-table-column prop="actInnerUserAt" label="实际内购成本" min-width="80" ></el-table-column>
-				<el-table-column prop="planOutUserWorkload" label="计划外购工作量" min-width="80" ></el-table-column>
-				<el-table-column prop="planInnerUserWorkload" label="计划内购工作量" min-width="80" ></el-table-column>
-				<el-table-column prop="actOutUserWorkload" label="实际外购工作量" min-width="80" ></el-table-column>
-				<el-table-column prop="actInnerUserWorkload" label="实际内购工作量" min-width="80" ></el-table-column>
+				<el-table-column prop="planOuserAt" label="外购资金预算" min-width="80" ></el-table-column>
+				<el-table-column prop="planIuserAt" label="内购资金预算" min-width="80" ></el-table-column>
+				<el-table-column prop="actOuserAt" label="实际外购成本" min-width="80" ></el-table-column>
+				<el-table-column prop="actIuserAt" label="实际内购成本" min-width="80" ></el-table-column>
+				<el-table-column prop="planOuserWorkload" label="计划外购工作量" min-width="80" ></el-table-column>
+				<el-table-column prop="planIuserWorkload" label="计划内购工作量" min-width="80" ></el-table-column>
+				<el-table-column prop="actOuserWorkload" label="实际外购工作量" min-width="80" ></el-table-column>
+				<el-table-column prop="actIuserWorkload" label="实际内购工作量" min-width="80" ></el-table-column>
 				<el-table-column prop="planNouserAt" label="计划非人力成本" min-width="80" ></el-table-column>
 				<el-table-column prop="actNouserAt" label="实际非人力成本" min-width="80" ></el-table-column>
 				<el-table-column prop="id" label="主键" min-width="80" ></el-table-column>
@@ -91,13 +91,13 @@
 				addFormVisible: false,//新增xmBranchTaskTypeState界面是否显示
 				//新增xmBranchTaskTypeState界面初始化数据
 				addForm: {
-					taskType:'',planWorkload:'',planAmount:'',actWorkload:'',actAmount:'',branchId:'',bizDate:'',calcTime:'',planOutUserAt:'',planInnerUserAt:'',actOutUserAt:'',actInnerUserAt:'',planOutUserWorkload:'',planInnerUserWorkload:'',actOutUserWorkload:'',actInnerUserWorkload:'',planNouserAt:'',actNouserAt:'',id:'',branchName:''
+					taskType:'',planWorkload:'',planAmount:'',actWorkload:'',actAmount:'',branchId:'',bizDate:'',calcTime:'',planOuserAt:'',planIuserAt:'',actOuserAt:'',actIuserAt:'',planOuserWorkload:'',planIuserWorkload:'',actOuserWorkload:'',actIuserWorkload:'',planNouserAt:'',actNouserAt:'',id:'',branchName:''
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmBranchTaskTypeState界面初始化数据
 				editForm: {
-					taskType:'',planWorkload:'',planAmount:'',actWorkload:'',actAmount:'',branchId:'',bizDate:'',calcTime:'',planOutUserAt:'',planInnerUserAt:'',actOutUserAt:'',actInnerUserAt:'',planOutUserWorkload:'',planInnerUserWorkload:'',actOutUserWorkload:'',actInnerUserWorkload:'',planNouserAt:'',actNouserAt:'',id:'',branchName:''
+					taskType:'',planWorkload:'',planAmount:'',actWorkload:'',actAmount:'',branchId:'',bizDate:'',calcTime:'',planOuserAt:'',planIuserAt:'',actOuserAt:'',actIuserAt:'',planOuserWorkload:'',planIuserWorkload:'',actOuserWorkload:'',actIuserWorkload:'',planNouserAt:'',actNouserAt:'',id:'',branchName:''
 				}
 				/**begin 自定义属性请在下面加 请加备注**/
 					

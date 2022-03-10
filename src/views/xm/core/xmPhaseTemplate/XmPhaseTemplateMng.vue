@@ -3,15 +3,15 @@
 		<el-row v-if="!simple">
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>  
 			<el-input v-model="filters.projectName" style="width: 20%;" placeholder="点击选择项目" @click.native="showProjectTemplate"></el-input>  
-			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectPhases">查询</el-button>
+			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmPhases">查询</el-button>
  			<el-button v-if="isSelect" type="primary" @click="selectedConfirm">确认选择</el-button>  
 		</el-row>
 		
 		<el-row class="page-main" v-if="!simple"> 
-			<!--列表 XmProjectPhaseTemplate xm_phase_template-->
-			<el-table ref="table" :height="maxTableHeight" lazy :load="loadXmProjectPhaseLazy" :data="xmProjectPhaseTemplateTreeData" @sort-change="sortChange" row-key="id"  :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<!--列表 XmPhaseTemplate xm_phase_template-->
+			<el-table ref="table" :height="maxTableHeight" lazy :load="loadXmPhaseLazy" :data="xmPhaseTemplateTreeData" @sort-change="sortChange" row-key="id"  :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="selection" width="40"></el-table-column> 
-				<el-table-column prop="phaseName" label="计划名称" min-width="260" >
+				<el-table-column prop="name" label="计划名称" min-width="260" >
 					
 					 <template slot-scope="scope">  
 						<span>
@@ -23,7 +23,7 @@
 							</span>
 							<el-link :icon="scope.row.ntype=='1'?'el-icon-folder-opened':''" type="primary">{{scope.row.seqNo}} &nbsp;&nbsp;  
 							</el-link>
-							{{scope.row.phaseName}}   
+							{{scope.row.name}}   
 						</span>
 					 </template>
 				</el-table-column>
@@ -36,8 +36,8 @@
 				<el-table-column   label="成本预算(元)" min-width="80" show-overflow-tooltip>
 					<el-table-column prop="phaseBudgetAt" label="总预算" min-width="80" ></el-table-column>
 					<el-table-column prop="phaseBudgetNouserAt" label="非人力" min-width="80" ></el-table-column>
-					<el-table-column prop="phaseBudgetInnerUserAt" label="内部" min-width="80" ></el-table-column>
-					<el-table-column prop="phaseBudgetOutUserAt" label="外购" min-width="80" ></el-table-column>
+					<el-table-column prop="phaseBudgetIuserAt" label="内部" min-width="80" ></el-table-column>
+					<el-table-column prop="phaseBudgetOuserAt" label="外购" min-width="80" ></el-table-column>
 				</el-table-column> 
 				<el-table-column label="操作" width="260" fixed="right"  v-if="!isSelect" >
 					<template slot-scope="scope">
@@ -52,11 +52,11 @@
 
 		</el-row>
 		<el-row  v-if="simple"> 
-			<!--列表 XmProjectPhaseTemplate xm_phase_template-->
-			<el-table lazy :load="loadXmProjectPhaseLazy"  default-expand-all :height="maxTableHeight" :data="xmProjectPhaseTemplateTreeData" @sort-change="sortChange" row-key="id"  :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
- 				<el-table-column prop="phaseName" label="计划名称" min-width="180" > 
+			<!--列表 XmPhaseTemplate xm_phase_template-->
+			<el-table lazy :load="loadXmPhaseLazy"  default-expand-all :height="maxTableHeight" :data="xmPhaseTemplateTreeData" @sort-change="sortChange" row-key="id"  :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+ 				<el-table-column prop="name" label="计划名称" min-width="180" > 
 					 <template slot-scope="scope">  
-						 {{scope.row.seqNo}} &nbsp;&nbsp;{{scope.row.phaseName}}
+						 {{scope.row.seqNo}} &nbsp;&nbsp;{{scope.row.name}}
 					 </template> 
 				</el-table-column>  
 			</el-table>
@@ -64,14 +64,14 @@
 		
 
 		</el-row>
-					<!--编辑 XmProjectPhaseTemplate xm_phase_template界面-->
+					<!--编辑 XmPhaseTemplate xm_phase_template界面-->
 		<el-drawer title="编辑计划" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
-				<xm-project-phase-template-edit  :xm-project-phase-template="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-phase-template-edit>
+				<xm-phase-template-edit  :xm-phase-template="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-phase-template-edit>
 		</el-drawer>
 
-		<!--新增 XmProjectPhaseTemplate xm_phase_template界面-->
+		<!--新增 XmPhaseTemplate xm_phase_template界面-->
 		<el-drawer title="新增计划" :visible.sync="addFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
-			<xm-project-phase-template-add :sel-project-template="filters.projectTemplate" :xm-parent-phase-template="parentPhaseTemplate" :xm-project-phase-template="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-phase-template-add>
+			<xm-phase-template-add :sel-project-template="filters.projectTemplate" :xm-parent-phase-template="parentPhaseTemplate" :xm-phase-template="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-phase-template-add>
 		</el-drawer> 
 		<el-drawer title="项目模板" :with-header="false" :visible.sync="projectTemplateVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 			<xm-project-template-list    :visible="addFormVisible" @cancel="projectTemplateVisible=false" @selected="onProjectTemplateSelected"></xm-project-template-list>
@@ -84,19 +84,19 @@
 	import treeTool from '@/common/js/treeTool';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { listXmProjectPhase } from '@/api/xm/core/xmProjectPhase'; 
+	import { listXmPhase } from '@/api/xm/core/xmPhase'; 
 	import  XmProjectTemplateList from '../xmProjectTemplate/XmProjectTemplateList';//修改界面
 	import { mapGetters } from 'vuex'
 	
 	export default { 
-		name:'xm-project-phase-template-mng',
+		name:'xm-phase-template-mng',
 		props:['xmType','selProjectTemplate','simple','isSelect'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
 			]), 
-			xmProjectPhaseTemplateTreeData(){ 
-				return treeTool.translateDataToTree(this.xmProjectPhases,'parentPhaseId','id');
+			xmPhaseTemplateTreeData(){ 
+				return treeTool.translateDataToTree(this.xmPhases,'parentPhaseId','id');
 			},
 		},
 		watch:{ 
@@ -106,7 +106,7 @@
 				}else{
 					this.filters.projectTemplate=null;
 				}
-				this.getXmProjectPhases()
+				this.getXmPhases()
 			}
 		},
 		data() {
@@ -118,7 +118,7 @@
 					productId:'',
 					productName:'', 
 				},
-				xmProjectPhases: [],//查询结果
+				xmPhases: [],//查询结果
 				pageInfo:{//分页数据
 					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
 					pageSize:500,//每页数据
@@ -131,16 +131,16 @@
 				sels: [],//列表选中数据
 				options:{projectType:[]},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				
-				addFormVisible: false,//新增xmProjectPhaseTemplate界面是否显示
-				//新增xmProjectPhaseTemplate界面初始化数据
+				addFormVisible: false,//新增xmPhaseTemplate界面是否显示
+				//新增xmPhaseTemplate界面初始化数据
 				addForm: {
-					id:'',phaseName:'',remark:'',parentPhaseId:'',branchId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',xmType:'',projectTypeName:'',phaseBudgetNouserAt:'',phaseBudgetInnerUserAt:'',phaseBudgetOutUserAt:'',phaseBudgetWorkload:''
+					id:'',name:'',remark:'',parentPhaseId:'',branchId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',xmType:'',projectTypeName:'',phaseBudgetNouserAt:'',phaseBudgetIuserAt:'',phaseBudgetOuserAt:'',phaseBudgetWorkload:''
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
-				//编辑xmProjectPhaseTemplate界面初始化数据
+				//编辑xmPhaseTemplate界面初始化数据
 				editForm: {
-					id:'',phaseName:'',remark:'',parentPhaseId:'',branchId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',xmType:'',projectTypeName:'',phaseBudgetNouserAt:'',phaseBudgetInnerUserAt:'',phaseBudgetOutUserAt:'',phaseBudgetWorkload:''
+					id:'',name:'',remark:'',parentPhaseId:'',branchId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',xmType:'',projectTypeName:'',phaseBudgetNouserAt:'',phaseBudgetIuserAt:'',phaseBudgetOuserAt:'',phaseBudgetWorkload:''
 				},
 				parentPhaseTemplate:null,
 				projectTemplateVisible:false,
@@ -153,11 +153,11 @@
 		methods: { 
 			handleSizeChange(pageSize) { 
 				this.pageInfo.pageSize=pageSize; 
-				this.getXmProjectPhases();
+				this.getXmPhases();
 			},
 			handleCurrentChange(pageNum) {
 				this.pageInfo.pageNum = pageNum;
-				this.getXmProjectPhases();
+				this.getXmPhases();
 			},
 			// 表格排序 obj.order=ascending/descending,需转化为 asc/desc ; obj.prop=表格中的排序字段,字段驼峰命名
 			sortChange( obj ){
@@ -171,11 +171,11 @@
 					this.pageInfo.orderFields=['xxx'];
 					this.pageInfo.orderDirs=[dir];
 				}
-				this.getXmProjectPhases();
+				this.getXmPhases();
 			},
-			searchXmProjectPhases(){
+			searchXmPhases(){
 				 this.pageInfo.count=true; 
-				 this.getXmProjectPhases();
+				 this.getXmPhases();
 			},
 			getParams(params){
 				if( this.filters.projectId  ){
@@ -186,8 +186,8 @@
 				} 
 				return params;
 			},
-			//获取列表 XmProjectPhaseTemplate xm_phase_template
-			getXmProjectPhases() {
+			//获取列表 XmPhaseTemplate xm_phase_template
+			getXmPhases() {
 				let params = {
 					pageSize: this.pageInfo.pageSize,
 					pageNum: this.pageInfo.pageNum,
@@ -208,12 +208,12 @@
 				}
 				params.isTop="1"
 				this.load.list = true;
-				listXmProjectPhase(params).then((res) => {
+				listXmPhase(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
-						this.xmProjectPhases = res.data.data;
+						this.xmPhases = res.data.data;
 					}else{
 						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					} 
@@ -221,12 +221,12 @@
 				}).catch( err => this.load.list = false );
 			},
 
-			//显示编辑界面 XmProjectPhaseTemplate xm_phase_template
+			//显示编辑界面 XmPhaseTemplate xm_phase_template
 			showEdit: function ( row,index ) {
 				this.editFormVisible = true;
 				this.editForm = Object.assign({}, row);
 			},
-			//显示新增界面 XmProjectPhaseTemplate xm_phase_template
+			//显示新增界面 XmPhaseTemplate xm_phase_template
 			showAdd: function () { 
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);
@@ -242,12 +242,12 @@
 			afterAddSubmit(){
 				this.addFormVisible=false;
 				this.pageInfo.count=true;
-				this.getXmProjectPhases();
+				this.getXmPhases();
 			},
 			afterEditSubmit(){
 				this.editFormVisible=false;
 			},
-			//选择行xmProjectPhaseTemplate
+			//选择行xmPhaseTemplate
 			selsChange: function (sels) {
 				this.sels = sels;
 			}, 
@@ -267,15 +267,15 @@
 				this.filters.projectId=projectTemplate.id; 
 				this.filters.projectName=projectTemplate.name; 
 				this.$emit('selected-project-template',projectTemplate)
-				this.getXmProjectPhases();
+				this.getXmPhases();
 			},
 			
-			loadXmProjectPhaseLazy(tree, treeNode, resolve) {     
+			loadXmPhaseLazy(tree, treeNode, resolve) {     
 					var params={parentPhaseId:tree.id}
 					params=this.getParams(params);
 					params.isTop=""
 					this.load.list = true;
-					var func=listXmProjectPhase 
+					var func=listXmPhase 
 					func(params).then(res=>{
 						this.load.list = false
 						var tips = res.data.tips;
@@ -299,7 +299,7 @@
 			}
 			this.$nextTick(() => { 
                 this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el);
-				this.getXmProjectPhases();   
+				this.getXmPhases();   
 			}); 
 			
 			

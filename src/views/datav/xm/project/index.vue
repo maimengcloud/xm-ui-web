@@ -45,7 +45,7 @@ import cards from './cards'
   import { listXmGroupState} from '@/api/xm/core/xmGroupState';
 	import { listXmProjectTaskTypeState } from '@/api/xm/core/xmProjectTaskTypeState';
   import { listXmRecord } from '@/api/xm/core/xmRecord';
-  import { listXmProjectPhase } from '@/api/xm/core/xmProjectPhase';
+  import { listXmPhase } from '@/api/xm/core/xmPhase';
 
 
   import { mapGetters } from 'vuex'
@@ -74,7 +74,7 @@ export default {
         {
           title: '累计金额',
           number: {
-            number: [(this.floatValue(this.xmProjectState.totalBudgetNouserAmount) + this.floatValue(this.xmProjectState.totalBudgetInnerUserAmount) + this.floatValue(this.xmProjectState.totalBudgetOutUserAmount))/10000],
+            number: [(this.floatValue(this.xmProjectState.totalBudgetNouserAmount) + this.floatValue(this.xmProjectState.totalBudgetIuserAmount) + this.floatValue(this.xmProjectState.totalBudgetOuserAmount))/10000],
             content: '{nt}',
             textAlign: 'right',
             style: {
@@ -236,8 +236,8 @@ export default {
     waterLevelChartData(){
       if(this.xmProjectState){
         var data={}
-        var allAmount=this.floatValue(this.xmProjectState.totalBudgetNouserAmount) + this.floatValue(this.xmProjectState.totalBudgetInnerUserAmount) + this.floatValue(this.xmProjectState.totalBudgetOutUserAmount);
-        data.finishNum= this.floatValue(this.xmProjectState.totalCostNouserAmount) + this.floatValue(this.xmProjectState.totalCostInnerUserAmount) +this.floatValue(this.xmProjectState.totalCostOutUserAmount) 
+        var allAmount=this.floatValue(this.xmProjectState.totalBudgetNouserAmount) + this.floatValue(this.xmProjectState.totalBudgetIuserAmount) + this.floatValue(this.xmProjectState.totalBudgetOuserAmount);
+        data.finishNum= this.floatValue(this.xmProjectState.totalCostNouserAmount) + this.floatValue(this.xmProjectState.totalCostIuserAmount) +this.floatValue(this.xmProjectState.totalCostOuserAmount) 
         data.finishPercent= parseFloat(data.finishNum/allAmount * 100).toFixed(0)
         return data;
      }else{
@@ -255,10 +255,10 @@ export default {
         }
     },
     cardsData(){
-      if(this.xmProjectPhases && this.xmProjectPhases.length>0){
+      if(this.xmPhases && this.xmPhases.length>0){
          var totalPlanWorkload=this.floatValue(this.xmProjectState.totalPlanWorkload)  
         
-        return this.xmProjectPhases.map(i=>{
+        return this.xmPhases.map(i=>{
            i.totalPlanWorkload=totalPlanWorkload
            return i;
         })
@@ -277,7 +277,7 @@ export default {
       xmGroupStates:[],
       xmProjectTaskTypeStates:[],
       xmRecords:[],
-      xmProjectPhases:[],
+      xmPhases:[],
       options:{
         taskType:[],
       },
@@ -301,7 +301,7 @@ export default {
       },
       
       
-      xmProjectPhasePageInfo:{//分页数据
+      xmPhasePageInfo:{//分页数据
         total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
         pageSize:5,//每页数据
         count:false,//是否需要重新计算总记录数
@@ -391,29 +391,29 @@ export default {
  					} 
  				}) ;
       },
-    //获取列表 XmProjectPhase 功能状态表,无需前端维护，所有数据由汇总统计得出
-    getXmProjectPhases() {
+    //获取列表 XmPhase 功能状态表,无需前端维护，所有数据由汇总统计得出
+    getXmPhases() {
       let params = {
-        pageSize: this.xmProjectPhasePageInfo.pageSize,
-        pageNum: this.xmProjectPhasePageInfo.pageNum,
-        total: this.xmProjectPhasePageInfo.total,
-        count:this.xmProjectPhasePageInfo.count
+        pageSize: this.xmPhasePageInfo.pageSize,
+        pageNum: this.xmPhasePageInfo.pageNum,
+        total: this.xmPhasePageInfo.total,
+        count:this.xmPhasePageInfo.count
       };
-      if(this.xmProjectPhasePageInfo.orderFields!=null && this.xmProjectPhasePageInfo.orderFields.length>0){
+      if(this.xmPhasePageInfo.orderFields!=null && this.xmPhasePageInfo.orderFields.length>0){
         let orderBys=[];
-        for(var i=0;i<this.xmProjectPhasePageInfo.orderFields.length;i++){ 
-          orderBys.push(this.xmProjectPhasePageInfo.orderFields[i]+" "+this.xmProjectPhasePageInfo.orderDirs[i])
+        for(var i=0;i<this.xmPhasePageInfo.orderFields.length;i++){ 
+          orderBys.push(this.xmPhasePageInfo.orderFields[i]+" "+this.xmPhasePageInfo.orderDirs[i])
         }  
         params.orderBy= orderBys.join(",")
       } 
 
       params.projectId=this.filters.projectId
-       listXmProjectPhase(params).then((res) => {
+       listXmPhase(params).then((res) => {
         var tips=res.data.tips;
         if(tips.isOk){ 
-          this.xmProjectPhasePageInfo.total = res.data.total;
-          this.xmProjectPhasePageInfo.count=false;
-          this.xmProjectPhases = res.data.data;
+          this.xmPhasePageInfo.total = res.data.total;
+          this.xmPhasePageInfo.count=false;
+          this.xmPhases = res.data.data;
         }else{
          } 
        }) ;
@@ -434,7 +434,7 @@ export default {
     this.getXmGroupStates();
     this.getXmProjectTaskTypeStates();
     this.getXmRecords();
-    this.getXmProjectPhases();
+    this.getXmPhases();
     listOption([{categoryId:'all',itemCode:'taskType'}] ).then(res=>{
       if(res.data.tips.isOk){ 
         this.options=res.data.data

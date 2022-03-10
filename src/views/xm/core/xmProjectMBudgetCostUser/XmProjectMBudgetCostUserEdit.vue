@@ -96,7 +96,7 @@
 				},
 				//编辑界面数据  XmProjectMBudgetCostUser xm_project_m_budget_cost_user
 				editForm: {
-					projectId:'',userid:'',budgetCost:'',id:'',remark:'',username:'',subjectId:'',bizzStartDate:'',bizzEndDate:'',bizzMonth:'',bizProcInstId:'',bizFlowState:'',projectPhaseId:'',costType:'',subjectName:''
+					projectId:'',userid:'',budgetCost:'',id:'',remark:'',username:'',subjectId:'',bizzStartDate:'',bizzEndDate:'',bizzMonth:'',bizProcInstId:'',bizFlowState:'',phaseId:'',costType:'',subjectName:''
 				}
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				

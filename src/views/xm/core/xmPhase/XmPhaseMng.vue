@@ -10,19 +10,23 @@
 				</el-select>
 				<el-input   v-model="filters.key" style="width:200px;" placeholder="模糊查询"> 
 				</el-input> 
-				<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectPhases" icon="el-icon-search">查询</el-button>
+				<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmPhases" icon="el-icon-search">查询</el-button>
 				<el-button  class="hidden-md-and-down" v-loading="load.edit" :disabled="load.edit==true" v-on:click="calcKeyPaths" icon="el-icon-s-help">计算关键路径</el-button>
 				
-				<el-button  class="hidden-md-and-down"  @click="loadMenusToXmProductPhase(sels)" v-loading="load.edit" icon="el-icon-s-data">由需求汇总进度数据</el-button> 
+				<el-button  class="hidden-md-and-down"  @click="loadTasksToXmPhase(sels)" v-loading="load.edit" icon="el-icon-s-data">由任务汇总进度数据</el-button> 
 				<el-button   @click="batchEditVisible=true" v-loading="load.edit" icon="el-icon-edit">批量修改</el-button> 
-				<el-button type="danger"   @click="batchDel" v-loading="load.del" icon="el-icon-delete">删除</el-button> 
+				<el-button type="danger"  @click="batchDel" v-loading="load.del" icon="el-icon-delete">删除</el-button> 
 			</span> 
 			<el-popover
 				placement="top-start"
 				title="添加计划"
 				width="200"
 				trigger="hover"> 
-				<el-row>  
+				<el-row> 
+					
+					<el-col :span="24"  style="padding-top:5px;">
+						<el-button type="primary"  @click="showMenu" v-loading="load.add" icon="el-icon-plus">由需求批量创建(推荐)</el-button> 
+					</el-col>
 					<el-col :span="24"  style="padding-top:5px;">
 						<el-button   @click="showAdd" v-loading="load.add" icon="el-icon-plus">直接新建</el-button> 
 					</el-col>
@@ -39,47 +43,56 @@
 					trigger="click" >
 					<el-row> 
 						
-						<el-select  v-model="filters.taskFilterType" placeholder="是否关联需求" clearable style="width: 140px;">
-							<el-option   value="not-join"  label="未关联任何需求的计划"></el-option>  
-							<el-option   value="join"  label="已关联需求的计划"></el-option>  
+						<el-select  v-model="filters.taskFilterType" placeholder="是否分配任务" clearable style="width: 140px;">
+							<el-option   value="not-join"  label="未分配任何任务的计划"></el-option>  
+							<el-option   value="join"  label="已分配任务的计划"></el-option>  
 						</el-select>  
 						<el-col  :span="24"  style="padding-top:5px;">
 							<el-button  class="hidden-md-and-down" v-loading="load.edit" :disabled="load.edit==true" v-on:click="calcKeyPaths" icon="el-icon-s-help">计算关键路径</el-button>
 						</el-col>
 						<el-col  :span="24"  style="padding-top:5px;">
-							<el-button  type="warning" @click="loadMenusToXmProductPhase(sels)" v-loading="load.edit" icon="el-icon-s-data">由需求汇总进度数据</el-button> 
+							<el-button  type="warning" @click="loadTasksToXmPhase(sels)" v-loading="load.edit" icon="el-icon-s-data">由任务汇总进度数据</el-button> 
 						</el-col>    
 					</el-row>
 					<el-button  slot="reference" icon="el-icon-more"></el-button>
 				</el-popover>  
 			
-		</el-row> 
+		</el-row>
+		<el-row class="padding-top hidden-md-and-down"     v-if="batchEditVisible==false && !xmIteration && !xmProduct">  
+ 					<span style="margin-left:10px;font-size:14px;">项目总预算：</span><el-tag type='success'> {{toFixed(phaseBudgetData.planTotalCost/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanCostAt/10000,2)}}万</el-tag> 
+					<span style="margin-left:10px;font-size:14px;">非人力总预算：</span><el-tag :type="phaseBudgetData.surplusPlanNouserAt>0?'warning':'danger'">{{toFixed(phaseBudgetData.planNouserAt/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanNouserAt/10000,2)}}万</el-tag>  
+					<span style="margin-left:10px;font-size:14px;">内部人力总预算：</span><el-tag  :type="phaseBudgetData.surplusPlanIuserAt>0?'warning':'danger'">{{toFixed(phaseBudgetData.planIuserAt/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanIuserAt/10000,2)}}万</el-tag>  
+					<span style="margin-left:10px;font-size:14px;">外购人力总预算：</span><el-tag  :type="phaseBudgetData.surplusPlanOuserAt>0?'warning':'danger'">{{toFixed(phaseBudgetData.planOuserAt/10000,2)}}万，剩{{toFixed(phaseBudgetData.surplusPlanOuserAt/10000,2)}}万</el-tag>  
+					<el-button @click="selectTotalProjectAndPhaseBudgetCost">刷新统计数据</el-button>
+
+ 		</el-row> 
  		<el-row  class="padding-top" v-show="batchEditVisible==false"> 
-			<!--列表 XmProjectPhase xm_project_phase-->
-			<el-table lazy :load="loadXmProjectPhaseLazy" ref="table" :height="tableHeight" v-show="!gstcVisible "  default-expand-all :data="projectPhaseTreeData"  :summary-method="getSummariesForNoBatchEdit"  :show-summary="true"  row-key="id" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<!--列表 XmPhase xm_project_phase-->
+			<el-table lazy :load="loadXmPhaseLazy" ref="table" :height="tableHeight" v-show="!gstcVisible "  default-expand-all :data="projectPhaseTreeData"  :summary-method="getSummariesForNoBatchEdit"  :show-summary="true"  row-key="id" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 					
-				<el-table-column  type="selection"  width="80"> 
+				<el-table-column  type="selection"  width="50"> 
 				</el-table-column>
-				  <el-table-column prop="phaseName" label="计划名称" min-width="150" show-overflow-tooltip> 
+				<el-table-column  type="index"  width="50"> 
+				</el-table-column>
+				  <el-table-column prop="name" label="计划名称" min-width="150" show-overflow-tooltip> 
 					 <template slot-scope="scope">   
-						<span class="vlink"   @click="showEdit(scope.row)">
+						<span class="vlink"    @click="showEdit(scope.row)">
 							<span v-show="scope.row.milestone=='1'">
 								<i class="el-icon-star-on"></i>
 							</span>
 							<span v-show="scope.row.isKeyPath=='1'"> 
 								<i class="el-icon-s-help"></i>
 							</span>
-							{{scope.row.seqNo}} &nbsp; 
-							 
-							{{scope.row.phaseName}}  
-							<font v-for="item in [calcTaskStateByTime(scope.row.beginDate,scope.row.endDate,scope.row.actRate,scope.phaseStatus)]" :key="item.status"><el-tag :type="item.status">{{item.remark}}</el-tag></font> 
+							{{scope.row.seqNo}} &nbsp;  
+								{{scope.row.name}}  
+								<font v-for="item in [calcTaskStateByTime(scope.row.beginDate,scope.row.endDate,scope.row.actRate,scope.phaseStatus)]" :key="item.status"><el-tag :type="item.status">{{item.remark}}</el-tag></font> 
 						</span>
 					 </template>
 				</el-table-column>   
 				<el-table-column  prop="mngUsername" label="责任人" width="80" show-overflow-tooltip> 
 					<template  slot-scope="scope">
-						<el-button type="text" v-if="!scope.row.mngUserid"  v-model="scope.row.mngUsername" @click="groupUserSelectVisible=true" icon="el-icon-setting">去设置</el-button>  
-						<el-link v-else type="primary"   @click="groupUserSelectVisible=true">{{scope.row.mngUsername}}</el-link>
+						<el-link type="primary" title="还没设置负责人，点击去设置" v-if="!scope.row.mngUserid"  v-model="scope.row.mngUsername" @click="groupUserSelectVisible=true" icon="el-icon-setting">去设置</el-link>  
+						<el-link v-else    @click="groupUserSelectVisible=true">{{scope.row.mngUsername}}</el-link>
 					</template>
 				</el-table-column>
 				<el-table-column  prop="beginDate" label="起止时间" width="120" show-overflow-tooltip>
@@ -123,20 +136,24 @@
 								</el-col>  
 								<el-col :span="24" style="padding-top:5px;">
 									<el-button  @click="showPhaseTemplate(scope.row)" icon="el-icon-upload2">从模板批量导入子计划</el-button> 
-								</el-col>  
+								</el-col> 
+								<el-col :span="24" style="padding-top:5px;">
+									<el-button  @click="showMenu(scope.row)" icon="el-icon-upload2">由需求创建子计划</el-button> 
+								</el-col> 
 							</el-row>   
 							<el-button type="text"  slot="reference" icon="el-icon-plus">子计划</el-button>
-						</el-popover>    
-						<el-button type="text"  @click="showEdit(scope.row)" icon="el-icon-edit">编辑</el-button>   
+						</el-popover>   
+						
+						<el-button type="text"  @click="showEdit(scope.row)" icon="el-icon-edit">编辑</el-button>  
 							<span v-if="scope.row.ntype!='1'">
-								<el-dropdown @command="handleCommand" :hide-on-click="false"> 
+								<el-dropdown @command="handleCommand" :hide-on-click="false">  
 									<span class="el-dropdown-link">
 										更多<i class="el-icon-arrow-down el-icon--right"></i>
 									</span>
 									<el-dropdown-menu slot="dropdown">
-										<el-dropdown-item icon="el-icon-edit"   :command="{type:'showTaskForBatchRelTasksWithPhase',row:scope.row}">批量关联需求</el-dropdown-item>	
+										<el-dropdown-item icon="el-icon-edit"   :command="{type:'showTaskForBatchRelTasksWithPhase',row:scope.row}">批量关联任务</el-dropdown-item>	
 										<el-dropdown-item icon="el-icon-search"   :command="{type:'showLog',row:scope.row}">日志</el-dropdown-item> 									
-  										<el-dropdown-item icon="el-icon-success"   :command="{type:'loadMenusToXmProductPhase',row:scope.row}">从需求中汇总进度</el-dropdown-item> 
+  										<el-dropdown-item icon="el-icon-success"   :command="{type:'loadTasksToXmPhase',row:scope.row}">从任务中汇总进度</el-dropdown-item> 
 										<el-dropdown-item icon="el-icon-success"   :command="{type:'sendToProcessApprova',row:scope.row,bizKey:'xm_project_start_approva'}">变更发审(审核通过后起效)</el-dropdown-item> 
 										<el-dropdown-item icon="el-icon-success"   :command="{type:'sendToProcessApprova',row:scope.row,bizKey:'xm_project_delete_approva'}">删除发审(审核通过后删除)</el-dropdown-item>  
 									</el-dropdown-menu>
@@ -152,32 +169,36 @@
 				<el-pagination layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[1,2,10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 			</el-row>
 
-			<!--编辑 XmProjectPhase xm_project_phase界面-->
+			<!--编辑 XmPhase xm_project_phase界面-->
 			<el-drawer  title="编辑计划" :visible.sync="editFormVisible"  size="60%"  :close-on-click-modal="false" append-to-body>
-				  <xm-project-phase-edit :xm-project-phase="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-phase-edit>
+				  <xm-phase-edit :xm-phase="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-phase-edit>
 			</el-drawer >
 	
-			<!--新增 XmProjectPhase xm_project_phase界面-->
+			<!--新增 XmPhase xm_project_phase界面-->
 			<el-drawer title="新增计划" :visible.sync="addFormVisible"  size="60%"  :close-on-click-modal="false" append-to-body>
-				<xm-project-phase-add :parent-project-phase="parentProjectPhase" :xm-project-phase="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit" ></xm-project-phase-add>
+				<xm-phase-add :parent-project-phase="parentProjectPhase" :xm-phase="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit" ></xm-phase-add>
 			</el-drawer> 
 			<!--计划模板-->
 			<el-drawer title="计划模板" :visible.sync="phaseTemplateVisible"  size="80%"  :close-on-click-modal="false" append-to-body>
-				<xm-project-phase-template-mng  :is-select="true"  :visible="phaseTemplateVisible" @cancel="phaseTemplateVisible=false" @selected-confirm="afterPhaseTemplateSelected" ></xm-project-phase-template-mng>
+				<xm-phase-template-mng  :is-select="true"  :visible="phaseTemplateVisible" @cancel="phaseTemplateVisible=false" @selected-confirm="afterPhaseTemplateSelected" ></xm-phase-template-mng>
 			</el-drawer> 
-			<el-drawer :title="editForm==null?'操作日志':editForm.phaseName+'操作日志'" center   :visible.sync="xmRecordVisible"  size="60%"  :close-on-click-modal="false" append-to-body>
-				<xm-record :obj-type="'phase'"  :visible="xmRecordVisible" :product-id="xmProduct?xmProduct.id:null" :obj-id="editForm.id"   :simple="1"></xm-record>
+			<el-drawer :title="editForm==null?'操作日志':editForm.name+'操作日志'" center   :visible.sync="xmRecordVisible"  size="60%"  :close-on-click-modal="false" append-to-body>
+				<xm-record :obj-type="'phase'"  :visible="xmRecordVisible" :project-id="selProject?selProject.id:null" :obj-id="editForm.id"   :simple="1"></xm-record>
 			</el-drawer> 
 			<el-drawer append-to-body title="选择负责人" :visible.sync="groupUserSelectVisible" size="60%"    :close-on-click-modal="false">
-				<xm-group-select :visible="groupUserSelectVisible" :xm-product="xmProduct" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-group-select>
+				<xm-group-select :visible="groupUserSelectVisible" :sel-project="selProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-group-select>
 				 
 			</el-drawer> 
 			<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible" size="60%"    :close-on-click-modal="false">
 				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
-			</el-drawer> 
+			</el-drawer>
+			
+			<el-drawer append-to-body title="任务选择" :visible.sync="taskVisible" size="80%"    :close-on-click-modal="false">
+				<xm-task-list :visible="taskVisible"  :isMultiSelect="true" :sel-project="selProject"    @tasks-selected="onSelectedTasks" ></xm-task-list>
+			</el-drawer>
 		</el-row>
 		<el-row v-if="batchEditVisible==true">
-			<xm-project-phase-batch :xm-product="xmProduct" @back="batchEditBack"></xm-project-phase-batch>
+			<xm-phase-batch :sel-project="selProject" @back="batchEditBack"></xm-phase-batch>
 		</el-row>
 	</section>
 </template>
@@ -187,18 +208,18 @@
 	import treeTool from '@/common/js/treeTool';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { batchAddXmPhaseMenu,batchDelXmPhaseMenu  } from '@/api/xm/core/xmPhaseMenu';
+	import { batchRelTasksWithPhase  } from '@/api/xm/core/xmTask';
 
-	import { listXmProductPhase,calcKeyPaths, delXmProductPhase, batchDelXmProductPhase,batchImportFromTemplate,batchSaveBudget,loadMenusToXmProductPhase,setPhaseMngUser,selectTotalProductAndPhaseBudgetCost  } from '@/api/xm/core/xmProductPhase';
-	import  XmProjectPhaseAdd from './XmProjectPhaseAdd';//新增界面
-	import  XmProjectPhaseEdit from './XmProjectPhaseEdit';//修改界面 
+	import { listXmPhase,calcKeyPaths, delXmPhase, batchDelXmPhase,batchImportFromTemplate,batchSaveBudget,loadTasksToXmPhase,setPhaseMngUser,selectTotalProjectAndPhaseBudgetCost  } from '@/api/xm/core/xmPhase';
+	import  XmPhaseAdd from './XmPhaseAdd';//新增界面
+	import  XmPhaseEdit from './XmPhaseEdit';//修改界面 
   import XmGantt from '../components/xm-gantt';
-  import  XmProjectPhaseTemplateMng from '@/views/xm/core/xmProjectPhaseTemplate/XmProjectPhaseTemplateMng';//修改界面
+  import  XmPhaseTemplateMng from '@/views/xm/core/xmPhaseTemplate/XmPhaseTemplateMng';//修改界面
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
 
 	import {sn} from '@/common/js/sequence'
 	import { mapGetters } from 'vuex'
-import XmProjectPhaseBatch from './XmProjectPhaseBatch'; 
+import XmPhaseBatch from './XmPhaseBatch'; 
 import XmGroupSelect from '../xmGroup/XmGroupSelect.vue';
 import XmTaskList from '../xmTask/XmTaskList.vue';
 
@@ -209,7 +230,7 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 		      'userInfo','roles'
 			]),
 			projectPhaseTreeData() { 
-				return treeTool.translateDataToTree(this.xmProjectPhases,"parentPhaseId","id");
+				return treeTool.translateDataToTree(this.xmPhases,"parentPhaseId","id");
 			},
 			phaseBudgetData(){ 
 				if( this.xmIteration || this.xmProduct){
@@ -220,18 +241,18 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 				var phaseBudgetAt=this.getFloatValue(dbData.phaseBudgetAt) 
 				const total={
 					surplusPlanCostAt: projectPlanTotalCost-phaseBudgetAt, 
-					surplusPlanInnerUserAt: dbData.planInnerUserAt-dbData.phaseBudgetInnerUserAt,
-					surplusPlanOutUserAt: dbData.planOutUserAt-dbData.phaseBudgetOutUserAt,
+					surplusPlanIuserAt: dbData.planIuserAt-dbData.phaseBudgetIuserAt,
+					surplusPlanOuserAt: dbData.planOuserAt-dbData.phaseBudgetOuserAt,
 					surplusPlanNouserAt: dbData.planNouserAt-dbData.phaseBudgetNouserAt, 
 
 					phaseBudgetNouserAt:dbData.phaseBudgetNouserAt,
-					phaseBudgetInnerUserAt:dbData.phaseBudgetInnerUserAt,
-					phaseBudgetOutUserAt:dbData.phaseBudgetOutUserAt,
+					phaseBudgetIuserAt:dbData.phaseBudgetIuserAt,
+					phaseBudgetOuserAt:dbData.phaseBudgetOuserAt,
 					phaseBudgetAt: phaseBudgetAt,
 					
 					planTotalCost: projectPlanTotalCost, 
-					planInnerUserAt: dbData.planInnerUserAt,
-					planOutUserAt: dbData.planOutUserAt,
+					planIuserAt: dbData.planIuserAt,
+					planOuserAt: dbData.planOuserAt,
 					planNouserAt: dbData.planNouserAt, 
 
 				}; 
@@ -239,13 +260,24 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 
 			}
 		},
-		props:['xmIteration','xmProduct'],
-		watch:{ 
+		props:['selProject','xmIteration','xmProduct'],
+		watch:{
+			selProject:function(selProject,old){ 
+        
+				if(!selProject){
+					this.xmPhases=[]
+				}else{
+					if( ( !old && selProject.id) || (old && selProject.id!=old.id)){
+						
+						this.searchXmPhases();
+					}
+				}
+			},
 			xmIteration(){
-				this.searchXmProjectPhases()
+				this.searchXmPhases()
 			},
 			xmProduct(){
-				this.searchXmProjectPhases()
+				this.searchXmPhases()
 			}
     },
 		data() {
@@ -257,7 +289,7 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 					isKeyPath:'',
 					phaseStatus:'',
 				},
-				xmProjectPhases: [],//查询结果
+				xmPhases: [],//查询结果
 				pageInfo:{//分页数据
 					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
 					pageSize:500,//每页数据
@@ -280,20 +312,20 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 					]
 				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				
-				addFormVisible: false,//新增xmProjectPhase界面是否显示
-				//新增xmProjectPhase界面初始化数据
+				addFormVisible: false,//新增xmPhase界面是否显示
+				//新增xmPhase界面初始化数据
 				addForm: {
-					id:'',phaseName:'',remark:'',parentPhaseId:'',branchId:'',taskType:'kf',planType:'m1',projectId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetInnerUserAt:'',phaseBudgetOutUserAt:'',projectBaselineId:'',bizProcInstId:'',bizFlowState:'',phaseBudgetInnerUserCnt:'',phaseBudgetOutUserCnt:'',seqNo:'',phaseBudgetInnerUserPrice:80,phaseBudgetOutUserPrice:100,phaseBudgetInnerUserWorkload:0,phaseBudgetOutUserWorkload:0
+					id:'',name:'',remark:'',parentPhaseId:'',branchId:'',taskType:'kf',planType:'m1',projectId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetIuserAt:'',phaseBudgetOuserAt:'',baselineId:'',bizProcInstId:'',bizFlowState:'',phaseBudgetIuserCnt:'',phaseBudgetOuserCnt:'',seqNo:'',phaseBudgetIuserPrice:80,phaseBudgetOuserPrice:100,phaseBudgetIuserWorkload:0,phaseBudgetOuserWorkload:0
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
-				//编辑xmProjectPhase界面初始化数据
+				//编辑xmPhase界面初始化数据
 				editForm: {
-					id:'',phaseName:'',remark:'',parentPhaseId:'',branchId:'',projectId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetInnerUserAt:'',phaseBudgetOutUserAt:'',projectBaselineId:'',bizProcInstId:'',bizFlowState:'',phaseBudgetInnerUserCnt:'',phaseBudgetOutUserCnt:'',seqNo:'',phaseBudgetInnerUserPrice:80,phaseBudgetOutUserPrice:100,phaseBudgetInnerUserWorkload:0,phaseBudgetOutUserWorkload:0
+					id:'',name:'',remark:'',parentPhaseId:'',branchId:'',projectId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetIuserAt:'',phaseBudgetOuserAt:'',baselineId:'',bizProcInstId:'',bizFlowState:'',phaseBudgetIuserCnt:'',phaseBudgetOuserCnt:'',seqNo:'',phaseBudgetIuserPrice:80,phaseBudgetOuserPrice:100,phaseBudgetIuserWorkload:0,phaseBudgetOuserWorkload:0
 				},
 				
 				editFormInit: {
-					id:'',phaseName:'',remark:'',parentPhaseId:'',branchId:'',taskType:'kf',planType:'m1',projectId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetInnerUserAt:'',phaseBudgetOutUserAt:'',projectBaselineId:'',bizProcInstId:'',bizFlowState:'',phaseBudgetInnerUserCnt:'',phaseBudgetOutUserCnt:'',seqNo:'',phaseBudgetInnerUserPrice:80,phaseBudgetOutUserPrice:100,phaseBudgetInnerUserWorkload:0,phaseBudgetOutUserWorkload:0
+					id:'',name:'',remark:'',parentPhaseId:'',branchId:'',taskType:'kf',planType:'m1',projectId:'',beginDate:'',endDate:'',phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetIuserAt:'',phaseBudgetOuserAt:'',baselineId:'',bizProcInstId:'',bizFlowState:'',phaseBudgetIuserCnt:'',phaseBudgetOuserCnt:'',seqNo:'',phaseBudgetIuserPrice:80,phaseBudgetOuserPrice:100,phaseBudgetIuserWorkload:0,phaseBudgetOuserWorkload:0
 				},
 				parentProjectPhase:null,
 				/**begin 自定义属性请在下面加 请加备注**/
@@ -308,7 +340,7 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 				groupUserSelectVisible:false,//选择负责人
 				ganrrColumns: {
 				children: 'children',
-				name: 'phaseName',
+				name: 'name',
 				id: 'id',
 				pid: 'parentPhaseId',
 				startDate: 'beginDate',
@@ -324,11 +356,11 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 		methods: { 
 			handleSizeChange(pageSize) { 
 				this.pageInfo.pageSize=pageSize; 
-				this.getXmProjectPhases();
+				this.getXmPhases();
 			},
 			handleCurrentChange(pageNum) {
 				this.pageInfo.pageNum = pageNum;
-				this.getXmProjectPhases();
+				this.getXmPhases();
 			},
 			// 表格排序 obj.order=ascending/descending,需转化为 asc/desc ; obj.prop=表格中的排序字段,字段驼峰命名
 			sortChange( obj ){
@@ -342,18 +374,22 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 					this.pageInfo.orderFields=['xxx'];
 					this.pageInfo.orderDirs=[dir];
 				}
-				this.getXmProjectPhases();
+				this.getXmPhases();
 			},
-			searchXmProjectPhases(){
+			searchXmPhases(){
 				 this.pageInfo.count=true; 
-				 this.getXmProjectPhases();
+				 this.getXmPhases();
 			},
 			
 			getParams(params){
 
 				if(this.filters.key){
 					params.key='%'+this.filters.key+'%'
-				} 
+				}
+				if(this.selProject!=null && this.selProject!=undefined){
+					params.projectId=this.selProject.id
+
+				}
 				if(this.xmIteration){
 					params.iterationId=this.xmIteration.id
 				}
@@ -381,13 +417,13 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 				}
 				return params;
 			},
-			loadXmProjectPhaseLazy(tree, treeNode, resolve) {    
+			loadXmPhaseLazy(tree, treeNode, resolve) {    
 				this.maps.set(tree.id, { tree, treeNode, resolve }) //储存数据
 					var params={parentPhaseId:tree.id}
 					params=this.getParams(params);
 					params.isTop=""
 					this.load.list = true;
-					var func=listXmProductPhase 
+					var func=listXmPhase 
 					func(params).then(res=>{
 						this.load.list = false
 						var tips = res.data.tips;
@@ -400,8 +436,8 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 				
 			},
 
-			//获取列表 XmProjectPhase xm_project_phase
-			getXmProjectPhases() {
+			//获取列表 XmPhase xm_project_phase
+			getXmPhases() {
 				this.valueChangeRows=[]
 				let params = {
 					pageSize: this.pageInfo.pageSize,
@@ -420,12 +456,12 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 				params=this.getParams(params) 
 				params.withParents="1"
 				this.load.list = true;
-				listXmProductPhase(params).then((res) => {
+				listXmPhase(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
-						this.xmProjectPhases = res.data.data;
+						this.xmPhases = res.data.data;
 					}else{
 						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					} 
@@ -433,16 +469,16 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 				}).catch( err => this.load.list = false );
 			},
 
-			//显示编辑界面 XmProjectPhase xm_project_phase
+			//显示编辑界面 XmPhase xm_project_phase
 			showEdit: function ( row,index ) { 
 				this.editForm = row;
 				this.editFormVisible = true;
 			},
-			//显示新增界面 XmProjectPhase xm_project_phase
+			//显示新增界面 XmPhase xm_project_phase
 			showAdd: function () {  
 				this.parentProjectPhase=null;
-				this.addForm.productId=this.xmProduct.id;
-				this.addForm.branchId=this.xmProduct.branchId;
+				this.addForm.projectId=this.selProject.id;
+				this.addForm.branchId=this.selProject.branchId;
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);
 			},
@@ -451,21 +487,21 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 				var myrow=JSON.parse(JSON.stringify(parentProjectPhase))
 				myrow.children=[];
 				this.parentProjectPhase=myrow
-				this.addForm.productId=this.xmProduct.id;
-				this.addForm.branchId=this.xmProduct.branchId;
+				this.addForm.projectId=this.selProject.id;
+				this.addForm.branchId=this.selProject.branchId;
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);
 			},
 			afterAddSubmit(row){
 				this.addFormVisible=false;
 				this.pageInfo.count=true; 
-				this.searchXmProjectPhases() 
-				treeTool.reloadChildren(this.$refs.table,this.maps,row.parentPhaseId,'parentPhaseId',this.loadXmProjectPhaseLazy) 
+				this.searchXmPhases() 
+				treeTool.reloadChildren(this.$refs.table,this.maps,row.parentPhaseId,'parentPhaseId',this.loadXmPhaseLazy) 
 			},
 			afterEditSubmit(row){
 				this.editFormVisible=false;   
-				this.searchXmProjectPhases() 
-				treeTool.reloadChildren(this.$refs.table,this.maps,row.parentPhaseId,'parentPhaseId',this.loadXmProjectPhaseLazy) 
+				this.searchXmPhases() 
+				treeTool.reloadChildren(this.$refs.table,this.maps,row.parentPhaseId,'parentPhaseId',this.loadXmPhaseLazy) 
 			},
 			afterPhaseTemplateSelected(phaseTemplates){
 				if(phaseTemplates==null || phaseTemplates.length==0){
@@ -517,23 +553,22 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 
 				translator(parents, children)
 				phaseTemplates2.forEach(i=>{
-					i.productId=this.xmProduct.id
-					i.phaseClass="1"
-					i.productName=this.xmProduct.productName
-					i.branchId=this.xmProduct.branchId
+					i.projectId=this.selProject.id
+					i.projectName=this.selProject.name
+					i.branchId=this.selProject.branchId
 					i.phaseBudgetAt=0
 					i.phaseBudgetNouserAt=0
-					i.phaseBudgetInnerUserAt=0
-					i.phaseBudgetOutUserAt=0 
+					i.phaseBudgetIuserAt=0
+					i.phaseBudgetOuserAt=0 
 					i.phaseBudgetWorkload=0
 					i.phaseBudgetStaffNu=0
 					i.phaseBudgetHours=160
-					i.phaseBudgetInnerUserWorkload=0
-					i.phaseBudgetOutUserWorkload=0
-					i.phaseBudgetInnerUserPrice=80
-					i.phaseBudgetOutUserPrice=100
-					i.phaseBudgetOutUserCnt=0;
-					i.phaseBudgetInnerUserCnt=0;
+					i.phaseBudgetIuserWorkload=0
+					i.phaseBudgetOuserWorkload=0
+					i.phaseBudgetIuserPrice=this.selProject.planIuserPrice
+					i.phaseBudgetOuserPrice=this.selProject.planOuserPrice
+					i.phaseBudgetOuserCnt=0;
+					i.phaseBudgetIuserCnt=0;
 					const ctime = new Date();
 					var beginDate=new Date();
 					const endDate=new Date();
@@ -548,39 +583,39 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 					var tips =res.data.tips
 
 					if(tips.isOk){  
-						this.searchXmProjectPhases() 
-						if(this.parentProjectPhase&&this.parentProjectPhase.id){
-							treeTool.reloadChildren(this.$refs.table,this.maps,this.parentProjectPhase.id,'parentPhaseId',this.loadXmProjectPhaseLazy)
+						this.searchXmPhases() 
+						if(this.parentProjectPhase&&this.this.parentProjectPhase.id){
+							treeTool.reloadChildren(this.$refs.table,this.maps,this.parentProjectPhase.id,'parentPhaseId',this.loadXmPhaseLazy)
 						} 
 					}else{ 
 						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					} 
 				}).catch( err  => this.load.add=false );
 			},
-			//选择行xmProjectPhase
+			//选择行xmPhase
 			selsChange: function (sels) {
 				this.sels = sels;
 			}, 
-			//删除xmProjectPhase
+			//删除xmPhase
 			handleDel: function (row,index) {   
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
 				}).then(() => { 
 					this.load.del=true;
 					let params = { id: row.id };
-					delXmProductPhase(params).then((res) => {
+					delXmPhase(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
 						if(tips.isOk){ 
 							this.pageInfo.count=true; 
-							this.searchXmProjectPhases() 
-							treeTool.reloadChildren(this.$refs.table,this.maps,row.parentPhaseId,'parentPhaseId',this.loadXmProjectPhaseLazy) 
+							this.searchXmPhases() 
+							treeTool.reloadChildren(this.$refs.table,this.maps,row.parentPhaseId,'parentPhaseId',this.loadXmPhaseLazy) 
 						}
 						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
-			//批量删除xmProjectPhase
+			//批量删除xmPhase
 			batchDel: function () { 
 				var phases=this.sels.filter(i=>{
 					if( i.bizFlowState==''|| i.bizFlowState==null || i.bizFlowState==undefined){
@@ -597,13 +632,13 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 					type: 'warning'
 				}).then(() => { 
 					this.load.del=true;
-					batchDelXmProductPhase(phases).then((res) => {
+					batchDelXmPhase(phases).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
 						if( tips.isOk ){  
 							this.pageInfo.count=true; 
-							this.searchXmProjectPhases() 
-							treeTool.reloadAllChildren(this.$refs.table,this.maps,phases,'parentPhaseId',this.loadXmProjectPhaseLazy)
+							this.searchXmPhases() 
+							treeTool.reloadAllChildren(this.$refs.table,this.maps,phases,'parentPhaseId',this.loadXmPhaseLazy)
 								 
 						}
 						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
@@ -765,41 +800,41 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 					this.showLog(command.data);
 				} else if(command.type=='handleDel'){
 					this.handleDel(command.data);
-				}  else if(command.type=='loadMenusToXmProductPhase'){
-					this.loadMenusToXmProductPhase([command.data]);
+				}  else if(command.type=='loadTasksToXmPhase'){
+					this.loadTasksToXmPhase([command.data]);
 				} else if(command.type=='showTaskForBatchRelTasksWithPhase'){
 					this.taskVisible=true
 				}
 			},
 			//从任务中汇总进度/实际费用等数据
-			loadMenusToXmProductPhase:function(phases){ 
+			loadTasksToXmPhase:function(phases){ 
 				var params={
-					productId:this.xmProduct.id,
+					projectId:this.selProject.id,
  				}
 				if(phases && phases.length>0){
 					params.phaseIds=phases.map(i=>i.id);
 				}
 				 this.load.edit=true;
-				loadMenusToXmProductPhase(params).then(res=>{
+				loadTasksToXmPhase(params).then(res=>{
 					 this.load.edit=false;
 					var tips = res.data.tips
-					this.xmProjectPhases=[]
+					this.xmPhases=[]
 					if(tips.isOk){
-						this.getXmProjectPhases()
+						this.getXmPhases()
 					}
 					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'}); 
 				})
 			},
 			calcKeyPaths(){
 				var params={
-					productId:this.xmProduct.id,
+					projectId:this.selProject.id,
  				}
 				 this.load.edit=true;
 				calcKeyPaths(params).then(res=>{
 					 this.load.edit=false;
 					var tips = res.data.tips
 					if(tips.isOk){
-						this.getXmProjectPhases()
+						this.getXmPhases()
 					}
 					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'}); 
 				})
@@ -824,26 +859,26 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 					row.phaseBudgetNouserAt=0;
 				}
 				
-				if(row.phaseBudgetInnerUserAt==null ||  row.phaseBudgetInnerUserAt=='' || row.phaseBudgetInnerUserAt==undefined){
-					row.phaseBudgetInnerUserAt=0;
+				if(row.phaseBudgetIuserAt==null ||  row.phaseBudgetIuserAt=='' || row.phaseBudgetIuserAt==undefined){
+					row.phaseBudgetIuserAt=0;
 				}
 				
-				if(row.phaseBudgetOutUserAt==null ||  row.phaseBudgetOutUserAt=='' || row.phaseBudgetOutUserAt==undefined){
-					row.phaseBudgetOutUserAt=0;
+				if(row.phaseBudgetOuserAt==null ||  row.phaseBudgetOuserAt=='' || row.phaseBudgetOuserAt==undefined){
+					row.phaseBudgetOuserAt=0;
 				}
 				if(row.actNouserAt==null ||  row.actNouserAt=='' || row.actNouserAt==undefined){
 					row.actNouserAt=0;
 				}
 				
-				if(row.actInnerUserAt==null ||  row.actInnerUserAt=='' || row.actInnerUserAt==undefined){
-					row.actInnerUserAt=0;
+				if(row.actIuserAt==null ||  row.actIuserAt=='' || row.actIuserAt==undefined){
+					row.actIuserAt=0;
 				}
 				
-				if(row.actOutUserAt==null ||  row.actOutUserAt=='' || row.actOutUserAt==undefined){
-					row.actOutUserAt=0;
+				if(row.actOuserAt==null ||  row.actOuserAt=='' || row.actOuserAt==undefined){
+					row.actOuserAt=0;
 				}
-				var phaseBudgetAt=parseFloat(row.phaseBudgetNouserAt)+parseFloat(row.phaseBudgetInnerUserAt)+parseFloat(row.phaseBudgetOutUserAt)
-				var actCostAt=parseFloat(row.actNouserAt)+parseFloat(row.actInnerUserAt)+parseFloat(row.actOutUserAt)
+				var phaseBudgetAt=parseFloat(row.phaseBudgetNouserAt)+parseFloat(row.phaseBudgetIuserAt)+parseFloat(row.phaseBudgetOuserAt)
+				var actCostAt=parseFloat(row.actNouserAt)+parseFloat(row.actIuserAt)+parseFloat(row.actOuserAt)
 
 				return {phaseBudgetAt:phaseBudgetAt,actCostAt:actCostAt};
 			},
@@ -854,24 +889,24 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
         console.log('fieldChange--row.opType==', row.opType);
         
         //{{formatDate(scope.row.beginDate)}}~{{formatDate(scope.row.endDate)}}  <br/> 
-				if(!row.phaseBudgetInnerUserPrice){
-					row.phaseBudgetInnerUserPrice=this.selProject.planInnerUserPrice
+				if(!row.phaseBudgetIuserPrice){
+					row.phaseBudgetIuserPrice=this.selProject.planIuserPrice
 				} 
-				if(!row.phaseBudgetOutUserPrice){
-					row.phaseBudgetOutUserPrice=this.selProject.planOutUserPrice
+				if(!row.phaseBudgetOuserPrice){
+					row.phaseBudgetOuserPrice=this.selProject.planOuserPrice
 				}
-				if(!row.phaseBudgetInnerUserCnt){
-					row.phaseBudgetInnerUserCnt=0
+				if(!row.phaseBudgetIuserCnt){
+					row.phaseBudgetIuserCnt=0
 				}
 				
-				if(!row.phaseBudgetOutUserPrice){
-					row.phaseBudgetOutUserPrice=this.selProject.planOutUserPrice
+				if(!row.phaseBudgetOuserPrice){
+					row.phaseBudgetOuserPrice=this.selProject.planOuserPrice
 				} 
-				if(!row.phaseBudgetOutUserPrice){
-					row.phaseBudgetOutUserPrice=this.selProject.planOutUserPrice
+				if(!row.phaseBudgetOuserPrice){
+					row.phaseBudgetOuserPrice=this.selProject.planOuserPrice
 				}
-				if(!row.phaseBudgetOutUserCnt){
-					row.phaseBudgetOutUserCnt=0
+				if(!row.phaseBudgetOuserCnt){
+					row.phaseBudgetOuserCnt=0
 				}
 				if(fieldName=='beginDate' || fieldName=='endDate'){
 					if(row.beginDate && row.endDate){
@@ -880,26 +915,26 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 						var end=new Date(row.endDate);
 						var days=this.getDaysBetween(end,start)
 						row.phaseBudgetHours=this.getFloatValue(days*8).toFixed(2)
-						row.phaseBudgetInnerUserWorkload=row.phaseBudgetHours  * row.phaseBudgetInnerUserCnt
-						row.phaseBudgetInnerUserAt=row.phaseBudgetInnerUserWorkload * row.phaseBudgetInnerUserPrice  
-						row.phaseBudgetOutUserWorkload=row.phaseBudgetHours  * row.phaseBudgetOutUserCnt
-						row.phaseBudgetOutUserAt=row.phaseBudgetOutUserWorkload * row.phaseBudgetOutUserPrice  
-						row.phaseBudgetWorkload=row.phaseBudgetInnerUserWorkload+row.phaseBudgetOutUserWorkload 
+						row.phaseBudgetIuserWorkload=row.phaseBudgetHours  * row.phaseBudgetIuserCnt
+						row.phaseBudgetIuserAt=row.phaseBudgetIuserWorkload * row.phaseBudgetIuserPrice  
+						row.phaseBudgetOuserWorkload=row.phaseBudgetHours  * row.phaseBudgetOuserCnt
+						row.phaseBudgetOuserAt=row.phaseBudgetOuserWorkload * row.phaseBudgetOuserPrice  
+						row.phaseBudgetWorkload=row.phaseBudgetIuserWorkload+row.phaseBudgetOuserWorkload 
 					}
 				}else if(fieldName=='phaseBudgetHours'){ 
-						row.phaseBudgetInnerUserWorkload=row.phaseBudgetHours  * row.phaseBudgetInnerUserCnt
-						row.phaseBudgetInnerUserAt=row.phaseBudgetInnerUserWorkload * row.phaseBudgetInnerUserPrice  
-						row.phaseBudgetOutUserWorkload=row.phaseBudgetHours  * row.phaseBudgetOutUserCnt
-						row.phaseBudgetOutUserAt=row.phaseBudgetOutUserWorkload * row.phaseBudgetOutUserPrice  
-						row.phaseBudgetWorkload=row.phaseBudgetInnerUserWorkload+row.phaseBudgetOutUserWorkload 
-				}else if(fieldName=='phaseBudgetInnerUserPrice' || fieldName=='phaseBudgetInnerUserCnt'){
-						row.phaseBudgetInnerUserWorkload=row.phaseBudgetHours  * row.phaseBudgetInnerUserCnt
-						row.phaseBudgetInnerUserAt=row.phaseBudgetInnerUserWorkload * row.phaseBudgetInnerUserPrice  
-						row.phaseBudgetWorkload=row.phaseBudgetInnerUserWorkload+row.phaseBudgetOutUserWorkload 
-				}else if(fieldName=='phaseBudgetOutUserPrice'||fieldName=='phaseBudgetOutUserCnt'){ 
-						row.phaseBudgetOutUserWorkload=row.phaseBudgetHours  * row.phaseBudgetOutUserCnt
-						row.phaseBudgetOutUserAt=row.phaseBudgetOutUserWorkload * row.phaseBudgetOutUserPrice  
-						row.phaseBudgetWorkload=row.phaseBudgetInnerUserWorkload+row.phaseBudgetOutUserWorkload 
+						row.phaseBudgetIuserWorkload=row.phaseBudgetHours  * row.phaseBudgetIuserCnt
+						row.phaseBudgetIuserAt=row.phaseBudgetIuserWorkload * row.phaseBudgetIuserPrice  
+						row.phaseBudgetOuserWorkload=row.phaseBudgetHours  * row.phaseBudgetOuserCnt
+						row.phaseBudgetOuserAt=row.phaseBudgetOuserWorkload * row.phaseBudgetOuserPrice  
+						row.phaseBudgetWorkload=row.phaseBudgetIuserWorkload+row.phaseBudgetOuserWorkload 
+				}else if(fieldName=='phaseBudgetIuserPrice' || fieldName=='phaseBudgetIuserCnt'){
+						row.phaseBudgetIuserWorkload=row.phaseBudgetHours  * row.phaseBudgetIuserCnt
+						row.phaseBudgetIuserAt=row.phaseBudgetIuserWorkload * row.phaseBudgetIuserPrice  
+						row.phaseBudgetWorkload=row.phaseBudgetIuserWorkload+row.phaseBudgetOuserWorkload 
+				}else if(fieldName=='phaseBudgetOuserPrice'||fieldName=='phaseBudgetOuserCnt'){ 
+						row.phaseBudgetOuserWorkload=row.phaseBudgetHours  * row.phaseBudgetOuserCnt
+						row.phaseBudgetOuserAt=row.phaseBudgetOuserWorkload * row.phaseBudgetOuserPrice  
+						row.phaseBudgetWorkload=row.phaseBudgetIuserWorkload+row.phaseBudgetOuserWorkload 
 				} 
 				if(row.opType){
 					var index=this.valueChangeRows.findIndex(i=>i.id==row.id);
@@ -930,11 +965,11 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 					this.$notify({showClose: true, message:"没有改变任何数据，无需保存", type: 'success'});
 					return;
 				}else {
-					if(this.phaseBudgetData.surplusPlanInnerUserAt<0){
+					if(this.phaseBudgetData.surplusPlanIuserAt<0){
 						this.$notify({showClose: true, message:"内部人力预算不足，请调整", type: 'error'});
 						return;
 					}
-					if(this.phaseBudgetData.surplusPlanOutUserAt<0){
+					if(this.phaseBudgetData.surplusPlanOuserAt<0){
 						this.$notify({showClose: true, message:"外购人力预算不足，请调整", type: 'error'});
 						return;
 					}
@@ -949,7 +984,7 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 						var tips =res.data.tips;
 						if(tips.isOk){
 							this.valueChangeRows=[]
-							this.getXmProjectPhases();
+							this.getXmPhases();
 						}
 						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'}); 
 						
@@ -968,7 +1003,7 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 				this.batchEditVisible=false;
 				if(this.valueChangeRows.length>0){
 					this.valueChangeRows=[];
-					this.searchXmProjectPhases();
+					this.searchXmPhases();
 				}
 				
 			},
@@ -1012,8 +1047,8 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 				sums[3]=''//开始结束时间
 				sums[4]=''// 工期 工作量 成本金额
  
-				var workload=this.phaseBudgetData.phaseBudgetInnerUserWorkload+this.phaseBudgetData.phaseBudgetOutUserWorkload
-				var cost=this.phaseBudgetData.phaseBudgetNouserAt+this.phaseBudgetData.phaseBudgetInnerUserAt+this.phaseBudgetData.phaseBudgetOutUserAt
+				var workload=this.phaseBudgetData.phaseBudgetIuserWorkload+this.phaseBudgetData.phaseBudgetOuserWorkload
+				var cost=this.phaseBudgetData.phaseBudgetNouserAt+this.phaseBudgetData.phaseBudgetIuserAt+this.phaseBudgetData.phaseBudgetOuserAt
 				sums[4]='工作量:'+workload.toFixed(0)+'人时,预算金额:'+cost.toFixed(0)+'元,'+(cost/10000).toFixed(2)+'万元'
 				return sums;
 			},
@@ -1027,11 +1062,11 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 				sums[4]=''//进度
 				sums[5]=''//工作量 计划、实际
 				sums[6]=''// 成本 计划、实际 
-				var budgetWorkload=this.phaseBudgetData.phaseBudgetInnerUserWorkload+this.phaseBudgetData.phaseBudgetOutUserWorkload
+				var budgetWorkload=this.phaseBudgetData.phaseBudgetIuserWorkload+this.phaseBudgetData.phaseBudgetOuserWorkload
 				
 				var phaseActWorkload=this.phaseBudgetData.phaseActWorkload 
-				var budgetCost=this.phaseBudgetData.phaseBudgetNouserAt+this.phaseBudgetData.phaseBudgetInnerUserAt+this.phaseBudgetData.phaseBudgetOutUserAt
-				var actCost=this.phaseBudgetData.actInnerUserAt+this.phaseBudgetData.actNouserAt+this.phaseBudgetData.actOutUserAt
+				var budgetCost=this.phaseBudgetData.phaseBudgetNouserAt+this.phaseBudgetData.phaseBudgetIuserAt+this.phaseBudgetData.phaseBudgetOuserAt
+				var actCost=this.phaseBudgetData.actIuserAt+this.phaseBudgetData.actNouserAt+this.phaseBudgetData.actOuserAt
 				sums[5]='计 '+budgetWorkload+',实 '+phaseActWorkload+'' 
 				sums[6]='计 '+budgetCost.toFixed(0)+',实 '+actCost.toFixed(0)+''
 
@@ -1076,11 +1111,11 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
       },
       changePmenuId(sId, eId) {
         let dict = {};
-        this.xmProjectPhases.forEach(d => {
+        this.xmPhases.forEach(d => {
           dict[d.id] = d.parentPhaseId || '';
         });
         if (!dict[eId]) {
-          this.xmProjectPhases.find(d => {
+          this.xmPhases.find(d => {
             if (d.id === sId) {
               d.parentPhaseId = eId;
               console.log('更新关系1');
@@ -1090,7 +1125,7 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
         } else {
           const isSynezesis = this.judgePmenuId(dict, sId, dict[eId]);
           if (!isSynezesis) {
-            this.xmProjectPhases.find(d => {
+            this.xmPhases.find(d => {
               if (d.id === sId) {
                 d.parentPhaseId = eId;
                 console.log('更新关系2');
@@ -1131,7 +1166,7 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 				menus2.forEach(i=>{
 					i.id=i.menuId
 					i.parentPhaseId=i.pmenuId
-					i.phaseName=i.menuName 
+					i.name=i.menuName 
 				})
 				this.afterPhaseTemplateSelected(menus2);
 				this.menuVisible=false;
@@ -1143,7 +1178,7 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 					return;
 				}
 				var params={
-					projectPhaseId:this.editForm.id,
+					phaseId:this.editForm.id,
 					taskIds:tasks.map(i=>i.id)
 				}
 				batchRelTasksWithPhase(params).then(res=>{
@@ -1167,17 +1202,17 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 					subRow.branchId=this.selProject.branchId
 					subRow.phaseBudgetAt=0
 					subRow.phaseBudgetNouserAt=0
-					subRow.phaseBudgetInnerUserAt=0
-					subRow.phaseBudgetOutUserAt=0 
+					subRow.phaseBudgetIuserAt=0
+					subRow.phaseBudgetOuserAt=0 
 					subRow.phaseBudgetWorkload=0
 					subRow.phaseBudgetStaffNu=0
 					subRow.phaseBudgetHours=160
-					subRow.phaseBudgetInnerUserWorkload=0
-					subRow.phaseBudgetOutUserWorkload=0
-					subRow.phaseBudgetInnerUserPrice=this.selProject.planInnerUserPrice
-					subRow.phaseBudgetOutUserPrice=this.selProject.planOutUserPrice
-					subRow.phaseBudgetOutUserCnt=0;
-					subRow.phaseBudgetInnerUserCnt=0;
+					subRow.phaseBudgetIuserWorkload=0
+					subRow.phaseBudgetOuserWorkload=0
+					subRow.phaseBudgetIuserPrice=this.selProject.planIuserPrice
+					subRow.phaseBudgetOuserPrice=this.selProject.planOuserPrice
+					subRow.phaseBudgetOuserCnt=0;
+					subRow.phaseBudgetIuserCnt=0;
 					const ctime = new Date();
 					var beginDate=new Date();
 					const endDate=new Date();
@@ -1187,7 +1222,7 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 					subRow.endDate=util.formatDate.format(endDate,'yyyy-MM-dd HH:mm:ss')
 
 					this.fieldChange(subRow,'seqNo');
-					this.xmProjectPhases.unshift(subRow);
+					this.xmPhases.unshift(subRow);
 				}else if('addSub'==opType){
 					var subRow=JSON.parse(JSON.stringify(row));
 					subRow.children=[];
@@ -1196,7 +1231,7 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 					subRow.seqNo=row.seqNo+".1"
 					subRow.opType=opType
 					this.fieldChange(subRow,'seqNo');
-					this.xmProjectPhases.unshift(subRow);
+					this.xmPhases.unshift(subRow);
 				}else if('delete'==opType){
 					if(row.opType && (row.opType=='addSub' || row.opType=='add')){
 						if(row.children && row.children.length>0){
@@ -1204,15 +1239,15 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 							return;
 						}else{ 
 
-							var index=this.xmProjectPhases.findIndex(i=>i.id==row.id)
+							var index=this.xmPhases.findIndex(i=>i.id==row.id)
 							var indexValueChanges=this.valueChangeRows.findIndex(i=>i.id==row.id)
 							this.valueChangeRows.splice(indexValueChanges,1);
-							this.xmProjectPhases.splice(index,1);
+							this.xmPhases.splice(index,1);
             }
             }
           }else if ('highestPmenuId' === opType) {  
             if (row.id) {
-              this.xmProjectPhases.find(d => {
+              this.xmPhases.find(d => {
                 if (d.id === row.id) { 
                   d.parentPhaseId = '';
                   this.fieldChange(d,'seqNo', true); 
@@ -1228,7 +1263,7 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 			batchEditBack:function(reload){
 				if(reload){
 					this.batchEditVisible=false;
-					this.searchXmProjectPhases();
+					this.searchXmPhases();
 				}else{
 					this.batchEditVisible=false;
 				}
@@ -1250,12 +1285,15 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 					}
 				})
 			},
-			selectTotalProductAndPhaseBudgetCost(){
-				var params={  } 
+			selectTotalProjectAndPhaseBudgetCost(){
+				var params={  }
+				if(this.selProject && this.selProject.id){
+					params.projectId=this.selProject.id
+				}
 				if(this.xmProduct && this.xmProduct.id){
 					params.productId=this.xmProduct.id
 				} 
-				selectTotalProductAndPhaseBudgetCost(params ).then(res=>{ 
+				selectTotalProjectAndPhaseBudgetCost(params ).then(res=>{ 
 					var tips = res.data.tips;
 					if(tips.isOk){ 
 						this.totalProjectAndPhaseBudgetCost=res.data.data;
@@ -1265,19 +1303,19 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 			}
 		},//end methods
 		components: { 
-		    'xm-project-phase-add':XmProjectPhaseAdd,
-		    'xm-project-phase-edit':XmProjectPhaseEdit,
+		    'xm-phase-add':XmPhaseAdd,
+		    'xm-phase-edit':XmPhaseEdit,
 			
-      XmProjectPhaseTemplateMng,xmMenuSelect,XmGantt,XmProjectPhaseBatch,XmGroupSelect,
+      XmPhaseTemplateMng,xmMenuSelect,XmGantt,XmPhaseBatch,XmGroupSelect,
 XmTaskList
         //在下面添加其它组件
 		},
 		mounted() {  
-			this.selectTotalProductAndPhaseBudgetCost();
+			this.selectTotalProjectAndPhaseBudgetCost();
 			this.$nextTick(() => { 
 				this.tableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
-				if(this.xmProduct && this.xmProduct.id){
-					this.getXmProjectPhases();
+				if(this.selProject){
+					this.getXmPhases();
 				} 
       });  
 			

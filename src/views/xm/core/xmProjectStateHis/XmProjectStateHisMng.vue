@@ -33,13 +33,13 @@
 				<el-table-column prop="totalNeedColAmount" label="待收款总金额" min-width="80" ></el-table-column>
 				<el-table-column prop="totalFinishColAmount" label="已收款总金额" min-width="80" ></el-table-column>
 				<el-table-column prop="totalCostUserAmount" label="项目总人力成本" min-width="80" ></el-table-column>
-				<el-table-column prop="totalBudgetInnerUserAmount" label="项目总内部人力预算-来自项目表" min-width="80" ></el-table-column>
+				<el-table-column prop="totalBudgetIuserAmount" label="项目总内部人力预算-来自项目表" min-width="80" ></el-table-column>
 				<el-table-column prop="totalPlanWorkload" label="项目总预算工作量-来自项目表" min-width="80" ></el-table-column>
 				<el-table-column prop="totalRiskCnt" label="项目风险总数" min-width="80" ></el-table-column>
 				<el-table-column prop="totalCompleteRiskCnt" label="已完成风险总数" min-width="80" ></el-table-column>
 				<el-table-column prop="branchId" label="机构编号" min-width="80" ></el-table-column>
 				<el-table-column prop="branchName" label="机构名称" min-width="80" ></el-table-column>
-				<el-table-column prop="totalBudgetOutUserAmount" label="项目总外购人力预算-来自项目表" min-width="80" ></el-table-column>
+				<el-table-column prop="totalBudgetOuserAmount" label="项目总外购人力预算-来自项目表" min-width="80" ></el-table-column>
 				<el-table-column prop="totalCompleteWorkload" label="已完成工作量-来自计划中实际完成工作量" min-width="80" ></el-table-column>
 				<el-table-column prop="id" label="本表主键" min-width="80" ></el-table-column>
 				<el-table-column label="操作" width="160" fixed="right"  >
@@ -100,13 +100,13 @@
 				addFormVisible: false,//新增xmProjectStateHis界面是否显示
 				//新增xmProjectStateHis界面初始化数据
 				addForm: {
-					projectId:'',bizDate:'',totalFileCnt:'',totalBugCnt:'',totalTaskCnt:'',totalBudgetNouserAmount:'',projectName:'',stateId:'',totalStaffCnt:'',calCtime:'',calStatus:'',totalCostNouserAmount:'',totalCloseBugCnt:'',totalResolveBugCnt:'',totalCompleteTaskCnt:'',totalPhaseCnt:'',totalCompletePhaseCnt:'',totalNeedPayAmount:'',totalFinishPayAmount:'',totalNeedColAmount:'',totalFinishColAmount:'',totalCostUserAmount:'',totalBudgetInnerUserAmount:'',totalPlanWorkload:'',totalRiskCnt:'',totalCompleteRiskCnt:'',branchId:'',branchName:'',totalBudgetOutUserAmount:'',totalCompleteWorkload:'',id:''
+					projectId:'',bizDate:'',totalFileCnt:'',totalBugCnt:'',totalTaskCnt:'',totalBudgetNouserAmount:'',projectName:'',stateId:'',totalStaffCnt:'',calCtime:'',calStatus:'',totalCostNouserAmount:'',totalCloseBugCnt:'',totalResolveBugCnt:'',totalCompleteTaskCnt:'',totalPhaseCnt:'',totalCompletePhaseCnt:'',totalNeedPayAmount:'',totalFinishPayAmount:'',totalNeedColAmount:'',totalFinishColAmount:'',totalCostUserAmount:'',totalBudgetIuserAmount:'',totalPlanWorkload:'',totalRiskCnt:'',totalCompleteRiskCnt:'',branchId:'',branchName:'',totalBudgetOuserAmount:'',totalCompleteWorkload:'',id:''
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmProjectStateHis界面初始化数据
 				editForm: {
-					projectId:'',bizDate:'',totalFileCnt:'',totalBugCnt:'',totalTaskCnt:'',totalBudgetNouserAmount:'',projectName:'',stateId:'',totalStaffCnt:'',calCtime:'',calStatus:'',totalCostNouserAmount:'',totalCloseBugCnt:'',totalResolveBugCnt:'',totalCompleteTaskCnt:'',totalPhaseCnt:'',totalCompletePhaseCnt:'',totalNeedPayAmount:'',totalFinishPayAmount:'',totalNeedColAmount:'',totalFinishColAmount:'',totalCostUserAmount:'',totalBudgetInnerUserAmount:'',totalPlanWorkload:'',totalRiskCnt:'',totalCompleteRiskCnt:'',branchId:'',branchName:'',totalBudgetOutUserAmount:'',totalCompleteWorkload:'',id:''
+					projectId:'',bizDate:'',totalFileCnt:'',totalBugCnt:'',totalTaskCnt:'',totalBudgetNouserAmount:'',projectName:'',stateId:'',totalStaffCnt:'',calCtime:'',calStatus:'',totalCostNouserAmount:'',totalCloseBugCnt:'',totalResolveBugCnt:'',totalCompleteTaskCnt:'',totalPhaseCnt:'',totalCompletePhaseCnt:'',totalNeedPayAmount:'',totalFinishPayAmount:'',totalNeedColAmount:'',totalFinishColAmount:'',totalCostUserAmount:'',totalBudgetIuserAmount:'',totalPlanWorkload:'',totalRiskCnt:'',totalCompleteRiskCnt:'',branchId:'',branchName:'',totalBudgetOuserAmount:'',totalCompleteWorkload:'',id:''
 				}
 				/**begin 自定义属性请在下面加 请加备注**/
 					

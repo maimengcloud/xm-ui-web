@@ -10,7 +10,7 @@
 				</div>
 				<div class="info-detail">
 					<xm-task-template-mng v-if="infotype=='任务'" :sel-project-template="selProjectTemplate" ></xm-task-template-mng>
-					<xm-project-phase-template-mng v-if="infotype=='计划'" :sel-project-template="selProjectTemplate" ></xm-project-phase-template-mng> 
+					<xm-phase-template-mng v-if="infotype=='计划'" :sel-project-template="selProjectTemplate" ></xm-phase-template-mng> 
 				</div>
 			</div>
 		</el-row>
@@ -25,7 +25,7 @@
 	import { mapGetters } from 'vuex';
 	import xmTaskTemplateMng from '../xmTaskTemplate/XmTaskTemplateMng'; 
 	import xmProjectTemplateEdit from './XmProjectTemplateEdit';
- 	import xmProjectPhaseTemplateMng from '../xmProjectPhaseTemplate/XmProjectPhaseTemplateMng'; 
+ 	import xmPhaseTemplateMng from '../xmPhaseTemplate/XmPhaseTemplateMng'; 
  
 	export default { 
 		props: ["selProjectTemplate"],
@@ -74,7 +74,7 @@
 		},//end methods
 		components: { 
 			xmTaskTemplateMng,
-			xmProjectPhaseTemplateMng,  
+			xmPhaseTemplateMng,  
 			xmProjectTemplateEdit, 
 			//在下面添加其它组件
 		},

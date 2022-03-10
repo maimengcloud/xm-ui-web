@@ -74,7 +74,7 @@ export default {
         {
           title: '累计金额',
           number: {
-            number: [(this.floatValue(this.xmBranchState.totalBudgetNouserAmount) + this.floatValue(this.xmBranchState.totalBudgetInnerUserAmount) + this.floatValue(this.xmBranchState.totalBudgetOutUserAmount))/10000],
+            number: [(this.floatValue(this.xmBranchState.totalBudgetNouserAmount) + this.floatValue(this.xmBranchState.totalBudgetIuserAmount) + this.floatValue(this.xmBranchState.totalBudgetOuserAmount))/10000],
             content: '{nt}',
             textAlign: 'right',
             style: {
@@ -236,8 +236,8 @@ export default {
     waterLevelChartData(){
       if(this.xmBranchState){
         var data={}
-        var allAmount=this.floatValue(this.xmBranchState.totalBudgetNouserAmount) + this.floatValue(this.xmBranchState.totalBudgetInnerUserAmount) + this.floatValue(this.xmBranchState.totalBudgetOutUserAmount);
-        data.finishNum= this.floatValue(this.xmBranchState.totalCostNouserAmount) + this.floatValue(this.xmBranchState.totalCostInnerUserAmount) +this.floatValue(this.xmBranchState.totalCostOutUserAmount) 
+        var allAmount=this.floatValue(this.xmBranchState.totalBudgetNouserAmount) + this.floatValue(this.xmBranchState.totalBudgetIuserAmount) + this.floatValue(this.xmBranchState.totalBudgetOuserAmount);
+        data.finishNum= this.floatValue(this.xmBranchState.totalCostNouserAmount) + this.floatValue(this.xmBranchState.totalCostIuserAmount) +this.floatValue(this.xmBranchState.totalCostOuserAmount) 
         data.finishPercent= parseFloat(data.finishNum/allAmount * 100).toFixed(0)
         return data;
      }else{

@@ -39,7 +39,7 @@
               type="primary"
               v-loading="load.list"
               :disabled="load.list == true"
-              v-on:click="searchXmProjectPhases"
+              v-on:click="searchXmPhases"
               icon="el-icon-search"
             ></el-button>
           </template>
@@ -63,26 +63,26 @@
       <span style="margin-left: 10px; font-size: 14px">内部人力总预算：</span
       ><el-tag
         :type="
-          phaseBudgetData.surplusPlanInnerUserAt > 0 ? 'warning' : 'danger'
+          phaseBudgetData.surplusPlanIuserAt > 0 ? 'warning' : 'danger'
         "
-        >{{ toFixed(selProject.planInnerUserAt / 10000, 2) }}万，剩{{
-          toFixed(phaseBudgetData.surplusPlanInnerUserAt / 10000, 2)
+        >{{ toFixed(selProject.planIuserAt / 10000, 2) }}万，剩{{
+          toFixed(phaseBudgetData.surplusPlanIuserAt / 10000, 2)
         }}万</el-tag
       >
       <span style="margin-left: 10px; font-size: 14px">外购人力总预算：</span
       ><el-tag
-        :type="phaseBudgetData.surplusPlanOutUserAt > 0 ? 'warning' : 'danger'"
-        >{{ toFixed(selProject.planOutUserAt / 10000, 2) }}万，剩{{
-          toFixed(phaseBudgetData.surplusPlanOutUserAt / 10000, 2)
+        :type="phaseBudgetData.surplusPlanOuserAt > 0 ? 'warning' : 'danger'"
+        >{{ toFixed(selProject.planOuserAt / 10000, 2) }}万，剩{{
+          toFixed(phaseBudgetData.surplusPlanOuserAt / 10000, 2)
         }}万</el-tag
       >
     </el-row>
     <el-row class="padding-top">
-      <!--列表 XmProjectPhase xm_project_phase-->
+      <!--列表 XmPhase xm_project_phase-->
       <el-table
         ref="table"
         lazy
-        :load="loadXmProjectPhaseLazy"
+        :load="loadXmPhaseLazy"
         :height="tableHeight"
         class="drag-table"
         :summary-method="getSummariesForBatchEdit"
@@ -124,8 +124,8 @@
                 @change="fieldChange(scope.row, 'seqNo')"
               ></el-input>
               <el-input  style="width: 100%"
-              v-model="scope.row.phaseName"
-              @change="fieldChange(scope.row, 'phaseName')"
+              v-model="scope.row.name"
+              @change="fieldChange(scope.row, 'name')"
             ></el-input> 
           </template>
         </el-table-column> 
@@ -196,12 +196,12 @@
                     内购
                     <el-input
                       style="width: 80px"
-                      v-model="scope.row.phaseBudgetInnerUserCnt"
+                      v-model="scope.row.phaseBudgetIuserCnt"
                       :precision="2"
                       step="1"
                       type="number"
                       @change="
-                        fieldChange(scope.row, 'phaseBudgetInnerUserCnt')
+                        fieldChange(scope.row, 'phaseBudgetIuserCnt')
                       "
                     ></el-input
                     > 
@@ -210,11 +210,11 @@
                     外购
                     <el-input
                       style="width: 80px"
-                      v-model="scope.row.phaseBudgetOutUserCnt"
+                      v-model="scope.row.phaseBudgetOuserCnt"
                       :precision="2"
                       step="1"
                       type="number"
-                      @change="fieldChange(scope.row, 'phaseBudgetOutUserCnt')"
+                      @change="fieldChange(scope.row, 'phaseBudgetOuserCnt')"
                     ></el-input
                     > 
                   </el-col>  
@@ -225,12 +225,12 @@
           <template slot-scope="scope">
              <el-input
                 style="width: 80px"
-                v-model="scope.row.phaseBudgetOutUserPrice"
+                v-model="scope.row.phaseBudgetOuserPrice"
                 :precision="2"
                 step="10"
                 type="number"
                 @change="
-                  fieldChange(scope.row, 'phaseBudgetOutUserPrice')
+                  fieldChange(scope.row, 'phaseBudgetOuserPrice')
                 "
               ></el-input>
           </template>
@@ -239,8 +239,8 @@
           <template slot-scope="scope">
             {{
               (
-                scope.row.phaseBudgetInnerUserAt +
-                scope.row.phaseBudgetOutUserAt +
+                scope.row.phaseBudgetIuserAt +
+                scope.row.phaseBudgetOuserAt +
                 scope.row.phaseBudgetNouserAt
               ).toFixed(0)
             }}元
@@ -278,13 +278,13 @@ import treeTool from "@/common/js/treeTool"; //全局公共库
 //import Sticky from '@/components/Sticky' // 粘性header组件
 import { listOption } from "@/api/mdp/meta/itemOption"; //下拉框数据查询
 import {
-  listXmProjectPhase,
-  delXmProjectPhase,
-  batchDelXmProjectPhase,
+  listXmPhase,
+  delXmPhase,
+  batchDelXmPhase,
   batchImportFromTemplate,
   batchSaveBudget,
-  loadTasksToXmProjectPhase,
-} from "@/api/xm/core/xmProjectPhase";
+  loadTasksToXmPhase,
+} from "@/api/xm/core/xmPhase";
 
 import { sn } from "@/common/js/sequence";
 import { mapGetters } from "vuex";
@@ -293,49 +293,49 @@ export default {
   computed: {
     ...mapGetters(["userInfo", "roles"]),
     projectPhaseTreeData() {  
-      var projectPhaseTreeData = treeTool.translateDataToTree(this.xmProjectPhases,"parentPhaseId","id");  
+      var projectPhaseTreeData = treeTool.translateDataToTree(this.xmPhases,"parentPhaseId","id");  
       return projectPhaseTreeData;
     },
     phaseBudgetData() {
-      var rows = this.xmProjectPhases;
+      var rows = this.xmPhases;
       var surplusPlanCostAt =
-        this.getFloatValue(this.selProject.planInnerUserAt) +
-        this.getFloatValue(this.selProject.planOutUserAt) +
+        this.getFloatValue(this.selProject.planIuserAt) +
+        this.getFloatValue(this.selProject.planOuserAt) +
         this.getFloatValue(this.selProject.planNouserAt);
-      var surplusPlanInnerUserAt = this.getFloatValue(
-        this.selProject.planInnerUserAt
+      var surplusPlanIuserAt = this.getFloatValue(
+        this.selProject.planIuserAt
       );
-      var surplusPlanOutUserAt = this.getFloatValue(
-        this.selProject.planOutUserAt
+      var surplusPlanOuserAt = this.getFloatValue(
+        this.selProject.planOuserAt
       );
       var surplusPlanNouserAt = this.getFloatValue(
         this.selProject.planNouserAt
       );
       var surplusPlanUserAt =
-        this.getFloatValue(this.selProject.planInnerUserAt) +
-        this.getFloatValue(this.selProject.planOutUserAt);
+        this.getFloatValue(this.selProject.planIuserAt) +
+        this.getFloatValue(this.selProject.planOuserAt);
 
       const total = {
         surplusPlanCostAt: surplusPlanCostAt,
-        surplusPlanInnerUserAt: surplusPlanInnerUserAt,
-        surplusPlanOutUserAt: surplusPlanOutUserAt,
+        surplusPlanIuserAt: surplusPlanIuserAt,
+        surplusPlanOuserAt: surplusPlanOuserAt,
         surplusPlanNouserAt: surplusPlanNouserAt,
         surplusPlanUserAt: surplusPlanUserAt,
 
         phaseBudgetNouserAt: 0,
-        phaseBudgetInnerUserAt: 0,
-        phaseBudgetOutUserAt: 0,
+        phaseBudgetIuserAt: 0,
+        phaseBudgetOuserAt: 0,
         phaseBudgetUserAt: 0,
 
-        phaseBudgetInnerUserWorkload: 0,
-        phaseBudgetOutUserWorkload: 0,
+        phaseBudgetIuserWorkload: 0,
+        phaseBudgetOuserWorkload: 0,
 
         phaseActWorkload: 0,
-        actInnerUserAt: 0,
+        actIuserAt: 0,
         actNouserAt: 0,
-        actOutUserAt: 0,
+        actOuserAt: 0,
       };
-      //phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetInnerUserAt:'',phaseBudgetOutUserAt
+      //phaseBudgetHours:'',phaseBudgetStaffNu:'',ctime:'',phaseBudgetNouserAt:'',phaseBudgetIuserAt:'',phaseBudgetOuserAt
 
       rows.forEach((row2) => {
         var row = row2;
@@ -349,41 +349,41 @@ export default {
             total.phaseBudgetNouserAt =
           total.phaseBudgetNouserAt +
           this.getFloatValue(row.phaseBudgetNouserAt);
-        total.phaseBudgetInnerUserAt =
-          total.phaseBudgetInnerUserAt +
-          this.getFloatValue(row.phaseBudgetInnerUserAt);
-        total.phaseBudgetOutUserAt =
-          total.phaseBudgetOutUserAt +
-          this.getFloatValue(row.phaseBudgetOutUserAt);
-        total.phaseBudgetInnerUserWorkload =
-          total.phaseBudgetInnerUserWorkload +
-          this.getFloatValue(row.phaseBudgetInnerUserWorkload);
-        total.phaseBudgetOutUserWorkload =
-          total.phaseBudgetOutUserWorkload +
-          this.getFloatValue(row.phaseBudgetOutUserWorkload);
+        total.phaseBudgetIuserAt =
+          total.phaseBudgetIuserAt +
+          this.getFloatValue(row.phaseBudgetIuserAt);
+        total.phaseBudgetOuserAt =
+          total.phaseBudgetOuserAt +
+          this.getFloatValue(row.phaseBudgetOuserAt);
+        total.phaseBudgetIuserWorkload =
+          total.phaseBudgetIuserWorkload +
+          this.getFloatValue(row.phaseBudgetIuserWorkload);
+        total.phaseBudgetOuserWorkload =
+          total.phaseBudgetOuserWorkload +
+          this.getFloatValue(row.phaseBudgetOuserWorkload);
 
         total.phaseActWorkload =
           total.phaseActWorkload + this.getFloatValue(row.phaseActWorkload);
-        total.actInnerUserAt =
-          total.actInnerUserAt + this.getFloatValue(row.actInnerUserAt);
+        total.actIuserAt =
+          total.actIuserAt + this.getFloatValue(row.actIuserAt);
         total.actNouserAt =
           total.actNouserAt + this.getFloatValue(row.actNouserAt);
-        total.actOutUserAt =
-          total.actOutUserAt + this.getFloatValue(row.actOutUserAt);
+        total.actOuserAt =
+          total.actOuserAt + this.getFloatValue(row.actOuserAt);
         }
         
       });
       total.phaseBudgetUserAt =
-        total.phaseBudgetInnerUserAt + total.phaseBudgetOutUserAt;
+        total.phaseBudgetIuserAt + total.phaseBudgetOuserAt;
       total.surplusPlanCostAt = this.getFloatValue(
         total.surplusPlanCostAt -
           total.phaseBudgetNouserAt -
           total.phaseBudgetUserAt
       );
-      total.surplusPlanInnerUserAt =
-        total.surplusPlanInnerUserAt - total.phaseBudgetInnerUserAt;
-      total.surplusPlanOutUserAt =
-        total.surplusPlanOutUserAt - total.phaseBudgetOutUserAt;
+      total.surplusPlanIuserAt =
+        total.surplusPlanIuserAt - total.phaseBudgetIuserAt;
+      total.surplusPlanOuserAt =
+        total.surplusPlanOuserAt - total.phaseBudgetOuserAt;
       total.surplusPlanNouserAt =
         total.surplusPlanNouserAt - total.phaseBudgetNouserAt;
       total.surplusPlanUserAt =
@@ -395,10 +395,10 @@ export default {
   watch: {
     selProject: function (selProject, old) {
       if (!selProject) {
-        this.xmProjectPhases = [];
+        this.xmPhases = [];
       } else {
         if ((!old && selProject.id) || (old && selProject.id != old.id)) {
-          this.searchXmProjectPhases();
+          this.searchXmPhases();
         }
       }
     },
@@ -408,7 +408,7 @@ export default {
       filters: {
         key: "",
       },
-      xmProjectPhases: [], //查询结果
+      xmPhases: [], //查询结果
       pageInfo: {
         //分页数据
         total: 0, //服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
@@ -424,11 +424,11 @@ export default {
         xmPhaseStatus: [],
       }, //下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
 
-      addFormVisible: false, //新增xmProjectPhase界面是否显示
-      //新增xmProjectPhase界面初始化数据
+      addFormVisible: false, //新增xmPhase界面是否显示
+      //新增xmPhase界面初始化数据
       addForm: {
         id: "",
-        phaseName: "",
+        name: "",
         remark: "",
         parentPhaseId: "",
         branchId: "",
@@ -441,25 +441,25 @@ export default {
         phaseBudgetStaffNu: "",
         ctime: "",
         phaseBudgetNouserAt: "",
-        phaseBudgetInnerUserAt: "",
-        phaseBudgetOutUserAt: "",
-        projectBaselineId: "",
+        phaseBudgetIuserAt: "",
+        phaseBudgetOuserAt: "",
+        baselineId: "",
         bizProcInstId: "",
         bizFlowState: "",
-        phaseBudgetInnerUserCnt: "",
-        phaseBudgetOutUserCnt: "",
+        phaseBudgetIuserCnt: "",
+        phaseBudgetOuserCnt: "",
         seqNo: "",
-        phaseBudgetInnerUserPrice: 80,
-        phaseBudgetOutUserPrice: 100,
-        phaseBudgetInnerUserWorkload: 0,
-        phaseBudgetOutUserWorkload: 0,
+        phaseBudgetIuserPrice: 80,
+        phaseBudgetOuserPrice: 100,
+        phaseBudgetIuserWorkload: 0,
+        phaseBudgetOuserWorkload: 0,
       },
 
       editFormVisible: false, //编辑界面是否显示
-      //编辑xmProjectPhase界面初始化数据
+      //编辑xmPhase界面初始化数据
       editForm: {
         id: "",
-        phaseName: "",
+        name: "",
         remark: "",
         parentPhaseId: "",
         branchId: "",
@@ -470,23 +470,23 @@ export default {
         phaseBudgetStaffNu: "",
         ctime: "",
         phaseBudgetNouserAt: "",
-        phaseBudgetInnerUserAt: "",
-        phaseBudgetOutUserAt: "",
-        projectBaselineId: "",
+        phaseBudgetIuserAt: "",
+        phaseBudgetOuserAt: "",
+        baselineId: "",
         bizProcInstId: "",
         bizFlowState: "",
-        phaseBudgetInnerUserCnt: "",
-        phaseBudgetOutUserCnt: "",
+        phaseBudgetIuserCnt: "",
+        phaseBudgetOuserCnt: "",
         seqNo: "",
-        phaseBudgetInnerUserPrice: 80,
-        phaseBudgetOutUserPrice: 100,
-        phaseBudgetInnerUserWorkload: 0,
-        phaseBudgetOutUserWorkload: 0,
+        phaseBudgetIuserPrice: 80,
+        phaseBudgetOuserPrice: 100,
+        phaseBudgetIuserWorkload: 0,
+        phaseBudgetOuserWorkload: 0,
       },
 
       editFormInit: {
         id: "",
-        phaseName: "",
+        name: "",
         remark: "",
         parentPhaseId: "",
         branchId: "",
@@ -499,18 +499,18 @@ export default {
         phaseBudgetStaffNu: "",
         ctime: "",
         phaseBudgetNouserAt: "",
-        phaseBudgetInnerUserAt: "",
-        phaseBudgetOutUserAt: "",
-        projectBaselineId: "",
+        phaseBudgetIuserAt: "",
+        phaseBudgetOuserAt: "",
+        baselineId: "",
         bizProcInstId: "",
         bizFlowState: "",
-        phaseBudgetInnerUserCnt: "",
-        phaseBudgetOutUserCnt: "",
+        phaseBudgetIuserCnt: "",
+        phaseBudgetOuserCnt: "",
         seqNo: "",
-        phaseBudgetInnerUserPrice: 80,
-        phaseBudgetOutUserPrice: 100,
-        phaseBudgetInnerUserWorkload: 0,
-        phaseBudgetOutUserWorkload: 0,
+        phaseBudgetIuserPrice: 80,
+        phaseBudgetOuserPrice: 100,
+        phaseBudgetIuserWorkload: 0,
+        phaseBudgetOuserWorkload: 0,
       },
       parentProjectPhase: null,
       /**begin 自定义属性请在下面加 请加备注**/
@@ -524,7 +524,7 @@ export default {
       gstcVisible: false,
       ganrrColumns: {
         children: "children",
-        name: "phaseName",
+        name: "name",
         id: "id",
         pid: "parentPhaseId",
         startDate: "beginDate",
@@ -536,11 +536,11 @@ export default {
   methods: {
     handleSizeChange(pageSize) {
       this.pageInfo.pageSize = pageSize;
-      this.getXmProjectPhases();
+      this.getXmPhases();
     },
     handleCurrentChange(pageNum) {
       this.pageInfo.pageNum = pageNum;
-      this.getXmProjectPhases();
+      this.getXmPhases();
     },
     // 表格排序 obj.order=ascending/descending,需转化为 asc/desc ; obj.prop=表格中的排序字段,字段驼峰命名
     sortChange(obj) {
@@ -554,11 +554,11 @@ export default {
         this.pageInfo.orderFields = ["xxx"];
         this.pageInfo.orderDirs = [dir];
       }
-      this.getXmProjectPhases();
+      this.getXmPhases();
     },
-    searchXmProjectPhases() {
+    searchXmPhases() {
       this.pageInfo.count = true;
-      this.getXmProjectPhases();
+      this.getXmPhases();
     },
 
     getParams(params) {
@@ -571,22 +571,22 @@ export default {
       params.isTop = "1";
       return params;
     },
-    loadXmProjectPhaseLazy(row, treeNode, resolve) {
+    loadXmPhaseLazy(row, treeNode, resolve) {
       if (row.children && row.children.length > 0) {
-        this.xmProjectPhases.push(...row.children);
+        this.xmPhases.push(...row.children);
         resolve(row.children);
       } else {
         var params = { parentPhaseId: row.id };
         params = this.getParams(params);
         params.isTop = "";
         this.load.list = true;
-        var func = listXmProjectPhase;
+        var func = listXmPhase;
         func(params)
           .then((res) => {
             this.load.list = false;
             var tips = res.data.tips;
             if (tips.isOk) {
-              this.xmProjectPhases.push(...res.data.data);
+              this.xmPhases.push(...res.data.data);
               resolve(res.data.data);
             } else {
               resolve([]);
@@ -595,8 +595,8 @@ export default {
           .catch((err) => (this.load.list = false));
       }
     },
-    //获取列表 XmProjectPhase xm_project_phase
-    getXmProjectPhases() {
+    //获取列表 XmPhase xm_project_phase
+    getXmPhases() {
       this.valueChangeRows = [];
       let params = {
         pageSize: this.pageInfo.pageSize,
@@ -618,13 +618,13 @@ export default {
       }
       params = this.getParams(params);
       this.load.list = true;
-      listXmProjectPhase(params)
+      listXmPhase(params)
         .then((res) => {
           var tips = res.data.tips;
           if (tips.isOk) {
             this.pageInfo.total = res.data.total;
             this.pageInfo.count = false;
-            this.xmProjectPhases = res.data.data;
+            this.xmPhases = res.data.data;
           } else {
             this.$notify({
               showClose: true,
@@ -637,7 +637,7 @@ export default {
         .catch((err) => (this.load.list = false));
     },
 
-    //显示编辑界面 XmProjectPhase xm_project_phase
+    //显示编辑界面 XmPhase xm_project_phase
     showEdit: function (row, index) {
       if (
         !this.roles.some((i) => i.roleid == "projectAdmin") &&
@@ -653,7 +653,7 @@ export default {
       this.editForm = Object.assign({}, row);
       this.editFormVisible = true;
     },
-    //显示新增界面 XmProjectPhase xm_project_phase
+    //显示新增界面 XmPhase xm_project_phase
     showAdd: function () {
       if (
         !this.roles.some((i) => i.roleid == "projectAdmin") &&
@@ -696,7 +696,7 @@ export default {
     afterAddSubmit() {
       this.addFormVisible = false;
       this.pageInfo.count = true;
-      this.getXmProjectPhases();
+      this.getXmPhases();
     },
     afterEditSubmit() {
       this.editFormVisible = false;
@@ -766,17 +766,17 @@ export default {
         i.branchId = this.selProject.branchId;
         i.phaseBudgetAt = 0;
         i.phaseBudgetNouserAt = 0;
-        i.phaseBudgetInnerUserAt = 0;
-        i.phaseBudgetOutUserAt = 0;
+        i.phaseBudgetIuserAt = 0;
+        i.phaseBudgetOuserAt = 0;
         i.phaseBudgetWorkload = 0;
         i.phaseBudgetStaffNu = 0;
         i.phaseBudgetHours = 160;
-        i.phaseBudgetInnerUserWorkload = 0;
-        i.phaseBudgetOutUserWorkload = 0;
-        i.phaseBudgetInnerUserPrice = this.selProject.planInnerUserPrice;
-        i.phaseBudgetOutUserPrice = this.selProject.planOutUserPrice;
-        i.phaseBudgetOutUserCnt = 0;
-        i.phaseBudgetInnerUserCnt = 0;
+        i.phaseBudgetIuserWorkload = 0;
+        i.phaseBudgetOuserWorkload = 0;
+        i.phaseBudgetIuserPrice = this.selProject.planIuserPrice;
+        i.phaseBudgetOuserPrice = this.selProject.planOuserPrice;
+        i.phaseBudgetOuserCnt = 0;
+        i.phaseBudgetIuserCnt = 0;
         const ctime = new Date();
         var beginDate = new Date();
         const endDate = new Date();
@@ -791,7 +791,7 @@ export default {
           this.load.add = false;
           var tips = res.data.tips;
           if (tips.isOk) {
-            this.getXmProjectPhases();
+            this.getXmPhases();
           } else {
             this.$notify({
               showClose: true,
@@ -802,11 +802,11 @@ export default {
         })
         .catch((err) => (this.load.add = false));
     },
-    //选择行xmProjectPhase
+    //选择行xmPhase
     selsChange: function (sels) {
       this.sels = sels;
     },
-    //删除xmProjectPhase
+    //删除xmPhase
     handleDel: function (row, index) {
       if (
         !this.roles.some((i) => i.roleid == "projectAdmin") &&
@@ -841,13 +841,13 @@ export default {
       }).then(() => {
         this.load.del = true;
         let params = { id: row.id };
-        delXmProjectPhase(params)
+        delXmPhase(params)
           .then((res) => {
             this.load.del = false;
             var tips = res.data.tips;
             if (tips.isOk) {
               this.pageInfo.count = true;
-              this.getXmProjectPhases();
+              this.getXmPhases();
             }
             this.$notify({
               showClose: true,
@@ -858,7 +858,7 @@ export default {
           .catch((err) => (this.load.del = false));
       });
     },
-    //批量删除xmProjectPhase
+    //批量删除xmPhase
     batchDel: function () {
       if (
         !this.roles.some((i) => i.roleid == "projectAdmin") &&
@@ -898,13 +898,13 @@ export default {
         }
       ).then(() => {
         this.load.del = true;
-        batchDelXmProjectPhase(phases)
+        batchDelXmPhase(phases)
           .then((res) => {
             this.load.del = false;
             var tips = res.data.tips;
             if (tips.isOk) {
               this.pageInfo.count = true;
-              this.getXmProjectPhases();
+              this.getXmPhases();
             }
             this.$notify({
               showClose: true,
@@ -994,7 +994,7 @@ export default {
     },
 
     //从任务中汇总进度/实际费用等数据
-    loadTasksToXmProjectPhase: function (phases) {
+    loadTasksToXmPhase: function (phases) {
       var phaseIds = phases.map((i) => i.id);
       var params = {
         projectId: this.selProject.id,
@@ -1002,10 +1002,10 @@ export default {
       if (phases && phases.length > 0) {
         params.phaseIds = phases.map((i) => i.id);
       }
-      loadTasksToXmProjectPhase(params).then((res) => {
+      loadTasksToXmPhase(params).then((res) => {
         var tips = res.data.tips;
         if (tips.isOk) {
-          this.getXmProjectPhases();
+          this.getXmPhases();
         }
         this.$notify({
           showClose: true,
@@ -1038,19 +1038,19 @@ export default {
       }
 
       if (
-        row.phaseBudgetInnerUserAt == null ||
-        row.phaseBudgetInnerUserAt == "" ||
-        row.phaseBudgetInnerUserAt == undefined
+        row.phaseBudgetIuserAt == null ||
+        row.phaseBudgetIuserAt == "" ||
+        row.phaseBudgetIuserAt == undefined
       ) {
-        row.phaseBudgetInnerUserAt = 0;
+        row.phaseBudgetIuserAt = 0;
       }
 
       if (
-        row.phaseBudgetOutUserAt == null ||
-        row.phaseBudgetOutUserAt == "" ||
-        row.phaseBudgetOutUserAt == undefined
+        row.phaseBudgetOuserAt == null ||
+        row.phaseBudgetOuserAt == "" ||
+        row.phaseBudgetOuserAt == undefined
       ) {
-        row.phaseBudgetOutUserAt = 0;
+        row.phaseBudgetOuserAt = 0;
       }
       if (
         row.actNouserAt == null ||
@@ -1061,28 +1061,28 @@ export default {
       }
 
       if (
-        row.actInnerUserAt == null ||
-        row.actInnerUserAt == "" ||
-        row.actInnerUserAt == undefined
+        row.actIuserAt == null ||
+        row.actIuserAt == "" ||
+        row.actIuserAt == undefined
       ) {
-        row.actInnerUserAt = 0;
+        row.actIuserAt = 0;
       }
 
       if (
-        row.actOutUserAt == null ||
-        row.actOutUserAt == "" ||
-        row.actOutUserAt == undefined
+        row.actOuserAt == null ||
+        row.actOuserAt == "" ||
+        row.actOuserAt == undefined
       ) {
-        row.actOutUserAt = 0;
+        row.actOuserAt = 0;
       }
       var phaseBudgetAt =
         parseFloat(row.phaseBudgetNouserAt) +
-        parseFloat(row.phaseBudgetInnerUserAt) +
-        parseFloat(row.phaseBudgetOutUserAt);
+        parseFloat(row.phaseBudgetIuserAt) +
+        parseFloat(row.phaseBudgetOuserAt);
       var actCostAt =
         parseFloat(row.actNouserAt) +
-        parseFloat(row.actInnerUserAt) +
-        parseFloat(row.actOutUserAt);
+        parseFloat(row.actIuserAt) +
+        parseFloat(row.actOuserAt);
 
       return { phaseBudgetAt: phaseBudgetAt, actCostAt: actCostAt };
     },
@@ -1093,24 +1093,24 @@ export default {
       console.log("fieldChange--row.opType==", row.opType);
 
       //{{formatDate(scope.row.beginDate)}}~{{formatDate(scope.row.endDate)}}  <br/>
-      if (!row.phaseBudgetInnerUserPrice) {
-        row.phaseBudgetInnerUserPrice = this.selProject.planInnerUserPrice;
+      if (!row.phaseBudgetIuserPrice) {
+        row.phaseBudgetIuserPrice = this.selProject.planIuserPrice;
       }
-      if (!row.phaseBudgetOutUserPrice) {
-        row.phaseBudgetOutUserPrice = this.selProject.planOutUserPrice;
+      if (!row.phaseBudgetOuserPrice) {
+        row.phaseBudgetOuserPrice = this.selProject.planOuserPrice;
       }
-      if (!row.phaseBudgetInnerUserCnt) {
-        row.phaseBudgetInnerUserCnt = 0;
+      if (!row.phaseBudgetIuserCnt) {
+        row.phaseBudgetIuserCnt = 0;
       }
 
-      if (!row.phaseBudgetOutUserPrice) {
-        row.phaseBudgetOutUserPrice = this.selProject.planOutUserPrice;
+      if (!row.phaseBudgetOuserPrice) {
+        row.phaseBudgetOuserPrice = this.selProject.planOuserPrice;
       }
-      if (!row.phaseBudgetOutUserPrice) {
-        row.phaseBudgetOutUserPrice = this.selProject.planOutUserPrice;
+      if (!row.phaseBudgetOuserPrice) {
+        row.phaseBudgetOuserPrice = this.selProject.planOuserPrice;
       }
-      if (!row.phaseBudgetOutUserCnt) {
-        row.phaseBudgetOutUserCnt = 0;
+      if (!row.phaseBudgetOuserCnt) {
+        row.phaseBudgetOuserCnt = 0;
       }
       if (fieldName == "beginDate" || fieldName == "endDate") {
         if (row.beginDate && row.endDate) {
@@ -1118,48 +1118,48 @@ export default {
           var end = new Date(row.endDate);
           var days = this.getDaysBetween(end, start);
           row.phaseBudgetHours = this.getFloatValue(days * 8).toFixed(2);
-          row.phaseBudgetInnerUserWorkload =
-            row.phaseBudgetHours * row.phaseBudgetInnerUserCnt;
-          row.phaseBudgetInnerUserAt =
-            row.phaseBudgetInnerUserWorkload * row.phaseBudgetInnerUserPrice;
-          row.phaseBudgetOutUserWorkload =
-            row.phaseBudgetHours * row.phaseBudgetOutUserCnt;
-          row.phaseBudgetOutUserAt =
-            row.phaseBudgetOutUserWorkload * row.phaseBudgetOutUserPrice;
+          row.phaseBudgetIuserWorkload =
+            row.phaseBudgetHours * row.phaseBudgetIuserCnt;
+          row.phaseBudgetIuserAt =
+            row.phaseBudgetIuserWorkload * row.phaseBudgetIuserPrice;
+          row.phaseBudgetOuserWorkload =
+            row.phaseBudgetHours * row.phaseBudgetOuserCnt;
+          row.phaseBudgetOuserAt =
+            row.phaseBudgetOuserWorkload * row.phaseBudgetOuserPrice;
           row.phaseBudgetWorkload =
-            row.phaseBudgetInnerUserWorkload + row.phaseBudgetOutUserWorkload;
+            row.phaseBudgetIuserWorkload + row.phaseBudgetOuserWorkload;
         }
       } else if (fieldName == "phaseBudgetHours") {
-        row.phaseBudgetInnerUserWorkload =
-          row.phaseBudgetHours * row.phaseBudgetInnerUserCnt;
-        row.phaseBudgetInnerUserAt =
-          row.phaseBudgetInnerUserWorkload * row.phaseBudgetInnerUserPrice;
-        row.phaseBudgetOutUserWorkload =
-          row.phaseBudgetHours * row.phaseBudgetOutUserCnt;
-        row.phaseBudgetOutUserAt =
-          row.phaseBudgetOutUserWorkload * row.phaseBudgetOutUserPrice;
+        row.phaseBudgetIuserWorkload =
+          row.phaseBudgetHours * row.phaseBudgetIuserCnt;
+        row.phaseBudgetIuserAt =
+          row.phaseBudgetIuserWorkload * row.phaseBudgetIuserPrice;
+        row.phaseBudgetOuserWorkload =
+          row.phaseBudgetHours * row.phaseBudgetOuserCnt;
+        row.phaseBudgetOuserAt =
+          row.phaseBudgetOuserWorkload * row.phaseBudgetOuserPrice;
         row.phaseBudgetWorkload =
-          row.phaseBudgetInnerUserWorkload + row.phaseBudgetOutUserWorkload;
+          row.phaseBudgetIuserWorkload + row.phaseBudgetOuserWorkload;
       } else if (
-        fieldName == "phaseBudgetInnerUserPrice" ||
-        fieldName == "phaseBudgetInnerUserCnt"
+        fieldName == "phaseBudgetIuserPrice" ||
+        fieldName == "phaseBudgetIuserCnt"
       ) {
-        row.phaseBudgetInnerUserWorkload =
-          row.phaseBudgetHours * row.phaseBudgetInnerUserCnt;
-        row.phaseBudgetInnerUserAt =
-          row.phaseBudgetInnerUserWorkload * row.phaseBudgetInnerUserPrice;
+        row.phaseBudgetIuserWorkload =
+          row.phaseBudgetHours * row.phaseBudgetIuserCnt;
+        row.phaseBudgetIuserAt =
+          row.phaseBudgetIuserWorkload * row.phaseBudgetIuserPrice;
         row.phaseBudgetWorkload =
-          row.phaseBudgetInnerUserWorkload + row.phaseBudgetOutUserWorkload;
+          row.phaseBudgetIuserWorkload + row.phaseBudgetOuserWorkload;
       } else if (
-        fieldName == "phaseBudgetOutUserPrice" ||
-        fieldName == "phaseBudgetOutUserCnt"
+        fieldName == "phaseBudgetOuserPrice" ||
+        fieldName == "phaseBudgetOuserCnt"
       ) {
-        row.phaseBudgetOutUserWorkload =
-          row.phaseBudgetHours * row.phaseBudgetOutUserCnt;
-        row.phaseBudgetOutUserAt =
-          row.phaseBudgetOutUserWorkload * row.phaseBudgetOutUserPrice;
+        row.phaseBudgetOuserWorkload =
+          row.phaseBudgetHours * row.phaseBudgetOuserCnt;
+        row.phaseBudgetOuserAt =
+          row.phaseBudgetOuserWorkload * row.phaseBudgetOuserPrice;
         row.phaseBudgetWorkload =
-          row.phaseBudgetInnerUserWorkload + row.phaseBudgetOutUserWorkload;
+          row.phaseBudgetIuserWorkload + row.phaseBudgetOuserWorkload;
       }
       if (row.opType) {
         var index = this.valueChangeRows.findIndex((i) => i.id == row.id);
@@ -1205,7 +1205,7 @@ export default {
         });
         return;
       } else {
-        if (this.phaseBudgetData.surplusPlanInnerUserAt < 0) {
+        if (this.phaseBudgetData.surplusPlanIuserAt < 0) {
           this.$notify({
             showClose: true,
             message: "内部人力预算不足，请调整",
@@ -1213,7 +1213,7 @@ export default {
           });
           return;
         }
-        if (this.phaseBudgetData.surplusPlanOutUserAt < 0) {
+        if (this.phaseBudgetData.surplusPlanOuserAt < 0) {
           this.$notify({
             showClose: true,
             message: "外购人力预算不足，请调整",
@@ -1237,7 +1237,7 @@ export default {
             var tips = res.data.tips;
             if (tips.isOk) {
               this.valueChangeRows = [];
-              this.getXmProjectPhases();
+              this.getXmPhases();
             }
             this.$notify({
               showClose: true,
@@ -1320,12 +1320,12 @@ export default {
       sums[4] = ""; // 工期 工作量 成本金额
 
       var workload =
-        this.phaseBudgetData.phaseBudgetInnerUserWorkload +
-        this.phaseBudgetData.phaseBudgetOutUserWorkload;
+        this.phaseBudgetData.phaseBudgetIuserWorkload +
+        this.phaseBudgetData.phaseBudgetOuserWorkload;
       var cost =
         this.phaseBudgetData.phaseBudgetNouserAt +
-        this.phaseBudgetData.phaseBudgetInnerUserAt +
-        this.phaseBudgetData.phaseBudgetOutUserAt;
+        this.phaseBudgetData.phaseBudgetIuserAt +
+        this.phaseBudgetData.phaseBudgetOuserAt;
       sums[4] =
         "工作量:" +
         workload.toFixed(0) +
@@ -1347,18 +1347,18 @@ export default {
       sums[5] = ""; //工作量 计划、实际
       sums[6] = ""; // 成本 计划、实际
       var budgetWorkload =
-        this.phaseBudgetData.phaseBudgetInnerUserWorkload +
-        this.phaseBudgetData.phaseBudgetOutUserWorkload;
+        this.phaseBudgetData.phaseBudgetIuserWorkload +
+        this.phaseBudgetData.phaseBudgetOuserWorkload;
 
       var phaseActWorkload = this.phaseBudgetData.phaseActWorkload;
       var budgetCost =
         this.phaseBudgetData.phaseBudgetNouserAt +
-        this.phaseBudgetData.phaseBudgetInnerUserAt +
-        this.phaseBudgetData.phaseBudgetOutUserAt;
+        this.phaseBudgetData.phaseBudgetIuserAt +
+        this.phaseBudgetData.phaseBudgetOuserAt;
       var actCost =
-        this.phaseBudgetData.actInnerUserAt +
+        this.phaseBudgetData.actIuserAt +
         this.phaseBudgetData.actNouserAt +
-        this.phaseBudgetData.actOutUserAt;
+        this.phaseBudgetData.actOuserAt;
       sums[5] =
         "预算工作量:" +
         budgetWorkload +
@@ -1559,11 +1559,11 @@ export default {
     },
     changePmenuId(sId, eId) {
       let dict = {};
-      this.xmProjectPhases.forEach((d) => {
+      this.xmPhases.forEach((d) => {
         dict[d.id] = d.parentPhaseId || "";
       });
       if (!dict[eId]) {
-        this.xmProjectPhases.find((d) => {
+        this.xmPhases.find((d) => {
           if (d.id === sId) {
             d.parentPhaseId = eId;
             console.log("更新关系1");
@@ -1573,7 +1573,7 @@ export default {
       } else {
         const isSynezesis = this.judgePmenuId(dict, sId, dict[eId]);
         if (!isSynezesis) {
-          this.xmProjectPhases.find((d) => {
+          this.xmPhases.find((d) => {
             if (d.id === sId) {
               d.parentPhaseId = eId;
               console.log("更新关系2");
@@ -1625,7 +1625,7 @@ export default {
       menus2.forEach((i) => {
         i.id = i.menuId;
         i.parentPhaseId = i.pmenuId;
-        i.phaseName = i.menuName;
+        i.name = i.menuName;
       });
       this.afterPhaseTemplateSelected(menus2);
       this.menuVisible = false;
@@ -1654,17 +1654,17 @@ export default {
         subRow.branchId = this.selProject.branchId;
         subRow.phaseBudgetAt = 0;
         subRow.phaseBudgetNouserAt = 0;
-        subRow.phaseBudgetInnerUserAt = 0;
-        subRow.phaseBudgetOutUserAt = 0;
+        subRow.phaseBudgetIuserAt = 0;
+        subRow.phaseBudgetOuserAt = 0;
         subRow.phaseBudgetWorkload = 0;
         subRow.phaseBudgetStaffNu = 0;
         subRow.phaseBudgetHours = 160;
-        subRow.phaseBudgetInnerUserWorkload = 0;
-        subRow.phaseBudgetOutUserWorkload = 0;
-        subRow.phaseBudgetInnerUserPrice = this.selProject.planInnerUserPrice;
-        subRow.phaseBudgetOutUserPrice = this.selProject.planOutUserPrice;
-        subRow.phaseBudgetOutUserCnt = 0;
-        subRow.phaseBudgetInnerUserCnt = 0;
+        subRow.phaseBudgetIuserWorkload = 0;
+        subRow.phaseBudgetOuserWorkload = 0;
+        subRow.phaseBudgetIuserPrice = this.selProject.planIuserPrice;
+        subRow.phaseBudgetOuserPrice = this.selProject.planOuserPrice;
+        subRow.phaseBudgetOuserCnt = 0;
+        subRow.phaseBudgetIuserCnt = 0;
         const ctime = new Date();
         var beginDate = new Date();
         const endDate = new Date();
@@ -1677,11 +1677,11 @@ export default {
         subRow.endDate = util.formatDate.format(endDate, "yyyy-MM-dd HH:mm:ss");
 
         this.fieldChange(subRow, "seqNo");
-        this.xmProjectPhases.unshift(subRow);
+        this.xmPhases.unshift(subRow);
       } else if ("addSub" == opType) {
         if (row.ntype != "1") {
           this.$notify.error(
-            "【" + row.phaseName + "】不是计划集，不允许在其下增加子计划"
+            "【" + row.name + "】不是计划集，不允许在其下增加子计划"
           );
           return;
         }
@@ -1694,7 +1694,7 @@ export default {
         subRow.seqNo = row.seqNo + ".1";
         subRow.opType = opType;
         this.fieldChange(subRow, "seqNo");
-        this.xmProjectPhases.push(subRow);
+        this.xmPhases.push(subRow);
         if (row.children) {
           row.children.push(subRow);
         } else {
@@ -1708,17 +1708,17 @@ export default {
             this.$notify.error("请先删除子元素");
             return;
           } else {
-            var index = this.xmProjectPhases.findIndex((i) => i.id == row.id);
+            var index = this.xmPhases.findIndex((i) => i.id == row.id);
             var indexValueChanges = this.valueChangeRows.findIndex(
               (i) => i.id == row.id
             );
             this.valueChangeRows.splice(indexValueChanges, 1);
-            this.xmProjectPhases.splice(index, 1);
+            this.xmPhases.splice(index, 1);
           }
         }
       } else if ("highestPmenuId" === opType) {
         if (row.id) {
-          this.xmProjectPhases.find((d) => {
+          this.xmPhases.find((d) => {
             if (d.id === row.id) {
               d.parentPhaseId = "";
               this.fieldChange(d, "seqNo", true);
@@ -1738,7 +1738,7 @@ export default {
     this.$nextTick(() => { 
       this.tableHeight = util.calcTableMaxHeight(this.$refs.table.$el)
       if (this.selProject) {
-        this.getXmProjectPhases();
+        this.getXmPhases();
       }
 
       listOption([{ categoryId: "all", itemCode: "xmPhaseStatus" }]).then(

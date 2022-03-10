@@ -30,8 +30,8 @@
  				<el-table-column  label="预算(元)" min-width="80" >
  				<el-table-column prop="planTotalCost" label="总预算" min-width="80" ></el-table-column>
  				<el-table-column prop="planNouserAt" label="非人力" min-width="80" ></el-table-column>
-				<el-table-column prop="planInnerUserAt" label="内部" min-width="80" ></el-table-column>
-				<el-table-column prop="planOutUserAt" label="外购" min-width="80" ></el-table-column> 
+				<el-table-column prop="planIuserAt" label="内部" min-width="80" ></el-table-column>
+				<el-table-column prop="planOuserAt" label="外购" min-width="80" ></el-table-column> 
 				</el-table-column>
 				<el-table-column prop="description" label="项目描述" min-width="80" show-overflow-tooltip ></el-table-column>
 				<el-table-column label="操作" width="160" fixed="right">
@@ -85,13 +85,13 @@
 				addFormVisible: false,//新增xmProjectTemplate界面是否显示
 				//新增xmProjectTemplate界面初始化数据
 				addForm: {
-					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:'',bizProcInstId:'',bizFlowState:'',planNouserAt:'',planInnerUserAt:'',planOutUserAt:'',locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:'',totalReceivables:'',budgetMarginRate:'',contractAmt:'',planInnerUserPrice:'',planOutUserPrice:'',planOutUserCnt:'',planInnerUserCnt:'',planWorkingHours:'',taxRate:'',planInnerUserWorkload:'',planOutUserWorkload:'',productId:'',productName:'',templateId:'',tcuserid:'',tcusername:'',tremark:'',tctime:'',tcbranchId:'',shareScope:''
+					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:'',bizProcInstId:'',bizFlowState:'',planNouserAt:'',planIuserAt:'',planOuserAt:'',locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:'',totalReceivables:'',budgetMarginRate:'',contractAmt:'',planIuserPrice:'',planOuserPrice:'',planOuserCnt:'',planIuserCnt:'',planWorkingHours:'',taxRate:'',planIuserWorkload:'',planOuserWorkload:'',productId:'',productName:'',templateId:'',tcuserid:'',tcusername:'',tremark:'',tctime:'',tcbranchId:'',shareScope:''
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmProjectTemplate界面初始化数据
 				editForm: {
-					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:'',bizProcInstId:'',bizFlowState:'',planNouserAt:'',planInnerUserAt:'',planOutUserAt:'',locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:'',totalReceivables:'',budgetMarginRate:'',contractAmt:'',planInnerUserPrice:'',planOutUserPrice:'',planOutUserCnt:'',planInnerUserCnt:'',planWorkingHours:'',taxRate:'',planInnerUserWorkload:'',planOutUserWorkload:'',productId:'',productName:'',templateId:'',tcuserid:'',tcusername:'',tremark:'',tctime:'',tcbranchId:'',shareScope:''
+					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:'',bizProcInstId:'',bizFlowState:'',planNouserAt:'',planIuserAt:'',planOuserAt:'',locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:'',totalReceivables:'',budgetMarginRate:'',contractAmt:'',planIuserPrice:'',planOuserPrice:'',planOuserCnt:'',planIuserCnt:'',planWorkingHours:'',taxRate:'',planIuserWorkload:'',planOuserWorkload:'',productId:'',productName:'',templateId:'',tcuserid:'',tcusername:'',tremark:'',tctime:'',tcbranchId:'',shareScope:''
 				},
 				projectTemplateInfoVisible:false,
 				maxTableHeight:300,
