@@ -182,13 +182,10 @@
 							<el-table-column prop="actWorkload" label="实际" width="100"  show-overflow-tooltip sortable></el-table-column>
 						</el-table-column>
 						
-						<el-table-column  label="操作" width="350" fixed="right">
+						<el-table-column  label="操作" width="200" fixed="right">
 							<template slot-scope="scope">
 											<el-button id="guider-five" type="text"  title="通过复制创建新的产品" @click="onCopyToBtnClick(scope.row)" :disabled="load.add" v-loading="load.add">复制</el-button>
 											<el-button  type="text" @click="showProductState(scope.row)" icon="el-icon-s-data">报告</el-button>  
-											<el-button  type="text" @click="toIterationList(scope.row)" icon="el-icon-document">迭代</el-button>  
-											<el-button  type="text" @click="toProjectList(scope.row)"  icon="el-icon-document">项目</el-button>  
-											<el-button  type="text" @click="toTaskList(scope.row)"  icon="el-icon-tickets">任务</el-button>  
 											<el-button  type="text" v-loading="load.del" @click="handleDel(scope.row)" :disabled="load.del==true" icon="el-icon-delete">删除</el-button> 
 							</template>
 						</el-table-column>
