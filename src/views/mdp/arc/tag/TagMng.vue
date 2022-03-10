@@ -4,14 +4,14 @@
       <el-row v-if="editVisible==false">
         <el-col :span="10"> 
           <el-button type="primary"  @click="selectConfirm" icon="el-icon-finished">确认选择</el-button>
-          <el-button  @click="getAllHrSkill" v-loading="sectionLoading" icon="el-icon-search">刷新标签</el-button>
+          <el-button  @click="searchTags" v-loading="sectionLoading" icon="el-icon-search">刷新标签</el-button>
         </el-col> 
         <el-col :span="14"> 
-           <el-button type="text"  @click="editVisible=true" icon="el-icon-edit">管理技能</el-button> 
-          <el-tooltip content="黄色表示已经有的技能">
+           <el-button type="text"  @click="editVisible=true" icon="el-icon-edit">管理标签</el-button> 
+          <el-tooltip content="黄色表示已经有的标签">
             <span class="addTagSquare"></span>
           </el-tooltip>
-          <el-tooltip content="白色表示尚未拥有的技能">
+          <el-tooltip content="白色表示尚未拥有的标签">
             <span class="closeTagSquare"></span>
           </el-tooltip>
         </el-col> 
@@ -29,14 +29,14 @@
           <el-input
             style="width:50%;"
             v-model="needAddTagCategoryNameInputValue"
-            placeholder="回车直接快速添加技能分类"
+            placeholder="回车直接快速添加标签分类"
             @keyup.enter.native="addTagCategorySubmitMethod"
           ></el-input>
           <el-button type="primary"  @click="addTagCategorySubmitMethod" icon="el-icon-finished">保存分类</el-button>
-          <el-tooltip content="黄色表示已经有的技能">
+          <el-tooltip content="黄色表示已经有的标签">
             <span class="addTagSquare"></span>
           </el-tooltip>
-          <el-tooltip content="白色表示尚未拥有的技能">
+          <el-tooltip content="白色表示尚未拥有的标签">
             <span class="closeTagSquare"></span>
           </el-tooltip>
         </el-col> 
@@ -89,7 +89,7 @@
             <el-input
               style="200px;"
               v-model="item.showAddButtonInputValue"
-              placeholder="请输入技能,回车即可"
+              placeholder="请输入标签,回车即可"
               @keyup.enter.native="addTagMethod(index)"
               autofocus
             ></el-input>

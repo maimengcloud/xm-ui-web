@@ -7,6 +7,14 @@
         :class="{ 'flex-box': displayType == 'agil' }"
       >
         <el-row>  
+          
+          <el-popover
+            placement="right"
+            width="400"
+            trigger="click"> 
+            <xm-project-select v-if="!selProject||!selProject.id" :auto-select="true"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick"></xm-project-select>
+              <el-link type="warning" slot="reference" v-if="!selProject||!selProject.id"  icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link> 
+          </el-popover> 
 					<el-select style="width: 100px" v-model="filters.taskState" placeholder="状态">
 									<el-option value="0" label="待领取"></el-option>
 									<el-option value="1" label="已领取执行中"></el-option>
@@ -109,25 +117,7 @@
             >{{ filters.tags[0].tagName.substr(0, 5) }}等({{
               filters.tags.length
             }})个</el-tag
-          >
-
-          <font v-if="!selProject">
-            <el-tag
-              class="hidden-md-and-down"
-              v-if="filters.selProject"
-              closable
-              @click="showProjectList"
-              @close="clearProject"
-              >{{ this.filters.selProject.name }}</el-tag
-            >
-            <el-button
-              class="hidden-md-and-down"
-              v-else
-              @click="showProjectList"
-              type="plian"
-              >选项目</el-button
-            >
-          </font>
+          > 
           <el-input
             style="width: 200px"
             v-model="filters.key"
@@ -214,20 +204,7 @@
                 <el-button v-else @click="showProductVisible" type="plian"
                   >选产品</el-button
                 >
-              </el-col>
-              <el-col :span="24" style="padding-top: 5px" v-if="!selProject">
-                <font class="more-label-font">项目:</font
-                ><el-tag
-                  v-if="filters.selProject"
-                  closable
-                  @click="showProjectList"
-                  @close="clearProject"
-                  >{{ this.filters.selProject.name }}</el-tag
-                >
-                <el-button v-else @click="showProjectList" type="plian"
-                  >选项目</el-button
-                >
-              </el-col>
+              </el-col> 
               <el-col :span="24" style="padding-top: 5px">
                 <font class="more-label-font">需求:</font>
                 <font v-if="filters.menus && filters.menus.length > 0">
@@ -874,20 +851,7 @@
         @changeShowInfo="changeShowInfo"
         @submit="changeShowInfo"
       ></xm-project-info>
-    </el-drawer>
-
-    <el-drawer
-      title="选中项目"
-      :visible.sync="selectProjectVisible"
-      :size="750"
-      append-to-body
-      :close-on-click-modal="false"
-    >
-      <xm-project-list
-        class="padding-left"
-        @project-confirm="onPorjectConfirm"
-      ></xm-project-list>
-    </el-drawer>
+    </el-drawer> 
 
     <el-drawer
       append-to-body
@@ -1055,7 +1019,7 @@ import xmMenuSelect from "../xmMenu/XmMenuSelect";
 
 import { addXmMyFocus, delXmMyFocus } from "@/api/xm/core/xmMyFocus";
 
-import XmProjectList from "../xmProject/XmProjectList";
+import XmProjectSelect from "../xmProject/XmProjectSelect";
 
 import XmMenuRichDetail from "../xmMenu/XmMenuRichDetail";
 import XmProductSelect from "../xmProduct/XmProductSelect"; //修改界面
@@ -1298,8 +1262,7 @@ export default {
       parentTask: null,
       projectInfoVisible: false,
       batchEditVisible: false,
-      valueChangeRows: [], //批量修改时，存储修改过的行
-      selectProjectVisible: false,
+      valueChangeRows: [], //批量修改时，存储修改过的行 
       menuVisible: false,
       menuDetailVisible: false,
       pickerOptions: util.pickerOptions(),
@@ -2109,13 +2072,9 @@ export default {
       this.filters.product = product;
       this.productSelectVisible = false;
       this.searchXmTasks();
-    },
-    showProjectList: function () {
-      this.selectProjectVisible = true;
-    },
-    onPorjectConfirm: function (project) {
-      this.filters.selProject = project;
-      this.selectProjectVisible = false;
+    }, 
+    onProjectRowClick: function (project) {
+      this.filters.selProject = project; 
       this.searchXmTasks();
     },
     handleCommand(command) {
@@ -2426,7 +2385,7 @@ export default {
     skillMng,
     xmPhaseMng,
     xmTaskTemplateMng,
-    XmProjectList,
+    XmProjectSelect,
     xmExchangeMng,
     xmMenuSelect,
     XmMenuRichDetail,
