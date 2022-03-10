@@ -86,7 +86,7 @@
 				return this.translateDataToTree(this.xmIterations);
       },
 		},
-		props:[ 'productId','menuId','visible','selProject'],
+		props:[ 'productId','menuId','visible','selProject','autoSelect'],
 		watch:{
 			visible:function(visible){
 				if(visible==true){
@@ -240,6 +240,12 @@
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
 						this.xmIterations = res.data.data;
+						
+						if(this.autoSelect===true&&this.xmIterations.length>0){ 
+							var row=this.xmIterations[0];
+							this.$refs.table.setCurrentRow(row);
+							this.rowClick(row);
+						}
 					}else{
 						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					}
