@@ -1,13 +1,16 @@
 <template>
-	<section>
-		
-		
-		<el-row>  
-			<el-col  :span="6"  >
-				<xm-product-mng :xm-iteration="xmIteration" @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-mng>
-			</el-col>
-			<el-col :span="18"  style="padding-left:12px;" >
-				<el-row  >  
+	<section> 
+		<el-row>   
+			<el-col :span="24"  style="padding-left:12px;" >
+				<el-row  > 
+					
+					<el-popover
+						placement="right"
+						width="400"
+						trigger="click"> 
+						<xm-product-mng :auto-select="true" v-if="!xmProduct" :xm-iteration="xmIteration" @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-mng>
+							<el-link type="warning" slot="reference" v-if="!xmProduct" icon="el-icon-search"><font style="font-size:14px;">{{filters.product?filters.product.productName:'选择产品'}}</font></el-link> 
+					</el-popover>  
  					<el-select class="hidden-md-and-down" v-if="excludeIterationId" v-model="filters.iterationFilterType" placeholder="是否加入过迭代？" clearable  >
 						<el-option   value="not-join"  label="未加入任何迭代的需求"></el-option>  
 						<el-option   value="join"  label="已加入迭代的需求"></el-option>  
