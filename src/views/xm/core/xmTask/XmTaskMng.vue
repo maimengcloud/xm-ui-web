@@ -864,6 +864,8 @@
         :visible="batchRelTasksWithMenuVisible"
         :is-select-menu="true" 
          @selected="onBatchRelTasksWithMenu" 
+         :xm-product="filters.product"
+        :sel-project="filters.selProject"
       ></xm-menu-select>
     </el-drawer> 
     <el-drawer
@@ -877,6 +879,7 @@
         :visible="menuVisible"
         :is-select-menu="true"
         :multi="true"
+         :xm-product="filters.product"
         @menus-selected="onSelectedMenus"
       ></xm-menu-select>
     </el-drawer>
@@ -891,7 +894,8 @@
         :visible="menuStory"
         :is-select-menu="true"
         :multi="true"
-        @menus-selected="onSelectedStory"
+        @menus-selected="onSelectedStory" 
+         :xm-product="filters.product"
       ></xm-menu-select>
     </el-drawer>
 

@@ -118,6 +118,9 @@
 				this.filters.selProject=this.selProject
 				 this.changeSelKey("all"); 
 			}, 
+			"xmProduct":function(){ 
+				 this.changeSelKey("all"); 
+			}
 		},
 		data() {
 			const beginDate = new Date();

@@ -207,11 +207,10 @@
 					params.key="%"+this.filters.key+"%"
 				}else{
 					//params.xxx=xxxxx
-				}
+				} 
 				if(this.selProject){
 					params.projectId=this.selProject.id
 				}
-				
 				if(this.xmIteration){
 					params.iterationId=this.xmIteration.id
 				}

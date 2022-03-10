@@ -8,7 +8,7 @@
 						placement="right"
 						width="400"
 						trigger="click"> 
-						<xm-product-mng :auto-select="true" v-if="!xmProduct" :xm-iteration="xmIteration" @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-mng>
+						<xm-product-select :auto-select="true" :sel-project="selProject" v-if="!xmProduct" :xm-iteration="xmIteration" @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-select>
 							<el-link type="warning" slot="reference" v-if="!xmProduct" icon="el-icon-search"><font style="font-size:14px;">{{filters.product?filters.product.productName:'选择产品'}}</font></el-link> 
 					</el-popover>  
  					<el-select class="hidden-md-and-down" v-if="excludeIterationId" v-model="filters.iterationFilterType" placeholder="是否加入过迭代？" clearable  >
@@ -117,7 +117,7 @@
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { listXmMenu  } from '@/api/xm/core/xmMenu';
- 	import  XmProductMng from '../xmProduct/XmProductSelect';//新增界面
+ 	import  XmProductSelect from '../xmProduct/XmProductSelect';//新增界面
  	import XmMenuRichDetail from './XmMenuRichDetail';
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
 
@@ -126,7 +126,7 @@
 	import { mapGetters } from 'vuex'
 	
 	export default { 
-		props:['isSelectMenu','excludeIterationId','multi','visible','xmIteration'],
+		props:['isSelectMenu','excludeIterationId','multi','visible','xmIteration','xmProduct','selProject'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -143,6 +143,14 @@
 				}
 			},
 			xmItertaion(){
+				this.getXmMenus();
+			},
+			
+			xmProduct(){
+				this.filters.product=this.xmProduct
+				this.getXmMenus();
+			},
+			selProject(){ 
 				this.getXmMenus();
 			}
 		},
@@ -412,7 +420,7 @@
 			
 		},//end methods
 		components: { 
- 			XmProductMng,XmMenuRichDetail,UsersSelect
+ 			XmProductSelect,XmMenuRichDetail,UsersSelect
  		    
 		    //在下面添加其它组件
 		},
@@ -421,6 +429,8 @@
 				if(this.excludeIterationId){
 					this.filters.iterationFilterType='not-join'
 				}
+				
+				this.filters.product=this.xmProduct
 				this.getXmMenus();  
 				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
         	}); 
