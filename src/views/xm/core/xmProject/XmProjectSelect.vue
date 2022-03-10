@@ -27,7 +27,7 @@
 
 
 	export default {  
-		props:["xmIteration","xmProduct"],
+		props:["xmIteration","xmProduct",'autoSelect'],
 		computed: {
 			...mapGetters([
 				'userInfo','roles'
@@ -133,11 +133,15 @@
 				params.branchId = this.userInfo.branchId;
 				listXmProject(params).then((res) => {
 					var tips=res.data.tips;
-					if(tips.isOk){ 
-						console.log(res.data);
+					if(tips.isOk){  
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false; 
 						this.xmProjects = res.data.data;
+						if(this.autoSelect===true&&this.xmProjects.length>0){ 
+							var row=this.xmProjects[0];
+							this.$refs.table.setCurrentRow(row);
+							this.rowClick(row);
+						}
 					}else{
 						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					} 
