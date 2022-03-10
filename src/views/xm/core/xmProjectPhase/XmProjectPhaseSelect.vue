@@ -238,7 +238,7 @@
 				this.$emit('clear-select',null );//  @row-click="rowClick"
 			},
 			rowClick: function(row, event, column){
-				debugger;
+				
 				var myrow=JSON.parse(JSON.stringify(row))
 				myrow.children=[];
 				this.parentProjectPhase=myrow

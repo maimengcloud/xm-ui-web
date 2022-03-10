@@ -14,7 +14,7 @@ function padding(s, len) {
 export default {
 
   calcTableMaxHeight(cssSelector) {     
-    debugger;
+    
     var table=cssSelector;
     if(typeof cssSelector == 'string'){
       table=document.querySelector(cssSelector);

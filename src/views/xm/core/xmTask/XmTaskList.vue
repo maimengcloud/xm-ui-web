@@ -103,7 +103,7 @@
 				'userInfo','roles'
 			]),  
 			tasksTreeData() {
-				debugger;
+				
 				var d=JSON.parse(JSON.stringify(this.xmTasks))
 				 var data= treeTool.translateDataToTree(d,"parentTaskid","id");
 				 return data;

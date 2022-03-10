@@ -386,7 +386,7 @@ XmProductSelect,
 				 this.getXmGroups();
 			},
 			loadNexGroup(){
-				debugger;
+				
 				var params={}
 				if(this.currNodeType=='branch'||this.currNodeType=='iteration'){
 					params.branchId=this.editForm.branchId

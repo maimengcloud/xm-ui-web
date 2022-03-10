@@ -61,7 +61,7 @@
 		    ]),
 			xmIterationMenusTreeData(){ 
 				var data= this.translateDataToTree(this.xmIterationMenus);
-				debugger
+				
 				return data;
 			},
 		},
