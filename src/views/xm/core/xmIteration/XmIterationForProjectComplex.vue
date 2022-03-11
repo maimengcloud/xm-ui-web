@@ -47,7 +47,7 @@
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { delXmIterationProductLink } from '@/api/xm/core/xmIterationProductLink';
+	import { delXmIterationLink } from '@/api/xm/core/xmIterationLink';
 
  	import XmIterationSelect from './XmIterationSelect.vue'
 	import XmMenuMng from '../xmMenu/XmMenuMng.vue'
@@ -156,10 +156,10 @@
 				}
 				this.showPanel=tab.name 
 			},
-			doDelXmIterationProductLink(){
+			doDelXmIterationLink(){
 				this.$confirm('移出后，迭代试图将看不到该产品信息，确认将产品【'+this.xmProduct.productName+'】从迭代【'+this.xmIteration.iterationName+'】移出吗？', '提示', {}).then(() => {
 					var params={iterationId:this.xmIteration.id,productId:this.xmProduct.id}
-					delXmIterationProductLink(params).then(res=>{
+					delXmIterationLink(params).then(res=>{
 						var tips = res.data.tips;
 						if(tips.isOk){
 							this.$notify({showClose: true, message:"移出成功", type: tips.isOk?'success':'error' });

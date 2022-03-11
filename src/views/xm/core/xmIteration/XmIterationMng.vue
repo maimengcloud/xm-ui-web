@@ -131,7 +131,7 @@
 	import config from '@/common/config';//全局公共库
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { listXmIteration,listXmIterationWithState, delXmIteration, batchDelXmIteration,loadTasksToXmIterationState } from '@/api/xm/core/xmIteration';
-	import { addXmIterationProductLink,delXmIterationProductLink } from '@/api/xm/core/xmIterationProductLink';
+	import { addXmIterationLink,delXmIterationLink } from '@/api/xm/core/xmIterationLink';
 
 	import  XmIterationAdd from './XmIterationAdd';//新增界面
 	import  XmIterationEdit from './XmIterationEdit';//修改界面
@@ -491,7 +491,7 @@ import XmIterationSelect from './XmIterationSelect.vue';
 				this.$confirm('确认将产品【'+xmProduct.productName+'】加入迭代计划【'+xmIteration.iterationName+'】吗？', '提示', {
 					type: 'warning'
 				}).then(()=>{
-					addXmIterationProductLink({iterationId:xmIteration.id,productId:xmProduct.id}).then(res=>{
+					addXmIterationLink({iterationId:xmIteration.id,productId:xmProduct.id}).then(res=>{
 						var tips =res.data.tips;
 						if(tips.isOk){
 							this.getXmIterations();
@@ -500,13 +500,13 @@ import XmIterationSelect from './XmIterationSelect.vue';
 					})
 				})
 			},
-			doDelXmIterationProductLink(row){
+			doDelXmIterationLink(row){
 				var xmIteration=row;
 				var xmProduct=this.xmProduct;
 				this.$confirm('确认将产品【'+xmProduct.productName+'】与迭代【'+xmIteration.iterationName+'】进行脱钩吗？脱钩后，产品与迭代互相查看不到对方信息。', '提示', {
 					type: 'warning'
 				}).then(()=>{
-					delXmIterationProductLink({iterationId:xmIteration.id,productId:xmProduct.id}).then(res=>{
+					delXmIterationLink({iterationId:xmIteration.id,productId:xmProduct.id}).then(res=>{
 						var tips =res.data.tips;
 						if(tips.isOk){
 							this.getXmIterations();

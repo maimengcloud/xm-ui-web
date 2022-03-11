@@ -1,7 +1,7 @@
 <template>
 	<section>
 		<el-row>
-			<!--新增界面 XmIterationProductLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表--> 
+			<!--新增界面 XmIterationLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表--> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
 				<el-form-item label="迭代表主键" prop="iterationId">
 					<el-input v-model="addForm.iterationId" placeholder="迭代表主键" ></el-input>
@@ -35,7 +35,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询 
-	import { addXmIterationProductLink } from '@/api/xm/core/xmIterationProductLink';
+	import { addXmIterationLink } from '@/api/xm/core/xmIterationLink';
 	import { mapGetters } from 'vuex'
 	
 	export default { 
@@ -44,10 +44,10 @@
 		      'userInfo'
 		    ])
 		},
-		props:['xmIterationProductLink','visible'],
+		props:['xmIterationLink','visible'],
 		watch: {
-	      'xmIterationProductLink':function( xmIterationProductLink ) {
-	        this.addForm = xmIterationProductLink;
+	      'xmIterationLink':function( xmIterationLink ) {
+	        this.addForm = xmIterationLink;
 	      },
 	      'visible':function(visible) { 
 	      	if(visible==true){
@@ -79,7 +79,7 @@
 				this.$refs['addForm'].resetFields();
 				this.$emit('cancel');
 			},
-			//新增提交XmIterationProductLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表 父组件监听@submit="afterAddSubmit"
+			//新增提交XmIterationLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表 父组件监听@submit="afterAddSubmit"
 			addSubmit: function () {
 				
 				this.$refs.addForm.validate((valid) => {
@@ -88,7 +88,7 @@
 						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
 							this.load.add=true
 							let params = Object.assign({}, this.addForm); 
-							addXmIterationProductLink(params).then((res) => {
+							addXmIterationLink(params).then((res) => {
 								this.load.add=false
 								var tips=res.data.tips;
 								if(tips.isOk){
@@ -107,10 +107,10 @@
 			
 		},//end method
 		components: {  
-		    //在下面添加其它组件 'xm-iteration-product-link-edit':XmIterationProductLinkEdit
+		    //在下面添加其它组件 'xm-iteration-link-edit':XmIterationLinkEdit
 		},
 		mounted() {
-			this.addForm=Object.assign(this.addForm, this.xmIterationProductLink);  
+			this.addForm=Object.assign(this.addForm, this.xmIterationLink);  
 			/**在下面写其它函数***/
 			
 		}//end mounted

@@ -5,8 +5,8 @@
 			<el-button type="primary" v-if="xmProduct" @click="iterationVisible=true" icon="el-icon-plus" > 选择更多迭代加入产品 </el-button>
 		</el-row>
 		<el-row style="padding-top:10px;">
-			<!--列表 XmIterationProductLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表-->
-			<el-table ref="xmIterationProductLink" :data="xmIterationProductLinks" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<!--列表 XmIterationLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表-->
+			<el-table ref="xmIterationLink" :data="xmIterationLinks" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
   				<el-table-column prop="iterationName" v-if="!xmIteration" label="包含的迭代名称" min-width="150" ></el-table-column>
 				<el-table-column prop="productName" v-if="!xmProduct" label="包含的产品名称" min-width="150" ></el-table-column>
 				<el-table-column prop="ctime" label="加入时间" min-width="80" ></el-table-column>
@@ -36,9 +36,9 @@
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库 
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { listXmIterationProductLink,addXmIterationProductLink, delXmIterationProductLink, batchDelXmIterationProductLink } from '@/api/xm/core/xmIterationProductLink';
-	import  XmIterationProductLinkAdd from './XmIterationProductLinkAdd';//新增界面
-	import  XmIterationProductLinkEdit from './XmIterationProductLinkEdit';//修改界面
+	import { listXmIterationLink,addXmIterationLink, delXmIterationLink, batchDelXmIterationLink } from '@/api/xm/core/xmIterationLink';
+	import  XmIterationLinkAdd from './XmIterationLinkAdd';//新增界面
+	import  XmIterationLinkEdit from './XmIterationLinkEdit';//修改界面
 	import { mapGetters } from 'vuex'
 import XmProductSelect from '../xmProduct/XmProductSelect.vue';
 import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
@@ -47,10 +47,10 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 		props:['xmIteration','xmProduct'],
 		watch:{
 			xmIteration(){
-				this.getXmIterationProductLinks();
+				this.getXmIterationLinks();
 			},
 			xmProduct(){
-				this.getXmIterationProductLinks();
+				this.getXmIterationLinks();
 			}
 		},
 		computed: {
@@ -63,7 +63,7 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 				filters: {
 					key: ''
 				},
-				xmIterationProductLinks: [],//查询结果
+				xmIterationLinks: [],//查询结果
 				pageInfo:{//分页数据
 					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
 					pageSize:10,//每页数据
@@ -78,14 +78,14 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 					//sex:[],
 				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				
-				addFormVisible: false,//新增xmIterationProductLink界面是否显示
-				//新增xmIterationProductLink界面初始化数据
+				addFormVisible: false,//新增xmIterationLink界面是否显示
+				//新增xmIterationLink界面初始化数据
 				addForm: {
 					iterationId:'',productId:'',ctime:'',cuserid:'',cusername:'',linkStatus:''
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
-				//编辑xmIterationProductLink界面初始化数据
+				//编辑xmIterationLink界面初始化数据
 				editForm: {
 					iterationId:'',productId:'',ctime:'',cuserid:'',cusername:'',linkStatus:''
 				},
@@ -97,11 +97,11 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 		methods: { 
 			handleSizeChange(pageSize) { 
 				this.pageInfo.pageSize=pageSize; 
-				this.getXmIterationProductLinks();
+				this.getXmIterationLinks();
 			},
 			handleCurrentChange(pageNum) {
 				this.pageInfo.pageNum = pageNum;
-				this.getXmIterationProductLinks();
+				this.getXmIterationLinks();
 			},
 			// 表格排序 obj.order=ascending/descending,需转化为 asc/desc ; obj.prop=表格中的排序字段,字段驼峰命名
 			sortChange( obj ){
@@ -119,14 +119,14 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 					this.pageInfo.orderFields=[util.toLine(obj.prop)]; 
 					this.pageInfo.orderDirs=[dir];
 				}
-				this.getXmIterationProductLinks();
+				this.getXmIterationLinks();
 			},
-			searchXmIterationProductLinks(){
+			searchXmIterationLinks(){
 				 this.pageInfo.count=true; 
-				 this.getXmIterationProductLinks();
+				 this.getXmIterationLinks();
 			},
-			//获取列表 XmIterationProductLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表
-			getXmIterationProductLinks() {
+			//获取列表 XmIterationLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表
+			getXmIterationLinks() {
 				let params = {
 					pageSize: this.pageInfo.pageSize,
 					pageNum: this.pageInfo.pageNum,
@@ -152,12 +152,12 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 					params.productId=this.xmProduct.id
 				}
 				this.load.list = true;
-				listXmIterationProductLink(params).then((res) => {
+				listXmIterationLink(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
-						this.xmIterationProductLinks = res.data.data;
+						this.xmIterationLinks = res.data.data;
 					}else{
 						this.$notify({ message: tips.msg, type: 'error' });
 					} 
@@ -165,12 +165,12 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 				}).catch( err => this.load.list = false );
 			},
 
-			//显示编辑界面 XmIterationProductLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表
+			//显示编辑界面 XmIterationLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表
 			showEdit: function ( row,index ) {
 				this.editFormVisible = true;
 				this.editForm = Object.assign({}, row);
 			},
-			//显示新增界面 XmIterationProductLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表
+			//显示新增界面 XmIterationLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表
 			showAdd: function () {
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);
@@ -178,46 +178,46 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 			afterAddSubmit(){
 				this.addFormVisible=false;
 				this.pageInfo.count=true;
-				this.getXmIterationProductLinks();
+				this.getXmIterationLinks();
 			},
 			afterEditSubmit(){
 				this.editFormVisible=false;
 			},
-			//选择行xmIterationProductLink
+			//选择行xmIterationLink
 			selsChange: function (sels) {
 				this.sels = sels;
 			}, 
-			//删除xmIterationProductLink
+			//删除xmIterationLink
 			handleDel: function (row,index) { 
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
 				}).then(() => { 
 					this.load.del=true;
 					let params = row;
-					delXmIterationProductLink(params).then((res) => {
+					delXmIterationLink(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
 						if(tips.isOk){ 
 							this.pageInfo.count=true;
-							this.getXmIterationProductLinks();
+							this.getXmIterationLinks();
 						}
 						this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
-			//批量删除xmIterationProductLink
+			//批量删除xmIterationLink
 			batchDel: function () {
 				
 				this.$confirm('确认删除选中记录吗？', '提示', {
 					type: 'warning'
 				}).then(() => { 
 					this.load.del=true;
-					batchDelXmIterationProductLink(this.sels).then((res) => {
+					batchDelXmIterationLink(this.sels).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
 						if( tips.isOk ){ 
 							this.pageInfo.count=true;
-							this.getXmIterationProductLinks(); 
+							this.getXmIterationLinks(); 
 						}
 						this.$notify({ message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
@@ -234,12 +234,12 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 					this.load.add=true;
 					this.addForm.iterationId=this.xmIteration.id;
 					this.addForm.productId= product.id;
-					addXmIterationProductLink(this.addForm).then((res) => {
+					addXmIterationLink(this.addForm).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
 						if( tips.isOk ){ 
 							this.pageInfo.count=true;
-							this.getXmIterationProductLinks(); 
+							this.getXmIterationLinks(); 
 						}
 						this.$notify({ message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
@@ -252,12 +252,12 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 					this.load.del=true;
 					this.addForm.iterationId=iteration.id;
 					this.addForm.productId=this.xmProduct.id;
-					addXmIterationProductLink(this.addForm).then((res) => {
+					addXmIterationLink(this.addForm).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
 						if( tips.isOk ){ 
 							this.pageInfo.count=true;
-							this.getXmIterationProductLinks(); 
+							this.getXmIterationLinks(); 
 						}
 						this.$notify({ message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
@@ -267,15 +267,15 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 			
 		},//end methods
 		components: { 
-		    'xm-iteration-product-link-add':XmIterationProductLinkAdd,
-		    'xm-iteration-product-link-edit':XmIterationProductLinkEdit,
+		    'xm-iteration-link-add':XmIterationLinkAdd,
+		    'xm-iteration-link-edit':XmIterationLinkEdit,
 			XmProductSelect,
 			XmIterationSelect,
 		},
 		mounted() { 
 			this.$nextTick(() => {
-				this.getXmIterationProductLinks(); 
-                this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.xmIterationProductLink.$el)
+				this.getXmIterationLinks(); 
+                this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.xmIterationLink.$el)
         	}); 
         	/** 举例，
     		listOption([{categoryId:'all',itemCode:'sex'},{categoryId:'all',itemCode:'grade'}] ).then(res=>{

@@ -1,7 +1,7 @@
 <template>
 	<section>
 		<el-row>
-		<!--编辑界面 XmIterationProductLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表--> 
+		<!--编辑界面 XmIterationLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
 				<el-form-item label="迭代表主键" prop="iterationId">
 					<el-input v-model="editForm.iterationId" placeholder="迭代表主键"></el-input>
@@ -35,7 +35,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { editXmIterationProductLink } from '@/api/xm/core/xmIterationProductLink';
+	import { editXmIterationLink } from '@/api/xm/core/xmIterationLink';
 	import { mapGetters } from 'vuex'
 	
 	export default { 
@@ -44,10 +44,10 @@
 		      'userInfo'
 		    ])
 		},
-		props:['xmIterationProductLink','visible'],
+		props:['xmIterationLink','visible'],
 		watch: {
-	      'xmIterationProductLink':function( xmIterationProductLink ) {
-	        this.editForm = xmIterationProductLink;
+	      'xmIterationLink':function( xmIterationLink ) {
+	        this.editForm = xmIterationLink;
 	      },
 	      'visible':function(visible) { 
 	      	if(visible==true){
@@ -64,7 +64,7 @@
 						//{ required: true, message: '迭代表主键不能为空', trigger: 'blur' }
 					]
 				},
-				//编辑界面数据  XmIterationProductLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表
+				//编辑界面数据  XmIterationLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表
 				editForm: {
 					iterationId:'',productId:'',ctime:'',cuserid:'',cusername:'',linkStatus:''
 				}
@@ -79,14 +79,14 @@
 				this.$refs['editForm'].resetFields();
 				this.$emit('cancel');
 			},
-			//编辑提交XmIterationProductLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表父组件监听@submit="afterEditSubmit"
+			//编辑提交XmIterationLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表父组件监听@submit="afterEditSubmit"
 			editSubmit: function () {
 				this.$refs.editForm.validate((valid) => {
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
 							this.load.edit=true
 							let params = Object.assign({}, this.editForm); 
-							editXmIterationProductLink(params).then((res) => {
+							editXmIterationLink(params).then((res) => {
 								this.load.edit=false
 								var tips=res.data.tips;
 								if(tips.isOk){
@@ -104,10 +104,10 @@
 			/**end 在上面加自定义方法**/
 		},//end method
 		components: {  
-		    //在下面添加其它组件 'xm-iteration-product-link-edit':XmIterationProductLinkEdit
+		    //在下面添加其它组件 'xm-iteration-link-edit':XmIterationLinkEdit
 		},
 		mounted() {
-			this.editForm=Object.assign(this.editForm, this.xmIterationProductLink);  
+			this.editForm=Object.assign(this.editForm, this.xmIterationLink);  
 		}
 	}
 

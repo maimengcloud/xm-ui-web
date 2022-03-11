@@ -12,19 +12,19 @@ let base = config.getCoreBasePath();
  **/
  
 //普通查询 条件之间and关系  
-export const listXmIterationProductLink = params => { return axios.get(`${base}/xm/core/xmIterationProductLink/list`, { params: params }); };
+export const listXmIterationLink = params => { return axios.get(`${base}/xm/core/xmIterationLink/list`, { params: params }); };
 
 //模糊查询迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表 条件之间or关系  
-//export const listXmIterationProductLinkKey = params => { return axios.get(`${base}/xm/core/xmIterationProductLink/listKey`, { params: params }); };
+//export const listXmIterationLinkKey = params => { return axios.get(`${base}/xm/core/xmIterationLink/listKey`, { params: params }); };
 
 //删除一条迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表 params={iterationId:'迭代表主键 主键',productId:'产品表主键 主键'}
-export const delXmIterationProductLink = params => { return axios.post(`${base}/xm/core/xmIterationProductLink/del`,params); };
+export const delXmIterationLink = params => { return axios.post(`${base}/xm/core/xmIterationLink/del`,params); };
 
 //批量删除迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表  params=[{iterationId:'迭代表主键 主键',productId:'产品表主键 主键'}]
-export const batchDelXmIterationProductLink = params => { return axios.post(`${base}/xm/core/xmIterationProductLink/batchDel`, params); };
+export const batchDelXmIterationLink = params => { return axios.post(`${base}/xm/core/xmIterationLink/batchDel`, params); };
 
 //修改一条迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表记录
-export const editXmIterationProductLink = params => { return axios.post(`${base}/xm/core/xmIterationProductLink/edit`, params); };
+export const editXmIterationLink = params => { return axios.post(`${base}/xm/core/xmIterationLink/edit`, params); };
 
 //新增一条迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表
-export const addXmIterationProductLink = params => { return axios.post(`${base}/xm/core/xmIterationProductLink/add`, params); };
+export const addXmIterationLink = params => { return axios.post(`${base}/xm/core/xmIterationLink/add`, params); };

@@ -51,7 +51,7 @@
       </el-menu>
        <xm-product-overview  v-if="showPanelName=='overview'" :xm-product="xmProduct"></xm-product-overview>
         <xm-product-edit  v-if="showPanelName=='detail'" :xm-product="xmProduct"></xm-product-edit>
-        <xm-iteration-product-link-mng v-if="showPanelName=='iterationProductLink'" :xm-product="xmProduct"></xm-iteration-product-link-mng>
+        <xm-iteration-link-mng v-if="showPanelName=='iterationProductLink'" :xm-product="xmProduct"></xm-iteration-link-mng>
         <xm-product-project-link-mng  v-if="showPanelName=='productProjectLink'" :xm-product="xmProduct"></xm-product-project-link-mng>
    </section>
 </template>
@@ -62,12 +62,12 @@ import util from "@/common/js/util"; // 全局公共库
 import { mapGetters } from "vuex";
 import XmProductOverview from './XmProductOverview.vue';
 import XmProductEdit from './XmProductEdit.vue';
-import XmIterationProductLinkMng from '../xmIterationProductLink/XmIterationProductLinkMng.vue';
+import XmIterationLinkMng from '../xmIterationLink/XmIterationLinkMng.vue';
 import XmProductProjectLinkMng from '../xmProductProjectLink/XmProductProjectLinkMng.vue';
 
 
 export default {
-  components: { XmProductOverview, XmProductEdit, XmIterationProductLinkMng, XmProductProjectLinkMng },
+  components: { XmProductOverview, XmProductEdit, XmIterationLinkMng, XmProductProjectLinkMng },
   computed: {
     ...mapGetters(["userInfo"]),
   },

@@ -267,7 +267,7 @@
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { listXmProduct,listXmProductWithState, delXmProduct, batchDelXmProduct,copyTo,createProductCode } from '@/api/xm/core/xmProduct';
-	import { addXmIterationProductLink,delXmIterationProductLink } from '@/api/xm/core/xmIterationProductLink';
+	import { addXmIterationLink,delXmIterationLink } from '@/api/xm/core/xmIterationLink';
 	import { loadTasksToXmProductState } from '@/api/xm/core/xmProductState';
 	import  XmProductAdd from './XmProductAdd';//新增界面
 	import  XmProductEdit from './XmProductEdit';//修改界面
@@ -603,7 +603,7 @@
 				this.$confirm('确认将产品【'+xmProduct.productName+'】加入迭代计划【'+xmIteration.iterationName+'】吗？', '提示', {
 					type: 'warning'
 				}).then(()=>{
-					addXmIterationProductLink({iterationId:xmIteration.id,productId:xmProduct.id}).then(res=>{
+					addXmIterationLink({iterationId:xmIteration.id,productId:xmProduct.id}).then(res=>{
 						var tips =res.data.tips;
 						if(tips.isOk){
 							this.getXmProducts();
@@ -612,13 +612,13 @@
 					})
 				})
 			},
-			doDelXmIterationProductLink(row){
+			doDelXmIterationLink(row){
 				var xmIteration=this.xmIteration;
 				var xmProduct=row;
 				this.$confirm('确认将产品【'+xmProduct.productName+'】与迭代【'+xmIteration.iterationName+'】进行脱钩吗？脱钩后，产品下的所有需求将从本迭代计划一并移出。', '提示', {
 					type: 'warning'
 				}).then(()=>{
-					delXmIterationProductLink({iterationId:xmIteration.id,productId:xmProduct.id}).then(res=>{
+					delXmIterationLink({iterationId:xmIteration.id,productId:xmProduct.id}).then(res=>{
 						var tips =res.data.tips;
 						if(tips.isOk){
 							this.getXmProducts();
