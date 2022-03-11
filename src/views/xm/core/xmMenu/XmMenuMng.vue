@@ -7,7 +7,7 @@
 							placement="right"
 							width="400"
 							trigger="click"> 
-							<xm-product-select v-if="!xmProduct" :auto-select="true" :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :xm-iteration="xmIteration" :simple="true"></xm-product-select>
+							<xm-product-select v-if="!xmProduct" :auto-select="true" :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :xm-iteration="xmIteration" :simple="true" @clear-select="filters.product=null"></xm-product-select>
 								<el-link type="warning" slot="reference" v-if="!xmProduct" icon="el-icon-search"><font style="font-size:14px;">{{filters.product?filters.product.productName:'选择产品'}}</font></el-link> 
 						</el-popover> 
 						<el-select  v-model="filters.status" placeholder="需求状态" clearable style="width: 100px;">
