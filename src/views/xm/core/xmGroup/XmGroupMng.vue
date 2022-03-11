@@ -262,29 +262,14 @@ XmProductSelect,XmProjectSelect,
 				var topLabel=this.userInfo.branchName+"-组织架构"
 				var currNodeType='branch'
 				var topdata={id:this.userInfo.branchId,branchName:this.userInfo.branchName,branchId:this.userInfo.branchId} 
-				if(this.xmProduct&&this.xmProduct.id){
-					topLabel=this.xmProduct.productName+"-产品组织架构"
-					currNodeType='product'
-					topdata=this.xmProduct
-					topdata.leaderUserid=this.xmProduct.pmUserid
-					topdata.leaderUsername=this.xmProduct.pmUsername
-					topdata.assUserid=this.xmProduct.assUserid
-					topdata.assUsername=this.xmProduct.assUsername
-				}else if(this.selProject && this.selProject.id){
-					topLabel=this.selProject.name+"-项目组织架构"
+				if(this.filters.selProject && this.filters.selProject.id){
+					topLabel=this.filters.selProject.name+"-项目组织架构"
 					currNodeType='project'
-					topdata=this.selProject
-					topdata.leaderUserid=this.selProject.pmUserid
-					topdata.leaderUsername=this.selProject.pmUsername
-					topdata.assUserid=this.selProject.assUserid
-					topdata.assUsername=this.selProject.assUsername
-				}else if(this.xmIteration){
-					
-					topLabel=this.xmIteration.iterationName+"-迭代组织架构"
-					currNodeType='iteration'
-					topdata=this.xmIteration
-					topdata.leaderUserid=this.xmIteration.admUserid
-					topdata.leaderUsername=this.xmIteration.admUsername 
+					topdata=this.filters.selProject
+					topdata.leaderUserid=this.filters.selProject.pmUserid
+					topdata.leaderUsername=this.filters.selProject.pmUsername
+					topdata.assUserid=this.filters.selProject.assUserid
+					topdata.assUsername=this.filters.selProject.assUsername
 				}
 				var data=[{
 					...topdata,
@@ -407,7 +392,7 @@ XmProductSelect,XmProjectSelect,
 					params.projectId=this.editForm.id
 					params.lvl=1
 				}else if(this.currNodeType=='product'){
-					params.productId=this.editForm.id
+					//params.productId=this.editForm.id
 					params.lvl=1
 				}else if(this.currNodeType=='group'){
 					params.pgroupId=this.editForm.id
@@ -447,12 +432,17 @@ XmProductSelect,XmProjectSelect,
 				if(this.filters.selProject){
 					params.projectId=this.filters.selProject.id
 				}
+				if(!params.projectId){
+					return;
+				}
 				if(this.xmIteration){
 					params.iterationId=this.xmIteration.id
 				}
+				/** 取消产品团队，产品团队在项目团队中保留项目团队
 				if(this.xmProduct){
 					params.productId=this.xmProduct.id
 				}
+				 */
 				if(this.filters.key){
 					params.key=this.filters.key
 				}
