@@ -6,8 +6,8 @@
 				<el-form-item label="迭代表主键" prop="iterationId">
 					<el-input v-model="editForm.iterationId" placeholder="迭代表主键"></el-input>
 				</el-form-item> 
-				<el-form-item label="产品表主键" prop="productId">
-					<el-input v-model="editForm.productId" placeholder="产品表主键"></el-input>
+				<el-form-item label="产品表主键" prop="proId">
+					<el-input v-model="editForm.proId" placeholder="产品表主键"></el-input>
 				</el-form-item> 
 				<el-form-item label="创建时间" prop="ctime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.ctime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
@@ -66,7 +66,7 @@
 				},
 				//编辑界面数据  XmIterationLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表
 				editForm: {
-					iterationId:'',productId:'',ctime:'',cuserid:'',cusername:'',linkStatus:''
+					iterationId:'',proId:'',ctime:'',cuserid:'',cusername:'',linkStatus:''
 				}
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				

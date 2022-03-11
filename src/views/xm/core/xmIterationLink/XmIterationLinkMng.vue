@@ -81,13 +81,13 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 				addFormVisible: false,//新增xmIterationLink界面是否显示
 				//新增xmIterationLink界面初始化数据
 				addForm: {
-					iterationId:'',productId:'',ctime:'',cuserid:'',cusername:'',linkStatus:''
+					iterationId:'',proId:'',ctime:'',cuserid:'',cusername:'',linkStatus:''
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmIterationLink界面初始化数据
 				editForm: {
-					iterationId:'',productId:'',ctime:'',cuserid:'',cusername:'',linkStatus:''
+					iterationId:'',proId:'',ctime:'',cuserid:'',cusername:'',linkStatus:''
 				},
 				maxTableHeight:300,
 				productVisible:false,
@@ -149,7 +149,7 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 				}
 				
 				if(this.xmProduct){
-					params.productId=this.xmProduct.id
+					params.proId=this.xmProduct.id
 				}
 				this.load.list = true;
 				listXmIterationLink(params).then((res) => {
@@ -233,7 +233,7 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 				}).then(() => { 
 					this.load.add=true;
 					this.addForm.iterationId=this.xmIteration.id;
-					this.addForm.productId= product.id;
+					this.addForm.proId= product.id;
 					addXmIterationLink(this.addForm).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
@@ -251,7 +251,7 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 				}).then(() => { 
 					this.load.del=true;
 					this.addForm.iterationId=iteration.id;
-					this.addForm.productId=this.xmProduct.id;
+					this.addForm.proId=this.xmProduct.id;
 					addXmIterationLink(this.addForm).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
