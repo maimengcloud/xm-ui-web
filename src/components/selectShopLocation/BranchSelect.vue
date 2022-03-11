@@ -133,7 +133,7 @@
 						this.pageInfo.total = res.data.total;this.pageInfo.count=false;
 						this.branchs = res.data.data;
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({showClose: true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch(() => {

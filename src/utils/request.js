@@ -73,6 +73,7 @@ service.interceptors.response.use(
     }
     
     Message({
+      showClose:true,
       message: '通讯错误',
       type: 'error',
       duration: 5 * 1000

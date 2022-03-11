@@ -1,6 +1,14 @@
 <template>
 	<section class="page-container border padding" >
 		<el-row> 
+			 
+			<el-popover
+				placement="right"
+				width="400"
+				trigger="click"> 
+				<xm-project-select :auto-select="true" v-if="!selProject"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClearSelect"></xm-project-select>
+					<el-link type="warning" slot="reference" v-if="!selProject" icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link> 
+			</el-popover>
 					<el-input v-model="filters.groupNameKey" style="width:15%;" clearable placeholder="小组名称查询"></el-input> 
 					<el-input v-model="filters.mngUsernamekey" style="width:15%;" clearable placeholder="组长、副组长名称查询"></el-input> 
 					<el-input v-model="filters.groupUsernameKey" style="width:15%;" clearable placeholder="组员名称查询"></el-input>
@@ -206,13 +214,15 @@
 	import  XmGroupStateMng from '../xmGroupState/XmGroupStateMng';//修改界面
 	import  XmGroupUserMng from '../xmGroupUser/XmGroupUserMng';//修改界面
 	import XmProjectList from '../xmProject/XmProjectList';
+	
+	import XmProjectSelect from '../xmProject/XmProjectSelect';
 	import XmProductSelect from '../xmProduct/XmProductSelect.vue';
 	
 	export default {
 	    name:'xmGroupMng',
 		components: {
 		    XmGroupEdit,VueOkrTree,UsersSelect,XmGroupStateMng,XmGroupUserMng,XmProjectList,
-XmProductSelect,
+XmProductSelect,XmProjectSelect,
 		},
 		props:["visible","selProject" ,"isSelectSingleUser","isSelectMultiUser",'xmProduct','xmIteration'],
 		computed: {
@@ -295,6 +305,7 @@ XmProductSelect,
             },
 			
 			selProject(){
+				this.selProject=this.selProject;
 				this.getXmGroup();
 			},
 			xmProduct(){
@@ -311,6 +322,7 @@ XmProductSelect,
 					groupNameKey:'',
 					mngUsernamekey:'',
 					groupUsernameKey:'',
+					selProject:null,
 				},
 				xmGroups: [],//查询结果
 				pageInfo:{//分页数据
@@ -432,8 +444,8 @@ XmProductSelect,
 					params.orderBy= orderBys.join(",")
 				}
 				
-				if(this.selProject){
-					params.projectId=this.selProject.id
+				if(this.filters.selProject){
+					params.projectId=this.filters.selProject.id
 				}
 				if(this.xmIteration){
 					params.iterationId=this.xmIteration.id
@@ -682,7 +694,7 @@ XmProductSelect,
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
             initData: function(){
-
+				this.filters.selProject=this.selProject;
             },
 			renderCurrentClass (node) {
 				return 'label-bg-blue'
@@ -749,6 +761,14 @@ XmProductSelect,
 				this.addForm.pgClass="1"
 				this.addFormVisible=true;
 				this.selectProductVisible=false;
+			},
+			onProjectRowClick(project){
+				this.filters.selProject=project;
+				this.searchXmGroups();
+			},
+			onProjectClearSelect(){
+				this.filters.selProject=null
+				this.xmGroups=[]
 			}
 		},//end methods
 		mounted() {
