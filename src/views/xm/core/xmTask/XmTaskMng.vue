@@ -15,7 +15,7 @@
             <xm-project-select v-if="!selProject||!selProject.id" :auto-select="workItemType!='productPlan'"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="filters.selProject=null"></xm-project-select>
               <el-link type="warning" slot="reference" v-if="!selProject||!selProject.id"  icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link> 
           </el-popover> 
-					<el-select style="width: 100px" v-model="filters.taskState" placeholder="状态">
+					<el-select style="width: 100px" v-model="filters.taskState" placeholder="状态" clearable>
 									<el-option value="0" label="待领取"></el-option>
 									<el-option value="1" label="已领取执行中"></el-option>
 									<el-option value="2" label="已完工"></el-option>
