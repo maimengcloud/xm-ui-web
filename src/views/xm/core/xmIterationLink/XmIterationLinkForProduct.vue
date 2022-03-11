@@ -3,12 +3,14 @@
 		<el-row>
 			<el-button type="primary" v-if="xmIteration" @click="productVisible=true" icon="el-icon-plus" > 选择更多产品加入迭代 </el-button>
 			<el-button type="primary" v-if="xmProduct" @click="iterationVisible=true" icon="el-icon-plus" > 选择更多迭代加入产品 </el-button>
+			<el-button type="primary"  icon="el-icon-plus" @click="showAdd"> 新增迭代 </el-button>
 		</el-row>
 		<el-row style="padding-top:10px;">
 			<!--列表 XmIterationLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表-->
 			<el-table ref="xmIterationLink" :data="xmIterationLinks" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-  				<el-table-column prop="iterationName" v-if="!xmIteration" label="包含的迭代名称" min-width="150" ></el-table-column>
-				<el-table-column prop="productName" v-if="!xmProduct" label="包含的产品名称" min-width="150" ></el-table-column>
+  				<el-table-column prop="seqNo" v-if="!xmIteration" label="迭代序号" width="100" ></el-table-column>
+				<el-table-column prop="iterationName" v-if="!xmIteration" label="迭代名称" min-width="150" ></el-table-column>
+				<el-table-column prop="productName" v-if="!xmProduct" label="产品名称" min-width="150" ></el-table-column>
 				<el-table-column prop="ctime" label="加入时间" min-width="80" ></el-table-column>
  				<el-table-column prop="cusername" label="操作者" min-width="80" ></el-table-column> 
 				<el-table-column label="操作" width="120" fixed="right"> 
@@ -28,6 +30,11 @@
 			<el-drawer title="选择迭代" :visible.sync="iterationVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
 				<xm-iteration-select @row-click="onIterationSelect"></xm-iteration-select>
 			</el-drawer> 
+			
+			<!--新增 XmIteration 迭代定义界面-->
+			<el-drawer title="新增迭代" :visible.sync="addFormVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
+				<xm-iteration-add :xm-iteration="addForm" :xm-product="xmProduct" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-iteration-add>
+			</el-drawer>
 		</el-row>
 	</section>
 </template>
@@ -37,11 +44,12 @@
 	import config from '@/common/config';//全局公共库 
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { listXmIterationLinkWithProductInfo,addXmIterationLink, delXmIterationLink, batchDelXmIterationLink } from '@/api/xm/core/xmIterationLink';
-	import  XmIterationLinkAdd from './XmIterationLinkAdd';//新增界面
-	import  XmIterationLinkEdit from './XmIterationLinkEdit';//修改界面
+ 
 	import { mapGetters } from 'vuex'
 	import XmProductSelect from '../xmProduct/XmProductSelect.vue';
 	import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
+	
+	import  XmIterationAdd from '../xmIteration/XmIterationAdd';//新增界面
 	
 	export default { 
 		props:['xmIteration','xmProduct'],
@@ -268,11 +276,10 @@
 			/**end 自定义函数请在上面加**/
 			
 		},//end methods
-		components: { 
-		    'xm-iteration-link-add':XmIterationLinkAdd,
-		    'xm-iteration-link-edit':XmIterationLinkEdit,
+		components: {  
 			XmProductSelect,
 			XmIterationSelect,
+			XmIterationAdd,
 		},
 		mounted() { 
 			this.$nextTick(() => {

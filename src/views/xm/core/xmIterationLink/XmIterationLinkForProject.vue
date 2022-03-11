@@ -8,8 +8,9 @@
 		<el-row style="padding-top:10px;">
 			<!--列表 XmIterationLink 迭代表与项目表的关联关系，一般由迭代管理员将迭代挂接到项目表-->
 			<el-table ref="xmIterationLink" :data="xmIterationLinks" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-  				<el-table-column prop="iterationName" v-if="!xmIteration" label="包含的迭代名称" min-width="150" ></el-table-column>
-				<el-table-column prop="projectName" v-if="!selProject" label="包含的项目名称" min-width="150" ></el-table-column>
+  				<el-table-column prop="seqNo" v-if="!xmIteration" label="迭代序号" width="100" ></el-table-column> 
+				<el-table-column prop="iterationName" v-if="!xmIteration" label="迭代名称" min-width="150" ></el-table-column>
+				<el-table-column prop="projectName" v-if="!selProject" label="项目名称" min-width="150" ></el-table-column>
 				<el-table-column prop="ctime" label="加入时间" min-width="80" ></el-table-column>
  				<el-table-column prop="cusername" label="操作者" min-width="80" ></el-table-column> 
 				<el-table-column label="操作" width="120" fixed="right"> 
