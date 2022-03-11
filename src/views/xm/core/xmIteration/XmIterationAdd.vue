@@ -2,18 +2,9 @@
 	<section class="page-container  padding border">
 		<el-row>
 			<!--新增界面 XmIteration 迭代定义--> 
-			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">  
-				<el-form-item v-if="parentIteration" label="上级迭代" prop="pid">
-					 {{parentIteration.seqNo}}&nbsp;&nbsp;{{parentIteration.iterationName}}
-				</el-form-item> 
-				<el-form-item v-else label="上级迭代" prop="pid">
-					 无上级
-				</el-form-item>  
+			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">   
 				<el-form-item label="迭代名称" prop="iterationName">
 					<el-input v-model="addForm.iterationName" placeholder="迭代名称" ></el-input>
-				</el-form-item> 
-				<el-form-item label="序号" prop="seqNo">
-					<el-input v-model="addForm.seqNo" placeholder="如1.0，2.0，1.1.1等" ></el-input> <span v-if="parentIteration" style="color:red;">建议：{{parentIteration.seqNo}}.1</span>
 				</el-form-item> 
 				<el-form-item label="开始时间" prop="startTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="addForm.startTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
@@ -59,7 +50,7 @@
 		      'userInfo','roles'
 		    ])
 		},
-		props:['xmIteration','visible','parentIteration'],
+		props:['xmIteration','visible','parentIteration','selProject','xmProduct'],
 		watch: {
 	      'xmIteration':function( xmIteration ) {
 	        this.addForm = xmIteration;
@@ -112,22 +103,25 @@
 				this.$emit('cancel');
 			},
 			//新增提交XmIteration 迭代定义 父组件监听@submit="afterAddSubmit"
-			addSubmit: function () {
-				if(!this.roles.some(i=>i.roleid=='iterationAdmin')){
-					this.$notify({showClose: true, message: "只有迭代管理员可以修改迭代", type:  'error' }); 
-					return ;
-				}
+			addSubmit: function () { 
 				this.$refs.addForm.validate((valid) => {
-					if (valid) {
+					if (valid) { 
+						var links=[];
+						if(this.xmProduct){
+							 links.push({proId:this.xmProduct.id,ltype:'1'})
+						}
 						
+						if(this.selProject){
+							 links.push({proId:this.selProject.id,ltype:'0'})
+						}
+						var params={...this.addForm}
+						params.links=links;
 						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
-							this.load.add=true
-							let params = Object.assign({}, this.addForm); 
+							this.load.add=true 
 							addXmIteration(params).then((res) => {
 								this.load.add=false
 								var tips=res.data.tips;
-								if(tips.isOk){
-									this.$refs['addForm'].resetFields();
+								if(tips.isOk){ 
 									this.$emit('submit',res.data.data);//  @submit="afterAddSubmit"
 								}
 								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 

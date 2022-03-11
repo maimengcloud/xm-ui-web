@@ -3,6 +3,7 @@
 		<el-row>
 			<el-button type="primary" v-if="xmIteration" @click="projectVisible=true" icon="el-icon-plus" > 选择更多项目加入迭代 </el-button>
 			<el-button type="primary" v-if="selProject" @click="iterationVisible=true" icon="el-icon-plus" > 选择更多迭代加入项目 </el-button>
+			<el-button type="primary"  icon="el-icon-plus" @click="showAdd"> 新增迭代 </el-button>
 		</el-row>
 		<el-row style="padding-top:10px;">
 			<!--列表 XmIterationLink 迭代表与项目表的关联关系，一般由迭代管理员将迭代挂接到项目表-->
@@ -28,6 +29,11 @@
 			<el-drawer title="选择迭代" :visible.sync="iterationVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
 				<xm-iteration-select @row-click="onIterationSelect"></xm-iteration-select>
 			</el-drawer> 
+			
+			<!--新增 XmIteration 迭代定义界面-->
+			<el-drawer title="新增迭代" :visible.sync="addFormVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
+				<xm-iteration-add :xm-iteration="addForm" :sel-project="selProject" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-iteration-add>
+			</el-drawer>
 		</el-row>
 	</section>
 </template>
@@ -37,11 +43,12 @@
 	import config from '@/common/config';//全局公共库 
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { listXmIterationLinkWithProjectInfo,addXmIterationLink, delXmIterationLink, batchDelXmIterationLink } from '@/api/xm/core/xmIterationLink';
-	import  XmIterationLinkAdd from './XmIterationLinkAdd';//新增界面
-	import  XmIterationLinkEdit from './XmIterationLinkEdit';//修改界面
+ 
 	import { mapGetters } from 'vuex'
 	import XmProjectSelect from '../xmProject/XmProjectSelect.vue';
 	import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
+	
+	import  XmIterationAdd from '../xmIteration/XmIterationAdd';//新增界面
 	
 	export default { 
 		props:['xmIteration','selProject'],
@@ -268,11 +275,10 @@
 			/**end 自定义函数请在上面加**/
 			
 		},//end methods
-		components: { 
-		    'xm-iteration-link-add':XmIterationLinkAdd,
-		    'xm-iteration-link-edit':XmIterationLinkEdit,
+		components: {  
 			XmProjectSelect,
 			XmIterationSelect,
+			XmIterationAdd,
 		},
 		mounted() { 
 			this.$nextTick(() => {
