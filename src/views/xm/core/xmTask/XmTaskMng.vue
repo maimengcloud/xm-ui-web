@@ -12,7 +12,7 @@
             placement="right"
             width="400"
             trigger="click"> 
-            <xm-project-select v-if="!selProject||!selProject.id" :auto-select="workItemType!='productPlan'"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="filters.selProject=null"></xm-project-select>
+            <xm-project-select v-if="!selProject||!selProject.id" :auto-select="true"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="filters.selProject=null"></xm-project-select>
               <el-link type="warning" slot="reference" v-if="!selProject||!selProject.id"  icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link> 
           </el-popover> 
 					<el-select style="width: 100px" v-model="filters.taskState" placeholder="状态" clearable>
