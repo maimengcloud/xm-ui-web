@@ -15,7 +15,7 @@
  				<el-table-column prop="cusername" label="操作者" min-width="80" ></el-table-column> 
 				<el-table-column label="操作" width="120" fixed="right"> 
 					<template scope="scope">
- 						<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete" >移出</el-button>
+ 						<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete" v-loading="load.del">移出</el-button>
 					</template>
 				</el-table-column>
 			</el-table>

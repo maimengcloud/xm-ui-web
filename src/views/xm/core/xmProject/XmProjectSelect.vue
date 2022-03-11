@@ -3,6 +3,9 @@
 		<el-row class="page-main padding-left">   
 			<el-table ref="table" border :height="maxTableHeight"  stripe :data="xmProjects"  highlight-current-row v-loading="load.list"  @selection-change="selsChange" @row-click="rowClick" style="width: 100%;" >
  				<el-table-column prop="name" label="项目名称" >
+					 <template slot="header">
+						 项目名称 <el-button type="text" @click="clearSelect">清空所选</el-button>
+					 </template>
 					 <template slot-scope="scope">
 						 {{scope.row.name}}&nbsp;&nbsp;
 						 <font   :color="scope.row.totalProgress==100?'green':'#FF8C00'">{{parseInt(scope.row.totalProgress)}}%</font>
@@ -161,7 +164,11 @@
 				this.$emit('project-confirm',this.editForm);
 			}
 			/**end 自定义函数请在上面加**/
-			
+			,
+			clearSelect(){
+				this.$refs.table.setCurrentRow();
+				this.$emit("clear-select");
+			}
 		},//end methods
 		components: {  
 			 

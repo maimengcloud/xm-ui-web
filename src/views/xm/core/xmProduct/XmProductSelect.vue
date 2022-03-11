@@ -8,7 +8,7 @@
 				<el-table-column  v-if="isSelectProduct==true"  label="产品代号" prop="code" min-width="100" show-overflow-tooltip >  </el-table-column>
 				  <el-table-column prop="productName"  label="产品名称"    show-overflow-tooltip> 
 					 <template slot="header" slot-scope="scope"> 
-						 产品名称 
+						 产品名称 <el-button type="text" @click="clearSelect">清空所选</el-button>
 						 <el-popover
 							placement="top-start"
 							title=""
@@ -311,6 +311,10 @@
 					return 'success-row';
 				}
 				return '';
+			},
+			clearSelect(){
+				this.$refs.table.setCurrentRow();
+				this.$emit("clear-select");
 			}
 		},//end methods
 		components: {  

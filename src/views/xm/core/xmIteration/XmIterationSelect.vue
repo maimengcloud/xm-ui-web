@@ -5,7 +5,8 @@
 			<el-table ref="table" :height="maxTableHeight" :data="xmIterationTreeData" row-key="id"  default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
    				<el-table-column prop="iterationName" label="迭代名称" >
 					<template slot="header" slot-scope="scope">
-					迭代名称 <el-popover v-if=" !menuId && !productId"
+					迭代名称 <el-button type="text" @click="clearSelectIteration">清空所选</el-button>
+					<el-popover v-if=" !menuId && !productId"
 						placement="top-start"
 						title=""
 						width="400"
@@ -256,8 +257,7 @@
 			//选择行xmIteration
 			selsChange: function (sels) {
 				this.sels = sels;
-			},
-			 
+			},  
 			rowClick: function(row, event, column){
 				this.editForm=row
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
@@ -308,6 +308,8 @@
 
 			clearSelectIteration(){
 				this.editForm=this.editFormInit
+				
+				this.$refs.table.setCurrentRow();
 				this.$emit('clear-select',null );//  @row-click="rowClick"
 			},
 			fieldChange:function(row,fieldName){
