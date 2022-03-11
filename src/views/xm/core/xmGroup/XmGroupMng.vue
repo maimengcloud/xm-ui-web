@@ -72,8 +72,7 @@
 				</el-row> 
 				<el-row v-else>  
 					<el-button type="primary" @click="loadNexGroup" icon="el-icon-search" v-loading="load.add">加载下一级小组</el-button>  
-					<el-button type="primary" @click="selectProductVisible=true" icon="el-icon-plus" v-loading="load.add">新增产品小组</el-button>  
-					<el-button type="primary" @click="selectProjectVisible=true" icon="el-icon-plus" v-loading="load.add">新增项目小组</el-button>  
+ 					<el-button type="primary" @click="selectProjectVisible=true" icon="el-icon-plus" v-loading="load.add">新增项目小组</el-button>  
 				</el-row>
 			</el-dialog>
 			
@@ -481,22 +480,18 @@ XmProductSelect,XmProjectSelect,
 			},
 			//显示新增界面 XmGroup xm_group
 			showAdd: function () {
+				if(!this.filters.selProject || !this.filters.selProject.id){
+					this.$notify({ showClose:true, message: "请先选择项目", type:  'warning' });
+					return;
+				}
 				this.addForm={...this.addFormInit}
-				if(this.currNodeType=='product'){
-					this.addForm.pgroupId=null
-					this.addForm.pgroupName=null
-					this.addForm.productId=this.xmProduct.id
-					this.addForm.pgClass="1" 
-					this.addForm.projectId=null
-					this.addForm.groupName=this.xmProduct.productName+"-产品管理组"
-					this.addFormVisible = true;
-				}else if(this.currNodeType=='project'){ 
+				 if(this.currNodeType=='project'){ 
 					this.addForm.pgroupId=null
 					this.addForm.pgroupName=null
 					this.addForm.productId=null
 					this.addForm.pgClass="0"
-					this.addForm.projectId=this.selProject.id
-					this.addForm.groupName=this.selProject.name+"-项目管理组"
+					this.addForm.projectId=this.filters.selProject.id
+					this.addForm.groupName=this.filters.selProject.name+"-项目管理组"
 					this.addFormVisible = true;
 				}else{
 					 return;
@@ -510,16 +505,10 @@ XmProductSelect,XmProjectSelect,
 				if(!row){
 					return;
 				}
-				this.addForm={...row}
-				if("1"==row.pgClass){
-					this.addForm.productId=row.productId
-					this.addForm.pgClass="1" 
-					this.addForm.projectId=null
-				}else{
-					this.addForm.productId=null
-					this.addForm.pgClass="0"
-					this.addForm.projectId=row.projectId
-				} 
+				this.addForm={...row} 
+				this.addForm.productId=null
+				this.addForm.pgClass="0"
+				this.addForm.projectId=row.projectId 
 				this.addForm.pgroupId=row.id
 				this.addForm.pgroupName=row.groupName
 				this.addForm.groupName=row.groupName+"-"+"下级小组xx"
