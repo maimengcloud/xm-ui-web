@@ -28,3 +28,8 @@ export const editXmIterationLink = params => { return axios.post(`${base}/xm/cor
 
 //新增一条迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表
 export const addXmIterationLink = params => { return axios.post(`${base}/xm/core/xmIterationLink/add`, params); };
+
+
+//普通查询 条件之间and关系  
+export const listXmIterationLinkWithProductInfo = params => { return axios.get(`${base}/xm/core/xmIterationLink/listWithProductInfo`, { params: params }); };
+export const listXmIterationLinkWithProjectInfo = params => { return axios.get(`${base}/xm/core/xmIterationLink/listWithProjectInfo`, { params: params }); };

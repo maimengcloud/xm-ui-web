@@ -1,14 +1,14 @@
 <template>
 	<section class="app-container"> 
 		<el-row>
-			<el-button type="primary" v-if="xmIteration" @click="productVisible=true" icon="el-icon-plus" > 选择更多产品加入迭代 </el-button>
-			<el-button type="primary" v-if="xmProduct" @click="iterationVisible=true" icon="el-icon-plus" > 选择更多迭代加入产品 </el-button>
+			<el-button type="primary" v-if="xmIteration" @click="projectVisible=true" icon="el-icon-plus" > 选择更多项目加入迭代 </el-button>
+			<el-button type="primary" v-if="selProject" @click="iterationVisible=true" icon="el-icon-plus" > 选择更多迭代加入项目 </el-button>
 		</el-row>
 		<el-row style="padding-top:10px;">
-			<!--列表 XmIterationLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表-->
+			<!--列表 XmIterationLink 迭代表与项目表的关联关系，一般由迭代管理员将迭代挂接到项目表-->
 			<el-table ref="xmIterationLink" :data="xmIterationLinks" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
   				<el-table-column prop="iterationName" v-if="!xmIteration" label="包含的迭代名称" min-width="150" ></el-table-column>
-				<el-table-column prop="productName" v-if="!xmProduct" label="包含的产品名称" min-width="150" ></el-table-column>
+				<el-table-column prop="projectName" v-if="!selProject" label="包含的项目名称" min-width="150" ></el-table-column>
 				<el-table-column prop="ctime" label="加入时间" min-width="80" ></el-table-column>
  				<el-table-column prop="cusername" label="操作者" min-width="80" ></el-table-column> 
 				<el-table-column label="操作" width="120" fixed="right"> 
@@ -21,8 +21,8 @@
 		 
 
 						 
-			<el-drawer title="选择产品" :visible.sync="productVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
-				 <xm-product-select @row-click="onProductSelect"></xm-product-select>
+			<el-drawer title="选择项目" :visible.sync="projectVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
+				 <xm-project-select @row-click="onProjectSelect"></xm-project-select>
 			</el-drawer> 
 			
 			<el-drawer title="选择迭代" :visible.sync="iterationVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
@@ -36,20 +36,20 @@
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库 
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { listXmIterationLink,addXmIterationLink, delXmIterationLink, batchDelXmIterationLink } from '@/api/xm/core/xmIterationLink';
+	import { listXmIterationLinkWithProjectInfo,addXmIterationLink, delXmIterationLink, batchDelXmIterationLink } from '@/api/xm/core/xmIterationLink';
 	import  XmIterationLinkAdd from './XmIterationLinkAdd';//新增界面
 	import  XmIterationLinkEdit from './XmIterationLinkEdit';//修改界面
 	import { mapGetters } from 'vuex'
-import XmProductSelect from '../xmProduct/XmProductSelect.vue';
-import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
+	import XmProjectSelect from '../xmProject/XmProjectSelect.vue';
+	import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 	
 	export default { 
-		props:['xmIteration','xmProduct'],
+		props:['xmIteration','selProject'],
 		watch:{
 			xmIteration(){
 				this.getXmIterationLinks();
 			},
-			xmProduct(){
+			selProject(){
 				this.getXmIterationLinks();
 			}
 		},
@@ -87,10 +87,10 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmIterationLink界面初始化数据
 				editForm: {
-					iterationId:'',proId:'',ctime:'',cuserid:'',cusername:'',linkStatus:''
+					iterationId:'',proId:'',ctime:'',cuserid:'',cusername:'',linkStatus:'',ltype:'0'
 				},
 				maxTableHeight:300,
-				productVisible:false,
+				projectVisible:false,
 				iterationVisible:false,	
 			}
 		},//end data
@@ -125,7 +125,7 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 				 this.pageInfo.count=true; 
 				 this.getXmIterationLinks();
 			},
-			//获取列表 XmIterationLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表
+			//获取列表 XmIterationLink 迭代表与项目表的关联关系，一般由迭代管理员将迭代挂接到项目表
 			getXmIterationLinks() {
 				let params = {
 					pageSize: this.pageInfo.pageSize,
@@ -148,11 +148,11 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 					params.iterationId=this.xmIteration.id
 				}
 				
-				if(this.xmProduct){
-					params.proId=this.xmProduct.id
+				if(this.selProject){
+					params.proId=this.selProject.id
 				}
 				this.load.list = true;
-				listXmIterationLink(params).then((res) => {
+				listXmIterationLinkWithProjectInfo(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 
 						this.pageInfo.total = res.data.total;
@@ -165,12 +165,12 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 				}).catch( err => this.load.list = false );
 			},
 
-			//显示编辑界面 XmIterationLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表
+			//显示编辑界面 XmIterationLink 迭代表与项目表的关联关系，一般由迭代管理员将迭代挂接到项目表
 			showEdit: function ( row,index ) {
 				this.editFormVisible = true;
 				this.editForm = Object.assign({}, row);
 			},
-			//显示新增界面 XmIterationLink 迭代表与产品表的关联关系，一般由迭代管理员将迭代挂接到产品表
+			//显示新增界面 XmIterationLink 迭代表与项目表的关联关系，一般由迭代管理员将迭代挂接到项目表
 			showAdd: function () {
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);
@@ -227,15 +227,16 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
 			/**begin 自定义函数请在下面加**/
-			onProductSelect(product){
-				this.$confirm('确认建立与产品【'+product.productName+'】的关联关系吗？', '提示', {
+			onProjectSelect(project){
+				this.$confirm('确认建立与项目【'+project.projectName+'】的关联关系吗？', '提示', {
 					type: 'warning'
 				}).then(() => { 
 					this.load.add=true;
 					this.addForm.iterationId=this.xmIteration.id;
-					this.addForm.proId= product.id;
+					this.addForm.proId= project.id;
+					this.addForm.ltype="0"
 					addXmIterationLink(this.addForm).then((res) => {
-						this.load.del=false;
+						this.load.add=false;
 						var tips=res.data.tips;
 						if( tips.isOk ){ 
 							this.pageInfo.count=true;
@@ -249,11 +250,12 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 				this.$confirm('确认建立与迭代【'+iteration.iterationName+'】的关联关系吗？', '提示', {
 					type: 'warning'
 				}).then(() => { 
-					this.load.del=true;
+					this.load.add=true;
 					this.addForm.iterationId=iteration.id;
-					this.addForm.proId=this.xmProduct.id;
+					this.addForm.proId=this.selProject.id;
+					this.addForm.ltype="0";
 					addXmIterationLink(this.addForm).then((res) => {
-						this.load.del=false;
+						this.load.add=false;
 						var tips=res.data.tips;
 						if( tips.isOk ){ 
 							this.pageInfo.count=true;
@@ -269,7 +271,7 @@ import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 		components: { 
 		    'xm-iteration-link-add':XmIterationLinkAdd,
 		    'xm-iteration-link-edit':XmIterationLinkEdit,
-			XmProductSelect,
+			XmProjectSelect,
 			XmIterationSelect,
 		},
 		mounted() { 

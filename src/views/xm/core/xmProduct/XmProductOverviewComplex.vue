@@ -12,46 +12,11 @@
         </el-menu-item>
         <el-menu-item index="productProjectLink"> 
           <span slot="title">配置可见项目</span>
-        </el-menu-item>
-        <el-submenu index="menu-change">
-          <template slot="title">
-            <span slot="title">需求变更</span>
-          </template>
-            <el-menu-item index="menu-change-review">
-              <span slot="title">需求评审</span>
-            </el-menu-item>
-            <el-menu-item index="menu-change-border-review">
-              <span slot="title">需求边界异动</span>
-            </el-menu-item>
-        </el-submenu>
-
-        <el-submenu index="iteration-change">
-          <template slot="title">
-            <span slot="title">迭代变更</span>
-          </template>
-            <el-menu-item index="iteration-change-review">
-              <span slot="title">迭代计划评审</span>
-            </el-menu-item>
-            <el-menu-item index="iteration-change-border-review">
-              <span slot="title">迭代上线申请</span>
-            </el-menu-item>
-        </el-submenu>
-
-        <el-submenu index="phase-change">
-          <template slot="title">
-            <span slot="title">计划变更</span>
-          </template>
-            <el-menu-item index="phase-change-review">
-              <span slot="title">计划评审</span>
-            </el-menu-item>
-            <el-menu-item index="phase-change-border-review">
-              <span slot="title">预算变更</span>
-            </el-menu-item>
-        </el-submenu>
+        </el-menu-item> 
       </el-menu>
        <xm-product-overview  v-if="showPanelName=='overview'" :xm-product="xmProduct"></xm-product-overview>
         <xm-product-edit  v-if="showPanelName=='detail'" :xm-product="xmProduct"></xm-product-edit>
-        <xm-iteration-link-mng v-if="showPanelName=='iterationProductLink'" :xm-product="xmProduct"></xm-iteration-link-mng>
+        <xm-iteration-link-for-product v-if="showPanelName=='iterationProductLink'" :xm-product="xmProduct"></xm-iteration-link-for-product>
         <xm-product-project-link-mng  v-if="showPanelName=='productProjectLink'" :xm-product="xmProduct"></xm-product-project-link-mng>
    </section>
 </template>
@@ -62,12 +27,12 @@ import util from "@/common/js/util"; // 全局公共库
 import { mapGetters } from "vuex";
 import XmProductOverview from './XmProductOverview.vue';
 import XmProductEdit from './XmProductEdit.vue';
-import XmIterationLinkMng from '../xmIterationLink/XmIterationLinkMng.vue';
+import XmIterationLinkForProduct from '../xmIterationLink/XmIterationLinkForProduct.vue';
 import XmProductProjectLinkMng from '../xmProductProjectLink/XmProductProjectLinkMng.vue';
 
 
 export default {
-  components: { XmProductOverview, XmProductEdit, XmIterationLinkMng, XmProductProjectLinkMng },
+  components: { XmProductOverview, XmProductEdit, XmIterationLinkForProduct, XmProductProjectLinkMng },
   computed: {
     ...mapGetters(["userInfo"]),
   },
