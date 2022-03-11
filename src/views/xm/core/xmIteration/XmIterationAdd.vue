@@ -4,7 +4,8 @@
 			<!--新增界面 XmIteration 迭代定义--> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">   
 				<el-form-item label="迭代名称" prop="iterationName">
-					<el-input v-model="addForm.iterationName" placeholder="迭代名称" ></el-input>
+					<el-input v-model="addForm.iterationName" placeholder="迭代名称" minlength="10"></el-input>
+					<font color="red">格式如下： 上线日期+主题+V版本号 例如： 2021.6.15购书商城V1.0.9</font>
 				</el-form-item> 
 				<el-form-item label="开始时间" prop="startTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="addForm.startTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
@@ -56,23 +57,11 @@
 	        this.addForm = xmIteration;
 	      },
 	      'visible':function(visible) { 
-	      	if(visible==true){
-				if(this.parentIteration){
-					this.addForm=Object.assign(this.addForm, this.parentIteration);  
-					this.addForm.id="";
-					this.addForm.pid=this.parentIteration.id
-					this.addForm.branchId=this.userInfo.branchId
-					this.cuserid=this.userInfo.userid
-					this.cusername=this.userInfo.username
-					if(this.parentIteration){
-						if(this.parentIteration.children){
-							this.addForm.seqNo=this.parentIteration.seqNo+"."+(this.parentIteration.children.length+1)
-						}else{
-							this.addForm.seqNo=this.parentIteration.seqNo+"."+1
-						}
-						
-					}
-				}
+	      	if(visible==true){  
+				this.addForm.cuserid=this.userInfo.userid
+				this.addForm.cusername=this.userInfo.username
+				this.addForm.adminUserid=this.userInfo.userid
+				this.addForm.adminUsername=this.userInfo.username;
 	      	}
 	      } 
 	    },
@@ -82,10 +71,11 @@
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				addFormRules: {
 					iterationName: [
-						{ required: true, message: '迭代名称不能为空', trigger: 'blur' }
+						{ required: true, message: '迭代名称不能为空', trigger: 'change' },
+						{ min:10, message: '名称长度必须大于10个字符', trigger: 'change' }
 					],
 					seqNo: [
-						{ required: true, message: '序号不能为空', trigger: 'blur' }
+						{ required: true, message: '序号不能为空', trigger: 'change' }
 					]
 				},
 				//新增界面数据 迭代定义
@@ -103,7 +93,7 @@
 				this.$emit('cancel');
 			},
 			//新增提交XmIteration 迭代定义 父组件监听@submit="afterAddSubmit"
-			addSubmit: function () { 
+			addSubmit: function () {  
 				this.$refs.addForm.validate((valid) => {
 					if (valid) { 
 						var links=[];
@@ -127,6 +117,8 @@
 								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err  => this.load.add=false);
 						});
+					}else{
+						this.$notify({showClose: true, message: "表单验证不通过", type: 'error' }); 
 					}
 				});
 			},
@@ -151,25 +143,11 @@
 		},
 		mounted() {
 
-			this.addForm=Object.assign(this.addForm, this.xmIteration);  
-			if(this.parentIteration){
-				this.addForm=Object.assign(this.addForm, this.parentIteration);  
-				this.addForm.id="";
-				this.addForm.pid=this.parentIteration.id
-				this.addForm.branchId=this.userInfo.branchId
-				this.cuserid=this.userInfo.userid
-				this.cusername=this.userInfo.username
-
-				
-				if(this.parentIteration){
-					if(this.parentIteration.children){
-						this.addForm.seqNo=this.parentIteration.seqNo+"."+(this.parentIteration.children.length+1)
-					}else{
-						this.addForm.seqNo=this.parentIteration.seqNo+"."+1
-					}
-					
-				}
-			}
+			this.addForm=Object.assign(this.addForm, this.xmIteration);   
+			this.addForm.cuserid=this.userInfo.userid
+			this.addForm.cusername=this.userInfo.username
+			this.addForm.adminUserid=this.userInfo.userid
+			this.addForm.adminUsername=this.userInfo.username;
 			/**在下面写其它函数***/
 			
 		}//end mounted
