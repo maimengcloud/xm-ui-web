@@ -8,18 +8,17 @@
 						 <el-radio :disabled="parentTask&&parentTask.id&&parentTask.ntype==='0'" v-model="addForm.ntype" label="1">计划项</el-radio>
 						 <el-radio v-model="addForm.ntype" label="0">任务</el-radio>
 					</el-form-item>
+					
+					<el-form-item label="上级" prop="parentTaskname">  
+						<el-tag v-if="addForm.parentTaskid"  @close="clearParentTask" closable >{{addForm.parentTaskname}}</el-tag>
+						<el-button  type="text"  @click.stop="selectParentTaskVisible=true"  >选上级</el-button><font color="red" style="font-size:12px;">&nbsp;&nbsp;请尽量选择上级,对任务进行归类，方便排版和操作</font>
+					</el-form-item>
 					<el-form-item label="名称" prop="name">
 						<el-row>
-						<el-col :span="24" style="padding-left:10px;"> 
+						<el-col :span="24"> 
 							<el-input style="width:100%;" v-model="addForm.name" placeholder="名称" ></el-input>
-							<br>
-							<el-divider direction="vertical"></el-divider>
-							<el-tooltip content="归属项目"><el-tag>{{addForm.projectName}}</el-tag></el-tooltip>
-							<el-divider direction="vertical"></el-divider>
-							<el-tooltip content="上级" >
-								<el-tag v-if="parentTask!=null"><span >{{parentTask.sortLevel}}</span>&nbsp;&nbsp;<span>{{parentTask.name}}</span></el-tag>
-								<el-tag v-else>无上级</el-tag>
-							</el-tooltip>
+							<br> 
+							<el-tooltip content="归属项目"><el-tag>{{addForm.projectName}}</el-tag></el-tooltip> 
 						</el-col>
 						</el-row>
 					</el-form-item>
@@ -29,7 +28,7 @@
 					<div>
 					<el-form-item label="前置">
 						<el-tag v-if="addForm.preTaskid"  @close="clearPreTask" closable >{{addForm.preTaskname}}</el-tag>
-						<el-button    @click.stop="selectTaskVisible=true"  >选前置</el-button>
+						<el-button  type="text"  @click.stop="selectTaskVisible=true"  >选前置</el-button>
 					</el-form-item>
 					<el-row>
 						<el-col :span="8">
@@ -171,6 +170,9 @@
 			<xm-task-list  :sel-project="xmProject"   @task-selected="onSelectedTask"></xm-task-list>
 		</el-drawer>
 
+		<el-drawer title="选中上级" :visible.sync="selectParentTaskVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
+			<xm-task-list check-scope="plan" :sel-project="xmProject"   @task-selected="onSelectedParentTask"></xm-task-list>
+		</el-drawer>
 		<el-drawer append-to-body title="需求明细" :visible.sync="menuDetailVisible" size="60%"    :close-on-click-modal="false">
 			<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="true" :xm-menu="{menuId:addForm.menuId,menuName:addForm.menuName}" ></xm-menu-rich-detail>
 		</el-drawer>
@@ -274,6 +276,7 @@
 				skillVisible: false,
 				taskSkills: [],
 				selectTaskVisible:false,
+				selectParentTaskVisible:false,
 				execUserVisible:false,
 				groupUserSelectVisible:false,
 				execGroupUserSelectVisible:false,
@@ -283,7 +286,7 @@
 				],
 				actDateRanger: [
 				],
-				pickerOptions:  util.pickerOptions('datarange'),
+				pickerOptions:  util.pickerOptions('datarange'), 
 				 /**end 在上面加自定义属性**/
 			}//end return
 		},//end data
@@ -414,6 +417,25 @@
 			clearPreTask(){
 					this.addForm.preTaskid=''
 					this.addForm.preTaskname=''
+			},
+			onSelectedParentTask(parentTask){
+				this.selectParentTaskVisible=false;
+				if(parentTask && parentTask.id){ 
+					this.addForm.parentTaskid=parentTask.id
+					this.addForm.parentTaskname=parentTask.name;
+					this.addForm.taskType=parentTask.taskType
+					this.addForm.planType=parentTask.planType  
+					if(parentTask.childrenCnt){
+						this.addForm.sortLevel=parentTask.sortLevel+"."+(parentTask.childrenCnt+1)
+					}else{
+						this.addForm.sortLevel=parentTask.sortLevel+"."+1
+					}
+				}
+			},
+			clearParentTask(){
+					this.addForm.parentTaskid=''
+					this.addForm.parentTaskname=''
+					this.addForm.sortLevel=""
 			},
 			goAnchor :function(id){
        			document.querySelector("#"+id).scrollIntoView(true);
