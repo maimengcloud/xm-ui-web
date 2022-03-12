@@ -144,7 +144,7 @@
             icon="el-icon-del"
             >删除</el-button
           >
-          <el-popover v-if="workItemType=='projectPlan'"
+          <el-popover v-if="workItemType=='projectPlan'|| workItemType=='productPlan'"
             placement="top-start"
             title="选择创建计划/任务的方式"
             width="300"
@@ -179,7 +179,7 @@
             <el-button
               slot="reference"
               v-if="
-                isTaskCenter != '1' && isMy != '1' && !xmProduct && !xmIteration
+                isTaskCenter != '1' && isMy != '1' && !xmIteration
               "
               type="primary"
               icon="el-icon-plus"
@@ -503,7 +503,7 @@
                 <template slot-scope="scope">
                   <el-dropdown 
                     @command="handleCommand"
-                    v-if="isTaskCenter != '1' && isMy != '1' && scope.row.ntype=='1' && workItemType=='projectPlan'"
+                    v-if="isTaskCenter != '1' && isMy != '1' && scope.row.ntype=='1' && (workItemType=='projectPlan' || workItemType=='productPlan')"
                     :disabled="scope.row.ntype!='1'"
                   >
                     <span class="el-dropdown-link">
@@ -1560,11 +1560,20 @@ export default {
            this.$notify({
               showClose: true,
               message: "当前为任务节点，任务节点下不能再创建新的子项",
-              type: "error",
+              type: "warning",
             });
             return false;
         }
         return true;
+      }else{
+        if(!this.filters.selProject || !this.filters.selProject.id){
+          this.$notify({
+              showClose: true,
+              message: "请先选择项目",
+              type: "warning",
+            });
+            return false;
+        }
       }
       return true;
        

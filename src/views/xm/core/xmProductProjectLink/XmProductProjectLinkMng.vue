@@ -232,7 +232,7 @@ import XmProjectSelect from '../xmProject/XmProjectSelect.vue';
 					type: 'warning'
 				}).then(() => { 
 					this.load.add=true;
-					this.addForm.iterationId=this.xmIteration.id;
+					this.addForm.projectId=this.selProject.id;
 					this.addForm.productId= product.id;
 					addXmProductProjectLink(this.addForm).then((res) => {
 						this.load.del=false;

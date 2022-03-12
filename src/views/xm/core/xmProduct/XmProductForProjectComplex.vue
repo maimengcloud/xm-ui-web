@@ -10,7 +10,7 @@
 								width="400"
 								trigger="click"> 
 								<xm-product-select :auto-select="true" :sel-project="selProject" :xm-iteration="xmIteration"  @row-click="onProductRowClick" @clear-select="onProductClearSelect"></xm-product-select>
- 								 <el-link type="warning" slot="reference" @click.stop="showProjectSelect" icon="el-icon-search"><font style="font-size:14px;">{{xmProduct?xmProduct.productName:'选择产品'}}</font></el-link> 
+ 								 <el-link type="warning" slot="reference"  icon="el-icon-search"><font style="font-size:14px;">{{xmProduct?xmProduct.productName:'选择产品'}}</font></el-link> 
 							</el-popover> 
 						</div>
 					</el-tab-pane>
