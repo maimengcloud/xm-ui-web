@@ -2,7 +2,9 @@
 	<section>  
 		<el-row class="page-main padding-left">   
 			<el-table ref="table" border :height="maxTableHeight"  stripe :data="xmProjects"  highlight-current-row v-loading="load.list"  @selection-change="selsChange" @row-click="rowClick" style="width: 100%;" >
- 				<el-table-column prop="name" label="项目名称" >
+ 				<el-table-column type="index" label="序号" >
+				 </el-table-column>
+				 <el-table-column prop="name" label="项目名称" >
 					 <template slot="header">
 						 项目名称 <el-button type="text" @click="clearSelect">清空所选</el-button>
 					 </template>

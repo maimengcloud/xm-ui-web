@@ -4,7 +4,7 @@
 			<!--列表 XmProduct 产品表-->
 			<el-table  ref="table" :height="maxTableHeight" :data="xmProducts" :row-class-name="tableRowClassName" @sort-change="sortChange" :highlight-current-row="true" current-row-key="id" v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  				 
-				<el-table-column label="" type="index" width="50"  >  </el-table-column>
+				<el-table-column label="序号" type="index" width="50"  >  </el-table-column>
 				<el-table-column  v-if="isSelectProduct==true"  label="产品代号" prop="code" min-width="100" show-overflow-tooltip >  </el-table-column>
 				  <el-table-column prop="productName"  label="产品名称"    show-overflow-tooltip> 
 					 <template slot="header" slot-scope="scope"> 

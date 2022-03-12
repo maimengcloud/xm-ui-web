@@ -9,18 +9,26 @@
 				<xm-project-select :auto-select="true" v-if="!selProject"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClearSelect"></xm-project-select>
 					<el-link type="warning" slot="reference" v-if="!selProject" icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link> 
 			</el-popover>
-					<el-input v-model="filters.groupNameKey" style="width:15%;" clearable placeholder="小组名称查询"></el-input> 
-					<el-input v-model="filters.mngUsernamekey" style="width:15%;" clearable placeholder="组长、副组长名称查询"></el-input> 
-					<el-input v-model="filters.groupUsernameKey" style="width:15%;" clearable placeholder="组员名称查询"></el-input>
-					<el-button type="primary" @click="searchXmGroups">查询</el-button>
+					<el-input v-model="filters.key" style="width:15%;" clearable placeholder="名称过滤"></el-input>  
  					<el-button  type="plain" @click="showGroupState" icon="el-icon-s-data">小组进度</el-button> 
- 					<el-button class="hidden-md-and-down" type="plain" @click="xmRecordVisible=true" icon="el-icon-document">变化日志</el-button>
-					<el-button class="hidden-md-and-down" type="plain" @click="doSearchImGroupsByProjectId" icon="el-icon-document">绑定即聊情况</el-button>
+ 					<el-button class="hidden-lg-and-down" type="plain" @click="xmRecordVisible=true" icon="el-icon-document">变化日志</el-button>
+					<el-button class="hidden-lg-and-down" type="plain" @click="doSearchImGroupsByProjectId" icon="el-icon-document">绑定即聊情况</el-button>
  					<el-button class="hidden-md-and-down" @click="groupRoleDescVisible=true" icon="el-icon-document">角色说明</el-button> 
-					 <font style="font-size:12px;" class="hidden-md-and-down" color="red">注意：点击架构图进行操作</font>
+					 <font style="font-size:12px;" class="hidden-md-and-down" color="red">点击架构图操作</font>
+					 
+			<el-popover
+				placement="right"
+				width="400"
+				trigger="click"> 
+				 	<el-button   type="plain" @click="xmRecordVisible=true" icon="el-icon-document">变化日志</el-button>
+					<el-button   type="plain" @click="doSearchImGroupsByProjectId" icon="el-icon-document">绑定即聊情况</el-button>
+ 					<el-button   @click="groupRoleDescVisible=true" icon="el-icon-document">角色说明</el-button> 
+					 <font style="font-size:12px;"   color="red">注意：点击架构图进行操作</font>
+ 					<el-link type="warning" slot="reference" v-if="!selProject" icon="el-icon-search">更多</el-link> 
+			</el-popover>
   		</el-row> 
 		<el-row ref="table" :style="{overflowX:'auto',height:maxTableHeight+'px'}">
-			<vue-okr-tree :data="okrTreeData" v-loading="load.list"
+			<vue-okr-tree :data="okrTreeData" v-loading="load.list" ref="tree"
 				show-collapsable   
 				node-key="id"
 				default-expand-all
@@ -28,6 +36,7 @@
 				:render-content="renderContent"  
   				@node-click="handleNodeClick"
   				direction="horizontal"
+				  :filter-node-method="filterNode"
   			></vue-okr-tree>   
 		</el-row>
 		<el-row>
@@ -297,6 +306,9 @@ XmProductSelect,XmProjectSelect,
 			},
 			xmIteration(){
 				this.getXmGroup();
+			},
+			"filters.key":function(val) {
+				this.$refs.tree.filter(val);
 			}
 		}, 
 		data() {
@@ -748,7 +760,37 @@ XmProductSelect,XmProjectSelect,
 			onProjectClearSelect(){
 				this.filters.selProject=null
 				this.xmGroups=[]
-			}
+			},
+			filterNode(value, data) {
+				if (!value) return true;
+				var match=false;
+				if(data.leaderUsername){
+					match=data.leaderUsername.indexOf(value)!==-1;
+					if(match==true){
+						return true;
+					}
+				} 
+				if(data.assUsername){
+					match=data.assUsername.indexOf(value)!==-1;
+					if(match==true){
+						return true;
+					}
+				} 
+				if(data.groupName){
+					match=data.groupName.indexOf(value)!==-1;
+					if(match==true){
+						return true;
+					}
+				} 
+				
+				if(data.crowBranchName){
+					match=data.crowBranchName.indexOf(value)!==-1;
+					if(match==true){
+						return true;
+					}
+				}  
+				return data.label.indexOf(value) !== -1;
+			},  
 		},//end methods
 		mounted() {
 			this.$nextTick(() => {
