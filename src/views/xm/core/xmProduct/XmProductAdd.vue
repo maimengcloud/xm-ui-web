@@ -66,14 +66,17 @@
 		      'userInfo','roles'
 		    ])
 		},
-		props:['xmProduct','visible'],
+		props:['xmProduct','visible','selProject'],
 		watch: {
 	      'xmProduct':function( xmProduct ) {
 	        this.addForm = xmProduct;
 	      },
 	      'visible':function(visible) { 
-	      	if(visible==true){
-	      		//从新打开页面时某些数据需要重新加载，可以在这里添加
+	      	if(visible==true){ 
+				this.addForm.pmUserid=this.userInfo.userid
+				this.addForm.pmUsername=this.userInfo.username
+				this.addForm.admUserid=this.userInfo.userid
+				this.addForm.admUsername=this.userInfo.username
 	      	}
 	      } 
 	    },
@@ -111,15 +114,10 @@
 		methods: {
 			// 取消按钮点击 父组件监听@cancel="addFormVisible=false" 监听
 			handleCancel:function(){
-				this.$refs['addForm'].resetFields();
 				this.$emit('cancel');
 			},
 			//新增提交XmProduct 产品表 父组件监听@submit="afterAddSubmit"
 			addSubmit: function () {
-				if(!this.roles.some(i=>i.roleid=='productAdmin')){
-					this.$notify({showClose: true, message: "只有产品经理能够创建产品", type: 'error'}); 
-					return false;
-				}
 				
 				this.$refs.addForm.validate((valid) => {
 					if (valid) {
@@ -127,6 +125,9 @@
 						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
 							this.load.add=true
 							let params = Object.assign({}, this.addForm); 
+							if(this.selProject &&this.selProject.id){
+								params.links=[{projectId:this.selProject.id}]
+							}
 							params.branchId=this.userInfo.branchId
 							addXmProduct(params).then((res) => {
 								this.load.add=false
@@ -138,6 +139,8 @@
 								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err  => this.load.add=false);
 						});
+					}else{
+						this.$notify({showClose: true, message: "表单检查不通过", type: 'error' }); 
 					}
 				});
 			}, 
@@ -188,6 +191,8 @@
 			this.addForm=Object.assign(this.addForm, this.xmProduct);  
 			this.addForm.pmUserid=this.userInfo.userid
 			this.addForm.pmUsername=this.userInfo.username
+			this.addForm.admUserid=this.userInfo.userid
+			this.addForm.admUsername=this.userInfo.username
 			/**在下面写其它函数***/
 			
 		}//end mounted

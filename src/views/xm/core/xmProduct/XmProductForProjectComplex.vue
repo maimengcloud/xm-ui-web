@@ -9,8 +9,20 @@
 								placement="right"
 								width="400"
 								trigger="click"> 
-								<xm-product-select :auto-select="true" :sel-project="selProject" :xm-iteration="xmIteration"  @row-click="onProductRowClick" @clear-select="onProductClearSelect"></xm-product-select>
+								<xm-product-select ref="xmProductSelect" :auto-select="true" :sel-project="selProject" :xm-iteration="xmIteration"  @row-click="onProductRowClick" @clear-select="onProductClearSelect"></xm-product-select>
  								 <el-link type="warning" slot="reference"  icon="el-icon-search"><font style="font-size:14px;">{{xmProduct?xmProduct.productName:'选择产品'}}</font></el-link> 
+							</el-popover> 
+						</div>
+					</el-tab-pane>
+					<el-tab-pane disabled> 
+						<div  slot="label">
+							<el-popover
+								placement="bottom"
+								width="800"
+								v-model="addProductVisible"
+								trigger="manual"> 
+								<xm-product-add  @cancel="addProductVisible=false"  :sel-project="selProject"  @submit="afterAddProductSubmit"></xm-product-add>
+ 								 <el-link type="warning" slot="reference" @click="addProductVisible=true" icon="el-icon-plus">产品</el-link> 
 							</el-popover> 
 						</div>
 					</el-tab-pane>
@@ -62,6 +74,7 @@ import XmProductSelect from './XmProductSelect.vue';
 import XmProductProjectForLink from './XmProductProjectForLink.vue';
 import XmProductOverview from "./XmProductOverview";
 
+	import  XmProductAdd from './XmProductAdd';//新增界面
 
 	export default {
 		computed: {
@@ -132,6 +145,7 @@ import XmProductOverview from "./XmProductOverview";
 					}
 				],
 				productVisible:true,
+				addProductVisible:false,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -142,7 +156,11 @@ import XmProductOverview from "./XmProductOverview";
 
 				this.xmProduct=xmProduct
 			},
-
+			afterAddProductSubmit(product){ 
+				this.$refs.xmProductSelect.xmProducts.push(product)
+				this.$refs.xmProductSelect.rowClick(product)
+				this.addProductVisible=false;
+			},
 			onProductClearSelect(){
 				this.xmProduct=null;
 			},
@@ -166,7 +184,7 @@ import XmProductOverview from "./XmProductOverview";
 			XmProjectList,
 			XmProjectForLink,
 XmProductProjectForLink,
-      XmProductOverview,
+      XmProductOverview,XmProductAdd,
 		},
 		mounted() { 
 		this.$nextTick(() => {

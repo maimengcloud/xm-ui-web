@@ -3,14 +3,28 @@
 		<el-row> 
 			<el-col :span="24">
 				<el-tabs type="border-card"  :value="showPanel" @tab-click="tabClick"> 
-					<el-tab-pane  lazy @click.stop="iterationVisible=!iterationVisible" name="iterations" disabled> 
+					<el-tab-pane  lazy   name="iterations" disabled> 
 						<div  slot="label">
 							<el-popover
 								placement="right"
 								width="400"
 								trigger="click"> 
-								<xm-iteration-select :auto-select="true" :sel-project="selProject" :product-id="xmProduct?xmProduct.id:null"  @row-click="onIterationRowClick" @clear-select="onIterationClearSelect"></xm-iteration-select>
+								<xm-iteration-select ref="xmIterationSelect" :auto-select="true" :sel-project="selProject" :product-id="xmProduct?xmProduct.id:null"  @row-click="onIterationRowClick" @clear-select="onIterationClearSelect"></xm-iteration-select>
  								<el-link type="warning" slot="reference"  icon="el-icon-search"><font style="font-size:14px;">{{xmIteration?xmIteration.iterationName:'选择迭代'}}</font></el-link> 
+							</el-popover> 
+						</div>
+					</el-tab-pane>
+
+
+					<el-tab-pane  lazy   name="iterations" disabled> 
+						<div  slot="label">
+							<el-popover
+								placement="bottom"
+								width="800"
+								v-model="iterationAddVisible"
+								trigger="manual">  
+ 										<xm-iteration-add  :xm-product="xmProduct" :sel-project="selProject" :visible="iterationAddVisible" @cancel="iterationAddVisible=false" @submit="afterIterationAddSubmit"></xm-iteration-add>
+  								<el-link type="warning" slot="reference" @click="iterationAddVisible=true" icon="el-icon-plus">迭代</el-link> 
 							</el-popover> 
 						</div>
 					</el-tab-pane>
@@ -59,6 +73,7 @@
 	import XmQuestionMng from '../xmQuestion/XmQuestionMng.vue';
 	import XmIterationOverview from "./XmIterationOverview";
 
+	import  XmIterationAdd from './XmIterationAdd';//新增界面
 
 	export default {
 		computed: {
@@ -128,7 +143,7 @@
 					moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
 					}
 				],
-				iterationVisible:true,
+				iterationAddVisible:false,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -143,30 +158,14 @@
 			onIterationClearSelect(){
 				this.xmIteration=null;
 			},
-			tabClick(tab){
-				if(this.xmIteration==null || !this.xmIteration.id){
-					this.iterationVisible=true;
-					this.$notify({showClose: true, message:"请先选中左边迭代", type: 'warning' });
-					return;
-				} 
-				
-				if(tab.name=='iterations'){
-					this.iterationVisible=!this.iterationVisible;
-					return;
-				}
-				this.showPanel=tab.name 
+			afterIterationAddSubmit(iteration){
+				this.$refs.xmIterationSelect.xmIterations.push(iteration)
+				this.$refs.xmIterationSelect.rowClick(iteration);
+				this.iterationAddVisible=false;
 			},
-			doDelXmIterationLink(){
-				this.$confirm('移出后，迭代试图将看不到该产品信息，确认将产品【'+this.xmProduct.productName+'】从迭代【'+this.xmIteration.iterationName+'】移出吗？', '提示', {}).then(() => {
-					var params={iterationId:this.xmIteration.id,productId:this.xmProduct.id}
-					delXmIterationLink(params).then(res=>{
-						var tips = res.data.tips;
-						if(tips.isOk){
-							this.$notify({showClose: true, message:"移出成功", type: tips.isOk?'success':'error' });
-						}
-					})
-				})
-			}
+			tabClick(tab){  
+				this.showPanel=tab.name 
+			}, 
 		},//end methods
 		components: {
       XmIterationOverview,
@@ -178,6 +177,7 @@
 			XmTaskMng,
 			XmQuestionMng,
 			XmProjectForLink,
+			XmIterationAdd,
 		},
 		mounted() { 
 		this.$nextTick(() => {
