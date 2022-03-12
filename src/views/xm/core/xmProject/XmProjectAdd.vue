@@ -272,7 +272,7 @@
 				 return this.addForm.totalReceivables
 			}
 		},
-		props:['visible'],
+		props:['visible','xmProduct'],
 		watch: { 
 	      'visible':function(visible) { 
 	      	if(visible==true){  
@@ -372,11 +372,7 @@
 				this.$emit('cancel');
 			},
 			//编辑提交XmProject xm_project父组件监听@submit="afterEditSubmit"
-			addSubmit: function () {
-				if(!this.roles.some(i=>i.roleid=='projectAdmin')){
-					this.$notify({showClose: true, message: "只有项目经理可以建立项目", type: 'error' }); 
-					return;
-				}
+			addSubmit: function () { 
 				if (
 					this.dateRanger != null &&
 					this.dateRanger.length == 2
@@ -391,17 +387,18 @@
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
 							this.load.add=true
-							let params = Object.assign({}, this.addForm); 
-							params.groups=this.xmGroups;
-							params.planIuserWorkload=this.autoParams.planIuserWorkload
-							
+							let params = Object.assign({}, this.addForm);  
+							if(this.xmProduct && this.xmProduct.id){
+								params.links=[{productId:this.xmProduct.id}]
+							}
+							params.planIuserWorkload=this.autoParams.planIuserWorkload 
 							params.planOuserWorkload=this.autoParams.planOuserWorkload
 							params.planWorkload=this.autoParams.planWorkload
 							addXmProject(params).then((res) => {
 								this.load.add=false;
 								var tips=res.data.tips;
 								if(tips.isOk){
-									this.$emit('submit',params);//  @submit="afterEditSubmit"
+									this.$emit('submit',res.data.data);//  @submit="afterEditSubmit"
 								}
 								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err =>this.load.add=false);

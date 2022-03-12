@@ -9,8 +9,22 @@
 								placement="right"
 								width="400"
 								trigger="click"> 
-								<xm-project-select :auto-select="true"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClearSelect"></xm-project-select>
+								<xm-project-select ref="xmProjectSelect" :auto-select="true"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClearSelect"></xm-project-select>
  								 <el-link type="warning" slot="reference"  icon="el-icon-search"><font style="font-size:14px;">{{selProject?selProject.name:'选择项目'}}</font></el-link> 
+							</el-popover>
+							
+						</div>
+					 </el-tab-pane> 
+					<el-tab-pane disabled> 
+						<div  slot="label">
+							<el-popover
+								placement="bottom"
+								width="800"
+								v-model="projectAddVisible"
+								trigger="manual"> 
+								
+ 								 <xm-project-add :visible="projectAddVisible" @cancel="projectAddVisible=false" @submit="afterProjectAddSubmit"></xm-project-add>
+  								 <el-link type="warning" slot="reference" @click="projectAddVisible=true"  icon="el-icon-plus"><font style="font-size:14px;">项目</font></el-link> 
 							</el-popover>
 							
 						</div>
@@ -65,6 +79,7 @@ import XmProductSelect from '../xmProduct/XmProductSelect.vue';
 import XmProductProjectForLink from '../xmProduct/XmProductProjectForLink.vue';
 import XmProjectOverview from "./XmProjectOverview";
 
+	import  XmProjectAdd from './XmProjectAdd';//新增界面
 
 	export default {
 		computed: {
@@ -134,7 +149,7 @@ import XmProjectOverview from "./XmProjectOverview";
 					moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
 					}
 				],
-				projectVisible:true,
+				projectAddVisible:false,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -149,12 +164,13 @@ import XmProjectOverview from "./XmProjectOverview";
 			onProjectClearSelect(){
 				this.selProject=null;
 			},
-			tabClick(tab){
-				if(this.selProject==null || !this.selProject.id){
-					this.projectVisible=true;
-					this.$notify({showClose: true, message:"请先选中左边项目", type: 'warning'});
-				}
+			tabClick(tab){ 
 				 this.showPanel=tab.name
+			},
+			afterProjectAddSubmit(project){
+				this.$refs.xmProjectSelect.xmProjects.push(project)
+				this.$refs.xmProjectSelect.rowClick(project);
+				this.projectAddVisible=false;
 			}
 		},//end methods
 		components: {
@@ -169,6 +185,7 @@ import XmProjectOverview from "./XmProjectOverview";
 			XmProjectSelect,
 			XmProjectForLink,
 			XmProductProjectForLink,
+			XmProjectAdd,
       XmProjectOverview,
 		},
 		mounted() {

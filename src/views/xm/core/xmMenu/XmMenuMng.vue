@@ -13,11 +13,16 @@
 						<el-select  v-model="filters.status" placeholder="需求状态" clearable style="width: 100px;">
 							<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option> 
 						</el-select>   
-						<el-select  v-model="filters.taskFilterType" placeholder="是否分配任务" clearable style="width: 140px;">
-							<el-option   value="not-join"  label="未分配任何任务的需求"></el-option>  
-							<el-option   value="join"  label="已分配任务的需求"></el-option>  
-						</el-select>  
-						
+						<el-select  v-model="filters.taskFilterType" placeholder="分配任务？" clearable style="width: 170px;">
+							<el-option   value="not-join-any-project"  label="未分配过任务"></el-option>  
+							<el-option   value="join-any-project"  label="已分配过任务"></el-option>  
+							<el-option   value="not-join-curr-project"  label="未分配任务到本项目"></el-option>  
+							<el-option   value="join-curr-project"  label="已分配任务到本项目"></el-option>  
+						</el-select>   
+						<el-select   v-model="filters.iterationFilterType" placeholder="加入迭代？" clearable  style="width: 115px;">
+							<el-option   value="not-join"  label="未加入迭代"></el-option>  
+							<el-option   value="join"  label="已加入迭代"></el-option>  
+						</el-select>
 						<el-input v-model="filters.key" style="width: 15%;" placeholder="需求名称查询" clearable> 
 						</el-input> 
 						<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
@@ -51,18 +56,6 @@
 									<el-button v-if="!filters.tags||filters.tags.length==0" @click.native="tagSelectVisible=true">标签</el-button>
 									<el-tag v-else @click="tagSelectVisible=true"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
  
-								</el-col>
-								<el-col  :span="24"  style="padding-top:5px;" >
-									<el-select   v-model="filters.iterationFilterType" placeholder="是否加入过迭代？" clearable  >
-										<el-option   value="not-join"  label="未加入任何迭代的需求"></el-option>  
-										<el-option   value="join"  label="已加入迭代的需求"></el-option>  
-									</el-select>
-								</el-col>
-								<el-col  :span="24"  style="padding-top:5px;"> 
-									<el-select  v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable >
-										<el-option   value="not-join"  label="未分配任何任务的需求"></el-option>  
-										<el-option   value="join"  label="已分配任务的需求"></el-option>  
-									</el-select> 
 								</el-col> 
 								<el-col :span="24"  style="padding-top:5px;">
 									<font class="more-label-font">创建日期:</font>  
