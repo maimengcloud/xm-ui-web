@@ -13,15 +13,17 @@
 						<el-select  v-model="filters.status" placeholder="需求状态" clearable style="width: 100px;">
 							<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option> 
 						</el-select>   
-						<el-select  v-model="filters.taskFilterType" placeholder="分配任务？" clearable style="width: 170px;">
+						<el-select  v-model="filters.taskFilterType" placeholder="分配过任务？" clearable style="width: 160px;">
 							<el-option   value="not-join-any-project"  label="未分配过任务"></el-option>  
 							<el-option   value="join-any-project"  label="已分配过任务"></el-option>  
-							<el-option   value="not-join-curr-project"  label="未分配任务到本项目"></el-option>  
-							<el-option   value="join-curr-project"  label="已分配任务到本项目"></el-option>  
+							<el-option   value="not-join-curr-project"  label="未分配到本项目"></el-option>  
+							<el-option   value="join-curr-project"  label="已分配到本项目"></el-option>  
 						</el-select>   
-						<el-select   v-model="filters.iterationFilterType" placeholder="加入迭代？" clearable  style="width: 115px;">
-							<el-option   value="not-join"  label="未加入迭代"></el-option>  
-							<el-option   value="join"  label="已加入迭代"></el-option>  
+						<el-select   v-model="filters.iterationFilterType" placeholder="加入过迭代？" clearable  style="width: 160px;">
+							<el-option   value="not-join-any-iteration"  label="未加入过迭代"></el-option>  
+							<el-option   value="join-any-iteration"  label="已加入过迭代"></el-option>  
+							<el-option   value="not-join-curr-iteration"  label="未加入本迭代"></el-option>  
+							<el-option   value="join-curr-iteration"  label="已加入本迭代"></el-option>  
 						</el-select>
 						<el-input v-model="filters.key" style="width: 15%;" placeholder="需求名称查询" clearable> 
 						</el-input> 
@@ -288,6 +290,7 @@
 		},
 		watch:{  
 			xmIteration:function(){
+				this.filters.iterationFilterType="join-curr-iteration"
 				this.getXmMenus()
 			},
 			xmProduct:function(){  
@@ -295,6 +298,7 @@
 					this.getXmMenus() 
 			},
 			selProject:function(){
+				this.filters.taskFilterType='join-curr-project'
 				this.getXmMenus();
 			}
     	},
@@ -417,9 +421,8 @@
 				if(this.filters.iterationFilterType){
 					params.iterationFilterType=this.filters.iterationFilterType
 				} 
-				if(this.xmIteration){
-					params.iterationFilterType='join'
-					params.iterationId=this.xmIteration.id
+				if(this.xmIteration){ 
+					params.filterIterationId=this.xmIteration.id
 				}
 				if(this.filters.taskFilterType){
 					params.taskFilterType=this.filters.taskFilterType
@@ -442,7 +445,7 @@
 				if(this.filters.tags && this.filters.tags.length>0){
 					params.tagIdList=this.filters.tags.map(i=>i.tagId)
 				}
-				if(!(params.ctimeStart||params.pmenuId||params.projectId||params.iterationId||params.iterationFilterType||params.mmUserid||params.key||params.taskFilterType||params.tagIdList||params.status)){
+				if(!(params.ctimeStart||params.pmenuId||params.projectId||params.filterIterationId||params.iterationFilterType||params.mmUserid||params.key||params.taskFilterType||params.tagIdList||params.status)){
 					params.isTop="1"
 				}
 				return params;
@@ -879,6 +882,13 @@
 			if(this.xmProduct && this.xmProduct.id){
 				this.productVisible=false;
 			} 
+			if(this.selProject && this.selProject.id){ 
+				this.filters.taskFilterType='join-curr-project'
+			}
+			
+			if(this.xmIteration && this.xmIteration.id){ 
+				this.filters.iterationFilterType='join-curr-iteration'
+			}
 			this.$nextTick(() => {  
 				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
 				this.getXmMenus();
