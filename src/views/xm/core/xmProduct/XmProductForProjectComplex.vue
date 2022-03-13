@@ -39,8 +39,8 @@
 					<el-tab-pane label="需求" lazy name="menus" v-if="xmProduct && xmProduct.id">
 						<xm-menu-mng v-if="xmProduct && showPanel=='menus'"   :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"  :disabled-mng="false"></xm-menu-mng>
 					</el-tab-pane>
-					<el-tab-pane label="任务" lazy name="tasks" v-if="xmProduct && xmProduct.id">
-						<xm-task-mng v-if="xmProduct && showPanel=='tasks'"  :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-task-mng>
+					<el-tab-pane label="任务" lazy name="tasks"  v-if="xmProduct && xmProduct.id">
+						<xm-task-mng v-if="xmProduct && showPanel=='tasks'" queryScope="task" ptype="0" :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-task-mng>
 					</el-tab-pane>
 					<el-tab-pane label="缺陷" lazy name="bugs" v-if="xmProduct && xmProduct.id">
 						<xm-question-mng v-if="xmProduct && showPanel=='bugs'"  :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-question-mng>

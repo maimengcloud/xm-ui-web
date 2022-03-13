@@ -430,7 +430,10 @@
 				if(this.selProject){
 					params.projectId=this.selProject.id
 				}
-				
+				 
+				if(this.filters.product){
+					params.productId=this.filters.product.id
+				}
 				if(this.filters.parentMenu){
 					params.pmenuId=this.filters.parentMenu.menuId
 				}

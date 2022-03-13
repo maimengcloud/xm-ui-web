@@ -45,7 +45,7 @@
 						<xm-menu-mng v-if="selProject && showPanel=='menus'"   :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"  :disabled-mng="false"></xm-menu-mng>
 					</el-tab-pane>
 					<el-tab-pane label="任务" lazy name="tasks" v-if="selProject&&selProject.id">
-						<xm-task-mng v-if="selProject && showPanel=='tasks'"  :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-task-mng>
+						<xm-task-mng v-if="selProject && showPanel=='tasks'"  queryScope="task" ptype="0" :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-task-mng>
 					</el-tab-pane>
 					<el-tab-pane label="缺陷" lazy name="bugs" v-if="selProject&&selProject.id">
 						<xm-question-mng v-if="selProject && showPanel=='bugs'"  :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-question-mng>

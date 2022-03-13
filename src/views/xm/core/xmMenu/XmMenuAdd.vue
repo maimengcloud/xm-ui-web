@@ -155,6 +155,8 @@
 								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err  => this.load.add=false);
 						});
+					}else{
+						this.$notify({showClose: true, message:"表单检查不通过，请修改后提交", type: 'error' });
 					}
 				});
 			},

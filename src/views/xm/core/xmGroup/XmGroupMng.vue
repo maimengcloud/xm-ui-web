@@ -717,6 +717,13 @@ XmProductSelect,XmProjectSelect,
 			},
             initData: function(){
 				this.filters.selProject=this.selProject;
+				if(this.selProject && this.selProject.id){
+					this.filters.pgClass="0"
+				}else if(this.xmProduct && this.xmProduct.id){
+					this.filters.pgClass="1"
+				}else{
+					this.filters.pgClass="0"
+				}
             },
 			renderCurrentClass (node) {
 				return 'label-bg-blue'

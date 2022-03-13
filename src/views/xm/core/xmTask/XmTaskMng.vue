@@ -8,7 +8,7 @@
       >
         <el-row>  
           
-          <el-popover
+          <el-popover v-if="(!xmProduct||!xmProduct.id) && (!selProject || !selProject.id)"
             placement="right"
             width="400"
             trigger="click"> 
@@ -2459,6 +2459,14 @@ export default {
           });
         });
       })
+    },
+    initData(){
+      if (this.selProject) {
+        this.filters.selProject = this.selProject;
+      }
+      if (this.xmProduct) {
+        this.filters.product = this.xmProduct;
+      }
     }
     /**end 自定义函数请在上面加**/
   }, //end methods
@@ -2485,12 +2493,7 @@ export default {
     //在下面添加其它组件
   },
   mounted() {
-    if (this.selProject) {
-      this.filters.selProject = this.selProject;
-    }
-    if (this.xmProduct) {
-      this.filters.product = this.xmProduct;
-    }
+    this.initData();
     this.$nextTick(() => {
       this.getXmTasks(); 
       this.tableHeight = util.calcTableMaxHeight(this.$refs.table.$el);  

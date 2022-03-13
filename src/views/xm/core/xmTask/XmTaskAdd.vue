@@ -160,7 +160,7 @@
 		</el-drawer>
 
 		<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible" size="60%"   :close-on-click-modal="false">
-			<xm-menu-select :is-select-menu="true"  @selected="onMenuSelected" :sel-project="xmProject"></xm-menu-select>
+			<xm-menu-select :is-select-menu="true"  @selected="onMenuSelected" :sel-project="xmProject" :xm-product="xmProduct"></xm-menu-select>
 		</el-drawer>
 		<el-drawer append-to-body title="选择执行人"  :visible.sync="execGroupUserSelectVisible" size="60%"    :close-on-click-modal="false">
 			<xm-group-select :visible="execGroupUserSelectVisible" :sel-project="xmProject" :isSelectSingleUser="1" @user-confirm="execGroupUserSelectConfirm"></xm-group-select>

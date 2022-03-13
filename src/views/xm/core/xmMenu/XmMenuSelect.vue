@@ -4,12 +4,12 @@
 			<el-col :span="24"  style="padding-left:12px;" >
 				<el-row  > 
 					
-					<el-popover
+					<el-popover v-if="!xmProduct||!xmProduct.id"
 						placement="right"
 						width="400"
 						trigger="click"> 
 						<xm-product-select :auto-select="true" :sel-project="selProject" v-if="!xmProduct" :xm-iteration="xmIteration" @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-select>
-							<el-link type="warning" slot="reference" v-if="!xmProduct" icon="el-icon-search"><font style="font-size:14px;">{{filters.product?filters.product.productName:'选择产品'}}</font></el-link> 
+							<el-link type="warning" slot="reference"  icon="el-icon-search"><font style="font-size:14px;">{{filters.product?filters.product.productName:'选择产品'}}</font></el-link> 
 					</el-popover>  
  					<el-select class="hidden-md-and-down" v-if="excludeIterationId" v-model="filters.iterationFilterType" placeholder="是否加入过迭代？" clearable  >
 						<el-option   value="not-join"  label="未加入任何迭代的需求"></el-option>  
@@ -79,7 +79,7 @@
 					<el-button   type="primary" v-if="multi"  v-on:click="multiSelectedConfirm">确认选择</el-button>
 				</el-row>
 				<el-row style="padding-top:12px;">
-					<el-table ref="table" class="menu-table"  lazy :load="loadMenusLazy" :height="maxTableHeight" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+					<el-table ref="table" class="menu-table"  lazy :load="loadMenusLazy" :height="maxTableHeight" :data="xmMenusTreeData"   row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column v-if="multi" type="selection" width="50"></el-table-column>  
 						<el-table-column prop="menuName" label="需求名称" min-width="140" > 
 							<template slot-scope="scope">
@@ -114,6 +114,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
+	import treeTool from '@/common/js/treeTool';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { listXmMenu  } from '@/api/xm/core/xmMenu';
@@ -133,7 +134,8 @@
 			]),
 			
 			xmMenusTreeData(){ 
-				return this.translateDataToTree(this.xmMenus);
+				var xmMenus=JSON.parse(JSON.stringify(this.xmMenus))
+				return treeTool.translateDataToTree(xmMenus,"pmenuId","menuId");
 			},
 		},
 		watch:{ 
@@ -254,6 +256,9 @@
 					params.projectId=this.selProject.id
 				}
 				
+				if(this.filters.product){
+					params.productId=this.filters.product.id
+				}
 				if(this.filters.parentMenu){
 					params.pmenuId=this.filters.parentMenu.menuId
 				}
@@ -340,49 +345,7 @@
 			rowClick: function(row, event, column){
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
-			
-			/**begin 自定义函数请在下面加**/
-			translateDataToTree(data2) { 
-				var data=JSON.parse(JSON.stringify(data2));
-				let parents = data.filter(value =>{
-					//如果我的上级为空，则我是最上级 
-					if(value.pmenuId == 'undefined' || value.pmenuId == null  || value.pmenuId == ''){
-						return true;
-
-						//如果我的上级不在列表中，我作为最上级
-					}else if(data.some(i=>value.pmenuId==i.menuId)){
-						return false;
-					}else {
-						return true
-					}
-				 
-				}) 
-				let children = data.filter(value =>{
-					if(data.some(i=>value.pmenuId==i.menuId)){
-						return true;
-					}else{
-						return false;
-					} 
-				})  
-				let translator = (parents, children) => {
-					parents.forEach((parent) => {
-						children.forEach((current, index) => {
-							if (current.pmenuId === parent.menuId) {
-								let temp = JSON.parse(JSON.stringify(children))
-								temp.splice(index, 1)
-								translator([current], temp)
-								typeof parent.children !== 'undefined' ? parent.children.push(current) : parent.children = [current]
-							}
-						}
-						)
-					}
-					)
-				}
-
-				translator(parents, children)
-
-				return parents
-			},	
+			 
 			/**begin 自定义函数请在下面加**/
 			selectedMenu:function(row){
 				this.$emit("selected",row)
@@ -426,13 +389,14 @@
 		},
 		mounted() {  
 			this.$nextTick(() => {
+				
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
 				if(this.excludeIterationId){
 					this.filters.iterationFilterType='not-join'
 				}
 				
 				this.filters.product=this.xmProduct
 				this.getXmMenus();  
-				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
         	}); 
 		}
 	}
