@@ -2,20 +2,25 @@
 	<section class="page-container border padding" >
 		<el-row> 
 			 
-			<el-popover
+			<el-popover v-if="filters.pgClass==='0' && (!selProject  || !selProject.id)"
 				placement="right"
 				width="400"
 				trigger="click"> 
-				<xm-project-select :auto-select="false" v-if="!selProject"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClearSelect"></xm-project-select>
-					<el-link type="warning" slot="reference" v-if="!selProject" icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link> 
+				<xm-project-select :auto-select="true"   :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClearSelect"></xm-project-select>
+					<el-link type="warning" slot="reference" icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link> 
 			</el-popover>
-					<el-input v-model="filters.key" style="width:15%;" clearable placeholder="名称过滤"></el-input>  
- 					<el-button  type="plain" @click="showGroupState" icon="el-icon-s-data">小组进度</el-button> 
- 					<el-button class="hidden-lg-and-down" type="plain" @click="xmRecordVisible=true" icon="el-icon-document">变化日志</el-button>
-					<el-button class="hidden-lg-and-down" type="plain" @click="doSearchImGroupsByProjectId" icon="el-icon-document">绑定即聊情况</el-button>
- 					<el-button class="hidden-md-and-down" @click="groupRoleDescVisible=true" icon="el-icon-document">角色说明</el-button> 
-					 <font style="font-size:12px;" class="hidden-md-and-down" color="red">点击架构图操作</font>
-					 
+			<span v-if="xmProduct && xmProduct.id && (!selProject || !selProject.id)">
+			<el-radio v-model="filters.pgClass" label="1">产品组</el-radio>
+			<el-radio v-model="filters.pgClass" label="0">项目组</el-radio>
+			</span>
+			<el-input v-model="filters.key" style="width:15%;" clearable placeholder="名称过滤"></el-input>   
+			<el-button  type="primary" @click="searchXmGroups" icon="el-icon-search">刷新</el-button> 
+			<el-button  type="plain" @click="showGroupState" icon="el-icon-s-data">小组进度</el-button> 
+			<el-button class="hidden-lg-and-down" type="plain" @click="xmRecordVisible=true" icon="el-icon-document">变化日志</el-button>
+			<el-button class="hidden-lg-and-down" type="plain" @click="doSearchImGroupsByProjectId" icon="el-icon-document">绑定即聊情况</el-button>
+			<el-button class="hidden-md-and-down" @click="groupRoleDescVisible=true" icon="el-icon-document">角色说明</el-button> 
+				<font style="font-size:12px;" class="hidden-md-and-down" color="red">点击架构图操作</font>
+				
 			<el-popover
 				placement="right"
 				width="400"
@@ -232,7 +237,7 @@
 		    XmGroupEdit,VueOkrTree,UsersSelect,XmGroupStateMng,XmGroupUserMng,XmProjectList,
 XmProductSelect,XmProjectSelect,
 		},
-		props:["visible","selProject" ,"isSelectSingleUser","isSelectMultiUser",'xmProduct','xmIteration','pgClass'],
+		props:["visible","selProject" ,"isSelectSingleUser","isSelectMultiUser",'xmProduct','xmIteration'],
 		computed: {
 		    ...mapGetters(['userInfo']),
 			expandedKeys(){  
@@ -317,6 +322,13 @@ XmProductSelect,XmProjectSelect,
 			},
 			"filters.key":function(val) {
 				this.$refs.tree.filter(val);
+			},
+			"filters.pgClass":function(val) { 
+				if(val==='1'){
+					this.filters.selProject=null; 
+					this.xmGroups=[]
+					this.searchXmGroups();
+				}
 			}
 		}, 
 		data() {
@@ -327,6 +339,7 @@ XmProductSelect,XmProjectSelect,
 					mngUsernamekey:'',
 					groupUsernameKey:'',
 					selProject:null,
+					pgClass:'',
 				},
 				xmGroups: [],//查询结果
 				pageInfo:{//分页数据
@@ -778,6 +791,7 @@ XmProductSelect,XmProjectSelect,
 			onProjectClearSelect(){
 				this.filters.selProject=null
 				this.xmGroups=[]
+				this.searchXmGroups();
 			},
 			filterNode(value, data) {
 				if (!value) return true;
