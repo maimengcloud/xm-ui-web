@@ -1,11 +1,14 @@
 <template>
-	<section class="page-container border">
-		<el-row class="page-main">  
-			<el-col  :span="4" class="padding">
-				<xm-product-template-mng @row-click="onProductSelected" ref="xmProductTemplateMng" :simple="true"></xm-product-template-mng>
-			</el-col>
-			<el-col  :span="18" class="padding"> 
-				<el-row>  
+	<section class="page-container border padding">
+		<el-row class="page-main">   
+				<el-row>   
+					<el-popover
+						placement="bottom"
+						width="400"
+						trigger="click"> 
+						<xm-product-tpl-mng :auto-select="true" :isSelect="true"  showType="simple"  @row-click="onProductRowClick" @clear-select="onProductClearSelect"></xm-product-tpl-mng>
+							<el-link type="warning" slot="reference" icon="el-icon-search"><font style="font-size:14px;">{{filters.product?filters.product.productName:'选择产品模板'}}</font></el-link> 
+					</el-popover>
 					<el-input v-model="filters.key" style="width: 20%;" placeholder="需求名字模糊查询"></el-input> 
 					<el-button    v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenuTemplates">查询</el-button>
 					<el-button type="primary" v-if="isSelectMenu" v-loading="load.del" @click="selectedMenusConfirm" :disabled="this.sels.length===0 || load.del==true">确认选择</el-button> 
@@ -35,17 +38,7 @@
 					</el-table-column>
 				</el-table>
 				<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
-				 
-			</el-col>
-			<!--编辑 XmMenuTemplate xm_project_menu界面-->
-			<el-drawer title="编辑需求" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
-				  <xm-menu-template-edit :xm-menu-template="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-menu-template-edit>
-			</el-drawer>
-	
-			<!--新增 XmMenuTemplate xm_project_menu界面-->
-			<el-drawer title="新增需求" :visible.sync="addFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
-				<xm-menu-template-add  :product="filters.product"   :parent-menu="parentMenu"  :xm-menu="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-menu-template-add>
-			</el-drawer> 
+				   
 		</el-row>
 	</section>
 </template>
@@ -55,10 +48,8 @@
 	import treeTool from '@/common/js/treeTool';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { listXmMenu, delXmMenuTemplate, batchDelXmMenuTemplate,batchEditXmMenuTemplate } from '@/api/xm/core/xmMenu';
-	import  XmMenuTemplateAdd from './XmMenuTemplateAdd';//新增界面
-	import  XmMenuTemplateEdit from './XmMenuTemplateEdit';//修改界面
-	import  XmProductTemplateMng from '../xmProductTemplate/XmProductTemplateMng';//新增界面
+	import { listXmMenu, delXmMenuTemplate, batchDelXmMenuTemplate,batchEditXmMenuTemplate } from '@/api/xm/core/xmMenu'; 
+	import  XmProductTplMng from '../xmProduct/XmProductTplMng';//新增界面
 
 	import { mapGetters } from 'vuex'
 	
@@ -218,7 +209,7 @@
 			selsChange: function (sels) {
 				this.sels = sels;
 			}, 
-			onProductSelected:function(product){
+			onProductRowClick:function(product){
 				this.filters.product=product
 				this.getXmMenuTemplates()
 			},
@@ -286,24 +277,16 @@
 			},
 			
 		},//end methods
-		components: { 
-		    'xm-menu-template-add':XmMenuTemplateAdd,
-			'xm-menu-template-edit':XmMenuTemplateEdit,
-			XmProductTemplateMng,
+		components: {  
+			XmProductTplMng,
 		    
 		    //在下面添加其它组件
 		},
 		mounted() { 
 			this.$nextTick(() => {
-				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
-				this.getXmMenuTemplates();
-          }); 
-      // 阻止默认行为
-      document.body.ondrop = function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-      };
-      this.rowDrop();
+					this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
+					this.getXmMenuTemplates();
+			});  
 		}
 	}
 

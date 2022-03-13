@@ -198,10 +198,8 @@
 					count:this.pageInfo.count,
 				};
 				if(this.filters.key!==""){
-					//params.xxx=this.filters.key
-				}else{
-					//params.xxx=xxxxx
-				}
+					 params.key='%'+this.filters.key+'%';
+				} 
 				
 				if(this.dateRanger&&this.dateRanger.length==2){
 					 
@@ -240,33 +238,7 @@
 			},
 
 			menuFilter(params) {
-				const key = this.menukey;
-				const userid = this.userInfo.userid;
-				if( this.dataScope=='all' && key == "compete"){ 
-						params.compete = userid;  
-				}else if( this.dataScope!='all' && (key == "compete" || key=="all")){
-						params.compete = userid; 
-				} else if(key == "leader"){ //负责人
-					params.pgTypeIds=['nbxmjl']
-					params.userid=userid
-				}
-				else if(key == "moniter"){ //监控人
-					params.pgTypeIds=['yyz','xmzl']
-					params.userid=userid
-				}
-				else if(key == "approver"){ //审批人
-					params.pgTypeIds=['nbxmjl','xmzk','nbldz']
-					params.userid=userid
-				}
-				else if(key == "create"){
-					params.createUserid = userid;
-				}else if(key=="myFocus"){
-					params.myFocus="1"
-					params.userid=userid
-				}else if(key.indexOf("myExecuserStatus")>=0){
-					params.userid=userid
-					params.myExecuserStatus=key.substring("myExecuserStatus".length)
-				}
+				 
 				return params;
 			},
 

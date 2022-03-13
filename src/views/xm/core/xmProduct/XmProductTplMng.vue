@@ -255,7 +255,7 @@
 					params.orderBy= orderBys.join(",")
 				}
 				 if(this.filters.key){
-					 params.key=this.filters.key
+					 params.key='%'+this.filters.key+'%'
 				 }
 				 if(this.filters.isMy=='1'){
 					 params.assistantUserid=this.userInfo.userid

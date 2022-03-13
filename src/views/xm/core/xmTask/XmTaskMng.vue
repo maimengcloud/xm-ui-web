@@ -888,6 +888,7 @@
         :is-select-menu="true"
         :multi="true"
          :xm-product="filters.product"
+         :sel-project="filters.selProject"
         @menus-selected="onSelectedMenus"
       ></xm-menu-select>
     </el-drawer>
@@ -904,6 +905,7 @@
         :multi="true"
         @menus-selected="onSelectedStory" 
          :xm-product="filters.product"
+         :sel-project="filters.selProject"
       ></xm-menu-select>
     </el-drawer>
 
@@ -1594,7 +1596,7 @@ export default {
               });
               return false;
           }else if(this.ptype==='1'){
-            if( !this.xmProduct && this.xmProduct.id){
+            if( !this.filters.product && this.filters.product.id){
                this.$notify({
                 showClose: true,
                 message: "请先选择产品",

@@ -13,11 +13,11 @@
 						<el-select  v-model="filters.status" placeholder="需求状态" clearable style="width: 100px;">
 							<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option> 
 						</el-select>   
-						<el-select  v-model="filters.taskFilterType" placeholder="分配过任务？" clearable style="width: 160px;">
-							<el-option   value="not-join-any-project"  label="未分配过任务"></el-option>  
-							<el-option   value="join-any-project"  label="已分配过任务"></el-option>  
-							<el-option   value="not-join-curr-project"  label="未分配到本项目"></el-option>  
-							<el-option   value="join-curr-project"  label="已分配到本项目"></el-option>  
+						<el-select  v-model="filters.taskFilterType" placeholder="已关联任务的需求？" clearable style="width: 160px;">
+							<el-option   value="not-join-any-project"  label="未关联任务"></el-option>  
+							<el-option   value="join-any-project"  label="已关联任务"></el-option>  
+							<el-option   value="not-join-curr-project"  label="未有本项目任务关联"></el-option>  
+							<el-option   value="join-curr-project"  label="有本项目任务关联"></el-option>  
 						</el-select>   
 						<el-select   v-model="filters.iterationFilterType" placeholder="加入过迭代？" clearable  style="width: 160px;">
 							<el-option   value="not-join-any-iteration"  label="未加入过迭代"></el-option>  
