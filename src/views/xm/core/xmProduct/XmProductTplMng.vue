@@ -66,10 +66,12 @@
 				</el-table-column> 
 				  <el-table-column prop="productName" label="产品模板(参考学习用)" sortable show-overflow-tooltip> 
 					<template slot-scope="scope">
-						<el-link  @click="intoInfo(scope.row)">{{scope.row.productName}}</el-link>
+						
+						<div v-if="isSelect===true">{{scope.row.productName}}</div>
+						<el-link v-else  @click="intoInfo(scope.row)">{{scope.row.productName}}</el-link>
 					</template>
 				</el-table-column>  
-				<el-table-column  label="操作" width="80" fixed="right">
+				<el-table-column v-if="isSelect!==true"  label="操作" width="80" fixed="right">
 					<template slot-scope="scope">
 						<el-button type="text" title="通过复制创建新的项目" @click="onCopyToBtnClick(scope.row)" :disabled="load.add" v-loading="load.add">复制</el-button> 
 					</template>
@@ -128,7 +130,7 @@
  
  
 	export default {
-		props:['selProject','xmIteration','showType'],
+		props:['selProject','xmIteration','showType','isSelect'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'

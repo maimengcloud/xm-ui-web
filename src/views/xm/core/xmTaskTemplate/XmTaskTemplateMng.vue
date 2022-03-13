@@ -1,19 +1,28 @@
 <template>
-	<section class="page-container padding border">
-		<el-row>
-			<el-col :span="filters.projectTemplate&&filters.projectTemplate.id?6:0" >
-					<xm-phase-template-mng   :sel-project-template="filters.projectTemplate" :simple="true" @row-click="projectPhaseTemplateRowClick" @selected-project-template="onSelectedProjectTemplate" ref="projectPhaseTemplate"></xm-phase-template-mng>
-			</el-col>
-			<el-col :span="filters.projectTemplate&&filters.projectTemplate.id?18:24">
-				<el-row>
+	<section class="page-container padding border"> 
+				<el-row> 
+					<el-popover
+						placement="bottom"
+						width="400"
+						trigger="click"> 
+						<xm-project-tpl-mng :auto-select="true" :isSelect="true" showType="simple"  @row-click="onProjectRowClick" @clear-select="onProjectClearSelect"></xm-project-tpl-mng>
+							<el-link type="warning" slot="reference" icon="el-icon-search"><font style="font-size:14px;">{{filters.project?filters.project.name:'选择项目模板'}}</font></el-link> 
+					</el-popover>
+					
+					<el-popover
+						placement="bottom"
+						width="400"
+						trigger="click"> 
+						<xm-product-tpl-mng :auto-select="true" :isSelect="true"  showType="simple"  @row-click="onProductRowClick" @clear-select="onProductClearSelect"></xm-product-tpl-mng>
+							<el-link type="warning" slot="reference" icon="el-icon-search"><font style="font-size:14px;">{{filters.product?filters.product.productName:'选择产品模板'}}</font></el-link> 
+					</el-popover>
 					<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
 					<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTaskTemplates">查询</el-button>
-					<el-button v-if="!selProjectTemplate"  @click="showProjectTemplate">选择模板</el-button>   
-					<el-button v-if="isSelect" type="primary" @click="selectedConfirm">确认选择</el-button>  
+ 					<el-button v-if="isSelect" type="primary" @click="selectConfirm">确认选择</el-button>  
 				</el-row>
 				<el-row class="page-main">  
 						<!--列表 XmTaskTemplate xm_task_template select-confirm-->
-						<el-table ref="table" :height="maxTableHeight" :data="xmTaskTemplatesTreeData" row-key="id" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+						<el-table ref="table" lazy :load="loadXmTaskLazy" :height="maxTableHeight" :data="xmTaskTemplatesTreeData" row-key="id" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 							<el-table-column sortable type="selection" width="40"></el-table-column>
 							<el-table-column prop="name" label="任务名称" min-width="150" >						
 								<template slot-scope="scope">
@@ -32,9 +41,7 @@
 						</el-table> 
 				</el-row>
 				<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
-			</el-col>
-		</el-row>
-		
+  
 	</section>
 </template>
 
@@ -43,9 +50,9 @@
 	import treeTool from '@/common/js/treeTool';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { listXmTask  } from '@/api/xm/core/xmTask'; 
-	import xmPhaseTemplateMng from '../xmPhaseTemplate/XmPhaseTemplateMng'; 
-
+	import { listXmTask  } from '@/api/xm/core/xmTask';  
+	import XmProductTplMng from '../xmProduct/XmProductTplMng'
+	import XmProjectTplMng from '../xmProject/XmProjectTplMng'
 	import { mapGetters } from 'vuex'
 	
 	export default { 
@@ -58,18 +65,15 @@
 				 return treeTool.translateDataToTree(this.xmTaskTemplates,"parentTaskid","id");
 			},
 		},
-		watch:{
-			selProjectTemplate:function(selProjectTemplate){
-				this.filters.projectTemplate=this.selProjectTemplate
-				this.getXmTaskTemplates();
-			}
+		watch:{ 
 		},
-		props:['selProjectTemplate','isSelect'],
+		props:['isSelect'],
 		data() {
 			return {
 				filters: {
 					key: '',
-					projectTemplate:null,
+					project:null,
+					product:null,
 				},
 				xmTaskTemplates: [],//查询结果
 				pageInfo:{//分页数据
@@ -96,7 +100,6 @@
 					 id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'',sortLevel:'',preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',rate:'',budgetCost:'',budgetWorkload:'',taskState:'',taskType:'',taskClass:'',toTaskCenter:'',phaseId:'',projectPhaseName:'',taskSkillNames:'',taskSkillIds:'',taskOut:'',planType:'',settleSchemel:'',menuId:'',menuName:''
 				},
 				parentTaskTemplate:null,
-				projectPhaseTemplate:null,
 				maxTableHeight:300,
 				/**begin 自定义属性请在下面加 请加备注**/
 					
@@ -144,23 +147,20 @@
 						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
 					}  
 					params.orderBy= orderBys.join(",")
+				} 
+				if(this.filters.project){
+					params.ptype="0"
+					params.projectId=this.filters.project.id
 				}
-				if(this.projectPhaseTemplate){
-					params.phaseId=this.projectPhaseTemplate.id
+				if(this.filters.product){
+					params.ptype="1"
+					params.productId=this.filters.product.id
 				}
-				if(this.filters.projectTemplate){
-					params.projectId=this.filters.projectTemplate.id
-				}
-
 				
-				if(!params.projectId){
-					this.$notify({showClose: true, message: "选择一个模板项目", type: 'error' });
+				if(!params.productId && !params.projectId){
+					this.$notify({showClose: true, message: "选择一个模板", type: 'error' });
 					return;
-				}
-				if(!params.phaseId){
-					this.$notify({showClose: true, message: "请在左边计划列表中选择一个计划", type: 'error' });
-					return;
-				}
+				}  
 				params.isTpl="1"
 				this.load.list = true;
 				listXmTask(params).then((res) => {
@@ -183,7 +183,7 @@
 			},
 			//显示新增界面 XmTaskTemplate xm_task_template
 			showAdd: function () {
-				if(!this.filters.projectTemplate){
+				if(!this.filters.project){
 					this.$notify.error("请选择模板")
 					return;
 				}
@@ -212,71 +212,57 @@
 			//选择行xmTaskTemplate
 			selsChange: function (sels) {
 				this.sels = sels;
-			}, 
-			//删除xmTaskTemplate
-			handleDel: function (row,index) { 
-				this.$confirm('确认删除该记录吗?', '提示', {
-					type: 'warning'
-				}).then(() => { 
-					this.load.del=true;
-					let params = { id: row.id };
-					delXmTask(params).then((res) => {
-						this.load.del=false;
-						var tips=res.data.tips;
-						if(tips.isOk){ 
-							this.pageInfo.count=true;
-							this.getXmTaskTemplates();
-						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
-					}).catch( err  => this.load.del=false );
-				});
-			},
-			//批量删除xmTaskTemplate
-			batchDel: function () {
-				
-				this.$confirm('确认删除选中记录吗？', '提示', {
-					type: 'warning'
-				}).then(() => { 
-					this.load.del=true;
-					batchDelXmTaskTemplate(this.sels).then((res) => {
-						this.load.del=false;
-						var tips=res.data.tips;
-						if( tips.isOk ){ 
-							this.pageInfo.count=true;
-							this.getXmTaskTemplates(); 
-						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
-					}).catch( err  => this.load.del=false );
-				});
-			},
+			},  
 			rowClick: function(row, event, column){
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			}, 
-			selectedConfirm(){
+			selectConfirm(){ 
 				this.$emit("select-confirm",this.sels)
-			},
-			
-			projectPhaseTemplateRowClick:function(projectPhaseTemplate){
-				this.projectPhaseTemplate=projectPhaseTemplate
+			},  
+			onProjectRowClick:function(project){
+				this.filters.project=project
+				this.filters.product=null;
 				this.getXmTaskTemplates();
 			},
-			showProjectTemplate(){
-				this.$refs.projectPhaseTemplate.showProjectTemplate();
-			}, 
-			onSelectedProjectTemplate:function(projectTemplate){
-				this.filters.projectTemplate=projectTemplate
+			onProjectClearSelect(){
+				this.filters.project=null; 
 				this.getXmTaskTemplates();
-			}
+			},  
+			onProductRowClick:function(product){
+				this.filters.product=product
+				this.filters.project=null;
+				this.getXmTaskTemplates();
+			},
+			onProductClearSelect(){
+				this.filters.product=null;
+				this.getXmTaskTemplates();
+			},
+			loadXmTaskLazy(tree, treeNode, resolve) {     
+					var params={parentTaskid:tree.id} 
+					params.isTop=""
+					this.load.list = true;
+					var func=listXmTask 
+					func(params).then(res=>{
+					this.load.list = false
+					var tips = res.data.tips;
+					if(tips.isOk){  
+						resolve(res.data.data) 
+					}else{
+						resolve([])
+					}
+					}).catch( err => this.load.list = false );   
+				
+				},
 			/**end 自定义函数请在上面加**/
 			
 		},//end methods
 		components: {  
-		    xmPhaseTemplateMng,
+		    XmProjectTplMng,XmProductTplMng,
 		    //在下面添加其它组件
 		},
 		mounted() { 
 			if(this.selProjectTemplate){
-				this.filters.projectTemplate=this.selProjectTemplate
+				this.filters.project=this.selProjectTemplate
 			}
 			this.$nextTick(() => { 
                 

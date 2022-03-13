@@ -22,10 +22,11 @@
 					<el-table :height="maxTableHeight" ref="table" v-cloak  stripe :data="ScreenData" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  						<el-table-column prop="name" label="项目模板(学习/参考)" min-width="200" >
 							<template slot-scope="scope">
-								<el-link @click.stop="intoInfo(scope.row)">{{scope.row.name}}</el-link>
+								<div v-if="isSelect===true">{{scope.row.name}}</div>
+								<el-link v-else @click.stop="intoInfo(scope.row)">{{scope.row.name}}</el-link>
 							</template>
 						</el-table-column>  
-						<el-table-column  label="" width="100" fixed="right">
+						<el-table-column  label="" width="100" fixed="right" v-if="isSelect!==true">
 							<template slot-scope="scope"> 
 								<el-button type="text" title="通过复制创建新的项目" @click="onCopyToBtnClick(scope.row)" :disabled="load.add" v-loading="load.add">复制</el-button>								
 								<el-button type="text" title="删除该模板" @click="handleDel(scope.row)" :disabled="load.del" v-loading="load.del">删除</el-button>
@@ -85,20 +86,14 @@
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { listXmProject, editStatus, delXmProject, batchDelXmProject,copyTo,createProjectCode} from '@/api/xm/core/xmProject'; 
 	import { addXmMyFocus , delXmMyFocus } from '@/api/xm/core/xmMyFocus'; 
-	import  XmProjectEdit from './XmProjectEdit';//修改界面
-	import { mapGetters } from 'vuex' 
-	import xmProjectInfo from './XmProjectInfo';  
+ 	import { mapGetters } from 'vuex'  
 
-	if(!Vue.component("xm-project-info")){
-		
-		Vue.component('xm-project-info',xmProjectInfo)
-		Vue.use(xmProjectInfo);
-	}
+	 
 	
 
 
 	export default { 
-		props:['dataScope','showType'],
+		props:['dataScope','showType','isSelect'],
 		computed: {
 			...mapGetters([
 				'userInfo','roles'
@@ -345,10 +340,9 @@
 					}).catch( err  => this.load.del=false );
 				});
 			},
-			rowClick: function(row, event, column){
-				const that = this;
-				//that.intoInfo(row.id);
-				// this.$emit('row-click',row, event, column);//  @row-click="rowClick"
+			rowClick: function(row, event, column){ 
+				this.editForm=row
+				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
 			onCopyToBtnClick(row){
 				this.xmProjectCopy.id=row.id;
@@ -566,9 +560,7 @@
 			/**end 自定义函数请在上面加**/
 			
 		},//end methods
-		components: { 
-		    'xm-project-edit':XmProjectEdit,
-		    //在下面添加其它组件
+		components: {   
 		},
 		mounted() { 
 			if(this.$route.params){

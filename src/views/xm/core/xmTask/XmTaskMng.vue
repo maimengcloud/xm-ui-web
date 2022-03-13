@@ -1856,21 +1856,23 @@ export default {
 
       translator(parents, children);
       taskTemplates2.forEach((i) => {
-        i.branchId = this.selProject.branchId;
-        i.projectId = this.selProject.id;
-        i.projectName = this.selProject.name;
-        if (this.projectPhase == null) {
-          i.phaseId = this.parentTask.phaseId;
-          i.projectPhaseName = this.parentTask.projectPhaseName;
-          i.sortLevel = i.sortLevel ? i.sortLevel : this.parentTask.sortLevel;
-          i.taskType = i.taskType ? i.taskType : this.parentTask.taskType;
-          i.taskClass = i.taskClass ? i.taskClass : this.parentTask.taskClass;
-        } else {
-          i.phaseId = this.projectPhase.id;
-          i.projectPhaseName = this.projectPhase.name;
-          i.sortLevel = i.sortLevel ? i.sortLevel : this.projectPhase.seqNo;
-          i.taskType = i.taskType ? i.taskType : this.projectPhase.taskType;
-        }
+        if(this.ptype==='1'){
+          i.branchId=this.xmProduct.branchId;
+          i.ptype="1"
+          i.projectId=null;
+          i.projectName=null;
+          i.productId=this.xmProduct.id
+          i.menuId=null;
+          i.menuName=null;
+        }else if(this.ptype==='0'){ 
+          i.branchId=this.filters.selProject.branchId;
+          i.ptype="0"
+          i.projectId=this.filters.selProject.id;
+          i.projectName=this.filters.selProject.name;
+          i.productId=null
+          i.menuId=null;
+          i.menuName=null;
+        } 
         i.budgetCost = 0;
         i.budgetWorkload = 80;
         i.level = i.level ? i.level : "3";
