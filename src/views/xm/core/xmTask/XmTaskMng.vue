@@ -119,7 +119,7 @@
             }})个</el-tag
           > 
           <el-input
-            style="width: 200px"
+            style="width: 150px"
             v-model="filters.key"
             placeholder="计划/任务名称"
           >
@@ -130,6 +130,13 @@
             icon="el-icon-search"
             v-loading="load.list"
           ></el-button>
+          
+          <el-button
+            @click="showParentTaskList"
+            type="primary"
+            icon="el-icon-edit"
+            v-loading="load.edit"
+          >更换上级</el-button>
           <el-button  
             v-if="isTaskCenter != '1' && isMy != '1'"
             @click="showBatchEdit"
@@ -984,6 +991,9 @@
       >
       </tag-mng>
     </el-drawer>
+		<el-drawer title="选中上级" :visible.sync="selectParentTaskVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
+			<xm-task-list check-scope="plan" :sel-project="filters.selProject"   @task-selected="onSelectedParentTask"></xm-task-list>
+		</el-drawer>
   </section>
 </template>
 
@@ -1005,6 +1015,7 @@ import {
   batchSaveBudget,
   setTaskCreateUser,
   batchRelTasksWithMenu,
+  batchChangeParentTask,
 } from "@/api/xm/core/xmTask";
 import XmTaskAdd from "./XmTaskAdd"; //新增界面
 import XmTaskEdit from "./XmTaskEdit"; //修改界面
@@ -1031,6 +1042,7 @@ import TagMng from "@/views/mdp/arc/tag/TagMng";
 
 import XmGantt from "../components/xm-gantt";
 import XmGroupSelect from "../xmGroup/XmGroupSelect.vue";
+	import XmTaskList from '../xmTask/XmTaskList';
 
 export default {
   computed: {
@@ -1285,6 +1297,7 @@ export default {
       actDateRanger: [],
       tagSelectVisible: false,
       batchRelTasksWithMenuVisible:false,
+      selectParentTaskVisible:false,
       maps:new Map(),
     };
   }, //end data
@@ -1656,11 +1669,9 @@ export default {
             this.load.del = false;
             var tips = res.data.tips;
             if (tips.isOk) {
-              this.pageInfo.count = true;
-              var parents=this.sels.filter(i=>!this.sels.some(k=>k.id==i.parentTaskid)); 
-							var needLoadChlidList=parents.filter(i=>i.lvl>1) 
+              this.pageInfo.count = true; 
 							this.searchXmTasks()  
-							treeTool.reloadAllChildren(this.$refs.table,this.maps,this.sles,'parentTaskid',this.loadXmTaskLazy)  
+							treeTool.reloadAllChildren(this.$refs.table,this.maps,this.sels,'parentTaskid',this.loadXmTaskLazy)  
             }
             this.$notify({
               showClose: true,
@@ -2389,6 +2400,48 @@ export default {
         }).catch( err => this.load.list = false );   
       
     },
+    showParentTaskList(){ 
+      if(this.filters.selProject && this.filters.selProject.id){
+        if(this.sels.length==0){
+          this.$notify({showClose:true,message:"请先选择一个或者多个需要更换上级的计划/任务",type:'warning'})
+          return;
+        }
+         this.selectParentTaskVisible=true
+      }else{
+        this.$notify({showClose:true,message:"请先选择项目",type:'warning'})
+      }
+     
+    },
+    onSelectedParentTask(task){
+      if(this.sels.length==0){
+         this.$notify({showClose:true,message:"请先选择一个或者多个需要更换上级的计划/任务",type:'warning'})
+         this.selectParentTaskVisible=true
+        return;
+      }else if(task==null || !task.id){
+         this.$notify({showClose:true,message:"请选择上级计划/任务",type:'warning'})
+        return;
+      }
+
+      var params={taskIds:this.sels.map(i=>i.id),parentTaskid:task.id}
+      this.$confirm("确认批量更新以下"+this.sels.length+"个任务的上级为【"+task.name+"】吗?", "提示", {
+        type: "warning",
+      }).then(() => {
+        batchChangeParentTask(params).then(res=>{
+          var tips = res.data.tips;
+          if(tips.isOk){
+            this.searchXmTasks(); 
+            debugger;
+            var rows=[...this.sels,{id:'xxxxx',parentTaskid:task.id}]
+            treeTool.reloadAllChildren(this.$refs.table,this.maps,rows,'parentTaskid',this.loadXmTaskLazy) 
+          } 
+          this.$notify({
+            showClose: true,
+            message: tips.msg,
+            type: tips.isOk ? "success" : "error",
+          });
+        });
+      })
+    }
     /**end 自定义函数请在上面加**/
   }, //end methods
   components: {
@@ -2410,6 +2463,7 @@ export default {
     XmProductSelect,
     XmTaskAgileKanban,
     TagMng,
+    XmTaskList,
     //在下面添加其它组件
   },
   mounted() {

@@ -380,6 +380,8 @@
 								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err  => this.load.edit=false);
 						});
+					}else{
+						this.$notify({showClose: true, message: "表单验证不通过，请修改后提交", type: 'error' }); 
 					}
 				});
 			}, 

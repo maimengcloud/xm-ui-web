@@ -22,8 +22,9 @@
 					</el-row>
 					<el-row  class="page-main">
 						<el-table
-							ref="taskTable"
-							show-summary
+							ref="taskTable" 
+							lazy
+							:load="loadXmTaskLazy"
 							:data="tasksTreeData"
 							@sort-change="sortChange"
 							v-loading="load.list"
@@ -74,7 +75,7 @@
 							
 							<el-table-column   v-if="!isMultiSelect"  header-align="center" label="操作" fixed="right" width="100">
 								<template slot-scope="scope">
-									<el-button  :disabled="checkScope!='plan' && scope.row.ntype=='1'"  type="primary" @click.stop="selectedTask(scope.row)" >选择</el-button> 	
+									<el-button  :disabled="(checkScope=='plan' && scope.row.ntype!='1')||(checkScope=='task' && scope.row.ntype=='1')"  type="primary" @click.stop="selectedTask(scope.row)" >选择</el-button> 	
 								</template>
 							</el-table-column>
 						</el-table>
@@ -109,7 +110,7 @@
 			},
 			  
 		},
-		props: ["selProject",'isMultiSelect','xmProduct','xmIteration','check-scope'/**task/plan */],
+		props: ["selProject",'isMultiSelect','xmProduct','xmIteration','checkScope'/**task/all/plan */,'queryScope'/**task/all/plan */,],
 		watch: {
 			"selkey": function(val) {
 				// console.log("任务类型");
@@ -172,6 +173,7 @@
 				tableHeight:300,
 				dateRanger: [ ],  
 				pickerOptions:  util.pickerOptions('datarange'),
+      			maps:new Map(),
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -234,45 +236,21 @@
 					params.orderBy= orderBys.join(",")
 				}
 				
-				if(this.dateRanger&&this.dateRanger.length==2){ 
-					params.createTimeStart=this.dateRanger[0]
-					params.createTimeEnd=this.dateRanger[1]
-				} 
-				if(this.filters.key){
-					params.key='%'+this.filters.key+'%'
-				}
-				if(this.filters.taskType!="all" && this.filters.taskType!="" && this.filters.taskType!=null){
-					params.taskType=this.filters.taskType
-				} 
 				
-				params.withParents="1"
-				this.load.list = true;
-				if(this.selProject){
-					params.projectId = this.selProject.id;
-				} 
-				if(!params.projectId){
-					if(this.filters.selProject){
-						params.projectId=this.filters.selProject.id
-					}
+				params=this.getParams(params) 
+				if(this.queryScope=='all'){
+					params.isTop="1" 
+					params.withParents="1"
+				}else if(this.queryScope=='plan'){
+					params.isTop="1" 
+					params.withParents="1"
+					params.ntype="1"
+				}else if(this.queryScope=='task'){
+					params.ntype="0"
+				}else{
+					params.isTop="1" 
+					params.withParents="1"
 				}
-				if(this.xmProduct && this.xmProduct.id){
-					params.productId = this.xmProduct.id;
-				}
-				if(this.xmIteration && this.xmIteration.id){
-					params.iterationId=this.xmIteration.id
-				}
-				if(!params.projectId){ 
-					this.$notify({showClose: true, message: "请选择项目", type: 'error' });
-					this.load.list=false; 
-					return; 
-				}
-				 
-				params.workexec="true"; 
-				if(this.isMy=='1'){
-					params.userid=this.userInfo.userid
-					params.isMy="1"
-				}
-				params.ntype="0"
 				getTask(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 
@@ -285,6 +263,107 @@
 					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
+			},
+			
+			getParams(params) {
+			
+				if (this.dateRanger && this.dateRanger.length == 2) {
+					params.createTimeStart = this.dateRanger[0];
+					params.createTimeEnd = this.dateRanger[1];
+				}
+				if (
+					this.filters.taskType != "all" &&
+					this.filters.taskType != "" &&
+					this.filters.taskType != null
+				) {
+					params.taskType = this.filters.taskType;
+				}
+				if (this.selkey == "work") {
+					params.work = "work";
+				} else if (this.selkey == "finish") {
+					params.rate = 100;
+				} else if (this.selkey == "myFocus") {
+					params.myFocus = "1";
+					params.userid = this.userInfo.userid;
+				} else if (this.selkey == "myCreate") {
+					params.createUserid = this.userInfo.userid;
+					params.userid = this.userInfo.userid;
+				} else if (this.selkey.indexOf("myExecuserStatus") >= 0) {
+					params.userid = this.userInfo.userid;
+					params.myExecuserStatus = this.selkey.substring(
+					"myExecuserStatus".length
+					);
+				}
+				if(this.filters.taskState){
+					params.taskState=this.filters.taskState
+				}
+				if (this.filters.selProject) {
+					params.projectId = this.filters.selProject.id;
+				}
+				params.workexec = "true";
+				if (this.projectPhase) {
+					{
+					params.phaseId = this.projectPhase.id;
+					}
+				}
+				if (this.isMy == "1") {
+					params.userid = this.userInfo.userid;
+					params.isMy = "1";
+				}
+				if (this.menuId) {
+					params.menuId = this.menuId;
+				}
+				if (this.filters.menus && this.filters.menus.length == 1) {
+					params.menuId = this.filters.menus[0].menuId;
+				} else if (this.filters.menus && this.filters.menus.length > 1) {
+					params.menuIds = this.filters.menus.map((i) => i.menuId);
+				}
+				if (this.filters.skillTags && this.filters.skillTags.length > 0) {
+					params.skillIds = this.filters.skillTags.map((i) => i.skillId);
+				}
+				if (this.filters.key) {
+					params.key = "%" + this.filters.key + "%";
+				}
+				if (this.filters.taskOut) {
+					params.taskOut = this.filters.taskOut;
+				}
+				if (this.filters.createUser) {
+					params.createUserid = this.filters.createUser.userid;
+				}
+				if (this.filters.executor) {
+					params.executorUserid = this.filters.executor.userid;
+				}
+				if (this.filters.product) {
+					params.productId = this.filters.product.id;
+				}
+				if (this.xmIteration) {
+					params.iterationId = this.xmIteration.id;
+				}
+				if (this.filters.tags && this.filters.tags.length>0) {
+					params.tagIdList = this.filters.tags.map(i=>i.tagId);
+				}
+				return params;
+			}, 
+			loadXmTaskLazy(tree, treeNode, resolve) {    
+			this.maps.set(tree.id, { tree, treeNode, resolve }) //储存数据
+				var params={parentTaskid:tree.id}
+				params=this.getParams(params);
+				params.isTop=""
+				this.load.list = true;
+				var func=listXmTask 
+				func(params).then(res=>{
+				this.load.list = false
+				var tips = res.data.tips;
+				if(tips.isOk){
+					var xmTasks=this.xmTasks.filter(i=>i.parentTaskid!=tree.id)
+					xmTasks.push(...res.data.data)
+					this.xmTasks=xmTasks;
+					resolve(res.data.data) 
+				}else{
+					resolve([])
+				}
+				}).catch( err => this.load.list = false );   
+			
 			},
 			calcTaskStateByTime(startTime,endTime,row){
 				var obj={
