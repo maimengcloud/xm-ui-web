@@ -6,7 +6,7 @@
 				placement="right"
 				width="400"
 				trigger="click"> 
-				<xm-project-select :auto-select="true" v-if="!selProject"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClearSelect"></xm-project-select>
+				<xm-project-select :auto-select="false" v-if="!selProject"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClearSelect"></xm-project-select>
 					<el-link type="warning" slot="reference" v-if="!selProject" icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link> 
 			</el-popover>
 					<el-input v-model="filters.key" style="width:15%;" clearable placeholder="名称过滤"></el-input>  
@@ -57,11 +57,11 @@
 				width="50%" >
 				<el-row v-if="currNodeType=='project'">   
 					<el-button type="primary" @click="loadNexGroup" icon="el-icon-search" v-loading="load.add">加载下一级小组</el-button>  
-					<el-button @click="showAdd" icon="el-icon-plus" v-loading="load.add">新增下一级小组</el-button>  
+					<el-button @click="showProjectGroupAdd" icon="el-icon-plus" v-loading="load.add">新增项目小组</el-button>  
 				</el-row> 
 				<el-row v-else-if="currNodeType=='product'">  
 					<el-button type="primary" @click="loadNexGroup" icon="el-icon-search" v-loading="load.add">加载下一级小组</el-button>  
-					<el-button type="primary" @click="showAdd" icon="el-icon-plus"  v-loading="load.add">新增下一级小组</el-button> 
+					<el-button type="primary" @click="showProductGroupAdd" icon="el-icon-plus"  v-loading="load.add">新增产品小组</el-button> 
 				</el-row> 
 				<el-row v-else-if="currNodeType=='group'">  
 					<el-row>
@@ -232,7 +232,7 @@
 		    XmGroupEdit,VueOkrTree,UsersSelect,XmGroupStateMng,XmGroupUserMng,XmProjectList,
 XmProductSelect,XmProjectSelect,
 		},
-		props:["visible","selProject" ,"isSelectSingleUser","isSelectMultiUser",'xmProduct','xmIteration'],
+		props:["visible","selProject" ,"isSelectSingleUser","isSelectMultiUser",'xmProduct','xmIteration','pgClass'],
 		computed: {
 		    ...mapGetters(['userInfo']),
 			expandedKeys(){  
@@ -278,6 +278,14 @@ XmProductSelect,XmProjectSelect,
 					topdata.leaderUsername=this.filters.selProject.pmUsername
 					topdata.assUserid=this.filters.selProject.assUserid
 					topdata.assUsername=this.filters.selProject.assUsername
+				}else if(this.xmProduct && this.xmProduct.id){
+					topLabel=this.xmProduct.productName+"-产品组织架构"
+					currNodeType='product'
+					topdata=this.xmProduct
+					topdata.leaderUserid=this.xmProduct.pmUserid
+					topdata.leaderUsername=this.xmProduct.pmUsername
+					topdata.assUserid=this.xmProduct.assUserid
+					topdata.assUsername=this.xmProduct.assUsername
 				}
 				var data=[{
 					...topdata,
@@ -440,20 +448,13 @@ XmProductSelect,XmProjectSelect,
 					params.orderBy= orderBys.join(",")
 				}
 				
-				if(this.filters.selProject){
+				if(this.filters.selProject && this.filters.selProject.id){
 					params.projectId=this.filters.selProject.id
-				}
-				if(!params.projectId){
-					return;
-				}
-				if(this.xmIteration){
+				}else if(this.xmProduct && this.xmProduct.id){
+					params.productId=this.xmProduct.id
+				}else if(this.xmIteration && this.xmIteration.id){
 					params.iterationId=this.xmIteration.id
 				}
-				/** 取消产品团队，产品团队在项目团队中保留项目团队
-				if(this.xmProduct){
-					params.productId=this.xmProduct.id
-				}
-				 */
 				if(this.filters.key){
 					params.key=this.filters.key
 				}
@@ -491,7 +492,7 @@ XmProductSelect,XmProjectSelect,
 				this.editForm = Object.assign({}, row);
 			},
 			//显示新增界面 XmGroup xm_group
-			showAdd: function () {
+			showProjectGroupAdd: function () {
 				if(!this.filters.selProject || !this.filters.selProject.id){
 					this.$notify({ showClose:true, message: "请先选择项目", type:  'warning' });
 					return;
@@ -512,15 +513,32 @@ XmProductSelect,XmProjectSelect,
 				//this.addForm=Object.assign({}, this.editForm);
 			},
 			//显示新增界面 XmGroup xm_group
+			showProductGroupAdd: function () {
+				if(!this.xmProduct || !this.xmProduct.id){
+					this.$notify({ showClose:true, message: "请先选择产品", type:  'warning' });
+					return;
+				}
+				this.addForm={...this.addFormInit}
+				 if(this.currNodeType=='product'){ 
+					this.addForm.pgroupId=null
+					this.addForm.pgroupName=null
+					this.addForm.productId=this.xmProduct.id
+					this.addForm.pgClass="1" 
+					this.addForm.groupName=this.xmProduct.productName+"-产品管理组"
+					this.addFormVisible = true;
+				}else{
+					 return;
+				}
+				
+				//this.addForm=Object.assign({}, this.editForm);
+			},
+			//显示新增界面 XmGroup xm_group
 			showAddSub: function (row) { 
 				
 				if(!row){
 					return;
 				}
 				this.addForm={...row} 
-				this.addForm.productId=null
-				this.addForm.pgClass="0"
-				this.addForm.projectId=row.projectId 
 				this.addForm.pgroupId=row.id
 				this.addForm.pgroupName=row.groupName
 				this.addForm.groupName=row.groupName+"-"+"下级小组xx"
