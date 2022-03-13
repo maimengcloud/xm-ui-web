@@ -7,8 +7,8 @@
 							placement="right"
 							width="400"
 							trigger="click"> 
-							<xm-project-select v-if="!selProject||!selProject.id" :auto-select="true"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick"></xm-project-select>
-								<el-link type="warning" slot="reference" v-if="!selProject||!selProject.id"  icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link> 
+							<xm-project-select v-if="ptype==='0' && (!selProject||!selProject.id)" :auto-select="true"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick"></xm-project-select>
+								<el-link type="warning" slot="reference" v-if="ptype==='0' && (!selProject||!selProject.id)"  icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link> 
 						</el-popover> 
 						
 						<el-select v-model="filters.taskType" placeholder="请选择任务类型" clearable @change="changeTaskType">
@@ -110,7 +110,7 @@
 			},
 			  
 		},
-		props: ["selProject",'isMultiSelect','xmProduct','xmIteration','checkScope'/**task/all/plan */,'queryScope'/**task/all/plan */,],
+		props: ["selProject",'isMultiSelect','xmProduct','xmIteration','checkScope'/**task/planTask/plan */,'queryScope'/**task/planTask/plan */,"ptype"],
 		watch: {
 			"selkey": function(val) {
 				// console.log("任务类型");
@@ -238,7 +238,7 @@
 				
 				
 				params=this.getParams(params) 
-				if(this.queryScope=='all'){
+				if(this.queryScope=='planTask'){
 					params.isTop="1" 
 					params.withParents="1"
 				}else if(this.queryScope=='plan'){
@@ -250,6 +250,9 @@
 				}else{
 					params.isTop="1" 
 					params.withParents="1"
+				}
+				if(this.ptype){ 
+					params.ptype=this.ptype
 				}
 				getTask(params).then((res) => {
 					var tips=res.data.tips;

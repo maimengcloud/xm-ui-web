@@ -345,7 +345,7 @@ export default {
     },
  
   },
-  props: ["selProject",  "visible","workItemType","xmTasks"],
+  props: ["selProject",  "visible","ptype","xmTasks","queryScope"],
   watch: {
     selProject: function (oval, val) {
       this.filters.selProject = this.selProject;
@@ -527,7 +527,7 @@ export default {
       }
 	  this.load.list=true
 	  params=this.getParams(params)
-    if(this.workItemType=='projectPlan'){
+    if(this.ptype=='projectPlan'){
       params.isTop = "1";
       params.withParents = "1";
     }else{ 

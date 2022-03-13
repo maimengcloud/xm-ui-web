@@ -8,19 +8,19 @@
 						 <el-radio :disabled="parentTask&&parentTask.id&&parentTask.ntype==='0'" v-model="addForm.ntype" label="1">计划项</el-radio>
 						 <el-radio v-model="addForm.ntype" label="0">任务</el-radio>
 					</el-form-item>
+					<el-form-item v-if="addForm.ptype==='0'" label="归属项目" prop="projectId">
+						<el-tag>{{addForm.projectName}}</el-tag>
+					</el-form-item>
 					
+					<el-form-item v-if="addForm.ptype==='1'" label="归属产品" prop="productId">
+						<el-tag>{{addForm.productName}}</el-tag>
+					</el-form-item>
 					<el-form-item label="上级" prop="parentTaskname">  
 						<el-tag v-if="addForm.parentTaskid"  @close="clearParentTask" closable >{{addForm.parentTaskname}}</el-tag>
 						<el-button  type="text"  @click.stop="selectParentTaskVisible=true"  >选上级</el-button><font color="red" style="font-size:12px;">&nbsp;&nbsp;请尽量选择上级,对任务进行归类，方便排版和操作</font>
 					</el-form-item>
-					<el-form-item label="名称" prop="name">
-						<el-row>
-						<el-col :span="24"> 
-							<el-input style="width:100%;" v-model="addForm.name" placeholder="名称" ></el-input>
-							<br> 
-							<el-tooltip content="归属项目"><el-tag>{{addForm.projectName}}</el-tag></el-tooltip> 
-						</el-col>
-						</el-row>
+					<el-form-item label="名称" prop="name"> 
+							<el-input style="width:100%;" v-model="addForm.name" placeholder="名称" ></el-input>  
 					</el-form-item>
 					<el-form-item label="序号" prop="sortLevel"> 
 						<el-input  v-model="addForm.sortLevel" style="width:30%;"   placeholder="如1.0或者1.2.3等" ></el-input> <el-checkbox v-model="addForm.milestone" :true-label="1" :false-label="0">里程碑</el-checkbox>
@@ -167,11 +167,11 @@
 		</el-drawer>
 
 		<el-drawer title="选中任务" :visible.sync="selectTaskVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
-			<xm-task-list  :sel-project="xmProject"   @task-selected="onSelectedTask"></xm-task-list>
+			<xm-task-list  check-scope="task" query-scope="planTask" :sel-project="xmProject" :xm-product="xmProduct" :ptype="addForm.ptype"  @task-selected="onSelectedTask"></xm-task-list>
 		</el-drawer>
 
 		<el-drawer title="选中上级" :visible.sync="selectParentTaskVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
-			<xm-task-list check-scope="plan" :sel-project="xmProject"   @task-selected="onSelectedParentTask"></xm-task-list>
+			<xm-task-list check-scope="plan" query-scope="plan" :sel-project="xmProject" :xm-product="xmProduct" :ptype="addForm.ptype"   @task-selected="onSelectedParentTask"></xm-task-list>
 		</el-drawer>
 		<el-drawer append-to-body title="需求明细" :visible.sync="menuDetailVisible" size="60%"    :close-on-click-modal="false">
 			<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="true" :xm-menu="{menuId:addForm.menuId,menuName:addForm.menuName}" ></xm-menu-rich-detail>
@@ -216,7 +216,7 @@
 				} 
 			}
 		},
-		props:['xmTask','visible','xmProject','projectPhase',"parentTask"],
+		props:['xmTask','visible','xmProject','xmProduct',"parentTask","ptype"],
 		watch: {
 			'xmTask':function( xmTask ) {
 			},
@@ -505,12 +505,16 @@
 					this.addForm.parentTaskname=this.parentTask.name;
 					this.addForm.taskType=this.parentTask.taskType
 					this.addForm.planType=this.parentTask.planType 
+					this.addForm.ptype=this.parentTask.ptype
 				} 
 				if(this.xmProject){
 					this.addForm.projectId=this.xmProject.id
 					this.addForm.projectName=this.xmProject.name
 				} 
-				
+				if(this.xmProduct){
+					this.addForm.productId=this.xmProduct.id
+					this.addForm.productName=this.xmProduct.productName
+				} 
 				if(this.parentTask && this.parentTask.id){
 					if(this.parentTask.childrenCnt){
 						this.addForm.sortLevel=this.parentTask.sortLevel+"."+(this.parentTask.childrenCnt+1)
@@ -527,6 +531,9 @@
 				if(!this.addForm.uniOutPrice){
 					this.addForm.uniOutPrice=100
 				} 
+				if(!this.parentTask || !this.parentTask.id){ 
+						this.addForm.ptype=this.ptype 
+				}
 				this.addForm.createUserid=this.userInfo.userid
 				this.addForm.createUsername=this.userInfo.username;
 				this.addForm.executorUserid=this.userInfo.userid

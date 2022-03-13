@@ -772,9 +772,10 @@
     >
       <xm-task-add
         :xm-project="currentProject"
-        :project-phase="currentProjectPhase"
+        :xm-product="xmProduct"
         :xm-task="addForm"
         :parent-task="parentTask"
+        :ptype="ptype"
         :visible="addFormVisible"
         @cancel="addFormVisible = false"
         @submit="afterAddSubmit"
@@ -1124,7 +1125,8 @@ export default {
     "menuName",
     "xmProduct",
     "xmIteration",
-    "workItemType"//task/projectPlan/productPlan
+    "ptype",//0-项目，1-产品，all/空为不区分
+    "queryScope",//planTask,task,plan,分别为计划及任务，纯任务,纯计划
   ],
   watch: {
     selProject: function (oval, val) {
@@ -1383,15 +1385,19 @@ export default {
         params.orderBy = orderBys.join(",");
       }
       params=this.getParams(params) 
-      if(this.workItemType=='projectPlan'){
+      if(this.queryScope==='planTask'){
         params.isTop="1" 
 			  params.withParents="1"
-      }else if(this.workItemType=='productPlan'){
+      }else if(this.queryScope==='plan'){
         params.isTop="1" 
 			  params.withParents="1"
-      }else{
+        params.ntype="1"
+      }else if(this.queryScope==='task'){
         params.ntype="0"
       } 
+      if(this.ptype){
+        params.ptype=this.ptype
+      }
       getTask(params)
         .then((res) => {
           var tips = res.data.tips;
@@ -1579,14 +1585,26 @@ export default {
         }
         return true;
       }else{
-        if(!this.filters.selProject || !this.filters.selProject.id){
-          this.$notify({
-              showClose: true,
-              message: "请先选择项目",
-              type: "warning",
-            });
-            return false;
+        if(this.ptype==='0'){
+          if(!this.filters.selProject || !this.filters.selProject.id){
+            this.$notify({
+                showClose: true,
+                message: "请先选择项目",
+                type: "warning",
+              });
+              return false;
+          }else if(this.ptype==='1'){
+            if( !this.xmProduct && this.xmProduct.id){
+               this.$notify({
+                showClose: true,
+                message: "请先选择产品",
+                type: "warning",
+              });
+              return false;
+            }
+          }
         }
+        
       }
       return true;
        

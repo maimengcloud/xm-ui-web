@@ -136,11 +136,11 @@
 			 <xm-iteration-for-project-complex  v-if="infotype=='迭代'" ref="xmIterationMng" :xm-product="xmProduct"></xm-iteration-for-project-complex>
  			 <xm-project-complex v-if="infotype=='项目'" ref="xmProjectForLink" :xm-product="xmProduct"></xm-project-complex> 
 			  <xm-menu-mng v-if="infotype=='需求'" :xm-product="xmProduct"></xm-menu-mng>
-			 <xm-task-mng v-if="infotype=='任务'" work-item-type="task"  ref="xmTaskMng" :xm-product="xmProduct" key="task"></xm-task-mng>
+			 <xm-task-mng v-if="infotype=='任务'" ptype="1" queryScope="task"  ref="xmTaskMng" :xm-product="xmProduct" key="task"></xm-task-mng>
 			  <xm-question v-if="infotype=='缺陷'" :qtype="'bug'" :xm-product='xmProduct' ref="xmQuestion"></xm-question>
 			  <xm-group-mng v-if="infotype=='团队'" :xm-product="xmProduct"></xm-group-mng>
 			  <xm-file-mng v-if="infotype=='文档'" :xm-product="xmProduct"></xm-file-mng>
-			  <xm-task-mng v-if="infotype=='计划'" ref="productPlan" work-item-type="productPlan" :xm-product="xmProduct" key="productPlan"></xm-task-mng> 
+			  <xm-task-mng v-if="infotype=='计划'" ref="productPlan" ptype="1" queryScope="planTask"  :xm-product="xmProduct" key="productPlan"></xm-task-mng> 
 			  <!--<xm-phase-for-product v-if="infotype=='计划'" ref="xmPhaseMng" :xm-product="xmProduct" ></xm-phase-for-product> -->
 			  <xm-test-case-exec-mng v-if="infotype=='测试计划'" :visible="infotype=='测试计划'"  :xm-product='xmProduct' ref="xmQuestion"></xm-test-case-exec-mng>
 			<xm-menu-with-plan v-if="infotype=='需求监控'" ref="xmMenuWithPlan" :xm-product="xmProduct"></xm-menu-with-plan>

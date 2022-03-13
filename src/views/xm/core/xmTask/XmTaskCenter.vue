@@ -1,7 +1,7 @@
 <template>
 	<section>
 		<el-row class="xm-task">
-			 <xm-task-mng :is-task-center="1" work-item-type="task"></xm-task-mng>
+			 <xm-task-mng :is-task-center="1" ptype="0" ntype="0"></xm-task-mng>
 		</el-row>
 	</section>
 </template>
