@@ -3,50 +3,127 @@
 		<el-row class="page-main ">
 			<el-tabs>
 				<el-tab-pane  label="需求详情">
-					<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
+					<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm"> 
 						<el-row class="padding-bottom"> 
 						<el-steps :active="parseInt(editForm.status)+1" simple finish-status="success" align-center>
 							<el-step v-for="(item,index) in dicts.menuStatus" @click.native="on_click(item.id)" :title="item.name" :key="index"></el-step> 
 						</el-steps>
 						</el-row> 
-						<el-form-item label="名称" prop="menuName">
-							<el-input v-model="editForm.menuName" placeholder="名称" ></el-input>
-						</el-form-item>
-						<el-row class="padding-bottom">
-							<el-col :span="12">
-							<el-form-item label="序号" prop="seqNo">
-								<el-input v-model="editForm.seqNo" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input>
+						<el-collapse value="1" accordion>
+						<el-collapse-item title="基本信息" name="1" >
+							<el-form-item label="节点类型" prop="ntype">
+								<el-radio v-model="editForm.ntype" label="1">需求池</el-radio>
+								<el-radio v-model="editForm.ntype" label="0">需求</el-radio>
+								<br>
+								<font v-if="editForm.ntype==='0'" color="red" style="font-size:12px;">需求：建议按以下逻辑描述一个需求：什么人？做什么事？，为什么？</font> 
+								<font v-if="editForm.ntype==='1'" color="red" style="font-size:12px;">需求池：需求池下可建立子需求池或者需求。负责汇总统计下级数据，分解上级需求池预算。</font>
+							</el-form-item> 
+							<el-row> 
+								<el-col :span="6">
+									<el-form-item label="序号名称" prop="seqNo" >
+										<el-input v-model="editForm.seqNo" style="width:100%;" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input> 
+									</el-form-item>  
+								</el-col>
+								<el-col :span="18">
+									<el-form-item label="" prop="menuName" label-width="0px">
+										<el-input v-model="editForm.menuName" placeholder="名称" ></el-input>
+									</el-form-item>   
+								</el-col>
+							</el-row>
+							<el-row>
+								<el-col :span="12">
+									<el-form-item label="归属产品" prop="productId">
+										<font v-if="editForm.productId">{{editForm.productName?editForm.productName:editForm.productId}}</font>
+									</el-form-item>
+								</el-col>
+								<el-col :span="12">
+									<el-form-item v-if="parentMenu" label="需求池" prop="pmenuId"> 
+										<el-link type="primary"  :icon="'el-icon-folder-opened'">{{parentMenu.seqNo}} &nbsp; &nbsp; {{parentMenu.menuName}}</el-link> 
+									</el-form-item>  
+									<el-form-item v-if="!parentMenu" label="需求池" prop="pmenuId">
+										无归属需求池
+									</el-form-item>  
+								</el-col>
+							</el-row> 
+							<el-row> 
+								
+								<el-col :span="12">
+									<el-form-item  label="需求类型" prop="dtype" >   
+										<el-select v-model="editForm.dtype">
+											<el-option v-for="i in this.options.demandType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+										</el-select>  
+									</el-form-item>   
+								</el-col>
+								<el-col :span="12">
+									<el-form-item  label="需求来源" prop="source">   
+										<el-select v-model="editForm.source">
+											<el-option v-for="i in this.options.demandSource" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+										</el-select>  
+									</el-form-item>   
+								</el-col> 
+								<el-col :span="12">
+									<el-form-item  label="需求层次" prop="dlvl" >   
+										<el-select v-model="editForm.dlvl">
+											<el-option v-for="i in this.options.demandLvl" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+										</el-select>  
+									</el-form-item>   
+								</el-col>
+								<el-col :span="12">
+								<el-form-item  label="优先级" prop="priority" >  
+									<el-select v-model="editForm.priority">
+											<el-option v-for="i in options.priority" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option> 
+									</el-select>    
+								</el-form-item>  
+								</el-col>
+							</el-row>
+							<el-row>
+								<el-col :span="12">
+									<el-form-item label="提出人" prop="proposerId">
+										<el-tag type="text" v-if="editForm.mmUserid" closable @close="clearPmUser">{{editForm.mmUsername}}</el-tag> 
+										<el-button type="text" @click="selectUser">选负责人</el-button>
+									</el-form-item>   
+								</el-col>
+								<el-col  :span="12">
+									<el-form-item label="跟进人" prop="mmUserid">
+										<el-tag type="text" v-if="editForm.mmUserid" closable @close="clearPmUser">{{editForm.mmUsername}}</el-tag> 
+										<el-button type="text" @click="selectUser">选跟进人</el-button>
+									</el-form-item>   
+								</el-col>
+							</el-row>
+						</el-collapse-item>
+						<el-collapse-item title="需求概述" name="4"> 
+							<el-form-item label="需求概述" prop="remark">
+								<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="editForm.remark" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
 							</el-form-item>  
-							</el-col>
-							<el-col :span="12">
-							<el-form-item label="标签" prop="ntype">
-								{{editForm.tagNames?editForm.tagNames:''}} 
-								<el-button type="text" icon="el-icon-plus" @click="tagSelectVisible=true">标签</el-button> 
+						</el-collapse-item> 
+						<el-collapse-item title="成本进度预估" name="2">
+							<el-form-item label="预估工期" prop="budgetHours">
+								<el-input-number style="width:200px;"  v-model="editForm.budgetHours"  :precision="2" :step="8" :min="0" placeholder="预计工期(小时)"></el-input-number>&nbsp;小时
+							</el-form-item> 
+							<el-form-item label="预估工作量" prop="budgetWorkload">
+								<el-input-number style="width:200px;"  v-model="editForm.budgetWorkload" :precision="2" :step="8" :min="0" placeholder="预计总工作量(人时,不包括下一级)"></el-input-number> <el-tag>人时，{{this.toFixed(editForm.budgetWorkload/8/20)}}人月</el-tag>
+							</el-form-item> 
+							<el-form-item label="预估金额" prop="budgetAmount">
+								<el-input-number style="width:200px;"  v-model="editForm.budgetAmount" :precision="2" :step="100" :min="0" placeholder="预算金额"></el-input-number>   元 
+							</el-form-item> 
+						</el-collapse-item>
+						<el-collapse-item title="相关链接" name="3"> 
+							<el-form-item label="需求链接" prop="demandUrl"> 
+								<el-input v-model="editForm.demandUrl" placeholder="需求链接" ></el-input> 
 							</el-form-item>  
-							</el-col>
-						</el-row> 
-						<el-form-item label="负责人" prop="mmUserid">
-							<el-tag v-if="editForm.mmUserid" closable @close="clearPmUser">{{editForm.mmUsername}}</el-tag>
-							<el-tag v-else>未配置</el-tag>
-							<el-button @click="selectUser">选负责人</el-button>
-						</el-form-item>
-						<el-form-item label="需求链接" prop="demandUrl">
-							<el-input v-model="editForm.demandUrl" placeholder="需求链接" ></el-input>
-						</el-form-item>
-						<el-form-item label="代码链接" prop="codeUrl">
-							<el-input v-model="editForm.codeUrl" placeholder="代码链接" ></el-input>
-						</el-form-item>
-						<el-form-item label="设计链接" prop="designUrl">
-							<el-input v-model="editForm.designUrl" placeholder="设计链接" ></el-input>
-						</el-form-item>
-						<el-form-item label="操作手册链接" prop="operDocUrl">
-							<el-input v-model="editForm.operDocUrl" placeholder="操作手册链接" ></el-input>
-						</el-form-item>
-						<el-form-item label="概述" prop="remark">
-							<el-input type="textarea" v-model="editForm.remark" :autosize="{ minRows: 4, maxRows: 20}"  placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
-						</el-form-item>
+							<el-form-item label="代码链接" prop="codeUrl">
+								<el-input v-model="editForm.codeUrl" placeholder="代码链接" ></el-input>  
+							</el-form-item>  
+							<el-form-item label="设计链接" prop="designUrl">
+								<el-input v-model="editForm.designUrl" placeholder="设计链接" ></el-input>  
+							</el-form-item>   
+							<el-form-item label="操作手册链接" prop="operDocUrl">
+								<el-input v-model="editForm.operDocUrl" placeholder="操作手册链接" ></el-input>  
+							</el-form-item>  
+						</el-collapse-item> 
+						</el-collapse>
 					</el-form> 
-					<el-row >
+					<el-row class="padding">
 						<el-button @click.native="handleCancel">取消</el-button>
 						<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>
 					</el-row>
@@ -73,7 +150,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { editXmMenu } from '@/api/xm/core/xmMenu';
 	import { mapGetters } from 'vuex'
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
@@ -205,6 +282,13 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 			},
 			/**end 在上面加自定义方法**/
 
+			toFixed(floatValue){
+				if(floatValue ==null || floatValue=='' || floatValue == undefined){
+					return 0;
+				}else{
+					return parseFloat(floatValue).toFixed(2);
+				}
+			},
 		},//end method
 		components: {
 			//在下面添加其它组件 'xm-menu-edit':XmMenuEdit
@@ -214,6 +298,11 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 			XmMenuExchangeMng,
 		},
 		mounted() {
+			
+			
+ 			listOption([{categoryId:'all',itemCode:'demandSource'},{categoryId:'all',itemCode:'demandLvl'},{categoryId:'all',itemCode:'demandType'},{categoryId:'all',itemCode:'priority'}]).then(res=>{
+				this.options=res.data.data;
+			})
 			this.editForm=Object.assign(this.editForm, this.xmMenu);
 			/**在下面写其它函数***/
 

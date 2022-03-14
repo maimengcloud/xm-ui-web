@@ -2,49 +2,95 @@
 	<section class="page-container  padding border">
 		<el-row class="page-main ">
 			<!--新增界面 XmMenu 项目需求表--> 
-			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
+			<el-form :model="addForm"  label-width="120px"  :rules="addFormRules" ref="addForm">
 				
-				<el-collapse active="1" accordion>
+				<el-collapse value="1" accordion>
 					<el-collapse-item title="基本信息" name="1" >
-						<el-form-item label="" prop="ntype">
+						<el-form-item label="节点类型" prop="ntype">
 							<el-radio :disabled="parentMenu&&parentMenu.menuId&&parentTask.ntype==='0'" v-model="addForm.ntype" label="1">需求池</el-radio>
 							<el-radio v-model="addForm.ntype" label="0">需求</el-radio>
 							<br>
 							<font v-if="addForm.ntype==='0'" color="red" style="font-size:12px;">需求：建议按以下逻辑描述一个需求：什么人？做什么事？，为什么？</font> 
 							<font v-if="addForm.ntype==='1'" color="red" style="font-size:12px;">需求池：需求池下可建立子需求池或者需求。负责汇总统计下级数据，分解上级需求池预算。</font>
-						</el-form-item>
-
-						<el-form-item v-if="parentMenu" label="所属需求池" prop="pmenuId"> 
-							<el-link type="primary"  :icon="'el-icon-folder-opened'">{{parentMenu.seqNo}} &nbsp; &nbsp; {{parentMenu.menuName}}</el-link> 
 						</el-form-item> 
-						<el-form-item v-if="!parentMenu" label="所属需求池" prop="pmenuId">
-							无归属需求池
-						</el-form-item>  
-						<el-form-item label="归属产品" prop="productId">
-							<el-tag v-if="addForm.productId">{{addForm.productName?addForm.productName:addForm.productId}}</el-tag>
-						</el-form-item>
-						<el-form-item label="名称" prop="menuName">
-							<el-input v-model="addForm.menuName" placeholder="名称" ></el-input>
-						</el-form-item>   
-						<el-form-item label="序号" prop="seqNo">
-							<el-input v-model="addForm.seqNo" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input>
-							<span v-if="parentMenu" style="color:red;">建议：{{parentMenu.seqNo}}.{{parentMenu.childrenCnt?parentMenu.childrenCnt+1:1}} </span> 
-						</el-form-item> 
-						
-						<el-form-item label="提出人" prop="proposerId">
-							<el-tag v-if="addForm.mmUserid" closable @close="clearPmUser">{{addForm.mmUsername}}</el-tag>
-							<el-tag v-else>未配置</el-tag> 
-							<el-button @click="selectUser">选负责人</el-button>
-						</el-form-item>   
-						<el-form-item label="跟进人" prop="mmUserid">
-							<el-tag v-if="addForm.mmUserid" closable @close="clearPmUser">{{addForm.mmUsername}}</el-tag>
-							<el-tag v-else>未配置</el-tag> 
-							<el-button @click="selectUser">选跟进人</el-button>
-						</el-form-item>   
-						<el-form-item label="概述" prop="remark">
-							<el-input type="textarea" :autosize="{ minRows: 4, maxRows: 20}" v-model="addForm.remark" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
-						</el-form-item>  
+						<el-row> 
+							<el-col :span="6">
+								<el-form-item label="序号名称" prop="seqNo" >
+									<el-input v-model="addForm.seqNo" style="width:100%;" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input> 
+								</el-form-item>  
+							</el-col>
+							<el-col :span="18">
+								<el-form-item label="" prop="menuName" label-width="0px">
+									<el-input v-model="addForm.menuName" placeholder="名称" ></el-input>
+								</el-form-item>   
+							</el-col>
+						</el-row>
+						<el-row>
+							<el-col :span="12">
+								<el-form-item label="归属产品" prop="productId">
+									<font v-if="addForm.productId">{{addForm.productName?addForm.productName:addForm.productId}}</font>
+								</el-form-item>
+							</el-col>
+							<el-col :span="12">
+								<el-form-item v-if="parentMenu" label="需求池" prop="pmenuId"> 
+									<el-link type="primary"  :icon="'el-icon-folder-opened'">{{parentMenu.seqNo}} &nbsp; &nbsp; {{parentMenu.menuName}}</el-link> 
+								</el-form-item>  
+								<el-form-item v-if="!parentMenu" label="需求池" prop="pmenuId">
+									无归属需求池
+								</el-form-item>  
+							</el-col>
+						</el-row> 
+						<el-row> 
+							
+							<el-col :span="12">
+								<el-form-item  label="需求类型" prop="dtype" >   
+									<el-select v-model="addForm.dtype">
+										<el-option v-for="i in this.options.demandType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+									</el-select>  
+								</el-form-item>   
+							</el-col>
+							<el-col :span="12">
+								<el-form-item  label="需求来源" prop="source">   
+									<el-select v-model="addForm.source">
+										<el-option v-for="i in this.options.demandSource" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+									</el-select>  
+								</el-form-item>   
+							</el-col> 
+							<el-col :span="12">
+								<el-form-item  label="需求层次" prop="dlvl" >   
+									<el-select v-model="addForm.dlvl">
+										<el-option v-for="i in this.options.demandLvl" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+									</el-select>  
+								</el-form-item>   
+							</el-col>
+							<el-col :span="12">
+							<el-form-item  label="优先级" prop="priority" >  
+								<el-select v-model="addForm.priority">
+										<el-option v-for="i in options.priority" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option> 
+								</el-select>    
+							</el-form-item>  
+							</el-col>
+						</el-row>
+						<el-row>
+							<el-col :span="12">
+								<el-form-item label="提出人" prop="proposerId">
+									<el-tag type="text" v-if="addForm.mmUserid" closable @close="clearPmUser">{{addForm.mmUsername}}</el-tag> 
+									<el-button type="text" @click="selectUser">选负责人</el-button>
+								</el-form-item>   
+							</el-col>
+							<el-col  :span="12">
+								<el-form-item label="跟进人" prop="mmUserid">
+									<el-tag type="text" v-if="addForm.mmUserid" closable @close="clearPmUser">{{addForm.mmUsername}}</el-tag> 
+									<el-button type="text" @click="selectUser">选跟进人</el-button>
+								</el-form-item>   
+							</el-col>
+						</el-row> 
 					</el-collapse-item>
+						<el-collapse-item title="需求概述" name="4"> 
+							<el-form-item label="需求概述" prop="remark">
+								<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="addForm.remark" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
+							</el-form-item>  
+						</el-collapse-item> 
 					<el-collapse-item title="成本进度预估" name="2">
 						<el-form-item label="预估工期" prop="budgetHours">
 							<el-input-number style="width:200px;"  v-model="addForm.budgetHours"  :precision="2" :step="8" :min="0" placeholder="预计工期(小时)"></el-input-number>&nbsp;小时
@@ -70,10 +116,6 @@
 							<el-input v-model="addForm.operDocUrl" placeholder="操作手册链接" ></el-input>  
 						</el-form-item>  
 					</el-collapse-item>
-					<el-collapse-item title="可控 Controllability" name="4">
-						<div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
-						<div>结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
-					</el-collapse-item>
 				</el-collapse>
 			</el-form>
 			
@@ -82,7 +124,7 @@
 			</el-drawer>	
 			
 		</el-row>
-		<el-row>
+		<el-row class="padding">
 			<el-button @click.native="handleCancel">取消</el-button>  
 			<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">提交</el-button>  
 		</el-row>
@@ -91,7 +133,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询 
+	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询 
 	import { addXmMenu } from '@/api/xm/core/xmMenu';
 	import { mapGetters } from 'vuex'	
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
@@ -187,6 +229,9 @@
 								this.$notify({showClose: true, message: '产品编号不能为空', type:'error' }); 
 								return;
 							}
+							if(params.remark=='作为   ，我需要   ，以便我能够   。'){
+								params.remark=""
+							}
 							addXmMenu(params).then((res) => {
 								this.load.add=false
 								var tips=res.data.tips;
@@ -232,6 +277,10 @@
 			UsersSelect
 		},
 		mounted() {
+			
+ 			listOption([{categoryId:'all',itemCode:'demandSource'},{categoryId:'all',itemCode:'demandLvl'},{categoryId:'all',itemCode:'demandType'},{categoryId:'all',itemCode:'priority'}]).then(res=>{
+				this.options=res.data.data;
+			})
 			this.addForm=Object.assign(this.addForm, this.xmMenu);  
 			this.addForm.mmUserid=this.userInfo.userid
 			this.addForm.mmUsername=this.userInfo.username
