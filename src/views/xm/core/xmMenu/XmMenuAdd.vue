@@ -7,7 +7,7 @@
 				<el-collapse value="1" accordion>
 					<el-collapse-item title="基本信息" name="1" >
 						<el-form-item label="节点类型" prop="ntype">
-							<el-radio :disabled="parentMenu&&parentMenu.menuId&&parentTask.ntype==='0'" v-model="addForm.ntype" label="1">需求池</el-radio>
+							<el-radio :disabled="parentMenu&&parentMenu.menuId&&parentMenu.ntype==='0'" v-model="addForm.ntype" label="1">需求池</el-radio>
 							<el-radio v-model="addForm.ntype" label="0">需求</el-radio>
 							<br>
 							<font v-if="addForm.ntype==='0'" color="red" style="font-size:12px;">需求：建议按以下逻辑描述一个需求：什么人？做什么事？，为什么？</font> 

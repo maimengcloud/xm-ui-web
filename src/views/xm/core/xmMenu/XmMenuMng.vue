@@ -2,17 +2,21 @@
 	<section class="padding">
 		<el-row v-if=" !batchEditVisible">  
 			<el-col :span="24" class="padding-left">
+				
 					<el-row>   
-						<el-popover
-							placement="right"
-							width="400"
-							trigger="click"> 
-							<xm-product-select v-if="!xmProduct" :auto-select="true" :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :xm-iteration="xmIteration" :simple="true" @clear-select="filters.product=null"></xm-product-select>
-								<el-link type="warning" slot="reference" v-if="!xmProduct" icon="el-icon-search"><font style="font-size:14px;">{{filters.product?filters.product.productName:'选择产品'}}</font></el-link> 
-						</el-popover> 
-						<el-select  v-model="filters.status" placeholder="需求状态" clearable style="width: 100px;">
-							<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option> 
-						</el-select>   
+						
+						<el-select v-model="filters.dtype" clearable placeholder="需求类型">
+							<el-option v-for="i in this.options.demandType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+						</el-select>    
+						<el-select v-model="filters.source" placeholder="需求来源"  clearable>
+							<el-option v-for="i in this.options.demandSource" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+						</el-select>     
+						<el-select v-model="filters.dlvl" placeholder="需求层次"  clearable class="hidden-md-and-down">
+							<el-option v-for="i in this.options.demandLvl" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+						</el-select>    
+						<el-select v-model="filters.priority" placeholder="优先级"  clearable>
+								<el-option v-for="i in options.priority" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option> 
+						</el-select>  
 						<el-select  v-model="filters.taskFilterType" placeholder="已关联任务的需求？" clearable style="width: 160px;">
 							<el-option   value="not-join-any-project"  label="未关联任务"></el-option>  
 							<el-option   value="join-any-project"  label="已关联任务"></el-option>  
@@ -24,10 +28,23 @@
 							<el-option   value="join-any-iteration"  label="已加入过迭代"></el-option>  
 							<el-option   value="not-join-curr-iteration"  label="未加入本迭代"></el-option>  
 							<el-option   value="join-curr-iteration"  label="已加入本迭代"></el-option>  
-						</el-select>
+						</el-select>    
+					</el-row>
+					<el-row>   
+						<el-popover
+							placement="right"
+							width="400"
+							trigger="click"> 
+							<xm-product-select v-if="!xmProduct" :auto-select="true" :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :xm-iteration="xmIteration" :simple="true" @clear-select="filters.product=null"></xm-product-select>
+								<el-link type="warning" slot="reference" v-if="!xmProduct" icon="el-icon-search"><font style="font-size:14px;">{{filters.product?filters.product.productName:'选择产品'}}</font></el-link> 
+						</el-popover>   
+						
+						<el-select  v-model="filters.status" placeholder="需求状态" clearable style="width: 100px;">
+							<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option> 
+						</el-select> 
 						<el-input v-model="filters.key" style="width: 15%;" placeholder="需求名称查询" clearable> 
 						</el-input> 
-						<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
+						<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search">查询</el-button>
 						<el-button class="hidden-md-and-down" v-if="!filters.tags||filters.tags.length==0" @click.native="tagSelectVisible=true">标签</el-button>
 						<el-tag class="hidden-md-and-down" v-else @click="tagSelectVisible=true"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
 						<el-popover style="padding-left:10px;"  
@@ -44,7 +61,7 @@
 							</el-row>   
 							<el-button type="primary"    slot="reference" icon="el-icon-plus">需求</el-button>
 						</el-popover>
-						<el-button type="primary" @click="showParentMenu">更换上级</el-button>
+						<el-button  @click="showParentMenu">更换上级</el-button>
  						<el-button  v-if="!selProject&&!xmIteration&&disabledMng!=false"  type="danger" @click="batchDel" icon="el-icon-delete">删除</el-button> 
 
 						<el-button class="hidden-md-and-down"  v-if=" batchEditVisible==false&&disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>  
@@ -56,7 +73,7 @@
 							<el-row>  
 								<el-col  :span="24"  style="padding-top:5px;" >
 									<font class="more-label-font">标签条件:</font>  
-									<el-button v-if="!filters.tags||filters.tags.length==0" @click.native="tagSelectVisible=true">标签</el-button>
+									<el-button type="text" v-if="!filters.tags||filters.tags.length==0" @click.native="tagSelectVisible=true">标签</el-button>
 									<el-tag v-else @click="tagSelectVisible=true"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
  
 								</el-col> 
@@ -83,12 +100,13 @@
 									<el-button   v-else @click="selectFiltersMmUser()">选责任人</el-button>
 									<el-button    @click="setFiltersMmUserAsMySelf()">我的</el-button>
 								</el-col>
-								<el-col  :span="24"  style="padding-top:5px;">
+								<el-col  :span="24"  style="padding-top:5px;" class="hidden-log-and-up">
 									<font class="more-label-font">
-										需求名称:
-									</font> 
-									<el-input   v-model="filters.key" style="width:100%;"  placeholder="输入需求名字关键字" clearable>  
-									</el-input> 
+										需求层次:
+									</font>  
+									<el-select v-model="filters.dlvl" placeholder="需求层次"  clearable>
+										<el-option v-for="i in this.options.demandLvl" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+									</el-select>  
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
 									<el-button type="primary"  @click="searchXmMenus" icon="el-icon-search">查询</el-button>
@@ -261,7 +279,7 @@
 	import util from '@/common/js/util';//全局公共库
 	import treeTool from '@/common/js/treeTool';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { listXmMenu, delXmMenu, batchDelXmMenu,batchAddXmMenu,batchEditXmMenu,listXmMenuWithState,listXmMenuWithPlan,batchChangeParentMenu } from '@/api/xm/core/xmMenu';
 	import { batchRelTasksWithMenu } from '@/api/xm/core/xmTask';
 	import { loadTasksToXmMenuState} from '@/api/xm/core/xmMenuState';
@@ -337,6 +355,7 @@
 					parentMenuList:[],
 					status:'',
 				},
+				options:{},
 				xmMenus: [],//查询结果
 				pageInfo:{//分页数据
 					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
@@ -936,6 +955,10 @@
 		    //在下面添加其它组件
 		},
 		mounted() {   
+			
+ 			listOption([{categoryId:'all',itemCode:'demandSource'},{categoryId:'all',itemCode:'demandLvl'},{categoryId:'all',itemCode:'demandType'},{categoryId:'all',itemCode:'priority'}]).then(res=>{
+				this.options=res.data.data;
+			})
 			this.filters.product=this.xmProduct
 			if(this.xmProduct && this.xmProduct.id){
 				this.productVisible=false;
