@@ -165,9 +165,9 @@
 					<el-table-column prop="tagNames" label="标签"  width="100" show-overflow-tooltip> 
 					</el-table-column>
 					<el-table-column prop="menuName" label="需求" width="100" show-overflow-tooltip></el-table-column>
-					<el-table-column   v-if="!isMultiSelect"  header-align="center" label="操作" fixed="right" width="100">
+					<el-table-column   header-align="center" label="操作" fixed="right" width="100">
 						<template slot-scope="scope">
-							<el-button  :disabled="scope.row.ntype=='1'"  type="primary" @click.stop="showEdit(scope.row)" >编辑</el-button> 	
+							<el-button  type="primary" @click.stop="showEdit(scope.row)" >编辑</el-button> 	
 						</template>
 					</el-table-column>
 				</el-table>

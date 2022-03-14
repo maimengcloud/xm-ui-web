@@ -16,7 +16,7 @@
 					</el-tab-pane>
 
 
-					<el-tab-pane  lazy   name="iterations" disabled> 
+					<el-tab-pane  lazy   name="iterations2" disabled> 
 						<div  slot="label">
 							<el-popover
 								placement="bottom"
