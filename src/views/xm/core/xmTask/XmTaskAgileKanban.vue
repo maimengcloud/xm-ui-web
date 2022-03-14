@@ -20,7 +20,7 @@
 							:sort="false"
 							@start="onStart" @end="onEnd"
 							:move="onMove"
-							:options="{group: scope.row.menuId}"
+							:dicts="{group: scope.row.menuId}"
 							class="draggable"
 							animation="300"
 							scroll
