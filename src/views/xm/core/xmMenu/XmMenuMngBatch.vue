@@ -19,12 +19,37 @@
 							<el-input    v-model="scope.row.menuName"  @change="fieldChange(scope.row,'menuName')"></el-input>
 						</template>
 					</el-table-column> 
-					<el-table-column prop="mmUsername" label="负责人" min-width="100" > 
+					<el-table-column prop="mmUsername" label="跟进人" min-width="100" > 
+						
+						<template slot="header">
+							<el-button type="text" icon="el-icon-user" title="批量修改跟进人" @click="showBatchMmUserSelectVisible">批量修改</el-button>
+						</template>
 						<template slot-scope="scope"> 
 							<el-tag v-if="scope.row.mmUserid" @click="selectUser(scope.row)" closable @close="clearPmUser(scope.row)">{{scope.row.mmUsername}}</el-tag> 
 							<el-button v-else type="text" @click="selectUser(scope.row)">选人</el-button>
 						</template>
 					</el-table-column> 
+					
+					<el-table-column  label="需求属性" width="500" >  
+						<template slot-scope="scope"> 
+							 <el-select v-model="scope.row.dtype" clearable placeholder="需求类型">
+								<el-option v-for="i in options.demandType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+							</el-select>    
+							<el-select v-model="scope.row.source" placeholder="需求来源"  clearable>
+								<el-option v-for="i in options.demandSource" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+							</el-select>     
+							<el-select v-model="scope.row.dlvl" placeholder="需求层次"  clearable class="hidden-md-and-down">
+								<el-option v-for="i in options.demandLvl" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+							</el-select>    
+							<el-select v-model="scope.row.priority" placeholder="优先级"  clearable>
+									<el-option v-for="i in options.priority" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option> 
+							</el-select>  
+						</template>
+					</el-table-column> 
+
+
+					
+						
 					<el-table-column prop="remark" label="描述" min-width="140"  show-overflow-tooltip> 
 						<template slot-scope="scope">
 
@@ -36,7 +61,11 @@
 		</el-row>     	
 			<el-drawer title="选择员工" :visible.sync="userSelectVisible" size="60%" append-to-body>
 				<users-select  @confirm="onUserSelected" ref="usersSelect"></users-select>
-			</el-drawer>	 
+			</el-drawer>	
+			<el-drawer title="选择员工" :visible.sync="batchMmUserSelectVisible" size="60%" append-to-body>
+				<users-select  @confirm="onBatchMmUserSelectConfirm" ref="batchMmUserSelect"></users-select>
+			</el-drawer>	
+			 
 		</el-row>
 	</section>
 </template>
@@ -44,7 +73,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import treeTool from '@/common/js/treeTool';//全局公共库
- 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+ 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import {  batchEditXmMenu,listXmMenuWithState } from '@/api/xm/core/xmMenu';
     	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
  
@@ -52,7 +81,7 @@
 	import { mapGetters } from 'vuex'
 	
 	export default { 
-		props:['product','xmMenus'],
+		props:['product','xmMenus','options'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -78,7 +107,7 @@
 				},  
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				options:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				options2:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				
  				//新增xmMenu界面初始化数据
 				addForm: {
@@ -91,6 +120,7 @@
 				},  
 				valueChangeRows:[],  
  				userSelectVisible:false, 
+				 batchMmUserSelectVisible:false,
 				maxTableHeight:300, 
 				pickerOptions:  util.pickerOptions('datarange'), 
 				
@@ -125,8 +155,7 @@
 				batchEditXmMenu(this.valueChangeRows).then(res=>{
 					var tips=res.data.tips;
 					if(tips.isOk){
-						this.valueChangeRows=[]
-						this.getXmMenus()
+						this.valueChangeRows=[] 
 					}
 					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 				});
@@ -200,11 +229,34 @@
 					}).catch( err => this.load.list = false );   
 				
 			},
+			//查询时选择责任人
+			showBatchMmUserSelectVisible() {
+				if(!this.sels||this.sels.length==0){
+					this.$notify({showClose:true,message:'请先选中一条或多条数据',type:'error'})
+					return;
+				}else{
+					this.batchMmUserSelectVisible=true;
+				}
+			}, 
+			//查询时选择责任人
+			onBatchMmUserSelectConfirm(users) {
+				var user={};
+				if (users && users.length > 0) { 
+					user=users[0]
+				} 
+				this.batchMmUserSelectVisible=false;
+				this.sels.forEach(i=>{
+					i.mmUserid=user.userid;
+					i.mmUsername=user.username; 
+					this.fieldChange(i,"mmUserid")
+				})
+			},
 		},//end methods
 		components: {  
 			UsersSelect, 
 		},
 		mounted() { 
+			 
 			this.$nextTick(() => {   
 				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);  
           }); 

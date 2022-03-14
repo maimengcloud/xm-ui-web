@@ -5,16 +5,16 @@
 					<el-row>   
 						
 						<el-select v-model="filters.dtype" clearable placeholder="需求类型">
-							<el-option v-for="i in this.options.demandType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+							<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 						</el-select>    
 						<el-select v-model="filters.source" placeholder="需求来源"  clearable>
-							<el-option v-for="i in this.options.demandSource" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+							<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
 						</el-select>     
 						<el-select v-model="filters.dlvl" placeholder="需求层次"  clearable class="hidden-md-and-down">
-							<el-option v-for="i in this.options.demandLvl" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+							<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
 						</el-select>    
 						<el-select v-model="filters.priority" placeholder="优先级"  clearable>
-								<el-option v-for="i in options.priority" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option> 
+								<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option> 
 						</el-select>  
 						<el-select  v-model="filters.taskFilterType" placeholder="已关联任务的需求？" clearable style="width: 160px;">
 							<el-option   value="not-join-any-project"  label="未关联任务"></el-option>  
@@ -106,7 +106,7 @@
 										需求层次:
 									</font>  
 									<el-select v-model="filters.dlvl" placeholder="需求层次"  clearable>
-										<el-option v-for="i in this.options.demandLvl" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+										<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
 									</el-select>  
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
@@ -250,7 +250,7 @@
 		</el-row>
 		
 		<el-row v-if="batchEditVisible">
-			<xm-menu-mng-batch :xm-menus="xmMenus"  @no-batch-edit="noBatchEdit" :product="filters.product"></xm-menu-mng-batch>
+			<xm-menu-mng-batch :xm-menus="xmMenus" :options="options"  @no-batch-edit="noBatchEdit" :product="filters.product"></xm-menu-mng-batch>
 		</el-row>
 		<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		
@@ -281,7 +281,7 @@
 	import util from '@/common/js/util';//全局公共库
 	import treeTool from '@/common/js/treeTool';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { listXmMenu, delXmMenu, batchDelXmMenu,batchAddXmMenu,batchEditXmMenu,listXmMenuWithState,listXmMenuWithPlan,batchChangeParentMenu } from '@/api/xm/core/xmMenu';
 	import { batchRelTasksWithMenu } from '@/api/xm/core/xmTask';
 	import { loadTasksToXmMenuState} from '@/api/xm/core/xmMenuState';
@@ -357,7 +357,21 @@
 					parentMenuList:[],
 					status:'',
 				},
-				options:{},
+				options:{
+					menuStatus:[
+						
+							{id:"0", name:"初始"},
+							{id:"1", name:"待评审"},
+							{id:"2", name:"待设计"},
+							{id:"3", name:"待开发"},
+							{id:"4", name:"待SIT"},
+							{id:"5", name:"待UAT"},
+							{id:"6", name:"待上线"},
+							{id:"7", name:"运行中"},
+							{id:"8", name:"已下线"},
+							{id:"9", name:"已删除"}, 
+					]
+				},
 				xmMenus: [],//查询结果
 				pageInfo:{//分页数据
 					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
@@ -957,9 +971,8 @@
 		    //在下面添加其它组件
 		},
 		mounted() {   
-			
- 			listOption([{categoryId:'all',itemCode:'demandSource'},{categoryId:'all',itemCode:'demandLvl'},{categoryId:'all',itemCode:'demandType'},{categoryId:'all',itemCode:'priority'}]).then(res=>{
-				this.options=res.data.data;
+  			initSimpleDicts("all",['menuStatus','demandSource','demandLvl','demandType','priority']).then(res=>{
+				this.dicts=res.data.data;
 			})
 			this.filters.product=this.xmProduct
 			if(this.xmProduct && this.xmProduct.id){
