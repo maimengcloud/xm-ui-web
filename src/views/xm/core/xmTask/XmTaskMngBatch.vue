@@ -192,10 +192,10 @@
                 @change="fieldChange(scope.row, 'settleSchemel')"
               >
                 <el-option
-                  v-for="i in options.xmTaskSettleSchemel"
-                  :label="i.optionName"
-                  :key="i.optionValue"
-                  :value="i.optionValue"
+                  v-for="i in dicts.xmTaskSettleSchemel"
+                  :label="i.name"
+                  :key="i.id"
+                  :value="i.id"
                 ></el-option>
               </el-select>
             </template>
@@ -271,7 +271,7 @@ import Vue from "vue";
 import util from "@/common/js/util"; //全局公共库
 import treeTool from "@/common/js/treeTool"; //全局公共库
 //import Sticky from '@/components/Sticky' // 粘性header组件
-import { listOption } from "@/api/mdp/meta/itemOption"; //下拉框数据查询
+import { initSimpleDicts } from '@/api/mdp/meta/item'; //下拉框数据查询
 import {
   getTask,
   listXmTask,
@@ -348,7 +348,7 @@ export default {
       },
       load: { list: false, edit: false, del: false, add: false }, //查询中...
       sels: [], //列表选中数据
-      options: {
+      dicts: {
         urgencyLevel: [],
         taskType: [],
         planType: [],
@@ -1209,14 +1209,8 @@ export default {
     } 
     this.$nextTick(() => { 
       this.tableHeight = util.calcTableMaxHeight(this.$refs.table.$el); 
-      listOption([
-        { categoryId: "all", itemCode: "planType" },
-        { categoryId: "all", itemCode: "taskType" },
-        { categoryId: "all", itemCode: "urgencyLevel" },
-        { categoryId: "all", itemCode: "xmTaskSettleSchemel" },
-        { categoryId: "all", itemCode: "priority" },
-      ]).then((res) => {
-        this.options = res.data.data;
+      initSimpleDicts( "all",["planType","taskType","urgencyLevel","xmTaskSettleSchemel","priority"]).then((res) => {
+        this.dicts = res.data.data;
       });
     });
     // 阻止默认行为

@@ -45,28 +45,28 @@
 							<el-col :span="12">
 								<el-form-item  label="需求类型" prop="dtype" >   
 									<el-select v-model="addForm.dtype">
-										<el-option v-for="i in this.options.demandType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+										<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 									</el-select>  
 								</el-form-item>   
 							</el-col>
 							<el-col :span="12">
 								<el-form-item  label="需求来源" prop="source">   
 									<el-select v-model="addForm.source">
-										<el-option v-for="i in this.options.demandSource" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+										<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
 									</el-select>  
 								</el-form-item>   
 							</el-col> 
 							<el-col :span="12">
 								<el-form-item  label="需求层次" prop="dlvl" >   
 									<el-select v-model="addForm.dlvl">
-										<el-option v-for="i in this.options.demandLvl" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+										<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
 									</el-select>  
 								</el-form-item>   
 							</el-col>
 							<el-col :span="12">
 							<el-form-item  label="优先级" prop="priority" >  
 								<el-select v-model="addForm.priority">
-										<el-option v-for="i in options.priority" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option> 
+										<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option> 
 								</el-select>    
 							</el-form-item>  
 							</el-col>
@@ -137,7 +137,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询 
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询 
 	import { addXmMenu } from '@/api/xm/core/xmMenu';
 	import { mapGetters } from 'vuex'	
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
@@ -176,7 +176,7 @@
 	    },
 		data() {
 			return {
-				options:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				addFormRules: {
 					menuId: [
@@ -295,8 +295,8 @@
 		},
 		mounted() {
 			
- 			listOption([{categoryId:'all',itemCode:'demandSource'},{categoryId:'all',itemCode:'demandLvl'},{categoryId:'all',itemCode:'demandType'},{categoryId:'all',itemCode:'priority'}]).then(res=>{
-				this.options=res.data.data;
+ 			initSimpleDicts('all',['demandSource','demandLvl','demandType','priority'] ).then(res=>{
+				this.dicts=res.data.data;
 			})
 			this.addForm=Object.assign(this.addForm, this.xmMenu);  
 			this.addForm.mmUserid=this.userInfo.userid

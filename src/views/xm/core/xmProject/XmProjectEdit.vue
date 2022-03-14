@@ -2,9 +2,9 @@
 	<section class="page-container padding border">
 		<el-row class="padding-bottom">
 			<el-steps :active="calcProjectStatusStep" simple finish-status="success">
- 				<el-step  v-for="(i,index) in options['projectStatus']" :title="i.optionName" :key="index" @click.native.stop="editForm.status=i.optionValue">
-					 <el-link slot="title" @click.native.stop="editForm.status=i.optionValue">
-						 {{i.optionName}} 
+ 				<el-step  v-for="(i,index) in dicts['projectStatus']" :title="i.name" :key="index" @click.native.stop="editForm.status=i.id">
+					 <el-link slot="title" @click.native.stop="editForm.status=i.id">
+						 {{i.name}} 
 					 </el-link>
 				</el-step> 
 			</el-steps>
@@ -16,13 +16,13 @@
 						</el-form-item>  
 						<el-form-item label="项目属性" prop="xmType"> 
 							<el-select v-model="editForm.xmType">
-								<el-option v-for="(i,index) in options['projectType']" :label="i.optionName" :value="i.optionValue" :key="index"></el-option> 
+								<el-option v-for="(i,index) in dicts['projectType']" :label="i.name" :value="i.id" :key="index"></el-option> 
 							</el-select>   
 							<el-select v-model="editForm.urgent">
-								<el-option v-for="(i,index) in options['urgencyLevel']" :label="i.optionName" :value="i.optionValue" :key="index"></el-option> 
+								<el-option v-for="(i,index) in dicts['urgencyLevel']" :label="i.name" :value="i.id" :key="index"></el-option> 
 							</el-select>    
 							<el-select v-model="editForm.priority">
-								<el-option v-for="(i,index) in options['priority']" :label="i.optionName" :value="i.optionValue" :key="index"></el-option> 
+								<el-option v-for="(i,index) in dicts['priority']" :label="i.name" :value="i.id" :key="index"></el-option> 
 							</el-select> 
 						</el-form-item>   
 						<el-form-item label="预算控制"> 
@@ -167,7 +167,7 @@
 	import {sn} from '@/common/js/sequence';//全局公共库
 
 	import config from "@/common/config"; //全局公共库
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { editXmProject,getDefOptions } from '@/api/xm/core/xmProject'; 
 	import { uploadBase64 } from '@/api/mdp/arc/image'; 
 	
@@ -276,9 +276,9 @@
 				 return this.editForm.totalReceivables
 			},
 			calcProjectStatusStep(){ 
-				if(this.options['projectStatus'] && this.editForm){
-					var index=this.options['projectStatus'].findIndex(i=>{
-						if(i.optionValue==this.editForm.status){
+				if(this.dicts['projectStatus'] && this.editForm){
+					var index=this.dicts['projectStatus'].findIndex(i=>{
+						if(i.id==this.editForm.status){
 							return true;
 						}else{
 							return false;
@@ -366,7 +366,7 @@
 				filters: {
 					ids: [],
 				},
-				options: getDefOptions(),//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				dicts: getDefOptions(),//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, add: false, del: false, edit: false },//查询中...
 				editFormRules: {
 					name: [{
@@ -738,16 +738,11 @@
 			this.maxTableHeight=util.calcTableMaxHeight(this.$refs.table.$el);
 				 this.editForm=Object.assign({},this.selProject);
 				 this.dateRanger=[this.editForm.startTime,this.editForm.endTime]
-				listOption([{categoryId:'all',itemCode:'projectType'},{categoryId:'all',itemCode:'urgencyLevel'},{categoryId:'all',itemCode:'priority'},{categoryId:'all',itemCode:'projectStatus'}] ).then(res=>{
-					if(res.data.tips.isOk){ 
-						
-						this.options['projectType']=res.data.data.projectType
-						this.options['urgencyLevel']=res.data.data.urgencyLevel
-						this.options['priority']=res.data.data.priority
-						this.options['projectStatus']=res.data.data.projectStatus 
-						//this.editForm.projectStatus=this.options['projectStatus'][0].optionValue
-					}
-				});
+				
+			
+				initSimpleDicts('all',['projectType','urgencyLevel','priority','projectStatus']).then(res=>{
+					this.dicts=res.data.data;
+				})
 			
 		}
 	}

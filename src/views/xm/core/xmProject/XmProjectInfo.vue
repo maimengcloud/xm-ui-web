@@ -161,7 +161,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { listXmProject,editStatus , delXmProject, batchDelXmProject } from '@/api/xm/core/xmProject';
 	import  XmProjectAdd from './XmProjectAdd';//新增界面
 	import  XmProjectEdit from './XmProjectEdit';//修改界面
@@ -362,13 +362,13 @@
               } else {
                 return v[j];
               }
-              const options = this.$refs.xmMenuWithPlan.options;
+              const options = this.$refs.xmMenuWithPlan.dicts;
               if(options[key]==undefined || options[key]==null || options[key].length==0   ){
                 return v[j];
               }
-              var rowData=options[key].filter(i=>i.optionValue==v[j])
+              var rowData=options[key].filter(i=>i.id==v[j])
               if(rowData.length>0){
-                return rowData[0].optionName
+                return rowData[0].name
               }else{
                 return v[j];
               }

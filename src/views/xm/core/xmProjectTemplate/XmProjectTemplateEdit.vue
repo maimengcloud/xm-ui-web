@@ -14,22 +14,22 @@
 						</el-form-item> 
 						<el-form-item label="项目状态" prop="status"> 
 							<el-radio-group v-model="editForm.status">
-								<el-radio v-for="(i,index) in options['projectStatus']" :label="i.optionValue" :key="index">{{i.optionName}}</el-radio> 
+								<el-radio v-for="(i,index) in dicts['projectStatus']" :label="i.id" :key="index">{{i.name}}</el-radio> 
 							</el-radio-group>  
 						</el-form-item> 
 						<el-form-item label="项目类型" prop="xmType"> 
 							<el-radio-group v-model="editForm.xmType">
-								<el-radio v-for="(i,index) in options['projectType']" :label="i.optionValue" :key="index">{{i.optionName}}</el-radio> 
+								<el-radio v-for="(i,index) in dicts['projectType']" :label="i.id" :key="index">{{i.name}}</el-radio> 
 							</el-radio-group>  
 						</el-form-item> 
 						<el-form-item label="紧急程度" prop="urgent">
 							<el-radio-group v-model="editForm.urgent">
-								<el-radio v-for="(i,index) in options['urgencyLevel']" :label="i.optionValue" :key="index">{{i.optionName}}</el-radio> 
+								<el-radio v-for="(i,index) in dicts['urgencyLevel']" :label="i.id" :key="index">{{i.name}}</el-radio> 
 							</el-radio-group>   
 						</el-form-item>  
 						<el-form-item label="优先程度" prop="priority">
 							<el-radio-group v-model="editForm.priority">
-								<el-radio v-for="(i,index) in options['priority']" :label="i.optionValue" :key="index">{{i.optionName}}</el-radio> 
+								<el-radio v-for="(i,index) in dicts['priority']" :label="i.id" :key="index">{{i.name}}</el-radio> 
 							</el-radio-group> 
 						</el-form-item>   
 						
@@ -141,7 +141,7 @@
 	import {sn} from '@/common/js/sequence';//全局公共库
 
 	import config from "@/common/config"; //全局公共库
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { editXmProjectTemplate } from '@/api/xm/core/xmProjectTemplate';  
 	
 	import { mapGetters } from 'vuex'; 
@@ -272,7 +272,7 @@
 				filters: {
 					ids: [],
 				},
-				options:{ 
+				dicts:{ 
 					projectType:[],
 					urgencyLevel:[],
 					priority:[],
@@ -421,15 +421,13 @@
 		},
 		mounted() { 
 			 	this.editForm=Object.assign({},this.selProjectTemplate);
-				listOption([{categoryId:'all',itemCode:'projectType'},{categoryId:'all',itemCode:'urgencyLevel'},{categoryId:'all',itemCode:'priority'},{categoryId:'all',itemCode:'projectStatus'}] ).then(res=>{
-					if(res.data.tips.isOk){ 
-						this.options['projectType']=res.data.data.projectType
-						this.options['urgencyLevel']=res.data.data.urgencyLevel
-						this.options['priority']=res.data.data.priority
-						this.options['projectStatus']=res.data.data.projectStatus 
-						//this.editForm.projectStatus=this.options['projectStatus'][0].optionValue
-					}
-				});
+				
+				initSimpleDicts('all',['projectType','urgencyLevel','priority','projectStatus']).then(res=>{
+					this.dicts['projectType']=res.data.data.projectType
+					this.dicts['urgencyLevel']=res.data.data.urgencyLevel
+					this.dicts['priority']=res.data.data.priority
+					this.dicts['projectStatus']=res.data.data.projectStatus 
+				})
 			
 		}
 	}

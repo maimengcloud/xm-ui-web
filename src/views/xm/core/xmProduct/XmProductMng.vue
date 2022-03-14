@@ -265,7 +265,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { listXmProduct,listXmProductWithState, delXmProduct, batchDelXmProduct,copyTo,createProductCode } from '@/api/xm/core/xmProduct';
 	import { addXmIterationLink,delXmIterationLink } from '@/api/xm/core/xmIterationLink';
 	import { loadTasksToXmProductState } from '@/api/xm/core/xmProductState';
@@ -320,7 +320,7 @@
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				options:{
+				dicts:{
 					xmProductPstatus:[]
 				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
 
@@ -656,9 +656,9 @@
 				})
 			},
 			formatPstatus(row, column, cellValue, index){
-				var item=this.options.xmProductPstatus.find(i=>i.optionValue==cellValue)
+				var item=this.dicts.xmProductPstatus.find(i=>i.id==cellValue)
 				if(item){
-					return item.optionName
+					return item.name
 				}else{
 					return cellValue;
 				}
@@ -691,9 +691,9 @@
 		},
 		mounted() {
 			
-			listOption([{categoryId:'all',itemCode:'xmProductPstatus'}] ).then(res=>{
+			initSimpleDicts('all',['xmProductPstatus'] ).then(res=>{
 				if(res.data.tips.isOk){ 
-					this.options['xmProductPstatus']=res.data.data.xmProductPstatus   
+					this.dicts['xmProductPstatus']=res.data.data.xmProductPstatus   
 				}
 			});
 			this.$nextTick(() => { 

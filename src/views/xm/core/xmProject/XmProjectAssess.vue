@@ -47,7 +47,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { mapGetters } from 'vuex';
 	import VueEditor from '@/components/Tinymce/index';
 	import { editAssess, listXmProject, delXmProject, batchDelXmProject } from '@/api/xm/core/xmProject';

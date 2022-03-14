@@ -63,7 +63,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询 
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询 
 	import { addXmTaskExecuser } from '@/api/xm/core/xmTaskExecuser';
 	import { mapGetters } from 'vuex'
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
@@ -97,7 +97,7 @@
 			const endDate = new Date();
 			endDate.setTime(beginDate.getTime() + 3600 * 1000 * 24 * 7 * 4);
 			return {
-				options:{
+				dicts:{
 					projectTaskExecuserStatus:[],
 					projectTaskSettleStatus:[],
 
@@ -235,8 +235,8 @@
 			}
 			
 			/**在下面写其它函数***/
-			listOption([{categoryId:'all',itemCode:'projectTaskExecuserStatus'},{categoryId:'all',itemCode:'projectTaskSettleStatus'}]).then(res=>{
-				this.options=res.data.data;
+			initSimpleDicts('all',['projectTaskExecuserStatus','projectTaskSettleStatus']).then(res=>{
+				this.dicts=res.data.data;
 			})	
 		}//end mounted
 	}

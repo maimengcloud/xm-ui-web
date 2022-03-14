@@ -16,13 +16,13 @@
 					</el-form-item>    
 					<el-form-item label="项目属性" prop="xmType"> 
 						<el-select v-model="addForm.xmType">
-							<el-option v-for="(i,index) in options['projectType']" :label="i.optionName" :value="i.optionValue" :key="index"></el-option> 
+							<el-option v-for="(i,index) in dicts['projectType']" :label="i.name" :value="i.id" :key="index"></el-option> 
 						</el-select>   
 						<el-select v-model="addForm.urgent">
-							<el-option v-for="(i,index) in options['urgencyLevel']" :label="i.optionName" :value="i.optionValue" :key="index"></el-option> 
+							<el-option v-for="(i,index) in dicts['urgencyLevel']" :label="i.name" :value="i.id" :key="index"></el-option> 
 						</el-select>    
 						<el-select v-model="addForm.priority">
-							<el-option v-for="(i,index) in options['priority']" :label="i.optionName" :value="i.optionValue" :key="index"></el-option> 
+							<el-option v-for="(i,index) in dicts['priority']" :label="i.name" :value="i.id" :key="index"></el-option> 
 						</el-select> 
 					</el-form-item>   
 					<el-form-item label="预算控制"> 
@@ -167,7 +167,7 @@
 	import util from '@/common/js/util';//全局公共库
 	import {sn} from '@/common/js/sequence';//全局公共库
 
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { addXmProject,createProjectCode } from '@/api/xm/core/xmProject'; 
 	import { mapGetters } from 'vuex';  
 	
@@ -304,7 +304,7 @@
 				filters: {
 					ids: [],
 				},
-				options:{ 
+				dicts:{ 
 					projectType:[],
 					urgencyLevel:[],
 					priority:[],
@@ -504,20 +504,11 @@
 		},
 		mounted() {  
 			
-			this.maxTableHeight=util.calcTableMaxHeight(this.$refs.table.$el);
-				listOption([{categoryId:'all',itemCode:'projectType'},{categoryId:'all',itemCode:'urgencyLevel'},{categoryId:'all',itemCode:'priority'},{categoryId:'all',itemCode:'projectStatus'}] ).then(res=>{
-					if(res.data.tips.isOk){ 
-						this.options['projectType']=res.data.data.projectType
-						this.options['urgencyLevel']=res.data.data.urgencyLevel
-						this.options['priority']=res.data.data.priority
-						this.options['projectStatus']=res.data.data.projectStatus
-
-						this.addForm.xmType=this.options['projectType'][0].optionValue
-						this.addForm.urgent=this.options['urgencyLevel'][0].optionValue
-						this.addForm.priority=this.options['priority'][0].optionValue
-						//this.addForm.projectStatus=this.options['projectStatus'][0].optionValue
-					}
-				});
+			this.maxTableHeight=util.calcTableMaxHeight(this.$refs.table.$el); 
+			
+			initSimpleDicts('all',['projectType','urgencyLevel','priority','projectStatus']).then(res=>{
+				this.dicts=res.data.data;
+			})
 			
 		}
 	}

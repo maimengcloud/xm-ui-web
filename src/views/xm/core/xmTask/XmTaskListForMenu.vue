@@ -3,7 +3,7 @@
 		<el-row class="xm-task"> 
 			<el-menu  active-text-color="#00abfc" :default-active="filters.taskType" @select="changeTaskType" class="el-menu-demo" mode="horizontal">
 				<el-menu-item index="all">全部任务类型</el-menu-item>
-				<el-menu-item v-for="(i,index) in options.taskType" :index="i.optionValue" :key="index">{{i.optionName}}</el-menu-item>
+				<el-menu-item v-for="(i,index) in dicts.taskType" :index="i.id" :key="index">{{i.name}}</el-menu-item>
 			</el-menu> 
 			<el-row>
 				<el-col :span="24">
@@ -90,7 +90,7 @@
 	import Vue from 'vue'
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { getTask ,listXmTask,editXmTask,editRate, delXmTask, batchDelXmTask,batchImportTaskFromTemplate,batchSaveBudget } from '@/api/xm/core/xmTask'; 
 	import { mapGetters } from 'vuex'; 
  	export default { 
@@ -127,7 +127,7 @@
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				options:{
+				dicts:{
 					urgencyLevel:[],
 					taskType:[],
 					planType:[],
@@ -406,8 +406,8 @@
 				this.tableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
 				this.getXmTasks(); 
 			});
-				listOption([{categoryId:'all',itemCode:'planType'},{categoryId:'all',itemCode:'taskType'},{categoryId:'all',itemCode:'urgencyLevel'},{categoryId:'all',itemCode:'priority'}]).then(res=>{
-					this.options=res.data.data;
+				initSimpleDicts('all',['planType','taskType','urgencyLevel','priority']).then(res=>{
+					this.dicts=res.data.data;
 				})		
 		}
 	}

@@ -6,9 +6,9 @@
           <div>
             <el-row style="padding:10px">
               <el-steps :active="calcProjectStatusStep" finish-status="success">
-                <el-step  v-for="(i,index) in options['projectStatus']" :title="i.optionName" :key="index">
+                <el-step  v-for="(i,index) in dicts['projectStatus']" :title="i.name" :key="index">
                   <el-row slot="title">
-                    {{i.optionName}}
+                    {{i.name}}
                   </el-row>
                 </el-step>
               </el-steps>
@@ -266,7 +266,7 @@
 <script>
 import util from "@/common/js/util"; // 全局公共库
 import { mapGetters } from "vuex";
-import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import {  getDefOptions} from '@/api/xm/core/xmProject'; 
 
 export default {
@@ -335,9 +335,9 @@ export default {
       return this.selProject
     },
     calcProjectStatusStep(){
-      if(this.options['projectStatus'] && this.selProject){
-        var index=this.options['projectStatus'].findIndex(i=>{
-          if(i.optionValue==this.selProject.status){
+      if(this.dicts['projectStatus'] && this.selProject){
+        var index=this.dicts['projectStatus'].findIndex(i=>{
+          if(i.id==this.selProject.status){
             return true;
           }else{
             return false;
@@ -366,7 +366,7 @@ export default {
     return {
       isActive: true,
       maxTableHeight:300,
-      options: getDefOptions(),//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
+      dicts: getDefOptions(),//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
     };
   },
 
@@ -754,14 +754,10 @@ export default {
     this.$nextTick(() => {
       this.maxTableHeight=util.calcTableMaxHeight(this.$refs.table.$el)
     });
-    listOption([{categoryId:'all',itemCode:'projectType'},{categoryId:'all',itemCode:'urgencyLevel'},{categoryId:'all',itemCode:'priority'},{categoryId:'all',itemCode:'projectStatus'}] ).then(res=>{
-      if(res.data.tips.isOk){
-        this.options['projectType']=res.data.data.projectType
-        this.options['urgencyLevel']=res.data.data.urgencyLevel
-        this.options['priority']=res.data.data.priority
-        this.options['projectStatus']=res.data.data.projectStatus
-      }
-    });
+			
+			initSimpleDicts('all',['projectType','urgencyLevel','priority','projectStatus']).then(res=>{
+				this.dicts=res.data.data;
+			})
     this.drawAllBar();
     this.drawTaskByDate();
     this.drawPieBug();

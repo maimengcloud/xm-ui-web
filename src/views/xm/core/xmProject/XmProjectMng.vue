@@ -26,7 +26,7 @@
 						<el-option  value="myExecuserStatus7"  label="我放弃"></el-option> 
 					</el-select> 
 					<el-select  v-model="filters.status" clearable placeholder="项目状态">
-						<el-option v-for="(item,index) in options['projectStatus']" :value="item.optionValue" :label="item.optionName" :key="index"></el-option> 
+						<el-option v-for="(item,index) in dicts['projectStatus']" :value="item.id" :label="item.name" :key="index"></el-option> 
 					</el-select>  
 					<el-input class="hidden-md-and-down" placeholder="选择产品" v-model="filters.productName" @click.native="productSelectVisible=true" clearable @clear="onProductClose"  style="width:15%;"></el-input>
  					<el-input v-model="filters.key" style="width:15%;" placeholder="项目名称模糊查询" clearable>
@@ -303,7 +303,7 @@
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import config from "@/common/config"; //全局公共库
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { listXmProject, editStatus, delXmProject, batchDelXmProject,copyTo,createProjectCode ,getDefOptions} from '@/api/xm/core/xmProject'; 
 	import {  loadTasksToXmProjectState , loadTasksSettleToXmProjectState} from '@/api/xm/core/xmProjectState';
 
@@ -370,7 +370,7 @@
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				options: getDefOptions(),//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				dicts: getDefOptions(),//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				
 				addFormVisible: false,//新增xmProject界面是否显示
 				//新增xmProject界面初始化数据
@@ -808,10 +808,10 @@
 				})
 			},
 			formatProjectStatus(status){
-				if(this.options['projectStatus'] && this.options['projectStatus'].length>0 ){
-					var sts=this.options['projectStatus'].find(i=>i.optionValue==status)
+				if(this.dicts['projectStatus'] && this.dicts['projectStatus'].length>0 ){
+					var sts=this.dicts['projectStatus'].find(i=>i.id==status)
 					if(sts){
-						return sts.optionName
+						return sts.name
 					}else{
 						return status;
 					}
@@ -853,16 +853,10 @@
 				this.filters.productId=this.$route.params.productId;
 				this.filters.productName=this.$route.params.productName;
 			}
-			this.$nextTick(() => {  
-				listOption([{categoryId:'all',itemCode:'projectType'},{categoryId:'all',itemCode:'urgencyLevel'},{categoryId:'all',itemCode:'priority'},{categoryId:'all',itemCode:'projectStatus'}] ).then(res=>{
-					if(res.data.tips.isOk){ 
-						
-						this.options['projectType']=res.data.data.projectType
-						this.options['urgencyLevel']=res.data.data.urgencyLevel
-						this.options['priority']=res.data.data.priority
-						this.options['projectStatus']=res.data.data.projectStatus  
-					}
-				});
+			this.$nextTick(() => {    
+				initSimpleDicts('all',['projectType','urgencyLevel','priority','projectStatus']).then(res=>{
+					this.dicts=res.data.data;
+				})
                 this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table1.$el);
 				this.showInfo = false;
 				this.getXmProjects(this.guiderStart);

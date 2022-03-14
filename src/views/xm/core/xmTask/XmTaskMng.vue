@@ -74,11 +74,11 @@
               >全部类型</el-option
             >
             <el-option
-              v-for="(i, index) in options.taskType"
-              :value="i.optionValue"
-              :label="i.optionName"
+              v-for="(i, index) in dicts.taskType"
+              :value="i.id"
+              :label="i.name"
               :key="index"
-              >{{ i.optionName }}</el-option
+              >{{ i.name }}</el-option
             >
           </el-select>
           <el-checkbox
@@ -1005,7 +1005,7 @@ import Vue from "vue";
 import util from "@/common/js/util"; //全局公共库
 import treeTool from "@/common/js/treeTool"; //全局公共库
 //import Sticky from '@/components/Sticky' // 粘性header组件
-import { listOption } from "@/api/mdp/meta/itemOption"; //下拉框数据查询
+import { initSimpleDicts } from '@/api/mdp/meta/item'; //下拉框数据查询
 import {
   getTask,
   listXmTask,
@@ -1181,7 +1181,7 @@ export default {
       },
       load: { list: false, edit: false, del: false, add: false }, //查询中...
       sels: [], //列表选中数据
-      options: {
+      dicts: {
         urgencyLevel: [],
         taskType: [],
         planType: [],
@@ -1982,12 +1982,12 @@ export default {
       }
     },
     formateOption: function (itemCode, value) {
-      if (this.options[itemCode]) {
-        var options = this.options[itemCode].filter(
-          (i) => i.optionValue == value
+      if (this.dicts[itemCode]) {
+        var options = this.dicts[itemCode].filter(
+          (i) => i.id == value
         );
-        if (options && options.length > 0) {
-          return options[0].optionName;
+        if (options && dicts.length > 0) {
+          return options[0].name;
         } else {
           return value;
         }
@@ -2005,15 +2005,15 @@ export default {
         return cellValue;
       }
       if (
-        this.options[key] == undefined ||
-        this.options[key] == null ||
-        this.options[key].length == 0
+        this.dicts[key] == undefined ||
+        this.dicts[key] == null ||
+        this.dicts[key].length == 0
       ) {
         return cellValue;
       }
-      var list = this.options[key].filter((i) => i.optionValue == cellValue);
+      var list = this.dicts[key].filter((i) => i.id == cellValue);
       if (list.length > 0) {
-        return list[0].optionName;
+        return list[0].name;
       } else {
         return cellValue;
       }
@@ -2501,14 +2501,8 @@ export default {
     this.$nextTick(() => {
       this.getXmTasks(); 
       this.tableHeight = util.calcTableMaxHeight(this.$refs.table.$el);  
-      listOption([
-        { categoryId: "all", itemCode: "planType" },
-        { categoryId: "all", itemCode: "taskType" },
-        { categoryId: "all", itemCode: "urgencyLevel" },
-        { categoryId: "all", itemCode: "xmTaskSettleSchemel" },
-        { categoryId: "all", itemCode: "priority" },
-      ]).then((res) => {
-        this.options = res.data.data;
+      initSimpleDicts( "all", ["planType","taskType","urgencyLevel","xmTaskSettleSchemel","priority" ]).then((res) => {
+        this.dicts = res.data.data;
       });
     });
   },

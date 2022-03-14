@@ -2,15 +2,15 @@
 	<section class="padding">
 			<el-row>
 			  	<el-select v-model="filters.bugStatus" placeholder="状态" style="width:100px;"  clearable @change="changeBugStatus">
-					<el-option v-for="(b,index) in options['bugStatus']" :value="b.optionValue"  :key="index" :label="b.optionName">{{b.optionName}}
+					<el-option v-for="(b,index) in dicts['bugStatus']" :value="b.id"  :key="index" :label="b.name">{{b.name}}
 					</el-option>
 				</el-select>
 				<el-select class="hidden-md-and-down" v-model="filters.priority" placeholder="紧急程度"  style="width:120px;"  clearable @change="changePriority">
-					<el-option v-for="(b,index) in options['urgencyLevel']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
+					<el-option v-for="(b,index) in dicts['urgencyLevel']" :value="b.id" :key="index" :label="b.name">{{b.name}}
 					</el-option>
 				</el-select>
 				<el-select class="hidden-md-and-down" v-model="filters.bugSeverity" placeholder="严重程度"  style="width:120px;" clearable @change="changeBugSeverity">
-					<el-option v-for="(b,index) in options['bugSeverity']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
+					<el-option v-for="(b,index) in dicts['bugSeverity']" :value="b.id" :key="index" :label="b.name">{{b.name}}
 					</el-option>
 				</el-select>
 				<el-input style="width:200px;" v-model="filters.key" placeholder="缺陷名称" clearable> 
@@ -61,7 +61,7 @@
 							<el-button v-if="!filters.hisHandler||filters.hisHandler.userid!=userInfo.userid" @click="setFiltersHisHandlerAsMySelf">我的</el-button>
 							变更状态为
 							<el-select v-model="filters.hisHandleStatus" placeholder="请选择状态"  clearable @change="changeHisHandleStatus">
-								<el-option v-for="(b,index) in options['bugStatus']" :value="b.optionValue"  :key="index" :label="b.optionName">{{b.optionName}}
+								<el-option v-for="(b,index) in dicts['bugStatus']" :value="b.id"  :key="index" :label="b.name">{{b.name}}
 								</el-option>
 							</el-select>的缺陷
 						</el-col>
@@ -74,13 +74,13 @@
 						</el-col>
 						<el-col :span="24" class="hidden-lg-and-up" style="padding-top:12px;">
 							<el-select   v-model="filters.priority" placeholder="请选择紧急程度" clearable @change="changePriority">
-								<el-option v-for="(b,index) in options['urgencyLevel']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
+								<el-option v-for="(b,index) in dicts['urgencyLevel']" :value="b.id" :key="index" :label="b.name">{{b.name}}
 								</el-option>
 							</el-select>
 						</el-col>
 						<el-col :span="24"  style="padding-top:12px;">
 							<el-select  v-model="filters.solution" placeholder="请选择解决方案" clearable @change="changeSolution">
-								<el-option v-for="(b,index) in options['bugSolution']" :value="b.optionValue" :key="index" :label="b.optionName">{{b.optionName}}
+								<el-option v-for="(b,index) in dicts['bugSolution']" :value="b.id" :key="index" :label="b.name">{{b.name}}
 								</el-option>
 							</el-select>
 						</el-col>
@@ -209,7 +209,7 @@
 
 	import config from '@/common/config';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { listXmQuestion, delXmQuestion, batchDelXmQuestion, editStatus } from '@/api/xm/core/xmQuestion';
 	import  XmQuestionAdd from './XmQuestionAdd';//新增界面
 	import  XmQuestionEdit from './XmQuestionEdit';//修改界面
@@ -278,7 +278,7 @@
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				options:{
+				dicts:{
 					urgencyLevel:[],
 					bugSeverity:[],
 					bugSolution:[],
@@ -649,12 +649,12 @@
 				}else{
 					return cellValue
 				}
-				if(this.options[key]==undefined || this.options[key]==null || this.options[key].length==0   ){
+				if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0   ){
 					return cellValue;
 				}
-				var list=this.options[key].filter(i=>i.optionValue==cellValue)
+				var list=this.dicts[key].filter(i=>i.id==cellValue)
 				if(list.length>0){
-					return list[0].optionName
+					return list[0].name
 				}else{
 					return cellValue;
 				}
@@ -704,7 +704,7 @@
 				})
 			},
 			formatJson(filterVal, jsonData) {
-				console.log('this.options==', this.options);
+				console.log('this.dicts==', this.dicts);
 
 				return jsonData.map(v => filterVal.map(j => {
 					let key = '';
@@ -723,12 +723,12 @@
 					} else {
 						return v[j];
 					}
-					if(this.options[key]==undefined || this.options[key]==null || this.options[key].length==0){
+					if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0){
 						return v[j];
 					}
-					var rowData = this.options[key].find(i => i.optionValue == v[j]);
+					var rowData = this.dicts[key].find(i => i.id == v[j]);
 					if(rowData){
-						return rowData.optionName;
+						return rowData.name;
 					}else{
 						return v[j];
 					}
@@ -952,13 +952,13 @@
 				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
 				this.getXmQuestions();
 			});
-				listOption([{categoryId:'all',itemCode:'bugSeverity'},{categoryId:'all',itemCode:'bugSolution'},{categoryId:'all',itemCode:'bugStatus'},{categoryId:'all',itemCode:'bugType'},{categoryId:'all',itemCode:'urgencyLevel'}] ).then(res=>{
+				initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','urgencyLevel']).then(res=>{
 					if(res.data.tips.isOk){
-						this.options['bugSeverity']=res.data.data.bugSeverity
-						this.options['bugSolution']=res.data.data.bugSolution
-						this.options['bugStatus']=res.data.data.bugStatus
-						this.options['bugType']=res.data.data.bugType
-						this.options['urgencyLevel']=res.data.data.urgencyLevel
+						this.dicts['bugSeverity']=res.data.data.bugSeverity
+						this.dicts['bugSolution']=res.data.data.bugSolution
+						this.dicts['bugStatus']=res.data.data.bugStatus
+						this.dicts['bugType']=res.data.data.bugType
+						this.dicts['urgencyLevel']=res.data.data.urgencyLevel
 					}
 				});
 		}

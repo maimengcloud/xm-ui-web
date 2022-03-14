@@ -23,15 +23,15 @@
 						<el-form-item label="缺陷属性" prop="priority">
 							<el-col :span="24">
 							<el-select v-model="addForm.priority" placeholder="请选择紧急程度">
-								<el-option v-for="(i,index) in options['urgencyLevel']" :label="i.optionName" :value="i.optionValue" :key="i.optionValue">{{i.optionName}}</el-option>
+								<el-option v-for="(i,index) in dicts['urgencyLevel']" :label="i.name" :value="i.id" :key="i.id">{{i.name}}</el-option>
 							</el-select>
 
 							<el-select v-model="addForm.bugSeverity" placeholder="请选择严重程度">
-								<el-option v-for="(i,index) in options['bugSeverity']" :label="i.optionName" :value="i.optionValue" :key="i.optionValue">{{i.optionName}}</el-option>
+								<el-option v-for="(i,index) in dicts['bugSeverity']" :label="i.name" :value="i.id" :key="i.id">{{i.name}}</el-option>
 							</el-select>
 
 							<el-select v-model="addForm.solution" placeholder="请选择解决方案">
-								<el-option v-for="(i,index) in options['bugSolution']" :label="i.optionName" :value="i.optionValue" :key="i.optionValue">{{i.optionName}}</el-option>
+								<el-option v-for="(i,index) in dicts['bugSolution']" :label="i.name" :value="i.id" :key="i.id">{{i.name}}</el-option>
 							</el-select>
 							</el-col>
 						</el-form-item>
@@ -104,7 +104,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { addXmQuestion } from '@/api/xm/core/xmQuestion';
 	import { mapGetters } from 'vuex';
 	import AttachmentUpload from "@/views/mdp/arc/archiveAttachment/AttachmentUpload"; //上传组件
@@ -156,7 +156,7 @@
 				filters:{
 					selProject:null,
 				},
-				options:{
+				dicts:{
 					urgencyLevel:[],
 					bugSeverity:[],
 					bugSolution:[],
@@ -401,13 +401,13 @@
 			this.addForm.qtype=this.qtype
 			this.setDefaultData();
 			this.initByExec();
-			listOption([{categoryId:'all',itemCode:'bugSeverity'},{categoryId:'all',itemCode:'bugSolution'},{categoryId:'all',itemCode:'bugStatus'},{categoryId:'all',itemCode:'bugType'},{categoryId:'all',itemCode:'urgencyLevel'}] ).then(res=>{
+			initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','urgencyLevel']).then(res=>{
 				if(res.data.tips.isOk){
-					this.options['bugSeverity']=res.data.data.bugSeverity
-					this.options['bugSolution']=res.data.data.bugSolution
-					this.options['bugStatus']=res.data.data.bugStatus
-					this.options['bugType']=res.data.data.bugType
-					this.options['urgencyLevel']=res.data.data.urgencyLevel
+					this.dicts['bugSeverity']=res.data.data.bugSeverity
+					this.dicts['bugSolution']=res.data.data.bugSolution
+					this.dicts['bugStatus']=res.data.data.bugStatus
+					this.dicts['bugType']=res.data.data.bugType
+					this.dicts['urgencyLevel']=res.data.data.urgencyLevel
 				}
 			});
 			/**在下面写其它函数***/

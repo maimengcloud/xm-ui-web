@@ -127,7 +127,7 @@
 					<el-table-column prop="planStatus" label="计划状态" min-width="80" > 
 						<template slot-scope="scope"> 
 							<el-select v-model="scope.row.planStatus" @change="fieldChange(scope.row,'planStatus')" :disabled="!scope.row.projectId">
-								<el-option v-for="i in options.xmMenuPlanStatus" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+								<el-option v-for="i in dicts.xmMenuPlanStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>
 						</template>
 					</el-table-column> 
@@ -164,7 +164,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库 
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import {  listXmMenuWithPlan } from '@/api/xm/core/xmMenu';
 	import { delXmMenuPlan, batchDelXmMenuPlan,batchAddPlanFromTasks, loadTasksToXmMenuPlan,batchEditXmMenuPlan} from '@/api/xm/core/xmMenuPlan'; 
 	
@@ -207,7 +207,7 @@
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				options:{
+				dicts:{
 					xmMenuPlanStatus:[]
 				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				
@@ -484,12 +484,12 @@
 				}else{
 					return cellValue
 				}
-				if(this.options[key]==undefined || this.options[key]==null || this.options[key].length==0   ){
+				if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0   ){
 					return cellValue;
 				}
-				var list=this.options[key].filter(i=>i.optionValue==cellValue)
+				var list=this.dicts[key].filter(i=>i.id==cellValue)
 				if(list.length>0){
-					return list[0].optionName
+					return list[0].name
 				}else{
 					return cellValue;
 				}
@@ -578,8 +578,8 @@
 				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
 				this.getXmMenus();
 			}); 
-				listOption([{categoryId:'all',itemCode:'xmMenuPlanStatus'} ]).then(res=>{
-					this.options=res.data.data;
+				initSimpleDicts('all',['xmMenuPlanStatus'] ).then(res=>{
+					this.dicts=res.data.data;
 				})		
 		}
 	}

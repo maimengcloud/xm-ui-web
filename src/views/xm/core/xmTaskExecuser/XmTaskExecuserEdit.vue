@@ -16,10 +16,10 @@
 				<el-form-item label="执行人状态" prop="status">
 					<el-select :disabled="editForm.status == '2'" style="width:100%;" placeholder="选择状态" v-model="editForm.status">
 						<el-option
-							v-for="(item,i) in options.projectTaskExecuserStatus"
+							v-for="(item,i) in dicts.projectTaskExecuserStatus"
 							:key="i"
-							:label="item.optionName"
-							:value="item.optionValue">
+							:label="item.name"
+							:value="item.id">
 						</el-option>
 					</el-select>
 				</el-form-item>
@@ -41,10 +41,10 @@
 				<el-form-item label="结算状态" prop="settleStatus">
 					<el-select style="width:100%;" placeholder="选择结算状态" v-model="editForm.settleStatus">
 						<el-option
-							v-for="(item,i) in options.projectTaskSettleStatus"
+							v-for="(item,i) in dicts.projectTaskSettleStatus"
 							:key="i"
-							:label="item.optionName"
-							:value="item.optionValue">
+							:label="item.name"
+							:value="item.id">
 						</el-option>
 					</el-select>
 				</el-form-item> 
@@ -70,7 +70,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { editXmTaskExecuser } from '@/api/xm/core/xmTaskExecuser';
 	import { mapGetters } from 'vuex'
 	
@@ -95,7 +95,7 @@
 	    },
 		data() {
 			return {
-				options:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				dicts:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				editFormRules: {
 					id: [
@@ -148,8 +148,8 @@
 			this.editForm=Object.assign(this.editForm, this.xmTaskExecuser);
 			this.execUser.userid = this.editForm.userid;
 			this.execUser.username = this.editForm.username;
-			listOption([{categoryId:'all',itemCode:'projectTaskExecuserStatus'},{categoryId:'all',itemCode:'projectTaskSettleStatus'}]).then(res=>{
-				this.options=res.data.data;
+			initSimpleDicts('all',['projectTaskExecuserStatus','projectTaskSettleStatus']).then(res=>{
+				this.dicts=res.data.data;
 			})	
 		}
 	}

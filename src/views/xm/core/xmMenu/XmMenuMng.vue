@@ -357,7 +357,7 @@
 					parentMenuList:[],
 					status:'',
 				},
-				options:{
+				dicts:{
 					menuStatus:[
 						
 							{id:"0", name:"初始"},

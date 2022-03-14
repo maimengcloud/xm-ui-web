@@ -129,10 +129,10 @@
 						<el-select disabled style="width:100%;" placeholder="结算状态" v-model="settleForm.settleStatus">
 							<el-option
 								no-data-text="暂无结算状态"
-								v-for="(item,i) in options.projectTaskSettleStatus"
+								v-for="(item,i) in dicts.projectTaskSettleStatus"
 								:key="i"
-								:label="item.optionName"
-								:value="item.optionValue">
+								:label="item.name"
+								:value="item.id">
 							</el-option>
 						</el-select>
 					</el-form-item>
@@ -209,7 +209,7 @@
 	import config from "@/common/config"; //全局公共库
 
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { listXmTaskExecuser,editXmTaskExecuser,leaveTask,beExecutor,settleExec, delXmTaskExecuser, batchDelXmTaskExecuser,quotePrice,becomeCandidate,toTest,testSuccess,testFail } from '@/api/xm/core/xmTaskExecuser';
 	import  XmTaskExecuserAdd from './XmTaskExecuserAdd';//新增界面
 	import  XmTaskExecuserEdit from './XmTaskExecuserEdit';//修改界面
@@ -249,7 +249,7 @@
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				options:{
+				dicts:{
 					projectTaskExecuserStatus:[],
 					projectTaskSettleStatus:[],
 				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
@@ -576,12 +576,12 @@
 				}else{
 					return cellValue
 				}
-				if(this.options[key]==undefined || this.options[key]==null || this.options[key].length==0   ){
+				if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0   ){
 					return cellValue;
 				}
-				var list=this.options[key].filter(i=>i.optionValue==cellValue)
+				var list=this.dicts[key].filter(i=>i.id==cellValue)
 				if(list.length>0){
-					return list[0].optionName
+					return list[0].name
 				}else{
 					return cellValue;
 				}
@@ -821,8 +821,8 @@
 				this.getXmTaskExecusers();
 				});
 
-			listOption([{categoryId:'all',itemCode:'projectTaskExecuserStatus'},{categoryId:'all',itemCode:'projectTaskSettleStatus'}]).then(res=>{
-				this.options=res.data.data;
+			initSimpleDicts('all',['projectTaskExecuserStatus','projectTaskSettleStatus']).then(res=>{
+				this.dicts=res.data.data;
 			})
 		}
 	}

@@ -68,14 +68,14 @@
 							<el-col :span="8">
 								<el-form-item  label="紧急程度" prop="level">  
 									<el-select v-model="addForm.level">
-											<el-option v-for="i in options.urgencyLevel" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option> 
+											<el-option v-for="i in dicts.urgencyLevel" :label="i.name" :key="i.id" :value="i.id"></el-option> 
 									</el-select>    
 								</el-form-item>  
 							</el-col>
 							<el-col :span="8">
 								<el-form-item  label="类型" prop="taskType">   
 									<el-select v-model="addForm.taskType">
-										<el-option v-for="i in this.options.taskType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+										<el-option v-for="i in this.dicts.taskType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 									</el-select>  
 								</el-form-item>   
 							</el-col>
@@ -106,7 +106,7 @@
 						<el-form-item label="预计时间">
 								<el-tooltip content="计划类型">
 									<el-select v-model=" addForm.planType" style="width:20%;">
-										<el-option v-for="i in this.options.planType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+										<el-option v-for="i in this.dicts.planType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 									</el-select>
 								</el-tooltip>
 								<el-date-picker
@@ -149,7 +149,7 @@
 						</el-form-item>
 						<el-form-item v-if="addForm.taskClass=='1'" label="结算方案" prop="settlSchemel">
 							<el-select v-model=" addForm.settleSchemel">
-								<el-option v-for="i in options.xmTaskSettleSchemel" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+								<el-option v-for="i in dicts.xmTaskSettleSchemel" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>
 						</el-form-item>
 					</el-collapse-item>
@@ -203,7 +203,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import {addTask,addXmTask } from '@/api/xm/core/xmTask';
 	import { mapGetters } from 'vuex';
  	import {sn} from '@/common/js/sequence';
@@ -254,7 +254,7 @@
 			const endDate = new Date();
 			endDate.setTime(beginDate.getTime() + 3600 * 1000 * 24 * 7 * 4);
 			return {
-				options:{
+				dicts:{
 					urgencyLevel:[],
 					taskType:[],
 					planType:[],
@@ -573,8 +573,8 @@
 		},
 		mounted() { 
  			this.initData();
- 			listOption([{categoryId:'all',itemCode:'planType'},{categoryId:'all',itemCode:'taskType'},{categoryId:'all',itemCode:'urgencyLevel'},{categoryId:'all',itemCode:'priority'},{categoryId:'all',itemCode:'xmTaskSettleSchemel'}]).then(res=>{
-				this.options=res.data.data;
+ 			initSimpleDicts('all',['planType','taskType','urgencyLevel','priority','xmTaskSettleSchemel']).then(res=>{
+				this.dicts=res.data.data;
 			})
 			/**在下面写其它函数***/
 

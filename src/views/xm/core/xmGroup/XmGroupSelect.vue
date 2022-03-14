@@ -41,7 +41,7 @@
 <script>
 	import util from '@/common/js/util'; //全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
    	import {  getGroups } from '@/api/xm/core/xmGroup';
    	import XmProjectList from '../xmProject/XmProjectList';
 
@@ -94,7 +94,7 @@ import XmProductSelect from '../xmProduct/XmProductSelect.vue';
 				selGroups:[],
 				load: {list: false,edit: false,del: false,add: false}, //查询中...
 				sels: [], //列表选中数据
-				options: {
+				dicts: {
 					projectGroupType:[]
 				}, //下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
 

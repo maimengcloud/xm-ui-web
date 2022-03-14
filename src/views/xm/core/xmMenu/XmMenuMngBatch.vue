@@ -33,16 +33,16 @@
 					<el-table-column  label="需求属性" width="500" >  
 						<template slot-scope="scope"> 
 							 <el-select v-model="scope.row.dtype" clearable placeholder="需求类型">
-								<el-option v-for="i in options.demandType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+								<el-option v-for="i in dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>    
 							<el-select v-model="scope.row.source" placeholder="需求来源"  clearable>
-								<el-option v-for="i in options.demandSource" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+								<el-option v-for="i in dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>     
 							<el-select v-model="scope.row.dlvl" placeholder="需求层次"  clearable class="hidden-md-and-down">
-								<el-option v-for="i in options.demandLvl" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+								<el-option v-for="i in dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>    
 							<el-select v-model="scope.row.priority" placeholder="优先级"  clearable>
-									<el-option v-for="i in options.priority" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option> 
+									<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option> 
 							</el-select>  
 						</template>
 					</el-table-column> 
@@ -73,7 +73,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import treeTool from '@/common/js/treeTool';//全局公共库
- 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+ 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import {  batchEditXmMenu,listXmMenuWithState } from '@/api/xm/core/xmMenu';
     	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
  

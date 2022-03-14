@@ -11,12 +11,12 @@
 				</el-form-item> 
 				<el-form-item  label="计划类型" prop="planType"> 
 					<el-select v-model="addForm.planType">
-						<el-option v-for="i in this.options.planType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+						<el-option v-for="i in this.dicts.planType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 					</el-select>
 				</el-form-item>
 				<el-form-item  label="任务类型" prop="taskType"> 
 					<el-select v-model="addForm.taskType">
-						<el-option v-for="i in this.options.taskType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+						<el-option v-for="i in this.dicts.taskType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 					</el-select>
 				</el-form-item>
 				<el-form-item label="备注" prop="remark">
@@ -53,7 +53,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询 
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询 
 	import { addXmPhaseTemplate } from '@/api/xm/core/xmPhaseTemplate';
 	import { mapGetters } from 'vuex'
 	
@@ -105,7 +105,7 @@
 	    },
 		data() {
 			return {
-				options:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				addFormRules: {
 					id: [
@@ -208,12 +208,11 @@
 			if(this.selProjectTemplate){
 				this.addForm.projectId=this.selProjectTemplate.id
 				this.addForm.projectName=this.selProjectTemplate.projectName
-			}
-			/**在下面写其它函数***/
-			listOption([{categoryId:'all',itemCode:'planType'},{categoryId:'all',itemCode:'taskType'}]).then(res=>{
-				this.options=res.data.data;
+			} 
+			
+			initSimpleDicts('all',['planType','taskType']).then(res=>{
+				this.dicts=res.data.data;
 			})
-
 			
 		}//end mounted
 	}

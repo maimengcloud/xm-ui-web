@@ -276,7 +276,7 @@
 import util from "@/common/js/util"; //全局公共库
 import treeTool from "@/common/js/treeTool"; //全局公共库
 //import Sticky from '@/components/Sticky' // 粘性header组件
-import { listOption } from "@/api/mdp/meta/itemOption"; //下拉框数据查询
+import { initSimpleDicts } from '@/api/mdp/meta/item'; //下拉框数据查询
 import {
   listXmPhase,
   delXmPhase,
@@ -420,7 +420,7 @@ export default {
       },
       load: { list: false, edit: false, del: false, add: false }, //查询中...
       sels: [], //列表选中数据
-      options: {
+      dicts: {
         xmPhaseStatus: [],
       }, //下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
 
@@ -1587,12 +1587,12 @@ export default {
     },
     /**end 自定义函数请在上面加**/
     formateOption: function (itemCode, value) {
-      if (this.options[itemCode]) {
-        var options = this.options[itemCode].filter(
-          (i) => i.optionValue == value
+      if (this.dicts[itemCode]) {
+        var options = this.dicts[itemCode].filter(
+          (i) => i.id == value
         );
-        if (options && options.length > 0) {
-          return options[0].optionName;
+        if (options && dicts.length > 0) {
+          return options[0].name;
         } else {
           return value;
         }
@@ -1739,13 +1739,10 @@ export default {
       this.tableHeight = util.calcTableMaxHeight(this.$refs.table.$el)
       if (this.selProject) {
         this.getXmPhases();
-      }
-
-      listOption([{ categoryId: "all", itemCode: "xmPhaseStatus" }]).then(
-        (res) => {
-          this.options = res.data.data;
-        }
-      );
+      } 
+			initSimpleDicts('all',['xmPhaseStatus']).then(res=>{
+				this.dicts=res.data.data;
+			})
     });
     // 阻止默认行为
     document.body.ondrop = function (event) {
