@@ -7,6 +7,9 @@
 					<el-form-item label="" prop="ntype">
 						 <el-radio :disabled="parentTask&&parentTask.id&&parentTask.ntype==='0'" v-model="addForm.ntype" label="1">计划项</el-radio>
 						 <el-radio v-model="addForm.ntype" label="0">任务</el-radio>
+						 <br>
+						 <font v-if="addForm.ntype==='0'" color="red" style="font-size:12px;">任务：任务一般不再包含子任务；建议细分到一个人一天或者几天内能完成这种粒度，任务的预算不能大于上一级预算。</font> 
+						 <font v-if="addForm.ntype==='1'" color="red" style="font-size:12px;">计划：计划负责分解上级预算，汇总统计下级实际数据，计划下包含子计划或者子任务</font>
 					</el-form-item>
 					<el-form-item v-if="addForm.ptype==='0'" label="归属项目" prop="projectId">
 						<el-tag>{{addForm.projectName}}</el-tag>
@@ -17,7 +20,9 @@
 					</el-form-item>
 					<el-form-item label="上级" prop="parentTaskname">  
 						<el-tag v-if="addForm.parentTaskid"  @close="clearParentTask" closable >{{addForm.parentTaskname}}</el-tag>
-						<el-button  type="text"  @click.stop="selectParentTaskVisible=true"  >选上级</el-button><font color="red" style="font-size:12px;">&nbsp;&nbsp;请尽量选择上级,对任务进行归类，方便排版和操作</font>
+						<el-button  type="text"  @click.stop="selectParentTaskVisible=true"  >选上级</el-button>
+						<br>
+						<font color="red" style="font-size:12px;">&nbsp;&nbsp;任务数多的情况下，请尽量设置上级,对任务进行归类，方便对其进行管理</font>
 					</el-form-item>
 					<el-form-item label="名称" prop="name"> 
 							<el-input style="width:100%;" v-model="addForm.name" placeholder="名称" ></el-input>  

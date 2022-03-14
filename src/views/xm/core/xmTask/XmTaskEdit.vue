@@ -7,16 +7,26 @@
 					<el-form-item label="" prop="ntype">
 						 <el-radio v-model="editForm.ntype" label="1">计划项</el-radio>
 						 <el-radio v-model="editForm.ntype" label="0">任务</el-radio>
+						 
+						 <br>
+						 <font v-if="editForm.ntype==='0'" color="red" style="font-size:12px;">任务：任务一般不再包含子任务；建议细分到一个人一天或者几天内能完成这种粒度，任务的预算不能大于上一级预算。</font> 
+						 <font v-if="editForm.ntype==='1'" color="red" style="font-size:12px;">计划：计划负责分解上级预算，汇总统计下级实际数据，计划下包含子计划或者子任务</font>
+					</el-form-item> 
+					<el-form-item v-if="editForm.ptype==='0'" label="归属项目" prop="projectId"> 
+						{{editForm.projectName?editForm.projectName:editForm.projectId}}
 					</el-form-item>
-					<el-form-item label="名称" prop="name">
-						<el-row>
-						<el-col :span="24" style="padding-left:10px;">
-							<el-input v-model="editForm.name" placeholder="名称" ></el-input>
-							<el-tooltip content="归属项目"><el-tag>{{editForm.projectName}}</el-tag></el-tooltip>
-							<el-divider direction="vertical"></el-divider>
-							<el-tooltip content="上级" ><el-tag>{{editForm.parentTaskid?(editForm.parentTaskname?editForm.parentTaskname:editForm.parentTaskid):"无上级"}}</el-tag></el-tooltip>
-						</el-col>
-						</el-row>
+					
+					<el-form-item v-if="editForm.ptype==='1'" label="归属产品" prop="productId">
+						{{editForm.productName?editForm.productName:editForm.productId}}
+					</el-form-item>
+					
+					<el-form-item label="上级计划" prop="parentTaskname">  
+						<font v-if="editForm.parentTaskid" >{{editForm.parentTaskname?editForm.parentTaskname:editForm.parentTaskid}}</font> 
+						<font v-else>无上级(视为顶级)</font> 
+
+					</el-form-item>
+					<el-form-item label="名称" prop="name"> 
+							<el-input v-model="editForm.name" placeholder="名称" ></el-input>   
 					</el-form-item> 
 					<el-form-item label="序号" prop="sortLevel"> 
 						<el-input  v-model="editForm.sortLevel" style="width:30%;"   placeholder="如1.0或者1.2.3等" ></el-input> <font style="color:red;">如1.0或者1.2.3等</font>
