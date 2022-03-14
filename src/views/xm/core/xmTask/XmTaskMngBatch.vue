@@ -10,11 +10,6 @@
           >保存</el-button
         >
         <el-button
-          type="success"
-          @click="handlePopover(null, 'add')"
-          icon="el-icon-plus"
-        ></el-button>
-        <el-button
           @click="noBatchEdit"
           v-loading="load.edit"
           icon="el-icon-back"
@@ -42,37 +37,7 @@
         >
           <el-table-column type="selection" width="50" fixed="left"></el-table-column>
           <el-table-column prop="sortLevel" label="序号/名称" width="350" fixed="left">
-            <template slot-scope="scope"> 
-              <el-popover placement="top" width="400" trigger="click">
-                <div style="text-align: center; margin: 0">
-                  <div
-                    :ref="'task_' + scope.$index"
-                    :data-task-id="scope.row.id"
-                  ></div>
-				  <!--
-                  <el-button
-                    type="primary"
-                    @click="handlePopover(scope.row, 'highestPmenuId')"
-                    >成为顶级节点</el-button
-                  >
-				  -->
-                  <el-button
-                    type="danger"
-                    @click="handlePopover(scope.row, 'delete')"
-                    >删除当前行</el-button
-                  >
-                  <el-button
-                    type="success"
-                    @click="handlePopover(scope.row, 'addSub')"
-                    >增加子行</el-button
-                  >
-                </div>
-                <el-button
-                  slot="reference" 
-                  :type="scope.row.opType ? 'success' : 'plain'"
-                  icon="el-icon-edit"
-                ></el-button>
-              </el-popover>
+            <template slot-scope="scope">  
               <el-input
                 style="width: 100px"
                 v-model="scope.row.sortLevel"

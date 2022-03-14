@@ -2,7 +2,6 @@
 	<section class="padding">
 		<el-row v-if=" !batchEditVisible">  
 			<el-col :span="24" class="padding-left">
-				
 					<el-row>   
 						
 						<el-select v-model="filters.dtype" clearable placeholder="需求类型">
@@ -61,6 +60,8 @@
 							</el-row>   
 							<el-button type="primary"    slot="reference" icon="el-icon-plus">需求</el-button>
 						</el-popover>
+						
+						<el-button  @click="batchEditVisible=true">批量修改</el-button>
 						<el-button  @click="showParentMenu">更换上级</el-button>
  						<el-button  v-if="!selProject&&!xmIteration&&disabledMng!=false"  type="danger" @click="batchDel" icon="el-icon-delete">删除</el-button> 
 
@@ -164,7 +165,7 @@
 										 <span>{{scope.row.ctime}} </span>  
 								</template>
 							</el-table-column> 
-							<el-table-column prop="menuName" label="负责人"  min-width="100" show-overflow-tooltip> 
+							<el-table-column prop="menuName" label="跟进人"  min-width="100" show-overflow-tooltip> 
 								<template slot-scope="scope"> 
 										 <span>{{scope.row.mmUsername}} </span>  
 								</template>
@@ -195,7 +196,7 @@
 							</el-table-column>   
 							
 						</el-table>
-						<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+						
 							
 					</el-row> 
 				<!--编辑 XmMenu xm_project_menu界面-->
@@ -248,9 +249,10 @@
 			</el-col> 	 
 		</el-row>
 		
-		<el-row v-if="batchEditVisible && filters.product" :span="24">
-			<xm-menu-mng-batch :sel-project="selProject"  @no-batch-edit="noBatchEdit" :product="filters.product"></xm-menu-mng-batch>
+		<el-row v-if="batchEditVisible">
+			<xm-menu-mng-batch :xm-menus="xmMenus"  @no-batch-edit="noBatchEdit" :product="filters.product"></xm-menu-mng-batch>
 		</el-row>
+		<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		
 		<el-drawer append-to-body title="标签条件" :visible.sync="tagSelectVisible"  size="60%">
 			<tag-mng :tagIds="filters.tags?filters.tags.map(i=>i.tagId):[]" :jump="true" @select-confirm="onTagSelected">
@@ -313,7 +315,7 @@
 			
       xmMenusTreeData() {  
 				let xmMenus = JSON.parse(JSON.stringify(this.xmMenus || []));  
-				let xmMenusTreeData = treeTool.translateDataToTree(xmMenus,"pmenuId","id");  
+				let xmMenusTreeData = treeTool.translateDataToTree(xmMenus,"pmenuId","menuId");  
 				 return xmMenusTreeData;
 			},
 			isPmUser(){

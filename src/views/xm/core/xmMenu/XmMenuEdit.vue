@@ -37,11 +37,12 @@
 									</el-form-item>
 								</el-col>
 								<el-col :span="12">
-									<el-form-item v-if="parentMenu" label="需求池" prop="pmenuId"> 
-										<el-link type="primary"  :icon="'el-icon-folder-opened'">{{parentMenu.seqNo}} &nbsp; &nbsp; {{parentMenu.menuName}}</el-link> 
-									</el-form-item>  
-									<el-form-item v-if="!parentMenu" label="需求池" prop="pmenuId">
+									<el-form-item v-if="!editForm.pmenuId" label="需求池" prop="pmenuId">
 										无归属需求池
+									</el-form-item>  
+									
+									<el-form-item  v-else label="需求池" prop="pmenuId"> 
+										<el-link type="primary"  :icon="'el-icon-folder-opened'">  {{editForm.pmenuName?editForm.pmenuName:editForm.pmenuId}}</el-link> 
 									</el-form-item>  
 								</el-col>
 							</el-row> 
