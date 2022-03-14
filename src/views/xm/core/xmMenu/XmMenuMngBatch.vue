@@ -81,7 +81,7 @@
 	import { mapGetters } from 'vuex'
 	
 	export default { 
-		props:['product','xmMenus','options'],
+		props:['product','xmMenus','dicts'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
