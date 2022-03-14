@@ -44,6 +44,7 @@
 							</el-row>   
 							<el-button type="primary"    slot="reference" icon="el-icon-plus">需求</el-button>
 						</el-popover>
+						<el-button type="primary" @click="showParentMenu">更换上级</el-button>
  						<el-button  v-if="!selProject&&!xmIteration&&disabledMng!=false"  type="danger" @click="batchDel" icon="el-icon-delete">删除</el-button> 
 
 						<el-button class="hidden-md-and-down"  v-if=" batchEditVisible==false&&disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>  
@@ -237,6 +238,22 @@
 			<tag-mng :tagIds="filters.tags?filters.tags.map(i=>i.tagId):[]" :jump="true" @select-confirm="onTagSelected">
 			</tag-mng>
 		</el-drawer>
+		
+
+		<el-drawer
+		append-to-body
+		title="需求选择"
+		:visible.sync="parentMenuVisible"
+		size="70%"
+		:close-on-click-modal="false"
+		>
+		<xm-menu-select
+			:visible="parentMenuVisible"
+			:is-select-menu="true" 
+			@selected="onParentMenuSelected" 
+			:xm-product="filters.product"
+		></xm-menu-select>
+		</el-drawer> 
 	</section>
 </template>
 
@@ -245,7 +262,7 @@
 	import treeTool from '@/common/js/treeTool';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { listXmMenu, delXmMenu, batchDelXmMenu,batchAddXmMenu,batchEditXmMenu,listXmMenuWithState,listXmMenuWithPlan } from '@/api/xm/core/xmMenu';
+	import { listXmMenu, delXmMenu, batchDelXmMenu,batchAddXmMenu,batchEditXmMenu,listXmMenuWithState,listXmMenuWithPlan,batchChangeParentMenu } from '@/api/xm/core/xmMenu';
 	import { batchRelTasksWithMenu } from '@/api/xm/core/xmTask';
 	import { loadTasksToXmMenuState} from '@/api/xm/core/xmMenuState';
 
@@ -261,6 +278,8 @@
 	import XmTaskListForMenu from '../xmTask/XmTaskListForMenu';
 	import  XmIterationMng from '../xmIteration/XmIterationSelect';//修改界面
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
+	
+	import XmMenuSelect from "../xmMenu/XmMenuSelect";
   	import TagMng from "@/views/mdp/arc/tag/TagMng";
 
 	import {sn} from '@/common/js/sequence'
@@ -372,6 +391,7 @@
 				pickerOptions:  util.pickerOptions('datarange'),
 				productVisible:false,
 				tagSelectVisible:false,
+				parentMenuVisible:false,
 				maps:new Map(),
  				/**begin 自定义属性请在下面加 请加备注**/
 					
@@ -863,7 +883,41 @@
 					this.filters.tags=tags
 				}
 				this.searchXmMenus();
-			}
+			},
+			showParentMenu(){
+				if(this.filters.product && this.filters.product.id){
+					if(this.sels.length==0){
+						this.$notify({showClose:true,message:'请先选择一个或者多个需求',type:'warning'})
+						return;
+					}
+					this.parentMenuVisible=true;
+				}else{
+					this.$notify({showClose:true,message:'请先选择产品',type:'warning'})
+					return;
+				}
+				
+			},
+			onParentMenuSelected(menu){
+
+				if(!menu||!menu.menuId){
+					this.$notify({showClose:true,message:'请先选择一个上级需求',type:'warning'})
+					return;
+				}
+				this.parentMenuVisible=false;
+				var params={
+					menuIds:this.sels.map(i=>i.menuId),
+					pmenuId:menu.menuId
+				}
+				batchChangeParentMenu(params).then(res=>{
+					var tips = res.data.tips;
+					if(tips.isOk){
+						this.searchXmMenus();
+						var rows=[...this.sels,{menuId:'',pmenuId:menu.menuId}]
+						treeTool.reloadAllChildren(this.$refs.table,this.maps,rows,'pmenuId',this.loadXmMenusLazy)  
+					}
+					this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+				})
+			} 
 		},//end methods
 		components: { 
 		    'xm-menu-add':XmMenuAdd,
@@ -878,6 +932,7 @@
 			UsersSelect,
 			XmMenuMngBatch,
 		    TagMng,
+			XmMenuSelect,
 		    //在下面添加其它组件
 		},
 		mounted() {   

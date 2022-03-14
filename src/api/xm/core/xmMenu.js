@@ -40,3 +40,7 @@ export const batchAddXmMenu = params => { return axios.post(`${base}/xm/core/xmM
 export const batchEditXmMenu = params => { return axios.post(`${base}/xm/core/xmMenu/batchEdit`, params); };
 
 
+export const batchChangeParentMenu = params => { return axios.post(`${base}/xm/core/xmMenu/batchChangeParentMenu`, params); };
+
+
+
