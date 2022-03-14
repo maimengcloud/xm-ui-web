@@ -4,40 +4,77 @@
 			<!--新增界面 XmMenu 项目需求表--> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
 				
+				<el-collapse active="1" accordion>
+					<el-collapse-item title="基本信息" name="1" >
+						<el-form-item label="" prop="ntype">
+							<el-radio :disabled="parentMenu&&parentMenu.menuId&&parentTask.ntype==='0'" v-model="addForm.ntype" label="1">需求池</el-radio>
+							<el-radio v-model="addForm.ntype" label="0">需求</el-radio>
+							<br>
+							<font v-if="addForm.ntype==='0'" color="red" style="font-size:12px;">需求：建议按以下逻辑描述一个需求：什么人？做什么事？，为什么？</font> 
+							<font v-if="addForm.ntype==='1'" color="red" style="font-size:12px;">需求池：需求池下可建立子需求池或者需求。负责汇总统计下级数据，分解上级需求池预算。</font>
+						</el-form-item>
 
-				<el-form-item v-if="parentMenu" label="所属需求集" prop="pmenuId"> 
-					<el-link type="primary"  :icon="'el-icon-folder-opened'">{{parentMenu.seqNo}} &nbsp; &nbsp; {{parentMenu.menuName}}</el-link> 
-				</el-form-item> 
-				<el-form-item v-if="!parentMenu" label="所属需求集" prop="pmenuId">
-					无归属需求集
-				</el-form-item>  
-				<el-form-item label="名称" prop="menuName">
-					<el-input v-model="addForm.menuName" placeholder="名称" ></el-input>
-				</el-form-item>   
-				<el-form-item label="序号" prop="seqNo">
-					<el-input v-model="addForm.seqNo" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input>
-					<span v-if="parentMenu" style="color:red;">建议：{{parentMenu.seqNo}}.{{parentMenu.childrenCnt?parentMenu.childrenCnt+1:1}} </span> 
-				</el-form-item> 
-				<el-form-item label="负责人" prop="mmUserid">
-					 <el-tag v-if="addForm.mmUserid" closable @close="clearPmUser">{{addForm.mmUsername}}</el-tag>
-					 <el-tag v-else>未配置</el-tag> 
-					 <el-button @click="selectUser">选负责人</el-button>
-				</el-form-item>   
-				<el-form-item label="需求链接" prop="demandUrl"> 
-					<el-input v-model="addForm.demandUrl" placeholder="需求链接" ></el-input> 
-				</el-form-item>  
-				<el-form-item label="代码链接" prop="codeUrl">
-					<el-input v-model="addForm.codeUrl" placeholder="代码链接" ></el-input>  
-				</el-form-item>  
-				<el-form-item label="设计链接" prop="designUrl">
-					<el-input v-model="addForm.designUrl" placeholder="设计链接" ></el-input>  
-				</el-form-item>   
-				<el-form-item label="操作手册链接" prop="operDocUrl">
-					<el-input v-model="addForm.operDocUrl" placeholder="操作手册链接" ></el-input>  
-				</el-form-item>  
-				<el-form-item label="概述" prop="remark">
-					<el-input type="textarea" :autosize="{ minRows: 4, maxRows: 20}" v-model="addForm.remark" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
-				</el-form-item>  
+						<el-form-item v-if="parentMenu" label="所属需求池" prop="pmenuId"> 
+							<el-link type="primary"  :icon="'el-icon-folder-opened'">{{parentMenu.seqNo}} &nbsp; &nbsp; {{parentMenu.menuName}}</el-link> 
+						</el-form-item> 
+						<el-form-item v-if="!parentMenu" label="所属需求池" prop="pmenuId">
+							无归属需求池
+						</el-form-item>  
+						<el-form-item label="归属产品" prop="productId">
+							<el-tag v-if="addForm.productId">{{addForm.productName?addForm.productName:addForm.productId}}</el-tag>
+						</el-form-item>
+						<el-form-item label="名称" prop="menuName">
+							<el-input v-model="addForm.menuName" placeholder="名称" ></el-input>
+						</el-form-item>   
+						<el-form-item label="序号" prop="seqNo">
+							<el-input v-model="addForm.seqNo" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input>
+							<span v-if="parentMenu" style="color:red;">建议：{{parentMenu.seqNo}}.{{parentMenu.childrenCnt?parentMenu.childrenCnt+1:1}} </span> 
+						</el-form-item> 
+						
+						<el-form-item label="提出人" prop="proposerId">
+							<el-tag v-if="addForm.mmUserid" closable @close="clearPmUser">{{addForm.mmUsername}}</el-tag>
+							<el-tag v-else>未配置</el-tag> 
+							<el-button @click="selectUser">选负责人</el-button>
+						</el-form-item>   
+						<el-form-item label="跟进人" prop="mmUserid">
+							<el-tag v-if="addForm.mmUserid" closable @close="clearPmUser">{{addForm.mmUsername}}</el-tag>
+							<el-tag v-else>未配置</el-tag> 
+							<el-button @click="selectUser">选跟进人</el-button>
+						</el-form-item>   
+						<el-form-item label="概述" prop="remark">
+							<el-input type="textarea" :autosize="{ minRows: 4, maxRows: 20}" v-model="addForm.remark" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
+						</el-form-item>  
+					</el-collapse-item>
+					<el-collapse-item title="成本进度预估" name="2">
+						<el-form-item label="预估工期" prop="budgetHours">
+							<el-input-number style="width:200px;"  v-model="addForm.budgetHours"  :precision="2" :step="8" :min="0" placeholder="预计工期(小时)"></el-input-number>&nbsp;小时
+						</el-form-item> 
+						<el-form-item label="预估工作量" prop="budgetWorkload">
+							<el-input-number style="width:200px;"  v-model="addForm.budgetWorkload" :precision="2" :step="8" :min="0" placeholder="预计总工作量(人时,不包括下一级)"></el-input-number> <el-tag>人时，{{this.toFixed(addForm.budgetWorkload/8/20)}}人月</el-tag>
+						</el-form-item> 
+						<el-form-item label="预估金额" prop="budgetAmount">
+							  <el-input-number style="width:200px;"  v-model="addForm.budgetAmount" :precision="2" :step="100" :min="0" placeholder="预算金额"></el-input-number>   元 
+						</el-form-item> 
+					</el-collapse-item>
+					<el-collapse-item title="相关链接" name="3"> 
+						<el-form-item label="需求链接" prop="demandUrl"> 
+							<el-input v-model="addForm.demandUrl" placeholder="需求链接" ></el-input> 
+						</el-form-item>  
+						<el-form-item label="代码链接" prop="codeUrl">
+							<el-input v-model="addForm.codeUrl" placeholder="代码链接" ></el-input>  
+						</el-form-item>  
+						<el-form-item label="设计链接" prop="designUrl">
+							<el-input v-model="addForm.designUrl" placeholder="设计链接" ></el-input>  
+						</el-form-item>   
+						<el-form-item label="操作手册链接" prop="operDocUrl">
+							<el-input v-model="addForm.operDocUrl" placeholder="操作手册链接" ></el-input>  
+						</el-form-item>  
+					</el-collapse-item>
+					<el-collapse-item title="可控 Controllability" name="4">
+						<div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
+						<div>结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
+					</el-collapse-item>
+				</el-collapse>
 			</el-form>
 			
 			<el-drawer title="选择员工" :visible.sync="userSelectVisible" size="60%" append-to-body>
@@ -75,14 +112,18 @@
 	      },
 	      'visible':function(visible) { 
 	      	if(visible==true){
-				  if(this.parentMenu){
-					  if(this.parentMenu.children){
-						    this.addForm.seqNo=this.parentMenu.seqNo+"."+(this.parentMenu.children.length+1)
-					  }else{
-						  this.addForm.seqNo=this.parentMenu.seqNo+"."+1
-					  }
-					  
-				  }
+				if(this.parentMenu && this.parentMenu.menuId){
+					if(this.parentMenu.childrenCnt){
+						this.addForm.seqNo=this.parentMenu.seqNo+"."+(this.parentMenu.childrenCnt.length+1)
+					}else{
+						this.addForm.seqNo=this.parentMenu.seqNo+"."+1
+					}
+					
+				}
+				if(this.product && this.product.id){ 
+					this.addForm.productId=this.product.id
+					this.addForm.productName=this.product.productName
+				}
 	      		//从新打开页面时某些数据需要重新加载，可以在这里添加
 	      	}
 	      } 
@@ -127,7 +168,7 @@
 					return;
 				}
 				if(this.parentMenu && this.parentMenu.ntype=="0"){
-					 this.$notify({showClose: true, message: '需求集下不能再建立子需求', type:'error' }); 
+					 this.$notify({showClose: true, message: '需求池下不能再建立子需求', type:'error' }); 
 					return;
 				}
 				this.$refs.addForm.validate((valid) => {
@@ -173,9 +214,16 @@
 			clearPmUser:function(){
 				this.addForm.mmUserid=''
 				this.addForm.mmUsername=''
-			}
+			},
 			/**begin 在下面加自定义方法,记得补上面的一个逗号**/
 				
+			toFixed(floatValue){
+				if(floatValue ==null || floatValue=='' || floatValue == undefined){
+					return 0;
+				}else{
+					return parseFloat(floatValue).toFixed(2);
+				}
+			},
 			/**end 在上面加自定义方法**/
 			
 		},//end method
@@ -187,6 +235,10 @@
 			this.addForm=Object.assign(this.addForm, this.xmMenu);  
 			this.addForm.mmUserid=this.userInfo.userid
 			this.addForm.mmUsername=this.userInfo.username
+			if(this.product){
+				this.addForm.productId=this.product.id
+				this.addForm.productName=this.product.productName 
+			}
 			this.addForm.remark="作为   ，我需要   ，以便我能够   。"
 			if(this.parentMenu){
 				if(this.parentMenu.childrenCnt){

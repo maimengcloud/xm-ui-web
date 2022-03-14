@@ -393,7 +393,7 @@
 			},
 			onSelectedMenu(menu){
 				if(menu.ntype=='1'){
-					this.$notify({showClose: true, message: "您选择的【"+menu.menuName+"】属于需求集，请重新选择。建议选择树中叶子节点", type: 'error' });
+					this.$notify({showClose: true, message: "您选择的【"+menu.menuName+"】属于需求池，请重新选择。建议选择树中叶子节点", type: 'error' });
 					return;
 				}
 				this.editForm.menuId=menu.menuId

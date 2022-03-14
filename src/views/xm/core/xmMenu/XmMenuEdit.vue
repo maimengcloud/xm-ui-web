@@ -5,7 +5,7 @@
 				<el-tab-pane  label="需求详情">
 					<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
 						<el-row class="padding-bottom"> 
-						<el-steps :active="parseInt(editForm.status)" simple finish-status="success" align-center>
+						<el-steps :active="parseInt(editForm.status)+1" simple finish-status="success" align-center>
 							<el-step v-for="(item,index) in dicts.menuStatus" @click.native="on_click(item.id)" :title="item.name" :key="index"></el-step> 
 						</el-steps>
 						</el-row> 
