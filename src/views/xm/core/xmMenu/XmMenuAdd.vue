@@ -71,21 +71,21 @@
 							</el-form-item>  
 							</el-col>
 						</el-row>
-						<el-row>
-							<el-col :span="12">
-								<el-form-item label="提出人" prop="proposerId">
-									<el-tag type="text" v-if="addForm.mmUserid" closable @close="clearPmUser">{{addForm.mmUsername}}</el-tag> 
-									<el-button type="text" @click="selectUser">选负责人</el-button>
-								</el-form-item>   
-							</el-col>
-							<el-col  :span="12">
-								<el-form-item label="跟进人" prop="mmUserid">
-									<el-tag type="text" v-if="addForm.mmUserid" closable @close="clearPmUser">{{addForm.mmUsername}}</el-tag> 
-									<el-button type="text" @click="selectUser">选跟进人</el-button>
-								</el-form-item>   
-							</el-col>
-						</el-row> 
-					</el-collapse-item>
+							<el-row>
+								<el-col :span="12">
+									<el-form-item label="提出人" prop="proposerId">
+										<el-tag type="text" v-if="addForm.proposerId" closable @close="clearProposer">{{addForm.proposerName}}</el-tag> 
+										<el-button type="text" @click="selectProposer">选提出人</el-button>
+									</el-form-item>   
+								</el-col>
+								<el-col  :span="12">
+									<el-form-item label="跟进人" prop="mmUserid">
+										<el-tag type="text" v-if="addForm.mmUserid" closable @close="clearMmUser">{{addForm.mmUsername}}</el-tag> 
+										<el-button type="text" @click="mmUserSelectVisible=true">选跟进人</el-button>
+									</el-form-item>   
+								</el-col>
+							</el-row>
+					</el-collapse-item> 
 						<el-collapse-item title="需求概述" name="4"> 
 							<el-form-item label="需求概述" prop="remark">
 								<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="addForm.remark" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
@@ -119,9 +119,13 @@
 				</el-collapse>
 			</el-form>
 			
-			<el-drawer title="选择员工" :visible.sync="userSelectVisible" size="60%" append-to-body>
-				<users-select  @confirm="onUserSelected" ref="usersSelect"></users-select>
-			</el-drawer>	
+			<el-drawer title="选择提出人" :visible.sync="proposerSelectVisible" size="60%" append-to-body>
+				<users-select  @confirm="onProposerSelected" ref="usersSelect"></users-select>
+			</el-drawer>
+			
+			<el-drawer title="选择跟进人" :visible.sync="mmUserSelectVisible" size="60%" append-to-body>
+				<users-select  @confirm="onMmUserSelected" ref="mmUsersSelect"></users-select>
+			</el-drawer>
 			
 		</el-row>
 		<el-row class="padding">
@@ -190,9 +194,11 @@
 				},
 				//新增界面数据 项目需求表
 				addForm: {
-						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'1',mmUserid:'',mmUsername:'',ntype:'0',childrenCnt:0,sinceVersion:''
+						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'1',mmUserid:'',mmUsername:'',ntype:'0',childrenCnt:0,sinceVersion:'',
+					proposerId:'',proposerName:'',dlvl:'',dtype:'',priority:'',source:''
 				},
-				userSelectVisible:false,
+				proposerSelectVisible:false,
+				mmUserSelectVisible:false,
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				
 				/**end 在上面加自定义属性**/
@@ -246,17 +252,28 @@
 					}
 				});
 			},
-			selectUser(){
-				this.userSelectVisible=true;
+			selectProposer(){
+				this.proposerSelectVisible=true;
 			},
-			onUserSelected(users){
+			onProposerSelected(users){
+				if(users && users.length>0){
+					this.addForm.proposerId=users[0].userid
+					this.addForm.proposerName=users[0].username
+				}
+				this.proposerSelectVisible=false
+			},
+			clearProposer:function(){
+				this.addForm.proposerId=''
+				this.addForm.proposerName=''
+			},
+			onMmUserSelected(users){
 				if(users && users.length>0){
 					this.addForm.mmUserid=users[0].userid
 					this.addForm.mmUsername=users[0].username
 				}
-				this.userSelectVisible=false
+				this.mmUserSelectVisible=false
 			},
-			clearPmUser:function(){
+			clearMmUser:function(){
 				this.addForm.mmUserid=''
 				this.addForm.mmUsername=''
 			},

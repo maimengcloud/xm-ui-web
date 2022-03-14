@@ -79,14 +79,14 @@
 							<el-row>
 								<el-col :span="12">
 									<el-form-item label="提出人" prop="proposerId">
-										<el-tag type="text" v-if="editForm.mmUserid" closable @close="clearPmUser">{{editForm.mmUsername}}</el-tag> 
-										<el-button type="text" @click="selectUser">选负责人</el-button>
+										<el-tag type="text" v-if="editForm.proposerId" closable @close="clearProposer">{{editForm.proposerName}}</el-tag> 
+										<el-button type="text" @click="selectProposer">选提出人</el-button>
 									</el-form-item>   
 								</el-col>
 								<el-col  :span="12">
 									<el-form-item label="跟进人" prop="mmUserid">
-										<el-tag type="text" v-if="editForm.mmUserid" closable @close="clearPmUser">{{editForm.mmUsername}}</el-tag> 
-										<el-button type="text" @click="selectUser">选跟进人</el-button>
+										<el-tag type="text" v-if="editForm.mmUserid" closable @close="clearMmUser">{{editForm.mmUsername}}</el-tag> 
+										<el-button type="text" @click="mmUserSelectVisible=true">选跟进人</el-button>
 									</el-form-item>   
 								</el-col>
 							</el-row>
@@ -136,8 +136,12 @@
 					<xm-menu-exchange-mng :xm-menu="xmMenu"></xm-menu-exchange-mng>
 				</el-tab-pane>
 			</el-tabs>
-			<el-drawer title="选择员工" :visible.sync="userSelectVisible" size="60%" append-to-body>
-				<users-select  @confirm="onUserSelected" ref="usersSelect"></users-select>
+			<el-drawer title="选择提出人" :visible.sync="proposerSelectVisible" size="60%" append-to-body>
+				<users-select  @confirm="onProposerSelected" ref="usersSelect"></users-select>
+			</el-drawer>
+			
+			<el-drawer title="选择跟进人" :visible.sync="mmUserSelectVisible" size="60%" append-to-body>
+				<users-select  @confirm="onMmUserSelected" ref="mmUsersSelect"></users-select>
 			</el-drawer>
 		</el-row>
 			
@@ -196,9 +200,11 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 				},
 				//新增界面数据 项目需求表
 				editForm: {
-						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'1',mmUserid:'',mmUsername:'',ntype:'0',childrenCnt:0,sinceVersion:''
+						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'1',mmUserid:'',mmUsername:'',ntype:'0',childrenCnt:0,sinceVersion:'',
+						proposerId:'',proposerName:'',dlvl:'',dtype:'',priority:'',source:''
 				},
-				userSelectVisible:false,
+				proposerSelectVisible:false,
+				mmUserSelectVisible:false,
 				dicts:{
 					menuStatus:[
 						
@@ -252,17 +258,28 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 					}
 				});
 			},
-			selectUser(){
-				this.userSelectVisible=true;
+			selectProposer(){
+				this.proposerSelectVisible=true;
 			},
-			onUserSelected(users){
+			onProposerSelected(users){
+				if(users && users.length>0){
+					this.editForm.proposerId=users[0].userid
+					this.editForm.proposerName=users[0].username
+				}
+				this.proposerSelectVisible=false
+			},
+			clearProposer:function(){
+				this.editForm.proposerId=''
+				this.editForm.proposerName=''
+			},
+			onMmUserSelected(users){
 				if(users && users.length>0){
 					this.editForm.mmUserid=users[0].userid
 					this.editForm.mmUsername=users[0].username
 				}
-				this.userSelectVisible=false
+				this.mmUserSelectVisible=false
 			},
-			clearPmUser:function(){
+			clearMmUser:function(){
 				this.editForm.mmUserid=''
 				this.editForm.mmUsername=''
 			},
