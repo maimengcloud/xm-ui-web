@@ -82,12 +82,7 @@
 								</el-form-item>   
 							</el-col>
 						</el-row> 
-
-						<el-form-item :label="editForm.ntype=='1'?'计划描述':'任务描述'" prop="description">
-							<el-input type="textarea" :autosize="{ minRows: 4, maxRows: 10}" v-model="editForm.description" :placeholder="editForm.ntype=='1'?'计划描述':'任务描述'" ></el-input>
-						</el-form-item>   
-					</el-collapse-item>
-					<el-collapse-item title="进度预测" name="2">
+						
 						<el-form-item label="负责人"> 
 							<el-tag  v-if="editForm.createUserid" style="margin-left:10px;border-radius:30px;"  >{{editForm.createUsername}}</el-tag>
 							<el-button  @click="showGroupUserSelect(editForm)" icon="el-icon-setting">设置负责人</el-button>
@@ -96,6 +91,11 @@
 							<el-tag  v-if="editForm.executorUserid" style="margin-left:10px;border-radius:30px;"  >{{editForm.executorUsername}}</el-tag>
 							<el-button  @click="execGroupUserSelectVisible=true" icon="el-icon-setting">设置执行人</el-button>
 						</el-form-item>
+						<el-form-item :label="editForm.ntype=='1'?'计划描述':'任务描述'" prop="description">
+							<el-input type="textarea" :autosize="{ minRows: 4, maxRows: 10}" v-model="editForm.description" :placeholder="editForm.ntype=='1'?'计划描述':'任务描述'" ></el-input>
+						</el-form-item>   
+					</el-collapse-item>
+					<el-collapse-item title="进度预测" name="2">
 						<el-form-item label="预计时间"> 
 								<el-tooltip content="计划类型">
 									<el-select v-model=" editForm.planType" style="width:20%;">
@@ -201,10 +201,10 @@
 			<xm-skill-mng :visible="skillVisible" :task-id="editForm.id" @cancel="skillVisible=false" @getSkill="getSkill"></xm-skill-mng>
 		</el-drawer> -->
 		<el-drawer append-to-body title="选择执行人"  :visible.sync="execGroupUserSelectVisible" size="60%"    :close-on-click-modal="false">
-			<xm-group-select :visible="execGroupUserSelectVisible" :sel-project="xmProject" :isSelectSingleUser="1" @user-confirm="execGroupUserSelectConfirm"></xm-group-select>
+			<xm-group-select :pgClass="editForm.ptype" :xm-product="editForm.productId?{id:editForm.productId,productName:''}:null" :visible="execGroupUserSelectVisible" :sel-project="xmProject" :isSelectSingleUser="1" @user-confirm="execGroupUserSelectConfirm"></xm-group-select>
 		</el-drawer>
 		<el-drawer append-to-body title="选择负责人"  :visible.sync="groupUserSelectVisible" size="60%"    :close-on-click-modal="false">
-			<xm-group-select :visible="groupUserSelectVisible" :sel-project="xmProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-group-select>
+			<xm-group-select :pgClass="editForm.ptype" :xm-product="editForm.productId?{id:editForm.productId,productName:''}:null" :visible="groupUserSelectVisible" :sel-project="xmProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-group-select>
 		</el-drawer>
 		<el-drawer append-to-body title="新增技能"  :visible.sync="skillVisible" size="60%"    :close-on-click-modal="false">
 			<skill-mng :task-skills="taskSkills" :jump="true" @select-confirm="onTaskSkillsSelected"></skill-mng>
@@ -215,7 +215,7 @@
 		</el-drawer>
 		
 		<el-drawer title="选中任务"  :visible.sync="selectTaskVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
-			<xm-task-list  :sel-project="xmProject"   @task-selected="onSelectedTask"></xm-task-list>
+			<xm-task-list :ptype="editForm.ptype" :xm-product="{id:editForm.productId,productName:''}" :sel-project="xmProject"   @task-selected="onSelectedTask"></xm-task-list>
 		</el-drawer> 	
 		
 		<el-drawer :title="'任务'+editForm.name+'的候选人'"  :visible.sync="execUserVisible" fullscreen size="60%" append-to-body  :close-on-click-modal="false">

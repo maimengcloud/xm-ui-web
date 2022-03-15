@@ -920,6 +920,7 @@
         :visible="menuGroupUser"
         :sel-project="selProject"
         :isSelectSingleUser="1"
+        :ptype="ptype"
         @user-confirm="seleConfirm"
       ></xm-group-select>
     </el-drawer>
@@ -934,6 +935,7 @@
         :visible="menuExecutor"
         :sel-project="selProject"
         :isSelectSingleUser="1"
+        :ptype="ptype"
         @user-confirm="seleExecutor"
       ></xm-group-select>
     </el-drawer>
@@ -961,6 +963,7 @@
         :visible="groupUserSelectVisible"
         :sel-project="selProject"
         :isSelectSingleUser="1"
+        :ptype="ptype"
         @user-confirm="groupUserSelectConfirm"
       ></xm-group-select>
     </el-drawer>
@@ -2423,15 +2426,22 @@ export default {
       
     },
     showParentTaskList(){ 
-      if(this.filters.selProject && this.filters.selProject.id){
-        if(this.sels.length==0){
-          this.$notify({showClose:true,message:"请先选择一个或者多个需要更换上级的计划/任务",type:'warning'})
-          return;
-        }
-         this.selectParentTaskVisible=true
-      }else{
-        this.$notify({showClose:true,message:"请先选择项目",type:'warning'})
+      if(this.sels.length==0){
+        this.$notify({showClose:true,message:"请先选择一个或者多个需要更换上级的计划/任务",type:'warning'})
+        return;
       }
+      if(this.ptype==='0'){
+        if( !this.filters.selProject|| !this.filters.selProject.id){ 
+           this.$notify({showClose:true,message:"请先选择项目",type:'warning'})
+           return;
+        }  
+      }else if(this.ptype==='1'){
+        if( !this.filters.product|| !this.filters.product.id){ 
+           this.$notify({showClose:true,message:"请先选择产品",type:'warning'})
+           return;
+        }
+      }
+      this.selectParentTaskVisible=true
      
     },
     onSelectedParentTask(task){

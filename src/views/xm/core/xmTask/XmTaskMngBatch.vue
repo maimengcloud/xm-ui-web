@@ -225,6 +225,7 @@
         :visible="batchExecUserSelectVisible"
         :sel-project="selProject"
         :isSelectSingleUser="1"
+        :ptype="ptype"
         @user-confirm="batchExecUserSelectConfirm"
       ></xm-group-select>
     </el-drawer>
@@ -240,6 +241,7 @@
         :visible="batchGroupUserSelectVisible"
         :sel-project="selProject"
         :isSelectSingleUser="1"
+        :ptype="ptype"
         @user-confirm="batchCreateUserSelectConfirm"
       ></xm-group-select>
     </el-drawer>
