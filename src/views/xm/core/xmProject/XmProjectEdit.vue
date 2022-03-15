@@ -10,57 +10,65 @@
 			</el-steps>
 		</el-row>
 		<el-row class="page-main" ref="table" :style="{overflowX:'auto',height:maxTableHeight+'px'}">  
-				<el-form :model="editForm"  label-width="150px" :rules="editFormRules" ref="editForm" class="editForm">   
-						<el-form-item label="项目编号|名称" prop="name">
-							<el-input v-model="editForm.code" placeholder="项目编号，不可为空" style="width:20%;" ></el-input><el-input style="width:80%;" v-model="editForm.name" placeholder="项目名称" ></el-input>
-						</el-form-item>  
-						<el-form-item label="项目属性" prop="xmType"> 
-							<el-select v-model="editForm.xmType">
-								<el-option v-for="(i,index) in dicts['projectType']" :label="i.name" :value="i.id" :key="index"></el-option> 
-							</el-select>   
-							<el-select v-model="editForm.urgent">
-								<el-option v-for="(i,index) in dicts['urgencyLevel']" :label="i.name" :value="i.id" :key="index"></el-option> 
-							</el-select>    
-							<el-select v-model="editForm.priority">
-								<el-option v-for="(i,index) in dicts['priority']" :label="i.name" :value="i.id" :key="index"></el-option> 
-							</el-select> 
-						</el-form-item>   
-						<el-form-item label="预算控制"> 
-							<el-form-item prop="budgetCtrl">
-								<el-checkbox  v-model="editForm.budgetCtrl"  true-label="1" false-label="0" >总预算控制</el-checkbox>  
-								<font style="font-size:12px;" color="red">项目计划总预算不能大于项目总预算</font> 
+				<el-form :model="editForm"  label-width="150px" :rules="editFormRules" ref="editForm" class="editForm">
+
+					<el-collapse value="1" accordion>
+						<el-collapse-item title="基本信息" name="1">
+							<el-form-item label="项目编号|名称" prop="name">
+								<el-input v-model="editForm.code" placeholder="项目编号，不可为空" style="width:20%;" ></el-input><el-input style="width:80%;" v-model="editForm.name" placeholder="项目名称" ></el-input>
 							</el-form-item>  
-							<el-form-item label="" prop="phaseBudgetCtrl">
-								<el-checkbox  v-model="editForm.phaseBudgetCtrl"  true-label="1" false-label="0" >项目计划预算控制</el-checkbox> 
-								<font style="font-size:12px;" color="red">下级计划总预算不能大于上级计划总预算；每条计划的预算金额必须大于其关联任务的预算合计。</font> 
+							<el-form-item label="项目属性" prop="xmType"> 
+								<el-select v-model="editForm.xmType">
+									<el-option v-for="(i,index) in dicts['projectType']" :label="i.name" :value="i.id" :key="index"></el-option> 
+								</el-select>   
+								<el-select v-model="editForm.urgent">
+									<el-option v-for="(i,index) in dicts['urgencyLevel']" :label="i.name" :value="i.id" :key="index"></el-option> 
+								</el-select>    
+								<el-select v-model="editForm.priority">
+									<el-option v-for="(i,index) in dicts['priority']" :label="i.name" :value="i.id" :key="index"></el-option> 
+								</el-select> 
+							</el-form-item>   
+							<el-form-item label="预算控制"> 
+								<el-form-item prop="budgetCtrl">
+									<el-checkbox  v-model="editForm.budgetCtrl"  true-label="1" false-label="0" >总预算控制</el-checkbox>  
+									<font style="font-size:12px;" color="red">项目计划总预算不能大于项目总预算</font> 
+								</el-form-item>  
+								<el-form-item label="" prop="phaseBudgetCtrl">
+									<el-checkbox  v-model="editForm.phaseBudgetCtrl"  true-label="1" false-label="0" >项目计划预算控制</el-checkbox> 
+									<font style="font-size:12px;" color="red">下级计划总预算不能大于上级计划总预算；每条计划的预算金额必须大于其关联任务的预算合计。</font> 
+								</el-form-item> 
+								<el-form-item label="" prop="phaseActCtrl">
+									<el-checkbox  v-model="editForm.phaseActCtrl"  true-label="1" false-label="0" >实际金额控制</el-checkbox>  
+									<font style="font-size:12px;" color="red">每条计划实际金额不能大于预算金额;每条计划的预算金额必须大于其关联的任务的实际金额合计。</font> 
+								</el-form-item> 
+							
+							</el-form-item>	  
+							<el-row>
+								<el-col :span="8">
+							<el-form-item label="总控"  prop="admUserid">
+								<el-input readonly v-model="editForm.admUsername" @click.native="showUserVisible('admUserid')"></el-input>
+								<font style="font-size:12px;" color="red"></font> 
+							</el-form-item>  
+								</el-col>
+								<el-col :span="8">
+							<el-form-item label="项目经理" prop="pmUserid"> 
+								<el-input readonly v-model="editForm.pmUsername" @click.native="showUserVisible('pmUserid')"></el-input>
+								<font style="font-size:12px;" color="red"></font> 
 							</el-form-item> 
-							<el-form-item label="" prop="phaseActCtrl">
-								<el-checkbox  v-model="editForm.phaseActCtrl"  true-label="1" false-label="0" >实际金额控制</el-checkbox>  
-								<font style="font-size:12px;" color="red">每条计划实际金额不能大于预算金额;每条计划的预算金额必须大于其关联的任务的实际金额合计。</font> 
-							</el-form-item> 
-						
-						</el-form-item>	  
-						<el-row>
-							<el-col :span="8">
-						<el-form-item label="总控"  prop="admUserid">
-							<el-input readonly v-model="editForm.admUsername" @click.native="showUserVisible('admUserid')"></el-input>
-							<font style="font-size:12px;" color="red"></font> 
-						</el-form-item>  
-							</el-col>
-							<el-col :span="8">
-						<el-form-item label="项目经理" prop="pmUserid"> 
-							<el-input readonly v-model="editForm.pmUsername" @click.native="showUserVisible('pmUserid')"></el-input>
-							<font style="font-size:12px;" color="red"></font> 
-						</el-form-item> 
-							</el-col>
-							<el-col :span="8">
-						<el-form-item label="副经理、助理" prop="assUserid"> 
-							<el-input readonly v-model="editForm.assUsername" @click.native="showUserVisible('assUserid')"></el-input>
-							<font style="font-size:12px;" color="red"></font> 
-						</el-form-item>  
-							</el-col>
-						</el-row>
-						<el-form-item label="工期及成本预估" >  
+								</el-col>
+								<el-col :span="8">
+							<el-form-item label="副经理、助理" prop="assUserid"> 
+								<el-input readonly v-model="editForm.assUsername" @click.native="showUserVisible('assUserid')"></el-input>
+								<font style="font-size:12px;" color="red"></font> 
+							</el-form-item>  
+								</el-col>
+							</el-row> 
+							<el-form-item label="项目描述" prop="description">
+								<el-input type="textarea" :rows="6" v-model="editForm.description" placeholder="项目描述" ></el-input>
+							</el-form-item>    
+						</el-collapse-item>
+						<el-collapse-item title="工期及成本预估" name="2">
+							<el-form-item label="工期及成本预估" >  
 							<el-row>
 								<el-date-picker
 									v-model="dateRanger"
@@ -75,7 +83,7 @@
 									:default-time="['00:00:00','23:59:59']"
 									:picker-options="pickerOptions"
 								></el-date-picker>    
-								<el-input  style="width:150px;" type="number" v-model="editForm.planWorkingHours" :precision="2" :step="8" :min="0" placeholder="预计工时"></el-input><el-tag>参考工时{{autoParams.weekday*8}}小时,工作日{{autoParams.weekday}}天</el-tag>  
+								<el-input  style="width:150px;" type="number" v-model="editForm.planWorkingHours" :precision="2" :step="8" :min="0" placeholder="预计工时"></el-input>小时 &nbsp;&nbsp;<el-tag>参考工时{{autoParams.weekday*8}}小时,工作日{{autoParams.weekday}}天</el-tag>  
 								
 							</el-row>
 							<el-divider></el-divider>
@@ -137,10 +145,9 @@
 								考核标准毛利率：<el-input style="width:150px;" type="number" v-model="editForm.budgetMarginRate" :precision="2" :step="0.01" :min="0" :max="0.99" placeholder="毛利率"></el-input> 
 								当前毛利率为：<el-tag>{{toFixed(parseFloat2(autoParams.currentBudgetMarginRate)*100,2)}}%</el-tag>
  							</el-row>  
-						</el-form-item>  
-						<el-form-item label="项目描述" prop="description">
-							<el-input type="textarea" :rows="6" v-model="editForm.description" placeholder="项目描述" ></el-input>
-						</el-form-item>     
+						</el-form-item>   
+						</el-collapse-item> 
+					</el-collapse>    
 				</el-form>    
 		</el-row>
 		<el-row>  
