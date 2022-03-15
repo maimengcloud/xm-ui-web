@@ -1588,11 +1588,11 @@ export default {
     /**end 自定义函数请在上面加**/
     formateOption: function (itemCode, value) {
       if (this.dicts[itemCode]) {
-        var options = this.dicts[itemCode].filter(
+        var dicts = this.dicts[itemCode].filter(
           (i) => i.id == value
         );
-        if (options && dicts.length > 0) {
-          return options[0].name;
+        if (dicts && dicts.length > 0) {
+          return dicts[0].name;
         } else {
           return value;
         }

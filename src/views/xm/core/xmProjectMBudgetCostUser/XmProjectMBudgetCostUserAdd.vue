@@ -100,9 +100,9 @@
 			  this.addForm.budgetCost=totalBudgetCost/this.allMonths.length;
 		  },
 	      'addForm.subjectId':function(subjectId) { 
-	      	var options=this.dicts.projectSubject.filter(i=>i.id==subjectId)
+	      	var dicts=this.dicts.projectSubject.filter(i=>i.id==subjectId)
 			if(options!=null && dicts.length>0){
-				 this.addForm.subjectName=options[0].name
+				 this.addForm.subjectName=dicts[0].name
 			}else{
 				this.addForm.subjectName="";
 			}

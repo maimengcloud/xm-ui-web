@@ -69,9 +69,9 @@
 	      } ,
 	      'editForm.subjectId':function(subjectId) { 
 			  console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxlg" + subjectId);
-	      	var options=this.dicts.projectSubject.filter(i=>i.id==subjectId)
+	      	var dicts=this.dicts.projectSubject.filter(i=>i.id==subjectId)
 			if(options!=null && dicts.length>0){
-				 this.editForm.subjectName=options[0].name
+				 this.editForm.subjectName=dicts[0].name
 			}else{
 				this.editForm.subjectName="";
 			}

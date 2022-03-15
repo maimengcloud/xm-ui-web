@@ -365,11 +365,11 @@ import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
               } else {
                 return v[j];
               }
-              const options = this.$refs.xmMenuWithPlan.dicts;
-              if(options[key]==undefined || options[key]==null || options[key].length==0   ){
+              const dicts = this.$refs.xmMenuWithPlan.dicts;
+              if(dicts[key]==undefined || dicts[key]==null || dicts[key].length==0   ){
                 return v[j];
               }
-              var rowData=options[key].filter(i=>i.id==v[j])
+              var rowData=dicts[key].filter(i=>i.id==v[j])
               if(rowData.length>0){
                 return rowData[0].name
               }else{
