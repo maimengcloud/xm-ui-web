@@ -5,7 +5,7 @@
 				<el-tab-pane  label="需求详情">
 					<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm"> 
 						<el-row class="padding-bottom"> 
-						<el-steps :active="parseInt(editForm.status)+1" simple finish-status="success" align-center>
+						<el-steps :active="calcMenuCurrStep" simple finish-status="success" align-center>
 							<el-step v-for="(item,index) in dicts.menuStatus" @click.native="on_click(item.id)" :title="item.name" :key="index"></el-step> 
 						</el-steps>
 						</el-row> 
@@ -168,7 +168,20 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
-		    ])
+		    ]),
+			calcMenuCurrStep(){
+				var menuStatus= this.dicts.menuStatus
+				if(!menuStatus){
+					return 1;
+				}else{
+					var status=menuStatus.findIndex(i=>this.editForm.status==i.id)
+					if(status>=0){
+						return status+1;
+					}else{
+						return 1;
+					}
+				}
+			}
 		},
 		props:['xmMenu','visible','parentMenu','product'],
 		watch: {
@@ -183,7 +196,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 	    },
 		data() {
 			return {
-				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
+				//dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
 				load:{ list: false, add: false, del: false, edit: false },//查询中...
 				editFormRules: {
 					menuId: [
@@ -318,7 +331,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 		mounted() {
 			
 			
- 			initSimpleDicts('all',['demandSource','demandLvl','demandType','priority'] ).then(res=>{
+ 			initSimpleDicts('all',['demandSource','demandLvl','demandType','priority','menuStatus'] ).then(res=>{
 				this.dicts=res.data.data;
 			})
 			this.editForm=Object.assign(this.editForm, this.xmMenu);
