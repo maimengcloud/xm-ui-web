@@ -132,7 +132,15 @@
 								<template slot-scope="scope"> 
 									{{dicts.menuStatus.some(i=>i.id==scope.row.status)?dicts.menuStatus.find(i=>scope.row.status==i.id).name:''}}
 								</template>
-							</el-table-column>  
+							</el-table-column>   
+							<el-table-column prop="dtype" label="类型" width="100" :formatter="formaterByDicts"  show-overflow-tooltip>   
+							</el-table-column> 
+							<el-table-column prop="source"  label="来源" width="100"  :formatter="formaterByDicts"  show-overflow-tooltip>   
+							</el-table-column> 
+							<el-table-column prop="dlvl"  label="层次" width="100"  :formatter="formaterByDicts"  show-overflow-tooltip>   
+							</el-table-column> 
+							<el-table-column prop="priority"  label="优先级" width="100"  :formatter="formaterByDicts"  show-overflow-tooltip>   
+							</el-table-column> 
 							<el-table-column prop="iterationName" label="迭代"  min-width="80" show-overflow-tooltip>  
 							</el-table-column>  
 							
@@ -952,7 +960,26 @@
 					}
 					this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 				})
-			} 
+			},
+			formaterByDicts(row,column,cellValue,index){ 
+				var property=column.property
+				var dict=null;
+				if(property=='source'){
+					dict=this.dicts['demandSource']
+				}else if(property=='dlvl'){
+					dict=this.dicts['demandLvl']
+				}else if(property=='dtype'){
+					dict=this.dicts['demandType']
+				}else if(property=='priority'){
+					dict=this.dicts['priority']
+				}  
+				if(!dict){
+					return cellValue;
+				}else{
+					var item=dict.find(i=>i.id==cellValue)
+					return item?item.name:cellValue;
+				}
+			}
 		},//end methods
 		components: { 
 		    'xm-menu-add':XmMenuAdd,

@@ -32,16 +32,16 @@
 					
 					<el-table-column  label="需求属性" width="500" >  
 						<template slot-scope="scope"> 
-							 <el-select v-model="scope.row.dtype" clearable placeholder="需求类型">
+							 <el-select v-model="scope.row.dtype" title="需求类型" clearable placeholder="需求类型">
 								<el-option v-for="i in dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>    
-							<el-select v-model="scope.row.source" placeholder="需求来源"  clearable>
+							<el-select v-model="scope.row.source"  title="需求来源" placeholder="需求来源"  clearable>
 								<el-option v-for="i in dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>     
-							<el-select v-model="scope.row.dlvl" placeholder="需求层次"  clearable class="hidden-md-and-down">
+							<el-select v-model="scope.row.dlvl"  title="需求层次" placeholder="需求层次"  clearable class="hidden-md-and-down">
 								<el-option v-for="i in dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>    
-							<el-select v-model="scope.row.priority" placeholder="优先级"  clearable>
+							<el-select v-model="scope.row.priority"  title="优先级" placeholder="优先级"  clearable>
 									<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option> 
 							</el-select>  
 						</template>

@@ -141,7 +141,14 @@
                 if(this.opType=='edit'){
 
                 }else{
-
+					if(!this.editForm.leaderUserid){
+						this.editForm.leaderUserid=this.userInfo.userid
+						this.editForm.leaderUsername=this.userInfo.username
+					}
+					if(!this.editForm.assUserid){
+						this.editForm.assUserid=this.userInfo.userid
+						this.editForm.assUsername=this.userInfo.username
+					}
                 }
             },
 			showUserSelect(userType){

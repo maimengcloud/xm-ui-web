@@ -8,11 +8,11 @@
       >
         <el-row>  
           
-          <el-popover v-if="(!xmProduct||!xmProduct.id) && (!selProject || !selProject.id)"
+          <el-popover v-if=" ptype==='0' && (!selProject || !selProject.id)"
             placement="right"
             width="400"
             trigger="click"> 
-            <xm-project-select v-if="!selProject||!selProject.id" :auto-select="true"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="filters.selProject=null"></xm-project-select>
+            <xm-project-select v-if="!selProject||!selProject.id" :auto-select="true"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClear"></xm-project-select>
               <el-link type="warning" slot="reference" v-if="!selProject||!selProject.id"  icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link> 
           </el-popover> 
 					<el-select style="width: 100px" v-model="filters.taskState" placeholder="状态" clearable>
@@ -437,6 +437,11 @@
                 </template>
               </el-table-column>
               
+              <el-table-column sortable prop="productId" label="产品" width="100" show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column sortable prop="projectId" label="项目" width="100" show-overflow-tooltip>
+              </el-table-column>
+              
               <el-table-column sortable prop="tagNames" label="标签" width="100">
               </el-table-column>
               <el-table-column
@@ -553,11 +558,7 @@
           </template>
           <xm-gantt
             v-if="displayType == 'grant'"
-            :tree-data="tasksTreeData"
-            :project-phase="{
-              startTime: currentProjectPhase.beginDate,
-              endTime: currentProjectPhase.endDate,
-            }"
+            :tree-data="tasksTreeData" 
             :useRealTime="true"
           ></xm-gantt>
         </el-row>
@@ -565,8 +566,7 @@
     </el-row>
     <el-row v-if="batchEditVisible">
       <xm-task-mng-batch
-        :sel-project="selProject"
-        :sel-project-phase="currentProjectPhase"
+        :sel-project="selProject" 
         :visible="batchEditVisible"
         :xmTasks="xmTasks"
         @back="batchEditBack"
@@ -750,8 +750,7 @@
     >
       <xm-task-edit
         :xm-project="currentProject"
-        :xm-task="editForm"
-        :project-phase="currentProjectPhase"
+        :xm-task="editForm" 
         :visible="editFormVisible"
         @cancel="editFormVisible = false"
         @after-add-submit="afterExecEditSubmit"
@@ -1059,27 +1058,7 @@ export default {
       } else {
         return null;
       }
-    },
-    currentProjectPhase() {
-      if (this.projectPhase != null && this.projectPhase != undefined) {
-        return this.projectPhase;
-      } else {
-        var projectPhase = {};
-        if (
-          this.editForm && this.editForm.id
-        ) {
-          projectPhase.id = this.editForm.phaseId;
-          projectPhase.name = this.editForm.projectPhaseName;
-          projectPhase.taskType = this.editForm.taskType;
-          projectPhase.projectId = this.editForm.projectId;
-          projectPhase.projectName = this.editForm.projectName;
-          projectPhase.ntype="0"
-          return projectPhase;
-        } else {
-          return null;
-        }
-      }
-    },
+    }, 
     curUser() {
       return {
         id: this.userInfo.userid,
@@ -1279,8 +1258,7 @@ export default {
 
       skillVisible: false,
       skillIds: [],
-      taskSkills: [],
-      projectPhase: null,
+      taskSkills: [], 
       taskTemplateVisible: false,
       parentTask: null,
       projectInfoVisible: false,
@@ -1399,10 +1377,18 @@ export default {
         params.ntype="1"
       }else if(this.queryScope==='task'){
         params.ntype="0"
-      } 
-      if(this.ptype){
-        params.ptype=this.ptype
+      }  
+      if(this.ptype==='1'){
+        if(!params.productId){
+          return;
+        } 
+      }else if(this.ptype==='0'){
+        if(!params.projectId){
+          return;
+        }
       }
+      params.ptype=this.ptype
+      
       getTask(params)
         .then((res) => {
           var tips = res.data.tips;
@@ -1957,21 +1943,7 @@ export default {
 
     handleSelect(key, keyPath) {
       this.drawerkey = key;
-    },
-    
-    projectPhaseRowClick: function (projectPhase) {
-       this.projectPhase = projectPhase;
-      if(projectPhase.ntype=='1'){
-        this.pageInfo.total=0;
-        this.xmTasks=[];
-        return;
-      } 
-      this.getXmTasks();
-    },
-    clearSelectPhase: function () {
-      this.projectPhase = null;
-      this.getXmTasks();
-    },
+    },  
     getDateString(dateStr) {
       if (dateStr == null || dateStr == "" || dateStr == undefined) {
         return "";
@@ -2126,6 +2098,10 @@ export default {
     }, 
     onProjectRowClick: function (project) {
       this.filters.selProject = project; 
+      this.searchXmTasks();
+    },
+    onProjectClear(){
+      this.filters.selProject=null;
       this.searchXmTasks();
     },
     handleCommand(command) {
@@ -2360,12 +2336,7 @@ export default {
       if (this.filters.selProject) {
         params.projectId = this.filters.selProject.id;
       }
-      params.workexec = "true";
-      if (this.projectPhase) {
-        {
-          params.phaseId = this.projectPhase.id;
-        }
-      }
+      params.workexec = "true"; 
       if (this.isMy == "1") {
         params.userid = this.userInfo.userid;
         params.isMy = "1";
@@ -2407,7 +2378,10 @@ export default {
     loadXmTaskLazy(tree, treeNode, resolve) {    
       this.maps.set(tree.id, { tree, treeNode, resolve }) //储存数据
         var params={parentTaskid:tree.id}
-        params=this.getParams(params);
+        params=this.getParams(params); 
+        if(params.projectId && params.productId){
+          params.ptype=""
+        }
         params.isTop=""
         this.load.list = true;
         var func=listXmTask 
