@@ -1,5 +1,15 @@
 <template>
 	<section class="page-container  padding border">
+		
+		<el-row class="padding-header">
+			<el-steps :active="calcIterationCurrStep" simple finish-status="success">
+ 				<el-step  v-for="(i,index) in dicts['iterationStatus']" :title="i.name" :key="index" @click.native.stop="editForm.iphase=i.id">
+					 <el-link slot="title" >
+						 {{i.name}} 
+					 </el-link>
+				</el-step> 
+			</el-steps>
+		</el-row>
 		<el-row>
 			<!--新增界面 XmIteration 迭代定义--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">  
@@ -19,14 +29,13 @@
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.onlineTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
 				</el-form-item>   
 				<el-form-item label="负责人姓名" prop="adminUsername">
-					{{editForm.adminUsername}} <el-button @click="userSelectVisible=true">选择负责人</el-button>
+					{{editForm.adminUsername}} <el-button type="text" @click="userSelectVisible=true">选择负责人</el-button>
 				</el-form-item>  
 				<el-form-item label="预算工作量" prop="budgetWorkload">
 					<el-input v-model="editForm.budgetWorkload" type="number" min="0" style="width:60%;" placeholder="预算工作量"></el-input> 人时 ，1人工作1日=8人时
 				</el-form-item>    
 				<el-form-item>
-					<el-col :span="24" :offset="8"> 
-						<el-button @click.native="handleCancel">取消</el-button>  
+					<el-col :span="24" :offset="8">  
 						<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>  
 					</el-col>
 				</el-form-item> 
@@ -51,7 +60,20 @@
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
-		    ])
+		    ]),
+			calcIterationCurrStep(){
+				var istatus= this.dicts.iterationStatus
+				if(!istatus){
+					return 1;
+				}else{
+					var status=istatus.findIndex(i=>this.editForm.iphase==i.id)
+					if(status>=0){
+						return status+1;
+					}else{
+						return 1;
+					}
+				}
+			} 
 		},
 		props:['xmIteration','visible'],
 		watch: {
@@ -77,7 +99,7 @@
 				},
 				//新增界面数据 迭代定义
 				editForm: {
-					id:'',branchId:'',iterationName:'',startTime:'',endTime:'',onlineTime:'',pid:'',adminUserid:'',adminUsername:'',ctime:'',budgetCost:'',budgetWorkload:'',distBudgetCost:'',distBudgetWorkload:'',actCost:'',actWorkload:'',actStaffNum:'',seqNo:'',
+					id:'',branchId:'',iterationName:'',startTime:'',endTime:'',onlineTime:'',pid:'',adminUserid:'',adminUsername:'',ctime:'',budgetCost:'',budgetWorkload:'',distBudgetCost:'',distBudgetWorkload:'',actCost:'',actWorkload:'',actStaffNum:'',seqNo:'',iphase:'0'
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				userSelectVisible:false,
@@ -134,8 +156,10 @@
 			//在下面添加其它组件 'xm-iteration-edit':XmIterationEdit
 			UsersSelect
 		},
-		mounted() {
-
+		mounted() { 
+			initSimpleDicts('all',['iterationStatus'] ).then(res=>{
+			this.dicts=res.data.data;
+			})
 			this.editForm=Object.assign(this.editForm, this.xmIteration);   
 			/**在下面写其它函数***/
 			

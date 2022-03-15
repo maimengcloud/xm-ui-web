@@ -5,14 +5,8 @@
         <el-card class="box-card" style="padding:0px ;height:100px">
           <div>
             <el-row style="padding:10px">
-              <el-steps :active="this.xmIteration.iphase+1" align-center finish-status="success">
-                <el-step title="未开始"></el-step>
-                <el-step title="需求评审"></el-step>
-                <el-step title="计划会"></el-step>
-                <el-step title="研发中"></el-step>
-                <el-step title="测试中"></el-step>
-                <el-step title="迭代上线"></el-step>
-                <el-step title="已完成"></el-step>
+              <el-steps :active="calcIterationCurrStep" align-center finish-status="success">
+                <el-step :title="item.name" v-for="(item,index) in dicts['iterationStatus']" :key="index"></el-step> 
               </el-steps>
             </el-row>
           </div>
@@ -245,6 +239,7 @@
 
 <script>
 import util from "@/common/js/util"; // 全局公共库
+import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 import { mapGetters } from "vuex";
 
 export default {
@@ -303,6 +298,19 @@ export default {
     xmIterationStateCpd(){
       return this.xmIteration
     },
+    calcIterationCurrStep(){
+				var istatus= this.dicts.iterationStatus
+				if(!istatus){
+					return 1;
+				}else{
+					var status=istatus.findIndex(i=>this.xmIteration.iphase==i.id)
+					if(status>=0){
+						return status+1;
+					}else{
+						return 1;
+					}
+				}
+			} 
   },
 
   props:['xmIteration'],
@@ -318,6 +326,7 @@ export default {
     return {
       isActive: true,
       maxTableHeight:300,
+      dicts:{},
       };
   },
 
@@ -574,6 +583,10 @@ export default {
   },
 
   mounted() {
+    
+    initSimpleDicts('all',['iterationStatus'] ).then(res=>{
+      this.dicts=res.data.data;
+    })
     this.$nextTick(() => { 
       this.maxTableHeight=util.calcTableMaxHeight(this.$refs.table.$el)
     });
