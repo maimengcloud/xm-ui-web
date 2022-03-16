@@ -12,6 +12,10 @@
 						<el-option label="我相关的产品" value="compete"></el-option>
 						<el-option label="按产品编号精确查找" value="productId"></el-option>
 					</el-select>
+					
+					<el-select  v-model="filters.pstatus" clearable placeholder="状态">
+						<el-option v-for="(item,index) in dicts['xmProductPstatus']" :value="item.id" :label="item.name" :key="index"></el-option> 
+					</el-select>  
 					<el-input v-if="filters.queryScope=='productId'" style="width:20%;"  v-model="filters.id"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">
 					</el-input>
 					<el-input v-model="filters.key" style="width: 20%;" placeholder="名称查询" clearable>   
@@ -337,6 +341,7 @@
 					queryScope:'compete',//compete/branchId/''/productId
 					id:'',//产品编号
 					pmUser:null,//产品经理
+					pstatus:'',
 				},
 				xmProducts: [],//查询结果
 				pageInfo:{//分页数据
@@ -471,6 +476,9 @@
 				}
 				if(this.filters.pmUser){
 					params.pmUserid=this.filters.pmUser.userid
+				}
+				if(this.filters.pstatus){
+					params.pstatus=this.filters.pstatus
 				}
 				this.load.list = true;
 				listXmProductWithState(params).then((res) => {
