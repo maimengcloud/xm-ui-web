@@ -155,6 +155,8 @@
 						
 						<el-table-column type="index" width="60"> 
 						</el-table-column>
+						<el-table-column prop="code" label="产品代号" min-width="100" sortable > 
+						</el-table-column>
 						<el-table-column prop="productName" label="产品名称" min-width="200" sortable >
 							<template slot-scope="scope" >
 								<el-link id="guider-three" type="primary" @click="intoInfo(scope.row)">{{scope.row.productName}}</el-link>
@@ -177,6 +179,33 @@
 							</template>
 						</el-table-column>
 						
+						<el-table-column prop="menuCnt" label="需求数" width="120" sortable show-overflow-tooltip>
+							<template slot-scope="scope"> 						
+								<span title=" 已完成 / 总需求数">{{scope.row.menuCnt>0?scope.row.menuFinishCnt+'&nbsp;/&nbsp;'+scope.row.menuCnt:''}}</span>
+							</template>
+						</el-table-column>
+						
+						<el-table-column prop="projectCnt" label="项目数" width="120" sortable show-overflow-tooltip>
+							<template slot-scope="scope"> 						
+								<span title="实际发生的关联项目数">{{scope.row.projectCnt>0? scope.row.projectCnt:''}}</span>
+							</template>
+						</el-table-column> 
+						<el-table-column prop="iterationCnt" label="迭代数" width="120" sortable show-overflow-tooltip>
+							<template slot-scope="scope"> 						
+								<span title="实际发生的关联迭代数">{{scope.row.iterationCnt>0? scope.row.iterationCnt:''}}</span>
+							</template>
+						</el-table-column>
+						<el-table-column prop="taskCnt" label="任务数" width="120" sortable show-overflow-tooltip>
+							<template slot-scope="scope"> 						
+								<span title=" 已完成 / 总任务数">{{scope.row.taskCnt>0?scope.row.finishTaskCnt+'&nbsp;/&nbsp;'+scope.row.taskCnt:''}}</span>
+							</template>
+						</el-table-column>
+						
+						<el-table-column prop="bugCnt" label="缺陷数" width="120" sortable show-overflow-tooltip>
+							<template slot-scope="scope"> 						
+								<span title=" 已关闭 / 总缺陷数 ">{{scope.row.bugCnt>0?scope.row.closedBugs+'&nbsp;/&nbsp;'+scope.row.bugCnt:''}}</span>
+							</template>
+						</el-table-column>
 						<el-table-column label="工作量(人时)" width="200">
 							<el-table-column prop="planWorkload" label="预计" width="100"  show-overflow-tooltip sortable></el-table-column>
 							<el-table-column prop="actWorkload" label="实际" width="100"  show-overflow-tooltip sortable></el-table-column>
@@ -185,7 +214,7 @@
 						<el-table-column  label="操作" width="200" fixed="right">
 							<template slot-scope="scope">
 											<el-button id="guider-five" type="text"  title="通过复制创建新的产品" @click="onCopyToBtnClick(scope.row)" :disabled="load.add" v-loading="load.add">复制</el-button>
-											<el-button  type="text" @click="showProductState(scope.row)" icon="el-icon-s-data">报告</el-button>  
+											<el-button  type="text" @click="intoInfo(scope.row)" icon="el-icon-s-data">视图</el-button>  
 											<el-button  type="text" v-loading="load.del" @click="handleDel(scope.row)" :disabled="load.del==true" icon="el-icon-delete">删除</el-button> 
 							</template>
 						</el-table-column>

@@ -385,7 +385,7 @@
 				},
 				/**begin 自定义属性请在下面加 请加备注**/
 				menukey: "all",
-				showType: true,
+				showType: false,
 				showInfo: false,
 				selectProject: null,
 				finishFlag: false,
