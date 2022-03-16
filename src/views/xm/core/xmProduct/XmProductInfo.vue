@@ -36,10 +36,16 @@
 				</el-submenu > 
 				<el-menu-item  index="缺陷">
 					 <span slot="title"><i class="el-icon-question"  ></i>缺陷</span>
-				</el-menu-item>
-				<el-menu-item  index="团队">
-					 <span slot="title"><i class="el-icon-user-solid"  ></i>团队</span>
-				</el-menu-item>  
+				</el-menu-item> 
+				<el-submenu index="团队">
+					<template slot="title">团队</template>
+						<el-menu-item   index="产品团队">
+							<span slot="title"><i class="el-icon-solid"></i>产品团队</span> 
+						</el-menu-item>
+						<el-menu-item index="项目团队">
+							<span slot="title"><i class="el-icon-solid"></i>项目团队</span>
+						</el-menu-item> 
+				</el-submenu >
 				<el-submenu index="计划">
 					<template slot="title">计划</template>
 						<el-menu-item   index="产品计划">
@@ -151,7 +157,8 @@
 			  <xm-task-mng v-if="infotype=='产品任务'" ptype="1" queryScope="task"  ref="productXmTaskMng" :xm-product="xmProduct" key="productXmTaskMng"></xm-task-mng>
 			 <xm-task-mng v-if="infotype=='项目任务'" ptype="0" queryScope="task"  ref="projectXmTaskMng" :xm-product="xmProduct" key="projectXmTaskMng"></xm-task-mng>
 			  <xm-question v-if="infotype=='缺陷'" :qtype="'bug'" :xm-product='xmProduct' ref="xmQuestion"></xm-question>
-			  <xm-group-mng v-if="infotype=='团队'" :xm-product="xmProduct"></xm-group-mng>
+			  <xm-group-mng v-if="infotype=='项目团队'" pgClass="0" :xm-product="xmProduct" key="projectGroup"></xm-group-mng>
+			  <xm-group-mng v-if="infotype=='产品团队'" pgClass="1" :xm-product="xmProduct" key="productGroup"></xm-group-mng>
 			  <xm-file-mng v-if="infotype=='文档'" :xm-product="xmProduct"></xm-file-mng>
 			  <xm-task-mng v-if="infotype=='产品计划'" ref="productPlan" ptype="1" queryScope="planTask"  :xm-product="xmProduct" key="productPlan"></xm-task-mng> 
 
