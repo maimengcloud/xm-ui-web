@@ -7,8 +7,8 @@
 							placement="right"
 							width="400"
 							trigger="click"> 
-							<xm-project-select v-if="ptype==='0' && (!selProject||!selProject.id)" :auto-select="true"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick"></xm-project-select>
-								<el-link type="warning" slot="reference" v-if="ptype==='0' && (!selProject||!selProject.id)"  icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link> 
+							<xm-project-select v-if="ptype!=='1' && (!selProject||!selProject.id)" :auto-select="true"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClear"></xm-project-select>
+								<el-link type="warning" slot="reference" v-if="ptype!=='1' && (!selProject||!selProject.id)"  icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link> 
 						</el-popover> 
 						
 						<el-select v-model="filters.taskType" placeholder="请选择任务类型" clearable @change="changeTaskType">
@@ -254,6 +254,17 @@
 				if(this.ptype){ 
 					params.ptype=this.ptype
 				}
+				if(params.ptype!=='1'){
+					if(!params.projectId){
+						this.$notify({showClose:true,message:'请选择一个项目',type:'warning'})
+						return;
+					}
+				}else{
+					if(!params.productId){
+						this.$notify({showClose:true,message:'请选择一个产品',type:'warning'})
+						return;
+					}
+				}
 				getTask(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 
@@ -303,12 +314,7 @@
 				if (this.filters.selProject) {
 					params.projectId = this.filters.selProject.id;
 				}
-				params.workexec = "true";
-				if (this.projectPhase) {
-					{
-					params.phaseId = this.projectPhase.id;
-					}
-				}
+				params.workexec = "true"; 
 				if (this.isMy == "1") {
 					params.userid = this.userInfo.userid;
 					params.isMy = "1";
@@ -500,6 +506,11 @@
 				this.filters.selProject=project 
 				this.getXmTasks();
 			},  
+			onProjectClear(){
+				this.filters.selProject=null;
+				this.xmTasks=[];
+				this.searchXmTasks();
+			}
 		},//end methods
 		components: {   
 			 XmProjectSelect

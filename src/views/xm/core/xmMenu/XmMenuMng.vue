@@ -1,6 +1,6 @@
 <template>
 	<section class="padding">
-		<el-row v-if=" !batchEditVisible">  
+		<el-row v-show=" !batchEditVisible">  
 			<el-col :span="24" class="padding-left">
 					<el-row>   
 						
@@ -196,8 +196,8 @@
 											<el-button type="text"    slot="reference" icon="el-icon-plus">{{scope.row.ntype=='1'?'子需求':''}}</el-button>
 										</el-popover>   
 										<font>
-											<el-button  v-if="scope.row.ntype!='1'"  type="text"  @click="showTaskListForMenu(scope.row,scope.$index)"  icon="el-icon-s-operation">查任务</el-button>
-											<el-button  v-if="scope.row.ntype!='1'"  type="text"  @click="showTaskList(scope.row,scope.$index)"  icon="el-icon-s-operation">关联任务</el-button> 
+											<el-button  v-if="scope.row.ntype!=='1'"  type="text"  @click="showTaskListForMenu(scope.row,scope.$index)"  icon="el-icon-s-operation">查任务</el-button>
+											<el-button  v-if="scope.row.ntype!=='1'"  type="text"  @click="showTaskList(scope.row,scope.$index)"  icon="el-icon-s-operation">关联任务</el-button> 
 										</font>
 									</el-row>
 								</template>
@@ -228,7 +228,7 @@
 					<xm-product-select :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-select>
 				</el-drawer> 
 				<el-drawer title="选中任务" :visible.sync="selectTaskVisible"   size="80%"  append-to-body   :close-on-click-modal="false">
-					<xm-task-list :xm-product="filters.product" :sel-project="selProject" :is-multi-select="true"  @tasks-selected="onSelectedTasks"></xm-task-list>
+					<xm-task-list :xm-product="filters.product" :sel-project="selProject" :query-scope="planTask" :check-scope="task"  :is-multi-select="true"  @tasks-selected="onSelectedTasks"></xm-task-list>
 				</el-drawer> 
 				<el-drawer title="查看任务" :visible.sync="taskListForMenuVisible" :with-header="false"  size="80%"  append-to-body   :close-on-click-modal="false">
 					<xm-task-list-for-menu  :xm-product="filters.product"  :is-multi-select="true" :menu-id="editForm.menuId"></xm-task-list-for-menu>

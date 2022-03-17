@@ -134,7 +134,7 @@
 		  	<xm-project-overview-complex v-if="infotype=='项目概览'" :sel-project="selProject" @submit="afterEditSubmit"></xm-project-overview-complex>  
 			 <xm-iteration-for-project-complex  v-if="infotype=='迭代'" ref="xmIterationMng" :sel-project="selProject"></xm-iteration-for-project-complex>
  			 <xm-product-for-project-complex  v-if="infotype=='产品'" ref="xmProductComplex" :sel-project="selProject"></xm-product-for-project-complex>
-			 <xm-menu-mng v-if="infotype=='需求'" :sel-project="selProject" :disabled-mng="false"></xm-menu-mng>
+			 <xm-menu-mng v-if="infotype=='需求'" :sel-project="selProject"></xm-menu-mng>
 			 <xm-task-mng v-if="infotype=='任务'" ref="xmTaskMng" :sel-project="selProject" ptype="0" queryScope="task" key="task"></xm-task-mng>
 			  <xm-question v-if="infotype=='缺陷'" :qtype="'bug'" :sel-project='selProject' ref="xmQuestion"></xm-question>
 			  <xm-group-mng v-if="infotype=='团队'" :sel-project="selProject"></xm-group-mng>
