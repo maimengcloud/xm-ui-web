@@ -97,7 +97,7 @@
 								<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="editForm.remark" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
 							</el-form-item>  
 						</el-collapse-item> 
-						<el-collapse-item title="成本进度预估" name="2">
+						<el-collapse-item title="工期与工作量预估" name="2">
 							<el-form-item label="预估工期" prop="budgetHours">
 								<el-input-number style="width:200px;"  v-model="editForm.budgetHours"  :precision="2" :step="8" :min="0" placeholder="预计工期(小时)"></el-input-number>&nbsp;小时
 							</el-form-item> 
@@ -108,7 +108,24 @@
 								<el-input-number style="width:200px;"  v-model="editForm.budgetAmount" :precision="2" :step="100" :min="0" placeholder="预算金额"></el-input-number>   元 
 							</el-form-item> 
 						</el-collapse-item>
-						<el-collapse-item title="相关链接" name="3"> 
+						<el-collapse-item title="进度与实际工作量填报" name="3">
+							<el-form-item label="数据收集方式" prop="calcType"> 
+								<el-radio   v-model="editForm.calcType"  label="3" placeholder="下级往上级汇总" :disabled="editForm.ntype==='0'">下级往上级汇总</el-radio>
+								<el-radio   v-model="editForm.calcType"  label="0" placeholder="不计算" :disabled="editForm.ntype==='1'">不计算</el-radio> 
+								<el-radio   v-model="editForm.calcType"  label="1" placeholder="由任务汇总" :disabled="editForm.ntype==='1'">由任务汇总</el-radio> 
+								<el-radio   v-model="editForm.calcType"  label="2" placeholder="手工填报" :disabled="editForm.ntype==='1'">手工填报</el-radio>
+							</el-form-item> 
+							<el-form-item label="当前进度" prop="mactRate" v-if="editForm.calcType==='2'">
+								<el-input-number style="width:200px;" v-model="editForm.mactRate" :precision="2" :step="5" :min="0" :max="100" placeholder="进度"></el-input-number> &nbsp;%
+							</el-form-item> 
+							<el-form-item label="实际工作量" prop="mactWorkload" v-if="editForm.calcType==='2'">
+								<el-input-number style="width:200px;"  v-model="editForm.mactWorkload" :precision="2" :step="8" :min="0" placeholder="实际总工作量(人时)"></el-input-number> <el-tag>人时，{{this.toFixed(editForm.budgetWorkload/8/20)}}人月</el-tag>
+							</el-form-item> 
+							<el-form-item label="实际金额" prop="mactAmount" v-if="editForm.calcType==='2'">
+								<el-input-number style="width:200px;"  v-model="editForm.mactAmount" :precision="2" :step="100" :min="0" placeholder="实际金额"></el-input-number>   元 
+							</el-form-item> 
+						</el-collapse-item>
+						<el-collapse-item title="相关链接" name="4"> 
 							<el-form-item label="需求链接" prop="demandUrl"> 
 								<el-input v-model="editForm.demandUrl" placeholder="需求链接" ></el-input> 
 							</el-form-item>  
@@ -215,7 +232,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 				//新增界面数据 项目需求表
 				editForm: {
 						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'1',mmUserid:'',mmUsername:'',ntype:'0',childrenCnt:0,sinceVersion:'',
-						proposerId:'',proposerName:'',dlvl:'',dtype:'',priority:'',source:''
+						proposerId:'',proposerName:'',dlvl:'',dtype:'',priority:'',source:'',calcType:'1',mactWorkload:0,mactAmount:0,mactRate:0
 				},
 				proposerSelectVisible:false,
 				mmUserSelectVisible:false,
