@@ -6,7 +6,7 @@
 				 </el-table-column>
 				 <el-table-column prop="name" label="项目名称" >
 					 <template slot="header">
-						 项目名称 <el-button type="text" @click="clearSelect">清空所选</el-button>
+						 项目名称 <el-button type="text" @click="clearSelect">清空所选</el-button><el-button type="text" @click="close">关闭</el-button>
 					 </template>
 					 <template slot-scope="scope">
 						 {{scope.row.name}}&nbsp;&nbsp;
@@ -170,6 +170,9 @@
 			clearSelect(){
 				this.$refs.table.setCurrentRow();
 				this.$emit("clear-select");
+			},
+			close(){ 
+				this.$emit("close");
 			}
 		},//end methods
 		components: {  

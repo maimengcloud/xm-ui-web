@@ -11,9 +11,10 @@
           <el-popover v-if=" ptype==='0' && (!selProject || !selProject.id)"
             placement="right"
             width="400"
-            trigger="click"> 
-            <xm-project-select v-if="!selProject||!selProject.id" :auto-select="true"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClear"></xm-project-select>
-              <el-link type="warning" slot="reference" v-if="!selProject||!selProject.id"  icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link> 
+            v-model="projectVisible"
+            trigger="manual"> 
+            <xm-project-select v-if="!selProject||!selProject.id" :auto-select="true"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClear" @close="projectVisible=false"></xm-project-select>
+              <el-link type="warning" @click="projectVisible=true" slot="reference" v-if="!selProject||!selProject.id"  icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link> 
           </el-popover> 
 					<el-select style="width: 100px" v-model="filters.taskState" placeholder="状态" clearable>
 									<el-option value="0" label="待领取"></el-option>
@@ -1283,6 +1284,7 @@ export default {
       tagSelectVisible: false,
       batchRelTasksWithMenuVisible:false,
       selectParentTaskVisible:false,
+      projectVisible:false,
       maps:new Map(),
     };
   }, //end data
@@ -1380,10 +1382,12 @@ export default {
       }  
       if(this.ptype==='1'){
         if(!params.productId){
+          this.$notify.error("请先选中产品")
           return;
         } 
       }else if(this.ptype==='0'){
-        if(!params.projectId){
+        if(!params.projectId){ 
+          this.$notify.error("请先选中项目")
           return;
         }
       }
@@ -1583,6 +1587,7 @@ export default {
                 message: "请先选择项目",
                 type: "warning",
               });
+              this.projectVisible=true;
               return false;
           }else if(this.ptype==='1'){
             if( !this.filters.product && this.filters.product.id){
@@ -1591,6 +1596,8 @@ export default {
                 message: "请先选择产品",
                 type: "warning",
               });
+              
+              this.productSelectVisible=true;
               return false;
             }
           }
@@ -2098,10 +2105,13 @@ export default {
     }, 
     onProjectRowClick: function (project) {
       this.filters.selProject = project; 
+      this.projectVisible=false;
       this.searchXmTasks();
     },
     onProjectClear(){
-      this.filters.selProject=null;
+      this.filters.selProject=null; 
+      this.projectVisible=false;
+      this.xmTasks=[]
       this.searchXmTasks();
     },
     handleCommand(command) {
