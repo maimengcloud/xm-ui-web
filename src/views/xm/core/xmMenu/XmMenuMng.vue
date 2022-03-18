@@ -137,7 +137,7 @@
 							<el-table-column sortable type="selection" width="40"></el-table-column> 
 							<el-table-column prop="menuName" label="需求名称" min-width="260" show-overflow-tooltip> 
 								<template slot-scope="scope"> 
-									<span class="vlink" @click="showEdit(scope.row)">{{scope.row.seqNo}} &nbsp; {{scope.row.menuName}} </span>
+									<span class="vlink" @click="showEdit(scope.row)" :class="scope.row.ntype==='1'?'el-icon-folder-opened':''">{{scope.row.seqNo}} &nbsp; {{scope.row.menuName}} </span>
 								</template>
 							</el-table-column>  
 							<el-table-column prop="status" label="状态"  min-width="80" show-overflow-tooltip> 
