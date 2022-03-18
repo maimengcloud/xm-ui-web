@@ -107,12 +107,12 @@
 							<el-form-item label="预估金额" prop="budgetAmount">
 								<el-input-number style="width:200px;"  v-model="editForm.budgetAmount" :precision="2" :step="100" :min="0" placeholder="预算金额"></el-input-number>   元 
 							</el-form-item> 
+							<font color="red" style="font-size:10px;">控制规则：下级预估工作量总和不能大于上级预估工作量</font>
 						</el-collapse-item>
 						<el-collapse-item title="进度与实际工作量填报" name="3">
 							<el-form-item label="数据收集方式" prop="calcType"> 
 								<el-radio   v-model="editForm.calcType"  label="3" placeholder="下级往上级汇总" :disabled="editForm.ntype==='0'">下级往上级汇总</el-radio>
-								<el-radio   v-model="editForm.calcType"  label="0" placeholder="不计算" :disabled="editForm.ntype==='1'">不计算</el-radio> 
-								<el-radio   v-model="editForm.calcType"  label="1" placeholder="由任务汇总" :disabled="editForm.ntype==='1'">由任务汇总</el-radio> 
+ 								<el-radio   v-model="editForm.calcType"  label="1" placeholder="由任务汇总" :disabled="editForm.ntype==='1'">由任务汇总</el-radio> 
 								<el-radio   v-model="editForm.calcType"  label="2" placeholder="手工填报" :disabled="editForm.ntype==='1'">手工填报</el-radio>
 							</el-form-item> 
 							<el-form-item label="当前进度" prop="mactRate" v-if="editForm.calcType==='2'">
