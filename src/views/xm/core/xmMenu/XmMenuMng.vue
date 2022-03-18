@@ -9,7 +9,7 @@
 							width="400"
 							trigger="manual"
 							v-model="productVisible"> 
-							<xm-product-select v-if="!xmProduct" :auto-select="false" :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :xm-iteration="xmIteration" :simple="true" @clear-select="onProductClearSelect"></xm-product-select>
+							<xm-product-select v-if="!xmProduct" :auto-select="false" :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :xm-iteration="xmIteration" :simple="true" @clear-select="onProductClearSelect" @close="productVisible=false"></xm-product-select>
 								<el-link title="产品，点击选择、清除选择" @click="productVisible=true" type="warning" slot="reference" v-if="!xmProduct" icon="el-icon-search"><font style="font-size:14px;">{{filters.product?filters.product.productName:'选择产品'}}</font></el-link> 
 						</el-popover>  
 						
@@ -75,7 +75,7 @@
 						
 						<el-button  @click="batchEditVisible=true">批量修改</el-button> 
 						<el-button  @click="showParentMenu">更换上级</el-button>
- 						<el-button  v-if="!selProject&&!xmIteration&&disabledMng!=false"  type="danger" @click="batchDel" icon="el-icon-delete">删除</el-button> 
+ 						<el-button  v-if="disabledMng!=false"  type="danger" @click="batchDel" icon="el-icon-delete">删除</el-button> 
 
 						<el-button class="hidden-md-and-down"  v-if=" batchEditVisible==false&&disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>  
 						<el-popover
@@ -240,7 +240,7 @@
 		
 				<!--新增 XmMenu xm_project_menu界面-->
 				<el-drawer title="新增需求" :visible.sync="addFormVisible"  :with-header="false" size="50%"  append-to-body   :close-on-click-modal="false">
-					<xm-menu-add  :product="filters.product"   :parent-menu="parentMenu"  :xm-menu="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-menu-add>
+					<xm-menu-add  :parent-menu="parentMenu"  :xm-menu="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-menu-add>
 				</el-drawer> 
 				<el-drawer title="需求模板" :visible.sync="menuTemplateVisible"   size="80%"  append-to-body   :close-on-click-modal="false">
 					<xm-menu-template-mng  :is-select-menu="true"  :visible="menuTemplateVisible" @cancel="menuTemplateVisible=false" @selected-menus="onSelectedMenuTemplates"></xm-menu-template-mng>
@@ -601,13 +601,27 @@
 			},
 			//显示新增界面 XmMenu xm_project_menu
 			showAdd: function () {  
-				this.parentMenu=null;
-				this.addFormVisible = true;
+				if(this.filters.product && this.filters.product.id){
+					this.parentMenu=null;
+					this.addForm.productId=this.filters.product.id
+					this.addForm.productName=this.filters.product.productName
+					this.addFormVisible = true;
+				}else{
+					this.productVisible=true;
+					this.$notify({showClose: true, message: "请先选择一个产品", type: 'error'});
+				}
+				
 				//this.addForm=Object.assign({}, this.editForm);
 			},
 			showSubAdd:function(row){ 
 				this.editForm=row
 				this.parentMenu=row
+				this.addForm.productId=row.productId
+				if(this.filters.product && row.productId==this.filters.product.id){
+					this.addForm.productName=this.filters.product.productName
+				}else{
+					this.addForm.productName=null;
+				}
 				this.addFormVisible=true
 			},
 			showProdcutAdd:function(){
@@ -676,7 +690,11 @@
 			},
 			//批量删除xmMenu
 			batchDel: function () { 
-				this.$confirm('确认删除选中记录吗？', '提示', {
+				if(this.sels.length==0){
+					this.$notify({showClose: true, message: "请先选择要删除的需求或者需求池", type: 'error'});
+					return;
+				}
+				this.$confirm('确认删除选中的'+this.sels.length+'条数据吗？删除后数据不可恢复', '提示', {
 					type: 'warning'
 				}).then(() => { 
 					this.load.del=true;

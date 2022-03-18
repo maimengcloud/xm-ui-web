@@ -149,28 +149,25 @@
 		      'userInfo','roles'
 		    ])
 		},
-		props:['xmMenu','visible','parentMenu','product'],
+		props:['xmMenu','visible','parentMenu'],
 		watch: {
 	      'xmMenu':function( xmMenu ) {
-			this.addForm = xmMenu; 
+			this.addForm = {...xmMenu}; 
 			this.addForm.mmUserid=this.userInfo.userid
 			this.addForm.mmUsername=this.userInfo.username
 	      },
 	      'visible':function(visible) { 
 	      	if(visible==true){
+				  debugger;
+				  this.addForm={...this.xmMenu}
 				if(this.parentMenu && this.parentMenu.menuId){
 					if(this.parentMenu.childrenCnt){
-						this.addForm.seqNo=this.parentMenu.seqNo+"."+(this.parentMenu.childrenCnt.length+1)
+						this.addForm.seqNo=this.parentMenu.seqNo+"."+(this.parentMenu.childrenCnt+1)
 					}else{
 						this.addForm.seqNo=this.parentMenu.seqNo+"."+1
 					}
 					
 				}
-				if(this.product && this.product.id){ 
-					this.addForm.productId=this.product.id
-					this.addForm.productName=this.product.productName
-				}
-	      		//从新打开页面时某些数据需要重新加载，可以在这里添加
 	      	}
 	      } 
 	    },
@@ -211,7 +208,7 @@
 			},
 			//新增提交XmMenu 项目需求表 父组件监听@submit="afterAddSubmit"
 			addSubmit: function () {
-				if(this.parentMenu==null && this.product ==null ){
+				if(this.addForm.productId==null){
 					this.$notify({showClose: true, message: '请选择产品/或者上级需求进行新增', type:'error' }); 
 					return;
 				}
@@ -228,8 +225,6 @@
 							if(this.parentMenu!=null){
 								params.productId=this.parentMenu.productId
 								params.pmenuId=this.parentMenu.menuId
-							}else if(this.product){
-								params.productId=this.product.id
 							}
 							if(params.productId==null|| params.productId==''){
 								this.$notify({showClose: true, message: '产品编号不能为空', type:'error' }); 
@@ -301,10 +296,6 @@
 			this.addForm=Object.assign(this.addForm, this.xmMenu);  
 			this.addForm.mmUserid=this.userInfo.userid
 			this.addForm.mmUsername=this.userInfo.username
-			if(this.product){
-				this.addForm.productId=this.product.id
-				this.addForm.productName=this.product.productName 
-			}
 			this.addForm.remark="作为   ，我需要   ，以便我能够   。"
 			if(this.parentMenu){
 				if(this.parentMenu.childrenCnt){
