@@ -12,12 +12,28 @@
         </el-menu-item>    
         <el-menu-item index="iterationProjectLink"> 
           <span slot="title">关联迭代</span>
-        </el-menu-item>   
+        </el-menu-item>  
+        <el-menu-item index="projectCalc"> 
+          <span slot="title">执行项目数据统计计划</span>
+        </el-menu-item>    
       </el-menu>
        <xm-project-overview  v-if="showPanelName=='overview'" :sel-project="selProject"></xm-project-overview>
         <xm-project-detail  v-if="showPanelName=='detail'" :sel-project="selProject" @submit="afterEditSubmit"></xm-project-detail> 
         <xm-product-project-link-mng v-if="showPanelName=='productProjectLink'" :sel-project="selProject"></xm-product-project-link-mng>
         <xm-iteration-link-for-project v-if="showPanelName=='iterationProjectLink'" :sel-project="selProject"></xm-iteration-link-for-project>
+        
+        <div v-if="showPanelName=='projectCalc'" class="padding">
+          <el-row>
+            <el-button type="primary" @click="loadTasksToXmProjectState" v-loading="load.calcProject">计算项目预算数据</el-button>
+            <br>
+              <font color="red" style="font-size:10px;">将从项目任务中汇总进度、预算工作量、实际工作量、预算金额、实际金额、缺陷数、需求数等数据到项目统计表</font>
+          </el-row>
+          <el-row>
+            <el-button  type="primary" @click="loadTasksSettleToXmProjectState"  v-loading="load.calcSettle">计算项目结算数据</el-button>
+            <br>
+              <font color="red"  style="font-size:10px;">将从项目任务汇总结算数据项目统计表</font>
+          </el-row>
+        </div>
   </section>
 </template>
 
@@ -31,6 +47,7 @@ import XmProjectDetail from './XmProjectDetail.vue';
 import XmProductProjectLinkMng from '../xmProductProjectLink/XmProductProjectLinkMng.vue';
 import XmIterationLinkForProject from '../xmIterationLink/XmIterationLinkForProject.vue';
 
+	import {  loadTasksToXmProjectState , loadTasksSettleToXmProjectState} from '@/api/xm/core/xmProjectState';
 
 export default {
   components: { XmProjectOverview, XmProjectDetail, XmProductProjectLinkMng ,XmIterationLinkForProject},
@@ -43,7 +60,9 @@ export default {
   },
   data() {
     return {
-      showPanelName:'overview'
+      showPanelName:'overview',
+      
+      load:{calcProject:false,calcSettle:false}
     };
   },
 
@@ -53,7 +72,17 @@ export default {
     },
     onMenuToolBarSelect(menuIndex){
       this.showPanelName=menuIndex;
-    }
+    },
+    
+    loadTasksToXmProjectState(){
+        var row=this.selProject;
+        var params={projectId:row.id}
+      loadTasksToXmProjectState(params).then((res) => {
+          this.load.calcProject=false;
+          var tips=res.data.tips; 
+          this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+        }).catch( err  => this.load.calcProject=false ); 
+    },
   },
 
   mounted() {
