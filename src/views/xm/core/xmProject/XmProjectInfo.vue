@@ -134,7 +134,7 @@
 		  	<xm-project-overview-complex v-if="infotype=='项目概览'" :sel-project="selProject" @submit="afterEditSubmit"></xm-project-overview-complex>  
 			 <xm-iteration-for-project-complex  v-if="infotype=='迭代'" ref="xmIterationMng" :sel-project="selProject"></xm-iteration-for-project-complex>
  			 <xm-product-for-project-complex  v-if="infotype=='产品'" ref="xmProductComplex" :sel-project="selProject"></xm-product-for-project-complex>
-			 <xm-menu-mng v-if="infotype=='需求'" :sel-project="selProject" :disabled-mng="false"></xm-menu-mng>
+			 <xm-menu-mng v-if="infotype=='需求'" :sel-project="selProject"></xm-menu-mng>
 			 <xm-task-mng v-if="infotype=='任务'" ref="xmTaskMng" :sel-project="selProject" ptype="0" queryScope="task" key="task"></xm-task-mng>
 			  <xm-question v-if="infotype=='缺陷'" :qtype="'bug'" :sel-project='selProject' ref="xmQuestion"></xm-question>
 			  <xm-group-mng v-if="infotype=='团队'" :sel-project="selProject"></xm-group-mng>
@@ -161,7 +161,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { listXmProject,editStatus , delXmProject, batchDelXmProject } from '@/api/xm/core/xmProject';
 	import  XmProjectAdd from './XmProjectAdd';//新增界面
 	import  XmProjectEdit from './XmProjectEdit';//修改界面
@@ -362,13 +362,13 @@
               } else {
                 return v[j];
               }
-              const options = this.$refs.xmMenuWithPlan.options;
-              if(options[key]==undefined || options[key]==null || options[key].length==0   ){
+              const dicts = this.$refs.xmMenuWithPlan.dicts;
+              if(dicts[key]==undefined || dicts[key]==null || dicts[key].length==0   ){
                 return v[j];
               }
-              var rowData=options[key].filter(i=>i.optionValue==v[j])
+              var rowData=dicts[key].filter(i=>i.id==v[j])
               if(rowData.length>0){
-                return rowData[0].optionName
+                return rowData[0].name
               }else{
                 return v[j];
               }

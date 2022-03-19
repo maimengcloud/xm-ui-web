@@ -1,8 +1,6 @@
 <template> 
   <section>
     <wl-gantt :data="tasks" 
-            :start-date="projectPhase.beginDate"
-            :end-date="projectPhase.endDate"
             :usePreColumn="true"
             :checkSource="true"
             :useRealTime="true"
@@ -21,7 +19,7 @@ import wlGantt from 'wl-gantt'
 import "wl-gantt/lib/wl-gantt.css" 
 Vue.use(wlGantt)
  export default {
-  props: ["tasks",'projectPhase'],
+  props: ["tasks"],
   watch:{
     tasks(tasks){
      }

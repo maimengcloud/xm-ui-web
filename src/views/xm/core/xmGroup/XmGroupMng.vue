@@ -2,17 +2,13 @@
 	<section class="page-container border padding" >
 		<el-row> 
 			 
-			<el-popover v-if="filters.pgClass==='0' && (!selProject  || !selProject.id)"
+			<el-popover v-if="pgClass==='0' && (!selProject  || !selProject.id)"
 				placement="right"
 				width="400"
 				trigger="click"> 
 				<xm-project-select :auto-select="true"   :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClearSelect"></xm-project-select>
 					<el-link type="warning" slot="reference" icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link> 
-			</el-popover>
-			<span v-if="xmProduct && xmProduct.id && (!selProject || !selProject.id)">
-			<el-radio v-model="filters.pgClass" label="1">产品组</el-radio>
-			<el-radio v-model="filters.pgClass" label="0">项目组</el-radio>
-			</span>
+			</el-popover> 
 			<el-input v-model="filters.key" style="width:15%;" clearable placeholder="名称过滤"></el-input>   
 			<el-button  type="primary" @click="searchXmGroups" icon="el-icon-search">刷新</el-button> 
 			<el-button  type="plain" @click="showGroupState" icon="el-icon-s-data">小组进度</el-button> 
@@ -237,7 +233,7 @@
 		    XmGroupEdit,VueOkrTree,UsersSelect,XmGroupStateMng,XmGroupUserMng,XmProjectList,
 XmProductSelect,XmProjectSelect,
 		},
-		props:["visible","selProject" ,"isSelectSingleUser","isSelectMultiUser",'xmProduct','xmIteration'],
+		props:["visible","selProject" ,"isSelectSingleUser","isSelectMultiUser",'xmProduct','xmIteration','pgClass'],
 		computed: {
 		    ...mapGetters(['userInfo']),
 			expandedKeys(){  
@@ -322,14 +318,7 @@ XmProductSelect,XmProjectSelect,
 			},
 			"filters.key":function(val) {
 				this.$refs.tree.filter(val);
-			},
-			"filters.pgClass":function(val) { 
-				if(val==='1'){
-					this.filters.selProject=null; 
-					this.xmGroups=[]
-					this.searchXmGroups();
-				}
-			}
+			}, 
 		}, 
 		data() {
 			return {
@@ -338,8 +327,7 @@ XmProductSelect,XmProjectSelect,
 					groupNameKey:'',
 					mngUsernamekey:'',
 					groupUsernameKey:'',
-					selProject:null,
-					pgClass:'',
+					selProject:null, 
 				},
 				xmGroups: [],//查询结果
 				pageInfo:{//分页数据
@@ -479,6 +467,15 @@ XmProductSelect,XmProjectSelect,
 				}
 				if(this.filters.mngUsernamekey){
 					params.mngUsernamekey=this.filters.mngUsernamekey
+				}
+				if(this.pgClass==='0'||!this.pgClass){
+					if(!params.projectId){
+						return;
+					}
+				}else if(this.pgClass==='1'){
+					if(!params.productId){
+						return;
+					}
 				}
 				var func=getGroups
 				this.load.list = true;
@@ -716,14 +713,7 @@ XmProductSelect,XmProjectSelect,
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
             initData: function(){
-				this.filters.selProject=this.selProject;
-				if(this.selProject && this.selProject.id){
-					this.filters.pgClass="0"
-				}else if(this.xmProduct && this.xmProduct.id){
-					this.filters.pgClass="1"
-				}else{
-					this.filters.pgClass="0"
-				}
+				this.filters.selProject=this.selProject; 
             },
 			renderCurrentClass (node) {
 				return 'label-bg-blue'

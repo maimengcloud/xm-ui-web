@@ -6,7 +6,7 @@
 				<el-checkbox v-model="filters.milestone" true-label="1" false-label=""  >里程碑</el-checkbox>
 				<el-checkbox v-model="filters.isKeyPath" true-label="1" false-label=""  >关键路径</el-checkbox>
 				<el-select v-model="filters.phaseStatus" placeholder="计划状态" clearable style="width:100px;">
-					<el-option :label="item.name" :value="item.id" v-for="(item,index) in options.xmPhaseStatus" :key="index"></el-option>
+					<el-option :label="item.name" :value="item.id" v-for="(item,index) in dicts.xmPhaseStatus" :key="index"></el-option>
 				</el-select>
 				<el-input   v-model="filters.key" style="width:200px;" placeholder="模糊查询"> 
 				</el-input> 
@@ -108,7 +108,7 @@
 				</el-table-column> 
 				<el-table-column  prop="phaseStatus" label="计划状态" width="100" >  
 					<template slot-scope="scope">
-						 <font v-if="options.xmPhaseStatus.some(i=>i.id==scope.row.phaseStatus)">{{options.xmPhaseStatus.find(i=>i.id==scope.row.phaseStatus).name}}</font>
+						 <font v-if="dicts.xmPhaseStatus.some(i=>i.id==scope.row.phaseStatus)">{{dicts.xmPhaseStatus.find(i=>i.id==scope.row.phaseStatus).name}}</font>
 					</template>
 				</el-table-column>     
 				<el-table-column    label="操作" width="200" >  
@@ -186,7 +186,7 @@
 	import util from '@/common/js/util';//全局公共库
 	import treeTool from '@/common/js/treeTool';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { batchAddXmPhaseMenu,batchDelXmPhaseMenu  } from '@/api/xm/core/xmPhaseMenu';
 
 	import { listXmPhase,calcKeyPaths, delXmPhase, batchDelXmPhase,batchImportFromTemplate,batchSaveBudget,loadMenusToXmPhase,setPhaseMngUser,selectTotalProductAndPhaseBudgetCost  } from '@/api/xm/core/xmPhase';
@@ -268,7 +268,7 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				options:{  
+				dicts:{  
 					xmPhaseStatus:[
 						{id:'0',name:'初始'},
 						{id:'1',name:'执行中'},
@@ -1105,10 +1105,10 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 			}, 
 			/**end 自定义函数请在上面加**/ 
 			formateOption:function(itemCode,value){
-				if(this.options[itemCode]){
-					var options=this.options[itemCode].filter(i=>i.optionValue==value);
-					if(options && options.length > 0){
-						return options[0].optionName
+				if(this.dicts[itemCode]){
+					var dicts=this.dicts[itemCode].filter(i=>i.id==value);
+					if(dicts && dicts.length > 0){
+						return dicts[0].name
 					}else{
 						return value;
 					}

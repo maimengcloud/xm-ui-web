@@ -7,13 +7,13 @@
 							placement="right"
 							width="400"
 							trigger="click"> 
-							<xm-project-select v-if="ptype==='0' && (!selProject||!selProject.id)" :auto-select="true"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick"></xm-project-select>
-								<el-link type="warning" slot="reference" v-if="ptype==='0' && (!selProject||!selProject.id)"  icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link> 
+							<xm-project-select v-if="ptype!=='1' && (!selProject||!selProject.id)" :auto-select="true"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClear"></xm-project-select>
+								<el-link type="warning" slot="reference" v-if="ptype!=='1' && (!selProject||!selProject.id)"  icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link> 
 						</el-popover> 
 						
 						<el-select v-model="filters.taskType" placeholder="请选择任务类型" clearable @change="changeTaskType">
 							<el-option class="showall" value="all"  label="全部类型">全部类型</el-option>
-							<el-option  v-for="(i,index) in options.taskType" :value="i.optionValue" :label="i.optionName" :key="index">{{i.optionName}}</el-option>
+							<el-option  v-for="(i,index) in dicts.taskType" :value="i.id" :label="i.name" :key="index">{{i.name}}</el-option>
 						</el-select>   
 						<el-input v-model="filters.key" style="width:20%;" placeholder="任务、需求名称模糊查询">  
 						</el-input>
@@ -92,7 +92,7 @@
 	import util from '@/common/js/util';//全局公共库
 	import treeTool from '@/common/js/treeTool';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { getTask ,listXmTask,editXmTask,editRate, delXmTask, batchDelXmTask,batchImportTaskFromTemplate,batchSaveBudget } from '@/api/xm/core/xmTask'; 
 	import { mapGetters } from 'vuex';  
 	import XmProjectSelect from '../xmProject/XmProjectSelect';
@@ -145,7 +145,7 @@
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				options:{
+				dicts:{
 					urgencyLevel:[],
 					taskType:[],
 					planType:[],
@@ -254,6 +254,17 @@
 				if(this.ptype){ 
 					params.ptype=this.ptype
 				}
+				if(params.ptype!=='1'){
+					if(!params.projectId){
+						this.$notify({showClose:true,message:'请选择一个项目',type:'warning'})
+						return;
+					}
+				}else{
+					if(!params.productId){
+						this.$notify({showClose:true,message:'请选择一个产品',type:'warning'})
+						return;
+					}
+				}
 				getTask(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 
@@ -303,12 +314,7 @@
 				if (this.filters.selProject) {
 					params.projectId = this.filters.selProject.id;
 				}
-				params.workexec = "true";
-				if (this.projectPhase) {
-					{
-					params.phaseId = this.projectPhase.id;
-					}
-				}
+				params.workexec = "true"; 
 				if (this.isMy == "1") {
 					params.userid = this.userInfo.userid;
 					params.isMy = "1";
@@ -500,6 +506,11 @@
 				this.filters.selProject=project 
 				this.getXmTasks();
 			},  
+			onProjectClear(){
+				this.filters.selProject=null;
+				this.xmTasks=[];
+				this.searchXmTasks();
+			}
 		},//end methods
 		components: {   
 			 XmProjectSelect
@@ -512,8 +523,8 @@
 				this.tableHeight = util.calcTableMaxHeight(this.$refs.taskTable.$el); 
 				this.getXmTasks(); 
 			});
-				listOption([{categoryId:'all',itemCode:'planType'},{categoryId:'all',itemCode:'taskType'},{categoryId:'all',itemCode:'urgencyLevel'},{categoryId:'all',itemCode:'priority'}]).then(res=>{
-					this.options=res.data.data;
+				initSimpleDicts('all',['planType','taskType','urgencyLevel','priority']).then(res=>{
+					this.dicts=res.data.data;
 				})		
 		}
 	}

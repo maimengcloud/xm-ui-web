@@ -12,10 +12,10 @@
 				<el-form-item label="预算科目" prop="subjectId">
 					<el-select   placeholder="预算科目编号" v-model="editForm.subjectId">
 						<el-option
-							v-for="(item,i) in options.projectSubject"
+							v-for="(item,i) in dicts.projectSubject"
 							:key="i"
-							:label="item.optionName"
-							:value="item.optionValue">
+							:label="item.name"
+							:value="item.id">
 						</el-option>
 					</el-select>
 				</el-form-item>   
@@ -42,7 +42,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { editXmProjectMBudgetCostNouser } from '@/api/xm/core/xmProjectMBudgetCostNouser';
 	import { mapGetters } from 'vuex'
 	
@@ -63,9 +63,9 @@
 	      	}
 	      },
 	      'editForm.subjectId':function(subjectId) { 
-	      	var options=this.options.projectSubject.filter(i=>i.optionValue==subjectId)
-			if(options!=null && options.length>0){
-				 this.editForm.subjectName=options[0].optionName
+	      	var dicts=this.dicts.projectSubject.filter(i=>i.id==subjectId)
+			if(options!=null && dicts.length>0){
+				 this.editForm.subjectName=dicts[0].name
 			}else{
 				this.editForm.subjectName="";
 			}
@@ -73,7 +73,7 @@
 	    },
 		data() {
 			return { 
-				options:{
+				dicts:{
 					projectSubject:[]
 				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
@@ -131,10 +131,11 @@
 		    //在下面添加其它组件 'xm-project-m-budget-cost-nouser-edit':XmProjectMBudgetCostNouserEdit
 		},
 		mounted() {
-			this.editForm=Object.assign(this.editForm, this.xmProjectMBudgetCostNouser);    				
-			listOption([{categoryId:'all',itemCode:'projectSubject'}]).then(res=>{
-				this.options=res.data.data;
-			})	
+			this.editForm=Object.assign(this.editForm, this.xmProjectMBudgetCostNouser);    
+			
+			initSimpleDicts('all',['projectSubject']).then(res=>{
+				this.dicts=res.data.data;
+			})
 		}
 	}
 

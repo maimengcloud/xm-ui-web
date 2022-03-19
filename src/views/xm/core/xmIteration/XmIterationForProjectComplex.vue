@@ -16,7 +16,7 @@
 					</el-tab-pane>
 
 
-					<el-tab-pane  lazy   name="iterations" disabled> 
+					<el-tab-pane  lazy   name="iterations2" disabled> 
 						<div  slot="label">
 							<el-popover
 								placement="bottom"
@@ -60,7 +60,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { delXmIterationLink } from '@/api/xm/core/xmIterationLink';
 
  	import XmIterationSelect from './XmIterationSelect.vue'

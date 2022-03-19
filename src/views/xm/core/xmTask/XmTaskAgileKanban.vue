@@ -1,25 +1,25 @@
 <template>
   <section class="menu-box">
-		<el-table 
+		<el-table
 			ref="table"
-			:data="menus"
+			:data="menusCpd"
 			header-cell-class-name="head-row"
 			border
 			:height="tableHeight"
 			style="width: 100%">
 			<el-table-column :label="'需求 ('+menus.length + ')'" class-name="menu-name" width="200">
 				<template slot-scope="scope">
-					<div class="menu">{{scope.row.name}}</div>
+					<div class="menu">{{scope.row.menuName}}</div>
 				</template>
 			</el-table-column>
-			<template v-for="(type, tt) in taskState">
+			<template v-for="(type, tt) in taskStateCpd">
 				<el-table-column :label="type.label + '('+ type.number + ')'" :key="tt" width="450">
 					<template slot-scope="scope">
 						<draggable
 							:name="scope.row.menuId"
 							:sort="false"
 							@start="onStart" @end="onEnd"
-							:move="onMove"
+							@move="onMove"
 							:options="{group: scope.row.menuId}"
 							class="draggable"
 							animation="300"
@@ -32,7 +32,7 @@
 									<div class="drag-to-box">{{type.label}}</div>
 								</template> -->
 								<template
-									v-if="tasks && tasks[scope.row.menuId][tt].length"
+									v-if="tasks && tasksCpd[scope.row.menuId][tt].length"
 								>
 									<div
 										:data-menu-id="scope.row.menuId"
@@ -40,18 +40,18 @@
 										:data-task-state="task.taskState"
 										class="task"
 										v-for="(task, t) in tasks[scope.row.menuId][tt]"
-										:key="task.id"
+										:key="task.id+t"
 									>
 										<span>
 											{{task.sortLevel}}&nbsp;
 											<el-tag v-if="task.level<='2'" type="info">轻微</el-tag>
 											<el-tag v-else-if="task.level=='3'" type="warning">一般</el-tag>
 											<el-tag v-else-if="task.level=='4'" type="danger">紧急</el-tag>
-											<el-tag v-else type="danger">特急</el-tag> 
+											<el-tag v-else type="danger">特急</el-tag>
 											<span v-for="(item ,index) in [formatExeUsernames(task)]" :key="index">
 
 												<el-tooltip :content="item.exeUsernames" ><el-link     :type="item.type"     @click.stop="showExecusers(task)">{{item.showMsg}}</el-link></el-tooltip>
-												
+
 											</span>
 											<el-tooltip content="进度"><el-link style="border-radius:30px;" :type="task.rate>=100?'success':'warning'" @click="drawerVisible=true"> {{ (task.rate!=null?task.rate:0)+'%'}} </el-link></el-tooltip>
 											<el-tooltip content="预算金额、工时"><el-tag type="info">{{parseFloat(task.budgetCost/10000).toFixed(2)}}万,{{task.budgetWorkload}}人时</el-tag></el-tooltip>
@@ -64,7 +64,7 @@
 					</template>
 				</el-table-column>
 			</template>
-		</el-table> 
+		</el-table>
   </section>
 </template>
 
@@ -76,14 +76,16 @@ export default {
   name: "XmTaskAgileKanban",
   props: ["xmTasks", "tableHeight"],
   data() {
-    return {
-      taskState: [
-        { label: "待领取", status: 0, number: 0 },
-        { label: "已领取执行中", status: 1, number: 0 },
-        { label: "已完工", status: 2, number: 0 },
-        { label: "已结算", status: 3, number: 0 },
+    return {  
+		
+	  taskState:[
+        { label: "待领取", status: "0", number: 0 },
+        { label: "已领取执行中", status: "1", number: 0 },
+        { label: "已完工", status: "2", number: 0 },
+        { label: "已结算", status: "3", number: 0 },
       ],
-      tasks: {},
+	  tasks:{},
+	  menus:[],
 			drag: {
 				menuId: '',
 				state: '',
@@ -91,38 +93,30 @@ export default {
     };
   },
   components: { draggable },
-  watch: {},
+  watch: {
+	  xmTasks(){
+		  this.initData();
+	  }
+  },
   computed: {
-    menus() {
-      let xmTasks = JSON.parse(JSON.stringify(this.xmTasks || []));
-	  xmTasks=xmTasks.filter(i=>i.ntype=='0') 
-
-      let menus = [], menuIds = {}, tasks = {};
-			this.taskState.map(d => {
-				d.number = 0;
-				return d;
-			})
-      xmTasks.forEach((d, i) => {
-        if (!menus.length || !menuIds[d.menuId]) {
-          menus.push(d);
-          menuIds[d.menuId] = true;
-        }
-        if (!tasks[d.menuId]) {
-					tasks[d.menuId] = [[], [], [], []];
-        }
-        tasks[d.menuId][parseInt(d.taskState)].push(d);
-				this.taskState[parseInt(d.taskState)].number += 1;
-			});
-      this.tasks = tasks;
-      return menus;
+    menusCpd() { 
+      return this.menus;
     },
+	tasksCpd(){
+		return this.tasks;
+	},
+	taskStateCpd(){
+		return this.taskState;
+	}
+
   },
   methods: {
 		onMove(e) {
 			console.log('onMove--e==', e);
+			debugger;
 			let targetEl = { ...e.dragged.dataset };
 			let toEl = { ...e.to.dataset };
-			if (targetEl.menuId === toEl.menuId && targetEl.taskState !== toEl.taskState) {
+			if (targetEl.menuId === toEl.menuId && targetEl.taskState != toEl.taskState) {
 				console.log('onMove--true');
 				return true;
 			}
@@ -140,12 +134,23 @@ export default {
       this.drag = {};
 			// targetEl：拖拽的任务数据; toEl拖拽后的位置.
 			let targetEl = { ...e.item.dataset };
-			let toEl = { ...e.to.dataset }; 
-			if (targetEl.menuId === toEl.menuId && targetEl.taskState !== toEl.taskState) {
+			let toEl = { ...e.to.dataset };
+			if (targetEl.menuId === toEl.menuId && targetEl.taskState != toEl.taskState) {
  				let task = this.xmTasks.find(d => d.id === targetEl.taskId);
+				let taskIndex = this.xmTasks.findIndex(d => d.id === targetEl.taskId);
 				const params = { ...task, taskState: toEl.taskState };
-				editXmTask(params).then(res => { 
+				editXmTask(params).then(res => {
 					//this.$emit('submit');
+					var tips = res.data.tips;
+					if(tips.isOk){ 
+						this.taskState[parseInt(task.taskState)].number=this.taskState[parseInt(task.taskState)].number-1
+						this.taskState[parseInt(params.taskState)].number=this.taskState[parseInt(params.taskState)].number+1
+						task.taskState=params.taskState
+						this.$set(this.xmTasks,taskIndex,task)
+					}else{ 
+         				this.$notify({showClose:true,message:tips.msg,type:'error'})
+					}
+					return res.data.tips.isOk
 				})
  			} else {
  				return false
@@ -186,9 +191,37 @@ export default {
 				respons.showMsg="去设置"
 			}
 			return respons
+		},
+		initData(){
+			let xmTasks = JSON.parse(JSON.stringify(this.xmTasks || []));
+			xmTasks=xmTasks.filter(i=>i.ntype=='0')
+		
+			let menus = [], menuIds = {}, tasks = {};
+					this.taskState.map(d => {
+						d.number = 0;
+						return d;
+					})
+			xmTasks.forEach((d, i) => {
+				if(!d.menuId){
+					d.menuId="noMenuId"
+					d.menuName="未关联需求的任务"
+				}
+				if (!menus.length || !menuIds[d.menuId]) {
+				menus.push(d);
+				menuIds[d.menuId] = true;
+				}
+				if (!tasks[d.menuId]) {
+							tasks[d.menuId] = [[], [], [], []];
+				}
+				tasks[d.menuId][parseInt(d.taskState)].push(d);
+						this.taskState[parseInt(d.taskState)].number += 1;
+					});
+			this.tasks = tasks;
+			this.menus=menus;
 		}
   },
-  mounted(){ 	
+  mounted(){
+	  this.initData();
   }
 };
 </script>

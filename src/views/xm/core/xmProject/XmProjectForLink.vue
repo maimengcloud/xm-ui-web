@@ -39,7 +39,7 @@
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import config from "@/common/config"; //全局公共库
-	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { listXmProject,  } from '@/api/xm/core/xmProject';  
 	import { mapGetters } from 'vuex' 
  	import { delXmProductProjectLink, addXmProductProjectLink,batchDelXmProductProjectLink } from '@/api/xm/core/xmProductProjectLink';
@@ -78,7 +78,7 @@ import XmProjectList from './XmProjectList.vue';
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				options:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				dicts:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				
 				addFormVisible: false,//新增xmProject界面是否显示
 				//新增xmProject界面初始化数据

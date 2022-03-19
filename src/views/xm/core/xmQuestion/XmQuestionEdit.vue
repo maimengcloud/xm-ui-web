@@ -35,15 +35,15 @@
 						<el-form-item label="缺陷属性" prop="priority">
 							<el-col :span="24">
 							<el-select v-model="editForm.priority" placeholder="请选择紧急程度">
-								<el-option v-for="(i,index) in options['urgencyLevel']" :label="i.optionName" :value="i.optionValue" :key="index">{{i.optionName}}</el-option>
+								<el-option v-for="(i,index) in dicts['urgencyLevel']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
 							</el-select>
 
 							<el-select v-model="editForm.bugSeverity" placeholder="请选择严重程度">
-								<el-option v-for="(i,index) in options['bugSeverity']" :label="i.optionName" :value="i.optionValue" :key="index">{{i.optionName}}</el-option>
+								<el-option v-for="(i,index) in dicts['bugSeverity']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
 							</el-select>
 
 							<el-select v-model="editForm.solution" placeholder="请选择解决方案">
-								<el-option v-for="(i,index) in options['bugSolution']" :label="i.optionName" :value="i.optionValue" :key="index">{{i.optionName}}</el-option>
+								<el-option v-for="(i,index) in dicts['bugSolution']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
 							</el-select>
 							</el-col>
 						</el-form-item>
@@ -138,7 +138,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { editXmQuestion } from '@/api/xm/core/xmQuestion'; 
 	import { mapGetters } from 'vuex';
 	import AttachmentUpload from "@/views/mdp/arc/archiveAttachment/AttachmentUpload"; //上传组件
@@ -187,7 +187,7 @@
 	    },
 		data() {
 			return {
-				options:{
+				dicts:{
 					urgencyLevel:[],
 					bugSeverity:[],
 					bugSolution:[],
@@ -336,12 +336,12 @@
 				}else{
 					return cellValue
 				}
-				if(this.options[key]==undefined || this.options[key]==null || this.options[key].length==0   ){
+				if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0   ){
 					return cellValue;
 				}
-				var list=this.options[key].filter(i=>i.optionValue==cellValue)
+				var list=this.dicts[key].filter(i=>i.id==cellValue)
 				if(list.length>0){
-					return list[0].optionName
+					return list[0].name
 				}else{
 					return cellValue;
 				}
@@ -393,7 +393,7 @@
 			},
 			onSelectedMenu(menu){
 				if(menu.ntype=='1'){
-					this.$notify({showClose: true, message: "您选择的【"+menu.menuName+"】属于需求集，请重新选择。建议选择树中叶子节点", type: 'error' });
+					this.$notify({showClose: true, message: "您选择的【"+menu.menuName+"】属于需求池，请重新选择。建议选择树中叶子节点", type: 'error' });
 					return;
 				}
 				this.editForm.menuId=menu.menuId
@@ -425,13 +425,13 @@
 		mounted() {
 			console.log("question_add");
 			this.editForm=Object.assign(this.editForm, this.xmQuestion);
-			listOption([{categoryId:'all',itemCode:'bugSeverity'},{categoryId:'all',itemCode:'bugSolution'},{categoryId:'all',itemCode:'bugStatus'},{categoryId:'all',itemCode:'bugType'},{categoryId:'all',itemCode:'urgencyLevel'}] ).then(res=>{
+			initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','urgencyLevel']).then(res=>{
 				if(res.data.tips.isOk){
-					this.options['bugSeverity']=res.data.data.bugSeverity
-					this.options['bugSolution']=res.data.data.bugSolution
-					this.options['bugStatus']=res.data.data.bugStatus
-					this.options['bugType']=res.data.data.bugType
-					this.options['urgencyLevel']=res.data.data.urgencyLevel
+					this.dicts['bugSeverity']=res.data.data.bugSeverity
+					this.dicts['bugSolution']=res.data.data.bugSolution
+					this.dicts['bugStatus']=res.data.data.bugStatus
+					this.dicts['bugType']=res.data.data.bugType
+					this.dicts['urgencyLevel']=res.data.data.urgencyLevel
 				}
 			});
 			//this.getXmQuestionHandle();

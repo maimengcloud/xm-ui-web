@@ -5,15 +5,8 @@
         <el-card class="box-card" style="padding:0px ;height:100px">
           <div>
             <el-row style="padding:10px">
-              <el-steps :active="this.xmMenu.menuStatus" finish-status="success" align-center>
-                <el-step title="初始"></el-step>
-                <el-step title="设计中"></el-step>
-                <el-step title="开发中"></el-step>
-                <el-step title="测试中"></el-step>
-                <el-step title="uat测试"></el-step>
-                <el-step title="已上线"></el-step>
-                <el-step title="已下线"></el-step>
-                <el-step title="已删除"></el-step>
+              <el-steps :active="calcMenuCurrStep" finish-status="success" align-center>
+                <el-step :title="item.name" v-for="(item,index) in dicts['menuStatus']" :key="index"></el-step> 
               </el-steps>
             </el-row>
           </div>
@@ -237,7 +230,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { mapGetters } from 'vuex'
 
 
@@ -305,6 +298,20 @@
       xmMenuCpd(){
         return this.xmMenu
       },
+      
+			calcMenuCurrStep(){
+				var menuStatus= this.dicts.menuStatus
+				if(!menuStatus){
+					return 1;
+				}else{
+					var status=menuStatus.findIndex(i=>this.xmMenu.status==i.id)
+					if(status>=0){
+						return status+1;
+					}else{
+						return 1;
+					}
+				}
+			}
 
     },
 
@@ -319,6 +326,7 @@
     data() {
       return {
         isActive:true,
+        dicts:{},
       };
     },
 
@@ -533,6 +541,10 @@
     },
 
     mounted() {
+      
+ 			initSimpleDicts('all',['demandSource','demandLvl','demandType','priority','menuStatus'] ).then(res=>{
+				this.dicts=res.data.data;
+			})
       this.$nextTick(() => {
       });
       this.drawAllBar();

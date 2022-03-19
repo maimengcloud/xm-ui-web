@@ -25,18 +25,36 @@
 				<el-menu-item label="需求" index="需求">
 					 <span slot="title"><i class="el-icon-document"  ></i>需求</span>
 				</el-menu-item>
-				<el-menu-item   index="任务">
-					 <span slot="title"><i class="el-icon-s-operation"></i>任务</span>
-				</el-menu-item>
+				<el-submenu index="任务">
+					<template slot="title">任务</template>
+						<el-menu-item   index="产品任务">
+							<span slot="title"><i class="el-icon-view"></i>产品任务</span> 
+						</el-menu-item>
+						<el-menu-item index="项目任务">
+							<span slot="title"><i class="el-icon-video-camera"></i>项目任务</span>
+						</el-menu-item> 
+				</el-submenu > 
 				<el-menu-item  index="缺陷">
 					 <span slot="title"><i class="el-icon-question"  ></i>缺陷</span>
-				</el-menu-item>
-				<el-menu-item  index="团队">
-					 <span slot="title"><i class="el-icon-user-solid"  ></i>团队</span>
 				</el-menu-item> 
-				<el-menu-item index="计划">
-					<span slot="title"><i class="el-icon-odometer"></i>计划</span>
-				</el-menu-item>  
+				<el-submenu index="团队">
+					<template slot="title">团队</template>
+						<el-menu-item   index="产品团队">
+							<span slot="title"><i class="el-icon-solid"></i>产品团队</span> 
+						</el-menu-item>
+						<el-menu-item index="项目团队">
+							<span slot="title"><i class="el-icon-solid"></i>项目团队</span>
+						</el-menu-item> 
+				</el-submenu >
+				<el-submenu index="计划">
+					<template slot="title">计划</template>
+						<el-menu-item   index="产品计划">
+							<span slot="title"><i class="el-icon-view"></i>产品计划</span> 
+						</el-menu-item>
+						<el-menu-item index="项目计划">
+							<span slot="title"><i class="el-icon-video-camera"></i>项目计划</span>
+						</el-menu-item> 
+				</el-submenu >
 				<el-submenu index="财务" class="hidden-sm-and-down">
 					<template slot="title">财务</template> 
 						<el-menu-item   index="合同管理">
@@ -136,11 +154,15 @@
 			 <xm-iteration-for-project-complex  v-if="infotype=='迭代'" ref="xmIterationMng" :xm-product="xmProduct"></xm-iteration-for-project-complex>
  			 <xm-project-complex v-if="infotype=='项目'" ref="xmProjectForLink" :xm-product="xmProduct"></xm-project-complex> 
 			  <xm-menu-mng v-if="infotype=='需求'" :xm-product="xmProduct"></xm-menu-mng>
-			 <xm-task-mng v-if="infotype=='任务'" ptype="1" queryScope="task"  ref="xmTaskMng" :xm-product="xmProduct" key="task"></xm-task-mng>
+			  <xm-task-mng v-if="infotype=='产品任务'" ptype="1" queryScope="task"  ref="productXmTaskMng" :xm-product="xmProduct" key="productXmTaskMng"></xm-task-mng>
+			 <xm-task-mng v-if="infotype=='项目任务'" ptype="0" queryScope="task"  ref="projectXmTaskMng" :xm-product="xmProduct" key="projectXmTaskMng"></xm-task-mng>
 			  <xm-question v-if="infotype=='缺陷'" :qtype="'bug'" :xm-product='xmProduct' ref="xmQuestion"></xm-question>
-			  <xm-group-mng v-if="infotype=='团队'" :xm-product="xmProduct"></xm-group-mng>
+			  <xm-group-mng v-if="infotype=='项目团队'" pgClass="0" :xm-product="xmProduct" key="projectGroup"></xm-group-mng>
+			  <xm-group-mng v-if="infotype=='产品团队'" pgClass="1" :xm-product="xmProduct" key="productGroup"></xm-group-mng>
 			  <xm-file-mng v-if="infotype=='文档'" :xm-product="xmProduct"></xm-file-mng>
-			  <xm-task-mng v-if="infotype=='计划'" ref="productPlan" ptype="1" queryScope="planTask"  :xm-product="xmProduct" key="productPlan"></xm-task-mng> 
+			  <xm-task-mng v-if="infotype=='产品计划'" ref="productPlan" ptype="1" queryScope="planTask"  :xm-product="xmProduct" key="productPlan"></xm-task-mng> 
+
+			  <xm-task-mng v-if="infotype=='项目计划'" ref="projectPlan" ptype="0" queryScope="planTask"  :xm-product="xmProduct" key="projectPlan"></xm-task-mng> 
 			  <!--<xm-phase-for-product v-if="infotype=='计划'" ref="xmPhaseMng" :xm-product="xmProduct" ></xm-phase-for-product> -->
 			  <xm-test-case-exec-mng v-if="infotype=='测试计划'" :visible="infotype=='测试计划'"  :xm-product='xmProduct' ref="xmQuestion"></xm-test-case-exec-mng>
 			<xm-menu-with-plan v-if="infotype=='需求监控'" ref="xmMenuWithPlan" :xm-product="xmProduct"></xm-menu-with-plan>
@@ -162,7 +184,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { listXmProject,editStatus , delXmProject, batchDelXmProject } from '@/api/xm/core/xmProject';
 	import  XmProjectAdd from '../xmProject/XmProjectAdd';//新增界面
 	import  XmProjectEdit from '../xmProject/XmProjectEdit';//修改界面
@@ -365,13 +387,13 @@ import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
               } else {
                 return v[j];
               }
-              const options = this.$refs.xmMenuWithPlan.options;
-              if(options[key]==undefined || options[key]==null || options[key].length==0   ){
+              const dicts = this.$refs.xmMenuWithPlan.dicts;
+              if(dicts[key]==undefined || dicts[key]==null || dicts[key].length==0   ){
                 return v[j];
               }
-              var rowData=options[key].filter(i=>i.optionValue==v[j])
+              var rowData=dicts[key].filter(i=>i.id==v[j])
               if(rowData.length>0){
-                return rowData[0].optionName
+                return rowData[0].name
               }else{
                 return v[j];
               }

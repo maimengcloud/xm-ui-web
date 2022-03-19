@@ -2,54 +2,82 @@
 	<section> 
 		<el-row>   
 			<el-col :span="24"  style="padding-left:12px;" >
-				<el-row  > 
-					
-					<el-popover v-if="!xmProduct||!xmProduct.id"
-						placement="right"
-						width="400"
-						trigger="click"> 
-						<xm-product-select :auto-select="true" :sel-project="selProject" v-if="!xmProduct" :xm-iteration="xmIteration" @row-click="onProductSelected" ref="xmProductMng" :simple="true"></xm-product-select>
-							<el-link type="warning" slot="reference"  icon="el-icon-search"><font style="font-size:14px;">{{filters.product?filters.product.productName:'选择产品'}}</font></el-link> 
-					</el-popover>  
- 					<el-select class="hidden-md-and-down" v-if="excludeIterationId" v-model="filters.iterationFilterType" placeholder="是否加入过迭代？" clearable  >
-						<el-option   value="not-join"  label="未加入任何迭代的需求"></el-option>  
-						<el-option   value="join"  label="已加入迭代的需求"></el-option>  
-					</el-select>
-					<el-select class="hidden-md-and-down" v-else v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable  >
-						<el-option   value="not-join"  label="未分配任何任务的需求"></el-option>  
-						<el-option   value="join"  label="已分配任务的需求"></el-option>  
-					</el-select> 
-					<el-input v-model="filters.key" closable style="width: 20%;" placeholder="需求名查询"> 
-					</el-input>  
-					<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
+				<el-row>    
 					<el-popover
+						placement="bottom"
+						width="400"
+						trigger="manual"
+						v-model="productVisible"> 
+						<xm-product-select v-if="!xmProduct" :auto-select="false" :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :xm-iteration="xmIteration" :simple="true" @clear-select="onProductClearSelect" @close="productVisible=false"></xm-product-select>
+							<el-link title="产品，点击选择、清除选择" @click="productVisible=true" type="warning" slot="reference" v-if="!xmProduct" icon="el-icon-search"><font style="font-size:14px;">{{filters.product?filters.product.productName:'选择产品'}}</font></el-link> 
+					</el-popover>  
+					
+					<el-popover
+						placement="bottom"
+						width="400"
+						trigger="manual"
+						v-model="iterationVisible"> 
+						<xm-iteration-select v-if="!xmIteration" :auto-select="false" :sel-project="selProject" @row-click="onIterationSelected" ref="xmProductMng" :xm-product="xmProduct" :simple="true" @clear-select="onIterationClearSelect" @close="iterationVisible=false"></xm-iteration-select>
+							<el-link title="迭代，点击选择、清除选择" @click="iterationVisible=true" type="warning" slot="reference" v-if="!xmIteration" icon="el-icon-search"><font style="font-size:14px;">{{filters.iteration?filters.iteration.iterationName:'选择迭代'}}</font></el-link> 
+					</el-popover>  
+					<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable style="width: 160px;">
+						<el-option   value="not-join-any-project"  label="未分配任务"></el-option>  
+						<el-option   value="join-any-project"  label="已分配任务"></el-option>  
+						<el-option   value="not-join-curr-project"  label="未分配任务到本项目" v-if="selProject && selProject.id"></el-option>  
+						<el-option   value="join-curr-project"  label="已分配任务到本项目"  v-if="selProject && selProject.id"></el-option>  
+					</el-select>   
+					<el-select   v-model="filters.iterationFilterType" placeholder="加入过迭代？" clearable  style="width: 160px;">
+						<el-option   value="not-join-any-iteration"  label="未加入过迭代"></el-option>  
+						<el-option   value="join-any-iteration"  label="已加入过迭代"></el-option>  
+						<el-option   value="not-join-curr-iteration"  label="未加入本迭代"  v-if="filters.iteration && filters.iteration.id"></el-option>  
+						<el-option   value="join-curr-iteration"  label="已加入本迭代" v-if="filters.iteration && filters.iteration.id"></el-option>  
+					</el-select> 
+					
+					<el-select v-model="filters.dtype" clearable placeholder="需求类型">
+						<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
+					</el-select>    
+					<el-select v-model="filters.source" placeholder="需求来源"  clearable>
+						<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
+					</el-select>     
+					<el-select v-model="filters.dlvl" placeholder="需求层次"  clearable class="hidden-md-and-down">
+						<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
+					</el-select>     
+				</el-row>
+				<el-row>     
+					<el-button class="hidden-md-and-down" v-if="!filters.tags||filters.tags.length==0" @click.native="tagSelectVisible=true">标签条件</el-button>
+					<el-tag class="hidden-md-and-down" v-else @click="tagSelectVisible=true"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
+					<el-select v-model="filters.priority" placeholder="优先级"  clearable>
+							<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option> 
+					</el-select>      
+					<el-select  v-model="filters.status" placeholder="需求状态" clearable style="width: 100px;">
+						<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option> 
+					</el-select> 
+					<el-input v-model="filters.key" style="width: 15%;" placeholder="需求名称查询" clearable> 
+					</el-input> 
+					<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search">查询</el-button>
+					 
+ 					<el-popover
 						placement="top-start"
 						title=""
 						width="400"
 						trigger="click" >
-						<el-row> 
-							<el-col  :span="24"  style="padding-top:5px;">
-								<el-select    v-model="filters.iterationFilterType" placeholder="是否加入过迭代？" clearable  >
-									<el-option   value="not-join"  label="未加入任何迭代的需求"></el-option>  
-									<el-option   value="join"  label="已加入迭代的需求"></el-option>  
-								</el-select>
-							</el-col>
-							<el-col  :span="24"  style="padding-top:5px;"> 
-								<el-select   v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable >
-									<el-option   value="not-join"  label="未分配任何任务的需求"></el-option>  
-									<el-option   value="join"  label="已分配任务的需求"></el-option>  
-								</el-select> 
-							</el-col>
+						<el-row>  
+							<el-col  :span="24"  style="padding-top:5px;" >
+								<font class="more-label-font">标签条件:</font>  
+								<el-button type="text" v-if="!filters.tags||filters.tags.length==0" @click.native="tagSelectVisible=true">标签</el-button>
+								<el-tag v-else @click="tagSelectVisible=true"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
+
+							</el-col> 
 							<el-col :span="24"  style="padding-top:5px;">
-								<font class="more-label-font">创建时间:</font>  
+								<font class="more-label-font">创建日期:</font>  
 								<el-date-picker
 									v-model="dateRanger" 
 									type="daterange"
 									align="right"
 									unlink-panels
 									range-separator="至"
-									start-placeholder="开始日期"
-									end-placeholder="完成日期"
+									start-placeholder="创建日期"
+									end-placeholder="创建日期"
 									value-format="yyyy-MM-dd HH:mm:ss"
 									:default-time="['00:00:00','23:59:59']"
 									:picker-options="pickerOptions"
@@ -60,30 +88,32 @@
 									责任人:
 								</font>  
 								<el-tag v-if="filters.mmUser" closable @close="clearFiltersMmUser()">{{filters.mmUser.username}}</el-tag> 
-								<el-button v-else @click="selectFiltersMmUser()">选责任人</el-button>
-								<el-button   @click="setFiltersMmUserAsMySelf()">我的</el-button>
+								<el-button   v-else @click="selectFiltersMmUser()">选责任人</el-button>
+								<el-button    @click="setFiltersMmUserAsMySelf()">我的</el-button>
 							</el-col>
-							<el-col  :span="24"  style="padding-top:5px;">
+							<el-col  :span="24"  style="padding-top:5px;" class="hidden-log-and-up">
 								<font class="more-label-font">
-									需求名称:
-								</font> 
-								<el-input   v-model="filters.key" style="width:100%;"  placeholder="输入需求名字关键字" clearable>  
-								</el-input> 
+									需求层次:
+								</font>  
+								<el-select v-model="filters.dlvl" placeholder="需求层次"  clearable>
+									<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
+								</el-select>  
 							</el-col>
 							<el-col  :span="24"  style="padding-top:5px;">
-								<el-button type="primary"  @click="searchXmMenus" >查询</el-button>
- 							</el-col> 
+								<el-button type="primary"  @click="searchXmMenus" icon="el-icon-search">查询</el-button>
+							</el-col>  
 						</el-row> 
 						<el-button  slot="reference" icon="el-icon-more"></el-button>
-					</el-popover> 
+					</el-popover>  
+					
 					<el-button   type="primary" v-if="multi"  v-on:click="multiSelectedConfirm">确认选择</el-button>
-				</el-row>
+				</el-row>   
 				<el-row style="padding-top:12px;">
 					<el-table ref="table" class="menu-table"  lazy :load="loadMenusLazy" :height="maxTableHeight" :data="xmMenusTreeData"   row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column v-if="multi" type="selection" width="50"></el-table-column>  
 						<el-table-column prop="menuName" label="需求名称" min-width="140" > 
 							<template slot-scope="scope">
-								<span class="vlink"  @click="toMenu(scope.row)">{{scope.row.seqNo}}&nbsp;
+								<span class="vlink" :class="scope.row.ntype==='1'?'el-icon-folder-opened':''"  @click="toMenu(scope.row)">{{scope.row.seqNo}}&nbsp;
 								{{scope.row.menuName}}</span> 
 							</template>
 						</el-table-column> 
@@ -116,12 +146,13 @@
 	import util from '@/common/js/util';//全局公共库
 	import treeTool from '@/common/js/treeTool';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { listXmMenu  } from '@/api/xm/core/xmMenu';
  	import  XmProductSelect from '../xmProduct/XmProductSelect';//新增界面
  	import XmMenuRichDetail from './XmMenuRichDetail';
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
 
+	import  XmIterationSelect from '../xmIteration/XmIterationSelect';//修改界面
 	import {sn} from '@/common/js/sequence'
 
 	import { mapGetters } from 'vuex'
@@ -174,12 +205,12 @@
 					pageSize:50,//每页数据
 					count:false,//是否需要重新计算总记录数
 					pageNum:1,//当前页码、从1开始计算
-					orderFields:[],//排序列 如 ['sex','student_id']，必须为数据库字段
-					orderDirs:[]//升序 asc,降序desc 如 性别 升序、学生编号降序 ['asc','desc']
+					orderFields:['seq_no'],//排序列 如 ['sex','student_id']，必须为数据库字段
+					orderDirs:['asc']//升序 asc,降序desc 如 性别 升序、学生编号降序 ['asc','desc']
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				options:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				dicts:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				
 				addFormVisible: false,//新增xmMenu界面是否显示
 				//新增xmMenu界面初始化数据
@@ -194,6 +225,8 @@
 				},
  				menuDetailVisible:false,
 				 selectFiltersMmUserVisible:false,
+				 productVisible:false,
+				iterationVisible:false,
 				/**begin 自定义属性请在下面加 请加备注**/
 				maxTableHeight:300,
 				dateRanger: [ ],  
@@ -228,12 +261,7 @@
 				 this.pageInfo.count=true; 
 				 this.getXmMenus();
 			},
-			
-			getParams(params){
-
-				if(!params.productId){
-					params.branchId=this.userInfo.branchId
-				}
+			getParams(params){ 
 				
 				if( this.filters.key){
 					params.key="%"+this.filters.key+"%"
@@ -244,53 +272,79 @@
 				}  
 				if(this.filters.iterationFilterType){
 					params.iterationFilterType=this.filters.iterationFilterType
-				} 
-				if(this.xmIteration){
-					params.iterationFilterType='join'
-					params.iterationId=this.xmIteration.id
+					if(params.iterationFilterType==='not-join-any-iteration'){
+
+					}else if(params.iterationFilterType==='join-any-iteration'){
+
+					}else if(params.iterationFilterType==='not-join-curr-iteration'){
+						params.filterIterationId=this.filters.iteration.id
+					}else if(params.iterationFilterType==='join-curr-iteration'){
+						params.filterIterationId=this.filters.iteration.id
+					} 
+					params.ntype="0"
+				}else{
+					if(this.filters.iteration){
+						params.iterationId=this.filters.iteration.id
+					}
+				}
+				if(this.xmIteration && this.xmIteration.id){ 
+					params.linkIterationId=this.xmIteration.id
 				}
 				if(this.filters.taskFilterType){
-					params.taskFilterType=this.filters.taskFilterType
+					params.taskFilterType=this.filters.taskFilterType 
+					params.projectId=this.selProject.id 
+					params.ntype="0"
 				} 
-				if(this.selProject){
-					params.projectId=this.selProject.id
-				}
-				
+				if(this.selProject && this.selProject.id){
+					params.linkProjectId=this.selProject.id
+				} 
 				if(this.filters.product){
 					params.productId=this.filters.product.id
-				}
-				if(this.filters.parentMenu){
-					params.pmenuId=this.filters.parentMenu.menuId
+				}  
+				if(this.filters.status){
+					params.status=this.filters.status
 				}
 				
+				if(this.filters.dlvl){
+					params.dlvl=this.filters.dlvl
+				}
+				
+				if(this.filters.dtype){
+					params.dtype=this.filters.dtype
+				}
+				
+				if(this.filters.priority){
+					params.priority=this.filters.priority
+				}
+				
+				if(this.filters.source){
+					params.source=this.filters.source
+				}
 				if( this.dateRanger && this.dateRanger.length==2){
 					params.ctimeStart=this.dateRanger[0] 
 					params.ctimeEnd=this.dateRanger[1] 
 				} 
-				if(!(params.ctimeStart||params.pmenuId||params.projectId||params.iterationId||params.iterationFilterType||params.mmUserid||params.key||params.taskFilterType)){
-					params.isTop="1"
-				}
+				if(this.filters.tags && this.filters.tags.length>0){
+					params.tagIdList=this.filters.tags.map(i=>i.tagId)
+				} 
 				return params;
 			},
 			loadMenusLazy(row, treeNode, resolve) {  
-				if(row.children&&row.children.length>0){
-					resolve(row.children) 
-				}else{
-					var params={pmenuId:row.menuId}
-					params=this.getParams(params);
-					params.isTop=""
-					this.load.list = true;
-					var func=listXmMenu 
-					func(params).then(res=>{
-						this.load.list = false
-						var tips = res.data.tips;
-						if(tips.isOk){
-							resolve(res.data.data) 
-						}else{
-							resolve([])
-						}
-					}).catch( err => this.load.list = false );  
-				}
+				 
+				var params={pmenuId:row.menuId}
+				params=this.getParams(params);
+				params.isTop=""
+				this.load.list = true;
+				var func=listXmMenu 
+				func(params).then(res=>{
+					this.load.list = false
+					var tips = res.data.tips;
+					if(tips.isOk){
+						resolve(res.data.data) 
+					}else{
+						resolve([])
+					}
+				}).catch( err => this.load.list = false );   
 				
 			},
 			//获取列表 XmMenu xm_project_menu
@@ -336,11 +390,7 @@
 			//选择行xmMenu
 			selsChange: function (sels) {
 				this.sels = sels;
-			}, 
-			onProductSelected:function(product){
-				this.filters.product=product
-				this.getXmMenus()
-			},
+			},  
 			 
 			rowClick: function(row, event, column){
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
@@ -378,16 +428,45 @@
 			setFiltersMmUserAsMySelf(){
 				this.filters.mmUser=this.userInfo;
 				this.searchXmMenus();
-			},		
+			},
+			
+			onProductSelected:function(product){
+				this.filters.product=product 
+				this.productVisible=false;
+				this.xmMenus=[]
+				this.getXmMenus()
+			},
+			onProductClearSelect:function(){
+				this.filters.product=null  
+				this.productVisible=false;
+				this.xmMenus=[]
+				this.getXmMenus()
+			},	 
+			onIterationSelected:function(iteration){
+				this.filters.iteration=iteration  
+				this.iterationVisible=false;
+				this.xmMenus=[]
+				this.getXmMenus()
+			},
+			onIterationClearSelect:function(){
+				this.filters.iteration=null  
+				this.iterationVisible=false;
+				this.xmMenus=[]
+				this.getXmMenus()
+			},	
 			/**end 自定义函数请在上面加**/
 			
 		},//end methods
 		components: { 
- 			XmProductSelect,XmMenuRichDetail,UsersSelect
+ 			XmProductSelect,XmMenuRichDetail,UsersSelect,XmIterationSelect
  		    
 		    //在下面添加其它组件
 		},
 		mounted() {  
+			
+  			initSimpleDicts("all",['menuStatus','demandSource','demandLvl','demandType','priority']).then(res=>{
+				this.dicts=res.data.data;
+			})
 			this.$nextTick(() => {
 				
 				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 

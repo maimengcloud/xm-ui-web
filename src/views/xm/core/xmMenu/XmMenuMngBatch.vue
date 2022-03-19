@@ -1,117 +1,16 @@
 <template>
 	<section class="page-container  padding border">
 		<el-row>  
-			<el-row >  
-				<el-select class="hidden-lg-and-down" v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable >
-					<el-option   value="not-join"  label="未分配任何任务的需求"></el-option>  
-					<el-option   value="join"  label="已分配任务的需求"></el-option>  
-				</el-select> 
-				<el-date-picker
-					v-model="dateRanger" 
-					type="daterange"
-					align="right"
-					class="hidden-md-and-down"
-					unlink-panels
-					range-separator="至"
-					start-placeholder="创建日期"
-					end-placeholder="创建日期"
-					value-format="yyyy-MM-dd HH:mm:ss"
-					:default-time="['00:00:00','23:59:59']"
-					:picker-options="pickerOptions"
-				></el-date-picker> 
-				<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询" clearable>
-					<template slot="append">
-						<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
-					</template>
-				</el-input> 
-				
-				
+			<el-row >    
 				<el-button    type="warning" @click="batchSaveMenu" icon="el-icon-finished">保存</el-button> 
-				<el-button   type="success"  @click="handlePopover(null,'add')" icon="el-icon-plus">需求</el-button>
 				<el-button      @click="noBatchEdit" icon="el-icon-back">返回</el-button>  
-
-				<el-button    type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button> 
-				
-				<el-popover
-					placement="top-start"
-					title="更多查询条件或操作"
-					width="400"
-					trigger="click" >
-					<el-row>  
-						<el-col  :span="24"  style="padding-top:5px;" >
-							<el-select   v-model="filters.iterationFilterType" placeholder="是否加入过迭代？" clearable  >
-								<el-option   value="not-join"  label="未加入任何迭代的需求"></el-option>  
-								<el-option   value="join"  label="已加入迭代的需求"></el-option>  
-							</el-select>
-						</el-col>
-						<el-col  :span="24"  style="padding-top:5px;"> 
-							<el-select  v-model="filters.taskFilterType" placeholder="是否分配了任务？" clearable >
-								<el-option   value="not-join"  label="未分配任何任务的需求"></el-option>  
-								<el-option   value="join"  label="已分配任务的需求"></el-option>  
-							</el-select> 
-						</el-col> 
-						<el-col :span="24"  style="padding-top:5px;">
-							<font class="more-label-font">创建日期:</font>  
-							<el-date-picker
-								v-model="dateRanger" 
-								type="daterange"
-								align="right"
-								unlink-panels
-								range-separator="至"
-								start-placeholder="创建日期"
-								end-placeholder="创建日期"
-								value-format="yyyy-MM-dd HH:mm:ss"
-								:default-time="['00:00:00','23:59:59']"
-								:picker-options="pickerOptions"
-							></el-date-picker>   
-						</el-col>   
-						<el-col  :span="24"  style="padding-top:5px;">
-							<font class="more-label-font">
-								责任人:
-							</font>  
-							<el-tag v-if="filters.mmUser" closable @close="clearFiltersMmUser()">{{filters.mmUser.username}}</el-tag> 
-							<el-button   v-else @click="selectFiltersMmUser()">选责任人</el-button>
-							<el-button    @click="setFiltersMmUserAsMySelf()">我的</el-button>
-						</el-col>
-						<el-col  :span="24"  style="padding-top:5px;">
-							<font class="more-label-font">
-								需求名称:
-							</font> 
-							<el-input   v-model="filters.key" style="width:100%;"  placeholder="输入需求名字关键字" clearable>  
-							</el-input> 
-						</el-col>
-						<el-col  :span="24"  style="padding-top:5px;">
-							<el-button type="primary"  @click="searchXmMenus" icon="el-icon-search">查询</el-button>
-							<el-button  v-if=" batchEditVisible==false "  @click="handleExport" icon="el-icon-download">导出</el-button> 
-							<el-button   v-if=" batchEditVisible==true "  type="success" @click="showImportFromMenuTemplate" icon="el-icon-upload2">由模板快速导入</el-button> 
-							
-							<el-button   v-if=" batchEditVisible==false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">刷新统计数据</el-button>  
-						</el-col> 
-					</el-row> 
-					<el-button  slot="reference" icon="el-icon-more"></el-button>
-				</el-popover> 
-			
 			</el-row>
 			<el-row style="padding-top:12px;"> 
-				<el-table ref="table" :height="maxTableHeight" :data="xmMenusTreeData" class="drag-table" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+				<el-table ref="table" :indent="16" lazy :load="loadXmMenusLazy" :height="maxTableHeight" :data="xmMenusTreeData" class="drag-table"   row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}"   highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 					<el-table-column  type="selection" width="45"></el-table-column>
-					<el-table-column  prop="seqNo"  label="序号" min-width="100">
-						<template slot-scope="scope">
-							<div style="display:flex;width:100%;">
-								<el-popover
-									placement="top"
-									width="400"
-									trigger="click">
-									<div style="text-align: center; margin: 0">
-										<div :ref="'menu_'+scope.$index" :data-menu-id="scope.row.menuId"></div>
-										<el-button type="primary"    @click="handlePopover(scope.row,'highestPmenuId')">成为顶级节点</el-button> 
-										<el-button type="danger"    @click="handlePopover(scope.row,'delete')">删除当前行</el-button> 
-										<el-button type="success"    @click="handlePopover(scope.row,'addSub')">增加子行</el-button> 
-									</div>
-									<el-button slot="reference" :type="scope.row.opType?'success':'plain'"   icon="el-icon-more"></el-button> 
-								</el-popover>
+					<el-table-column  prop="seqNo"  label="序号" width="150">
+						<template slot-scope="scope"> 
 								<el-input   style="width:100%;"   v-model="scope.row.seqNo"  @change="fieldChange(scope.row,'seqNo')"></el-input>
-							</div>
 						</template>
 					
 					</el-table-column>  
@@ -120,13 +19,37 @@
 							<el-input    v-model="scope.row.menuName"  @change="fieldChange(scope.row,'menuName')"></el-input>
 						</template>
 					</el-table-column> 
-					<el-table-column prop="mmUsername" label="负责人" min-width="100" > 
+					<el-table-column prop="mmUsername" label="跟进人" min-width="100" > 
+						
+						<template slot="header">
+							<el-button type="text" icon="el-icon-user" title="批量修改跟进人" @click="showBatchMmUserSelectVisible">批量修改</el-button>
+						</template>
 						<template slot-scope="scope"> 
-							<el-tag v-if="scope.row.mmUserid" closable @close="clearPmUser(scope.row)">{{scope.row.mmUsername}}</el-tag>
-							<el-tag v-else>未配置</el-tag> 
-							<el-button @click="selectUser(scope.row)">选人</el-button>
+							<el-tag v-if="scope.row.mmUserid" @click="selectUser(scope.row)" closable @close="clearPmUser(scope.row)">{{scope.row.mmUsername}}</el-tag> 
+							<el-button v-else type="text" @click="selectUser(scope.row)">选人</el-button>
 						</template>
 					</el-table-column> 
+					
+					<el-table-column  label="需求属性" width="500" >  
+						<template slot-scope="scope"> 
+							 <el-select v-model="scope.row.dtype" title="需求类型" clearable placeholder="需求类型" @change="fieldChange(scope.row,'dtype')">
+								<el-option v-for="i in dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
+							</el-select>    
+							<el-select v-model="scope.row.source"  title="需求来源" placeholder="需求来源"  clearable @change="fieldChange(scope.row,'dtype')">
+								<el-option v-for="i in dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
+							</el-select>     
+							<el-select v-model="scope.row.dlvl"  title="需求层次" placeholder="需求层次"  clearable class="hidden-md-and-down" @change="fieldChange(scope.row,'dtype')">
+								<el-option v-for="i in dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
+							</el-select>    
+							<el-select v-model="scope.row.priority"  title="优先级" placeholder="优先级"  clearable @change="fieldChange(scope.row,'dtype')">
+									<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option> 
+							</el-select>  
+						</template>
+					</el-table-column> 
+
+
+					
+						
 					<el-table-column prop="remark" label="描述" min-width="140"  show-overflow-tooltip> 
 						<template slot-scope="scope">
 
@@ -134,116 +57,43 @@
 						</template>
 					</el-table-column>  
 				</el-table>
-				<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
-					
-		</el-row> 
-			<!--编辑 XmMenu xm_project_menu界面-->
-			<el-drawer title="编辑需求" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
-				<xm-menu-edit :xm-menu="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-menu-edit>
-			</el-drawer>
-	
-			<!--新增 XmMenu xm_project_menu界面-->
-			<el-drawer title="新增需求" :visible.sync="addFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
-				<xm-menu-add  :product="filters.product"   :parent-menu="parentMenu"  :xm-menu="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-menu-add>
-			</el-drawer> 
-			<el-drawer title="需求模板" :visible.sync="menuTemplateVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
-				<xm-menu-template-mng  :is-select-menu="true"  :visible="menuTemplateVisible" @cancel="menuTemplateVisible=false" @selected-menus="onSelectedMenuTemplates"></xm-menu-template-mng>
-			</el-drawer> 
-			
-			<el-drawer title="需求谈论" :visible.sync=" menuDetailVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
-				<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="false" :xm-menu="editForm" ></xm-menu-rich-detail>
-			</el-drawer> 
-			
-			<el-drawer title="选中任务" :visible.sync="selectTaskVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
-				<xm-task-list  :sel-project="selProject" :is-multi-select="true"  @tasks-selected="onSelectedTasks"></xm-task-list>
-			</el-drawer> 
-			<el-drawer title="查看任务" :visible.sync="taskListForMenuVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
-				<xm-task-list-for-menu   :is-multi-select="true" :menu-id="editForm.menuId"></xm-task-list-for-menu>
-			</el-drawer> 
-			<el-drawer
-				append-to-body
-				title="任务"
-				:visible.sync="taskMngVisible"
-				fullscreen>
-				<xm-task-mng :sel-project="selProject"   :menu-id="editForm.menuId" :menu-name="editForm.menuName"></xm-task-mng> 
-			</el-drawer>
-			<el-drawer
-				append-to-body
-				title="需求关联的迭代查询"
-				:visible.sync="iterationVisible" 
-				>
-					<xm-iteration-mng :visible="iterationVisible" :product-id="editForm.productId" :menu-id="editForm.menuId" ></xm-iteration-mng>
-			</el-drawer>
-
-			<el-drawer title="选择员工" :visible.sync="selectFiltersMmUserVisible" size="60%" append-to-body>
-				<users-select  @confirm="onFiltersMmUserSelected" ref="selectFiltersMmUser"></users-select>
-			</el-drawer>	
+				 
+		</el-row>     	
 			<el-drawer title="选择员工" :visible.sync="userSelectVisible" size="60%" append-to-body>
 				<users-select  @confirm="onUserSelected" ref="usersSelect"></users-select>
-			</el-drawer>	 
+			</el-drawer>	
+			<el-drawer title="选择员工" :visible.sync="batchMmUserSelectVisible" size="60%" append-to-body>
+				<users-select  @confirm="onBatchMmUserSelectConfirm" ref="batchMmUserSelect"></users-select>
+			</el-drawer>	
+			 
 		</el-row>
 	</section>
 </template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	//import Sticky from '@/components/Sticky' // 粘性header组件
-	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { listXmMenu, delXmMenu, batchDelXmMenu,batchAddXmMenu,batchEditXmMenu,listXmMenuWithState } from '@/api/xm/core/xmMenu';
-	import { batchRelTasksWithMenu } from '@/api/xm/core/xmTask';
-	import { loadTasksToXmMenuState} from '@/api/xm/core/xmMenuState';
-
-	
-	import  XmMenuAdd from './XmMenuAdd';//新增界面
-	import  XmMenuEdit from './XmMenuEdit';//修改界面
-	import  XmProductMng from '../xmProduct/XmProductSelect';//新增界面
-	import  XmMenuTemplateMng from '../xmMenuTemplate/XmMenuTemplateMng';//新增界面
-	import XmMenuRichDetail from './XmMenuRichDetail';
-	import XmTaskList from '../xmTask/XmTaskList';
-	import XmTaskMng from '../xmTask/XmTaskMng'; 
-	import XmTaskListForMenu from '../xmTask/XmTaskListForMenu';
-	import  XmIterationMng from '../xmIteration/XmIterationSelect';//修改界面
-	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
-
-	import {sn} from '@/common/js/sequence'
+	import treeTool from '@/common/js/treeTool';//全局公共库
+ 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+	import {  batchEditXmMenu,listXmMenuWithState } from '@/api/xm/core/xmMenu';
+    	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
+ 
 
 	import { mapGetters } from 'vuex'
 	
 	export default { 
-		props:['selProject','product'],
+		props:['product','xmMenus','dicts'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
 			]),
 			
       xmMenusTreeData() {
-        let xmMenus = JSON.parse(JSON.stringify(this.xmMenus || []));
-        if (this.valueChangeRows && this.valueChangeRows.length) {
-          this.valueChangeRows.forEach(c => {
-            var index = xmMenus.findIndex(i=>i.id==c.id);
-            const oldRow = JSON.parse(JSON.stringify(xmMenus[index]));
-            xmMenus.splice(index,1);
-            c.parentTaskid = oldRow.parentTaskid;
-            xmMenus.push(c);
-          })
-        }
+        let xmMenus = JSON.parse(JSON.stringify(this.xmMenus || [])); 
         
-        const xmMenusTreeData = this.translateDataToTree(xmMenus); 
-				if(xmMenusTreeData!=null && xmMenusTreeData.length>0){
-					this.rowDrop(); 
-				}
-          
-        
+        const xmMenusTreeData = treeTool.translateDataToTree(xmMenus,"pmenuId","menuId"); 
+				 
 				 return xmMenusTreeData;
-			},
-			isPmUser(){
-				if(this.filters.product){
-					if(this.userInfo.userid==this.filters.product.pmUserid){
-						return true;
-					}
-				}
-				return false;
-			}
+			}, 
 		},
 		watch:{ 
 			product(product){
@@ -251,598 +101,42 @@
 			}
     	},
 		data() {
-			const beginDate = new Date();
-			const endDate = new Date();
-			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 12 );
+			 
 			return {
-				filters: {
-					key: '',
-					product:null,
-					mmUser:null,
-					iterationFilterType:'',//join、not-join、''
-					taskFilterType:'',//join、not-join、''
-				},
-				xmMenus: [],//查询结果
-				pageInfo:{//分页数据
-					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
-					pageSize:50,//每页数据
-					count:false,//是否需要重新计算总记录数
-					pageNum:1,//当前页码、从1开始计算
-					orderFields:[],//排序列 如 ['sex','student_id']，必须为数据库字段
-					orderDirs:[]//升序 asc,降序desc 如 性别 升序、学生编号降序 ['asc','desc']
-				},
+				filters: { 
+				},  
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				options:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				options2:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				
-				addFormVisible: false,//新增xmMenu界面是否显示
-				//新增xmMenu界面初始化数据
+ 				//新增xmMenu界面初始化数据
 				addForm: {
 						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:''
 				},
-				
-				editFormVisible: false,//编辑界面是否显示
+				 
 				//编辑xmMenu界面初始化数据
 				editForm: {
 						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:''
-				},
-				parentMenu:null,
-				menuTemplateVisible:false,
-				batchEditVisible:false,
-				valueChangeRows:[],
-				 menuDetailVisible:false,
-				selectTaskVisible:false, 
-				taskMngVisible:false,
-				taskListForMenuVisible:false,
-				iterationVisible:false,
-				userSelectVisible:false,
-				selectFiltersMmUserVisible:false,
-				maxTableHeight:300,
-				dateRanger: [ ],  
-				pickerOptions:  util.pickerOptions('datarange'),
- 				/**begin 自定义属性请在下面加 请加备注**/
-					
-				/**end 自定义属性请在上面加 请加备注**/
+				},  
+				valueChangeRows:[],  
+ 				userSelectVisible:false, 
+				 batchMmUserSelectVisible:false,
+				maxTableHeight:300, 
+				pickerOptions:  util.pickerOptions('datarange'), 
+				
+				maps:new Map(),
 			}
 		},//end data
-		methods: { 
-			handleSizeChange(pageSize) { 
-				this.pageInfo.pageSize=pageSize; 
-				this.getXmMenus();
-			},
-			handleCurrentChange(pageNum) {
-				this.pageInfo.pageNum = pageNum;
-				this.getXmMenus();
-			},
-			// 表格排序 obj.order=ascending/descending,需转化为 asc/desc ; obj.prop=表格中的排序字段,字段驼峰命名
-			sortChange( obj ){
-				var dir='asc';
-				if(obj.order=='ascending'){
-					dir='asc'
-				}else{
-					dir='desc';
-				}
-				if(obj.prop=='xxx'){
-					this.pageInfo.orderFields=['xxx'];
-					this.pageInfo.orderDirs=[dir];
-				}
-				this.getXmMenus();
-			},
-			searchXmMenus(){
-				 this.pageInfo.count=true; 
-				 this.getXmMenus();
-			},
-			//获取列表 XmMenu xm_project_menu
-			getXmMenus() {
-				let params = {
-					pageSize: this.pageInfo.pageSize,
-					pageNum: this.pageInfo.pageNum,
-					total: this.pageInfo.total,
-					count:this.pageInfo.count
-				};
-				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
-					let orderBys=[];
-					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
-						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
-					}  
-					params.orderBy= orderBys.join(",")
-				} 
-					if( this.filters.product!==null && this.filters.product.id!=''){
-						params.productId=this.filters.product.id
-					}else {
-						this.$notify({showClose: true, message: "请先选择产品", type: 'success' });
-						return;
-						//params.xxx=xxxxx
-					} 
-				if(!params.productId){
-					params.branchId=this.userInfo.branchId
-				}
-				
-				if( this.filters.key){
-					params.key="%"+this.filters.key+"%"
-				} 
-				if(this.filters.mmUser){
-					params.mmUserid=this.filters.mmUser.userid;
-				} 
-				params.excludeIterationId=this.excludeIterationId
-				if(this.filters.iterationFilterType){
-					params.iterationFilterType=this.filters.iterationFilterType
-				} 
-				if(this.filters.taskFilterType){
-					params.taskFilterType=this.filters.taskFilterType
-				}  
-				if( this.dateRanger && this.dateRanger.length==2){
-					params.ctimeStart=this.dateRanger[0] 
-					params.ctimeEnd=this.dateRanger[1] 
-				} 
-				
-				params.withParents="1"
-				let callback= (res)=>{
-					var tips=res.data.tips;
-					if(tips.isOk){ 
-						this.pageInfo.total = res.data.total;
-						this.pageInfo.count=false;
-						this.xmMenus = res.data.data;
-					}else{
-						this.$notify({showClose: true, message: tips.msg, type: 'error' });
-					} 
-					this.load.list = false;
-				}
-				this.load.list = true;
-				listXmMenuWithState(params).then( callback ).catch( err => this.load.list = false );
-			},
-
-			//显示编辑界面 XmMenu xm_project_menu
-			showEdit: function ( row,index ) {
-				this.editFormVisible = true;
-				this.editForm = Object.assign({}, row);
-			},
-			//显示新增界面 XmMenu xm_project_menu
-			showAdd: function () { 
-				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$notify({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
-					return false;
-				}
-				if(this.filters.product==null){
-					this.$notify({showClose: true, message: "请先选择产品", type: 'error' });
-					return;
-				}
-				this.parentMenu=null;
-				this.addFormVisible = true;
-				//this.addForm=Object.assign({}, this.editForm);
-			},
-			showSubAdd:function(row){
-				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$notify({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
-					return false;
-				}
-				this.editForm=row
-				this.parentMenu=row
-				this.addFormVisible=true
-			},
-			showProdcutAdd:function(){
-				this.$refs.xmProductMng.showAdd();
-			},
-			afterAddSubmit(){
-				this.addFormVisible=false;
-				this.pageInfo.count=true;
-				this.parentMenu=null;
-				this.getXmMenus();
-			},
-			afterEditSubmit(){
-				this.editFormVisible=false;
-				this.getXmMenus();
-			},
+		methods: {
+			
 			//选择行xmMenu
 			selsChange: function (sels) {
 				this.sels = sels;
 			}, 
-			onProductSelected:function(product){
-				this.filters.product=product
-				this.getXmMenus()
-			},
-			//删除xmMenu
-			handleDel: function (row,index) { 
-				if(row.mmUserid!=this.userInfo.userid){
-					this.$notify({showClose: true, message: "只能操作你负责的需求", type: 'error'}); 
-					return false;
-				}
-				this.$confirm('确认删除该记录吗?', '提示', {
-					type: 'warning'
-				}).then(() => { 
-					this.load.del=true;
-					let params = { menuId: row.menuId };
-					delXmMenu(params).then((res) => {
-						this.load.del=false;
-						var tips=res.data.tips;
-						if(tips.isOk){ 
-							this.pageInfo.count=true;
-							this.getXmMenus();
-						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
-					}).catch( err  => this.load.del=false );
-				});
-			},
-			//批量删除xmMenu
-			batchDel: function () {
-				var mmSels=this.sels.filter(i=>i.mmUserid!=this.userInfo.userid)
-				if(mmSels.length>0){
-					this.$notify({showClose: true, message: "只能操作你负责的需求", type: 'error'}); 
-					return false;
-				}
-				this.$confirm('确认删除选中记录吗？', '提示', {
-					type: 'warning'
-				}).then(() => { 
-					this.load.del=true;
-					batchDelXmMenu(this.sels).then((res) => {
-						this.load.del=false;
-						var tips=res.data.tips;
-						if( tips.isOk ){ 
-							this.pageInfo.count=true;
-							this.getXmMenus(); 
-						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
-					}).catch( err  => this.load.del=false );
-				});
-			},
 			
 			rowClick: function(row, event, column){
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
-      },
-            // 行拖拽
-      rowDrop() {
-        const _this = this
-        // 被拖动的元素的索引
-        let dragged = null;
-        // 被拖动的元素的索引
-        let draggedIndex = -1;
-
-        // 目标元素
-        let target = document.querySelector('.drag-table .el-table__body-wrapper .el-table__body tbody');
-        console.log('rowDrop--target==', target);
-        
-        let rows = 0;//行数
-        setTimeout(function () {
-          rows = target.childElementCount
-        console.log('rowDrop--rows==', rows);
-          for (let i = 0; i < target.childElementCount; i++) {
-            const child = target.children[i]
-            child.draggable = true
-            // child.style.cursor = 'copy'
-            child.ondragstart = function(e){
-              console.log('开始--ondragstart--e==', e);
-              
-              dragged = e.path[0]
-              draggedIndex = e.path[0].rowIndex
-              console.log('child'+i+'开始拖拽'+draggedIndex);
-              _this.cellMouseIndex = -1
-              dragged.style.cursor = 'grabbing'
-            }
-            child.ondragend = function(){
-              console.log('child'+i+'拖拽结束');
-            }
-          }
-        },0)
-
-        // 被拖动的元素正在那个容器里
-        let dragIndex = -1
-
-        target.ondragenter = function(e){
-          clearTimeout(loop)
-
-          // 由于被拖动的元素 经过tbody中的每一元素都会触发该事件, 但是我们只需要它正在那一行上就行了
-          if(e.path[0].nodeName === 'TD'){
-            // throughRow 表示被拖动的元素正在哪一行上
-            const throughRow = e.path.find(path => {
-              if(path.className.split(' ').includes('el-table__row')){
-                return path
-              }
-            })
-            if(dragIndex !== throughRow.rowIndex){
-              if(dragIndex > -1){
-                // 清除上次进入的容器的状态
-                const last = target.children[dragIndex];
-                clearClass(last)
-              }
-              // console.log('拖动进入目标元素'+selectRow.rowIndex);
-              // 不是自己或未文件夹时才改变状态
-              if(draggedIndex !== throughRow.rowIndex ){
-                // 改变本次进入的容器的状态
-                dragged.style.cursor = 'copy'
-                throughRow.style.height = 60+'px'
-                throughRow.style.backgroundColor = '#e9fdcf'
-              }
-              dragIndex = throughRow.rowIndex
-            }
-          }
-          leaveIndex = -1
-        }
-        target.ondragover = function(e){
-          // console.log('目标元素中拖拽...');
-          e.preventDefault();
-          leaveIndex = -1
-        }
-
-        let loop = null
-        let leaveIndex = -1 // 是否拖出了整个table, -1表示还在table内
-
-        target.ondragleave = function(e){
-          console.log('ondragleave--e==', e);
-
-          clearTimeout(loop)
-
-          if(e.path[0].nodeName){
-            const throughRow = e.path.find(path => {
-              if(path.className.split(' ').includes('el-table__row')){
-                return path;
-              }
-            })
-            if(throughRow && dragIndex !== throughRow.rowIndex){
-              // console.log('拖动离开目标元素'+selectRow.rowIndex);
-              // selectRow.style.height = 'unset'
-              // selectRow.style.backgroundColor = '#fff'
-              // dragIndex = selectRow.rowIndex
-            }
-            if(throughRow.rowIndex === 0 || throughRow.rowIndex === rows-1){
-              // 离开第一行或最后一行
-              leaveIndex = throughRow.rowIndex
-              loop = setTimeout(function () {
-                if(leaveIndex > -1){
-                  console.log("离开了",leaveIndex)
-                  const leave = target.children[leaveIndex];
-                  clearClass(leave)
-                  dragIndex = -1
-                }
-              },100)
-            }``
-          }
-        }
-        target.ondrop = function(){
-          console.log('ondrop--放下了'+draggedIndex);
-          // 清除上次进入的容器的状态
-          const last = target.children[dragIndex];
-          clearClass(last)
-          dragged.style.cursor = 'default'
-
-          console.log('ondrop--draggedIndex==', draggedIndex);
-          console.log('ondrop--dragIndex==', dragIndex);
-          
-
-          const form = _this.xmMenusTreeData[draggedIndex];
-          const to = _this.xmMenusTreeData[dragIndex];
-
-          const startId = _this.$refs['menu_'+draggedIndex].dataset.menuId;;
-          const endId = _this.$refs['menu_'+dragIndex].dataset.menuId;
-
-          if (startId !== endId) {
-            _this.changePmenuId(startId, endId)
-          }
-        }
-
-        let clearClass = function (node) {
-          if(node){
-            node.style.height = 'unset'
-            node.style.backgroundColor = '#fff'
-          }
-          dragged.style.cursor = 'grabbing'
-        }
-        // if(last && form.menuId !== to.menuId && to.isFolder){
-        //   // 移动文件/文件夹
-        //   _this.copyOrMoveApi('move', form.menuId, to.menuId)
-        // }
-      },
-      // 判断前后两个数据是否存在同一回路里面
-      // dict 为字典；sId拖拽到menuId; ePmeuId 是放置位置的祖先 menuId;
-      judgePmenuId(dict, sId, ePmeuId) {
-        if (sId === ePmeuId) {
-          return true;
-        } else if (dict[ePmeuId]) {
-          return this.judgePmenuId(dict, sId, dict[ePmeuId]);
-        } else {
-          return false;
-        }
-      },
-      handleExport() {
-        this.downloadLoading = true
-        const pageNum = this.pageInfo.pageNum;
-        const header = ['需求名称', '负责人', '总体进度', '描述'];
-        const keyList = ['menuName', 'mmUsername', 'finishRate', 'remark'];
-        const filename = `需求管理_${this.filters.product.productName}_第${pageNum}页`;
-				const data = this.formatJson(keyList, this.xmMenusTreeData);
-				import('@/vendor/Export2Excel').then(excel => {
-					excel.export_json_to_excel({
-						header,
-						data,
-						filename,
-						// autoWidth: this.autoWidth,
-						bookType: 'xlsx'
-					})
-					this.downloadLoading = false
-				})
-			},
-			formatJson(filterVal, jsonData, dataList = []) {
-        jsonData.forEach(v => {
-          const row = filterVal.map(j => {
-            let key = '';
-            if (j === 'menuName') {
-              return `${v.seqNo}  ${v[j]}`;
-            } else if(j == 'finishRate') {
-              return `${ (v[j] !== null ? v[j] : 0 )+'%' }`;
-            } else {
-              return v[j];
-            }
-          })
-        dataList.push(row);
-          if (v.children && v.children.length) {
-            dataList = this.formatJson(filterVal, v.children, dataList);
-          }
-        })
-        return dataList;
-      },
-      changePmenuId(sId, eId) {
-        let dict = {};
-        this.xmMenus.forEach(d => {
-          dict[d.menuId] = d.pmenuId || '';
-        });
-        if (!dict[eId]) {
-          this.xmMenus.find(d => {
-            if (d.menuId === sId) {
-              d.pmenuId = eId;
-              console.log('更新关系1');
-              this.fieldChange(d,'pmenuId',true);
-            }
-          })
-        } else {
-          const isSynezesis = this.judgePmenuId(dict, sId, dict[eId]);
-          if (!isSynezesis) {
-            this.xmMenus.find(d => {
-              if (d.menuId === sId) {
-                d.pmenuId = eId;
-                console.log('更新关系2');
-                this.fieldChange(d,'pmenuId',true);
-              }
-            })
-          } else {
-            console.log('形成闭合回路--拖拽不更新');
-            
-          }
-        }
-			}, 
-			
-			/**begin 自定义函数请在下面加**/
-			translateDataToTree(data2) { 
-				var data=JSON.parse(JSON.stringify(data2));
-				let parents = data.filter(value =>{
-					//如果我的上级为空，则我是最上级 
-					if(value.pmenuId == 'undefined' || value.pmenuId == null  || value.pmenuId == ''){
-						return true;
-
-						//如果我的上级不在列表中，我作为最上级
-					}else if(data.some(i=>value.pmenuId==i.menuId)){
-						return false;
-					}else {
-						return true
-					}
-				 
-				}) 
-				let children = data.filter(value =>{
-					if(data.some(i=>value.pmenuId==i.menuId)){
-						return true;
-					}else{
-						return false;
-					} 
-				})  
-				let translator = (parents, children) => {
-					parents.forEach((parent) => {
-						children.forEach((current, index) => {
-							if (current.pmenuId === parent.menuId) {
-								let temp = JSON.parse(JSON.stringify(children))
-								temp.splice(index, 1)
-								translator([current], temp)
-								typeof parent.children !== 'undefined' ? parent.children.push(current) : parent.children = [current]
-							}
-						}
-						)
-					}
-					)
-				}
-
-				translator(parents, children)
-
-				return parents
-			},	
-			/**begin 自定义函数请在下面加**/
-			selectedMenu:function(row){
-				this.$emit("selected",row)
-			},
-			showImportFromMenuTemplate(row){
-				
-				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$notify({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
-					return false;
-				}
-				if(!this.filters.product){
-					this.$notify.error("请选择产品模板")
-					return;
-				}
-				this.parentMenu=row
-				this.menuTemplateVisible=true;
-			},
-			onSelectedMenuTemplates:function(menuTemplates){
-				
-				if(menuTemplates==null || menuTemplates.length==0){
-					this.menuTemplateVisible=false;
-					return;
-				}
-				var menuTemplates2=JSON.parse(JSON.stringify(menuTemplates))
-				this.load.add=true
-				let parents = menuTemplates2.filter(value =>{
-					//如果我的上级为空，则我是最上级
-					if(value.pmenuId == 'undefined' || value.pmenuId == null  || value.pmenuId == ''){
-						return true;
-
-						//如果我的上级不在列表中，我作为最上级
-					}else if(menuTemplates2.some(i=>value.pmenuId==i.menuId)){
-						return false;
-					}else {
-						return true
-					}
-				 
-				})
-				if(this.parentMenu!=null &&  this.parentMenu!=undefined){
-					parents.forEach(i=>i.pmenuId=this.parentMenu.menuId);
-				}else{
-					parents.forEach(i=>i.pmenuId=null);
-				}
-				let children = menuTemplates2.filter(value =>{
-					if(menuTemplates2.some(i=>value.pmenuId==i.menuId)){
-						return true;
-					}else{
-						return false;
-					} 
-				}) 
-				let translator = (parents, children) => {
-					parents.forEach((parent) => {
-						var newId=sn();
-						var myChildren=[];
-						if(children!=null && children.length>0){
-							myChildren=children.filter(current=>current.pmenuId===parent.menuId);
-						}  
-						myChildren.forEach((current, index) => {
-							 current.pmenuId=newId;
-							 var mySubChildren=children.filter(c=>c.pmenuId===current.menuId);
-							 translator([current],mySubChildren)
-						})
-						parent.menuId=newId;
-					})
-				}
-
-				translator(parents, children)
-				menuTemplates2.forEach(i=>{
-					i.productId=this.filters.product.id 
-					i.productName=this.filters.product.productName 
-				});
-				batchAddXmMenu(menuTemplates2).then(res=>{ 
-					this.menuTemplateVisible=false;
-					this.load.add=false
-					var tips =res.data.tips
-					if(tips.isOk){ 
-						this.getXmMenus()
-					}else{ 
-						this.$notify({showClose: true, message: tips.msg, type: 'error' });
-					}
-				}).catch( err  => this.load.add=false );
-			},
-			toBatchEdit(){
-				
-				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$notify({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
-					return false;
-				}
-				this.valueChangeRows=[];
-				this.batchEditVisible=true;
-
-			},
+      		},   
 			noBatchEdit(){
 				this.batchEditVisible=false; 
 				this.valueChangeRows=[];
@@ -861,8 +155,7 @@
 				batchEditXmMenu(this.valueChangeRows).then(res=>{
 					var tips=res.data.tips;
 					if(tips.isOk){
-						this.valueChangeRows=[]
-						this.getXmMenus()
+						this.valueChangeRows=[] 
 					}
 					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 				});
@@ -897,128 +190,7 @@
 					}
 				} 
 			},
-			showTaskList(row){ 
-				
-				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$notify({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
-					return false;
-				}
-				this.editForm=row
-				this.selectTaskVisible=true; 
-			}, 
-			
-			onSelectedTasks:function(xmTasks){
-				 
-				 
-				if(xmTasks==null || xmTasks.length==0){
-					this.$notify.error("请最少选择一个任务进行关联");
-					return;
-				}
-				var menu=this.editForm
-				xmTasks.forEach(i=>{
-					i.menuId=menu.menuId
-					i.menuName=menu.menuName
-					i.productId=menu.productId
-					i.productName=menu.productName
-				});
-				this.selectTaskVisible=false;
-
-				batchRelTasksWithMenu(xmTasks).then(res=>{
-					var tips = res.data.tips
-					if(tips.isOk){
-						this.getXmMenus()
-					}
-					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
-				});
-			},
-			showMenuExchange:function(row){
-				this.editForm=row
-				this. menuDetailVisible=true;
-			},
-			toProjectList:function(product){
-				this.$router.push({name:'xmProjectMng',params:{productId:product.id,productName:product.productName}})
-			},
-			toIterationList:function(row){
-				 this.editForm=row
-				 this.iterationVisible=true;
-
-			},
-			showTasks(row){
-				this.editForm=row
-				this.taskMngVisible=true
-			}, 
-
-			showTaskListForMenu(row){
-				this.editForm=row
-				this.taskListForMenuVisible=true
-			}, 
-			/**end 自定义函数请在上面加**/
-			handlePopover:function(row,opType){
-				if('add'==opType){
-					var subRow=JSON.parse(JSON.stringify(this.addForm));
-					subRow.pmenuId=null
-					subRow.menuId=sn();
-					subRow.seqNo="1"
-					subRow.opType=opType
-					subRow.productId=this.filters.product.id 
-					subRow.productName=this.filters.product.productName 
-					this.fieldChange(subRow,'seqNo');
-					this.xmMenus.unshift(subRow);
-				}else if('addSub'==opType){
-					var subRow=JSON.parse(JSON.stringify(row));
-					subRow.children=[];
-					subRow.pmenuId=row.menuId
-					subRow.menuId=sn();
-					subRow.seqNo=row.seqNo+".1"
-					subRow.opType=opType
-					this.fieldChange(subRow,'seqNo');
-					this.xmMenus.unshift(subRow);
-				}else if('delete'==opType){
-					if(row.opType && (row.opType=='addSub' || row.opType=='add')){
-						if(row.children && row.children.length>0){
-							this.$notify.error("请先删除子元素");
-							return;
-						}else{ 
-
-							var index=this.xmMenus.findIndex(i=>i.menuId==row.menuId)
-							var indexValueChanges=this.valueChangeRows.findIndex(i=>i.menuId==row.menuId)
-							this.valueChangeRows.splice(indexValueChanges,1);
-							this.xmMenus.splice(index,1);
-						}
-					}else{
-						this.$notify.error("只能删除未保存的行");
-						return;
-					}
-					 
-				} else if ('highestPmenuId' === opType) {  
-					if (row.pmenuId) {
-						this.xmMenus.find(d => {
-							
-							if (d.menuId === row.menuId) { 
-								d.pmenuId = '';
-								this.fieldChange(d,'seqNo', true); 
-							}
-						});
-					}
-				}
-            
-			},
-			loadTasksToXmMenuState: function () {  
-				this.load.edit=true;
-				if(!this.filters.product){
-					this.$notify.error("请先选择产品");
-				}
-				let params = { productId: this.filters.product.id };
-				loadTasksToXmMenuState(params).then((res) => {
-					this.load.edit=false;
-					var tips=res.data.tips;
-					if(tips.isOk){ 
-						this.pageInfo.count=true;
-						this.getXmMenus();
-					}
-					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
-				}).catch( err  => this.load.edit=false ); 
-			},
+			 
 			selectUser(row){
 				this.editForm=row
 				this.userSelectVisible=true;
@@ -1038,59 +210,57 @@
 				 row.mmUsername=''
 				 this.fieldChange(row,"mmUsername");
 			},
-			clearFiltersMmUser:function(){
-				 this.filters.mmUser=null;
-				  this.searchXmMenus();
-			},			
-			selectFiltersMmUser(){
-				this.selectFiltersMmUserVisible=true;
-			},
-			onFiltersMmUserSelected(users){
+			 
+			loadXmMenusLazy(tree, treeNode, resolve) {   
 				
-				 if(users && users.length>0){
-					 this.filters.mmUser=users[0]
-				 }else{
-					 this.filters.mmUser=null;
-				 }
-				 this.selectFiltersMmUserVisible=false;
-				 this.searchXmMenus();
+      			this.maps.set(tree.menuId, { tree, treeNode, resolve }) //储存数据
+					var params={pmenuId:tree.menuId} 
+					params.isTop=""
+					this.load.list = true;
+					var func=listXmMenuWithState 
+					func(params).then(res=>{
+						this.load.list = false
+						var tips = res.data.tips;
+						if(tips.isOk){
+							resolve(res.data.data) 
+						}else{
+							resolve([])
+						}
+					}).catch( err => this.load.list = false );   
+				
 			},
-			setFiltersMmUserAsMySelf(){
-				this.filters.mmUser=this.userInfo;
-				this.searchXmMenus();
-			},								 
-			toSelectProduct(){
-				this.filters.product=null;
-			}
+			//查询时选择责任人
+			showBatchMmUserSelectVisible() {
+				if(!this.sels||this.sels.length==0){
+					this.$notify({showClose:true,message:'请先选中一条或多条数据',type:'error'})
+					return;
+				}else{
+					this.batchMmUserSelectVisible=true;
+				}
+			}, 
+			//查询时选择责任人
+			onBatchMmUserSelectConfirm(users) {
+				var user={};
+				if (users && users.length > 0) { 
+					user=users[0]
+				} 
+				this.batchMmUserSelectVisible=false;
+				this.sels.forEach(i=>{
+					i.mmUserid=user.userid;
+					i.mmUsername=user.username; 
+					this.fieldChange(i,"mmUserid")
+				})
+			},
 		},//end methods
-		components: { 
-		    'xm-menu-add':XmMenuAdd,
-			'xm-menu-edit':XmMenuEdit,
-			XmProductMng,
-			XmMenuTemplateMng,
-			XmMenuRichDetail,
-			XmTaskList,
-			XmTaskMng,
-			XmTaskListForMenu,
-			XmIterationMng,
-			UsersSelect,
-		    
-		    //在下面添加其它组件
+		components: {  
+			UsersSelect, 
 		},
 		mounted() { 
-			this.$nextTick(() => { 
-				this.filters.product=this.product
-				this.getXmMenus(); 
-				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
-				
-				
+			 
+			this.$nextTick(() => {   
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);  
           }); 
-			// 阻止默认行为
-			document.body.ondrop = function (event) {
-				event.preventDefault();
-				event.stopPropagation();
-			};
-			this.rowDrop();
+			 
 		}
 	}
 

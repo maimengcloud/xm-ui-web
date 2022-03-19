@@ -3,9 +3,9 @@
 		
 		<el-row class="padding-header">
 			<el-steps :active="calcXmProductPstatusStep" simple finish-status="success">
- 				<el-step  v-for="(i,index) in options['xmProductPstatus']" :title="i.optionName" :key="index" @click.native.stop="editForm.pstatus=i.optionValue">
+ 				<el-step  v-for="(i,index) in dicts['xmProductPstatus']" :title="i.name" :key="index" @click.native.stop="editForm.pstatus=i.id">
 					 <el-link slot="title" >
-						 {{i.optionName}} 
+						 {{i.name}} 
 					 </el-link>
 				</el-step> 
 			</el-steps>
@@ -22,7 +22,7 @@
 				
 				<el-form-item label="状态" prop="pstatus">
 					<el-select v-model="editForm.pstatus" placeholder="状态" >
-						<el-option v-for="(item,index) in options['xmProductPstatus']" :label="item.optionName" :value="item.optionValue" :key="index"></el-option>
+						<el-option v-for="(item,index) in dicts['xmProductPstatus']" :label="item.name" :value="item.id" :key="index"></el-option>
 					</el-select>
 				</el-form-item>  
 				<el-row>
@@ -64,7 +64,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询 
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询 
 	import { editXmProduct } from '@/api/xm/core/xmProduct';
 	import { mapGetters } from 'vuex'	
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
@@ -76,9 +76,9 @@
 		      'userInfo','roles'
 		    ]), 
 			calcXmProductPstatusStep(){
-				if(this.options['xmProductPstatus']){
-					var index=this.options['xmProductPstatus'].findIndex(i=>{
-						if(i.optionValue==this.editForm.pstatus){
+				if(this.dicts['xmProductPstatus']){
+					var index=this.dicts['xmProductPstatus'].findIndex(i=>{
+						if(i.id==this.editForm.pstatus){
 							return true;
 						}else{
 							return false;
@@ -103,7 +103,7 @@
 	    },
 		data() {
 			return {
-				options:{xmProductPstatus:[]},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				dicts:{xmProductPstatus:[]},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, add: false, del: false, edit: false },//查询中...
 				editFormRules: {
 					id: [
@@ -199,9 +199,9 @@
 		mounted() {
 			
 			
-			listOption([{categoryId:'all',itemCode:'xmProductPstatus'}] ).then(res=>{
+			initSimpleDicts('all',['xmProductPstatus'] ).then(res=>{
 				if(res.data.tips.isOk){ 
-					this.options['xmProductPstatus']=res.data.data.xmProductPstatus   
+					this.dicts['xmProductPstatus']=res.data.data.xmProductPstatus   
 				}
 			});
 			this.editForm= this.xmProduct;   

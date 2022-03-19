@@ -11,12 +11,12 @@
 				</el-form-item>
 				<el-form-item  label="计划类型" prop="planType"> 
 					<el-select v-model=" addForm.planType">
-						<el-option v-for="i in this.options.planType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+						<el-option v-for="i in this.dicts.planType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 					</el-select>
 				</el-form-item>
 				<el-form-item  label="任务类型" prop="taskType"> 
 					<el-select v-model=" addForm.taskType">
-						<el-option v-for="i in this.options.taskType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+						<el-option v-for="i in this.dicts.taskType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 					</el-select>
 				</el-form-item>
 				<el-form-item prop="skill" label="技能要求">
@@ -99,7 +99,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询 
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询 
 	import {addXmTaskTemplate } from '@/api/xm/core/xmTaskTemplate';
 	import { mapGetters } from 'vuex';
 	import AttachmentUpload from "@/views/mdp/arc/archiveAttachment/AttachmentUpload"; //上传组件
@@ -157,7 +157,7 @@
 		},
 		data() { 
 			return { 
-				options:{ 
+				dicts:{ 
 					planType:[],
 					taskType:[],
 				},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
@@ -298,8 +298,8 @@
 				this.addForm=Object.assign(this.addForm, this.parentTaskTemplate); 
 			}
 			this.addForm.id = sn();
-			listOption([{categoryId:'all',itemCode:'planType'},{categoryId:'all',itemCode:'taskType'}]).then(res=>{
-				this.options=res.data.data;
+			initSimpleDicts('all',['planType','taskType']).then(res=>{
+				this.dicts=res.data.data;
 			})
 			/**在下面写其它函数***/
 			

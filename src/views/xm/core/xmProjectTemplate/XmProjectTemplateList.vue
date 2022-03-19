@@ -3,7 +3,7 @@
 		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="项目模板名称查询"></el-input>  
 			<el-select v-model="filters.xmType" @change="searchXmProjectTemplates">
-				<el-option v-for="i in this.options.projectType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+				<el-option v-for="i in this.dicts.projectType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 			</el-select>
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectTemplates">查询</el-button> 
   		</el-row>
@@ -50,7 +50,7 @@
 
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库 
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { listXmProject  } from '@/api/xm/core/xmProject';
  	import { mapGetters } from 'vuex'
  	 
@@ -77,7 +77,7 @@
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				options:{
+				dicts:{
 					//sex:[],
 					projectType:[],
 				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
@@ -192,10 +192,10 @@
 			/**begin 自定义函数请在下面加**/
 			
 			formatXmType(row,column,cellValue){
-				if(this.options.projectType){
-					var xmType=this.options.projectType.find(i=>i.optionValue==cellValue)
+				if(this.dicts.projectType){
+					var xmType=this.dicts.projectType.find(i=>i.id==cellValue)
 					if(xmType){
-						return xmType.optionName
+						return xmType.name
 					}else{
 						return cellValue;
 					}
@@ -214,17 +214,17 @@
 			this.$nextTick(() => { 
                 this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el);
 				this.getXmProjectTemplates();
-				listOption([{categoryId:'all',itemCode:'projectType'}] ).then(res=>{
+				initSimpleDicts( 'all' ['projectType'] ).then(res=>{
 					if(res.data.tips.isOk){ 
-						this.options['projectType']=res.data.data.projectType
+						this.dicts['projectType']=res.data.data.projectType
 					}
 				}); 
 			}); 
 			
         	/** 举例，
-    		listOption([{categoryId:'all',itemCode:'sex'},{categoryId:'all',itemCode:'grade'}] ).then(res=>{
+    		initSimpleDicts( "all",["sex","grade"] ).then(res=>{
 				if(res.data.tips.isOk){ 
- 					this.options=res.data.data
+ 					this.dicts=res.data.data
 				}
 			});
 			**/

@@ -6,7 +6,7 @@
           <div>
             <el-row style="padding:10px"> 
               <el-steps :active="calcXmProductPstatusStep" align-center finish-status="success">
-                <el-step  v-for="(i,index) in options['xmProductPstatus']" :title="i.optionName" :key="index" >
+                <el-step  v-for="(i,index) in dicts['xmProductPstatus']" :title="i.name" :key="index" >
                    
                 </el-step> 
               </el-steps>
@@ -242,7 +242,7 @@
 import util from "@/common/js/util"; // 全局公共库
 import { mapGetters } from "vuex";
 
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 
 export default {
   computed: {
@@ -309,9 +309,9 @@ export default {
       return this.xmProduct;
     },
     calcXmProductPstatusStep(){
-				if(this.options['xmProductPstatus']){
-					var index=this.options['xmProductPstatus'].findIndex(i=>{
-						if(i.optionValue==this.xmProductCpd.pstatus){
+				if(this.dicts['xmProductPstatus']){
+					var index=this.dicts['xmProductPstatus'].findIndex(i=>{
+						if(i.id==this.xmProductCpd.pstatus){
 							return true;
 						}else{
 							return false;
@@ -337,7 +337,7 @@ export default {
   data() {
     return {
       isActive: true,
-      options:{
+      dicts:{
         xmProductPstatus:[]
       },
       maxTableHeight:300,
@@ -598,9 +598,9 @@ export default {
 
   mounted() {
 			
-			listOption([{categoryId:'all',itemCode:'xmProductPstatus'}] ).then(res=>{
+			initSimpleDicts('all',['xmProductPstatus'] ).then(res=>{
 				if(res.data.tips.isOk){ 
-					this.options['xmProductPstatus']=res.data.data.xmProductPstatus   
+					this.dicts['xmProductPstatus']=res.data.data.xmProductPstatus   
 				}
 			});
     this.$nextTick(() => {

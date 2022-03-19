@@ -35,7 +35,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库 
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { listXmProductProjectLink,addXmProductProjectLink, delXmProductProjectLink, batchDelXmProductProjectLink } from '@/api/xm/core/xmProductProjectLink';
 	import  XmProductProjectLinkAdd from './XmProductProjectLinkAdd';//新增界面
 	import  XmProductProjectLinkEdit from './XmProductProjectLinkEdit';//修改界面
@@ -74,7 +74,7 @@ import XmProjectSelect from '../xmProject/XmProjectSelect.vue';
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				options:{
+				dicts:{
 					//sex:[],
 				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				
@@ -279,9 +279,9 @@ import XmProjectSelect from '../xmProject/XmProjectSelect.vue';
                 this.maxTableHeight =  util.calcTableMaxHeight(".el-table")
         	}); 
         	/** 举例，
-    		listOption([{categoryId:'all',itemCode:'sex'},{categoryId:'all',itemCode:'grade'}] ).then(res=>{
+    		initSimpleDicts( "all",["sex","grade"] ).then(res=>{
 				if(res.data.tips.isOk){ 
- 					this.options=res.data.data
+ 					this.dicts=res.data.data
 				}
 			});
 			**/

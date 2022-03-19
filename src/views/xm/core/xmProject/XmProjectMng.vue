@@ -26,7 +26,7 @@
 						<el-option  value="myExecuserStatus7"  label="我放弃"></el-option> 
 					</el-select> 
 					<el-select  v-model="filters.status" clearable placeholder="项目状态">
-						<el-option v-for="(item,index) in options['projectStatus']" :value="item.optionValue" :label="item.optionName" :key="index"></el-option> 
+						<el-option v-for="(item,index) in dicts['projectStatus']" :value="item.id" :label="item.name" :key="index"></el-option> 
 					</el-select>  
 					<el-input class="hidden-md-and-down" placeholder="选择产品" v-model="filters.productName" @click.native="productSelectVisible=true" clearable @clear="onProductClose"  style="width:15%;"></el-input>
  					<el-input v-model="filters.key" style="width:15%;" placeholder="项目名称模糊查询" clearable>
@@ -154,34 +154,45 @@
 						</el-col>
 					</el-row>
 
-					<el-table  ref="table" :height="maxTableHeight" v-cloak v-show="!showType" stripe :data="ScreenData" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-						<el-table-column  type="index" label="序号" width="80" ></el-table-column>
-						<el-table-column prop="code" label="项目编号" min-width="120" ></el-table-column>
-						<el-table-column prop="name" label="标题" min-width="200" >
+					<el-table  ref="table" :height="maxTableHeight" v-cloak v-show="!showType" fit stripe :data="ScreenData" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+						<el-table-column  type="index" label="序号" width="60" ></el-table-column>
+						<el-table-column prop="code" label="项目代号" width="120" sortable show-overflow-tooltip></el-table-column>
+						<el-table-column prop="name" label="标题" sortable min-width="200" >
 							<template slot-scope="scope">
-								<el-link @click.stop="intoInfo(scope.row)">{{scope.row.name}}</el-link>
+								<el-link type="primary" @click.stop="intoInfo(scope.row)">{{scope.row.name}}</el-link>
 							</template>
 						</el-table-column> 
-						<el-table-column prop="menuCnt" label="需求数" min-width="80" >
-							<el-table-column prop="finishMenuCnt" label="已完成" min-width="80" ></el-table-column>
-							<el-table-column prop="menuCnt" label="总数" min-width="80" ></el-table-column>
-						</el-table-column> 
-						<el-table-column prop="totalTaskCnt" label="任务数" min-width="80" >
-							<el-table-column prop="totalCompleteTaskCnt" label="已完成" min-width="80" ></el-table-column>
-							<el-table-column prop="totalTaskCnt" label="总数" min-width="80" ></el-table-column>
+						<el-table-column prop="status" label="状态" width="80 sortable" :formatter="formatterByDicts"> 
 						</el-table-column>  
- 						<el-table-column prop="totalBugCnt" label="缺陷" min-width="80" >
-							 <el-table-column prop="totalClosedBugCnt" label="已关闭" min-width="80" > 
-							</el-table-column>
-							<el-table-column prop="totalBugCnt" label="总数" min-width="80" > 
-							</el-table-column>
-						 </el-table-column>
-						<el-table-column label="进度" min-width="80" >
-							<template slot-scope="scope">
-								{{scope.row.totalProgress}}%
+						<el-table-column prop="totalProgress" label="进度" width="100" sortable>
+							<template slot-scope="scope"> 
+								<font  ><el-tag :type="scope.row.totalProgress>=100?'success':'warning'">{{scope.row.totalProgress}}%</el-tag>
+
+								 <el-button  id="guider-four" type="text" icon="el-icon-video-play"  title="统计项目的工作量、进度、需求、bugs等数据"  @click.stop="loadTasksToXmProjectState( scope.row)"></el-button> 
+
+								</font>
 							</template>
-						</el-table-column>
-						<el-table-column prop="startTime" label="起止时间" min-width="150" >
+						</el-table-column> 
+						<el-table-column prop="productCnt" label="产品数" sortable min-width="80" >  
+						</el-table-column> 
+						<el-table-column prop="iterationCnt" label="迭代数" sortable min-width="80" >  
+						</el-table-column> 
+						<el-table-column prop="menuCnt" label="需求数" sortable min-width="80" > 
+							<template slot-scope="scope">
+								<span title="完成的需求数 / 需求总数 ">{{scope.row.menuCnt>0?scope.row.finishMenuCnt+'&nbsp;/&nbsp;'+scope.row.menuCnt:''}}</span>
+							</template>
+						</el-table-column> 
+						<el-table-column prop="totalTaskCnt" label="任务数" sortable min-width="80" > 
+							<template slot-scope="scope">
+								<span title="完成的任务数 / 任务总数 ">{{scope.row.totalTaskCnt>0?scope.row.totalCompleteTaskCnt+'&nbsp;/&nbsp;'+scope.row.totalTaskCnt:''}}</span>
+							</template>
+						</el-table-column>  
+ 						<el-table-column prop="totalBugCnt" label="缺陷" sortable min-width="80" >
+							<template slot-scope="scope">
+								<span title="关闭的缺陷数 / 缺陷总数 ">{{scope.row.totalBugCnt>0?scope.row.totalClosedBugCnt+'&nbsp;/&nbsp;'+scope.row.totalBugCnt:''}}</span>
+							</template> 
+						 </el-table-column>
+						<el-table-column prop="startTime" label="起止时间" sortable min-width="150" >
 							<template slot-scope="scope">
 								{{scope.row.startTime? scope.row.startTime.substr(0,10) : ""}}~{{scope.row.endTime? scope.row.endTime.substr(0,10) : ""}}
 							</template>
@@ -197,7 +208,7 @@
 								</el-tooltip> 
 							</template>
 						</el-table-column>
-						<el-table-column label="操作" width="245" fixed="right">
+						<el-table-column label="操作" width="200" fixed="right">
 							<template slot-scope="scope">
 								<!-- <el-popover
 									placement="left"
@@ -205,10 +216,10 @@
 									 
 										<el-button v-if="menukey=='myFocus'"  type="primary" @click.stop="focusOrUnfocus(scope.row)" >取消关注</el-button> 
 										<el-button v-else  type="text" @click.stop="focusOrUnfocus(scope.row)" >关注</el-button>  
-										<el-button    type="text" @click.stop="xmRecordVisible=true" >日志</el-button> 
+										<el-button    type="text" @click.stop="intoInfo(scope.row)" >视图</el-button> 
 										<el-button   type="text" title="通过复制快速创建新项目" @click.stop="onCopyToBtnClick(scope.row)" v-loading="load.add">复制</el-button>
 										<el-button   type="text" title="删除项目" @click.stop="handleDel(scope.row)" v-loading="load.del">删除</el-button>
-										handleDel
+										 
 										<!-- 
 										<el-button  type="primary" @click.stop="statusChange(scope,'1')" v-if="scope.row.status==0 || scope.row.status == 2">提交审核</el-button>
 										<el-button  type="primary" @click.stop="statusChange(scope,'3')" v-if="scope.row.status==1">批准</el-button>
@@ -216,7 +227,7 @@
 										<el-button  type="primary" @click.stop="statusChange(scope,'4')" v-if="scope.row.status==3">结束</el-button>
 										<el-button  type="primary" @click.stop="statusChange(scope,'3')" v-if="scope.row.status==4">重新启动</el-button>
 										<el-button  type="primary" @click.stop="handleDel(scope.row,scope.$index)" v-if="isLeader(scope.row.leader)">删除</el-button>
-										--> 
+										
 									
 									<el-dropdown @command="handleCommand" :hide-on-click="false">
 										<span class="el-dropdown-link">
@@ -232,6 +243,7 @@
 											<el-dropdown-item icon="el-icon-success"   :command="{type:'sendToProcessApprova',row:scope.row,bizKey:'xm_project_restart_approva'}">项目重新启动发审(审核通过后生效)</el-dropdown-item>
 										</el-dropdown-menu>
 									</el-dropdown> 
+									--> 
 									<!-- <el-button style="width:100%;" slot="reference" class="see-more" type="text" icon="el-icon-more"></el-button>
 								</el-popover> -->
 							</template>
@@ -303,7 +315,7 @@
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import config from "@/common/config"; //全局公共库
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { listXmProject, editStatus, delXmProject, batchDelXmProject,copyTo,createProjectCode ,getDefOptions} from '@/api/xm/core/xmProject'; 
 	import {  loadTasksToXmProjectState , loadTasksSettleToXmProjectState} from '@/api/xm/core/xmProjectState';
 
@@ -370,7 +382,7 @@
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				options: getDefOptions(),//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				dicts: getDefOptions(),//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				
 				addFormVisible: false,//新增xmProject界面是否显示
 				//新增xmProject界面初始化数据
@@ -385,7 +397,7 @@
 				},
 				/**begin 自定义属性请在下面加 请加备注**/
 				menukey: "all",
-				showType: true,
+				showType: false,
 				showInfo: false,
 				selectProject: null,
 				finishFlag: false,
@@ -461,6 +473,9 @@
 				params = this.menuFilter(params);
 				if(this.filters.productId){
 					params.productId  = this.filters.productId
+				} 
+				if(this.filters.status){
+					params.status  = this.filters.status
 				} 
 				params.createTimeStart=this.dateRanger[0]
 				params.createTimeEnd=this.dateRanger[1]
@@ -808,16 +823,21 @@
 				})
 			},
 			formatProjectStatus(status){
-				if(this.options['projectStatus'] && this.options['projectStatus'].length>0 ){
-					var sts=this.options['projectStatus'].find(i=>i.optionValue==status)
+				if(this.dicts['projectStatus'] && this.dicts['projectStatus'].length>0 ){
+					var sts=this.dicts['projectStatus'].find(i=>i.id==status)
 					if(sts){
-						return sts.optionName
+						return sts.name
 					}else{
 						return status;
 					}
 				}else{
 					return status;
 				}
+			},
+			formatterByDicts(row,column,cellValue){ 
+				if(column.property=='status'){
+					return this.formatProjectStatus(cellValue);
+				} 
 			},
 			loadTasksToXmProjectState(row){
 				
@@ -853,17 +873,11 @@
 				this.filters.productId=this.$route.params.productId;
 				this.filters.productName=this.$route.params.productName;
 			}
-			this.$nextTick(() => {  
-				listOption([{categoryId:'all',itemCode:'projectType'},{categoryId:'all',itemCode:'urgencyLevel'},{categoryId:'all',itemCode:'priority'},{categoryId:'all',itemCode:'projectStatus'}] ).then(res=>{
-					if(res.data.tips.isOk){ 
-						
-						this.options['projectType']=res.data.data.projectType
-						this.options['urgencyLevel']=res.data.data.urgencyLevel
-						this.options['priority']=res.data.data.priority
-						this.options['projectStatus']=res.data.data.projectStatus  
-					}
-				});
-                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table1.$el);
+			this.$nextTick(() => {    
+				initSimpleDicts('all',['projectType','urgencyLevel','priority','projectStatus']).then(res=>{
+					this.dicts=res.data.data;
+				})
+                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el);
 				this.showInfo = false;
 				this.getXmProjects(this.guiderStart);
 			}); 

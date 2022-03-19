@@ -37,7 +37,7 @@
 						<xm-product-project-for-link v-if="xmProduct && showPanel=='projects'"  :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-product-project-for-link>
 					</el-tab-pane>
 					<el-tab-pane label="需求" lazy name="menus" v-if="xmProduct && xmProduct.id">
-						<xm-menu-mng v-if="xmProduct && showPanel=='menus'"   :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"  :disabled-mng="false"></xm-menu-mng>
+						<xm-menu-mng v-if="xmProduct && showPanel=='menus'"   :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"  :disabled-mng="true"></xm-menu-mng>
 					</el-tab-pane>
 					<el-tab-pane label="任务" lazy name="tasks"  v-if="xmProduct && xmProduct.id">
 						<xm-task-mng v-if="xmProduct && showPanel=='tasks'" queryScope="task" ptype="0" :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-task-mng>
@@ -59,7 +59,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import XmIterationMng from '../xmIteration/XmIterationMng.vue'
 	import XmMenuMng from '../xmMenu/XmMenuMng.vue'
 	import XmIterationStateShow from '../xmIterationState/XmIterationStateShow.vue'

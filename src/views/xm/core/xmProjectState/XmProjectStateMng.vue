@@ -115,7 +115,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库 
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { listXmProjectState,loadProjectToXmProjectState, loadBugsToXmProjectState, loadTasksToXmProjectState , loadTasksSettleToXmProjectState} from '@/api/xm/core/xmProjectState';
 	import  XmProjectStateAdd from './XmProjectStateAdd';//新增界面
 	import  XmProjectStateEdit from './XmProjectStateEdit';//修改界面
@@ -152,7 +152,7 @@
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				options:{
+				dicts:{
 					//sex:[],
 					projectStatus:[],
 				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
@@ -406,12 +406,12 @@
 				}else{
 					return cellValue
 				}
-				if(this.options[key]==undefined || this.options[key]==null || this.options[key].length==0   ){
+				if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0   ){
 					return cellValue;
 				}
-				var list=this.options[key].filter(i=>i.optionValue==cellValue)
+				var list=this.dicts[key].filter(i=>i.id==cellValue)
 				if(list.length>0){
-					return list[0].optionName
+					return list[0].name
 				}else{
 					return cellValue;
 				}
@@ -439,19 +439,17 @@
 					this.filters.selProject=this.selProject
 				} 
 
-				this.getXmProjectStates();
-				listOption([{categoryId:'all',itemCode:'projectStatus'}] ).then(res=>{
-					if(res.data.tips.isOk){  
-						this.options['projectStatus']=res.data.data.projectStatus 
-						//this.editForm.projectStatus=this.options['projectStatus'][0].optionValue
-					}
-				});  
+				this.getXmProjectStates(); 
+				
+				initSimpleDicts('all',['projectStatus']).then(res=>{
+					this.dicts=res.data.data;
+				})
                 this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el);
         	}); 
         	/** 举例，
-    		listOption([{categoryId:'all',itemCode:'sex'},{categoryId:'all',itemCode:'grade'}] ).then(res=>{
+    		initSimpleDicts( "all",["sex","grade"] ).then(res=>{
 				if(res.data.tips.isOk){ 
- 					this.options=res.data.data
+ 					this.dicts=res.data.data
 				}
 			});
 			**/

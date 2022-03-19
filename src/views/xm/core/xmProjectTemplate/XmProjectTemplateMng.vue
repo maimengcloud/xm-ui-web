@@ -4,7 +4,7 @@
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
 			
 			<el-select v-model="filters.xmType" @change="searchXmProjectTemplates">
-				<el-option v-for="i in this.options.projectType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
+				<el-option v-for="i in this.dicts.projectType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 			</el-select>
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectTemplates">查询</el-button> 
 			<el-button type="primary" @click="showAdd">+项目模板</el-button>
@@ -56,7 +56,7 @@
 
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库 
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { listXmProjectTemplate, delXmProjectTemplate, batchDelXmProjectTemplate } from '@/api/xm/core/xmProjectTemplate';
 	import  XmProjectTemplateAdd from './XmProjectTemplateAdd';//新增界面
 	import  XmProjectTemplateEdit from './XmProjectTemplateEdit';//修改界面
@@ -91,7 +91,7 @@
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				options:{
+				dicts:{
 					//sex:[],
 					projectType:[],
 				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
@@ -260,17 +260,15 @@
 			this.$nextTick(() => { 
                 this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el);
 				this.getXmProjectTemplates();
-				listOption([{categoryId:'all',itemCode:'projectType'}] ).then(res=>{
-					if(res.data.tips.isOk){ 
-						this.options['projectType']=res.data.data.projectType
-					}
-				});
+				initSimpleDicts( 'all' ['projectType'] ).then(res=>{ 
+						this.dicts=res.data.data 
+				}); 
 			}); 
 			
         	/** 举例，
-    		listOption([{categoryId:'all',itemCode:'sex'},{categoryId:'all',itemCode:'grade'}] ).then(res=>{
+    		initSimpleDicts( "all",["sex","grade"] ).then(res=>{
 				if(res.data.tips.isOk){ 
- 					this.options=res.data.data
+ 					this.dicts=res.data.data
 				}
 			});
 			**/

@@ -2,194 +2,194 @@
 	<section class="page-container padding">  
 		<el-row class="page-main ">
 			<!--新增界面 XmTask xm_task--> 
-			<el-form :model="editForm"  label-width="100px" :rules="editFormRules" ref="editForm">     
-				<el-card class="box-card" header="基础信息" id="baseInfo" shadow="hover">  
-					<el-form-item label="" prop="ntype">
-						 <el-radio v-model="editForm.ntype" label="1">计划项</el-radio>
-						 <el-radio v-model="editForm.ntype" label="0">任务</el-radio>
-						 
-						 <br>
-						 <font v-if="editForm.ntype==='0'" color="red" style="font-size:12px;">任务：任务一般不再包含子任务；建议细分到一个人一天或者几天内能完成这种粒度，任务的预算不能大于上一级预算。</font> 
-						 <font v-if="editForm.ntype==='1'" color="red" style="font-size:12px;">计划：计划负责分解上级预算，汇总统计下级实际数据，计划下包含子计划或者子任务</font>
-					</el-form-item> 
-					<el-form-item v-if="editForm.ptype==='0'" label="归属项目" prop="projectId"> 
-						{{editForm.projectName?editForm.projectName:editForm.projectId}}
-					</el-form-item>
-					
-					<el-form-item v-if="editForm.ptype==='1'" label="归属产品" prop="productId">
-						{{editForm.productName?editForm.productName:editForm.productId}}
-					</el-form-item>
-					
-					<el-form-item label="上级计划" prop="parentTaskname">  
-						<font v-if="editForm.parentTaskid" >{{editForm.parentTaskname?editForm.parentTaskname:editForm.parentTaskid}}</font> 
-						<font v-else>无上级(视为顶级)</font> 
-
-					</el-form-item>
-					<el-form-item label="名称" prop="name"> 
-							<el-input v-model="editForm.name" placeholder="名称" ></el-input>   
-					</el-form-item> 
-					<el-form-item label="序号" prop="sortLevel"> 
-						<el-input  v-model="editForm.sortLevel" style="width:30%;"   placeholder="如1.0或者1.2.3等" ></el-input> <font style="color:red;">如1.0或者1.2.3等</font>
-						<br/><el-checkbox v-model="editForm.milestone" :true-label="1" :false-label="0">标记为里程碑</el-checkbox>
-					</el-form-item>  
-					<el-form-item label="前置"> 
-						<el-tag v-if="editForm.preTaskid"  @close="clearPreTask" closable >{{editForm.preTaskname}}</el-tag>
-						<el-button    @click.stop="selectTaskVisible=true"  >选前置</el-button> 
-					</el-form-item>  
-					<el-row>
-						<el-col :span="8">
-							<el-form-item label="状态">  
-								<el-select v-model="editForm.taskState">
-									<el-option value="0" label="待领取"></el-option>
-									<el-option value="1" label="已领取执行中"></el-option>
-									<el-option value="2" label="已完工"></el-option>
-									<el-option value="3" label="已结算"></el-option>
-								</el-select>   
-							</el-form-item> 
-						</el-col>
-						<el-col :span="8">
-							<el-form-item  label="紧急程度" prop="level">  
-								<el-select v-model="editForm.level">
-										<el-option v-for="i in options.urgencyLevel" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option> 
-								</el-select>    
-							</el-form-item>  
-						</el-col>
-						<el-col :span="8">
-							<el-form-item  label="类型" prop="taskType">   
-								<el-select v-model="editForm.taskType">
-									<el-option v-for="i in this.options.taskType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
-								</el-select>  
-							</el-form-item>   
-						</el-col>
-					</el-row>
-					 
-					<el-form-item  label="所属需求" prop="menuId" id="menuInfo" v-if="editForm.ntype!='1'"> 
-						{{editForm.menuName}} &nbsp;&nbsp;&nbsp; <el-link @click="menuVisible=true" type="primary">{{editForm.menuName?'更改':'设置'}}</el-link>&nbsp;&nbsp;&nbsp;
-						<el-link v-if="editForm.menuName" @click="toMenu" type="primary">查看需求</el-link>
-					</el-form-item> 
-					<el-row>  
-						<el-col :span="12"> 
-							<el-form-item prop="skill" label="技能要求"  v-if="editForm.ntype!='1'">
-								<el-button class="useradd-icon" type="text" @click.stop="showSkill()" icon="el-icon-circle-plus-outline">增加</el-button>
-								<el-tag class="fs-ft" style="margin-right:10px" v-for="(item,i) in taskSkills" :key="i">{{item.taskSkillName}}</el-tag>
-							</el-form-item> 
-						</el-col>
-						<el-col :span="12">
-							<el-form-item  label="标签" prop="tagNames">   
-								<el-tag v-if="editForm.tagNames">{{editForm.tagNames?editForm.tagNames:''}} </el-tag>
-								<el-button type="text" icon="el-icon-plus" @click="tagSelectVisible=true">标签</el-button> 
-							</el-form-item>   
-						</el-col>
-					</el-row> 
-
-					<el-form-item :label="editForm.ntype=='1'?'计划描述':'任务描述'" prop="description">
-						<el-input type="textarea" :autosize="{ minRows: 4, maxRows: 10}" v-model="editForm.description" :placeholder="editForm.ntype=='1'?'计划描述':'任务描述'" ></el-input>
-					</el-form-item>   
-				</el-card>  
- 				<el-card class="box-card" id="planInfo" header="进度预测" shadow="hover"> 
-					<el-form-item label="负责人"> 
-						<el-tag  v-if="editForm.createUserid" style="margin-left:10px;border-radius:30px;"  >{{editForm.createUsername}}</el-tag>
- 						<el-button  @click="showGroupUserSelect(editForm)" icon="el-icon-setting">设置负责人</el-button>
-					</el-form-item> 
-					<el-form-item label="执行人" prop="executorUsername">
-						<el-tag  v-if="editForm.executorUserid" style="margin-left:10px;border-radius:30px;"  >{{editForm.executorUsername}}</el-tag>
- 						<el-button  @click="execGroupUserSelectVisible=true" icon="el-icon-setting">设置执行人</el-button>
-					</el-form-item>
-					<el-form-item label="预计时间"> 
-							<el-tooltip content="计划类型">
-								<el-select v-model=" editForm.planType" style="width:20%;">
-									<el-option v-for="i in this.options.planType" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
-								</el-select> 
-							</el-tooltip>
-							<el-date-picker
-								v-model="budgetDateRanger"
-								@change="onBudgetDateRangerChange"
-								class="hidden-sm-and-down"
-								type="daterange"
-								align="right"
-								unlink-panels
-								range-separator="至"
-								start-placeholder="计划开始日期"
-								end-placeholder="计划完成日期"
-								value-format="yyyy-MM-dd HH:mm:ss"
-								:default-time="['00:00:00','23:59:59']"
-								:picker-options="pickerOptions"
-							></el-date-picker> 
-					</el-form-item>   
-					<el-form-item label="实际时间" prop="actStartTime">
-							<el-date-picker
-								v-model="actDateRanger"
-								class="hidden-sm-and-down"
-								type="daterange"
-								align="right"
-								unlink-panels
-								range-separator="至"
-								start-placeholder="实际开始日期"
-								end-placeholder="实际完成日期"
-								value-format="yyyy-MM-dd HH:mm:ss"
-								:default-time="['00:00:00','23:59:59']"
-								:picker-options="pickerOptions"
-							></el-date-picker> 
-					</el-form-item>  
-					<el-form-item label="实际进度" prop="rate">
-						<el-slider
-							v-model="editForm.rate"
-							show-input>
-						</el-slider> 
-					</el-form-item>  
+			<el-form :model="editForm"  label-width="100px" :rules="editFormRules" ref="editForm">    
+				<el-collapse value="1" accordion>
+					<el-collapse-item title="基础信息" name="1">
+						<el-form-item label="" prop="ntype">
+							<el-radio v-model="editForm.ntype" label="1">计划项</el-radio>
+							<el-radio v-model="editForm.ntype" label="0">任务</el-radio>
 							
-				</el-card>
+							<br>
+							<font v-if="editForm.ntype==='0'" color="red" style="font-size:12px;">任务：任务一般不再包含子任务；建议细分到一个人一天或者几天内能完成这种粒度，任务的预算不能大于上一级预算。</font> 
+							<font v-if="editForm.ntype==='1'" color="red" style="font-size:12px;">计划：计划负责分解上级预算，汇总统计下级实际数据，计划下包含子计划或者子任务</font>
+						</el-form-item> 
+						<el-form-item v-if="editForm.ptype==='0'" label="归属项目" prop="projectId"> 
+							{{editForm.projectName?editForm.projectName:editForm.projectId}}
+						</el-form-item>
+						
+						<el-form-item v-if="editForm.ptype==='1'" label="归属产品" prop="productId">
+							{{editForm.productName?editForm.productName:editForm.productId}}
+						</el-form-item>
+						
+						<el-form-item label="上级计划" prop="parentTaskname">  
+							<font v-if="editForm.parentTaskid" >{{editForm.parentTaskname?editForm.parentTaskname:editForm.parentTaskid}}</font> 
+							<font v-else>无上级(视为顶级)</font> 
 
- 				<el-card class="box-card" header="工作量、成本" id="costInfo"> 
-					<el-form-item label="预估工作量" prop="budgetWorkload">
-						<el-input-number style="width:200px;"  v-model="editForm.budgetWorkload" @change="onBudgetWorkloadChange" :precision="2" :step="8" :min="0" placeholder="预计总工作量(人时,不包括下一级)"></el-input-number> <el-tag>人时，{{this.toFixed(editForm.budgetWorkload/8/20)}}人月</el-tag> 
-						 <br>
-						 <el-checkbox v-model="editForm.taskOut" @change="onTaskOutChange" true-label="1" false-label="0">是否为众包任务</el-checkbox> 
-					</el-form-item>  
-					<el-form-item label="预估金额" prop="taskOut">
-						<el-row v-if="editForm.taskOut!=='1'">
-							工时单价&nbsp;<el-input-number style="width:200px;"  v-model="editForm.uniInnerPrice" :precision="2" :step="10" :min="0" placeholder="工时单价"></el-input-number>   元/人时
- 						</el-row> 
-						<el-row v-if="editForm.taskOut==='1'">
- 							工时单价&nbsp;<el-input-number style="width:200px;" v-if="editForm.taskOut==='1'" v-model="editForm.uniOutPrice" :precision="2" :step="10" :min="0" placeholder="外发工时单价"></el-input-number>   元/人时
+						</el-form-item>
+						<el-form-item label="名称" prop="name"> 
+								<el-input v-model="editForm.name" placeholder="名称" ></el-input>   
+						</el-form-item> 
+						<el-form-item label="序号" prop="sortLevel"> 
+							<el-input  v-model="editForm.sortLevel" style="width:30%;"   placeholder="如1.0或者1.2.3等" ></el-input> <font style="color:red;">如1.0或者1.2.3等</font>
+							<br/><el-checkbox v-model="editForm.milestone" :true-label="1" :false-label="0">标记为里程碑</el-checkbox>
+						</el-form-item>  
+						<el-form-item label="前置"> 
+							<el-tag v-if="editForm.preTaskid"  @close="clearPreTask" closable >{{editForm.preTaskname}}</el-tag>
+							<el-button    @click.stop="selectTaskVisible=true"  >选前置</el-button> 
+						</el-form-item>  
+						<el-row>
+							<el-col :span="8">
+								<el-form-item label="状态">  
+									<el-select v-model="editForm.taskState">
+										<el-option value="0" label="待领取"></el-option>
+										<el-option value="1" label="已领取执行中"></el-option>
+										<el-option value="2" label="已完工"></el-option>
+										<el-option value="3" label="已结算"></el-option>
+									</el-select>   
+								</el-form-item> 
+							</el-col>
+							<el-col :span="8">
+								<el-form-item  label="紧急程度" prop="level">  
+									<el-select v-model="editForm.level">
+											<el-option v-for="i in dicts.urgencyLevel" :label="i.name" :key="i.id" :value="i.id"></el-option> 
+									</el-select>    
+								</el-form-item>  
+							</el-col>
+							<el-col :span="8">
+								<el-form-item  label="类型" prop="taskType">   
+									<el-select v-model="editForm.taskType">
+										<el-option v-for="i in this.dicts.taskType" :label="i.name" :key="i.id" :value="i.id"></el-option>
+									</el-select>  
+								</el-form-item>   
+							</el-col>
 						</el-row>
 						
-						预估金额&nbsp;<el-input-number style="width:200px;"  v-model="editForm.budgetCost" :precision="2" :step="1000" :min="0" placeholder="预算金额"></el-input-number>   元
-					</el-form-item>  
-					<el-form-item  label="实际工作量" prop="actWorkload" shadow="hover">
-						<el-input-number style="width:200px;"  disabled v-model="editForm.actWorkload" :precision="2" :step="8" :min="0" placeholder="实际工作量"></el-input-number>  <el-tag>由后台自动计算，无需填写</el-tag>     
-					</el-form-item> 
-					<el-form-item label="实际金额" prop="actCost">
-						<el-input-number  style="width:200px;"  disabled v-model="editForm.actCost" :precision="2" :step="1000" :min="0" placeholder="实际金额"></el-input-number>    <el-tag>由后台自动计算，无需填写</el-tag>  
-					</el-form-item>   
-				 </el-card>  
- 				<el-card class="box-card" header="结算信息" id="settleInfo" shadow="hover" v-if="editForm.ntype!='1'">   
-					<el-form-item label="" prop="taskClass">
-						<el-checkbox v-model="editForm.taskClass" true-label="1" false-label="0">是否需要结算</el-checkbox> 
-					</el-form-item>  
-					<el-form-item v-if="editForm.taskClass=='1'" label="结算方案" prop="settlSchemel"> 
-						<el-select v-model=" editForm.settleSchemel">
-							<el-option v-for="i in options.xmTaskSettleSchemel" :label="i.optionName" :key="i.optionValue" :value="i.optionValue"></el-option>
-						</el-select>
-					</el-form-item>   
-				 </el-card>
-				 
-				<el-card class="box-card" header="众包" id="taskOut" v-if="editForm.ntype!='1'">  
-					<el-form-item label="" prop="toTaskCenter"> 
-						<el-checkbox v-model="editForm.toTaskCenter" true-label="1" false-label="0" id="toTaskCenter">发布到互联网任务大厅</el-checkbox>  
-					</el-form-item>   
-					<el-form-item label="众包流程" prop="taskOut" v-if="editForm.taskOut=='1'">
-						 <el-steps :active="calcTaskStep" align-center finish-status="success" simple>
-							<el-step title="发布" description="任务创建成功后即发布"></el-step>
-							<el-step title="竞标" description="候选人参与竞标，或者由责任人主动设置候选人"></el-step>
-							<el-step title="执行" description="候选人中标后，成为执行人，执行任务"></el-step>
-							<el-step title="验收" description="任务完成后提交验收，验收通过，即可进行结算"></el-step>
-							<el-step title="结算" description="提交结算申请审批流程，审批过程自动根据审批结果进行结算"></el-step>
-							<el-step title="企业付款" description="结算流程审批通过，自动付款到个人钱包"></el-step> 
-							<el-step title="提现" description="企业付款完成后，个人对钱包中余额进行提现"></el-step> 
-						</el-steps>
-					</el-form-item> 
-				 </el-card>   
+						<el-form-item  label="所属需求" prop="menuId" id="menuInfo" v-if="editForm.ntype!='1'"> 
+							{{editForm.menuName}} &nbsp;&nbsp;&nbsp; <el-link @click="menuVisible=true" type="primary">{{editForm.menuName?'更改':'设置'}}</el-link>&nbsp;&nbsp;&nbsp;
+							<el-link v-if="editForm.menuName" @click="toMenu" type="primary">查看需求</el-link>
+						</el-form-item> 
+						<el-row>  
+							<el-col :span="12"> 
+								<el-form-item prop="skill" label="技能要求"  v-if="editForm.ntype!='1'">
+									<el-button class="useradd-icon" type="text" @click.stop="showSkill()" icon="el-icon-circle-plus-outline">增加</el-button>
+									<el-tag class="fs-ft" style="margin-right:10px" v-for="(item,i) in taskSkills" :key="i">{{item.taskSkillName}}</el-tag>
+								</el-form-item> 
+							</el-col>
+							<el-col :span="12">
+								<el-form-item  label="标签" prop="tagNames">   
+									<el-tag v-if="editForm.tagNames">{{editForm.tagNames?editForm.tagNames:''}} </el-tag>
+									<el-button type="text" icon="el-icon-plus" @click="tagSelectVisible=true">标签</el-button> 
+								</el-form-item>   
+							</el-col>
+						</el-row> 
+						
+						<el-form-item label="负责人"> 
+							<el-tag  v-if="editForm.createUserid" style="margin-left:10px;border-radius:30px;"  >{{editForm.createUsername}}</el-tag>
+							<el-button  @click="showGroupUserSelect(editForm)" icon="el-icon-setting">设置负责人</el-button>
+						</el-form-item> 
+						<el-form-item label="执行人" prop="executorUsername">
+							<el-tag  v-if="editForm.executorUserid" style="margin-left:10px;border-radius:30px;"  >{{editForm.executorUsername}}</el-tag>
+							<el-button  @click="execGroupUserSelectVisible=true" icon="el-icon-setting">设置执行人</el-button>
+						</el-form-item>
+						<el-form-item :label="editForm.ntype=='1'?'计划描述':'任务描述'" prop="description">
+							<el-input type="textarea" :autosize="{ minRows: 4, maxRows: 10}" v-model="editForm.description" :placeholder="editForm.ntype=='1'?'计划描述':'任务描述'" ></el-input>
+						</el-form-item>   
+					</el-collapse-item>
+					<el-collapse-item title="进度预测" name="2">
+						<el-form-item label="预计时间"> 
+								<el-tooltip content="计划类型">
+									<el-select v-model=" editForm.planType" style="width:20%;">
+										<el-option v-for="i in this.dicts.planType" :label="i.name" :key="i.id" :value="i.id"></el-option>
+									</el-select> 
+								</el-tooltip>
+								<el-date-picker
+									v-model="budgetDateRanger"
+									@change="onBudgetDateRangerChange"
+									class="hidden-sm-and-down"
+									type="daterange"
+									align="right"
+									unlink-panels
+									range-separator="至"
+									start-placeholder="计划开始日期"
+									end-placeholder="计划完成日期"
+									value-format="yyyy-MM-dd HH:mm:ss"
+									:default-time="['00:00:00','23:59:59']"
+									:picker-options="pickerOptions"
+								></el-date-picker> 
+						</el-form-item>   
+						<el-form-item label="预估工作量" prop="budgetWorkload">
+							<el-input-number style="width:200px;"  v-model="editForm.budgetWorkload" @change="onBudgetWorkloadChange" :precision="2" :step="8" :min="0" placeholder="预计总工作量(人时,不包括下一级)"></el-input-number> <el-tag>人时，{{this.toFixed(editForm.budgetWorkload/8/20)}}人月</el-tag> 
+							<br>
+							<el-checkbox v-model="editForm.taskOut" @change="onTaskOutChange" true-label="1" false-label="0">是否为众包任务</el-checkbox> 
+						</el-form-item>  
+						<el-form-item label="预估金额" prop="taskOut">
+							<el-row v-if="editForm.taskOut!=='1'">
+								工时单价&nbsp;<el-input-number style="width:200px;"  v-model="editForm.uniInnerPrice" :precision="2" :step="10" :min="0" placeholder="工时单价"></el-input-number>   元/人时
+							</el-row> 
+							<el-row v-if="editForm.taskOut==='1'">
+								工时单价&nbsp;<el-input-number style="width:200px;" v-if="editForm.taskOut==='1'" v-model="editForm.uniOutPrice" :precision="2" :step="10" :min="0" placeholder="外发工时单价"></el-input-number>   元/人时
+							</el-row>
+							
+							预估金额&nbsp;<el-input-number style="width:200px;"  v-model="editForm.budgetCost" :precision="2" :step="1000" :min="0" placeholder="预算金额"></el-input-number>   元
+						</el-form-item>  
+					</el-collapse-item>
+					<el-collapse-item title="实际进度、工作量与成本" name="3">
+						
+						<el-form-item label="实际时间" prop="actStartTime">
+								<el-date-picker
+									v-model="actDateRanger"
+									class="hidden-sm-and-down"
+									type="daterange"
+									align="right"
+									unlink-panels
+									range-separator="至"
+									start-placeholder="实际开始日期"
+									end-placeholder="实际完成日期"
+									value-format="yyyy-MM-dd HH:mm:ss"
+									:default-time="['00:00:00','23:59:59']"
+									:picker-options="pickerOptions"
+								></el-date-picker> 
+						</el-form-item>  
+						<el-form-item label="实际进度" prop="rate">
+							<el-slider
+								v-model="editForm.rate"
+								show-input>
+							</el-slider> 
+						</el-form-item>  
+						<el-form-item  label="实际工作量" prop="actWorkload" shadow="hover">
+							<el-input-number style="width:200px;"  disabled v-model="editForm.actWorkload" :precision="2" :step="8" :min="0" placeholder="实际工作量"></el-input-number>  <el-tag>由后台自动计算，无需填写</el-tag>     
+						</el-form-item> 
+						<el-form-item label="实际金额" prop="actCost">
+							<el-input-number  style="width:200px;"  disabled v-model="editForm.actCost" :precision="2" :step="1000" :min="0" placeholder="实际金额"></el-input-number>    <el-tag>由后台自动计算，无需填写</el-tag>  
+						</el-form-item>   
+						</el-collapse-item>
+					<el-collapse-item title="结算信息" name="4"  v-if="editForm.ntype!='1'">
+						<el-form-item label="" prop="taskClass">
+							<el-checkbox v-model="editForm.taskClass" true-label="1" false-label="0">是否需要结算</el-checkbox> 
+						</el-form-item>  
+						<el-form-item v-if="editForm.taskClass=='1'" label="结算方案" prop="settlSchemel"> 
+							<el-select v-model=" editForm.settleSchemel">
+								<el-option v-for="i in dicts.xmTaskSettleSchemel" :label="i.name" :key="i.id" :value="i.id"></el-option>
+							</el-select>
+						</el-form-item>  
+					</el-collapse-item>
+					<el-collapse-item title="众包" name="5" v-if="editForm.ntype!='1'">
+						<el-form-item label="" prop="toTaskCenter"> 
+							<el-checkbox v-model="editForm.toTaskCenter" true-label="1" false-label="0" id="toTaskCenter">发布到互联网任务大厅</el-checkbox>  
+						</el-form-item>   
+						<el-form-item label="众包流程" prop="taskOut" v-if="editForm.taskOut=='1'">
+							<el-steps :active="calcTaskStep" align-center finish-status="success" simple>
+								<el-step title="发布" description="任务创建成功后即发布"></el-step>
+								<el-step title="竞标" description="候选人参与竞标，或者由责任人主动设置候选人"></el-step>
+								<el-step title="执行" description="候选人中标后，成为执行人，执行任务"></el-step>
+								<el-step title="验收" description="任务完成后提交验收，验收通过，即可进行结算"></el-step>
+								<el-step title="结算" description="提交结算申请审批流程，审批过程自动根据审批结果进行结算"></el-step>
+								<el-step title="企业付款" description="结算流程审批通过，自动付款到个人钱包"></el-step> 
+								<el-step title="提现" description="企业付款完成后，个人对钱包中余额进行提现"></el-step> 
+							</el-steps>
+						</el-form-item> 
+					</el-collapse-item>
+				</el-collapse>    
 			</el-form>  
 		</el-row>
 		<el-row class="padding">
@@ -201,10 +201,10 @@
 			<xm-skill-mng :visible="skillVisible" :task-id="editForm.id" @cancel="skillVisible=false" @getSkill="getSkill"></xm-skill-mng>
 		</el-drawer> -->
 		<el-drawer append-to-body title="选择执行人"  :visible.sync="execGroupUserSelectVisible" size="60%"    :close-on-click-modal="false">
-			<xm-group-select :visible="execGroupUserSelectVisible" :sel-project="xmProject" :isSelectSingleUser="1" @user-confirm="execGroupUserSelectConfirm"></xm-group-select>
+			<xm-group-select :pgClass="editForm.ptype" :xm-product="editForm.productId?{id:editForm.productId,productName:''}:null" :visible="execGroupUserSelectVisible" :sel-project="xmProject" :isSelectSingleUser="1" @user-confirm="execGroupUserSelectConfirm"></xm-group-select>
 		</el-drawer>
 		<el-drawer append-to-body title="选择负责人"  :visible.sync="groupUserSelectVisible" size="60%"    :close-on-click-modal="false">
-			<xm-group-select :visible="groupUserSelectVisible" :sel-project="xmProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-group-select>
+			<xm-group-select :pgClass="editForm.ptype" :xm-product="editForm.productId?{id:editForm.productId,productName:''}:null" :visible="groupUserSelectVisible" :sel-project="xmProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-group-select>
 		</el-drawer>
 		<el-drawer append-to-body title="新增技能"  :visible.sync="skillVisible" size="60%"    :close-on-click-modal="false">
 			<skill-mng :task-skills="taskSkills" :jump="true" @select-confirm="onTaskSkillsSelected"></skill-mng>
@@ -215,7 +215,7 @@
 		</el-drawer>
 		
 		<el-drawer title="选中任务"  :visible.sync="selectTaskVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
-			<xm-task-list  :sel-project="xmProject"   @task-selected="onSelectedTask"></xm-task-list>
+			<xm-task-list :ptype="editForm.ptype" :xm-product="{id:editForm.productId,productName:''}" :sel-project="xmProject"   @task-selected="onSelectedTask"></xm-task-list>
 		</el-drawer> 	
 		
 		<el-drawer :title="'任务'+editForm.name+'的候选人'"  :visible.sync="execUserVisible" fullscreen size="60%" append-to-body  :close-on-click-modal="false">
@@ -235,7 +235,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询 
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询 
 	import {editXmTask,setTaskCreateUser } from '@/api/xm/core/xmTask';
 	import { mapGetters } from 'vuex';
  	import {sn} from '@/common/js/sequence';
@@ -303,7 +303,7 @@
 			const endDate = new Date();
 			endDate.setTime(beginDate.getTime() + 3600 * 1000 * 24 * 7 * 4);
 			return {
-				options:{
+				dicts:{
 					urgencyLevel:[],
 					taskType:[],
 					planType:[],
@@ -609,8 +609,8 @@
 			}
 			
 			this.setSkills();
-			listOption([{categoryId:'all',itemCode:'planType'},{categoryId:'all',itemCode:'taskType'},{categoryId:'all',itemCode:'urgencyLevel'},{categoryId:'all',itemCode:'priority'},{categoryId:'all',itemCode:'xmTaskSettleSchemel'}]).then(res=>{
-				this.options=res.data.data;
+			initSimpleDicts('all',['planType','taskType','urgencyLevel','priority','xmTaskSettleSchemel']).then(res=>{
+				this.dicts=res.data.data;
 			})
 			/**在下面写其它函数***/
 			

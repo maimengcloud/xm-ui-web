@@ -6,12 +6,12 @@
 					<el-table-column type="index" label="序号" ></el-table-column>
 				   <el-table-column prop="iterationName" label="迭代名称" >
 					<template slot="header" slot-scope="scope">
-					迭代名称 <el-button type="text" @click="clearSelectIteration">清空所选</el-button>
+					迭代名称 <el-button type="text" @click="clearSelectIteration">清空所选</el-button> &nbsp;<el-button type="text" @click="close">关闭</el-button>
 					<el-popover v-if=" !menuId && !productId"
 						placement="top-start"
 						title=""
 						width="400"
-						trigger="click" >
+						trigger="hover" >
 						<el-row>  
 							<el-col :span="24" style="padding-top:5px;">
 								<font class="more-label-font">
@@ -54,7 +54,7 @@
 								<el-button  type="primary" icon="el-icon-search" @click="getXmIterations">查询</el-button>
 							</el-col> 
 						</el-row>
-						<el-button type="text" slot="reference" icon="el-icon-more">更多条件</el-button>
+						<el-button type="text" slot="reference">更多条件</el-button>
 					</el-popover>
 				</template>
 					 <template slot-scope="scope">
@@ -72,7 +72,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { listXmIteration,listXmIterationWithState, delXmIteration, batchDelXmIteration,loadTasksToXmIterationState } from '@/api/xm/core/xmIteration';
   
 
@@ -125,7 +125,7 @@
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				options:{
+				dicts:{
 					//sex:[],
 				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
 
@@ -337,7 +337,9 @@
 					return 0;
 				}
 			},
-			
+			close(){
+				this.$emit("close")
+			},
 			loadTasksToXmIterationState(row){
 
 				this.load.edit=true;

@@ -27,10 +27,10 @@
 					<template slot-scope="scope">
 						<el-select :disabled="batchEditVisible==false"  placeholder="预算科目编号" v-model="scope.row.subjectId"  @change="fieldChange(scope.row)">
 						<el-option
-							v-for="(item,i) in options.projectSubject"
+							v-for="(item,i) in dicts.projectSubject"
 							:key="i"
-							:label="item.optionName"
-							:value="item.optionValue">
+							:label="item.name"
+							:value="item.id">
 						</el-option>
 					</el-select> 
 					</template>
@@ -95,7 +95,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { listXmProjectMBudgetCostNouser, delXmProjectMBudgetCostNouser, batchDelXmProjectMBudgetCostNouser,batchEdit  } from '@/api/xm/core/xmProjectMBudgetCostNouser';
 	import  XmProjectMBudgetCostNouserAdd from './XmProjectMBudgetCostNouserAdd';//新增界面
 	import  XmProjectMBudgetCostNouserEdit from './XmProjectMBudgetCostNouserEdit';//修改界面
@@ -132,7 +132,7 @@
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				options:{
+				dicts:{
 					projectSubject:[],
 				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				
@@ -349,11 +349,11 @@
 				
 				this.tableHeight =  util.calcTableMaxHeight(".el-table"); 
 				this.getXmProjectMBudgetCostNousers();
-			}); 
-			
-				listOption([{categoryId:'all',itemCode:'projectSubject'}]).then(res=>{
-					this.options=res.data.data;
-				})	
+			});  
+				
+			initSimpleDicts('all',['projectSubject']).then(res=>{
+				this.dicts=res.data.data;
+			})	
 		}
 	}
 

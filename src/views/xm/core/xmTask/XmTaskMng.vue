@@ -8,12 +8,13 @@
       >
         <el-row>  
           
-          <el-popover v-if="(!xmProduct||!xmProduct.id) && (!selProject || !selProject.id)"
+          <el-popover v-if=" ptype==='0' && (!selProject || !selProject.id)"
             placement="right"
             width="400"
-            trigger="click"> 
-            <xm-project-select v-if="!selProject||!selProject.id" :auto-select="true"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="filters.selProject=null"></xm-project-select>
-              <el-link type="warning" slot="reference" v-if="!selProject||!selProject.id"  icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link> 
+            v-model="projectVisible"
+            trigger="manual"> 
+            <xm-project-select v-if="!selProject||!selProject.id" :auto-select="true"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClear" @close="projectVisible=false"></xm-project-select>
+              <el-link type="warning" @click="projectVisible=true" slot="reference" v-if="!selProject||!selProject.id"  icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link> 
           </el-popover> 
 					<el-select style="width: 100px" v-model="filters.taskState" placeholder="状态" clearable>
 									<el-option value="0" label="待领取"></el-option>
@@ -74,11 +75,11 @@
               >全部类型</el-option
             >
             <el-option
-              v-for="(i, index) in options.taskType"
-              :value="i.optionValue"
-              :label="i.optionName"
+              v-for="(i, index) in dicts.taskType"
+              :value="i.id"
+              :label="i.name"
               :key="index"
-              >{{ i.optionName }}</el-option
+              >{{ i.name }}</el-option
             >
           </el-select>
           <el-checkbox
@@ -437,6 +438,11 @@
                 </template>
               </el-table-column>
               
+              <el-table-column sortable prop="productId" label="产品" width="100" show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column sortable prop="projectId" label="项目" width="100" show-overflow-tooltip>
+              </el-table-column>
+              
               <el-table-column sortable prop="tagNames" label="标签" width="100">
               </el-table-column>
               <el-table-column
@@ -553,11 +559,7 @@
           </template>
           <xm-gantt
             v-if="displayType == 'grant'"
-            :tree-data="tasksTreeData"
-            :project-phase="{
-              startTime: currentProjectPhase.beginDate,
-              endTime: currentProjectPhase.endDate,
-            }"
+            :tree-data="tasksTreeData" 
             :useRealTime="true"
           ></xm-gantt>
         </el-row>
@@ -565,8 +567,7 @@
     </el-row>
     <el-row v-if="batchEditVisible">
       <xm-task-mng-batch
-        :sel-project="selProject"
-        :sel-project-phase="currentProjectPhase"
+        :sel-project="selProject" 
         :visible="batchEditVisible"
         :xmTasks="xmTasks"
         @back="batchEditBack"
@@ -750,8 +751,7 @@
     >
       <xm-task-edit
         :xm-project="currentProject"
-        :xm-task="editForm"
-        :project-phase="currentProjectPhase"
+        :xm-task="editForm" 
         :visible="editFormVisible"
         @cancel="editFormVisible = false"
         @after-add-submit="afterExecEditSubmit"
@@ -920,6 +920,7 @@
         :visible="menuGroupUser"
         :sel-project="selProject"
         :isSelectSingleUser="1"
+        :ptype="ptype"
         @user-confirm="seleConfirm"
       ></xm-group-select>
     </el-drawer>
@@ -934,6 +935,7 @@
         :visible="menuExecutor"
         :sel-project="selProject"
         :isSelectSingleUser="1"
+        :ptype="ptype"
         @user-confirm="seleExecutor"
       ></xm-group-select>
     </el-drawer>
@@ -961,6 +963,7 @@
         :visible="groupUserSelectVisible"
         :sel-project="selProject"
         :isSelectSingleUser="1"
+        :ptype="ptype"
         @user-confirm="groupUserSelectConfirm"
       ></xm-group-select>
     </el-drawer>
@@ -1005,7 +1008,7 @@ import Vue from "vue";
 import util from "@/common/js/util"; //全局公共库
 import treeTool from "@/common/js/treeTool"; //全局公共库
 //import Sticky from '@/components/Sticky' // 粘性header组件
-import { listOption } from "@/api/mdp/meta/itemOption"; //下拉框数据查询
+import { initSimpleDicts } from '@/api/mdp/meta/item'; //下拉框数据查询
 import {
   getTask,
   listXmTask,
@@ -1056,27 +1059,7 @@ export default {
       } else {
         return null;
       }
-    },
-    currentProjectPhase() {
-      if (this.projectPhase != null && this.projectPhase != undefined) {
-        return this.projectPhase;
-      } else {
-        var projectPhase = {};
-        if (
-          this.editForm && this.editForm.id
-        ) {
-          projectPhase.id = this.editForm.phaseId;
-          projectPhase.name = this.editForm.projectPhaseName;
-          projectPhase.taskType = this.editForm.taskType;
-          projectPhase.projectId = this.editForm.projectId;
-          projectPhase.projectName = this.editForm.projectName;
-          projectPhase.ntype="0"
-          return projectPhase;
-        } else {
-          return null;
-        }
-      }
-    },
+    }, 
     curUser() {
       return {
         id: this.userInfo.userid,
@@ -1181,7 +1164,7 @@ export default {
       },
       load: { list: false, edit: false, del: false, add: false }, //查询中...
       sels: [], //列表选中数据
-      options: {
+      dicts: {
         urgencyLevel: [],
         taskType: [],
         planType: [],
@@ -1276,8 +1259,7 @@ export default {
 
       skillVisible: false,
       skillIds: [],
-      taskSkills: [],
-      projectPhase: null,
+      taskSkills: [], 
       taskTemplateVisible: false,
       parentTask: null,
       projectInfoVisible: false,
@@ -1302,6 +1284,7 @@ export default {
       tagSelectVisible: false,
       batchRelTasksWithMenuVisible:false,
       selectParentTaskVisible:false,
+      projectVisible:false,
       maps:new Map(),
     };
   }, //end data
@@ -1396,10 +1379,20 @@ export default {
         params.ntype="1"
       }else if(this.queryScope==='task'){
         params.ntype="0"
-      } 
-      if(this.ptype){
-        params.ptype=this.ptype
+      }  
+      if(this.ptype==='1'){
+        if(!params.productId){
+          this.$notify.error("请先选中产品")
+          return;
+        } 
+      }else if(this.ptype==='0'){
+        if(!params.projectId){ 
+          this.$notify.error("请先选中项目")
+          return;
+        }
       }
+      params.ptype=this.ptype
+      
       getTask(params)
         .then((res) => {
           var tips = res.data.tips;
@@ -1594,6 +1587,7 @@ export default {
                 message: "请先选择项目",
                 type: "warning",
               });
+              this.projectVisible=true;
               return false;
           }else if(this.ptype==='1'){
             if( !this.filters.product && this.filters.product.id){
@@ -1602,6 +1596,8 @@ export default {
                 message: "请先选择产品",
                 type: "warning",
               });
+              
+              this.productSelectVisible=true;
               return false;
             }
           }
@@ -1954,21 +1950,7 @@ export default {
 
     handleSelect(key, keyPath) {
       this.drawerkey = key;
-    },
-    
-    projectPhaseRowClick: function (projectPhase) {
-       this.projectPhase = projectPhase;
-      if(projectPhase.ntype=='1'){
-        this.pageInfo.total=0;
-        this.xmTasks=[];
-        return;
-      } 
-      this.getXmTasks();
-    },
-    clearSelectPhase: function () {
-      this.projectPhase = null;
-      this.getXmTasks();
-    },
+    },  
     getDateString(dateStr) {
       if (dateStr == null || dateStr == "" || dateStr == undefined) {
         return "";
@@ -1982,12 +1964,12 @@ export default {
       }
     },
     formateOption: function (itemCode, value) {
-      if (this.options[itemCode]) {
-        var options = this.options[itemCode].filter(
-          (i) => i.optionValue == value
+      if (this.dicts[itemCode]) {
+        var dicts = this.dicts[itemCode].filter(
+          (i) => i.id == value
         );
-        if (options && options.length > 0) {
-          return options[0].optionName;
+        if (dicts && dicts.length > 0) {
+          return dicts[0].name;
         } else {
           return value;
         }
@@ -2005,15 +1987,15 @@ export default {
         return cellValue;
       }
       if (
-        this.options[key] == undefined ||
-        this.options[key] == null ||
-        this.options[key].length == 0
+        this.dicts[key] == undefined ||
+        this.dicts[key] == null ||
+        this.dicts[key].length == 0
       ) {
         return cellValue;
       }
-      var list = this.options[key].filter((i) => i.optionValue == cellValue);
+      var list = this.dicts[key].filter((i) => i.id == cellValue);
       if (list.length > 0) {
-        return list[0].optionName;
+        return list[0].name;
       } else {
         return cellValue;
       }
@@ -2123,6 +2105,13 @@ export default {
     }, 
     onProjectRowClick: function (project) {
       this.filters.selProject = project; 
+      this.projectVisible=false;
+      this.searchXmTasks();
+    },
+    onProjectClear(){
+      this.filters.selProject=null; 
+      this.projectVisible=false;
+      this.xmTasks=[]
       this.searchXmTasks();
     },
     handleCommand(command) {
@@ -2357,12 +2346,7 @@ export default {
       if (this.filters.selProject) {
         params.projectId = this.filters.selProject.id;
       }
-      params.workexec = "true";
-      if (this.projectPhase) {
-        {
-          params.phaseId = this.projectPhase.id;
-        }
-      }
+      params.workexec = "true"; 
       if (this.isMy == "1") {
         params.userid = this.userInfo.userid;
         params.isMy = "1";
@@ -2404,7 +2388,10 @@ export default {
     loadXmTaskLazy(tree, treeNode, resolve) {    
       this.maps.set(tree.id, { tree, treeNode, resolve }) //储存数据
         var params={parentTaskid:tree.id}
-        params=this.getParams(params);
+        params=this.getParams(params); 
+        if(params.projectId && params.productId){
+          params.ptype=""
+        }
         params.isTop=""
         this.load.list = true;
         var func=listXmTask 
@@ -2423,15 +2410,22 @@ export default {
       
     },
     showParentTaskList(){ 
-      if(this.filters.selProject && this.filters.selProject.id){
-        if(this.sels.length==0){
-          this.$notify({showClose:true,message:"请先选择一个或者多个需要更换上级的计划/任务",type:'warning'})
-          return;
-        }
-         this.selectParentTaskVisible=true
-      }else{
-        this.$notify({showClose:true,message:"请先选择项目",type:'warning'})
+      if(this.sels.length==0){
+        this.$notify({showClose:true,message:"请先选择一个或者多个需要更换上级的计划/任务",type:'warning'})
+        return;
       }
+      if(this.ptype==='0'){
+        if( !this.filters.selProject|| !this.filters.selProject.id){ 
+           this.$notify({showClose:true,message:"请先选择项目",type:'warning'})
+           return;
+        }  
+      }else if(this.ptype==='1'){
+        if( !this.filters.product|| !this.filters.product.id){ 
+           this.$notify({showClose:true,message:"请先选择产品",type:'warning'})
+           return;
+        }
+      }
+      this.selectParentTaskVisible=true
      
     },
     onSelectedParentTask(task){
@@ -2501,14 +2495,8 @@ export default {
     this.$nextTick(() => {
       this.getXmTasks(); 
       this.tableHeight = util.calcTableMaxHeight(this.$refs.table.$el);  
-      listOption([
-        { categoryId: "all", itemCode: "planType" },
-        { categoryId: "all", itemCode: "taskType" },
-        { categoryId: "all", itemCode: "urgencyLevel" },
-        { categoryId: "all", itemCode: "xmTaskSettleSchemel" },
-        { categoryId: "all", itemCode: "priority" },
-      ]).then((res) => {
-        this.options = res.data.data;
+      initSimpleDicts( "all", ["planType","taskType","urgencyLevel","xmTaskSettleSchemel","priority" ]).then((res) => {
+        this.dicts = res.data.data;
       });
     });
   },

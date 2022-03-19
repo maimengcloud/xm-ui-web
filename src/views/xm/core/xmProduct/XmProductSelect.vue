@@ -8,12 +8,12 @@
 				<el-table-column  v-if="isSelectProduct==true"  label="产品代号" prop="code" min-width="100" show-overflow-tooltip >  </el-table-column>
 				  <el-table-column prop="productName"  label="产品名称"    show-overflow-tooltip> 
 					 <template slot="header" slot-scope="scope"> 
-						 产品名称 <el-button type="text" @click="clearSelect">清空所选</el-button>
+						 产品名称 <el-button type="text" @click="clearSelect">清空所选</el-button>&nbsp;<el-button type="text" @click="close">关闭</el-button>
 						 <el-popover
 							placement="top-start"
 							title=""
 							width="400"
-							trigger="click" >
+							trigger="hover" >
 							<el-row>
 								<el-col :span="24" style="padding-top:5px;">
 									<font class="more-label-font">
@@ -91,7 +91,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { listXmProductWithState } from '@/api/xm/core/xmProduct';  
 	import { mapGetters } from 'vuex' 
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
@@ -136,7 +136,7 @@
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				options:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				dicts:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				
 				addFormVisible: false,//新增xmProduct界面是否显示
 				//新增xmProduct界面初始化数据
@@ -315,6 +315,9 @@
 			clearSelect(){
 				this.$refs.table.setCurrentRow();
 				this.$emit("clear-select");
+			},
+			close(){
+				this.$emit("close");
 			}
 		},//end methods
 		components: {  

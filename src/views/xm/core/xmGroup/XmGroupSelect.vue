@@ -1,17 +1,21 @@
 <template>
 	<section class="border padding-left">
-		<el-row class="padding-top">
-				<el-col :span="6"> 
-					<el-button   type="primary" @click="userConfirm" icon="el-icon-finished">确认选择</el-button> 
-				</el-col>
-				<el-col :span="18" class="hidden-sm-and-down">
- 					<el-tooltip    content="黄色表示选中"><span class="addXmGroupFormworkSquare"></span></el-tooltip> 
-					 {{this.filters.selProject?"项目：":""}}<el-tag type="primary" @click="selectProjectVisible=true" v-if="this.filters.selProject" closable @close="onProjectClose">{{this.filters.selProject.name}}</el-tag>
-					 <el-tag v-else type="warning" @click="selectProjectVisible=true"> 选择项目</el-tag>
-						&nbsp;&nbsp;
- 					 {{this.filters.xmProduct?"产品：":""}}<el-tag type="primary" @click="selectProductVisible=true" v-if="this.filters.xmProduct&&this.filters.xmProduct.id" closable @close="onProductClose">{{this.filters.xmProduct.productName}}</el-tag>
-					 <el-tag v-else type="warning" @click="selectProductVisible=true">选择产品</el-tag>
- 				</el-col> 
+		<el-row class="padding-top"> 
+					<el-popover v-if="(pgClass==='0'||!pgClass) && (!selProject  || !selProject.id)"
+						placement="right"
+						width="400"
+						trigger="click"> 
+						<xm-project-select :auto-select="true" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClose"></xm-project-select>
+							<el-link type="warning" slot="reference" icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link> 
+					</el-popover>
+					<el-popover v-if="pgClass==='1' && (!xmProduct  || !xmProduct.id)"
+						placement="right"
+						width="400"
+						trigger="click"> 
+							<xm-product-select :auto-select="true"  :sel-project="selProject" @row-click="onProductRowClick" @clear-select="onProductClose"></xm-product-select>
+							<el-link type="warning" slot="reference" icon="el-icon-search"><font style="font-size:14px;">{{filters.xmProduct?filters.xmProduct.productName:'选择项目'}}</font></el-link> 
+					</el-popover> 
+					<el-button   type="primary" @click="userConfirm" icon="el-icon-finished">确认选择</el-button>  
 		</el-row>  
 		<el-row class="padding-top" v-loading="load.list" :style="{overflowX:'auto',height:maxTableHeight+'px'}" ref="table">
 			<el-row v-for="(item,index) in xmGroupFormworkSels" :key="index"> 
@@ -28,12 +32,12 @@
 		</el-row>  
 		
 		<el-drawer title="选中项目团队" :visible.sync="selectProjectVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
-			<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
+			<xm-project-list    @project-confirm="onProjectRowClick"></xm-project-list>
 		</el-drawer> 
 		
 		
 		<el-drawer title="选中产品团队" :visible.sync="selectProductVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
-			<xm-product-select  :isSelectProduct="true"  @selected="onProductConfirm"></xm-product-select>
+			<xm-product-select  :isSelectProduct="true"  @selected="onProductRowClick"></xm-product-select>
 		</el-drawer> 
 	</section>
 </template>
@@ -41,9 +45,9 @@
 <script>
 	import util from '@/common/js/util'; //全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
    	import {  getGroups } from '@/api/xm/core/xmGroup';
-   	import XmProjectList from '../xmProject/XmProjectList';
+   	import XmProjectSelect from '../xmProject/XmProjectSelect';
 
 	import {mapGetters} from 'vuex' 
 import XmProductSelect from '../xmProduct/XmProductSelect.vue';
@@ -55,7 +59,7 @@ import XmProductSelect from '../xmProduct/XmProductSelect.vue';
 			])
 		},
 		//
-		props: ['visible','selProject','isSelectSingleUser','isSelectMultiUser','xmProduct'],
+		props: ['visible','selProject','isSelectSingleUser','isSelectMultiUser','xmProduct','pgClass'],
 		watch: {
 			"selGroups": function(selGroups) {
 				if(this.selGroups){
@@ -94,7 +98,7 @@ import XmProductSelect from '../xmProduct/XmProductSelect.vue';
 				selGroups:[],
 				load: {list: false,edit: false,del: false,add: false}, //查询中...
 				sels: [], //列表选中数据
-				options: {
+				dicts: {
 					projectGroupType:[]
 				}, //下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
 
@@ -153,14 +157,14 @@ import XmProductSelect from '../xmProduct/XmProductSelect.vue';
 				if(this.filters.xmProduct && this.filters.xmProduct.id){
 					params.productId=this.filters.xmProduct.id
 				}
-				if(!params.projectId && !params.productId){
-					this.$notify({showClose:true,message:'产品团队或者项目团队最少选中一个',type:'error'})
+				if(this.pgClass==='1' && !params.productId){
+					this.$notify({showClose:true,message:'请选择产品',type:'error'})
 					return;
 				}
 				
-				if(params.projectId && params.productId){
+				if((this.pgClass==='0' || !this.pgClass )&& !params.projectId){
 					params.productId=null
-					this.$notify({showClose:true,message:'产品团队或者项目团队只能选中一个，两个都选以项目团队为准',type:'warning'})
+					this.$notify({showClose:true,message:'请选择项目',type:'warning'})
 				}
 				getGroups(params).then(res=>{
 					var tips = res.data.tips;
@@ -172,7 +176,7 @@ import XmProductSelect from '../xmProduct/XmProductSelect.vue';
 				})
 			},
 			
-			onPorjectConfirm:function(project){
+			onProjectRowClick:function(project){
 				this.filters.selProject=project
 				this.filters.xmProduct=null;
 				this.selectProjectVisible=false;
@@ -180,7 +184,7 @@ import XmProductSelect from '../xmProduct/XmProductSelect.vue';
 			},
 			 
 			
-			onProductConfirm:function(product){
+			onProductRowClick:function(product){
 				this.filters.xmProduct=product
 				this.filters.selProject=null
 				this.selectProductVisible=false;
@@ -199,7 +203,7 @@ import XmProductSelect from '../xmProduct/XmProductSelect.vue';
 		}, //end methods
 		components: {
 			
-			XmProjectList,XmProductSelect			 
+			XmProjectSelect,XmProductSelect			 
 		},
 		mounted() {
 			this.$nextTick(() => { 

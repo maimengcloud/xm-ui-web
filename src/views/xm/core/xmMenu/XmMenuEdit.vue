@@ -3,50 +3,150 @@
 		<el-row class="page-main ">
 			<el-tabs>
 				<el-tab-pane  label="需求详情">
-					<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
+					<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm"> 
 						<el-row class="padding-bottom"> 
-						<el-steps :active="parseInt(editForm.status)" simple finish-status="success" align-center>
+						<el-steps :active="calcMenuCurrStep" simple finish-status="success" align-center>
 							<el-step v-for="(item,index) in dicts.menuStatus" @click.native="on_click(item.id)" :title="item.name" :key="index"></el-step> 
 						</el-steps>
 						</el-row> 
-						<el-form-item label="名称" prop="menuName">
-							<el-input v-model="editForm.menuName" placeholder="名称" ></el-input>
-						</el-form-item>
-						<el-row class="padding-bottom">
-							<el-col :span="12">
-							<el-form-item label="序号" prop="seqNo">
-								<el-input v-model="editForm.seqNo" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input>
+						<el-collapse value="1" accordion>
+						<el-collapse-item title="基本信息" name="1" >
+							<el-form-item label="节点类型" prop="ntype">
+								<el-radio v-model="editForm.ntype" label="1">需求池</el-radio>
+								<el-radio v-model="editForm.ntype" label="0">需求</el-radio>
+								<br>
+								<font v-if="editForm.ntype==='0'" color="red" style="font-size:12px;">需求：建议按以下逻辑描述一个需求：什么人？做什么事？，为什么？</font> 
+								<font v-if="editForm.ntype==='1'" color="red" style="font-size:12px;">需求池：需求池下可建立子需求池或者需求。负责汇总统计下级数据，分解上级需求池预算。</font>
+							</el-form-item> 
+							<el-row> 
+								<el-col :span="6">
+									<el-form-item label="序号名称" prop="seqNo" >
+										<el-input v-model="editForm.seqNo" style="width:100%;" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input> 
+									</el-form-item>  
+								</el-col>
+								<el-col :span="18">
+									<el-form-item label="" prop="menuName" label-width="0px">
+										<el-input v-model="editForm.menuName" placeholder="名称" ></el-input>
+									</el-form-item>   
+								</el-col>
+							</el-row>
+							<el-row>
+								<el-col :span="12">
+									<el-form-item label="归属产品" prop="productId">
+										<font v-if="editForm.productId">{{editForm.productName?editForm.productName:editForm.productId}}</font>
+									</el-form-item>
+								</el-col>
+								<el-col :span="12">
+									<el-form-item v-if="!editForm.pmenuId" label="需求池" prop="pmenuId">
+										无归属需求池
+									</el-form-item>  
+									
+									<el-form-item  v-else label="需求池" prop="pmenuId"> 
+										<el-link type="primary"  :icon="'el-icon-folder-opened'">  {{editForm.pmenuName?editForm.pmenuName:editForm.pmenuId}}</el-link> 
+									</el-form-item>  
+								</el-col>
+							</el-row> 
+							<el-row> 
+								
+								<el-col :span="12">
+									<el-form-item  label="需求类型" prop="dtype" >   
+										<el-select v-model="editForm.dtype">
+											<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
+										</el-select>  
+									</el-form-item>   
+								</el-col>
+								<el-col :span="12">
+									<el-form-item  label="需求来源" prop="source">   
+										<el-select v-model="editForm.source">
+											<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
+										</el-select>  
+									</el-form-item>   
+								</el-col> 
+								<el-col :span="12">
+									<el-form-item  label="需求层次" prop="dlvl" >   
+										<el-select v-model="editForm.dlvl">
+											<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
+										</el-select>  
+									</el-form-item>   
+								</el-col>
+								<el-col :span="12">
+								<el-form-item  label="优先级" prop="priority" >  
+									<el-select v-model="editForm.priority">
+											<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option> 
+									</el-select>    
+								</el-form-item>  
+								</el-col>
+							</el-row>
+							<el-row>
+								<el-col :span="12">
+									<el-form-item label="提出人" prop="proposerId">
+										<el-tag type="text" v-if="editForm.proposerId" closable @close="clearProposer">{{editForm.proposerName}}</el-tag> 
+										<el-button type="text" @click="selectProposer">选提出人</el-button>
+									</el-form-item>   
+								</el-col>
+								<el-col  :span="12">
+									<el-form-item label="跟进人" prop="mmUserid">
+										<el-tag type="text" v-if="editForm.mmUserid" closable @close="clearMmUser">{{editForm.mmUsername}}</el-tag> 
+										<el-button type="text" @click="mmUserSelectVisible=true">选跟进人</el-button>
+									</el-form-item>   
+								</el-col>
+							</el-row>
+						</el-collapse-item>
+						<el-collapse-item title="需求概述" name="4"> 
+							<el-form-item label="需求概述" prop="remark">
+								<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="editForm.remark" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
 							</el-form-item>  
-							</el-col>
-							<el-col :span="12">
-							<el-form-item label="标签" prop="ntype">
-								{{editForm.tagNames?editForm.tagNames:''}} 
-								<el-button type="text" icon="el-icon-plus" @click="tagSelectVisible=true">标签</el-button> 
+						</el-collapse-item> 
+						<el-collapse-item title="工期与工作量预估" name="2">
+							<el-form-item label="预估工期" prop="budgetHours">
+								<el-input-number style="width:200px;"  v-model="editForm.budgetHours"  :precision="2" :step="8" :min="0" placeholder="预计工期(小时)"></el-input-number>&nbsp;小时
+							</el-form-item> 
+							<el-form-item label="预估工作量" prop="budgetWorkload">
+								<el-input-number style="width:200px;"  v-model="editForm.budgetWorkload" :precision="2" :step="8" :min="0" placeholder="预计总工作量(人时,不包括下一级)"></el-input-number> <el-tag>人时，{{this.toFixed(editForm.budgetWorkload/8/20)}}人月</el-tag>
+							</el-form-item> 
+							<el-form-item label="预估金额" prop="budgetAmount">
+								<el-input-number style="width:200px;"  v-model="editForm.budgetAmount" :precision="2" :step="100" :min="0" placeholder="预算金额"></el-input-number>   元 
+							</el-form-item> 
+							<font color="red" style="font-size:10px;">控制规则：下级预估工作量总和不能大于上级预估工作量</font>
+						</el-collapse-item>
+						<el-collapse-item title="进度与实际工作量填报" name="3">
+							<el-form-item label="数据收集方式" prop="calcType"> 
+								<el-radio   v-model="editForm.calcType"  label="3" placeholder="下级往上级汇总" :disabled="editForm.ntype==='0'">下级往上级汇总</el-radio>
+ 								<el-radio   v-model="editForm.calcType"  label="1" placeholder="由任务汇总" :disabled="editForm.ntype==='1'">由任务汇总</el-radio> 
+								<el-radio   v-model="editForm.calcType"  label="2" placeholder="手工填报" :disabled="editForm.ntype==='1'">手工填报</el-radio>
+							</el-form-item> 
+							<el-form-item label="当前进度" prop="mactRate" v-if="editForm.calcType==='2'">
+								<el-input-number style="width:200px;" v-model="editForm.mactRate" :precision="2" :step="5" :min="0" :max="100" placeholder="进度"></el-input-number> &nbsp;%
+							</el-form-item> 
+							<el-form-item label="实际工作量" prop="mactWorkload" v-if="editForm.calcType==='2'">
+								<el-input-number style="width:200px;"  v-model="editForm.mactWorkload" :precision="2" :step="8" :min="0" placeholder="实际总工作量(人时)"></el-input-number> <el-tag>人时，{{this.toFixed(editForm.budgetWorkload/8/20)}}人月</el-tag>
+							</el-form-item> 
+							<el-form-item label="实际金额" prop="mactAmount" v-if="editForm.calcType==='2'">
+								<el-input-number style="width:200px;"  v-model="editForm.mactAmount" :precision="2" :step="100" :min="0" placeholder="实际金额"></el-input-number>   元 
+							</el-form-item> 
+							<font color="red" style="font-size:10px;">控制规则:
+								<br>下级往上汇总：指需求池的数据来自直接下级的需求池(需求)的数据之和。逐级往上汇总。
+								<br>由任务汇总： 指需求(不包括需求池)的数据来自与该需求关联的任务的数据之和。
+								<br>手工填报：  指需求(不包括需求池)的数据来自手工填报，无论是否关联了任务，都不从任务汇总。
+							</font>
+						</el-collapse-item>
+						<el-collapse-item title="相关链接" name="4"> 
+							<el-form-item label="需求链接" prop="demandUrl"> 
+								<el-input v-model="editForm.demandUrl" placeholder="需求链接" ></el-input> 
 							</el-form-item>  
-							</el-col>
-						</el-row> 
-						<el-form-item label="负责人" prop="mmUserid">
-							<el-tag v-if="editForm.mmUserid" closable @close="clearPmUser">{{editForm.mmUsername}}</el-tag>
-							<el-tag v-else>未配置</el-tag>
-							<el-button @click="selectUser">选负责人</el-button>
-						</el-form-item>
-						<el-form-item label="需求链接" prop="demandUrl">
-							<el-input v-model="editForm.demandUrl" placeholder="需求链接" ></el-input>
-						</el-form-item>
-						<el-form-item label="代码链接" prop="codeUrl">
-							<el-input v-model="editForm.codeUrl" placeholder="代码链接" ></el-input>
-						</el-form-item>
-						<el-form-item label="设计链接" prop="designUrl">
-							<el-input v-model="editForm.designUrl" placeholder="设计链接" ></el-input>
-						</el-form-item>
-						<el-form-item label="操作手册链接" prop="operDocUrl">
-							<el-input v-model="editForm.operDocUrl" placeholder="操作手册链接" ></el-input>
-						</el-form-item>
-						<el-form-item label="概述" prop="remark">
-							<el-input type="textarea" v-model="editForm.remark" :autosize="{ minRows: 4, maxRows: 20}"  placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
-						</el-form-item>
+							<el-form-item label="代码链接" prop="codeUrl">
+								<el-input v-model="editForm.codeUrl" placeholder="代码链接" ></el-input>  
+							</el-form-item>  
+							<el-form-item label="设计链接" prop="designUrl">
+								<el-input v-model="editForm.designUrl" placeholder="设计链接" ></el-input>  
+							</el-form-item>   
+							<el-form-item label="操作手册链接" prop="operDocUrl">
+								<el-input v-model="editForm.operDocUrl" placeholder="操作手册链接" ></el-input>  
+							</el-form-item>  
+						</el-collapse-item> 
+						</el-collapse>
 					</el-form> 
-					<el-row >
+					<el-row class="padding">
 						<el-button @click.native="handleCancel">取消</el-button>
 						<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>
 					</el-row>
@@ -59,8 +159,12 @@
 					<xm-menu-exchange-mng :xm-menu="xmMenu"></xm-menu-exchange-mng>
 				</el-tab-pane>
 			</el-tabs>
-			<el-drawer title="选择员工" :visible.sync="userSelectVisible" size="60%" append-to-body>
-				<users-select  @confirm="onUserSelected" ref="usersSelect"></users-select>
+			<el-drawer title="选择提出人" :visible.sync="proposerSelectVisible" size="60%" append-to-body>
+				<users-select  @confirm="onProposerSelected" ref="usersSelect"></users-select>
+			</el-drawer>
+			
+			<el-drawer title="选择跟进人" :visible.sync="mmUserSelectVisible" size="60%" append-to-body>
+				<users-select  @confirm="onMmUserSelected" ref="mmUsersSelect"></users-select>
 			</el-drawer>
 		</el-row>
 			
@@ -73,7 +177,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { editXmMenu } from '@/api/xm/core/xmMenu';
 	import { mapGetters } from 'vuex'
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
@@ -86,7 +190,20 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
-		    ])
+		    ]),
+			calcMenuCurrStep(){
+				var menuStatus= this.dicts.menuStatus
+				if(!menuStatus){
+					return 1;
+				}else{
+					var status=menuStatus.findIndex(i=>this.editForm.status==i.id)
+					if(status>=0){
+						return status+1;
+					}else{
+						return 1;
+					}
+				}
+			}
 		},
 		props:['xmMenu','visible','parentMenu','product'],
 		watch: {
@@ -101,7 +218,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 	    },
 		data() {
 			return {
-				options:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
+				//dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
 				load:{ list: false, add: false, del: false, edit: false },//查询中...
 				editFormRules: {
 					menuId: [
@@ -119,9 +236,11 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 				},
 				//新增界面数据 项目需求表
 				editForm: {
-						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'1',mmUserid:'',mmUsername:'',ntype:'0',childrenCnt:0,sinceVersion:''
+						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'1',mmUserid:'',mmUsername:'',ntype:'0',childrenCnt:0,sinceVersion:'',
+						proposerId:'',proposerName:'',dlvl:'',dtype:'',priority:'',source:'',calcType:'1',mactWorkload:0,mactAmount:0,mactRate:0
 				},
-				userSelectVisible:false,
+				proposerSelectVisible:false,
+				mmUserSelectVisible:false,
 				dicts:{
 					menuStatus:[
 						
@@ -175,17 +294,28 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 					}
 				});
 			},
-			selectUser(){
-				this.userSelectVisible=true;
+			selectProposer(){
+				this.proposerSelectVisible=true;
 			},
-			onUserSelected(users){
+			onProposerSelected(users){
+				if(users && users.length>0){
+					this.editForm.proposerId=users[0].userid
+					this.editForm.proposerName=users[0].username
+				}
+				this.proposerSelectVisible=false
+			},
+			clearProposer:function(){
+				this.editForm.proposerId=''
+				this.editForm.proposerName=''
+			},
+			onMmUserSelected(users){
 				if(users && users.length>0){
 					this.editForm.mmUserid=users[0].userid
 					this.editForm.mmUsername=users[0].username
 				}
-				this.userSelectVisible=false
+				this.mmUserSelectVisible=false
 			},
-			clearPmUser:function(){
+			clearMmUser:function(){
 				this.editForm.mmUserid=''
 				this.editForm.mmUsername=''
 			},
@@ -205,6 +335,13 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 			},
 			/**end 在上面加自定义方法**/
 
+			toFixed(floatValue){
+				if(floatValue ==null || floatValue=='' || floatValue == undefined){
+					return 0;
+				}else{
+					return parseFloat(floatValue).toFixed(2);
+				}
+			},
 		},//end method
 		components: {
 			//在下面添加其它组件 'xm-menu-edit':XmMenuEdit
@@ -214,6 +351,11 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 			XmMenuExchangeMng,
 		},
 		mounted() {
+			
+			
+ 			initSimpleDicts('all',['demandSource','demandLvl','demandType','priority','menuStatus'] ).then(res=>{
+				this.dicts=res.data.data;
+			})
 			this.editForm=Object.assign(this.editForm, this.xmMenu);
 			/**在下面写其它函数***/
 
