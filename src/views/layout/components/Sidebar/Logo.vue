@@ -44,7 +44,7 @@ export default {
   width: 100%;
   height: 50px;
   line-height: 50px;
-  background: #3594d3;
+  background: #282F40;
   text-align: center;
   overflow: hidden;
 
@@ -58,12 +58,13 @@ export default {
       vertical-align: middle;
       margin-left:-4px;
     }
+    
     & .sidebar-title {
       display: inline-block;
       margin: 0;
       color: #fff; 
       line-height: 50px;
-      font-weight: 400;
+      font-weight: bold;
       font-size: 16px;
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
       vertical-align: middle;

@@ -14,6 +14,7 @@ import routesXm from './routes_xm'
 import routesDatavXm from './routes_datav_xm' 
 import routesArc from './routes_arc'
 import routesIm from './routes_im' 
+import routesMyWork from './routes_my_work'
 
 
 export { Layout }
@@ -45,22 +46,23 @@ export const constantRouterMap = [
     component: Layout,
     redirect: 'dashboard',
     meta:{title:'首页',icon: 'home-page'},
-    children: [{
-      path: 'dashboard',
-      component: _import('xm/XmOverview'),
-      name: '首页',
-      meta: { title: '首页', icon: 'home-page', noCache: true }
-    },
-    {
-      path: 'updateUserInfo',
-      component: _import('mdp/sys/user/UpdateUserInfo'),
-      name: '账户设置',
-      meta: {
-        title: '修改个人信息',
-        icon: 'component'
-      }
-    }
-  ],
+    children: [
+      {
+        path: 'dashboard',
+        component: _import('xm/XmOverview2'),
+        name: '首页',
+        meta: { title: '首页', icon: 'home-page', noCache: true }
+      },
+      // {
+      //   path: 'updateUserInfo',
+      //   component: _import('mdp/sys/user/UpdateUserInfo'),
+      //   name: '账户设置',
+      //   meta: {
+      //     title: '修改个人信息',
+      //     icon: 'component'
+      //   }
+      // }
+    ],
     hidden: false
   }, 
   
@@ -73,10 +75,10 @@ export default new Router({
 })
 
 let allRoutes = [] 
+allRoutes=allRoutes.concat(routesMyWork.routes);
 allRoutes=allRoutes.concat(routesXm.routes); 
 allRoutes=allRoutes.concat(routesDatavXm.routes);
 allRoutes=allRoutes.concat(routesWorkflow.routes).concat(routesForm.routes)
 allRoutes=allRoutes.concat(routesArc.routes);
 allRoutes=allRoutes.concat(routesIm.routes);
-
 export const asyncRouterMap = allRoutes

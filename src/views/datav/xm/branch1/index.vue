@@ -1,27 +1,51 @@
 <template>
-  <div id="data-view">
-    <dv-full-screen-container>
-      <top-header :title="'唛盟项目管理综合数据监控'"/>
-      <div class="main-content">
-        <digital-flop :data="digitalFlopData" :title="'汇总数据'" />
-
-        <div class="block-left-right-content">
-          <ranking-board :data="rankingBoardData" :title="'项目进度'" />
-
-          <div class="block-top-bottom-content">
-            <div class="block-top-content">
-              <rose-chart :data="roseChartData" :title="'资金分布'"/>
-
-              <water-level-chart :data="waterLevelChartData" :title="'计划资金累计完成情况'"/>
-
-              <scroll-board  :data="scrollBoardData" :title="'动态'" :header="['时间','操作人','动作','备注']"/>
+  <div id="data-branch" ref="appRef">
+    <div class="bg">
+      <dv-loading v-if="loading">加载中</dv-loading>
+      <div v-else class="host-body">
+        <!-- 第一行 -->
+          <div class="row_1">
+            <dv-decoration-10 class="dv-dec-10" />
+            <div class="middle">
+              <dv-decoration-8 class="dv-dec-8" :color="['#568aea', '#000000']" />
+              <div class="title">
+                <span class="title-text">唛盟项目管理综合数据监控</span>
+                <dv-decoration-6 class="dv-dec-6" :reverse="true" :color="['#50e3c2', '#67a1e5']"></dv-decoration-6>
+              </div>
+              <dv-decoration-8 class="dv-dec-8" :reverse="true" :color="['#568aea', '#000000']" />
             </div>
-
-            <cards :data="cardsData" :title="'产品'" />
+            <dv-decoration-10 class="dv-dec-10-s" />
           </div>
-        </div>
+
+          <!-- 第二行 -->
+          <div class="row_2">
+            <digital-flop :data="digitalFlopData" :title="'汇总数据'"/>
+          </div>
+
+          <!-- 第三行 -->
+          <div class="row_3">
+            <div class="left">
+              <ranking-board :data="rankingBoardData" :title="'项目进度'" />
+            </div>
+            <div class="right">
+              <div class="r_top">
+                <div class="top_1">
+                  <rose-chart :data="roseChartData" :title="'资金分布'"/>
+                </div>
+                <div class="top_2">
+                  <water-level-chart :data="waterLevelChartData" :title="'计划资金累计完成情况'"/>
+                </div>
+                <div class="top_3">
+                  <scroll-board  :data="scrollBoardData" :title="'动态'" :header="['时间','操作人','动作','备注']"/>
+                </div>
+              </div>
+              <div class="r_bottom">
+                <cards :data="cardsData" :title="'产品'" />
+              </div>
+            </div>
+          </div>
       </div>
-    </dv-full-screen-container>
+    </div>
   </div>
 </template>
 
@@ -34,23 +58,21 @@ import roseChart from './roseChart'
 import waterLevelChart from './waterLevelChart'
 import scrollBoard from './scrollBoard'
 import cards from './cards'
-	import dataV from '@jiaminghi/data-view' 
-  Vue.use(dataV)
-  import util from '@/common/js/util';//全局公共库
-	import config from '@/common/config';//全局公共库 
-	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-  import { listXmBranchState  } from '@/api/xm/core/xmBranchState'; 
-  import { listXmProjectState} from '@/api/xm/core/xmProjectState';
-	import { listXmBranchTaskTypeState } from '@/api/xm/core/xmBranchTaskTypeState';
-  import { listXmRecord } from '@/api/xm/core/xmRecord';
-  import { listXmProductState } from '@/api/xm/core/xmProductState';
-
-
-  import { mapGetters } from 'vuex'
+import dataV from '@jiaminghi/data-view' 
+Vue.use(dataV)
+import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+import { listXmBranchState  } from '@/api/xm/core/xmBranchState'; 
+import { listXmProjectState} from '@/api/xm/core/xmProjectState';
+import { listXmBranchTaskTypeState } from '@/api/xm/core/xmBranchTaskTypeState';
+import { listXmRecord } from '@/api/xm/core/xmRecord';
+import { listXmProductState } from '@/api/xm/core/xmProductState';
+import { mapGetters } from 'vuex'
+import drawMixin from "../utils/drawMixin";
   
 
 export default {
   name: 'BranchDataView',
+  mixins: [ drawMixin ],
   components: {
     topHeader,
     digitalFlop,
@@ -252,23 +274,24 @@ export default {
           return null;
         }
     },
+
     cardsData(){
       if(this.xmProductStates && this.xmProductStates.length>0){
-         var totalPlanWorkload=this.floatValue(this.xmBranchState.totalPlanWorkload)  
-        
-        return this.xmProductStates.map(i=>{
+        var totalPlanWorkload=this.floatValue(this.xmBranchState.totalPlanWorkload)
+        this.xmProductStates.map(i=>{
            i.totalPlanWorkload=totalPlanWorkload
            return i;
         })
+        return this.xmProductStates.slice(0, 5);
       }else{
         return null;
       }
     }
-    
   },
+
   data () {
     return {
-
+      loading: true,
       xmBranchState:null,
       xmProjectStates:[],
       xmBranchTaskTypeStates:[],
@@ -318,6 +341,9 @@ export default {
           if(res.data.data.length>0){
              this.xmBranchState=res.data.data[0]
           }
+          setTimeout(() => {
+            this.loading = false;
+          }, 100);
         }
       });
     },
@@ -433,46 +459,5 @@ export default {
 </script>
 
 <style lang="less">
-#data-view {
-  width: 100%;
-  height: 100%;
-  background-color: #030409;
-  color: #fff;
-
-  #dv-full-screen-container {
-    background-image: url('../../../../assets/image/datav_bg.png');
-    background-size: 100% 100%;
-    box-shadow: 0 0 3px blue;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .main-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .block-left-right-content {
-    flex: 1;
-    display: flex;
-    margin-top: 20px;
-  }
-
-  .block-top-bottom-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    padding-left: 20px;
-  }
-
-  .block-top-content {
-    height: 55%;
-    display: flex;
-    flex-grow: 0;
-    box-sizing: border-box;
-    padding-bottom: 20px;
-  }
-}
+  @import './index.less';
 </style>

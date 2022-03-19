@@ -1,22 +1,23 @@
 <template v-loadding="load.list">
-
-      <el-dropdown trigger="hover"  class="avatar-container"  @command="handleNoticeMsgClick">
-         <div class="avatar-wrapper">
-           <el-badge :value="noticeMsg.totalNum" class="item">
-              <img class="user-avatar" src="../../assets/image/platform/module-notice.png">
-           </el-badge>
-        </div>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="toPay" >待付款订单(<font color=red>{{noticeMsg.toPayNum}}</font>)</el-dropdown-item>
-          <el-dropdown-item command="toSend" >待发货订单(<font color=red>{{noticeMsg.toSendNum}}</font>)</el-dropdown-item>
-          <el-dropdown-item command="toRece" >待收货订单(<font color=red>{{noticeMsg.hadSendNum}}</font>)</el-dropdown-item>
-          <!--<el-dropdown-item command="hadFinish" >已完成订单(<font color=red>{{noticeMsg.hadFinishNum}}</font>)</el-dropdown-item>-->
-          <!-- <el-dropdown-item command="hadCancel" >已取消订单(<font color=red>{{noticeMsg.hadCancelNum}}</font>)</el-dropdown-item>-->
-          <el-dropdown-item command="toApprova" >待审核订单(<font color=red>{{noticeMsg.toApprovaNum}}</font>)</el-dropdown-item>
-          <!-- <el-dropdown-item command="hadApprova" >已审核订单(<font color=red>{{noticeMsg.hadApprovaNum}}</font>)</el-dropdown-item> -->
-          <el-dropdown-item command="doGetNoticeMsg" >刷新 </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+    <el-dropdown trigger="hover"  class="avatar-container"  @command="handleNoticeMsgClick">
+      <div class="avatar-wrapper">
+          <i class="el-icon-bell"></i>
+          <span>未读消息（{{noticeMsg.totalNum}}）</span>
+          <!-- <el-badge :value="noticeMsg.totalNum" class="item">
+            <img class="user-avatar" src="../../assets/image/platform/module-notice.png">
+          </el-badge> -->
+      </div>
+      <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item command="toPay" >待付款订单(<font color=red>{{noticeMsg.toPayNum || 0}}</font>)</el-dropdown-item>
+        <el-dropdown-item command="toSend" >待发货订单(<font color=red>{{noticeMsg.toSendNum || 0}}</font>)</el-dropdown-item>
+        <el-dropdown-item command="toRece" >待收货订单(<font color=red>{{noticeMsg.hadSendNum || 0}}</font>)</el-dropdown-item>
+        <!--<el-dropdown-item command="hadFinish" >已完成订单(<font color=red>{{noticeMsg.hadFinishNum}}</font>)</el-dropdown-item>-->
+        <!-- <el-dropdown-item command="hadCancel" >已取消订单(<font color=red>{{noticeMsg.hadCancelNum}}</font>)</el-dropdown-item>-->
+        <el-dropdown-item command="toApprova" >待审核订单(<font color=red>{{noticeMsg.toApprovaNum || 0}}</font>)</el-dropdown-item>
+        <!-- <el-dropdown-item command="hadApprova" >已审核订单(<font color=red>{{noticeMsg.hadApprovaNum}}</font>)</el-dropdown-item> -->
+        <el-dropdown-item command="doGetNoticeMsg" >刷新 </el-dropdown-item>
+      </el-dropdown-menu>
+    </el-dropdown>
 </template>
 
 <script>
@@ -105,8 +106,8 @@ export default {
   height: 50px;
   .avatar-wrapper {
     cursor: pointer;
-    margin-top: 8px;
     position: relative;
+    font-size: 16px;
     .user-avatar {
       height: 30px;
       border-radius: 10px;

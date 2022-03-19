@@ -277,7 +277,7 @@
           <el-col :span="16" >
             <el-card class="box-card" style="padding:0px ;height:425px">
               <div slot="header" class="clearfix">
-                <span  class="el-icon-document"  style=" color: #3E68fe;">任务每日状态趋势</span>
+                <span class="el-icon-document"  style=" color: #3E68fe;">任务每日状态趋势</span>
               </div>
               <div>
                 <div id="taskChart" :style="{width: '100%', height: '320px'}"></div>

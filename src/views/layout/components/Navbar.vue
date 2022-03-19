@@ -1,5 +1,6 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
+
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
      
     <!--<breadcrumb class="breadcrumb-container"></breadcrumb>-->
@@ -18,44 +19,47 @@
 			</div>
       -->
      
-     <error-log v-if="false" class="errLog-container right-menu-item hidden-sm-and-down"></error-log>
-
-
+      <error-log v-if="false" class="errLog-container right-menu-item hidden-sm-and-down"></error-log>
       <screenfull v-if="false" class="screenfull right-menu-item"></screenfull>
       <lang-select v-if="false" class="international right-menu-item hidden-sm-and-down"></lang-select>
 
       <el-tooltip v-if="false" class="hidden-sm-and-down"  effect="dark" :content="$t('navbar.theme')" placement="bottom">
         <theme-picker class="theme-switch right-menu-item"></theme-picker>
       </el-tooltip>
-       <el-divider direction="vertical" class="divider hidden-sm-and-down"></el-divider>
+
       <el-dropdown class="avatar-container right-menu-item hidden-sm-and-down" trigger="hover" style="max-width:300px;" @command="handleCommand">
         <div class="avatar-wrapper">
           <img v-if="userInfo && userInfo.headimgurl && userInfo.headimgurl!=null && userInfo.headimgurl!=='' " class="user-avatar" :src="userInfo.headimgurl">
           <img v-else class="user-avatar" src="../../../assets/image/user_img.gif">
-          <span class="username">{{userInfo.username}}</span>
+          <span class="username">早上好，<b>{{userInfo.username}}</b></span>
+          <i class="el-icon-caret-bottom"></i>
         </div>
         <el-dropdown-menu  slot="dropdown" style="width:400px;">
           <el-dropdown-item divided command="updateUserInfo">
-                                <div>         用户名：{{userInfo.username}} <el-button style="float:right;"  type="text" icon="el-icon-setting">账户设置</el-button></div>
+            <div>用户名：{{userInfo.username}}
+              <el-button style="float:right;"  type="text" icon="el-icon-setting">账户设置</el-button>
+            </div>
           </el-dropdown-item>
           <el-dropdown-item divided>
-                                           公司：{{userInfo.branchName}}
+                公司：{{userInfo.branchName}}
           </el-dropdown-item>
           <el-dropdown-item  divided>
           	<div style="height:250px;">
-                       <el-row v-for="(item ,index) in deptPostsTree" :label="item.deptName" :key="index">
-                          部门：{{item.deptName}}
-                           <br>
-                          岗位：
+              <el-row v-for="(item ,index) in deptPostsTree" :label="item.deptName" :key="index">
+                部门：{{item.deptName}}
+                  <br>
+                岗位：
 
-                         <div v-if="item.children!=null && item.children.length>0" style="padding-left:40px;">
-                       		<el-row  v-for="(post,idx) in item.children" :key="idx">
-                       		   {{post.postName}}
-                       		</el-row>
-                         </div>
-                       </el-row>
-               </div>
+                <div v-if="item.children!=null && item.children.length>0" style="padding-left:40px;">
+                <el-row  v-for="(post,idx) in item.children" :key="idx">
+                    {{post.postName}}
+                </el-row>
+                </div>
+              </el-row>
+            </div>
           </el-dropdown-item>
+
+
           <el-dropdown-item v-if="false" divided>
           <div style=" overflow-x:auto; height:250px;">
       商户及门店： <el-form>
@@ -81,18 +85,26 @@
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <el-divider direction="vertical" class="divider"></el-divider>
+
+      <!-- <div class="notice">
+        <i class="el-icon-bell"></i>
+        <span>未读消息(3)</span>
+      </div> -->
+      
+      <div class="notice">
+        <notice-msg-bar class="avatar-container hidden-sm-and-down" ></notice-msg-bar>
+      </div>
+
       <!--喇叭标记-->
-      <notice-msg-bar class="avatar-container hidden-sm-and-down" ></notice-msg-bar>
-      <el-divider direction="vertical" class="divider hidden-sm-and-down"></el-divider>
-      <el-link class="logout hidden-sm-and-down" @click="goToIndex" icon="el-icon-s-home">
+
+      <!-- <el-link class="logout hidden-sm-and-down" @click="goToIndex" icon="el-icon-s-home">
         <span style="font-size: 17px">首页</span>
-      </el-link>
-      <el-divider direction="vertical" class="divider hidden-sm-and-down"></el-divider>
-      <el-link class="logout" @click="logout" icon="el-icon-switch-button">
-        <span style="font-size: 17px">退出</span>
-      </el-link>
-      <el-divider direction="vertical" class="divider"></el-divider>
+      </el-link> -->
+
+      <div class="logout">
+        <el-button size="mini" type="primary" round  @click="logout">退出</el-button>
+      </div>
+
     </div>
   </el-menu>
 </template>
@@ -249,20 +261,31 @@ export default {
 @import './iconfont.css';
 .navbar {
   height: 50px;
-  line-height: 50px;
   border-radius: 0px !important;
-  background-color: lightblue;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: nowrap;
+  background-color: #fff;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 99;
   .hamburger-container {
     line-height: 58px;
     height: 50px;
     float: left;
     padding: 0 10px;
+    margin-right: 24px;
+    color: #9D9D9E !important;
   }
 
   .modules-container {
-    line-height: 58px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex: 1;
     height: 50px;
-    float: left;
     padding: 0 10px;
   }
   .breadcrumb-container{
@@ -272,60 +295,60 @@ export default {
     display: inline-block;
     vertical-align: top;
   }
+
   .right-menu {
-    float: right;
-    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     &:focus{
      outline: none;
     }
-    .right-menu-item {
-      display: inline-block;
-      margin: 0 8px;
-    }
-    .divider{
-      vertical-align: 4px;
-    }
-    .screenfull {
-      height: 20px;
-    }
-    .international{
-      vertical-align: top;
-    }
-    .theme-switch {
-      vertical-align: 15px;
-    }
+
     .logout{
+      display: flex;
+      align-items: center;
       height: 50px;
-      vertical-align: top;
-      /*margin-right: 10px;*/
       color: #fff;
       font-size: 30px;
+      margin-right: 28px;
     }
+
     .avatar-container {
       height: 50px;
+      display: flex;
+      align-items: center;
       .avatar-wrapper {
         cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         .user-avatar {
-          height: 30px;
-          width:30px;
+          height: 34px;
+          width: 34px;
           border-radius: 50%;
+          margin-right: 12px;
         }
-
         .username{
-          line-height: 35px;
-          vertical-align: top;
-          /*margin-right: 20px;*/
-          color: #fff;
-          font-size: 17px;
+          color: #7D7D7D;
+          font-size: 18px;
+          margin-right: 2px;
         }
         .el-icon-caret-bottom {
-          position: absolute;
-          right: -20px;
-          top: 25px;
-          font-size: 12px;
+          font-size: 22px;
         }
       }
     }
+
+    .notice {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin: 0 18px;
+      color: #827E7E;
+      font-size: 16px;
+    }
+
+
   }
 }
 

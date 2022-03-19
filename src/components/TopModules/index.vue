@@ -1,27 +1,29 @@
 <template>  
-    <section>    
-      <div class="module-item" v-for="(item,index) in topModules" :key="index">
+    <section>
+      <!-- <div class="module-item" v-for="(item,index) in topModules" :key="index">
         <div class="module-text" @click="gotolink(item)"  >
           <div class="box-icon">
                 <img :src="item.icon" height="20px" />
           </div>
           <div class="box-info">{{item.moduleName}}</div> 
         </div>
-      </div>  
-
-      
+      </div> -->
       <div class="module-item"> 
-        <div class="module-text" @click="drawer=true"  >
-          <div class="box-icon">
-                <i class="el-icon-menu" height="20px" />
-          </div>
+        <div class="module-text" @click="drawer = true"  >
           <div class="box-info">全部应用</div> 
+        </div>
+      </div> 
+
+      <div class="module-item">
+        <div class="module-text">
+          <div class="box-info">我的工作台</div>
         </div>
       </div> 
       
       <div class="drawer-box">
           <el-drawer  
-          :visible.sync="drawer"  
+          :visible.sync="drawer"
+          :modal-append-to-body="false"
           :direction="direction">
           <div class="drawer">
             <div class="drawer-content">
@@ -49,7 +51,7 @@
               </div>
             </div>
           </div>
-        </el-drawer> 
+        </el-drawer>
       </div>
     </section>
 </template>
@@ -58,7 +60,6 @@
 
 import NProgress from 'nprogress' // progress bar  
 const topModulesData = require("./top_modules_"+process.env.CONTEXT+".js") 
-
 const allModulesData = require("./all_modules.js") 
  
 export default {
@@ -83,7 +84,6 @@ export default {
   methods: { 
     //路由跳转
     gotolink(module) {
-      
         this.drawer = false
         this.jumpToOtherSystem(module); 
     },
@@ -91,8 +91,7 @@ export default {
     jumpToOtherSystem(module) {   
         window.open(module.sysLink, module.moduleName,null,true);
         NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
-
-      },
+    },
     //搜索
     searchModule(){
       for(let i =0 ; i <this.categorys.length; i++){
@@ -118,7 +117,6 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped> 
-
  .drawer-box{
     .drawer{
       padding-left: 10px;
@@ -126,6 +124,7 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
+      z-index: 9 !important;
       .drawer-content{
         width: 900px;
         height: 100%;
@@ -188,22 +187,21 @@ export default {
     fill: #5a5e66;
     align-items: center; 
     text-align: center;
-    margin-left: 10px;  
-     
+    margin-right: 30px;
     .module-text{  
       line-height: 22px;
       font-size: 22px;  
     }
     
     .box-icon {
-      padding-top:5px; 
       text-align: center;
     }
 
     .box-info {
       text-align: center;
       font-size: 14px;
-      color: #000000; 
+      color: #7D7D7D;
+      font-weight: bold;
     }
 }
 
@@ -211,7 +209,7 @@ export default {
 <style rel="stylesheet/scss" lang="scss"> 
 .drawer-box{
   .el-drawer{
-    height: 100%!important;
+    height: 100% !important;
     overflow: auto;
   }
 } 

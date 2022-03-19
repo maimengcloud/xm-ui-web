@@ -7,8 +7,8 @@
       :show-timeout="200"
       :default-active="$route.path"
       :collapse="isCollapse"
-      background-color="#304156"
-      text-color="#bfcbd9"
+      background-color="#282F40"
+      text-color="rgba(255,255,255,.6)"
       active-text-color="#409EFF"
     > 
       <sidebar-item :routes="permission_routers"></sidebar-item>
