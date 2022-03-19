@@ -173,12 +173,14 @@ export default {
     remainWorkload:function (){
       return this.xmBranchState.totalPlanWorkload - this.xmBranchState.totalActWorkload;
     },
+
     planProgress:function (){
       if(!this.xmBranchState.totalPlanWorkload){
         return 0;
       }
-      return parseInt( this.xmBranchState.estimateWorkload/this.xmBranchState.totalPlanWorkload*100)
+      return Math.round( this.xmBranchState.estimateWorkload/this.xmBranchState.totalPlanWorkload*100)
     },
+
     realProgress:function (){
       if(!this.xmBranchState.totalPlanWorkload){
         return 0;
@@ -189,6 +191,7 @@ export default {
         return 100;
       }
     },
+
     xmBranchStateCpd(){
       return this.xmBranchState
     }, 

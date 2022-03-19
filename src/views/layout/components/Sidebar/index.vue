@@ -11,7 +11,7 @@
       text-color="rgba(255,255,255,.6)"
       active-text-color="#409EFF"
     > 
-      <sidebar-item :routes="permission_routers"></sidebar-item>
+      <sidebar-item  :routes="permission_routers"></sidebar-item>
     </el-menu>
   </scroll-bar>
   </section>
@@ -38,11 +38,10 @@ export default {
 </script>
 
 <style lang="scss">
-.el-menu .menu-wrapper a:nth-child(1) .el-menu-item{
+.el-menu  .menu-wrapper :first-child .submenu-title-noDropdown{
   background-image: linear-gradient(to right, rgba(42,63,104,.2), rgb(52,87,150), rgb(62,111,225)) !important;
   color: #fff !important;
 }
-
 </style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

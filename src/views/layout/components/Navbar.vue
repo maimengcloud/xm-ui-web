@@ -31,7 +31,7 @@
         <div class="avatar-wrapper">
           <img v-if="userInfo && userInfo.headimgurl && userInfo.headimgurl!=null && userInfo.headimgurl!=='' " class="user-avatar" :src="userInfo.headimgurl">
           <img v-else class="user-avatar" src="../../../assets/image/user_img.gif">
-          <span class="username">早上好，<b>{{userInfo.username}}</b></span>
+          <span class="username">{{getTimeStatus}}，<b>{{userInfo.username}}</b></span>
           <i class="el-icon-caret-bottom"></i>
         </div>
         <el-dropdown-menu  slot="dropdown" style="width:400px;">
@@ -119,6 +119,7 @@ import Screenfull from '@/components/Screenfull'
 import LangSelect from '@/components/LangSelect'
 import ThemePicker from '@/components/ThemePicker';
 import NoticeMsgBar from '@/components/NoticeMsgBar'
+import dayjs from 'dayjs'
 //import selectShopLocationBySysDept from '@/views/mdp/app/selectShopLocationBySysDept/selectShopLocationBySysDept';
 
 export default {
@@ -204,6 +205,16 @@ export default {
     		}
     	}) 
     	return myShops
+    },
+    getTimeStatus() {
+      let hour = dayjs().hour();
+      let msg = '早上好';
+      if(hour >= 13 || hour <= 18) {
+        msg = '下午好';
+      }else if (hour >= 19 || hour <= 24){
+        msg = '晚上好';
+      }
+      return msg;
     }
   }, 
   methods: {
