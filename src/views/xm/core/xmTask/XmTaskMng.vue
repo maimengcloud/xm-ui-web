@@ -391,12 +391,12 @@
               <el-table-column
                 sortable
                 prop="name"
+                class-name="title"
                 label="名称(点击详情)"
-                min-width="250"
-                show-overflow-tooltip
+                min-width="250" show-overflow-tooltip
               >
                 <template slot-scope="scope">
-                  <span class="vlink" type="primary" @click.stop="showDrawer(scope.row)">
+                  <span class="vlink"  :class="scope.row.ntype==='1'?'el-icon-folder-opened':''"  type="primary" @click.stop="showDrawer(scope.row)">
                     {{ scope.row.sortLevel }}&nbsp;
                     <el-tag v-if="scope.row.level <= '2'" type="info"
                       >轻微</el-tag
@@ -2544,5 +2544,20 @@ export default {
   font-size: 16px;
   overflow-x: auto;
   overflow-y: hidden;
+}
+
+.el-table { 
+	 box-sizing: border-box; 
+	/deep/ .title .cell {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    word-break: break-all;
+    line-height: 23px;
+    padding-right: 10px;
+	display: flex;
+	 }
 }
 </style>
