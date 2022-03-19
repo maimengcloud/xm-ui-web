@@ -6,12 +6,12 @@
 					<el-table-column type="index" label="序号" ></el-table-column>
 				   <el-table-column prop="iterationName" label="迭代名称" >
 					<template slot="header" slot-scope="scope">
-					迭代名称 <el-button type="text" @click="clearSelectIteration">清空所选</el-button>
+					迭代名称 <el-button type="text" @click="clearSelectIteration">清空所选</el-button> &nbsp;<el-button type="text" @click="close">关闭</el-button>
 					<el-popover v-if=" !menuId && !productId"
 						placement="top-start"
 						title=""
 						width="400"
-						trigger="click" >
+						trigger="hover" >
 						<el-row>  
 							<el-col :span="24" style="padding-top:5px;">
 								<font class="more-label-font">
@@ -54,7 +54,7 @@
 								<el-button  type="primary" icon="el-icon-search" @click="getXmIterations">查询</el-button>
 							</el-col> 
 						</el-row>
-						<el-button type="text" slot="reference" icon="el-icon-more">更多条件</el-button>
+						<el-button type="text" slot="reference">更多条件</el-button>
 					</el-popover>
 				</template>
 					 <template slot-scope="scope">
@@ -337,7 +337,9 @@
 					return 0;
 				}
 			},
-			
+			close(){
+				this.$emit("close")
+			},
 			loadTasksToXmIterationState(row){
 
 				this.load.edit=true;
