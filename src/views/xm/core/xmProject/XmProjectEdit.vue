@@ -570,11 +570,7 @@
 				var msg=msgFields.join(",");
 				return msg;
 			},
-			sendToProcessApprova:function(row,bizKey){ 
-				if(!this.roles.some(i=>i.roleid=='projectAdmin')){
-					this.$notify({showClose: true, message: "只有项目经理可以发起流程", type: 'error' }); 
-					return;
-				}
+			sendToProcessApprova:function(row,bizKey){  
 				// 传过来的参数格式
 				if(row.flowState=='1'){
 					this.$notify.error("审核中，不允许重复发审");
