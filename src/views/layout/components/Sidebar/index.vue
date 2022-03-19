@@ -37,6 +37,14 @@ export default {
 }
 </script>
 
+<style lang="scss">
+.el-menu .menu-wrapper a:nth-child(1) .el-menu-item{
+  background-image: linear-gradient(to right, rgba(42,63,104,.2), rgb(52,87,150), rgb(62,111,225)) !important;
+  color: #fff !important;
+}
+
+</style>
+
 <style rel="stylesheet/scss" lang="scss" scoped>
   .logo {
     height: 56px;
