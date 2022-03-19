@@ -97,9 +97,9 @@
 						min-width="250">
 							<template slot-scope="scope">
 								{{showAssigneeTips(scope.row)}}
-								<el-button round v-if="scope.row.candidate=='1'"  @click.native="showCandidateSelectDialog(scope.row,'')" :loading="addLoading">选候选人</el-button>
-								<el-button round v-if="scope.row.candidate!='1' "  @click.native="showUserSelectDialog(scope.row,'')" :loading="addLoading">选人员</el-button>
-								<el-button round v-if="scope.row.toCreater!='1'"  @click.native="setAssigneeAsStartUser(scope.row)">转发起人</el-button>
+								<el-button round v-if="scope.row.candidate=='1'" size="mini" @click.native="showCandidateSelectDialog(scope.row,'')" :loading="addLoading">选候选人</el-button>
+								<el-button round v-if="scope.row.candidate!='1' " size="mini" @click.native="showUserSelectDialog(scope.row,'')" :loading="addLoading">选人员</el-button>
+								<el-button round v-if="scope.row.toCreater!='1'" size="mini" @click.native="setAssigneeAsStartUser(scope.row)">转发起人</el-button>
 							</template>
 						</el-table-column>
 						<el-table-column

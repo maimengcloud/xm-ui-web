@@ -28,7 +28,7 @@
                 <font >
                   查询范围
                 </font>
-                <el-select  v-model="filters.filterType" placeholder="查询范围">
+                <el-select size="mini" v-model="filters.filterType" placeholder="查询范围">
                   <el-option value="" label="全部"> </el-option>
                   <el-option value="startUserId" label="我发起"> </el-option>
                   <el-option value="partake" label="我参与"> </el-option>
@@ -40,7 +40,7 @@
                 <font >
                   分类
                 </font>
-                <el-select   v-model="filters.procCategory" clearable filterable placeholder="选择分类" >
+                <el-select size="mini"  v-model="filters.procCategory" clearable filterable placeholder="选择分类" >
                   <el-option v-for="item in categorys" :key="item" :label="item" :value="item"></el-option>
                 </el-select>
               </el-row>
@@ -54,7 +54,7 @@
                     {{tag.tagName}}
                   </el-tag>
                 </el-row>
-                <el-button v-if="filters.tags==null || filters.tags.length==0" 
+                <el-button v-if="filters.tags==null || filters.tags.length==0" size="mini"
                   @click.native="showTagSelect(false)">选择标签</el-button>
               </el-row>
               <el-row>
@@ -65,7 +65,7 @@
                   @click="userSelectVisible=true" @close="handleFiltersTagClose('','assignee')">
                   {{filters.assignee.username}}
                 </el-tag>
-                <el-button v-else  @click.native="userSelectVisible=true">选择执行人</el-button>
+                <el-button v-else size="mini" @click.native="userSelectVisible=true">选择执行人</el-button>
               </el-row>
               <el-row>
                 <font >
@@ -93,13 +93,13 @@
               </el-col> -->
 
               <el-row>
-                <el-button  type="primary" v-on:click="searchProcinsts" icon="el-icon-search">查询</el-button>
+                <el-button size="mini" type="primary" v-on:click="searchProcinsts" icon="el-icon-search">查询</el-button>
               </el-row>
 
               <el-row>
                 <el-divider content-position="left">其它操作</el-divider>
-                <el-button  @click.native="showTagSelect(true)">给任务打标签</el-button>
-                <el-button  @click="handleDownload">导出数据</el-button>
+                <el-button size="mini" @click.native="showTagSelect(true)">给任务打标签</el-button>
+                <el-button size="mini" @click="handleDownload">导出数据</el-button>
                </el-row>
             </el-row>
           </el-drawer>
@@ -109,7 +109,7 @@
             v-loading="listLoading" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
             <el-table-column type="selection" width="40"></el-table-column>
             <el-table-column type="index" width="40"></el-table-column>
-            <el-table-column sortable prop="mainTitle" label="流程(点击详情)" min-width="300" show-overflow-tooltip>
+            <el-table-column sortable prop="mainTitle" label="流程(点击详情)" min-width="300">
               <template slot-scope="scope">
                 <el-link type="primary" @click="showEdit( scope.row,scope.$index)">{{scope.row.mainTitle}}</el-link>
               </template>
@@ -143,7 +143,7 @@
             :page-size="pageInfo.pageSize" :total="pageInfo.total" style="float:right;"></el-pagination>
           <!--编辑 Execution act_ru_execution界面-->
           <el-drawer title="任务详情"  :visible.sync="editFormVisible" :size="dialogWidth()" :withHeader="false"
-            :close-on-click-modal="false">
+            :close-on-click-modal="false" append-to-body>
             <procinst-parames-execution-set :companyEmployees="companyEmployees" :companyDepts="companyDepts"
               :taskInfo="editForm" :procDefId="editForm.procDefId" :procInstId="editForm.procInstId"
               :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit">
@@ -202,7 +202,7 @@
         return screen.width;
       }
     },
-    props: ["isMyMonitors", "isMyStart", "isMySponsors", "isMyPartake", "isAll"],
+    props: ["isMyMonitors", "isMyStart", "isMySponsors", "isMyPartake", "isAll",'bizParentPkid','bizPkid','procInstIds'],
     data() {
       const fromStartTime = new Date();
       const toStartTime = new Date();
@@ -476,6 +476,16 @@
         }
         if (this.filters.procCategory != "") {
           params.category = this.filters.procCategory;
+        }
+        
+        if(this.bizParentPkid){
+          params.bizParentPkid=this.bizParentPkid
+        }
+        if(this.bizPkid){
+          params.bizPkid=this.bizPkid
+        } 
+        if(this.procInstIds){
+          params.procInstIds=this.procInstIds
         }
         params.tenantId = this.userInfo.branchId;
         this.listLoading = true;

@@ -11,8 +11,8 @@
           <el-popover placement="top" width="375" trigger="manual" v-model="weixinContentVisible">
             <p>{{weixinContent}}</p>
             <div style="text-align: right; margin: 0">
-              <el-button  type="text" @click="doCopyWeixinUrl">拷贝链接</el-button>
-              <el-button type="primary"  @click="doCopyWeixinContent">拷贝内容</el-button>
+              <el-button size="mini" type="text" @click="doCopyWeixinUrl">拷贝链接</el-button>
+              <el-button type="primary" size="mini" @click="doCopyWeixinContent">拷贝内容</el-button>
             </div>
             <el-button slot="reference" v-show="assigneeToMe===false"
               v-on:click="showWeixin" class="hidden-sm-and-down">微信催办</el-button>
@@ -48,7 +48,7 @@
                     {{tag.tagName}}
                   </el-tag>
                 </el-row>
-                <el-button v-if="filters.tags==null || filters.tags.length==0" 
+                <el-button v-if="filters.tags==null || filters.tags.length==0" size="mini"
                   @click.native="showTagSelect(false)">选择标签</el-button>
               </el-row>
               <el-row>
@@ -90,7 +90,7 @@
             <el-table-column type="selection" width="40" v-if="screenWidth>=500" :class="'hidden-sm-and-down'">
             </el-table-column>
             <el-table-column type="index" width="40" :class="'hidden-sm-and-down'"></el-table-column>
-            <el-table-column sortable prop="mainTitle" label="流程(点击详情)" min-width="300" show-overflow-tooltip>
+            <el-table-column sortable prop="mainTitle" label="流程(点击详情)" min-width="300">
               <template slot-scope="scope">
                 <el-link type="primary" @click="showTaskDetail( scope.row,scope.$index)">{{scope.row.mainTitle}}
                 </el-link>
@@ -197,12 +197,12 @@
           </template>
         </el-calendar> 
 
-      <el-dialog title="短信催办" :visible.sync="sendSmsVisible" :width="dialogWidth()" :close-on-click-modal="false">
+      <el-dialog title="短信催办" :visible.sync="sendSmsVisible" :width="dialogWidth()" :close-on-click-modal="false" append-to-body>
         <send-sms :sms-body-params="smsBodyParams" :sms-user-list="smsUserList" :load-phoneno-by-userid="true"
           :visible="sendSmsVisible" @cancel="sendSmsVisible=false"></send-sms>
       </el-dialog>
       <el-drawer fullscreen title="任务详情" :visible.sync="editFormVisible" :size="dialogWidth()" :withHeader="false"
-        :close-on-click-modal="false">
+        :close-on-click-modal="false"  append-to-body >
         <procinst-parames-execution-set :companyEmployees="companyEmployees" :companyDepts="companyDepts"
           :taskInfo="editForm" :procDefId="editForm.procDefId" :procInstId="editForm.procInstId"
           :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit">
@@ -259,7 +259,7 @@
 
   export default {
     name: "TaskMng",
-    props: ["assigneeToMe", "defaultShowCalendar", "isClaim"], // 待我执行的任务
+    props: ["assigneeToMe", "defaultShowCalendar", "isClaim","bizParentPkid","bizPkid","procInstIds"], // 待我执行的任务
     computed: {
       ...mapGetters(["userInfo", "myDepts", "myPosts"]),
       screenWidth: function() {
@@ -267,6 +267,7 @@
       }
     },
     activated: function() {
+      debugger;
       if (this.assigneeToMe !== false) {
         if (this.isClaim == undefined || this.isClaim === false) {
           this.filters.assignee = this.userInfo.userid;
@@ -274,6 +275,8 @@
         } else {
           this.searchMyCandidateUserTasks();
         }
+      }else{
+        this.searchAssigneeToAnyTasks()
       }
     },
     data() {
@@ -829,6 +832,15 @@
             this.filters.planFinishTimeRanger[0] + " 00:00:00";
           params.toPlanFinishTime =
             this.filters.planFinishTimeRanger[1] + " 23:59:59";
+        }
+        if(this.bizParentPkid){
+          params.bizParentPkid=this.bizParentPkid
+        }
+        if(this.bizPkid){
+          params.bizPkid=this.bizPkid
+        }
+        if(this.procInstIds){
+          params.procInstIds=this.procInstIds
         }
         params.tenantId = this.userInfo.branchId;
         this.listLoading = true;
@@ -1410,12 +1422,12 @@
       if (this.assigneeToMe !== false) {
         if (this.isClaim == undefined || this.isClaim === false) {
           this.filters.assignee = this.userInfo.userid;
-          console.log(this.myBranchDepts);
-          // this.filters.candidateGroups=this.myBranchDepts.map(i=>i.deptid)
-          //this.getTasks();
+          this.getTasks();
         } else {
-          //this.searchMyCandidateUserTasks()
+          this.searchMyCandidateUserTasks();
         }
+      }else{
+        this.searchAssigneeToAnyTasks()
       }
     }
   };

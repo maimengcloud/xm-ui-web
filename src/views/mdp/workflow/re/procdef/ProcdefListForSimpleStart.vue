@@ -56,7 +56,7 @@
         </el-dialog>
       </el-row>
     </el-row>
-    <el-row v-else-if="flowStartVisible==true">
+    <el-row v-if="flowStartVisible==true">
       <procinst-parames-start-set :procdef="addForm" :visible="flowStartVisible" :params="filters.params"
         @cancel="startCancel"></procinst-parames-start-set>
     </el-row>
@@ -86,11 +86,14 @@
         return screen.width;
       },
     },
-    watch: {
-      params: function(params) {
-
-        this.filters.params = params;
-        this.searchProcdefs();
+    watch: { 
+      params: {
+         handler: function() { 
+            this.flowStartVisible=false;
+            this.filters.params = this.params; 
+            this.searchProcdefs();
+         },
+         deep: true
       }
     },
     data() {
@@ -262,6 +265,7 @@
           if (tips.isOk) {
             this.pageInfo.total = res.data.total
             this.pageInfo.count = false
+            this.procdefs = res.data.data;
             if (res.data.data.length == 1) {
               this.addForm = res.data.data[0]
               this.flowStartVisible = true;
@@ -269,7 +273,7 @@
               this.flowStartVisible = false;
               this.$message.success("请选中一个流程")
             }
-            this.procdefs = res.data.data;
+            
           } else {
             this.$message({showClose: true,
               message: tips.msg,

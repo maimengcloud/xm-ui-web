@@ -15,8 +15,8 @@
 						v-model="weixinContentVisible">
 						<p>{{weixinContent}}</p>
 						<div style="text-align: right; margin: 0"> 
-							<el-button  type="text" @click="doCopyWeixinUrl">拷贝链接</el-button>
-							<el-button type="primary"  @click="doCopyWeixinContent">拷贝内容</el-button>
+							<el-button size="mini" type="text" @click="doCopyWeixinUrl">拷贝链接</el-button>
+							<el-button type="primary" size="mini" @click="doCopyWeixinContent">拷贝内容</el-button>
 						</div> 
 						<el-button slot="reference"     class="hidden-sm-and-down"  v-on:click="showWeixin">微信催办</el-button>
 					</el-popover>

@@ -23,8 +23,8 @@
           <el-popover placement="top" width="375" trigger="manual" v-model="weixinContentVisible">
             <p>{{weixinContent}}</p>
             <div style="text-align: right; margin: 0">
-              <el-button  type="text" @click="doCopyWeixinUrl">拷贝链接</el-button>
-              <el-button type="primary"  @click="doCopyWeixinContent">拷贝内容</el-button>
+              <el-button size="mini" type="text" @click="doCopyWeixinUrl">拷贝链接</el-button>
+              <el-button type="primary" size="mini" @click="doCopyWeixinContent">拷贝内容</el-button>
             </div>
             <el-button slot="reference" class="hidden-lg-and-down" icon="el-icon-alarm-clock " v-on:click="showWeixin">
               微信催办</el-button>
@@ -38,7 +38,7 @@
                 <font>
                   查询范围
                 </font>
-                <el-select  v-model="filters.filterType" placeholder="查询范围">
+                <el-select size="mini" v-model="filters.filterType" placeholder="查询范围">
                   <el-option value="" label="全部"> </el-option>
                   <el-option value="startUserId" label="我发起"> </el-option>
                   <el-option value="partake" label="我参与"> </el-option>
@@ -64,7 +64,7 @@
                     {{tag.tagName}}
                   </el-tag>
                 </el-row>
-                <el-button v-if="filters.tags==null || filters.tags.length==0" 
+                <el-button v-if="filters.tags==null || filters.tags.length==0" size="mini"
                   @click.native="showTagSelect(false)">选择标签</el-button>
               </el-row>
               <el-row >
@@ -75,15 +75,15 @@
                   @click="userSelectVisible=true" @close="handleFiltersTagClose('','assignee')">
                   {{filters.assignee.username}}
                 </el-tag>
-                <el-button v-else  @click.native="userSelectVisible=true">选择执行人</el-button>
+                <el-button v-else size="mini" @click.native="userSelectVisible=true">选择执行人</el-button>
               </el-row>
               <el-row >
                 <font>
                   流程状态
                 </font>
-                <el-button  :type="filters.suspensionState=='2'?'success':''"
+                <el-button size="mini" :type="filters.suspensionState=='2'?'success':''"
                   v-on:click="filters.suspensionState='2'">挂起的</el-button>
-                <el-button  :type="filters.suspensionState=='1'?'success':''"
+                <el-button size="mini" :type="filters.suspensionState=='1'?'success':''"
                   v-on:click="filters.suspensionState='1'">活动的</el-button> 
               </el-row>
               <el-row >
@@ -106,20 +106,20 @@
                 </el-date-picker>
               </el-row>  
               <el-row >
-                <el-button  type="primary" v-on:click="searchExecutions" icon="el-icon-search">查询</el-button>
+                <el-button size="mini" type="primary" v-on:click="searchExecutions" icon="el-icon-search">查询</el-button>
               </el-row>
 
               <el-row >
                 <el-divider content-position="left">其它操作</el-divider>
-                <el-checkbox  v-model="showCalendar">按日历风格显示</el-checkbox>
-                <el-button  @click.native="showTagSelect(true)">添加标签</el-button>
-                <el-button  @click="handleDownload">导出数据</el-button> 
+                <el-checkbox size="mini" v-model="showCalendar">按日历风格显示</el-checkbox>
+                <el-button size="mini" @click.native="showTagSelect(true)">添加标签</el-button>
+                <el-button size="mini" @click="handleDownload">导出数据</el-button> 
               </el-row> 
               <el-row >
                 <el-divider content-position="left">催办</el-divider> 
-                <el-button  v-on:click="showWeixinTask">微信催办</el-button>
-                <el-button  v-on:click="showSendSms">短信催办</el-button>
-                <el-button  v-on:click="showOaMsg">OAMSG催办</el-button>
+                <el-button size="mini" v-on:click="showWeixinTask">微信催办</el-button>
+                <el-button size="mini" v-on:click="showSendSms">短信催办</el-button>
+                <el-button size="mini" v-on:click="showOaMsg">OAMSG催办</el-button>
               </el-row>
             </el-row>
            
@@ -131,7 +131,7 @@
             v-loading="listLoading" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
             <el-table-column type="selection" width="40"></el-table-column>
             <el-table-column type="index" width="40"></el-table-column>
-            <el-table-column sortable prop="mainTitle" label="流程(点击详情)" min-width="300" show-overflow-tooltip>
+            <el-table-column sortable prop="mainTitle" label="流程(点击详情)" min-width="300">
               <template slot-scope="scope">
                 <el-link type="primary" @click="showTasksInfo( scope.row,scope.$index)">{{scope.row.mainTitle}}
                 </el-link>

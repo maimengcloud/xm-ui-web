@@ -16,6 +16,15 @@
         <el-menu-item index="productCalc"> 
           <span slot="title">执行数据汇总计划</span>
         </el-menu-item> 
+
+        <el-menu-item index="currFlow"> 
+          <span slot="title">当前审批流</span>
+        </el-menu-item> 
+
+        <el-menu-item index="hisFlow"> 
+          <span slot="title">历史审批流</span>
+        </el-menu-item> 
+
       </el-menu>
        <xm-product-overview  v-if="showPanelName=='overview'" :xm-product="xmProduct"></xm-product-overview>
         <xm-product-edit  v-if="showPanelName=='detail'" :xm-product="xmProduct"></xm-product-edit>
@@ -32,7 +41,9 @@
             <br>
               <font color="red"  style="font-size:10px;">将从项目任务汇总进度、预算工作量、实际工作量、预算金额、实际金额等数据到需求统计表</font>
           </el-row>
-        </div>
+        </div> 
+            <task-mng v-if="showPanelName === 'currFlow' " ref="currFlow" :biz-parent-pkid="xmProduct.id" > </task-mng>  
+            <procinst-mng v-if="showPanelName === 'hisFlow' " ref="hisFlow" isAll="true" :biz-parent-pkid="xmProduct.id"></procinst-mng> 
    </section>
 </template>
 
@@ -44,11 +55,12 @@ import XmProductOverview from './XmProductOverview.vue';
 import XmProductEdit from './XmProductEdit.vue';
 import XmIterationLinkForProduct from '../xmIterationLink/XmIterationLinkForProduct.vue';
 import XmProductProjectLinkMng from '../xmProductProjectLink/XmProductProjectLinkMng.vue'; 
-	import { loadTasksToXmProductState } from '@/api/xm/core/xmProductState';
-	import { loadTasksToXmMenuState} from '@/api/xm/core/xmMenuState';
-
+import { loadTasksToXmProductState } from '@/api/xm/core/xmProductState';
+import { loadTasksToXmMenuState} from '@/api/xm/core/xmMenuState'; 
+import TaskMng from '@/views/mdp/workflow/ru/task/TaskMng'; 
+import ProcinstMng from '@/views//mdp/workflow/hi/procinst/ProcinstMng';
 export default {
-  components: { XmProductOverview, XmProductEdit, XmIterationLinkForProduct, XmProductProjectLinkMng },
+  components: { XmProductOverview, XmProductEdit, XmIterationLinkForProduct, XmProductProjectLinkMng,TaskMng,ProcinstMng,},
   computed: {
     ...mapGetters(["userInfo"]),
   },

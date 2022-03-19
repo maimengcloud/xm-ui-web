@@ -15,6 +15,14 @@
         </el-menu-item>  
         <el-menu-item index="projectCalc"> 
           <span slot="title">执行项目数据统计计划</span>
+        </el-menu-item> 
+
+        <el-menu-item index="currFlow"> 
+          <span slot="title">当前审批流</span>
+        </el-menu-item> 
+
+        <el-menu-item index="hisFlow"> 
+          <span slot="title">历史审批流</span>
         </el-menu-item>    
       </el-menu>
        <xm-project-overview  v-if="showPanelName=='overview'" :sel-project="selProject"></xm-project-overview>
@@ -34,6 +42,9 @@
               <font color="red"  style="font-size:10px;">将从项目任务汇总结算数据项目统计表</font>
           </el-row>
         </div>
+        
+        <task-mng v-if="showPanelName === 'currFlow' " ref="currFlow" :biz-parent-pkid="selProject.id" > </task-mng>  
+        <procinst-mng v-if="showPanelName === 'hisFlow' " ref="hisFlow" isAll="true" :biz-parent-pkid="selProject.id"></procinst-mng> 
   </section>
 </template>
 
@@ -47,10 +58,12 @@ import XmProjectDetail from './XmProjectDetail.vue';
 import XmProductProjectLinkMng from '../xmProductProjectLink/XmProductProjectLinkMng.vue';
 import XmIterationLinkForProject from '../xmIterationLink/XmIterationLinkForProject.vue';
 
-	import {  loadTasksToXmProjectState , loadTasksSettleToXmProjectState} from '@/api/xm/core/xmProjectState';
+import TaskMng from '@/views/mdp/workflow/ru/task/TaskMng'; 
+import ProcinstMng from '@/views//mdp/workflow/hi/procinst/ProcinstMng';
+import {  loadTasksToXmProjectState , loadTasksSettleToXmProjectState} from '@/api/xm/core/xmProjectState';
 
 export default {
-  components: { XmProjectOverview, XmProjectDetail, XmProductProjectLinkMng ,XmIterationLinkForProject},
+  components: { XmProjectOverview, XmProjectDetail, XmProductProjectLinkMng ,XmIterationLinkForProject,TaskMng,ProcinstMng},
   computed: {
     ...mapGetters(["userInfo"]),
   },

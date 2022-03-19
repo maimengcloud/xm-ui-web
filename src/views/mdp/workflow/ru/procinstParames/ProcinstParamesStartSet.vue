@@ -4,9 +4,9 @@
 
 			<!--新增界面 ProcinstParames 流程实例参数设置表-->
 			<el-col :span="24">
-				<el-form :model="addForm"  :label-width="labelWidth()" :rules="addFormRules" ref="addForm" >
+				<el-form :model="addForm" size="small" :label-width="labelWidth()" :rules="addFormRules" ref="addForm" >
 					<el-form-item label="流程标题" prop="mainTitle">
-						<el-col  :xs="24" :sm="24" :md="24" :lg="24" :xl="24" :span="10"> <el-input v-model="addForm.mainTitle" auto-complete="off"></el-input></el-col>
+						  <el-input style="width:100%;" v-model="addForm.mainTitle" auto-complete="off"></el-input> 
 					</el-form-item>
 					<el-form-item label="标签" prop="tagNames">
 							<font  v-if="addForm.tagNames">
@@ -573,27 +573,18 @@
 			initByParams(){
 
 				if(this.params){
-					this.filters.params=this.params;
-					if( this.params.formId && this.params.formDataId){
-						this.addForm.formId=this.params.formId
-						this.filters.formDataId=this.params.formDataId
-					}
-					if(this.params.mainTitle!='' && this.params.mainTitle!=null){
-						this.addForm.mainTitle=this.params.mainTitle
-					}
-					if(this.params.mainContext!='' && this.params.mainContext!=null){
-						this.addForm.mainContext=this.params.mainContext
-					}
+					this.filters.params=this.params; 
+					this.addForm.formId=this.params.formId
+					this.filters.formDataId=this.params.formDataId 
+					this.addForm.mainTitle=this.params.mainTitle  
+					this.addForm.mainContext=this.params.mainContext 
 					if(this.params.bizUrl!='' && this.params.bizUrl!=null ){
 						this.addForm.mainContext=this.addForm.mainContext+'<br><p><a href='+this.params.bizUrl+' target="_blank">'+'点击查看业务数据'+'</a></p>'
-					}
-
-					if(this.params.restUrl!='' && this.params.restUrl!=null){
-						this.addForm.restUrl=this.params.restUrl
-					}
-					if(this.params.bizKey!='' && this.params.bizKey!=null){
-						this.addForm.bizKey=this.params.bizKey
-					}
+					} 
+					this.addForm.restUrl=this.params.restUrl 
+					this.addForm.bizKey=this.params.bizKey 
+					this.addForm.bizParentPkid=this.params.bizParentPkid
+					this.addForm.bizPkid=this.params.bizPkid 
 				}
 			},
 			initByProcdef(){

@@ -25,6 +25,11 @@
 		      'userInfo'
 		    ]), 
 		},
+		watch:{
+			$route(to,from){ 
+				this.dataInit();
+			}
+		},
 		data() {
 			return { 
 				filters: { 
@@ -59,6 +64,7 @@
 				  this.$router.back(-1);
 			  },
 			  dataInit(){ 
+				  debugger;
 				  this.$nextTick(()=>{
 					  var key="ProcdefListForBizStart"
 						if(this.$route.query && this.$route.query.params){
@@ -98,7 +104,7 @@
 			//在下面添加其它组件 
 		},
 		activated:function(){  
-			this.dataInit();
+			//this.dataInit();
 		},
 		mounted() { 
 			 this.dataInit();
