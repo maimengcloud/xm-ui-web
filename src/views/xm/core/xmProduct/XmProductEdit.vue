@@ -177,14 +177,14 @@
 				}
 				 
 				if(this.currUserType=='admUserid'){ 
-					this.addForm.admUserid=user.userid
-					this.addForm.admUsername=user.username
+					this.editForm.admUserid=user.userid
+					this.editForm.admUsername=user.username
 				}else if(this.currUserType=='assUserid'){ 
-					this.addForm.assUserid=user.userid
-					this.addForm.assUsername=user.username
+					this.editForm.assUserid=user.userid
+					this.editForm.assUsername=user.username
 				}else if(this.currUserType=='pmUserid'){ 
-					this.addForm.pmUserid=user.userid
-					this.addForm.pmUsername=user.username
+					this.editForm.pmUserid=user.userid
+					this.editForm.pmUsername=user.username
 				}
 				this.currUserType="";
 				
