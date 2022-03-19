@@ -973,7 +973,7 @@ export default {
       display: flex;
       flex-direction: row;
       height: 120px;
-      margin-top: 28px;
+      margin-top: 10px;
       .r {
         flex: 1;
         display: flex;
