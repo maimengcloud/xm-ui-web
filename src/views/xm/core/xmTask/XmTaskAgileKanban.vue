@@ -50,12 +50,12 @@
 											<el-tag v-else type="danger">特急</el-tag>
 											<span v-for="(item ,index) in [formatExeUsernames(task)]" :key="index">
 
-												<el-tooltip :content="item.exeUsernames" ><el-link     :type="item.type"     @click.stop="showExecusers(task)">{{item.showMsg}}</el-link></el-tooltip>
+												<el-tooltip :content="item.exeUsernames" ><el-link     :type="item.type"  @click.stop="showEditForm(task)">{{item.showMsg}}</el-link></el-tooltip>
 
 											</span>
-											<el-tooltip content="进度"><el-link style="border-radius:30px;" :type="task.rate>=100?'success':'warning'" @click="drawerVisible=true"> {{ (task.rate!=null?task.rate:0)+'%'}} </el-link></el-tooltip>
+											<el-tooltip content="进度"><el-link style="border-radius:30px;" :type="task.rate>=100?'success':'warning'"  @click.stop="showEditForm(task)"> {{ (task.rate!=null?task.rate:0)+'%'}} </el-link></el-tooltip>
 											<el-tooltip content="预算金额、工时"><el-tag type="info">{{parseFloat(task.budgetCost/10000).toFixed(2)}}万,{{task.budgetWorkload}}人时</el-tag></el-tooltip>
-											<el-link  type="primary"  @click.stop="showDrawer(task)">{{task.name}}</el-link>
+											<el-link  type="primary"  @click.stop="showEditForm(task)">{{task.name}}</el-link>
 										</span>
 									</div>
 								</template>
@@ -65,19 +65,40 @@
 				</el-table-column>
 			</template>
 		</el-table>
+    <el-drawer
+      title="编辑任务"
+      :visible.sync="editFormVisible"
+      :with-header="false"
+      :size="850"
+      append-to-body
+      :close-on-click-modal="false"
+    >
+      <xm-task-edit
+        :xm-project="currentProject"
+        :xm-task="editForm" 
+        :visible="editFormVisible"
+        @cancel="editFormVisible = false"
+        @after-add-submit="afterExecEditSubmit"
+        @after-edit-submit="afterExecEditSubmit"
+        @submit="afterEditSubmit"
+      ></xm-task-edit>
+    </el-drawer>
   </section>
 </template>
 
 <script>
 import draggable from "vuedraggable";
 import { editXmTask } from '@/api/xm/core/xmTask';
+import XmTaskEdit from "./XmTaskEdit"; //修改界面
 
 export default {
   name: "XmTaskAgileKanban",
   props: ["xmTasks", "tableHeight"],
   data() {
     return {  
+	  editForm:null,
 		
+		editFormVisible:false,
 	  taskState:[
         { label: "待领取", status: "0", number: 0 },
         { label: "已领取执行中", status: "1", number: 0 },
@@ -92,7 +113,7 @@ export default {
 			},
     };
   },
-  components: { draggable },
+  components: { draggable,XmTaskEdit },
   watch: {
 	  xmTasks(){
 		  this.initData();
@@ -218,6 +239,14 @@ export default {
 					});
 			this.tasks = tasks;
 			this.menus=menus;
+		},
+		showEditForm(task){
+			this.editForm=task
+			this.editFormVisible=true;
+		},
+		afterEditSubmit(task){ 
+			let taskIndex = this.xmTasks.findIndex(d => d.id === task.id);
+			this.$set(this.xmTasks,taskIndex,task)
 		}
   },
   mounted(){
