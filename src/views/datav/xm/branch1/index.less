@@ -1,0 +1,104 @@
+#data-branch {
+    color: #d3d6dd;
+    width: 1920px;
+    height: 1080px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transform-origin: left top;
+    overflow: hidden;
+    .bg {
+        width: 100%;
+        height: 100%;
+        padding: 16px 16px 0 16px;
+        background-image: url("../../../../assets/image/datav_bg2.png");
+        background-size: cover;
+        background-position: center center;
+    }
+
+    .row_1 {
+        display: flex;
+        .dv-dec-10,
+        .dv-dec-10-s {
+            width: 33.3%;
+            height: 5px;
+        }
+        .dv-dec-10-s {
+            transform: rotateY(180deg);
+        }
+        .middle {
+            display: flex;
+            .dv-dec-8 {
+                width: 200px;
+                height: 30px;
+            }
+            .title {
+                position: relative;
+                width: 500px;
+                height: 40px;
+                text-align: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+                line-height: 40px;
+                .title-text {
+                    font-size: 36px; 
+                    position: absolute;
+                    bottom: 0;
+                    left: 50%;
+                    width: 500px;
+                    transform: translate(-50%);
+                }
+                .dv-dec-6 {
+                    position: absolute;
+                    bottom: -30px;
+                    left: 50%;
+                    width: 250px;
+                    height: 8px;
+                    transform: translate(-50%);
+                }
+            }
+        }
+    } 
+
+    .row_2 {
+        display: flex;
+        margin-top: 42px;
+    }
+    
+    .row_3 {
+        display: flex;
+        margin-top: 10px;
+        .left {
+            width: 300px;
+            height: 826px;
+        }
+        .right {
+            flex: 1;
+            height: 820px;
+            display: flex;
+            flex-direction: column;
+            .r_top {
+                display: flex;
+                flex: 1;
+                .top_1, .top_2, .top_3 {
+                    height: 400px;
+                }
+                .top_1 {
+                    width: 480px;
+                }
+                .top_2 {
+                    width: 325px;
+                }
+                .top_3 {
+                    width: 772px;
+                }
+            }
+            .r_bottom {
+                display: flex;
+                flex: 1;
+            }
+        }
+    }
+
+}

@@ -1,41 +1,63 @@
 <template>
-  <div id="data-view">
-    <dv-full-screen-container>
-
-      <top-header :title="xmProjectState?xmProjectState.projectName:''+'综合数据监控'"/>
-
-      <div class="main-content">
-        <digital-flop :data="digitalFlopData" :title="'汇总数据'" />
-
-        <div class="block-left-right-content">
-          <ranking-board :data="rankingBoardData" :title="'团队进度'" />
-          <div class="block-top-bottom-content">
-            <div class="block-top-content">
-              <rose-chart :data="roseChartData" :title="'资金分布'"/>
-              <water-level-chart :data="waterLevelChartData" :title="'计划资金累计完成情况'"/>
-              <scroll-board  :data="scrollBoardData" :title="'动态'" :header="['时间','操作人','动作','备注']"/>
+  <div id="index" ref="appRef">
+      <div class="bg">
+        <dv-loading v-if="loading">加载中</dv-loading>
+        <div v-else class="host-body">
+          <!-- 第一行 -->
+          <div class="row_1">
+            <dv-decoration-10 class="dv-dec-10" />
+            <div class="middle">
+              <dv-decoration-8 class="dv-dec-8" :color="['#568aea', '#000000']" />
+              <div class="title">
+                <span class="title-text">综合数据监控</span>
+                <dv-decoration-6 class="dv-dec-6" :reverse="true" :color="['#50e3c2', '#67a1e5']"></dv-decoration-6>
+              </div>
+              <dv-decoration-8 class="dv-dec-8" :reverse="true" :color="['#568aea', '#000000']" />
             </div>
-            <cards :data="cardsData" :title="'阶段计划'" />
-          </div> 
+            <dv-decoration-10 class="dv-dec-10-s" />
+          </div>
+
+          <!-- 第二行 -->
+          <div class="row_2">
+            <digital-flop />
+          </div>
+
+          <!-- 第三行 -->
+          <div class="row_3">
+            <div class="left">
+              <ranking-board :data="rankingBoardData" :title="'团队进度'" />
+            </div>
+            <div class="right">
+              <div class="r_top">
+                <div class="top_1">
+                  <rose-chart :data="roseChartData" :title="'资金分布'"/>
+                </div>
+                <div class="top_2">
+                  <water-level-chart :data="waterLevelChartData" :title="'计划资金累计完成情况'"/>
+                </div>
+                <div class="top_3">
+                  <scroll-board  :data="scrollBoardData" :title="'动态'" :header="['时间','操作人','动作','备注']"/>
+                </div>
+              </div>
+              <div class="r_bottom">
+                <cards :data="cardsData" :title="'阶段计划'" />
+              </div>
+            </div>
+          </div>
+        
         </div>
       </div>
-    </dv-full-screen-container>
   </div>
 </template>
 
-<script>
-import Vue from 'vue'  
-import topHeader from './topHeader'
-import digitalFlop from './digitalFlop'
+<script> 
+import digitalFlop from './digitalFlop';
+import drawMixin from "../utils/drawMixin";
 import rankingBoard from './rankingBoard'
 import roseChart from './roseChart'
 import waterLevelChart from './waterLevelChart'
 import scrollBoard from './scrollBoard'
 import cards from './cards'
-import dataV from '@jiaminghi/data-view' 
-Vue.use(dataV)
-import util from '@/common/js/util';//全局公共库
-import config from '@/common/config';//全局公共库 
 import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 import { listXmProjectState  } from '@/api/xm/core/xmProjectState'; 
 import { listXmGroupState} from '@/api/xm/core/xmGroupState';
@@ -44,18 +66,15 @@ import { listXmRecord } from '@/api/xm/core/xmRecord';
 import { listXmPhase } from '@/api/xm/core/xmPhase';
 import { mapGetters } from 'vuex'
 
+import Vue from 'vue' 
+import dataV from '@jiaminghi/data-view' 
+Vue.use(dataV)
+
 export default {
-  name: 'BranchDataView',
-  components: {
-    topHeader,
-    digitalFlop,
-    rankingBoard,
-    roseChart,
-    waterLevelChart,
-    scrollBoard,
-    cards
-  },
+  mixins: [ drawMixin ],
+  components: {digitalFlop, rankingBoard, roseChart, waterLevelChart, scrollBoard, cards},
   computed: {
+
     ...mapGetters([
       'userInfo'
     ]),
@@ -250,7 +269,6 @@ export default {
     cardsData(){
       if(this.xmPhases && this.xmPhases.length>0){
          var totalPlanWorkload=this.floatValue(this.xmProjectState.totalPlanWorkload)  
-        
         return this.xmPhases.map(i=>{
            i.totalPlanWorkload=totalPlanWorkload
            return i;
@@ -263,6 +281,7 @@ export default {
   },
   data () {
     return {
+      loading: true,
       filters:{
         projectId:null,
       },
@@ -274,7 +293,6 @@ export default {
       options:{
         taskType:[],
       },
-      
       xmRecordPageInfo:{//分页数据
         total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
         pageSize:20,//每页数据
@@ -315,6 +333,9 @@ export default {
           if(res.data.data.length>0){
              this.xmProjectState=res.data.data[0]
           }
+          setTimeout(() => {
+            this.loading = false;
+          }, 100);
         }
       });
     },
@@ -358,32 +379,32 @@ export default {
         }
       });
     },//获取列表 XmRecord xm_record
-			getXmRecords() {
-				let params = {
-					pageSize: this.xmRecordPageInfo.pageSize,
-					pageNum: this.xmRecordPageInfo.pageNum,
-					total: this.xmRecordPageInfo.total,
-					count:this.xmRecordPageInfo.count
-        };
-        params.projectId=this.filters.projectId
+    getXmRecords() {
+      let params = {
+        pageSize: this.xmRecordPageInfo.pageSize,
+        pageNum: this.xmRecordPageInfo.pageNum,
+        total: this.xmRecordPageInfo.total,
+        count:this.xmRecordPageInfo.count
+      };
+      params.projectId=this.filters.projectId
 
-				if(this.xmRecordPageInfo.orderFields!=null && this.xmRecordPageInfo.orderFields.length>0){
-					let orderBys=[];
-					for(var i=0;i<this.xmRecordPageInfo.orderFields.length;i++){ 
-						orderBys.push(this.xmRecordPageInfo.orderFields[i]+" "+this.xmRecordPageInfo.orderDirs[i])
-					}  
-					params.orderBy= orderBys.join(",")
-				} 
- 				listXmRecord(params).then((res) => {
-					var tips=res.data.tips;
-					if(tips.isOk){ 
-						this.xmRecordPageInfo.total = res.data.total;
-						this.xmRecordPageInfo.count=false;
-						this.xmRecords = res.data.data;
-					}else{
- 					} 
- 				}) ;
-      },
+      if(this.xmRecordPageInfo.orderFields!=null && this.xmRecordPageInfo.orderFields.length>0){
+        let orderBys=[];
+        for(var i=0;i<this.xmRecordPageInfo.orderFields.length;i++){ 
+          orderBys.push(this.xmRecordPageInfo.orderFields[i]+" "+this.xmRecordPageInfo.orderDirs[i])
+        }  
+        params.orderBy= orderBys.join(",")
+      } 
+      listXmRecord(params).then((res) => {
+        var tips=res.data.tips;
+        if(tips.isOk){ 
+          this.xmRecordPageInfo.total = res.data.total;
+          this.xmRecordPageInfo.count=false;
+          this.xmRecords = res.data.data;
+        }else{
+        } 
+      }) ;
+    },
     //获取列表 XmPhase 功能状态表,无需前端维护，所有数据由汇总统计得出
     getXmPhases() {
       let params = {
@@ -419,15 +440,18 @@ export default {
       }
     }
   },
+
   mounted(){
     if(this.$route.params){
 				this.filters.projectId=this.$route.params.projectId;
 		}
+
     this.getXmProjectState();
     this.getXmGroupStates();
     this.getXmProjectTaskTypeStates();
     this.getXmRecords();
     this.getXmPhases();
+
     listOption([{categoryId:'all',itemCode:'taskType'}] ).then(res=>{
       if(res.data.tips.isOk){ 
         this.options=res.data.data
@@ -438,46 +462,5 @@ export default {
 </script>
 
 <style lang="less">
-#data-view {
-  width: 100%;
-  height: 100%;
-  background-color: #030409;
-  color: #fff;
-
-  #dv-full-screen-container {
-    background-image: url('../../../../assets/image/datav_bg.png');
-    background-size: 100% 100%;
-    box-shadow: 0 0 3px blue;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .main-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .block-left-right-content {
-    flex: 1;
-    display: flex;
-    margin-top: 20px;
-  }
-
-  .block-top-bottom-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    padding-left: 20px;
-  }
-
-  .block-top-content {
-    height: 55%;
-    display: flex;
-    flex-grow: 0;
-    box-sizing: border-box;
-    padding-bottom: 20px;
-  }
-}
+@import './index.less';
 </style>
