@@ -125,7 +125,7 @@
 						</el-table-column> 
 						<el-table-column label="操作"    width="100" fixed="right"  >
 							<template slot-scope="scope"> 
-								<el-button  :disabled="scope.row.ntype=='1'"  type="primary" @click="selectedMenu( scope.row,scope.$index)">选择</el-button> 
+								<el-button  :disabled="checkScope && checkScope!==scope.row.ntype"  type="primary" @click="selectedMenu( scope.row,scope.$index)">选择</el-button> 
 							</template>
 						</el-table-column>
 					</el-table>
@@ -167,7 +167,7 @@
 	import { mapGetters } from 'vuex'
 	
 	export default { 
-		props:['isSelectMenu','multi','visible','xmIteration','xmProduct','selProject'],
+		props:['isSelectMenu','multi','visible','xmIteration','xmProduct','selProject','checkScope'/**0-需求，1-需求池 */],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'

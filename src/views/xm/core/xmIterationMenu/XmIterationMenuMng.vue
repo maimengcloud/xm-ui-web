@@ -40,7 +40,7 @@
 				</el-row>
 			</el-col> 
 			<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible"  size="70%"   :close-on-click-modal="false">
-				<xm-menu-select :xm-iteration="xmIteration" :visible="menuVisible" :is-select-menu="true" :multi="true"   @menus-selected="onSelectedMenus" ></xm-menu-select>
+				<xm-menu-select  :xm-iteration="xmIteration" :visible="menuVisible" :is-select-menu="true" :multi="true"   @menus-selected="onSelectedMenus" ></xm-menu-select>
 			</el-drawer>
 		</el-row>
 	</section>

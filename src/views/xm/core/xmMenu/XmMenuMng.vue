@@ -293,6 +293,7 @@
 		<xm-menu-select
 			:visible="parentMenuVisible"
 			:is-select-menu="true" 
+			check-scope="1"
 			@selected="onParentMenuSelected" 
 			:xm-product="filters.product"
 		></xm-menu-select>
@@ -1009,6 +1010,11 @@
 				}
 			},
 			doBatchDelXmIterationMenu(){
+				
+				if(!this.filters.iteration||!this.filters.iteration.id){
+					this.$notify({showClose:true,message:"请选择一个迭代进行操作",type:'warning'})
+					return;
+				}
 				if(this.sels.length==0){
 					this.$notify({showClose:true,message:"请选择一个或者多个需求进行操作",type:'warning'})
 					return;
@@ -1026,6 +1032,10 @@
 				})
 			},
 			doBatchAddXmIterationMenu(){
+				if(!this.filters.iteration||!this.filters.iteration.id){
+					this.$notify({showClose:true,message:"请选择一个迭代进行操作",type:'warning'})
+					return;
+				}
 				if(this.sels.length==0){
 					this.$notify({showClose:true,message:"请选择一个或者多个需求进行操作",type:'warning'})
 					return;
