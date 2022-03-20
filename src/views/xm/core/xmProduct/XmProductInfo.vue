@@ -212,7 +212,7 @@
 	import xmTestCaseExecMng from '../xmTestCaseExec/XmTestCaseExecMng';  
 	import XmIterationForLinkComplex from '../xmIteration/XmIterationForLinkComplex.vue'; 
 	import XmProductOverviewComplex from '../xmProduct/XmProductOverviewComplex.vue';
-	import XmProductForProjectComplex from './XmProductForProjectComplex.vue';
+	import XmProductForLinkComplex from './XmProductForLinkComplex.vue';
 import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
 
 
@@ -439,7 +439,7 @@ import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
 			xmGroupSelect,
 			XmIterationForLinkComplex, 
 			XmProductOverviewComplex,
-			XmProductForProjectComplex,
+			XmProductForLinkComplex,
 			XmProjectComplex,
 XmProjectForLink,
 			//在下面添加其它组件

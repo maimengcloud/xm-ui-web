@@ -30,12 +30,12 @@
 						 <xm-product-overview v-if="xmProduct && showPanel=='productOverview'"  :xm-product="xmProduct" :sel-project="selProject"></xm-product-overview>
 
           			</el-tab-pane>
-					<el-tab-pane label="迭代"   name="iterations" v-if=" !xmIteration && xmProduct && xmProduct.id" >
-						 <xm-iteration-mng v-if=" xmProduct && showPanel=='iterations' && !xmIteration"   :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-iteration-mng>
-					</el-tab-pane>
-					<el-tab-pane label="项目" lazy  name="projects" v-if="!selProject && xmProduct && xmProduct.id">
-						<xm-product-project-for-link v-if="xmProduct && showPanel=='projects'"  :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-product-project-for-link>
-					</el-tab-pane>
+					<el-tab-pane label="配置关联的迭代"   name="iterationProductLink" v-if="xmProduct && xmProduct.id" >
+						<xm-iteration-link-for-product v-if="showPanel=='iterationProductLink'" :xm-product="xmProduct"></xm-iteration-link-for-product>
+					</el-tab-pane> 
+					<el-tab-pane label="配置关联的项目" lazy  name="productProjectLink" v-if="xmProduct && xmProduct.id">
+						<xm-product-project-link-mng  v-if="showPanel=='productProjectLink'" :xm-product="xmProduct"></xm-product-project-link-mng>
+					</el-tab-pane> 
 					<el-tab-pane label="需求" lazy name="menus" v-if="xmProduct && xmProduct.id">
 						<xm-menu-mng v-if="xmProduct && showPanel=='menus'"   :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"  :disabled-mng="true"></xm-menu-mng>
 					</el-tab-pane>
@@ -72,7 +72,9 @@ import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
 
 import XmProductSelect from './XmProductSelect.vue';
 import XmProductProjectForLink from './XmProductProjectForLink.vue';
-import XmProductOverview from "./XmProductOverview";
+import XmProductOverview from "./XmProductOverview"; 
+import XmIterationLinkForProduct from '../xmIterationLink/XmIterationLinkForProduct.vue';
+import XmProductProjectLinkMng from '../xmProductProjectLink/XmProductProjectLinkMng.vue'; 
 
 	import  XmProductAdd from './XmProductAdd';//新增界面
 
@@ -185,6 +187,9 @@ import XmProductOverview from "./XmProductOverview";
 			XmProjectForLink,
 XmProductProjectForLink,
       XmProductOverview,XmProductAdd,
+	  XmIterationLinkForProduct,
+	  XmProductProjectLinkMng,
+	  
 		},
 		mounted() { 
 		this.$nextTick(() => {

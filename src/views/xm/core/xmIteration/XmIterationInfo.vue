@@ -76,7 +76,7 @@
 	import xmTestCaseExecMng from '../xmTestCaseExec/XmTestCaseExecMng';  
 	import XmIterationForProjectComplex from './XmIterationForLinkComplex.vue'; 
 	import XmIterationOverviewComplex from '../xmIteration/XmIterationOverviewComplex.vue';
-	import XmProductForProjectComplex from '../xmProduct/XmProductForProjectComplex.vue';
+	import XmProductForProjectComplex from '../xmProduct/XmProductForLinkComplex.vue';
  import XmProjectComplex from '../xmProject/XmProjectComplex.vue';
 
 
