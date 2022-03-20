@@ -22,16 +22,16 @@
 								<el-link title="迭代，点击选择、清除选择" @click="iterationVisible=true" type="warning" slot="reference" v-if="!xmIteration" icon="el-icon-search"><font style="font-size:14px;">{{filters.iteration?filters.iteration.iterationName:'选择迭代'}}</font></el-link> 
 						</el-popover>  
 						<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable style="width: 160px;">
-							<el-option   value="not-join-any-project"  label="未分配任务"></el-option>  
-							<el-option   value="join-any-project"  label="已分配任务"></el-option>  
-							<el-option   value="not-join-curr-project"  label="未分配任务到本项目" v-if="selProject && selProject.id"></el-option>  
-							<el-option   value="join-curr-project"  label="已分配任务到本项目"  v-if="selProject && selProject.id"></el-option>  
+							<el-option   value="not-join-any-project"  label="未分配过任务的需求"></el-option>  
+							<el-option   value="join-any-project"  label="已分配过任务的需求"></el-option>  
+							<el-option   value="not-join-curr-project"  :label="'未分配任务到项目【'+selProject.name+'】'" v-if="selProject && selProject.id"></el-option>  
+							<el-option   value="join-curr-project"  :label="'已分配任务到本项目【'+selProject.name+'】'"  v-if="selProject && selProject.id"></el-option>  
 						</el-select>   
 						<el-select   v-model="filters.iterationFilterType" placeholder="加入过迭代？" clearable  style="width: 160px;">
 							<el-option   value="not-join-any-iteration"  label="未加入过迭代"></el-option>  
 							<el-option   value="join-any-iteration"  label="已加入过迭代"></el-option>  
-							<el-option   value="not-join-curr-iteration"  label="未加入本迭代"  v-if="filters.iteration && filters.iteration.id"></el-option>  
-							<el-option   value="join-curr-iteration"  label="已加入本迭代" v-if="filters.iteration && filters.iteration.id"></el-option>  
+							<el-option   value="not-join-curr-iteration"  :label="'未加入迭代【'+filters.iteration.iterationName+'】'"  v-if="filters.iteration && filters.iteration.id"></el-option>  
+							<el-option   value="join-curr-iteration"  :label="'已加入本迭代【'+filters.iteration.iterationName+'】'" v-if="filters.iteration && filters.iteration.id"></el-option>  
 						</el-select> 
 						
 						<el-select v-model="filters.dtype" clearable placeholder="需求类型">
@@ -156,11 +156,11 @@
 							<el-table-column prop="iterationName" label="迭代"  min-width="120" show-overflow-tooltip>  
 								<template slot="header">
 									迭代 
-									<el-popover v-if="xmIteration && xmIteration.id"
+									<el-popover  
 										placement="top"
 										width="300"
 										v-model="linkIterationPopoverVisible">
-										<p>将需求加入还是移出迭代 <span v-if="xmIteration && xmIteration.id">【{{xmIteration.iterationName}}】</span>?</p>
+										<p>将需求加入还是移出迭代 <span v-if="filters.iteration && filters.iteration.id">【{{filters.iteration.iterationName}}】</span>?</p>
 										<div style="text-align: right; margin: 0">
 											<el-button size="mini" type="text" @click="doBatchDelXmIterationMenu">移出</el-button>
 											<el-button type="primary" size="mini" @click="doBatchAddXmIterationMenu">加入</el-button>
@@ -1012,7 +1012,7 @@
 				}
 				var params={
 					menuIds:this.sels.map(i=>i.menuId),
-					iterationId:this.xmIteration.id
+					iterationId:this.filters.iteration.id
 				}
 				batchDelXmIterationMenu(params).then(res=>{
 					var tips =res.data.tips;
@@ -1029,7 +1029,7 @@
 				}
 				var params={
 					menuIds:this.sels.map(i=>i.menuId),
-					iterationId:this.xmIteration.id
+					iterationId:this.filters.iteration.id
 				}
 				batchAddXmIterationMenu(params).then(res=>{
 					var tips =res.data.tips;

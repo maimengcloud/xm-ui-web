@@ -31,21 +31,28 @@
 					<el-tab-pane label="迭代概览" lazy  name="iterationOverview" v-if="xmIteration && xmIteration.id">
 						<xm-iteration-overview v-if="xmIteration && showPanel=='iterationOverview'"  :xm-iteration="xmIteration" :sel-project="selProject"></xm-iteration-overview>
 					</el-tab-pane>
-					<el-tab-pane label="产品、战略"   name="products" v-if="!xmProduct&&xmIteration&&xmIteration.id">
-						 <xm-product-mng  v-if="xmIteration && showPanel=='products'"    :xm-iteration="xmIteration" :sel-project="selProject"></xm-product-mng>
- 					</el-tab-pane>
-					<el-tab-pane label="项目"   name="projects" v-if="!selProject&&xmIteration&&xmIteration.id">
-  						<xm-project-for-link v-if="xmIteration && showPanel=='projects'"  :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-project-for-link>
+					
+					<el-tab-pane label="迭代详情" lazy name="detail" v-if="xmIteration&&xmIteration.id">
+						<xm-iteration-edit v-if="showPanel=='detail'" :xm-iteration="xmIteration"></xm-iteration-edit>
+					</el-tab-pane> 
+					<el-tab-pane label="配置关联产品" lazy name="iterationProductLink" v-if="xmIteration&&xmIteration.id">
+						<xm-iteration-link-for-product  v-if="showPanel=='iterationProductLink'" :xm-iteration="xmIteration"></xm-iteration-link-for-product>
+					</el-tab-pane> 
+					<el-tab-pane label="配置需求范围" lazy name="iterationMenuMng" v-if="xmIteration&&xmIteration.id">
+      					<xm-iteration-menu-mng v-if="showPanel=='iterationMenuMng'" :xm-iteration="xmIteration"></xm-iteration-menu-mng>
 					</el-tab-pane>
-					<el-tab-pane label="需求" lazy name="menus" v-if="xmIteration&&xmIteration.id">
+					<el-tab-pane label="配置关联项目" lazy name="iterationProjectLink" v-if="xmIteration&&xmIteration.id">
+						<xm-iteration-link-for-project  v-if="showPanel=='iterationProjectLink'" :xm-iteration="xmIteration"></xm-iteration-link-for-project>
+					</el-tab-pane>
+					<el-tab-pane label="需求列表" lazy name="menus" v-if="xmIteration&&xmIteration.id">
 						<xm-menu-mng v-if="xmIteration && showPanel=='menus'" :xm-product="xmProduct"  :xm-iteration="xmIteration" :sel-project="selProject" :disabled-mng="false"></xm-menu-mng>
 					</el-tab-pane>
-					<el-tab-pane label="任务" lazy name="tasks" v-if="xmIteration&&xmIteration.id">
+					<el-tab-pane label="任务列表" lazy name="tasks" v-if="xmIteration&&xmIteration.id">
 						<xm-task-mng v-if="xmIteration && showPanel=='tasks'" :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-task-mng>
 					</el-tab-pane> 
-					<el-tab-pane label="缺陷" lazy name="bugs" v-if="xmIteration&&xmIteration.id">
+					<el-tab-pane label="缺陷列表" lazy name="bugs" v-if="xmIteration&&xmIteration.id">
 						<xm-question-mng v-if="xmIteration && showPanel=='bugs'" :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-question-mng>
-					</el-tab-pane>
+					</el-tab-pane> 
 				</el-tabs>
 				<el-row>
 
@@ -73,8 +80,12 @@
 	import XmQuestionMng from '../xmQuestion/XmQuestionMng.vue';
 	import XmIterationOverview from "./XmIterationOverview";
 
+	import XmIterationEdit from './XmIterationEdit.vue';
+ 	import XmIterationLinkForProduct from '../xmIterationLink/XmIterationLinkForProduct.vue';
+ 	import XmIterationLinkForProject from '../xmIterationLink/XmIterationLinkForProject.vue';
 	import  XmIterationAdd from './XmIterationAdd';//新增界面
 
+	import XmIterationMenuMng from '../xmIterationMenu/XmIterationMenuMng.vue';
 	export default {
 		computed: {
 		    ...mapGetters([
@@ -178,6 +189,11 @@
 			XmQuestionMng,
 			XmProjectForLink,
 			XmIterationAdd,
+			XmIterationEdit,
+			XmIterationLinkForProduct,
+			XmIterationLinkForProject,
+			XmIterationMenuMng,
+
 		},
 		mounted() { 
 		this.$nextTick(() => {

@@ -1039,6 +1039,7 @@
       afterEditSubmit() {
         this.editFormVisible = false;
         this.getTasks();
+        this.$emit("submit")
       },
       // 选择行task
       selsChange: function(sels) {

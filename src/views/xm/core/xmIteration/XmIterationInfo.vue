@@ -74,7 +74,7 @@
 	import xmMenuWithPlan from '../xmMenu/XmMenuWithPlan';
 	import xmProjectStateMng from '../xmProjectState/XmProjectStateMng';
 	import xmTestCaseExecMng from '../xmTestCaseExec/XmTestCaseExecMng';  
-	import XmIterationForProjectComplex from '../xmIteration/XmIterationForProjectComplex.vue'; 
+	import XmIterationForProjectComplex from './XmIterationForLinkComplex.vue'; 
 	import XmIterationOverviewComplex from '../xmIteration/XmIterationOverviewComplex.vue';
 	import XmProductForProjectComplex from '../xmProduct/XmProductForProjectComplex.vue';
  import XmProjectComplex from '../xmProject/XmProjectComplex.vue';

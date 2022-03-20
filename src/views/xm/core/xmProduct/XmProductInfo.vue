@@ -151,7 +151,7 @@
 			</el-menu>
 		   
 		  	<xm-product-overview-complex v-if="infotype=='产品概览'" :xm-product="xmProduct"></xm-product-overview-complex>  
-			 <xm-iteration-for-project-complex  v-if="infotype=='迭代'" ref="xmIterationMng" :xm-product="xmProduct"></xm-iteration-for-project-complex>
+			 <xm-iteration-for-link-complex  v-if="infotype=='迭代'" ref="xmIterationMng" :xm-product="xmProduct"></xm-iteration-for-link-complex>
  			 <xm-project-complex v-if="infotype=='项目'" ref="xmProjectForLink" :xm-product="xmProduct"></xm-project-complex> 
 			  <xm-menu-mng v-if="infotype=='需求'" :xm-product="xmProduct"></xm-menu-mng>
 			  <xm-task-mng v-if="infotype=='产品任务'" ptype="1" queryScope="task"  ref="productXmTaskMng" :xm-product="xmProduct" key="productXmTaskMng"></xm-task-mng>
@@ -210,7 +210,7 @@
 	import xmMenuWithPlan from '../xmMenu/XmMenuWithPlan';
 	import xmProjectStateMng from '../xmProjectState/XmProjectStateMng';
 	import xmTestCaseExecMng from '../xmTestCaseExec/XmTestCaseExecMng';  
-	import XmIterationForProjectComplex from '../xmIteration/XmIterationForProjectComplex.vue'; 
+	import XmIterationForLinkComplex from '../xmIteration/XmIterationForLinkComplex.vue'; 
 	import XmProductOverviewComplex from '../xmProduct/XmProductOverviewComplex.vue';
 	import XmProductForProjectComplex from './XmProductForProjectComplex.vue';
 import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
@@ -437,7 +437,7 @@ import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
 			xmProjectStateMng,
 			xmTestCaseExecMng,
 			xmGroupSelect,
-			XmIterationForProjectComplex, 
+			XmIterationForLinkComplex, 
 			XmProductOverviewComplex,
 			XmProductForProjectComplex,
 			XmProjectComplex,

@@ -43,7 +43,7 @@
           </el-row>
         </div>
         
-        <task-mng v-if="showPanelName === 'currFlow' " ref="currFlow" :biz-parent-pkid="selProject.id" > </task-mng>  
+        <task-mng v-if="showPanelName === 'currFlow' " ref="currFlow" :biz-parent-pkid="selProject.id" @submit="afterFlowSubmit"> </task-mng>  
         <procinst-mng v-if="showPanelName === 'hisFlow' " ref="hisFlow" isAll="true" :biz-parent-pkid="selProject.id"></procinst-mng> 
   </section>
 </template>
@@ -51,8 +51,7 @@
 <script>
 import util from "@/common/js/util"; // 全局公共库
 //import Sticky from "@/components/Sticky"; // 粘性header组件
-import { mapGetters } from "vuex";
-import { listXmProjectState } from '@/api/xm/core/xmProjectState';
+import { mapGetters } from "vuex"; 
 import XmProjectOverview from './XmProjectOverview.vue';
 import XmProjectDetail from './XmProjectDetail.vue';
 import XmProductProjectLinkMng from '../xmProductProjectLink/XmProductProjectLinkMng.vue';
@@ -61,6 +60,8 @@ import XmIterationLinkForProject from '../xmIterationLink/XmIterationLinkForProj
 import TaskMng from '@/views/mdp/workflow/ru/task/TaskMng'; 
 import ProcinstMng from '@/views//mdp/workflow/hi/procinst/ProcinstMng';
 import {  loadTasksToXmProjectState , loadTasksSettleToXmProjectState} from '@/api/xm/core/xmProjectState';
+import { listXmProject} from '@/api/xm/core/xmProject'; 
+
 
 export default {
   components: { XmProjectOverview, XmProjectDetail, XmProductProjectLinkMng ,XmIterationLinkForProject,TaskMng,ProcinstMng},
@@ -96,6 +97,16 @@ export default {
           this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
         }).catch( err  => this.load.calcProject=false ); 
     },
+    afterFlowSubmit(){
+      debugger;
+      listXmProject({id:this.selProject.id}).then(res=>{
+        var tips = res.data.tips;
+        if(tips.isOk){
+          var selProject=res.data.data[0]
+          this.afterEditSubmit(selProject)
+        }
+      })
+    }
   },
 
   mounted() {

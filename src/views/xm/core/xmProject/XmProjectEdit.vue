@@ -615,9 +615,9 @@
 				}else if(bizKey=="xm_project_delay_approva"){
 					//延期审核
 					params.mainTitle='关于项目【'+row.name+"】延期的审批申请";
-					params.mainContext='项目编号：'+row.code+','+'项目名称：'+row.name+',项目结束时间由'+this.selProject.endTime+'变更为:'+row.endTime+',此次变更不涉及预算调整';
+					params.mainContext='项目编号：'+row.code+','+'项目名称：'+row.name+',项目结束时间由'+this.selProject.endTime+'变更为:'+this.dateRanger[1]+',此次变更不涉及预算调整';
 					params.restUrl=config.getXmBasePath()+"/xm/core/xmProject/processApprova"; 
-					params.flowVars.data.endTime=row.endTime
+					params.flowVars.data.endTime=this.dateRanger[1]
 					//this.html2canvas(document.querySelector(".editForm"),row,params);
 					this.$router.push({name:'ProcdefListForBizStart',params:params}); 
 				}else if(bizKey=="xm_project_start_approva"){
