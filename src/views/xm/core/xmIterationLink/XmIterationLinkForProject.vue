@@ -33,7 +33,7 @@
 			
 			<!--新增 XmIteration 迭代定义界面-->
 			<el-drawer title="新增迭代" :visible.sync="addFormVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
-				<xm-iteration-add :xm-iteration="addForm" :sel-project="selProject" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-iteration-add>
+				<xm-iteration-add :xm-iteration="addForm" :xm-product="xmProduct" :sel-project="selProject" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-iteration-add>
 			</el-drawer>
 		</el-row>
 	</section>
@@ -52,7 +52,7 @@
 	import  XmIterationAdd from '../xmIteration/XmIterationAdd';//新增界面
 	
 	export default { 
-		props:['xmIteration','selProject'],
+		props:['xmIteration','selProject','xmProduct'],
 		watch:{
 			xmIteration(){
 				this.getXmIterationLinks();
