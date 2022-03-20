@@ -30,6 +30,13 @@
 						 <xm-product-overview v-if="xmProduct && showPanel=='productOverview'"  :xm-product="xmProduct" :sel-project="selProject"></xm-product-overview>
 
           			</el-tab-pane>
+
+					  
+					<el-tab-pane label="产品详情"   name="detail" v-if="xmProduct && xmProduct.id">
+						 <xm-product-edit  v-if="showPanel=='detail'" :xm-product="xmProduct"></xm-product-edit>
+
+          			</el-tab-pane>
+       
 					<el-tab-pane label="配置关联的迭代"   name="iterationProductLink" v-if="xmProduct && xmProduct.id" >
 						<xm-iteration-link-for-product v-if="showPanel=='iterationProductLink'" :xm-product="xmProduct"></xm-iteration-link-for-product>
 					</el-tab-pane> 
@@ -76,6 +83,7 @@ import XmProductOverview from "./XmProductOverview";
 import XmIterationLinkForProduct from '../xmIterationLink/XmIterationLinkForProduct.vue';
 import XmProductProjectLinkMng from '../xmProductProjectLink/XmProductProjectLinkMng.vue'; 
 
+import XmProductEdit from './XmProductEdit.vue';
 	import  XmProductAdd from './XmProductAdd';//新增界面
 
 	export default {
@@ -189,6 +197,7 @@ XmProductProjectForLink,
       XmProductOverview,XmProductAdd,
 	  XmIterationLinkForProduct,
 	  XmProductProjectLinkMng,
+	  XmProductEdit,
 	  
 		},
 		mounted() { 
