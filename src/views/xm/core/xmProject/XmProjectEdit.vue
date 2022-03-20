@@ -738,7 +738,7 @@
 		    //在下面添加其它组件 'xm-project-add':XmProjectEdit
 		},
 		mounted() { 
-			this.maxTableHeight=util.calcTableMaxHeight(this.$refs.table.$el);
+			this.maxTableHeight=util.calcTableMaxHeight(this.$refs.table.$el)-20;
 				 this.editForm=Object.assign({},this.selProject);
 				 this.dateRanger=[this.editForm.startTime,this.editForm.endTime]
 				

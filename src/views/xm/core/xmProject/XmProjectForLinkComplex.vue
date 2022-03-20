@@ -32,6 +32,9 @@
 					<el-tab-pane label="项目概览"   name="projectOverview" v-if="selProject&&selProject.id">
 					 	<xm-project-overview v-if="selProject && showPanel=='projectOverview'" :xm-product="xmProduct"  :xm-iteration="xmIteration" :sel-project="selProject"></xm-project-overview>
 					</el-tab-pane>
+					<el-tab-pane label="项目详情"   name="detail" v-if="selProject&&selProject.id"> 
+        				<xm-project-detail  v-if="showPanel=='detail'" :sel-project="selProject" @submit="afterEditSubmit"></xm-project-detail> 
+					</el-tab-pane>
 					<el-tab-pane label="迭代"   name="iterations" v-if=" !xmIteration && selProject&&selProject.id" >
 						 <xm-iteration-mng v-if=" selProject && showPanel=='iterations' && !xmIteration"   :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-iteration-mng>
 					</el-tab-pane>
@@ -80,6 +83,7 @@ import XmProductProjectForLink from '../xmProduct/XmProductProjectForLink.vue';
 import XmProjectOverview from "./XmProjectOverview";
 
 	import  XmProjectAdd from './XmProjectAdd';//新增界面
+	import  XmProjectDetail from './XmProjectDetail';//新增界面
 
 	export default {
 		computed: {
@@ -135,6 +139,7 @@ import XmProjectOverview from "./XmProjectOverview";
 			XmProjectForLink,
 			XmProductProjectForLink,
 			XmProjectAdd,
+			XmProjectDetail,
       XmProjectOverview,
 		},
 		mounted() {
