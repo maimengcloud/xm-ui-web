@@ -2,8 +2,7 @@
 	<section class="app-container"> 
 		<el-row>
 			<el-button type="primary" v-if="xmIteration" @click="projectVisible=true" icon="el-icon-plus" > 选择更多项目加入迭代 </el-button>
-			<el-button type="primary" v-if="selProject" @click="iterationVisible=true" icon="el-icon-plus" > 选择更多迭代加入项目 </el-button>
-			<el-button type="primary"  icon="el-icon-plus" @click="showAdd"> 新增迭代 </el-button>
+			<el-button type="primary" v-if="selProject" @click="iterationVisible=true" icon="el-icon-plus" > 选择更多迭代加入项目 </el-button> 
 		</el-row>
 		<el-row style="padding-top:10px;">
 			<!--列表 XmIterationLink 迭代表与项目表的关联关系，一般由迭代管理员将迭代挂接到项目表-->

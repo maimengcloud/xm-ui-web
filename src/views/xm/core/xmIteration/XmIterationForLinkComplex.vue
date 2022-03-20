@@ -36,13 +36,13 @@
 						<xm-iteration-edit v-if="showPanel=='detail'" :xm-iteration="xmIteration"></xm-iteration-edit>
 					</el-tab-pane> 
 					<el-tab-pane label="配置关联产品" lazy name="iterationProductLink" v-if="xmIteration&&xmIteration.id">
-						<xm-iteration-link-for-product  v-if="showPanel=='iterationProductLink'" :xm-iteration="xmIteration"></xm-iteration-link-for-product>
+						<xm-iteration-link-for-product  v-if="showPanel=='iterationProductLink'" :xm-iteration="xmIteration" :sel-project="selProject"></xm-iteration-link-for-product>
 					</el-tab-pane> 
 					<el-tab-pane label="配置需求范围" lazy name="iterationMenuMng" v-if="xmIteration&&xmIteration.id">
       					<xm-iteration-menu-mng v-if="showPanel=='iterationMenuMng'" :xm-iteration="xmIteration"></xm-iteration-menu-mng>
 					</el-tab-pane>
 					<el-tab-pane label="配置关联项目" lazy name="iterationProjectLink" v-if="xmIteration&&xmIteration.id">
-						<xm-iteration-link-for-project  v-if="showPanel=='iterationProjectLink'" :xm-iteration="xmIteration"></xm-iteration-link-for-project>
+						<xm-iteration-link-for-project  v-if="showPanel=='iterationProjectLink'" :xm-iteration="xmIteration" :xm-product="xmProduct"></xm-iteration-link-for-project>
 					</el-tab-pane>
 					<el-tab-pane label="需求列表" lazy name="menus" v-if="xmIteration&&xmIteration.id">
 						<xm-menu-mng v-if="xmIteration && showPanel=='menus'" :xm-product="xmProduct"  :xm-iteration="xmIteration" :sel-project="selProject" :disabled-mng="false"></xm-menu-mng>

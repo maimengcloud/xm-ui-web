@@ -97,16 +97,22 @@
 				this.$refs.addForm.validate((valid) => {
 					if (valid) { 
 						var links=[];
+						var msg="";
 						if(this.xmProduct){
 							 links.push({proId:this.xmProduct.id,ltype:'1'})
+							 msg="产品【"+this.xmProduct.productName+"】"
+
 						}
 						
 						if(this.selProject){
 							 links.push({proId:this.selProject.id,ltype:'0'})
+							 if(msg.length>0){
+								 msg=msg+",项目【"+this.selProject.name+"】"
+							 }
 						}
 						var params={...this.addForm}
 						params.links=links;
-						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
+						this.$confirm('确认提交迭代吗？'+(msg.length>0?'将自动关联'+msg:''), '提示', {}).then(() => { 
 							this.load.add=true 
 							addXmIteration(params).then((res) => {
 								this.load.add=false
