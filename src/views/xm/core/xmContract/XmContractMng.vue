@@ -12,7 +12,7 @@
 			<el-input v-model="filters.cpNameKey" style="width: 20%;" placeholder="相对方名称模糊查询">  
 			</el-input>  
 			<el-button  v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmContracts" icon="el-icon-search"></el-button> 
-			<el-button type="primary" @click="showAdd" icon="el-icon-plus">添加合同</el-button>
+			<el-button type="primary" @click="showAdd" icon="el-icon-plus">合同管理</el-button>
  		</el-row>
 		<el-row class="page-main "> 
 			<!--列表 XmContract xm_project_contract-->
@@ -204,11 +204,16 @@
 			showEdit: function ( row,index ) {
 				this.editFormVisible = true;
 				this.editForm = Object.assign({}, row);
+				var htRoutePath="/oa/"+process.env.VERSION+"/#/oa/ht/contractCard/detail?htId="+row.htId;
+				 window.open(htRoutePath, row.htName,null,true);
+        		NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
 			},
 			//显示新增界面 XmContract xm_project_contract
 			showAdd: function () {
 				this.addFormVisible = true;
-				//this.addForm=Object.assign({}, this.editForm);
+				var htRoutePath="/oa/"+process.env.VERSION+"/#/oa/ht/contractCard/ContractCardMng";
+				 window.open(htRoutePath, row.htName,null,true);
+        		NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
 			},
 			afterAddSubmit(){
 				this.addFormVisible=false;
