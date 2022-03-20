@@ -1,7 +1,7 @@
 <template>
-	<section class="page-container  padding border">
+	<section class="padding border">
 		
-		<el-row class="padding-header">
+		<el-row>
 			<el-steps :active="calcIterationCurrStep" simple finish-status="success">
  				<el-step  v-for="(i,index) in dicts['iterationStatus']" :title="i.name" :key="index" @click.native.stop="editForm.iphase=i.id">
 					 <el-link slot="title" >
