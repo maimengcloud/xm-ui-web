@@ -66,7 +66,7 @@
 									<el-button type="primary"  @click="searchXmProducts" >查询</el-button>
 								</el-col>
 							</el-row> 
-							<el-button type="text" slot="reference">更多条件</el-button>
+							<el-button type="text" slot="reference" style="float:right;">更多条件</el-button>
 						</el-popover>  
 					 </template>
 					<template slot-scope="scope">
