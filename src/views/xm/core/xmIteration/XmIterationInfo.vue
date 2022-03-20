@@ -77,7 +77,7 @@
 	import XmIterationForProjectComplex from './XmIterationForLinkComplex.vue'; 
 	import XmIterationOverviewComplex from '../xmIteration/XmIterationOverviewComplex.vue';
 	import XmProductForProjectComplex from '../xmProduct/XmProductForLinkComplex.vue';
- import XmProjectComplex from '../xmProject/XmProjectComplex.vue';
+ import XmProjectComplex from '../xmProject/XmProjectForLinkComplex.vue';
 
 
 	export default {

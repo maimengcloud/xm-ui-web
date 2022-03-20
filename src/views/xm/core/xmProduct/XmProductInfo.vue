@@ -152,7 +152,7 @@
 		   
 		  	<xm-product-overview-complex v-if="infotype=='产品概览'" :xm-product="xmProduct"></xm-product-overview-complex>  
 			 <xm-iteration-for-link-complex  v-if="infotype=='迭代'" ref="xmIterationMng" :xm-product="xmProduct"></xm-iteration-for-link-complex>
- 			 <xm-project-complex v-if="infotype=='项目'" ref="xmProjectForLink" :xm-product="xmProduct"></xm-project-complex> 
+ 			 <xm-project-for-link-complex v-if="infotype=='项目'" ref="xmProjectForLink" :xm-product="xmProduct"></xm-project-for-link-complex> 
 			  <xm-menu-mng v-if="infotype=='需求'" :xm-product="xmProduct"></xm-menu-mng>
 			  <xm-task-mng v-if="infotype=='产品任务'" ptype="1" queryScope="task"  ref="productXmTaskMng" :xm-product="xmProduct" key="productXmTaskMng"></xm-task-mng>
 			 <xm-task-mng v-if="infotype=='项目任务'" ptype="0" queryScope="task"  ref="projectXmTaskMng" :xm-product="xmProduct" key="projectXmTaskMng"></xm-task-mng>
@@ -188,7 +188,7 @@
 	import { listXmProject,editStatus , delXmProject, batchDelXmProject } from '@/api/xm/core/xmProject';
 	import  XmProjectAdd from '../xmProject/XmProjectAdd';//新增界面
 	import  XmProjectEdit from '../xmProject/XmProjectEdit';//修改界面
-	import  XmProjectComplex from '../xmProject/XmProjectComplex';//修改界面
+	import  XmProjectForLinkComplex from '../xmProject/XmProjectForLinkComplex';//修改界面
 
 	import { mapGetters } from 'vuex';
 	import xmTaskMng from '../xmTask/XmTaskMng';
@@ -213,7 +213,7 @@
 	import XmIterationForLinkComplex from '../xmIteration/XmIterationForLinkComplex.vue'; 
 	import XmProductOverviewComplex from '../xmProduct/XmProductOverviewComplex.vue';
 	import XmProductForLinkComplex from './XmProductForLinkComplex.vue';
-import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
+	import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
 
 
 
@@ -440,8 +440,8 @@ import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
 			XmIterationForLinkComplex, 
 			XmProductOverviewComplex,
 			XmProductForLinkComplex,
-			XmProjectComplex,
-XmProjectForLink,
+			XmProjectForLinkComplex,
+			XmProjectForLink,
 			//在下面添加其它组件
 		},
 		mounted() {

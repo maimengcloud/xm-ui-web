@@ -97,58 +97,7 @@ import XmProjectOverview from "./XmProjectOverview";
 		data() {
 			 return{
 				selProject:null,
-				showPanel:'projectOverview',//menus,tasks,bugs,iterationStateShow
-				topModules:
-				[
-					{
-					moduleName:"项目",
-					topModuleId:'xm',
-					link:"/xm/core/xmProject/XmProjectMng",
-					icon: require("@/assets/image/platform/module-project.png"),
-					isHighlight:false,
-					moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
-					},
-					{
-					moduleName:"产品",
-					topModuleId:'xm',
-					link:"/xm/core/xmProduct/XmProductMng",
-					icon: require("@/assets/image/platform/module-marketing.png"),
-					isHighlight:false,
-					moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
-					},
-					{
-					moduleName:"需求",
-					topModuleId:'xm',
-					link:"/xm/core/xmMenu/XmMenuMng",
-					icon: require("@/assets/image/platform/module-intelligentForms.png"),
-					isHighlight:false,
-					moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
-					},
-					{
-					moduleName:"迭代",
-					topModuleId:'xm',
-					link:"/xm/core/xmIteration/XmIterationMng",
-					icon: require("@/assets/image/platform/module-iteration.png"),
-					isHighlight:false,
-					moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
-					},
-					{
-					moduleName:"任务",
-					topModuleId:'xm',
-					link:"/xm/core/xmTask/XmMyTaskCenter",
-					icon: require("@/assets/image/platform/module-task.png"),
-					isHighlight:false,
-					moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
-					},
-					{
-					moduleName:"缺陷",
-					topModuleId:'xm',
-					link:"/xm/core/xmQuestion/XmQuestionMng",
-					icon: require("@/assets/image/platform/anti-fake.png"),
-					isHighlight:false,
-					moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
-					}
-				],
+				showPanel:'projectOverview',//menus,tasks,bugs,iterationStateShow 
 				projectAddVisible:false,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
