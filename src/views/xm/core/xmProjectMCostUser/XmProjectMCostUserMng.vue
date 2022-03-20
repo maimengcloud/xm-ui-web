@@ -9,15 +9,9 @@
 			
 			<el-button type="primary" v-if="batchEditVisible==false"  @click="showAdd" icon="el-icon-plus"></el-button>
 			<el-button   v-if="batchEditVisible==false" @click="batchEditVisible=true" icon="el-icon-edit"></el-button> 
-			<el-button type="primary" v-if="batchEditVisible==true" @click="batchSave"> icon="el-icon-finish">保存</el-button>  
+			<el-button type="primary" v-if="batchEditVisible==true" @click="batchSave"  icon="el-icon-finish">保存</el-button>  
 			<el-button   v-if="batchEditVisible==true" @click="noBatchEdit" icon="el-icon-back">返回</el-button> 
 			<el-button type="danger" v-if="batchEditVisible==false"  v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true"  icon="el-icon-delete"></el-button>  
-			<font class="hidden-md-and-down">	
-				<span style="margin-left:10px;font-size:14px;">项目总成本：</span><el-tag type='success'> {{selProject.planTotalCost}}</el-tag> 
-				<span style="margin-left:10px;font-size:14px;">非人力总成本：</span><el-tag type='warning'>{{selProject.planNouserAt}}</el-tag>  
-				<span style="margin-left:10px;font-size:14px;">内部人力总成本：</span><el-tag type='warning'>{{selProject.planIuserAt}}</el-tag>  
-				<span style="margin-left:10px;font-size:14px;">外购人力总成本：</span><el-tag type='warning'>{{selProject.planOuserAt}}</el-tag>  
-			</font>
 		</el-row>
 		<el-row class="page-main "> 
 			<!--列表 XmProjectMCostUser xm_project_m_budget_cost_user-->

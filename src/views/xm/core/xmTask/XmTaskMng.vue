@@ -17,10 +17,7 @@
               <el-link type="warning" @click="projectVisible=true" slot="reference" v-if="!selProject||!selProject.id"  icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link>
           </el-popover>
 					<el-select style="width: 100px" v-model="filters.taskState" placeholder="状态" clearable>
-									<el-option value="0" label="待领取"></el-option>
-									<el-option value="1" label="已领取执行中"></el-option>
-									<el-option value="2" label="已完工"></el-option>
-									<el-option value="3" label="已结算"></el-option>
+									<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.taskState" :key="index"></el-option> 
           </el-select>
           <el-select
             v-model="selkey"
@@ -413,7 +410,16 @@
 
                 </template>
               </el-table-column>
-
+              
+              <el-table-column
+                label="状态"
+                type="taskState"
+                width="100"
+              >
+                <template slot-scope="scope">
+                    {{formateOption("taskState",scope.row.taskState)}}
+                </template>
+              </el-table-column>
               <el-table-column
                 sortable
                 prop="name"
@@ -1170,6 +1176,7 @@ export default {
         planType: [],
         priority: [],
         xmTaskSettleSchemel: [],
+        taskState:[],
       }, //下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
 
       addFormVisible: false, //新增xmTask界面是否显示
@@ -2484,7 +2491,7 @@ export default {
     this.$nextTick(() => {
       this.getXmTasks();
       this.tableHeight = util.calcTableMaxHeight(this.$refs.table.$el);
-      initSimpleDicts( "all", ["planType","taskType","urgencyLevel","xmTaskSettleSchemel","priority" ]).then((res) => {
+      initSimpleDicts( "all", ["planType","taskType","urgencyLevel","xmTaskSettleSchemel","priority","taskState" ]).then((res) => {
         this.dicts = res.data.data;
       });
     });
