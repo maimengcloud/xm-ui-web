@@ -18,7 +18,7 @@
 							width="400"
 							trigger="manual"
 							v-model="iterationVisible"> 
-							<xm-iteration-select v-if="!xmIteration" :auto-select="false" :sel-project="selProject" @row-click="onIterationSelected" ref="xmProductMng" :xm-product="xmProduct" :simple="true" @clear-select="onIterationClearSelect"  @close="iterationVisible=false"></xm-iteration-select>
+							<xm-iteration-select v-if="!xmIteration" :auto-select="false" :sel-project="selProject" @row-click="onIterationSelected" ref="xmProductMng" :product-id="filters.product?filters.product.id:null" :simple="true" @clear-select="onIterationClearSelect"  @close="iterationVisible=false"></xm-iteration-select>
 								<el-link title="迭代，点击选择、清除选择" @click="iterationVisible=true" type="warning" slot="reference" v-if="!xmIteration" icon="el-icon-search"><font style="font-size:14px;">{{filters.iteration?filters.iteration.iterationName:'选择迭代'}}</font></el-link> 
 						</el-popover>  
 						<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable style="width: 160px;">
