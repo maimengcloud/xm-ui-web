@@ -8,7 +8,7 @@
 		<el-row class="page-main ">   
 			<el-table ref="table" :height="tableHeight"  stripe :data="xmProjects"  highlight-current-row v-loading="load.list"   style="width: 100%;">
 				<el-table-column  type="index" label="序号" width="55" ></el-table-column>
-				<el-table-column prop="code" label="项目编号" min-width="80" ></el-table-column>
+				<el-table-column prop="id" label="项目编码" min-width="80" ></el-table-column>
 				<el-table-column prop="name" label="项目名称" min-width="120" ></el-table-column> 
 				<el-table-column label="操作" width="100" fixed="right">
 					<template slot-scope="scope">  

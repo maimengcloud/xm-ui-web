@@ -98,6 +98,8 @@
 								<el-button type="text" @click="createProductCode">自动生成</el-button>
 							</template>
 				</el-input>
+				
+						<font color="red" style="font-size:10px;">产品代号为合同上的产品代号，甲乙方共享；产品内部编号为&nbsp;代号-四位随机码</font>
 			</el-form-item>
 			<el-form-item  label="目标">
 				<el-radio v-model="xmProductCopy.isTpl" label="1">复制为新的模板</el-radio>

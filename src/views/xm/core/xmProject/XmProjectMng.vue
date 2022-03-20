@@ -156,7 +156,7 @@
 
 					<el-table  ref="table" :height="maxTableHeight" v-cloak v-show="!showType" fit stripe :data="ScreenData" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column  type="index" label="序号" width="60" ></el-table-column>
-						<el-table-column prop="code" label="项目代号" width="120" sortable show-overflow-tooltip></el-table-column>
+						<el-table-column prop="id" label="项目编码" width="120" sortable show-overflow-tooltip></el-table-column>
 						<el-table-column prop="name" label="标题" sortable min-width="200" >
 							<template slot-scope="scope">
 								<el-link type="primary" @click.stop="intoInfo(scope.row)">{{scope.row.name}}</el-link>
@@ -282,6 +282,8 @@
 						<el-button type="text" @click="createProjectCode">自动生成</el-button>
 					</template>
 				</el-input>
+				
+							 <font color="red" style="font-size:10px;">项目代号为合同上的项目代号，甲乙方共享;项目内部编号为 &nbsp;代号-四位随机码</font>
 			</el-form-item>
 			<el-form-item  label="目标">
 				<el-radio v-model="xmProjectCopy.isTpl" label="1">复制为新的模板</el-radio>

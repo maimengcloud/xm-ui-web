@@ -8,7 +8,7 @@
 		<el-row class="page-main ">  
 			 <el-table  ref="table" :height="maxTableHeight" v-cloak stripe :data="xmProjects" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column  type="index" label="序号" width="80" ></el-table-column>
-						<el-table-column prop="code" label="项目编号" min-width="120" ></el-table-column>
+						<el-table-column prop="id" label="项目编码" min-width="120" ></el-table-column>
 						<el-table-column prop="name" label="标题" min-width="200" >
 							<template slot-scope="scope">
 								<el-link @click.stop="intoInfo(scope.row)">{{scope.row.name}}</el-link>
