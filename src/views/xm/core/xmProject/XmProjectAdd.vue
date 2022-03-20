@@ -2,7 +2,7 @@
 	<section class="page-container padding border">
 		<el-row class="page-main " :style="{overflowX:'auto',height:maxTableHeight+'px'}" ref="table"> 
 		<!--编辑界面 XmProject xm_project--> 
-			<el-form :model="addForm" label-width="150px" :rules="addFormRules" ref="addForm">    
+			<el-form :model="addForm" label-width="120px" :rules="addFormRules" ref="addForm">    
 					<el-form-item label="项目代号" prop="code">
 							<el-input v-model="addForm.code"  placeholder="项目代号，不可为空" >
 								<template slot="append">
@@ -14,17 +14,23 @@
 					<el-form-item label="名称" prop="name">  
 							<el-input  v-model="addForm.name" placeholder="项目名称" ></el-input> 
 					</el-form-item>    
-					<el-form-item label="项目属性" prop="xmType"> 
-						<el-select v-model="addForm.xmType">
-							<el-option v-for="(i,index) in dicts['projectType']" :label="i.name" :value="i.id" :key="index"></el-option> 
-						</el-select>   
-						<el-select v-model="addForm.urgent">
-							<el-option v-for="(i,index) in dicts['urgencyLevel']" :label="i.name" :value="i.id" :key="index"></el-option> 
-						</el-select>    
-						<el-select v-model="addForm.priority">
-							<el-option v-for="(i,index) in dicts['priority']" :label="i.name" :value="i.id" :key="index"></el-option> 
-						</el-select> 
-					</el-form-item>   
+					
+					<el-row>
+						<el-col :span="12">
+							<el-form-item label="项目类型" prop="xmType"> 
+								<el-select v-model="addForm.xmType">
+									<el-option v-for="(i,index) in dicts['projectType']" :label="i.name" :value="i.id" :key="index"></el-option> 
+								</el-select>      
+							</el-form-item>   
+						</el-col>
+						<el-col :span="12">
+							<el-form-item label="紧急程度" prop="priority">   
+								<el-select v-model="addForm.priority">
+									<el-option v-for="(i,index) in dicts['priority']" :label="i.name" :value="i.id" :key="index"></el-option> 
+								</el-select> 
+							</el-form-item>  
+						</el-col> 
+					</el-row>
 					<el-form-item label="预算控制"> 
 						<el-form-item prop="budgetCtrl">
 							<el-checkbox  v-model="addForm.budgetCtrl"  true-label="1" false-label="0" >总预算控制</el-checkbox>  
@@ -506,7 +512,12 @@
 		mounted() {  
 			
 			this.maxTableHeight=util.calcTableMaxHeight(this.$refs.table.$el); 
-			
+			this.addForm.pmUserid=this.userInfo.userid
+			this.addForm.pmUsername=this.userInfo.username
+			this.addForm.admUserid=this.userInfo.userid
+			this.addForm.admUsername=this.userInfo.username
+			this.addForm.assUserid=this.userInfo.userid
+			this.addForm.assUsername=this.userInfo.username
 			initSimpleDicts('all',['projectType','urgencyLevel','priority','projectStatus']).then(res=>{
 				this.dicts=res.data.data;
 			})
