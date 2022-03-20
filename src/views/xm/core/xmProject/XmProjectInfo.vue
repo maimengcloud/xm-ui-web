@@ -178,7 +178,7 @@
 	import xmRecord from '../xmRecord/XmRecordMng';
 	import xmCost from './XmProjectCost';
 	import xmBudget from './XmProjectBudgetCost';
-	import xmContract from '../xmProjectContract/XmProjectContractMng';
+	import xmContract from '../xmContract/XmContractMng';
 	import xmEnvList from '../xmProjectEnvList/XmProjectEnvListMng';
 	import xmPhaseMng from '../xmPhase/XmPhaseMng';
 	import xmMenuMng from '../xmMenu/XmMenuMng';
