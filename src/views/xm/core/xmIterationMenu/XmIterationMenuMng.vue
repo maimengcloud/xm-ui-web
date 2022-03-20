@@ -36,8 +36,8 @@
 					<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 				</el-row>
 			</el-col> 
-			<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible"  size="60%"   :close-on-click-modal="false">
-				<xm-menu-select :xm-iteration="xmIteration" :visible="menuVisible" :is-select-menu="true" :multi="true" :exclude-iteration-id="iteration?iteration.id:''"  @menus-selected="onSelectedMenus" ></xm-menu-select>
+			<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible"  size="70%"   :close-on-click-modal="false">
+				<xm-menu-select :xm-iteration="xmIteration" :visible="menuVisible" :is-select-menu="true" :multi="true"   @menus-selected="onSelectedMenus" ></xm-menu-select>
 			</el-drawer>
 		</el-row>
 	</section>

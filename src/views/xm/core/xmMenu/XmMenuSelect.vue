@@ -19,20 +19,20 @@
 						v-model="iterationVisible"> 
 						<xm-iteration-select v-if="!xmIteration" :auto-select="false" :sel-project="selProject" @row-click="onIterationSelected" ref="xmProductMng" :xm-product="xmProduct" :simple="true" @clear-select="onIterationClearSelect" @close="iterationVisible=false"></xm-iteration-select>
 							<el-link title="迭代，点击选择、清除选择" @click="iterationVisible=true" type="warning" slot="reference" v-if="!xmIteration" icon="el-icon-search"><font style="font-size:14px;">{{filters.iteration?filters.iteration.iterationName:'选择迭代'}}</font></el-link> 
-					</el-popover>  
+					</el-popover>   
 					<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable style="width: 160px;">
-						<el-option   value="not-join-any-project"  label="未分配任务"></el-option>  
-						<el-option   value="join-any-project"  label="已分配任务"></el-option>  
-						<el-option   value="not-join-curr-project"  label="未分配任务到本项目" v-if="selProject && selProject.id"></el-option>  
-						<el-option   value="join-curr-project"  label="已分配任务到项目"  v-if="selProject && selProject.id"></el-option>  
+						<el-option   value="not-join-any-project"  label="未分配过任务的需求"></el-option>  
+						<el-option   value="join-any-project"  label="已分配过任务的需求"></el-option>  
+						<el-option   value="not-join-curr-project"  :label="'未分配任务到项目【'+selProject.name+'】'" v-if="selProject && selProject.id"></el-option>  
+						<el-option   value="join-curr-project"  :label="'已分配任务到项目【'+selProject.name+'】'"  v-if="selProject && selProject.id"></el-option>  
 					</el-select>   
 					<el-select   v-model="filters.iterationFilterType" placeholder="加入过迭代？" clearable  style="width: 160px;">
 						<el-option   value="not-join-any-iteration"  label="未加入过迭代"></el-option>  
 						<el-option   value="join-any-iteration"  label="已加入过迭代"></el-option>  
-						<el-option   value="not-join-curr-iteration"  label="未加入本迭代"  v-if="filters.iteration && filters.iteration.id"></el-option>  
-						<el-option   value="join-curr-iteration"  label="已加入本迭代" v-if="filters.iteration && filters.iteration.id"></el-option>  
+						<el-option   value="not-join-curr-iteration"  :label="'未加入迭代【'+filters.iteration.iterationName+'】'"  v-if="filters.iteration && filters.iteration.id"></el-option>  
+						<el-option   value="join-curr-iteration"  :label="'已加入本迭代【'+filters.iteration.iterationName+'】'" v-if="filters.iteration && filters.iteration.id"></el-option>  
 					</el-select> 
-					
+
 					<el-select v-model="filters.dtype" clearable placeholder="需求类型">
 						<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 					</el-select>    
@@ -138,6 +138,11 @@
 			<el-drawer title="需求谈论" :visible.sync=" menuDetailVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="false" :xm-menu="editForm" ></xm-menu-rich-detail>
 			</el-drawer> 
+			
+			<el-drawer append-to-body title="标签条件" :visible.sync="tagSelectVisible"  size="60%">
+				<tag-mng :tagIds="filters.tags?filters.tags.map(i=>i.tagId):[]" :jump="true" @select-confirm="onTagSelected">
+				</tag-mng>
+			</el-drawer>
 		</el-row>
 	</section>
 </template>
@@ -152,13 +157,15 @@
  	import XmMenuRichDetail from './XmMenuRichDetail';
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
 
+  	import TagMng from "@/views/mdp/arc/tag/TagMng";
+
 	import  XmIterationSelect from '../xmIteration/XmIterationSelect';//修改界面
 	import {sn} from '@/common/js/sequence'
 
 	import { mapGetters } from 'vuex'
 	
 	export default { 
-		props:['isSelectMenu','excludeIterationId','multi','visible','xmIteration','xmProduct','selProject'],
+		props:['isSelectMenu','multi','visible','xmIteration','xmProduct','selProject'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -230,6 +237,7 @@
 				/**begin 自定义属性请在下面加 请加备注**/
 				maxTableHeight:300,
 				dateRanger: [ ],  
+				tagSelectVisible:false,
 				pickerOptions:  util.pickerOptions('datarange'),
 				/**end 自定义属性请在上面加 请加备注**/
 			}
@@ -363,7 +371,7 @@
 					params.orderBy= orderBys.join(",")
 				} 
 				
-				if( this.filters.product!==null && this.filters.product.id!=''){
+				if( this.filters.product  && this.filters.product.id){
 					params.productId=this.filters.product.id
 				}else {
 					this.$notify({showClose: true, message: "请先选择产品", type: 'success' });
@@ -434,31 +442,47 @@
 				this.filters.product=product 
 				this.productVisible=false;
 				this.xmMenus=[]
-				this.getXmMenus()
+				this.searchXmMenus()
 			},
 			onProductClearSelect:function(){
 				this.filters.product=null  
 				this.productVisible=false;
 				this.xmMenus=[]
-				this.getXmMenus()
+				this.searchXmMenus()
 			},	 
 			onIterationSelected:function(iteration){
 				this.filters.iteration=iteration  
 				this.iterationVisible=false;
 				this.xmMenus=[]
-				this.getXmMenus()
+				this.searchXmMenus()
 			},
 			onIterationClearSelect:function(){
 				this.filters.iteration=null  
 				this.iterationVisible=false;
 				this.xmMenus=[]
-				this.getXmMenus()
+				this.searchXmMenus()
 			},	
+			 
+			clearFiltersTag(tag){
+				var index=this.filters.tags.findIndex(i=>i.tagId==tag.tagId)
+				this.filters.tags.splice(index,1);
+				this.searchXmMenus();
+			},
+			onTagSelected(tags){
+				
+				this.tagSelectVisible = false; 
+				if (!tags || tags.length == 0) { 
+					this.filters.tags=[]
+				}else{
+					this.filters.tags=tags
+				}
+				this.searchXmMenus();
+			},
 			/**end 自定义函数请在上面加**/
 			
 		},//end methods
 		components: { 
- 			XmProductSelect,XmMenuRichDetail,UsersSelect,XmIterationSelect
+ 			XmProductSelect,XmMenuRichDetail,UsersSelect,XmIterationSelect,TagMng,
  		    
 		    //在下面添加其它组件
 		},
@@ -469,9 +493,14 @@
 			})
 			this.$nextTick(() => {
 				
-				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
-				if(this.excludeIterationId){
-					this.filters.iterationFilterType='not-join'
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);   
+				if(this.selProject && this.selProject.id){ 
+					this.filters.taskFilterType='join-curr-project'
+				}
+				
+				if(this.xmIteration && this.xmIteration.id){ 
+					this.filters.iterationFilterType='join-curr-iteration'
+					this.filters.iteration=this.xmIteration
 				}
 				
 				this.filters.product=this.xmProduct
