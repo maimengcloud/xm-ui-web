@@ -14,8 +14,10 @@
 
 					<el-collapse value="1" accordion>
 						<el-collapse-item title="基本信息" name="1">
-							<el-form-item label="项目编号|名称" prop="name">
-								<el-input v-model="editForm.code" placeholder="项目编号，不可为空" style="width:20%;" ></el-input><el-input style="width:80%;" v-model="editForm.name" placeholder="项目名称" ></el-input>
+							<el-form-item label="项目代号|名称" prop="name">
+								<el-input v-model="editForm.code" placeholder="项目代号，不可为空" style="width:20%;" ></el-input><el-input style="width:80%;" v-model="editForm.name" placeholder="项目名称" ></el-input>
+							    <font color="red" style="font-size:10px;">项目代号为合同上的项目代号，甲乙方共享;项目内部编号为 &nbsp;代号-四位随机码</font>
+
 							</el-form-item>  
 							<el-form-item label="项目属性" prop="xmType"> 
 								<el-select v-model="editForm.xmType">

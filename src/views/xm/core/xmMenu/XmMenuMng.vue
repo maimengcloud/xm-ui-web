@@ -135,11 +135,14 @@
 					<el-row class="padding-top">  
 						<el-table lazy :load="loadXmMenusLazy" stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
 							<el-table-column sortable type="selection" width="40"></el-table-column> 
+							
 							<el-table-column prop="menuName" label="需求名称" min-width="260" show-overflow-tooltip> 
 								<template slot-scope="scope"> 
 									<span class="vlink" @click="showEdit(scope.row)" :class="scope.row.ntype==='1'?'el-icon-folder-opened':''">{{scope.row.seqNo}} &nbsp; {{scope.row.menuName}} </span>
 								</template>
-							</el-table-column>  
+							</el-table-column>   
+							<el-table-column prop="productId" label="产品" width="100" show-overflow-tooltip>   
+							</el-table-column> 
 							<el-table-column prop="status" label="状态"  min-width="80" show-overflow-tooltip> 
 								<template slot-scope="scope"> 
 									{{dicts.menuStatus.some(i=>i.id==scope.row.status)?dicts.menuStatus.find(i=>scope.row.status==i.id).name:''}}

@@ -11,6 +11,7 @@
 							</template>
 						</el-input>
 							
+						<font color="red" style="font-size:10px;">产品代号为合同上的产品代号，甲乙方共享；产品内部编号为代号-四位随机码</font>
 				</el-form-item>  		   
 				<el-form-item label="产品名称" prop="productName">
 					<el-input v-model="addForm.productName" placeholder="产品名称" ></el-input>

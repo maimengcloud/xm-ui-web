@@ -159,7 +159,7 @@
 						
 						<el-table-column type="index" width="60"> 
 						</el-table-column>
-						<el-table-column prop="code" label="产品代号" min-width="100" sortable > 
+						<el-table-column prop="id" label="产品编码" min-width="100" sortable > 
 						</el-table-column>
 						<el-table-column prop="productName" label="产品名称" min-width="200" sortable >
 							<template slot-scope="scope" >

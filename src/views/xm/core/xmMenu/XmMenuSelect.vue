@@ -111,12 +111,14 @@
 				<el-row style="padding-top:12px;">
 					<el-table ref="table" class="menu-table"  lazy :load="loadMenusLazy" :height="maxTableHeight" :data="xmMenusTreeData"   row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column v-if="multi" type="selection" width="50"></el-table-column>  
+						
 						<el-table-column prop="menuName" label="需求名称" min-width="140" > 
 							<template slot-scope="scope">
 								<span class="vlink" :class="scope.row.ntype==='1'?'el-icon-folder-opened':''"  @click="toMenu(scope.row)">{{scope.row.seqNo}}&nbsp;
 								{{scope.row.menuName}}</span> 
 							</template>
 						</el-table-column> 
+						<el-table-column prop="productId" label="产品" min-width="100" >   </el-table-column>
 						<el-table-column prop="iterationName" label="迭代" min-width="140" >   </el-table-column>
 						<el-table-column prop="mmUsername" label="责任人" width="140" > 
 							 

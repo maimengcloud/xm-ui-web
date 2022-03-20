@@ -17,6 +17,9 @@
 					<!--列表 XmIterationMenu 迭代定义-->
 					<el-table ref="table" :height="maxTableHeight" :data="xmIterationMenusTreeData"  default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column  type="selection" width="45"></el-table-column> 
+						
+						<el-table-column prop="productId" label="产品" min-width="120" >  
+						</el-table-column> 
 						<el-table-column prop="menuName" label="需求名称" min-width="140" > 
 							<template slot-scope="scope">
 								<el-link type="primary"  :icon="scope.row.ntype=='1'?'el-icon-folder-opened':''">{{scope.row.seqNo}}</el-link> 
