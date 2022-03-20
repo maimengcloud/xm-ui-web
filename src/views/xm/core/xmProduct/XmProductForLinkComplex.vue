@@ -6,7 +6,7 @@
 					<el-tab-pane disabled> 
 						<div  slot="label">
 							<el-popover
-								placement="right"
+								placement="bottom"
 								width="400"
 								trigger="click"> 
 								<xm-product-select ref="xmProductSelect" :auto-select="true" :sel-project="selProject" :xm-iteration="xmIteration"  @row-click="onProductRowClick" @clear-select="onProductClearSelect"></xm-product-select>

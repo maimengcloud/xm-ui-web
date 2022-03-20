@@ -3,7 +3,7 @@
 		<el-row> 
 			 
 			<el-popover v-if="pgClass==='0' && (!selProject  || !selProject.id)"
-				placement="right"
+				placement="bottom"
 				width="400"
 				trigger="click"> 
 				<xm-project-select :auto-select="true"   :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClearSelect"></xm-project-select>
@@ -18,7 +18,7 @@
 				<font style="font-size:12px;" class="hidden-md-and-down" color="red">点击架构图操作</font>
 				
 			<el-popover
-				placement="right"
+				placement="bottom"
 				width="400"
 				trigger="click"> 
 				 	<el-button   type="plain" @click="xmRecordVisible=true" icon="el-icon-document">变化日志</el-button>

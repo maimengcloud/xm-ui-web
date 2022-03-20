@@ -6,7 +6,7 @@
 					<el-tab-pane  lazy   name="iterations" disabled> 
 						<div  slot="label">
 							<el-popover
-								placement="right"
+								placement="bottom"
 								width="400"
 								trigger="click"> 
 								<xm-iteration-select ref="xmIterationSelect" :auto-select="true" :sel-project="selProject" :product-id="xmProduct?xmProduct.id:null"  @row-click="onIterationRowClick" @clear-select="onIterationClearSelect"></xm-iteration-select>

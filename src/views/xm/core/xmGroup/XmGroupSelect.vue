@@ -2,14 +2,14 @@
 	<section class="border padding-left">
 		<el-row class="padding-top"> 
 					<el-popover v-if="(pgClass==='0'||!pgClass) && (!selProject  || !selProject.id)"
-						placement="right"
+						placement="bottom"
 						width="400"
 						trigger="click"> 
 						<xm-project-select :auto-select="true" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClose"></xm-project-select>
 							<el-link type="warning" slot="reference" icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link> 
 					</el-popover>
 					<el-popover v-if="pgClass==='1' && (!xmProduct  || !xmProduct.id)"
-						placement="right"
+						placement="bottom"
 						width="400"
 						trigger="click"> 
 							<xm-product-select :auto-select="true"  :sel-project="selProject" @row-click="onProductRowClick" @clear-select="onProductClose"></xm-product-select>

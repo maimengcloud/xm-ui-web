@@ -4,7 +4,7 @@
 				<el-col :span="24">
 					<el-row class="page-main padding-left">  
 						<el-popover
-							placement="right"
+							placement="bottom"
 							width="400"
 							trigger="click"> 
 							<xm-project-select v-if="ptype!=='1' && (!selProject||!selProject.id)" :auto-select="true"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClear"></xm-project-select>

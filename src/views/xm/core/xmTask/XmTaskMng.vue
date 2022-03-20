@@ -9,7 +9,7 @@
         <el-row>
 
           <el-popover v-if=" ptype==='0' && (!selProject || !selProject.id)"
-            placement="right"
+            placement="bottom"
             width="400"
             v-model="projectVisible"
             trigger="manual">
