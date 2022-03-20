@@ -24,7 +24,7 @@
 						<el-option   value="not-join-any-project"  label="未分配任务"></el-option>  
 						<el-option   value="join-any-project"  label="已分配任务"></el-option>  
 						<el-option   value="not-join-curr-project"  label="未分配任务到本项目" v-if="selProject && selProject.id"></el-option>  
-						<el-option   value="join-curr-project"  label="已分配任务到本项目"  v-if="selProject && selProject.id"></el-option>  
+						<el-option   value="join-curr-project"  label="已分配任务到项目"  v-if="selProject && selProject.id"></el-option>  
 					</el-select>   
 					<el-select   v-model="filters.iterationFilterType" placeholder="加入过迭代？" clearable  style="width: 160px;">
 						<el-option   value="not-join-any-iteration"  label="未加入过迭代"></el-option>  
