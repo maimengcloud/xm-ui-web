@@ -34,16 +34,13 @@
 					</el-tab-pane>
 					<el-tab-pane label="项目详情"   name="detail" v-if="selProject&&selProject.id"> 
         				<xm-project-detail  v-if="showPanel=='detail'" :sel-project="selProject" @submit="afterEditSubmit"></xm-project-detail> 
-					</el-tab-pane>
-					<el-tab-pane label="迭代"   name="iterations" v-if=" !xmIteration && selProject&&selProject.id" >
-						 <xm-iteration-mng v-if=" selProject && showPanel=='iterations' && !xmIteration"   :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-iteration-mng>
-					</el-tab-pane>
-					<el-tab-pane label="产品、战略"   name="products" v-if=" !xmProduct && selProject&&selProject.id" >
-						 <xm-product-mng v-if=" selProject && showPanel=='products'"   :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-product-mng>
-					</el-tab-pane>
-					<el-tab-pane label="项目" lazy  name="projects" v-if="!selProject">
-						<xm-product-project-for-link v-if="selProject && showPanel=='projects'"  :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-product-project-for-link>
-					</el-tab-pane>
+					</el-tab-pane> 
+					<el-tab-pane label="配置关联的产品"   name="productProjectLink" v-if="selProject&&selProject.id" >
+						<xm-product-project-link-mng v-if="showPanel=='productProjectLink'" :sel-project="selProject"></xm-product-project-link-mng>
+					</el-tab-pane> 
+					<el-tab-pane label="配置关联的迭代"   name="iterationProjectLink" v-if="selProject&&selProject.id" >
+						<xm-iteration-link-for-project v-if="showPanel=='iterationProjectLink'" :sel-project="selProject"></xm-iteration-link-for-project>
+					</el-tab-pane>  
 					<el-tab-pane label="需求" lazy name="menus" v-if="selProject&&selProject.id">
 						<xm-menu-mng v-if="selProject && showPanel=='menus'"   :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"  :disabled-mng="false"></xm-menu-mng>
 					</el-tab-pane>
@@ -85,6 +82,8 @@ import XmProjectOverview from "./XmProjectOverview";
 	import  XmProjectAdd from './XmProjectAdd';//新增界面
 	import  XmProjectDetail from './XmProjectDetail';//新增界面
 
+import XmProductProjectLinkMng from '../xmProductProjectLink/XmProductProjectLinkMng.vue';
+import XmIterationLinkForProject from '../xmIterationLink/XmIterationLinkForProject.vue';
 	export default {
 		computed: {
 		    ...mapGetters([
@@ -141,6 +140,8 @@ import XmProjectOverview from "./XmProjectOverview";
 			XmProjectAdd,
 			XmProjectDetail,
       XmProjectOverview,
+	  XmProductProjectLinkMng,
+	  XmIterationLinkForProject,
 		},
 		mounted() {
 		this.$nextTick(() => {
