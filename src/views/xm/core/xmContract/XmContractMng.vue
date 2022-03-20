@@ -44,9 +44,9 @@
 					{{scope.row.assigneeName}}&nbsp;&nbsp;{{scope.row.commentMsg}}</el-link>
 				</template>
 				</el-table-column>
-				<el-table-column label="操作" width="50" fixed="right"  >
+				<el-table-column label="操作" width="120" fixed="right"  >
 				<template slot-scope="scope">
-					<el-button  @click="showEdit( scope.row,scope.$index)">合同明细</el-button>
+					<el-button type="primary" @click="showEdit( scope.row,scope.$index)">合同明细</el-button>
 				</template>
 			</el-table-column> 
 			</el-table>
@@ -212,7 +212,7 @@
 			showAdd: function () {
 				this.addFormVisible = true;
 				var htRoutePath="/oa/"+process.env.VERSION+"/#/oa/ht/contractCard/ContractCardMng";
-				 window.open(htRoutePath, row.htName,null,true);
+				 window.open(htRoutePath, "合同管理",null,true);
         		NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
 			},
 			afterAddSubmit(){
