@@ -23,7 +23,7 @@
 								v-model="projectAddVisible"
 								trigger="manual"> 
 								
- 								 <xm-project-add :visible="projectAddVisible" @cancel="projectAddVisible=false" @submit="afterProjectAddSubmit"></xm-project-add>
+ 								 <xm-project-add :visible="projectAddVisible" :xm-product="xmProduct" @cancel="projectAddVisible=false" @submit="afterProjectAddSubmit"></xm-project-add>
   								 <el-link type="warning" slot="reference" @click="projectAddVisible=true"  icon="el-icon-plus"><font style="font-size:14px;">项目</font></el-link> 
 							</el-popover>
 							

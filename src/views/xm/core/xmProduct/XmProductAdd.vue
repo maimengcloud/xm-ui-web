@@ -121,8 +121,8 @@
 				
 				this.$refs.addForm.validate((valid) => {
 					if (valid) {
-						
-						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
+						var msg=this.selProject&&this.selProject.id?'将自动关联项目【'+this.selProject.name+'】':'';
+						this.$confirm('确认提交吗？'+msg, '提示', {}).then(() => { 
 							this.load.add=true
 							let params = Object.assign({}, this.addForm); 
 							if(this.selProject &&this.selProject.id){

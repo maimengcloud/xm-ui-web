@@ -385,7 +385,8 @@
 				} 
 				this.$refs.addForm.validate((valid) => {
 					if (valid) {
-						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
+						var msg=this.xmProduct&&this.xmProduct.id?'将自动关联产品【'+this.xmProduct.productName+'】':'';
+						this.$confirm('确认提交吗？'+msg, '提示', {}).then(() => { 
 							this.load.add=true
 							let params = Object.assign({}, this.addForm);  
 							if(this.xmProduct && this.xmProduct.id){
