@@ -9,10 +9,7 @@
         </el-menu-item> 
         <el-menu-item index="productProjectLink"> 
           <span slot="title">关联产品</span>
-        </el-menu-item>    
-        <el-menu-item index="iterationProjectLink"> 
-          <span slot="title">关联迭代</span>
-        </el-menu-item>  
+        </el-menu-item>      
         <el-menu-item index="projectCalc"> 
           <span slot="title">执行项目数据统计计划</span>
         </el-menu-item> 

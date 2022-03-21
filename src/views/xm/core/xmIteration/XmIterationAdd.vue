@@ -3,6 +3,16 @@
 		<el-row>
 			<!--新增界面 XmIteration 迭代定义--> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">   
+				<el-form-item label="归属产品" prop="productId"> 
+					<el-popover
+						placement="bottom"
+						width="400"
+						v-model="productSelectVisible"
+						trigger="manual"> 
+						<xm-product-select ref="xmProductSelect" :auto-select="true" :sel-project="selProject"   @row-click="onProductRowClick" @clear-select="onProductClearSelect" @close="productSelectVisible=false"></xm-product-select>
+							<el-link type="warning" @click="productSelectVisible=true" slot="reference"  icon="el-icon-search"><font style="font-size:14px;">{{addForm.productId?addForm.productName:'选择产品'}}</font></el-link> 
+					</el-popover> 
+				</el-form-item>
 				<el-form-item label="迭代名称" prop="iterationName">
 					<el-input v-model="addForm.iterationName" placeholder="迭代名称" minlength="10"></el-input>
 					<font color="red">格式如下： 上线日期+主题+V版本号 例如： 2021.6.15购书商城V1.0.9</font>
@@ -44,6 +54,7 @@
 	import { mapGetters } from 'vuex'	
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
 
+	import XmProductSelect from '../xmProduct/XmProductSelect.vue';
 	
 	export default { 
 		computed: {
@@ -51,7 +62,7 @@
 		      'userInfo','roles'
 		    ])
 		},
-		props:['xmIteration','visible','parentIteration','selProject','xmProduct'],
+		props:['xmIteration','visible', 'selProject','xmProduct'],
 		watch: {
 	      'xmIteration':function( xmIteration ) {
 	        this.addForm = xmIteration;
@@ -62,6 +73,11 @@
 				this.addForm.cusername=this.userInfo.username
 				this.addForm.adminUserid=this.userInfo.userid
 				this.addForm.adminUsername=this.userInfo.username;
+				if(this.xmProduct && this.xmProduct.id){
+					
+					this.addForm.productId=this.xmProduct.id
+					this.addForm.productName=this.xmProduct.productName;
+				}
 	      	}
 	      } 
 	    },
@@ -76,14 +92,18 @@
 					],
 					seqNo: [
 						{ required: true, message: '序号不能为空', trigger: 'change' }
+					],
+					productId: [
+						{ required: true, message: '产品编号不能为空', trigger: 'change' }
 					]
 				},
 				//新增界面数据 迭代定义
 				addForm: {
-					id:'',branchId:'',iterationName:'',startTime:'',endTime:'',onlineTime:'',pid:'',adminUserid:'',adminUsername:'',ctime:'',budgetCost:'',budgetWorkload:'',distBudgetCost:'',distBudgetWorkload:'',actCost:'',actWorkload:'',actStaffNum:'',seqNo:'',
+					id:'',branchId:'',iterationName:'',startTime:'',endTime:'',onlineTime:'',pid:'',adminUserid:'',adminUsername:'',ctime:'',budgetCost:'',budgetWorkload:'',distBudgetCost:'',distBudgetWorkload:'',actCost:'',actWorkload:'',actStaffNum:'',seqNo:'',productName:'',productId:'',
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				userSelectVisible:false,
+				productSelectVisible:false,
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data
@@ -95,24 +115,9 @@
 			//新增提交XmIteration 迭代定义 父组件监听@submit="afterAddSubmit"
 			addSubmit: function () {  
 				this.$refs.addForm.validate((valid) => {
-					if (valid) { 
-						var links=[];
-						var msg="";
-						if(this.xmProduct){
-							 links.push({proId:this.xmProduct.id,ltype:'1'})
-							 msg="产品【"+this.xmProduct.productName+"】"
-
-						}
-						
-						if(this.selProject){
-							 links.push({proId:this.selProject.id,ltype:'0'})
-							 if(msg.length>0){
-								 msg=msg+",项目【"+this.selProject.name+"】"
-							 }
-						}
-						var params={...this.addForm}
-						params.links=links;
-						this.$confirm('确认提交迭代吗？'+(msg.length>0?'将自动关联'+msg:''), '提示', {}).then(() => { 
+					if (valid) {  
+						var params={...this.addForm} 
+						this.$confirm('确认提交迭代吗？', '提示', {}).then(() => { 
 							this.load.add=true 
 							addXmIteration(params).then((res) => {
 								this.load.add=false
@@ -140,12 +145,22 @@
 				this.addForm.adminUsername=user.username
 				this.userSelectVisible = false;
 			},	
+			onProductRowClick(product){
+				this.addForm.productId=product.id
+				this.addForm.productName=product.productName
+				this.productSelectVisible=false;
+			}, 
+			onProductClearSelect(){ 
+				this.addForm.productId=''
+				this.addForm.productName=''
+				this.productSelectVisible=false;
+			}
 			/**end 在上面加自定义方法**/
 			
 		},//end method
 		components: {  
 			//在下面添加其它组件 'xm-iteration-edit':XmIterationEdit
-			UsersSelect
+			UsersSelect,XmProductSelect,
 		},
 		mounted() {
 
@@ -154,6 +169,11 @@
 			this.addForm.cusername=this.userInfo.username
 			this.addForm.adminUserid=this.userInfo.userid
 			this.addForm.adminUsername=this.userInfo.username;
+			if(this.xmProduct && this.xmProduct.id){
+				
+				this.addForm.productId=this.xmProduct.id
+				this.addForm.productName=this.xmProduct.productName;
+			}
 			/**在下面写其它函数***/
 			
 		}//end mounted

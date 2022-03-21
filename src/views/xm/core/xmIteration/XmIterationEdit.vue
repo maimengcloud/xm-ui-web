@@ -128,7 +128,6 @@
 								this.load.edit=false
 								var tips=res.data.tips;
 								if(tips.isOk){
-									this.$refs['editForm'].resetFields();
 									this.$emit('submit');//  @submit="afterAddSubmit"
 								}
 								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 

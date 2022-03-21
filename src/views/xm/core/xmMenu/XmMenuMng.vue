@@ -138,8 +138,22 @@
 							
 							<el-table-column prop="menuName" label="需求名称" min-width="260" show-overflow-tooltip> 
 								<template slot-scope="scope"> 
-									<span class="vlink" @click="showEdit(scope.row)" :class="scope.row.ntype==='1'?'el-icon-folder-opened':''">{{scope.row.seqNo}} &nbsp; {{scope.row.menuName}} </span>
-								</template>
+									
+                    <div v-if="scope.row.ntype=='0'" class="icon" style="background-color:  rgb(79, 140, 255);">
+                      <i class="el-icon-loading"></i>
+                    </div>
+					
+                    <div  v-if="scope.row.ntype=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
+                      <i class="el-icon-discover"></i>
+                    </div>
+					
+                    <div v-if="scope.row.ntype=='2'" class="icon" style="background-color:  rgb(0, 153, 51);">
+                      <i class="el-icon-s-operation"></i>
+                    </div>
+					<span   class="vlink"   @click="showEdit(scope.row)" >{{scope.row.seqNo}} &nbsp; {{scope.row.menuName}} </span>
+  								</template>
+								
+
 							</el-table-column>   
 							<el-table-column prop="productId" label="产品" width="100" show-overflow-tooltip>   
 							</el-table-column> 
@@ -1105,5 +1119,15 @@
 .align-right{
 	float: right; 
 } 
-
+.icon {
+  color: #fff;
+  height: 20px;
+  width: 20px;
+  border-radius: 15px;
+  text-align: center;
+  line-height: 20px;
+  font-size: 14px;
+  display: inline-block;
+  margin-right: 5px;
+}
 </style>
