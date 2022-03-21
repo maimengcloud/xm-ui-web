@@ -87,10 +87,12 @@
 							<el-tag  v-if="editForm.createUserid" style="margin-left:10px;border-radius:30px;"  >{{editForm.createUsername}}</el-tag>
 							<el-button  @click="showGroupUserSelect(editForm)" icon="el-icon-setting">设置负责人</el-button>
 						</el-form-item> 
+						<!--
 						<el-form-item label="执行人" prop="executorUsername">
 							<el-tag  v-if="editForm.executorUserid" style="margin-left:10px;border-radius:30px;"  >{{editForm.executorUsername}}</el-tag>
 							<el-button  @click="execGroupUserSelectVisible=true" icon="el-icon-setting">设置执行人</el-button>
 						</el-form-item>
+						-->
 						<el-form-item :label="editForm.ntype=='1'?'计划描述':'任务描述'" prop="description">
 							<el-input type="textarea" :autosize="{ minRows: 4, maxRows: 10}" v-model="editForm.description" :placeholder="editForm.ntype=='1'?'计划描述':'任务描述'" ></el-input>
 						</el-form-item>   

@@ -98,11 +98,12 @@
 							<el-tag  v-else style="margin-left:10px;border-radius:30px;"  icon="el-icon-right" >未设置</el-tag>
 							<el-button  @click="showGroupUserSelect(addForm)" icon="el-icon-setting">设置负责人</el-button>
 						</el-form-item> 
-						
+						<!--
 						<el-form-item label="执行人" prop="executorUsername">
 							<el-tag  v-if="addForm.executorUserid" style="margin-left:10px;border-radius:30px;"  >{{addForm.executorUsername}}</el-tag>
 							<el-button  @click="execGroupUserSelectVisible=true" icon="el-icon-setting">设置执行人</el-button>
 						</el-form-item>
+						-->
 						<el-form-item label="预计时间">
 								<el-tooltip content="计划类型">
 									<el-select v-model=" addForm.planType" style="width:20%;">
