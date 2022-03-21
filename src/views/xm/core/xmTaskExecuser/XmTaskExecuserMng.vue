@@ -679,7 +679,7 @@
 					bizUrl:bizUrl,
 					resUrl:'',
 					bizPkid:row.id,
-					bizParentPkid:row.id,
+					bizParentPkid:projectId,
 					mainContext:'',
 					extVars:extVars,
 					flowVars:{
