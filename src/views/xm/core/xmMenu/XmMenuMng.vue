@@ -209,24 +209,13 @@
 									<span   class="vlink"   @click="showEdit(scope.row)" >{{scope.row.seqNo}} &nbsp; {{scope.row.menuName}} </span>
 									<div class="tool-bar">
 									<span class="u-btn">
-										<el-tooltip  v-if="scope.row.dclass==='2'||scope.row.dclass==='1'" :content="scope.row.dclass==='1'?'新建特性':'新建用户故事'">
-											<el-popover style="padding-left:10px;"  
-											placement="top-start"
-											width="250"
-											trigger="hover" > 
-											<el-row> 
-												<el-col :span="24" style="padding-top:5px;">
-													<el-button   @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus">直接添加{{scope.row.dclass==='1'?'新特性':'新用户故事'}}</el-button> 
-												</el-col>  
-												<el-col :span="24" style="padding-top:5px;">
-													<el-button  @click="showImportFromMenuTemplate(scope.row)" icon="el-icon-upload2">由模板快速导入{{scope.row.dclass==='1'?'新特性':'新用户故事'}}</el-button> 
-												</el-col> 
-											</el-row>   
-											<el-button slot="reference"   icon="el-icon-plus" circle plain size="mini"></el-button> 
-										</el-popover>   
-										
+										<el-tooltip  v-if="scope.row.dclass==='2'||scope.row.dclass==='1'" :content="scope.row.dclass==='1'?'新建特性':'新建用户故事'">    
+												<el-button   @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建" circle plain size="mini"> </el-button>     
 										</el-tooltip>
 										
+										<el-tooltip  v-if="scope.row.dclass==='2'||scope.row.dclass==='1'" :content="scope.row.dclass==='1'?'新建特性':'新建用户故事'">     
+												<el-button  @click="showImportFromMenuTemplate(scope.row)" icon="el-icon-upload2" title="批量导入" circle plain size="mini"> </el-button>   
+										</el-tooltip>
 										<el-tooltip v-if="scope.row.dclass==='3'" content="新建任务">
 										<el-button   icon="el-icon-plus" circle plain size="mini"  @click="showTaskList(scope.row,scope.$index)"></el-button>
 										</el-tooltip>
@@ -1130,7 +1119,18 @@
 					this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 
 				})
-			}
+			}, 
+			calcMenuLabel(dclass){ 
+				var params={label:'工作项',icon:'',color:''};
+				if(dclass==='1'){
+					params={label:'史诗',icon:'el-icon-s-promotion',color:'rgb(255, 153, 51)'};
+				}else if(dclass==='2'){
+					params={label:'特性',icon:'el-icon-s-flag',color:'rgb(0, 153, 51)'};
+				}else if(dclass==='3'){
+					params={label:'用户故事',icon:'el-icon-document',color:' rgb(79, 140, 255)'};
+				} 
+				return params;
+			}, 
 		},//end methods
 		components: { 
 		    'xm-menu-add':XmMenuAdd,

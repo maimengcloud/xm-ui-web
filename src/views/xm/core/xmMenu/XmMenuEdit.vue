@@ -2,31 +2,31 @@
 	<section class="page-container border padding">
 		<el-row class="page-main ">
 			<el-tabs>
-				<el-tab-pane  label="需求详情">
+				<el-tab-pane  :label="calcMenuLabel.label+'详情'">
 					<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm"> 
 						<el-row class="padding-bottom"> 
-						<el-steps :active="calcMenuCurrStep" simple finish-status="success" align-center>
+						<el-steps :active="calcMenuCurrStep"   finish-status="success" align-center>
 							<el-step v-for="(item,index) in dicts.menuStatus" @click.native="on_click(item.id)" :title="item.name" :key="index"></el-step> 
 						</el-steps>
 						</el-row> 
 						<el-collapse value="1" accordion>
-						<el-collapse-item title="基本信息" name="1" >
-							<el-form-item label="节点类型" prop="ntype">
-								<el-radio v-model="editForm.ntype" label="1">需求池</el-radio>
-								<el-radio v-model="editForm.ntype" label="0">需求</el-radio>
-								<br>
-								<font v-if="editForm.ntype==='0'" color="red" style="font-size:12px;">需求：建议按以下逻辑描述一个需求：什么人？做什么事？，为什么？</font> 
-								<font v-if="editForm.ntype==='1'" color="red" style="font-size:12px;">需求池：需求池下可建立子需求池或者需求。负责汇总统计下级数据，分解上级需求池预算。</font>
-							</el-form-item> 
+						<el-collapse-item title="基本信息" name="1" > 
 							<el-row> 
 								<el-col :span="6">
-									<el-form-item label="序号名称" prop="seqNo" >
+									<el-form-item label="calcMenuLabel.label" prop="seqNo" >
+										<template slot="label">
+											<div  class="icon" :style="{backgroundColor: calcMenuLabel.color }">
+													<i :class="calcMenuLabel.icon"></i>
+												</div>  
+												{{calcMenuLabel.label}}
+										</template>
 										<el-input v-model="editForm.seqNo" style="width:100%;" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input> 
 									</el-form-item>  
 								</el-col>
 								<el-col :span="18">
 									<el-form-item label="" prop="menuName" label-width="0px">
-										<el-input v-model="editForm.menuName" placeholder="名称" ></el-input>
+										<el-input v-model="editForm.menuName" placeholder="名称" > 
+										</el-input>
 									</el-form-item>   
 								</el-col>
 							</el-row>
@@ -37,12 +37,18 @@
 									</el-form-item>
 								</el-col>
 								<el-col :span="12">
-									<el-form-item v-if="!editForm.pmenuId" label="需求池" prop="pmenuId">
-										无归属需求池
+									<el-form-item v-if="!editForm.pmenuId" :label="editForm.dclass==='3'?'归属特性':(editForm.dclass==='2'?'归属史诗':'归属')" prop="pmenuId">
+										无
 									</el-form-item>  
 									
-									<el-form-item  v-else label="需求池" prop="pmenuId"> 
-										<el-link type="primary"  :icon="'el-icon-folder-opened'">  {{editForm.pmenuName?editForm.pmenuName:editForm.pmenuId}}</el-link> 
+									<el-form-item  v-else :label="editForm.dclass==='3'?'归属特性':(editForm.dclass==='2'?'归属史诗':'归属')" prop="pmenuId">  
+										<div   v-if="editForm.dclass==='2'"  class="icon" style="background-color:  rgb(255, 153, 51);">
+											<i class="el-icon-s-promotion"></i>
+										</div> 
+										<div   v-if="editForm.dclass==='3'"  class="icon" style="background-color:  rgb(0, 153, 51);">
+											<i class="el-icon-s-flag"></i>
+										</div> 
+										  {{editForm.pmenuName?editForm.pmenuName:editForm.pmenuId}} 
 									</el-form-item>  
 								</el-col>
 							</el-row> 
@@ -203,9 +209,20 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 						return 1;
 					}
 				}
-			}
+			},
+			calcMenuLabel(){ 
+				var params={label:'工作项',icon:'',color:''};
+				if(this.editForm.dclass==='1'){
+					params={label:'史诗',icon:'el-icon-s-promotion',color:'rgb(255, 153, 51)'};
+				}else if(this.editForm.dclass==='2'){
+					params={label:'特性',icon:'el-icon-s-flag',color:'rgb(0, 153, 51)'};
+				}else if(this.editForm.dclass==='3'){
+					params={label:'用户故事',icon:'el-icon-document',color:' rgb(79, 140, 255)'};
+				} 
+				return params;
+			}, 
 		},
-		props:['xmMenu','visible','parentMenu','product'],
+		props:['xmMenu','visible','parentMenu','product','dclass'],
 		watch: {
 	      'xmMenu':function( xmMenu ) {
 	        this.editForm = xmMenu;
@@ -366,4 +383,15 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 
 <style scoped>
 
+.icon {
+  color: #fff;
+  height: 20px;
+  width: 20px;
+  border-radius: 15px;
+  text-align: center;
+  line-height: 20px;
+  font-size: 14px;
+  display: inline-block;
+  margin-right: 5px;
+} 
 </style>

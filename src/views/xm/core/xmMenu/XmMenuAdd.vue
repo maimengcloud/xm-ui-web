@@ -5,17 +5,17 @@
 			<el-form :model="addForm"  label-width="120px"  :rules="addFormRules" ref="addForm">
 				
 				<el-collapse value="1" accordion>
-					<el-collapse-item title="基本信息" name="1" >
-						<el-form-item label="节点类型" prop="ntype">
-							<el-radio :disabled="parentMenu&&parentMenu.menuId&&parentMenu.ntype==='0'" v-model="addForm.ntype" label="1">需求池</el-radio>
-							<el-radio v-model="addForm.ntype" label="0">需求</el-radio>
-							<br>
-							<font v-if="addForm.ntype==='0'" color="red" style="font-size:12px;">需求：建议按以下逻辑描述一个需求：什么人？做什么事？，为什么？</font> 
-							<font v-if="addForm.ntype==='1'" color="red" style="font-size:12px;">需求池：需求池下可建立子需求池或者需求。负责汇总统计下级数据，分解上级需求池预算。</font>
-						</el-form-item> 
+					<el-collapse-item :title="calcMenuLabel.label+'基本信息'" name="1" >
+						 
 						<el-row> 
 							<el-col :span="6">
-								<el-form-item label="序号名称" prop="seqNo" >
+								<el-form-item label="序号名称" prop="seqNo" > 
+									<template slot="label">
+										<div  class="icon" :style="{backgroundColor: calcMenuLabel.color }">
+											<i :class="calcMenuLabel.icon"></i>
+										</div>  
+										{{calcMenuLabel.label}}
+									</template>
 									<el-input v-model="addForm.seqNo" style="width:100%;" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input> 
 								</el-form-item>  
 							</el-col>
@@ -32,12 +32,19 @@
 								</el-form-item>
 							</el-col>
 							<el-col :span="12">
-								<el-form-item v-if="parentMenu" label="需求池" prop="pmenuId"> 
-									<el-link type="primary"  :icon="'el-icon-folder-opened'">{{parentMenu.seqNo}} &nbsp; &nbsp; {{parentMenu.menuName}}</el-link> 
-								</el-form-item>  
-								<el-form-item v-if="!parentMenu" label="需求池" prop="pmenuId">
-									无归属需求池
-								</el-form-item>  
+								<el-form-item v-if="!addForm.pmenuId" :label="addForm.dclass==='3'?'归属特性':(addForm.dclass==='2'?'归属史诗':'归属')" prop="pmenuId">
+										无
+									</el-form-item>  
+									
+									<el-form-item  v-else :label="addForm.dclass==='3'?'归属特性':(addForm.dclass==='2'?'归属史诗':'归属')" prop="pmenuId">  
+										<div   v-if="addForm.dclass==='2'"  class="icon" style="background-color:  rgb(255, 153, 51);">
+											<i class="el-icon-s-promotion"></i>
+										</div> 
+										<div   v-if="addForm.dclass==='3'"  class="icon" style="background-color:  rgb(0, 153, 51);">
+											<i class="el-icon-s-flag"></i>
+										</div> 
+										  {{addForm.pmenuName?addForm.pmenuName:addForm.pmenuId}} 
+									</el-form-item>  
 							</el-col>
 						</el-row> 
 						<el-row> 
@@ -147,7 +154,19 @@
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
-		    ])
+		    ]),
+			
+			calcMenuLabel(){ 
+				var params={label:'工作项',icon:'',color:''};
+				if(this.addForm.dclass==='1'){
+					params={label:'史诗',icon:'el-icon-s-promotion',color:'rgb(255, 153, 51)'};
+				}else if(this.addForm.dclass==='2'){
+					params={label:'特性',icon:'el-icon-s-flag',color:'rgb(0, 153, 51)'};
+				}else if(this.addForm.dclass==='3'){
+					params={label:'用户故事',icon:'el-icon-document',color:' rgb(79, 140, 255)'};
+				} 
+				return params;
+			}, 
 		},
 		props:['xmMenu','visible','parentMenu'],
 		watch: {
@@ -157,14 +176,24 @@
 			this.addForm.mmUsername=this.userInfo.username
 	      },
 	      'visible':function(visible) { 
-	      	if(visible==true){
-				  debugger;
+	      	if(visible==true){ 
 				  this.addForm={...this.xmMenu}
 				if(this.parentMenu && this.parentMenu.menuId){
 					if(this.parentMenu.childrenCnt){
 						this.addForm.seqNo=this.parentMenu.seqNo+"."+(this.parentMenu.childrenCnt+1)
 					}else{
 						this.addForm.seqNo=this.parentMenu.seqNo+"."+1
+					}
+					this.addForm.pmenuId=this.parentMenu.menuId
+					this.addForm.pmenuName=this.parentMenu.menuName
+					if(this.parentMenu.dclass==='3'){
+						this.addForm.dclass='4'
+					}else if(this.parentMenu.dclass==='2'){
+						this.addForm.dclass='3'
+					}else if(this.parentMenu.dclass==='1'){
+						this.addForm.dclass='2'
+					}else if(this.parentMenu.dclass==='0'){
+						this.addForm.dclass='1'
 					}
 					
 				}
@@ -302,9 +331,20 @@
 					this.addForm.seqNo=this.parentMenu.seqNo+"."+(this.parentMenu.childrenCnt+1)
 				}else{
 					this.addForm.seqNo=this.parentMenu.seqNo+"."+1
+				} 
+				this.addForm.pmenuId=this.parentMenu.menuId
+				this.addForm.pmenuName=this.parentMenu.menuName
+				if(this.parentMenu.dclass==='3'){
+					this.addForm.dclass='4'
+				}else if(this.parentMenu.dclass==='2'){
+					this.addForm.dclass='3'
+				}else if(this.parentMenu.dclass==='1'){
+					this.addForm.dclass='2'
+				}else if(this.parentMenu.dclass==='0'){
+					this.addForm.dclass='1'
 				}
 				
-			}
+			} 
 			/**在下面写其它函数***/
 			
 		}//end mounted
@@ -314,4 +354,15 @@
 
 <style scoped>
 
+.icon {
+  color: #fff;
+  height: 20px;
+  width: 20px;
+  border-radius: 15px;
+  text-align: center;
+  line-height: 20px;
+  font-size: 14px;
+  display: inline-block;
+  margin-right: 5px;
+} 
 </style>

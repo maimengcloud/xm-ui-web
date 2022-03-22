@@ -392,18 +392,4 @@ export default {
 </script>
 
 <style scoped>
-</style>
-
-<style>
-  .el-input-group__append, .el-input-group__prepend {
-      background-color: #409EFF!important;
-      color: #ffffff!important;
-      vertical-align: middle;
-      display: table-cell;
-      position: relative;
-      border: 1px solid #409EFF!important;
-      padding: 0 20px;
-      width: 1px;
-      white-space: nowrap;
-  }
-</style>
+</style> 
