@@ -216,13 +216,13 @@
                 isTaskCenter != '1' && isMy != '1' && !xmIteration
               "
               type="primary"
+              round
               icon="el-icon-plus"
               title="新建计划、任务"
             ></el-button>
           </el-popover>
           <el-button
-            @click="showParentTaskList"
-            type="primary"
+            @click="showParentTaskList" 
             title="更换任务的上级，实现任务搬家功能"
             icon="el-icon-upload2"
             v-loading="load.edit"
