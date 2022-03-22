@@ -197,7 +197,6 @@
 							
 							<el-table-column prop="menuName" label="需求名称" min-width="300"> 
 								<template slot-scope="scope"> 
-									
 									<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
 									<i class="el-icon-s-promotion"></i>
 									</div> 
@@ -1196,17 +1195,19 @@
   margin-right: 5px;
 } 
 </style>
+
 <style lang="scss">
 .tool-bar{
-	 display: none;
-} 
+	visibility: hidden;
+	float: right;
+}
+
 .el-table__body tr:hover{
 	.tool-bar{
-		display: inline;     
+		visibility: visible;
 		.u-btn{   
 			float: right;
 		}
 	}
-	
 }
 </style>
