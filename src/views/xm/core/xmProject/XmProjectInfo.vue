@@ -8,12 +8,12 @@
 					</span>
 				</el-menu-item>
 				<el-menu-item  index="项目概览" >
-					<span slot="title" style="font-size:18px;color:#ffd04b" class="hidden-sm-and-down"> 
+					<span slot="title" style="font-size:18px;color:#ffd04b" class="hidden-sm-and-down" :title="selProject.name"> 
 						<font v-if="selProject.name.length>=15"><strong>项目:&nbsp;&nbsp;{{selProject.name.substring(0,15)}}</strong></font>
 						<font type="danger" v-else><strong>项目:&nbsp;&nbsp;{{selProject.name}}</strong></font> 
 					</span>
 					
-					<span slot="title" style="color:#ffd04b" class="hidden-md-and-up"> 
+					<span slot="title" style="color:#ffd04b" class="hidden-md-and-up" :title="selProject.name"> 
 						<font v-if="selProject.name.length>=15">项目:&nbsp;&nbsp;{{selProject.name.substring(0,15)}}</font>
 						<font type="danger" v-else>项目:&nbsp;&nbsp;{{selProject.name}}</font> 
 					</span>

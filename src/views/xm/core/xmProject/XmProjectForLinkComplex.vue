@@ -38,9 +38,11 @@
 					<el-tab-pane label="配置关联的产品"   name="productProjectLink" v-if="selProject&&selProject.id" >
 						<xm-product-project-link-mng v-if="showPanel=='productProjectLink'" :sel-project="selProject"></xm-product-project-link-mng>
 					</el-tab-pane> 
+					<!--
 					<el-tab-pane label="配置关联的迭代"   name="iterationProjectLink" v-if="selProject&&selProject.id" >
 						<xm-iteration-link-for-project v-if="showPanel=='iterationProjectLink'" :sel-project="selProject"></xm-iteration-link-for-project>
 					</el-tab-pane>  
+					-->
 					<el-tab-pane label="需求" lazy name="menus" v-if="selProject&&selProject.id">
 						<xm-menu-mng v-if="selProject && showPanel=='menus'"   :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"  :disabled-mng="false"></xm-menu-mng>
 					</el-tab-pane>

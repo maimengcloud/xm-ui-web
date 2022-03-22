@@ -7,11 +7,11 @@
 						<span slot="title"><i class="el-icon-back" ></i></span>  
 				</el-menu-item> 
 				<el-menu-item  index="迭代概览" >
-					<span slot="title" style="font-size:18px;color:#409eff;" class="hidden-md-and-down">
+					<span slot="title" style="font-size:18px;color:#409eff;" class="hidden-md-and-down" :title="xmIteration.iterationName">
  						<font v-if="xmIteration.iterationName.length>=15"><strong>迭代:&nbsp;&nbsp;{{xmIteration.iterationName.substring(0,15)}}</strong></font>
 						<font type="danger" v-else><strong>迭代:&nbsp;&nbsp;{{xmIteration.iterationName}}</strong></font> 
 					</span>
-					<span slot="title" style="color:#409eff;" class="hidden-lg-and-up">
+					<span slot="title" style="color:#409eff;" class="hidden-lg-and-up" :title="xmIteration.iterationName">
  						<font v-if="xmIteration.iterationName.length>=15">迭代:&nbsp;{{xmIteration.iterationName.substring(0,15)}}</font>
 						<font type="danger" v-else>迭代:&nbsp;{{xmIteration.iterationName}}</font> 
 					</span>

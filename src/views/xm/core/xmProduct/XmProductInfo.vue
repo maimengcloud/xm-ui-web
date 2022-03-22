@@ -6,11 +6,11 @@
 					<span slot="title" @click.stop="goBack"><i class="el-icon-back" ></i></span>  
 				</el-menu-item>
 				<el-menu-item  index="产品概览" > 
-					<span slot="title" style="font-size:18px;color:#409eff;" class="hidden-md-and-down">
+					<span slot="title" style="font-size:18px;color:#409eff;" class="hidden-md-and-down" :title="xmProduct.productName">
   						<font v-if="xmProduct.productName.length>=15"> <strong> 产品:&nbsp;{{xmProduct.productName.substring(0,15)}}</strong></font>
 						<font type="danger" v-else> <strong>产品:&nbsp;{{xmProduct.productName}}</strong></font> 
 					</span> 
-					<span slot="title" style="color:#409eff;" class="hidden-lg-and-up">
+					<span slot="title" style="color:#409eff;" class="hidden-lg-and-up" :title="xmProduct.productName">
   						<font v-if="xmProduct.productName.length>=15"> 产品:&nbsp;{{xmProduct.productName.substring(0,15)}}</font>
 						<font type="danger" v-else> 产品:&nbsp;{{xmProduct.productName}}</font> 
 					</span> 

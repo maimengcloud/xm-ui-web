@@ -7,15 +7,19 @@
         <el-menu-item index="detail">
           <span slot="title">迭代详情</span>
         </el-menu-item>
+        <!--
         <el-menu-item index="iterationProductLink">
           <span slot="title">配置可见产品</span>
         </el-menu-item> 
+        -->
         <el-menu-item index="iterationMenuMng">
           <span slot="title">配置可见需求</span>
         </el-menu-item> 
+        <!--
         <el-menu-item index="iterationProjectLink">
           <span slot="title">配置可见项目</span>
         </el-menu-item> 
+        -->
       </el-menu>
        <xm-iteration-overview  v-if="showPanelName=='overview'" :xm-iteration="xmIteration"></xm-iteration-overview>
         <xm-iteration-edit v-if="showPanelName=='detail'" :xm-iteration="xmIteration"></xm-iteration-edit>
