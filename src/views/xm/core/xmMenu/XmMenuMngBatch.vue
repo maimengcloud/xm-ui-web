@@ -8,14 +8,23 @@
 			<el-row style="padding-top:12px;"> 
 				<el-table ref="table" :indent="16" lazy :load="loadXmMenusLazy" :height="maxTableHeight" :data="xmMenusTreeData" class="drag-table"   row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}"   highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 					<el-table-column  type="selection" width="45"></el-table-column>
-					<el-table-column  prop="seqNo"  label="序号" width="150">
-						<template slot-scope="scope"> 
-								<el-input   style="width:100%;"   v-model="scope.row.seqNo"  @change="fieldChange(scope.row,'seqNo')"></el-input>
+					<el-table-column  prop="seqNo"  label="序号" width="200" fixed="left">
+						<template slot-scope="scope">  
+							<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
+								<i class="el-icon-s-promotion"></i>
+								</div> 
+								<div v-if="scope.row.dclass=='2'" class="icon" style="background-color:  rgb(0, 153, 51);">
+								<i class="el-icon-s-flag"></i>
+								</div>
+								<div v-if="scope.row.dclass=='3'" class="icon" style="background-color:  rgb(79, 140, 255);">
+								<i class="el-icon-document"></i>
+							</div>
+								<el-input   style="width:70%;"   v-model="scope.row.seqNo"  @change="fieldChange(scope.row,'seqNo')"></el-input> 
 						</template>
 					
 					</el-table-column>  
-					<el-table-column prop="menuName" label="需求名称" min-width="140"  show-overflow-tooltip> 
-						<template slot-scope="scope">
+					<el-table-column prop="menuName" label="需求名称" min-width="140"  show-overflow-tooltip fixed="left"> 
+						<template slot-scope="scope"> 
 							<el-input    v-model="scope.row.menuName"  @change="fieldChange(scope.row,'menuName')"></el-input>
 						</template>
 					</el-table-column> 
@@ -272,10 +281,10 @@
 	text-align:center;
 	float:left;
 	padding-top:5px;
-}  
-.el-table{ 
-	 box-sizing: border-box; 
-	/deep/ .cell {
+}   
+.el-table {
+  box-sizing: border-box;
+  /deep/ .cell {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     overflow: hidden;
@@ -284,7 +293,7 @@
     word-break: break-all;
     line-height: 23px;
     padding-right: 10px;
-	display: flex;
-	 }
+    display: flex;
+  }
 }
 </style>

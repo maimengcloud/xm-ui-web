@@ -136,7 +136,7 @@
 								<br>手工填报：  指需求(不包括需求池)的数据来自手工填报，无论是否关联了任务，都不从任务汇总。
 							</font>
 						</el-collapse-item>
-						<el-collapse-item title="相关链接" name="4"> 
+						<el-collapse-item title="相关链接" name="5"> 
 							<el-form-item label="需求链接" prop="demandUrl"> 
 								<el-input v-model="editForm.demandUrl" placeholder="需求链接" ></el-input> 
 							</el-form-item>  

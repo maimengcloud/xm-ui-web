@@ -18,13 +18,25 @@
 					<el-table ref="table" :height="maxTableHeight" :data="xmIterationMenusTreeData"  default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column  type="selection" width="45"></el-table-column> 
 						
-						<el-table-column prop="productId" label="产品" min-width="120" >  
-						</el-table-column> 
 						<el-table-column prop="menuName" label="需求名称" min-width="140" > 
 							<template slot-scope="scope">
-								<el-link type="primary"  :icon="scope.row.ntype=='1'?'el-icon-folder-opened':''">{{scope.row.seqNo}}</el-link> 
+								
+							<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
+								<i class="el-icon-s-promotion"></i>
+								</div> 
+								<div v-if="scope.row.dclass=='2'" class="icon" style="background-color:  rgb(0, 153, 51);">
+								<i class="el-icon-s-flag"></i>
+								</div>
+								<div v-if="scope.row.dclass=='3'" class="icon" style="background-color:  rgb(79, 140, 255);">
+								<i class="el-icon-document"></i>
+							</div>
+								<span class="vlink" type="primary">{{scope.row.seqNo}}
 								&nbsp;&nbsp;{{scope.row.menuName}}
+								</span> 
 							</template>
+						</el-table-column> 
+						
+						<el-table-column prop="productId" label="产品" min-width="120" >  
 						</el-table-column> 
 						<el-table-column prop="iterationName" label="迭代" min-width="120" >  
 						</el-table-column> 

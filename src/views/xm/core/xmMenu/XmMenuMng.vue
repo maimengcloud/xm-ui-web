@@ -160,20 +160,20 @@
 									<div   class="icon" style="background-color:  rgb(255, 153, 51);">
  										<i class="el-icon-s-promotion"></i>
 									</div>
-									<el-button   @click="showAdd">新建史诗</el-button> 
+									<el-button   @click="showAdd('1')">新建史诗</el-button> 
 								</el-col>  
 								<el-col :span="24" style="padding-top:5px;"> 
 									<div  class="icon" style="background-color:  rgb(0, 153, 51);">
 									<i class="el-icon-s-flag"></i>
 									</div>
-									<el-button   @click="showAdd">新建特性</el-button> 
+									<el-button   @click="showAdd('2')">新建特性</el-button> 
 								</el-col>  
 								<el-col :span="24" style="padding-top:5px;">
 									
 									<div  class="icon" style="background-color:  rgb(79, 140, 255);">
 									<i class="el-icon-document"></i>
 									</div> 
-									<el-button   @click="showAdd"  >新建用户故事</el-button> 
+									<el-button   @click="showAdd('3')"  >新建用户故事</el-button> 
 								</el-col>  
 
 
@@ -671,11 +671,12 @@
 				this.editForm = Object.assign({}, row);
 			},
 			//显示新增界面 XmMenu xm_project_menu
-			showAdd: function () {  
+			showAdd: function (dclass) {  
 				if(this.filters.product && this.filters.product.id){
 					this.parentMenu=null;
 					this.addForm.productId=this.filters.product.id
 					this.addForm.productName=this.filters.product.productName
+					this.addForm.dclass=dclass
 					this.addFormVisible = true;
 				}else{
 					this.productVisible=true;

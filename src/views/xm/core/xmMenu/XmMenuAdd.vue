@@ -196,6 +196,8 @@
 						this.addForm.dclass='1'
 					}
 					
+				}else{
+					this.addFOrm.dclass=this.xmMenu.dclass
 				}
 	      	}
 	      } 

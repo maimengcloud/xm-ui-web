@@ -18,6 +18,16 @@
 					<el-table-column sortable type="selection" width="40"></el-table-column>
  					<el-table-column prop="menuName" label="需求名称" min-width="150" >
 						<template slot-scope="scope"> 
+							
+							<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
+								<i class="el-icon-s-promotion"></i>
+								</div> 
+								<div v-if="scope.row.dclass=='2'" class="icon" style="background-color:  rgb(0, 153, 51);">
+								<i class="el-icon-s-flag"></i>
+								</div>
+								<div v-if="scope.row.dclass=='3'" class="icon" style="background-color:  rgb(79, 140, 255);">
+								<i class="el-icon-document"></i>
+							</div>
 							<span class="vlink" type="primary" @click="toMenu(scope.row)"> {{scope.row.seqNo}}&nbsp; {{scope.row.menuName}} </span>
 						</template>
 					</el-table-column>  
