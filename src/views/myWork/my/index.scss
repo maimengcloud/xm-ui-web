@@ -1,0 +1,96 @@
+.m_top {
+    background: #fff;
+    display: flex;
+    flex-direction: row;
+    height: 100px;
+    align-items: center;
+    border: 1px solid #ebeef5;
+    box-shadow: 0 2px 12px 0 rgba($color: #000000, $alpha: .2);
+    .m_avatar {
+        width: 58px;
+        height: 58px;
+        margin-left: 34px;
+    }
+    .m_msg {
+        margin-left: 22px;
+        p:nth-child(1) {
+            font-size: 22px;
+            font-weight: bold;
+            color: #7D7D7D;
+            opacity: 0.92;
+        }
+        p:nth-child(2) {
+            margin-top: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #7D7D7D;
+            opacity: 0.53;
+        }
+    }
+    .m_btn {
+        margin-left: auto;
+        margin-right: 20px;
+    }
+}
+
+
+.m_middle {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    height: 280px;
+    .m_left, .m_right {
+        flex: 1;
+        padding: 30px;
+        background: #fff;
+        border: 1px solid #ebeef5;
+        box-shadow: 0 2px 12px 0 rgba($color: #000000, $alpha: .2);
+    }
+    .m_left {
+        display: flex;
+        flex-direction: row;
+        margin-right: 10px;
+        .m_left_1 {
+            flex: 1.5;
+            p {
+                font-size: 20px;
+                margin-bottom: 30px;
+            }
+            span {
+                font-size: 16px;
+                line-height: 42px;
+                color: #7D7D7D;
+            }
+        }
+        .m_left_2 {
+            flex: 1;
+            img {
+                width: 100%;
+                margin-left: 20px;
+            }
+        }
+    }
+
+    .m_right {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        .m_right_menu {
+            display: flex;
+            width: 33.3%;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            cursor: pointer;
+            img {
+                width: 68px;
+                height: 68px;
+            }
+            span {
+                margin-top: 12px;
+            }
+        }
+    }
+}
+
