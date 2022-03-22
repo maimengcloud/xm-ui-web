@@ -220,7 +220,33 @@
   /* overflow-x: auto; */
 }
 
+.tool-bar{
+	visibility: hidden;
+	float: right;
+}
 
+.el-table__body tr:hover{
+	.tool-bar{
+		visibility: visible;
+		.u-btn{   
+			float: right;
+		}
+	}
+}
+
+
+
+.icon {
+  color: #fff;
+  height: 20px;
+  width: 20px;
+  border-radius: 15px;
+  text-align: center;
+  line-height: 20px;
+  font-size: 14px;
+  display: inline-block;
+  margin-right: 5px;
+} 
 
 /*2.隐藏滚动条，太丑了
 .el-drawer__container ::-webkit-scrollbar{
