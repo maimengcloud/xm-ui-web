@@ -196,6 +196,7 @@
 					bugSolution:[],
 					bugStatus:[],
 					bugType:[],
+					bugRepRate:[],
 				},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				addFormRules: {
@@ -443,6 +444,7 @@
 					this.dicts['bugStatus']=res.data.data.bugStatus
 					this.dicts['bugType']=res.data.data.bugType
 					this.dicts['urgencyLevel']=res.data.data.urgencyLevel
+					this.dicts['bugRepRate']=res.data.data.bugRepRate
 				}
 			});
 			/**在下面写其它函数***/

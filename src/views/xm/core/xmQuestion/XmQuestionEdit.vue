@@ -1,54 +1,86 @@
 <template>
 	<section class="page-container padding border"> 
+		
+		<el-row class="padding-bottom">
+			<el-steps :active="calcBugStep" simple finish-status="success">
+				<el-step title="已激活,待确认" description="创建后自动激活、关闭后重新激活)"></el-step>
+				<el-step title="已确认,待解决" description="业务确认缺陷后变为已确认"></el-step>
+				<el-step title="已解决,待关闭" description="开发修复缺陷后，变成已解决"></el-step>
+				<el-step title="已关闭(可重新激活)" description="测试通过后变为已关闭，已关闭缺陷可以重新激活"></el-step>
+			</el-steps>
+		</el-row>
 		<el-row class="page-main ">
 			<el-row class="padding">
 				<font class="font">{{editForm.name}}</font>
 			</el-row>
 			<el-row class="padding-bottom">
 				<el-tooltip content="项目"><el-tag type="warning">{{selProject.name}} </el-tag></el-tooltip>
-				<el-divider direction="vertical"></el-divider>
+				<el-divider direction="vertical"></el-divider> 
 				<el-tag>{{editForm.createUsername}} 于 {{editForm.createTime}} 创建 </el-tag>
 				<el-divider direction="vertical"></el-divider>
-				<el-date-picker :clearable="false" style="width:150px;" type="date" placeholder="到期日期" v-model="editForm.endTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
-			</el-row>
-			
-			<el-row class="padding-bottom">
-				{{editForm.tagNames?editForm.tagNames:''}} 
+				<el-tag v-if="editForm.tagNames">{{editForm.tagNames?editForm.tagNames:''}} </el-tag>
 				<el-button type="text" icon="el-icon-plus" @click="tagSelectVisible=true">标签</el-button>
-				<el-button type="text" icon="el-icon-search" @click="flowInfoVisible=true">日志</el-button>
-			</el-row>
-			<el-row class="padding-bottom">
-				<el-steps :active="calcBugStep" simple finish-status="success">
-					<el-step title="已激活,待确认" description="创建后自动激活、关闭后重新激活)"></el-step>
-					<el-step title="已确认,待解决" description="业务确认缺陷后变为已确认"></el-step>
-					<el-step title="已解决,待关闭" description="开发修复缺陷后，变成已解决"></el-step>
-					<el-step title="已关闭(可重新激活)" description="测试通过后变为已关闭，已关闭缺陷可以重新激活"></el-step>
-				</el-steps>
-			</el-row>
+				<el-divider direction="vertical"></el-divider>
+				<el-button type="text" icon="el-icon-search" @click="flowInfoVisible=true">日志</el-button> 
+			</el-row> 
+			<el-divider></el-divider>
 			<el-row>
-				<el-form :model="editForm"  :rules="editFormRules" ref="editForm">
-						<el-form-item label="隶属任务\需求" prop="taskName">
-								<el-tooltip content="隶属任务"><el-tag  closable @click="showSelectTask" @close.stop="handleCloseTaskTag">{{editForm.taskName?editForm.taskName:'未关联任务'}}</el-tag> </el-tooltip>
-								<el-divider direction="vertical"></el-divider>
-								<el-tooltip content="隶属需求"><el-tag  closable @click="showSelectMenu" @close.stop="handleCloseMenuTag">{{editForm.menuName?editForm.menuName:"未关联需求"}}</el-tag></el-tooltip>
-							</el-form-item>
-						<el-form-item label="缺陷属性" prop="priority">
-							<el-col :span="24">
-							<el-select v-model="editForm.priority" placeholder="请选择紧急程度">
-								<el-option v-for="(i,index) in dicts['urgencyLevel']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
-							</el-select>
-
-							<el-select v-model="editForm.bugSeverity" placeholder="请选择严重程度">
-								<el-option v-for="(i,index) in dicts['bugSeverity']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
-							</el-select>
-
-							<el-select v-model="editForm.solution" placeholder="请选择解决方案">
-								<el-option v-for="(i,index) in dicts['bugSolution']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
-							</el-select>
+				<el-form :model="editForm"  :rules="editFormRules" ref="editForm"> 
+						<el-row> 
+							<el-col  :span="12">
+								<el-form-item label="归属任务" prop="taskName"> 
+									
+									<div    class="icon" :style="{backgroundColor:   '#409EFF' }">
+										<i :class="  'el-icon-s-operation'  " ></i>
+									</div>  
+									 <el-tag  closable @click="showSelectTask" @close.stop="handleCloseTaskTag">{{editForm.taskName?editForm.taskName:'未关联任务'}}</el-tag>   
+								</el-form-item>
 							</el-col>
-						</el-form-item>
+							<el-col  :span="12">
+								<el-form-item label="归属用户故事" prop="taskName">  
+										<el-tag  closable @click="showSelectMenu" @close.stop="handleCloseMenuTag">
+										<div class="icon" :style="{backgroundColor:   'rgb(79, 140, 255)' }">
+											<i :class="  'el-icon-document'  " ></i>
+										</div> {{editForm.menuName?editForm.menuName:"未关联需求"}}</el-tag> 
+								</el-form-item>
+							</el-col>
+						</el-row>
+						<el-row> 
+								<el-col :span="12">
+									<el-form-item label="紧急程度" prop="priority">
+										<el-select v-model="editForm.priority" placeholder="请选择紧急程度">
+											<el-option v-for="(i,index) in dicts['urgencyLevel']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
+										</el-select> 
+									</el-form-item>
+									
+								</el-col>
+								<el-col :span="12">
+									<el-form-item label="严重程度" prop="bugSeverity">
+									<el-select v-model="editForm.bugSeverity" placeholder="请选择严重程度">
+										<el-option v-for="(i,index) in dicts['bugSeverity']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
+									</el-select> 
+									</el-form-item>
+								</el-col> 
+						</el-row> 
+						<el-row> 
+								<el-col :span="12">
+									<el-form-item label="复现频率" prop="repRate">
+										<el-select v-model="editForm.repRate" placeholder="请选择复现频率">
+											<el-option v-for="(i,index) in dicts['bugRepRate']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
+										</el-select> 
+									</el-form-item>
+									
+								</el-col>
+								<el-col :span="12">
+									<el-form-item label="解决方案" prop="solution">
+										<el-select v-model="editForm.solution" placeholder="请选择解决方案">
+											<el-option v-for="(i,index) in dicts['bugSolution']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
+										</el-select> 
+									</el-form-item>
+								</el-col>
+						</el-row>
 						<el-form-item label="指派给" prop="handlerUsername">
-							{{editForm.handlerUsername}}   <el-button @click="sendToCreater">指派给创建人</el-button><el-button @click="showGroupUsers('handlerUsername')">选其它人</el-button>
+							{{editForm.handlerUsername}}   <el-button type="text" @click="sendToCreater">指派给创建人</el-button><el-button  type="text" @click="showGroupUsers('handlerUsername')">选其它人</el-button>
 						</el-form-item>
 					<el-form-item label="测试步骤" prop="opStep">
 						<el-col :span="24" v-if="editForm.expectResult">
@@ -193,6 +225,7 @@
 					bugSolution:[],
 					bugStatus:[],
 					bugType:[],
+					bugRepRate:[],
 				},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				editFormRules: {
@@ -425,13 +458,14 @@
 		mounted() {
 			console.log("question_add");
 			this.editForm=Object.assign(this.editForm, this.xmQuestion);
-			initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','urgencyLevel']).then(res=>{
+			initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','urgencyLevel','bugRepRate']).then(res=>{
 				if(res.data.tips.isOk){
 					this.dicts['bugSeverity']=res.data.data.bugSeverity
 					this.dicts['bugSolution']=res.data.data.bugSolution
 					this.dicts['bugStatus']=res.data.data.bugStatus
 					this.dicts['bugType']=res.data.data.bugType
 					this.dicts['urgencyLevel']=res.data.data.urgencyLevel
+					this.dicts['bugRepRate']=res.data.data.bugRepRate
 				}
 			});
 			//this.getXmQuestionHandle();
