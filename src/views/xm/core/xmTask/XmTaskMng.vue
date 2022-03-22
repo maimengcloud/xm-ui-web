@@ -128,27 +128,7 @@
             icon="el-icon-search"
             v-loading="load.list"
           ></el-button>
-
-          <el-button
-            @click="showParentTaskList"
-            type="primary"
-            icon="el-icon-edit"
-            v-loading="load.edit"
-          >更换上级</el-button>
-          <el-button
-            v-if="isTaskCenter != '1' && isMy != '1'"
-            @click="showBatchEdit"
-            v-loading="load.edit"
-            icon="el-icon-edit"
-            >修改</el-button
-          >
-          <el-button type="danger"
-            v-if="isTaskCenter != '1' && isMy != '1'"
-            @click="batchDel"
-            v-loading="load.del"
-            icon="el-icon-del"
-            >删除</el-button
-          >
+          <span style="float:right;"> 
           <el-popover
             placement="top-start"
             title="选择创建计划/任务的方式"
@@ -157,27 +137,76 @@
           >
             <el-row>
               <el-col :span="24" style="padding-top: 5px">
+                
+                <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
+                  <i :class=" 'el-icon-odometer' " ></i>
+                </div>  
                 <el-button
                   v-if="isTaskCenter != '1' && isMy != '1'"
                   @click="showMenu"
+                  type="primary"
                   icon="el-icon-plus"
-                  >由需求快速创建计划/任务(推荐)</el-button
+                  >由用户故事快速创建计划 (推荐)</el-button
                 >
               </el-col>
               <el-col :span="24" style="padding-top: 5px">
+                
+                <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
+                  <i :class=" 'el-icon-odometer' " ></i>
+                </div>  
                 <el-button
                   v-if="isTaskCenter != '1' && isMy != '1'"
                   @click="showTaskTemplate"
                   icon="el-icon-plus"
-                  >从模板快速导入计划/任务</el-button
+                  >从模板快速导入计划 </el-button
                 >
               </el-col>
               <el-col :span="24" style="padding-top: 5px">
+                
+                <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
+                  <i :class=" 'el-icon-odometer' " ></i>
+                </div>  
                 <el-button
                   v-if="isTaskCenter != '1' && isMy != '1'"
                   @click="showAdd"
                   icon="el-icon-plus"
-                  >直接创建</el-button
+                  >直接创建计划</el-button
+                >
+              </el-col>
+              <el-col :span="24" style="padding-top: 5px"> 
+                <div    class="icon" :style="{backgroundColor:   '#409EFF'}">
+                  <i :class=" 'el-icon-s-operation' " ></i>
+                </div>  
+                <el-button
+                  v-if="isTaskCenter != '1' && isMy != '1'"
+                  @click="showMenu"
+                  type="primary"
+                  icon="el-icon-plus"
+                  >由用户故事快速创建任务(推荐)</el-button
+                >
+              </el-col>
+              <el-col :span="24" style="padding-top: 5px">
+                
+                <div    class="icon" :style="{backgroundColor:   '#409EFF'}">
+                  <i :class=" 'el-icon-s-operation' " ></i>
+                </div>  
+                <el-button
+                  v-if="isTaskCenter != '1' && isMy != '1'"
+                  @click="showTaskTemplate"
+                  icon="el-icon-plus"
+                  >从模板快速导入任务</el-button
+                >
+              </el-col>
+              <el-col :span="24" style="padding-top: 5px">
+                
+                <div    class="icon" :style="{backgroundColor:   '#409EFF'}">
+                  <i :class=" 'el-icon-s-operation' " ></i>
+                </div>  
+                <el-button
+                  v-if="isTaskCenter != '1' && isMy != '1'"
+                  @click="showAdd"
+                  icon="el-icon-plus"
+                  >直接创建任务</el-button
                 >
               </el-col>
             </el-row>
@@ -188,8 +217,32 @@
               "
               type="primary"
               icon="el-icon-plus"
+              title="新建计划、任务"
             ></el-button>
           </el-popover>
+          <el-button
+            @click="showParentTaskList"
+            type="primary"
+            title="更换任务的上级，实现任务搬家功能"
+            icon="el-icon-upload2"
+            v-loading="load.edit"
+          > </el-button>
+          <el-button
+            v-if="isTaskCenter != '1' && isMy != '1'"
+            @click="showBatchEdit"
+            v-loading="load.edit"
+            icon="el-icon-edit"
+            title="批量修改任务"
+            ></el-button
+          >
+          <el-button type="danger"
+            v-if="isTaskCenter != '1' && isMy != '1'"
+            @click="batchDel"
+            v-loading="load.del"
+            icon="el-icon-delete"
+            title="批量删除"
+            ></el-button
+          >
 
           <el-popover
             placement="top-start"
@@ -343,6 +396,7 @@
             </el-row>
             <el-button slot="reference">视图</el-button>
           </el-popover>
+          </span>
         </el-row>
 
         <el-row class="padding-top">
@@ -393,7 +447,10 @@
                 min-width="250" show-overflow-tooltip
               >
                 <template slot-scope="scope">
-                  <span class="vlink"  :class="scope.row.ntype==='1'?'el-icon-folder-opened':''"  type="primary" @click.stop="showDrawer(scope.row)">
+                  <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#409EFF'}">
+									<i :class="scope.row.ntype==='1'?'el-icon-odometer':'el-icon-s-operation'" ></i>
+									</div>  
+                  <span class="vlink"   type="primary" @click.stop="showDrawer(scope.row)">
                     {{ scope.row.sortLevel }}&nbsp;
                     <el-tag v-if="scope.row.level <= '2'" type="info"
                       >轻微</el-tag
@@ -517,7 +574,7 @@
                    </font>
                 </template>
               </el-table-column>
-
+              <!-- 
               <el-table-column label="操作" width="100">
                 <template slot-scope="scope">
                   <el-dropdown
@@ -531,7 +588,11 @@
                     <el-dropdown-menu slot="dropdown">
                       <el-dropdown-item
                         :command="{ type: 'showMenu', data: scope.row }"
-                        >+由需求创建子计划/任务(推荐)</el-dropdown-item
+                        >
+                        <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
+                          <i :class=" 'el-icon-odometer' " ></i>
+                        </div>   
+                        </el-dropdown-item
                       >
                       <el-dropdown-item
                         :command="{ type: 'showSubAdd', data: scope.row }"
@@ -550,6 +611,7 @@
                   ></el-button>
                 </template>
               </el-table-column>
+              -->
             </el-table>
             <el-pagination
               ref="pagination"
@@ -2541,19 +2603,17 @@ export default {
   overflow-x: auto;
   overflow-y: hidden;
 }
+ 
 
-.el-table {
-	 box-sizing: border-box;
-	/deep/ .title .cell {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;
-    word-break: break-all;
-    line-height: 23px;
-    padding-right: 10px;
-	display: flex;
-	 }
-}
+.icon {
+  color: #fff;
+  height: 20px;
+  width: 20px;
+  border-radius: 15px;
+  text-align: center;
+  line-height: 20px;
+  font-size: 14px;
+  display: inline-block;
+  margin-right: 5px;
+} 
 </style>
