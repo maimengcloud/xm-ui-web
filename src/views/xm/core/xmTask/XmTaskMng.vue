@@ -168,7 +168,7 @@
                 </div>  
                 <el-button
                   v-if="isTaskCenter != '1' && isMy != '1'"
-                  @click="showAdd"
+                  @click="showAdd('1')"
                   icon="el-icon-plus"
                   >直接创建计划</el-button
                 >
@@ -204,7 +204,7 @@
                 </div>  
                 <el-button
                   v-if="isTaskCenter != '1' && isMy != '1'"
-                  @click="showAdd"
+                  @click="showAdd('0')"
                   icon="el-icon-plus"
                   >直接创建任务</el-button
                 >
@@ -468,10 +468,10 @@
 									<div class="tool-bar">
                     <span class="u-btn">
                       <el-tooltip  v-if="scope.row.ntype==='1'" :content=" '新建任务'">    
-                          <el-button :style="{backgroundColor:'#409EFF'}"  @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建任务" circle plain size="mini"> </el-button>     
+                          <el-button :style="{backgroundColor:'#409EFF'}"  @click="showSubAdd( scope.row,scope.$index,'0')" icon="el-icon-plus" title="新建任务" circle plain size="mini"> </el-button>     
                       </el-tooltip> 
                       <el-tooltip  v-if="scope.row.ntype==='1'" :content=" '新建计划'">    
-                          <el-button :style="{backgroundColor:  '#E6A23C'}"  @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建计划" circle plain size="mini"> </el-button>     
+                          <el-button :style="{backgroundColor:  '#E6A23C'}"  @click="showSubAdd( scope.row,scope.$index,'1')" icon="el-icon-plus" title="新建计划" circle plain size="mini"> </el-button>     
                       </el-tooltip> 
                       
                       <el-tooltip  v-if="scope.row.ntype==='0'" :content=" '编辑任务'">    
@@ -1691,19 +1691,21 @@ export default {
 
 
     },
-    showSubAdd(row) {
+    showSubAdd(row,index,ntype) {
       if(!this.checkCanAdd(row)){
         return;
       }
       this.parentTask = row;
       this.editForm = row;
+      this.addForm.ntype=ntype;
       this.addFormVisible = true;
     },
     //显示新增界面 XmTask xm_task
-    showAdd: function () {
+    showAdd: function (ntype) {
       if(!this.checkCanAdd()){
         return;
-      }
+      } 
+      this.addForm.ntype=ntype;
       this.addFormVisible = true;
     },
     afterAddSubmit(row) {
