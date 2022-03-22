@@ -2,44 +2,107 @@
 	<section class="page-container padding">  
 		<el-row class="page-main ">
 			<!--新增界面 XmTask xm_task--> 
-			<el-form :model="editForm"  label-width="100px" :rules="editFormRules" ref="editForm">    
+			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">    
 				<el-collapse value="1" accordion>
-					<el-collapse-item title="基础信息" name="1">
-						<el-form-item label="" prop="ntype">
-							<el-radio v-model="editForm.ntype" label="1">计划项</el-radio>
-							<el-radio v-model="editForm.ntype" label="0">任务</el-radio>
-							
-							<br>
-							<font v-if="editForm.ntype==='0'" color="red" style="font-size:12px;">任务：任务一般不再包含子任务；建议细分到一个人一天或者几天内能完成这种粒度，任务的预算不能大于上一级预算。</font> 
-							<font v-if="editForm.ntype==='1'" color="red" style="font-size:12px;">计划：计划负责分解上级预算，汇总统计下级实际数据，计划下包含子计划或者子任务</font>
-						</el-form-item> 
-						<el-form-item v-if="editForm.ptype==='0'" label="归属项目" prop="projectId"> 
-							{{editForm.projectName?editForm.projectName:editForm.projectId}}
-						</el-form-item>
-						
-						<el-form-item v-if="editForm.ptype==='1'" label="归属产品" prop="productId">
-							{{editForm.productName?editForm.productName:editForm.productId}}
-						</el-form-item>
-						
-						<el-form-item label="上级计划" prop="parentTaskname">  
-							<font v-if="editForm.parentTaskid" >{{editForm.parentTaskname?editForm.parentTaskname:editForm.parentTaskid}}</font> 
-							<font v-else>无上级(视为顶级)</font> 
-
-						</el-form-item>
-						<el-form-item label="名称" prop="name"> 
-								<el-input v-model="editForm.name" placeholder="名称" ></el-input>   
-						</el-form-item> 
-						<el-form-item label="序号" prop="sortLevel"> 
-							<el-input  v-model="editForm.sortLevel" style="width:30%;"   placeholder="如1.0或者1.2.3等" ></el-input> <font style="color:red;">如1.0或者1.2.3等</font>
-							<br/><el-checkbox v-model="editForm.milestone" :true-label="1" :false-label="0">标记为里程碑</el-checkbox>
-						</el-form-item>  
-						<el-form-item label="前置"> 
-							<el-tag v-if="editForm.preTaskid"  @close="clearPreTask" closable >{{editForm.preTaskname}}</el-tag>
-							<el-button    @click.stop="selectTaskVisible=true"  >选前置</el-button> 
-						</el-form-item>  
+					<el-collapse-item title="基础信息" name="1"> 
 						<el-row>
-							<el-col :span="8">
-								<el-form-item label="状态">  
+							<el-col :span="6">
+								<el-form-item label="序号" prop="sortLevel" >  
+									<template slot="label"> 
+									<div    class="icon" :style="{backgroundColor:   editForm.ntype==='0'?'#409EFF':'#E6A23C'}">
+										<i :class="  editForm.ntype==='0'?'el-icon-s-operation':'el-icon-odometer' " ></i>
+									</div>  
+									{{editForm.ntype==='0'?'序号/任务':'序号/计划'}}
+									</template>
+									<el-input  v-model="editForm.sortLevel"    placeholder="如1.0或者1.2.3等" title="序号，如1.0、1.1.1或者1，2，3等"></el-input> 
+ 
+								</el-form-item>  
+							</el-col>
+							<el-col :span="18"> 
+								<el-form-item label="" prop="name" label-width="0"> 
+										<el-input v-model="editForm.name" placeholder="名称" ></el-input>   
+								</el-form-item> 
+							</el-col>
+							
+						</el-row>
+						
+						<el-row> 
+							<el-col :span="6">
+								<el-form-item  label="" prop="milestone">  
+									<el-checkbox v-model="editForm.milestone" :true-label="1" :false-label="0">里程碑</el-checkbox>
+								</el-form-item> 
+							</el-col>
+							<el-col :span="9">  
+								<el-form-item  label="" prop="tagNames" label-width="0">   
+									<el-tag v-if="editForm.tagNames">{{editForm.tagNames?editForm.tagNames:''}} </el-tag>
+									<el-button type="text" icon="el-icon-plus" @click="tagSelectVisible=true">标签</el-button> 
+								</el-form-item>   
+							</el-col>  
+							<el-col :span="9"> 
+								<el-form-item prop="skill" label=""  v-if="editForm.ntype!='1'"  label-width="0"> 
+									<el-tag class="fs-ft" style="margin-right:10px" v-for="(item,i) in taskSkills" :key="i">{{item.taskSkillName}}</el-tag>
+									<el-button   type="text" @click.stop="showSkill()" icon="el-icon-plus">技能</el-button>
+								</el-form-item> 
+							</el-col>  
+						</el-row>
+						<el-divider></el-divider>
+						<el-row>
+							<el-col :span="12">
+								 <el-form-item label="上级计划" prop="parentTaskname">  
+									<template slot="label"> 
+										<div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
+										<i :class=" 'el-icon-odometer' " ></i>
+										</div> 
+										上级计划
+									</template>
+									<font v-if="editForm.parentTaskid" >{{editForm.parentTaskname?editForm.parentTaskname:editForm.parentTaskid}}</font> 
+									<font v-else>无上级(视为顶级)</font> 
+								</el-form-item>
+							</el-col>
+							<el-col :span="12"> 
+								 <el-form-item v-if="editForm.ptype==='0'" label="归属项目" prop="projectId"> 
+									{{editForm.projectName?editForm.projectName:editForm.projectId}}
+								</el-form-item>
+								
+								<el-form-item v-if="editForm.ptype==='1'" label="归属产品" prop="productId">
+									{{editForm.productName?editForm.productName:editForm.productId}}
+								</el-form-item>
+							</el-col>
+						</el-row> 
+						
+						<el-row>
+							<el-col :span="12"> 
+								<el-form-item :label="editForm.ntype=='0'?'任务前置':'计划前置'"> 
+									<el-tag v-if="editForm.preTaskid"  @close="clearPreTask" closable >{{editForm.preTaskname}}</el-tag>
+									<el-button  type="text"  @click.stop="selectTaskVisible=true"  >选前置</el-button> 
+								</el-form-item>  
+							</el-col>
+							<el-col :span="12"> 
+								<el-form-item  label="所属需求" prop="menuId" id="menuInfo" v-if="editForm.ntype!='1'"> 
+									{{editForm.menuName}} &nbsp;&nbsp;&nbsp; <el-link @click="menuVisible=true" type="primary">{{editForm.menuName?'更改':'设置'}}</el-link>&nbsp;&nbsp;&nbsp;
+									<el-link v-if="editForm.menuName" @click="toMenu" type="primary">查看需求</el-link>
+								</el-form-item> 
+							</el-col> 
+						</el-row>
+						<el-row>
+							<el-col :span="12">
+								<el-form-item  label="紧急程度" prop="level">  
+									<el-select v-model="editForm.level">
+											<el-option v-for="i in dicts.urgencyLevel" :label="i.name" :key="i.id" :value="i.id"></el-option> 
+									</el-select>    
+								</el-form-item>  
+							</el-col>
+							<el-col :span="12">
+								<el-form-item  :label="editForm.ntype=='0'?'任务类型':'计划类型'" prop="taskType">   
+									<el-select v-model="editForm.taskType">
+										<el-option v-for="i in this.dicts.taskType" :label="i.name" :key="i.id" :value="i.id"></el-option>
+									</el-select>  
+								</el-form-item>   
+							</el-col>
+						</el-row> 
+						<el-row>
+							<el-col :span="12">
+								<el-form-item :label="editForm.ntype=='0'?'任务状态':'计划状态'">  
 									<el-select v-model="editForm.taskState">
 										<el-option value="0" label="待领取"></el-option>
 										<el-option value="1" label="已领取执行中"></el-option>
@@ -48,45 +111,13 @@
 									</el-select>   
 								</el-form-item> 
 							</el-col>
-							<el-col :span="8">
-								<el-form-item  label="紧急程度" prop="level">  
-									<el-select v-model="editForm.level">
-											<el-option v-for="i in dicts.urgencyLevel" :label="i.name" :key="i.id" :value="i.id"></el-option> 
-									</el-select>    
-								</el-form-item>  
-							</el-col>
-							<el-col :span="8">
-								<el-form-item  label="类型" prop="taskType">   
-									<el-select v-model="editForm.taskType">
-										<el-option v-for="i in this.dicts.taskType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-									</el-select>  
-								</el-form-item>   
-							</el-col>
-						</el-row>
-						
-						<el-form-item  label="所属需求" prop="menuId" id="menuInfo" v-if="editForm.ntype!='1'"> 
-							{{editForm.menuName}} &nbsp;&nbsp;&nbsp; <el-link @click="menuVisible=true" type="primary">{{editForm.menuName?'更改':'设置'}}</el-link>&nbsp;&nbsp;&nbsp;
-							<el-link v-if="editForm.menuName" @click="toMenu" type="primary">查看需求</el-link>
-						</el-form-item> 
-						<el-row>  
 							<el-col :span="12"> 
-								<el-form-item prop="skill" label="技能要求"  v-if="editForm.ntype!='1'">
-									<el-button class="useradd-icon" type="text" @click.stop="showSkill()" icon="el-icon-circle-plus-outline">增加</el-button>
-									<el-tag class="fs-ft" style="margin-right:10px" v-for="(item,i) in taskSkills" :key="i">{{item.taskSkillName}}</el-tag>
+								<el-form-item label="总负责人"> 
+									<el-tag  v-if="editForm.createUserid" style="margin-left:10px;border-radius:30px;"  >{{editForm.createUsername}}</el-tag>
+									<el-button type="text" @click="showGroupUserSelect(editForm)" icon="el-icon-setting">设置负责人</el-button>
 								</el-form-item> 
-							</el-col>
-							<el-col :span="12">
-								<el-form-item  label="标签" prop="tagNames">   
-									<el-tag v-if="editForm.tagNames">{{editForm.tagNames?editForm.tagNames:''}} </el-tag>
-									<el-button type="text" icon="el-icon-plus" @click="tagSelectVisible=true">标签</el-button> 
-								</el-form-item>   
-							</el-col>
+							</el-col> 
 						</el-row> 
-						
-						<el-form-item label="负责人"> 
-							<el-tag  v-if="editForm.createUserid" style="margin-left:10px;border-radius:30px;"  >{{editForm.createUsername}}</el-tag>
-							<el-button  @click="showGroupUserSelect(editForm)" icon="el-icon-setting">设置负责人</el-button>
-						</el-form-item> 
 						<!--
 						<el-form-item label="执行人" prop="executorUsername">
 							<el-tag  v-if="editForm.executorUserid" style="margin-left:10px;border-radius:30px;"  >{{editForm.executorUsername}}</el-tag>
@@ -319,10 +350,7 @@
 					],
 					taskState: [
 						{ required: true, message: '请选择任务状态', trigger: 'blur' }
-					],
-					taskType: [
-						{ required: true, message: '请选择任务类型', trigger: 'blur' }
-					],
+					], 
 					taskClass: [
 						{ required: true, message: '请选择是否结算', trigger: 'blur' }
 					],
@@ -628,4 +656,16 @@
 .el-form-item__content{
 	margin-left: 0;
 }
+
+.icon {
+  color: #fff;
+  height: 20px;
+  width: 20px;
+  border-radius: 15px;
+  text-align: center;
+  line-height: 20px;
+  font-size: 14px;
+  display: inline-block;
+  margin-right: 5px;
+} 
 </style>
