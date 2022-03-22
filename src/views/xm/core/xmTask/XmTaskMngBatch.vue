@@ -36,17 +36,22 @@
           row-key="id"
         >
           <el-table-column type="selection" width="50" fixed="left"></el-table-column>
-          <el-table-column prop="sortLevel" label="序号/名称" width="350" fixed="left">
+          <el-table-column prop="sortLevel" label="序号/名称" width="450" fixed="left">
             <template slot-scope="scope">  
+              <span style="display:inline;">
+                  <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#409EFF'}">
+									<i :class="scope.row.ntype==='1'?'el-icon-odometer':'el-icon-s-operation'" ></i>
+									</div>  
               <el-input
-                style="width: 100px"
+                style="width: 20%;"
                 v-model="scope.row.sortLevel"
                 @change="fieldChange(scope.row, 'sortLevel')"
               ></el-input>
-              <el-input style="width: 100%"
+              <el-input style="width: 65%;"
                 v-model="scope.row.name"
                 @change="fieldChange(scope.row, 'name')"
               ></el-input> 
+              </span>
             </template>
           </el-table-column>
           <el-table-column  width="100" prop="createUsername">
@@ -202,7 +207,7 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column prop="description" label="任务描述" width="350">
+          <el-table-column prop="description" label="任务描述" width="250">
             <template slot-scope="scope">
               <el-input
                 type="textarea"

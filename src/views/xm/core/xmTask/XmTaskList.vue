@@ -41,6 +41,10 @@
 							<el-table-column v-show="isMultiSelect"  sortable width="70" type="selection"></el-table-column>
 							<el-table-column prop="name" label="任务名称"  min-width="260" show-overflow-tooltip>
 								<template slot-scope="scope">
+									
+                  					<div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#409EFF'}">
+										<i :class="scope.row.ntype==='1'?'el-icon-odometer':'el-icon-s-operation'" ></i>
+									</div>  
 								<span>
 									{{ scope.row.sortLevel }}&nbsp;
 									<el-tag v-if="scope.row.level <= '2'" type="info"

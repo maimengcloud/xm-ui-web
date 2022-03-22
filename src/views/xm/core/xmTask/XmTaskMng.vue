@@ -2619,17 +2619,5 @@ export default {
   overflow-x: auto;
   overflow-y: hidden;
 }
- 
-
-.icon {
-  color: #fff;
-  height: 20px;
-  width: 20px;
-  border-radius: 15px;
-  text-align: center;
-  line-height: 20px;
-  font-size: 14px;
-  display: inline-block;
-  margin-right: 5px;
-} 
+  
 </style>
