@@ -4,7 +4,7 @@
 			<!--新增界面 XmIteration 迭代定义--> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">   
 				<el-form-item label="归属产品" prop="productId"> 
-					<el-popover
+					<el-popover v-if="!xmProduct||!xmProduct.id"
 						placement="bottom"
 						width="400"
 						v-model="productSelectVisible"
@@ -12,6 +12,7 @@
 						<xm-product-select ref="xmProductSelect" :auto-select="true" :sel-project="selProject"   @row-click="onProductRowClick" @clear-select="onProductClearSelect" @close="productSelectVisible=false"></xm-product-select>
 							<el-link type="warning" @click="productSelectVisible=true" slot="reference"  icon="el-icon-search"><font style="font-size:14px;">{{addForm.productId?addForm.productName:'选择产品'}}</font></el-link> 
 					</el-popover> 
+					<span v-else>{{addForm.productName}}</span>
 				</el-form-item>
 				<el-form-item label="迭代名称" prop="iterationName">
 					<el-input v-model="addForm.iterationName" placeholder="迭代名称" minlength="10"></el-input>

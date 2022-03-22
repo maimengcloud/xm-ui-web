@@ -4,7 +4,7 @@
 			<el-col :span="24" class="padding-left">
 					<el-row>   
 						
-						<el-popover
+						<el-popover v-if=" !filters.iteration || !filters.iteration.id"
 							placement="bottom"
 							width="400"
 							trigger="manual"
@@ -34,50 +34,29 @@
 							<el-option   value="join-curr-iteration"  :label="'已加入本迭代【'+filters.iteration.iterationName+'】'" v-if="filters.iteration && filters.iteration.id"></el-option>  
 						</el-select> 
 						
-						<el-select v-model="filters.dtype" clearable placeholder="需求类型">
+						<el-select class="hidden-md-and-down" v-model="filters.dtype" clearable placeholder="需求类型" style="width: 120px;">
 							<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 						</el-select>    
-						<el-select v-model="filters.source" placeholder="需求来源"  clearable>
+						<el-select class="hidden-lg-and-down" v-model="filters.source" placeholder="需求来源"  clearable style="width: 120px;">
 							<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
 						</el-select>     
-						<el-select v-model="filters.dlvl" placeholder="需求层次"  clearable class="hidden-md-and-down">
+						<el-select class="hidden-lg-and-down" v-model="filters.dlvl" placeholder="需求层次"  clearable style="width: 120px;">
 							<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
 						</el-select>    
-						<el-button class="hidden-md-and-down" v-if="!filters.tags||filters.tags.length==0" @click.native="tagSelectVisible=true">标签条件</el-button>
-						<el-tag class="hidden-md-and-down" v-else @click="tagSelectVisible=true"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
-					</el-row>
-					<el-row>     
+						<el-button class="hidden-lg-and-down" v-if="!filters.tags||filters.tags.length==0" @click.native="tagSelectVisible=true">标签条件</el-button>
+						<el-tag class="hidden-lg-and-down" v-else @click="tagSelectVisible=true"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
+    
 						
-						<el-select v-model="filters.priority" placeholder="优先级"  clearable>
+						<el-select class="hidden-lg-and-down" v-model="filters.priority" placeholder="优先级"  clearable style="width: 100px;">
 								<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option> 
 						</el-select>      
-						<el-select  v-model="filters.status" placeholder="需求状态" clearable style="width: 100px;">
+						<el-select class="hidden-md-and-down" v-model="filters.status" placeholder="需求状态" clearable style="width: 100px;">
 							<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option> 
 						</el-select> 
 						<el-input v-model="filters.key" style="width: 15%;" placeholder="需求名称查询" clearable> 
 						</el-input> 
 						<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search">查询</el-button>
 						
-						<el-popover style="padding-left:10px;"  
-							placement="top-start"
-							width="250" 
-							trigger="click" > 
-							<el-row> 
-								<el-col :span="24" style="padding-top:5px;">
-									<el-button   @click="showAdd" icon="el-icon-plus">直接添加子需求</el-button> 
-								</el-col>  
-								<el-col :span="24" style="padding-top:5px;">
-									<el-button  @click="showImportFromMenuTemplate()" icon="el-icon-upload2">由模板快速导入子需求</el-button> 
-								</el-col> 
-							</el-row>   
-							<el-button type="primary"    slot="reference" icon="el-icon-plus">需求</el-button>
-						</el-popover>
-						
-						<el-button  @click="batchEditVisible=true">批量修改</el-button> 
-						<el-button  @click="showParentMenu">更换上级</el-button>
- 						<el-button  v-if="disabledMng!=false"  type="danger" @click="batchDel" icon="el-icon-delete">删除</el-button> 
-
-						<el-button class="hidden-md-and-down"  v-if=" batchEditVisible==false&&disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>  
 						<el-popover
 							placement="top-start"
 							title=""
@@ -128,29 +107,99 @@
 									<el-button  v-if=" batchEditVisible==false "  @click="handleExport" icon="el-icon-download">导出</el-button>  
 									<el-button   v-if=" batchEditVisible==false&&disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>   
 								</el-col> 
-							</el-row> 
-							<el-button  slot="reference" icon="el-icon-more"></el-button>
+							</el-row>  
+								<el-button  slot="reference" icon="el-icon-more"></el-button> 
 						</el-popover>  
+						<span style="float:right;">
+						<el-popover style="padding-left:10px;"  
+							placement="top-start"
+							width="250" 
+							trigger="click" > 
+							<el-row> 
+								<el-col :span="24" style="padding-top:5px;">
+									<div   class="icon" style="background-color:  rgb(255, 153, 51);">
+ 										<i class="el-icon-s-promotion"></i>
+									</div>
+									<el-button   @click="showAdd">新建史诗</el-button> 
+								</el-col>  
+								<el-col :span="24" style="padding-top:5px;"> 
+									<div  class="icon" style="background-color:  rgb(0, 153, 51);">
+									<i class="el-icon-s-flag"></i>
+									</div>
+									<el-button   @click="showAdd">新建特性</el-button> 
+								</el-col>  
+								<el-col :span="24" style="padding-top:5px;">
+									
+									<div  class="icon" style="background-color:  rgb(79, 140, 255);">
+									<i class="el-icon-document"></i>
+									</div> 
+									<el-button   @click="showAdd"  >新建用户故事</el-button> 
+								</el-col>  
+
+
+								<el-col :span="24" style="padding-top:5px;">
+									<el-button  @click="showImportFromMenuTemplate()" icon="el-icon-upload2">由模板快速导入需求</el-button> 
+								</el-col> 
+							</el-row>   
+							<el-button type="primary"  round  slot="reference" icon="el-icon-plus"></el-button>
+						</el-popover>
+						
+						<el-button  @click="batchEditVisible=true" icon="el-icon-edit" title="批量修改"></el-button> 
+						<el-button  @click="showParentMenu" icon="el-icon-top" title="更换上级"></el-button>
+ 						<el-button  v-if="disabledMng!=false"  type="danger" @click="batchDel" icon="el-icon-delete" title="删除"></el-button> 
+
+						<el-button class="hidden-md-and-down"  v-if=" batchEditVisible==false&&disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing" title="汇总进度"></el-button>  
+						</span>
 					 </el-row>  
 					<el-row class="padding-top">  
 						<el-table lazy :load="loadXmMenusLazy" stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
 							<el-table-column sortable type="selection" width="40"></el-table-column> 
 							
-							<el-table-column prop="menuName" label="需求名称" min-width="260" show-overflow-tooltip> 
+							<el-table-column prop="menuName" label="需求名称" min-width="300"> 
 								<template slot-scope="scope"> 
 									
-                    <div v-if="scope.row.ntype=='0'" class="icon" style="background-color:  rgb(79, 140, 255);">
-                      <i class="el-icon-loading"></i>
-                    </div>
-					
-                    <div  v-if="scope.row.ntype=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
-                      <i class="el-icon-discover"></i>
-                    </div>
-					
-                    <div v-if="scope.row.ntype=='2'" class="icon" style="background-color:  rgb(0, 153, 51);">
-                      <i class="el-icon-s-operation"></i>
-                    </div>
-					<span   class="vlink"   @click="showEdit(scope.row)" >{{scope.row.seqNo}} &nbsp; {{scope.row.menuName}} </span>
+									<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
+									<i class="el-icon-s-promotion"></i>
+									</div> 
+									<div v-if="scope.row.dclass=='2'" class="icon" style="background-color:  rgb(0, 153, 51);">
+									<i class="el-icon-s-flag"></i>
+									</div>
+									<div v-if="scope.row.dclass=='3'" class="icon" style="background-color:  rgb(79, 140, 255);">
+									<i class="el-icon-document"></i>
+									</div>
+									<span   class="vlink"   @click="showEdit(scope.row)" >{{scope.row.seqNo}} &nbsp; {{scope.row.menuName}} </span>
+									<div class="tool-bar">
+									<span class="u-btn">
+										<el-tooltip  v-if="scope.row.dclass==='2'||scope.row.dclass==='1'" :content="scope.row.dclass==='1'?'新建特性':'新建用户故事'">
+											<el-popover style="padding-left:10px;"  
+											placement="top-start"
+											width="250"
+											trigger="hover" > 
+											<el-row> 
+												<el-col :span="24" style="padding-top:5px;">
+													<el-button   @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus">直接添加{{scope.row.dclass==='1'?'新特性':'新用户故事'}}</el-button> 
+												</el-col>  
+												<el-col :span="24" style="padding-top:5px;">
+													<el-button  @click="showImportFromMenuTemplate(scope.row)" icon="el-icon-upload2">由模板快速导入{{scope.row.dclass==='1'?'新特性':'新用户故事'}}</el-button> 
+												</el-col> 
+											</el-row>   
+											<el-button slot="reference"   icon="el-icon-plus" circle plain size="mini"></el-button> 
+										</el-popover>   
+										
+										</el-tooltip>
+										
+										<el-tooltip v-if="scope.row.dclass==='3'" content="新建任务">
+										<el-button   icon="el-icon-plus" circle plain size="mini"  @click="showTaskList(scope.row,scope.$index)"></el-button>
+										</el-tooltip>
+										
+										<el-tooltip v-if="scope.row.dclass==='3'" content="去关联任务">
+										<el-button   icon="el-icon-s-operation" circle plain size="mini" @click="showTaskList(scope.row,scope.$index)"></el-button>
+										</el-tooltip>
+										<el-tooltip v-if="scope.row.dclass==='3'" content="查看任务">
+										<el-button   icon="el-icon-search" circle plain size="mini"  @click="showTaskListForMenu(scope.row,scope.$index)"></el-button>
+										</el-tooltip> 
+									</span>
+									</div>
   								</template>
 								
 
@@ -219,30 +268,6 @@
 							<el-table-column prop="menuName" label="跟进人"  min-width="100" show-overflow-tooltip> 
 								<template slot-scope="scope"> 
 										 <span>{{scope.row.mmUsername}} </span>  
-								</template>
-							</el-table-column> 
-							<el-table-column   label="操作"  width="200" fixed="right"> 
-								<template slot-scope="scope">   
-									<el-row v-if="disabledMng!=false">
-										<el-popover style="padding-left:10px;"  
-											placement="top-start"
-											width="250"
-											trigger="click" > 
-											<el-row> 
-												<el-col :span="24" style="padding-top:5px;">
-													<el-button   @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus">直接添加子需求</el-button> 
-												</el-col>  
-												<el-col :span="24" style="padding-top:5px;">
-													<el-button  @click="showImportFromMenuTemplate(scope.row)" icon="el-icon-upload2">由模板快速导入子需求</el-button> 
-												</el-col> 
-											</el-row>   
-											<el-button type="text"    slot="reference" icon="el-icon-plus">{{scope.row.ntype=='1'?'子需求':''}}</el-button>
-										</el-popover>   
-										<font>
-											<el-button  v-if="scope.row.ntype!=='1'"  type="text"  @click="showTaskListForMenu(scope.row,scope.$index)"  icon="el-icon-s-operation">查任务</el-button>
-											<el-button  v-if="scope.row.ntype!=='1'"  type="text"  @click="showTaskList(scope.row,scope.$index)"  icon="el-icon-s-operation">关联任务</el-button> 
-										</font>
-									</el-row>
 								</template>
 							</el-table-column>   
 							
@@ -1129,5 +1154,19 @@
   font-size: 14px;
   display: inline-block;
   margin-right: 5px;
+} 
+</style>
+<style lang="scss">
+.tool-bar{
+	 display: none;
+} 
+.el-table__body tr:hover{
+	.tool-bar{
+		display: inline;     
+		.u-btn{   
+			float: right;
+		}
+	}
+	
 }
 </style>
