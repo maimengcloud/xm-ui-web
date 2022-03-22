@@ -8,6 +8,7 @@
           <el-input v-model="filters.key" class="input-width"  placeholder="模糊查询"> 
           </el-input> 
           <el-button type="primary"  @click="searchAssigneeToMeTasks" icon="el-icon-search">查询</el-button>
+          
           <el-popover placement="top" width="375" trigger="manual" v-model="weixinContentVisible">
             <p>{{weixinContent}}</p>
             <div style="text-align: right; margin: 0">
@@ -17,17 +18,13 @@
             <el-button slot="reference" v-show="assigneeToMe===false"
               v-on:click="showWeixin" class="hidden-sm-and-down">微信催办</el-button>
           </el-popover>
+
           <el-button v-show="assigneeToMe===false" class="hidden-sm-and-down" v-on:click="showSendSms">短信催办</el-button>
-
           <el-button v-show="assigneeToMe===false" class="hidden-sm-and-down" v-on:click="showOaMsg">OAMSG催办</el-button>
-
           <el-button @click.native="showTagSelect(false)" icon="el-icon-plus">标签</el-button>
           <el-button @click="moreFilterVisible = true" circle icon="el-icon-more"></el-button>
-
-
           <el-drawer title="更多查询条件" :visible.sync="moreFilterVisible"   append-to-body :size="400">
             <el-row class="page-container more-filter"> 
-              
               <el-divider content-position="left">查询条件</el-divider>
               <el-row>
                 <font>
@@ -37,7 +34,6 @@
                   <el-option v-for="item in categorys" :key="item" :label="item" :value="item"></el-option>
                 </el-select>
               </el-row>
-
               <el-row>
                 <font >
                   标签查找
@@ -79,14 +75,15 @@
                 <el-button @click="handleDownload">导出数据</el-button>
               </el-row>
             </el-row>
-
           </el-drawer>
           <el-row class="page-tips"><span></span></el-row>
         </el-row>
+        
         <el-row v-if="showCalendar==false" class="page-main">
           <!--列表 Task act_ru_task-->
+          <!-- :height="tableHeight" -->
           <el-table ref="table" :data="tasks" highlight-current-row v-loading="listLoading" border
-            @selection-change="selsChange" @row-click="rowClick" style="width: 100%;" :height="tableHeight">
+            @selection-change="selsChange" @row-click="rowClick" style="width: 100%;" height="tableHeight">
             <el-table-column type="selection" width="40" v-if="screenWidth>=500" :class="'hidden-sm-and-down'">
             </el-table-column>
             <el-table-column type="index" width="40" :class="'hidden-sm-and-down'"></el-table-column>

@@ -21,6 +21,9 @@ import  'echarts/map/js/china.js'
 import * as filters from './filters' // global filters
 import Print from 'vue-print-nb'
 
+
+
+
 Vue.prototype.$echarts = echarts
 Vue.use(Print); //注册
 Vue.use(Element, {

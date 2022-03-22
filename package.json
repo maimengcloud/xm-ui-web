@@ -48,6 +48,7 @@
     "vue-count-to": "1.0.13",
     "vue-cropper": "^0.2.9",
     "vue-gantt-schedule-timeline-calendar": "^1.0.33",
+    "vue-grid-layout": "^2.3.12",
     "vue-i18n": "7.3.2",
     "vue-okr-tree": "^1.0.10",
     "vue-print-nb": "^1.7.5",
