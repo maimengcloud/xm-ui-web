@@ -1,8 +1,8 @@
 <template>
 	<section class="page-container padding border">
 		
-		<el-row class="padding-header">
-			<el-steps :active="calcXmProductPstatusStep" simple finish-status="success">
+		<el-row style="padding-left:250px;padding-right:250px;padding-top:20px;padding-bottom:20px;">
+			<el-steps :active="calcXmProductPstatusStep" finish-status="success">
  				<el-step  v-for="(i,index) in dicts['xmProductPstatus']" :title="i.name" :key="index" @click.native.stop="editForm.pstatus=i.id">
 					 <el-link slot="title" >
 						 {{i.name}} 
