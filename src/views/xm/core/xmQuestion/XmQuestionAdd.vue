@@ -9,38 +9,72 @@
 			</el-steps>
 		</el-row>
 		<el-row class="page-main  padding">
-			<el-form :model="addForm"  :rules="addFormRules" ref="addForm">
+			<el-form :model="addForm" label-width="120px"  :rules="addFormRules" ref="addForm">
 						<el-form-item label="缺陷标题" prop="name">
 							<el-input v-model="addForm.name" placeholder="缺陷标题" ></el-input>
+							<br><el-tooltip content="隶属需求">   
+									<el-tag  closable @click="showSelectMenu" @close.stop="handleCloseMenuTag">
+									<div class="icon" :style="{backgroundColor:   'rgb(79, 140, 255)' }">
+										<i :class="  'el-icon-document'  " ></i>
+									</div> {{addForm.menuName?addForm.menuName:"未关联需求"}}</el-tag></el-tooltip>
 						</el-form-item>
-						<el-form-item label="隶属" prop="taskName">
-							<el-tooltip content="隶属项目"><el-tag :closable="!selProject" @click="showProjectList" @close.stop="clearProject">{{this.filters.selProject?this.filters.selProject.name:'未关联项目'}}</el-tag></el-tooltip>
-							<el-divider direction="vertical"></el-divider>
-							<el-tooltip content="隶属任务"><el-tag  closable @click="showSelectTask" @close.stop="handleCloseTaskTag">{{addForm.taskName?addForm.taskName:'未关联任务'}}</el-tag> </el-tooltip>
-							<el-divider direction="vertical"></el-divider>
-							<el-tooltip content="隶属需求"><el-tag  closable @click="showSelectMenu" @close.stop="handleCloseMenuTag">{{addForm.menuName?addForm.menuName:"未关联需求"}}</el-tag></el-tooltip>
-						</el-form-item>
-						<el-form-item label="缺陷属性" prop="priority">
-							<el-col :span="24">
-							<el-select v-model="addForm.priority" placeholder="请选择紧急程度">
-								<el-option v-for="(i,index) in dicts['urgencyLevel']" :label="i.name" :value="i.id" :key="i.id">{{i.name}}</el-option>
-							</el-select>
-
-							<el-select v-model="addForm.bugSeverity" placeholder="请选择严重程度">
-								<el-option v-for="(i,index) in dicts['bugSeverity']" :label="i.name" :value="i.id" :key="i.id">{{i.name}}</el-option>
-							</el-select>
-
-							<el-select v-model="addForm.solution" placeholder="请选择解决方案">
-								<el-option v-for="(i,index) in dicts['bugSolution']" :label="i.name" :value="i.id" :key="i.id">{{i.name}}</el-option>
-							</el-select>
+						<el-row>
+							<el-col :span="12">
+								<el-form-item label="归属项目" prop="projectId">
+									 <el-tag :closable="!selProject" @click="showProjectList" @close.stop="clearProject">{{this.filters.selProject?this.filters.selProject.name:'未关联项目'}}</el-tag>  
+								</el-form-item>
 							</el-col>
-						</el-form-item>
+							<el-col  :span="12">
+								<el-form-item label="归属任务" prop="taskName"> 
+									
+									<div    class="icon" :style="{backgroundColor:   '#409EFF' }">
+										<i :class="  'el-icon-s-operation'  " ></i>
+									</div>  
+									 <el-tag  closable @click="showSelectTask" @close.stop="handleCloseTaskTag">{{addForm.taskName?addForm.taskName:'未关联任务'}}</el-tag>   
+								</el-form-item>
+							</el-col>
+						</el-row>
+						<el-row> 
+								<el-col :span="12">
+									<el-form-item label="紧急程度" prop="priority">
+										<el-select v-model="addForm.priority" placeholder="请选择紧急程度">
+											<el-option v-for="(i,index) in dicts['urgencyLevel']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
+										</el-select> 
+									</el-form-item>
+									
+								</el-col>
+								<el-col :span="12">
+									<el-form-item label="严重程度" prop="bugSeverity">
+									<el-select v-model="addForm.bugSeverity" placeholder="请选择严重程度">
+										<el-option v-for="(i,index) in dicts['bugSeverity']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
+									</el-select> 
+									</el-form-item>
+								</el-col> 
+						</el-row>
+						
+						<el-row> 
+								<el-col :span="12">
+									<el-form-item label="复现频率" prop="repRate">
+										<el-select v-model="addForm.repRate" placeholder="请选择复现频率">
+											<el-option v-for="(i,index) in dicts['bugRepRate']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
+										</el-select> 
+									</el-form-item>
+									
+								</el-col>
+								<el-col :span="12">
+									<el-form-item label="解决方案" prop="solution">
+										<el-select v-model="addForm.solution" placeholder="请选择解决方案">
+											<el-option v-for="(i,index) in dicts['bugSolution']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
+										</el-select> 
+									</el-form-item>
+								</el-col>
+						</el-row>
 						<el-form-item label="提出人" prop="askUsername">
 							<el-tag @click="showGroupUsers('askUsername')">{{addForm.askUsername?addForm.askUsername:'未关联提出人'}}</el-tag>
 							<el-tooltip content="最晚解决时间"><el-date-picker :clearable="false" style="width:150px;" type="date" placeholder="选择日期" v-model="addForm.endTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker></el-tooltip>
 						</el-form-item>
 						<el-form-item label="指派给" prop="handlerUsername">
-							{{addForm.handlerUsername}} <el-button @click="sendToAsk">指派给提出人</el-button><el-button @click="sendToCreater">指派给创建人</el-button><el-button @click="showGroupUsers('handlerUsername')">指派给其它人</el-button>
+							{{addForm.handlerUsername}} <el-button type="text" @click="sendToAsk">指派给提出人</el-button><el-button type="text"  @click="sendToCreater">指派给创建人</el-button><el-button type="text"  @click="showGroupUsers('handlerUsername')">指派给其它人</el-button>
 						</el-form-item>
 
 						<el-form-item label="测试步骤" prop="opStep">
@@ -180,6 +214,7 @@
 					id:'',name:'',projectId:'',projectName:'',taskId:'',taskName:'',endTime:'',askUserid:'',askUsername:'',handlerUserid:'',handlerUsername:'',priority:'3',solution:'',processTime:'',receiptMessage:'',receiptTime:'',description:'',createUserid:'',createUsername:'',createTime:'',status:'',bugSeverity:'3',
 					qtype:'',
 					attachment: [],
+					repRate:'',
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				fileVisible: true,
@@ -401,7 +436,7 @@
 			this.addForm.qtype=this.qtype
 			this.setDefaultData();
 			this.initByExec();
-			initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','urgencyLevel']).then(res=>{
+			initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','urgencyLevel','bugRepRate']).then(res=>{
 				if(res.data.tips.isOk){
 					this.dicts['bugSeverity']=res.data.data.bugSeverity
 					this.dicts['bugSolution']=res.data.data.bugSolution

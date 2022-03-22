@@ -35,7 +35,7 @@
 						</el-menu-item> 
 				</el-submenu > 
 				<el-menu-item  index="缺陷">
-					 <span slot="title"><i class="el-icon-question"  ></i>缺陷</span>
+					 <span slot="title"><i class="bug"  ></i>缺陷</span>
 				</el-menu-item> 
 				<el-submenu index="团队">
 					<template slot="title">团队</template>

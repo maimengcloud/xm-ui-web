@@ -128,9 +128,10 @@
 				<!--列表 XmQuestion xm_question-->
 				<el-table  ref="table" :height="maxTableHeight" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  					<el-table-column  label="序号" type="index" min-width="50"></el-table-column>
-					 <el-table-column prop="name" label="缺陷名称"  min-width="150" show-overflow-tooltip>
-						<template slot-scope="scope"> 
-								<span class="vlink" @click="showEdit(scope.row)"> 
+					  <el-table-column prop="id" label="缺陷编号" width="100" show-overflow-tooltip></el-table-column>
+					 <el-table-column prop="name" label="缺陷名称"  min-width="150">
+						<template slot-scope="scope">  
+								<span class="vlink" @click="showEdit(scope.row)" :title="scope.row.name"> 
 									<el-tag type="info" v-if="scope.row.bugSeverity=='4' ">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
 									<el-tag type="primary" v-else-if="scope.row.bugSeverity=='3'">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
 									<el-tag type="warning" v-else-if="scope.row.bugSeverity=='2'">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
