@@ -13,13 +13,14 @@
 					<el-option v-for="(b,index) in dicts['bugSeverity']" :value="b.id" :key="index" :label="b.name">{{b.name}}
 					</el-option>
 				</el-select>
-				<el-input style="width:200px;" v-model="filters.key" placeholder="缺陷名称" clearable> 
-				</el-input>
-				<el-button @click="searchXmQuestions" type="primary" icon="el-icon-search"></el-button>
 				
 				<el-button v-if="!filters.tags||filters.tags.length==0" @click.native="tagSelectVisible=true">标签</el-button>
 				<el-tag v-else @click="tagSelectVisible=true"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
- 
+				
+				<el-input style="width:200px;" v-model="filters.key" placeholder="缺陷名称" clearable> 
+				</el-input>
+				<el-button @click="searchXmQuestions" type="primary" icon="el-icon-search"></el-button> 
+				<span style="float:right;">
 				<el-button type="primary" icon="el-icon-plus" @click="showAdd">
 				</el-button>
 				<el-popover
@@ -121,6 +122,7 @@
 					</el-row>
 					<el-button  slot="reference" icon="el-icon-more"></el-button>
 				</el-popover> 
+				</span>
 			 </el-row> 
 			 <el-row class="padding-top">
 				<!--列表 XmQuestion xm_question-->
