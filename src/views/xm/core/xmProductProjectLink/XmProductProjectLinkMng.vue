@@ -1,8 +1,10 @@
 <template>
 	<section class="app-container">
 		<el-row> 
-			<el-button type="primary" v-if="selProject" @click="productVisible=true" icon="el-icon-plus" > 选择更多产品加入项目 </el-button>
-			<el-button type="primary" v-if="xmProduct" @click="projectVisible=true" icon="el-icon-plus" > 选择更多项目加入产品 </el-button> 
+			<span style="float:right;">
+			<el-button type="primary" v-if="selProject" @click="productVisible=true" icon="el-icon-plus" round> 选择更多产品加入项目 </el-button>
+			<el-button type="primary" v-if="xmProduct" @click="projectVisible=true" icon="el-icon-plus" round> 选择更多项目加入产品 </el-button> 
+			</span>
 		</el-row>
 		<el-row style="padding-top:10px;">
 			<!--列表 XmProductProjectLink 产品与项目的关联关系表，一般由产品经理挂接项目到产品上-->
