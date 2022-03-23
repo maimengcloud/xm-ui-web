@@ -15,7 +15,7 @@
 			<el-button class="hidden-lg-and-down" type="plain" @click="xmRecordVisible=true" icon="el-icon-document">变化日志</el-button>
 			<el-button class="hidden-lg-and-down" type="plain" @click="doSearchImGroupsByProjectId" icon="el-icon-document">绑定即聊情况</el-button>
 			<el-button class="hidden-md-and-down" @click="groupRoleDescVisible=true" icon="el-icon-document">角色说明</el-button> 
-				<font style="font-size:12px;" class="hidden-md-and-down" color="red">点击架构图操作</font>
+				<font style="font-size:12px;" class="hidden-md-and-down" color="blue">点击架构图操作</font>
 				
 			<el-popover
 				placement="bottom"
@@ -24,7 +24,7 @@
 				 	<el-button   type="plain" @click="xmRecordVisible=true" icon="el-icon-document">变化日志</el-button>
 					<el-button   type="plain" @click="doSearchImGroupsByProjectId" icon="el-icon-document">绑定即聊情况</el-button>
  					<el-button   @click="groupRoleDescVisible=true" icon="el-icon-document">角色说明</el-button> 
-					 <font style="font-size:12px;"   color="red">注意：点击架构图进行操作</font>
+					 <font style="font-size:12px;"   color="blue">注意：点击架构图进行操作</font>
  					<el-link type="warning" slot="reference" v-if="!selProject" icon="el-icon-search">更多</el-link> 
 			</el-popover>
   		</el-row> 

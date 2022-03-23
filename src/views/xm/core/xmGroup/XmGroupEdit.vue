@@ -16,7 +16,7 @@
 					</el-form-item> 
 					<el-form-item label="副组长" prop="assUsername">
 						<el-input v-model="editForm.assUsername" placeholder="副组长姓名" @click.native="showUserSelect('ass')"></el-input>
-						<font color="red">如果没用副组长可以设置为项目助理、小组助理等，具有组长同等权限</font>
+						<font color="blue">如果没用副组长可以设置为项目助理、小组助理等，具有组长同等权限</font>
 					</el-form-item>  
 				</el-form-item>     
 				<el-form-item label="企业协作" prop="isCrow"> 
@@ -25,7 +25,7 @@
 					</el-form-item> 
 					<el-form-item label="协作公司" prop="crowBranchName" v-if="editForm.isCrow">
 						<el-input v-model="editForm.crowBranchName" placeholder="协作公司名称" @click.native="branchVisible=true"></el-input>
-						<font color="red">如果该团队属于某协作公司，请选择协作公司。</font>
+						<font color="blue">如果该团队属于某协作公司，请选择协作公司。</font>
 					</el-form-item>  
 				</el-form-item>      
 			</el-form>

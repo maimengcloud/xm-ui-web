@@ -16,7 +16,7 @@
 				</el-form-item>
 				<el-form-item label="迭代名称" prop="iterationName">
 					<el-input v-model="addForm.iterationName" placeholder="迭代名称" minlength="10"></el-input>
-					<font color="red">格式如下： 上线日期+主题+V版本号 例如： 2021.6.15购书商城V1.0.9</font>
+					<font color="blue">格式如下： 上线日期+主题+V版本号 例如： 2021.6.15购书商城V1.0.9</font>
 				</el-form-item> 
 				<el-form-item label="开始时间" prop="startTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="addForm.startTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>

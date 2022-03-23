@@ -9,7 +9,7 @@
 									<el-button type="text" @click="createProjectCode">自动生成</el-button>
 								</template>
 							</el-input>
-							 <font color="red" style="font-size:10px;">项目代号为合同上的项目代号，甲乙方共享;项目内部编号为 &nbsp;代号-四位随机码</font>
+							 <font color="blue" style="font-size:10px;">项目代号为合同上的项目代号，甲乙方共享;项目内部编号为 &nbsp;代号-四位随机码</font>
 					</el-form-item>  					
 					<el-form-item label="名称" prop="name">  
 							<el-input  v-model="addForm.name" placeholder="项目名称" ></el-input> 
@@ -34,15 +34,15 @@
 					<el-form-item label="预算控制"> 
 						<el-form-item prop="budgetCtrl">
 							<el-checkbox  v-model="addForm.budgetCtrl"  true-label="1" false-label="0" >总预算控制</el-checkbox>  
-							<font style="font-size:12px;" color="red">项目计划总预算不能大于项目总预算</font> 
+							<font style="font-size:12px;" color="blue">项目计划总预算不能大于项目总预算</font> 
 						</el-form-item>  
 						<el-form-item label="" prop="phaseBudgetCtrl">
 							<el-checkbox  v-model="addForm.phaseBudgetCtrl"  true-label="1" false-label="0" >项目计划预算控制</el-checkbox> 
-							<font style="font-size:12px;" color="red">下级计划总预算不能大于上级计划总预算；每条计划的预算金额必须大于其关联任务的预算合计。</font> 
+							<font style="font-size:12px;" color="blue">下级计划总预算不能大于上级计划总预算；每条计划的预算金额必须大于其关联任务的预算合计。</font> 
 						</el-form-item> 
 						<el-form-item label="" prop="phaseActCtrl">
 							<el-checkbox  v-model="addForm.phaseActCtrl"  true-label="1" false-label="0" >实际金额控制</el-checkbox>  
-							<font style="font-size:12px;" color="red">每条计划实际金额不能大于预算金额;每条计划的预算金额必须大于其关联的任务的实际金额合计。</font> 
+							<font style="font-size:12px;" color="blue">每条计划实际金额不能大于预算金额;每条计划的预算金额必须大于其关联的任务的实际金额合计。</font> 
 						</el-form-item> 
 					
 					</el-form-item>	 
@@ -50,19 +50,19 @@
 							<el-col :span="8">
 						<el-form-item label="总控"  prop="admUserid">
 							<el-input readonly v-model="addForm.admUsername" @click.native="showUserVisible('admUserid')"></el-input>
-							<font style="font-size:12px;" color="red"></font> 
+							<font style="font-size:12px;" color="blue"></font> 
 						</el-form-item>  
 							</el-col>
 							<el-col :span="8">
 						<el-form-item label="项目经理" prop="pmUserid"> 
 							<el-input readonly v-model="addForm.pmUsername" @click.native="showUserVisible('pmUserid')"></el-input>
-							<font style="font-size:12px;" color="red"></font> 
+							<font style="font-size:12px;" color="blue"></font> 
 						</el-form-item> 
 							</el-col>
 							<el-col :span="8">
 						<el-form-item label="副经理、助理" prop="assUserid"> 
 							<el-input readonly v-model="addForm.assUsername" @click.native="showUserVisible('assUserid')"></el-input>
-							<font style="font-size:12px;" color="red"></font> 
+							<font style="font-size:12px;" color="blue"></font> 
 						</el-form-item>  
 							</el-col>
 						</el-row>

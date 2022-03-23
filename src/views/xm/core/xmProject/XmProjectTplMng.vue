@@ -7,7 +7,7 @@
 		</el-row>
 		<el-row v-if="showType=='simple'"> 
 					<el-col :span="24">
-					<el-checkbox v-model="filters.isMy" false-label="0" true-label="1">我的模板</el-checkbox> <font style="font-size:10px;" color="red">通过复制快速创建新的项目</font>
+					<el-checkbox v-model="filters.isMy" false-label="0" true-label="1">我的模板</el-checkbox> <font style="font-size:10px;" color="blue">通过复制快速创建新的项目</font>
 					</el-col>
 					<el-col :span="16"><el-input  v-model="filters.key" placeholder="模板名字"></el-input>
 					</el-col>
@@ -57,7 +57,7 @@
 						<el-button type="text" @click="createProjectCode">自动生成</el-button>
 					</template>
 				</el-input>
-				<font color="red" style="font-size:10px;">项目代号为合同上的项目代号，甲乙方共享;项目内部编号为 &nbsp;代号-四位随机码</font>
+				<font color="blue" style="font-size:10px;">项目代号为合同上的项目代号，甲乙方共享;项目内部编号为 &nbsp;代号-四位随机码</font>
 			</el-form-item>
 			<el-form-item  label="目标">
 				<el-radio v-model="xmProjectCopy.isTpl" label="1">复制为新的模板</el-radio>

@@ -113,7 +113,7 @@
 							<el-form-item label="预估金额" prop="budgetAmount">
 								<el-input-number style="width:200px;"  v-model="editForm.budgetAmount" :precision="2" :step="100" :min="0" placeholder="预算金额"></el-input-number>   元 
 							</el-form-item> 
-							<font color="red" style="font-size:10px;">控制规则：下级预估工作量总和不能大于上级预估工作量</font>
+							<font color="blue" style="font-size:10px;">控制规则：下级预估工作量总和不能大于上级预估工作量</font>
 						</el-collapse-item>
 						<el-collapse-item title="进度与实际工作量填报" name="3">
 							<el-form-item label="数据收集方式" prop="calcType"> 
@@ -130,7 +130,7 @@
 							<el-form-item label="实际金额" prop="mactAmount" v-if="editForm.calcType==='2'">
 								<el-input-number style="width:200px;"  v-model="editForm.mactAmount" :precision="2" :step="100" :min="0" placeholder="实际金额"></el-input-number>   元 
 							</el-form-item> 
-							<font color="red" style="font-size:10px;">控制规则:
+							<font color="blue" style="font-size:10px;">控制规则:
 								<br>下级往上汇总：指需求池的数据来自直接下级的需求池(需求)的数据之和。逐级往上汇总。
 								<br>由任务汇总： 指需求(不包括需求池)的数据来自与该需求关联的任务的数据之和。
 								<br>手工填报：  指需求(不包括需求池)的数据来自手工填报，无论是否关联了任务，都不从任务汇总。

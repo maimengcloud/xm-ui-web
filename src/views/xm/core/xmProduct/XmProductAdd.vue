@@ -11,7 +11,7 @@
 							</template>
 						</el-input>
 							
-						<font color="red" style="font-size:10px;">产品代号为合同上的产品代号，甲乙方共享；产品内部编号为&nbsp;代号-四位随机码</font>
+						<font color="blue" style="font-size:10px;">产品代号为合同上的产品代号，甲乙方共享；产品内部编号为&nbsp;代号-四位随机码</font>
 				</el-form-item>  		   
 				<el-form-item label="产品名称" prop="productName">
 					<el-input v-model="addForm.productName" placeholder="产品名称" ></el-input>
@@ -20,19 +20,19 @@
 					<el-col :span="8">
 				<el-form-item label="总监"  prop="admUserid">
 					<el-input readonly v-model="addForm.admUsername" @click.native="showUserVisible('admUserid')"></el-input>
-					<font style="font-size:12px;" color="red"></font> 
+					<font style="font-size:12px;" color="blue"></font> 
 				</el-form-item>  
 					</el-col>
 					<el-col :span="8">
 				<el-form-item label="产品经理" prop="pmUserid"> 
 					<el-input readonly v-model="addForm.pmUsername" @click.native="showUserVisible('pmUserid')"></el-input>
-					<font style="font-size:12px;" color="red"></font> 
+					<font style="font-size:12px;" color="blue"></font> 
 				</el-form-item> 
 					</el-col>
 					<el-col :span="8">
 				<el-form-item label="副经理、助理" prop="assUserid"> 
 					<el-input readonly v-model="addForm.assUsername" @click.native="showUserVisible('assUserid')"></el-input>
-					<font style="font-size:12px;" color="red"></font> 
+					<font style="font-size:12px;" color="blue"></font> 
 				</el-form-item>  
 					</el-col>
 				</el-row>
