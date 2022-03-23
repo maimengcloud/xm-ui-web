@@ -240,7 +240,7 @@
 			//批量删除xmIterationMenu
 			batchDel: function () { 
 				if(this.sels.length<=0){
-					this.$notify({showClose: true, message:"请先选择一个或者多个需求", type: 'error' }); 
+					this.$notify({showClose: true, message:"请先选择一个或者多个需求", type: 'warning' }); 
 					return ;
 				}
 				this.$confirm('确认将需求移出迭代吗？', '提示', {

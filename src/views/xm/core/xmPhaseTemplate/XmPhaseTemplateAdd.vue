@@ -142,7 +142,7 @@
 			//新增提交XmPhaseTemplate xm_phase_template 父组件监听@submit="afterAddSubmit"
 			addSubmit: function () { 
 				if(!this.selProjectTemplate){
-					this.$notify.error("模板不能为空，请先选择项目模板")
+					this.$notify.warning("模板不能为空，请先选择项目模板")
 					return;
 				}
 				this.$refs.addForm.validate((valid) => {

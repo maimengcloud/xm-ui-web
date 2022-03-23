@@ -680,7 +680,7 @@
 					this.addFormVisible = true;
 				}else{
 					this.productVisible=true;
-					this.$notify({showClose: true, message: "请先选择一个产品", type: 'error'});
+					this.$notify({showClose: true, message: "请先选择一个产品", type: 'warning'});
 				}
 				
 				//this.addForm=Object.assign({}, this.editForm);
@@ -763,7 +763,7 @@
 			//批量删除xmMenu
 			batchDel: function () { 
 				if(this.sels.length==0){
-					this.$notify({showClose: true, message: "请先选择要删除的需求或者需求池", type: 'error'});
+					this.$notify({showClose: true, message: "请先选择要删除的需求或者需求池", type: 'warning'});
 					return;
 				}
 				this.$confirm('确认删除选中的'+this.sels.length+'条数据吗？删除后数据不可恢复', '提示', {
@@ -964,7 +964,7 @@
 			loadTasksToXmMenuState: function () {  
 				this.load.edit=true;
 				if(!this.filters.product){
-					this.$notify.error("请先选择产品");
+					this.$notify.warning("请先选择产品");
 				}
 				let params = { productId: this.filters.product.id };
 				loadTasksToXmMenuState(params).then((res) => {

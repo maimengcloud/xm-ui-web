@@ -1465,12 +1465,12 @@ export default {
       }
       if(this.ptype==='1'){
         if(!params.productId){
-          this.$notify.error("请先选中产品")
+          this.$notify.warning("请先选中产品")
           return;
         }
       }else if(this.ptype==='0'){
         if(!params.projectId){
-          this.$notify.error("请先选中项目")
+          this.$notify.warning("请先选中项目")
           return;
         }
       }
@@ -1505,7 +1505,7 @@ export default {
     },
     showBatchRelTasksWithMenuVisible(){
       if(this.sels.length==0){
-        this.$notify.error("请先选中一条或者多条数据")
+        this.$notify.warning("请先选中一条或者多条数据")
         return;
       }
       this.batchRelTasksWithMenuVisible=true;
@@ -1758,7 +1758,7 @@ export default {
     //批量删除xmTask
     batchDel: function () {
       if(this.sels.length==0){
-        this.$notify.error("请先选中要删除的记录")
+        this.$notify.warning("请先选中要删除的记录")
         return;
       }
       this.$confirm("确认删除选中记录吗？", "提示", {

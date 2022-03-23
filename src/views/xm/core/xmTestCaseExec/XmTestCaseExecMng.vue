@@ -499,13 +499,9 @@
 				}
 
 			},
-			showCase(){
-				if( !this.roles.some(i=>i.roleid=='testAdmin')   && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
-					this.$notify({showClose: true,message:"只有测试经理、测试组长可以操作",type:"error"});
-					return ;
-				}
+			showCase(){ 
 				if(!this.filters.selProject){
-					this.$notify({showClose: true,message:"请先选择项目",type:"success"});
+					this.$notify({showClose: true,message:"请先选择项目",type:"warning"});
 					this.nextAction="showCase"
 					this.showProjectList();
 					return;
@@ -592,19 +588,14 @@
 					return ;
 				}
 				if( !this.filters.selProject ){
-					this.$notify({showClose: true, message:"请先选择项目", type: 'success'});
+					this.$notify({showClose: true, message:"请先选择项目", type: 'warning'});
 					this.nextAction="showBatchEdit"
 					this.showProjectList();
 					return ;
 				}
 				this.batchEditVisible=true
 			},
-			batchEditXmTestCaseExec:function(){
-				
-				if( !this.roles.some(i=>i.roleid=='testAdmin') && !this.roles.some(i=>i.roleid=='tester') && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
-					this.$notify({showClose: true,message:"只有测试经理、测试组长、测试员可以操作",type:"error"});
-					return ;
-				}
+			batchEditXmTestCaseExec:function(){ 
  				if(this.valueChangeRows.length==0){
 					this.$notify({showClose: true, message:"没有改变任何数据，无需保存", type: 'success'});
 					return;

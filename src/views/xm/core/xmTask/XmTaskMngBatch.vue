@@ -553,7 +553,7 @@ export default {
         this.$notify({
           showClose: true,
           message: "请先选择项目计划",
-          type: "error",
+          type: "warning",
         });
         return false;
       }
@@ -570,7 +570,7 @@ export default {
         this.$notify({
           showClose: true,
           message: "请先选择项目计划",
-          type: "error",
+          type: "warning",
         });
         return;
       }
@@ -899,7 +899,7 @@ export default {
     },  
     showMenu(){
       if(this.sels.length==0){
-        this.$notify.error("请先选中一条或者多条记录")
+        this.$notify.warning("请先选中一条或者多条记录")
         return;
       }else{
         this.menuVisible=true;
@@ -1147,7 +1147,7 @@ export default {
     //查询时选择责任人
     showBatchCreateUserSelectVisible() {
        if(!this.sels||this.sels.length==0){
-         this.$notify({showClose:true,message:'请先选中一条或多条数据',type:'error'})
+         this.$notify({showClose:true,message:'请先选中一条或多条数据',type:'warning'})
          return;
        }else{
          this.batchGroupUserSelectVisible=true;
@@ -1156,7 +1156,7 @@ export default {
     //查询时选择责任人
     showBatchExecUserSelectVisible() {
        if(!this.sels||this.sels.length==0){
-         this.$notify({showClose:true,message:'请先选中一条或多条数据',type:'error'})
+         this.$notify({showClose:true,message:'请先选中一条或多条数据',type:'warning'})
          return;
        }else{
          this.batchExecUserSelectVisible=true;

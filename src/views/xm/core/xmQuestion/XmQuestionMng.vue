@@ -535,7 +535,7 @@
 			showAdd: function () {
 				if(this.filters.selProject==null){
 
-					this.$notify({showClose: true, message: "请先选中项目", type: 'success' });
+					this.$notify({showClose: true, message: "请先选中项目", type: 'warning' });
 					this.nextAction="showAdd"
 					this.showProjectList();
 					return;
@@ -677,7 +677,7 @@
 			showGroupUsers:function(userType){
 				this.userType=userType;
 				if(this.filters.selProject==null || this.filters.selProject.id==''){
-					this.$notify({showClose: true, message: "请先选中项目", type: 'success' });
+					this.$notify({showClose: true, message: "请先选中项目", type: 'warning' });
 					this.nextAction="showGroupUsers"
 					this.showProjectList();
 					return;
