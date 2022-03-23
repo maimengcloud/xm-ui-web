@@ -18,15 +18,15 @@
 				<el-table-column prop="receiptTime" label="时间" min-width="80" ></el-table-column> 
 				<el-table-column prop="handleStatus" label="状态" min-width="80" > 
 					<template slot-scope="scope"> 
-							<el-tag type="info" v-if="scope.row.bugStatus=='create' ">创建</el-tag>
-							<el-tag type="primary" v-else-if="scope.row.bugStatus=='active'">已激活</el-tag>
-							<el-tag type="warning" v-else-if="scope.row.bugStatus=='confirm'">确认</el-tag>
-							<el-tag type="warning" v-else-if="scope.row.bugStatus=='confirmed'">已确认</el-tag>
-							<el-tag type="success" v-else-if="scope.row.bugStatus=='solve'">解决</el-tag>
-							<el-tag type="success" v-else-if="scope.row.bugStatus=='resolved'">已解决</el-tag>
-							<el-tag type="success" v-else-if="scope.row.bugStatus=='close'">关闭</el-tag>
-							<el-tag type="success" v-else-if="scope.row.bugStatus=='closed'">已关闭</el-tag>
-							<el-tag v-else>{{scope.row.bugStatus}}</el-tag>   
+							<el-tag type="info" v-if="scope.row.handleStatus=='create' ">创建</el-tag>
+							<el-tag type="primary" v-else-if="scope.row.handleStatus=='active'">已激活</el-tag>
+							<el-tag type="warning" v-else-if="scope.row.handleStatus=='confirm'">确认</el-tag>
+							<el-tag type="warning" v-else-if="scope.row.handleStatus=='confirmed'">已确认</el-tag>
+							<el-tag type="success" v-else-if="scope.row.handleStatus=='solve'">解决</el-tag>
+							<el-tag type="success" v-else-if="scope.row.handleStatus=='resolved'">已解决</el-tag>
+							<el-tag type="success" v-else-if="scope.row.handleStatus=='close'">关闭</el-tag>
+							<el-tag type="success" v-else-if="scope.row.handleStatus=='closed'">已关闭</el-tag>
+							<el-tag v-else>{{scope.row.handleStatus}}</el-tag>   
 					</template>
 				</el-table-column> 
  			</el-table>
