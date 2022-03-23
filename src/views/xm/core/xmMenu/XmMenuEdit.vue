@@ -12,7 +12,7 @@
 						<el-collapse value="1" accordion>
 						<el-collapse-item title="基本信息" name="1" > 
 							<el-row> 
-								<el-col :span="6">
+								<el-col :span="8">
 									<el-form-item label="calcMenuLabel.label" prop="seqNo" >
 										<template slot="label">
 											<div  class="icon" :style="{backgroundColor: calcMenuLabel.color }">
@@ -20,10 +20,10 @@
 												</div>  
 												{{calcMenuLabel.label}}
 										</template>
-										<el-input v-model="editForm.seqNo" style="width:100%;" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input> 
+										<el-input v-model="editForm.seqNo" style="display:block;width:100%;" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input> 
 									</el-form-item>  
 								</el-col>
-								<el-col :span="18">
+								<el-col :span="16">
 									<el-form-item label="" prop="menuName" label-width="0px">
 										<el-input v-model="editForm.menuName" placeholder="名称" > 
 										</el-input>

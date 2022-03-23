@@ -192,10 +192,10 @@
 						</span>
 					 </el-row>  
 					<el-row class="padding-top">  
-						<el-table lazy :load="loadXmMenusLazy" stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
+						<el-table  :row-style="{height:'60px'}" lazy :load="loadXmMenusLazy" stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
 							<el-table-column sortable type="selection" width="40"></el-table-column> 
 							
-							<el-table-column prop="menuName" label="需求名称" min-width="300"> 
+							<el-table-column prop="menuName" label="需求名称" min-width="300" fixed="left"> 
 								<template slot-scope="scope"> 
 									<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
 									<i class="el-icon-s-promotion"></i>
@@ -234,18 +234,65 @@
 							</el-table-column>   
 							<el-table-column prop="productId" label="产品" width="100" show-overflow-tooltip>   
 							</el-table-column> 
-							<el-table-column prop="status" label="状态"  min-width="80" show-overflow-tooltip> 
+							<el-table-column prop="status" label="状态"  min-width="80" > 
 								<template slot-scope="scope"> 
+									<div class="cell-text">
 									{{dicts.menuStatus.some(i=>i.id==scope.row.status)?dicts.menuStatus.find(i=>scope.row.status==i.id).name:''}}
+									</div>
+									<span class="cell-bar">   
+										 <el-select  v-model="scope.row.status" placeholder="需求状态"  style="display:block;">
+												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option> 
+										 </el-select>  
+									</span> 
 								</template>
 							</el-table-column>   
-							<el-table-column prop="dtype" label="类型" width="100" :formatter="formaterByDicts"  show-overflow-tooltip>   
+							<el-table-column prop="dtype" label="类型" width="100" :formatter="formaterByDicts"  show-overflow-tooltip> 
+								<template slot-scope="scope"> 
+									<div class="cell-text">
+										{{dicts.demandType.some(i=>i.id==scope.row.dtype)?dicts.demandType.find(i=>scope.row.dtype==i.id).name:''}}
+									</div>
+									<span class="cell-bar">   
+										 <el-select  v-model="scope.row.dtype" placeholder="类型"  style="display:block;">
+												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.demandType" :key="index"></el-option> 
+										 </el-select>  
+									</span> 
+								</template>  
 							</el-table-column> 
-							<el-table-column prop="source"  label="来源" width="100"  :formatter="formaterByDicts"  show-overflow-tooltip>   
+							<el-table-column prop="source"  label="来源" width="100"  :formatter="formaterByDicts"  show-overflow-tooltip>  
+								<template slot-scope="scope"> 
+									<div class="cell-text">
+										{{dicts.demandSource.some(i=>i.id==scope.row.source)?dicts.demandSource.find(i=>scope.row.source==i.id).name:''}}
+									</div>
+									<span class="cell-bar">   
+										 <el-select  v-model="scope.row.source" placeholder="来源"  style="display:block;">
+												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.demandSource" :key="index"></el-option> 
+										 </el-select>  
+									</span> 
+								</template>   
 							</el-table-column> 
-							<el-table-column prop="dlvl"  label="层次" width="100"  :formatter="formaterByDicts"  show-overflow-tooltip>   
+							<el-table-column prop="dlvl"  label="层次" width="100">   
+								<template slot-scope="scope"> 
+									<div class="cell-text">
+										{{dicts.demandLvl.some(i=>i.id==scope.row.dlvl)?dicts.demandLvl.find(i=>scope.row.dlvl==i.id).name:''}}
+									</div>
+									<span class="cell-bar">   
+										 <el-select  v-model="scope.row.dlvl" placeholder="层次"  style="display:block;">
+												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.demandLvl" :key="index"></el-option> 
+										 </el-select>  
+									</span> 
+								</template>  
 							</el-table-column> 
-							<el-table-column prop="priority"  label="优先级" width="100"  :formatter="formaterByDicts"  show-overflow-tooltip>   
+							<el-table-column prop="priority"  label="优先级" width="100">   
+								<template slot-scope="scope"> 
+									<div class="cell-text">
+										{{dicts.priority.some(i=>i.id==scope.row.priority)?dicts.priority.find(i=>scope.row.priority==i.id).name:''}}
+									</div>
+									<span class="cell-bar">   
+										 <el-select  v-model="scope.row.priority" placeholder="优先级"  style="display:block;">
+												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.priority" :key="index"> </el-option> 
+										 </el-select>  
+									</span> 
+								</template>  
 							</el-table-column> 
 							<el-table-column prop="iterationName" label="迭代"  min-width="120" show-overflow-tooltip>  
 								<template slot="header">
@@ -290,10 +337,10 @@
 							</el-table-column> 
 							<el-table-column prop="ctime" label="创建日期"  min-width="100" show-overflow-tooltip> 
 								<template slot-scope="scope"> 
-										 <span>{{scope.row.ctime}} </span>  
+										 <span>{{scope.row.ctime}} </span>   
 								</template>
 							</el-table-column> 
-							<el-table-column prop="menuName" label="跟进人"  min-width="100" show-overflow-tooltip> 
+							<el-table-column prop="mmUsername" label="跟进人"  min-width="100" show-overflow-tooltip> 
 								<template slot-scope="scope"> 
 										 <span>{{scope.row.mmUsername}} </span>  
 								</template>
