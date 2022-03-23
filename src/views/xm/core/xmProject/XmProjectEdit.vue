@@ -23,9 +23,6 @@
 								<el-select v-model="editForm.xmType">
 									<el-option v-for="(i,index) in dicts['projectType']" :label="i.name" :value="i.id" :key="index"></el-option> 
 								</el-select>   
-								<el-select v-model="editForm.urgent">
-									<el-option v-for="(i,index) in dicts['priority']" :label="i.name" :value="i.id" :key="index"></el-option> 
-								</el-select>    
 								<el-select v-model="editForm.priority">
 									<el-option v-for="(i,index) in dicts['priority']" :label="i.name" :value="i.id" :key="index"></el-option> 
 								</el-select> 
