@@ -12,7 +12,9 @@
 			<el-input v-model="filters.cpNameKey" style="width: 20%;" placeholder="相对方名称模糊查询">  
 			</el-input>  
 			<el-button  v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmContracts" icon="el-icon-search"></el-button> 
-			<el-button type="primary" @click="showAdd" icon="el-icon-plus">合同管理</el-button>
+			<span style="float:right;">
+			<el-button type="primary" @click="showAdd" icon="el-icon-plus" round>合同管理</el-button>
+			</span>
  		</el-row>
 		<el-row class="page-main "> 
 			<!--列表 XmContract xm_project_contract-->

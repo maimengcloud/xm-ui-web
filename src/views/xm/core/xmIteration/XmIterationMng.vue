@@ -18,7 +18,6 @@
 				<el-input v-model="filters.key" style="width: 15%;" placeholder="模糊查询"> 
 				</el-input>
 				<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterations" icon="el-icon-search"></el-button>
-			<el-button type="primary" @click="showAdd" icon="el-icon-plus">迭代计划</el-button>
 			<el-popover
 				placement="top-start"
 				title=""
@@ -70,6 +69,9 @@
 				</el-row>
  				<el-button  slot="reference" icon="el-icon-more"></el-button>
 			</el-popover>
+			<span style="float:right;"> 
+				<el-button type="primary" @click="showAdd" icon="el-icon-plus" round>迭代计划</el-button>
+			</span>
  		</el-row>
 		<el-row  class="page-main">
 			<!--列表 XmIteration 迭代定义-->

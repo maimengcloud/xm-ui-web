@@ -10,8 +10,12 @@
 					<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"> 
 					</el-input>  
 					<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterationMenus" icon="el-icon-search"></el-button>
-					<el-button type="primary" @click="showAdd" icon="el-icon-plus">加入更多需求到迭代计划</el-button> 
-					<el-button type="danger" @click="batchDel" icon="el-icon-right">批量移出</el-button> 
+					
+					<span style="float:right;"> 
+						<el-button type="primary" @click="showAdd" icon="el-icon-plus" round>加入更多需求到迭代计划</el-button> 
+						<el-button type="danger" @click="batchDel" icon="el-icon-right">批量移出</el-button> 
+					</span>
+					
 				</el-row>
 				<el-row class="page-main padding-top padding-left">
 					<!--列表 XmIterationMenu 迭代定义-->
