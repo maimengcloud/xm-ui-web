@@ -15,13 +15,8 @@
 					 	 <el-radio-group v-model="addForm.xmType">
 							<el-radio v-for="(i,index) in dicts['projectType']" :label="i.id" :key="index">{{i.name}}</el-radio> 
 						</el-radio-group>  
-					</el-form-item> 
-					<el-form-item label="紧急程度" prop="urgent">
-					 	 <el-radio-group v-model="addForm.urgent">
-							<el-radio v-for="(i,index) in dicts['urgencyLevel']" :label="i.id" :key="index">{{i.name}}</el-radio> 
-						</el-radio-group>   
 					</el-form-item>  
-					<el-form-item label="优先程度" prop="priority">
+					<el-form-item label="优先级" prop="priority">
 					 	 <el-radio-group v-model="addForm.priority">
 							<el-radio v-for="(i,index) in dicts['priority']" :label="i.id" :key="index">{{i.name}}</el-radio> 
 						</el-radio-group> 
@@ -265,7 +260,7 @@
 				},
 				dicts:{ 
 					projectType:[],
-					urgencyLevel:[],
+					priority:[],
 					priority:[],
 					projectStatus:[], 
 				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
@@ -280,12 +275,9 @@
 					}],
 					xmType: [{
 						required: true, message: '项目类型不可为空', trigger: 'blur'
-					}],
-					urgent: [{
-						required: true, message: '紧急程度不可为空', trigger: 'blur'
-					}],
+					}], 
 					priority: [{
-						required: true, message: '优先程度不可为空', trigger: 'blur'
+						required: true, message: '优先级不可为空', trigger: 'blur'
 					}], 
 				},
 				//编辑界面数据  XmProjectTemplate xm_project
@@ -406,14 +398,14 @@
 		},
 		mounted() { 
 			this.addForm.id=sn();  
-				initSimpleDicts('all',['projectType','urgencyLevel','priority','projectStatus']).then(res=>{
+				initSimpleDicts('all',['projectType','priority','projectStatus']).then(res=>{
 					this.dicts['projectType']=res.data.data.projectType
-					this.dicts['urgencyLevel']=res.data.data.urgencyLevel
+					this.dicts['priority']=res.data.data.priority
 					this.dicts['priority']=res.data.data.priority
 					this.dicts['projectStatus']=res.data.data.projectStatus
 
 					this.addForm.xmType=this.dicts['projectType'][0].id
-					this.addForm.urgent=this.dicts['urgencyLevel'][0].id
+					this.addForm.urgent=this.dicts['priority'][0].id
 					this.addForm.priority=this.dicts['priority'][0].id
 				})
 			

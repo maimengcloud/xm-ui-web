@@ -47,9 +47,9 @@
 						</el-row>
 						<el-row> 
 								<el-col :span="12">
-									<el-form-item label="紧急程度" prop="priority">
-										<el-select v-model="editForm.priority" placeholder="请选择紧急程度">
-											<el-option v-for="(i,index) in dicts['urgencyLevel']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
+									<el-form-item label="优先级" prop="priority">
+										<el-select v-model="editForm.priority" placeholder="请选择优先级">
+											<el-option v-for="(i,index) in dicts['priority']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
 										</el-select> 
 									</el-form-item>
 									
@@ -220,7 +220,7 @@
 		data() {
 			return {
 				dicts:{
-					urgencyLevel:[],
+					priority:[],
 					bugSeverity:[],
 					bugSolution:[],
 					bugStatus:[],
@@ -365,7 +365,7 @@
 				}else if(columnName=='bugSeverity'){
 					key="bugSeverity"
 				}else if(columnName=='priority'){
-					key="urgencyLevel"
+					key="priority"
 				}else{
 					return cellValue
 				}
@@ -458,13 +458,13 @@
 		mounted() {
 			console.log("question_add");
 			this.editForm=Object.assign(this.editForm, this.xmQuestion);
-			initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','urgencyLevel','bugRepRate']).then(res=>{
+			initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','priority','bugRepRate']).then(res=>{
 				if(res.data.tips.isOk){
 					this.dicts['bugSeverity']=res.data.data.bugSeverity
 					this.dicts['bugSolution']=res.data.data.bugSolution
 					this.dicts['bugStatus']=res.data.data.bugStatus
 					this.dicts['bugType']=res.data.data.bugType
-					this.dicts['urgencyLevel']=res.data.data.urgencyLevel
+					this.dicts['priority']=res.data.data.priority
 					this.dicts['bugRepRate']=res.data.data.bugRepRate
 				}
 			});

@@ -24,7 +24,7 @@
 									<el-option v-for="(i,index) in dicts['projectType']" :label="i.name" :value="i.id" :key="index"></el-option> 
 								</el-select>   
 								<el-select v-model="editForm.urgent">
-									<el-option v-for="(i,index) in dicts['urgencyLevel']" :label="i.name" :value="i.id" :key="index"></el-option> 
+									<el-option v-for="(i,index) in dicts['priority']" :label="i.name" :value="i.id" :key="index"></el-option> 
 								</el-select>    
 								<el-select v-model="editForm.priority">
 									<el-option v-for="(i,index) in dicts['priority']" :label="i.name" :value="i.id" :key="index"></el-option> 
@@ -387,12 +387,9 @@
 					}],
 					xmType: [{
 						required: true, message: '项目类型不可为空', trigger: 'blur'
-					}],
-					urgent: [{
-						required: true, message: '紧急程度不可为空', trigger: 'blur'
-					}],
+					}], 
 					priority: [{
-						required: true, message: '优先程度不可为空', trigger: 'blur'
+						required: true, message: '优先级不可为空', trigger: 'blur'
 					}],
 					admUserid: [{
 						required: true, message: '项目总控不能为空', trigger: 'change'
@@ -745,7 +742,7 @@
 				 this.dateRanger=[this.editForm.startTime,this.editForm.endTime]
 				
 			
-				initSimpleDicts('all',['projectType','urgencyLevel','priority','projectStatus']).then(res=>{
+				initSimpleDicts('all',['projectType','priority','projectStatus']).then(res=>{
 					this.dicts=res.data.data;
 				})
 			

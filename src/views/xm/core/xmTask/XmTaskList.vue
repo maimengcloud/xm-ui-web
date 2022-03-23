@@ -150,7 +150,6 @@
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
 				dicts:{
-					urgencyLevel:[],
 					taskType:[],
 					planType:[],
 					priority:[],
@@ -527,7 +526,7 @@
 				this.tableHeight = util.calcTableMaxHeight(this.$refs.taskTable.$el); 
 				this.getXmTasks(); 
 			});
-				initSimpleDicts('all',['planType','taskType','urgencyLevel','priority']).then(res=>{
+				initSimpleDicts('all',['planType','taskType','priority','priority']).then(res=>{
 					this.dicts=res.data.data;
 				})		
 		}

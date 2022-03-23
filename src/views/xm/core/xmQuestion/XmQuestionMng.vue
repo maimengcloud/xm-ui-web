@@ -5,8 +5,8 @@
 					<el-option v-for="(b,index) in dicts['bugStatus']" :value="b.id"  :key="index" :label="b.name">{{b.name}}
 					</el-option>
 				</el-select>
-				<el-select class="hidden-md-and-down" v-model="filters.priority" placeholder="紧急程度"  style="width:120px;"  clearable @change="changePriority">
-					<el-option v-for="(b,index) in dicts['urgencyLevel']" :value="b.id" :key="index" :label="b.name">{{b.name}}
+				<el-select class="hidden-md-and-down" v-model="filters.priority" placeholder="优先级"  style="width:120px;"  clearable @change="changePriority">
+					<el-option v-for="(b,index) in dicts['priority']" :value="b.id" :key="index" :label="b.name">{{b.name}}
 					</el-option>
 				</el-select>
 				<el-select class="hidden-md-and-down" v-model="filters.bugSeverity" placeholder="严重程度"  style="width:120px;" clearable @change="changeBugSeverity">
@@ -71,8 +71,8 @@
 							<el-button v-else    @click="showMenu" type="plian">选需求</el-button>
 						</el-col>
 						<el-col :span="24" class="hidden-lg-and-up" style="padding-top:12px;">
-							<el-select   v-model="filters.priority" placeholder="请选择紧急程度" clearable @change="changePriority">
-								<el-option v-for="(b,index) in dicts['urgencyLevel']" :value="b.id" :key="index" :label="b.name">{{b.name}}
+							<el-select   v-model="filters.priority" placeholder="请选择优先级" clearable @change="changePriority">
+								<el-option v-for="(b,index) in dicts['priority']" :value="b.id" :key="index" :label="b.name">{{b.name}}
 								</el-option>
 							</el-select>
 						</el-col>
@@ -282,7 +282,7 @@
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
 				dicts:{
-					urgencyLevel:[],
+					priority:[],
 					bugSeverity:[],
 					bugSolution:[],
 					bugStatus:[],
@@ -327,7 +327,7 @@
 					{
 						key: 'priority',
 						type: 'dict',
-						name: '紧急程度'
+						name: '优先级'
 					},
 					{
 						key: 'solution',
@@ -648,7 +648,7 @@
 				}else if(columnName=='bugSeverity'){
 					key="bugSeverity"
 				}else if(columnName=='priority'){
-					key="urgencyLevel"
+					key="priority"
 				}else{
 					return cellValue
 				}
@@ -722,7 +722,7 @@
 					} else if(j == 'bugSeverity') {
 						key = "bugSeverity"
 					} else if(j == 'priority') {
-						key = "urgencyLevel"
+						key = "priority"
 					} else {
 						return v[j];
 					}
@@ -955,13 +955,13 @@
 				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
 				this.getXmQuestions();
 			});
-				initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','urgencyLevel']).then(res=>{
+				initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','priority']).then(res=>{
 					if(res.data.tips.isOk){
 						this.dicts['bugSeverity']=res.data.data.bugSeverity
 						this.dicts['bugSolution']=res.data.data.bugSolution
 						this.dicts['bugStatus']=res.data.data.bugStatus
 						this.dicts['bugType']=res.data.data.bugType
-						this.dicts['urgencyLevel']=res.data.data.urgencyLevel
+						this.dicts['priority']=res.data.data.priority
 					}
 				});
 		}

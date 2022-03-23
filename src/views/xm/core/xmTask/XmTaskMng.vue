@@ -698,7 +698,7 @@
               <el-tag
                 v-if="editForm.level != '' && editForm.level != null"
                 style="border-radius: 30px"
-                >{{ formateOption("urgencyLevel", editForm.level) }}</el-tag
+                >{{ formateOption("priority", editForm.level) }}</el-tag
               >
               [{{ formateOption("taskType", editForm.taskType) }}]
               <span> {{ editForm.projectName }} </span>
@@ -1247,7 +1247,7 @@ export default {
       load: { list: false, edit: false, del: false, add: false }, //查询中...
       sels: [], //列表选中数据
       dicts: {
-        urgencyLevel: [],
+        priority: [],
         taskType: [],
         planType: [],
         priority: [],
@@ -2569,7 +2569,7 @@ export default {
     this.$nextTick(() => {
       this.getXmTasks();
       this.tableHeight = util.calcTableMaxHeight(this.$refs.table.$el);
-      initSimpleDicts( "all", ["planType","taskType","urgencyLevel","xmTaskSettleSchemel","priority","taskState" ]).then((res) => {
+      initSimpleDicts( "all", ["planType","taskType","priority","xmTaskSettleSchemel","priority","taskState" ]).then((res) => {
         this.dicts = res.data.data;
       });
     });

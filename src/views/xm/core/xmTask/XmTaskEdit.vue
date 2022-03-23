@@ -86,9 +86,9 @@
 						</el-row>
 						<el-row>
 							<el-col :span="12">
-								<el-form-item  label="紧急程度" prop="level">  
+								<el-form-item  label="优先级" prop="level">  
 									<el-select v-model="editForm.level">
-											<el-option v-for="i in dicts.urgencyLevel" :label="i.name" :key="i.id" :value="i.id"></el-option> 
+											<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option> 
 									</el-select>    
 								</el-form-item>  
 							</el-col>
@@ -337,7 +337,7 @@
 			endDate.setTime(beginDate.getTime() + 3600 * 1000 * 24 * 7 * 4);
 			return {
 				dicts:{
-					urgencyLevel:[],
+					priority:[],
 					taskType:[],
 					planType:[],
 					priority:[],
@@ -639,7 +639,7 @@
 			}
 			
 			this.setSkills();
-			initSimpleDicts('all',['planType','taskType','urgencyLevel','priority','xmTaskSettleSchemel']).then(res=>{
+			initSimpleDicts('all',['planType','taskType','priority','xmTaskSettleSchemel']).then(res=>{
 				this.dicts=res.data.data;
 			})
 			/**在下面写其它函数***/

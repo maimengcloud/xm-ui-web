@@ -24,7 +24,7 @@
 							</el-form-item>   
 						</el-col>
 						<el-col :span="12">
-							<el-form-item label="紧急程度" prop="priority">   
+							<el-form-item label="优先级" prop="priority">   
 								<el-select v-model="addForm.priority">
 									<el-option v-for="(i,index) in dicts['priority']" :label="i.name" :value="i.id" :key="index"></el-option> 
 								</el-select> 
@@ -312,7 +312,7 @@
 				},
 				dicts:{ 
 					projectType:[],
-					urgencyLevel:[],
+					priority:[],
 					priority:[],
 					projectStatus:[], 
 				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
@@ -327,12 +327,9 @@
 					}],
 					xmType: [{
 						required: true, message: '项目类型不可为空', trigger: 'change'
-					}],
-					urgent: [{
-						required: true, message: '紧急程度不可为空', trigger: 'change'
-					}],
+					}], 
 					priority: [{
-						required: true, message: '优先程度不可为空', trigger: 'change'
+						required: true, message: '优先级不可为空', trigger: 'change'
 					}], 
 					admUserid: [{
 						required: true, message: '项目总控不能为空', trigger: 'change'
@@ -518,7 +515,7 @@
 			this.addForm.admUsername=this.userInfo.username
 			this.addForm.assUserid=this.userInfo.userid
 			this.addForm.assUsername=this.userInfo.username
-			initSimpleDicts('all',['projectType','urgencyLevel','priority','projectStatus']).then(res=>{
+			initSimpleDicts('all',['projectType','priority','projectStatus']).then(res=>{
 				this.dicts=res.data.data;
 			})
 			

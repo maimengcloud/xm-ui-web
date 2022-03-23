@@ -877,7 +877,7 @@
 				this.filters.productName=this.$route.params.productName;
 			}
 			this.$nextTick(() => {    
-				initSimpleDicts('all',['projectType','urgencyLevel','priority','projectStatus']).then(res=>{
+				initSimpleDicts('all',['projectType','priority','projectStatus']).then(res=>{
 					this.dicts=res.data.data;
 				})
                 this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el);
