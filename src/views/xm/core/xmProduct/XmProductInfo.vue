@@ -20,13 +20,13 @@
 				</el-menu-item> 
 				
 				<el-menu-item label="项目" index="项目" class="hidden-sm-and-down">
-					 <span slot="title"><i class="el-icon-document"  ></i>项目</span> 
+					 <span slot="title"><i class="el-icon-s-unfold"  ></i>项目</span> 
 				</el-menu-item>
 				<el-menu-item label="需求" index="需求">
 					 <span slot="title"><i class="el-icon-document"  ></i>需求</span>
 				</el-menu-item>
 				<el-submenu index="任务">
-					<template slot="title">任务</template>
+					<template slot="title"><i class="el-icon-s-operation"></i>任务</template>
 						<el-menu-item   index="产品任务">
 							<span slot="title"><i class="el-icon-view"></i>产品任务</span> 
 						</el-menu-item>
@@ -35,10 +35,10 @@
 						</el-menu-item> 
 				</el-submenu > 
 				<el-menu-item  index="缺陷">
-					 <span slot="title"><i class="bug"  ></i>缺陷</span>
+					 <span slot="title"><i class="el-icon-question"></i>缺陷</span>
 				</el-menu-item> 
 				<el-submenu index="团队">
-					<template slot="title">团队</template>
+					<template slot="title"><i class="el-icon-user-solid"></i>团队</template>
 						<el-menu-item   index="产品团队">
 							<span slot="title"><i class="el-icon-solid"></i>产品团队</span> 
 						</el-menu-item>
@@ -47,7 +47,7 @@
 						</el-menu-item> 
 				</el-submenu >
 				<el-submenu index="计划">
-					<template slot="title">计划</template>
+					<template slot="title"><i class="el-icon-odometer"></i>计划</template>
 						<el-menu-item   index="产品计划">
 							<span slot="title"><i class="el-icon-view"></i>产品计划</span> 
 						</el-menu-item>
@@ -56,7 +56,7 @@
 						</el-menu-item> 
 				</el-submenu >
 				<el-submenu index="财务" class="hidden-sm-and-down">
-					<template slot="title">财务</template> 
+					<template slot="title"><i class="el-icon-coin"></i>财务</template> 
 						<el-menu-item   index="合同管理">
 							<span slot="title"><i class="el-icon-s-data"></i>合同管理</span>
 						</el-menu-item>

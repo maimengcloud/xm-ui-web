@@ -40,7 +40,7 @@
 					<span slot="title"><i class="el-icon-odometer"></i>计划</span>
 				</el-menu-item>
 				<el-submenu index="财务" class="hidden-sm-and-down">
-					<template slot="title">财务</template> 
+					<template slot="title"><i class="el-icon-coin"></i>财务</template> 
 						<el-menu-item   index="合同管理">
 							<span slot="title"><i class="el-icon-s-data"></i>合同管理</span>
 						</el-menu-item>

@@ -7,9 +7,11 @@
         <el-menu-item index="detail">
           <span slot="title">产品详情</span>
         </el-menu-item>  
+        <!--
         <el-menu-item index="iterationProductLink"> 
           <span slot="title">配置关联迭代</span>
         </el-menu-item>
+        -->
         <el-menu-item index="productProjectLink"> 
           <span slot="title">配置关联项目</span>
         </el-menu-item> 
