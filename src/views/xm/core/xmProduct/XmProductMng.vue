@@ -4,7 +4,7 @@
 		<el-col :span="6" v-if="templateVisible"> 
 			<xm-product-tpl-mng @copy="searchXmProducts" ref="xmProductTplMngRef" show-type="simple"></xm-product-tpl-mng>
 		</el-col> 
-		<el-col :span="templateVisible?18:24" class="padding-top padding-left border">
+		<el-col :span="templateVisible?18:24" class="padding-top padding-left border padding-right">
 			<el-row >
 				<el-row>
 					<el-select   v-model="filters.queryScope"    placeholder="产品查询范围">
@@ -22,29 +22,6 @@
 					</el-input>
 					<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProducts" icon="el-icon-search">查询</el-button>
 					
-					<el-popover style="padding-left:10px;"  
-							placement="top-start"
-							width="450" 
-							trigger="click" > 
-							<el-row> 
-								<el-col :span="24" style="padding-top:5px;">
-									<el-badge value="都适用">
-									<el-button   @click="showAdd" icon="el-icon-plus">直接添加新产品</el-button> 
-									</el-badge>
-								</el-col>  
-								<el-col :span="24" style="padding-top:5px;">
-									<el-badge value="进阶">
-									<el-button type="primary" icon="el-icon-plus" >通过【产品-复制】一键创建新的产品</el-button> 
-									</el-badge>
-								</el-col> 
-								<el-col :span="24" style="padding-top:5px;">
-									<el-badge value="新手">
-									<el-button type="warning" @click="templateVisible=!templateVisible" icon="el-icon-plus">通过【模板-复制】一键创建新的产品</el-button> 
-									</el-badge>
-								</el-col> 
-							</el-row>   
- 							<el-button type="primary" slot="reference"  icon="el-icon-plus" v-if="!xmIteration" id="guider-one" >产品</el-button>
-					</el-popover>
 					<el-popover
 						placement="top-start"
 						title=""
@@ -116,6 +93,31 @@
 						</el-row>
 						<el-button  slot="reference"   icon="el-icon-more" id="guider-two"></el-button>
 					</el-popover>
+					<span style="float:right;">
+					<el-popover style="padding-left:10px;"  
+							placement="top-start"
+							width="450" 
+							trigger="click" > 
+							<el-row> 
+								<el-col :span="24" style="padding-top:5px;">
+									<el-badge value="都适用">
+									<el-button   @click="showAdd" icon="el-icon-plus">直接添加新产品</el-button> 
+									</el-badge>
+								</el-col>  
+								<el-col :span="24" style="padding-top:5px;">
+									<el-badge value="进阶">
+									<el-button type="primary" icon="el-icon-plus" >通过【产品-复制】一键创建新的产品</el-button> 
+									</el-badge>
+								</el-col> 
+								<el-col :span="24" style="padding-top:5px;">
+									<el-badge value="新手">
+									<el-button type="warning" @click="templateVisible=!templateVisible" icon="el-icon-plus">通过【模板-复制】一键创建新的产品</el-button> 
+									</el-badge>
+								</el-col> 
+							</el-row>   
+ 							<el-button type="primary" slot="reference"  icon="el-icon-plus" v-if="!xmIteration" id="guider-one" round>产品</el-button>
+					</el-popover>
+					</span>
 				</el-row>
 				<el-row  class="page-main "  v-show="showType">
 					<!--列表 XmProject xm_project-->

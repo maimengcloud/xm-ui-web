@@ -6,7 +6,7 @@
 					<xm-project-tpl-mng @copy="searchXmProjects" :show-type="'simple'" ref="xmProjectTplMngRef"></xm-project-tpl-mng>
 				</el-row>
 			</el-col> 
-			<el-col :span="templateVisible?18:24" class="border padding-top"> 
+			<el-col :span="templateVisible?18:24" class="border padding-top padding-right"> 
 				<el-row class="padding-left"> 
 					<el-select v-model="menukey" @change="handleSelect" clearable>
 						<el-option value="all" label="全部"></el-option>
@@ -31,31 +31,7 @@
 					<el-input class="hidden-md-and-down" placeholder="选择产品" v-model="filters.productName" @click.native="productSelectVisible=true" clearable @clear="onProductClose"  style="width:15%;"></el-input>
  					<el-input v-model="filters.key" style="width:15%;" placeholder="项目名称模糊查询" clearable>
 					</el-input>
-					<el-button  type="primary" icon="el-icon-search" @click="searchXmProjects">查询</el-button>
-						<el-popover style="padding-left:10px;"  
-							placement="top-start"
-							width="450" 
-							trigger="click" > 
-							<el-row> 
-								<el-col :span="24" style="padding-top:5px;">
-									<el-badge value="都适用">
-									<el-button   @click="showAdd" icon="el-icon-plus">直接添加新项目</el-button> 
-									</el-badge>
-								</el-col>  
-								<el-col :span="24" style="padding-top:5px;">
-									<el-badge value="进阶">
-									<el-button type="primary" icon="el-icon-plus">通过【产品-复制】一键创建新的项目</el-button> 
-									</el-badge>
-								</el-col> 
-								<el-col :span="24" style="padding-top:5px;">
-									<el-badge value="新手">
-									<el-button type="warning" @click="templateVisible=!templateVisible" icon="el-icon-plus">通过【模板-复制】一键创建新的项目</el-button> 
-									</el-badge>
-								</el-col> 
-							</el-row>   
- 							<el-button id="prj-plus-btn" type="primary" slot="reference"  icon="el-icon-plus">项目</el-button>
-							</el-popover>  
-					
+					<el-button  type="primary" icon="el-icon-search" @click="searchXmProjects">查询</el-button> 
 						<el-popover
 							placement="top-start"
 							title="更多查询条件或操作"
@@ -96,6 +72,31 @@
 							</el-row>
 							<el-button  slot="reference" icon="el-icon-more" id="prj-more-btn"></el-button>
 						</el-popover>
+						<span style="float:right;">
+						<el-popover style="padding-left:10px;"  
+							placement="top-start"
+							width="450" 
+							trigger="click" > 
+							<el-row> 
+								<el-col :span="24" style="padding-top:5px;">
+									<el-badge value="都适用">
+									<el-button   @click="showAdd" icon="el-icon-plus">直接添加新项目</el-button> 
+									</el-badge>
+								</el-col>  
+								<el-col :span="24" style="padding-top:5px;">
+									<el-badge value="进阶">
+									<el-button type="primary" icon="el-icon-plus">通过【产品-复制】一键创建新的项目</el-button> 
+									</el-badge>
+								</el-col> 
+								<el-col :span="24" style="padding-top:5px;">
+									<el-badge value="新手">
+									<el-button type="warning" @click="templateVisible=!templateVisible" icon="el-icon-plus">通过【模板-复制】一键创建新的项目</el-button> 
+									</el-badge>
+								</el-col> 
+							</el-row>   
+ 							<el-button id="prj-plus-btn" type="primary" slot="reference"  icon="el-icon-plus" round>项目</el-button>
+							</el-popover>  
+						</span>
 				</el-row> 
 				<el-row  class="page-main"> 
 					<!--列表 XmProject xm_project-->

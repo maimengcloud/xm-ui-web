@@ -25,7 +25,7 @@
 			</el-row> 
 			<el-divider></el-divider>
 			<el-row>
-				<el-form :model="editForm"  :rules="editFormRules" ref="editForm"> 
+				<el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm"> 
 						<el-row> 
 							<el-col  :span="12">
 								<el-form-item label="归属任务" prop="taskName"> 
