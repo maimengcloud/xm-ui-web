@@ -11,16 +11,10 @@
 							v-model="productVisible"> 
 							<xm-product-select v-if="!xmProduct" :auto-select="false" :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :xm-iteration="xmIteration" :simple="true" @clear-select="onProductClearSelect" @close="productVisible=false"></xm-product-select>
 								<el-link title="产品，点击选择、清除选择" @click="productVisible=true" type="warning" slot="reference" v-if="!xmProduct" icon="el-icon-search"><font style="font-size:14px;">{{filters.product?filters.product.productName:'选择产品'}}</font></el-link> 
-						</el-popover>  
+						</el-popover>   
 						
-						<el-popover
-							placement="bottom"
-							width="400"
-							trigger="manual"
-							v-model="iterationVisible"> 
-							<xm-iteration-select v-if="!xmIteration" :auto-select="false" :sel-project="selProject" @row-click="onIterationSelected" ref="xmProductMng" :product-id="filters.product?filters.product.id:null" :simple="true" @clear-select="onIterationClearSelect"  @close="iterationVisible=false"></xm-iteration-select>
-								<el-link title="迭代，点击选择、清除选择" @click="iterationVisible=true" type="warning" slot="reference" v-if="!xmIteration" icon="el-icon-search"><font style="font-size:14px;">{{filters.iteration?filters.iteration.iterationName:'选择迭代'}}</font></el-link> 
-						</el-popover>  
+						<xm-it-select style="width: 120px;" clearable :product-id="filters.product?filters.product.id:null" :link-project-id="selProject?selProject.id:null"   placeholder="迭代"  @change="onIterationSelected" @clear="onIterationClearSelect">
+					    </xm-it-select> 
 						<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable style="width: 160px;">
 							<el-option   value="not-join-any-project"  label="未分配过任务的需求"></el-option>  
 							<el-option   value="join-any-project"  label="已分配过任务的需求"></el-option>  
@@ -232,9 +226,9 @@
 								
 
 							</el-table-column>   
-							<el-table-column prop="productId" label="产品" width="100" show-overflow-tooltip>   
+							<el-table-column prop="productId" label="产品" width="100" show-overflow-tooltip sortable>   
 							</el-table-column> 
-							<el-table-column prop="status" label="状态"  min-width="80" > 
+							<el-table-column prop="status" label="状态"  min-width="80"  sortable> 
 								<template slot-scope="scope"> 
 									<div class="cell-text">
 									{{dicts.menuStatus.some(i=>i.id==scope.row.status)?dicts.menuStatus.find(i=>scope.row.status==i.id).name:''}}
@@ -246,7 +240,7 @@
 									</span> 
 								</template>
 							</el-table-column>   
-							<el-table-column prop="dtype" label="类型" width="100" > 
+							<el-table-column prop="dtype" label="类型" width="100"  sortable> 
 								<template slot-scope="scope"> 
 									<div class="cell-text">
 										{{formaterByDicts(scope.row,'dtype',scope.row.dtype)}}
@@ -258,7 +252,7 @@
 									</span> 
 								</template>  
 							</el-table-column> 
-							<el-table-column prop="source"  label="来源" width="100"  :formatter="formaterByDicts"  show-overflow-tooltip>  
+							<el-table-column prop="source"  label="来源" width="100"  :formatter="formaterByDicts"  show-overflow-tooltip sortable>  
 								<template slot-scope="scope"> 
 									<div class="cell-text">
 										{{formaterByDicts(scope.row,'source',scope.row.source)}}
@@ -270,7 +264,7 @@
 									</span> 
 								</template>   
 							</el-table-column> 
-							<el-table-column prop="dlvl"  label="层次" width="100">   
+							<el-table-column prop="dlvl"  label="层次" width="100" sortable>   
 								<template slot-scope="scope"> 
 									<div class="cell-text"> 
 										{{formaterByDicts(scope.row,'dlvl',scope.row.dlvl)}} 
@@ -282,7 +276,7 @@
 									</span> 
 								</template>  
 							</el-table-column> 
-							<el-table-column prop="priority"  label="优先级" width="100">   
+							<el-table-column prop="priority"  label="优先级" width="100" sortable>   
 								<template slot-scope="scope"> 
 									<div class="cell-text">
 										
@@ -295,7 +289,7 @@
 									</span> 
 								</template>  
 							</el-table-column> 
-							<el-table-column prop="iterationName" label="迭代"  min-width="120" show-overflow-tooltip>  
+							<el-table-column prop="iterationName" label="迭代"  min-width="120" show-overflow-tooltip sortable>  
 								<template slot="header">
 									迭代 
 									<el-popover  
@@ -310,38 +304,58 @@
 										<el-button type="text" slot="reference" icon="el-icon-edit" title="点击设置需求与迭代的关联关系" @click="linkIterationPopoverVisible=true">关联</el-button>
 										</el-popover> 
 								</template>
+								<template slot-scope="scope"> 
+									<div class="cell-text">
+										
+										{{scope.row.iterationName}}  
+									</div>
+									<span class="cell-bar">   
+										 <xm-it-select :product-id="filters.product?filters.product.id:null" :link-project-id="selProject?selProject.id:null"  v-model="scope.row.iterationId" placeholder="迭代"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'iterationId',$event)">
+												 
+										 </xm-it-select>  
+									</span> 
+								</template>  
 							</el-table-column>  
 							
-							<el-table-column prop="taskCnt" label="任务数"  min-width="80" show-overflow-tooltip>   
+							<el-table-column prop="taskCnt" label="任务数"  min-width="100" show-overflow-tooltip sortable>   
 								<template slot="header"> 
-									<el-tooltip   content="已完成 / 总数 注意：统计包括下级数据"><div>任务数<i class="el-icon-bangzhu"></i></div></el-tooltip>
+									<el-tooltip   content="已完成 / 总数 注意：统计包括下级数据"><span>任务数</span></el-tooltip>
 								</template>
 								<template slot-scope="scope"> 
 										<div>{{scope.row.finishTaskCnt}}/{{scope.row.taskCnt}}</div>
 								</template>
 							</el-table-column>  
-							<el-table-column prop="finishRate" label="进度"  min-width="80" show-overflow-tooltip> 
+							<el-table-column prop="finishRate" label="进度"  min-width="80" show-overflow-tooltip sortable> 
 								<template slot-scope="scope"> 
 										<span v-if="scope.row.finishRate"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag></span>
 								</template>
 							</el-table-column>   
-							<el-table-column prop="bugs" label="缺陷"  min-width="100" show-overflow-tooltip>   
+							<el-table-column prop="bugs" label="缺陷"  min-width="100" show-overflow-tooltip sortable>   
 								
 								<template slot="header"> 
-									<el-tooltip   content="已关闭缺陷数 / 总缺陷数 注意：统计包括下级数据"><div>缺陷<i class="el-icon-bangzhu"></i></div></el-tooltip>
+									<el-tooltip   content="已关闭缺陷数 / 总缺陷数 注意：统计包括下级数据"><span> 缺陷 </span></el-tooltip>
 								</template>
 								<template slot-scope="scope"> 
 										 {{scope.row.closedBugs}}/{{scope.row.bugCnt}} 
 								</template>
 							</el-table-column>  
-							<el-table-column prop="tagNames" label="标签"  min-width="100" show-overflow-tooltip> 
+							<el-table-column prop="tagNames" label="标签"  min-width="100" show-overflow-tooltip sortable> 
+								<template slot-scope="scope"> 
+									<div class="cell-text">
+										
+										{{scope.row.tagNames}}  
+									</div>
+									<span class="cell-bar">   
+										 <el-button @click="showFieldTag(scope.row)">选标签</el-button>
+									</span> 
+								</template>
 							</el-table-column> 
-							<el-table-column prop="ctime" label="创建日期"  min-width="100" show-overflow-tooltip> 
+							<el-table-column prop="ctime" label="创建日期"  min-width="100" show-overflow-tooltip sortable> 
 								<template slot-scope="scope"> 
 										 <span>{{scope.row.ctime}} </span>   
 								</template>
 							</el-table-column> 
-							<el-table-column prop="mmUsername" label="跟进人"  min-width="100" show-overflow-tooltip> 
+							<el-table-column prop="mmUsername" label="跟进人"  min-width="100" show-overflow-tooltip  sortable> 
 								<template slot-scope="scope"> 
 										 <span>{{scope.row.mmUsername}} </span>  
 								</template>
@@ -397,6 +411,10 @@
 			</tag-mng>
 		</el-drawer>
 		
+		<el-drawer append-to-body title="标签" :visible.sync="fieldTagVisible"  size="60%">
+			<tag-mng   :jump="true" @select-confirm="editXmMenuSomeFields(editForm,'tagIds',$event)">
+			</tag-mng>
+		</el-drawer>
 
 		<el-drawer
 		append-to-body
@@ -437,6 +455,7 @@
 	import XmTaskMng from '../xmTask/XmTaskMng'; 
 	import XmTaskListForMenu from '../xmTask/XmTaskListForMenu';
 	import  XmIterationSelect from '../xmIteration/XmIterationSelect';//修改界面
+	import  XmItSelect from '@/views/xm/core/components/XmItSelect';//修改界面
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
 	
 	import XmMenuSelect from "../xmMenu/XmMenuSelect";
@@ -547,6 +566,7 @@
 				pickerOptions:  util.pickerOptions('datarange'),
 				productVisible:false,
 				tagSelectVisible:false,
+				fieldTagVisible:false,
 				parentMenuVisible:false,
 				maps:new Map(),
 				linkIterationPopoverVisible:false,
@@ -1071,7 +1091,7 @@
 					this.filters.tags=tags
 				}
 				this.searchXmMenus();
-			},
+			}, 
 			showParentMenu(){
 				if(this.filters.product && this.filters.product.id){
 					if(this.sels.length==0){
@@ -1180,12 +1200,59 @@
 				} 
 				return params;
 			}, 
+			showFieldTag(row){
+				this.editForm=row;
+				this.fieldTagVisible=true;
+			},
 			editXmMenuSomeFields(row,fieldName,$event){
-				var params={menuId:row.menuId};
-				params[fieldName]=$event;
+				var params={menuIds:[row.menuId]};
+				if(this.sels.length>0){
+					if(!this.sels.some(k=>k.menuId==row.menuId)){
+						this.$notify({showClose:true,message:'请操作选中的行或者取消选中的行再操作其它行',type:'warning'})
+						return;
+					}
+					params.menuIds=this.sels.map(i=>i.menuId)
+				}
+				if(fieldName==='iterationId'){
+					if($event){ 	
+						params[fieldName]=$event.id;
+						params.iterationName=$event.iterationName 
+					}else{
+						return;
+					}
+				}else if(fieldName==='tagIds'){
+					if($event){ 	
+						params[fieldName]=$event.map(i=>i.tagId).join(",");
+						params.tagNames=$event.map(i=>i.tagName).join(","); 
+					}else{
+						return;
+					}
+				}else {
+					params[fieldName]=$event;
+				}
+				
 				editXmMenuSomeFields(params).then(res=>{
 					var tips = res.data.tips;
 					if(tips.isOk){ 
+						if(this.sels.length>0){
+							 this.sels.forEach(i=>{
+								 i[fieldName]=params[fieldName]
+								 if(fieldName==='iterationId'){ 	 
+									i['iterationName']=params['iterationName']
+								}
+								if(fieldName==='tagIds'){ 	 
+									i['tagNames']=params['tagNames']
+									i['tagIds']=params['tagIds']
+									this.fieldTagVisible=false;
+								}
+							 })
+						}else{
+							if(fieldName==='tagIds'){ 	 
+								row['tagNames']=params['tagNames']
+								row['tagIds']=params['tagIds']
+								this.fieldTagVisible=false;
+							}
+						}
 					}else{
 						this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 					}
@@ -1206,6 +1273,7 @@
 			XmMenuMngBatch,
 		    TagMng,
 			XmMenuSelect,
+			XmItSelect,
 		    //在下面添加其它组件
 		},
 		mounted() {   

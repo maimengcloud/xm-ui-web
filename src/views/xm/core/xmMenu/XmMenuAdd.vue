@@ -93,23 +93,48 @@
 								</el-col>
 							</el-row>
 					</el-collapse-item> 
-						<el-collapse-item title="需求概述" name="4"> 
+						<el-collapse-item title="概述" name="4"> 
 							<el-form-item label="需求概述" prop="remark">
 								<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="addForm.remark" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
 							</el-form-item>  
 						</el-collapse-item> 
-					<el-collapse-item title="成本进度预估" name="2">
-						<el-form-item label="预估工期" prop="budgetHours">
-							<el-input-number style="width:200px;"  v-model="addForm.budgetHours"  :precision="2" :step="8" :min="0" placeholder="预计工期(小时)"></el-input-number>&nbsp;小时
-						</el-form-item> 
-						<el-form-item label="预估工作量" prop="budgetWorkload">
-							<el-input-number style="width:200px;"  v-model="addForm.budgetWorkload" :precision="2" :step="8" :min="0" placeholder="预计总工作量(人时,不包括下一级)"></el-input-number> <el-tag>人时，{{this.toFixed(addForm.budgetWorkload/8/20)}}人月</el-tag>
-						</el-form-item> 
-						<el-form-item label="预估金额" prop="budgetAmount">
-							  <el-input-number style="width:200px;"  v-model="addForm.budgetAmount" :precision="2" :step="100" :min="0" placeholder="预算金额"></el-input-number>   元 
-						</el-form-item> 
-					</el-collapse-item>
-					<el-collapse-item title="相关链接" name="3"> 
+						<el-collapse-item title="工时" name="2">
+							<el-form-item label="数据收集方式" prop="calcType"> 
+								<el-radio   v-model="addForm.calcType"  label="3" placeholder="下级往上级汇总" :disabled="addForm.ntype==='0'">下级往上级汇总</el-radio>
+ 								<el-radio   v-model="addForm.calcType"  label="1" placeholder="由任务汇总" :disabled="addForm.ntype==='1'">由任务汇总</el-radio> 
+								<el-radio   v-model="addForm.calcType"  label="2" placeholder="手工填报" :disabled="addForm.ntype==='1'">手工填报</el-radio>
+							</el-form-item> 
+							<el-form-item label="当前进度" prop="mactRate" >
+								<el-progress style="width:80%;" :stroke-width="26" :percentage="addForm.mactRate?addForm.mactRate:0"></el-progress>
+ 							</el-form-item> 
+							<el-form-item label="预估工期" prop="budgetHours">
+								<el-input-number :disabled="addForm.calcType!=='2' && addForm.ntype==='1'" style="width:200px;"  v-model="addForm.budgetHours"  :precision="2" :step="8" :min="0" placeholder="预计工期(小时)"></el-input-number> &nbsp;h
+							</el-form-item> 
+							<el-form-item label="预估工时" prop="budgetWorkload">
+								<el-input-number :disabled="addForm.calcType!=='2' && addForm.ntype==='1'" style="width:200px;"  v-model="addForm.budgetWorkload" :precision="2" :step="8" :min="0" placeholder="预计工时(小时)"></el-input-number>  &nbsp;h
+							</el-form-item> 
+							<el-form-item label="实际工时" prop="mactWorkload">
+								<el-input-number :disabled="addForm.calcType!=='2' && addForm.ntype==='1'" style="width:200px;"  v-model="addForm.mactWorkload" :precision="2" :step="8" :min="0" placeholder="实际工时(小时)"></el-input-number> &nbsp;h
+							</el-form-item> 
+							<font color="blue" style="font-size:10px;">控制规则:
+								<br>下级往上汇总：指需求池的数据来自直接下级的需求池(需求)的数据之和。逐级往上汇总。
+								<br>由任务汇总： 指需求(不包括需求池)的数据来自与该需求关联的任务的数据之和。
+								<br>手工填报：  指需求(不包括需求池)的数据来自手工填报，无论是否关联了任务，都不从任务汇总。
+							</font>
+						</el-collapse-item>
+						<el-collapse-item title="成本" name="3">
+							
+							
+							
+							<el-form-item label="预估金额" prop="budgetAmount">
+								<el-input-number :disabled="addForm.calcType!=='2' && addForm.ntype==='1'"  style="width:200px;"  v-model="addForm.budgetAmount" :precision="2" :step="100" :min="0" placeholder="预算金额"></el-input-number>   元 
+							</el-form-item> 
+							<el-form-item label="实际金额" prop="mactAmount">
+								<el-input-number :disabled="addForm.calcType!=='2' && addForm.ntype==='1'"  style="width:200px;"  v-model="addForm.mactAmount" :precision="2" :step="100" :min="0" placeholder="实际金额"></el-input-number>   元 
+							</el-form-item> 
+							
+						</el-collapse-item>
+					<el-collapse-item title="链接" name="5"> 
 						<el-form-item label="需求链接" prop="demandUrl"> 
 							<el-input v-model="addForm.demandUrl" placeholder="需求链接" ></el-input> 
 						</el-form-item>  
