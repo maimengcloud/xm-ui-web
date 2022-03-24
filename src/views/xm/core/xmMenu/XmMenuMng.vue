@@ -28,7 +28,7 @@
 							<el-option   value="join-curr-iteration"  :label="'已加入本迭代【'+filters.iteration.iterationName+'】'" v-if="filters.iteration && filters.iteration.id"></el-option>  
 						</el-select> 
 						
-						<el-select class="hidden-md-and-down" v-model="filters.dtype" clearable placeholder="需求类型" style="width: 120px;">
+						<el-select class="hidden-lg-and-down" v-model="filters.dtype" clearable placeholder="需求类型" style="width: 120px;">
 							<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 						</el-select>    
 						<el-select class="hidden-lg-and-down" v-model="filters.source" placeholder="需求来源"  clearable style="width: 120px;">
@@ -49,7 +49,7 @@
 						</el-select> 
 						<el-input v-model="filters.key" style="width: 15%;" placeholder="需求名称查询" clearable> 
 						</el-input> 
-						<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search">查询</el-button>
+						<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
 						
 						<el-popover
 							placement="top-start"
@@ -178,7 +178,7 @@
 							<el-button type="primary"  round  slot="reference" icon="el-icon-plus"></el-button>
 						</el-popover>
 						
-						<el-button  @click="batchEditVisible=true" icon="el-icon-edit" title="批量修改"></el-button> 
+						<!--<el-button  @click="batchEditVisible=true" icon="el-icon-edit" title="批量修改"></el-button> -->
 						<el-button  @click="showParentMenu" icon="el-icon-top" title="更换上级"></el-button>
  						<el-button  v-if="disabledMng!=false"  type="danger" @click="batchDel" icon="el-icon-delete" title="删除"></el-button> 
 
