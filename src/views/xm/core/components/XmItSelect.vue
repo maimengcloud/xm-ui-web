@@ -30,7 +30,7 @@
 				this.initData();
 			},
 			value(){
-				this.iterationId=value;
+				this.iterationId=this.value;
 			},
 			iterationId(){
 				this.$emit("input",this.iterationId)
@@ -38,8 +38,14 @@
 					this.$emit("change",null)
 					return;
 				}
-				var iteration=this.xmIterations.find(i=>i.id==this.iterationId)
-				this.$emit("change",iteration)
+				if(this.xmIterations){
+					var iteration=this.xmIterations.find(i=>i.id==this.iterationId)
+					this.$emit("change",iteration)
+				}else{
+					var iteration={id:this.iterationId}
+					this.$emit("change",iteration)
+				}
+				
 			}
 		},
 		data() { 

@@ -177,8 +177,7 @@
 							</el-row>   
 							<el-button type="primary"  round  slot="reference" icon="el-icon-plus"></el-button>
 						</el-popover>
-						
-						<!--<el-button  @click="batchEditVisible=true" icon="el-icon-edit" title="批量修改"></el-button> -->
+						 
 						<el-button  @click="showParentMenu" icon="el-icon-top" title="更换上级"></el-button>
  						<el-button  v-if="disabledMng!=false"  type="danger" @click="batchDel" icon="el-icon-delete" title="删除"></el-button> 
 
@@ -310,7 +309,7 @@
 										{{scope.row.iterationName}}  
 									</div>
 									<span class="cell-bar">   
-										 <xm-it-select :product-id="filters.product?filters.product.id:null" :link-project-id="selProject?selProject.id:null"  v-model="scope.row.iterationId" placeholder="迭代"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'iterationId',$event)">
+										 <xm-it-select :product-id="filters.product?filters.product.id:null" :link-project-id="selProject?selProject.id:null"  placeholder="迭代"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'iterationId',$event)">
 												 
 										 </xm-it-select>  
 									</span> 
@@ -327,8 +326,18 @@
 							</el-table-column>  
 							<el-table-column prop="finishRate" label="进度"  min-width="80" show-overflow-tooltip sortable> 
 								<template slot-scope="scope"> 
-										<span v-if="scope.row.finishRate"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag></span>
+									<div class="cell-text" v-if="scope.row.calcType!=='2'">
+										 <span v-if="scope.row.finishRate"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag></span>
+									</div>
+									<div class="cell-text" v-else>
+										 <span v-if="scope.row.mactRate"><el-tag :type="scope.row.mactRate>=100?'success':'warning'">{{scope.row.mactRate}}%</el-tag></span>
+									</div>
+									<span class="cell-bar">  
+										<xm-menu-workload   :menu="scope.row"  placeholder="工时"  style="display:block;" @submit="editXmMenuSomeFields(scope.row,'workload',$event)">  
+										</xm-menu-workload>  
+									</span>  
 								</template>
+								
 							</el-table-column>   
 							<el-table-column prop="bugs" label="缺陷"  min-width="100" show-overflow-tooltip sortable>   
 								
@@ -456,6 +465,7 @@
 	import XmTaskListForMenu from '../xmTask/XmTaskListForMenu';
 	import  XmIterationSelect from '../xmIteration/XmIterationSelect';//修改界面
 	import  XmItSelect from '@/views/xm/core/components/XmItSelect';//修改界面
+	import  XmMenuWorkload from '@/views/xm/core/components/XmMenuWorkload';//修改界面
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
 	
 	import XmMenuSelect from "../xmMenu/XmMenuSelect";
@@ -463,7 +473,7 @@
 
 	import {sn} from '@/common/js/sequence'
 
-	import { mapGetters } from 'vuex' 
+	import { mapGetters } from 'vuex'  
 	
 	export default { 
 		props:['selProject','xmIteration','xmProduct','disabledMng'],
@@ -1227,8 +1237,10 @@
 					}else{
 						return;
 					}
-				}else {
-					params[fieldName]=$event;
+				}else if(fieldName==='workload'){
+					params={...params,...$event}
+				}else{
+					params[fieldName]=$event
 				}
 				
 				editXmMenuSomeFields(params).then(res=>{
@@ -1245,12 +1257,22 @@
 									i['tagIds']=params['tagIds']
 									this.fieldTagVisible=false;
 								}
+								if(fieldName==='workload'){ 	   
+									Object.assign(i,params)
+								}
 							 })
 						}else{
 							if(fieldName==='tagIds'){ 	 
 								row['tagNames']=params['tagNames']
 								row['tagIds']=params['tagIds']
 								this.fieldTagVisible=false;
+							}
+							if(fieldName==='iterationId'){ 	 
+								row['iterationName']=params['iterationName']
+								row['iterationId']=params['iterationId'] 
+							}
+							if(fieldName==='workload'){    
+								Object.assign(row,params)
 							}
 						}
 					}else{
@@ -1274,8 +1296,9 @@
 		    TagMng,
 			XmMenuSelect,
 			XmItSelect,
+			XmMenuWorkload,
 		    //在下面添加其它组件
-		},
+		}, 
 		mounted() {   
   			initSimpleDicts("all",['menuStatus','demandSource','demandLvl','demandType','priority']).then(res=>{
 				this.dicts=res.data.data;
