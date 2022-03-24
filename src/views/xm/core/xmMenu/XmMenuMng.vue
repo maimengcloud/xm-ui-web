@@ -240,19 +240,19 @@
 									{{dicts.menuStatus.some(i=>i.id==scope.row.status)?dicts.menuStatus.find(i=>scope.row.status==i.id).name:''}}
 									</div>
 									<span class="cell-bar">   
-										 <el-select  v-model="scope.row.status" placeholder="需求状态"  style="display:block;">
+										 <el-select  v-model="scope.row.status" placeholder="需求状态"  style="display:block;"  @change="editXmMenuSomeFields(scope.row,'status',$event)">
 												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option> 
 										 </el-select>  
 									</span> 
 								</template>
 							</el-table-column>   
-							<el-table-column prop="dtype" label="类型" width="100" :formatter="formaterByDicts"  show-overflow-tooltip> 
+							<el-table-column prop="dtype" label="类型" width="100" > 
 								<template slot-scope="scope"> 
 									<div class="cell-text">
-										{{dicts.demandType.some(i=>i.id==scope.row.dtype)?dicts.demandType.find(i=>scope.row.dtype==i.id).name:''}}
+										{{formaterByDicts(scope.row,'dtype',scope.row.dtype)}}
 									</div>
 									<span class="cell-bar">   
-										 <el-select  v-model="scope.row.dtype" placeholder="类型"  style="display:block;">
+										 <el-select  v-model="scope.row.dtype" placeholder="类型"  style="display:block;"  @change="editXmMenuSomeFields(scope.row,'dtype',$event)">
 												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.demandType" :key="index"></el-option> 
 										 </el-select>  
 									</span> 
@@ -261,10 +261,10 @@
 							<el-table-column prop="source"  label="来源" width="100"  :formatter="formaterByDicts"  show-overflow-tooltip>  
 								<template slot-scope="scope"> 
 									<div class="cell-text">
-										{{dicts.demandSource.some(i=>i.id==scope.row.source)?dicts.demandSource.find(i=>scope.row.source==i.id).name:''}}
+										{{formaterByDicts(scope.row,'source',scope.row.source)}}
 									</div>
 									<span class="cell-bar">   
-										 <el-select  v-model="scope.row.source" placeholder="来源"  style="display:block;">
+										 <el-select  v-model="scope.row.source" placeholder="来源"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'source',$event)">
 												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.demandSource" :key="index"></el-option> 
 										 </el-select>  
 									</span> 
@@ -272,11 +272,11 @@
 							</el-table-column> 
 							<el-table-column prop="dlvl"  label="层次" width="100">   
 								<template slot-scope="scope"> 
-									<div class="cell-text">
-										{{dicts.demandLvl.some(i=>i.id==scope.row.dlvl)?dicts.demandLvl.find(i=>scope.row.dlvl==i.id).name:''}}
+									<div class="cell-text"> 
+										{{formaterByDicts(scope.row,'dlvl',scope.row.dlvl)}} 
 									</div>
 									<span class="cell-bar">   
-										 <el-select  v-model="scope.row.dlvl" placeholder="层次"  style="display:block;">
+										 <el-select  v-model="scope.row.dlvl" placeholder="层次"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'dlvl',$event)">
 												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.demandLvl" :key="index"></el-option> 
 										 </el-select>  
 									</span> 
@@ -285,10 +285,11 @@
 							<el-table-column prop="priority"  label="优先级" width="100">   
 								<template slot-scope="scope"> 
 									<div class="cell-text">
-										{{dicts.priority.some(i=>i.id==scope.row.priority)?dicts.priority.find(i=>scope.row.priority==i.id).name:''}}
+										
+										{{formaterByDicts(scope.row,'priority',scope.row.priority)}}  
 									</div>
 									<span class="cell-bar">   
-										 <el-select  v-model="scope.row.priority" placeholder="优先级"  style="display:block;">
+										 <el-select  v-model="scope.row.priority" placeholder="优先级"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'priority',$event)">
 												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.priority" :key="index"> </el-option> 
 										 </el-select>  
 									</span> 
@@ -420,7 +421,7 @@
 	import treeTool from '@/common/js/treeTool';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { listXmMenu, delXmMenu, batchDelXmMenu,batchAddXmMenu,batchEditXmMenu,listXmMenuWithState,listXmMenuWithPlan,batchChangeParentMenu } from '@/api/xm/core/xmMenu';
+	import { listXmMenu, delXmMenu, batchDelXmMenu,batchAddXmMenu,batchEditXmMenu,listXmMenuWithState,listXmMenuWithPlan,batchChangeParentMenu,editXmMenuSomeFields } from '@/api/xm/core/xmMenu';
 	import { batchRelTasksWithMenu } from '@/api/xm/core/xmTask';
 	import { loadTasksToXmMenuState} from '@/api/xm/core/xmMenuState';
 
@@ -1105,8 +1106,8 @@
 					this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 				})
 			},
-			formaterByDicts(row,column,cellValue,index){ 
-				var property=column.property
+			formaterByDicts(row,property,cellValue){ 
+				var property=property
 				var dict=null;
 				if(property=='source'){
 					dict=this.dicts['demandSource']
@@ -1179,6 +1180,17 @@
 				} 
 				return params;
 			}, 
+			editXmMenuSomeFields(row,fieldName,$event){
+				var params={menuId:row.menuId};
+				params[fieldName]=$event;
+				editXmMenuSomeFields(params).then(res=>{
+					var tips = res.data.tips;
+					if(tips.isOk){ 
+					}else{
+						this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+					}
+				})
+			}
 		},//end methods
 		components: { 
 		    'xm-menu-add':XmMenuAdd,

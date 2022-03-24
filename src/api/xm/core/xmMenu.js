@@ -31,6 +31,8 @@ export const batchDelXmMenu = params => { return axios.post(`${base}/xm/core/xmM
 
 //修改一条功能表记录
 export const editXmMenu = params => { return axios.post(`${base}/xm/core/xmMenu/edit`, params); };
+//修改一条功能表记录
+export const editXmMenuSomeFields = params => { return axios.post(`${base}/xm/core/xmMenu/editSomeFields`, params); };
 
 //新增一条功能表
 export const addXmMenu = params => { return axios.post(`${base}/xm/core/xmMenu/add`, params); };
