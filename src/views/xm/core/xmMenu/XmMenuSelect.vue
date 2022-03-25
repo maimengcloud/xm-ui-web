@@ -3,13 +3,13 @@
 		<el-row>   
 			<el-col :span="24"  style="padding-left:12px;" >
 				<el-row>    
-					<el-popover
+					<el-popover  v-if="!xmProduct&&!xmIteration"
 						placement="bottom"
 						width="400"
 						trigger="manual"
 						v-model="productVisible"> 
 						<xm-product-select v-if="!xmProduct" :auto-select="false" :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :xm-iteration="xmIteration" :simple="true" @clear-select="onProductClearSelect" @close="productVisible=false"></xm-product-select>
-							<el-link title="产品，点击选择、清除选择" @click="productVisible=true" type="warning" slot="reference" v-if="!xmProduct" icon="el-icon-search"><font style="font-size:14px;">{{filters.product?filters.product.productName:'选择产品'}}</font></el-link> 
+							<el-link title="产品，点击选择、清除选择" @click="productVisible=true" type="warning" slot="reference" icon="el-icon-search"><font style="font-size:14px;">{{filters.product?filters.product.productName:'选择产品'}}</font></el-link> 
 					</el-popover>  
 					
 					<el-popover
@@ -124,7 +124,7 @@
 									<div v-if="scope.row.dclass=='3'" class="icon" style="background-color:  rgb(79, 140, 255);">
 									<i class="el-icon-document"></i>
 								</div>
-								<span class="vlink" :class="scope.row.ntype==='1'?'el-icon-folder-opened':''"  @click="toMenu(scope.row)">{{scope.row.seqNo}}&nbsp;
+								<span class="vlink" @click="toMenu(scope.row)">{{scope.row.seqNo}}&nbsp;
 								{{scope.row.menuName}}</span> 
 							</template>
 						</el-table-column> 
@@ -385,13 +385,14 @@
 				
 				if( this.filters.product  && this.filters.product.id){
 					params.productId=this.filters.product.id
-				}else {
-					this.$notify({showClose: true, message: "请先选择产品", type: 'warning' });
-					return;
-					//params.xxx=xxxxx
-				} 
+				}
 				
 				params=this.getParams(params)
+				
+				if(!params.productId && !params.iterationId && !params.linkIterationId){ 
+					this.$notify({showClose: true, message: "请先选择产品", type: 'warning' });
+					return; 
+				}
 				params.withParents="1"
 				this.load.list = true;
 				listXmMenu(params).then((res) => {

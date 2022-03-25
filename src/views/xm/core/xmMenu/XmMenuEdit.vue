@@ -111,7 +111,7 @@
 							</el-form-item> 
 							 
 							<el-form-item label="当前进度" prop="mactRate" >
-								<el-progress style="width:80%;" :stroke-width="26" :percentage="editForm.mactRate?addForm.mactRate:0"></el-progress>
+								<el-progress style="width:80%;" :stroke-width="26" :percentage="editForm.mactRate?editForm.mactRate:0"></el-progress>
  							</el-form-item>  
 							<el-form-item label="预估工期" prop="budgetHours">
 								<el-input-number :disabled="editForm.calcType!=='2' && editForm.ntype==='1'" style="width:200px;"  v-model="editForm.budgetHours"  :precision="2" :step="8" :min="0" placeholder="预计工期(小时)"></el-input-number>&nbsp;h

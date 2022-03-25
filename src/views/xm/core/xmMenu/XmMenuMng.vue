@@ -139,7 +139,8 @@
  								</el-col> 
 								<el-col  :span="24"  style="padding-top:5px;"> 
 									<el-button  v-if=" batchEditVisible==false "  @click="handleExport" icon="el-icon-download">导出</el-button>  
-									<el-button   v-if=" batchEditVisible==false&&disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>   
+									<el-button   v-if=" batchEditVisible==false&&disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>  
+									
 								</el-col> 
 							</el-row>  
 								<el-button  slot="reference" icon="el-icon-more"></el-button> 
@@ -179,13 +180,13 @@
 						</el-popover>
 						 
 						<el-button  @click="showParentMenu" icon="el-icon-top" title="更换上级"></el-button>
- 						<el-button  v-if="disabledMng!=false"  type="danger" @click="batchDel" icon="el-icon-delete" title="删除"></el-button> 
-
+ 						<el-button  v-if="disabledMng!=false"  type="danger" @click="batchDel" icon="el-icon-delete" title="删除"></el-button>  
 						<el-button class="hidden-md-and-down"  v-if=" batchEditVisible==false&&disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing" title="汇总进度"></el-button>  
+						<xm-table-config ref="tableConfig" style="display:inline;" :table="$refs.table"></xm-table-config>   
 						</span>
 					 </el-row>  
 					<el-row class="padding-top">  
-						<el-table  :row-style="{height:'60px'}" lazy :load="loadXmMenusLazy" stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
+						<el-table :cell-style="cellStyleCalc" :header-cell-style="cellStyleCalc" :row-style="{height:'60px'}" lazy :load="loadXmMenusLazy" stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
 							<el-table-column sortable type="selection" width="40"></el-table-column> 
 							
 							<el-table-column prop="menuName" label="需求名称" min-width="300" fixed="left"> 
@@ -225,6 +226,7 @@
 								
 
 							</el-table-column>   
+							<template>
 							<el-table-column prop="productId" label="产品" width="100" show-overflow-tooltip sortable>   
 							</el-table-column> 
 							<el-table-column prop="status" label="状态"  min-width="80"  sortable> 
@@ -239,7 +241,7 @@
 									</span> 
 								</template>
 							</el-table-column>   
-							<el-table-column prop="dtype" label="类型" width="100"  sortable> 
+							<el-table-column prop="dtype" label="类型" width="100"  sortable v-if="false"> 
 								<template slot-scope="scope"> 
 									<div class="cell-text">
 										{{formaterByDicts(scope.row,'dtype',scope.row.dtype)}}
@@ -251,7 +253,7 @@
 									</span> 
 								</template>  
 							</el-table-column> 
-							<el-table-column prop="source"  label="来源" width="100"  :formatter="formaterByDicts"  show-overflow-tooltip sortable>  
+							<el-table-column prop="source"  label="来源" width="100"  :formatter="formaterByDicts"  show-overflow-tooltip sortable  v-if="false">  
 								<template slot-scope="scope"> 
 									<div class="cell-text">
 										{{formaterByDicts(scope.row,'source',scope.row.source)}}
@@ -288,21 +290,7 @@
 									</span> 
 								</template>  
 							</el-table-column> 
-							<el-table-column prop="iterationName" label="迭代"  min-width="120" show-overflow-tooltip sortable>  
-								<template slot="header">
-									迭代 
-									<el-popover  
-										placement="top"
-										width="300"
-										v-model="linkIterationPopoverVisible">
-										<p>将需求加入还是移出迭代 <span v-if="filters.iteration && filters.iteration.id">【{{filters.iteration.iterationName}}】</span>?</p>
-										<div style="text-align: right; margin: 0">
-											<el-button size="mini" type="text" @click="doBatchDelXmIterationMenu">移出</el-button>
-											<el-button type="primary" size="mini" @click="doBatchAddXmIterationMenu">加入</el-button>
-										</div>
-										<el-button type="text" slot="reference" icon="el-icon-edit" title="点击设置需求与迭代的关联关系" @click="linkIterationPopoverVisible=true">关联</el-button>
-										</el-popover> 
-								</template>
+							<el-table-column prop="iterationName" label="迭代" width="150" show-overflow-tooltip sortable>   
 								<template slot-scope="scope"> 
 									<div class="cell-text">
 										
@@ -333,7 +321,7 @@
 										 <span v-if="scope.row.mactRate"><el-tag :type="scope.row.mactRate>=100?'success':'warning'">{{scope.row.mactRate}}%</el-tag></span>
 									</div>
 									<span class="cell-bar">  
-										<xm-menu-workload   :menu="scope.row"  placeholder="工时"  style="display:block;" @submit="editXmMenuSomeFields(scope.row,'workload',$event)">  
+										<xm-menu-workload :menu="scope.row"  placeholder="工时"  style="display:block;" @submit="editXmMenuSomeFields(scope.row,'workload',$event)">  
 										</xm-menu-workload>  
 									</span>  
 								</template>
@@ -369,7 +357,7 @@
 										 <span>{{scope.row.mmUsername}} </span>  
 								</template>
 							</el-table-column>   
-							
+							</template>
 						</el-table>
 						
 							
@@ -466,6 +454,7 @@
 	import  XmIterationSelect from '../xmIteration/XmIterationSelect';//修改界面
 	import  XmItSelect from '@/views/xm/core/components/XmItSelect';//修改界面
 	import  XmMenuWorkload from '@/views/xm/core/components/XmMenuWorkload';//修改界面
+	import  XmTableConfig from '@/views/xm/core/components/XmTableConfig';//修改界面
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
 	
 	import XmMenuSelect from "../xmMenu/XmMenuSelect";
@@ -473,7 +462,7 @@
 
 	import {sn} from '@/common/js/sequence'
 
-	import { mapGetters } from 'vuex'  
+	import { mapGetters } from 'vuex'   
 	
 	export default { 
 		props:['selProject','xmIteration','xmProduct','disabledMng'],
@@ -508,6 +497,7 @@
 			const endDate = new Date();
 			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 12 );
 			return {
+				columnsConfig:[/**{label:'',property:'',isShow:true} */],
 				filters: {
 					key: '',
 					product:null,
@@ -525,7 +515,7 @@
 				xmMenus: [],//查询结果
 				pageInfo:{//分页数据
 					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
-					pageSize:50,//每页数据
+					pageSize:20,//每页数据
 					count:false,//是否需要重新计算总记录数
 					pageNum:1,//当前页码、从1开始计算
 					orderFields:[],//排序列 如 ['sex','student_id']，必须为数据库字段
@@ -745,8 +735,8 @@
 
 			//显示编辑界面 XmMenu xm_project_menu
 			showEdit: function ( row,index ) {
+				this.editForm = Object.assign({}, row); 
 				this.editFormVisible = true;
-				this.editForm = Object.assign({}, row);
 			},
 			//显示新增界面 XmMenu xm_project_menu
 			showAdd: function (dclass) {  
@@ -1279,7 +1269,19 @@
 						this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 					}
 				})
+			},
+			cellStyleCalc({row, column, rowIndex, columnIndex}){
+				if(this.$refs.tableConfig && this.$refs.tableConfig.columnsConfig.length>0){ 
+					if(this.$refs.tableConfig.columnsConfig.some(i=>i.property==column.property&&i.isShow==false)){
+						return "display:none;"
+					}else{
+						return "";
+					}
+				}else{
+					return "";
+				}
 			}
+			 
 		},//end methods
 		components: { 
 		    'xm-menu-add':XmMenuAdd,
@@ -1297,6 +1299,7 @@
 			XmMenuSelect,
 			XmItSelect,
 			XmMenuWorkload,
+			XmTableConfig,
 		    //在下面添加其它组件
 		}, 
 		mounted() {   
@@ -1318,7 +1321,7 @@
 			this.$nextTick(() => {  
 				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
 				this.getXmMenus();
-          });  
+          });    
 		}
 	}
 
