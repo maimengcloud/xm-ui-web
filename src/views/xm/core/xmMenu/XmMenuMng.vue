@@ -452,7 +452,7 @@
 	import XmTaskMng from '../xmTask/XmTaskMng'; 
 	import XmTaskListForMenu from '../xmTask/XmTaskListForMenu';
 	import  XmIterationSelect from '../xmIteration/XmIterationSelect';//修改界面
-	import  XmItSelect from '@/views/xm/core/components/XmItSelect';//修改界面
+	import  XmItSelect from '@/views/xm/core/components/XmIterationSelect.vue';//修改界面
 	import  XmMenuWorkload from '@/views/xm/core/components/XmMenuWorkload';//修改界面
 	import  XmTableConfig from '@/views/xm/core/components/XmTableConfig';//修改界面
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 

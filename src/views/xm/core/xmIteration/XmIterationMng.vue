@@ -141,7 +141,7 @@
   import XmGantt from '../components/xm-gantt';
 
 	import { mapGetters } from 'vuex'
-import XmIterationSelect from './XmIterationSelect.vue';
+import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';
 
 	export default {
 		computed: {

@@ -64,7 +64,7 @@
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { delXmIterationLink } from '@/api/xm/core/xmIterationLink';
 
- 	import XmIterationSelect from './XmIterationSelect.vue'
+ 	import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue'
 	import XmMenuMng from '../xmMenu/XmMenuMng.vue'
 	import XmIterationStateShow from '../xmIterationState/XmIterationStateShow.vue'
 	import { mapGetters } from 'vuex'
