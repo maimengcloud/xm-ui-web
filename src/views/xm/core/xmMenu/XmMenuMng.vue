@@ -13,7 +13,7 @@
 								<el-link title="产品，点击选择、清除选择" @click="productVisible=true" type="warning" slot="reference" v-if="!xmProduct" icon="el-icon-search"><font style="font-size:14px;">{{filters.product?filters.product.productName:'选择产品'}}</font></el-link> 
 						</el-popover>   
 						
-						<xm-it-select style="width: 120px;" clearable :product-id="filters.product?filters.product.id:null" :link-project-id="selProject?selProject.id:null"   placeholder="迭代"  @change="onIterationSelected" @clear="onIterationClearSelect">
+						<xm-it-select style="display:inline;"  :product-id="filters.product?filters.product.id:null" :link-project-id="selProject?selProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClearSelect">
 					    </xm-it-select> 
 						<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable style="width: 160px;">
 							<el-option   value="not-join-any-project"  label="未分配过任务的需求"></el-option>  
