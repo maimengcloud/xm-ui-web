@@ -329,7 +329,7 @@
 	import xmTaskMng from '../xmTask/XmTaskMng'; 
 	import xmProjectInfo from './XmProjectInfo'; 
 	import XmProjectTplMng from './XmProjectTplMng'; 
-	import XmProductMng from '../xmProduct/XmProductSelect';
+	import XmProductMng from '@/views/xm/core/components/XmProductSelect';
 
 	if(!Vue.component("xm-project-info")){
 		

@@ -45,7 +45,7 @@
 	import { listXmIterationLinkWithProductInfo,addXmIterationLink, delXmIterationLink, batchDelXmIterationLink } from '@/api/xm/core/xmIterationLink';
  
 	import { mapGetters } from 'vuex'
-	import XmProductSelect from '../xmProduct/XmProductSelect.vue';
+	import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 	import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 	
 	import  XmIterationAdd from '../xmIteration/XmIterationAdd';//新增界面

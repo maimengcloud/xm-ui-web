@@ -55,7 +55,7 @@
 	import { mapGetters } from 'vuex'	
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
 
-	import XmProductSelect from '../xmProduct/XmProductSelect.vue';
+	import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 	
 	export default { 
 		computed: {

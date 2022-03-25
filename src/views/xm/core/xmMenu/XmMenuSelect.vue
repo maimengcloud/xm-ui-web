@@ -165,7 +165,7 @@
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { listXmMenu  } from '@/api/xm/core/xmMenu';
- 	import  XmProductSelect from '../xmProduct/XmProductSelect';//新增界面
+ 	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//新增界面
  	import XmMenuRichDetail from './XmMenuRichDetail';
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
 

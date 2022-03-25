@@ -134,7 +134,7 @@
 	import  XmTestCaseEdit from './XmTestCaseEdit';//修改界面
 	import { mapGetters } from 'vuex'
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
-	import  XmProductSelect from '../xmProduct/XmProductSelect';//修改界面
+	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修改界面
 
 	import XmProjectList from '../xmProject/XmProjectList';
 	import XmGroupMng from '../xmGroup/XmGroupMng';

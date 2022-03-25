@@ -445,7 +445,7 @@
 	import  XmMenuAdd from './XmMenuAdd';//新增界面
 	import  XmMenuEdit from './XmMenuEdit';//修改界面
 	import  XmMenuMngBatch from './XmMenuMngBatch';//修改界面
-	import  XmProductSelect from '../xmProduct/XmProductSelect';//新增界面
+	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//新增界面
 	import  XmMenuTemplateMng from '../xmMenuTemplate/XmMenuTemplateMng';//新增界面
 	import XmMenuRichDetail from './XmMenuRichDetail';
 	import XmTaskList from '../xmTask/XmTaskList';

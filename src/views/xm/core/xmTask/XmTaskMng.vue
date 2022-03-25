@@ -1125,7 +1125,7 @@ import { addXmMyFocus, delXmMyFocus } from "@/api/xm/core/xmMyFocus";
 import XmProjectSelect from "../xmProject/XmProjectSelect";
 
 import XmMenuRichDetail from "../xmMenu/XmMenuRichDetail";
-import XmProductSelect from "../xmProduct/XmProductSelect"; //修改界面
+import XmProductSelect from "@/views/xm/core/components/XmProductSelect"; //修改界面
 import TagMng from "@/views/mdp/arc/tag/TagMng";
 
 import XmGantt from "../components/xm-gantt";

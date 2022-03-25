@@ -225,7 +225,7 @@
 	import  XmTestCaseEdit from '../xmTestCase/XmTestCaseEdit';//修改界面
 	import  XmQuestionMng from '../xmQuestion/XmQuestionMng';//修改界面
 	import  XmQuestionAdd from '../xmQuestion/XmQuestionAdd';//修改界面 
-	import  XmProductSelect from '../xmProduct/XmProductSelect';//修改界面
+	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修改界面
   import XmGantt from '../components/xm-gantt';
 
 	import { mapGetters } from 'vuex'

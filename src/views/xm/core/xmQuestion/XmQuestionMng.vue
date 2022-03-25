@@ -222,7 +222,7 @@
 	import XmGroupMng from '../xmGroup/XmGroupMng';
 	import XmProjectList from '../xmProject/XmProjectList';
 
-	import  XmProductSelect from '../xmProduct/XmProductSelect';//修改界面
+	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修改界面
   	import TagMng from "@/views/mdp/arc/tag/TagMng";
 
 	export default {

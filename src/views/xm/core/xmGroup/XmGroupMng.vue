@@ -225,7 +225,7 @@
 	import XmProjectList from '../xmProject/XmProjectList';
 	
 	import XmProjectSelect from '../xmProject/XmProjectSelect';
-	import XmProductSelect from '../xmProduct/XmProductSelect.vue';
+	import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 	
 	export default {
 	    name:'xmGroupMng',

@@ -77,7 +77,7 @@ import XmQuestionMng from '../xmQuestion/XmQuestionMng.vue';
 import XmProjectList from '../xmProject/XmProjectList.vue';
 import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
 
-import XmProductSelect from './XmProductSelect.vue';
+import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue';
 import XmProductProjectForLink from './XmProductProjectForLink.vue';
 import XmProductOverview from "./XmProductOverview"; 
 import XmIterationLinkForProduct from '../xmIterationLink/XmIterationLinkForProduct.vue';

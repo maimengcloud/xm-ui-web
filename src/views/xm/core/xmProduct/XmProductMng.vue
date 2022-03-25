@@ -315,7 +315,7 @@
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
 	import XmProjectList from '../xmProject/XmProjectList.vue';
 	import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
-	import XmProductSelect from './XmProductSelect.vue'; 
+	import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'; 
 
 	import Guider from '@/components/Guider/Index.js';
 

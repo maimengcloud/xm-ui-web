@@ -42,7 +42,7 @@
 	import  XmProductProjectLinkAdd from './XmProductProjectLinkAdd';//新增界面
 	import  XmProductProjectLinkEdit from './XmProductProjectLinkEdit';//修改界面
 	import { mapGetters } from 'vuex'
-import XmProductSelect from '../xmProduct/XmProductSelect.vue';
+import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 import XmProjectSelect from '../xmProject/XmProjectSelect.vue';
 	
 	export default { 
