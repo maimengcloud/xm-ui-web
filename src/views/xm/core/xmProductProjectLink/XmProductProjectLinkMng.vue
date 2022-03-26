@@ -2,9 +2,15 @@
 	<section class="app-container">
 		<el-row> 
 			<span style="float:right;">
-			<el-button type="primary" v-if="selProject" @click="productVisible=true" icon="el-icon-plus" round> 选择更多产品加入项目 </el-button>
-			<el-button type="primary" v-if="xmProduct" @click="projectVisible=true" icon="el-icon-plus" round> 选择更多项目加入产品 </el-button> 
-			</span>
+				<xm-product-select @row-click="onProductSelect" :autoSelect="false" v-if="selProject && selProject.id">
+					<font slot="title">选择更多产品加入项目</font>
+				</xm-product-select>  
+ 				<xm-project-select :autoSelect="false" @row-click="onProjectSelect" v-if="xmProduct && xmProduct.id">
+					 <font slot="title">
+						 选择更多项目加入产品
+					 </font>
+				</xm-project-select> 
+ 			</span>
 		</el-row>
 		<el-row style="padding-top:10px;">
 			<!--列表 XmProductProjectLink 产品与项目的关联关系表，一般由产品经理挂接项目到产品上-->
@@ -21,16 +27,7 @@
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		 
-		</el-row>
-		
-						 
-			<el-drawer title="选择产品" :visible.sync="productVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
-				 <xm-product-select @row-click="onProductSelect"></xm-product-select> 
-			</el-drawer> 
-			
-			<el-drawer title="选择项目" :visible.sync="projectVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
- 				<xm-project-select @row-click="onProjectSelect"></xm-project-select>
-			</el-drawer> 
+		</el-row>  
 	</section>
 </template>
 
@@ -43,7 +40,7 @@
 	import  XmProductProjectLinkEdit from './XmProductProjectLinkEdit';//修改界面
 	import { mapGetters } from 'vuex'
 import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
-import XmProjectSelect from '../xmProject/XmProjectSelect.vue';
+import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue'
 	
 	export default { 
 		props:['selProject','xmProduct'],
@@ -92,9 +89,7 @@ import XmProjectSelect from '../xmProject/XmProjectSelect.vue';
 					projectId:'',productId:'',ctime:'',cuserid:'',cusername:'',linkStatus:''
 				},
 				maxTableHeight:300,
-				productVisible:false,
-				projectVisible:false,
-			}
+ 			}
 		},//end data
 		methods: { 
 			handleSizeChange(pageSize) { 

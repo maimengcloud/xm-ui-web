@@ -2,24 +2,11 @@
 	<section> 
 		<el-row>   
 			<el-col :span="24"  style="padding-left:12px;" >
-				<el-row>    
-					<el-popover  v-if="!xmProduct&&!xmIteration"
-						placement="bottom"
-						width="400"
-						trigger="manual"
-						v-model="productVisible"> 
-						<xm-product-select v-if="!xmProduct" :auto-select="false" :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :xm-iteration="xmIteration" :simple="true" @clear-select="onProductClearSelect" @close="productVisible=false"></xm-product-select>
-							<el-link title="产品，点击选择、清除选择" @click="productVisible=true" type="warning" slot="reference" icon="el-icon-search"><font style="font-size:14px;">{{filters.product?filters.product.productName:'选择产品'}}</font></el-link> 
-					</el-popover>  
-					
-					<el-popover
-						placement="bottom"
-						width="400"
-						trigger="manual"
-						v-model="iterationVisible"> 
-						<xm-iteration-select v-if="!xmIteration" :auto-select="false" :sel-project="selProject" @row-click="onIterationSelected" ref="xmProductMng" :xm-product="xmProduct" :simple="true" @clear-select="onIterationClearSelect" @close="iterationVisible=false"></xm-iteration-select>
-							<el-link title="迭代，点击选择、清除选择" @click="iterationVisible=true" type="warning" slot="reference" v-if="!xmIteration" icon="el-icon-search"><font style="font-size:14px;">{{filters.iteration?filters.iteration.iterationName:'选择迭代'}}</font></el-link> 
-					</el-popover>   
+				<el-row>     
+						<xm-product-select v-if="!xmProduct&&!xmIteration" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" ref="xmProductMng" :iteration-id="xmIteration?xmIteration.id:null"  @clear-select="onProductClearSelect" @close="productVisible=false"></xm-product-select>
+ 
+						<xm-iteration-select v-if="!xmIteration" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onIterationSelected" ref="xmIterationMng" :product-id="xmProduct?xmProduct.id:null"  @clear-select="onIterationClearSelect" @close="iterationVisible=false"></xm-iteration-select>
+							 
 					<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable style="width: 160px;">
 						<el-option   value="not-join-any-project"  label="未分配过任务的需求"></el-option>  
 						<el-option   value="join-any-project"  label="已分配过任务的需求"></el-option>  
@@ -33,20 +20,20 @@
 						<el-option   value="join-curr-iteration"  :label="'已加入本迭代【'+filters.iteration.iterationName+'】'" v-if="filters.iteration && filters.iteration.id"></el-option>  
 					</el-select> 
 
-					<el-select v-model="filters.dtype" clearable placeholder="需求类型">
+					<el-select v-model="filters.dtype" clearable placeholder="需求类型" style="width: 100px;">
 						<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 					</el-select>    
-					<el-select v-model="filters.source" placeholder="需求来源"  clearable>
+					<el-select v-model="filters.source" placeholder="需求来源"  clearable style="width: 100px;">
 						<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
 					</el-select>     
-					<el-select v-model="filters.dlvl" placeholder="需求层次"  clearable class="hidden-md-and-down">
+					<el-select v-model="filters.dlvl" placeholder="需求层次"  clearable class="hidden-md-and-down" style="width: 100px;">
 						<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
 					</el-select>     
 				</el-row>
 				<el-row>     
 					<el-button class="hidden-md-and-down" v-if="!filters.tags||filters.tags.length==0" @click.native="tagSelectVisible=true">标签条件</el-button>
 					<el-tag class="hidden-md-and-down" v-else @click="tagSelectVisible=true"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
-					<el-select v-model="filters.priority" placeholder="优先级"  clearable>
+					<el-select v-model="filters.priority" placeholder="优先级"  clearable style="width: 100px;">
 							<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option> 
 					</el-select>      
 					<el-select  v-model="filters.status" placeholder="需求状态" clearable style="width: 100px;">
@@ -106,7 +93,7 @@
 						<el-button  slot="reference" icon="el-icon-more"></el-button>
 					</el-popover>  
 					
-					<el-button   type="primary" v-if="multi"  v-on:click="multiSelectedConfirm">确认选择</el-button>
+					<el-button  style="float:right;" type="primary" v-if="multi"  v-on:click="multiSelectedConfirm">确认选择</el-button>
 				</el-row>   
 				<el-row style="padding-top:12px;">
 					<el-table ref="table" class="menu-table"  lazy :load="loadMenusLazy" :height="maxTableHeight" :data="xmMenusTreeData"   row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
@@ -130,9 +117,6 @@
 						</el-table-column> 
 						<el-table-column prop="productId" label="产品" min-width="100" >   </el-table-column>
 						<el-table-column prop="iterationName" label="迭代" min-width="140" >   </el-table-column>
-						<el-table-column prop="mmUsername" label="责任人" width="140" > 
-							 
-						</el-table-column> 
 						<el-table-column label="操作"    width="100" fixed="right"  >
 							<template slot-scope="scope"> 
 								<el-button  :disabled="checkScope && checkScope!==scope.row.ntype"  type="primary" @click="selectedMenu( scope.row,scope.$index)">选择</el-button> 

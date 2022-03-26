@@ -253,11 +253,7 @@
 					</el-drawer>
 					<el-drawer title="选择项目" :visible.sync="projectVisible" size="60%" append-to-body>
 						<xm-project-list  @select="onProjectSelected"></xm-project-list>
-					</el-drawer>
-
-					<el-drawer title="选择产品" :visible.sync="productSelectVisible" size="60%" append-to-body>
-						<xm-product-select  @row-click="onXmProductSelect"></xm-product-select>
-					</el-drawer>
+					</el-drawer> 
 					<el-drawer title="迭代报告" :visible.sync="iterationSelectVisible" fullscreen  append-to-body  :close-on-click-modal="false">
 						<xm-iteration-select @row-click="onXmIterationSelect"></xm-iteration-select>
 					</el-drawer> 

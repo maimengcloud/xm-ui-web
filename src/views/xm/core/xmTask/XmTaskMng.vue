@@ -1122,7 +1122,7 @@ import xmMenuSelect from "../xmMenu/XmMenuSelect";
 
 import { addXmMyFocus, delXmMyFocus } from "@/api/xm/core/xmMyFocus";
 
-import XmProjectSelect from "../xmProject/XmProjectSelect";
+import XmProjectSelect from "@/views/xm/core/components/XmProjectSelect";
 
 import XmMenuRichDetail from "../xmMenu/XmMenuRichDetail";
 import XmProductSelect from "@/views/xm/core/components/XmProductSelect"; //修改界面

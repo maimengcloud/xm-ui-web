@@ -22,8 +22,8 @@
 					trigger="click" > 
 					<el-row>
 						<el-col :span="24" style="padding-top:5px;">
-							<font class="more-label-font">产品:</font><el-tag    v-if="  filters.product "  closable    @close="clearProduct">{{this.filters.product.productName}}</el-tag>
-							<el-button v-else    @click="showProductVisible" type="plian">选产品</el-button>
+							<font class="more-label-font" v-if="!xmProduct">产品:</font>
+							<xm-product-select :link-project-id="filters.selProject?filters.selProject.id:null"   @row-click="onProductSelected"></xm-product-select>
 						</el-col> 
 						<el-col :span="24" style="padding-top:5px;" v-if="!selProject" >
 							<font class="more-label-font">项目:</font><el-tag    v-if="  filters.selProject "  closable    @close="clearProject">{{this.filters.selProject.name}}</el-tag>
@@ -117,11 +117,7 @@
 		</el-row>
 		<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible"    size="80%"   :close-on-click-modal="false">
 			<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
-		</el-drawer>
-		
-		<el-drawer title="选择产品" :visible.sync="productSelectVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
-				<xm-product-select  :isSelectProduct="true" :selProject="filters.selProject" :visible="productSelectVisible" @cancel="productSelectVisible=false" @selected="onProductSelected"></xm-product-select>
-		</el-drawer>
+		</el-drawer> 
 	</section>
 </template>
 

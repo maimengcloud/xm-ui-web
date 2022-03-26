@@ -4,15 +4,9 @@
 			<el-col :span="24">
 				<el-tabs type="border-card"  :value="showPanel" @tab-click="tabClick">
 					<el-tab-pane disabled> 
-						<div  slot="label">
-							<el-popover
-								placement="bottom"
-								width="400"
-								trigger="click"> 
-								<xm-project-select ref="xmProjectSelect" :auto-select="true"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClearSelect"></xm-project-select>
- 								 <el-link type="warning" slot="reference"  icon="el-icon-search"><font style="font-size:14px;">{{selProject?selProject.name:'选择项目'}}</font></el-link> 
-							</el-popover>
-							
+						<div  slot="label"> 
+								<xm-project-select ref="xmProjectSelect" :auto-select="true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear-select="onProjectClearSelect"></xm-project-select>
+ 								  
 						</div>
 					 </el-tab-pane> 
 					<el-tab-pane disabled> 
@@ -74,7 +68,7 @@
 import XmProductMng from '../xmProduct/XmProductMng.vue';
 import XmTaskMng from '../xmTask/XmTaskMng.vue';
 import XmQuestionMng from '../xmQuestion/XmQuestionMng.vue';
-import XmProjectSelect from './XmProjectSelect.vue';
+import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue';
 import XmProjectForLink from './XmProjectForLink.vue';
 
 import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'

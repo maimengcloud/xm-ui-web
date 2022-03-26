@@ -1,20 +1,11 @@
 <template>
 	<section class="border padding-left">
 		<el-row class="padding-top"> 
-					<el-popover v-if="(pgClass==='0'||!pgClass) && (!selProject  || !selProject.id)"
-						placement="bottom"
-						width="400"
-						trigger="click"> 
+ 
 						<xm-project-select :auto-select="true" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClose"></xm-project-select>
-							<el-link type="warning" slot="reference" icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link> 
-					</el-popover>
-					<el-popover v-if="pgClass==='1' && (!xmProduct  || !xmProduct.id)"
-						placement="bottom"
-						width="400"
-						trigger="click"> 
-							<xm-product-select :auto-select="true"  :sel-project="selProject" @row-click="onProductRowClick" @clear-select="onProductClose"></xm-product-select>
-							<el-link type="warning" slot="reference" icon="el-icon-search"><font style="font-size:14px;">{{filters.xmProduct?filters.xmProduct.productName:'选择项目'}}</font></el-link> 
-					</el-popover> 
+ 
+						<xm-product-select :auto-select="true"  :link-project-id="selProject?selProject.id:null" @row-click="onProductRowClick" @clear-select="onProductClose"></xm-product-select>
+							 
 					<el-button   type="primary" @click="userConfirm" icon="el-icon-finished">确认选择</el-button>  
 		</el-row>  
 		<el-row class="padding-top" v-loading="load.list" :style="{overflowX:'auto',height:maxTableHeight+'px'}" ref="table">
@@ -29,16 +20,7 @@
 					</div>  
 				</el-col>
 			</el-row>
-		</el-row>  
-		
-		<el-drawer title="选中项目团队" :visible.sync="selectProjectVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
-			<xm-project-list    @project-confirm="onProjectRowClick"></xm-project-list>
-		</el-drawer> 
-		
-		
-		<el-drawer title="选中产品团队" :visible.sync="selectProductVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
-			<xm-product-select  :isSelectProduct="true"  @selected="onProductRowClick"></xm-product-select>
-		</el-drawer> 
+		</el-row>   
 	</section>
 </template>
 
@@ -47,7 +29,7 @@
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
    	import {  getGroups } from '@/api/xm/core/xmGroup';
-   	import XmProjectSelect from '../xmProject/XmProjectSelect';
+   	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
 
 	import {mapGetters} from 'vuex' 
 import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'

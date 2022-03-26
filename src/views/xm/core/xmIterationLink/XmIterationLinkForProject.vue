@@ -45,7 +45,8 @@
 	import { listXmIterationLinkWithProjectInfo,addXmIterationLink, delXmIterationLink, batchDelXmIterationLink } from '@/api/xm/core/xmIterationLink';
  
 	import { mapGetters } from 'vuex'
-	import XmProjectSelect from '../xmProject/XmProjectSelect.vue';
+	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue'
+;
 	import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 	
 	import  XmIterationAdd from '../xmIteration/XmIterationAdd';//新增界面

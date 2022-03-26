@@ -27,8 +27,8 @@
 					trigger="click" >
 					<el-row>
 						<el-col :span="24" style="padding-top:5px;">
-							<font class="more-label-font">产品:</font><el-tag    v-if="  filters.product "  closable    @close="clearProduct">{{this.filters.product.productName}}</el-tag>
-							<el-button v-else    @click="showProductVisible" type="plian">选产品</el-button>
+							<font class="more-label-font" v-if="!xmProduct">产品:</font> 
+							<xm-product-select   :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"></xm-product-select>
 						</el-col>
 						<el-col :span="24"  style="padding-top:12px;" v-if="!selProject">
 							<font class="more-label-font">项目:</font>
@@ -194,11 +194,7 @@
 
 			<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible"    size="70%"   :close-on-click-modal="false">
 				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
-			</el-drawer>
-
-			<el-drawer title="选择产品" :visible.sync="productSelectVisible"  size="70%"  append-to-body   :close-on-click-modal="false">
-					<xm-product-select   :isSelectProduct="true" :selProject="filters.selProject" :visible="productSelectVisible" @cancel="productSelectVisible=false" @selected="onProductSelected"></xm-product-select>
-			</el-drawer>
+			</el-drawer> 
 			
 			<el-drawer append-to-body title="标签条件" :visible.sync="tagSelectVisible"  :close-on-click-modal="false" size="60%">
 				<tag-mng :tagIds="filters.tags?filters.tags.map(i=>i.tagId):[]" :jump="true" @select-confirm="onTagSelected">

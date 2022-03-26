@@ -3,7 +3,7 @@
 		<el-popover style="display:inline;"
 			placement="bottom"
 			width="400"
-			v-model="tableVisible"
+			v-model="iterationVisible"
 			trigger="manual" >  
 			<el-row>
 				<el-table ref="table" :height="maxTableHeight" :data="xmIterations" row-key="id"    @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
@@ -59,7 +59,7 @@
 				<el-pagination  layout="total, prev,  next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 
 			</el-row>
-			<el-link title="点击选中迭代" @click="tableVisible=!tableVisible"  type="warning" slot="reference" icon="el-icon-search"><font style="font-size:14px;">{{editForm&&editForm.id?editForm.iterationName:'选择迭代'}}</font></el-link> 
+			<el-link title="点击选中迭代" @click="iterationVisible=!iterationVisible"  type="warning" slot="reference" icon="el-icon-search"><font style="font-size:14px;"><slot name="title">{{editForm&&editForm.id?editForm.iterationName:'选择迭代'}}</slot></font></el-link> 
 		</el-popover> 
 	</section>
 </template>
@@ -131,7 +131,7 @@
 				},
 				/**begin 自定义属性请在下面加 请加备注**/ 
 				maxTableHeight:300, 
-				tableVisible:false,
+				iterationVisible:false,
 				moreVisible:false,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
@@ -206,9 +206,11 @@
 							 map.set(this.linkProjectId,this.xmIterations)
 						}
 						if(this.autoSelect===true&&this.xmIterations.length>0){ 
-							var row=this.xmIterations[0];
-							this.$refs.table.setCurrentRow(row);
-							this.rowClick(row);
+							if(this.autoSelect!==false&&this.xmIterations.length>0 && this.iterationVisible==false){ 
+								var row=this.xmIterations[0]; 
+								this.$refs.table.setCurrentRow(row);
+								this.rowClick(row);  
+							} 
 						}
 					}else{
 						this.$notify({showClose: true, message: tips.msg, type: 'error' });
@@ -224,10 +226,11 @@
 			rowClick: function(row, event, column){
 				var oldId=this.editForm.id
 				this.editForm=row
-				this.tableVisible=false;
+				this.iterationVisible=false;
+				this.moreVisible=false;
 				if(oldId!=this.editForm.id){
 					this.$emit("change",row)
-				}
+				} 
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			}, 
 			/**end 自定义函数请在上面加**/
@@ -239,7 +242,7 @@
 				}
 			},
 			close(){
-				this.tableVisible=false;
+				this.iterationVisible=false;
 				this.$emit("close")
 			}, 
 			initData(){
@@ -247,11 +250,25 @@
 					var xmIterations=map.get(this.productId);
 					if(xmIterations){
 						this.xmIterations=xmIterations;
+						if(this.autoSelect!==false&&this.xmIterations.length>0 && this.iterationVisible==false){ 
+							var row=this.xmIterations[0]; 
+							this.$refs.table.setCurrentRow(row);
+							this.rowClick(row);  
+						}
+					}else{
+						this.searchXmIterations();
 					}
 				}else if(this.linkProjectId){
 					var xmIterations=map.get(this.linkProjectId);
 					if(xmIterations){
 						this.xmIterations=xmIterations;
+						if(this.autoSelect!==false&&this.xmIterations.length>0 && this.iterationVisible==false){ 
+							var row=this.xmIterations[0]; 
+							this.$refs.table.setCurrentRow(row);
+							this.rowClick(row);  
+						}
+					}else{
+						this.searchXmIterations();
 					}
 				}else{
 					this.searchXmIterations();
@@ -266,7 +283,8 @@
 				if(oldId!=this.editForm.id){
 					this.$emit("change",null)
 				}
-				this.tableVisible=false;
+				this.iterationVisible=false;
+				this.moreVisible=false;
 				this.$emit('clear',null );//  @row-click="rowClick"
 			},
 		},//end methods

@@ -2,52 +2,88 @@
 	<section class="padding">
 		<el-row v-show=" !batchEditVisible">  
 			<el-col :span="24" class="padding-left">
-					<el-row>   
-						
-						<el-popover v-if=" !filters.iteration || !filters.iteration.id"
-							placement="bottom"
-							width="400"
-							trigger="manual"
-							v-model="productVisible"> 
-							<xm-product-select v-if="!xmProduct" :auto-select="false" :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :xm-iteration="xmIteration" :simple="true" @clear-select="onProductClearSelect" @close="productVisible=false"></xm-product-select>
-								<el-link title="产品，点击选择、清除选择" @click="productVisible=true" type="warning" slot="reference" v-if="!xmProduct" icon="el-icon-search"><font style="font-size:14px;">{{filters.product?filters.product.productName:'选择产品'}}</font></el-link> 
-						</el-popover>   
-						
-						<xm-it-select style="display:inline;"  :product-id="filters.product?filters.product.id:null" :link-project-id="selProject?selProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClearSelect">
+					<el-row>    
+						<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="!xmProduct && !xmIteration"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear-select="onProductClearSelect"></xm-product-select>
+								 
+						<xm-it-select v-if="!xmIteration || !xmIteration.id" style="display:inline;"  :product-id="filters.product?filters.product.id:null" :link-project-id="selProject?selProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClearSelect">
 					    </xm-it-select> 
-						<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable style="width: 160px;">
+						<el-select   v-model="filters.iterationFilterType" placeholder="加入过迭代？" clearable   >
+							<el-option   value="not-join-any-iteration"  label="未加入过迭代"></el-option>  
+							<el-option   value="join-any-iteration"  label="已加入过迭代"></el-option>  
+							<el-option   value="not-join-curr-iteration"  :label="'未加入迭代【'+filters.iteration.iterationName+'】'"  v-if="filters.iteration && filters.iteration.id"></el-option>  
+							<el-option   value="join-curr-iteration"  :label="'已加入本迭代【'+filters.iteration.iterationName+'】'" v-if="filters.iteration && filters.iteration.id"></el-option>  
+						</el-select>  
+						<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable >
 							<el-option   value="not-join-any-project"  label="未分配过任务的需求"></el-option>  
 							<el-option   value="join-any-project"  label="已分配过任务的需求"></el-option>  
 							<el-option   value="not-join-curr-project"  :label="'未分配任务到项目【'+selProject.name+'】'" v-if="selProject && selProject.id"></el-option>  
 							<el-option   value="join-curr-project"  :label="'已分配任务到项目【'+selProject.name+'】'"  v-if="selProject && selProject.id"></el-option>  
 						</el-select>   
-						<el-select   v-model="filters.iterationFilterType" placeholder="加入过迭代？" clearable  style="width: 160px;">
-							<el-option   value="not-join-any-iteration"  label="未加入过迭代"></el-option>  
-							<el-option   value="join-any-iteration"  label="已加入过迭代"></el-option>  
-							<el-option   value="not-join-curr-iteration"  :label="'未加入迭代【'+filters.iteration.iterationName+'】'"  v-if="filters.iteration && filters.iteration.id"></el-option>  
-							<el-option   value="join-curr-iteration"  :label="'已加入本迭代【'+filters.iteration.iterationName+'】'" v-if="filters.iteration && filters.iteration.id"></el-option>  
-						</el-select> 
+						<span style="float:right;">
+						<el-popover style="padding-left:10px;"  
+							placement="top-start"
+							width="250" 
+							trigger="click" > 
+							<el-row> 
+								<el-col :span="24" style="padding-top:5px;">
+									<div   class="icon" style="background-color:  rgb(255, 153, 51);">
+ 										<i class="el-icon-s-promotion"></i>
+									</div>
+									<el-button   @click="showAdd('1')">新建史诗</el-button> 
+								</el-col>  
+								<el-col :span="24" style="padding-top:5px;"> 
+									<div  class="icon" style="background-color:  rgb(0, 153, 51);">
+									<i class="el-icon-s-flag"></i>
+									</div>
+									<el-button   @click="showAdd('2')">新建特性</el-button> 
+								</el-col>  
+								<el-col :span="24" style="padding-top:5px;">
+									
+									<div  class="icon" style="background-color:  rgb(79, 140, 255);">
+									<i class="el-icon-document"></i>
+									</div> 
+									<el-button   @click="showAdd('3')"  >新建用户故事</el-button> 
+								</el-col>  
+
+
+								<el-col :span="24" style="padding-top:5px;">
+									<el-button  @click="showImportFromMenuTemplate()" icon="el-icon-upload2">由模板快速导入需求</el-button> 
+								</el-col> 
+							</el-row>   
+							<el-button type="primary"  round  slot="reference" icon="el-icon-plus"></el-button>
+						</el-popover>
+						 
+						<el-button  @click="showParentMenu" icon="el-icon-top" title="更换上级"></el-button>
+ 						<el-button  v-if="disabledMng!=false"  type="danger" @click="batchDel" icon="el-icon-delete" title="删除"></el-button>  
+						<el-button class="hidden-md-and-down"  v-if=" batchEditVisible==false&&disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing" title="汇总进度"></el-button>  
 						
-						<el-select class="hidden-lg-and-down" v-model="filters.dtype" clearable placeholder="需求类型" style="width: 120px;">
+						<xm-table-config ref="tableConfig" style="display:inline;" :table="$refs.table"></xm-table-config>   
+						
+						</span>
+					</el-row>
+					<el-row>   
+						
+						<el-select   v-model="filters.dtype" clearable placeholder="需求类型" style="width: 120px;">
 							<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 						</el-select>    
-						<el-select class="hidden-lg-and-down" v-model="filters.source" placeholder="需求来源"  clearable style="width: 120px;">
+						<el-select class="hidden-md-and-down"  v-model="filters.source" placeholder="需求来源"  clearable style="width: 120px;">
 							<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
 						</el-select>     
-						<el-select class="hidden-lg-and-down" v-model="filters.dlvl" placeholder="需求层次"  clearable style="width: 120px;">
+						<el-select class="hidden-md-and-down" v-model="filters.dlvl" placeholder="需求层次"  clearable style="width: 120px;">
 							<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
 						</el-select>    
-						<el-button class="hidden-lg-and-down" v-if="!filters.tags||filters.tags.length==0" @click.native="tagSelectVisible=true">标签条件</el-button>
-						<el-tag class="hidden-lg-and-down" v-else @click="tagSelectVisible=true"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
-    
 						
-						<el-select class="hidden-lg-and-down" v-model="filters.priority" placeholder="优先级"  clearable style="width: 100px;">
+						<el-select   v-model="filters.priority" placeholder="优先级"  clearable style="width: 100px;">
 								<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option> 
 						</el-select>      
 						<el-select class="hidden-md-and-down" v-model="filters.status" placeholder="需求状态" clearable style="width: 100px;">
 							<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option> 
 						</el-select> 
-						<el-input v-model="filters.key" style="width: 15%;" placeholder="需求名称查询" clearable> 
+						
+						<el-button class="hidden-md-and-down" v-if="!filters.tags||filters.tags.length==0" @click.native="tagSelectVisible=true">标签条件</el-button>
+						<el-tag class="hidden-md-and-down" v-else @click="tagSelectVisible=true"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
+    
+						<el-input v-model="filters.key" style="width: 220px;" placeholder="需求名称查询" clearable> 
 						</el-input> 
 						<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
 						
@@ -129,9 +165,9 @@
 						 
 						
 
-						<el-button class="hidden-lg-and-down" v-if="!filters.tags||filters.tags.length==0" @click.native="tagSelectVisible=true">标签条件</el-button>
-						<el-tag class="hidden-lg-and-down" v-else @click="tagSelectVisible=true"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
-       
+								<el-button class="hidden-lg-and-down" v-if="!filters.tags||filters.tags.length==0" @click.native="tagSelectVisible=true">标签条件</el-button>
+								<el-tag class="hidden-lg-and-down" v-else @click="tagSelectVisible=true"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
+			
 
 
 								<el-col  :span="24"  style="padding-top:5px;">
@@ -144,46 +180,7 @@
 								</el-col> 
 							</el-row>  
 								<el-button  slot="reference" icon="el-icon-more"></el-button> 
-						</el-popover>  
-						<span style="float:right;">
-						<el-popover style="padding-left:10px;"  
-							placement="top-start"
-							width="250" 
-							trigger="click" > 
-							<el-row> 
-								<el-col :span="24" style="padding-top:5px;">
-									<div   class="icon" style="background-color:  rgb(255, 153, 51);">
- 										<i class="el-icon-s-promotion"></i>
-									</div>
-									<el-button   @click="showAdd('1')">新建史诗</el-button> 
-								</el-col>  
-								<el-col :span="24" style="padding-top:5px;"> 
-									<div  class="icon" style="background-color:  rgb(0, 153, 51);">
-									<i class="el-icon-s-flag"></i>
-									</div>
-									<el-button   @click="showAdd('2')">新建特性</el-button> 
-								</el-col>  
-								<el-col :span="24" style="padding-top:5px;">
-									
-									<div  class="icon" style="background-color:  rgb(79, 140, 255);">
-									<i class="el-icon-document"></i>
-									</div> 
-									<el-button   @click="showAdd('3')"  >新建用户故事</el-button> 
-								</el-col>  
-
-
-								<el-col :span="24" style="padding-top:5px;">
-									<el-button  @click="showImportFromMenuTemplate()" icon="el-icon-upload2">由模板快速导入需求</el-button> 
-								</el-col> 
-							</el-row>   
-							<el-button type="primary"  round  slot="reference" icon="el-icon-plus"></el-button>
-						</el-popover>
-						 
-						<el-button  @click="showParentMenu" icon="el-icon-top" title="更换上级"></el-button>
- 						<el-button  v-if="disabledMng!=false"  type="danger" @click="batchDel" icon="el-icon-delete" title="删除"></el-button>  
-						<el-button class="hidden-md-and-down"  v-if=" batchEditVisible==false&&disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing" title="汇总进度"></el-button>  
-						<xm-table-config ref="tableConfig" style="display:inline;" :table="$refs.table"></xm-table-config>   
-						</span>
+						</el-popover>   
 					 </el-row>  
 					<el-row class="padding-top">  
 						<el-table :cell-style="cellStyleCalc" :header-cell-style="cellStyleCalc" :row-style="{height:'60px'}" lazy :load="loadXmMenusLazy" stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
@@ -202,7 +199,7 @@
 									</div>
 									<span   class="vlink"   @click="showEdit(scope.row)" >{{scope.row.seqNo}} &nbsp; {{scope.row.menuName}} </span>
 									<div class="tool-bar">
-									<span class="u-btn">
+									<span class="u-btn"> 
 										<el-tooltip  v-if="scope.row.dclass==='2'||scope.row.dclass==='1'" :content="scope.row.dclass==='1'?'新建特性':'新建用户故事'">    
 												<el-button   @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建" circle plain size="mini"> </el-button>     
 										</el-tooltip>
@@ -747,7 +744,7 @@
 					this.addForm.dclass=dclass
 					this.addFormVisible = true;
 				}else{
-					this.productVisible=true;
+					this.$refs.xmProductSelect1.productVisible=true;
 					this.$notify({showClose: true, message: "请先选择一个产品", type: 'warning'});
 				}
 				

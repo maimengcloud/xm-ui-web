@@ -1,19 +1,15 @@
 <template>
-	<section class="page-container padding">
+	<section class="page-container">
 
 		<el-row > 
-			<el-col :span="8"  v-if="!xmIteration">
-				<xm-iteration-mng :simple="true" @row-click="onIterationRowClick" @clear-select="onIterationClearSelect"></xm-iteration-mng>
-			</el-col>
-			<el-col :span="xmIteration?24:16">
+			<el-col :span="10">
 				<el-row class="padding-left">
-					<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"> 
+					<el-input v-model="filters.key" style="width: 60%;" placeholder="模糊查询"> 
 					</el-input>  
 					<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterationMenus" icon="el-icon-search"></el-button>
 					
 					<span style="float:right;"> 
-						<el-button type="primary" @click="showAdd" icon="el-icon-plus" round>加入更多需求到迭代计划</el-button> 
-						<el-button type="danger" @click="batchDel" icon="el-icon-right">批量移出</el-button> 
+ 						<el-button type="danger" @click="batchDel" icon="el-icon-right">批量移出</el-button> 
 					</span>
 					
 				</el-row>
@@ -39,14 +35,7 @@
 								</span> 
 							</template>
 						</el-table-column> 
-						
-						<el-table-column prop="productId" label="产品" min-width="120" >  
-						</el-table-column> 
-						<el-table-column prop="iterationName" label="迭代" min-width="120" >  
-						</el-table-column> 
-						<el-table-column prop="mmUsername" label="责任人"  width="140" >  
-						</el-table-column> 
-						<el-table-column label="操作" width="160" fixed="right">
+						<el-table-column label="操作" width="100" fixed="right">
 							<template slot-scope="scope">
 								<el-button type="primary" @click="handleDel(scope.row,scope.$index)" icon="el-icon-right">移出</el-button>
 							</template>
@@ -54,11 +43,11 @@
 					</el-table>
 					<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 				</el-row>
+			</el-col>
+			<el-col :span="14">
+				<xm-menu-select checkScope="0" :xm-product="{id:xmIteration.productId}" :xm-iteration="xmIteration" :visible="menuVisible" :is-select-menu="true" :multi="true"   @menus-selected="onSelectedMenus" ></xm-menu-select>
 			</el-col> 
-			<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible"  size="70%"   :close-on-click-modal="false">
-				<xm-menu-select  :xm-iteration="xmIteration" :visible="menuVisible" :is-select-menu="true" :multi="true"   @menus-selected="onSelectedMenus" ></xm-menu-select>
-			</el-drawer>
-		</el-row>
+  		</el-row>
 	</section>
 </template>
 
@@ -200,10 +189,6 @@
 			},
 			//显示新增界面 XmIterationMenu 迭代定义
 			showAdd: function () {
-				if(!this.roles.some(i=>i.roleid=='iterationAdmin')){
-					this.$notify({showClose: true, message: "只有迭代管理员可以操作", type:  'error' }); 
-					return ;
-				}
 				this.menuVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);
 			},

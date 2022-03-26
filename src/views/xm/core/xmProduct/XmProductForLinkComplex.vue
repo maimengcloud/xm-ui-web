@@ -5,13 +5,7 @@
 				<el-tabs type="border-card"  :value="showPanel"  @tab-click="tabClick">
 					<el-tab-pane disabled> 
 						<div  slot="label">
-							<el-popover
-								placement="bottom"
-								width="400"
-								trigger="click"> 
-								<xm-product-select ref="xmProductSelect" :auto-select="true" :sel-project="selProject" :xm-iteration="xmIteration"  @row-click="onProductRowClick" @clear-select="onProductClearSelect"></xm-product-select>
- 								 <el-link type="warning" slot="reference"  icon="el-icon-search"><font style="font-size:14px;">{{xmProduct?xmProduct.productName:'选择产品'}}</font></el-link> 
-							</el-popover> 
+								<xm-product-select ref="xmProductSelect" :auto-select="true" :link-project-id="selProject?selProject.id:null" :iterationId="xmIteration?xmIteration.id:null"  @row-click="onProductRowClick" @clear-select="onProductClearSelect"></xm-product-select>
 						</div>
 					</el-tab-pane>
 					<el-tab-pane disabled> 
