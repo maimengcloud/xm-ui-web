@@ -14,6 +14,14 @@
 
 					<el-collapse value="1" accordion>
 						<el-collapse-item title="基本信息" name="1">
+							
+							<el-row>  
+									
+									<span v-if="opType!=='add'" style="float:right;">
+										<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">保存</el-button>  
+										<el-button icon="el-icon-watch" type="warning"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_baseinfo_change_approva'})">基本信息修改申请</el-button>  
+ 									</span>
+							</el-row>
 							<el-form-item label="项目代号" prop="code" v-if="opType==='add'">
 								<el-input v-model="editForm.code"  placeholder="项目代号，不可为空" >
 									<template slot="append">
@@ -105,6 +113,11 @@
 							</el-form-item>	     
 						</el-collapse-item>
 						<el-collapse-item title="工期" name="3">
+							<el-row>  
+ 									<span v-if="opType!=='add'" style="float:right;">
+ 										<el-button icon="el-icon-watch" type="warning"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_delay_approva'})">工期变更申请</el-button> 
+ 									</span>
+							</el-row>
 							<el-form-item label="" >  
 							<el-row>
 								<el-date-picker
@@ -124,9 +137,17 @@
 								<br>
 								<el-checkbox v-model="autoSet">工期变化自动更新预估成本/合同金额/预估工时等关联数据</el-checkbox>
 							</el-row> 
+							
+
 						</el-form-item>   
 						</el-collapse-item> 
 						<el-collapse-item title="成本预估" name="4">
+							
+							<el-row>  
+ 									<span v-if="opType!=='add'" style="float:right;">
+ 										<el-button icon="el-icon-edit" type="warning"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_budget_change_approva'})">预算变更申请</el-button>
+ 									</span>
+							</el-row>
 							<el-form-item label="" >   
 							<el-row>
 								<el-col :span="3">类型</el-col>
@@ -196,12 +217,9 @@
 		<el-row>  
 				<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>  
 				<span v-if="opType!=='add'" style="float:right;">
-					<el-button icon="el-icon-watch" type="danger"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_baseinfo_change_approva'})">基本信息修改申请</el-button>  
-					<el-button icon="el-icon-watch" type="danger"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_delay_approva'})">延期申请</el-button> 
-					<el-button icon="el-icon-star-on"  type="success"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_start_approva'})">立项申请</el-button>
+ 					<el-button icon="el-icon-star-on"  type="success"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_start_approva'})">立项申请</el-button>
 					<el-button icon="el-icon-success"  type="success" @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_over_approva'})">结项申请</el-button>
-					<el-button icon="el-icon-edit" type="warning"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_budget_change_approva'})">预算变更申请</el-button>
-					<el-button icon="el-icon-video-pause" type="danger"   @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_pause_approva'})">项目暂停申请</el-button> 
+ 					<el-button icon="el-icon-video-pause" type="info"   @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_pause_approva'})">项目暂停申请</el-button> 
 					<el-button icon="el-icon-video-play"  type="primary" @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_restart_approva'})">项目重新启动申请</el-button>
 				</span>
 		</el-row>
