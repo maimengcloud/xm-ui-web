@@ -81,9 +81,9 @@
               <el-progress class="pc" :stroke-width="14" :percentage="planProgress"></el-progress>
               <el-progress class="pc" :stroke-width="14" color="#47CBF6" :percentage="realProgress"></el-progress>
             </div>
-          </div> 
+          </div>
         </div>
-        
+
         <div class="r2">
           <p class="r_text">工作量分布</p>
           <div class="chart">
@@ -124,7 +124,7 @@
           <p class="r_text">所含产品和迭代情况</p>
           <div class="chart">
             <div id="iterationAndProduct" :style="{width: '100%', height: '320px'}"></div>
-          </div>         
+          </div>
         </div>
       </div>
     </div>
@@ -134,7 +134,7 @@
 <script>
 import util from "@/common/js/util"; // 全局公共库
 import { mapGetters } from "vuex";
-import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询  
+import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 import { listXmBranchState,loadProjectStateToXmBranchState } from '@/api/xm/core/xmBranchState';
 import Guider from '@/components/Guider/Index.js';
 export default {
@@ -194,9 +194,9 @@ export default {
 
     xmBranchStateCpd(){
       return this.xmBranchState
-    }, 
+    },
 
-  }, 
+  },
   watch:{
     xmBranchStateCpd:function(){
       this.drawWorkload();
@@ -297,7 +297,7 @@ export default {
                 type: 'max',
                 name: 'max'
               }],
-            }, 
+            },
           },
           {
             name: '缺陷',
@@ -314,7 +314,7 @@ export default {
                 yAxis: this.xmBranchState.totalBugCnt,  // y轴就是数据轴，那么标记数据的y轴坐标就是当前显示的数据，this.trenddata[1]是显示的所有数据，他是个数组，通过数组下标的形式获取最后一个数据即可
                 x: '95.55%'// 标记数据的x轴的位置，由于是最后一个点，所以这个位置是固定的，用百分比表示该图标内最后一个点的位置即可
               }],
-            }, 
+            },
           }
         ]
       };
@@ -403,7 +403,7 @@ export default {
                   name: 'max'
                 }
               ],
-            }, 
+            },
             areaStyle: {
               normal: {
                 color: {
@@ -482,7 +482,7 @@ export default {
       // 绘制图表
       taskChart.setOption(option);
     },
-    
+
     drawPieBug() {
       let bugPieChart = this.$echarts.init(document.getElementById("bugPieChart"));
       let option = {
@@ -764,7 +764,7 @@ export default {
             }
             return params;
           },
-         
+
         },
         series: [
           {
@@ -818,7 +818,7 @@ export default {
                 }
               },
             ],
-            
+
           }
         ]
       };
@@ -927,20 +927,21 @@ export default {
         }
       });
     },
-    
+
     //路由跳转
     gotolink(link) {
       this.$router.replace(link);
     },
-    
+
     /**end 自定义函数请在上面加**/
     guiderStart(forceDisplayWhileClosed) { // 初始化引导页
-      Guider.startByName('xmHomePage',forceDisplayWhileClosed); 
+      Guider.startByName('xmHomePage',forceDisplayWhileClosed);
     },
   },
 
   mounted() {
-    this.searchXmBranchState( this.guiderStart );
+    //this.searchXmBranchState( this.guiderStart );
+    this.searchXmBranchState();
     this.drawWorkload();
     this.drawTaskByDate();
     this.drawAllBar();
@@ -970,7 +971,7 @@ export default {
       border-left: 10px #AEB8CE solid;
       margin-right: 12px;
     }
-    
+
     .row_1 {
       background-color: #fff;
       display: flex;
@@ -1039,7 +1040,7 @@ export default {
             color: #7D7D7D;
             justify-content: center;
             span:nth-child(1) {
-              margin-bottom: 20px;              
+              margin-bottom: 20px;
             }
           }
           .process {
@@ -1048,7 +1049,7 @@ export default {
             flex: 1;
             justify-content: center;
             .pc:nth-child(1) {
-              margin-bottom: 20px;          
+              margin-bottom: 20px;
             }
           }
           .tj {
