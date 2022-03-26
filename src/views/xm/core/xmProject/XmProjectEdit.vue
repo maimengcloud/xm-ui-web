@@ -141,8 +141,8 @@
 								<el-col :span="3">内购</el-col>
 								<el-col :span="4"><el-input style="width:90%;"  type="number" v-model="editForm.planIuserCnt" :precision="0" :step="1" :min="0" placeholder="内购人数"></el-input>  
 								</el-col>
-								<el-col :span="6">{{autoParams.planIuserWorkload}}人时</el-col>
-								<el-col :span="3"><el-input  style="width:90%;" type="number" v-model="editForm.planIuserPrice" :precision="0" :step="1" :min="0" placeholder="预计内部人时单价"></el-input> </el-col>
+								<el-col :span="6">{{autoParams.planIuserWorkload}}h</el-col>
+								<el-col :span="3"><el-input  style="width:90%;" type="number" v-model="editForm.planIuserPrice" :precision="0" :step="1" :min="0" placeholder="预计内部h单价"></el-input> </el-col>
 								<el-col :span="8">{{this.toFixed(autoParams.planIuserAt)}}元,{{this.toFixed(autoParams.planIuserAt/10000)}} 万元</el-col>
 							</el-row>
 							<el-divider></el-divider>
@@ -150,18 +150,18 @@
 								<el-col :span="3">外购</el-col>
 								<el-col :span="4"><el-input  style="width:90%;" type="number" v-model="editForm.planOuserCnt" :precision="0" :step="1" :min="0" placeholder="外购人数"></el-input>  
 								</el-col>
-								<el-col :span="6">{{autoParams.planOuserWorkload}}人时</el-col>
-								<el-col :span="3"><el-input  style="width:90%;" type="number" v-model="editForm.planOuserPrice" :precision="0" :step="1" :min="0" placeholder="预计外购人时单价"></el-input> </el-col>
+								<el-col :span="6">{{autoParams.planOuserWorkload}}h</el-col>
+								<el-col :span="3"><el-input  style="width:90%;" type="number" v-model="editForm.planOuserPrice" :precision="0" :step="1" :min="0" placeholder="预计外购h单价"></el-input> </el-col>
 								<el-col :span="8">{{autoParams.planOuserAt }} 元 {{autoParams.planOuserAt/10000 }}万元</el-col>
 							
 							</el-row>
 							<el-divider></el-divider>
 							<el-row>
-								<el-col :span="4">合计</el-col>
-								<el-col :span="4"> {{autoParams.planOuserCnt+autoParams.planIuserCnt}}
+								<el-col :span="3">合计</el-col>
+								<el-col :span="4"> {{autoParams.planOuserCnt+autoParams.planIuserCnt}}人
 								</el-col>
-								<el-col :span="4">{{autoParams.planOuserWorkload+autoParams.planIuserWorkload  }}人时,{{ (autoParams.planOuserWorkload+autoParams.planIuserWorkload)/8/20  }}人月 </el-col>
-								<el-col :span="4">平均：{{ (parseFloat2(autoParams.planOuserPrice) + parseFloat2(autoParams.planIuserPrice))/2}}元/人时</el-col>
+								<el-col :span="6">{{autoParams.planOuserWorkload+autoParams.planIuserWorkload  }}h,{{ (autoParams.planOuserWorkload+autoParams.planIuserWorkload)/8/20  }}人月 </el-col>
+								<el-col :span="3"> {{ (parseFloat2(autoParams.planOuserPrice) + parseFloat2(autoParams.planIuserPrice))/2}}元/h</el-col>
 								<el-col :span="8">{{autoParams.planTotalCost}} 元，{{(autoParams.planTotalCost)/10000}} 万元</el-col>
 							</el-row> 
 						</el-form-item>
