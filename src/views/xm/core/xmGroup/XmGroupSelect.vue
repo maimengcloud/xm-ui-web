@@ -2,9 +2,9 @@
 	<section class="border padding-left">
 		<el-row class="padding-top"> 
  
-						<xm-project-select :auto-select="true" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClose"></xm-project-select>
+						<xm-project-select style="display:inline;" v-if="!selProject" :auto-select="false" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClose"></xm-project-select>
  
-						<xm-product-select :auto-select="true"  :link-project-id="selProject?selProject.id:null" @row-click="onProductRowClick" @clear-select="onProductClose"></xm-product-select>
+						<xm-product-select style="display:inline;" v-if="!xmProduct" :auto-select="false"  :link-project-id="selProject?selProject.id:null" @row-click="onProductRowClick" @clear-select="onProductClose"></xm-product-select>
 							 
 					<el-button   type="primary" @click="userConfirm" icon="el-icon-finished">确认选择</el-button>  
 		</el-row>  

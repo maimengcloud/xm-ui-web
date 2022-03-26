@@ -2,11 +2,19 @@
 	<section class="page-container padding border"> 
 		
 		<el-row class="padding-bottom">
-			<el-steps :active="calcBugStep" simple finish-status="success">
-				<el-step title="已激活,待确认" description="创建后自动激活、关闭后重新激活)"></el-step>
-				<el-step title="已确认,待解决" description="业务确认缺陷后变为已确认"></el-step>
-				<el-step title="已解决,待关闭" description="开发修复缺陷后，变成已解决"></el-step>
-				<el-step title="已关闭(可重新激活)" description="测试通过后变为已关闭，已关闭缺陷可以重新激活"></el-step>
+			<!--1|新提交 
+				2|处理中 
+				3|已修复
+				4|重新打开
+				5|已发布
+				6|已拒绝
+				7|挂起 --> 
+			<el-steps :active="calcBugStep" simple finish-status="success" >
+				<el-step v-for="(item,index) in dicts['bugStatus']" :title="item.name" :key="index" @click.native.stop="editForm.bugStatus=item.id">
+					<el-link slot="title" @click="editForm.bugStatus=item.id">
+						 {{item.name}} 
+					 </el-link>
+				</el-step> 
 			</el-steps>
 		</el-row>
 		<el-row class="page-main ">
@@ -137,22 +145,13 @@
 				</el-drawer>
 
 				<el-drawer append-to-body title="需求选择" :visible.sync="selectMenuVisible"   size="70%"   :close-on-click-modal="false">
-					<xm-menu-select :is-select-menu="true"  @selected="onSelectedMenu" :sel-project="selProject"></xm-menu-select>
+					<xm-menu-select :is-select-menu="true" checkScope="0"  @selected="onSelectedMenu" :sel-project="selProject"></xm-menu-select>
 				</el-drawer>
 			</el-row>
 		</el-row>
 		<el-row class="page-bottom">
 				<el-button @click.native="handleCancel">取消</el-button>
-				<el-button v-if="editForm.bugStatus !='closed'" v-loading="load.edit" type="primary" @click.native="handleQuestion(editForm.bugStatus)" :disabled="load.edit==true">保存</el-button>
-				<el-button v-if="editForm.bugStatus=='active'" v-loading="load.edit" type="primary" @click.native="handleQuestion('confirmed')" :disabled="load.edit==true">确认</el-button>
-				<el-button v-if="editForm.bugStatus=='active'" v-loading="load.edit" type="primary" @click.native="handleQuestion('active')" :disabled="load.edit==true">不是缺陷</el-button>
-				<el-button v-if="editForm.bugStatus=='active'" v-loading="load.edit" type="primary" @click.native="handleQuestion('resolved')" :disabled="load.edit==true">直接解决</el-button>
-				<el-button v-if="editForm.bugStatus=='active'" v-loading="load.edit" type="primary" @click.native="handleQuestion('closed')" :disabled="load.edit==true">直接关闭</el-button>
-				<el-button v-if="editForm.bugStatus=='confirmed'" v-loading="load.edit" type="primary" @click.native="handleQuestion('resolved')" :disabled="load.edit==true">解决</el-button>
-				<el-button v-if="editForm.bugStatus=='confirmed'" v-loading="load.edit" type="primary" @click.native="handleQuestion('closed')" :disabled="load.edit==true">关闭</el-button>
-				<el-button v-if="editForm.bugStatus=='resolved'" v-loading="load.edit" type="primary" @click.native="handleQuestion('closed')" :disabled="load.edit==true">关闭</el-button>
-				<el-button v-if="editForm.bugStatus=='resolved'" v-loading="load.edit" type="primary" @click.native="handleQuestion('active')" :disabled="load.edit==true">重新激活</el-button>
-				<el-button v-if="editForm.bugStatus=='closed'" v-loading="load.edit" type="primary" @click.native="handleQuestion('active')" :disabled="load.edit==true">重新激活</el-button>
+				<el-button v-loading="load.edit" type="primary" @click.native="handleQuestion(editForm.bugStatus)" :disabled="load.edit==true">保存</el-button> 
 		</el-row>
 		
 
@@ -190,17 +189,19 @@
 			]),
 
 			calcBugStep(){
-				if(this.editForm.bugStatus=='active'){
-					return 1
-				}else if(this.editForm.bugStatus=='confirmed'){
-					return 2
-				}else if(this.editForm.bugStatus=='resolved'){
-					return 3
-				}else if(this.editForm.bugStatus=='closed'){
-					return 4
+				if(this.dicts['bugStatus'] && this.editForm){
+					var index=this.dicts['bugStatus'].findIndex(i=>{
+						if(i.id==this.editForm.bugStatus){
+							return true;
+						}else{
+							return false;
+						}
+					})
+					return index+1;
 				}else{
-					return 1;
+					return 0;
 				}
+				 
 			}
 		},
 		props:['xmQuestion','visible',"selProject"],
@@ -241,7 +242,7 @@
 				},
 				//新增界面数据 xm_question
 				editForm: {
-					id:'',name:'',projectId:'',projectName:'',taskId:'',taskName:'',endTime:'',askUserid:'',askUsername:'',handlerUserid:'',handlerUsername:'',priority:'',solution:'',processTime:'',receiptMessage:'',receiptTime:'',description:'',createUserid:'',createUsername:'',createTime:'',status:'',receiptMessage:'',
+					id:'',name:'',projectId:'',projectName:'',taskId:'',taskName:'',endTime:'',askUserid:'',askUsername:'',handlerUserid:'',handlerUsername:'',priority:'',solution:'',processTime:'',receiptMessage:'',receiptTime:'',description:'',createUserid:'',createUsername:'',createTime:'',bugStatus:'',receiptMessage:'',
 					attachment: [],iterationId:'',iterationName:'',productId:'',
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
