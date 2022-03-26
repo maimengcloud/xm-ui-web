@@ -26,22 +26,7 @@
 								<el-select v-model="editForm.priority">
 									<el-option v-for="(i,index) in dicts['priority']" :label="i.name" :value="i.id" :key="index"></el-option> 
 								</el-select> 
-							</el-form-item>   
-							<el-form-item label="预算控制"> 
-								<el-form-item prop="budgetCtrl">
-									<el-checkbox  v-model="editForm.budgetCtrl"  true-label="1" false-label="0" >总预算控制</el-checkbox>  
-									<font style="font-size:12px;" color="blue">项目计划总预算不能大于项目总预算</font> 
-								</el-form-item>  
-								<el-form-item label="" prop="phaseBudgetCtrl">
-									<el-checkbox  v-model="editForm.phaseBudgetCtrl"  true-label="1" false-label="0" >项目计划预算控制</el-checkbox> 
-									<font style="font-size:12px;" color="blue">下级计划总预算不能大于上级计划总预算；每条计划的预算金额必须大于其关联任务的预算合计。</font> 
-								</el-form-item> 
-								<el-form-item label="" prop="phaseActCtrl">
-									<el-checkbox  v-model="editForm.phaseActCtrl"  true-label="1" false-label="0" >实际金额控制</el-checkbox>  
-									<font style="font-size:12px;" color="blue">每条计划实际金额不能大于预算金额;每条计划的预算金额必须大于其关联的任务的实际金额合计。</font> 
-								</el-form-item> 
-							
-							</el-form-item>	  
+							</el-form-item>    
 							<el-row>
 								<el-col :span="8">
 							<el-form-item label="总控"  prop="admUserid">
@@ -66,8 +51,24 @@
 								<el-input type="textarea" :rows="6" v-model="editForm.description" placeholder="项目描述" ></el-input>
 							</el-form-item>    
 						</el-collapse-item>
-						<el-collapse-item title="工期及成本预估" name="2">
-							<el-form-item label="工期及成本预估" >  
+						<el-collapse-item title="控制开关" name="2"> 
+							<el-form-item label=""> 
+								<el-form-item prop="budgetCtrl">
+									<el-checkbox  v-model="editForm.budgetCtrl"  true-label="1" false-label="0" >总预算控制</el-checkbox>  
+									<font style="font-size:12px;" color="blue">开启后：项目计划总预算大于项目总预算后将无法添加新的计划任务，进行项目预算变更后方可继续添加计划任务。</font> 
+								</el-form-item>  
+								<el-form-item label="" prop="budgetEarly">
+									<el-checkbox  v-model="editForm.budgetEarly"  true-label="1" false-label="0" >总预算超额预警</el-checkbox> &nbsp;超出&nbsp;<el-input v-if="editForm.budgetEarly" type="number" v-model="editForm.earlyAmt" placeholder="预警额度" style="width:20%;" ></el-input> &nbsp;元将进入预警清单
+									<br><font style="font-size:12px;" color="blue">一级计划总预算超出项目预算一定额度，将进入超预算预警项目清单，直到调小计划预算或者调大项目预算后解除。</font> 
+								</el-form-item> 
+								<el-form-item label="" prop="phaseActCtrl">
+									<el-checkbox  v-model="editForm.phaseActCtrl"  true-label="1" false-label="0" >实际金额控制</el-checkbox>  
+									<font style="font-size:12px;" color="blue">每条计划实际金额不能大于预算金额; 任务的实际金额合计不能大于与任务关联的上级计划的预算。</font> 
+								</el-form-item>  
+							</el-form-item>	     
+						</el-collapse-item>
+						<el-collapse-item title="工期及成本预估" name="3">
+							<el-form-item label="" >  
 							<el-row>
 								<el-date-picker
 									v-model="dateRanger"
