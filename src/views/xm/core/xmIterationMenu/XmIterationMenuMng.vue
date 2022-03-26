@@ -57,7 +57,7 @@
 	import config from '@/common/config';//全局公共库 
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { listXmIterationMenu, delXmIterationMenu, batchDelXmIterationMenu,batchAddXmIterationMenu } from '@/api/xm/core/xmIterationMenu'; 
-	import  XmIterationMng from '../xmIteration/XmIterationSelect';//修改界面
+	import  XmIterationMng from '@/views/xm/core/components/XmIterationSelect';//修改界面
 	import { mapGetters } from 'vuex'
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
 

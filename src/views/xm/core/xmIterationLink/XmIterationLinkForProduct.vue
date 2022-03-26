@@ -46,7 +46,7 @@
  
 	import { mapGetters } from 'vuex'
 	import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
-	import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
+	import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';
 	
 	import  XmIterationAdd from '../xmIteration/XmIterationAdd';//新增界面
 	

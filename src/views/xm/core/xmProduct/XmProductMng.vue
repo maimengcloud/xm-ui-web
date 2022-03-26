@@ -305,11 +305,11 @@
 	import  XmProductEdit from './XmProductEdit';//修改界面
 	import  XmProductTplMng from './XmProductTplMng';//修改界面
 	import { mapGetters } from 'vuex'
-	import  XmIterationMng from '../xmIteration/XmIterationSelect';//修改界面
+	import  XmIterationMng from '@/views/xm/core/components/XmIterationSelect';//修改界面
 	import  XmProductStateMng from '../xmProductState/XmProductStateMng';//修改界面
 
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
-	import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
+	import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';
 	import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'; 
 
 	import Guider from '@/components/Guider/Index.js';
