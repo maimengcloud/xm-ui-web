@@ -30,7 +30,7 @@
 						 <xm-product-edit  v-if="showPanel=='detail'" :xm-product="xmProduct"></xm-product-edit>
 
           			</el-tab-pane>
-					<el-tab-pane label="配置关联的项目" lazy  name="productProjectLink" v-if="xmProduct && xmProduct.id">
+					<el-tab-pane label="配置关联的项目" lazy  name="productProjectLink" v-if="xmProduct && xmProduct.id && !selProject">
 						<xm-product-project-link-mng  v-if="showPanel=='productProjectLink'" :xm-product="xmProduct"></xm-product-project-link-mng>
 					</el-tab-pane> 
 					<el-tab-pane label="迭代"   name="iterationProductLink" v-if="xmProduct && xmProduct.id" >
