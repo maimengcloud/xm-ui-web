@@ -39,8 +39,8 @@
 							<el-row>  
 								<el-col  :span="24"  style="padding-top:5px;" >
 									<font class="more-label-font">标签条件:</font>  
-									<el-button type="text" v-if="!filters.tags||filters.tags.length==0" @click.native="tagSelectVisible=true">标签</el-button>
-									<el-tag v-else @click="tagSelectVisible=true"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
+									<el-button type="text" v-if="!filters.tags||filters.tags.length==0" @click.native="$refs.tagDialog.open()">标签</el-button>
+									<el-tag v-else @click="$refs.tagDialog.open()"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
  
 								</el-col> 
 								<el-col :span="24"  style="padding-top:5px;">
@@ -229,7 +229,7 @@
 							<el-table-column prop="status" label="状态"  min-width="80"  sortable> 
 								<template slot-scope="scope"> 
 									<div class="cell-text">
-									{{dicts.menuStatus.some(i=>i.id==scope.row.status)?dicts.menuStatus.find(i=>scope.row.status==i.id).name:''}}
+										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in [formatterMenuStatusDicts(scope.row.status)]" :key="index">{{item.name}}</el-button>
 									</div>
 									<span class="cell-bar">   
 										 <el-select  v-model="scope.row.status" placeholder="需求状态"  style="display:block;"  @change="editXmMenuSomeFields(scope.row,'status',$event)">
@@ -238,6 +238,18 @@
 									</span> 
 								</template>
 							</el-table-column>   
+							<el-table-column prop="priority"  label="优先级" width="100" sortable>   
+								<template slot-scope="scope"> 
+									<div class="cell-text">
+										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in [formatterPriorityDicts(scope.row.priority)]" :key="index">{{item.name}}</el-button>
+ 									</div>
+									<span class="cell-bar">   
+										 <el-select  v-model="scope.row.priority" placeholder="优先级"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'priority',$event)">
+												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.priority" :key="index"> </el-option> 
+										 </el-select>  
+									</span> 
+								</template>  
+							</el-table-column> 
 							<el-table-column prop="dtype" label="类型" width="100"  sortable v-if="false"> 
 								<template slot-scope="scope"> 
 									<div class="cell-text">
@@ -270,19 +282,6 @@
 									<span class="cell-bar">   
 										 <el-select  v-model="scope.row.dlvl" placeholder="层次"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'dlvl',$event)">
 												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.demandLvl" :key="index"></el-option> 
-										 </el-select>  
-									</span> 
-								</template>  
-							</el-table-column> 
-							<el-table-column prop="priority"  label="优先级" width="100" sortable>   
-								<template slot-scope="scope"> 
-									<div class="cell-text">
-										
-										{{formaterByDicts(scope.row,'priority',scope.row.priority)}}  
-									</div>
-									<span class="cell-bar">   
-										 <el-select  v-model="scope.row.priority" placeholder="优先级"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'priority',$event)">
-												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.priority" :key="index"> </el-option> 
 										 </el-select>  
 									</span> 
 								</template>  
@@ -332,7 +331,7 @@
 										{{scope.row.tagNames}}  
 									</div>
 									<span class="cell-bar">   
-										 <el-button @click="showFieldTag(scope.row)">选标签</el-button>
+										 <el-button @click="$refs.tagDialog.open({data:scope.row,action:'editTagIds'})">选标签</el-button>
 									</span> 
 								</template>
 							</el-table-column> 
@@ -388,16 +387,9 @@
 		</el-row>
 		<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		
-		<el-drawer append-to-body title="标签条件" :visible.sync="tagSelectVisible"  size="60%">
-			<tag-mng :tagIds="filters.tags?filters.tags.map(i=>i.tagId):[]" :jump="true" @select-confirm="onTagSelected">
-			</tag-mng>
-		</el-drawer>
-		
-		<el-drawer append-to-body title="标签" :visible.sync="fieldTagVisible"  size="60%">
-			<tag-mng   :jump="true" @select-confirm="editXmMenuSomeFields(editForm,'tagIds',$event)">
-			</tag-mng>
-		</el-drawer>
-
+ 			<tag-dialog ref="tagDialog" :tagIds="filters.tags?filters.tags.map(i=>i.tagId):[]" :jump="true" @select-confirm="onTagSelected">
+			</tag-dialog> 
+ 
 		<el-drawer
 		append-to-body
 		title="需求选择"
@@ -442,7 +434,7 @@
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
 	
 	import XmMenuSelect from "../xmMenu/XmMenuSelect";
-  	import TagMng from "@/views/mdp/arc/tag/TagMng";
+  	import TagDialog from "@/views/mdp/arc/tag/TagDialog";
 
 	import {sn} from '@/common/js/sequence'
 
@@ -1044,15 +1036,18 @@
 				this.filters.tags.splice(index,1);
 				this.searchXmMenus();
 			},
-			onTagSelected(tags){
-				
-				this.tagSelectVisible = false; 
-				if (!tags || tags.length == 0) { 
-					this.filters.tags=[]
-				}else{
-					this.filters.tags=tags
+			onTagSelected(tags,option){
+				if(option.action=='editTagIds'){
+					this.editXmMenuSomeFields(option.data,"tagIds",tags)
+				}else{ 
+					if (!tags || tags.length == 0) { 
+						this.filters.tags=[]
+					}else{
+						this.filters.tags=tags
+					}
+					this.searchXmMenus();
 				}
-				this.searchXmMenus();
+				
 			}, 
 			showParentMenu(){
 				if(this.filters.product && this.filters.product.id){
@@ -1242,7 +1237,60 @@
 				}else{
 					return "";
 				}
-			}
+			},
+			
+			formatterPriorityDicts(cellValue){
+				var key="priority";  
+				if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0   ){
+					return {id:cellValue,name:cellValue,className:'primary'};
+				}
+				var list=this.dicts[key].filter(i=>i.id==cellValue)
+				if(list.length>0){
+					var data= {...list[0],className:'primary'}
+					if(data.id=='0'){
+						data.className='danger'
+					}else if(data.id=='1'){
+						data.className='warning'
+					}else if(data.id=='2'){
+						data.className='success'
+					}else if(data.id=='3'){
+						data.className='primary'
+					}else if(data.id=='4'){
+						data.className='info'
+					}else{
+						data.className='primary'
+					}
+					return data;
+				}else{
+					return {id:cellValue,name:cellValue,className:'primary'}
+				}
+
+			},
+			formatterMenuStatusDicts: function(cellValue){
+				var key="menuStatus";  
+				if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0   ){
+					return {id:cellValue,name:cellValue,className:'primary'};
+				}
+				var list=this.dicts[key].filter(i=>i.id==cellValue)
+				if(list.length>0){
+					var data= {...list[0],className:'primary'}
+					if(data.id=='0'){
+						data.className='primary'
+					}else if(data.id=='1'){
+						data.className='warning'
+					}else if(data.id=='2'){
+						data.className='success'
+					}else if(data.id=='3'){
+						data.className='info'
+					} else{
+						data.className='danger'
+					}
+					return data;
+				}else{
+					return {id:cellValue,name:cellValue,className:'primary'}
+				}
+
+			}, 
 			 
 		},//end methods
 		components: { 
@@ -1256,7 +1304,7 @@
 			XmTaskListForMenu,
 			UsersSelect,
 			XmMenuMngBatch,
-		    TagMng,
+		    TagDialog,
 			XmMenuSelect,
 			XmItSelect,
 			XmMenuWorkload,

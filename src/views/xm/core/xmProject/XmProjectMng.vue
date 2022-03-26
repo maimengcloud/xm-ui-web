@@ -165,6 +165,14 @@
 							</template>
 						</el-table-column> 
 						<el-table-column prop="status" label="状态" width="80 sortable" :formatter="formatterByDicts"> 
+							<template slot-scope="scope"> 						
+								<el-tag v-if="scope.row.status=='0'" type="info" effect="plain">{{formatProjectStatus(scope.row.status)}}</el-tag> 								
+								<el-tag v-else-if="scope.row.status=='1' || scope.row.status=='2'|| scope.row.status=='3'" type="primary" effect="plain">{{formatProjectStatus(scope.row.status)}}</el-tag> 
+								<el-tag v-else-if="scope.row.status=='4' " type="warning" effect="plain">{{formatProjectStatus(scope.row.status)}}</el-tag> 
+								<el-tag v-else-if="scope.row.status=='5'||scope.row.status=='6' || scope.row.status=='7'|| scope.row.status=='8'" type="success" effect="plain">{{formatProjectStatus(scope.row.status)}}</el-tag> 
+ 								<el-tag v-else type="danger" effect="plain">{{formatProjectStatus(scope.row.status)}}</el-tag> 
+
+							</template>
 						</el-table-column>  
 						<el-table-column prop="totalProgress" label="进度" width="100" sortable>
 							<template slot-scope="scope"> 

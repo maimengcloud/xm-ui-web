@@ -169,6 +169,14 @@
 							</template>
 						</el-table-column>
 						<el-table-column prop="pstatus" label="状态" width="100" sortable :formatter="formatPstatus"> 
+							<template slot-scope="scope"> 						
+								<el-tag v-if="scope.row.pstatus=='0'" type="info" effect="plain">{{formatPstatus(null,null,scope.row.pstatus)}}</el-tag> 								
+								<el-tag v-else-if="scope.row.pstatus=='1'  " type="primary" effect="plain">{{formatPstatus(null,null,scope.row.pstatus)}}</el-tag> 
+								<el-tag v-else-if="scope.row.pstatus=='2' " type="success" effect="plain">{{formatPstatus(null,null,scope.row.pstatus)}}</el-tag> 
+								<el-tag v-else-if="scope.row.pstatus=='3'" type="warning" effect="plain">{{formatPstatus(null,null,scope.row.pstatus)}}</el-tag> 
+ 								<el-tag v-else  type="danger" effect="plain">{{formatPstatus(null,null,scope.row.pstatus)}}</el-tag> 
+
+							</template>
 						</el-table-column>
 						<el-table-column prop="finishRate" label="进度" width="100" sortable>
 							<template slot-scope="scope"> 
