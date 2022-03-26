@@ -10,6 +10,9 @@
 				</el-step> 
 			</el-steps>
 		</el-row>
+		<el-row style="padding-left:70px;">
+			 <font color="blue" style="text-align:center;">注意：请尽量在评审会阶段把需求明确，进入计划会后，不允许再添加需求进入迭代。原则上需求评审后需求只出不进。</font>
+		</el-row>
 		<el-row>
 			<!--新增界面 XmIteration 迭代定义--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">  
