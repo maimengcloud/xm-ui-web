@@ -17,7 +17,7 @@
 								v-model="projectAddVisible"
 								trigger="manual"> 
 								
- 								 <xm-project-add :visible="projectAddVisible" :xm-product="xmProduct" @cancel="projectAddVisible=false" @submit="afterProjectAddSubmit"></xm-project-add>
+ 								 <xm-project-add :visible="projectAddVisible" op-type="add" :xm-product="xmProduct" @cancel="projectAddVisible=false" @submit="afterProjectAddSubmit"></xm-project-add>
   								 <el-link type="warning" slot="reference" @click="projectAddVisible=true"  icon="el-icon-plus"><font style="font-size:14px;">项目</font></el-link> 
 							</el-popover>
 							
@@ -75,7 +75,7 @@ import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 import XmProductProjectForLink from '../xmProduct/XmProductProjectForLink.vue';
 import XmProjectOverview from "./XmProjectOverview";
 
-	import  XmProjectAdd from './XmProjectAdd';//新增界面
+	import  XmProjectAdd from './XmProjectEdit';//新增界面
 	import  XmProjectDetail from './XmProjectDetail';//新增界面
 
 import XmProductProjectLinkMng from '../xmProductProjectLink/XmProductProjectLinkMng.vue';

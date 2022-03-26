@@ -50,10 +50,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { listXmProject,editStatus , delXmProject, batchDelXmProject } from '@/api/xm/core/xmProject';
-	import  XmProjectAdd from '../xmProject/XmProjectAdd';//新增界面
-	import  XmProjectEdit from '../xmProject/XmProjectEdit';//修改界面
+	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询 
 	import { mapGetters } from 'vuex';
 	import xmTaskMng from '../xmTask/XmTaskMng';
 	import xmGroupMng from '../xmGroup/XmGroupMng';

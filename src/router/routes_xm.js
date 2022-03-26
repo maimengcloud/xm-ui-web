@@ -14,9 +14,7 @@ export default {
         icon: 'project'
       },
       // leaf: true,//只有一个节点
-      children: [
-
-        { path: 'xmProject/XmProjectAdd', component: _import('xm/core/xmProject/XmProjectAdd'), name: 'xmProjectAdd',hidden:true, meta: { title: '项目立项' }},
+      children: [ 
         { path: 'xmProject/XmProjectAllMng', component: _import('xm/core/xmProject/XmProjectAllMng'), name: 'xmProjectAllMng', meta: { title: '项目总览' }},
         { path: 'xmProject/XmProjectMng', component: _import('xm/core/xmProject/XmProjectMng'), name: 'xmProjectMng', meta: { title: '项目(我的)' }}, 
         { path: 'xmProjectState/XmProjectStateMng', component: _import('xm/core/xmProjectState/XmProjectStateMng'), name: 'XmProjectStateMng', meta: { title: '项目统计' }},

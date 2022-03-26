@@ -256,10 +256,10 @@
 		</el-row>
 		
 		<el-drawer title="项目新增" :visible.sync="addFormVisible" :with-header="false" size="60%"  :close-on-click-modal="false" append-to-body>
-			<xm-project-add :sel-project="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-add>
+			<xm-project-add :sel-project="addForm" op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-add>
 		</el-drawer>
 		<el-drawer title="项目编辑" :visible.sync="editFormVisible" :with-header="false"  size="60%"  :close-on-click-modal="false" append-to-body>
-			<xm-project-edit :sel-project="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-edit>
+			<xm-project-edit :sel-project="editForm" op-type="edit" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-edit>
 		</el-drawer>
 		<el-drawer :title="selectProject==null?'项目明细':selectProject.name" center :fullscreen="true" :visible.sync="showInfo"  size="50%"  :close-on-click-modal="false" append-to-body>
 			<xm-project-info :sel-project="selectProject" :visible="showInfo" @changeShowInfo="changeShowInfo" @submit="changeShowInfo"></xm-project-info>
@@ -323,7 +323,7 @@
 	import {  loadTasksToXmProjectState , loadTasksSettleToXmProjectState} from '@/api/xm/core/xmProjectState';
 
 	import { addXmMyFocus , delXmMyFocus } from '@/api/xm/core/xmMyFocus';
-	import  XmProjectAdd from './XmProjectAdd';//新增界面
+	import  XmProjectAdd from './XmProjectEdit';//新增界面
 	import  XmProjectEdit from './XmProjectEdit';//修改界面
 	import { mapGetters } from 'vuex'
 	import xmTaskMng from '../xmTask/XmTaskMng'; 
