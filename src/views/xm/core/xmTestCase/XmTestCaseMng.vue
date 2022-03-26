@@ -3,7 +3,7 @@
 		<el-row> 
 			<div>
 				<el-tag    v-if="  filters.product "  closable    @close="clearProduct">{{this.filters.product.productName}}</el-tag>
-				<el-button v-else    @click="showProductVisible" type="plian">选产品</el-button>
+				<xm-product-select v-else :link-project-id="filters.selProject?filters.selProject.id:null"   @row-click="onProductSelected"></xm-product-select>
 				<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 选择需求</el-button>
 				<el-tag v-else   closable @close=" clearFiltersMenu(filters.menus[0])">{{filters.menus[0].menuName.substr(0,5)}}等({{filters.menus.length}})个</el-tag>
 				<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
@@ -26,8 +26,7 @@
 							<xm-product-select :link-project-id="filters.selProject?filters.selProject.id:null"   @row-click="onProductSelected"></xm-product-select>
 						</el-col> 
 						<el-col :span="24" style="padding-top:5px;" v-if="!selProject" >
-							<font class="more-label-font">项目:</font><el-tag    v-if="  filters.selProject "  closable    @close="clearProject">{{this.filters.selProject.name}}</el-tag>
-							<el-button v-else    @click="showProjectList" type="plian">选项目</el-button>
+							<xm-project-select :link-product-id="filters.product?filters.product.id:null"   @row-click="onPorjectConfirm"></xm-project-select>
 						</el-col> 		
 						<el-col :span="24" style="padding-top:5px;">
 								<font class="more-label-font">需求:</font>
@@ -107,9 +106,6 @@
 			<!--新增 XmTestCase 测试用例界面-->
 			<el-drawer title="新增测试用例" :visible.sync="addFormVisible"  size="80%"  append-to-body  :close-on-click-modal="false">
 				<xm-test-case-add :xm-test-case="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-test-case-add>
-			</el-drawer> 
-			<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
-				<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
 			</el-drawer>  
 			<el-drawer title="选中用户" :visible.sync="selectUserForFiltersVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 				<xm-group-mng v-if="filters.selProject" :sel-project=" filters.selProject " :is-select-single-user="1" @user-confirm="onFiltersUserConfirm"></xm-group-mng>
@@ -132,7 +128,7 @@
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
 	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修改界面
 
-	import XmProjectList from '../xmProject/XmProjectList';
+	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
 	import XmGroupMng from '../xmGroup/XmGroupMng';
 	
 	export default { 
@@ -444,7 +440,7 @@
 		components: { 
 		    'xm-test-case-add':XmTestCaseAdd,
 			'xm-test-case-edit':XmTestCaseEdit, 
-			xmMenuSelect,XmProductSelect,XmProjectList,XmGroupMng
+			xmMenuSelect,XmProductSelect,XmProjectSelect,XmGroupMng
 		    //在下面添加其它组件
 		},
 		mounted() { 

@@ -308,8 +308,7 @@
 	import  XmIterationMng from '../xmIteration/XmIterationSelect';//修改界面
 	import  XmProductStateMng from '../xmProductState/XmProductStateMng';//修改界面
 
-	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
-	import XmProjectList from '../xmProject/XmProjectList.vue';
+	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
 	import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
 	import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'; 
 
@@ -718,8 +717,7 @@
 		    'xm-product-edit':XmProductEdit,
 			XmIterationMng,
 			XmProductStateMng,
-			UsersSelect,
-			XmProjectList,
+			UsersSelect, 
 			XmIterationSelect,
 			XmProductSelect,
 			XmProductTplMng, 

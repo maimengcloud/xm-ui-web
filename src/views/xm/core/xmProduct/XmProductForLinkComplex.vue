@@ -66,8 +66,7 @@
 	import { mapGetters } from 'vuex'
 import XmProductMng from './XmProductMng.vue';
 import XmTaskMng from '../xmTask/XmTaskMng.vue';
-import XmQuestionMng from '../xmQuestion/XmQuestionMng.vue';
-import XmProjectList from '../xmProject/XmProjectList.vue';
+import XmQuestionMng from '../xmQuestion/XmQuestionMng.vue'; 
 import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
 
 import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue';
@@ -132,8 +131,7 @@ import XmProductEdit from './XmProductEdit.vue';
 			XmProductMng,
 			XmTaskMng,
 			XmQuestionMng,
-			XmProductSelect,
-			XmProjectList,
+			XmProductSelect, 
 			XmProjectForLink,
 			XmProductProjectForLink,
 			XmProductOverview,

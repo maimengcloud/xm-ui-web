@@ -2,8 +2,8 @@
 	<section class="page-container  padding border">
 		<el-row v-if="!batchEditVisible">
         		<el-checkbox v-model="gstcVisible"  >甘特图</el-checkbox>
-				<el-tag type="primary" v-if="this.filters.selProject && !selProject " closable @close="clearProject"  @click="showProjectList">{{ this.filters.selProject.name }}</el-tag>
-				<el-button   v-if="!this.filters.selProject" @click="showProjectList">选择项目</el-button>
+				<xm-product-select  :auto-select="false" :link-project-id="filters.selProject"   @row-click="onProductSelected"></xm-product-select>
+  				<xm-project-select  :auto-select="false"  :link-product-id="filters.product?filters.product.id:null"  @row-click="onPorjectConfirm"></xm-project-select>
 				<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 选择需求</el-button>
 				<el-tag v-else   closable @close="clearFiltersMenu(filters.menus[0])">{{filters.menus[0].menuName.substr(0,5)}}等({{filters.menus.length}})个</el-tag>
 				<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
@@ -20,12 +20,10 @@
 					trigger="click" > 
 					<el-row>
 						<el-col :span="24" style="padding-top:5px;">
-							<font class="more-label-font">产品:</font><el-tag    v-if="  filters.product "  closable    @close="clearProduct">{{this.filters.product.productName}}</el-tag>
-							<el-button v-else    @click="showProductVisible" type="plian">选产品</el-button>
+ 								<xm-product-select  :auto-select="false" :link-project-id="filters.selProject"   @row-click="onProductSelected"></xm-product-select>
 						</el-col> 
 						<el-col :span="24" style="padding-top:5px;" v-if="!selProject" >
-							<font class="more-label-font">项目:</font><el-tag    v-if="  filters.selProject "  closable    @close="clearProject">{{this.filters.selProject.name}}</el-tag>
-							<el-button v-else    @click="showProjectList" type="plian">选项目</el-button>
+   							<xm-project-select  :auto-select="false"  :link-product-id="filters.product?filters.product.id:null"  @row-click="onPorjectConfirm"></xm-project-select>
 						</el-col> 		
 						<el-col :span="24" style="padding-top:5px;">
 								<font class="more-label-font">需求:</font>
@@ -168,10 +166,7 @@
 			</el-drawer> 
 			<el-drawer title="选择用例" :visible.sync="xmTestCaseMngVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
 				<xm-test-case-mng  :multi-select="true" :visible="xmTestCaseMngVisible"   @selected="onCaseSelected"></xm-test-case-mng>
-			</el-drawer> 
-			<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
-				<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
-			</el-drawer> 
+			</el-drawer>  
 			<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible" fullscreen  size="80%"    :close-on-click-modal="false">
 				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"   @menus-selected="onSelectedMenus" ></xm-menu-select>
 			</el-drawer>
@@ -193,11 +188,7 @@
 			</el-drawer>
 			<el-drawer title="缺陷列表" :visible.sync="bugsVisible"  size="80%"  append-to-body  fullscreen :close-on-click-modal="false">
 				  <xm-question-mng :xm-test-case="xmTestCase" :xm-test-case-exec="editForm" :sel-project="filters.selProject" :visible="bugsVisible" @cancel="bugsVisible=false" ></xm-question-mng>
-			</el-drawer>
-			
-			<el-drawer title="选择产品" :visible.sync="productSelectVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
-				  <xm-product-select  :isSelectProduct="true" :selProject="filters.selProject" :visible="productSelectVisible" @cancel="productSelectVisible=false" @selected="onProductSelected"></xm-product-select>
-			</el-drawer>
+			</el-drawer> 
 			<!--新增 XmQuestion xm_question界面-->
 			<el-drawer title="新增缺陷" :visible.sync="addBugVisible"   size="60%"  append-to-body   :close-on-click-modal="false">
 				<xm-question-add :xm-test-case-exec="editForm" :xm-test-case="xmTestCase" :qtype="'bug'" :sel-project=" filters.selProject "   :visible="addBugVisible" @cancel="addBugVisible=false"></xm-question-add>
@@ -218,7 +209,7 @@
 	import  XmTestCaseExecAdd from './XmTestCaseExecAdd';//新增界面
 	import  XmTestCaseExecEdit from './XmTestCaseExecEdit';//修改界面
 	import  XmTestCaseMng from '../xmTestCase/XmTestCaseMng';//修改界面
-	import XmProjectList from '../xmProject/XmProjectList';
+	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
 	import XmGroupMng from '../xmGroup/XmGroupMng';
 	import XmTaskList from '../xmTask/XmTaskList';
@@ -229,7 +220,7 @@
   import XmGantt from '../components/xm-gantt';
 
 	import { mapGetters } from 'vuex'
-	
+ 	
 	export default { 
 		computed: {
 		    ...mapGetters([
@@ -502,7 +493,7 @@
 			showCase(){ 
 				if(!this.filters.selProject){
 					this.$notify({showClose: true,message:"请先选择项目",type:"warning"});
-					this.nextAction="showCase"
+					nextAction="showCase"
 					this.showProjectList();
 					return;
 				}
@@ -516,28 +507,28 @@
 			showProjectList:function(){
 				this.selectProjectVisible=true;
 			},
-			onPorjectConfirm:function(project){
+			onPorjectConfirm:function(nextAction,project){
 				this.filters.selProject=project
 				this.selectProjectVisible=false;
 				this.getXmTestCaseExecs();
-				if(this.nextAction=="showBatchEdit"){
+				if(nextAction=="showBatchEdit"){
 					this.showBatchEdit();
-					this.nextAction=""
-				}else if(this.nextAction=="showCase"){
+					nextAction=""
+				}else if(nextAction=="showCase"){
 					this.showCase();
-					this.nextAction=""
-				}else if(this.nextAction=="showAddBug"){
+					nextAction=""
+				}else if(nextAction=="showAddBug"){
 					this.showAddBug(this.editForm);
-					this.nextAction=""
-				}else if(this.nextAction=="showBugs"){
+					nextAction=""
+				}else if(nextAction=="showBugs"){
 					this.showBugs(this.editForm);
-					this.nextAction=""
-				}else if(this.nextAction=="showSelectTask"){
+					nextAction=""
+				}else if(nextAction=="showSelectTask"){
 					this.showSelectTask(this.editForm);
-					this.nextAction=""
-				}else if(this.nextAction=="showExecUsersForFilters"){
+					nextAction=""
+				}else if(nextAction=="showExecUsersForFilters"){
 					this.showExecUsersForFilters();
-					this.nextAction=""
+					nextAction=""
 				}
 			},
 			formatterExecStatus(row,column,cellValue, index){
@@ -589,7 +580,7 @@
 				}
 				if( !this.filters.selProject ){
 					this.$notify({showClose: true, message:"请先选择项目", type: 'warning'});
-					this.nextAction="showBatchEdit"
+					nextAction="showBatchEdit"
 					this.showProjectList();
 					return ;
 				}
@@ -641,7 +632,7 @@
 			},
 			showExecUsersForFilters:function(){ 
 				if(!this.filters.selProject){
-					this.nextAction="showExecUsersForFilters"
+					nextAction="showExecUsersForFilters"
 					this.showProjectList();
 				}else{
 					this.selectUserForFiltersVisible=true;
@@ -654,8 +645,8 @@
  				}else{
 					this.filters.execUser=groupUsers[0]  
 				} 
-				if(this.nextAction=="showExecUsersForFilters"){
-					this.nextAction=""
+				if(nextAction=="showExecUsersForFilters"){
+					nextAction=""
 				}
 				this.selectUserForFiltersVisible=false
 				this.searchXmTestCaseExecs();
@@ -677,7 +668,7 @@
 				this.editForm=row
 				if(this.filters.selProject==null){
 					this.$notify({showClose: true, message: "请先选项目", type: 'success' }); 
-					this.nextAction="showSelectTask"
+					nextAction="showSelectTask"
 					this.showProjectList();
 
 					return ;
@@ -707,7 +698,7 @@
 				if(!this.filters.selProject){ 
 					this.$notify({showClose: true, message: "请先选项目", type: 'success' }); 
 					this.showProjectList();
-					this.nextAction="showBugs"
+					nextAction="showBugs"
 					return ;
 				} 
 				if(row.caseId){
@@ -724,7 +715,7 @@
 				if(!this.filters.selProject){
 					
 					this.$notify({showClose: true, message: "请先选项目", type: 'success' }); 
-					this.nextAction="showAddBug"
+					nextAction="showAddBug"
 					this.showProjectList();
 					return ;
 				} 
@@ -747,10 +738,11 @@
 		components: { 
 		    'xm-test-case-exec-add':XmTestCaseExecAdd,
 			'xm-test-case-exec-edit':XmTestCaseExecEdit, 
-			XmTestCaseMng,XmProjectList,xmMenuSelect,XmGroupMng,XmTaskList,XmTestCaseEdit,XmQuestionMng,XmQuestionAdd, XmGantt,XmProductSelect
+			XmTestCaseMng,XmProjectSelect,xmMenuSelect,XmGroupMng,XmTaskList,XmTestCaseEdit,XmQuestionMng,XmQuestionAdd, XmGantt,XmProductSelect
 		    //在下面添加其它组件
 		},
-		mounted() { 
+		
+XmProjectSelectmounted() { 
 			this.filters.selProject=this.selProject; 
 			this.filters.execUser=this.userInfo;
 			this.$nextTick(() => {

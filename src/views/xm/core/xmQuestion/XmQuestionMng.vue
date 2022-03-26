@@ -1,7 +1,10 @@
 <template>
 	<section class="padding">
 			<el-row>
-			  	<el-select v-model="filters.bugStatus" placeholder="状态" style="width:100px;"  clearable @change="changeBugStatus">
+				<xm-product-select v-if="!xmProduct" style="display:inline;" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear-select="clearProduct"></xm-product-select>
+			  	<xm-project-select v-if="!selProject" style="display:inline;" ref="xmProjectSelect" :auto-select="false" :link-product-id="xmProduct?xmProduct.id:null" @row-click="onProjectConfirm" @clear-select="clearProject"></xm-project-select>
+
+				  <el-select v-model="filters.bugStatus" placeholder="状态" style="width:100px;"  clearable @change="changeBugStatus">
 					<el-option v-for="(b,index) in dicts['bugStatus']" :value="b.id"  :key="index" :label="b.name">{{b.name}}
 					</el-option>
 				</el-select>
@@ -25,16 +28,7 @@
 					title="更多查询条件或操作"
 					width="600"
 					trigger="click" >
-					<el-row>
-						<el-col :span="24" style="padding-top:5px;">
-							<font class="more-label-font" v-if="!xmProduct">产品:</font> 
-							<xm-product-select   :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"></xm-product-select>
-						</el-col>
-						<el-col :span="24"  style="padding-top:12px;" v-if="!selProject">
-							<font class="more-label-font">项目:</font>
-							<el-tag v-if="filters.selProject && !selProject" closable @close="clearProject" @click="showProjectList(true)">{{ filters.selProject.name }}</el-tag>
-							<el-button v-else @click="showProjectList(true)" >选择项目</el-button> 
-						</el-col>
+					<el-row> 
 						<el-col :span="24"  style="padding-top:12px;">
 							<font class="more-label-font">需求:</font>
 							<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 需求</el-button>
@@ -120,8 +114,7 @@
 					<el-button  slot="reference" icon="el-icon-more"></el-button>
 				</el-popover> 
 				<span style="float:right;">
-				<el-button type="primary" icon="el-icon-plus" @click="showAdd" round>
-				</el-button> 
+  					<el-button   type="primary" icon="el-icon-plus" @click="showAdd"  round> </el-button> 
 				</span>
 			 </el-row> 
 			 <el-row class="padding-top">
@@ -188,10 +181,8 @@
 			<el-drawer title="选中用户" v-if=" filters.selProject " :visible.sync="selectUserVisible"  size="70%"  append-to-body   :close-on-click-modal="false">
 				<xm-group-mng  :sel-project=" filters.selProject " :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-mng>
 			</el-drawer>
-			<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  size="70%"  append-to-body   :close-on-click-modal="false">
-				<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
-			</el-drawer>
-
+ 			 
+ 
 			<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible"    size="70%"   :close-on-click-modal="false">
 				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
 			</el-drawer> 
@@ -216,7 +207,7 @@
 
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
 	import XmGroupMng from '../xmGroup/XmGroupMng';
-	import XmProjectList from '../xmProject/XmProjectList';
+	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
 
 	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修改界面
   	import TagMng from "@/views/mdp/arc/tag/TagMng";
@@ -528,12 +519,11 @@
 				this.editForm = Object.assign({}, row);
 			},
 			//显示新增界面 XmQuestion xm_question
-			showAdd: function () {
-				if(this.filters.selProject==null){
-
+			showAdd: function () { 
+				if(!this.filters.selProject){ 
 					this.$notify({showClose: true, message: "请先选中项目", type: 'warning' });
-					this.nextAction="showAdd"
-					this.showProjectList();
+					this.$refs.xmProjectSelect.projectVisible=true;
+					this.nextAction="showAdd" 
 					return;
 				}
 				this.addFormVisible = true;
@@ -764,20 +754,14 @@
 				this.selectUserVisible=false
 				this.searchXmQuestions();
 
-			},
-			showProjectList:function(clear){
-				if(clear){
-					this.nextAction="";
-				}
-				this.selectProjectVisible=true;
-			},
-			onPorjectConfirm:function(project){
+			}, 
+			onProjectConfirm:function(project){
 				this.filters.selProject=project
 				this.selectProjectVisible=false;
 
-				if(this.nextAction=='showAdd'){
+				if( this.nextAction=='showAdd'){
 					this.showAdd()
-				}else if(this.nextAction=='showGroupUsers'){
+				}else if( this.nextAction=='showGroupUsers'){
 					this.showGroupUsers(this.userType)
 				}else{
 					this.searchXmQuestions();
@@ -930,7 +914,7 @@
 		components: {
 				'xm-question-add':XmQuestionAdd,
 				'xm-question-edit':XmQuestionEdit,
-				XmGroupMng,XmProjectList,xmMenuSelect,XmProductSelect,TagMng,
+				XmGroupMng,XmProjectSelect,xmMenuSelect,XmProductSelect,TagMng,
 				//在下面添加其它组件
 		},
 		mounted() {

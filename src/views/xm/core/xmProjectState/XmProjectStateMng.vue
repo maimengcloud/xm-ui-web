@@ -1,12 +1,14 @@
 <template>
 	<section class="page-container padding border">
-		<el-row>
-			<el-input style="width:20%;" v-model="filters.selProject.name" @click.native="onProjectInputClick" clearable @clear="closeSelectProject" placeholder="点击选择项目"></el-input> 
- 			
+		<el-row> 
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="项目名称模糊查询">  </el-input> 
 			<el-button  v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectStates" icon="el-icon-search"></el-button>
-			 <el-button type="success" @click="loadTasksToXmProjectState" icon="el-icon-s-data">刷新数据</el-button> 
-			<el-button type="success" @click="loadTasksSettleToXmProjectState" icon="el-icon-s-data">刷新结算数据</el-button>  
+  			<xm-project-select  :auto-select="false"  @row-click="onPorjectConfirm(loadTasksToXmProjectState,$event)">
+				<font slot="title">刷新任务统计数据</font>
+			</xm-project-select> 
+			<xm-project-select  :auto-select="false"   @row-click="onPorjectConfirm(loadTasksSettleToXmProjectState,$event)">
+				<font slot="title">刷新结算数据</font>
+			</xm-project-select>
 		</el-row> 
 		<el-row class="page-main"> 
 			<!--列表 XmProjectState 项目指标日统计表-->
@@ -104,10 +106,7 @@
 			<!--新增 XmProjectState 项目指标日统计表界面-->
 			<el-drawer title="新增项目指标日统计表" :visible.sync="addFormVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
 				<xm-project-state-add :xm-project-state="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-state-add>
-			</el-drawer> 
-			<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  size="80%"  append-to-body   :close-on-click-modal="false" @close="nextCommand=null">
-				<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
-			</el-drawer>    
+			</el-drawer>   
 		</el-row>
 	</section>
 </template>
@@ -119,8 +118,8 @@
 	import { listXmProjectState,loadProjectToXmProjectState, loadBugsToXmProjectState, loadTasksToXmProjectState , loadTasksSettleToXmProjectState} from '@/api/xm/core/xmProjectState';
 	import  XmProjectStateAdd from './XmProjectStateAdd';//新增界面
 	import  XmProjectStateEdit from './XmProjectStateEdit';//修改界面
-	import { mapGetters } from 'vuex'
-	import XmProjectList from '../xmProject/XmProjectList';
+	import { mapGetters } from 'vuex' 
+import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue';
  
 	export default { 
 		computed: {
@@ -376,10 +375,9 @@
 			},
 			/**begin 自定义函数请在下面加**/
 			
-			onPorjectConfirm:function(project){
+			onPorjectConfirm:function(nextCommand,project){
 				this.filters.selProject={...project}
-				this.selectProjectVisible=false;  
-				if(this.nextCommand){
+ 				if(nextCommand){
 					this.nextCommand();
 				}else{
 					this.searchXmProjectStates();
@@ -429,7 +427,7 @@
 		},//end methods
 		components: { 
 		    'xm-project-state-add':XmProjectStateAdd,
-		    'xm-project-state-edit':XmProjectStateEdit, XmProjectList
+		    'xm-project-state-edit':XmProjectStateEdit,XmProjectSelect,
 		    //在下面添加其它组件
 		},
 		mounted() { 

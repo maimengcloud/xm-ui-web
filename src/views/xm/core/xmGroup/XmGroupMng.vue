@@ -208,8 +208,7 @@
 
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
 	import  XmGroupStateMng from '../xmGroupState/XmGroupStateMng';//修改界面
-	import  XmGroupUserMng from '../xmGroupUser/XmGroupUserMng';//修改界面
-	import XmProjectList from '../xmProject/XmProjectList';
+	import  XmGroupUserMng from '../xmGroupUser/XmGroupUserMng';//修改界面 
 	
 	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
 	import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
@@ -217,7 +216,7 @@
 	export default {
 	    name:'xmGroupMng',
 		components: {
-		    XmGroupEdit,VueOkrTree,UsersSelect,XmGroupStateMng,XmGroupUserMng,XmProjectList,
+		    XmGroupEdit,VueOkrTree,UsersSelect,XmGroupStateMng,XmGroupUserMng, 
 XmProductSelect,XmProjectSelect,
 		},
 		props:["visible","selProject" ,"isSelectSingleUser","isSelectMultiUser",'xmProduct','xmIteration','pgClass'],

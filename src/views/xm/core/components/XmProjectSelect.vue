@@ -74,7 +74,9 @@
 									</el-table>
 									<el-pagination  layout="total, prev, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>  
 								</el-row> 
-								<slot name="reference"><el-link title="项目，点击选择、清除选择" @click="projectVisible=!projectVisible" type="warning" slot="reference"   icon="el-icon-search"><font style="font-size:14px;"><slot name="title">{{editForm && editForm.id?editForm.name:'选择项目'}}</slot></font></el-link> </slot>
+ 								<span slot="reference" @click="projectVisible=!projectVisible">
+									<slot name="reference"><el-link title="项目，点击选择、清除选择"  type="warning"    icon="el-icon-search"><font style="font-size:14px;"><slot name="title">{{editForm && editForm.id?editForm.name:'选择项目'}}</slot></font></el-link> </slot>
+								</span>
 						</el-popover>  
 			<el-drawer title="选择员工" :visible.sync="selectFiltersPmUserVisible" size="60%" append-to-body>
 				<users-select  @confirm="onFiltersPmUserSelected" ref="usersSelect"></users-select>

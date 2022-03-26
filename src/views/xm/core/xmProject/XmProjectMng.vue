@@ -8,6 +8,7 @@
 			</el-col> 
 			<el-col :span="templateVisible?18:24" class="border padding-top padding-right"> 
 				<el-row class="padding-left"> 
+					<xm-product-select style="display:inline;" class="hidden-md-and-down" :auto-select="false" @row-click="onProductSelected" @clear-select="onProductClose"></xm-product-select> 
 					<el-select v-model="menukey" @change="handleSelect" clearable>
 						<el-option value="all" label="全部"></el-option>
 						<el-option value="compete"  label="我参与"></el-option>
@@ -28,8 +29,8 @@
 					<el-select  v-model="filters.status" clearable placeholder="项目状态">
 						<el-option v-for="(item,index) in dicts['projectStatus']" :value="item.id" :label="item.name" :key="index"></el-option> 
 					</el-select>  
-					<el-input class="hidden-md-and-down" placeholder="选择产品" v-model="filters.productName" @click.native="productSelectVisible=true" clearable @clear="onProductClose"  style="width:15%;"></el-input>
- 					<el-input v-model="filters.key" style="width:15%;" placeholder="项目名称模糊查询" clearable>
+					
+  					<el-input v-model="filters.key" style="width:15%;" placeholder="项目名称模糊查询" clearable>
 					</el-input>
 					<el-button  type="primary" icon="el-icon-search" @click="searchXmProjects">查询</el-button> 
 						<el-popover
@@ -301,14 +302,7 @@
 				<el-button @click="copyToVisible = false;load.add=false">取 消</el-button>
 				<el-button type="primary" @click="onCopyToConfirm" :disabled="load.add" v-loading="load.add">确 定</el-button>
 			</span>
-		</el-dialog>
-		<el-drawer
-			append-to-body
-			title="产品"
-			:visible.sync="productSelectVisible"
-			width="80%">
-			<xm-product-mng :is-select-product="true" @selected="onProductSelected"></xm-product-mng> 
-		</el-drawer>
+		</el-dialog> 
 	</section> 
 
 </template>
@@ -329,7 +323,7 @@
 	import xmTaskMng from '../xmTask/XmTaskMng'; 
 	import xmProjectInfo from './XmProjectInfo'; 
 	import XmProjectTplMng from './XmProjectTplMng'; 
-	import XmProductMng from '@/views/xm/core/components/XmProductSelect';
+	import XmProductSelect from '@/views/xm/core/components/XmProductSelect';
 
 	if(!Vue.component("xm-project-info")){
 		
@@ -475,7 +469,7 @@
 
 				params = this.menuFilter(params);
 				if(this.filters.productId){
-					params.productId  = this.filters.productId
+					params.linkProductId  = this.filters.productId
 				} 
 				if(this.filters.status){
 					params.status  = this.filters.status
@@ -866,7 +860,7 @@
 		    'xm-project-add':XmProjectAdd,
 		    'xm-project-edit':XmProjectEdit,
 			
-			XmProductMng,
+			XmProductSelect,
 			xmTaskMng,
 			XmProjectTplMng,
 		    //在下面添加其它组件
