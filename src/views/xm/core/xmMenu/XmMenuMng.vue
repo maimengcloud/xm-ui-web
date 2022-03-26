@@ -5,7 +5,7 @@
 					<el-row>    
 						<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="!xmProduct && !xmIteration"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear-select="onProductClearSelect"></xm-product-select>
 								 
-						<xm-it-select v-if="!xmIteration || !xmIteration.id" style="display:inline;"  :product-id="filters.product?filters.product.id:null" :link-project-id="selProject?selProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClearSelect">
+						<xm-it-select v-if="!xmIteration || !xmIteration.id" style="display:inline;" :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="selProject?selProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClearSelect">
 					    </xm-it-select> 
 						
 						<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable v-if="selProject &&selProject.id">
@@ -288,16 +288,8 @@
 								</template>  
 							</el-table-column> 
 							<el-table-column prop="iterationName" label="迭代" width="150" show-overflow-tooltip sortable>   
-								<template slot-scope="scope"> 
-									<div class="cell-text">
-										
-										{{scope.row.iterationName}}  
-									</div>
-									<span class="cell-bar">   
-										 <xm-it-select :product-id="filters.product?filters.product.id:null" :link-project-id="selProject?selProject.id:null"  placeholder="迭代"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'iterationId',$event)">
-												 
-										 </xm-it-select>  
-									</span> 
+								<template slot-scope="scope">  
+										{{scope.row.iterationName}}   
 								</template>  
 							</el-table-column>  
 							
@@ -394,10 +386,6 @@
 				</el-drawer>	
 			</el-col> 	 
 		</el-row>
-		
-		<el-row v-if="batchEditVisible">
-			<xm-menu-mng-batch :xm-menus="xmMenus" :dicts="dicts"  @no-batch-edit="noBatchEdit" :product="filters.product"></xm-menu-mng-batch>
-		</el-row>
 		<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		
 		<el-drawer append-to-body title="标签条件" :visible.sync="tagSelectVisible"  size="60%">
@@ -448,7 +436,6 @@
 	import XmTaskList from '../xmTask/XmTaskList';
 	import XmTaskMng from '../xmTask/XmTaskMng'; 
 	import XmTaskListForMenu from '../xmTask/XmTaskListForMenu';
-	import  XmIterationSelect from '../xmIteration/XmIterationSelect';//修改界面
 	import  XmItSelect from '@/views/xm/core/components/XmIterationSelect.vue';//修改界面
 	import  XmMenuWorkload from '@/views/xm/core/components/XmMenuWorkload';//修改界面
 	import  XmTableConfig from '@/views/xm/core/components/XmTableConfig';//修改界面
@@ -468,7 +455,7 @@
 		      'userInfo','roles'
 			]),
 			
-      xmMenusTreeData() {  
+      		xmMenusTreeData() {  
 				let xmMenus = JSON.parse(JSON.stringify(this.xmMenus || []));  
 				let xmMenusTreeData = treeTool.translateDataToTree(xmMenus,"pmenuId","menuId");  
 				 return xmMenusTreeData;
@@ -630,7 +617,13 @@
 				}
 				if(this.filters.taskFilterType){
 					params.taskFilterType=this.filters.taskFilterType 
-					params.projectId=this.selProject.id 
+					 
+					if(params.taskFilterType==='not-join-curr-project'){
+						params.projectId=this.selProject.id 
+					} 
+					if(params.taskFilterType==='join-curr-project'){
+						params.projectId=this.selProject.id 
+					} 
 					params.ntype="0"
 				} 
 				if(this.selProject && this.selProject.id){
@@ -792,15 +785,13 @@
 				this.xmMenus=[]
 				this.getXmMenus()
 			},
-			onIterationSelected:function(iteration){
-				this.filters.iteration=iteration  
-				this.iterationVisible=false;
+			onIterationSelected:function(iteration){ 
+				this.filters.iteration=iteration   
 				this.xmMenus=[]
 				this.getXmMenus()
 			},
 			onIterationClearSelect:function(){
-				this.filters.iteration=null  
-				this.iterationVisible=false;
+				this.filters.iteration=null   
 				this.xmMenus=[]
 				this.getXmMenus()
 			},
@@ -828,7 +819,7 @@
 			//批量删除xmMenu
 			batchDel: function () { 
 				if(this.sels.length==0){
-					this.$notify({showClose: true, message: "请先选择要删除的需求或者需求池", type: 'warning'});
+					this.$notify({showClose: true, message: "请先选择要删除的需求", type: 'warning'});
 					return;
 				}
 				this.$confirm('确认删除选中的'+this.sels.length+'条数据吗？删除后数据不可恢复', '提示', {
@@ -889,10 +880,6 @@
         return dataList;
       },
         
-			/**begin 自定义函数请在下面加**/
-			selectedMenu:function(row){
-				this.$emit("selected",row)
-			},
 			showImportFromMenuTemplate(row){
 				if(!this.filters.product){
 					this.$notify.error("请选择产品模板")
@@ -969,14 +956,8 @@
 					}
 				}).catch( err  => this.load.add=false );
 			},
-			toBatchEdit(){
-				this.batchEditVisible=true;
-
-			},
-			noBatchEdit(){
-				this.batchEditVisible=false; 
-				this.getXmMenus();
-			}, 
+			
+			
 			 
 			showTaskList(row){ 
 				this.editForm=row
@@ -1004,22 +985,6 @@
 					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 				});
 			},
-			showMenuExchange:function(row){
-				this.editForm=row
-				this. menuDetailVisible=true;
-			},
-			toProjectList:function(product){
-				this.$router.push({name:'xmProjectMng',params:{productId:product.id,productName:product.productName}})
-			},
-			toIterationList:function(row){
-				 this.editForm=row
-				 this.iterationVisible=true;
-
-			},
-			showTasks(row){
-				this.editForm=row
-				this.taskMngVisible=true
-			}, 
 
 			showTaskListForMenu(row){
 				this.editForm=row
@@ -1289,7 +1254,6 @@
 			XmTaskList,
 			XmTaskMng,
 			XmTaskListForMenu,
-			XmIterationSelect,
 			UsersSelect,
 			XmMenuMngBatch,
 		    TagMng,

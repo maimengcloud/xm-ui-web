@@ -82,10 +82,10 @@
 		props:['clearable', 'productId', 'linkProjectId','autoSelect'],
 		watch:{ 
 			productId:function(){
-				this.getXmIterations();
+				this.initData();
 			},
-			iterationId:function(){
-				this.getXmIterations();
+			linkProjectId:function(){
+				this.initData();
 			}
 		},
 		data() {
@@ -208,8 +208,8 @@
 						if(this.autoSelect===true&&this.xmIterations.length>0){ 
 							if(this.autoSelect!==false&&this.xmIterations.length>0 && this.iterationVisible==false){ 
 								var row=this.xmIterations[0]; 
-								this.$refs.table.setCurrentRow(row);
-								this.rowClick(row);  
+								this.$refs.table.setCurrentRow(row); 
+								this.rowClick(row)
 							} 
 						}
 					}else{
@@ -223,7 +223,7 @@
 			selsChange: function (sels) {
 				this.sels = sels;
 			},  
-			rowClick: function(row, event, column){
+			rowClick: function(row, event, column){ 
 				var oldId=this.editForm.id
 				this.editForm=row
 				this.iterationVisible=false;
@@ -252,8 +252,8 @@
 						this.xmIterations=xmIterations;
 						if(this.autoSelect!==false&&this.xmIterations.length>0 && this.iterationVisible==false){ 
 							var row=this.xmIterations[0]; 
-							this.$refs.table.setCurrentRow(row);
-							this.rowClick(row);  
+							this.$refs.table.setCurrentRow(row); 
+							this.rowClick(row)
 						}
 					}else{
 						this.searchXmIterations();
@@ -264,14 +264,14 @@
 						this.xmIterations=xmIterations;
 						if(this.autoSelect!==false&&this.xmIterations.length>0 && this.iterationVisible==false){ 
 							var row=this.xmIterations[0]; 
-							this.$refs.table.setCurrentRow(row);
-							this.rowClick(row);  
+							this.$refs.table.setCurrentRow(row); 
+							this.rowClick(row)
 						}
 					}else{
 						this.searchXmIterations();
 					}
 				}else{
-					this.searchXmIterations();
+					//his.searchXmIterations();
 				}
 			},
 			

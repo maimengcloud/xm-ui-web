@@ -111,16 +111,16 @@
 							</el-form-item> 
 							 
 							<el-form-item label="当前进度" prop="mactRate" >
-								<el-progress style="width:80%;" :stroke-width="26" :percentage="editForm.mactRate?editForm.mactRate:0"></el-progress>
+								<el-progress style="width:40%;" :stroke-width="26" :percentage="editForm.mactRate?editForm.mactRate:0"></el-progress>
  							</el-form-item>  
 							<el-form-item label="预估工期" prop="budgetHours">
-								<el-input-number :disabled="editForm.calcType!=='2' && editForm.ntype==='1'" style="width:200px;"  v-model="editForm.budgetHours"  :precision="2" :step="8" :min="0" placeholder="预计工期(小时)"></el-input-number>&nbsp;h
+								<el-input-number :disabled="editForm.calcType!=='2'" style="width:200px;"  v-model="editForm.budgetHours"  :precision="2" :step="8" :min="0" placeholder="预计工期(小时)"></el-input-number>&nbsp;h
 							</el-form-item> 
 							<el-form-item label="预估工时" prop="budgetWorkload">
-								<el-input-number :disabled="editForm.calcType!=='2' && editForm.ntype==='1'" style="width:200px;"  v-model="editForm.budgetWorkload" :precision="2" :step="8" :min="0" placeholder="预计工时(人时)"></el-input-number>  &nbsp;h
+								<el-input-number :disabled="editForm.calcType!=='2'" style="width:200px;"  v-model="editForm.budgetWorkload" :precision="2" :step="8" :min="0" placeholder="预计工时(人时)"></el-input-number>  &nbsp;h
 							</el-form-item> 
 							<el-form-item label="实际工时" prop="mactWorkload">
-								<el-input-number :disabled="editForm.calcType!=='2' && editForm.ntype==='1'" style="width:200px;"  v-model="editForm.mactWorkload" :precision="2" :step="8" :min="0" placeholder="实际工时(人时)"></el-input-number>  &nbsp;h
+								<el-input-number :disabled="editForm.calcType!=='2'" style="width:200px;"  v-model="editForm.mactWorkload" :precision="2" :step="8" :min="0" placeholder="实际工时(人时)"></el-input-number>  &nbsp;h
 							</el-form-item> 
 							<font color="blue" style="font-size:10px;">控制规则:
 								<br>下级往上汇总：指工时数据按 &nbsp;用户故事->特性->史诗 &nbsp;这样的汇总关系将数据逐级往上汇总。
@@ -235,7 +235,31 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 	      	if(visible==true){
 	      		//从新打开页面时某些数据需要重新加载，可以在这里添加
 	      	}
-	      }
+	      }, 
+			'editForm.mactWorkload':function(val,oldVal){
+				if(!this.editForm.budgetWorkload){
+					return;
+				}
+				if(val==0||!val){
+					return;
+				}
+				this.editForm.mactRate=Math.round(val/this.editForm.budgetWorkload*100)
+				if( this.editForm.mactRate>100){
+					this.editForm.mactRate=100;
+				}
+			},
+			'editForm.budgetWorkload':function(val,oldVal){
+				if(!this.editForm.mactWorkload){
+					return;
+				}
+				if(val==0||!val){
+					return;
+				}
+				this.editForm.mactRate=Math.round(this.editForm.mactWorkload/val*100)
+				if( this.editForm.mactRate>100){
+					this.editForm.mactRate=100;
+				}
+			}
 	    },
 		data() {
 			return {

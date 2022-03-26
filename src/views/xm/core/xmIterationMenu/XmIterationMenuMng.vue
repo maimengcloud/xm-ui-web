@@ -15,7 +15,7 @@
 				</el-row>
 				<el-row class="page-main padding-top padding-left">
 					<!--列表 XmIterationMenu 迭代定义-->
-					<el-table ref="table" :height="maxTableHeight" :data="xmIterationMenusTreeData"  default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+					<el-table ref="table" :height="maxTableHeight" :data="xmIterationMenusTreeData"  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column  type="selection" width="45"></el-table-column> 
 						
 						<el-table-column prop="menuName" label="需求名称" min-width="140" > 
@@ -45,7 +45,7 @@
 				</el-row>
 			</el-col>
 			<el-col :span="14">
-				<xm-menu-select checkScope="0" :xm-product="{id:xmIteration.productId}" :xm-iteration="xmIteration" :visible="menuVisible" :is-select-menu="true" :multi="true"   @menus-selected="onSelectedMenus" ></xm-menu-select>
+				<xm-menu-select ref="menusSelect" iterationFilterType="not-join-curr-iteration" checkScope="0" :xm-product="{id:xmIteration.productId}" :xm-iteration="xmIteration" :visible="menuVisible" :is-select-menu="true" :multi="true"   @menus-selected="onSelectedMenus" ></xm-menu-select>
 			</el-col> 
   		</el-row>
 	</section>
@@ -53,6 +53,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
+	import treeTool from '@/common/js/treeTool';//全局公共库
 	import config from '@/common/config';//全局公共库 
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { listXmIterationMenu, delXmIterationMenu, batchDelXmIterationMenu,batchAddXmIterationMenu } from '@/api/xm/core/xmIterationMenu'; 
@@ -66,12 +67,13 @@
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
-		    ]),
-			xmIterationMenusTreeData(){ 
-				var data= this.translateDataToTree(this.xmIterationMenus);
-				
-				return data;
-			},
+		    ]), 
+			
+      		xmIterationMenusTreeData() {  
+				let xmMenus = JSON.parse(JSON.stringify(this.xmIterationMenus || []));  
+				let xmMenusTreeData = treeTool.translateDataToTree(xmMenus,"pmenuId","menuId");  
+				 return xmMenusTreeData;
+			}, 
 		},
 		watch:{
 			'xmIteration':function(xmIteration){
@@ -216,6 +218,8 @@
 						var tips=res.data.tips;
 						if(tips.isOk){ 
 							this.pageInfo.count=true;
+							
+							this.$refs.menusSelect.reloadChildren([row]);
 							this.getXmIterationMenus();
 						}
 						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
@@ -239,6 +243,7 @@
 						this.load.del=false;
 						var tips=res.data.tips;
 						if( tips.isOk ){ 
+							this.$refs.menusSelect.reloadChildren(this.sels);
 							this.pageInfo.count=true;
 							this.getXmIterationMenus(); 
 						}
@@ -248,51 +253,7 @@
 			},
 			rowClick: function(row, event, column){
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
-			},
-			/**begin 自定义函数请在下面加**/
-			
-			/**begin 自定义函数请在下面加**/
-			translateDataToTree(data2) { 
-				var data=JSON.parse(JSON.stringify(data2));
-				let parents = data.filter(value =>{
-					//如果我的上级为空，则我是最上级 
-					if(value.pmenuId == 'undefined' || value.pmenuId == null  || value.pmenuId == ''){
-						return true;
-
-						//如果我的上级不在列表中，我作为最上级
-					}else if(data.some(i=>value.pmenuId==i.menuId)){
-						return false;
-					}else {
-						return true
-					}
-				 
-				}) 
-				let children = data.filter(value =>{
-					if(data.some(i=>value.pmenuId==i.menuId)){
-						return true;
-					}else{
-						return false;
-					} 
-				})  
-				let translator = (parents, children) => {
-					parents.forEach((parent) => {
-						children.forEach((current, index) => {
-							if (current.pmenuId === parent.menuId) {
-								let temp = JSON.parse(JSON.stringify(children))
-								temp.splice(index, 1)
-								translator([current], temp)
-								typeof parent.children !== 'undefined' ? parent.children.push(current) : parent.children = [current]
-							}
-						}
-						)
-					}
-					)
-				}
-
-				translator(parents, children)
-
-				return parents
-			},	
+			}, 	
 			onSelectedMenus(menus){
 				if(!menus || menus.length==0){
 					this.menuVisible=false
@@ -308,6 +269,7 @@
 					var tips = res.data.tips
 					if(tips.isOk){
 						this.getXmIterationMenus()
+						this.$refs.menusSelect.reloadChildren(menus);
 					}
 					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 				})

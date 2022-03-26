@@ -6,7 +6,19 @@
 						<xm-product-select v-if="!xmProduct&&!xmIteration" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" ref="xmProductMng" :iteration-id="xmIteration?xmIteration.id:null"  @clear-select="onProductClearSelect" @close="productVisible=false"></xm-product-select>
  
 						<xm-iteration-select v-if="!xmIteration" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onIterationSelected" ref="xmIterationMng" :product-id="xmProduct?xmProduct.id:null"  @clear-select="onIterationClearSelect" @close="iterationVisible=false"></xm-iteration-select>
-							    
+						 
+						<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable v-if="taskFilterType">
+							<el-option   value="not-join-any-project"  label="未分配过任务的需求"></el-option>  
+							<el-option   value="join-any-project"  label="已分配过任务的需求"></el-option>  
+							<el-option   value="not-join-curr-project"  :label="'未分配任务到项目【'+selProject.name+'】'" v-if="selProject && selProject.id"></el-option>  
+							<el-option   value="join-curr-project"  :label="'已分配任务到项目【'+selProject.name+'】'"  v-if="selProject && selProject.id"></el-option>  
+						</el-select>   
+						<el-select   v-model="filters.iterationFilterType" placeholder="加入过迭代？" clearable  v-if="iterationFilterType">
+							<el-option   value="not-join-any-iteration"  label="未加入过迭代"></el-option>  
+							<el-option   value="join-any-iteration"  label="已加入过迭代"></el-option>  
+							<el-option   value="not-join-curr-iteration"  :label="'未加入迭代【'+filters.iteration.iterationName+'】'"  v-if="filters.iteration && filters.iteration.id"></el-option>  
+							<el-option   value="join-curr-iteration"  :label="'已加入本迭代【'+filters.iteration.iterationName+'】'" v-if="filters.iteration && filters.iteration.id"></el-option>  
+						</el-select>  	    
 					 <el-select v-model="filters.priority" placeholder="优先级"  clearable style="width: 100px;">
 							<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option> 
 					</el-select>      
@@ -191,7 +203,7 @@
 	import { mapGetters } from 'vuex'
 	
 	export default { 
-		props:['isSelectMenu','multi','visible','xmIteration','xmProduct','selProject','checkScope'/**0-需求，1-需求池 */],
+		props:['isSelectMenu','multi','visible','xmIteration','xmProduct','selProject','checkScope'/**0-需求，1-需求池 */,'iterationFilterType','taskFilterType'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -225,6 +237,7 @@
 			const endDate = new Date();
 			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 6 );
 			return {
+				maps:new Map(),
 				filters: {
 					key: '',
 					product:null,
@@ -326,7 +339,13 @@
 				}
 				if(this.filters.taskFilterType){
 					params.taskFilterType=this.filters.taskFilterType 
-					params.projectId=this.selProject.id 
+					 
+					if(params.taskFilterType==='not-join-curr-project'){
+						params.projectId=this.selProject.id 
+					} 
+					if(params.taskFilterType==='join-curr-project'){
+						params.projectId=this.selProject.id 
+					} 
 					params.ntype="0"
 				} 
 				if(this.selProject && this.selProject.id){
@@ -363,9 +382,9 @@
 				} 
 				return params;
 			},
-			loadMenusLazy(row, treeNode, resolve) {  
-				 
-				var params={pmenuId:row.menuId}
+			loadMenusLazy(tree, treeNode, resolve) {  
+				this.maps.set(tree.menuId, { tree, treeNode, resolve }) //储存数据
+				var params={pmenuId:tree.menuId}
 				params=this.getParams(params);
 				params.isTop=""
 				this.load.list = true;
@@ -380,6 +399,9 @@
 					}
 				}).catch( err => this.load.list = false );   
 				
+			},
+			reloadChildren(rows){  
+            	treeTool.reloadAllChildren(this.$refs.table,this.maps,rows,'pmenuId',this.loadMenusLazy) 
 			},
 			//获取列表 XmMenu xm_project_menu
 			getXmMenus() {
@@ -529,7 +551,13 @@
 					this.filters.iterationFilterType='join-curr-iteration'
 					this.filters.iteration=this.xmIteration
 				}
+				if(this.iterationFilterType){
+					this.filters.iterationFilterType=this.iterationFilterType
+				}
 				
+				if(this.taskFilterType){
+					this.filters.taskFilterType=this.taskFilterType
+				}
 				this.filters.product=this.xmProduct
 				this.getXmMenus();  
         	}); 
