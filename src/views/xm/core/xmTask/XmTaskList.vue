@@ -521,7 +521,7 @@
 		},
 		mounted() {
 			this.filters.selProject=this.selProject
-			debugger;
+			
 			this.$nextTick(()=>{  
 				this.tableHeight = util.calcTableMaxHeight(this.$refs.taskTable.$el); 
 				this.getXmTasks(); 

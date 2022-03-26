@@ -294,7 +294,7 @@
 			},
 			
 			initData(){
-				debugger;
+				
 				if(this.linkIterationId){
 					var xmProjects=map.get(this.linkIterationId);
 					if(xmProjects){

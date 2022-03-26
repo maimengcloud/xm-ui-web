@@ -95,7 +95,7 @@ export default {
         }).catch( err  => this.load.calcProject=false ); 
     },
     afterFlowSubmit(){
-      debugger;
+      
       listXmProject({id:this.selProject.id}).then(res=>{
         var tips = res.data.tips;
         if(tips.isOk){

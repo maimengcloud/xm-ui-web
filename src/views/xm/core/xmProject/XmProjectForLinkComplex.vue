@@ -29,7 +29,7 @@
 					<el-tab-pane label="项目详情"   name="detail" v-if="selProject&&selProject.id"> 
         				<xm-project-detail  v-if="showPanel=='detail'" :sel-project="selProject" @submit="afterEditSubmit"></xm-project-detail> 
 					</el-tab-pane> 
-					<el-tab-pane label="配置关联的产品"   name="productProjectLink" v-if="selProject&&selProject.id" >
+					<el-tab-pane label="配置关联的产品"   name="productProjectLink" v-if="selProject&&selProject.id && !xmProduct" >
 						<xm-product-project-link-mng v-if="showPanel=='productProjectLink'" :sel-project="selProject"></xm-product-project-link-mng>
 					</el-tab-pane> 
 					<!--

@@ -2520,7 +2520,7 @@ export default {
           var tips = res.data.tips;
           if(tips.isOk){
             this.searchXmTasks();
-            debugger;
+            
             var rows=[...this.sels,{id:'xxxxx',parentTaskid:task.id}]
             treeTool.reloadAllChildren(this.$refs.table,this.maps,rows,'parentTaskid',this.loadXmTaskLazy)
           }

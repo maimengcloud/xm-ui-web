@@ -134,7 +134,7 @@ export default {
   methods: {
 		onMove(e) {
 			console.log('onMove--e==', e);
-			debugger;
+			
 			let targetEl = { ...e.dragged.dataset };
 			let toEl = { ...e.to.dataset };
 			if (targetEl.menuId === toEl.menuId && targetEl.taskState != toEl.taskState) {

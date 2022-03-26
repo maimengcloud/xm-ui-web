@@ -190,7 +190,7 @@
 			},
 			//获取列表 XmIteration 迭代定义
 			getXmIterations() {
-				debugger;
+				
 				let params = {
 					pageSize: this.pageInfo.pageSize,
 					pageNum: this.pageInfo.pageNum,

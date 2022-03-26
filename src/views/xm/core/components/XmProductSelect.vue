@@ -363,7 +363,7 @@
 			},
 			
 			initData(){
-				debugger;
+				
 				if(this.iterationId){
 					var xmProducts=map.get(this.iterationId);
 					if(xmProducts){
