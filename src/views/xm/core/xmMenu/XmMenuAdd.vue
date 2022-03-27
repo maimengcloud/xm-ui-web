@@ -49,6 +49,27 @@
 									</el-form-item>   
 								</el-col>
 						</el-row> 
+						
+						<el-row gutter="10">
+							<el-col :span="8">
+								<el-form-item label="需求状态" prop="status"> 
+									<el-select style="display:block;width:100px;" v-model="addForm.status">
+										<el-option v-for="i in this.dicts.menuStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>
+									</el-select>  
+								</el-form-item>
+							</el-col> 
+							<el-col :span="8">
+								<el-form-item label="进度" prop="finishRate">  
+									<el-progress     :percentage="addForm.mactRate"></el-progress> 
+								</el-form-item>
+							</el-col> 
+							<el-col :span="8">
+								<el-form-item label="截止时间" prop="startTime">  
+									 <el-date-picker style="width:220px;" type="daterange" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="dateRanger"></el-date-picker>
+								  
+								</el-form-item>
+							</el-col> 
+						</el-row> 
 					<el-tabs value="1"  >
 					<el-tab-pane label="基本信息'" name="1" >
 						
@@ -261,6 +282,7 @@
 				},
 				proposerSelectVisible:false,
 				mmUserSelectVisible:false,
+				dateRanger:[],
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				
 				/**end 在上面加自定义属性**/
@@ -293,6 +315,11 @@
 							}
 							if(params.remark=='作为   ，我需要   ，以便我能够   。'){
 								params.remark=""
+							}
+							
+							if(this.dateRanger.length>1){
+								params.startTime=this.dateRanger[0]
+								params.endTime=this.dateRanger[1]
 							}
 							addXmMenu(params).then((res) => {
 								this.load.add=false
@@ -351,7 +378,7 @@
 		},
 		mounted() {
 			
- 			initSimpleDicts('all',['demandSource','demandLvl','demandType','priority'] ).then(res=>{
+ 			initSimpleDicts('all',['demandSource','demandLvl','demandType','priority','menuStatus'] ).then(res=>{
 				this.dicts=res.data.data;
 			})
 			this.addForm=Object.assign(this.addForm, this.xmMenu);  

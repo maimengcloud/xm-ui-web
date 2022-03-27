@@ -60,7 +60,13 @@
 							</el-col> 
 							<el-col :span="8">
 								<el-form-item label="进度" prop="finishRate">  
-									<el-progress :text-inside="true" :stroke-width="26" :percentage="editForm.finishRate" status="success"></el-progress> 
+									<el-progress    :percentage="editForm.finishRate"></el-progress> 
+								</el-form-item>
+							</el-col> 
+							<el-col :span="8">
+								<el-form-item label="截止时间" prop="startTime">  
+									 <el-date-picker type="daterange" style="width:220px;" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="dateRanger"></el-date-picker>
+								  
 								</el-form-item>
 							</el-col> 
 						</el-row> 
@@ -245,7 +251,10 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 	      },
 	      'visible':function(visible) {
 	      	if(visible==true){
-	      		//从新打开页面时某些数据需要重新加载，可以在这里添加
+	      		if(this.editForm.startTime && this.editForm.endTime){
+					this.dateRanger.push(this.editForm.startTime) 
+					this.dateRanger.push(this.editForm.endTime)
+				}
 	      	}
 	      }, 
 			'editForm.mactWorkload':function(val,oldVal){
@@ -314,6 +323,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 					]
 				},
 				tagSelectVisible:false,
+				dateRanger:[],
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 
 				/**end 在上面加自定义属性**/
@@ -337,6 +347,10 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
 							this.load.edit=true
 							let params = Object.assign({}, this.editForm);
+							if(this.dateRanger.length>1){
+								params.startTime=this.dateRanger[0]
+								params.endTime=this.dateRanger[1]
+							}
 							editXmMenu(params).then((res) => {
 								this.load.edit=false
 								var tips=res.data.tips;
@@ -414,6 +428,10 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 				this.dicts=res.data.data;
 			})
 			this.editForm=Object.assign(this.editForm, this.xmMenu);
+			if(this.editForm.startTime && this.editForm.endTime){
+				this.dateRanger.push(this.editForm.startTime) 
+				this.dateRanger.push(this.editForm.endTime)
+			}
 			/**在下面写其它函数***/
 
 		}//end mounted
