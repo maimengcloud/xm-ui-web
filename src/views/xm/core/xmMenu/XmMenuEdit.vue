@@ -2,7 +2,7 @@
 	<section>
 		<el-row class="page-main ">
 			<el-form :model="editForm"  label-width="100px" label-position="left" :rules="editFormRules" ref="editForm"> 
-						<el-row gutter="10"> 
+						<el-row :gutter="10"> 
 							<el-col :span="6">
 								<el-form-item label="序号名称" prop="seqNo" > 
 									<template slot="label">
@@ -21,7 +21,7 @@
 								</el-form-item>   
 							</el-col>
 						</el-row>
-						<el-row gutter="10"> 
+						<el-row :gutter="10"> 
 							<el-col :span="8">
 								<el-form-item label="归属产品" prop="productId">
 									<font v-if="editForm.productId">{{editForm.productName?editForm.productName:editForm.productId}}</font>
@@ -50,7 +50,7 @@
 								</el-col>
 						</el-row> 
 						
-						<el-row gutter="10">
+						<el-row :gutter="10">
 							<el-col :span="8">
 								<el-form-item label="需求状态" prop="status"> 
 									<el-select style="display:block;width:100px;" v-model="editForm.status">
@@ -124,10 +124,10 @@
 								<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="editForm.remark" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
 							</el-form-item>  
 						</el-tab-pane> 
-						<el-tab-pane label="子工作项" name="6"> 
-							 <xm-work-item>史诗下面是特性、特性下面是用户故事、故事下面是工作项（任务/bug）</xm-work-item>
+						<el-tab-pane :label="'子工作项'+(subWorkItemNum>=0?'('+subWorkItemNum+')':'')" name="6">  
+							 <xm-sub-work-item :parent-xm-menu="editForm" @sub-work-item-num="setSubWorkItemNum"></xm-sub-work-item>
 						</el-tab-pane> 
-						<el-tab-pane label="工时" name="2">
+						<el-tab-pane :label="'工时('+editForm.mactWorkload+' h)'" name="2">
 							<el-form-item label="数据收集方式" prop="calcType"> 
 								<el-radio   v-model="editForm.calcType"  label="3" placeholder="下级往上级汇总" :disabled="editForm.ntype==='0'">下级往上级汇总</el-radio>
  								<el-radio   v-model="editForm.calcType"  label="1" placeholder="由任务汇总" :disabled="editForm.ntype==='1'">由任务汇总</el-radio> 
@@ -212,7 +212,7 @@
 import XmMenuOverview from './XmMenuOverview.vue';
 import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
   	import TagMng from "@/views/mdp/arc/tag/TagMng";
-
+	import XmSubWorkItem from "@/views/xm/core/xmWorkItem/XmSubWorkItem";
 
 	export default {
 		computed: {
@@ -324,12 +324,16 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 				},
 				tagSelectVisible:false,
 				dateRanger:[],
+				subWorkItemNum:-1,
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data
 		methods: {
+			setSubWorkItemNum(val){
+				this.subWorkItemNum=val;
+			},
 			// 取消按钮点击 父组件监听@cancel="editFormVisible=false" 监听
 			handleCancel:function(){
  				this.$emit('cancel');
@@ -420,6 +424,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 			XmMenuOverview,
 			TagMng,
 			XmMenuExchangeMng,
+			XmSubWorkItem,
 		},
 		mounted() {
 			
