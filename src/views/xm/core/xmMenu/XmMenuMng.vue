@@ -334,15 +334,15 @@
 										 <el-button @click="$refs.tagDialog.open({data:scope.row,action:'editTagIds'})">选标签</el-button>
 									</span>
 								</template>
-							</el-table-column>
-							<el-table-column prop="ctime" label="创建日期"  min-width="100" show-overflow-tooltip sortable>
-								<template slot-scope="scope">
-										 <span>{{scope.row.ctime}} </span>
-								</template>
-							</el-table-column>
+							</el-table-column> 
 							<el-table-column prop="mmUsername" label="跟进人"  min-width="100" show-overflow-tooltip  sortable>
 								<template slot-scope="scope">
-										 <span>{{scope.row.mmUsername}} </span>
+									<div class="cell-text"> 
+										{{scope.row.mmUsername}}
+									</div>
+									<span class="cell-bar">
+										 <el-button @click="$refs.xmGroupDialog.open({data:scope.row,action:'editMmUserid'})">选跟进人</el-button>
+									</span>
 								</template>
 							</el-table-column>
 							</template>
@@ -389,7 +389,8 @@
 
  			<tag-dialog ref="tagDialog" :tagIds="filters.tags?filters.tags.map(i=>i.tagId):[]" :jump="true" @select-confirm="onTagSelected">
 			</tag-dialog>
-
+ 			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="selProject" :xm-product="filters.xmProduct" @user-confirm="onGroupUserSelect">
+			</xm-group-dialog>
 		<el-drawer
 		append-to-body
 		title="需求选择"
@@ -431,6 +432,7 @@
 	import  XmItSelect from '@/views/xm/core/components/XmIterationSelect.vue';//修改界面
 	import  XmMenuWorkload from '@/views/xm/core/components/XmMenuWorkload';//修改界面
 	import  XmTableConfig from '@/views/xm/core/components/XmTableConfig';//修改界面
+	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
 
 	import XmMenuSelect from "../xmMenu/XmMenuSelect";
@@ -999,9 +1001,8 @@
 					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 				}).catch( err  => this.load.edit=false );
 			},
-			selectUser(row){
-				this.editForm=row
-				this.userSelectVisible=true;
+			onGroupUserSelect(users,option){
+				 this.editXmMenuSomeFields(option.data,"mmUserid",users);
 			},
 			clearFiltersMmUser:function(){
 				 this.filters.mmUser=null;
@@ -1186,6 +1187,9 @@
 					}
 				}else if(fieldName==='workload'){
 					params={...params,...$event}
+				}else if(fieldName==='mmUserid'){
+					params.mmUserid=$event[0].userid
+					params.mmUsername=$event[0].username
 				}else{
 					params[fieldName]=$event
 				}
@@ -1194,33 +1198,12 @@
 					var tips = res.data.tips;
 					if(tips.isOk){
 						if(this.sels.length>0){
-							 this.sels.forEach(i=>{
-								 i[fieldName]=params[fieldName]
-								 if(fieldName==='iterationId'){
-									i['iterationName']=params['iterationName']
-								}
-								if(fieldName==='tagIds'){
-									i['tagNames']=params['tagNames']
-									i['tagIds']=params['tagIds']
-									this.fieldTagVisible=false;
-								}
-								if(fieldName==='workload'){
-									Object.assign(i,params)
-								}
+							 this.sels.forEach(i=>{ 
+								 this.fieldTagVisible=false;
+								Object.assign(i,params) 
 							 })
 						}else{
-							if(fieldName==='tagIds'){
-								row['tagNames']=params['tagNames']
-								row['tagIds']=params['tagIds']
-								this.fieldTagVisible=false;
-							}
-							if(fieldName==='iterationId'){
-								row['iterationName']=params['iterationName']
-								row['iterationId']=params['iterationId']
-							}
-							if(fieldName==='workload'){
-								Object.assign(row,params)
-							}
+							  Object.assign(row,params) 
 						}
 					}else{
 						this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
@@ -1315,6 +1298,7 @@
 			XmItSelect,
 			XmMenuWorkload,
 			XmTableConfig,
+			XmGroupDialog,
 		    //在下面添加其它组件
 		},
 		mounted() {
