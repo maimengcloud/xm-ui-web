@@ -120,7 +120,8 @@
 			 <el-row class="padding-top">
 				<!--列表 XmQuestion xm_question-->
 				<el-table  ref="table" :height="maxTableHeight" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
- 					<el-table-column  label="序号" type="index" min-width="50"></el-table-column>
+ 					<el-table-column  label="全选" type="selection" min-width="50"></el-table-column>
+					 <el-table-column  label="序号" type="index" min-width="50"></el-table-column>
 					  <el-table-column prop="id" label="缺陷编号" width="100" show-overflow-tooltip></el-table-column>
 					 <el-table-column prop="name" label="缺陷名称"  min-width="150">
 						<template slot-scope="scope">  
