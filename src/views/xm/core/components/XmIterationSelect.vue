@@ -59,7 +59,7 @@
 				<el-pagination  layout="total, prev,  next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 
 			</el-row>
-			<el-link title="点击选中迭代" @click="iterationVisible=!iterationVisible"  type="warning" slot="reference" icon="el-icon-search"><font style="font-size:14px;"><slot name="title">{{editForm&&editForm.id?editForm.iterationName:'选择迭代'}}</slot></font></el-link> 
+			<el-link title="点击选中迭代" @click="referenceClick"  type="warning" slot="reference" icon="el-icon-search"><font style="font-size:14px;"><slot name="title">{{editForm&&editForm.id?editForm.iterationName:'选择迭代'}}</slot></font></el-link> 
 		</el-popover> 
 	</section>
 </template>
@@ -133,6 +133,7 @@
 				maxTableHeight:300, 
 				iterationVisible:false,
 				moreVisible:false,
+				hadInit:false,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -271,7 +272,7 @@
 						this.searchXmIterations();
 					}
 				}else{
-					//his.searchXmIterations();
+					this.searchXmIterations();
 				}
 			},
 			
@@ -286,15 +287,27 @@
 				this.iterationVisible=false;
 				this.moreVisible=false;
 				this.$emit('clear',null );//  @row-click="rowClick"
-			},
+			}, 
+			referenceClick(){
+				if(!this.hadInit){
+					this.initData();
+					this.hadInit=true;
+				}
+				this.iterationVisible=!this.iterationVisible;
+			}
 		},//end methods
 		components: { 
 		    //在下面添加其它组件
 		},
 		mounted() {
 			this.$nextTick(() => {  
-				this.initData();
-				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
+				 
+			this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
+
+			if(this.autoSelect!==false){
+					this.initData();
+					this.hadInit=true;
+				}
         	});
            
 		}

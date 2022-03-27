@@ -115,16 +115,18 @@
 					<el-button  slot="reference" icon="el-icon-more"></el-button>
 				</el-popover> 
 				<span style="float:right;"> 
-   					<el-button   type="primary" icon="el-icon-plus"  @click="showAdd"  round> </el-button> 
+   					<el-button v-if="filters.selProject && filters.selProject.id"  type="primary" icon="el-icon-plus"  @click="showAdd"  round> </el-button> 
+					<xm-project-select v-else style="display:inline;"  :auto-select="false" :link-product-id="xmProduct?xmProduct.id:null" @row-click="showAddAfterProjectSelect" >
+						  <el-button slot="reference"  type="primary" icon="el-icon-plus"    round> </el-button>  
+					</xm-project-select>
 				</span>
 			 </el-row> 
 			 <el-row class="padding-top">
 				<!--列表 XmQuestion xm_question-->
 				<el-table  ref="table" :height="maxTableHeight" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
- 					<el-table-column  label="全选" type="selection" min-width="50"></el-table-column>
-					 <el-table-column  label="序号" type="index" min-width="50"></el-table-column>
-					  <el-table-column prop="id" label="缺陷编号" width="100" show-overflow-tooltip></el-table-column>
-					 <el-table-column prop="name" label="缺陷名称"  min-width="150">
+ 					<el-table-column  label="全选" type="selection" min-width="50"  fixed="left"></el-table-column>
+					  <el-table-column prop="id" label="缺陷编号" width="100" show-overflow-tooltip fixed="left"></el-table-column>
+					 <el-table-column prop="name" label="缺陷名称"  min-width="150" show-overflow-tooltip fixed="left">
 						<template slot-scope="scope">  
 								<span class="vlink" @click="showEdit(scope.row)" :title="scope.row.name">  
 									 {{scope.row.name}}
@@ -176,6 +178,26 @@
 										 <el-select  v-model="scope.row.bugSeverity" placeholder="类型"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugSeverity',$event)">
 												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.bugSeverity" :key="index"></el-option> 
 										 </el-select>  
+									</span> 
+						</template>
+					</el-table-column>
+					<el-table-column prop="projectId" label="项目"  width="100" show-overflow-tooltip> 
+						<template slot-scope="scope">   
+									<div class="cell-text">
+										{{scope.row.projectId}}
+									</div>
+									<span class="cell-bar">   
+										<xm-project-select  style="display:inline;"  :auto-select="false" :link-product-id="xmProduct?xmProduct.id:null" @row-click="editXmQuestionSomeFields(scope.row,'projectId',$event)" ></xm-project-select>
+									</span> 
+						</template>
+					</el-table-column>
+					<el-table-column prop="productId" label="产品"  width="100" show-overflow-tooltip>  
+						<template slot-scope="scope">   
+									<div class="cell-text">
+										{{scope.row.productId}}
+									</div>
+									<span class="cell-bar">   
+										<xm-product-select  style="display:inline;"  :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="editXmQuestionSomeFields(scope.row,'productId',$event)" ></xm-product-select>
 									</span> 
 						</template>
 					</el-table-column>
@@ -562,6 +584,12 @@
 					return;
 				}
 				this.addFormVisible = true;
+			},
+			showAddAfterProjectSelect(project){
+				this.$refs.xmProjectSelect.editForm=project; 
+				this.filters.selProject=project;
+				this.addFormVisible = true;
+				this.searchXmQuestions();
 			},
 			afterAddSubmit(){
 				this.addFormVisible=false;
@@ -1018,6 +1046,10 @@
 					}
 				}else if(fieldName==='workload'){
 					params={...params,...$event}
+				}else if(fieldName==='projectId'){
+					params.projectId=$event.id
+				}else if(fieldName==='productId'){
+					params.productId=$event.id
 				}else{
 					params[fieldName]=$event
 				}

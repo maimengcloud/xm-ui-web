@@ -74,7 +74,7 @@
 									</el-table>
 									<el-pagination  layout="total, prev, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>  
 								</el-row> 
- 								<span slot="reference" @click="projectVisible=!projectVisible">
+ 								<span slot="reference" @click="referenceClick">
 									<slot name="reference"><el-link title="项目，点击选择、清除选择"  type="warning"    icon="el-icon-search"><font style="font-size:14px;"><slot name="title">{{editForm && editForm.id?editForm.name:'选择项目'}}</slot></font></el-link> </slot>
 								</span>
 						</el-popover>  
@@ -148,6 +148,7 @@
 				pickerOptions:  util.pickerOptions('datarange'),
 				projectVisible:false,
 				moreVisible:false, 
+				hadInit:false,
 			}
 		},//end data
 		methods: {  
@@ -326,6 +327,14 @@
 					this.searchXmProjects();
 				}
 			},
+			
+			referenceClick(){
+				if(!this.hadInit){
+					this.initData();
+					this.hadInit=true;
+				}
+				this.projectVisible=!this.projectVisible;
+			}
 		},//end methods
 		components: {  
 			UsersSelect,
@@ -334,7 +343,10 @@
 		mounted() { 
 			this.$nextTick(() => { 
 				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
-				this.initData();
+				if(this.autoSelect!==false){
+					this.initData();
+					this.hadInit=true;
+				}
         	}); 
 		}
 	}

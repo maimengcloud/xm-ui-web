@@ -74,7 +74,7 @@
 									</el-table>
 									<el-pagination  layout="total, prev, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>  
 								</el-row> 
-								<slot name="reference"><el-link title="产品，点击选择、清除选择" @click="productVisible=!productVisible" type="warning" slot="reference"   icon="el-icon-search"><font style="font-size:14px;"><slot name="title">{{editForm && editForm.id?editForm.productName:'选择产品'}}</slot></font></el-link> </slot>
+								<slot name="reference"><el-link title="产品，点击选择、清除选择" @click="referenceClick" type="warning" slot="reference"   icon="el-icon-search"><font style="font-size:14px;"><slot name="title">{{editForm && editForm.id?editForm.productName:'选择产品'}}</slot></font></el-link> </slot>
 						</el-popover>   
 						<el-dialog  v-if="dialog" append-to-body
 							v-model="productVisible"> 
@@ -215,6 +215,7 @@
 				pickerOptions:  util.pickerOptions('datarange'),
 				productVisible:false,
 				moreVisible:false,
+				hadInit:false,
 				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -362,8 +363,7 @@
 				this.$emit("close");
 			},
 			
-			initData(){
-				
+			initData(){ 
 				if(this.iterationId){
 					var xmProducts=map.get(this.iterationId);
 					if(xmProducts){
@@ -396,6 +396,13 @@
 					this.searchXmProducts();
 				}
 			},
+			referenceClick(){
+				if(!this.hadInit){
+					this.initData();
+					this.hadInit=true;
+				}
+				this.productVisible=!this.productVisible;
+			}
 		},//end methods
 		components: {  
 			UsersSelect,
@@ -404,7 +411,11 @@
 		mounted() { 
 			this.$nextTick(() => { 
 				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
-				this.initData();
+				if(this.autoSelect!==false){
+					this.initData();
+					this.hadInit=true;
+				}
+				
         	}); 
 		}
 	}
