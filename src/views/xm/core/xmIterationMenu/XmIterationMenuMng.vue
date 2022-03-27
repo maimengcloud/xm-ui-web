@@ -1,29 +1,29 @@
 <template>
 	<section class="page-container">
 
-		<el-row > 
+		<el-row >
 			<el-col :span="10">
 				<el-row class="padding-left">
-					<el-input v-model="filters.key" style="width: 60%;" placeholder="模糊查询"> 
-					</el-input>  
-					<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterationMenus" icon="el-icon-search"></el-button>
-					
-					<span style="float:right;"> 
- 						<el-button type="danger" @click="batchDel" icon="el-icon-right">批量移出</el-button> 
+					<el-input v-model="filters.key" style="width: 60%;" placeholder="模糊查询">
+					</el-input>
+					<el-button v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterationMenus" icon="el-icon-search"></el-button>
+
+					<span style="float:right;">
+ 						<el-button type="primary" @click="batchDel" icon="el-icon-right">批量移出</el-button>
 					</span>
-					
+
 				</el-row>
 				<el-row class="page-main padding-top padding-left">
 					<!--列表 XmIterationMenu 迭代定义-->
 					<el-table ref="table" :height="maxTableHeight" :data="xmIterationMenusTreeData"  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-						<el-table-column  type="selection" width="45"></el-table-column> 
-						
-						<el-table-column prop="menuName" label="需求名称" min-width="140" > 
+						<el-table-column  type="selection" width="45"></el-table-column>
+
+						<el-table-column prop="menuName" label="已加入迭代的用户故事" min-width="140" >
 							<template slot-scope="scope">
-								
+
 							<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
 								<i class="el-icon-s-promotion"></i>
-								</div> 
+								</div>
 								<div v-if="scope.row.dclass=='2'" class="icon" style="background-color:  rgb(0, 153, 51);">
 								<i class="el-icon-s-flag"></i>
 								</div>
@@ -32,21 +32,21 @@
 							</div>
 								<span class="vlink" type="primary">{{scope.row.seqNo}}
 								&nbsp;&nbsp;{{scope.row.menuName}}
-								</span> 
+								</span>
 							</template>
-						</el-table-column> 
+						</el-table-column>
 						<el-table-column label="操作" width="100" fixed="right">
 							<template slot-scope="scope">
 								<el-button type="primary" @click="handleDel(scope.row,scope.$index)" icon="el-icon-right">移出</el-button>
 							</template>
 						</el-table-column>
 					</el-table>
-					<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+					<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 				</el-row>
 			</el-col>
 			<el-col :span="14">
 				<xm-menu-select ref="menusSelect" iterationFilterType="not-join-curr-iteration" checkScope="0" :xm-product="{id:xmIteration.productId}" :xm-iteration="xmIteration" :visible="menuVisible" :is-select-menu="true" :multi="true"   @menus-selected="onSelectedMenus" ></xm-menu-select>
-			</el-col> 
+			</el-col>
   		</el-row>
 	</section>
 </template>
@@ -54,26 +54,26 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import treeTool from '@/common/js/treeTool';//全局公共库
-	import config from '@/common/config';//全局公共库 
+	import config from '@/common/config';//全局公共库
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { listXmIterationMenu, delXmIterationMenu, batchDelXmIterationMenu,batchAddXmIterationMenu } from '@/api/xm/core/xmIterationMenu'; 
+	import { listXmIterationMenu, delXmIterationMenu, batchDelXmIterationMenu,batchAddXmIterationMenu } from '@/api/xm/core/xmIterationMenu';
 	import  XmIterationMng from '@/views/xm/core/components/XmIterationSelect';//修改界面
 	import { mapGetters } from 'vuex'
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
 
-	
-	export default { 
+
+	export default {
 		props:['xmIteration'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
-		    ]), 
-			
-      		xmIterationMenusTreeData() {  
-				let xmMenus = JSON.parse(JSON.stringify(this.xmIterationMenus || []));  
-				let xmMenusTreeData = treeTool.translateDataToTree(xmMenus,"pmenuId","menuId");  
+		    ]),
+
+      		xmIterationMenusTreeData() {
+				let xmMenus = JSON.parse(JSON.stringify(this.xmIterationMenus || []));
+				let xmMenusTreeData = treeTool.translateDataToTree(xmMenus,"pmenuId","menuId");
 				 return xmMenusTreeData;
-			}, 
+			},
 		},
 		watch:{
 			'xmIteration':function(xmIteration){
@@ -98,14 +98,14 @@
 				sels: [],//列表选中数据
 				dicts:{
 					//sex:[],
-				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
-				
+				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
+
 				addFormVisible: false,//新增xmIterationMenu界面是否显示
 				//新增xmIterationMenu界面初始化数据
 				addForm: {
 					id:'',iterationId:'',menuId:'',productId:'',ctime:'',relStatus:''
 				},
-				
+
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmIterationMenu界面初始化数据
 				editForm: {
@@ -115,13 +115,13 @@
 				menuVisible:false,
 				maxTableHeight:300,
 				/**begin 自定义属性请在下面加 请加备注**/
-					
+
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
-		methods: { 
-			handleSizeChange(pageSize) { 
-				this.pageInfo.pageSize=pageSize; 
+		methods: {
+			handleSizeChange(pageSize) {
+				this.pageInfo.pageSize=pageSize;
 				this.getXmIterationMenus();
 			},
 			handleCurrentChange(pageNum) {
@@ -143,7 +143,7 @@
 				this.getXmIterationMenus();
 			},
 			searchXmIterationMenus(){
-				 this.pageInfo.count=true; 
+				 this.pageInfo.count=true;
 				 this.getXmIterationMenus();
 			},
 			//获取列表 XmIterationMenu 迭代定义
@@ -156,11 +156,11 @@
 				};
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
-					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
+					for(var i=0;i<this.pageInfo.orderFields.length;i++){
 						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
-					}  
+					}
 					params.orderBy= orderBys.join(",")
-				} 
+				}
 				if(this.filters.key){
 					params.key='%'+this.filters.key+'%'
 				}
@@ -173,13 +173,13 @@
 				this.load.list = true;
 				listXmIterationMenu(params).then((res) => {
 					var tips=res.data.tips;
-					if(tips.isOk){ 
+					if(tips.isOk){
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
 						this.xmIterationMenus = res.data.data;
 					}else{
 						this.$notify({showClose: true, message: tips.msg, type: 'error' });
-					} 
+					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			},
@@ -205,36 +205,36 @@
 			//选择行xmIterationMenu
 			selsChange: function (sels) {
 				this.sels = sels;
-			}, 
+			},
 			//删除xmIterationMenu
-			handleDel: function (row,index) {  
+			handleDel: function (row,index) {
 				this.$confirm('确认将该需求移出迭代吗?', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					let params = { iterationId:row.iterationId,menuIds: [row.menuId] };
 					delXmIterationMenu(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if(tips.isOk){ 
+						if(tips.isOk){
 							this.pageInfo.count=true;
-							
+
 							this.$refs.menusSelect.reloadChildren([row]);
 							this.getXmIterationMenus();
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
 			//批量删除xmIterationMenu
-			batchDel: function () { 
+			batchDel: function () {
 				if(this.sels.length<=0){
-					this.$notify({showClose: true, message:"请先选择一个或者多个需求", type: 'warning' }); 
+					this.$notify({showClose: true, message:"请先选择一个或者多个需求", type: 'warning' });
 					return ;
 				}
 				this.$confirm('确认将需求移出迭代吗？', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					var params={
 						iterationId:this.sels[0].iterationId,menuIds:this.sels.map(i=>i.menuId)
@@ -242,10 +242,10 @@
 					batchDelXmIterationMenu(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if( tips.isOk ){ 
+						if( tips.isOk ){
 							this.$refs.menusSelect.reloadChildren(this.sels);
 							this.pageInfo.count=true;
-							this.getXmIterationMenus(); 
+							this.getXmIterationMenus();
 						}
 						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
@@ -253,13 +253,13 @@
 			},
 			rowClick: function(row, event, column){
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
-			}, 	
+			},
 			onSelectedMenus(menus){
 				if(!menus || menus.length==0){
 					this.menuVisible=false
 					return;
-				} 
-				 
+				}
+
 				 var params={
 					 menuIds:menus.map(i=>i.menuId),
 					iterationId:this.iteration.id
@@ -278,32 +278,32 @@
 				this.iteration=iteration
 				this.getXmIterationMenus();
 			},
-			
+
 			onIterationClearSelect(){
 				this.iteration=null;
 				this.getXmIterationMenus();
 			}
 			/**end 自定义函数请在上面加**/
-			
+
 		},//end methods
-		components: {  
+		components: {
 			XmIterationMng,
 			xmMenuSelect,
 		    //在下面添加其它组件
 		},
-		mounted() { 
+		mounted() {
 			if(this.xmIteration){
 				this.iteration=this.xmIteration
 			}
 			this.$nextTick(() => {
-				
-				
-				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
+
+
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
 				this.getXmIterationMenus();
-        	}); 
+        	});
         	/** 举例，
     		initSimpleDicts( "all",["sex","grade"] ).then(res=>{
-				if(res.data.tips.isOk){ 
+				if(res.data.tips.isOk){
  					this.dicts=res.data.data
 				}
 			});
