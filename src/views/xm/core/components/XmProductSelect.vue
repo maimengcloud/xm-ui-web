@@ -195,10 +195,10 @@
 					params.key="%"+this.filters.key+"%"
 				}
 				if(this.linkProjectId){
-					params.projectId=this.linkProjectId
+					params.linkProjectId=this.linkProjectId
 				}
-				if(this.iterationId){
-					params.iterationId=this.iterationId
+				if(this.linkIterationId){
+					params.linkIterationId=this.linkIterationId
 				}
 				if(this.filters.id){
 					params.id=this.filters.id

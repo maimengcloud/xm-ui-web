@@ -253,6 +253,7 @@
 					attachment: [],
 					repRate:'',
 					verNum:'',
+					bugReason:'',
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				fileVisible: true,

@@ -88,12 +88,11 @@
 						
 						<el-row> 
 								<el-col :span="12">
-									<el-form-item label="缺陷类别" prop="bugType">
-										<el-select v-model="editForm.bugType" placeholder="请选择缺陷类别">
-											<el-option v-for="(i,index) in dicts['bugType']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
+									<el-form-item label="原因分析" prop="bugReason">
+										<el-select v-model="editForm.bugReason" placeholder="请选择原因">
+											<el-option v-for="(i,index) in dicts['bugReason']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
 										</el-select> 
 									</el-form-item>
-									
 								</el-col>
 								
 								<el-col :span="12">
@@ -108,10 +107,11 @@
 						
 						<el-row> 
 								<el-col :span="12">
-									<el-form-item label="提出时间" prop="createTime">
-										 <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" v-model="editForm.createTime"></el-date-picker>
-									</el-form-item>
-									
+									<el-form-item label="缺陷类别" prop="bugType">
+										<el-select v-model="editForm.bugType" placeholder="请选择缺陷类别">
+											<el-option v-for="(i,index) in dicts['bugType']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
+										</el-select> 
+									</el-form-item>  
 								</el-col>
 								
 								<el-col :span="12">
@@ -289,7 +289,12 @@
 				//新增界面数据 xm_question
 				editForm: {
 					id:'',name:'',projectId:'',projectName:'',taskId:'',taskName:'',endTime:'',askUserid:'',askUsername:'',handlerUserid:'',handlerUsername:'',priority:'',solution:'',processTime:'',receiptMessage:'',receiptTime:'',description:'',createUserid:'',createUsername:'',createTime:'',bugStatus:'',receiptMessage:'',
-					attachment: [],iterationId:'',iterationName:'',productId:'',
+					iterationId:'',iterationName:'',productId:'',
+					qtype:'',
+					attachment: [],
+					repRate:'',
+					verNum:'',
+					bugReason:'',
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				fileVisible: true,

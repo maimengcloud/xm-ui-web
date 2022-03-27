@@ -224,6 +224,9 @@
 				}else{
 					this.addFOrm.dclass=this.xmMenu.dclass
 				}
+				
+				this.addForm.mmUserid=this.userInfo.userid
+				this.addForm.mmUsername=this.userInfo.username
 	      	}
 	      } 
 	    },
@@ -267,11 +270,7 @@
 				if(this.addForm.productId==null){
 					this.$notify({showClose: true, message: '请选择产品/或者上级需求进行新增', type:'error' }); 
 					return;
-				}
-				if(this.parentMenu && this.parentMenu.ntype=="0"){
-					 this.$notify({showClose: true, message: '需求池下不能再建立子需求', type:'error' }); 
-					return;
-				}
+				} 
 				this.$refs.addForm.validate((valid) => {
 					if (valid) {
 

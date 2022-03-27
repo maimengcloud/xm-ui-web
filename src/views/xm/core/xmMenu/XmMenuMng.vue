@@ -5,15 +5,8 @@
 					<el-row>
 						<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="!xmProduct && !xmIteration"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear-select="onProductClearSelect"></xm-product-select>
 
-						<xm-it-select v-if="!xmIteration || !xmIteration.id" style="display:inline;" :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="selProject?selProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClearSelect">
-					    </xm-it-select>
-
-						<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable v-if="selProject &&selProject.id">
-							<el-option   value="not-join-any-project"  label="未分配过任务的需求"></el-option>
-							<el-option   value="join-any-project"  label="已分配过任务的需求"></el-option>
-							<el-option   value="not-join-curr-project"  :label="'未分配任务到项目【'+selProject.name+'】'" v-if="selProject && selProject.id"></el-option>
-							<el-option   value="join-curr-project"  :label="'已分配任务到项目【'+selProject.name+'】'"  v-if="selProject && selProject.id"></el-option>
-						</el-select>
+						<xm-iteration-select v-if="!xmIteration || !xmIteration.id" style="display:inline;" :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="selProject?selProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClearSelect">
+					    </xm-iteration-select>
 						<el-select v-if=" !selProject || !selProject.id"  v-model="filters.iterationFilterType" placeholder="加入过迭代？" clearable>
 							<el-option   value="not-join-any-iteration"  label="未加入过迭代"></el-option>
 							<el-option   value="join-any-iteration"  label="已加入过迭代"></el-option>
@@ -183,7 +176,7 @@
 						</span>
 					 </el-row>
 					<el-row class="padding-top">
-						<el-table :cell-style="cellStyleCalc" :header-cell-style="cellStyleCalc" :row-style="{height:'60px'}" lazy :load="loadXmMenusLazy" stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
+						<el-table :cell-style="cellStyleCalc" :expand-row-keys="expandRowKeysCpd" :header-cell-style="cellStyleCalc" :row-style="{height:'60px'}" lazy :load="loadXmMenusLazy" stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
 							<el-table-column sortable type="selection" width="40"></el-table-column>
 
 							<el-table-column prop="menuName" label="需求名称" min-width="300" fixed="left">
@@ -288,7 +281,12 @@
 							</el-table-column>
 							<el-table-column prop="iterationName" label="迭代" width="150" show-overflow-tooltip sortable>
 								<template slot-scope="scope">
+									<div class="cell-text"> 
 										{{scope.row.iterationName}}
+									</div>
+									<span class="cell-bar">
+										 <xm-iteration-select  style="display:inline;" :auto-select="false"  :product-id="scope.row.productId"    placeholder="迭代"  @row-click="editXmMenuSomeFields(scope.row,'iterationId',$event)"></xm-iteration-select>
+									</span>
 								</template>
 							</el-table-column>
 
@@ -429,7 +427,7 @@
 	import XmTaskList from '../xmTask/XmTaskList';
 	import XmTaskMng from '../xmTask/XmTaskMng';
 	import XmTaskListForMenu from '../xmTask/XmTaskListForMenu';
-	import  XmItSelect from '@/views/xm/core/components/XmIterationSelect.vue';//修改界面
+	import  XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';//修改界面
 	import  XmMenuWorkload from '@/views/xm/core/components/XmMenuWorkload';//修改界面
 	import  XmTableConfig from '@/views/xm/core/components/XmTableConfig';//修改界面
 	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面
@@ -440,7 +438,7 @@
 
 	import {sn} from '@/common/js/sequence'
 
-	import { mapGetters } from 'vuex'
+	import { mapGetters } from 'vuex' 
 
 	export default {
 		props:['selProject','xmIteration','xmProduct','disabledMng'],
@@ -466,7 +464,6 @@
 					this.getXmMenus()
 			},
 			selProject:function(){
-				this.filters.taskFilterType='join-curr-project'
 				this.getXmMenus();
 			}
     	},
@@ -549,7 +546,7 @@
 				maps:new Map(),
 				linkIterationPopoverVisible:false,
  				/**begin 自定义属性请在下面加 请加备注**/
-
+				expandRowKeysCpd:[],
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -739,7 +736,8 @@
 			},
 			showSubAdd:function(row){
 				this.editForm=row
-				this.parentMenu=row
+				this.parentMenu=row 
+				this.expandRowKeysCpd.push(row.pmenuId);
 				this.addForm.productId=row.productId
 				if(this.filters.product && row.productId==this.filters.product.id){
 					this.addForm.productName=this.filters.product.productName
@@ -751,16 +749,18 @@
 			showProdcutAdd:function(){
 				this.$refs.xmProductMng.showAdd();
 			},
-			afterAddSubmit(row){
+			afterAddSubmit(row){ 
 				this.addFormVisible=false;
-				this.pageInfo.count=true;
+				this.pageInfo.count=true; 
+				//this.getXmMenus(); 
+				treeTool.reloadAllChildren(this.$refs.table,this.maps,[row,{...this.parentMenu}],'pmenuId',this.loadXmMenusLazy) 
+				
 				this.parentMenu=null;
-				this.getXmMenus();
-				treeTool.reloadChildren(this.$refs.table,this.maps,row.pmenuId,'pmenuId',this.loadXmMenusLazy)
+				
 			},
 			afterEditSubmit(row){
 				this.editFormVisible=false;
-				this.getXmMenus();
+				//this.getXmMenus();
 				treeTool.reloadChildren(this.$refs.table,this.maps,row.pmenuId,'pmenuId',this.loadXmMenusLazy)
 			},
 			//选择行xmMenu
@@ -1294,11 +1294,11 @@
 			UsersSelect,
 			XmMenuMngBatch,
 		    TagDialog,
-			XmMenuSelect,
-			XmItSelect,
+			XmMenuSelect, 
 			XmMenuWorkload,
 			XmTableConfig,
 			XmGroupDialog,
+			XmIterationSelect,
 		    //在下面添加其它组件
 		},
 		mounted() {
@@ -1308,9 +1308,6 @@
 			this.filters.product=this.xmProduct
 			if(this.xmProduct && this.xmProduct.id){
 				this.productVisible=false;
-			}
-			if(this.selProject && this.selProject.id){
-				this.filters.taskFilterType='join-curr-project'
 			}
 
 			if(this.xmIteration && this.xmIteration.id){

@@ -1,14 +1,6 @@
 <template>
 	<section class="page-container padding border">
 		<el-row>
-      		<el-checkbox v-model="gstcVisible"  class="hidden-md-and-down">甘特图</el-checkbox>
-
-			<el-select  v-model="filters.queryScope"  placeholder="迭代查询范围">
-				<el-option :label="userInfo.branchName+'机构下所有的迭代'" value="branchId"></el-option>
-				<el-option label="我相关的迭代" value="compete"></el-option>
-				<el-option label="按迭代编号精确查找" value="iterationId"></el-option>
-				<el-option label="后台智能匹配" value=""></el-option>
-			</el-select>
 			<el-input v-if="filters.queryScope=='iterationId'"  v-model="filters.id" style="width:20%;"  placeholder="输入迭代编号" @keyup.enter.native="searchXmProducts"> </el-input>
 			<el-date-picker v-if="filters.queryScope!='iterationId'" v-model="dateRangerOnline" type="daterange" align="right" unlink-panels range-separator="至"
 				start-placeholder="上线日期" end-placeholder="上线日期" value-format="yyyy-MM-dd HH:mm:ss"
@@ -25,18 +17,6 @@
 				trigger="click" >
 				<el-divider content-position="left"><strong>查询条件</strong></el-divider>
 				<el-row>
-
-					<el-col :span="24" style="padding-top:5px;">
-						<font class="more-label-font">
-							迭代查询范围：
-						</font>
-						<el-select  v-model="filters.queryScope" style="width:100%;"   placeholder="迭代查询范围">
-							<el-option :label="userInfo.branchName+'机构下所有的迭代'" value="branchId"></el-option>
-							<el-option label="我相关的迭代" value="compete"></el-option>
-							<el-option label="按迭代编号精确查找" value="iterationId"></el-option>
-							<el-option label="后台智能匹配" value=""></el-option>
-						</el-select>
-					</el-col>
 					<el-col  :span="24"  style="padding-top:5px;">
 						<el-input  v-if="filters.queryScope=='iterationId'"  v-model="filters.id" style="width:100%;"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">
 						</el-input>
@@ -59,12 +39,8 @@
 					<el-col :span="24" style="padding-top:5px;">
 							<font class="more-label-font">迭代名称:</font><el-input  v-model="filters.key" style="width: 60%;" placeholder="模糊查询"></el-input>
 					</el-col>
-					<el-col :span="24" style="padding-top:5px;">
-							<el-tag>默认只能查询本人创建的迭代、本人作为需求责任人参与的迭代</el-tag>
-					</el-col>
-					<el-col :span="24" style="padding-top:5px;">
+					<el-col :span="24" style="padding-top:10px;">
 						<el-button  type="primary" icon="el-icon-search" @click="getXmIterations">查询</el-button>
-						<el-checkbox v-model="gstcVisible">甘特图</el-checkbox>
 					</el-col>
 				</el-row>
  				<el-button  slot="reference" icon="el-icon-more"></el-button>
