@@ -994,14 +994,14 @@
 					return ""
 				}
 				if(row.handlerUsername){
-					if(row.lremark){
-						var lremark=row.lremark;
-						lremark=lremark.replace(/<\w?>/g,""); 
-						lremark=lremark.replace(/<\/\w?>/g,"");
-						if(lremark.length<=10){
-							msg='已指派给'+row.handlerUsername+','+lremark
+					if(row.remarks){
+						var remarks=row.remarks;
+						remarks=remarks.replace(/<\w?>/g,""); 
+						remarks=remarks.replace(/<\/\w?>/g,"");
+						if(remarks.length<=10){
+							msg='已指派给'+row.handlerUsername+','+remarks
 						}else{
-							msg='已指派给'+row.handlerUsername+','+lremark.substr(0,10)+"..."
+							msg='已指派给'+row.handlerUsername+','+remarks.substr(0,10)+"..."
 						}
 						
 					}else{

@@ -1,37 +1,33 @@
 <template>
-	<section class="page-container  padding border">
+	<section class="padding">
 		<el-row class="page-main ">
 			<!--新增界面 XmMenu 项目需求表--> 
-			<el-form :model="addForm"  label-width="120px"  :rules="addFormRules" ref="addForm">
-				
-				<el-collapse value="1" accordion>
-					<el-collapse-item :title="calcMenuLabel.label+'基本信息'" name="1" >
-						 
-						<el-row> 
-							<el-col :span="8">
+			<el-form :model="addForm"  label-width="120px" label-position="left" :rules="addFormRules" ref="addForm"> 
+						<el-row gutter="10"> 
+							<el-col :span="6">
 								<el-form-item label="序号名称" prop="seqNo" > 
 									<template slot="label">
 										<div  class="icon" :style="{backgroundColor: calcMenuLabel.color }">
 											<i :class="calcMenuLabel.icon"></i>
 										</div>  
-										{{calcMenuLabel.label}}
+										{{calcMenuLabel.label}}名称
 									</template>
-									<el-input v-model="addForm.seqNo" style="width:100%;" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input> 
+									<el-input v-model="addForm.seqNo" title="序号 如 1.1，1.2.3，1.3.2等" style="width:100%;" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input> 
 								</el-form-item>  
 							</el-col>
-							<el-col :span="16">
+							<el-col :span="18">
 								<el-form-item label="" prop="menuName" label-width="0px">
-									<el-input v-model="addForm.menuName" placeholder="名称" ></el-input>
+									<el-input v-model="addForm.menuName" placeholder="名称" title="名称"></el-input>
 								</el-form-item>   
 							</el-col>
 						</el-row>
 						<el-row>
-							<el-col :span="12">
+							<el-col :span="8">
 								<el-form-item label="归属产品" prop="productId">
 									<font v-if="addForm.productId">{{addForm.productName?addForm.productName:addForm.productId}}</font>
 								</el-form-item>
 							</el-col>
-							<el-col :span="12">
+							<el-col :span="8">
 								<el-form-item v-if="!addForm.pmenuId" :label="addForm.dclass==='3'?'归属特性':(addForm.dclass==='2'?'归属史诗':'归属')" prop="pmenuId">
 										无
 									</el-form-item>  
@@ -45,8 +41,31 @@
 										</div> 
 										  {{addForm.pmenuName?addForm.pmenuName:addForm.pmenuId}} 
 									</el-form-item>  
-							</el-col>
+							</el-col> 
+								<el-col  :span="8">
+									<el-form-item label="负责人" prop="mmUserid">
+										<el-tag type="text" v-if="addForm.mmUserid" closable @close="clearMmUser">{{addForm.mmUsername}}</el-tag> 
+										<el-button type="text" @click="mmUserSelectVisible=true">选跟进人</el-button>
+									</el-form-item>   
+								</el-col>
 						</el-row> 
+					<el-tabs value="1"  >
+					<el-tab-pane label="基本信息'" name="1" >
+						
+						
+						<el-row>
+							<el-col :span="12">
+								<el-form-item label="提出人" prop="proposerId">
+									<el-tag type="text" v-if="addForm.proposerId" closable @close="clearProposer">{{addForm.proposerName}}</el-tag> 
+									<el-button type="text" @click="selectProposer">选提出人</el-button>
+								</el-form-item>   
+							</el-col>
+							<el-col :span="12">
+								<el-form-item label="提出时间" prop="ctime">
+									<el-date-picker value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="addForm.ctime"></el-date-picker>
+								</el-form-item>   
+							</el-col>
+						</el-row>
 						<el-row> 
 							
 							<el-col :span="12">
@@ -78,63 +97,49 @@
 							</el-form-item>  
 							</el-col>
 						</el-row>
-							<el-row>
-								<el-col :span="12">
-									<el-form-item label="提出人" prop="proposerId">
-										<el-tag type="text" v-if="addForm.proposerId" closable @close="clearProposer">{{addForm.proposerName}}</el-tag> 
-										<el-button type="text" @click="selectProposer">选提出人</el-button>
-									</el-form-item>   
-								</el-col>
-								<el-col  :span="12">
-									<el-form-item label="跟进人" prop="mmUserid">
-										<el-tag type="text" v-if="addForm.mmUserid" closable @close="clearMmUser">{{addForm.mmUsername}}</el-tag> 
-										<el-button type="text" @click="mmUserSelectVisible=true">选跟进人</el-button>
-									</el-form-item>   
-								</el-col>
-							</el-row>
-					</el-collapse-item> 
-						<el-collapse-item title="概述" name="4"> 
+					</el-tab-pane> 
+						<el-tab-pane label="概述" name="4"> 
 							<el-form-item label="需求概述" prop="remark">
 								<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="addForm.remark" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
 							</el-form-item>  
-						</el-collapse-item> 
-						<el-collapse-item title="工时" name="2">
+						</el-tab-pane> 
+						<el-tab-pane label="子工作项" name="6"> 
+							 <xm-work-item>史诗下面是特性、特性下面是用户故事、故事下面是工作项（任务/bug）</xm-work-item>
+						</el-tab-pane> 
+						<el-tab-pane label="工时" name="2">
 							<el-form-item label="数据收集方式" prop="calcType"> 
 								<el-radio   v-model="addForm.calcType"  label="3" placeholder="下级往上级汇总" :disabled="addForm.ntype==='0'">下级往上级汇总</el-radio>
  								<el-radio   v-model="addForm.calcType"  label="1" placeholder="由任务汇总" :disabled="addForm.ntype==='1'">由任务汇总</el-radio> 
 								<el-radio   v-model="addForm.calcType"  label="2" placeholder="手工填报" :disabled="addForm.ntype==='1'">手工填报</el-radio>
 							</el-form-item> 
-							<el-form-item label="当前进度" prop="mactRate" >
-								<el-progress style="width:80%;" :stroke-width="26" :percentage="addForm.mactRate?addForm.mactRate:0"></el-progress>
+							<el-form-item label="工时进度" prop="mactRate" >
+								<el-progress style="width:60%;" :stroke-width="26" :percentage="addForm.mactRate?addForm.mactRate:0"></el-progress>
  							</el-form-item> 
 							<el-form-item label="预估工期" prop="budgetHours">
-								<el-input-number :disabled="addForm.calcType!=='2' && addForm.ntype==='1'" style="width:200px;"  v-model="addForm.budgetHours"  :precision="2" :step="8" :min="0" placeholder="预计工期(小时)"></el-input-number> &nbsp;h
+								<el-input-number :disabled="addForm.calcType!=='2' " style="width:200px;"  v-model="addForm.budgetHours"  :precision="2" :step="8" :min="0" placeholder="预计工期(小时)"></el-input-number> &nbsp;h
 							</el-form-item> 
 							<el-form-item label="预估工时" prop="budgetWorkload">
-								<el-input-number :disabled="addForm.calcType!=='2' && addForm.ntype==='1'" style="width:200px;"  v-model="addForm.budgetWorkload" :precision="2" :step="8" :min="0" placeholder="预计工时(小时)"></el-input-number>  &nbsp;h
+								<el-input-number :disabled="addForm.calcType!=='2'  " style="width:200px;"  v-model="addForm.budgetWorkload" :precision="2" :step="8" :min="0" placeholder="预计工时(小时)"></el-input-number>  &nbsp;h
 							</el-form-item> 
 							<el-form-item label="实际工时" prop="mactWorkload">
-								<el-input-number :disabled="addForm.calcType!=='2' && addForm.ntype==='1'" style="width:200px;"  v-model="addForm.mactWorkload" :precision="2" :step="8" :min="0" placeholder="实际工时(小时)"></el-input-number> &nbsp;h
+								<el-input-number :disabled="addForm.calcType!=='2'  " style="width:200px;"  v-model="addForm.mactWorkload" :precision="2" :step="8" :min="0" placeholder="实际工时(小时)"></el-input-number> &nbsp;h
 							</el-form-item> 
 							<font color="blue" style="font-size:10px;">控制规则:
 								<br>下级往上汇总：指工时数据按 &nbsp;用户故事->特性->史诗 &nbsp;这样的汇总关系将数据逐级往上汇总。
 								<br>由任务汇总： 指用户故事的工时数据由任务汇总。
 								<br>手工填报：  指用户故事的工时数据来自手工填报，无论是否关联了任务，都不从任务汇总。
 							</font>
-						</el-collapse-item>
-						<el-collapse-item title="成本" name="3">
-							
-							
-							
+						</el-tab-pane>
+						<el-tab-pane label="成本" name="3"> 
 							<el-form-item label="预估金额" prop="budgetAmount">
-								<el-input-number :disabled="addForm.calcType!=='2' && addForm.ntype==='1'"  style="width:200px;"  v-model="addForm.budgetAmount" :precision="2" :step="100" :min="0" placeholder="预算金额"></el-input-number>   元 
+								<el-input-number :disabled="addForm.calcType!=='2' "  style="width:200px;"  v-model="addForm.budgetAmount" :precision="2" :step="100" :min="0" placeholder="预算金额"></el-input-number>   元 
 							</el-form-item> 
 							<el-form-item label="实际金额" prop="mactAmount">
-								<el-input-number :disabled="addForm.calcType!=='2' && addForm.ntype==='1'"  style="width:200px;"  v-model="addForm.mactAmount" :precision="2" :step="100" :min="0" placeholder="实际金额"></el-input-number>   元 
+								<el-input-number :disabled="addForm.calcType!=='2'  "  style="width:200px;"  v-model="addForm.mactAmount" :precision="2" :step="100" :min="0" placeholder="实际金额"></el-input-number>   元 
 							</el-form-item> 
 							
-						</el-collapse-item>
-					<el-collapse-item title="链接" name="5"> 
+						</el-tab-pane>
+					<el-tab-pane label="链接" name="5"> 
 						<el-form-item label="需求链接" prop="demandUrl"> 
 							<el-input v-model="addForm.demandUrl" placeholder="需求链接" ></el-input> 
 						</el-form-item>  
@@ -147,8 +152,14 @@
 						<el-form-item label="操作手册链接" prop="operDocUrl">
 							<el-input v-model="addForm.operDocUrl" placeholder="操作手册链接" ></el-input>  
 						</el-form-item>  
-					</el-collapse-item>
-				</el-collapse>
+					</el-tab-pane>
+					<el-tab-pane label="wiki" name="7">  
+						关联知识库
+					</el-tab-pane>
+					<el-tab-pane label="附件" name="8">  
+						上传附件
+					</el-tab-pane>
+				</el-tabs>
 			</el-form>
 			
 			<el-drawer title="选择提出人" :visible.sync="proposerSelectVisible" size="60%" append-to-body>
@@ -161,7 +172,7 @@
 			
 		</el-row>
 		<el-row class="padding">
-			<el-button @click.native="handleCancel">取消</el-button>  
+			<el-button @click.native="handleCancel">关闭</el-button>  
 			<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">提交</el-button>  
 		</el-row>
 	</section>
@@ -194,12 +205,7 @@
 			}, 
 		},
 		props:['xmMenu','visible','parentMenu'],
-		watch: {
-	      'xmMenu':function( xmMenu ) {
-			this.addForm = {...xmMenu}; 
-			this.addForm.mmUserid=this.userInfo.userid
-			this.addForm.mmUsername=this.userInfo.username
-	      },
+		watch: { 
 	      'visible':function(visible) { 
 	      	if(visible==true){ 
 				  this.addForm={...this.xmMenu}
@@ -222,7 +228,7 @@
 					}
 					
 				}else{
-					this.addFOrm.dclass=this.xmMenu.dclass
+					this.addForm.dclass=this.xmMenu.dclass
 				}
 				
 				this.addForm.mmUserid=this.userInfo.userid
@@ -368,6 +374,11 @@
 					this.addForm.dclass='2'
 				}else if(this.parentMenu.dclass==='0'){
 					this.addForm.dclass='1'
+				}
+				if(this.addForm.dclass<3){
+					this.addForm.calcType="3"
+				}else{
+					this.addForm.calcType="1"
 				}
 				
 			} 

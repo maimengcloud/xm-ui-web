@@ -169,7 +169,7 @@
 
 						<el-button  @click="showParentMenu" icon="el-icon-top" title="更换上级"></el-button>
  						<el-button  v-if="disabledMng!=false"  type="danger" @click="batchDel" icon="el-icon-delete" title="删除"></el-button>
-						<el-button class="hidden-md-and-down"  v-if=" batchEditVisible==false&&disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing" title="汇总进度"></el-button>
+						<el-button  class="hidden-md-and-down"  v-if=" disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing" title="汇总进度"></el-button>
 
 						<xm-table-config ref="tableConfig" style="display:inline;" :table="$refs.table"></xm-table-config>
 
@@ -199,17 +199,7 @@
 
 										<el-tooltip  v-if="scope.row.dclass==='2'||scope.row.dclass==='1'" :content="scope.row.dclass==='1'?'新建特性':'新建用户故事'">
 												<el-button  @click="showImportFromMenuTemplate(scope.row)" icon="el-icon-upload2" title="批量导入" circle plain size="mini"> </el-button>
-										</el-tooltip>
-										<el-tooltip v-if="scope.row.dclass==='3'" content="新建任务">
-										<el-button   icon="el-icon-plus" circle plain size="mini"  @click="showTaskList(scope.row,scope.$index)"></el-button>
-										</el-tooltip>
-
-										<el-tooltip v-if="scope.row.dclass==='3'" content="去关联任务">
-										<el-button   icon="el-icon-s-operation" circle plain size="mini" @click="showTaskList(scope.row,scope.$index)"></el-button>
-										</el-tooltip>
-										<el-tooltip v-if="scope.row.dclass==='3'" content="查看任务">
-										<el-button   icon="el-icon-search" circle plain size="mini"  @click="showTaskListForMenu(scope.row,scope.$index)"></el-button>
-										</el-tooltip>
+										</el-tooltip> 
 									</span>
 									</div>
   								</template>
@@ -349,14 +339,14 @@
 
 					</el-row>
 				<!--编辑 XmMenu xm_project_menu界面-->
-				<el-drawer title="编辑需求" :visible.sync="editFormVisible" :with-header="false"  size="50%"  append-to-body   :close-on-click-modal="false">
+				<el-dialog title="编辑需求" :visible.sync="editFormVisible" :with-header="false" width="80%" top="20px" center  append-to-body   :close-on-click-modal="false">
 					<xm-menu-edit :xm-menu="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-menu-edit>
-				</el-drawer>
+				</el-dialog>
 
 				<!--新增 XmMenu xm_project_menu界面-->
-				<el-drawer title="新增需求" :visible.sync="addFormVisible"  :with-header="false" size="50%"  append-to-body   :close-on-click-modal="false">
+				<el-dialog title="新增需求" :visible.sync="addFormVisible"  :with-header="false" width="80%" top="20px" center  append-to-body   :close-on-click-modal="false">
 					<xm-menu-add  :parent-menu="parentMenu"  :xm-menu="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-menu-add>
-				</el-drawer>
+				</el-dialog>
 				<el-drawer title="需求模板" :visible.sync="menuTemplateVisible"   size="80%"  append-to-body   :close-on-click-modal="false">
 					<xm-menu-template-mng  :is-select-menu="true"  :visible="menuTemplateVisible" @cancel="menuTemplateVisible=false" @selected-menus="onSelectedMenuTemplates"></xm-menu-template-mng>
 				</el-drawer>
@@ -519,7 +509,9 @@
 				addForm: {
 						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',ntype:'0',childrenCnt:0,sinceVersion:''
 				},
-
+				addFormInit: {
+						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',ntype:'0',childrenCnt:0,sinceVersion:''
+				},
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmMenu界面初始化数据
 				editForm: {
@@ -721,10 +713,18 @@
 			},
 			//显示新增界面 XmMenu xm_project_menu
 			showAdd: function (dclass) {
+				this.addForm={...this.addFormInit}
 				if(this.filters.product && this.filters.product.id){
 					this.parentMenu=null;
 					this.addForm.productId=this.filters.product.id
 					this.addForm.productName=this.filters.product.productName
+					this.addForm.dclass=dclass
+					this.addFormVisible = true;
+				}else if(this.filters.iteration && this.filters.iteration.id){
+					this.parentMenu=null;
+					this.addForm.productId=this.filters.iteration.productId 
+					this.addForm.iterationId=this.filters.iteration.id
+					this.addForm.iterationName=this.filters.iteration.iterationName
 					this.addForm.dclass=dclass
 					this.addFormVisible = true;
 				}else{
@@ -735,6 +735,8 @@
 				//this.addForm=Object.assign({}, this.editForm);
 			},
 			showSubAdd:function(row){
+				
+				this.addForm={...this.addFormInit}
 				this.editForm=row
 				this.parentMenu=row 
 				this.expandRowKeysCpd.push(row.pmenuId);
@@ -743,6 +745,12 @@
 					this.addForm.productName=this.filters.product.productName
 				}else{
 					this.addForm.productName=null;
+				}
+				if(this.filters.iteration && this.filters.iteration.id){
+					this.addForm.productId=this.filters.iteration.productId 
+					this.addForm.iterationId=this.filters.iteration.id
+					this.addForm.iterationName=this.filters.iteration.iterationName 
+					this.addFormVisible = true;
 				}
 				this.addFormVisible=true
 			},
@@ -753,6 +761,12 @@
 				this.addFormVisible=false;
 				this.pageInfo.count=true; 
 				//this.getXmMenus(); 
+				if(!row.pmenuId){
+					this.xmMenus.push(row);
+				}
+				if(this.parentMenu){
+					this.parentMenu.childrenCnt=this.parentMenu.childrenCnt?this.parentMenu.childrenCnt+1:1;
+				}
 				treeTool.reloadAllChildren(this.$refs.table,this.maps,[row,{...this.parentMenu}],'pmenuId',this.loadXmMenusLazy) 
 				
 				this.parentMenu=null;

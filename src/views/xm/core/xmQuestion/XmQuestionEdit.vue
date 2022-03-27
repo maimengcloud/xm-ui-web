@@ -158,10 +158,10 @@
 						</el-col>
 						<font v-else>无</font>
 					</el-form-item> 
-					<el-form-item v-if="!flowInfoVisible" label="上次处理意见" prop="lremark">
-						<el-col v-if="editForm.lremark" :span="24" >
+					<el-form-item v-if="!flowInfoVisible" label="上次处理意见" prop="remarks">
+						<el-col v-if="editForm.remarks" :span="24" >
 						<div class="wf-main-context-box"  >
-							<div   class="wf-main-context rich-context" v-html="editForm.lremark"></div>
+							<div   class="wf-main-context rich-context" v-html="editForm.remarks"></div>
 						</div>
 						</el-col>
 						<font v-else>无</font> 

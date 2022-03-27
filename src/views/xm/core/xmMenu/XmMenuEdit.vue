@@ -1,43 +1,33 @@
 <template>
-	<section class="page-container border padding">
+	<section>
 		<el-row class="page-main ">
-			<el-tabs>
-				<el-tab-pane  :label="calcMenuLabel.label+'详情'">
-					<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm"> 
-						<el-row class="padding-bottom"> 
-						<el-steps :active="calcMenuCurrStep"   finish-status="success" align-center>
-							<el-step v-for="(item,index) in dicts.menuStatus" @click.native="on_click(item.id)" :title="item.name" :key="index"></el-step> 
-						</el-steps>
-						</el-row> 
-						<el-collapse value="1" accordion>
-						<el-collapse-item title="基本信息" name="1" > 
-							<el-row> 
-								<el-col :span="8">
-									<el-form-item label="calcMenuLabel.label" prop="seqNo" >
-										<template slot="label">
-											<div  class="icon" :style="{backgroundColor: calcMenuLabel.color }">
-													<i :class="calcMenuLabel.icon"></i>
-												</div>  
-												{{calcMenuLabel.label}}
-										</template>
-										<el-input v-model="editForm.seqNo" style="display:block;width:100%;" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input> 
-									</el-form-item>  
-								</el-col>
-								<el-col :span="16">
-									<el-form-item label="" prop="menuName" label-width="0px">
-										<el-input v-model="editForm.menuName" placeholder="名称" > 
-										</el-input>
-									</el-form-item>   
-								</el-col>
-							</el-row>
-							<el-row>
-								<el-col :span="12">
-									<el-form-item label="归属产品" prop="productId">
-										<font v-if="editForm.productId">{{editForm.productName?editForm.productName:editForm.productId}}</font>
-									</el-form-item>
-								</el-col>
-								<el-col :span="12">
-									<el-form-item v-if="!editForm.pmenuId" :label="editForm.dclass==='3'?'归属特性':(editForm.dclass==='2'?'归属史诗':'归属')" prop="pmenuId">
+			<el-form :model="editForm"  label-width="120px" label-position="left" :rules="editFormRules" ref="editForm"> 
+						<el-row gutter="10"> 
+							<el-col :span="6">
+								<el-form-item label="序号名称" prop="seqNo" > 
+									<template slot="label">
+										<div  class="icon" :style="{backgroundColor: calcMenuLabel.color }">
+											<i :class="calcMenuLabel.icon"></i>
+										</div>  
+										{{calcMenuLabel.label}}名称
+									</template>
+									<el-input v-model="editForm.seqNo" title="序号 如 1.1，1.2.3，1.3.2等" style="width:100%;" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input> 
+								</el-form-item>  
+							</el-col>
+							<el-col :span="18">
+								<el-form-item label="" prop="menuName" label-width="0px">
+									<el-input v-model="editForm.menuName" placeholder="名称" title="名称"></el-input>
+								</el-form-item>   
+							</el-col>
+						</el-row>
+						<el-row>
+							<el-col :span="8">
+								<el-form-item label="归属产品" prop="productId">
+									<font v-if="editForm.productId">{{editForm.productName?editForm.productName:editForm.productId}}</font>
+								</el-form-item>
+							</el-col>
+							<el-col :span="8">
+								<el-form-item v-if="!editForm.pmenuId" :label="editForm.dclass==='3'?'归属特性':(editForm.dclass==='2'?'归属史诗':'归属')" prop="pmenuId">
 										无
 									</el-form-item>  
 									
@@ -50,125 +40,126 @@
 										</div> 
 										  {{editForm.pmenuName?editForm.pmenuName:editForm.pmenuId}} 
 									</el-form-item>  
-								</el-col>
-							</el-row> 
-							<el-row> 
-								
-								<el-col :span="12">
-									<el-form-item  label="需求类型" prop="dtype" >   
-										<el-select v-model="editForm.dtype">
-											<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-										</el-select>  
-									</el-form-item>   
-								</el-col>
-								<el-col :span="12">
-									<el-form-item  label="需求来源" prop="source">   
-										<el-select v-model="editForm.source">
-											<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
-										</el-select>  
-									</el-form-item>   
-								</el-col> 
-								<el-col :span="12">
-									<el-form-item  label="需求层次" prop="dlvl" >   
-										<el-select v-model="editForm.dlvl">
-											<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
-										</el-select>  
-									</el-form-item>   
-								</el-col>
-								<el-col :span="12">
-								<el-form-item  label="优先级" prop="priority" >  
-									<el-select v-model="editForm.priority">
-											<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option> 
-									</el-select>    
-								</el-form-item>  
-								</el-col>
-							</el-row>
-							<el-row>
-								<el-col :span="12">
-									<el-form-item label="提出人" prop="proposerId">
-										<el-tag type="text" v-if="editForm.proposerId" closable @close="clearProposer">{{editForm.proposerName}}</el-tag> 
-										<el-button type="text" @click="selectProposer">选提出人</el-button>
-									</el-form-item>   
-								</el-col>
-								<el-col  :span="12">
-									<el-form-item label="跟进人" prop="mmUserid">
+							</el-col> 
+								<el-col  :span="8">
+									<el-form-item label="负责人" prop="mmUserid">
 										<el-tag type="text" v-if="editForm.mmUserid" closable @close="clearMmUser">{{editForm.mmUsername}}</el-tag> 
 										<el-button type="text" @click="mmUserSelectVisible=true">选跟进人</el-button>
 									</el-form-item>   
 								</el-col>
-							</el-row>
-						</el-collapse-item>
-						<el-collapse-item title="概述" name="4"> 
+						</el-row> 
+					<el-tabs value="1"  >
+					<el-tab-pane label="基本信息'" name="1" >
+						
+						
+						<el-row>
+							<el-col :span="12">
+								<el-form-item label="提出人" prop="proposerId">
+									<el-tag type="text" v-if="editForm.proposerId" closable @close="clearProposer">{{editForm.proposerName}}</el-tag> 
+									<el-button type="text" @click="selectProposer">选提出人</el-button>
+								</el-form-item>   
+							</el-col>
+							<el-col :span="12">
+								<el-form-item label="提出时间" prop="ctime">
+									<el-date-picker value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="editForm.ctime"></el-date-picker>
+								</el-form-item>   
+							</el-col>
+						</el-row>
+						<el-row> 
+							
+							<el-col :span="12">
+								<el-form-item  label="需求类型" prop="dtype" >   
+									<el-select v-model="editForm.dtype">
+										<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
+									</el-select>  
+								</el-form-item>   
+							</el-col>
+							<el-col :span="12">
+								<el-form-item  label="需求来源" prop="source">   
+									<el-select v-model="editForm.source">
+										<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
+									</el-select>  
+								</el-form-item>   
+							</el-col> 
+							<el-col :span="12">
+								<el-form-item  label="需求层次" prop="dlvl" >   
+									<el-select v-model="editForm.dlvl">
+										<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
+									</el-select>  
+								</el-form-item>   
+							</el-col>
+							<el-col :span="12">
+							<el-form-item  label="优先级" prop="priority" >  
+								<el-select v-model="editForm.priority">
+										<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option> 
+								</el-select>    
+							</el-form-item>  
+							</el-col>
+						</el-row>
+					</el-tab-pane> 
+						<el-tab-pane label="概述" name="4"> 
 							<el-form-item label="需求概述" prop="remark">
 								<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="editForm.remark" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
 							</el-form-item>  
-						</el-collapse-item> 
-						<el-collapse-item title="工时" name="2">
+						</el-tab-pane> 
+						<el-tab-pane label="子工作项" name="6"> 
+							 <xm-work-item>史诗下面是特性、特性下面是用户故事、故事下面是工作项（任务/bug）</xm-work-item>
+						</el-tab-pane> 
+						<el-tab-pane label="工时" name="2">
 							<el-form-item label="数据收集方式" prop="calcType"> 
 								<el-radio   v-model="editForm.calcType"  label="3" placeholder="下级往上级汇总" :disabled="editForm.ntype==='0'">下级往上级汇总</el-radio>
  								<el-radio   v-model="editForm.calcType"  label="1" placeholder="由任务汇总" :disabled="editForm.ntype==='1'">由任务汇总</el-radio> 
 								<el-radio   v-model="editForm.calcType"  label="2" placeholder="手工填报" :disabled="editForm.ntype==='1'">手工填报</el-radio>
 							</el-form-item> 
-							 
-							<el-form-item label="当前进度" prop="mactRate" >
-								<el-progress style="width:40%;" :stroke-width="26" :percentage="editForm.mactRate?editForm.mactRate:0"></el-progress>
- 							</el-form-item>  
+							<el-form-item label="工时进度" prop="mactRate" >
+								<el-progress style="width:60%;" :stroke-width="26" :percentage="editForm.mactRate?editForm.mactRate:0"></el-progress>
+ 							</el-form-item> 
 							<el-form-item label="预估工期" prop="budgetHours">
-								<el-input-number :disabled="editForm.calcType!=='2'" style="width:200px;"  v-model="editForm.budgetHours"  :precision="2" :step="8" :min="0" placeholder="预计工期(小时)"></el-input-number>&nbsp;h
+								<el-input-number :disabled="editForm.calcType!=='2'  " style="width:200px;"  v-model="editForm.budgetHours"  :precision="2" :step="8" :min="0" placeholder="预计工期(小时)"></el-input-number> &nbsp;h
 							</el-form-item> 
 							<el-form-item label="预估工时" prop="budgetWorkload">
-								<el-input-number :disabled="editForm.calcType!=='2'" style="width:200px;"  v-model="editForm.budgetWorkload" :precision="2" :step="8" :min="0" placeholder="预计工时(人时)"></el-input-number>  &nbsp;h
+								<el-input-number :disabled="editForm.calcType!=='2'  " style="width:200px;"  v-model="editForm.budgetWorkload" :precision="2" :step="8" :min="0" placeholder="预计工时(小时)"></el-input-number>  &nbsp;h
 							</el-form-item> 
 							<el-form-item label="实际工时" prop="mactWorkload">
-								<el-input-number :disabled="editForm.calcType!=='2'" style="width:200px;"  v-model="editForm.mactWorkload" :precision="2" :step="8" :min="0" placeholder="实际工时(人时)"></el-input-number>  &nbsp;h
+								<el-input-number :disabled="editForm.calcType!=='2'  " style="width:200px;"  v-model="editForm.mactWorkload" :precision="2" :step="8" :min="0" placeholder="实际工时(小时)"></el-input-number> &nbsp;h
 							</el-form-item> 
 							<font color="blue" style="font-size:10px;">控制规则:
 								<br>下级往上汇总：指工时数据按 &nbsp;用户故事->特性->史诗 &nbsp;这样的汇总关系将数据逐级往上汇总。
 								<br>由任务汇总： 指用户故事的工时数据由任务汇总。
 								<br>手工填报：  指用户故事的工时数据来自手工填报，无论是否关联了任务，都不从任务汇总。
 							</font>
-						</el-collapse-item>
-						<el-collapse-item title="成本" name="3">
-							
-							
-							
+						</el-tab-pane>
+						<el-tab-pane label="成本" name="3"> 
 							<el-form-item label="预估金额" prop="budgetAmount">
-								<el-input-number :disabled="editForm.calcType!=='2' && editForm.ntype==='1'"  style="width:200px;"  v-model="editForm.budgetAmount" :precision="2" :step="100" :min="0" placeholder="预算金额"></el-input-number>   元 
+								<el-input-number :disabled="editForm.calcType!=='2'  "  style="width:200px;"  v-model="editForm.budgetAmount" :precision="2" :step="100" :min="0" placeholder="预算金额"></el-input-number>   元 
 							</el-form-item> 
 							<el-form-item label="实际金额" prop="mactAmount">
-								<el-input-number :disabled="editForm.calcType!=='2' && editForm.ntype==='1'"  style="width:200px;"  v-model="editForm.mactAmount" :precision="2" :step="100" :min="0" placeholder="实际金额"></el-input-number>   元 
+								<el-input-number :disabled="editForm.calcType!=='2'  "  style="width:200px;"  v-model="editForm.mactAmount" :precision="2" :step="100" :min="0" placeholder="实际金额"></el-input-number>   元 
 							</el-form-item> 
 							
-						</el-collapse-item>
-						<el-collapse-item title="链接" name="5"> 
-							<el-form-item label="需求链接" prop="demandUrl"> 
-								<el-input v-model="editForm.demandUrl" placeholder="需求链接" ></el-input> 
-							</el-form-item>  
-							<el-form-item label="代码链接" prop="codeUrl">
-								<el-input v-model="editForm.codeUrl" placeholder="代码链接" ></el-input>  
-							</el-form-item>  
-							<el-form-item label="设计链接" prop="designUrl">
-								<el-input v-model="editForm.designUrl" placeholder="设计链接" ></el-input>  
-							</el-form-item>   
-							<el-form-item label="操作手册链接" prop="operDocUrl">
-								<el-input v-model="editForm.operDocUrl" placeholder="操作手册链接" ></el-input>  
-							</el-form-item>  
-						</el-collapse-item> 
-						</el-collapse>
-					</el-form> 
-					<el-row class="padding">
-						<el-button @click.native="handleCancel">取消</el-button>
-						<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>
-					</el-row>
-				</el-tab-pane>
-				<el-tab-pane  label="概览" lazy>
-					<xm-menu-overview :xm-menu="xmMenu"></xm-menu-overview>
-				</el-tab-pane>
-				
-				<el-tab-pane  label="需求评论" lazy>
-					<xm-menu-exchange-mng :xm-menu="xmMenu"></xm-menu-exchange-mng>
-				</el-tab-pane>
-			</el-tabs>
+						</el-tab-pane>
+					<el-tab-pane label="链接" name="5"> 
+						<el-form-item label="需求链接" prop="demandUrl"> 
+							<el-input v-model="editForm.demandUrl" placeholder="需求链接" ></el-input> 
+						</el-form-item>  
+						<el-form-item label="代码链接" prop="codeUrl">
+							<el-input v-model="editForm.codeUrl" placeholder="代码链接" ></el-input>  
+						</el-form-item>  
+						<el-form-item label="设计链接" prop="designUrl">
+							<el-input v-model="editForm.designUrl" placeholder="设计链接" ></el-input>  
+						</el-form-item>   
+						<el-form-item label="操作手册链接" prop="operDocUrl">
+							<el-input v-model="editForm.operDocUrl" placeholder="操作手册链接" ></el-input>  
+						</el-form-item>  
+					</el-tab-pane>
+					<el-tab-pane label="wiki" name="7">  
+						关联知识库
+					</el-tab-pane>
+					<el-tab-pane label="附件" name="8">  
+						上传附件
+					</el-tab-pane>
+				</el-tabs>
+			</el-form>
 			<el-drawer title="选择提出人" :visible.sync="proposerSelectVisible" size="60%" append-to-body>
 				<users-select  @confirm="onProposerSelected" ref="usersSelect"></users-select>
 			</el-drawer>
@@ -182,6 +173,11 @@
 				<tag-mng :tagIds="editForm.tagIds?editForm.tagIds.split(','):[]" :jump="true" @select-confirm="onTagSelected">
 				</tag-mng>
 			</el-drawer>
+			
+		<el-row class="padding">
+			<el-button @click.native="handleCancel">关闭</el-button>  
+			<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>  
+		</el-row>
 	</section>
 </template>
 
