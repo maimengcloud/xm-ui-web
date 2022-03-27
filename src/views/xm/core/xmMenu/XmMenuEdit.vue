@@ -9,9 +9,10 @@
 										<div  class="icon" :style="{backgroundColor: calcMenuLabel.color }">
 											<i :class="calcMenuLabel.icon"></i>
 										</div>  
-										{{calcMenuLabel.label}}名称
-									</template>
-									<el-input v-model="editForm.seqNo" title="序号 如 1.1，1.2.3，1.3.2等" style="width:100%;" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input> 
+										{{calcMenuLabel.label}}
+									</template> 
+										<el-input v-model="editForm.seqNo" title="序号 如 1.1，1.2.3，1.3.2等" style="width:100%;" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input> 
+  
 								</el-form-item>  
 							</el-col>
 							<el-col :span="18">
@@ -112,7 +113,7 @@
 								<el-radio   v-model="editForm.calcType"  label="2" placeholder="手工填报" :disabled="editForm.ntype==='1'">手工填报</el-radio>
 							</el-form-item> 
 							<el-form-item label="工时进度" prop="mactRate" >
-								<el-progress style="width:60%;" :stroke-width="26" :percentage="editForm.mactRate?editForm.mactRate:0"></el-progress>
+								<el-progress style="width:60%;" :text-inside="true" :stroke-width="15" :percentage="editForm.mactRate?editForm.mactRate:0"></el-progress>
  							</el-form-item> 
 							<el-form-item label="预估工期" prop="budgetHours">
 								<el-input-number :disabled="editForm.calcType!=='2'  " style="width:200px;"  v-model="editForm.budgetHours"  :precision="2" :step="8" :min="0" placeholder="预计工期(小时)"></el-input-number> &nbsp;h
