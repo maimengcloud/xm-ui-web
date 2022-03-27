@@ -94,6 +94,16 @@ export default {
           this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
         }).catch( err  => this.load.calcProject=false ); 
     },
+    loadTasksSettleToXmProjectState(){
+        var row=this.selProject;
+        var params={projectId:row.id}
+      loadTasksSettleToXmProjectState(params).then((res) => {
+          this.load.calcProject=false;
+          var tips=res.data.tips; 
+          this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+        }).catch( err  => this.load.calcProject=false ); 
+    },
+    
     afterFlowSubmit(){
       
       listXmProject({id:this.selProject.id}).then(res=>{
