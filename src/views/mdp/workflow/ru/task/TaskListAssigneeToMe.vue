@@ -1,15 +1,15 @@
 <template>
 	<section>
-		<task-mng :assigneeToMe="true"></task-mng>
+		<task-mng :assigneeToMe="true" :source="source"></task-mng>
 	</section>
 </template>
 
 <script>
-	 
 	import  TaskMng from './TaskMng';//
 	
 	export default {
 		name:'TaskListAssigneeToMe',
+		props: ['source'],
 		data() {
 			return {
 				filters: {

@@ -1,43 +1,48 @@
 <template>
-    <div class="my_grid" style="width: 100%; min-height: 800px; margin-top: 10px">
-        <grid-layout
-            :layout.sync="layout"
-            :col-num="12"
-            :row-height="120"
-            :is-draggable="true"
-            :is-resizable="true"
-            :vertical-compact="true"
-            :margin="[10, 10]"
-            :use-css-transforms="true"
-        >   
-            <grid-item 
-                v-for="item in layout"
-                :x="item.x"
-                :y="item.y"
-                :w="item.w"
-                :h="item.h"
-                :i="item.i"
-                :key="item.i">
-                <div class="m_content_card_title">
-                    <span><b>{{item.moduleName}}</b></span>
-                </div>
-                <dsp v-if="item.name == 'dsp'"></dsp>
-                <wdrw v-if="item.name == 'wdrw'"></wdrw>
-                <wdcp v-if="item.name == 'wdcp'"></wdcp>
-                <wdxm v-if="item.name == 'wdxm'"></wdxm>
-            </grid-item>
-        </grid-layout>
-    </div>
+   <div>
+        <div class="empty" v-if="layout.length == 0">
+            <el-empty description="暂未选择模块"></el-empty>
+        </div>
+        <div v-else class="my_grid" style="width: 100%; min-height: 800px; margin-top: 10px">
+            <grid-layout
+                :layout.sync="layout"
+                :col-num="layoutColNum"
+                :row-height="120"
+                :is-draggable="true"
+                :is-resizable="true"
+                :is-mirrored="false"
+                :vertical-compact="true"
+                :margin="[10, 10]"
+                :use-css-transforms="true"
+            >   
+                <grid-item 
+                    v-for="(item) in layout"
+                    :x="item.x"
+                    :y="item.y"
+                    :w="item.w"
+                    :h="item.h"
+                    :i="item.i"
+                    :key="item.i">
+                    <div class="m_content_card_title">
+                        <span><b>{{item.menuname}}</b></span>
+                    </div>
+                    <dsp  source="GZT" v-if="item.menuid == 'dsp'"></dsp>
+                    <wdrw source="GZT" v-if="item.menuid == 'wdrw'"></wdrw>
+                    <wdcp source="GZT" v-if="item.menuid == 'wdcp'"></wdcp>
+                    <wdxm source="GZT" v-if="item.menuid == 'wdxm'"></wdxm>
+                </grid-item>
+            </grid-layout>
+        </div>
+   </div>
 </template>
 
 <script>
 import dsp from  '@/views/mdp/workflow/ru/task/TaskListAssigneeToMe.vue';
-import wdrw from '@/views/xm/core/xmTask/xmTaskCenter.vue';
+import wdrw from '@/views/xm/core/xmTask/xmMyTaskCenter.vue';
 import wdcp from '@/views/xm/core/xmProduct/XmProductAllMng.vue';
 import wdxm from '@/views/xm/core/xmProject/XmProjectMng';
 import VueGridLayout from 'vue-grid-layout';
-
-
+import { mapGetters } from 'vuex'
 
 export default {
     components: {
@@ -48,54 +53,56 @@ export default {
         GridLayout: VueGridLayout.GridLayout,
         GridItem: VueGridLayout.GridItem
     },
-    data() {
-        return {
-            layout: [
-                {
-                    moduleName: '待审批',
-                    name: 'dsp',
-                    isOpen: false,
-                    x: 0,
-                    y: 0,
-                    w: 6,
-                    h: 4,
-                    i: 0
-                },
-                {
-                    moduleName: '我的任务',
-                    name: 'wdrw',
-                    isOpen: false,
-                    x: 6,
-                    y: 0,
-                    w: 6,
-                    h: 4,
-                    i: 1
-                },
-                {
-                    moduleName: '我的产品',
-                    name: 'wdcp',
-                    isOpen: false,
-                    x: 0,
-                    y: 2,
-                    w: 6,
-                    h: 4,
-                    i: 2
-                },
-                {
-                    moduleName: '我的项目',
-                    name: 'wdxm',
-                    isOpen: false,
-                    x: 6,
-                    y: 2,
-                    w: 6,
-                    h: 4,
-                    i: 3
-                }
-            ],
+
+    computed: {
+        ...mapGetters(['userInfo']),
+        menuFavorite() {
+            return this.$store.state.menuFavorite.fMenu;
         }
     },
+
+    watch: {
+        'menuFavorite': {
+            handler(val, oval) {
+                this.layout = [];
+                val.forEach((element, index) => {
+                   this.addItem(element, index);
+                });
+            }
+        }
+    },
+
+    data() {
+        return {
+            // 布局位置数据
+            layout: [],
+            // 布局列数
+            layoutColNum: 12,
+        }
+    },
+
     methods: {
-    }
+        addItem: function(element, index) {
+            this.layout.push(
+                {   
+                    ...element,
+                    // x: (this.layout.length * 6) % (this.layoutColNum || 12),
+                    x: 0,
+                    // y: this.layout.length + (this.layoutColNum || 12),
+                    y: 12,
+                    w: 12,
+                    h: 4,
+                    i: index, 
+                }
+            )
+        },
+    },
+
+    mounted() {
+        this.$nextTick(() => {
+            this.$store.dispatch('getUserFavoriteMenu', {userid: this.userInfo.displayUserid});
+        })
+    },
 
 }
 </script>
@@ -109,6 +116,18 @@ export default {
 <style lang="scss" scoped>
 @import '../../common.scss';
 @import '../index.scss';
+
+.empty {
+    height: 500px;
+    background: #fff;
+    margin: 11px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
 .vue-grid-layout {
     background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.15) 1%, rgba(0, 0, 0, 0) 1%) 
     ,linear-gradient(0deg,rgba(0, 0, 0, 0.15) 1%, rgba(0, 0, 0, 0) 1%);
@@ -117,7 +136,6 @@ export default {
 
 .vue-grid-item:not(.vue-grid-placeholder) {
     background: #fff;
-    box-shadow: 1px 1px 1px 1px #ccc;
 }
 
 .vue-grid-item .resizing {

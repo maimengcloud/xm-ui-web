@@ -21,27 +21,27 @@
           </div>
         </div>
         <div class="m_right">
-          <div class="m_right_menu">
+          <div class="m_right_menu" @click="gotolink('/xm/core/xmProduct/XmProductMng')">
             <img src="../img/cp.png" alt="">
             <span>产品管理</span>
           </div>
-           <div class="m_right_menu">
+           <div class="m_right_menu" @click="gotolink('/xm/core/xmMenu/XmMenuMng')">
             <img src="../img/xqgl.png" alt="">
             <span>需求管理</span>
           </div>
-           <div class="m_right_menu">
+           <div class="m_right_menu" @click="gotolink('/xm/core/xmProject/XmProjectAllMng')">
             <img src="../img/xmgl.png" alt="">
             <span>项目管理</span>
           </div>
-           <div class="m_right_menu">
+           <div class="m_right_menu" @click="gotolink('/xm/core/xmGroup/XmGroupAllMng')">
             <img src="../img/tdgl.png" alt="">
             <span>团队管理</span>
           </div>
-           <div class="m_right_menu">
+           <div class="m_right_menu" @click="gotolink('/xm/core/xmTask/XmTaskCenter')">
             <img src="../img/kfrw.png" alt="">
             <span>开发任务</span>
           </div>
-           <div class="m_right_menu">
+           <div class="m_right_menu" @click="gotolink('/xm/core/xmQuestion/XmQuestionMng')">
             <img src="../img/qx.png" alt="">
             <span>缺陷管理</span>
           </div>
@@ -79,12 +79,25 @@ export default {
       return msg;
     }
   },
+
+  watch: {
+  },
+
   data() {
     return {
       moduleSetVisible: false
-        
     }
   },
+
+  methods: {
+
+    gotolink(url) {
+      this.$router.replace(url);
+    },
+
+  },
+
+
   mounted() {
     
   }

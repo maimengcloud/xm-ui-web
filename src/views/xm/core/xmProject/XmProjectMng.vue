@@ -31,7 +31,7 @@
 					<el-input class="hidden-md-and-down" placeholder="选择产品" v-model="filters.productName" @click.native="productSelectVisible=true" clearable @clear="onProductClose"  style="width:15%;"></el-input>
  					<el-input v-model="filters.key" style="width:15%;" placeholder="项目名称模糊查询" clearable>
 					</el-input>
-					<el-button  type="primary" icon="el-icon-search" @click="searchXmProjects">查询</el-button> 
+					<el-button  style="margin-top: 10px;" type="primary" icon="el-icon-search" @click="searchXmProjects">查询</el-button> 
 						<el-popover
 							placement="top-start"
 							title="更多查询条件或操作"
@@ -94,7 +94,7 @@
 									</el-badge>
 								</el-col> 
 							</el-row>   
- 							<el-button id="prj-plus-btn" type="primary" slot="reference"  icon="el-icon-plus" round>项目</el-button>
+ 							<el-button id="prj-plus-btn" type="primary" style="margin-top: 10px;" slot="reference"  icon="el-icon-plus" round>项目</el-button>
 							</el-popover>  
 						</span>
 				</el-row> 
@@ -341,7 +341,7 @@
 	import Guider from '@/components/Guider/Index.js';
 
 	export default { 
-		props:['dataScope'],
+		props:['dataScope', 'source'],
 		computed: {
 			...mapGetters([
 				'userInfo','roles'
@@ -880,7 +880,7 @@
 				initSimpleDicts('all',['projectType','priority','projectStatus']).then(res=>{
 					this.dicts=res.data.data;
 				})
-                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el);
+                this.maxTableHeight = this.source == 'GZT' ?  this.maxTableHeight : util.calcTableMaxHeight(this.$refs.table.$el);
 				this.showInfo = false;
 				this.getXmProjects(this.guiderStart);
 			}); 

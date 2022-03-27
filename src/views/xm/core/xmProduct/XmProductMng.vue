@@ -85,13 +85,13 @@
 									迭代 <el-tag v-if="xmIteration">{{xmIteration.iterationName}}</el-tag>
 								</font>
 							</el-col>
-							<el-col  :span="24"  style="padding-top:10px;">
-								<el-button type="primary"  @click="searchXmProducts" >查询</el-button>
+							<el-col :span="24"  style="padding-top:10px;">
+								<el-button type="primary" @click="searchXmProducts" >查询</el-button>
 								<el-button type="text"  @click="templateVisible=!templateVisible" >{{templateVisible?"隐藏模板":"显示模板"}}</el-button>
 								<el-button type="text"  @click="guiderStart(true)" icon="el-icon-help">新手导航</el-button>
 							</el-col>
 						</el-row>
-						<el-button  slot="reference"   icon="el-icon-more" id="guider-two"></el-button>
+						<el-button  slot="reference"  style="margin-top: 10px;" icon="el-icon-more" id="guider-two"></el-button>
 					</el-popover>
 					<span style="float:right;">
 					<el-popover style="padding-left:10px;"  
@@ -115,7 +115,7 @@
 									</el-badge>
 								</el-col> 
 							</el-row>   
- 							<el-button type="primary" slot="reference"  icon="el-icon-plus" v-if="!xmIteration" id="guider-one" round>产品</el-button>
+ 							<el-button type="primary" slot="reference"  style="margin-top: 10px;"  icon="el-icon-plus" v-if="!xmIteration" id="guider-one" round>产品</el-button>
 					</el-popover>
 					</span>
 				</el-row>
@@ -320,7 +320,7 @@
 	import Guider from '@/components/Guider/Index.js';
 
 	export default {
-		props:['selProject','xmIteration'],
+		props:['selProject','xmIteration', 'source'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -737,7 +737,7 @@
 				}
 			});
 			this.$nextTick(() => { 
-				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
+				this.maxTableHeight = this.source == 'GZT' ? this.maxTableHeight : util.calcTableMaxHeight(this.$refs.table.$el); 
 				this.getXmProducts(this.guiderStart);  
         	});
 		},

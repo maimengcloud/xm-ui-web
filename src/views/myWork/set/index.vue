@@ -1,6 +1,6 @@
 <template>
-	<div class="m_container">
-		<div class="m_content">
+	<div class="set_container">
+		<div class="set_content">
 			<div class="m_msgcard">
 				<el-avatar class="m_avater" :src="editForm.headimgurl || defaultImg">
 				</el-avatar>

@@ -21,7 +21,7 @@
 
           <el-button v-show="assigneeToMe===false" class="hidden-sm-and-down" v-on:click="showSendSms">短信催办</el-button>
           <el-button v-show="assigneeToMe===false" class="hidden-sm-and-down" v-on:click="showOaMsg">OAMSG催办</el-button>
-          <el-button @click.native="showTagSelect(false)" icon="el-icon-plus">标签</el-button>
+          <el-button style="margin-top: 20px;" @click.native="showTagSelect(false)" icon="el-icon-plus">标签</el-button>
           <el-button @click="moreFilterVisible = true" circle icon="el-icon-more"></el-button>
           <el-drawer title="更多查询条件" :visible.sync="moreFilterVisible"   append-to-body :size="400">
             <el-row class="page-container more-filter"> 
@@ -132,7 +132,7 @@
           </el-table>
           <el-pagination layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange"
             @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum"
-            :page-size="pageInfo.pageSize" :total="pageInfo.total" style="float:right;"></el-pagination>
+            :page-size="pageInfo.pageSize" :total="pageInfo.total" style="float:right; margin-top:20px;"></el-pagination>
           <!--编辑 Execution act_ru_execution界面-->
         </el-row>  
         <el-calendar  v-if="showCalendar==true" v-loading="listLoading" v-model="filters.calendarDate">
@@ -256,7 +256,7 @@
 
   export default {
     name: "TaskMng",
-    props: ["assigneeToMe", "defaultShowCalendar", "isClaim","bizParentPkid","bizPkid","procInstIds"], // 待我执行的任务
+    props: ["assigneeToMe", "defaultShowCalendar", "isClaim","bizParentPkid","bizPkid","procInstIds", "source"], // 待我执行的任务
     computed: {
       ...mapGetters(["userInfo", "myDepts", "myPosts"]),
       screenWidth: function() {
@@ -1398,6 +1398,7 @@
       } else {
         this.showCalendar = false;
       }
+
       this.$nextTick(() => {
         if (!this.showCalendar) {
           var clientRect = this.$refs.table.$el.getBoundingClientRect();
