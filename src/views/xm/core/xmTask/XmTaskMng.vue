@@ -7,7 +7,6 @@
         :class="{ 'flex-box': displayType == 'agil' }"
       >
         <el-row>
-
           <el-popover v-if=" ptype==='0' && (!selProject || !selProject.id)"
             placement="bottom"
             width="400"
@@ -103,6 +102,7 @@
             >{{ skill.skillName }}</el-tag
           >
           <el-button
+            style="margin-top: 10px;"
             v-if="!filters.tags || filters.tags.length == 0"
             @click.native="tagSelectVisible = true"
             >标签</el-button
@@ -380,7 +380,7 @@
                 >
               </el-col>
             </el-row>
-            <el-button slot="reference">更多</el-button>
+            <el-button style="margin-top: 10px;" slot="reference">更多</el-button>
           </el-popover>
 
           <el-popover
@@ -636,7 +636,7 @@
               :current-page="pageInfo.pageNum"
               :page-size="pageInfo.pageSize"
               :total="pageInfo.total"
-              style="float: right"
+              style="float: right; margin-top: 10px;"
             ></el-pagination>
           </template>
           <xm-gantt
@@ -1194,6 +1194,7 @@ export default {
     "xmIteration",
     "ptype",//0-项目，1-产品，all/空为不区分
     "queryScope",//planTask,task,plan,分别为计划及任务，纯任务,纯计划
+    "source" //来源 "GZT:工作台"
   ],
   watch: {
     selProject: function (oval, val) {
@@ -2568,7 +2569,7 @@ export default {
     this.initData();
     this.$nextTick(() => {
       this.getXmTasks();
-      this.tableHeight = util.calcTableMaxHeight(this.$refs.table.$el);
+      this.tableHeight = this.source == 'GZT' ? this.tableHeight : util.calcTableMaxHeight(this.$refs.table.$el);
       initSimpleDicts( "all", ["planType","taskType","priority","xmTaskSettleSchemel","priority","taskState" ]).then((res) => {
         this.dicts = res.data.data;
       });

@@ -1,6 +1,6 @@
 <template>
 	<section> 
-		 <xm-product-mng :data-scope="'all'"></xm-product-mng>
+		 <xm-product-mng :data-scope="'all'" :source="source"></xm-product-mng>
 	</section>
 </template>
 
@@ -11,6 +11,7 @@
  import XmProductMng from './XmProductMng.vue';
 	
 export default { 
+	props: ['source'],
 	computed: {
 		...mapGetters([
 			'userInfo','roles'

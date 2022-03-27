@@ -23,21 +23,21 @@
             </div>
         </div>
     </div>
-    <div class="nav">
-       <div class="nav_item" :class="{itemActive:selectArr.indexOf(item.index) != -1}" v-for="(item, index) in (tempMenu.length > 0 ?  tempMenu : menus)" :key="index" @click="selectItem(item, index)">
-           <img :src="item.img" alt="">
+    <div class="nav" v-loading="menuFavorite.loading.search">
+       <div class="nav_item" :class="{itemActive: item.isChecked}" v-for="(item, index) in (tempMenu.length > 0 ?  tempMenu : menus)" :key="index" @click="selectItem(item, index)">
+           <img :src="item.icon" alt="">
            <div class="desc">
-               <p>{{item.name}}</p>
+               <p>{{item.menuname}}</p>
                <span>
-                  {{item.desc}}
+                  {{item.menudesc}}
                </span>
            </div>
-           <i v-if="selectArr.indexOf(item.index) != -1" class="el-icon-success"></i>
+           <i v-if="item.isChecked" class="el-icon-success"></i>
        </div>
     </div>
     <span slot="footer" class="dialog-footer">
         <el-button @click="visible = false">取 消</el-button>
-        <el-button type="primary">确 定</el-button>
+        <el-button type="primary" :loading="menuFavorite.loading.add" @click="save">确 定</el-button>
     </span>
   </el-dialog>
 </template>
@@ -47,71 +47,120 @@ import img1 from '../../img/dsp.png'
 import img2 from '../../img/wdrw.png'
 import img3 from '../../img/wdxm.png'
 import img4 from '../../img/wdcp.png'
+import { mapGetters } from 'vuex'
+
+
 export default {
     props: ['value'],
     computed: {
+        ...mapGetters(['userInfo']),
         visible: {
             get: function () {
+                if(this.value) {
+                    //查询用户设置的模块
+                    this.getUserModules();
+                }
                 return this.value;
             },
             set: function (val) {
-                this.$emit('input', val)
+                this.menus.forEach(element => {
+                    element.isChecked = false;
+                });
+                this.$emit('input', val);
+            }
+        },
+        
+        menuFavorite() {
+            return this.$store.state.menuFavorite;
+        }
+    },
+
+    watch: {
+        'menuFavorite.fMenu' : {
+            handler(val, oval) {
+                if(!val || val.length < 1) return
+                this.menus.forEach(m => {
+                    val.forEach(v => {
+                        if(m.menuid == v.menuid) {
+                            m.isChecked = true;
+                        }
+                    })
+                })
             }
         }
     },
+
     data() {
         return {
             searchResult: '',
-            selectArr: [],
             tempMenu: [],
             menus: [
                 {
-                    index: 0,
-                    img: img1,
-                    name: '待审批',
-                    desc: '可以直接显示全部待审批列表，也可根据审批分类详细筛选单条待审批事项'
+                    menuid: 'dsp',
+                    icon: img1,
+                    menuname: '待审批',
+                    menudesc: '可以直接显示全部待审批列表，也可根据审批分类详细筛选单条待审批事项',
+                    isChecked: false,
                 },
                 {
-                    index: 1,
-                    img: img2,
-                    name: '我的任务',
-                    desc: '可以直接显示全部任务列表，也可根据状态、类型详细筛选分类的任务'
+                    menuid: 'wdrw',
+                    icon: img2,
+                    menuname: '我的任务',
+                    menudesc: '可以直接显示全部任务列表，也可根据状态、类型详细筛选分类的任务',
+                    isChecked: false,
                 },
                 {
-                    index: 2,
-                    img: img3,
-                    name: '我的项目',
-                    desc: '可以直接显示全部项目列表，也可根据项目状态产品筛选单条项目'
+                    menuid: 'wdxm',
+                    icon: img3,
+                    menuname: '我的项目',
+                    menudesc: '可以直接显示全部项目列表，也可根据项目状态产品筛选单条项目',
+                    isChecked: false,
                 },
                 {
-                    index: 3,
-                    img: img4,
-                    name: '我的产品',
-                    desc: '可以直接显示全部产品列表，可新增我的产品'
+                    menuid: 'wdcp',
+                    icon: img4,
+                    menuname: '我的产品',
+                    menudesc: '可以直接显示全部产品列表，可新增我的产品',
+                    isChecked: false,
                 }
-            ]
+            ],
+            
         }
     },
 
     methods: {
         searchMenu(val) {
-            console.log("查询菜单" + val);
             let tempArr = [];
             this.menus.forEach(element => {
                 if(element.name.indexOf(val) != -1) {
                     tempArr.push(element);
-                }                
+                }
             });
             this.tempMenu = tempArr;
         },
+
         selectItem(item, index) {
-            let arrIndex = this.selectArr.indexOf(item.index);
-            if(arrIndex != -1) {
-                this.selectArr.splice(arrIndex, 1);
-            }else {
-                this.selectArr.push(item.index);
-            }
+           this.$set(item, 'isChecked', !item.isChecked)
         },
+
+        getUserModules() {
+            this.$store.dispatch('getUserFavoriteMenu', {userid: this.userInfo.displayUserid});
+        },
+
+        save() {
+            let saveModules = [];
+            this.menus.forEach(m => {
+                if(m.isChecked) {
+                    saveModules.push(m);
+                }
+            })
+            this.$store.dispatch('saveUserFavoriteMenu', {data: saveModules, userid: this.userInfo.displayUserid}).then(() => {
+                this.visible = false
+                this.$message.success("设置成功");
+            })
+        }
+
+
     }
 
 }
