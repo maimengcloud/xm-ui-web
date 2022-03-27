@@ -221,6 +221,9 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue';
 				}else{
 					params.branchId=this.userInfo.branchId
 				}
+				if(this.filters.key){
+					params.key=this.filters.key
+				}
 				this.load.list = true;
 				listXmProjectState(params).then((res) => {
 					var tips=res.data.tips;

@@ -22,6 +22,7 @@
 				
 				<el-input style="width:200px;" v-model="filters.key" placeholder="缺陷名称" clearable> 
 				</el-input>
+
 				<el-button @click="searchXmQuestions" type="primary" icon="el-icon-search"></el-button> 
 				<el-popover
 					placement="top-start"
@@ -113,8 +114,8 @@
 					</el-row>
 					<el-button  slot="reference" icon="el-icon-more"></el-button>
 				</el-popover> 
-				<span style="float:right;">
-  					<el-button   type="primary" icon="el-icon-plus" @click="showAdd"  round> </el-button> 
+				<span style="float:right;"> 
+   					<el-button   type="primary" icon="el-icon-plus"  @click="showAdd"  round> </el-button> 
 				</span>
 			 </el-row> 
 			 <el-row class="padding-top">
@@ -844,6 +845,7 @@
 				}else{
 					this.searchXmQuestions();
 				}
+				this.nextAction=null
 			},
 			showApprovaInfo:function(row){
 				var msgFields=[];

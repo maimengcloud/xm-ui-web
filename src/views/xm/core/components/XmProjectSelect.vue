@@ -147,13 +147,10 @@
 				dateRanger: [ ],  
 				pickerOptions:  util.pickerOptions('datarange'),
 				projectVisible:false,
-				moreVisible:false,
-				/**begin 自定义属性请在下面加 请加备注**/
-					
-				/**end 自定义属性请在上面加 请加备注**/
+				moreVisible:false, 
 			}
 		},//end data
-		methods: { 
+		methods: {  
 			handleSizeChange(pageSize) { 
 				this.pageInfo.pageSize=pageSize; 
 				this.getXmProjects();
