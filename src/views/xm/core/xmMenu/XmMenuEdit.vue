@@ -1,7 +1,7 @@
 <template>
 	<section>
 		<el-row class="page-main ">
-			<el-form :model="editForm"  label-width="120px" label-position="left" :rules="editFormRules" ref="editForm"> 
+			<el-form :model="editForm"  label-width="100px" label-position="left" :rules="editFormRules" ref="editForm"> 
 						<el-row gutter="10"> 
 							<el-col :span="6">
 								<el-form-item label="序号名称" prop="seqNo" > 
@@ -21,7 +21,7 @@
 								</el-form-item>   
 							</el-col>
 						</el-row>
-						<el-row>
+						<el-row gutter="10"> 
 							<el-col :span="8">
 								<el-form-item label="归属产品" prop="productId">
 									<font v-if="editForm.productId">{{editForm.productName?editForm.productName:editForm.productId}}</font>
@@ -48,6 +48,21 @@
 										<el-button type="text" @click="mmUserSelectVisible=true">选跟进人</el-button>
 									</el-form-item>   
 								</el-col>
+						</el-row> 
+						
+						<el-row gutter="10">
+							<el-col :span="8">
+								<el-form-item label="需求状态" prop="status"> 
+									<el-select style="display:block;" v-model="editForm.status">
+										<el-option v-for="i in this.dicts.menuStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>
+									</el-select>  
+								</el-form-item>
+							</el-col> 
+							<el-col :span="8">
+								<el-form-item label="进度" prop="finishRate">  
+									<el-progress :text-inside="true" :stroke-width="26" :percentage="editForm.finishRate" status="success"></el-progress> 
+								</el-form-item>
+							</el-col> 
 						</el-row> 
 					<el-tabs value="1"  >
 					<el-tab-pane label="基本信息'" name="1" >
@@ -218,7 +233,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 				}else if(this.editForm.dclass==='2'){
 					params={label:'特性',icon:'el-icon-s-flag',color:'rgb(0, 153, 51)'};
 				}else if(this.editForm.dclass==='3'){
-					params={label:'用户故事',icon:'el-icon-document',color:' rgb(79, 140, 255)'};
+					params={label:'故事',icon:'el-icon-document',color:' rgb(79, 140, 255)'};
 				} 
 				return params;
 			}, 
