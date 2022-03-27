@@ -18,10 +18,7 @@
 				</el-menu-item> 
 				<el-menu-item label="项目" index="项目" class="hidden-sm-and-down">
 					 <span slot="title"><i class="el-icon-document"></i>项目</span> 
-				</el-menu-item>
-				<el-menu-item   index="产品" class="hidden-sm-and-down">
-					 <span slot="title"><i class="el-icon-s-flag"></i>产品</span> 
-				</el-menu-item>
+				</el-menu-item> 
 				<el-menu-item label="需求" index="需求">
 					 <span slot="title"><i class="el-icon-document"></i>需求</span>  
 				</el-menu-item>
@@ -35,8 +32,7 @@
 		   
    			<xm-iteration-overview-complex  v-if="infotype=='迭代概览'" :xm-iteration="xmIteration"></xm-iteration-overview-complex>
  			<xm-project-complex  v-if="infotype=='项目'" ref="xmProjectComplex" :xm-iteration="xmIteration"></xm-project-complex>
-			 <xm-product-for-project-complex  v-if="infotype=='产品'" ref="xmProductComplex" :xm-iteration="xmIteration"></xm-product-for-project-complex>
-			 <xm-menu-mng v-if="infotype=='需求'" :xm-iteration="xmIteration" :disabled-mng="false"></xm-menu-mng>
+ 			 <xm-menu-mng v-if="infotype=='需求'" :xm-iteration="xmIteration" :disabled-mng="false"></xm-menu-mng>
 			 <xm-task-mng v-if="infotype=='任务'" ref="xmTaskMng" ptype="" queryScope="task" :xm-iteration="xmIteration" ></xm-task-mng>
 			  <xm-question v-if="infotype=='缺陷'" :qtype="'bug'" :xm-iteration='xmIteration' ref="xmQuestion"></xm-question>
 			  <xm-group-mng v-if="infotype=='团队'" :xm-iteration="xmIteration"></xm-group-mng>

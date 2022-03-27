@@ -13,7 +13,7 @@
         </el-menu-item> 
         -->
         <el-menu-item index="iterationMenuMng">
-          <span slot="title">配置可见需求</span>
+          <span slot="title">配置需求范围</span>
         </el-menu-item> 
         <!--
         <el-menu-item index="iterationProjectLink">
@@ -21,7 +21,7 @@
         </el-menu-item> 
         -->
       </el-menu>
-       <xm-iteration-overview  v-if="showPanelName=='overview'" :xm-iteration="xmIteration"></xm-iteration-overview>
+       <xm-iteration-overview class="padding-top" v-if="showPanelName=='overview'" :xm-iteration="xmIteration"></xm-iteration-overview>
         <xm-iteration-edit v-if="showPanelName=='detail'" :xm-iteration="xmIteration"></xm-iteration-edit>
       <xm-iteration-link-for-product  v-if="showPanelName=='iterationProductLink'" :xm-iteration="xmIteration"></xm-iteration-link-for-product>
       <xm-iteration-link-for-project  v-if="showPanelName=='iterationProjectLink'" :xm-iteration="xmIteration"></xm-iteration-link-for-project>
