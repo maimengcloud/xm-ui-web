@@ -119,6 +119,7 @@
 					<xm-project-select v-else style="display:inline;"  :auto-select="false" :link-product-id="xmProduct?xmProduct.id:null" @row-click="showAddAfterProjectSelect" >
 						  <el-button slot="reference"  type="primary" icon="el-icon-plus"    round> </el-button>  
 					</xm-project-select>
+					<el-button @click="batchDel" type="danger" icon="el-icon-delete"></el-button>
 				</span>
 			 </el-row> 
 			 <el-row class="padding-top">
@@ -624,6 +625,10 @@
 			},
 			//批量删除xmQuestion
 			batchDel: function () {
+				if(this.sels.length<=0){
+					this.$notify({showClose: true, message:"请选择要删除的缺陷", type: "error"});
+					return ;
+				}
 				this.$confirm('确认删除选中记录吗？', '提示', {
 					type: 'warning'
 				}).then(() => {

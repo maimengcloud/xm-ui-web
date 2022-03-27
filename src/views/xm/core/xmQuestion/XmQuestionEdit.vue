@@ -21,9 +21,7 @@
 			<el-row class="padding">
 				<font class="font">{{editForm.name}}</font>
 			</el-row>
-			<el-row class="padding-bottom">
-				<el-tooltip content="项目"><el-tag type="warning">{{selProject.name}} </el-tag></el-tooltip>
-				<el-divider direction="vertical"></el-divider> 
+			<el-row class="padding-bottom"> 
 				<el-tag>{{editForm.createUsername}} 于 {{editForm.createTime}} 创建 </el-tag>
 				<el-divider direction="vertical"></el-divider>
 				<el-tag v-if="editForm.tagNames">{{editForm.tagNames?editForm.tagNames:''}} </el-tag>
@@ -34,28 +32,27 @@
 			<el-divider></el-divider>
 			<el-row>
 				<el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm"> 
-						<el-row> 
-							<el-col  :span="12">
-								<el-form-item label="归属任务" prop="taskName"> 
-									
-									<div    class="icon" :style="{backgroundColor:   '#409EFF' }">
-										<i :class="  'el-icon-s-operation'  " ></i>
-									</div>  
-									 <el-tag  closable @click="showSelectTask" @close.stop="handleCloseTaskTag">{{editForm.taskName?editForm.taskName:'未关联任务'}}</el-tag>   
+						
+						<el-row>
+							<el-col :span="12">
+								<el-form-item label="归属项目" prop="projectId">
+									<font v-if="editForm.projectId">{{editForm.projectId?editForm.projectId:''}}</font>
+ 									 <xm-project-select ref="xmProjectSelect" :auto-select="false"  @row-click="onPorjectConfirm" @clear="clearProject"> 
+									  </xm-project-select>
 								</el-form-item>
 							</el-col>
 							<el-col  :span="12">
-								<el-form-item label="归属用户故事" prop="taskName">  
-										<el-tag  closable @click="showSelectMenu" @close.stop="handleCloseMenuTag">
-										<div class="icon" :style="{backgroundColor:   'rgb(79, 140, 255)' }">
-											<i :class="  'el-icon-document'  " ></i>
-										</div> {{editForm.menuName?editForm.menuName:"未关联需求"}}</el-tag> 
+								<el-form-item label="隶属需求" prop="menuId"> 
+									<el-tag title="隶属需求" closable @click="showSelectMenu" @close.stop="handleCloseMenuTag">
+									<div class="icon" :style="{backgroundColor:   'rgb(79, 140, 255)' }">
+										<i :class="  'el-icon-document'  " ></i>
+									</div> {{editForm.menuName?editForm.menuName:"未关联需求"}}</el-tag> 
 								</el-form-item>
 							</el-col>
 						</el-row>
 						<el-row> 
 								<el-col :span="12">
-									<el-form-item label="优先级" prop="priority">
+									<el-form-item label="优先级别" prop="priority">
 										<el-select v-model="editForm.priority" placeholder="请选择优先级">
 											<el-option v-for="(i,index) in dicts['priority']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
 										</el-select> 
@@ -79,6 +76,26 @@
 									</el-form-item>
 									
 								</el-col>
+								
+								<el-col :span="12">
+									<el-form-item label="复现版本" prop="verNum">
+										<el-select v-model="editForm.verNum" placeholder="请选择版本">
+											<el-option v-for="(i,index) in xmProductVersions" :label="i.name" :value="i.id" :key="index">{{i.id}}</el-option>
+										</el-select> 
+									</el-form-item>
+								</el-col>
+						</el-row>
+						
+						<el-row> 
+								<el-col :span="12">
+									<el-form-item label="缺陷类别" prop="bugType">
+										<el-select v-model="editForm.bugType" placeholder="请选择缺陷类别">
+											<el-option v-for="(i,index) in dicts['bugType']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
+										</el-select> 
+									</el-form-item>
+									
+								</el-col>
+								
 								<el-col :span="12">
 									<el-form-item label="解决方案" prop="solution">
 										<el-select v-model="editForm.solution" placeholder="请选择解决方案">
@@ -87,9 +104,35 @@
 									</el-form-item>
 								</el-col>
 						</el-row>
-						<el-form-item label="指派给" prop="handlerUsername">
-							{{editForm.handlerUsername}}   <el-button type="text" @click="sendToCreater">指派给创建人</el-button><el-button  type="text" @click="showGroupUsers('handlerUsername')">选其它人</el-button>
-						</el-form-item>
+						
+						
+						<el-row> 
+								<el-col :span="12">
+									<el-form-item label="提出时间" prop="createTime">
+										 <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" v-model="editForm.createTime"></el-date-picker>
+									</el-form-item>
+									
+								</el-col>
+								
+								<el-col :span="12">
+									<el-form-item label="结束时间" prop="endTime">
+										 <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" v-model="editForm.endTime"></el-date-picker>
+									</el-form-item>
+								</el-col>
+						</el-row>
+						
+						<el-row> 
+								<el-col :span="12">
+									<el-form-item label="提出人" prop="askUsername">
+										<el-tag @click="showGroupUsers('askUsername')">{{editForm.askUsername?editForm.askUsername:'未关联提出人'}}</el-tag>
+ 									</el-form-item> 
+								</el-col>
+								<el-col :span="12">
+									<el-form-item label="负责人" prop="handlerUsername">
+										{{editForm.handlerUsername}} <el-button type="text" @click="sendToAsk">指派给提出人</el-button><el-button type="text"  @click="sendToCreater">指派给创建人</el-button><el-button type="text"  @click="showGroupUsers('handlerUsername')">指派给其它人</el-button>
+									</el-form-item>
+								</el-col>
+						</el-row> 
 					<el-form-item label="测试步骤" prop="opStep">
 						<el-col :span="24" v-if="editForm.expectResult">
 							<div class="wf-main-context-box" v-if="editForm.opStep">
@@ -181,6 +224,8 @@
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
 	import  XmQuestionHandleMng from '../xmQuestionHandle/XmQuestionHandleMng';//修改界面
   	import TagMng from "@/views/mdp/arc/tag/TagMng";
+	  
+	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
 
 	export default {
 		computed: {
@@ -227,6 +272,7 @@
 					bugStatus:[],
 					bugType:[],
 					bugRepRate:[],
+					bugReason:[],
 				},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				editFormRules: {
@@ -255,6 +301,8 @@
 				selectMenuVisible:false,
 				receiptMessageEditorVisible:false,
 				tagSelectVisible:false,
+				
+				xmProductVersions:[{id:"1.0.0" ,name:'1.0.0'}],
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data
@@ -451,22 +499,26 @@
 					this.editForm.tagNames=""
 				}
 			},
+			
+			onPorjectConfirm:function(project){ 
+				this.editForm.projectId=project.id
+				this.editForm.projectName=project.name 
+			},
+			clearProject(){ 
+				this.editForm.projectId=''
+				this.editForm.projectName=''
+			},
 		},//end method
 		components: {
 				//在下面添加其它组件 'xm-question-edit':XmQuestionEdit
-				'upload': AttachmentUpload,XmGroupMng,VueEditor,XmTaskList,xmMenuSelect,XmQuestionHandleMng,TagMng,
+				'upload': AttachmentUpload,XmGroupMng,VueEditor,XmTaskList,xmMenuSelect,XmQuestionHandleMng,TagMng,XmProjectSelect,
 		},
 		mounted() {
 			console.log("question_add");
 			this.editForm=Object.assign(this.editForm, this.xmQuestion);
-			initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','priority','bugRepRate']).then(res=>{
+			initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','priority','bugRepRate','bugReason']).then(res=>{
 				if(res.data.tips.isOk){
-					this.dicts['bugSeverity']=res.data.data.bugSeverity
-					this.dicts['bugSolution']=res.data.data.bugSolution
-					this.dicts['bugStatus']=res.data.data.bugStatus
-					this.dicts['bugType']=res.data.data.bugType
-					this.dicts['priority']=res.data.data.priority
-					this.dicts['bugRepRate']=res.data.data.bugRepRate
+					 this.dicts=res.data.data
 				}
 			});
 			//this.getXmQuestionHandle();

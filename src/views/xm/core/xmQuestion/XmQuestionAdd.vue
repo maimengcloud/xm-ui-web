@@ -1,21 +1,26 @@
 <template>
 	<section class="page-container  padding">
-		<el-row>
-			<el-steps simple finish-status="success">
-				<el-step title="已激活,待确认" description="创建后自动激活、关闭后重新激活)"></el-step>
-				<el-step title="已确认,待解决" description="业务确认缺陷后变为已确认"></el-step>
-				<el-step title="已解决,待关闭" description="开发修复缺陷后，变成已解决"></el-step>
-				<el-step title="已关闭(可重新激活)" description="测试通过后变为已关闭，已关闭缺陷可以重新激活"></el-step>
+		<el-row class="padding-bottom">
+			<!--1|新提交 
+				2|处理中 
+				3|已修复
+				4|重新打开
+				5|已发布
+				6|已拒绝
+				7|挂起 --> 
+			<el-steps :active="calcBugStep" simple finish-status="success" >
+				<el-step v-for="(item,index) in dicts['bugStatus']" :title="item.name" :key="index" @click.native.stop="editForm.bugStatus=item.id">
+					<el-link slot="title" @click="editForm.bugStatus=item.id">
+						 {{item.name}} 
+					 </el-link>
+				</el-step> 
 			</el-steps>
 		</el-row>
 		<el-row class="page-main  padding">
 			<el-form :model="addForm" label-width="120px"  :rules="addFormRules" ref="addForm">
 						<el-form-item label="缺陷标题" prop="name">
 							<el-input v-model="addForm.name" placeholder="缺陷标题" ></el-input>
- 									<el-tag title="隶属需求" closable @click="showSelectMenu" @close.stop="handleCloseMenuTag">
-									<div class="icon" :style="{backgroundColor:   'rgb(79, 140, 255)' }">
-										<i :class="  'el-icon-document'  " ></i>
-									</div> {{addForm.menuName?addForm.menuName:"未关联需求"}}</el-tag> 
+
 						</el-form-item>
 						<el-row>
 							<el-col :span="12">
@@ -25,18 +30,17 @@
 								</el-form-item>
 							</el-col>
 							<el-col  :span="12">
-								<el-form-item label="归属任务" prop="taskName"> 
-									
-									<div    class="icon" :style="{backgroundColor:   '#409EFF' }">
-										<i :class="  'el-icon-s-operation'  " ></i>
-									</div>  
-									 <el-tag  closable @click="showSelectTask" @close.stop="handleCloseTaskTag">{{addForm.taskName?addForm.taskName:'未关联任务'}}</el-tag>   
+								<el-form-item label="隶属需求" prop="menuId"> 
+									<el-tag title="隶属需求" closable @click="showSelectMenu" @close.stop="handleCloseMenuTag">
+									<div class="icon" :style="{backgroundColor:   'rgb(79, 140, 255)' }">
+										<i :class="  'el-icon-document'  " ></i>
+									</div> {{addForm.menuName?addForm.menuName:"未关联需求"}}</el-tag> 
 								</el-form-item>
 							</el-col>
 						</el-row>
 						<el-row> 
 								<el-col :span="12">
-									<el-form-item label="优先级" prop="priority">
+									<el-form-item label="优先级别" prop="priority">
 										<el-select v-model="addForm.priority" placeholder="请选择优先级">
 											<el-option v-for="(i,index) in dicts['priority']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
 										</el-select> 
@@ -68,9 +72,22 @@
 										</el-select> 
 									</el-form-item>
 								</el-col>
+						</el-row> 
+						<el-row> 
+								<el-col :span="12">
+									<el-form-item label="缺陷类别" prop="bugType">
+										<el-select v-model="addForm.bugType" placeholder="请选择缺陷类别">
+											<el-option v-for="(i,index) in dicts['bugType']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
+										</el-select> 
+									</el-form-item>
+									
+								</el-col>
+								<el-col :span="12">
+									<el-form-item label="结束时间" prop="endTime">
+										 <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" v-model="addForm.endTime"></el-date-picker>
+									</el-form-item>
+								</el-col>
 						</el-row>
-						
-						
 						<el-row> 
 								<el-col :span="12">
 									<el-form-item label="提出人" prop="askUsername">
@@ -79,7 +96,7 @@
 									</el-form-item> 
 								</el-col>
 								<el-col :span="12">
-									<el-form-item label="指派给" prop="handlerUsername">
+									<el-form-item label="负责人" prop="handlerUsername">
 										{{addForm.handlerUsername}} <el-button type="text" @click="sendToAsk">指派给提出人</el-button><el-button type="text"  @click="sendToCreater">指派给创建人</el-button><el-button type="text"  @click="showGroupUsers('handlerUsername')">指派给其它人</el-button>
 									</el-form-item>
 								</el-col>
@@ -108,7 +125,7 @@
 								<vue-editor v-if="expectResultEditorVisible==true" :id="'expectResult'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.expectResult"  ref="expectResult"></vue-editor>
 							</div>
 						</el-form-item>
-				<el-form-item label="缺陷描述" prop="description">
+						<el-form-item label="缺陷描述" prop="description">
 							<el-tooltip content="点击切换为富文本编辑|普通文本">
 								<el-button icon="el-icon-refresh" @click="descriptionEditorVisible=!descriptionEditorVisible" type="text"></el-button>
 							</el-tooltip>
@@ -161,6 +178,21 @@
 			...mapGetters([
 				'userInfo','roles'
 			]),
+			calcBugStep(){
+				if(this.dicts['bugStatus'] && this.addForm){
+					var index=this.dicts['bugStatus'].findIndex(i=>{
+						if(i.id==this.addForm.bugStatus){
+							return true;
+						}else{
+							return false;
+						}
+					})
+					return index+1;
+				}else{
+					return 0;
+				}
+				 
+			}
 		},
 		props:['xmQuestion','visible',"selProject",'qtype','xmTestCaseExec','xmTestCase'],
 		watch: {
