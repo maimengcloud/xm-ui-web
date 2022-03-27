@@ -1122,10 +1122,10 @@ import xmMenuSelect from "../xmMenu/XmMenuSelect";
 
 import { addXmMyFocus, delXmMyFocus } from "@/api/xm/core/xmMyFocus";
 
-import XmProjectSelect from "../xmProject/XmProjectSelect";
+import XmProjectSelect from "@/views/xm/core/components/XmProjectSelect";
 
 import XmMenuRichDetail from "../xmMenu/XmMenuRichDetail";
-import XmProductSelect from "../xmProduct/XmProductSelect"; //修改界面
+import XmProductSelect from "@/views/xm/core/components/XmProductSelect"; //修改界面
 import TagMng from "@/views/mdp/arc/tag/TagMng";
 
 import XmGantt from "../components/xm-gantt";
@@ -2521,7 +2521,7 @@ export default {
           var tips = res.data.tips;
           if(tips.isOk){
             this.searchXmTasks();
-            debugger;
+            
             var rows=[...this.sels,{id:'xxxxx',parentTaskid:task.id}]
             treeTool.reloadAllChildren(this.$refs.table,this.maps,rows,'parentTaskid',this.loadXmTaskLazy)
           }

@@ -4,14 +4,9 @@
 			<el-col :span="24">
 				<el-tabs type="border-card"  :value="showPanel" @tab-click="tabClick"> 
 					<el-tab-pane  lazy   name="iterations" disabled> 
-						<div  slot="label">
-							<el-popover
-								placement="bottom"
-								width="400"
-								trigger="click"> 
-								<xm-iteration-select ref="xmIterationSelect" :auto-select="true" :sel-project="selProject" :product-id="xmProduct?xmProduct.id:null"  @row-click="onIterationRowClick" @clear-select="onIterationClearSelect"></xm-iteration-select>
- 								<el-link type="warning" slot="reference"  icon="el-icon-search"><font style="font-size:14px;">{{xmIteration?xmIteration.iterationName:'选择迭代'}}</font></el-link> 
-							</el-popover> 
+						<div  slot="label"> 
+								<xm-iteration-select ref="xmIterationSelect" :auto-select="true" :link-project-id="selProject?selProject.id:null" :product-id="xmProduct?xmProduct.id:null"  @row-click="onIterationRowClick" @clear="onIterationClearSelect"></xm-iteration-select>
+ 								 
 						</div>
 					</el-tab-pane>
 
@@ -64,7 +59,7 @@
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { delXmIterationLink } from '@/api/xm/core/xmIterationLink';
 
- 	import XmIterationSelect from './XmIterationSelect.vue'
+ 	import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue'
 	import XmMenuMng from '../xmMenu/XmMenuMng.vue'
 	import XmIterationStateShow from '../xmIterationState/XmIterationStateShow.vue'
 	import { mapGetters } from 'vuex'

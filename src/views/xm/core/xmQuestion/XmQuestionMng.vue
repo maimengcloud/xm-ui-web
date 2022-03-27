@@ -1,7 +1,10 @@
 <template>
 	<section class="padding">
 			<el-row>
-			  	<el-select v-model="filters.bugStatus" placeholder="状态" style="width:100px;"  clearable @change="changeBugStatus">
+				<xm-product-select v-if="!xmProduct" style="display:inline;" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear-select="clearProduct"></xm-product-select>
+			  	<xm-project-select v-if="!selProject" style="display:inline;" ref="xmProjectSelect" :auto-select="false" :link-product-id="xmProduct?xmProduct.id:null" @row-click="onProjectConfirm" @clear-select="clearProject"></xm-project-select>
+
+				  <el-select v-model="filters.bugStatus" placeholder="状态" style="width:100px;"  clearable @change="changeBugStatus">
 					<el-option v-for="(b,index) in dicts['bugStatus']" :value="b.id"  :key="index" :label="b.name">{{b.name}}
 					</el-option>
 				</el-select>
@@ -14,8 +17,8 @@
 					</el-option>
 				</el-select>
 				
-				<el-button v-if="!filters.tags||filters.tags.length==0" @click.native="tagSelectVisible=true">标签</el-button>
-				<el-tag v-else @click="tagSelectVisible=true"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
+				<el-button v-if="!filters.tags||filters.tags.length==0" @click.native="$refs.tagDialog.open()">标签</el-button>
+				<el-tag v-else @click="$refs.tagDialog.open()"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
 				
 				<el-input style="width:200px;" v-model="filters.key" placeholder="缺陷名称" clearable> 
 				</el-input>
@@ -25,16 +28,7 @@
 					title="更多查询条件或操作"
 					width="600"
 					trigger="click" >
-					<el-row>
-						<el-col :span="24" style="padding-top:5px;">
-							<font class="more-label-font">产品:</font><el-tag    v-if="  filters.product "  closable    @close="clearProduct">{{this.filters.product.productName}}</el-tag>
-							<el-button v-else    @click="showProductVisible" type="plian">选产品</el-button>
-						</el-col>
-						<el-col :span="24"  style="padding-top:12px;" v-if="!selProject">
-							<font class="more-label-font">项目:</font>
-							<el-tag v-if="filters.selProject && !selProject" closable @close="clearProject" @click="showProjectList(true)">{{ filters.selProject.name }}</el-tag>
-							<el-button v-else @click="showProjectList(true)" >选择项目</el-button> 
-						</el-col>
+					<el-row> 
 						<el-col :span="24"  style="padding-top:12px;">
 							<font class="more-label-font">需求:</font>
 							<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 需求</el-button>
@@ -120,8 +114,7 @@
 					<el-button  slot="reference" icon="el-icon-more"></el-button>
 				</el-popover> 
 				<span style="float:right;">
-				<el-button type="primary" icon="el-icon-plus" @click="showAdd" round>
-				</el-button> 
+  					<el-button   type="primary" icon="el-icon-plus" @click="showAdd"  round> </el-button> 
 				</span>
 			 </el-row> 
 			 <el-row class="padding-top">
@@ -131,28 +124,57 @@
 					  <el-table-column prop="id" label="缺陷编号" width="100" show-overflow-tooltip></el-table-column>
 					 <el-table-column prop="name" label="缺陷名称"  min-width="150">
 						<template slot-scope="scope">  
-								<span class="vlink" @click="showEdit(scope.row)" :title="scope.row.name"> 
-									<el-tag type="info" v-if="scope.row.bugSeverity=='4' ">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
-									<el-tag type="primary" v-else-if="scope.row.bugSeverity=='3'">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
-									<el-tag type="warning" v-else-if="scope.row.bugSeverity=='2'">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
-									<el-tag type="danger" v-else-if="scope.row.bugSeverity=='1'">{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag>
-									<el-tag v-else>{{formatterOption(scope.row,{property:'bugSeverity'},scope.row.bugSeverity)}}</el-tag> 
-									&nbsp;&nbsp;{{scope.row.name}}
-								</span>   
-								
+								<span class="vlink" @click="showEdit(scope.row)" :title="scope.row.name">  
+									 {{scope.row.name}}
+								</span>    
 						</template>
 					</el-table-column>
 					<el-table-column prop="bugStatus" label="状态"  width="100">
-						<template slot-scope="scope"> 
- 								<el-tag type="info" v-if="scope.row.bugStatus=='create' ">创建</el-tag>
-								<el-tag type="primary" v-else-if="scope.row.bugStatus=='active'">已激活</el-tag>
-								<el-tag type="warning" v-else-if="scope.row.bugStatus=='confirm'">确认</el-tag>
-								<el-tag type="warning" v-else-if="scope.row.bugStatus=='confirmed'">已确认</el-tag>
-								<el-tag type="success" v-else-if="scope.row.bugStatus=='solve'">解决</el-tag>
-								<el-tag type="success" v-else-if="scope.row.bugStatus=='resolved'">已解决</el-tag>
-								<el-tag type="success" v-else-if="scope.row.bugStatus=='close'">关闭</el-tag>
-								<el-tag type="success" v-else-if="scope.row.bugStatus=='closed'">已关闭</el-tag>
-								<el-tag v-else>{{scope.row.bugStatus}}</el-tag>   
+						<template slot-scope="scope">   
+									<div class="cell-text">
+										 <el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in [formatterBugStatusDicts(scope.row.bugStatus)]" :key="index">{{item.name}}</el-button>
+									</div>
+									<span class="cell-bar">   
+										 <el-select  v-model="scope.row.bugStatus" placeholder="类型"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugStatus',$event)">
+												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.bugStatus" :key="index"></el-option> 
+										 </el-select>  
+									</span> 
+						</template>
+					</el-table-column>
+					<el-table-column prop="priority" label="优先级"  width="100">
+						<template slot-scope="scope">   
+									<div class="cell-text">
+										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in [formatterPriorityDicts(scope.row.priority)]" :key="index">{{item.name}}</el-button>
+									</div>
+									<span class="cell-bar">   
+										 <el-select  v-model="scope.row.priority" placeholder="优先级"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'priority',$event)">
+												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.priority" :key="index"></el-option> 
+										 </el-select>  
+									</span> 
+						</template>
+					</el-table-column> 
+					<el-table-column prop="solution" label="解决方案"  width="100">
+						<template slot-scope="scope">   
+									<div class="cell-text">
+										{{formaterByDicts(scope.row,'solution',scope.row.solution)}}
+									</div>
+									<span class="cell-bar">   
+										 <el-select  v-model="scope.row.solution" placeholder="类型"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'solution',$event)">
+												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.bugSolution" :key="index"></el-option> 
+										 </el-select>  
+									</span> 
+						</template>
+					</el-table-column>
+					<el-table-column prop="bugSeverity" label="严重程度"  width="100">
+						<template slot-scope="scope">   
+									<div class="cell-text">
+										{{formaterByDicts(scope.row,'bugSeverity',scope.row.bugSeverity)}}
+									</div>
+									<span class="cell-bar">   
+										 <el-select  v-model="scope.row.bugSeverity" placeholder="类型"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugSeverity',$event)">
+												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.bugSeverity" :key="index"></el-option> 
+										 </el-select>  
+									</span> 
 						</template>
 					</el-table-column>
 					<el-table-column prop="askUsername" label="创建人"  width="100" show-overflow-tooltip> 
@@ -163,16 +185,27 @@
 					
 					<el-table-column prop="ltime" label="更新时间" sortable  width="100" show-overflow-tooltip> 
 					</el-table-column>
-					<el-table-column prop="handlerUsername" label="指派给"  width="100" show-overflow-tooltip> 
-					</el-table-column>
-					<el-table-column prop="tagNames" label="标签"  width="100" show-overflow-tooltip> 
-					</el-table-column>
-					<el-table-column prop="menuName" label="需求" width="100" show-overflow-tooltip></el-table-column>
-					<el-table-column   header-align="center" label="操作" fixed="right" width="100">
-						<template slot-scope="scope">
-							<el-button  type="primary" @click.stop="showEdit(scope.row)" >编辑</el-button> 	
+					<el-table-column prop="handlerUsername" label="负责人"  width="100" show-overflow-tooltip> 
+						<template slot-scope="scope">   
+									<div class="cell-text">
+										{{ scope.row.handlerUsername}}
+									</div>
+									<span class="cell-bar">   
+										 <el-button @click="showGroupUsers('editHandlerUserid',scope.row)">负责人</el-button>
+									</span> 
 						</template>
 					</el-table-column>
+					<el-table-column prop="tagNames" label="标签"  width="100" show-overflow-tooltip> 
+						<template slot-scope="scope">   
+									<div class="cell-text">
+										{{ scope.row.tagNames}}
+									</div>
+									<span class="cell-bar">   
+										 <el-button @click="$refs.tagDialog.open({data:scope.row,action:'editTagIds'})">标签</el-button>
+									</span> 
+						</template>
+					</el-table-column>
+					<el-table-column prop="menuName" label="需求" width="100" show-overflow-tooltip></el-table-column> 
 				</el-table>
 				<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 			 </el-row>
@@ -185,26 +218,13 @@
 			<el-drawer title="新增缺陷"  :visible.sync="addFormVisible" :with-header="false" size="70%"  append-to-body   :close-on-click-modal="false">
 				<xm-question-add :xm-test-case-exec="xmTestCaseExec" :xm-test-case="xmTestCase" :qtype="qtype" :sel-project=" filters.selProject " :xm-question="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-question-add>
 			</el-drawer>
-			<el-drawer title="选中用户" v-if=" filters.selProject " :visible.sync="selectUserVisible"  size="70%"  append-to-body   :close-on-click-modal="false">
-				<xm-group-mng  :sel-project=" filters.selProject " :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-mng>
-			</el-drawer>
-			<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  size="70%"  append-to-body   :close-on-click-modal="false">
-				<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
-			</el-drawer>
-
+ 			<xm-group-dialog ref="xmGroupDialog" :sel-project=" filters.selProject " :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-dialog> 
 			<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible"    size="70%"   :close-on-click-modal="false">
 				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
-			</el-drawer>
-
-			<el-drawer title="选择产品" :visible.sync="productSelectVisible"  size="70%"  append-to-body   :close-on-click-modal="false">
-					<xm-product-select   :isSelectProduct="true" :selProject="filters.selProject" :visible="productSelectVisible" @cancel="productSelectVisible=false" @selected="onProductSelected"></xm-product-select>
-			</el-drawer>
+			</el-drawer> 
 			
-			<el-drawer append-to-body title="标签条件" :visible.sync="tagSelectVisible"  :close-on-click-modal="false" size="60%">
-				<tag-mng :tagIds="filters.tags?filters.tags.map(i=>i.tagId):[]" :jump="true" @select-confirm="onTagSelected">
-				</tag-mng>
-			</el-drawer>
-	</section>
+ 			<tag-dialog ref="tagDialog" :tagIds="filters.tags?filters.tags.map(i=>i.tagId):[]" :jump="true" @select-confirm="onTagSelected"></tag-dialog>
+ 	</section>
 </template>
 
 <script>
@@ -213,18 +233,18 @@
 	import config from '@/common/config';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { listXmQuestion, delXmQuestion, batchDelXmQuestion, editStatus } from '@/api/xm/core/xmQuestion';
+	import { listXmQuestion, delXmQuestion, batchDelXmQuestion, editStatus ,editXmQuestionSomeFields} from '@/api/xm/core/xmQuestion';
 	import  XmQuestionAdd from './XmQuestionAdd';//新增界面
 	import  XmQuestionEdit from './XmQuestionEdit';//修改界面
 	import { mapGetters } from 'vuex'
 
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
-	import XmGroupMng from '../xmGroup/XmGroupMng';
-	import XmProjectList from '../xmProject/XmProjectList';
+	import XmGroupDialog from '../xmGroup/XmGroupDialog';
+	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
 
-	import  XmProductSelect from '../xmProduct/XmProductSelect';//修改界面
-  	import TagMng from "@/views/mdp/arc/tag/TagMng";
-
+	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修改界面
+ 	import TagDialog from '@/views/mdp/arc/tag/TagDialog.vue';
+ 
 	export default {
 		computed: {
 			...mapGetters([
@@ -532,12 +552,11 @@
 				this.editForm = Object.assign({}, row);
 			},
 			//显示新增界面 XmQuestion xm_question
-			showAdd: function () {
-				if(this.filters.selProject==null){
-
+			showAdd: function () { 
+				if(!this.filters.selProject){ 
 					this.$notify({showClose: true, message: "请先选中项目", type: 'warning' });
-					this.nextAction="showAdd"
-					this.showProjectList();
+					this.$refs.xmProjectSelect.projectVisible=true;
+					this.nextAction="showAdd" 
 					return;
 				}
 				this.addFormVisible = true;
@@ -663,27 +682,68 @@
 				}
 
 			},
-			showSolveName:function(row){
-				if(row.bugStatus=='active'){
-					return "去确认"
-				}else if(row.bugStatus=='confirmed'){
-					return "去解决"
-				}else if(row.bugStatus=='resolved'){
-					return "去关闭"
-				}else if(row.bugStatus=='closed'){
-					return "激活"
+			formatterPriorityDicts(cellValue){
+				var key="priority";  
+				if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0   ){
+					return {id:cellValue,name:cellValue,className:'primary'};
 				}
-			},
-			showGroupUsers:function(userType){
-				this.userType=userType;
-				if(this.filters.selProject==null || this.filters.selProject.id==''){
-					this.$notify({showClose: true, message: "请先选中项目", type: 'warning' });
-					this.nextAction="showGroupUsers"
-					this.showProjectList();
-					return;
+				var list=this.dicts[key].filter(i=>i.id==cellValue)
+				if(list.length>0){
+					var data= {...list[0],className:'primary'}
+					if(data.id=='0'){
+						data.className='danger'
+					}else if(data.id=='1'){
+						data.className='warning'
+					}else if(data.id=='2'){
+						data.className='success'
+					}else if(data.id=='3'){
+						data.className='primary'
+					}else if(data.id=='4'){
+						data.className='info'
+					}else{
+						data.className='primary'
+					}
+					return data;
+				}else{
+					return {id:cellValue,name:cellValue,className:'primary'}
 				}
-				this.selectUserVisible=true;
+
 			},
+			formatterBugStatusDicts: function(cellValue){
+				var key="bugStatus";  
+				if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0   ){
+					return {id:cellValue,name:cellValue,className:'primary'};
+				}
+				var list=this.dicts[key].filter(i=>i.id==cellValue)
+				if(list.length>0){
+					var data= {...list[0],className:'primary'}
+					if(data.id=='1'){
+						data.className='primary'
+					}else if(data.id=='2'){
+						data.className='primary'
+					}else if(data.id=='3'){
+						data.className='success'
+					}else if(data.id=='4'){
+						data.className='warning'
+					}else if(data.id=='5'){
+						data.className='success'
+					}else if(data.id=='6'){
+						data.className='info'
+					}else if(data.id=='7'){
+						data.className='info'
+					}else{
+						data.className='danger'
+					}
+					return data;
+				}else{
+					return {id:cellValue,name:cellValue,className:'primary'}
+				}
+
+			}, 
+			showGroupUsers:function(userType,row){
+ 				this.$refs.xmGroupDialog.open({data:row,action:userType})
+			},
+			 
 			handleExport() {
 				this.downloadLoading = true
 				let header = [];
@@ -739,21 +799,24 @@
 			},
 			/**end 自定义函数请在上面加**/
 
-			onUserConfirm:function(groupUsers){
-				if(this.userType=='createUser'){
+			onUserConfirm:function(groupUsers,option){
+				if(option.action=='createUser'){
 					if(groupUsers==null || groupUsers.length==0){
 						this.filters.createUser=null
 					}else{
 						var user=groupUsers[0]
 						this.filters.createUser=user
 					}
-				}else if(this.userType=='hisHandler'){
+				}else if(option.action=='hisHandler'){
 					if(groupUsers==null || groupUsers.length==0){
 						this.filters.hisHandler=null
 					}else{
 						var user=groupUsers[0]
 						this.filters.hisHandler=user
 					}
+				}else if(option.action=='editHandlerUserid'){
+					 this.editXmQuestionSomeFields(option.data,"handlerUserid",groupUsers)
+					 return;
 				}else{
 					if(groupUsers==null || groupUsers.length==0){
 						this.filters.handlerUserid=''
@@ -768,20 +831,14 @@
 				this.selectUserVisible=false
 				this.searchXmQuestions();
 
-			},
-			showProjectList:function(clear){
-				if(clear){
-					this.nextAction="";
-				}
-				this.selectProjectVisible=true;
-			},
-			onPorjectConfirm:function(project){
+			}, 
+			onProjectConfirm:function(project){
 				this.filters.selProject=project
 				this.selectProjectVisible=false;
 
-				if(this.nextAction=='showAdd'){
+				if( this.nextAction=='showAdd'){
 					this.showAdd()
-				}else if(this.nextAction=='showGroupUsers'){
+				}else if( this.nextAction=='showGroupUsers'){
 					this.showGroupUsers(this.userType)
 				}else{
 					this.searchXmQuestions();
@@ -920,21 +977,94 @@
 				return msg;
 			},
 			
-			onTagSelected(tags) {
-				this.tagSelectVisible = false; 
-				if (!tags || tags.length == 0) { 
-					this.filters.tags=[]
+			onTagSelected(tags,option) { 
+				if(option.action=="editTagIds"){
+					this.editXmQuestionSomeFields(option.data,"tagIds",tags);
 				}else{
-					this.filters.tags=tags
+					if (!tags || tags.length == 0) { 
+						this.filters.tags=[]
+					}else{
+						this.filters.tags=tags
+					}
+					this.searchXmQuestions();
 				}
-				this.searchXmQuestions();
-			}
-
+				
+			}, 
+			editXmQuestionSomeFields(row,fieldName,$event){
+				var params={ids:[row.id]};
+				if(this.sels.length>0){
+					if(!this.sels.some(k=>k.id==row.id)){
+						this.$notify({showClose:true,message:'请操作选中的行或者取消选中的行再操作其它行',type:'warning'})
+						return;
+					}
+					params.ids=this.sels.map(i=>i.id)
+				}
+				if(fieldName==='handlerUserid'){
+					if($event){ 	
+						params[fieldName]=$event[0].userid;
+						params.handlerUsername=$event[0].username 
+					}else{
+						return;
+					}
+				}else if(fieldName==='tagIds'){
+					if($event){ 	
+						params[fieldName]=$event.map(i=>i.tagId).join(",");
+						params.tagNames=$event.map(i=>i.tagName).join(","); 
+					}else{
+						return;
+					}
+				}else if(fieldName==='workload'){
+					params={...params,...$event}
+				}else{
+					params[fieldName]=$event
+				}
+				
+				editXmQuestionSomeFields(params).then(res=>{
+					var tips = res.data.tips;
+					if(tips.isOk){ 
+						if(this.sels.length>0){
+							 this.sels.forEach(i=>{ 
+								Object.assign(i,params) 
+							 })
+						}else{ 
+							Object.assign(row,params) 
+						}
+					}else{
+						this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+					}
+				})
+			},
+			/**
+			 * 'bugSeverity','bugSolution','bugStatus','bugType','priority'bugRepRate
+			 */
+			formaterByDicts(row,property,cellValue){ 
+				var property=property
+				var dict=null;
+				if(property=='bugSeverity'){
+					dict=this.dicts['bugSeverity']
+				}else if(property=='solution'){
+					dict=this.dicts['bugSolution']
+				}else if(property=='bugStatus'){
+					dict=this.dicts['bugStatus']
+				}else if(property=='priority'){
+					dict=this.dicts['priority']
+				}else if(property=='bugType'){
+					dict=this.dicts['bugType']
+				}else if(property=='repRate'){
+					dict=this.dicts['bugRepRate']
+				}  
+				if(!dict){
+					return cellValue;
+				}else{
+					var item=dict.find(i=>i.id==cellValue)
+					return item?item.name:cellValue;
+				}
+			},
 		},//end methods
 		components: {
 				'xm-question-add':XmQuestionAdd,
 				'xm-question-edit':XmQuestionEdit,
-				XmGroupMng,XmProjectList,xmMenuSelect,XmProductSelect,TagMng,
+				XmGroupDialog,XmProjectSelect,xmMenuSelect,XmProductSelect, TagDialog 
 				//在下面添加其它组件
 		},
 		mounted() {
@@ -955,13 +1085,9 @@
 				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
 				this.getXmQuestions();
 			});
-				initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','priority']).then(res=>{
-					if(res.data.tips.isOk){
-						this.dicts['bugSeverity']=res.data.data.bugSeverity
-						this.dicts['bugSolution']=res.data.data.bugSolution
-						this.dicts['bugStatus']=res.data.data.bugStatus
-						this.dicts['bugType']=res.data.data.bugType
-						this.dicts['priority']=res.data.data.priority
+				initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','priority','bugRepRate']).then(res=>{
+					if(res.data.tips.isOk){ 
+						this.dicts=res.data.data;
 					}
 				});
 		}

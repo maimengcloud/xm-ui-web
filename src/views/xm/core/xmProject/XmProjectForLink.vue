@@ -5,9 +5,9 @@
 			 <el-input v-model="filters.key" style="width:30%;" placeholder="请输入关键字进行查找项目" v-if="!xmIteration && !xmProduct"> 
 			</el-input>
 			<el-button @click="searchXmProjects" icon="el-icon-search" v-if="!xmIteration && !xmProduct"></el-button>
-			<el-button icon="el-icon-plus" @click="xmProjectListVisible=true" v-if="!xmIteration"> 
-				加入更多项目到产品中
-			</el-button>
+			 <xm-project-select @row-click="onXmProjectSelect">
+				 <font slot="title">添加更多项目到产品中</font>
+			 </xm-project-select>
 		</el-row>
 		<el-row class="page-main ">   
 			<el-table ref="table" :height="tableHeight"  stripe :data="xmProjects"  highlight-current-row v-loading="load.list"   style="width: 100%;">
@@ -43,7 +43,7 @@
 	import { listXmProject,  } from '@/api/xm/core/xmProject';  
 	import { mapGetters } from 'vuex' 
  	import { delXmProductProjectLink, addXmProductProjectLink,batchDelXmProductProjectLink } from '@/api/xm/core/xmProductProjectLink';
-import XmProjectList from './XmProjectList.vue';
+import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue';
 
 
 
@@ -206,7 +206,7 @@ import XmProjectList from './XmProjectList.vue';
 			
 		},//end methods
 		components: {
-XmProjectList  
+XmProjectSelect  
 			 
 		    //在下面添加其它组件
 		},

@@ -30,3 +30,7 @@ export const editXmQuestion = params => { return axios.post(`${base}/xm/core/xmQ
 export const addXmQuestion = params => { return axios.post(`${base}/xm/core/xmQuestion/add`, params); };
 
 export const editStatus = params => { return axios.post(`${base}/xm/core/xmQuestion/editStatus`, params); };
+
+export const editXmQuestionSomeFields = params => { return axios.post(`${base}/xm/core/xmQuestion/editSomeFields`, params); };
+
+

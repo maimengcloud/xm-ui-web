@@ -15,10 +15,8 @@ export default {
       },
       // leaf: true,//只有一个节点
       children: [
-
-        { path: 'xmProject/XmProjectAdd', component: _import('xm/core/xmProject/XmProjectAdd'), name: 'xmProjectAdd',hidden:true, meta: { title: '项目立项' }},
         { path: 'xmProject/XmProjectAllMng', component: _import('xm/core/xmProject/XmProjectAllMng'), name: 'xmProjectAllMng', meta: { title: '项目总览' }},
-        { path: 'xmProject/XmProjectMng', component: _import('xm/core/xmProject/XmProjectMng'), name: 'xmProjectMng', meta: { title: '项目(我的)' }}, 
+        { path: 'xmProject/XmProjectMng', component: _import('xm/core/xmProject/XmProjectMng'), name: 'xmProjectMng', meta: { title: '项目(我的)' }},
         { path: 'xmProjectState/XmProjectStateMng', component: _import('xm/core/xmProjectState/XmProjectStateMng'), name: 'XmProjectStateMng', meta: { title: '项目统计' }},
         { path: 'xmBranchState/XmBranchStateMng', component: _import('xm/core/xmBranchState/XmBranchStateMng'), name: 'XmBranchStateMng', meta: { title: '所有项目汇总' }},
         { path: 'xmProject/XmProjectRecycle', component: _import('xm/core/xmProject/XmProjectRecycle'), name: 'XmProjectRecycle', meta: { title: '项目回收站' }},
@@ -136,7 +134,7 @@ export default {
          { path: 'xmIteration/XmIterationMng', component: _import('xm/core/xmIteration/XmIterationMng'), name: 'XmIterationMng', meta: { title: '迭代管理' }},
         { path: 'xmIterationMenu/XmIterationMenuMng', component: _import('xm/core/xmIterationMenu/XmIterationMenuMng'), name: 'XmIterationMenuMng', meta: { title: '需求迭代' }},
       ]
-    }, 
+    },
     {
       path: '/xm/core',
       component: Layout,
@@ -148,8 +146,23 @@ export default {
       },
       // leaf: true,//只有一个节点
       children: [
-         { path: 'xmGroup/XmGroupAllMng', component: _import('xm/core/xmGroup/XmGroupAllMng'), name: 'XmGroupAllMng', meta: { title: '团队管理' }}, 
-         { path: 'xmGroupUser/XmGroupUserMng', component: _import('xm/core/xmGroupUser/XmGroupUserMng'), name: 'XmGroupUserMng', meta: { title: '成员管理' }}, 
+         { path: 'xmGroup/XmGroupAllMng', component: _import('xm/core/xmGroup/XmGroupAllMng'), name: 'XmGroupAllMng', meta: { title: '团队管理' }},
+         { path: 'xmGroupUser/XmGroupUserMng', component: _import('xm/core/xmGroupUser/XmGroupUserMng'), name: 'XmGroupUserMng', meta: { title: '成员管理' }},
+      ]
+    },
+    {
+      path: '/xm/core',
+      component: Layout,
+      name: 'TaskSbill',
+      iconCls: 'fa el-icon-menu',
+      meta: {
+        menu:true,
+        title: '任务结算',
+        icon: 'task'
+      },
+      //leaf: true,//只有一个节点
+      children: [
+        { path: 'xmTaskSbill/XmTaskSbillMng', component: _import('xm/core/xmTaskSbill/XmTaskSbillMng'), name: 'XmTaskSbilllMng', meta: { title: '任务结算',icon:'task' }},
       ]
     }
   ]

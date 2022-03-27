@@ -141,7 +141,7 @@
   import XmGantt from '../components/xm-gantt';
 
 	import { mapGetters } from 'vuex'
-import XmIterationSelect from './XmIterationSelect.vue';
+import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';
 
 	export default {
 		computed: {
@@ -150,8 +150,8 @@ import XmIterationSelect from './XmIterationSelect.vue';
 			]),
 
 			xmIterationTreeData(){
-				return this.translateDataToTree(this.xmIterations);
-      },
+				return this.xmIterations
+      		},
 		},
 		props:['xmProduct','selProject','menuId','visible'],
 		watch:{
@@ -407,50 +407,7 @@ import XmIterationSelect from './XmIterationSelect.vue';
 			rowClick: function(row, event, column){
 				this.editForm=row
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
-			},
-			/**begin 自定义函数请在下面加**/
-
-			translateDataToTree(data2) {
-				var data=JSON.parse(JSON.stringify(data2));
-				let parents = data.filter(value =>{
-					//如果我的上级为空，则我是最上级
-					if(value.pid == 'undefined' || value.pid == null  || value.pid == ''){
-						return true;
-
-						//如果我的上级不在列表中，我作为最上级
-					}else if(data.some(i=>value.pid==i.id)){
-						return false;
-					}else {
-						return true
-					}
-
-				})
-				let children = data.filter(value =>{
-					if(data.some(i=>value.pid==i.id)){
-						return true;
-					}else{
-						return false;
-					}
-				})
-				let translator = (parents, children) => {
-					parents.forEach((parent) => {
-						children.forEach((current, index) => {
-							if (current.pid === parent.id) {
-								let temp = JSON.parse(JSON.stringify(children))
-								temp.splice(index, 1)
-								translator([current], temp)
-								typeof parent.children !== 'undefined' ? parent.children.push(current) : parent.children = [current]
-							}
-						}
-						)
-					}
-					)
-				}
-
-				translator(parents, children)
-
-				return parents
-			},
+			}, 
 
 			clearSelectIteration(){
 				this.editForm=this.editFormInit

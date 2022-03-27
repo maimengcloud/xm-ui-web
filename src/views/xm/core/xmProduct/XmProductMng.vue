@@ -253,11 +253,7 @@
 					</el-drawer>
 					<el-drawer title="选择项目" :visible.sync="projectVisible" size="60%" append-to-body>
 						<xm-project-list  @select="onProjectSelected"></xm-project-list>
-					</el-drawer>
-
-					<el-drawer title="选择产品" :visible.sync="productSelectVisible" size="60%" append-to-body>
-						<xm-product-select  @row-click="onXmProductSelect"></xm-product-select>
-					</el-drawer>
+					</el-drawer> 
 					<el-drawer title="迭代报告" :visible.sync="iterationSelectVisible" fullscreen  append-to-body  :close-on-click-modal="false">
 						<xm-iteration-select @row-click="onXmIterationSelect"></xm-iteration-select>
 					</el-drawer> 
@@ -309,13 +305,12 @@
 	import  XmProductEdit from './XmProductEdit';//修改界面
 	import  XmProductTplMng from './XmProductTplMng';//修改界面
 	import { mapGetters } from 'vuex'
-	import  XmIterationMng from '../xmIteration/XmIterationSelect';//修改界面
+	import  XmIterationMng from '@/views/xm/core/components/XmIterationSelect';//修改界面
 	import  XmProductStateMng from '../xmProductState/XmProductStateMng';//修改界面
 
-	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
-	import XmProjectList from '../xmProject/XmProjectList.vue';
-	import XmIterationSelect from '../xmIteration/XmIterationSelect.vue';
-	import XmProductSelect from './XmProductSelect.vue'; 
+	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
+	import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';
+	import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'; 
 
 	import Guider from '@/components/Guider/Index.js';
 
@@ -722,8 +717,7 @@
 		    'xm-product-edit':XmProductEdit,
 			XmIterationMng,
 			XmProductStateMng,
-			UsersSelect,
-			XmProjectList,
+			UsersSelect, 
 			XmIterationSelect,
 			XmProductSelect,
 			XmProductTplMng, 

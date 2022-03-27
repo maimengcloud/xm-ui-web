@@ -5,13 +5,7 @@
 				<el-tabs type="border-card"  :value="showPanel"  @tab-click="tabClick">
 					<el-tab-pane disabled> 
 						<div  slot="label">
-							<el-popover
-								placement="bottom"
-								width="400"
-								trigger="click"> 
-								<xm-product-select ref="xmProductSelect" :auto-select="true" :sel-project="selProject" :xm-iteration="xmIteration"  @row-click="onProductRowClick" @clear-select="onProductClearSelect"></xm-product-select>
- 								 <el-link type="warning" slot="reference"  icon="el-icon-search"><font style="font-size:14px;">{{xmProduct?xmProduct.productName:'选择产品'}}</font></el-link> 
-							</el-popover> 
+								<xm-product-select ref="xmProductSelect" :auto-select="true" :link-project-id="selProject?selProject.id:null" :iterationId="xmIteration?xmIteration.id:null"  @row-click="onProductRowClick" @clear-select="onProductClearSelect"></xm-product-select>
 						</div>
 					</el-tab-pane>
 					<el-tab-pane disabled> 
@@ -36,12 +30,11 @@
 						 <xm-product-edit  v-if="showPanel=='detail'" :xm-product="xmProduct"></xm-product-edit>
 
           			</el-tab-pane>
-       
+					<el-tab-pane label="配置关联的项目" lazy  name="productProjectLink" v-if="xmProduct && xmProduct.id && !selProject">
+						<xm-product-project-link-mng  v-if="showPanel=='productProjectLink'" :xm-product="xmProduct"></xm-product-project-link-mng>
+					</el-tab-pane> 
 					<el-tab-pane label="迭代"   name="iterationProductLink" v-if="xmProduct && xmProduct.id" >
 						<xm-iteration-mng v-if="showPanel=='iterationProductLink'" :xm-product="xmProduct"></xm-iteration-mng>
-					</el-tab-pane> 
-					<el-tab-pane label="配置关联的项目" lazy  name="productProjectLink" v-if="xmProduct && xmProduct.id">
-						<xm-product-project-link-mng  v-if="showPanel=='productProjectLink'" :xm-product="xmProduct"></xm-product-project-link-mng>
 					</el-tab-pane> 
 					<el-tab-pane label="需求" lazy name="menus" v-if="xmProduct && xmProduct.id">
 						<xm-menu-mng v-if="xmProduct && showPanel=='menus'"   :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"  :disabled-mng="true"></xm-menu-mng>
@@ -73,11 +66,10 @@
 	import { mapGetters } from 'vuex'
 import XmProductMng from './XmProductMng.vue';
 import XmTaskMng from '../xmTask/XmTaskMng.vue';
-import XmQuestionMng from '../xmQuestion/XmQuestionMng.vue';
-import XmProjectList from '../xmProject/XmProjectList.vue';
+import XmQuestionMng from '../xmQuestion/XmQuestionMng.vue'; 
 import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
 
-import XmProductSelect from './XmProductSelect.vue';
+import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue';
 import XmProductProjectForLink from './XmProductProjectForLink.vue';
 import XmProductOverview from "./XmProductOverview"; 
 import XmIterationLinkForProduct from '../xmIterationLink/XmIterationLinkForProduct.vue';
@@ -139,8 +131,7 @@ import XmProductEdit from './XmProductEdit.vue';
 			XmProductMng,
 			XmTaskMng,
 			XmQuestionMng,
-			XmProductSelect,
-			XmProjectList,
+			XmProductSelect, 
 			XmProjectForLink,
 			XmProductProjectForLink,
 			XmProductOverview,

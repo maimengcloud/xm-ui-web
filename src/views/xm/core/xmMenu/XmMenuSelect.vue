@@ -2,51 +2,24 @@
 	<section> 
 		<el-row>   
 			<el-col :span="24"  style="padding-left:12px;" >
-				<el-row>    
-					<el-popover
-						placement="bottom"
-						width="400"
-						trigger="manual"
-						v-model="productVisible"> 
-						<xm-product-select v-if="!xmProduct" :auto-select="false" :sel-project="selProject" @row-click="onProductSelected" ref="xmProductMng" :xm-iteration="xmIteration" :simple="true" @clear-select="onProductClearSelect" @close="productVisible=false"></xm-product-select>
-							<el-link title="产品，点击选择、清除选择" @click="productVisible=true" type="warning" slot="reference" v-if="!xmProduct" icon="el-icon-search"><font style="font-size:14px;">{{filters.product?filters.product.productName:'选择产品'}}</font></el-link> 
-					</el-popover>  
-					
-					<el-popover
-						placement="bottom"
-						width="400"
-						trigger="manual"
-						v-model="iterationVisible"> 
-						<xm-iteration-select v-if="!xmIteration" :auto-select="false" :sel-project="selProject" @row-click="onIterationSelected" ref="xmProductMng" :xm-product="xmProduct" :simple="true" @clear-select="onIterationClearSelect" @close="iterationVisible=false"></xm-iteration-select>
-							<el-link title="迭代，点击选择、清除选择" @click="iterationVisible=true" type="warning" slot="reference" v-if="!xmIteration" icon="el-icon-search"><font style="font-size:14px;">{{filters.iteration?filters.iteration.iterationName:'选择迭代'}}</font></el-link> 
-					</el-popover>   
-					<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable style="width: 160px;">
-						<el-option   value="not-join-any-project"  label="未分配过任务的需求"></el-option>  
-						<el-option   value="join-any-project"  label="已分配过任务的需求"></el-option>  
-						<el-option   value="not-join-curr-project"  :label="'未分配任务到项目【'+selProject.name+'】'" v-if="selProject && selProject.id"></el-option>  
-						<el-option   value="join-curr-project"  :label="'已分配任务到项目【'+selProject.name+'】'"  v-if="selProject && selProject.id"></el-option>  
-					</el-select>   
-					<el-select   v-model="filters.iterationFilterType" placeholder="加入过迭代？" clearable  style="width: 160px;">
-						<el-option   value="not-join-any-iteration"  label="未加入过迭代"></el-option>  
-						<el-option   value="join-any-iteration"  label="已加入过迭代"></el-option>  
-						<el-option   value="not-join-curr-iteration"  :label="'未加入迭代【'+filters.iteration.iterationName+'】'"  v-if="filters.iteration && filters.iteration.id"></el-option>  
-						<el-option   value="join-curr-iteration"  :label="'已加入本迭代【'+filters.iteration.iterationName+'】'" v-if="filters.iteration && filters.iteration.id"></el-option>  
-					</el-select> 
-
-					<el-select v-model="filters.dtype" clearable placeholder="需求类型">
-						<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-					</el-select>    
-					<el-select v-model="filters.source" placeholder="需求来源"  clearable>
-						<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
-					</el-select>     
-					<el-select v-model="filters.dlvl" placeholder="需求层次"  clearable class="hidden-md-and-down">
-						<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
-					</el-select>     
-				</el-row>
 				<el-row>     
-					<el-button class="hidden-md-and-down" v-if="!filters.tags||filters.tags.length==0" @click.native="tagSelectVisible=true">标签条件</el-button>
-					<el-tag class="hidden-md-and-down" v-else @click="tagSelectVisible=true"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
-					<el-select v-model="filters.priority" placeholder="优先级"  clearable>
+						<xm-product-select style="display:inline;" v-if="!xmProduct&&!xmIteration" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" ref="xmProductMng" :iteration-id="xmIteration?xmIteration.id:null"  @clear-select="onProductClearSelect"></xm-product-select>
+ 
+						<xm-iteration-select style="display:inline;"  v-if="!xmIteration" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onIterationSelected" ref="xmIterationMng" :product-id="xmProduct?xmProduct.id:null"  @clear-select="onIterationClearSelect"></xm-iteration-select>
+						 
+						<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable v-if="taskFilterType">
+							<el-option   value="not-join-any-project"  label="未分配过任务的需求"></el-option>  
+							<el-option   value="join-any-project"  label="已分配过任务的需求"></el-option>  
+							<el-option   value="not-join-curr-project"  :label="'未分配任务到项目【'+selProject.name+'】'" v-if="selProject && selProject.id"></el-option>  
+							<el-option   value="join-curr-project"  :label="'已分配任务到项目【'+selProject.name+'】'"  v-if="selProject && selProject.id"></el-option>  
+						</el-select>   
+						<el-select   v-model="filters.iterationFilterType" placeholder="加入过迭代？" clearable  v-if="iterationFilterType">
+							<el-option   value="not-join-any-iteration"  label="未加入过迭代"></el-option>  
+							<el-option   value="join-any-iteration"  label="已加入过迭代"></el-option>  
+							<el-option   value="not-join-curr-iteration"  :label="'未加入迭代【'+filters.iteration.iterationName+'】'"  v-if="filters.iteration && filters.iteration.id"></el-option>  
+							<el-option   value="join-curr-iteration"  :label="'已加入本迭代【'+filters.iteration.iterationName+'】'" v-if="filters.iteration && filters.iteration.id"></el-option>  
+						</el-select>  	    
+					 <el-select v-model="filters.priority" placeholder="优先级"  clearable style="width: 100px;">
 							<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option> 
 					</el-select>      
 					<el-select  v-model="filters.status" placeholder="需求状态" clearable style="width: 100px;">
@@ -93,6 +66,62 @@
 							</el-col>
 							<el-col  :span="24"  style="padding-top:5px;" class="hidden-log-and-up">
 								<font class="more-label-font">
+									需求是否加入了迭代:
+								</font>  
+								<el-select   v-model="filters.iterationFilterType" placeholder="加入过迭代？" clearable >
+									<el-option   value="not-join-any-iteration"  label="未加入过迭代"></el-option>  
+									<el-option   value="join-any-iteration"  label="已加入过迭代"></el-option>  
+									<el-option   value="not-join-curr-iteration"  :label="'未加入迭代【'+filters.iteration.iterationName+'】'"  v-if="filters.iteration && filters.iteration.id"></el-option>  
+									<el-option   value="join-curr-iteration"  :label="'已加入本迭代【'+filters.iteration.iterationName+'】'" v-if="filters.iteration && filters.iteration.id"></el-option>  
+								</el-select>  
+							</el-col>
+							
+							<el-col  :span="24"  style="padding-top:5px;" class="hidden-log-and-up">
+								<font class="more-label-font">
+									需求是否分配了任务:
+								</font>   
+								<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable >
+									<el-option   value="not-join-any-project"  label="未分配过任务的需求"></el-option>  
+									<el-option   value="join-any-project"  label="已分配过任务的需求"></el-option>  
+									<el-option   value="not-join-curr-project"  :label="'未分配任务到项目【'+selProject.name+'】'" v-if="selProject && selProject.id"></el-option>  
+									<el-option   value="join-curr-project"  :label="'已分配任务到项目【'+selProject.name+'】'"  v-if="selProject && selProject.id"></el-option>  
+								</el-select>   
+							</el-col>
+							<el-col  :span="24"  style="padding-top:5px;" class="hidden-log-and-up">
+								<font class="more-label-font">
+									需求层次:
+								</font>  
+								<el-select v-model="filters.dlvl" placeholder="需求层次"  clearable>
+									<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
+								</el-select>  
+							</el-col>
+							<el-col  :span="24"  style="padding-top:5px;" class="hidden-log-and-up">
+								<font class="more-label-font">
+									需求类型:
+								</font>  
+								<el-select v-model="filters.dtype" clearable placeholder="需求类型" style="width: 100px;">
+									<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
+								</el-select>   
+							</el-col>
+							<el-col  :span="24"  style="padding-top:5px;" class="hidden-log-and-up">
+								<font class="more-label-font">
+									需求来源:
+								</font>  
+ 
+								<el-select v-model="filters.source" placeholder="需求来源"  clearable style="width: 100px;">
+									<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
+								</el-select>     
+							</el-col>
+							<el-col  :span="24"  style="padding-top:5px;" class="hidden-log-and-up">
+								<font class="more-label-font">
+									需求层次:
+								</font>  
+								<el-select v-model="filters.dlvl" placeholder="需求层次"  clearable class="hidden-md-and-down" style="width: 100px;">
+									<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
+								</el-select>    
+							</el-col>
+							<el-col  :span="24"  style="padding-top:5px;" class="hidden-log-and-up">
+								<font class="more-label-font">
 									需求层次:
 								</font>  
 								<el-select v-model="filters.dlvl" placeholder="需求层次"  clearable>
@@ -106,7 +135,7 @@
 						<el-button  slot="reference" icon="el-icon-more"></el-button>
 					</el-popover>  
 					
-					<el-button   type="primary" v-if="multi"  v-on:click="multiSelectedConfirm">确认选择</el-button>
+					<el-button  style="float:right;" type="primary" v-if="multi"  v-on:click="multiSelectedConfirm">确认选择</el-button>
 				</el-row>   
 				<el-row style="padding-top:12px;">
 					<el-table ref="table" class="menu-table"  lazy :load="loadMenusLazy" :height="maxTableHeight" :data="xmMenusTreeData"   row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
@@ -124,15 +153,12 @@
 									<div v-if="scope.row.dclass=='3'" class="icon" style="background-color:  rgb(79, 140, 255);">
 									<i class="el-icon-document"></i>
 								</div>
-								<span class="vlink" :class="scope.row.ntype==='1'?'el-icon-folder-opened':''"  @click="toMenu(scope.row)">{{scope.row.seqNo}}&nbsp;
+								<span class="vlink" @click="toMenu(scope.row)">{{scope.row.seqNo}}&nbsp;
 								{{scope.row.menuName}}</span> 
 							</template>
 						</el-table-column> 
 						<el-table-column prop="productId" label="产品" min-width="100" >   </el-table-column>
 						<el-table-column prop="iterationName" label="迭代" min-width="140" >   </el-table-column>
-						<el-table-column prop="mmUsername" label="责任人" width="140" > 
-							 
-						</el-table-column> 
 						<el-table-column label="操作"    width="100" fixed="right"  >
 							<template slot-scope="scope"> 
 								<el-button  :disabled="checkScope && checkScope!==scope.row.ntype"  type="primary" @click="selectedMenu( scope.row,scope.$index)">选择</el-button> 
@@ -165,19 +191,19 @@
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { listXmMenu  } from '@/api/xm/core/xmMenu';
- 	import  XmProductSelect from '../xmProduct/XmProductSelect';//新增界面
+ 	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//新增界面
  	import XmMenuRichDetail from './XmMenuRichDetail';
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
 
   	import TagMng from "@/views/mdp/arc/tag/TagMng";
 
-	import  XmIterationSelect from '../xmIteration/XmIterationSelect';//修改界面
+	import  XmIterationSelect from '@/views/xm/core/components/XmIterationSelect';//修改界面
 	import {sn} from '@/common/js/sequence'
 
 	import { mapGetters } from 'vuex'
 	
 	export default { 
-		props:['isSelectMenu','multi','visible','xmIteration','xmProduct','selProject','checkScope'/**0-需求，1-需求池 */],
+		props:['isSelectMenu','multi','visible','xmIteration','xmProduct','selProject','checkScope'/**0-需求，1-需求池 */,'iterationFilterType','taskFilterType'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -211,6 +237,7 @@
 			const endDate = new Date();
 			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 6 );
 			return {
+				maps:new Map(),
 				filters: {
 					key: '',
 					product:null,
@@ -312,7 +339,13 @@
 				}
 				if(this.filters.taskFilterType){
 					params.taskFilterType=this.filters.taskFilterType 
-					params.projectId=this.selProject.id 
+					 
+					if(params.taskFilterType==='not-join-curr-project'){
+						params.projectId=this.selProject.id 
+					} 
+					if(params.taskFilterType==='join-curr-project'){
+						params.projectId=this.selProject.id 
+					} 
 					params.ntype="0"
 				} 
 				if(this.selProject && this.selProject.id){
@@ -349,9 +382,9 @@
 				} 
 				return params;
 			},
-			loadMenusLazy(row, treeNode, resolve) {  
-				 
-				var params={pmenuId:row.menuId}
+			loadMenusLazy(tree, treeNode, resolve) {  
+				this.maps.set(tree.menuId, { tree, treeNode, resolve }) //储存数据
+				var params={pmenuId:tree.menuId}
 				params=this.getParams(params);
 				params.isTop=""
 				this.load.list = true;
@@ -366,6 +399,9 @@
 					}
 				}).catch( err => this.load.list = false );   
 				
+			},
+			reloadChildren(rows){  
+            	treeTool.reloadAllChildren(this.$refs.table,this.maps,rows,'pmenuId',this.loadMenusLazy) 
 			},
 			//获取列表 XmMenu xm_project_menu
 			getXmMenus() {
@@ -385,13 +421,14 @@
 				
 				if( this.filters.product  && this.filters.product.id){
 					params.productId=this.filters.product.id
-				}else {
-					this.$notify({showClose: true, message: "请先选择产品", type: 'warning' });
-					return;
-					//params.xxx=xxxxx
-				} 
+				}
 				
 				params=this.getParams(params)
+				
+				if(!params.productId && !params.iterationId && !params.linkIterationId){ 
+					this.$notify({showClose: true, message: "请先选择产品", type: 'warning' });
+					return; 
+				}
 				params.withParents="1"
 				this.load.list = true;
 				listXmMenu(params).then((res) => {
@@ -514,7 +551,13 @@
 					this.filters.iterationFilterType='join-curr-iteration'
 					this.filters.iteration=this.xmIteration
 				}
+				if(this.iterationFilterType){
+					this.filters.iterationFilterType=this.iterationFilterType
+				}
 				
+				if(this.taskFilterType){
+					this.filters.taskFilterType=this.taskFilterType
+				}
 				this.filters.product=this.xmProduct
 				this.getXmMenus();  
         	}); 

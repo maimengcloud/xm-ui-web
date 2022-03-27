@@ -12,16 +12,16 @@
 			<el-form :model="addForm" label-width="120px"  :rules="addFormRules" ref="addForm">
 						<el-form-item label="缺陷标题" prop="name">
 							<el-input v-model="addForm.name" placeholder="缺陷标题" ></el-input>
-							<br><el-tooltip content="隶属需求">   
-									<el-tag  closable @click="showSelectMenu" @close.stop="handleCloseMenuTag">
+ 									<el-tag title="隶属需求" closable @click="showSelectMenu" @close.stop="handleCloseMenuTag">
 									<div class="icon" :style="{backgroundColor:   'rgb(79, 140, 255)' }">
 										<i :class="  'el-icon-document'  " ></i>
-									</div> {{addForm.menuName?addForm.menuName:"未关联需求"}}</el-tag></el-tooltip>
+									</div> {{addForm.menuName?addForm.menuName:"未关联需求"}}</el-tag> 
 						</el-form-item>
 						<el-row>
 							<el-col :span="12">
 								<el-form-item label="归属项目" prop="projectId">
-									 <el-tag :closable="!selProject" @click="showProjectList" @close.stop="clearProject">{{this.filters.selProject?this.filters.selProject.name:'未关联项目'}}</el-tag>  
+									<font v-if="filters.selProject">{{this.filters.selProject?this.filters.selProject.name:''}}</font>
+ 									 <xm-project-select ref="xmProjectSelect" v-if="!selProject" @row-click="onPorjectConfirm"></xm-project-select>
 								</el-form-item>
 							</el-col>
 							<el-col  :span="12">
@@ -130,12 +130,8 @@
 			</el-drawer>
 
 			<el-drawer append-to-body title="需求选择" :visible.sync="selectMenuVisible"   size="70%"   :close-on-click-modal="false">
-				<xm-menu-select :is-select-menu="true"  @selected="onSelectedMenu" :sel-project="filters.selProject"></xm-menu-select>
-			</el-drawer>
-
-			<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  size="70%"  append-to-body   :close-on-click-modal="false">
-				<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
-			</el-drawer>
+				<xm-menu-select :is-select-menu="true" checkScope="0"  @selected="onSelectedMenu" :sel-project="filters.selProject"></xm-menu-select>
+			</el-drawer> 
 		</el-row>
 		<el-row>
 			<el-button @click.native="handleCancel">取消</el-button>
@@ -155,7 +151,7 @@
 
 	import XmGroupMng from '../xmGroup/XmGroupSelect';
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
-	import XmProjectList from '../xmProject/XmProjectList';
+	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
 
 
 	import XmTaskList from '../xmTask/XmTaskList';
@@ -236,6 +232,7 @@
 				opStepEditorVisible:false,
 				expectResultEditorVisible:false,
 				descriptionEditorVisible:false,
+				xmProductVersions:[{id:"1.0.0" ,name:'1.0.0'}],
 
 				/**end 在上面加自定义属性**/
 			}//end return
@@ -375,6 +372,7 @@
 			showSelectMenu:function(){
 				if(this.filters.selProject==null){
 					this.$notify({showClose: true, message: "请先选项目", type: 'error' });
+					this.$refs.xmProjectSelect.projectVisible=true;
 					return ;
 				}
 				this.selectMenuVisible=true;
@@ -398,10 +396,7 @@
 			sendToAsk(){
 				this.addForm.handlerUsername=this.addForm.askUsername
 				this.addForm.handlerUserid=this.addForm.askUserid
-			},
-			showProjectList:function(){
-				this.selectProjectVisible=true;
-			},
+			}, 
 			onPorjectConfirm:function(project){
 				this.filters.selProject=project
 				this.addForm.projectId=project.id
@@ -433,7 +428,7 @@
 		},//end method
 		components: {
 				//在下面添加其它组件 'xm-question-edit':XmQuestionEdit
-				'upload': AttachmentUpload,XmGroupMng,VueEditor,XmTaskList,xmMenuSelect,XmProjectList
+				'upload': AttachmentUpload,XmGroupMng,VueEditor,XmTaskList,xmMenuSelect,XmProjectSelect
 		},
 		mounted() {
 			console.log("question_add");

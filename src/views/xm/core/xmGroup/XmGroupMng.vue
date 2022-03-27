@@ -1,14 +1,8 @@
 <template>
 	<section class="page-container border padding" >
-		<el-row> 
-			 
-			<el-popover v-if="pgClass==='0' && (!selProject  || !selProject.id)"
-				placement="bottom"
-				width="400"
-				trigger="click"> 
-				<xm-project-select :auto-select="true"   :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClearSelect"></xm-project-select>
-					<el-link type="warning" slot="reference" icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link> 
-			</el-popover> 
+		<el-row>  
+			<xm-project-select style="display:inline;" v-if="!selProject &&pgClass==='0'" :auto-select="false"   :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear-select="onProjectClearSelect"></xm-project-select>
+			
 			<el-input v-model="filters.key" style="width:15%;" clearable placeholder="名称过滤"></el-input>   
 			<el-button  type="primary" @click="searchXmGroups" icon="el-icon-search">刷新</el-button> 
 			<el-button  type="plain" @click="showGroupState" icon="el-icon-s-data">小组进度</el-button> 
@@ -188,16 +182,9 @@
 			<el-drawer v-else-if="!selProject && xmProduct" :title="xmProduct.productName+'小组进度数据查看'" center   :visible.sync="xmGroupStateVisible"  size="80%"  :close-on-click-modal="false" append-to-body>
 				<xm-group-state-mng   :xm-product="xmProduct"   :visible="xmGroupStateVisible" ></xm-group-state-mng>
 			</el-drawer>
-			
 			<el-drawer  v-if="currNodeType=='group'&&editForm.groupName" center  :title="(editForm==null?editForm.groupName:'')+'小组成员管理'" :visible.sync="groupUserVisible"  size="80%"  :close-on-click-modal="false" append-to-body>
 				<xm-group-user-mng  :xm-group="editForm" :visible="groupUserVisible" ></xm-group-user-mng>
 			</el-drawer>
-			<el-drawer title="选中项目" :visible.sync="selectProjectVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
-				<xm-project-list    @project-confirm="onPorjectConfirm"></xm-project-list>
-			</el-drawer>   
-			<el-drawer title="选中产品" :visible.sync="selectProductVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
-				<xm-product-select :isSelectProduct="true"   @selected="onProductConfirm"></xm-product-select>
-			</el-drawer>    
 	    </el-row>
 		
 	</section>
@@ -221,16 +208,15 @@
 
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
 	import  XmGroupStateMng from '../xmGroupState/XmGroupStateMng';//修改界面
-	import  XmGroupUserMng from '../xmGroupUser/XmGroupUserMng';//修改界面
-	import XmProjectList from '../xmProject/XmProjectList';
+	import  XmGroupUserMng from '../xmGroupUser/XmGroupUserMng';//修改界面 
 	
-	import XmProjectSelect from '../xmProject/XmProjectSelect';
-	import XmProductSelect from '../xmProduct/XmProductSelect.vue';
+	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
+	import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 	
 	export default {
 	    name:'xmGroupMng',
 		components: {
-		    XmGroupEdit,VueOkrTree,UsersSelect,XmGroupStateMng,XmGroupUserMng,XmProjectList,
+		    XmGroupEdit,VueOkrTree,UsersSelect,XmGroupStateMng,XmGroupUserMng, 
 XmProductSelect,XmProjectSelect,
 		},
 		props:["visible","selProject" ,"isSelectSingleUser","isSelectMultiUser",'xmProduct','xmIteration','pgClass'],

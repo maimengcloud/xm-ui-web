@@ -99,7 +99,7 @@
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { getTask ,listXmTask,editXmTask,editRate, delXmTask, batchDelXmTask,batchImportTaskFromTemplate,batchSaveBudget } from '@/api/xm/core/xmTask'; 
 	import { mapGetters } from 'vuex';  
-	import XmProjectSelect from '../xmProject/XmProjectSelect';
+	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
 
 	export default { 
 		computed: {
@@ -521,7 +521,7 @@
 		},
 		mounted() {
 			this.filters.selProject=this.selProject
-			debugger;
+			
 			this.$nextTick(()=>{  
 				this.tableHeight = util.calcTableMaxHeight(this.$refs.taskTable.$el); 
 				this.getXmTasks(); 

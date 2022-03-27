@@ -4,15 +4,9 @@
 			<el-col :span="24">
 				<el-tabs type="border-card"  :value="showPanel" @tab-click="tabClick">
 					<el-tab-pane disabled> 
-						<div  slot="label">
-							<el-popover
-								placement="bottom"
-								width="400"
-								trigger="click"> 
-								<xm-project-select ref="xmProjectSelect" :auto-select="true"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClearSelect"></xm-project-select>
- 								 <el-link type="warning" slot="reference"  icon="el-icon-search"><font style="font-size:14px;">{{selProject?selProject.name:'选择项目'}}</font></el-link> 
-							</el-popover>
-							
+						<div  slot="label"> 
+								<xm-project-select ref="xmProjectSelect" :auto-select="true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear-select="onProjectClearSelect"></xm-project-select>
+ 								  
 						</div>
 					 </el-tab-pane> 
 					<el-tab-pane disabled> 
@@ -23,7 +17,7 @@
 								v-model="projectAddVisible"
 								trigger="manual"> 
 								
- 								 <xm-project-add :visible="projectAddVisible" :xm-product="xmProduct" @cancel="projectAddVisible=false" @submit="afterProjectAddSubmit"></xm-project-add>
+ 								 <xm-project-add :visible="projectAddVisible" op-type="add" :xm-product="xmProduct" @cancel="projectAddVisible=false" @submit="afterProjectAddSubmit"></xm-project-add>
   								 <el-link type="warning" slot="reference" @click="projectAddVisible=true"  icon="el-icon-plus"><font style="font-size:14px;">项目</font></el-link> 
 							</el-popover>
 							
@@ -35,7 +29,7 @@
 					<el-tab-pane label="项目详情"   name="detail" v-if="selProject&&selProject.id"> 
         				<xm-project-detail  v-if="showPanel=='detail'" :sel-project="selProject" @submit="afterEditSubmit"></xm-project-detail> 
 					</el-tab-pane> 
-					<el-tab-pane label="配置关联的产品"   name="productProjectLink" v-if="selProject&&selProject.id" >
+					<el-tab-pane label="配置关联的产品"   name="productProjectLink" v-if="selProject&&selProject.id && !xmProduct" >
 						<xm-product-project-link-mng v-if="showPanel=='productProjectLink'" :sel-project="selProject"></xm-product-project-link-mng>
 					</el-tab-pane> 
 					<!--
@@ -74,14 +68,14 @@
 import XmProductMng from '../xmProduct/XmProductMng.vue';
 import XmTaskMng from '../xmTask/XmTaskMng.vue';
 import XmQuestionMng from '../xmQuestion/XmQuestionMng.vue';
-import XmProjectSelect from './XmProjectSelect.vue';
+import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue';
 import XmProjectForLink from './XmProjectForLink.vue';
 
-import XmProductSelect from '../xmProduct/XmProductSelect.vue';
+import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 import XmProductProjectForLink from '../xmProduct/XmProductProjectForLink.vue';
 import XmProjectOverview from "./XmProjectOverview";
 
-	import  XmProjectAdd from './XmProjectAdd';//新增界面
+	import  XmProjectAdd from './XmProjectEdit';//新增界面
 	import  XmProjectDetail from './XmProjectDetail';//新增界面
 
 import XmProductProjectLinkMng from '../xmProductProjectLink/XmProductProjectLinkMng.vue';

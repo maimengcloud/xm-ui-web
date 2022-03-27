@@ -14,37 +14,67 @@
 
 					<el-collapse value="1" accordion>
 						<el-collapse-item title="基本信息" name="1">
-							<el-form-item label="项目代号|名称" prop="name">
+							
+							<el-row>  
+									
+									<span v-if="opType!=='add'" style="float:right;">
+										<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">保存</el-button>  
+										<el-button icon="el-icon-watch" type="warning"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_baseinfo_change_approva'})">基本信息修改申请</el-button>  
+ 									</span>
+							</el-row>
+							<el-form-item label="项目代号" prop="code" v-if="opType==='add'">
+								<el-input v-model="editForm.code"  placeholder="项目代号，不可为空" >
+									<template slot="append">
+										<el-button type="text" @click.native="createProjectCode">自动生成</el-button>
+									</template>
+								</el-input>
+								<font color="blue" style="font-size:10px;">项目代号为合同上的项目代号，甲乙方共享;项目内部编号为 &nbsp;代号-四位随机码</font>
+							</el-form-item>  					
+							<el-form-item label="名称" prop="name"  v-if="opType==='add'">  
+									<el-input  v-model="editForm.name" placeholder="项目名称" ></el-input> 
+							</el-form-item>  
+							<el-form-item label="项目代号|名称" prop="name" v-if="opType!=='add'">
 								<el-input v-model="editForm.code" placeholder="项目代号，不可为空" style="width:20%;" ></el-input><el-input style="width:80%;" v-model="editForm.name" placeholder="项目名称" ></el-input>
 							    <font color="blue" style="font-size:10px;">项目代号为合同上的项目代号，甲乙方共享;项目内部编号为 &nbsp;代号-四位随机码</font>
 
 							</el-form-item>  
-							<el-form-item label="项目属性" prop="xmType"> 
-								<el-select v-model="editForm.xmType">
-									<el-option v-for="(i,index) in dicts['projectType']" :label="i.name" :value="i.id" :key="index"></el-option> 
-								</el-select>   
-								<el-select v-model="editForm.priority">
-									<el-option v-for="(i,index) in dicts['priority']" :label="i.name" :value="i.id" :key="index"></el-option> 
-								</el-select> 
-							</el-form-item>   
-							<el-form-item label="预算控制"> 
-								<el-form-item prop="budgetCtrl">
-									<el-checkbox  v-model="editForm.budgetCtrl"  true-label="1" false-label="0" >总预算控制</el-checkbox>  
-									<font style="font-size:12px;" color="blue">项目计划总预算不能大于项目总预算</font> 
-								</el-form-item>  
-								<el-form-item label="" prop="phaseBudgetCtrl">
-									<el-checkbox  v-model="editForm.phaseBudgetCtrl"  true-label="1" false-label="0" >项目计划预算控制</el-checkbox> 
-									<font style="font-size:12px;" color="blue">下级计划总预算不能大于上级计划总预算；每条计划的预算金额必须大于其关联任务的预算合计。</font> 
-								</el-form-item> 
-								<el-form-item label="" prop="phaseActCtrl">
-									<el-checkbox  v-model="editForm.phaseActCtrl"  true-label="1" false-label="0" >实际金额控制</el-checkbox>  
-									<font style="font-size:12px;" color="blue">每条计划实际金额不能大于预算金额;每条计划的预算金额必须大于其关联的任务的实际金额合计。</font> 
-								</el-form-item> 
+							<el-row>
+								<el-col :span="12">
+									<el-form-item label="项目类型"  prop="xmType">
+										<el-select v-model="editForm.xmType">
+											<el-option v-for="(i,index) in dicts['projectType']" :label="i.name" :value="i.id" :key="index"></el-option> 
+										</el-select>   
+									</el-form-item>  
+								</el-col>
+								<el-col :span="12">
+									<el-form-item label="优先级别" prop="priority">  
+										<el-select v-model="editForm.priority">
+											<el-option v-for="(i,index) in dicts['priority']" :label="i.name" :value="i.id" :key="index"></el-option> 
+										</el-select> 
+									</el-form-item> 
+								</el-col> 
+							</el-row> 
 							
-							</el-form-item>	  
+							<el-row>
+								<el-col :span="12">
+									<el-form-item label="工作方式"  prop="workType">
+										 <el-radio label="1" v-model="editForm.workType">scrum</el-radio>
+										 <el-radio label="2" v-model="editForm.workType">看板</el-radio>
+									</el-form-item>  
+								</el-col>
+								<el-col :span="12">
+									<el-form-item label="报工方式" prop="wtype">  
+										<el-select v-model="editForm.wtype">
+											<el-option   label="无须报工" value="0"  ></el-option> 
+											<el-option   label="每日报工" value="1"  ></el-option> 
+											<el-option   label="工期内任意日报工" value="2"  ></el-option> 
+										</el-select>  
+									</el-form-item> 
+								</el-col> 
+							</el-row>   
 							<el-row>
 								<el-col :span="8">
-							<el-form-item label="总控"  prop="admUserid">
+							<el-form-item label="项目总控"  prop="admUserid">
 								<el-input readonly v-model="editForm.admUsername" @click.native="showUserVisible('admUserid')"></el-input>
 								<font style="font-size:12px;" color="blue"></font> 
 							</el-form-item>  
@@ -66,8 +96,29 @@
 								<el-input type="textarea" :rows="6" v-model="editForm.description" placeholder="项目描述" ></el-input>
 							</el-form-item>    
 						</el-collapse-item>
-						<el-collapse-item title="工期及成本预估" name="2">
-							<el-form-item label="工期及成本预估" >  
+						<el-collapse-item title="控制开关" name="2"> 
+							<el-form-item label=""> 
+								<el-form-item prop="budgetCtrl">
+									<el-checkbox  v-model="editForm.budgetCtrl"  true-label="1" false-label="0" >总预算控制</el-checkbox>  
+									<font style="font-size:12px;" color="blue">开启后：项目计划总预算大于项目总预算后将无法添加新的计划任务，进行项目预算变更后方可继续添加计划任务。</font> 
+								</el-form-item>  
+								<el-form-item label="" prop="budgetEarly">
+									<el-checkbox  v-model="editForm.budgetEarly"  true-label="1" false-label="0" >总预算超额预警</el-checkbox> &nbsp;超出&nbsp;<el-input v-if="editForm.budgetEarly" type="number" v-model="editForm.earlyAmt" placeholder="预警额度" style="width:20%;" ></el-input> &nbsp;元将进入预警清单
+									<br><font style="font-size:12px;" color="blue">一级计划总预算超出项目预算一定额度，将进入超预算预警项目清单，直到调小计划预算或者调大项目预算后解除。</font> 
+								</el-form-item> 
+								<el-form-item label="" prop="phaseActCtrl">
+									<el-checkbox  v-model="editForm.phaseActCtrl"  true-label="1" false-label="0" >实际金额控制</el-checkbox>  
+									<font style="font-size:12px;" color="blue">每条计划实际金额不能大于预算金额; 任务的实际金额合计不能大于与任务关联的上级计划的预算。</font> 
+								</el-form-item>  
+							</el-form-item>	     
+						</el-collapse-item>
+						<el-collapse-item title="工期" name="3">
+							<el-row>  
+ 									<span v-if="opType!=='add'" style="float:right;">
+ 										<el-button icon="el-icon-watch" type="warning"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_delay_approva'})">工期变更申请</el-button> 
+ 									</span>
+							</el-row>
+							<el-form-item label="" >  
 							<el-row>
 								<el-date-picker
 									v-model="dateRanger"
@@ -83,43 +134,55 @@
 									:picker-options="pickerOptions"
 								></el-date-picker>    
 								<el-input  style="width:150px;" type="number" v-model="editForm.planWorkingHours" :precision="2" :step="8" :min="0" placeholder="预计工时"></el-input>小时 &nbsp;&nbsp;<el-tag>参考工时{{autoParams.weekday*8}}小时,工作日{{autoParams.weekday}}天</el-tag>  
-								
+								<br>
+								<el-checkbox v-model="autoSet">工期变化自动更新预估成本/合同金额/预估工时等关联数据</el-checkbox>
+							</el-row> 
+							
+
+						</el-form-item>   
+						</el-collapse-item> 
+						<el-collapse-item title="成本预估" name="4">
+							
+							<el-row>  
+ 									<span v-if="opType!=='add'" style="float:right;">
+ 										<el-button icon="el-icon-edit" type="warning"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_budget_change_approva'})">预算变更申请</el-button>
+ 									</span>
 							</el-row>
-							<el-divider></el-divider>
+							<el-form-item label="" >   
 							<el-row>
-								<el-col :span="4">人员类型</el-col>
+								<el-col :span="3">类型</el-col>
 								<el-col :span="4">人数</el-col>
-								<el-col :span="4">工作量</el-col>
-								<el-col :span="4">单价</el-col>
+								<el-col :span="6">工作量</el-col>
+								<el-col :span="3">单价</el-col>
 								<el-col :span="8">总价</el-col>
 								
 							</el-row>
 							<el-divider></el-divider>
 							<el-row>
-								<el-col :span="4">内购</el-col>
-								<el-col :span="4"><el-input style="width:150px;"  type="number" v-model="editForm.planIuserCnt" :precision="0" :step="1" :min="0" placeholder="内购人数"></el-input>  
+								<el-col :span="3">内购</el-col>
+								<el-col :span="4"><el-input style="width:90%;"  type="number" v-model="editForm.planIuserCnt" :precision="0" :step="1" :min="0" placeholder="内购人数"></el-input>  
 								</el-col>
-								<el-col :span="4">{{autoParams.planIuserWorkload}}人时</el-col>
-								<el-col :span="4"><el-input  style="width:150px;" type="number" v-model="editForm.planIuserPrice" :precision="0" :step="1" :min="0" placeholder="预计内部人时单价"></el-input> </el-col>
+								<el-col :span="6">{{autoParams.planIuserWorkload}}h</el-col>
+								<el-col :span="3"><el-input  style="width:90%;" type="number" v-model="editForm.planIuserPrice" :precision="0" :step="1" :min="0" placeholder="预计内部h单价"></el-input> </el-col>
 								<el-col :span="8">{{this.toFixed(autoParams.planIuserAt)}}元,{{this.toFixed(autoParams.planIuserAt/10000)}} 万元</el-col>
 							</el-row>
 							<el-divider></el-divider>
 							<el-row>
-								<el-col :span="4">外购</el-col>
-								<el-col :span="4"><el-input  style="width:150px;" type="number" v-model="editForm.planOuserCnt" :precision="0" :step="1" :min="0" placeholder="外购人数"></el-input>  
+								<el-col :span="3">外购</el-col>
+								<el-col :span="4"><el-input  style="width:90%;" type="number" v-model="editForm.planOuserCnt" :precision="0" :step="1" :min="0" placeholder="外购人数"></el-input>  
 								</el-col>
-								<el-col :span="4">{{autoParams.planOuserWorkload}}人时</el-col>
-								<el-col :span="4"><el-input  style="width:150px;" type="number" v-model="editForm.planOuserPrice" :precision="0" :step="1" :min="0" placeholder="预计外购人时单价"></el-input> </el-col>
-								<el-col :span="4">{{autoParams.planOuserAt }} 元 {{autoParams.planOuserAt/10000 }}万元</el-col>
+								<el-col :span="6">{{autoParams.planOuserWorkload}}h</el-col>
+								<el-col :span="3"><el-input  style="width:90%;" type="number" v-model="editForm.planOuserPrice" :precision="0" :step="1" :min="0" placeholder="预计外购h单价"></el-input> </el-col>
+								<el-col :span="8">{{autoParams.planOuserAt }} 元 {{autoParams.planOuserAt/10000 }}万元</el-col>
 							
 							</el-row>
 							<el-divider></el-divider>
 							<el-row>
-								<el-col :span="4">合计</el-col>
-								<el-col :span="4"> {{autoParams.planOuserCnt+autoParams.planIuserCnt}}
+								<el-col :span="3">合计</el-col>
+								<el-col :span="4"> {{autoParams.planOuserCnt+autoParams.planIuserCnt}}人
 								</el-col>
-								<el-col :span="4">{{autoParams.planOuserWorkload+autoParams.planIuserWorkload  }}人时,{{ (autoParams.planOuserWorkload+autoParams.planIuserWorkload)/8/20  }}人月 </el-col>
-								<el-col :span="4">平均：{{ (parseFloat2(autoParams.planOuserPrice) + parseFloat2(autoParams.planIuserPrice))/2}}元/人时</el-col>
+								<el-col :span="6">{{autoParams.planOuserWorkload+autoParams.planIuserWorkload  }}h,{{ (autoParams.planOuserWorkload+autoParams.planIuserWorkload)/8/20  }}人月 </el-col>
+								<el-col :span="3"> {{ (parseFloat2(autoParams.planOuserPrice) + parseFloat2(autoParams.planIuserPrice))/2}}元/h</el-col>
 								<el-col :span="8">{{autoParams.planTotalCost}} 元，{{(autoParams.planTotalCost)/10000}} 万元</el-col>
 							</el-row> 
 						</el-form-item>
@@ -132,33 +195,33 @@
 							<el-divider></el-divider>
 							<el-row>
 								合计： <el-input style="width:150px;" disabled type="number" v-model="editForm.planTotalCost" :precision="2" :step="1000" :min="0" placeholder="总成本预算"></el-input> <el-tag> {{this.toFixed(autoParams.planTotalCost/10000)}}万元</el-tag>
- 							</el-row>
-						</el-form-item>
-						<el-form-item label="收入及盈利水平预估"> 
-							<el-row> 
-								预计收款总额：<el-input style="width:150px;" type="number" v-model="editForm.totalReceivables" :precision="2" :step="1000" :min="0" disabled placeholder="预计总收款金额"></el-input> <el-tag> {{this.toFixed(autoParams.totalReceivables/10000)}}万元</el-tag>
-								合同总金额  ：<el-input style="width:150px;" type="number" v-model="editForm.contractAmt" :precision="2" :step="1000" :min="0" placeholder="合同总金额"></el-input> <el-tag>{{this.toFixed(autoParams.contractAmt/10000)}}万元</el-tag>
  							</el-row> 
-							<el-row> 
-								税率：<el-input style="width:150px;" type="number" v-model="editForm.taxRate" :precision="2" :step="0.01" :min="0" :max="0.99" placeholder="税率"></el-input> 
-								考核标准毛利率：<el-input style="width:150px;" type="number" v-model="editForm.budgetMarginRate" :precision="2" :step="0.01" :min="0" :max="0.99" placeholder="毛利率"></el-input> 
-								当前毛利率为：<el-tag>{{toFixed(parseFloat2(autoParams.currentBudgetMarginRate)*100,2)}}%</el-tag>
- 							</el-row>  
-						</el-form-item>   
+						</el-form-item> 
+						</el-collapse-item> 
+						<el-collapse-item title="收入及盈利水平" name="5">  
+							<el-form-item label="">  
+								<el-row> 
+									税率：<el-input style="width:150px;" type="number" v-model="editForm.taxRate" :precision="2" :step="5" :min="0" :max="100" placeholder="税率"></el-input> %
+									考核标准毛利率：<el-input style="width:150px;" type="number" v-model="editForm.budgetMarginRate" :precision="2" :step="5" :min="0" :max="100" placeholder="毛利率"></el-input>% 
+									当前预估毛利率为：<el-tag>{{toFixed(parseFloat2(autoParams.currentBudgetMarginRate),2)}}%</el-tag>
+								</el-row>  
+								<el-row> 
+									预计收\付款总额：<el-input style="width:150px;" type="number" v-model="editForm.totalReceivables" :precision="2" :step="1000" :min="0" disabled placeholder="预计总收款金额"></el-input> <el-tag> {{this.toFixed(autoParams.totalReceivables/10000)}}万元</el-tag>
+									合同总金额  ：<el-input style="width:150px;" type="number" v-model="editForm.contractAmt" :precision="2" :step="1000" :min="0" placeholder="合同总金额"></el-input> <el-tag>{{this.toFixed(editForm.contractAmt/10000)}}万元</el-tag>
+								</el-row> 
+							</el-form-item>   
 						</el-collapse-item> 
 					</el-collapse>    
 				</el-form>    
 		</el-row>
 		<el-row>  
 				<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>  
-				<el-button icon="el-icon-watch" type="danger"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_baseinfo_change_approva'})">基本信息修改申请</el-button>  
-				<el-button icon="el-icon-watch" type="danger"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_delay_approva'})">延期申请</el-button> 
-				<el-button icon="el-icon-star-on"  type="success"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_start_approva'})">立项申请</el-button>
-				<el-button icon="el-icon-success"  type="success" @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_over_approva'})">结项申请</el-button>
-				<el-button icon="el-icon-edit" type="warning"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_budget_change_approva'})">预算变更申请</el-button>
-				<el-button icon="el-icon-video-pause" type="danger"   @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_pause_approva'})">项目暂停申请</el-button> 
-				<el-button icon="el-icon-video-play"  type="primary" @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_restart_approva'})">项目重新启动申请</el-button>
-	 
+				<span v-if="opType!=='add'" style="float:right;">
+ 					<el-button icon="el-icon-star-on"  type="success"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_start_approva'})">立项申请</el-button>
+					<el-button icon="el-icon-success"  type="success" @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_over_approva'})">结项申请</el-button>
+ 					<el-button icon="el-icon-video-pause" type="info"   @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_pause_approva'})">项目暂停申请</el-button> 
+					<el-button icon="el-icon-video-play"  type="primary" @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_restart_approva'})">项目重新启动申请</el-button>
+				</span>
 		</el-row>
 		
 		<el-drawer append-to-body title="选择员工" :visible.sync="userSelectVisible" size="60%">
@@ -174,7 +237,7 @@
 
 	import config from "@/common/config"; //全局公共库
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { editXmProject,getDefOptions } from '@/api/xm/core/xmProject'; 
+	import { addXmProject,editXmProject,getDefOptions,createProjectCode } from '@/api/xm/core/xmProject'; 
 	import { uploadBase64 } from '@/api/mdp/arc/image'; 
 	
 	import { mapGetters } from 'vuex';  
@@ -217,14 +280,14 @@
 					planNouserAt=0.0
 				}
 				if(budgetMarginRate==null || budgetMarginRate==''){
-					budgetMarginRate=0.4
+					budgetMarginRate=13
 				}
 				
 				if(planWorkingHours==null || planWorkingHours==''){
 					planWorkingHours=0.0
 				}
 				if(taxRate==null || taxRate==''){
-					taxRate=0.03
+					taxRate=6
 				}
 				var autoParams={   
 
@@ -252,13 +315,13 @@
 				autoParams.planNouserAt= planNouserAt
 				autoParams.budgetMarginRate=budgetMarginRate
 				autoParams.planTotalCost=  autoParams.planOuserAt + autoParams.planIuserAt + autoParams.planNouserAt
-				autoParams.totalReceivables=autoParams.planTotalCost/(1-budgetMarginRate)/ (1-taxRate)
+				autoParams.totalReceivables=autoParams.planTotalCost/(100-budgetMarginRate)*100/ (100-taxRate)*100
 				autoParams.contractAmt =autoParams.totalReceivables
 				var totalReceivables=this.editForm.totalReceivables
 				if(totalReceivables==null || totalReceivables=='' || isNaN(totalReceivables)){
 					autoParams.currentBudgetMarginRate=-99
 				}else{ 
-					autoParams.currentBudgetMarginRate= this.toFixed(1-this.editForm.planTotalCost/(this.editForm.totalReceivables* (1-taxRate)),4)
+					autoParams.currentBudgetMarginRate= this.toFixed(1-this.editForm.planTotalCost/(this.editForm.totalReceivables* (100-taxRate)),4)
 				}
 
 				// 1.毛利率=（销售收入-销售成本）/销售收入×100%=（不含税售价－不含税进价）/不含税售价×100%
@@ -296,12 +359,11 @@
 				}
 			}, 
 		},
-		props:['selProject','visible'],
+		props:['selProject','visible','xmProject','opType'/**add、edit */],
 		watch: { 
 	      'visible':function(visible) { 
 	      	if(visible==true){ 
-				this.editForm=Object.assign({},this.selProject) 
-				this.dateRanger=[this.editForm.startTime,this.editForm.endTime]
+				this.initData();
 	      	}
 		  },
 		  'planTotalAt':{
@@ -315,40 +377,46 @@
 			  //this.editForm.budgetMarginRate=this.toFixed((this.editForm.totalReceivables-this.editForm.planTotalCost)/this.editForm.totalReceivables,4)
 		  },
 		  autoParams(){ 
-			  this.fillPlanWorkingHoursToField()
-			  this.fillPlanCostAtToField();
-			  this.fillTotalReceivablesToField();
-			  this.fillBudgetMarginRateToField()
+			  if(this.autoSet){
+				this.fillPlanWorkingHoursToField()
+				this.fillPlanCostAtToField();
+				this.fillTotalReceivablesToField();
+				this.fillBudgetMarginRateToField()
+			  }
+			  
 		  },
 		  
 		  editForm:{  
 				handler(newValue, oldValue) {
+					if(this.opType==='add'){
+						return;
+					}
 					this.$notify.closeAll();
 					this.changeTips=[];
 					if(this.selProject.planWorkingHours!=this.editForm.planWorkingHours){ 
 						var distance=this.selProject.planWorkingHours-this.editForm.planWorkingHours
 						var operType=distance>0?"-":"+";
-						this.changeTips.push("预计总工期: "+ this.selProject.planWorkingHours+" > " +this.editForm.planWorkingHours+"&nbsp;&nbsp;&nbsp;<strong>"+operType+Math.abs(distance).toFixed(2)+"</strong>小时");
+						this.changeTips.push("预计总工期: "+ this.selProject.planWorkingHours+" ==> " +this.editForm.planWorkingHours+"&nbsp;&nbsp;&nbsp;<strong>"+operType+Math.abs(distance).toFixed(2)+"</strong>小时");
 					}
 					if(this.selProject.planTotalCost!=this.editForm.planTotalCost){ 
 						var distance=this.selProject.planTotalCost-this.editForm.planTotalCost
 						var operType=distance>0?"-":"+";
-						this.changeTips.push("预计总成本: "+ this.selProject.planTotalCost+" > " +this.editForm.planTotalCost+"&nbsp;&nbsp;&nbsp;<strong>"+operType+Math.abs(distance).toFixed(2)+"</strong>元");
+						this.changeTips.push("预计总成本: "+ this.selProject.planTotalCost+" ==> " +this.editForm.planTotalCost+"&nbsp;&nbsp;&nbsp;<strong>"+operType+Math.abs(distance).toFixed(2)+"</strong>元");
 					}
 					if(this.selProject.budgetMarginRate!=this.editForm.budgetMarginRate){  
 						var distance=this.selProject.budgetMarginRate-this.editForm.budgetMarginRate
 						var operType=distance>0?"-":"+";
-						this.changeTips.push("毛利率: "+ this.selProject.budgetMarginRate+" > " +this.editForm.budgetMarginRate+"&nbsp;&nbsp;&nbsp;<strong>"+operType+Math.abs(distance).toFixed(2)+"</strong>%");
+						this.changeTips.push("毛利率: "+ this.selProject.budgetMarginRate+" ==> " +this.editForm.budgetMarginRate+"&nbsp;&nbsp;&nbsp;<strong>"+operType+Math.abs(distance).toFixed(2)+"</strong>%");
 					}
 					if(this.selProject.totalReceivables!=this.editForm.totalReceivables){  
 						var distance=this.selProject.totalReceivables-this.editForm.totalReceivables
 						var operType=distance>0?"-":"+";
-						this.changeTips.push("预计总收款: "+ this.selProject.totalReceivables+" > " +this.editForm.totalReceivables+"&nbsp;&nbsp;&nbsp;<strong>"+operType+Math.abs(distance).toFixed(2)+"</strong>元");
+						this.changeTips.push("预计总收款: "+ this.selProject.totalReceivables+" ==> " +this.editForm.totalReceivables+"&nbsp;&nbsp;&nbsp;<strong>"+operType+Math.abs(distance).toFixed(2)+"</strong>元");
 					}
 					if(this.selProject.contractAmt!=this.editForm.contractAmt){  
 						var distance=this.selProject.contractAmt-this.editForm.contractAmt
 						var operType=distance>0?"-":"+";
-						this.changeTips.push("合同金额: "+ this.selProject.contractAmt+" > " +this.editForm.contractAmt+"&nbsp;&nbsp;&nbsp;<strong>"+operType+Math.abs(distance).toFixed(2)+"</strong>元");
+						this.changeTips.push("合同金额: "+ this.selProject.contractAmt+" ==> " +this.editForm.contractAmt+"&nbsp;&nbsp;&nbsp;<strong>"+operType+Math.abs(distance).toFixed(2)+"</strong>元");
 					}
 					
 					if(this.changeTips.length==0){
@@ -376,17 +444,20 @@
 				load:{ list: false, add: false, del: false, edit: false },//查询中...
 				editFormRules: {
 					name: [{
-						required: true, message: '项目名称不可为空' , trigger: 'blur'
+						required: true, message: '项目名称不可为空' , trigger: 'change'
 					}], 
 					
 					code: [{
-						required: true, message: '项目代号不可为空', trigger: 'blur'
+						required: true, message: '项目代号不可为空', trigger: 'change'
 					}],
 					xmType: [{
-						required: true, message: '项目类型不可为空', trigger: 'blur'
+						required: true, message: '项目类型不可为空', trigger: 'change'
+					}],  
+					xmType: [{
+						required: true, message: '项目类型不可为空', trigger: 'change'
 					}], 
 					priority: [{
-						required: true, message: '优先级不可为空', trigger: 'blur'
+						required: true, message: '优先级不可为空', trigger: 'change'
 					}],
 					admUserid: [{
 						required: true, message: '项目总控不能为空', trigger: 'change'
@@ -412,6 +483,7 @@
 				changeTips:[],//变化日志列表
 				maxTableHeight:300,
 				currUserType:'',
+				autoSet:false,
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data
@@ -434,15 +506,12 @@
 				this.$emit('cancel');
 			},
 			//编辑提交XmProject xm_project父组件监听@submit="afterEditSubmit"
-			editSubmit: function () {
-				if(!this.roles.some(i=>i.roleid=='projectAdmin')){
-					this.$notify({showClose: true, message: "只有项目经理可以修改项目", type: 'error' }); 
-					return;
-				}
-				if("0" != this.selProject.status){
+			editSubmit: function () { 
+				if(this.opType!=='add' && "0" != this.selProject.status){
 					this.$notify({showClose: true, message: "只有初始状态的项目可以修改，如确实需要修改，请进行项目变更审批", type: 'error' }); 
 					return;
 				}
+				var msg=this.xmProduct&&this.xmProduct.id?'将自动关联产品【'+this.xmProduct.productName+'】':'';
 				if (
 					this.dateRanger != null &&
 					this.dateRanger.length == 2
@@ -455,13 +524,17 @@
 				} 
 				this.$refs.editForm.validate((valid) => {
 					if (valid) {
-						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
+						this.$confirm('确认提交吗？'+msg, '提示', {}).then(() => { 
 							this.load.edit=true
+							var func=editXmProject;
+							if(this.opType==='add'){
+								func=addXmProject;
+							}
 							let params = Object.assign({}, this.editForm);  
 							params.planIuserWorkload=this.autoParams.planIuserWorkload 
 							params.planOuserWorkload=this.autoParams.planOuserWorkload
 							params.planWorkload=this.autoParams.planWorkload
-							editXmProject(params).then((res) => {
+							func(params).then((res) => {
 								this.load.edit=false;
 								var tips=res.data.tips; 
 								if(tips.isOk){ 
@@ -728,17 +801,52 @@
 				
 			}, 
 			
+			createProjectCode(){
+				createProjectCode({}).then(res=>{
+					var tips=res.data.tips;
+					if(tips.isOk){
+						this.editForm.code=res.data.data
+					}
+					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+				})
+			},
+			initData(){
+				this.editForm={...this.selProject}
+				if(this.opType==='add'){
+					this.editForm.pmUserid=this.userInfo.userid
+					this.editForm.pmUsername=this.userInfo.username
+					this.editForm.admUserid=this.userInfo.userid
+					this.editForm.admUsername=this.userInfo.username
+					this.editForm.assUserid=this.userInfo.userid
+					this.editForm.assUsername=this.userInfo.username
+					this.editForm.status="0" 
+					this.editForm.wtype=this.editForm.wtype||"2" 
+					this.editForm.workType=this.editForm.workType||"1" 
+					this.editForm.xmType=this.editForm.xmType||"2" 
+					this.editForm.priority=this.editForm.priority||"2"
+					this.editForm.locked=this.editForm.locked||"0"
+					this.editForm.showOut=this.editForm.showOut||"2"
+					this.editForm.isTpl=this.editForm.isTpl||"0"
+					this.editForm.phaseActCtrl=this.editForm.phaseActCtrl||"1"; 
+					this.editForm.budgetEarly=this.editForm.budgetEarly||"1";
+					this.editForm.earlyAmt=this.editForm.earlyAmt||-10000;
+					this.editForm.budgetCtrl=this.editForm.budgetCtrl||"0";
+					this.editForm.taxRate=this.editForm.taxRate||6
+					this.editForm.budgetMarginRate=this.editForm.budgetMarginRate||13
+					this.autoSet=true;
+				}else{ 
+				 	this.dateRanger=[this.editForm.startTime,this.editForm.endTime] 
+					 this.autoSet=false;
+				}
+			}
 			/**end 在上面加自定义方法**/
 		},//end method
 		components: {  html2canvas,UsersSelect,
 		    //在下面添加其它组件 'xm-project-add':XmProjectEdit
 		},
 		mounted() { 
-			this.maxTableHeight=util.calcTableMaxHeight(this.$refs.table.$el)-20;
-				 this.editForm=Object.assign({},this.selProject);
-				 this.dateRanger=[this.editForm.startTime,this.editForm.endTime]
-				
-			
+			this.maxTableHeight=util.calcTableMaxHeight(this.$refs.table.$el)-20; 
+			this.initData();
 				initSimpleDicts('all',['projectType','priority','projectStatus']).then(res=>{
 					this.dicts=res.data.data;
 				})
