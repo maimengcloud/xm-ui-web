@@ -53,7 +53,7 @@
 						<el-row gutter="10">
 							<el-col :span="8">
 								<el-form-item label="需求状态" prop="status"> 
-									<el-select style="display:block;" v-model="editForm.status">
+									<el-select style="display:block;width:100px;" v-model="editForm.status">
 										<el-option v-for="i in this.dicts.menuStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>
 									</el-select>  
 								</el-form-item>
