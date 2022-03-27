@@ -3,10 +3,10 @@
 		<el-row> 
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="项目名称模糊查询">  </el-input> 
 			<el-button  v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectStates" icon="el-icon-search"></el-button>
-  			<xm-project-select  :auto-select="false"  @row-click="onPorjectConfirm(loadTasksToXmProjectState,$event)">
+  			<xm-project-select style="display:inline;" :auto-select="false"  @row-click="onPorjectConfirm(loadTasksToXmProjectState,$event)">
 				<font slot="title">刷新任务统计数据</font>
 			</xm-project-select> 
-			<xm-project-select  :auto-select="false"   @row-click="onPorjectConfirm(loadTasksSettleToXmProjectState,$event)">
+			<xm-project-select style="display:inline;"  :auto-select="false"   @row-click="onPorjectConfirm(loadTasksSettleToXmProjectState,$event)">
 				<font slot="title">刷新结算数据</font>
 			</xm-project-select>
 		</el-row> 
@@ -331,16 +331,14 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue';
 						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.edit=false ); 
 			},
-			loadTasksToXmProjectState: function () {
-				 	if(!this.filters.selProject||!this.filters.selProject.id){
-						 this.$notify({showClose: true, message: '请选择一个项目', type: 'warning'});
-						 
-						 this.showProjectList(this.loadTasksToXmProjectState);
+			loadTasksToXmProjectState: function (project) {
+				 	if(!project){
+						 this.$notify({showClose: true, message: '请选择一个项目', type: 'warning'}); 
 						 return;
 					 } 
 					 
 					this.load.edit=true;
-					var params={projectId:this.filters.selProject.id}
+					var params={projectId:project.id}
 					loadTasksToXmProjectState(params).then((res) => {
 						this.load.edit=false;
 						var tips=res.data.tips;
@@ -351,15 +349,14 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue';
 						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.edit=false ); 
 			},
-			loadTasksSettleToXmProjectState: function () { 
-				 	if(!this.filters.selProject||!this.filters.selProject.id){
+			loadTasksSettleToXmProjectState: function (project) { 
+				 	if(!project){
 						 this.$notify({showClose: true, message: '请选择一个项目', type: 'warning'});
-						 this.showProjectList(this.loadTasksSettleToXmProjectState);
-						 return;
+ 						 return;
 					 } 
 					 
 					this.load.edit=true;
-					var params={projectId:this.filters.selProject.id}
+					var params={projectId:project.id}
 					loadTasksSettleToXmProjectState(params).then((res) => {
 						this.load.edit=false;
 						var tips=res.data.tips;
@@ -376,22 +373,12 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue';
 			/**begin 自定义函数请在下面加**/
 			
 			onPorjectConfirm:function(nextCommand,project){
-				this.filters.selProject={...project}
- 				if(nextCommand){
-					this.nextCommand();
+  				if(nextCommand){
+					nextCommand(project);
 				}else{
 					this.searchXmProjectStates();
 				}
-			},
-			
-			onProjectInputClick:function(){  
-				this.selectProjectVisible=true; 
-				this.nextCommand=null;
-			},
-			showProjectList:function(nextCommand){  
-				this.selectProjectVisible=true; 
-				this.nextCommand=nextCommand;
-			},
+			}, 
 			closeSelectProject:function(){ 
 				this.filters.selProject={name:'',id:''}  
 			},
