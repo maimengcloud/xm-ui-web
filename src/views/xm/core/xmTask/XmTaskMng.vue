@@ -6,15 +6,9 @@
         class="padding-left"
         :class="{ 'flex-box': displayType == 'agil' }"
       >
-        <el-row>
-          <el-popover v-if=" ptype==='0' && (!selProject || !selProject.id)"
-            placement="bottom"
-            width="400"
-            v-model="projectVisible"
-            trigger="manual">
-            <xm-project-select v-if="!selProject||!selProject.id" :auto-select="true"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear-select="onProjectClear" @close="projectVisible=false"></xm-project-select>
-              <el-link type="warning" @click="projectVisible=true" slot="reference" v-if="!selProject||!selProject.id"  icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link>
-          </el-popover>
+        <el-row> 
+            <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear-select="onProjectClear" ></xm-project-select>
+              
 					<el-select style="width: 100px" v-model="filters.taskState" placeholder="状态" clearable>
 									<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.taskState" :key="index"></el-option> 
           </el-select>
