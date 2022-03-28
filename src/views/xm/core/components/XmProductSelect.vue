@@ -1,6 +1,6 @@
 <template>
 	<section>
-			<el-popover  v-if="!dialog"
+			<el-popover  
 							placement="bottom"
 							width="400"
 							trigger="manual"
