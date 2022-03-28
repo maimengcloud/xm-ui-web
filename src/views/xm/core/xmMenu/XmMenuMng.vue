@@ -1,6 +1,6 @@
 <template>
 	<section class="padding">
-		<el-row v-show=" !batchEditVisible">
+		<el-row>
 			<el-col :span="24" class="padding-left">
 					<el-row>
 						<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="!xmProduct && !xmIteration"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear-select="onProductClearSelect"></xm-product-select>
@@ -126,8 +126,8 @@
 									<el-button type="primary"  @click="searchXmMenus" icon="el-icon-search">查询</el-button>
  								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
-									<el-button  v-if=" batchEditVisible==false "  @click="handleExport" icon="el-icon-download">导出</el-button>
-									<el-button   v-if=" batchEditVisible==false&&disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>
+									<el-button    @click="handleExport" icon="el-icon-download">导出</el-button>
+									<el-button   v-if="  disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>
 
 								</el-col>
 							</el-row>
@@ -518,8 +518,7 @@
 						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',ntype:'0',childrenCnt:0,sinceVersion:''
 				},
 				parentMenu:null,
-				menuTemplateVisible:false,
-				batchEditVisible:false,
+				menuTemplateVisible:false, 
 				valueChangeRows:[],
 				 menuDetailVisible:false,
 				selectTaskVisible:false,

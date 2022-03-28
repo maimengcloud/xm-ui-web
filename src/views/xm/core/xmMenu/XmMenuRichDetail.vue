@@ -1,38 +1,17 @@
 <template>
 	<section class="page-container  padding border">
-		<el-row> 
-			<el-col :span="14"> 
+		<el-row>  
 				<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
 					<el-form-item label="名称" prop="menuName" >
 						 {{editForm.seqNo}} &nbsp; {{editForm.menuName}} 
 					</el-form-item>  
 					<el-form-item label="负责人" prop="menuName">
 						{{editForm.mmUsername}} 
-					</el-form-item>  
-					    
-					<el-form-item label="需求链接" prop="demandUrl">
-						{{editForm.demandUrl}}  
-					</el-form-item>  
-					<el-form-item label="代码链接" prop="codeUrl">
-						{{editForm.codeUrl}}  
-					</el-form-item>  
-					<el-form-item label="设计链接" prop="designUrl">
-						{{editForm.designUrl}}  
 					</el-form-item>   
-					<el-form-item label="操作手册链接" prop="operDocUrl">
-						{{editForm.operDocUrl}}  
-					</el-form-item>  
 					<el-form-item label="概述" prop="remark">
 						{{editForm.remark}}  
 					</el-form-item>  
-				</el-form>
-			</el-col>
-			<el-col :span="10"> 
-				<el-row style="padding-top:12px;">
-					<el-button v-if="exchangeMngVisible==false" @click="exchangeMngVisible=true" icon="el-icon-search">查看评论</el-button>
-					<xm-menu-exchange-mng  v-if="exchangeMngVisible" :visible="exchangeMngVisible" :xm-menu="xmMenu" :simple="true"></xm-menu-exchange-mng>
-				</el-row>
-			</el-col>
+				</el-form> 
 		</el-row> 
 	</section>
 </template>
