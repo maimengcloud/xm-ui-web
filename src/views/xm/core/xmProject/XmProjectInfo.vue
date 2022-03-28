@@ -136,7 +136,7 @@
  			 <xm-product-for-link-complex  v-if="infotype=='产品'" ref="xmProductComplex" :sel-project="selProject"></xm-product-for-link-complex>
 			 <xm-menu-mng v-if="infotype=='需求'" :sel-project="selProject"></xm-menu-mng>
 			 <xm-task-mng v-if="infotype=='任务'" ref="xmTaskMng" :sel-project="selProject" ptype="0" queryScope="task" key="task"></xm-task-mng>
-			  <xm-question v-if="infotype=='缺陷'" :qtype="'bug'" :sel-project='selProject' ref="xmQuestion"></xm-question>
+			  <xm-question v-if="infotype=='缺陷'"  :sel-project='selProject' ref="xmQuestion"></xm-question>
 			  <xm-group-mng v-if="infotype=='团队'" :sel-project="selProject"></xm-group-mng>
 			  <xm-file-mng v-if="infotype=='文档'" :sel-project="selProject"></xm-file-mng>
 			   <xm-task-mng v-if="infotype=='计划'" ref="projectPlan" ptype="0" queryScope="planTask" :sel-project="selProject" key="projectPlan"></xm-task-mng>

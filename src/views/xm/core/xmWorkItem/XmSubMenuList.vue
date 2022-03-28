@@ -5,20 +5,91 @@
          <div class="icon" style="background-color:  rgb(0, 153, 51);">
             <i class="el-icon-s-flag"></i>
           </div>特性
+          
+          <span style="float:right;">
+            <el-button @click="batchDel" type="danger" icon="el-icon-delete" plain></el-button>
+          </span>
       </el-row>
       <el-row v-if="parentXmMenu.dclass==='2'">
         <div  class="icon" :style="{backgroundColor: calcMenuLabel.color }">
             <i :class="calcMenuLabel.icon"></i>
           </div>  
           用户故事  
+          
+          <span style="float:right;">
+            <el-button @click="batchDel" type="danger" icon="el-icon-delete" plain></el-button>
+          </span>
       </el-row> 
       <el-row>
-        <el-table :data="xmMenus" :show-header="false" :max-height="400">
-          <el-table-column type="index" label="序号"></el-table-column>
-          <el-table-column prop="menuName" label="名称"></el-table-column>
+        <el-table :data="xmMenus" :max-height="400"  highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
+          <el-table-column type="selection" label="全选"></el-table-column>
+          <el-table-column prop="menuName" label="名称" min-width="150"></el-table-column>
+          <el-table-column prop="status" label="状态"  min-width="80"  sortable>
+								<template slot-scope="scope">
+									<div class="cell-text">
+										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in formatterMenuStatusDicts(scope.row.status)" :key="index">{{item.name}}</el-button>
+									</div>
+									<span class="cell-bar">
+										 <el-select  v-model="scope.row.status" placeholder="需求状态"  style="display:block;"  @change="editXmMenuSomeFields(scope.row,'status',$event)">
+												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option>
+										 </el-select>
+									</span>
+								</template>
+							</el-table-column>
+							<el-table-column prop="priority"  label="优先级" width="100" sortable>
+								<template slot-scope="scope">
+									<div class="cell-text">
+										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in formatterPriorityDicts(scope.row.priority)" :key="index">{{item.name}}</el-button>
+ 									</div>
+									<span class="cell-bar">
+										 <el-select  v-model="scope.row.priority" placeholder="优先级"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'priority',$event)">
+												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.priority" :key="index"> </el-option>
+										 </el-select>
+									</span>
+								</template>
+							</el-table-column> 
+							<el-table-column prop="iterationName" label="迭代" width="150" show-overflow-tooltip sortable>
+								<template slot-scope="scope">
+									<div class="cell-text">
+										{{scope.row.iterationName}}
+									</div>
+									<span class="cell-bar">
+										 <xm-iteration-select v-if="scope.row.dclass==='3'" style="display:inline;" :auto-select="false"  :product-id="scope.row.productId"    placeholder="迭代"  @row-click="editXmMenuSomeFields(scope.row,'iterationId',$event)"></xm-iteration-select>
+									</span>
+								</template>
+							</el-table-column> 
+							<el-table-column prop="finishRate" label="进度"  min-width="80" show-overflow-tooltip sortable>
+								<template slot-scope="scope">
+									<div class="cell-text" v-if="scope.row.calcType!=='2'">
+										 <span v-if="scope.row.finishRate"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag></span>
+									</div>
+									<div class="cell-text" v-else>
+										 <span v-if="scope.row.mactRate"><el-tag :type="scope.row.mactRate>=100?'success':'warning'">{{scope.row.mactRate}}%</el-tag></span>
+									</div>
+									<span class="cell-bar">
+										<xm-menu-workload :menu="scope.row"  placeholder="工时"  style="display:block;" @submit="editXmMenuSomeFields(scope.row,'workload',$event)">
+										</xm-menu-workload>
+									</span>
+								</template>
+
+							</el-table-column> 
+							<el-table-column prop="mmUsername" label="跟进人"  min-width="100" show-overflow-tooltip  sortable>
+								<template slot-scope="scope">
+									<div class="cell-text">
+										{{scope.row.mmUsername}}
+									</div>
+									<span class="cell-bar">
+										 <el-button @click="$refs.xmGroupDialog.open({data:scope.row,action:'editMmUserid'})">选跟进人</el-button>
+									</span>
+								</template>
+							</el-table-column>
         </el-table> 
       </el-row>
     </el-row> 
+    <tag-dialog ref="tagDialog"  :jump="true" @select-confirm="onTagSelected">
+			</tag-dialog>
+ 			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="linkProjectId?{id:linkProjectId}:null" :xm-product="parentXmMenu&&parentXmMenu.productId?{id:parentXmMenu.productId}:null" @user-confirm="onGroupUserSelect">
+			</xm-group-dialog>
   </section>
 </template>
 
@@ -27,8 +98,11 @@ import Vue from "vue";
 import util from "@/common/js/util"; //全局公共库
 import treeTool from "@/common/js/treeTool"; //全局公共库
  import { initSimpleDicts } from '@/api/mdp/meta/item'; //下拉框数据查询 
- 	import { listXmMenu,addXmMenu } from '@/api/xm/core/xmMenu';
-
+ 	import { listXmMenuWithState,addXmMenu,editXmMenuSomeFields,batchDelXmMenu } from '@/api/xm/core/xmMenu'; 
+	import  XmMenuWorkload from '@/views/xm/core/components/XmMenuWorkload';//修改界面
+ 	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面
+	import  XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';//修改界面
+   	import TagDialog from "@/views/mdp/arc/tag/TagDialog";
 	import { mapGetters } from 'vuex'
 
 export default {
@@ -48,7 +122,7 @@ export default {
 			},  
   },
   props: [ 
-    'parentXmMenu'
+    'parentXmMenu','linkProjectId'
   ],
   watch: { 
     'parentXmMenu.menuId':function(){
@@ -61,14 +135,107 @@ export default {
   },
   data() { 
     return{
-      load:{edit:false,list:false,add:false}, 
+      load:{edit:false,list:false,add:false,del:false}, 
       xmMenus:[],
+      editForm:{},
+      dicts:{},
+      sels:[],
+
 
     }
   }, //end data
   methods: { 
+    
+			//选择行xmMenu
+			selsChange: function (sels) {
+				this.sels = sels;
+			},
+      
+
+			rowClick: function(row, event, column){ 
+        this.editForm=row
+      },
+      
+
+			formaterByDicts(row,property,cellValue){
+				var property=property
+				var dict=null;
+				if(property=='source'){
+					dict=this.dicts['demandSource']
+				}else if(property=='dlvl'){
+					dict=this.dicts['demandLvl']
+				}else if(property=='dtype'){
+					dict=this.dicts['demandType']
+				}else if(property=='priority'){
+					dict=this.dicts['priority']
+				}
+				if(!dict){
+					return cellValue;
+				}else{
+					var item=dict.find(i=>i.id==cellValue)
+					return item?item.name:cellValue;
+				}
+			},
+			formatterPriorityDicts(cellValue){
+				if(!cellValue && cellValue!=='0'){
+					return []
+				}
+				var key="priority";
+				if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0   ){
+					return [{id:cellValue,name:cellValue,className:'primary'}];
+				}
+				var list=this.dicts[key].filter(i=>i.id==cellValue)
+				if(list.length>0){
+					var data= {...list[0],className:'primary'}
+					if(data.id=='0'){
+						data.className='danger'
+					}else if(data.id=='1'){
+						data.className='warning'
+					}else if(data.id=='2'){
+						data.className='success'
+					}else if(data.id=='3'){
+						data.className='primary'
+					}else if(data.id=='4'){
+						data.className='info'
+					}else{
+						data.className='primary'
+					}
+					return [data];
+				}else{
+					return [{id:cellValue,name:cellValue,className:'primary'}]
+				}
+
+			},
+			formatterMenuStatusDicts: function(cellValue){
+				if(!cellValue && cellValue!=='0'){
+					return []
+				}
+				var key="menuStatus";
+				if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0   ){
+					return [{id:cellValue,name:cellValue,className:'primary'}];
+				}
+				var list=this.dicts[key].filter(i=>i.id==cellValue)
+				if(list.length>0){
+					var data= {...list[0],className:'primary'}
+					if(data.id=='0'){
+						data.className='primary'
+					}else if(data.id=='1'){
+						data.className='warning'
+					}else if(data.id=='2'){
+						data.className='success'
+					}else if(data.id=='3'){
+						data.className='info'
+					} else{
+						data.className='danger'
+					}
+					return [data];
+				}else{
+					return [{id:cellValue,name:cellValue,className:'primary'}]
+				}
+
+			},
     getXmMenus(){
-      listXmMenu({pmenuId:this.parentXmMenu.menuId}).then(res=>{
+      listXmMenuWithState({pmenuId:this.parentXmMenu.menuId}).then(res=>{
         var tips = res.data.tips;
         if(tips.isOk){
           this.xmMenus=res.data.data
@@ -120,11 +287,98 @@ export default {
         }); 
     },
     
+			editXmMenuSomeFields(row,fieldName,$event){
+				var params={menuIds:[row.menuId]};
+				if(this.sels.length>0){
+					if(!this.sels.some(k=>k.menuId==row.menuId)){
+						this.$notify({showClose:true,message:'请操作选中的行或者取消选中的行再操作其它行',type:'warning'})
+						return;
+					}
+					params.menuIds=this.sels.map(i=>i.menuId)
+				}
+				if(fieldName==='iterationId'){
+					if($event){
+						params[fieldName]=$event.id;
+						params.iterationName=$event.iterationName
+					}else{
+						return;
+					}
+				}else if(fieldName==='tagIds'){
+					if($event){
+						params[fieldName]=$event.map(i=>i.tagId).join(",");
+						params.tagNames=$event.map(i=>i.tagName).join(",");
+					}else{
+						return;
+					}
+				}else if(fieldName==='workload'){
+					params={...params,...$event}
+				}else if(fieldName==='mmUserid'){
+					params.mmUserid=$event[0].userid
+					params.mmUsername=$event[0].username
+				}else{
+					params[fieldName]=$event
+				}
+
+				editXmMenuSomeFields(params).then(res=>{
+					var tips = res.data.tips;
+					if(tips.isOk){
+						if(this.sels.length>0){
+							 this.sels.forEach(i=>{
+								 this.fieldTagVisible=false;
+								Object.assign(i,params)
+							 })
+						}else{
+							  Object.assign(row,params)
+						}
+					}else{
+						this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+					}
+				})
+			},
+    
+			onTagSelected(tags,option){
+				if(option.action=='editTagIds'){
+					this.editXmMenuSomeFields(option.data,"tagIds",tags)
+				} 
+
+			},
+      
+			onGroupUserSelect(users,option){
+				 this.editXmMenuSomeFields(option.data,"mmUserid",users);
+			},
+      //批量删除xmMenu
+			batchDel: function () {
+				if(this.sels.length==0){
+					this.$notify({showClose: true, message: "请先选择要删除的需求", type: 'warning'});
+					return;
+				}
+				this.$confirm('确认删除选中的'+this.sels.length+'条数据吗？删除后数据不可恢复', '提示', {
+					type: 'warning'
+				}).then(() => {
+					this.load.del=true;
+					batchDelXmMenu(this.sels).then((res) => {
+						this.load.del=false;
+						var tips=res.data.tips;
+						if( tips.isOk ){ 
+							this.getXmMenus(); 
+						}
+						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+					}).catch( err  => this.load.del=false );
+				});
+			},
   }, //end methods
-  components: { 
+  components: {  
+		  TagDialog, 
+			XmMenuWorkload, 
+			XmGroupDialog,
+			XmIterationSelect,
   },
   mounted() { 
     this.initData();
+    
+  		initSimpleDicts("all",['menuStatus','demandSource','demandLvl','demandType','priority']).then(res=>{
+				this.dicts=res.data.data;
+			})
   },
 };
 </script>

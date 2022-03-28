@@ -521,7 +521,7 @@
 				if(this.filters.tags && this.filters.tags.length>0){
 					params.tagIdList=this.filters.tags.map(i=>i.tagId)
 				}
-				params.qtype=this.qtype
+				//params.qtype=this.qtype
 				listXmQuestion(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){

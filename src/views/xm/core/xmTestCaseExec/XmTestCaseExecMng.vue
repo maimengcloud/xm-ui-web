@@ -191,7 +191,7 @@
 			</el-drawer> 
 			<!--新增 XmQuestion xm_question界面-->
 			<el-drawer title="新增缺陷" :visible.sync="addBugVisible"   size="60%"  append-to-body   :close-on-click-modal="false">
-				<xm-question-add :xm-test-case-exec="editForm" :xm-test-case="xmTestCase" :qtype="'bug'" :sel-project=" filters.selProject "   :visible="addBugVisible" @cancel="addBugVisible=false"></xm-question-add>
+				<xm-question-add :xm-test-case-exec="editForm" :xm-test-case="xmTestCase"  :sel-project=" filters.selProject "   :visible="addBugVisible" @cancel="addBugVisible=false"></xm-question-add>
 			</el-drawer> 
 		</el-row>
 	</section>
