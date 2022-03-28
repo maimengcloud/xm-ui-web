@@ -113,7 +113,7 @@
 	      'visible':function(visible) {
 	      	if(visible==true){
 	      		//从新打开页面时某些数据需要重新加载，可以在这里添加
-	      		this.initData()
+	      		this.initData();
 	      	}
 	      }
 	    },
@@ -171,10 +171,8 @@
                                     this.load.edit=false
                                     var tips=res.data.tips;
                                     if(tips.isOk){
-                                        this.editForm=res.data.data
-                                        this.initData()
-                                        this.currOpType="edit";
                                         this.$emit('submit');//  @submit="afterAddSubmit"
+
                                     }
                                     this.$message({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
                                 }).catch( err =>this.load.edit=false);
@@ -185,16 +183,14 @@
 			},
 			initData: function(){
 			    this.currOpType=this.opType
-			    if(this.xmTaskSbill){
-                    this.editForm = Object.assign({},this.xmTaskSbill);
-                }
-
-                if(this.opType=='edit'){
-
-                }else{
-
-                }
-            },
+          if(this.opType=='edit'){
+            if(this.xmTaskSbill){
+              this.editForm = Object.assign({},this.xmTaskSbill);
+            }
+          }else{
+            this.editForm = Object.assign({},{});
+          }
+      },
 			/**begin 在下面加自定义方法**/
       afterProjectSelect(obj){
         this.projSelVisible = false;
