@@ -1,21 +1,22 @@
-  
+
 export default {
 
 
-  reloadAllChildren: function(table,maps, rows,parentIdName,loadChildren,idMaps) {   
-     
+  reloadAllChildren: function(table,maps, rows,parentIdName,loadChildren,idMaps) {
+    debugger;
+
      if(!rows||rows.length==0){
       return;
      }
      if(!maps || maps.length==0){
       return;
      }
-     
+
      if(!table){
       return;
      }
      var lazyTreeNodeMap=table.store.states.lazyTreeNodeMap
-     var parentIds=rows.map(i=>i[parentIdName]) 
+     var parentIds=rows.map(i=>i[parentIdName])
      if(idMaps==null){
       idMaps=new Map();
      }
@@ -26,47 +27,47 @@ export default {
        if(!idMaps.has(k)){
         idMaps.set(k,k);
         if (maps.get(k)) {
-          const { tree, treeNode, resolve } = maps.get(k)  
+          const { tree, treeNode, resolve } = maps.get(k)
           lazyTreeNodeMap[k]=[]
           if (tree) { // 重新执行父节点加载子级操作
             loadChildren(tree, treeNode, resolve)
-            if(tree[parentIdName]){ 
+            if(tree[parentIdName]){
               this.reloadAllChildren(table,maps, [tree],parentIdName,loadChildren,idMaps)
             }
           }
-        } 
-       } 
-     }); 
+        }
+       }
+     });
   },
- 
 
-  reloadChildren: function(table,maps, parentId,parentIdName,loadChildren) {   
+
+  reloadChildren: function(table,maps, parentId,parentIdName,loadChildren) {
       var params={};
       params[parentIdName]=parentId;
-      this.reloadAllChildren(table,maps, [params],parentIdName,loadChildren)  
-  },  
-  reloadChildrenByOpType: function(table,maps, parentId,parentIdName,loadChildren,opType) {  
+      this.reloadAllChildren(table,maps, [params],parentIdName,loadChildren)
+  },
+  reloadChildrenByOpType: function(table,maps, parentId,parentIdName,loadChildren,opType) {
     var lazyTreeNodeMap=table.store.states.lazyTreeNodeMap
     if (maps.get(parentId)) {
-      const { tree, treeNode, resolve } = maps.get(parentId)   
+      const { tree, treeNode, resolve } = maps.get(parentId)
       if (tree) { // 重新执行父节点加载子级操作
         var oldDatas=lazyTreeNodeMap[parentId]
-        loadChildren(tree, treeNode, resolve,oldDatas,opType) 
+        loadChildren(tree, treeNode, resolve,oldDatas,opType)
       }
-    } 
-     
-  }, 
-  clearOpType: function(table,maps,parentId,parentIdName,loadChildren) {   
+    }
+
+  },
+  clearOpType: function(table,maps,parentId,parentIdName,loadChildren) {
     var lazyTreeNodeMap=table.store.states.lazyTreeNodeMap
     if (maps.get(parentId)) {
-      const { tree, treeNode, resolve } = maps.get(parentId)   
+      const { tree, treeNode, resolve } = maps.get(parentId)
       if (tree) { // 重新执行父节点加载子级操作
         var oldDatas=lazyTreeNodeMap[parentId]
-        loadChildren(tree, treeNode, resolve,oldDatas,"clearOpType") 
+        loadChildren(tree, treeNode, resolve,oldDatas,"clearOpType")
       }
-    }  
-     
-  }, 
+    }
+
+  },
   /**
    * 将类表数据转换为如下树状结构的数据
    * {
@@ -81,12 +82,12 @@ export default {
    * @param {*} pidName 上级字段名称，如 pmenId
    * @param {*} idName 本条数据主键字段名称 如 menuId
    * @param {*} rowCallBack(data),如果需要对部分字段进行转换，可以传入这个回调函数。比如需要将 name:'陈天财' => label:'陈天财'
-   * @returns 
+   * @returns
    */
-  translateDataToTree: function(data2,pidName,idName,rowCallBack) { 
+  translateDataToTree: function(data2,pidName,idName,rowCallBack) {
     var data=JSON.parse(JSON.stringify(data2));
     let parents = data.filter(value =>{
-      //如果我的上级为空，则我是最上级 
+      //如果我的上级为空，则我是最上级
       if(value[pidName] == 'undefined' || value[pidName] == null  || value[pidName] == ''|| value[pidName] == '0'){
         return true;
 
@@ -96,15 +97,15 @@ export default {
       }else {
         return true
       }
-     
-    }) 
+
+    })
     let children = data.filter(value =>{
       if(data.some(i=>value[pidName]==i[idName])){
         return true;
       }else{
         return false;
-      } 
-    })  
+      }
+    })
     let translator = (parents, children) => {
       parents.forEach((parent) => {
         if(rowCallBack){
@@ -127,6 +128,6 @@ export default {
     translator(parents, children)
 
     return parents
-  },	
+  },
 
 }

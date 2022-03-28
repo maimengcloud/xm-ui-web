@@ -199,7 +199,7 @@
 
 										<el-tooltip  v-if="scope.row.dclass==='2'||scope.row.dclass==='1'" :content="scope.row.dclass==='1'?'新建特性':'新建用户故事'">
 												<el-button  @click="showImportFromMenuTemplate(scope.row)" icon="el-icon-upload2" title="批量导入" circle plain size="mini"> </el-button>
-										</el-tooltip> 
+										</el-tooltip>
 									</span>
 									</div>
   								</template>
@@ -271,7 +271,7 @@
 							</el-table-column>
 							<el-table-column prop="iterationName" label="迭代" width="150" show-overflow-tooltip sortable>
 								<template slot-scope="scope">
-									<div class="cell-text"> 
+									<div class="cell-text">
 										{{scope.row.iterationName}}
 									</div>
 									<span class="cell-bar">
@@ -322,10 +322,10 @@
 										 <el-button @click="$refs.tagDialog.open({data:scope.row,action:'editTagIds'})">选标签</el-button>
 									</span>
 								</template>
-							</el-table-column> 
+							</el-table-column>
 							<el-table-column prop="mmUsername" label="跟进人"  min-width="100" show-overflow-tooltip  sortable>
 								<template slot-scope="scope">
-									<div class="cell-text"> 
+									<div class="cell-text">
 										{{scope.row.mmUsername}}
 									</div>
 									<span class="cell-bar">
@@ -339,8 +339,8 @@
 
 					</el-row>
 				<!--编辑 XmMenu xm_project_menu界面-->
-				<el-dialog title="编辑需求" :visible.sync="editFormVisible" :with-header="false" width="80%" top="20px" center  append-to-body   :close-on-click-modal="false">
-					<xm-menu-edit :xm-menu="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-menu-edit>
+				<el-dialog title="编辑需求" :visible.sync="editFormVisible" :with-header="false" width="80%" top="20px" center  append-to-body   :close-on-click-modal="false" >
+					<xm-menu-edit :xm-menu="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @add-sub-menu="onAddSubMenu" @edit-fields="onEditSomeFields"></xm-menu-edit>
 				</el-dialog>
 
 				<!--新增 XmMenu xm_project_menu界面-->
@@ -428,7 +428,7 @@
 
 	import {sn} from '@/common/js/sequence'
 
-	import { mapGetters } from 'vuex' 
+	import { mapGetters } from 'vuex'
 
 	export default {
 		props:['selProject','xmIteration','xmProduct','disabledMng'],
@@ -708,7 +708,7 @@
 
 			//显示编辑界面 XmMenu xm_project_menu
 			showEdit: function ( row,index ) {
-				this.editForm = Object.assign({}, row);
+				this.editForm =row
 				this.editFormVisible = true;
 			},
 			//显示新增界面 XmMenu xm_project_menu
@@ -722,7 +722,7 @@
 					this.addFormVisible = true;
 				}else if(this.filters.iteration && this.filters.iteration.id){
 					this.parentMenu=null;
-					this.addForm.productId=this.filters.iteration.productId 
+					this.addForm.productId=this.filters.iteration.productId
 					this.addForm.iterationId=this.filters.iteration.id
 					this.addForm.iterationName=this.filters.iteration.iterationName
 					this.addForm.dclass=dclass
@@ -735,10 +735,10 @@
 				//this.addForm=Object.assign({}, this.editForm);
 			},
 			showSubAdd:function(row){
-				
+
 				this.addForm={...this.addFormInit}
 				this.editForm=row
-				this.parentMenu=row 
+				this.parentMenu=row
 				this.expandRowKeysCpd.push(row.pmenuId);
 				this.addForm.productId=row.productId
 				if(this.filters.product && row.productId==this.filters.product.id){
@@ -747,9 +747,9 @@
 					this.addForm.productName=null;
 				}
 				if(this.filters.iteration && this.filters.iteration.id){
-					this.addForm.productId=this.filters.iteration.productId 
+					this.addForm.productId=this.filters.iteration.productId
 					this.addForm.iterationId=this.filters.iteration.id
-					this.addForm.iterationName=this.filters.iteration.iterationName 
+					this.addForm.iterationName=this.filters.iteration.iterationName
 					this.addFormVisible = true;
 				}
 				this.addFormVisible=true
@@ -757,20 +757,20 @@
 			showProdcutAdd:function(){
 				this.$refs.xmProductMng.showAdd();
 			},
-			afterAddSubmit(row){ 
+			afterAddSubmit(row){
 				this.addFormVisible=false;
-				this.pageInfo.count=true; 
-				//this.getXmMenus(); 
+				this.pageInfo.count=true;
+				//this.getXmMenus();
 				if(!row.pmenuId){
 					this.xmMenus.push(row);
 				}
 				if(this.parentMenu){
 					this.parentMenu.childrenCnt=this.parentMenu.childrenCnt?this.parentMenu.childrenCnt+1:1;
 				}
-				treeTool.reloadAllChildren(this.$refs.table,this.maps,[row,{...this.parentMenu}],'pmenuId',this.loadXmMenusLazy) 
-				
+				treeTool.reloadAllChildren(this.$refs.table,this.maps,[row,{...this.parentMenu}],'pmenuId',this.loadXmMenusLazy)
+
 				this.parentMenu=null;
-				
+
 			},
 			afterEditSubmit(row){
 				this.editFormVisible=false;
@@ -1212,12 +1212,12 @@
 					var tips = res.data.tips;
 					if(tips.isOk){
 						if(this.sels.length>0){
-							 this.sels.forEach(i=>{ 
+							 this.sels.forEach(i=>{
 								 this.fieldTagVisible=false;
-								Object.assign(i,params) 
+								Object.assign(i,params)
 							 })
 						}else{
-							  Object.assign(row,params) 
+							  Object.assign(row,params)
 						}
 					}else{
 						this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
@@ -1294,6 +1294,12 @@
 				}
 
 			},
+			onEditSomeFields(params){
+				Object.assign(this.editForm,params)
+			},
+			onAddSubMenu(row){
+				treeTool.reloadAllChildren(this.$refs.table,this.maps,[this.editForm,row],'pmenuId',this.loadXmMenusLazy)
+			}
 
 		},//end methods
 		components: {
@@ -1308,7 +1314,7 @@
 			UsersSelect,
 			XmMenuMngBatch,
 		    TagDialog,
-			XmMenuSelect, 
+			XmMenuSelect,
 			XmMenuWorkload,
 			XmTableConfig,
 			XmGroupDialog,

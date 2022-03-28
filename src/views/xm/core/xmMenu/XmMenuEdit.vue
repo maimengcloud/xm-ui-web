@@ -1,27 +1,27 @@
 <template>
 	<section>
 		<el-row class="page-main ">
-			<el-form :model="editForm"  label-width="100px" label-position="left" :rules="editFormRules" ref="editForm"> 
-						<el-row :gutter="10"> 
+			<el-form :model="editForm"  label-width="100px" label-position="left" :rules="editFormRules" ref="editForm">
+						<el-row :gutter="10">
 							<el-col :span="6">
-								<el-form-item label="序号名称" prop="seqNo" > 
+								<el-form-item label="序号名称" prop="seqNo" >
 									<template slot="label">
 										<div  class="icon" :style="{backgroundColor: calcMenuLabel.color }">
 											<i :class="calcMenuLabel.icon"></i>
-										</div>  
+										</div>
 										{{calcMenuLabel.label}}
-									</template> 
-										<el-input v-model="editForm.seqNo" title="序号 如 1.1，1.2.3，1.3.2等" style="width:100%;" placeholder="如1.0 ， 1.1 ， 1.1.1等"  @change="editXmMenuSomeFields(editForm,'seqNo',$event)"></el-input> 
-  
-								</el-form-item>  
+									</template>
+										<el-input v-model="editForm.seqNo" title="序号 如 1.1，1.2.3，1.3.2等" style="width:100%;" placeholder="如1.0 ， 1.1 ， 1.1.1等"  @change="editXmMenuSomeFields(editForm,'seqNo',$event)"></el-input>
+
+								</el-form-item>
 							</el-col>
 							<el-col :span="18">
 								<el-form-item label="" prop="menuName" label-width="0px">
 									<el-input v-model="editForm.menuName" placeholder="名称" title="名称"  @change="editXmMenuSomeFields(editForm,'menuName',$event)"></el-input>
-								</el-form-item>   
+								</el-form-item>
 							</el-col>
 						</el-row>
-						<el-row :gutter="10"> 
+						<el-row :gutter="10">
 							<el-col :span="8">
 								<el-form-item label="归属产品" prop="productId">
 									<font v-if="editForm.productId">{{editForm.productName?editForm.productName:editForm.productId}}</font>
@@ -30,168 +30,168 @@
 							<el-col :span="8">
 								<el-form-item v-if="!editForm.pmenuId" :label="editForm.dclass==='3'?'归属特性':(editForm.dclass==='2'?'归属史诗':'归属')" prop="pmenuId">
 										无
-									</el-form-item>  
-									
-									<el-form-item  v-else :label="editForm.dclass==='3'?'归属特性':(editForm.dclass==='2'?'归属史诗':'归属')" prop="pmenuId">  
+									</el-form-item>
+
+									<el-form-item  v-else :label="editForm.dclass==='3'?'归属特性':(editForm.dclass==='2'?'归属史诗':'归属')" prop="pmenuId">
 										<div   v-if="editForm.dclass==='2'"  class="icon" style="background-color:  rgb(255, 153, 51);">
 											<i class="el-icon-s-promotion"></i>
-										</div> 
+										</div>
 										<div   v-if="editForm.dclass==='3'"  class="icon" style="background-color:  rgb(0, 153, 51);">
 											<i class="el-icon-s-flag"></i>
-										</div> 
-										  {{editForm.pmenuName?editForm.pmenuName:editForm.pmenuId}} 
-									</el-form-item>  
-							</el-col> 
+										</div>
+										  {{editForm.pmenuName?editForm.pmenuName:editForm.pmenuId}}
+									</el-form-item>
+							</el-col>
 								<el-col  :span="8">
 									<el-form-item label="负责人" prop="mmUserid">
-										<el-tag type="text" v-if="editForm.mmUserid" closable @close="clearMmUser">{{editForm.mmUsername}}</el-tag> 
+										<el-tag type="text" v-if="editForm.mmUserid" closable @close="clearMmUser">{{editForm.mmUsername}}</el-tag>
 										<el-button type="text" @click="mmUserSelectVisible=true">选跟进人</el-button>
-									</el-form-item>   
+									</el-form-item>
 								</el-col>
-						</el-row> 
-						
+						</el-row>
+
 						<el-row :gutter="10">
 							<el-col :span="8">
-								<el-form-item label="需求状态" prop="status"> 
+								<el-form-item label="需求状态" prop="status">
 									<el-select style="display:block;width:100px;" v-model="editForm.status"  @change="editXmMenuSomeFields(editForm,'status',$event)">
 										<el-option v-for="i in this.dicts.menuStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>
-									</el-select>  
+									</el-select>
 								</el-form-item>
-							</el-col> 
+							</el-col>
 							<el-col :span="8">
-								<el-form-item label="进度" prop="finishRate">  
-									<el-progress    :percentage="editForm.finishRate"></el-progress> 
+								<el-form-item label="进度" prop="finishRate">
+									<el-progress    :percentage="editForm.finishRate?editForm.finishRate:0"></el-progress>
 								</el-form-item>
-							</el-col> 
+							</el-col>
 							<el-col :span="8">
-								<el-form-item label="截止时间" prop="startTime" >  
+								<el-form-item label="截止时间" prop="startTime" >
 									 <el-date-picker type="daterange" style="width:220px;" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="dateRanger"  @change="editXmMenuSomeFields(editForm,'startTime',dateRanger)"></el-date-picker>
-								  
+
 								</el-form-item>
-							</el-col> 
-						</el-row> 
+							</el-col>
+						</el-row>
 					<el-tabs value="1"  >
 					<el-tab-pane label="基本信息'" name="1" >
-						
-						
+
+
 						<el-row>
 							<el-col :span="12">
 								<el-form-item label="提出人" prop="proposerId">
-									<el-tag type="text" v-if="editForm.proposerId" closable @close="clearProposer">{{editForm.proposerName}}</el-tag> 
+									<el-tag type="text" v-if="editForm.proposerId" closable @close="clearProposer">{{editForm.proposerName}}</el-tag>
 									<el-button type="text" @click="selectProposer">选提出人</el-button>
-								</el-form-item>   
+								</el-form-item>
 							</el-col>
 							<el-col :span="12">
 								<el-form-item label="提出时间" prop="ctime" >
 									<el-date-picker value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="editForm.ctime"  @change="editXmMenuSomeFields(editForm,'ctime',$event)"></el-date-picker>
-								</el-form-item>   
+								</el-form-item>
 							</el-col>
 						</el-row>
-						<el-row> 
-							
+						<el-row>
+
 							<el-col :span="12">
-								<el-form-item  label="需求类型" prop="dtype" >   
+								<el-form-item  label="需求类型" prop="dtype" >
 									<el-select v-model="editForm.dtype"  @change="editXmMenuSomeFields(editForm,'dtype',$event)">
 										<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-									</el-select>  
-								</el-form-item>   
+									</el-select>
+								</el-form-item>
 							</el-col>
 							<el-col :span="12">
-								<el-form-item  label="需求来源" prop="source">   
+								<el-form-item  label="需求来源" prop="source">
 									<el-select v-model="editForm.source"  @change="editXmMenuSomeFields(editForm,'source',$event)">
 										<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
-									</el-select>  
-								</el-form-item>   
-							</el-col> 
+									</el-select>
+								</el-form-item>
+							</el-col>
 							<el-col :span="12">
-								<el-form-item  label="需求层次" prop="dlvl" >   
+								<el-form-item  label="需求层次" prop="dlvl" >
 									<el-select v-model="editForm.dlvl"  @change="editXmMenuSomeFields(editForm,'dlvl',$event)">
 										<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
-									</el-select>  
-								</el-form-item>   
+									</el-select>
+								</el-form-item>
 							</el-col>
 							<el-col :span="12">
-							<el-form-item  label="优先级" prop="priority" >  
+							<el-form-item  label="优先级" prop="priority" >
 								<el-select v-model="editForm.priority" @change="editXmMenuSomeFields(editForm,'priority',$event)">
-										<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option> 
-								</el-select>    
-							</el-form-item>  
+										<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
+								</el-select>
+							</el-form-item>
 							</el-col>
 						</el-row>
-					</el-tab-pane> 
-						<el-tab-pane label="概述" name="4"> 
+					</el-tab-pane>
+						<el-tab-pane label="概述" name="4">
 							<el-form-item label="需求概述" prop="remark">
 								<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="editForm.remark" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
-							</el-form-item>   
+							</el-form-item>
 							<el-row class="padding">
- 								<el-button v-loading="load.edit" type="primary" @click.native="editXmMenuSomeFields(editForm,'remark',editForm.remark)" :disabled="load.edit==true">提交</el-button>  
+ 								<el-button v-loading="load.edit" type="primary" @click.native="editXmMenuSomeFields(editForm,'remark',editForm.remark)" :disabled="load.edit==true">提交</el-button>
 							</el-row>
-						</el-tab-pane> 
-						<el-tab-pane :label="'子工作项'+(subWorkItemNum>=0?'('+subWorkItemNum+')':'')" name="6">  
-							 <xm-sub-work-item :parent-xm-menu="editForm" @sub-work-item-num="setSubWorkItemNum"></xm-sub-work-item>
-						</el-tab-pane> 
+						</el-tab-pane>
+						<el-tab-pane :label="'子工作项'+(subWorkItemNum>=0?'('+subWorkItemNum+')':'')" name="6">
+							 <xm-sub-work-item :parent-xm-menu="editForm" @sub-work-item-num="setSubWorkItemNum" @add-sub-menu="onAddSubMenu"></xm-sub-work-item>
+						</el-tab-pane>
 						<el-tab-pane :label="'工时('+editForm.mactWorkload+' h)'" name="2">
-							<el-form-item label="数据收集方式" prop="calcType"> 
+							<el-form-item label="数据收集方式" prop="calcType">
 								<el-radio   v-model="editForm.calcType"  label="3" placeholder="下级往上级汇总" :disabled="editForm.ntype==='0'">下级往上级汇总</el-radio>
- 								<el-radio   v-model="editForm.calcType"  label="1" placeholder="由任务汇总" :disabled="editForm.ntype==='1'">由任务汇总</el-radio> 
+ 								<el-radio   v-model="editForm.calcType"  label="1" placeholder="由任务汇总" :disabled="editForm.ntype==='1'">由任务汇总</el-radio>
 								<el-radio   v-model="editForm.calcType"  label="2" placeholder="手工填报" :disabled="editForm.ntype==='1'">手工填报</el-radio>
-							</el-form-item> 
+							</el-form-item>
 							<el-form-item label="工时进度" prop="mactRate" >
 								<el-progress style="width:60%;" :text-inside="true" :stroke-width="15" :percentage="editForm.mactRate?editForm.mactRate:0"></el-progress>
- 							</el-form-item> 
+ 							</el-form-item>
 							<el-form-item label="预估工期" prop="budgetHours">
 								<el-input-number :disabled="editForm.calcType!=='2'  " style="width:200px;"  v-model="editForm.budgetHours"  :precision="2" :step="8" :min="0" placeholder="预计工期(小时)"></el-input-number> &nbsp;h
-							</el-form-item> 
+							</el-form-item>
 							<el-form-item label="预估工时" prop="budgetWorkload">
 								<el-input-number :disabled="editForm.calcType!=='2'  " style="width:200px;"  v-model="editForm.budgetWorkload" :precision="2" :step="8" :min="0" placeholder="预计工时(小时)"></el-input-number>  &nbsp;h
-							</el-form-item> 
+							</el-form-item>
 							<el-form-item label="实际工时" prop="mactWorkload">
 								<el-input-number :disabled="editForm.calcType!=='2'  " style="width:200px;"  v-model="editForm.mactWorkload" :precision="2" :step="8" :min="0" placeholder="实际工时(小时)"></el-input-number> &nbsp;h
-							</el-form-item> 
+							</el-form-item>
 							<font color="blue" style="font-size:10px;">控制规则:
 								<br>下级往上汇总：指工时数据按 &nbsp;用户故事->特性->史诗 &nbsp;这样的汇总关系将数据逐级往上汇总。
 								<br>由任务汇总： 指用户故事的工时数据由任务汇总。
 								<br>手工填报：  指用户故事的工时数据来自手工填报，无论是否关联了任务，都不从任务汇总。
 							</font>
-							  
+
 							<el-row class="padding">
- 								<el-button v-loading="load.edit" type="primary" @click.native="editXmMenuSomeFields(editForm,'workload',{mactWorkload:editForm.mactWorkload,budgetWorkload:editForm.budgetWorkload,mactRate:editForm.mactRate,budgetHours:editForm.budgetHours})" :disabled="load.edit==true">提交</el-button>  
+ 								<el-button v-loading="load.edit" type="primary" @click.native="editXmMenuSomeFields(editForm,'workload',{mactWorkload:editForm.mactWorkload,budgetWorkload:editForm.budgetWorkload,mactRate:editForm.mactRate,budgetHours:editForm.budgetHours})" :disabled="load.edit==true">提交</el-button>
 							</el-row>
 						</el-tab-pane>
-						<el-tab-pane label="成本" name="3"> 
+						<el-tab-pane label="成本" name="3">
 							<el-form-item label="预估金额" prop="budgetAmount">
-								<el-input-number :disabled="editForm.calcType!=='2'  "  style="width:200px;"  v-model="editForm.budgetAmount" :precision="2" :step="100" :min="0" placeholder="预算金额"></el-input-number>   元 
-							</el-form-item> 
+								<el-input-number :disabled="editForm.calcType!=='2'  "  style="width:200px;"  v-model="editForm.budgetAmount" :precision="2" :step="100" :min="0" placeholder="预算金额"></el-input-number>   元
+							</el-form-item>
 							<el-form-item label="实际金额" prop="mactAmount">
-								<el-input-number :disabled="editForm.calcType!=='2'  "  style="width:200px;"  v-model="editForm.mactAmount" :precision="2" :step="100" :min="0" placeholder="实际金额"></el-input-number>   元 
-							</el-form-item> 
-							
+								<el-input-number :disabled="editForm.calcType!=='2'  "  style="width:200px;"  v-model="editForm.mactAmount" :precision="2" :step="100" :min="0" placeholder="实际金额"></el-input-number>   元
+							</el-form-item>
+
 							<el-row class="padding">
- 								<el-button v-loading="load.edit" type="primary" @click.native="editXmMenuSomeFields(editForm,'budgetAmount',{budgetAmount:editForm.budgetAmount,mactAmount:editForm.mactAmount })" :disabled="load.edit==true">提交</el-button>  
+ 								<el-button v-loading="load.edit" type="primary" @click.native="editXmMenuSomeFields(editForm,'budgetAmount',{budgetAmount:editForm.budgetAmount,mactAmount:editForm.mactAmount })" :disabled="load.edit==true">提交</el-button>
 							</el-row>
 						</el-tab-pane>
-					<el-tab-pane label="链接" name="5"> 
-						<el-form-item label="需求链接" prop="demandUrl"> 
-							<el-input v-model="editForm.demandUrl" placeholder="需求链接" ></el-input> 
-						</el-form-item>  
+					<el-tab-pane label="链接" name="5">
+						<el-form-item label="需求链接" prop="demandUrl">
+							<el-input v-model="editForm.demandUrl" placeholder="需求链接" ></el-input>
+						</el-form-item>
 						<el-form-item label="代码链接" prop="codeUrl">
-							<el-input v-model="editForm.codeUrl" placeholder="代码链接" ></el-input>  
-						</el-form-item>  
+							<el-input v-model="editForm.codeUrl" placeholder="代码链接" ></el-input>
+						</el-form-item>
 						<el-form-item label="设计链接" prop="designUrl">
-							<el-input v-model="editForm.designUrl" placeholder="设计链接" ></el-input>  
-						</el-form-item>   
+							<el-input v-model="editForm.designUrl" placeholder="设计链接" ></el-input>
+						</el-form-item>
 						<el-form-item label="操作手册链接" prop="operDocUrl">
-							<el-input v-model="editForm.operDocUrl" placeholder="操作手册链接" ></el-input>  
-						</el-form-item>  
-						
+							<el-input v-model="editForm.operDocUrl" placeholder="操作手册链接" ></el-input>
+						</el-form-item>
+
 							<el-row class="padding">
- 								<el-button v-loading="load.edit" type="primary" @click.native="editXmMenuSomeFields(editForm,'link',{demandUrl:editForm.demandUrl,codeUrl:editForm.codeUrl,designUrl:editForm.designUrl,operDocUrl:editForm.operDocUrl})" :disabled="load.edit==true">提交</el-button>  
+ 								<el-button v-loading="load.edit" type="primary" @click.native="editXmMenuSomeFields(editForm,'link',{demandUrl:editForm.demandUrl,codeUrl:editForm.codeUrl,designUrl:editForm.designUrl,operDocUrl:editForm.operDocUrl})" :disabled="load.edit==true">提交</el-button>
 							</el-row>
 					</el-tab-pane>
-					<el-tab-pane label="wiki" name="7">  
+					<el-tab-pane label="wiki" name="7">
 						关联知识库
 					</el-tab-pane>
-					<el-tab-pane label="附件" name="8">  
+					<el-tab-pane label="附件" name="8">
 						上传附件
 					</el-tab-pane>
 				</el-tabs>
@@ -199,18 +199,18 @@
 			<el-drawer title="选择提出人" :visible.sync="proposerSelectVisible" size="60%" append-to-body>
 				<users-select  @confirm="onProposerSelected" ref="usersSelect"></users-select>
 			</el-drawer>
-			
+
 			<el-drawer title="选择跟进人" :visible.sync="mmUserSelectVisible" size="60%" append-to-body>
 				<users-select  @confirm="onMmUserSelected" ref="mmUsersSelect"></users-select>
 			</el-drawer>
 		</el-row>
-			
+
 			<el-drawer append-to-body title="标签" :visible.sync="tagSelectVisible" class="dialog-body" size="60%">
 				<tag-mng :tagIds="editForm.tagIds?editForm.tagIds.split(','):[]" :jump="true" @select-confirm="onTagSelected">
 				</tag-mng>
 			</el-drawer>
-			
-		
+
+
 	</section>
 </template>
 
@@ -243,7 +243,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 					}
 				}
 			},
-			calcMenuLabel(){ 
+			calcMenuLabel(){
 				var params={label:'工作项',icon:'',color:''};
 				if(this.editForm.dclass==='1'){
 					params={label:'史诗',icon:'el-icon-s-promotion',color:'rgb(255, 153, 51)'};
@@ -251,9 +251,9 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 					params={label:'特性',icon:'el-icon-s-flag',color:'rgb(0, 153, 51)'};
 				}else if(this.editForm.dclass==='3'){
 					params={label:'故事',icon:'el-icon-document',color:' rgb(79, 140, 255)'};
-				} 
+				}
 				return params;
-			}, 
+			},
 		},
 		props:['xmMenu','visible','parentMenu','product','dclass'],
 		watch: {
@@ -263,11 +263,11 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 	      'visible':function(visible) {
 	      	if(visible==true){
 	      		if(this.editForm.startTime && this.editForm.endTime){
-					this.dateRanger.push(this.editForm.startTime) 
+					this.dateRanger.push(this.editForm.startTime)
 					this.dateRanger.push(this.editForm.endTime)
 				}
 	      	}
-	      }, 
+	      },
 			'editForm.mactWorkload':function(val,oldVal){
 				if(!this.editForm.budgetWorkload){
 					return;
@@ -320,7 +320,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 				mmUserSelectVisible:false,
 				dicts:{
 					menuStatus:[
-						
+
 							{id:"0", name:"初始"},
 							{id:"1", name:"待评审"},
 							{id:"2", name:"待设计"},
@@ -330,7 +330,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 							{id:"6", name:"待上线"},
 							{id:"7", name:"运行中"},
 							{id:"8", name:"已下线"},
-							{id:"9", name:"已删除"}, 
+							{id:"9", name:"已删除"},
 					]
 				},
 				tagSelectVisible:false,
@@ -350,7 +350,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
  				this.$emit('cancel');
 			},
 			//新增提交XmMenu 项目需求表 父组件监听@submit="afterAddSubmit"
-			editSubmit: function () { 
+			editSubmit: function () {
 				this.$refs.editForm.validate((valid) => {
 					if (valid) {
 
@@ -408,8 +408,8 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 				this.editForm.status=status;
 			},
 			onTagSelected(tags) {
-				this.tagSelectVisible = false; 
-				if(tags && tags.length>0){ 
+				this.tagSelectVisible = false;
+				if(tags && tags.length>0){
 					this.editForm.tagIds=tags.map(i=>i.tagId).join(",")
 					this.editForm.tagNames=tags.map(i=>i.tagName).join(",")
 				}else{
@@ -455,13 +455,14 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 						params[fieldName]=$event
 					}else{
 						params={...params,...$event}
-					} 
+					}
 				}
 
 				editXmMenuSomeFields(params).then(res=>{
 					var tips = res.data.tips;
 					if(tips.isOk){
-						Object.assign(row,params) 
+						Object.assign(row,params)
+						this.$emit("edit-fields",params);
 						if(fieldName==='remark'||fieldName==='link'){
 							this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 						}
@@ -470,6 +471,10 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 					}
 				})
 			},
+			onAddSubMenu(menu){
+				debugger;
+				this.$emit("add-sub-menu",menu)
+			}
 		},//end method
 		components: {
 			//在下面添加其它组件 'xm-menu-edit':XmMenuEdit
@@ -480,14 +485,14 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 			XmSubWorkItem,
 		},
 		mounted() {
-			
-			
+
+
  			initSimpleDicts('all',['demandSource','demandLvl','demandType','priority','menuStatus'] ).then(res=>{
 				this.dicts=res.data.data;
 			})
 			this.editForm=Object.assign(this.editForm, this.xmMenu);
 			if(this.editForm.startTime && this.editForm.endTime){
-				this.dateRanger.push(this.editForm.startTime) 
+				this.dateRanger.push(this.editForm.startTime)
 				this.dateRanger.push(this.editForm.endTime)
 			}
 			/**在下面写其它函数***/
@@ -509,5 +514,5 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
   font-size: 14px;
   display: inline-block;
   margin-right: 5px;
-} 
+}
 </style>
