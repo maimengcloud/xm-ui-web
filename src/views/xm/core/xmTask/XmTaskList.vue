@@ -241,17 +241,14 @@
 				
 				
 				params=this.getParams(params) 
-				if(this.queryScope=='planTask'){
-					params.isTop="1" 
+				if(this.queryScope=='planTask'){ 
 					params.withParents="1"
-				}else if(this.queryScope=='plan'){
-					params.isTop="1" 
+				}else if(this.queryScope=='plan'){ 
 					params.withParents="1"
 					params.ntype="1"
 				}else if(this.queryScope=='task'){
 					params.ntype="0"
-				}else{
-					params.isTop="1" 
+				}else{ 
 					params.withParents="1"
 				}
 				if(this.ptype){ 

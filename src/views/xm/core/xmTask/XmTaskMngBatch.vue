@@ -500,8 +500,7 @@ export default {
       }
 	  this.load.list=true
 	  params=this.getParams(params)
-    if(this.ptype=='projectPlan'){
-      params.isTop = "1";
+    if(this.ptype=='projectPlan'){ 
       params.withParents = "1";
     }else{ 
       params.ntype="0"
