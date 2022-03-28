@@ -823,11 +823,11 @@
       </el-row>
     </el-drawer>
     <!--编辑 XmTask xm_task界面-->
-    <el-drawer
+    <el-dialog
       title="编辑任务"
       :visible.sync="editFormVisible"
-      :with-header="false"
-      :size="850"
+      width="90%"
+      top="20px"
       append-to-body
       :close-on-click-modal="false"
     >
@@ -840,15 +840,15 @@
         @after-edit-submit="afterExecEditSubmit"
         @submit="afterEditSubmit"
       ></xm-task-edit>
-    </el-drawer>
+    </el-dialog>
 
     <!-- 新增 XmTask xm_task界面-->
-    <el-drawer
+    <el-dialog
       class="xm-task-add"
       title="新增任务"
-      :visible.sync="addFormVisible"
-      :with-header="false"
-      :size="850"
+      :visible.sync="addFormVisible" 
+      width="90%"
+      top="20px"
       append-to-body
       :close-on-click-modal="false"
     >
@@ -862,7 +862,7 @@
         @cancel="addFormVisible = false"
         @submit="afterAddSubmit"
       ></xm-task-add>
-    </el-drawer>
+    </el-dialog>
 
     <el-drawer
       :title="'任务' + currTaskName + '的执行人'"

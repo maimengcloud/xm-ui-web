@@ -152,8 +152,7 @@
 						</el-form-item>   
 						<el-form-item label="预估工作量" prop="budgetWorkload">
 							<el-input-number style="width:200px;"  v-model="editForm.budgetWorkload" @change="onBudgetWorkloadChange" :precision="2" :step="8" :min="0" placeholder="预计总工作量(人时,不包括下一级)"></el-input-number> <el-tag>人时，{{this.toFixed(editForm.budgetWorkload/8/20)}}人月</el-tag> 
-							<br>
-							<el-checkbox v-model="editForm.taskOut" @change="onTaskOutChange" true-label="1" false-label="0">是否为众包任务</el-checkbox> 
+							 
 						</el-form-item>  
 						<el-form-item label="预估金额" prop="taskOut">
 							<el-row v-if="editForm.taskOut!=='1'">
@@ -368,7 +367,7 @@
 				editForm: {
 					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'3',sortLevel:'0',executorUserid:'',executorUsername:'',
 					preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',taskOut:'0',
-					rate:0,budgetCost:'',budgetWorkload:'',actCost:'',actWorkload:'',taskState:'0',taskClass:'0',toTaskCenter:'0',actStartTime:'',actEndTime:'',taskType:'kf',planType:'w2',settleSchemel:'1',ntype:'0',childrenCnt:0
+					rate:0,budgetCost:'',budgetWorkload:'',actCost:'',actWorkload:'',taskState:'0',taskClass:'0',toTaskCenter:'0',actStartTime:'',actEndTime:'',taskType:'4',planType:'w2',settleSchemel:'1',ntype:'0',childrenCnt:0
   
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
