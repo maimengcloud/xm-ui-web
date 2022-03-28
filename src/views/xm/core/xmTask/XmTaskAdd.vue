@@ -151,7 +151,7 @@
 						</el-form-item> 
 					</el-tab-pane>
 					
-					<el-tab-pane label="需求" name="3">  
+					<el-tab-pane label="需求" name="3" v-if="addForm.ntype==='0'">  
 						
 						<el-row>
 							<el-col :span="12"> 
@@ -167,19 +167,22 @@
 							</el-col> 
 						</el-row>
 					</el-tab-pane>
-					<el-tab-pane label="子工作项" name="4">  
+					<el-tab-pane label="子工作项" name="4" v-if="false">  
 
 					</el-tab-pane>
 					<el-tab-pane label="工时" name="5"> 
 						<el-row>
-							<el-col :span="12">  
+							<el-col :span="8">  
 								<el-form-item label="数据收集方式" prop="calcType">
-									<el-radio   v-model="addForm.calcType"  label="0" placeholder="不统计" :disabled="addForm.ntype==='0'">不收集</el-radio>
-									<el-radio   v-model="addForm.calcType"  label="1" placeholder="下级往上级汇总" :disabled="addForm.ntype==='0'">下往上</el-radio>
- 									<el-radio   v-model="addForm.calcType"  label="2" placeholder="手工填报" :disabled="addForm.ntype==='1'">手工填报</el-radio>
+									
+									<el-select v-model="addForm.calcType">
+										<el-option label="不统计"  value="0"></el-option>
+										<el-option label="下级往上级汇总"  value="1"></el-option>
+										<el-option label="手工填报"  value="2"></el-option>
+									</el-select>   
 								</el-form-item>  
 							</el-col>
-							<el-col :span="6"> 
+							<el-col :span="8"> 
 								<el-form-item label="报工方式" prop="wtype" > 
 									<el-select v-model="addForm.wtype">
 										<el-option label="无须报工"  value="0"></el-option>
@@ -188,7 +191,7 @@
 									</el-select>  
 								</el-form-item>
 							</el-col>  
-							<el-col :span="6"> 
+							<el-col :span="8"> 
 								<el-form-item label="工时进度" prop="rate" >
 									<el-progress style="width:60%;" :text-inside="true" :stroke-width="15" :percentage="addForm.rate?addForm.rate:0"></el-progress>
 								</el-form-item>

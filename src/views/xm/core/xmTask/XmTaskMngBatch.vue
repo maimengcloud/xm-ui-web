@@ -728,7 +728,7 @@ export default {
         i.taskOut = i.taskOut ? i.taskOut : "0";
         i.taskClass = i.taskClass ? i.taskClass : "1";
         i.toTaskCenter = i.toTaskCenter ? i.toTaskCenter : "1";
-        i.settleSchemel = i.settleSchemel ? i.settleSchemel : "quotePrice";
+        i.settleSchemel = i.settleSchemel ? i.settleSchemel : "1";
         i.createUserid = this.userInfo.userid;
         i.createUsername = this.userInfo.username;
         const createTime = new Date();
@@ -951,7 +951,7 @@ export default {
         subRow.toTaskCenter = subRow.toTaskCenter ? subRow.toTaskCenter : "1";
         subRow.settleSchemel = subRow.settleSchemel
           ? subRow.settleSchemel
-          : "quotePrice";
+          : "1";
         subRow.createUserid = this.userInfo.userid;
         subRow.createUsername = this.userInfo.username;
         const createTime = new Date();
