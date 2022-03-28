@@ -2,8 +2,8 @@
 	<section class="page-container  padding border">
 		<el-row> 
 			<div>
-				<el-tag    v-if="  filters.product "  closable    @close="clearProduct">{{this.filters.product.productName}}</el-tag>
-				<xm-product-select v-else :link-project-id="filters.selProject?filters.selProject.id:null"   @row-click="onProductSelected"></xm-product-select>
+				
+				<xm-product-select style="display:inline;" :auto-select="false" :link-project-id="filters.selProject?filters.selProject.id:null"   @row-click="onProductSelected" @clear-select="filters.xmProduct=null"></xm-product-select>
 				<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 选择需求</el-button>
 				<el-tag v-else   closable @close=" clearFiltersMenu(filters.menus[0])">{{filters.menus[0].menuName.substr(0,5)}}等({{filters.menus.length}})个</el-tag>
 				<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
@@ -11,10 +11,6 @@
 						<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTestCases" icon="el-icon-search"></el-button>
 					</template>
 				</el-input> 
-				<el-button type="primary" v-if="!multiSelect" icon="el-icon-plus" @click="showAdd"></el-button>
-				<el-button type="primary" v-if="multiSelect" @click="selected">确认选中</el-button> 
-				<el-button v-if="!multiSelect " type="danger" icon="el-icon-delete" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
-				
 				<el-popover
 					placement="top-start"
 					title="更多查询条件或操作"
@@ -22,11 +18,10 @@
 					trigger="click" > 
 					<el-row>
 						<el-col :span="24" style="padding-top:5px;">
-							<font class="more-label-font" v-if="!xmProduct">产品:</font>
-							<xm-product-select :link-project-id="filters.selProject?filters.selProject.id:null"   @row-click="onProductSelected"></xm-product-select>
+							<xm-product-select :auto-select="false" :link-project-id="filters.selProject?filters.selProject.id:null"   @row-click="onProductSelected" @clear-select="filters.xmProduct=null"></xm-product-select>
 						</el-col> 
 						<el-col :span="24" style="padding-top:5px;" v-if="!selProject" >
-							<xm-project-select :link-product-id="filters.product?filters.product.id:null"   @row-click="onPorjectConfirm"></xm-project-select>
+							<xm-project-select :auto-select="false" :link-product-id="filters.product?filters.product.id:null"   @row-click="onPorjectConfirm" @clear-select="filters.selProject=null"></xm-project-select>
 						</el-col> 		
 						<el-col :span="24" style="padding-top:5px;">
 								<font class="more-label-font">需求:</font>
@@ -63,6 +58,12 @@
 					</el-row>
 					<el-button  slot="reference" icon="el-icon-more"></el-button>
 				</el-popover> 
+				
+				<span style="float:right;">
+				<el-button type="primary" v-if="!multiSelect" icon="el-icon-plus" @click="showAdd"></el-button>
+				<el-button type="primary" v-if="multiSelect" @click="selected">确认选中</el-button> 
+				<el-button v-if="!multiSelect " type="danger" icon="el-icon-delete" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true"></el-button> 
+				</span>
 			</div>
 		</el-row>
 		<el-row class="page-main "> 
@@ -99,19 +100,19 @@
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		
 			<!--编辑 XmTestCase 测试用例界面-->
-			<el-drawer title="编辑测试用例" :visible.sync="editFormVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑测试用例" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
 				  <xm-test-case-edit :xm-test-case="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-test-case-edit>
 			</el-drawer>
 	
 			<!--新增 XmTestCase 测试用例界面-->
-			<el-drawer title="新增测试用例" :visible.sync="addFormVisible"  size="80%"  append-to-body  :close-on-click-modal="false">
+			<el-drawer title="新增测试用例" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
 				<xm-test-case-add :xm-test-case="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-test-case-add>
 			</el-drawer>  
-			<el-drawer title="选中用户" :visible.sync="selectUserForFiltersVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="选中用户" :visible.sync="selectUserForFiltersVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
 				<xm-group-mng v-if="filters.selProject" :sel-project=" filters.selProject " :is-select-single-user="1" @user-confirm="onFiltersUserConfirm"></xm-group-mng>
 			</el-drawer> 
 		</el-row>
-		<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible"    size="80%"   :close-on-click-modal="false">
+		<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible"    size="60%"   :close-on-click-modal="false">
 			<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
 		</el-drawer> 
 	</section>
@@ -361,7 +362,6 @@
 			},
 			onProductSelected(product){
 				this.filters.product=product;
-				this.productSelectVisible=false;
 				this.searchXmTestCases();
 			},
 			showMenu(){

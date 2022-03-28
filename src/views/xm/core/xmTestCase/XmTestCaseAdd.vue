@@ -15,15 +15,15 @@
 					<el-button @click="showMenu">关联需求</el-button>
 				</el-form-item>
 
-				<el-form-item>
- 					<el-col :span="12">测试步骤</el-col>
-					<el-col :span="12" offset="0">预期结果</el-col>
-					<el-col :span="12">
-							<vue-editor :id="'testStep'" :branch-id="userInfo.branchId" v-model="addForm.testStep" ref="testStep"></vue-editor>
-					</el-col>
-					<el-col :span="12" offset="0">
-							<vue-editor :id="'expectResult'" :branch-id="userInfo.branchId" v-model="addForm.expectResult"  ref="expectResult"></vue-editor>
-					</el-col>
+				<el-form-item label="测试步骤" prop="testStep"> 
+							<vue-editor :id="'testStep3'" :branch-id="userInfo.branchId" v-model="addForm.testStep" ref="testStep" key="1"></vue-editor>
+				 
+ 					 
+ 				</el-form-item>
+				<el-form-item label="预期结果" prop="expectResult"> 
+ 				 
+							<vue-editor :id="'expectResult3'" :branch-id="userInfo.branchId" v-model="addForm.expectResult"  ref="expectResult" key="2"></vue-editor>
+					 
  				</el-form-item>
 				<el-form-item>
  						<el-button @click.native="handleCancel">取消</el-button>
@@ -33,8 +33,8 @@
  				</el-form-item>
 			</el-form>
 
-		<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible" fullscreen    :close-on-click-modal="false">
-			<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true" :exclude-iteration-id="iteration?iteration.id:''"  @menus-selected="onSelectedMenus" ></xm-menu-select>
+		<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible" size="60%"    :close-on-click-modal="false">
+			<xm-menu-select :visible="menuVisible" checkScope="0" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
 		</el-drawer>
 		</el-row>
 	</section>

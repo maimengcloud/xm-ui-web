@@ -45,7 +45,7 @@
 				</el-row>
 			</el-col>
 			<el-col :span="14">
-				<xm-menu-select ref="menusSelect" iterationFilterType="not-join-curr-iteration" checkScope="0" :xm-product="{id:xmIteration.productId}" :xm-iteration="xmIteration" :visible="menuVisible" :is-select-menu="true" :multi="true"   @menus-selected="onSelectedMenus" ></xm-menu-select>
+				<xm-menu-select ref="menusSelect" iterationFilterType="not-join-curr-iteration" checkScope="0" :xm-product="xmIteration?{id:xmIteration.productId}:null" :xm-iteration="xmIteration" :visible="menuVisible" :is-select-menu="true" :multi="true"   @menus-selected="onSelectedMenus" ></xm-menu-select>
 			</el-col>
   		</el-row>
 	</section>

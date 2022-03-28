@@ -1,18 +1,13 @@
 <template>
 	<section class="page-container  padding border">
 		<el-row v-if="!batchEditVisible">
-        		<el-checkbox v-model="gstcVisible"  >甘特图</el-checkbox>
-				<xm-product-select  :auto-select="false" :link-project-id="filters.selProject"   @row-click="onProductSelected"></xm-product-select>
-  				<xm-project-select  :auto-select="false"  :link-product-id="filters.product?filters.product.id:null"  @row-click="onPorjectConfirm"></xm-project-select>
+				<xm-product-select style="display:inline;" :auto-select="false" :link-project-id="filters.selProject?filters.selProject.id:null"   @row-click="onProductSelected" @clear-select="filters.xmProduct=null"></xm-product-select>
+  				<xm-project-select style="display:inline;" :auto-select="false"  :link-product-id="filters.product?filters.product.id:null"  @row-click="onPorjectConfirm" @clear-select="filters.selProject=null"></xm-project-select>
 				<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 选择需求</el-button>
 				<el-tag v-else   closable @close="clearFiltersMenu(filters.menus[0])">{{filters.menus[0].menuName.substr(0,5)}}等({{filters.menus.length}})个</el-tag>
-				<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
-					<template slot="append">
-						<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTestCaseExecs" icon="el-icon-search"></el-button>  
-					</template>
+				<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"> 
 				</el-input> 
-				<el-button  type="primary" @click="showCase" icon="el-icon-plus">由用例创建计划</el-button>
-				<el-button   @click="showBatchEdit" icon="el-icon-right">批量修改</el-button>  
+				<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTestCaseExecs" icon="el-icon-search"></el-button>  
 				<el-popover
 					placement="top-start"
 					title="更多查询条件或操作"
@@ -64,6 +59,11 @@
 					</el-row>
 					<el-button  slot="reference" icon="el-icon-more"></el-button>
 				</el-popover> 
+				
+				<span style="float:right;">
+				<el-button  type="primary" @click="showCase" icon="el-icon-plus">由用例创建计划</el-button>
+				<el-button   @click="showBatchEdit" icon="el-icon-right">批量修改</el-button>  
+				</span>
 		</el-row>
 		<el-row class="page-main" v-else> 
 				<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
@@ -167,26 +167,26 @@
 			<el-drawer title="选择用例" :visible.sync="xmTestCaseMngVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
 				<xm-test-case-mng  :multi-select="true" :visible="xmTestCaseMngVisible"   @selected="onCaseSelected"></xm-test-case-mng>
 			</el-drawer>  
-			<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible" fullscreen  size="80%"    :close-on-click-modal="false">
+			<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible" fullscreen  size="60%"    :close-on-click-modal="false">
 				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"   @menus-selected="onSelectedMenus" ></xm-menu-select>
 			</el-drawer>
-			<el-drawer title="选中用户" :visible.sync="selectUserForFiltersVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="选中用户" :visible.sync="selectUserForFiltersVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
 				<xm-group-mng v-if="filters.selProject" :sel-project=" filters.selProject " :is-select-single-user="1" @user-confirm="onFiltersUserConfirm"></xm-group-mng>
 			</el-drawer> 
-			<el-drawer title="选中用户" :visible.sync="selectUserVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="选中用户" :visible.sync="selectUserVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
 				<xm-group-mng v-if="filters.selProject" :sel-project=" filters.selProject " :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-mng>
 			</el-drawer> 
-			<el-drawer title="选中任务" :visible.sync="selectTaskVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="选中任务" :visible.sync="selectTaskVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
 				<xm-task-list  :sel-project="filters.selProject"   @task-selected="onSelectedTask"></xm-task-list>
 			</el-drawer> 	
 			 
-			<el-drawer title="查看用例" :visible.sync="caseVisible"  size="80%" fullscreen append-to-body  :close-on-click-modal="false">
+			<el-drawer title="查看用例" :visible.sync="caseVisible"  size="60%" fullscreen append-to-body  :close-on-click-modal="false">
 				<xm-test-case-mng  :case-id="editForm.caseId" :visible="caseVisible"   ></xm-test-case-mng>
 			</el-drawer> 
-			<el-drawer title="测试用例" :visible.sync="caseVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="测试用例" :visible.sync="caseVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
 				  <xm-test-case-edit :xm-test-case="xmTestCase"   :visible="caseVisible" @cancel="caseVisible=false" ></xm-test-case-edit>
 			</el-drawer>
-			<el-drawer title="缺陷列表" :visible.sync="bugsVisible"  size="80%"  append-to-body  fullscreen :close-on-click-modal="false">
+			<el-drawer title="缺陷列表" :visible.sync="bugsVisible"  size="60%"  append-to-body  fullscreen :close-on-click-modal="false">
 				  <xm-question-mng :xm-test-case="xmTestCase" :xm-test-case-exec="editForm" :sel-project="filters.selProject" :visible="bugsVisible" @cancel="bugsVisible=false" ></xm-question-mng>
 			</el-drawer> 
 			<!--新增 XmQuestion xm_question界面-->
@@ -742,7 +742,7 @@
 		    //在下面添加其它组件
 		},
 		
-XmProjectSelectmounted() { 
+		mounted() { 
 			this.filters.selProject=this.selProject; 
 			this.filters.execUser=this.userInfo;
 			this.$nextTick(() => {
