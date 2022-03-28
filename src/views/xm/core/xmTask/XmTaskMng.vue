@@ -1,6 +1,6 @@
 <template>
   <section class="padding">
-    <el-row v-show="batchEditVisible == false">
+    <el-row>
       <el-col
         :span="24"
         class="padding-left"
@@ -104,12 +104,12 @@
           <el-button
             style="margin-top: 10px;"
             v-if="!filters.tags || filters.tags.length == 0"
-            @click.native="tagSelectVisible = true"
+            @click.native="$refs.tagDialog.open()"
             >标签</el-button
           >
           <el-tag
             v-else
-            @click="tagSelectVisible = true"
+            @click="$refs.tagDialog.open()"
             closable
             @close="clearFiltersTag(filters.tags[0])"
             >{{ filters.tags[0].tagName.substr(0, 5) }}等({{
@@ -226,15 +226,7 @@
             title="更换任务的上级，实现任务搬家功能"
             icon="el-icon-upload2"
             v-loading="load.edit"
-          > </el-button>
-          <el-button
-            v-if="isTaskCenter != '1' && isMy != '1'"
-            @click="showBatchEdit"
-            v-loading="load.edit"
-            icon="el-icon-edit"
-            title="批量修改任务"
-            ></el-button
-          >
+          > </el-button> 
           <el-button type="danger"
             v-if="isTaskCenter != '1' && isMy != '1'"
             @click="batchDel"
@@ -253,15 +245,7 @@
             <el-row>
               <el-col :span="24" style="padding-top: 5px">
                 <font class="more-label-font">产品:</font
-                ><el-tag
-                  v-if="filters.product"
-                  :closable="!xmProduct"
-                  @close="clearProduct"
-                  >{{ this.filters.product.productName }}</el-tag
-                >
-                <el-button v-else @click="showProductVisible" type="plian"
-                  >选产品</el-button
-                >
+                > <xm-product-select :auto-select="false" :link-project-id="filters.selProject && filters.selProject.id?filters.selProject.id:null" @row-click="onProductSelected" @clear-select="onProductClearSelect"></xm-product-select>
               </el-col>
               <el-col :span="24" style="padding-top: 5px">
                 <font class="more-label-font">需求:</font>
@@ -360,16 +344,7 @@
                 >
               </el-col>
             </el-row>
-            <el-row>
-              <el-col :span="24" style="padding-top: 5px">
-                <el-button
-                  v-if="isTaskCenter != '1' && isMy != '1'"
-                  @click="showBatchEdit"
-                  v-loading="load.edit"
-                  icon="el-icon-edit"
-                  >批量修改任务</el-button
-                >
-              </el-col>
+            <el-row> 
               <el-col :span="24" style="padding-top: 5px">
                 <el-button type="danger"
                   v-if="isTaskCenter != '1' && isMy != '1'"
@@ -451,18 +426,7 @@
 									<i :class="scope.row.ntype==='1'?'el-icon-odometer':'el-icon-s-operation'" ></i>
 									</div>  
                   <span class="vlink"   type="primary" @click.stop="showDrawer(scope.row)">
-                    {{ scope.row.sortLevel }}&nbsp;
-                    <el-tag v-if="scope.row.level <= '2'" type="info"
-                      >轻微</el-tag
-                    >
-                    <el-tag v-else-if="scope.row.level == '3'" type="warning"
-                      >一般</el-tag
-                    >
-                    <el-tag v-else-if="scope.row.level == '4'" type="danger"
-                      >紧急</el-tag
-                    >
-                    <el-tag v-else type="danger">特急</el-tag>
-                     {{ scope.row.name }}
+                    {{ scope.row.sortLevel }}&nbsp;  {{ scope.row.name }}
                     </span>
                   
 									<div class="tool-bar">
@@ -486,21 +450,44 @@
                 label="状态"
                 type="taskState"
                 width="100"
-              >
-                <template slot-scope="scope">
-                    {{formateOption("taskState",scope.row.taskState)}}
-                </template>
+              >  
+								<template slot-scope="scope">
+									<div class="cell-text">
+										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in formatterTaskStateDicts(scope.row.taskState)" :key="index">{{item.name}}</el-button>
+									</div>
+									<span class="cell-bar">
+										 <el-select  v-model="scope.row.taskState" placeholder="任务状态"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'taskState',$event)">
+												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.taskState" :key="index"></el-option>
+										 </el-select>
+									</span>
+								</template>
+              </el-table-column>
+              
+              <el-table-column
+                label="优先级"
+                type="level"
+                width="100"
+              >  
+								<template slot-scope="scope">
+									<div class="cell-text">
+										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in formatterPriorityDicts(scope.row.level)" :key="index">{{item.name}}</el-button>
+									</div>
+									<span class="cell-bar">
+										 <el-select  v-model="scope.row.level" placeholder="优先级"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'level',$event)">
+												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.priority" :key="index"></el-option>
+										 </el-select>
+									</span>
+								</template>
               </el-table-column>
               <el-table-column
                 sortable
-                prop="name"
-                label="预算及工时"
+                prop="budgetWorkload"
+                label="预计工时"
                 width="150"
               >
-                <template slot-scope="scope">
-                  {{ "￥" + getAmountDesc(scope.row.budgetCost) }},{{
+                <template slot-scope="scope"> {{
                     scope.row.budgetWorkload
-                  }}人时
+                  }}&nbsp;h
                 </template>
               </el-table-column>
               <el-table-column sortable prop="rate" label="进度" width="100">
@@ -521,6 +508,14 @@
               </el-table-column>
 
               <el-table-column sortable prop="tagNames" label="标签" width="100">
+								<template slot-scope="scope">
+									<div class="cell-text"> 
+										{{scope.row.tagNames}}
+									</div>
+									<span class="cell-bar">
+										 <el-button @click="$refs.tagDialog.open({data:scope.row,action:'editTagIds'})">选标签</el-button>
+									</span>
+								</template>
               </el-table-column>
               <el-table-column
                 sortable
@@ -529,6 +524,14 @@
                 width="120"
                 show-overflow-tooltip
               >
+								<template slot-scope="scope">
+									<div class="cell-text">
+										{{scope.row.createUsername}}
+									</div>
+									<span class="cell-bar">
+										 <el-button @click="$refs.xmGroupDialog.open({data:scope.row,action:'createUserid'})">选负责人</el-button>
+									</span>
+								</template>
               </el-table-column>
               <el-table-column
                 sortable
@@ -578,54 +581,16 @@
                 label="需求"
                 width="120"
                 show-overflow-tooltip
-              >
-                <template slot="header">  <el-button type="text" icon="el-icon-link" title="批量关联需求" @click="showBatchRelTasksWithMenuVisible">关联需求</el-button> </template>
-                <template slot-scope="scope">
-                   <font>
-                  <el-link @click.stop="toMenu(scope.row)">{{
-                    scope.row.menuName ? scope.row.menuName : ""
-                  }}</el-link>
-                   </font>
-                </template>
-              </el-table-column>
-              <!-- 
-              <el-table-column label="操作" width="100">
-                <template slot-scope="scope">
-                  <el-dropdown
-                    @command="handleCommand"
-                    v-if="isTaskCenter != '1' && isMy != '1' && scope.row.ntype=='1'"
-                    :disabled="scope.row.ntype!='1'"
-                  >
-                    <span class="el-dropdown-link">
-                      <el-button><i class="el-icon-plus"></i></el-button>
-                    </span>
-                    <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item
-                        :command="{ type: 'showMenu', data: scope.row }"
-                        >
-                        <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
-                          <i :class=" 'el-icon-odometer' " ></i>
-                        </div>   
-                        </el-dropdown-item
-                      >
-                      <el-dropdown-item
-                        :command="{ type: 'showSubAdd', data: scope.row }"
-                        >+子计划/子任务</el-dropdown-item
-                      >
-                      <el-dropdown-item
-                        :command="{ type: 'showTaskTemplate', data: scope.row }"
-                        >+从模板批量导入子计划/子任务</el-dropdown-item
-                      >
-                    </el-dropdown-menu>
-                  </el-dropdown>
-                  <el-button
-                    type="text"
-                    @click="handleDel(scope.row)"
-                    icon="el-icon-delete"
-                  ></el-button>
-                </template>
-              </el-table-column>
-              -->
+              > 
+								<template slot-scope="scope">
+									<div class="cell-text"> 
+                    <el-link @click.stop="toMenu(scope.row)">{{ scope.row.menuName ? scope.row.menuName : ""  }}</el-link>
+									</div>
+									<span class="cell-bar">
+										 <el-button @click="showBatchRelTasksWithMenuVisible">关联需求</el-button>
+									</span>
+								</template> 
+              </el-table-column> 
             </el-table>
             <el-pagination
               ref="pagination"
@@ -646,27 +611,7 @@
           ></xm-gantt>
         </el-row>
       </el-col>
-    </el-row>
-    <el-row v-if="batchEditVisible">
-      <xm-task-mng-batch
-        :sel-project="selProject"
-        :visible="batchEditVisible"
-        :xmTasks="xmTasks"
-        @back="batchEditBack"
-      ></xm-task-mng-batch>
-
-      <el-pagination
-        ref="pagination"
-        layout="total, sizes, prev, pager, next"
-        @current-change="handleCurrentChange"
-        @size-change="handleSizeChange"
-        :page-sizes="[10, 20, 50, 100, 500]"
-        :current-page="pageInfo.pageNum"
-        :page-size="pageInfo.pageSize"
-        :total="pageInfo.total"
-        style="float: right"
-      ></el-pagination>
-    </el-row>
+    </el-row> 
     <el-drawer
       v-if="drawerVisible == true"
       :size="600"
@@ -881,7 +826,8 @@
         ref="execuserMng"
       ></xm-execuser-mng>
     </el-drawer>
-
+ 			<tag-dialog ref="tagDialog"   @select-confirm="onTagSelected">
+			</tag-dialog>
     <!-- <el-drawer :title="'技能要求——'+currTaskName" :visible.sync="skillVisible"  size="80%" append-to-body  :close-on-click-modal="false">
 			<xm-skill-mng :visible="skillVisible" :task-id="currTaskId" :task-name="currTaskName"></xm-skill-mng>
 		</el-drawer> -->
@@ -953,6 +899,7 @@
       <xm-menu-select
         :visible="batchRelTasksWithMenuVisible"
         :is-select-menu="true"
+        checkScope="0"
          @selected="onBatchRelTasksWithMenu"
          :xm-product="filters.product"
         :sel-project="filters.selProject"
@@ -991,36 +938,8 @@
       ></xm-menu-select>
     </el-drawer>
 
-    <el-drawer
-      append-to-body
-      title="选择负责人"
-      :visible.sync="menuGroupUser"
-      :size="650"
-      :close-on-click-modal="false"
-    >
-      <xm-group-select
-        :visible="menuGroupUser"
-        :sel-project="selProject"
-        :isSelectSingleUser="1"
-        :ptype="ptype"
-        @user-confirm="seleConfirm"
-      ></xm-group-select>
-    </el-drawer>
-    <el-drawer
-      append-to-body
-      title="选择执行人"
-      :visible.sync="menuExecutor"
-      :size="650"
-      :close-on-click-modal="false"
-    >
-      <xm-group-select
-        :visible="menuExecutor"
-        :sel-project="selProject"
-        :isSelectSingleUser="1"
-        :ptype="ptype"
-        @user-confirm="seleExecutor"
-      ></xm-group-select>
-    </el-drawer>
+ 			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="selProject" :xm-product="filters.xmProduct" @user-confirm="selectCreateUserConfirm">
+			</xm-group-dialog>  
     <el-drawer
       append-to-body
       title="需求明细"
@@ -1033,52 +952,7 @@
         :reload="true"
         :xm-menu="{ menuId: editForm.menuId, menuName: editForm.menuName }"
       ></xm-menu-rich-detail>
-    </el-drawer>
-    <el-drawer
-      append-to-body
-      title="选择负责人"
-      :visible.sync="groupUserSelectVisible"
-      size="60%"
-      :close-on-click-modal="false"
-    >
-      <xm-group-select
-        :visible="groupUserSelectVisible"
-        :sel-project="selProject"
-        :isSelectSingleUser="1"
-        :ptype="ptype"
-        @user-confirm="groupUserSelectConfirm"
-      ></xm-group-select>
-    </el-drawer>
-
-    <el-drawer
-      title="选择产品"
-      :visible.sync="productSelectVisible"
-      :size="650"
-      append-to-body
-      :close-on-click-modal="false"
-    >
-      <xm-product-select
-        :isSelectProduct="true"
-        :selProject="filters.selProject"
-        :visible="productSelectVisible"
-        @cancel="productSelectVisible = false"
-        @selected="onProductSelected"
-      ></xm-product-select>
-    </el-drawer>
-    <el-drawer
-      :title="'标签条件'"
-      :visible.sync="tagSelectVisible"
-      :size="750"
-      append-to-body
-      :close-on-click-modal="false"
-    >
-      <tag-mng
-        :tagIds="filters.tags ? filters.tags.map((i) => i.tagId) : []"
-        :jump="true"
-        @select-confirm="onTagSelected"
-      >
-      </tag-mng>
-    </el-drawer>
+    </el-drawer>  
 		<el-drawer title="选中上级" :visible.sync="selectParentTaskVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
 			<xm-task-list check-scope="plan" :sel-project="filters.selProject"   @task-selected="onSelectedParentTask"></xm-task-list>
 		</el-drawer>
@@ -1104,6 +978,7 @@ import {
   setTaskCreateUser,
   batchRelTasksWithMenu,
   batchChangeParentTask,
+  editXmTaskSomeFields,
 } from "@/api/xm/core/xmTask";
 import XmTaskAdd from "./XmTaskAdd"; //新增界面
 import XmTaskEdit from "./XmTaskEdit"; //修改界面
@@ -1131,6 +1006,11 @@ import TagMng from "@/views/mdp/arc/tag/TagMng";
 import XmGantt from "../components/xm-gantt";
 import XmGroupSelect from "../xmGroup/XmGroupSelect.vue";
 	import XmTaskList from '../xmTask/XmTaskList';
+ 
+	import  XmTableConfig from '@/views/xm/core/components/XmTableConfig';//修改界面
+	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面
+  
+  	import TagDialog from "@/views/mdp/arc/tag/TagDialog";
 
 export default {
   computed: {
@@ -1336,8 +1216,7 @@ export default {
       isChild: false,
       oldrate: "",
       drawerkey: "",
-
-      execUserVisible: false,
+ 
       currTaskId: "",
       currTaskName: "",
 
@@ -1346,17 +1225,12 @@ export default {
       taskSkills: [],
       taskTemplateVisible: false,
       parentTask: null,
-      projectInfoVisible: false,
-      batchEditVisible: false,
-      valueChangeRows: [], //批量修改时，存储修改过的行
+      projectInfoVisible: false, 
       menuVisible: false,
       menuDetailVisible: false,
       pickerOptions: util.pickerOptions(),
       displayType: "table",
-      menuStory: false, //需求查询
-      menuGroupUser: false, //负责人查询
-      menuExecutor: false, //执行人查询
-      groupUserSelectVisible: false, //选择负责人
+      menuStory: false, //需求查询  
       showSkillSearchVisible: false, //按技能查询
       tableHeight: 300,
       productSelectVisible: false,
@@ -1364,11 +1238,10 @@ export default {
       pickerOptions: util.pickerOptions("datarange"),
 
       budgetDateRanger: [],
-      actDateRanger: [],
-      tagSelectVisible: false,
+      actDateRanger: [], 
       batchRelTasksWithMenuVisible:false,
-      selectParentTaskVisible:false,
-      projectVisible:false,
+      selectParentTaskVisible:false, 
+      execUserVisible:false,
       maps:new Map(),
     };
   }, //end data
@@ -1504,17 +1377,25 @@ export default {
         })
         .catch((err) => (this.load.list = false));
     },
-    showBatchRelTasksWithMenuVisible(){
-      if(this.sels.length==0){
-        this.$notify.warning("请先选中一条或者多条数据")
-        return;
-      }
+    showBatchRelTasksWithMenuVisible(){ 
       this.batchRelTasksWithMenuVisible=true;
     },
     onBatchRelTasksWithMenu(menu){
       var params={
-        menuId:menu.menuId,
-        taskIds:this.sels.map(i=>i.id)
+        menuId:menu.menuId, 
+      }
+      if(this.sels.length==0){
+        if(!this.editForm||!this.editForm.id){
+           this.$notify({
+              showClose: true,
+              message: "请先选中一个或者多个任务",
+              type: "warning",
+            });
+            return;
+        }
+        params.taskIds=[this.editForm.id]
+      }else{
+        params.taskIds=this.sels.map(i=>i.id)
       }
       this.load.edit=true;
       this.batchRelTasksWithMenuVisible=false;
@@ -2139,10 +2020,7 @@ export default {
           });
         });
       }
-    },
-    showBatchEdit: function () {
-      this.batchEditVisible = true;
-    },
+    }, 
     getRowSum(row) {
       var budgetCost = this.getFloatValue(row.budgetCost);
       if (row.taskOut == "1") {
@@ -2169,10 +2047,7 @@ export default {
     clearProduct() {
       this.filters.product = null;
       this.searchXmTasks();
-    },
-    showProductVisible() {
-      this.productSelectVisible = true;
-    },
+    }, 
     onProductSelected(product) {
       this.filters.product = product;
       this.productSelectVisible = false;
@@ -2265,14 +2140,21 @@ export default {
       });
     },
     //查询时选择责任人
-    seleConfirm(groupUsers) {
-      if (groupUsers && groupUsers.length > 0) {
-        this.filters.createUser = groupUsers[0];
-      } else {
-        this.filters.createUser = null;
+    selectCreateUserConfirm(groupUsers,option) {
+      if(option && option.action==='createUserid'){
+        if (groupUsers && groupUsers.length > 0) {
+          var user= groupUsers[0];
+          this.editXmTaskSomeFields(option.data,option.action,user)
+        }  
+      }else{
+        if (groupUsers && groupUsers.length > 0) {
+          this.filters.createUser = groupUsers[0];
+        } else {
+          this.filters.createUser = null;
+        }
+        this.searchXmTasks(); 
       }
-      this.searchXmTasks();
-      this.menuGroupUser = false;
+      
     },
     seleExecutor(executors) {
       if (executors && executors.length > 0) {
@@ -2282,12 +2164,7 @@ export default {
       }
       this.searchXmTasks();
       this.menuExecutor = false;
-    },
-
-    batchEditBack: function (needReload) {
-        this.searchXmTasks();
-      this.batchEditVisible = false;
-    },
+    }, 
     setFiltersCreateUserAsMySelf() {
       this.filters.createUser = this.userInfo;
       this.searchXmTasks();
@@ -2375,17 +2252,20 @@ export default {
       var index=this.filters.tags.findIndex(i=>i.tagId==tag.tagId)
       this.filters.tags.splice(index,1);
       this.searchXmTasks();
-    },
-    onTagSelected(tags){
+    }, 
+    onTagSelected(tags,option){
+				if(option && option.action=='editTagIds'){
+					this.editXmTaskSomeFields(option.data,"tagIds",tags)
+				}else{
+					if (!tags || tags.length == 0) {
+						this.filters.tags=[]
+					}else{
+						this.filters.tags=tags
+					}
+					this.searchXmTasks();
+				}
 
-      this.tagSelectVisible = false;
-      if (!tags || tags.length == 0) {
-        this.filters.tags=[]
-      }else{
-        this.filters.tags=tags
-      }
-      this.searchXmTasks();
-    },
+			},
     getParams(params) {
 
       if (this.dateRanger && this.dateRanger.length == 2) {
@@ -2503,6 +2383,59 @@ export default {
       this.selectParentTaskVisible=true
 
     },
+    
+			editXmTaskSomeFields(row,fieldName,$event){
+				var params={ids:[row.id]};
+				if(this.sels.length>0){
+					if(!this.sels.some(k=>k.id==row.id)){
+						this.$notify({showClose:true,message:'请操作选中的行或者取消选中的行再操作其它行',type:'warning'})
+						return;
+					}
+					params.ids=this.sels.map(i=>i.id)
+				}
+				if(fieldName==='menuId'){
+					if($event){
+						params[fieldName]=$event.menuId;
+						params.menuName=$event.menuName
+            params.productId=$event.productId
+					}else{
+						return;
+					}
+				}else if(fieldName==='tagIds'){
+					if($event){
+						params[fieldName]=$event.map(i=>i.tagId).join(",");
+						params.tagNames=$event.map(i=>i.tagName).join(",");
+					}else{
+						return;
+					}
+				}else if(fieldName==='workload'){
+					params={...params,...$event}
+				}else if(fieldName==='executorUserid'){
+					params.executorUserid=$event[0].userid
+					params.executorUsername=$event[0].username
+				}else if(fieldName==='createUserid'){
+					params.createUserid=$event[0].userid
+					params.createUsername=$event[0].username
+				}else{
+					params[fieldName]=$event
+				}
+
+				editXmTaskSomeFields(params).then(res=>{
+					var tips = res.data.tips;
+					if(tips.isOk){
+						if(this.sels.length>0){
+							 this.sels.forEach(i=>{
+								 this.fieldTagVisible=false;
+								Object.assign(i,params)
+							 })
+						}else{
+							  Object.assign(row,params)
+						}
+					}else{
+						this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+					}
+				})
+			},
     onSelectedParentTask(task){
       if(this.sels.length==0){
          this.$notify({showClose:true,message:"请先选择一个或者多个需要更换上级的计划/任务",type:'warning'})
@@ -2540,7 +2473,70 @@ export default {
       if (this.xmProduct) {
         this.filters.product = this.xmProduct;
       }
-    }
+    },
+    
+			formatterPriorityDicts(cellValue){
+				if(!cellValue && cellValue!=='0'){
+					return []
+				}
+				var key="priority";
+				if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0   ){
+					return [{id:cellValue,name:cellValue,className:'primary'}];
+				}
+				var list=this.dicts[key].filter(i=>i.id==cellValue)
+				if(list.length>0){
+					var data= {...list[0],className:'primary'}
+					if(data.id=='0'){
+						data.className='danger'
+					}else if(data.id=='1'){
+						data.className='warning'
+					}else if(data.id=='2'){
+						data.className='success'
+					}else if(data.id=='3'){
+						data.className='primary'
+					}else if(data.id=='4'){
+						data.className='info'
+					}else{
+						data.className='primary'
+					}
+					return [data];
+				}else{
+					return [{id:cellValue,name:cellValue,className:'primary'}]
+				}
+
+			},
+			formatterTaskStateDicts: function(cellValue){
+				if(!cellValue && cellValue!=='0'){
+					return []
+				}
+				var key="taskState";
+				if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0   ){
+					return [{id:cellValue,name:cellValue,className:'primary'}];
+				}
+				var list=this.dicts[key].filter(i=>i.id==cellValue)
+				if(list.length>0){
+					var data= {...list[0],className:'primary'}
+					if(data.id=='0'){
+						data.className='primary'
+					}else if(data.id=='1'){
+						data.className='warning'
+					}else if(data.id=='2'){
+						data.className='success'
+					}else if(data.id=='3'){
+						data.className='info'
+					} else{
+						data.className='danger'
+					}
+					return [data];
+				}else{
+					return [{id:cellValue,name:cellValue,className:'primary'}]
+				}
+
+			},
+      onProductClearSelect(){
+        this.filters.xmProduct=null;
+        this.searchXmTasks();
+      }
     /**end 自定义函数请在上面加**/
   }, //end methods
   components: {
@@ -2563,6 +2559,9 @@ export default {
     XmTaskAgileKanban,
     TagMng,
     XmTaskList,
+    TagDialog,
+    XmGroupDialog,
+    XmTableConfig,
     //在下面添加其它组件
   },
   mounted() {

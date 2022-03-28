@@ -56,13 +56,10 @@
 						</el-row>
 						<el-row>
 							<el-col :span="8"> 
-								<el-form-item :label="addForm.ntype=='0'?'任务状态':'计划状态'">  
+								<el-form-item :label="addForm.ntype=='0'?'任务状态':'计划状态'">
 									<el-select v-model="addForm.taskState">
-										<el-option value="0" label="待领取"></el-option>
-										<el-option value="1" label="已领取执行中"></el-option>
-										<el-option value="2" label="已完工"></el-option>
-										<el-option value="3" label="已结算"></el-option>
-									</el-select>   
+											<el-option v-for="i in dicts.taskState" :label="i.name" :key="i.id" :value="i.id"></el-option> 
+									</el-select>    
 								</el-form-item> 
 							</el-col>
 							<el-col :span="8"> 
@@ -660,7 +657,7 @@
 		},
 		mounted() { 
  			this.initData();
- 			initSimpleDicts('all',['planType','taskType','priority','xmTaskSettleSchemel']).then(res=>{
+ 			initSimpleDicts('all',['planType','taskType','priority','xmTaskSettleSchemel','taskState']).then(res=>{
 				this.dicts=res.data.data;
 			})
 			/**在下面写其它函数***/

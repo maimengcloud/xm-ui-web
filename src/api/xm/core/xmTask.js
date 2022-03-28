@@ -54,6 +54,10 @@ export const editTime = params => { return axios.post(`${base}/xm/core/xmTask/ed
 export const batchChangeParentTask = params => { return axios.post(`${base}/xm/core/xmTask/batchChangeParentTask`, params); }; 
 
 
+export const editXmTaskSomeFields = params => { return axios.post(`${base}/xm/core/xmTask/editSomeFields`, params); }; 
+
+
+
 
 
 

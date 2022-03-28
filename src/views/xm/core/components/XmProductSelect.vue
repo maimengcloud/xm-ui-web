@@ -273,7 +273,7 @@
 			},
 
 			tableRowClassName({row, rowIndex}) {
-				if (row.id == this.editForm.id) {
+				if (row && this.editForm && row.id == this.editForm.id) {
 					return 'success-row';
 				}
 				return '';

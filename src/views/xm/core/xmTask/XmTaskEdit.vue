@@ -57,12 +57,10 @@
 						<el-row>
 							<el-col :span="8"> 
 								<el-form-item :label="editForm.ntype=='0'?'任务状态':'计划状态'">  
+									
 									<el-select v-model="editForm.taskState">
-										<el-option value="0" label="待领取"></el-option>
-										<el-option value="1" label="已领取执行中"></el-option>
-										<el-option value="2" label="已完工"></el-option>
-										<el-option value="3" label="已结算"></el-option>
-									</el-select>   
+											<el-option v-for="i in dicts.taskState" :label="i.name" :key="i.id" :value="i.id"></el-option> 
+									</el-select>    
 								</el-form-item> 
 							</el-col>
 							<el-col :span="8"> 
@@ -275,7 +273,7 @@
 		</el-drawer>
 
 		<el-drawer append-to-body title="需求选择"  :visible.sync="menuVisible" size="80%"   :close-on-click-modal="false">
-			<xm-menu-select :is-select-menu="true"  @selected="onMenuSelected" :sel-project="xmProject"></xm-menu-select>
+			<xm-menu-select :is-select-menu="true" checkScope="0"  @selected="onMenuSelected" :sel-project="xmProject"></xm-menu-select>
 		</el-drawer>
 		
 		<el-drawer title="选中任务"  :visible.sync="selectTaskVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
@@ -670,7 +668,7 @@
 			}
 			
 			this.setSkills();
-			initSimpleDicts('all',['planType','taskType','priority','xmTaskSettleSchemel']).then(res=>{
+			initSimpleDicts('all',['planType','taskType','priority','xmTaskSettleSchemel','taskState']).then(res=>{
 				this.dicts=res.data.data;
 			})
 			/**在下面写其它函数***/

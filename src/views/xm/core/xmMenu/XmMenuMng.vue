@@ -1051,7 +1051,7 @@
 				this.searchXmMenus();
 			},
 			onTagSelected(tags,option){
-				if(option.action=='editTagIds'){
+				if(option && option.action=='editTagIds'){
 					this.editXmMenuSomeFields(option.data,"tagIds",tags)
 				}else{
 					if (!tags || tags.length == 0) {
