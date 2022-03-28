@@ -1,6 +1,6 @@
 <template>
-  <section class="page-container padding">
-    <el-row class="page-main " :style="{overflowX: 'hidden',height:maxTableHeight+'px'}" ref="table">
+  <section>
+    <el-row :style="{overflowX: 'hidden',height:maxTableHeight+'px'}" ref="table">
       <el-row style="margin-bottom:10px">
         <el-card class="box-card" style="padding:0px ;height:100px">
           <div>

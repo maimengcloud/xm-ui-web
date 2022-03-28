@@ -512,7 +512,7 @@
 					params.caseId=this.xmTestCase.id
 				}
 				if(this.xmIteration){
-					params.iterationId=this.xmIteration.id
+					params.linkIterationId=this.xmIteration.id
 				}
 
 				if(this.filters.key){

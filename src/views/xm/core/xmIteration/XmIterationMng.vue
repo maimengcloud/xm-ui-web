@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container padding border">
+	<section class="page-container">
 		<el-row>
 			<el-input v-if="filters.queryScope=='iterationId'"  v-model="filters.id" style="width:20%;"  placeholder="输入迭代编号" @keyup.enter.native="searchXmProducts"> </el-input>
 			<el-date-picker v-if="filters.queryScope!='iterationId'" v-model="dateRangerOnline" type="daterange" align="right" unlink-panels range-separator="至"
