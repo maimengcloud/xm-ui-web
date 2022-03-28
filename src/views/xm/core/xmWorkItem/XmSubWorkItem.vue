@@ -3,24 +3,24 @@
     <el-row>
        <font>共{{subWorkItemNum}}个子工作项</font>
       <span style="float:right;">
-      <el-button v-if="parentXmMenu.dclass==='1'" icon="el-icon-plus" @click="showAdd"> 
+      <el-button v-if="parentXmMenu.dclass==='1'" icon="el-icon-plus" @click="showAdd(2)"> 
           <div class="icon" style="background-color:  rgb(0, 153, 51);">
             <i class="el-icon-s-flag"></i>
           </div>  添加特性
       </el-button>
-      <el-button v-if="parentXmMenu.dclass==='2'" icon="el-icon-plus" @click="showAdd">
+      <el-button v-if="parentXmMenu.dclass==='2'" icon="el-icon-plus" @click="showAdd(3)">
         <div  class="icon" :style="{backgroundColor: calcMenuLabel.color }">
           <i :class="calcMenuLabel.icon"></i>
         </div>  
         添加用户故事
       </el-button>
-      <el-button v-if="parentXmMenu.dclass==='3'" icon="el-icon-plus" @click="showAdd">
+      <el-button v-if="parentXmMenu.dclass==='3'" icon="el-icon-plus" @click="showAdd('4')">
         
         <div class="icon" style="background-color:  #1CC7EA;">
             <i class="el-icon-s-operation"></i>
           </div>
         添加任务</el-button>
-      <el-button v-if="parentXmMenu.dclass==='3'" icon="el-icon-plus" @click="showAdd">
+      <el-button v-if="parentXmMenu.dclass==='3'" icon="el-icon-plus" @click="showAdd('5')">
         
         <div class="icon" style="background-color: #F56C6C;">
             <i class="el-icon-warning"></i>
@@ -41,7 +41,7 @@
           用户故事  
       </el-row> 
       <el-row>
-        <el-table :data="xmMenus" :show-header="false">
+        <el-table :data="xmMenus" :show-header="false" :max-height="400">
           <el-table-column type="index" label="序号"></el-table-column>
           <el-table-column prop="menuName" label="名称"></el-table-column>
         </el-table> 
@@ -55,7 +55,7 @@
           </div>
         任务</el-row> 
       <el-row>
-        <el-table :data="xmTasks" :show-header="false">
+        <el-table :data="xmTasks" :show-header="false" :max-height="400">
           <el-table-column type="index" label="序号"></el-table-column>
           <el-table-column prop="name" label="名称"></el-table-column>
         </el-table> 
@@ -70,7 +70,7 @@
           </div>
         缺陷</el-row> 
       <el-row>
-        <el-table :data="xmBugs" :show-header="false">
+        <el-table :data="xmBugs" :show-header="false" :max-height="400">
           <el-table-column type="index" label="序号"></el-table-column>
           <el-table-column prop="name" label="名称"></el-table-column>
         </el-table> 
@@ -88,7 +88,7 @@ import {
   listXmTask, 
 } from "@/api/xm/core/xmTask"; 
 	import { listXmQuestion} from '@/api/xm/core/xmQuestion';
-	import { listXmMenu } from '@/api/xm/core/xmMenu';
+	import { listXmMenu,addXmMenu } from '@/api/xm/core/xmMenu';
 
 	import { mapGetters } from 'vuex'
 
@@ -124,6 +124,7 @@ export default {
   },
   data() { 
     return{
+      load:{edit:false,list:false,add:false},
       xmTasks:[],
       xmBugs:[],
       xmMenus:[],
@@ -177,10 +178,45 @@ export default {
         this.getXmTasks();
         this.getXmBugs();
       }
+    }, 
+    addXmMenu(name){
+      debugger;
+       var menu={...this.parentXmMenu}
+             menu.mmUserid=this.userInfo.userid
+             menu.mmUsername=this.userInfo.username
+             menu.seqNo=this.parentXmMenu.seqNo+"."+(parseInt(this.parentXmMenu.childrenCnt)+1)
+             menu.pmenuId=this.parentXmMenu.menuId
+             menu.pmenuName=this.parentXmMenu.menuName
+             menu.dclass=(parseInt(this.parentXmMenu.dclass)+1)+'';
+             menu.menuId=null;
+             menu.menuName=name
+             
+             addXmMenu(menu).then((res) => {
+								this.load.edit=false
+								var tips=res.data.tips;
+								if(tips.isOk){
+ 									this.$emit('submit',res.data.data);//  @submit="afterAddSubmit"
+                   this.xmMenus.push(res.data.data)
+								}
+								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+							}).catch( err  => this.load.edit=false);
     },
-    showAdd(){
-
-    }
+      showAdd(dclass) {
+        this.$prompt('请输入标题', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',  
+        }).then(({ value }) => {
+           if(dclass<4){
+            this.addXmMenu(value);
+           }else if(dclass==='4'){
+             this.addXmTask(value);
+           }else if(dclass==='5'){
+             this.addXmQuestion(value);
+           }
+        }).catch(() => {
+              
+        }); 
+    },
     /**end 自定义函数请在上面加**/
   }, //end methods
   components: { 

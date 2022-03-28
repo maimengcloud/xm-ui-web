@@ -118,11 +118,19 @@
 							</el-form-item>  
 							</el-col>
 						</el-row>
+						<el-row class="padding">
+							<el-button @click.native="handleCancel">关闭</el-button>  
+							<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>  
+						</el-row>
 					</el-tab-pane> 
 						<el-tab-pane label="概述" name="4"> 
 							<el-form-item label="需求概述" prop="remark">
 								<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="editForm.remark" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
-							</el-form-item>  
+							</el-form-item>   
+							<el-row class="padding">
+								<el-button @click.native="handleCancel">关闭</el-button>  
+								<el-button v-loading="load.edit" type="primary" @click.native="editXmMenuSomeFields(editForm,'remark',editForm.remark)" :disabled="load.edit==true">提交</el-button>  
+							</el-row>
 						</el-tab-pane> 
 						<el-tab-pane :label="'子工作项'+(subWorkItemNum>=0?'('+subWorkItemNum+')':'')" name="6">  
 							 <xm-sub-work-item :parent-xm-menu="editForm" @sub-work-item-num="setSubWorkItemNum"></xm-sub-work-item>
@@ -196,17 +204,14 @@
 				</tag-mng>
 			</el-drawer>
 			
-		<el-row class="padding">
-			<el-button @click.native="handleCancel">关闭</el-button>  
-			<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>  
-		</el-row>
+		
 	</section>
 </template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { editXmMenu } from '@/api/xm/core/xmMenu';
+	import { editXmMenu,editXmMenuSomeFields } from '@/api/xm/core/xmMenu';
 	import { mapGetters } from 'vuex'
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
 import XmMenuOverview from './XmMenuOverview.vue';
@@ -339,12 +344,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
  				this.$emit('cancel');
 			},
 			//新增提交XmMenu 项目需求表 父组件监听@submit="afterAddSubmit"
-			editSubmit: function () {
-
-				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$notify({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'});
-					return false;
-				}
+			editSubmit: function () { 
 				this.$refs.editForm.validate((valid) => {
 					if (valid) {
 
@@ -416,6 +416,43 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 				}else{
 					return parseFloat(floatValue).toFixed(2);
 				}
+			},
+			editXmMenuSomeFields(row,fieldName,$event){
+				var params={menuIds:[row.menuId]};
+				if(fieldName==='iterationId'){
+					if($event){
+						params[fieldName]=$event.id;
+						params.iterationName=$event.iterationName
+					}else{
+						return;
+					}
+				}else if(fieldName==='tagIds'){
+					if($event){
+						params[fieldName]=$event.map(i=>i.tagId).join(",");
+						params.tagNames=$event.map(i=>i.tagName).join(",");
+					}else{
+						return;
+					}
+				}else if(fieldName==='workload'){
+					params={...params,...$event}
+				}else if(fieldName==='mmUserid'){
+					params.mmUserid=$event[0].userid
+					params.mmUsername=$event[0].username
+				}else{
+					params[fieldName]=$event
+				}
+
+				editXmMenuSomeFields(params).then(res=>{
+					var tips = res.data.tips;
+					if(tips.isOk){
+						Object.assign(row,params) 
+						if(fieldName==='remark'){
+							this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+						}
+					}else{
+						this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+					}
+				})
 			},
 		},//end method
 		components: {
