@@ -10,7 +10,7 @@
 				</el-form-item>
 				<el-form-item label="迭代名称" prop="iterationName">
 					<el-input v-model="addForm.iterationName" placeholder="迭代名称" minlength="10"></el-input>
-					<font color="blue">格式如下： 上线日期+主题+V版本号 例如： 2021.6.15购书商城V1.0.9</font>
+					<font color="blue">格式如下： 上线日期+主题+V版本号 例如： 2021.6.15购书商城V1.0.9 &nbsp;&nbsp;留空，选日期后自动填写迭代名称</font>
 				</el-form-item> 
 				<el-form-item label="开始时间" prop="startTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="addForm.startTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
@@ -74,7 +74,24 @@
 					this.addForm.productName=this.xmProduct.productName;
 				}
 	      	}
-	      } 
+	      },
+		  'addForm.endTime':function(val){
+			  if(!val){
+				  return;
+			  }
+			  var date=val.substr(0,10)
+			  date=date.replaceAll('-','');
+			  this.addForm.iterationName=date+this.addForm.productName+'V1.0.0'
+		  },
+		  'addForm.productName':function(val){
+			  var date=this.addForm.endTime
+			  if(!date){
+				  return;
+			  }
+			  date=date.substr(0,10)
+			  date=date.replaceAll('-','');
+			  this.addForm.iterationName=date+this.addForm.productName+'V1.0.0'
+		  }
 	    },
 		data() {
 			return {
@@ -84,10 +101,7 @@
 					iterationName: [
 						{ required: true, message: '迭代名称不能为空', trigger: 'change' },
 						{ min:10, message: '名称长度必须大于10个字符', trigger: 'change' }
-					],
-					seqNo: [
-						{ required: true, message: '序号不能为空', trigger: 'change' }
-					],
+					], 
 					productId: [
 						{ required: true, message: '产品编号不能为空', trigger: 'change' }
 					]
