@@ -319,11 +319,12 @@
           this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
         }).catch( err =>{});
       },
+      //添加到结算的要修改工时登记的状态
       changeXmTaskWorkload(data,sbill){
         let params={
           id:data.id,
           sstatus:'2',//2为已提交结算
-          stime:this.formatDate("YYYY-mm-dd HH:MM",new Date()),
+          stime:this.dateFormat("YYYY-mm-dd HH:MM:SS",new Date()),
           sbillId:sbill.id
         }
         editXmTaskWorkload(params).then((res) => {
