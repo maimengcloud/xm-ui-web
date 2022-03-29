@@ -30,7 +30,7 @@
 			</el-form>
 		</el-row>
 		<el-row>
-			<xm-task-workload-list :xm-task="xmTask" @submit="onWorkloadSubmit"></xm-task-workload-list>
+			<xm-task-workload-list :visible="visible" :xm-task="xmTask" @submit="onWorkloadSubmit"></xm-task-workload-list>
 		</el-row> 
 	</section>
 </template>
