@@ -27,6 +27,9 @@
 				<el-table-column prop="amt" label="工时对应金额" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="samt" label="结算金额" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="workload" label="工时，一个task_id可多次提交，小时" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="rworkload" label="剩余工时（同一天取最后日期更新到task表rworkload中）" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="cusername" label="创建人姓名" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="projectId" label="归属项目" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column label="操作" width="180" fixed="right">
 					<template scope="scope">
 						<el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"></el-button>
@@ -97,12 +100,12 @@
 				},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				addFormVisible: false,//新增xmTaskWorkload界面是否显示
 				addForm: {
-					userid:'',username:'',ctime:'',taskId:'',cuserid:'',bizDate:'',wstatus:'',remark:'',ttype:'',id:'',sbillId:'',stime:'',sstatus:'',amt:'',samt:'',workload:''
+					userid:'',username:'',ctime:'',taskId:'',cuserid:'',bizDate:'',wstatus:'',remark:'',ttype:'',id:'',sbillId:'',stime:'',sstatus:'',amt:'',samt:'',workload:'',rworkload:'',cusername:'',projectId:''
 				},
 
 				editFormVisible: false,//编辑界面是否显示
 				editForm: {
-					userid:'',username:'',ctime:'',taskId:'',cuserid:'',bizDate:'',wstatus:'',remark:'',ttype:'',id:'',sbillId:'',stime:'',sstatus:'',amt:'',samt:'',workload:''
+					userid:'',username:'',ctime:'',taskId:'',cuserid:'',bizDate:'',wstatus:'',remark:'',ttype:'',id:'',sbillId:'',stime:'',sstatus:'',amt:'',samt:'',workload:'',rworkload:'',cusername:'',projectId:''
 				},
 				maxTableHeight:300,
 			}

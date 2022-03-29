@@ -8,8 +8,11 @@
 <!--				<el-form-item label="结算单据编号" prop="id">
 					<el-input v-model="editForm.id" placeholder="结算单据编号"></el-input>
 				</el-form-item>-->
-        <el-form-item label="项目ID：" prop="projectId">
-          <el-button v-if="!editForm.projectId" type="primary" @click="projSelVisible=true" round>选择项目</el-button>
+        <el-form-item label="选择项目：" prop="projectId">
+<!--          <el-button v-if="!editForm.projectId" type="primary" @click="projSelVisible=true" round>选择项目</el-button>-->
+          <div v-if="!editForm.projectId">
+            <xm-project-select style="display:inline;" :auto-select="false" @row-click="onProjectRowClick(arguments)" @clear-select="onProjectClear" ></xm-project-select>
+          </div>
           <span v-else>{{editForm.projectId}}</span>
         </el-form-item>
         <el-form-item label="项目名称：" prop="projectName">
@@ -89,12 +92,14 @@
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
 	import { addXmTaskSbill,editXmTaskSbill } from '@/api/xm/core/xmTaskSbill';
 	import { mapGetters } from 'vuex';
-  import SelectXmProject from "./SelectXmProject";
+  //import SelectXmProject from "./SelectXmProject";
+  import XmProjectSelect from "@/views/xm/core/components/XmProjectSelect";
 
 	export default {
     components: {
       //XmTaskSbillEdit,
-      SelectXmProject,
+      //SelectXmProject,
+      XmProjectSelect,
 
     },
 		computed: {
@@ -119,8 +124,8 @@
 	    },
 		data() {
 			return {
-			    currOpType:'add',//add/edit
- 				load:{ list: false, edit: false, del: false, add: false },//查询中...
+        currOpType:'add',//add/edit
+        load:{ list: false, edit: false, del: false, add: false },//查询中...
 				dicts:{},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				editFormRules: {
 					id: [
@@ -196,6 +201,14 @@
         this.projSelVisible = false;
         this.editForm.projectId = obj.projectId;
         this.editForm.projectName = obj.projectName;
+      },
+      onProjectRowClick(obj){
+        this.$set(this.editForm, "projectI", obj[0].projectId);
+        this.$set(this.editForm, "projectName", obj[0].projectName);
+      },
+      onProjectClear(){
+        this.$set(this.editForm, "projectI", null);
+        this.$set(this.editForm, "projectName", null);
       }
 		},//end method
 		mounted() {
