@@ -102,6 +102,12 @@
 				editFormRules: {
 					id: [
 						//{ required: true, message: '主键不能为空', trigger: 'blur' }
+					],
+					bizDate:[
+						{ required: true, message: '业务日期不能为空', trigger: 'change' } 
+					],
+					workload:[
+						{ required: true, message: '上班时长不能为空', trigger: 'change' } 
 					]
 				},
 				editForm: {
@@ -115,8 +121,7 @@
 		},//end data
 		methods: {
 			// 取消按钮点击 父组件监听@cancel="editFormVisible=false" 监听
-			handleCancel:function(){
-				this.$refs['editFormRef'].resetFields();
+			handleCancel:function(){ 
 				this.$emit('cancel');
 			},
 			//新增、编辑提交XmTaskWorkload 工时登记表父组件监听@submit="afterEditSubmit"
@@ -160,6 +165,10 @@
 					if(this.xmTask){
 						this.editForm.taskId=this.xmTask.id
 						this.editForm.ttype=this.xmTask.taskType
+					}
+					this.editForm.bizDate=util.getDate();
+					if(!this.editForm.ttype){
+						this.editForm.ttype="4"
 					}
                 }
             },
