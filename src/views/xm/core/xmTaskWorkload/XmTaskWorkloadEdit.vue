@@ -4,7 +4,7 @@
 	    </el-row>
 		<el-row class="page-main" ref="table">
 		<!--编辑界面 XmTaskWorkload 工时登记表-->
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef"> 
+			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">
 				<el-row>
 					<el-col :span="8">
 						<el-form-item label="预估工时" prop="budgetWorkload">
@@ -14,21 +14,21 @@
 					<el-col :span="8">
 						<el-form-item label="已登工时" prop="actWorkload">
 							{{xmTask.actWorkload}}&nbsp;&nbsp;h
-						</el-form-item> 
+						</el-form-item>
 					</el-col>
-					
+
 					<el-col :span="8">
 						<el-form-item label="工时进度" prop="rate">
 							{{xmTask.rate}} %
-						</el-form-item> 
+						</el-form-item>
 					</el-col>
 				</el-row>
 				<el-row>
-					
+
 					<el-col :span="12">
 						<el-form-item label="工作时长" prop="workload">
 							<el-input style="width:80%;" v-model="editForm.workload" placeholder="工作时长"></el-input> &nbsp;&nbsp;h
-						</el-form-item> 
+						</el-form-item>
 					</el-col>
 					<el-col :span="12">
 						<el-form-item label="剩余工时" prop="rworkload">
@@ -37,25 +37,25 @@
 					</el-col>
 				</el-row>
 				<el-row>
-					
+
 					<el-col :span="12">
 						<el-form-item label="业务日期" prop="bizDate">
 							<el-date-picker style="width:80%;" v-model="editForm.bizDate" value-format="yyyy-MM-dd" format="yyyy-MM-dd"  placeholder="业务日期"></el-date-picker>
-						</el-form-item> 
+						</el-form-item>
 					</el-col>
-					<el-col :span="12"> 
+					<el-col :span="12">
 						<el-form-item label="任务类型" prop="ttype">
 							<el-select v-model="editForm.ttype">
 								<el-option v-for="i in this.dicts.taskType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-							</el-select>  
-						</el-form-item> 
+							</el-select>
+						</el-form-item>
 					</el-col>
 				</el-row>
 				<el-form-item label="工作说明" prop="remark">
- 					<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="editForm.remark" placeholder="工作说明，如果报工大于8小时，请填写说明" ></el-input> 
+ 					<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="editForm.remark" placeholder="工作说明，如果报工大于8小时，请填写说明" ></el-input>
 				</el-form-item>
 			</el-form>
-		</el-row> 
+		</el-row>
 		<el-row   class="page-bottom bottom-fixed">
 		    <el-button @click.native="handleCancel">取消</el-button>
             <el-button v-loading="load.edit" type="primary" @click.native="saveSubmit" :disabled="load.edit==true">提交</el-button>
@@ -104,14 +104,14 @@
 						//{ required: true, message: '主键不能为空', trigger: 'blur' }
 					],
 					bizDate:[
-						{ required: true, message: '业务日期不能为空', trigger: 'change' } 
+						{ required: true, message: '业务日期不能为空', trigger: 'change' }
 					],
 					workload:[
-						{ required: true, message: '上班时长不能为空', trigger: 'change' } 
+						{ required: true, message: '上班时长不能为空', trigger: 'change' }
 					]
 				},
 				editForm: {
-					userid:'',username:'',ctime:'',taskId:'',cuserid:'',bizDate:'',wstatus:'',remark:'',ttype:'',id:'',sbillId:'',stime:'',sstatus:'',amt:'',samt:'',workload:''
+					userid:'',username:'',ctime:'',taskId:'',cuserid:'',bizDate:'',wstatus:'',remark:'',ttype:'',id:'',sbillId:'',stime:'',sstatus:'',amt:'',samt:'',workload:'',rworkload:'',cusername:'',projectId:''
 				},
                 maxTableHeight:300,
 				dicts:{
@@ -121,7 +121,7 @@
 		},//end data
 		methods: {
 			// 取消按钮点击 父组件监听@cancel="editFormVisible=false" 监听
-			handleCancel:function(){ 
+			handleCancel:function(){
 				this.$emit('cancel');
 			},
 			//新增、编辑提交XmTaskWorkload 工时登记表父组件监听@submit="afterEditSubmit"
@@ -135,7 +135,7 @@
 							if(this.currOpType=='edit'){
 							    func=editXmTaskWorkload
 							}
-							
+
 							func(params).then((res) => {
                                 this.load.edit=false
                                 var tips=res.data.tips;
@@ -160,7 +160,7 @@
                 }
 
                 if(this.opType=='edit'){
-					
+
                 }else{
 					if(this.xmTask){
 						this.editForm.taskId=this.xmTask.id
@@ -175,11 +175,11 @@
 
 		},//end method
 		mounted() {
-		    this.$nextTick(() => { 
+		    this.$nextTick(() => {
 				initSimpleDicts('all',[ 'taskType' ]).then(res=>{
 					this.dicts=res.data.data;
 				})
-                this.initData() 
+                this.initData()
             });
 		}
 	}
