@@ -3,7 +3,7 @@
     <el-row>
        <font>共{{subWorkItemNum}}个子工作项</font> &nbsp;&nbsp;
       <span style="float:right;">
-        <xm-project-select style="display:inline;" v-if="parentXmMenu&&parentXmMenu.menuId && parentXmMenu.dclass==='3' && !linkProjectId" :link-product-id="parentXmMenu.productId" @row-click="xmProject=$event"></xm-project-select>
+        <xm-project-select style="display:inline;" :auto-select="false" v-if="parentXmMenu&&parentXmMenu.menuId && parentXmMenu.dclass==='3' && !linkProjectId" :link-product-id="parentXmMenu.productId" @row-click="xmProject=$event"></xm-project-select>
       <el-button v-if="parentXmMenu.dclass==='1'" icon="el-icon-plus" @click="showAdd(2)">
           <div class="icon" style="background-color:  rgb(0, 153, 51);">
             <i class="el-icon-s-flag"></i>

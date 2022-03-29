@@ -1,22 +1,5 @@
 <template>
-	<section class="page-container padding border"> 
-		
-		<el-row class="padding-bottom">
-			<!--1|新提交 
-				2|处理中 
-				3|已修复
-				4|重新打开
-				5|已发布
-				6|已拒绝
-				7|挂起 --> 
-			<el-steps :active="calcBugStep" simple finish-status="success" >
-				<el-step v-for="(item,index) in dicts['bugStatus']" :title="item.name" :key="index" @click.native.stop="editForm.bugStatus=item.id">
-					<el-link slot="title" @click="editForm.bugStatus=item.id">
-						 {{item.name}} 
-					 </el-link>
-				</el-step> 
-			</el-steps>
-		</el-row>
+	<section>  
 		<el-row class="page-main ">
 			<el-row class="padding">
 				<font class="font">{{editForm.name}}</font>
@@ -28,17 +11,14 @@
 				<el-button type="text" icon="el-icon-plus" @click="tagSelectVisible=true">标签</el-button>
 				<el-divider direction="vertical"></el-divider>
 				<el-button type="text" icon="el-icon-search" @click="flowInfoVisible=true">日志</el-button> 
-			</el-row> 
-			<el-divider></el-divider>
+			</el-row>  
 			<el-row>
 				<el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm"> 
 						
 						<el-row>
 							<el-col :span="12">
 								<el-form-item label="归属项目" prop="projectId">
-									<font v-if="editForm.projectId">{{editForm.projectId?editForm.projectId:''}}</font>
- 									 <xm-project-select ref="xmProjectSelect" :auto-select="false"  @row-click="onPorjectConfirm" @clear="clearProject"> 
-									  </xm-project-select>
+									<font v-if="editForm.projectId">{{editForm.projectId?editForm.projectId:''}}</font> 
 								</el-form-item>
 							</el-col>
 							<el-col  :span="12">

@@ -340,7 +340,7 @@
 					</el-row>
 				<!--编辑 XmMenu xm_project_menu界面-->
 				<el-dialog title="编辑需求" :visible.sync="editFormVisible" :with-header="false" width="80%" top="20px" center  append-to-body   :close-on-click-modal="false" >
-					<xm-menu-edit :xm-menu="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @add-sub-menu="onAddSubMenu" @edit-fields="onEditSomeFields"></xm-menu-edit>
+					<xm-menu-edit :xm-menu="editForm" :sel-project="selProject" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @add-sub-menu="onAddSubMenu" @edit-fields="onEditSomeFields"></xm-menu-edit>
 				</el-dialog>
 
 				<!--新增 XmMenu xm_project_menu界面-->

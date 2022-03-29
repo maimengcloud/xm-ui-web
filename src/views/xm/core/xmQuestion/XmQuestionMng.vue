@@ -235,16 +235,16 @@
 				<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 			 </el-row>
 			<!--编辑 XmQuestion xm_question界面-->
-			<el-drawer  title="编辑缺陷"   :visible.sync="editFormVisible" :with-header="false"  size="70%"    :close-on-click-modal="false">
+			<el-dialog  :title="编辑缺陷"   :visible.sync="editFormVisible"   width="80%"  top="20px"  :close-on-click-modal="false">
 					<xm-question-edit :sel-project=" {id:editForm.projectId,name:editForm.projectName} " :xm-question="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-question-edit>
-			</el-drawer>
+			</el-dialog>
 
 			<!--新增 XmQuestion xm_question界面-->
-			<el-drawer title="新增缺陷"  :visible.sync="addFormVisible" :with-header="false" size="70%"  append-to-body   :close-on-click-modal="false">
+			<el-dialog title="新增缺陷"  :visible.sync="addFormVisible"   width="80%" top="20px"  append-to-body   :close-on-click-modal="false">
 				<xm-question-add :xm-test-case-exec="xmTestCaseExec" :xm-test-case="xmTestCase" :qtype="qtype" :sel-project=" filters.selProject " :xm-question="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-question-add>
-			</el-drawer>
+			</el-dialog>
  			<xm-group-dialog ref="xmGroupDialog" :sel-project=" filters.selProject " :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-dialog> 
-			<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible"    size="70%"   :close-on-click-modal="false">
+			<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible"    size="60%"   :close-on-click-modal="false">
 				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
 			</el-drawer> 
 			

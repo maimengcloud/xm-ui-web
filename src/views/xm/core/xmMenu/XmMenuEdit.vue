@@ -128,7 +128,7 @@
 							</el-row>
 						</el-tab-pane>
 						<el-tab-pane :label="'子工作项'+(subWorkItemNum>=0?'('+subWorkItemNum+')':'')" name="6">
-							 <xm-sub-work-item :parent-xm-menu="editForm" @sub-work-item-num="setSubWorkItemNum" @add-sub-menu="onAddSubMenu"></xm-sub-work-item>
+							 <xm-sub-work-item :parent-xm-menu="editForm" :link-project-id="selProject?selProject.id:null" @sub-work-item-num="setSubWorkItemNum" @add-sub-menu="onAddSubMenu"></xm-sub-work-item>
 						</el-tab-pane>
 						<el-tab-pane :label="'工时('+editForm.mactWorkload+' h)'" name="2">
 							<el-form-item label="数据收集方式" prop="calcType">
@@ -255,7 +255,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 				return params;
 			},
 		},
-		props:['xmMenu','visible','parentMenu','product','dclass'],
+		props:['xmMenu','visible','parentMenu','product','dclass','selProject'],
 		watch: {
 	      'xmMenu':function( xmMenu ) {
 	        this.editForm = xmMenu;

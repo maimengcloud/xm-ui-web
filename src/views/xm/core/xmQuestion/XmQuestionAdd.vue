@@ -1,22 +1,6 @@
 <template>
-	<section class="page-container  padding">
-		<el-row class="padding-bottom">
-			<!--1|新提交 
-				2|处理中 
-				3|已修复
-				4|重新打开
-				5|已发布
-				6|已拒绝
-				7|挂起 --> 
-			<el-steps :active="calcBugStep" simple finish-status="success" >
-				<el-step v-for="(item,index) in dicts['bugStatus']" :title="item.name" :key="index" @click.native.stop="editForm.bugStatus=item.id">
-					<el-link slot="title" @click="editForm.bugStatus=item.id">
-						 {{item.name}} 
-					 </el-link>
-				</el-step> 
-			</el-steps>
-		</el-row>
-		<el-row class="page-main  padding">
+	<section> 
+		<el-row class="page-main">
 			<el-form :model="addForm" label-width="120px"  :rules="addFormRules" ref="addForm">
 						<el-form-item label="缺陷标题" prop="name">
 							<el-input v-model="addForm.name" placeholder="缺陷标题" ></el-input>
