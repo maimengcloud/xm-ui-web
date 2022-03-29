@@ -395,6 +395,7 @@
               :tree-props="{ children: 'children', hasChildren: 'childrenCnt' }"
               row-key="id"
               ref="table"
+              row-style="height:60px;"
             >
               <el-table-column
                 label="全选"
@@ -501,7 +502,7 @@
               <el-table-column sortable prop="projectId" label="项目" width="100" show-overflow-tooltip>
               </el-table-column>
 
-              <el-table-column sortable prop="tagNames" label="标签" width="100">
+              <el-table-column sortable prop="tagNames" label="标签" width="100" show-overflow-tooltip>
 								<template slot-scope="scope">
 									<div class="cell-text"> 
 										{{scope.row.tagNames}}
@@ -948,7 +949,7 @@
       ></xm-menu-rich-detail>
     </el-drawer>  
 		<el-drawer title="选中上级" :visible.sync="selectParentTaskVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
-			<xm-task-list check-scope="plan" :sel-project="filters.selProject"   @task-selected="onSelectedParentTask"></xm-task-list>
+			<xm-task-list check-scope="plan" queryScope="plan" :sel-project="filters.selProject"   @task-selected="onSelectedParentTask"></xm-task-list>
 		</el-drawer>
   </section>
 </template>

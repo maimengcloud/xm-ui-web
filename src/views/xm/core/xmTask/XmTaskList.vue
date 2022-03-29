@@ -351,6 +351,9 @@
 				if (this.filters.tags && this.filters.tags.length>0) {
 					params.tagIdList = this.filters.tags.map(i=>i.tagId);
 				}
+				if(this.queryScope==='plan'){
+					params.ntype='1'
+				}
 				return params;
 			}, 
 			loadXmTaskLazy(tree, treeNode, resolve) {    
