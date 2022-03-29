@@ -29,6 +29,17 @@
 									</span>
 								</template>
               </el-table-column>
+					
+            <el-table-column prop="budgetWorkload" label="工时"  width="100">
+              <template slot-scope="scope">   
+                    <div class="cell-text">
+                      <span v-if="scope.row.actWorkload>0">{{scope.row.actWorkload}}&nbsp;/&nbsp;{{scope.row.budgetWorkload}}</span>
+                    </div>
+                    <span class="cell-bar">   
+                        <el-button @click="workloadRecord(scope.row)">登记工时</el-button>
+                    </span> 
+              </template>
+            </el-table-column>
               
               <el-table-column
                 label="优先级"
@@ -67,6 +78,7 @@
       
  			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="linkProjectId?{id:linkProjectId}:null" :xm-product="parentXmMenu?{id:parentXmMenu.productId}:null" @user-confirm="selectCreateUserConfirm">
 			</xm-group-dialog>  
+      <xm-task-workload-record-dialog ref="workloadRecordDialog" @submi="afterWorkloadSubmit"></xm-task-workload-record-dialog>
     </el-row> 
 </template>
 
@@ -79,6 +91,7 @@ import treeTool from "@/common/js/treeTool"; //全局公共库
 
 	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面
 	import { mapGetters } from 'vuex'
+import XmTaskWorkloadRecordDialog from '../xmTaskWorkload/XmTaskWorkloadRecordDialog.vue';
 
 export default {
   computed: {
@@ -143,7 +156,9 @@ export default {
         }
       })
     },
-     
+     workloadRecord(row){
+       this.$refs.workloadRecordDialog.open(row)
+     },
     initData(){  
       this.xmTasks=[] 
       if(!this.parentXmMenu || !this.parentXmMenu.menuId){
@@ -340,10 +355,12 @@ export default {
 				}
 
 			},
+      afterWorkloadSubmit(xmTask){
+        
+      }
   }, //end methods
-  components: { 
-    
-    XmGroupDialog,
+  components: {  
+    XmTaskWorkloadRecordDialog,
   },
   mounted() { 
     this.initData();

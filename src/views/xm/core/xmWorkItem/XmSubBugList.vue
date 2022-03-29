@@ -18,6 +18,7 @@
           <el-table-column prop="name" label="名称" min-width="150px">
               
             </el-table-column> 
+
 					<el-table-column prop="bugStatus" label="状态"  width="100">
 						<template slot-scope="scope">   
 									<div class="cell-text">
@@ -27,6 +28,17 @@
 										 <el-select  v-model="scope.row.bugStatus" placeholder="类型"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugStatus',$event)">
 												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.bugStatus" :key="index"></el-option> 
 										 </el-select>  
+									</span> 
+						</template>
+					</el-table-column>
+					
+					<el-table-column prop="budgetWorkload" label="工时"  width="100">
+						<template slot-scope="scope">   
+									<div class="cell-text">
+										 {{scope.row.budgetWorkload}}&nbsp;/&nbsp;{{scope.row.actWorkload}}
+									</div>
+									<span class="cell-bar">   
+										  <el-button @click="workloadRecord('actWorkload',scope.row)">登记工时</el-button>
 									</span> 
 						</template>
 					</el-table-column>

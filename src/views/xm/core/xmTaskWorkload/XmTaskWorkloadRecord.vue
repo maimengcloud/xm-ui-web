@@ -1,65 +1,37 @@
 <template>
-	<section  class="page-container padding">
+	<section>
 	    <el-row class="page-header">
 	    </el-row>
-		<el-row class="page-main" ref="table">
+		<el-row class="page-main"  ref="table">
 		<!--编辑界面 XmTaskWorkload 工时登记表-->
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef"> 
+			<el-form :model="editForm" label-width="100px"  :rules="editFormRules" ref="editFormRef">
 				<el-row>
-					<el-col :span="8">
+					<el-col :span="6">
 						<el-form-item label="预估工时" prop="budgetWorkload">
-							{{xmTask.budgetWorkload}}&nbsp;&nbsp;h
+							 <el-input style="width:85%;"  v-model="editForm.budgetWorkload" placeholder="预估工时"></el-input> &nbsp;h 
 						</el-form-item>
 					</el-col>
-					<el-col :span="8">
+					<el-col :span="6">
 						<el-form-item label="已登工时" prop="actWorkload">
-							{{xmTask.actWorkload}}&nbsp;&nbsp;h
-						</el-form-item> 
-					</el-col>
-					
-					<el-col :span="8">
-						<el-form-item label="工时进度" prop="rate">
-							{{xmTask.rate}} %
-						</el-form-item> 
-					</el-col>
-				</el-row>
-				<el-row>
-					
-					<el-col :span="12">
-						<el-form-item label="工作时长" prop="workload">
-							<el-input style="width:80%;" v-model="editForm.workload" placeholder="工作时长"></el-input> &nbsp;&nbsp;h
-						</el-form-item> 
-					</el-col>
-					<el-col :span="12">
-						<el-form-item label="剩余工时" prop="rworkload">
-							<el-input style="width:80%;" v-model="editForm.rworkload" placeholder="剩余工时"></el-input>&nbsp;&nbsp;h
+							<el-input style="width:85%;"  v-model="editForm.actWorkload" placeholder="已登记工时"></el-input> &nbsp;h
 						</el-form-item>
 					</el-col>
-				</el-row>
-				<el-row>
-					
-					<el-col :span="12">
-						<el-form-item label="业务日期" prop="bizDate">
-							<el-date-picker style="width:80%;" v-model="editForm.bizDate" value-format="yyyy-MM-dd" format="yyyy-MM-dd"  placeholder="业务日期"></el-date-picker>
+					<el-col :span="6">
+						<el-form-item label="剩余工时" prop="rworkload">
+							<el-input style="width:85%;"  v-model="editForm.rworkload" placeholder="剩余工时"></el-input>  &nbsp;h
 						</el-form-item> 
-					</el-col>
-					<el-col :span="12"> 
-						<el-form-item label="任务类型" prop="ttype">
-							<el-select v-model="editForm.ttype">
-								<el-option v-for="i in this.dicts.taskType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-							</el-select>  
+					</el-col> 
+					<el-col :span="6">
+						<el-form-item label="工时进度" prop="rate">
+							<el-input v-model="editForm.rate" placeholder="工时进度"></el-input>
 						</el-form-item> 
 					</el-col>
 				</el-row>
-				<el-form-item label="工作说明" prop="remark">
- 					<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="editForm.remark" placeholder="工作说明，如果报工大于8小时，请填写说明" ></el-input> 
-				</el-form-item>
 			</el-form>
-		</el-row> 
-		<el-row   class="page-bottom bottom-fixed">
-		    <el-button @click.native="handleCancel">取消</el-button>
-            <el-button v-loading="load.edit" type="primary" @click.native="saveSubmit" :disabled="load.edit==true">提交</el-button>
 		</el-row>
+		<el-row>
+			<xm-task-workload-list :xm-task="xmTask"></xm-task-workload-list>
+		</el-row> 
 	</section>
 </template>
 
@@ -69,25 +41,21 @@
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
 	import { addXmTaskWorkload,editXmTaskWorkload } from '@/api/xm/core/xmTaskWorkload';
 	import { mapGetters } from 'vuex'
+	import XmTaskWorkloadList from './XmTaskWorkloadList';
 
 	export default {
 	    name:'xmTaskWorkloadEdit',
 	    components: {
-
+			XmTaskWorkloadList,
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
 
 		},
-		props:['xmTask','xmTaskWorkload','visible','opType'],
+		props:['xmTask','visible','opType'],
 
 		watch: {
-	      'xmTaskWorkload':function( xmTaskWorkload ) {
-	        if(xmTaskWorkload){
-	            this.editForm = xmTaskWorkload;
-	        }
-
-	      },
+	      
 	      'visible':function(visible) {
 	      	if(visible==true){
  	      		this.initData()
@@ -103,14 +71,14 @@
 					id: [
 						//{ required: true, message: '主键不能为空', trigger: 'blur' }
 					]
-				},
+				},//新增界面数据 xm_task
 				editForm: {
-					userid:'',username:'',ctime:'',taskId:'',cuserid:'',bizDate:'',wstatus:'',remark:'',ttype:'',id:'',sbillId:'',stime:'',sstatus:'',amt:'',samt:'',workload:''
+					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'3',sortLevel:'0',executorUserid:'',executorUsername:'',
+					preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',taskOut:'0',
+					rate:0,budgetCost:'',budgetWorkload:'',actCost:'',actWorkload:'',taskState:'0',taskClass:'0',toTaskCenter:'0',actStartTime:'',actEndTime:'',taskType:'4',planType:'w2',settleSchemel:'1',ntype:'0',childrenCnt:0
+  
 				},
                 maxTableHeight:300,
-				dicts:{
-					taskType:[],
-				}
 			}//end return
 		},//end data
 		methods: {
@@ -130,7 +98,6 @@
 							if(this.currOpType=='edit'){
 							    func=editXmTaskWorkload
 							}
-							
 							func(params).then((res) => {
                                 this.load.edit=false
                                 var tips=res.data.tips;
@@ -151,25 +118,20 @@
 			initData: function(){
 			    this.currOpType=this.opType
 			    if(this.xmTaskWorkload){
-                    this.editForm = Object.assign({},this.xmTaskWorkload);
+                    this.editForm = Object.assign({},this.xmTask);
                 }
 
                 if(this.opType=='edit'){
-					
+
                 }else{
-					if(this.xmTask){
-						this.editForm.taskId=this.xmTask.id
-						this.editForm.ttype=this.xmTask.taskType
-					}
+
                 }
             },
 
 		},//end method
 		mounted() {
-		    this.$nextTick(() => { 
-				initSimpleDicts('all',[ 'taskType' ]).then(res=>{
-					this.dicts=res.data.data;
-				})
+		    this.$nextTick(() => {
+                //initSimpleDicts('all',['sex','gradeLvl']).then(res=>this.dicts=res.data.data);
                 this.initData() 
             });
 		}
