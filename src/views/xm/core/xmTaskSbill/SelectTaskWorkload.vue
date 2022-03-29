@@ -1,7 +1,7 @@
 <template>
   <section class="page-container border padding">
     <el-row>
-      <el-input v-model="filters.key" style="width: 30%;" placeholder="模糊查询任务ID/名称"></el-input>
+      <el-input v-model="filters.key" style="width: 30%;" placeholder="模糊查询任务ID/名称/员工ID/员工名称"></el-input>
       <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTaskWorkloads" icon="el-icon-search">查询</el-button>
     </el-row>
     <el-row class="padding-top">
@@ -52,15 +52,7 @@
       <el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
     </el-row>
     <el-row>
-      <!--编辑 XmTaskWorkload 工时登记表界面-->
-      <el-drawer title="编辑工时登记表" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
-        <xm-task-workload-edit op-type="edit" :xm-task-workload="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-task-workload-edit>
-      </el-drawer>
 
-      <!--新增 XmTaskWorkload 工时登记表界面-->
-      <el-drawer title="新增工时登记表" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
-        <xm-task-workload-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-task-workload-edit>
-      </el-drawer>
     </el-row>
   </section>
 </template>
