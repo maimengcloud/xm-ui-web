@@ -2,9 +2,9 @@
 	<section>
 		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
-			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTaskWorkloads" icon="el-icon-search">查询</el-button>
+			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTaskWorkloads" icon="el-icon-search">已登记工时查询</el-button>
 			<span style="float:right;">
-			<el-button type="primary" @click="showAdd" icon="el-icon-plus"> </el-button>
+			<el-button type="primary" @click="showAdd" icon="el-icon-plus"> 登记工时</el-button>
 			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>
 			</span>
 		</el-row>
@@ -13,16 +13,20 @@
 			<el-table ref="xmTaskWorkloadTable" :data="xmTaskWorkloads"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip></el-table-column>
  				<el-table-column prop="username" label="姓名" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="bizDate" label="业务日期" min-width="80" show-overflow-tooltip></el-table-column> 
- 				<el-table-column prop="wstatus" label="状态" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="bizDate" label="报送日期" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="workload" label="报送工时" min-width="80" show-overflow-tooltip></el-table-column>
+ 				<el-table-column prop="wstatus" label="状态" min-width="80" show-overflow-tooltip>
+					 <template slot-scope="scope">
+						 {{scope.row.wstatus==='1'?'已确认':'待确认'}}
+					 </template>
+				 </el-table-column>
 				<el-table-column prop="remark" label="备注" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="ttype" label="任务类型" min-width="80" show-overflow-tooltip :formatter="formatterOption"></el-table-column>
- 				<el-table-column prop="workload" label="实际工时" min-width="80" show-overflow-tooltip></el-table-column>
- 				<el-table-column prop="rworkload" label="剩余工时" min-width="80" show-overflow-tooltip></el-table-column> 
+
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 		</el-row>
-		<el-row> 
+		<el-row>
 
 			<!--新增 XmTaskWorkload 工时登记表界面-->
 			<el-dialog :title="'任务【'+xmTask.name+'】新增工时'" :visible.sync="addFormVisible"  width="60%" top="20px"  append-to-body  :close-on-click-modal="false">
@@ -91,13 +95,13 @@
 			}
 		},//end data
 		methods: {
-			
+
 			formatterOption: function (row, column, cellValue, index) {
 				var columnName = column.property;
-				var key = columnName; 
+				var key = columnName;
 				if(columnName==='ttype'){
 					key="taskType"
-				} 
+				}
 				if (
 					this.dicts[key] == undefined ||
 					this.dicts[key] == null ||
@@ -163,7 +167,7 @@
 				if(!this.xmTask || !this.xmTask.id){
 					return;
 				}
-				
+
 				params.taskId=this.xmTask.id
 
 				this.load.list = true;
@@ -254,7 +258,7 @@
 		},//end methods
 		mounted() {
 			this.$nextTick(() => {
-			   
+
 				initSimpleDicts('all',[ 'taskType' ]).then(res=>{
 					this.dicts=res.data.data;
 				})

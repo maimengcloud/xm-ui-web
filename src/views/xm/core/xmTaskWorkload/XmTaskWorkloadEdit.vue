@@ -134,8 +134,9 @@
 							var func=addXmTaskWorkload
 							if(this.currOpType=='edit'){
 							    func=editXmTaskWorkload
+							}else{
+								params.id=null;
 							}
-
 							func(params).then((res) => {
                                 this.load.edit=false
                                 var tips=res.data.tips;
