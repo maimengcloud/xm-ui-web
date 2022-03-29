@@ -543,14 +543,6 @@
 			this.$nextTick(() => {
 				
 				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);   
-				if(this.selProject && this.selProject.id){ 
-					this.filters.taskFilterType='join-curr-project'
-				}
-				
-				if(this.xmIteration && this.xmIteration.id){ 
-					this.filters.iterationFilterType='join-curr-iteration'
-					this.filters.iteration=this.xmIteration
-				}
 				if(this.iterationFilterType){
 					this.filters.iterationFilterType=this.iterationFilterType
 				}

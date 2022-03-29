@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="padding-right">
     <el-row>
       <el-col
         :span="24"
@@ -888,7 +888,7 @@
       append-to-body
       title="需求选择"
       :visible.sync="batchRelTasksWithMenuVisible"
-      size="70%"
+      size="60%"
       :close-on-click-modal="false"
     >
       <xm-menu-select
