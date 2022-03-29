@@ -28,3 +28,6 @@ export const editXmTaskWorkload = params => { return axios.post(`${base}/xm/core
 
 //新增一条工时登记表
 export const addXmTaskWorkload = params => { return axios.post(`${base}/xm/core/xmTaskWorkload/add`, params); };
+
+//普通查询 条件之间and关系
+export const listByProject = params => { return axios.get(`${base}/xm/core/xmTaskWorkload/listByProject`, { params: params }); };

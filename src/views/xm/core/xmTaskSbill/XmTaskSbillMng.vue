@@ -1,7 +1,7 @@
 <template>
 	<section class="page-container border padding">
 		<el-row>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询:编号/标题"></el-input>
+			<el-input v-model="filters.key" clearable style="width: 20%;" placeholder="模糊查询:编号/标题/项目名称"></el-input>
 			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTaskSbills" icon="el-icon-search">查询</el-button>
 <!--			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>-->
       <span style="float:right;">
@@ -43,7 +43,7 @@
 				<el-table-column prop="bizFlowState" label="审批状态" min-width="60" show-overflow-tooltip>
           <template scope="scope">
             <el-tag v-if="scope.row.bizFlowState=='0'">未发审</el-tag>
-            <el-tag v-else-if="scope.row.bizFlowState=='1'">审批中</el-tag>
+            <el-tag type="warning" v-else-if="scope.row.bizFlowState=='1'">审批中</el-tag>
             <el-tag type="success" v-else-if="scope.row.bizFlowState=='2'">已通过</el-tag>
             <el-tag type="danger" v-else-if="scope.row.bizFlowState=='3'">未通过</el-tag>
             <el-tag type="info" v-else-if="scope.row.bizFlowState=='4'">已取消</el-tag>
@@ -72,7 +72,7 @@
             <el-button type="text">发审</el-button>
 						<el-button type="text" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"></el-button>
 						<el-button type="text" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"></el-button>
-            <el-button type="text" icon="el-icon-plus"></el-button>
+            <el-button type="text" @click="addWorkload(scope.row,scope.$index)" icon="el-icon-plus"></el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -83,12 +83,15 @@
 			<el-drawer title="编辑任务结算单" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
 				  <xm-task-sbill-edit op-type="edit" :xm-task-sbill="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-task-sbill-edit>
 			</el-drawer>
-
 			<!--新增 XmTaskSbill 任务结算表界面-->
 			<el-drawer title="新增任务结算单" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
 				<xm-task-sbill-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-task-sbill-edit>
 			</el-drawer>
-	    </el-row>
+      <!--添加登记工时界面-->
+      <el-drawer title="添加工时登记单" :visible.sync="taskWorkloadVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
+        <select-task-workload :xm-task-sbill="thisBillRow" :visible="taskWorkloadVisible" @cancel="taskWorkloadVisible=false" @submit="afterWorkloadSubmit"></select-task-workload>
+      </el-drawer>
+    </el-row>
 	</section>
 </template>
 
@@ -99,10 +102,15 @@
 	import { listXmTaskSbill, delXmTaskSbill, batchDelXmTaskSbill } from '@/api/xm/core/xmTaskSbill';
 	import  XmTaskSbillEdit from './XmTaskSbillEdit';//新增修改界面
 	import { mapGetters } from 'vuex'
+  import SelectTaskWorkload from "./SelectTaskWorkload";
+  import {editXmTaskSbill} from "../../../../api/xm/core/xmTaskSbill";
+  import dateUtil from "../../../../common/js/dateUtil";
+  import {editXmTaskWorkload} from "../../../../api/xm/core/xmTaskWorkload";
 
 	export default {
 		components: {
-		    XmTaskSbillEdit,
+      XmTaskSbillEdit,
+      SelectTaskWorkload,
 		},
 		props:['visible'],
 		computed: {
@@ -146,6 +154,9 @@
 					id:'',title:'',amt:'',ctime:'',cuserid:'',cusername:'',remark:'',branchId:'',deptid:'',cpId:'',cpName:'',workload:'',bizMonth:'',bizDate:'',bizFlowState:'',bizProcInstId:'',ltime:'',status:'',fmsg:'',projectId:'',projectName:''
 				},
 				maxTableHeight:300,
+        taskWorkloadVisible:false,
+        thisBillRow:{},//添加工时的结算单
+        projectId:'',//添加工时的项目编号
 			}
 		},//end data
 		methods: {
@@ -206,7 +217,7 @@
 						this.pageInfo.count=false;
 						this.xmTaskSbills = res.data.data;
 					}else{
-						this.$message({ showClose:true, message: tips.msg, type: 'error' });
+						this.$notify({ showClose:true, message: tips.msg, type: 'error' });
 					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -248,7 +259,7 @@
 							this.pageInfo.count=true;
 							this.getXmTaskSbills();
 						}
-						this.$message({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -266,18 +277,81 @@
 							this.pageInfo.count=true;
 							this.getXmTaskSbills();
 						}
-						this.$message({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
 			rowClick: function(row, event, column){
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
-            initData: function(){
+      initData: function(){
 
-            },
+      },
 			/**begin 自定义函数请在下面加**/
-
+      addWorkload(row,index){
+        if(row.status!='0'){
+          this.$notify({ showClose:true, message: "只能修改待提交的数据", type: 'error'});
+          return;
+        }
+        if(!(row.bizFlowState=='0' || row.bizFlowState=='3')){
+          this.$notify({ showClose:true, message: "只能修改未发审、未通过的数据", type: 'error'});
+          return;
+        }
+        this.thisBillRow = Object.assign({},row);
+        this.taskWorkloadVisible = true;
+      },
+      afterWorkloadSubmit(row){
+        this.taskWorkloadVisible = false;
+        this.thisBillRow.workload = this.thisBillRow.workload + row.workload;
+        this.thisBillRow.amt = this.thisBillRow.amt + row.samt;
+        //修改xmTaskSbill
+        this.changeXmTaskSbill(this.thisBillRow);
+        //更新xmTaskWokload现状
+        this.changeXmTaskWorkload(row,this.thisBillRow);
+      },
+      changeXmTaskSbill(data){
+        let params = Object.assign({}, data);
+        editXmTaskSbill(params).then((res) => {
+          let tips=res.data.tips;
+          if(tips.isOk){
+            this.getXmTaskSbills();
+          }
+          this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
+        }).catch( err =>{});
+      },
+      changeXmTaskWorkload(data,sbill){
+        let params={
+          id:data.id,
+          sstatus:'2',//2为已提交结算
+          stime:this.formatDate("YYYY-mm-dd HH:MM",new Date()),
+          sbillId:sbill.id
+        }
+        editXmTaskWorkload(params).then((res) => {
+          let tips=res.data.tips;
+          if(tips.isOk){
+          }
+          this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
+        }).catch( err =>{});
+      },
+      dateFormat(fmt, date) {
+        let ret;
+        const opt = {
+          "Y+": date.getFullYear().toString(),        // 年
+          "m+": (date.getMonth() + 1).toString(),     // 月
+          "d+": date.getDate().toString(),            // 日
+          "H+": date.getHours().toString(),           // 时
+          "M+": date.getMinutes().toString(),         // 分
+          "S+": date.getSeconds().toString()          // 秒
+          // 有其他格式化字符需求可以继续添加，必须转化成字符串
+        };
+        for (let k in opt) {
+          ret = new RegExp("(" + k + ")").exec(fmt);
+          if (ret) {
+            fmt = fmt.replace(ret[1], (ret[1].length == 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, "0")))
+          };
+        };
+        return fmt;
+  }
 		},//end methods
 		mounted() {
 			this.$nextTick(() => {

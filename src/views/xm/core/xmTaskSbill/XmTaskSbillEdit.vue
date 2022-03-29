@@ -150,12 +150,12 @@
 							this.load.edit=true
 							let params = Object.assign({}, this.editForm);
 
-							let today = new Date();
+							/*let today = new Date();
 							let year = today.getFullYear();
 							let m = today.getMonth() + 1;
 							let d = today.getDay();
 							params.bizMonth = year+"-"+m;
-							params.bizDate = year+"-"+m+"-"+d;
+							params.bizDate = year+"-"+m+"-"+d;*/
 
 							if(this.currOpType=='edit'){
 							    editXmTaskSbill(params).then((res) => {
@@ -164,7 +164,7 @@
                                     if(tips.isOk){
                                         this.$emit('submit');//  @submit="afterEditSubmit"
                                     }
-                                    this.$message({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
+                                    this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
                                 }).catch( err =>this.load.edit=false);
 							}else{
 							    addXmTaskSbill(params).then((res) => {
@@ -174,7 +174,7 @@
                                         this.$emit('submit');//  @submit="afterAddSubmit"
 
                                     }
-                                    this.$message({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
+                                    this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
                                 }).catch( err =>this.load.edit=false);
 							}
 						});
