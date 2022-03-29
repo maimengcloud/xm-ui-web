@@ -3,17 +3,16 @@
 		<el-row class="page-main">
 			<el-form :model="addForm" label-width="120px"  :rules="addFormRules" ref="addForm">
 						<el-form-item label="缺陷标题" prop="name">
-							<el-input v-model="addForm.name" placeholder="缺陷标题" ></el-input>
-
+							<el-input v-model="addForm.name" placeholder="缺陷标题" ></el-input> 
 						</el-form-item>
 						<el-row>
-							<el-col :span="12">
+							<el-col :span="8">
 								<el-form-item label="归属项目" prop="projectId">
 									<font v-if="filters.selProject">{{this.filters.selProject?this.filters.selProject.name:''}}</font>
  									 <xm-project-select ref="xmProjectSelect" v-if="!selProject" @row-click="onPorjectConfirm"></xm-project-select>
 								</el-form-item>
 							</el-col>
-							<el-col  :span="12">
+							<el-col  :span="8">
 								<el-form-item label="隶属需求" prop="menuId"> 
 									<el-tag title="隶属需求" closable @click="showSelectMenu" @close.stop="handleCloseMenuTag">
 									<div class="icon" :style="{backgroundColor:   'rgb(79, 140, 255)' }">
@@ -21,106 +20,106 @@
 									</div> {{addForm.menuName?addForm.menuName:"未关联需求"}}</el-tag> 
 								</el-form-item>
 							</el-col>
+							<el-col :span="8">
+								<el-form-item label="负责人" prop="handlerUsername">
+									{{addForm.handlerUsername}} <el-button type="text" @click="sendToAsk">指派给提出人</el-button><el-button type="text"  @click="sendToCreater">指派给创建人</el-button><el-button type="text"  @click="showGroupUsers('handlerUsername')">指派给其它人</el-button>
+								</el-form-item>
+							</el-col>
 						</el-row>
-						<el-row> 
-								<el-col :span="12">
-									<el-form-item label="优先级别" prop="priority">
-										<el-select v-model="addForm.priority" placeholder="请选择优先级">
-											<el-option v-for="(i,index) in dicts['priority']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
-										</el-select> 
-									</el-form-item>
-									
-								</el-col>
-								<el-col :span="12">
-									<el-form-item label="严重程度" prop="bugSeverity">
-									<el-select v-model="addForm.bugSeverity" placeholder="请选择严重程度">
-										<el-option v-for="(i,index) in dicts['bugSeverity']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
+						<el-row>
+							<el-col :span="8">
+								<el-form-item label="严重程度" prop="bugSeverity">
+								<el-select v-model="addForm.bugSeverity" placeholder="请选择严重程度">
+									<el-option v-for="(i,index) in dicts['bugSeverity']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
+								</el-select> 
+								</el-form-item>
+							</el-col> 
+							<el-col :span="8">
+								<el-form-item label="优先级别" prop="priority">
+									<el-select v-model="addForm.priority" placeholder="请选择优先级">
+										<el-option v-for="(i,index) in dicts['priority']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
 									</el-select> 
-									</el-form-item>
-								</el-col> 
+								</el-form-item> 
+							</el-col>
+							<el-col :span="8">
+								<el-form-item label="结束时间" prop="endTime">
+										<el-date-picker value-format="yyyy-MM-dd HH:mm:ss" v-model="addForm.endTime"></el-date-picker>
+								</el-form-item>
+							</el-col>
 						</el-row>
-						
-						<el-row> 
-								<el-col :span="12">
-									<el-form-item label="复现频率" prop="repRate">
-										<el-select v-model="addForm.repRate" placeholder="请选择复现频率">
-											<el-option v-for="(i,index) in dicts['bugRepRate']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
-										</el-select> 
-									</el-form-item>
-									
-								</el-col>
-								<el-col :span="12">
-									<el-form-item label="复现版本" prop="verNum">
-										<el-select v-model="addForm.verNum" placeholder="请选择版本">
-											<el-option v-for="(i,index) in xmProductVersions" :label="i.name" :value="i.id" :key="index">{{i.id}}</el-option>
-										</el-select> 
-									</el-form-item>
-								</el-col>
-						</el-row> 
-						<el-row> 
-								<el-col :span="12">
-									<el-form-item label="缺陷类别" prop="bugType">
-										<el-select v-model="addForm.bugType" placeholder="请选择缺陷类别">
-											<el-option v-for="(i,index) in dicts['bugType']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
-										</el-select> 
-									</el-form-item>
-									
-								</el-col>
-								<el-col :span="12">
-									<el-form-item label="结束时间" prop="endTime">
-										 <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" v-model="addForm.endTime"></el-date-picker>
-									</el-form-item>
-								</el-col>
-						</el-row>
-						<el-row> 
-								<el-col :span="12">
-									<el-form-item label="提出人" prop="askUsername">
-										<el-tag @click="showGroupUsers('askUsername')">{{addForm.askUsername?addForm.askUsername:'未关联提出人'}}</el-tag>
-										<el-tooltip content="最晚解决时间"><el-date-picker :clearable="false" style="width:150px;" type="date" placeholder="选择日期" v-model="addForm.endTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker></el-tooltip>
-									</el-form-item> 
-								</el-col>
-								<el-col :span="12">
-									<el-form-item label="负责人" prop="handlerUsername">
-										{{addForm.handlerUsername}} <el-button type="text" @click="sendToAsk">指派给提出人</el-button><el-button type="text"  @click="sendToCreater">指派给创建人</el-button><el-button type="text"  @click="showGroupUsers('handlerUsername')">指派给其它人</el-button>
-									</el-form-item>
-								</el-col>
-						</el-row>
+						<el-tabs value="1">
+							<el-tab-pane name="1" label="基本信息">
+								<el-row> 
+										<el-col :span="6">
+											<el-form-item label="复现频率" prop="repRate">
+												<el-select v-model="addForm.repRate" placeholder="请选择复现频率">
+													<el-option v-for="(i,index) in dicts['bugRepRate']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
+												</el-select> 
+											</el-form-item>
+											
+										</el-col> 
+										<el-col :span="6">
+											<el-form-item label="复现版本" prop="verNum">
+												<el-select v-model="addForm.verNum" placeholder="请选择版本">
+													<el-option v-for="(i,index) in xmProductVersions" :label="i.name" :value="i.id" :key="index">{{i.id}}</el-option>
+												</el-select> 
+											</el-form-item>
+										</el-col> 
+										<el-col :span="6">
+											<el-form-item label="缺陷类别" prop="bugType">
+												<el-select v-model="addForm.bugType" placeholder="请选择缺陷类别">
+													<el-option v-for="(i,index) in dicts['bugType']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
+												</el-select> 
+											</el-form-item>
+											
+										</el-col> 
+										<el-col :span="6">
+											<el-form-item label="提出人" prop="askUsername">
+												<el-tag @click="showGroupUsers('askUsername')">{{addForm.askUsername?addForm.askUsername:'未关联提出人'}}</el-tag>
+ 											</el-form-item> 
+										</el-col>
+								</el-row>
 
-						<el-form-item label="测试步骤" prop="opStep">
-							<el-tooltip content="点击切换为富文本编辑|普通文本">
-								<el-button icon="el-icon-refresh" @click="opStepEditorVisible=!opStepEditorVisible" type="text"></el-button>
-							</el-tooltip>
-							<div v-if="opStepEditorVisible==false">
-								<el-input  style="width:100%;" v-model="addForm.opStep" type="textarea" :rows="2"> </el-input>
-							</div>
-							<div v-else>
-								<vue-editor  :id="'opStep'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.opStep" ref="opStep"></vue-editor>
-							</div>
- 						</el-form-item>
-
-						<el-form-item label="预期结果" prop="expectResult">
-							<el-tooltip content="点击切换为富文本编辑|普通文本">
-								<el-button icon="el-icon-refresh" @click="expectResultEditorVisible=!expectResultEditorVisible" type="text"></el-button>
-							</el-tooltip>
-							<div v-if="expectResultEditorVisible==false">
-								<el-input  style="width:100%;" v-model="addForm.expectResult" type="textarea" :rows="2"> </el-input>
-							</div>
-							<div v-else>
-								<vue-editor v-if="expectResultEditorVisible==true" :id="'expectResult'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.expectResult"  ref="expectResult"></vue-editor>
-							</div>
-						</el-form-item>
-						<el-form-item label="缺陷描述" prop="description">
-							<el-tooltip content="点击切换为富文本编辑|普通文本">
-								<el-button icon="el-icon-refresh" @click="descriptionEditorVisible=!descriptionEditorVisible" type="text"></el-button>
-							</el-tooltip>
-							<div v-if="descriptionEditorVisible==false">
-								<el-input  style="width:100%;" v-model="addForm.description" type="textarea" :rows="2"> </el-input>
-							</div>
-							<div v-else>
-								<vue-editor class="rich-context" :id="'description_'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.description"></vue-editor>
-							</div>
-
-				</el-form-item>
+								
+								<el-form-item label="缺陷描述" prop="description">
+									<el-tooltip content="点击切换为富文本编辑|普通文本">
+										<el-button icon="el-icon-refresh" @click="descriptionEditorVisible=!descriptionEditorVisible" type="text"></el-button>
+									</el-tooltip>
+									<div v-if="descriptionEditorVisible==false">
+										<el-input  style="width:100%;" v-model="addForm.description" type="textarea" :rows="6"> </el-input>
+									</div>
+									<div v-else>
+										<vue-editor class="rich-context" :id="'description_'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.description"></vue-editor>
+									</div>
+								</el-form-item>
+							</el-tab-pane>
+							<el-tab-pane label="测试步骤" name="2">
+								<el-form-item label="测试步骤" prop="opStep">
+									<el-tooltip content="点击切换为富文本编辑|普通文本">
+										<el-button icon="el-icon-refresh" @click="opStepEditorVisible=!opStepEditorVisible" type="text"></el-button>
+									</el-tooltip>
+									<div v-if="opStepEditorVisible==false">
+										<el-input  style="width:100%;" v-model="addForm.opStep" type="textarea" :rows="6"> </el-input>
+									</div>
+									<div v-else>
+										<vue-editor  :id="'opStep'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.opStep" ref="opStep"></vue-editor>
+									</div>
+								</el-form-item>
+							</el-tab-pane>
+							<el-tab-pane label="预期结果" name="3">
+								<el-form-item label="预期结果" prop="expectResult">
+									<el-tooltip content="点击切换为富文本编辑|普通文本">
+										<el-button icon="el-icon-refresh" @click="expectResultEditorVisible=!expectResultEditorVisible" type="text"></el-button>
+									</el-tooltip>
+									<div v-if="expectResultEditorVisible==false">
+										<el-input  style="width:100%;" v-model="addForm.expectResult" type="textarea" :rows="6"> </el-input>
+									</div>
+									<div v-else>
+										<vue-editor v-if="expectResultEditorVisible==true" :id="'expectResult'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.expectResult"  ref="expectResult"></vue-editor>
+									</div>
+								</el-form-item>
+							</el-tab-pane> 
+						</el-tabs> 
 			</el-form>
 			<el-drawer title="选中用户" :visible.sync="selectUserVisible"  size="70%"  append-to-body   :close-on-click-modal="false">
 				<xm-group-mng  :sel-project="filters.selProject" :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-mng>

@@ -342,7 +342,10 @@
 		},
 		mounted() {
 			this.$nextTick(() => {
-				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
+				if(this.$refs.table){
+					this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
+				}
+				
 				if(this.autoSelect!==false){
 					this.initData();
 					this.hadInit=true;

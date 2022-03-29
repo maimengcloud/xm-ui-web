@@ -169,17 +169,7 @@
 
 					</el-tab-pane>
 					<el-tab-pane label="工时" name="5"> 
-						<el-row>
-							<el-col :span="8">  
-								<el-form-item label="统计方式" prop="calcType">
-									
-									<el-select v-model="editForm.calcType">
-										<el-option label="不统计"  value="0"></el-option>
-										<el-option label="下级往上级汇总"  value="1"></el-option>
-										<el-option label="手工填报"  value="2"></el-option>
-									</el-select>  
-								</el-form-item>  
-							</el-col>
+						<el-row> 
 							<el-col :span="8"> 
 								<el-form-item label="报工方式" prop="wtype" > 
 									<el-select v-model="editForm.wtype">
@@ -397,7 +387,7 @@
 				editForm: {
 					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'3',sortLevel:'0',executorUserid:'',executorUsername:'',
 					preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',taskOut:'0',
-					rate:0,budgetCost:'',budgetWorkload:'',actCost:'',actWorkload:'',taskState:'0',taskClass:'0',toTaskCenter:'0',actStartTime:'',actEndTime:'',taskType:'4',planType:'w2',settleSchemel:'1',ntype:'0',childrenCnt:0
+					rate:0,budgetCost:'',budgetWorkload:'',actCost:'',actWorkload:'',taskState:'0',taskClass:'0',toTaskCenter:'0',actStartTime:'',actEndTime:'',taskType:'4',planType:'w2',settleSchemel:'1',ntype:'0',childrenCnt:0,wtype:'',
   
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
