@@ -65,10 +65,9 @@
 							</el-col>
 							<el-col :span="8"> 
 								<el-form-item label="当前进度" prop="rate">
-									<el-slider   
-										v-model="editForm.rate"
-										show-input>
-									</el-slider> 
+									<el-progress   
+										:percentage="editForm.rate?editForm.rate:0">
+									</el-progress> 
 								</el-form-item>  
 							</el-col>  
 							<el-col :span="8"> 
