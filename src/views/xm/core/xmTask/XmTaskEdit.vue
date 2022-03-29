@@ -164,43 +164,11 @@
 							</el-col> 
 						</el-row>
 					</el-tab-pane>
-					<el-tab-pane label="子工作项" name="4" v-if="editForm.ntype==='1'">  
-
+					<el-tab-pane :label="'子工作项('+subWorkItemNum+')'" name="4" v-if="editForm.ntype==='1'">  
+							 <xm-sub-work-item :parent-xm-task="editForm"  @sub-work-item-num="setSubWorkItemNum" @add-sub-task="onAddSubTask"></xm-sub-work-item>
 					</el-tab-pane>
 					<el-tab-pane label="工时" name="5"> 
-						<el-row> 
-							<el-col :span="8"> 
-								<el-form-item label="报工方式" prop="wtype" > 
-									<el-select v-model="editForm.wtype">
-										<el-option label="无须报工"  value="0"></el-option>
-										<el-option label="强制每日报工"  value="1"></el-option>
-										<el-option label="工期内报工"  value="2"></el-option>
-									</el-select>  
-								</el-form-item>
-							</el-col>  
-							<el-col :span="8"> 
-								<el-form-item label="工时进度" prop="rate" >
-									<el-progress style="width:60%;" :text-inside="true" :stroke-width="15" :percentage="editForm.rate?editForm.rate:0"></el-progress>
-								</el-form-item>
-							</el-col>  
-						</el-row>  
-						<el-row>
-							<el-col :span="8"> 
-								<el-form-item label="预估工作量" prop="budgetWorkload">
-									<el-input type="number"   style="width:150px;"   v-model="editForm.budgetWorkload" @change="onBudgetWorkloadChange" :precision="2" :step="8" :min="0" placeholder="预计总工作量(人时,不包括下一级)"></el-input type="number"> <el-tag>h</el-tag>
-								</el-form-item>    
-							</el-col>
-							<el-col :span="8"> 
-								<el-form-item label="完工时间" prop="actEndTime">
-									 <el-date-picker style="display:inline;" type="daterange"  unlink-panels value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="actDateRanger"></el-date-picker>
-								</el-form-item> 
-							</el-col> 
-							<el-col :span="8"> 
-								<el-form-item label="实际工作量" prop="actWorkload">
-									<el-input type="number"   style="width:150px;"     v-model="editForm.actWorkload" @change="onActWorkloadChange" :precision="2" :step="8" :min="0" placeholder="实际总工作量(人时,不包括下一级)"></el-input type="number"> <el-tag>h</el-tag>
-								</el-form-item> 
-							</el-col> 
-						</el-row>  
+						 <xm-task-workload-record :xm-task="editForm"></xm-task-workload-record>
 					</el-tab-pane>
 					<el-tab-pane label="成本" name="6"> 
 						<el-form-item label="预估金额" prop="budgetCost">
@@ -273,9 +241,9 @@
 			<xm-execuser-mng :visible="execUserVisible" :xm-task="editForm"   @after-add-submit="afterAddExecSubmit" @after-edit-submit="afterEditExecSubmit" @after-delete-submit="afterEditExecSubmit" ref="execuserMng"></xm-execuser-mng>
 		</el-drawer>
 
-		<el-drawer append-to-body title="需求明细"  :visible.sync="menuDetailVisible" size="80%"    :close-on-click-modal="false">
-			<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="true" :xm-menu="{menuId:editForm.menuId,menuName:editForm.menuName}" ></xm-menu-rich-detail>
-		</el-drawer>
+		<el-dialog append-to-body title="需求明细"  :visible.sync="menuDetailVisible" width="80%"  top="20px"  :close-on-click-modal="false">
+			<xm-menu-edit :visible="menuDetailVisible"  :reload="true" :xm-menu="{menuId:editForm.menuId,menuName:editForm.menuName}" ></xm-menu-edit>
+		</el-dialog>
 			
 		<el-drawer append-to-body title="标签"  :visible.sync="tagSelectVisible" size="60%">
 			<tag-mng :tagIds="editForm.tagIds?editForm.tagIds.split(','):[]" :jump="true" @select-confirm="onTagSelected">
@@ -300,6 +268,9 @@
 	import XmMenuRichDetail from '../xmMenu/XmMenuRichDetail';
 	import TagMng from "@/views/mdp/arc/tag/TagMng";
 
+	import XmSubWorkItem from "@/views/xm/core/xmTaskWorkItem/XmSubWorkItem";
+	import XmTaskWorkloadRecord from "../xmTaskWorkload/XmTaskWorkloadRecord"
+import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 	export default { 
 		computed: {
 			...mapGetters([
@@ -406,10 +377,14 @@
 				],  
 				pickerOptions:  util.pickerOptions('datarange'),
 				tagSelectVisible:false,
+				subWorkItemNum:0,
 				 /**end 在上面加自定义属性**/
 			}//end return
 		},//end data
 		methods: {  
+			setSubWorkItemNum(val){
+				this.subWorkItemNum=val;
+			},
 			// 取消按钮点击 父组件监听@cancel="editFormVisible=false" 监听
 			handleCancel:function(){
  				this.$emit('cancel');
@@ -637,10 +612,13 @@
 					this.editForm.tagNames=""
 				}
 			},
+			onAddSubTask(val){
+
+			}
 		},//end method
 		components: { 
  			xmSkillMng,
-			skillMng,xmMenuSelect,XmTaskList,XmExecuserMng,XmGroupSelect,XmMenuRichDetail,TagMng,
+			skillMng,xmMenuSelect,XmTaskList,XmExecuserMng,XmGroupSelect,XmMenuRichDetail,TagMng,XmSubWorkItem,XmTaskWorkloadRecord,XmMenuEdit,
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},
 		mounted() { 

@@ -131,11 +131,7 @@
 							 <xm-sub-work-item :parent-xm-menu="editForm" :link-project-id="selProject?selProject.id:null" @sub-work-item-num="setSubWorkItemNum" @add-sub-menu="onAddSubMenu"></xm-sub-work-item>
 						</el-tab-pane>
 						<el-tab-pane :label="'工时('+editForm.mactWorkload+' h)'" name="2">
-							<el-form-item label="数据收集方式" prop="calcType">
-								<el-radio   v-model="editForm.calcType"  label="3" placeholder="下级往上级汇总" :disabled="editForm.ntype==='0'">下级往上级汇总</el-radio>
- 								<el-radio   v-model="editForm.calcType"  label="1" placeholder="由任务汇总" :disabled="editForm.ntype==='1'">由任务汇总</el-radio>
-								<el-radio   v-model="editForm.calcType"  label="2" placeholder="手工填报" :disabled="editForm.ntype==='1'">手工填报</el-radio>
-							</el-form-item>
+							 
 							<el-form-item label="工时进度" prop="mactRate" >
 								<el-progress style="width:60%;" :text-inside="true" :stroke-width="15" :percentage="editForm.mactRate?editForm.mactRate:0"></el-progress>
  							</el-form-item>
@@ -147,13 +143,7 @@
 							</el-form-item>
 							<el-form-item label="实际工时" prop="mactWorkload">
 								<el-input-number :disabled="editForm.calcType!=='2'  " style="width:200px;"  v-model="editForm.mactWorkload" :precision="2" :step="8" :min="0" placeholder="实际工时(小时)"></el-input-number> &nbsp;h
-							</el-form-item>
-							<font color="blue" style="font-size:10px;">控制规则:
-								<br>下级往上汇总：指工时数据按 &nbsp;用户故事->特性->史诗 &nbsp;这样的汇总关系将数据逐级往上汇总。
-								<br>由任务汇总： 指用户故事的工时数据由任务汇总。
-								<br>手工填报：  指用户故事的工时数据来自手工填报，无论是否关联了任务，都不从任务汇总。
-							</font>
-
+							</el-form-item>  
 							<el-row class="padding">
  								<el-button v-loading="load.edit" type="primary" @click.native="editXmMenuSomeFields(editForm,'workload',{mactWorkload:editForm.mactWorkload,budgetWorkload:editForm.budgetWorkload,mactRate:editForm.mactRate,budgetHours:editForm.budgetHours})" :disabled="load.edit==true">提交</el-button>
 							</el-row>
@@ -217,13 +207,13 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { editXmMenu,editXmMenuSomeFields } from '@/api/xm/core/xmMenu';
+	import {listXmMenuWithState,editXmMenu,editXmMenuSomeFields } from '@/api/xm/core/xmMenu';
 	import { mapGetters } from 'vuex'
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
 import XmMenuOverview from './XmMenuOverview.vue';
 import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
   	import TagMng from "@/views/mdp/arc/tag/TagMng";
-	import XmSubWorkItem from "@/views/xm/core/xmWorkItem/XmSubWorkItem";
+	import XmSubWorkItem from "@/views/xm/core/xmMenuWorkItem/XmSubWorkItem";
 
 	export default {
 		computed: {
@@ -255,16 +245,20 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 				return params;
 			},
 		},
-		props:['xmMenu','visible','parentMenu','product','dclass','selProject'],
+		props:['xmMenu','visible','parentMenu','product','dclass','selProject','reload'],
 		watch: {
 	      'xmMenu':function( xmMenu ) {
 	        this.editForm = xmMenu;
 	      },
 	      'visible':function(visible) {
 	      	if(visible==true){
+				  
 	      		if(this.editForm.startTime && this.editForm.endTime){
 					this.dateRanger.push(this.editForm.startTime)
 					this.dateRanger.push(this.editForm.endTime)
+				}
+				if(this.reload==true){
+					this.searchXmMenus();
 				}
 	      	}
 	      },
@@ -474,6 +468,25 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 			onAddSubMenu(menu){
 				debugger;
 				this.$emit("add-sub-menu",menu)
+			},
+			searchXmMenus(){
+				let callback= (res)=>{
+					var tips=res.data.tips;
+					if(tips.isOk){
+						this.editForm=res.data.data[0]
+						if(this.editForm.startTime && this.editForm.endTime){
+							this.dateRanger=[]
+							this.dateRanger.push(this.editForm.startTime)
+							this.dateRanger.push(this.editForm.endTime)
+						}
+					}else{
+						this.$notify({showClose: true, message: tips.msg, type: 'error' });
+					}
+					this.load.list = false;
+				}
+				this.load.list = true; 
+				var params={menuId:this.xmMenu.menuId}
+					listXmMenuWithState(params).then( callback ).catch( err => this.load.list = false ); 
 			}
 		},//end method
 		components: {
@@ -494,6 +507,9 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 			if(this.editForm.startTime && this.editForm.endTime){
 				this.dateRanger.push(this.editForm.startTime)
 				this.dateRanger.push(this.editForm.endTime)
+			}
+			if(this.reload==true){
+				this.searchXmMenus();
 			}
 			/**在下面写其它函数***/
 

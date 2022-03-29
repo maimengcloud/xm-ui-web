@@ -1,10 +1,6 @@
 <template>
-    <el-row v-show="parentXmMenu.dclass==='3' && xmTasks.length>0"> 
-      <el-row>
-         <div class="icon" style="background-color:  #1CC7EA;">
-            <i class="el-icon-s-operation"></i>
-          </div>
-        任务
+    <el-row  v-show="xmTasks.length>0">
+      <el-row> 
         <span style="float:right;">
           <el-button @click="batchDel" type="danger" icon="el-icon-delete" plain></el-button>
         </span>
@@ -12,7 +8,13 @@
       <el-row>
         <el-table :data="xmTasks"  :max-height="400" v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
           <el-table-column type="selection" label="全选"></el-table-column>
-          <el-table-column prop="name" label="名称"></el-table-column>
+          <el-table-column prop="name" label="名称"> 
+                <template slot-scope="scope">
+                  <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#409EFF'}">
+									<i :class="scope.row.ntype==='1'?'el-icon-odometer':'el-icon-s-operation'" ></i>
+									</div>  {{scope.row.name}}
+                </template>
+          </el-table-column>
               <el-table-column
                 label="状态"
                 type="taskState"
@@ -77,7 +79,7 @@
         </el-table> 
       </el-row>
       
- 			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="linkProjectId?{id:linkProjectId}:null" :xm-product="parentXmMenu?{id:parentXmMenu.productId}:null" @user-confirm="selectCreateUserConfirm">
+ 			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="linkProjectId?{id:linkProjectId}:null" :xm-product="parentXmTask?{id:parentXmTask.productId}:null" @user-confirm="selectCreateUserConfirm">
 			</xm-group-dialog>  
       <xm-task-workload-record-dialog ref="workloadRecordDialog" @submi="afterWorkloadSubmit" @edit-xm-task-some-fields="onEditXmTaskSomeFields" @submit="onWorkloadSubmit"></xm-task-workload-record-dialog>
     </el-row> 
@@ -100,21 +102,21 @@ export default {
     
 			calcMenuLabel(){ 
 				var params={label:'工作项',icon:'',color:''};
-				if(this.parentXmMenu.dclass==='0'){
+				if(this.parentXmTask.dclass==='0'){
 					params={label:'史诗',icon:'el-icon-s-promotion',color:'rgb(255, 153, 51)'};
-				}else if(this.parentXmMenu.dclass==='1'){
+				}else if(this.parentXmTask.dclass==='1'){
 					params={label:'特性',icon:'el-icon-s-flag',color:'rgb(0, 153, 51)'};
-				}else if(this.parentXmMenu.dclass==='2'){
+				}else if(this.parentXmTask.dclass==='2'){
 					params={label:'故事',icon:'el-icon-document',color:' rgb(79, 140, 255)'};
 				} 
 				return params;
 			},  
   },
   props: [ 
-    'parentXmMenu','linkProjectId'
+    'parentXmTask','linkProjectId'
   ],
   watch: { 
-    'parentXmMenu.menuId':function(){
+    'parentXmTask.id':function(){
       this.initData();
     },
     'xmTasks':function(){
@@ -148,7 +150,7 @@ export default {
       this.sels = sels;
     },
     getXmTasks(){
-      listXmTask({menuId:this.parentXmMenu.menuId}).then(res=>{
+      listXmTask({parentTaskid:this.parentXmTask.id}).then(res=>{
         var tips = res.data.tips;
         if(tips.isOk){
           this.xmTasks=res.data.data
@@ -163,27 +165,26 @@ export default {
      },
     initData(){  
       this.xmTasks=[] 
-      if(!this.parentXmMenu || !this.parentXmMenu.menuId){
+      if(!this.parentXmTask || !this.parentXmTask.menuId){
         return;
       }
-      var dclass=this.parentXmMenu.dclass;
+      var dclass=this.parentXmTask.dclass;
       if(dclass==='3'){
         this.getXmTasks();
       } 
     }, 
     addXmTask(name){ 
-       var task={name:name,menuId:this.parentXmMenu.menuId,menuName:this.parentXmMenu.menuName,productId:this.parentXmMenu.productId,iterationId:this.parentXmMenu.iterationId,iterationName:this.parentXmMenu.iterationName}
+       var task={...this.parentXmTask,name:name,id:null,parentTaskid:this.parentXmTask.id,parentTaskname:this.parentXmTask.name}
              task.priority='3'
-             task.verNum=this.parentXmMenu.sinceVersion;
-             task.pverNum=this.parentXmMenu.sinceVersion;
+             task.verNum=this.parentXmTask.sinceVersion;
+             task.pverNum=this.parentXmTask.sinceVersion;
              task.askUserid=this.userInfo.userid
              task.askUsername=this.userInfo.username 
              task.qtype="1"
-             task.ntype="0"
+             task.ntype=this.ntype
              task.ptype="0"
              task.id=null;
              task.name=name
-             task.projectId=this.linkProjectId
              addTask(task).then((res) => {
 								this.load.edit=false
 								var tips=res.data.tips;
@@ -194,8 +195,9 @@ export default {
 								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.edit=false);
     },  
-      showAdd() {
-        this.$prompt('请输入任务标题', '提示', {
+      showAdd(ntype) {
+        this.ntype=ntype;
+        this.$prompt('请输入'+(ntype==='0'?'子任务':'子计划')+'标题', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',  
         }).then(({ value }) => { 
@@ -372,7 +374,7 @@ export default {
       }
   }, //end methods
   components: {  
-    XmTaskWorkloadRecordDialog,
+    XmTaskWorkloadRecordDialog,XmGroupDialog,
   },
   mounted() { 
     this.initData();

@@ -395,7 +395,7 @@
               :tree-props="{ children: 'children', hasChildren: 'childrenCnt' }"
               row-key="id"
               ref="table"
-              row-style="height:60px;"
+              :row-style="{height:'60px'}"
             >
               <el-table-column
                 label="全选"

@@ -5,7 +5,7 @@
 		<el-row class="page-main"  ref="table">
 		<!--编辑界面 XmTaskWorkload 工时登记表-->
 			<el-form :model="editForm" label-width="100px"  :rules="editFormRules" ref="editFormRef">
-				<el-row>
+				<el-row v-if="editForm.ntype==='0'">
 					<el-col :span="6">
 						<el-form-item label="预估工时" prop="budgetWorkload">
 							 <el-input :controls="false" type="number" :step="8" style="width:80%;"  v-model="editForm.budgetWorkload" placeholder="预估工时" @change="editXmTaskSomeFields(editForm,'budgetWorkload',$event)"></el-input> &nbsp;小时
@@ -27,10 +27,32 @@
 						</el-form-item> 
 					</el-col>
 				</el-row>
+				<el-row v-else>
+					<el-col :span="6">
+						<el-form-item label="预估工时" prop="budgetWorkload">
+							 {{scope.row.budgetWorkload}} &nbsp;小时
+						</el-form-item>
+					</el-col>
+					<el-col :span="6">
+						<el-form-item label="已登工时" prop="actWorkload">
+							{{editForm.actWorkload?editForm.actWorkload:0}} &nbsp; 小时
+ 						</el-form-item>
+					</el-col>
+					<el-col :span="6">
+						<el-form-item label="剩余工时" prop="rworkload">
+							{{editForm.rworkload?editForm.rworkload:0}} &nbsp;小时
+						</el-form-item> 
+					</el-col> 
+					<el-col :span="6">
+						<el-form-item label="工时进度" prop="rate">
+							<el-progress :percentage="editForm.rate>0?editForm.rate:0"  placeholder="工时进度"></el-progress>
+						</el-form-item> 
+					</el-col>
+				</el-row>
 			</el-form>
 		</el-row>
 		<el-row>
-			<xm-task-workload-list :visible="visible" :xm-task="xmTask" @submit="onWorkloadSubmit"></xm-task-workload-list>
+			<xm-task-workload-list v-if="xmTask.ntype==='0'" :visible="visible" :xm-task="xmTask" @submit="onWorkloadSubmit"></xm-task-workload-list>
 		</el-row> 
 	</section>
 </template>
