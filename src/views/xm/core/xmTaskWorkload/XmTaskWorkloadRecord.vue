@@ -8,17 +8,17 @@
 				<el-row>
 					<el-col :span="6">
 						<el-form-item label="预估工时" prop="budgetWorkload">
-							 <el-input style="width:85%;"  v-model="editForm.budgetWorkload" placeholder="预估工时"></el-input> &nbsp;h 
+							 <el-input  type="number"  style="width:85%;"  v-model="editForm.budgetWorkload" placeholder="预估工时"></el-input> &nbsp;h 
 						</el-form-item>
 					</el-col>
 					<el-col :span="6">
 						<el-form-item label="已登工时" prop="actWorkload">
-							<el-input style="width:85%;"  v-model="editForm.actWorkload" placeholder="已登记工时"></el-input> &nbsp;h
+							<el-input  type="number"  style="width:85%;"  v-model="editForm.actWorkload" placeholder="已登记工时"></el-input> &nbsp;h
 						</el-form-item>
 					</el-col>
 					<el-col :span="6">
 						<el-form-item label="剩余工时" prop="rworkload">
-							<el-input style="width:85%;"  v-model="editForm.rworkload" placeholder="剩余工时"></el-input>  &nbsp;h
+							<el-input  type="number"  style="width:85%;"  v-model="editForm.rworkload" placeholder="剩余工时"></el-input>  &nbsp;h
 						</el-form-item> 
 					</el-col> 
 					<el-col :span="6">

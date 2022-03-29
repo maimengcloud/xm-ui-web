@@ -27,12 +27,12 @@
 					
 					<el-col :span="12">
 						<el-form-item label="工作时长" prop="workload">
-							<el-input style="width:80%;" v-model="editForm.workload" placeholder="工作时长"></el-input> &nbsp;&nbsp;h
+							<el-input type="number" style="width:80%;" v-model="editForm.workload" placeholder="工作时长"></el-input> &nbsp;&nbsp;h
 						</el-form-item> 
 					</el-col>
 					<el-col :span="12">
 						<el-form-item label="剩余工时" prop="rworkload">
-							<el-input style="width:80%;" v-model="editForm.rworkload" placeholder="剩余工时"></el-input>&nbsp;&nbsp;h
+							<el-input type="number"  style="width:80%;" v-model="editForm.rworkload" placeholder="剩余工时"></el-input>&nbsp;&nbsp;h
 						</el-form-item>
 					</el-col>
 				</el-row>
