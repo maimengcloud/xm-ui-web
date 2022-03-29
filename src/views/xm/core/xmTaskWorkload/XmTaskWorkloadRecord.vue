@@ -8,22 +8,22 @@
 				<el-row>
 					<el-col :span="6">
 						<el-form-item label="预估工时" prop="budgetWorkload">
-							 <el-input  type="number"  style="width:85%;"  v-model="editForm.budgetWorkload" placeholder="预估工时"></el-input> &nbsp;h 
+							 <el-input  type="number"  style="width:80%;"  v-model="editForm.budgetWorkload" placeholder="预估工时" @change="editXmTaskSomeFields(editForm,'budgetWorkload',$event)"></el-input> &nbsp;小时
 						</el-form-item>
 					</el-col>
 					<el-col :span="6">
 						<el-form-item label="已登工时" prop="actWorkload">
-							<el-input  type="number"  style="width:85%;"  v-model="editForm.actWorkload" placeholder="已登记工时"></el-input> &nbsp;h
-						</el-form-item>
+							{{editForm.actWorkload?editForm.actWorkload:0}} &nbsp; 小时
+ 						</el-form-item>
 					</el-col>
 					<el-col :span="6">
 						<el-form-item label="剩余工时" prop="rworkload">
-							<el-input  type="number"  style="width:85%;"  v-model="editForm.rworkload" placeholder="剩余工时"></el-input>  &nbsp;h
+							<el-input  type="number"  style="width:80%;"  v-model="editForm.rworkload" placeholder="剩余工时" @change="editXmTaskSomeFields(editForm,'rworkload',$event)"></el-input>  &nbsp;小时
 						</el-form-item> 
 					</el-col> 
 					<el-col :span="6">
 						<el-form-item label="工时进度" prop="rate">
-							<el-input v-model="editForm.rate" placeholder="工时进度"></el-input>
+							<el-progress :percentage="editForm.rate>0?editForm.rate:0"  placeholder="工时进度"></el-progress>
 						</el-form-item> 
 					</el-col>
 				</el-row>
@@ -39,7 +39,7 @@
 	import util from '@/common/js/util';//全局公共库
 	import config from "@/common/config"; //全局公共库import
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
-	import { addXmTaskWorkload,editXmTaskWorkload } from '@/api/xm/core/xmTaskWorkload';
+	import { editXmTaskSomeFields } from '@/api/xm/core/xmTaskWorkload';
 	import { mapGetters } from 'vuex'
 	import XmTaskWorkloadList from './XmTaskWorkloadList';
 
@@ -52,7 +52,7 @@
 		    ...mapGetters([ 'userInfo'  ]),
 
 		},
-		props:['xmTask','visible','opType'],
+		props:['xmTask','visible'],
 
 		watch: {
 	      
@@ -63,8 +63,7 @@
 	      }
 	    },
 		data() {
-			return {
-			    currOpType:'add',//add/edit
+			return { 
  				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				dicts:{},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				editFormRules: {
@@ -83,51 +82,27 @@
 		},//end data
 		methods: {
 			// 取消按钮点击 父组件监听@cancel="editFormVisible=false" 监听
-			handleCancel:function(){
-				this.$refs['editFormRef'].resetFields();
+			handleCancel:function(){ 
 				this.$emit('cancel');
 			},
 			//新增、编辑提交XmTaskWorkload 工时登记表父组件监听@submit="afterEditSubmit"
 			saveSubmit: function () {
-				this.$refs.editFormRef.validate((valid) => {
-					if (valid) {
-						this.$confirm('确认提交吗？', '提示', {}).then(() => {
-							this.load.edit=true
-							let params = Object.assign({}, this.editForm);
-							var func=addXmTaskWorkload
-							if(this.currOpType=='edit'){
-							    func=editXmTaskWorkload
-							}
-							func(params).then((res) => {
-                                this.load.edit=false
-                                var tips=res.data.tips;
-                                if(tips.isOk){
-                                    this.editForm=res.data.data
-                                    this.initData()
-                                    this.currOpType="edit";
-                                    this.$emit('submit');//  @submit="afterAddSubmit"
-                                }
-                                this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
-                            }).catch( err =>this.load.edit=false);
-						});
-					}else{
-					    this.$notify({ showClose:true, message: "表单验证不通过，请修改表单数据再提交", type: 'error' });
-					}
-				});
 			},
-			initData: function(){
-			    this.currOpType=this.opType
-			    if(this.xmTaskWorkload){
-                    this.editForm = Object.assign({},this.xmTask);
-                }
-
-                if(this.opType=='edit'){
-
-                }else{
-
-                }
+			initData: function(){ 
+				this.editForm={...this.xmTask}
             },
-
+			
+			editXmTaskSomeFields(row,fieldName,$event){
+				var params={ids:[row.id]}; 
+				editXmTaskSomeFields(params).then(res=>{
+					var tips = res.data.tips;
+					if(tips.isOk){ 
+						Object.assign(row,params) 
+					}else{
+						this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+					}
+				})
+			},
 		},//end method
 		mounted() {
 		    this.$nextTick(() => {
