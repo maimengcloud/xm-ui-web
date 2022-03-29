@@ -198,9 +198,11 @@
 				this.addFormVisible=false;
 				this.pageInfo.count=true;
 				this.getXmTaskWorkloads();
+				this.$emit('submit',this.editForm)
 			},
 			afterEditSubmit(){
 				this.editFormVisible=false;
+				this.$emit('submit',this.editForm)
 			},
 			//选择行xmTaskWorkload
 			selsChange: function (sels) {
@@ -219,6 +221,7 @@
 						if(tips.isOk){
 							this.pageInfo.count=true;
 							this.getXmTaskWorkloads();
+							this.$emit('submit',this.editForm)
 						}
 						this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
@@ -242,6 +245,7 @@
 						if( tips.isOk ){
 							this.pageInfo.count=true;
 							this.getXmTaskWorkloads();
+							this.$emit('submit')
 						}
 						this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );

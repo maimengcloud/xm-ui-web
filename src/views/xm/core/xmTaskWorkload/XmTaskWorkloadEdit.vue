@@ -25,25 +25,17 @@
 				</el-row>
 				<el-row>
 
-					<el-col :span="12">
+					<el-col :span="8">
 						<el-form-item label="工作时长" prop="workload">
-							<el-input type="number" style="width:80%;" v-model="editForm.workload" placeholder="工作时长"></el-input> &nbsp;小时
+							<el-input  type="number" style="width:80%;" v-model="editForm.workload" placeholder="工作时长"></el-input> &nbsp;小时
 						</el-form-item>
 					</el-col>
-					<el-col :span="12">
-						<el-form-item label="剩余工时" prop="rworkload">
-							<el-input type="number"  style="width:80%;" v-model="editForm.rworkload" placeholder="剩余工时"></el-input>&nbsp;小时
-						</el-form-item>
-					</el-col>
-				</el-row>
-				<el-row>
-
-					<el-col :span="12">
+					<el-col :span="8">
 						<el-form-item label="业务日期" prop="bizDate">
 							<el-date-picker style="width:80%;" v-model="editForm.bizDate" value-format="yyyy-MM-dd" format="yyyy-MM-dd"  placeholder="业务日期"></el-date-picker>
 						</el-form-item>
 					</el-col>
-					<el-col :span="12">
+					<el-col :span="8">
 						<el-form-item label="任务类型" prop="ttype">
 							<el-select v-model="editForm.ttype">
 								<el-option v-for="i in this.dicts.taskType" :label="i.name" :key="i.id" :value="i.id"></el-option>
@@ -171,6 +163,7 @@
 					if(!this.editForm.ttype){
 						this.editForm.ttype="4"
 					}
+					this.editForm.workload=8
                 }
             },
 

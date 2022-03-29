@@ -33,7 +33,8 @@
             <el-table-column prop="budgetWorkload" label="工时"  width="100">
               <template slot-scope="scope">   
                     <div class="cell-text">
-                      <span v-if="scope.row.actWorkload>0">{{scope.row.actWorkload}}&nbsp;/&nbsp;{{scope.row.budgetWorkload}}</span>
+                      <span title="实际工时 / 预估工时 " >{{scope.row.actWorkload>0?scope.row.actWorkload:0}}&nbsp;/&nbsp;{{scope.row.budgetWorkload>0?scope.row.budgetWorkload:0}}</span>
+
                     </div>
                     <span class="cell-bar">   
                         <el-button @click="workloadRecord(scope.row)">登记工时</el-button>
@@ -78,7 +79,7 @@
       
  			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="linkProjectId?{id:linkProjectId}:null" :xm-product="parentXmMenu?{id:parentXmMenu.productId}:null" @user-confirm="selectCreateUserConfirm">
 			</xm-group-dialog>  
-      <xm-task-workload-record-dialog ref="workloadRecordDialog" @submi="afterWorkloadSubmit"></xm-task-workload-record-dialog>
+      <xm-task-workload-record-dialog ref="workloadRecordDialog" @submi="afterWorkloadSubmit" @edit-xm-task-some-fields="onEditXmTaskSomeFields" @submit="onWorkloadSubmit"></xm-task-workload-record-dialog>
     </el-row> 
 </template>
 
@@ -157,6 +158,7 @@ export default {
       })
     },
      workloadRecord(row){
+       this.editForm=row
        this.$refs.workloadRecordDialog.open(row)
      },
     initData(){  
@@ -356,7 +358,17 @@ export default {
 
 			},
       afterWorkloadSubmit(xmTask){
-        
+
+      },
+      
+			onEditXmTaskSomeFields(data){
+        debugger;
+        Object.assign(this.editForm,data)
+				this.$emit('edit-xm-task-some-fields',data);
+			},
+      onWorkloadSubmit(data){
+         Object.assign(this.editForm,data)
+        this.$emit('workload-submit',data)
       }
   }, //end methods
   components: {  

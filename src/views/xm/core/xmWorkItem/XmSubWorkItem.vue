@@ -31,7 +31,7 @@
     </el-row>
        <xm-sub-menu-list ref="menuList" :link-project-id="linkProjectId?linkProjectId:(xmProject?xmProject.id:null)" :parentXmMenu="parentXmMenu" @menus-change="onMenusChange" @add-submit="$emit('add-sub-menu',$event)"></xm-sub-menu-list>
 
-        <xm-sub-task-list  ref="taskList" :link-project-id="linkProjectId?linkProjectId:(xmProject?xmProject.id:null)" :parentXmMenu="parentXmMenu" @tasks-change="onTasksChange"></xm-sub-task-list>
+        <xm-sub-task-list  ref="taskList" :link-project-id="linkProjectId?linkProjectId:(xmProject?xmProject.id:null)" :parentXmMenu="parentXmMenu" @tasks-change="onTasksChange" @workload-submit="onWorkloadSubmit"></xm-sub-task-list>
 
         <xm-sub-bug-list class="padding-top" ref="bugList" :link-project-id="linkProjectId?linkProjectId:(xmProject?xmProject.id:null)" :parentXmMenu="parentXmMenu" @bugs-change="onBugsChange"></xm-sub-bug-list>
   </section>
@@ -120,6 +120,9 @@ export default {
     },
     onTasksChange(tasks){
       this.xmTasks=tasks
+    },
+    onWorkloadSubmit(xmTask){
+      this.$emit('workload-submit',xmTask)
     }
     /**end 自定义函数请在上面加**/
   }, //end methods

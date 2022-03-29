@@ -1,6 +1,7 @@
 <template>
 	<section>
-	     <el-dialog append-to-body width="80%" top="20px" :visible.sync="visible" :title="'任务【'+editForm.name+'】工时登记'"><xm-task-workload-record :visible="visible" :xm-task="editForm"></xm-task-workload-record></el-dialog>
+	     <el-dialog append-to-body width="80%" top="20px" :visible.sync="visible" :title="'任务【'+editForm.name+'】工时登记'">
+			 <xm-task-workload-record :visible="visible" :xm-task="editForm" @edit-xm-task-some-fields="onEditXmTaskSomeFields" @submit="onWorkloadSubmit"></xm-task-workload-record></el-dialog>
 	</section>
 </template>
 
@@ -55,6 +56,12 @@
 			close(){
 				this.visible=false;
 				this.$emit("close");
+			},
+			onEditXmTaskSomeFields(data){
+				this.$emit('edit-xm-task-some-fields',data);
+			},
+			onWorkloadSubmit(data){
+				this.$emit('submit',data)
 			}
 
 		},//end method

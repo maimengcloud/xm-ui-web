@@ -8,7 +8,7 @@
 				<el-row>
 					<el-col :span="6">
 						<el-form-item label="预估工时" prop="budgetWorkload">
-							 <el-input  type="number"  style="width:80%;"  v-model="editForm.budgetWorkload" placeholder="预估工时" @change="editXmTaskSomeFields(editForm,'budgetWorkload',$event)"></el-input> &nbsp;小时
+							 <el-input :controls="false" type="number" :step="8" style="width:80%;"  v-model="editForm.budgetWorkload" placeholder="预估工时" @change="editXmTaskSomeFields(editForm,'budgetWorkload',$event)"></el-input> &nbsp;小时
 						</el-form-item>
 					</el-col>
 					<el-col :span="6">
@@ -18,7 +18,7 @@
 					</el-col>
 					<el-col :span="6">
 						<el-form-item label="剩余工时" prop="rworkload">
-							<el-input  type="number"  style="width:80%;"  v-model="editForm.rworkload" placeholder="剩余工时" @change="editXmTaskSomeFields(editForm,'rworkload',$event)"></el-input>  &nbsp;小时
+							<el-input :controls="false"  type="number"  style="width:80%;" :step="8"  v-model="editForm.rworkload" placeholder="剩余工时" @change="editXmTaskSomeFields(editForm,'rworkload',$event)"></el-input>  &nbsp;小时
 						</el-form-item> 
 					</el-col> 
 					<el-col :span="6">
@@ -30,7 +30,7 @@
 			</el-form>
 		</el-row>
 		<el-row>
-			<xm-task-workload-list :xm-task="xmTask"></xm-task-workload-list>
+			<xm-task-workload-list :xm-task="xmTask" @submit="onWorkloadSubmit"></xm-task-workload-list>
 		</el-row> 
 	</section>
 </template>
@@ -39,7 +39,7 @@
 	import util from '@/common/js/util';//全局公共库
 	import config from "@/common/config"; //全局公共库import
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
-	import { editXmTaskSomeFields } from '@/api/xm/core/xmTaskWorkload';
+	import { getTask, editXmTaskSomeFields } from '@/api/xm/core/xmTask';
 	import { mapGetters } from 'vuex'
 	import XmTaskWorkloadList from './XmTaskWorkloadList';
 
@@ -93,16 +93,43 @@
             },
 			
 			editXmTaskSomeFields(row,fieldName,$event){
+				debugger;
 				var params={ids:[row.id]}; 
+				params[fieldName]=$event
+				if(fieldName==='rworkload'||fieldName==='budgetWorkload'){ 
+					var total=row.budgetWorkload;
+					if(row.actWorkload>0 && row.rworkload>0){
+						total=Math.round(row.actWorkload,2)+Math.round(row.rworkload,2)
+					}
+					var rate=Math.round(Math.round(row.actWorkload,2)/total*100) 
+					if(rate>100){
+						rate=100;
+					}
+					params.rate=rate
+					row.rate=rate
+				}
 				editXmTaskSomeFields(params).then(res=>{
 					var tips = res.data.tips;
 					if(tips.isOk){ 
-						Object.assign(row,params) 
+						//Object.assign(row,params) 
+						this.$emit("edit-xm-task-some-fields",params);
 					}else{
 						this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 					}
 				})
 			},
+			onWorkloadSubmit(){
+				getTask({id:this.xmTask.id}).then(res=>{
+					var tips = res.data.tips
+					if(tips.isOk){
+						if(res.data.data.length>0){
+							Object.assign(this.xmTask,res.data.data[0])
+							Object.assign(this.editForm,this.xmTask)
+							this.$emit('submit',this.editForm)
+						}
+					}
+				})
+			}
 		},//end method
 		mounted() {
 		    this.$nextTick(() => {
