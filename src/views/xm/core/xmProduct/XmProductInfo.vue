@@ -25,6 +25,11 @@
 				<el-menu-item label="需求" index="需求">
 					 <span slot="title"><i class="el-icon-document"  ></i>需求</span>
 				</el-menu-item>
+				
+				<el-menu-item index="项目任务">
+					<span slot="title"><i class="el-icon-s-operation"></i>任务</span>
+				</el-menu-item> 
+				<!--
 				<el-submenu index="任务">
 					<template slot="title"><i class="el-icon-s-operation"></i>任务</template>
 						<el-menu-item   index="产品任务">
@@ -34,6 +39,7 @@
 							<span slot="title"><i class="el-icon-video-camera"></i>项目任务</span>
 						</el-menu-item> 
 				</el-submenu > 
+				-->
 				<el-menu-item  index="缺陷">
 					 <span slot="title"><i class="el-icon-question"></i>缺陷</span>
 				</el-menu-item> 

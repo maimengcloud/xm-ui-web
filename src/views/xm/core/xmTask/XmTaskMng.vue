@@ -1289,6 +1289,7 @@ export default {
       }else if(this.queryScope==='task'){
         params.ntype="0"
       }
+      
       if(this.ptype==='1'){
         if(!params.productId){
           this.$notify.warning("请先选中产品")
@@ -1300,7 +1301,7 @@ export default {
           return;
         }
       }
-      params.ptype=this.ptype
+      //params.ptype=this.ptype
 
       getTask(params)
         .then((res) => {
@@ -2490,6 +2491,7 @@ export default {
         this.searchXmTasks();
       },
       onTaskWorkloadSubmit(){
+        this.taskWorkloadVisible=false;
         this.searchXmTasks();
         treeTool.reloadAllChildren(this.$refs.table,this.maps,[this.editForm],'parentTaskid',this.loadXmTaskLazy)
       },
