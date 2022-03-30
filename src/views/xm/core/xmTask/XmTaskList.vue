@@ -22,9 +22,7 @@
 					</el-row>
 					<el-row  class="page-main">
 						<el-table
-							ref="taskTable" 
-							lazy
-							:load="loadXmTaskLazy"
+							ref="taskTable"  
 							:data="tasksTreeData"
 							@sort-change="sortChange"
 							v-loading="load.list"
@@ -34,7 +32,7 @@
 							stripe
 							fit
 							border
-							:tree-props="{children: 'children', hasChildren: 'childrenCnt'}"
+							:tree-props="{children: 'children' }"
 							row-key="id"
 							 :height="tableHeight"
 							>

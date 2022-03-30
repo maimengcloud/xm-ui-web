@@ -176,7 +176,7 @@
 						</span>
 					 </el-row>
 					<el-row class="padding-top">
-						<el-table :cell-style="cellStyleCalc" :expand-row-keys="expandRowKeysCpd" :header-cell-style="cellStyleCalc" :row-style="{height:'60px'}" lazy :load="loadXmMenusLazy" stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
+						<el-table :cell-style="cellStyleCalc" :expand-row-keys="expandRowKeysCpd" :header-cell-style="cellStyleCalc" :row-style="{height:'60px'}"   stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
 							<el-table-column sortable type="selection" width="40"></el-table-column>
 
 							<el-table-column prop="menuName" label="需求名称" min-width="300" fixed="left">
@@ -757,10 +757,8 @@
 			afterAddSubmit(row){
 				this.addFormVisible=false;
 				this.pageInfo.count=true;
-				//this.getXmMenus();
-				if(!row.pmenuId){
-					this.xmMenus.push(row);
-				}
+				//this.getXmMenus(); 
+				this.xmMenus.push(row); 
 				if(this.parentMenu){
 					this.parentMenu.childrenCnt=this.parentMenu.childrenCnt?this.parentMenu.childrenCnt+1:1;
 				}

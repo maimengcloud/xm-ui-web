@@ -138,7 +138,7 @@
 					<el-button  style="float:right;" type="primary" v-if="multi"  v-on:click="multiSelectedConfirm">确认选择</el-button>
 				</el-row>   
 				<el-row style="padding-top:12px;">
-					<el-table ref="table" class="menu-table"  lazy :load="loadMenusLazy" :height="maxTableHeight" :data="xmMenusTreeData"   row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+					<el-table ref="table" class="menu-table"   :height="maxTableHeight" :data="xmMenusTreeData"   row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column v-if="multi" type="selection" width="50"></el-table-column>  
 						
 						<el-table-column prop="menuName" label="需求名称" min-width="140" > 
@@ -161,7 +161,7 @@
 						<el-table-column prop="iterationName" label="迭代" min-width="140" >   </el-table-column>
 						<el-table-column label="操作"    width="100" fixed="right"  >
 							<template slot-scope="scope"> 
-								<el-button  :disabled="checkScope && checkScope!==scope.row.ntype"  type="primary" @click="selectedMenu( scope.row,scope.$index)">选择</el-button> 
+								<el-button  :disabled=" checkScope!==scope.row.dclass"  type="primary" @click="selectedMenu( scope.row,scope.$index)">选择</el-button> 
 							</template>
 						</el-table-column>
 					</el-table>
@@ -203,7 +203,7 @@
 	import { mapGetters } from 'vuex'
 	
 	export default { 
-		props:['isSelectMenu','multi','visible','xmIteration','xmProduct','selProject','checkScope'/**0-需求，1-需求池 */,'iterationFilterType','taskFilterType'],
+		props:['isSelectMenu','multi','visible','xmIteration','xmProduct','selProject','checkScope'/**1-史诗，2-特性，3-用户故事 */,'iterationFilterType','taskFilterType'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -217,25 +217,25 @@
 		watch:{ 
 			visible:function(visible){
 				if(visible==true){
-					this.getXmMenus();
+					this.searchXmMenus();
 				}
 			},
-			xmItertaion(){
+			"xmIteration"(){
 				if(this.iterationFilterType){
 					this.filters.iterationFilterType=this.iterationFilterType
 				}
 				if(this.xmIteration){
 					this.filters.iteration=this.xmIteration
 				}
-				this.getXmMenus();
+				this.searchXmMenus();
 			},
 			
-			xmProduct(){
+			"xmProduct"(){
 				this.filters.product=this.xmProduct
-				this.getXmMenus();
+				this.searchXmMenus();
 			},
-			selProject(){ 
-				this.getXmMenus();
+			"selProject"(){ 
+				this.searchXmMenus();
 			}
 		},
 		data() {

@@ -34,7 +34,7 @@
 			</el-form>
 
 		<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible" size="60%"    :close-on-click-modal="false">
-			<xm-menu-select :visible="menuVisible" checkScope="0" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
+			<xm-menu-select :visible="menuVisible" checkScope="3" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
 		</el-drawer>
 		</el-row>
 	</section>

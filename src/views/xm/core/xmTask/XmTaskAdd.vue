@@ -352,15 +352,6 @@
 					taskState: [
 						{ required: true, message: '请选择任务状态', trigger: 'change' }
 					],
-					taskType: [
-						{ required: true, message: '请选择任务类型', trigger: 'change' }
-					],
-					taskClass: [
-						{ required: true, message: '请选择是否结算', trigger: 'change' }
-					],
-					toTaskCenter: [
-						{ required: true, message: '请选择是否发布', trigger: 'change' }
-					],
 					sortLevel: [
 						{ required: true, message: '排序号不能为空', trigger: 'change' }
 					],

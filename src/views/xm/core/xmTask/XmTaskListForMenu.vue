@@ -18,7 +18,7 @@
 						stripe
 						fit
 						default-expand-all
-						:tree-props="{children: 'children', hasChildren: 'childrenCnt'}"
+						:tree-props="{children: 'children' }"
 						row-key="id"
 						 :height="tableHeight"
 						 ref="table"

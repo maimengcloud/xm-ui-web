@@ -230,7 +230,7 @@
 		</el-drawer>
 
 		<el-drawer append-to-body title="需求选择"  :visible.sync="menuVisible" size="80%"   :close-on-click-modal="false">
-			<xm-menu-select :is-select-menu="true" checkScope="0"  @selected="onMenuSelected" :sel-project="xmProject"></xm-menu-select>
+			<xm-menu-select :is-select-menu="true" checkScope="3"  @selected="onMenuSelected" :sel-project="xmProject"></xm-menu-select>
 		</el-drawer>
 		
 		<el-drawer title="选中任务"  :visible.sync="selectTaskVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
@@ -339,16 +339,7 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 					],
 					taskState: [
 						{ required: true, message: '请选择任务状态', trigger: 'blur' }
-					], 
-					taskClass: [
-						{ required: true, message: '请选择是否结算', trigger: 'blur' }
-					],
-					toTaskCenter: [
-						{ required: true, message: '请选择是否发布', trigger: 'blur' }
-					],   
-					sortLevel: [
-						{ required: true, message: '排序号不能为空', trigger: 'blur' }
-					],   
+					],  
 					// execuser:[{
 					// 	validator: validateExec, trigger: 'blur'
 					// }],

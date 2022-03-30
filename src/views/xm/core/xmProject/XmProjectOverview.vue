@@ -285,10 +285,10 @@ export default {
       return this.selProject.totalProgress;
     },
     taskStartTime: function (){
-      return this.selProject.startTime.substring(0,10);
+      return this.selProject.startTime?this.selProject.startTime.substring(0,10):'';
     },
     taskEndTime: function (){
-      return this.selProject.endTime.substring(0,10);
+      return this.selProject.endTime?this.selProject.endTime.substring(0,10):'';
     },
     taskMng: function (){
       return this.selProject.createUsername;

@@ -130,7 +130,7 @@
 			</el-drawer>
 
 			<el-drawer append-to-body title="需求选择" :visible.sync="selectMenuVisible"   size="70%"   :close-on-click-modal="false">
-				<xm-menu-select :is-select-menu="true" checkScope="0"  @selected="onSelectedMenu" :sel-project="filters.selProject"></xm-menu-select>
+				<xm-menu-select :is-select-menu="true" checkScope="3"  @selected="onSelectedMenu" :sel-project="filters.selProject" :xm-product="xmProduct"></xm-menu-select>
 			</el-drawer> 
 		</el-row>
 		<el-row>
@@ -177,7 +177,7 @@
 				 
 			}
 		},
-		props:['xmQuestion','visible',"selProject",'qtype','xmTestCaseExec','xmTestCase'],
+		props:['xmQuestion','visible',"selProject",'qtype','xmTestCaseExec','xmTestCase','xmProduct'],
 		watch: {
 	      'xmQuestion':function( xmQuestion ) {
 		   this.addForm=Object.assign(this.addForm, this.xmQuestion);
@@ -279,6 +279,9 @@
 							if(params.description){
 								params.description=params.description.replace(/<p>\n<br>\n<\p>/g,"");
 								params.description=params.description.replace("<p><br><\p>","");
+							}
+							if(this.xmProduct && this.xmProduct.id){
+								params.productId=this.xmProduct.id
 							}
 							addXmQuestion(params).then((res) => {
 								this.load.add=false

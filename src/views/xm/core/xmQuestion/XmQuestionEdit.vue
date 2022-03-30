@@ -87,14 +87,14 @@
 									</el-form-item>
 								</el-col>
 								
-								<el-col :span="6">
+								<el-col :span="8">
 									<el-form-item label="解决方案" prop="solution">
 										<el-select v-model="editForm.solution" placeholder="请选择解决方案">
 											<el-option v-for="(i,index) in dicts['bugSolution']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
 										</el-select> 
 									</el-form-item>
 								</el-col> 
-								<el-col :span="6">
+								<el-col :span="8">
 											<el-form-item label="缺陷类别" prop="bugType">
 												<el-select v-model="editForm.bugType" placeholder="请选择缺陷类别">
 													<el-option v-for="(i,index) in dicts['bugType']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
@@ -179,8 +179,8 @@
 					<xm-task-list  :sel-project="selProject"   @task-selected="onSelectedTask"></xm-task-list>
 				</el-drawer>
 
-				<el-drawer append-to-body title="需求选择" :visible.sync="selectMenuVisible"   size="70%"   :close-on-click-modal="false">
-					<xm-menu-select :is-select-menu="true" checkScope="0"  @selected="onSelectedMenu" :sel-project="selProject"></xm-menu-select>
+				<el-drawer append-to-body title="需求选择" :visible.sync="selectMenuVisible"   size="60%"   :close-on-click-modal="false">
+					<xm-menu-select :is-select-menu="true" checkScope="3"  @selected="onSelectedMenu" :sel-project="selProject"></xm-menu-select>
 				</el-drawer>
 			</el-row>
 		</el-row>

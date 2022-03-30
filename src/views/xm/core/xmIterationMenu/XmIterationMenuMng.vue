@@ -15,7 +15,7 @@
 				</el-row>
 				<el-row class="page-main padding-top padding-left">
 					<!--列表 XmIterationMenu 迭代定义-->
-					<el-table ref="table" :height="maxTableHeight" :data="xmIterationMenusTreeData"  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+					<el-table ref="table" :height="maxTableHeight" :data="xmIterationMenusTreeData"  row-key="menuId" :tree-props="{children: 'children'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column  type="selection" width="45"></el-table-column>
 
 						<el-table-column prop="menuName" label="已加入迭代的用户故事" min-width="140" >
@@ -45,7 +45,7 @@
 				</el-row>
 			</el-col>
 			<el-col :span="14">
-				<xm-menu-select ref="menusSelect" iterationFilterType="not-join-curr-iteration" checkScope="0" :xm-product="xmIteration?{id:xmIteration.productId}:null" :xm-iteration="xmIteration" :visible="menuVisible" :is-select-menu="true" :multi="true"   @menus-selected="onSelectedMenus" ></xm-menu-select>
+				<xm-menu-select ref="menusSelect" iterationFilterType="not-join-curr-iteration" checkScope="3" :xm-product="xmIteration?{id:xmIteration.productId}:null" :xm-iteration="xmIteration" :visible="menuVisible" :is-select-menu="true" :multi="true"   @menus-selected="onSelectedMenus" ></xm-menu-select>
 			</el-col>
   		</el-row>
 	</section>
@@ -76,8 +76,8 @@
 			},
 		},
 		watch:{
-			'xmIteration':function(xmIteration){
-				this.onIterationRowClick(xmIteration)
+			'xmIteration.id':function(){
+				this.onIterationRowClick(this.xmIteration)
 			}
 		},
 		data() {
