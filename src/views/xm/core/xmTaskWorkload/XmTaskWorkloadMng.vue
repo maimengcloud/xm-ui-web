@@ -2,8 +2,41 @@
 	<section class="page-container border padding">
 		<el-row>
       <xm-project-select style="display:inline;" ref="xmProjectSelect" :auto-select="false"  @row-click="onProjectConfirm" @clear-select="clearProject"></xm-project-select>
-			<el-input v-model="filters.key" style="width: 30%;" clearable placeholder="模糊查询:员工ID/员工名称/项目ID/任务编号"></el-input>
+      <el-select v-if="wstatuses && wstatuses.toString()=='0,2'" v-model="filters.wstatus" clearable @change="searchXmTaskWorkloads" placeholder="请选择工时单状态">
+        <el-option label="全部状态" value=""></el-option>
+        <el-option label="待确认" value="0"></el-option>
+        <el-option label="无效" value="2"></el-option>
+      </el-select>
+
+      <el-select v-if="sstatuses && sstatuses.toString()!='1'" v-model="filters.sstatus" clearable @change="searchXmTaskWorkloads" placeholder="请选择工时单状态">
+        <el-option label="全部结算状态" value=""></el-option>
+        <el-option label="无需结算" value="0"></el-option>
+        <el-option label="已提交" value="2"></el-option>
+        <el-option label="已通过" value="3"></el-option>
+        <el-option label="已结算" value="4"></el-option>
+      </el-select>
+			<el-input v-model="filters.key" style="width: 25%;" clearable placeholder="模糊查询:员工ID/员工名称/项目ID/任务编号"></el-input>
 			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTaskWorkloads" icon="el-icon-search">查询</el-button>
+      <el-popover placement="top-start" title="更多查询条件" width="400" v-model="moreVisible" trigger="manual" >
+        <el-row>
+          <el-col :span="24"  style="padding-top:5px;">
+            <span class="more-label-font">创建时间:</span>
+            <el-date-picker v-model="dateRanger" type="daterange" align="right" unlink-panels range-separator="至"
+                            start-placeholder="开始日期" end-placeholder="完成日期" value-format="yyyy-MM-dd HH:mm:ss"
+                            :default-time="['00:00:00','23:59:59']" :picker-options="pickerOptions"></el-date-picker>
+          </el-col>
+          <el-col  :span="24"  style="padding-top:10px;">
+            <span class="more-label-font">创建人:</span>
+            <el-tag v-if="filters.pmUser" closable @click="selectFiltersPmUser" @close="clearFiltersPmUser()">{{filters.pmUser.username}}</el-tag>
+            <el-button   v-else @click="selectFiltersPmUser()">选择</el-button>
+            <el-button    @click="setFiltersPmUserAsMySelf()">我的</el-button>
+          </el-col>
+          <el-col  :span="24"  style="padding-top:10px;">
+            <el-button type="text"  @click="moreVisible=false" >关闭</el-button><el-button type="primary"  @click="searchXmTaskWorkloads" >查询</el-button>
+          </el-col>
+        </el-row>
+        <el-button slot="reference" @click="moreVisible=!moreVisible" icon="el-icon-more"></el-button>
+      </el-popover>
 <!--			<el-button type="primary" @click="showAdd" icon="el-icon-plus"> </el-button>
 			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>-->
 		</el-row>
@@ -16,13 +49,52 @@
 				<el-table-column sortable type="index" width="55" show-overflow-tooltip></el-table-column>
         <el-table-column prop="id" label="编号" min-width="80" show-overflow-tooltip></el-table-column>
         <el-table-column prop="projectId" label="归属项目" min-width="80" show-overflow-tooltip></el-table-column>
+        <el-table-column v-if="wstatuses && (wstatuses.toString()=='1')" prop="wstatus" label="工时状态" min-width="80" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <el-tag type="info" v-if="scope.row.wstatus=='0'">待确认</el-tag>
+            <el-tag type="success" v-else-if="scope.row.wstatus=='1'">已确认</el-tag>
+            <el-tag type="danger" v-else-if="scope.row.wstatus=='2'">无效</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column v-if="wstatuses && (wstatuses.toString()=='0,2')" prop="wstatus" label="工时状态" min-width="80" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <div class="cell-text">
+              <el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in [formatterStatusDicts(scope.row.wstatus)]" :key="index">{{item.name}}</el-button>
+            </div>
+            <span class="cell-bar">
+              <el-select  v-model="scope.row.wstatus" placeholder="状态"  style="display:block;"  @change="editXmTaskWorkloadSomeFields(scope.row,'sstatus',$event)">
+                <el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.wstatus" :key="index"></el-option>
+              </el-select>
+            </span>
+          </template>
+        </el-table-column>
 				<el-table-column prop="userid" label="员工编号" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="username" label="姓名" min-width="80" show-overflow-tooltip></el-table-column>
-<!--				<el-table-column prop="ctime" label="创建日期" min-width="80" show-overflow-tooltip></el-table-column>-->
+				<el-table-column prop="ctime" label="创建日期" min-width="80" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span>{{scope.row.ctime.substring(0,10)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="sstatus" label="结算状态" min-width="80" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <el-tag type="info" v-if="scope.row.sstatus=='0'">无需结算</el-tag>
+            <el-tag v-else-if="scope.row.sstatus=='1'">待结算</el-tag>
+            <el-tag type="warning" v-else-if="scope.row.sstatus=='2'">已提交</el-tag>
+            <el-tag type="danger" v-else-if="scope.row.sstatus=='3'">已通过</el-tag>
+            <el-tag type="success" v-else-if="scope.row.sstatus=='4'">已结算</el-tag>
+            <el-tag v-else>未结算</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column v-if="sstatuses && sstatuses.toString()=='1'" prop="toSbill" label="结算" min-width="80" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span class="cell-bar">
+              <xm-task-sbill-select style="display:inline;" :auto-select="false"  :project-id="scope.row.projectId"    placeholder="结算"  @row-click="editXmWorkloadSomeFields(scope.row,$event)"></xm-task-sbill-select>
+						</span>
+          </template>
+        </el-table-column>
 				<el-table-column prop="taskId" label="任务编号" min-width="80" show-overflow-tooltip></el-table-column>
 <!--				<el-table-column prop="cuserid" label="创建人编号" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="bizDate" label="业务日期yyyy-MM-dd" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="wstatus" label="状态0-待确认，1-已确认，2-无效" min-width="80" show-overflow-tooltip></el-table-column>-->
+				<el-table-column prop="bizDate" label="业务日期yyyy-MM-dd" min-width="80" show-overflow-tooltip></el-table-column>-->
 				<el-table-column prop="remark" label="备注" min-width="80" show-overflow-tooltip>
           <template slot-scope="scope">
             <span v-if="scope.row.remark">{{scope.row.remark}}</span>
@@ -32,23 +104,6 @@
 <!--				<el-table-column prop="ttype" label="任务类型-关联字典taskType" min-width="80" show-overflow-tooltip></el-table-column>-->
 <!--				<el-table-column prop="sbillId" label="结算单据编号" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="stime" label="结算提交时间" min-width="80" show-overflow-tooltip></el-table-column>-->
-        <el-table-column prop="toSbill" label="结算" min-width="80" show-overflow-tooltip>
-          <template slot-scope="scope">
-            <span class="cell-bar">
-              <xm-task-sbill-select style="display:inline;" :auto-select="false"  :project-id="scope.row.projectId"    placeholder="结算"  @row-click="editXmWorkloadSomeFields(scope.row,$event)"></xm-task-sbill-select>
-						</span>
-          </template>
-        </el-table-column>
-				<el-table-column prop="sstatus" label="结算状态" min-width="80" show-overflow-tooltip>
-          <template slot-scope="scope">
-            <span v-if="scope.row.sstatus=='0'">无需结算</span>
-            <span v-else-if="scope.row.sstatus=='1'">待结算</span>
-            <span v-else-if="scope.row.sstatus=='2'">已提交</span>
-            <span v-else-if="scope.row.sstatus=='3'">已通过</span>
-            <span v-else-if="scope.row.sstatus=='4'">已结算</span>
-            <span v-else>-</span>
-          </template>
-        </el-table-column>
 				<el-table-column prop="amt" label="工时金额" min-width="80" show-overflow-tooltip>
           <template slot-scope="scope">
             <span v-if="scope.row.amt">¥{{scope.row.amt}}</span>
@@ -88,6 +143,9 @@
 			<el-drawer title="新增工时登记表" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
 				<xm-task-workload-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-task-workload-edit>
 			</el-drawer>
+      <el-drawer title="选择员工" :visible.sync="selectFiltersPmUserVisible" size="60%" append-to-body>
+        <users-select  @confirm="onFiltersPmUserSelected" ref="usersSelect"></users-select>
+      </el-drawer>
 	    </el-row>
 	</section>
 </template>
@@ -101,7 +159,9 @@
 	import { mapGetters } from 'vuex'
   import XmProjectSelect from "../components/XmProjectSelect";
   import XmTaskSbillSelect from "./XmTaskSbillSelect";
-  import {editWorkloadToSbill} from "../../../../api/xm/core/xmTaskWorkload";
+  import {editWorkloadToSbill} from "@/api/xm/core/xmTaskWorkload";
+  import {editXmWorkloadWstatus} from "../../../../api/xm/core/xmTaskWorkload";
+  import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
 
 	export default {
 	    name:'xmTaskWorkloadMng',
@@ -109,24 +169,34 @@
 		    XmTaskWorkloadEdit,
       XmProjectSelect,
       XmTaskSbillSelect,
+      UsersSelect
 		},
-		props:['visible'],
+		props:['visible','wstatuses','sstatuses'],
 		computed: {
 		    ...mapGetters(['userInfo']),
 
 		},
 		watch:{
-            visible(val){
-                if(val==true){
-                    this.initData();
-                    this.searchXmTaskWorkloads()
-                }
-            }
+      visible:{
+        handler:function(o,n){
+          if(n==true){
+            this.initData();
+            this.searchXmTaskWorkloads()
+          }
+        },
+        immediate: true
+      },
 		},
 		data() {
+      const beginDate = new Date();
+      const endDate = new Date();
+      beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 12 );
 			return {
 				filters: {
-					key: ''
+					key: '',
+          wstatus:'',
+          sstatus:'',
+          pmUser:''
 				},
 				xmTaskWorkloads: [],//查询结果
 				pageInfo:{//分页数据
@@ -141,6 +211,7 @@
 				sels: [],//列表选中数据
 				dicts:{
 				    //sex: [{id:'1',name:'男'},{id:'2',name:'女'}]
+          wstatus:[{id:'0',name:'待确认'},{id:'1',name: '已确认'},{id:'2',name:'无效'}]
 				},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				addFormVisible: false,//新增xmTaskWorkload界面是否显示
 				addForm: {
@@ -153,6 +224,10 @@
 				},
 				maxTableHeight:300,
         selProject:'',
+        moreVisible:false,
+        pickerOptions:  util.pickerOptions('datarange'),
+        dateRanger: [],
+        selectFiltersPmUserVisible:false,
 			}
 		},//end data
 		methods: {
@@ -193,7 +268,6 @@
 					pageNum: this.pageInfo.pageNum,
 					total: this.pageInfo.total,
 					count:this.pageInfo.count,
-          toSbill:true
 				};
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
@@ -207,6 +281,25 @@
 				}
         if(this.selProject){
           params.projectId= this.selProject;
+        }
+        if(this.sstatuses){
+          params.sstatuses=this.sstatuses.join();
+        }
+        if(this.wstatuses){
+          params.wstatuses=this.wstatuses.join();
+        }
+        if(this.filters.wstatus){
+          params.wstatuses = this.filters.wstatus;
+        }
+        if(this.filters.sstatus){
+          params.sstatuses = this.filters.sstatus;
+        }
+        if(this.filters.pmUser){
+          params.cuserid = this.filters.pmUser.userid;
+        }
+        if(this.dateRanger){
+          params.startTime = this.dateRanger[0];
+          params.endTime = this.dateRanger[1];
         }
 
 				this.load.list = true;
@@ -325,16 +418,88 @@
           }
         })
       },
-		},//end methods
+      formatterStatusDicts: function(cellValue){
+        let key="wstatus";
+        if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0   ){
+          return {id:cellValue,name:cellValue,className:'primary'};
+        }
+        let list=this.dicts[key].filter(i=>i.id==cellValue)
+        if(list.length>0){
+          let data= {...list[0],className:'primary'}
+          if(data.id=='1'){
+            data.className='success'
+          }else if(data.id=='2'){
+            data.className='info'
+          }else{
+            data.className='danger'
+          }
+          return data;
+        }else{
+          return {id:cellValue,name:cellValue,className:'primary'}
+        }
+
+      },
+      editXmTaskWorkloadSomeFields(row,fieldName,$event){
+        let params={ids:[row.id]};
+        if(this.sels.length>0){
+          if(!this.sels.some(k=>k.id==row.id)){
+            this.$notify({showClose:true,message:'请操作选中的行或者取消选中的行再操作其它行',type:'warning'})
+            return;
+          }
+          params.ids=this.sels.map(i=>i.id)
+        }else{
+          params.ids = [row.id]
+        }
+        if(fieldName!=='sstatus') {
+          this.$notify.error("不支持当前选项");
+          return;
+        }else{
+          params.wstatus = row.wstatus;
+        }
+
+        editXmWorkloadWstatus(params).then(res=>{
+          let tips = res.data.tips;
+          if(tips.isOk){
+            this.getXmTaskWorkloads();
+          }else{
+            this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+          }
+        })
+      },
+      clearFiltersPmUser:function(){
+        this.filters.pmUser=null;
+        this.searchXmTaskWorkloads();
+      },
+      selectFiltersPmUser(){
+        this.selectFiltersPmUserVisible=true;
+      },
+      onFiltersPmUserSelected(users){
+        if(users && users.length>0){
+          this.filters.pmUser=users[0]
+        }else{
+          this.filters.pmUser=null;
+        }
+        this.selectFiltersPmUserVisible=false;
+        this.searchXmTaskWorkloads();
+      },
+      setFiltersPmUserAsMySelf(){
+        this.filters.pmUser=this.userInfo;
+        this.searchXmTaskWorkloads();
+      },
+    },//end methods
 		mounted() {
 			this.$nextTick(() => {
 			    //initSimpleDicts('all',['sex','gradeLvl']).then(res=>this.dicts=res.data.data);
 			    this.initData()
-				this.searchXmTaskWorkloads();
-                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmTaskWorkloadTable.$el)
+				  this.searchXmTaskWorkloads();
+          this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmTaskWorkloadTable.$el)
 
-        	});
-		}
+      });
+		},
+    activated(){
+      this.initData();
+      this.searchXmTaskWorkloads();
+    }
 	}
 
 </script>

@@ -33,3 +33,5 @@ export const addXmTaskWorkload = params => { return axios.post(`${base}/xm/core/
 export const listByProject = params => { return axios.get(`${base}/xm/core/xmTaskWorkload/listByProject`, { params: params }); };
 
 export const editWorkloadToSbill = params => { return axios.post(`${base}/xm/core/xmTaskWorkload/editWorkloadToSbill`, params); };
+
+export const editXmWorkloadWstatus = params => { return axios.post(`${base}/xm/core/xmTaskWorkload/editXmWorkloadWstatus`, params); };
