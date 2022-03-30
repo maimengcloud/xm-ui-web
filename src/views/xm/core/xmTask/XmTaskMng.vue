@@ -477,10 +477,10 @@
               <el-table-column
                 sortable
                 prop="budgetWorkload"
-                label="预计工时"
+                label="工时"
                 width="150"
               >
-                <template slot-scope="scope"> {{
+                <template slot-scope="scope"> {{scope.row.actWorkload}}&nbsp;/&nbsp;{{
                     scope.row.budgetWorkload
                   }}&nbsp;h
                 </template>
@@ -490,7 +490,7 @@
                   <el-link :disabled="scope.row.ntype=='1'"
                     style="border-radius: 30px"
                     :type="scope.row.rate >= 100 ? 'success' : 'warning'"
-                    @click="drawerVisible = true"
+                    @click="showWorkload(scope.row)"
                   >
                     {{ (scope.row.rate != null ? scope.row.rate : 0) + "%" }}
                   </el-link>
@@ -558,7 +558,7 @@
                 show-overflow-tooltip
               >
                 <template slot-scope="scope">
-                  <el-link @click="drawerVisible = true" :disabled="scope.row.ntype=='1'"
+                  <el-link @click="timeVisible = true" :disabled="scope.row.ntype=='1'"
                     >{{ getDateString(scope.row.startTime) }}&nbsp;~&nbsp;{{
                       getDateString(scope.row.endTime)
                     }}
@@ -608,9 +608,9 @@
       </el-col>
     </el-row> 
     <el-drawer
-      v-if="drawerVisible == true"
+      v-if="timeVisible == true"
       :size="600"
-      :visible.sync="drawerVisible"
+      :visible.sync="timeVisible"
       append-to-body
     >
       <el-row class="padding">
@@ -693,72 +693,13 @@
               :picker-options="pickerOptions"
             ></el-date-picker>
             <el-button @click="editTime(editForm)">保存时间</el-button>
-          </div>
-          <div class="progress extra">
-            <div class="field-label"></div>
-            <el-row>
-              <el-slider v-model="editForm.rate" show-input> </el-slider>
-            </el-row>
-            <el-row>
-              <el-button @click="editProgress(editForm.rate)"
-                >完成{{ editForm.rate }}%</el-button
-              >
-              <el-button style="font-size: 12px" @click="editProgress(40)"
-                >完成40%</el-button
-              >
-              <el-button style="font-size: 12px" @click="editProgress(80)"
-                >完成80%</el-button
-              >
-              <el-button style="font-size: 12px" @click="editProgress(100)"
-                >完成100%</el-button
-              >
-            </el-row>
-          </div>
-          <div class="exector extra">
-            <div class="field-label">负责人</div>
-            <el-tag
-              v-if="editForm.createUserid"
-              style="margin-left: 10px; border-radius: 30px"
-              >{{ editForm.createUsername }}</el-tag
-            >
-            <el-tag
-              v-else
-              style="margin-left: 10px; border-radius: 30px"
-              icon="el-icon-right"
-              >未设置</el-tag
-            >
-            <el-button
-              @click="showGroupUserSelect(editForm)"
-              icon="el-icon-setting"
-              >设置负责人</el-button
-            >
-          </div>
-          <div class="exector extra">
-            <div class="field-label">执行人</div>
-            <el-tag style="margin-left: 10px; border-radius: 30px">{{
-              editForm.exeUsernames
-            }}</el-tag>
-            <el-button @click="showExecusers(editForm)" icon="el-icon-s-data"
-              >查看队员情况</el-button
-            >
-
-            <el-button type="primary" @click="toJoin" icon="el-icon-plus"
-              >我要加入</el-button
-            >
-          </div>
-          <div class="skill extra">
-            <div class="field-label">技能要求</div>
-            <el-tag style="margin-left: 10px; border-radius: 30px">{{
-              editForm.taskSkillNames ? editForm.taskSkillNames : "无"
-            }}</el-tag>
-          </div>
+          </div> 
         </el-row>
 
         <div
-          v-if="drawerkey == '1' && drawerVisible == true"
+          v-if="drawerkey == '1' && timeVisible == true"
           style="overflow-x: hidden"
-        >
-          <xm-exchange-mng :xm-task="editForm"></xm-exchange-mng>
+        > 
         </div>
       </el-row>
     </el-drawer>
@@ -780,6 +721,24 @@
         @after-edit-submit="afterExecEditSubmit"
         @submit="afterEditSubmit"
       ></xm-task-edit>
+    </el-dialog>
+    
+    <!--编辑 XmTask xm_task界面-->
+    <el-dialog
+      :title="'【'+editForm.name+'】登记工时'"
+      :visible.sync="taskWorkloadVisible"
+      width="60%"
+      top="20px"
+      append-to-body
+      :close-on-click-modal="false"
+    >
+      <xm-task-workload-edit 
+        :xm-task="editForm"
+        :visible="taskWorkloadVisible" 
+        op-type="add"
+        @cancel="taskWorkloadVisible=false"
+        @submit="onTaskWorkloadSubmit"
+      ></xm-task-workload-edit>
     </el-dialog>
 
     <!-- 新增 XmTask xm_task界面-->
@@ -993,9 +952,9 @@ import xmMenuSelect from "../xmMenu/XmMenuSelect";
 import { addXmMyFocus, delXmMyFocus } from "@/api/xm/core/xmMyFocus";
 
 import XmProjectSelect from "@/views/xm/core/components/XmProjectSelect";
+import XmProductSelect from "@/views/xm/core/components/XmProductSelect";
 
-import XmMenuRichDetail from "../xmMenu/XmMenuRichDetail";
-import XmProductSelect from "@/views/xm/core/components/XmProductSelect"; //修改界面
+import XmMenuRichDetail from "../xmMenu/XmMenuRichDetail"; 
 import TagMng from "@/views/mdp/arc/tag/TagMng";
 
 import XmGantt from "../components/xm-gantt";
@@ -1006,6 +965,7 @@ import XmGroupSelect from "../xmGroup/XmGroupSelect.vue";
 	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面
   
   	import TagDialog from "@/views/mdp/arc/tag/TagDialog";
+  	import XmTaskWorkloadEdit from "@/views/xm/core/xmTaskWorkload/XmTaskWorkloadEdit";
 
 export default {
   computed: {
@@ -1079,8 +1039,8 @@ export default {
     menuId: function (menuId) {
       this.getXmTasks();
     },
-    drawerVisible: function (drawerVisible) {
-      if (drawerVisible == false) {
+    timeVisible: function (timeVisible) {
+      if (timeVisible == false) {
         this.drawerkey = "";
       }
     },
@@ -1206,7 +1166,7 @@ export default {
       taskStateList: ["待领取", "已领取执行中", "已完工", "已结算"],
 
       selkey: "",
-      drawerVisible: false,
+      timeVisible: false,
       progress_show: true,
       isChild: false,
       oldrate: "",
@@ -1237,6 +1197,7 @@ export default {
       batchRelTasksWithMenuVisible:false,
       selectParentTaskVisible:false, 
       execUserVisible:false,
+      taskWorkloadVisible:false,
       maps:new Map(),
     };
   }, //end data
@@ -1510,7 +1471,7 @@ export default {
         .catch((err) => {
           this.load.edit = false;
           this.editForm.rate = this.oldrate;
-          this.drawerVisible = false;
+          this.timeVisible = false;
         });
     },
     //显示编辑界面 XmTask xm_task
@@ -2238,7 +2199,7 @@ export default {
         .catch((err) => {
           this.load.edit = false;
           this.editForm.rate = this.oldrate;
-          this.drawerVisible = false;
+          this.timeVisible = false;
         });
     },
     clearFiltersTag(tag){
@@ -2529,6 +2490,14 @@ export default {
       onProductClearSelect(){
         this.filters.xmProduct=null;
         this.searchXmTasks();
+      },
+      onTaskWorkloadSubmit(){
+        this.searchXmTasks();
+        treeTool.reloadAllChildren(this.$refs.table,this.maps,[this.editForm],'parentTaskid',this.loadXmTaskLazy)
+      },
+      showWorkload(row){
+        this.editForm=row
+        this.taskWorkloadVisible=true;
       }
     /**end 自定义函数请在上面加**/
   }, //end methods
@@ -2555,6 +2524,7 @@ export default {
     TagDialog,
     XmGroupDialog,
     XmTableConfig,
+    XmTaskWorkloadEdit,
     //在下面添加其它组件
   },
   mounted() {

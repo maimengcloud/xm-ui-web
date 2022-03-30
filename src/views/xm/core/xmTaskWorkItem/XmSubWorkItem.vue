@@ -17,7 +17,7 @@
         添加任务</el-button> 
       </span>
     </el-row> 
-        <xm-sub-task-list  ref="taskList"  :parentXmTask="parentXmTask" @tasks-change="onTasksChange" @workload-submit="onWorkloadSubmit"></xm-sub-task-list>
+        <xm-sub-task-list  ref="taskList"  :parent-xm-task="parentXmTask" @tasks-change="onTasksChange" @workload-submit="onWorkloadSubmit"></xm-sub-task-list>
    </section>
 </template>
 

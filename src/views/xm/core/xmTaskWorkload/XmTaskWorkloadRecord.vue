@@ -30,7 +30,7 @@
 				<el-row v-else>
 					<el-col :span="6">
 						<el-form-item label="预估工时" prop="budgetWorkload">
-							 {{scope.row.budgetWorkload}} &nbsp;小时
+							 {{editForm.budgetWorkload}} &nbsp;小时
 						</el-form-item>
 					</el-col>
 					<el-col :span="6">
@@ -44,8 +44,8 @@
 						</el-form-item> 
 					</el-col> 
 					<el-col :span="6">
-						<el-form-item label="工时进度" prop="rate">
-							<el-progress :percentage="editForm.rate>0?editForm.rate:0"  placeholder="工时进度"></el-progress>
+						<el-form-item label="工时进度" prop="rate"> 
+							{{scope.row.rate}}&nbsp;&nbsp;%
 						</el-form-item> 
 					</el-col>
 				</el-row>

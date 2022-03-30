@@ -207,7 +207,7 @@
 							</el-col> 
 							<el-col :span="8"> 
 								<el-form-item label="实际工作量" prop="actWorkload">
-									<el-input type="number"   style="width:150px;"     v-model="addForm.actWorkload" @change="onActWorkloadChange" :precision="2" :step="8" :min="0" placeholder="实际总工作量(人时,不包括下一级)"></el-input type="number"> <el-tag>h</el-tag>
+									<el-input type="number"   style="width:150px;"     v-model="addForm.actWorkload"  :precision="2" :step="8" :min="0" placeholder="实际总工作量(人时,不包括下一级)"></el-input type="number"> <el-tag>h</el-tag>
 								</el-form-item> 
 							</el-col> 
 						</el-row>  

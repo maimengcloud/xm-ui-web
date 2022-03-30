@@ -165,13 +165,10 @@ export default {
      },
     initData(){  
       this.xmTasks=[] 
-      if(!this.parentXmTask || !this.parentXmTask.menuId){
+      if(!this.parentXmTask || !this.parentXmTask.id){
         return;
       }
-      var dclass=this.parentXmTask.dclass;
-      if(dclass==='3'){
         this.getXmTasks();
-      } 
     }, 
     addXmTask(name){ 
        var task={...this.parentXmTask,name:name,id:null,parentTaskid:this.parentXmTask.id,parentTaskname:this.parentXmTask.name}
