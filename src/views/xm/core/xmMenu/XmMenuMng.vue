@@ -1009,6 +1009,7 @@
 					var tips=res.data.tips;
 					if(tips.isOk){
 						this.pageInfo.count=true;
+						this.xmMenus=[];
 						this.getXmMenus();
 					}
 					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
