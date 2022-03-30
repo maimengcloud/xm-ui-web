@@ -646,8 +646,7 @@
 
       			this.maps.set(tree.menuId, { tree, treeNode, resolve }) //储存数据
 					var params={pmenuId:tree.menuId}
-					params=this.getParams(params);
-					params.isTop=""
+					params=this.getParams(params); 
 					this.load.list = true;
 					var func=listXmMenuWithState
 					if(this.selProject&&this.selProject.id){
@@ -684,8 +683,7 @@
 					params.productId=this.filters.product.id
 				}
 				params=this.getParams(params);
-				params.withParents="1"
-				//params.isTop="1"
+				params.withParents="1" 
 				let callback= (res)=>{
 					var tips=res.data.tips;
 					if(tips.isOk){

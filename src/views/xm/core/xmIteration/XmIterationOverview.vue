@@ -249,15 +249,18 @@ export default {
       return this.xmIteration.taskCnt-this.xmIteration.finishTaskCnt;
     },
     taskProgress: function (){
-      return this.xmIteration.finishRate;
+      return this.xmIteration.finishRate||0;
     },
     iterationStartTime: function (){
-      return this.xmIteration.startTime.substring(0,10);
+      return this.xmIteration.startTime?this.xmIteration.startTime.substring(0,10):'';
     },
     iterationEndTime: function (){
-      return this.xmIteration.endTime.substring(0,10);
+      return this.xmIteration.endTime?this.xmIteration.endTime.substring(0,10):'';
     },
     workloadProgress:function (){
+      if(!this.xmIteration.distBudgetWorkload || !this.xmIteration.actWorkload){
+        return 0;
+      }
       return Math.round(this.xmIteration.actWorkload/this.xmIteration.distBudgetWorkload*100);
     },
     deviation:function (){
