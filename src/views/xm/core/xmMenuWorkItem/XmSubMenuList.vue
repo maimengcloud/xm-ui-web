@@ -83,6 +83,25 @@
 			</tag-dialog>
  			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="linkProjectId?{id:linkProjectId}:null" :xm-product="parentXmMenu&&parentXmMenu.productId?{id:parentXmMenu.productId}:null" @user-confirm="onGroupUserSelect">
 			</xm-group-dialog>
+
+			
+      <el-dialog :title="'新增'+calcMenuLabel.label" :visible.sync="addFormVisible" append-to-body modal-append-to-body>
+          <el-form :model="addForm" :rules="addFormRules">
+            <el-form-item>
+				<template slot="label">
+				<div  class="icon" :style="{backgroundColor: calcMenuLabel.color }">
+					<i :class="calcMenuLabel.icon"></i>
+				</div>
+				{{calcMenuLabel.label}}名称
+			</template>
+              <el-input v-model="addForm.menuName" autocomplete="off" ></el-input>
+            </el-form-item> 
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="addFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="addXmTask">确 定</el-button>
+          </div>
+      </el-dialog>
   </section>
 </template>
 
@@ -130,7 +149,14 @@ export default {
     return{
       load:{edit:false,list:false,add:false,del:false}, 
       xmMenus:[],
-      editForm:{},
+      editForm:{menuName:''},
+	  addForm:{menuName:''},
+	  addFormVisible:false,
+	  addFormRules:{
+		  menuName:[
+			  {required:true,message:'名称不能为空',trigger:'change'}
+		  ]
+	  },
       dicts:{},
       sels:[],
 
@@ -248,7 +274,7 @@ export default {
         this.getXmMenus();
       } 
     }, 
-    addXmMenu(name){ 
+    addXmMenu( ){ 
        var menu={...this.parentXmMenu}
              menu.mmUserid=this.userInfo.userid
              menu.mmUsername=this.userInfo.username
@@ -257,27 +283,22 @@ export default {
              menu.pmenuName=this.parentXmMenu.menuName
              menu.dclass=(parseInt(this.parentXmMenu.dclass)+1)+'';
              menu.menuId=null;
-             menu.menuName=name
+             menu.menuName=this.addForm.menuName
              
              addXmMenu(menu).then((res) => {
 								this.load.edit=false
 								var tips=res.data.tips;
 								if(tips.isOk){
  									this.$emit('add-submit',res.data.data);//  @submit="afterAddSubmit"
+									 this.addFormVisible=false;
                    this.xmMenus.push(res.data.data)
 								}
 								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.edit=false);
     },  
       showAdd() {
-        this.$prompt('请输入标题', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',  
-        }).then(({ value }) => { 
-            this.addXmMenu(value); 
-        }).catch(() => {
-              
-        }); 
+		  this.addForm.menuName=this.parentXmMenu.menuName+'---请修改'
+         this.addFormVisible=true;
     },
     
 			editXmMenuSomeFields(row,fieldName,$event){

@@ -1741,7 +1741,7 @@ export default {
           projectId=this.parentTask.projectId
         }else{
           projectId=this.filters.selProject.id
-        }
+        } 
       }else{
          if(this.parentTask && this.parentTask.id){
           productId=this.parentTask.productId

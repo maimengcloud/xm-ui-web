@@ -15,8 +15,12 @@
           <el-table-column prop="id" label="缺陷编号" width="100px" show-overflow-tooltip="">
             
             </el-table-column> 
-          <el-table-column prop="name" label="名称" min-width="150px">
-              
+          <el-table-column prop="name" label="名称" min-width="250px">
+              <template slot-scope="scope">
+				  <div class="icon" style="background-color: #F56C6C;">
+					<i class="el-icon-warning"></i>
+					</div>{{scope.row.id}}&nbsp;&nbsp;{{scope.row.name}}
+			  </template>
             </el-table-column> 
 
 					<el-table-column prop="bugStatus" label="状态"  width="100">
@@ -79,6 +83,23 @@
         </el-table> 
       </el-row>
       <xm-group-dialog ref="xmGroupDialog" :sel-project=" {id:linkProjectId} " :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-dialog> 
+	        <el-dialog :title="'新增缺陷'" :visible.sync="addFormVisible" append-to-body modal-append-to-body>
+          <el-form :model="addForm" :rules="addFormRules">
+            <el-form-item>
+				<template slot="label">
+				<div class="icon" style="background-color: #F56C6C;">
+					<i class="el-icon-warning"></i>
+					</div>
+					缺陷名称
+			</template>
+              <el-input v-model="addForm.name" autocomplete="off" ></el-input>
+            </el-form-item> 
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="addFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="addXmBug">确 定</el-button>
+          </div>
+      </el-dialog>
     </el-row> 
 </template>
 
@@ -125,6 +146,13 @@ export default {
       load:{edit:false,list:false,add:false,del:false,}, 
       xmBugs:[],
       editForm:null,
+	  addForm:{name:''},
+	  addFormVisible:false,
+	  addFormRules:{
+		  name:[
+			  {required:true,message:'名称不能为空',trigger:'change'}
+		  ]
+	  },
       sels:[],
       dicts:{
 					priority:[],
@@ -169,8 +197,8 @@ export default {
         this.getXmBugs();
       } 
     }, 
-    addXmBug(name){ 
-       var question={name:name,menuId:this.parentXmMenu.menuId,menuName:this.parentXmMenu.menuName,productId:this.parentXmMenu.productId,iterationId:this.parentXmMenu.iterationId,iterationName:this.parentXmMenu.iterationName}
+    addXmBug(){ 
+       var question={menuId:this.parentXmMenu.menuId,menuName:this.parentXmMenu.menuName,productId:this.parentXmMenu.productId,iterationId:this.parentXmMenu.iterationId,iterationName:this.parentXmMenu.iterationName}
              question.priority='3'
              question.verNum=this.parentXmMenu.sinceVersion;
              question.pverNum=this.parentXmMenu.sinceVersion;
@@ -178,7 +206,7 @@ export default {
              question.askUsername=this.userInfo.username 
              question.qtype="1"
              question.id=null;
-             question.name=name
+             question.name=this.addForm.name
              question.projectId=this.linkProjectId
              question.bugStatus="1"
              addXmQuestion(question).then((res) => {
@@ -186,20 +214,14 @@ export default {
 								var tips=res.data.tips;
 								if(tips.isOk){
  									this.$emit('submit',res.data.data);//  @submit="afterAddSubmit"
+									 this.addFormVisible=false;
                    this.xmBugs.push(res.data.data)
 								}
 								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.edit=false);
     },  
       showAdd() {
-        this.$prompt('请输入缺陷标题', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',  
-        }).then(({ value }) => { 
-            this.addXmBug(value); 
-        }).catch(() => {
-              
-        }); 
+          this.addFormVisible=true;
     },
     
 			batchDel: function () {

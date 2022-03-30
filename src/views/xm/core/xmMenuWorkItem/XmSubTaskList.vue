@@ -15,7 +15,7 @@
           <el-table-column type="selection" label="全选"></el-table-column>
           <el-table-column prop="name" label="名称">
                 <template slot-scope="scope">
-                  <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#409EFF'}">
+                  <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#1CC7EA'}">
 									<i :class="scope.row.ntype==='1'?'el-icon-odometer':'el-icon-s-operation'" ></i>
 									</div>  {{scope.row.name}}
                 </template>
@@ -87,6 +87,13 @@
       <el-dialog title="新增任务" :visible.sync="addFormVisible" append-to-body modal-append-to-body>
           <el-form :model="addForm" :rules="addFormRules">
             <el-form-item label="任务名称">
+              
+            <template slot="label">
+            <div class="icon" style="background-color:  #1CC7EA;">
+              <i class="el-icon-s-operation"></i>
+            </div>
+              任务名称
+          </template>
               <el-input v-model="addForm.name" autocomplete="off" ></el-input>
             </el-form-item> 
           </el-form>
