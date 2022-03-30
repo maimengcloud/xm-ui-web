@@ -111,7 +111,6 @@ export default {
         key: '',
         id:'',
         pmUser:null,//创建人
-
       },
       xmTaskSbills: [],//查询结果
       pageInfo:{//分页数据

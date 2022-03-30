@@ -1,9 +1,49 @@
 <template>
 	<section class="page-container border padding">
 		<el-row>
+      <xm-project-select style="display:inline;" ref="xmProjectSelect" :auto-select="false"  @row-click="onProjectConfirm" @clear-select="clearProject"></xm-project-select>
+      <el-select v-model="filters.status" clearable @change="searchXmTaskSbills" placeholder="请选择结算单状态">
+        <el-option label="全部状态" value=""></el-option>
+        <el-option label="结算待提交" value="0"></el-option>
+        <el-option label="结算已提交" value="1"></el-option>
+        <el-option label="结算已通过" value="2"></el-option>
+        <el-option label="结算已付款" value="3"></el-option>
+        <el-option label="结算已完成" value="4"></el-option>
+      </el-select>
+
+      <el-select v-model="filters.bizFlowState" clearable @change="searchXmTaskSbills" placeholder="请选择审批状态">
+        <el-option label="全部审批" value=""></el-option>
+        <el-option label="审批待提交" value="0"></el-option>
+        <el-option label="审批进行中" value="1"></el-option>
+        <el-option label="审批已通过" value="2"></el-option>
+        <el-option label="审批不通过" value="3"></el-option>
+        <el-option label="流程取消" value="4"></el-option>
+      </el-select>
+
 			<el-input v-model="filters.key" clearable style="width: 20%;" placeholder="模糊查询:编号/标题/项目名称"></el-input>
 			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTaskSbills" icon="el-icon-search">查询</el-button>
 <!--			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>-->
+      <el-popover placement="top-start" title="更多查询条件" width="400" v-model="moreVisible" trigger="manual" >
+        <el-row>
+          <el-col :span="24"  style="padding-top:5px;">
+            <span class="more-label-font">创建时间:</span>
+            <el-date-picker v-model="dateRanger" type="daterange" align="right" unlink-panels range-separator="至"
+              start-placeholder="开始日期" end-placeholder="完成日期" value-format="yyyy-MM-dd HH:mm:ss"
+              :default-time="['00:00:00','23:59:59']" :picker-options="pickerOptions"></el-date-picker>
+          </el-col>
+          <el-col  :span="24"  style="padding-top:10px;">
+            <span class="more-label-font">创建人:</span>
+            <el-tag v-if="filters.pmUser" closable @click="selectFiltersPmUser" @close="clearFiltersPmUser()">{{filters.pmUser.username}}</el-tag>
+            <el-button   v-else @click="selectFiltersPmUser()">选择</el-button>
+            <el-button    @click="setFiltersPmUserAsMySelf()">我的</el-button>
+          </el-col>
+          <el-col  :span="24"  style="padding-top:10px;">
+            <el-button type="text"  @click="moreVisible=false" >关闭</el-button><el-button type="primary"  @click="searchXmTaskSbills" >查询</el-button>
+          </el-col>
+        </el-row>
+        <el-button slot="reference" @click="moreVisible=!moreVisible" icon="el-icon-more"></el-button>
+      </el-popover>
+
       <span style="float:right;">
 				<el-button type="primary" icon="el-icon-plus" @click="showAdd" round></el-button>
       </span>
@@ -15,11 +55,27 @@
                 :cell-style="{'text-align':'center'}">
 <!--				<el-table-column  type="selection" width="55" show-overflow-tooltip></el-table-column>-->
 				<el-table-column label="序号" type="index" min-width="55" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="id" label="结算单编号" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="title" label="结算单标题" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="id" label="结算单编号" min-width="80" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span class="click-style" @click="showEdit( scope.row,scope.$index)">
+              {{scope.row.id}}
+            </span>
+          </template>
+        </el-table-column>
+				<el-table-column prop="title" label="结算单标题" min-width="80" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span class="click-style" @click="showEdit( scope.row,scope.$index)">
+              {{scope.row.title}}
+            </span>
+          </template>
+        </el-table-column>
         <el-table-column prop="projectId" label="项目编号" min-width="80" show-overflow-tooltip></el-table-column>
         <el-table-column prop="projectName" label="项目名称" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="amt" label="金额" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="amt" label="金额" min-width="80" show-overflow-tooltip>
+          <template slot-scope="scope">
+            ¥{{scope.row.amt}}
+          </template>
+        </el-table-column>
 				<el-table-column prop="ctime" label="创建时间" min-width="60" show-overflow-tooltip>
           <template slot-scope="scope">
             {{ scope.row.ctime.substr(0, 10) }}
@@ -37,7 +93,11 @@
 				<el-table-column prop="deptid" label="部门编号" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="cpId" label="相对方编号(机构写机构号，个人写个人编号)" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="cpName" label="相对方名称（机构写机构名称，个人写个人名称）" min-width="80" show-overflow-tooltip></el-table-column>-->
-				<el-table-column prop="workload" label="结算工时" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="workload" label="结算工时" min-width="80" show-overflow-tooltip>
+          <template slot-scope="scope">
+            {{scope.row.workload}}h
+          </template>
+        </el-table-column>
 <!--				<el-table-column prop="bizMonth" label="业务月份yyyy-MM" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="bizDate" label="业务日期yyyy-MM-dd" min-width="80" show-overflow-tooltip></el-table-column>-->
 				<el-table-column prop="bizFlowState" label="审批状态" min-width="60" show-overflow-tooltip>
@@ -54,11 +114,11 @@
                 <el-table-column prop="ltime" label="更新时间" min-width="80" show-overflow-tooltip></el-table-column>-->
 				<el-table-column prop="status" label="结算单状态" min-width="60" show-overflow-tooltip>
           <template scope="scope">
-            <span v-if="scope.row.status=='0'">待提交</span>
-            <span v-else-if="scope.row.status=='1'">已提交</span>
-            <span v-else-if="scope.row.status=='2'">已通过</span>
-            <span v-else-if="scope.row.status=='3'">已付款</span>
-            <span v-else-if="scope.row.status=='4'">已完成</span>
+            <el-tag v-if="scope.row.status=='0'">待提交</el-tag>
+            <el-tag type="warning" v-else-if="scope.row.status=='1'">已提交</el-tag>
+            <el-tag type="success" v-else-if="scope.row.status=='2'">已通过</el-tag>
+            <el-tag type="danger" v-else-if="scope.row.status=='3'">已付款</el-tag>
+            <el-tag type="info" v-else-if="scope.row.status=='4'">已完成</el-tag>
           </template>
         </el-table-column>
 				<el-table-column prop="fmsg" label="最后审核意见" min-width="80" show-overflow-tooltip>
@@ -91,6 +151,9 @@
       <el-drawer title="添加工时登记单" :visible.sync="taskWorkloadVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
         <select-task-workload :xm-task-sbill="thisBillRow" :visible="taskWorkloadVisible" @cancel="taskWorkloadVisible=false" @submit="afterWorkloadSubmit"></select-task-workload>
       </el-drawer>
+      <el-drawer title="选择员工" :visible.sync="selectFiltersPmUserVisible" size="60%" append-to-body>
+        <users-select  @confirm="onFiltersPmUserSelected" ref="usersSelect"></users-select>
+      </el-drawer>
     </el-row>
 	</section>
 </template>
@@ -106,11 +169,15 @@
   import {editXmTaskSbill} from "../../../../api/xm/core/xmTaskSbill";
   import dateUtil from "../../../../common/js/dateUtil";
   import {editXmTaskWorkload} from "../../../../api/xm/core/xmTaskWorkload";
+  import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
+  import XmProjectSelect from "../components/XmProjectSelect";
 
 	export default {
 		components: {
       XmTaskSbillEdit,
       SelectTaskWorkload,
+      UsersSelect,
+      XmProjectSelect,
 		},
 		props:['visible'],
 		computed: {
@@ -126,9 +193,15 @@
             }
 		},
 		data() {
+      const beginDate = new Date();
+      const endDate = new Date();
+      beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 12 );
 			return {
 				filters: {
-					key: ''
+					key: '',
+          status:'',
+          bizFlowState:'',
+          pmUser:null,//创建人
 				},
 				xmTaskSbills: [],//查询结果
 				pageInfo:{//分页数据
@@ -157,7 +230,12 @@
         taskWorkloadVisible:false,
         thisBillRow:{},//添加工时的结算单
         projectId:'',//添加工时的项目编号
-			}
+        moreVisible:false,
+        pickerOptions:  util.pickerOptions('datarange'),
+        dateRanger: [],
+        selectFiltersPmUserVisible:false,
+        selProjectId:'',
+      }
 		},//end data
 		methods: {
 			handleSizeChange(pageSize) {
@@ -208,6 +286,24 @@
 				if(this.filters.key){
 					params.key= "%"+ this.filters.key + "%"
 				}
+				if(this.filters.status){
+				  params.status = this.filters.status
+        }
+				if(this.filters.bizFlowState){
+				  params.bizFlowState = this.filters.bizFlowState;
+        }
+
+        if(this.filters.pmUser){
+          params.cuserid = this.filters.pmUser.userid;
+        }
+        if(this.dateRanger){
+          params.startTime = this.dateRanger[0];
+          params.endTime = this.dateRanger[1];
+        }
+        if(this.selProjectId){
+          params.projectId = this.selProjectId
+        }
+
 
 				this.load.list = true;
 				listXmTaskSbill(params).then((res) => {
@@ -353,7 +449,85 @@
           };
         };
         return fmt;
-  }
+      },
+      clearFiltersPmUser:function(){
+        this.filters.pmUser=null;
+        this.searchXmTaskSbills();
+      },
+      selectFiltersPmUser(){
+        this.selectFiltersPmUserVisible=true;
+      },
+      onFiltersPmUserSelected(users){
+        if(users && users.length>0){
+          this.filters.pmUser=users[0]
+        }else{
+          this.filters.pmUser=null;
+        }
+        this.selectFiltersPmUserVisible=false;
+        this.searchXmTaskSbills();
+      },
+      setFiltersPmUserAsMySelf(){
+        this.filters.pmUser=this.userInfo;
+        this.searchXmTaskSbills();
+      },
+      onProjectConfirm(obj){
+        this.selProjectId = obj.projectId;
+        this.searchXmTaskSbills();
+      },
+      clearProject(){
+        this.selProjectId = null;
+        this.searchXmTaskSbills();
+      },
+
+
+      sendToProcessApprova:function(row){
+        var bizKey="xm_task_sbill";
+        if( row.bizFlowState=='1' ){
+          this.$notify.error("审核中，不允许重复发审");
+          return;
+        }
+        if(row.bizFlowState =='2'){
+          this.$notify.error("已审核通过，请勿重复发审");
+          return;
+        }
+
+        let extVars={
+          shopId:this.userInfo.shopId,
+          branchId:this.userInfo.branchId,
+          sbillId:row.id
+        }
+        let jsonExtVars=JSON.stringify(extVars);
+
+        let currDomain=window.location.protocol+"//"+window.location.host;
+        let fullPath=this.$route.fullPath;
+        let bizUrl=currDomain+'/#'+fullPath+'?extVars='+jsonExtVars
+
+        let mainTitle=''
+        if(bizKey=='xm_task_sbill'){
+          mainTitle='关于工时结算单【'+row.title+"】的审批"
+        }else{
+          this.$notify.error("暂不支持的业务审批");
+          return;
+        }
+        let mainContext=mainTitle;
+
+        let params={
+          mainContext:mainContext,
+          mainTitle:mainTitle,
+          bizKey:bizKey,
+          bizUrl:bizUrl,
+          restUrl:config.getCoreBasePath()+"/xm/core/xmTaskSbill/processApprova",
+          extVars:extVars,
+          flowVars:{
+            subscribeTaskEvent:'PROCESS_STARTED,PROCESS_COMPLETED,PROCESS_CANCELLED',
+            shopId:row.shopId,
+            branchId:row.branchId,
+            grade:row
+          },
+        }
+        let jsonParmas=encodeURIComponent(JSON.stringify(params));//对方要 decodeURIComponent
+        this.$router.push({path:'/mdp/workflow/re/procdef/ProcdefListForBizStart',query:{params:jsonParmas}});
+      },
 		},//end methods
 		mounted() {
 			this.$nextTick(() => {
@@ -373,4 +547,8 @@
 </script>
 
 <style scoped>
+.click-style{
+  cursor: pointer;
+  color: #409EFF
+}
 </style>

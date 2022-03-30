@@ -149,6 +149,18 @@
 			},
 			//编辑提交XmTaskSbill 任务结算表父组件监听@submit="afterEditSubmit"
 			saveSubmit: function () {
+			  if(this.currOpType=='add'){
+			    if(this.editForm.projectId==null || this.editForm.projectId=='' || this.editForm.projectId==undefined){
+			      this.$notify({showClose:true,message:'请选择项目',type:'error'});
+			      return;
+          }
+        }
+        if(this.currOpType=='edit'){
+          if(this.editForm.status!='0'){
+            this.$notify({showClose:true,message:'当前状态不能修改',type:'error'});
+            return;
+          }
+        }
 				this.$refs.editFormRef.validate((valid) => {
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {

@@ -51,17 +51,21 @@
         </el-table-column>
 				<el-table-column prop="amt" label="工时金额" min-width="80" show-overflow-tooltip>
           <template slot-scope="scope">
-            <span v-if="scope.row.amt">{{scope.row.amt}}</span>
-            <span v-else>0</span>
+            <span v-if="scope.row.amt">¥{{scope.row.amt}}</span>
+            <span v-else>¥0</span>
           </template>
         </el-table-column>
 				<el-table-column prop="samt" label="结算金额" min-width="80" show-overflow-tooltip>
           <template slot-scope="scope">
-            <span v-if="scope.row.samt">{{scope.row.samt}}</span>
+            <span v-if="scope.row.samt">¥{{ scope.row.samt}}</span>
             <span v-else>-</span>
           </template>
         </el-table-column>
-				<el-table-column prop="workload" label="工时" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="workload" label="工时" min-width="80" show-overflow-tooltip>
+          <template slot-scope="scope">
+            {{scope.row.workload}}h
+          </template>
+        </el-table-column>
 <!--				<el-table-column prop="rworkload" label="剩余工时（同一天取最后日期更新到task表rworkload中）" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="cusername" label="创建人姓名" min-width="80" show-overflow-tooltip></el-table-column>-->
 
