@@ -308,6 +308,7 @@
         this.changeXmTaskSbill(this.thisBillRow);
         //更新xmTaskWokload现状
         this.changeXmTaskWorkload(row,this.thisBillRow);
+        this.getXmTaskSbills();
       },
       changeXmTaskSbill(data){
         let params = Object.assign({}, data);

@@ -31,3 +31,5 @@ export const addXmTaskWorkload = params => { return axios.post(`${base}/xm/core/
 
 //普通查询 条件之间and关系
 export const listByProject = params => { return axios.get(`${base}/xm/core/xmTaskWorkload/listByProject`, { params: params }); };
+
+export const editWorkloadToSbill = params => { return axios.post(`${base}/xm/core/xmTaskWorkload/editWorkloadToSbill`, params); };

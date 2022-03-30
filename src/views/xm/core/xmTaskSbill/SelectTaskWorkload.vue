@@ -1,7 +1,7 @@
 <template>
   <section class="page-container border padding">
     <el-row>
-      <el-input v-model="filters.key" style="width: 30%;" placeholder="模糊查询任务ID/名称/员工ID/员工名称"></el-input>
+      <el-input v-model="filters.key" style="width: 30%;" placeholder="模糊查询:/员工ID/员工名称"></el-input>
       <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTaskWorkloads" icon="el-icon-search">查询</el-button>
     </el-row>
     <el-row class="padding-top">
@@ -40,8 +40,18 @@
             <span v-else>-</span>
           </template>
         </el-table-column>
-        <el-table-column prop="amt" label="工时金额" min-width="80" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="samt" label="结算金额" min-width="80" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="amt" label="工时金额" min-width="80" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span v-if="scope.row.amt">{{scope.row.amt}}</span>
+            <span v-else>0</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="samt" label="结算金额" min-width="80" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span v-if="scope.row.samt">{{scope.row.samt}}</span>
+            <span v-else>-</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="workload" label="工时" min-width="80" show-overflow-tooltip></el-table-column>
         <el-table-column label="操作" width="180" fixed="right">
           <template scope="scope">
@@ -135,7 +145,8 @@ export default {
         pageNum: this.pageInfo.pageNum,
         total: this.pageInfo.total,
         count:this.pageInfo.count,
-        projectId:this.xmTaskSbill.projectId
+        projectId:this.xmTaskSbill.projectId,
+        toSbill:true
       };
       if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
         let orderBys=[];
@@ -149,7 +160,7 @@ export default {
       }
 
       this.load.list = true;
-      listByProject(params).then((res) => {
+      listXmTaskWorkload(params).then((res) => {
         var tips=res.data.tips;
         if(tips.isOk){
           this.pageInfo.total = res.data.total;

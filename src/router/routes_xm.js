@@ -162,7 +162,8 @@ export default {
       },
       //leaf: true,//只有一个节点
       children: [
-        { path: 'xmTaskSbill/XmTaskSbillMng', component: _import('xm/core/xmTaskSbill/XmTaskSbillMng'), name: 'XmTaskSbilllMng', meta: { title: '任务结算',icon:'task' }},
+        { path: 'xmTaskSbill/XmTaskSbillMng', component: _import('xm/core/xmTaskSbill/XmTaskSbillMng'), name: 'XmTaskSbilllMng', meta: { title: '任务结算'}},
+        { path: 'xmTaskWorkload/XmTaskWorkloadMng', component: _import('xm/core/xmTaskWorkload/XmTaskWorkloadMng'), name: 'XmTaskWorkloadMng', meta: { title: '工时列表'}},
       ]
     }
   ]

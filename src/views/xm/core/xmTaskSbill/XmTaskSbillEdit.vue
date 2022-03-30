@@ -203,11 +203,11 @@
         this.editForm.projectName = obj.projectName;
       },
       onProjectRowClick(obj){
-        this.$set(this.editForm, "projectI", obj[0].projectId);
+        this.$set(this.editForm, "projectId", obj[0].projectId);
         this.$set(this.editForm, "projectName", obj[0].projectName);
       },
       onProjectClear(){
-        this.$set(this.editForm, "projectI", null);
+        this.$set(this.editForm, "projectId", null);
         this.$set(this.editForm, "projectName", null);
       }
 		},//end method
