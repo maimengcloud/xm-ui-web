@@ -78,15 +78,21 @@
               </el-table-column>
         </el-table> 
       </el-row>
-      <el-dialog title="新增任务" :visible.sync="editFormVisible">
-          <el-form :model="editForm" :rules="editFormRules">
+      <el-dialog :title="ntype==='0'?'新增任务':'新增计划'" :visible.sync="addFormVisible" append-to-body modal-append-to-body>
+          <el-form :model="editForm" :rules="addFormRules">
             <el-form-item label="任务名称">
-              <el-input v-model="editForm.name" autocomplete="off" ></el-input>
+              
+                <template slot="label">
+                  <div    class="icon" :style="{backgroundColor:   ntype==='1'?'#E6A23C':'#409EFF'}">
+									<i :class=" ntype==='1'?'el-icon-odometer':'el-icon-s-operation'" ></i>
+									</div>  {{ntype==='1'?'计划名称':'任务名称'}}
+                </template>
+              <el-input v-model="addForm.name" autocomplete="off" ></el-input>
             </el-form-item> 
           </el-form>
           <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+            <el-button @click="addFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="addXmTask">确 定</el-button>
           </div>
       </el-dialog>
  			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="linkProjectId?{id:linkProjectId}:null" :xm-product="parentXmTask?{id:parentXmTask.productId}:null" @user-confirm="selectCreateUserConfirm">
@@ -139,7 +145,8 @@ export default {
       load:{edit:false,list:false,add:false,del:false,}, 
       xmTasks:[],
       editForm:{},
-      editFormRules:{
+      addForm:{name:''},
+      addFormRules:{
 					name: [
 						{ required: true, message: '任务名称不能为空', trigger: 'change' }
 					],
@@ -153,8 +160,8 @@ export default {
         xmTaskSettleSchemel: [],
         taskState:[],
       }, //下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
-      editFormVisible:false,
-
+      addFormVisible:false,
+      ntype:'1',
 
     }
   }, //end data
@@ -185,23 +192,23 @@ export default {
       }
         this.getXmTasks();
     }, 
-    addXmTask(name){ 
-       var task={...this.parentXmTask,name:name,id:null,parentTaskid:this.parentXmTask.id,parentTaskname:this.parentXmTask.name}
+    addXmTask(){ 
+       var task={...this.parentXmTask,name:this.addForm.name,id:null,parentTaskid:this.parentXmTask.id,parentTaskname:this.parentXmTask.name}
              task.priority='3'
              task.verNum=this.parentXmTask.sinceVersion;
              task.pverNum=this.parentXmTask.sinceVersion;
-             task.askUserid=this.userInfo.userid
-             task.askUsername=this.userInfo.username 
+             task.createUserid=this.userInfo.userid
+             task.createUsername=this.userInfo.username 
              task.qtype="1"
              task.ntype=this.ntype
              task.ptype="0"
-             task.id=null;
-             task.name=name
+             task.id=null; 
              addTask(task).then((res) => {
 								this.load.edit=false
 								var tips=res.data.tips;
 								if(tips.isOk){
  									this.$emit('submit',res.data.data);//  @submit="afterAddSubmit"
+                   this.addFormVisible=false;
                    this.xmTasks.push(res.data.data)
 								}
 								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
@@ -209,6 +216,8 @@ export default {
     },  
       showAdd(ntype) {
         this.ntype=ntype; 
+        this.addFormVisible=true;
+        
     },
     
     //查询时选择责任人
