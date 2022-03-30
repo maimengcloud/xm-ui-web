@@ -60,16 +60,9 @@
 							</el-table-column> 
 							<el-table-column prop="finishRate" label="进度"  min-width="80" show-overflow-tooltip sortable>
 								<template slot-scope="scope">
-									<div class="cell-text" v-if="scope.row.calcType!=='2'">
+									<div v-if="scope.row.calcType!=='2'">
 										 <span v-if="scope.row.finishRate"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag></span>
 									</div>
-									<div class="cell-text" v-else>
-										 <span v-if="scope.row.mactRate"><el-tag :type="scope.row.mactRate>=100?'success':'warning'">{{scope.row.mactRate}}%</el-tag></span>
-									</div>
-									<span class="cell-bar">
-										<xm-menu-workload :menu="scope.row"  placeholder="工时"  style="display:block;" @submit="editXmMenuSomeFields(scope.row,'workload',$event)">
-										</xm-menu-workload>
-									</span>
 								</template>
 
 							</el-table-column> 
