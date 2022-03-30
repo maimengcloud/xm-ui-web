@@ -9,9 +9,6 @@
 					<el-form-item label="工时进度" prop="mactRate" >
 						<el-progress style="width:50%;" :stroke-width="15" :percentage="editForm.mactRate?editForm.mactRate:0"></el-progress>
 					</el-form-item>  
-					<el-form-item label="预估工期" prop="budgetHours">
-						{{editForm.budgetHours}}&nbsp;小时
-					</el-form-item> 
 					<el-form-item label="预估工时" prop="budgetWorkload">
 						 {{editForm.budgetWorkload}}&nbsp;小时
 					</el-form-item> 
@@ -19,8 +16,12 @@
 						 {{editForm.mactWorkload}}&nbsp;小时
 					</el-form-item>  
 					
+					<el-form-item label="剩余工时" prop="rworkload">
+						 {{editForm.rworkload}}&nbsp;小时
+					</el-form-item>  
+					
 					<el-form-item label="" class="padding">
-						<el-button   type="text" @click="cancel">关闭</el-button>
+						<el-button   @click="cancel">关闭</el-button>
 						 
 					</el-form-item> 
 				</el-form> 

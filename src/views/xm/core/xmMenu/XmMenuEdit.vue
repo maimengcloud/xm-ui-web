@@ -124,7 +124,7 @@
 								<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="editForm.remark" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
 							</el-form-item>
 							<el-row class="padding">
- 								<el-button v-loading="load.edit" type="primary" @click.native="editXmMenuSomeFields(editForm,'remark',editForm.remark)" :disabled="load.edit==true">提交</el-button>
+ 								<el-button v-loading="load.edit" type="primary" @click.native="editXmMenuSomeFields(editForm,'remark',editForm.remark)" :disabled="load.edit==true">提交概述</el-button>
 							</el-row>
 						</el-tab-pane>
 						<el-tab-pane :label="'子工作项'+(subWorkItemNum>=0?'('+subWorkItemNum+')':'')" name="6">
@@ -144,9 +144,6 @@
 							<el-form-item label="实际工时" prop="mactWorkload">
 								<el-input-number :disabled="editForm.calcType!=='2'  " style="width:200px;"  v-model="editForm.mactWorkload" :precision="2" :step="8" :min="0" placeholder="实际工时(小时)"></el-input-number> &nbsp;h
 							</el-form-item>  
-							<el-row class="padding">
- 								<el-button v-loading="load.edit" type="primary" @click.native="editXmMenuSomeFields(editForm,'workload',{mactWorkload:editForm.mactWorkload,budgetWorkload:editForm.budgetWorkload,mactRate:editForm.mactRate,budgetHours:editForm.budgetHours})" :disabled="load.edit==true">提交</el-button>
-							</el-row>
 						</el-tab-pane>
 						<el-tab-pane label="成本" name="3">
 							<el-form-item label="预估金额" prop="budgetAmount">
@@ -155,10 +152,6 @@
 							<el-form-item label="实际金额" prop="mactAmount">
 								<el-input-number :disabled="editForm.calcType!=='2'  "  style="width:200px;"  v-model="editForm.mactAmount" :precision="2" :step="100" :min="0" placeholder="实际金额"></el-input-number>   元
 							</el-form-item>
-
-							<el-row class="padding">
- 								<el-button v-loading="load.edit" type="primary" @click.native="editXmMenuSomeFields(editForm,'budgetAmount',{budgetAmount:editForm.budgetAmount,mactAmount:editForm.mactAmount })" :disabled="load.edit==true">提交</el-button>
-							</el-row>
 						</el-tab-pane>
 					<el-tab-pane label="链接" name="5">
 						<el-form-item label="需求链接" prop="demandUrl">
@@ -175,7 +168,7 @@
 						</el-form-item>
 
 							<el-row class="padding">
- 								<el-button v-loading="load.edit" type="primary" @click.native="editXmMenuSomeFields(editForm,'link',{demandUrl:editForm.demandUrl,codeUrl:editForm.codeUrl,designUrl:editForm.designUrl,operDocUrl:editForm.operDocUrl})" :disabled="load.edit==true">提交</el-button>
+ 								<el-button v-loading="load.edit" type="primary" @click.native="editXmMenuSomeFields(editForm,'link',{demandUrl:editForm.demandUrl,codeUrl:editForm.codeUrl,designUrl:editForm.designUrl,operDocUrl:editForm.operDocUrl})" :disabled="load.edit==true">提交链接</el-button>
 							</el-row>
 					</el-tab-pane>
 					<el-tab-pane label="wiki" name="7">

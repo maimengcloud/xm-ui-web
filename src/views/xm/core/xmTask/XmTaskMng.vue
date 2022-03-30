@@ -478,9 +478,9 @@
                 label="工时"
                 width="150"
               >
-                <template slot-scope="scope"> {{scope.row.actWorkload}}&nbsp;/&nbsp;{{
-                    scope.row.budgetWorkload
-                  }}&nbsp;h
+
+                <template slot-scope="scope">
+                  	<span title="实际工时 / 预算工时 或者 (剩余工时+实际工时)">{{scope.row.actWorkload}} &nbsp;/ &nbsp;{{scope.row.rworkload?parseInt(scope.row.actWorkload)+parseInt(scope.row.rworkload):scope.row.budgetWorkload}}h </span>
                 </template>
               </el-table-column>
               <el-table-column sortable prop="rate" label="进度" width="100">
