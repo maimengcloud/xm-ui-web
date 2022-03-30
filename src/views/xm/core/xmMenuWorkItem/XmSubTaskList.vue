@@ -6,6 +6,7 @@
           </div>
         任务
         <span style="float:right;">
+          <el-button @click="getXmTasks" type="primary" icon="el-icon-search" plain></el-button>
           <el-button @click="batchDel" type="danger" icon="el-icon-delete" plain></el-button>
         </span>
       </el-row>
@@ -83,6 +84,17 @@
         </el-table> 
       </el-row>
       
+      <el-dialog title="新增任务" :visible.sync="addFormVisible" append-to-body modal-append-to-body>
+          <el-form :model="addForm" :rules="addFormRules">
+            <el-form-item label="任务名称">
+              <el-input v-model="addForm.name" autocomplete="off" ></el-input>
+            </el-form-item> 
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="addFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="addXmTask">确 定</el-button>
+          </div>
+      </el-dialog>
  			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="linkProjectId?{id:linkProjectId}:null" :xm-product="parentXmMenu?{id:parentXmMenu.productId}:null" @user-confirm="selectCreateUserConfirm">
 			</xm-group-dialog>  
       <xm-task-workload-record-dialog ref="workloadRecordDialog" @submi="afterWorkloadSubmit" @edit-xm-task-some-fields="onEditXmTaskSomeFields" @submit="onWorkloadSubmit"></xm-task-workload-record-dialog>
@@ -132,7 +144,14 @@ export default {
     return{
       load:{edit:false,list:false,add:false,del:false,}, 
       xmTasks:[],
-      editForm:{},
+      editForm:{name:''},
+      addForm:{name:''},
+      addFormRules: {
+					name: [
+						{ required: true, message: '任务名称不能为空', trigger: 'change' }
+					],  
+				},
+      addFormVisible:false,
       sels:[],
       dicts: {
         priority: [],
@@ -177,18 +196,18 @@ export default {
         this.getXmTasks();
       } 
     }, 
-    addXmTask(name){ 
-       var task={name:name,menuId:this.parentXmMenu.menuId,menuName:this.parentXmMenu.menuName,productId:this.parentXmMenu.productId,iterationId:this.parentXmMenu.iterationId,iterationName:this.parentXmMenu.iterationName}
+    addXmTask(){ 
+       var task={...this.addForm,menuId:this.parentXmMenu.menuId,menuName:this.parentXmMenu.menuName,productId:this.parentXmMenu.productId,iterationId:this.parentXmMenu.iterationId,iterationName:this.parentXmMenu.iterationName}
              task.priority='3'
              task.verNum=this.parentXmMenu.sinceVersion;
              task.pverNum=this.parentXmMenu.sinceVersion;
-             task.askUserid=this.userInfo.userid
-             task.askUsername=this.userInfo.username 
+             task.createUserid=this.userInfo.userid
+             task.createUsername=this.userInfo.username 
              task.qtype="1"
              task.ntype="0"
              task.ptype="0"
              task.id=null;
-             task.name=name
+             task.sortLevel=this.parentXmMenu.seqNo
              task.projectId=this.linkProjectId
              addTask(task).then((res) => {
 								this.load.edit=false
@@ -196,19 +215,14 @@ export default {
 								if(tips.isOk){
  									this.$emit('submit',res.data.data);//  @submit="afterAddSubmit"
                    this.xmTasks.push(res.data.data)
+                   this.addFormVisible=false;
 								}
 								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.edit=false);
     },  
       showAdd() {
-        this.$prompt('请输入任务标题', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',  
-        }).then(({ value }) => { 
-            this.addXmTask(value); 
-        }).catch(() => {
-              
-        }); 
+        this.addForm.name=this.parentXmMenu.menuName
+        this.addFormVisible=true;
     },
     
     //查询时选择责任人

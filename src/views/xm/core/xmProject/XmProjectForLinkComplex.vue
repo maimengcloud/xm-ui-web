@@ -116,9 +116,11 @@ import XmIterationLinkForProject from '../xmIterationLink/XmIterationLinkForProj
 				 this.showPanel=tab.name
 			},
 			afterProjectAddSubmit(project){
-				this.$refs.xmProjectSelect.xmProjects.push(project)
-				this.$refs.xmProjectSelect.rowClick(project);
 				this.projectAddVisible=false;
+				if(this.$refs.xmProjectSelect){
+					this.$refs.xmProjectSelect.xmProjects.push(project)
+					this.$refs.xmProjectSelect.rowClick(project);
+				}  
 			}
 		},//end methods
 		components: {

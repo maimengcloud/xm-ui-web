@@ -23,7 +23,7 @@
       <el-row>
         <el-table :data="xmMenus" :max-height="400"  highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
           <el-table-column type="selection" label="全选"></el-table-column>
-          <el-table-column prop="menuName" label="名称" min-width="150"></el-table-column>
+          <el-table-column prop="menuName" label="名称" min-width="250"></el-table-column>
           <el-table-column prop="status" label="状态"  min-width="80"  sortable>
 								<template slot-scope="scope">
 									<div class="cell-text">

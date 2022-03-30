@@ -221,6 +221,12 @@
 				}
 			},
 			xmItertaion(){
+				if(this.iterationFilterType){
+					this.filters.iterationFilterType=this.iterationFilterType
+				}
+				if(this.xmIteration){
+					this.filters.iteration=this.xmIteration
+				}
 				this.getXmMenus();
 			},
 			
@@ -545,6 +551,9 @@
 				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);   
 				if(this.iterationFilterType){
 					this.filters.iterationFilterType=this.iterationFilterType
+				}
+				if(this.xmIteration){
+					this.filters.iteration=this.xmIteration
 				}
 				
 				if(this.taskFilterType){

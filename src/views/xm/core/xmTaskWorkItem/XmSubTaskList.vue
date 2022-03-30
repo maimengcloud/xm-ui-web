@@ -78,7 +78,17 @@
               </el-table-column>
         </el-table> 
       </el-row>
-      
+      <el-dialog title="新增任务" :visible.sync="editFormVisible">
+          <el-form :model="editForm" :rules="editFormRules">
+            <el-form-item label="任务名称">
+              <el-input v-model="editForm.name" autocomplete="off" ></el-input>
+            </el-form-item> 
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+          </div>
+      </el-dialog>
  			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="linkProjectId?{id:linkProjectId}:null" :xm-product="parentXmTask?{id:parentXmTask.productId}:null" @user-confirm="selectCreateUserConfirm">
 			</xm-group-dialog>  
       <xm-task-workload-record-dialog ref="workloadRecordDialog" @submi="afterWorkloadSubmit" @edit-xm-task-some-fields="onEditXmTaskSomeFields" @submit="onWorkloadSubmit"></xm-task-workload-record-dialog>
@@ -129,6 +139,11 @@ export default {
       load:{edit:false,list:false,add:false,del:false,}, 
       xmTasks:[],
       editForm:{},
+      editFormRules:{
+					name: [
+						{ required: true, message: '任务名称不能为空', trigger: 'change' }
+					],
+      },
       sels:[],
       dicts: {
         priority: [],
@@ -138,7 +153,7 @@ export default {
         xmTaskSettleSchemel: [],
         taskState:[],
       }, //下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
-
+      editFormVisible:false,
 
 
     }
@@ -193,15 +208,7 @@ export default {
 							}).catch( err  => this.load.edit=false);
     },  
       showAdd(ntype) {
-        this.ntype=ntype;
-        this.$prompt('请输入'+(ntype==='0'?'子任务':'子计划')+'标题', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',  
-        }).then(({ value }) => { 
-            this.addXmTask(value); 
-        }).catch(() => {
-              
-        }); 
+        this.ntype=ntype; 
     },
     
     //查询时选择责任人

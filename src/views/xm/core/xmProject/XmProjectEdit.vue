@@ -25,15 +25,15 @@
 							<el-form-item label="项目代号" prop="code" v-if="opType==='add'">
 								<el-input v-model="editForm.code"  placeholder="项目代号，不可为空" >
 									<template slot="append">
-										<el-button type="text" @click.native="createProjectCode">自动生成</el-button>
+										<el-button type="primary" @click.native="createProjectCode">自动生成</el-button>
 									</template>
 								</el-input>
 								<font color="blue" style="font-size:10px;">项目代号为合同上的项目代号，甲乙方共享;项目内部编号为 &nbsp;代号-四位随机码</font>
 							</el-form-item>  					
-							<el-form-item label="名称" prop="name"  v-if="opType==='add'">  
+							<el-form-item label="名称" prop="name"  v-show="opType==='add'">  
 									<el-input  v-model="editForm.name" placeholder="项目名称" ></el-input> 
 							</el-form-item>  
-							<el-form-item label="项目代号|名称" prop="name" v-if="opType!=='add'">
+							<el-form-item label="项目代号|名称" prop="name" v-show="opType!=='add'">
 								<el-input v-model="editForm.code" placeholder="项目代号，不可为空" style="width:20%;" ></el-input><el-input style="width:80%;" v-model="editForm.name" placeholder="项目名称" ></el-input>
 							    <font color="blue" style="font-size:10px;">项目代号为合同上的项目代号，甲乙方共享;项目内部编号为 &nbsp;代号-四位随机码</font>
 
@@ -215,6 +215,7 @@
 				</el-form>    
 		</el-row>
 		<el-row>  
+				<el-button   type="text" @click.native="handleCancel" >关闭</el-button>  
 				<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>  
 				<span v-if="opType!=='add'" style="float:right;">
  					<el-button icon="el-icon-star-on"  type="success"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_start_approva'})">立项申请</el-button>
@@ -359,7 +360,7 @@
 				}
 			}, 
 		},
-		props:['selProject','visible','xmProject','opType'/**add、edit */],
+		props:['selProject','visible','xmProduct','opType'/**add、edit */],
 		watch: { 
 	      'visible':function(visible) { 
 	      	if(visible==true){ 
@@ -518,9 +519,6 @@
 				) {
 					this.editForm.startTime = this.dateRanger[0] ;
 					this.editForm.endTime = this.dateRanger[1] ;
-				}else{
-					this.$notify({showClose: true, message: "请输入开始日期和结束日期", type: 'error' }); 
-					return;
 				} 
 				this.$refs.editForm.validate((valid) => {
 					if (valid) {
@@ -531,14 +529,19 @@
 								func=addXmProject;
 							}
 							let params = Object.assign({}, this.editForm);  
+							if(this.xmProduct && this.xmProduct.id){
+								params.links=[{productId:this.xmProduct.id}]
+							}
 							params.planIuserWorkload=this.autoParams.planIuserWorkload 
 							params.planOuserWorkload=this.autoParams.planOuserWorkload
 							params.planWorkload=this.autoParams.planWorkload
 							func(params).then((res) => {
 								this.load.edit=false;
 								var tips=res.data.tips; 
-								if(tips.isOk){ 
-									this.selProject=Object.assign(this.selProject,res.data.data)
+								if(tips.isOk){  
+									if(this.selProject && this.opType!=='add'){
+										Object.assign(this.selProject,res.data.data)
+									} 
 									this.$emit('submit',res.data.data);//  @submit="afterEditSubmit"
 								}
 								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
@@ -801,11 +804,11 @@
 				
 			}, 
 			
-			createProjectCode(){
+			createProjectCode(){ 
 				createProjectCode({}).then(res=>{
 					var tips=res.data.tips;
-					if(tips.isOk){
-						this.editForm.code=res.data.data
+					if(tips.isOk){  
+						this.$set(this.editForm,'code',res.data.data)
 					}
 					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
 				})
