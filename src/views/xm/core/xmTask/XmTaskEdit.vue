@@ -168,7 +168,7 @@
 							 <xm-sub-work-item :parent-xm-task="editForm"  @sub-work-item-num="setSubWorkItemNum" @add-sub-task="onAddSubTask"></xm-sub-work-item>
 					</el-tab-pane>
 					<el-tab-pane label="工时" name="5"> 
-						 <xm-task-workload-record :visible="visible" :xm-task="editForm" :key="Math.random()"></xm-task-workload-record>
+						 <xm-task-workload-record :visible="visible" :xm-task="editForm" ></xm-task-workload-record>
 					</el-tab-pane>
 					<el-tab-pane label="成本" name="6"> 
 						<el-form-item label="预估金额" prop="budgetCost">
@@ -348,7 +348,7 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 				editForm: {
 					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'3',sortLevel:'0',executorUserid:'',executorUsername:'',
 					preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',taskOut:'0',
-					rate:0,budgetCost:'',budgetWorkload:'',actCost:'',actWorkload:'',taskState:'0',taskClass:'0',toTaskCenter:'0',actStartTime:'',actEndTime:'',taskType:'4',planType:'w2',settleSchemel:'1',ntype:'0',childrenCnt:0,wtype:'',
+					rate:0,budgetCost:'',budgetWorkload:'',actCost:'',actWorkload:'',taskState:'0',taskClass:'0',toTaskCenter:'0',actStartTime:'',actEndTime:'',taskType:'4',planType:'w2',settleSchemel:'1',ntype:'0',childrenCnt:0,wtype:'',rworkload:0,
   
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
