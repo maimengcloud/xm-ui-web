@@ -6,6 +6,12 @@
 		<!--编辑界面 XmTaskWorkload 工时登记表-->
 			<el-form :model="editForm" label-width="100px"  :rules="editFormRules" ref="editFormRef">
 				<el-row v-if="editForm.ntype==='0'">
+					
+					<el-col :span="6">
+						<el-form-item label="原估工时" prop="initBudgetWorkload">
+							{{editForm.initBudgetWorkload?editForm.initBudgetWorkload:'0'}} &nbsp;小时
+						</el-form-item> 
+					</el-col>  
 					<el-col :span="6">
 						<el-form-item label="预估工时" prop="budgetWorkload">
 							 <el-input :controls="false" type="number" :step="8" style="width:80%;"  v-model="editForm.budgetWorkload" placeholder="预估工时" @change="editXmTaskSomeFields(editForm,'budgetWorkload',$event)"></el-input> &nbsp;小时
@@ -13,21 +19,17 @@
 					</el-col>
 					<el-col :span="6">
 						<el-form-item label="已登工时" prop="actWorkload">
-							{{editForm.actWorkload?editForm.actWorkload:0}} &nbsp; 小时
+							{{editForm.actWorkload?editForm.actWorkload:0}} &nbsp; 小时<el-tag type="primary">{{editForm.rate}}%</el-tag>
  						</el-form-item>
-					</el-col>
-					<el-col :span="6">
-						<el-form-item label="剩余工时" prop="rworkload">
-							<el-input :controls="false"  type="number"  style="width:80%;" :step="8"  v-model="editForm.rworkload" placeholder="剩余工时" @change="editXmTaskSomeFields(editForm,'rworkload',$event)"></el-input>  &nbsp;小时
-						</el-form-item> 
 					</el-col> 
-					<el-col :span="6">
-						<el-form-item label="工时进度" prop="rate">
-							<el-progress :percentage="editForm.rate>0?editForm.rate:0"  placeholder="工时进度"></el-progress>
-						</el-form-item> 
-					</el-col>
 				</el-row>
 				<el-row v-else>
+					
+					<el-col :span="6">
+						<el-form-item label="原估工时" prop="initBudgetWorkload">
+							{{editForm.initBudgetWorkload?editForm.initBudgetWorkload:'0'}} &nbsp;小时
+						</el-form-item> 
+					</el-col>  
 					<el-col :span="6">
 						<el-form-item label="预估工时" prop="budgetWorkload">
 							 {{editForm.budgetWorkload}} &nbsp;小时
@@ -35,18 +37,8 @@
 					</el-col>
 					<el-col :span="6">
 						<el-form-item label="已登工时" prop="actWorkload">
-							{{editForm.actWorkload?editForm.actWorkload:0}} &nbsp; 小时
+							{{editForm.actWorkload?editForm.actWorkload:0}} &nbsp; 小时,<el-tag type="primary">{{editForm.rate}}%</el-tag>
  						</el-form-item>
-					</el-col>
-					<el-col :span="6">
-						<el-form-item label="剩余工时" prop="rworkload">
-							{{editForm.rworkload?editForm.rworkload:0}} &nbsp;小时
-						</el-form-item> 
-					</el-col> 
-					<el-col :span="6">
-						<el-form-item label="工时进度" prop="rate"> 
-							{{editForm.rate}}&nbsp;&nbsp;%
-						</el-form-item> 
 					</el-col>
 				</el-row>
 			</el-form>
@@ -99,7 +91,7 @@
 					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'3',sortLevel:'0',executorUserid:'',executorUsername:'',
 					preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',taskOut:'0',
 					rate:0,budgetCost:'',budgetWorkload:'',actCost:'',actWorkload:'',taskState:'0',taskClass:'0',toTaskCenter:'0',actStartTime:'',actEndTime:'',taskType:'4',planType:'w2',settleSchemel:'1',ntype:'0',childrenCnt:0
-					,rworkload:0,
+					,rworkload:null,
 				},
                 maxTableHeight:300,
 			}//end return

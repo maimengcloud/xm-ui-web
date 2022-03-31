@@ -4,44 +4,48 @@
 	    </el-row>
 		<el-row class="page-main" ref="table">
 		<!--编辑界面 XmTaskWorkload 工时登记表-->
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">
+			<el-form :model="editForm"  label-width="120px"  :rules="editFormRules" ref="editFormRef">
 				<el-row>
-					<el-col :span="8">
+					<el-col :span="12">
 						<el-form-item label="预估工时" prop="budgetWorkload">
-							{{xmTask.budgetWorkload}}&nbsp;&nbsp;小时
+							{{xmTask.budgetWorkload?xmTask.budgetWorkload:0}}&nbsp;&nbsp;小时
 						</el-form-item>
 					</el-col>
-					<el-col :span="8">
+					<el-col :span="12">
 						<el-form-item label="已登工时" prop="actWorkload">
-							{{xmTask.actWorkload}}&nbsp;小时
+							{{xmTask.actWorkload?xmTask.actWorkload:0}}&nbsp;小时, <el-tag type="primary"> {{xmTask.rate}}% </el-tag>
 						</el-form-item>
-					</el-col>
-
-					<el-col :span="8">
-						<el-form-item label="工时进度" prop="rate">
-							{{xmTask.rate}} %
-						</el-form-item>
-					</el-col>
+					</el-col> 
 				</el-row>
 				<el-row>
 
-					<el-col :span="8">
-						<el-form-item label="工作时长" prop="workload">
-							<el-input  type="number" style="width:80%;" v-model="editForm.workload" placeholder="工作时长"></el-input> &nbsp;小时
-						</el-form-item>
-					</el-col>
-					<el-col :span="8">
+					<el-col :span="12">
 						<el-form-item label="业务日期" prop="bizDate">
 							<el-date-picker style="width:80%;" v-model="editForm.bizDate" value-format="yyyy-MM-dd" format="yyyy-MM-dd"  placeholder="业务日期"></el-date-picker>
 						</el-form-item>
-					</el-col>
-					<el-col :span="8">
-						<el-form-item label="任务类型" prop="ttype">
+					</el-col> 
+					<el-col :span="12">
+						<el-form-item label="工作类型" prop="ttype">
 							<el-select v-model="editForm.ttype">
 								<el-option v-for="i in this.dicts.taskType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>
 						</el-form-item>
 					</el-col>
+				</el-row>
+				<el-row> 
+					<el-col :span="12">
+						<el-form-item label="工作时长" prop="workload">
+							<el-input  type="number" style="width:80%;" :step="8" :min="0" :max="1000" v-model="editForm.workload" placeholder="工作时长"></el-input> 小时
+						</el-form-item>
+					</el-col>
+					
+					<el-col :span="12">
+						<el-form-item label="未来工时" prop="rworkload">
+							<el-input :step="8"   :max="1000"  type="number" style="width:80%;" v-model="editForm.rworkload" placeholder="预计还要多少工时能够完成工作"></el-input>  小时
+						</el-form-item> 
+					</el-col>
+					<font color="blue" style="font-size:12px;padding-left:100px;">注意：未来工时指完成工作还需要继续投入的工时，一般在原始预估出现比较大的偏差时，需要对预估偏差进行重新调整才填写。</font>
+					
 				</el-row>
 				<el-form-item label="工作说明" prop="remark">
  					<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="editForm.remark" placeholder="工作说明，如果报工大于8小时，请填写说明" ></el-input>
@@ -105,6 +109,7 @@
 				editForm: {
 					userid:'',username:'',ctime:'',taskId:'',cuserid:'',bizDate:'',wstatus:'',remark:'',ttype:'',id:'',sbillId:'',stime:'',sstatus:'',amt:'',samt:'',workload:''
 				},
+				rwokkload:0,
                 maxTableHeight:300,
 				dicts:{
 					taskType:[],
