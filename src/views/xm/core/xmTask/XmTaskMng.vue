@@ -399,18 +399,14 @@
                 label="全选"
                 type="selection"
                 width="50"
+                fixed="left"
               >
-              </el-table-column>
-              <el-table-column
-                label="序号"
-                type="index"
-                width="50"
-              >
-              </el-table-column>
+              </el-table-column> 
               <el-table-column
                 sortable
                 prop="name"
                 class-name="title"
+                fixed="left"
                 label="名称(点击详情)"
                 min-width="250" show-overflow-tooltip
               >
@@ -1072,7 +1068,7 @@ export default {
       pageInfo: {
         //分页数据
         total: 0, //服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
-        pageSize: 20, //每页数据
+        pageSize: this.queryScope==='plan' || this.queryScope==='planTask'?50:20, //每页数据
         count: false, //是否需要重新计算总记录数
         pageNum: 1, //当前页码、从1开始计算
         orderFields: ["create_time"], //排序列 如 ['sex','student_id']，必须为数据库字段
