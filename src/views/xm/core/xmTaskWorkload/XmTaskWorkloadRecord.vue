@@ -45,14 +45,14 @@
 					</el-col> 
 					<el-col :span="6">
 						<el-form-item label="工时进度" prop="rate"> 
-							{{scope.row.rate}}&nbsp;&nbsp;%
+							{{editForm.rate}}&nbsp;&nbsp;%
 						</el-form-item> 
 					</el-col>
 				</el-row>
 			</el-form>
 		</el-row>
 		<el-row>
-			<xm-task-workload-list v-if="xmTask.ntype==='0'" :visible="visible" :xm-task="xmTask" @submit="onWorkloadSubmit"></xm-task-workload-list>
+			<xm-task-workload-list v-if="editForm.ntype==='0'" :visible="visible" :xm-task="editForm" @submit="onWorkloadSubmit"></xm-task-workload-list>
 		</el-row> 
 	</section>
 </template>
@@ -77,7 +77,9 @@
 		props:['xmTask','visible'],
 
 		watch: {
-	      
+	      'xmTask':function() {
+ 	      		this.initData()
+	      },
 	      'visible':function(visible) {
 	      	if(visible==true){
  	      		this.initData()
@@ -111,7 +113,7 @@
 			saveSubmit: function () {
 			},
 			initData: function(){ 
-				this.editForm={...this.xmTask}
+				this.editForm=this.xmTask
             },
 			
 			editXmTaskSomeFields(row,fieldName,$event){

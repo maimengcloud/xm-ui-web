@@ -55,6 +55,11 @@
 
 		},
 		watch:{
+			'xmTask.id':function(){
+				debugger;
+				this.initData();
+                this.searchXmTaskWorkloads()
+			},
             visible(val){
                 if(val==true){
                     this.initData();

@@ -168,7 +168,7 @@
 							 <xm-sub-work-item :parent-xm-task="editForm"  @sub-work-item-num="setSubWorkItemNum" @add-sub-task="onAddSubTask"></xm-sub-work-item>
 					</el-tab-pane>
 					<el-tab-pane label="工时" name="5"> 
-						 <xm-task-workload-record :xm-task="editForm"></xm-task-workload-record>
+						 <xm-task-workload-record :visible="visible" :xm-task="editForm" :key="Math.random()"></xm-task-workload-record>
 					</el-tab-pane>
 					<el-tab-pane label="成本" name="6"> 
 						<el-form-item label="预估金额" prop="budgetCost">

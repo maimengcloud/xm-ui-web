@@ -991,11 +991,21 @@
 			},
 
 			loadTasksToXmMenuState: function () {
-				this.load.edit=true;
-				if(!this.filters.product){
-					this.$notify.warning("请先选择产品");
+				
+				if(!this.filters.product ){
+					if(!this.filters.iteration){
+						this.$notify.warning("请先选择产品或者迭代");
+						return;
+					} 
 				}
-				let params = { productId: this.filters.product.id };
+				this.load.edit=true;
+				let params = { productId: ''};
+				if(!this.filters.product){
+					params.productId=this.filters.iteration.productId
+				}else{
+					params = { productId: this.filters.product.id };
+				}
+				
 				loadTasksToXmMenuState(params).then((res) => {
 					this.load.edit=false;
 					var tips=res.data.tips;
