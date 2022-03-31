@@ -18,7 +18,7 @@
         <el-form-item label="项目名称：" prop="projectName">
           <el-input disabled v-model="editForm.projectName" placeholder="项目名称"></el-input>
         </el-form-item>
-				<el-form-item label="结算单标题：" prop="title">
+				<el-form-item label="结算单标题：" prop="title" :rules="[{ required: true, message: '结算单标题不能为空'}]">
 					<el-input v-model="editForm.title" placeholder="结算单标题"></el-input>
 				</el-form-item>
 <!--				<el-form-item label="金额=工时表中结算金额之和" prop="amt">
