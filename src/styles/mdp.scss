@@ -241,8 +241,9 @@
 
 .el-table__row td:hover{
 	.cell-bar{
-		display: block;
+		display: block; 
 		float: right;  
+    width: 90%;
 	}
   .cell-text{
     display:none;

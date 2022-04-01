@@ -1,10 +1,5 @@
 <template>
     <el-row  v-show="xmTasks.length>0">
-      <el-row> 
-        <span style="float:right;">
-          <el-button @click="batchDel" type="danger" icon="el-icon-delete" plain></el-button>
-        </span>
-      </el-row>
       <el-row>
         <el-table :data="xmTasks"  :max-height="400" v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
           <el-table-column type="selection" label="全选"></el-table-column>

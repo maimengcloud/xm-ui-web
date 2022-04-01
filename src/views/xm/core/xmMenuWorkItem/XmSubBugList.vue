@@ -1,25 +1,20 @@
 <template>
-    <el-row v-show="parentXmMenu.dclass==='3' && xmBugs.length>0"> 
-      <el-row>
-        <div class="icon" style="background-color: #F56C6C;">
-          <i class="el-icon-warning"></i>
-        </div>
-        缺陷 
-        <span style="float:right;">
-          <el-button @click="batchDel" type="danger" icon="el-icon-delete" plain></el-button>
-        </span>
-      </el-row>
+    <el-row v-show="parentXmMenu.dclass==='3' && xmBugs.length>0">  
       <el-row>
         <el-table :data="xmBugs" :max-height="400" @selection-change="selsChange" @row-click="rowClick">
           <el-table-column type="selection" label="全选"></el-table-column>
-          <el-table-column prop="id" label="缺陷编号" width="100px" show-overflow-tooltip="">
-            
-            </el-table-column> 
-          <el-table-column prop="name" label="名称" min-width="250px">
+          <el-table-column prop="name" label="名称" min-width="250px"  show-overflow-tooltip>
               <template slot-scope="scope">
 				  <div class="icon" style="background-color: #F56C6C;">
 					<i class="el-icon-warning"></i>
-					</div>{{scope.row.id}}&nbsp;&nbsp;{{scope.row.name}}
+					</div>
+					
+					<span class="cell-text">
+						 {{scope.row.name}}
+					</span>
+					<span class="cell-bar" >
+							  <el-input title="名称" placeholder="名称" v-model="scope.row.name"  style="width:100%;"  @change="editXmQuestionSomeFields(scope.row,'name',$event)"></el-input> 
+					</span> 
 			  </template>
             </el-table-column> 
 

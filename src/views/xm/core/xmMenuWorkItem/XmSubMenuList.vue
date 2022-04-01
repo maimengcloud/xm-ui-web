@@ -1,29 +1,30 @@
 <template>
   <section> 
-    <el-row v-if="parentXmMenu.dclass<'3' && xmMenus.length>0">
-      <el-row v-if="parentXmMenu.dclass==='1'">
-         <div class="icon" style="background-color:  rgb(0, 153, 51);">
-            <i class="el-icon-s-flag"></i>
-          </div>特性
-          
-          <span style="float:right;">
-            <el-button @click="batchDel" type="danger" icon="el-icon-delete" plain></el-button>
-          </span>
-      </el-row>
-      <el-row v-if="parentXmMenu.dclass==='2'">
-        <div  class="icon" :style="{backgroundColor: calcMenuLabel.color }">
-            <i :class="calcMenuLabel.icon"></i>
-          </div>  
-          用户故事  
-          
-          <span style="float:right;">
-            <el-button @click="batchDel" type="danger" icon="el-icon-delete" plain></el-button>
-          </span>
-      </el-row> 
+    <el-row v-if="parentXmMenu.dclass<'3' && xmMenus.length>0"> 
       <el-row>
         <el-table :data="xmMenus" :max-height="400"  highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
           <el-table-column type="selection" label="全选"></el-table-column>
-          <el-table-column prop="menuName" label="名称" min-width="250"></el-table-column>
+          <el-table-column prop="menuName" label="名称" min-width="250" show-overflow-tooltip> 
+              <template slot-scope="scope" >
+				  <span style="display:inline;">
+				<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
+				<i class="el-icon-s-promotion"></i>
+				</div>
+				<div v-if="scope.row.dclass=='2'" class="icon" style="background-color:  rgb(0, 153, 51);">
+				<i class="el-icon-s-flag"></i>
+				</div>
+				<div v-if="scope.row.dclass=='3'" class="icon" style="background-color:  rgb(79, 140, 255);">
+				<i class="el-icon-document"></i>
+				</div>
+				  </span>  
+					<span class="cell-text">
+						{{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}}
+					</span>
+					<span class="cell-bar">
+							<el-input title="序号" style="width:30%;"  v-model="scope.row.seqNo" placeholder="序号"  @change="editXmMenuSomeFields(scope.row,'seqNo',$event)"></el-input><el-input title="名称" placeholder="名称" v-model="scope.row.menuName"  style="width:60%;"  @change="editXmMenuSomeFields(scope.row,'menuName',$event)"></el-input> 
+					</span> 
+			  </template>
+		  </el-table-column>
           <el-table-column prop="status" label="状态"  min-width="80"  sortable>
 								<template slot-scope="scope">
 									<div class="cell-text">

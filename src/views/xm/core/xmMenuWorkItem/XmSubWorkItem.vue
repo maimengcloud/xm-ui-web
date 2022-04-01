@@ -27,6 +27,8 @@
             <i class="el-icon-warning"></i>
           </div>
         添加缺陷</el-button>
+      <el-button   icon="el-icon-delete" type="danger" plain @click="doDelete"> 
+        </el-button>
       </span>
     </el-row>
        <xm-sub-menu-list ref="menuList" :link-project-id="linkProjectId?linkProjectId:(xmProject?xmProject.id:null)" :parentXmMenu="parentXmMenu" @menus-change="onMenusChange" @add-submit="$emit('add-sub-menu',$event)"></xm-sub-menu-list>
@@ -74,7 +76,7 @@ export default {
     'parentXmMenu','linkProjectId'
   ],
   watch: {
-    'parentXmMenu.menuId':function(){
+    'parentXmMenu':function(){
       this.initData();
     }
 
@@ -111,6 +113,21 @@ export default {
           }
           this.$refs.bugList.showAdd();
         }
+    },
+    doDelete(){ 
+          if((this.$refs.menuList.sels.length+ this.$refs.taskList.sels.length+this.$refs.bugList.sels.length)==0){
+            this.$notify({showClose:true,message:'请先选择要删除的数据',type:'warning'})
+            return;
+          }
+         if(this.$refs.menuList.sels.length>0){
+           this.$refs.menuList.batchDel();
+         }
+         if(this.$refs.taskList.sels.length>0){
+           this.$refs.taskList.batchDel();
+         }
+         if(this.$refs.bugList.sels.length>0){
+           this.$refs.bugList.batchDel();
+         } 
     },
     onMenusChange(menus){
       this.xmMenus=menus

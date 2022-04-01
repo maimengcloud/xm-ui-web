@@ -15,6 +15,8 @@
             <i class="el-icon-s-operation"></i>
           </div>
         添加任务</el-button> 
+         <el-button type="danger" plain icon="el-icon-delete" @click="doDelete"> 
+         </el-button> 
       </span>
     </el-row> 
         <xm-sub-task-list  ref="taskList"  :parent-xm-task="parentXmTask" @tasks-change="onTasksChange" @workload-submit="onWorkloadSubmit"></xm-sub-task-list>
@@ -77,6 +79,9 @@ export default {
     },
     onWorkloadSubmit(xmTask){
       this.$emit('workload-submit',xmTask)
+    },
+    doDelete(){
+      this.$refs.taskList.batchDel(); 
     }
     /**end 自定义函数请在上面加**/
   }, //end methods

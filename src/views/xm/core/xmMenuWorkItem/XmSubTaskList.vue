@@ -1,23 +1,19 @@
 <template>
-    <el-row v-show="parentXmMenu.dclass==='3' && xmTasks.length>0"> 
-      <el-row>
-         <div class="icon" style="background-color:  #1CC7EA;">
-            <i class="el-icon-s-operation"></i>
-          </div>
-        任务
-        <span style="float:right;">
-          <el-button @click="getXmTasks" type="primary" icon="el-icon-search" plain></el-button>
-          <el-button @click="batchDel" type="danger" icon="el-icon-delete" plain></el-button>
-        </span>
-      </el-row>
+    <el-row v-show="parentXmMenu.dclass==='3' && xmTasks.length>0">  
       <el-row>
         <el-table :data="xmTasks"  :max-height="400" v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
           <el-table-column type="selection" label="全选"></el-table-column>
-          <el-table-column prop="name" label="名称">
+          <el-table-column prop="name" label="名称"  show-overflow-tooltip>
                 <template slot-scope="scope">
                   <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#1CC7EA'}">
 									<i :class="scope.row.ntype==='1'?'el-icon-odometer':'el-icon-s-operation'" ></i>
-									</div>  {{scope.row.name}}
+									</div>    
+									<span class="cell-text">
+										 {{scope.row.sortLevel}}&nbsp;{{scope.row.name}}
+									</span>
+									<span class="cell-bar">
+									  	<el-input title="序号" style="width:30%;"  v-model="scope.row.sortLevel" placeholder="序号"  @change="editXmTaskSomeFields(scope.row,'sortLevel',$event)"></el-input><el-input title="名称" placeholder="名称" v-model="scope.row.name"  style="width:60%;"  @change="editXmTaskSomeFields(scope.row,'name',$event)"></el-input> 
+									</span>
                 </template>
               </el-table-column>
               <el-table-column
