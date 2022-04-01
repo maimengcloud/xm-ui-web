@@ -53,7 +53,7 @@ export default {
     'parentXmTask','linkProductId'
   ],
   watch: {
-    'parentXmTask.id':function(){
+    'parentXmTask':function(){
       this.initData();
     }
 

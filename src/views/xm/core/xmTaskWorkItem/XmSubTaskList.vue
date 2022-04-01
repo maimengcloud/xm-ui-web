@@ -132,7 +132,7 @@ export default {
     'parentXmTask','linkProjectId'
   ],
   watch: { 
-    'parentXmTask.id':function(){
+    'parentXmTask':function(){
       this.initData();
     },
     'xmTasks':function(){
