@@ -133,7 +133,7 @@ export default {
     'parentXmMenu','linkProjectId'
   ],
   watch: { 
-    'parentXmMenu.menuId':function(){
+    'parentXmMenu':function(){
       this.initData();
     },
     'xmBugs':function(){

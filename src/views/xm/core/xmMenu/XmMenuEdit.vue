@@ -241,17 +241,19 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 		props:['xmMenu','visible','parentMenu','product','dclass','selProject','reload'],
 		watch: {
 	      'xmMenu':function( xmMenu ) {
-	        this.editForm = xmMenu;
+	        //this.editForm = {...xmMenu};
 	      },
 	      'visible':function(visible) {
 	      	if(visible==true){
-				  
-	      		if(this.editForm.startTime && this.editForm.endTime){
-					this.dateRanger.push(this.editForm.startTime)
-					this.dateRanger.push(this.editForm.endTime)
-				}
+				
 				if(this.reload==true){
 					this.searchXmMenus();
+				}else{
+					this.editForm = {...this.xmMenu};
+					if(this.editForm.startTime && this.editForm.endTime){
+						this.dateRanger.push(this.editForm.startTime)
+						this.dateRanger.push(this.editForm.endTime)
+					}
 				}
 	      	}
 	      },
@@ -301,7 +303,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 				//新增界面数据 项目需求表
 				editForm: {
 						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'1',mmUserid:'',mmUsername:'',ntype:'0',childrenCnt:0,sinceVersion:'',
-						proposerId:'',proposerName:'',dlvl:'',dtype:'',priority:'',source:'',calcType:'1',mactWorkload:0,mactAmount:0,mactRate:0,ctime:'',
+						proposerId:'',proposerName:'',dlvl:'',dtype:'',priority:'',source:'',calcType:'1',mactWorkload:0,mactAmount:0,mactRate:0,ctime:'',dclass:'1'
 				},
 				proposerSelectVisible:false,
 				mmUserSelectVisible:false,
