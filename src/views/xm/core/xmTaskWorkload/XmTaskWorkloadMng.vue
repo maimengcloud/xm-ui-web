@@ -395,6 +395,10 @@
         this.getXmTaskWorkloads();
       },
       editXmWorkloadSomeFields(workload,row,fieldName,$event){
+			  if(row.status!='0'){
+          this.$notify.error({showClose:true,message:'该结算单已提交，请重新选择',type:'warning'})
+          return;
+        }
         let params={
           projectId:row.projectId
         };

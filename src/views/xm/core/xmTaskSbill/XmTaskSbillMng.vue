@@ -129,7 +129,7 @@
         </el-table-column>
 				<el-table-column label="操作" width="145" fixed="right">
 					<template scope="scope">
-            <el-button type="text">发审</el-button>
+            <el-button :disabled="scope.row.workload===0 && scope.row.amt===0" type="text" @click="sendToProcessApprova(scope.row)">发审</el-button>
 						<el-button type="text" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"></el-button>
 						<el-button type="text" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"></el-button>
             <el-button type="text" @click="addWorkload(scope.row,scope.$index)" icon="el-icon-plus"></el-button>
@@ -389,8 +389,8 @@
           this.$notify({ showClose:true, message: "只能修改待提交的数据", type: 'error'});
           return;
         }
-        if(!(row.bizFlowState=='0' || row.bizFlowState=='3')){
-          this.$notify({ showClose:true, message: "只能修改未发审、未通过的数据", type: 'error'});
+        if(!(row.bizFlowState=='0' || row.bizFlowState=='3' || row.bizFlowState=='4')){
+          this.$notify({ showClose:true, message: "只能修改未发审、未通过、已取消的数据", type: 'error'});
           return;
         }
         this.thisBillRow = Object.assign({},row);
@@ -481,9 +481,14 @@
 
 
       sendToProcessApprova:function(row){
+        if(row.workload===0 && row.amt===0){
+          this.$notify.error("结算工时和金额同时为空")
+          return;
+        }
+
         var bizKey="xm_task_sbill";
         if( row.bizFlowState=='1' ){
-          this.$notify.error("审核中，不允许重复发审");
+          this.$notify.error("审批中，不允许重复发审");
           return;
         }
         if(row.bizFlowState =='2'){
@@ -517,12 +522,13 @@
           bizKey:bizKey,
           bizUrl:bizUrl,
           restUrl:config.getCoreBasePath()+"/xm/core/xmTaskSbill/processApprova",
+          //restUrl:"http://localhost:8067/api/m1/xm/xm/xm/core/xmTaskSbill/processApprova",
           extVars:extVars,
           flowVars:{
             subscribeTaskEvent:'PROCESS_STARTED,PROCESS_COMPLETED,PROCESS_CANCELLED',
-            shopId:row.shopId,
-            branchId:row.branchId,
-            grade:row
+            shopId:this.userInfo.shopId,
+            branchId:this.userInfo.branchId,
+            sbillId:row.id
           },
         }
         let jsonParmas=encodeURIComponent(JSON.stringify(params));//对方要 decodeURIComponent
