@@ -19,6 +19,7 @@
 		</el-row>
         <xm-iteration-burnout ref="xmIterationBurnout"></xm-iteration-burnout>
         <xm-menu-day-trend ref="xmMenuDayTrend"></xm-menu-day-trend>
+        <xm-menu-day-accumulate ref="xmMenuDayAccumulate"></xm-menu-day-accumulate>
 	</section>
 </template>
 
@@ -28,11 +29,12 @@
 	import { mapGetters } from 'vuex'	
     import xmIterationBurnout from './iteration/burnout'
     import xmMenuDayTrend from './product/menuDayTrend'
+    import xmMenuDayAccumulate from './product/menuDayAccumulate'
 	
 	export default { 
         
 		components: {   
-            xmIterationBurnout,xmMenuDayTrend
+            xmIterationBurnout,xmMenuDayTrend,xmMenuDayAccumulate,
 		},
         props:['xmProduct','xmIteration','xmProject'],
 		computed: {
@@ -76,6 +78,7 @@
                 rptList:[/**{name:'报表名称',category:'报表分类，组织级、产品级、项目级、迭代级、需求、测试、任务',path:'路由路径',imgUrl:'图片路径',query:{参数}} */
                     {rptName:'迭代燃尽图',category:'迭代级',ref:'xmIterationBurnout' },
                     {rptName:'需求每日趋势',category:'产品级',ref:'xmMenuDayTrend' },
+                    {rptName:'需求每日累积',category:'产品级',ref:'xmMenuDayAccumulate' },
                 ],
 			}//end return
 		},//end data
