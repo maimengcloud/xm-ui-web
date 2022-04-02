@@ -98,7 +98,7 @@
 			},
 			listXmIterationStateHis(){
 				var params={iterationId:'IT2022-0001-Z5TA',orderBy:'biz_date asc'}
-				listXmIterationStateHis({iterationId:'IT2022-0001-Z5TA'}).then(res=>{ 
+				listXmIterationStateHis(params).then(res=>{ 
 					this.xmIterationStateHiss=res.data.tips.isOk?res.data.data:this.xmIterationStateHiss;
 				})
 			},

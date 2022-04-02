@@ -18,6 +18,7 @@
             </el-row>
 		</el-row>
         <xm-iteration-burnout ref="xmIterationBurnout"></xm-iteration-burnout>
+        <xm-menu-day-trend ref="xmMenuDayTrend"></xm-menu-day-trend>
 	</section>
 </template>
 
@@ -26,11 +27,12 @@
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询  
 	import { mapGetters } from 'vuex'	
     import xmIterationBurnout from './iteration/burnout'
+    import xmMenuDayTrend from './product/menuDayTrend'
 	
 	export default { 
         
 		components: {   
-            xmIterationBurnout
+            xmIterationBurnout,xmMenuDayTrend
 		},
         props:['xmProduct','xmIteration','xmProject'],
 		computed: {
@@ -72,7 +74,8 @@
 				dateRanger:[], 
                 maxTableHeight:300,
                 rptList:[/**{name:'报表名称',category:'报表分类，组织级、产品级、项目级、迭代级、需求、测试、任务',path:'路由路径',imgUrl:'图片路径',query:{参数}} */
-                    {rptName:'迭代燃尽图',category:'迭代级',ref:'xmIterationBurnout' }
+                    {rptName:'迭代燃尽图',category:'迭代级',ref:'xmIterationBurnout' },
+                    {rptName:'需求每日趋势',category:'产品级',ref:'xmMenuDayTrend' },
                 ],
 			}//end return
 		},//end data
