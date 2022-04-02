@@ -161,14 +161,21 @@ export default {
     taskMng: function (){
       return this.xmBranchState.createUsername;
     },
-    workloadProgress:function (){
-      return Math.round(this.xmBranchState.totalActWorkload/this.xmBranchState.estimateWorkload*100);
+    workloadProgress:function (){ 
+      if(!this.xmBranchState.totalPlanWorkload){
+        return 0;
+      }
+      if(this.xmBranchState.totalActWorkload < this.xmBranchState.totalPlanWorkload){
+        return Math.round(this.xmBranchState.totalActWorkload/this.xmBranchState.totalPlanWorkload*100)
+      }else{
+        return 100;
+      }
     },
     deviation:function (){
       return Math.round(this.xmBranchState.totalActWorkload-this.xmBranchState.estimateWorkload);
     },
     deviationRate:function (){
-      return Math.round((this.xmBranchState.totalActWorkload-this.xmBranchState.estimateWorkload)/this.xmBranchState.estimateWorkload*100);
+      return Math.round((this.xmBranchState.totalActWorkload-this.xmBranchState.estimateWorkload)/this.xmBranchState.totalPlanWorkload*100);
     },
     remainWorkload:function (){
       return this.xmBranchState.totalPlanWorkload - this.xmBranchState.totalActWorkload;
