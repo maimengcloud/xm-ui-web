@@ -114,7 +114,7 @@
 									
 									<div class="info-task"  title="已完成需求数 / 总需求数 ">
 										<span>
-											<span class="item-total finish-task">{{p.finishMenuCnt==null?0:p.finishMenuCnt}}</span>
+											<span class="item-total finish-task">{{p.menuFinishCnt==null?0:p.menuFinishCnt}}</span>
 											<span style="margin: 0 .25rem !important;">/</span>
 											<span class="item-type total-task">{{p.menuCnt==null?0:p.menuCnt}}</span>
 										</span>
@@ -189,7 +189,7 @@
 						</el-table-column> 
 						<el-table-column prop="menuCnt" label="需求数" sortable min-width="80" > 
 							<template slot-scope="scope">
-								<span title="完成的需求数 / 需求总数 ">{{scope.row.menuCnt>0?scope.row.finishMenuCnt+'&nbsp;/&nbsp;'+scope.row.menuCnt:''}}</span>
+								<span title="完成的需求数 / 需求总数 ">{{scope.row.menuCnt>0?scope.row.menuFinishCnt+'&nbsp;/&nbsp;'+scope.row.menuCnt:''}}</span>
 							</template>
 						</el-table-column> 
 						<el-table-column prop="totalTaskCnt" label="任务数" sortable min-width="80" > 

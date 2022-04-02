@@ -32,15 +32,29 @@
 					return this.xmProductStateHiss.map(i=>i.bizDate)
 				}
 			}, 
-			unFinishMenuCntCpd(){
+			menuCloseCntCpd(){
 				if(this.xmProductStateHiss.length==0){
 					return []
 				}else{ 
-					return this.xmProductStateHiss.map(i=>i.menuCnt-i.menuFinishCnt)
+					return this.xmProductStateHiss.map(i=>i.menuCloseCnt)
+				}
+			},
+			menuUnstartCntCpd(){
+				if(this.xmProductStateHiss.length==0){
+					return []
+				}else{ 
+					return this.xmProductStateHiss.map(i=> i.menuUnstartCnt)
+				}
+			},
+			menuExecCntCpd(){
+				if(this.xmProductStateHiss.length==0){
+					return []
+				}else{ 
+					return this.xmProductStateHiss.map(i=> i.menuExecCnt)
 				}
 			},
 			
-			finishMenuCntCpd(){
+			menuFinishCntCpd(){
 				if(this.xmProductStateHiss.length==0){
 					return []
 				}else{ 
@@ -105,7 +119,7 @@
 					{	
 						legend: {
 							right: 40,
-							data: ['未完成故事数','已完成故事数']
+							data: ['未开始故事数','执行中故事数','已完成故事数','已关闭故事数']
 						},
 						xAxis: {
 							type: 'category',
@@ -116,8 +130,8 @@
 						},
 						series: [
 							{
-								name:'未完成故事数',
-								data: this.unFinishMenuCntCpd,
+								name:'未开始故事数',
+								data: this.menuUnstartCntCpd,
 								type: 'line',
 								smooth: true,  
 								itemStyle: {
@@ -133,8 +147,25 @@
 							},
 							
 							{
+								name:'执行中故事数',
+								data: this.menuExecCntCpd,
+								type: 'line',
+								smooth: true, 
+								itemStyle: {
+									normal: {
+										// 折点颜色样式
+										color: 'blue',
+										lineStyle: {
+											// 折线颜色样式
+											color: 'blue'
+										}
+									}
+								},
+							},
+							
+							{
 								name:'已完成故事数',
-								data: this.finishMenuCntCpd,
+								data: this.menuFinishCntCpd,
 								type: 'line',
 								smooth: true, 
 								itemStyle: {
@@ -144,6 +175,23 @@
 										lineStyle: {
 											// 折线颜色样式
 											color: 'green'
+										}
+									}
+								},
+							},
+							
+							{
+								name:'已关闭故事数',
+								data: this.menuCloseCntCpd,
+								type: 'line',
+								smooth: true, 
+								itemStyle: {
+									normal: {
+										// 折点颜色样式
+										color: 'red',
+										lineStyle: {
+											// 折线颜色样式
+											color: 'red'
 										}
 									}
 								},
