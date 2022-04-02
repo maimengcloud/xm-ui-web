@@ -31,3 +31,7 @@ export const addXmGroupState = params => { return axios.post(`${base}/xm/core/xm
 
 export const loadTasksToXmGroupState = params => { return axios.post(`${base}/xm/core/xmGroupState/loadTasksToXmGroupState`, params); };
 
+
+
+//普通查询 条件之间and关系  
+export const listXmGroupStatehHis = params => { return axios.get(`${base}/xm/core/xmGroupState/list/his`, { params: params }); };

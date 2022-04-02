@@ -15,6 +15,7 @@
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询  
 	import { mapGetters } from 'vuex'	 
 	
+	import { listXmIterationStateHis } from '@/api/xm/core/xmIterationState';
 	export default { 
         
 		components: {   
@@ -27,7 +28,7 @@
             
         }, 
 		watch: {  
-			datas(){
+			xmIterationStateHisList(){
 				this.charts();
 			}
 	    },
@@ -44,18 +45,23 @@
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				datas:[],
+				xmIterationStateHisList:[],
 
 			}//end return
 		},//end data
 		methods: { 
+			listXmIterationStateHis(){
+				listXmIterationStateHis({}).then(res=>{ 
+					this.xmIterationStateHisList=res.data.tips.isOk?res.data.data:this.xmIterationStateHisList;
+				})
+			},
 			open(params){
 				this.visible=true;
 				this.filters.product=params.xmProduct
 				this.filters.project=params.xmProject
 				this.filters.iteration=params.xmIteration
 				this.$nextTick(()=>{
-					this.charts()
+					this.listXmIterationStateHis();
 				})
 				
 			},

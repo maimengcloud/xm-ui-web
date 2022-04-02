@@ -40,3 +40,7 @@ export const loadTasksToXmProjectState = params => { return axios.post(`${base}/
 
 
 export const loadTasksSettleToXmProjectState = params => { return axios.post(`${base}/xm/core/xmProjectState/loadTasksSettleToXmProjectState`, params); };
+
+
+//普通查询 条件之间and关系  
+export const listXmProjectStateHis = params => { return axios.get(`${base}/xm/core/xmProjectState/list/his`, { params: params }); };

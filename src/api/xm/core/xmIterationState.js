@@ -31,4 +31,8 @@ export const addXmIterationState = params => { return axios.post(`${base}/xm/cor
 
 export const loadTasksToXmIterationState= params => { return axios.post(`${base}/xm/core/xmIterationState/loadTasksToXmIterationState`, params); };
 
+
+export const listXmIterationStateHis = params => { return axios.get(`${base}/xm/core/xmIterationState/list/his`, { params: params }); };
+
+
  

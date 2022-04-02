@@ -30,3 +30,7 @@ export const editXmProductState = params => { return axios.post(`${base}/xm/core
 export const addXmProductState = params => { return axios.post(`${base}/xm/core/xmProductState/add`, params); };
 
 export const loadTasksToXmProductState = params => { return axios.post(`${base}/xm/core/xmProductState/loadTasksToXmProductState`, params); };
+
+
+//普通查询 条件之间and关系  
+export const listXmProductStateHis = params => { return axios.get(`${base}/xm/core/xmProductState/list/his`, { params: params }); };

@@ -30,4 +30,7 @@ export const editXmBranchState = params => { return axios.post(`${base}/xm/core/
 export const addXmBranchState = params => { return axios.post(`${base}/xm/core/xmBranchState/add`, params); };
 
 export const loadProjectStateToXmBranchState = params => { return axios.post(`${base}/xm/core/xmBranchState/loadProjectStateToXmBranchState`,params); };
+
+
+export const listXmBranchStateHis = params => { return axios.get(`${base}/xm/core/xmBranchState/list/his`, { params: params }); };
  
