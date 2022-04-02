@@ -1,9 +1,9 @@
 <template>
 	<section>
-        <el-dialog title="xxxxxxxxxxxxx" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
+        <el-dialog :title="filters.iteration?'【'+filters.iterationName+'】':''+'迭代燃尽图'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
 			<div>
 				<div class="main" id="main"
-					style="width:600px;height:400px;margin:0 auto;"></div>
+					style="width:100%;height:600px;margin:0 auto;"></div>
 				<div class="progress"></div>
 			</div>
         </el-dialog>
@@ -15,7 +15,7 @@
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询  
 	import { mapGetters } from 'vuex'	 
 	
-	import { listXmIterationStateHis } from '@/api/xm/core/xmIterationState';
+	import { listXmIterationStateHis } from '@/api/xm/core/xmIterationStateHis';
 	export default { 
         
 		components: {   
@@ -25,11 +25,45 @@
 		    ...mapGetters([
 		      'userInfo','roles'
 		    ]), 
-            
+            datesCpd(){
+				if(this.xmIterationStateHiss.length==0){
+					return []
+				}else{ 
+					return this.xmIterationStateHiss.map(i=>i.bizDate)
+				}
+			},
+			
+			remainStandWorkloadsCpd(){
+				if(this.xmIterationStateHiss.length==0){
+					return []
+				}else{ 
+					var max=this.findMax(this.xmIterationStateHiss);
+					var length=this.xmIterationStateHiss.length;
+					return this.xmIterationStateHiss.map((i,index)=>{
+						return max.distBudgetWorkload*(length-index)/length
+					})
+				}
+			},
+			remainWorkloadsCpd(){
+				if(this.xmIterationStateHiss.length==0){
+					return []
+				}else{ 
+					return this.xmIterationStateHiss.map(i=>i.distBudgetWorkload-i.actWorkload)
+				}
+			},
+			
+			remainEstimateWorkloadsCpd(){
+				if(this.xmIterationStateHiss.length==0){
+					return []
+				}else{ 
+					return this.xmIterationStateHiss.map(i=>i.distBudgetWorkload-i.estimateWorkload)
+				}
+			},
+			
         }, 
 		watch: {  
-			xmIterationStateHisList(){
-				this.charts();
+			xmIterationStateHiss(){
+				this.drawWorkload();
 			}
 	    },
 		data() {
@@ -45,14 +79,27 @@
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmIterationStateHisList:[],
+				xmIterationStateHiss:[],
 
 			}//end return
 		},//end data
 		methods: { 
+			 findMax( list ) {
+				var i, max = list[0];
+				
+				if(list.length < 2) return max;
+			
+				for (i = 0; i < list.length; i++) {
+					if (list[i].distBudgetWorkload > max.distBudgetWorkload) {
+						max = list[i];
+					}
+				}
+				return max;
+			},
 			listXmIterationStateHis(){
-				listXmIterationStateHis({}).then(res=>{ 
-					this.xmIterationStateHisList=res.data.tips.isOk?res.data.data:this.xmIterationStateHisList;
+				var params={iterationId:'IT2022-0001-Z5TA',orderBy:'biz_date asc'}
+				listXmIterationStateHis({iterationId:'IT2022-0001-Z5TA'}).then(res=>{ 
+					this.xmIterationStateHiss=res.data.tips.isOk?res.data.data:this.xmIterationStateHiss;
 				})
 			},
 			open(params){
@@ -65,7 +112,7 @@
 				})
 				
 			},
-			charts() {
+			drawWorkload() {
 				this.myChart = this.$echarts.init(document.getElementById("main")); 
 				this.myChart.setOption({
 					title: {
@@ -76,7 +123,7 @@
 					},
 					legend: {
 						right: 40,
-						data: ['剩余工作量', '任务量']
+						data: ['理想线','预估剩余工时', '剩余工时']
 					},
 					xAxis: {
 						type: 'category',
@@ -84,15 +131,15 @@
 						splitLine: {
 							show: false
 						},
-						data: ['迭代一', '迭代二', '迭代三', '迭代四', '迭代五']
+						data: this.datesCpd,
 					},
 					yAxis: {},
 					series: [
 						{
-							name: '剩余工作量',
+							name: '理想线',
 							type: 'line',
 							// stack: '剩余工作量',
-							data: [5, 4.6, 3.9, 2.7, 0.2],
+							data: this.remainStandWorkloadsCpd,
 							itemStyle: {
 								normal: {
 									// 折点颜色样式
@@ -106,15 +153,30 @@
 							// data: this.opinionData,
 						},
 						{
-							name: '任务量',
+							name: '预估剩余工时',
 							type: 'line',
-							data: [5, 4, 3, 2, 0],
+							// stack: '剩余工作量',
+							data: this.remainEstimateWorkloadsCpd,
 							itemStyle: {
 								normal: {
-
-
-	
-								// 折点颜色样式
+									// 折点颜色样式
+									color: 'blue',
+									lineStyle: {
+										// 折线颜色样式
+										color: 'blue'
+									}
+								}
+							},
+							// data: this.opinionData,
+						},
+						{
+							name: '剩余工时',
+							type: 'line',
+							// stack: '剩余工作量',
+							data: this.remainWorkloadsCpd,
+							itemStyle: {
+								normal: {
+									// 折点颜色样式
 									color: 'orange',
 									lineStyle: {
 										// 折线颜色样式
@@ -122,7 +184,8 @@
 									}
 								}
 							},
-						},
+							// data: this.opinionData,
+						}, 
 					]
 				})
 			}
