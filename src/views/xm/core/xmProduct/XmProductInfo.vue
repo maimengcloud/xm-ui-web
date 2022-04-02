@@ -73,16 +73,10 @@
 							<span slot="title"><i class="el-icon-coin"></i>费用</span> 
 						</el-menu-item>
 				</el-submenu >
-				<el-submenu index="监控" class="hidden-sm-and-down">
-					<template slot="title">监控</template>
-						<el-menu-item   index="考核">
+				<el-submenu index="效能" class="hidden-sm-and-down">
+					<template slot="title">效能</template>
+						<el-menu-item   index="报表">
 							<span slot="title"><i class="el-icon-view"></i>考核</span> 
-						</el-menu-item>
-						<el-menu-item index="项目监控">
-							<span slot="title"><i class="el-icon-video-camera"></i>项目监控</span>
-						</el-menu-item>
-						<el-menu-item   index="需求监控">
-							<span slot="title"><i class="el-icon-video-camera"></i>需求监控</span>
 						</el-menu-item> 
 						<el-menu-item   index="风险">
 							<span slot="title"><i class="el-icon-question"></i>风险</span>
@@ -101,13 +95,7 @@
 						</el-menu-item> 
 				</el-submenu > 
 				<el-submenu index="更多">
-					<template slot="title">更多 </template>
-					<el-menu-item  index="需求监控" >
-						<span slot="title"><i class="el-icon-video-camera"  ></i>需求监控</span>
-					</el-menu-item>
-					<el-menu-item   index="项目监控">
-						<span slot="title"><i class="el-icon-video-camera"  ></i>项目监控</span>
-					</el-menu-item> 
+					<template slot="title">更多 </template> 
 					<el-menu-item   index="合同管理">
 						<span slot="title"><i class="el-icon-s-data"  ></i>合同管理</span>
 					</el-menu-item>
@@ -140,8 +128,11 @@
 						<span slot="title"><i class="el-icon-setting"  ></i>环境清单</span>
 
 					</el-menu-item>
+					<el-menu-item   index="报表">
+						<span slot="title"><i class="el-icon-view"></i>考核</span> 
+					</el-menu-item> 
 					<el-menu-item   index="风险">
-						<span slot="title"><i class="el-icon-question"  ></i>风险</span>
+						<span slot="title"><i class="el-icon-question"></i>风险</span>
 					</el-menu-item>
 					<el-menu-item   index="论坛">
 						<span slot="title"><i class="el-icon-date"  ></i>论坛</span>
