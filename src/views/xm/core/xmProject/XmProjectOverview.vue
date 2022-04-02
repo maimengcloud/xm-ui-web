@@ -24,11 +24,8 @@
               </div>
               <el-row style="margin-bottom:18px">
                 <el-row>
-                  <span v-text="taskMng"></span>
-                </el-row>
-                <el-row>
-                  <span>项目负责人</span>
-                </el-row>
+                  <span>项目负责人</span><span v-text="taskMng"></span>
+                </el-row> 
               </el-row>
               <el-row style="margin-bottom:18px">
                 <el-col :span="8" @click="">
@@ -152,12 +149,12 @@
                 <span>项目工时</span>
               </div>
               <div>
-                <el-row style="padding:25px;">
+                <el-row  >
                   <div class="item">
                     <el-col :span="8">
                       <div>
                         <div style="text-align:center;">
-                          <span style="font-size:24px;" v-text="this.selProject.totalPlanWorkload"></span>
+                          <span style="font-size:24px;" v-text="this.selProject.estimateWorkload"></span>
                           <span style="font-size:5px;">h</span>
                         </div>
                         <div style="text-align:center;font-size:5px;">预估工时</div>
@@ -183,7 +180,7 @@
                     </el-col>
                   </div>
                 </el-row>
-                <el-row style="padding:25px;">
+                <el-row  >
                   <div class="item">
                     <el-col :span="8">
                       <div>
@@ -216,11 +213,11 @@
                 </el-row>
                 <el-row>
                   <span style="margin-left:20px;">项目预计进度</span>
-                  <el-progress style="width: 90%;margin-left:20px;margin-top: 10px;margin-bottom: 20px;" :text-inside="true" :stroke-width="24" :percentage="planProgress"></el-progress>
+                  <el-progress style="width: 90%;margin-left:20px;margin-top: 10px;margin-bottom: 20px;"   :stroke-width="14" :percentage="planProgress"></el-progress>
                 </el-row>
                 <el-row>
                   <span style="margin-left:20px;">项目实际进度</span>
-                  <el-progress style="width: 90%;margin-left:20px;margin-top: 10px;" :text-inside="true" :stroke-width="24" :percentage="realProgress"></el-progress>
+                  <el-progress style="width: 90%;margin-left:20px;margin-top: 10px;"  color="#47CBF6" :stroke-width="14" :percentage="realProgress"></el-progress>
                 </el-row>
 
               </div>
@@ -297,32 +294,18 @@ export default {
       return Math.round(this.selProject.totalActWorkload/this.selProject.totalPlanWorkload*100);
     },
     deviation:function (){
-      let now = new Date();
-      let taskStartTime = new Date(this.selProject.startTime);
-      let taskEndTime = new Date(this.selProject.endTime);
-      if(now<=taskEndTime){
-        let allDays=taskEndTime-taskStartTime;
-        return this.selProject.totalActWorkload - Math.round((now-taskStartTime)/allDays*this.selProject.totalPlanWorkload)
-      }else{
-        return this.selProject.totalActWorkload - this.selProject.totalPlanWorkload;
-      }
+      
+        return this.selProject.totalActWorkload -  this.selProject.estimateWorkload
+       
     },
     deviationRate:function (){
-      return Math.round(this.deviation/this.selProject.totalPlanWorkload*100);
+      return Math.round(this.deviation/this.selProject.estimateWorkload*100);
     },
     remainWorkload:function (){
       return this.selProject.totalPlanWorkload - this.selProject.totalActWorkload;
     },
     planProgress:function (){
-      let now = new Date();
-      let taskStartTime = new Date(this.selProject.startTime);
-      let taskEndTime = new Date(this.selProject.endTime);
-      if(now<=taskEndTime){
-        let allDays=taskEndTime-taskStartTime;
-        return Math.round((now-taskStartTime)/allDays*100)
-      }else{
-        return 100;
-      }
+        return Math.round(this.selProject.estimateWorkload/this.selProject.totalPlanWorkload*100);
     },
     realProgress:function (){
       if(this.selProject.totalActWorkload < this.selProject.totalPlanWorkload){

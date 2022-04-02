@@ -22,11 +22,8 @@
               </div>
               <el-row style="margin-bottom:18px">
                 <el-row>
-                  <span v-text="this.xmProduct.pmUsername"></span>
-                </el-row>
-                <el-row>
-                  <span>产品负责人</span>
-                </el-row>
+                  <span>产品负责人</span><span v-text="this.xmProduct.pmUsername"></span>
+                </el-row> 
               </el-row>
               <el-row style="margin-bottom:18px">
                 <el-col :span="8" @click="">
@@ -140,12 +137,12 @@
               <span>产品工时</span>
             </div>
             <div>
-              <el-row style="padding:25px;">
+              <el-row >
                 <div class="item">
                   <el-col :span="8">
                     <div>
                       <div style="text-align:center;">
-                        <span style="font-size:24px;" v-text="this.xmProductCpd.planWorkload"></span>
+                        <span style="font-size:24px;" v-text="this.xmProductCpd.estimateWorkload"></span>
                         <span style="font-size:5px;">h</span>
                       </div>
                       <div style="text-align:center;font-size:5px;">预估工时</div>
@@ -171,7 +168,7 @@
                   </el-col>
                 </div>
               </el-row>
-              <el-row style="padding:25px;">
+              <el-row >
                 <div class="item">
                   <el-col :span="8">
                     <div>
@@ -204,11 +201,11 @@
               </el-row>
               <el-row>
                 <span style="margin-left:20px;">工时预计进度</span>
-                <el-progress style="width: 90%;margin-left:20px;margin-top: 10px;margin-bottom: 20px;" :text-inside="true" :stroke-width="20" :percentage="planProgress"></el-progress>
+                <el-progress style="width: 90%;margin-left:20px;margin-top: 10px;margin-bottom: 20px;"   :stroke-width="14" :percentage="planProgress"></el-progress>
               </el-row>
               <el-row>
                 <span style="margin-left:20px;">工时实际进度</span>
-                <el-progress style="width: 90%;margin-left:20px;margin-top: 10px;" :text-inside="true" :stroke-width="20" :percentage="realProgress"></el-progress>
+                <el-progress style="width: 90%;margin-left:20px;margin-top: 10px;" color="#47CBF6" :stroke-width="14" :percentage="realProgress"></el-progress>
               </el-row>
             </div>
           </el-card>

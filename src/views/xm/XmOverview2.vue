@@ -175,7 +175,7 @@ export default {
       return Math.round(this.xmBranchState.totalActWorkload-this.xmBranchState.estimateWorkload);
     },
     deviationRate:function (){
-      return Math.round((this.xmBranchState.totalActWorkload-this.xmBranchState.estimateWorkload)/this.xmBranchState.totalPlanWorkload*100);
+      return Math.round((this.xmBranchState.totalActWorkload-this.xmBranchState.estimateWorkload)/this.xmBranchState.estimateWorkload*100);
     },
     remainWorkload:function (){
       return this.xmBranchState.totalPlanWorkload - this.xmBranchState.totalActWorkload;

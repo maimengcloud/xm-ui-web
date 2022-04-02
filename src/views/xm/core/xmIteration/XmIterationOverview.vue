@@ -20,11 +20,8 @@
               </div>
               <el-row style="margin-bottom:18px">
                 <el-row>
-                  <span v-text="this.xmIteration.adminUsername"></span>
-                </el-row>
-                <el-row>
-                  <span>负责人</span>
-                </el-row>
+                  <span>负责人</span> <span v-text="this.xmIteration.adminUsername"></span>
+                </el-row> 
               </el-row>
               <el-row style="margin-bottom:18px">
                 <el-col :span="8" @click="">
@@ -138,12 +135,12 @@
                 <span>迭代工时</span>
               </div>
               <div>
-                <el-row style="padding:25px;">
+                <el-row >
                   <div class="item">
                     <el-col :span="8">
                       <div>
                         <div style="text-align:center;">
-                          <span style="font-size:24px;" v-text="this.xmIteration.distBudgetWorkload"></span>
+                          <span style="font-size:24px;" v-text="this.xmIteration.estimateWorkload"></span>
                           <span style="font-size:5px;">h</span>
                         </div>
                         <div style="text-align:center;font-size:5px;">预估工时</div>
@@ -169,7 +166,7 @@
                     </el-col>
                   </div>
                 </el-row>
-                <el-row style="padding:25px;">
+                <el-row  >
                   <div class="item">
                     <el-col :span="8">
                       <div>
@@ -202,11 +199,11 @@
                 </el-row>
                 <el-row>
                   <span style="margin-left:20px;">项目预计进度</span>
-                  <el-progress style="width: 90%;margin-left:20px;margin-top: 10px;margin-bottom: 20px;" :text-inside="true" :stroke-width="24" :percentage="planProgress"></el-progress>
+                  <el-progress style="width: 90%;margin-left:20px;margin-top: 10px;margin-bottom: 20px;"   :stroke-width="14" :percentage="planProgress"></el-progress>
                 </el-row>
                 <el-row>
                   <span style="margin-left:20px;">项目实际进度</span>
-                  <el-progress style="width: 90%;margin-left:20px;margin-top: 10px;" :text-inside="true" :stroke-width="24" :percentage="realProgress"></el-progress>
+                  <el-progress style="width: 90%;margin-left:20px;margin-top: 10px;" color="#47CBF6"    :stroke-width="14" :percentage="realProgress"></el-progress>
                 </el-row>
 
               </div>
@@ -263,33 +260,17 @@ export default {
       }
       return Math.round(this.xmIteration.actWorkload/this.xmIteration.distBudgetWorkload*100);
     },
-    deviation:function (){
-      let now = new Date();
-      let startTime = new Date(this.xmIteration.startTime);
-      let endTime = new Date(this.xmIteration.endTime);
-      if(now<=endTime){
-        let allDays=endTime-startTime;
-        return this.xmIteration.actWorkload - Math.round((now-startTime)/allDays*this.xmIteration.distBudgetWorkload)
-      }else{
-        return this.xmIteration.actWorkload - this.xmIteration.distBudgetWorkload;
-      }
+    deviation:function (){ 
+        return this.xmIteration.actWorkload -this.xmIteration.estimateWorkload
     },
     deviationRate:function (){
-      return Math.round(this.deviation/this.xmIteration.distBudgetWorkload*100);
+      return Math.round(this.deviation/this.xmIteration.estimateWorkload*100);
     },
     remainWorkload:function (){
       return this.xmIteration.distBudgetWorkload - this.xmIteration.actWorkload;
     },
     planProgress:function (){
-      let now = new Date();
-      let startTime = new Date(this.xmIteration.startTime);
-      let endTime = new Date(this.xmIteration.endTime);
-      if(now<=endTime){
-        let allDays=endTime-startTime;
-        return Math.round((now-startTime)/allDays*100)
-      }else{
-        return 100;
-      }
+        return Math.round(this.xmIteration.estimateWorkload/this.xmIteration.distBudgetWorkload*100)
     },
     realProgress:function (){
       if(this.xmIteration.actWorkload < this.xmIteration.distBudgetWorkload){
