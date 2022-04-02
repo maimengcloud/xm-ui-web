@@ -20,10 +20,10 @@
             </div>
             <el-row style="margin-bottom:18px">
               <el-row>
-                <span v-text="this.xmMenu.mmUsername"></span>
+                <span>需求管理员</span> <span v-text="this.xmMenu.mmUsername"></span>
               </el-row>
               <el-row>
-                <span>需求管理员</span>
+               
               </el-row>
             </el-row>
             <el-row style="margin-bottom:18px">
@@ -128,12 +128,12 @@
               <span>项目工时</span>
             </div>
             <div>
-              <el-row style="padding:25px;">
+              <el-row >
                 <div class="item">
                   <el-col :span="8">
                     <div>
                       <div style="text-align:center;">
-                        <span style="font-size:24px;" v-text="this.xmMenu.planWorkload"></span>
+                        <span style="font-size:24px;" v-text="estimateWorkload"></span>
                         <span style="font-size:5px;">h</span>
                       </div>
                       <div style="text-align:center;font-size:5px;">预估工时</div>
@@ -159,7 +159,7 @@
                   </el-col>
                 </div>
               </el-row>
-              <el-row style="padding:25px;">
+              <el-row >
                 <div class="item">
                   <el-col :span="8">
                     <div>
@@ -192,11 +192,11 @@
               </el-row>
               <el-row>
                 <span style="margin-left:20px;">项目预计进度</span>
-                <el-progress style="width: 90%;margin-left:20px;margin-top: 10px;margin-bottom: 20px;" :text-inside="true" :stroke-width="24" :percentage="planProgress"></el-progress>
+                <el-progress style="width: 90%;margin-left:20px;margin-top: 10px;margin-bottom: 20px;"  :stroke-width="14" :percentage="planProgress"></el-progress>
               </el-row>
               <el-row>
                 <span style="margin-left:20px;">项目实际进度</span>
-                <el-progress style="width: 90%;margin-left:20px;margin-top: 10px;" :text-inside="true" :stroke-width="24" :percentage="realProgress"></el-progress>
+                <el-progress style="width: 90%;margin-left:20px;margin-top: 10px;" color="#47CBF6" :stroke-width="14" :percentage="realProgress"></el-progress>
               </el-row>
             </div>
           </el-card>
@@ -257,36 +257,34 @@
           return '暂无';
         }
       },
+      estimateWorkload:function(){
+         let now = new Date();
+          let startTime = new Date(this.xmMenu.planStartTime);
+          let endTime = new Date(this.xmMenu.planEndTime);
+          if(now<startTime){
+            return 0;
+          }
+          if(now<=endTime){
+            let allDays=endTime-startTime;
+            return Math.round((now-startTime)/allDays*this.xmMenu.planWorkload)
+          }else{
+            return this.xmMenu.planWorkload;
+          }
+      },
       workloadProgress:function (){
         return Math.round(this.xmMenu.actWorkload/this.xmMenu.planWorkload*100);
       },
-      deviation:function (){
-        let now = new Date();
-        let startTime = new Date(this.xmMenu.planStartTime);
-        let endTime = new Date(this.xmMenu.planEndTime);
-        if(now<=endTime){
-          let allDays=endTime-startTime;
-          return this.xmMenu.planWorkload - Math.round((now-startTime)/allDays*this.xmMenu.planWorkload)
-        }else{
-          return this.xmMenu.actWorkload - this.xmMenu.planWorkload;
-        }
+      deviation:function (){ 
+          return this.xmMenuCpd.actWorkload-this.estimateWorkload;
       },
       deviationRate:function (){
-        return Math.round(this.deviation/this.xmMenu.planWorkload*100);
+        return Math.round(this.deviation/this.estimateWorkload*100);
       },
       remainWorkload:function (){
         return this.xmMenu.planWorkload - this.xmMenu.actWorkload;
       },
-      planProgress:function (){
-        let now = new Date();
-        let startTime = new Date(this.xmMenu.planStartTime);
-        let endTime = new Date(this.xmMenu.planEndTime);
-        if(now<=endTime){
-          let allDays=endTime-startTime;
-          return Math.round((now-startTime)/allDays*100)
-        }else{
-          return 100;
-        }
+      planProgress:function (){ 
+         return Math.round(this.xmMenuCpd.estimateWorkload/this.planWorkload *100);
       },
       realProgress:function (){
         if(this.xmMenu.actWorkload < this.xmMenu.planWorkload){
