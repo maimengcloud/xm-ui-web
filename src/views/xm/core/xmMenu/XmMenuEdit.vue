@@ -121,11 +121,8 @@
 					</el-tab-pane>
 						<el-tab-pane label="概述" name="4">
 							<el-form-item label="需求概述" prop="remark">
-								<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="editForm.remark" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
-							</el-form-item>
-							<el-row class="padding">
- 								<el-button v-loading="load.edit" type="primary" @click.native="editXmMenuSomeFields(editForm,'remark',editForm.remark)" :disabled="load.edit==true">提交概述</el-button>
-							</el-row>
+								<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="editForm.remark"  @click.native="editXmMenuSomeFields(editForm,'remark',editForm.remark)" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
+							</el-form-item> 
 						</el-tab-pane>
 						<el-tab-pane :label="'子工作项'+(subWorkItemNum>=0?'('+subWorkItemNum+')':'')" name="6">
 							 <xm-sub-work-item :parent-xm-menu="editForm" :link-project-id="selProject?selProject.id:null" @sub-work-item-num="setSubWorkItemNum" @add-sub-menu="onAddSubMenu"></xm-sub-work-item>
@@ -243,7 +240,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 	      'xmMenu':function( xmMenu ) {
 	        //this.editForm = {...xmMenu};
 	      },
-	      'visible':function(visible) {
+	      'visible':function(visible) { 
 	      	if(visible==true){
 				
 				if(this.reload==true){
@@ -251,6 +248,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 				}else{
 					this.editForm = {...this.xmMenu};
 					if(this.editForm.startTime && this.editForm.endTime){
+						this.dateRanger=[]
 						this.dateRanger.push(this.editForm.startTime)
 						this.dateRanger.push(this.editForm.endTime)
 					}

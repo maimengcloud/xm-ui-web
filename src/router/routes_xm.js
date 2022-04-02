@@ -87,6 +87,23 @@ export default {
         hidden:true
       },
     },
+    
+    {
+      path: '/xm/rpt', 
+      name: 'reportIndex', 
+      component: Layout,
+      iconCls: 'fa el-icon-menu',
+      meta: {
+        title: '报表统计',
+        icon: 'report',
+        hidden:true
+      },
+      
+      children: [
+
+        { path: 'reportIndex', component: _import('xm/rpt/reportIndex'), name: 'reportIndex', meta: { title: '报表统计',  icon: 'chart' }}, 
+      ]
+    },
     {
       path: '/xm/core',
       component: Layout,

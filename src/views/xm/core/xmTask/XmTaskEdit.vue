@@ -613,6 +613,7 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 				editXmTaskSomeFields(params).then(res=>{
 					var tips = res.data.tips;
 					if(tips.isOk){
+						this.$emit('edit-fields',params)
 						 Object.assign(row,params) 
 					}else{
 						this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})

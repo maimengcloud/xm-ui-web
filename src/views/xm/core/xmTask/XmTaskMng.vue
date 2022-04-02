@@ -714,6 +714,7 @@
         @after-add-submit="afterExecEditSubmit"
         @after-edit-submit="afterExecEditSubmit"
         @submit="afterEditSubmit"
+        @edit-fields="onEditSomeFields"
       ></xm-task-edit>
     </el-dialog>
     
@@ -1472,8 +1473,7 @@ export default {
     //显示编辑界面 XmTask xm_task
     showEdit: function (row, index) {
       this.editFormVisible = true;
-      this.editForm = Object.assign({}, row);
-      console.log("editForm", this.editForm);
+      this.editForm=row 
     },
     showTaskTemplate: function (row) {
       if(!this.checkCanAdd(row)){
@@ -1556,6 +1556,9 @@ export default {
       var row=this.editForm
       this.getXmTasks()
       treeTool.reloadChildren(this.$refs.table,this.maps,row.parentTaskid,'parentTaskid',this.loadXmTaskLazy)
+    },
+    onEditSomeFields(params){
+      Object.assign(this.editForm,params )
     },
     //选择行xmTask
     selsChange: function (sels) {
