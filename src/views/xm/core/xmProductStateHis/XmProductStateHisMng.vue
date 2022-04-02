@@ -2,13 +2,13 @@
 	<section class="page-container border padding">
 		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
-			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmProductStates" icon="el-icon-search">查询</el-button>
+			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmProductStateHiss" icon="el-icon-search">查询</el-button>
 			<el-button type="primary" @click="showAdd" icon="el-icon-plus"> </el-button>
 			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>
 		</el-row>
 		<el-row class="padding-top">
-			<!--列表 XmProductState 功能状态表,无需前端维护，所有数据由汇总统计得出-->
-			<el-table ref="xmProductStateTable" :data="xmProductStates" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<!--列表 XmProductStateHis 功能状态表,无需前端维护，所有数据由汇总统计得出-->
+			<el-table ref="xmProductStateHisTable" :data="xmProductStateHiss" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip></el-table-column>
 				<el-table-column sortable type="index" width="55" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="planStartTime" label="开始时间" min-width="80" show-overflow-tooltip></el-table-column>
@@ -62,14 +62,14 @@
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 		</el-row>
 		<el-row>
-			<!--编辑 XmProductState 功能状态表,无需前端维护，所有数据由汇总统计得出界面-->
+			<!--编辑 XmProductStateHis 功能状态表,无需前端维护，所有数据由汇总统计得出界面-->
 			<el-drawer title="编辑功能状态表,无需前端维护，所有数据由汇总统计得出" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
-				  <xm-product-state-edit op-type="edit" :xm-product-state="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-product-state-edit>
+				  <xm-product-state-his-edit op-type="edit" :xm-product-state-his="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-product-state-his-edit>
 			</el-drawer>
 
-			<!--新增 XmProductState 功能状态表,无需前端维护，所有数据由汇总统计得出界面-->
+			<!--新增 XmProductStateHis 功能状态表,无需前端维护，所有数据由汇总统计得出界面-->
 			<el-drawer title="新增功能状态表,无需前端维护，所有数据由汇总统计得出" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
-				<xm-product-state-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-product-state-edit>
+				<xm-product-state-his-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-product-state-his-edit>
 			</el-drawer>
 	    </el-row>
 	</section>
@@ -79,14 +79,14 @@
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库 
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
-	import { listXmProductState, delXmProductState, batchDelXmProductState } from '@/api/xm/core/xmProductState';
-	import  XmProductStateEdit from './XmProductStateEdit';//新增修改界面
+	import { listXmProductStateHis, delXmProductStateHis, batchDelXmProductStateHis } from '@/api/xm/core/xmProductStateHis';
+	import  XmProductStateHisEdit from './XmProductStateHisEdit';//新增修改界面
 	import { mapGetters } from 'vuex'
 	
 	export default {
-	    name:'xmProductStateMng',
+	    name:'xmProductStateHisMng',
 		components: {
-		    XmProductStateEdit,
+		    XmProductStateHisEdit,
 		},
 		props:['visible'],
 		computed: {
@@ -97,7 +97,7 @@
             visible(val){
                 if(val==true){
                     this.initData();
-                    this.searchXmProductStates()
+                    this.searchXmProductStateHiss()
                 }
             }
 		},
@@ -106,7 +106,7 @@
 				filters: {
 					key: ''
 				},
-				xmProductStates: [],//查询结果
+				xmProductStateHiss: [],//查询结果
 				pageInfo:{//分页数据
 					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
 					pageSize:10,//每页数据
@@ -120,7 +120,7 @@
 				dicts:{
 				    //sex: [{id:'1',name:'男'},{id:'2',name:'女'}]
 				},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
-				addFormVisible: false,//新增xmProductState界面是否显示
+				addFormVisible: false,//新增xmProductStateHis界面是否显示
 				addForm: {
 					planStartTime:'',planEndTime:'',actStartTime:'',actEndTime:'',planWorkload:'',actWorkload:'',planCostAmount:'',actCostAmount:'',finishRate:'',demandRate:'',designRate:'',devRate:'',uatRate:'',sitRate:'',ctime:'',ltime:'',cuserid:'',cusername:'',calcTime:'',planWorkhours:'',planWorkerCnt:'',closedBugs:'',activeBugs:'',confirmedBugs:'',resolvedBugs:'',productId:'',productName:'',testCases:'',execCases:'',designCases:'',finishCases:'',projectCnt:'',iterationCnt:'',taskCnt:'',finishTaskCnt:'',bizDate:'',branchId:'',bugCnt:'',menuCnt:'',menuFinishCnt:'',estimateWorkload:''
 				},
@@ -135,11 +135,11 @@
 		methods: { 
 			handleSizeChange(pageSize) { 
 				this.pageInfo.pageSize=pageSize; 
-				this.getXmProductStates();
+				this.getXmProductStateHiss();
 			},
 			handleCurrentChange(pageNum) {
 				this.pageInfo.pageNum = pageNum;
-				this.getXmProductStates();
+				this.getXmProductStateHiss();
 			},
 			// 表格排序 obj.order=ascending/descending,需转化为 asc/desc ; obj.prop=表格中的排序字段,字段驼峰命名
 			sortChange( obj ){
@@ -157,14 +157,14 @@
 					this.pageInfo.orderFields=[util.toLine(obj.prop)]; 
 					this.pageInfo.orderDirs=[dir];
 				}
-				this.getXmProductStates();
+				this.getXmProductStateHiss();
 			},
-			searchXmProductStates(){
+			searchXmProductStateHiss(){
 				 this.pageInfo.count=true; 
-				 this.getXmProductStates();
+				 this.getXmProductStateHiss();
 			},
-			//获取列表 XmProductState 功能状态表,无需前端维护，所有数据由汇总统计得出
-			getXmProductStates() {
+			//获取列表 XmProductStateHis 功能状态表,无需前端维护，所有数据由汇总统计得出
+			getXmProductStateHiss() {
 				let params = {
 					pageSize: this.pageInfo.pageSize,
 					pageNum: this.pageInfo.pageNum,
@@ -183,12 +183,12 @@
 				}
 
 				this.load.list = true;
-				listXmProductState(params).then((res) => {
+				listXmProductStateHis(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
-						this.xmProductStates = res.data.data;
+						this.xmProductStateHiss = res.data.data;
 					}else{
 						this.$notify({ showClose:true, message: tips.msg, type: 'error' });
 					} 
@@ -196,12 +196,12 @@
 				}).catch( err => this.load.list = false );
 			},
 
-			//显示编辑界面 XmProductState 功能状态表,无需前端维护，所有数据由汇总统计得出
+			//显示编辑界面 XmProductStateHis 功能状态表,无需前端维护，所有数据由汇总统计得出
 			showEdit: function ( row,index ) {
 				this.editFormVisible = true;
 				this.editForm = Object.assign({}, row);
 			},
-			//显示新增界面 XmProductState 功能状态表,无需前端维护，所有数据由汇总统计得出
+			//显示新增界面 XmProductStateHis 功能状态表,无需前端维护，所有数据由汇总统计得出
 			showAdd: function () {
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);
@@ -209,51 +209,51 @@
 			afterAddSubmit(){
 				this.addFormVisible=false;
 				this.pageInfo.count=true;
-				this.getXmProductStates();
+				this.getXmProductStateHiss();
 			},
 			afterEditSubmit(){
 				this.editFormVisible=false;
 			},
-			//选择行xmProductState
+			//选择行xmProductStateHis
 			selsChange: function (sels) {
 				this.sels = sels;
 			}, 
-			//删除xmProductState
+			//删除xmProductStateHis
 			handleDel: function (row,index) { 
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
 				}).then(() => { 
 					this.load.del=true;
-					let params = {  productId:row.productId };
-					delXmProductState(params).then((res) => {
+					let params = {  productId:row.productId,  bizDate:row.bizDate };
+					delXmProductStateHis(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
 						if(tips.isOk){ 
 							this.pageInfo.count=true;
-							this.getXmProductStates();
+							this.getXmProductStateHiss();
 						}
 						this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
-			//批量删除xmProductState
+			//批量删除xmProductStateHis
 			batchDel: function () {
 				if(this.sels.length<=0){
 				    return;
 				}
 				var params=this.sels.map(i=>{
-				    return { productId:i.productId}
+				    return { productId:i.productId,  bizDate:i.bizDate}
 				})
 				this.$confirm('确认删除选中记录吗？', '提示', {
 					type: 'warning'
 				}).then(() => { 
 					this.load.del=true;
-					batchDelXmProductState(params).then((res) => {
+					batchDelXmProductStateHis(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
 						if( tips.isOk ){ 
 							this.pageInfo.count=true;
-							this.getXmProductStates(); 
+							this.getXmProductStateHiss(); 
 						}
 						this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
@@ -272,8 +272,8 @@
 			this.$nextTick(() => {
 			    //initSimpleDicts('all',['sex','gradeLvl']).then(res=>this.dicts=res.data.data);
 			    this.initData()
-				this.searchXmProductStates();
-                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmProductStateTable.$el)
+				this.searchXmProductStateHiss();
+                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmProductStateHisTable.$el)
 
         	});
 		}

@@ -3,7 +3,7 @@
 	    <el-row class="page-header">
 	    </el-row>
 		<el-row class="page-main" :style="{overflowX:'auto',height:maxTableHeight+'px'}" ref="table">
-		<!--编辑界面 XmIterationState 迭代定义--> 
+		<!--编辑界面 XmIterationStateHis 迭代定义--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">
 				<el-form-item label="已分配到任务的预算从任务表汇总而来" prop="distBudgetCost">
 					<el-input v-model="editForm.distBudgetCost" placeholder="已分配到任务的预算从任务表汇总而来"></el-input>
@@ -106,11 +106,11 @@
 	import util from '@/common/js/util';//全局公共库
 	import config from "@/common/config"; //全局公共库import
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
-	import { addXmIterationState,editXmIterationState } from '@/api/xm/core/xmIterationState';
+	import { addXmIterationStateHis,editXmIterationStateHis } from '@/api/xm/core/xmIterationStateHis';
 	import { mapGetters } from 'vuex'
 	
 	export default {
-	    name:'xmIterationStateEdit',
+	    name:'xmIterationStateHisEdit',
 	    components: {
 
         },
@@ -118,12 +118,12 @@
 		    ...mapGetters([ 'userInfo'  ]),
 
 		},
-		props:['xmIterationState','visible','opType'],
+		props:['xmIterationStateHis','visible','opType'],
 
 		watch: {
-	      'xmIterationState':function( xmIterationState ) {
-	        if(xmIterationState){
-	            this.editForm = xmIterationState;
+	      'xmIterationStateHis':function( xmIterationStateHis ) {
+	        if(xmIterationStateHis){
+	            this.editForm = xmIterationStateHis;
 	        }
 
 	      },
@@ -155,16 +155,16 @@
 				this.$refs['editFormRef'].resetFields();
 				this.$emit('cancel');
 			},
-			//新增、编辑提交XmIterationState 迭代定义父组件监听@submit="afterEditSubmit"
+			//新增、编辑提交XmIterationStateHis 迭代定义父组件监听@submit="afterEditSubmit"
 			saveSubmit: function () {
 				this.$refs.editFormRef.validate((valid) => {
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
 							this.load.edit=true
 							let params = Object.assign({}, this.editForm);
-							var func=addXmIterationState
+							var func=addXmIterationStateHis
 							if(this.currOpType=='edit'){
-							    func=editXmIterationState
+							    func=editXmIterationStateHis
 							}
 							func(params).then((res) => {
                                 this.load.edit=false
@@ -185,8 +185,8 @@
 			},
 			initData: function(){
 			    this.currOpType=this.opType
-			    if(this.xmIterationState){
-                    this.editForm = Object.assign({},this.xmIterationState);
+			    if(this.xmIterationStateHis){
+                    this.editForm = Object.assign({},this.xmIterationStateHis);
                 }
 
                 if(this.opType=='edit'){

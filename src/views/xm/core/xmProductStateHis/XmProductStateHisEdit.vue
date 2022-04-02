@@ -3,7 +3,7 @@
 	    <el-row class="page-header">
 	    </el-row>
 		<el-row class="page-main" :style="{overflowX:'auto',height:maxTableHeight+'px'}" ref="table">
-		<!--编辑界面 XmProductState 功能状态表,无需前端维护，所有数据由汇总统计得出--> 
+		<!--编辑界面 XmProductStateHis 功能状态表,无需前端维护，所有数据由汇总统计得出--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">
 				<el-form-item label="开始时间" prop="planStartTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.planStartTime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
@@ -142,11 +142,11 @@
 	import util from '@/common/js/util';//全局公共库
 	import config from "@/common/config"; //全局公共库import
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
-	import { addXmProductState,editXmProductState } from '@/api/xm/core/xmProductState';
+	import { addXmProductStateHis,editXmProductStateHis } from '@/api/xm/core/xmProductStateHis';
 	import { mapGetters } from 'vuex'
 	
 	export default {
-	    name:'xmProductStateEdit',
+	    name:'xmProductStateHisEdit',
 	    components: {
 
         },
@@ -154,12 +154,12 @@
 		    ...mapGetters([ 'userInfo'  ]),
 
 		},
-		props:['xmProductState','visible','opType'],
+		props:['xmProductStateHis','visible','opType'],
 
 		watch: {
-	      'xmProductState':function( xmProductState ) {
-	        if(xmProductState){
-	            this.editForm = xmProductState;
+	      'xmProductStateHis':function( xmProductStateHis ) {
+	        if(xmProductStateHis){
+	            this.editForm = xmProductStateHis;
 	        }
 
 	      },
@@ -191,16 +191,16 @@
 				this.$refs['editFormRef'].resetFields();
 				this.$emit('cancel');
 			},
-			//新增、编辑提交XmProductState 功能状态表,无需前端维护，所有数据由汇总统计得出父组件监听@submit="afterEditSubmit"
+			//新增、编辑提交XmProductStateHis 功能状态表,无需前端维护，所有数据由汇总统计得出父组件监听@submit="afterEditSubmit"
 			saveSubmit: function () {
 				this.$refs.editFormRef.validate((valid) => {
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
 							this.load.edit=true
 							let params = Object.assign({}, this.editForm);
-							var func=addXmProductState
+							var func=addXmProductStateHis
 							if(this.currOpType=='edit'){
-							    func=editXmProductState
+							    func=editXmProductStateHis
 							}
 							func(params).then((res) => {
                                 this.load.edit=false
@@ -221,8 +221,8 @@
 			},
 			initData: function(){
 			    this.currOpType=this.opType
-			    if(this.xmProductState){
-                    this.editForm = Object.assign({},this.xmProductState);
+			    if(this.xmProductStateHis){
+                    this.editForm = Object.assign({},this.xmProductStateHis);
                 }
 
                 if(this.opType=='edit'){

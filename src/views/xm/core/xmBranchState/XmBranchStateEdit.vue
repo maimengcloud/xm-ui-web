@@ -1,8 +1,10 @@
 <template>
-	<section class="page-container  padding border">
-		<el-row> 
+	<section  class="page-container padding">
+	    <el-row class="page-header">
+	    </el-row>
+		<el-row class="page-main" :style="{overflowX:'auto',height:maxTableHeight+'px'}" ref="table">
 		<!--编辑界面 XmBranchState 机构内所有项目指标汇总--> 
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
+			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">
 				<el-form-item label="统计日期yyyy-mm-dd类型" prop="bizDate">
 					<el-input v-model="editForm.bizDate" placeholder="统计日期yyyy-mm-dd类型"></el-input>
 				</el-form-item> 
@@ -17,9 +19,6 @@
 				</el-form-item> 
 				<el-form-item label="项目总非人力预算-来自项目表" prop="totalBudgetNouserAmount">
 					<el-input v-model="editForm.totalBudgetNouserAmount" placeholder="项目总非人力预算-来自项目表"></el-input>
-				</el-form-item> 
-				<el-form-item label="主键" prop="id">
-					<el-input v-model="editForm.id" placeholder="主键"></el-input>
 				</el-form-item> 
 				<el-form-item label="总参与人数" prop="totalStaffCnt">
 					<el-input-number v-model="editForm.totalStaffCnt" :min="0" :max="200"></el-input-number>
@@ -42,10 +41,10 @@
 				<el-form-item label="已完成任务总数-来自任务表" prop="totalCompleteTaskCnt">
 					<el-input-number v-model="editForm.totalCompleteTaskCnt" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
-				<el-form-item label="项目计划数" prop="totalPhaseCnt">
+				<el-form-item label="项目阶段计划数" prop="totalPhaseCnt">
 					<el-input-number v-model="editForm.totalPhaseCnt" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
-				<el-form-item label="项目计划已完成数" prop="totalCompletePhaseCnt">
+				<el-form-item label="项目阶段计划已完成数" prop="totalCompletePhaseCnt">
 					<el-input-number v-model="editForm.totalCompletePhaseCnt" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
 				<el-form-item label="待付款总金额" prop="totalNeedPayAmount">
@@ -132,11 +131,11 @@
 				<el-form-item label="待付款总人数" prop="totalNeedPayUserCnt">
 					<el-input v-model="editForm.totalNeedPayUserCnt" placeholder="待付款总人数"></el-input>
 				</el-form-item> 
-				<el-form-item label="内部人力总工作量-应该大于或等于计划内部人力总成本" prop="totalPlanIuserWorkload">
-					<el-input v-model="editForm.totalPlanIuserWorkload" placeholder="内部人力总工作量-应该大于或等于计划内部人力总成本"></el-input>
+				<el-form-item label="内部人力总工作量-应该大于或等于阶段计划内部人力总成本" prop="totalPlanIuserWorkload">
+					<el-input v-model="editForm.totalPlanIuserWorkload" placeholder="内部人力总工作量-应该大于或等于阶段计划内部人力总成本"></el-input>
 				</el-form-item> 
-				<el-form-item label="外购人力总工作量-应该大于或等于计划外购人力总成本" prop="totalPlanOuserWorkload">
-					<el-input v-model="editForm.totalPlanOuserWorkload" placeholder="外购人力总工作量-应该大于或等于计划外购人力总成本"></el-input>
+				<el-form-item label="外购人力总工作量-应该大于或等于阶段计划外购人力总成本" prop="totalPlanOuserWorkload">
+					<el-input v-model="editForm.totalPlanOuserWorkload" placeholder="外购人力总工作量-应该大于或等于阶段计划外购人力总成本"></el-input>
 				</el-form-item> 
 				<el-form-item label="测试案例总数" prop="testCases">
 					<el-input-number v-model="editForm.testCases" :min="0" :max="200"></el-input-number>
@@ -156,96 +155,150 @@
 				<el-form-item label="产品数" prop="productCnt">
 					<el-input-number v-model="editForm.productCnt" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
-				<el-form-item label="需求数" prop="menuCnt">
+				<el-form-item label="故事数" prop="menuCnt">
 					<el-input-number v-model="editForm.menuCnt" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
-				<el-form-item> 
-					<el-col :span="24" :offset="8"> 
-						<el-button @click.native="handleCancel">取消</el-button>  
-						<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>  
-					</el-col> 
+				<el-form-item label="项目数量" prop="projectCnt">
+					<el-input-number v-model="editForm.projectCnt" :min="0" :max="200"></el-input-number>
+				</el-form-item> 
+				<el-form-item label="产品总工时" prop="productBudgetWorkload">
+					<el-input v-model="editForm.productBudgetWorkload" placeholder="产品总工时"></el-input>
+				</el-form-item> 
+				<el-form-item label="产品实际完成总工作量" prop="productActWorkload">
+					<el-input v-model="editForm.productActWorkload" placeholder="产品实际完成总工作量"></el-input>
+				</el-form-item> 
+				<el-form-item label="预估完成工作量" prop="estimateWorkload">
+					<el-input v-model="editForm.estimateWorkload" placeholder="预估完成工作量"></el-input>
+				</el-form-item> 
+				<el-form-item label="执行中任务数=任务表开始日期小于当前日期，进度<100的任务" prop="execTaskCnt">
+					<el-input-number v-model="editForm.execTaskCnt" :min="0" :max="200"></el-input-number>
+				</el-form-item> 
+				<el-form-item label="待开始的任务数=任务表中开始日期大于当前日期的任务数" prop="toStartTaskCnt">
+					<el-input-number v-model="editForm.toStartTaskCnt" :min="0" :max="200"></el-input-number>
+				</el-form-item> 
+				<el-form-item label="执行中需求=需求表中开始日期小于小于当前日期，进度<100的需求" prop="execMenuCnt">
+					<el-input-number v-model="editForm.execMenuCnt" :min="0" :max="200"></el-input-number>
+				</el-form-item> 
+				<el-form-item label="待开始需求数=需求表中开始日期大于当前日期的需求数" prop="toStartMenuCnt">
+					<el-input-number v-model="editForm.toStartMenuCnt" :min="0" :max="200"></el-input-number>
+				</el-form-item> 
+				<el-form-item label="最早开始日期" prop="minStartTime">
+					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.minStartTime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
+				</el-form-item> 
+				<el-form-item label="最晚结束时间" prop="maxEndTime">
+					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.maxEndTime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
 				</el-form-item> 
 			</el-form>
+		</el-row>
+
+		<el-row   class="page-bottom bottom-fixed">
+		    <el-button @click.native="handleCancel">取消</el-button>
+            <el-button v-loading="load.edit" type="primary" @click.native="saveSubmit" :disabled="load.edit==true">提交</el-button>
 		</el-row>
 	</section>
 </template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { editXmBranchState } from '@/api/xm/core/xmBranchState';
+	import config from "@/common/config"; //全局公共库import
+	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
+	import { addXmBranchState,editXmBranchState } from '@/api/xm/core/xmBranchState';
 	import { mapGetters } from 'vuex'
 	
-	export default { 
+	export default {
+	    name:'xmBranchStateEdit',
+	    components: {
+
+        },
 		computed: {
-		    ...mapGetters([
-		      'userInfo','roles'
-		    ])
+		    ...mapGetters([ 'userInfo'  ]),
+
 		},
-		props:['xmBranchState','visible'],
+		props:['xmBranchState','visible','opType'],
+
 		watch: {
 	      'xmBranchState':function( xmBranchState ) {
-	        this.editForm = xmBranchState;
+	        if(xmBranchState){
+	            this.editForm = xmBranchState;
+	        }
+
 	      },
 	      'visible':function(visible) { 
 	      	if(visible==true){
-	      		//从新打开页面时某些数据需要重新加载，可以在这里添加
+ 	      		this.initData()
 	      	}
 	      } 
 	    },
 		data() {
 			return {
-				dicts:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
-				load:{ list: false, edit: false, del: false, add: false },//查询中...
+			    currOpType:'add',//add/edit
+ 				load:{ list: false, edit: false, del: false, add: false },//查询中...
+				dicts:{},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				editFormRules: {
-					id: [
-						//{ required: true, message: '主键不能为空', trigger: 'blur' }
+					branchId: [
+						//{ required: true, message: '机构编号不能为空', trigger: 'blur' }
 					]
 				},
-				//编辑界面数据  XmBranchState 机构内所有项目指标汇总
 				editForm: {
-					bizDate:'',totalFileCnt:'',totalBugCnt:'',totalTaskCnt:'',totalBudgetNouserAmount:'',id:'',totalStaffCnt:'',calcTime:'',calcStatus:'',totalCostNouserAmount:'',totalClosedBugCnt:'',totalResolvedBugCnt:'',totalCompleteTaskCnt:'',totalPhaseCnt:'',totalCompletePhaseCnt:'',totalNeedPayAmount:'',totalFinishPayAmount:'',totalNeedColAmount:'',totalFinishColAmount:'',totalCostUserAmount:'',totalBudgetIuserAmount:'',totalPlanWorkload:'',totalRiskCnt:'',totalCompleteRiskCnt:'',branchId:'',branchName:'',totalBudgetOuserAmount:'',totalCompleteWorkload:'',totalCostIuserAmount:'',totalCostOuserAmount:'',totalProgress:'',totalActiveBugCnt:'',totalConfirmedBugCnt:'',projectStatus:'',totalActWorkload:'',totalActOutWorkload:'',totalActInnerWorkload:'',totalTaskBudgetCostAt:'',totalTaskOutCnt:'',totalNeedPayCnt:'',totalFinishPayCnt:'',totalFinishPayUserCnt:'',totalNeedPayUserCnt:'',totalPlanIuserWorkload:'',totalPlanOuserWorkload:'',testCases:'',execCases:'',designCases:'',finishCases:'',iterationCnt:'',productCnt:'',menuCnt:''
-				}
-				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
-				
-				/**end 在上面加自定义属性**/
+					bizDate:'',totalFileCnt:'',totalBugCnt:'',totalTaskCnt:'',totalBudgetNouserAmount:'',totalStaffCnt:'',calcTime:'',calcStatus:'',totalCostNouserAmount:'',totalClosedBugCnt:'',totalResolvedBugCnt:'',totalCompleteTaskCnt:'',totalPhaseCnt:'',totalCompletePhaseCnt:'',totalNeedPayAmount:'',totalFinishPayAmount:'',totalNeedColAmount:'',totalFinishColAmount:'',totalCostUserAmount:'',totalBudgetIuserAmount:'',totalPlanWorkload:'',totalRiskCnt:'',totalCompleteRiskCnt:'',branchId:'',branchName:'',totalBudgetOuserAmount:'',totalCompleteWorkload:'',totalCostIuserAmount:'',totalCostOuserAmount:'',totalProgress:'',totalActiveBugCnt:'',totalConfirmedBugCnt:'',projectStatus:'',totalActWorkload:'',totalActOutWorkload:'',totalActInnerWorkload:'',totalTaskBudgetCostAt:'',totalTaskOutCnt:'',totalNeedPayCnt:'',totalFinishPayCnt:'',totalFinishPayUserCnt:'',totalNeedPayUserCnt:'',totalPlanIuserWorkload:'',totalPlanOuserWorkload:'',testCases:'',execCases:'',designCases:'',finishCases:'',iterationCnt:'',productCnt:'',menuCnt:'',projectCnt:'',productBudgetWorkload:'',productActWorkload:'',estimateWorkload:'',execTaskCnt:'',toStartTaskCnt:'',execMenuCnt:'',toStartMenuCnt:'',minStartTime:'',maxEndTime:''
+				},
+                maxTableHeight:300,
 			}//end return
 		},//end data
 		methods: {
 			// 取消按钮点击 父组件监听@cancel="editFormVisible=false" 监听
 			handleCancel:function(){
-				this.$refs['editForm'].resetFields();
+				this.$refs['editFormRef'].resetFields();
 				this.$emit('cancel');
 			},
-			//编辑提交XmBranchState 机构内所有项目指标汇总父组件监听@submit="afterEditSubmit"
-			editSubmit: function () {
-				this.$refs.editForm.validate((valid) => {
+			//新增、编辑提交XmBranchState 机构内所有项目指标汇总父组件监听@submit="afterEditSubmit"
+			saveSubmit: function () {
+				this.$refs.editFormRef.validate((valid) => {
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
 							this.load.edit=true
-							let params = Object.assign({}, this.editForm); 
-							editXmBranchState(params).then((res) => {
-								this.load.edit=false
-								var tips=res.data.tips;
-								if(tips.isOk){
-									this.$refs['editForm'].resetFields();
-									this.$emit('submit');//  @submit="afterEditSubmit"
-								}
-								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
-							}).catch( err =>this.load.edit=false);
+							let params = Object.assign({}, this.editForm);
+							var func=addXmBranchState
+							if(this.currOpType=='edit'){
+							    func=editXmBranchState
+							}
+							func(params).then((res) => {
+                                this.load.edit=false
+                                var tips=res.data.tips;
+                                if(tips.isOk){
+                                    this.editForm=res.data.data
+                                    this.initData()
+                                    this.currOpType="edit";
+                                    this.$emit('submit');//  @submit="afterAddSubmit"
+                                }
+                                this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
+                            }).catch( err =>this.load.edit=false);
 						});
+					}else{
+					    this.$notify({ showClose:true, message: "表单验证不通过，请修改表单数据再提交", type: 'error' });
 					}
 				});
 			},
-			/**begin 在下面加自定义方法,记得补上面的一个逗号**/
-				
-			/**end 在上面加自定义方法**/
+			initData: function(){
+			    this.currOpType=this.opType
+			    if(this.xmBranchState){
+                    this.editForm = Object.assign({},this.xmBranchState);
+                }
+
+                if(this.opType=='edit'){
+
+                }else{
+
+                }
+            },
+
 		},//end method
-		components: {  
-		    //在下面添加其它组件 'xm-branch-state-edit':XmBranchStateEdit
-		},
 		mounted() {
-			this.editForm=Object.assign(this.editForm, this.xmBranchState);  
+		    this.$nextTick(() => {
+                //initSimpleDicts('all',['sex','gradeLvl']).then(res=>this.dicts=res.data.data);
+                this.initData()
+                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el)
+            });
 		}
 	}
 

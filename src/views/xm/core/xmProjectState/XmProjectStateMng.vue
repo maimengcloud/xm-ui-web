@@ -1,144 +1,130 @@
 <template>
-	<section class="page-container padding border">
-		<el-row> 
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="项目名称模糊查询">  </el-input> 
-			<el-button  v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectStates" icon="el-icon-search"></el-button>
-  			<xm-project-select style="display:inline;" :auto-select="false"  @row-click="onPorjectConfirm(loadTasksToXmProjectState,$event)">
-				<font slot="title">刷新任务统计数据</font>
-			</xm-project-select> 
-			<xm-project-select style="display:inline;"  :auto-select="false"   @row-click="onPorjectConfirm(loadTasksSettleToXmProjectState,$event)">
-				<font slot="title">刷新结算数据</font>
-			</xm-project-select>
-		</el-row> 
-		<el-row class="page-main"> 
+	<section class="page-container border padding">
+		<el-row>
+			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
+			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmProjectStates" icon="el-icon-search">查询</el-button>
+			<el-button type="primary" @click="showAdd" icon="el-icon-plus"> </el-button>
+			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>
+		</el-row>
+		<el-row class="padding-top">
 			<!--列表 XmProjectState 项目指标日统计表-->
-			<el-table ref="table" :height="maxTableHeight" :data="xmProjectStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-				<el-table-column  type="selection" width="45"></el-table-column>
-				<el-table-column sortable type="index" width="45">  </el-table-column> 
-				<el-table-column   type="expand" width="45">
-					<template slot-scope="scope">
-					<el-form   label-width="120px" >  
-						<el-form-item label="总预算金额" prop="totalFileCnt">
-							<span style="margin-left:10px;font-size:14px;">项目总预算：</span><el-tag type='success'> {{(scope.row.totalBudgetNouserAmount+scope.row.totalBudgetIuserAmount+scope.row.totalBudgetOuserAmount)/10000}}万</el-tag> 
-							<span style="margin-left:10px;font-size:14px;">非人力总预算：</span><el-tag :type="scope.row.totalBudgetNouserAmount>0?'warning':'danger'">{{scope.row.totalBudgetNouserAmount/10000}}万</el-tag>  
-							<span style="margin-left:10px;font-size:14px;">内部人力总预算：</span><el-tag  :type="scope.row.totalBudgetIuserAmount>0?'warning':'danger'">{{scope.row.totalBudgetIuserAmount/10000}}万</el-tag>  
-							<span style="margin-left:10px;font-size:14px;">外购人力总预算：</span><el-tag  :type="scope.row.totalBudgetOuserAmount>0?'warning':'danger'">{{scope.row.totalBudgetOuserAmount/10000}}万</el-tag> 
-							<span style="margin-left:10px;font-size:14px;">已分配到任务的总预算：</span><el-tag  :type="scope.row.totalTaskBudgetCostAt>0?'warning':'danger'">{{scope.row.totalTaskBudgetCostAt/10000}}万</el-tag>   
-						</el-form-item> 
-						<el-form-item label="bug数目" prop="totalBugCnt">
-							 总数：<el-tag type="primary">{{scope.row.totalBugCnt?scope.row.totalBugCnt:0}}</el-tag> 
-							 激活:<el-tag type="warning">{{scope.row.totalActiveBugCnt?scope.row.totalActiveBugCnt:0}}</el-tag>       
-							 已确认：<el-tag type="danger">{{scope.row.totalConfirmedBugCnt?scope.row.totalConfirmedBugCnt:0}}</el-tag>  
-							已解决： <el-tag type="success">{{scope.row.totalResolvedBugCnt?scope.row.totalResolvedBugCnt:0}}</el-tag>    
-							已关闭：<el-tag type="info">{{scope.row.totalClosedBugCnt?scope.row.totalClosedBugCnt:0}}</el-tag>
-						</el-form-item> 
-						<el-form-item label="任务数" prop="totalTaskCnt">
-							任务总数：：<el-tag type="primary">{{scope.row.totalTaskCnt?scope.row.totalTaskCnt:0}}</el-tag> 
-							 已完成 :<el-tag type="warning">{{scope.row.totalCompleteTaskCnt?scope.row.totalCompleteTaskCnt:0}}</el-tag>       
-							 未完成：<el-tag type="danger">{{scope.row.totalCompleteTaskCnt?scope.row.totalTaskCnt-scope.row.totalCompleteTaskCnt:scope.row.totalTaskCnt}}</el-tag>    
-							 外购任务数：<el-tag type="danger">{{scope.row.totalTaskOutCnt?scope.row.totalTaskOutCnt:0}}</el-tag>    
-						</el-form-item>  
-						<el-form-item label="工作量" prop="projectName">
-							预算： 
-							 总工作量：：<el-tag type="primary">{{scope.row.totalPlanWorkload?scope.row.totalPlanWorkload:0}}</el-tag> 
- 							 内购：<el-tag type="danger">{{scope.row.totalPlanInnerWorkload?scope.row.totalPlanInnerWorkload:0}}</el-tag>    
-							 外购：<el-tag type="danger">{{scope.row.totalPlanOutWorkload?scope.row.totalPlanOutWorkload:0}}</el-tag>  
-							 <br/>
-						   实际：  
-						   	 总工作量：：<el-tag type="primary">{{scope.row.totalActWorkload?scope.row.totalActWorkload:0}}</el-tag>  
-							 内购：<el-tag type="danger">{{scope.row.totalActInnerWorkload?scope.row.totalActInnerWorkload:0}}</el-tag>    
-							 外购：<el-tag type="danger">{{scope.row.totalActOutWorkload?scope.row.totalActOutWorkload:0}}</el-tag>  
-						</el-form-item>   
-						<el-form-item label="实际成本" prop="projectName">
-							 总成本：：<el-tag type="primary">{{ scope.row.totalCostNouserAmount+scope.row.totalCostIuserAmount+scope.row.totalCostOuserAmount}}</el-tag> 
-							 非人力成本 :<el-tag type="warning">{{scope.row.totalCostNouserAmount?scope.row.totalCostNouserAmount:0}}</el-tag>       
-							 内购人力成本：<el-tag type="danger">{{scope.row.totalCostIuserAmount?scope.row.totalCostIuserAmount:0}}</el-tag>    
-							 外购人力成本：<el-tag type="danger">{{scope.row.totalCostOuserAmount?scope.row.totalCostOuserAmount:0}}</el-tag>    
-						</el-form-item>  
-						
-						<el-form-item label="结算" prop="projectName">
-							 待付款人数.金额.笔数：<el-tag type="primary">{{scope.row.totalNeedPayUserCnt?scope.row.totalNeedPayUserCnt:0}}</el-tag>人, <el-tag type="primary">{{scope.row.totalNeedPayAmount?scope.row.totalNeedPayAmount:0}}</el-tag>元,<el-tag type="warning">  {{scope.row.totalNeedPayCnt?scope.row.totalNeedPayCnt:0}}笔</el-tag>
-							 <br/>
-							 已付款人数.金额.笔数: <el-tag type="primary">{{scope.row.totalFinishPayUserCnt?scope.row.totalFinishPayUserCnt:0}}</el-tag>人,  <el-tag type="warning">{{scope.row.totalFinishPayAmount?scope.row.totalFinishPayAmount:0}}</el-tag>元,    <el-tag type="warning"> {{scope.row.totalFinishPayCnt?scope.row.totalFinishPayCnt:0}}笔</el-tag>      
-						</el-form-item>   
-						<el-form-item label="收款" prop="projectName">
-							 待收款金额：<el-tag type="primary">{{scope.row.totalNeedColAmount?scope.row.totalNeedColAmount:0}}</el-tag>  
-							 已收款金额: <el-tag type="primary">{{scope.row.totalFinishColAmount?scope.row.totalFinishColAmount:0}}</el-tag> 
-						</el-form-item>   
-						<el-form-item label="项目风险" prop="totalRiskCnt">
-							 总数：{{scope.row.totalRiskCnt}}个,已解决：{{scope.row.totalCompleteRiskCnt}}个，待解决{{scope.row.totalRiskCnt-scope.row.totalCompleteRiskCnt}}个
-						</el-form-item>  
-					</el-form>
-					</template>
-				</el-table-column> 
-				<el-table-column prop="projectName" label="项目名称" min-width="250" > 
-				</el-table-column>
-				<el-table-column prop="bizDate" label="统计日期" min-width="120" ></el-table-column>
-				<el-table-column prop="totalProgress" label="项目进度" min-width="80" >
-					<template slot-scope="scope">
-						{{scope.row.totalProgress}}%
-					</template>
-				</el-table-column>
-				<el-table-column prop="projectStatus" label="项目状态" min-width="80" :formatter="formatterOption"></el-table-column> 
-				<el-table-column prop="totalFileCnt" label="文档数量" min-width="80" ></el-table-column>
-				<el-table-column prop="totalBugCnt" label="bug数目" min-width="80" ></el-table-column>
-				<el-table-column prop="totalTaskCnt" label="任务数" min-width="80" ></el-table-column>				  
- 				<el-table-column prop="totalStaffCnt" label="总参与人数" min-width="80" ></el-table-column>
-				<el-table-column prop="totalCostUserAmount" label="人力成本" min-width="80" ></el-table-column>
-  				<el-table-column prop="totalCostNouserAmount" label="非人力成本" min-width="80" ></el-table-column>
-				<el-table-column prop="totalFinishPayAmount" label="已付款总金额" min-width="80" ></el-table-column>
-				<el-table-column prop="totalFinishColAmount" label="已收款总金额" min-width="80" ></el-table-column>
-				<el-table-column prop="totalPlanWorkload" label="项目总预算工作量" min-width="80" ></el-table-column>
-				<el-table-column prop="totalActWorkload" label="实际总工作量" min-width="80" ></el-table-column>
-				<el-table-column label="操作" width="160" fixed="right">
+			<el-table ref="xmProjectStateTable" :data="xmProjectStates" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+				<el-table-column  type="selection" width="55" show-overflow-tooltip></el-table-column>
+				<el-table-column sortable type="index" width="55" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="projectId" label="项目编号" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="bizDate" label="统计日期yyyy-mm-dd类型" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalFileCnt" label="文件数据" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalBugCnt" label="bug数目" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalTaskCnt" label="任务数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalBudgetNouserAmount" label="项目总非人力预算-来自项目表" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="projectName" label="项目名称" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalStaffCnt" label="总参与人数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="calcTime" label="统计执行日期" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="calcStatus" label="0-暂时的1稳定的，暂时的可以被覆盖，稳定的不允许覆盖" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalCostNouserAmount" label="项目总非人力成本" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalClosedBugCnt" label="已关闭bug总数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalResolvedBugCnt" label="已解决bug总数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalCompleteTaskCnt" label="已完成任务总数-来自任务表" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalPhaseCnt" label="项目阶段计划数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalCompletePhaseCnt" label="项目阶段计划已完成数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalNeedPayAmount" label="待付款总金额" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalFinishPayAmount" label="已付款总金额" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalNeedColAmount" label="待收款总金额" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalFinishColAmount" label="已收款总金额" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalCostUserAmount" label="项目总人力成本" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalBudgetIuserAmount" label="项目总内部人力预算-来自项目表" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalPlanWorkload" label="项目总预算工作量-来自项目表" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalRiskCnt" label="项目风险总数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalCompleteRiskCnt" label="已完成风险总数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="branchId" label="机构编号" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="branchName" label="机构名称" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalBudgetOuserAmount" label="项目总外购人力预算-来自项目表" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalCompleteWorkload" label="已完成工作量-来自计划中实际完成工作量" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalCostIuserAmount" label="项目总内部人力成本金额" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalCostOuserAmount" label="项目总外购人力成本金额" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalProgress" label="项目进度0~100之间，来自任务表" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalActiveBugCnt" label="激活的bug总数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalConfirmedBugCnt" label="已解决bug总数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="projectStatus" label="0|初始" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalActWorkload" label="实际总工作量，来自任务表" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalActOutWorkload" label="实际外购总工作量，来自任务表" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalActInnerWorkload" label="实际内部总工作量，来自任务表" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalTaskBudgetCostAt" label="已经分配到任务的总预算" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalTaskOutCnt" label="外购任务数，来自任务表" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalNeedPayCnt" label="待付款笔数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalFinishPayCnt" label="完成付款总比数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalFinishPayUserCnt" label="已付款总人数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalNeedPayUserCnt" label="待付款总人数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalPlanIuserWorkload" label="内部人力总工作量-应该大于或等于阶段计划内部人力总成本" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="totalPlanOuserWorkload" label="外购人力总工作量-应该大于或等于阶段计划外购人力总成本" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="testCases" label="测试案例总数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="execCases" label="测试中案例总数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="designCases" label="设计中案例总数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="finishCases" label="完成案例总数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="iterationCnt" label="迭代数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="productCnt" label="产品数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="menuCnt" label="故事数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="finishMenuCnt" label="完成的故事数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="estimateWorkload" label="预估工时=计划结束时间在计算当日前完成的任务的预算工时总和" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="execTaskCnt" label="执行中任务数=任务表开始日期小于=当前日期，进度<100的任务" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="toStartTaskCnt" label="待开始的任务数=任务表中开始日期=当前日期+1的任务数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="execMenuCnt" label="执行中需求=需求表中开始日期小于小于等于当前日期，进度<100的需求" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="toStartMenuCnt" label="待开始需求数=需求表中开始日期=当前日期+1的需求数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="minStartTime" label="最早开始日期" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="maxEndTime" label="最晚结束时间" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column label="操作" width="180" fixed="right">
 					<template scope="scope">
-						<el-button  @click="showXmProjectDatav( scope.row,scope.$index)">大屏展示</el-button> 
+						<el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"></el-button>
+						<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"></el-button>
 					</template>
 				</el-table-column>
 			</el-table>
-			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
-		
-			<!--编辑 XmProjectState 项目指标日统计表界面-->
-			<el-drawer title="编辑项目指标日统计表" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
-				  <xm-project-state-edit :xm-project-state="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-state-edit>
-			</el-drawer>
-	
-			<!--新增 XmProjectState 项目指标日统计表界面-->
-			<el-drawer title="新增项目指标日统计表" :visible.sync="addFormVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
-				<xm-project-state-add :xm-project-state="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-state-add>
-			</el-drawer>   
+			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 		</el-row>
+		<el-row>
+			<!--编辑 XmProjectState 项目指标日统计表界面-->
+			<el-drawer title="编辑项目指标日统计表" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
+				  <xm-project-state-edit op-type="edit" :xm-project-state="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-state-edit>
+			</el-drawer>
+
+			<!--新增 XmProjectState 项目指标日统计表界面-->
+			<el-drawer title="新增项目指标日统计表" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
+				<xm-project-state-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-state-edit>
+			</el-drawer>
+	    </el-row>
 	</section>
 </template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库 
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { listXmProjectState,loadProjectToXmProjectState, loadBugsToXmProjectState, loadTasksToXmProjectState , loadTasksSettleToXmProjectState} from '@/api/xm/core/xmProjectState';
-	import  XmProjectStateAdd from './XmProjectStateAdd';//新增界面
-	import  XmProjectStateEdit from './XmProjectStateEdit';//修改界面
-	import { mapGetters } from 'vuex' 
-import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue';
- 
-	export default { 
-		computed: {
-		    ...mapGetters([
-		      'userInfo','roles'
-		    ])
+	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
+	import { listXmProjectState, delXmProjectState, batchDelXmProjectState } from '@/api/xm/core/xmProjectState';
+	import  XmProjectStateEdit from './XmProjectStateEdit';//新增修改界面
+	import { mapGetters } from 'vuex'
+	
+	export default {
+	    name:'xmProjectStateMng',
+		components: {
+		    XmProjectStateEdit,
 		},
-		props:['selProject'],
+		props:['visible'],
+		computed: {
+		    ...mapGetters(['userInfo']),
+
+		},
 		watch:{
-			selProject:function(selProject,old){
-				this.filters.selProject={...this.selProject}
-				this.getXmProjectStates()
-			}
+            visible(val){
+                if(val==true){
+                    this.initData();
+                    this.searchXmProjectStates()
+                }
+            }
 		},
 		data() {
 			return {
 				filters: {
-					key: '',
-					selProject:{name:'',id:''},
+					key: ''
 				},
 				xmProjectStates: [],//查询结果
 				pageInfo:{//分页数据
@@ -152,26 +138,18 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue';
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
 				dicts:{
-					//sex:[],
-					projectStatus:[],
-				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
-				
+				    //sex: [{id:'1',name:'男'},{id:'2',name:'女'}]
+				},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				addFormVisible: false,//新增xmProjectState界面是否显示
-				//新增xmProjectState界面初始化数据
 				addForm: {
-					projectId:'',bizDate:'',totalFileCnt:'',totalBugCnt:'',totalTaskCnt:'',totalBudgetNouserAmount:'',projectName:'',id:'',totalStaffCnt:'',calCtime:'',calStatus:'',totalCostNouserAmount:'',totalClosedBugCnt:'',totalResolvedBugCnt:'',totalCompleteTaskCnt:'',totalPhaseCnt:'',totalCompletePhaseCnt:'',totalNeedPayAmount:'',totalFinishPayAmount:'',totalNeedColAmount:'',totalFinishColAmount:'',totalCostUserAmount:'',totalBudgetIuserAmount:'',totalPlanWorkload:'',totalRiskCnt:'',totalCompleteRiskCnt:'',branchId:'',branchName:'',totalBudgetOuserAmount:'',totalCompleteWorkload:'',todayNewBugCnt:'',todayResolvedBugCnt:'',todayClosedBugCnt:'',todayNewTaskCnt:'',todayCompleteTaskCnt:'',todayNewPhaseCnt:'',todayCompletePhaseCnt:'',todayNewStaffCnt:'',todaySubStaffCnt:'',todayNewPlanWorkload:'',todayNewActWorkload:'',todayNeedColAmount:'',todayFinishColAmount:'',todayCostUserAmount:'',todayCostIuserAmount:'',todayCostOuserAmount:'',todayCostNouserAmount:'',totalCostIuserAmount:'',totalCostOuserAmount:'',todayNeedPayAmount:'',todayFinishPayAmount:'',todayNewRiskCnt:'',todayCompleteRiskCnt:'',todayNewFileCnt:'',totalProgress:'',totalActiveBugCnt:'',totalConfirmedBugCnt:'',projectStatus:'',totalActWorkload:'',totalActOutWorkload:'',totalActInnerWorkload:'',totalTaskBudgetCostAt:'',totalTaskOutCnt:'',totalNeedPayCnt:'',totalFinishPayCnt:'',todayConfirmedBugCnt:'',todayActiveBugCnt:'',totalFinishPayUserCnt:'',totalNeedPayUserCnt:'',todayNeedPayUserCnt:'',todayFinishPayUserCnt:''
+					projectId:'',bizDate:'',totalFileCnt:'',totalBugCnt:'',totalTaskCnt:'',totalBudgetNouserAmount:'',projectName:'',totalStaffCnt:'',calcTime:'',calcStatus:'',totalCostNouserAmount:'',totalClosedBugCnt:'',totalResolvedBugCnt:'',totalCompleteTaskCnt:'',totalPhaseCnt:'',totalCompletePhaseCnt:'',totalNeedPayAmount:'',totalFinishPayAmount:'',totalNeedColAmount:'',totalFinishColAmount:'',totalCostUserAmount:'',totalBudgetIuserAmount:'',totalPlanWorkload:'',totalRiskCnt:'',totalCompleteRiskCnt:'',branchId:'',branchName:'',totalBudgetOuserAmount:'',totalCompleteWorkload:'',totalCostIuserAmount:'',totalCostOuserAmount:'',totalProgress:'',totalActiveBugCnt:'',totalConfirmedBugCnt:'',projectStatus:'',totalActWorkload:'',totalActOutWorkload:'',totalActInnerWorkload:'',totalTaskBudgetCostAt:'',totalTaskOutCnt:'',totalNeedPayCnt:'',totalFinishPayCnt:'',totalFinishPayUserCnt:'',totalNeedPayUserCnt:'',totalPlanIuserWorkload:'',totalPlanOuserWorkload:'',testCases:'',execCases:'',designCases:'',finishCases:'',iterationCnt:'',productCnt:'',menuCnt:'',finishMenuCnt:'',estimateWorkload:'',execTaskCnt:'',toStartTaskCnt:'',execMenuCnt:'',toStartMenuCnt:'',minStartTime:'',maxEndTime:''
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
-				//编辑xmProjectState界面初始化数据
 				editForm: {
-					projectId:'',bizDate:'',totalFileCnt:'',totalBugCnt:'',totalTaskCnt:'',totalBudgetNouserAmount:'',projectName:'',id:'',totalStaffCnt:'',calCtime:'',calStatus:'',totalCostNouserAmount:'',totalClosedBugCnt:'',totalResolvedBugCnt:'',totalCompleteTaskCnt:'',totalPhaseCnt:'',totalCompletePhaseCnt:'',totalNeedPayAmount:'',totalFinishPayAmount:'',totalNeedColAmount:'',totalFinishColAmount:'',totalCostUserAmount:'',totalBudgetIuserAmount:'',totalPlanWorkload:'',totalRiskCnt:'',totalCompleteRiskCnt:'',branchId:'',branchName:'',totalBudgetOuserAmount:'',totalCompleteWorkload:'',todayNewBugCnt:'',todayResolvedBugCnt:'',todayClosedBugCnt:'',todayNewTaskCnt:'',todayCompleteTaskCnt:'',todayNewPhaseCnt:'',todayCompletePhaseCnt:'',todayNewStaffCnt:'',todaySubStaffCnt:'',todayNewPlanWorkload:'',todayNewActWorkload:'',todayNeedColAmount:'',todayFinishColAmount:'',todayCostUserAmount:'',todayCostIuserAmount:'',todayCostOuserAmount:'',todayCostNouserAmount:'',totalCostIuserAmount:'',totalCostOuserAmount:'',todayNeedPayAmount:'',todayFinishPayAmount:'',todayNewRiskCnt:'',todayCompleteRiskCnt:'',todayNewFileCnt:'',totalProgress:'',totalActiveBugCnt:'',totalConfirmedBugCnt:'',projectStatus:'',totalActWorkload:'',totalActOutWorkload:'',totalActInnerWorkload:'',totalTaskBudgetCostAt:'',totalTaskOutCnt:'',totalNeedPayCnt:'',totalFinishPayCnt:'',todayConfirmedBugCnt:'',todayActiveBugCnt:'',totalFinishPayUserCnt:'',totalNeedPayUserCnt:'',todayNeedPayUserCnt:'',todayFinishPayUserCnt:''
+					projectId:'',bizDate:'',totalFileCnt:'',totalBugCnt:'',totalTaskCnt:'',totalBudgetNouserAmount:'',projectName:'',totalStaffCnt:'',calcTime:'',calcStatus:'',totalCostNouserAmount:'',totalClosedBugCnt:'',totalResolvedBugCnt:'',totalCompleteTaskCnt:'',totalPhaseCnt:'',totalCompletePhaseCnt:'',totalNeedPayAmount:'',totalFinishPayAmount:'',totalNeedColAmount:'',totalFinishColAmount:'',totalCostUserAmount:'',totalBudgetIuserAmount:'',totalPlanWorkload:'',totalRiskCnt:'',totalCompleteRiskCnt:'',branchId:'',branchName:'',totalBudgetOuserAmount:'',totalCompleteWorkload:'',totalCostIuserAmount:'',totalCostOuserAmount:'',totalProgress:'',totalActiveBugCnt:'',totalConfirmedBugCnt:'',projectStatus:'',totalActWorkload:'',totalActOutWorkload:'',totalActInnerWorkload:'',totalTaskBudgetCostAt:'',totalTaskOutCnt:'',totalNeedPayCnt:'',totalFinishPayCnt:'',totalFinishPayUserCnt:'',totalNeedPayUserCnt:'',totalPlanIuserWorkload:'',totalPlanOuserWorkload:'',testCases:'',execCases:'',designCases:'',finishCases:'',iterationCnt:'',productCnt:'',menuCnt:'',finishMenuCnt:'',estimateWorkload:'',execTaskCnt:'',toStartTaskCnt:'',execMenuCnt:'',toStartMenuCnt:'',minStartTime:'',maxEndTime:''
 				},
-				selectProjectVisible:false,
-				/**begin 自定义属性请在下面加 请加备注**/
 				maxTableHeight:300,
-				nextCommand:null,
-				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
 		methods: { 
@@ -185,14 +163,18 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue';
 			},
 			// 表格排序 obj.order=ascending/descending,需转化为 asc/desc ; obj.prop=表格中的排序字段,字段驼峰命名
 			sortChange( obj ){
-				var dir='asc';
-				if(obj.order=='ascending'){
-					dir='asc'
+				if(obj.order==null){
+					this.pageInfo.orderFields=[];
+					this.pageInfo.orderDirs=[]; 
 				}else{
-					dir='desc';
-				}
-				if(obj.prop=='xxx'){
-					this.pageInfo.orderFields=['xxx'];
+					var dir='asc';
+					if(obj.order=='ascending'){
+						dir='asc'
+					}else{
+						dir='desc';
+					}
+					 
+					this.pageInfo.orderFields=[util.toLine(obj.prop)]; 
 					this.pageInfo.orderDirs=[dir];
 				}
 				this.getXmProjectStates();
@@ -216,14 +198,10 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue';
 					}  
 					params.orderBy= orderBys.join(",")
 				}
-				if(this.filters.selProject){
-					params.projectId=this.filters.selProject.id
-				}else{
-					params.branchId=this.userInfo.branchId
-				}
 				if(this.filters.key){
 					params.key=this.filters.key
 				}
+
 				this.load.list = true;
 				listXmProjectState(params).then((res) => {
 					var tips=res.data.tips;
@@ -232,7 +210,7 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue';
 						this.pageInfo.count=false;
 						this.xmProjectStates = res.data.data;
 					}else{
-						this.$notify({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({ showClose:true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -266,7 +244,7 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue';
 					type: 'warning'
 				}).then(() => { 
 					this.load.del=true;
-					let params = { id: row.id };
+					let params = {  projectId:row.projectId };
 					delXmProjectState(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
@@ -274,178 +252,54 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue';
 							this.pageInfo.count=true;
 							this.getXmProjectStates();
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
 			//批量删除xmProjectState
 			batchDel: function () {
-				
+				if(this.sels.length<=0){
+				    return;
+				}
+				var params=this.sels.map(i=>{
+				    return { projectId:i.projectId}
+				})
 				this.$confirm('确认删除选中记录吗？', '提示', {
 					type: 'warning'
 				}).then(() => { 
 					this.load.del=true;
-					batchDelXmProjectState(this.sels).then((res) => {
+					batchDelXmProjectState(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
 						if( tips.isOk ){ 
 							this.pageInfo.count=true;
 							this.getXmProjectStates(); 
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
-			}, 
-			loadProjectToXmProjectState: function () {
-				 	if(!this.filters.selProject||!this.filters.selProject.id){
-						 this.$notify({showClose: true, message: '请选择一个项目', type: 'warning'}); 
-						 this.showProjectList(this.loadBugsToXmProjectState);
-						 return;
-					 } 
-					 
-					this.load.edit=true;
-					var params={projectId:this.filters.selProject.id}
-					loadProjectToXmProjectState(params).then((res) => {
-						this.load.edit=false;
-						var tips=res.data.tips;
-						if( tips.isOk ){ 
-							this.pageInfo.count=true;
-							this.getXmProjectStates(); 
-						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
-					}).catch( err  => this.load.edit=false ); 
-			}, 
-			loadBugsToXmProjectState: function () {
-				 	if(!this.filters.selProject||!this.filters.selProject.id){
-						 this.$notify({showClose: true, message: '请选择一个项目', type: 'warning'}); 
-						 this.showProjectList(this.loadBugsToXmProjectState);
-						 return;
-					 } 
-					 
-					this.load.edit=true;
-					var params={projectId:this.filters.selProject.id}
-					loadBugsToXmProjectState(params).then((res) => {
-						this.load.edit=false;
-						var tips=res.data.tips;
-						if( tips.isOk ){ 
-							this.pageInfo.count=true;
-							this.getXmProjectStates(); 
-						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
-					}).catch( err  => this.load.edit=false ); 
-			},
-			loadTasksToXmProjectState: function (project) {
-				 	if(!project){
-						 this.$notify({showClose: true, message: '请选择一个项目', type: 'warning'}); 
-						 return;
-					 } 
-					 
-					this.load.edit=true;
-					var params={projectId:project.id}
-					loadTasksToXmProjectState(params).then((res) => {
-						this.load.edit=false;
-						var tips=res.data.tips;
-						if( tips.isOk ){ 
-							this.pageInfo.count=true;
-							this.getXmProjectStates(); 
-						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
-					}).catch( err  => this.load.edit=false ); 
-			},
-			loadTasksSettleToXmProjectState: function (project) { 
-				 	if(!project){
-						 this.$notify({showClose: true, message: '请选择一个项目', type: 'warning'});
- 						 return;
-					 } 
-					 
-					this.load.edit=true;
-					var params={projectId:project.id}
-					loadTasksSettleToXmProjectState(params).then((res) => {
-						this.load.edit=false;
-						var tips=res.data.tips;
-						if( tips.isOk ){ 
-							this.pageInfo.count=true;
-							this.getXmProjectStates(); 
-						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
-					}).catch( err  => this.load.edit=false ); 
 			},
 			rowClick: function(row, event, column){
+			    this.editForm=row
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
-			/**begin 自定义函数请在下面加**/
-			
-			onPorjectConfirm:function(nextCommand,project){
-  				if(nextCommand){
-					nextCommand(project);
-				}else{
-					this.searchXmProjectStates();
-				}
-			}, 
-			closeSelectProject:function(){ 
-				this.filters.selProject={name:'',id:''}  
-			},
-			
-			formatterOption: function(row,column,cellValue, index){ 
-				var columnName=column.property;
-				var key="";
-				if(columnName=='projectStatus'){
-					key="projectStatus"
-				}else{
-					return cellValue
-				}
-				if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0   ){
-					return cellValue;
-				}
-				var list=this.dicts[key].filter(i=>i.id==cellValue)
-				if(list.length>0){
-					return list[0].name
-				}else{
-					return cellValue;
-				}
+            initData: function(){
 
-			},
-			
-			showXmProjectDatav(row){
-				this.$router.push({
-					name: "projectDatavFullScreen",
-					params:{projectId:row.projectId}
-				});
-			}
-			/**end 自定义函数请在上面加**/
+            },
 			
 		},//end methods
-		components: { 
-		    'xm-project-state-add':XmProjectStateAdd,
-		    'xm-project-state-edit':XmProjectStateEdit,XmProjectSelect,
-		    //在下面添加其它组件
-		},
-		mounted() { 
+		mounted() {
 			this.$nextTick(() => {
-				
-				if(this.selProject){
-					this.filters.selProject=this.selProject
-				} 
+			    //initSimpleDicts('all',['sex','gradeLvl']).then(res=>this.dicts=res.data.data);
+			    this.initData()
+				this.searchXmProjectStates();
+                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmProjectStateTable.$el)
 
-				this.getXmProjectStates(); 
-				
-				initSimpleDicts('all',['projectStatus']).then(res=>{
-					this.dicts=res.data.data;
-				})
-                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el);
-        	}); 
-        	/** 举例，
-    		initSimpleDicts( "all",["sex","grade"] ).then(res=>{
-				if(res.data.tips.isOk){ 
- 					this.dicts=res.data.data
-				}
-			});
-			**/
+        	});
 		}
 	}
 
 </script>
 
 <style scoped>
-
 </style>

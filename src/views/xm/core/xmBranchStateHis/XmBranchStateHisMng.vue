@@ -2,13 +2,13 @@
 	<section class="page-container border padding">
 		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
-			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmBranchStates" icon="el-icon-search">查询</el-button>
+			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmBranchStateHiss" icon="el-icon-search">查询</el-button>
 			<el-button type="primary" @click="showAdd" icon="el-icon-plus"> </el-button>
 			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>
 		</el-row>
 		<el-row class="padding-top">
-			<!--列表 XmBranchState 机构内所有项目指标汇总-->
-			<el-table ref="xmBranchStateTable" :data="xmBranchStates" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<!--列表 XmBranchStateHis 机构内所有项目指标汇总-->
+			<el-table ref="xmBranchStateHisTable" :data="xmBranchStateHiss" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip></el-table-column>
 				<el-table-column sortable type="index" width="55" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="bizDate" label="统计日期yyyy-mm-dd类型" min-width="80" show-overflow-tooltip></el-table-column>
@@ -82,14 +82,14 @@
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 		</el-row>
 		<el-row>
-			<!--编辑 XmBranchState 机构内所有项目指标汇总界面-->
+			<!--编辑 XmBranchStateHis 机构内所有项目指标汇总界面-->
 			<el-drawer title="编辑机构内所有项目指标汇总" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
-				  <xm-branch-state-edit op-type="edit" :xm-branch-state="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-branch-state-edit>
+				  <xm-branch-state-his-edit op-type="edit" :xm-branch-state-his="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-branch-state-his-edit>
 			</el-drawer>
 
-			<!--新增 XmBranchState 机构内所有项目指标汇总界面-->
+			<!--新增 XmBranchStateHis 机构内所有项目指标汇总界面-->
 			<el-drawer title="新增机构内所有项目指标汇总" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
-				<xm-branch-state-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-branch-state-edit>
+				<xm-branch-state-his-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-branch-state-his-edit>
 			</el-drawer>
 	    </el-row>
 	</section>
@@ -99,14 +99,14 @@
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库 
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
-	import { listXmBranchState, delXmBranchState, batchDelXmBranchState } from '@/api/xm/core/xmBranchState';
-	import  XmBranchStateEdit from './XmBranchStateEdit';//新增修改界面
+	import { listXmBranchStateHis, delXmBranchStateHis, batchDelXmBranchStateHis } from '@/api/xm/core/xmBranchStateHis';
+	import  XmBranchStateHisEdit from './XmBranchStateHisEdit';//新增修改界面
 	import { mapGetters } from 'vuex'
 	
 	export default {
-	    name:'xmBranchStateMng',
+	    name:'xmBranchStateHisMng',
 		components: {
-		    XmBranchStateEdit,
+		    XmBranchStateHisEdit,
 		},
 		props:['visible'],
 		computed: {
@@ -117,7 +117,7 @@
             visible(val){
                 if(val==true){
                     this.initData();
-                    this.searchXmBranchStates()
+                    this.searchXmBranchStateHiss()
                 }
             }
 		},
@@ -126,7 +126,7 @@
 				filters: {
 					key: ''
 				},
-				xmBranchStates: [],//查询结果
+				xmBranchStateHiss: [],//查询结果
 				pageInfo:{//分页数据
 					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
 					pageSize:10,//每页数据
@@ -140,7 +140,7 @@
 				dicts:{
 				    //sex: [{id:'1',name:'男'},{id:'2',name:'女'}]
 				},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
-				addFormVisible: false,//新增xmBranchState界面是否显示
+				addFormVisible: false,//新增xmBranchStateHis界面是否显示
 				addForm: {
 					bizDate:'',totalFileCnt:'',totalBugCnt:'',totalTaskCnt:'',totalBudgetNouserAmount:'',totalStaffCnt:'',calcTime:'',calcStatus:'',totalCostNouserAmount:'',totalClosedBugCnt:'',totalResolvedBugCnt:'',totalCompleteTaskCnt:'',totalPhaseCnt:'',totalCompletePhaseCnt:'',totalNeedPayAmount:'',totalFinishPayAmount:'',totalNeedColAmount:'',totalFinishColAmount:'',totalCostUserAmount:'',totalBudgetIuserAmount:'',totalPlanWorkload:'',totalRiskCnt:'',totalCompleteRiskCnt:'',branchId:'',branchName:'',totalBudgetOuserAmount:'',totalCompleteWorkload:'',totalCostIuserAmount:'',totalCostOuserAmount:'',totalProgress:'',totalActiveBugCnt:'',totalConfirmedBugCnt:'',projectStatus:'',totalActWorkload:'',totalActOutWorkload:'',totalActInnerWorkload:'',totalTaskBudgetCostAt:'',totalTaskOutCnt:'',totalNeedPayCnt:'',totalFinishPayCnt:'',totalFinishPayUserCnt:'',totalNeedPayUserCnt:'',totalPlanIuserWorkload:'',totalPlanOuserWorkload:'',testCases:'',execCases:'',designCases:'',finishCases:'',iterationCnt:'',productCnt:'',menuCnt:'',projectCnt:'',productBudgetWorkload:'',productActWorkload:'',estimateWorkload:'',execTaskCnt:'',toStartTaskCnt:'',execMenuCnt:'',toStartMenuCnt:'',minStartTime:'',maxEndTime:''
 				},
@@ -155,11 +155,11 @@
 		methods: { 
 			handleSizeChange(pageSize) { 
 				this.pageInfo.pageSize=pageSize; 
-				this.getXmBranchStates();
+				this.getXmBranchStateHiss();
 			},
 			handleCurrentChange(pageNum) {
 				this.pageInfo.pageNum = pageNum;
-				this.getXmBranchStates();
+				this.getXmBranchStateHiss();
 			},
 			// 表格排序 obj.order=ascending/descending,需转化为 asc/desc ; obj.prop=表格中的排序字段,字段驼峰命名
 			sortChange( obj ){
@@ -177,14 +177,14 @@
 					this.pageInfo.orderFields=[util.toLine(obj.prop)]; 
 					this.pageInfo.orderDirs=[dir];
 				}
-				this.getXmBranchStates();
+				this.getXmBranchStateHiss();
 			},
-			searchXmBranchStates(){
+			searchXmBranchStateHiss(){
 				 this.pageInfo.count=true; 
-				 this.getXmBranchStates();
+				 this.getXmBranchStateHiss();
 			},
-			//获取列表 XmBranchState 机构内所有项目指标汇总
-			getXmBranchStates() {
+			//获取列表 XmBranchStateHis 机构内所有项目指标汇总
+			getXmBranchStateHiss() {
 				let params = {
 					pageSize: this.pageInfo.pageSize,
 					pageNum: this.pageInfo.pageNum,
@@ -203,12 +203,12 @@
 				}
 
 				this.load.list = true;
-				listXmBranchState(params).then((res) => {
+				listXmBranchStateHis(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
-						this.xmBranchStates = res.data.data;
+						this.xmBranchStateHiss = res.data.data;
 					}else{
 						this.$notify({ showClose:true, message: tips.msg, type: 'error' });
 					} 
@@ -216,12 +216,12 @@
 				}).catch( err => this.load.list = false );
 			},
 
-			//显示编辑界面 XmBranchState 机构内所有项目指标汇总
+			//显示编辑界面 XmBranchStateHis 机构内所有项目指标汇总
 			showEdit: function ( row,index ) {
 				this.editFormVisible = true;
 				this.editForm = Object.assign({}, row);
 			},
-			//显示新增界面 XmBranchState 机构内所有项目指标汇总
+			//显示新增界面 XmBranchStateHis 机构内所有项目指标汇总
 			showAdd: function () {
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);
@@ -229,51 +229,51 @@
 			afterAddSubmit(){
 				this.addFormVisible=false;
 				this.pageInfo.count=true;
-				this.getXmBranchStates();
+				this.getXmBranchStateHiss();
 			},
 			afterEditSubmit(){
 				this.editFormVisible=false;
 			},
-			//选择行xmBranchState
+			//选择行xmBranchStateHis
 			selsChange: function (sels) {
 				this.sels = sels;
 			}, 
-			//删除xmBranchState
+			//删除xmBranchStateHis
 			handleDel: function (row,index) { 
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
 				}).then(() => { 
 					this.load.del=true;
-					let params = {  branchId:row.branchId };
-					delXmBranchState(params).then((res) => {
+					let params = {  bizDate:row.bizDate,  branchId:row.branchId };
+					delXmBranchStateHis(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
 						if(tips.isOk){ 
 							this.pageInfo.count=true;
-							this.getXmBranchStates();
+							this.getXmBranchStateHiss();
 						}
 						this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
-			//批量删除xmBranchState
+			//批量删除xmBranchStateHis
 			batchDel: function () {
 				if(this.sels.length<=0){
 				    return;
 				}
 				var params=this.sels.map(i=>{
-				    return { branchId:i.branchId}
+				    return { bizDate:i.bizDate,  branchId:i.branchId}
 				})
 				this.$confirm('确认删除选中记录吗？', '提示', {
 					type: 'warning'
 				}).then(() => { 
 					this.load.del=true;
-					batchDelXmBranchState(params).then((res) => {
+					batchDelXmBranchStateHis(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
 						if( tips.isOk ){ 
 							this.pageInfo.count=true;
-							this.getXmBranchStates(); 
+							this.getXmBranchStateHiss(); 
 						}
 						this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
@@ -292,8 +292,8 @@
 			this.$nextTick(() => {
 			    //initSimpleDicts('all',['sex','gradeLvl']).then(res=>this.dicts=res.data.data);
 			    this.initData()
-				this.searchXmBranchStates();
-                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmBranchStateTable.$el)
+				this.searchXmBranchStateHiss();
+                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmBranchStateHisTable.$el)
 
         	});
 		}
