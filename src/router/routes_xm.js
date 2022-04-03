@@ -94,14 +94,14 @@ export default {
       component: Layout,
       iconCls: 'fa el-icon-menu',
       meta: {
-        title: '报表统计',
+        title: '效能分析',
         icon: 'report',
         hidden:true
       },
       
       children: [
 
-        { path: 'reportIndex', component: _import('xm/rpt/reportIndex'), name: 'reportIndex', meta: { title: '报表统计',  icon: 'chart' }}, 
+        { path: 'reportIndex', component: _import('xm/rpt/reportIndex'), name: 'reportIndex', meta: { title: '效能分析',  icon: 'chart' }}, 
       ]
     },
     {

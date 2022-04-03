@@ -24,7 +24,7 @@
         <xm-iteration-burnout ref="xmIterationBurnout"></xm-iteration-burnout>
         <xm-menu-day-trend ref="xmMenuDayTrend"></xm-menu-day-trend>
         <xm-menu-day-accumulate ref="xmMenuDayAccumulate"></xm-menu-day-accumulate>
-        <xm-menu-att-dist ref="xmMenuAttDist"></xm-menu-att-dist>
+        <xm-menu-age-dist ref="xmMenuAgeDist"></xm-menu-age-dist>
 	</section>
 </template>
 
@@ -36,10 +36,11 @@
     import xmMenuDayTrend from './product/menuDayTrend'
     import xmMenuDayAccumulate from './product/menuDayAccumulate'
 	import xmMenuAttDist from './product/menuAttDist'
+	import xmMenuAgeDist from './product/menuAgeDist'
 	export default { 
         
 		components: {   
-            xmIterationBurnout,xmMenuDayTrend,xmMenuDayAccumulate,xmMenuAttDist,
+            xmIterationBurnout,xmMenuDayTrend,xmMenuDayAccumulate,xmMenuAttDist,xmMenuAgeDist,
 		},
         props:['xmProduct','xmIteration','xmProject'],
 		computed: {
@@ -85,6 +86,7 @@
                     {rptName:'需求每日趋势',category:'产品级',ref:'xmMenuDayTrend',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期变化趋势，识别需求工作情况' },
                     {rptName:'需求每日累积',category:'产品级',ref:'xmMenuDayAccumulate',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期累积情况，识别需求工作的瓶颈' },
                     {rptName:'需求属性分布',category:'产品级',ref:'xmMenuAttDist',desc:'统计所有需求任意属性数量分布情况（实时数据）' },
+                    {rptName:'需求年龄分布',category:'产品级',ref:'xmMenuAgeDist',desc:'统计所有需求年龄分布情况（实时数据）' },
                 ],
 			}//end return
 		},//end data
