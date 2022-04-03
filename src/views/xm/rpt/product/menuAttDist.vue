@@ -9,7 +9,7 @@
 						<div class="progress"></div>
 					</div>
 				</el-col>
-				<el-col :span="6">
+				<el-col :span="6" class="border">
 					<el-form :label-position="'top'" label-width="120px" :model="filters">
 						<el-form-item label="分组属性">
 							<el-select   v-model="groupBy"  @change="onXmMenuSomeFieldsChange('groupBy',$event)" clearable>

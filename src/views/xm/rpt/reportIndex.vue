@@ -6,7 +6,7 @@
             </el-select>
 		</el-row>
 		<el-row class="padding">
-			 <el-row  :style="{overflowX:'hidden',height:maxTableHeight+'px'}"  ref="table">
+			 <el-row  :style="{overflowX:'hidden',height:maxTableHeight+'px'}"  ref="table" :gutter="5">
                 <el-col  v-cloak v-for="(p,i) in rptListCpd" :key="i" :xl="4" :lg="6" :md="8" :sm="12" :body-style="{ padding: '0px' }">
                     <el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always" id="prj-view-box">
                         <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
@@ -122,6 +122,7 @@
   .bottom {
     margin-top: 13px;
     line-height: 12px;
+    height: 30px;
   }
 
   .button {
