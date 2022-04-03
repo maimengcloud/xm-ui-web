@@ -28,3 +28,5 @@ export const editXmProductStateHis = params => { return axios.post(`${base}/xm/c
 
 //新增一条功能状态表,无需前端维护，所有数据由汇总统计得出
 export const addXmProductStateHis = params => { return axios.post(`${base}/xm/core/xmProductStateHis/add`, params); };
+
+export const getXmMenuAttDist = params => { return axios.get(`${base}/xm/core/xmProductStateHis/getXmMenuAttDist`, { params: params }); };

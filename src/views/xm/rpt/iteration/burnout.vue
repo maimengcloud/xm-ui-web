@@ -2,7 +2,7 @@
 	<section>
         <el-dialog :title="filters.iteration?'【'+filters.iterationName+'】':''+'迭代燃尽图'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
 			<div>
-				<div class="main" id="main"
+				<div class="main" id="burnout"
 					style="width:100%;height:600px;margin:0 auto;"></div>
 				<div class="progress"></div>
 			</div>
@@ -113,7 +113,7 @@
 				
 			},
 			drawWorkload() {
-				this.myChart = this.$echarts.init(document.getElementById("main")); 
+				this.myChart = this.$echarts.init(document.getElementById("burnout")); 
 				this.myChart.setOption({
 					title: {
 						text: '燃尽图：',
@@ -197,6 +197,7 @@
 			}) 
              */
 			//this.charts();
+			//this.drawWorkload();
 			
 		}//end mounted
 	}

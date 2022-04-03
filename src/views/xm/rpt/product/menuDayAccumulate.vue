@@ -2,7 +2,7 @@
 	<section>
         <el-dialog :title="filters.product?'产品【'+filters.product.productName+'】':''+'需求累积图'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
 			<div>
-				<div class="main" id="main"
+				<div class="main" id="menuDayAccumulate"
 					style="width:100%;height:600px;margin:0 auto;"></div>
 				<div class="progress"></div>
 			</div>
@@ -65,7 +65,7 @@
         }, 
 		watch: {  
 			xmProductStateHiss(){
-				this.drawWorkload();
+				this.drawCharts();
 			}
 	    },
 		data() {
@@ -113,8 +113,8 @@
 				})
 				
 			},
-			drawWorkload() {
-				this.myChart = this.$echarts.init(document.getElementById("main")); 
+			drawCharts() {
+				this.myChart = this.$echarts.init(document.getElementById("menuDayAccumulate")); 
 				this.myChart.setOption(  
 					{
 						title: {
@@ -182,6 +182,7 @@
 			}) 
              */
 			//this.charts();
+			//this.drawCharts()
 			
 		}//end mounted
 	}

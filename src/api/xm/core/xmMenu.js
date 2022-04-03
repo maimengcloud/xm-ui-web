@@ -46,3 +46,7 @@ export const batchChangeParentMenu = params => { return axios.post(`${base}/xm/c
 
 
 
+export const getXmMenuAttDist = params => { return axios.get(`${base}/xm/core/xmMenu/getXmMenuAttDist`, { params: params }); };
+
+
+
