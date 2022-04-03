@@ -9,7 +9,7 @@
 			 <el-row  :style="{overflowX:'hidden',height:maxTableHeight+'px'}"  ref="table" :gutter="5">
                 <el-col  v-cloak v-for="(p,i) in rptListCpd" :key="i" :xl="4" :lg="6" :md="8" :sm="12" :body-style="{ padding: '0px' }">
                     <el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always" id="prj-view-box">
-                        <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
+                        <img :src="p.img" class="image" style="width:100%;float:center;">
                         <div style="padding: 14px;">
                             <span>{{p.rptName}}</span> 
                             <div class="bottom clearfix">
@@ -24,6 +24,7 @@
         <xm-iteration-burnout ref="xmIterationBurnout"></xm-iteration-burnout>
         <xm-menu-day-trend ref="xmMenuDayTrend"></xm-menu-day-trend>
         <xm-menu-day-accumulate ref="xmMenuDayAccumulate"></xm-menu-day-accumulate>
+        <xm-menu-att-dist ref="xmMenuAttDist"></xm-menu-att-dist>
         <xm-menu-age-dist ref="xmMenuAgeDist"></xm-menu-age-dist>
 	</section>
 </template>
@@ -37,6 +38,9 @@
     import xmMenuDayAccumulate from './product/menuDayAccumulate'
 	import xmMenuAttDist from './product/menuAttDist'
 	import xmMenuAgeDist from './product/menuAgeDist'
+    import pieSimple from './images/pie-simple.png'
+    import lineStack from './images/line-stack.png'
+    import areaStack from './images/area-stack.png'
 	export default { 
         
 		components: {   
@@ -82,11 +86,11 @@
 				dateRanger:[], 
                 maxTableHeight:300,
                 rptList:[/**{name:'报表名称',category:'报表分类，组织级、产品级、项目级、迭代级、需求、测试、任务',path:'路由路径',imgUrl:'图片路径',query:{参数}} */
-                    {rptName:'迭代燃尽图',category:'迭代级',ref:'xmIterationBurnout',desc:'跟踪迭代的剩余工作量按日期变化趋势，识别迭代当前进度情况' },
-                    {rptName:'需求每日趋势',category:'产品级',ref:'xmMenuDayTrend',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期变化趋势，识别需求工作情况' },
-                    {rptName:'需求每日累积',category:'产品级',ref:'xmMenuDayAccumulate',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期累积情况，识别需求工作的瓶颈' },
-                    {rptName:'需求属性分布',category:'产品级',ref:'xmMenuAttDist',desc:'统计所有需求任意属性数量分布情况（实时数据）' },
-                    {rptName:'需求年龄分布',category:'产品级',ref:'xmMenuAgeDist',desc:'统计所有需求年龄分布情况（实时数据）' },
+                    {rptName:'迭代燃尽图',category:'迭代级',ref:'xmIterationBurnout',desc:'跟踪迭代的剩余工作量按日期变化趋势，识别迭代当前进度情况',img:pieSimple },
+                    {rptName:'需求每日趋势',category:'产品级',ref:'xmMenuDayTrend',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期变化趋势，识别需求工作情况',img:lineStack  },
+                    {rptName:'需求每日累积',category:'产品级',ref:'xmMenuDayAccumulate',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期累积情况，识别需求工作的瓶颈',img:areaStack  },
+                    {rptName:'需求属性分布',category:'产品级',ref:'xmMenuAttDist',desc:'统计所有需求任意属性数量分布情况（实时数据）',img:pieSimple  },
+                    {rptName:'需求年龄分布',category:'产品级',ref:'xmMenuAgeDist',desc:'统计所有需求年龄分布情况（实时数据）',img:pieSimple  },
                 ],
 			}//end return
 		},//end data
@@ -132,8 +136,9 @@
     float: right;
   }
 
-  .image {
-    width: 100%;
+  .image {  
+    object-fit:cover;
+    width: 100%;    
     display: block;
   }
 
