@@ -282,7 +282,7 @@
 			},
 			clearSelect(){
 				this.$refs.table.setCurrentRow();
-				this.$emit("clear-select");
+				this.$emit("clear");
 				this.selectedProduct(null);
 				this.projectVisible=false;
 				this.moreVisible=false;

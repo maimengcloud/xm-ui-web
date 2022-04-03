@@ -212,6 +212,8 @@
 								this.$refs.table.setCurrentRow(row); 
 								this.rowClick(row)
 							} 
+						}else{
+							this.clearSelectIteration()
 						}
 					}else{
 						this.$notify({showClose: true, message: tips.msg, type: 'error' });
@@ -247,6 +249,7 @@
 				this.$emit("close")
 			}, 
 			initData(){
+				
 				if(this.productId){
 					var xmIterations=map.get(this.productId);
 					if(xmIterations){
@@ -255,6 +258,8 @@
 							var row=this.xmIterations[0]; 
 							this.$refs.table.setCurrentRow(row); 
 							this.rowClick(row)
+						}else{
+							this.clearSelectIteration()
 						}
 					}else{
 						this.searchXmIterations();

@@ -15,13 +15,15 @@
 							<el-select   v-model="groupBy"  @change="onXmMenuSomeFieldsChange('groupBy',$event)" clearable>
 								<el-option v-for="i in this.groupBys" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>
-						</el-form-item>    
-						<el-form-item label="需求状态" prop="status">
+						</el-form-item>     
+							 <xm-product-select class="padding" v-if="!xmProduct && !xmIteration"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear-select="onProductClear"></xm-product-select>
+						    
+							<xm-iteration-select ref="xmIterationSelect" class="padding" v-if="!xmIteration || !xmIteration.id"  :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear-select="onIterationClear"></xm-iteration-select>
+ 						<el-form-item label="需求状态" prop="status">
 							<el-select   v-model="filters.status"  @change="onXmMenuSomeFieldsChange('status',$event)" clearable>
 								<el-option v-for="i in this.dicts.menuStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>
-						</el-form-item>
-						
+						</el-form-item>  
 						<el-form-item  label="需求类型" prop="dtype" >
 							<el-select v-model="filters.dtype"  @change="onXmMenuSomeFieldsChange('dtype',$event)" clearable>
 								<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
@@ -58,11 +60,16 @@
 	import { mapGetters } from 'vuex'	 
 	  
 	import { getXmMenuAttDist } from '@/api/xm/core/xmMenu';
+	
+	import  XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';//修改界面 
+	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//新增界面
+
 	export default { 
         
 		components: {   
+			XmIterationSelect,XmProductSelect,
 		},
-        props:['xmProduct'],
+        props:['xmProduct','xmIteration','xmProject'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -119,9 +126,8 @@
 		data() {
 			return {
                 filters:{
-                    category:'', 
-                    product:null, 
-                    project:null,
+                    product:null,  
+					iteration:null,
                 },
 				groupBy:'status',
 				groupBys:[
@@ -162,12 +168,6 @@
 					}
 				}
 				return max;
-			},
-			getXmMenuAttDist(){
-				var params={productId:'mmcloud-xm',orderBy:'biz_date asc'}
-				getXmMenuAttDist(params).then(res=>{ 
-					this.xmMenuAttDists=res.data.tips.isOk?res.data.data:this.xmMenuAttDists;
-				})
 			}, 
 			open(params){
 				this.visible=true;
@@ -239,10 +239,33 @@
 					params.priority=this.filters.priority
 				} 
 				params.groupBy=this.groupBy
+				if(this.filters.product){
+					params.productId=this.filters.product.id
+				}
+				
+				if(this.filters.iteration){
+					params.iterationId=this.filters.iteration.id
+				}
 				getXmMenuAttDist(params).then(res=>{
 					this.xmMenuAttDists=res.data.data
 				})
 				
+			},
+			onProductSelected(product){
+				this.filters.product=product
+			},
+			
+			onProductClear(){
+				this.filters.product=null
+				
+			},
+			
+			onIterationSelected(iteration){
+				this.filters.iteration=iteration
+			},
+			
+			onIterationClear(){
+				this.filters.iteration=null
 			}
 		},//end method
 		mounted() { 
