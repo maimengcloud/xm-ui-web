@@ -26,6 +26,7 @@
         <xm-menu-day-accumulate ref="xmMenuDayAccumulate"></xm-menu-day-accumulate>
         <xm-menu-att-dist ref="xmMenuAttDist"></xm-menu-att-dist>
         <xm-menu-age-dist ref="xmMenuAgeDist"></xm-menu-age-dist>
+        <xm-product-work-item-day-list ref="productWorkItemDayList"></xm-product-work-item-day-list>
 	</section>
 </template>
 
@@ -38,14 +39,19 @@
     import xmMenuDayAccumulate from './product/menuDayAccumulate'
 	import xmMenuAttDist from './product/menuAttDist'
 	import xmMenuAgeDist from './product/menuAgeDist'
+	import xmProductWorkItemDayList from './product/productWorkItemDayList'
+
+    
     import pieSimple from './images/pie-simple.png'
     import lineStack from './images/line-stack.png'
     import areaStack from './images/area-stack.png'
     import ranjintu from './images/ranjintu.png'
+    import datasetLink from './images/dataset-link.png'
+    
 	export default { 
         
 		components: {   
-            xmIterationBurnout,xmMenuDayTrend,xmMenuDayAccumulate,xmMenuAttDist,xmMenuAgeDist,
+            xmIterationBurnout,xmMenuDayTrend,xmMenuDayAccumulate,xmMenuAttDist,xmMenuAgeDist,xmProductWorkItemDayList,
 		},
         props:['xmProduct','xmIteration','xmProject'],
 		computed: {
@@ -92,6 +98,7 @@
                     {rptName:'需求每日累积',category:'产品级',ref:'xmMenuDayAccumulate',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期累积情况，识别需求工作的瓶颈',img:areaStack  },
                     {rptName:'需求属性分布',category:'产品级',ref:'xmMenuAttDist',desc:'统计所有需求任意属性数量分布情况（实时数据）',img:pieSimple  },
                     {rptName:'需求年龄分布',category:'产品级',ref:'xmMenuAgeDist',desc:'统计所有需求年龄分布情况（实时数据）',img:pieSimple  },
+                    {rptName:'产品工作项每日趋势',category:'产品级',ref:'productWorkItemDayList',desc:'统计产品每日工作项数量分布情况',img:datasetLink  },
                 ],
 			}//end return
 		},//end data
