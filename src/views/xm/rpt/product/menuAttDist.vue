@@ -67,42 +67,6 @@
 		    ...mapGetters([
 		      'userInfo','roles'
 		    ]), 
-            datesCpd(){
-				if(this.xmMenuAttDists.length==0){
-					return []
-				}else{ 
-					return this.xmMenuAttDists.map(i=>i.bizDate)
-				}
-			}, 
-			menuCloseCntCpd(){
-				if(this.xmMenuAttDists.length==0){
-					return []
-				}else{ 
-					return this.xmMenuAttDists.map(i=>i.menuCloseCnt)
-				}
-			},
-			menuUnstartCntCpd(){
-				if(this.xmMenuAttDists.length==0){
-					return []
-				}else{ 
-					return this.xmMenuAttDists.map(i=> i.menuUnstartCnt)
-				}
-			},
-			menuExecCntCpd(){
-				if(this.xmMenuAttDists.length==0){
-					return []
-				}else{ 
-					return this.xmMenuAttDists.map(i=> i.menuExecCnt)
-				}
-			},
-			
-			menuFinishCntCpd(){
-				if(this.xmMenuAttDists.length==0){
-					return []
-				}else{ 
-					return this.xmMenuAttDists.map(i=>i.menuFinishCnt)
-				}
-			},
 			xmMenuAttDistsCpd(){
 				if(this.xmMenuAttDists.length==0){
 					return []
