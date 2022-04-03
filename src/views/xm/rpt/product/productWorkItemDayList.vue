@@ -104,6 +104,7 @@
 				this.filters.project=params.xmProject
 				this.filters.iteration=params.xmIteration
 				this.xmProductStateHiss=[]
+				if(this.$refs['xmProductSelect'])this.$refs['xmProductSelect'].clearSelect();
 				this.$nextTick(()=>{
 					this.listXmProductStateHis();
 				})
