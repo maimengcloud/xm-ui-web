@@ -119,9 +119,16 @@
 					{
 						title: {
 							text: '需求累积图'
-						},
+						}, 
+
 						tooltip: {
-							trigger: 'axis'
+							trigger: 'axis',
+							axisPointer: {
+							type: 'cross',
+							label: {
+								backgroundColor: '#6a7985'
+							}
+							}
 						},
 						legend: {
 							data: ['未开始', '执行中', '已完成', '已关闭']
@@ -150,24 +157,45 @@
 							name: '未开始',
 							type: 'line',
 							stack: 'Total',
+							areaStyle: {},
+							emphasis: {
+								focus: 'series'
+							},
 							data: this.menuUnstartCntCpd
 							},
 							{
 							name: '执行中',
 							type: 'line',
 							stack: 'Total',
+							areaStyle: {},
+							emphasis: {
+								focus: 'series'
+							},
 							data: this.menuExecCntCpd,
 							},
 							{
 							name: '已完成',
 							type: 'line',
 							stack: 'Total',
+							areaStyle: {},
+							emphasis: {
+								focus: 'series'
+							},
 							data: this.menuFinishCntCpd,
 							},
 							{
 							name: '已关闭',
 							type: 'line',
 							stack: 'Total',
+							areaStyle: {},
+							emphasis: {
+								focus: 'series'
+							},
+
+							label: {
+								show: true,
+								position: 'top'
+							},
 							data: this.menuCloseCntCpd,
 							} 
 						]
