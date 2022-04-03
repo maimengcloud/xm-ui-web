@@ -57,7 +57,7 @@
 			},
 			dataSetCpd(){
 				return [
-					['date',...this.datesCpd],
+					['日期',...this.datesCpd],
 					['故事数',...this.menuNumCpd],
 					['缺陷数',...this.bugNumCpd],
 					['任务数',...this.taskNumCpd]
@@ -118,6 +118,25 @@
 			},
 			drawCharts() {
 				this.myChart = this.$echarts.init(document.getElementById("productWorkItemDayList")); 
+				var that=this;
+				this.myChart.on('updateAxisPointer', function (event) {
+					const xAxisInfo = event.axesInfo[0];
+					if (xAxisInfo) {
+					const dimension = xAxisInfo.value + 1;
+					that.myChart.setOption({
+						series: {
+						id: 'pie',
+						label: {
+							formatter: '{b}: {@[' + dimension + ']} ({d}%)'
+						},
+						encode: {
+							value: dimension,
+							tooltip: dimension
+						}
+						}
+					});
+					}
+				});
 				this.myChart.setOption({
 					title: {
 						text: '工作项分布',
@@ -138,62 +157,23 @@
 					yAxis: { gridIndex: 0 },
     				grid: { top: '55%' },
 					series: [
-						{
-							name: '故事数',
+						{ 
 							type: 'line',
         					seriesLayoutBy: 'row',
 							smooth:true, 
-        					emphasis: { focus: 'series' },
-							// stack: '剩余工作量', 
-							itemStyle: {
-								normal: {
-									// 折点颜色样式
-									color: 'green',
-									lineStyle: {
-										// 折线颜色样式
-										color: 'green'
-									}
-								}
-							},
-							// data: this.opinionData,
+        					emphasis: { focus: 'series' }, 
 						},
-						{
-							name: '任务数',
+						{ 
 							type: 'line',
         					seriesLayoutBy: 'row',
 							smooth:true,
-        					emphasis: { focus: 'series' },
-							// stack: '剩余工作量', 
-							itemStyle: {
-								normal: {
-									// 折点颜色样式
-									color: 'blue',
-									lineStyle: {
-										// 折线颜色样式
-										color: 'blue'
-									}
-								}
-							},
-							// data: this.opinionData,
+        					emphasis: { focus: 'series' }, 
 						},
-						{
-							name: '缺陷数',
+						{ 
 							type: 'line',
         					seriesLayoutBy: 'row',
 							smooth:true,
-        					emphasis: { focus: 'series' },
-							// stack: '剩余工作量', 
-							itemStyle: {
-								normal: {
-									// 折点颜色样式
-									color: 'orange',
-									lineStyle: {
-										// 折线颜色样式
-										color: 'orange'
-									}
-								}
-							},
-							// data: this.opinionData,
+        					emphasis: { focus: 'series' },  
 						},
 						{
 							type: 'pie',
@@ -204,35 +184,16 @@
 								focus: 'self'
 							},
 							label: {
-								formatter: '{b}: {@2012} ({d}%)'
+								formatter: '{b}: {@日期} ({d}%)'
 							},
 							encode: {
-								itemName: 'date',
-								value: '2012',
-								tooltip: '2012'
+								itemName: '日期',
+								value: '日期',
+								tooltip: '日期'
 							}
 						}
 					]
-				});
-
-				this.myChart.on('updateAxisPointer', function (event) {
-					const xAxisInfo = event.axesInfo[0];
-					if (xAxisInfo) {
-					const dimension = xAxisInfo.value + 1;
-					this.myChart.setOption({
-						series: {
-						id: 'pie',
-						label: {
-							formatter: '{b}: {@[' + dimension + ']} ({d}%)'
-						},
-						encode: {
-							value: dimension,
-							tooltip: dimension
-						}
-						}
-					});
-					}
-				});
+				}); 
 			}
 		},//end method
 		mounted() {

@@ -16,8 +16,7 @@ import './icons' // icon
 import './errorLog'// error log
 import './permission' // permission control
 //import './mock' // simulation data
-import echarts from 'echarts'
-import  'echarts/map/js/china.js'
+import * as echarts from 'echarts' 
 import * as filters from './filters' // global filters
 import Print from 'vue-print-nb'
 
