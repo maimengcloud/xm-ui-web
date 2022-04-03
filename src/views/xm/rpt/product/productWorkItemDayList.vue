@@ -24,43 +24,16 @@
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
-		    ]), 
-            datesCpd(){
-				if(this.xmProductStateHiss.length==0){
-					return []
-				}else{ 
-					return this.xmProductStateHiss.map(i=>i.bizDate)
-				}
-			},
-			
-			menuNumCpd(){
-				if(this.xmProductStateHiss.length==0){
-					return []
-				}else{ 
-					return this.xmProductStateHiss.map(i=>i.menuCnt)
-				}
-			},
-			bugNumCpd(){
-				if(this.xmProductStateHiss.length==0){
-					return []
-				}else{ 
-					return this.xmProductStateHiss.map(i=>i.bugCnt)
-				}
-			},
-			
-			taskNumCpd(){
-				if(this.xmProductStateHiss.length==0){
-					return []
-				}else{ 
-					return this.xmProductStateHiss.map(i=>i.taskCnt)
-				}
-			},
+		    ]),  
 			dataSetCpd(){
 				return [
-					['日期',...this.datesCpd],
-					['故事数',...this.menuNumCpd],
-					['缺陷数',...this.bugNumCpd],
-					['任务数',...this.taskNumCpd]
+					['日期',...this.xmProductStateHiss.map(i=>i.bizDate)],
+					['未关故事',...this.xmProductStateHiss.map(i=>i.menuCnt-i.menuFinishCnt)],
+					['已关故事',...this.xmProductStateHiss.map(i=>i.menuFinishCnt)],
+					['未关任务',...this.xmProductStateHiss.map(i=>i.taskCnt-i.finishTaskCnt)],
+					['已关任务',...this.xmProductStateHiss.map(i=>i.finishTaskCnt)],
+					['未关缺陷',...this.xmProductStateHiss.map(i=>i.bugCnt-i.closedBugs)],
+					['已关缺陷',...this.xmProductStateHiss.map(i=>i.closedBugs)]
 				]
 			}
 			
@@ -157,19 +130,39 @@
 					yAxis: { gridIndex: 0 },
     				grid: { top: '55%' },
 					series: [
-						{ 
+						{ 	name:'未关故事',
+							type: 'line',
+        					seriesLayoutBy: 'row',
+							smooth:true, 
+        					emphasis: { focus: 'series' }, 
+						},
+						{ 	name:'已关故事',
 							type: 'line',
         					seriesLayoutBy: 'row',
 							smooth:true, 
         					emphasis: { focus: 'series' }, 
 						},
 						{ 
+							name:'未关任务',
 							type: 'line',
         					seriesLayoutBy: 'row',
 							smooth:true,
         					emphasis: { focus: 'series' }, 
 						},
 						{ 
+							name:'已关任务',
+							type: 'line',
+        					seriesLayoutBy: 'row',
+							smooth:true,
+        					emphasis: { focus: 'series' }, 
+						},
+						{ 	name:'未关缺陷',
+							type: 'line',
+        					seriesLayoutBy: 'row',
+							smooth:true,
+        					emphasis: { focus: 'series' },  
+						},
+						{ 	name:'已关缺陷',
 							type: 'line',
         					seriesLayoutBy: 'row',
 							smooth:true,
