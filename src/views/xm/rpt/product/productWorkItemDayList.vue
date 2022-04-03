@@ -212,6 +212,7 @@
 			onProductSelected(product){
 				this.filters.product=product
 				this.xmProductStateHiss=[];
+				this.listXmProductStateHis();
 			},
 			
 			onProductClear(){
