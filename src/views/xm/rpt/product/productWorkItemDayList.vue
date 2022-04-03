@@ -1,11 +1,24 @@
 <template>
 	<section>
-        <el-dialog :title="filters.product?'【'+filters.product.productName+'】':''+'工作项按日分布趋势图'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
-			<div>
-				<div class="main" id="productWorkItemDayList"
-					style="width:100%;height:600px;margin:0 auto;"></div>
-				<div class="progress"></div>
-			</div>
+        <el-dialog :title="(filters.product?'【'+filters.product.productName+'】':'')+'工作项按日分布趋势图'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
+ 
+			<el-row :gutter="5">
+				<el-col :span="18"> 
+					<div> 
+						<div class="main" id="productWorkItemDayList" style="width:100%;height:600px;margin:0 auto;"></div> 
+					</div>
+				</el-col>
+				<el-col :span="6" class="border">
+					<el-form :label-position="'top'" label-width="120px" :model="filters"> 
+						<el-form-item>
+							 <xm-product-select  v-if="!xmProduct"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"   @clear="onProductClear"></xm-product-select>
+  					  </el-form-item>  
+					<el-form-item>
+						 <el-button type="primary" icon="el-icon-search" @click="listXmProductStateHis">查询</el-button>
+					</el-form-item>  
+					</el-form>
+				</el-col>
+			</el-row>
         </el-dialog>
 	</section>
 </template>
@@ -15,10 +28,12 @@
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询  
 	import { mapGetters } from 'vuex'	 
 	
+	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//新增界面
 	import { listXmProductStateHis } from '@/api/xm/core/xmProductStateHis';
 	export default { 
         
-		components: {   
+		components: {  
+			XmProductSelect, 
 		},
         props:['xmProduct'],
 		computed: {
@@ -74,7 +89,11 @@
 				return max;
 			},
 			listXmProductStateHis(){
-				var params={productId:'mmcloud-xm',orderBy:'biz_date asc'}
+				if(!this.filters.product){
+					this.$notify({showClose:true,message:'请先选中产品',type:'warning'})
+					return;
+				}
+				var params={productId:this.filters.product.id,orderBy:'biz_date asc'}
 				listXmProductStateHis(params).then(res=>{ 
 					this.xmProductStateHiss=res.data.tips.isOk?res.data.data:this.xmProductStateHiss;
 				})
@@ -84,6 +103,7 @@
 				this.filters.product=params.xmProduct
 				this.filters.project=params.xmProject
 				this.filters.iteration=params.xmIteration
+				this.xmProductStateHiss=[]
 				this.$nextTick(()=>{
 					this.listXmProductStateHis();
 				})
@@ -187,7 +207,19 @@
 						}
 					]
 				}); 
-			}
+			},
+			
+			onProductSelected(product){
+				this.filters.product=product
+				this.xmProductStateHiss=[];
+			},
+			
+			onProductClear(){
+				this.filters.product=null
+				
+				this.xmProductStateHiss=[];
+				
+			},
 		},//end method
 		mounted() {
 			/**
