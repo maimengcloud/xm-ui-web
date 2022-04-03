@@ -5,7 +5,7 @@
 				<el-tabs type="border-card"  :value="showPanel"  @tab-click="tabClick">
 					<el-tab-pane disabled> 
 						<div  slot="label">
-								<xm-product-select ref="xmProductSelect" :auto-select="true" :link-project-id="selProject?selProject.id:null" :iterationId="xmIteration?xmIteration.id:null"  @row-click="onProductRowClick" @clear-select="onProductClearSelect"></xm-product-select>
+								<xm-product-select ref="xmProductSelect" :auto-select="true" :link-project-id="selProject?selProject.id:null" :iterationId="xmIteration?xmIteration.id:null"  @row-click="onProductRowClick" @clear="onProductClearSelect"></xm-product-select>
 						</div>
 					</el-tab-pane>
 					<el-tab-pane disabled> 

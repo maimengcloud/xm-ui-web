@@ -1,7 +1,7 @@
 <template>
 	<section class="page-container border padding" >
 		<el-row>  
-			<xm-project-select style="display:inline;" v-if="!selProject &&pgClass==='0'" :auto-select="false"   :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear-select="onProjectClearSelect"></xm-project-select>
+			<xm-project-select style="display:inline;" v-if="!selProject &&pgClass==='0'" :auto-select="false"   :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClearSelect"></xm-project-select>
 			
 			<el-input v-model="filters.key" style="width:15%;" clearable placeholder="名称过滤"></el-input>   
 			<el-button  type="primary" @click="searchXmGroups" icon="el-icon-search">刷新</el-button> 

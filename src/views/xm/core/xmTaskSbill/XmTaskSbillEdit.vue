@@ -11,7 +11,7 @@
         <el-form-item label="选择项目：" prop="projectId">
 <!--          <el-button v-if="!editForm.projectId" type="primary" @click="projSelVisible=true" round>选择项目</el-button>-->
           <div v-if="!editForm.projectId">
-            <xm-project-select style="display:inline;" :auto-select="false" @row-click="onProjectRowClick(arguments)" @clear-select="onProjectClear" ></xm-project-select>
+            <xm-project-select style="display:inline;" :auto-select="false" @row-click="onProjectRowClick(arguments)" @clear="onProjectClear" ></xm-project-select>
           </div>
           <span v-else>{{editForm.projectId}}</span>
         </el-form-item>

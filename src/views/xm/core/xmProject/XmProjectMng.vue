@@ -8,7 +8,7 @@
 			</el-col> 
 			<el-col :span="templateVisible?18:24" class="border padding-top padding-right"> 
 				<el-row class="padding-left"> 
-					<xm-product-select style="display:inline;" class="hidden-md-and-down" :auto-select="false" @row-click="onProductSelected" @clear-select="onProductClose"></xm-product-select> 
+					<xm-product-select style="display:inline;" class="hidden-md-and-down" :auto-select="false" @row-click="onProductSelected" @clear="onProductClose"></xm-product-select> 
 					<el-select v-model="menukey" @change="handleSelect" clearable>
 						<el-option value="all" label="全部"></el-option>
 						<el-option value="compete"  label="我参与"></el-option>

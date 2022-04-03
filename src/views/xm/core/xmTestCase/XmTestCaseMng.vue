@@ -3,7 +3,7 @@
 		<el-row> 
 			<div>
 				
-				<xm-product-select style="display:inline;" :auto-select="false" :link-project-id="filters.selProject?filters.selProject.id:null"   @row-click="onProductSelected" @clear-select="filters.xmProduct=null"></xm-product-select>
+				<xm-product-select style="display:inline;" :auto-select="false" :link-project-id="filters.selProject?filters.selProject.id:null"   @row-click="onProductSelected" @clear="filters.xmProduct=null"></xm-product-select>
 				<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 选择需求</el-button>
 				<el-tag v-else   closable @close=" clearFiltersMenu(filters.menus[0])">{{filters.menus[0].menuName.substr(0,5)}}等({{filters.menus.length}})个</el-tag>
 				<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
@@ -18,10 +18,10 @@
 					trigger="click" > 
 					<el-row>
 						<el-col :span="24" style="padding-top:5px;">
-							<xm-product-select :auto-select="false" :link-project-id="filters.selProject?filters.selProject.id:null"   @row-click="onProductSelected" @clear-select="filters.xmProduct=null"></xm-product-select>
+							<xm-product-select :auto-select="false" :link-project-id="filters.selProject?filters.selProject.id:null"   @row-click="onProductSelected" @clear="filters.xmProduct=null"></xm-product-select>
 						</el-col> 
 						<el-col :span="24" style="padding-top:5px;" v-if="!selProject" >
-							<xm-project-select :auto-select="false" :link-product-id="filters.product?filters.product.id:null"   @row-click="onPorjectConfirm" @clear-select="filters.selProject=null"></xm-project-select>
+							<xm-project-select :auto-select="false" :link-product-id="filters.product?filters.product.id:null"   @row-click="onPorjectConfirm" @clear="filters.selProject=null"></xm-project-select>
 						</el-col> 		
 						<el-col :span="24" style="padding-top:5px;">
 								<font class="more-label-font">需求:</font>

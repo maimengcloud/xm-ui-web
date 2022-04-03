@@ -4,7 +4,7 @@
 			<!--新增界面 XmIteration 迭代定义--> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">   
 				<el-form-item label="归属产品" prop="productId">  
-						<xm-product-select v-if="!xmProduct||!xmProduct.id" ref="xmProductSelect" :auto-select="true" :sel-project="selProject"   @row-click="onProductRowClick" @clear-select="onProductClearSelect" @close="productSelectVisible=false"></xm-product-select>
+						<xm-product-select v-if="!xmProduct||!xmProduct.id" ref="xmProductSelect" :auto-select="true" :sel-project="selProject"   @row-click="onProductRowClick" @clear="onProductClearSelect" @close="productSelectVisible=false"></xm-product-select>
  
 					<span v-else>{{addForm.productName}}</span>
 				</el-form-item>

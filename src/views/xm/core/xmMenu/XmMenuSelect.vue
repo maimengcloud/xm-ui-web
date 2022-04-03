@@ -3,9 +3,9 @@
 		<el-row>   
 			<el-col :span="24"  style="padding-left:12px;" >
 				<el-row>     
-						<xm-product-select style="display:inline;" v-if="!xmProduct&&!xmIteration" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" ref="xmProductMng" :iteration-id="xmIteration?xmIteration.id:null"  @clear-select="onProductClearSelect"></xm-product-select>
+						<xm-product-select style="display:inline;" v-if="!xmProduct&&!xmIteration" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" ref="xmProductMng" :iteration-id="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select>
  
-						<xm-iteration-select style="display:inline;"  v-if="!xmIteration" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onIterationSelected" ref="xmIterationMng" :product-id="xmProduct?xmProduct.id:null"  @clear-select="onIterationClearSelect"></xm-iteration-select>
+						<xm-iteration-select style="display:inline;"  v-if="!xmIteration" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onIterationSelected" ref="xmIterationMng" :product-id="xmProduct?xmProduct.id:null"  @clear="onIterationClearSelect"></xm-iteration-select>
 						 
 						<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable v-if="taskFilterType">
 							<el-option   value="not-join-any-project"  label="未分配过任务的需求"></el-option>  

@@ -7,7 +7,7 @@
         :class="{ 'flex-box': displayType == 'agil' }"
       >
         <el-row> 
-            <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear-select="onProjectClear" ></xm-project-select>
+            <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
               
 					<el-select style="width: 100px" v-model="filters.taskState" placeholder="状态" clearable>
 									<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.taskState" :key="index"></el-option> 
@@ -239,7 +239,7 @@
             <el-row>
               <el-col :span="24" style="padding-top: 5px">
                 <font class="more-label-font">产品:</font
-                > <xm-product-select :auto-select="false" :link-project-id="filters.selProject && filters.selProject.id?filters.selProject.id:null" @row-click="onProductSelected" @clear-select="onProductClearSelect"></xm-product-select>
+                > <xm-product-select :auto-select="false" :link-project-id="filters.selProject && filters.selProject.id?filters.selProject.id:null" @row-click="onProductSelected" @clear="onProductClearSelect"></xm-product-select>
               </el-col>
               <el-col :span="24" style="padding-top: 5px">
                 <font class="more-label-font">需求:</font>
