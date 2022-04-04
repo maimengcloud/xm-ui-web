@@ -59,6 +59,15 @@ export const editXmTaskSomeFields = params => { return axios.post(`${base}/xm/co
 
 
 
+export const getXmTaskAttDist = params => { return axios.get(`${base}/xm/core/xmTask/getXmTaskAttDist`, { params: params }); };
+
+
+
+export const getXmTaskAgeDist = params => { return axios.get(`${base}/xm/core/xmTask/getXmTaskAgeDist`, { params: params }); };
+
+
+
+
 
 
 

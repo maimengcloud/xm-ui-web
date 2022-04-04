@@ -34,3 +34,10 @@ export const editStatus = params => { return axios.post(`${base}/xm/core/xmQuest
 export const editXmQuestionSomeFields = params => { return axios.post(`${base}/xm/core/xmQuestion/editSomeFields`, params); };
 
 
+export const getXmQuestionAttDist = params => { return axios.get(`${base}/xm/core/xmQuestion/getXmQuestionAttDist`, { params: params }); };
+
+
+
+export const getXmQuestionAgeDist = params => { return axios.get(`${base}/xm/core/xmQuestion/getXmQuestionAgeDist`, { params: params }); };
+
+
