@@ -13,6 +13,9 @@
 						<el-form-item>
 							 <xm-product-select  v-if="!xmProduct"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"   @clear="onProductClear"></xm-product-select>
   					  </el-form-item>  
+						<el-form-item label="日期区间">
+							<date-range v-model="filters" value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></date-range>
+  					  </el-form-item>  
 					<el-form-item>
 						 <el-button type="primary" icon="el-icon-search" @click="listXmProductStateHis">查询</el-button>
 					</el-form-item>  
@@ -65,6 +68,8 @@
                     product:null,
                     iteration:null,
                     project:null,
+					startBizDate:'',
+					endBizDate:'',
                 },
 				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中... 
@@ -81,7 +86,12 @@
 					this.$notify({position:'bottom-left',showClose:true,message:'请先选中产品',type:'warning'})
 					return;
 				}
+				
 				var params={productId:this.filters.product.id,orderBy:'biz_date asc'}
+				if(this.filters.startBizDate && this.filters.endBizDate){
+					params.startBizDate=this.filters.startBizDate;
+					params.endBizDate=this.filters.endBizDate;
+				}
 				listXmProductStateHis(params).then(res=>{ 
 					this.xmProductStateHiss=res.data.tips.isOk?res.data.data:this.xmProductStateHiss;
 				})

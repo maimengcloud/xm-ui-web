@@ -22,9 +22,11 @@ import Print from 'vue-print-nb'
 
 
 
+import DateRange from '@/components/dateRange/index'
 
 Vue.prototype.$echarts = echarts
 Vue.use(Print); //注册
+Vue.component('date-range',DateRange)
 Vue.use(Element, {
   size: 'small', // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)
