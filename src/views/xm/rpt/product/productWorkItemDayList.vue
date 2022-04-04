@@ -12,10 +12,10 @@
 					<el-form :label-position="'top'" label-width="120px" :model="filters"> 
 						<el-form-item>
 							 <xm-product-select  v-if="!xmProduct"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"   @clear="onProductClear"></xm-product-select>
-  					  </el-form-item>  
-						<el-form-item label="日期区间">
+  					</el-form-item>  
+					<el-form-item label="日期区间">
 							<date-range v-model="filters" value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></date-range>
-  					  </el-form-item>  
+  					</el-form-item>  
 					<el-form-item>
 						 <el-button type="primary" icon="el-icon-search" @click="listXmProductStateHis">查询</el-button>
 					</el-form-item>  
