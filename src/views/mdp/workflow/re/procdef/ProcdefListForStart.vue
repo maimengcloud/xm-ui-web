@@ -401,7 +401,7 @@
               this.pageInfo.count = false;
               this.procdefs = res.data.data;
             } else {
-              this.$message({showClose: true,
+              this.$notify({position:'bottom-left',showClose: true,
                 message: tips.msg,
                 type: "error"
               });
@@ -436,7 +436,7 @@
                 this.pageInfo.count = true;
                 this.getProcdefs();
               }
-              this.$message({showClose: true,
+              this.$notify({position:'bottom-left',showClose: true,
                 message: tips.msg,
                 type: tips.isOk ? "success" : "error"
               });

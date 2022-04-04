@@ -609,7 +609,7 @@ XmProductSelect,XmProjectSelect,
 					if(tips.isOk){
 						this.imGroups=res.data.data;
 					}
-					this.$notify({showClose: true,
+					this.$notify({position:'bottom-left',showClose: true,
 						message: tips.msg,
 						type: tips.isOk ? 'success' : 'error'
 					});
@@ -641,7 +641,7 @@ XmProductSelect,XmProjectSelect,
 							params.id=params.groupId
 							this.imGroups.push(params);
 						} 
-						this.$notify({showClose: true,
+						this.$notify({position:'bottom-left',showClose: true,
 							message: tips.msg,
 							type: tips.isOk ? 'success' : 'error'
 						});

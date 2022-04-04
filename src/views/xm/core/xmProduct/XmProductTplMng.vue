@@ -238,7 +238,7 @@
 						this.pageInfo.count=true;
 						this.getXmProducts();
 					}
-					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 				}).catch( err  => this.load.edit=false );
 			},
 			//获取列表 XmProduct 产品表
@@ -271,7 +271,7 @@
 						this.pageInfo.count=false;
 						this.xmProducts = res.data.data;
 					}else{
-						this.$notify({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -285,7 +285,7 @@
 			//显示新增界面 XmProduct 产品表
 			showAdd: function () {
 				if(!this.roles.some(i=>i.roleid=='productAdmin')){
-					this.$notify({showClose: true, message: "只有产品经理能够创建产品", type: 'error'});
+					this.$notify({position:'bottom-left',showClose:true,message: "只有产品经理能够创建产品", type: 'error'});
 					return false;
 				}
 				this.addFormVisible = true;
@@ -330,10 +330,10 @@
 								this.pageInfo.count=true;
 								this.getXmProducts();
 							}
-							this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+							this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 						}).catch( err  => this.load.del=false );
 					 }else{
-						 this.$notify({showClose: true, message: "产品代号不正确", type: 'error' }); 
+						 this.$notify({position:'bottom-left',showClose:true,message: "产品代号不正确", type: 'error' }); 
 					 }
 				}).catch(() => { 
 					return;    
@@ -352,7 +352,7 @@
 							this.pageInfo.count=true;
 							this.getXmProducts();
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -413,7 +413,7 @@
 						if(tips.isOk){
 							this.getXmProducts();
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					})
 				})
 			},
@@ -428,7 +428,7 @@
 						if(tips.isOk){
 							this.getXmProducts();
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					})
 				})
 			},
@@ -441,7 +441,7 @@
 			},
 			onCopyToConfirm(){
 				if(!this.xmProductCopy.code){
-					this.$notify({showClose: true, message: '产品代号不能为空', type: 'error' });
+					this.$notify({position:'bottom-left',showClose:true,message: '产品代号不能为空', type: 'error' });
 					return;
 				}
 				
@@ -457,7 +457,7 @@
 						this.$emit("copy",res.data.data)
 					}
 					
-					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 
 				})
 			},
@@ -468,7 +468,7 @@
 					if(tips.isOk){
 						this.xmProductCopy.code=res.data.data
 					}
-					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 				})
 			},
 			/**end 自定义函数请在上面加**/

@@ -154,7 +154,7 @@
 			batchSaveMenu(){
 				
 				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$notify({showClose: true, message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
+					this.$notify({position:'bottom-left',showClose:true,message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
 					return false;
 				}
 				if(this.valueChangeRows.length==0){
@@ -166,7 +166,7 @@
 					if(tips.isOk){
 						this.valueChangeRows=[] 
 					}
-					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 				});
 			},
 			fieldChange:function(row,fieldName,nextReplace){

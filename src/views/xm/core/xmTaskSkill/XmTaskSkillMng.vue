@@ -165,7 +165,7 @@
 						this.skillIds = ids;
 						this.$emit("getSkill",this.xmTaskSkills);
 					}else{
-						this.$notify({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -210,7 +210,7 @@
 							this.pageInfo.count=true;
 							this.getXmTaskSkills();
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -228,7 +228,7 @@
 							this.pageInfo.count=true;
 							this.getXmTaskSkills(); 
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -256,7 +256,7 @@
 						this.skillVisible = false;
 						this.getXmTaskSkills();
 					}
-					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 				}).catch( err  => this.load.add=false);
 			},
 			

@@ -131,7 +131,7 @@
 								if(tips.isOk){ 
 									this.$emit('submit');//  @submit="afterEditSubmit"
 								}
-								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err =>this.load.edit=false);
 						});
 					}

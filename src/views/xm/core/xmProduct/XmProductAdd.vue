@@ -137,11 +137,11 @@
 									//this.$refs['addForm'].resetFields();
 									this.$emit('submit',res.data.data);//  @submit="afterAddSubmit"
 								}
-								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err  => this.load.add=false);
 						});
 					}else{
-						this.$notify({showClose: true, message: "表单检查不通过", type: 'error' }); 
+						this.$notify({position:'bottom-left',showClose:true,message: "表单检查不通过", type: 'error' }); 
 					}
 				});
 			}, 
@@ -151,7 +151,7 @@
 					if(tips.isOk){
 						this.addForm.code=res.data.data
 					}
-					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 				})
 			},
 			showUserVisible(userType){

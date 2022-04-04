@@ -212,7 +212,7 @@ export default {
 									 this.addFormVisible=false;
                    this.xmBugs.push(res.data.data)
 								}
-								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.edit=false);
     },  
       showAdd() {
@@ -221,7 +221,7 @@ export default {
     
 			batchDel: function () {
 				if(this.sels.length<=0){
-					this.$notify({showClose: true, message:"请选择要删除的缺陷", type: "error"});
+					this.$notify({position:'bottom-left',showClose:true,message:"请选择要删除的缺陷", type: "error"});
 					return ;
 				}
 				this.$confirm('确认删除选中记录吗？', '提示', {
@@ -234,7 +234,7 @@ export default {
 						if( tips.isOk ){
 							this.getXmBugs();
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},

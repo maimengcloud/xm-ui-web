@@ -397,11 +397,11 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 									//this.$refs['editForm'].resetFields();
 									this.$emit('submit',res.data.data);//  @submit="aftereditSubmit"
 								}
-								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err  => this.load.edit=false);
 						});
 					}else{
-						this.$notify({showClose: true, message: "表单验证不通过，请修改后提交", type: 'error' }); 
+						this.$notify({position:'bottom-left',showClose:true,message: "表单验证不通过，请修改后提交", type: 'error' }); 
 					}
 				});
 			}, 
@@ -445,7 +445,7 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 						// this.getXmTasks();
 						this.$emit("submit",this.editForm)
 					}
-					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 				}).catch( err  => this.load.add=false);
 			}, 
 			

@@ -222,7 +222,7 @@
 						this.pageInfo.count=false;
 						this.xmPhases = res.data.data;
 					}else{
-						this.$notify({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );

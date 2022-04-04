@@ -176,7 +176,7 @@ import XmGroupStateOverview from './XmGroupStateOverview.vue';
 						this.pageInfo.count=false;
 						this.xmGroupStates = res.data.data;
 					}else{
-						this.$notify({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -218,7 +218,7 @@ import XmGroupStateOverview from './XmGroupStateOverview.vue';
 							this.pageInfo.count=true;
 							this.getXmGroupStates();
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -236,7 +236,7 @@ import XmGroupStateOverview from './XmGroupStateOverview.vue';
 							this.pageInfo.count=true;
 							this.getXmGroupStates();
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -250,7 +250,7 @@ import XmGroupStateOverview from './XmGroupStateOverview.vue';
 					if(tips.isOk){
 						this.getXmGroupStates();
 					}else{
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 
 					}
 				})

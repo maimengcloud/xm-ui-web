@@ -481,7 +481,7 @@
 					if(this.filters.hisHandleStatus){
 						params.hisHandlerUserid=this.filters.hisHandler.userid;
 					}else{
-						this.$notify({showClose: true, message: "请选择曾经的缺陷状态", type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: "请选择曾经的缺陷状态", type: 'error' });
 						return;
 					}
 
@@ -490,7 +490,7 @@
 					if(this.filters.hisHandler){
 						params.hisHandleStatus=this.filters.hisHandleStatus
 					}else{
-						this.$notify({showClose: true, message: "请选择曾经的执行人", type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: "请选择曾经的执行人", type: 'error' });
 						return;
 					}
 
@@ -529,7 +529,7 @@
 						this.pageInfo.count=false;
 						this.xmQuestions = res.data.data;
 					}else{
-						this.$notify({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -579,7 +579,7 @@
 			//显示新增界面 XmQuestion xm_question
 			showAdd: function () { 
 				if(!this.filters.selProject){ 
-					this.$notify({showClose: true, message: "请先选中项目", type: 'warning' });
+					this.$notify({position:'bottom-left',showClose:true,message: "请先选中项目", type: 'warning' });
 					this.$refs.xmProjectSelect.projectVisible=true;
 					this.nextAction="showAdd" 
 					return;
@@ -619,14 +619,14 @@
 							this.pageInfo.count=true;
 							this.getXmQuestions();
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
 			//批量删除xmQuestion
 			batchDel: function () {
 				if(this.sels.length<=0){
-					this.$notify({showClose: true, message:"请选择要删除的缺陷", type: "error"});
+					this.$notify({position:'bottom-left',showClose:true,message:"请选择要删除的缺陷", type: "error"});
 					return ;
 				}
 				this.$confirm('确认删除选中记录吗？', '提示', {
@@ -640,7 +640,7 @@
 							this.pageInfo.count=true;
 							this.getXmQuestions();
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},

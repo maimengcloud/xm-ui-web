@@ -237,7 +237,7 @@ import md5 from "js-md5";
 								if(tips.isOk){ 
 									this.$emit('submit');//  @submit="afterEditSubmit"
 								}
-								this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch(() => {
 								this.editLoading = false;
 							});
@@ -253,7 +253,7 @@ import md5 from "js-md5";
 						this.setLoading = true
 						changePassword({oldPassword:md5(this.passwordForm.oldPassword),newPassword:md5(this.passwordForm.newPassword)}).then(res=>{
 							var tips = res.data.tips;
-							this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+							this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' }); 
 						}).finally(r => this.setLoading = false)
 					}
 				})

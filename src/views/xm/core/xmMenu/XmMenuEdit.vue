@@ -354,11 +354,11 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 								if(tips.isOk){
  									this.$emit('submit',res.data.data);//  @submit="afterAddSubmit"
 								}
-								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.edit=false);
 						});
 					}else{
-						this.$notify({showClose: true, message:"表单检查不通过，请修改后提交", type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message:"表单检查不通过，请修改后提交", type: 'error' });
 					}
 				});
 			},
@@ -473,7 +473,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 							this.dateRanger.push(this.editForm.endTime)
 						}
 					}else{
-						this.$notify({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					}
 					this.load.list = false;
 				}

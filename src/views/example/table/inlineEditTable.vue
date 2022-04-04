@@ -100,7 +100,7 @@ export default {
     cancelEdit(row) {
       row.title = row.originalTitle
       row.edit = false
-      this.$message({showClose: true,
+      this.$notify({position:'bottom-left',showClose: true,
         message: 'The title has been restored to the original value',
         type: 'warning'
       })
@@ -108,7 +108,7 @@ export default {
     confirmEdit(row) {
       row.edit = false
       row.originalTitle = row.title
-      this.$message({showClose: true,
+      this.$notify({position:'bottom-left',showClose: true,
         message: 'The title has been edited',
         type: 'success'
       })

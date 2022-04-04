@@ -122,7 +122,7 @@ import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 				if(this.isSelectSingleUser=='1'){
 					if(users.length>1){
 						
-						this.$notify({showClose: true,
+						this.$notify({position:'bottom-left',showClose: true,
 							message: '只能选中一个用户',
 							type: 'error'
 						});
@@ -153,7 +153,7 @@ import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 					if(tips.isOk){
 						this.selGroups=res.data.data;
 					}else{
-						this.$notify({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					}
 				})
 			},

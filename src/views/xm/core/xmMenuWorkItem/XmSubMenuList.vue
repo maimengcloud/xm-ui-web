@@ -294,7 +294,7 @@ export default {
 									 this.addFormVisible=false;
                    this.xmMenus.push(res.data.data)
 								}
-								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.edit=false);
     },  
       showAdd() {
@@ -364,7 +364,7 @@ export default {
       //批量删除xmMenu
 			batchDel: function () {
 				if(this.sels.length==0){
-					this.$notify({showClose: true, message: "请先选择要删除的需求", type: 'warning'});
+					this.$notify({position:'bottom-left',showClose:true,message: "请先选择要删除的需求", type: 'warning'});
 					return;
 				}
 				this.$confirm('确认删除选中的'+this.sels.length+'条数据吗？删除后数据不可恢复', '提示', {
@@ -377,7 +377,7 @@ export default {
 						if( tips.isOk ){ 
 							this.getXmMenus(); 
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},

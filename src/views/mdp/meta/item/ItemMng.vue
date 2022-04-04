@@ -152,12 +152,12 @@
 						this.pageInfo.total = res.data.data.total;this.pageInfo.count=false;
 						this.items = res.data.data;
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch(() => {
 					this.load.list = false;
-					//this.$message({showClose: true, message: '通讯错误', type: 'error' });
+					//this.$notify({position:'bottom-left',showClose:true,message: '通讯错误', type: 'error' });
 				});
 			},
 
@@ -203,7 +203,7 @@
 							this.pageInfo.count=true;
 							this.getItems();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 					});
 				}).catch(() => {
 					this.load.del=false;
@@ -223,7 +223,7 @@
 							this.pageInfo.count=true;
 							this.getItems(); 
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					});
 				}).catch(() => {
 					this.load.del=false;

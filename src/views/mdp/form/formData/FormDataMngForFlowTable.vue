@@ -189,14 +189,14 @@
 							that.$emit("submit",formDatas)
 							return;
 						  }else{
-							   this.$message({showClose: true, message: '请补充智能表单数据', type: 'info' });
+							   this.$notify({position:'bottom-left',showClose:true,message: '请补充智能表单数据', type: 'info' });
 							  return;
 						  }
 					  });
 					return; 
 				}else{
 				   if(formDatas.length<=0){ 
-					   this.$message({showClose: true, message: '请先选择要加入审批流的智能表单数据', type: 'info' });
+					   this.$notify({position:'bottom-left',showClose:true,message: '请先选择要加入审批流的智能表单数据', type: 'info' });
 				   }else{ 
 						   formDatas.forEach(i=>{ 
 								   i.flowAction="join" 
@@ -358,7 +358,7 @@
 						this.editForm=this.procFormDatas[0];
 						
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					} 
 					this.listLoading = false;
 				}).catch(() => {
@@ -496,7 +496,7 @@
 						if(this.formDefSelected!=null){
 							params.formId=this.formDefSelected.id;
 						}else{
-							this.$message({showClose: true, message: '没有关联智能表单，无法查询表单数据', type: 'info' });
+							this.$notify({position:'bottom-left',showClose:true,message: '没有关联智能表单，无法查询表单数据', type: 'info' });
 							return;
 						}   
 				if(this.formDataIds){
@@ -508,7 +508,7 @@
 				}
 				let tips=this.checkFormQueryQx(this.formQx,params.userid,params.deptid,this.userInfo.userid,this.userInfo.deptid,this.userInfo.roleid)
 				if(tips.isOk==false){
-					this.$message({showClose: true, message: tips.msg, type: 'error' });
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					return;
 				}
 				//params.flowState="0" 
@@ -534,7 +534,7 @@
 						
 						
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					} 
 					this.listLoading = false;
 				}).catch(() => {
@@ -547,7 +547,7 @@
 			showEdit: function ( row,index ) {
 				let tips=this.checkFormEditQx(this.formQx,row.userid,row.deptid,this.userInfo.userid,this.userInfo.deptid,this.userInfo.roleid)
 				if(tips.isOk==false){
-					this.$message({showClose: true, message: tips.msg, type: 'error' });
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					return;
 				}
 				this.editFormVisible = true;
@@ -560,7 +560,7 @@
 			},
 			startProc: function() { 
 				if(this.sels.length<1){
-					this.$message({showClose: true, message: "请至少选择一条数据发审", type: 'error' });
+					this.$notify({position:'bottom-left',showClose:true,message: "请至少选择一条数据发审", type: 'error' });
 					return;
 				}
 				let extVars={ids:this.sels.map(i=>i.id),formId:this.formDefSelected.id}
@@ -578,17 +578,17 @@
 			joinToProc: function(row,index){
 				let tips=this.checkFormEditQx(this.formQx,row.userid,row.deptid,this.userInfo.userid,this.userInfo.deptid,this.userInfo.roleid)
 				if(tips.isOk==false){
-					this.$message({showClose: true, message: tips.msg, type: 'error' });
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					return;
 				}
 				 if(this.procFormDatas.some(i=>i.id==row.id)){
-					 this.$message({showClose: true, message: '该数据已在审核单中', type: 'info'});
+					 this.$notify({position:'bottom-left',showClose:true,message: '该数据已在审核单中', type: 'info'});
 				 }else{
 					 this.$nextTick(() => {
 						 this.formDatas.splice(index, 1); 
 						 this.delProcFormDatas=this.delProcFormDatas.filter(i=>i.id!=row.id)
 						 this.procFormDatas.push(row)
-						 this.$message({showClose: true, message: '添加成功', type: 'info'});
+						 this.$notify({position:'bottom-left',showClose:true,message: '添加成功', type: 'info'});
 		        		});
 					
 				 }
@@ -596,7 +596,7 @@
 			removeFromProc: function(row,index){
 				let tips=this.checkFormEditQx(this.formQx,row.userid,row.deptid,this.userInfo.userid,this.userInfo.deptid,this.userInfo.roleid)
 				if(tips.isOk==false){
-					this.$message({showClose: true, message: tips.msg, type: 'error' });
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					return;
 				}
 				 if(this.procFormDatas.some(i=>i.id==row.id)){
@@ -606,11 +606,11 @@
 							 this.delProcFormDatas.push(row)
 						 } 
 						 this.formDatas.push(row);
-						 this.$message({showClose: true, message: '移除成功', type: 'info'});
+						 this.$notify({position:'bottom-left',showClose:true,message: '移除成功', type: 'info'});
 		        		});
 					 
 				 }else{
-					 this.$message({showClose: true, message: '没有该条数据', type: 'error'});
+					 this.$notify({position:'bottom-left',showClose:true,message: '没有该条数据', type: 'error'});
 				 }
 			},
 			afterAddSubmit(){
@@ -633,7 +633,7 @@
 			handleDel: function (row,index) {
 				let tips=this.checkFormDelQx(this.formQx,row.userid,row.deptid,this.userInfo.userid,this.userInfo.deptid,this.userInfo.roleid)
 				if(tips.isOk==false){
-					this.$message({showClose: true, message: tips.msg, type: 'error' });
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					return;
 				}
 				this.$confirm('确认删除该记录吗?', '提示', {
@@ -648,7 +648,7 @@
 							this.pageInfo.total=0;
 							this.getFormDatas();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 						
 					});
 				}).catch(() => {
@@ -670,7 +670,7 @@
 							this.pageInfo.total=0;
 							this.getFormDatas(); 
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					});
 				}).catch(() => {
 					this.listLoading = false;
@@ -726,7 +726,7 @@
 						this.getOptions2();
 						this.$emit('formFieldsLoad',this.formFields);
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					} 
 				}).catch(() => {
 					 this.listLoading=false;

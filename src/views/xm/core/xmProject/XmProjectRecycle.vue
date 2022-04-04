@@ -151,7 +151,7 @@
 						this.pageInfo.count=false; 
 						this.xmProjects = res.data.data;
 					}else{
-						this.$notify({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -175,10 +175,10 @@
 								this.pageInfo.count=true;
 								this.getXmProjects();
 							}
-							this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+							this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 						}).catch( err  => this.load.del=false ); 
 					 }else{
-						 this.$notify({showClose: true, message: "项目代号不正确", type: 'error' }); 
+						 this.$notify({position:'bottom-left',showClose:true,message: "项目代号不正确", type: 'error' }); 
 					 }
 				}).catch(() => { 
 					return;    

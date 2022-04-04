@@ -159,7 +159,7 @@
 									if(tips.isOk){ 
 										this.$emit('submit');//  @submit="afterAddSubmit"
 									}
-									this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+									this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 								}).catch( err  => this.load.add=false);
 							});
 						}
@@ -173,7 +173,7 @@
 			//选择接收人
 			onUserSelected: function(users) { 
 				if(users.length>1){
-					this.$notify({showClose: true, message: "只能选择一个人", type:'error' }); 
+					this.$notify({position:'bottom-left',showClose:true,message: "只能选择一个人", type:'error' }); 
 					return;
 				}
 				if(users==null || users.length ==0 ){

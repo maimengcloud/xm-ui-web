@@ -463,7 +463,7 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 						this.pageInfo.count=false;
 						this.xmPhases = res.data.data;
 					}else{
-						this.$notify({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -588,7 +588,7 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 							treeTool.reloadChildren(this.$refs.table,this.maps,this.parentProjectPhase.id,'parentPhaseId',this.loadXmPhaseLazy)
 						} 
 					}else{ 
-						this.$notify({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					} 
 				}).catch( err  => this.load.add=false );
 			},
@@ -611,7 +611,7 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 							this.searchXmPhases() 
 							treeTool.reloadChildren(this.$refs.table,this.maps,row.parentPhaseId,'parentPhaseId',this.loadXmPhaseLazy) 
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -641,7 +641,7 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 							treeTool.reloadAllChildren(this.$refs.table,this.maps,phases,'parentPhaseId',this.loadXmPhaseLazy)
 								 
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -822,7 +822,7 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 					if(tips.isOk){
 						this.getXmPhases()
 					}
-					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'}); 
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'}); 
 				})
 			},
 			calcKeyPaths(){
@@ -836,7 +836,7 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 					if(tips.isOk){
 						this.getXmPhases()
 					}
-					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'}); 
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'}); 
 				})
 			},
 			getFloatValue(value,digit){
@@ -962,19 +962,19 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 			},
 			saveBatchEdit:function(){
 				if(this.valueChangeRows.length==0){
-					this.$notify({showClose: true, message:"没有改变任何数据，无需保存", type: 'success'});
+					this.$notify({position:'bottom-left',showClose:true,message:"没有改变任何数据，无需保存", type: 'success'});
 					return;
 				}else {
 					if(this.budgetData.surplusPlanIuserAt<0){
-						this.$notify({showClose: true, message:"内部人力预算不足，请调整", type: 'error'});
+						this.$notify({position:'bottom-left',showClose:true,message:"内部人力预算不足，请调整", type: 'error'});
 						return;
 					}
 					if(this.budgetData.surplusPlanOuserAt<0){
-						this.$notify({showClose: true, message:"外购人力预算不足，请调整", type: 'error'});
+						this.$notify({position:'bottom-left',showClose:true,message:"外购人力预算不足，请调整", type: 'error'});
 						return;
 					}
 					if(this.budgetData.surplusPlanNouserAt<0){
-						this.$notify({showClose: true, message:"非人力预算不足请调整",type: 'error'});
+						this.$notify({position:'bottom-left',showClose:true,message:"非人力预算不足请调整",type: 'error'});
 						return;
 					}
 					
@@ -986,7 +986,7 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 							this.valueChangeRows=[]
 							this.getXmPhases();
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'}); 
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'}); 
 						
 					}).catch(e=>this.load.edit=false);
 				}
@@ -1298,7 +1298,7 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 					if(tips.isOk){ 
 						this.totalProjectAndPhaseBudgetCost=res.data.data;
 					}
-					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 				})
 			}
 		},//end methods

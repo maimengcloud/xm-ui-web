@@ -118,7 +118,7 @@ import XmProductEdit from './XmProductEdit.vue';
 			tabClick(tab){
 				if(this.xmProduct==null || !this.xmProduct.id){
 					this.productVisible=true;
-					this.$notify({showClose: true, message:"请先选中左边产品", type: 'warning'});
+					this.$notify({position:'bottom-left',showClose:true,message:"请先选中左边产品", type: 'warning'});
 				}
 				 this.showPanel=tab.name
 			}

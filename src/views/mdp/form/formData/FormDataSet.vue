@@ -106,7 +106,7 @@
 					if(tips.isOk){ 
                         this.formFields = res.data.data;
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					}
 					this.addLoading=false;
 				}).catch(() => {
@@ -127,7 +127,7 @@
 					if(tips.isOk){  
 						this.addForm = res.data.data[0];
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					}  
 				}).catch(() => { 
 					 

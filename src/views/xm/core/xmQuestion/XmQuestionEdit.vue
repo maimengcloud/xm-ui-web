@@ -343,7 +343,7 @@
 								if(tips.isOk){
 									this.$emit('submit');//  @submit="afterAddSubmit" 
 								}
-								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.edit=false);
 						});
 					}
@@ -431,14 +431,14 @@
 			}, 
 			showSelectTask:function(){
 				if(this.selProject==null){
-					this.$notify({showClose: true, message: "请先选项目", type: 'error' });
+					this.$notify({position:'bottom-left',showClose:true,message: "请先选项目", type: 'error' });
 					return ;
 				}
 				this.selectTaskVisible=true;
 			},
 			onSelectedTask(task){
 				if(task.ntype=='1'){
-					this.$notify({showClose: true, message: "您选择的【"+task.name+"】属于任务集，请重新选择。建议选择树中叶子节点", type: 'error' });
+					this.$notify({position:'bottom-left',showClose:true,message: "您选择的【"+task.name+"】属于任务集，请重新选择。建议选择树中叶子节点", type: 'error' });
 					return;
 				}
 				this.editForm.taskId=task.id
@@ -468,14 +468,14 @@
 
 			showSelectMenu:function(){
 				if(this.selProject==null){
-					this.$notify({showClose: true, message: "请先选项目", type: 'error' });
+					this.$notify({position:'bottom-left',showClose:true,message: "请先选项目", type: 'error' });
 					return ;
 				}
 				this.selectMenuVisible=true;
 			},
 			onSelectedMenu(menu){
 				if(menu.ntype=='1'){
-					this.$notify({showClose: true, message: "您选择的【"+menu.menuName+"】属于需求池，请重新选择。建议选择树中叶子节点", type: 'error' });
+					this.$notify({position:'bottom-left',showClose:true,message: "您选择的【"+menu.menuName+"】属于需求池，请重新选择。建议选择树中叶子节点", type: 'error' });
 					return;
 				}
 				this.editForm.menuId=menu.menuId

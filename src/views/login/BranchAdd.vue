@@ -181,16 +181,16 @@
 												if(tips.isOk){ 
 													this.$emit('submit',res.data.data );//  @submit="afterAddSubmit"
 												}
-												this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+												this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 											}).catch(() => this.load.add=false);
 										}else{
-											this.$message({showClose: true, message: "该公司名已注册，不可以使用", type: 'error' }); 
+											this.$notify({position:'bottom-left',showClose:true,message: "该公司名已注册，不可以使用", type: 'error' }); 
 											return;
 										}
 									}
 								})
 							}else{
-								this.$message({showClose: true, message: "公司名必须6个字以上", type: 'error' }); 
+								this.$notify({position:'bottom-left',showClose:true,message: "公司名必须6个字以上", type: 'error' }); 
 								return;
 							}
 							
@@ -219,7 +219,7 @@
 					})
 				}else{
 					this.load.list=false;
-					this.$message({showClose: true, message: "最少输入两个字", type: 'info' }); 
+					this.$notify({position:'bottom-left',showClose:true,message: "最少输入两个字", type: 'info' }); 
 					return;
 				}
 			},
@@ -231,11 +231,11 @@
 							addUserJoinBranchRequire(params).then(res=>{ 
 								var tips = res.data.tips;
 								if(tips.isOk){ 
-									this.$message({showClose: true, message:tips.msg, type: 'success' }); 
+									this.$notify({position:'bottom-left',showClose:true,message:tips.msg, type: 'success' }); 
 									//this.$emit('submit',res.data.data );//  @submit="afterAddSubmit" 
 									return; 
 								}else{ 
-									this.$message({showClose: true, message: tips.msg, type: 'error' }); 
+									this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' }); 
 									return;
 								}
 							})
@@ -251,16 +251,16 @@
 					listBranchNoAuth(params).then(res=>{
 						if(res.data.tips.isOk){
 							if(res.data.data.length<=0){
-								this.$message({showClose: true, message: "该公司名未注册，可以使用", type: 'success' }); 
+								this.$notify({position:'bottom-left',showClose:true,message: "该公司名未注册，可以使用", type: 'success' }); 
 								return;
 							}else{
-								this.$message({showClose: true, message: "该公司名已注册，不可以使用", type: 'error' }); 
+								this.$notify({position:'bottom-left',showClose:true,message: "该公司名已注册，不可以使用", type: 'error' }); 
 								return;
 							}
 						}
 					})
 				}else{
-					this.$message({showClose: true, message: "最少输入两个字", type: 'error' }); 
+					this.$notify({position:'bottom-left',showClose:true,message: "最少输入两个字", type: 'error' }); 
 					return;
 				}
 			}

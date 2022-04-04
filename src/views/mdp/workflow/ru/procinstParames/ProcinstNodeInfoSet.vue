@@ -203,7 +203,7 @@
 							this.nodeInfoList=res.data.data; 
 							this.nodeInfoListOld=JSON.parse(JSON.stringify(this.nodeInfoList));
 						}else{
-							this.$message({showClose: true, message: tips.msg, type: 'error' });
+							this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 						}
 					});
 				}else{
@@ -216,7 +216,7 @@
 							this.nodeInfoList=res.data.data; 
 							this.nodeInfoListOld=JSON.parse(JSON.stringify(this.nodeInfoList));
 						}else{
-							this.$message({showClose: true, message: tips.msg, type: 'error' });
+							this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 						}
 					});
 				}

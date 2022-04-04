@@ -222,7 +222,7 @@ export default {
             this.pageInfo.total = res.data.total;
             this.deployments = res.data.data;
           } else {
-            this.$message({showClose: true, message: tips.msg, type: "error" });
+            this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: "error" });
           }
           this.listLoading = false;
         })
@@ -272,7 +272,7 @@ export default {
               this.pageInfo.total = 0;
               this.getDeployments();
             }
-            this.$message({showClose: true,
+            this.$notify({position:'bottom-left',showClose: true,
               message: tips.msg,
               type: tips.isOk ? "success" : "error"
             });
@@ -297,7 +297,7 @@ export default {
               this.pageInfo.total = 0;
               this.getDeployments();
             }
-            this.$message({showClose: true,
+            this.$notify({position:'bottom-left',showClose: true,
               message: tips.msg,
               type: tips.isOk ? "success" : "error"
             });

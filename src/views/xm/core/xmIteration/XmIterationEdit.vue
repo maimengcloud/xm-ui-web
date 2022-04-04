@@ -118,7 +118,7 @@
 			//新增提交XmIteration 迭代定义 父组件监听@submit="afterAddSubmit"
 			editSubmit: function () {
 				if(!this.roles.some(i=>i.roleid=='iterationAdmin')){
-					this.$notify({showClose: true, message: "只有迭代管理员可以修改迭代", type:  'error' }); 
+					this.$notify({position:'bottom-left',showClose:true,message: "只有迭代管理员可以修改迭代", type:  'error' }); 
 					return ;
 				}
 				this.$refs.editForm.validate((valid) => {
@@ -133,7 +133,7 @@
 								if(tips.isOk){
 									this.$emit('submit');//  @submit="afterAddSubmit"
 								}
-								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err  => this.load.edit=false);
 						});
 					}

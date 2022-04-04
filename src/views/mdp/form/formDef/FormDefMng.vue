@@ -257,7 +257,7 @@
 						this.pageInfo.total = res.data.total;
 						this.formDefs = res.data.data;
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					} 
 					this.listLoading = false;
 				}).catch(() => {
@@ -302,7 +302,7 @@
 							this.pageInfo.total=0;
 							this.getFormDefs();
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 						
 					});
 				}).catch(() => {
@@ -323,7 +323,7 @@
 							this.pageInfo.total=0;
 							this.getFormDefs(); 
 						}
-						this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					});
 				}).catch(() => {
 					this.listLoading = false; 

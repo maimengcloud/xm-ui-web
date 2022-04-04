@@ -379,7 +379,7 @@
 						this.pageInfo.count=false;
 						this.xmTestCaseExecs = res.data.data;
 					}else{
-						this.$notify({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -408,11 +408,7 @@
 				this.sels = sels;
 			}, 
 			//删除xmTestCaseExec
-			handleDel: function (row,index) {  
-				if( !this.roles.some(i=>i.roleid=='testAdmin')  && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
-					this.$notify({showClose: true,message:"只有测试经理、测试组长可以操作",type:"error"});
-					return ;
-				}
+			handleDel: function (row,index) {   
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
 				}).then(() => { 
@@ -425,14 +421,14 @@
 							this.pageInfo.count=true;
 							this.getXmTestCaseExecs();
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
 			//批量删除xmTestCaseExec
 			batchDel: function () { 
 				if( !this.roles.some(i=>i.roleid=='testAdmin')  && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
-					this.$notify({showClose: true,message:"只有测试经理、测试组长可以操作",type:"error"});
+					this.$notify({position:'bottom-left',showClose: true,message:"只有测试经理、测试组长可以操作",type:"error"});
 					return ;
 				}
 				this.$confirm('确认删除选中记录吗？', '提示', {
@@ -446,7 +442,7 @@
 							this.pageInfo.count=true;
 							this.getXmTestCaseExecs(); 
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -483,7 +479,7 @@
 							this.pageInfo.count=true;
 							this.getXmTestCaseExecs(); 
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					})
 				}else{
 					this.xmTestCaseMngVisible=false;
@@ -492,7 +488,7 @@
 			},
 			showCase(){ 
 				if(!this.filters.selProject){
-					this.$notify({showClose: true,message:"请先选择项目",type:"warning"});
+					this.$notify({position:'bottom-left',showClose: true,message:"请先选择项目",type:"warning"});
 					nextAction="showCase"
 					this.showProjectList();
 					return;
@@ -575,11 +571,11 @@
 			},	
 			showBatchEdit:function(){ 
 				if( !this.roles.some(i=>i.roleid=='testAdmin') && !this.roles.some(i=>i.roleid=='tester') && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
-					this.$notify({showClose: true,message:"只有测试经理、测试组长、测试员可以操作",type:"error"});
+					this.$notify({position:'bottom-left',showClose: true,message:"只有测试经理、测试组长、测试员可以操作",type:"error"});
 					return ;
 				}
 				if( !this.filters.selProject ){
-					this.$notify({showClose: true, message:"请先选择项目", type: 'warning'});
+					this.$notify({position:'bottom-left',showClose:true,message:"请先选择项目", type: 'warning'});
 					nextAction="showBatchEdit"
 					this.showProjectList();
 					return ;
@@ -588,7 +584,7 @@
 			},
 			batchEditXmTestCaseExec:function(){ 
  				if(this.valueChangeRows.length==0){
-					this.$notify({showClose: true, message:"没有改变任何数据，无需保存", type: 'success'});
+					this.$notify({position:'bottom-left',showClose:true,message:"没有改变任何数据，无需保存", type: 'success'});
 					return;
 				}else { 
 					this.load.edit=true;
@@ -599,7 +595,7 @@
 							this.valueChangeRows=[]
 							this.getXmTestCaseExecs();
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'}); 
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'}); 
 						
 					}).catch(e=>this.load.edit=false);
 				}
@@ -667,7 +663,7 @@
 			showSelectTask:function(row){
 				this.editForm=row
 				if(this.filters.selProject==null){
-					this.$notify({showClose: true, message: "请先选项目", type: 'success' }); 
+					this.$notify({position:'bottom-left',showClose:true,message: "请先选项目", type: 'success' }); 
 					nextAction="showSelectTask"
 					this.showProjectList();
 
@@ -696,7 +692,7 @@
 			showBugs(row){
 				this.editForm=row
 				if(!this.filters.selProject){ 
-					this.$notify({showClose: true, message: "请先选项目", type: 'success' }); 
+					this.$notify({position:'bottom-left',showClose:true,message: "请先选项目", type: 'success' }); 
 					this.showProjectList();
 					nextAction="showBugs"
 					return ;
@@ -714,7 +710,7 @@
 				this.editForm=row
 				if(!this.filters.selProject){
 					
-					this.$notify({showClose: true, message: "请先选项目", type: 'success' }); 
+					this.$notify({position:'bottom-left',showClose:true,message: "请先选项目", type: 'success' }); 
 					nextAction="showAddBug"
 					this.showProjectList();
 					return ;

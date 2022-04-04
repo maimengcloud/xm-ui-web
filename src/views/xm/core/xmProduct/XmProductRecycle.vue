@@ -258,7 +258,7 @@
 				params.queryScope=this.filters.queryScope
 				if(this.filters.queryScope=='productId'){
 					if(!this.filters.id){
-						this.$notify({showClose: true, message:"您选择了按产品编号精确查找模式，请输入产品编号", type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message:"您选择了按产品编号精确查找模式，请输入产品编号", type: 'error' });
 						return;
 					}
 					params.id=this.filters.id
@@ -284,7 +284,7 @@
 						this.pageInfo.count=false;
 						this.xmProducts = res.data.data;
 					}else{
-						this.$notify({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -335,10 +335,10 @@
 								this.pageInfo.count=true;
 								this.getXmProducts();
 							}
-							this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+							this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 						}).catch( err  => this.load.del=false );
 					 }else{
-						 this.$notify({showClose: true, message: "产品代号不正确", type: 'error' }); 
+						 this.$notify({position:'bottom-left',showClose:true,message: "产品代号不正确", type: 'error' }); 
 					 }
 				}).catch(() => { 
 					return;    

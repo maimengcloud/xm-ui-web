@@ -154,7 +154,7 @@
 						this.pageInfo.count=false;
 						this.xmExchanges = res.data.data;
 					}else{
-						this.$notify({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -196,7 +196,7 @@
 							this.pageInfo.count=true;
 							this.getXmExchanges();
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -214,7 +214,7 @@
 							this.pageInfo.count=true;
 							this.getXmExchanges(); 
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -247,7 +247,7 @@
 					if(tips.isOk){
 						this.xmExchanges.push(params);
 					}
-					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 				})
 			}
 			/**end 自定义函数请在上面加**/

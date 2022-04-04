@@ -509,7 +509,7 @@
 			//编辑提交XmProject xm_project父组件监听@submit="afterEditSubmit"
 			editSubmit: function () { 
 				if(this.opType!=='add' && "0" != this.selProject.status){
-					this.$notify({showClose: true, message: "只有初始状态的项目可以修改，如确实需要修改，请进行项目变更审批", type: 'error' }); 
+					this.$notify({position:'bottom-left',showClose:true,message: "只有初始状态的项目可以修改，如确实需要修改，请进行项目变更审批", type: 'error' }); 
 					return;
 				}
 				var msg=this.xmProduct&&this.xmProduct.id?'将自动关联产品【'+this.xmProduct.productName+'】':'';
@@ -544,11 +544,11 @@
 									} 
 									this.$emit('submit',res.data.data);//  @submit="afterEditSubmit"
 								}
-								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err =>this.load.edit=false);
 						});
 					}else{ 
-						this.$notify({showClose: true, message: "表单检查不通过，请修改后提交", type:'error'}); 
+						this.$notify({position:'bottom-left',showClose:true,message: "表单检查不通过，请修改后提交", type:'error'}); 
 					}
 				});
 			}, 
@@ -562,7 +562,7 @@
 					if(tips.isOk){ 
 						this.xmGroups = res.data.data; 
 					}else{
-						this.$notify({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -810,7 +810,7 @@
 					if(tips.isOk){  
 						this.$set(this.editForm,'code',res.data.data)
 					}
-					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 				})
 			},
 			initData(){

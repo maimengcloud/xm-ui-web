@@ -74,11 +74,11 @@
 				this.$refs.addForm.validate((valid) => {
 					if (valid) {
 						if(this.addForm.formName==''){
-							this.$message({showClose: true, message: '表单名称不能为空', type: 'error' });
+							this.$notify({position:'bottom-left',showClose:true,message: '表单名称不能为空', type: 'error' });
 							return;
 						}
 						if(this.addForm.categoryId==null || this.addForm.categoryId==''  ){
-							this.$message({showClose: true, message: '归属分类不能为空', type: 'error' });
+							this.$notify({position:'bottom-left',showClose:true,message: '归属分类不能为空', type: 'error' });
 							return;
 						}
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
@@ -97,7 +97,7 @@
 									this.$refs['addForm'].resetFields();
 									this.$emit('submit');//  @submit="afterAddSubmit"
 								}
-								this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch(() => {
 								this.addLoading = false;
 							});

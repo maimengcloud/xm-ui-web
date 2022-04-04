@@ -159,7 +159,7 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue';
 						this.pageInfo.count=false; 
 						this.xmProjects = res.data.data;
 					}else{
-						this.$notify({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -180,7 +180,7 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue';
 						if(tips.isOk){
 							this.getXmProjects();
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					})
 				})
 			},
@@ -196,7 +196,7 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue';
 					var tips = res.data.tips;
 					if(tips.isOk){
 						this.getXmProjects();
-						this.$notify({showClose: true, message: "移出成功", type: 'success' });
+						this.$notify({position:'bottom-left',showClose:true,message: "移出成功", type: 'success' });
 					}
 				});
 			})

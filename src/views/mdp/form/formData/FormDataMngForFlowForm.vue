@@ -141,7 +141,7 @@
 						this.editForm=res.data.data[0]
 						
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					} 
 					this.listLoading = false;
 				}).catch(() => {
@@ -169,7 +169,7 @@
 						this.getOptions2();
 						this.$emit('formFieldsLoad',this.formFields);
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					} 
 				}).catch(() => {
 					 this.listLoading=false;

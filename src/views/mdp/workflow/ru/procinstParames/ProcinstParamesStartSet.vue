@@ -402,7 +402,7 @@
 									this.needAssignee='';
 									this.needAssigneeMsg='';
 									this.$emit('submit');//  @submit="afterAddSubmit"
-									this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+									this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 									this.handleCancel();
 								}else if(tips.tipscode=='need-mulit-assignee'){//need-mulit-assignee 需要一个或者多个 need-single-assignee 只需要一个
 									this.needAssignee=tips.tipscode
@@ -415,7 +415,7 @@
 									this.needAssigneeNum=1;
 									this.$refs.addForm.validateField('needAssignee');
 								}else{
-									this.$message({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+									this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 								}
 
 							}).catch(() => {
@@ -631,7 +631,7 @@
 							this.nodeInfoVisible=true
 						}
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					}
 				});
 			},

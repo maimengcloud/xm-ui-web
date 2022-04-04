@@ -180,7 +180,7 @@
 						data.forEach(i=>i.showEditor=false)
 						this.xmMenuExchanges = data;
 					}else{
-						this.$notify({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -222,7 +222,7 @@
 							this.pageInfo.count=true;
 							this.getXmMenuExchanges();
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -240,7 +240,7 @@
 							this.pageInfo.count=true;
 							this.getXmMenuExchanges(); 
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -297,7 +297,7 @@
 						this.editForm.showEditor=false; 
 						this.headEditorVisible=false;
 					}
-					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 				})
 			},
 			/**end 自定义函数请在上面加**/

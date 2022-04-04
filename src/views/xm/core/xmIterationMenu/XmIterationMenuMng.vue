@@ -167,7 +167,7 @@
 				if(this.iteration){
 					params.iterationId=this.iteration.id
 				}else{
-					this.$notify({showClose: true, message: "请先在左边选择迭代", type: 'success' });
+					this.$notify({position:'bottom-left',showClose:true,message: "请先在左边选择迭代", type: 'success' });
 					return;
 				}
 				this.load.list = true;
@@ -178,7 +178,7 @@
 						this.pageInfo.count=false;
 						this.xmIterationMenus = res.data.data;
 					}else{
-						this.$notify({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -222,14 +222,14 @@
 							this.$refs.menusSelect.reloadChildren([row]);
 							this.getXmIterationMenus();
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
 			//批量删除xmIterationMenu
 			batchDel: function () {
 				if(this.sels.length<=0){
-					this.$notify({showClose: true, message:"请先选择一个或者多个需求", type: 'warning' });
+					this.$notify({position:'bottom-left',showClose:true,message:"请先选择一个或者多个需求", type: 'warning' });
 					return ;
 				}
 				this.$confirm('确认将需求移出迭代吗？', '提示', {
@@ -247,7 +247,7 @@
 							this.pageInfo.count=true;
 							this.getXmIterationMenus();
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -271,7 +271,7 @@
 						this.getXmIterationMenus()
 						this.$refs.menusSelect.reloadChildren(menus);
 					}
-					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 				})
 			},
 			onIterationRowClick(iteration){

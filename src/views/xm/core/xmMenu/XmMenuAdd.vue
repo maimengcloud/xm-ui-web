@@ -296,7 +296,7 @@
 			//新增提交XmMenu 项目需求表 父组件监听@submit="afterAddSubmit"
 			addSubmit: function () {
 				if(this.addForm.productId==null){
-					this.$notify({showClose: true, message: '请选择产品/或者上级需求进行新增', type:'error' }); 
+					this.$notify({position:'bottom-left',showClose:true,message: '请选择产品/或者上级需求进行新增', type:'error' }); 
 					return;
 				} 
 				this.$refs.addForm.validate((valid) => {
@@ -310,7 +310,7 @@
 								params.pmenuId=this.parentMenu.menuId
 							}
 							if(params.productId==null|| params.productId==''){
-								this.$notify({showClose: true, message: '产品编号不能为空', type:'error' }); 
+								this.$notify({position:'bottom-left',showClose:true,message: '产品编号不能为空', type:'error' }); 
 								return;
 							}
 							if(params.remark=='作为   ，我需要   ，以便我能够   。'){
@@ -327,11 +327,11 @@
 								if(tips.isOk){
  									this.$emit('submit',res.data.data);//  @submit="afterAddSubmit"
 								}
-								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err  => this.load.add=false);
 						});
 					}else{
-						this.$notify({showClose: true, message:"表单检查不通过，请修改后提交", type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message:"表单检查不通过，请修改后提交", type: 'error' });
 					}
 				});
 			},

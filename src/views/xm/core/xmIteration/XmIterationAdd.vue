@@ -134,11 +134,11 @@
 								if(tips.isOk){ 
 									this.$emit('submit',res.data.data);//  @submit="afterAddSubmit"
 								}
-								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err  => this.load.add=false);
 						});
 					}else{
-						this.$notify({showClose: true, message: "表单验证不通过", type: 'error' }); 
+						this.$notify({position:'bottom-left',showClose:true,message: "表单验证不通过", type: 'error' }); 
 					}
 				});
 			},

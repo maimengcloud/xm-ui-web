@@ -311,7 +311,7 @@
 			//编辑提交XmProjectTemplate xm_project父组件监听@submit="afterEditSubmit"
 			editSubmit: function () {
 				if("0" != this.selProjectTemplate.status){
-					this.$notify({showClose: true, message: "只有初始状态的项目可以修改，如确实需要修改，请进行项目变更审批", type: 'error' }); 
+					this.$notify({position:'bottom-left',showClose:true,message: "只有初始状态的项目可以修改，如确实需要修改，请进行项目变更审批", type: 'error' }); 
 					return;
 				}
 				if (
@@ -321,12 +321,12 @@
 					this.editForm.startTime = this.dateRanger[0] ;
 					this.editForm.endTime = this.dateRanger[1] ;
 				}else{
-					this.$notify({showClose: true, message: "请输入开始日期和结束日期", type: 'error' }); 
+					this.$notify({position:'bottom-left',showClose:true,message: "请输入开始日期和结束日期", type: 'error' }); 
 					return;
 				}
 				
 				if(!this.editForm.productId){
-					this.$notify({showClose: true, message: "请选择归属产品", type: 'error' }); 
+					this.$notify({position:'bottom-left',showClose:true,message: "请选择归属产品", type: 'error' }); 
 					return;
 				}
 				this.$refs.editForm.validate((valid) => {
@@ -344,7 +344,7 @@
 									this.$refs['editForm'].resetFields();
 									this.$emit('submit',params);//  @submit="afterEditSubmit"
 								}
-								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err =>this.load.edit=false);
 						});
 					}

@@ -232,7 +232,7 @@
 						this.pageInfo.count=false; 
 						this.xmProjects = res.data.data;
 					}else{
-						this.$notify({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -285,10 +285,10 @@
 								this.pageInfo.count=true;
 								this.getXmProjects();
 							}
-							this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+							this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 						}).catch( err  => this.load.del=false ); 
 					 }else{
-						 this.$notify({showClose: true, message: "项目代号不正确", type: 'error' }); 
+						 this.$notify({position:'bottom-left',showClose:true,message: "项目代号不正确", type: 'error' }); 
 					 }
 				}).catch(() => { 
 					return;    
@@ -309,7 +309,7 @@
 							this.pageInfo.count=true;
 							this.getXmProjects(); 
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -325,7 +325,7 @@
 			},
 			onCopyToConfirm(){ 
 				if(!this.xmProjectCopy.code){
-					this.$notify({showClose: true, message: '项目代号不能为空', type: 'error' });
+					this.$notify({position:'bottom-left',showClose:true,message: '项目代号不能为空', type: 'error' });
 					return;
 				}
 				this.load.add=true;
@@ -339,7 +339,7 @@
 						}
 						this.$emit("copy",res.data.data)
 					}
-					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 
 				})
 			},
@@ -374,7 +374,7 @@
 						this.ScreenData[scope.$index].status = val;
 						this.status = val;
 					}
-					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 					this.load.edit = false;
 				}).catch( err => this.load.edut = false );
 			},
@@ -500,12 +500,12 @@
 						if(tips.isOk){
 							this.getXmProjects(); 
 						} 
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 					})
 				}else{
 					addXmMyFocus({projectId:row.id,focusType:'project',projectName:row.name,userid:this.userInfo.userid,username:this.userInfo.username}).then(res=>{
 						var tips=res.data.tips;
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 					})
 				}
 			},
@@ -527,7 +527,7 @@
 					if(tips.isOk){
 						this.xmProjectCopy.code=res.data.data
 					}
-					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 				})
 			}
 			/**end 自定义函数请在上面加**/

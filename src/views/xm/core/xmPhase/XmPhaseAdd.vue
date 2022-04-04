@@ -257,20 +257,20 @@
 					}
 
 				}else{
-					this.$notify({showClose: true, message: "请输入开始日期和结束日期", type: 'error' });
+					this.$notify({position:'bottom-left',showClose:true,message: "请输入开始日期和结束日期", type: 'error' });
 					return;
 				}
 				if(!this.addForm.budgetIuserCnt){
-					this.$notify({showClose: true, message: "内购人员数不能为空", type: 'error' });
+					this.$notify({position:'bottom-left',showClose:true,message: "内购人员数不能为空", type: 'error' });
 					return;
 				}
 
 				if(!this.addForm.budgetHours){
-					this.$notify({showClose: true, message: "工期不能为空", type: 'error' });
+					this.$notify({position:'bottom-left',showClose:true,message: "工期不能为空", type: 'error' });
 					return;
 				}
 				if(!this.addForm.budgetIuserPrice){
-					this.$notify({showClose: true, message: "内购单价不能为空", type: 'error' });
+					this.$notify({position:'bottom-left',showClose:true,message: "内购单价不能为空", type: 'error' });
 					return;
 				}
 				this.$refs.addForm.validate((valid) => {
@@ -308,7 +308,7 @@
 									//this.$refs['addForm'].resetFields();
 									this.$emit('submit',res.data.data);//  @submit="afteraddSubmit"
 								}
-								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.add=false);
 						});
 					}

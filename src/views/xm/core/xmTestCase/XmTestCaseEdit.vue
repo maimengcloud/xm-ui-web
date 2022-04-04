@@ -96,12 +96,7 @@
 				this.$emit('cancel');
 			},
 			//新增提交XmTestCase 测试用例 父组件监听@submit="afterAddSubmit"
-			editSubmit: function () {
-
-				if( !this.roles.some(i=>i.roleid=='testAdmin') && !this.roles.some(i=>i.roleid=='tester') && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
-					this.$notify({showClose: true,message:"只有测试经理、测试组长、测试员可以操作",type:"error"});
-					return ;
-				}
+			editSubmit: function () { 
 				this.$refs.editForm.validate((valid) => {
 					if (valid) {
 
@@ -116,7 +111,7 @@
 								if(tips.isOk){
  									this.$emit('submit');//  @submit="afterAddSubmit"
 								}
-								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.edit=false);
 						});
 					}

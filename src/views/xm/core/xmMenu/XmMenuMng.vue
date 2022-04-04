@@ -687,7 +687,7 @@
 						this.pageInfo.count=false;
 						this.xmMenus = res.data.data;
 					}else{
-						this.$notify({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					}
 					this.load.list = false;
 				}
@@ -722,7 +722,7 @@
 					this.addFormVisible = true;
 				}else{
 					this.$refs.xmProductSelect1.productVisible=true;
-					this.$notify({showClose: true, message: "请先选择一个产品", type: 'warning'});
+					this.$notify({position:'bottom-left',showClose:true,message: "请先选择一个产品", type: 'warning'});
 				}
 
 				//this.addForm=Object.assign({}, this.editForm);
@@ -811,14 +811,14 @@
 							this.getXmMenus();
 
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
 			//批量删除xmMenu
 			batchDel: function () {
 				if(this.sels.length==0){
-					this.$notify({showClose: true, message: "请先选择要删除的需求", type: 'warning'});
+					this.$notify({position:'bottom-left',showClose:true,message: "请先选择要删除的需求", type: 'warning'});
 					return;
 				}
 				this.$confirm('确认删除选中的'+this.sels.length+'条数据吗？删除后数据不可恢复', '提示', {
@@ -833,7 +833,7 @@
 							this.getXmMenus();
 							treeTool.reloadAllChildren(this.$refs.table,this.maps,this.sels,'pmenuId',this.loadXmMenusLazy)
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -951,7 +951,7 @@
 							treeTool.reloadAllChildren(this.$refs.table,this.maps,this.parentMenu.menuId,'pmenuId',this.loadXmMenusLazy)
 						}
 					}else{
-						this.$notify({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					}
 				}).catch( err  => this.load.add=false );
 			},
@@ -981,7 +981,7 @@
 					if(tips.isOk){
 						//this.getXmMenus()
 					}
-					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 				});
 			},
 
@@ -1014,7 +1014,7 @@
 						this.xmMenus=[];
 						this.getXmMenus();
 					}
-					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 				}).catch( err  => this.load.edit=false );
 			},
 			onGroupUserSelect(users,option){

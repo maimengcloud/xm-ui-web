@@ -133,12 +133,12 @@
 						this.pageInfo.total = res.data.data.total;this.pageInfo.countSql=false;
 						this.branchs = res.data.data;
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch(() => {
 					this.load.list = false;
-					//this.$message({showClose: true, message: '通讯错误', type: 'error' });
+					//this.$notify({position:'bottom-left',showClose:true,message: '通讯错误', type: 'error' });
 				});
 			}, 
 			//选择行branch

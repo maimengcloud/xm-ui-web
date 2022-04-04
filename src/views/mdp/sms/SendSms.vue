@@ -192,21 +192,21 @@
 			sendSmsMethod() {
 				let that = this;
 				if (!this.smsTemplatesSelectValue) {
-					this.$message({showClose: true,
+					this.$notify({position:'bottom-left',showClose: true,
 						message: "请选择某个模板",
 						type: 'error'
 					});
 					return;
 				}
 				if (!this.smsSignsSelectValue) {
-					this.$message({showClose: true,
+					this.$notify({position:'bottom-left',showClose: true,
 						message: "请选择某个签名",
 						type: 'error'
 					});
 					return;
 				}
 				if (!this.mobilesStr) {
-					this.$message({showClose: true,
+					this.$notify({position:'bottom-left',showClose: true,
 						message: "发送对象不能为空",
 						type: 'error'
 					});
@@ -223,7 +223,7 @@
 			
 				var mobileArr = this.mobilesStr.split(",");
 				if (mobileArr.length > 10) {
-					this.$message({showClose: true,
+					this.$notify({position:'bottom-left',showClose: true,
 						message: "发送的对象不能超过10个",
 						type: 'error'
 					});
@@ -232,14 +232,14 @@
 				for (let i = 0; i < mobileArr.length; i++) {
 					if (!/^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/.test(
 							mobileArr[i])) {
-						this.$message({showClose: true,
+						this.$notify({position:'bottom-left',showClose: true,
 							message: mobileArr[i] + "手机号码不对",
 							type: 'error'
 						});
 						return;
 					}
 					if (this.mobilesStr.lastIndexOf(mobileArr[i]) != this.mobilesStr.indexOf(mobileArr[i])) {
-						this.$message({showClose: true,
+						this.$notify({position:'bottom-left',showClose: true,
 							message: "请填写不同的手机号码进行发送",
 							type: 'error'
 						});
@@ -251,21 +251,21 @@
 				var reg = /\{\d\}/;
 				let smsTemplateVariableCount = this.smsTemplatesSelectValue.text.split(reg).length - 1;
 				if (templateParamsArr.length != smsTemplateVariableCount) {
-					this.$message({showClose: true,
+					this.$notify({position:'bottom-left',showClose: true,
 						message: "输入的短信模板参数与短信模板的变量的数目不一致",
 						type: 'error'
 					});
 					return;
 				}
 				if (this.userNeedReplySmsRadio === '1' && !this.replyEndDay) {
-					this.$message({showClose: true,
+					this.$notify({position:'bottom-left',showClose: true,
 						message: "如果勾选需要用户回复，必须填写天数",
 						type: 'error'
 					});
 					return;
 				}
 				if (this.userNeedReplySmsRadio === '1' && !/^\d+$/.test(this.replyEndDay)) {
-					this.$message({showClose: true,
+					this.$notify({position:'bottom-left',showClose: true,
 						message: "天数必须是正整数",
 						type: 'error'
 					});
@@ -301,7 +301,7 @@
 						this.sendResultVisible = true;
 						that.sendResult = res.data.data;
 					};
-					this.$message({showClose: true,
+					this.$notify({position:'bottom-left',showClose: true,
 						message: tips.msg,
 						type: tips.isOk ? 'success' : 'error'
 					});
@@ -326,7 +326,7 @@
 					if (tips.isOk) {
 						this.smsTemplatesOptions = res.data.data;
 					} else {
-						this.$message({showClose: true,
+						this.$notify({position:'bottom-left',showClose: true,
 							message: tips.msg,
 							type: 'error'
 						});
@@ -346,7 +346,7 @@
 					if (tips.isOk) {
 						this.smsSignsOptions = res.data.data;
 					} else {
-						this.$message({showClose: true,
+						this.$notify({position:'bottom-left',showClose: true,
 							message: tips.msg,
 							type: 'error'
 						});

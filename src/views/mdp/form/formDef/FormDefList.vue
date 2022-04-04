@@ -177,7 +177,7 @@
 							this.rowClick(this.formDefs[0], null, null);
 						} 
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					} 
 					this.listLoading = false;
 				}).catch(() => {

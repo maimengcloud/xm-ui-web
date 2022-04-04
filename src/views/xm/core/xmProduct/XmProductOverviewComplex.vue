@@ -85,7 +85,7 @@ export default {
 				loadTasksToXmProductState(params).then((res) => {
 					this.load.calcProduct=false;
 					var tips=res.data.tips; 
-					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 				}).catch( err  => this.load.calcProduct=false );
 			},
       
@@ -96,7 +96,7 @@ export default {
 				loadTasksToXmMenuState(params).then((res) => {
 					this.load.calcMenu=false;
 					var tips=res.data.tips; 
-					this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 				}).catch( err  => this.load.calcMenu=false ); 
 			},
     onMenuToolBarSelect(menuIndex){

@@ -260,7 +260,7 @@ import { months } from 'moment';
 			// },
 			updateBudget() {
 				if(this.selProject.planTotalCost==undefined){
-					this.$notify({showClose: true, message:"不允许修改", type:  'success'}); 
+					this.$notify({position:'bottom-left',showClose:true,message:"不允许修改", type:  'success'}); 
 					return;
 				}  
 				var planTotalCost=this.getFloatValue(this.selProjectBudget.planTotalCost)
@@ -283,7 +283,7 @@ import { months } from 'moment';
 						}else{
 							this.selProjectBudget=Object.assign({},this.selProject)
 						}	
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 						this.load.edit = false;
 					}).catch( err => this.load.edut = false );
 				}).catch(() => {

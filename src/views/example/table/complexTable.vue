@@ -237,10 +237,7 @@ export default {
       this.getList()
     },
     handleModifyStatus(row, status) {
-      this.$message({showClose: true,
-        message: '操作成功',
-        type: 'success'
-      })
+      this.$notify({position:'bottom-left',showClose: true,message: '操作成功',type: 'success'})
       row.status = status
     },
     resetTemp() {

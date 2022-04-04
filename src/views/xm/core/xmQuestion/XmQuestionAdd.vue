@@ -290,7 +290,7 @@
 									this.$emit('submit');//  @submit="afterAddSubmit"
 									this.handleCancel();
 								}
-								this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' });
+								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.add=false);
 						});
 					}
@@ -366,7 +366,7 @@
 			},
 			showSelectTask:function(){
 				if(this.filters.selProject==null){
-					this.$notify({showClose: true, message: "请先选项目", type: 'error' });
+					this.$notify({position:'bottom-left',showClose:true,message: "请先选项目", type: 'error' });
 					return ;
 				}
 				this.selectTaskVisible=true;
@@ -390,7 +390,7 @@
 			},
 			showSelectMenu:function(){
 				if(this.filters.selProject==null){
-					this.$notify({showClose: true, message: "请先选项目", type: 'error' });
+					this.$notify({position:'bottom-left',showClose:true,message: "请先选项目", type: 'error' });
 					this.$refs.xmProjectSelect.projectVisible=true;
 					return ;
 				}

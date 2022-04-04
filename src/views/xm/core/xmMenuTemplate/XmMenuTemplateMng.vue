@@ -154,7 +154,7 @@
 				if( this.filters.product!==null && this.filters.product.id!=''){
 					params.productId=this.filters.product.id
 				}else {
-					this.$notify({showClose: true, message: "请先选择产品", type: 'warning' });
+					this.$notify({position:'bottom-left',showClose:true,message: "请先选择产品", type: 'warning' });
 					return;
 					//params.xxx=xxxxx
 				} 
@@ -168,7 +168,7 @@
 						this.pageInfo.count=false;
 						this.xmMenuTemplates = res.data.data;
 					}else{
-						this.$notify({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -182,7 +182,7 @@
 			//显示新增界面 XmMenuTemplate xm_project_menu
 			showAdd: function () {
 				if(this.filters.product==null){
-					this.$notify({showClose: true, message: "请先在左边选择产品", type: 'warning' });
+					this.$notify({position:'bottom-left',showClose:true,message: "请先在左边选择产品", type: 'warning' });
 					return;
 				}
 				this.addFormVisible = true;
@@ -227,7 +227,7 @@
 							this.pageInfo.count=true;
 							this.getXmMenuTemplates();
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -245,7 +245,7 @@
 							this.pageInfo.count=true;
 							this.getXmMenuTemplates(); 
 						}
-						this.$notify({showClose: true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},

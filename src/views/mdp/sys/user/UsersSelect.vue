@@ -169,7 +169,7 @@
 			searchUsers(){
 				//判断是否需要通过部门查询
 				if(this.isSelectByDept && Object.keys(this.deptTree.deptNodeSelected).length === 0) {
-					this.$message({showClose: true, message: "必须先选择一个部门", type: 'error' });
+					this.$notify({position:'bottom-left',showClose:true,message: "必须先选择一个部门", type: 'error' });
 					return;
 				}
 
@@ -218,7 +218,7 @@
 						this.pageInfo.total = res.data.total;this.pageInfo.count=false;
 						this.users = res.data.data;
 					}else{
-						this.$message({showClose: true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					}
 					if(this.needSetTableUserChecked==true){
 						this.setTableUserChecked();
@@ -228,7 +228,7 @@
 					this.load.list = false;
 				}).catch(() => {
 					this.load.list = false;
-					//this.$message({showClose: true, message: '通讯错误', type: 'error' });
+					//this.$notify({position:'bottom-left',showClose:true,message: '通讯错误', type: 'error' });
 				});
 			},
 
@@ -270,12 +270,12 @@
 			},
 			confirmUsers: function(){
 				if(this.sels.length<1){
-					this.$message({showClose: true, message: "请选择一个用户", type: 'error' });
+					this.$notify({position:'bottom-left',showClose:true,message: "请选择一个用户", type: 'error' });
 					return;
 				}
 				if(this.isSingleUser==true){
 					if(this.sels.length!=1){
-						this.$message({showClose: true, message: "最多只能选择一个用户", type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true,message: "最多只能选择一个用户", type: 'error' });
 						return;
 					}
 				}
