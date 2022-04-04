@@ -75,19 +75,7 @@
 
 			}//end return
 		},//end data
-		methods: { 
-			 findMax( list ) {
-				var i, max = list[0];
-				
-				if(list.length < 2) return max;
-			
-				for (i = 0; i < list.length; i++) {
-					if (list[i].distBudgetWorkload > max.distBudgetWorkload) {
-						max = list[i];
-					}
-				}
-				return max;
-			},
+		methods: {  
 			listXmProductStateHis(){
 				if(!this.filters.product){
 					this.$notify({showClose:true,message:'请先选中产品',type:'warning'})
