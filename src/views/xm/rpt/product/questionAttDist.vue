@@ -1,10 +1,10 @@
 <template>
 	<section>
-        <el-dialog :title="filters.product?'产品【'+filters.product.productName+'】':''+'需求属性分布'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
+        <el-dialog :title="filters.product?'产品【'+filters.product.productName+'】':''+'缺陷属性分布'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
 			<el-row :gutter="5">
 				<el-col :span="18"> 
 					<div>
-						<div class="main" id="xmMenuAttDist"
+						<div class="main" id="xmQuestionAttDist"
 							style="width:100%;height:600px;margin:0 auto;"></div>
 						<div class="progress"></div>
 					</div>
@@ -12,40 +12,51 @@
 				<el-col :span="6" class="border">
 					<el-form :label-position="'top'" label-width="120px" :model="filters">
 						<el-form-item label="分组属性">
-							<el-select   v-model="groupBy"  @change="onXmMenuSomeFieldsChange('groupBy',$event)" clearable>
+							<el-select   v-model="groupBy"  @change="onXmQuestionSomeFieldsChange('groupBy',$event)" clearable>
 								<el-option v-for="i in this.groupBys" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>
 						</el-form-item>     
 							 <xm-product-select class="padding" v-if="!xmProduct && !xmIteration"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
 						    
 							<xm-iteration-select ref="xmIterationSelect" class="padding" v-if="!xmIteration || !xmIteration.id"  :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
- 						<el-form-item label="需求状态" prop="status">
-							<el-select   v-model="filters.status"  @change="onXmMenuSomeFieldsChange('status',$event)" clearable>
-								<el-option v-for="i in this.dicts.menuStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>
+ 						<el-form-item label="缺陷状态" prop="bugStatus">
+							<el-select   v-model="filters.bugStatus"  @change="onXmQuestionSomeFieldsChange('bugStatus',$event)" clearable>
+								<el-option v-for="i in this.dicts.bugStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>
 						</el-form-item>  
-						<el-form-item  label="需求类型" prop="dtype" >
-							<el-select v-model="filters.dtype"  @change="onXmMenuSomeFieldsChange('dtype',$event)" clearable>
-								<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
+						<el-form-item  label="缺陷类型" prop="bugType" >
+							<el-select v-model="filters.bugType"  @change="onXmQuestionSomeFieldsChange('bugType',$event)" clearable>
+								<el-option v-for="i in this.dicts.bugType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>
 						</el-form-item> 
-						<el-form-item  label="需求来源" prop="source">
-							<el-select v-model="filters.source"  @change="onXmMenuSomeFieldsChange('source',$event)" clearable>
-								<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
+						<el-form-item  label="缺陷原因" prop="bugReason">
+							<el-select v-model="filters.bugReason"  @change="onXmQuestionSomeFieldsChange('bugReason',$event)" clearable>
+								<el-option v-for="i in this.dicts.bugReason" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>
 						</el-form-item> 
-						<el-form-item  label="需求层次" prop="dlvl" >
-							<el-select v-model="filters.dlvl"  @change="onXmMenuSomeFieldsChange('dlvl',$event)" clearable>
-								<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
+						<el-form-item  label="严重程度" prop="bugSeverity" >
+							<el-select v-model="filters.bugSeverity"  @change="onXmQuestionSomeFieldsChange('bugSeverity',$event)" clearable>
+								<el-option v-for="i in this.dicts.bugSeverity" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>
 						</el-form-item> 
 					<el-form-item  label="优先级" prop="priority" >
-						<el-select v-model="filters.priority" @change="onXmMenuSomeFieldsChange('priority',$event)" clearable>
+						<el-select v-model="filters.priority" @change="onXmQuestionSomeFieldsChange('priority',$event)" clearable>
 								<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
 						</el-select>
 					</el-form-item>  
+					<el-form-item  label="解决方案" prop="solution" >
+						<el-select v-model="filters.solution" @change="onXmQuestionSomeFieldsChange('solution',$event)" clearable>
+								<el-option v-for="i in dicts.bugSolution" :label="i.name" :key="i.id" :value="i.id"></el-option>
+						</el-select>
+					</el-form-item>  
+
+					<el-form-item  label="重现频率" prop="repRate" >
+						<el-select v-model="filters.repRate" @change="onXmQuestionSomeFieldsChange('repRate',$event)" clearable>
+								<el-option v-for="i in dicts.bugRepRate" :label="i.name" :key="i.id" :value="i.id"></el-option>
+						</el-select>
+					</el-form-item>  
 					<el-form-item>
-						 <el-button type="primary" icon="el-icon-search" @click="searchXmMenuAttDist">查询</el-button>
+						 <el-button type="primary" icon="el-icon-search" @click="searchXmQuestionAttDist">查询</el-button>
 					</el-form-item>  
 					</el-form>
 				</el-col>
@@ -59,7 +70,7 @@
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询  
 	import { mapGetters } from 'vuex'	 
 	  
-	import { getXmMenuAttDist } from '@/api/xm/core/xmMenu';
+	import { getXmQuestionAttDist } from '@/api/xm/core/xmQuestion';
 	
 	import  XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';//修改界面 
 	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//新增界面
@@ -74,23 +85,27 @@
 		    ...mapGetters([
 		      'userInfo','roles'
 		    ]), 
-			xmMenuAttDistsCpd(){
-				if(this.xmMenuAttDists.length==0){
+			xmQuestionAttDistsCpd(){
+				if(this.xmQuestionAttDists.length==0){
 					return []
 				}else{ 
 					var itemId="";
-					if(this.groupBy=='status'){
-						itemId="menuStatus"
-					}else if(this.groupBy=='dlvl'){
-						itemId="demandLvl"
-					}else if(this.groupBy=='dtype'){
-						itemId="demandType"
+					if(this.groupBy=='bug_status'){
+						itemId="bugStatus"
+					}else if(this.groupBy=='bug_type'){
+						itemId="bugType"
+					}else if(this.groupBy=='bug_reason'){
+						itemId="bugReason"
+					}else if(this.groupBy=='bug_severity'){
+						itemId="bugSeverity"
 					}else if(this.groupBy=='priority'){
 						itemId="priority"
-					}else if(this.groupBy=='source'){
-						itemId="demandSource"
+					} else if(this.groupBy=='bug_solution'){
+						itemId="bugSolution"
+					} else if(this.groupBy=='rep_rate'){
+						itemId="bugRepRate"
 					} 
-					return this.xmMenuAttDists.map(i=>{
+					return this.xmQuestionAttDists.map(i=>{
 						var data={...i}
 						data.name=this.formatDict(itemId,data.name)
 						return data;
@@ -102,16 +117,20 @@
 			},
 			legendCpd(){
 				var itemId="";
-				if(this.groupBy=='status'){
-					itemId="menuStatus"
-				}else if(this.groupBy=='dlvl'){
-					itemId="demandLvl"
-				}else if(this.groupBy=='dtype'){
-					itemId="demandType"
+				if(this.groupBy=='bug_status'){
+					itemId="bugStatus"
+				}else if(this.groupBy=='bug_type'){
+					itemId="bugType"
+				}else if(this.groupBy=='bug_reason'){
+					itemId="bugReason"
+				}else if(this.groupBy=='bug_severity'){
+					itemId="bugSeverity"
 				}else if(this.groupBy=='priority'){
 					itemId="priority"
-				}else if(this.groupBy=='source'){
-					itemId="demandSource"
+				} else if(this.groupBy=='bug_solution'){
+					itemId="bugSolution"
+				} else if(this.groupBy=='rep_rate'){
+					itemId="bugRepRate"
 				} 
 
 				return this.dicts[itemId].map(i=>i.name)
@@ -119,7 +138,7 @@
 			
         }, 
 		watch: {  
-			xmMenuAttDistsCpd(){
+			xmQuestionAttDistsCpd(){
 				this.drawCharts();
 			}
 	    },
@@ -129,20 +148,23 @@
                     product:null,  
 					iteration:null,
                 },
-				groupBy:'status',
+				groupBy:'bug_status',
 				groupBys:[
-					{id:'status', name:'需求状态'},
-					{id:'dtype', name:'需求类型'},
-					{id:'source', name:'需求来源'},
-					{id:'dlvl', name:'需求层次'},
-					{id:'priority', name:'优先级'}
+					{id:'bug_status', name:'缺陷状态'},
+					{id:'bug_type', name:'缺陷类型'},
+					{id:'bug_reason', name:'缺陷原因'},
+					{id:'bug_severity', name:'紧急程度'},
+					{id:'priority', name:'优先级'},
+					{id:'bug_solution', name:'解决方案'},
+					{id:'rep_rate', name:'复现频率'},
+					
 				],
 				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中... 
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmMenuAttDists:[],
+				xmQuestionAttDists:[],
 
 			}//end return
 		},//end data
@@ -177,7 +199,7 @@
 				
 			},
 			drawCharts() {
-				this.myChart = this.$echarts.init(document.getElementById("xmMenuAttDist")); 
+				this.myChart = this.$echarts.init(document.getElementById("xmQuestionAttDist")); 
 				this.myChart.setOption(   
 					{
 						title: {
@@ -196,7 +218,7 @@
 							{
 							type: 'pie',
 							radius: '50%',
-							data: this.xmMenuAttDistsCpd,
+							data: this.xmQuestionAttDistsCpd,
 							emphasis: {
 								itemStyle: {
 								shadowBlur: 10,
@@ -214,26 +236,32 @@
 					}
 				)
 			},
-			onXmMenuSomeFieldsChange(fieldName,$event){
-				this.xmMenuAttDists=[]
+			onXmQuestionSomeFieldsChange(fieldName,$event){
+				this.xmQuestionAttDists=[]
 			},
-			searchXmMenuAttDist(){
+			searchXmQuestionAttDist(){
 				if(!this.groupBy){
 					this.$notify({position:'bottom-left',showClose:true,message:'请选中分组属性',type:'warning'})
 					return 
 				}
 				var params={}
-				if(this.filters.dtype){
-					params.dtype=this.filters.dtype
+				if(this.filters.solution){
+					params.solution=this.filters.solution
 				}
-				if(this.filters.status){
-					params.status=this.filters.status
+				if(this.filters.bugType){
+					params.bugType=this.filters.bugType
 				}
-				if(this.filters.source){
-					params.source=this.filters.source
+				if(this.filters.bugStatus){
+					params.bugStatus=this.filters.bugStatus
 				}
-				if(this.filters.dlvl){
-					params.dlvl=this.filters.dlvl
+				if(this.filters.bugReason){
+					params.bugReason=this.filters.bugReason
+				}
+				if(this.filters.bugSeverity){
+					params.bugSeverity=this.filters.bugSeverity
+				}
+				if(this.filters.repRate){
+					params.repRate=this.filters.repRate
 				}
 				if(this.filters.priority){
 					params.priority=this.filters.priority
@@ -246,8 +274,8 @@
 				if(this.filters.iteration){
 					params.iterationId=this.filters.iteration.id
 				}
-				getXmMenuAttDist(params).then(res=>{
-					this.xmMenuAttDists=res.data.data
+				getXmQuestionAttDist(params).then(res=>{
+					this.xmQuestionAttDists=res.data.data
 				})
 				
 			},
@@ -269,7 +297,7 @@
 			}
 		},//end method
 		mounted() { 
- 			initSimpleDicts('all',['demandSource','demandLvl','demandType','priority','menuStatus'] ).then(res=>{
+ 			initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','priority','bugRepRate','bugReason'] ).then(res=>{
 				this.dicts=res.data.data;
 			}) 
 			//this.charts();

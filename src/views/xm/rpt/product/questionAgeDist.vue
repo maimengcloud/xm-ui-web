@@ -45,6 +45,11 @@
 						</el-select>
 					</el-form-item>  
 
+					<el-form-item  label="重现频率" prop="repRate" >
+						<el-select v-model="filters.repRate" @change="onXmQuestionSomeFieldsChange('repRate',$event)" clearable>
+								<el-option v-for="i in dicts.bugRepRate" :label="i.name" :key="i.id" :value="i.id"></el-option>
+						</el-select>
+					</el-form-item>  
 					
 					<el-form-item>
 						 <el-button type="primary" icon="el-icon-search" @click="searchXmQuestionAgeDist">查询</el-button>
@@ -168,6 +173,9 @@
 			},
 			searchXmQuestionAgeDist(){ 
 				var params={}
+				if(this.filters.solution){
+					params.solution=this.filters.solution
+				}
 				if(this.filters.bugType){
 					params.bugType=this.filters.bugType
 				}
@@ -179,6 +187,9 @@
 				}
 				if(this.filters.bugSeverity){
 					params.bugSeverity=this.filters.bugSeverity
+				}
+				if(this.filters.repRate){
+					params.repRate=this.filters.repRate
 				}
 				if(this.filters.priority){
 					params.priority=this.filters.priority
