@@ -40,7 +40,7 @@
 		components: {   
 			XmProductSelect,
 		},
-        props:['xmProduct'],
+        props:['xmProduct','xmProject'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -84,8 +84,12 @@
 			
         }, 
 		watch: {  
-			xmProductStateHiss(){
-				this.drawCharts();
+			datesCpd(){
+
+				this.$nextTick(()=>{
+					this.drawCharts();
+				})
+				 
 			}
 	    },
 		data() {

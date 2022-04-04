@@ -1,11 +1,30 @@
 <template>
 	<section>
-        <el-dialog :title="filters.iteration?'【'+filters.iterationName+'】':''+'迭代燃尽图'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
-			<div>
-				<div class="main" id="burnout"
-					style="width:100%;height:600px;margin:0 auto;"></div>
-				<div class="progress"></div>
-			</div>
+        <el-dialog :title="(	filters.iteration?'【'+filters.iteration.iterationName+'】':'')+'迭代燃尽图'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
+			
+			 
+			<el-row :gutter="5">
+				<el-col :span="18"> 
+					<div>
+						<div class="main" id="burnout"
+							style="width:100%;height:600px;margin:0 auto;"></div>
+						<div class="progress"></div>
+					</div>
+				</el-col>
+				<el-col :span="6" class="border">
+					<el-form :label-position="'top'" label-width="120px" :model="filters"> 
+						<el-form-item>
+								<xm-product-select  v-if="!xmProduct&&!xmIteration"    ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"   @clear="onProductClear"></xm-product-select>
+						</el-form-item>  
+ 						<el-form-item> 
+							<xm-iteration-select v-if="!xmIteration || !xmIteration.id" style="display:inline;" :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
+						</el-form-item>  
+						<el-form-item>
+							<el-button type="primary" icon="el-icon-search" @click="listXmIterationStateHis">查询</el-button>
+						</el-form-item>  
+					</el-form>
+				</el-col>
+			</el-row>
         </el-dialog>
 	</section>
 </template>
@@ -16,9 +35,15 @@
 	import { mapGetters } from 'vuex'	 
 	
 	import { listXmIterationStateHis } from '@/api/xm/core/xmIterationStateHis';
+	
+	import  XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';//修改界面
+	
+	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//新增界面
+
 	export default { 
         
 		components: {   
+			XmIterationSelect,XmProductSelect,
 		},
         props:['xmProduct','xmIteration','xmProject'],
 		computed: {
@@ -62,8 +87,10 @@
 			
         }, 
 		watch: {  
-			xmIterationStateHiss(){
-				this.drawWorkload();
+			datesCpd(){
+				this.$nextTick(()=>{
+					this.drawCharts();
+				})
 			}
 	    },
 		data() {
@@ -97,7 +124,11 @@
 				return max;
 			},
 			listXmIterationStateHis(){
-				var params={iterationId:'IT2022-0001-Z5TA',orderBy:'biz_date asc'}
+				if(!this.filters.iteration|| !this.filters.iteration.id){
+					this.$notify({position:'bottom-left',showClose:true,message:'请先选中迭代',type:'warning'})
+					return;
+				}
+				var params={iterationId:this.filters.iteration.id,orderBy:'biz_date asc'}
 				listXmIterationStateHis(params).then(res=>{ 
 					this.xmIterationStateHiss=res.data.tips.isOk?res.data.data:this.xmIterationStateHiss;
 				})
@@ -112,7 +143,7 @@
 				})
 				
 			},
-			drawWorkload() {
+			drawCharts() {
 				this.myChart = this.$echarts.init(document.getElementById("burnout")); 
 				this.myChart.setOption({
 					title: {
@@ -188,7 +219,30 @@
 						}, 
 					]
 				})
-			}
+			},
+			
+			
+			onProductSelected(product){
+				this.filters.product=product
+				this.xmProductStateHiss=[]; 
+			},
+			
+			onProductClear(){
+				this.filters.product=null 
+				this.xmProductStateHiss=[];
+				
+			},
+			
+			onIterationSelected(iteration){
+				this.filters.iteration=iteration
+				this.xmProductStateHiss=[];
+				this.listXmIterationStateHis();
+			},
+			
+			onIterationClear(){
+				this.filters.iteration=null 
+				this.xmProductStateHiss=[];  
+			},
 		},//end method
 		mounted() {
 			/**
@@ -197,7 +251,7 @@
 			}) 
              */
 			//this.charts();
-			//this.drawWorkload();
+			//this.drawCharts();
 			
 		}//end mounted
 	}

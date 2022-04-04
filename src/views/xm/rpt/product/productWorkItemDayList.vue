@@ -9,7 +9,7 @@
 					</div>
 				</el-col>
 				<el-col :span="6" class="border">
-					<el-form :label-position="'top'" label-width="120px" :model="filters"> 
+					<el-form :label-position="'top'" :model="filters"> 
 						<el-form-item>
 							 <xm-product-select  v-if="!xmProduct"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"   @clear="onProductClear"></xm-product-select>
   					</el-form-item>  
@@ -38,7 +38,7 @@
 		components: {  
 			XmProductSelect, 
 		},
-        props:['xmProduct'],
+        props:['xmProduct','xmProject'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -57,8 +57,11 @@
 			
         }, 
 		watch: {  
-			xmProductStateHiss(){
-				this.drawCharts();
+			dataSetCpd(){ 
+				this.$nextTick(()=>{
+					this.drawCharts();
+				})
+				
 			}
 	    },
 		data() {

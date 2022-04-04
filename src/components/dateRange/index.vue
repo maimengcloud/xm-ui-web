@@ -1,5 +1,5 @@
 <template>
-  <el-date-picker :type="type" :style="style" v-model="dateRange" :value-format="valueFormat" :format="format" 
+  <el-date-picker :type="type" :style="styleObj" v-model="dateRange" :value-format="valueFormat" :format="format" 
        unlink-panels
       :range-separator="rangeSepaSrator"
       :start-placeholder="startPlaceholder"
@@ -46,9 +46,9 @@ export default {
       default: 'startTime'
     }, 
      
-    style:{
+    styleObj:{
         typeof:Object,
-        default:{'display':'inline'}
+        default:function(){return {'display':'inline'}}
     },
     
     endKey: {
@@ -80,7 +80,7 @@ export default {
     },
     pickerOptions:{
         typeof:Object,
-        default:util.pickerOptions('datarange')
+        default:function(){return util.pickerOptions('datarange')}
     },
     autoDefault:{
         type:Boolean,
@@ -88,7 +88,9 @@ export default {
     },
     defaultRange:{
         type:Array,
-        default:[-15,15]
+        default:function(){
+            return [-15,15]
+        }
     }
   },
   methods: { 
