@@ -102,13 +102,13 @@ export default {
         this.$refs.menuList.showAdd();
         }else if(dclass==='4'){
           if(!this.linkProjectId && !this.xmProject){
-            this.$notify({showClose:true,message:'请先选择一个项目',type:'warning'})
+            this.$notify({position:'bottom-left',showClose:true,message:'请先选择一个项目',type:'warning'})
             return;
           }
          this.$refs.taskList.showAdd();
         }else if(dclass==='5'){
           if(!this.linkProjectId && !this.xmProject){
-            this.$notify({showClose:true,message:'请先选择一个项目',type:'warning'})
+            this.$notify({position:'bottom-left',showClose:true,message:'请先选择一个项目',type:'warning'})
             return;
           }
           this.$refs.bugList.showAdd();
@@ -116,7 +116,7 @@ export default {
     },
     doDelete(){ 
           if((this.$refs.menuList.sels.length+ this.$refs.taskList.sels.length+this.$refs.bugList.sels.length)==0){
-            this.$notify({showClose:true,message:'请先选择要删除的数据',type:'warning'})
+            this.$notify({position:'bottom-left',showClose:true,message:'请先选择要删除的数据',type:'warning'})
             return;
           }
          if(this.$refs.menuList.sels.length>0){

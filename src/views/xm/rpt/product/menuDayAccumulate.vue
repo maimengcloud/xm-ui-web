@@ -114,7 +114,7 @@
 			},
 			listXmProductStateHis(){
 				if(!this.filters.product){
-					this.$notify({showClose:true,message:'请先选中产品',type:'warning'})
+					this.$notify({position:'bottom-left',showClose:true,message:'请先选中产品',type:'warning'})
 					return;
 				}
 				var params={productId:this.filters.product.id,orderBy:'biz_date asc'}

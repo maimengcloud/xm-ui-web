@@ -254,12 +254,12 @@
 				}
 				if(params.ptype!=='1'){
 					if(!params.projectId){
-						this.$notify({showClose:true,message:'请选择一个项目',type:'warning'})
+						this.$notify({position:'bottom-left',showClose:true,message:'请选择一个项目',type:'warning'})
 						return;
 					}
 				}else{
 					if(!params.productId){
-						this.$notify({showClose:true,message:'请选择一个产品',type:'warning'})
+						this.$notify({position:'bottom-left',showClose:true,message:'请选择一个产品',type:'warning'})
 						return;
 					}
 				}

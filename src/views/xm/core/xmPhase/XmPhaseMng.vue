@@ -1186,7 +1186,7 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 					if(tips.isOk){
 						this.taskVisible=false;
 					}
-					this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+					this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 				})
 			},
 			handlePopover:function(row,opType){

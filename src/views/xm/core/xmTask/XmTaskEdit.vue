@@ -616,7 +616,7 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 						this.$emit('edit-fields',params)
 						 Object.assign(row,params) 
 					}else{
-						this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+						this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 					}
 				})
 			},

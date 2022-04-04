@@ -169,7 +169,7 @@ export default {
 						task.taskState=params.taskState
 						this.$set(this.xmTasks,taskIndex,task)
 					}else{ 
-         				this.$notify({showClose:true,message:tips.msg,type:'error'})
+         				this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:'error'})
 					}
 					return res.data.tips.isOk
 				})

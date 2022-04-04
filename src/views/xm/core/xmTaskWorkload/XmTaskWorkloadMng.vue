@@ -396,7 +396,7 @@
       },
       editXmWorkloadSomeFields(workload,row,fieldName,$event){
 			  if(row.status!='0'){
-          this.$notify.error({showClose:true,message:'该结算单已提交，请重新选择',type:'warning'})
+          this.$notify.error({position:'bottom-left',showClose:true,message:'该结算单已提交，请重新选择',type:'warning'})
           return;
         }
         let params={
@@ -404,7 +404,7 @@
         };
         if(this.sels.length>0){
           if(!this.sels.some(k=>k.projectId==row.projectId)){
-            this.$notify({showClose:true,message:'存在不同项目的工时单，请重新选择',type:'warning'})
+            this.$notify({position:'bottom-left',showClose:true,message:'存在不同项目的工时单，请重新选择',type:'warning'})
             return;
           }
           params.ids=this.sels.map(i=>i.id);
@@ -418,7 +418,7 @@
           if(tips.isOk){
             this.getXmTaskWorkloads();
           }else{
-            this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+            this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
           }
         })
       },
@@ -447,7 +447,7 @@
         let params={ids:[row.id]};
         if(this.sels.length>0){
           if(!this.sels.some(k=>k.id==row.id)){
-            this.$notify({showClose:true,message:'请操作选中的行或者取消选中的行再操作其它行',type:'warning'})
+            this.$notify({position:'bottom-left',showClose:true,message:'请操作选中的行或者取消选中的行再操作其它行',type:'warning'})
             return;
           }
           params.ids=this.sels.map(i=>i.id)
@@ -466,7 +466,7 @@
           if(tips.isOk){
             this.getXmTaskWorkloads();
           }else{
-            this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+            this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
           }
         })
       },

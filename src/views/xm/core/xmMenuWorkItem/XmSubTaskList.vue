@@ -242,7 +242,7 @@ export default {
 				var params={ids:[row.id]};
 				if(this.sels.length>0){
 					if(!this.sels.some(k=>k.id==row.id)){
-						this.$notify({showClose:true,message:'请操作选中的行或者取消选中的行再操作其它行',type:'warning'})
+						this.$notify({position:'bottom-left',showClose:true,message:'请操作选中的行或者取消选中的行再操作其它行',type:'warning'})
 						return;
 					}
 					params.ids=this.sels.map(i=>i.id)
@@ -286,7 +286,7 @@ export default {
 							  Object.assign(row,params)
 						}
 					}else{
-						this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+						this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 					}
 				})
 			},

@@ -184,7 +184,7 @@
 				}
 				
 				if(!params.projectId && !params.productId && params.htSn){
-					this.$notify({showClose:true,message:'项目编号、产品编号、合同编号必须输入一个',type:'error'})
+					this.$notify({position:'bottom-left',showClose:true,message:'项目编号、产品编号、合同编号必须输入一个',type:'error'})
 					return;
 				}
 				this.load.list = true;

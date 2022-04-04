@@ -451,10 +451,10 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 						Object.assign(row,params)
 						this.$emit("edit-fields",params);
 						if(fieldName==='remark'||fieldName==='link'){
-							this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+							this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 						}
 					}else{
-						this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+						this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 					}
 				})
 			},

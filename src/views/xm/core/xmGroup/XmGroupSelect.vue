@@ -140,13 +140,13 @@ import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 					params.productId=this.filters.xmProduct.id
 				}
 				if(this.pgClass==='1' && !params.productId){
-					this.$notify({showClose:true,message:'请选择产品',type:'error'})
+					this.$notify({position:'bottom-left',showClose:true,message:'请选择产品',type:'error'})
 					return;
 				}
 				
 				if((this.pgClass==='0' || !this.pgClass )&& !params.projectId){
 					params.productId=null
-					this.$notify({showClose:true,message:'请选择项目',type:'warning'})
+					this.$notify({position:'bottom-left',showClose:true,message:'请选择项目',type:'warning'})
 				}
 				getGroups(params).then(res=>{
 					var tips = res.data.tips;

@@ -219,7 +219,7 @@
 			},
 			searchXmMenuAttDist(){
 				if(!this.groupBy){
-					this.$notify({showClose:true,message:'请选中分组属性',type:'warning'})
+					this.$notify({position:'bottom-left',showClose:true,message:'请选中分组属性',type:'warning'})
 					return 
 				}
 				var params={}

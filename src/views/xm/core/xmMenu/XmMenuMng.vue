@@ -1069,12 +1069,12 @@
 			showParentMenu(){
 				if(this.filters.product && this.filters.product.id){
 					if(this.sels.length==0){
-						this.$notify({showClose:true,message:'请先选择一个或者多个需求',type:'warning'})
+						this.$notify({position:'bottom-left',showClose:true,message:'请先选择一个或者多个需求',type:'warning'})
 						return;
 					}
 					this.parentMenuVisible=true;
 				}else{
-					this.$notify({showClose:true,message:'请先选择产品',type:'warning'})
+					this.$notify({position:'bottom-left',showClose:true,message:'请先选择产品',type:'warning'})
 					return;
 				}
 
@@ -1082,7 +1082,7 @@
 			onParentMenuSelected(menu){
 
 				if(!menu||!menu.menuId){
-					this.$notify({showClose:true,message:'请先选择一个上级需求',type:'warning'})
+					this.$notify({position:'bottom-left',showClose:true,message:'请先选择一个上级需求',type:'warning'})
 					return;
 				}
 				this.parentMenuVisible=false;
@@ -1097,7 +1097,7 @@
 						var rows=[...this.sels,{menuId:'',pmenuId:menu.menuId}]
 						treeTool.reloadAllChildren(this.$refs.table,this.maps,rows,'pmenuId',this.loadXmMenusLazy)
 					}
-					this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+					this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 				})
 			},
 			formaterByDicts(row,property,cellValue){
@@ -1122,11 +1122,11 @@
 			doBatchDelXmIterationMenu(){
 
 				if(!this.filters.iteration||!this.filters.iteration.id){
-					this.$notify({showClose:true,message:"请选择一个迭代进行操作",type:'warning'})
+					this.$notify({position:'bottom-left',showClose:true,message:"请选择一个迭代进行操作",type:'warning'})
 					return;
 				}
 				if(this.sels.length==0){
-					this.$notify({showClose:true,message:"请选择一个或者多个需求进行操作",type:'warning'})
+					this.$notify({position:'bottom-left',showClose:true,message:"请选择一个或者多个需求进行操作",type:'warning'})
 					return;
 				}
 				var params={
@@ -1138,16 +1138,16 @@
 					if(tips.isOk){
 						this.searchXmMenus();
 					}
-					this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+					this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 				})
 			},
 			doBatchAddXmIterationMenu(){
 				if(!this.filters.iteration||!this.filters.iteration.id){
-					this.$notify({showClose:true,message:"请选择一个迭代进行操作",type:'warning'})
+					this.$notify({position:'bottom-left',showClose:true,message:"请选择一个迭代进行操作",type:'warning'})
 					return;
 				}
 				if(this.sels.length==0){
-					this.$notify({showClose:true,message:"请选择一个或者多个需求进行操作",type:'warning'})
+					this.$notify({position:'bottom-left',showClose:true,message:"请选择一个或者多个需求进行操作",type:'warning'})
 					return;
 				}
 				var params={
@@ -1159,7 +1159,7 @@
 					if(tips.isOk){
 						this.searchXmMenus();
 					}
-					this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+					this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 
 				})
 			},
@@ -1182,7 +1182,7 @@
 				var params={menuIds:[row.menuId]};
 				if(this.sels.length>0){
 					if(!this.sels.some(k=>k.menuId==row.menuId)){
-						this.$notify({showClose:true,message:'请操作选中的行或者取消选中的行再操作其它行',type:'warning'})
+						this.$notify({position:'bottom-left',showClose:true,message:'请操作选中的行或者取消选中的行再操作其它行',type:'warning'})
 						return;
 					}
 					params.menuIds=this.sels.map(i=>i.menuId)
@@ -1222,7 +1222,7 @@
 							  Object.assign(row,params)
 						}
 					}else{
-						this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+						this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 					}
 				})
 			},

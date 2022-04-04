@@ -130,7 +130,7 @@
 						//Object.assign(row,params) 
 						this.$emit("edit-xm-task-some-fields",params);
 					}else{
-						this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+						this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 					}
 				})
 			},

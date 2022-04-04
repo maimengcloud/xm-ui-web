@@ -2318,17 +2318,17 @@ export default {
     },
     showParentTaskList(){
       if(this.sels.length==0){
-        this.$notify({showClose:true,message:"请先选择一个或者多个需要更换上级的计划/任务",type:'warning'})
+        this.$notify({position:'bottom-left',showClose:true,message:"请先选择一个或者多个需要更换上级的计划/任务",type:'warning'})
         return;
       }
       if(this.ptype==='0'){
         if( !this.filters.selProject|| !this.filters.selProject.id){
-           this.$notify({showClose:true,message:"请先选择项目",type:'warning'})
+           this.$notify({position:'bottom-left',showClose:true,message:"请先选择项目",type:'warning'})
            return;
         }
       }else if(this.ptype==='1'){
         if( !this.filters.product|| !this.filters.product.id){
-           this.$notify({showClose:true,message:"请先选择产品",type:'warning'})
+           this.$notify({position:'bottom-left',showClose:true,message:"请先选择产品",type:'warning'})
            return;
         }
       }
@@ -2340,7 +2340,7 @@ export default {
 				var params={ids:[row.id]};
 				if(this.sels.length>0){
 					if(!this.sels.some(k=>k.id==row.id)){
-						this.$notify({showClose:true,message:'请操作选中的行或者取消选中的行再操作其它行',type:'warning'})
+						this.$notify({position:'bottom-left',showClose:true,message:'请操作选中的行或者取消选中的行再操作其它行',type:'warning'})
 						return;
 					}
 					params.ids=this.sels.map(i=>i.id)
@@ -2384,17 +2384,17 @@ export default {
 							  Object.assign(row,params)
 						}
 					}else{
-						this.$notify({showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+						this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 					}
 				})
 			},
     onSelectedParentTask(task){
       if(this.sels.length==0){
-         this.$notify({showClose:true,message:"请先选择一个或者多个需要更换上级的计划/任务",type:'warning'})
+         this.$notify({position:'bottom-left',showClose:true,message:"请先选择一个或者多个需要更换上级的计划/任务",type:'warning'})
          this.selectParentTaskVisible=true
         return;
       }else if(task==null || !task.id){
-         this.$notify({showClose:true,message:"请选择上级计划/任务",type:'warning'})
+         this.$notify({position:'bottom-left',showClose:true,message:"请选择上级计划/任务",type:'warning'})
         return;
       }
 

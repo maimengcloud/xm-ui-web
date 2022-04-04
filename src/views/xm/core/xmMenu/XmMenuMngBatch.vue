@@ -241,7 +241,7 @@
 			//查询时选择责任人
 			showBatchMmUserSelectVisible() {
 				if(!this.sels||this.sels.length==0){
-					this.$notify({showClose:true,message:'请先选中一条或多条数据',type:'warning'})
+					this.$notify({position:'bottom-left',showClose:true,message:'请先选中一条或多条数据',type:'warning'})
 					return;
 				}else{
 					this.batchMmUserSelectVisible=true;
