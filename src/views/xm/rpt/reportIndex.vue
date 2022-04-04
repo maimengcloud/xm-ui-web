@@ -26,6 +26,10 @@
         <xm-menu-day-accumulate ref="xmMenuDayAccumulate"></xm-menu-day-accumulate>
         <xm-menu-att-dist ref="xmMenuAttDist"></xm-menu-att-dist>
         <xm-menu-age-dist ref="xmMenuAgeDist"></xm-menu-age-dist>
+
+        
+        <xm-question-day-trend ref="xmQuestionDayTrend"></xm-question-day-trend>
+        <xm-question-day-accumulate ref="xmQuestionDayAccumulate"></xm-question-day-accumulate>
         <xm-question-att-dist ref="xmQuestionAttDist"></xm-question-att-dist>
         <xm-question-age-dist ref="xmQuestionAgeDist"></xm-question-age-dist>
         <xm-product-work-item-day-list ref="productWorkItemDayList"></xm-product-work-item-day-list>
@@ -43,6 +47,9 @@
 	import xmMenuAgeDist from './product/menuAgeDist'
 	import xmProductWorkItemDayList from './product/productWorkItemDayList'
 
+
+    import xmQuestionDayTrend from './product/questionDayTrend'
+    import xmQuestionDayAccumulate from './product/questionDayAccumulate'
 	import xmQuestionAttDist from './product/questionAttDist'
 	import xmQuestionAgeDist from './product/questionAgeDist'
     
@@ -55,7 +62,7 @@
 	export default { 
         
 		components: {   
-            xmIterationBurnout,xmMenuDayTrend,xmMenuDayAccumulate,xmMenuAttDist,xmMenuAgeDist,xmProductWorkItemDayList,xmQuestionAttDist,xmQuestionAgeDist
+            xmIterationBurnout,xmMenuDayTrend,xmMenuDayAccumulate,xmMenuAttDist,xmMenuAgeDist,xmProductWorkItemDayList,xmQuestionDayTrend,xmQuestionDayAccumulate,xmQuestionAttDist,xmQuestionAgeDist
 		},
         props:['xmProduct','xmIteration','xmProject'],
 		computed: {
@@ -103,6 +110,9 @@
                     {rptName:'需求属性分布',category:'产品级',ref:'xmMenuAttDist',desc:'统计所有需求任意属性数量分布情况（实时数据）',img:pieSimple  },
                     {rptName:'需求年龄分布',category:'产品级',ref:'xmMenuAgeDist',desc:'统计所有需求年龄分布情况（实时数据）',img:pieSimple  },
                     {rptName:'产品工作项每日趋势',category:'产品级',ref:'productWorkItemDayList',desc:'统计产品每日工作项数量分布情况',img:datasetLink  },
+
+                    {rptName:'缺陷每日趋势',category:'产品级',ref:'xmQuestionDayTrend',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
+                    {rptName:'缺陷每日累积',category:'产品级',ref:'xmQuestionDayAccumulate',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期累积情况，识别缺陷处理工作的瓶颈',img:areaStack  },
                     {rptName:'缺陷属性分布',category:'产品级',ref:'xmQuestionAttDist',desc:'统计所有缺陷任意属性数量分布情况（实时数据）',img:pieSimple  },
                     {rptName:'缺陷年龄分布',category:'产品级',ref:'xmQuestionAgeDist',desc:'统计所有缺陷年龄分布情况（实时数据）',img:pieSimple  },
                 ],
