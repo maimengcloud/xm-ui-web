@@ -1,0 +1,258 @@
+<template>
+	<section>
+        <el-dialog :title="(filters.project?'【'+filters.project.name+'】':'')+'任务每日趋势'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
+			
+			<el-row :gutter="5">
+				<el-col :span="18"> 
+					<div>
+						<div class="main" id="menuDayTrend"
+							style="width:100%;height:600px;margin:0 auto;"></div>
+						<div class="progress"></div>
+					</div>
+				</el-col>
+				<el-col :span="6" class="border">
+					<el-form :label-position="'top'" label-width="120px" :model="filters"> 
+						<el-form-item>
+							 <xm-project-select  v-if="!xmProduct"  ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProjectSelected"   @clear="onProjectClear"></xm-project-select>
+  					  </el-form-item>  
+					<el-form-item label="日期区间">
+							<date-range v-model="filters" value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></date-range>
+  					</el-form-item>    
+					<el-form-item>
+						 <el-button type="primary" icon="el-icon-search" @click="listXmProjectStateHis">查询</el-button>
+					</el-form-item>  
+					</el-form>
+				</el-col>
+			</el-row>
+        </el-dialog>
+	</section>
+</template>
+
+<script>
+	import util from '@/common/js/util';//全局公共库
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询  
+	import { mapGetters } from 'vuex'	 
+	
+	import { listXmProjectStateHis } from '@/api/xm/core/xmProjectStateHis';
+	import  XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';//新增界面
+	export default { 
+        
+		components: {   
+			XmProjectSelect,
+		},
+        props:['xmProduct','xmProject'],
+		computed: {
+		    ...mapGetters([
+		      'userInfo','roles'
+		    ]), 
+            datesCpd(){
+				if(this.xmProjectStateHiss.length==0){
+					return []
+				}else{ 
+					return this.xmProjectStateHiss.map(i=>i.bizDate)
+				}
+			}, 
+			menuCloseCntCpd(){
+				if(this.xmProjectStateHiss.length==0){
+					return []
+				}else{ 
+					return this.xmProjectStateHiss.map(i=>i.menuCloseCnt)
+				}
+			},
+			menuUnstartCntCpd(){
+				if(this.xmProjectStateHiss.length==0){
+					return []
+				}else{ 
+					return this.xmProjectStateHiss.map(i=> i.menuUnstartCnt)
+				}
+			},
+			menuExecCntCpd(){
+				if(this.xmProjectStateHiss.length==0){
+					return []
+				}else{ 
+					return this.xmProjectStateHiss.map(i=> i.menuExecCnt)
+				}
+			},
+			
+			menuFinishCntCpd(){
+				if(this.xmProjectStateHiss.length==0){
+					return []
+				}else{ 
+					return this.xmProjectStateHiss.map(i=>i.menuFinishCnt)
+				}
+			},
+			
+        }, 
+		watch: {  
+			datesCpd(){
+
+				this.$nextTick(()=>{
+					this.drawCharts();
+				})
+				 
+			}
+	    },
+		data() {
+			return {
+                filters:{
+                    category:'', 
+                    product:null, 
+                    project:null,
+                },
+				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				load:{ list: false, edit: false, del: false, add: false },//查询中... 
+				dateRanger:[], 
+                maxTableHeight:300, 
+                visible:false,
+				xmProjectStateHiss:[],
+
+			}//end return
+		},//end data
+		methods: {  
+			listXmProjectStateHis(){
+				if(!this.filters.project){
+					this.$notify({position:'bottom-left',showClose:true,message:'请先选中项目',type:'warning'})
+					return;
+				}
+				var params={projectId: this.filters.project.id,orderBy:'biz_date asc'}
+				
+				if(this.filters.startBizDate && this.filters.endBizDate){
+					params.startBizDate=this.filters.startBizDate;
+					params.endBizDate=this.filters.endBizDate;
+				}
+				listXmProjectStateHis(params).then(res=>{ 
+					this.xmProjectStateHiss=res.data.tips.isOk?res.data.data:this.xmProjectStateHiss;
+				})
+			},
+			open(params){
+				this.visible=true;
+				this.filters.product=params.xmProduct
+				this.filters.project=params.xmProject
+				this.filters.Product=params.xmProduct 
+				if(this.$refs['xmProjectSelect'])this.$refs['xmProjectSelect'].clearSelect();
+				this.$nextTick(()=>{
+					this.listXmProjectStateHis();
+				})
+				
+			},
+			drawCharts() {
+				this.myChart = this.$echarts.init(document.getElementById("menuDayTrend")); 
+				this.myChart.setOption(  
+					{	
+						legend: {
+							right: 40,
+							data: ['未开始故事数','执行中故事数','已完成故事数','已关闭故事数']
+						},
+						xAxis: {
+							type: 'category',
+							data: this.datesCpd
+						},
+						yAxis: {
+							type: 'value'
+						},
+						series: [
+							{
+								name:'未开始故事数',
+								data: this.menuUnstartCntCpd,
+								type: 'line',
+								smooth: true,  
+								itemStyle: {
+									normal: {
+										// 折点颜色样式
+										color: 'orange',
+										lineStyle: {
+											// 折线颜色样式
+											color: 'orange'
+										}
+									}
+								},
+							},
+							
+							{
+								name:'执行中故事数',
+								data: this.menuExecCntCpd,
+								type: 'line',
+								smooth: true, 
+								itemStyle: {
+									normal: {
+										// 折点颜色样式
+										color: 'blue',
+										lineStyle: {
+											// 折线颜色样式
+											color: 'blue'
+										}
+									}
+								},
+							},
+							
+							{
+								name:'已完成故事数',
+								data: this.menuFinishCntCpd,
+								type: 'line',
+								smooth: true, 
+								itemStyle: {
+									normal: {
+										// 折点颜色样式
+										color: 'green',
+										lineStyle: {
+											// 折线颜色样式
+											color: 'green'
+										}
+									}
+								},
+							},
+							
+							{
+								name:'已关闭故事数',
+								data: this.menuCloseCntCpd,
+								type: 'line',
+								smooth: true, 
+								itemStyle: {
+									normal: {
+										// 折点颜色样式
+										color: 'red',
+										lineStyle: {
+											// 折线颜色样式
+											color: 'red'
+										}
+									}
+								},
+							}
+						]
+					}
+				)
+			},
+			
+			onProjectSelected(project){
+				this.filters.project=project
+				this.xmProjectStateHiss=[];
+				this.listXmProjectStateHis();
+			},
+			
+			onProjectClear(){
+				this.filters.project=null
+				
+				this.xmProjectStateHiss=[];
+				
+			},
+		},//end method
+		mounted() {
+			/**
+ 			initSimpleDicts('all',['planType','xmTaskSettleSchemel','taskType','priority','taskState'] ).then(res=>{
+				this.dicts=res.data.data;
+			}) 
+             */
+			//this.charts();
+			//this.drawCharts();
+			
+		}//end mounted
+	}
+
+</script>
+
+<style scoped>
+   .image {
+    width: 100%;
+    display: block;
+  }
+</style>
