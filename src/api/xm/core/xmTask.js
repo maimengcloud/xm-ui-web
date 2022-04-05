@@ -64,6 +64,7 @@ export const getXmTaskAttDist = params => { return axios.get(`${base}/xm/core/xm
 
 
 export const getXmTaskAgeDist = params => { return axios.get(`${base}/xm/core/xmTask/getXmTaskAgeDist`, { params: params }); };
+export const getXmTaskSort = params => { return axios.get(`${base}/xm/core/xmTask/getXmTaskSort`, { params: params }); };
 
 
 

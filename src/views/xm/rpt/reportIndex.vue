@@ -32,6 +32,7 @@
         <xm-question-day-accumulate ref="xmQuestionDayAccumulate"></xm-question-day-accumulate>
         <xm-question-att-dist ref="xmQuestionAttDist"></xm-question-att-dist>
         <xm-question-age-dist ref="xmQuestionAgeDist"></xm-question-age-dist>
+        <xm-question-sort ref="xmQuestionSort"></xm-question-sort>
         <xm-product-work-item-day-list ref="productWorkItemDayList"></xm-product-work-item-day-list>
 	</section>
 </template>
@@ -52,17 +53,19 @@
     import xmQuestionDayAccumulate from './product/questionDayAccumulate'
 	import xmQuestionAttDist from './product/questionAttDist'
 	import xmQuestionAgeDist from './product/questionAgeDist'
+	import xmQuestionSort from './product/questionSort'
     
     import pieSimple from './images/pie-simple.png'
     import lineStack from './images/line-stack.png'
     import areaStack from './images/area-stack.png'
     import ranjintu from './images/ranjintu.png'
     import datasetLink from './images/dataset-link.png'
+    import bar from './images/bar.png'
     
 	export default { 
         
 		components: {   
-            xmIterationBurnout,xmMenuDayTrend,xmMenuDayAccumulate,xmMenuAttDist,xmMenuAgeDist,xmProductWorkItemDayList,xmQuestionDayTrend,xmQuestionDayAccumulate,xmQuestionAttDist,xmQuestionAgeDist
+            xmIterationBurnout,xmMenuDayTrend,xmMenuDayAccumulate,xmMenuAttDist,xmMenuAgeDist,xmProductWorkItemDayList,xmQuestionDayTrend,xmQuestionDayAccumulate,xmQuestionAttDist,xmQuestionAgeDist,xmQuestionSort,
 		},
         props:['xmProduct','xmIteration','xmProject'],
 		computed: {
@@ -115,6 +118,7 @@
                     {rptName:'缺陷每日累积',category:'产品级',ref:'xmQuestionDayAccumulate',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期累积情况，识别缺陷处理工作的瓶颈',img:areaStack  },
                     {rptName:'缺陷属性分布',category:'产品级',ref:'xmQuestionAttDist',desc:'统计所有缺陷任意属性数量分布情况（实时数据）',img:pieSimple  },
                     {rptName:'缺陷年龄分布',category:'产品级',ref:'xmQuestionAgeDist',desc:'统计所有缺陷年龄分布情况（实时数据）',img:pieSimple  },
+                    {rptName:'缺陷排行榜',category:'产品级',ref:'xmQuestionSort',desc:'统计所有缺陷按提出人、创建人、负责人、故事等维度统计排行（实时数据）',img:bar  },
                 ],
 			}//end return
 		},//end data

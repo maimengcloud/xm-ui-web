@@ -51,4 +51,5 @@ export const getXmMenuAttDist = params => { return axios.get(`${base}/xm/core/xm
 
 
 export const getXmMenuAgeDist = params => { return axios.get(`${base}/xm/core/xmMenu/getXmMenuAgeDist`, { params: params }); };
+export const getXmMenuSort = params => { return axios.get(`${base}/xm/core/xmMenu/getXmMenuSort`, { params: params }); };
 
