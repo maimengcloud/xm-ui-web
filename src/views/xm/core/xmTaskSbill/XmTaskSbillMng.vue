@@ -313,7 +313,7 @@
 						this.pageInfo.count=false;
 						this.xmTaskSbills = res.data.data;
 					}else{
-						this.$notify({ showClose:true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: 'error' });
 					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -355,7 +355,7 @@
 							this.pageInfo.count=true;
 							this.getXmTaskSbills();
 						}
-						this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -373,7 +373,7 @@
 							this.pageInfo.count=true;
 							this.getXmTaskSbills();
 						}
-						this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -386,11 +386,11 @@
 			/**begin 自定义函数请在下面加**/
       addWorkload(row,index){
         if(row.status!='0'){
-          this.$notify({ showClose:true, message: "只能修改待提交的数据", type: 'error'});
+          this.$notify({position:'bottom-left',showClose:true, message: "只能修改待提交的数据", type: 'error'});
           return;
         }
         if(!(row.bizFlowState=='0' || row.bizFlowState=='3' || row.bizFlowState=='4')){
-          this.$notify({ showClose:true, message: "只能修改未发审、未通过、已取消的数据", type: 'error'});
+          this.$notify({position:'bottom-left',showClose:true, message: "只能修改未发审、未通过、已取消的数据", type: 'error'});
           return;
         }
         this.thisBillRow = Object.assign({},row);
@@ -413,7 +413,7 @@
           if(tips.isOk){
             this.getXmTaskSbills();
           }
-          this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
+          this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
         }).catch( err =>{});
       },
       //添加到结算的要修改工时登记的状态
@@ -428,7 +428,7 @@
           let tips=res.data.tips;
           if(tips.isOk){
           }
-          this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
+          this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
         }).catch( err =>{});
       },
       dateFormat(fmt, date) {

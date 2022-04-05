@@ -124,11 +124,11 @@
                                     this.currOpType="edit";
                                     this.$emit('submit',this.editForm);//  @submit="afterAddSubmit"
                                 }
-                                this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
+                                this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
                             }).catch( err =>this.load.edit=false);
 						});
 					}else{
-					    this.$notify({ showClose:true, message: "表单验证不通过，请修改表单数据再提交", type: 'error' });
+					    this.$notify({position:'bottom-left',showClose:true, message: "表单验证不通过，请修改表单数据再提交", type: 'error' });
 					}
 				});
 			},

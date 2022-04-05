@@ -414,7 +414,7 @@ XmProductSelect,XmProjectSelect,
 						childrens=childrens.filter(i=>!this.xmGroups.some(k=>k.id==i.id))
 						this.xmGroups.push(...childrens)
 					}else{
-						this.$notify({ showClose:true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -476,7 +476,7 @@ XmProductSelect,XmProjectSelect,
 						this.pageInfo.count=false;
 						this.xmGroups = res.data.data;
 					}else{
-						this.$notify({ showClose:true, message: tips.msg, type: 'error' });
+						this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -490,7 +490,7 @@ XmProductSelect,XmProjectSelect,
 			//显示新增界面 XmGroup xm_group
 			showProjectGroupAdd: function () {
 				if(!this.filters.selProject || !this.filters.selProject.id){
-					this.$notify({ showClose:true, message: "请先选择项目", type:  'warning' });
+					this.$notify({position:'bottom-left',showClose:true, message: "请先选择项目", type:  'warning' });
 					return;
 				}
 				this.addForm={...this.addFormInit}
@@ -511,7 +511,7 @@ XmProductSelect,XmProjectSelect,
 			//显示新增界面 XmGroup xm_group
 			showProductGroupAdd: function () {
 				if(!this.xmProduct || !this.xmProduct.id){
-					this.$notify({ showClose:true, message: "请先选择产品", type:  'warning' });
+					this.$notify({position:'bottom-left',showClose:true, message: "请先选择产品", type:  'warning' });
 					return;
 				}
 				this.addForm={...this.addFormInit}
@@ -573,7 +573,7 @@ XmProductSelect,XmProjectSelect,
 							this.pageInfo.count=true;
 							this.getXmGroups();
 						}
-						this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -592,7 +592,7 @@ XmProductSelect,XmProjectSelect,
 							this.pageInfo.count=true;
 							this.getXmGroups(); 
 						}
-						this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
@@ -688,7 +688,7 @@ XmProductSelect,XmProjectSelect,
 					if(tips.isOk){
 						this.searchXmGroups()
 					}
-					this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error'}); 
+					this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error'}); 
 				})
 				
 			}, 
@@ -745,7 +745,7 @@ XmProductSelect,XmProjectSelect,
 							this.pageInfo.count=true;
 							this.getXmGroups();
 						}
-						this.$notify({ showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
+						this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
