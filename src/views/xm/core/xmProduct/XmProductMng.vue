@@ -145,7 +145,7 @@
 									</div>
 								</div>
 								<div class="project-rate">
-									<el-progress :percentage="(p.totalProgress==null?0:p.totalProgress)"></el-progress>
+									<el-progress :percentage="(p.finishRate==null?0:p.finishRate)"></el-progress>
 								</div>
 								<div class="project-footer">
 									<div class="project-type">{{p.xmType}}</div>

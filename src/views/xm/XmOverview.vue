@@ -352,7 +352,7 @@ export default {
       return this.xmBranchState.totalTaskCnt;
     },
     taskProgress: function (){
-      return this.xmBranchState.totalProgress;
+      return this.xmBranchState.finishRate;
     },
     taskStartTime: function (){
       return this.xmBranchState.startTime.substring(0,10);

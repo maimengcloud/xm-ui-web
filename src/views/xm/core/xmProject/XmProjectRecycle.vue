@@ -20,7 +20,7 @@
 						<el-table-column prop="totalBugCnt" label="缺陷" min-width="80" ></el-table-column>
 						<el-table-column label="进度" min-width="80" >
 							<template slot-scope="scope">
-								{{scope.row.totalProgress}}%
+								{{scope.row.finishRate}}%
 							</template>
 						</el-table-column>
 						<el-table-column prop="startTime" label="起止时间" min-width="150" >
