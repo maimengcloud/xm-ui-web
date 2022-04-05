@@ -163,7 +163,7 @@
                     <el-col :span="8">
                       <div>
                         <div style="text-align:center;">
-                          <span style="font-size:24px;" v-text="this.selProject.totalActWorkload"></span>
+                          <span style="font-size:24px;" v-text="this.selProject.actWorkload"></span>
                           <span style="font-size:5px;">h</span>
                         </div>
                         <div style="text-align:center;font-size:5px;">登记工时</div>
@@ -270,13 +270,13 @@ export default {
   computed: {
     ...mapGetters(["userInfo"]),
     finish: function (){
-      return this.selProject.totalCompleteTaskCnt;
+      return this.selProject.taskCloseCnt;
     },
     notStart: function() {
-      return this.selProject.totalTaskCnt-this.selProject.totalCompleteTaskCnt;
+      return this.selProject.taskCnt-this.selProject.taskCloseCnt;
     },
     totalTask: function() {
-      return this.selProject.totalTaskCnt;
+      return this.selProject.taskCnt;
     },
     taskProgress: function (){
       return this.selProject.finishRate;
@@ -291,25 +291,25 @@ export default {
       return this.selProject.createUsername;
     },
     workloadProgress:function (){
-      return Math.round(this.selProject.totalActWorkload/this.selProject.totalPlanWorkload*100);
+      return Math.round(this.selProject.actWorkload/this.selProject.budgetWorkload*100);
     },
     deviation:function (){
       
-        return this.selProject.totalActWorkload -  this.selProject.estimateWorkload
+        return this.selProject.actWorkload -  this.selProject.estimateWorkload
        
     },
     deviationRate:function (){
       return Math.round(this.deviation/this.selProject.estimateWorkload*100);
     },
     remainWorkload:function (){
-      return this.selProject.totalPlanWorkload - this.selProject.totalActWorkload;
+      return this.selProject.budgetWorkload - this.selProject.actWorkload;
     },
     planProgress:function (){
-        return Math.round(this.selProject.estimateWorkload/this.selProject.totalPlanWorkload*100);
+        return Math.round(this.selProject.estimateWorkload/this.selProject.budgetWorkload*100);
     },
     realProgress:function (){
-      if(this.selProject.totalActWorkload < this.selProject.totalPlanWorkload){
-        return Math.round(this.selProject.totalActWorkload/this.selProject.totalPlanWorkload*100)
+      if(this.selProject.actWorkload < this.selProject.budgetWorkload){
+        return Math.round(this.selProject.actWorkload/this.selProject.budgetWorkload*100)
       }else{
         return 100;
       }
@@ -396,7 +396,7 @@ export default {
                 }
               },
               {
-                value: this.selProject.totalTaskCnt,
+                value: this.selProject.taskCnt,
                 itemStyle: {
                   normal:{
                     color: '#99CCFF'
@@ -404,7 +404,7 @@ export default {
                 }
               },
               {
-                value: this.selProject.totalBugCnt,
+                value: this.selProject.bugCnt,
                 itemStyle: {
                   normal:{
                     color: '#99CCFF'
@@ -519,28 +519,28 @@ export default {
               }
             },
             data: [
-              {value: this.selProject.totalClosedBugCnt,
+              {value: this.selProject.closedBugs,
                 itemStyle: {
                   normal:{
                     color: '#5470C6'
                   }
                 },
                 name: '已关闭'},
-              {value: this.selProject.totalResolvedBugCnt,
+              {value: this.selProject.resolvedBugs,
                 itemStyle: {
                   normal:{
                     color: '#91CC75'
                   }
                 },
                 name: '已解决'},
-              {value: this.selProject.totalActiveBugCnt,
+              {value: this.selProject.activeBugs,
                 itemStyle: {
                   normal:{
                     color: '#FAC858'
                   }
                 },
                 name: '已激活'},
-              {value: this.selProject.totalConfirmedBugCnt,
+              {value: this.selProject.confirmedBugs,
                 itemStyle: {
                   normal:{
                     color: '#EE6666'
@@ -593,21 +593,21 @@ export default {
               }
             },
             data: [
-              {value: this.selProject.planNouserAt,
+              {value: this.selProject.budgetNouserAt,
                 itemStyle: {
                   normal:{
                     color: '#FAC858'
                   }
                 },
                 name: '非人力'},
-              {value: this.selProject.planIuserAt,
+              {value: this.selProject.budgetIuserAt,
                 itemStyle: {
                   normal:{
                     color: '#73C0DE'
                   }
                 },
                 name: '内部人力'},
-              {value: this.selProject.planOuserAt,
+              {value: this.selProject.budgetOuserAt,
                 itemStyle: {
                   normal:{
                     color: '#5470C6'
@@ -660,14 +660,14 @@ export default {
               }
             },
             data: [
-              {value: this.selProject.planIuserWorkload,
+              {value: this.selProject.budgetIuserWorkload,
                 itemStyle: {
                   normal:{
                     color: '#91CC75'
                   }
                 },
                 name: '内部人力'},
-              {value: this.selProject.planOuserWorkload,
+              {value: this.selProject.budgetOuserWorkload,
                 itemStyle: {
                   normal:{
                     color: '#3BA272'
