@@ -146,7 +146,7 @@
 									</div>
 								</div>
 								<div class="project-rate">
-									<el-progress :percentage="(p.totalProgress==null?0:p.totalProgress)"></el-progress>
+									<el-progress :percentage="(p.finishRate==null?0:p.finishRate)"></el-progress>
 								</div>
 								<div class="project-footer">
 									<div class="project-type" title="项目经理">{{p.pmUsername?p.pmUsername:p.createUsername}}</div>
@@ -174,9 +174,9 @@
 
 							</template>
 						</el-table-column>  
-						<el-table-column prop="totalProgress" label="进度" width="100" sortable>
+						<el-table-column prop="finishRate" label="进度" width="100" sortable>
 							<template slot-scope="scope"> 
-								<font  ><el-tag :type="scope.row.totalProgress>=100?'success':'warning'">{{scope.row.totalProgress}}%</el-tag>
+								<font  ><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag>
 
 								 <el-button  id="guider-four" type="text" icon="el-icon-video-play"  title="统计项目的工作量、进度、需求、bugs等数据"  @click.stop="loadTasksToXmProjectState( scope.row)"></el-button> 
 
