@@ -141,7 +141,7 @@
 					{	
 						legend: {
 							right: 40,
-							data: ['未开始故事数','执行中故事数','已完成故事数','已关闭故事数']
+							data: ['待领取','执行中','已完成','已结算','已关闭']
 						},
 						xAxis: {
 							type: 'category',
@@ -152,7 +152,7 @@
 						},
 						series: [
 							{
-								name:'未开始故事数',
+								name:'待领取',
 								data: this.menuUnstartCntCpd,
 								type: 'line',
 								smooth: true,  
@@ -169,7 +169,7 @@
 							},
 							
 							{
-								name:'执行中故事数',
+								name:'执行中',
 								data: this.menuExecCntCpd,
 								type: 'line',
 								smooth: true, 
@@ -186,7 +186,7 @@
 							},
 							
 							{
-								name:'已完成故事数',
+								name:'已完成',
 								data: this.menuFinishCntCpd,
 								type: 'line',
 								smooth: true, 
@@ -203,7 +203,24 @@
 							},
 							
 							{
-								name:'已关闭故事数',
+								name:'已结算',
+								data: this.menuCloseCntCpd,
+								type: 'line',
+								smooth: true, 
+								itemStyle: {
+									normal: {
+										// 折点颜色样式
+										color: 'red',
+										lineStyle: {
+											// 折线颜色样式
+											color: 'red'
+										}
+									}
+								},
+							},
+							
+							{
+								name:'已关闭',
 								data: this.menuCloseCntCpd,
 								type: 'line',
 								smooth: true, 
