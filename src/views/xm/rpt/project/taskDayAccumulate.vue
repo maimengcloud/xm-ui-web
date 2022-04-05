@@ -4,7 +4,7 @@
 			
 			<el-row :gutter="5">
 				<el-col :span="18"> <div>
-					<div class="main" id="menuDayAccumulate"
+					<div class="main" id="taskDayAccumulate"
 							style="width:100%;height:600px;margin:0 auto;"></div> 
 					</div>
 				</el-col>
@@ -50,33 +50,33 @@
 					return this.xmProjectStateHiss.map(i=>i.bizDate)
 				}
 			}, 
-			menuCloseCntCpd(){
+			taskCloseCntCpd(){
 				if(this.xmProjectStateHiss.length==0){
 					return []
 				}else{ 
-					return this.xmProjectStateHiss.map(i=>i.menuCloseCnt)
+					return this.xmProjectStateHiss.map(i=>i.taskCloseCnt)
 				}
 			},
-			menuUnstartCntCpd(){
+			taskUnstartCntCpd(){
 				if(this.xmProjectStateHiss.length==0){
 					return []
 				}else{ 
-					return this.xmProjectStateHiss.map(i=> i.menuUnstartCnt)
+					return this.xmProjectStateHiss.map(i=> i.taskUnstartCnt)
 				}
 			},
-			menuExecCntCpd(){
+			taskExecCntCpd(){
 				if(this.xmProjectStateHiss.length==0){
 					return []
 				}else{ 
-					return this.xmProjectStateHiss.map(i=> i.menuExecCnt)
+					return this.xmProjectStateHiss.map(i=> i.taskExecCnt)
 				}
 			},
 			
-			menuFinishCntCpd(){
+			taskFinishCntCpd(){
 				if(this.xmProjectStateHiss.length==0){
 					return []
 				}else{ 
-					return this.xmProjectStateHiss.map(i=>i.menuFinishCnt)
+					return this.xmProjectStateHiss.map(i=>i.taskFinishCnt)
 				}
 			},
 			
@@ -135,7 +135,7 @@
 				
 			},
 			drawCharts() {
-				this.myChart = this.$echarts.init(document.getElementById("menuDayAccumulate")); 
+				this.myChart = this.$echarts.init(document.getElementById("taskDayAccumulate")); 
 				this.myChart.setOption(  
 					{
 						title: {
@@ -182,7 +182,7 @@
 							emphasis: {
 								focus: 'series'
 							},
-							data: this.menuUnstartCntCpd
+							data: this.taskUnstartCntCpd
 							},
 							{
 							name: '执行中',
@@ -192,7 +192,7 @@
 							emphasis: {
 								focus: 'series'
 							},
-							data: this.menuExecCntCpd,
+							data: this.taskExecCntCpd,
 							},
 							{
 							name: '已完成',
@@ -202,7 +202,7 @@
 							emphasis: {
 								focus: 'series'
 							},
-							data: this.menuFinishCntCpd,
+							data: this.taskFinishCntCpd,
 							},
 							{
 							name: '已关闭',
@@ -217,7 +217,7 @@
 								show: true,
 								position: 'top'
 							},
-							data: this.menuCloseCntCpd,
+							data: this.taskCloseCntCpd,
 							} 
 						]
 					}

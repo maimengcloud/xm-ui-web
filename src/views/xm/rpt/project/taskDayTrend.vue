@@ -5,7 +5,7 @@
 			<el-row :gutter="5">
 				<el-col :span="18"> 
 					<div>
-						<div class="main" id="menuDayTrend"
+						<div class="main" id="taskDayTrend"
 							style="width:100%;height:600px;margin:0 auto;"></div>
 						<div class="progress"></div>
 					</div>
@@ -52,33 +52,33 @@
 					return this.xmProjectStateHiss.map(i=>i.bizDate)
 				}
 			}, 
-			menuCloseCntCpd(){
+			taskCloseCntCpd(){
 				if(this.xmProjectStateHiss.length==0){
 					return []
 				}else{ 
-					return this.xmProjectStateHiss.map(i=>i.menuCloseCnt)
+					return this.xmProjectStateHiss.map(i=>i.taskCloseCnt)
 				}
 			},
-			menuUnstartCntCpd(){
+			taskUnstartCntCpd(){
 				if(this.xmProjectStateHiss.length==0){
 					return []
 				}else{ 
-					return this.xmProjectStateHiss.map(i=> i.menuUnstartCnt)
+					return this.xmProjectStateHiss.map(i=> i.taskUnstartCnt)
 				}
 			},
-			menuExecCntCpd(){
+			taskExecCntCpd(){
 				if(this.xmProjectStateHiss.length==0){
 					return []
 				}else{ 
-					return this.xmProjectStateHiss.map(i=> i.menuExecCnt)
+					return this.xmProjectStateHiss.map(i=> i.taskExecCnt)
 				}
 			},
 			
-			menuFinishCntCpd(){
+			taskFinishCntCpd(){
 				if(this.xmProjectStateHiss.length==0){
 					return []
 				}else{ 
-					return this.xmProjectStateHiss.map(i=>i.menuFinishCnt)
+					return this.xmProjectStateHiss.map(i=>i.taskFinishCnt)
 				}
 			},
 			
@@ -136,7 +136,7 @@
 				
 			},
 			drawCharts() {
-				this.myChart = this.$echarts.init(document.getElementById("menuDayTrend")); 
+				this.myChart = this.$echarts.init(document.getElementById("taskDayTrend")); 
 				this.myChart.setOption(  
 					{	
 						legend: {
@@ -153,7 +153,7 @@
 						series: [
 							{
 								name:'待领取',
-								data: this.menuUnstartCntCpd,
+								data: this.taskUnstartCntCpd,
 								type: 'line',
 								smooth: true,  
 								itemStyle: {
@@ -170,7 +170,7 @@
 							
 							{
 								name:'执行中',
-								data: this.menuExecCntCpd,
+								data: this.taskExecCntCpd,
 								type: 'line',
 								smooth: true, 
 								itemStyle: {
@@ -187,7 +187,7 @@
 							
 							{
 								name:'已完成',
-								data: this.menuFinishCntCpd,
+								data: this.taskFinishCntCpd,
 								type: 'line',
 								smooth: true, 
 								itemStyle: {
@@ -204,7 +204,7 @@
 							
 							{
 								name:'已结算',
-								data: this.menuCloseCntCpd,
+								data: this.taskCloseCntCpd,
 								type: 'line',
 								smooth: true, 
 								itemStyle: {
@@ -221,7 +221,7 @@
 							
 							{
 								name:'已关闭',
-								data: this.menuCloseCntCpd,
+								data: this.taskCloseCntCpd,
 								type: 'line',
 								smooth: true, 
 								itemStyle: {
