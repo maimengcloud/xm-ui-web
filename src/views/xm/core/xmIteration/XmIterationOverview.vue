@@ -255,26 +255,32 @@ export default {
       return this.xmIteration.endTime?this.xmIteration.endTime.substring(0,10):'';
     },
     workloadProgress:function (){
-      if(!this.xmIteration.distBudgetWorkload || !this.xmIteration.actWorkload){
+      if(!this.xmIteration.budgetWorkload || !this.xmIteration.actWorkload){
         return 0;
       }
-      return Math.round(this.xmIteration.actWorkload/this.xmIteration.distBudgetWorkload*100);
+      return Math.round(this.xmIteration.actWorkload/this.xmIteration.budgetWorkload*100);
     },
     deviation:function (){ 
         return this.xmIteration.actWorkload -this.xmIteration.estimateWorkload
     },
     deviationRate:function (){
+      if(!this.xmIteration.estimateWorkload){
+        return 0;
+      }
       return Math.round(this.deviation/this.xmIteration.estimateWorkload*100);
     },
     remainWorkload:function (){
-      return this.xmIteration.distBudgetWorkload - this.xmIteration.actWorkload;
+      return this.xmIteration.budgetWorkload - this.xmIteration.actWorkload;
     },
     planProgress:function (){
-        return Math.round(this.xmIteration.estimateWorkload/this.xmIteration.distBudgetWorkload*100)
+      if(!this.xmIteration.budgetWorkload){
+        return 0;
+      }
+        return Math.round(this.xmIteration.estimateWorkload/this.xmIteration.budgetWorkload*100)
     },
     realProgress:function (){
-      if(this.xmIteration.actWorkload < this.xmIteration.distBudgetWorkload){
-        return Math.round(this.xmIteration.actWorkload/this.xmIteration.distBudgetWorkload*100)
+      if(this.xmIteration.actWorkload < this.xmIteration.budgetWorkload){
+        return Math.round(this.xmIteration.actWorkload/this.xmIteration.budgetWorkload*100)
       }else{
         return 100;
       }
@@ -412,28 +418,28 @@ export default {
               }
             },
             data: [
-              {value: this.xmIteration.closedBugCnt,
+              {value: this.xmIteration.closedBugs,
                 itemStyle: {
                   normal:{
                     color: '#5470C6'
                   }
                 },
                 name: '已关闭'},
-              {value: this.xmIteration.resolvedBugCnt,
+              {value: this.xmIteration.resolvedBugs,
                 itemStyle: {
                   normal:{
                     color: '#91CC75'
                   }
                 },
                 name: '已解决'},
-              {value: this.xmIteration.activeBugCnt,
+              {value: this.xmIteration.activeBugs,
                 itemStyle: {
                   normal:{
                     color: '#FAC858'
                   }
                 },
                 name: '已激活'},
-              {value: this.xmIteration.confirmedBugCnt,
+              {value: this.xmIteration.confirmedBugs,
                 itemStyle: {
                   normal:{
                     color: '#EE6666'

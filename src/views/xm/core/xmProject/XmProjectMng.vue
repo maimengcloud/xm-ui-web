@@ -122,25 +122,25 @@
 									</div>
 									<div class="info-task" title="已完成 / 预算工作量 ，单位人天 ">
 										<span>
-											<span class="item-total finish-task">{{p.totalActWorkload==null?0:parseInt(p.totalActWorkload/8)}}</span>
+											<span class="item-total finish-task">{{p.actWorkload==null?0:parseInt(p.actWorkload/8)}}</span>
 											<span style="margin: 0 .25rem !important;">/</span>
-											<span class="item-type total-task">{{p.totalPlanWorkload==null?0:parseInt(p.totalPlanWorkload/8)}}</span>
+											<span class="item-type total-task">{{p.budgetWorkload==null?0:parseInt(p.budgetWorkload/8)}}</span>
 										</span>
 										<span class="item-type">工作量</span>
 									</div>
 									<div class="info-task"   title="已完成 / 总任务数 ">
 										<span>
-											<span class="item-total finish-task">{{p.totalCompleteTaskCnt==null?0:p.totalCompleteTaskCnt}}</span>
+											<span class="item-total finish-task">{{p.taskFinishCnt==null?0:p.taskFinishCnt}}</span>
 											<span style="margin: 0 .25rem !important;">/</span>
-											<span class="item-type total-task">{{p.totalTaskCnt==null?0:p.totalTaskCnt}}</span>
+											<span class="item-type total-task">{{p.taskCnt==null?0:p.taskCnt}}</span>
 										</span>
 										<span class="item-type">任务</span>
 									</div>
 									<div class="info-task"  title="已关闭 / 总缺陷数 ">
 										<span>
-											<span class="item-total finish-task">{{p.totalClosedBugCnt==null?0:p.totalClosedBugCnt}}</span>
+											<span class="item-total finish-task">{{p.closedBugs==null?0:p.closedBugs}}</span>
 											<span style="margin: 0 .25rem !important;">/</span>
-											<span class="item-type total-task">{{p.totalBugCnt==null?0:p.totalBugCnt}}</span>
+											<span class="item-type total-task">{{p.bugCnt==null?0:p.bugCnt}}</span>
 										</span>
 										<span class="item-type">缺陷</span>
 									</div>
@@ -192,14 +192,14 @@
 								<span title="完成的需求数 / 需求总数 ">{{scope.row.menuCnt>0?scope.row.menuFinishCnt+'&nbsp;/&nbsp;'+scope.row.menuCnt:''}}</span>
 							</template>
 						</el-table-column> 
-						<el-table-column prop="totalTaskCnt" label="任务数" sortable min-width="80" > 
+						<el-table-column prop="taskCnt" label="任务数" sortable min-width="80" > 
 							<template slot-scope="scope">
-								<span title="完成的任务数 / 任务总数 ">{{scope.row.totalTaskCnt>0?scope.row.totalCompleteTaskCnt+'&nbsp;/&nbsp;'+scope.row.totalTaskCnt:''}}</span>
+								<span title="完成的任务数 / 任务总数 ">{{scope.row.taskCnt>0?scope.row.taskFinishCnt+'&nbsp;/&nbsp;'+scope.row.taskCnt:''}}</span>
 							</template>
 						</el-table-column>  
- 						<el-table-column prop="totalBugCnt" label="缺陷" sortable min-width="80" >
+ 						<el-table-column prop="bugCnt" label="缺陷" sortable min-width="80" >
 							<template slot-scope="scope">
-								<span title="关闭的缺陷数 / 缺陷总数 ">{{scope.row.totalBugCnt>0?scope.row.totalClosedBugCnt+'&nbsp;/&nbsp;'+scope.row.totalBugCnt:''}}</span>
+								<span title="关闭的缺陷数 / 缺陷总数 ">{{scope.row.bugCnt>0?scope.row.closedBugs+'&nbsp;/&nbsp;'+scope.row.bugCnt:''}}</span>
 							</template> 
 						 </el-table-column>
 						<el-table-column prop="startTime" label="起止时间" sortable min-width="150" >

@@ -266,13 +266,13 @@
           }
           if(now<=endTime){
             let allDays=endTime-startTime;
-            return Math.round((now-startTime)/allDays*this.xmMenu.planWorkload)
+            return Math.round((now-startTime)/allDays*this.xmMenu.budgetWorkload)
           }else{
-            return this.xmMenu.planWorkload;
+            return this.xmMenu.budgetWorkload;
           }
       },
       workloadProgress:function (){
-        return Math.round(this.xmMenu.actWorkload/this.xmMenu.planWorkload*100);
+        return Math.round(this.xmMenu.actWorkload/this.xmMenu.budgetWorkload*100);
       },
       deviation:function (){ 
           return this.xmMenuCpd.actWorkload-this.estimateWorkload;
@@ -281,14 +281,14 @@
         return Math.round(this.deviation/this.estimateWorkload*100);
       },
       remainWorkload:function (){
-        return this.xmMenu.planWorkload - this.xmMenu.actWorkload;
+        return this.xmMenu.budgetWorkload - this.xmMenu.actWorkload;
       },
       planProgress:function (){ 
-         return Math.round(this.xmMenuCpd.estimateWorkload/this.planWorkload *100);
+         return Math.round(this.xmMenuCpd.estimateWorkload/this.budgetWorkload *100);
       },
       realProgress:function (){
-        if(this.xmMenu.actWorkload < this.xmMenu.planWorkload){
-          return Math.round(this.xmMenu.actWorkload/this.xmMenu.planWorkload*100)
+        if(this.xmMenu.actWorkload < this.xmMenu.budgetWorkload){
+          return Math.round(this.xmMenu.actWorkload/this.xmMenu.budgetWorkload*100)
         }else{
           return 100;
         }
