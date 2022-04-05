@@ -1,16 +1,21 @@
 <template>
 	<section>
-        <el-dialog :title="(filters.product?'产品【'+filters.product.productName+'】':'')+'需求属性分布'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
+        <el-dialog :title="(filters.product?'产品【'+filters.product.productName+'】':'')+'用户故事排行榜'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
 			<el-row :gutter="5">
 				<el-col :span="18"> 
 					<div>
-						<div class="main" id="xmMenuAgeDist"
+						<div class="main" id="xmMenuSort"
 							style="width:100%;height:600px;margin:0 auto;"></div>
 						<div class="progress"></div>
 					</div>
 				</el-col>
 				<el-col :span="6" class="border">
-					<el-form :label-position="'top'" label-width="120px" :model="filters">   
+					<el-form :label-position="'top'" label-width="120px" :model="filters">
+						<el-form-item label="分组属性">
+							<el-select   v-model="groupBy"  @change="onXmMenuSomeFieldsChange('groupBy',$event)" clearable>
+								<el-option v-for="i in this.groupBys" :label="i.name" :key="i.id" :value="i.id"></el-option>
+							</el-select>
+						</el-form-item>     
 							 <xm-product-select class="padding" v-if="!xmProduct && !xmIteration"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
 						    
 							<xm-iteration-select ref="xmIterationSelect" class="padding" v-if="!xmIteration || !xmIteration.id"  :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
@@ -40,7 +45,7 @@
 						</el-select>
 					</el-form-item>  
 					<el-form-item>
-						 <el-button type="primary" icon="el-icon-search" @click="searchXmMenuAgeDist">查询</el-button>
+						 <el-button type="primary" icon="el-icon-search" @click="searchXmMenuSort">查询</el-button>
 					</el-form-item>  
 					</el-form>
 				</el-col>
@@ -54,7 +59,7 @@
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询  
 	import { mapGetters } from 'vuex'	 
 	  
-	import { getXmMenuAgeDist } from '@/api/xm/core/xmMenu';
+	import { getXmMenuSort } from '@/api/xm/core/xmMenu';
 	
 	import  XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';//修改界面 
 	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//新增界面
@@ -69,29 +74,28 @@
 		    ...mapGetters([
 		      'userInfo','roles'
 		    ]), 
-			xmMenuAgeDistsCpd(){
-				if(this.xmMenuAgeDists.length==0){
+			xmMenuSortsCpd(){
+				if(this.xmMenuSorts.length==0){
 					return []
-				}else{   
-					var datas=[]
-					this.xmMenuAgeDists.forEach(i=>{
-						var data={...i}
-						 data.name=this.legendCpd[i.name]
-						 datas.push(data)
-					})
-					return datas;
+				}else{ 
+					return this.xmMenuSorts.map(i=>i.value)
 				}
 			},
 			title(){
-				return '需求年龄数量分布'
+				return this.groupBys.find(i=>i.id==this.groupBy).name+'用户故事数量排行榜'
 			},
 			legendCpd(){
-				 return ['0-2天','3-5天','6-7天','8-15天','16-30天','30天以上']
+				if(this.xmMenuSorts.length==0){
+					return []
+				}else{ 
+					return this.xmMenuSorts.map(i=>i.name)
+				}
+				
 			}
 			
         }, 
 		watch: {  
-			xmMenuAgeDistsCpd(){
+			xmMenuSortsCpd(){
 				this.drawCharts();
 			}
 	    },
@@ -100,17 +104,31 @@
                 filters:{
                     product:null,  
 					iteration:null,
-                }, 
+                },
+				groupBy:'proposer_id',
+				groupBys:[
+					{id:'proposer_id', name:'提出人'},
+					{id:'mm_userid', name:'负责人'}, 
+				],
 				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中... 
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmMenuAgeDists:[],
+				xmMenuSorts:[],
+				pageInfo: {
+					//分页数据
+					total: 0, //服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
+					pageSize: this.queryScope==='plan' || this.queryScope==='planTask'?50:20, //每页数据
+					count: false, //是否需要重新计算总记录数
+					pageNum: 1, //当前页码、从1开始计算
+					orderFields: ["value"], //排序列 如 ['sex','student_id']，必须为数据库字段
+					orderDirs: ["desc"], //升序 asc,降序desc 如 性别 升序、学生编号降序 ['asc','desc']
+				},
 
 			}//end return
 		},//end data
-		methods: {   
+		methods: { 
 			open(params){
 				this.visible=true;
 				this.filters.product=params.xmProduct
@@ -119,48 +137,39 @@
 				
 			},
 			drawCharts() {
-				this.myChart = this.$echarts.init(document.getElementById("xmMenuAgeDist")); 
-				this.myChart.setOption(   
+				this.myChart = this.$echarts.init(document.getElementById("xmMenuSort")); 
+				this.myChart.setOption(      
 					{
-						title: {
-							text: this.title, 
-							left: 'center'
+						xAxis: {
+							type: 'category',
+							data: this.legendCpd
 						},
-						tooltip: {
-							trigger: 'item'
-						},
-						legend: { 
-							top:'5%',
-							left: 'center',
-							data:this.legendCpd,
+						yAxis: {
+							type: 'value'
 						},
 						series: [
 							{
-							type: 'pie',
-							radius: '50%',
-							data: this.xmMenuAgeDistsCpd,
-							emphasis: {
-								itemStyle: {
-								shadowBlur: 10,
-								shadowOffsetX: 0,
-								shadowColor: 'rgba(0, 0, 0, 0.5)'
-								}
-							},
-
-							label: {
-								show: true,
-								position: 'center'
-							},
+							data: this.xmMenuSortsCpd,
+							type: 'bar'
 							}
 						]
 					}
 				)
 			},
 			onXmMenuSomeFieldsChange(fieldName,$event){
-				this.xmMenuAgeDists=[]
+				this.xmMenuSorts=[]
 			},
-			searchXmMenuAgeDist(){ 
-				var params={}
+			searchXmMenuSort(){
+				if(!this.groupBy){
+					this.$notify({position:'bottom-left',showClose:true,message:'请选中分组属性',type:'warning'})
+					return 
+				}
+				 let params = {
+					pageSize: this.pageInfo.pageSize,
+					pageNum: this.pageInfo.pageNum,
+					total: this.pageInfo.total,
+					count: this.pageInfo.count,
+				};
 				if(this.filters.dtype){
 					params.dtype=this.filters.dtype
 				}
@@ -184,8 +193,22 @@
 				if(this.filters.iteration){
 					params.iterationId=this.filters.iteration.id
 				}
-				getXmMenuAgeDist(params).then(res=>{
-					this.xmMenuAgeDists=res.data.data
+
+				
+				if (
+					this.pageInfo.orderFields != null &&
+					this.pageInfo.orderFields.length > 0
+				) {
+					let orderBys = [];
+					for (var i = 0; i < this.pageInfo.orderFields.length; i++) {
+					orderBys.push(
+						this.pageInfo.orderFields[i] + " " + this.pageInfo.orderDirs[i]
+					);
+					}
+					params.orderBy = orderBys.join(",");
+				}
+				getXmMenuSort(params).then(res=>{
+					this.xmMenuSorts=res.data.data
 				})
 				
 			},

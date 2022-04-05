@@ -26,6 +26,7 @@
         <xm-menu-day-accumulate ref="xmMenuDayAccumulate"></xm-menu-day-accumulate>
         <xm-menu-att-dist ref="xmMenuAttDist"></xm-menu-att-dist>
         <xm-menu-age-dist ref="xmMenuAgeDist"></xm-menu-age-dist>
+        <xm-menu-sort ref="xmMenuSort"></xm-menu-sort>
 
         
         <xm-question-day-trend ref="xmQuestionDayTrend"></xm-question-day-trend>
@@ -46,6 +47,7 @@
     import xmMenuDayAccumulate from './product/menuDayAccumulate'
 	import xmMenuAttDist from './product/menuAttDist'
 	import xmMenuAgeDist from './product/menuAgeDist'
+	import xmMenuSort from './product/menuSort'
 	import xmProductWorkItemDayList from './product/productWorkItemDayList'
 
 
@@ -65,7 +67,7 @@
 	export default { 
         
 		components: {   
-            xmIterationBurnout,xmMenuDayTrend,xmMenuDayAccumulate,xmMenuAttDist,xmMenuAgeDist,xmProductWorkItemDayList,xmQuestionDayTrend,xmQuestionDayAccumulate,xmQuestionAttDist,xmQuestionAgeDist,xmQuestionSort,
+            xmIterationBurnout,xmMenuDayTrend,xmMenuDayAccumulate,xmMenuAttDist,xmMenuAgeDist,xmMenuSort,xmProductWorkItemDayList,xmQuestionDayTrend,xmQuestionDayAccumulate,xmQuestionAttDist,xmQuestionAgeDist,xmQuestionSort,
 		},
         props:['xmProduct','xmIteration','xmProject'],
 		computed: {
@@ -112,13 +114,14 @@
                     {rptName:'需求每日累积',category:'产品级',ref:'xmMenuDayAccumulate',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期累积情况，识别需求工作的瓶颈',img:areaStack  },
                     {rptName:'需求属性分布',category:'产品级',ref:'xmMenuAttDist',desc:'统计所有需求任意属性数量分布情况（实时数据）',img:pieSimple  },
                     {rptName:'需求年龄分布',category:'产品级',ref:'xmMenuAgeDist',desc:'统计所有需求年龄分布情况（实时数据）',img:pieSimple  },
+                    {rptName:'需求排行榜',category:'产品级',ref:'xmMenuSort',desc:'需求提出人、负责人的用户故事数量排行（实时数据）',img:bar  },
                     {rptName:'产品工作项每日趋势',category:'产品级',ref:'productWorkItemDayList',desc:'统计产品每日工作项数量分布情况',img:datasetLink  },
 
                     {rptName:'缺陷每日趋势',category:'产品级',ref:'xmQuestionDayTrend',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
                     {rptName:'缺陷每日累积',category:'产品级',ref:'xmQuestionDayAccumulate',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期累积情况，识别缺陷处理工作的瓶颈',img:areaStack  },
                     {rptName:'缺陷属性分布',category:'产品级',ref:'xmQuestionAttDist',desc:'统计所有缺陷任意属性数量分布情况（实时数据）',img:pieSimple  },
                     {rptName:'缺陷年龄分布',category:'产品级',ref:'xmQuestionAgeDist',desc:'统计所有缺陷年龄分布情况（实时数据）',img:pieSimple  },
-                    {rptName:'缺陷排行榜',category:'产品级',ref:'xmQuestionSort',desc:'统计所有缺陷按提出人、创建人、负责人、故事等维度统计排行（实时数据）',img:bar  },
+                    {rptName:'缺陷排行榜',category:'产品级',ref:'xmQuestionSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
                 ],
 			}//end return
 		},//end data
