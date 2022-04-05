@@ -55,7 +55,7 @@
                       <i class="el-icon-check"></i>
                     </div>
                     <div class="info">
-                      <div v-text="this.xmProduct.finishTaskCnt" >
+                      <div v-text="this.xmProduct.taskFinishCnt" >
                       </div>
                       <div class="title">已完成</div>
                     </div>
@@ -245,7 +245,7 @@ export default {
   computed: {
     ...mapGetters(["userInfo"]),
     notStart: function() {
-      return this.xmProduct.taskCnt-this.xmProduct.finishTaskCnt;
+      return this.xmProduct.taskCnt-this.xmProduct.taskFinishCnt;
     },
     taskProgress: function (){
       return this.xmProduct.finishRate?parseInt(this.xmProduct.finishRate):0;
@@ -265,10 +265,10 @@ export default {
       }
     },
     workloadProgress:function (){
-      return Math.round(this.xmProduct.actWorkload/this.xmProduct.planWorkload*100);
+      return Math.round(this.xmProduct.actWorkload/this.xmProduct.budgetWorkload*100);
     },
     remainWorkload:function (){
-      return this.xmProduct.planWorkload - this.xmProduct.actWorkload;
+      return this.xmProduct.budgetWorkload - this.xmProduct.actWorkload;
     },
     deviation:function (){
       let now = new Date();
@@ -276,13 +276,13 @@ export default {
       let productEndTime = new Date(this.xmProduct.planEndTime);
       if(now<=productEndTime){
         let allDays=productEndTime-productStartTime;
-        return this.xmProduct.planWorkload - Math.round((now-productStartTime)/allDays*this.xmProduct.planWorkload);
+        return this.xmProduct.budgetWorkload - Math.round((now-productStartTime)/allDays*this.xmProduct.budgetWorkload);
       }else{
-        return this.xmProduct.actWorkload - this.xmProduct.planWorkload;
+        return this.xmProduct.actWorkload - this.xmProduct.budgetWorkload;
       }
     },
     deviationRate:function (){
-      return Math.round(this.deviation/this.xmProduct.planWorkload*100);
+      return Math.round(this.deviation/this.xmProduct.budgetWorkload*100);
     },
     planProgress:function (){
       let now = new Date();
@@ -296,8 +296,8 @@ export default {
       }
     },
     realProgress:function (){
-      if(this.xmProduct.actWorkload < this.xmProduct.planWorkload){
-        return Math.round(this.xmProduct.actWorkload/this.xmProduct.planWorkload*100)
+      if(this.xmProduct.actWorkload < this.xmProduct.budgetWorkload){
+        return Math.round(this.xmProduct.actWorkload/this.xmProduct.budgetWorkload*100)
       }else{
         return 100;
       }

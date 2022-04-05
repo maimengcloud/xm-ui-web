@@ -56,7 +56,7 @@
                     <i class="el-icon-check"></i>
                   </div>
                   <div class="info">
-                    <div v-text="this.xmMenu.finishTaskCnt" >
+                    <div v-text="this.xmMenu.taskFinishCnt" >
                     </div>
                     <div class="title">已完成</div>
                   </div>
@@ -238,7 +238,7 @@
 		computed: {
       ...mapGetters(['userInfo','roles']),
       notStart: function() {
-        return this.xmMenu.taskCnt-this.xmMenu.finishTaskCnt;
+        return this.xmMenu.taskCnt-this.xmMenu.taskFinishCnt;
       },
       taskProgress: function (){
         return this.xmMenu.finishRate;

@@ -47,8 +47,8 @@
 				<el-form-item label="关联任务数" prop="taskCnt">
 					<el-input-number v-model="editForm.taskCnt" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
-				<el-form-item label="已完成的任务数" prop="finishTaskCnt">
-					<el-input-number v-model="editForm.finishTaskCnt" :min="0" :max="200"></el-input-number>
+				<el-form-item label="已完成的任务数" prop="taskFinishCnt">
+					<el-input-number v-model="editForm.taskFinishCnt" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
 				<el-form-item label="计算日期" prop="calcTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.calcTime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
@@ -144,7 +144,7 @@
 					]
 				},
 				editForm: {
-					distBudgetCost:'',distBudgetWorkload:'',actCost:'',actWorkload:'',actStaffNum:'',finishRate:'',testCases:'',execCases:'',designCases:'',finishCases:'',projectCnt:'',productCnt:'',menuCnt:'',taskCnt:'',finishTaskCnt:'',calcTime:'',iterationName:'',budgetCost:'',budgetWorkload:'',iterationId:'',bizDate:'',closedBugCnt:'',resolvedBugCnt:'',activeBugCnt:'',confirmedBugCnt:'',bugCnt:'',estimateWorkload:'',minStartTime:'',maxEndTime:''
+					distBudgetCost:'',distBudgetWorkload:'',actCost:'',actWorkload:'',actStaffNum:'',finishRate:'',testCases:'',execCases:'',designCases:'',finishCases:'',projectCnt:'',productCnt:'',menuCnt:'',taskCnt:'',taskFinishCnt:'',calcTime:'',iterationName:'',budgetCost:'',budgetWorkload:'',iterationId:'',bizDate:'',closedBugCnt:'',resolvedBugCnt:'',activeBugCnt:'',confirmedBugCnt:'',bugCnt:'',estimateWorkload:'',minStartTime:'',maxEndTime:''
 				},
                 maxTableHeight:300,
 			}//end return

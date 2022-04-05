@@ -43,7 +43,7 @@
                     <i class="el-icon-check"></i>
                   </div>
                   <div class="info">
-                    <div v-text="this.xmGroupState.finishTaskCnt" >
+                    <div v-text="this.xmGroupState.taskFinishCnt" >
                     </div>
                     <div class="title">已完成</div>
                   </div>
@@ -218,7 +218,7 @@ export default {
       return parseFloat(this.xmGroupState.finishRate);
     },
     notStart: function() {
-      return this.xmGroupState.taskCnt-this.xmGroupState.finishTaskCnt;
+      return this.xmGroupState.taskCnt-this.xmGroupState.taskFinishCnt;
     },
     planStartTime: function (){
       if(this.xmGroupState.planStartTime){

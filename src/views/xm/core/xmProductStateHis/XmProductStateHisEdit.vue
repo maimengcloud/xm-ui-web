@@ -107,8 +107,8 @@
 				<el-form-item label="任务总数" prop="taskCnt">
 					<el-input-number v-model="editForm.taskCnt" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
-				<el-form-item label="已完成的任务总数" prop="finishTaskCnt">
-					<el-input-number v-model="editForm.finishTaskCnt" :min="0" :max="200"></el-input-number>
+				<el-form-item label="已完成的任务总数" prop="taskFinishCnt">
+					<el-input-number v-model="editForm.taskFinishCnt" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
 				<el-form-item label="业务日期yyyy-MM-dd字符串" prop="bizDate">
 					<el-input v-model="editForm.bizDate" placeholder="业务日期yyyy-MM-dd字符串"></el-input>
@@ -180,7 +180,7 @@
 					]
 				},
 				editForm: {
-					planStartTime:'',planEndTime:'',actStartTime:'',actEndTime:'',planWorkload:'',actWorkload:'',planCostAmount:'',actCostAmount:'',finishRate:'',demandRate:'',designRate:'',devRate:'',uatRate:'',sitRate:'',ctime:'',ltime:'',cuserid:'',cusername:'',calcTime:'',planWorkhours:'',planWorkerCnt:'',closedBugs:'',activeBugs:'',confirmedBugs:'',resolvedBugs:'',productId:'',productName:'',testCases:'',execCases:'',designCases:'',finishCases:'',projectCnt:'',iterationCnt:'',taskCnt:'',finishTaskCnt:'',bizDate:'',branchId:'',bugCnt:'',menuCnt:'',menuFinishCnt:'',estimateWorkload:''
+					planStartTime:'',planEndTime:'',actStartTime:'',actEndTime:'',planWorkload:'',actWorkload:'',planCostAmount:'',actCostAmount:'',finishRate:'',demandRate:'',designRate:'',devRate:'',uatRate:'',sitRate:'',ctime:'',ltime:'',cuserid:'',cusername:'',calcTime:'',planWorkhours:'',planWorkerCnt:'',closedBugs:'',activeBugs:'',confirmedBugs:'',resolvedBugs:'',productId:'',productName:'',testCases:'',execCases:'',designCases:'',finishCases:'',projectCnt:'',iterationCnt:'',taskCnt:'',taskFinishCnt:'',bizDate:'',branchId:'',bugCnt:'',menuCnt:'',menuFinishCnt:'',estimateWorkload:''
 				},
                 maxTableHeight:300,
 			}//end return

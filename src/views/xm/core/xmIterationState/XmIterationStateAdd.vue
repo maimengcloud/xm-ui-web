@@ -48,8 +48,8 @@
 				<el-form-item label="关联任务数" prop="taskCnt">
 					<el-input-number v-model="addForm.taskCnt" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
-				<el-form-item label="已完成的任务数" prop="finishTaskCnt">
-					<el-input-number v-model="addForm.finishTaskCnt" :min="0" :max="200"></el-input-number>
+				<el-form-item label="已完成的任务数" prop="taskFinishCnt">
+					<el-input-number v-model="addForm.taskFinishCnt" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
 				<el-form-item label="计算日期" prop="calcTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="addForm.calcTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
@@ -111,7 +111,7 @@
 				},
 				//新增界面数据 迭代定义
 				addForm: {
-					id:'',distBudgetCost:'',distBudgetWorkload:'',actCost:'',actWorkload:'',actStaffNum:'',finishRate:'',testCases:'',execCases:'',designCases:'',finishCases:'',projectCnt:'',productCnt:'',menuCnt:'',taskCnt:'',finishTaskCnt:'',calcTime:'',iterationName:'',budgetCost:'',budgetWorkload:'',iterationId:''
+					id:'',distBudgetCost:'',distBudgetWorkload:'',actCost:'',actWorkload:'',actStaffNum:'',finishRate:'',testCases:'',execCases:'',designCases:'',finishCases:'',projectCnt:'',productCnt:'',menuCnt:'',taskCnt:'',taskFinishCnt:'',calcTime:'',iterationName:'',budgetCost:'',budgetWorkload:'',iterationId:''
 				}
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				

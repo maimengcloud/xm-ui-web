@@ -62,7 +62,7 @@
                     <i class="el-icon-check"></i>
                   </div>
                   <div class="info">
-                    <div v-text="this.xmPhase.finishTaskCnt" >
+                    <div v-text="this.xmPhase.taskFinishCnt" >
                     </div>
                     <div class="title">已完成</div>
                   </div>
@@ -232,7 +232,7 @@ export default {
   computed: {
     ...mapGetters(['userInfo','roles']),
     notStart: function() {
-      return this.xmPhase.taskCnt-this.xmPhase.finishTaskCnt;
+      return this.xmPhase.taskCnt-this.xmPhase.taskFinishCnt;
     },
     taskProgress: function (){
       if(this.xmPhase.actRate){

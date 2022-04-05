@@ -132,8 +132,8 @@
 				<el-form-item label="任务数" prop="taskCnt">
 					<el-input-number v-model="editForm.taskCnt" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
-				<el-form-item label="完成的任务数" prop="finishTaskCnt">
-					<el-input-number v-model="editForm.finishTaskCnt" :min="0" :max="200"></el-input-number>
+				<el-form-item label="完成的任务数" prop="taskFinishCnt">
+					<el-input-number v-model="editForm.taskFinishCnt" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
 				<el-form-item label="业务日期yyyy-MM-dd字符串" prop="bizDate">
 					<el-input v-model="editForm.bizDate" placeholder="业务日期yyyy-MM-dd字符串"></el-input>
@@ -186,7 +186,7 @@
 				},
 				//编辑界面数据  XmMenuState 功能状态表,无需前端维护，所有数据由汇总统计得出
 				editForm: {
-					id:'',menuId:'',planStartTime:'',planEndTime:'',actStartTime:'',actEndTime:'',planWorkload:'',actWorkload:'',planCostAmount:'',actCostAmount:'',finishRate:'',demandRate:'',designRate:'',devRate:'',uatRate:'',sitRate:'',onlineStatus:'',onlineTime:'',planStatus:'',chargeUserid:'',chargeUsername:'',menuStatus:'',ctime:'',ltime:'',cuserid:'',cusername:'',calcTime:'',menuName:'',planWorkhours:'',planWorkerCnt:'',closedBugs:'',activeBugs:'',confirmedBugs:'',resolvedBugs:'',productId:'',productName:'',testCases:'',execCases:'',designCases:'',finishCases:'',projectCnt:'',iterationCnt:'',taskCnt:'',finishTaskCnt:'',bizDate:'',bugCnt:''
+					id:'',menuId:'',planStartTime:'',planEndTime:'',actStartTime:'',actEndTime:'',planWorkload:'',actWorkload:'',planCostAmount:'',actCostAmount:'',finishRate:'',demandRate:'',designRate:'',devRate:'',uatRate:'',sitRate:'',onlineStatus:'',onlineTime:'',planStatus:'',chargeUserid:'',chargeUsername:'',menuStatus:'',ctime:'',ltime:'',cuserid:'',cusername:'',calcTime:'',menuName:'',planWorkhours:'',planWorkerCnt:'',closedBugs:'',activeBugs:'',confirmedBugs:'',resolvedBugs:'',productId:'',productName:'',testCases:'',execCases:'',designCases:'',finishCases:'',projectCnt:'',iterationCnt:'',taskCnt:'',taskFinishCnt:'',bizDate:'',bugCnt:''
 				}
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				

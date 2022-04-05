@@ -108,8 +108,8 @@
 				<el-form-item label="任务总数" prop="taskCnt">
 					<el-input-number v-model="addForm.taskCnt" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
-				<el-form-item label="已完成的任务总数" prop="finishTaskCnt">
-					<el-input-number v-model="addForm.finishTaskCnt" :min="0" :max="200"></el-input-number>
+				<el-form-item label="已完成的任务总数" prop="taskFinishCnt">
+					<el-input-number v-model="addForm.taskFinishCnt" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
 				<el-form-item>
 					<el-col :span="24" :offset="8"> 
@@ -156,7 +156,7 @@
 				},
 				//新增界面数据 功能状态表,无需前端维护，所有数据由汇总统计得出
 				addForm: {
-					id:'',planStartTime:'',planEndTime:'',actStartTime:'',actEndTime:'',planWorkload:'',actWorkload:'',planCostAmount:'',actCostAmount:'',finishRate:'',demandRate:'',designRate:'',devRate:'',uatRate:'',sitRate:'',ctime:'',ltime:'',cuserid:'',cusername:'',calcTime:'',planWorkhours:'',planWorkerCnt:'',closedBugs:'',activeBugs:'',confirmedBugs:'',resolvedBugs:'',productId:'',productName:'',testCases:'',execCases:'',designCases:'',finishCases:'',projectCnt:'',iterationCnt:'',taskCnt:'',finishTaskCnt:''
+					id:'',planStartTime:'',planEndTime:'',actStartTime:'',actEndTime:'',planWorkload:'',actWorkload:'',planCostAmount:'',actCostAmount:'',finishRate:'',demandRate:'',designRate:'',devRate:'',uatRate:'',sitRate:'',ctime:'',ltime:'',cuserid:'',cusername:'',calcTime:'',planWorkhours:'',planWorkerCnt:'',closedBugs:'',activeBugs:'',confirmedBugs:'',resolvedBugs:'',productId:'',productName:'',testCases:'',execCases:'',designCases:'',finishCases:'',projectCnt:'',iterationCnt:'',taskCnt:'',taskFinishCnt:''
 				}
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				

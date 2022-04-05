@@ -48,8 +48,8 @@
 					['日期',...this.xmProjectStateHiss.map(i=>i.bizDate)],
 					['未关故事',...this.xmProjectStateHiss.map(i=>i.menuCnt-i.menuFinishCnt)],
 					['已关故事',...this.xmProjectStateHiss.map(i=>i.menuFinishCnt)],
-					['未关任务',...this.xmProjectStateHiss.map(i=>i.taskCnt-i.finishTaskCnt)],
-					['已关任务',...this.xmProjectStateHiss.map(i=>i.finishTaskCnt)],
+					['未关任务',...this.xmProjectStateHiss.map(i=>i.taskCnt-i.taskFinishCnt)],
+					['已关任务',...this.xmProjectStateHiss.map(i=>i.taskFinishCnt)],
 					['未关缺陷',...this.xmProjectStateHiss.map(i=>i.bugCnt-i.closedBugs)],
 					['已关缺陷',...this.xmProjectStateHiss.map(i=>i.closedBugs)]
 				]

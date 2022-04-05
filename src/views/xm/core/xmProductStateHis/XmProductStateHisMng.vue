@@ -45,7 +45,7 @@
 				<el-table-column prop="projectCnt" label="关联项目数" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="iterationCnt" label="关联迭代数" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="taskCnt" label="任务总数" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="finishTaskCnt" label="已完成的任务总数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="taskFinishCnt" label="已完成的任务总数" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="bizDate" label="业务日期yyyy-MM-dd字符串" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="branchId" label="机构号码" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="bugCnt" label="bug总数" min-width="80" show-overflow-tooltip></el-table-column>
@@ -122,12 +122,12 @@
 				},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				addFormVisible: false,//新增xmProductStateHis界面是否显示
 				addForm: {
-					planStartTime:'',planEndTime:'',actStartTime:'',actEndTime:'',planWorkload:'',actWorkload:'',planCostAmount:'',actCostAmount:'',finishRate:'',demandRate:'',designRate:'',devRate:'',uatRate:'',sitRate:'',ctime:'',ltime:'',cuserid:'',cusername:'',calcTime:'',planWorkhours:'',planWorkerCnt:'',closedBugs:'',activeBugs:'',confirmedBugs:'',resolvedBugs:'',productId:'',productName:'',testCases:'',execCases:'',designCases:'',finishCases:'',projectCnt:'',iterationCnt:'',taskCnt:'',finishTaskCnt:'',bizDate:'',branchId:'',bugCnt:'',menuCnt:'',menuFinishCnt:'',estimateWorkload:''
+					planStartTime:'',planEndTime:'',actStartTime:'',actEndTime:'',planWorkload:'',actWorkload:'',planCostAmount:'',actCostAmount:'',finishRate:'',demandRate:'',designRate:'',devRate:'',uatRate:'',sitRate:'',ctime:'',ltime:'',cuserid:'',cusername:'',calcTime:'',planWorkhours:'',planWorkerCnt:'',closedBugs:'',activeBugs:'',confirmedBugs:'',resolvedBugs:'',productId:'',productName:'',testCases:'',execCases:'',designCases:'',finishCases:'',projectCnt:'',iterationCnt:'',taskCnt:'',taskFinishCnt:'',bizDate:'',branchId:'',bugCnt:'',menuCnt:'',menuFinishCnt:'',estimateWorkload:''
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
 				editForm: {
-					planStartTime:'',planEndTime:'',actStartTime:'',actEndTime:'',planWorkload:'',actWorkload:'',planCostAmount:'',actCostAmount:'',finishRate:'',demandRate:'',designRate:'',devRate:'',uatRate:'',sitRate:'',ctime:'',ltime:'',cuserid:'',cusername:'',calcTime:'',planWorkhours:'',planWorkerCnt:'',closedBugs:'',activeBugs:'',confirmedBugs:'',resolvedBugs:'',productId:'',productName:'',testCases:'',execCases:'',designCases:'',finishCases:'',projectCnt:'',iterationCnt:'',taskCnt:'',finishTaskCnt:'',bizDate:'',branchId:'',bugCnt:'',menuCnt:'',menuFinishCnt:'',estimateWorkload:''
+					planStartTime:'',planEndTime:'',actStartTime:'',actEndTime:'',planWorkload:'',actWorkload:'',planCostAmount:'',actCostAmount:'',finishRate:'',demandRate:'',designRate:'',devRate:'',uatRate:'',sitRate:'',ctime:'',ltime:'',cuserid:'',cusername:'',calcTime:'',planWorkhours:'',planWorkerCnt:'',closedBugs:'',activeBugs:'',confirmedBugs:'',resolvedBugs:'',productId:'',productName:'',testCases:'',execCases:'',designCases:'',finishCases:'',projectCnt:'',iterationCnt:'',taskCnt:'',taskFinishCnt:'',bizDate:'',branchId:'',bugCnt:'',menuCnt:'',menuFinishCnt:'',estimateWorkload:''
 				},
 				maxTableHeight:300,
 			}

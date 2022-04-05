@@ -6,7 +6,7 @@
             :usePreColumn="true"
             :checkSource="true"
             :useRealTime="useRealTime"
-						:treeProps="{children: 'children', hasChildren: 'hasChildren',pid:'parentPhaseId', pre: 'finishTaskCnt'}"
+						:treeProps="{children: 'children', hasChildren: 'hasChildren',pid:'parentPhaseId', pre: 'taskFinishCnt'}"
 						:props="columns"
             row-key="id">
             <!-- <el-table-column prop="name" label="计划名称" min-width="160" > 

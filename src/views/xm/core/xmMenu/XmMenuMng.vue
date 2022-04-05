@@ -285,7 +285,7 @@
 									<el-tooltip   content="已完成 / 总数 注意：统计包括下级数据"><span>任务数</span></el-tooltip>
 								</template>
 								<template slot-scope="scope">
-										<div>{{scope.row.finishTaskCnt}}/{{scope.row.taskCnt}}</div>
+										<div>{{scope.row.taskFinishCnt}}/{{scope.row.taskCnt}}</div>
 								</template>
 							</el-table-column>
 							

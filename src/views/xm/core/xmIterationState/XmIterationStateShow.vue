@@ -30,7 +30,7 @@
 				<el-table-column prop="productCnt" label="关联产品数" min-width="80" ></el-table-column>
 				<el-table-column prop="menuCnt" label="关联需求数" min-width="80" ></el-table-column>
 				<el-table-column prop="taskCnt" label="关联任务数" min-width="80" ></el-table-column>
-				<el-table-column prop="finishTaskCnt" label="已完成的任务数" min-width="80" ></el-table-column> 
+				<el-table-column prop="taskFinishCnt" label="已完成的任务数" min-width="80" ></el-table-column> 
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		
@@ -91,13 +91,13 @@
 				addFormVisible: false,//新增xmIterationState界面是否显示
 				//新增xmIterationState界面初始化数据
 				addForm: {
-					id:'',distBudgetCost:'',distBudgetWorkload:'',actCost:'',actWorkload:'',actStaffNum:'',finishRate:'',testCases:'',execCases:'',designCases:'',finishCases:'',projectCnt:'',productCnt:'',menuCnt:'',taskCnt:'',finishTaskCnt:'',calcTime:'',iterationName:'',budgetCost:'',budgetWorkload:'',iterationId:''
+					id:'',distBudgetCost:'',distBudgetWorkload:'',actCost:'',actWorkload:'',actStaffNum:'',finishRate:'',testCases:'',execCases:'',designCases:'',finishCases:'',projectCnt:'',productCnt:'',menuCnt:'',taskCnt:'',taskFinishCnt:'',calcTime:'',iterationName:'',budgetCost:'',budgetWorkload:'',iterationId:''
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmIterationState界面初始化数据
 				editForm: {
-					id:'',distBudgetCost:'',distBudgetWorkload:'',actCost:'',actWorkload:'',actStaffNum:'',finishRate:'',testCases:'',execCases:'',designCases:'',finishCases:'',projectCnt:'',productCnt:'',menuCnt:'',taskCnt:'',finishTaskCnt:'',calcTime:'',iterationName:'',budgetCost:'',budgetWorkload:'',iterationId:''
+					id:'',distBudgetCost:'',distBudgetWorkload:'',actCost:'',actWorkload:'',actStaffNum:'',finishRate:'',testCases:'',execCases:'',designCases:'',finishCases:'',projectCnt:'',productCnt:'',menuCnt:'',taskCnt:'',taskFinishCnt:'',calcTime:'',iterationName:'',budgetCost:'',budgetWorkload:'',iterationId:''
 				},maxTableHeight:300,
 				/**begin 自定义属性请在下面加 请加备注**/
 					

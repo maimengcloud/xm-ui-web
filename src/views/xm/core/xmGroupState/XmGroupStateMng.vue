@@ -21,7 +21,7 @@
 				<el-table-column prop="actCostAmount" label="实际成本" min-width="80" ></el-table-column>
 				<el-table-column prop="iterationCnt" label="迭代数" min-width="80" ></el-table-column>
 				<el-table-column prop="taskCnt" label="任务数" min-width="80" ></el-table-column>
-				<el-table-column prop="finishTaskCnt" label="完成的任务数" min-width="80" ></el-table-column>
+				<el-table-column prop="taskFinishCnt" label="完成的任务数" min-width="80" ></el-table-column>
  				<el-table-column prop="planWorkerCnt" label="总人数" min-width="80" ></el-table-column>
 				<el-table-column prop="bugCnt" label="bug总数" min-width="80" ></el-table-column>
 				<el-table-column prop="closedBugs" label="总关闭bugs" min-width="80" ></el-table-column>
@@ -95,13 +95,13 @@ import XmGroupStateOverview from './XmGroupStateOverview.vue';
 				addFormVisible: false,//新增xmGroupState界面是否显示
 				//新增xmGroupState界面初始化数据
 				addForm: {
-					id:'',planStartTime:'',planEndTime:'',actStartTime:'',actEndTime:'',planWorkload:'',actWorkload:'',planCostAmount:'',actCostAmount:'',finishRate:'',demandRate:'',designRate:'',devRate:'',uatRate:'',sitRate:'',ctime:'',calcTime:'',planWorkhours:'',planWorkerCnt:'',closedBugs:'',activeBugs:'',confirmedBugs:'',resolvedBugs:'',testCases:'',execCases:'',designCases:'',finishCases:'',iterationCnt:'',taskCnt:'',finishTaskCnt:'',bizDate:'',bugCnt:'',groupId:'',projectId:'',projectName:'',groupName:''
+					id:'',planStartTime:'',planEndTime:'',actStartTime:'',actEndTime:'',planWorkload:'',actWorkload:'',planCostAmount:'',actCostAmount:'',finishRate:'',demandRate:'',designRate:'',devRate:'',uatRate:'',sitRate:'',ctime:'',calcTime:'',planWorkhours:'',planWorkerCnt:'',closedBugs:'',activeBugs:'',confirmedBugs:'',resolvedBugs:'',testCases:'',execCases:'',designCases:'',finishCases:'',iterationCnt:'',taskCnt:'',taskFinishCnt:'',bizDate:'',bugCnt:'',groupId:'',projectId:'',projectName:'',groupName:''
 				},
 
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmGroupState界面初始化数据
 				editForm: {
-					id:'',planStartTime:'',planEndTime:'',actStartTime:'',actEndTime:'',planWorkload:'',actWorkload:'',planCostAmount:'',actCostAmount:'',finishRate:'',demandRate:'',designRate:'',devRate:'',uatRate:'',sitRate:'',ctime:'',calcTime:'',planWorkhours:'',planWorkerCnt:'',closedBugs:'',activeBugs:'',confirmedBugs:'',resolvedBugs:'',testCases:'',execCases:'',designCases:'',finishCases:'',iterationCnt:'',taskCnt:'',finishTaskCnt:'',bizDate:'',bugCnt:'',groupId:'',projectId:'',projectName:'',groupName:''
+					id:'',planStartTime:'',planEndTime:'',actStartTime:'',actEndTime:'',planWorkload:'',actWorkload:'',planCostAmount:'',actCostAmount:'',finishRate:'',demandRate:'',designRate:'',devRate:'',uatRate:'',sitRate:'',ctime:'',calcTime:'',planWorkhours:'',planWorkerCnt:'',closedBugs:'',activeBugs:'',confirmedBugs:'',resolvedBugs:'',testCases:'',execCases:'',designCases:'',finishCases:'',iterationCnt:'',taskCnt:'',taskFinishCnt:'',bizDate:'',bugCnt:'',groupId:'',projectId:'',projectName:'',groupName:''
 				},
 				/**begin 自定义属性请在下面加 请加备注**/
 

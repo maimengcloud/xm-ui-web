@@ -211,7 +211,7 @@
 						</el-table-column>
 						<el-table-column prop="taskCnt" label="任务数" width="120" sortable show-overflow-tooltip>
 							<template slot-scope="scope"> 						
-								<span title=" 已完成 / 总任务数">{{scope.row.taskCnt>0?scope.row.finishTaskCnt+'&nbsp;/&nbsp;'+scope.row.taskCnt:''}}</span>
+								<span title=" 已完成 / 总任务数">{{scope.row.taskCnt>0?scope.row.taskFinishCnt+'&nbsp;/&nbsp;'+scope.row.taskCnt:''}}</span>
 							</template>
 						</el-table-column>
 						
@@ -221,7 +221,7 @@
 							</template>
 						</el-table-column>
 						<el-table-column label="工作量(人时)" width="200">
-							<el-table-column prop="planWorkload" label="预计" width="100"  show-overflow-tooltip sortable></el-table-column>
+							<el-table-column prop="budgetWorkload" label="预计" width="100"  show-overflow-tooltip sortable></el-table-column>
 							<el-table-column prop="actWorkload" label="实际" width="100"  show-overflow-tooltip sortable></el-table-column>
 						</el-table-column>
 						

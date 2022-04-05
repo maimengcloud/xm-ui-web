@@ -25,7 +25,7 @@
 				<el-table-column prop="productCnt" label="关联产品数" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="menuCnt" label="关联故事数" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="taskCnt" label="关联任务数" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="finishTaskCnt" label="已完成的任务数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="taskFinishCnt" label="已完成的任务数" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="calcTime" label="计算日期" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="iterationName" label="迭代名称" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="budgetCost" label="预算成本" min-width="80" show-overflow-tooltip></el-table-column>
@@ -110,12 +110,12 @@
 				},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				addFormVisible: false,//新增xmIterationStateHis界面是否显示
 				addForm: {
-					distBudgetCost:'',distBudgetWorkload:'',actCost:'',actWorkload:'',actStaffNum:'',finishRate:'',testCases:'',execCases:'',designCases:'',finishCases:'',projectCnt:'',productCnt:'',menuCnt:'',taskCnt:'',finishTaskCnt:'',calcTime:'',iterationName:'',budgetCost:'',budgetWorkload:'',iterationId:'',bizDate:'',closedBugCnt:'',resolvedBugCnt:'',activeBugCnt:'',confirmedBugCnt:'',bugCnt:'',estimateWorkload:'',minStartTime:'',maxEndTime:''
+					distBudgetCost:'',distBudgetWorkload:'',actCost:'',actWorkload:'',actStaffNum:'',finishRate:'',testCases:'',execCases:'',designCases:'',finishCases:'',projectCnt:'',productCnt:'',menuCnt:'',taskCnt:'',taskFinishCnt:'',calcTime:'',iterationName:'',budgetCost:'',budgetWorkload:'',iterationId:'',bizDate:'',closedBugCnt:'',resolvedBugCnt:'',activeBugCnt:'',confirmedBugCnt:'',bugCnt:'',estimateWorkload:'',minStartTime:'',maxEndTime:''
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
 				editForm: {
-					distBudgetCost:'',distBudgetWorkload:'',actCost:'',actWorkload:'',actStaffNum:'',finishRate:'',testCases:'',execCases:'',designCases:'',finishCases:'',projectCnt:'',productCnt:'',menuCnt:'',taskCnt:'',finishTaskCnt:'',calcTime:'',iterationName:'',budgetCost:'',budgetWorkload:'',iterationId:'',bizDate:'',closedBugCnt:'',resolvedBugCnt:'',activeBugCnt:'',confirmedBugCnt:'',bugCnt:'',estimateWorkload:'',minStartTime:'',maxEndTime:''
+					distBudgetCost:'',distBudgetWorkload:'',actCost:'',actWorkload:'',actStaffNum:'',finishRate:'',testCases:'',execCases:'',designCases:'',finishCases:'',projectCnt:'',productCnt:'',menuCnt:'',taskCnt:'',taskFinishCnt:'',calcTime:'',iterationName:'',budgetCost:'',budgetWorkload:'',iterationId:'',bizDate:'',closedBugCnt:'',resolvedBugCnt:'',activeBugCnt:'',confirmedBugCnt:'',bugCnt:'',estimateWorkload:'',minStartTime:'',maxEndTime:''
 				},
 				maxTableHeight:300,
 			}

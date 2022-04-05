@@ -45,7 +45,7 @@
 				</el-table-column>
 				
 				<el-table-column label="工作量(人时)" width="200">
-					<el-table-column prop="planWorkload" label="预计" width="100"  show-overflow-tooltip sortable></el-table-column>
+					<el-table-column prop="budgetWorkload" label="预计" width="100"  show-overflow-tooltip sortable></el-table-column>
 					<el-table-column prop="actWorkload" label="实际" width="100"  show-overflow-tooltip sortable></el-table-column>
 				</el-table-column>
 				<el-table-column  label="" width="100" fixed="right">

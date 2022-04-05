@@ -7,7 +7,7 @@
           <p>项目数</p>
         </div>
         <div class="r r2">
-          <span style="color: #4779F6">{{xmBranchState.totalPlanWorkload || 0}}</span>
+          <span style="color: #4779F6">{{xmBranchState.budgetWorkload || 0}}</span>
           <p>项目总工时</p>
         </div>
         <div class="r r3">
@@ -19,7 +19,7 @@
           <p>产品总工时</p>
         </div>
         <div class="r r5">
-          <span style="color: #47CBF6">{{xmBranchState.totalPhaseCnt || 0}}</span>
+          <span style="color: #47CBF6">{{xmBranchState.phaseCnt || 0}}</span>
           <p>计划数</p>
         </div>
         <div class="r r6">
@@ -31,7 +31,7 @@
           <p>总人数</p>
         </div>
         <div class="r r8">
-          <span style="color: #7D7D7D">{{xmBranchState.totalTaskCnt || 0}}</span>
+          <span style="color: #7D7D7D">{{xmBranchState.taskCnt || 0}}</span>
           <p>任务数</p>
         </div>
         <div class="r r9">
@@ -49,7 +49,7 @@
               <p>预估工时</p>
             </div>
             <div>
-              <span>{{this.xmBranchState.totalActWorkload || 0}}h</span>
+              <span>{{this.xmBranchState.actWorkload || 0}}h</span>
               <p>登记工时</p>
             </div>
             <div>
@@ -141,16 +141,16 @@ export default {
   computed: {
     ...mapGetters(["userInfo"]),
     finish: function (){
-      return this.xmBranchState.totalCompleteTaskCnt;
+      return this.xmBranchState.taskFinishCnt;
     },
     notStart: function() {
-      return this.xmBranchState.totalTaskCnt-this.xmBranchState.totalCompleteTaskCnt;
+      return this.xmBranchState.taskCnt-this.xmBranchState.taskFinishCnt;
     },
     totalTask: function() {
-      return this.xmBranchState.totalTaskCnt;
+      return this.xmBranchState.taskCnt;
     },
     taskProgress: function (){
-      return this.xmBranchState.totalProgress;
+      return this.xmBranchState.finishRate;
     },
     taskStartTime: function (){
       return this.xmBranchState.startTime.substring(0,10);
@@ -162,38 +162,38 @@ export default {
       return this.xmBranchState.createUsername;
     },
     workloadProgress:function (){ 
-      if(!this.xmBranchState.totalPlanWorkload){
+      if(!this.xmBranchState.budgetWorkload){
         return 0;
       }
-      if(this.xmBranchState.totalActWorkload < this.xmBranchState.totalPlanWorkload){
-        return Math.round(this.xmBranchState.totalActWorkload/this.xmBranchState.totalPlanWorkload*100)
+      if(this.xmBranchState.actWorkload < this.xmBranchState.budgetWorkload){
+        return Math.round(this.xmBranchState.actWorkload/this.xmBranchState.budgetWorkload*100)
       }else{
         return 100;
       }
     },
     deviation:function (){
-      return Math.round(this.xmBranchState.totalActWorkload-this.xmBranchState.estimateWorkload);
+      return Math.round(this.xmBranchState.actWorkload-this.xmBranchState.estimateWorkload);
     },
     deviationRate:function (){
-      return Math.round((this.xmBranchState.totalActWorkload-this.xmBranchState.estimateWorkload)/this.xmBranchState.estimateWorkload*100);
+      return Math.round((this.xmBranchState.actWorkload-this.xmBranchState.estimateWorkload)/this.xmBranchState.estimateWorkload*100);
     },
     remainWorkload:function (){
-      return this.xmBranchState.totalPlanWorkload - this.xmBranchState.totalActWorkload;
+      return this.xmBranchState.budgetWorkload - this.xmBranchState.actWorkload;
     },
 
     planProgress:function (){
-      if(!this.xmBranchState.totalPlanWorkload){
+      if(!this.xmBranchState.budgetWorkload){
         return 0;
       }
-      return Math.round( this.xmBranchState.estimateWorkload/this.xmBranchState.totalPlanWorkload*100)
+      return Math.round( this.xmBranchState.estimateWorkload/this.xmBranchState.budgetWorkload*100)
     },
 
     realProgress:function (){
-      if(!this.xmBranchState.totalPlanWorkload){
+      if(!this.xmBranchState.budgetWorkload){
         return 0;
       }
-      if(this.xmBranchState.totalActWorkload < this.xmBranchState.totalPlanWorkload){
-        return Math.round(this.xmBranchState.totalActWorkload/this.xmBranchState.totalPlanWorkload*100)
+      if(this.xmBranchState.actWorkload < this.xmBranchState.budgetWorkload){
+        return Math.round(this.xmBranchState.actWorkload/this.xmBranchState.budgetWorkload*100)
       }else{
         return 100;
       }
@@ -298,7 +298,7 @@ export default {
             emphasis: {
               focus: 'series'
             },
-            data: [0, this.xmBranchState.totalTaskCnt],
+            data: [0, this.xmBranchState.taskCnt],
             markPoint: {
               data: [{
                 type: 'max',
@@ -314,11 +314,11 @@ export default {
             emphasis: {
               focus: 'series'
             },
-            data: [0,  0, this.xmBranchState.totalBugCnt],
+            data: [0,  0, this.xmBranchState.bugCnt],
             markPoint: {
               data: [{
                 name: '',
-                yAxis: this.xmBranchState.totalBugCnt,  // y轴就是数据轴，那么标记数据的y轴坐标就是当前显示的数据，this.trenddata[1]是显示的所有数据，他是个数组，通过数组下标的形式获取最后一个数据即可
+                yAxis: this.xmBranchState.bugCnt,  // y轴就是数据轴，那么标记数据的y轴坐标就是当前显示的数据，this.trenddata[1]是显示的所有数据，他是个数组，通过数组下标的形式获取最后一个数据即可
                 x: '95.55%'// 标记数据的x轴的位置，由于是最后一个点，所以这个位置是固定的，用百分比表示该图标内最后一个点的位置即可
               }],
             },
@@ -523,7 +523,7 @@ export default {
               }
             },
             data: [
-              {value: this.xmBranchState.totalClosedBugCnt,
+              {value: this.xmBranchState.closedBugs,
                 itemStyle: {
                   normal:{
                     color: '#47CBF6'
@@ -542,7 +542,7 @@ export default {
                   }
                 }
               },
-              {value: this.xmBranchState.totalResolvedBugCnt,
+              {value: this.xmBranchState.resolvedBugs,
                 itemStyle: {
                   normal:{
                     color: '#88B0BA'
@@ -561,7 +561,7 @@ export default {
                   }
                 }
               },
-              {value: this.xmBranchState.totalActiveBugCnt,
+              {value: this.xmBranchState.activeBugs,
                 itemStyle: {
                   normal:{
                     color: '#F6AD48'
@@ -580,7 +580,7 @@ export default {
                   }
                 }
               },
-              {value: this.xmBranchState.totalConfirmedBugCnt,
+              {value: this.xmBranchState.confirmedBugs,
                 itemStyle: {
                   normal:{
                     color: '#467AF6'
@@ -649,7 +649,7 @@ export default {
             },
             data: [
               {
-                value: this.xmBranchState.totalBudgetNouserAmount,
+                value: this.xmBranchState.budgetNouserAt,
                 itemStyle: {
                   normal:{
                     color: '#46CBF6'
@@ -668,7 +668,7 @@ export default {
                   }
                 }
               },
-              {value: this.xmBranchState.totalBudgetIuserAmount,
+              {value: this.xmBranchState.budgetIuserAt,
                 itemStyle: {
                   normal:{
                     color: '#F7AE48'
@@ -687,7 +687,7 @@ export default {
                   }
                 }
               },
-              {value: this.xmBranchState.totalBudgetOuserAmount,
+              {value: this.xmBranchState.budgetOuserAt,
                 itemStyle: {
                   normal:{
                     color: '#4679F6'
@@ -754,18 +754,18 @@ export default {
           },
           formatter(params) {
             console.log(params);
-            let total = that.xmBranchState.totalPlanIuserWorkload + that.xmBranchState.totalPlanOuserWorkload;
+            let total = that.xmBranchState.budgetIuserWorkload + that.xmBranchState.budgetOuserWorkload;
             if(params == '内部人力') {
-              let p = ((that.xmBranchState.totalPlanIuserWorkload / total) * 100).toFixed(2)
+              let p = ((that.xmBranchState.budgetIuserWorkload / total) * 100).toFixed(2)
               return [
-                `{name|${that.xmBranchState.totalPlanIuserWorkload}}/{val|${p}%}`,
+                `{name|${that.xmBranchState.budgetIuserWorkload}}/{val|${p}%}`,
                 `{desc|${params}}`
               ].join('\n')
             }
             if(params == '外购人力') {
-              let p = ((that.xmBranchState.totalPlanOuserWorkload / total) * 100).toFixed(2)
+              let p = ((that.xmBranchState.budgetOuserWorkload / total) * 100).toFixed(2)
               return [
-                `{name|${that.xmBranchState.totalPlanOuserWorkload}}/{val|${p}%}`,
+                `{name|${that.xmBranchState.budgetOuserWorkload}}/{val|${p}%}`,
                 `{desc|${params}}`
               ].join('\n')
             }
@@ -784,7 +784,7 @@ export default {
             },
             data: [
               {
-                value: this.xmBranchState.totalPlanIuserWorkload,
+                value: this.xmBranchState.budgetIuserWorkload,
                 itemStyle: {
                   normal:{
                     color: '#3AC2ED'
@@ -804,7 +804,7 @@ export default {
                   }
                 }
               },
-              {value: this.xmBranchState.totalPlanOuserWorkload,
+              {value: this.xmBranchState.budgetOuserWorkload,
                 itemStyle: {
                   normal:{
                     color: '#4072F5'
