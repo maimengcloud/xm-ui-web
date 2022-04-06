@@ -27,7 +27,7 @@
           <p>迭代数</p>
         </div>
         <div class="r r7">
-          <span style="color: #F68D47">{{xmBranchState.totalStaffCnt || 0}}</span>
+          <span style="color: #F68D47">{{xmBranchState.planWorkerCnt || 0}}</span>
           <p>总人数</p>
         </div>
         <div class="r r8">
