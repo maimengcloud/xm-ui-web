@@ -246,7 +246,7 @@ export default {
         },
         xAxis: {
           type: 'category',
-          boundaryGap: false,
+          boundaryGap: true,
           data: ['需求', '任务', '缺陷'], 
         },
         series: [
