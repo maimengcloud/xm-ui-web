@@ -8,12 +8,13 @@
 						<div class="main" id="productWorkItemDayList" style="width:100%;height:600px;margin:0 auto;"></div> 
 					</div>
 				</el-col>
-				<el-col :span="6" class="border">
-					<el-form :label-position="'top'" :model="filters"> 
-						<el-form-item>
-							 <xm-product-select  v-if="!xmProduct"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"   @clear="onProductClear"></xm-product-select>
+				<el-col :span="6" class="border padding">
+					<el-form  :model="filters"> 
+					<el-form-item label="归属产品">
+							<xm-product-select  v-if="!xmProduct"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"   @clear="onProductClear"></xm-product-select>
   					</el-form-item>  
 					<el-form-item label="日期区间">
+						<br>
 							<date-range v-model="filters" value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></date-range>
   					</el-form-item>  
 					<el-form-item>

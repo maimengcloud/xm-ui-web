@@ -10,12 +10,13 @@
 						<div class="progress"></div>
 					</div>
 				</el-col>
-				<el-col :span="6" class="border">
-					<el-form :label-position="'top'" label-width="120px" :model="filters"> 
-						<el-form-item>
-							 <xm-project-select  v-if="!xmProduct"  ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProjectSelected"   @clear="onProjectClear"></xm-project-select>
+				<el-col :span="6" class="border padding">
+					<el-form   :model="filters"> 
+						<el-form-item  label="归属项目" v-if="!xmProject" >
+							 <xm-project-select  v-if="!xmProject"  ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProjectSelected"   @clear="onProjectClear"></xm-project-select>
   					  </el-form-item>  
 					<el-form-item label="日期区间">
+						<br>
 							<date-range v-model="filters" value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></date-range>
   					</el-form-item>    
 					<el-form-item>

@@ -12,12 +12,12 @@
 					</div>
 				</el-col>
 				<el-col :span="6" class="border">
-					<el-form :label-position="'top'" label-width="120px" :model="filters"> 
-						<el-form-item>
-								<xm-product-select  v-if="!xmProduct&&!xmIteration"    ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"   @clear="onProductClear"></xm-product-select>
+					<el-form  :model="filters"> 
+						<el-form-item label="归属产品" v-if="!xmProduct&&!xmIteration">
+								<xm-product-select     ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"   @clear="onProductClear"></xm-product-select>
 						</el-form-item>  
- 						<el-form-item> 
-							<xm-iteration-select v-if="!xmIteration || !xmIteration.id" style="display:inline;" :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
+ 						<el-form-item label="归属迭代" v-if="!xmIteration || !xmIteration.id"> 
+							<xm-iteration-select  style="display:inline;" :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
 						</el-form-item>  
 						<el-form-item>
 							<el-button type="primary" icon="el-icon-search" @click="listXmIterationStateHis">查询</el-button>

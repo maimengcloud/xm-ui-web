@@ -9,10 +9,12 @@
 						<div class="progress"></div>
 					</div>
 				</el-col>
-				<el-col :span="6" class="border">
-					<el-form :label-position="'top'" label-width="120px" :model="filters">   
-							 <xm-project-select class="padding" v-if="!xmProject"  ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProjectSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProjectClear"></xm-project-select>
- 						<el-form-item label="任务状态" prop="taskState">
+				<el-col :span="6" class="border padding">
+					<el-form  :model="filters">   
+						<el-form-item label="归属项目" v-if="!xmProject">
+							 <xm-project-select  v-if="!xmProject"  ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProjectSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProjectClear"></xm-project-select>
+						</el-form-item>
+						 <el-form-item label="任务状态" prop="taskState">
 							<el-select   v-model="filters.taskState"  @change="onXmTaskSomeFieldsChange('taskState',$event)" clearable>
 								<el-option v-for="i in this.dicts.taskState" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>

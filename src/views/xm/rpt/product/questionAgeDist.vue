@@ -9,12 +9,15 @@
 						<div class="progress"></div>
 					</div>
 				</el-col>
-				<el-col :span="6" class="border">
-					<el-form :label-position="'top'" label-width="120px" :model="filters">   
-							 <xm-product-select class="padding" v-if="!xmProduct && !xmIteration"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
-						    
-							<xm-iteration-select ref="xmIterationSelect" class="padding" v-if="!xmIteration || !xmIteration.id"  :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
- 						<el-form-item label="缺陷状态" prop="bugStatus">
+				<el-col :span="6" class="border padding">
+					<el-form :model="filters">   
+						<el-form-item label="归属产品"  v-if="!xmProduct && !xmIteration">
+							 <xm-product-select   ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
+						</el-form-item>
+						<el-form-item label="归属迭代" v-if="!xmIteration || !xmIteration.id">
+							<xm-iteration-select ref="xmIterationSelect"    :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
+						</el-form-item>
+						 <el-form-item label="缺陷状态" prop="bugStatus">
 							<el-select   v-model="filters.bugStatus"  @change="onXmQuestionSomeFieldsChange('bugStatus',$event)" clearable>
 								<el-option v-for="i in this.dicts.bugStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>

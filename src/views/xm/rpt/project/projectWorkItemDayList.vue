@@ -8,13 +8,14 @@
 						<div class="main" id="projectWorkItemDayList" style="width:100%;height:600px;margin:0 auto;"></div> 
 					</div>
 				</el-col>
-				<el-col :span="6" class="border">
-					<el-form :label-position="'top'" :model="filters"> 
-						<el-form-item>
-							 <xm-project-select  v-if="!xmProduct"  ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProjectSelected"   @clear="onProjectClear"></xm-project-select>
+				<el-col :span="6" class="border padding">
+					<el-form   :model="filters"> 
+					<el-form-item label="归属项目" v-if="!xmProject">
+							 <xm-project-select  v-if="!xmProject"  ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProjectSelected"   @clear="onProjectClear"></xm-project-select>
   					</el-form-item>  
 					<el-form-item label="日期区间">
-							<date-range v-model="filters" value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></date-range>
+						<br>
+							<date-range v-model="filters"   value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></date-range>
   					</el-form-item>  
 					<el-form-item>
 						 <el-button type="primary" icon="el-icon-search" @click="listXmProjectStateHis">查询</el-button>
