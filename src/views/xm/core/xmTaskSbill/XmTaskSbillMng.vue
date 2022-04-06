@@ -55,12 +55,7 @@
                 :cell-style="{'text-align':'center'}">
 <!--				<el-table-column  type="selection" width="55" show-overflow-tooltip></el-table-column>-->
 				<el-table-column label="序号" type="index" min-width="55" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="id" label="结算单编号" min-width="80" show-overflow-tooltip>
-          <template slot-scope="scope">
-            <span class="click-style" @click="showEdit( scope.row,scope.$index)">
-              {{scope.row.id}}
-            </span>
-          </template>
+				<el-table-column prop="id" label="结算单编号" min-width="80" show-overflow-tooltip> 
         </el-table-column>
 				<el-table-column prop="title" label="结算单标题" min-width="80" show-overflow-tooltip>
           <template slot-scope="scope">

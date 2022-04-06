@@ -179,11 +179,11 @@ export default {
       },
       //leaf: true,//只有一个节点
       children: [
-        { path: 'xmTaskSbill/XmTaskSbillMng', component: _import('xm/core/xmTaskSbill/XmTaskSbillMng'), name: 'XmTaskSbilllMng', meta: { title: '任务结算'}},
+        { path: 'xmTaskSbill/XmTaskSbillMng', component: _import('xm/core/xmTaskSbill/XmTaskSbillMng'), name: 'XmTaskSbilllMng', meta: { title: '任务结算单'}},
         /*{ path: 'xmTaskWorkload/XmTaskWorkloadMng', component: _import('xm/core/xmTaskWorkload/XmTaskWorkloadMng'), name: 'XmTaskWorkloadMng', meta: { title: '工时列表'}},*/
-        { path: 'xmTaskWorkload/WaitWorkloadToSbill', component: _import('xm/core/xmTaskWorkload/WaitWorkloadToSbill'), name: 'WaitWorkloadToSbill', meta: { title: '待结算工时列表'}},
-        { path: 'xmTaskWorkload/FinWorkloadToSbill', component: _import('xm/core/xmTaskWorkload/FinWorkloadToSbill'), name: 'FinWorkloadToSbill', meta: { title: '已结算工时列表'}},
-        { path: 'xmTaskWorkload/ToComfirmWorkload', component: _import('xm/core/xmTaskWorkload/ToComfirmWorkload'), name: 'ToComfirmWorkload', meta: { title: '未确认工时列表'}},
+        { path: 'xmTaskWorkload/WaitWorkloadToSbill', component: _import('xm/core/xmTaskWorkload/WaitWorkloadToSbill'), name: 'WaitWorkloadToSbill', meta: { title: '待结算工时'}},
+        { path: 'xmTaskWorkload/FinWorkloadToSbill', component: _import('xm/core/xmTaskWorkload/FinWorkloadToSbill'), name: 'FinWorkloadToSbill', meta: { title: '已结算工时'}},
+        { path: 'xmTaskWorkload/ToComfirmWorkload', component: _import('xm/core/xmTaskWorkload/ToComfirmWorkload'), name: 'ToComfirmWorkload', meta: { title: '待确认工时'}},
       ]
     }
   ]

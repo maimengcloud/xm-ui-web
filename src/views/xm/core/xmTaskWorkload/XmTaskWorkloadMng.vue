@@ -47,8 +47,8 @@
                 :cell-style="{'text-align':'center'}">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip></el-table-column>
 				<el-table-column sortable type="index" width="55" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="id" label="编号" min-width="80" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="projectId" label="归属项目" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="userid" label="员工编号" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="username" label="姓名" min-width="80" show-overflow-tooltip></el-table-column>
         <el-table-column v-if="wstatuses && (wstatuses.toString()=='1')" prop="wstatus" label="工时状态" min-width="80" show-overflow-tooltip>
           <template slot-scope="scope">
             <el-tag type="info" v-if="scope.row.wstatus=='0'">待确认</el-tag>
@@ -68,42 +68,11 @@
             </span>
           </template>
         </el-table-column>
-				<el-table-column prop="userid" label="员工编号" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="username" label="姓名" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="ctime" label="创建日期" min-width="80" show-overflow-tooltip>
+				<el-table-column prop="workload" label="工时" min-width="80" show-overflow-tooltip>
           <template slot-scope="scope">
-            <span>{{scope.row.ctime.substring(0,10)}}</span>
+            {{scope.row.workload}}h
           </template>
         </el-table-column>
-        <el-table-column prop="sstatus" label="结算状态" min-width="80" show-overflow-tooltip>
-          <template slot-scope="scope">
-            <el-tag type="info" v-if="scope.row.sstatus=='0'">无需结算</el-tag>
-            <el-tag v-else-if="scope.row.sstatus=='1'">待结算</el-tag>
-            <el-tag type="warning" v-else-if="scope.row.sstatus=='2'">已提交</el-tag>
-            <el-tag type="danger" v-else-if="scope.row.sstatus=='3'">已通过</el-tag>
-            <el-tag type="success" v-else-if="scope.row.sstatus=='4'">已结算</el-tag>
-            <el-tag v-else>未结算</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column v-if="sstatuses && sstatuses.toString()=='1'" prop="toSbill" label="结算" min-width="80" show-overflow-tooltip>
-          <template slot-scope="scope">
-            <span class="cell-bar">
-              <xm-task-sbill-select style="display:inline;" :auto-select="false"  :project-id="scope.row.projectId"    placeholder="结算"  @row-click="editXmWorkloadSomeFields(scope.row,$event)"></xm-task-sbill-select>
-						</span>
-          </template>
-        </el-table-column>
-				<el-table-column prop="taskId" label="任务编号" min-width="80" show-overflow-tooltip></el-table-column>
-<!--				<el-table-column prop="cuserid" label="创建人编号" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="bizDate" label="业务日期yyyy-MM-dd" min-width="80" show-overflow-tooltip></el-table-column>-->
-				<el-table-column prop="remark" label="备注" min-width="80" show-overflow-tooltip>
-          <template slot-scope="scope">
-            <span v-if="scope.row.remark">{{scope.row.remark}}</span>
-            <span v-else>-</span>
-          </template>
-        </el-table-column>
-<!--				<el-table-column prop="ttype" label="任务类型-关联字典taskType" min-width="80" show-overflow-tooltip></el-table-column>-->
-<!--				<el-table-column prop="sbillId" label="结算单据编号" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="stime" label="结算提交时间" min-width="80" show-overflow-tooltip></el-table-column>-->
 				<el-table-column prop="amt" label="工时金额" min-width="80" show-overflow-tooltip>
           <template slot-scope="scope">
             <span v-if="scope.row.amt">¥{{scope.row.amt}}</span>
@@ -116,11 +85,31 @@
             <span v-else>-</span>
           </template>
         </el-table-column>
-				<el-table-column prop="workload" label="工时" min-width="80" show-overflow-tooltip>
+        <el-table-column v-if="sstatuses && sstatuses=='1'" prop="toSbill" label="结算单" min-width="80" show-overflow-tooltip>
           <template slot-scope="scope">
-            {{scope.row.workload}}h
+            <span class="cell-bar">
+              <xm-task-sbill-select style="display:inline;" :auto-select="false"  :project-id="scope.row.projectId"    placeholder="结算"  @row-click="editXmWorkloadSomeFields(scope.row,$event)"></xm-task-sbill-select>
+						</span>
           </template>
         </el-table-column>
+         <el-table-column prop="projectId" label="归属项目" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="ctime" label="创建日期" min-width="80" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span>{{scope.row.ctime.substring(0,10)}}</span>
+          </template>
+        </el-table-column> 
+				<el-table-column prop="taskId" label="任务编号" min-width="80" show-overflow-tooltip></el-table-column>
+<!--				<el-table-column prop="cuserid" label="创建人编号" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="bizDate" label="业务日期yyyy-MM-dd" min-width="80" show-overflow-tooltip></el-table-column>-->
+				<el-table-column prop="remark" label="备注" min-width="80" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span v-if="scope.row.remark">{{scope.row.remark}}</span>
+            <span v-else>-</span>
+          </template>
+        </el-table-column>
+<!--				<el-table-column prop="ttype" label="任务类型-关联字典taskType" min-width="80" show-overflow-tooltip></el-table-column>-->
+<!--				<el-table-column prop="sbillId" label="结算单据编号" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="stime" label="结算提交时间" min-width="80" show-overflow-tooltip></el-table-column>-->
 <!--				<el-table-column prop="rworkload" label="剩余工时（同一天取最后日期更新到task表rworkload中）" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="cusername" label="创建人姓名" min-width="80" show-overflow-tooltip></el-table-column>-->
 
