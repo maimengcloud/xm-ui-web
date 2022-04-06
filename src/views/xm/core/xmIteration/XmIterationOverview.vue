@@ -53,7 +53,7 @@
                       <i class="el-icon-check"></i>
                     </div>
                     <div class="info">
-                      <div v-text="this.xmIteration.taskFinishCnt" >
+                      <div v-text="this.xmIteration.taskCnt-notStart" >
                       </div>
                       <div class="title">已完成</div>
                     </div>
@@ -243,7 +243,7 @@ export default {
   computed: {
     ...mapGetters(["userInfo"]),
     notStart: function() {
-      return this.xmIteration.taskCnt-this.xmIteration.taskFinishCnt;
+      return this.xmIteration.taskUnstartCnt+this.xmIteration.taskExecCnt;
     },
     taskProgress: function (){
       return this.xmIteration.finishRate||0;
@@ -394,9 +394,7 @@ export default {
           trigger: 'item',
           formatter: '{b} : {c} ({d}%)'
         },
-        legend: {
-          orient: 'vertical',
-          left: 'left',
+        legend: { 
         },
         series: [
           {

@@ -270,10 +270,10 @@ export default {
   computed: {
     ...mapGetters(["userInfo"]),
     finish: function (){
-      return this.selProject.taskCloseCnt;
+      return this.selProject.taskCnt-this.selProject.taskUnstartCnt-this.selProject.taskExecCnt;
     },
     notStart: function() {
-      return this.selProject.taskCnt-this.selProject.taskCloseCnt;
+      return  this.selProject.taskUnstartCnt+this.selProject.taskExecCnt;
     },
     totalTask: function() {
       return this.selProject.taskCnt;
@@ -495,9 +495,7 @@ export default {
           trigger: 'item',
           formatter: '{b} : {c} ({d}%)'
         },
-        legend: {
-          orient: 'vertical',
-          left: 'left',
+        legend: { 
         },
         series: [
           {
