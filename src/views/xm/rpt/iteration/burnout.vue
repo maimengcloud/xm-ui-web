@@ -65,7 +65,7 @@
 					var max=this.findMax(this.xmIterationStateHiss);
 					var length=this.xmIterationStateHiss.length;
 					return this.xmIterationStateHiss.map((i,index)=>{
-						return max.distBudgetWorkload*(length-index)/length
+						return max.budgetWorkload*(length-index-1)/length
 					})
 				}
 			},
@@ -73,7 +73,7 @@
 				if(this.xmIterationStateHiss.length==0){
 					return []
 				}else{ 
-					return this.xmIterationStateHiss.map(i=>i.distBudgetWorkload-i.actWorkload)
+					return this.xmIterationStateHiss.map(i=>i.budgetWorkload-i.actWorkload)
 				}
 			},
 			
@@ -81,7 +81,7 @@
 				if(this.xmIterationStateHiss.length==0){
 					return []
 				}else{ 
-					return this.xmIterationStateHiss.map(i=>i.distBudgetWorkload-i.estimateWorkload)
+					return this.xmIterationStateHiss.map(i=>i.budgetWorkload-i.estimateWorkload)
 				}
 			},
 			
@@ -117,7 +117,7 @@
 				if(list.length < 2) return max;
 			
 				for (i = 0; i < list.length; i++) {
-					if (list[i].distBudgetWorkload > max.distBudgetWorkload) {
+					if (list[i].budgetWorkload > max.budgetWorkload) {
 						max = list[i];
 					}
 				}
