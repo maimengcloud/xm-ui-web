@@ -242,59 +242,33 @@ export default {
           },
           axisTick: {
             show: false
-          },
-          splitLine: {
-            lineStyle: {
-              color: 'rgba(0, 0, 0, .05)'
-            }
-          }
+          }, 
         },
         xAxis: {
           type: 'category',
           boundaryGap: false,
-          data: ['需求', '任务', '缺陷'],
-          splitLine: {
-            show: true,
-            lineStyle: {
-              color: 'rgba(0, 0, 0, .05)'
-            }
-          },
-          axisLine: {
-            lineStyle: {
-              color: 'rgba(0, 0, 0, .1)'
-            }
-          },
-          axisTick: {
-            lineStyle: {
-              color: 'rgba(0, 0, 0, .1)'
-            }
-          },
-          axisLabel: {
-            color: '#555'
-          }
+          data: ['需求', '任务', '缺陷'], 
         },
         series: [
           {
             name: '需求',
             type: 'line',
-            stack: 'Total',
-            areaStyle: {},
+            stack: 'Total', 
             emphasis: {
               focus: 'series'
             },
             data: [this.xmBranchState.menuCnt],
             markPoint: {
               data: [{
-                type: 'min',
-                name: 'min'
+                type: 'max',
+                name: 'max'
               }],
             }
           },
           {
             name: '任务',
             type: 'line',
-            stack: 'Total',
-            areaStyle: {},
+            stack: 'Total', 
             emphasis: {
               focus: 'series'
             },
@@ -309,17 +283,15 @@ export default {
           {
             name: '缺陷',
             type: 'line',
-            stack: 'Total',
-            areaStyle: {},
+            stack: 'Total', 
             emphasis: {
               focus: 'series'
             },
             data: [0,  0, this.xmBranchState.bugCnt],
             markPoint: {
               data: [{
-                name: '',
-                yAxis: this.xmBranchState.bugCnt,  // y轴就是数据轴，那么标记数据的y轴坐标就是当前显示的数据，this.trenddata[1]是显示的所有数据，他是个数组，通过数组下标的形式获取最后一个数据即可
-                x: '95.55%'// 标记数据的x轴的位置，由于是最后一个点，所以这个位置是固定的，用百分比表示该图标内最后一个点的位置即可
+                type: 'max',
+                name: 'max'
               }],
             },
           }
