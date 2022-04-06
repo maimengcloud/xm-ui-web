@@ -28,6 +28,9 @@
 				<el-menu-item  index="缺陷">
 					 <span slot="title"><i class="el-icon-question"></i>缺陷</span> 
 				</el-menu-item> 
+				<el-menu-item  index="效能">
+					 <span slot="title"><i class="el-icon-s-data"></i>效能</span> 
+				</el-menu-item> 
 			</el-menu>
 		   
    			<xm-iteration-overview-complex  v-if="infotype=='迭代概览'" :xm-iteration="xmIteration"></xm-iteration-overview-complex>
@@ -36,6 +39,7 @@
 			 <xm-task-mng v-if="infotype=='任务'" ref="xmTaskMng" ptype="" queryScope="task" :xm-iteration="xmIteration" ></xm-task-mng>
 			  <xm-question v-if="infotype=='缺陷'"  :xm-iteration='xmIteration' ref="xmQuestion"></xm-question>
 			  <xm-group-mng v-if="infotype=='团队'" :xm-iteration="xmIteration"></xm-group-mng>
+			   <xm-report v-if="infotype=='效能'" :xm-iteration="xmIteration"></xm-report>
   			<el-drawer title="选中团队成员" :visible.sync="groupUserVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				<xm-group-select :xm-iteration="xmIteration" :visible="groupUserVisible" is-select-multi-user="1" @user-confirm="onUserSelected"></xm-group-select>
 			</el-drawer>
@@ -70,8 +74,9 @@
 	import XmIterationForProjectComplex from './XmIterationForLinkComplex.vue'; 
 	import XmIterationOverviewComplex from '../xmIteration/XmIterationOverviewComplex.vue';
 	import XmProductForProjectComplex from '../xmProduct/XmProductForLinkComplex.vue';
- import XmProjectComplex from '../xmProject/XmProjectForLinkComplex.vue';
+ 	import XmProjectComplex from '../xmProject/XmProjectForLinkComplex.vue';
 
+ 	import XmReport from '@/views/xm/rpt/reportIndex';
 
 	export default {
 		props: ["xmIteration","visible"],
@@ -298,6 +303,7 @@
 			XmIterationOverviewComplex,
 			XmProductForProjectComplex, 
 			XmProjectComplex,
+			XmReport,
 			//在下面添加其它组件
 		},
 		mounted() {

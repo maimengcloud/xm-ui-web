@@ -73,15 +73,10 @@
 							<span slot="title"><i class="el-icon-coin"></i>费用</span> 
 						</el-menu-item>
 				</el-submenu >
-				<el-submenu index="效能" class="hidden-sm-and-down">
-					<template slot="title">效能</template>
-						<el-menu-item   index="报表">
-							<span slot="title"><i class="el-icon-view"></i>考核</span> 
-						</el-menu-item> 
-						<el-menu-item   index="风险">
-							<span slot="title"><i class="el-icon-question"></i>风险</span>
-						</el-menu-item>
-				</el-submenu >
+				
+				<el-menu-item  index="效能">
+					 <span slot="title"><i class="el-icon-s-data"></i>效能</span>
+				</el-menu-item>  
 				<el-submenu index="知识" class="hidden-md-and-down">
 					<template slot="title">知识</template>
 						<el-menu-item  index="文档" >
@@ -171,6 +166,8 @@
 			<xm-contract v-if="infotype=='合同管理'" :xm-product="xmProduct"></xm-contract>
 			<xm-env-list v-if="infotype=='环境清单'" :xm-product="xmProduct"></xm-env-list>
 			<xm-question v-if="infotype=='风险'" :qtype="'risk'" :xm-product='xmProduct' ref="xmRisk"></xm-question>
+			
+			<xm-report v-if="infotype=='效能'" :xm-product="xmProduct"></xm-report>
 			<el-drawer title="选中团队成员" :visible.sync="groupUserVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				<xm-group-select :xm-product="xmProduct" :visible="groupUserVisible" is-select-multi-user="1" @user-confirm="onUserSelected"></xm-group-select>
 			</el-drawer>
@@ -209,6 +206,7 @@
 	import XmProductForLinkComplex from './XmProductForLinkComplex.vue';
 	import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
 
+ 	import XmReport from '@/views/xm/rpt/reportIndex';
 
 
 	export default {
@@ -436,6 +434,7 @@
 			XmProductForLinkComplex,
 			XmProjectForLinkComplex,
 			XmProjectForLink,
+			XmReport,
 			//在下面添加其它组件
 		},
 		mounted() {

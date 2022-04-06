@@ -51,21 +51,9 @@
 							<span slot="title"><i class="el-icon-coin"></i>费用</span> 
 						</el-menu-item>
 				</el-submenu >
-				<el-submenu index="监控" class="hidden-sm-and-down">
-					<template slot="title">监控</template>
-						<el-menu-item   index="考核">
-							<span slot="title"><i class="el-icon-view"></i>考核</span> 
-						</el-menu-item>
-						<el-menu-item index="项目监控">
-							<span slot="title"><i class="el-icon-video-camera"></i>项目监控</span>
-						</el-menu-item>
-						<el-menu-item   index="需求监控">
-							<span slot="title"><i class="el-icon-video-camera"></i>需求监控</span>
-						</el-menu-item> 
-						<el-menu-item   index="风险">
-							<span slot="title"><i class="el-icon-question"></i>风险</span>
-						</el-menu-item>
-				</el-submenu >
+				<el-menu-item  index="效能">
+					 <span slot="title"><i class="el-icon-s-data"></i>效能</span>
+				</el-menu-item>  
 				<el-submenu index="知识" class="hidden-md-and-down">
 					<template slot="title">知识</template>
 						<el-menu-item  index="文档" >
@@ -154,6 +142,8 @@
 			<el-drawer title="选中团队成员" :visible.sync="groupUserVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				<xm-group-select :sel-project="selProject" :visible="groupUserVisible" is-select-multi-user="1" @user-confirm="onUserSelected"></xm-group-select>
 			</el-drawer>
+			
+			<xm-report v-if="infotype=='效能'" :xm-project="selProject"></xm-report>
 		</el-row>
 	</section>
 </template>
@@ -186,6 +176,7 @@
 	import XmProjectOverviewComplex from './XmProjectOverviewComplex.vue';
 	import XmProductForLinkComplex from '../xmProduct/XmProductForLinkComplex.vue';
 
+ 	import XmReport from '@/views/xm/rpt/reportIndex';
 
 	export default {
 		props: ["selProject","visible"],
@@ -412,6 +403,7 @@
 			XmIterationForLinkComplex, 
 			XmProjectOverviewComplex,
 			XmProductForLinkComplex,
+			XmReport,
 			//在下面添加其它组件
 		},
 		mounted() {
