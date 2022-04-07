@@ -7,7 +7,7 @@
 				项目 &nbsp;<font>{{xmTask.projectName}}</font>  &nbsp;&nbsp;任务 &nbsp;<font>{{xmTask.id}}&nbsp;{{xmTask.name}}</font>
 			</el-row>
 			<el-row>
-				预估工时 &nbsp;<el-tag>{{xmTask.budgetWorkload}} &nbsp;h</el-tag>  &nbsp;&nbsp;已登记工时 &nbsp;<el-tag>{{xmTask.actWorkload}}&nbsp;h</el-tag> &nbsp;&nbsp;工时进度 &nbsp;<el-tag type="warning">{{xmTask.budgetWorkload>0?xmTask.actWorkload/xmTask.budgetWorkload*100:0}}%&nbsp;</el-tag>
+				预估工时 &nbsp;<el-tag>{{xmTask.budgetWorkload}} &nbsp;h</el-tag>  &nbsp;&nbsp;已登记工时 &nbsp;<el-tag>{{xmTask.actWorkload}}&nbsp;h</el-tag> &nbsp;&nbsp;工时进度 &nbsp;<el-tag type="warning">{{xmTask.budgetWorkload>0?Math.round(xmTask.actWorkload/xmTask.budgetWorkload*100):0}}%&nbsp;</el-tag>
 			</el-row>
 			<el-table ref="xmTaskWorkloadTable" :data="xmTaskWorkloads"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip></el-table-column>
