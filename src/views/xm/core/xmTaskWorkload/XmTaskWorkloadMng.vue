@@ -234,7 +234,7 @@
       UsersSelect,
       XmTaskWorkloadSimpleList,
 		},
-		props:['visible','wstatuses','sstatuses'],
+		props:['visible','wstatuses','sstatuses','queryScope'/**my/all */],
 		computed: {
 		    ...mapGetters(['userInfo']),
 
@@ -375,6 +375,11 @@
         if(this.dateRanger){
           params.startBidDate = this.dateRanger[0];
           params.endBizDate = this.dateRanger[1];
+        }
+        if(this.queryScope){
+          params.queryScope=this.queryScope
+        }else{
+          params.queryScope="my"
         }
 
 				this.load.list = true;
