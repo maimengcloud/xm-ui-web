@@ -385,7 +385,7 @@ export default {
       },
       
 			onEditXmTaskSomeFields(data){
-        debugger;
+        
         Object.assign(this.editForm,data)
 				this.$emit('edit-xm-task-some-fields',data);
 			},

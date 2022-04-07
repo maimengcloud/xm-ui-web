@@ -114,11 +114,11 @@
  	      		this.initData()
 	      	}
 	      },
-		  'workloadFillType':function(val){
+		  'workloadFillType':function(val){ 
 			  if(val==='2'){
 				  this.listXmTaskExecuser();
 			  }
-			  if(va==='3'){
+			  if(val==='3'){
 				  this.editForm.workload=this.xmTask.budgetWorkload-this.xmTask.actWorkload
 			  }
 			  if(val==='1'){

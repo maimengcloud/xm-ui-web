@@ -240,7 +240,7 @@ export default {
 			},
       
 			editXmQuestionSomeFields(row,fieldName,$event){
-        debugger;
+        
 				var params={ids:[row.id]};
 				if(this.sels.length>0){
 					if(!this.sels.some(k=>k.id==row.id)){

@@ -459,7 +459,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 				})
 			},
 			onAddSubMenu(menu){
-				debugger;
+				
 				this.$emit("add-sub-menu",menu)
 			},
 			searchXmMenus(){

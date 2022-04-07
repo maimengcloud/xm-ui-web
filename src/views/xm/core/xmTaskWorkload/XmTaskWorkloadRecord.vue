@@ -109,7 +109,7 @@
             },
 			
 			editXmTaskSomeFields(row,fieldName,$event){
-				debugger;
+				
 				var params={ids:[row.id]}; 
 				params[fieldName]=$event
 				if(fieldName==='rworkload'||fieldName==='budgetWorkload'){ 
