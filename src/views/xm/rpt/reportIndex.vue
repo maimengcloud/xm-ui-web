@@ -35,6 +35,9 @@
         <xm-task-age-dist ref="xmTaskAgeDist"></xm-task-age-dist>
         <xm-task-sort ref="xmTaskSort"></xm-task-sort>
         <xm-project-work-item-day-list ref="xmProjectWorkItemDayList"></xm-project-work-item-day-list>
+        <xm-project-workload-set-day-list ref="xmProjectWorkloadSetDayList"></xm-project-workload-set-day-list>
+        <xm-project-workload-set-month-list ref="xmProjectWorkloadSetMonthList"></xm-project-workload-set-month-list>
+        
 
         <xm-question-day-trend ref="xmQuestionDayTrend"></xm-question-day-trend>
         <xm-question-day-accumulate ref="xmQuestionDayAccumulate"></xm-question-day-accumulate>
@@ -64,6 +67,8 @@
 	import xmTaskAgeDist from './project/taskAgeDist'
 	import xmTaskSort from './project/taskSort'
 	import xmProjectWorkItemDayList from './project/projectWorkItemDayList'
+	import xmProjectWorkloadSetDayList from './project/projectWorkloadSetDayList'
+	import xmProjectWorkloadSetMonthList from './project/projectWorkloadSetMonthList'
 
     import xmQuestionDayTrend from './product/questionDayTrend'
     import xmQuestionDayAccumulate from './product/questionDayAccumulate'
@@ -81,7 +86,7 @@
 	export default { 
         
 		components: {   
-            xmIterationBurnout,xmMenuDayTrend,xmMenuDayAccumulate,xmMenuAttDist,xmMenuAgeDist,xmMenuSort,xmProductWorkItemDayList,xmTaskDayTrend,xmTaskDayAccumulate,xmTaskAttDist,xmTaskAgeDist,xmTaskSort,xmProjectWorkItemDayList,xmQuestionDayTrend,xmQuestionDayAccumulate,xmQuestionAttDist,xmQuestionAgeDist,xmQuestionSort,
+            xmIterationBurnout,xmMenuDayTrend,xmMenuDayAccumulate,xmMenuAttDist,xmMenuAgeDist,xmMenuSort,xmProductWorkItemDayList,xmTaskDayTrend,xmTaskDayAccumulate,xmTaskAttDist,xmTaskAgeDist,xmTaskSort,xmProjectWorkItemDayList,xmProjectWorkloadSetDayList,xmProjectWorkloadSetMonthList,xmQuestionDayTrend,xmQuestionDayAccumulate,xmQuestionAttDist,xmQuestionAgeDist,xmQuestionSort,
 		},
         props:['xmProduct','xmIteration','xmProject'],
 		computed: {
@@ -137,7 +142,10 @@
                     {rptName:'任务属性分布',category:'项目级',ref:'xmTaskAttDist',desc:'统计所有任务任意属性数量分布情况（实时数据）',img:pieSimple  },
                     {rptName:'任务年龄分布',category:'项目级',ref:'xmTaskAgeDist',desc:'统计所有任务年龄分布情况（实时数据）',img:pieSimple  },
                     {rptName:'任务排行榜',category:'项目级',ref:'xmTaskSort',desc:'任务提出人、负责人的用户故事数量排行（实时数据）',img:bar  },
-                    {rptName:'项目工作项每日趋势',category:'项目级',ref:'xmProjectWorkItemDayList',desc:'统计产品每日工作项数量分布情况',img:datasetLink  },
+                    {rptName:'项目工作项每日趋势',category:'项目级',ref:'xmProjectWorkItemDayList',desc:'统计项目每日工作项数量分布情况',img:datasetLink  },
+                    {rptName:'项目结算工时每日趋势',category:'项目级',ref:'xmProjectWorkloadSetDayList',desc:'统计项目每日登记工时、结算工时数量分布情况',img:datasetLink  },
+                    {rptName:'项目结算工时每月趋势',category:'项目级',ref:'xmProjectWorkloadSetMonthList',desc:'统计项目每月登记工时、结算工时数量分布情况',img:datasetLink  },
+                    
 
                     {rptName:'缺陷每日趋势',category:'产品级',ref:'xmQuestionDayTrend',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
                     {rptName:'缺陷每日累积',category:'产品级',ref:'xmQuestionDayAccumulate',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期累积情况，识别缺陷处理工作的瓶颈',img:areaStack  },
