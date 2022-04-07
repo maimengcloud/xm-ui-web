@@ -4,8 +4,7 @@
       <xm-project-select style="display:inline;" ref="xmProjectSelect" :auto-select="false"  @row-click="onProjectConfirm" @clear="clearProject"></xm-project-select>
       <el-select v-if="wstatuses && wstatuses.toString()=='0,2'" v-model="filters.wstatus" clearable @change="searchXmTaskWorkloads" placeholder="请选择工时单状态">
         <el-option label="全部状态" value=""></el-option>
-        <el-option label="待确认" value="0"></el-option>
-        <el-option label="无效" value="2"></el-option>
+        <el-option label="待确认" value="0"></el-option> 
       </el-select>
 
       <el-select v-if="sstatuses && sstatuses.toString()!='1'" v-model="filters.sstatus" clearable @change="searchXmTaskWorkloads" placeholder="请选择工时单状态">
@@ -37,8 +36,10 @@
         </el-row>
         <el-button slot="reference" @click="moreVisible=!moreVisible" icon="el-icon-more"></el-button>
       </el-popover>
-<!--			<el-button type="primary" @click="showAdd" icon="el-icon-plus"> </el-button>
-			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>-->
+      <span style="float:right;">
+<!--			<el-button type="primary" @click="showAdd" icon="el-icon-plus"> </el-button>-->
+			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>
+      </span>
 		</el-row>
 		<el-row class="padding-top">
 			<!--列表 XmTaskWorkload 工时登记表-->
@@ -266,7 +267,7 @@
 				sels: [],//列表选中数据
 				dicts:{
 				    //sex: [{id:'1',name:'男'},{id:'2',name:'女'}]
-          wstatus:[{id:'0',name:'待确认'},{id:'1',name: '已确认'},{id:'2',name:'无效'}],
+          wstatus:[{id:'0',name:'待确认'},{id:'1',name: '已确认'}],
           sstatus:[{id:'0',name:'无需结算'},{id:'1',name: '待结算'},{id:'2',name:'已提交'},{id:'3',name:'已通过'},{id:'4',name:'已结算'}]
           /**0-无需结算，1-待结算2-已提交3-已通过4-已结算 */
 				},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
