@@ -54,7 +54,7 @@
 
 											</span>
 											<el-tooltip content="进度"><el-link style="border-radius:30px;" :type="task.rate>=100?'success':'warning'"  @click.stop="showEditForm(task)"> {{ (task.rate!=null?task.rate:0)+'%'}} </el-link></el-tooltip>
-											<el-tooltip content="预算金额、工时"><el-tag type="info">{{parseFloat(task.budgetCost/10000).toFixed(2)}}万,{{task.budgetWorkload}}人时</el-tag></el-tooltip>
+											<el-tooltip content="预算金额、工时"><el-tag type="info">{{parseFloat(task.budgetAt/10000).toFixed(2)}}万,{{task.budgetWorkload}}人时</el-tag></el-tooltip>
 											<el-link  type="primary"  @click.stop="showEditForm(task)">{{task.name}}</el-link>
 										</span>
 									</div>

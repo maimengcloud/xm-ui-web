@@ -213,7 +213,7 @@
 						</el-row>  
 					</el-tab-pane>
 					<el-tab-pane label="成本" name="6"> 
-						<el-form-item label="预估金额" prop="budgetCost">
+						<el-form-item label="预估金额" prop="budgetAt">
 							<el-row v-if="addForm.taskOut!=='1'">
 								工时单价&nbsp;<el-input type="number" style="width:150px;"   v-model="addForm.uniInnerPrice" :precision="2" :step="10" :min="0" placeholder="工时单价"></el-input type="number">   元/h
 							</el-row> 
@@ -221,7 +221,7 @@
 								工时单价&nbsp;<el-input type="number" style="width:150px;"   v-if="addForm.taskOut==='1'" v-model="addForm.uniOutPrice" :precision="2" :step="10" :min="0" placeholder="外发工时单价"></el-input type="number">   元/h
 							</el-row>
 							<el-row>
-								预估金额&nbsp;<el-input type="number" style="width:150px;"    v-model="addForm.budgetCost" :precision="2" :step="100" :min="0" placeholder="预算金额"></el-input type="number">   元
+								预估金额&nbsp;<el-input type="number" style="width:150px;"    v-model="addForm.budgetAt" :precision="2" :step="100" :min="0" placeholder="预算金额"></el-input type="number">   元
 							</el-row>
 						</el-form-item> 
 
@@ -363,8 +363,8 @@
 				addForm: {
 					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'3',sortLevel:'0',executorUserid:'',executorUsername:'',
 					preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',taskOut:'0',
-					rate:0,budgetCost:'',budgetWorkload:'',actCost:'',actWorkload:'',taskState:'0',taskClass:'0',toTaskCenter:'0',actStartTime:'',actEndTime:'',taskType:'4',planType:'w2',settleSchemel:'1',ntype:'0',childrenCnt:0
-
+					rate:0,budgetAt:'',budgetWorkload:'',actAt:'',actWorkload:'',taskState:'0',taskClass:'0',toTaskCenter:'0',actStartTime:'',actEndTime:'',taskType:'4',planType:'w2',settleSchemel:'1',ntype:'0',childrenCnt:0,
+					uniInnerPrice:80,uniOutPrice:100,
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
  				menuVisible:false,
@@ -490,7 +490,7 @@
 						price=this.projectPhase.budgetIuserPrice
 					}
 				}
-				this.addForm.budgetCost=this.addForm.budgetWorkload * price
+				this.addForm.budgetAt=this.addForm.budgetWorkload * price
 			},
 			onBudgetWorkloadChange(){
 
@@ -498,7 +498,7 @@
 				if(this.addForm.taskOut=='1'){ 
 						price=this.addForm.uniOutPrice? this.addForm.uniOutPrice:80;
 				} 
-				this.addForm.budgetCost=this.addForm.budgetWorkload * price
+				this.addForm.budgetAt=this.addForm.budgetWorkload * price
 			},
 			onTaskOutChange(){
 				this.onBudgetWorkloadChange();

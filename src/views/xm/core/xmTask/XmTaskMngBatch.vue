@@ -141,13 +141,13 @@
               </el-row> 
             </template>
           </el-table-column>
-          <el-table-column label="金额.元" prop="budgetCost" width="140">
+          <el-table-column label="金额.元" prop="budgetAt" width="140">
             <template slot-scope="scope">
               <el-input
-                v-model="scope.row.budgetCost"
+                v-model="scope.row.budgetAt"
                 type="number"
                 ::precision="2"
-                @change="fieldChange(scope.row, 'budgetCost')"
+                @change="fieldChange(scope.row, 'budgetAt')"
               ></el-input>
             </template>
           </el-table-column>
@@ -178,7 +178,7 @@
                 ></el-input>
               </template>
             </el-table-column>
-            <el-table-column prop="actCost" label="金额.元" width="100">
+            <el-table-column prop="actAt" label="金额.元" width="100">
               <template slot-scope="scope">
                 <el-input
                   :disabled="scope.row.calcType=='1'"
@@ -388,9 +388,9 @@ export default {
         createUsername: "",
         createTime: "",
         rate: "",
-        budgetCost: "",
+        budgetAt: "",
         budgetWorkload: "",
-        actCost: "",
+        actAt: "",
         actWorkload: "",
         taskState: "",
         taskType: "",
@@ -424,9 +424,9 @@ export default {
         createUsername: "",
         createTime: "",
         rate: "",
-        budgetCost: "",
+        budgetAt: "",
         budgetWorkload: "",
-        actCost: "",
+        actAt: "",
         actWorkload: "",
         taskState: "",
         taskType: "",
@@ -716,11 +716,11 @@ export default {
           i.taskType = i.taskType ? i.taskType : this.parentTask.taskType;
           i.taskClass = i.taskClass ? i.taskClass : this.parentTask.taskClass;
          
-        i.budgetCost = 0;
+        i.budgetAt = 0;
         i.budgetWorkload = 80;
         i.level = i.level ? i.level : "3";
         i.planType = i.planType ? i.planType : "w2";
-        i.actCost = 0;
+        i.actAt = 0;
         i.actWorkload = 0;
         i.taskState = "0";
         i.rate = 0;
@@ -848,26 +848,26 @@ export default {
             !row.budgetWorkload
           ) {
             row.budgetWorkload = parseFloat((days * 8).toFixed(2));
-            row.budgetCost =  row.budgetWorkload * row.uniOutPrice;
+            row.budgetAt =  row.budgetWorkload * row.uniOutPrice;
           } else if (
             row.taskOut != "1" &&
             row.uniInnerPrice &&
             !row.budgetWorkload
           ) {
             row.budgetWorkload = parseFloat((days * 8).toFixed(2));
-            row.budgetCost =
+            row.budgetAt =
               row.budgetWorkload * row.uniInnerPrice;
           }
         }
       }
       if (fieldName == "budgetWorkload" || fieldName == "taskOut") {
         if (row.taskOut == "1" && row.uniOutPrice) {
-          row.budgetCost =
+          row.budgetAt =
             row.budgetWorkload * row.uniOutPrice;
         } else if (
           row.taskOut != "1" && row.uniInnerPrice
         ) {
-          row.budgetCost =
+          row.budgetAt =
             row.budgetWorkload * row.uniInnerPrice
         }
       }
@@ -937,11 +937,11 @@ export default {
           subRow.taskClass = subRow.taskClass
             ? subRow.taskClass
             : this.parentTask.taskClass; 
-        subRow.budgetCost = 0;
+        subRow.budgetAt = 0;
         subRow.budgetWorkload = 80;
         subRow.level = subRow.level ? subRow.level : "3";
         subRow.planType = subRow.planType ? subRow.planType : "w2";
-        subRow.actCost = 0;
+        subRow.actAt = 0;
         subRow.actWorkload = 0;
         subRow.taskState = "0";
         subRow.rate = 0;

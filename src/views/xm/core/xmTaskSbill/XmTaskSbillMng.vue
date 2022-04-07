@@ -141,11 +141,7 @@
 			<!--新增 XmTaskSbill 任务结算表界面-->
 			<el-drawer title="新增任务结算单" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
 				<xm-task-sbill-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-task-sbill-edit>
-			</el-drawer>
-      <!--添加登记工时界面-->
-      <el-drawer title="添加工时登记单" :visible.sync="taskWorkloadVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
-        <select-task-workload :xm-task-sbill="thisBillRow" :visible="taskWorkloadVisible" @cancel="taskWorkloadVisible=false" @submit="afterWorkloadSubmit"></select-task-workload>
-      </el-drawer>
+			</el-drawer> 
       <el-drawer title="选择员工" :visible.sync="selectFiltersPmUserVisible" size="60%" append-to-body>
         <users-select  @confirm="onFiltersPmUserSelected" ref="usersSelect"></users-select>
       </el-drawer>
@@ -159,8 +155,7 @@
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
 	import { listXmTaskSbill, delXmTaskSbill, batchDelXmTaskSbill } from '@/api/xm/core/xmTaskSbill';
 	import  XmTaskSbillEdit from './XmTaskSbillEdit';//新增修改界面
-	import { mapGetters } from 'vuex'
-  import SelectTaskWorkload from "./SelectTaskWorkload";
+	import { mapGetters } from 'vuex' 
   import {editXmTaskSbill} from "../../../../api/xm/core/xmTaskSbill";
   import dateUtil from "../../../../common/js/dateUtil";
   import {editXmTaskWorkload} from "../../../../api/xm/core/xmTaskWorkload";
@@ -169,8 +164,7 @@
 
 	export default {
 		components: {
-      XmTaskSbillEdit,
-      SelectTaskWorkload,
+      XmTaskSbillEdit, 
       UsersSelect,
       XmProjectSelect,
 		},

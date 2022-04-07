@@ -1110,9 +1110,9 @@ export default {
         createUsername: "",
         createTime: "",
         rate: "",
-        budgetCost: "",
+        budgetAt: "",
         budgetWorkload: "",
-        actCost: "",
+        actAt: "",
         actWorkload: "",
         taskState: "",
         taskType: "",
@@ -1120,6 +1120,7 @@ export default {
         toTaskCenter: "",
         actStartTime: "",
         actEndTime: "",
+        uniInnerPrice:80,uniOutPrice:100,
       },
 
       editFormVisible: false, //编辑界面是否显示
@@ -1146,9 +1147,9 @@ export default {
         createUsername: "",
         createTime: "",
         rate: "",
-        budgetCost: "",
+        budgetAt: "",
         budgetWorkload: "",
-        actCost: "",
+        actAt: "",
         actWorkload: "",
         taskState: "",
         taskType: "",
@@ -1156,6 +1157,7 @@ export default {
         toTaskCenter: "",
         actStartTime: "",
         actEndTime: "",
+        uniInnerPrice:80,uniOutPrice:100,
       },
       /**begin 自定义属性请在下面加 请加备注**/
       taskStateList: ["待领取", "已领取执行中", "已完工", "已结算"],
@@ -1767,11 +1769,11 @@ export default {
           }
           i.projectId=projectId
         }
-        i.budgetCost = 0;
+        i.budgetAt = 0;
         i.budgetWorkload = 80;
         i.level = i.level ? i.level : "3";
         i.planType = i.planType ? i.planType : "w2";
-        i.actCost = 0;
+        i.actAt = 0;
         i.actWorkload = 0;
         i.taskState = "0";
         i.rate = 0;
@@ -1974,17 +1976,17 @@ export default {
       }
     }, 
     getRowSum(row) {
-      var budgetCost = this.getFloatValue(row.budgetCost);
+      var budgetAt = this.getFloatValue(row.budgetAt);
       if (row.taskOut == "1") {
-        row.taskBudgetOuserAt = budgetCost;
+        row.taskBudgetOuserAt = budgetAt;
         row.taskBudgetIuserAt = 0;
         row.taskBudgetNouserAt = 0;
       } else {
         row.taskBudgetOuserAt = 0;
-        row.taskBudgetIuserAt = budgetCost;
+        row.taskBudgetIuserAt = budgetAt;
         row.taskBudgetNouserAt = 0;
       }
-      return budgetCost;
+      return budgetAt;
     },
     getFloatValue(value, digit) {
       if (isNaN(value)) {

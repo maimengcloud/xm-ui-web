@@ -36,9 +36,9 @@
 						<el-table-column    prop="projectName" label="项目名称"  min-width="160"  show-overflow-tooltip> 
 						</el-table-column>  
 						 
-						<el-table-column label="预算" prop="budgetCost" width="120" >
+						<el-table-column label="预算" prop="budgetAt" width="120" >
 							<template slot-scope="scope">
-								<el-tag  type= 'info' >{{parseFloat(scope.row.budgetCost/10000).toFixed(2)}}万,{{scope.row.budgetWorkload}}人时</el-tag>
+								<el-tag  type= 'info' >{{parseFloat(scope.row.budgetAt/10000).toFixed(2)}}万,{{scope.row.budgetWorkload}}人时</el-tag>
 							</template>
 						</el-table-column>
 						<el-table-column label="执行人" prop="exeUsernames" min-width="120" > 
@@ -141,7 +141,7 @@
 				addForm: {
 					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'',sortLevel:'',executorUserid:'',executorUsername:'',
 					preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',
-					rate:'',budgetCost:'',budgetWorkload:'',actCost:'',actWorkload:'',taskState:'',taskType:'',taskClass:'',toTaskCenter:'',actStartTime:'',actEndTime:'', 
+					rate:'',budgetAt:'',budgetWorkload:'',actAt:'',actWorkload:'',taskState:'',taskType:'',taskClass:'',toTaskCenter:'',actStartTime:'',actEndTime:'', 
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
@@ -149,7 +149,7 @@
 				editForm: {
 					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'',sortLevel:'',executorUserid:'',executorUsername:'',
 					preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',
-					rate:'',budgetCost:'',budgetWorkload:'',actCost:'',actWorkload:'',taskState:'',taskType:'',taskClass:'',toTaskCenter:'',actStartTime:'',actEndTime:'', 
+					rate:'',budgetAt:'',budgetWorkload:'',actAt:'',actWorkload:'',taskState:'',taskType:'',taskClass:'',toTaskCenter:'',actStartTime:'',actEndTime:'', 
 				},  
 
 				selkey: "all",       
@@ -374,17 +374,17 @@
 			}, 
 			 
 			getRowSum(row){
-				var budgetCost=this.getFloatValue(row.budgetCost);
+				var budgetAt=this.getFloatValue(row.budgetAt);
 				if(row.taskOut=='1'){
-					 row.taskBudgetOuserAt=budgetCost
+					 row.taskBudgetOuserAt=budgetAt
 					 row.taskBudgetIuserAt=0
 					 row.taskBudgetNouserAt=0;
 				}else{
 					 row.taskBudgetOuserAt=0
-					 row.taskBudgetIuserAt=budgetCost
+					 row.taskBudgetIuserAt=budgetAt
 					 row.taskBudgetNouserAt=0;
 				} 
-				return budgetCost;
+				return budgetAt;
 			},
 			getFloatValue(value,digit){
 				

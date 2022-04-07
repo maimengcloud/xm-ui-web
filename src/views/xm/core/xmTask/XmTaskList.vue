@@ -158,7 +158,7 @@
 				addForm: {
 					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'',sortLevel:'',executorUserid:'',executorUsername:'',
 					preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',
-					rate:'',budgetCost:'',budgetWorkload:'',actCost:'',actWorkload:'',taskState:'',taskType:'',taskClass:'',toTaskCenter:'',actStartTime:'',actEndTime:'', 
+					rate:'',budgetAt:'',budgetWorkload:'',actAt:'',actWorkload:'',taskState:'',taskType:'',taskClass:'',toTaskCenter:'',actStartTime:'',actEndTime:'', 
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
@@ -166,7 +166,7 @@
 				editForm: {
 					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'',sortLevel:'',executorUserid:'',executorUsername:'',
 					preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',
-					rate:'',budgetCost:'',budgetWorkload:'',actCost:'',actWorkload:'',taskState:'',taskType:'',taskClass:'',toTaskCenter:'',actStartTime:'',actEndTime:'', 
+					rate:'',budgetAt:'',budgetWorkload:'',actAt:'',actWorkload:'',taskState:'',taskType:'',taskClass:'',toTaskCenter:'',actStartTime:'',actEndTime:'', 
 				},  
 
 				selkey: "all",   
@@ -478,17 +478,17 @@
 			}, 
 			 
 			getRowSum(row){
-				var budgetCost=this.getFloatValue(row.budgetCost);
+				var budgetAt=this.getFloatValue(row.budgetAt);
 				if(row.taskOut=='1'){
-					 row.taskBudgetOuserAt=budgetCost
+					 row.taskBudgetOuserAt=budgetAt
 					 row.taskBudgetIuserAt=0
 					 row.taskBudgetNouserAt=0;
 				}else{
 					 row.taskBudgetOuserAt=0
-					 row.taskBudgetIuserAt=budgetCost
+					 row.taskBudgetIuserAt=budgetAt
 					 row.taskBudgetNouserAt=0;
 				} 
-				return budgetCost;
+				return budgetAt;
 			},
 			getFloatValue(value,digit){
 				
