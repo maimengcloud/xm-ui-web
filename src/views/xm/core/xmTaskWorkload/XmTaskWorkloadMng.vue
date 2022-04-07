@@ -166,10 +166,15 @@
         </el-table-column>
 <!--				<el-table-column prop="cuserid" label="创建人编号" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="bizDate" label="业务日期yyyy-MM-dd" min-width="80" show-overflow-tooltip></el-table-column>-->
-				<el-table-column prop="remark" label="备注" min-width="80" show-overflow-tooltip>
-          <template slot-scope="scope">
-            <span v-if="scope.row.remark">{{scope.row.remark}}</span>
-            <span v-else>-</span>
+				<el-table-column prop="remark" label="备注" min-width="80" show-overflow-tooltip>  
+          <template slot-scope="scope"> 
+            <span class="cell-text">
+              <span v-if="scope.row.remark">{{ scope.row.remark}}</span>
+              <span v-else>-</span>
+            </span>
+            <span class="cell-bar">
+              <el-input  style="display:inline;"  v-model="scope.row.remark"    placeholder="备注"  @change="editXmTaskWorkloadSomeFields(scope.row,'remark',$event)"></el-input>
+						</span>
           </template>
         </el-table-column>
 <!--				<el-table-column prop="ttype" label="任务类型-关联字典taskType" min-width="80" show-overflow-tooltip></el-table-column>-->
