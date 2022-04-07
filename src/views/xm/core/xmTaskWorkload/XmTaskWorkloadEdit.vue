@@ -31,22 +31,45 @@
 							</el-select>
 						</el-form-item>
 					</el-col>
-				</el-row>
-				<el-row> 
+				</el-row> 
+				
+				
+				<el-row>
+
 					<el-col :span="12">
 						<el-form-item label="工作时长" prop="workload">
 							<el-input  type="number" style="width:80%;" :step="8" :min="0" :max="1000" v-model="editForm.workload" placeholder="工作时长"></el-input> 小时
-						</el-form-item>
+							 
+						</el-form-item>  
+					</el-col> 
+					<el-col :span="12"> 
+						<el-form-item label="计算方式" prop="workloadFillType">
+ 							<el-select v-model="workloadFillType" style="display:inline;">
+								<el-option value="1" label="正常报工(都适用)"></el-option>
+								<el-option value="2" label="按报价工时减去已登记工时一次性填满（适合众包报价任务）"></el-option>
+								<el-option value="3" label="按预估工时减去已登记工时一次性填满（适合不严格要求报工，但为了统计进度等）"></el-option>
+							</el-select>
+						</el-form-item>  
 					</el-col>
+				
 					
+				</el-row>  
+				<el-row v-if="workloadFillType=='2'">  
+					<el-form-item label="报价工时" prop="quoteWorkload">
+						 {{execuser?execuser.quoteWorkload:0}}h
+					</el-form-item>  
+				</el-row>
+				<el-row>
+
 					<el-col :span="12">
 						<el-form-item label="未来工时" prop="rworkload">
 							<el-input :step="8"   :max="1000"  type="number" style="width:80%;" v-model="editForm.rworkload" placeholder="预计还要多少工时能够完成工作"></el-input>  小时
-						</el-form-item> 
-					</el-col>
-					<font color="blue" style="font-size:12px;padding-left:100px;">注意：未来工时指完成工作还需要继续投入的工时，一般在原始预估出现比较大的偏差时，需要对预估偏差进行重新调整才填写。</font>
-					
-				</el-row>
+							
+						</el-form-item>  
+						
+					</el-col>   <font color="blue">注意：未来工时指完成工作还需要继续投入的工时，一般在原始预估出现比较大的偏差时，需要对预估偏差进行重新调整才填写。</font>
+				</el-row>  
+				
 				<el-form-item label="工作说明" prop="remark">
  					<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="editForm.remark" placeholder="工作说明，如果报工大于8小时，请填写说明" ></el-input>
 				</el-form-item>
@@ -64,6 +87,8 @@
 	import config from "@/common/config"; //全局公共库import
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
 	import { addXmTaskWorkload,editXmTaskWorkload } from '@/api/xm/core/xmTaskWorkload';
+	import { listXmTaskExecuser  } from '@/api/xm/core/xmTaskExecuser';
+
 	import { mapGetters } from 'vuex'
 
 	export default {
@@ -88,7 +113,18 @@
 	      	if(visible==true){
  	      		this.initData()
 	      	}
-	      }
+	      },
+		  'workloadFillType':function(val){
+			  if(val==='2'){
+				  this.listXmTaskExecuser();
+			  }
+			  if(va==='3'){
+				  this.editForm.workload=this.xmTask.budgetWorkload-this.xmTask.actWorkload
+			  }
+			  if(val==='1'){
+				  this.editForm.workload=8
+			  }
+		  }
 	    },
 		data() {
 			return {
@@ -113,7 +149,9 @@
                 maxTableHeight:300,
 				dicts:{
 					taskType:[],
-				}
+				},
+				execuser:null,
+				workloadFillType:'1',//工时填写方式
 			}//end return
 		},//end data
 		methods: {
@@ -171,6 +209,18 @@
 					this.editForm.workload=8
                 }
             },
+			listXmTaskExecuser(){
+				listXmTaskExecuser({userid:this.userInfo.userid,taskId:this.xmTask.id}).then(res=>{
+					if(res.data.tips.isOk&& res.data.data.length>0){
+						this.execuser=res.data.data[0]
+						if(this.workloadFillType=='2'){
+							this.editForm.workload=this.execuser.quoteWorkload-this.xmTask.actWorkload
+						}
+					}else{
+						this.$notify({position:'bottom-left',showClose:true,message:'没有找到报价信息',type:'error'})
+					}
+				});
+			}
 
 		},//end method
 		mounted() {

@@ -152,7 +152,11 @@
                {{scope.row.taskName}}
             </span>
             <span class="cell-bar">
-               {{scope.row.taskId}}-{{scope.row.taskName}}
+              <el-popover>
+                   <xm-task-workload-simple-list :visible="scope.row.id==editForm.id" :xm-task="{id:scope.row.taskId,name:scope.row.taskName,projectName:scope.row.projectName,projectId:scope.row.projectId,budgetWorkload:scope.row.budgetWorkload,actWorkload:scope.row.actWorkload}"  ref="xmTaskWorkloadSimpleList"></xm-task-workload-simple-list>
+                   <el-button slot="reference" icon="el-icon-search" style="display:inline;">工时记录</el-button>
+              </el-popover>
+               
 						</span>
           </template>
           
@@ -192,7 +196,7 @@
 			</el-drawer>
       <el-drawer title="选择员工" :visible.sync="selectFiltersPmUserVisible" size="60%" append-to-body>
         <users-select  @confirm="onFiltersPmUserSelected" ref="usersSelect"></users-select>
-      </el-drawer>
+      </el-drawer> 
 	    </el-row>
 	</section>
 </template>
@@ -209,6 +213,9 @@
   import {editWorkloadToSbill} from "@/api/xm/core/xmTaskWorkload";
   import {editXmTaskWorkloadSomeFields} from "../../../../api/xm/core/xmTaskWorkload";
   import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
+  import XmTaskWorkloadSimpleList from './XmTaskWorkloadSimpleList';
+	import { listXmTaskExecuser  } from '@/api/xm/core/xmTaskExecuser';
+	import { listXmTask  } from '@/api/xm/core/xmTask';
 
 	export default {
 	    name:'xmTaskWorkloadMng',
@@ -216,7 +223,8 @@
 		    XmTaskWorkloadEdit,
       XmProjectSelect,
       XmTaskSbillSelect,
-      UsersSelect
+      UsersSelect,
+      XmTaskWorkloadSimpleList,
 		},
 		props:['visible','wstatuses','sstatuses'],
 		computed: {
@@ -277,6 +285,7 @@
         pickerOptions:  util.pickerOptions('datarange'),
         dateRanger: [],
         selectFiltersPmUserVisible:false,
+        xmTaskWorkloadSimpleListVisible:false,
 			}
 		},//end data
 		methods: {
