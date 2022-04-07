@@ -28,22 +28,14 @@
 							<el-form-item label="备注说明">
 								<span>{{ props.row.remarks }}</span>
 							</el-form-item>
-							<el-form-item  label="操作">
-								<el-button type="primary" v-if="props.row.status=='1'" @click="toTest(props.row)">申请验收</el-button>
-								<el-button type="primary" v-if="props.row.status=='4'" @click="toTest(props.row)">再申请验收</el-button>
-
-								<!--结算状态0未结算1已部分结算2无需结算4已申请结算5结算失败6已全部结算-->
-								<el-button type="primary"  v-if="props.row.status=='3' && props.row.settleStatus!='2' && props.row.settleStatus!='4' && props.row.settleStatus!='6' " @click="settle(props.row)" >申请结算</el-button>
-								<el-button type="success"  v-if="props.row.status=='2' " @click="testSuccess(props.row)" >验收通过</el-button>
-								<el-button type="warning"  v-if="props.row.status=='2' " @click="testFail(props.row)" >验收不通过</el-button>
-
+							<el-form-item  label="操作">  
+								<!--结算状态0未结算1已部分结算2无需结算4已申请结算5结算失败6已全部结算--> 
 								<el-button type="primary" v-if="props.row.status=='7' " @click="becomeCandidate(props.row)">成为候选人</el-button>
 								<el-button type="danger" v-if="props.row.status=='7' " @click="handleDel(props.row)">删除</el-button>
 								<el-button type="warning" v-if="props.row.status=='0'"  @click="showQuotePrice(props.row)">修改报价信息</el-button>
 								<el-button type="primary" v-if="props.row.status=='0'"   @click="execute(props.row)">成为执行人</el-button>
 								<el-button type="warning" v-if="props.row.status!='7' " @click="leave(props.row)">离开任务</el-button>
-								<el-button type="primary" v-if="props.row.status=='3' || props.row.status=='6' "  @click="showSettleList(props.row)">结算清单</el-button>
-
+ 
 							</el-form-item>
 						</el-form>
 					</template>
@@ -55,94 +47,27 @@
 						<el-popover trigger="hover"
 							width="400" >
 							<el-row>
-									<el-button type="primary" v-if="scope.row.status=='1'" @click="toTest(scope.row)">申请验收</el-button>
-									<el-button type="primary" v-if="scope.row.status=='4'" @click="toTest(scope.row)">再申请验收</el-button>
-
-									<!--结算状态0未结算1已部分结算2无需结算4已申请结算5结算失败6已全部结算-->
-									<el-button type="primary"  v-if="scope.row.status=='3' && scope.row.settleStatus!='2' && scope.row.settleStatus!='4' && scope.row.settleStatus!='6' " @click="settle(scope.row)" >申请结算</el-button>
-									<el-button type="success"  v-if="scope.row.status=='2' " @click="testSuccess(scope.row)" >验收通过</el-button>
-									<el-button type="warning"  v-if="scope.row.status=='2' " @click="testFail(scope.row)" >验收不通过</el-button>
-
+  									<!--结算状态0未结算1已部分结算2无需结算4已申请结算5结算失败6已全部结算--> 
 									<el-button type="primary" v-if="scope.row.status=='7' " @click="becomeCandidate(scope.row)">成为候选人</el-button>
 									<el-button type="danger" v-if="scope.row.status=='7' " @click="handleDel(scope.row)">删除</el-button>
 									<el-button type="warning" v-if="scope.row.status=='0'"  @click="showQuotePrice(scope.row)">修改报价信息</el-button>
 									<el-button type="primary" v-if="scope.row.status=='0'"   @click="execute(scope.row)">成为执行人</el-button>
-									<el-button type="warning" v-if="scope.row.status!='7' " @click="leave(scope.row)">离开任务</el-button>
-									<el-button type="primary" v-if="scope.row.status=='3' || scope.row.status=='6' "  @click="showSettleList(scope.row)">结算清单</el-button>
-
+									<el-button type="warning" v-if="scope.row.status!='7' " @click="leave(scope.row)">离开任务</el-button> 
 							</el-row>
 								<font slot="reference">
 										<el-link type="primary" v-if="scope.row.status=='0'">候选中({{formatToDoByStatus(scope.row)}})</el-link>
-										<el-link type="success" v-else-if="scope.row.status=='1'">执行中({{formatToDoByStatus(scope.row)}})</el-link>
-										<el-link type="warning" v-else-if="scope.row.status=='2'">验收中({{formatToDoByStatus(scope.row)}})</el-link>
-										<el-link type="success" v-else-if="scope.row.status=='3'">已验收({{formatToDoByStatus(scope.row)}})</el-link>
-										<el-link type="danger" v-else-if="scope.row.status=='4'">验收不通过({{formatToDoByStatus(scope.row)}})</el-link>
-										<el-link type="warning" v-else-if="scope.row.status=='5'">结算中({{formatToDoByStatus(scope.row)}})</el-link>
-										<el-link type="success" v-else-if="scope.row.status=='6'">已结算完毕({{formatToDoByStatus(scope.row)}})</el-link>
+										<el-link type="success" v-else-if="scope.row.status=='1'">执行中({{formatToDoByStatus(scope.row)}})</el-link> 
 										<el-link type="info" v-else-if="scope.row.status=='7'">已放弃任务({{formatToDoByStatus(scope.row)}})</el-link>
-										<el-link type="danger" v-else-if="scope.row.status=='8'">黑名单({{formatToDoByStatus(scope.row)}})</el-link>
-										<el-link type="primary" v-else>新建</el-link>
+										<el-link type="danger" v-else-if="scope.row.status=='8'">黑名单({{formatToDoByStatus(scope.row)}})</el-link> 
 								</font>
 
 						</el-popover>
 						</div>
 					</template>
-				</el-table-column>
- 				<el-table-column prop="settleStatus" label="结算" min-width="80">
-					<template slot-scope="scope">
-						<el-tag type="success" v-if="scope.row.settleStatus=='1'">已部分结算</el-tag>
-						<el-tag type="success" v-else-if="scope.row.settleStatus=='2'">无需结算</el-tag>
-						<el-tag type="warning" v-else-if="scope.row.settleStatus=='4'">结算审批中</el-tag>
-						<el-tag type="danger" v-else-if="scope.row.settleStatus=='5'">结算失败</el-tag>
-						<el-tag type="success" v-else-if="scope.row.settleStatus=='6'">已全部结算完毕</el-tag>
-						<el-tooltip v-else content="验收通过后可以申请结算">
-							<el-tag type="primary" >未开始结算</el-tag>
-						</el-tooltip>
-						<el-tooltip   content="结算金额">
-							{{scope.row.settleAmount}}
-						</el-tooltip>
-						<el-tooltip   content="结算工作量">
-							{{scope.row.settleWorkload}}
-						</el-tooltip>
-						<el-tooltip   content="结算时间">
-							{{scope.row.settleTime}}
-						</el-tooltip>
-
-					</template>
-				 </el-table-column>
+				</el-table-column> 
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
-
-			<el-drawer append-to-body title="结算" :visible.sync="settleVisible" width="40%" :close-on-click-modal="false">
-				<el-form :model="settleForm" label-width="100px" ref="settleForm" class="settleForm">
-					<el-form-item label="执行人名称">
-						<span>{{ editForm.username }}</span>
-					</el-form-item>
-					<el-form-item prop="settleAmount" label="结算金额">
-						<el-input v-model="settleForm.settleAmount" type="number" ></el-input>
-						<el-tag>报价{{editForm.quoteAmount}},任务预算{{xmTask.budgetCost}}</el-tag>
-					</el-form-item>
-					<el-form-item prop="settleWorkload" label="结算工作量">
-						<el-input v-model="settleForm.settleWorkload" type="number" ></el-input><el-tag>报价{{editForm.quoteWorkload}},任务预估{{xmTask.budgetWorkload}}</el-tag>
-					</el-form-item>
-					<el-form-item prop="settleStatus" label="结算状态">
-						<el-select disabled style="width:100%;" placeholder="结算状态" v-model="settleForm.settleStatus">
-							<el-option
-								no-data-text="暂无结算状态"
-								v-for="(item,i) in dicts.projectTaskSettleStatus"
-								:key="i"
-								:label="item.name"
-								:value="item.id">
-							</el-option>
-						</el-select>
-					</el-form-item>
-					<el-form-item>
-						<el-button @click.native="handleSettleCancel">取消</el-button>
-						<el-button v-loading="load.edit"  @click.native="fillQuotePriceToSettleForm" :disabled="load.edit==true">按报价信息填充</el-button>
- 						<el-button icon="el-icon-success"  type="success" @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_task_execuser_settle_approva'})">结算申请</el-button>
-					</el-form-item>
-				</el-form>
-			</el-drawer>
+ 
 			<el-drawer append-to-body title="报价" :visible.sync="quotePriceVisible" size="60%" :close-on-click-modal="false">
 				<el-form :model="quotePriceForm" label-width="100px" ref="quotePriceForm">
 					<el-form-item label="候选人名称">
@@ -194,12 +119,7 @@
 			<!--新增 XmTaskExecuser xm_task_execuser界面-->
 			<el-drawer append-to-body title="新增任务执行人" :visible.sync="addFormVisible"  size="50%"  :close-on-click-modal="false">
 				<xm-task-execuser-add :exec-user-list="xmTaskExecusers" :xm-task="xmTask" :execuser-add-type="execuserAddType"  :xm-task-execuser="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-task-execuser-add>
-			</el-drawer>
-
-			<!--新增 XmTaskExecuser xm_task_execuser界面-->
-			<el-drawer append-to-body title="结算清单" :visible.sync="settleListVisible"  size="80%"  :close-on-click-modal="false">
-				<xm-project-m-cost-user-list :userid="editForm.userid" :project-id="this.editForm.projectId"   :task-id="editForm.taskId" :visible="settleListVisible" @cancel="settleListVisible=false" ></xm-project-m-cost-user-list>
-			</el-drawer>
+			</el-drawer> 
 		</el-row>
 	</section>
 </template>

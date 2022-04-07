@@ -33,22 +33,7 @@
             >
             <el-option value="myExecuserStatus1" label="我执行"
               >我执行</el-option
-            >
-            <el-option value="myExecuserStatus2" label="我提交"
-              >我提交</el-option
-            >
-            <el-option value="myExecuserStatus3" label="我的验收成功"
-              >我的验收成功</el-option
-            >
-            <el-option value="myExecuserStatus4" label="我的验收失败"
-              >我的验收失败</el-option
-            >
-            <el-option value="myExecuserStatus5" label="我的付款中"
-              >我的付款中</el-option
-            >
-            <el-option value="myExecuserStatus6" label="我的付款成功"
-              >我的付款成功</el-option
-            >
+            > 
             <el-option value="myExecuserStatus7" label="我放弃的"
               >我放弃的</el-option
             >

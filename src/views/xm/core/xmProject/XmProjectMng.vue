@@ -12,18 +12,12 @@
 					<el-select v-model="menukey" @change="handleSelect" clearable>
 						<el-option value="all" label="全部"></el-option>
 						<el-option value="compete"  label="我参与"></el-option>
-						<el-option value="leader"  label="我管理"></el-option>
-						<el-option value="moniter"  label="我监控"></el-option>
+						<el-option value="leader"  label="我管理"></el-option> 
 						<el-option value="approver"  label="我审核"></el-option>
 						<el-option value="create"  label="我创建"></el-option>
 						<el-option  value="myFocus"  label="我关注"></el-option>
 						<el-option  value="myExecuserStatus0"  label="我排队"></el-option>
-						<el-option  value="myExecuserStatus1"  label="我执行"></el-option>
-						<el-option  value="myExecuserStatus2"  label="我提交验收"></el-option>
-						<el-option  value="myExecuserStatus3"  label="我验收成功"></el-option>
-						<el-option  value="myExecuserStatus4"  label="我验收失败"></el-option>
-						<el-option  value="myExecuserStatus5"  label="我付款中"></el-option>
-						<el-option  value="myExecuserStatus6"  label="我付款成功"></el-option>
+						<el-option  value="myExecuserStatus1"  label="我执行"></el-option> 
 						<el-option  value="myExecuserStatus7"  label="我放弃"></el-option> 
 					</el-select> 
 					<el-select  v-model="filters.status" clearable placeholder="项目状态">
