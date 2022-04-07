@@ -185,9 +185,15 @@ export default {
         { path: 'xmTaskWorkload/FinWorkloadToSbill', component: _import('xm/core/xmTaskWorkload/FinWorkloadToSbill'), name: 'FinWorkloadToSbill', meta: { title: '已结算工时(我)'}},
         { path: 'xmTaskWorkload/ToComfirmWorkload', component: _import('xm/core/xmTaskWorkload/ToComfirmWorkload'), name: 'ToComfirmWorkload', meta: { title: '待确认工时(我)'}},
         
+        { path: 'xmTaskWorkload/WorkloadSetDayListMy', component: _import('xm/core/xmTaskWorkload/WorkloadSetDayListMy'), name: 'WorkloadSetDayListMy', meta: { title: '工时日报表(我)'}},
+        { path: 'xmTaskWorkload/WorkloadSetMonthListMy', component: _import('xm/core/xmTaskWorkload/WorkloadSetMonthListMy'), name: 'WorkloadSetMonthListMy', meta: { title: '工时月报表(我)'}},
+        
          { path: 'xmTaskWorkload/WaitWorkloadToSbillAll', component: _import('xm/core/xmTaskWorkload/WaitWorkloadToSbillAll'), name: 'WaitWorkloadToSbillAll', meta: { title: '待结算工时'}},
         { path: 'xmTaskWorkload/FinWorkloadToSbillAll', component: _import('xm/core/xmTaskWorkload/FinWorkloadToSbillAll'), name: 'FinWorkloadToSbillAll', meta: { title: '已结算工时'}},
         { path: 'xmTaskWorkload/ToComfirmWorkloadAll', component: _import('xm/core/xmTaskWorkload/ToComfirmWorkloadAll'), name: 'ToComfirmWorkloadAll', meta: { title: '待确认工时'}},
+        
+        { path: 'xmTaskWorkload/WorkloadSetDayList', component: _import('xm/core/xmTaskWorkload/WorkloadSetDayList'), name: 'WorkloadSetDayList', meta: { title: '工时日报表'}},
+        { path: 'xmTaskWorkload/WorkloadSetMonthList', component: _import('xm/core/xmTaskWorkload/WorkloadSetMonthList'), name: 'WorkloadSetMonthList', meta: { title: '工时月报表'}},
       ]
     }
   ]
