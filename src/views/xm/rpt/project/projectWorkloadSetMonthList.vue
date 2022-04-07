@@ -13,6 +13,13 @@
 					<el-form-item label="归属项目" v-if="!xmProject">
 							 <xm-project-select  v-if="!xmProject"  ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProjectSelected"   @clear="onProjectClear"></xm-project-select>
   					</el-form-item>  
+					<el-form-item label="人员编号">
+							<el-input v-model="filters.userid"></el-input>
+  					</el-form-item>  
+					  
+					<el-form-item label="任务编号编号">
+							<el-input v-model="filters.taskId"></el-input>
+  					</el-form-item>  
 					<el-form-item label="日期区间">
 						<br>
 							<date-range v-model="filters"   value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></date-range>
@@ -75,6 +82,8 @@
                     project:null,
 					startBizDate:'',
 					endBizDate:'',
+					userid:'',
+					taskId:''
                 },
 				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中... 
@@ -96,6 +105,13 @@
 				if(this.filters.startBizDate && this.filters.endBizDate){
 					params.startBizDate=this.filters.startBizDate;
 					params.endBizDate=this.filters.endBizDate;
+				}
+				
+				if(this.filters.userid){
+					params.userid=this.filters.userid
+				}
+				if(this.filters.taskId){
+					params.taskId=this.filters.taskId
 				}
 				listProjectWorkloadSetMonth(params).then(res=>{ 
 					this.xmProjectWorkloadSetMonths=res.data.tips.isOk?res.data.data:this.xmProjectWorkloadSetMonths;

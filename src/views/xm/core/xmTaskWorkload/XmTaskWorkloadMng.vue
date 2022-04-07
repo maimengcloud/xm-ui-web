@@ -14,7 +14,9 @@
         <el-option label="已通过" value="3"></el-option>
         <el-option label="已结算" value="4"></el-option>
       </el-select>
-			<el-input v-model="filters.key" style="width: 25%;" clearable placeholder="模糊查询:员工ID/员工名称/项目ID/任务编号"></el-input>
+			<el-input v-model="filters.key" style="width: 150px;" clearable placeholder="模糊查询员工名称"></el-input>
+			<el-input v-model="filters.userid" style="width: 150px;" clearable placeholder="员工编号"></el-input>
+			<el-input v-model="filters.taskId" style="width: 150px;" clearable placeholder="任务编号"></el-input>
 			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTaskWorkloads" icon="el-icon-search">查询</el-button>
       <el-popover placement="top-start" title="更多查询条件" width="400" v-model="moreVisible" trigger="manual" >
         <el-row>
@@ -252,7 +254,9 @@
 					key: '',
           wstatus:'',
           sstatus:'',
-          pmUser:''
+          pmUser:'',
+          taskId:'',
+          userid:''
 				},
 				xmTaskWorkloads: [],//查询结果
 				pageInfo:{//分页数据
@@ -353,12 +357,19 @@
         if(this.filters.sstatus){
           params.sstatuses = this.filters.sstatus;
         }
+        
+        if(this.filters.userid){
+          params.userid = this.filters.userid;
+        }
+        if(this.filters.taskId){
+          params.taskId = this.filters.taskId;
+        }
         if(this.filters.pmUser){
           params.cuserid = this.filters.pmUser.userid;
         }
         if(this.dateRanger){
-          params.startTime = this.dateRanger[0];
-          params.endTime = this.dateRanger[1];
+          params.startBidDate = this.dateRanger[0];
+          params.endBizDate = this.dateRanger[1];
         }
 
 				this.load.list = true;
