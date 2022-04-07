@@ -28,3 +28,6 @@ export const editXmBranchStateHis = params => { return axios.post(`${base}/xm/co
 
 //新增一条机构内所有项目指标汇总
 export const addXmBranchStateHis = params => { return axios.post(`${base}/xm/core/xmBranchStateHis/add`, params); };
+
+
+export const listXmBranchFiveDayTaskCnt = params => { return axios.get(`${base}/xm/core/xmBranchStateHis/listXmBranchFiveDayTaskCnt`, { params: params }); };

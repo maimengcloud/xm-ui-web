@@ -135,7 +135,8 @@
 import util from "@/common/js/util"; // 全局公共库
 import { mapGetters } from "vuex";
 import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-import { listXmBranchState,loadProjectStateToXmBranchState } from '@/api/xm/core/xmBranchState';
+import { listXmBranchState  } from '@/api/xm/core/xmBranchState'; 
+import { listXmBranchFiveDayTaskCnt  } from '@/api/xm/core/xmBranchStateHis';
 import Guider from '@/components/Guider/Index.js';
 export default {
   computed: {
@@ -198,7 +199,25 @@ export default {
         return 100;
       }
     },
-
+    xmTaskFiveDaysCpd(){
+      if(this.xmBranchFiveDayTaskCnts.length==0){
+        return [
+          ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+          [120, 132, 101, 134, 90, 230, 210],
+          [220, 182, 191, 234, 290, 330, 310]
+        ]
+      }else{ 
+        var datas=this.xmBranchFiveDayTaskCnts;
+         datas.sort((a,b)=>Date.parse(a.bizDate) - Date.parse(b.bizDate));
+          var datas2=[
+            datas.map(i=>this.getWeek(i.bizDate)),
+            datas.map(i=>i.taskUnstartCnt),
+            datas.map(i=>i.taskExecCnt)
+          ]
+          return datas2;
+      }
+      
+    },
     xmBranchStateCpd(){
       return this.xmBranchState
     },
@@ -207,11 +226,13 @@ export default {
   watch:{
     xmBranchStateCpd:function(){
       this.drawWorkload();
-      this.drawTaskByDate();
       this.drawAllBar();
       this.drawCostPie();
       this.drawPieBug();
       this.drawIterationProduct();
+    },
+    xmTaskFiveDaysCpd:function(){ 
+      this.drawTaskByDate();
     }
   },
   data() {
@@ -219,6 +240,7 @@ export default {
       isActive: true,
       xmBranchState:{},
       maxTableHeight:300,
+      xmBranchFiveDayTaskCnts:[],
      // options: getDefOptions(),//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
     };
   },
@@ -320,7 +342,7 @@ export default {
         xAxis: {
           type: 'category',
           boundaryGap: false,
-          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+          data: this.xmTaskFiveDaysCpd[0],
           splitLine: {
             show: true,
             lineStyle: {
@@ -361,7 +383,7 @@ export default {
             name: '未开始',
             type: 'line',
             smooth: true,
-            data: [120, 132, 101, 134, 90, 230, 210],
+            data: this.xmTaskFiveDaysCpd[1],
             areaStyle: {},
             label: {
               show: true,
@@ -409,7 +431,7 @@ export default {
             name: '进行中',
             type: 'line',
             smooth: true,
-            data: [220, 182, 191, 234, 290, 330, 310],
+            data: this.xmTaskFiveDaysCpd[2],
             areaStyle: {
               opacity: 0.8,
               color: 'rgb(55, 162, 255)'
@@ -907,6 +929,21 @@ export default {
       });
     },
 
+    searchXmBranchFiveDayTaskCnt(callBack){
+      listXmBranchFiveDayTaskCnt({branchId:this.userInfo.branchId}).then(res=>{
+        var tips=res.data.tips;
+        if(tips.isOk && res.data.data.length>0){
+          this.xmBranchFiveDayTaskCnts=res.data.data
+        }
+        if(callBack){
+          this.$nextTick(()=>{
+            callBack();
+          })
+        }
+      });
+    },
+
+
     //路由跳转
     gotolink(link) {
       this.$router.replace(link);
@@ -916,11 +953,17 @@ export default {
     guiderStart(forceDisplayWhileClosed) { // 初始化引导页
       Guider.startByName('xmHomePage',forceDisplayWhileClosed);
     },
+    getWeek(dateString) {
+        var dateArray = dateString.split("-");
+        var date = new Date(dateArray[0], parseInt(dateArray[1] - 1), dateArray[2]);
+        return "周" + "日一二三四五六".charAt(date.getDay());
+    }
   },
 
   mounted() {
     //this.searchXmBranchState( this.guiderStart );
     this.searchXmBranchState();
+    this.searchXmBranchFiveDayTaskCnt();
     this.drawWorkload();
     this.drawTaskByDate();
     this.drawAllBar();
