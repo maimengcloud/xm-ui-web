@@ -1,14 +1,14 @@
 <template>
-	<section>
-		<div class="exec-navbar">
+	<section class="padding">
+		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="任务名称、用户姓名模糊查询" clearable></el-input>
-			<el-input v-model="filters.taskId" style="width:120px;" placeholder="任务编号查询" clearable></el-input>
-			<el-input v-model="filters.projectId" style="width: 120px;" placeholder="项目编号" clearable></el-input>
- 			<el-input v-model="filters.execUserBranchId" style="width: 120px;" placeholder="归属公司" clearable></el-input>
+			<el-input v-model="filters.taskId" style="width:150px;" placeholder="任务编号查询" clearable></el-input>
+			<el-input v-model="filters.projectId" style="width: 150px;" placeholder="项目编号" clearable></el-input>
+ 			<el-input v-model="filters.execUserBranchId" style="width: 150px;" placeholder="归属公司" clearable></el-input>
 			
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTaskExecusers">查询</el-button> 
 			<!-- <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button>  -->
-		</div>
+		</el-row>
 		<el-row class="page-main ">
 			<!--列表 XmTaskExecuser xm_task_execuser-->
 			<el-table ref="table" :height="tableHeight" :data="xmTaskExecusers" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
@@ -193,7 +193,7 @@
 			'visible': function(val) {
 				if(val == true){
 					console.log("visible");
-					this.getXmTaskExecusers();
+					this.searchXmTaskExecusers();
 				}
 			},
 		},
