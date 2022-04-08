@@ -31,7 +31,7 @@
 									<el-button type="danger" v-if="scope.row.status=='7' " @click="handleDel(scope.row)">删除</el-button>
 									<el-button type="warning" v-if="scope.row.status=='0'"  @click="showQuotePrice(scope.row)">修改报价信息</el-button>
 									<el-button type="primary" v-if="scope.row.status=='0'"   @click="execute(scope.row)">成为执行人</el-button>
-									<el-button type="primary" v-if="scope.row.status=='1' " @click="workload(scope.row)">填报工时进度</el-button> 
+									<el-button type="primary" v-if="scope.row.status=='1' " @click="showWorkload(scope.row)">填报工时进度</el-button> 
 									<el-button type="warning" v-if="scope.row.status!='7' " @click="leave(scope.row)">离开任务</el-button> 
 									<br><font color="blue">{{formatToDoByStatus(scope.row)}}</font>
 							</el-row>
