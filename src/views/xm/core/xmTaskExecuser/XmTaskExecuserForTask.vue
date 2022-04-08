@@ -1,23 +1,49 @@
 <template>
 	<section>
 		<div class="exec-navbar">
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="任务名称、用户姓名模糊查询" clearable></el-input>
-			<el-input v-model="filters.taskId" style="width:120px;" placeholder="任务编号查询" clearable></el-input>
-			<el-input v-model="filters.projectId" style="width: 120px;" placeholder="项目编号" clearable></el-input>
- 			<el-input v-model="filters.execUserBranchId" style="width: 120px;" placeholder="归属公司" clearable></el-input>
-			
-			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTaskExecusers">查询</el-button> 
+			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
+			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTaskExecusers">查询</el-button>
+			<el-button type="primary"  @click="toJoin">我要加入</el-button>
+			<el-button type="primary"  @click="showAdd">邀请他人加入</el-button>
 			<!-- <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button>  -->
 		</div>
 		<el-row class="page-main ">
 			<!--列表 XmTaskExecuser xm_task_execuser-->
 			<el-table ref="table" :height="tableHeight" :data="xmTaskExecusers" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-				 <el-table-column  label="序号" type="index" width="60"  fixed="left"> 
-				</el-table-column>  
-					 <el-table-column prop="username" label="姓名"  width="150" sortable  show-overflow-tooltip fixed="left">  
-					</el-table-column>   
-					<el-table-column prop="status" label="候选状态"  width="100" sortable fixed="left"> 
-						<template slot-scope="scope">
+				 <el-table-column type="expand">
+					<template slot-scope="props">
+						<el-form label-position="left"  class="demo-table-expand">
+							<el-form-item label="报价">
+								工作量：<span>{{ props.row.quoteWorkload }} 人时</span> 金额：<span>{{ props.row.quoteAmount }}元</span>
+							</el-form-item>
+							<el-form-item label="报价工期">
+								<span>{{ props.row.quoteWeekday }} 天 :{{props.row.quoteStartTime }}~{{props.row.quoteEndTime}}</span>
+							</el-form-item>
+							<el-form-item label="匹配指数">
+								<span>{{ props.row.matchScore }}</span>
+							</el-form-item>
+							<el-form-item label="技能说明">
+								<span>{{ props.row.skillRemark }}</span>
+							</el-form-item>
+							<el-form-item label="备注说明">
+								<span>{{ props.row.remarks }}</span>
+							</el-form-item>
+							<el-form-item  label="操作">  
+								<!--结算状态0未结算1已部分结算2无需结算4已申请结算5结算失败6已全部结算--> 
+								<el-button type="primary" v-if="props.row.status=='7' " @click="becomeCandidate(props.row)">成为候选人</el-button>
+								<el-button type="danger" v-if="props.row.status=='7' " @click="handleDel(props.row)">删除</el-button>
+								<el-button type="warning" v-if="props.row.status=='0'"  @click="showQuotePrice(props.row)">修改报价信息</el-button>
+								<el-button type="primary" v-if="props.row.status=='0'"   @click="execute(props.row)">成为执行人</el-button>
+								<el-button type="warning" v-if="props.row.status!='7' " @click="leave(props.row)">离开任务</el-button>
+ 
+							</el-form-item>
+						</el-form>
+					</template>
+				</el-table-column>
+				<el-table-column prop="username" label="姓名" min-width="300" >
+					<template slot-scope="scope">
+						<div>
+						{{scope.row.username}} <el-tag type="info">{{scope.row.quoteStartTime }}~{{scope.row.quoteEndTime}}</el-tag> <el-tooltip  content="报价金额"><el-tag type="danger">{{scope.row.quoteAmount}}元</el-tag></el-tooltip>
 						<el-popover trigger="hover"
 							width="400" >
 							<el-row>
@@ -26,66 +52,18 @@
 									<el-button type="danger" v-if="scope.row.status=='7' " @click="handleDel(scope.row)">删除</el-button>
 									<el-button type="warning" v-if="scope.row.status=='0'"  @click="showQuotePrice(scope.row)">修改报价信息</el-button>
 									<el-button type="primary" v-if="scope.row.status=='0'"   @click="execute(scope.row)">成为执行人</el-button>
-									<el-button type="primary" v-if="scope.row.status=='1' " @click="workload(scope.row)">填报工时进度</el-button> 
 									<el-button type="warning" v-if="scope.row.status!='7' " @click="leave(scope.row)">离开任务</el-button> 
-									<br><font color="blue">{{formatToDoByStatus(scope.row)}}</font>
 							</el-row>
 								<font slot="reference">
-										<el-link type="primary" v-if="scope.row.status=='0'">候选中</el-link>
-										<el-link type="success" v-else-if="scope.row.status=='1'">执行中 </el-link> 
-										<el-link type="info" v-else-if="scope.row.status=='7'">已放弃  </el-link>
-										<el-link type="danger" v-else-if="scope.row.status=='8'">黑名单 </el-link> 
+										<el-link type="primary" v-if="scope.row.status=='0'">候选中({{formatToDoByStatus(scope.row)}})</el-link>
+										<el-link type="success" v-else-if="scope.row.status=='1'">执行中({{formatToDoByStatus(scope.row)}})</el-link> 
+										<el-link type="info" v-else-if="scope.row.status=='7'">已放弃任务({{formatToDoByStatus(scope.row)}})</el-link>
+										<el-link type="danger" v-else-if="scope.row.status=='8'">黑名单({{formatToDoByStatus(scope.row)}})</el-link> 
 								</font>
 
 						</el-popover>
-						</template>
-					</el-table-column>  
-					
-					<el-table-column prop="taskName" label="任务名称" width="150" sortable  show-overflow-tooltip fixed="left"> 
-					</el-table-column>  
-					<el-table-column sortable prop="rate" label="进度" width="100">
-						<template slot-scope="scope">
-						<el-link :disabled="scope.row.ntype=='1'"
-							style="border-radius: 30px"
-							:type="scope.row.rate >= 100 ? 'success' : 'warning'"
-							@click="showWorkload(scope.row)"
-						>
-							{{ (scope.row.rate != null ? scope.row.rate : 0) + "%" }}
-						</el-link>
-						</template>
-					</el-table-column>
-					<el-table-column prop="taskName" label="任务状态" width="100" sortable  show-overflow-tooltip > 
-						<template slot-scope="scope"> 
-							<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in formatterTaskStateDicts(scope.row.taskState)" :key="index">{{item.name}}</el-button>
-						</template>
-					</el-table-column> 
-					<el-table-column prop="projectId" label="项目编号" width="100" sortable show-overflow-tooltip> 
-					</el-table-column>   
-					<el-table-column prop="startTime" label="加入时间"  width="150" sortable> 
-					</el-table-column>  
-					<el-table-column prop="endTime" label="离开时间"  width="150" sortable> 
-					</el-table-column> 
-					<el-table-column prop="skillRemark" label="技能" min-width="150" sortable  show-overflow-tooltip> 
-					</el-table-column>  
-					<el-table-column prop="remarks" label="备注" min-width="150" sortable  show-overflow-tooltip> 
-					</el-table-column>  
-					<el-table-column prop="execUserBranchId" label="归属公司" width="150" sortable  show-overflow-tooltip> 
-					</el-table-column>   
-				<el-table-column  label="报价信息" min-width="150">
-					
-					 <el-table-column prop="createTime" label="报价时间" width="150" sortable> 
-					</el-table-column>  
-					 <el-table-column prop="quoteWorkload" label="报价工作量" width="100" sortable>  
-						<template slot-scope="scope">
-							{{scope.row.quoteWorkload?scope.row.quoteWorkload:'-'}}h
-						</template>
-					</el-table-column>  
-					<el-table-column prop="quotePrice" label="报价金额" width="100" sortable> 
-						
-						<template slot-scope="scope">
-							￥{{scope.row.quotePrice?scope.row.quotePrice:'-'}}元
-						</template>
-					</el-table-column>   
+						</div>
+					</template>
 				</el-table-column> 
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
@@ -142,22 +120,6 @@
 			<el-drawer append-to-body title="新增任务执行人" :visible.sync="addFormVisible"  size="50%"  :close-on-click-modal="false">
 				<xm-task-execuser-add :exec-user-list="xmTaskExecusers" :xm-task="xmTask" :execuser-add-type="execuserAddType"  :xm-task-execuser="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-task-execuser-add>
 			</el-drawer> 
-			<el-dialog
-				:title="'【'+xmTask.name+'】登记工时'"
-				:visible.sync="taskWorkloadVisible"
-				width="60%"
-				top="20px"
-				append-to-body
-				:close-on-click-modal="false"
-				>
-				<xm-task-workload-edit 
-					:xm-task="xmTask"
-					:visible="taskWorkloadVisible" 
-					op-type="add"
-					@cancel="taskWorkloadVisible=false"
-					@submit="onTaskWorkloadSubmit"
-				></xm-task-workload-edit>
-			</el-dialog>
 		</el-row>
 	</section>
 </template>
@@ -168,27 +130,21 @@
 
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { listXmTaskExecuserWithTask,editXmTaskExecuser,leaveTask,beExecutor,settleExec, delXmTaskExecuser, batchDelXmTaskExecuser,quotePrice,becomeCandidate,toTest,testSuccess,testFail } from '@/api/xm/core/xmTaskExecuser';
+	import { listXmTaskExecuser,editXmTaskExecuser,leaveTask,beExecutor,settleExec, delXmTaskExecuser, batchDelXmTaskExecuser,quotePrice,becomeCandidate,toTest,testSuccess,testFail } from '@/api/xm/core/xmTaskExecuser';
 	import  XmTaskExecuserAdd from './XmTaskExecuserAdd';//新增界面
 	import  XmTaskExecuserEdit from './XmTaskExecuserEdit';//修改界面
 	import XmProjectMCostUserList from '../xmProjectMCostUser/XmProjectMCostUserList';
 	import { mapGetters } from 'vuex'
 	import html2canvas from 'html2canvas'
 	import { uploadBase64 } from '@/api/mdp/arc/image';
-  	import XmTaskWorkloadEdit from "@/views/xm/core/xmTaskWorkload/XmTaskWorkloadEdit";
 
 	export default {
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
 				]),
-			xmTask:function(){
-				var xmTask={...this.editForm}
-				xmTask.id=this.editForm.taskId;
-				return xmTask;
-			}
 		},
-		props: ["visible","isMy"],
+		props: ["visible","xmTask","isMy"],
 		watch: {
 			'visible': function(val) {
 				if(val == true){
@@ -200,10 +156,7 @@
 		data() {
 			return {
 				filters: {
-					key: '',
-					execUserBranchId:'',
-					taskId:'',
-					projectId:'', 
+					key: ''
 				},
 				xmTaskExecusers: [],//查询结果
 				pageInfo:{//分页数据
@@ -211,7 +164,7 @@
 					pageSize:10,//每页数据
 					count:false,//是否需要重新计算总记录数
 					pageNum:1,//当前页码、从1开始计算
-					orderFields:['res.create_time'],//排序列 如 ['sex','student_id']，必须为数据库字段
+					orderFields:['create_time'],//排序列 如 ['sex','student_id']，必须为数据库字段
 					orderDirs:['desc']//升序 asc,降序desc 如 性别 升序、学生编号降序 ['asc','desc']
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
@@ -249,8 +202,6 @@
 				execuserAddType:'add',//add为新增 join为当前登陆者加入
 				pickerOptions:  util.pickerOptions('datarange'),
 				tableHeight:300,
-				taskWorkloadVisible:false,
-				 
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -297,25 +248,21 @@
 					params.orderBy= orderBys.join(",")
 				}
 				if(this.filters.key!==""){
-					 params.key=this.filters.key
-				} 
+					params.fuzzy = '%'+this.filters.key+'%';
+					//params.xxx=this.filters.key
+				}else{
+					//params.xxx=xxxxx
+				}
 				if(this.isMy=='1'){
 					params.isMy='1'
 				}
-				this.load.list = true; 
+				this.load.list = true;
+				params.taskId = this.xmTask.id;
+				params.projectId=this.xmTask.projectId
 				if(this.isMy=='1'){
 					params.userid=this.userInfo.userid
 				}
-				if(this.filters.taskId){
-					params.taskId=this.filters.taskId
-				}
-				if(this.filters.projectId){
-					params.projectId=this.filters.projectId
-				}
-				if(this.filters.execUserBranchId){
-					params.execUserBranchId=this.filters.execUserBranchId
-				}
-				listXmTaskExecuserWithTask(params).then((res) => {
+				listXmTaskExecuser(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){
 						this.pageInfo.total = res.data.total;
@@ -761,52 +708,22 @@
 			formatToDoByStatus(row){
 				var status=row.status;
 				var msg="点我操作"
-				if(status=='1' && row.taskState=='1'){
-					msg="请及时填报工时";
-				}else if(status=='7' && ( row.taskState=='0' || row.taskState=='1')){
+				if(status=='1'){
+					msg="请申请验收";
+				}else if( row.status=='3' &&  row.settleStatus!='2' &&  row.settleStatus!='4' &&  row.settleStatus!='6' ){
+					msg="请申请结算";
+				}else if(status=='2' ){
+					msg="请给出验收结论";
+				}else if(status=='7' ){
 					msg="申请成为候选人";
-				}else if(status=='0' && ( row.taskState=='0' || row.taskState=='1')){
+				}else if(status=='0' ){
 					msg="申请成为执行人";
-				}else if(  status=='1' && (row.taskState=='2' || row.taskState=='3'|| row.taskState=='4' )){
+				}else if( row.status=='3' ||  row.status=='6' ){
 					msg="查看结算清单";
-				} 
+				} else if( row.status=='4'){
+					msg="再次申请验收";
+				}
 				return msg;
-			},
-			
-			formatterTaskStateDicts: function(cellValue){
-				if(!cellValue && cellValue!=='0'){
-					return []
-				}
-				var key="taskState";
-				if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0   ){
-					return [{id:cellValue,name:cellValue,className:'primary'}];
-				}
-				var list=this.dicts[key].filter(i=>i.id==cellValue)
-				if(list.length>0){
-					var data= {...list[0],className:'primary'}
-					if(data.id=='0'){
-						data.className='primary'
-					}else if(data.id=='1'){
-						data.className='warning'
-					}else if(data.id=='2'){
-						data.className='success'
-					}else if(data.id=='3'){
-						data.className='info'
-					} else{
-						data.className='danger'
-					}
-					return [data];
-				}else{
-					return [{id:cellValue,name:cellValue,className:'primary'}]
-				}
-
-			},
-			onTaskWorkloadSubmit(){
-				this.searchXmTaskExecusers();
-			},
-			
-			showWorkload(row){ 
-				this.taskWorkloadVisible=true;
 			}
 			/**end 自定义函数请在上面加**/
 
@@ -815,7 +732,7 @@
 		    'xm-task-execuser-add':XmTaskExecuserAdd,
 		    'xm-task-execuser-edit':XmTaskExecuserEdit,
 
-			XmProjectMCostUserList,XmTaskWorkloadEdit,
+			XmProjectMCostUserList,
 		    //在下面添加其它组件
 		},
 		mounted() {
@@ -824,9 +741,9 @@
 				this.getXmTaskExecusers();
 				});
 
-			initSimpleDicts('all',['projectTaskExecuserStatus','projectTaskSettleStatus','taskState']).then(res=>{
+			initSimpleDicts('all',['projectTaskExecuserStatus','projectTaskSettleStatus']).then(res=>{
 				this.dicts=res.data.data;
-			})  
+			})
 		}
 	}
 

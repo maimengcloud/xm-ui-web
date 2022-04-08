@@ -919,7 +919,7 @@ import XmTaskEdit from "./XmTaskEdit"; //修改界面
 import XmTaskMngBatch from "./XmTaskMngBatch"; //修改界面
 import XmTaskAgileKanban from "./XmTaskAgileKanban"; //敏捷看板
 import { mapGetters } from "vuex";
-import xmExecuserMng from "../xmTaskExecuser/XmTaskExecuserMng";
+import xmExecuserMng from "../xmTaskExecuser/XmTaskExecuserForTask";
 import xmSkillMng from "../xmTaskSkill/XmTaskSkillMng";
 import skillMng from "@/views/xm/core/skill/skillMng";
 import { batchAddSkill } from "@/api/xm/core/xmTaskSkill";

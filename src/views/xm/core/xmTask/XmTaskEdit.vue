@@ -259,7 +259,7 @@
 	import {batchAddSkill } from '@/api/xm/core/xmTaskSkill';
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
 	import XmTaskList from '../xmTask/XmTaskList';
-	import XmExecuserMng from '../xmTaskExecuser/XmTaskExecuserMng';
+	import XmExecuserMng from '../xmTaskExecuser/XmTaskExecuserForTask';
 	import XmGroupSelect from '../xmGroup/XmGroupSelect.vue';
 	import XmMenuRichDetail from '../xmMenu/XmMenuRichDetail';
 	import TagMng from "@/views/mdp/arc/tag/TagMng";

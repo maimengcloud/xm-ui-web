@@ -44,4 +44,6 @@ export const toTest = params => { return axios.post(`${base}/xm/core/xmTaskExecu
 export const testSuccess = params => { return axios.post(`${base}/xm/core/xmTaskExecuser/testSuccess`, params); };
 export const testFail = params => { return axios.post(`${base}/xm/core/xmTaskExecuser/testFail`, params); }; 
 
+export const listXmTaskExecuserWithTask = params => { return axios.get(`${base}/xm/core/xmTaskExecuser/listWithTask`, { params: params }); };
+
 
