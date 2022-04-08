@@ -916,8 +916,7 @@ import {
 } from "@/api/xm/core/xmTask";
 import XmTaskAdd from "./XmTaskAdd"; //新增界面
 import XmTaskEdit from "./XmTaskEdit"; //修改界面
-import XmTaskMngBatch from "./XmTaskMngBatch"; //修改界面
-import XmTaskAgileKanban from "./XmTaskAgileKanban"; //敏捷看板
+ import XmTaskAgileKanban from "./XmTaskAgileKanban"; //敏捷看板
 import { mapGetters } from "vuex";
 import xmExecuserMng from "../xmTaskExecuser/XmTaskExecuserForTask";
 import xmSkillMng from "../xmTaskSkill/XmTaskSkillMng";
@@ -2500,8 +2499,7 @@ export default {
     xmExchangeMng,
     xmMenuSelect,
     XmMenuRichDetail,
-    XmGantt,
-    XmTaskMngBatch,
+    XmGantt, 
     XmGroupSelect,
     XmProductSelect,
     XmTaskAgileKanban,
