@@ -4,8 +4,13 @@
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="任务名称、用户姓名模糊查询" clearable></el-input>
 			<el-input v-model="filters.taskId" style="width:150px;" placeholder="任务编号查询" clearable></el-input>
 			<el-input v-model="filters.projectId" style="width: 150px;" placeholder="项目编号" clearable></el-input>
- 			<el-input v-model="filters.execUserBranchId" style="width: 150px;" placeholder="归属公司" clearable></el-input>
-			
+ 			<el-input v-model="filters.execUserBranchId" style="width: 150px;" placeholder="归属公司" clearable></el-input> 
+ 			<el-select v-model="filters.status"   placeholder="候选状态" clearable>
+				 <el-option v-for="(item,index) in dicts.projectTaskExecuserStatus" :value="item.id" :label="item.name" :key="index"></el-option>
+			 </el-select>
+ 			<el-select v-model="filters.taskState"   placeholder="任务状态" clearable>
+				 <el-option v-for="(item,index) in dicts.taskState" :value="item.id" :label="item.name" :key="index"></el-option>
+			 </el-select>
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTaskExecusers">查询</el-button> 
 			<!-- <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button>  -->
 		</el-row>
@@ -204,6 +209,8 @@
 					execUserBranchId:'',
 					taskId:'',
 					projectId:'', 
+					status:'',
+					taskState:'',
 				},
 				xmTaskExecusers: [],//查询结果
 				pageInfo:{//分页数据
@@ -314,6 +321,13 @@
 				}
 				if(this.filters.execUserBranchId){
 					params.execUserBranchId=this.filters.execUserBranchId
+				}
+				
+				if(this.filters.taskState){
+					params.taskState=this.filters.taskState
+				}
+				if(this.filters.status){
+					params.status=this.filters.status
 				}
 				listXmTaskExecuserWithTask(params).then((res) => {
 					var tips=res.data.tips;

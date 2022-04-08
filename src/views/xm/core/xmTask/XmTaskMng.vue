@@ -7,7 +7,7 @@
         :class="{ 'flex-box': displayType == 'agil' }"
       >
         <el-row> 
-            <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
+            <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
               
 					<el-select style="width: 100px" v-model="filters.taskState" placeholder="状态" clearable>
 									<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.taskState" :key="index"></el-option> 
@@ -955,24 +955,7 @@ export default {
       } else {
         return null;
       }
-    },
-    curUser() {
-      return {
-        id: this.userInfo.userid,
-        name: this.userInfo.username,
-      };
-    },
-    progress_disable() {
-      if (
-        (this.isEmpty(this.editForm.preTaskid) ||
-          this.editForm.prerate == "100") &&
-        this.isEmpty(this.editForm.children)
-      ) {
-        return false;
-      } else {
-        return true;
-      }
-    },
+    }, 
     taskTime() {
       if (this.budgetDateRanger.length > 1) {
         const s = new Date(this.budgetDateRanger[0]);
@@ -1283,7 +1266,7 @@ export default {
           this.$notify.warning("请先选中项目")
           return;
         }
-      }
+      } 
       //params.ptype=this.ptype
 
       getTask(params)

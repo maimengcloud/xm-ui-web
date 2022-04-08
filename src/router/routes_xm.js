@@ -17,10 +17,7 @@ export default {
       children: [
         { path: 'xmProject/XmProjectAllMng', component: _import('xm/core/xmProject/XmProjectAllMng'), name: 'xmProjectAllMng', meta: { title: '项目总览' }},
         { path: 'xmProject/XmProjectMng', component: _import('xm/core/xmProject/XmProjectMng'), name: 'xmProjectMng', meta: { title: '项目(我的)' }},
-        { path: 'xmProjectState/XmProjectStateMng', component: _import('xm/core/xmProjectState/XmProjectStateMng'), name: 'XmProjectStateMng', meta: { title: '项目统计' }},
-        { path: 'xmBranchState/XmBranchStateMng', component: _import('xm/core/xmBranchState/XmBranchStateMng'), name: 'XmBranchStateMng', meta: { title: '所有项目汇总' }},
         { path: 'xmProject/XmProjectRecycle', component: _import('xm/core/xmProject/XmProjectRecycle'), name: 'XmProjectRecycle', meta: { title: '项目回收站' }},
-
         { path: 'xmRecord/XmRecord', component: _import('xm/core/xmRecord/XmRecord'), name: 'XmRecord', meta: { title: '项目动态' }},
         { path: 'xmProject/XmProjectTplMng', component: _import('xm/core/xmProject/XmProjectTplMng'), name: 'XmProjectTplMng', meta: { title: '项目模板' }},
         { path: 'xmEnvList/XmEnvListMng', component: _import('xm/core/xmEnvList/XmEnvListMng'), name: 'XmEnvListMng', meta: { title: '环境清单' }},
@@ -73,8 +70,7 @@ export default {
         { path: 'xmTask/XmTaskCenter', component: _import('xm/core/xmTask/XmTaskCenter'), name: 'xmTaskCenter', meta: { title: '任务大厅' }},
         { path: 'xmTask/XmMyTaskCenter', component: _import('xm/core/xmTask/XmMyTaskCenter'), name: 'xmMyTaskCenter', meta: { title: '任务(我的)' }},
         { path: 'xmTaskExecuser/XmTaskExecuserMng', component: _import('xm/core/xmTaskExecuser/XmTaskExecuserMng'), name: 'XmTaskExecuserMng', meta: { title: '候选人管理' }},
-        { path: 'xmTask/XmTaskCenterForProduct', component: _import('xm/core/xmTask/XmTaskCenterForProduct'), name: 'XmTaskCenterForProduct', meta: { title: '产品任务',hidden:true }},
-
+ 
       ]
     },
     {
@@ -149,9 +145,8 @@ export default {
       },
       // leaf: true,//只有一个节点
       children: [
-         { path: 'xmIteration/XmIterationMng', component: _import('xm/core/xmIteration/XmIterationMng'), name: 'XmIterationMng', meta: { title: '迭代管理' }},
-        { path: 'xmIterationMenu/XmIterationMenuMng', component: _import('xm/core/xmIterationMenu/XmIterationMenuMng'), name: 'XmIterationMenuMng', meta: { title: '需求迭代' }},
-      ]
+         { path: 'xmIteration/XmIterationMng', component: _import('xm/core/xmIteration/XmIterationMng'), name: 'XmIterationMng', meta: { title: '迭代管理',icon: 'flow' }},
+       ]
     },
     {
       path: '/xm/core',
