@@ -274,7 +274,7 @@
 					tags:[], 
 					users:null,//更新人
 					cusers:null,//创建人
-					createTimeRanger:[util.formatDate.format(fromStartTime,'yyyy-MM-dd'),util.formatDate.format(toStartTime,'yyyy-MM-dd')], 
+					createTimeRanger:[util.formatDate(fromStartTime,'yyyy-MM-dd'),util.formatDate(toStartTime,'yyyy-MM-dd')], 
 					flowState:'',//审核状态 0 未审核 1审核中 2 审核结束
 				},  
 				pickerOptions: {
@@ -942,7 +942,7 @@
 				var nullTimeDatas=[];
 				var tags=[];
 				var now=new Date();
-				var dateStr=util.formatDate.format(now,'yyyy-MM-dd');
+				var dateStr=util.formatDate(now,'yyyy-MM-dd');
 				datas.forEach(i=>{
 					var rowData=Object.assign({},i); 
 					 

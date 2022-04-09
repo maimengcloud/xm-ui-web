@@ -357,8 +357,8 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 				groupUserSelectVisible:false,
 				execGroupUserSelectVisible:false,
 				budgetDateRanger: [
-					util.formatDate.format(beginDate, "yyyy-MM-dd HH:mm:ss"),
-					util.formatDate.format(endDate, "yyyy-MM-dd HH:mm:ss")
+					util.formatDate(beginDate, "yyyy-MM-dd HH:mm:ss"),
+					util.formatDate(endDate, "yyyy-MM-dd HH:mm:ss")
 				], 
 				actDateRanger: [
 				],  

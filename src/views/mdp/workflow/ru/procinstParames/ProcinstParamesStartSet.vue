@@ -333,7 +333,7 @@
 				},
 				//新增界面数据 流程实例参数设置表
 				addForm: {
-					id:seq.sn(),isRefForm:'',monitors:'',sponsors:'',procInstId:'',formId:'',formDataId:'',procDefId:'',userid:'',startDate:util.formatDate.format(new Date(),'yyyy-MM-dd hh:mm:ss'),planFinishTime:'',mainQx:'',isTemplate:'',mainContext:'',mainTitle:'',deptid:'',categoryId:''
+					id:seq.sn(),isRefForm:'',monitors:'',sponsors:'',procInstId:'',formId:'',formDataId:'',procDefId:'',userid:'',startDate:util.formatDate(new Date(),'yyyy-MM-dd hh:mm:ss'),planFinishTime:'',mainQx:'',isTemplate:'',mainContext:'',mainTitle:'',deptid:'',categoryId:''
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				procdefParamesForm: {
@@ -603,7 +603,7 @@
 				this.addForm.sponsors=(this.procdef.sponsors!=null && this.procdef.sponsors!='')?this.procdef.sponsors:this.userInfo.userid;
 				var planFinishTime = new Date();
 				planFinishTime.setTime(planFinishTime.getTime() + 3600 * 1000 * 24 * 7);
-				this.addForm.planFinishTime=util.formatDate.format(planFinishTime,'yyyy-MM-dd hh:mm:ss')
+				this.addForm.planFinishTime=util.formatDate(planFinishTime,'yyyy-MM-dd hh:mm:ss')
 				this.addForm.tagIds=this.procdef.tagIds;
 				this.addForm.tagNames=this.procdef.tagNames;
 				this.addForm.mainQx=this.procdef.mainQx;
