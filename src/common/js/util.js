@@ -13,6 +13,60 @@ function padding(s, len) {
 
 export default {
 
+  /**
+   * 通过字典值获取其名称
+   * 界面上可以
+   * {{formatDicts(dicts,'xxx',scope.row.xxx)}}
+   * @param {*} dicts 
+   * @param {*} itemCode 
+   * @param {*} cellValue 
+   * @returns 
+   */
+  formatDicts: function(dicts,itemCode,cellValue){ 
+    let key=itemCode;
+    if( dicts[key]==undefined ||  dicts[key]==null ||  dicts[key].length==0   ){
+      return cellValue;
+    }
+    let dict=dicts[key].find(i=>i.id===cellValue)
+    if(dict){
+      return dict.name
+    }else{
+      return cellValue
+    } 
+  }, 
+
+  /**
+   * 通过字典值获取其名称，返回根值相同的字典,并自动计算其对应显示样式
+   * 界面上可以类似使用
+   * <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'xxxx',scope.row.xxxx)" :key="index" :type="item.className">{{item.name}}</el-tag>
+   * 
+   * @param {*} dicts 
+   * @param {*} itemCode 
+   * @param {*} cellValue 
+   * @returns [{id:'',name:'',className:''}]
+   */
+  formatDictsWithClass: function(dicts,itemCode,cellValue){ 
+    debugger;
+    var classNames=['info','primary','success','warning','danger'];
+    let key=itemCode;
+    if(!cellValue){
+      return [];
+    }
+    if(dicts[key]==undefined || dicts[key]==null || dicts[key].length==0   ){
+      var className=cellValue%5;
+      return [{id:cellValue,name:cellValue,className:classNames[cellValue%5]}];
+    }
+    let data=dicts[key].find(i=>i.id===cellValue)
+    let index=dicts[key].findIndex(i=>i.id===cellValue)
+    if(data){ 
+      data['className']=classNames[index%5]
+      return [data];
+    }else{
+      return [{id:cellValue,name:cellValue,className:classNames[cellValue%5]}]
+    }
+
+  }, 
+
   calcTableMaxHeight(cssSelector) {     
     var table=cssSelector;
     if(typeof cssSelector == 'string'){
@@ -157,10 +211,8 @@ export default {
    */
   toLine(name) {
     return name.replace(/([A-Z])/g, "_$1").toLowerCase();
-  },
-  formatDate: {
-
-    format: function(date, pattern) {
+  }, 
+  formatDate: function(date, pattern) {
       pattern = pattern || DEFAULT_PATTERN
       return pattern.replace(SIGN_REGEXP, function($0) {
         switch ($0.charAt(0)) {
@@ -183,7 +235,7 @@ export default {
         }
       })
     },
-    parse: function(dateString, pattern) {
+    parseDate: function(dateString, pattern) {
       var matchs1 = pattern.match(SIGN_REGEXP)
       var matchs2 = dateString.match(/(\d)+/g)
       if (matchs1.length == matchs2.length) {
@@ -215,9 +267,7 @@ export default {
         return _date
       }
       return null
-    },
-
-  },
+    }, 
 
   //type date/daterange
   pickerOptions: function(type) {
