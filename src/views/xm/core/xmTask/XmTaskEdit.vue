@@ -202,9 +202,9 @@
  							<el-checkbox v-model="editForm.oshare" true-label="1" false-label="0" id="oshare" @change="editXmTaskSomeFields(editForm,'oshare',$event)">开通分享赚</el-checkbox>  
 						</el-form-item>
 
-						<el-form-item label="分享赚佣金" prop="shareFee" v-if="editForm.oshare==='1'">
+						<el-form-item label="分享佣金" prop="shareFee" v-if="editForm.oshare==='1'">
  							<el-input type="number" style="width:150px;"    v-model="editForm.shareFee" :precision="2" :step="100" :min="0" placeholder="分享赚佣金" @change="editXmTaskSomeFields(editForm,'shareFee',$event)"></el-input  >   元
-							 <font color="blue">开通分享赚后起效，佣金从任务预算中扣除，如果未发生分享佣金，则不扣除。</font>
+							 <font color="blue">开通分享赚后起效，佣金从任务预算中扣除，如果未发生分享佣金，则不扣除。一般建议为任务佣金的1%-5%</font>
 						</el-form-item>
 						<el-steps :active="calcTaskStep" align-center simple>
 							<el-step title="发布" description="任务创建成功后即发布"></el-step>

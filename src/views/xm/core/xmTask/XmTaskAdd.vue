@@ -247,7 +247,7 @@
 
 						<el-form-item label="分享赚佣金" prop="shareFee" v-if="addForm.oshare==='1'">
  							<el-input type="number" style="width:150px;"    v-model="addForm.shareFee" :precision="2" :step="100" :min="0" placeholder="分享赚佣金" ></el-input  >   元
-							 <font color="blue">开通分享赚后起效，佣金从任务预算中扣除，如果未发生分享佣金，则不扣除。</font>
+							 <font color="blue">开通分享赚后起效，佣金从任务预算中扣除，如果未发生分享佣金，则不扣除。一般建议为任务佣金的1%-5%</font>
 						</el-form-item>
 					 
 						<el-steps :active="calcTaskStep" align-center simple>
