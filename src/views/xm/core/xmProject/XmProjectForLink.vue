@@ -225,7 +225,7 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue';
               let tips = res.data.tips;
               if(tips.isOk){
                 if(this.sels.length>0){
-                    this.searchXmProductProjectLinks();
+                    this.getXmProjects();
                 }
                 this.editFormBak=[...this.editForm]
               }else{
