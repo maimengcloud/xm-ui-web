@@ -43,6 +43,7 @@
 				<el-menu-item  index="缺陷">
 					 <span slot="title"><i class="el-icon-question"></i>缺陷</span>
 				</el-menu-item> 
+				<!--
 				<el-submenu index="团队">
 					<template slot="title"><i class="el-icon-user-solid"></i>团队</template>
 						<el-menu-item   index="产品团队">
@@ -52,15 +53,26 @@
 							<span slot="title"><i class="el-icon-solid"></i>项目团队</span>
 						</el-menu-item> 
 				</el-submenu >
+				-->
+				<el-menu-item index="项目团队">
+							<span slot="title"><i class="el-icon-user-solid"></i>团队</span>
+				</el-menu-item> 
+				<!--
 				<el-submenu index="计划">
 					<template slot="title"><i class="el-icon-odometer"></i>计划</template>
+						
 						<el-menu-item   index="产品计划">
 							<span slot="title"><i class="el-icon-view"></i>产品计划</span> 
 						</el-menu-item>
+						
 						<el-menu-item index="项目计划">
 							<span slot="title"><i class="el-icon-video-camera"></i>项目计划</span>
 						</el-menu-item> 
 				</el-submenu >
+				-->
+				<el-menu-item index="项目计划">
+							<span slot="title"><i class="el-icon-odometer"></i>计划</span>
+						</el-menu-item> 
 				<el-submenu index="财务" class="hidden-sm-and-down">
 					<template slot="title"><i class="el-icon-coin"></i>财务</template> 
 						<el-menu-item   index="合同管理">
