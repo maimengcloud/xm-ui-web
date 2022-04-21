@@ -99,7 +99,7 @@
 						<el-col  v-cloak v-for="(p,i) in ScreenData" :key="i" :xl="8" :lg="8" :md="8" :sm="12">
 							<el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always" id="prj-view-box">
 								<div class="project-name" title="这是项目名称">{{p.name}}</div>
-								<div class="project-id"><span title="项目代号">{{p.code}} </span><font title="项目状态" :color="p.status=='7'?'green':'blue'">{{formatProjectStatus(p.status)}}</font>
+								<div class="project-id"><span title="项目代号">{{p.code}} </span><font title="项目状态" :color="p.status=='7'?'green':'blue'">{{formatProjectStatus(dicts,'projectStatus',p.status)}}</font>
 									<el-link id="prj-del-btn" type="danger" style="font-size:14px;float:right;margin-left:2px;"  title="删除项目" @click.stop="handleDel(p)" v-loading="load.add">删除</el-link>
 									<el-link id="prj-copy-btn" type="primary" style="font-size:14px;float:right;margin-left:2px;"  title="通过复制快速创建新项目" @click.stop="onCopyToBtnClick(p)" v-loading="load.add">复制</el-link> 
 									<el-link id="prj-calc-btn" type="warning" style="font-size:14px;float:right;margin-left:2px;"  title="统计项目的工作量、进度、需求、bugs等数据" @click.stop="loadTasksToXmProjectState(p)" v-loading="load.add">统计</el-link>
@@ -203,13 +203,7 @@
 						</el-table-column>
 						<el-table-column prop="bizFlowState" label="审批状态" min-width="80" >
 							<template slot-scope="scope">
-								<el-tooltip  v-if="scope.row.flowState!='' && scope.row.flowState!=null" :content="showApprovaInfo(scope.row)" placement="bottom" effect="light">
-								<el-tag v-if="scope.row.flowState=='0' || scope.row.flowState==null ">未发审</el-tag> 
-								<el-tag v-else-if="scope.row.flowState=='1'">审核中</el-tag> 
-								<el-tag v-else-if="scope.row.flowState=='2'">已通过</el-tag>
-								<el-tag v-else-if="scope.row.flowState=='3'">未通过</el-tag>
-								<el-tag v-else-if="scope.row.flowState=='4'">已取消</el-tag> 
-								</el-tooltip> 
+								<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'bizFlowState',scope.row.bizFlowState)" :key="index" :type="item.className">{{item.name}}</el-tag>
 							</template>
 						</el-table-column>
 						<el-table-column label="操作" width="200" fixed="right">
@@ -414,6 +408,7 @@
 			}
 		},//end data
 		methods: {
+			...util,
 			handleSizeChange(pageSize) { 
 				this.pageInfo.pageSize=pageSize; 
 				this.getXmProjects();
@@ -873,7 +868,7 @@
 				this.filters.productName=this.$route.params.productName;
 			}
 			this.$nextTick(() => {    
-				initSimpleDicts('all',['projectType','priority','projectStatus']).then(res=>{
+				initSimpleDicts('all',['projectType','priority','projectStatus','bizFlowState']).then(res=>{
 					this.dicts=res.data.data;
 				})
                 this.maxTableHeight = this.source == 'GZT' ?  this.maxTableHeight : util.calcTableMaxHeight(this.$refs.table.$el);
