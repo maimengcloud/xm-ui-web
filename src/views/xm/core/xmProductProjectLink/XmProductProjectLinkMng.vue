@@ -17,7 +17,7 @@
 			<el-table ref="xmProductProjectLink" :data="xmProductProjectLinks" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  				<el-table-column prop="name" v-if="xmProduct" label="包含的项目名称" min-width="150" ></el-table-column>
 				<el-table-column prop="productName" v-if="selProject" label="包含的产品名称" min-width="150" ></el-table-column>
-				<el-table-column prop="seq" label="顺序" min-width="80" >
+				<el-table-column prop="seq" label="顺序" min-width="80" sortable>
 					<template scope="scope">
 				     <span class="cell-text">  {{scope.row.seq}}  </span>
                      <span class="cell-bar"><el-input style="display:inline;" title="0-999之间，数值越小越靠前" v-model="scope.row.seq" placeholder="" @change="editSomeFields(scope.row,'seq',$event)" :maxlength="22"></el-input></span>
