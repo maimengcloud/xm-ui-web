@@ -195,8 +195,8 @@
 					</el-tab-pane>
 					<el-tab-pane label="众包" name="8" v-if="editForm.ntype!='1'">
 					 	<el-form-item label="" prop="crowd"> 
+							 <el-checkbox v-model="editForm.crowd" true-label="1" false-label="0" id="crowd" @change="editXmTaskSomeFields(editForm,'crowd',$event)">开通众包</el-checkbox>   
 							<el-checkbox v-model="editForm.toTaskCenter" true-label="1" false-label="0" id="toTaskCenter" @change="editXmTaskSomeFields(editForm,'toTaskCenter',$event)">发布到互联网任务大厅</el-checkbox> 
-							<el-checkbox v-model="editForm.crowd" true-label="1" false-label="0" id="crowd" @change="editXmTaskSomeFields(editForm,'crowd',$event)">开通众包</el-checkbox>   
 						</el-form-item>
 						<el-form-item label="分享赚" prop="oshare">
  							<el-checkbox v-model="editForm.oshare" true-label="1" false-label="0" id="oshare" @change="editXmTaskSomeFields(editForm,'oshare',$event)">开通分享赚</el-checkbox>  

@@ -236,9 +236,19 @@
 							</el-select>
 						</el-form-item>
 					</el-tab-pane>
-					<el-tab-pane label="众包" name="8" v-if="addForm.ntype!='1' && addForm.taskOut=='1'">
-					 
-					<el-checkbox v-model="addForm.toTaskCenter" true-label="1" false-label="0" id="taskOut">发布到互联网任务大厅</el-checkbox>  
+					<el-tab-pane label="众包" name="8" v-if="addForm.ntype!='1' ">
+					 	<el-form-item label="" prop="crowd">  
+							<el-checkbox v-model="addForm.crowd" true-label="1" false-label="0" id="crowd" >开通众包</el-checkbox> 
+							<el-checkbox v-model="addForm.toTaskCenter" true-label="1" false-label="0" id="toTaskCenter">发布到互联网任务大厅</el-checkbox>  
+						</el-form-item>
+						<el-form-item label="分享赚" prop="oshare">
+ 							<el-checkbox v-model="addForm.oshare" true-label="1" false-label="0" id="oshare">开通分享赚</el-checkbox>  
+						</el-form-item>
+
+						<el-form-item label="分享赚佣金" prop="shareFee" v-if="addForm.oshare==='1'">
+ 							<el-input type="number" style="width:150px;"    v-model="addForm.shareFee" :precision="2" :step="100" :min="0" placeholder="分享赚佣金" ></el-input  >   元
+							 <font color="blue">开通分享赚后起效，佣金从任务预算中扣除，如果未发生分享佣金，则不扣除。</font>
+						</el-form-item>
 					 
 						<el-steps :active="calcTaskStep" align-center simple>
 							<el-step title="发布" description="任务创建成功后即发布"></el-step>
@@ -364,7 +374,7 @@
 					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'3',sortLevel:'0',executorUserid:'',executorUsername:'',
 					preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',taskOut:'0',
 					rate:0,budgetAt:'',budgetWorkload:'',actAt:'',actWorkload:'',taskState:'0',taskClass:'0',toTaskCenter:'0',actStartTime:'',actEndTime:'',taskType:'4',planType:'w2',settleSchemel:'1',ntype:'0',childrenCnt:0,
-					uniInnerPrice:80,uniOutPrice:100,
+					uniInnerPrice:80,uniOutPrice:100,crowd:'0',oshare:'0',shareFee:0
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
  				menuVisible:false,
