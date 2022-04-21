@@ -240,14 +240,14 @@
 					 	<el-form-item> 
 							 <el-checkbox v-model="addForm.taskOut" true-label="1" false-label="0" id="taskOut" >外包</el-checkbox>   
  						 
-							 <el-checkbox v-model="addForm.crowd" true-label="1" false-label="0" id="crowd"  >开通众包</el-checkbox>   
+							 <el-checkbox v-model="addForm.crowd" true-label="1" false-label="0" id="crowd"  v-if="addForm.taskOut==='1'">开通众包</el-checkbox>   
 						 
-							<el-checkbox v-model="addForm.toTaskCenter" true-label="1" false-label="0" id="toTaskCenter"  >发布到互联网任务大厅</el-checkbox> 
+							<el-checkbox v-model="addForm.toTaskCenter" true-label="1" false-label="0" id="toTaskCenter"  v-if="addForm.taskOut==='1'">发布到互联网任务大厅</el-checkbox> 
 						</el-form-item>
-						<el-form-item label="分享赚" prop="oshare">
+						<el-form-item label="分享赚" prop="oshare" v-if="addForm.taskOut==='1'">
  							<el-checkbox v-model="addForm.oshare" true-label="1" false-label="0" id="oshare"  >开通分享赚</el-checkbox>  
 						</el-form-item> 
-						<el-form-item label="分享佣金" prop="shareFee" v-if="addForm.oshare==='1'">
+						<el-form-item label="分享佣金" prop="shareFee" v-if="addForm.oshare==='1' && addForm.taskOut==='1'">
  							<el-input type="number" style="width:150px;"    v-model="addForm.shareFee" :precision="2" :step="100" :min="0" placeholder="分享赚佣金"  ></el-input  >   元
 							 <font color="blue">开通分享赚后起效，佣金从任务预算中扣除，如果未发生分享佣金，则不扣除。一般建议为任务佣金的1%-5%</font>
 						</el-form-item>
