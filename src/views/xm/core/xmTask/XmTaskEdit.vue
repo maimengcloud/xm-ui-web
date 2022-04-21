@@ -98,7 +98,6 @@
 							<el-col :span="10">
 								<el-form-item  label="" prop="milestone">  
 									<el-checkbox v-model="editForm.milestone" true-label="1" false-label="0" @change="editXmTaskSomeFields(editForm,'milestone',$event)">里程碑</el-checkbox>
-									<el-checkbox v-model="editForm.taskOut" @change="editXmTaskSomeFields(editForm,'taskOut',$event)" true-label="1" false-label="0"  >众包</el-checkbox>
 								</el-form-item> 
 							</el-col> 
 							<el-col :span="14"> 
@@ -170,17 +169,17 @@
 					<el-tab-pane label="工时" name="5"> 
 						 <xm-task-workload-record :visible="visible" :xm-task="editForm" ></xm-task-workload-record>
 					</el-tab-pane>
-					<el-tab-pane label="成本" name="6"> 
+					<el-tab-pane label="预算金额" name="6"> 
+						<el-form-item label="自研工时单价" prop="uniInnerPrice">
+							 <el-input type="number" style="width:150px;"   v-model="editForm.uniInnerPrice" :precision="2" :step="10" :min="0" placeholder="自研工时单价" @change="editXmTaskSomeFields(editForm,'uniInnerPrice',$event)"></el-input  >   元/h
+							 
+						</el-form-item> 
+						<el-form-item label="外包、众包单价" prop="uniOutPrice"> 
+								 <el-input type="number" style="width:150px;"   v-model="editForm.uniOutPrice" :precision="2" :step="10" :min="0" placeholder="外发工时单价" @change="editXmTaskSomeFields(editForm,'uniOutPrice',$event)"></el-input  >   元/h
+						 
+						</el-form-item> 
 						<el-form-item label="预估金额" prop="budgetAt">
-							<el-row v-if="editForm.taskOut!=='1'">
-								工时单价&nbsp;<el-input type="number" style="width:150px;"   v-model="editForm.uniInnerPrice" :precision="2" :step="10" :min="0" placeholder="工时单价" @change="editXmTaskSomeFields(editForm,'uniInnerPrice',$event)"></el-input  >   元/h
-							</el-row> 
-							<el-row v-if="editForm.taskOut==='1'">
-								工时单价&nbsp;<el-input type="number" style="width:150px;"   v-if="editForm.taskOut==='1'" v-model="editForm.uniOutPrice" :precision="2" :step="10" :min="0" placeholder="外发工时单价" @change="editXmTaskSomeFields(editForm,'uniOutPrice',$event)"></el-input  >   元/h
-							</el-row>
-							<el-row>
-								预估金额&nbsp;<el-input type="number" style="width:150px;"    v-model="editForm.budgetAt" :precision="2" :step="100" :min="0" placeholder="预算金额" @change="editXmTaskSomeFields(editForm,'budgetAt',$event)"></el-input  >   元
-							</el-row>
+						 	<el-input type="number" style="width:150px;"    v-model="editForm.budgetAt" :precision="2" :step="100" :min="0" placeholder="预算金额" @change="editXmTaskSomeFields(editForm,'budgetAt',$event)"></el-input  >   元 
 						</el-form-item> 
 
 					</el-tab-pane>
@@ -194,10 +193,19 @@
 							</el-select>
 						</el-form-item>
 					</el-tab-pane>
-					<el-tab-pane label="众包" name="8" v-if="editForm.ntype!='1' && editForm.taskOut=='1'">
-					 
-					<el-checkbox v-model="editForm.toTaskCenter" true-label="1" false-label="0" id="taskOut" @change="editXmTaskSomeFields(editForm,'taskOut',$event)">发布到互联网任务大厅</el-checkbox>  
-					 
+					<el-tab-pane label="众包" name="8" v-if="editForm.ntype!='1'">
+					 	<el-form-item label="" prop="crowd"> 
+							<el-checkbox v-model="editForm.toTaskCenter" true-label="1" false-label="0" id="toTaskCenter" @change="editXmTaskSomeFields(editForm,'toTaskCenter',$event)">发布到互联网任务大厅</el-checkbox> 
+							<el-checkbox v-model="editForm.crowd" true-label="1" false-label="0" id="crowd" @change="editXmTaskSomeFields(editForm,'crowd',$event)">开通众包</el-checkbox>   
+						</el-form-item>
+						<el-form-item label="分享赚" prop="oshare">
+ 							<el-checkbox v-model="editForm.oshare" true-label="1" false-label="0" id="oshare" @change="editXmTaskSomeFields(editForm,'oshare',$event)">开通分享赚</el-checkbox>  
+						</el-form-item>
+
+						<el-form-item label="分享赚佣金" prop="shareFee" v-if="editForm.oshare==='1'">
+ 							<el-input type="number" style="width:150px;"    v-model="editForm.shareFee" :precision="2" :step="100" :min="0" placeholder="分享赚佣金" @change="editXmTaskSomeFields(editForm,'shareFee',$event)"></el-input  >   元
+							 <font color="blue">开通分享赚后起效，佣金从任务预算中扣除，如果未发生分享佣金，则不扣除。</font>
+						</el-form-item>
 						<el-steps :active="calcTaskStep" align-center simple>
 							<el-step title="发布" description="任务创建成功后即发布"></el-step>
 							<el-step title="竞标" description="候选人参与竞标，或者由责任人主动设置候选人"></el-step>
@@ -345,7 +353,7 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'3',sortLevel:'0',executorUserid:'',executorUsername:'',
 					preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',taskOut:'0',
 					rate:0,budgetAt:'',budgetWorkload:'',actAt:'',actWorkload:'',taskState:'0',taskClass:'0',toTaskCenter:'0',actStartTime:'',actEndTime:'',taskType:'4',planType:'w2',settleSchemel:'1',ntype:'0',childrenCnt:0,wtype:'',rworkload:0,
-					uniInnerPrice:80,uniOutPrice:100,
+					uniInnerPrice:80,uniOutPrice:100,crowd:'0',oshare:'0',shareFee:0
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
  				menuVisible:false,
