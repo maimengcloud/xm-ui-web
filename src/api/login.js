@@ -7,13 +7,14 @@ import config from '@/common/config'
 let base=config.getOauth2LoginBasePath();
 
 //let base='';
-export function doLoginByUserloginid(userloginid, password,grantType,authType,deptid) {
+export function doLoginByUserloginid(userloginid, password,grantType,authType,deptid,userid) {
   removeToken();
   const data = {
     userloginid: userloginid,
     password: password, 
     authType:authType,
-    deptid:deptid
+    deptid:deptid,
+    userid:userid,
   }
   return axios({
     url: base+'/login/token?grantType='+grantType,
@@ -55,6 +56,14 @@ export function checkPhoneno(phoneno ) {
     data
   })
 }
+export function queryByUserloginid( params ) {  
+  return axios({
+    url: base+'/user/queryByUserloginid',
+    method: 'get',
+    params:params
+  })
+}
+
 export function doRegister( userInfo ) {
   removeToken();
   const data = {
@@ -79,6 +88,7 @@ export function resetPasswordByPhoneno( userInfo ) {
     newPassword:userInfo.newPassword,
     phoneno:userInfo.phoneno,
     smsCode:userInfo.smsCode, 
+    userid:userInfo.userid
   }
   return axios({
     url: base+'/user/password/reset?type=sms',
@@ -107,5 +117,29 @@ export function getUserInfo(params) {
     url: base+'/user/info',
     method: 'post',
     data
+  })
+}
+
+/**
+ * 发送邮件
+ */
+
+export function sendEmail(params) { 
+  const data=params;
+  return axios({
+    url: base+'/user/sendEmail',
+    method: 'post',
+    data
+  })
+}
+/**
+ * 验证邮箱
+ */
+
+export function validEmailCode(params) {  
+  return axios({
+    url: base+'/user/validEmailCode',
+    method: 'get',
+    params:params
   })
 }

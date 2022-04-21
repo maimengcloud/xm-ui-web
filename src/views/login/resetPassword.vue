@@ -13,6 +13,11 @@
         <el-input name="phoneno" type="text" v-model="loginForm.phoneno" autoComplete="on" placeholder="手机号码"> 
           <el-button slot="append" @click.prevent="sendPhonenoSmsCode">发送验证码</el-button>
         </el-input>
+        
+        <span v-if="phonenoUsers!=null && phonenoUsers.length>0"> 该手机号有{{phonenoUsers.length}}个账户,请选择需要重置密码的账户<font color="blue"></font>
+        <br>
+         <el-tag v-if="selectUser && selectUser.userid">已选择：{{selectUser.username}}</el-tag> <el-button type="text"  @click="phonenoUsersVisible=true">选择账户</el-button>
+        </span>
       </el-form-item>
       <el-form-item prop="smsCode"  label="短信验证码"> 
         <el-input name="smsCode" type="text" v-model="loginForm.smsCode" autoComplete="on" placeholder="短信验证码">
@@ -28,6 +33,27 @@
       </el-form-item>
       <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleResetPasswordByPhoneno">重置密码</el-button> 
     </el-form>
+    
+	<el-dialog
+	  title="查看已有账户"
+	  :visible.sync="phonenoUsersVisible"
+	  width="600" append-to-body> 
+	   <el-table :data="phonenoUsers">
+       <el-table-column prop="userid" label="编号">
+       </el-table-column> 
+       <el-table-column prop="displayUserid" label="登录账号">
+       </el-table-column>
+       <el-table-column prop="username" label="姓名">
+       </el-table-column> 
+       <el-table-column prop="branchName" label="企业">
+       </el-table-column>
+       <el-table-column label="操作">
+         <template slot-scope="scope">
+         <el-button type="primary" @click="onUserSelect(scope.row)">选中</el-button>
+         </template>
+       </el-table-column>
+     </el-table>
+	</el-dialog> 
 	<el-dialog
 	  title="请选择一个部门进行登陆"
 	  :visible.sync="deptSelectVisible"
@@ -63,13 +89,13 @@
 
 <script> 
 import { sendSmsCode } from '@/api/sms/sms';
-import { checkPhoneno,resetPasswordByPhoneno } from '@/api/login';
+import { checkPhoneno,resetPasswordByPhoneno,queryByUserloginid } from '@/api/login';
 
 import LangSelect from '@/components/LangSelect';
 import SocialSign from './socialsignin';
 import BranchAdd from './BranchAdd';
 import { mapGetters } from 'vuex'; 
-import md5 from 'js-md5';
+import md5 from 'js-md5'; 
 
 export default {
   components: { LangSelect, SocialSign, BranchAdd },
@@ -114,6 +140,9 @@ export default {
       deptSelectVisible:false,//显示选择部门对话框
       userDeptid:'',//选中的部门编号 
       addBranchFormVisible:false,  //显示添加机构对话框 
+      phonenoUsersVisible:false,
+      phonenoUsers:[],
+      selectUser:null,//选中的账户
     }
   },
   methods: {
@@ -137,24 +166,22 @@ export default {
         phoneno:this.loginForm.phoneno,
         scene:"changePassword"
       } 
-      checkPhoneno(this.loginForm.phoneno).then(res0=>{
-        if(res0.data.tips.isOk==false){
-          sendSmsCode(params).then(res=>{
-            if(res.data.tips.isOk){
-              this.$message.success(res.data.tips.msg);
-            }else{
-              this.$message.error(res.data.tips.msg);
-            }
-          })
-        }else{
-          this.$message.error("手机号码不存在");
-        }
-      })
-      
+       queryByUserloginid({userloginid:this.loginForm.phoneno,idType:"phoneno"}).then(res0=>{
+          if(res0.data.tips.isOk){ 
+            this.phonenoUsers=res0.data.data; 
+            sendSmsCode(params).then(res=>{
+              if(res.data.tips.isOk){
+                this.$message.success(res.data.tips.msg);
+              }else{
+                this.$message.error(res.data.tips.msg);
+              }
+            })  
+          }
+        })  
     }, 
     
     handleResetPasswordByPhoneno() {
-      this.loading = true 
+     
       this.$refs.loginForm.validate(valid => {
         if (valid) { 
           let params={
@@ -162,6 +189,22 @@ export default {
               phoneno:this.loginForm.phoneno,
               smsCode:this.loginForm.smsCode
           } 
+          if(this.phonenoUsers && this.phonenoUsers.length>0){
+            if(!this.selectUser || !this.selectUser.userid){
+              
+              if(this.phonenoUsers.length==1){
+                this.selectUser=this.phonenoUsers[0]
+              }else{
+                this.$notify({position:'bottom-left',showClose:true,message:'请选一个账户进行重置密码',type:'warning'})
+                return;
+              }
+              
+            }
+          }
+          if(this.selectUser && this.selectUser.userid){
+             params.userid=this.selectUser.userid
+          } 
+           this.loading = true 
           resetPasswordByPhoneno(params).then(res=>{
             this.loading = false  
             if(res.data.tips.isOk){
@@ -232,6 +275,10 @@ export default {
       //     this.$router.push({ path: '/' })
       //   })
       // }
+    },
+    onUserSelect(user){
+      this.selectUser=user
+      this.phonenoUsersVisible=false; 
     }
   },
   created() {
