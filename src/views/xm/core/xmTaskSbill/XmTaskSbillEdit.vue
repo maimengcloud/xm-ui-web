@@ -1,43 +1,79 @@
 <template>
-	<section  class="page-container padding">
-	    <el-row class="page-header">
-	    </el-row>
+	<section  class="padding"> 
 		<el-row class="page-main">
 		<!--编辑界面 XmTaskSbill 任务结算表-->
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">
-<!--				<el-form-item label="结算单据编号" prop="id">
-					<el-input v-model="editForm.id" placeholder="结算单据编号"></el-input>
-				</el-form-item>-->
-        <el-form-item label="选择项目：" prop="projectId">
-<!--          <el-button v-if="!editForm.projectId" type="primary" @click="projSelVisible=true" round>选择项目</el-button>-->
-          <div v-if="!editForm.projectId">
-            <xm-project-select style="display:inline;" :auto-select="false" @row-click="onProjectRowClick(arguments)" @clear="onProjectClear" ></xm-project-select>
-          </div>
-          <span v-else>{{editForm.projectId}}</span>
-        </el-form-item>
-        <el-form-item label="项目名称：" prop="projectName">
-          <el-input disabled v-model="editForm.projectName" placeholder="项目名称"></el-input>
-        </el-form-item>
-				<el-form-item label="结算单标题：" prop="title" :rules="[{ required: true, message: '结算单标题不能为空'}]">
-					<el-input v-model="editForm.title" placeholder="结算单标题"></el-input>
-				</el-form-item>
-<!--				<el-form-item label="金额=工时表中结算金额之和" prop="amt">
-					<el-input v-model="editForm.amt" placeholder="金额=工时表中结算金额之和"></el-input>
-				</el-form-item>
-				<el-form-item label="创建时间" prop="ctime">
-					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.ctime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
-				</el-form-item>
-				<el-form-item label="创建人编号" prop="cuserid">
-					<el-input v-model="editForm.cuserid" placeholder="创建人编号"></el-input>
-				</el-form-item>
-				<el-form-item label="创建人姓名" prop="cusername">
-					<el-input v-model="editForm.cusername" placeholder="创建人姓名"></el-input>
-				</el-form-item>-->
+				<el-row>
+					<el-col :span="8">
+						<el-form-item label="编号/标题" prop="id">
+							<el-input v-model="editForm.id" placeholder="结算单据编号" disabled></el-input>
+						</el-form-item> 
+					</el-col>
+					<el-col :span="16">
+						<el-form-item label="" prop="title" :rules="[{ required: true, message: '结算单标题不能为空'}]" label-width="0px">
+							<el-input v-model="editForm.title" placeholder="结算单标题"></el-input>
+						</el-form-item>
+					</el-col>
+				</el-row>
+				<el-row>
+					<el-col :span="8">
+						<el-form-item label="审核状态" prop="id">
+							 <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'bizFlowState',editForm.bizFlowState)" :key="index" :type="item.className">{{item.name}}</el-tag>
+						</el-form-item> 
+					</el-col>
+					<el-col :span="16">
+						<el-form-item label="结算项目" prop="projectId">
+				<!--          <el-button v-if="!editForm.projectId" type="primary" @click="projSelVisible=true" round>选择项目</el-button>-->
+						<div v-if="!editForm.projectId">
+							<xm-project-select style="display:inline;" :auto-select="false" @row-click="onProjectRowClick(arguments)" @clear="onProjectClear" ></xm-project-select>
+						</div>
+						<span v-else>{{editForm.projectId}} &nbsp;{{editForm.projectName}}</span>
+						</el-form-item> 
+					</el-col>
+				</el-row>
+        
+					<el-row>
+					<el-col :span="8"> 
+						<el-form-item label="结算金额" prop="amt">
+							￥{{editForm.amt}}元
+						</el-form-item> 
+					</el-col>
+					<el-col :span="8"> 
+						<el-form-item label="提交时间" prop="ctime">
+							<el-date-picker type="date" placeholder="选择日期" v-model="editForm.ctime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
+						</el-form-item> 
+					</el-col>
+					<el-col :span="8"> 
+						<el-form-item label="提交人" prop="cusername">
+							<el-input v-model="editForm.cusername" placeholder="创建人姓名"></el-input>
+						</el-form-item> 
+					</el-col>
+				</el-row> 
 				<el-form-item label="备注：" prop="remark">
-          <el-input v-model="editForm.remark" type="textarea" :autosize="{ minRows: 3}" placeholder="请输入备注"
-                    maxlength="200" show-word-limit></el-input>
+					<el-input v-model="editForm.remark" type="textarea" :autosize="{ minRows: 3}" placeholder="请输入备注" maxlength="200" show-word-limit></el-input>
 				</el-form-item>
-        <el-form-item>
+				<el-tabs value="1" accordion> 
+					
+					<el-tab-pane label="结算工时列表" name="1"  v-if="opType==='edit'"> 	
+						<el-row v-if="editForm.id">  
+							 <XmTaskWorkloadMng :sbill-id="editForm.id"></XmTaskWorkloadMng>
+						</el-row>  
+					</el-tab-pane> 
+					
+					<el-tab-pane label="审批流" name="2" v-if="opType==='edit'"> 	
+						<el-row  v-if="editForm.id">   
+							<task-mng   ref="currFlow" :biz-parent-pkid="editForm.projectId" :biz-pkid="editForm.id" @submit="afterFlowSubmit"> </task-mng>  
+ 						</el-row>  
+					</el-tab-pane> 
+					
+					
+					<el-tab-pane label="历史审批流" name="3"  v-if="opType==='edit'"> 	
+						<el-row v-if="editForm.id">   
+ 							<procinst-mng   ref="hisFlow" isAll="true" :biz-parent-pkid="editForm.projectId" :biz-pkid="editForm.id"></procinst-mng> 
+						</el-row>  
+					</el-tab-pane> 
+				</el-tabs>
+        <el-form-item v-if="opType==='add'">
           <el-button @click.native="handleCancel">取消</el-button>
           <el-button v-loading="load.edit" type="primary" @click.native="saveSubmit" :disabled="load.edit==true">提交</el-button>
         </el-form-item>
@@ -94,12 +130,16 @@
 	import { mapGetters } from 'vuex';
   //import SelectXmProject from "./SelectXmProject";
   import XmProjectSelect from "@/views/xm/core/components/XmProjectSelect";
+  import XmTaskWorkloadMng from "@/views/xm/core/xmTaskWorkload/XmTaskWorkloadMng";
+
+	import TaskMng from '@/views/mdp/workflow/ru/task/TaskMng'; 
+	import ProcinstMng from '@/views//mdp/workflow/hi/procinst/ProcinstMng';
 
 	export default {
     components: {
       //XmTaskSbillEdit,
       //SelectXmProject,
-      XmProjectSelect,
+      XmProjectSelect,XmTaskWorkloadMng,TaskMng,ProcinstMng
 
     },
 		computed: {
@@ -142,6 +182,7 @@
 			}//end return
 		},//end data
 		methods: {
+			...util,
 			// 取消按钮点击 父组件监听@cancel="editFormVisible=false" 监听
 			handleCancel:function(){
 				this.$refs['editFormRef'].resetFields();
@@ -225,7 +266,7 @@
 		},//end method
 		mounted() {
 		    this.$nextTick(() => {
-                //initSimpleDicts('all',['sex','gradeLvl']).then(res=>this.dicts=res.data.data);
+                initSimpleDicts('all',['bizFlowState']).then(res=>this.dicts=res.data.data);
                 this.initData()
             });
 		}

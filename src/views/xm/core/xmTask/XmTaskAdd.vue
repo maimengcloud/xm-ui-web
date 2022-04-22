@@ -407,6 +407,18 @@
 			addSubmit: function () {
 				this.$refs.addForm.validate((valid) => {
 					if (valid) {
+						if(this.addForm.oshare==='1'){
+							if(this.addForm.shareFee>1000){ 
+								this.$notify({position:'bottom-left',showClose:true,message:'分享佣金不能超过1000元',type: 'error'})
+								return;
+							}else if( !this.addForm.budgetAt){ 
+								this.$notify({position:'bottom-left',showClose:true,message:'请先设置预算金额',type: 'error'})
+								return;
+							}else if(this.addForm.shareFee/this.addForm.budgetAt>0.05){ 
+								this.$notify({position:'bottom-left',showClose:true,message:'分享佣金不能超过预算金额的5%',type: 'error'})
+								return;
+							}
+						}
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
 							let params = Object.assign({}, this.addForm); 
 							if(this.budgetDateRanger.length>=2){
@@ -417,6 +429,8 @@
 								params.actStartTime=this.actDateRanger[0]
 								params.actEndTime=this.actDateRanger[1]
 							}
+							
+							
 							addTask(params).then((res) => {
 								this.load.add=false
 								var tips=res.data.tips;

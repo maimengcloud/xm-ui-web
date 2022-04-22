@@ -39,4 +39,7 @@ export const editXmTaskWorkloadSomeFields = params => { return axios.post(`${bas
 
 export const listProjectWorkloadSetDay = params => { return axios.get(`${base}/xm/core/xmTaskWorkload/listProjectWorkloadSetDay`, { params: params }); };
 export const listProjectWorkloadSetMonth = params => { return axios.get(`${base}/xm/core/xmTaskWorkload/listProjectWorkloadSetMonth`, { params: params }); };
+export const batchSetSbillIdNull = params => { return axios.post(`${base}/xm/core/xmTaskWorkload/batchSetSbillIdNull`, params); };
+
+
 

@@ -40,6 +40,7 @@
       </el-popover>
       <span style="float:right;">
 <!--			<el-button type="primary" @click="showAdd" icon="el-icon-plus"> </el-button>-->
+      <el-button type="warning" v-loading="load.edit" @click="batchSetSbillIdNull" :disabled="this.sels.length===0 || load.edit==true" icon="el-icon-setting">移出结算单</el-button>
 			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>
       </span>
 		</el-row>
@@ -69,8 +70,8 @@
         <el-table-column  prop="wstatus" label="工时状态" min-width="80" show-overflow-tooltip  sortable>
           <template slot-scope="scope">
             <div class="cell-text">
-              <el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in [formatterWstatusDicts(scope.row.wstatus)]" :key="index">{{item.name}}</el-button>
-            </div>
+              <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'wstatus',scope.row.wstatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
+             </div>
             <span class="cell-bar">
               <el-select  v-model="scope.row.wstatus" placeholder="工时状态"  style="display:block;"  @change="editXmTaskWorkloadSomeFields(scope.row,'wstatus',$event)">
                 <el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.wstatus" :key="index"></el-option>
@@ -81,8 +82,8 @@
         <el-table-column  prop="sstatus" label="结算状态" min-width="80" show-overflow-tooltip  sortable>
           <template slot-scope="scope">
             <div class="cell-text">
-              <el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in [formatterSstatusDicts(scope.row.sstatus)]" :key="index">{{item.name}}</el-button>
-            </div>
+              <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'sstatus',scope.row.sstatus)" :key="index" :type="item.className">{{item.name}}</el-tag> 
+             </div>
             <span class="cell-bar">
               <el-select  v-model="scope.row.sstatus" placeholder="结算状态"  style="display:block;"  @change="editXmTaskWorkloadSomeFields(scope.row,'sstatus',$event)">
                 <el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.sstatus" :key="index"></el-option>
@@ -213,7 +214,7 @@
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
-	import { listXmTaskWorkload, delXmTaskWorkload, batchDelXmTaskWorkload } from '@/api/xm/core/xmTaskWorkload';
+	import { listXmTaskWorkload, delXmTaskWorkload, batchDelXmTaskWorkload,batchSetSbillIdNull } from '@/api/xm/core/xmTaskWorkload';
 	import  XmTaskWorkloadEdit from './XmTaskWorkloadEdit';//新增修改界面
 	import { mapGetters } from 'vuex'
   import XmProjectSelect from "../components/XmProjectSelect";
@@ -234,7 +235,7 @@
       UsersSelect,
       XmTaskWorkloadSimpleList,
 		},
-		props:['visible','wstatuses','sstatuses','queryScope'/**my/all */],
+		props:['visible','wstatuses','sstatuses','queryScope'/**my/all */,'sbillId'],
 		computed: {
 		    ...mapGetters(['userInfo']),
 
@@ -249,6 +250,9 @@
         },
         immediate: true
       },
+      sbillId(){
+        this.searchXmTaskWorkloads();
+      }
 		},
 		data() {
       const beginDate = new Date();
@@ -299,6 +303,7 @@
 			}
 		},//end data
 		methods: {
+      ...util,
 			handleSizeChange(pageSize) {
 				this.pageInfo.pageSize=pageSize;
 				this.getXmTaskWorkloads();
@@ -381,6 +386,9 @@
         }else{
           params.queryScope="my"
         }
+        if(this.sbillId){
+          params.sbillId=this.sbillId
+        }
 
 				this.load.list = true;
 				listXmTaskWorkload(params).then((res) => {
@@ -437,6 +445,33 @@
 				});
 			},
 			//批量删除xmTaskWorkload
+			batchSetSbillIdNull: function () {
+				if(this.sels.length<=0){
+				    return;
+				}
+        if(this.sels.some(i=>!i.sbillId)){
+          this.$notify({position:'bottom-left',showClose:true, message:"请选中已加入结算单的工时", type: 'error'});
+          return;
+        }
+				var params=this.sels.map(i=>{
+				    return { id:i.id}
+				})
+				this.$confirm('确认移出结算单吗？', '提示', {
+					type: 'warning'
+				}).then(() => {
+					this.load.edit=true;
+					batchSetSbillIdNull(params).then((res) => {
+						this.load.edit=false;
+						var tips=res.data.tips;
+						if( tips.isOk ){
+							this.pageInfo.count=true;
+							this.getXmTaskWorkloads();
+						}
+						this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
+					}).catch( err  => this.load.edit=false );
+				});
+			},
+      
 			batchDel: function () {
 				if(this.sels.length<=0){
 				    return;
@@ -503,48 +538,6 @@
             this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
           }
         })
-      },
-      formatterWstatusDicts: function(cellValue){
-        let key="wstatus";
-        if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0   ){
-          return {id:cellValue,name:cellValue,className:'primary'};
-        }
-        let list=this.dicts[key].filter(i=>i.id===cellValue)
-        if(list.length>0){
-          let data= {...list[0],className:'primary'}
-          if(data.id==='1'){
-            data.className='success'
-          }else if(data.id==='2'){
-            data.className='info'
-          }else{
-            data.className='danger'
-          }
-          return data;
-        }else{
-          return {id:cellValue,name:cellValue,className:'primary'}
-        }
-
-      },
-      formatterSstatusDicts: function(cellValue){ 
-        let key="sstatus";
-        if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0   ){
-          return {id:cellValue,name:cellValue,className:'primary'};
-        }
-        let list=this.dicts[key].filter(i=>i.id===cellValue)
-        if(list.length>0){
-          let data= {...list[0],className:'primary'}
-          if(data.id==='1'){
-            data.className='success'
-          }else if(data.id==='2'){
-            data.className='info'
-          }else{
-            data.className='danger'
-          }
-          return data;
-        }else{
-          return {id:cellValue,name:cellValue,className:'primary'}
-        }
-
       }, 
       clearFiltersPmUser:function(){
         this.filters.pmUser=null;
@@ -566,6 +559,7 @@
         this.filters.pmUser=this.userInfo;
         this.searchXmTaskWorkloads();
       },
+
     },//end methods
 		mounted() {
 			this.$nextTick(() => {
