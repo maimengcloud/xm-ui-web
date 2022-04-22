@@ -174,16 +174,14 @@
 </template>
 
 <script>
-import xmgl from '@/assets/image/module/xm/xm_project management.png'
+import xmgl from '@/assets/image/module/xm/xm_project_management.png'
 import csgl from '@/assets/image/module/xm/xm_test.png'
-import cpgh from '@/assets/image/module/xm/xm_product management.png'
-import xngl from '@/assets/image/module/xm/xm_Efficiency management.png'
-import lsx  from '@/assets/image/module/xm/xm_flow line.png'
+import cpgh from '@/assets/image/module/xm/xm_product_management.png'
+import xngl from '@/assets/image/module/xm/xm_Efficiency_management.png'
+import lsx  from '@/assets/image/module/xm/xm_flow_line.png'
 import zzjg from '@/assets/image/module/xm/mo_org.png'
 import zb   from '@/assets/image/module/xm/xm_crowd-sourcing.png'
 import kfpt from '@/assets/image/module/xm/xm_development.png'
-
-
 
 
 

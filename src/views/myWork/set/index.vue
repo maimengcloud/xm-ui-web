@@ -125,7 +125,7 @@
 import { editUser,changePassword } from '@/api/mdp/sys/user';
 import { mapGetters } from 'vuex' 
 import SingleShearUpload from "@/components/Image/Single/Index";
-	
+
 import md5 from "js-md5";
 	export default {
 	    computed: {

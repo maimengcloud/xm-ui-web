@@ -9,7 +9,7 @@
         </div>
       </div> -->
       <div class="module-item"> 
-        <div class="module-text" @click="drawer = true"  >
+        <div class="module-text" @click="menuVisible = true"  >
           <div class="box-info">全部应用</div> 
         </div>
       </div> 
@@ -21,18 +21,13 @@
       </div> 
       
       <div class="drawer-box">
-          <el-drawer  
+        <all-menus v-model="menuVisible"></all-menus>
+        <!-- <el-drawer  
           :visible.sync="drawer"
           :modal-append-to-body="false"
           :direction="direction">
           <div class="drawer">
             <div class="drawer-content">
-              <!--
-              <div class="drawer-content-input">
-                <el-input placeholder="请输入中文" v-model.trim="key" clearable prefix-icon = "el-icon-search" size="small" style="width:60%">
-                </el-input>
-              </div>
-              -->
               <div class="drawer-content-category" v-for="(item,index) in categorys" :key="index">
                 <div class="category-name" v-text="item.moduleName"></div>
                 <div class="category-list">
@@ -51,8 +46,10 @@
               </div>
             </div>
           </div>
-        </el-drawer>
+        </el-drawer> -->
       </div>
+
+
     </section>
 </template>
 
@@ -61,8 +58,10 @@
 import NProgress from 'nprogress' // progress bar  
 const topModulesData = require("./top_modules_"+process.env.CONTEXT+".js") 
 const allModulesData = require("./all_modules.js") 
- 
+import allMenus from '../ModulesMenu/allMenus'
+
 export default {
+  components: {allMenus},
   created() {
   },
   data() { 
@@ -74,6 +73,7 @@ export default {
       topModules: topModulesData.default,
       //模块分类
       categorys:allModulesData.default,
+      menuVisible: false,
     }
   },
   watch: { 
