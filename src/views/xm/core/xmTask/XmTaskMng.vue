@@ -1147,14 +1147,14 @@ export default {
       projectInfoVisible: false, 
       menuVisible: false,
       menuDetailVisible: false,
-      pickerOptions: util.pickerOptions(),
+      pickerOptions: util.getPickerOptions(),
       displayType: "table",
       menuStory: false, //需求查询  
       showSkillSearchVisible: false, //按技能查询
       tableHeight: 300,
       productSelectVisible: false,
       dateRanger: [],
-      pickerOptions: util.pickerOptions("datarange"),
+      pickerOptions: util.getPickerOptions("datarange"),
 
       budgetDateRanger: [],
       actDateRanger: [], 

@@ -64,7 +64,7 @@
 				  this.$router.back(-1);
 			  },
 			  dataInit(){ 
-				  debugger;
+				  
 				  this.$nextTick(()=>{
 					  var key="ProcdefListForBizStart"
 						if(this.$route.query && this.$route.query.params){

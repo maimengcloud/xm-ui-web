@@ -132,7 +132,7 @@ export default {
       selectFiltersPmUserVisible:false,
       maxTableHeight:300,
       dateRanger: [ ],
-      pickerOptions:  util.pickerOptions('datarange'),
+      pickerOptions:  util.getPickerOptions('datarange'),
       sbillVisible:false,
       moreVisible:false,
       hadInit:false,

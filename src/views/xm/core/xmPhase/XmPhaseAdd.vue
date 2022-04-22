@@ -222,7 +222,7 @@
 					util.formatDate(endDate, "yyyy-MM-dd HH:mm:ss")
 				],
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
-				pickerOptions:  util.pickerOptions('datarange'),
+				pickerOptions:  util.getPickerOptions('datarange'),
 				activeName:'',
 				costVisible:false,
 				/**end 在上面加自定义属性**/

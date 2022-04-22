@@ -208,7 +208,7 @@
         thisBillRow:{},//添加工时的结算单
         projectId:'',//添加工时的项目编号
         moreVisible:false,
-        pickerOptions:  util.pickerOptions('datarange'),
+        pickerOptions:  util.getPickerOptions('datarange'),
         dateRanger: [],
         selectFiltersPmUserVisible:false,
         selProjectId:'',

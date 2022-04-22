@@ -525,7 +525,7 @@
 				selectFiltersMmUserVisible:false,
 				maxTableHeight:300,
 				dateRanger: [ ],
-				pickerOptions:  util.pickerOptions('datarange'),
+				pickerOptions:  util.getPickerOptions('datarange'),
 				productVisible:false,
 				tagSelectVisible:false,
 				fieldTagVisible:false,

@@ -200,7 +200,7 @@
 				quoteDateRanger: [
 				],
 				execuserAddType:'add',//add为新增 join为当前登陆者加入
-				pickerOptions:  util.pickerOptions('datarange'),
+				pickerOptions:  util.getPickerOptions('datarange'),
 				tableHeight:300,
 				/**end 自定义属性请在上面加 请加备注**/
 			}

@@ -398,7 +398,7 @@
 				productSelectVisible:false,
 				maxTableHeight:300,
 				dateRanger: [ ],  
-				pickerOptions:  util.pickerOptions('datarange'),
+				pickerOptions:  util.getPickerOptions('datarange'),
 				xmProjectCopy:{
 					id:'',name:'',code:'',isTpl:'',copyPhase:'1',copyTask:'1',copyGroup:'1',copyGroupUser:'0'
 				},

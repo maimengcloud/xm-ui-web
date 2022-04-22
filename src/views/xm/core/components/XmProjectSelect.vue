@@ -145,7 +145,7 @@
 				selectFiltersPmUserVisible:false,
 				maxTableHeight:300,
 				dateRanger: [ ],
-				pickerOptions:  util.pickerOptions('datarange'),
+				pickerOptions:  util.getPickerOptions('datarange'),
 				projectVisible:false,
 				moreVisible:false,
 				hadInit:false,

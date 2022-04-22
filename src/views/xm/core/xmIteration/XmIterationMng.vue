@@ -154,7 +154,7 @@ import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue'
 					queryScope:'',//迭代查询范围 iterationId\branchId\compete\''
 					id:'',//迭代编号
 				},
-				pickerOptions:  util.pickerOptions('datarange'),
+				pickerOptions:  util.getPickerOptions('datarange'),
 				dateRanger: [ ],//创建时间选择范围
 				dateRangerOnline: [ 
 				],//上线时间选择范围

@@ -303,7 +303,7 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 				batchEditVisible:false,
 				menuVisible:false,//由需求自动创建计划
 				tableHeight:200,
-				pickerOptions: util.pickerOptions('date'),
+				pickerOptions: util.getPickerOptions('date'),
 				gstcVisible:false,
 				groupUserSelectVisible:false,//选择负责人
 				ganrrColumns: {

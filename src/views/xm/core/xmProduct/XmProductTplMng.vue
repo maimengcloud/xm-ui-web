@@ -183,7 +183,7 @@
 				selectFiltersPmUserVisible:false, 
 				dateRanger: [ 
 				],
-				pickerOptions:  util.pickerOptions('datarange'),
+				pickerOptions:  util.getPickerOptions('datarange'),
 				projectVisible:false,
 				productSelectVisible:false,
 				xmProductCopy:{ 

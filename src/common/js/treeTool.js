@@ -3,7 +3,7 @@ export default {
 
 
   reloadAllChildren: function(table,maps, rows,parentIdName,loadChildren,idMaps) {
-    debugger;
+    
 
      if(!rows||rows.length==0){
       return;

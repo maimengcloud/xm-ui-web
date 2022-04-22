@@ -297,7 +297,7 @@
  
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				dateRanger: [ ],  
-				pickerOptions:  util.pickerOptions('datarange'),
+				pickerOptions:  util.getPickerOptions('datarange'),
 				activateName:'planWorkload',
 				/**end 在上面加自定义属性**/
 			}//end return

@@ -46,7 +46,7 @@ export default {
    * @returns [{id:'',name:'',className:''}]
    */
   formatDictsWithClass: function(dicts,itemCode,cellValue){ 
-    debugger;
+    
     var classNames=['info','primary','success','warning','danger'];
     let key=itemCode;
     if(!cellValue){
@@ -270,7 +270,7 @@ export default {
     }, 
 
   //type date/daterange
-  pickerOptions: function(type) {
+  getPickerOptions: function(type) {
     if (type != 'datarange') {
       var shortcuts = [{
         text: '今天',

@@ -131,7 +131,7 @@
  				userSelectVisible:false, 
 				 batchMmUserSelectVisible:false,
 				maxTableHeight:300, 
-				pickerOptions:  util.pickerOptions('datarange'), 
+				pickerOptions:  util.getPickerOptions('datarange'), 
 				
 				maps:new Map(),
 			}

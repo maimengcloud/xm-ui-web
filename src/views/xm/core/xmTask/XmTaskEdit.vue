@@ -372,7 +372,7 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 				], 
 				actDateRanger: [
 				],  
-				pickerOptions:  util.pickerOptions('datarange'),
+				pickerOptions:  util.getPickerOptions('datarange'),
 				tagSelectVisible:false,
 				subWorkItemNum:0,
 				 /**end 在上面加自定义属性**/

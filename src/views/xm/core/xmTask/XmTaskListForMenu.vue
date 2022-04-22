@@ -153,7 +153,7 @@
 				},  
 
 				selkey: "all",       
- 				pickerOptions:  util.pickerOptions(),
+ 				pickerOptions:  util.getPickerOptions(),
 				tableHeight:300,
 				/**end 自定义属性请在上面加 请加备注**/
 			}

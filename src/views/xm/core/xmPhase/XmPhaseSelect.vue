@@ -101,7 +101,7 @@
 				valueChangeRows:[],
 				batchEditVisible:false,
 				menuVisible:false,//由需求自动创建计划
-        pickerOptions: util.pickerOptions('date'),
+        pickerOptions: util.getPickerOptions('date'),
         gstcVisible:false,
 		tableHeight:300,
         ganrrColumns: {

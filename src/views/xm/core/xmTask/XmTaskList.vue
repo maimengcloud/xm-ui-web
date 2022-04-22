@@ -173,7 +173,7 @@
  				projectPhase: null,  
 				tableHeight:300,
 				dateRanger: [ ],  
-				pickerOptions:  util.pickerOptions('datarange'),
+				pickerOptions:  util.getPickerOptions('datarange'),
       			maps:new Map(),
 				/**end 自定义属性请在上面加 请加备注**/
 			}

@@ -193,7 +193,7 @@
 				selectFiltersPmUserVisible:false,
 				maxTableHeight:300,
 				dateRanger: [ ],  
-				pickerOptions:  util.pickerOptions('datarange'),
+				pickerOptions:  util.getPickerOptions('datarange'),
 				
 				/**begin 自定义属性请在下面加 请加备注**/
 					

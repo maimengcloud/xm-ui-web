@@ -99,7 +99,7 @@
 					queryScope:'',//迭代查询范围 iterationId\branchId\compete\''
 					id:'',//迭代编号
 				},
-				pickerOptions:  util.pickerOptions('datarange'), 
+				pickerOptions:  util.getPickerOptions('datarange'), 
 				dateRangerOnline: [ 
 				],//上线时间选择范围
 				xmIterations: [],//查询结果

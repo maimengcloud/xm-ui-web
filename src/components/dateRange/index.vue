@@ -80,7 +80,7 @@ export default {
     },
     pickerOptions:{
         typeof:Object,
-        default:function(){return util.pickerOptions('datarange')}
+        default:function(){return util.getPickerOptions('datarange')}
     },
     autoDefault:{
         type:Boolean,

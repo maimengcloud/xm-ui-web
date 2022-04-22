@@ -264,7 +264,7 @@
       }
     },
     activated: function() {
-      debugger;
+      
       if (this.assigneeToMe !== false) {
         if (this.isClaim == undefined || this.isClaim === false) {
           this.filters.assignee = this.userInfo.userid;

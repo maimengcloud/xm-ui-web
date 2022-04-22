@@ -288,7 +288,7 @@
 				productSelectVisible:false,
 				nextAction:'',
 				dateRanger: [ ],  
-				pickerOptions:  util.pickerOptions('datarange'),
+				pickerOptions:  util.getPickerOptions('datarange'),
 				gstcVisible:false,
 				ganrrColumns: {
 					children: 'children',

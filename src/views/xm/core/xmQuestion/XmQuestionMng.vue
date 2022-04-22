@@ -394,7 +394,7 @@
 				dateRanger: [ ],
 				ltimeRanger:[
 				],
-				pickerOptions:  util.pickerOptions('datarange'),
+				pickerOptions:  util.getPickerOptions('datarange'),
 				userType:'',//createUser、handlerUser
 				tagSelectVisible:false,
 				/**end 自定义属性请在上面加 请加备注**/

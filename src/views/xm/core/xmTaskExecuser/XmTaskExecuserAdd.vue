@@ -115,7 +115,7 @@
 				userSelectVisible: false,
 				quoteDateRanger: [
 				],  
-				pickerOptions:  util.pickerOptions('datarange'),
+				pickerOptions:  util.getPickerOptions('datarange'),
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data

@@ -283,7 +283,7 @@
 				maxTableHeight:300,
 				dateRanger: [ ],  
 				tagSelectVisible:false,
-				pickerOptions:  util.pickerOptions('datarange'),
+				pickerOptions:  util.getPickerOptions('datarange'),
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
