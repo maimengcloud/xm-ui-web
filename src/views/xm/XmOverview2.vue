@@ -391,7 +391,7 @@ export default {
               color: '#888',
               formatter: ({
                 data
-              }) => data == 0 ? '' : `${data}次`
+              }) => data == 0 ? '' : `${data}`
             },
             markPoint: {
               data: [
