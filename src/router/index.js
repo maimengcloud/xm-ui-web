@@ -15,7 +15,7 @@ import routesDatavXm from './routes_datav_xm'
 import routesArc from './routes_arc'
 import routesIm from './routes_im' 
 import routesMyWork from './routes_my_work'
-
+import routesOrder from './routes_order'
 
 export { Layout }
 
@@ -38,7 +38,7 @@ export { Layout }
   }
 **/
 export const constantRouterMap = [
-  { path: '/login', component: _import('login/index'), hidden: true },
+  { path: '/login', component: _import('login/index2'), hidden: true },
   { path: '/404', component: _import('errorPage/404'), hidden: true },
   { path: '/401', component: _import('errorPage/401'), hidden: true },
   {
@@ -81,4 +81,6 @@ allRoutes=allRoutes.concat(routesDatavXm.routes);
 allRoutes=allRoutes.concat(routesWorkflow.routes).concat(routesForm.routes)
 allRoutes=allRoutes.concat(routesArc.routes);
 allRoutes=allRoutes.concat(routesIm.routes);
+allRoutes=allRoutes.concat(routesOrder.routes);
+
 export const asyncRouterMap = allRoutes
