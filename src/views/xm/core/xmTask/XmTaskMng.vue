@@ -1754,12 +1754,12 @@ export default {
         var startTime = new Date();
         const endTime = new Date();
         endTime.setTime(startTime.getTime() + 3600 * 1000 * 24 * 7 * 2); //两周后
-        i.createTime = util.formatDate.format(
+        i.createTime = util.formatDate(
           createTime,
           "yyyy-MM-dd HH:mm:ss"
         );
-        i.startTime = util.formatDate.format(startTime, "yyyy-MM-dd HH:mm:ss");
-        i.endTime = util.formatDate.format(endTime, "yyyy-MM-dd HH:mm:ss");
+        i.startTime = util.formatDate(startTime, "yyyy-MM-dd HH:mm:ss");
+        i.endTime = util.formatDate(endTime, "yyyy-MM-dd HH:mm:ss");
       });
       var params={
         xmTasks:taskTemplates2,

@@ -292,11 +292,11 @@
           categoryTreeNodes: [],
           tags: [],
           startTimeRanger: [
-            util.formatDate.format(fromStartTime, "yyyy-MM-dd"),
-            util.formatDate.format(toStartTime, "yyyy-MM-dd")
+            util.formatDate(fromStartTime, "yyyy-MM-dd"),
+            util.formatDate(toStartTime, "yyyy-MM-dd")
           ],
           planFinishTimeRanger: [],
-          calendarDate: util.formatDate.format(toStartTime, 'yyyy-MM-dd'),
+          calendarDate: util.formatDate(toStartTime, 'yyyy-MM-dd'),
         },
         pickerOptions: {
           shortcuts: [{
@@ -1153,7 +1153,7 @@
         var tags = [];
 
         var now = new Date();
-        var dateStr = util.formatDate.format(now, "yyyy-MM-dd");
+        var dateStr = util.formatDate(now, "yyyy-MM-dd");
         if (dateStr == data.day) {
           data.isSelected = true;
         }

@@ -17,6 +17,12 @@
 			<el-table ref="xmProductProjectLink" :data="xmProductProjectLinks" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  				<el-table-column prop="name" v-if="xmProduct" label="包含的项目名称" min-width="150" ></el-table-column>
 				<el-table-column prop="productName" v-if="selProject" label="包含的产品名称" min-width="150" ></el-table-column>
+				<el-table-column prop="seq" label="顺序" min-width="80" sortable>
+					<template scope="scope">
+				     <span class="cell-text">  {{scope.row.seq}}  </span>
+                     <span class="cell-bar"><el-input style="display:inline;" title="0-999之间，数值越小越靠前" v-model="scope.row.seq" placeholder="" @change="editSomeFields(scope.row,'seq',$event)" :maxlength="22"></el-input></span>
+					</template>
+				</el-table-column>  
 				<el-table-column prop="ctime" label="加入时间" min-width="80" ></el-table-column> 
 				<el-table-column prop="cusername" label="操作者" min-width="80" ></el-table-column>
  				<el-table-column label="操作" width="120" fixed="right"> 
@@ -35,7 +41,7 @@
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库 
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { listXmProductProjectLink,addXmProductProjectLink, delXmProductProjectLink, batchDelXmProductProjectLink } from '@/api/xm/core/xmProductProjectLink';
+	import { listXmProductProjectLink,addXmProductProjectLink, delXmProductProjectLink, batchDelXmProductProjectLink,editSomeFieldsXmProductProjectLink } from '@/api/xm/core/xmProductProjectLink';
 	import  XmProductProjectLinkAdd from './XmProductProjectLinkAdd';//新增界面
 	import  XmProductProjectLinkEdit from './XmProductProjectLinkEdit';//修改界面
 	import { mapGetters } from 'vuex'
@@ -68,8 +74,8 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue'
 					pageSize:10,//每页数据
 					count:false,//是否需要重新计算总记录数
 					pageNum:1,//当前页码、从1开始计算
-					orderFields:[],//排序列 如 ['sex','student_id']，必须为数据库字段
-					orderDirs:[]//升序 asc,降序desc 如 性别 升序、学生编号降序 ['asc','desc']
+					orderFields:['seq'],//排序列 如 ['sex','student_id']，必须为数据库字段
+					orderDirs:['asc']//升序 asc,降序desc 如 性别 升序、学生编号降序 ['asc','desc']
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
@@ -259,7 +265,32 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue'
 						this.$notify({ message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
-			}	
+			},
+			
+          editSomeFields(row,fieldName,$event){
+            let params={};
+            if(this.sels.length>0){
+              if(!this.sels.some(k=> k.projectId==row.projectId &&  k.productId==row.productId)){
+                this.$notify({position:'bottom-left',showClose:true,message:'请编辑选中的行',type:'warning'})
+                Object.assign(this.editForm,this.editFormBak)
+                return;
+              }
+                params['pkList']=this.sels.map(i=>{ return { projectId:i.projectId,  productId:i.productId}})
+            }else{
+                params['pkList']=[row].map(i=>{ return { projectId:i.projectId,  productId:i.productId}})
+            }
+            params[fieldName]=$event
+            var func = editSomeFieldsXmProductProjectLink
+            func(params).then(res=>{
+              let tips = res.data.tips;
+              if(tips.isOk){ 
+                this.getXmProductProjectLinks();  
+              }else{
+                Object.assign(this.editForm,this.editFormBak)
+                this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+              }
+            }).catch((e)=>Object.assign(this.editForm,this.editFormBak))
+          },
 				
 			/**end 自定义函数请在上面加**/
 			

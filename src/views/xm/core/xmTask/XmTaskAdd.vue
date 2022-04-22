@@ -207,22 +207,22 @@
 							</el-col> 
 							<el-col :span="8"> 
 								<el-form-item label="实际工作量" prop="actWorkload">
-									<el-input type="number"   style="width:150px;"     v-model="addForm.actWorkload"  :precision="2" :step="8" :min="0" placeholder="实际总工作量(人时,不包括下一级)"></el-input type="number"> <el-tag>h</el-tag>
+									<el-input type="number"   style="width:150px;"     v-model="addForm.actWorkload"  :precision="2" :step="8" :min="0" placeholder="实际总工作量(人时,不包括下一级)"></el-input> <el-tag>h</el-tag>
 								</el-form-item> 
 							</el-col> 
 						</el-row>  
 					</el-tab-pane>
 					<el-tab-pane label="成本" name="6"> 
+						<el-form-item label="自研工时单价" prop="uniInnerPrice">
+							 <el-input type="number" style="width:150px;"   v-model="addForm.uniInnerPrice" :precision="2" :step="10" :min="0" placeholder="自研工时单价"  ></el-input  >   元/h
+							 
+						</el-form-item> 
+						<el-form-item label="外包、众包单价" prop="uniOutPrice"> 
+								 <el-input type="number" style="width:150px;"   v-model="addForm.uniOutPrice" :precision="2" :step="10" :min="0" placeholder="外发工时单价"  ></el-input  >   元/h
+						 
+						</el-form-item> 
 						<el-form-item label="预估金额" prop="budgetAt">
-							<el-row v-if="addForm.taskOut!=='1'">
-								工时单价&nbsp;<el-input type="number" style="width:150px;"   v-model="addForm.uniInnerPrice" :precision="2" :step="10" :min="0" placeholder="工时单价"></el-input type="number">   元/h
-							</el-row> 
-							<el-row v-if="addForm.taskOut==='1'">
-								工时单价&nbsp;<el-input type="number" style="width:150px;"   v-if="addForm.taskOut==='1'" v-model="addForm.uniOutPrice" :precision="2" :step="10" :min="0" placeholder="外发工时单价"></el-input type="number">   元/h
-							</el-row>
-							<el-row>
-								预估金额&nbsp;<el-input type="number" style="width:150px;"    v-model="addForm.budgetAt" :precision="2" :step="100" :min="0" placeholder="预算金额"></el-input type="number">   元
-							</el-row>
+						 	<el-input type="number" style="width:150px;"    v-model="addForm.budgetAt" :precision="2" :step="100" :min="0" placeholder="预算金额"  ></el-input  >   元 
 						</el-form-item> 
 
 					</el-tab-pane>
@@ -236,9 +236,21 @@
 							</el-select>
 						</el-form-item>
 					</el-tab-pane>
-					<el-tab-pane label="众包" name="8" v-if="addForm.ntype!='1' && addForm.taskOut=='1'">
-					 
-					<el-checkbox v-model="addForm.toTaskCenter" true-label="1" false-label="0" id="taskOut">发布到互联网任务大厅</el-checkbox>  
+					<el-tab-pane label="外包、众包、互联网" name="8" v-if="addForm.ntype!='1' ">
+					 	<el-form-item> 
+							 <el-checkbox v-model="addForm.taskOut" true-label="1" false-label="0" id="taskOut" >外包</el-checkbox>   
+ 						 
+							 <el-checkbox v-model="addForm.crowd" true-label="1" false-label="0" id="crowd"  v-if="addForm.taskOut==='1'">开通众包</el-checkbox>   
+						 
+							<el-checkbox v-model="addForm.toTaskCenter" true-label="1" false-label="0" id="toTaskCenter"  v-if="addForm.taskOut==='1'">发布到互联网任务大厅</el-checkbox> 
+						</el-form-item>
+						<el-form-item label="分享赚" prop="oshare" v-if="addForm.taskOut==='1'">
+ 							<el-checkbox v-model="addForm.oshare" true-label="1" false-label="0" id="oshare"  >开通分享赚</el-checkbox>  
+						</el-form-item> 
+						<el-form-item label="分享佣金" prop="shareFee" v-if="addForm.oshare==='1' && addForm.taskOut==='1'">
+ 							<el-input type="number" style="width:150px;"    v-model="addForm.shareFee" :precision="2" :step="100" :min="0" placeholder="分享赚佣金"  ></el-input  >   元
+							 <font color="blue">开通分享赚后起效，佣金从任务预算中扣除，如果未发生分享佣金，则不扣除。一般建议为任务佣金的1%-5%</font>
+						</el-form-item>
 					 
 						<el-steps :active="calcTaskStep" align-center simple>
 							<el-step title="发布" description="任务创建成功后即发布"></el-step>
@@ -364,7 +376,7 @@
 					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'3',sortLevel:'0',executorUserid:'',executorUsername:'',
 					preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',taskOut:'0',
 					rate:0,budgetAt:'',budgetWorkload:'',actAt:'',actWorkload:'',taskState:'0',taskClass:'0',toTaskCenter:'0',actStartTime:'',actEndTime:'',taskType:'4',planType:'w2',settleSchemel:'1',ntype:'0',childrenCnt:0,
-					uniInnerPrice:80,uniOutPrice:100,
+					uniInnerPrice:80,uniOutPrice:100,crowd:'0',oshare:'0',shareFee:0
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
  				menuVisible:false,
@@ -377,8 +389,8 @@
 				groupUserSelectVisible:false,
 				execGroupUserSelectVisible:false,
 				budgetDateRanger: [
-					util.formatDate.format(beginDate, "yyyy-MM-dd HH:mm:ss"),
-					util.formatDate.format(endDate, "yyyy-MM-dd HH:mm:ss")
+					util.formatDate(beginDate, "yyyy-MM-dd HH:mm:ss"),
+					util.formatDate(endDate, "yyyy-MM-dd HH:mm:ss")
 				],
 				actDateRanger: [
 				],

@@ -14,6 +14,10 @@
 				<el-table-column  type="index" label="序号" width="55" ></el-table-column>
 				<el-table-column prop="id" label="项目编码" min-width="80" ></el-table-column>
 				<el-table-column prop="name" label="标题名称" min-width="80" ></el-table-column> 
+				<el-table-column prop="seq" label="顺序" min-width="80" >
+				     <span class="cell-text">  {{scope.row.username}}}  </span>
+                     <span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
+				</el-table-column>  
 				<el-table-column label="操作" width="245" fixed="right">
 					<template slot-scope="scope">  
 							<el-button-group>
@@ -42,7 +46,7 @@
 	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { listXmProject,  } from '@/api/xm/core/xmProject';  
 	import { mapGetters } from 'vuex' 
- 	import { delXmProductProjectLink, addXmProductProjectLink,batchDelXmProductProjectLink } from '@/api/xm/core/xmProductProjectLink';
+ 	import { delXmProductProjectLink, addXmProductProjectLink,batchDelXmProductProjectLink,editSomeFieldsXmProductProjectLink } from '@/api/xm/core/xmProductProjectLink';
 import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue';
 
 
@@ -201,7 +205,35 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue';
 				});
 			})
 				
-			}
+			},
+			
+          editSomeFields(row,fieldName,$event){
+            let params={};
+            if(this.sels.length>0){
+              if(!this.sels.some(k=> k.projectId==row.projectId &&  k.productId==row.productId)){
+                this.$notify({position:'bottom-left',showClose:true,message:'请编辑选中的行',type:'warning'})
+                Object.assign(this.editForm,this.editFormBak)
+                return;
+              }
+                params['pkList']=this.sels.map(i=>{ return { projectId:i.projectId,  productId:i.productId}})
+            }else{
+                params['pkList']=[row].map(i=>{ return { projectId:i.projectId,  productId:i.productId}})
+            }
+            params[fieldName]=$event
+            var func = editSomeFieldsXmProductProjectLink
+            func(params).then(res=>{
+              let tips = res.data.tips;
+              if(tips.isOk){
+                if(this.sels.length>0){
+                    this.getXmProjects();
+                }
+                this.editFormBak=[...this.editForm]
+              }else{
+                Object.assign(this.editForm,this.editFormBak)
+                this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+              }
+            }).catch((e)=>Object.assign(this.editForm,this.editFormBak))
+          },
 			/**end 自定义函数请在上面加**/
 			
 		},//end methods

@@ -781,9 +781,9 @@ export default {
         var beginDate = new Date();
         const endDate = new Date();
         endDate.setTime(ctime.getTime() + 3600 * 1000 * 24 * 7 * 4); //两周后
-        i.ctime = util.formatDate.format(ctime, "yyyy-MM-dd HH:mm:ss");
-        i.beginDate = util.formatDate.format(beginDate, "yyyy-MM-dd HH:mm:ss");
-        i.endDate = util.formatDate.format(endDate, "yyyy-MM-dd HH:mm:ss");
+        i.ctime = util.formatDate(ctime, "yyyy-MM-dd HH:mm:ss");
+        i.beginDate = util.formatDate(beginDate, "yyyy-MM-dd HH:mm:ss");
+        i.endDate = util.formatDate(endDate, "yyyy-MM-dd HH:mm:ss");
       });
       batchImportFromTemplate(phaseTemplates2)
         .then((res) => {
@@ -1669,12 +1669,12 @@ export default {
         var beginDate = new Date();
         const endDate = new Date();
         endDate.setTime(ctime.getTime() + 3600 * 1000 * 24 * 7 * 4); //两周后
-        subRow.ctime = util.formatDate.format(ctime, "yyyy-MM-dd HH:mm:ss");
-        subRow.beginDate = util.formatDate.format(
+        subRow.ctime = util.formatDate(ctime, "yyyy-MM-dd HH:mm:ss");
+        subRow.beginDate = util.formatDate(
           beginDate,
           "yyyy-MM-dd HH:mm:ss"
         );
-        subRow.endDate = util.formatDate.format(endDate, "yyyy-MM-dd HH:mm:ss");
+        subRow.endDate = util.formatDate(endDate, "yyyy-MM-dd HH:mm:ss");
 
         this.fieldChange(subRow, "seqNo");
         this.xmPhases.unshift(subRow);

@@ -217,8 +217,8 @@
           categoryTreeNodes: [],
           tags: [],
           startTimeRanger: [
-            util.formatDate.format(fromStartTime, "yyyy-MM-dd"),
-            util.formatDate.format(toStartTime, "yyyy-MM-dd")
+            util.formatDate(fromStartTime, "yyyy-MM-dd"),
+            util.formatDate(toStartTime, "yyyy-MM-dd")
           ],
           planFinishTimeRanger: [],
           endTimeRanger: [],

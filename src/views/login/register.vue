@@ -11,8 +11,11 @@
       </div>  
       <el-form-item prop="phoneno" label="手机号码"> 
         <el-input name="phoneno" type="text" v-model="loginForm.phoneno" autoComplete="on" placeholder="手机号码"> 
-          <el-button slot="append" @click.prevent="sendPhonenoSmsCode">发送验证码</el-button>
+         <span slot="append"> <el-button  @click.prevent="sendPhonenoSmsCode" v-loading="load.sendSmsCode">发送验证码</el-button> </span>
         </el-input>
+        <span v-if="phonenoUsers!=null && phonenoUsers.length>0"> 该手机号已注册有{{phonenoUsers.length}}个账户<font color="blue"></font>
+          <el-button type="text"  @click="phonenoUsersVisible=true">查看明细</el-button>
+        </span>
       </el-form-item>
       <el-form-item prop="smsCode"  label="短信验证码"> 
         <el-input name="smsCode" type="text" v-model="loginForm.smsCode" autoComplete="on" placeholder="短信验证码">
@@ -54,7 +57,22 @@
    		</el-col>
 	  </el-row >
 	</el-dialog> 
-	
+	<el-dialog
+	  title="查看已有账户"
+	  :visible.sync="phonenoUsersVisible"
+	  width="600" append-to-body> 
+	   <el-table :data="phonenoUsers">
+       <el-table-column prop="userid" label="编号">
+       </el-table-column> 
+       <el-table-column prop="displayUserid" label="登录账号">
+       </el-table-column>
+       <el-table-column prop="username" label="姓名">
+       </el-table-column>
+       
+       <el-table-column prop="branchName" label="企业">
+       </el-table-column>
+     </el-table>
+	</el-dialog> 
 	<!-- 第三方登陆窗口 -->
     <el-dialog :title="$t('login.thirdparty')" :visible.sync="showTpLoginDialog" append-to-body>
       {{$t('login.thirdpartyTips')}}
@@ -73,7 +91,7 @@
 
 <script> 
 import { sendSmsCode } from '@/api/sms/sms';
-import { checkPhoneno,checkDisplayUserid,doRegister } from '@/api/login';
+import { checkPhoneno,checkDisplayUserid,doRegister,queryByUserloginid } from '@/api/login';
 
 import LangSelect from '@/components/LangSelect';
 import SocialSign from './socialsignin';
@@ -140,10 +158,13 @@ export default {
       passwordType: 'password',
       
       loading: false,
+      load:{sendSmsCode:false,},
       showTpLoginDialog: false, //显示第三方登陆对话框
       deptSelectVisible:false,//显示选择部门对话框
       userDeptid:'',//选中的部门编号 
       addBranchFormVisible:false,  //显示添加机构对话框 
+      phonenoUsers:[],//与手机号关联的账户
+      phonenoUsersVisible:false,
     }
   },
   methods: {
@@ -155,18 +176,35 @@ export default {
       }
     },
     sendPhonenoSmsCode(){
+      this.load.sendSmsCode=true;
       if(!this.loginForm.phoneno){
-        this.$message.error("手机号码不能为空");
+        this.$message.error("手机号码不能为空"); 
+        this.load.sendSmsCode=false;
         return;
       }
       if(this.loginForm.phoneno.length !=11 ){
         this.$message.error("手机号码必须为11位");
+        this.load.sendSmsCode=false;
         return;
       }
       var params={
         phoneno:this.loginForm.phoneno,
         scene:"register"
-      } 
+      }  
+       queryByUserloginid({userloginid:this.loginForm.phoneno,idType:"phoneno"}).then(res0=>{ 
+        this.load.sendSmsCode=false;
+        if(res0.data.tips.isOk){ 
+          this.phonenoUsers=res0.data.data; 
+          sendSmsCode(params).then(res=>{
+            if(res.data.tips.isOk){
+              this.$message.success(res.data.tips.msg);
+            }else{
+              this.$message.error(res.data.tips.msg);
+            }
+          })
+        } 
+      }).catch(err=> this.load.sendSmsCode=false)
+      /**
       checkPhoneno(this.loginForm.phoneno).then(res0=>{
         if(res0.data.tips.isOk){
           sendSmsCode(params).then(res=>{
@@ -180,7 +218,15 @@ export default {
           this.$message.error("手机号码已存在，不允许注册，请直接登录");
         }
       })
+       */
       
+    },
+    checkPhonenoUsers(){ 
+       queryByUserloginid({userloginid:this.loginForm.phoneno,idType:"phoneno",atype:'1'}).then(res0=>{
+        if(res0.data.tips.isOk){ 
+          this.phonenoUsers=res0.data.data; 
+        } 
+      })
     },
     checkDisplayUserid(){
       if(!this.loginForm.displayUserid){

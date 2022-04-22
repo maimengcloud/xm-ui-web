@@ -28,3 +28,6 @@ export const editXmProductProjectLink = params => { return axios.post(`${base}/x
 
 //新增一条产品与项目的关联关系表，一般由产品经理挂接项目到产品上
 export const addXmProductProjectLink = params => { return axios.post(`${base}/xm/core/xmProductProjectLink/add`, params); };
+
+//新增一条产品与项目的关联关系表，一般由产品经理挂接项目到产品上
+export const editSomeFieldsXmProductProjectLink = params => { return axios.post(`${base}/xm/core/xmProductProjectLink/editSomeFields`, params); };

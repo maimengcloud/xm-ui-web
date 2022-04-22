@@ -218,8 +218,8 @@
 					id:'',name:'',remark:'',parentPhaseId:'',branchId:'',taskType:'kf',planType:'m1',projectId:'',beginDate:'',endDate:'',budgetHours:'',budgetStaffNu:'',ctime:'',budgetNouserAt:'',budgetIuserAt:'',budgetOuserAt:'',baselineId:'',bizProcInstId:'',bizFlowState:'',budgetWorkload:'',totalActWorkload:'',totalActNouserAt:'',totalActInerUserAt:'',totalActOuserAt:'',planType:'',taskType:'',seqNo:'1',budgetIuserCnt:'',budgetOuserCnt:'',budgetIuserPrice:80,budgetOuserPrice:100,budgetIuserWorkload:0,budgetOuserWorkload:0,ntype:'0'
 				},
 				dateRanger: [
-					util.formatDate.format(beginDate, "yyyy-MM-dd HH:mm:ss"),
-					util.formatDate.format(endDate, "yyyy-MM-dd HH:mm:ss")
+					util.formatDate(beginDate, "yyyy-MM-dd HH:mm:ss"),
+					util.formatDate(endDate, "yyyy-MM-dd HH:mm:ss")
 				],
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				pickerOptions:  util.pickerOptions('datarange'),
