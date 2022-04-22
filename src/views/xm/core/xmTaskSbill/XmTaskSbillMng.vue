@@ -54,60 +54,41 @@
                 border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;" :header-cell-style="{'text-align':'center'}"
                 :cell-style="{'text-align':'center'}">
 <!--				<el-table-column  type="selection" width="55" show-overflow-tooltip></el-table-column>-->
-				<el-table-column label="序号" type="index" min-width="55" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="id" label="结算单编号" min-width="80" show-overflow-tooltip> 
+				<el-table-column label="序号" type="index" min-width="55"  fixed="left"></el-table-column>
+				<el-table-column prop="id" label="结算单编号" width="120" show-overflow-tooltip fixed="left"> 
         </el-table-column>
-				<el-table-column prop="title" label="结算单标题" min-width="80" show-overflow-tooltip>
+				<el-table-column prop="title" label="结算单标题" width="180" show-overflow-tooltip fixed="left">
           <template slot-scope="scope">
-            <span class="click-style" @click="showEdit( scope.row,scope.$index)">
+            <el-link type="primary"  @click="showEdit( scope.row,scope.$index)">
               {{scope.row.title}}
-            </span>
+            </el-link>
           </template>
         </el-table-column>
-        <el-table-column prop="projectId" label="项目编号" min-width="80" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="projectName" label="项目名称" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="amt" label="金额" min-width="80" show-overflow-tooltip>
+         <el-table-column prop="projectName" label="项目名称" width="120" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="amt" label="金额" width="120" show-overflow-tooltip>
           <template slot-scope="scope">
             ¥{{scope.row.amt}}
           </template>
         </el-table-column>
-				<el-table-column prop="ctime" label="创建时间" min-width="60" show-overflow-tooltip>
-          <template slot-scope="scope">
-            {{ scope.row.ctime.substr(0, 10) }}
-          </template>
-        </el-table-column>
-<!--				<el-table-column prop="cuserid" label="创建人编号" min-width="80" show-overflow-tooltip></el-table-column>-->
-				<el-table-column prop="cusername" label="创建人姓名" min-width="60" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="remark" label="备注" min-width="80" show-overflow-tooltip>
-          <template scope="scope">
-            <span v-if="scope.row.remark">{{scope.row.remark}}</span>
-            <span v-else>-</span>
-          </template>
-        </el-table-column>
-<!--				<el-table-column prop="branchId" label="机构编号" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="deptid" label="部门编号" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="cpId" label="相对方编号(机构写机构号，个人写个人编号)" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="cpName" label="相对方名称（机构写机构名称，个人写个人名称）" min-width="80" show-overflow-tooltip></el-table-column>-->
-				<el-table-column prop="workload" label="结算工时" min-width="80" show-overflow-tooltip>
+<!--				<el-table-column prop="branchId" label="机构编号" width="120" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="deptid" label="部门编号" width="120" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="cpId" label="相对方编号(机构写机构号，个人写个人编号)" width="120" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="cpName" label="相对方名称（机构写机构名称，个人写个人名称）" width="120" show-overflow-tooltip></el-table-column>-->
+				<el-table-column prop="workload" label="结算工时" width="120" show-overflow-tooltip>
           <template slot-scope="scope">
             {{scope.row.workload}}h
           </template>
         </el-table-column>
-<!--				<el-table-column prop="bizMonth" label="业务月份yyyy-MM" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="bizDate" label="业务日期yyyy-MM-dd" min-width="80" show-overflow-tooltip></el-table-column>-->
-				<el-table-column prop="bizFlowState" label="审批状态" min-width="60" show-overflow-tooltip>
+<!--				<el-table-column prop="bizMonth" label="业务月份yyyy-MM" width="120" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="bizDate" label="业务日期yyyy-MM-dd" width="120" show-overflow-tooltip></el-table-column>-->
+				<el-table-column prop="bizFlowState" label="审批状态" width="120" show-overflow-tooltip>
           <template scope="scope">
-            <el-tag v-if="scope.row.bizFlowState=='0'">未发审</el-tag>
-            <el-tag type="warning" v-else-if="scope.row.bizFlowState=='1'">审批中</el-tag>
-            <el-tag type="success" v-else-if="scope.row.bizFlowState=='2'">已通过</el-tag>
-            <el-tag type="danger" v-else-if="scope.row.bizFlowState=='3'">未通过</el-tag>
-            <el-tag type="info" v-else-if="scope.row.bizFlowState=='4'">已取消</el-tag>
-            <el-tag v-else>未发审</el-tag>
+            <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'bizFlowState',scope.row.bizFlowState)" :key="index" :type="item.className">{{item.name}}</el-tag>
           </template>
         </el-table-column>
-<!--				<el-table-column prop="bizProcInstId" label="审批编号" min-width="80" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="ltime" label="更新时间" min-width="80" show-overflow-tooltip></el-table-column>-->
-				<el-table-column prop="status" label="结算单状态" min-width="60" show-overflow-tooltip>
+<!--				<el-table-column prop="bizProcInstId" label="审批编号" width="120" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="ltime" label="更新时间" width="120" show-overflow-tooltip></el-table-column>-->
+				<el-table-column prop="status" label="结算单状态" width="120" show-overflow-tooltip>
           <template scope="scope">
             <el-tag v-if="scope.row.status=='0'">待提交</el-tag>
             <el-tag type="warning" v-else-if="scope.row.status=='1'">已提交</el-tag>
@@ -115,10 +96,17 @@
             <el-tag type="danger" v-else-if="scope.row.status=='3'">已付款</el-tag>
             <el-tag type="info" v-else-if="scope.row.status=='4'">已完成</el-tag>
           </template>
+        </el-table-column> 
+				<el-table-column prop="ctime" label="提交时间" width="120" show-overflow-tooltip>
+          <template slot-scope="scope">
+            {{ scope.row.ctime.substr(0, 10) }}
+          </template>
         </el-table-column>
-				<el-table-column prop="fmsg" label="最后审核意见" min-width="80" show-overflow-tooltip>
+<!--				<el-table-column prop="cuserid" label="创建人编号" width="120" show-overflow-tooltip></el-table-column>-->
+				<el-table-column prop="cusername" label="提交人" width="120" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="remark" label="备注" width="120" show-overflow-tooltip>
           <template scope="scope">
-            <span v-if="scope.row.fmsg">{{scope.row.fmsg}}</span>
+            <span v-if="scope.row.remark">{{scope.row.remark}}</span>
             <span v-else>-</span>
           </template>
         </el-table-column>
@@ -135,9 +123,9 @@
 		</el-row>
 		<el-row>
 			<!--编辑 XmTaskSbill 任务结算表界面-->
-			<el-drawer title="编辑任务结算单" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
+			<el-dialog title="编辑任务结算单" :visible.sync="editFormVisible"  width="90%" top="20px" append-to-body   :close-on-click-modal="false">
 				  <xm-task-sbill-edit op-type="edit" :xm-task-sbill="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-task-sbill-edit>
-			</el-drawer>
+			</el-dialog>
 			<!--新增 XmTaskSbill 任务结算表界面-->
 			<el-drawer title="新增任务结算单" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
 				<xm-task-sbill-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-task-sbill-edit>
@@ -227,6 +215,7 @@
       }
 		},//end data
 		methods: {
+      ...util,
 			handleSizeChange(pageSize) {
 				this.pageInfo.pageSize=pageSize;
 				this.getXmTaskSbills();
@@ -510,12 +499,13 @@
           mainTitle:mainTitle,
           bizKey:bizKey,
           bizUrl:bizUrl,
+          bizPkid:row.id,
+          bizParentPkid:row.projectId,
           restUrl:config.getCoreBasePath()+"/xm/core/xmTaskSbill/processApprova",
           //restUrl:"http://localhost:8067/api/m1/xm/xm/xm/core/xmTaskSbill/processApprova",
           extVars:extVars,
           flowVars:{
-            subscribeTaskEvent:'PROCESS_STARTED,PROCESS_COMPLETED,PROCESS_CANCELLED',
-            shopId:this.userInfo.shopId,
+            subscribeTaskEvent:'PROCESS_STARTED,PROCESS_COMPLETED,PROCESS_CANCELLED', 
             branchId:this.userInfo.branchId,
             sbillId:row.id
           },
@@ -526,7 +516,7 @@
 		},//end methods
 		mounted() {
 			this.$nextTick(() => {
-			    //initSimpleDicts('all',['sex','gradeLvl']).then(res=>this.dicts=res.data.data);
+			    initSimpleDicts('all',['bizFlowState']).then(res=>this.dicts=res.data.data);
 			    this.initData()
 				this.searchXmTaskSbills();
 				if(this.$refs.xmTaskSbillTable){

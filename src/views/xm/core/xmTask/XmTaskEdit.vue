@@ -616,6 +616,21 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 				}else if(fieldName==='dateRange'){
 					params.startTime=$event[0]
 					params.endTime=$event[1]
+				}else if(fieldName==='shareFee'){ 
+					if($event>1000){
+						this.editForm.shareFee=this.xmTask.shareFee
+						this.$notify({position:'bottom-left',showClose:true,message:'分享佣金不能超过1000元',type: 'error'})
+						return;
+					}else if(!this.editForm.budgetAt){
+						this.editForm.shareFee=this.xmTask.shareFee
+						this.$notify({position:'bottom-left',showClose:true,message:'请先设置预算金额',type: 'error'})
+						return;
+					}else if(this.editForm.shareFee/this.editForm.budgetAt>0.05){
+						this.editForm.shareFee=this.xmTask.shareFee
+						this.$notify({position:'bottom-left',showClose:true,message:'分享佣金不能超过预算金额的5%',type: 'error'})
+						return;
+					}
+					params.shareFee=$event
 				}else{
 					params[fieldName]=$event
 				}
