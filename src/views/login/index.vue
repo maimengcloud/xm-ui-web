@@ -1,7 +1,6 @@
 <template>
   <div class="login-container">
     <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm">
- 
       <div class="title-container">
         <div class="logo">
           <img src="../../assets/image/logo1.png" alt="" />  
@@ -102,7 +101,7 @@ import { mapGetters } from 'vuex';
 import md5 from 'js-md5';
 
 export default {
-  components: { LangSelect, SocialSign, BranchAdd,Register,ResetPassword},
+  components: { LangSelect, SocialSign, BranchAdd, Register,ResetPassword},
   name: 'login',
   data() {
     const validateDisplayUserid = (rule, value, callback) => {
