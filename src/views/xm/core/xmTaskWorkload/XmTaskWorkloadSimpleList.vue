@@ -4,10 +4,13 @@
 			<!--列表 XmTaskWorkload 工时登记表-->
 			<el-descriptions title="用户信息" :column="3" :size="size" border>
 				<el-descriptions-item label="项目">{{xmTask.projectName}}</el-descriptions-item>
-				<el-descriptions-item label="任务">{{xmTask.id}}&nbsp;{{xmTask.name}}</el-descriptions-item>
+				<el-descriptions-item label="任务" :span="2">{{xmTask.name}}</el-descriptions-item>
 				<el-descriptions-item label="预估工时"><el-tag>{{xmTask.budgetWorkload}} &nbsp;h</el-tag> </el-descriptions-item>
 				<el-descriptions-item label="已登记工时">
-					<el-tag>{{xmTask.actWorkload}}&nbsp;h</el-tag> &nbsp;&nbsp;工时进度 &nbsp;<el-tag type="warning">{{xmTask.budgetWorkload>0?Math.round(xmTask.actWorkload/xmTask.budgetWorkload*100):0}}%&nbsp;</el-tag>
+					<el-tag>{{xmTask.actWorkload}}&nbsp;h</el-tag>
+				</el-descriptions-item>
+				<el-descriptions-item label="工时进度">
+					 <el-tag type="warning">{{xmTask.budgetWorkload>0?Math.round(xmTask.actWorkload/xmTask.budgetWorkload*100):0}}%&nbsp;</el-tag>
 				</el-descriptions-item>
  			</el-descriptions> 
 			<el-table ref="xmTaskWorkloadTable" :data="xmTaskWorkloads" :row-style="{height:'50px'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
