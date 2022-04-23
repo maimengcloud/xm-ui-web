@@ -46,6 +46,9 @@ export const batchSetSbillIdNull = params => { return axios.post(`${base}/xm/cor
 
 export const listXmTaskWorkloadGroupByTaskIdAndUserid = params => { return axios.get(`${base}/xm/core/xmTaskWorkload/ListGroupByTaskIdAndUserid`, { params: params }); };
 
+export const listXmTaskWorkloadGroupByTaskIdAndUseridToSet = params => { return axios.get(`${base}/xm/core/xmTaskWorkload/ListGroupByTaskIdAndUseridToSet`, { params: params }); };
+
+ 
 
 
 /**-------------------------前端mng|add|edit界面公共函数---------------请写在下面----------------------------------------------- */

@@ -30,6 +30,7 @@ export const addXmTaskSbill = params => { return axios.post(`${base}/xm/core/xmT
 //批量修改某些字段
 export const editSomeFieldsXmTaskSbill = params => { return axios.post(`${base}/xm/core/xmTaskSbill/editSomeFields`, params); };
 
+export const batchJoinToSbill = params => { return axios.post(`${base}/xm/core/xmTaskSbill/batchJoinToSbill`, params); };
 
 
 /**-------------------------前端mng|add|edit界面公共函数---------------请写在下面----------------------------------------------- */

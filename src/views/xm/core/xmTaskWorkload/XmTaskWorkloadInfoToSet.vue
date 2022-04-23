@@ -2,20 +2,7 @@
 	<section class="page-container border padding">
 		<el-row>
       <xm-project-select style="display:inline;" ref="xmProjectSelect" :auto-select="false"  @row-click="onProjectConfirm" @clear="clearProject"></xm-project-select>
-      <el-select  v-model="filters.wstatus" clearable @change="searchXmTaskWorkloads" placeholder="请选择工时单状态">
-        <el-option label="全部状态" value=""></el-option>
-        <el-option label="待确认" value="0"></el-option> 
-        <el-option label="已确认" value="1"></el-option> 
-      </el-select>
-      <!--
-      <el-select  v-model="filters.sstatus" clearable @change="searchXmTaskWorkloads" placeholder="请选择工时单状态">
-        <el-option label="全部结算状态" value=""></el-option>
-        <el-option label="无需结算" value="0"></el-option>
-        <el-option label="待结算" value="1"></el-option>
-        <el-option label="已提交" value="2"></el-option> 
-        <el-option label="已结算" value="4"></el-option>
-      </el-select>
-      -->
+        
 			<el-input v-model="filters.key" style="width: 150px;" clearable placeholder="模糊查询员工名称"></el-input>
 			<el-input v-model="filters.userid" style="width: 150px;" clearable placeholder="员工编号"></el-input>
 			<el-input v-model="filters.taskId" style="width: 150px;" clearable placeholder="任务编号"></el-input>
@@ -23,7 +10,7 @@
       
       <span style="float:right;">
 <!--			<el-button type="primary" @click="showAdd" icon="el-icon-plus"> </el-button>-->
-      <el-button type="warning" v-loading="load.edit" @click="batchSetSbillIdNull" :disabled="this.sels.length===0 || load.edit==true" icon="el-icon-setting">移出结算单</el-button>
+      <el-button type="warning" v-loading="load.edit" @click="batchJoinToSbill" :disabled="this.sels.length===0 || load.edit==true" icon="el-icon-setting">加入结算单</el-button>
 			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>
       <el-popover placement="top-start" title="更多查询条件" width="400" v-model="moreVisible" trigger="manual" >
         <el-row>
@@ -98,19 +85,33 @@
              
           </template>
         </el-table-column>  
-				<el-table-column prop="workload" label="登记工时" width="120" show-overflow-tooltip  sortable>
+        <el-table-column label="报价信息">
+          <el-table-column prop="quoteWorkload" label="报价工时" width="120" show-overflow-tooltip  sortable>
+            <template slot-scope="scope">
+              {{scope.row.quoteWorkload}}h
+            </template>
+          </el-table-column>
+          <el-table-column prop="quoteEndTime" label="完工时间" width="120" show-overflow-tooltip  sortable>
+            <template slot-scope="scope">
+              {{scope.row.quoteWorkload}}h
+            </template>
+          </el-table-column>
+          
+          <el-table-column prop="quoteAmount" label="价格" width="120" show-overflow-tooltip  sortable>
+            <template slot-scope="scope">
+            ￥ {{scope.row.quoteAmount}}元
+            </template>
+          </el-table-column>
+        </el-table-column>
+				<el-table-column prop="toSetSworkload" label="待结算工时" width="120" show-overflow-tooltip  sortable>
           <template slot-scope="scope">
-            {{scope.row.workload}}h
+            {{scope.row.toSetSworkload}}h
           </template>
         </el-table-column>
-				<el-table-column prop="toConfirmWorkload" label="待确认工时" width="120" show-overflow-tooltip  sortable>
-          <template slot-scope="scope">
-            {{scope.row.toConfirmWorkload}}h
-          </template>
-        </el-table-column>
-				<el-table-column prop="hadConfirmWorkload" label="已确认工时" width="120" show-overflow-tooltip  sortable>
-          <template slot-scope="scope">
-            {{scope.row.hadConfirmWorkload}}h
+        
+        <el-table-column label="选择结算单" width="120" show-overflow-tooltip >
+          <template slot-scope="scope">  
+              <xm-task-sbill-select style="display:inline;"  :auto-select="false"  :project-id="scope.row.projectId"    placeholder="结算"  @row-click="batchJoinToSbill(scope.row,$event)"></xm-task-sbill-select> 
           </template>
         </el-table-column>
         <!--
@@ -198,12 +199,13 @@
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
-	import { listXmTaskWorkloadGroupByTaskIdAndUserid, delXmTaskWorkload, batchDelXmTaskWorkload,batchSetSbillIdNull,initDicts } from '@/api/xm/core/xmTaskWorkload';
+	import { listXmTaskWorkloadGroupByTaskIdAndUseridToSet, delXmTaskWorkload, batchDelXmTaskWorkload,batchSetSbillIdNull,initDicts, } from '@/api/xm/core/xmTaskWorkload';
 	import  XmTaskWorkloadEdit from './XmTaskWorkloadEdit';//新增修改界面
 	import { mapGetters } from 'vuex'
   import XmProjectSelect from "../components/XmProjectSelect";
   import XmTaskSbillSelect from "./XmTaskSbillSelect";
   import {editWorkloadToSbill} from "@/api/xm/core/xmTaskWorkload";
+  import {batchJoinToSbill} from "@/api/xm/core/xmTaskSbill";
   import {editXmTaskWorkloadSomeFields} from "../../../../api/xm/core/xmTaskWorkload";
   import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
   import XmTaskWorkloadSimpleList from './XmTaskWorkloadSimpleList';
@@ -374,9 +376,10 @@
         if(this.sbillId){
           params.sbillId=this.sbillId
         }
+        params.sstatus='1'
 
 				this.load.list = true;
-				listXmTaskWorkloadGroupByTaskIdAndUserid(params).then((res) => {
+				listXmTaskWorkloadGroupByTaskIdAndUseridToSet(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){
 						this.pageInfo.total = res.data.total;
@@ -430,22 +433,24 @@
 				});
 			},
 			//批量删除xmTaskWorkload
-			batchSetSbillIdNull: function () {
-				if(this.sels.length<=0){
-				    return;
-				}
-        if(this.sels.some(i=>!i.sbillId)){
-          this.$notify({position:'bottom-left',showClose:true, message:"请选中已加入结算单的工时", type: 'error'});
-          return;
+			batchJoinToSbill: function (row,sbill) {
+        if(sbill || sbill.id==null){
+           this.$notify({position:'bottom-left',showClose:true,message:'请选择结算单',type:'warning'})
+           return;
         }
-				var params=this.sels.map(i=>{
-				    return { id:i.id}
-				})
-				this.$confirm('确认移出结算单吗？', '提示', {
-					type: 'warning'
-				}).then(() => {
+				let params={
+          dataList:[{userid:row.userid,taskId:row.taskId}],
+          sbillId:sbill.id
+        };
+        if(this.sels.length>0){
+          if(this.sels.some(k=>k.projectId!=row.projectId)){
+            this.$notify({position:'bottom-left',showClose:true,message:'存在不同项目的工时单，请重新选择',type:'warning'})
+            return;
+          }
+          params.dataList=this.sels.map(i=>{return {userid:i.userid,taskId:i.taskId}}); 
+        }  
 					this.load.edit=true;
-					batchSetSbillIdNull(params).then((res) => {
+					batchJoinToSbill(params).then((res) => {
 						this.load.edit=false;
 						var tips=res.data.tips;
 						if( tips.isOk ){
@@ -453,8 +458,7 @@
 							this.getXmTaskWorkloads();
 						}
 						this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
-					}).catch( err  => this.load.edit=false );
-				});
+					}).catch( err  => this.load.edit=false ); 
 			},
       
 			batchDel: function () {
