@@ -56,7 +56,7 @@
 					['已确认',...this.xmProjectWorkloadSetDays.map(i=>i.hadConfirmWorkload)],
 					['待结算',...this.xmProjectWorkloadSetDays.map(i=>i.toSetWorkload)],
 					['已提交审核',...this.xmProjectWorkloadSetDays.map(i=>i.hadCommitSworkload)],
-					['已审核',...this.xmProjectWorkloadSetDays.map(i=>i.hadAgreeSworkload)],
+					//['已审核',...this.xmProjectWorkloadSetDays.map(i=>i.hadAgreeSworkload)],
 					['已结算',...this.xmProjectWorkloadSetDays.map(i=>i.hadSetSworkload)]
 				]
 			}
@@ -167,6 +167,7 @@
 					yAxis: { gridIndex: 0 },
     				grid: { top: '55%' },
 					series: [
+						
 						{ 	name:'登记工时',
 							type: 'line',
         					seriesLayoutBy: 'row',
@@ -205,13 +206,14 @@
 							smooth:true,
         					emphasis: { focus: 'series' },  
 						},
+						/**
 						{ 	name:'已审核',
 							type: 'line',
         					seriesLayoutBy: 'row',
 							smooth:true,
         					emphasis: { focus: 'series' },  
 						},
-						
+						 */
 						{ 	name:'已结算',
 							type: 'line',
         					seriesLayoutBy: 'row',

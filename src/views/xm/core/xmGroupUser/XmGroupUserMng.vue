@@ -19,6 +19,7 @@
 					</template>
 				</el-table-column>   
 				<el-table-column prop="groupName" label="组名" min-width="120" show-overflow-tooltip></el-table-column>
+ 				<el-table-column prop="userid" label="成员编号" min-width="120" show-overflow-tooltip></el-table-column>
  				<el-table-column prop="username" label="成员姓名" min-width="120" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="joinTime" label="加入时间" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="outTime" label="离队时间" min-width="80" show-overflow-tooltip></el-table-column>
@@ -250,10 +251,7 @@
 					}).catch( err  => this.load.del=false );
 				});
 			},
-			rowClick: function(row, event, column){
-			    if(event.label!='操作' && event.type!='selection'){
-			        this.showEdit(row)
-			    }
+			rowClick: function(row, event, column){ 
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
             initData: function(){

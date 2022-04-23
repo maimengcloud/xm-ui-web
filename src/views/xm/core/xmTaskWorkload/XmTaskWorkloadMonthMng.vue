@@ -71,7 +71,7 @@
             <span class="cell-bar">
               <el-popover>
                    <xm-task-workload-simple-list :visible="scope.row.id==editForm.id" :xm-task="{id:scope.row.taskId,name:scope.row.taskName,projectName:scope.row.projectName,projectId:scope.row.projectId,budgetWorkload:scope.row.budgetWorkload,actWorkload:scope.row.actWorkload}"  ref="xmTaskWorkloadSimpleList"></xm-task-workload-simple-list>
-                   <el-button slot="reference" icon="el-icon-search" style="display:inline;">所有工时</el-button>
+                   <el-button slot="reference" icon="el-icon-search" style="display:inline;">工时记录</el-button>
               </el-popover>
                
 						</span>

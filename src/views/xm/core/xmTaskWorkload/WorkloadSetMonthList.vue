@@ -56,7 +56,7 @@
 					['已确认',...this.xmProjectWorkloadSetMonths.map(i=>i.hadConfirmWorkload)],
 					['待结算',...this.xmProjectWorkloadSetMonths.map(i=>i.toSetWorkload)],
 					['已提交审核',...this.xmProjectWorkloadSetMonths.map(i=>i.hadCommitSworkload)],
-					['已审核',...this.xmProjectWorkloadSetMonths.map(i=>i.hadAgreeSworkload)],
+					//['已审核',...this.xmProjectWorkloadSetMonths.map(i=>i.hadAgreeSworkload)],
 					['已结算',...this.xmProjectWorkloadSetMonths.map(i=>i.hadSetSworkload)]
 				]
 			}
@@ -207,13 +207,14 @@
 							smooth:true,
         					emphasis: { focus: 'series' },  
 						},
+						/**
 						{ 	name:'已审核',
 							type: 'line',
         					seriesLayoutBy: 'row',
 							smooth:true,
         					emphasis: { focus: 'series' },  
 						},
-						
+						 */
 						{ 	name:'已结算',
 							type: 'line',
         					seriesLayoutBy: 'row',
