@@ -111,8 +111,8 @@ export default {
                   var end=new Date(); 
                   start.setTime(now.getTime() + 3600 * 1000 * 24 * this.defaultRange[0]);
                   end.setTime(now.getTime() + 3600 * 1000 * 24 * this.defaultRange[1]);
-                  this.dateRange.push(util.formatDate.format(start,this.valueFormat))
-                  this.dateRange.push(util.formatDate.format(end,this.valueFormat))
+                  this.dateRange.push(util.formatDate(start,this.valueFormat))
+                  this.dateRange.push(util.formatDate(end,this.valueFormat))
                 this.onDateRangeChange(this.dateRange);
               }
           }
