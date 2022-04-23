@@ -52,7 +52,7 @@
                 :cell-style="{'text-align':'center'}">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column>
 				<el-table-column sortable type="index" width="55" show-overflow-tooltip fixed="left"></el-table-column>
- 				<el-table-column prop="username" label="姓名" width="120" show-overflow-tooltip  sortable  fixed="left"> 
+ 				<el-table-column prop="username" label="姓名" min-width="120" show-overflow-tooltip  sortable  fixed="left"> 
             <template slot-scope="scope"> 
               <span class="cell-text">
                 {{scope.row.username}}
@@ -62,7 +62,7 @@
               </span>
             </template>
         </el-table-column>
-				<el-table-column prop="taskId" label="任务编号" width="120" show-overflow-tooltip  sortable  fixed="left">
+				<el-table-column prop="taskId" label="任务" min-width="120" show-overflow-tooltip  sortable  fixed="left">
           <template slot-scope="scope">
             
             <span class="cell-text">
@@ -83,7 +83,7 @@
             <span>{{scope.row.bizDate}}</span>
           </template>
         </el-table-column>  
-         <el-table-column prop="projectId" label="归属项目" width="120" show-overflow-tooltip sortable> 
+         <el-table-column prop="projectId" label="归属项目" min-width="120" show-overflow-tooltip sortable> 
             <template slot-scope="scope"> 
               <span class="cell-text">
                 {{scope.row.projectName}}
@@ -122,7 +122,7 @@
             {{scope.row.workload}}h
           </template>
         </el-table-column>
-        
+        <!--
 				<el-table-column prop="sworkload" label="结算工时" width="120" show-overflow-tooltip  sortable>
           <template slot-scope="scope"> 
             <span class="cell-text">
@@ -144,6 +144,8 @@
 						</span>
           </template> 
         </el-table-column>
+        -->
+        <!--
 				<el-table-column prop="samt" label="结算金额" width="120" show-overflow-tooltip  sortable>  
           <template slot-scope="scope"> 
             <span class="cell-text">
@@ -165,6 +167,7 @@
 						</span>
           </template>
         </el-table-column>
+        -->
 <!--				<el-table-column prop="cuserid" label="创建人编号" width="120" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="bizDate" label="业务日期yyyy-MM-dd" width="120" show-overflow-tooltip></el-table-column>-->
 				<el-table-column prop="remark" label="备注" width="120" show-overflow-tooltip>  

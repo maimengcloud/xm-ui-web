@@ -262,7 +262,10 @@
       onProjectClear(){
         this.$set(this.editForm, "projectId", null);
         this.$set(this.editForm, "projectName", null);
-      }
+      },
+	  afterFlowSubmit(){
+		
+	  }
 		},//end method
 		mounted() {
 		    this.$nextTick(() => {
