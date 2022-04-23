@@ -186,6 +186,7 @@ export default {
         { path: 'xmTaskWorkload/WorkloadSetDayListMy', component: _import('xm/core/xmTaskWorkload/WorkloadSetDayListMy'), name: 'WorkloadSetDayListMy', meta: { title: '工时日报表(我)'}},
         { path: 'xmTaskWorkload/WorkloadSetMonthListMy', component: _import('xm/core/xmTaskWorkload/WorkloadSetMonthListMy'), name: 'WorkloadSetMonthListMy', meta: { title: '工时月报表(我)'}},
         
+        { path: 'xmTaskWorkload/XmTaskWorkloadInfo', component: _import('xm/core/xmTaskWorkload/XmTaskWorkloadInfo'), name: 'XmTaskWorkloadInfo', meta: { title: '工时管理'}},
         { path: 'xmTaskWorkload/ToComfirmWorkloadAll', component: _import('xm/core/xmTaskWorkload/ToComfirmWorkloadAll'), name: 'ToComfirmWorkloadAll', meta: { title: '待确认工时'}},
         { path: 'xmTaskWorkload/HadComfirmWorkloadAll', component: _import('xm/core/xmTaskWorkload/HadComfirmWorkloadAll'), name: 'HadComfirmWorkloadAll', meta: { title: '已确认工时'}},
          { path: 'xmTaskWorkload/WaitWorkloadToSbillAll', component: _import('xm/core/xmTaskWorkload/WaitWorkloadToSbillAll'), name: 'WaitWorkloadToSbillAll', meta: { title: '待结算工时'}},

@@ -2,25 +2,38 @@
 	<section> 
 		<el-row class="padding-top">
 			<!--列表 XmTaskWorkload 工时登记表-->
-			
-			<el-row>
-				项目 &nbsp;<font>{{xmTask.projectName}}</font>  &nbsp;&nbsp;任务 &nbsp;<font>{{xmTask.id}}&nbsp;{{xmTask.name}}</font>
-			</el-row>
-			<el-row>
-				预估工时 &nbsp;<el-tag>{{xmTask.budgetWorkload}} &nbsp;h</el-tag>  &nbsp;&nbsp;已登记工时 &nbsp;<el-tag>{{xmTask.actWorkload}}&nbsp;h</el-tag> &nbsp;&nbsp;工时进度 &nbsp;<el-tag type="warning">{{xmTask.budgetWorkload>0?Math.round(xmTask.actWorkload/xmTask.budgetWorkload*100):0}}%&nbsp;</el-tag>
-			</el-row>
-			<el-table ref="xmTaskWorkloadTable" :data="xmTaskWorkloads"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-descriptions title="用户信息" :column="3" :size="size" border>
+				<el-descriptions-item label="项目">{{xmTask.projectName}}</el-descriptions-item>
+				<el-descriptions-item label="任务">{{xmTask.id}}&nbsp;{{xmTask.name}}</el-descriptions-item>
+				<el-descriptions-item label="预估工时"><el-tag>{{xmTask.budgetWorkload}} &nbsp;h</el-tag> </el-descriptions-item>
+				<el-descriptions-item label="已登记工时">
+					<el-tag>{{xmTask.actWorkload}}&nbsp;h</el-tag> &nbsp;&nbsp;工时进度 &nbsp;<el-tag type="warning">{{xmTask.budgetWorkload>0?Math.round(xmTask.actWorkload/xmTask.budgetWorkload*100):0}}%&nbsp;</el-tag>
+				</el-descriptions-item>
+ 			</el-descriptions> 
+			<el-table ref="xmTaskWorkloadTable" :data="xmTaskWorkloads" :row-style="{height:'50px'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip></el-table-column>
- 				<el-table-column prop="username" label="姓名" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="bizDate" label="报送日期" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="workload" label="报送工时" min-width="80" show-overflow-tooltip></el-table-column>
- 				<el-table-column prop="wstatus" label="状态" min-width="80" show-overflow-tooltip>
+ 				<el-table-column prop="username" label="姓名" min-width="120" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="bizDate" label="登记日期" min-width="120" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="workload" label="登记工时" min-width="120" show-overflow-tooltip></el-table-column>
+ 				<el-table-column prop="wstatus" label="确认状态" min-width="120" show-overflow-tooltip>
 					 <template slot-scope="scope">
-						 {{scope.row.wstatus==='1'?'已确认':'待确认'}}
+						<div class="cell-text">
+							<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'wstatus',scope.row.wstatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
+						</div>
+						<span class="cell-bar">
+							<el-select  v-model="scope.row.wstatus" placeholder="工时状态"  style="display:block;"  @change="editXmTaskWorkloadSomeFields(scope.row,'wstatus',$event)">
+								<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.wstatus" :key="index"></el-option>
+							</el-select>
+						</span>
 					 </template>
 				 </el-table-column>
-				<el-table-column prop="remark" label="备注" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="ttype" label="任务类型" min-width="80" show-overflow-tooltip :formatter="formatterOption"></el-table-column>
+				<el-table-column prop="remark" label="备注" min-width="120" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="ttype" label="任务类型" min-width="80" show-overflow-tooltip>
+					 <template slot-scope="scope">
+						<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'taskType',scope.row.ttype)" :key="index" :type="item.className">{{item.name}}</el-tag>
+					 </template>
+
+				</el-table-column>
 
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
@@ -39,7 +52,7 @@
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
-	import { listXmTaskWorkload, delXmTaskWorkload, batchDelXmTaskWorkload } from '@/api/xm/core/xmTaskWorkload';
+	import { listXmTaskWorkload, delXmTaskWorkload, batchDelXmTaskWorkload,editXmTaskWorkloadSomeFields,initDicts } from '@/api/xm/core/xmTaskWorkload';
 	import  XmTaskWorkloadEdit from './XmTaskWorkloadEdit';//新增修改界面
 	import { mapGetters } from 'vuex'
 
@@ -48,7 +61,7 @@
 		components: {
 		    XmTaskWorkloadEdit,
 		},
-		props:['xmTask','visible'],
+		props:['xmTask','visible','userid','wstatus','sstatus'],
 		computed: {
 		    ...mapGetters(['userInfo']),
 
@@ -83,6 +96,9 @@
 				sels: [],//列表选中数据
 				dicts:{
 					taskType:[],
+					taskState:[],
+					wstatus:[],
+					sstatus:[],
 				    //sex: [{id:'1',name:'男'},{id:'2',name:'女'}]
 				},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				addFormVisible: false,//新增xmTaskWorkload界面是否显示
@@ -98,27 +114,38 @@
 			}
 		},//end data
 		methods: {
-
-			formatterOption: function (row, column, cellValue, index) {
-				var columnName = column.property;
-				var key = columnName;
-				if(columnName==='ttype'){
-					key="taskType"
+			...util,
+			editXmTaskWorkloadSomeFields(row,fieldName,$event){  
+				let params={
+				ids:[row.id],
+				};
+				if(this.sels.length>0){
+				if(this.sels.some(k=>k.projectId!=row.projectId)){
+					this.$notify({position:'bottom-left',showClose:true,message:'存在不同项目的工时单，请重新选择',type:'warning'})
+					return;
 				}
-				if (
-					this.dicts[key] == undefined ||
-					this.dicts[key] == null ||
-					this.dicts[key].length == 0
-				) {
-					return cellValue;
+				params.ids=this.sels.map(i=>i.id); 
+				}else{
+				params.ids = [row.id]; 
+				params[fieldName]=$event
 				}
-				var list = this.dicts[key].filter((i) => i.id == cellValue);
-				if (list.length > 0) {
-					return list[0].name;
-				} else {
-					return cellValue;
+				var func = editXmTaskWorkloadSomeFields
+				if(fieldName==='sbillId'){
+				func = editWorkloadToSbill
+				params.sbillId=$event.id
+				}else{ 
+				params[fieldName]=$event
 				}
-			},
+				func(params).then(res=>{
+				let tips = res.data.tips; 
+				this.getXmTaskWorkloads();
+				if(tips.isOk){
+					this.$emit("edit-some-fields",params)
+				}else{
+					this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+				}
+				})
+			},  
 			handleSizeChange(pageSize) {
 				this.pageInfo.pageSize=pageSize;
 				this.getXmTaskWorkloads();
@@ -172,7 +199,16 @@
 				}
 
 				params.taskId=this.xmTask.id
+				if(this.userid){
+					params.userid=this.userid
+				}
 
+				if(this.wstatus){
+					params.wstatus=this.wstatus
+				}
+				if(this.sstatus){
+					params.sstatus=this.sstatus
+				}
 				this.load.list = true;
 				listXmTaskWorkload(params).then((res) => {
 					var tips=res.data.tips;
@@ -264,11 +300,8 @@
 
 		},//end methods
 		mounted() {
-			this.$nextTick(() => {
-
-				initSimpleDicts('all',[ 'taskType' ]).then(res=>{
-					this.dicts=res.data.data;
-				})
+			this.$nextTick(() => { 
+				initDicts(this);
 				if(this.visible==true){ 
 					this.initData()
 					this.searchXmTaskWorkloads();
@@ -282,4 +315,7 @@
 </script>
 
 <style scoped>
+	.label {
+		font-family: 黑体; 
+	}
 </style>
