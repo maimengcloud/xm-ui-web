@@ -2,7 +2,7 @@
 	<section> 
 		<el-row class="padding-top">
 			<!--列表 XmTaskWorkload 工时登记表-->
-			<el-descriptions title="用户信息" :column="3" :size="size" border>
+			<el-descriptions :column="3" :size="size" border>
 				<el-descriptions-item label="项目">{{xmTask.projectName}}</el-descriptions-item>
 				<el-descriptions-item label="任务" :span="2">{{xmTask.name}}</el-descriptions-item>
 				<el-descriptions-item label="预估工时"><el-tag>{{xmTask.budgetWorkload}} &nbsp;h</el-tag> </el-descriptions-item>
@@ -26,6 +26,18 @@
 						<span class="cell-bar">
 							<el-select  v-model="scope.row.wstatus" placeholder="工时状态"  style="display:block;"  @change="editXmTaskWorkloadSomeFields(scope.row,'wstatus',$event)">
 								<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.wstatus" :key="index"></el-option>
+							</el-select>
+						</span>
+					 </template>
+				 </el-table-column>
+ 				<el-table-column prop="sstatus" label="结算状态" min-width="120" show-overflow-tooltip>
+					 <template slot-scope="scope">
+						<div class="cell-text">
+							<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'sstatus',scope.row.sstatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
+						</div>
+						<span class="cell-bar">
+							<el-select  v-model="scope.row.sstatus" placeholder="结算状态"  style="display:block;"  @change="editXmTaskWorkloadSomeFields(scope.row,'sstatus',$event)">
+								<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.sstatus" :key="index"></el-option>
 							</el-select>
 						</span>
 					 </template>

@@ -7,14 +7,15 @@
         <el-option label="待确认" value="0"></el-option> 
         <el-option label="已确认" value="1"></el-option> 
       </el-select>
-
+      <!--
       <el-select  v-model="filters.sstatus" clearable @change="searchXmTaskWorkloads" placeholder="请选择工时单状态">
         <el-option label="全部结算状态" value=""></el-option>
         <el-option label="无需结算" value="0"></el-option>
-        <el-option label="待结算" value="0"></el-option>
+        <el-option label="待结算" value="1"></el-option>
         <el-option label="已提交" value="2"></el-option> 
         <el-option label="已结算" value="4"></el-option>
       </el-select>
+      -->
 			<el-input v-model="filters.key" style="width: 150px;" clearable placeholder="模糊查询员工名称"></el-input>
 			<el-input v-model="filters.userid" style="width: 150px;" clearable placeholder="员工编号"></el-input>
 			<el-input v-model="filters.taskId" style="width: 150px;" clearable placeholder="任务编号"></el-input>
@@ -49,8 +50,7 @@
 		<el-row class="padding-top">
 			<!--列表 XmTaskWorkload 工时登记表-->
 			<el-table ref="xmTaskWorkloadTable" :data="xmTaskWorkloads" :row-style="{height:'50px'}" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row
-                v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;" :header-cell-style="{'text-align':'center'}"
-                :cell-style="{'text-align':'center'}">
+                v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;"  >
 				<el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column>
 				<el-table-column sortable type="index" width="55" show-overflow-tooltip fixed="left"></el-table-column>
  				<el-table-column prop="username" label="姓名" min-width="120" show-overflow-tooltip  sortable  fixed="left"> 
@@ -372,8 +372,9 @@
         }
         if(this.queryScope){
           params.queryScope=this.queryScope
+          params.userid=this.userInfo.userid
         }else{
-          params.queryScope="my"
+          params.queryScope="all" 
         }
         if(this.sbillId){
           params.sbillId=this.sbillId
