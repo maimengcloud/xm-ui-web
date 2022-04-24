@@ -26,7 +26,7 @@
 						</span>
 						<span class="cell-bar">
 							<el-popover :title="'【'+scope.row.username+'】在本任务的所有工时记录'" fixed="left">
-							<xm-task-workload-simple-list :visible="scope.row.id==editForm.id" :userid="scope.row.userid" :xm-task="{id:scope.row.taskId,name:scope.row.taskName,projectName:scope.row.projectName,projectId:scope.row.projectId,budgetWorkload:scope.row.budgetWorkload,actWorkload:scope.row.actWorkload}"  ref="xmTaskWorkloadSimpleList1" @edit-some-fields="searchXmTaskWorkloads"></xm-task-workload-simple-list>
+							<xm-task-workload-simple-list :visible="scope.row.id==editForm.id" :userid="scope.row.userid" :xm-task="{id:scope.row.taskId,name:scope.row.taskName,projectName:scope.row.projectName,projectId:scope.row.projectId,budgetWorkload:scope.row.budgetWorkload,actWorkload:scope.row.actWorkload}"  ref="xmTaskWorkloadSimpleList1" @edit-some-fields="searchXmTaskSbillDetails"></xm-task-workload-simple-list>
 							<el-button slot="reference" icon="el-icon-search" style="display:inline;">所有工时记录</el-button>
 							</el-popover>
 						</span>
@@ -39,7 +39,7 @@
 						</span>
 						<span class="cell-bar">
 						<el-popover title="当前任务所有工时记录">
-							<xm-task-workload-simple-list :visible="scope.row.id==editForm.id" :xm-task="{id:scope.row.taskId,name:scope.row.taskName,projectName:scope.row.projectName,projectId:scope.row.projectId,budgetWorkload:scope.row.budgetWorkload,actWorkload:scope.row.actWorkload}"  ref="xmTaskWorkloadSimpleList2"  @edit-some-fields="searchXmTaskWorkloads"></xm-task-workload-simple-list>
+							<xm-task-workload-simple-list :visible="scope.row.id==editForm.id" :xm-task="{id:scope.row.taskId,name:scope.row.taskName,projectName:scope.row.projectName,projectId:scope.row.projectId,budgetWorkload:scope.row.budgetWorkload,actWorkload:scope.row.actWorkload}"  ref="xmTaskWorkloadSimpleList2"  @edit-some-fields="searchXmTaskSbillDetails"></xm-task-workload-simple-list>
 							<el-button slot="reference" icon="el-icon-search" style="display:inline;">所有工时记录</el-button>
 						</el-popover>
                
@@ -61,7 +61,14 @@
 					</el-table-column>
 					<el-table-column prop="sschemel" label="结算方案" min-width="120" show-overflow-tooltip>
 						<template slot-scope="scope">
-							<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'xmTaskSettleSchemel',scope.row.sschemel)" :key="index" :type="item.className">{{item.name}}</el-tag> 
+							<div class="cell-text">
+								<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'xmTaskSettleSchemel',scope.row.sschemel)" :key="index" :type="item.className">{{item.name}}</el-tag> 
+							</div>
+							<span class="cell-bar">
+								<el-select  v-model="scope.row.sschemel" placeholder="结算方案"  style="display:block;"  @change="editSomeFields(scope.row,'sschemel',$event)">
+									<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.xmTaskSettleSchemel" :key="index"></el-option>
+								</el-select>
+							</span> 
 						</template>
 					</el-table-column>
 					<el-table-column prop="uniPrice" label="工时单价" min-width="120" show-overflow-tooltip>
@@ -366,6 +373,34 @@
                 params['ids']=[row].map(i=>i.id)
             }
             params[fieldName]=$event
+			if(fieldName==='sschemel'){
+				if(this.sels.length>1){
+					 this.$notify({position:'bottom-left',showClose:true,message:'该数据不允许批量修改，请不要选择数据,直接编辑即可',type:'warning'})
+					 Object.assign(this.editForm,this.editFormBak)
+					 return;
+				}
+				//1|按工期延迟比率打折 2|按报价结算不打折 3|按工期提前或者延迟进行奖罚
+				if("1"==$event){
+					if(!row.quoteAt){
+						params['samt']=row.budgetAt
+					}else{ 
+						params['samt']=row.quoteAt
+					}
+				}else if("2"==$event){
+					if(!row.quoteAt){
+						params['samt']=row.budgetAt
+					}else{ 
+						params['samt']=row.quoteAt
+					}
+				}else if("3"==$event){
+					if(!row.quoteAt){
+						params['samt']=row.budgetAt
+					}else{ 
+						params['samt']=row.quoteAt
+					}
+				}
+				
+			}
             var func = editSomeFieldsXmTaskSbillDetail
             func(params).then(res=>{
               let tips = res.data.tips;

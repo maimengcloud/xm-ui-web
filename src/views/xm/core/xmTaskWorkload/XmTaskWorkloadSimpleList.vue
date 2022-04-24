@@ -2,7 +2,7 @@
 	<section> 
 		<el-row class="padding-top">
 			<!--列表 XmTaskWorkload 工时登记表-->
-			<el-descriptions :column="3" :size="size" border>
+			<el-descriptions :column="3"  border>
 				<el-descriptions-item label="项目">{{xmTask.projectName}}</el-descriptions-item>
 				<el-descriptions-item label="任务" :span="2">{{xmTask.name}}</el-descriptions-item>
 				<el-descriptions-item label="预估工时"><el-tag>{{xmTask.budgetWorkload}} &nbsp;h</el-tag> </el-descriptions-item>
