@@ -97,7 +97,7 @@
             </template>
           </el-table-column>
           
-          <el-table-column prop="quoteAt" label="价格" width="120" show-overflow-tooltip  sortable>
+          <el-table-column prop="quoteAt" label="报价总金额" width="120" show-overflow-tooltip  sortable>
             <template slot-scope="scope">
             ￥ {{scope.row.quoteAt}}元
             </template>

@@ -73,12 +73,24 @@
 					</el-table-column>
 					<el-table-column prop="uniPrice" label="工时单价" min-width="120" show-overflow-tooltip>
 						<template slot-scope="scope">
-							<span> {{scope.row.uniPrice}} </span>
+							<span> ￥ {{scope.row.uniPrice}}&nbsp;元 &nbsp;/ &nbsp;h </span>
+						</template>
+					</el-table-column>
+					<el-table-column prop="budgetAt" label="预算金额" min-width="120" show-overflow-tooltip>
+						<template slot-scope="scope">
+							<span> ￥ {{scope.row.budgetAt}}元 </span>
+						</template>
+					</el-table-column>
+					<el-table-column prop="quoteAt" label="报价金额" min-width="120" show-overflow-tooltip>
+						<template slot-scope="scope">
+							<span> ￥ {{scope.row.quoteAt}}元 </span>
 						</template>
 					</el-table-column>
 					<el-table-column prop="samt" label="结算金额" min-width="120" show-overflow-tooltip>
 						<template slot-scope="scope">
-							<span> {{scope.row.samt}} </span>
+							<span class="cell-text"> ￥ {{scope.row.samt}}元  </span>
+                     		<span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.samt" placeholder="" @change="editSomeFields(scope.row,'samt',$event)" :maxlength="22"></el-input></span>
+							 
 						</template>
 					</el-table-column>
 					<el-table-column prop="bizMonth" label="月份" min-width="120" show-overflow-tooltip>
@@ -115,14 +127,14 @@
 					</el-table-column> 
 					<el-table-column prop="budgetAt" label="预算金额" min-width="120" show-overflow-tooltip>
 						<template slot-scope="scope">
-							<span> {{scope.row.budgetAt}} </span>
+							<span> ￥  {{scope.row.budgetAt}}元 </span>
 						</template>
 					</el-table-column>
 				</el-table-column> 
 				<el-table-column label="报价信息">
 				<el-table-column prop="quoteAt" label="报价金额" min-width="120" show-overflow-tooltip>
                     <template slot-scope="scope">
-                        <span> {{scope.row.quoteAt}} </span>
+                        <span>  ￥ {{scope.row.quoteAt}}元 </span>
                     </template>
 				</el-table-column>
 				<el-table-column prop="quoteWorkload" label="报价工时" min-width="120" show-overflow-tooltip>
