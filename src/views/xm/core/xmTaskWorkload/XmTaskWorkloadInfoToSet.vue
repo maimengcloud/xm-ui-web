@@ -434,12 +434,12 @@
 			},
 			//批量删除xmTaskWorkload
 			batchJoinToSbill: function (row,sbill) {
-        if(sbill || sbill.id==null){
+        if(!sbill || sbill.id==null){
            this.$notify({position:'bottom-left',showClose:true,message:'请选择结算单',type:'warning'})
            return;
         }
 				let params={
-          dataList:[{userid:row.userid,taskId:row.taskId}],
+          userTasks:[{userid:row.userid,taskId:row.taskId}],
           sbillId:sbill.id
         };
         if(this.sels.length>0){
@@ -447,7 +447,7 @@
             this.$notify({position:'bottom-left',showClose:true,message:'存在不同项目的工时单，请重新选择',type:'warning'})
             return;
           }
-          params.dataList=this.sels.map(i=>{return {userid:i.userid,taskId:i.taskId}}); 
+          params.userTasks=this.sels.map(i=>{return {userid:i.userid,taskId:i.taskId}}); 
         }  
 					this.load.edit=true;
 					batchJoinToSbill(params).then((res) => {

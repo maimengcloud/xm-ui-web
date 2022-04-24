@@ -54,9 +54,9 @@
 				</el-form-item>
 				<el-tabs value="1" accordion> 
 					
-					<el-tab-pane label="结算工时列表" name="1"  v-if="opType==='edit'"> 	
+					<el-tab-pane label="结算清单" name="1"  v-if="opType==='edit'"> 	
 						<el-row v-if="editForm.id">  
-							 <XmTaskWorkloadMng :sbill-id="editForm.id"></XmTaskWorkloadMng>
+							 <XmTaskSbillDetailMng :sbill-id="editForm.id"></XmTaskSbillDetailMng>
 						</el-row>  
 					</el-tab-pane> 
 					
@@ -130,7 +130,7 @@
 	import { mapGetters } from 'vuex';
   //import SelectXmProject from "./SelectXmProject";
   import XmProjectSelect from "@/views/xm/core/components/XmProjectSelect";
-  import XmTaskWorkloadMng from "@/views/xm/core/xmTaskWorkload/XmTaskWorkloadMng";
+  import XmTaskSbillDetailMng from "@/views/xm/core/xmTaskSbillDetail/XmTaskSbillDetailMng";
 
 	import TaskMng from '@/views/mdp/workflow/ru/task/TaskMng'; 
 	import ProcinstMng from '@/views//mdp/workflow/hi/procinst/ProcinstMng';
@@ -139,7 +139,7 @@
     components: {
       //XmTaskSbillEdit,
       //SelectXmProject,
-      XmProjectSelect,XmTaskWorkloadMng,TaskMng,ProcinstMng
+      XmProjectSelect,XmTaskSbillDetailMng,TaskMng,ProcinstMng
 
     },
 		computed: {

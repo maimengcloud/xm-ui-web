@@ -15,10 +15,10 @@
  			</el-descriptions> 
 			<el-table ref="xmTaskWorkloadTable" :data="xmTaskWorkloads" :row-style="{height:'50px'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip></el-table-column>
- 				<el-table-column prop="username" label="姓名" min-width="120" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="bizDate" label="登记日期" min-width="120" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="workload" label="登记工时" min-width="120" show-overflow-tooltip></el-table-column>
- 				<el-table-column prop="wstatus" label="确认状态" min-width="120" show-overflow-tooltip>
+ 				<el-table-column prop="username" label="姓名" width="120" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="bizDate" label="登记日期" width="120" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="workload" label="登记工时" width="120" show-overflow-tooltip></el-table-column>
+ 				<el-table-column prop="wstatus" label="确认状态" width="120" show-overflow-tooltip>
 					 <template slot-scope="scope">
 						<div class="cell-text">
 							<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'wstatus',scope.row.wstatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
@@ -30,7 +30,7 @@
 						</span>
 					 </template>
 				 </el-table-column>
- 				<el-table-column prop="sstatus" label="结算状态" min-width="120" show-overflow-tooltip>
+ 				<el-table-column prop="sstatus" label="结算状态" width="120" show-overflow-tooltip>
 					 <template slot-scope="scope">
 						<div class="cell-text">
 							<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'sstatus',scope.row.sstatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
@@ -42,8 +42,8 @@
 						</span>
 					 </template>
 				 </el-table-column>
-				<el-table-column prop="remark" label="备注" min-width="120" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="ttype" label="任务类型" min-width="80" show-overflow-tooltip>
+				<el-table-column prop="remark" label="备注" width="120" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="ttype" label="任务类型" width="80" show-overflow-tooltip>
 					 <template slot-scope="scope">
 						<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'taskType',scope.row.ttype)" :key="index" :type="item.className">{{item.name}}</el-tag>
 					 </template>

@@ -18,134 +18,129 @@
 				     <span class="cell-text">  {{scope.row.username}}}  </span>
                      <span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
 				</el-table-column>
-				-->
-				<el-table-column prop="id" label="主键" min-width="80" show-overflow-tooltip  fixed="left"></el-table-column>
-				<el-table-column prop="userid" label="员工编号" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.userid}} </span>
+				--> 
+				<el-table-column prop="username" label="姓名" min-width="120" show-overflow-tooltip fixed="left">
+                    <template slot-scope="scope"> 
+						<span class="cell-text">
+							{{scope.row.username}}
+						</span>
+						<span class="cell-bar">
+							<el-popover :title="'【'+scope.row.username+'】在本任务的所有工时记录'" fixed="left">
+							<xm-task-workload-simple-list :visible="scope.row.id==editForm.id" :userid="scope.row.userid" :xm-task="{id:scope.row.taskId,name:scope.row.taskName,projectName:scope.row.projectName,projectId:scope.row.projectId,budgetWorkload:scope.row.budgetWorkload,actWorkload:scope.row.actWorkload}"  ref="xmTaskWorkloadSimpleList1" @edit-some-fields="searchXmTaskWorkloads"></xm-task-workload-simple-list>
+							<el-button slot="reference" icon="el-icon-search" style="display:inline;">所有工时记录</el-button>
+							</el-popover>
+						</span>
                     </template>
-				</el-table-column>
-				<el-table-column prop="username" label="姓名" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.username}} </span>
+				</el-table-column> 
+				<el-table-column prop="taskName" label="任务" min-width="120" show-overflow-tooltip fixed="left">
+                    <template slot-scope="scope">  
+						<span class="cell-text">
+						{{scope.row.taskName}}
+						</span>
+						<span class="cell-bar">
+						<el-popover title="当前任务所有工时记录">
+							<xm-task-workload-simple-list :visible="scope.row.id==editForm.id" :xm-task="{id:scope.row.taskId,name:scope.row.taskName,projectName:scope.row.projectName,projectId:scope.row.projectId,budgetWorkload:scope.row.budgetWorkload,actWorkload:scope.row.actWorkload}"  ref="xmTaskWorkloadSimpleList2"  @edit-some-fields="searchXmTaskWorkloads"></xm-task-workload-simple-list>
+							<el-button slot="reference" icon="el-icon-search" style="display:inline;">所有工时记录</el-button>
+						</el-popover>
+               
+						</span>
                     </template>
+				</el-table-column> 
+				<el-table-column label="结算信息">    
+					<el-table-column  prop="sstatus" label="结算状态" width="120" show-overflow-tooltip  sortable>
+						<template slot-scope="scope">
+							<div class="cell-text">
+								<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'sstatus',scope.row.sstatus)" :key="index" :type="item.className">{{item.name}}</el-tag> 
+							</div>
+							<span class="cell-bar">
+								<el-select  v-model="scope.row.sstatus" placeholder="结算状态"  style="display:block;"  @change="editSomeFields(scope.row,'sstatus',$event)">
+									<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.sstatus" :key="index"></el-option>
+								</el-select>
+							</span>
+						</template>
+					</el-table-column>
+					<el-table-column prop="sschemel" label="结算方案" min-width="120" show-overflow-tooltip>
+						<template slot-scope="scope">
+							<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'xmTaskSettleSchemel',scope.row.sschemel)" :key="index" :type="item.className">{{item.name}}</el-tag> 
+						</template>
+					</el-table-column>
+					<el-table-column prop="uniPrice" label="工时单价" min-width="120" show-overflow-tooltip>
+						<template slot-scope="scope">
+							<span> {{scope.row.uniPrice}} </span>
+						</template>
+					</el-table-column>
+					<el-table-column prop="samt" label="结算金额" min-width="120" show-overflow-tooltip>
+						<template slot-scope="scope">
+							<span> {{scope.row.samt}} </span>
+						</template>
+					</el-table-column>
+					<el-table-column prop="bizMonth" label="月份" min-width="120" show-overflow-tooltip>
+						<template slot-scope="scope">
+							<span> {{scope.row.bizMonth}} </span>
+						</template>
+					</el-table-column>
+					<el-table-column prop="remark" label="备注" min-width="120" show-overflow-tooltip>
+						<template slot-scope="scope">
+							<span> {{scope.row.remark}} </span>
+						</template>
+					</el-table-column>  
 				</el-table-column>
-				<el-table-column prop="ctime" label="创建日期" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.ctime}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="taskId" label="业务对象主键任务编号" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.taskId}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="bizDate" label="业务日期yyyy-MM-dd" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.bizDate}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="remark" label="备注" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.remark}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="sbillId" label="结算单据编号-来自task_sbill.id" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.sbillId}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="stime" label="结算提交时间" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.stime}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="sstatus" label="结算状态0-无需结算，1-待结算2-已提交3-已通过4-已结算" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.sstatus}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="amt" label="工时对应金额" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.amt}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="samt" label="结算工时对应结算金额-根据结算方案计算结算金额" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.samt}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="workload" label="报工工时" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.workload}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="projectId" label="归属项目" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.projectId}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="sworkload" label="结算工时，用于结算，默认=workload" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.sworkload}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="bizMonth" label="月份yyyy-MM型" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.bizMonth}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="budgetAt" label="任务预算金额-来自task表" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.budgetAt}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="budgetWorkload" label="任务预算工时-来自task表" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.budgetWorkload}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="initWorkload" label="任务初始工时-来自task表" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.initWorkload}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="quoteAt" label="报价金额-来自task_execuser表" min-width="80" show-overflow-tooltip>
+				<el-table-column label="任务信息">
+					<el-table-column  prop="taskState" label="任务状态" width="120" show-overflow-tooltip  sortable >
+						<template slot-scope="scope"> 
+							<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'taskState',scope.row.taskState)" :key="index" :type="item.className">{{item.name}}</el-tag>
+						</template>
+					</el-table-column>   
+					<el-table-column prop="initWorkload" label="初始工时" min-width="120" show-overflow-tooltip>
+						<template slot-scope="scope">
+							<span> {{scope.row.initWorkload}} </span>
+						</template>
+					</el-table-column>
+					<el-table-column prop="budgetWorkload" label="预算工时" min-width="120" show-overflow-tooltip>
+						<template slot-scope="scope">
+							<span> {{scope.row.budgetWorkload}} </span>
+						</template>
+					</el-table-column>
+					<el-table-column prop="workload" label="登记工时" min-width="120" show-overflow-tooltip>
+						<template slot-scope="scope">
+							<span> {{scope.row.workload}} </span>
+						</template>
+					</el-table-column> 
+					<el-table-column prop="budgetAt" label="预算金额" min-width="120" show-overflow-tooltip>
+						<template slot-scope="scope">
+							<span> {{scope.row.budgetAt}} </span>
+						</template>
+					</el-table-column>
+				</el-table-column> 
+				<el-table-column label="报价信息">
+				<el-table-column prop="quoteAt" label="报价金额" min-width="120" show-overflow-tooltip>
                     <template slot-scope="scope">
                         <span> {{scope.row.quoteAt}} </span>
                     </template>
 				</el-table-column>
-				<el-table-column prop="quoteWorkload" label="报价工时-来自task_execuser表" min-width="80" show-overflow-tooltip>
+				<el-table-column prop="quoteWorkload" label="报价工时" min-width="120" show-overflow-tooltip>
                     <template slot-scope="scope">
                         <span> {{scope.row.quoteWorkload}} </span>
                     </template>
 				</el-table-column>
-				<el-table-column prop="sschemel" label="任务结算方案,来自task表、来自数字字典xmTaskSettleSchemel" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.sschemel}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="uniPrice" label="工时单价，来自task表，根据task_out判断取内部还是外部单价" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.uniPrice}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="qendTime" label="报价结束时间" min-width="80" show-overflow-tooltip>
+				
+				<el-table-column prop="qendTime" label="结束时间" min-width="120" show-overflow-tooltip>
                     <template slot-scope="scope">
                         <span> {{scope.row.qendTime}} </span>
                     </template>
 				</el-table-column>
-				<el-table-column prop="qstartTime" label="报价开始时间" min-width="80" show-overflow-tooltip>
+				<el-table-column prop="qstartTime" label="开始时间" min-width="120" show-overflow-tooltip>
                     <template slot-scope="scope">
                         <span> {{scope.row.qstartTime}} </span>
                     </template>
 				</el-table-column>
-				<el-table-column prop="actEndTime" label="实际完工时间-来自task表" min-width="80" show-overflow-tooltip>
+				</el-table-column>
+				<el-table-column prop="actEndTime" label="实际完工时间" min-width="120" show-overflow-tooltip>
                     <template slot-scope="scope">
                         <span> {{scope.row.actEndTime}} </span>
                     </template>
 				</el-table-column>
-				<el-table-column prop="actStartTime" label="实际开始时间-来自task表" min-width="80" show-overflow-tooltip>
+				<el-table-column prop="actStartTime" label="实际开始时间" min-width="120" show-overflow-tooltip>
                     <template slot-scope="scope">
                         <span> {{scope.row.actStartTime}} </span>
                     </template>
@@ -179,11 +174,12 @@
  	import { initDicts,listXmTaskSbillDetail, delXmTaskSbillDetail, batchDelXmTaskSbillDetail,editSomeFieldsXmTaskSbillDetail } from '@/api/xm/core/xmTaskSbillDetail';
 	import  XmTaskSbillDetailEdit from './XmTaskSbillDetailEdit';//新增修改界面
 	import { mapGetters } from 'vuex'
+  	import XmTaskWorkloadSimpleList from '../xmTaskWorkload/XmTaskWorkloadSimpleList';
 	
 	export default {
 	    name:'xmTaskSbillDetailMng',
 		components: {
-		    XmTaskSbillDetailEdit,
+		    XmTaskSbillDetailEdit,XmTaskWorkloadSimpleList,
 		},
 		props:['visible'],
 		computed: {

@@ -34,8 +34,12 @@ export const editSomeFieldsXmTaskSbillDetail = params => { return axios.post(`${
 
 /**-------------------------前端mng|add|edit界面公共函数---------------请写在下面----------------------------------------------- */
 //初始化页面上的字典
-export const initDicts = (that) => {
- var itemCodes=[];//在此添加要加载的字典 如['sex','grade','lvl']
+export const initDicts = (that) => { 
+ var itemCodes=['taskState','taskType','xmTaskSettleSchemel'];//在此添加要加载的字典 如['sex','grade','lvl'] 
+ var wstatus=[{id:'0',name:'待确认'},{id:'1',name: '已确认'}]
+ var sstatus=[{id:'0',name:'无需结算'},{id:'1',name: '待结算'},{id:'2',name:'已提交'},{id:'3',name:'已通过'},{id:'4',name:'已结算'}]
+ that.dicts.wstatus=wstatus
+ that.dicts.sstatus=sstatus
  if(itemCodes.length>0){
     initSimpleDicts('all',itemCodes).then(res=>{
         Object.assign(that.dicts,res.data.data)
