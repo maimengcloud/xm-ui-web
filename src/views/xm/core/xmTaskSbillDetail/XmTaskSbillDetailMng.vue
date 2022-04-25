@@ -60,15 +60,9 @@
 						</template>
 					</el-table-column>
 					<el-table-column prop="sschemel" label="结算方案" min-width="120" show-overflow-tooltip>
-						<template slot-scope="scope">
-							<div class="cell-text">
+						<template slot-scope="scope"> 
 								<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'xmTaskSettleSchemel',scope.row.sschemel)" :key="index" :type="item.className">{{item.name}}</el-tag> 
-							</div>
-							<span class="cell-bar">
-								<el-select  v-model="scope.row.sschemel" placeholder="结算方案"  style="display:block;"  @change="editSomeFields(scope.row,'sschemel',$event)">
-									<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.xmTaskSettleSchemel" :key="index"></el-option>
-								</el-select>
-							</span> 
+							 
 						</template>
 					</el-table-column>
 					<el-table-column prop="uniPrice" label="工时单价" min-width="120" show-overflow-tooltip>
@@ -86,11 +80,30 @@
 							<span> ￥ {{scope.row.quoteAt}}元 </span>
 						</template>
 					</el-table-column>
+					<el-table-column prop="tactAt" label="已结金额" min-width="120" show-overflow-tooltip>
+						<template slot-scope="scope">  
+							￥ {{scope.row.tactAt}}元   
+ 						</template>
+					</el-table-column>  
+					<el-table-column prop="sfee" label="服务费" min-width="120" show-overflow-tooltip>
+						<template slot-scope="scope">  
+							￥ {{scope.row.sfee}}元   
+ 						</template>
+					</el-table-column>  
+					<el-table-column prop="shareFee" label="分享赚费用" min-width="120" show-overflow-tooltip>
+						<template slot-scope="scope">  
+							￥ {{scope.row.sfee}}元   
+ 						</template>
+					</el-table-column>  
+					<el-table-column prop="othFee" label="其它费用" min-width="120" show-overflow-tooltip>
+						<template slot-scope="scope"> 
+						 	<span class="cell-text">  ￥ {{scope.row.othFee}} 元 </span>
+                     		<span class="cell-bar"><el-input style="display:inline;" type="number" v-model="scope.row.othFee" placeholder="" @change="editSomeFields(scope.row,'othFee',$event)"></el-input></span>
+						</template>
+					</el-table-column>
 					<el-table-column prop="samt" label="结算金额" min-width="120" show-overflow-tooltip>
 						<template slot-scope="scope">
-							<span class="cell-text"> ￥ {{scope.row.samt}}元  </span>
-                     		<span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.samt" placeholder="" @change="editSomeFields(scope.row,'samt',$event)" :maxlength="22"></el-input></span>
-							 
+							  ￥ {{scope.row.samt}}元   
 						</template>
 					</el-table-column>
 					<el-table-column prop="bizMonth" label="月份" min-width="120" show-overflow-tooltip>
@@ -99,9 +112,9 @@
 						</template>
 					</el-table-column>
 					<el-table-column prop="remark" label="备注" min-width="120" show-overflow-tooltip>
-						<template slot-scope="scope">
-							<span> {{scope.row.remark}} </span>
-						</template>
+						<template slot-scope="scope"><span class="cell-text">  {{scope.row.remark}}  </span>
+                     		<span class="cell-bar"><el-input type="textarea" style="display:inline;" v-model="scope.row.remark" placeholder="" @change="editSomeFields(scope.row,'remark',$event)"></el-input></span>
+ 						</template>
 					</el-table-column>  
 				</el-table-column>
 				<el-table-column label="任务信息">
@@ -163,13 +176,7 @@
                     <template slot-scope="scope">
                         <span> {{scope.row.actStartTime}} </span>
                     </template>
-				</el-table-column>
-				<el-table-column label="操作" width="180" fixed="right">
-					<template scope="scope">
-						<el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"  plain></el-button>
-						<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"  plain></el-button>
-					</template>
-				</el-table-column>
+				</el-table-column> 
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 		</el-row>
