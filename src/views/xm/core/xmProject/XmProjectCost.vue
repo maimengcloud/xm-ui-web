@@ -5,11 +5,7 @@
 				<el-radio-group v-model="costShow" size="medium">
 					<el-radio-button label="支出清单"></el-radio-button>
 					<el-radio-button label="支出统计"></el-radio-button>
-				</el-radio-group>
-				<span style="margin-left:10px;font-size:14px;">项目总预算：</span> <el-tag type="success">{{selProjectBudget.planTotalCost}}</el-tag>
-				<span style="margin-left:10px;font-size:14px;">非人力总预算：</span><el-tag>{{selProjectBudget.planNouserAt}}</el-tag> 
-				<span style="margin-left:10px;font-size:14px;">内部人力总预算：</span><el-tag>{{selProjectBudget.planIuserAt}}</el-tag> 
-				<span style="margin-left:10px;font-size:14px;">外购人力总预算：</span><el-tag>{{selProjectBudget.planOuserAt}}</el-tag> 
+				</el-radio-group> 
 			</div>
 			<div class="title-bar">
 				<el-radio-group v-model="showType" size="medium">
@@ -18,37 +14,43 @@
 				</el-radio-group>
 			</div>
 			<div v-if="costShow == '支出统计'">
-				<el-date-picker style="padding:10px;width:120px;" v-model="selYear" value-format="yyyy" type="year" placeholder="年份" :clearable="false"></el-date-picker>
-				<!-- <el-select style="height:50px;padding:10px;width:120px;" v-model="selYear" placeholder="年份">
-					<el-option
-						v-for="item in subjectYearList"
-						:key="item"
-						:label="item"
-						:value="item">
-					</el-option>
-				</el-select> -->
+				<el-row>
+					<el-date-picker style="padding:10px;width:120px;" v-model="selYear" value-format="yyyy" type="year" placeholder="统计年份" :clearable="false"></el-date-picker>
+					<el-select  v-model="rptType" placeholder="统计类型"> 
+						<el-option  label="统计本企业每月支出金额" value="1"> </el-option>
+						<el-option  label="统计项目每月支出金额" value="2"> </el-option>
+						<el-option  label="统计项目成员每月支出金额" value="3"> </el-option>
+					</el-select> 
+				</el-row>
 				<el-table ref="table"
 					:height="maxTableHeight"
 					v-if="showType == '人力'"
 					:data="sumXmProjectMCostUsersConvert"
 					highlight-current-row
 					v-loading="load.list"
-					border>
-					<el-table-column prop="subjectId" label="科目" min-width="100" >
-						<template slot-scope="scope">
-							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostUserDetails(scope.row,'subjectId','queryBySubjectId')">{{scope.row.subjectId}}</a>
-						</template>  
-					</el-table-column>
-					<el-table-column prop="username" label="姓名" min-width="100" >
+					border> 
+					<el-table-column prop="username" label="成员姓名" min-width="100" v-if="rptType==='3'">
 						<template slot-scope="scope">
 							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostUserDetails(scope.row,'username','queryByUsername')">{{scope.row.username}}</a>
+						</template> 
+
+					</el-table-column>
+					<el-table-column prop="projectId" label="项目编号" min-width="100" v-if="rptType==='2'">
+						<template slot-scope="scope">
+							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostUserDetails(scope.row,'username','queryByUsername')">{{scope.row.projectId}}</a>
+						</template> 
+
+					</el-table-column>
+					<el-table-column prop="branchId" label="企业编号" min-width="100" v-if="rptType==='1'">
+						<template slot-scope="scope">
+							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostUserDetails(scope.row,'username','queryByUsername')">{{scope.row.branchId}}</a>
 						</template> 
 
 					</el-table-column>
 					<!-- <el-table-column  min-width="100" ></el-table-column> -->
 					<el-table-column :prop="month" v-for="month in selYearMonths" :key="month" :label="month" width="100">  
 						<template slot-scope="scope">
-							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostUserDetails(scope.row,month,'queryByBizzMonth')">{{scope.row[month]}}</a>
+							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostUserDetails(scope.row,month,'queryByBizzMonth')">￥{{scope.row[month]}}</a>
 						</template> 
 					</el-table-column>
 					<el-table-column prop="monthsSum" label="合计" min-width="80"> 
@@ -76,7 +78,7 @@
 					<!-- <el-table-column  min-width="100" ></el-table-column> -->
 					<el-table-column :prop="month" v-for="month in selYearMonths" :key="month" :label="month" width="100">  
 						<template slot-scope="scope">
-							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostNouserDetails(scope.row,month,'queryByBizzMonth')">{{scope.row[month]}}</a>
+							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostNouserDetails(scope.row,month,'queryByBizzMonth')">￥{{scope.row[month]}}</a>
 						</template> 
 					</el-table-column>
 					<el-table-column prop="monthsSum" label="合计" min-width="80"> 
@@ -104,8 +106,11 @@
 	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { mapGetters } from 'vuex';
 	import { editBudget } from '@/api/xm/core/xmProject';
-	import { listSumSamtGroupByUseridAndBizMonth } from '@/api/xm/core/xmTaskSbillDetail';  
-	import { months } from 'moment';
+	import { listSumSamtGroupByUseridBizMonth,listSumSamtGroupByBranchIdBizMonth,listSumSamtGroupByProjectIdBizMonth } from '@/api/xm/core/xmTaskSbillDetail';
+	import { listSumXmProjectMCostNouser } from '@/api/xm/core/xmProjectMCostNouser';
+	import xmCostUser from '../xmTaskSbillDetail/XmTaskSbillDetailMng';
+	import xmCostNouser from '../xmProjectMCostNouser/XmProjectMCostNouserMng';
+import { months } from 'moment';
 
 	export default { 
 		props: ["selProject"],
@@ -134,7 +139,7 @@
 					this.selYearMonths.forEach(i=>{
 						var val=secMap[key+"_"+i];
 						if( val !=null && val !=undefined ){
-							row[i]=val.actCostAmount;
+							row[i]=val.samt;
 						}else{
 							row[i]=0;
 						}
@@ -176,14 +181,20 @@
 		watch: {
 			'showType': function(val) {
 				if(val == "人力"){
-					this.listSumSamtGroupByUseridAndBizMonth();
+					this.listSumSamt();
 				}
 				else{
 					this.listSumXmProjectMCostNouser();
 				}
 			},
 			'selProject': function(selProject){
-				 this.selProjectBudget=Object.assign({},this.selProject);
+				
+			},
+			'selYear':function(){
+				this.listSumSamt();
+			},
+			'rptType':function(){
+				this.listSumSamt();
 			}
 		},
 		data() {
@@ -200,8 +211,7 @@
 				selYear: ""+new Date().getFullYear(),
 				showType: "",
 				costUser: [],
-				costNouser: [],
-				selProjectBudget:{},
+				costNouser: [], 
 				sumXmProjectMCostUsers:[],
 				costUser:null,
 				fieldName:'',
@@ -211,6 +221,7 @@
 				costNouser:null, 
 				costNouserVisible:false,
 				maxTableHeight:300,
+				rptType:'1',//统计类型
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -220,12 +231,24 @@
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
  
-			listSumSamtGroupByUseridAndBizMonth:function(){
+			listSumSamt:function(){
 				var parmas={
+					bizYear:this.selYear,
 					projectId:this.selProject.id, 
 				}
-				listSumSamtGroupByUseridAndBizMonth(parmas).then(res=>{
-					this.sumXmProjectMCostUsers=res.data.data;
+				var func=listSumSamtGroupByUseridBizMonth
+				if(this.rptType==='1'){
+					func=listSumSamtGroupByBranchIdBizMonth
+				}else if(this.rptType==='2'){
+					func=listSumSamtGroupByProjectIdBizMonth
+				}else if(this.rptType==='3'){
+					func=listSumSamtGroupByUseridBizMonth
+				}
+				func(parmas).then(res=>{
+					if(res.data.tips.isOk){
+						this.sumXmProjectMCostUsers=res.data.data;
+					}
+					
 				})
 			},  
  
@@ -234,7 +257,10 @@
 					projectId:this.selProject.id, 
 				}
 				listSumXmProjectMCostNouser(parmas).then(res=>{
-					this.sumXmProjectMCostNousers=res.data.data;
+					if(res.data.tips.isOk){
+						this.sumXmProjectMCostNousers=res.data.data;
+					}
+					
 				})
 			}, 
 			showCostUserDetails:function(row,fieldName,queryType){
@@ -261,8 +287,7 @@
 				this.$nextTick(() => {  
 				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
 			  }); 
-			  
-			  this.selProjectBudget=Object.assign({},this.selProject);
+			   
 		}
 	}
 
