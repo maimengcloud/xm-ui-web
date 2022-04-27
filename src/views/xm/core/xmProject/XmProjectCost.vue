@@ -104,11 +104,8 @@
 	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { mapGetters } from 'vuex';
 	import { editBudget } from '@/api/xm/core/xmProject';
-	import { listSumXmProjectMCostUser } from '@/api/xm/core/xmProjectMCostUser';
-	import { listSumXmProjectMCostNouser } from '@/api/xm/core/xmProjectMCostNouser';
-	import xmCostUser from '../xmProjectMCostUser/XmProjectMCostUserMng';
-	import xmCostNouser from '../xmProjectMCostNouser/XmProjectMCostNouserMng';
-import { months } from 'moment';
+	import { listSumSamtGroupByUseridAndBizMonth } from '@/api/xm/core/xmTaskSbillDetail';  
+	import { months } from 'moment';
 
 	export default { 
 		props: ["selProject"],
@@ -179,7 +176,7 @@ import { months } from 'moment';
 		watch: {
 			'showType': function(val) {
 				if(val == "人力"){
-					this.listSumXmProjectMCostUser();
+					this.listSumSamtGroupByUseridAndBizMonth();
 				}
 				else{
 					this.listSumXmProjectMCostNouser();
@@ -223,11 +220,11 @@ import { months } from 'moment';
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
  
-			listSumXmProjectMCostUser:function(){
+			listSumSamtGroupByUseridAndBizMonth:function(){
 				var parmas={
 					projectId:this.selProject.id, 
 				}
-				listSumXmProjectMCostUser(parmas).then(res=>{
+				listSumSamtGroupByUseridAndBizMonth(parmas).then(res=>{
 					this.sumXmProjectMCostUsers=res.data.data;
 				})
 			},  
@@ -251,49 +248,6 @@ import { months } from 'moment';
 				this.fileName=fieldName
 				this.queryType=queryType
 				this.costNouserVisible=true;
-			},
-			/**begin 自定义函数请在下面加**/
-			// inputChange() {
-			// 	this.selProject.planTotalCost = this.selProject.planTotalCost.replace(/[^\d.]/g,"").replace(/^\./g,"").replace(/\.{1,}/g,".");
-			// },
-			updateBudget() {
-				if(this.selProject.planTotalCost==undefined){
-					this.$notify({position:'bottom-left',showClose:true,message:"不允许修改", type:  'success'}); 
-					return;
-				}  
-				var planTotalCost=this.getFloatValue(this.selProjectBudget.planTotalCost)
-				var planIuserAt=this.getFloatValue(this.selProjectBudget.planIuserAt)
-				var planOuserAt=this.getFloatValue(this.selProjectBudget.planOuserAt)
-				var planNouserAt=this.getFloatValue(this.selProjectBudget.planNouserAt)
-				this.selProjectBudget.planTotalCost=planIuserAt+planOuserAt+planNouserAt
-				this.$confirm('确定修改项目总支出吗?', '提示', {
-					type: 'warning'
-				}).then(() => { 
-					this.load.edit = true;
-					let params = this.selProjectBudget
-					editBudget(params).then((res) => {
-						var tips=res.data.tips;
-						if(tips.isOk){
-							this.selProject.planTotalCost=this.selProjectBudget.planTotalCost
-							this.selProject.planIuserAt=this.selProjectBudget.planIuserAt 
-							this.selProject.planOuserAt=this.selProjectBudget.planOuserAt 
-							this.selProject.planNouserAt=this.selProjectBudget.planNouserAt 
-						}else{
-							this.selProjectBudget=Object.assign({},this.selProject)
-						}	
-						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
-						this.load.edit = false;
-					}).catch( err => this.load.edut = false );
-				}).catch(() => {
-					this.selProjectBudget=Object.assign({},this.selProject)
-				});
-			},
-			
-			getFloatValue(value,digit){
-				if(value==null ||  value=='' || value==undefined){
-					value=0;
-				}
-				return parseFloat(value);
 			}, 
 			/**end 自定义函数请在上面加**/
 		},//end methods

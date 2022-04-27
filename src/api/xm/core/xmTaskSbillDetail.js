@@ -31,6 +31,14 @@ export const addXmTaskSbillDetail = params => { return axios.post(`${base}/xm/co
 export const editSomeFieldsXmTaskSbillDetail = params => { return axios.post(`${base}/xm/core/xmTaskSbillDetail/editSomeFields`, params); };
 
 
+//普通查询 条件之间and关系  
+export const listSumSamtGroupByUseridBizMonth = params => { return axios.get(`${base}/xm/core/xmTaskSbillDetail/listSumSamtGroupByUseridBizMonth`, { params: params }); };
+
+export const listSumSamtGroupByProjectIdBizMonth = params => { return axios.get(`${base}/xm/core/xmTaskSbillDetail/listSumSamtGroupByProjectIdBizMonth`, { params: params }); };
+
+export const listSumSamtGroupByBranchIdBizMonth = params => { return axios.get(`${base}/xm/core/xmTaskSbillDetail/listSumSamtGroupByBranchIdBizMonth`, { params: params }); };
+
+ 
 
 /**-------------------------前端mng|add|edit界面公共函数---------------请写在下面----------------------------------------------- */
 //初始化页面上的字典
