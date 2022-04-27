@@ -207,7 +207,7 @@
 		components: {
 		    XmTaskSbillDetailEdit,XmTaskWorkloadSimpleList,
 		},
-		props:['visible'],
+		props:['visible','branchId','userid','bizMonth','projectId'],
 		computed: {
 		    ...mapGetters(['userInfo']),
 
@@ -218,7 +218,7 @@
                     this.initData();
                     this.searchXmTaskSbillDetails()
                 }
-            }
+            }, 
 		},
 		data() {
 			return {
@@ -304,6 +304,22 @@
 					params.key=this.filters.key
 				}
 
+				if(this.branchId){
+					params.branchId=this.branchId
+				}
+
+				if(this.userid){
+					params.userid=this.userid
+				}
+
+				if(this.projectId){
+					params.projectId=this.projectId
+				} 
+
+				if(this.bizMonth){
+					params.bizMonth=this.bizMonth
+				} 
+				 
 				this.load.list = true;
 				listXmTaskSbillDetail(params).then((res) => {
 					var tips=res.data.tips;

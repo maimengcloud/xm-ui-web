@@ -31,26 +31,26 @@
 					border> 
 					<el-table-column prop="username" label="成员姓名" min-width="100" v-if="rptType==='3'">
 						<template slot-scope="scope">
-							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostUserDetails(scope.row,'username','queryByUsername')">{{scope.row.username}}</a>
+							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostUserDetails(scope.row,'username','queryByBizUserid')">{{scope.row.username}}</a>
 						</template> 
 
 					</el-table-column>
 					<el-table-column prop="projectId" label="项目编号" min-width="100" v-if="rptType==='2'">
 						<template slot-scope="scope">
-							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostUserDetails(scope.row,'username','queryByUsername')">{{scope.row.projectId}}</a>
+							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostUserDetails(scope.row,'projectId','queryByProjectId')">{{scope.row.projectId}}</a>
 						</template> 
 
 					</el-table-column>
 					<el-table-column prop="branchId" label="企业编号" min-width="100" v-if="rptType==='1'">
 						<template slot-scope="scope">
-							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostUserDetails(scope.row,'username','queryByUsername')">{{scope.row.branchId}}</a>
+							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostUserDetails(scope.row,'branchId','queryByBranchId')">{{scope.row.branchId}}</a>
 						</template> 
 
 					</el-table-column>
 					<!-- <el-table-column  min-width="100" ></el-table-column> -->
 					<el-table-column :prop="month" v-for="month in selYearMonths" :key="month" :label="month" width="100">  
 						<template slot-scope="scope">
-							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostUserDetails(scope.row,month,'queryByBizzMonth')">￥{{scope.row[month]}}</a>
+							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostUserDetails(scope.row,month,'queryByBizMonth')">￥{{scope.row[month]}}</a>
 						</template> 
 					</el-table-column>
 					<el-table-column prop="monthsSum" label="合计" min-width="80"> 
@@ -71,14 +71,14 @@
 					</el-table-column>
 					<el-table-column prop="username" label="姓名" min-width="100" >
 						<template slot-scope="scope">
-							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostNouserDetails(scope.row,'username','queryByUsername')">{{scope.row.username}}</a>
+							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostNouserDetails(scope.row,'username','queryByBizUserid')">{{scope.row.username}}</a>
 						</template> 
 
 					</el-table-column>
 					<!-- <el-table-column  min-width="100" ></el-table-column> -->
 					<el-table-column :prop="month" v-for="month in selYearMonths" :key="month" :label="month" width="100">  
 						<template slot-scope="scope">
-							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostNouserDetails(scope.row,month,'queryByBizzMonth')">￥{{scope.row[month]}}</a>
+							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostNouserDetails(scope.row,month,'queryByBizMonth')">￥{{scope.row[month]}}</a>
 						</template> 
 					</el-table-column>
 					<el-table-column prop="monthsSum" label="合计" min-width="80"> 
@@ -91,7 +91,7 @@
 				<xm-cost-nouser v-else  :sel-project="selProject"></xm-cost-nouser>
 			</div>
 			<el-drawer title="查看人力支出明细" :visible.sync="costUserVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
-				<xm-cost-user :cost-user="costUser" :visible="costUserVisible" :field-name="fieldName" :query-type="queryType" :sel-project="selProject"></xm-cost-user>
+				<xm-cost-user v-if="costUser" :biz-month="queryType==='queryByBizMonth'?fieldName:null" :visible="costUserVisible" :userid="costUser.userid" :branch-id=" costUser.branchId " :project-id=" costUser.projectId "></xm-cost-user>
 			</el-drawer> 
 			<el-drawer title="查看非人力支出明细" :visible.sync="costNouserVisible"  size="60%"   append-to-body   :close-on-click-modal="false">
 				<xm-cost-nouser :cost-nouser="costNouser" :visible="costNouserVisible" :field-name="fieldName" :query-type="queryType" :sel-project="selProject"></xm-cost-nouser>
@@ -233,8 +233,10 @@ import { months } from 'moment';
  
 			listSumSamt:function(){
 				var parmas={
-					bizYear:this.selYear,
-					projectId:this.selProject.id, 
+					bizYear:this.selYear, 
+				}
+				if(this.selProject){
+					params.projectId=this.selProject
 				}
 				var func=listSumSamtGroupByUseridBizMonth
 				if(this.rptType==='1'){
@@ -265,13 +267,13 @@ import { months } from 'moment';
 			}, 
 			showCostUserDetails:function(row,fieldName,queryType){
 				this.costUser=row
-				this.fileName=fieldName
+				this.fieldName=fieldName
 				this.queryType=queryType
 				this.costUserVisible=true;
 			},
 			showCostNouserDetails:function(row,fieldName,queryType){
 				this.costNouser=row
-				this.fileName=fieldName
+				this.fieldName=fieldName
 				this.queryType=queryType
 				this.costNouserVisible=true;
 			}, 

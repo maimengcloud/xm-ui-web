@@ -171,11 +171,13 @@ export default {
       iconCls: 'fa el-icon-menu',
       meta: {
         menu:true,
-        title: '任务结算',
+        title: '财务结算',
         icon: 'task'
       },
       //leaf: true,//只有一个节点
       children: [
+        { path: 'xmProject/XmProjectCost', component: _import('xm/core/xmProject/XmProjectCost'), name: 'XmProjectCost', meta: { title: '应付款'}},    
+
         { path: 'xmTaskSbill/XmTaskSbillMng', component: _import('xm/core/xmTaskSbill/XmTaskSbillMng'), name: 'XmTaskSbilllMng', meta: { title: '任务结算单'}},    
         { path: 'xmTaskWorkload/XmTaskWorkloadInfoMy', component: _import('xm/core/xmTaskWorkload/XmTaskWorkloadInfoMy'), name: 'XmTaskWorkloadInfoMy', meta: { title: '工时确认(我)'}},  
         { path: 'xmTaskWorkload/WorkloadSetDayListMy', component: _import('xm/core/xmTaskWorkload/WorkloadSetDayListMy'), name: 'WorkloadSetDayListMy', meta: { title: '工时日报表(我)'}},
