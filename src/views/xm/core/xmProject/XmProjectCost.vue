@@ -232,7 +232,7 @@ import { months } from 'moment';
 			},
  
 			listSumSamt:function(){
-				var parmas={
+				var params={
 					bizYear:this.selYear, 
 				}
 				if(this.selProject){
@@ -246,7 +246,7 @@ import { months } from 'moment';
 				}else if(this.rptType==='3'){
 					func=listSumSamtGroupByUseridBizMonth
 				}
-				func(parmas).then(res=>{
+				func(params).then(res=>{
 					if(res.data.tips.isOk){
 						this.sumXmProjectMCostUsers=res.data.data;
 					}
