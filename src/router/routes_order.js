@@ -21,6 +21,24 @@ export default {
 						title: '我的',
 						icon: 'component'
 					}
+				},
+				{
+				    path: 'create',
+					component: _import('order/createOrder'),
+					name: '创建订单',
+					meta: {
+						title: '创建订单',
+						icon: 'component'
+					}
+				},
+				{
+				    path: 'paySuccess',
+					component: _import('order/paySuccess'),
+					name: '支付成功',
+					meta: {
+						title: '支付成功',
+						icon: 'component'
+					}
 				}
 			]
 		},

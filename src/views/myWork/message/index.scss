@@ -1,0 +1,73 @@
+.message_card {
+    font-size: 24px;
+    font-weight: bold;
+    color: #303030;
+    line-height: 54px;
+    .message_type {
+        cursor: pointer;
+        margin-right: 58px;
+        position: relative;
+    }
+
+    .message_type_active  {
+        color: #4779F6;
+    }
+    
+    .message_type_active::after {
+        content: '';
+        position: absolute;
+        width: 100px; // 边框的宽度
+        height: 2px;
+        border-radius: 3px;
+        left: 50%; //距离 view 标签的距离
+        bottom: -10px;
+        background-color: #4779F6; //  颜色
+        transform: translateX(-50%);
+    }
+}
+
+.message_content {
+    margin-top: 20px;
+    background: #fff;
+    height: calc(100vh - 172px);
+    overflow: auto;
+    cursor: pointer;
+    padding: 20px;
+    .message_content_box {
+        .title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #303030;
+            line-height: 54px;
+            position: relative;
+        }
+        
+        .title::after {
+            content: "";
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #E52929;
+            top: 8px;
+        }
+
+        .date {
+            color: #606060;
+        }
+
+        .text {
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 14px;
+            font-weight: 400;
+            color: #606060;
+            line-height: 14px;
+        }
+        .line {
+            margin: 30px  0 15px 0;
+            border-bottom: 1px solid #D7D7D7;
+            opacity: 0.43;
+        }
+    }
+}

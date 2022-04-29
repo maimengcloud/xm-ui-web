@@ -114,7 +114,7 @@ export default {
             });
             this.selectMenus = tempArr;
         },
-
+ 
         selectItem() {},
         goBuy(item) {
             this.visible = false;

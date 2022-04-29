@@ -1,11 +1,14 @@
 <template>
-  <div class="full_continer">
+  <div class="full_continer"> 
     <div class="banner">
-      <p>购买流程:&nbsp;&nbsp;&nbsp;1.选择模块 》 2.确认订单 》 3.支付 》 4.完成</p>
+      <p>购买流程:&nbsp;&nbsp;&nbsp;1.选择模块 》2.确认订单 》 3.支付 》 4.完成</p>
     </div>
-    
+
     <div class="flux_continer">
-      <div class="content">
+
+      <orderSkeleton v-if="menuLoading" />
+
+      <div class="content" v-else>
         <div class="top_desc">
           <h2>购买订单</h2>
           <p>团队名: 擎勤科技</p>
@@ -14,191 +17,158 @@
         <div class="version">
           <h2>选择版本</h2>
           <div class="version_item">
-            <div class="oItem">
-              <img src="@/assets/image/module/mo_enterprise.png" alt="">
+            <div @click="selectVersion(item)" class="oItem" v-for="(item, index) in version" :key="index">
+              <img :src='item.img'>
               <div class="desc">
-                <p>企业版</p>
-                <p>(10人起购)</p>
+                <p>{{item.name}}</p>
+                <p>{{item.desc}}</p>
               </div>
-              <i class="select el-icon-success"></i>
-            </div>
-            <div class="oItem">
-              <img src="@/assets/image/module/mo_flagship.png" alt="">
-              <div class="desc">
-                <p>旗舰版</p>
-                <p>(50人起购)</p>
-              </div>
+              <i v-if="item.isChecked" class="select el-icon-success"></i>
             </div>
           </div>
         </div>
 
-        <div class="sys_type">
-          <div class="sys_desc">
-            <h2>选择产品</h2>
-            <span>项目管理系统</span>
-            <span>协同办公系统</span>
-            <span>电商定制系统</span>
-          </div>
-
-          <div class="sys_modules">
-             <div class="module">
-                <div class="module_top">
-                  <img :src="xmgl" alt="">
-                  <span>督办管理</span>
-                </div>
-                <div class="module_bottom">
-                </div>
-             </div>
-
-             <div class="module">
-                <div class="module_top">
-                  <img :src="xmgl" alt="">
-                  <span>资产管理</span>
-                </div>
-                <div class="module_bottom">
-                </div>
-              </div>
-
-              <div class="module">
-                <div class="module_top">
-                  <img :src="csgl" alt="">
-                  <span>会议管理</span>
-                </div>
-                <div class="module_bottom">
-                </div>
-              </div>
-
-              <div class="module">
-                <div class="module_top">
-                  <img :src="csgl" alt="">
-                  <span>会议管理</span>
-                </div>
-                <div class="module_bottom">
-                </div>
-              </div>
-          </div>
-        </div>        
-
-        <div class="buy_count">
-          <h2>
-            购买数量
-            <span>(购买账号不能少于10人)</span>
-          </h2>
-
-          <div class="buy_count_items">
-            <div class="oItem">
-              <div class="item_header">
-                <p>项目管理系统</p>
-              </div>
-              <div class="item_bottom">
-                 <span>10</span>
-              </div>
-            </div>
-
-            <div class="oItem">
-              <div class="item_header">
-                <p>智慧协同办公系统</p>
-              </div>
-              <div class="item_bottom">
-                 <span>10</span>
-              </div>
-            </div>
-          </div>
+        <div class="version_all">
+          <flag-ship ref="flagship" v-if="currentSelectVersion == '旗舰版'"></flag-ship>
+          <enterprise ref="enterprise" :menus="menus" v-if="currentSelectVersion == '企业版'"></enterprise>
         </div>
 
-        <div class="buy_date">
-          <h2>期限选择</h2>
-          <div class="buy_date_items">
-            <div class="oItem">
-              <div class="header">
-                1年
-                <i class="select el-icon-success"></i>
-              </div>
-              <div class="bottom">
-                <img src="@/assets/image/module/hot.png" alt="">
-                <p>￥138.33/人月</p>
-              </div>
-            </div>
-
-            <div class="oItem">
-              <div class="header">
-                6个月
-                <i></i>
-              </div>
-              <div class="bottom">
-                <p class="normal">￥138.33/人月</p>
-              </div>
-            </div>
-
-            <div class="oItem">
-              <div class="header">
-                3个月
-                <i></i>
-              </div>
-              <div class="bottom">
-                <p class="normal">￥138.33/人月</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="pay_way">
-          <h2>支付方式</h2>
-          <div class="pay_way_items">
-            <div class="oItem">
-              <img src="@/assets/image/module/alipay.png" alt="">
-              <span>支付宝</span>
-              <i></i>
-            </div>
-
-            <div class="oItem">
-              <img src="@/assets/image/module/weixin.png" alt="">
-              <span>微信</span>
-              <i></i>
-            </div>
-          </div>
-          <el-input class="phone" placeholder="输入手机号"></el-input>
-        </div>
-
-        <div class="pay_allAmount">
-          <h2>订单总额</h2>
-          <p class="allAmount">￥<b>299</b>.00/年</p>
-          <el-checkbox v-model="checked">同意<a>《服务协议》</a></el-checkbox>
-        </div>
-
-        <el-button size="larget" class="submit" type="primary">提交订单</el-button>
-
+        <el-button @click="submitOrder" size="larget" class="submit" type="primary">
+          {{currentSelectVersion == '企业版' ? '提交订单' : '提交信息'}}
+        </el-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import xmgl from '@/assets/image/module/xm/xm_project_management.png'
-import csgl from '@/assets/image/module/xm/xm_test.png'
-import cpgh from '@/assets/image/module/xm/xm_product_management.png'
-import xngl from '@/assets/image/module/xm/xm_Efficiency_management.png'
-import lsx  from '@/assets/image/module/xm/xm_flow_line.png'
-import zzjg from '@/assets/image/module/xm/mo_org.png'
-import zb   from '@/assets/image/module/xm/xm_crowd-sourcing.png'
-import kfpt from '@/assets/image/module/xm/xm_development.png'
 
+//图标
+import EnterpriseVersionIcon from '@/assets/image/module/mo_enterprise.png'
+import FlagShipIcon from '@/assets/image/module/mo_flagship.png'
+//组件
+import FlagShip from './flagShip'
+import Enterprise from './enterprise'
+import orderSkeleton from './components/orderSkeleton'
+import {getAllMenuModule, getBuyMenuModule} from '@/api/mdp/sys/modules'
+import {modulesOfIcon} from "@/components/ModulesMenu/modulesOfIcon";
 
 
 export default {
+  components: {FlagShip, Enterprise, orderSkeleton},
   data() {
     return {
-      xmgl: xmgl,
-      csgl: csgl,
-      cpgh: cpgh,
-      xngl: xngl,
-      lsx: lsx,
-      zzjg: zzjg,
-      zb: zb,
-      kfpt: kfpt,
-
+      version: [
+        {
+          name: '企业版',
+          desc: '(10人起购)',
+          isChecked: true,
+          img: EnterpriseVersionIcon
+        },
+        {
+          name: '旗舰版',
+          desc: '(50人起购)',
+          isChecked: false,
+          img: FlagShipIcon
+        }
+      ],
+      currentSelectVersion: '企业版',
+      menuLoading: false,
+      menus: null,
     }
   },
+
+  methods: {
+    selectVersion(item) {
+      this.currentSelectVersion = item.name;
+      this.version.forEach(element => {
+        element.isChecked = false;
+        if(item.name == element.name) {
+          element.isChecked = true;
+        }
+      });
+    },
+
+    submitOrder() {
+      //验证参数
+      if(this.currentSelectVersion = "企业版") {
+        let data = this.$refs.enterprise.getForm();
+        //验证手机号是否填写
+        // if(data.phone == "" || data.phone == null || data.phone == undefined) {
+        //   this.$message({
+        //     message: '请输入手机号',
+        //     type: 'warning'
+        //   });
+        //   return;
+        // }
+        //验证是否同意服务协议
+        // if(!data.checked) {
+        //   this.$message({
+        //     message: '请先同意服务协议',
+        //     type: 'warning'
+        //   });
+        //   return;
+        // }
+        //保存购买模块信息到本地
+        if(data.data.length < 0) {
+          this.$message({
+            message: '请选择要购买的模块',
+            type: 'warning'
+          });
+          return
+        }
+        console.log(data, "data");
+        window.localStorage.setItem("BUY_MODULES", undefined)
+        window.localStorage.setItem("BUY_MODULES", JSON.stringify(data))
+        this.$router.push('/my/order/create')
+      }else {
+        let data = this.$refs.flagship.getForm();
+      }
+    },
+
+    //获取所有模块
+    getAllModules() {
+        this.menuLoading = true
+        getAllMenuModule({}).then(res => {
+            let tempData = res.data.data;
+            getBuyMenuModule({}).then(res2 => {
+                let branchModules = res2.data.data;
+                tempData.forEach(k => {
+                    branchModules.forEach(element => {
+                        k.isChecked = false;
+                        k.num = 10;
+                        if(k.id == element.moduleId) {
+                            k.isBuy = true;
+                        }
+                    });
+                    modulesOfIcon.forEach(element => {
+                        if(k.id == element.id) {
+                            k.logoUrl = element.logoUrl;
+                        }
+                    });
+                })
+                let xmMenus = tempData.filter(res => {return res.mcate == '2'})
+                let oaMunus = tempData.filter(res => {return res.mcate == '1'})
+                let mallMenus = tempData.filter(res => {return res.mcate == '3'})
+                this.menus = {
+                    "xmgl": xmMenus,
+                    "oa" : oaMunus,
+                    "mall": mallMenus
+                }
+            })
+        }).finally(() => this.menuLoading = false)
+    }
+
+  },
+
+  created() {
+    this.getAllModules();
+  },
+
+
+
+
+
 
 }
 </script>

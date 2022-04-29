@@ -22,6 +22,7 @@ import xmProduct from '@/assets/image/module/xm/xm_product_management.png'
 import xmProject from '@/assets/image/module/xm/xm_project_management.png'
 import xmTest from '@/assets/image/module/xm/xm_test.png'
 import xmCrowd from '@/assets/image/module/xm/xm_crowd-sourcing.png'
+import xmWorkLoad from '@/assets/image/module/xm/xm_gongshi.png'
 
 
 export const modulesOfIcon = [
@@ -119,7 +120,7 @@ export const modulesOfIcon = [
     },
     {
         id: 'xm-workload',
-        logoUrl: '',
+        logoUrl: xmWorkLoad,
     },
     {
         id: 'xm-crowd',

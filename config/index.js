@@ -6,19 +6,34 @@ const path = require('path')
 
 module.exports = {
   dev: {
-
     // Paths
     assetsSubDirectory: '',
     assetsPublicPath: '/',
     proxyTable: {
-     
     	'/api/m1/xm': {
             target: 'http://localhost:7067',
             changeOrigin: true,
             pathRewrite: {
-                '^/api/m1/xm': '/xm'
-              }
-          },
+              '^/api/m1/xm': '/xm'
+            }
+      },
+
+      '/api/m1/sys': {
+        target: 'http://192.168.0.103:7015',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api/m1/sys': '/sys'
+        }
+      },
+
+      '/api/m1/pay': {
+        target: 'http://192.168.0.103:7125',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api/m1/pay': '/pay'
+        }
+      },
+
       /**
     	'/api/m1/workflow': {
             target: 'http://localhost:7080',

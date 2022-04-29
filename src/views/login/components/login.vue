@@ -155,7 +155,7 @@ export default {
             loginForm: {
                 displayUserid: '',
                 password: '',
-                authType:'sms',//password/sms/password_display_userid 分别为账户密码、短信验证码快捷登录
+                authType:'password_display_userid',//password/sms/password_display_userid 分别为账户密码、短信验证码快捷登录
                 phoneno:'',//手机号码
                 smsCode:'',//短信验证码
             },

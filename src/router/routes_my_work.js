@@ -33,6 +33,15 @@ export default {
                     	icon: 'component'
                     }
                 },
+				{
+                    path: 'message',
+                    component: _import('myWork/message/index'),
+                    name: '消息中心',
+                    meta: {
+                    	title: '消息中心',
+                    	icon: 'component'
+                    }
+                },
 			]
 		}
 	]
