@@ -92,7 +92,7 @@
 
 							
 						</el-row>
-					<el-tabs value="1" accordion>
+					<el-tabs v-model="activateTabPaneName" >
 						<el-tab-pane label="基础信息" name="1"> 	
 						<el-row>  
 							<el-col :span="10">
@@ -164,10 +164,10 @@
 						</el-row>
 					</el-tab-pane>
 					<el-tab-pane :label="'子工作项('+subWorkItemNum+')'" name="4" v-if="editForm.ntype==='1'">  
-							 <xm-sub-work-item :parent-xm-task="editForm"  @sub-work-item-num="setSubWorkItemNum" @add-sub-task="onAddSubTask"></xm-sub-work-item>
+							 <xm-sub-work-item v-if="activateTabPaneName=='4'" :parent-xm-task="editForm"  @sub-work-item-num="setSubWorkItemNum" @add-sub-task="onAddSubTask"></xm-sub-work-item>
 					</el-tab-pane>
 					<el-tab-pane label="工时" name="5"> 
-						 <xm-task-workload-record :visible="visible" :xm-task="editForm" ></xm-task-workload-record>
+						 <xm-task-workload-record v-if="activateTabPaneName=='5'" :xm-task="editForm" ></xm-task-workload-record>
 					</el-tab-pane>
 					<el-tab-pane label="预算金额" name="6"> 
 						<el-form-item label="自研工时单价" prop="uniInnerPrice">
@@ -217,6 +217,9 @@
 							<el-step title="企业付款" description="结算流程审批通过，自动付款到个人钱包"></el-step>
 							<el-step title="提现" description="企业付款完成后，个人对钱包中余额进行提现"></el-step>
 						</el-steps> 
+					</el-tab-pane>
+					<el-tab-pane label="日志" name="9">
+						 <xm-record v-if="activateTabPaneName=='9'"  :biz-id="editForm.id" :obj-type="'task'"></xm-record>
 					</el-tab-pane>
 				</el-tabs>   
 			</el-form>
@@ -273,6 +276,7 @@
 	import XmGroupSelect from '../xmGroup/XmGroupSelect.vue';
 	import XmMenuRichDetail from '../xmMenu/XmMenuRichDetail';
 	import TagMng from "@/views/mdp/arc/tag/TagMng";
+	import XmRecord from '../xmRecord/XmRecord' 
 
 	import XmSubWorkItem from "@/views/xm/core/xmTaskWorkItem/XmSubWorkItem";
 	import XmTaskWorkloadRecord from "../xmTaskWorkload/XmTaskWorkloadRecord"
@@ -375,6 +379,7 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 				pickerOptions:  util.getPickerOptions('datarange'),
 				tagSelectVisible:false,
 				subWorkItemNum:0,
+				activateTabPaneName:'1'
 				 /**end 在上面加自定义属性**/
 			}//end return
 		},//end data
@@ -649,6 +654,7 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 		components: { 
  			xmSkillMng,
 			skillMng,xmMenuSelect,XmTaskList,XmExecuserMng,XmGroupSelect,XmMenuRichDetail,TagMng,XmSubWorkItem,XmTaskWorkloadRecord,XmMenuEdit,
+			XmRecord,
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},
 		mounted() { 
