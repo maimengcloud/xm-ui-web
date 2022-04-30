@@ -99,8 +99,9 @@
 						<el-col  v-cloak v-for="(p,i) in ScreenData" :key="i" :xl="8" :lg="8" :md="8" :sm="12">
 							<el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always" id="prj-view-box">
 								<div class="project-name" title="这是项目名称">{{p.name}}</div>
-								<div class="project-id"><span title="项目代号">{{p.code}} </span><font title="项目状态" :color="p.status=='7'?'green':'blue'">{{formatProjectStatus(dicts,'projectStatus',p.status)}}</font>
-									<el-link id="prj-del-btn" type="danger" style="font-size:14px;float:right;margin-left:2px;"  title="删除项目" @click.stop="handleDel(p)" v-loading="load.add">删除</el-link>
+								<div class="project-id"><span title="项目代号">{{p.code}} </span>
+									<el-tag title="项目状态" v-for="(item,index) in formatDictsWithClass(dicts,'projectStatus',p.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
+ 									<el-link id="prj-del-btn" type="danger" style="font-size:14px;float:right;margin-left:2px;"  title="删除项目" @click.stop="handleDel(p)" v-loading="load.add">删除</el-link>
 									<el-link id="prj-copy-btn" type="primary" style="font-size:14px;float:right;margin-left:2px;"  title="通过复制快速创建新项目" @click.stop="onCopyToBtnClick(p)" v-loading="load.add">复制</el-link> 
 									<el-link id="prj-calc-btn" type="warning" style="font-size:14px;float:right;margin-left:2px;"  title="统计项目的工作量、进度、需求、bugs等数据" @click.stop="loadTasksToXmProjectState(p)" v-loading="load.add">统计</el-link>
 								</div>
@@ -159,13 +160,8 @@
 							</template>
 						</el-table-column> 
 						<el-table-column prop="status" label="状态" width="80 sortable" :formatter="formatterByDicts"> 
-							<template slot-scope="scope"> 						
-								<el-tag v-if="scope.row.status=='0'" type="info" effect="plain">{{formatProjectStatus(scope.row.status)}}</el-tag> 								
-								<el-tag v-else-if="scope.row.status=='1' || scope.row.status=='2'|| scope.row.status=='3'" type="primary" effect="plain">{{formatProjectStatus(scope.row.status)}}</el-tag> 
-								<el-tag v-else-if="scope.row.status=='4' " type="warning" effect="plain">{{formatProjectStatus(scope.row.status)}}</el-tag> 
-								<el-tag v-else-if="scope.row.status=='5'||scope.row.status=='6' || scope.row.status=='7'|| scope.row.status=='8'" type="success" effect="plain">{{formatProjectStatus(scope.row.status)}}</el-tag> 
- 								<el-tag v-else type="danger" effect="plain">{{formatProjectStatus(scope.row.status)}}</el-tag> 
-
+							<template slot-scope="scope"> 		
+								<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'projectStatus',scope.row.status)" :key="index" :type="item.className">{{item.name}}</el-tag>	 
 							</template>
 						</el-table-column>  
 						<el-table-column prop="finishRate" label="进度" width="100" sortable>
