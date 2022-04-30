@@ -71,7 +71,7 @@
 							</el-col>
 						</el-row>
 					<el-tabs value="1"  >
-					<el-tab-pane label="基本信息'" name="1" >
+					<el-tab-pane label="基本信息" name="1" >
 
 
 						<el-row>
