@@ -9,12 +9,7 @@
 	import Vue from 'vue'
 	 
 	import { mapGetters } from 'vuex' 
-	import XmRecord from './XmRecord'
-	if(!Vue.component("xm-record")){
-		
-		Vue.component('xm-record',XmRecord)
-		Vue.use(XmRecord);
-	}
+	import XmRecord from './XmRecord' 
 	
 	export default { 
 		computed: {
@@ -32,7 +27,7 @@
 			 
 		},//end methods
 		components: {  
-		    
+		    XmRecord
 		},
 		mounted() { 
 			 

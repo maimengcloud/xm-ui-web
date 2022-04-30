@@ -70,7 +70,7 @@
 								</el-form-item>
 							</el-col>
 						</el-row>
-					<el-tabs value="1"  >
+					<el-tabs  v-model="activateTabPaneName" >
 					<el-tab-pane label="基本信息" name="1" >
 
 
@@ -118,19 +118,19 @@
 							</el-form-item>
 							</el-col>
 						</el-row>
-					</el-tab-pane>
+					</el-tab-pane >
 						<el-tab-pane label="概述" name="4">
 							<el-form-item label="需求概述" prop="remark">
-								<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="editForm.remark"  @click.native="editXmMenuSomeFields(editForm,'remark',editForm.remark)" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
+								<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="editForm.remark"  @change="editXmMenuSomeFields(editForm,'remark',editForm.remark)" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
 							</el-form-item> 
 						</el-tab-pane>
 						<el-tab-pane :label="'子工作项'+(subWorkItemNum>=0?'('+subWorkItemNum+')':'')" name="6">
-							 <xm-sub-work-item :parent-xm-menu="editForm" :link-project-id="selProject?selProject.id:null" @sub-work-item-num="setSubWorkItemNum" @add-sub-menu="onAddSubMenu"></xm-sub-work-item>
+							 <xm-sub-work-item v-if="this.activateTabPaneName=='6'" :parent-xm-menu="editForm" :link-project-id="selProject?selProject.id:null" @sub-work-item-num="setSubWorkItemNum" @add-sub-menu="onAddSubMenu"></xm-sub-work-item>
 						</el-tab-pane>
-						<el-tab-pane :label="'工时('+editForm.mactWorkload+' h)'" name="2">
+						<el-tab-pane :label="'工时('+editForm.actWorkload+' h)'" name="2">
 							 
-							<el-form-item label="工时进度" prop="mactRate" >
-								<el-progress style="width:60%;" :text-inside="true" :stroke-width="15" :percentage="editForm.mactRate?editForm.mactRate:0"></el-progress>
+							<el-form-item label="工时进度" prop="finishRate" >
+								<el-progress style="width:60%;" :text-inside="true" :stroke-width="15" :percentage="editForm.finishRate?editForm.finishRate:0"></el-progress>
  							</el-form-item>
 							<el-form-item label="预估工期" prop="budgetHours">
 								<el-input-number :disabled="editForm.calcType!=='2'  " style="width:200px;"  v-model="editForm.budgetHours"  :precision="2" :step="8" :min="0" placeholder="预计工期(小时)"></el-input-number> &nbsp;h
@@ -138,16 +138,16 @@
 							<el-form-item label="预估工时" prop="budgetWorkload">
 								<el-input-number :disabled="editForm.calcType!=='2'  " style="width:200px;"  v-model="editForm.budgetWorkload" :precision="2" :step="8" :min="0" placeholder="预计工时(小时)"></el-input-number>  &nbsp;h
 							</el-form-item>
-							<el-form-item label="实际工时" prop="mactWorkload">
-								<el-input-number :disabled="editForm.calcType!=='2'  " style="width:200px;"  v-model="editForm.mactWorkload" :precision="2" :step="8" :min="0" placeholder="实际工时(小时)"></el-input-number> &nbsp;h
+							<el-form-item label="实际工时" prop="actWorkload">
+								<el-input-number :disabled="editForm.calcType!=='2'  " style="width:200px;"  v-model="editForm.actWorkload" :precision="2" :step="8" :min="0" placeholder="实际工时(小时)"></el-input-number> &nbsp;h
 							</el-form-item>  
 						</el-tab-pane>
 						<el-tab-pane label="成本" name="3">
-							<el-form-item label="预估金额" prop="budgetAmount">
-								<el-input-number :disabled="editForm.calcType!=='2'  "  style="width:200px;"  v-model="editForm.budgetAmount" :precision="2" :step="100" :min="0" placeholder="预算金额"></el-input-number>   元
+							<el-form-item label="预估金额" prop="budgetAt">
+								<el-input-number :disabled="editForm.calcType!=='2'  "  style="width:200px;"  v-model="editForm.budgetAt" :precision="2" :step="100" :min="0" placeholder="预算金额"></el-input-number>   元
 							</el-form-item>
-							<el-form-item label="实际金额" prop="mactAmount">
-								<el-input-number :disabled="editForm.calcType!=='2'  "  style="width:200px;"  v-model="editForm.mactAmount" :precision="2" :step="100" :min="0" placeholder="实际金额"></el-input-number>   元
+							<el-form-item label="实际金额" prop="actAt">
+								<el-input-number :disabled="editForm.calcType!=='2'  "  style="width:200px;"  v-model="editForm.actAt" :precision="2" :step="100" :min="0" placeholder="实际金额"></el-input-number>   元
 							</el-form-item>
 						</el-tab-pane>
 					<el-tab-pane label="链接" name="5">
@@ -173,6 +173,9 @@
 					</el-tab-pane>
 					<el-tab-pane label="附件" name="8">
 						上传附件
+					</el-tab-pane>
+					<el-tab-pane label="日志" name="9">
+						 <xm-record v-if="activateTabPaneName=='9'"  :biz-id="editForm.menuId" :obj-type="'menu'"></xm-record>
 					</el-tab-pane>
 				</el-tabs>
 			</el-form>
@@ -204,6 +207,7 @@ import XmMenuOverview from './XmMenuOverview.vue';
 import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
   	import TagMng from "@/views/mdp/arc/tag/TagMng";
 	import XmSubWorkItem from "@/views/xm/core/xmMenuWorkItem/XmSubWorkItem";
+	import XmRecord from '../xmRecord/XmRecord' 
 
 	export default {
 		computed: {
@@ -255,28 +259,28 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 				}
 	      	}
 	      },
-			'editForm.mactWorkload':function(val,oldVal){
+			'editForm.actWorkload':function(val,oldVal){
 				if(!this.editForm.budgetWorkload){
 					return;
 				}
 				if(val==0||!val){
 					return;
 				}
-				this.editForm.mactRate=Math.round(val/this.editForm.budgetWorkload*100)
-				if( this.editForm.mactRate>100){
-					this.editForm.mactRate=100;
+				this.editForm.finishRate=Math.round(val/this.editForm.budgetWorkload*100)
+				if( this.editForm.finishRate>100){
+					this.editForm.finishRate=100;
 				}
 			},
 			'editForm.budgetWorkload':function(val,oldVal){
-				if(!this.editForm.mactWorkload){
+				if(!this.editForm.actWorkload){
 					return;
 				}
 				if(val==0||!val){
 					return;
 				}
-				this.editForm.mactRate=Math.round(this.editForm.mactWorkload/val*100)
-				if( this.editForm.mactRate>100){
-					this.editForm.mactRate=100;
+				this.editForm.finishRate=Math.round(this.editForm.actWorkload/val*100)
+				if( this.editForm.finishRate>100){
+					this.editForm.finishRate=100;
 				}
 			}
 	    },
@@ -301,7 +305,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 				//新增界面数据 项目需求表
 				editForm: {
 						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'1',mmUserid:'',mmUsername:'',ntype:'0',childrenCnt:0,sinceVersion:'',
-						proposerId:'',proposerName:'',dlvl:'',dtype:'',priority:'',source:'',calcType:'1',mactWorkload:0,mactAmount:0,mactRate:0,ctime:'',dclass:'1'
+						proposerId:'',proposerName:'',dlvl:'',dtype:'',priority:'',source:'',calcType:'1',actWorkload:0,actAt:0,finishRate:0,ctime:'',dclass:'1'
 				},
 				proposerSelectVisible:false,
 				mmUserSelectVisible:false,
@@ -323,6 +327,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 				tagSelectVisible:false,
 				dateRanger:[],
 				subWorkItemNum:-1,
+				activateTabPaneName:'1'
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 
 				/**end 在上面加自定义属性**/
@@ -489,6 +494,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 			TagMng,
 			XmMenuExchangeMng,
 			XmSubWorkItem,
+			XmRecord
 		},
 		mounted() {
 
