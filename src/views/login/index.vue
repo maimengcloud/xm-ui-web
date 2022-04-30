@@ -270,11 +270,13 @@ export default {
           }
           this.$store.dispatch("LoginByUserloginid",loginParams).then(res => {
         	  this.loading = false
+            debugger;
             if(res.data.tips.isOk==true){
             	console.log(this.$store);
             	 this.loading = true;
                 this.$store.dispatch('GetUserInfo').then((res2)=>{
                 	//this.userDeptid=res2.data.userInfo.deptid
+                  debugger;
                 	this.loading = false
                 	if(res2.data.tips.isOk==true){
                 		    if(this.$store.state.user.myDepts.length>1 ){

@@ -265,33 +265,14 @@ export default {
                     loginParams.branchId=params.branchId
                 }
                 this.$store.dispatch("LoginByUserloginid",loginParams).then(res => {
-                    this.loading = false
+                    this.loading = false 
                     if(res.data.tips.isOk==true){
                         this.loading = true;
-                        this.$store.dispatch('GetUserInfo').then((res2)=>{
-                            //this.userDeptid=res2.data.userInfo.deptid
+                        this.$store.dispatch('GetUserInfo').then((res2)=>{ 
                             this.loading = false
-                            if(res2.data.tips.isOk==true){
-                                    if(this.$store.state.user.myBranchs==null ||this.$store.state.user.myBranchs.length==0||this.$store.state.user.myDepts==null || this.$store.state.user.myDepts.length<=0){ 
-                                //if(1==1){
-                                    //this.$message.error("亲，您不在任何一个公司或者部门中，需要【先创建公司】\n 或者请【管理员加您进入公司】哦"); 
-                                    this.addBranchFormVisible=true;
-                                }else if(this.$store.state.user.myDepts.length>1 ){
-                                    //this.$message.info("亲，您在多个部门中任职，我分不清您要登陆哪个部门，请选择一个部门登陆吧"); 
-                                if( !this.userDeptid ){
-                                    this.userDeptid=res2.data.userInfo.deptid 
-                                    this.deptSelectVisible=true; 
-                                }else{
-                                    this.rolesChecked();
-                                }
-                                    //this.$router.push({ path: 'mdp/sys/branch/BranchAdd' })
-                                }else if(this.$store.state.user.myDepts.length==1){
-                                    //进行角色身份验证
+                            if(res2.data.tips.isOk==true){ 
                                 this.userDeptid=res2.data.userInfo.deptid
-                                    this.rolesChecked();
-                                }else{
-                                    this.rolesChecked();
-                                }
+                                this.rolesChecked(); 
                             }else{
                                 this.$message.error(res2.data.tips.msg);
                             }
