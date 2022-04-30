@@ -159,16 +159,16 @@
 					<!--列表 XmProduct 产品表-->
 					<el-table ref="table"  :height="maxTableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						
-						<el-table-column type="index" width="60"> 
+						<el-table-column type="index" width="60"  fixed="left"> 
 						</el-table-column>
-						<el-table-column prop="id" label="产品编码" min-width="100" sortable > 
+						<el-table-column prop="id" label="产品编码" min-width="150" sortable fixed="left"> 
 						</el-table-column>
-						<el-table-column prop="productName" label="产品名称" min-width="200" sortable >
+						<el-table-column prop="productName" label="产品名称" min-width="250" sortable  fixed="left">
 							<template slot-scope="scope" >
 								<el-link id="guider-three" type="primary" @click="intoInfo(scope.row)">{{scope.row.productName}}</el-link>
 							</template>
 						</el-table-column>
-						<el-table-column prop="pstatus" label="状态" width="100" sortable :formatter="formatPstatus"> 
+						<el-table-column prop="pstatus" label="状态" width="100" sortable :formatter="formatPstatus"  fixed="left"> 
 							<template slot-scope="scope"> 						
 								<el-tag v-if="scope.row.pstatus=='0'" type="info" effect="plain">{{formatPstatus(null,null,scope.row.pstatus)}}</el-tag> 								
 								<el-tag v-else-if="scope.row.pstatus=='1'  " type="primary" effect="plain">{{formatPstatus(null,null,scope.row.pstatus)}}</el-tag> 
@@ -187,7 +187,7 @@
 								</font>
 							</template>
 						</el-table-column>
-						<el-table-column prop="pmUsername" label="产品经理" width="120" sortable show-overflow-tooltip>
+						<el-table-column prop="pmUsername" label="产品经理" width="150" sortable show-overflow-tooltip>
 							<template slot-scope="scope"> 						
 								<el-tag v-if="scope.row.pmUsername">{{scope.row.pmUsername}}</el-tag> 
 							</template>
