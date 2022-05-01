@@ -119,8 +119,8 @@ import { sendEmail,validEmailCode } from '@/api/login';
 import SingleShearUpload from "@/components/Image/Single/Index";
 import VueQr from 'vue-qr'	
 import BranchAdd from "@/views/mdp/sys/branch/BranchEdit";
-
 import md5 from "js-md5";
+
 	export default {
 	    computed: {
 		    ...mapGetters([
