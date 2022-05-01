@@ -143,3 +143,17 @@ export function validEmailCode(params) {
     params:params
   })
 }
+
+
+/**
+ * 获取第三方登录需要state参数，防止crfs攻击
+ * @param 
+ * @returns 
+ */
+export function getTpaState( ) {  
+  return axios({
+    url: '/tpa/login/wechat/wxpub/state',
+    method: 'post', 
+    data:{}
+  })
+}
