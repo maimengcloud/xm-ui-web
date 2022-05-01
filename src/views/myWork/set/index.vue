@@ -270,7 +270,7 @@ import md5 from "js-md5";
 			registerEmail(){
 				if(this.editForm.email){
 					var curlDomain=window.location.protocol+"//"+window.location.host+"/"+process.env.CONTEXT+"/"+process.env.VERSION;  
-					sendEmail({codeScene:'1',codeEmail:this.editForm.email,userType:'staff',callbackUri:curlDomain+'/#/myWork/set/index'}).then(res=>{
+					sendEmail({codeScene:'1',codeEmail:this.editForm.email,userType:'staff',callbackUri:curlDomain+'/#/updateUserInfo'}).then(res=>{
 						var tips = res.data.tips;
 						if(tips.isOk){
 							this.$message({ message: "邮件已发送，请到收件箱收取邮件，并点击其链接进行自动验证。", type: 'success' }); 

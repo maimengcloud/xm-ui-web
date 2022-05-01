@@ -7,6 +7,7 @@ export default {
 		
 		{ path: '/changeEmailStepOne', component: _import('myWork/set/ChangeEmailStepOne'), hidden: true },
 		{ path: '/changeEmailStepTwo', component: _import('myWork/set/ChangeEmailStepTwo'), hidden: true },
+		{ path: '/updateUserInfo', component: _import('myWork/set/index'), hidden: true },
 		{
 			path: '/my/work',
 			component: Layout,
