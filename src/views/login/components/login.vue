@@ -328,7 +328,8 @@ export default {
             this.handleLogin();
         },
         weixinLogin(){
-            var mdpRedirectUri="https://www.qingqinkj.com/xm/m1/"
+            var curlDomain=window.location.protocol+"//"+window.location.host; //  
+            var mdpRedirectUri=curlDomain+"/"+process.env.CONTEXT+"/"+process.env.VERSION+"/"
             getTpaState().then(res=>{
                 var tips = res.data.tips;
                 if(tips.isOk){
