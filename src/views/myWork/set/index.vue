@@ -10,7 +10,7 @@
 				 	<el-tag v-if="editForm.memType==='0'" type="primary">个人账户</el-tag>
 					 <el-tag type="warning" v-else-if="editForm.memType=='1'">企业管理员账户</el-tag>
 					<el-tag type="warning" v-else-if="editForm.memType=='2'">企业员工账户</el-tag>
-					 <el-button v-if="editForm.memType!=='0'" type="text"   icon="el-icon-setting" @click="toBranchDetail">{{editForm.branchName}}</el-button>
+					 <el-button v-if="editForm.memType!=='0'" type="text">{{editForm.branchName}}</el-button>
 					 <el-button v-if="editForm.memType==='0'" type="text"   icon="el-icon-top" @click="upgradeToBranchAccount">升级为企业账户</el-button>
 					</span>
 					<span class="m_dept">所在部门：{{userInfo.deptName}}</span>
@@ -269,7 +269,8 @@ import md5 from "js-md5";
 			},
 			registerEmail(){
 				if(this.editForm.email){
-					sendEmail({codeScene:'1',codeEmail:this.editForm.email,userType:'staff',callbackUri:'http://localhost:8015/#/updateUserInfo'}).then(res=>{
+					var curlDomain=window.location.protocol+"//"+window.location.host+"/"+process.env.CONTEXT+"/"+process.env.VERSION;  
+					sendEmail({codeScene:'1',codeEmail:this.editForm.email,userType:'staff',callbackUri:curlDomain+'/#/myWork/set/index'}).then(res=>{
 						var tips = res.data.tips;
 						if(tips.isOk){
 							this.$message({ message: "邮件已发送，请到收件箱收取邮件，并点击其链接进行自动验证。", type: 'success' }); 

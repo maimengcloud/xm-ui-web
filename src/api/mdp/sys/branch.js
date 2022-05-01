@@ -1,20 +1,19 @@
 import axios from '@/utils/request'
 
+import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
 import config from '@/common/config'
 
-let base=config.getSysBasePath();
+let base = config.getSysBasePath();
 
+/**-------------------------与后端通讯接口------------------请写在下面-------------------------------------------- */
 /**
  * 管理端机构表（机构下面若干部门）
- *1    默认只开放普通查询，所有查询，只要上传	 分页参数 {currentPage:当前页码从1开始,pageSize:每页记录数,total:总记录【数如果是0后台会自动计算总记录数非0不会自动计算】}，后台都会自动按分页查询 其它 api用到再打开，没用到的api请注释掉，
- *2 查询、新增、修改的参数格式  params={id:'机构编号 主键',branchName:'机构名称',enabled:'是否可用',industryCategory:'行业分类',cuserid:'创建人编号',cdate:'创建日期',cusername:'创建人姓名',phoneNo:'联系电话',emaill:'邮件'}
+ *1    默认只开放普通查询，所有查询，只要上传	 分页参数 {pageNum:当前页码从1开始,pageSize:每页记录数,total:总记录【数如果是0后台会自动计算总记录数非0不会自动计算】}，后台都会自动按分页查询 其它 api用到再打开，没用到的api请注释掉，
+ *2 查询、新增、修改的参数格式  params={id:'机构编号 主键',branchName:'机构名称',enabled:'是否可用',industryCategory:'行业分类',cuserid:'创建人编号-可以转让,创建人与机构管理员有同样的权限',cdate:'创建日期',cusername:'创建人姓名-可以转让',lphoneNo:'联系电话',emaill:'邮件',bizProcInstId:'当前流程实例编号',bizFlowState:'当前流程状态',pbranchId:'上级机构',admUserid:'管理员编号（==机构编号，不允许修改，即机构主账户）',admUsername:'管理员名称（==机构名称+'管理员'，不允许修改）',lusername:'联系人姓名',luserid:'联系人编号',address:'公司地址'}
  **/
  
 //普通查询 条件之间and关系  
 export const listBranch = params => { return axios.get(`${base}/mdp/sys/branch/list`, { params: params }); };
-
-//模糊查询管理端机构表（机构下面若干部门） 条件之间or关系  
-//export const listBranchKey = params => { return axios.get(`${base}/mdp/sys/branch/listKey`, { params: params }); };
 
 //删除一条管理端机构表（机构下面若干部门） params={id:'机构编号 主键'}
 export const delBranch = params => { return axios.post(`${base}/mdp/sys/branch/del`,params); };
@@ -27,3 +26,20 @@ export const editBranch = params => { return axios.post(`${base}/mdp/sys/branch/
 
 //新增一条管理端机构表（机构下面若干部门）
 export const addBranch = params => { return axios.post(`${base}/mdp/sys/branch/add`, params); };
+
+//批量修改某些字段
+export const editSomeFieldsBranch = params => { return axios.post(`${base}/mdp/sys/branch/editSomeFields`, params); };
+
+
+
+/**-------------------------前端mng|add|edit界面公共函数---------------请写在下面----------------------------------------------- */
+//初始化页面上的字典
+export const initDicts = (that) => {
+ var itemCodes=['industryCategory'];//在此添加要加载的字典 如['sex','grade','lvl']
+ that.dicts['enabled']=[{id:"0",name:'停用'},{id:"1",name:'启用'}];
+ if(itemCodes.length>0){
+    initSimpleDicts('all',itemCodes).then(res=>{
+        Object.assign(that.dicts,res.data.data)
+    });
+ }
+};
