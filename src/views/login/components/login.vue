@@ -328,17 +328,18 @@ export default {
             this.handleLogin();
         },
         weixinLogin(){
+            var mdpRedirectUri="https://www.qingqinkj.com/xm/m1/"
             getTpaState().then(res=>{
                 var tips = res.data.tips;
                 if(tips.isOk){
                     this.wxLoginCodeVisible=true;
                      var state=res.data.data
                     var obj = new WxLogin({
-                        self_redirect:true,
+                        self_redirect:false,
                         id:"login_container", 
                         appid: "wx2671d5db8346b6fc", 
                         scope: "snsapi_login", 
-                        redirect_uri: encodeURIComponent("https://www.maimengcloud.com/api/m1/tpa/login/token?authType=wechat_wxpub&authId=mmxmcloud_wxopen_pc"),
+                        redirect_uri: encodeURIComponent("https://www.maimengcloud.com/api/m1/tpa/login/token?authType=wechat_wxpub&authId=mmxmcloud_wxopen_pc&redirectUri="+mdpRedirectUri),
                         state: state,
                         style: "",
                         href: ""
