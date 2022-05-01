@@ -22,6 +22,20 @@ export function doLoginByUserloginid(userloginid, password,grantType,authType,de
     data
   })
 }
+export function switchUser(userloginid, password,grantType,authType,deptid,userid) { 
+  const data = {
+    userloginid: userloginid,
+    password: password, 
+    authType:authType,
+    deptid:deptid,
+    userid:userid,
+  }
+  return axios({
+    url: base+'/login/token?grantType='+grantType,
+    method: 'post',
+    data
+  })
+}
 export function checkUserid(userid ) {
   removeToken();
   const data = {

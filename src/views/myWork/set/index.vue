@@ -136,10 +136,12 @@
 <script>
 import { editUser,changePassword } from '@/api/mdp/sys/user';
 import { mapGetters } from 'vuex' 
-import { sendEmail,validEmailCode,queryMyUsers } from '@/api/login';
+import { sendEmail,validEmailCode,queryMyUsers,switchUser } from '@/api/login';
 import SingleShearUpload from "@/components/Image/Single/Index";
 import VueQr from 'vue-qr'	
 import BranchAdd from "@/views/mdp/sys/branch/BranchEdit";
+
+import { getToken, setToken, removeToken,getCacheUserInfo,setCacheUserInfo,removeCacheUserInfo} from '@/utils/auth'
 import md5 from "js-md5";
 
 	export default {
@@ -349,9 +351,12 @@ import md5 from "js-md5";
 							authType:'password_display_userid' ,
 							grantType:"password"
 						} 
-						this.$store.dispatch("LoginByUserloginid",params).then(res => {
+						//userloginid, password,grantType,authType,deptid,userid
+						switchUser(params.userloginid,params.password,params.grantType,params.authType,'',params.userloginid).then(res => {
 							this.phonenoUsersVisible=false;
-							if(res.data.tips.isOk==true){ 
+							if(res.data.tips.isOk==true){  
+								setToken( res.data.data.accessToken.tokenValue)
+								removeCacheUserInfo();
 								this.$store.dispatch('GetUserInfo').then((res2)=>{  
 									this.$router.push({ path: '/' });
 								}).catch(err=>{
@@ -367,6 +372,9 @@ import md5 from "js-md5";
 						  this.phonenoUsersVisible=false;
 					});  	 
 			},
+			afterAddSubmit(){
+
+			}
 		},
 		components: {  
 			SingleShearUpload,VueQr,BranchAdd
