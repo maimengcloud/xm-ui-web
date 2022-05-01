@@ -4,6 +4,9 @@ const _import = require('./_import_' + process.env.NODE_ENV)
 
 export default {
 	routes: [
+		
+		{ path: '/changeEmailStepOne', component: _import('myWork/set/ChangeEmailStepOne'), hidden: true },
+		{ path: '/changeEmailStepTwo', component: _import('myWork/set/ChangeEmailStepTwo'), hidden: true },
 		{
 			path: '/my/work',
 			component: Layout,
@@ -42,6 +45,15 @@ export default {
                     	icon: 'component'
                     }
                 },
+				{
+					path: 'userLoginRecord',
+					component: _import('myWork/userLoginRecord/index'),
+					name: '登录日志',
+					meta: {
+						title: '登录日志',
+						icon: 'component'
+					}
+				},
 			]
 		}
 	]
