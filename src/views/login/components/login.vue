@@ -17,7 +17,7 @@
                     <el-form-item prop="smsCode" v-show="loginForm.authType=='sms'"> 
                         <el-input class="inp smsCode" name="smsCode" type="text" v-model="loginForm.smsCode" autoComplete="on" placeholder="短信验证码">
                         </el-input>
-                        <el-button class="sendCode" :disabled="abledBut" @click.prevent="sendPhonenoSmsCode">
+                        <el-button class="sendCode" :disabled="abledBut" @click.prevent="sendPhonenoSmsCode('login')">
                             <span class="text" v-if="!abledBut">发送验证码</span>
                             <span class="text" v-else>({{setTimeNum}}s)</span>
                         </el-button>
@@ -39,7 +39,7 @@
                 <div class="other"> 
                     <el-popover trigger="manual" v-model="wxLoginCodeVisible" placement="top-start"> <div id="login_container"></div>
                         <img  slot="reference"  src="@/assets/image/module/weixin.png" @click="weixinLogin">
-                        <el-button type="text" @click="wxLoginCodeVisible=false">关闭</el-button>
+                        <el-button type="text" @click="wxLoginCodeVisible=false" icon="el-icon-close">关闭</el-button><el-button type="text" @click="weixinLogin" icon="el-icon-refresh">刷新二维码</el-button>
                     </el-popover> 
                 </div>
             </div>
@@ -55,7 +55,7 @@
                     <el-form-item prop="smsCode"> 
                         <el-input class="inp smsCode" name="smsCode" type="text" v-model="loginForm.smsCode" autoComplete="on" placeholder="短信验证码">
                         </el-input>
-                        <el-button :disabled="abledBut" class="sendCode" @click.prevent="sendPhonenoSmsCode">
+                        <el-button :disabled="abledBut" class="sendCode" @click.prevent="sendPhonenoSmsCode('changePassword')">
                             <span class="text" v-if="!abledBut">发送验证码</span>
                             <span class="text" v-else>({{setTimeNum}}s)</span>
                         </el-button>
@@ -193,10 +193,10 @@ export default {
             }
         },
         
-        sendPhonenoSmsCode(){
+        sendPhonenoSmsCode(scene){
             var params={
                 phoneno:this.loginForm.phoneno,
-                scene:"login"
+                scene:scene
             }
             sendSmsCode(params).then(res=>{
                 if(res.data.tips.isOk){
