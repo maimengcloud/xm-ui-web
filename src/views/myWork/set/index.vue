@@ -12,6 +12,7 @@
 					<el-tag type="warning" v-else-if="editForm.memType=='2'">企业员工账户</el-tag>
 					 <el-button v-if="editForm.memType!=='0'" type="text">{{editForm.branchName}}</el-button>
 					 <el-button v-if="editForm.memType==='0'" type="text"   icon="el-icon-top" @click="upgradeToBranchAccount">升级为企业账户</el-button>
+					  <el-button  type="warning" @click="switchUser">切换账户</el-button>
 					</span>
 					<span class="m_dept">所在部门：{{userInfo.deptName}}</span>
 					<el-button @click="showUploadHeadimg" class="m_btn">修改头像</el-button>
@@ -109,13 +110,33 @@
           @submit="afterAddSubmit"
         ></branch-add>
       </el-dialog>
+	  
+        
+        <el-dialog
+          title="请选择一个账户进行登录"
+          :visible.sync="phonenoUsersVisible"
+          width="600" append-to-body> 
+          <el-table :data="phonenoUsers"> 
+            <el-table-column prop="displayUserid" label="登录账号">
+            </el-table-column>
+            <el-table-column prop="username" label="姓名">
+            </el-table-column> 
+            <el-table-column prop="branchName" label="企业">
+            </el-table-column>
+            <el-table-column  label="操作">
+					<template slot-scope="scope"> 
+						<el-button type="primary" @click="toLogin(scope.row)">登录</el-button> 
+					</template>
+            </el-table-column>
+          </el-table>
+        </el-dialog> 
 	</div>  
 </template>
 
 <script>
 import { editUser,changePassword } from '@/api/mdp/sys/user';
 import { mapGetters } from 'vuex' 
-import { sendEmail,validEmailCode } from '@/api/login';
+import { sendEmail,validEmailCode,queryMyUsers } from '@/api/login';
 import SingleShearUpload from "@/components/Image/Single/Index";
 import VueQr from 'vue-qr'	
 import BranchAdd from "@/views/mdp/sys/branch/BranchEdit";
@@ -215,6 +236,8 @@ import md5 from "js-md5";
 				branchAddVisible:false,
 				valiCode:'',//验证码
 				showPanel:'',//bindMainAccount
+				phonenoUsers:[],
+				phonenoUsersVisible:false,
 			}
 		},
 		methods: {
@@ -300,6 +323,49 @@ import md5 from "js-md5";
 					var tips = res.data.tips;
 					this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
 				}) 
+			},
+			switchUser(){   
+				queryMyUsers().then(res0=>{  
+					if(res0.data.tips.isOk){
+						this.phonenoUsers=res0.data.data; 
+						if(res0.data.data.length<=1){
+							this.$message.warning("当前没有关联的账户，无须切换");
+						}else{
+							this.phonenoUsersVisible=true;
+						}
+					}else{
+						this.$message.error(res0.data.tips.msg);
+					}
+				})
+			},
+			toLogin(user) {
+				 this.$prompt('请输入密码', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',  
+					}).then(({ value }) => {
+						 let params={ 
+							password:md5(value),  
+							userloginid:user.userid,
+							authType:'password_display_userid' ,
+							grantType:"password"
+						} 
+						this.$store.dispatch("LoginByUserloginid",params).then(res => {
+							this.phonenoUsersVisible=false;
+							if(res.data.tips.isOk==true){ 
+								this.$store.dispatch('GetUserInfo').then((res2)=>{  
+									this.$router.push({ path: '/' });
+								}).catch(err=>{
+ 									 
+								}); 
+							}else{
+								this.$message.error(res.data.tips.msg);
+							} 
+						}).catch((e) => {
+							 
+						})
+					}).catch(() => {
+						  this.phonenoUsersVisible=false;
+					});  	 
 			},
 		},
 		components: {  

@@ -157,3 +157,14 @@ export function getTpaState( ) {
     data:{}
   })
 }
+/**
+ * 获取查询当前登录账户的所有关联账户
+  * @returns 
+ */
+ export function queryMyUsers( ) {  
+  return axios({
+    url: base+'/user/queryMyUsers',
+    method: 'get'
+  })
+}
+
