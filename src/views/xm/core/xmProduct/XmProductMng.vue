@@ -511,11 +511,7 @@
 				this.editForm = Object.assign({}, row);
 			},
 			//显示新增界面 XmProduct 产品表
-			showAdd: function () {
-				if(!this.roles.some(i=>i.roleid=='productAdmin')){
-					this.$notify({position:'bottom-left',showClose:true,message: "只有产品经理能够创建产品", type: 'error'});
-					return false;
-				}
+			showAdd: function () { 
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);
 			},
@@ -569,11 +565,7 @@
 				}); 	
 			},
 			//批量删除xmProduct
-			batchDel: function () {
-				if(!this.roles.some(i=>i.roleid=='productAdmin')){
-					this.$notify({position:'bottom-left',showClose:true,message: "只有产品经理能够删除产品", type: 'error'});
-					return false;
-				}
+			batchDel: function () { 
 				var mmSels=this.sels.filter(i=>i.pmUserid!=this.userInfo.userid)
 				if(mmSels.length>0){
 					this.$notify({position:'bottom-left',showClose:true,message: "只能删除你负责的产品", type: 'error'});

@@ -1,7 +1,7 @@
 <template>
 	<section class="page-container border padding" >
 		<el-row>  
-			<xm-project-select style="display:inline;" v-if="!selProject" :auto-select="true"   :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClearSelect"></xm-project-select>
+			<xm-project-select style="display:inline;" v-if="!selProject" :auto-select="true"   :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @selected="onProjectRowClick" @clear="onProjectClearSelect"></xm-project-select>
 			
 			<el-input v-model="filters.key" style="width:15%;" clearable placeholder="名称过滤"></el-input>   
 			<el-button  type="primary" @click="searchXmGroups" icon="el-icon-search">刷新</el-button> 
@@ -53,11 +53,7 @@
 				<el-row v-if="currNodeType=='project'">   
 					<el-button type="primary" @click="loadNexGroup" icon="el-icon-search" v-loading="load.add">加载下一级小组</el-button>  
 					<el-button @click="showProjectGroupAdd" icon="el-icon-plus" v-loading="load.add">新增项目小组</el-button>  
-				</el-row> 
-				<el-row v-else-if="currNodeType=='product'">  
-					<el-button type="primary" @click="loadNexGroup" icon="el-icon-search" v-loading="load.add">加载下一级小组</el-button>  
-					<el-button type="primary" @click="showProductGroupAdd" icon="el-icon-plus"  v-loading="load.add">新增产品小组</el-button> 
-				</el-row> 
+				</el-row>  
 				<el-row v-else-if="currNodeType=='group'">  
 					<el-row>
 						<el-button type="primary" @click="loadNexGroup" icon="el-icon-search" v-loading="load.add">加载下一级小组</el-button>  
@@ -73,11 +69,7 @@
 				</el-row> 
 				<el-row v-else-if="currNodeType=='groupUser'">  
 					<el-button type="danger" icon="el-icon-delete" @click="handleDelGroupUser(editForm)" v-loading="load.del">删除组员</el-button>
-				</el-row> 
-				<el-row v-else>  
-					<el-button type="primary" @click="loadNexGroup" icon="el-icon-search" v-loading="load.add">加载下一级小组</el-button>  
- 					<el-button type="primary" @click="selectProjectVisible=true" icon="el-icon-plus" v-loading="load.add">新增项目小组</el-button>  
-				</el-row>
+				</el-row>  
 			</el-dialog>
 			
 			<el-drawer append-to-body
@@ -255,8 +247,8 @@ XmProductSelect,XmProjectSelect,
 				})
 				var groupsTree=treeTool.translateDataToTree(groups,'pgroupId','id')
 				var topLabel=this.userInfo.branchName+"-组织架构"
-				var currNodeType='branch'
-				var topdata={id:this.userInfo.branchId,branchName:this.userInfo.branchName,branchId:this.userInfo.branchId} 
+				var currNodeType='project'
+				var topdata={}
 				if(this.filters.selProject && this.filters.selProject.id){
 					topLabel=this.filters.selProject.name+"-项目组织架构"
 					currNodeType='project'
@@ -265,15 +257,9 @@ XmProductSelect,XmProjectSelect,
 					topdata.leaderUsername=this.filters.selProject.pmUsername
 					topdata.assUserid=this.filters.selProject.assUserid
 					topdata.assUsername=this.filters.selProject.assUsername
-				}else if(this.xmProduct && this.xmProduct.id){
-					topLabel=this.xmProduct.productName+"-产品组织架构"
-					currNodeType='product'
-					topdata=this.xmProduct
-					topdata.leaderUserid=this.xmProduct.pmUserid
-					topdata.leaderUsername=this.xmProduct.pmUsername
-					topdata.assUserid=this.xmProduct.assUserid
-					topdata.assUsername=this.xmProduct.assUsername
-				}
+				}else{
+					return []
+				} 
 				var data=[{
 					...topdata,
 					label:topLabel,
@@ -295,13 +281,7 @@ XmProductSelect,XmProjectSelect,
 			selProject(){
 				this.selProject=this.selProject;
 				this.getXmGroup();
-			},
-			xmProduct(){
-				this.getXmGroup();
-			},
-			xmIteration(){
-				this.getXmGroup();
-			},
+			}, 
 			"filters.key":function(val) {
 				this.$refs.tree.filter(val);
 			}, 
@@ -434,14 +414,12 @@ XmProductSelect,XmProjectSelect,
 					}  
 					params.orderBy= orderBys.join(",")
 				}
-				
+				if( !this.filters.selProject || !this.filters.selProject.id){
+					return;
+				}
 				if(this.filters.selProject && this.filters.selProject.id){
 					params.projectId=this.filters.selProject.id
-				}else if(this.xmProduct && this.xmProduct.id){
-					params.productId=this.xmProduct.id
-				}else if(this.xmIteration && this.xmIteration.id){
-					params.iterationId=this.xmIteration.id
-				}
+				} 
 				if(this.filters.key){
 					params.key=this.filters.key
 				}
@@ -453,22 +431,9 @@ XmProductSelect,XmProjectSelect,
 				}
 				if(this.filters.mngUsernamekey){
 					params.mngUsernamekey=this.filters.mngUsernamekey
-				}
-				if(this.pgClass==='0'||!this.pgClass){
-					if(!params.projectId){
-						return;
-					}
-				}else if(this.pgClass==='1'){
-					if(!params.productId){
-						return;
-					}
-				}
+				} 
 				var func=getGroups
-				this.load.list = true;
-				if( !params.productId && !params.projectId && !params.iterationId){
-					func=listXmGroup
-					params.lvl=1
-				}
+				this.load.list = true; 
 				func(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 
@@ -699,7 +664,9 @@ XmProductSelect,XmProjectSelect,
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
             initData: function(){
-				this.filters.selProject=this.selProject; 
+				if(this.selProject){
+					this.filters.selProject=this.selProject;  
+				} 
             },
 			renderCurrentClass (node) {
 				return 'label-bg-blue'
@@ -757,16 +724,7 @@ XmProductSelect,XmProjectSelect,
 				this.addForm.pgClass="0"
 				this.addFormVisible=true;
 				this.selectProjectVisible=false;
-			},
-			onProductConfirm(product){
-				this.addForm={...this.addFormInit}
-				this.addForm.productId=product.id
-				this.addForm.groupName=product.productName+"-管理小组"
-				this.addForm.projectName=product.productName
-				this.addForm.pgClass="1"
-				this.addFormVisible=true;
-				this.selectProductVisible=false;
-			},
+			}, 
 			onProjectRowClick(project){
 				this.filters.selProject=project;
 				this.searchXmGroups();

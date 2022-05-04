@@ -411,11 +411,7 @@
 				}).catch( err  => this.load.add=false ); 
 			}, 
 			//批量删除xmMenu
-			batchDel: function () {
-				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$notify({position:'bottom-left',showClose:true,message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
-					return false;
-				}
+			batchDel: function () { 
 				
 				this.$confirm('确认删除选中记录吗？', '提示', {
 					type: 'warning'
@@ -505,11 +501,7 @@
 				}
 
 			},
-			showBatchEdit:function(){
-				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$notify({position:'bottom-left',showClose:true,message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
-					return false;
-				}
+			showBatchEdit:function(){ 
 				if(this.xmMenus.length==0 ){
 					this.$notify({position:'bottom-left',showClose:true,message:"没有数据可以修改", type: 'error'});
 					return ;

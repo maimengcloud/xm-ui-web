@@ -241,11 +241,11 @@
 			rowClick: function(row, event, column){
 				this.editForm=row
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
-				this.selectedProduct(row)
+				this.selectedProject(row)
 				this.projectVisible=false;
 				this.moreVisible=false;
 			},
-			selectedProduct:function(row){
+			selectedProject:function(row){
 				this.editForm=row
 				this.$emit('selected',row);
 				this.projectVisible=false;
@@ -283,7 +283,7 @@
 			clearSelect(){
 				this.$refs.table.setCurrentRow();
 				this.$emit("clear");
-				this.selectedProduct(null);
+				this.selectedProject(null);
 				this.projectVisible=false;
 				this.moreVisible=false;
 			},
