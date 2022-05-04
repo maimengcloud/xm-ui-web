@@ -3,8 +3,8 @@
 		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="任务名称、用户姓名模糊查询" clearable></el-input>
 			<el-input v-model="filters.taskId" style="width:150px;" placeholder="任务编号查询" clearable></el-input>
-			<span v-if="selProject && selProject.id">
-				<el-input v-if="selProject && selProject.id" v-model="filters.projectId" style="width: 150px;" placeholder="项目编号" clearable></el-input>
+			<span v-if="!selProject || !selProject.id">
+				<el-input  v-model="filters.projectId" style="width: 150px;" placeholder="项目编号" clearable></el-input>
 				<el-input v-model="filters.branchId" style="width: 150px;" placeholder="项目公司编号" clearable></el-input> 
 			</span>
 			<el-input v-model="filters.execUserBranchId" style="width: 150px;" placeholder="用户公司编号" clearable></el-input>  
@@ -15,14 +15,23 @@
 				 <el-option v-for="(item,index) in dicts.taskState" :value="item.id" :label="item.name" :key="index"></el-option>
 			 </el-select>
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTaskExecusers">查询</el-button> 
+			<span style="float:right;">
+			<el-button  type="primary" @click="select">确认选择</el-button>
+			</span>
 			<!-- <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button>  -->
 		</el-row>
 		<el-row class="page-main ">
 			<!--列表 XmTaskExecuser xm_task_execuser-->
 			<el-table ref="table" :height="tableHeight" :data="xmTaskExecusers" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+				
+				 <el-table-column  label="" type="selection" width="60"  fixed="left"> 
+				</el-table-column>  
 				 <el-table-column  label="序号" type="index" width="60"  fixed="left"> 
 				</el-table-column>  
 					 <el-table-column prop="username" label="用户姓名"  width="150" sortable  show-overflow-tooltip fixed="left">  
+						 <template slot-scope="scope">
+							 {{scope.row.username}} 
+						 </template>
 					</el-table-column>    
 					<el-table-column prop="execUserBranchId" label="用户归属公司" width="150" sortable  show-overflow-tooltip fixed="left"> 
 					</el-table-column>   
@@ -236,7 +245,9 @@
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			}, 
 			/**end 自定义函数请在上面加**/
-
+			select: function(){ 
+				this.$emit('select',this.sels);//  @row-click="rowClick"
+			}, 
 		},//end methods
 		components: { 
 		    //在下面添加其它组件

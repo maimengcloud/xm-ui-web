@@ -178,39 +178,44 @@
 			<el-drawer  v-if="currNodeType=='group'&&editForm.groupName" center  :title="(editForm==null?editForm.groupName:'')+'小组成员管理'" :visible.sync="groupUserVisible"  size="80%"  :close-on-click-modal="false" append-to-body>
 				<xm-group-user-mng  :xm-group="editForm" :visible="groupUserVisible" ></xm-group-user-mng>
 			</el-drawer>
+			<el-drawer    :visible.sync="candidateVisible"  size="80%"  :close-on-click-modal="false" append-to-body>
+				<xm-task-execuser-select  :sel-project="filters.selProject" :visible="candidateVisible" @select="onExecuserSelect"></xm-task-execuser-select>
+			</el-drawer>
 	    </el-row>
 		
 	</section>
 </template>
 
 <script>
-	import util from '@/common/js/util';//全局公共库
-	import treeTool from '@/common/js/treeTool';//全局公共库
-	import config from '@/common/config';//全局公共库 
-	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
-	import { listXmGroup, delXmGroup, batchDelXmGroup,getGroups } from '@/api/xm/core/xmGroup';
-	import  XmGroupEdit from './XmGroupEdit';//新增修改界面
-	import { mapGetters } from 'vuex'
-	import {VueOkrTree} from 'vue-okr-tree';
-	import 'vue-okr-tree/dist/vue-okr-tree.css'
-	import { listImGroup} from '@/api/mdp/im/group/imGroup';
-	import { publishMessage} from '@/api/mdp/im/imPush';
-	
-	import { listXmGroupUser, delXmGroupUser, batchDelXmGroupUser,batchAddXmGroupUser } from '@/api/xm/core/xmGroupUser';
+import util from '@/common/js/util';//全局公共库
+import treeTool from '@/common/js/treeTool';//全局公共库
+import config from '@/common/config';//全局公共库 
+import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
+import { listXmGroup, delXmGroup, batchDelXmGroup,getGroups } from '@/api/xm/core/xmGroup';
+import  XmGroupEdit from './XmGroupEdit';//新增修改界面
+import { mapGetters } from 'vuex'
+import {VueOkrTree} from 'vue-okr-tree';
+import 'vue-okr-tree/dist/vue-okr-tree.css'
+import { listImGroup} from '@/api/mdp/im/group/imGroup';
+import { publishMessage} from '@/api/mdp/im/imPush';
+
+import { listXmGroupUser, delXmGroupUser, batchDelXmGroupUser,batchAddXmGroupUser } from '@/api/xm/core/xmGroupUser';
 
 
-	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
-	import  XmGroupStateMng from '../xmGroupState/XmGroupStateMng';//修改界面
-	import  XmGroupUserMng from '../xmGroupUser/XmGroupUserMng';//修改界面 
-	
-	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
-	import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
+import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
+import  XmGroupStateMng from '../xmGroupState/XmGroupStateMng';//修改界面
+import  XmGroupUserMng from '../xmGroupUser/XmGroupUserMng';//修改界面 
+
+import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
+import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
+import XmTaskExecuserSelect from '../xmTaskExecuser/XmTaskExecuserSelect.vue';
 	
 	export default {
 	    name:'xmGroupMng',
 		components: {
 		    XmGroupEdit,VueOkrTree,UsersSelect,XmGroupStateMng,XmGroupUserMng, 
 XmProductSelect,XmProjectSelect,
+XmTaskExecuserSelect,
 		},
 		props:["visible","selProject" ,"isSelectSingleUser","isSelectMultiUser",'xmProduct','xmIteration','pgClass'],
 		computed: {
@@ -280,7 +285,7 @@ XmProductSelect,XmProjectSelect,
             },
 			
 			selProject(){
-				this.selProject=this.selProject;
+				this.filters.selProject=this.selProject;
 				this.getXmGroup();
 			}, 
 			"filters.key":function(val) {
@@ -620,6 +625,16 @@ XmProductSelect,XmProjectSelect,
 				}
 				
 			},
+			onExecuserSelect:function(users){
+				this.candidateVisible=false;
+				if(users && users.length>0){
+					users.forEach(i=>{
+						i.branchId=i.execUserBranchId
+						i.branchName=''
+					})
+					this.onUserSelected(users);
+				} 
+			},
 			
 			//选择接收人
 			onUserSelected: function(groupUsers) {  
@@ -633,6 +648,8 @@ XmProductSelect,XmProjectSelect,
 					var u={
 						userid:i.userid,
 						username:i.username,
+						obranchId:i.branchId,
+						obranchName:i.branchName,
 						groupId:this.editForm.id,
 					}
 					if(this.editForm.pgClass=='1'){
