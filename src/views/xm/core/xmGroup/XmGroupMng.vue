@@ -627,12 +627,18 @@ XmTaskExecuserSelect,
 			},
 			onExecuserSelect:function(users){
 				this.candidateVisible=false;
+				
 				if(users && users.length>0){
-					users.forEach(i=>{
-						i.branchId=i.execUserBranchId
-						i.branchName=''
+					var arrs=[];
+					users.forEach(i=>{ 
+						if(!arrs.some(k=>k.userid==i.userid)){
+							i.branchId=i.execUserBranchId
+							i.branchName=''
+							arrs.push(i)
+						}
+						
 					})
-					this.onUserSelected(users);
+					this.onUserSelected(arrs);
 				} 
 			},
 			
