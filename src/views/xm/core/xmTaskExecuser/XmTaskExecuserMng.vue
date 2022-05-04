@@ -4,7 +4,8 @@
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="任务名称、用户姓名模糊查询" clearable></el-input>
 			<el-input v-model="filters.taskId" style="width:150px;" placeholder="任务编号查询" clearable></el-input>
 			<el-input v-model="filters.projectId" style="width: 150px;" placeholder="项目编号" clearable></el-input>
- 			<el-input v-model="filters.execUserBranchId" style="width: 150px;" placeholder="归属公司" clearable></el-input> 
+ 			<el-input v-model="filters.execUserBranchId" style="width: 150px;" placeholder="用户公司编号" clearable></el-input> 
+ 			<el-input v-model="filters.branchId" style="width: 150px;" placeholder="项目公司编号" clearable></el-input> 
  			<el-select v-model="filters.status"   placeholder="候选状态" clearable>
 				 <el-option v-for="(item,index) in dicts.projectTaskExecuserStatus" :value="item.id" :label="item.name" :key="index"></el-option>
 			 </el-select>
@@ -19,7 +20,9 @@
 			<el-table ref="table" :height="tableHeight" :data="xmTaskExecusers" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				 <el-table-column  label="序号" type="index" width="60"  fixed="left"> 
 				</el-table-column>  
-					 <el-table-column prop="username" label="姓名"  width="150" sortable  show-overflow-tooltip fixed="left">  
+					 <el-table-column prop="username" label="用户姓名"  width="150" sortable  show-overflow-tooltip fixed="left">  
+					</el-table-column>    
+					<el-table-column prop="execUserBranchId" label="用户归属公司" width="150" sortable  show-overflow-tooltip fixed="left"> 
 					</el-table-column>   
 					<el-table-column prop="status" label="候选状态"  width="100" sortable fixed="left"> 
 						<template slot-scope="scope">
@@ -74,8 +77,6 @@
 					</el-table-column>  
 					<el-table-column prop="remarks" label="备注" min-width="150" sortable  show-overflow-tooltip> 
 					</el-table-column>  
-					<el-table-column prop="execUserBranchId" label="归属公司" width="150" sortable  show-overflow-tooltip> 
-					</el-table-column>   
 				<el-table-column  label="报价信息" min-width="150">
 					
 					 <el-table-column prop="createTime" label="报价时间" width="150" sortable> 
@@ -211,6 +212,7 @@
 					projectId:'', 
 					status:'',
 					taskState:'',
+					branchId:'',
 				},
 				xmTaskExecusers: [],//查询结果
 				pageInfo:{//分页数据

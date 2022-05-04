@@ -71,7 +71,7 @@
 			<el-drawer append-to-body title="报价" :visible.sync="quotePriceVisible" size="60%" :close-on-click-modal="false">
 				<el-form :model="quotePriceForm" label-width="100px" ref="quotePriceForm">
 					<el-form-item label="候选人名称">
-						<span>{{ quotePriceForm.username }}</span>
+						<span>{{ quotePriceForm.username }} </span>
 					</el-form-item>
 					<el-form-item label="报价工期" prop="quoteWeekday">
 						<div>

@@ -64,6 +64,7 @@
 						<el-button   @click="showAddSub(editForm)" icon="el-icon-plus"  v-loading="load.add">新增下一级小组</el-button>   
 						<el-button @click="showEdit(editForm)" icon="el-icon-edit"  v-loading="load.edit">修改小组信息</el-button> 
 						<el-button @click="userSelectVisible=true" icon="el-icon-plus"  v-loading="load.add">新增组员</el-button> 
+						<el-button @click="candidateVisible=true" icon="el-icon-plus"  v-loading="load.add">拉竞标人进组</el-button> 
 						<el-button type="danger" @click="handleDel(editForm)" icon="el-icon-delete"  v-loading="load.del">删除小组</el-button>
 					</el-row>
 				</el-row> 
@@ -333,8 +334,8 @@ XmProductSelect,XmProjectSelect,
 				groupOperSelectVisible:false,
 				currNodeType:'',//project/product/iteration/group/groupUser
 				groupUserVisible:false,
-				selectProjectVisible:false,
-				selectProductVisible:false,
+				selectProjectVisible:false, 
+				candidateVisible:false,
 			}
 		},//end data
 		methods: { 
