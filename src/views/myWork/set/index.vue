@@ -27,7 +27,12 @@
 						</el-form-item> 
 						<el-form-item label="登录账号" prop="displayUserid" :rules="[{required:true,message:'登录账号不能为空'}]">
 							<el-input style="width:400px;" v-model="editForm.displayUserid" auto-complete="off"></el-input>
-						</el-form-item>    
+						</el-form-item>  
+						<el-form-item label="手机号码" prop="phoneno">
+							<el-input style="width:400px;" v-model="editForm.phoneno" auto-complete="off"></el-input> 
+							<el-button type="text" @click="registerPhoneno" v-if="!userInfo.phoneno">绑定手机</el-button>
+							<el-button type="text" @click="changePhoneno" v-if="userInfo.phoneno">更换手机</el-button>
+						</el-form-item>      
 						<el-form-item label="邮箱" prop="email" :rules="[{required:true,message:'邮箱不能为空'},{validator:validateEmail}]">
 							<el-input style="width:400px;" v-model="editForm.email" auto-complete="off"></el-input> 
 							<el-button type="text" @click="registerEmail" v-if="!userInfo.email">绑定邮箱</el-button>
