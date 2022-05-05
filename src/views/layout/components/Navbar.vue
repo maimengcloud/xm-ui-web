@@ -224,8 +224,8 @@ export default {
     logout() {
       this.$store.dispatch('LogOut').then(() => {
         //location.reload()// In order to re-instantiate the vue-router object to avoid bugs
-        //this.$router.replace({path:'/login'})
-        location.replace('/');
+        //this.$router.replace({path:'/login'}) 
+        location.replace('/'+process.env.CONTEXT+'/'+process.env.VERSION+'/');
       })
     },
 			showSelectShopMethod() {
