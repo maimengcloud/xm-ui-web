@@ -19,7 +19,7 @@ module.exports = {
       },
 
       '/api/m1/sys': {
-        target: 'http://192.168.0.103:7015',
+        target: 'http://localhost:7015',
         changeOrigin: true,
         pathRewrite: {
           '^/api/m1/sys': '/sys'
@@ -27,7 +27,7 @@ module.exports = {
       },
 
       '/api/m1/pay': {
-        target: 'http://192.168.0.103:7125',
+        target: 'http://localhost:7125',
         changeOrigin: true,
         pathRewrite: {
           '^/api/m1/pay': '/pay'

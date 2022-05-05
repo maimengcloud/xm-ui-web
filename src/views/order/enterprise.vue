@@ -313,7 +313,7 @@ export default {
         map.set(t[0], t[1]);
       });
       map.forEach(function(value, key){
-        if(new Decimal(month).comparedTo(key) >= 0) {
+        if(new Decimal(month).comparedTo(key) == 0) {
           sale = new Decimal(value).div(new Decimal(100))
         }
       });
