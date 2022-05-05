@@ -10,7 +10,10 @@
             <el-form-item prop="smsCode"> 
                 <el-input class="inp smsCode" name="smsCode" type="text" v-model="loginForm.smsCode" autoComplete="on" placeholder="短信验证码">
                 </el-input>
-                <el-button class="sendCode" @click.prevent="sendPhonenoSmsCode"><span class="text">发送验证码</span></el-button>
+                <el-button class="sendCode" @click.prevent="sendPhonenoSmsCode"><span class="text">发送验证码</span></el-button> 
+              <span v-if="phonenoUsers!=null && phonenoUsers.length>0"> 该手机号已注册有{{phonenoUsers.length}}个账户<font color="blue"></font>
+                <el-button type="text"  @click="phonenoUsersVisible=true">查看明细</el-button>
+              </span>
             </el-form-item>
 
             <el-form-item prop="username"> 
@@ -36,6 +39,23 @@
 
 
         </el-form>
+        
+        <el-dialog
+          title="查看已有账户"
+          :visible.sync="phonenoUsersVisible"
+          width="600" append-to-body> 
+          <el-table :data="phonenoUsers">
+            <el-table-column prop="userid" label="编号">
+            </el-table-column> 
+            <el-table-column prop="displayUserid" label="登录账号">
+            </el-table-column>
+            <el-table-column prop="username" label="姓名">
+            </el-table-column>
+            
+            <el-table-column prop="branchName" label="企业">
+            </el-table-column>
+          </el-table>
+        </el-dialog> 
     </div>
   </div>
 
@@ -44,7 +64,7 @@
 
 <script>
 import { sendSmsCode } from '@/api/sms/sms';
-import { checkPhoneno,checkDisplayUserid,doRegister } from '@/api/login';
+import { checkPhoneno,checkDisplayUserid,doRegister,queryByUserloginid } from '@/api/login';
 import LangSelect from '@/components/LangSelect';
 import SocialSign from '../socialsignin';
 import BranchAdd from '../BranchAdd';
@@ -115,6 +135,8 @@ export default {
       deptSelectVisible:false,//显示选择部门对话框
       userDeptid:'',//选中的部门编号 
       addBranchFormVisible:false,  //显示添加机构对话框 
+      phonenoUsers:[],
+      phonenoUsersVisible:false,
     }
   },
   methods: {
@@ -138,17 +160,18 @@ export default {
         phoneno:this.loginForm.phoneno,
         scene:"register"
       } 
-      checkPhoneno(this.loginForm.phoneno).then(res0=>{
+      queryByUserloginid({userloginid:this.loginForm.phoneno,idType:"phoneno"}).then(res0=>{  
         if(res0.data.tips.isOk){
+          this.phonenoUsers=res0.data.data; 
           sendSmsCode(params).then(res=>{
             if(res.data.tips.isOk){
-              this.$message.success(res.data.tips.msg);
+              this.$message.success("发送成功");
             }else{
               this.$message.error(res.data.tips.msg);
             }
           })
         }else{
-          this.$message.error("手机号码已存在，不允许注册，请直接登录");
+          this.$message.error(res0.data.tips.msg);
         }
       })
       

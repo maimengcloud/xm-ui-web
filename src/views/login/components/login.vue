@@ -1,5 +1,6 @@
 <template>
     <div>
+        
         <div v-if="!isRestPwd">
             <div class="login_form">
                 <el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm">
@@ -16,7 +17,7 @@
                     <el-form-item prop="smsCode" v-show="loginForm.authType=='sms'"> 
                         <el-input class="inp smsCode" name="smsCode" type="text" v-model="loginForm.smsCode" autoComplete="on" placeholder="短信验证码">
                         </el-input>
-                        <el-button class="sendCode" :disabled="abledBut" @click.prevent="sendPhonenoSmsCode">
+                        <el-button class="sendCode" :disabled="abledBut" @click.prevent="sendPhonenoSmsCode('login')">
                             <span class="text" v-if="!abledBut">发送验证码</span>
                             <span class="text" v-else>({{setTimeNum}}s)</span>
                         </el-button>
@@ -35,9 +36,11 @@
             </div>
             <div class="bottom">
                 <el-divider content-position="center">第三方登录方式</el-divider>
-                <div class="other">
-                    <img src="@/assets/image/module/weixin.png">
-                    <img src="@/assets/image/module/qq.png">
+                <div class="other"> 
+                    <el-popover trigger="manual" v-model="wxLoginCodeVisible" placement="top-start"> <div id="login_container"></div>
+                        <img  slot="reference"  src="@/assets/image/module/weixin.png" @click="weixinLogin">
+                        <el-button type="text" @click="wxLoginCodeVisible=false" icon="el-icon-close">关闭</el-button><el-button type="text" @click="weixinLogin" icon="el-icon-refresh">刷新二维码</el-button>
+                    </el-popover> 
                 </div>
             </div>
         </div>
@@ -52,7 +55,7 @@
                     <el-form-item prop="smsCode"> 
                         <el-input class="inp smsCode" name="smsCode" type="text" v-model="loginForm.smsCode" autoComplete="on" placeholder="短信验证码">
                         </el-input>
-                        <el-button :disabled="abledBut" class="sendCode" @click.prevent="sendPhonenoSmsCode">
+                        <el-button :disabled="abledBut" class="sendCode" @click.prevent="sendPhonenoSmsCode('changePassword')">
                             <span class="text" v-if="!abledBut">发送验证码</span>
                             <span class="text" v-else>({{setTimeNum}}s)</span>
                         </el-button>
@@ -71,7 +74,7 @@
                 </el-button>
             </div>
         </div>
-
+       
     </div>
 
 </template>
@@ -80,8 +83,7 @@
 import { sendSmsCode } from '@/api/sms/sms';
 import { mapGetters } from 'vuex'; 
 import md5 from 'js-md5';
-import { resetPasswordByPhoneno } from '@/api/login';
-
+import { resetPasswordByPhoneno,getTpaState } from '@/api/login'; 
 
 export default {
     name: 'login',
@@ -178,6 +180,7 @@ export default {
             abledBut: false, //是否禁止
 		    setTimeNum: 60,  // 倒计时时间
             timeWrap: null,  // 定时器标识
+            wxLoginCodeVisible:false,
         }
     },
 
@@ -190,10 +193,10 @@ export default {
             }
         },
         
-        sendPhonenoSmsCode(){
+        sendPhonenoSmsCode(scene){
             var params={
                 phoneno:this.loginForm.phoneno,
-                scene:"login"
+                scene:scene
             }
             sendSmsCode(params).then(res=>{
                 if(res.data.tips.isOk){
@@ -265,33 +268,14 @@ export default {
                     loginParams.branchId=params.branchId
                 }
                 this.$store.dispatch("LoginByUserloginid",loginParams).then(res => {
-                    this.loading = false
+                    this.loading = false 
                     if(res.data.tips.isOk==true){
                         this.loading = true;
-                        this.$store.dispatch('GetUserInfo').then((res2)=>{
-                            //this.userDeptid=res2.data.userInfo.deptid
+                        this.$store.dispatch('GetUserInfo').then((res2)=>{ 
                             this.loading = false
-                            if(res2.data.tips.isOk==true){
-                                    if(this.$store.state.user.myBranchs==null ||this.$store.state.user.myBranchs.length==0||this.$store.state.user.myDepts==null || this.$store.state.user.myDepts.length<=0){ 
-                                //if(1==1){
-                                    //this.$message.error("亲，您不在任何一个公司或者部门中，需要【先创建公司】\n 或者请【管理员加您进入公司】哦"); 
-                                    this.addBranchFormVisible=true;
-                                }else if(this.$store.state.user.myDepts.length>1 ){
-                                    //this.$message.info("亲，您在多个部门中任职，我分不清您要登陆哪个部门，请选择一个部门登陆吧"); 
-                                if( !this.userDeptid ){
-                                    this.userDeptid=res2.data.userInfo.deptid 
-                                    this.deptSelectVisible=true; 
-                                }else{
-                                    this.rolesChecked();
-                                }
-                                    //this.$router.push({ path: 'mdp/sys/branch/BranchAdd' })
-                                }else if(this.$store.state.user.myDepts.length==1){
-                                    //进行角色身份验证
+                            if(res2.data.tips.isOk==true){ 
                                 this.userDeptid=res2.data.userInfo.deptid
-                                    this.rolesChecked();
-                                }else{
-                                    this.rolesChecked();
-                                }
+                                this.rolesChecked(); 
                             }else{
                                 this.$message.error(res2.data.tips.msg);
                             }
@@ -343,6 +327,28 @@ export default {
             this.addBranchFormVisible=false;
             this.handleLogin();
         },
+        weixinLogin(){
+            var curlDomain=window.location.protocol+"//"+window.location.host; //  
+            var mdpRedirectUri=curlDomain+"/"+process.env.CONTEXT+"/"+process.env.VERSION+"/"
+            getTpaState().then(res=>{
+                var tips = res.data.tips;
+                if(tips.isOk){
+                    this.wxLoginCodeVisible=true;
+                     var state=res.data.data
+                    var obj = new WxLogin({
+                        self_redirect:false,
+                        id:"login_container", 
+                        appid: "wx2671d5db8346b6fc", 
+                        scope: "snsapi_login", 
+                        redirect_uri: encodeURIComponent("https://www.maimengcloud.com/api/m1/tpa/login/token?authType=wechat_wxpub&authId=mmxmcloud_wxopen_pc&redirectUri="+mdpRedirectUri),
+                        state: state,
+                        style: "",
+                        href: ""
+                    }); 
+                }
+            })
+           
+        },
 
         afterQRScan() {
             // const hash = window.location.hash.slice(1)
@@ -369,6 +375,12 @@ export default {
     destroyed() {
         // window.removeEventListener('hashchange', this.afterQRScan)
     },
+    mounted(){
+        const s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.src = 'https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js';
+        document.body.appendChild(s);
+    }
 
 }
 

@@ -2497,7 +2497,9 @@ export default {
   mounted() {
     this.initData();
     this.$nextTick(() => {
-      this.getXmTasks();
+      if(this.isTaskCenter ||(this.selProject && this.selProject.id)){
+        this.getXmTasks();
+      } 
       this.tableHeight = this.source == 'GZT' ? this.tableHeight : util.calcTableMaxHeight(this.$refs.table.$el);
       initSimpleDicts( "all", ["planType","taskType","priority","xmTaskSettleSchemel","priority","taskState" ]).then((res) => {
         this.dicts = res.data.data;

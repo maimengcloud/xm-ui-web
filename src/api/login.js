@@ -22,6 +22,20 @@ export function doLoginByUserloginid(userloginid, password,grantType,authType,de
     data
   })
 }
+export function switchUser(userloginid, password,grantType,authType,deptid,userid) { 
+  const data = {
+    userloginid: userloginid,
+    password: password, 
+    authType:authType,
+    deptid:deptid,
+    userid:userid,
+  }
+  return axios({
+    url: base+'/login/token?grantType='+grantType,
+    method: 'post',
+    data
+  })
+}
 export function checkUserid(userid ) {
   removeToken();
   const data = {
@@ -143,3 +157,28 @@ export function validEmailCode(params) {
     params:params
   })
 }
+
+
+/**
+ * 获取第三方登录需要state参数，防止crfs攻击
+ * @param 
+ * @returns 
+ */
+export function getTpaState( ) {  
+  return axios({
+    url: '/tpa/login/wechat/wxpub/state',
+    method: 'post', 
+    data:{}
+  })
+}
+/**
+ * 获取查询当前登录账户的所有关联账户
+  * @returns 
+ */
+ export function queryMyUsers( ) {  
+  return axios({
+    url: base+'/user/queryMyUsers',
+    method: 'get'
+  })
+}
+

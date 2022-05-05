@@ -244,7 +244,7 @@
 		props:['xmQuestion','visible',"selProject"],
 		watch: {
 	      'xmQuestion':function( xmQuestion ) {
-	        this.editForm = xmQuestion;
+	        this.editForm = {...xmQuestion};
 	      },
 	      'visible':function(visible) {
 	      	if(visible==true){

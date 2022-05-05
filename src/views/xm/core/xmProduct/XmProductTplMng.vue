@@ -283,11 +283,7 @@
 				this.editForm = Object.assign({}, row);
 			},
 			//显示新增界面 XmProduct 产品表
-			showAdd: function () {
-				if(!this.roles.some(i=>i.roleid=='productAdmin')){
-					this.$notify({position:'bottom-left',showClose:true,message: "只有产品经理能够创建产品", type: 'error'});
-					return false;
-				}
+			showAdd: function () { 
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);
 			},

@@ -1,7 +1,7 @@
 <template>
 	<section class="page-container border padding" >
 		<el-row>  
-			<xm-project-select style="display:inline;" v-if="!selProject" :auto-select="true"   :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClearSelect"></xm-project-select>
+			<xm-project-select style="display:inline;" v-if="!selProject" :auto-select="true"   :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @selected="onProjectRowClick" @clear="onProjectClearSelect"></xm-project-select>
 			
 			<el-input v-model="filters.key" style="width:15%;" clearable placeholder="名称过滤"></el-input>   
 			<el-button  type="primary" @click="searchXmGroups" icon="el-icon-search">刷新</el-button> 
@@ -53,11 +53,7 @@
 				<el-row v-if="currNodeType=='project'">   
 					<el-button type="primary" @click="loadNexGroup" icon="el-icon-search" v-loading="load.add">加载下一级小组</el-button>  
 					<el-button @click="showProjectGroupAdd" icon="el-icon-plus" v-loading="load.add">新增项目小组</el-button>  
-				</el-row> 
-				<el-row v-else-if="currNodeType=='product'">  
-					<el-button type="primary" @click="loadNexGroup" icon="el-icon-search" v-loading="load.add">加载下一级小组</el-button>  
-					<el-button type="primary" @click="showProductGroupAdd" icon="el-icon-plus"  v-loading="load.add">新增产品小组</el-button> 
-				</el-row> 
+				</el-row>  
 				<el-row v-else-if="currNodeType=='group'">  
 					<el-row>
 						<el-button type="primary" @click="loadNexGroup" icon="el-icon-search" v-loading="load.add">加载下一级小组</el-button>  
@@ -68,16 +64,13 @@
 						<el-button   @click="showAddSub(editForm)" icon="el-icon-plus"  v-loading="load.add">新增下一级小组</el-button>   
 						<el-button @click="showEdit(editForm)" icon="el-icon-edit"  v-loading="load.edit">修改小组信息</el-button> 
 						<el-button @click="userSelectVisible=true" icon="el-icon-plus"  v-loading="load.add">新增组员</el-button> 
+						<el-button @click="candidateVisible=true" icon="el-icon-plus"  v-loading="load.add">拉竞标人进组</el-button> 
 						<el-button type="danger" @click="handleDel(editForm)" icon="el-icon-delete"  v-loading="load.del">删除小组</el-button>
 					</el-row>
 				</el-row> 
 				<el-row v-else-if="currNodeType=='groupUser'">  
 					<el-button type="danger" icon="el-icon-delete" @click="handleDelGroupUser(editForm)" v-loading="load.del">删除组员</el-button>
-				</el-row> 
-				<el-row v-else>  
-					<el-button type="primary" @click="loadNexGroup" icon="el-icon-search" v-loading="load.add">加载下一级小组</el-button>  
- 					<el-button type="primary" @click="selectProjectVisible=true" icon="el-icon-plus" v-loading="load.add">新增项目小组</el-button>  
-				</el-row>
+				</el-row>  
 			</el-dialog>
 			
 			<el-drawer append-to-body
@@ -185,39 +178,44 @@
 			<el-drawer  v-if="currNodeType=='group'&&editForm.groupName" center  :title="(editForm==null?editForm.groupName:'')+'小组成员管理'" :visible.sync="groupUserVisible"  size="80%"  :close-on-click-modal="false" append-to-body>
 				<xm-group-user-mng  :xm-group="editForm" :visible="groupUserVisible" ></xm-group-user-mng>
 			</el-drawer>
+			<el-drawer    :visible.sync="candidateVisible"  size="80%"  :close-on-click-modal="false" append-to-body>
+				<xm-task-execuser-select  :sel-project="filters.selProject" :visible="candidateVisible" @select="onExecuserSelect"></xm-task-execuser-select>
+			</el-drawer>
 	    </el-row>
 		
 	</section>
 </template>
 
 <script>
-	import util from '@/common/js/util';//全局公共库
-	import treeTool from '@/common/js/treeTool';//全局公共库
-	import config from '@/common/config';//全局公共库 
-	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
-	import { listXmGroup, delXmGroup, batchDelXmGroup,getGroups } from '@/api/xm/core/xmGroup';
-	import  XmGroupEdit from './XmGroupEdit';//新增修改界面
-	import { mapGetters } from 'vuex'
-	import {VueOkrTree} from 'vue-okr-tree';
-	import 'vue-okr-tree/dist/vue-okr-tree.css'
-	import { listImGroup} from '@/api/mdp/im/group/imGroup';
-	import { publishMessage} from '@/api/mdp/im/imPush';
-	
-	import { listXmGroupUser, delXmGroupUser, batchDelXmGroupUser,batchAddXmGroupUser } from '@/api/xm/core/xmGroupUser';
+import util from '@/common/js/util';//全局公共库
+import treeTool from '@/common/js/treeTool';//全局公共库
+import config from '@/common/config';//全局公共库 
+import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
+import { listXmGroup, delXmGroup, batchDelXmGroup,getGroups } from '@/api/xm/core/xmGroup';
+import  XmGroupEdit from './XmGroupEdit';//新增修改界面
+import { mapGetters } from 'vuex'
+import {VueOkrTree} from 'vue-okr-tree';
+import 'vue-okr-tree/dist/vue-okr-tree.css'
+import { listImGroup} from '@/api/mdp/im/group/imGroup';
+import { publishMessage} from '@/api/mdp/im/imPush';
+
+import { listXmGroupUser, delXmGroupUser, batchDelXmGroupUser,batchAddXmGroupUser } from '@/api/xm/core/xmGroupUser';
 
 
-	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
-	import  XmGroupStateMng from '../xmGroupState/XmGroupStateMng';//修改界面
-	import  XmGroupUserMng from '../xmGroupUser/XmGroupUserMng';//修改界面 
-	
-	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
-	import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
+import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
+import  XmGroupStateMng from '../xmGroupState/XmGroupStateMng';//修改界面
+import  XmGroupUserMng from '../xmGroupUser/XmGroupUserMng';//修改界面 
+
+import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
+import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
+import XmTaskExecuserSelect from '../xmTaskExecuser/XmTaskExecuserSelect.vue';
 	
 	export default {
 	    name:'xmGroupMng',
 		components: {
 		    XmGroupEdit,VueOkrTree,UsersSelect,XmGroupStateMng,XmGroupUserMng, 
 XmProductSelect,XmProjectSelect,
+XmTaskExecuserSelect,
 		},
 		props:["visible","selProject" ,"isSelectSingleUser","isSelectMultiUser",'xmProduct','xmIteration','pgClass'],
 		computed: {
@@ -255,8 +253,8 @@ XmProductSelect,XmProjectSelect,
 				})
 				var groupsTree=treeTool.translateDataToTree(groups,'pgroupId','id')
 				var topLabel=this.userInfo.branchName+"-组织架构"
-				var currNodeType='branch'
-				var topdata={id:this.userInfo.branchId,branchName:this.userInfo.branchName,branchId:this.userInfo.branchId} 
+				var currNodeType='project'
+				var topdata={}
 				if(this.filters.selProject && this.filters.selProject.id){
 					topLabel=this.filters.selProject.name+"-项目组织架构"
 					currNodeType='project'
@@ -265,15 +263,9 @@ XmProductSelect,XmProjectSelect,
 					topdata.leaderUsername=this.filters.selProject.pmUsername
 					topdata.assUserid=this.filters.selProject.assUserid
 					topdata.assUsername=this.filters.selProject.assUsername
-				}else if(this.xmProduct && this.xmProduct.id){
-					topLabel=this.xmProduct.productName+"-产品组织架构"
-					currNodeType='product'
-					topdata=this.xmProduct
-					topdata.leaderUserid=this.xmProduct.pmUserid
-					topdata.leaderUsername=this.xmProduct.pmUsername
-					topdata.assUserid=this.xmProduct.assUserid
-					topdata.assUsername=this.xmProduct.assUsername
-				}
+				}else{
+					return []
+				} 
 				var data=[{
 					...topdata,
 					label:topLabel,
@@ -293,15 +285,9 @@ XmProductSelect,XmProjectSelect,
             },
 			
 			selProject(){
-				this.selProject=this.selProject;
+				this.filters.selProject=this.selProject;
 				this.getXmGroup();
-			},
-			xmProduct(){
-				this.getXmGroup();
-			},
-			xmIteration(){
-				this.getXmGroup();
-			},
+			}, 
 			"filters.key":function(val) {
 				this.$refs.tree.filter(val);
 			}, 
@@ -353,8 +339,8 @@ XmProductSelect,XmProjectSelect,
 				groupOperSelectVisible:false,
 				currNodeType:'',//project/product/iteration/group/groupUser
 				groupUserVisible:false,
-				selectProjectVisible:false,
-				selectProductVisible:false,
+				selectProjectVisible:false, 
+				candidateVisible:false,
 			}
 		},//end data
 		methods: { 
@@ -434,14 +420,12 @@ XmProductSelect,XmProjectSelect,
 					}  
 					params.orderBy= orderBys.join(",")
 				}
-				
+				if( !this.filters.selProject || !this.filters.selProject.id){
+					return;
+				}
 				if(this.filters.selProject && this.filters.selProject.id){
 					params.projectId=this.filters.selProject.id
-				}else if(this.xmProduct && this.xmProduct.id){
-					params.productId=this.xmProduct.id
-				}else if(this.xmIteration && this.xmIteration.id){
-					params.iterationId=this.xmIteration.id
-				}
+				} 
 				if(this.filters.key){
 					params.key=this.filters.key
 				}
@@ -453,22 +437,9 @@ XmProductSelect,XmProjectSelect,
 				}
 				if(this.filters.mngUsernamekey){
 					params.mngUsernamekey=this.filters.mngUsernamekey
-				}
-				if(this.pgClass==='0'||!this.pgClass){
-					if(!params.projectId){
-						return;
-					}
-				}else if(this.pgClass==='1'){
-					if(!params.productId){
-						return;
-					}
-				}
+				} 
 				var func=getGroups
-				this.load.list = true;
-				if( !params.productId && !params.projectId && !params.iterationId){
-					func=listXmGroup
-					params.lvl=1
-				}
+				this.load.list = true; 
 				func(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 
@@ -654,6 +625,22 @@ XmProductSelect,XmProjectSelect,
 				}
 				
 			},
+			onExecuserSelect:function(users){
+				this.candidateVisible=false;
+				
+				if(users && users.length>0){
+					var arrs=[];
+					users.forEach(i=>{ 
+						if(!arrs.some(k=>k.userid==i.userid)){
+							i.branchId=i.execUserBranchId
+							i.branchName=''
+							arrs.push(i)
+						}
+						
+					})
+					this.onUserSelected(arrs);
+				} 
+			},
 			
 			//选择接收人
 			onUserSelected: function(groupUsers) {  
@@ -667,6 +654,8 @@ XmProductSelect,XmProjectSelect,
 					var u={
 						userid:i.userid,
 						username:i.username,
+						obranchId:i.branchId,
+						obranchName:i.branchName,
 						groupId:this.editForm.id,
 					}
 					if(this.editForm.pgClass=='1'){
@@ -699,7 +688,9 @@ XmProductSelect,XmProjectSelect,
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
             initData: function(){
-				this.filters.selProject=this.selProject; 
+				if(this.selProject){
+					this.filters.selProject=this.selProject;  
+				} 
             },
 			renderCurrentClass (node) {
 				return 'label-bg-blue'
@@ -757,16 +748,7 @@ XmProductSelect,XmProjectSelect,
 				this.addForm.pgClass="0"
 				this.addFormVisible=true;
 				this.selectProjectVisible=false;
-			},
-			onProductConfirm(product){
-				this.addForm={...this.addFormInit}
-				this.addForm.productId=product.id
-				this.addForm.groupName=product.productName+"-管理小组"
-				this.addForm.projectName=product.productName
-				this.addForm.pgClass="1"
-				this.addFormVisible=true;
-				this.selectProductVisible=false;
-			},
+			}, 
 			onProjectRowClick(project){
 				this.filters.selProject=project;
 				this.searchXmGroups();

@@ -124,7 +124,7 @@
  			 <xm-product-for-link-complex  v-if="infotype=='产品'" ref="xmProductComplex" :sel-project="selProject"></xm-product-for-link-complex>
 			 <xm-menu-mng v-if="infotype=='需求'" :sel-project="selProject"></xm-menu-mng>
 			 <xm-task-mng v-if="infotype=='任务'" ref="xmTaskMng" :sel-project="selProject" ptype="0" queryScope="task" key="task"></xm-task-mng>
-			  <xm-question v-if="infotype=='缺陷'"  :sel-project='selProject' ref="xmQuestion"></xm-question>
+			  <xm-question v-if="infotype=='缺陷'" :qtype="'1'" :sel-project='selProject' ref="xmQuestion"></xm-question>
 			  <xm-group-mng v-if="infotype=='团队'" :sel-project="selProject"></xm-group-mng>
 			  <xm-file-mng v-if="infotype=='文档'" :sel-project="selProject"></xm-file-mng>
 			   <xm-task-mng v-if="infotype=='计划'" ref="projectPlan" ptype="0" queryScope="planTask" :sel-project="selProject" key="projectPlan"></xm-task-mng>
@@ -138,7 +138,7 @@
 			<xm-record v-if="infotype=='日志'" :visible="infotype=='日志'" :sel-project="selProject"></xm-record>
 			<xm-contract v-if="infotype=='合同管理'" :sel-project="selProject"></xm-contract>
 			<xm-env-list v-if="infotype=='环境清单'" :sel-project="selProject"></xm-env-list>
-			<xm-question v-if="infotype=='风险'" :qtype="'risk'" :sel-project='selProject' ref="xmRisk"></xm-question>
+			<xm-question v-if="infotype=='风险'" :qtype="'2'" :sel-project='selProject' ref="xmRisk"></xm-question>
 			<el-drawer title="选中团队成员" :visible.sync="groupUserVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				<xm-group-select :sel-project="selProject" :visible="groupUserVisible" is-select-multi-user="1" @user-confirm="onUserSelected"></xm-group-select>
 			</el-drawer>

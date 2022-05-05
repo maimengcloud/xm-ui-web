@@ -10,21 +10,21 @@
 		<el-row class="padding-top">
 			<!--列表 XmGroupUser xm_group_user-->
 			<el-table ref="xmGroupUserTable" :data="xmGroupUsers" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-				<el-table-column  type="selection" width="55" ></el-table-column>
-				<el-table-column sortable type="index" width="55"></el-table-column>
-				
-				<el-table-column prop="pgClass" label="产品/团队编号" min-width="120" >
-					<template slot-scope="scope">{{scope.row.pgClass=='1'?'产品':'项目'}} 
-						&nbsp;&nbsp;{{scope.row.pgClass=='1'?scope.row.productId:scope.row.projectId}} 
+				<el-table-column  type="selection" width="55"></el-table-column>
+				<el-table-column sortable type="index" width="55"></el-table-column> 
+				<el-table-column prop="pgClass" label="项目编号" min-width="150">
+					<template slot-scope="scope"> 
+						 {{ scope.row.projectId}} 
 					</template>
 				</el-table-column>   
-				<el-table-column prop="groupName" label="组名" min-width="120" show-overflow-tooltip></el-table-column>
- 				<el-table-column prop="userid" label="成员编号" min-width="120" show-overflow-tooltip></el-table-column>
- 				<el-table-column prop="username" label="成员姓名" min-width="120" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="groupName" label="组名" min-width="150" show-overflow-tooltip></el-table-column>
+ 				<el-table-column prop="username" label="成员姓名" min-width="150" show-overflow-tooltip ></el-table-column>
+ 				<el-table-column prop="userid" label="成员编号" min-width="150" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="obranchId" label="归属机构" min-width="150" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="joinTime" label="加入时间" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="outTime" label="离队时间" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="status" label="状态" min-width="80" show-overflow-tooltip> 
-					<template slot-scope="scope">  {{scope.row.status=='1'?'已加入':'已退出'}} 
+					<template slot-scope="scope">  {{scope.row.status=='0'?'已退出':'已加入'}} 
 					</template>
 				</el-table-column>
  				<el-table-column prop="isPri" label="是否私人" min-width="80" show-overflow-tooltip> 
@@ -32,7 +32,6 @@
 					</template>
 				 </el-table-column>
 				<el-table-column prop="seqNo" label="排序号" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="obranchName" label="原归属机构名称" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column label="操作" width="180" fixed="right"> 
 					<template scope="scope">
 						<el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"></el-button>

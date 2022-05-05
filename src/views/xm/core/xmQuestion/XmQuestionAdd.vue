@@ -186,7 +186,12 @@
 	      'visible':function(visible) {
 	      	if(visible==true){
 				  //从新打开页面时某些数据需要重新加载，可以在这里添加
-				   this.addForm.qtype=this.qtype
+				  if(this.qtype){
+					   this.addForm.qtype=this.qtype
+				  }else{
+					   this.addForm.qtype='1'
+				  }
+				  
 				   this.addForm.id=sn('bug_')
 				   this.initByExec();
 

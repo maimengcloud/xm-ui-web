@@ -99,8 +99,9 @@
 						<el-col  v-cloak v-for="(p,i) in ScreenData" :key="i" :xl="8" :lg="8" :md="8" :sm="12">
 							<el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always" id="prj-view-box">
 								<div class="project-name" title="这是项目名称">{{p.name}}</div>
-								<div class="project-id"><span title="项目代号">{{p.code}} </span><font title="项目状态" :color="p.status=='7'?'green':'blue'">{{formatProjectStatus(dicts,'projectStatus',p.status)}}</font>
-									<el-link id="prj-del-btn" type="danger" style="font-size:14px;float:right;margin-left:2px;"  title="删除项目" @click.stop="handleDel(p)" v-loading="load.add">删除</el-link>
+								<div class="project-id"><span title="项目代号">{{p.code}} </span>
+									<el-tag title="项目状态" v-for="(item,index) in formatDictsWithClass(dicts,'projectStatus',p.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
+ 									<el-link id="prj-del-btn" type="danger" style="font-size:14px;float:right;margin-left:2px;"  title="删除项目" @click.stop="handleDel(p)" v-loading="load.add">删除</el-link>
 									<el-link id="prj-copy-btn" type="primary" style="font-size:14px;float:right;margin-left:2px;"  title="通过复制快速创建新项目" @click.stop="onCopyToBtnClick(p)" v-loading="load.add">复制</el-link> 
 									<el-link id="prj-calc-btn" type="warning" style="font-size:14px;float:right;margin-left:2px;"  title="统计项目的工作量、进度、需求、bugs等数据" @click.stop="loadTasksToXmProjectState(p)" v-loading="load.add">统计</el-link>
 								</div>
@@ -151,21 +152,16 @@
 					</el-row>
 
 					<el-table  ref="table" :height="maxTableHeight" v-cloak v-show="!showType" fit stripe :data="ScreenData" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-						<el-table-column  type="index" label="序号" width="60" ></el-table-column>
-						<el-table-column prop="id" label="项目编码" width="120" sortable show-overflow-tooltip></el-table-column>
-						<el-table-column prop="name" label="标题" sortable min-width="200" >
+						<el-table-column  type="index" label="序号" width="60" fixed="left"></el-table-column>
+						<el-table-column prop="id" label="项目编码" min-width="150" sortable show-overflow-tooltip  fixed="left"></el-table-column>
+						<el-table-column prop="name" label="标题" sortable min-width="250"  fixed="left">
 							<template slot-scope="scope">
 								<el-link type="primary" @click.stop="intoInfo(scope.row)">{{scope.row.name}}</el-link>
 							</template>
 						</el-table-column> 
-						<el-table-column prop="status" label="状态" width="80 sortable" :formatter="formatterByDicts"> 
-							<template slot-scope="scope"> 						
-								<el-tag v-if="scope.row.status=='0'" type="info" effect="plain">{{formatProjectStatus(scope.row.status)}}</el-tag> 								
-								<el-tag v-else-if="scope.row.status=='1' || scope.row.status=='2'|| scope.row.status=='3'" type="primary" effect="plain">{{formatProjectStatus(scope.row.status)}}</el-tag> 
-								<el-tag v-else-if="scope.row.status=='4' " type="warning" effect="plain">{{formatProjectStatus(scope.row.status)}}</el-tag> 
-								<el-tag v-else-if="scope.row.status=='5'||scope.row.status=='6' || scope.row.status=='7'|| scope.row.status=='8'" type="success" effect="plain">{{formatProjectStatus(scope.row.status)}}</el-tag> 
- 								<el-tag v-else type="danger" effect="plain">{{formatProjectStatus(scope.row.status)}}</el-tag> 
-
+						<el-table-column prop="status" label="状态" width="100" sortable  fixed="left"> 
+							<template slot-scope="scope"> 		
+								<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'projectStatus',scope.row.status)" :key="index" :type="item.className">{{item.name}}</el-tag>	 
 							</template>
 						</el-table-column>  
 						<el-table-column prop="finishRate" label="进度" width="100" sortable>
@@ -177,21 +173,21 @@
 								</font>
 							</template>
 						</el-table-column> 
-						<el-table-column prop="productCnt" label="产品数" sortable min-width="80" >  
+						<el-table-column prop="productCnt" label="产品数" sortable min-width="120" >  
 						</el-table-column> 
-						<el-table-column prop="iterationCnt" label="迭代数" sortable min-width="80" >  
+						<el-table-column prop="iterationCnt" label="迭代数" sortable min-width="120" >  
 						</el-table-column> 
-						<el-table-column prop="menuCnt" label="需求数" sortable min-width="80" > 
+						<el-table-column prop="menuCnt" label="需求数" sortable min-width="120" > 
 							<template slot-scope="scope">
 								<span title="完成的需求数 / 需求总数 ">{{scope.row.menuCnt>0?scope.row.menuFinishCnt+'&nbsp;/&nbsp;'+scope.row.menuCnt:''}}</span>
 							</template>
 						</el-table-column> 
-						<el-table-column prop="taskCnt" label="任务数" sortable min-width="80" > 
+						<el-table-column prop="taskCnt" label="任务数" sortable min-width="120" > 
 							<template slot-scope="scope">
 								<span title="完成的任务数 / 任务总数 ">{{scope.row.taskCnt>0?scope.row.taskFinishCnt+'&nbsp;/&nbsp;'+scope.row.taskCnt:''}}</span>
 							</template>
 						</el-table-column>  
- 						<el-table-column prop="bugCnt" label="缺陷" sortable min-width="80" >
+ 						<el-table-column prop="bugCnt" label="缺陷" sortable min-width="120" >
 							<template slot-scope="scope">
 								<span title="关闭的缺陷数 / 缺陷总数 ">{{scope.row.bugCnt>0?scope.row.closedBugs+'&nbsp;/&nbsp;'+scope.row.bugCnt:''}}</span>
 							</template> 
@@ -201,7 +197,7 @@
 								{{scope.row.startTime? scope.row.startTime.substr(0,10) : ""}}~{{scope.row.endTime? scope.row.endTime.substr(0,10) : ""}}
 							</template>
 						</el-table-column>
-						<el-table-column prop="bizFlowState" label="审批状态" min-width="80" >
+						<el-table-column prop="bizFlowState" label="审批状态"min-width="120" >
 							<template slot-scope="scope">
 								<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'bizFlowState',scope.row.bizFlowState)" :key="index" :type="item.className">{{item.name}}</el-tag>
 							</template>

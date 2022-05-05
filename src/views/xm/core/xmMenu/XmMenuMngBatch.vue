@@ -152,11 +152,7 @@
 				this.$emit('no-batch-edit')
 			},
 			batchSaveMenu(){
-				
-				if(!this.roles.some(i=>i.roleid=='productAdmin') && !this.roles.some(i=>i.roleid=='productTeamAdmin')){
-					this.$notify({position:'bottom-left',showClose:true,message: "只有产品经理、产品组长能够修改需求", type: 'error'}); 
-					return false;
-				}
+				 
 				if(this.valueChangeRows.length==0){
 					this.$notify.success("没有数据被修改");
 					return

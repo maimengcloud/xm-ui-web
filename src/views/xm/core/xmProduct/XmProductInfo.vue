@@ -177,7 +177,7 @@
 			<xm-record v-if="infotype=='日志'" :visible="infotype=='日志'" :xm-product="xmProduct"></xm-record>
 			<xm-contract v-if="infotype=='合同管理'" :xm-product="xmProduct"></xm-contract>
 			<xm-env-list v-if="infotype=='环境清单'" :xm-product="xmProduct"></xm-env-list>
-			<xm-question v-if="infotype=='风险'" :qtype="'risk'" :xm-product='xmProduct' ref="xmRisk"></xm-question>
+			<xm-question v-if="infotype=='风险'" :qtype="'2'" :xm-product='xmProduct' ref="xmRisk"></xm-question>
 			
 			<xm-report v-if="infotype=='效能'" :xm-product="xmProduct"></xm-report>
 			<el-drawer title="选中团队成员" :visible.sync="groupUserVisible"  size="50%"  append-to-body   :close-on-click-modal="false">

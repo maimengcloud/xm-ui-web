@@ -2,7 +2,7 @@
 	<section class="page-container padding border">
 		<el-row v-if="!simple">
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
-			  <el-radio v-model="filters.objType" v-for="i in objTypeOptions" :label="i.key" :key="i.key">{{i.name}}</el-radio>
+			<span v-if="!objType"><el-radio  v-model="filters.objType" v-for="i in objTypeOptions" :label="i.key" :key="i.key">{{i.name}}</el-radio></span>
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmRecords">查询</el-button>  
 		</el-row>
 		<el-row class="page-main"> 
@@ -65,12 +65,15 @@
 		      'userInfo','roles'
 		    ])
 		},
-		props:["projectId","objType","objId","simple" ,"visible"],
+		props:["projectId",'productId',"objType","bizId","simple" ,"visible"],
 		watch:{ 
 			visible:function(visible){
 				if( visible ==true ){ 
-					this.getXmRecords();
+					this.searchXmRecords();
 				}
+			},
+			bizId:function(bizId){ 
+				this.searchXmRecords(); 
 			}
 		},
 		data() {
@@ -157,8 +160,11 @@
 				if(this.projectId){
 					params.projectId=this.projectId;
 				} 
-				if(this.objId){
-					params.taskId=this.objId;
+				if(this.productId){
+					params.productId=this.productId;
+				} 
+				if(this.bizId){
+					params.bizId=this.bizId;
 				} 
 				this.load.list = true;
 				listXmRecord(params).then((res) => {

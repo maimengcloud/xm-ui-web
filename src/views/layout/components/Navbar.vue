@@ -27,7 +27,7 @@
         <theme-picker class="theme-switch right-menu-item"></theme-picker>
       </el-tooltip>
 
-      <el-dropdown class="avatar-container right-menu-item hidden-sm-and-down" trigger="hover" style="max-width:300px;" @command="handleCommand">
+      <el-dropdown class="avatar-container right-menu-item hidden-sm-and-down" trigger="hover"   @command="handleCommand">
         <div class="avatar-wrapper">
           <img v-if="userInfo && userInfo.headimgurl && userInfo.headimgurl!=null && userInfo.headimgurl!=='' " class="user-avatar" :src="userInfo.headimgurl">
           <img v-else class="user-avatar" src="../../../assets/image/user_img.gif">
@@ -223,7 +223,9 @@ export default {
     },
     logout() {
       this.$store.dispatch('LogOut').then(() => {
-        location.reload()// In order to re-instantiate the vue-router object to avoid bugs
+        //location.reload()// In order to re-instantiate the vue-router object to avoid bugs
+        //this.$router.replace({path:'/login'})
+        location.replace('/');
       })
     },
 			showSelectShopMethod() {
