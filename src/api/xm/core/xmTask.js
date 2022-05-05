@@ -29,6 +29,7 @@ export const editXmTask = params => { return axios.post(`${base}/xm/core/xmTask/
 export const addXmTask = params => { return axios.post(`${base}/xm/core/xmTask/add`, params); };
 
 export const getTask = params => { return axios.get(`${base}/xm/core/xmTask/getTask`, { params: params }); };
+export const getOutTask = params => { return axios.get(`${base}/xm/core/xmTask/getOutTask`, { params: params }); };
 
 export const addTask = params => { return axios.post(`${base}/xm/core/xmTask/addTask`, params ); };
 

@@ -75,6 +75,20 @@ export default {
       ]
     },
     {
+      path: '/xm/core',
+      component: Layout,
+      name: '众包任务',
+      iconCls: 'fa el-icon-menu',
+      meta: {
+        title: '众包任务',
+        icon: 'task'
+      },
+      // leaf: true,//只有一个节点
+      children: [ 
+        { path: 'crowd/XmTaskCrowdMng', component: _import('xm/core/crowd/XmTaskCrowdMng'), name: 'XmTaskCrowdMng', meta: { title: '众包大厅' }}, 
+      ]
+    },
+    {
       path: '/xm/core/xmProduct/XmProductInfoRoute',
       component: _import('xm/core/xmProduct/XmProductInfoRoute'),
       name: 'XmProductInfoRoute',
