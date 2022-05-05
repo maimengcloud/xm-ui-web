@@ -55,13 +55,15 @@
                 .top {
                     display: flex;
                     justify-content: space-between;
-                    h2 {
+                    height: 40px;
+                    .title {
+                        font-weight: bold;
                         color: #40485B;
                         font-size: 35px;
                     }
                     span {
-                        margin-top: 10px;
-                        color: #40485B;;
+                        color: #40485B;
+                        line-height: 40px;
                     }
                 }
             }
