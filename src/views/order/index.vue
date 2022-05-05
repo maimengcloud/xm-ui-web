@@ -91,38 +91,46 @@ export default {
 
     submitOrder() {
       //验证参数
-      if(this.currentSelectVersion = "企业版") {
+      if(this.currentSelectVersion == "企业版") {
         let data = this.$refs.enterprise.getForm();
         //验证手机号是否填写
-        // if(data.phone == "" || data.phone == null || data.phone == undefined) {
-        //   this.$message({
-        //     message: '请输入手机号',
-        //     type: 'warning'
-        //   });
-        //   return;
-        // }
+        if(data.phone == "" || data.phone == null || data.phone == undefined) {
+          this.$message({
+            message: '请输入手机号',
+            type: 'warning'
+          });
+          return;
+        }
+
         //验证是否同意服务协议
-        // if(!data.checked) {
-        //   this.$message({
-        //     message: '请先同意服务协议',
-        //     type: 'warning'
-        //   });
-        //   return;
-        // }
+        if(!data.checked) {
+          this.$message({
+            message: '请先同意服务协议',
+            type: 'warning'
+          });
+          return;
+        }
+
         //保存购买模块信息到本地
-        if(data.data.length < 0) {
+        if(data.data.length <= 0) {
           this.$message({
             message: '请选择要购买的模块',
             type: 'warning'
           });
           return
         }
-        console.log(data, "data");
+
         window.localStorage.setItem("BUY_MODULES", undefined)
         window.localStorage.setItem("BUY_MODULES", JSON.stringify(data))
         this.$router.push('/my/order/create')
       }else {
-        let data = this.$refs.flagship.getForm();
+        let flagData = this.$refs.flagship.getForm();
+        flagData.then((res) => {
+          console.log(res, "res-->");
+
+        }).catch(err => {
+        })
+
       }
     },
 

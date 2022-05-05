@@ -4,3 +4,4 @@ let base = config.getPayBasePath();
 
 export const aliPay = params => { return axios.post(`${base}/alipay/uniOrder`, params) }
 export const weixinPay = params => { return axios.post(`${base}/wxpay/uniOrder/native`, params) }
+export const checkWxPayStatus = params => { return axios.get(`${base}/wxpay/uniOrder/checkOrderStatus`, {params}) }

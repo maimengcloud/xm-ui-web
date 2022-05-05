@@ -19,7 +19,8 @@ import './permission' // permission control
 import * as echarts from 'echarts' 
 import * as filters from './filters' // global filters
 import Print from 'vue-print-nb'
-
+import VueQriously from 'vue-qriously'
+Vue.use(VueQriously)
 
 
 import DateRange from '@/components/dateRange/index'

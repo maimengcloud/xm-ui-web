@@ -21,7 +21,7 @@
                     <el-descriptions-item label="购买版本">企业版</el-descriptions-item>
                     <el-descriptions-item label="创建人">谢家豪</el-descriptions-item>
                     <!-- <el-descriptions-item label="手机号码">18826103122</el-descriptions-item> -->
-                    <el-descriptions-item label="支付方式">{{data.payWay == 'aliPay' ? '支付宝' : '微信'}}</el-descriptions-item>
+                    <el-descriptions-item label="支付方式">{{data.payway == 'aliPay' ? '支付宝' : '微信'}}</el-descriptions-item>
                   </el-descriptions>
                 </div>
                 <div class="table">
@@ -50,21 +50,6 @@
                       label="账号数量"
                       width="120">
                     </el-table-column>
-                    <!-- <el-table-column
-                      prop="city"
-                      label="单价"
-                      width="120">
-                    </el-table-column>
-                    <el-table-column
-                      prop="address"
-                      label="有效期"
-                      width="300">
-                    </el-table-column>
-                    <el-table-column
-                      prop="zip"
-                      label="总金额"
-                      >
-                    </el-table-column> -->
                   </el-table>
                 </div>
               </div>
@@ -73,8 +58,8 @@
                 <span class="allAmount">
                   总金额: <b>{{data.amount}}￥</b>
                 </span>
-                <el-button size="larget">上一步</el-button>
-                <el-button size="larget" type="primary" @click="createOrder">确认支付</el-button>
+                <el-button size="larget" @click="returnPage">上一步</el-button>
+                <el-button size="larget" type="primary" :loading="createOrderLonding" @click="createOrder">确认支付</el-button>
               </div>
             </div>
           </div>
@@ -82,26 +67,39 @@
       </div>
     </div>
 
+    <el-dialog
+      title="微信支付"
+      :visible.sync="weixinPayVisible"
+      :show-close="false"
+      @close="closeDialog"
+       width="350px"
+     >
+      <qriously :value="codeUrl" :size="300" />
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
 import {createOrder} from '@/api/mdp/sys/order'
-import {aliPay, weixinPay} from '@/api/mdp/pay/pay'
+import {aliPay, weixinPay, checkWxPayStatus} from '@/api/mdp/pay/pay'
+
 export default {
   data() {
     return {
       data: null,
-      createOrderLonding: false
+      createOrderLonding: false,
+      weixinPayVisible: false,
+      codeUrl: ""
     }
   },
   methods: {
+    returnPage() {
+      this.$router.go(-1);
+    },
 
     createOrder() {
-      // this.$router.push('/my/order/paySuccess')
-      //调取下单接口
-      console.log(this.data, 'data');
-      //来源s
+      //来源
       this.data.osource = "1";
       //订单类型
       this.data.otype = "1";
@@ -111,7 +109,6 @@ export default {
       this.createOrderLonding = true;
       createOrder(this.data).then(res => {
         if(res.data.tips.isOk){
-          console.log(res, "res--->");
           //获取订单号
           let orderId = res.data.data;
           if(this.data.payway == 'aliPay') {
@@ -128,45 +125,78 @@ export default {
       }).catch(err => {
         this.$message.error(err.msg);
       }).finally(() => {
-        this.createOrderLonding = false;
       })
     },
 
     toAliPay(orderId) {
-      let params = {
+      let params = { 
         id: orderId,
         otype: 1,
-        returnUrl: "www.baidu.com"
+        returnUrl: "http://359n6r5527.wicp.vip/#/my/order/paySuccess"
       }
       aliPay(params).then(res => {
-        console.log(res, "res---->");
-        const div = document.createElement("divform");
-        div.innerHTML = res.data.data.htmlStr;
-        document.body.appendChild(div);
-        document.forms[0].submit();
+        if(res.data.tips.isOk) {
+          const div = document.createElement("divform");
+          div.innerHTML = res.data.data.htmlStr;
+          document.body.appendChild(div);
+          document.forms[0].submit();
+        }else {
+          this.$message.error(res.data.tips.msg);
+        }
+      }).finally(() => {
+        setTimeout(() => {
+          this.createOrderLonding = false;
+        }, 2000);
       })
     },
 
     toWeixinPay(orderId) {
       let params = {
-        orderId: orderId
+        id: orderId,
+        otype: 1,
+        returnUrl: ""
       }
       weixinPay(params).then(res => {
-        console.log(res, "res---->");
+        if(res.data.tips.isOk) {
+          this.codeUrl = res.data.data.codeUrl;
+          this.weixinPayVisible = true;
+          this.timer = setInterval(() => {
+            this.queryOrderStatus(orderId)
+          }, 3000)
+        }else {
+          this.$message.error(res.data.tips.msg);
+        }
+      }).finally(() => {
+         setTimeout(() => {
+          this.createOrderLonding = false;
+        }, 2000);
       })
+    },
+
+    //查询订单支付状态
+    queryOrderStatus(orderId) {
+      console.log("查询订单");
+      checkWxPayStatus({'orderId': orderId}).then(res => {
+        if(res.data.tips.isOk) {
+          this.$router.push({path:'/my/order/paySuccess', query:{total_amount: this.data.amount, out_trade_no: orderId}});
+          clearInterval(this.timer);
+        }else {
+        }
+      }).finally(() => {
+        
+      })
+    },
+
+    closeDialog() {
+      clearInterval(this.timer);
     }
-
-
-
-
 
   },
 
   created() {
     let data = JSON.parse(window.localStorage.getItem("BUY_MODULES"));
-    this.data = data
-    console.log(data, "data");
-    
+    this.data = data;
+    console.log(this.data, "data-->");
   },
 
 }
