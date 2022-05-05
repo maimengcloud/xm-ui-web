@@ -35,7 +35,7 @@
       </div>
     </div>        
 
-    <div class="buy_count">
+    <!-- <div class="buy_count">
       <h2>
         购买数量
         <span>(购买账号不能少于10人)</span>
@@ -51,7 +51,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div class="buy_date">
       <h2>期限选择</h2>
@@ -360,7 +360,7 @@ export default {
       });
     },
 
-    selectBuyDate(item) {
+    selectBuyDate(item) {   
       this.form.usetime = item.val;
       this.useTimeOptions.forEach(element => {
         element.isChecked = false;
@@ -377,12 +377,10 @@ export default {
       let oa = this.menus.oa.filter(res => {return res.isChecked ==  true;})
       let mall = this.menus.mall.filter(res => {return res.isChecked ==  true;})
       tempData = Array.concat(xm).concat(oa).concat(mall);
-
       let obj = {
         data: tempData,
         ...this.form
       }
-
       return obj;
     },
 

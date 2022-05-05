@@ -33,7 +33,7 @@
           <enterprise ref="enterprise" :menus="menus" v-if="currentSelectVersion == '企业版'"></enterprise>
         </div>
 
-        <el-button @click="submitOrder" size="larget" class="submit" type="primary">
+        <el-button :loading="submitLoading" @click="submitOrder" size="larget" class="submit" type="primary">
           {{currentSelectVersion == '企业版' ? '提交订单' : '提交信息'}}
         </el-button>
       </div>
@@ -52,7 +52,7 @@ import Enterprise from './enterprise'
 import orderSkeleton from './components/orderSkeleton'
 import {getAllMenuModule, getBuyMenuModule} from '@/api/mdp/sys/modules'
 import {modulesOfIcon} from "@/components/ModulesMenu/modulesOfIcon";
-
+import {createFlagShipOrder} from '@/api/mdp/sys/order';
 
 export default {
   components: {FlagShip, Enterprise, orderSkeleton},
@@ -75,6 +75,7 @@ export default {
       currentSelectVersion: '企业版',
       menuLoading: false,
       menus: null,
+      submitLoading: false,
     }
   },
 
@@ -126,9 +127,23 @@ export default {
       }else {
         let flagData = this.$refs.flagship.getForm();
         flagData.then((res) => {
-          console.log(res, "res-->");
-
+          //创建订单
+          res.needs = JSON.stringify(res.needs);
+          this.submitLoading = true;
+          createFlagShipOrder(res).then(res => {
+            if(res.data.tips.isOk){
+              this.$message.success("信息已提交，稍后我们将会联系您");
+              this.$refs.flagship.clearForm();
+            }else{
+              this.$message.error(res.data.tips.msg);
+            }
+          }).catch(err => {
+            this.$message.error(err.msg);
+          }).finally(() => {
+            this.submitLoading = false;
+          })
         }).catch(err => {
+
         })
 
       }

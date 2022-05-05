@@ -40,6 +40,17 @@
 <script>
 export default {
     data() {
+        // 自定义验证
+        const validPhone = (rule, value, callback) => {
+            const reg = /^1([38][0-9]|4[014-9]|[59][0-35-9]|6[2567]|7[0-8])\d{8}$/
+            if (!value) {
+                callback(new Error('请输入电话号码'))
+            } else if (!reg.test(value)) { //判断用户输入的值是否符合规则
+                callback(new Error('请输入正确的11位手机号码'))
+            } else {
+                callback()
+            }
+        }
         return {
             usePeopleOptions: [
                 {
@@ -92,7 +103,7 @@ export default {
                     { required: true, message: '请输入联系人', trigger: 'blur' },
                 ],
                 phone: [
-                    { required: true, message: '请输入联系电话', trigger: 'blur' },
+                    { required: true, trigger: 'blur', validator: validPhone }
                 ],
                 usePeoples: [
                     { required: true, message: '请选择使用人数', trigger: 'blur' },
@@ -117,9 +128,12 @@ export default {
                 });
             })
         },
-
-
-
+        clearForm() {
+            this.form.phone = "";
+            this.form.contacts = "";
+            this.form.usePeoples = "";
+            this.form.needs = [];
+        }
     },
 
 

@@ -75,11 +75,13 @@
        width="350px"
      >
       <qriously :value="codeUrl" :size="300" />
+      
+
     </el-dialog>
 
   </div>
 </template>
-
+    
 <script>
 import {createOrder} from '@/api/mdp/sys/order'
 import {aliPay, weixinPay, checkWxPayStatus} from '@/api/mdp/pay/pay'
@@ -176,7 +178,7 @@ export default {
     //查询订单支付状态
     queryOrderStatus(orderId) {
       console.log("查询订单");
-      checkWxPayStatus({'orderId': orderId}).then(res => {
+      checkWxPayStatus({'orderId': orderId, "otype": "1"}).then(res => {
         if(res.data.tips.isOk) {
           this.$router.push({path:'/my/order/paySuccess', query:{total_amount: this.data.amount, out_trade_no: orderId}});
           clearInterval(this.timer);
