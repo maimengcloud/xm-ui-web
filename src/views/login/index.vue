@@ -11,7 +11,7 @@
                 <div class="login_box">
                     <div class="login_box_content">
                         <div class="top">
-                            <h2>平台{{status == 'register' ? '注册' : '登录' }}</h2>
+                            <span class="title">平台{{status == 'register' ? '注册' : '登录' }}</span>
                             <span v-if="status == 'login'" >没有账号？<a style="color:#409EFF;" @click="status = 'register' ">点此注册</a> </span>
                             <span v-else>已有账号？<a style="color:#409EFF;" @click="status = 'login' ">点此登录</a> </span>
                         </div>

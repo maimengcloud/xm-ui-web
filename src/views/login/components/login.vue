@@ -1,6 +1,5 @@
 <template>
     <div>
-        
         <div v-if="!isRestPwd">
             <div class="login_form">
                 <el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm">
