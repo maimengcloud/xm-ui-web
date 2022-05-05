@@ -53,6 +53,7 @@
     "vue-okr-tree": "^1.0.10",
     "vue-print-nb": "^1.7.5",
     "vue-qr": "^4.0.6",
+    "vue-qriously": "^1.1.1",
     "vue-router": "3.0.1",
     "vuedraggable": "2.15.0",
     "vuex": "3.0.1",
