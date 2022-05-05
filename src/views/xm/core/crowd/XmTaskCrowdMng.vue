@@ -1276,6 +1276,7 @@ export default {
       }
       params.taskOut="1"
       params.crowd="1"
+      params.ntype="0"
       return params;
     }, 
     
