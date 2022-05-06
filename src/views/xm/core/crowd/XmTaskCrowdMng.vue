@@ -99,7 +99,7 @@
             v-loading="load.list"
           ></el-button>
            
-
+        <span>
           <el-popover
             placement="top-start"
             title=""
@@ -853,27 +853,7 @@ export default {
         }
         params.orderBy = orderBys.join(",");
       }
-      params=this.getParams(params)
-      if(this.queryScope==='planTask'){ 
-			  params.withParents="1"
-      }else if(this.queryScope==='plan'){ 
-			  params.withParents="1"
-        params.ntype="1"
-      }else if(this.queryScope==='task'){
-        params.ntype="0"
-      }
-      
-      if(this.ptype==='1'){
-        if(!params.productId){
-          this.$notify.warning("请先选中产品")
-          return;
-        }
-      }else if(this.ptype==='0'){
-        if(!params.projectId){
-          this.$notify.warning("请先选中项目")
-          return;
-        }
-      } 
+      params=this.getParams(params) 
       //params.ptype=this.ptype
 
         getOutTask(params)
@@ -1418,10 +1398,8 @@ export default {
   },
   mounted() {
     this.initData();
-    this.$nextTick(() => {
-      if(this.isTaskCenter ||(this.selProject && this.selProject.id)){
-        this.getXmTasks();
-      } 
+    this.$nextTick(() => { 
+      this.getXmTasks(); 
       this.tableHeight = this.source == 'GZT' ? this.tableHeight : util.calcTableMaxHeight(this.$refs.table.$el);
       initSimpleDicts( "all", ["planType","taskType","priority","xmTaskSettleSchemel","priority","taskState" ]).then((res) => {
         this.dicts = res.data.data;
