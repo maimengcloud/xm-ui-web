@@ -85,7 +85,7 @@ export default {
       },
       // leaf: true,//只有一个节点
       children: [ 
-        { path: 'crowd/XmTaskCrowdMng', component: _import('xm/core/crowd/XmTaskCrowdMng'), name: 'XmTaskCrowdMng', meta: { title: '众包大厅' }}, 
+        { path: 'crowd/XmTaskCrowdMng', component: _import('xm/core/crowd/XmTaskCrowdMng'), name: 'XmTaskCrowdMng', meta: { title: '众包大厅',icon: 'task' }}, 
       ]
     },
     {

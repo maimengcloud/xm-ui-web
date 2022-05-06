@@ -326,12 +326,9 @@
                 show-overflow-tooltip
               >
 								<template slot-scope="scope">
-									<div class="cell-text">
+									<div>
 										{{scope.row.createUsername}}
-									</div>
-									<span class="cell-bar">
-										 <el-button @click="$refs.xmGroupDialog.open({data:scope.row,action:'createUserid'})">选负责人</el-button>
-									</span>
+									</div> 
 								</template>
               </el-table-column>
               <el-table-column
@@ -1140,11 +1137,11 @@ export default {
       });
     }, 
     setFiltersCreateUserAsMySelf() {
-      this.filters.createUser = this.userInfo;
+      this.filters.createUserid = this.userInfo.id;
       this.searchXmTasks();
     },
     setFiltersExecutorAsMySelf() {
-      this.filters.executor = this.userInfo;
+      this.filters.executorUserid = this.userInfo.id;
       this.searchXmTasks();
     },
     formatExeUsernames(row) {
