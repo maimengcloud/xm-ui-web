@@ -90,8 +90,11 @@
             style="width: 150px"
             v-model="filters.key"
             placeholder="计划/任务名称"
-          >
+          > 
           </el-input>
+          
+        <el-input v-model="filters.projectId" style="width: 150px;" placeholder="项目编号" clearable></el-input> 
+        <el-input v-model="filters.cbranchId" style="width: 150px;" placeholder="项目公司编号" clearable></el-input> 
           <el-button
             @click="searchXmTasks"
             type="primary"
@@ -682,6 +685,7 @@ export default {
         taskType: "",
         tags: [],
         taskState:'',//任务状态
+        cbranchId:'',//项目归属公司编号
       },
       xmTasks: [], //查询结果
       pageInfo: {
@@ -1270,6 +1274,10 @@ export default {
       } 
       if (this.filters.tags && this.filters.tags.length>0) {
         params.tagIdList = this.filters.tags.map(i=>i.tagId);
+      }
+      
+      if (this.filters.cbranchId) {
+        params.cbranchId = this.filters.cbranchId;
       }
       params.taskOut="1"
       params.crowd="1"

@@ -1256,12 +1256,12 @@ export default {
         params.ntype="0"
       }
       
-      if(this.ptype==='1'){
+      if(this.ptype==='1' && !this.isTaskCenter){
         if(!params.productId){
           this.$notify.warning("请先选中产品")
           return;
         }
-      }else if(this.ptype==='0'){
+      }else if(this.ptype==='0' && !this.isTaskCenter){
         if(!params.projectId){
           this.$notify.warning("请先选中项目")
           return;
