@@ -527,7 +527,25 @@
     <!-- <el-drawer :title="'技能要求——'+currTaskName" :visible.sync="skillVisible"  size="80%" append-to-body  :close-on-click-modal="false">
 			<xm-skill-mng :visible="skillVisible" :task-id="currTaskId" :task-name="currTaskName"></xm-skill-mng>
 		</el-drawer> -->
-
+    <el-dialog
+      title="编辑任务"
+      :visible.sync="editFormVisible"
+      width="90%"
+      top="20px"
+      append-to-body
+      :close-on-click-modal="false"
+    >
+      <xm-task-edit
+        :xm-project="currentProject"
+        :xm-task="editForm"
+        :visible="editFormVisible"
+        @cancel="editFormVisible = false"
+        @after-add-submit="afterExecEditSubmit"
+        @after-edit-submit="afterExecEditSubmit"
+        @submit="afterEditSubmit"
+        @edit-fields="onEditSomeFields"
+      ></xm-task-edit>
+    </el-dialog>
     <el-drawer
       :title="'任务' + currTaskName + '的技能要求'"
       :visible.sync="skillVisible"
@@ -580,34 +598,24 @@ import {
   getOutTask, 
   editXmTaskSomeFields,
 } from "@/api/xm/core/xmTask";
-import XmTaskAdd from "../xmTask/XmTaskAdd"; //新增界面
-import XmTaskEdit from "../xmTask/XmTaskEdit"; //修改界面
+ import XmTaskEdit from "../xmTask/XmTaskEdit"; //修改界面
  import XmTaskAgileKanban from "../xmTask/XmTaskAgileKanban"; //敏捷看板
 import { mapGetters } from "vuex";
 import xmExecuserMng from "../xmTaskExecuser/XmTaskExecuserForTask";
 import xmSkillMng from "../xmTaskSkill/XmTaskSkillMng";
 import skillMng from "@/views/xm/core/skill/skillMng";
-import { batchAddSkill } from "@/api/xm/core/xmTaskSkill";
-import xmPhaseMng from "../xmPhase/XmPhaseSelect";
-import { sn } from "@/common/js/sequence";
+import { batchAddSkill } from "@/api/xm/core/xmTaskSkill"; 
 import xmTaskTemplateMng from "../xmTaskTemplate/XmTaskTemplateMng";
-import xmExchangeMng from "../xmExchange/XmExchangeMng";
-import xmMenuSelect from "../xmMenu/XmMenuSelect";
+import xmExchangeMng from "../xmExchange/XmExchangeMng"; 
 
-import { addXmMyFocus, delXmMyFocus } from "@/api/xm/core/xmMyFocus";
-
-import XmProjectSelect from "@/views/xm/core/components/XmProjectSelect";
-import XmProductSelect from "@/views/xm/core/components/XmProductSelect";
+import { addXmMyFocus, delXmMyFocus } from "@/api/xm/core/xmMyFocus"; 
 
 import XmMenuRichDetail from "../xmMenu/XmMenuRichDetail"; 
 import TagMng from "@/views/mdp/arc/tag/TagMng";
 
-import XmGantt from "../components/xm-gantt";
-import XmGroupSelect from "../xmGroup/XmGroupSelect.vue";
-	import XmTaskList from '../xmTask/XmTaskList';
+import XmGantt from "../components/xm-gantt";  
  
-	import  XmTableConfig from '@/views/xm/core/components/XmTableConfig';//修改界面
-	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面
+	import  XmTableConfig from '@/views/xm/core/components/XmTableConfig';//修改界面 
   
   	import TagDialog from "@/views/mdp/arc/tag/TagDialog";
   	import XmTaskWorkloadEdit from "@/views/xm/core/xmTaskWorkload/XmTaskWorkloadEdit";
@@ -654,12 +662,13 @@ export default {
       filters: {
         key: "",
         isMyTask: "0", //0不区分我的，1 时我的任务
-        selProject: null,
+        projectId: "",
+        productId: "",
         skillTags: [],
         taskOut: "", //1只查众包任务，0//只查本机构任务
         menus: [],
-        createUser: null, //负责人
-        executor: null, //执行人
+        createUserid: "", //负责人
+        executorUserid: "", //执行人
         taskType: "",
         tags: [],
         taskState:'',//任务状态
@@ -1385,6 +1394,7 @@ export default {
   }, //end methods
   components: {  
     xmSkillMng,
+    XmTaskEdit,
     skillMng,  
     xmExchangeMng, 
     XmMenuRichDetail,
