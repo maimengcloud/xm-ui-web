@@ -406,14 +406,14 @@
 									<div class="tool-bar">
                     <span class="u-btn">
                       <el-tooltip  v-if="scope.row.ntype==='1'" :content=" '新建任务'">    
-                          <el-button :style="{backgroundColor:'#409EFF'}"  @click="showSubAdd( scope.row,scope.$index,'0')" icon="el-icon-plus" title="新建任务" circle plain size="mini"> </el-button>     
+                          <el-button    @click="showSubAdd( scope.row,scope.$index,'0')" icon="el-icon-plus" title="新建任务" circle plain size="mini"> </el-button>     
                       </el-tooltip> 
                       <el-tooltip  v-if="scope.row.ntype==='1'" :content=" '新建计划'">    
                           <el-button :style="{backgroundColor:  '#E6A23C'}"  @click="showSubAdd( scope.row,scope.$index,'1')" icon="el-icon-plus" title="新建计划" circle plain size="mini"> </el-button>     
                       </el-tooltip> 
                       
                       <el-tooltip  v-if="scope.row.ntype==='0'" :content=" '编辑任务'">    
-                          <el-button :style="{backgroundColor:  '#409EFF'}"  @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" circle plain size="mini"> </el-button>     
+                          <el-button    @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" circle plain size="mini"> </el-button>     
                       </el-tooltip> 
                     </span>
 									</div>

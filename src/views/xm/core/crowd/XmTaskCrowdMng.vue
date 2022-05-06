@@ -231,16 +231,9 @@
                     </span>
                   
 									<div class="tool-bar">
-                    <span class="u-btn">
-                      <el-tooltip  v-if="scope.row.ntype==='1'" :content=" '新建任务'">    
-                          <el-button :style="{backgroundColor:'#409EFF'}"  @click="showSubAdd( scope.row,scope.$index,'0')" icon="el-icon-plus" title="新建任务" circle plain size="mini"> </el-button>     
-                      </el-tooltip> 
-                      <el-tooltip  v-if="scope.row.ntype==='1'" :content=" '新建计划'">    
-                          <el-button :style="{backgroundColor:  '#E6A23C'}"  @click="showSubAdd( scope.row,scope.$index,'1')" icon="el-icon-plus" title="新建计划" circle plain size="mini"> </el-button>     
-                      </el-tooltip> 
-                      
+                    <span class="u-btn">  
                       <el-tooltip  v-if="scope.row.ntype==='0'" :content=" '编辑任务'">    
-                          <el-button :style="{backgroundColor:  '#409EFF'}"  @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" circle plain size="mini"> </el-button>     
+                          <el-button    @click="showDrawer( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" circle plain size="mini"> </el-button>     
                       </el-tooltip> 
                     </span>
 									</div>
@@ -535,8 +528,7 @@
       append-to-body
       :close-on-click-modal="false"
     >
-      <xm-task-edit
-        :xm-project="currentProject"
+      <xm-task-edit 
         :xm-task="editForm"
         :visible="editFormVisible"
         @cancel="editFormVisible = false"
@@ -558,6 +550,24 @@
         :jump="true"
         @select-confirm="onTaskSkillsSelected"
       ></skill-mng>
+    </el-drawer>
+
+    <el-drawer
+      :title="'任务' + currTaskName + '的执行人'"
+      :visible.sync="execUserVisible"
+      :size="650"
+      append-to-body
+      :close-on-click-modal="false"
+    >
+      <xm-execuser-mng
+        :visible="execUserVisible"
+        :xm-task="editForm"
+        :is-my="isMy"
+        @after-add-submit="afterExecuserSubmit"
+        @after-edit-submit="afterExecuserSubmit"
+        @after-delete-submit="afterExecuserSubmit"
+        ref="execuserMng"
+      ></xm-execuser-mng>
     </el-drawer>
     <el-drawer
       :title="'技能条件'"
@@ -792,6 +802,7 @@ export default {
       budgetDateRanger: [],
       actDateRanger: [],  
       taskWorkloadVisible:false, 
+      execUserVisible:false,
     };
   }, //end data
   methods: {
@@ -1381,18 +1392,32 @@ export default {
 				}
 
 			}, 
+      showExecusers(row) {
+        this.editForm = row;
+        this.execUserVisible = true;
+      },
       onTaskWorkloadSubmit(){
         this.taskWorkloadVisible=false;
         this.searchXmTasks();
-        treeTool.reloadAllChildren(this.$refs.table,this.maps,[this.editForm],'parentTaskid',this.loadXmTaskLazy)
-      },
+       },
       showWorkload(row){
         this.editForm=row
         this.taskWorkloadVisible=true;
-      }
+      },
+      afterEditSubmit() {
+        this.editFormVisible = false;
+        var row=this.editForm
+        this.getXmTasks()
+       },
+
+      afterExecEditSubmit() {
+        var row=this.editForm
+        this.getXmTasks()
+       },
     /**end 自定义函数请在上面加**/
   }, //end methods
   components: {  
+    xmExecuserMng,
     xmSkillMng,
     XmTaskEdit,
     skillMng,  
