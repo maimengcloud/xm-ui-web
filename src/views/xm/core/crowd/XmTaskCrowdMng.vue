@@ -94,7 +94,7 @@
           </el-input>
           
         <el-input v-model="filters.projectId" style="width: 150px;" placeholder="项目编号" clearable></el-input> 
-        <el-input v-model="filters.cbranchId" style="width: 150px;" placeholder="项目公司编号" clearable></el-input> 
+        <el-input v-model="filters.cbranchId" style="width: 150px;" placeholder="项目归属公司编号" clearable></el-input> 
           <el-button
             @click="searchXmTasks"
             type="primary"
