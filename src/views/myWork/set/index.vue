@@ -273,7 +273,9 @@ import md5 from "js-md5";
 					}
 				});
 			},
+			changePhoneno(){
 
+			},
 			doChangePassword(){
 				console.log("修改密码");
 				this.$refs.passwordForm.validate((valid) => {

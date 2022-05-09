@@ -154,6 +154,11 @@ export default {
         this.menuLoading = true
         getAllMenuModule({}).then(res => {
             let tempData = res.data.data;
+            tempData.forEach(i=>{
+              i.isChecked=false
+              i.musers=10
+              i.num=10
+            })
             getBuyMenuModule({}).then(res2 => {
                 let branchModules = res2.data.data;
                 tempData.forEach(k => {
