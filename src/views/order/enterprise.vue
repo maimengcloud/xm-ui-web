@@ -94,7 +94,8 @@ import {getAllMenuModule, getBuyMenuModule} from '@/api/mdp/sys/modules'
 import aliPay from '@/assets/image/module/alipay.png';
 import weixinPay from '@/assets/image/module/weixin.png'
 import Decimal from "decimal.js"  // 具体文件中引入
-import { months } from 'moment';
+import getDecimal from '@/utils/decimalUtil.js'
+
 
 export default {
   props: ['menus'],
@@ -150,6 +151,11 @@ export default {
   },
 
   computed: {
+    ...mapGetters([
+      'userInfo'
+    ]),
+
+
     totalList() {
       if(this.menus == null) return;
       let obj = [{key: 'xmgl',name: '项目管理', val : 0},{key: 'oa',name: '智慧协同办公系统',val : 0},{key: 'mall',name: '商城',val : 0}]
@@ -186,21 +192,17 @@ export default {
       let oa = this.menus.oa.filter(res => {return res.isChecked ==  true;})
       let mall = this.menus.mall.filter(res => {return res.isChecked ==  true;})
       tempData = Array.concat(xm).concat(oa).concat(mall);
-
+      if(tempData.length == 0) return 0;
       //计算价格，每个单独计算
       let amount = new Decimal(0);
-      let allNum = 0;
       //人均费用 * 数量 * 数量折扣优惠 * 月份折扣优惠
       tempData.forEach(t => {
         let numDiscount = 1;
         let monthDiscount = 1;
-        allNum += t.num;
-
         //免费
         if(t.billMode == 0) {
           amount = amount.add(0);
         }
-
         if(t.billMode == 1) {
           if(t.discount != null && t.discount != "" && t.discount != undefined) {
             let discount = JSON.parse(t.discount);
@@ -209,22 +211,22 @@ export default {
             //用户月份折扣
             monthDiscount = this.getMonthDiscount(discount.months, this.form.usetime);
           }
-          amount = amount.add(new Decimal(t.uniFee).mul(new Decimal(t.num)).mul(numDiscount).mul(monthDiscount));
+          amount = amount.add(getDecimal(t.uniFee, 0).mul(new Decimal(t.num)).mul(numDiscount).mul(monthDiscount));
         }
-        
         //总包模式
         if(t.billMode == 2) {
-          amount = amount.add(new Decimal(t.fee));
+          amount = amount.add(getDecimal(t.fee, 0));
         }
       })
-
       this.form.amount = amount;
-
       return amount;
     }
+
+    
   },
 
   watch: {
+    
     allAmount: {
       handler(val, oval) {
         if(this.menus == null) return;
@@ -233,11 +235,11 @@ export default {
         let oa = this.menus.oa.filter(res => {return res.isChecked ==  true;})
         let mall = this.menus.mall.filter(res => {return res.isChecked ==  true;})
         tempData = Array.concat(xm).concat(oa).concat(mall);
+        if(tempData.length == 0) return 0;
         let yearAmount = new Decimal(0);
         let halfYearAmount = new Decimal(0);
         let quarter = new Decimal(0);
         let allNum = 0;
-
         tempData.forEach(t => {
           let numDiscount = 1;
           let monthDiscount = 1;
@@ -249,22 +251,23 @@ export default {
             this.useTimeOptions.forEach(element => {
               //用户月份折扣
               monthDiscount = this.getMonthDiscount(discount.months, element.val);
+
               if(element.val == "12") {
-                yearAmount = yearAmount.add(new Decimal(t.uniFee).mul(new Decimal(t.num)).mul(numDiscount).mul(monthDiscount));
+                yearAmount = yearAmount.add(getDecimal(t.uniFee, 0).mul(new Decimal(t.num)).mul(numDiscount).mul(monthDiscount));
               }
 
               if(element.val == "6") {
-                halfYearAmount = halfYearAmount.add(new Decimal(t.uniFee).mul(new Decimal(t.num)).mul(numDiscount).mul(monthDiscount));
+                halfYearAmount = halfYearAmount.add(getDecimal(t.uniFee, 0).mul(new Decimal(t.num)).mul(numDiscount).mul(monthDiscount));
               }
 
               if(element.val == "3") {
-                quarter = quarter.add(new Decimal(t.uniFee).mul(new Decimal(t.num)).mul(numDiscount).mul(monthDiscount));
+                quarter = quarter.add(getDecimal(t.uniFee, 0).mul(new Decimal(t.num)).mul(numDiscount).mul(monthDiscount));
               }
             });
           }else {
-            yearAmount = yearAmount.add(new Decimal(t.uniFee).mul(new Decimal(t.num)));
-            halfYearAmount = halfYearAmount.add(new Decimal(t.uniFee).mul(new Decimal(t.num)));
-            quarter = quarter.add(new Decimal(t.uniFee).mul(new Decimal(t.num)));
+            yearAmount = yearAmount.add(getDecimal(t.uniFee, 0).mul(new Decimal(t.num)));
+            halfYearAmount = halfYearAmount.add(getDecimal(t.uniFee, 0).mul(new Decimal(t.num)));
+            quarter = quarter.add(getDecimal(t.uniFee, 0).mul(new Decimal(t.num)));
           }
         })
         
@@ -279,13 +282,13 @@ export default {
             element.price = quarter.div(allNum).toFixed(2, Decimal.ROUND_HALF_UP);
           }
         })
+
       },
       // immediate: true;
     }
   },
 
   methods: {
-
     getNumDiscount(discount, num) {
       let sale = new Decimal(1);
       let nums = discount.split("\n");
@@ -383,10 +386,10 @@ export default {
       }
       return obj;
     },
-
   },
 
   created() {
+    this.form.phone = this.userInfo.phoneno;
   }
 
 }
