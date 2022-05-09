@@ -2,24 +2,33 @@
   <div>
     <el-dropdown class="avatar-container right-menu-item hidden-sm-and-down" trigger="click"  @command="handleCommand">
         <div class="avatar-wrapper">
-            <img v-if="userInfo && userInfo.headimgurl && userInfo.headimgurl!=null && userInfo.headimgurl!=='' " class="user-avatar" :src="userInfo.headimgurl">
+            <img v-if="userInfo && userInfo.headimgurl" class="user-avatar" :src="userInfo.headimgurl">
             <img v-else class="user-avatar" src="../../../assets/image/user_img.gif">
             <span class="username">{{getTimeStatus}}，<b>{{userInfo.username}}</b></span>
             <i class="el-icon-caret-bottom"></i>
-        </div>
-        <el-dropdown-menu  slot="dropdown" style="width:360px;">
+        </div>  
+        <el-dropdown-menu  slot="dropdown" style="width:460px;">
             <div class="dropdown">
                 <div class="topBox">
-                    <div class="topBox_logo">
+                    <div class="topBox_logo" v-if="userInfo.memType!=='0'">
                         <img src="../../../assets/image/qqlogo_yuan.png" alt="">
                     </div>
+                    <div class="topBox_logo" v-else>
+                        <img v-if="userInfo && userInfo.headimgurl" class="user-avatar" :src="userInfo.headimgurl">
+                        <img v-else class="user-avatar" src="../../../assets/image/user_img.gif">
+                    </div>
                     <div class="topBox_desc">
-                        <p class="topBox_branch">{{userInfo.branchName}}</p>
+                        <p class="topBox_branch">{{userInfo.branchName?userInfo.branchName:''}}</p>
                         <div class="topBox_version">
-                            <span>当前版本 / <b class="version">免费基础版</b></span>
-                            <span class="level">
-                                <i></i>
-                                升级
+                            <span>账户类型 / 
+                                <b class="version" v-if="userInfo.memType==='0' && userInfo.atype==='1'"> 个人主账户 </b>
+                                <b class="version" v-else-if="userInfo.memType==='0' && userInfo.atype==='0'"> 个人子账户 </b>
+                                <b class="version" v-else-if="userInfo.memType==='1'"> 企业管理员账户 </b>
+                                <b class="version" v-else-if="userInfo.memType==='2'"> 企业员工账户 </b>
+                            </span>
+                            <span class="level" v-if="userInfo.memType==='0'"  @click="upgradeToBranchAccount">
+                                <i class="el-icon-upload2"></i>
+                                <span  @click="upgradeToBranchAccount">升级</span> 
                             </span>
                         </div>    
                         <div class="topBox_num">
@@ -29,67 +38,62 @@
                 </div>
 
                 <div class="middleBox">
-                    <p class="middleBox_username">我的用户名：<b>{{userInfo.username}}</b> </p>
+                    <p class="middleBox_username">用户名称：<b>{{userInfo.username}}</b> </p>
                     <div class="middleBox_role">
-                        <span>我的角色：</span>
-                        <span class="middleBox_role_name" v-for="role in roles" :key="role.roleid">
-                            <a v-if="role.roleid.indexOf('SCOPE')< 0 "> {{role.rolename}} , </a>
+                        <span>我的岗位：</span>
+                        <span class="middleBox_role_name" v-for="post in myPosts" :key="post.postName">
+                            <a> {{role.postName}} , </a>
                         </span>
                     </div>
                 </div>
 
                 <div class="bottomBox2">
+                    <p @click="switchUser">切换账户</p>
                     <p>团队管理</p>
                     <p @click="logout">退出登录</p>
                 </div>
 
-            </div>
-
-
-            <!-- <el-dropdown-item  divided>
-                <div style="height:250px;">
-                    <el-row v-for="(item ,index) in deptPostsTree" :label="item.deptName" :key="index">
-                    部门：{{item.deptName}}
-                        <br>
-                    岗位：
-
-                    <div v-if="item.children!=null && item.children.length>0" style="padding-left:40px;">
-                    <el-row  v-for="(post,idx) in item.children" :key="idx">
-                        {{post.postName}}
-                    </el-row>
-                    </div>
-                    </el-row>
-                </div>
-            </el-dropdown-item> -->
-
-            <!-- <el-dropdown-item v-if="false" divided>
-                <div style=" overflow-x:auto; height:250px;">
-                    商户及门店： <el-form>
-                        <el-form-item label-width="300"  v-for="item in shopLocationsTree" :label="item.shopName" :key="item.shopId">
-                            <el-row v-for="location in item.locations" :key="location.locationId">
-                                <el-col :span="24"><el-tag>{{location.locationName}}</el-tag><i  v-if="location.locationId==userInfo.locationId" class="el-icon-check"></i>
-                                </el-col>
-                            </el-row>
-                            <el-row v-if="item.locations==null || item.locations.length<=0">
-                                <el-col :span="24"><el-tag> 无门店或者我不是该商户的门店管理员</el-tag> </el-col>
-                            </el-row>
-                        </el-form-item>
-                    </el-form>
-                </div>
-            </el-dropdown-item> -->
-            
-            <!-- <el-dropdown-item  divided>
-                <div style=" overflow-x:auto; height:150px;">
-                    我拥有的角色：
-                    <el-row style="padding-left:40px;" v-for="role in roles" :key="role.roleid">
-                        <span v-if="role.roleid.indexOf('SCOPE')<0">{{role.rolename}}</span>
-                    </el-row>
-                </div>
-            </el-dropdown-item> -->
+            </div> 
 
 
         </el-dropdown-menu>
     </el-dropdown>
+    
+        
+        <el-dialog
+          title="请选择一个账户进行登录"
+          :visible.sync="phonenoUsersVisible"
+          width="600" append-to-body> 
+          <el-table :data="phonenoUsers"> 
+            <el-table-column prop="displayUserid" label="登录账号">
+            </el-table-column>
+            <el-table-column prop="username" label="姓名">
+            </el-table-column> 
+            <el-table-column prop="branchName" label="企业">
+            </el-table-column>
+            <el-table-column  label="操作">
+					<template slot-scope="scope"> 
+						<el-button type="primary" @click="toLogin(scope.row)">登录</el-button> 
+					</template>
+            </el-table-column>
+          </el-table>
+        </el-dialog> 
+        <el-dialog
+            title="新增机构"
+            :visible.sync="branchAddVisible"
+            width="60%"
+            append-to-body
+            top="20px"
+            :close-on-click-modal="false"
+        >
+            <branch-add 
+            :branch="{id:userInfo.branchId,branchName:'',admUserid:userInfo.branchId,admUsername:userInfo.username,luserid:userInfo.userid,lusername:userInfo.username}"
+            op-type="add"
+            :visible="branchAddVisible"
+            @cancel="branchAddVisible=false"
+            @submit="afterAddSubmit"
+            ></branch-add>
+        </el-dialog>
   </div>
 </template>
 
@@ -97,9 +101,15 @@
 import { mapGetters } from 'vuex'
 import dayjs from 'dayjs'
 
+import {  queryMyUsers,switchUser } from '@/api/login';
+import BranchAdd from "@/views/mdp/sys/branch/BranchEdit";
+
 export default {
     data() {
         return {
+            branchAddVisible:false,
+            phonenoUsers:[],
+            phonenoUsersVisible:false,
 
         }
     },
@@ -108,6 +118,7 @@ export default {
         ...mapGetters([
             'userInfo',
             'roles',
+            'myPosts'
         ]),
         getTimeStatus() {
             let hour = dayjs().hour();
@@ -122,12 +133,62 @@ export default {
     },
     
     methods: {
+        
+        switchUser(){   
+            queryMyUsers().then(res0=>{  
+                if(res0.data.tips.isOk){
+                    this.phonenoUsers=res0.data.data; 
+                    if(res0.data.data.length<=1){
+                        this.$message.warning("当前没有关联的账户，无须切换");
+                    }else{
+                        this.phonenoUsersVisible=true;
+                    }
+                }else{
+                    this.$message.error(res0.data.tips.msg);
+                }
+            })
+        },
         handleCommand(command){
             if(command=='updateUserInfo'){
                 this.$router.push({path:'/updateUserInfo'})
             }
+        },  
+        upgradeToBranchAccount(){
+            //跳转到购买模块页面
+            this.branchAddVisible=true;
         },
-
+        toLogin(user) {
+                this.$prompt('请输入密码', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',  
+                }).then(({ value }) => { 
+                        let params={ 
+                        password:md5(value),  
+                        userloginid:user.userid,
+                        authType:'password_display_userid' ,
+                        grantType:"password"
+                    } 
+                    //userloginid, password,grantType,authType,deptid,userid
+                    switchUser(params.userloginid,params.password,params.grantType,params.authType,'',params.userloginid).then(res => {
+                        this.phonenoUsersVisible=false;
+                        if(res.data.tips.isOk==true){  
+                            setToken( res.data.data.accessToken.tokenValue)
+                            removeCacheUserInfo();
+                            this.$store.dispatch('GetUserInfo').then((res2)=>{  
+                                this.$router.push({ path: '/' });
+                            }).catch(err=>{
+                                    
+                            }); 
+                        }else{
+                            this.$message.error(res.data.tips.msg);
+                        } 
+                    }).catch((e) => {
+                            
+                    })
+                }).catch(() => {
+                        this.phonenoUsersVisible=false;
+                });  	 
+        },
         logout() {
             this.$store.dispatch('LogOut').then(() => {
                 location.replace('/'+process.env.CONTEXT+'/'+process.env.VERSION+'/');
@@ -135,7 +196,9 @@ export default {
         },
 
     },
-
+    components:{
+        BranchAdd
+    },
     mounted() {
 
     }
