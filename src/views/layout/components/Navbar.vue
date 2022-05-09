@@ -27,65 +27,69 @@
         <theme-picker class="theme-switch right-menu-item"></theme-picker>
       </el-tooltip>
 
-      <el-dropdown class="avatar-container right-menu-item hidden-sm-and-down" trigger="hover"   @command="handleCommand">
-        <div class="avatar-wrapper">
-          <img v-if="userInfo && userInfo.headimgurl && userInfo.headimgurl!=null && userInfo.headimgurl!=='' " class="user-avatar" :src="userInfo.headimgurl">
-          <img v-else class="user-avatar" src="../../../assets/image/user_img.gif">
-          <span class="username">{{getTimeStatus}}，<b>{{userInfo.username}}</b></span>
-          <i class="el-icon-caret-bottom"></i>
-        </div>
-        <el-dropdown-menu  slot="dropdown" style="width:400px;">
-          <el-dropdown-item divided command="updateUserInfo">
-            <div>用户名：{{userInfo.username}}
-              <el-button style="float:right;"  type="text" icon="el-icon-setting">账户设置</el-button>
-            </div>
-          </el-dropdown-item>
-          <el-dropdown-item divided>
-                公司：{{userInfo.branchName}}
-          </el-dropdown-item>
-          <el-dropdown-item  divided>
-          	<div style="height:250px;">
-              <el-row v-for="(item ,index) in deptPostsTree" :label="item.deptName" :key="index">
-                部门：{{item.deptName}}
-                  <br>
-                岗位：
 
-                <div v-if="item.children!=null && item.children.length>0" style="padding-left:40px;">
-                <el-row  v-for="(post,idx) in item.children" :key="idx">
-                    {{post.postName}}
-                </el-row>
+      <UserInfo />
+
+      <!-- <el-dropdown class="avatar-container right-menu-item hidden-sm-and-down" trigger="hover"   @command="handleCommand">
+          <div class="avatar-wrapper">
+            <img v-if="userInfo && userInfo.headimgurl && userInfo.headimgurl!=null && userInfo.headimgurl!=='' " class="user-avatar" :src="userInfo.headimgurl">
+            <img v-else class="user-avatar" src="../../../assets/image/user_img.gif">
+            <span class="username">{{getTimeStatus}}，<b>{{userInfo.username}}</b></span>
+            <i class="el-icon-caret-bottom"></i>
+          </div>
+          <el-dropdown-menu  slot="dropdown" style="width:400px;">
+              <el-dropdown-item divided command="updateUserInfo">
+                <div>用户名：{{userInfo.username}}
+                  <el-button style="float:right;"  type="text" icon="el-icon-setting">账户设置</el-button>
                 </div>
-              </el-row>
+              </el-dropdown-item>
+              <el-dropdown-item divided>
+                    公司：{{userInfo.branchName}}
+              </el-dropdown-item>
+              <el-dropdown-item  divided>
+                <div style="height:250px;">
+                  <el-row v-for="(item ,index) in deptPostsTree" :label="item.deptName" :key="index">
+                    部门：{{item.deptName}}
+                      <br>
+                    岗位：
+
+                    <div v-if="item.children!=null && item.children.length>0" style="padding-left:40px;">
+                    <el-row  v-for="(post,idx) in item.children" :key="idx">
+                        {{post.postName}}
+                    </el-row>
+                    </div>
+                  </el-row>
+                </div>
+            </el-dropdown-item>
+
+            <el-dropdown-item v-if="false" divided>
+            <div style=" overflow-x:auto; height:250px;">
+              商户及门店： <el-form>
+                        <el-form-item label-width="300"  v-for="item in shopLocationsTree" :label="item.shopName" :key="item.shopId">
+                            <el-row v-for="location in item.locations" :key="location.locationId">
+                              <el-col :span="24"><el-tag>{{location.locationName}}</el-tag><i  v-if="location.locationId==userInfo.locationId" class="el-icon-check"></i>
+                              </el-col>
+                            </el-row>
+                            <el-row v-if="item.locations==null || item.locations.length<=0">
+                              <el-col :span="24"><el-tag> 无门店或者我不是该商户的门店管理员</el-tag> </el-col>
+                            </el-row>
+                        </el-form-item>
+                  </el-form>
+                  </div>
+            </el-dropdown-item>
+            <el-dropdown-item  divided>
+            <div style=" overflow-x:auto; height:150px;">
+              我拥有的角色：
+                    <el-row style="padding-left:40px;" v-for="role in roles" :key="role.roleid">
+                              <span v-if="role.roleid.indexOf('SCOPE')<0">{{role.rolename}}</span>
+                            </el-row>
             </div>
-          </el-dropdown-item>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+      </el-dropdown> -->
 
 
-          <el-dropdown-item v-if="false" divided>
-          <div style=" overflow-x:auto; height:250px;">
-      商户及门店： <el-form>
-                       <el-form-item label-width="300"  v-for="item in shopLocationsTree" :label="item.shopName" :key="item.shopId">
-                       		<el-row v-for="location in item.locations" :key="location.locationId">
-                       		  <el-col :span="24"><el-tag>{{location.locationName}}</el-tag><i  v-if="location.locationId==userInfo.locationId" class="el-icon-check"></i>
-                       		  </el-col>
-                       		</el-row>
-                       		<el-row v-if="item.locations==null || item.locations.length<=0">
-                       		  <el-col :span="24"><el-tag> 无门店或者我不是该商户的门店管理员</el-tag> </el-col>
-                       		</el-row>
-                       </el-form-item>
-                 </el-form>
-                 </div>
-          </el-dropdown-item>
-          <el-dropdown-item  divided>
-          <div style=" overflow-x:auto; height:150px;">
-            我拥有的角色：
-                  <el-row style="padding-left:40px;" v-for="role in roles" :key="role.roleid">
-                       		   <span v-if="role.roleid.indexOf('SCOPE')<0">{{role.rolename}}</span>
-                       		</el-row>
-           </div>
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-
+      
       <!-- <div class="notice">
         <i class="el-icon-bell"></i>
         <span>未读消息(3)</span>
@@ -117,8 +121,10 @@ import Hamburger from '@/components/Hamburger'
 import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
 import LangSelect from '@/components/LangSelect'
-import ThemePicker from '@/components/ThemePicker';
+import ThemePicker from '@/components/ThemePicker'
 import NoticeMsgBar from '@/components/NoticeMsgBar'
+import UserInfo from './UserInfo'
+
 import dayjs from 'dayjs'
 //import selectShopLocationBySysDept from '@/views/mdp/app/selectShopLocationBySysDept/selectShopLocationBySysDept';
 
@@ -132,6 +138,7 @@ export default {
     ThemePicker,
     TopModules,
     NoticeMsgBar, 
+    UserInfo
   },
   data:function(){
 	return {

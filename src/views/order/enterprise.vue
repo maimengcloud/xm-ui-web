@@ -226,7 +226,7 @@ export default {
   },
 
   watch: {
-    
+
     allAmount: {
       handler(val, oval) {
         if(this.menus == null) return;
@@ -235,7 +235,7 @@ export default {
         let oa = this.menus.oa.filter(res => {return res.isChecked ==  true;})
         let mall = this.menus.mall.filter(res => {return res.isChecked ==  true;})
         tempData = Array.concat(xm).concat(oa).concat(mall);
-        if(tempData.length == 0) return 0;
+        if(tempData.length == 0) return;
         let yearAmount = new Decimal(0);
         let halfYearAmount = new Decimal(0);
         let quarter = new Decimal(0);
