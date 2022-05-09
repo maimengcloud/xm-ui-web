@@ -134,7 +134,7 @@ export default {
       let params = { 
         id: orderId,
         otype: 1,
-        returnUrl: "http://359n6r5527.wicp.vip/#/my/order/paySuccess"
+        returnUrl: `${window.location.protocol+"//"+window.location.host}/${process.env.CONTEXT}/${process.env.VERSION}/#/my/order/paySuccess`
       }
       aliPay(params).then(res => {
         if(res.data.tips.isOk) {
@@ -198,7 +198,7 @@ export default {
   created() {
     let data = JSON.parse(window.localStorage.getItem("BUY_MODULES"));
     this.data = data;
-    console.log(this.data, "data-->");
+   
   },
 
 }

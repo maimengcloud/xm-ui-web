@@ -1,102 +1,102 @@
 export const modulesOfRouter = [
     {
         id: 'mall',
-        router: ''
+        path: ''
     },
     {
         id: 'mall-marketing',
-        router: ''
+        path: ''
     },  
     {
         id: 'mdp-arc',
-        router: ''
+        path: ''
     },  
     {
         id: 'mdp-sys',
-        router: ''
+        path: ''
     },  
     {
         id: 'oa-asset',
-        router: ''
+        path: ''
     },  
     {
         id: 'oa-attendance',
-        router: ''
+        path: ''
     },  
     {
         id: 'oa-car',
-        router: '',
+        path: '',
     },  
     {
         id: 'oa-contract',
-        router: ''
+        path: ''
     },  
     {
         id: 'oa-customer',
-        router: ''
+        path: ''
     },  
     {
         id: 'oa-file',
-        router: ''
+        path: ''
     },  
     {
         id: 'oa-finance',
-        router: ''
+        path: ''
     },  
     {
         id: 'oa-meeting',
-        router: ''
+        path: ''
     },  
     {
         id: 'oa-office',
-        router: ''
+        path: ''
     },  
     {
         id: 'oa-performance',
-        router: ''
+        path: ''
     },  
     {
         id: 'oa-schedule',
-        router: ''
+        path: ''
     },  
     {
         id: 'oa-seal',
-        router: '',
+        path: '',
     },  
     {
         id: 'oa-supervision',
-        router: ''
+        path: ''
     },  
     {
         id: 'xm-analysis',
-        router: 'reportIndex',
+        path: 'reportIndex',
     },  
     {
         id: 'xm-development',
-        router: ''
+        path: ''
     },
     {
         id: 'xm-pipeline',
-        router: ''
+        path: ''
     },
     {
         id: 'xm-product',
-        router: 'XmProductAllMng'
+        path: '/xm/core/xmProduct/XmProductAllMng'
     },
     {
         id: 'xm-project',
-        router: 'xmProjectAllMng'
+        path: 'xmProjectAllMng'
     },
     {
         id: 'xm-test',
-        router: 'XmQuestionAdd'
+        path: 'XmQuestionAdd'
     },
     {
         id: 'xm-workload',
-        router: 'XmTaskWorkloadInfoMy',
+        path: 'XmTaskWorkloadInfoMy',
     },
     {
         id: 'xm-crowd',
-        router: '',
+        path: '',
     }
 ]

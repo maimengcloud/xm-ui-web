@@ -16,7 +16,7 @@
         </div>
       </div>
 
-      <div class="sys_modules">
+      <div class="sys_modules" v-if="this.menus != null">
         <div class="module" v-for="(item, index) in menus[active]" :key="index" >
           <div class="head"  :class="{active: item.isChecked == true}" @click="selectItem(item, index)">
             <div class="module_top">
@@ -27,7 +27,6 @@
               <i class="selected el-icon-check"></i>
             </div>
           </div>
-
           <div class="footer" v-if="item.isChecked == true">
             <el-input-number style="width: 180px;" @change="numChange(item)" v-model="item.num"  :min="10" :max="99999" ></el-input-number>
           </div>
@@ -228,6 +227,7 @@ export default {
   watch: {
     allAmount: {
       handler(val, oval) {
+        if(this.menus == null) return;
         let tempData = [];
         let xm = this.menus.xmgl.filter(res => {return res.isChecked ==  true;})
         let oa = this.menus.oa.filter(res => {return res.isChecked ==  true;})

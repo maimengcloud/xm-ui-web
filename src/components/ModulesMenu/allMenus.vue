@@ -123,11 +123,11 @@ export default {
                 let name = "";
                 modulesOfRouter.forEach(e => {
                     if(e.id == item.id) {
-                        name = e.router;
+                        name = e.path;
                     }
                 })
                 if(name != "") {
-                    this.$router.push({name: name})
+                    this.$router.push({path: name})
                 }
                 this.visible = false;
             }
