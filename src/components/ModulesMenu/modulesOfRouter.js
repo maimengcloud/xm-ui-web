@@ -1,75 +1,92 @@
 export const modulesOfRouter = [
     {
         id: 'mall',
-        path: ''
+        path: 'https://www.qingqinkj.com/mallm/m1/#/dashboard',
+        type: 'link'
     },
     {
         id: 'mall-marketing',
-        path: ''
+        path: 'https://www.qingqinkj.com/mk/m1/#/dashboard',
+        type: 'link'
     },  
     {
         id: 'mdp-arc',
-        path: ''
+        path: 'https://www.qingqinkj.com/arc/m1/#/dashboard',
+        type: 'link'
     },  
     {
         id: 'mdp-sys',
-        path: ''
+        path: 'https://www.qingqinkj.com/sys/m1/#/mdp/sys/dept/DeptMng',
+        type: 'link'
     },  
     {
         id: 'oa-asset',
-        path: ''
+        path: 'https://www.qingqinkj.com/oa/m1/#/oa/erp/ass/assetDetail/AssetDetailMng',
+        type: 'link'
     },  
     {
         id: 'oa-attendance',
-        path: ''
+        path: 'https://www.qingqinkj.com/oa/m1/#/oa/kq/attendance/AttendanceMonth',
+        type: 'link'
     },  
     {
         id: 'oa-car',
-        path: '',
+        path: 'https://www.qingqinkj.com/oa/m1/#/oa/car/components/watch',
+        type: 'link'
     },  
     {
         id: 'oa-contract',
-        path: ''
+        path: 'https://www.qingqinkj.com/oa/m1/#/oa/ht/contractCard/ContractCardMng',
+        type: 'link'
     },  
     {
         id: 'oa-customer',
-        path: ''
+        path: 'https://www.qingqinkj.com/oa/m1/#/oa/crm/customer/CustomerIndex',
+        type: 'link'
     },  
     {
         id: 'oa-file',
-        path: ''
+        path: 'https://www.qingqinkj.com/oa/m1/#/oa/hr/user/employeeInfo',
+        type: 'link'
     },  
     {
         id: 'oa-finance',
-        path: ''
+        path: 'https://www.qingqinkj.com/ac/m1/#/dashboard',
+        type: 'link'
     },  
     {
         id: 'oa-meeting',
-        path: ''
+        path: 'https://www.qingqinkj.com/oa/m1/#/oa/meet/meetMeeting/MeetMeetingMng',
+        type: 'link'
     },  
     {
         id: 'oa-office',
-        path: ''
+        path: 'https://www.qingqinkj.com/oa/m1/#/oa/om/omAppliance/OmApplianceMng',
+        type: 'link'
     },  
     {
         id: 'oa-performance',
-        path: ''
+        path: 'https://www.qingqinkj.com/oa/m1/#/oa/jx/AssesssSatistical',
+        type: 'link'
     },  
     {
         id: 'oa-schedule',
-        path: ''
+        path: 'https://www.qingqinkj.com/oa/m1/#/oa/rc/rcSchedule/RcScheduleMng',
+        type: 'link'
     },  
     {
         id: 'oa-seal',
-        path: '',
+        path: 'https://www.qingqinkj.com/oa/m1/#/oa/sig/sigSignet/SigSignetMng',
+        type: 'link'
     },  
     {
         id: 'oa-supervision',
-        path: ''
+        path: 'https://www.qingqinkj.com/oa/m1/#/oa/duban/dubanItem/DutyDubanItem',
+        type: 'link'
     },  
     {
         id: 'xm-analysis',
-        path: 'reportIndex',
+        path: 'xm/rpt/reportIndex',
     },  
     {
         id: 'xm-development',
@@ -85,18 +102,18 @@ export const modulesOfRouter = [
     },
     {
         id: 'xm-project',
-        path: 'xmProjectAllMng'
+        path: '/xm/core/xmProject/XmProjectAllMng'
     },
     {
         id: 'xm-test',
-        path: 'XmQuestionAdd'
+        path: '/xm/core/xmQuestion/XmQuestionAdd'
     },
     {
         id: 'xm-workload',
-        path: 'XmTaskWorkloadInfoMy',
+        path: '/xm/core/xmTaskWorkload/XmTaskWorkloadInfoMy',
     },
     {
         id: 'xm-crowd',
-        path: '',
+        path: '/xm/core/crowd/XmTaskCrowdMng',
     }
 ]

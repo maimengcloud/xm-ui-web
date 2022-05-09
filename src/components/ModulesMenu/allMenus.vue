@@ -5,7 +5,6 @@
       :visible.sync="visible"
       width="60%"
       append-to-body>
-      
         <div slot="title" class="dialog-title">
             <p>全部应用</p>
             <el-divider style="margin: 0 !important;"></el-divider>
@@ -64,6 +63,7 @@ export default {
             }
         }
     },
+    
     watch: {
         'value': {
             handler(nval, oval) {
@@ -74,6 +74,7 @@ export default {
         },
         'keyWords': 'filterModule'
     },
+
     data() {
         return {
             menuLoading: false,
@@ -86,7 +87,6 @@ export default {
     },
 
     methods: {
-
         searchMenu(val) {
             this.keyWords = val;
         },
@@ -119,20 +119,24 @@ export default {
         selectItem(item) {
             if(item.isBuy) {
                 //路由跳转
-                console.log(modulesOfRouter, "modulesOfRouter");
                 let name = "";
                 modulesOfRouter.forEach(e => {
                     if(e.id == item.id) {
                         name = e.path;
+                        item.type = e.type;
                     }
                 })
+
                 if(name != "") {
-                    this.$router.push({path: name})
+                    if(item.type == "link") {
+                        window.open(name);
+                    }else {
+                        this.$router.push({path: name})
+                    }
                 }
                 this.visible = false;
             }
         },
-
 
         goBuy(item) {
             this.visible = false;
@@ -149,9 +153,10 @@ export default {
                     let branchModules = res2.data.data;
                     tempData.forEach(k => {
                         branchModules.forEach(element => {
-                            if(k.id == element.moduleId) {
-                                k.isBuy = true;
-                            }
+                            // if(k.id == element.moduleId) {
+                            //     k.isBuy = true;
+                            // }
+                            k.isBuy = true;
                         });
 
                         modulesOfIcon.forEach(element => {
