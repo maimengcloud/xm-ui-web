@@ -280,7 +280,7 @@ export default {
           }
         })
       },
-      immediate: true
+      // immediate: true;
     }
   },
 
