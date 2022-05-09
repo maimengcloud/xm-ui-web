@@ -27,13 +27,17 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
   // these devServer options should be customized in /config/index.js
   devServer: {
+    //解决内网穿透
+    historyApiFallback: true,
+    allowedHosts: "all",
+
     historyApiFallback: true,
     hot: true,
     compress: true,
     host: HOST || config.dev.host,
     port: PORT || config.dev.port,
     open: config.dev.autoOpenBrowser,
-    proxy: config.dev.proxyTable, 
+    proxy: config.dev.proxyTable,
     client: {
       overlay: {
         errors: config.dev.errorOverlay,

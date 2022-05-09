@@ -34,23 +34,24 @@
             position: absolute;
             display: flex;
             align-items: center;
-            top: 6px;
-            right: 60px;
+            top: 10px;
+            right: 40px;
             font-size: 30px;
             color: #1D1D1D;
             font-weight: bold;
             img {
-                width: 64px;
-                height: 64px;
+                width: 58px;
+                height: 58px;
+                margin-right: 10px;
             }
         }
         .login_box {
             width: 418px;
-            height: 482px;
+            height: 472px;
             border: 1px solid #F1F1F1;
             box-shadow: 1px 7px 25px 2px rgba(22, 22, 93, 0.04);
             border-radius: 5px 5px 5px 5px;
-            margin-top: 10px;
+            margin-top: 40px;
             .login_box_content {
                 padding: 28px 30px 16px 30px;
                 .top {
@@ -100,7 +101,7 @@
                     font-size: 14px;
                 }
                 .login {
-                    margin-top: 50px;
+                    margin-top: 40px;
                     width: 100%;
                     background-color: #FE9A00;
                     height: 42px;
@@ -124,7 +125,7 @@
             }
             
             .bottom {
-                margin-top: 30px;
+                margin-top: 40px;
                 width: 100%;
                 display: flex;
                 flex-direction: column;

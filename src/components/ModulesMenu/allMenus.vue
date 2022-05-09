@@ -47,6 +47,7 @@
 import { mapGetters } from 'vuex';
 import {getAllMenuModule, getBuyMenuModule} from '@/api/mdp/sys/modules'
 import {modulesOfIcon} from "./modulesOfIcon.js";
+import {modulesOfRouter} from "./modulesOfRouter.js";
 
 export default {
     props: ['value'],
@@ -115,7 +116,24 @@ export default {
             this.selectMenus = tempArr;
         },
  
-        selectItem() {},
+        selectItem(item) {
+            if(item.isBuy) {
+                //路由跳转
+                console.log(modulesOfRouter, "modulesOfRouter");
+                let name = "";
+                modulesOfRouter.forEach(e => {
+                    if(e.id == item.id) {
+                        name = e.router;
+                    }
+                })
+                if(name != "") {
+                    this.$router.push({name: name})
+                }
+                this.visible = false;
+            }
+        },
+
+
         goBuy(item) {
             this.visible = false;
             //前往购买页面

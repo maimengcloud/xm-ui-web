@@ -5,7 +5,7 @@
             </div>
             <div class="right">
                 <div class="logo">
-                    <img src="@/assets/image/logo1.png">
+                    <img src="@/assets/image/logo_cicle.png">
                     <span>唛盟</span>
                 </div>
                 <div class="login_box">

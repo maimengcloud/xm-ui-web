@@ -98,7 +98,6 @@ export default {
       },
       
       children: [
-
         { path: 'reportIndex', component: _import('xm/rpt/reportIndex'), name: 'reportIndex', meta: { title: '效能分析',  icon: 'chart' }}, 
       ]
     },

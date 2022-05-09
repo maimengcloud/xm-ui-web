@@ -89,7 +89,7 @@ export default {
     return '/im/im'
   },
   getPayBasePath:function() {
-    return '/pay/pay'
+    return '/tpa/pay'
   }
 
 
