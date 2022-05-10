@@ -11,7 +11,9 @@
             <div class="dropdown">
                 <div class="topBox">
                     <div class="topBox_logo" v-if="userInfo.memType!=='0'">
-                        <img src="../../../assets/image/qqlogo_yuan.png" alt="">
+                        <img v-if="!branchUsersCount || branchUsersCount.default || !branchUsersCount.imgUrl" src="../../../assets/image/qqlogo_yuan.png" alt="">
+                        <img v-else  :src="branchUsersCount.imgUrl" alt="">
+
                     </div>
                     <div class="topBox_logo" v-else>
                         <img v-if="userInfo && userInfo.headimgurl" class="user-avatar" :src="userInfo.headimgurl">
@@ -43,6 +45,12 @@
                         <span>我的角色：</span>
                         <span class="middleBox_role_name">
                             <a> {{getMyRoleNames()}} </a>
+                        </span>
+                    </div>
+                    <div class="middleBox_role">
+                        <span>会员等级：</span>
+                        <span class="middleBox_role_name">
+                            <a> {{userInfo.ilvlName?userInfo.ilvlName:'普通会员'}} </a>
                         </span>
                     </div>
                 </div>
@@ -116,7 +124,9 @@ export default {
             phonenoUsersVisible:false,
             branchUsersCount:{
                 currUsers:1,
-                maxUsers:100
+                maxUsers:100,
+                imgUrl:'',
+                defalut:1,
             }
 
         }
@@ -223,7 +233,7 @@ export default {
         BranchAdd
     },
     mounted() {
-        this.calcBranchUsers();
+        //this.calcBranchUsers();
     }
 }
 </script>
