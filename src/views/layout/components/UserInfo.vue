@@ -32,25 +32,27 @@
                             </span>
                         </div>    
                         <div class="topBox_num">
-                            <span>账号数量（1 / 25）个</span>    
+                            <span @click="calcBranchUsers">账号数量（ {{branchUsersCount.currUsers }} / {{branchUsersCount.maxUsers}} ）个 <i class="el-icon-refresh-right"></i></span>    
                         </div>                    
                     </div>
                 </div>
 
                 <div class="middleBox">
-                    <p class="middleBox_username">用户名称：<b>{{userInfo.username}}</b> </p>
+                    <p class="middleBox_username">用户名称：<b>{{userInfo.username}}</b> </p> 
                     <div class="middleBox_role">
-                        <span>我的岗位：</span>
-                        <span class="middleBox_role_name" v-for="post in myPosts" :key="post.postName">
-                            <a> {{role.postName}} , </a>
+                        <span>我的角色：</span>
+                        <span class="middleBox_role_name">
+                            <a> {{getMyRoleNames()}} </a>
                         </span>
                     </div>
                 </div>
 
                 <div class="bottomBox2">
-                    <p @click="switchUser">切换账户</p>
-                    <p>团队管理</p>
-                    <p @click="logout">退出登录</p>
+                    <!--<p class="el-icon-menu" @click="handleCommand('myWork')">我的工作台</p> -->
+                    <p class="el-icon-user" @click="switchUser">切换账户</p> 
+                    <p class="el-icon-edit" @click="handleCommand('updateUserInfo')">账户明细</p>
+                    <p class="el-icon-user-solid">团队管理</p>
+                    <p @click="logout" class="el-icon-switch-button">退出登录</p>
                 </div>
 
             </div> 
@@ -102,6 +104,8 @@ import { mapGetters } from 'vuex'
 import dayjs from 'dayjs'
 
 import {  queryMyUsers,switchUser } from '@/api/login';
+
+import {  calcBranchUsers } from '@/api/branch';
 import BranchAdd from "@/views/mdp/sys/branch/BranchEdit";
 
 export default {
@@ -110,6 +114,10 @@ export default {
             branchAddVisible:false,
             phonenoUsers:[],
             phonenoUsersVisible:false,
+            branchUsersCount:{
+                currUsers:1,
+                maxUsers:100
+            }
 
         }
     },
@@ -133,7 +141,15 @@ export default {
     },
     
     methods: {
-        
+        calcBranchUsers(){
+            calcBranchUsers().then(res=>this.branchUsersCount=res.data.data)
+        },
+        getMyRoleNames(){
+            if(this.roles && this.roles.length>0){
+                var myRoles=this.roles.filter(i=>i.roleid.indexOf('SCOPE')<0);
+                return myRoles.map(i=>i.rolename).join(",")
+            }
+        },
         switchUser(){   
             queryMyUsers().then(res0=>{  
                 if(res0.data.tips.isOk){
@@ -150,12 +166,19 @@ export default {
         },
         handleCommand(command){
             if(command=='updateUserInfo'){
-                this.$router.push({path:'/updateUserInfo'})
+                this.$router.push({path:'/my/work/updateUserInfo'})
+            }
+            if(command=='myWork'){
+                this.$router.push({path:'/my/work/index'})
             }
         },  
         upgradeToBranchAccount(){
             //跳转到购买模块页面
             this.branchAddVisible=true;
+        },
+        
+        afterAddSubmit(){
+
         },
         toLogin(user) {
                 this.$prompt('请输入密码', '提示', {
@@ -200,7 +223,7 @@ export default {
         BranchAdd
     },
     mounted() {
-
+        this.calcBranchUsers();
     }
 }
 </script>
@@ -281,6 +304,7 @@ export default {
             }
             .topBox_num {
                 font-size: 14px;
+                cursor: pointer;
             }
         }
     }

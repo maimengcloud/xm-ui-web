@@ -29,5 +29,10 @@ export const editBranch = params => { return axios.post(`${base}/mdp/sys/branch/
 export const addBranchNoAuth = params => { return axios.post(`${base}/mdp/sys/branch/addBranchNoAuth`, params); };
 
 
+//新增一条管理端机构表（机构下面若干部门）
+export const calcBranchUsers = params => { return axios.get(`${base}/mdp/sys/branch/calcBranchUsers`, params); };
+
+
+
 //新增一条企业入驻审核流程
 export const addUserJoinBranchRequire = params => { return axios.post(`${base}/mdp/sys/userJoinBranchRequire/add`, params); };

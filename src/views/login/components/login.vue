@@ -267,10 +267,12 @@ export default {
                     loginParams.branchId=params.branchId
                 }
                 this.$store.dispatch("LoginByUserloginid",loginParams).then(res => {
+                    debugger;
                     this.loading = false 
                     if(res.data.tips.isOk==true){
                         this.loading = true;
                         this.$store.dispatch('GetUserInfo').then((res2)=>{ 
+                            debugger;
                             this.loading = false
                             if(res2.data.tips.isOk==true){ 
                                 this.userDeptid=res2.data.userInfo.deptid
