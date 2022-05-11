@@ -50,7 +50,23 @@
                     <div class="middleBox_role">
                         <span>会员等级：</span>
                         <span class="middleBox_role_name">
-                            <a> {{userInfo.ilvlName?userInfo.ilvlName:'普通会员'}} </a>
+                            <a v-if="!userInfo.ilvlId || userInfo.ilvlId=='1'"> {{userInfo.ilvlName?userInfo.ilvlName:'普通会员'}} </a>
+                            <a v-else-if="userInfo.ilvlId=='2'"> {{userInfo.ilvlName?userInfo.ilvlName:'青铜会员'}} </a>
+                            <a v-else-if="userInfo.ilvlId=='3'"> {{userInfo.ilvlName?userInfo.ilvlName:'白银会员'}} </a>
+                            <a v-else-if="userInfo.ilvlId=='4'"> {{userInfo.ilvlName?userInfo.ilvlName:'黄金会员'}} </a>
+                            <a v-else-if="userInfo.ilvlId=='5'"> {{userInfo.ilvlName?userInfo.ilvlName:'紫金会员'}} </a>
+                            <a v-else-if="userInfo.ilvlId=='6'"> {{userInfo.ilvlName?userInfo.ilvlName:'皇冠会员'}} </a> 
+                        </span>
+                    </div>
+                    <div class="middleBox_role">
+                        <span>能力等级：</span>
+                        <span class="middleBox_role_name">
+                            <a v-if="!userInfo.gradeId || userInfo.gradeId=='1'"> {{userInfo.ilvlName?userInfo.ilvlName:'普通会员'}} </a>
+                            <a v-else-if="userInfo.ilvlId=='2'"> {{userInfo.ilvlName?userInfo.ilvlName:'青铜会员'}} </a>
+                            <a v-else-if="userInfo.ilvlId=='3'"> {{userInfo.ilvlName?userInfo.ilvlName:'白银会员'}} </a>
+                            <a v-else-if="userInfo.ilvlId=='4'"> {{userInfo.ilvlName?userInfo.ilvlName:'黄金会员'}} </a>
+                            <a v-else-if="userInfo.ilvlId=='5'"> {{userInfo.ilvlName?userInfo.ilvlName:'紫金会员'}} </a>
+                            <a v-else-if="userInfo.ilvlId=='6'"> {{userInfo.ilvlName?userInfo.ilvlName:'皇冠会员'}} </a> 
                         </span>
                     </div>
                 </div>
@@ -152,7 +168,7 @@ export default {
     
     methods: {
         calcBranchUsers(){
-            calcBranchUsers().then(res=>this.branchUsersCount=res.data.data)
+            calcBranchUsers().then(res=>this.branchUsersCount=res.data.data||this.branchUsersCount)
         },
         getMyRoleNames(){
             if(this.roles && this.roles.length>0){

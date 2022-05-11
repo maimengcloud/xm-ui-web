@@ -4,7 +4,7 @@
 		<!--编辑界面 Branch 管理端机构表（机构下面若干部门）--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">
 				<el-form-item label="机构编号" prop="id"  v-if="opType==='add'">
-					<el-input v-model="editForm.id" placeholder="机构编号，如果不填写将后台自动生成" :maxlength="50" :disabled="branch.id"></el-input>
+					<el-input v-model="editForm.id" placeholder="机构编号，如果不填写将后台自动生成" :maxlength="50" :disabled="!!branch.id"></el-input>
 					<br><font color="red">机构号将作为该机构的管理员登录账号</font>
 				</el-form-item> 
 				<el-form-item label="机构名称" prop="branchName">
