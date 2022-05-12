@@ -4,7 +4,6 @@
  
 						<xm-project-select style="display:inline;" v-if="!selProject" :auto-select="false" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear="onProjectClose"></xm-project-select>
  
-						<xm-product-select style="display:inline;" v-if="!xmProduct" :auto-select="false"  :link-project-id="selProject?selProject.id:null" @row-click="onProductRowClick" @clear="onProductClose"></xm-product-select>
 							 
 					<el-button   type="primary" @click="userConfirm" icon="el-icon-finished">确认选择</el-button>  
 		</el-row>  
@@ -41,7 +40,7 @@ import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 			])
 		},
 		//
-		props: ['visible','selProject','isSelectSingleUser','isSelectMultiUser','xmProduct','pgClass'],
+		props: ['visible','selProject','isSelectSingleUser','isSelectMultiUser','xmProduct'],
 		watch: {
 			"selGroups": function(selGroups) {
 				if(this.selGroups){
@@ -63,10 +62,7 @@ import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 			},
 			selProject(selProject){
 				this.filters.selProject=selProject
-			},
-			xmProduct(xmProduct){
-				this.filters.xmProduct=this.xmProduct
-			}
+			}, 
  
 		},
 
@@ -135,17 +131,9 @@ import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 				var params={};
 				if(this.filters.selProject){
 					params.projectId=this.filters.selProject.id
-				} 
-				if(this.filters.xmProduct && this.filters.xmProduct.id){
-					params.productId=this.filters.xmProduct.id
-				}
-				if(this.pgClass==='1' && !params.productId){
-					this.$notify({position:'bottom-left',showClose:true,message:'请选择产品',type:'error'})
-					return;
-				}
+				}  
 				
-				if((this.pgClass==='0' || !this.pgClass )&& !params.projectId){
-					params.productId=null
+				if( !params.projectId){ 
 					this.$notify({position:'bottom-left',showClose:true,message:'请选择项目',type:'warning'})
 				}
 				getGroups(params).then(res=>{
@@ -163,23 +151,11 @@ import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 				this.filters.xmProduct=null;
 				this.selectProjectVisible=false;
 				this.getGroups();
-			},
-			 
-			
-			onProductRowClick:function(product){
-				this.filters.xmProduct=product
-				this.filters.selProject=null
-				this.selectProductVisible=false;
-				this.getGroups();
-			},
+			}, 
 			onProjectClose(){
 				this.filters.selProject=null
 				this.getGroups();
-			},
-			onProductClose(){
-				this.filters.xmProduct=null
-				this.getGroups();
-			}
+			}, 
 			/**end 自定义函数请在上面加**/
 
 		}, //end methods
@@ -200,11 +176,7 @@ import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 				}
 				if(this.selProject){
 					this.filters.selProject=this.selProject
-				}
-				
-				if(this.xmProduct){
-					this.filters.xmProduct=this.xmProduct
-				}
+				} 
 				this.getGroups(); 
 			});
 		}
