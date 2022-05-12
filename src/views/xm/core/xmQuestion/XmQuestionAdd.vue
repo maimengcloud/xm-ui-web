@@ -22,7 +22,19 @@
 							</el-col>
 							<el-col :span="8">
 								<el-form-item label="负责人" prop="handlerUsername">
-									{{addForm.handlerUsername}} <el-button type="text" @click="sendToAsk">指派给提出人</el-button><el-button type="text"  @click="sendToCreater">指派给创建人</el-button><el-button type="text"  @click="showGroupUsers('handlerUsername')">指派给其它人</el-button>
+									{{addForm.handlerUsername}}  
+									  <el-popover
+										placement="top-start"
+										title="重新指派给"
+										width="200"
+										trigger="hover" >
+											<el-row>
+												<el-button type="text" @click="sendToAsk">提出人</el-button><br>
+												<el-button type="text"  @click="sendToCreater">创建人</el-button><br>
+												<el-button type="text"  @click="showGroupUsers('handlerUsername')">其它人</el-button><br>
+											</el-row>
+										<el-button slot="reference" type="text">指派给</el-button>
+									</el-popover>
 								</el-form-item>
 							</el-col>
 						</el-row>
