@@ -26,43 +26,33 @@
             <div v-if="item.isChecked == true" :class="{module_bottom_active: item.isChecked == true}" class="module_bottom">
               <i class="selected el-icon-check"></i>
             </div>
-          </div>
-          <div class="footer" v-if="item.isChecked == true">
-            <el-input-number style="width: 180px;" @change="numChange(item)" v-model="item.num"  :min="10" :max="99999" ></el-input-number>
-          </div>
+          </div> 
         </div>
       </div>
     </div>        
 
-    <!-- <div class="buy_count">
+    <div class="buy_count">
       <h2>
         购买数量
         <span>(购买账号不能少于10人)</span>
       </h2>
 
       <div class="buy_count_items">
-        <div class="oItem" v-for="(item, index) in totalList" :key="index">
-          <div class="item_header">
-            <p>{{item.name}}</p>
-          </div>
-          <div class="item_bottom">
-            <span>{{item.val}}</span>
-          </div>
-        </div>
+         <el-input-number v-model="form.ousers"></el-input-number>
       </div>
-    </div> -->
+    </div>
 
     <div class="buy_date">
       <h2>期限选择</h2>
       <div class="buy_date_items">
-        <div class="oItem" @click="selectBuyDate(item)" v-for="(item, index) in useTimeOptions" :key="index">
+        <div class="oItem" @click="selectBuyDate(item)" v-for="(item, index) in odaysOptions" :key="index">
           <div class="header">
             {{item.label}}
             <i v-if="item.isChecked" class="select el-icon-success"></i>
           </div>
           <div class="bottom">
             <img v-if="item.isHot" src="@/assets/image/module/hot.png" alt="">
-            <p>￥{{item.price}}/人月</p>
+            <p>￥{{item.price}}/人天</p>
           </div>
         </div>
       </div>
@@ -82,7 +72,7 @@
 
     <div class="pay_allAmount">
       <h2>订单总额</h2>
-      <p class="allAmount">￥<b>{{allAmount}}</b>/年</p>
+      <p class="allAmount">￥<b>{{orders.order?orders.order.ofinalFee:''}}</b>/年</p>
       <el-checkbox v-model="form.checked">同意</el-checkbox> <a style="font-size: 14px;color: #409EFF">《服务协议》</a>
     </div>
   </div>
@@ -91,6 +81,8 @@
 <script>
 import { mapGetters } from 'vuex';
 import {getAllMenuModule, getBuyMenuModule} from '@/api/mdp/sys/modules'
+import {calcOrder} from '@/api/mdp/sys/order'
+
 import aliPay from '@/assets/image/module/alipay.png';
 import weixinPay from '@/assets/image/module/weixin.png'
 import Decimal from "decimal.js"  // 具体文件中引入
@@ -117,240 +109,72 @@ export default {
           isChecked: false
         }
       ],
-      useTimeOptions: [
+      odaysOptions: [
         {
           label: '1年',
-          val: '12',
+          val: '360',
           isHot: true,
           isChecked: true,
-          price: '200.00'
+          price: '2'
         },
         {
           label: '6个月',
-          val: '6',
+          val: '180',
           isHot: false,
           isChecked: false,
-          price: '200.00'
+          price: '2'
         },
         {
           label: '3个月',
-          val: '3',
+          val: '90',
           isHot: false,
           isChecked: false,
-          price: '200.00'
+          price: '2'
         },
       ],
       form: {
+        moduleIds:[],
         payway: 'aliPay',
-        usetime: '12',
+        odays: '360',
+        ousers:10,
         phone: '',
-        checked: false,
-        amount: 0
-      }
+        checked: false, 
+      },
+      orders:{order:null,modules:[]},
     }
   },
 
   computed: {
     ...mapGetters([
       'userInfo'
-    ]),
-
-
-    totalList() {
-      if(this.menus == null) return;
-      let obj = [{key: 'xmgl',name: '项目管理', val : 0},{key: 'oa',name: '智慧协同办公系统',val : 0},{key: 'mall',name: '商城',val : 0}]
-      let xmCount = 0;
-      let oaConut = 0;
-      let mallCount = 0;
-      this.menus.xmgl.forEach(m => {
-        if(m.isChecked) {
-          xmCount += m.num;
-        }
-      });
-      this.menus.oa.forEach(m => {
-        if(m.isChecked) {
-          oaConut += m.num;
-        }
-      });
-
-      this.menus.mall.forEach(m => {
-        if(m.isChecked) {
-          mallCount += m.num;
-        }
-      });
-      obj[0].val = xmCount;
-      obj[1].val = oaConut;
-      obj[2].val = mallCount;
-      return obj
-    },
-
-    allAmount() {
-      if(this.menus == null) return;
-      //计费规则
-      let tempData = [];
-      let xm = this.menus.xmgl.filter(res => {return res.isChecked ==  true;})
-      let oa = this.menus.oa.filter(res => {return res.isChecked ==  true;})
-      let mall = this.menus.mall.filter(res => {return res.isChecked ==  true;})
-      tempData = Array.concat(xm).concat(oa).concat(mall);
-      if(tempData.length == 0) return 0;
-      //计算价格，每个单独计算
-      let amount = new Decimal(0);
-      //人均费用 * 数量 * 数量折扣优惠 * 月份折扣优惠
-      tempData.forEach(t => {
-        let numDiscount = 1;
-        let monthDiscount = 1;
-        //免费
-        if(t.billMode == 0) {
-          amount = amount.add(0);
-        }
-        if(t.billMode == 1) {
-          if(t.discount != null && t.discount != "" && t.discount != undefined) {
-            let discount = JSON.parse(t.discount);
-            //用户数量折扣
-            numDiscount = this.getNumDiscount(discount.userNum, t.num);
-            //用户月份折扣
-            monthDiscount = this.getMonthDiscount(discount.months, this.form.usetime);
-          }
-          amount = amount.add(getDecimal(t.uniFee, 0).mul(new Decimal(t.num)).mul(numDiscount).mul(monthDiscount));
-        }
-        //总包模式
-        if(t.billMode == 2) {
-          amount = amount.add(getDecimal(t.fee, 0));
-        }
-      })
-      this.form.amount = amount;
-      return amount;
-    }
-
-    
+    ]),    
   },
 
   watch: {
 
-    allAmount: {
-      handler(val, oval) {
-        if(this.menus == null) return;
-        let tempData = [];
-        let xm = this.menus.xmgl.filter(res => {return res.isChecked ==  true;})
-        let oa = this.menus.oa.filter(res => {return res.isChecked ==  true;})
-        let mall = this.menus.mall.filter(res => {return res.isChecked ==  true;})
-        tempData = Array.concat(xm).concat(oa).concat(mall);
-        if(tempData.length == 0) return;
-        let yearAmount = new Decimal(0);
-        let halfYearAmount = new Decimal(0);
-        let quarter = new Decimal(0);
-        let allNum = 0;
-        tempData.forEach(t => {
-          let numDiscount = 1;
-          let monthDiscount = 1;
-          allNum += t.num;
-          if(t.discount != null && t.discount != "" && t.discount != undefined) {
-            let discount = JSON.parse(t.discount);
-            //用户数量折扣
-            numDiscount = this.getNumDiscount(discount.userNum, t.num);
-            this.useTimeOptions.forEach(element => {
-              //用户月份折扣
-              monthDiscount = this.getMonthDiscount(discount.months, element.val);
-
-              if(element.val == "12") {
-                yearAmount = yearAmount.add(getDecimal(t.uniFee, 0).mul(new Decimal(t.num)).mul(numDiscount).mul(monthDiscount));
-              }
-
-              if(element.val == "6") {
-                halfYearAmount = halfYearAmount.add(getDecimal(t.uniFee, 0).mul(new Decimal(t.num)).mul(numDiscount).mul(monthDiscount));
-              }
-
-              if(element.val == "3") {
-                quarter = quarter.add(getDecimal(t.uniFee, 0).mul(new Decimal(t.num)).mul(numDiscount).mul(monthDiscount));
-              }
-            });
-          }else {
-            yearAmount = yearAmount.add(getDecimal(t.uniFee, 0).mul(new Decimal(t.num)));
-            halfYearAmount = halfYearAmount.add(getDecimal(t.uniFee, 0).mul(new Decimal(t.num)));
-            quarter = quarter.add(getDecimal(t.uniFee, 0).mul(new Decimal(t.num)));
-          }
-        })
-        
-        this.useTimeOptions.forEach(element => {
-          if(element.val == "12" && yearAmount != 0) {
-            element.price = yearAmount.div(allNum).toFixed(2, Decimal.ROUND_HALF_UP);
-          }
-          if(element.val == "6" && halfYearAmount != 0) {
-            element.price = halfYearAmount.div(allNum).toFixed(2, Decimal.ROUND_HALF_UP);
-          }
-          if(element.val == "3" && quarter != 0) {
-            element.price = quarter.div(allNum).toFixed(2, Decimal.ROUND_HALF_UP);
-          }
-        })
-
-      },
-      // immediate: true;
+    'form.ousers':function(){
+      this.calcOrder();
     }
   },
 
-  methods: {
-    getNumDiscount(discount, num) {
-      let sale = new Decimal(1);
-      let nums = discount.split("\n");
-      var map = new Map();
-      nums.forEach(element => {
-        let t = element.split(":");
-        map.set(t[0], t[1]);
-      });
-
-      map.forEach(function(value,key){
-        let t = key.split("-");
-        if(num >= t[0] && num <= t[1]) {
-          sale = new Decimal(value).div(new Decimal(100))
-        }
-      });
-      return sale;
+  methods: {  
+    calcOrder:function() {
+       calcOrder(this.form).then(res=>{ 
+         this.orders.order=res.data.data
+         this.orders.modules=res.data.modules
+         this.odaysOptions.forEach(i=>{ 
+             i.price=parseInt(this.orders.order.ofinalFee/this.form.ousers/this.form.odays  )
+         })
+       })
     },
-
-    getMonthDiscount(discount, month) {
-      let sale = new Decimal(1);
-      let condition = discount.split("\n");
-      var map = new Map();
-      condition.forEach(element => {
-        let t = element.split(":");
-        map.set(t[0], t[1]);
-      });
-      map.forEach(function(value, key){
-        if(new Decimal(month).comparedTo(key) == 0) {
-          sale = new Decimal(value).div(new Decimal(100))
-        }
-      });
-      return sale;
-    },
-
-    numChange(item) {
-      item.isChecked = true;
-    },
-
     selectItem(item) {
-      if(this.active == 'xmgl') {
-        this.menus.xmgl.forEach(element => {
-          if(element.id == item.id) {
-            element.isChecked ? element.isChecked = !element.isChecked : element.isChecked = true;
-          }
-        });
-      }
-
-      if(this.active == 'mall') {
-        this.menus.mall.forEach(element => {
-          if(element.id == item.id) {
-            element.isChecked ? element.isChecked = !element.isChecked : element.isChecked = true;
-          }
-        });
-      }
-
-      if(this.active == 'oa') {
-        this.menus.oa.forEach(element => {
-          if(element.id == item.id) {
-            element.isChecked ? element.isChecked = !element.isChecked : element.isChecked = true;
-          }
-        });
-      }
+       item.isChecked=!item.isChecked;
+       if(item.isChecked==false){
+          this.form.moduleIds=this.form.moduleIds.filter(i=>i!=item.id)
+       }else  if(item.isChecked==true && !this.form.moduleIds.some(i=>i==item.id)){
+         this.form.moduleIds.push(item.id)
+       } 
+       this.calcOrder();
     },
 
     selectPayWay(item) {
@@ -364,24 +188,21 @@ export default {
     },
 
     selectBuyDate(item) {   
-      this.form.usetime = item.val;
-      this.useTimeOptions.forEach(element => {
+      this.form.odays = item.val;
+      this.odaysOptions.forEach(element => {
         element.isChecked = false;
         if(item.val == element.val) {
           element.isChecked = true;
         }
       });
+      this.form.odays=item.val
+       this.calcOrder();
     },
 
 
-    getForm() {
-      let tempData = [];
-      let xm = this.menus.xmgl.filter(res => {return res.isChecked ==  true;})
-      let oa = this.menus.oa.filter(res => {return res.isChecked ==  true;})
-      let mall = this.menus.mall.filter(res => {return res.isChecked ==  true;})
-      tempData = Array.concat(xm).concat(oa).concat(mall);
+    getForm() { 
       let obj = {
-        data: tempData,
+        ...this.orders,
         ...this.form
       }
       return obj;

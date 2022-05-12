@@ -113,7 +113,7 @@ export default {
         }
 
         //保存购买模块信息到本地
-        if(data.data.length <= 0) {
+        if(data.moduleIds.length <= 0) {
           this.$message({
             message: '请选择要购买的模块',
             type: 'warning'

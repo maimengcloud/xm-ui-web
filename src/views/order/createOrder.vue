@@ -7,7 +7,7 @@
       <div class="content">
         <div class="top_desc">
           <h2>购买信息</h2>
-          <p>团队名:&nbsp;&nbsp;擎勤科技</p>
+          <p>团队名:&nbsp;&nbsp;{{userInfo.branchName?userInfo.branchName:userInfo.branchId}}</p>
         </div>
 
         <div class="order_detail">
@@ -19,7 +19,7 @@
                 <div class="desc">
                   <el-descriptions size="larget" :column="3" >
                     <el-descriptions-item label="购买版本">企业版</el-descriptions-item>
-                    <el-descriptions-item label="创建人">谢家豪</el-descriptions-item>
+                    <el-descriptions-item label="创建人">{{userInfo.username}}</el-descriptions-item>
                     <!-- <el-descriptions-item label="手机号码">18826103122</el-descriptions-item> -->
                     <el-descriptions-item label="支付方式">{{data.payway == 'aliPay' ? '支付宝' : '微信'}}</el-descriptions-item>
                   </el-descriptions>
@@ -28,9 +28,10 @@
                   <el-table
                     size="larget"
                     border
-                    :data="data.data"
+                    :data="data.modules"
                     style="width: 100%"
                     height="250">
+                    <!--
                     <el-table-column
                       prop="name"
                       label="产品类型"
@@ -40,15 +41,26 @@
                            scope.row.mcate == '2' ? '项目管理' : '商城'}}</span>
                       </template>
                     </el-table-column>
+                    -->
                     <el-table-column
                       prop="name"
-                      label="产品名称"
+                      label="产品名称" min-width="150"
                       >
                     </el-table-column>
                     <el-table-column
-                      prop="num"
+                      prop="musers"
                       label="账号数量"
-                      width="120">
+                      min-width="120">
+                    </el-table-column>
+                    <el-table-column
+                      prop="orginFee"
+                      label="原价"
+                      min-width="120">
+                    </el-table-column>
+                    <el-table-column
+                      prop="finalFee"
+                      label="折扣价"
+                      min-width="120">
                     </el-table-column>
                   </el-table>
                 </div>
@@ -56,7 +68,7 @@
 
               <div class="bottom">
                 <span class="allAmount">
-                  总金额: <b>{{data.amount}}￥</b>
+                  总金额: <b>{{data.order.ofinalFee}}￥</b>
                 </span>
                 <el-button size="larget" @click="returnPage">上一步</el-button>
                 <el-button size="larget" type="primary" :loading="createOrderLonding" @click="createOrder">确认支付</el-button>
@@ -83,13 +95,22 @@
 </template>
     
 <script>
+
+import { mapGetters } from 'vuex';
 import {createOrder} from '@/api/mdp/sys/order'
 import {aliPay, weixinPay, checkWxPayStatus} from '@/api/mdp/pay/pay'
 
 export default {
+  
+
+  computed: {
+    ...mapGetters([
+      'userInfo'
+    ]),    
+  },
   data() {
     return {
-      data: null,
+      data: {},
       createOrderLonding: false,
       weixinPayVisible: false,
       codeUrl: ""
@@ -112,7 +133,7 @@ export default {
       createOrder(this.data).then(res => {
         if(res.data.tips.isOk){
           //获取订单号
-          let orderId = res.data.data;
+          let orderId = res.data.data.id;
           if(this.data.payway == 'aliPay') {
             this.toAliPay(orderId);
             return;
