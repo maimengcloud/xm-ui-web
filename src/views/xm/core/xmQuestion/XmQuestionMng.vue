@@ -235,7 +235,7 @@
 				<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 			 </el-row>
 			<!--编辑 XmQuestion xm_question界面-->
-			<el-dialog  title="编辑缺陷"   :visible.sync="editFormVisible"   width="80%"  top="20px"  :close-on-click-modal="false">
+			<el-dialog  title="编辑缺陷"   :visible.sync="editFormVisible"   width="80%"  top="20px"  :close-on-click-modal="false" append-to-body>
 					<xm-question-edit :sel-project=" {id:editForm.projectId,name:editForm.projectName} " :xm-question="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-question-edit>
 			</el-dialog>
 
