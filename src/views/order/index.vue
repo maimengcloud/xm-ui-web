@@ -156,17 +156,17 @@ export default {
             let tempData = res.data.data;
             tempData.forEach(i=>{
               i.isChecked=false
-              i.musers=10
-              i.num=10
+              i.musers=10 
+              i.isBuy=false
             })
             getBuyMenuModule({}).then(res2 => {
                 let branchModules = res2.data.data;
                 tempData.forEach(k => {
                     branchModules.forEach(element => {
-                        k.isChecked = false;
-                        k.num = 10;
-                        if(k.id == element.moduleId) {
+                        k.isChecked = false; 
+                        if(k.id == element.moduleId && element.status=='1') {
                             k.isBuy = true;
+                            k.musers=element.musers
                         }
                     });
                     modulesOfIcon.forEach(element => {

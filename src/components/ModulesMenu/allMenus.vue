@@ -141,7 +141,7 @@ export default {
         goBuy(item) {
             this.visible = false;
             //前往购买页面
-            this.$router.push('/my/order/index')
+            this.$router.push({path:'/my/order/index',query:{moduleId:item.id}})
         },
 
         //获取所有模块

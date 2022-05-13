@@ -33,12 +33,14 @@
 
     <div class="buy_count">
       <h2>
-        购买数量
-        <span>(购买账号不能少于10人)</span>
+        购买总人数
+        <span>(10人起购,请按企业(团队)总人数填写，企业(团队)总人数代表了企业在唛盟平台可开立免费账户的总个数)</span>
       </h2>
 
       <div class="buy_count_items">
-         <el-input-number v-model="form.ousers"></el-input-number>
+         <el-input-number v-if="branchUsersCpd.ilvlId>1" v-model="form.ousers" :min="branchUsersCpd.maxUsers" @change="formOusersChange"></el-input-number>
+         
+         <el-input-number v-else  v-model="form.ousers" :min="10" @change="formOusersChange"></el-input-number>
       </div>
     </div>
 
@@ -72,7 +74,7 @@
 
     <div class="pay_allAmount">
       <h2>订单总额</h2>
-      <p class="allAmount">￥<b>{{orders.order?orders.order.ofinalFee:''}}</b>/年</p>
+      <p class="allAmount">￥<b>{{orders.order?orders.order.ofinalFee:''}}</b>/{{form.label}}</p>
       <el-checkbox v-model="form.checked">同意</el-checkbox> <a style="font-size: 14px;color: #409EFF">《服务协议》</a>
     </div>
   </div>
@@ -88,6 +90,7 @@ import weixinPay from '@/assets/image/module/weixin.png'
 import Decimal from "decimal.js"  // 具体文件中引入
 import getDecimal from '@/utils/decimalUtil.js'
 
+import {  calcBranchUsers } from '@/api/branch';
 
 export default {
   props: ['menus'],
@@ -136,11 +139,13 @@ export default {
         moduleIds:[],
         payway: 'aliPay',
         odays: '360',
+        label:'1年',
         ousers:10,
         phone: '',
         checked: false, 
       },
       orders:{order:null,modules:[]},
+      branchUsersCpd:{istatus:'1',maxUsers:50,ilvlId:'2',ilvlName:'黄金会员'}
     }
   },
 
@@ -152,13 +157,24 @@ export default {
 
   watch: {
 
-    'form.ousers':function(){
+    'form.ousers':function(val,oldValue){  
       this.calcOrder();
     }
   },
 
   methods: {  
-    calcOrder:function() {
+    formOusersChange(val){
+      if(this.branchUsersCpd && this.branchUsersCpd.istatus=='1'){
+        if(val<=this.branchUsersCpd.maxUsers){
+          this.form.ousers=this.branchUsersCpd.maxUsers
+          this.$notify({position:"bottom-left",message:"您当前在唛盟平台拥有"+this.branchUsersCpd.maxUsers+"个账户资格，企业总人数不能低于"+this.branchUsersCpd.maxUsers,type:"warning"})
+           
+          return false;
+        }
+       
+      }
+    },
+    calcOrder:function() { 
        calcOrder(this.form).then(res=>{ 
          this.orders.order=res.data.data
          this.orders.modules=res.data.modules
@@ -168,6 +184,10 @@ export default {
        })
     },
     selectItem(item) {
+      if(item.isBuy){
+        this.$notify({position:"bottom-left",message:"【"+item.name+"】已购买，如需调整，请进入【我的订单->加购】 处理",type:"warning"})
+        return;
+      }
        item.isChecked=!item.isChecked;
        if(item.isChecked==false){
           this.form.moduleIds=this.form.moduleIds.filter(i=>i!=item.id)
@@ -196,6 +216,7 @@ export default {
         }
       });
       this.form.odays=item.val
+      this.form.label=item.label
        this.calcOrder();
     },
 
@@ -209,8 +230,16 @@ export default {
     },
   },
 
-  created() {
+  mounted() {
     this.form.phone = this.userInfo.phoneno;
+    calcBranchUsers().then(res=>{  
+     // Object.assign(this.branchUsersCpd,res.data.data);
+      if(this.branchUsersCpd.branchId && this.branchUsersCpd.istatus=='1'){
+         this.form.ousers=this.branchUsersCpd.maxUsers
+         this.calcOrder();
+      }
+     
+    })
   }
 
 }
