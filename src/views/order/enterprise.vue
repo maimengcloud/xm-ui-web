@@ -21,10 +21,10 @@
           <div class="head"  :class="{active: item.isChecked == true}" @click="selectItem(item, index)">
             <div class="module_top">
               <img :src="item.logoUrl" alt="">
-              <span>{{item.name}}</span>
+              <span>{{item.name}}</span> 
             </div>
-            <div v-if="item.isChecked == true" :class="{module_bottom_active: item.isChecked == true}" class="module_bottom">
-              <i class="selected el-icon-check"></i>
+            <div v-if="item.isChecked == true || item.billMode==='0'" :class="{module_bottom_active: item.isChecked == true|| item.billMode==='0'}" class="module_bottom">
+              <i class="selected el-icon-check"></i><span v-if="item.billMode==='0'">&nbsp;&nbsp;<font color="red">免费</font></span>
             </div>
           </div> 
         </div>
@@ -188,6 +188,11 @@ export default {
         this.$notify({position:"bottom-left",message:"【"+item.name+"】已购买，如需调整，请进入【我的订单->加购】 处理",type:"warning"})
         return;
       }
+      
+        if(item.billMode==='0'){ 
+          this.$notify({position:"bottom-left",message:"【"+item.name+"】为免费开通，无须下单。",type:"warning"}) 
+          return false;
+        }
        item.isChecked=!item.isChecked;
        if(item.isChecked==false){
           this.form.moduleIds=this.form.moduleIds.filter(i=>i!=item.id)

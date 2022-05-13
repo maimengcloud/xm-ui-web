@@ -4,22 +4,16 @@
         <p>购买流程:&nbsp;&nbsp;&nbsp;1.选择模块 》 <span style="color:red;">2.确认订单 》</span> 3.支付 》 4.完成</p>
     </div>
     <div class="flux_continer">
-      <div class="content">
-        <div class="top_desc">
-          <h2>购买信息</h2>
-          <p>团队名:&nbsp;&nbsp;{{userInfo.branchName?userInfo.branchName:userInfo.branchId}}</p>
-        </div>
-
+      <div class="content">  
         <div class="order_detail">
-          <h2>订单详情</h2>
-
+          <h2>订单详情</h2> 
           <div class="order_box">
             <div class="content">
               <div class="middle">
                 <div class="desc">
                   <el-descriptions size="larget" :column="3" >
-                    <el-descriptions-item label="购买版本">企业版</el-descriptions-item>
-                    <el-descriptions-item label="创建人">{{userInfo.username}}</el-descriptions-item>
+                    <el-descriptions-item label="购买版本">企业版 ( {{data.ousers}} 人 )</el-descriptions-item> 
+                    <el-descriptions-item label="企业">{{data.order.obranchName?data.order.obranchName:data.order.obranchId}}</el-descriptions-item>
                     <!-- <el-descriptions-item label="手机号码">18826103122</el-descriptions-item> -->
                     <el-descriptions-item label="支付方式">{{data.payway == 'aliPay' ? '支付宝' : '微信'}}</el-descriptions-item>
                   </el-descriptions>
@@ -56,11 +50,17 @@
                       prop="orginFee"
                       label="原价"
                       min-width="120">
+                      <template slot-scope="scope">
+                        ￥{{scope.row.orginFee}}
+                      </template>
                     </el-table-column>
                     <el-table-column
                       prop="finalFee"
                       label="折扣价"
                       min-width="120">
+                      <template slot-scope="scope">
+                        ￥{{scope.row.finalFee}}
+                      </template>
                     </el-table-column>
                   </el-table>
                 </div>
