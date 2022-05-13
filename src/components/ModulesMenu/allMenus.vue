@@ -32,9 +32,12 @@
                 <img :src="item.logoUrl" alt="">
                 <span>{{item.name}}</span>
                 <el-divider></el-divider>
-                <div class="desc">
+                <div class="desc" v-if="item.billMode!=='0'">
                    <el-button @click="goBuy(item)" v-if="!item.isBuy" style="width:70px;" type="primary" round>购买</el-button>
                    <span class="buyAfter" v-else>（已购买）</span>
+                </div>
+                <div class="desc" v-else> 
+                   <span class="buyAfter">（免费）</span>
                 </div>
             </div>
         </div>
@@ -117,7 +120,7 @@ export default {
         },
  
         selectItem(item) {
-            if(item.isBuy) {
+            if(item.isBuy||item.billMode=='0') {
                 //路由跳转
                 let name = "";
                 modulesOfRouter.forEach(e => {
@@ -149,14 +152,16 @@ export default {
             this.menuLoading = true
             getAllMenuModule({}).then(res => {
                 let tempData = res.data.data;
+                tempData.forEach(i=>{
+                    i.isBuy=false; 
+                })
                 getBuyMenuModule({}).then(res2 => {
                     let branchModules = res2.data.data;
                     tempData.forEach(k => {
                         branchModules.forEach(element => {
-                            // if(k.id == element.moduleId) {
-                            //     k.isBuy = true;
-                            // }
-                            k.isBuy = true;
+                            if(k.id == element.moduleId && element.status=='1') {
+                                k.isBuy = true;
+                            }
                         });
 
                         modulesOfIcon.forEach(element => {

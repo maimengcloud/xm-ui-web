@@ -160,9 +160,8 @@ export default {
             })
             getBuyMenuModule({}).then(res2 => {
                 let branchModules = res2.data.data;
-                tempData.forEach(k => {
-                    branchModules.forEach(element => {
-                        k.isChecked = false; 
+                tempData.forEach(k => { 
+                    branchModules.forEach(element => { 
                         if(k.id == element.moduleId && element.status=='1') {
                             k.isBuy = true;
                             k.musers=element.musers
