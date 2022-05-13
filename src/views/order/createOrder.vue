@@ -118,7 +118,7 @@ export default {
   },
   methods: {
     returnPage() {
-      this.$router.go(-1);
+      this.$router.back();
     },
 
     createOrder() {

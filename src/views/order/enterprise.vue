@@ -16,8 +16,8 @@
         </div>
       </div>
 
-      <div class="sys_modules" v-if="this.menus != null">
-        <div class="module" v-for="(item, index) in menus[active]" :key="index" >
+      <div class="sys_modules" v-if="this.modules != null">
+        <div class="module" v-for="(item, index) in modules[active]" :key="index" >
           <div class="head"  :class="{active: item.isChecked == true}" @click="selectItem(item, index)">
             <div class="module_top">
               <img :src="item.logoUrl" alt="">
@@ -93,7 +93,7 @@ import getDecimal from '@/utils/decimalUtil.js'
 import {  calcBranchUsers } from '@/api/branch';
 
 export default {
-  props: ['menus'],
+  props: ['modules'],
   data() {
     return {
       menuLoading: false,
@@ -167,7 +167,7 @@ export default {
       if(this.branchUsersCpd && this.branchUsersCpd.istatus=='1'){
         if(val<=this.branchUsersCpd.maxUsers){
           this.form.ousers=this.branchUsersCpd.maxUsers
-          this.$notify({position:"bottom-left",message:"您当前在唛盟平台拥有"+this.branchUsersCpd.maxUsers+"个账户资格，企业总人数不能低于"+this.branchUsersCpd.maxUsers,type:"warning"})
+          this.$notify({position:"bottom-left",message:"您当前已拥有创建"+this.branchUsersCpd.maxUsers+"个账户资格，企业总人数不能低于"+this.branchUsersCpd.maxUsers,type:"warning"})
            
           return false;
         }
@@ -175,6 +175,12 @@ export default {
       }
     },
     calcOrder:function() { 
+      if(!this.form.moduleIds || this.form.moduleIds.length==0){
+        if(this.orders && this.orders.order){
+          this.orders={}  
+        } 
+         return;
+      }
        calcOrder(this.form).then(res=>{ 
          this.orders.order=res.data.data
          this.orders.modules=res.data.modules
@@ -227,7 +233,7 @@ export default {
 
 
     getForm() { 
-      let obj = {
+      let obj = { 
         ...this.orders,
         ...this.form
       }
@@ -241,7 +247,7 @@ export default {
      // Object.assign(this.branchUsersCpd,res.data.data);
       if(this.branchUsersCpd.branchId && this.branchUsersCpd.istatus=='1'){
          this.form.ousers=this.branchUsersCpd.maxUsers
-         this.calcOrder();
+         //this.calcOrder();
       }
      
     })

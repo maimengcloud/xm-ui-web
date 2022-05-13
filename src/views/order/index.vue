@@ -30,7 +30,7 @@
 
         <div class="version_all">
           <flag-ship ref="flagship" v-if="currentSelectVersion == '旗舰版'"></flag-ship>
-          <enterprise ref="enterprise" :menus="menus" v-if="currentSelectVersion == '企业版'"></enterprise>
+          <enterprise ref="enterprise" :modules="modules" v-if="currentSelectVersion == '企业版'"></enterprise>
         </div>
 
         <el-button :loading="submitLoading" @click="submitOrder" size="larget" class="submit" type="primary">
@@ -74,7 +74,7 @@ export default {
       ],
       currentSelectVersion: '企业版',
       menuLoading: false,
-      menus: null,
+      modules: null,
       submitLoading: false,
     }
   },
@@ -121,8 +121,7 @@ export default {
           return
         }
 
-        window.localStorage.setItem("BUY_MODULES", undefined)
-        window.localStorage.setItem("BUY_MODULES", JSON.stringify(data))
+        window.localStorage.setItem("BUY_MODULES",  JSON.stringify(data)) 
         this.$router.push('/my/order/create')
       }else {
         let flagData = this.$refs.flagship.getForm();
@@ -178,7 +177,7 @@ export default {
                 let xmMenus = tempData.filter(res => {return res.mcate == '2'})
                 let oaMunus = tempData.filter(res => {return res.mcate == '1'})
                 let mallMenus = tempData.filter(res => {return res.mcate == '3'})
-                this.menus = {
+                this.modules = {
                     "xmgl": xmMenus,
                     "oa" : oaMunus,
                     "mall": mallMenus
@@ -189,15 +188,9 @@ export default {
 
   },
 
-  created() {
-    this.getAllModules();
-  },
-
-
-
-
-
-
+    mounted(){ 
+         this.getAllModules(); 
+    }   
 }
 </script>
 
