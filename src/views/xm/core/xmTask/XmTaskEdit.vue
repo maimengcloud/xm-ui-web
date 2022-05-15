@@ -235,7 +235,7 @@
 			<xm-group-select :pgClass="editForm.ptype" :xm-product="editForm.productId?{id:editForm.productId,productName:''}:null" :visible="execGroupUserSelectVisible" :sel-project="xmProject" :isSelectSingleUser="1" @user-confirm="execGroupUserSelectConfirm"></xm-group-select>
 		</el-drawer>
 		<el-drawer append-to-body title="选择负责人"  :visible.sync="groupUserSelectVisible" size="60%"    :close-on-click-modal="false">
-			<xm-group-select :pgClass="editForm.ptype" :xm-product="editForm.productId?{id:editForm.productId,productName:''}:null" :visible="groupUserSelectVisible" :sel-project="xmProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-group-select>
+			<xm-group-select :xm-product="editForm.productId?{id:editForm.productId,productName:''}:null" :visible="groupUserSelectVisible" :sel-project="xmProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-group-select>
 		</el-drawer>
 		<el-drawer append-to-body title="新增技能"  :visible.sync="skillVisible" size="60%"    :close-on-click-modal="false">
 			<skill-mng :task-skills="taskSkills" :jump="true" @select-confirm="onTaskSkillsSelected"></skill-mng>
@@ -551,6 +551,7 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 					this.groupUserSelectVisible=false; 
 					return
 				}
+				debugger;
 				this.editForm.createUserid=users[0].userid
 				this.editForm.createUsername=users[0].username 
 				this.groupUserSelectVisible=false; 
@@ -620,8 +621,8 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 					params.executorUserid=$event[0].userid
 					params.executorUsername=$event[0].username
 				}else if(fieldName==='createUserid'){
-					params.createUserid=$event[0].userid
-					params.createUsername=$event[0].username
+					params.createUserid=$event.userid
+					params.createUsername=$event.username
 				}else if(fieldName==='dateRange'){
 					params.startTime=$event[0]
 					params.endTime=$event[1]

@@ -56,7 +56,7 @@
 					
 					<el-tab-pane label="结算清单" name="1"  v-if="opType==='edit'"> 	
 						<el-row v-if="editForm.id">  
-							 <XmTaskSbillDetailMng :sbill-id="editForm.id"></XmTaskSbillDetailMng>
+							 <xm-task-sbill-detail-mng :sbill-id="editForm.id"></xm-task-sbill-detail-mng>
 						</el-row>  
 					</el-tab-pane> 
 					

@@ -207,7 +207,7 @@
 		components: {
 		    XmTaskSbillDetailEdit,XmTaskWorkloadSimpleList,
 		},
-		props:['visible','branchId','userid','bizMonth','projectId'],
+		props:['visible','branchId','userid','bizMonth','projectId','sbillId'],
 		computed: {
 		    ...mapGetters(['userInfo']),
 
@@ -307,7 +307,9 @@
 				if(this.branchId){
 					params.branchId=this.branchId
 				}
-
+				if(this.sbillId){
+					params.sbillId=this.sbillId
+				}
 				if(this.userid){
 					params.userid=this.userid
 				}

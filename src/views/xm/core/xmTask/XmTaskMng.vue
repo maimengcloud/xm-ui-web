@@ -2061,7 +2061,7 @@ export default {
       });
     },
     //查询时选择责任人
-    selectCreateUserConfirm(groupUsers,option) {
+    selectCreateUserConfirm(groupUsers,option) { 
       if(option && option.action==='createUserid'){
         if (groupUsers && groupUsers.length > 0) {
           var user= groupUsers[0];
@@ -2335,8 +2335,8 @@ export default {
 					params.executorUserid=$event[0].userid
 					params.executorUsername=$event[0].username
 				}else if(fieldName==='createUserid'){
-					params.createUserid=$event[0].userid
-					params.createUsername=$event[0].username
+					params.createUserid=$event.userid
+					params.createUsername=$event.username
 				}else{
 					params[fieldName]=$event
 				}
