@@ -21,30 +21,30 @@
                 </el-col>
             </el-row>
 		</el-row>
-        <xm-iteration-burnout ref="xmIterationBurnout"></xm-iteration-burnout>
-        <xm-menu-day-trend ref="xmMenuDayTrend"></xm-menu-day-trend>
-        <xm-menu-day-accumulate ref="xmMenuDayAccumulate"></xm-menu-day-accumulate>
-        <xm-menu-att-dist ref="xmMenuAttDist"></xm-menu-att-dist>
-        <xm-menu-age-dist ref="xmMenuAgeDist"></xm-menu-age-dist>
-        <xm-menu-sort ref="xmMenuSort"></xm-menu-sort>
+        <xm-iteration-burnout ref="xmIterationBurnout" :xm-iteration="xmIteration" :xm-product="xmProduct" :xm-project="xmProject"></xm-iteration-burnout>
+        <xm-menu-day-trend ref="xmMenuDayTrend" :xm-product="xmProduct" :xm-project="xmProject"></xm-menu-day-trend>
+        <xm-menu-day-accumulate ref="xmMenuDayAccumulate" :xm-product="xmProduct" :xm-project="xmProject"></xm-menu-day-accumulate>
+        <xm-menu-att-dist ref="xmMenuAttDist" :xm-product="xmProduct" :xm-project="xmProject"></xm-menu-att-dist>
+        <xm-menu-age-dist ref="xmMenuAgeDist" :xm-product="xmProduct" :xm-project="xmProject"></xm-menu-age-dist>
+        <xm-menu-sort ref="xmMenuSort" :xm-product="xmProduct" :xm-project="xmProject"></xm-menu-sort>
 
         
-        <xm-task-day-trend ref="xmTaskDayTrend"></xm-task-day-trend>
-        <xm-task-day-accumulate ref="xmTaskDayAccumulate"></xm-task-day-accumulate>
-        <xm-task-att-dist ref="xmTaskAttDist"></xm-task-att-dist>
-        <xm-task-age-dist ref="xmTaskAgeDist"></xm-task-age-dist>
-        <xm-task-sort ref="xmTaskSort"></xm-task-sort>
-        <xm-project-work-item-day-list ref="xmProjectWorkItemDayList"></xm-project-work-item-day-list>
-        <xm-project-workload-set-day-list ref="xmProjectWorkloadSetDayList"></xm-project-workload-set-day-list>
-        <xm-project-workload-set-month-list ref="xmProjectWorkloadSetMonthList"></xm-project-workload-set-month-list>
+        <xm-task-day-trend ref="xmTaskDayTrend" :xm-product="xmProduct" :xm-project="xmProject"></xm-task-day-trend>
+        <xm-task-day-accumulate ref="xmTaskDayAccumulate" :xm-product="xmProduct" :xm-project="xmProject"></xm-task-day-accumulate>
+        <xm-task-att-dist ref="xmTaskAttDist" :xm-product="xmProduct" :xm-project="xmProject"></xm-task-att-dist>
+        <xm-task-age-dist ref="xmTaskAgeDist" :xm-product="xmProduct" :xm-project="xmProject"></xm-task-age-dist>
+        <xm-task-sort ref="xmTaskSort" :xm-product="xmProduct" :xm-project="xmProject"></xm-task-sort>
+        <xm-project-work-item-day-list ref="xmProjectWorkItemDayList" :xm-product="xmProduct" :xm-project="xmProject"></xm-project-work-item-day-list>
+        <xm-project-workload-set-day-list ref="xmProjectWorkloadSetDayList" :xm-product="xmProduct" :xm-project="xmProject"></xm-project-workload-set-day-list>
+        <xm-project-workload-set-month-list ref="xmProjectWorkloadSetMonthList" :xm-product="xmProduct" :xm-project="xmProject"></xm-project-workload-set-month-list>
         
 
-        <xm-question-day-trend ref="xmQuestionDayTrend"></xm-question-day-trend>
-        <xm-question-day-accumulate ref="xmQuestionDayAccumulate"></xm-question-day-accumulate>
-        <xm-question-att-dist ref="xmQuestionAttDist"></xm-question-att-dist>
-        <xm-question-age-dist ref="xmQuestionAgeDist"></xm-question-age-dist>
-        <xm-question-sort ref="xmQuestionSort"></xm-question-sort>
-        <xm-product-work-item-day-list ref="xmProductWorkItemDayList"></xm-product-work-item-day-list>
+        <xm-question-day-trend ref="xmQuestionDayTrend" :xm-product="xmProduct" :xm-project="xmProject"></xm-question-day-trend>
+        <xm-question-day-accumulate ref="xmQuestionDayAccumulate" :xm-product="xmProduct" :xm-project="xmProject"></xm-question-day-accumulate>
+        <xm-question-att-dist ref="xmQuestionAttDist" :xm-product="xmProduct" :xm-project="xmProject"></xm-question-att-dist>
+        <xm-question-age-dist ref="xmQuestionAgeDist" :xm-product="xmProduct" :xm-project="xmProject"></xm-question-age-dist>
+        <xm-question-sort ref="xmQuestionSort" :xm-product="xmProduct" :xm-project="xmProject"></xm-question-sort>
+        <xm-product-work-item-day-list ref="xmProductWorkItemDayList" :xm-product="xmProduct" :xm-project="xmProject"></xm-product-work-item-day-list>
 	</section>
 </template>
 
