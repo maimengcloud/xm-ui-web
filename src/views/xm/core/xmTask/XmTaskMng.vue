@@ -8,7 +8,9 @@
       >
         <el-row> 
             <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
-              
+        	<el-select v-model="filters.lvls" placeholder="层级" clearable multiple v-if="queryScope!='task'">
+									<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.xm_plan_lvl" :key="index"></el-option> 
+          </el-select>
 					<el-select style="width: 100px" v-model="filters.taskState" placeholder="状态" clearable>
 									<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.taskState" :key="index"></el-option> 
           </el-select>
@@ -1053,6 +1055,7 @@ export default {
         taskType: "",
         tags: [],
         taskState:'',//任务状态
+        lvls:['1','2'],
       },
       xmTasks: [], //查询结果
       pageInfo: {
@@ -1073,6 +1076,7 @@ export default {
         priority: [],
         xmTaskSettleSchemel: [],
         taskState:[],
+        xm_plan_lvl:[],
       }, //下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
 
       addFormVisible: false, //新增xmTask界面是否显示
@@ -2294,6 +2298,9 @@ export default {
       if (this.filters.tags && this.filters.tags.length>0) {
         params.tagIdList = this.filters.tags.map(i=>i.tagId);
       }
+      if(this.queryScope=="planTask"||this.queryScope=='plan'){
+        params.lvls=this.filters.lvls
+      }
       return params;
     },
     loadXmTaskLazy(tree, treeNode, resolve) {
@@ -2536,8 +2543,8 @@ export default {
         this.getXmTasks();
       } 
       this.tableHeight = this.source == 'GZT' ? this.tableHeight : util.calcTableMaxHeight(this.$refs.table.$el);
-      initSimpleDicts( "all", ["planType","taskType","priority","xmTaskSettleSchemel","priority","taskState" ]).then((res) => {
-        this.dicts = res.data.data;
+      initSimpleDicts( "all", ["planType","taskType","priority","xmTaskSettleSchemel","priority","taskState",'xm_plan_lvl' ]).then((res) => { 
+        Object.assign(this.dicts,res.data.data)
       });
     });
   },

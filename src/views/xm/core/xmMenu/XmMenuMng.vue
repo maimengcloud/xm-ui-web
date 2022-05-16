@@ -14,6 +14,9 @@
 							<el-option   value="join-curr-iteration"  :label="'已加入本迭代【'+filters.iteration.iterationName+'】'" v-if="filters.iteration && filters.iteration.id"></el-option>
 						</el-select>
 
+						<el-select   v-model="filters.dclasss" placeholder="分类"  clearable multiple>
+								<el-option v-for="i in dicts.dclass" :label="i.name" :key="i.id" :value="i.id"></el-option>
+						</el-select>
 						<el-select   v-model="filters.priority" placeholder="优先级"  clearable style="width: 100px;">
 								<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
 						</el-select>
@@ -472,6 +475,7 @@
 					dtype:'',
 					priority:'',
 					source:'',
+					dclasss:[],
 				},
 				xmMenus: [],//查询结果
 				pageInfo:{//分页数据
@@ -497,7 +501,8 @@
 							{id:"7", name:"运行中"},
 							{id:"8", name:"已下线"},
 							{id:"9", name:"已删除"},
-					]
+					],
+					dclass:[],
 				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
 
 				addFormVisible: false,//新增xmMenu界面是否显示
@@ -635,6 +640,9 @@
 				}
 				if(this.filters.tags && this.filters.tags.length>0){
 					params.tagIdList=this.filters.tags.map(i=>i.tagId)
+				}
+				if(this.filters.dclasss){
+					params.dclasss=this.filters.dclasss
 				}
 				return params;
 			},
@@ -1324,8 +1332,8 @@
 		    //在下面添加其它组件
 		},
 		mounted() {
-  			initSimpleDicts("all",['menuStatus','demandSource','demandLvl','demandType','priority']).then(res=>{
-				this.dicts=res.data.data;
+  			initSimpleDicts("all",['menuStatus','demandSource','demandLvl','demandType','priority','dclass']).then(res=>{
+				  Object.assign(this.dicts,res.data.data) 
 			})
 			this.filters.product=this.xmProduct
 			if(this.xmProduct && this.xmProduct.id){
