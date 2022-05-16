@@ -27,7 +27,8 @@
 						:value="item">
 					</el-option>
 				</el-select> -->
-				<el-table
+				<el-table 
+					ref="table"
 					:height="tableHeight"
 					v-if="showType == '人力'"
 					:data="sumXmBudgetLaborsConvert"
@@ -305,10 +306,9 @@
 		},
 		mounted() { 
 			this.showType = "人力";
-				this.$nextTick(() => {  
-					
+			this.$nextTick(() => {   
 				this.tableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
-			  }); 
+			}); 
 			  this.selProjectBudget=Object.assign({},this.selProject);
 		}
 	}

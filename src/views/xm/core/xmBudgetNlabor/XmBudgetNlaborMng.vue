@@ -80,7 +80,7 @@
 
 			<!--新增 XmBudgetNlabor 项目人力成本预算界面-->
 			<el-drawer title="新增项目人力成本预算" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
-				<xm-budget-nlabor-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-budget-nlabor-edit>
+				<xm-budget-nlabor-add op-type="add" :sel-project="selProject" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-budget-nlabor-add>
 			</el-drawer>
 	    </el-row>
 	</section>
@@ -91,12 +91,14 @@
 	import config from '@/common/config';//全局公共库 
  	import { initDicts,listXmBudgetNlabor, delXmBudgetNlabor, batchDelXmBudgetNlabor,editSomeFieldsXmBudgetNlabor } from '@/api/xm/core/xmBudgetNlabor';
 	import  XmBudgetNlaborEdit from './XmBudgetNlaborEdit';//新增修改界面
+	import  XmBudgetNlaborAdd from './XmBudgetNlaborAdd';//新增修改界面
+
 	import { mapGetters } from 'vuex'
 	
 	export default {
 	    name:'xmBudgetNlaborMng',
 		components: {
-		    XmBudgetNlaborEdit,
+		    XmBudgetNlaborEdit,XmBudgetNlaborAdd
 		},
 		props:["selProject",'xmBudgetNlabor','fieldName','queryType','visible'],
 		computed: {
