@@ -52,6 +52,13 @@ export const setTaskCreateUser = params => { return axios.post(`${base}/xm/core/
 
 export const editTime = params => { return axios.post(`${base}/xm/core/xmTask/editTime`, params); };
 
+
+
+export const calcProgress = params => { return axios.post(`${base}/xm/core/xmTask/calcProgress`, params); };
+
+
+export const calcProjectProgress = params => { return axios.post(`${base}/xm/core/xmTask/calcProjectProgress`, params); };
+
 export const batchChangeParentTask = params => { return axios.post(`${base}/xm/core/xmTask/batchChangeParentTask`, params); }; 
 
 

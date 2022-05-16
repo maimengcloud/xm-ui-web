@@ -334,6 +334,17 @@
                 >
               </el-col>
             </el-row>
+            <el-row> 
+              <el-col :span="24" style="padding-top: 5px">
+                <el-button  title="一般情况下默认半个小时会统一更新一次，不需要手动更新，如需要立即汇总数据到上级计划，可以手动执行刷新操作"
+                  v-if="queryScope=='planTask'||queryScope=='plan'"
+                  @click="calcProjectProgress"
+                  v-loading="load.edit"
+                  icon="el-icon-edit"
+                  >刷新全部计划进度数据</el-button
+                >
+              </el-col>
+            </el-row>
             <el-button style="margin-top: 10px;" slot="reference">更多</el-button>
           </el-popover>
 
@@ -405,17 +416,11 @@
                   
 									<div class="tool-bar">
                     <span class="u-btn">
-                      <el-tooltip  v-if="scope.row.ntype==='1'" :content=" '新建任务'">    
-                          <el-button    @click="showSubAdd( scope.row,scope.$index,'0')" icon="el-icon-plus" title="新建任务" circle plain size="mini"> </el-button>     
-                      </el-tooltip> 
-                      <el-tooltip  v-if="scope.row.ntype==='1'" :content=" '新建计划'">    
-                          <el-button :style="{backgroundColor:  '#E6A23C'}"  @click="showSubAdd( scope.row,scope.$index,'1')" icon="el-icon-plus" title="新建计划" circle plain size="mini"> </el-button>     
-                      </el-tooltip> 
-                      
-                      <el-tooltip  v-if="scope.row.ntype==='0'" :content=" '编辑任务'">    
-                          <el-button    @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" circle plain size="mini"> </el-button>     
-                      </el-tooltip> 
-                    </span>
+                        <el-button v-if="scope.row.ntype==='1'"   @click="showSubAdd( scope.row,scope.$index,'0')" icon="el-icon-plus" title="新建任务" circle plain size="mini"> </el-button>     
+                        <el-button v-if="scope.row.ntype==='1'" :style="{backgroundColor:  '#E6A23C'}"  @click="showSubAdd( scope.row,scope.$index,'1')" icon="el-icon-plus" title="新建计划" circle plain size="mini"> </el-button>     
+                    
+                        <el-button   v-if="scope.row.ntype==='0'"  @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" circle plain size="mini"> </el-button>     
+                     </span>
 									</div>
                 </template>
               </el-table-column>
@@ -466,13 +471,28 @@
               </el-table-column>
               <el-table-column sortable prop="rate" label="进度" width="100">
                 <template slot-scope="scope">
-                  <el-link :disabled="scope.row.ntype=='1'"
+                  <el-link v-if="scope.row.ntype=='0'"
                     style="border-radius: 30px"
                     :type="scope.row.rate >= 100 ? 'success' : 'warning'"
                     @click="showWorkload(scope.row)"
                   >
                     {{ (scope.row.rate != null ? scope.row.rate : 0) + "%" }}
-                  </el-link>
+                  </el-link>  
+                  
+                  <el-link v-else
+                    style="border-radius: 30px"
+                    :type="scope.row.rate >= 100 ? 'success' : 'warning'"
+                    @click="calcProgress(scope.row)"
+                  >
+                    {{ (scope.row.rate != null ? scope.row.rate : 0) + "%" }}
+                  </el-link>  
+									<div class="cell-bar">
+                    <span class="u-btn">  
+                          <el-button v-if="scope.row.ntype==='0'"   @click="showWorkload(scope.row)" icon="el-icon-timer" title="登记工时进度" circle plain size="mini"> </el-button>     
+                       
+                           <el-button  v-else :disabled="load.calcProgress" v-loading="load.calcProgress"  @click="calcProgress(scope.row)" icon="el-icon-s-data" title="统计进度，逐级往上汇总" circle plain size="mini"> </el-button>     
+                     </span> 
+                  </div>
                 </template>
               </el-table-column>
 
@@ -913,6 +933,8 @@ import {
   batchRelTasksWithMenu,
   batchChangeParentTask,
   editXmTaskSomeFields,
+  calcProgress,
+  calcProjectProgress,
 } from "@/api/xm/core/xmTask";
 import XmTaskAdd from "./XmTaskAdd"; //新增界面
 import XmTaskEdit from "./XmTaskEdit"; //修改界面
@@ -1042,7 +1064,7 @@ export default {
         orderFields: ["create_time"], //排序列 如 ['sex','student_id']，必须为数据库字段
         orderDirs: ["desc"], //升序 asc,降序desc 如 性别 升序、学生编号降序 ['asc','desc']
       },
-      load: { list: false, edit: false, del: false, add: false }, //查询中...
+      load: { list: false, edit: false, del: false, add: false,calcProgress:false, }, //查询中...
       sels: [], //列表选中数据
       dicts: {
         priority: [],
@@ -1166,6 +1188,19 @@ export default {
     };
   }, //end data
   methods: {
+    calcProjectProgress(){
+      calcProjectProgress().then(res=>{
+        this.searchXmTasks();
+      })
+    },
+    calcProgress(row){ 
+      this.load.calcProgress=true
+      calcProgress({id:row.id}).then(res=>{ 
+        
+        this.load.calcProgress=false
+        this.searchXmTasks();
+      })
+    },
     changeSelKey(index) {
       this.selkey = index;
       this.searchXmTasks();

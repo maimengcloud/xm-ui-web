@@ -225,7 +225,7 @@
 	float: right;
 }
 
-.el-table__body tr:hover{
+table tr:hover{
 	.tool-bar{
 		visibility: visible;
 		.u-btn{   
@@ -233,7 +233,14 @@
 		} 
 	}
 }
-
+table tr.hover-row{
+	.tool-bar{
+		visibility: visible;
+		.u-btn{   
+			float: right;
+		} 
+	}
+}
 .cell-bar{
 	display: none;
 	float: right;
@@ -241,9 +248,10 @@
 
 .el-table__row td:hover{
 	.cell-bar{
-		display: block; 
-		float: right;  
-    width: 90%;
+		display: inline; 
+    .u-btn{   
+			float: right;
+		}   
 	}
   .cell-text{
     display:none;
