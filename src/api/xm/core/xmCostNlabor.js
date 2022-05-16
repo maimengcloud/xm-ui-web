@@ -31,11 +31,14 @@ export const addXmCostNlabor = params => { return axios.post(`${base}/xm/core/xm
 export const editSomeFieldsXmCostNlabor = params => { return axios.post(`${base}/xm/core/xmCostNlabor/editSomeFields`, params); };
 
 
+//普通查询 条件之间and关系  
+export const listSumXmCostNlabor = params => { return axios.get(`${base}/xm/core/xmCostNlabor/listSum`, { params: params }); };
+
 
 /**-------------------------前端mng|add|edit界面公共函数---------------请写在下面----------------------------------------------- */
 //初始化页面上的字典
 export const initDicts = (that) => {
- var itemCodes=[];//在此添加要加载的字典 如['sex','grade','lvl']
+ var itemCodes=['projectSubject'];//在此添加要加载的字典 如['sex','grade','lvl']
  if(itemCodes.length>0){
     initSimpleDicts('all',itemCodes).then(res=>{
         Object.assign(that.dicts,res.data.data)

@@ -18,83 +18,56 @@
 				     <span class="cell-text">  {{scope.row.username}}}  </span>
                      <span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
 				</el-table-column>
-				-->
-				<el-table-column prop="id" label="主键" min-width="80" show-overflow-tooltip  fixed="left"></el-table-column>
+				-->  
 				<el-table-column prop="projectId" label="项目编号" min-width="80" show-overflow-tooltip>
                     <template slot-scope="scope">
-                        <span> {{scope.row.projectId}} </span>
+                         <span> {{scope.row.projectId}} </span>
                     </template>
-				</el-table-column>
-				<el-table-column prop="userid" label="项目成员编号" min-width="80" show-overflow-tooltip>
+				</el-table-column>  
+				<el-table-column prop="username" label="项目成员" min-width="80" show-overflow-tooltip>
                     <template slot-scope="scope">
-                        <span> {{scope.row.userid}} </span>
+                        <span class="cell-text"> {{scope.row.username}} </span>
+						<span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
                     </template>
-				</el-table-column>
-				<el-table-column prop="budgetAt" label="预算金额/每月" min-width="80" show-overflow-tooltip>
+				</el-table-column> 
+				<el-table-column prop="subjectId" label="预算科目" min-width="80" show-overflow-tooltip>
+                    <template slot-scope="scope"> 
+						<div class="cell-text">
+							{{formaterByDicts(scope.row,'projectSubject',scope.row.subjectId)}}
+						</div>
+						<span class="cell-bar">
+							<el-select  v-model="scope.row.subjectId" placeholder="预算科目"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'subjectId',$event)">
+								<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.projectSubject" :key="index"></el-option>
+							</el-select>
+						</span>
+                    </template>
+				</el-table-column> 
+				<el-table-column prop="remark" label="用途说明" min-width="80" show-overflow-tooltip>
                     <template slot-scope="scope">
-                        <span> {{scope.row.budgetAt}} </span>
+                        <span class="cell-text"> {{scope.row.remark}} </span>
+						<span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.remark" placeholder="" @change="editSomeFields(scope.row,'remark',$event)" :maxlength="22"></el-input></span>
                     </template>
 				</el-table-column>
-				<el-table-column prop="remark" label="备注" min-width="80" show-overflow-tooltip>
+				<el-table-column prop="budgetAt" label="预算金额" min-width="80" show-overflow-tooltip>
                     <template slot-scope="scope">
-                        <span> {{scope.row.remark}} </span>
+                        <span class="cell-text"> {{scope.row.budgetAt}} </span>
+						<span class="cell-bar"><el-input type="number" style="display:inline;" v-model="scope.row.budgetAt" placeholder="" @change="editSomeFields(scope.row,'budgetAt',$event)" :maxlength="22"></el-input></span>
                     </template>
 				</el-table-column>
-				<el-table-column prop="username" label="用户名" min-width="80" show-overflow-tooltip>
+				<el-table-column prop="bizMonth" label="费用月份" min-width="80" show-overflow-tooltip>
                     <template slot-scope="scope">
-                        <span> {{scope.row.username}} </span>
+                        <span class="cell-text"> {{scope.row.bizMonth}} </span> 
+						<span class="cell-bar">
+							<el-date-picker
+								@change="editSomeFields(scope.row,'bizMonth',$event)"
+								v-model="scope.row.bizMonth"
+								type="month"
+								value-format="yyyy-MM"
+								placeholder="选择年月">
+							</el-date-picker> 
+ 						</span>
                     </template>
-				</el-table-column>
-				<el-table-column prop="subjectId" label="预算科目编号" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.subjectId}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="bizSdate" label="费用归属周期开始日期" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.bizSdate}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="bizEdate" label="费用归属周期结束日期" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.bizEdate}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="bizMonth" label="费用归属月份yyyy-mm" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.bizMonth}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="instId" label="当前流程实例编号" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.instId}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="bizFlowState" label="当前流程状态0初始1审批中2审批通过3审批不通过4流程取消或者删除" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.bizFlowState}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="costType" label="成本类型0非人力1内部人力2外购人力" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.costType}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="subjectName" label="科目名称" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.subjectName}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="branchId" label="项目归属机构编号" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.branchId}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="ubranchId" label="用户归属机构编号-也就是将来的结算对象" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span> {{scope.row.ubranchId}} </span>
-                    </template>
-				</el-table-column>
+				</el-table-column>  
 				<el-table-column label="操作" width="180" fixed="right">
 					<template scope="scope">
 						<el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"  plain></el-button>

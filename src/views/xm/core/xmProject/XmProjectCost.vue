@@ -25,32 +25,32 @@
 				<el-table ref="table"
 					:height="maxTableHeight"
 					v-if="showType == '人力'"
-					:data="sumXmProjectMCostUsersConvert"
+					:data="sumXmCostLaborsConvert"
 					highlight-current-row
 					v-loading="load.list"
 					border> 
 					<el-table-column prop="username" label="成员姓名" min-width="100" v-if="rptType==='3'">
 						<template slot-scope="scope">
-							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostUserDetails(scope.row,'username','queryByBizUserid')">{{scope.row.username}}</a>
+							<a    style="text-decoration:underline;margin-right:5px;"  @click="showXmCostLaborDetails(scope.row,'username','queryByBizUserid')">{{scope.row.username}}</a>
 						</template> 
 
 					</el-table-column>
 					<el-table-column prop="projectId" label="项目编号" min-width="100" v-if="rptType==='2'">
 						<template slot-scope="scope">
-							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostUserDetails(scope.row,'projectId','queryByProjectId')">{{scope.row.projectId}}</a>
+							<a    style="text-decoration:underline;margin-right:5px;"  @click="showXmCostLaborDetails(scope.row,'projectId','queryByProjectId')">{{scope.row.projectId}}</a>
 						</template> 
 
 					</el-table-column>
 					<el-table-column prop="branchId" label="企业编号" min-width="100" v-if="rptType==='1'">
 						<template slot-scope="scope">
-							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostUserDetails(scope.row,'branchId','queryByBranchId')">{{scope.row.branchId}}</a>
+							<a    style="text-decoration:underline;margin-right:5px;"  @click="showXmCostLaborDetails(scope.row,'branchId','queryByBranchId')">{{scope.row.branchId}}</a>
 						</template> 
 
 					</el-table-column>
 					<!-- <el-table-column  min-width="100" ></el-table-column> -->
 					<el-table-column :prop="month" v-for="month in selYearMonths" :key="month" :label="month" width="100">  
 						<template slot-scope="scope">
-							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostUserDetails(scope.row,month,'queryByBizMonth')">￥{{scope.row[month]}}</a>
+							<a    style="text-decoration:underline;margin-right:5px;"  @click="showXmCostLaborDetails(scope.row,month,'queryByBizMonth')">￥{{scope.row[month]}}</a>
 						</template> 
 					</el-table-column>
 					<el-table-column prop="monthsSum" label="合计" min-width="80"> 
@@ -59,26 +59,26 @@
 
 				<el-table
 					v-if="showType == '非人力'"
-					:data="sumXmProjectMCostNousersConvert" 
+					:data="sumXmCostNlaborsConvert" 
 					highlight-current-row
 					v-loading="load.list"
 					border
 					style="width: 100%;height:720px;overflow-y:auto;">
 					<el-table-column prop="subjectId" label="科目" min-width="100" >
 						<template slot-scope="scope">
-							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostNouserDetails(scope.row,'subjectId','queryBySubjectId')">{{scope.row.subjectId}}</a>
+							<a    style="text-decoration:underline;margin-right:5px;"  @click="showXmCostNlaborDetails(scope.row,'subjectId','queryBySubjectId')">{{scope.row.subjectId}}</a>
 						</template>  
 					</el-table-column>
 					<el-table-column prop="username" label="姓名" min-width="100" >
 						<template slot-scope="scope">
-							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostNouserDetails(scope.row,'username','queryByBizUserid')">{{scope.row.username}}</a>
+							<a    style="text-decoration:underline;margin-right:5px;"  @click="showXmCostNlaborDetails(scope.row,'username','queryByBizUserid')">{{scope.row.username}}</a>
 						</template> 
 
 					</el-table-column>
 					<!-- <el-table-column  min-width="100" ></el-table-column> -->
 					<el-table-column :prop="month" v-for="month in selYearMonths" :key="month" :label="month" width="100">  
 						<template slot-scope="scope">
-							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostNouserDetails(scope.row,month,'queryByBizMonth')">￥{{scope.row[month]}}</a>
+							<a    style="text-decoration:underline;margin-right:5px;"  @click="showXmCostNlaborDetails(scope.row,month,'queryByBizMonth')">￥{{scope.row[month]}}</a>
 						</template> 
 					</el-table-column>
 					<el-table-column prop="monthsSum" label="合计" min-width="80"> 
@@ -87,14 +87,14 @@
 			</div>
 
 			<div v-else>
-				<xm-cost-user v-if="showType == '人力'" :sel-project="selProject"></xm-cost-user>
-				<xm-cost-nouser v-else  :sel-project="selProject"></xm-cost-nouser>
+				<xm-cost-labor v-if="showType == '人力'" :sel-project="selProject"></xm-cost-labor>
+				<xm-cost-nlabor v-else  :sel-project="selProject"></xm-cost-nlabor>
 			</div>
-			<el-drawer title="查看人力支出明细" :visible.sync="costUserVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
-				<xm-cost-user v-if="costUser" :biz-month="queryType==='queryByBizMonth'?fieldName:null" :visible="costUserVisible" :userid="costUser.userid" :branch-id=" costUser.branchId " :project-id=" costUser.projectId "></xm-cost-user>
+			<el-drawer title="查看人力支出明细" :visible.sync="xmCostLaborVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
+				<xm-cost-labor v-if="xmCostLabor" :biz-month="queryType==='queryByBizMonth'?fieldName:null" :visible="xmCostLaborVisible" :userid="xmCostLabor.userid" :branch-id=" xmCostLabor.branchId " :project-id=" xmCostLabor.projectId "></xm-cost-labor>
 			</el-drawer> 
-			<el-drawer title="查看非人力支出明细" :visible.sync="costNouserVisible"  size="60%"   append-to-body   :close-on-click-modal="false">
-				<xm-cost-nouser :cost-nouser="costNouser" :visible="costNouserVisible" :field-name="fieldName" :query-type="queryType" :sel-project="selProject"></xm-cost-nouser>
+			<el-drawer title="查看非人力支出明细" :visible.sync="xmCostNlaborVisible"  size="60%"   append-to-body   :close-on-click-modal="false">
+				<xm-cost-nlabor :xm-cost-nlabor="xmCostNlabor" :visible="xmCostNlaborVisible" :field-name="fieldName" :query-type="queryType" :sel-project="selProject"></xm-cost-nlabor>
 			</el-drawer> 
 		</el-row>
 	</section>
@@ -105,28 +105,26 @@
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { mapGetters } from 'vuex';
-	import { editBudget } from '@/api/xm/core/xmProject';
 	import { listSumSamtGroupByUseridBizMonth,listSumSamtGroupByBranchIdBizMonth,listSumSamtGroupByProjectIdBizMonth } from '@/api/xm/core/xmTaskSbillDetail';
-	import { listSumXmProjectMCostNouser } from '@/api/xm/core/xmProjectMCostNouser';
-	import xmCostUser from '../xmTaskSbillDetail/XmTaskSbillDetailMng';
-	import xmCostNouser from '../xmProjectMCostNouser/XmProjectMCostNouserMng';
-import { months } from 'moment';
+	import { listSumXmCostNlabor } from '@/api/xm/core/xmCostNlabor';
+	import xmCostLabor from '../xmTaskSbillDetail/XmTaskSbillDetailMng';
+	import xmCostNlabor from '../xmCostNlabor/XmCostNlaborMng'; 
 
 	export default { 
 		props: ["selProject"],
 		computed: {
 			...mapGetters([
-				'userInfo','roles'
+				'laborInfo','roles'
 			]),
 			selYearMonths:function(){
 				var selYear=this.selYear;
 				var yearMonths=[selYear+'-01',selYear+'-02',selYear+'-03',selYear+'-04',selYear+'-05',selYear+'-06',selYear+'-07',selYear+'-08',selYear+'-09',selYear+'-10',selYear+'-11',selYear+'-12']
 				return yearMonths;
 			},
-			sumXmProjectMCostUsersConvert:function(){ 
+			sumXmCostLaborsConvert:function(){ 
 				var map={};
 				var secMap={};
-				this.sumXmProjectMCostUsers.forEach(i=>{
+				this.sumXmCostLabors.forEach(i=>{
 					i.key=i.projectId+"_"+i.subjectId+"_"+i.userid;
 					i.monthKey=i.key+"_"+i.bizMonth;
 					secMap[i.monthKey]=i;
@@ -150,10 +148,10 @@ import { months } from 'moment';
 				}
 				return list;
 			},
-			sumXmProjectMCostNousersConvert:function(){ 
+			sumXmCostNlaborsConvert:function(){ 
 				var map={};
 				var secMap={};
-				this.sumXmProjectMCostNousers.forEach(i=>{
+				this.sumXmCostNlabors.forEach(i=>{
 					i.key=i.projectId+"_"+i.subjectId;
 					i.monthKey=i.key+"_"+i.bizzMonth;
 					secMap[i.monthKey]=i;
@@ -184,7 +182,7 @@ import { months } from 'moment';
 					this.listSumSamt();
 				}
 				else{
-					this.listSumXmProjectMCostNouser();
+					this.listSumXmCostNlabor();
 				}
 			},
 			'selProject': function(selProject){
@@ -210,16 +208,16 @@ import { months } from 'moment';
 				costShow: "支出统计",
 				selYear: ""+new Date().getFullYear(),
 				showType: "",
-				costUser: [],
-				costNouser: [], 
-				sumXmProjectMCostUsers:[],
-				costUser:null,
+				xmCostLabor: [],
+				xmCostNlabor: [], 
+				sumXmCostLabors:[],
+				xmCostLabor:null,
 				fieldName:'',
 				queryType:'',
-				costUserVisible:false,
-				sumXmProjectMCostNousers:[],
-				costNouser:null, 
-				costNouserVisible:false,
+				xmCostLaborVisible:false,
+				sumXmCostNlabors:[],
+				xmCostNlabor:null, 
+				xmCostNlaborVisible:false,
 				maxTableHeight:300,
 				rptType:'1',//统计类型
 				/**end 自定义属性请在上面加 请加备注**/
@@ -248,40 +246,40 @@ import { months } from 'moment';
 				}
 				func(params).then(res=>{
 					if(res.data.tips.isOk){
-						this.sumXmProjectMCostUsers=res.data.data;
+						this.sumXmCostLabors=res.data.data;
 					}
 					
 				})
 			},  
  
-			listSumXmProjectMCostNouser:function(){
+			listSumXmCostNlabor:function(){
 				var parmas={
 					projectId:this.selProject.id, 
 				}
-				listSumXmProjectMCostNouser(parmas).then(res=>{
+				listSumXmCostNlabor(parmas).then(res=>{
 					if(res.data.tips.isOk){
-						this.sumXmProjectMCostNousers=res.data.data;
+						this.sumXmCostNlabors=res.data.data;
 					}
 					
 				})
 			}, 
-			showCostUserDetails:function(row,fieldName,queryType){
-				this.costUser=row
+			showXmCostLaborDetails:function(row,fieldName,queryType){
+				this.xmCostLabor=row
 				this.fieldName=fieldName
 				this.queryType=queryType
-				this.costUserVisible=true;
+				this.xmCostLaborVisible=true;
 			},
-			showCostNouserDetails:function(row,fieldName,queryType){
-				this.costNouser=row
+			showXmCostNlaborDetails:function(row,fieldName,queryType){
+				this.xmCostNlabor=row
 				this.fieldName=fieldName
 				this.queryType=queryType
-				this.costNouserVisible=true;
+				this.xmCostNlaborVisible=true;
 			}, 
 			/**end 自定义函数请在上面加**/
 		},//end methods
 		components: {
-			xmCostUser,
-			xmCostNouser,
+			xmCostLabor,
+			xmCostNlabor,
 				//在下面添加其它组件
 		},
 		mounted() { 

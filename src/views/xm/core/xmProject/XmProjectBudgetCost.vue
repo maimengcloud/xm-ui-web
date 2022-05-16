@@ -30,7 +30,7 @@
 				<el-table
 					:height="tableHeight"
 					v-if="showType == '人力'"
-					:data="sumXmProjectMBudgetCostUsersConvert"
+					:data="sumXmBudgetLaborsConvert"
 					highlight-current-row
 					v-loading="load.list"
 					border>
@@ -59,7 +59,7 @@
 					ref="table"
 					:height="tableHeight"
 					v-if="showType == '非人力'"
-					:data="sumXmProjectMBudgetCostNousersConvert" 
+					:data="sumXmBudgetNlaborsConvert" 
 					highlight-current-row
 					v-loading="load.list"
 					border
@@ -87,14 +87,14 @@
 			</div>
 
 			<div v-else>
-				<xm-budget-user v-if="showType == '人力'" :sel-project="selProject"></xm-budget-user>
-				<xm-budget-nouser v-else  :sel-project="selProject"></xm-budget-nouser>
+				<xm-budget-labor v-if="showType == '人力'" :sel-project="selProject"></xm-budget-labor>
+				<xm-budget-nlabor v-else  :sel-project="selProject"></xm-budget-nlabor>
 			</div>
-			<el-drawer title="查看人力预算明细" :visible.sync="budgetCostUserVisible"  fullscreen  append-to-body   :close-on-click-modal="false">
-				<xm-budget-user :budget-cost-user="budgetCostUser" :visible="budgetCostUserVisible" :field-name="fieldName" :query-type="queryType" :sel-project="selProject"></xm-budget-user>
+			<el-drawer title="查看人力预算明细" :visible.sync="xmBudgetLaborVisible"  fullscreen  append-to-body   :close-on-click-modal="false">
+				<xm-budget-labor :xm-budget-labor="xmBudgetLabor" :visible="xmBudgetLaborVisible" :field-name="fieldName" :query-type="queryType" :sel-project="selProject"></xm-budget-labor>
 			</el-drawer> 
-			<el-drawer title="查看非人力预算明细" :visible.sync="budgetCostNouserVisible"  fullscreen  append-to-body   :close-on-click-modal="false">
-				<xm-budget-nouser :budget-cost-nouser="budgetCostNouser" :visible="budgetCostNouserVisible" :field-name="fieldName" :query-type="queryType" :sel-project="selProject"></xm-budget-nouser>
+			<el-drawer title="查看非人力预算明细" :visible.sync="xmBudgetNlaborVisible"  fullscreen  append-to-body   :close-on-click-modal="false">
+				<xm-budget-nlabor :xm-budget-nlabor="xmBudgetNlabor" :visible="xmBudgetNlaborVisible" :field-name="fieldName" :query-type="queryType" :sel-project="selProject"></xm-budget-nlabor>
 			</el-drawer> 
 		</el-row>
 	</section>
@@ -106,11 +106,10 @@
 	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { mapGetters } from 'vuex';
 	import { editBudget } from '@/api/xm/core/xmProject';
-	import { listSumXmProjectMBudgetCostUser } from '@/api/xm/core/xmProjectMBudgetCostUser';
-	import { listSumXmProjectMBudgetCostNouser } from '@/api/xm/core/xmProjectMBudgetCostNouser';
-	import xmBudgetUser from '../xmProjectMBudgetCostUser/XmProjectMBudgetCostUserMng';
-	import xmBudgetNouser from '../xmProjectMBudgetCostNouser/XmProjectMBudgetCostNouserMng';
-import { months } from 'moment';
+	import { listSumXmBudgetLabor } from '@/api/xm/core/xmBudgetLabor';
+	import { listSumXmBudgetNlabor } from '@/api/xm/core/xmBudgetNlabor';
+	import xmBudgetLabor from '../xmBudgetLabor/XmBudgetLaborMng';
+	import xmBudgetNlabor from '../xmBudgetNlabor/XmBudgetNlaborMng'; 
 
 	export default { 
 		props: ["selProject"],
@@ -123,10 +122,10 @@ import { months } from 'moment';
 				var yearMonths=[selYear+'-01',selYear+'-02',selYear+'-03',selYear+'-04',selYear+'-05',selYear+'-06',selYear+'-07',selYear+'-08',selYear+'-09',selYear+'-10',selYear+'-11',selYear+'-12']
 				return yearMonths;
 			},
-			sumXmProjectMBudgetCostUsersConvert:function(){ 
+			sumXmBudgetLaborsConvert:function(){ 
 				var map={};
 				var secMap={};
-				this.sumXmProjectMBudgetCostUsers.forEach(i=>{
+				this.sumXmBudgetLabors.forEach(i=>{
 					i.key=i.projectId+"_"+i.subjectId+"_"+i.userid+"_"+i.username;
 					i.monthKey=i.key+"_"+i.bizzMonth;
 					secMap[i.monthKey]=i;
@@ -150,10 +149,10 @@ import { months } from 'moment';
 				}
 				return list;
 			},
-			sumXmProjectMBudgetCostNousersConvert:function(){ 
+			sumXmBudgetNlaborsConvert:function(){ 
 				var map={};
 				var secMap={};
-				this.sumXmProjectMBudgetCostNousers.forEach(i=>{
+				this.sumXmBudgetNlabors.forEach(i=>{
 					i.key=i.projectId+"_"+i.subjectId;
 					i.monthKey=i.key+"_"+i.bizzMonth;
 					secMap[i.monthKey]=i;
@@ -181,10 +180,10 @@ import { months } from 'moment';
 		watch: {
 			'showType': function(val) {
 				if(val == "人力"){
-					this.listSumXmProjectMBudgetCostUser();
+					this.listSumXmBudgetLabor();
 				}
 				else{
-					this.listSumXmProjectMBudgetCostNouser();
+					this.listSumXmBudgetNlabor();
 				}
 			},
 			'selProject': function(selProject){
@@ -204,17 +203,17 @@ import { months } from 'moment';
 				costShow: "预算统计",
 				selYear: ""+new Date().getFullYear(),
 				showType: "",
-				budgetUser: [],
-				budgetNouser: [],
+				xmBudgetLabors: [],
+				xmBudgetNlabors: [],
 				selProjectBudget:{},
-				sumXmProjectMBudgetCostUsers:[],
-				budgetCostUser:null,
+				sumXmBudgetLabors:[],
+				xmBudgetLabor:null,
 				fieldName:'',
 				queryType:'',
-				budgetCostUserVisible:false,
-				sumXmProjectMBudgetCostNousers:[],
-				budgetCostNouser:null, 
-				budgetCostNouserVisible:false,
+				xmBudgetLaborVisible:false,
+				sumXmBudgetNlabors:[],
+				xmBudgetNlabor:null, 
+				xmBudgetNlaborVisible:false,
 				tableHeight:300,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
@@ -225,34 +224,34 @@ import { months } from 'moment';
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
  
-			listSumXmProjectMBudgetCostUser:function(){
+			listSumXmBudgetLabor:function(){
 				var parmas={
 					projectId:this.selProject.id, 
 				}
-				listSumXmProjectMBudgetCostUser(parmas).then(res=>{
-					this.sumXmProjectMBudgetCostUsers=res.data.data;
+				listSumXmBudgetLabor(parmas).then(res=>{
+					this.sumXmBudgetLabors=res.data.data;
 				})
 			},  
  
-			listSumXmProjectMBudgetCostNouser:function(){
+			listSumXmBudgetNlabor:function(){
 				var parmas={
 					projectId:this.selProject.id, 
 				}
-				listSumXmProjectMBudgetCostNouser(parmas).then(res=>{
-					this.sumXmProjectMBudgetCostNousers=res.data.data;
+				listSumXmBudgetNlabor(parmas).then(res=>{
+					this.sumXmBudgetNlabors=res.data.data;
 				})
 			}, 
 			showCostUserDetails:function(row,fieldName,queryType){
-				this.budgetCostUser=row
+				this.xmBudgetLabor=row
 				this.fileName=fieldName
 				this.queryType=queryType
-				this.budgetCostUserVisible=true;
+				this.xmBudgetLaborVisible=true;
 			},
 			showCostNouserDetails:function(row,fieldName,queryType){
-				this.budgetCostNouser=row
+				this.xmBudgetNlabor=row
 				this.fileName=fieldName
 				this.queryType=queryType
-				this.budgetCostNouserVisible=true;
+				this.xmBudgetNlaborVisible=true;
 			},
 			/**begin 自定义函数请在下面加**/
 			// inputChange() {
@@ -300,8 +299,8 @@ import { months } from 'moment';
 			/**end 自定义函数请在上面加**/
 		},//end methods
 		components: {
-			xmBudgetUser,
-			xmBudgetNouser,
+			xmBudgetLabor,
+			xmBudgetNlabor,
 				//在下面添加其它组件
 		},
 		mounted() { 

@@ -30,12 +30,13 @@ export const addXmBudgetLabor = params => { return axios.post(`${base}/xm/core/x
 //批量修改某些字段
 export const editSomeFieldsXmBudgetLabor = params => { return axios.post(`${base}/xm/core/xmBudgetLabor/editSomeFields`, params); };
 
+export const listSumXmBudgetLabor = params => { return axios.get(`${base}/xm/core/xmBudgetLabor/listSum`, { params: params }); };
 
 
 /**-------------------------前端mng|add|edit界面公共函数---------------请写在下面----------------------------------------------- */
 //初始化页面上的字典
 export const initDicts = (that) => {
- var itemCodes=[];//在此添加要加载的字典 如['sex','grade','lvl']
+ var itemCodes=['projectSubject'];//在此添加要加载的字典 如['sex','grade','lvl']
  if(itemCodes.length>0){
     initSimpleDicts('all',itemCodes).then(res=>{
         Object.assign(that.dicts,res.data.data)
