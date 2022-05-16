@@ -236,7 +236,7 @@ import { months } from 'moment';
 					bizYear:this.selYear, 
 				}
 				if(this.selProject){
-					params.projectId=this.selProject
+					params.projectId=this.selProject.id
 				}
 				var func=listSumSamtGroupByUseridBizMonth
 				if(this.rptType==='1'){
