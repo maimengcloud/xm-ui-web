@@ -404,7 +404,7 @@
                 class-name="title"
                 fixed="left"
                 label="名称(点击详情)"
-                min-width="250" show-overflow-tooltip
+                min-width="300" show-overflow-tooltip
               >
                 <template slot-scope="scope">
                   <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#409EFF'}">
