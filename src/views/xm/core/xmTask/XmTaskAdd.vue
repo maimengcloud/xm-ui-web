@@ -2,7 +2,7 @@
 	<section> 
 		<el-row>
 			<!--新增界面 XmTask xm_task-->
-			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm"> 
+			<el-form :model="addForm"  label-width="120px" label-position="left" :rules="addFormRules" ref="addForm"> 
 						<el-row :gutter="10">
 							<el-col :span="6">
 								<el-form-item label="序号" prop="sortLevel" >  
