@@ -79,12 +79,12 @@
 		</el-row>
 		<el-row>
 			<!--编辑 XmBudgetLabor 项目人力成本预算界面-->
-			<el-drawer title="编辑项目人力成本预算" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑项目人力预算" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
 				  <xm-budget-labor-edit op-type="edit" :xm-budget-labor="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-budget-labor-edit>
 			</el-drawer>
 
 			<!--新增 XmBudgetLabor 项目人力成本预算界面-->
-			<el-drawer title="新增项目人力成本预算" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
+			<el-drawer title="新增项目人力预算" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
 				<xm-budget-labor-add op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-budget-labor-add>
 			</el-drawer>
 	    </el-row>

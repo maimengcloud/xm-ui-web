@@ -5,66 +5,36 @@
 		<el-row class="page-main" :style="{overflowX:'auto',height:maxTableHeight+'px'}" ref="table">
 		<!--编辑界面 XmCostNlabor 项目实际人工成本费用--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">
-				<el-form-item label="项目编号" prop="projectId">
-					<el-input v-model="editForm.projectId" placeholder="项目编号" :maxlength="50"></el-input>
+				 <el-form-item label="项目编号" prop="projectId">
+					<el-input v-model="editForm.projectId" placeholder="项目编号" :maxlength="50" disabled></el-input>
+				</el-form-item>   
+				<el-form-item label="费用主责" prop="username">
+					<el-input v-model="editForm.username" placeholder="费用主责" ></el-input>
+				</el-form-item>   
+				<el-form-item label="用途说明" prop="remark">
+					<el-input v-model="editForm.remark" placeholder="用途说明" ></el-input>
+				</el-form-item>    
+				<el-form-item label="实际金额" prop="actAt">
+					<el-input v-model="editForm.budgetAt" placeholder="实际金额" :maxlength="10"></el-input>
 				</el-form-item> 
-				<el-form-item label="用户编号-费用主责人" prop="userid">
-					<el-input v-model="editForm.userid" placeholder="用户编号-费用主责人" :maxlength="50"></el-input>
-				</el-form-item> 
-				<el-form-item label="创建时间" prop="ctime">
-					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.ctime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
-				</el-form-item> 
-				<el-form-item label="费用发放时间" prop="sendTime">
-					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.sendTime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
-				</el-form-item> 
-				<el-form-item label="用户名称" prop="username">
-					<el-input v-model="editForm.username" placeholder="用户名称" :maxlength="50"></el-input>
-				</el-form-item> 
-				<el-form-item label="项目名称" prop="projectName">
-					<el-input v-model="editForm.projectName" placeholder="项目名称" :maxlength="255"></el-input>
-				</el-form-item> 
-				<el-form-item label="备注" prop="remark">
-					<el-input v-model="editForm.remark" placeholder="备注" :maxlength="255"></el-input>
-				</el-form-item> 
-				<el-form-item label="主键" prop="id">
-					<el-input v-model="editForm.id" placeholder="主键" :maxlength="50"></el-input>
-				</el-form-item> 
-				<el-form-item label="任务编号" prop="taskId">
-					<el-input v-model="editForm.taskId" placeholder="任务编号" :maxlength="50"></el-input>
-				</el-form-item> 
-				<el-form-item label="任务名称" prop="taskName">
-					<el-input v-model="editForm.taskName" placeholder="任务名称" :maxlength="255"></el-input>
-				</el-form-item> 
-				<el-form-item label="科目编号" prop="subjectId">
-					<el-input v-model="editForm.subjectId" placeholder="科目编号" :maxlength="50"></el-input>
-				</el-form-item> 
-				<el-form-item label="费用归属周期开始日期" prop="bizSdate">
-					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.bizSdate"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
-				</el-form-item> 
-				<el-form-item label="费用归属周期结束日期" prop="bizEdate">
-					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.bizEdate"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
-				</el-form-item> 
-				<el-form-item label="实际成本金额" prop="actAt">
-					<el-input v-model="editForm.actAt" placeholder="实际成本金额" :maxlength="10"></el-input>
-				</el-form-item> 
-				<el-form-item label="成本类型0非人力1内部人力2外购人力,此表都是非人力" prop="costType">
-					<el-input v-model="editForm.costType" placeholder="成本类型0非人力1内部人力2外购人力,此表都是非人力" :maxlength="1"></el-input>
-				</el-form-item> 
-				<el-form-item label="业务归属月份yyyy-MM" prop="bizMonth">
-					<el-input v-model="editForm.bizMonth" placeholder="业务归属月份yyyy-MM" :maxlength="7"></el-input>
-				</el-form-item> 
-				<el-form-item label="业务归属日期yyyy-MM-dd" prop="bizDate">
-					<el-input v-model="editForm.bizDate" placeholder="业务归属日期yyyy-MM-dd" :maxlength="10"></el-input>
-				</el-form-item> 
-				<el-form-item label="科目名称" prop="subjectName">
-					<el-input v-model="editForm.subjectName" placeholder="科目名称" :maxlength="255"></el-input>
-				</el-form-item> 
-				<el-form-item label="用户归属机构" prop="ubranchId">
-					<el-input v-model="editForm.ubranchId" placeholder="用户归属机构" :maxlength="50"></el-input>
-				</el-form-item> 
-				<el-form-item label="项目归属机构" prop="branchId">
-					<el-input v-model="editForm.branchId" placeholder="项目归属机构" :maxlength="50"></el-input>
-				</el-form-item> 
+				<el-form-item label="成本科目" prop="subjectId">
+					<el-select   placeholder="科目编号" v-model="editForm.subjectId">
+						<el-option
+							v-for="(item,i) in dicts.projectSubject"
+							:key="i"
+							:label="item.name"
+							:value="item.id">
+						</el-option>
+					</el-select>
+				</el-form-item>    
+				<el-form-item label="发生日期" prop="bizDate">
+					<el-date-picker 
+						v-model="editForm.bizDate"
+						type="date"
+						value-format="yyyy-MM-dd"
+						placeholder="选择日期">
+					</el-date-picker> 
+				</el-form-item>
 			</el-form>
 		</el-row>
 
@@ -109,10 +79,22 @@
 			return {
 			    currOpType:'add',//add/edit
  				load:{ list: false, edit: false, del: false, add: false },//查询中...
-				dicts:{},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
+				dicts:{
+					projectSubject:[],
+				},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				editFormRules: {
-					id: [
-						//{ required: true, message: '主键不能为空', trigger: 'blur' }
+					subjectId: [
+						{ required: true, message: '科目不能为空', trigger: 'change' }
+					], 
+					username: [
+						{ required: true, message: '姓名不能为空', trigger: 'change' }
+					],  
+					budgetAt: [
+						{ required: true, message: '金额不能为空', trigger: 'change' }
+					],
+					
+					remark: [
+						{ required: true, message: '用途说明不能为空', trigger: 'change' }
 					]
 				},
 				editForm: {

@@ -24,25 +24,31 @@
                         <span> {{scope.row.projectName}} </span>
                     </template>
 				</el-table-column>  
+				<el-table-column prop="username" label="费用主责" min-width="80" show-overflow-tooltip>
+                    <template slot-scope="scope">
+                        <span class="cell-text"> {{scope.row.username}} </span>
+						<span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
+                    </template>
+				</el-table-column>
 				<el-table-column prop="remark" label="用途说明" min-width="80" show-overflow-tooltip>
                     <template slot-scope="scope">
                         <span class="cell-text"> {{scope.row.remark}} </span>
 						<span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.remark" placeholder="" @change="editSomeFields(scope.row,'remark',$event)" :maxlength="22"></el-input></span>
                     </template>
 				</el-table-column>
-				<el-table-column prop="actAt" label="预算金额" min-width="80" show-overflow-tooltip>
+				<el-table-column prop="actAt" label="实际金额" min-width="80" show-overflow-tooltip>
                     <template slot-scope="scope">
                         <span class="cell-text"> {{scope.row.actAt}} </span>
 						<span class="cell-bar"><el-input type="number" style="display:inline;" v-model="scope.row.actAt" placeholder="" @change="editSomeFields(scope.row,'actAt',$event)" :maxlength="22"></el-input></span>
                     </template>
 				</el-table-column>
-				<el-table-column prop="subjectId" label="预算科目" min-width="80" show-overflow-tooltip>
+				<el-table-column prop="subjectId" label="成本科目" min-width="80" show-overflow-tooltip>
                     <template slot-scope="scope"> 
 						<div class="cell-text">
 							{{formaterByDicts(scope.row,'projectSubject',scope.row.subjectId)}}
 						</div>
 						<span class="cell-bar">
-							<el-select  v-model="scope.row.subjectId" placeholder="预算科目"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'subjectId',$event)">
+							<el-select  v-model="scope.row.subjectId" placeholder="成本科目"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'subjectId',$event)">
 								<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.projectSubject" :key="index"></el-option>
 							</el-select>
 						</span>
@@ -73,12 +79,12 @@
 		</el-row>
 		<el-row>
 			<!--编辑 XmCostNlabor 项目实际人工成本费用界面-->
-			<el-drawer title="编辑项目实际人工成本费用" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
+			<el-drawer title="编辑项目非人力费用" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
 				  <xm-cost-nlabor-edit op-type="edit" :xm-cost-nlabor="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-cost-nlabor-edit>
 			</el-drawer>
 
 			<!--新增 XmCostNlabor 项目实际人工成本费用界面-->
-			<el-drawer title="新增项目实际人工成本费用" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
+			<el-drawer title="新增项目非人力费用" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
 				<xm-cost-nlabor-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-cost-nlabor-edit>
 			</el-drawer>
 	    </el-row>

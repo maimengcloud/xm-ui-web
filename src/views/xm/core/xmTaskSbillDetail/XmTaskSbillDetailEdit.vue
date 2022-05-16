@@ -13,32 +13,23 @@
 				</el-form-item> 
 				<el-form-item label="创建日期" prop="ctime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.ctime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
-				</el-form-item> 
-				<el-form-item label="业务对象主键任务编号" prop="taskId">
-					<el-input v-model="editForm.taskId" placeholder="业务对象主键任务编号" :maxlength="50"></el-input>
-				</el-form-item> 
-				<el-form-item label="业务日期yyyy-MM-dd" prop="bizDate">
-					<el-input v-model="editForm.bizDate" placeholder="业务日期yyyy-MM-dd" :maxlength="10"></el-input>
+				</el-form-item>  
+				<el-form-item label="业务日期" prop="bizDate">
+					<el-input v-model="editForm.bizDate" placeholder="业务日期" :maxlength="10"></el-input>
 				</el-form-item> 
 				<el-form-item label="备注" prop="remark">
 					<el-input v-model="editForm.remark" placeholder="备注" :maxlength="255"></el-input>
-				</el-form-item> 
-				<el-form-item label="主键" prop="id">
-					<el-input v-model="editForm.id" placeholder="主键" :maxlength="50"></el-input>
-				</el-form-item> 
-				<el-form-item label="结算单据编号-来自task_sbill.id" prop="sbillId">
-					<el-input v-model="editForm.sbillId" placeholder="结算单据编号-来自task_sbill.id" :maxlength="50"></el-input>
-				</el-form-item> 
+				</el-form-item>   
 				<el-form-item label="结算提交时间" prop="stime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.stime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
 				</el-form-item> 
-				<el-form-item label="结算状态0-无需结算，1-待结算2-已提交3-已通过4-已结算" prop="sstatus">
-					<el-input v-model="editForm.sstatus" placeholder="结算状态0-无需结算，1-待结算2-已提交3-已通过4-已结算" :maxlength="1"></el-input>
+				<el-form-item label="结算状态" prop="sstatus">
+					<el-input v-model="editForm.sstatus" placeholder="结算状态" :maxlength="1"></el-input>
 				</el-form-item> 
 				<el-form-item label="工时对应金额" prop="amt">
 					<el-input v-model="editForm.amt" placeholder="工时对应金额" :maxlength="10"></el-input>
 				</el-form-item> 
-				<el-form-item label="结算工时对应结算金额-根据结算方案计算结算金额" prop="samt">
+				<el-form-item label="结算金额" prop="samt">
 					<el-input v-model="editForm.samt" placeholder="结算工时对应结算金额-根据结算方案计算结算金额" :maxlength="10"></el-input>
 				</el-form-item> 
 				<el-form-item label="报工工时" prop="workload">
@@ -47,32 +38,32 @@
 				<el-form-item label="归属项目" prop="projectId">
 					<el-input v-model="editForm.projectId" placeholder="归属项目" :maxlength="50"></el-input>
 				</el-form-item> 
-				<el-form-item label="结算工时，用于结算，默认=workload" prop="sworkload">
-					<el-input v-model="editForm.sworkload" placeholder="结算工时，用于结算，默认=workload" :maxlength="10"></el-input>
+				<el-form-item label="结算工时" prop="sworkload">
+					<el-input v-model="editForm.sworkload" placeholder="结算工时" :maxlength="10"></el-input>
 				</el-form-item> 
-				<el-form-item label="月份yyyy-MM型" prop="bizMonth">
+				<el-form-item label="月份" prop="bizMonth">
 					<el-input v-model="editForm.bizMonth" placeholder="月份yyyy-MM型" :maxlength="7"></el-input>
 				</el-form-item> 
-				<el-form-item label="任务预算金额-来自task表" prop="budgetAt">
-					<el-input v-model="editForm.budgetAt" placeholder="任务预算金额-来自task表" :maxlength="10"></el-input>
+				<el-form-item label="任务预算金额" prop="budgetAt">
+					<el-input v-model="editForm.budgetAt" placeholder="任务预算金额" :maxlength="10"></el-input>
 				</el-form-item> 
-				<el-form-item label="任务预算工时-来自task表" prop="budgetWorkload">
-					<el-input v-model="editForm.budgetWorkload" placeholder="任务预算工时-来自task表" :maxlength="10"></el-input>
+				<el-form-item label="任务预算工时" prop="budgetWorkload">
+					<el-input v-model="editForm.budgetWorkload" placeholder="任务预算工时" :maxlength="10"></el-input>
 				</el-form-item> 
-				<el-form-item label="任务初始工时-来自task表" prop="initWorkload">
-					<el-input v-model="editForm.initWorkload" placeholder="任务初始工时-来自task表" :maxlength="10"></el-input>
+				<el-form-item label="任务初始工时" prop="initWorkload">
+					<el-input v-model="editForm.initWorkload" placeholder="任务初始工时" :maxlength="10"></el-input>
 				</el-form-item> 
-				<el-form-item label="报价金额-来自task_execuser表" prop="quoteAt">
-					<el-input v-model="editForm.quoteAt" placeholder="报价金额-来自task_execuser表" :maxlength="10"></el-input>
+				<el-form-item label="报价金额" prop="quoteAt">
+					<el-input v-model="editForm.quoteAt" placeholder="报价金额" :maxlength="10"></el-input>
 				</el-form-item> 
-				<el-form-item label="报价工时-来自task_execuser表" prop="quoteWorkload">
-					<el-input v-model="editForm.quoteWorkload" placeholder="报价工时-来自task_execuser表" :maxlength="10"></el-input>
+				<el-form-item label="报价工时" prop="quoteWorkload">
+					<el-input v-model="editForm.quoteWorkload" placeholder="报价工时" :maxlength="10"></el-input>
 				</el-form-item> 
-				<el-form-item label="任务结算方案,来自task表、来自数字字典xmTaskSettleSchemel" prop="sschemel">
-					<el-input v-model="editForm.sschemel" placeholder="任务结算方案,来自task表、来自数字字典xmTaskSettleSchemel" :maxlength="1"></el-input>
+				<el-form-item label="任务结算方案" prop="sschemel">
+					<el-input v-model="editForm.sschemel" placeholder="任务结算方案" :maxlength="1"></el-input>
 				</el-form-item> 
-				<el-form-item label="工时单价，来自task表，根据task_out判断取内部还是外部单价" prop="uniPrice">
-					<el-input v-model="editForm.uniPrice" placeholder="工时单价，来自task表，根据task_out判断取内部还是外部单价" :maxlength="10"></el-input>
+				<el-form-item label="工时单价" prop="uniPrice">
+					<el-input v-model="editForm.uniPrice" placeholder="工时单价" :maxlength="10"></el-input>
 				</el-form-item> 
 				<el-form-item label="报价结束时间" prop="qendTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.qendTime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
@@ -80,10 +71,10 @@
 				<el-form-item label="报价开始时间" prop="qstartTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.qstartTime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
 				</el-form-item> 
-				<el-form-item label="实际完工时间-来自task表" prop="actEndTime">
+				<el-form-item label="实际完工时间" prop="actEndTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.actEndTime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
 				</el-form-item> 
-				<el-form-item label="实际开始时间-来自task表" prop="actStartTime">
+				<el-form-item label="实际开始时间" prop="actStartTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.actStartTime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
 				</el-form-item> 
 			</el-form>
