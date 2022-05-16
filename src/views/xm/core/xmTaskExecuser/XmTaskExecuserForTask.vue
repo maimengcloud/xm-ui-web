@@ -132,8 +132,7 @@
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { listXmTaskExecuser,editXmTaskExecuser,leaveTask,beExecutor,settleExec, delXmTaskExecuser, batchDelXmTaskExecuser,quotePrice,becomeCandidate,toTest,testSuccess,testFail } from '@/api/xm/core/xmTaskExecuser';
 	import  XmTaskExecuserAdd from './XmTaskExecuserAdd';//新增界面
-	import  XmTaskExecuserEdit from './XmTaskExecuserEdit';//修改界面
-	import XmProjectMCostUserList from '../xmProjectMCostUser/XmProjectMCostUserList';
+	import  XmTaskExecuserEdit from './XmTaskExecuserEdit';//修改界面 
 	import { mapGetters } from 'vuex'
 	import html2canvas from 'html2canvas'
 	import { uploadBase64 } from '@/api/mdp/arc/image';
@@ -730,9 +729,7 @@
 		},//end methods
 		components: {
 		    'xm-task-execuser-add':XmTaskExecuserAdd,
-		    'xm-task-execuser-edit':XmTaskExecuserEdit,
-
-			XmProjectMCostUserList,
+		    'xm-task-execuser-edit':XmTaskExecuserEdit, 
 		    //在下面添加其它组件
 		},
 		mounted() {

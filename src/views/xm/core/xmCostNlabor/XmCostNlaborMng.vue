@@ -45,10 +45,10 @@
 				<el-table-column prop="subjectId" label="成本科目" min-width="80" show-overflow-tooltip>
                     <template slot-scope="scope"> 
 						<div class="cell-text">
-							{{formaterByDicts(scope.row,'projectSubject',scope.row.subjectId)}}
+							{{formatDicts(dicts,'projectSubject',scope.row.subjectId)}}
 						</div>
 						<span class="cell-bar">
-							<el-select  v-model="scope.row.subjectId" placeholder="成本科目"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'subjectId',$event)">
+							<el-select  v-model="scope.row.subjectId" placeholder="成本科目"  style="display:block;" @change="editSomeFields(scope.row,'subjectId',$event)">
 								<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.projectSubject" :key="index"></el-option>
 							</el-select>
 						</span>
@@ -85,7 +85,7 @@
 
 			<!--新增 XmCostNlabor 项目实际人工成本费用界面-->
 			<el-drawer title="新增项目非人力费用" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
-				<xm-cost-nlabor-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-cost-nlabor-edit>
+				<xm-cost-nlabor-edit op-type="add" :sel-project="selProject" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-cost-nlabor-edit>
 			</el-drawer>
 	    </el-row>
 	</section>
@@ -103,7 +103,7 @@
 		components: {
 		    XmCostNlaborEdit,
 		},
-		props:['visible'],
+		props:['visible','selProject'],
 		computed: {
 		    ...mapGetters(['userInfo']),
 

@@ -118,7 +118,7 @@
 		   
 	      'editForm.subjectId':function(subjectId) { 
 	      	var dicts=this.dicts.projectSubject.filter(i=>i.id==subjectId)
-			if(options!=null && dicts.length>0){
+			if( dicts!=null && dicts.length>0){
 				 this.editForm.subjectName=dicts[0].name
 			}else{
 				this.editForm.subjectName="";

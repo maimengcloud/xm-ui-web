@@ -40,10 +40,10 @@
 				<el-table-column prop="subjectId" label="预算科目" min-width="80" show-overflow-tooltip>
                     <template slot-scope="scope"> 
 						<div class="cell-text">
-							{{formaterByDicts(scope.row,'projectSubject',scope.row.subjectId)}}
+							{{formatDicts(dicts,'projectSubject',scope.row.subjectId)}}
 						</div>
 						<span class="cell-bar">
-							<el-select  v-model="scope.row.subjectId" placeholder="预算科目"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'subjectId',$event)">
+							<el-select  v-model="scope.row.subjectId" placeholder="预算科目"  style="display:block;" @change="editSomeFields(scope.row,'subjectId',$event)">
 								<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.projectSubject" :key="index"></el-option>
 							</el-select>
 						</span>

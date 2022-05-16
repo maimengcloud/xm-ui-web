@@ -21,6 +21,9 @@ export const delXmBudgetLabor = params => { return axios.post(`${base}/xm/core/x
 //批量删除项目人力成本预算  params=[{id:'主键 主键'}]
 export const batchDelXmBudgetLabor = params => { return axios.post(`${base}/xm/core/xmBudgetLabor/batchDel`, params); };
 
+//批量新增项目人力成本预算  params=[{id:'主键 主键'}]
+export const batchAddXmBudgetLabor = params => { return axios.post(`${base}/xm/core/xmBudgetLabor/batchAdd`, params); };
+
 //修改一条项目人力成本预算记录
 export const editXmBudgetLabor = params => { return axios.post(`${base}/xm/core/xmBudgetLabor/edit`, params); };
 

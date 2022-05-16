@@ -60,7 +60,7 @@
 		    ...mapGetters([ 'userInfo'  ]),
 
 		},
-		props:['xmCostNlabor','visible','opType'],
+		props:['xmCostNlabor','visible','opType','selProject'],
 
 		watch: {
 	      'xmCostNlabor':function( xmCostNlabor ) {
@@ -73,7 +73,15 @@
 	      	if(visible==true){
  	      		this.initData()
 	      	}
-	      } 
+	      },
+	      'editForm.subjectId':function(subjectId) { 
+	      	var dicts=this.dicts.projectSubject.filter(i=>i.id==subjectId)
+			if( dicts!=null && dicts.length>0 ){
+				 this.editForm.subjectName=dicts[0].name
+			}else{
+				this.editForm.subjectName="";
+			}
+		 } 
 	    },
 		data() {
 			return {
@@ -89,7 +97,7 @@
 					username: [
 						{ required: true, message: '姓名不能为空', trigger: 'change' }
 					],  
-					budgetAt: [
+					actAt: [
 						{ required: true, message: '金额不能为空', trigger: 'change' }
 					],
 					
@@ -149,7 +157,10 @@
                 if(this.opType=='edit'){
 
                 }else{
-
+					if(this.selProject && this.selProject.id){
+						this.editForm.projectId=this.selProject.id
+						this.editForm.projectName=this.selProject.name 
+					}
                 }
             },
 
