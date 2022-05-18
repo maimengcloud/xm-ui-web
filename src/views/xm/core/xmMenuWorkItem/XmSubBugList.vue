@@ -24,7 +24,7 @@
 										 <el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in [formatterBugStatusDicts(scope.row.bugStatus)]" :key="index">{{item.name}}</el-button>
 									</div>
 									<span class="cell-bar">   
-										 <el-select  v-model="scope.row.bugStatus" placeholder="类型"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugStatus',$event)">
+										 <el-select @visible-change="selectVisible(scope.row,$event)"   v-model="scope.row.bugStatus" placeholder="类型"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugStatus',$event)">
 												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.bugStatus" :key="index"></el-option> 
 										 </el-select>  
 									</span> 
@@ -47,7 +47,7 @@
 										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in [formatterPriorityDicts(scope.row.priority)]" :key="index">{{item.name}}</el-button>
 									</div>
 									<span class="cell-bar">   
-										 <el-select  v-model="scope.row.priority" placeholder="优先级"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'priority',$event)">
+										 <el-select @visible-change="selectVisible(scope.row,$event)"   v-model="scope.row.priority" placeholder="优先级"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'priority',$event)">
 												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.priority" :key="index"></el-option> 
 										 </el-select>  
 									</span> 
@@ -59,7 +59,7 @@
 										{{formaterByDicts(scope.row,'solution',scope.row.solution)}}
 									</div>
 									<span class="cell-bar">   
-										 <el-select  v-model="scope.row.solution" placeholder="类型"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'solution',$event)">
+										 <el-select @visible-change="selectVisible(scope.row,$event)"   v-model="scope.row.solution" placeholder="类型"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'solution',$event)">
 												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.bugSolution" :key="index"></el-option> 
 										 </el-select>  
 									</span> 
@@ -161,11 +161,17 @@ export default {
   }, //end data
   methods: { 
     
+    selectVisible(row,visible){
+      if(visible){
+        this.rowClick(row)
+      }
+    },
 			showGroupUsers:function(userType,row){
  				this.$refs.xmGroupDialog.open({data:row,action:userType})
 			},
 			rowClick: function(row, event, column){
 				this.editForm=row;
+				this.editFormBak=Object.assign({},this.editForm)
 			},
 			//选择行xmQuestion
 			selsChange: function (sels) {
@@ -283,7 +289,9 @@ export default {
 						}else{ 
 							Object.assign(row,params) 
 						}
+						Object.assign(this.editFormBak,this.editForm)
 					}else{
+						Object.assign(this.editForm,this.editFormBak)
 						this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 					}
 				})

@@ -31,7 +31,7 @@
 										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in formatterMenuStatusDicts(scope.row.status)" :key="index">{{item.name}}</el-button>
 									</div>
 									<span class="cell-bar">
-										 <el-select  v-model="scope.row.status" placeholder="需求状态"  style="display:block;"  @change="editXmMenuSomeFields(scope.row,'status',$event)">
+										 <el-select @visible-change="selectVisible(scope.row,$event)"   v-model="scope.row.status" placeholder="需求状态"  style="display:block;"  @change="editXmMenuSomeFields(scope.row,'status',$event)">
 												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option>
 										 </el-select>
 									</span>
@@ -43,7 +43,7 @@
 										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in formatterPriorityDicts(scope.row.priority)" :key="index">{{item.name}}</el-button>
  									</div>
 									<span class="cell-bar">
-										 <el-select  v-model="scope.row.priority" placeholder="优先级"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'priority',$event)">
+										 <el-select @visible-change="selectVisible(scope.row,$event)"   v-model="scope.row.priority" placeholder="优先级"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'priority',$event)">
 												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.priority" :key="index"> </el-option>
 										 </el-select>
 									</span>
@@ -165,15 +165,20 @@ export default {
     }
   }, //end data
   methods: { 
-    
-			//选择行xmMenu
-			selsChange: function (sels) {
-				this.sels = sels;
-			},
-      
+    selectVisible(row,visible){
+      if(visible){
+        this.rowClick(row)
+      }
+    },
+	//选择行xmMenu
+	selsChange: function (sels) {
+		this.sels = sels;
+	},
 
-			rowClick: function(row, event, column){ 
+
+	rowClick: function(row, event, column){ 
         this.editForm=row
+		this.editFormBak=Object.assign({},this.editForm)
       },
       
 
@@ -345,7 +350,10 @@ export default {
 						}else{
 							  Object.assign(row,params)
 						}
+						Object.assign(this.editFormBak,this.editForm)
 					}else{
+						
+						Object.assign(this.editForm,this.editFormBak)
 						this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 					}
 				})
