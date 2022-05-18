@@ -69,8 +69,11 @@
 		props:['xmTask','visible'],
 
 		watch: {
-	      'xmTask':function() {
- 	      		this.initData()
+	      'xmTask':{ 
+			  handler(){
+				  this.initData()
+			  }
+ 	      		
 	      },
 	      'visible':function(visible) {
 	      	if(visible==true){
@@ -105,7 +108,8 @@
 			saveSubmit: function () {
 			},
 			initData: function(){ 
-				this.editForm=this.xmTask
+				this.editForm=Object.assign({},this.xmTask)
+				this.editFormBak=Object.assign({},this.editForm)
             },
 			
 			editXmTaskSomeFields(row,fieldName,$event){
@@ -130,6 +134,7 @@
 						//Object.assign(row,params) 
 						this.$emit("edit-xm-task-some-fields",params);
 					}else{
+						this.editForm=Object.assign(this.editForm,this.editFormBak)
 						this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 					}
 				})
@@ -140,7 +145,8 @@
 					if(tips.isOk){
 						if(res.data.data.length>0){
 							Object.assign(this.xmTask,res.data.data[0])
-							Object.assign(this.editForm,this.xmTask)
+							Object.assign(this.editForm,this.xmTask) 
+							Object.assign(this.editFormBak,this.xmTask)
 							this.$emit('submit',this.editForm)
 						}
 					}
