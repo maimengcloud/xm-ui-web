@@ -80,6 +80,7 @@
 											end-key="endTime"
 											@change="onBudgetDateRangerChange" 
 											type="daterange"
+											:auto-default="false"
 											align="right"
 											unlink-panels
 											range-separator="-"
@@ -354,7 +355,7 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'3',sortLevel:'0',executorUserid:'',executorUsername:'',
 					preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',taskOut:'0',
 					rate:0,budgetAt:'',budgetWorkload:'',actAt:'',actWorkload:'',taskState:'0',taskClass:'0',toTaskCenter:'0',actStartTime:'',actEndTime:'',taskType:'4',planType:'w2',settleSchemel:'1',ntype:'0',childrenCnt:0,wtype:'',rworkload:0,
-					uniInnerPrice:80,uniOutPrice:100,crowd:'0',oshare:'0',shareFee:0
+					uniInnerPrice:80,uniOutPrice:100,crowd:'0',oshare:'0',shareFee:0,menuName:''
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
  				menuVisible:false,
@@ -432,7 +433,7 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 				this.editForm.menuName=menu.menuName
 				this.editForm.productId=menu.productId
 				this.editForm.productName=menu.productName
-				this.editXmTaskSomeFields(this.editSubmit,'menuId',menu);
+				this.editXmTaskSomeFields(this.editForm,'menuId',menu);
 				this.menuVisible=false;
 			},
 			onTaskSkillsSelected(skills) {
@@ -539,8 +540,7 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 				if( users==null || users.length==0 ){
 					this.groupUserSelectVisible=false; 
 					return
-				}  
-				this.editFormBak=Object.assign({},this.editForm)
+				}   
 				this.editForm.createUserid=users[0].userid
 				this.editForm.createUsername=users[0].username 
 				this.groupUserSelectVisible=false; 
