@@ -65,7 +65,7 @@
 							</el-col>
 							<el-col :span="8">
 								<el-form-item label="截止时间" prop="startTime" >
-									 <el-date-picker type="daterange" style="width:220px;" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="dateRanger"  @change="editXmMenuSomeFields(editForm,'startTime',dateRanger)"></el-date-picker>
+									 <date-range type="daterange" :auto-default="false" style="width:220px;" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="editForm" start-key="startTime" end-key="endTime"  @change="editXmMenuSomeFields(editForm,'startTime',editForm)"></date-range>
 
 								</el-form-item>
 							</el-col>
@@ -250,13 +250,10 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 				if(this.reload==true){
 					this.searchXmMenus();
 				}else{
-					this.editForm = {...this.xmMenu};
-					if(this.editForm.startTime && this.editForm.endTime){
-						this.dateRanger=[]
-						this.dateRanger.push(this.editForm.startTime)
-						this.dateRanger.push(this.editForm.endTime)
-					}
+					this.editForm = {...this.xmMenu}; 
 				}
+				
+				this.editFormBak=Object.assign({},this.editForm)
 	      	}
 	      },
 			'editForm.actWorkload':function(val,oldVal){
@@ -305,7 +302,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 				//新增界面数据 项目需求表
 				editForm: {
 						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'1',mmUserid:'',mmUsername:'',ntype:'0',childrenCnt:0,sinceVersion:'',
-						proposerId:'',proposerName:'',dlvl:'',dtype:'',priority:'',source:'',calcType:'1',actWorkload:0,actAt:0,finishRate:0,ctime:'',dclass:'1'
+						proposerId:'',proposerName:'',dlvl:'',dtype:'',priority:'',source:'',calcType:'1',actWorkload:0,actAt:0,finishRate:0,ctime:'',dclass:'1',startTime:'',endTime:''
 				},
 				proposerSelectVisible:false,
 				mmUserSelectVisible:false,
@@ -324,8 +321,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 							{id:"9", name:"已删除"},
 					]
 				},
-				tagSelectVisible:false,
-				dateRanger:[],
+				tagSelectVisible:false, 
 				subWorkItemNum:-1,
 				activateTabPaneName:'1'
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
@@ -348,11 +344,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
 							this.load.edit=true
-							let params = Object.assign({}, this.editForm);
-							if(this.dateRanger.length>1){
-								params.startTime=this.dateRanger[0]
-								params.endTime=this.dateRanger[1]
-							}
+							let params = Object.assign({}, this.editForm); 
 							editXmMenu(params).then((res) => {
 								this.load.edit=false
 								var tips=res.data.tips;
@@ -440,8 +432,8 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 					params.mmUserid=$event[0].userid
 					params.mmUsername=$event[0].username
 				}else if(fieldName==='startTime'){
-					params.startTime=$event[0]
-					params.endTime=$event[1]
+					params.startTime=$event.startTime
+					params.endTime=$event.endTime
 				}else{
 					if(typeof $event ==='string'){
 						params[fieldName]=$event
@@ -450,15 +442,17 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 					}
 				}
 
-				editXmMenuSomeFields(params).then(res=>{
+				editXmMenuSomeFields(params).then(res=>{ 
 					var tips = res.data.tips;
 					if(tips.isOk){
 						Object.assign(row,params)
+						Object.assign(this.editFormBak,row)
 						this.$emit("edit-fields",params);
 						if(fieldName==='remark'||fieldName==='link'){
 							this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 						}
-					}else{
+					}else{ 
+						Object.assign(this.editForm,this.editFormBak)
 						this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 					}
 				})
@@ -471,12 +465,8 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 				let callback= (res)=>{
 					var tips=res.data.tips;
 					if(tips.isOk){
-						this.editForm=res.data.data[0]
-						if(this.editForm.startTime && this.editForm.endTime){
-							this.dateRanger=[]
-							this.dateRanger.push(this.editForm.startTime)
-							this.dateRanger.push(this.editForm.endTime)
-						}
+						this.editForm=res.data.data[0]  
+						this.editFormBak=Object.assign({},this.editForm)
 					}else{
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					}
@@ -502,11 +492,8 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
  			initSimpleDicts('all',['demandSource','demandLvl','demandType','priority','menuStatus'] ).then(res=>{
 				this.dicts=res.data.data;
 			})
-			this.editForm=Object.assign(this.editForm, this.xmMenu);
-			if(this.editForm.startTime && this.editForm.endTime){
-				this.dateRanger.push(this.editForm.startTime)
-				this.dateRanger.push(this.editForm.endTime)
-			}
+			this.editForm=Object.assign(this.editForm, this.xmMenu); 
+			this.editFormBak=Object.assign({},this.editForm)
 			if(this.reload==true){
 				this.searchXmMenus();
 			}

@@ -2389,6 +2389,7 @@ export default {
 						}else{
 							  Object.assign(row,params)
 						}
+            Object.assign(this.editFormBak,this.editForm)
 					}else{
             Object.assign(this.editForm,this.editFormBak)
 						this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
