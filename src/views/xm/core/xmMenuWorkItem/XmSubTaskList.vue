@@ -8,11 +8,11 @@
                   <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#1CC7EA'}">
 									<i :class="scope.row.ntype==='1'?'el-icon-odometer':'el-icon-s-operation'" ></i>
 									</div>    
-									<span class="cell-text">
+									<span class="my-cell-text">
 										 {{scope.row.sortLevel}}&nbsp;{{scope.row.name}}
 									</span>
-									<span class="cell-bar">
-									  	<el-input title="序号" style="width:30%;"  v-model="scope.row.sortLevel" placeholder="序号"  @change="editXmTaskSomeFields(scope.row,'sortLevel',$event)"></el-input><el-input title="名称" placeholder="名称" v-model="scope.row.name"  style="width:60%;"  @change="editXmTaskSomeFields(scope.row,'name',$event)"></el-input> 
+									<span class="my-cell-bar">
+									  	<el-input title="序号" style="width:20%;"  v-model="scope.row.sortLevel" placeholder="序号"  @change="editXmTaskSomeFields(scope.row,'sortLevel',$event)"></el-input><el-input title="名称" placeholder="名称" v-model="scope.row.name" @change="editXmTaskSomeFields(scope.row,'name',$event)"></el-input> 
 									</span>
                 </template>
               </el-table-column>
@@ -407,6 +407,19 @@ export default {
 };
 </script>
 
-<style scoped> 
-  
+<style lang="less" scoped>
+  .my-cell-bar{
+    display: none; 
+  }
+
+.el-table__row td:hover{
+	.my-cell-bar{
+		display: inline-block;  
+	}
+  .my-cell-text{
+    display:none;
+  }
+}
+
+
 </style>
