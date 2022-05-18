@@ -392,15 +392,7 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 				this.$refs.editForm.validate((valid) => {
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
-							let params = Object.assign({}, this.editForm);  
-							if(this.budgetDateRanger.length>=2){
-								params.startTime=this.budgetDateRanger[0]
-								params.endTime=this.budgetDateRanger[1] 
-							}
-							if(this.actDateRanger.length>=2){
-								params.actStartTime=this.actDateRanger[0]
-								params.actEndTime=this.actDateRanger[1]
-							} 
+							let params = Object.assign({}, this.editForm);   
 							editXmTask(params).then((res) => {
 								this.load.edit=false
 								var tips=res.data.tips;
