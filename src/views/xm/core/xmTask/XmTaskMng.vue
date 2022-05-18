@@ -536,9 +536,9 @@
                 width="120"
                 show-overflow-tooltip
               >
-                <template slot-scope="scope">
-                  <font>
-                  <span
+                <template slot-scope="scope"> 
+                  <span v-if="scope.row.ntype=='0'">
+                  <span 
                     v-for="(item, index) in [formatExeUsernames(scope.row)]"
                     :key="index"
                   >
@@ -547,8 +547,8 @@
                       @click.stop="showExecusers(scope.row)"
                       >{{ item.showMsg }}</el-link
                     >
+                  </span> 
                   </span>
-                  </font>
                 </template>
               </el-table-column>
               <el-table-column

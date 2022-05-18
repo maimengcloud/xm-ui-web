@@ -73,9 +73,11 @@
 							<el-col :span="8"> 
 								<el-form-item label="预计时间"> 
 											
-										<el-date-picker
+										<date-range
 										 style="display:inline;"
-											v-model="budgetDateRanger"
+											v-model="editForm"
+											start-key="startTime"
+											end-key="endTime"
 											@change="onBudgetDateRangerChange" 
 											type="daterange"
 											align="right"
@@ -86,7 +88,7 @@
 											value-format="yyyy-MM-dd HH:mm:ss"
 											:default-time="['00:00:00','23:59:59']"
 											:picker-options="pickerOptions"
-										></el-date-picker>
+										></date-range>
 								</el-form-item>  
 							</el-col> 
 
@@ -316,19 +318,8 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 			'visible':function(visible) { 
 				this.fileVisible = visible;
 				if(visible==true){ 
-					this.editForm=Object.assign(this.editForm, this.xmTask);     
-					if(this.editForm.startTime && this.editForm.endTime){
-						this.budgetDateRanger=[this.editForm.startTime,this.editForm.endTime] 
-					}else{
-						this.budgetDateRanger=[]
-					}
-					if(this.editForm.actStartTime && this.editForm.actEndTime){
-						this.actDateRanger=[this.editForm.actStartTime,this.editForm.actEndTime] 
-					}else{
-						this.actDateRanger=[]
-					}
-					 
-					
+					this.editForm=Object.assign(this.editForm, this.xmTask);      
+					this.editFormBak=Object.assign({},this.editForm)
 					this.setSkills()
 					//从新打开页面时某些数据需要重新加载，可以在这里添加
 				}
@@ -492,10 +483,8 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 				}
 			},
 
-			onBudgetDateRangerChange(){
-				var start= new Date(this.budgetDateRanger[0]);
-				var end= new Date(this.budgetDateRanger[1]); 
-				this.editXmTaskSomeFields(this.editForm,'dateRange',this.budgetDateRanger);
+			onBudgetDateRangerChange(){ 
+				this.editXmTaskSomeFields(this.editForm,'dateRange',{startTime:this.editForm.startTime,endTime:this.editForm.endTime});
 			},  
 			onSelectedTask(task){
 				this.selectTaskVisible=false;
@@ -550,8 +539,8 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 				if( users==null || users.length==0 ){
 					this.groupUserSelectVisible=false; 
 					return
-				}
-				debugger;
+				}  
+				this.editFormBak=Object.assign({},this.editForm)
 				this.editForm.createUserid=users[0].userid
 				this.editForm.createUsername=users[0].username 
 				this.groupUserSelectVisible=false; 
@@ -562,10 +551,8 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 			execGroupUserSelectConfirm:function(users){
 				if( users==null || users.length==0 ){
 					this.execGroupUserSelectVisible=false; 
-					this.editForm.executorUserid='';
-					this.editForm.executorUsername=''
 					return
-				}
+				} 
 				this.editForm.executorUserid=users[0].userid
 				this.editForm.executorUsername=users[0].username 
 				this.execGroupUserSelectVisible=false; 
@@ -624,8 +611,8 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 					params.createUserid=$event.userid
 					params.createUsername=$event.username
 				}else if(fieldName==='dateRange'){
-					params.startTime=$event[0]
-					params.endTime=$event[1]
+					params.startTime=$event.startTime
+					params.endTime=$event.endTime
 				}else if(fieldName==='shareFee'){ 
 					if($event>1000){
 						this.editForm.shareFee=this.xmTask.shareFee
@@ -650,7 +637,10 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 					if(tips.isOk){
 						this.$emit('edit-fields',params)
 						 Object.assign(row,params) 
+						 this.editFormBak=Object.assign({},row)
 					}else{
+						debugger;
+						Object.assign(this.editForm,this.editFormBak)
 						this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 					}
 				})
@@ -663,18 +653,8 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},
 		mounted() { 
-			this.editForm=Object.assign(this.editForm, this.xmTask);   
-			if(this.editForm.startTime && this.editForm.endTime){
-				this.budgetDateRanger=[this.editForm.startTime,this.editForm.endTime] 
-			}else{
-				this.budgetDateRanger=[]
-			}
-			if(this.editForm.actStartTime && this.editForm.actEndTime){
-				this.actDateRanger=[this.editForm.actStartTime,this.editForm.actEndTime] 
-			}else{
-				this.actDateRanger=[]
-			}
-			
+			this.editForm=Object.assign(this.editForm, this.xmTask);    
+			this.editFormBak=Object.assign({},this.editForm)
 			this.setSkills();
 			initSimpleDicts('all',['planType','taskType','priority','xmTaskSettleSchemel','taskState']).then(res=>{
 				this.dicts=res.data.data;

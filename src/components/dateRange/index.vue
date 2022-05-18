@@ -27,8 +27,12 @@ export default {
       dateRange(){
 
       },
-      value(){
-          this.initData();
+      value:{ 
+        deep:true,
+        handler(){
+           this.initData();
+        }
+         
       }
   },
   props: {

@@ -17,6 +17,7 @@ module.exports = {
               '^/api/m1/xm': '/xm'
             }
       },
+       /**
        '/api/m1/sys': {
          target: 'http://localhost:7015',
          changeOrigin: true,
@@ -24,7 +25,7 @@ module.exports = {
            '^/api/m1/sys': '/sys'
          }
        },
-
+      **/
       // '/api/m1/pay': {
       //   target: 'http://localhost:7125',
       //   changeOrigin: true,
