@@ -1,7 +1,7 @@
 <template>
 	<section>  
 		<el-row class="page-main ">
-			<el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm"> 
+			<el-form :model="editForm" label-width="120px" label-position="left" :rules="editFormRules" ref="editForm"> 
 			  	<el-form-item label="缺陷标题" prop="name">
 					 <el-input   v-model="editForm.name"></el-input>
 					 	<el-tag>{{editForm.createUsername}} 于 {{editForm.createTime}} 创建 </el-tag>

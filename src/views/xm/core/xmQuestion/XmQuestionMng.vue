@@ -64,6 +64,10 @@
 								<el-tag  v-for="(item,index) in filters.menus" :key="index"  closable  @close="clearFiltersMenu(item)">{{item.menuName.substr(0,10)}}</el-tag>
 							</font>
 							<el-button v-else    @click="showMenu" type="plian">选需求</el-button>
+						</el-col> 
+						<el-col :span="24" style="padding-top:5px;">
+								<font class="more-label-font">缺陷编号:</font>  
+								<el-input v-model="filters.id"></el-input>
 						</el-col>
 						<el-col :span="24" class="hidden-lg-and-up" style="padding-top:12px;">
 							<el-select   v-model="filters.priority" placeholder="请选择优先级" clearable @change="changePriority">
@@ -313,6 +317,7 @@
 					hisHandler:null,
 					hisHandleStatus:null,
 					tags:[],
+					id:'',
 
 				},
 				xmQuestions: [],//查询结果
@@ -485,6 +490,9 @@
 						return;
 					}
 
+				}
+				if(this.filters.id){
+					params.id=this.filters.id
 				}
 				if(this.filters.hisHandleStatus){
 					if(this.filters.hisHandler){
