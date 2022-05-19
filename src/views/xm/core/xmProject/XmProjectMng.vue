@@ -33,16 +33,21 @@
 							width="400"
 							trigger="click" >
 							<el-row>  
-								<el-col  :span="24"  style="padding-top:5px;"> 
-									<font class="more-label-font">显示方式:</font>  
-									<el-radio  v-model="showType" :label="false">表格</el-radio>
-									<el-radio  v-model="showType" :label="true">卡片</el-radio>
+								<el-col  :span="24"  style="padding-top:5px;">  
+									<el-row>
+										<el-radio  v-model="showType" :label="false">表格</el-radio>
+										<el-radio  v-model="showType" :label="true">卡片</el-radio>
+									</el-row>
 								</el-col>  
-								<el-col  :span="24"  style="padding-top:5px; ">  
-									<font v-if="filters.productId" class="more-label-font">产品:</font>  <el-tag v-if="filters.productId" closable @close="onProductClose">{{filters.productName}}</el-tag><el-button v-else    @click.native="productSelectVisible=true" >选择产品</el-button>
-
+								<el-col  :span="24"  style="padding-top:5px; " class="hidden-lg-and-up">  
+									<font v-if="filters.productId" class="more-label-font">产品:</font>  
+									<xm-product-select style="display:inline;"  :auto-select="false" @row-click="onProductSelected" @clear="onProductClose"></xm-product-select> 
 								</el-col> 
 										
+								<el-col  :span="24"  style="padding-top:5px; ">  
+									<font class="more-label-font">项目编号:</font>   
+									<el-input v-model="filters.projectId" clearable></el-input>
+								</el-col> 
 								<el-col  :span="24"  style="padding-top:5px;">
 									<font class="more-label-font">创建时间:</font>  
 									<el-date-picker
