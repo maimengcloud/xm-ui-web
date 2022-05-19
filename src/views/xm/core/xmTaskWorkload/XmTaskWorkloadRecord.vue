@@ -8,8 +8,8 @@
 				<el-row v-if="editForm.ntype==='0'">
 					
 					<el-col :span="6">
-						<el-form-item label="原估工时" prop="initBudgetWorkload">
-							{{editForm.initBudgetWorkload?editForm.initBudgetWorkload:'0'}} &nbsp;小时
+						<el-form-item label="原估工时" prop="initWorkload">
+							{{editForm.initWorkload?editForm.initWorkload:'0'}} &nbsp;小时
 						</el-form-item> 
 					</el-col>  
 					<el-col :span="6">
@@ -26,8 +26,8 @@
 				<el-row v-else>
 					
 					<el-col :span="6">
-						<el-form-item label="原估工时" prop="initBudgetWorkload">
-							{{editForm.initBudgetWorkload?editForm.initBudgetWorkload:'0'}} &nbsp;小时
+						<el-form-item label="原估工时" prop="initWorkload">
+							{{editForm.initWorkload?editForm.initWorkload:'0'}} &nbsp;小时
 						</el-form-item> 
 					</el-col>  
 					<el-col :span="6">

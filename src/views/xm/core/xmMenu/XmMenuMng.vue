@@ -735,6 +735,7 @@
 					this.addFormVisible = true;
 				}else{
 					this.$refs.xmProductSelect1.productVisible=true;
+					this.$refs.xmProductSelect1.searchXmProducts();
 					this.$notify({position:'bottom-left',showClose:true,message: "请先选择一个产品", type: 'warning'});
 				}
 

@@ -194,7 +194,7 @@
             <el-button
               slot="reference"
               v-if="
-                isTaskCenter != '1' && isMy != '1' && !xmIteration
+                 queryScope=='plan'||queryScope=='planTask'
               "
               type="primary"
               round
@@ -204,6 +204,7 @@
           </el-popover>
           <el-button
             @click="showParentTaskList" 
+            v-if="  queryScope=='plan'||queryScope=='planTask'  "
             title="更换任务的上级，实现任务搬家功能"
             icon="el-icon-upload2"
             v-loading="load.edit"
@@ -248,6 +249,7 @@
                 <el-tag
                   v-if="filters.createUser"
                   closable
+                  @click="showMenuGroupUser"
                   @close="clearFiltersCreateUser"
                   >{{ this.filters.createUser.username }}</el-tag
                 >
@@ -268,6 +270,7 @@
                 <el-tag
                   v-if="filters.executor"
                   closable
+                  @click="showMenuExecutor"
                   @close="clearFiltersExecutor"
                   >{{ this.filters.executor.username }}</el-tag
                 >
@@ -894,7 +897,7 @@
       ></xm-menu-select>
     </el-drawer>
 
- 			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="selProject" :xm-product="filters.xmProduct" @user-confirm="selectCreateUserConfirm">
+ 			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="filters.selProject" :xm-product="filters.xmProduct" @user-confirm="selectCreateUserConfirm">
 			</xm-group-dialog>  
     <el-drawer
       append-to-body
@@ -1543,7 +1546,8 @@ export default {
     showAdd: function (ntype) {
       if(!this.checkCanAdd()){
         return;
-      } 
+      }  
+      this.parentTask = null;
       this.addForm.ntype=ntype;
       this.addFormVisible = true;
     },
@@ -1662,11 +1666,11 @@ export default {
     showMenuStory() {
       this.menuStory = true;
     },
-    showMenuGroupUser() {
-      this.menuGroupUser = true;
+    showMenuGroupUser() { 
+      this.$refs.xmGroupDialog.open({data:null,action:'filtersCreateUserid'})
     },
-    showMenuExecutor() {
-      this.menuExecutor = true;
+    showMenuExecutor() { 
+      this.$refs.xmGroupDialog.open({data:null,action:'filtersExecutorUserid'})
     },
     skillTagClear(skill) {
       this.filters.skillTags = this.filters.skillTags.filter(
@@ -2101,11 +2105,18 @@ export default {
           var user= groupUsers[0];
           this.editXmTaskSomeFields(option.data,option.action,user)
         }  
-      }else{
+      }else if(option.action=='filtersCreateUserid'){
         if (groupUsers && groupUsers.length > 0) {
           this.filters.createUser = groupUsers[0];
         } else {
           this.filters.createUser = null;
+        }
+        this.searchXmTasks(); 
+      }else{
+        if (groupUsers && groupUsers.length > 0) {
+          this.filters.executor = groupUsers[0];
+        } else {
+          this.filters.executor = null;
         }
         this.searchXmTasks(); 
       }
