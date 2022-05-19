@@ -59,8 +59,8 @@
 								</el-form-item>
 							</el-col>
 							<el-col :span="8">
-								<el-form-item label="进度" prop="finishRate">
-									<el-progress    :percentage="editForm.finishRate?editForm.finishRate:0"></el-progress>
+								<el-form-item label="进度" prop="finishRate"> 
+									{{editForm.finishRate?editForm.finishRate:0}}%
 								</el-form-item>
 							</el-col>
 							<el-col :span="8">
