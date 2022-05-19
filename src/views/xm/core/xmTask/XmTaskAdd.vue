@@ -26,7 +26,7 @@
 						
 						
 						<el-row>
-							<el-col :span="8"> 
+							<el-col :span="12"> 
 								 <el-form-item v-if="addForm.ptype==='0'" label="归属项目" prop="projectId"> 
 									{{addForm.projectName?addForm.projectName:addForm.projectId}}
 								</el-form-item>
@@ -35,7 +35,7 @@
 									{{addForm.productName?addForm.productName:addForm.productId}}
 								</el-form-item>
 							</el-col>
-							<el-col :span="8"> 
+							<el-col :span="12"> 
 								 <el-form-item label="上级计划" prop="parentTaskname">  
 									<template slot="label"> 
 										<div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
@@ -46,39 +46,23 @@
 									<font v-if="addForm.parentTaskid" >{{addForm.parentTaskname?addForm.parentTaskname:addForm.parentTaskid}}</font> 
 									<font v-else>无上级(视为顶级)</font> 
 								</el-form-item>
-							</el-col> 
-							<el-col :span="8"> 
+							</el-col>  
+						</el-row>
+						<el-row>
+							<el-col :span="12">  
 								<el-form-item label="总负责人"> 
 									<el-tag  v-if="addForm.createUserid" style="margin-left:10px;border-radius:30px;"  >{{addForm.createUsername}}</el-tag>
 									<el-button type="text" @click="showGroupUserSelect(addForm)" icon="el-icon-setting">设置负责人</el-button>
 								</el-form-item> 
-							</el-col>  
-						</el-row>
-						<el-row>
-							<el-col :span="8"> 
-								<el-form-item :label="addForm.ntype=='0'?'任务状态':'计划状态'">
-									<el-select v-model="addForm.taskState">
-											<el-option v-for="i in dicts.taskState" :label="i.name" :key="i.id" :value="i.id"></el-option> 
-									</el-select>    
-								</el-form-item> 
-							</el-col>
-							<el-col :span="8"> 
-								<el-form-item label="当前进度" prop="rate">
-									<el-slider   
-										v-model="addForm.rate"
-										show-input>
-									</el-slider> 
-								</el-form-item>  
-							</el-col>  
-							<el-col :span="8"> 
-								<el-form-item label="预计时间"> 
-											
-										<el-date-picker  
-										 style="display:inline;"
-											v-model="budgetDateRanger"
+							</el-col> 
+							<el-col :span="12"> 
+								<el-form-item label="预估时间">  
+										<date-range  
+											v-model="addForm"
 											@change="onBudgetDateRangerChange" 
-											type="daterange"
-											align="right"
+											start-key="startTime"
+											end-key="endTime"
+											type="daterange" 
 											unlink-panels
 											range-separator="-"
 											start-placeholder="开始日期"
@@ -86,13 +70,13 @@
 											value-format="yyyy-MM-dd HH:mm:ss"
 											:default-time="['00:00:00','23:59:59']"
 											:picker-options="pickerOptions"
-										></el-date-picker>
+										></date-range>
 								</el-form-item>  
 							</el-col> 
 
 							
 						</el-row>
-					<el-tabs value="1" accordion>
+					<el-tabs v-model="activateTabPaneName">
 						<el-tab-pane label="基础信息" name="1"> 	
 						<el-row>  
 							<el-col :span="10">
@@ -146,11 +130,9 @@
 						<el-form-item  label="任务概述" prop="description">  
  							<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="addForm.description" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input> 
 						</el-form-item> 
-					</el-tab-pane>
-					
-					<el-tab-pane label="需求" name="3" v-if="addForm.ntype==='0'">  
-						
-						<el-row>
+					</el-tab-pane> 
+					<el-tab-pane label="需求" name="3">   
+						<el-row v-if="addForm.ntype==='0'">
 							<el-col :span="12"> 
 								<el-form-item  label="归属产品" prop="productId"> 
 									 {{addForm.productId}}
@@ -163,56 +145,23 @@
 								</el-form-item> 
 							</el-col> 
 						</el-row>
-					</el-tab-pane>
-					<el-tab-pane label="子工作项" name="4" v-if="false">  
-
-					</el-tab-pane>
-					<el-tab-pane label="工时" name="5"> 
-						<el-row>
-							<el-col :span="8">  
-								<el-form-item label="数据收集方式" prop="calcType">
-									
-									<el-select v-model="addForm.calcType">
-										<el-option label="不统计"  value="0"></el-option>
-										<el-option label="下级往上级汇总"  value="1"></el-option>
-										<el-option label="手工填报"  value="2"></el-option>
-									</el-select>   
-								</el-form-item>  
-							</el-col>
-							<el-col :span="8"> 
+					</el-tab-pane> 
+					<el-tab-pane label="工时" name="5">  
 								<el-form-item label="报工方式" prop="wtype" > 
 									<el-select v-model="addForm.wtype">
 										<el-option label="无须报工"  value="0"></el-option>
 										<el-option label="强制每日报工"  value="1"></el-option>
 										<el-option label="工期内报工"  value="2"></el-option>
 									</el-select>  
-								</el-form-item>
-							</el-col>  
-							<el-col :span="8"> 
-								<el-form-item label="工时进度" prop="rate" >
-									<el-progress style="width:60%;" :text-inside="true" :stroke-width="15" :percentage="addForm.rate?addForm.rate:0"></el-progress>
-								</el-form-item>
-							</el-col>  
-						</el-row>  
-						<el-row>
-							<el-col :span="8"> 
-								<el-form-item label="预估工作量" prop="budgetWorkload">
-									<el-input type="number"   style="width:150px;"   v-model="addForm.budgetWorkload" @change="onBudgetWorkloadChange" :precision="2" :step="8" :min="0" placeholder="预计总工作量(人时,不包括下一级)"></el-input type="number"> <el-tag>h</el-tag>
-								</el-form-item>    
-							</el-col>
-							<el-col :span="8"> 
-								<el-form-item label="完工时间" prop="actEndTime">
-									 <el-date-picker style="display:inline;" type="daterange"  unlink-panels value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="actDateRanger"></el-date-picker>
-								</el-form-item> 
-							</el-col> 
-							<el-col :span="8"> 
-								<el-form-item label="实际工作量" prop="actWorkload">
-									<el-input type="number"   style="width:150px;"     v-model="addForm.actWorkload"  :precision="2" :step="8" :min="0" placeholder="实际总工作量(人时,不包括下一级)"></el-input> <el-tag>h</el-tag>
-								</el-form-item> 
-							</el-col> 
-						</el-row>  
+								</el-form-item>  
+								<el-form-item label="原始预估工时" prop="initWorkload">
+									<el-input type="number"   style="width:250px;"   v-model="addForm.initWorkload" @change="onBudgetWorkloadChange" :precision="2" :step="8" :min="0" placeholder="原始预估总工时(人时)"></el-input> <el-tag>h</el-tag>
+									<br><font color="blue">原始预估工时，一旦填写，后续一般不做修改。</font>
+									<br><font color="blue">计划执行过程中，用于识别出当前进度与原始预估值之间的偏离幅度，偏离过大需要进一步分析原因。</font>
+
+								</el-form-item>      
 					</el-tab-pane>
-					<el-tab-pane label="成本" name="6"> 
+					<el-tab-pane label="成本" name="6666"> 
 						<el-form-item label="自研工时单价" prop="uniInnerPrice">
 							 <el-input type="number" style="width:150px;"   v-model="addForm.uniInnerPrice" :precision="2" :step="10" :min="0" placeholder="自研工时单价"  ></el-input  >   元/h
 							 
@@ -221,8 +170,10 @@
 								 <el-input type="number" style="width:150px;"   v-model="addForm.uniOutPrice" :precision="2" :step="10" :min="0" placeholder="外发工时单价"  ></el-input  >   元/h
 						 
 						</el-form-item> 
-						<el-form-item label="预估金额" prop="budgetAt">
+						<el-form-item label="预算金额" prop="budgetAt">
 						 	<el-input type="number" style="width:150px;"    v-model="addForm.budgetAt" :precision="2" :step="100" :min="0" placeholder="预算金额"  ></el-input  >   元 
+							<br><font color="blue">预算金额至上而下逐级分解，下级预算总和不能超出上级预算金额。实际金额不能超出预算金额。</font>
+
 						</el-form-item> 
 
 					</el-tab-pane>
@@ -345,9 +296,7 @@
 			},
 		},
 		data() {
-			const beginDate = new Date();
-			const endDate = new Date();
-			endDate.setTime(beginDate.getTime() + 3600 * 1000 * 24 * 7 * 4);
+			
 			return {
 				dicts:{
 					priority:[],
@@ -387,14 +336,9 @@
 				selectParentTaskVisible:false,
 				execUserVisible:false,
 				groupUserSelectVisible:false,
-				execGroupUserSelectVisible:false,
-				budgetDateRanger: [
-					util.formatDate(beginDate, "yyyy-MM-dd HH:mm:ss"),
-					util.formatDate(endDate, "yyyy-MM-dd HH:mm:ss")
-				],
-				actDateRanger: [
-				],
+				execGroupUserSelectVisible:false, 
 				pickerOptions:  util.getPickerOptions('datarange'), 
+				activateTabPaneName:'1'
 				 /**end 在上面加自定义属性**/
 			}//end return
 		},//end data
@@ -420,17 +364,7 @@
 							}
 						}
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
-							let params = Object.assign({}, this.addForm); 
-							if(this.budgetDateRanger.length>=2){
-								params.startTime=this.budgetDateRanger[0]
-								params.endTime=this.budgetDateRanger[1]
-							}
-							if(this.actDateRanger.length>=2){
-								params.actStartTime=this.actDateRanger[0]
-								params.actEndTime=this.actDateRanger[1]
-							}
-							
-							
+							let params = Object.assign({}, this.addForm);   
 							addTask(params).then((res) => {
 								this.load.add=false
 								var tips=res.data.tips;
@@ -501,30 +435,30 @@
 			},
 
 			onBudgetDateRangerChange(){
-				var start= new Date(this.budgetDateRanger[0]);
-				var end= new Date(this.budgetDateRanger[1]);
+				var start= new Date(this.addForm.startTime);
+				var end= new Date(this.addForm.endTime);
 				var weekday=this.getWeekday(start,end);
 
 				this.addForm.budgetWorkload=weekday * 8
+				this.addForm.initWorkload=this.addForm.budgetWorkload
 				var price=80;
 				if(this.addForm.taskOut=='1'){
-					if(this.projectPhase.budgetOuserPrice){
-						price=this.projectPhase.budgetOuserPrice
+					if(this.addForm.uniOuserPrice){
+						price=this.addForm.uniOuserPrice
+					}else{
+						price=this.xmProject.planOuserPrice
 					}
 				}else{
-					if(this.projectPhase.budgetIuserPrice){
-						price=this.projectPhase.budgetIuserPrice
+					if(this.addForm.uniIuserPrice){
+						price=this.addForm.uniIuserPrice
+					}else{
+						price=this.addForm.planIuserPrice
 					}
 				}
 				this.addForm.budgetAt=this.addForm.budgetWorkload * price
 			},
-			onBudgetWorkloadChange(){
-
- 				var price=this.addForm.uniInnerPrice?this.addForm.uniInnerPrice:80;
-				if(this.addForm.taskOut=='1'){ 
-						price=this.addForm.uniOutPrice? this.addForm.uniOutPrice:80;
-				} 
-				this.addForm.budgetAt=this.addForm.budgetWorkload * price
+			onBudgetWorkloadChange(){ 
+ 				 
 			},
 			onTaskOutChange(){
 				this.onBudgetWorkloadChange();
@@ -657,10 +591,18 @@
 						this.addForm.ptype=this.ptype 
 				}
 				this.addForm.createUserid=this.userInfo.userid
-				this.addForm.createUsername=this.userInfo.username;
-				this.addForm.executorUserid=this.userInfo.userid
-				this.addForm.executorUsername=this.userInfo.username
+				this.addForm.createUsername=this.userInfo.username; 
 				this.addForm.ntype=this.xmTask.ntype
+				this.addForm.wtype="2"
+				if(!this.addForm.startTime){
+					const beginDate = new Date();
+					const endDate = new Date();
+					endDate.setTime(beginDate.getTime() + 3600 * 1000 * 24 * 7 * 4);
+					this.addForm.startTime=util.formatDate(beginDate, "yyyy-MM-dd HH:mm:ss"),
+					this.addForm.endTime=util.formatDate(endDate, "yyyy-MM-dd HH:mm:ss")
+					this.onBudgetDateRangerChange();
+				}
+				
 				this.addForm.id=null;
 			},
 			toMenu(){

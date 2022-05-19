@@ -204,7 +204,7 @@
           </el-popover>
           <el-button
             @click="showParentTaskList" 
-            v-if="  queryScope=='plan'||queryScope=='planTask'  "
+            v-if="  queryScope=='plan'||queryScope=='planTask'"
             title="更换任务的上级，实现任务搬家功能"
             icon="el-icon-upload2"
             v-loading="load.edit"
