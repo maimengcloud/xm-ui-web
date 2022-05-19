@@ -131,21 +131,6 @@
  							<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="addForm.description" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input> 
 						</el-form-item> 
 					</el-tab-pane> 
-					<el-tab-pane label="需求" name="3">   
-						<el-row v-if="addForm.ntype==='0'">
-							<el-col :span="12"> 
-								<el-form-item  label="归属产品" prop="productId"> 
-									 {{addForm.productId}}
-								</el-form-item>  
-							</el-col>
-							<el-col :span="12"> 
-								<el-form-item  label="用户故事" prop="menuId" id="menuInfo" v-if="addForm.ntype!='1'"> 
-									{{addForm.menuName}} &nbsp;&nbsp;&nbsp; <el-link @click="menuVisible=true" type="primary">{{addForm.menuName?'更改':'设置'}}</el-link>&nbsp;&nbsp;&nbsp;
-									<el-link v-if="addForm.menuName" @click="toMenu" type="primary">查看需求</el-link>
-								</el-form-item> 
-							</el-col> 
-						</el-row>
-					</el-tab-pane> 
 					<el-tab-pane label="工时" name="5">  
 								<el-form-item label="报工方式" prop="wtype" > 
 									<el-select v-model="addForm.wtype">
@@ -176,7 +161,22 @@
 
 						</el-form-item> 
 
-					</el-tab-pane>
+					</el-tab-pane> 
+					<el-tab-pane label="需求" name="3" v-if="addForm.ntype!='1'">   
+						<el-row>
+							<el-col :span="12"> 
+								<el-form-item  label="归属产品" prop="productId"> 
+									 {{addForm.productId}}
+								</el-form-item>  
+							</el-col>
+							<el-col :span="12"> 
+								<el-form-item  label="用户故事" prop="menuId" id="menuInfo" v-if="addForm.ntype!='1'"> 
+									{{addForm.menuName}} &nbsp;&nbsp;&nbsp; <el-link @click="menuVisible=true" type="primary">{{addForm.menuName?'更改':'设置'}}</el-link>&nbsp;&nbsp;&nbsp;
+									<el-link v-if="addForm.menuName" @click="toMenu" type="primary">查看需求</el-link>
+								</el-form-item> 
+							</el-col> 
+						</el-row>
+					</el-tab-pane> 
 					<el-tab-pane label="结算信息" name="7" v-if="addForm.ntype!='1'">
 						<el-form-item label="" prop="taskClass">
 							<el-checkbox v-model="addForm.taskClass" true-label="1" false-label="0">是否需要结算</el-checkbox>
@@ -604,6 +604,7 @@
 				}
 				
 				this.addForm.id=null;
+				this.activateTabPaneName="1"
 			},
 			toMenu(){
 				this.menuDetailVisible=true

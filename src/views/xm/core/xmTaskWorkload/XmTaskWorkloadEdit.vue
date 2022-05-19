@@ -8,12 +8,12 @@
 				<el-row>
 					<el-col :span="12">
 						<el-form-item label="预估工时" prop="budgetWorkload">
-							{{xmTask.budgetWorkload?xmTask.budgetWorkload:0}}&nbsp;&nbsp;小时
+							{{xmTask.budgetWorkload?xmTask.budgetWorkload:0}}&nbsp;&nbsp;小时 <font color="red"> &nbsp;&nbsp;>>&nbsp; &nbsp;{{budgetWorkload}} &nbsp;小时</font>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
 						<el-form-item label="已登工时" prop="actWorkload">
-							{{xmTask.actWorkload?xmTask.actWorkload:0}}&nbsp;小时, <el-tag type="primary"> {{xmTask.rate}}% </el-tag>
+							{{xmTask.actWorkload?xmTask.actWorkload:0}}&nbsp;小时, <el-tag type="primary"> {{xmTask.rate}}% </el-tag><el-tag type="danger">&nbsp;&nbsp;>>&nbsp; &nbsp;{{rate}}% &nbsp;</el-tag> 
 						</el-form-item>
 					</el-col> 
 				</el-row>
@@ -98,6 +98,22 @@
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
+			
+			budgetWorkload(){
+				if(this.editForm.rworkload>0){
+					return parseFloat(this.editForm.rworkload)+parseFloat(this.editForm.workload?this.editForm.workload:0)+parseFloat(this.xmTask.actWorkload?this.xmTask.actWorkload:0)
+				}else{
+					return this.xmTask.budgetWorkload;
+				}
+			},
+			
+			rate(){
+				if(this.editForm.rworkload>0){
+					return Math.round((parseFloat(this.editForm.workload?this.editForm.workload:0)+parseFloat(this.xmTask.actWorkload?this.xmTask.actWorkload:0))/(parseFloat(this.editForm.rworkload)+parseFloat(this.editForm.workload?this.editForm.workload:0)+parseFloat(this.xmTask.actWorkload?this.xmTask.actWorkload:0))*100)
+				}else{
+					return Math.round((parseFloat(this.editForm.workload?this.editForm.workload:0)+parseFloat(this.xmTask.actWorkload?this.xmTask.actWorkload:0))/this.xmTask.budgetWorkload *100);
+				}
+			},
 
 		},
 		props:['xmTask','xmTaskWorkload','visible','opType'],
@@ -143,7 +159,7 @@
 					]
 				},
 				editForm: {
-					userid:'',username:'',ctime:'',taskId:'',cuserid:'',bizDate:'',wstatus:'',remark:'',ttype:'',id:'',sbillId:'',stime:'',sstatus:'',amt:'',samt:'',workload:''
+					userid:'',username:'',ctime:'',taskId:'',cuserid:'',bizDate:'',wstatus:'',remark:'',ttype:'',id:'',sbillId:'',stime:'',sstatus:'',amt:'',samt:'',workload:'',rwokkload:''
 				},
 				rwokkload:0,
                 maxTableHeight:300,
@@ -155,6 +171,7 @@
 			}//end return
 		},//end data
 		methods: {
+			
 			// 取消按钮点击 父组件监听@cancel="editFormVisible=false" 监听
 			handleCancel:function(){
 				this.$emit('cancel');

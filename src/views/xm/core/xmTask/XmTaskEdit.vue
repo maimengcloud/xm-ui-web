@@ -64,10 +64,8 @@
 								</el-form-item> 
 							</el-col>
 							<el-col :span="8"> 
-								<el-form-item label="当前进度" prop="rate">
-									<el-progress   
-										:percentage="editForm.rate?editForm.rate:0">
-									</el-progress> 
+								<el-form-item label="当前进度" prop="rate"> 
+									{{editForm.rate?editForm.rate:0}}%
 								</el-form-item>  
 							</el-col>  
 							<el-col :span="8"> 
@@ -80,8 +78,7 @@
 											end-key="endTime"
 											@change="onBudgetDateRangerChange" 
 											type="daterange"
-											:auto-default="false"
-											align="right"
+											:auto-default="false" 
 											unlink-panels
 											range-separator="-"
 											start-placeholder="开始日期"
@@ -322,6 +319,7 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 					this.editForm=Object.assign(this.editForm, this.xmTask);      
 					this.editFormBak=Object.assign({},this.editForm)
 					this.setSkills()
+					this.activateTabPaneName="1"
 					//从新打开页面时某些数据需要重新加载，可以在这里添加
 				}
 			}, 
@@ -365,13 +363,7 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 				selectTaskVisible:false,
 				execUserVisible:false,
 				groupUserSelectVisible:false,
-				execGroupUserSelectVisible:false,
-				budgetDateRanger: [
-					util.formatDate(beginDate, "yyyy-MM-dd HH:mm:ss"),
-					util.formatDate(endDate, "yyyy-MM-dd HH:mm:ss")
-				], 
-				actDateRanger: [
-				],  
+				execGroupUserSelectVisible:false,  
 				pickerOptions:  util.getPickerOptions('datarange'),
 				tagSelectVisible:false,
 				subWorkItemNum:0,
