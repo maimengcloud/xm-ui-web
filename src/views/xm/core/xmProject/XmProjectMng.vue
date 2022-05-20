@@ -46,7 +46,7 @@
 										
 								<el-col  :span="24"  style="padding-top:5px; ">  
 									<font class="more-label-font">项目编号:</font>   
-									<el-input v-model="filters.projectId" clearable></el-input>
+									<el-input v-model="filters.id" clearable></el-input>
 								</el-col> 
 								<el-col  :span="24"  style="padding-top:5px;">
 									<font class="more-label-font">创建时间:</font>  
@@ -364,6 +364,7 @@
 					key: '',
 					productId:'',
 					productName:'',
+					id:'',//项目编号
 				},
 				xmProjects: [],//查询结果
 				pageInfo:{//分页数据
@@ -520,6 +521,12 @@
 				}else if(key.indexOf("myExecuserStatus")>=0){
 					params.userid=userid
 					params.myExecuserStatus=key.substring("myExecuserStatus".length)
+				}
+				if(this.filters.id){
+					params.id=this.filters.id
+				}
+				if(this.filters.key){
+					params.key=this.filters.key
 				}
 				return params;
 			},
