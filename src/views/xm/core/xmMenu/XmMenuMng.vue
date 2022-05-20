@@ -125,6 +125,19 @@
 										<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option>
 									</el-select>
 								</el-col>
+								<el-col  :span="24"  style="padding-top:5px;" >
+									<font class="more-label-font">
+										需求编号:
+									</font>
+									<el-input v-model="filters.menuId" style="width: 220px;" placeholder="需求编号查询" clearable></el-input>
+								</el-col>
+								
+								<el-col  :span="24"  style="padding-top:5px;" >
+									<font class="more-label-font">
+										产品编号:
+									</font>
+									<el-input v-model="filters.productId" style="width: 220px;" placeholder="产品编号查询" clearable></el-input>
+								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
 									<el-button type="primary"  @click="searchXmMenus" icon="el-icon-search">查询</el-button>
  								</el-col>
@@ -476,6 +489,8 @@
 					priority:'',
 					source:'',
 					dclasss:[],
+					menuId:'',//需求编号
+					productId:'',//产品编号
 				},
 				xmMenus: [],//查询结果
 				pageInfo:{//分页数据
@@ -508,15 +523,15 @@
 				addFormVisible: false,//新增xmMenu界面是否显示
 				//新增xmMenu界面初始化数据
 				addForm: {
-						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',ntype:'0',childrenCnt:0,sinceVersion:''
+						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'0',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',ntype:'0',childrenCnt:0,sinceVersion:'',proposerId:'',proposerName:'',dlvl:'0',dtype:'0',priority:'0',source:'1'
 				},
 				addFormInit: {
-						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',ntype:'0',childrenCnt:0,sinceVersion:''
+						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',ntype:'0',childrenCnt:0,sinceVersion:'',proposerId:'',proposerName:'',dlvl:'0',dtype:'0',priority:'0',source:'1'
 				},
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmMenu界面初始化数据
 				editForm: {
-						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',ntype:'0',childrenCnt:0,sinceVersion:''
+						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',ntype:'0',childrenCnt:0,sinceVersion:'',proposerId:'',proposerName:'',dlvl:'0',dtype:'0',priority:'0',source:'1'
 				},
 				parentMenu:null,
 				menuTemplateVisible:false, 
@@ -648,6 +663,12 @@
 				}
 				if(this.filters.dclasss){
 					params.dclasss=this.filters.dclasss
+				}
+				if(this.filters.menuId){
+					params.menuId=this.filters.menuId
+				}
+				if(this.filters.productId){
+					params.productId=this.filters.productId
 				}
 				return params;
 			},

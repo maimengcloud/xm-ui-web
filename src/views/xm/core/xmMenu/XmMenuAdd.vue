@@ -3,7 +3,7 @@
 		<el-row class="page-main ">
 			<!--新增界面 XmMenu 项目需求表--> 
 			<el-form :model="addForm"  label-width="120px" label-position="left" :rules="addFormRules" ref="addForm"> 
-						<el-row gutter="10"> 
+						<el-row :gutter="10"> 
 							<el-col :span="6">
 								<el-form-item label="序号名称" prop="seqNo" > 
 									<template slot="label">
@@ -49,138 +49,49 @@
 									</el-form-item>   
 								</el-col>
 						</el-row> 
-						
-						<el-row gutter="10">
-							<el-col :span="8">
-								<el-form-item label="需求状态" prop="status"> 
-									<el-select style="display:block;width:100px;" v-model="addForm.status">
-										<el-option v-for="i in this.dicts.menuStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>
-									</el-select>  
-								</el-form-item>
-							</el-col> 
-							<el-col :span="8">
-								<el-form-item label="进度" prop="finishRate">  
-									<el-progress     :percentage="addForm.mactRate"></el-progress> 
-								</el-form-item>
-							</el-col> 
-							<el-col :span="8">
-								<el-form-item label="截止时间" prop="startTime">  
-									 <el-date-picker style="width:220px;" type="daterange" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="dateRanger"></el-date-picker>
-								  
-								</el-form-item>
-							</el-col> 
-						</el-row> 
-					<el-tabs value="1"  >
-					<el-tab-pane label="基本信息" name="1" >
-						
-						
 						<el-row>
-							<el-col :span="12">
-								<el-form-item label="提出人" prop="proposerId">
-									<el-tag type="text" v-if="addForm.proposerId" closable @close="clearProposer">{{addForm.proposerName}}</el-tag> 
-									<el-button type="text" @click="selectProposer">选提出人</el-button>
-								</el-form-item>   
-							</el-col>
-							<el-col :span="12">
-								<el-form-item label="提出时间" prop="ctime">
-									<el-date-picker value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="addForm.ctime"></el-date-picker>
-								</el-form-item>   
-							</el-col>
-						</el-row>
-						<el-row> 
-							
-							<el-col :span="12">
+							<el-col :span="8">
 								<el-form-item  label="需求类型" prop="dtype" >   
 									<el-select v-model="addForm.dtype">
 										<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 									</el-select>  
 								</el-form-item>   
 							</el-col>
-							<el-col :span="12">
+							<el-col :span="8">
 								<el-form-item  label="需求来源" prop="source">   
 									<el-select v-model="addForm.source">
 										<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
 									</el-select>  
 								</el-form-item>   
 							</el-col> 
-							<el-col :span="12">
+							<el-col :span="8">
 								<el-form-item  label="需求层次" prop="dlvl" >   
 									<el-select v-model="addForm.dlvl">
 										<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
 									</el-select>  
 								</el-form-item>   
-							</el-col>
-							<el-col :span="12">
-							<el-form-item  label="优先级" prop="priority" >  
-								<el-select v-model="addForm.priority">
-										<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option> 
-								</el-select>    
-							</el-form-item>  
-							</el-col>
+							</el-col> 
 						</el-row>
-					</el-tab-pane> 
-						<el-tab-pane label="概述" name="4"> 
+						
+						<el-row> 
+							<el-col :span="8">
+								<el-form-item label="提出人" prop="proposerId">
+									<el-tag type="text" v-if="addForm.proposerId" closable @close="clearProposer">{{addForm.proposerName}}</el-tag> 
+									<el-button type="text" @click="selectProposer">选提出人</el-button>
+								</el-form-item>   
+							</el-col>
+							<el-col :span="8">
+								<el-form-item label="截止时间" prop="startTime">  
+									 <date-range type="daterange" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="addForm" start-key="startTime" end-key="endTime"></date-range>
+								  
+								</el-form-item>
+							</el-col> 
+						</el-row>  
+						<el-row>
 							<el-form-item label="需求概述" prop="remark">
 								<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="addForm.remark" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
 							</el-form-item>  
-						</el-tab-pane> 
-						<el-tab-pane label="子工作项" name="6"> 
-							 <xm-work-item>史诗下面是特性、特性下面是用户故事、故事下面是工作项（任务/bug）</xm-work-item>
-						</el-tab-pane> 
-						<el-tab-pane label="工时" name="2">
-							<el-form-item label="数据收集方式" prop="calcType"> 
-								<el-radio   v-model="addForm.calcType"  label="3" placeholder="下级往上级汇总" :disabled="addForm.ntype==='0'">下级往上级汇总</el-radio>
- 								<el-radio   v-model="addForm.calcType"  label="1" placeholder="由任务汇总" :disabled="addForm.ntype==='1'">由任务汇总</el-radio> 
-								<el-radio   v-model="addForm.calcType"  label="2" placeholder="手工填报" :disabled="addForm.ntype==='1'">手工填报</el-radio>
-							</el-form-item> 
-							<el-form-item label="工时进度" prop="mactRate" >
-								<el-progress style="width:60%;" :text-inside="true" :stroke-width="15" :percentage="addForm.mactRate?addForm.mactRate:0"></el-progress>
- 							</el-form-item> 
-							<el-form-item label="预估工期" prop="budgetHours">
-								<el-input-number :disabled="addForm.calcType!=='2' " style="width:200px;"  v-model="addForm.budgetHours"  :precision="2" :step="8" :min="0" placeholder="预计工期(小时)"></el-input-number> &nbsp;h
-							</el-form-item> 
-							<el-form-item label="预估工时" prop="budgetWorkload">
-								<el-input-number :disabled="addForm.calcType!=='2'  " style="width:200px;"  v-model="addForm.budgetWorkload" :precision="2" :step="8" :min="0" placeholder="预计工时(小时)"></el-input-number>  &nbsp;h
-							</el-form-item> 
-							<el-form-item label="实际工时" prop="mactWorkload">
-								<el-input-number :disabled="addForm.calcType!=='2'  " style="width:200px;"  v-model="addForm.mactWorkload" :precision="2" :step="8" :min="0" placeholder="实际工时(小时)"></el-input-number> &nbsp;h
-							</el-form-item> 
-							<font color="blue" style="font-size:10px;">控制规则:
-								<br>下级往上汇总：指工时数据按 &nbsp;用户故事->特性->史诗 &nbsp;这样的汇总关系将数据逐级往上汇总。
-								<br>由任务汇总： 指用户故事的工时数据由任务汇总。
-								<br>手工填报：  指用户故事的工时数据来自手工填报，无论是否关联了任务，都不从任务汇总。
-							</font>
-						</el-tab-pane>
-						<el-tab-pane label="成本" name="3"> 
-							<el-form-item label="预估金额" prop="budgetAmount">
-								<el-input-number :disabled="addForm.calcType!=='2' "  style="width:200px;"  v-model="addForm.budgetAmount" :precision="2" :step="100" :min="0" placeholder="预算金额"></el-input-number>   元 
-							</el-form-item> 
-							<el-form-item label="实际金额" prop="mactAmount">
-								<el-input-number :disabled="addForm.calcType!=='2'  "  style="width:200px;"  v-model="addForm.mactAmount" :precision="2" :step="100" :min="0" placeholder="实际金额"></el-input-number>   元 
-							</el-form-item> 
-							
-						</el-tab-pane>
-					<el-tab-pane label="链接" name="5"> 
-						<el-form-item label="需求链接" prop="demandUrl"> 
-							<el-input v-model="addForm.demandUrl" placeholder="需求链接" ></el-input> 
-						</el-form-item>  
-						<el-form-item label="代码链接" prop="codeUrl">
-							<el-input v-model="addForm.codeUrl" placeholder="代码链接" ></el-input>  
-						</el-form-item>  
-						<el-form-item label="设计链接" prop="designUrl">
-							<el-input v-model="addForm.designUrl" placeholder="设计链接" ></el-input>  
-						</el-form-item>   
-						<el-form-item label="操作手册链接" prop="operDocUrl">
-							<el-input v-model="addForm.operDocUrl" placeholder="操作手册链接" ></el-input>  
-						</el-form-item>  
-					</el-tab-pane>
-					<el-tab-pane label="wiki" name="7">  
-						关联知识库
-					</el-tab-pane>
-					<el-tab-pane label="附件" name="8">  
-						上传附件
-					</el-tab-pane>
-				</el-tabs>
+						</el-row> 
 			</el-form>
 			
 			<el-drawer title="选择提出人" :visible.sync="proposerSelectVisible" size="60%" append-to-body>
@@ -214,7 +125,7 @@
 		    ]),
 			
 			calcMenuLabel(){ 
-				var params={label:'工作项',icon:'',color:''};
+				var params={label:'用户故事',icon:'el-icon-document',color:' rgb(79, 140, 255)'};
 				if(this.addForm.dclass==='1'){
 					params={label:'史诗',icon:'el-icon-s-promotion',color:'rgb(255, 153, 51)'};
 				}else if(this.addForm.dclass==='2'){
@@ -229,31 +140,7 @@
 		watch: { 
 	      'visible':function(visible) { 
 	      	if(visible==true){ 
-				  this.addForm={...this.xmMenu}
-				if(this.parentMenu && this.parentMenu.menuId){
-					if(this.parentMenu.childrenCnt){
-						this.addForm.seqNo=this.parentMenu.seqNo+"."+(this.parentMenu.childrenCnt+1)
-					}else{
-						this.addForm.seqNo=this.parentMenu.seqNo+"."+1
-					}
-					this.addForm.pmenuId=this.parentMenu.menuId
-					this.addForm.pmenuName=this.parentMenu.menuName
-					if(this.parentMenu.dclass==='3'){
-						this.addForm.dclass='4'
-					}else if(this.parentMenu.dclass==='2'){
-						this.addForm.dclass='3'
-					}else if(this.parentMenu.dclass==='1'){
-						this.addForm.dclass='2'
-					}else if(this.parentMenu.dclass==='0'){
-						this.addForm.dclass='1'
-					}
-					
-				}else{
-					this.addForm.dclass=this.xmMenu.dclass
-				}
-				
-				this.addForm.mmUserid=this.userInfo.userid
-				this.addForm.mmUsername=this.userInfo.username
+				 this.initData();
 	      	}
 	      } 
 	    },
@@ -277,8 +164,8 @@
 				},
 				//新增界面数据 项目需求表
 				addForm: {
-						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'1',mmUserid:'',mmUsername:'',ntype:'0',childrenCnt:0,sinceVersion:'',
-					proposerId:'',proposerName:'',dlvl:'',dtype:'',priority:'',source:''
+						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'0',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'1',mmUserid:'',mmUsername:'',ntype:'0',childrenCnt:0,sinceVersion:'',
+					proposerId:'',proposerName:'',dlvl:'0',dtype:'0',priority:'0',source:'1'
 				},
 				proposerSelectVisible:false,
 				mmUserSelectVisible:false,
@@ -370,7 +257,38 @@
 				}
 			},
 			/**end 在上面加自定义方法**/
-			
+			initData(){
+				Object.assign(this.addForm, this.xmMenu);  
+				this.addForm.mmUserid=this.userInfo.userid
+				this.addForm.mmUsername=this.userInfo.username
+				this.addForm.remark="作为   ，我需要   ，以便我能够   。"
+				if(this.parentMenu){
+					if(this.parentMenu.childrenCnt){
+						this.addForm.seqNo=this.parentMenu.seqNo+"."+(this.parentMenu.childrenCnt+1)
+					}else{
+						this.addForm.seqNo=this.parentMenu.seqNo+"."+1
+					} 
+					this.addForm.pmenuId=this.parentMenu.menuId
+					this.addForm.pmenuName=this.parentMenu.menuName
+					this.addForm.menuName=this.parentMenu.menuName+'-请修改补充'
+
+					if(this.parentMenu.dclass==='3'){
+						this.addForm.dclass='4'
+					}else if(this.parentMenu.dclass==='2'){
+						this.addForm.dclass='3'
+					}else if(this.parentMenu.dclass==='1'){
+						this.addForm.dclass='2'
+					}else if(this.parentMenu.dclass==='0'){
+						this.addForm.dclass='1'
+					}
+					if(this.addForm.dclass<3){
+						this.addForm.calcType="3"
+					}else{
+						this.addForm.calcType="1"
+					}
+					
+				} 
+			}
 		},//end method
 		components: {  
 			//在下面添加其它组件 'xm-menu-edit':XmMenuEdit
@@ -381,34 +299,9 @@
  			initSimpleDicts('all',['demandSource','demandLvl','demandType','priority','menuStatus'] ).then(res=>{
 				this.dicts=res.data.data;
 			})
-			this.addForm=Object.assign(this.addForm, this.xmMenu);  
-			this.addForm.mmUserid=this.userInfo.userid
-			this.addForm.mmUsername=this.userInfo.username
-			this.addForm.remark="作为   ，我需要   ，以便我能够   。"
-			if(this.parentMenu){
-				if(this.parentMenu.childrenCnt){
-					this.addForm.seqNo=this.parentMenu.seqNo+"."+(this.parentMenu.childrenCnt+1)
-				}else{
-					this.addForm.seqNo=this.parentMenu.seqNo+"."+1
-				} 
-				this.addForm.pmenuId=this.parentMenu.menuId
-				this.addForm.pmenuName=this.parentMenu.menuName
-				if(this.parentMenu.dclass==='3'){
-					this.addForm.dclass='4'
-				}else if(this.parentMenu.dclass==='2'){
-					this.addForm.dclass='3'
-				}else if(this.parentMenu.dclass==='1'){
-					this.addForm.dclass='2'
-				}else if(this.parentMenu.dclass==='0'){
-					this.addForm.dclass='1'
-				}
-				if(this.addForm.dclass<3){
-					this.addForm.calcType="3"
-				}else{
-					this.addForm.calcType="1"
-				}
-				
-			} 
+
+			this.initData()
+			
 			/**在下面写其它函数***/
 			
 		}//end mounted
