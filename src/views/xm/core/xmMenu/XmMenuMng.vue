@@ -161,6 +161,7 @@
 									</div>
 									<el-button   @click="showAdd('1')">新建史诗</el-button>
 								</el-col>
+								<!--
 								<el-col :span="24" style="padding-top:5px;">
 									<div  class="icon" style="background-color:  rgb(0, 153, 51);">
 									<i class="el-icon-s-flag"></i>
@@ -174,7 +175,7 @@
 									</div>
 									<el-button   @click="showAdd('3')"  >新建用户故事</el-button>
 								</el-col>
-
+								-->
 
 								<el-col :span="24" style="padding-top:5px;">
 									<el-button  @click="showImportFromMenuTemplate()" icon="el-icon-upload2">由模板快速导入需求</el-button>
