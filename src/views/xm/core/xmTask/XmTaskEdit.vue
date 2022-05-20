@@ -69,10 +69,8 @@
 								</el-form-item>  
 							</el-col>  
 							<el-col :span="8"> 
-								<el-form-item label="预计时间"> 
-											
-										<date-range
-										 style="display:inline;"
+								<el-form-item label="预计时间">  
+										<date-range 
 											v-model="editForm"
 											start-key="startTime"
 											end-key="endTime"

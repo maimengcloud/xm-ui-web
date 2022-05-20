@@ -562,6 +562,7 @@
 					this.addForm.taskType=this.parentTask.taskType
 					this.addForm.planType=this.parentTask.planType 
 					this.addForm.ptype=this.parentTask.ptype
+					this.addForm.name=this.parentTask.name+"-请修改"
 				} 
 				if(this.xmProject){
 					this.addForm.projectId=this.xmProject.id

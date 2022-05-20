@@ -65,7 +65,7 @@
 							</el-col>
 							<el-col :span="8">
 								<el-form-item label="截止时间" prop="startTime" >
-									 <date-range type="daterange" :auto-default="false" style="width:220px;" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="editForm" start-key="startTime" end-key="endTime"  @change="editXmMenuSomeFields(editForm,'startTime',editForm)"></date-range>
+									 <date-range type="daterange" :auto-default="false"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="editForm" start-key="startTime" end-key="endTime"  @change="editXmMenuSomeFields(editForm,'startTime',editForm)"></date-range>
 
 								</el-form-item>
 							</el-col>
