@@ -46,15 +46,16 @@ Vue.use(wlGantt)
     projectDateRange: {
       type: Object,
       default: () => {
+        var date=new Date();
         return {
-          startTime: '2022-01-01',
-          endTime: '2022-12-30'
+          startTime: date.getFullYear()+'-01-01',
+          endTime: date.getFullYear()+'-12-30'
         }
       }
     },
     useRealTime: {
       type: Boolean,
-      default: true
+      default: false
     }
     // 'projectPhase', 'columns', 'useRealTime'
   },
