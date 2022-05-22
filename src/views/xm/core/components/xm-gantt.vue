@@ -1,13 +1,15 @@
 <template> 
   <section>
     <wl-gantt :data="treeData" 
-            :start-date="projectPhase.startTime"
-            :end-date="projectPhase.endTime"
             :usePreColumn="true"
+            :dateType="'monthAndDay'"
+            :startDate="projectDateRange.startTime"
+            :endDate="projectDateRange.endTime"
+            :autoGanttDateType="true"
             :checkSource="true"
-            :useRealTime="useRealTime"
-						:treeProps="{children: 'children', hasChildren: 'hasChildren',pid:'parentPhaseId', pre: 'taskFinishCnt'}"
-						:props="columns"
+            :useRealTime="useRealTime" 
+						:treeProps="{children: 'children', hasChildren: 'hasChildren',pid:'parentTaskid', pre: 'preTaskid',startDate:'startTime',endDate:'endTime',realStartDate:'actStartTime',realEndDate:'actEndTime'}"
+ 
             row-key="id">
             <!-- <el-table-column prop="name" label="计划名称" min-width="160" > 
               <template slot-scope="scope">
@@ -41,12 +43,12 @@ Vue.use(wlGantt)
         return {};
       }
     },
-    projectPhase: {
+    projectDateRange: {
       type: Object,
       default: () => {
         return {
-          startTime: '2020-06-01',
-          endTime: '2021-12-30'
+          startTime: '2022-01-01',
+          endTime: '2022-12-30'
         }
       }
     },
