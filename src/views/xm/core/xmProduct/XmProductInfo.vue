@@ -302,6 +302,8 @@
 		  this.infotype=infotype;
 		  if(infotype=='返回'){
 				this.goBack()
+			}else{
+				localStorage.setItem('product-infotype',infotype);
 			}
 	  },
       handleExport() {
@@ -417,7 +419,8 @@
 					return dateStr.substr(0,10);
 				}
 			},
-			goBack(){
+			goBack(){ 
+				localStorage.setItem('product-infotype',"产品概览");
 				this.$router.back()
 			}
 
@@ -451,7 +454,11 @@
 		},
 		mounted() {
 			this.$nextTick(() => {
-
+				
+				var infotype=localStorage.getItem('product-infotype');
+				if(infotype){
+					this.infotype=infotype
+				}
       });
 		}
 	}

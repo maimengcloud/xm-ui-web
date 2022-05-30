@@ -9,6 +9,7 @@
 	 
 	import { mapGetters } from 'vuex'; 
 	import XmProjectInfo from './XmProjectInfo'
+	import { listXmProject} from '@/api/xm/core/xmProject'; 
 
 	export default {  
 		computed: {
@@ -30,6 +31,35 @@
 				this.selProject=project;
 				localStorage.setItem('xm-project-info-route',JSON.stringify(this.selProject));
 				this.$emit('submit',project)
+			 },
+			 initByQueryId(){
+				 if(this.$route.query && this.$route.query.id){
+					var localStorageProject=localStorage.getItem("xm-project-info-route")
+					var project=null;
+					if(localStorageProject){
+						project=JSON.parse(localStorageProject)
+						if(project && project.id==this.$route.query.id){
+							this.selProject=project
+							this.showInfo=true;
+						}else{
+							this.getProject(this.$route.query.id);
+						}
+					}else{
+						this.getProject(this.$route.query.id);
+					} 
+				} 
+			 },
+			 getProject(id){
+				 listXmProject({id:id}).then(res=>{
+					 var tips = res.data.tips;
+					 if(tips.isOk){
+						 this.selProject=res.data.data[0]
+						 localStorage.setItem("xm-project-info-route",JSON.stringify(this.selProject)) 
+						this.showInfo=true;
+					 }else{
+
+					 }
+				 })
 			 }
 			 
 			
@@ -39,24 +69,10 @@
 			//在下面添加其它组件
 		},
 		activated(){
-			if(this.$route.params && this.$route.params.id){
-				  this.selProject=this.$route.params
-				  this.showInfo=true;
-				  localStorage.setItem('xm-project-info-route',JSON.stringify(this.selProject));
-			}else{
-				this.selProject=JSON.parse(localStorage.getItem("xm-project-info-route"))
-				this.showInfo=true;
-			}
+			this.initByQueryId();
 		},
 		mounted() {  
-			  if(this.$route.params && this.$route.params.id){
-				  this.selProject=this.$route.params
-				  this.showInfo=true;
-				  localStorage.setItem('xm-project-info-route',JSON.stringify(this.selProject));
-			  }else{
-				this.selProject=JSON.parse(localStorage.getItem("xm-project-info-route"))
-				this.showInfo=true;
-			}
+			  this.initByQueryId();
 		}
 	}
 </script>

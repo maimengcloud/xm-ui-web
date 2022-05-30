@@ -532,7 +532,8 @@
 			//进入info界面
 			intoInfo(row) {
 				this.editForm = row;
-				this.$router.push({ name:'XmProductInfoRoute', params: row })
+				this.$router.push({ name:'XmProductInfoRoute', query: {id:row.id} })
+				localStorage.setItem("xm-product-info-route",JSON.stringify(row));
 				//this.showInfo = true;
 			},
 			//选择行xmProduct

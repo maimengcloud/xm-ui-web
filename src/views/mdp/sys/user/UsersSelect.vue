@@ -1,5 +1,5 @@
 <template>
-	<section> 
+	<section class="padding-left"> 
 		<el-tabs v-model="activeTabPane">
 			<el-tab-pane name="1" label="常用">
 				<el-row style="height:30px;"> 

@@ -186,15 +186,7 @@
 				]),
 		},
 		watch:{
-			selProject:function(selProject){
-				var oldInfotype=this.infotype
-				this.infotype=''
-				this.$nextTick(()=>{
-
-					this.infotype=oldInfotype
-				})
-
-			}
+			 
 		},
 		data() {
 			return {
@@ -229,10 +221,7 @@
 							sendContent:'咨询'
 						}
 				});
-			},
-			handleMenuSelect(menuId){
-				this.infotype=menuId
-			},
+			}, 
 			onUserSelected:function(users){
 				if(this.groupUserVisible==true){
 					var query={}
@@ -261,7 +250,9 @@
 		  
 		  if(infotype=='返回'){
 				this.goBack()
-			}
+		}else{
+			localStorage.setItem('project-infotype',infotype);
+		}
 	  },
       handleExport() {
         this.downloadLoading = true
@@ -376,7 +367,8 @@
 					return dateStr.substr(0,10);
 				}
 			},
-			goBack(){
+			goBack(){ 
+				localStorage.setItem('project-infotype',"项目概览");
 				this.$router.back()
 			}
 
@@ -408,7 +400,10 @@
 		},
 		mounted() {
 			this.$nextTick(() => {
-
+				var infotype=localStorage.getItem('project-infotype');
+				if(infotype){
+					this.infotype=infotype
+				}
       });
 		}
 	}

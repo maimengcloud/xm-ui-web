@@ -202,7 +202,7 @@
 								{{scope.row.startTime? scope.row.startTime.substr(0,10) : ""}}~{{scope.row.endTime? scope.row.endTime.substr(0,10) : ""}}
 							</template>
 						</el-table-column>
-						<el-table-column prop="bizFlowState" label="审批状态"min-width="120" >
+						<el-table-column prop="bizFlowState" label="审批状态" min-width="120" >
 							<template slot-scope="scope">
 								<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'bizFlowState',scope.row.bizFlowState)" :key="index" :type="item.className">{{item.name}}</el-tag>
 							</template>
@@ -616,7 +616,8 @@
 			//进入info界面
 			intoInfo(row) {
 				this.selectProject = row;
-				this.$router.push({ name:'XmProjectInfoRoute', params: row })
+				this.$router.push({ name:'XmProjectInfoRoute', query: {id:row.id} })
+				localStorage.setItem("xm-project-info-route",JSON.stringify(row)) 
 				//this.showInfo = true;
 			},
 
