@@ -10,6 +10,7 @@ module.exports = {
     assetsSubDirectory: '',
     assetsPublicPath: '/',
     proxyTable: {
+       /**
     	'/api/m1/xm': {
             target: 'http://localhost:7067',
             changeOrigin: true,
@@ -17,7 +18,7 @@ module.exports = {
               '^/api/m1/xm': '/xm'
             }
       },
-       /**
+      
        '/api/m1/sys': {
          target: 'http://localhost:7015',
          changeOrigin: true,
