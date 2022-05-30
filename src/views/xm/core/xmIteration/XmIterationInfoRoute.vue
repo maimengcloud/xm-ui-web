@@ -9,6 +9,7 @@
 	 
 	import { mapGetters } from 'vuex'; 
 	import XmIterationInfo from './XmIterationInfo'
+	import { listXmIterationWithState } from '@/api/xm/core/xmIteration';
 
 	export default {  
 		computed: {
@@ -26,7 +27,35 @@
 			}
 		},//end data
 		methods: { 
-			 
+			 initByQueryId(){
+				 if(this.$route.query && this.$route.query.id){
+					var localStorageIteration=localStorage.getItem("xm-iteration-info-route")
+					var iteration=null;
+					if(localStorageIteration){
+						iteration=JSON.parse(localStorageIteration)
+						if(iteration && iteration.id==this.$route.query.id){
+							this.xmIteration=iteration
+							this.showInfo=true;
+						}else{
+							this.getIteration(this.$route.query.id);
+						}
+					}else{
+						this.getIteration(this.$route.query.id);
+					} 
+				} 
+			 },
+			 getIteration(id){
+				 listXmIterationWithState({id:id}).then(res=>{
+					 var tips = res.data.tips;
+					 if(tips.isOk){
+						 this.xmIteration=res.data.data[0]
+						 localStorage.setItem("xm-iteration-info-route",JSON.stringify(this.xmIteration)) 
+						this.showInfo=true;
+					 }else{
+
+					 }
+				 })
+			 }
 			 
 			
 		},//end methods
@@ -35,24 +64,10 @@
 			//在下面添加其它组件
 		},
 		activated(){
-			if(this.$route.params && this.$route.params.id){
-				  this.xmIteration=this.$route.params
-				  this.showInfo=true;
-				  localStorage.setItem('xm-iteration-info-route',JSON.stringify(this.xmIteration));
-			}else{
-				this.xmIteration=JSON.parse(localStorage.getItem("xm-iteration-info-route"))
-				this.showInfo=true;
-			}
+			this.initByQueryId();
 		},
 		mounted() {  
-			  if(this.$route.params && this.$route.params.id){
-				  this.xmIteration=this.$route.params
-				  this.showInfo=true;
-				  localStorage.setItem('xm-iteration-info-route',JSON.stringify(this.xmIteration));
-			  }else{
-				this.xmIteration=JSON.parse(localStorage.getItem("xm-iteration-info-route"))
-				this.showInfo=true;
-			}
+			  this.initByQueryId();
 		}
 	}
 </script>

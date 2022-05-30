@@ -161,6 +161,7 @@
 			if(infotype=='返回'){
 				this.goBack()
 			}
+			localStorage.setItem('iteration-infotype',infotype);
 	  },
       handleExport() {
         this.downloadLoading = true
@@ -276,6 +277,7 @@
 				}
 			},
 			goBack(){
+				localStorage.setItem('iteration-infotype',"迭代概览");
 				this.$router.back()
 			}
 
@@ -308,7 +310,11 @@
 		},
 		mounted() {
 			this.$nextTick(() => {
-
+				
+				var infotype=localStorage.getItem('iteration-infotype');
+				if(infotype){
+					this.infotype=infotype
+				}
       });
 		}
 	}

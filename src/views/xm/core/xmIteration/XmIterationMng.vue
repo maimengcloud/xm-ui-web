@@ -329,8 +329,9 @@ import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue'
 
 			//进入info界面
 			intoInfo(row) {
-				this.editForm = row;
-				this.$router.push({ name:'XmIterationInfoRoute', params: row })
+				this.editForm = row; 
+				localStorage.setItem("xm-iteration-info-route",JSON.stringify(row)) 
+				this.$router.push({ name:'XmIterationInfoRoute', query: {id:row.id} })
 				//this.showInfo = true;
 			},
 			//选择行xmIteration
