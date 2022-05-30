@@ -1,8 +1,7 @@
 <template>
-  <div class="menu-wrapper"> 
-    <template> 
-      <div v-for="(item,index) in routes" :key="index">
-        <div v-if="!item.hidden&&item.children">
+  <div class="menu-wrapper">  
+      <template v-for="(item,index) in routes" >
+        <div v-if="!item.hidden&&item.children" :key="index" class="menu-item">
           <router-link v-if="hasOneShowingChildren(item.children)" :to="item.path+'/'+item.children[0].path">
             <el-menu-item :index="item.path+'/'+item.children[0].path" :class="{'submenu-title-noDropdown':!isNest}">
               <svg-icon v-if="item.children[0].meta&&item.children[0].meta.icon" :icon-class="item.children[0].meta.icon"></svg-icon>
@@ -16,9 +15,8 @@
               <span v-if="item.meta&&item.meta.title" slot="title">{{generateTitle(item.meta.title)}}</span>
             </template>
 
-            <template>
-              <div v-for="(child,idx) in item.children" :key="idx">
-                <div v-if="!child.hidden">
+            <template v-for="(child,idx) in item.children"> 
+                <div v-if="!child.hidden" :key="'idx-'+idx">
                   <sidebar-item :is-nest="true" class="nest-menu" v-if="child.children&&child.children.length>0" :routes="[child]"></sidebar-item>
                   <router-link v-else :to="{path:item.path+'/'+child.path,query:child.query}">
                     <el-menu-item :index="item.path+'/'+child.path">
@@ -26,12 +24,10 @@
                       <span v-if="child.meta&&child.meta.title" slot="title">{{generateTitle(child.meta.title)}}</span>
                     </el-menu-item>
                   </router-link>
-                </div>
-              </div>
+                </div> 
             </template>
           </el-submenu> 
-        </div>
-      </div>
+        </div> 
     </template>
   </div>
 </template>
