@@ -14,8 +14,8 @@
                 :vertical-compact="true"
                 :margin="[10, 10]"
                 :use-css-transforms="true"
-            >   
-                <grid-item 
+            >
+                <grid-item
                     v-for="(item) in layout"
                     :x="item.x"
                     :y="item.y"
@@ -84,7 +84,7 @@ export default {
     methods: {
         addItem: function(element, index) {
             this.layout.push(
-                {   
+                {
                     ...element,
                     // x: (this.layout.length * 6) % (this.layoutColNum || 12),
                     x: 0,
@@ -92,7 +92,7 @@ export default {
                     y: 12,
                     w: 12,
                     h: 4,
-                    i: index, 
+                    i: index,
                 }
             )
         },
@@ -129,7 +129,7 @@ export default {
 
 
 .vue-grid-layout {
-    background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.15) 1%, rgba(0, 0, 0, 0) 1%) 
+    background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.15) 1%, rgba(0, 0, 0, 0) 1%)
     ,linear-gradient(0deg,rgba(0, 0, 0, 0.15) 1%, rgba(0, 0, 0, 0) 1%);
     background-size: calc(100% / 12) calc(100% / 12); /*调节格子宽 高*/
 }

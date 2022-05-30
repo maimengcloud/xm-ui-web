@@ -192,10 +192,10 @@
 								//console.log("res--"+JSON.stringify(res));
 								if(res.data.tips.isOk){
 									this.addLoading=false;
-									this.$message.success(res.data.tips.msg); 
+									this.$notify.success(res.data.tips.msg); 
 									this.getTreeData(true);
 								}else{ 
-									this.$message.error(res.data.tips.msg); 
+									this.$notify.error(res.data.tips.msg); 
 								}
 							}).catch(e=>this.addLoading = false  );
 							
@@ -215,10 +215,10 @@
 								this.editLoading = false;  
 								if(res.data.tips.isOk){
 									this.editVisible=false;
-									this.$message.success(res.data.tips.msg); 
+									this.$notify.success(res.data.tips.msg); 
 									this.getTreeData(true);
 								}else{ 
-									this.$message.error(res.data.tips.msg); 
+									this.$notify.error(res.data.tips.msg); 
 								}
 							}).catch(e=>this.editLoading = false  );
 							
@@ -242,7 +242,7 @@
 		    deleteNode(data, node, comp) {  
 				console.log("deleteNode__"+JSON.stringify(data));
 						if(data.children){
-							this.$message.error("请先删除子元素"); 
+							this.$notify.error("请先删除子元素"); 
 							return;
 						}
 						let params={
@@ -258,10 +258,10 @@
 								if(res.data.tips.isOk){
 									this.editVisible=false;
 									
-									this.$message.success(res.data.tips.msg); 
+									this.$notify.success(res.data.tips.msg); 
 									this.getTreeData(true);
 								}else{ 
-									this.$message.error(res.data.tips.msg); 
+									this.$notify.error(res.data.tips.msg); 
 								}
 							});
 						})

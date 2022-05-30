@@ -149,11 +149,11 @@ export default {
     },
     sendPhonenoSmsCode(){
       if(!this.loginForm.phoneno){
-        this.$message.error("手机号码不能为空");
+        this.$notify.error("手机号码不能为空");
         return;
       }
       if(this.loginForm.phoneno.length !=11 ){
-        this.$message.error("手机号码必须为11位");
+        this.$notify.error("手机号码必须为11位");
         return;
       }
       var params={
@@ -165,32 +165,54 @@ export default {
           this.phonenoUsers=res0.data.data; 
           sendSmsCode(params).then(res=>{
             if(res.data.tips.isOk){
-              this.$message.success("发送成功");
+              this.$notify.success("发送成功");
             }else{
-              this.$message.error(res.data.tips.msg);
+              this.$notify.error(res.data.tips.msg);
             }
           })
         }else{
-          this.$message.error(res0.data.tips.msg);
+          this.$notify.error(res0.data.tips.msg);
         }
       })
       
     },
     checkDisplayUserid(){
       if(!this.loginForm.displayUserid){
-        this.$message.error("账号不能为空");
+        this.$notify.error("账号不能为空");
         return;
       }
       checkDisplayUserid(this.loginForm.displayUserid).then(res0=>{
         if(res0.data.tips.isOk){
-           this.$message.success("该账户可以注册");
+           this.$notify.success("该账户可以注册");
         }else{
-          this.$message.error("该账户已存在，不允许再注册！");
+          this.$notify.error("该账户已存在，不允许再注册！");
         }
       })
       
     },
     
+    getQueryVariable(variable,url){
+      var query =url;
+      if(url==null || url==undefined || url==''){
+        query=window.location.href;
+
+      }
+      //alert(query);
+      var query2=query.split("?");
+      if(query2.length>1){
+        query=query2[1];
+      }else{
+        query=""
+        return null;
+      }
+
+          var vars = query.split("&");
+          for (var i=0;i<vars.length;i++) {
+                  var pair = vars[i].split("=");
+                  if(pair[0] == variable){return pair[1];}
+          }
+          return null;
+    },
     handleRegister() {
       this.loading = true 
       this.$refs.loginForm.validate(valid => {
@@ -203,12 +225,16 @@ export default {
               smsCode:this.loginForm.smsCode,
               username:this.loginForm.username,
           } 
+          var branchId=this.getQueryVariable("branchId")
+          if(branchId){
+            params.branchId=branchId
+          }
           doRegister(params).then(res=>{
             this.loading = false  
             if(res.data.tips.isOk){
-              this.$message.success(res.data.tips.msg);
+              this.$notify.success(res.data.tips.msg);
             }else{
-              this.$message.error(res.data.tips.msg);
+              this.$notify.error(res.data.tips.msg);
             }
           })
         } else {
@@ -219,7 +245,7 @@ export default {
     },
     deptChecked() {
     	if( !this.userDeptid){
-    		this.$message.error("请选择登陆的部门")
+    		this.$notify.error("请选择登陆的部门")
     		return
     	}
     	
@@ -236,13 +262,13 @@ export default {
     rolesChecked(){ 
     	if(this.userInfo.isSuperAdmin){ 
     			this.$router.push({ path: '/' });
-    			this.$message.info("欢迎登陆，超级管理员"); 
+    			this.$notify.info("欢迎登陆，超级管理员"); 
 	  	}else if(this.userInfo.isPlatformAdmin){ 
 			this.$router.push({ path: '/' });
-			this.$message.info("欢迎登陆，平台管理员"); 
+			this.$notify.info("欢迎登陆，平台管理员"); 
   		}else{
   			this.$router.push({ path: '/' }); 
-  			this.$message.info("欢迎登陆"); 
+  			this.$notify.info("欢迎登陆"); 
 	  	}
     },   
     

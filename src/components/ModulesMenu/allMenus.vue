@@ -46,10 +46,13 @@
 </template>
 
 <script>
+import config from '../../common/config.js';
 import { mapGetters } from 'vuex';
 import {getAllMenuModule, getBuyMenuModule} from '@/api/mdp/sys/modules'
 import {modulesOfIcon} from "./modulesOfIcon.js";
 import {modulesOfRouter} from "./modulesOfRouter.js";
+
+import NProgress from 'nprogress' // progress bar
 
 export default {
     props: ['value'],
@@ -121,20 +124,23 @@ export default {
  
         selectItem(item) {
             if(item.isBuy||item.billMode=='0') {
+                var context="";
                 //路由跳转
-                let name = "";
+                let path = "";
                 modulesOfRouter.forEach(e => {
                     if(e.id == item.id) {
-                        name = e.path;
-                        item.type = e.type;
+                        path = e.path; 
+                        context=e.context
                     }
                 })
 
-                if(name != "") {
-                    if(item.type == "link") {
-                        window.open(name);
+                if(path != "") {
+                    if(context != process.env.CONTEXT) { 
+                        var fullpath=config.getBaseDomainUrl()+"/"+context+"/"+process.env.VERSION+"/#"+path
+                        window.open(fullpath);
+                        NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
                     }else {
-                        this.$router.push({path: name})
+                        this.$router.push({path: path})
                     }
                 }
                 this.visible = false;

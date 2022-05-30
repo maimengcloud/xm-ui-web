@@ -163,7 +163,7 @@ export default {
         this.$emit('getCarInnerImageUrl',res.data.url)
         this.$emit('uploadSuccess',file)
       } else {
-        this.$message.warning(res.tips.msg);
+        this.$notify.warning(res.tips.msg);
         return false;
       }
     },
@@ -186,11 +186,11 @@ export default {
             }
             this.$emit("on-remove", file, this.fileList);
           } else {
-            this.$message.error(res.data.tips.msg);
+            this.$notify.error(res.data.tips.msg);
           }
         })
         .catch(() => {
-          this.$message.warning("删除失败");
+          this.$notify.warning("删除失败");
         });
     },
     handlePreview(file) {
@@ -211,7 +211,7 @@ export default {
       window.open(attachmentPreviewUrl, "_blank");
     },
     handleExceed(files, fileList) {
-      this.$message.warning(
+      this.$notify.warning(
         "当前限制选择" +
           this.limit +
           " 个文件，本次选择了" +
@@ -233,7 +233,7 @@ export default {
         }
       });
       if (canDel == false && file.id && file.id != null && file.id != "") {
-        this.$message.warning(file.name + "设置了不允许删除");
+        this.$notify.warning(file.name + "设置了不允许删除");
         return false;
       } else if (
         canDel == true &&

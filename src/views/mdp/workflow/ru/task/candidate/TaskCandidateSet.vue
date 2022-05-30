@@ -198,10 +198,10 @@
 					this.addUsersLoading=false;
 					if(res.data.tips.isOk){
 						this.getCandidateUsersData();
-						this.$message.success(res.data.tips.msg);
+						this.$notify.success(res.data.tips.msg);
 						
 					}else{
-						this.$message.error(res.data.tips.msg);
+						this.$notify.error(res.data.tips.msg);
 					}
 				}).catch(e=>{
 					this.addUsersLoading=false;
@@ -223,10 +223,10 @@
 					this.addPostsLoading=false;
 					if(res.data.tips.isOk){
 						this.getCandidatePostsData();
-						this.$message.success(res.data.tips.msg);
+						this.$notify.success(res.data.tips.msg);
 						
 					}else{
-						this.$message.error(res.data.tips.msg);
+						this.$notify.error(res.data.tips.msg);
 					}
 				}).catch(e=>{
 					this.addPostsLoading=false;
@@ -250,10 +250,10 @@
 					this.addDeptsLoading=false;
 					if(res.data.tips.isOk){
 						this.getCandidateDeptsData();
-						this.$message.success(res.data.tips.msg);
+						this.$notify.success(res.data.tips.msg);
 					
 					}else{
-						this.$message.error(res.data.tips.msg);
+						this.$notify.error(res.data.tips.msg);
 					}
 				}).catch(e=>{
 					this.addDeptsLoading=false;
@@ -272,9 +272,9 @@
 				delCandidate(params).then(res=>{
 					if(res.data.tips.isOk){
 						this.getCandidateUsersData();
-						this.$message.success(res.data.tips.msg);
+						this.$notify.success(res.data.tips.msg);
 					}else{
-						this.$message.error(res.data.tips.msg);
+						this.$notify.error(res.data.tips.msg);
 					}
 				});
 				this.selectCandidateUsersVisible=false;
@@ -291,9 +291,9 @@
 				delCandidate(params).then(res=>{
 					if(res.data.tips.isOk){
 						this.getCandidatePostsData();
-						this.$message.success(res.data.tips.msg);
+						this.$notify.success(res.data.tips.msg);
 					}else{
-						this.$message.error(res.data.tips.msg);
+						this.$notify.error(res.data.tips.msg);
 					}
 				});
 				this.selectCandidatePostsVisible=false;
@@ -310,9 +310,9 @@
 				delCandidate(params).then(res=>{
 					if(res.data.tips.isOk){
 						this.getCandidateDeptsData();
-						this.$message.success(res.data.tips.msg);
+						this.$notify.success(res.data.tips.msg);
 					}else{
-						this.$message.error(res.data.tips.msg);
+						this.$notify.error(res.data.tips.msg);
 					}
 
 				});

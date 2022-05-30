@@ -20,7 +20,7 @@
       -->
      
       <error-log v-if="false" class="errLog-container right-menu-item hidden-sm-and-down"></error-log>
-      <screenfull v-if="false" class="screenfull right-menu-item"></screenfull>
+      <screen-full v-if="false" class="screenfull right-menu-item"></screen-full>
       <lang-select v-if="false" class="international right-menu-item hidden-sm-and-down"></lang-select>
 
       <el-tooltip v-if="false" class="hidden-sm-and-down"  effect="dark" :content="$t('navbar.theme')" placement="bottom">
@@ -28,7 +28,7 @@
       </el-tooltip>
 
 
-      <UserInfo />
+      <user-info />
 
       <!-- <el-dropdown class="avatar-container right-menu-item hidden-sm-and-down" trigger="hover"   @command="handleCommand">
           <div class="avatar-wrapper">

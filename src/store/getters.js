@@ -3,9 +3,8 @@ const getters = {
   language: state => state.app.language,
   visitedViews: state => state.tagsView.visitedViews,
   cachedViews: state => state.tagsView.cachedViews,
-  token: state => state.user.token, 
+  token: state => state.user.token,
   userInfo: state => state.user.userInfo,
-  workShop:state=>state.user.workShop,
   introduction: state => state.user.introduction,
   status: state => state.user.status,
   roles: state => state.user.roles,
@@ -21,6 +20,6 @@ const getters = {
   errorLogs: state => state.errorLog.logs,
   added: state => state.permission.added,
   isLoadOk:state=>state.user.isLoadOk,
-  noticeMsg:state=>state.noticeMsg.noticeMsg
+  noticeMsg:state=>state.noticeMsg.noticeMsg, 
 }
 export default getters

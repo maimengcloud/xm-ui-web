@@ -9,8 +9,8 @@
 				<el-form-item label="选项名称" prop="optionName">
 					<el-input v-model="editForm.optionName" auto-complete="off"></el-input>
 				</el-form-item> 
-				<el-form-item label="快捷键" prop="keys">
-					<el-input v-model="editForm.keys" auto-complete="off"></el-input>
+				<el-form-item label="快捷键" prop="Keyes">
+					<el-input v-model="editForm.Keyes" auto-complete="off"></el-input>
 				</el-form-item> 
 
 				<el-form-item label="顺序" prop="seqOrder">
@@ -94,7 +94,7 @@
 				},
 				//编辑界面数据  ItemOption 数据项取值列表
 				editForm: {
-					itemId:'',id:'',optionValue:'',optionName:'',keys:'',isShow:'',seqOrder:'',fp:'',tp:'',sp:'',isDefault:'',cdate:'',branchId:'',deptid:''
+					itemId:'',id:'',optionValue:'',optionName:'',Keyes:'',isShow:'',seqOrder:'',fp:'',tp:'',sp:'',isDefault:'',cdate:'',branchId:'',deptid:''
 				}
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				
@@ -121,7 +121,7 @@
 									this.$refs['editForm'].resetFields();
 									this.$emit('submit');//  @submit="afterEditSubmit"
 								}
-								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch(() => {
 								this.load.edit=false
 							});

@@ -8,16 +8,10 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '../views/layout/Layout'
-import routesWorkflow from './routes_workflow'
-import routesForm from './routes_form' 
-import routesXm from './routes_xm' 
-import routesDatavXm from './routes_datav_xm' 
-import routesArc from './routes_arc'
-import routesIm from './routes_im' 
+import routesSys from './routes_sys' 
 import routesMyWork from './routes_my_work'
 import routesOrder from './routes_order'
-
-export { Layout }
+export {Layout}
 
 /** note: submenu only apppear when children.length>=1
 *   detail see  https://panjiachen.github.io/vue-element-admin-site/#/router-and-nav?id=sidebar
@@ -41,31 +35,21 @@ export const constantRouterMap = [
   { path: '/login', component: _import('login/index'), hidden: true },
   { path: '/404', component: _import('errorPage/404'), hidden: true },
   { path: '/401', component: _import('errorPage/401'), hidden: true },
+  { path: '/changeEmailStepOne', component: _import('mdp/sys/user/ChangeEmailStepOne'), hidden: true },
+  { path: '/changeEmailStepTwo', component: _import('mdp/sys/user/ChangeEmailStepTwo'), hidden: true },
   {
     path: '',
     component: Layout,
     redirect: 'dashboard',
+    name:"首页", 
     meta:{title:'首页',icon: 'home-page'},
-    children: [
-      {
-        path: 'dashboard',
-        component: _import('xm/XmOverview'),
-        name: '首页',
-        meta: { title: '首页', icon: 'home-page', noCache: true }
-      },
-      // {
-      //   path: 'updateUserInfo',
-      //   component: _import('mdp/sys/user/UpdateUserInfo'),
-      //   name: '账户设置',
-      //   meta: {
-      //     title: '修改个人信息',
-      //     icon: 'component'
-      //   }
-      // }
-    ],
-    hidden: false
-  }, 
-  
+    children: [{
+      path: 'dashboard',
+      component: _import('myWork/my/index'),
+      name: '首页',
+      meta: { title: '首页', icon: 'dashboard', noCache: true }
+    }]
+  }
 ]
 
 export default new Router({
@@ -74,13 +58,10 @@ export default new Router({
   routes: constantRouterMap
 })
 
-let allRoutes = [] 
-allRoutes=allRoutes.concat(routesMyWork.routes);
-allRoutes=allRoutes.concat(routesXm.routes); 
-allRoutes=allRoutes.concat(routesDatavXm.routes);
-allRoutes=allRoutes.concat(routesWorkflow.routes).concat(routesForm.routes)
-allRoutes=allRoutes.concat(routesArc.routes);
-allRoutes=allRoutes.concat(routesIm.routes);
-allRoutes=allRoutes.concat(routesOrder.routes);
 
-export const asyncRouterMap = allRoutes
+let allRoutes=[] 
+
+allRoutes=allRoutes.concat(routesMyWork.routes);
+allRoutes=allRoutes.concat(routesSys.routes);
+allRoutes=allRoutes.concat(routesOrder.routes);
+export const asyncRouterMap = allRoutes 

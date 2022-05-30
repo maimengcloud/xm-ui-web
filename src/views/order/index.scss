@@ -133,12 +133,12 @@ h2 {
                 flex-direction: column;
                 background: #FFFFFF;
                 margin-right: 30px;
+                margin-top:30px;
                 .head {
                     width: 180px;
                     height: 200px;
                     border: 1px solid #E3E4E6;
-                    border-radius: 8px;
-                    margin-bottom: 20px;
+                    border-radius: 8px; 
                     position: relative;
                     cursor: pointer;
                     .module_top {
@@ -147,6 +147,7 @@ h2 {
                         flex-direction: column;
                         justify-content: center;
                         align-items: center;
+                        text-align: center;
                         img {
                             width: 90px;
                             height: 90px;
@@ -158,14 +159,20 @@ h2 {
                             font-size: 18px;
                         }
                     }
-                    .module_bottom {
-                        height: 30px;
-                        border-radius: 8px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        .selected {
-                            color: #fff;
+                    .module_bottom {  
+                        .selected { 
+                            font-size: 30px;
+                            position: absolute;
+                            right: 10px;
+                            top:5px;
+                            color: #409EFF;
+                        }
+                        span{ 
+                            font-size: 14px;
+                            position: absolute;
+                            left: 10px;
+                            top: 5px;
+                            color: #409EFF;
                         }
                     } 
 
@@ -330,4 +337,31 @@ h2 {
             }
         }
     }
-}  
+}
+
+
+.avatar-container {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    .avatar-wrapper {
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        .user-avatar {
+            height: 34px;
+            width: 34px;
+            border-radius: 50%;
+            margin-right: 12px;
+        }
+        .username{
+            color: #7D7D7D;
+            font-size: 18px;
+            margin-right: 2px;
+        }
+        .el-icon-caret-bottom {
+            font-size: 22px;
+        }
+    }
+}

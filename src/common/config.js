@@ -5,7 +5,7 @@
  *  api的调用一般是 /${BASE_API}/${applicationName}/${contextPath}/${具体的后端服务路径}
  */
 
-var sysName = 'oa协同办公系统'// 系统名称，用于展示
+var sysName="系统管理";//系统名称，用于展示
 
 export default {
   getOauth2LoginBasePath:function(){
@@ -13,7 +13,8 @@ export default {
   },
 
   getBaseDomainUrl:function(){
-    return "https://www.qingqinkj.com"
+    var curlDomain=window.location.protocol+"//"+window.location.host; //   返回https://mp.csdn.net
+    return curlDomain
   },
 
   getSysName: function() {
@@ -42,10 +43,7 @@ export default {
   // 图片内容首页路径
   getArcIndexPath: function() {
     return '/arc/arc/index.html'
-  },
-  getBaseDomainUrl: function() {
-    return window.location.protocol + '//' + window.location.host + '/api/' + process.env.VERSION
-  },
+  }, 
   // 图片展示或下载路径
   getArcFileUploadBasePath: function() {
     return window.location.protocol + '//' + window.location.host + '/api/' + process.env.VERSION + '/arc/arc'
@@ -90,6 +88,9 @@ export default {
   },
   getPayBasePath:function() {
     return '/tpa/pay'
+  },
+  getMoBasePath(){
+    return '/sys/sys/mo/'
   }
 
 

@@ -502,19 +502,19 @@
 
 			},
 			showDiagram(){
-				this.diagramUrl=config.getBaseDomainUrl()+config.getWorkflowBasePath()+"/mdp/workflow/re/procdef/diagram/"+this.procdef.id;
+				this.diagramUrl=config.getBaseDomainUrl()+"/"+process.env.VERSION+config.getWorkflowBasePath()+"/mdp/workflow/re/procdef/diagram/"+this.procdef.id;
 				this.displayDiagram=true;
 			},
 
 			startHandle(){
 				var date=new Date();
 				if(!this.monitors || this.monitors.length==0){
-					this.$message.error("监控人不能为空");
+					this.$notify.error("监控人不能为空");
 					return;
 				}
 
 				if(!this.sponsors || this.sponsors.length==0){
-					this.$message.error("主办人不能为空");
+					this.$notify.error("主办人不能为空");
 					return;
 				}
 				this.formDataSubmitEvent=date.getTime();

@@ -18,7 +18,7 @@ module.exports = {
               '^/api/m1/xm': '/xm'
             }
       },
-      
+      **/
        '/api/m1/sys': {
          target: 'http://localhost:7015',
          changeOrigin: true,
@@ -26,7 +26,7 @@ module.exports = {
            '^/api/m1/sys': '/sys'
          }
        },
-      **/
+      
       // '/api/m1/pay': {
       //   target: 'http://localhost:7125',
       //   changeOrigin: true,
@@ -34,7 +34,7 @@ module.exports = {
       //     '^/api/m1/pay': '/pay'
       //   }
       // },
-      
+
       /**
     	'/api/m1/workflow': {
             target: 'http://localhost:7080',
@@ -55,7 +55,7 @@ module.exports = {
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
-    port: 8067, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    port: 8015, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: true,
     errorOverlay: true,
     notifyOnErrors: false,

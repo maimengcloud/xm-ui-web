@@ -134,7 +134,7 @@ export default {
         code_dialog_width: 1000,
         advlist_bullet_styles: "square",
         advlist_number_styles: "default",
-        imagetools_cors_hosts: ["www.qingqinkj.com", "codepen.io"],
+        imagetools_cors_hosts: ["www.qingqinkj.com", "codepen.io","www.maimengcloud.com"],
         default_link_target: "_blank",
         link_title: false,
         convert_urls: false,

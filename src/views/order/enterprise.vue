@@ -17,16 +17,37 @@
       </div>
 
       <div class="sys_modules" v-if="this.modules != null">
-        <div class="module" v-for="(item, index) in modules[active]" :key="index" >
-          <div class="head"  :class="{active: item.isChecked == true}" @click="selectItem(item, index)">
-            <div class="module_top">
-              <img :src="item.logoUrl" alt="">
-              <span>{{item.name}}</span> 
-            </div>
-            <div v-if="item.isChecked == true || item.billMode==='0'" :class="{module_bottom_active: item.isChecked == true|| item.billMode==='0'}" class="module_bottom">
-              <i class="selected el-icon-check"></i><span v-if="item.billMode==='0'">&nbsp;&nbsp;<font color="red">免费</font></span>
-            </div>
-          </div> 
+        <div v-for="(item, index) in modules[active]" :key="index">
+          <div v-if="ooper==='2' && item.billMode!=='0' && item.isBuy" class="module">
+            <div class="head"  :class="{active: item.isChecked == true}" @click="selectItem(item, index)">
+              <div class="module_top">
+                <img :src="item.logoUrl" alt="">
+                <span>{{item.name}}</span> 
+              </div>   
+                <div v-if="item.isBuy" class="module_bottom">  
+                  <i v-if="item.isChecked" class="selected el-icon-success"></i>
+                  <span> <font color="red">  待续费 </font> <font  title="到期" style="font-size:10px;">  {{formatDate(item.endTime)}} </font></span> 
+                </div>  
+              </div>  
+          </div>
+          <div v-else-if="ooper!=='2' && item.billMode!=='0' " class="module">
+            <div class="head"  :class="{active: item.isChecked == true}" @click="selectItem(item, index)">
+              <div class="module_top">
+                <img :src="item.logoUrl" alt="">
+                <span>{{item.name}}</span> 
+              </div> 
+              <div v-if=" item.billMode==='0'"  class="module_bottom"> 
+                <span> <font color="red">免费 </font> <font color="blue">已开通</font></span> 
+              </div>
+              <div v-else-if="item.isBuy" class="module_bottom"> 
+                <span> <font color="blue">已开通</font></span> 
+              </div> 
+              <div v-else class="module_bottom" > 
+                  <i v-if="item.isChecked" class="selected el-icon-success"></i> 
+                  <span> <font color="red">待开通</font></span>  
+              </div> 
+            </div>  
+          </div>
         </div>
       </div>
     </div>        
@@ -81,6 +102,7 @@
 </template>
 
 <script>
+
 import { mapGetters } from 'vuex';
 import {getAllMenuModule, getBuyMenuModule} from '@/api/mdp/sys/modules'
 import {calcOrder} from '@/api/mdp/sys/order'
@@ -90,10 +112,10 @@ import weixinPay from '@/assets/image/module/weixin.png'
 import Decimal from "decimal.js"  // 具体文件中引入
 import getDecimal from '@/utils/decimalUtil.js'
 
-import {  calcBranchUsers } from '@/api/branch';
+import {  getBranchInterestsDetail } from '@/api/branch';
 
 export default {
-  props: ['modules'],
+  props: ['modules', 'ooper'], 
   data() {
     return {
       menuLoading: false,
@@ -101,13 +123,13 @@ export default {
       payWayOptions: [
         {
           label: '支付宝',
-          val: 'aliPay',
+          val: '2',
           icon: aliPay,
           isChecked: true
         },
         {
           label: '微信',
-          val: 'weixinPay',
+          val: '1',
           icon: weixinPay,
           isChecked: false
         }
@@ -137,14 +159,14 @@ export default {
       ],
       form: {
         moduleIds:[],
-        payway: 'aliPay',
+        payType: '1',
         odays: '360',
         label:'1年',
         ousers:10,
         phone: '',
         checked: false, 
       },
-      orders:{order:null,modules:[]},
+      orders:{order:{ofinalFee:0},modules:[]},
       branchUsersCpd:{istatus:'1',maxUsers:50,ilvlId:'2',ilvlName:'黄金会员'}
     }
   },
@@ -163,6 +185,13 @@ export default {
   },
 
   methods: {  
+    formatDate(dateStr){
+      if(dateStr){
+        return dateStr.substring(0,10)
+      }else{
+        return '';
+      }
+    },
     formOusersChange(val){
       if(this.branchUsersCpd && this.branchUsersCpd.istatus=='1'){
         if(val<=this.branchUsersCpd.maxUsers){
@@ -177,25 +206,33 @@ export default {
     calcOrder:function() { 
       if(!this.form.moduleIds || this.form.moduleIds.length==0){
         if(this.orders && this.orders.order){
-          this.orders={}  
+          this.orders={order:{ofinalFee:0},moduleIds:[]}  
         } 
          return;
       }
+      this.form.ooper=this.ooper;
        calcOrder(this.form).then(res=>{ 
-         this.orders.order=res.data.data
-         this.orders.modules=res.data.modules
-         this.odaysOptions.forEach(i=>{ 
-             i.price=parseInt(this.orders.order.ofinalFee/this.form.ousers/this.form.odays  )
-         })
+         var tips = res.data.tips;
+         if(tips.isOk){
+            this.orders.order=res.data.data
+            this.orders.modules=res.data.modules
+            this.odaysOptions.forEach(i=>{ 
+                i.price=parseInt(this.orders.order.ofinalFee/this.form.ousers/this.form.odays  )
+            })
+         }else{
+            this.$notify({position:"bottom-left",message:tips.msg,type:"error"})
+         }
+         
        })
     },
     selectItem(item) {
-      if(item.isBuy){
+       
+      if(this.ooper!='2' && item.isBuy){
         this.$notify({position:"bottom-left",message:"【"+item.name+"】已购买，如需调整，请进入【我的订单->加购】 处理",type:"warning"})
         return;
       }
       
-        if(item.billMode==='0'){ 
+        if(  item.billMode==='0'){ 
           this.$notify({position:"bottom-left",message:"【"+item.name+"】为免费开通，无须下单。",type:"warning"}) 
           return false;
         }
@@ -209,7 +246,7 @@ export default {
     },
 
     selectPayWay(item) {
-      this.form.payway = item.val;
+      this.form.payType = item.val;
       this.payWayOptions.forEach(element => {
         element.isChecked = false;
         if(item.val == element.val) {
@@ -232,10 +269,11 @@ export default {
     },
 
 
-    getForm() { 
+    getData() { 
       let obj = { 
         ...this.orders,
-        ...this.form
+        ...this.form,
+        opper:this.ooper,
       }
       return obj;
     },
@@ -243,8 +281,8 @@ export default {
 
   mounted() {
     this.form.phone = this.userInfo.phoneno;
-    calcBranchUsers().then(res=>{  
-     // Object.assign(this.branchUsersCpd,res.data.data);
+    getBranchInterestsDetail().then(res=>{  
+      Object.assign(this.branchUsersCpd,res.data.data);
       if(this.branchUsersCpd.branchId && this.branchUsersCpd.istatus=='1'){
          this.form.ousers=this.branchUsersCpd.maxUsers
          //this.calcOrder();

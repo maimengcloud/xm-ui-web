@@ -1,119 +1,128 @@
+
 export const modulesOfRouter = [
     {
         id: 'mall',
-        path: 'https://www.qingqinkj.com/mallm/m1/#/dashboard',
-        type: 'link'
+        path:  '/dashboard',
+        context:'mallm', 
     },
     {
         id: 'mall-marketing',
-        path: 'https://www.qingqinkj.com/mk/m1/#/dashboard',
-        type: 'link'
+        path: '/dashboard', 
+        context:'mallm', 
     },  
     {
         id: 'mdp-arc',
-        path: 'https://www.qingqinkj.com/arc/m1/#/dashboard',
-        type: 'link'
+        path: '/dashboard',
+        context: 'arc'
     },  
     {
         id: 'mdp-sys',
-        path: 'https://www.qingqinkj.com/sys/m1/#/mdp/sys/dept/DeptMng',
-        type: 'link'
+        path: '/mdp/sys/dept/DeptMng',
+        context: 'sys'
     },  
     {
         id: 'oa-asset',
-        path: 'https://www.qingqinkj.com/oa/m1/#/oa/erp/ass/assetDetail/AssetDetailMng',
-        type: 'link'
+        path: '/oa/erp/ass/assetDetail/AssetDetailMng',
+        context: 'oa'
     },  
     {
         id: 'oa-attendance',
-        path: 'https://www.qingqinkj.com/oa/m1/#/oa/kq/attendance/AttendanceMonth',
-        type: 'link'
+        path: '/oa/kq/attendance/AttendanceMonth',
+        context: 'oa'
     },  
     {
         id: 'oa-car',
-        path: 'https://www.qingqinkj.com/oa/m1/#/oa/car/components/watch',
-        type: 'link'
+        path: '/oa/car/components/watch',
+        context: 'oa'
     },  
     {
         id: 'oa-contract',
-        path: 'https://www.qingqinkj.com/oa/m1/#/oa/ht/contractCard/ContractCardMng',
-        type: 'link'
+        path: '/oa/ht/contractCard/ContractCardMng',
+        context: 'oa'
     },  
     {
         id: 'oa-customer',
-        path: 'https://www.qingqinkj.com/oa/m1/#/oa/crm/customer/CustomerIndex',
-        type: 'link'
+        path: '/oa/crm/customer/CustomerIndex',
+        context: 'oa'
     },  
     {
         id: 'oa-file',
-        path: 'https://www.qingqinkj.com/oa/m1/#/oa/hr/user/employeeInfo',
-        type: 'link'
+        path: '/oa/hr/user/employeeInfo',
+        context: 'oa'
     },  
     {
         id: 'oa-finance',
-        path: 'https://www.qingqinkj.com/ac/m1/#/dashboard',
-        type: 'link'
+        path: '/dashboard',
+        context: 'ac'
     },  
     {
         id: 'oa-meeting',
-        path: 'https://www.qingqinkj.com/oa/m1/#/oa/meet/meetMeeting/MeetMeetingMng',
-        type: 'link'
+        path: '/oa/meet/meetMeeting/MeetMeetingMng',
+        context: 'oa'
     },  
     {
         id: 'oa-office',
-        path: 'https://www.qingqinkj.com/oa/m1/#/oa/om/omAppliance/OmApplianceMng',
-        type: 'link'
+        path: '/oa/om/omAppliance/OmApplianceMng',
+        context: 'oa'
     },  
     {
         id: 'oa-performance',
-        path: 'https://www.qingqinkj.com/oa/m1/#/oa/jx/AssesssSatistical',
-        type: 'link'
+        path: '/oa/jx/AssesssSatistical',
+        context: 'oa'
     },  
     {
         id: 'oa-schedule',
-        path: 'https://www.qingqinkj.com/oa/m1/#/oa/rc/rcSchedule/RcScheduleMng',
-        type: 'link'
+        path: '/oa/rc/rcSchedule/RcScheduleMng',
+        context: 'oa'
     },  
     {
         id: 'oa-seal',
-        path: 'https://www.qingqinkj.com/oa/m1/#/oa/sig/sigSignet/SigSignetMng',
-        type: 'link'
+        path: '/oa/sig/sigSignet/SigSignetMng',
+        context: 'oa'
     },  
     {
         id: 'oa-supervision',
-        path: 'https://www.qingqinkj.com/oa/m1/#/oa/duban/dubanItem/DutyDubanItem',
-        type: 'link'
+        path: '/oa/duban/dubanItem/DutyDubanItem',
+        context: 'oa'
     },  
     {
         id: 'xm-analysis',
-        path: 'xm/rpt/reportIndex',
+        path: '/xm/rpt/reportIndex',
+        context: 'xm'
     },  
     {
         id: 'xm-development',
-        path: ''
+        path: '',
+        context: 'xm'
     },
     {
         id: 'xm-pipeline',
-        path: ''
+        path: '',
+        context: 'xm'
     },
     {
         id: 'xm-product',
-        path: '/xm/core/xmProduct/XmProductAllMng'
+        path: '/xm/core/xmProduct/XmProductAllMng',
+        context: 'xm'
     },
     {
         id: 'xm-project',
-        path: '/xm/core/xmProject/XmProjectAllMng'
+        path: '/xm/core/xmProject/XmProjectAllMng',
+        context: 'xm'
     },
     {
         id: 'xm-test',
-        path: '/xm/core/xmQuestion/XmQuestionAdd'
+        path: '/xm/core/xmQuestion/XmQuestionAdd',
+        context: 'xm'
     },
     {
         id: 'xm-workload',
         path: '/xm/core/xmTaskWorkload/XmTaskWorkloadInfoMy',
+        context: 'xm'
     },
     {
         id: 'xm-crowd',
         path: '/xm/core/crowd/XmTaskCrowdMng',
+        context: 'xm'
     }
 ]

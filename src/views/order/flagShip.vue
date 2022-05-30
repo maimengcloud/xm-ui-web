@@ -116,7 +116,7 @@ export default {
     },
 
     methods: {
-        getForm() {
+        getData() {
             //验证表单
             return new Promise((resolve, reject) => {
                 this.$refs['form'].validate((valid) => {

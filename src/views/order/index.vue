@@ -11,7 +11,7 @@
       <div class="content" v-else>
         <div class="top_desc">
           <h2>购买订单</h2>
-          <p>团队名: 擎勤科技</p>
+          <p>团队名: {{userInfo.branchName?userInfo.branchName:userInfo.branchId}}</p>
         </div>
 
         <div class="version">
@@ -30,7 +30,7 @@
 
         <div class="version_all">
           <flag-ship ref="flagship" v-if="currentSelectVersion == '旗舰版'"></flag-ship>
-          <enterprise ref="enterprise" :modules="modules" v-if="currentSelectVersion == '企业版'"></enterprise>
+          <enterprise ref="enterprise" :modules="modules" v-if="currentSelectVersion == '企业版'"  :ooper="'1'"></enterprise>
         </div>
 
         <el-button :loading="submitLoading" @click="submitOrder" size="larget" class="submit" type="primary">
@@ -54,8 +54,15 @@ import {getAllMenuModule, getBuyMenuModule} from '@/api/mdp/sys/modules'
 import {modulesOfIcon} from "@/components/ModulesMenu/modulesOfIcon";
 import {createFlagShipOrder} from '@/api/mdp/sys/order';
 
+import { mapGetters } from 'vuex'
+
 export default {
   components: {FlagShip, Enterprise, orderSkeleton},
+  
+  computed: {
+      ...mapGetters([ 'userInfo'  ]),
+
+  },
   data() {
     return {
       version: [
@@ -93,10 +100,10 @@ export default {
     submitOrder() {
       //验证参数
       if(this.currentSelectVersion == "企业版") {
-        let data = this.$refs.enterprise.getForm();
+        let data = this.$refs.enterprise.getData();
         //验证手机号是否填写
         if(data.phone == "" || data.phone == null || data.phone == undefined) {
-          this.$message({
+          this.$notify({
             message: '请输入手机号',
             type: 'warning'
           });
@@ -105,7 +112,7 @@ export default {
 
         //验证是否同意服务协议
         if(!data.checked) {
-          this.$message({
+          this.$notify({
             message: '请先同意服务协议',
             type: 'warning'
           });
@@ -114,7 +121,7 @@ export default {
 
         //保存购买模块信息到本地
         if(data.moduleIds.length <= 0) {
-          this.$message({
+          this.$notify({
             message: '请选择要购买的模块',
             type: 'warning'
           });
@@ -124,20 +131,20 @@ export default {
         window.localStorage.setItem("BUY_MODULES",  JSON.stringify(data)) 
         this.$router.push('/my/order/create')
       }else {
-        let flagData = this.$refs.flagship.getForm();
+        let flagData = this.$refs.flagship.getData();
         flagData.then((res) => {
           //创建订单
           res.needs = JSON.stringify(res.needs);
           this.submitLoading = true;
           createFlagShipOrder(res).then(res => {
             if(res.data.tips.isOk){
-              this.$message.success("信息已提交，稍后我们将会联系您");
+              this.$notify.success("信息已提交，稍后我们将会联系您");
               this.$refs.flagship.clearForm();
             }else{
-              this.$message.error(res.data.tips.msg);
+              this.$notify.error(res.data.tips.msg);
             }
           }).catch(err => {
-            this.$message.error(err.msg);
+            this.$notify.error(err.msg);
           }).finally(() => {
             this.submitLoading = false;
           })
@@ -157,6 +164,7 @@ export default {
               i.isChecked=false
               i.musers=10 
               i.isBuy=false
+              i.endTime='' 
             })
             getBuyMenuModule({}).then(res2 => {
                 let branchModules = res2.data.data;
@@ -165,6 +173,7 @@ export default {
                         if(k.id == element.moduleId && element.status=='1') {
                             k.isBuy = true;
                             k.musers=element.musers
+                            k.endTime=element.endTime 
                         }
                     });
                     modulesOfIcon.forEach(element => {

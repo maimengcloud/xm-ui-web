@@ -2,20 +2,19 @@
 	<div class="set_container">
 		<div class="set_content">
 			<div class="m_msgcard">
-				<el-avatar class="m_avater" :src="editForm.headimgurl || defaultImg">
+				<el-avatar class="m_avater" :src="editForm.headimgurl" @click.native="showUploadHeadimg">
+					<img src="../../../assets/image/user_img.gif"/> 
 				</el-avatar>
 				<div class="m_msg">
 					<span class="m_name">{{userInfo.username}}
 					
 				 	<el-tag v-if="editForm.memType==='0'" type="primary">个人账户</el-tag>
 					 <el-tag type="warning" v-else-if="editForm.memType=='1'">企业管理员账户</el-tag>
-					<el-tag type="warning" v-else-if="editForm.memType=='2'">企业员工账户</el-tag>
-					 <el-button v-if="editForm.memType!=='0'" type="text">{{editForm.branchName}}</el-button>
+					<el-tag type="warning" v-else-if="editForm.memType=='2'">企业员工账户</el-tag> 
 					 <el-button v-if="editForm.memType==='0'" type="text"   icon="el-icon-top" @click="upgradeToBranchAccount">升级为企业账户</el-button>
-					  <el-button  type="warning" @click="switchUser">切换账户</el-button>
-					</span>
-					<span class="m_dept">所在部门：{{userInfo.deptName}}</span>
-					<el-button @click="showUploadHeadimg" class="m_btn">修改头像</el-button>
+ 					</span>
+					<span class="m_dept">所属机构：{{userInfo.branchName}}</span> 
+					<span class="m_dept">所在部门：{{userInfo.deptName}}</span> 
 				</div>
 			</div>
 			<div class="m_opercard">
@@ -56,7 +55,7 @@
 							<vue-qr
 								ref="qrcode"
 								:logoSrc="logoSrc"
-								:text="' https://www.qingqinkj.com/miniapp?page=bindMainAccount&userid='+editForm.userid"
+								:text=" currDomainUrl+'/miniapp?page=bindMainAccount&userid='+editForm.userid"
 								:size="200"
 							:loadMake="true"/>
 							<br>
@@ -90,7 +89,7 @@
 			:img-width="100"
 			:img-height="100"
 			:show-title="true"
-			v-model="editForm.headimgurl"
+			v-model="headimgurl"
 			:branch-id="userInfo.branchId"
 			:deptid="userInfo.deptid"
 			:remark="userInfo.username"
@@ -139,7 +138,8 @@
 </template>
 
 <script>
-import { editUser,changePassword } from '@/api/mdp/sys/user';
+import config from '../../../common/config';
+import { editUser,changePassword,editHeadimgurl } from '@/api/mdp/sys/user';
 import { mapGetters } from 'vuex' 
 import { sendEmail,validEmailCode,queryMyUsers,switchUser } from '@/api/login';
 import SingleShearUpload from "@/components/Image/Single/Index";
@@ -159,7 +159,18 @@ import md5 from "js-md5";
 		watch: {
 	      'user':function(data) {
 	        this.editForm=data;
-	      } 
+	      },
+		  'headimgurl':function(val){
+			  editHeadimgurl({userid:this.userInfo.userid,headimgurl:val}).then(res=>{
+				  var tips = res.data.tips
+				  if(tips.isOk){
+					  this.$notify({ message: "修改头像成功，重新登录起效", type: 'success'}); 
+					  this.editForm.headimgurl=val
+				  }else{
+					this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+				  }
+			  })
+		  }
 	    },
 		data() {
 			var validatePhoneno = (rule, value, callback) => {
@@ -219,8 +230,7 @@ import md5 from "js-md5";
 				changePasswordVisible:false,
 				options:{},//下拉选择框的所有静态数据
 				editLoading: false,
-				setLoading: false,
-				defaultImg: 'https://www.qingqinkj.com/api/m1/arc/arc/image/qqkj_001/IM1632611467940176/IM1633550409547158.png',
+				setLoading: false, 
 				editFormRules: {
 					displayUserid: [
 						{ required: true, message: '账号必填', trigger: 'blur' }
@@ -245,6 +255,8 @@ import md5 from "js-md5";
 				showPanel:'',//bindMainAccount
 				phonenoUsers:[],
 				phonenoUsersVisible:false,
+				headimgurl:'',
+				currDomainUrl:'',
 			}
 		},
 		methods: {
@@ -288,7 +300,9 @@ import md5 from "js-md5";
 					}
 				})
 			},
+			registerPhoneno(){
 
+			},
 			showUploadHeadimg(){
 				this.$refs.uploadImg.showAdd();
 			},
@@ -305,9 +319,9 @@ import md5 from "js-md5";
 					sendEmail({codeScene:'1',codeEmail:this.editForm.email,userType:'staff',callbackUri:curlDomain+'/#/updateUserInfo'}).then(res=>{
 						var tips = res.data.tips;
 						if(tips.isOk){
-							this.$message({ message: "邮件已发送，请到收件箱收取邮件，并点击其链接进行自动验证。", type: 'success' }); 
+							this.$notify({ message: "邮件已发送，请到收件箱收取邮件，并点击其链接进行自动验证。", type: 'success' }); 
 						}else{
-							this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+							this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' }); 
 						}
 						
 					})
@@ -320,9 +334,9 @@ import md5 from "js-md5";
 					sendEmail({codeScene:'2',codeEmail:this.editForm.email,userType:'staff',callbackUri:curlDomain+'/#/changeEmailStepOne'}).then(res=>{
 						var tips = res.data.tips;
 						if(tips.isOk){
-							this.$message({ message: "邮件已发送，请到收件箱收取邮件，并点击其链接进行验证原邮箱。", type: 'success' }); 
+							this.$notify({ message: "邮件已发送，请到收件箱收取邮件，并点击其链接进行验证原邮箱。", type: 'success' }); 
 						}else{
-							this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+							this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' }); 
 						}
 					})
 				}
@@ -330,7 +344,7 @@ import md5 from "js-md5";
 			validEmailCode(){ 
 				validEmailCode({valiCode:this.valiCode,userType:'staff'}).then(res=>{
 					var tips = res.data.tips;
-					this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' }); 
 				}) 
 			},
 			switchUser(){   
@@ -338,12 +352,12 @@ import md5 from "js-md5";
 					if(res0.data.tips.isOk){
 						this.phonenoUsers=res0.data.data; 
 						if(res0.data.data.length<=1){
-							this.$message.warning("当前没有关联的账户，无须切换");
+							this.$notify.warning("当前没有关联的账户，无须切换");
 						}else{
 							this.phonenoUsersVisible=true;
 						}
 					}else{
-						this.$message.error(res0.data.tips.msg);
+						this.$notify.error(res0.data.tips.msg);
 					}
 				})
 			},
@@ -370,7 +384,7 @@ import md5 from "js-md5";
  									 
 								}); 
 							}else{
-								this.$message.error(res.data.tips.msg);
+								this.$notify.error(res.data.tips.msg);
 							} 
 						}).catch((e) => {
 							 
@@ -389,6 +403,7 @@ import md5 from "js-md5";
 		mounted() { 
 			this.editForm=Object.assign(this.editForm, this.userInfo); 
 			var valiCode=this.$route.query.valiCode;
+			this.currDomainUrl=config.getBaseDomainUrl()
 			//var valiCode=util.getQueryStringByName('valiCode'); 
 			if(valiCode){
 				this.valiCode=valiCode;

@@ -84,7 +84,7 @@
 			validEmailCode(){ 
 				validEmailCode({valiCode:this.valiCode,userType:'staff'}).then(res=>{
 					var tips = res.data.tips;
-					this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' }); 
 				}) 
 			},
 			doLogin(){

@@ -1,7 +1,6 @@
 /* Layout */
 import Layout from '../views/layout/Layout'
 const _import = require('./_import_' + process.env.NODE_ENV)
-
 export default {
 	routes: [
 		{
@@ -79,7 +78,7 @@ export default {
 				icon: 'model'
 			},
 			children: [
-				{ path: 'editor/Index', component: _import("mdp/workflow/editor/Index"), name: '在线模型编辑器', meta: { title: 'workflowEditorIndex', openTab: true, outUrl: 'https://www.qingqinkj.com/workflow/m1/modeler-ui/' } },
+				{ path: 'editor/Index', component: _import("mdp/workflow/editor/Index"), name: '在线模型编辑器', meta: { title: 'workflowEditorIndex', openTab: true, outUrl: '${curlDomain}/workflow/'+process.env.VERSION+'/modeler-ui/' } },
 				{ path: 'de/ModelMng', component: _import("mdp/workflow/de/model/ModelMng"), name: 'ModelMng', meta: { title: 'ModelMng' } },
 				{ path: 're/DeploymentMng', component: _import("mdp/workflow/re/deployment/DeploymentMng"), name: 'DeploymentMng', meta: { title: 'DeploymentMng' } },
 				{ path: 're/procdef/ProcdefSuspend', component: _import("mdp/workflow/re/procdef/ProcdefSuspend"), name: 'ProcdefSuspend', meta: { title: 'ProcdefSuspend' } },

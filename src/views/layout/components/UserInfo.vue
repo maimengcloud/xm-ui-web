@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dropdown class="avatar-container right-menu-item hidden-sm-and-down" trigger="click"  @command="handleCommand">
+    <el-dropdown class="avatar-container right-menu-item hidden-sm-and-down" trigger="click"  @command="handleCommand" @click.native="onDropdownClick">
         <div class="avatar-wrapper">
             <img v-if="userInfo && userInfo.headimgurl" class="user-avatar" :src="userInfo.headimgurl">
             <img v-else class="user-avatar" src="../../../assets/image/user_img.gif">
@@ -11,7 +11,7 @@
             <div class="dropdown">
                 <div class="topBox">
                     <div class="topBox_logo" v-if="userInfo.memType!=='0'">
-                        <img v-if="!branchUsersCount || branchUsersCount.default || !branchUsersCount.imgUrl" src="../../../assets/image/qqlogo_yuan.png" alt="">
+                        <img v-if="!branchUsersCount || !branchUsersCount.imgUrl" src="../../../assets/image/image_not_found_small.jpg" alt="">
                         <img v-else  :src="branchUsersCount.imgUrl" alt="">
 
                     </div>
@@ -34,7 +34,7 @@
                             </span>
                         </div>    
                         <div class="topBox_num">
-                            <span @click="calcBranchUsers">账号数量（ {{branchUsersCount.currUsers }} / {{branchUsersCount.maxUsers}} ）个 <i class="el-icon-refresh-right"></i></span>    
+                            <span @click="getBranchInterestsDetail">账号数量 <span v-if="branchUsersCount && branchUsersCount.branchId">（ {{branchUsersCount.currUsers }} / {{branchUsersCount.maxUsers}} ）个</span> <i class="el-icon-refresh-right"></i></span>    
                         </div>                    
                     </div>
                 </div>
@@ -75,7 +75,7 @@
                     <!--<p class="el-icon-menu" @click="handleCommand('myWork')">我的工作台</p> -->
                     <p class="el-icon-user" @click="switchUser">切换账户</p> 
                     <p class="el-icon-edit" @click="handleCommand('updateUserInfo')">账户明细</p>
-                    <p class="el-icon-user-solid">团队管理</p>
+                    <p class="el-icon-user-solid"  @click="handleCommand('branchSet')">团队管理</p>
                     <p @click="logout" class="el-icon-switch-button">退出登录</p>
                 </div>
 
@@ -124,12 +124,15 @@
 </template>
 
 <script>
+
+import NProgress from 'nprogress' // progress bar
+import config from '../../../common/config';
 import { mapGetters } from 'vuex'
 import dayjs from 'dayjs'
 
 import {  queryMyUsers,switchUser } from '@/api/login';
 
-import {  calcBranchUsers } from '@/api/branch';
+import {  getBranchInterestsDetail } from '@/api/branch';
 import BranchAdd from "@/views/mdp/sys/branch/BranchEdit";
 
 export default {
@@ -139,6 +142,7 @@ export default {
             phonenoUsers:[],
             phonenoUsersVisible:false,
             branchUsersCount:{
+                branchId:'',
                 currUsers:1,
                 maxUsers:100,
                 imgUrl:'',
@@ -167,8 +171,13 @@ export default {
     },
     
     methods: {
-        calcBranchUsers(){
-            calcBranchUsers().then(res=>this.branchUsersCount=res.data.data||this.branchUsersCount)
+        onDropdownClick(){
+            if( this.branchUsersCount.defalut){
+                this.getBranchInterestsDetail();
+            }
+        },
+        getBranchInterestsDetail(){
+            getBranchInterestsDetail().then(res=>this.branchUsersCount=res.data.data||this.branchUsersCount)
         },
         getMyRoleNames(){
             if(this.roles && this.roles.length>0){
@@ -181,22 +190,41 @@ export default {
                 if(res0.data.tips.isOk){
                     this.phonenoUsers=res0.data.data; 
                     if(res0.data.data.length<=1){
-                        this.$message.warning("当前没有关联的账户，无须切换");
+                        this.$notify.warning("当前没有关联的账户，无须切换");
                     }else{
                         this.phonenoUsersVisible=true;
                     }
                 }else{
-                    this.$message.error(res0.data.tips.msg);
+                    this.$notify.error(res0.data.tips.msg);
                 }
             })
         },
         handleCommand(command){
-            if(command=='updateUserInfo'){
-                this.$router.push({path:'/my/work/updateUserInfo'})
+            if(process.env.CONTEXT=='sys'){
+                if(command=='updateUserInfo'){
+                    this.$router.push({path:'/my/work/updateUserInfo'})
+                }
+                if(command=='myWork'){
+                    this.$router.push({path:'/my/work/index'})
+                }
+                if(command=='branchSet'){
+                    this.$router.push({path:'/mdp/sys/branch/branchSet'})
+                }
+            }else{
+                var prefixUrl=config.getBaseDomainUrl()+'/sys/'+process.env.VERSION+'/#/'
+                if(command=='updateUserInfo'){ 
+                    window.open(prefixUrl+'my/work/updateUserInfo')  
+                    NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
+                }
+                if(command=='myWork'){ 
+                     this.$router.push({path:'/my/work/index'})
+                }
+                if(command=='branchSet'){ 
+                    window.open(prefixUrl+'mdp/sys/branch/branchSet') 
+                    NProgress.done()
+                }
             }
-            if(command=='myWork'){
-                this.$router.push({path:'/my/work/index'})
-            }
+            
         },  
         upgradeToBranchAccount(){
             //跳转到购买模块页面
@@ -229,7 +257,7 @@ export default {
                                     
                             }); 
                         }else{
-                            this.$message.error(res.data.tips.msg);
+                            this.$notify.error(res.data.tips.msg);
                         } 
                     }).catch((e) => {
                             
@@ -248,8 +276,7 @@ export default {
     components:{
         BranchAdd
     },
-    mounted() {
-        //this.calcBranchUsers();
+    mounted() { 
     }
 }
 </script>

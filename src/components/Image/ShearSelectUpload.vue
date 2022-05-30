@@ -92,8 +92,7 @@ export default {
 	    }
   },
   data: function () {
-    return {
-	    	//base64UploadAction:"http://www.qingqinkj.com/arc"+"/arc/archiveAttachment/upload/base64",
+    return { 
 				model: false,
 				modelSrc: '',
 			  	crap: false,

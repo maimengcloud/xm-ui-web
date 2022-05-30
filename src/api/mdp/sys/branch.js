@@ -43,3 +43,211 @@ export const initDicts = (that) => {
     });
  }
 };
+
+
+export const initUserCountPieChart=(that)=>{
+    var chartDom = document.getElementById('userCountPieChart');
+    var myChart = that.$echarts.init(chartDom);
+    var option;
+    var branchInterestsDetail = that.branchInterestsDetail;
+    if(!branchInterestsDetail){
+        branchInterestsDetail={
+            currUsers:1,
+            maxUsers:10
+        }
+    }
+    var currUsers= parseInt(branchInterestsDetail.currUsers)
+    var maxUsers=parseInt(branchInterestsDetail.maxUsers);
+    var syUsers=maxUsers-currUsers;
+    if(syUsers<0){
+        syUsers=0
+    }
+    option = { 
+        title: {
+            text:  currUsers+"/"+ maxUsers,
+            left: "center",
+            top: "50%",
+            textStyle: {
+                textAlign: "center",
+                fill: "#333",
+                fontSize: 14,
+                fontWeight: 200,
+            }
+        },
+        graphic: {
+            type: "text",
+            left: "center",
+            top: "40%",
+            style: {
+                text: "剩余"+syUsers,
+                textAlign: "center",
+                fill: "#333",
+                fontSize: 10,
+            }
+        }, 
+    tooltip: {
+        trigger: 'item'
+    },
+    legend: {
+        top: '5%',
+        left: 'center'
+    },
+    series: [
+        {
+        name: '账户数量',
+        type: 'pie',
+        radius: ['40%', '70%'],
+        avoidLabelOverlap: false,
+        label: {
+            show: false,
+            position: 'center'
+        },
+        emphasis: {
+            label: {
+            show: false,
+            fontSize: '40',
+            fontWeight: 'bold'
+            }
+        },
+        labelLine: {
+            show: false
+        },
+        data: [
+            { value: currUsers , name: '已使用' },
+            { value: syUsers , name: '未使用' }, 
+        ]
+        }
+    ]
+    };
+
+    option && myChart.setOption(option);
+};
+
+
+export const initProductCountPieChart=(that)=>{
+    var chartDom = document.getElementById('productCountPieChart');
+    var myChart = that.$echarts.init(chartDom);
+    var option;
+    var calcBranchModule=that.calcBranchModule
+    
+    var allModules=calcBranchModule.allModules
+    var freeModules=calcBranchModule.freeModules
+    var hadModules=calcBranchModule.hadModules 
+    var yktModules=hadModules+freeModules
+    var syModules=allModules-freeModules-hadModules
+    option = { 
+        title: {
+            text:  yktModules + " / "+allModules,
+            left: "center",
+            top: "50%",
+            textStyle: {
+                textAlign: "center",
+                fill: "#333",
+                fontSize: 18,
+                fontWeight: 200,
+            }
+        },
+        graphic: {
+            type: "text",
+            left: "center",
+            top: "40%",
+            style: {
+                text: "未开通"+syModules,
+                textAlign: "center",
+                fill: "#333",
+                fontSize: 10,
+            }
+        }, 
+    tooltip: {
+        trigger: 'item'
+    },
+    legend: {
+        top: '5%',
+        left: 'center'
+    },
+    series: [
+        {
+        name: '产品数量',
+        type: 'pie',
+        radius: ['40%', '70%'],
+        avoidLabelOverlap: false,
+        label: {
+            show: false,
+            position: 'center'
+        },
+        emphasis: {
+            label: {
+            show: false,
+            fontSize: '40',
+            fontWeight: 'bold'
+            }
+        },
+        labelLine: {
+            show: false
+        },
+        data: [
+            { value: freeModules, name: '已免费开通' },
+            { value: hadModules, name: '已付费开通' },
+            { value: syModules, name: '未开通' },  
+        ]
+        }
+    ]
+    };
+
+    option && myChart.setOption(option);
+};
+
+
+export const initEndTimePieChart=(that)=>{
+    var chartDom = document.getElementById('endTimePieChart');
+    var myChart = that.$echarts.init(chartDom);
+    var option;
+    var branchInterestsDetail=that.branchInterestsDetail;
+    option = { 
+        title: {
+            text: branchInterestsDetail.maxRtime||"永久有效",
+            left: "center",
+            top: "45%",
+            textStyle: {
+                textAlign: "center",
+                fill: "#ee6666",
+                fontSize: 14,
+                fontWeight: 200,
+            }
+        }, 
+    tooltip: {
+        trigger: 'item'
+    },
+    legend: {
+        top: '5%',
+        left: 'center'
+    },
+    series: [
+        {
+        name: '有效期',
+        type: 'pie',
+        radius: ['40%', '70%'],
+        avoidLabelOverlap: false,
+        label: {
+            show: false,
+            position: 'center'
+        },
+        emphasis: {
+            label: {
+            show: false,
+            fontSize: '40',
+            fontWeight: 'bold'
+            }
+        },
+        labelLine: {
+            show: false
+        },
+        data: [ 
+            { value: 0, name: '有效期' }, 
+        ]
+        }
+    ]
+    };
+
+    option && myChart.setOption(option);
+};

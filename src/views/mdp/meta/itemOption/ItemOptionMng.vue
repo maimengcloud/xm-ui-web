@@ -2,34 +2,34 @@
 	<section>
 		<el-row>
 			<el-col :span="6">
-				<item-mng :read-only="readOnly" @row-click="itemRowClick" @checked-item="checkedItem"></item-mng>
+				<item-mng @row-click="itemRowClick"></item-mng>
 			</el-col>
 			<el-col :span="18"> 
-			<sticky :className="'sub-navbar draft'">
+			<el-row  class="app-container">
 			<el-input v-model="addForm.optionName"  @keyup.enter.native="addSubmit" style="width: 40%;" placeholder="输入名称按回车快速添加字段值"></el-input> 
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
-			<el-button type="primary" v-loading="load.list" v-on:click="searchItemOptions">查询</el-button>
-			<el-button type="text" @click="showAdd" :disabled="readOnly==true">+字段值</el-button>
-			<el-button type="text" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || readOnly==true">删除</el-button> 
-			</sticky>  
-			<el-row  class="page-container border">
+			<el-button type="primary" v-loading="load.list" v-on:click="searchItemOptions" icon="el-icon-search"></el-button>
+			<el-button type="text" @click="showAdd" icon="el-icon-plus">字段值</el-button>
+			<el-button type="text" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0">删除</el-button> 
+			</el-row>  
+			<el-row  class="app-container">
 			<!--列表 ItemOption 数据项取值列表-->
-			<el-table :data="itemOptions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-				<el-table-column type="selection" width="55"></el-table-column>
-				<el-table-column prop="seqOrder" label="顺序" min-width="80" ></el-table-column>
-				<el-table-column prop="optionValue" label="选项值" min-width="80" ></el-table-column>
-				<el-table-column prop="optionName" label="选项名称" min-width="80" ></el-table-column>
-				<el-table-column prop="isShow" label="是否显示" min-width="80" >
+			<el-table :max-height="tableHeight" :data="itemOptions"  highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+				<el-table-column sortable type="selection" width="40"></el-table-column>
+				<el-table-column sortable prop="seqOrder" label="顺序" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column sortable prop="optionValue" label="选项值" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column sortable prop="optionName" label="选项名称" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column sortable prop="isShow" label="是否显示" min-width="80" show-overflow-tooltip>
 					<template slot-scope="scope">
 					<el-tag v-if="scope.row.isShow=='1'">√</el-tag>
 					<el-tag v-else>×</el-tag>
 					</template>
 				</el-table-column>
-				<el-table-column prop="fp" label="扩展字段" min-width="80" ></el-table-column>
-				<el-table-column v-if="readOnly!=true" label="操作" width="150" fixed="right" >
+				<el-table-column sortable prop="fp" label="扩展字段" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column sortable label="操作" width="150" fixed="right" show-overflow-tooltip>
 					<template slot-scope="scope">
-						<el-button  @click="showEdit( scope.row,scope.$index)" >改</el-button>
-						<el-button  type="danger" @click="handleDel(scope.row,scope.$index)">删</el-button>
+						<el-button  @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"></el-button>
+						<el-button  type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"></el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -51,7 +51,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import Sticky from '@/components/Sticky' // 粘性header组件
+	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { listItemOption, delItemOption, batchDelItemOption, addItemOption,listOption } from '@/api/mdp/meta/itemOption';
 	import  ItemOptionAdd from './ItemOptionAdd';//新增界面
 	import  ItemOptionEdit from './ItemOptionEdit';//修改界面
@@ -59,7 +59,8 @@
 	import { mapGetters } from 'vuex' 
 	
 	export default {
-		props:['readOnly'],
+		name:'ItemOptionMng',
+
 	    computed: {
 		    ...mapGetters([
 		      'userInfo'
@@ -85,16 +86,17 @@
 				addFormVisible: false,//新增itemOption界面是否显示
 				//新增itemOption界面初始化数据
 				addForm: {
-					itemId:'',id:'',optionValue:'',optionName:'',keys:'',isShow:'1',seqOrder:'',fp:'',tp:'',sp:'',isDefault:'',cdate:'',branchId:'',deptid:''
+					itemId:'',id:'',optionValue:'',optionName:'',Keyes:'',isShow:'1',seqOrder:'',fp:'',tp:'',sp:'',isDefault:'',cdate:'',branchId:'',deptid:''
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
 				//编辑itemOption界面初始化数据
 				editForm: {
-					itemId:'',id:'',optionValue:'',optionName:'',keys:'',isShow:'1',seqOrder:'',fp:'',tp:'',sp:'',isDefault:'',cdate:'',branchId:'',deptid:''
+					itemId:'',id:'',optionValue:'',optionName:'',Keyes:'',isShow:'1',seqOrder:'',fp:'',tp:'',sp:'',isDefault:'',cdate:'',branchId:'',deptid:''
 				},
 				/**begin 自定义属性请在下面加 请加备注**/
-				item:{}, 
+				item:{},
+				tableHeight:500,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -143,7 +145,7 @@
 					params.orderBy= orderBys.join(",")
 				}
 				if(this.filters.key!==""){
-					//params.xxx=this.filters.key
+					params.key="%"+this.filters.key+"%"
 				}else{
 					//params.xxx=xxxxx
 				}
@@ -154,15 +156,15 @@
 				listItemOption(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 
-						this.pageInfo.total = res.data.data.total;this.pageInfo.count=false;
+						this.pageInfo.total = res.data.total;this.pageInfo.count=false;
 						this.itemOptions = res.data.data;
 					}else{
-						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
+						this.$notify({ message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch(() => {
 					this.load.list = false;
-					//this.$notify({position:'bottom-left',showClose:true,message: '通讯错误', type: 'error' });
+					//this.$notify({ message: '通讯错误', type: 'error' });
 				});
 			},
 
@@ -204,7 +206,7 @@
 							this.pageInfo.count=true;
 							this.getItemOptions();
 						}
-						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' }); 
 					});
 				}).catch(() => {
 					this.load.del=false;
@@ -224,7 +226,7 @@
 							this.pageInfo.count=true;
 							this.getItemOptions(); 
 						}
-						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
+						this.$notify({ message: tips.msg, type: tips.isOk?'success':'error'});
 					});
 				}).catch(() => {
 					this.load.del=false;
@@ -237,16 +239,11 @@
 				this.item=row
 				this.searchItemOptions();
 			},
-			checkedItem: function(row, event, column){ 
-				this.item=row
-				this.searchItemOptions();
-				this.$emit('checked-item',row, event, column);
-			},
 			/**begin 自定义函数请在下面加**/
 						//新增提交ItemOption 数据项取值列表 父组件监听@submit="afterAddSubmit"
 			addSubmit: function () {
 				if(this.item==null || this.item.id == '' ){
-					this.$message.error("请先选择字段")
+					this.$notify.error("请先选择字段")
 				}
 				
 				this.load.add=true
@@ -259,7 +256,7 @@
 					if(tips.isOk){
 						this.itemOptions.push(res.data.data);
 					}
-					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' }); 
 				}).catch(() => {
 					this.load.add=false
 				});
@@ -271,12 +268,13 @@
 		components: { 
 		    'item-option-add':ItemOptionAdd,
 		    'item-option-edit':ItemOptionEdit,
-		    'sticky': Sticky,
+		     
 		    'item-mng':ItemMng
 		    //在下面添加其它组件
 		},
-		mounted() { 
+		mounted() {
 			this.$nextTick(() => {
+      			this.tableHeight = window.innerHeight - 250;  
 				this.getItemOptions();
 				listOption([{categoryId:'gk8nischm',itemCode:'sex'}]).then(res=>{
 					this.options=res.data.data;

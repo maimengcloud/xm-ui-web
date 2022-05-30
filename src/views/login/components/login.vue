@@ -199,7 +199,7 @@ export default {
             }
             sendSmsCode(params).then(res=>{
                 if(res.data.tips.isOk){
-                    this.$message.success("发送成功");
+                    this.$notify.success("发送成功");
                     if (this.setTimeNum > 0) {
                         this.abledBut = true
                         this.timeWrap = setInterval(() => {
@@ -207,7 +207,7 @@ export default {
                         }, 1000)
                     }
                 }else{
-                    this.$message.error(res.data.tips.msg);
+                    this.$notify.error(res.data.tips.msg);
                 }
             })
         },
@@ -224,10 +224,10 @@ export default {
                 resetPasswordByPhoneno(params).then(res=>{
                     this.loading = false  
                     if(res.data.tips.isOk){
-                        this.$message.success(res.data.tips.msg);
+                        this.$notify.success(res.data.tips.msg);
                         this.isRestPwd = false;
                     }else{
-                        this.$message.error(res.data.tips.msg);
+                        this.$notify.error(res.data.tips.msg);
                     }
                 })
                 } else {
@@ -278,7 +278,7 @@ export default {
                                 this.userDeptid=res2.data.userInfo.deptid
                                 this.rolesChecked(); 
                             }else{
-                                this.$message.error(res2.data.tips.msg);
+                                this.$notify.error(res2.data.tips.msg);
                             }
                             
                         }).catch(err=>{
@@ -286,7 +286,7 @@ export default {
                             this.loading = false
                         }); 
                     }else{
-                        this.$message.error(res.data.tips.msg);
+                        this.$notify.error(res.data.tips.msg);
                     } 
                 }).catch((e) => {
                     this.loading = false
@@ -298,7 +298,7 @@ export default {
         },
         deptChecked() {
             if( !this.userDeptid){
-                this.$message.error("请选择登陆的部门")
+                this.$notify.error("请选择登陆的部门")
                 return
             }
             if(this.$store.state.user.userInfo.deptid!=this.userDeptid){
@@ -314,13 +314,13 @@ export default {
         rolesChecked(){ 
             if(this.userInfo.isSuperAdmin){ 
                     this.$router.push({ path: '/' });
-                    this.$message.info("欢迎登陆，超级管理员"); 
+                    this.$notify.info("欢迎登陆，超级管理员"); 
             }else if(this.userInfo.isPlatformAdmin){ 
                 this.$router.push({ path: '/' });
-                this.$message.info("欢迎登陆，平台管理员"); 
+                this.$notify.info("欢迎登陆，平台管理员"); 
             }else{
                 this.$router.push({ path: '/' }); 
-                this.$message.info("欢迎登陆"); 
+                this.$notify.info("欢迎登陆"); 
             }
         },   
         

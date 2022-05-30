@@ -156,7 +156,7 @@ export default {
             })
             this.$store.dispatch('saveUserFavoriteMenu', {data: saveModules, userid: this.userInfo.displayUserid}).then(() => {
                 this.visible = false
-                this.$message.success("设置成功");
+                this.$notify.success("设置成功");
             })
         }
 

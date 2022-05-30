@@ -129,7 +129,7 @@ export default {
   },
   methods: {
     message(row) {
-      this.$message.info(row.event)
+      this.$notify.info(row.event)
     }
   }
 }

@@ -11,11 +11,11 @@
             <div class="content">
               <div class="middle">
                 <div class="desc">
-                  <el-descriptions size="larget" :column="3" >
+                  <el-descriptions size="larget" :column="3">
                     <el-descriptions-item label="购买版本">企业版 ( {{data.ousers}} 人 )</el-descriptions-item> 
-                    <el-descriptions-item label="企业">{{data.order.obranchName?data.order.obranchName:data.order.obranchId}}</el-descriptions-item>
+                    <el-descriptions-item label="企业">{{data.order && data.order.obranchName?data.order.obranchName: ''}}</el-descriptions-item>
                     <!-- <el-descriptions-item label="手机号码">18826103122</el-descriptions-item> -->
-                    <el-descriptions-item label="支付方式">{{data.payway == 'aliPay' ? '支付宝' : '微信'}}</el-descriptions-item>
+                    <el-descriptions-item label="支付方式">{{data.payType == '2' ? '支付宝' : '微信'}}</el-descriptions-item>
                   </el-descriptions>
                 </div>
                 <div class="table">
@@ -39,11 +39,16 @@
                     <el-table-column
                       prop="name"
                       label="产品名称" min-width="150"
-                      >
+                      > 
+                    </el-table-column>
+                    <el-table-column
+                      prop="ousers"
+                      label="可用人数"
+                      min-width="120">
                     </el-table-column>
                     <el-table-column
                       prop="musers"
-                      label="账号数量"
+                      label="计价人数"
                       min-width="120">
                     </el-table-column>
                     <el-table-column
@@ -68,10 +73,10 @@
 
               <div class="bottom">
                 <span class="allAmount">
-                  总金额: <b>{{data.order.ofinalFee}}￥</b>
+                  总金额: <b>{{data.order?data.order.ofinalFee:''}}￥</b>
                 </span>
                 <el-button size="larget" @click="returnPage">上一步</el-button>
-                <el-button size="larget" type="primary" :loading="createOrderLonding" @click="createOrder">确认支付</el-button>
+                <el-button size="larget" type="primary" :loading="load.add" @click="createOrder">确认支付</el-button>
               </div>
             </div>
           </div>
@@ -110,8 +115,8 @@ export default {
   },
   data() {
     return {
-      data: {},
-      createOrderLonding: false,
+      data: {}, 
+      load:{add:false,},
       weixinPayVisible: false,
       codeUrl: ""
     }
@@ -129,24 +134,28 @@ export default {
       //备注
       this.data.remark = "";
       this.data.name = "模块开通订单"
-      this.createOrderLonding = true;
-      createOrder(this.data).then(res => {
+      this.load.add = true;
+      var params={...this.data}
+      params.order=null
+      params.modules=null
+      
+      createOrder(params).then(res => {
         if(res.data.tips.isOk){
           //获取订单号
           let orderId = res.data.data.id;
-          if(this.data.payway == 'aliPay') {
+          if(this.data.payType == '2') {
             this.toAliPay(orderId);
             return;
           }
-          if(this.data.payway == 'weixinPay') {
+          if(this.data.payType == '1') {
             this.toWeixinPay(orderId);
             return;
           }
         }else{
-          this.$message.error(res.data.tips.msg);
+          this.$notify.error(res.data.tips.msg);
         }
       }).catch(err => {
-        this.$message.error(err.msg);
+        this.$notify.error(err.msg);
       }).finally(() => {
       })
     },
@@ -164,11 +173,11 @@ export default {
           document.body.appendChild(div);
           document.forms[0].submit();
         }else {
-          this.$message.error(res.data.tips.msg);
+          this.$notify.error(res.data.tips.msg);
         }
       }).finally(() => {
         setTimeout(() => {
-          this.createOrderLonding = false;
+          this.load.add = false;
         }, 2000);
       })
     },
@@ -187,11 +196,11 @@ export default {
             this.queryOrderStatus(orderId)
           }, 3000)
         }else {
-          this.$message.error(res.data.tips.msg);
+          this.$notify.error(res.data.tips.msg);
         }
       }).finally(() => {
          setTimeout(() => {
-          this.createOrderLonding = false;
+          this.load.add = false;
         }, 2000);
       })
     },
@@ -217,7 +226,7 @@ export default {
   },
 
   created() {
-    let data = JSON.parse(window.localStorage.getItem("BUY_MODULES"));
+    let data = JSON.parse(window.localStorage.getItem("BUY_MODULES")); 
     this.data = data;
    
   },
@@ -242,15 +251,14 @@ export default {
         padding-left: 20px;
         border-bottom: 2px solid #F4F5F8;
       }
-      .middle {
-        padding: 20px;
+      .middle {  
         .desc {
           display: flex;
           flex-direction: row;
           flex-wrap: wrap;
-          span {
+          span { 
             margin-right: 60px;
-            margin-bottom: 20px;
+            margin-bottom: 20px; 
             color: #606060;
           }
         }

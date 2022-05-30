@@ -19,7 +19,7 @@ const store = new Vuex.Store({
     tagsView,
     user,
     noticeMsg,
-    menuFavorite
+    menuFavorite,
   },
   getters
 })

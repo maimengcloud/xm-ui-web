@@ -155,11 +155,11 @@ export default {
     },
     sendPhonenoSmsCode(){
       if(!this.loginForm.phoneno){
-        this.$message.error("手机号码不能为空");
+        this.$notify.error("手机号码不能为空");
         return;
       }
       if(this.loginForm.phoneno.length !=11 ){
-        this.$message.error("手机号码必须为11位");
+        this.$notify.error("手机号码必须为11位");
         return;
       }
       var params={
@@ -171,9 +171,9 @@ export default {
             this.phonenoUsers=res0.data.data; 
             sendSmsCode(params).then(res=>{
               if(res.data.tips.isOk){
-                this.$message.success(res.data.tips.msg);
+                this.$notify.success(res.data.tips.msg);
               }else{
-                this.$message.error(res.data.tips.msg);
+                this.$notify.error(res.data.tips.msg);
               }
             })  
           }
@@ -208,9 +208,9 @@ export default {
           resetPasswordByPhoneno(params).then(res=>{
             this.loading = false  
             if(res.data.tips.isOk){
-              this.$message.success(res.data.tips.msg);
+              this.$notify.success(res.data.tips.msg);
             }else{
-              this.$message.error(res.data.tips.msg);
+              this.$notify.error(res.data.tips.msg);
             }
           })
         } else {
@@ -221,7 +221,7 @@ export default {
     },
     deptChecked() {
     	if( !this.userDeptid){
-    		this.$message.error("请选择登陆的部门")
+    		this.$notify.error("请选择登陆的部门")
     		return
     	}
     	
@@ -238,13 +238,13 @@ export default {
     rolesChecked(){ 
     	if(this.userInfo.isSuperAdmin){ 
     			this.$router.push({ path: '/' });
-    			this.$message.info("欢迎登陆，超级管理员"); 
+    			this.$notify.info("欢迎登陆，超级管理员"); 
 	  	}else if(this.userInfo.isPlatformAdmin){ 
 			this.$router.push({ path: '/' });
-			this.$message.info("欢迎登陆，平台管理员"); 
+			this.$notify.info("欢迎登陆，平台管理员"); 
   		}else{
   			this.$router.push({ path: '/' }); 
-  			this.$message.info("欢迎登陆"); 
+  			this.$notify.info("欢迎登陆"); 
 	  	}
     },   
     

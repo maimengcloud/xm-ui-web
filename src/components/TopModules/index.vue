@@ -15,7 +15,7 @@
       </div> 
 
       <div class="module-item">
-        <div class="module-text">
+        <div class="module-text" @click="goToMyWork" >
           <div class="box-info">我的工作台</div>
         </div>
       </div> 
@@ -82,6 +82,9 @@ export default {
     }
   },
   methods: { 
+    goToMyWork(){
+      this.$router.push("/my/work/index")
+    },
     //路由跳转
     gotolink(module) {
         this.drawer = false

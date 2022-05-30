@@ -467,7 +467,7 @@
 					if(this.taskInfo.planFinishTime!=value){
 						 if(!this.sponsors.some(i=>i.userid==this.userInfo.userid)){
 							 //this.addForm.planFinishTime=this.taskInfo.planFinishTime
-							 //this.$message.error("只有主办可以修改计划完成时间"); 
+							 //this.$notify.error("只有主办可以修改计划完成时间"); 
 							// return;
 						 }
 					}
@@ -826,7 +826,7 @@
 			},
 			
 			showDiagram(){
-				this.diagramUrl=config.getBaseDomainUrl()+config.getWorkflowBasePath()+'/mdp/workflow/ru/diagram/'+this.procDefId+'/'+this.procInstId
+				this.diagramUrl=config.getBaseDomainUrl()+"/"+process.env.VERSION+config.getWorkflowBasePath()+'/mdp/workflow/ru/diagram/'+this.procDefId+'/'+this.procInstId
 				this.displayDiagram=true;
 			},
 			initBaseUserList(sponsorsAndMonitorsVisible){
@@ -901,7 +901,7 @@
 				this.tagSelectVisible=false; 
 				//TOD 批量更新后台数据标签
 				if(!tags || tags.length==0){
-						this.$message.error("最少选中一个标签");
+						this.$notify.error("最少选中一个标签");
 						return;
 				}
 				this.tagSetLoading=true;
@@ -922,9 +922,9 @@
 							var tagNames=tags.map(i=>i.tagName).join(","); 
 							this.addForm.tagIds=tags.map(t=>t.tagId).join(",");  
 							this.addForm.tagNames=tags.map(t=>t.tagName).join(",");  
-							this.$message.success("打标签成功");
+							this.$notify.success("打标签成功");
 						}else{
-							this.$message.error(res.data.tips.msg);
+							this.$notify.error(res.data.tips.msg);
 						}
 					}).catch(e=>this.tagSetLoading=false);
 				
@@ -949,7 +949,7 @@
 		                	if(res.data.tips.isOk){ 
 		   			    	  this.fileList.push(res.data.data);
 		   			      	}else{
-		   			    	  this.$message.warning(res.data.tips.msg); 
+		   			    	  this.$notify.warning(res.data.tips.msg); 
 		   			    	  return false;
 		   			      	}
 		                });
@@ -979,9 +979,9 @@
 		                }
 		                addWorkflowArchive(archive).then(res=>{
 		                	if(res.data.tips.isOk){  
-		                		this.$message.success(res.data.tips.msg); 
+		                		this.$notify.success(res.data.tips.msg); 
 		   			      	}else{
-		   			    	  this.$message.error(res.data.tips.msg); 
+		   			    	  this.$notify.error(res.data.tips.msg); 
 		   			      	}
 		                });  
 					}); 
@@ -1023,7 +1023,7 @@
 			},
 			updateFlowPlanFinishTime:function(){
 				 if(this.addForm.planFinishTime==null || this.addForm.planFinishTime==''){
-					this.$message.error("计划完成时间不能为空"); 
+					this.$notify.error("计划完成时间不能为空"); 
 					returnn;
 				 }
 				this.addLoading=true; 
@@ -1041,9 +1041,9 @@
 						this.addLoading=false
 						if(res.data.tips.isOk){
 							this.refreshCommentList=true;
-							this.$message.success("更新成功"); 
+							this.$notify.success("更新成功"); 
 						}else{
-							this.$message.error(res.data.tips.msg); 
+							this.$notify.error(res.data.tips.msg); 
 						}
 					}) 
 			},

@@ -556,7 +556,7 @@
 				return tips.join(",");
 			},
 			showDiagram(){
-				this.diagramUrl=config.getBaseDomainUrl()+config.getWorkflowBasePath()+"/mdp/workflow/re/procdef/diagram/"+this.procdef.id;
+				this.diagramUrl=config.getBaseDomainUrl()+"/"+process.env.VERSION+config.getWorkflowBasePath()+"/mdp/workflow/re/procdef/diagram/"+this.procdef.id;
 				this.displayDiagram=true;
 			},
 			getFormDefs() {
@@ -679,7 +679,7 @@
 					this.addForm.formId=template.formId
 					this.templateVisible=false;
 				}else{
-					this.$message.error("请选一个模板进行导入");
+					this.$notify.error("请选一个模板进行导入");
 				}
 			},
 			onFormDefForFlowNodeSubmit:function(formDefAndFields){
@@ -696,7 +696,7 @@
 			},
 			setAssigneeAsStartUser(nodeInfo){
 				if(nodeInfo.allowOverUser=='0'){
-					this.$message.error("该节点不允许改变执行人")
+					this.$notify.error("该节点不允许改变执行人")
 					return ;
 				}
 				this.actSelected=nodeInfo

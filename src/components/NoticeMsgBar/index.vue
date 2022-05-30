@@ -1,22 +1,24 @@
 <template v-loadding="load.list">
     <el-dropdown trigger="hover"  class="avatar-container"  @command="handleNoticeMsgClick">
-      <div class="avatar-wrapper">
+      <div class="avatar-wrapper" @click="goToMsgCenter">
           <i class="el-icon-bell"></i>
-          <span>未读消息（{{noticeMsg.totalNum}}）</span>
+          <span>消息中心</span>
           <!-- <el-badge :value="noticeMsg.totalNum" class="item">
             <img class="user-avatar" src="../../assets/image/platform/module-notice.png">
           </el-badge> -->
       </div>
+      <!--
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item command="toPay" >待付款订单(<font color=red>{{noticeMsg.toPayNum || 0}}</font>)</el-dropdown-item>
         <el-dropdown-item command="toSend" >待发货订单(<font color=red>{{noticeMsg.toSendNum || 0}}</font>)</el-dropdown-item>
         <el-dropdown-item command="toRece" >待收货订单(<font color=red>{{noticeMsg.hadSendNum || 0}}</font>)</el-dropdown-item>
-        <!--<el-dropdown-item command="hadFinish" >已完成订单(<font color=red>{{noticeMsg.hadFinishNum}}</font>)</el-dropdown-item>-->
-        <!-- <el-dropdown-item command="hadCancel" >已取消订单(<font color=red>{{noticeMsg.hadCancelNum}}</font>)</el-dropdown-item>-->
+        <el-dropdown-item command="hadFinish" >已完成订单(<font color=red>{{noticeMsg.hadFinishNum}}</font>)</el-dropdown-item>
+        <el-dropdown-item command="hadCancel" >已取消订单(<font color=red>{{noticeMsg.hadCancelNum}}</font>)</el-dropdown-item>
         <el-dropdown-item command="toApprova" >待审核订单(<font color=red>{{noticeMsg.toApprovaNum || 0}}</font>)</el-dropdown-item>
-        <!-- <el-dropdown-item command="hadApprova" >已审核订单(<font color=red>{{noticeMsg.hadApprovaNum}}</font>)</el-dropdown-item> -->
+       <el-dropdown-item command="hadApprova" >已审核订单(<font color=red>{{noticeMsg.hadApprovaNum}}</font>)</el-dropdown-item>
         <el-dropdown-item command="doGetNoticeMsg" >刷新 </el-dropdown-item>
       </el-dropdown-menu>
+      -->
     </el-dropdown>
 </template>
 
@@ -46,6 +48,9 @@ export default {
     }
   },
   methods: {
+    goToMsgCenter(){
+      this.$router.push("/my/work/message");
+    },
     doGetNoticeMsg(){
       this.load.list=true;
        getNoticeMsg({}).then(res=>{

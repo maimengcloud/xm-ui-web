@@ -2,24 +2,50 @@
   <div class="m_container">
     <div class="m_content">
       <div class="message_card">  
-        <span :class="{'message_type_active' : currentType == 1}" class="message_type" @click="currentType = 1">全部消息</span>
-        <span :class="{'message_type_active' : currentType == 2}" class="message_type " @click="currentType = 2">审批消息</span>
+        <span :class="{'message_type_active' : currentType == 1}" class="message_type" @click="currentType = 1">聊天消息</span>
+        <span :class="{'message_type_active' : currentType == 2}" class="message_type" @click="currentType = 2">客服消息</span>
+        <span :class="{'message_type_active' : currentType == 3}" class="message_type " @click="currentType = 3">审批流消息</span>
+        <span :class="{'message_type_active' : currentType == 4}" class="message_type " @click="currentType = 4">任务消息</span>
+        <span :class="{'message_type_active' : currentType == 5}" class="message_type " @click="currentType = 5">内部公告</span>
+        <span :class="{'message_type_active' : currentType == 6}" class="message_type " @click="currentType = 6">平台公告</span>
       </div>
-      <div class="message_content">
-        <div class="message_content_box" v-for="(item, index) in messageData" :key="index">
-          <p class="title">{{item.type}}</p>
-          <p class="date">{{item.time}}</p>
-          <span class="text">{{item.text}}</span>
-          <div class="line"></div>
-        </div>
+      <div class="message_content"  v-if="currentType == 1">
+         <prichat-im :msg-class="'0'" :key="0"></prichat-im>
+      </div> 
+      <div class="message_content"  v-if="currentType == 2">
+         <group-im :msg-class="'CSS'" key="css"></group-im>
+      </div>
+      <div class="message_content"  v-if="currentType == 3">
+         <prichat-im :msg-class="'4'" :key="4"></prichat-im>
+      </div>
+      
+      <div class="message_content"  v-if="currentType == 4">
+         <prichat-im :msg-class="'5'" :key="5"></prichat-im>
+      </div>
+      
+      <div class="message_content" v-if="currentType == 5">
+         <archive :archiveType="'2'" :key="2"></archive>
+      </div>
+      
+      <div class="message_content" v-if="currentType == 6">
+         <archive :archiveType="'3'" :key="3"></archive>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {
+import {listArchive} from '@/api/mdp/arc/archive'
 
+import archive from "./archive"
+import prichatIm from "./prichatIm"
+import groupIm from "./groupIm"
+
+export default {
+  
+  components:{
+    archive,prichatIm,groupIm
+  },
   data() {
     return {
       currentType: 1,
@@ -57,16 +83,25 @@ export default {
         
       ],
 
-
+      arcArchives:[],
     }
   },
 
-  methods() {
-
+  methods:{
+    searcArchives(){
+      var params={archiveType:'3'}
+      listArchive({}).then(res=>{
+        this.arcArchives=res.data.data;
+      })
+    },
+    goToArchive(item){
+      var curlDomain=window.location.protocol+"//"+window.location.host; //   返回https://mp.csdn.net
+      window.open(curlDomain+"/api/"+process.env.VERSION+"/arc/arc/archive/showArchive?id="+item.id)
+    }
   },
 
-  mounted: {
-
+  mounted() {
+     this.searcArchives();
   }
 
 }

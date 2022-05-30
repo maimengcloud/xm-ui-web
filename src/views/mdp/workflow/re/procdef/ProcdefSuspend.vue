@@ -254,7 +254,7 @@ export default {
       if (this.isBatchSetProcTags == true) {
         //TOD 批量更新后台数据标签
         if (!tags || tags.length == 0) {
-          this.$message.error("最少选中一个标签");
+          this.$notify.error("最少选中一个标签");
           this.isBatchSetProcTags = false;
           return;
         }
@@ -283,9 +283,9 @@ export default {
                 row.tagIds = tagIds;
                 row.tagNames = tagNames;
               });
-              this.$message.success("打标签成功");
+              this.$notify.success("打标签成功");
             } else {
-              this.$message.error(res.data.tips.msg);
+              this.$notify.error(res.data.tips.msg);
             }
           })
           .catch(e => (this.isBatchSetProcTags = false));
@@ -310,7 +310,7 @@ export default {
     showTagSelect: function(isBatchSetProcTags) {
       if (isBatchSetProcTags == true) {
         if (this.sels.length == 0) {
-          this.$message.error("请选中流程任务");
+          this.$notify.error("请选中流程任务");
           return false;
         }
         this.tagSelectVisible = true;

@@ -5,13 +5,16 @@ import elementEnLocale from 'element-ui/lib/locale/lang/en' // element-ui lang
 import elementZhLocale from 'element-ui/lib/locale/lang/zh-CN'// element-ui lang
 import enLocale from './en'
 import zhLocale from './zh'
+import zhSysLocale from './zh_sys'
 import zhWorkflowLocale from './zh_workflow'
+
 import zhFormLocale from './zh_form'
 
 Vue.use(VueI18n)
  
-let allZhLocale= Object.assign({},zhLocale,zhWorkflowLocale); 
-allZhLocale.route=Object.assign(allZhLocale.route,zhFormLocale.route)
+let allZhLocale= Object.assign({},zhLocale,zhSysLocale);
+
+allZhLocale.route=Object.assign(allZhLocale.route,zhWorkflowLocale.route,zhFormLocale.route)
 
 const messages = {
   en: {
@@ -20,7 +23,7 @@ const messages = {
   },
   zh: {
     ...elementZhLocale,
-    ...allZhLocale,
+    ...allZhLocale
   }
 }
 

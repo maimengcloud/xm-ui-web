@@ -148,7 +148,7 @@
 			
 			showUserSelectDialog:function(nodeInfoSeleced,index){
 				if(nodeInfoSeleced.allowOverUser=='0'){
-					this.$message.error("当前节点不允许变更执行人")
+					this.$notify.error("当前节点不允许变更执行人")
 					return;
 				} 
 				this.userSelectVisible=true;
@@ -156,7 +156,7 @@
 			},
 			showCandidateSelectDialog:function(nodeInfoSeleced,index){
 				if(nodeInfoSeleced.allowOverUser=='0'){
-					this.$message.error("当前节点不允许变更执行人")
+					this.$notify.error("当前节点不允许变更执行人")
 					return;
 				} 
 				this.candidateSelectVisible=true;
@@ -239,7 +239,7 @@
 			},
 			setAssigneeAsStartUser(nodeInfoSeleced){
 				if(nodeInfoSeleced.allowOverUser=='0'){
-					this.$message.error("当前节点不允许变更执行人")
+					this.$notify.error("当前节点不允许变更执行人")
 					return;
 				} 
 				this.nodeInfoSeleced=nodeInfoSeleced

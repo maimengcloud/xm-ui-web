@@ -9,17 +9,40 @@ export default {
 			component: Layout,
 			name: '订单',
 			meta: {
-				title: '订单',
-				icon: 'task'
+				title: '订单管理',
+				icon: 'business'
 			},
             children: [
+				{ path: 'branchModuleList', component: _import('mdp/menu/menuModuleBranch/MenuModuleBranchMng'), name: 'MenuModuleBranchMng', meta: { title: '已购模块(平台)',icon: 'component',menu:true  }}, 
+
+				{
+				    path: 'list',
+					component: _import('mdp/mo/moOrder/MoOrderMng'),
+					name: '订单列表(平台)',
+					meta: {
+						title: '订单列表(平台)',
+						icon: 'component',
+						menu:true
+					}
+				},
+				{
+				    path: 'myList',
+					component: _import('mdp/mo/moOrder/MyMoOrderMng'),
+					name: '我的订单',
+					meta: {
+						title: '我的订单',
+						icon: 'component',
+						menu:false
+					}
+				},
 				{
 				    path: 'index',
 					component: _import('order/index'),
-					name: '我的',
+					name: '购买产品',
 					meta: {
-						title: '我的',
-						icon: 'component'
+						title: '购买产品',
+						icon: 'component',
+						menu:false
 					}
 				},
 				{
@@ -28,8 +51,28 @@ export default {
 					name: '创建订单',
 					meta: {
 						title: '创建订单',
-						icon: 'component'
+						icon: 'component', 
+						menu:false
+					},
+					hidden:true,
+				},
+				{
+				    path: 'addUsers',
+					component: _import('order/addUsersIndex'),
+					name: '增购人数',
+					meta: {
+						title: '增购人数',
+						icon: 'component', 
 					}
+				},
+				{
+				    path: 'renew',
+					component: _import('order/renewIndex'),
+					name: '续费',
+					meta: {
+						title: '续费',
+						icon: 'component',
+					},  
 				},
 				{
 				    path: 'paySuccess',
@@ -38,7 +81,8 @@ export default {
 					meta: {
 						title: '支付成功',
 						icon: 'component'
-					}
+					}, 
+					hidden:true,
 				}
 			]
 		},

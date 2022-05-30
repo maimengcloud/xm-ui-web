@@ -128,9 +128,9 @@
 					sendEmail({codeScene:'3',codeEmail:this.editForm.email,userType:'staff',callbackUri:curlDomain+'/#/changeEmailStepTwo'}).then(res=>{
 						var tips = res.data.tips;
 						if(tips.isOk){
-							this.$message({ message: "邮件已发送，请到收件箱收取邮件，并点击其链接进行验证新邮箱。", type: 'success' }); 
+							this.$notify({ message: "邮件已发送，请到收件箱收取邮件，并点击其链接进行验证新邮箱。", type: 'success' }); 
 						}else{
-							this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+							this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' }); 
 						}
 					})
 				}
@@ -138,7 +138,7 @@
 			validEmailCode(){ 
 				validEmailCode({valiCode:this.valiCode,userType:'staff'}).then(res=>{
 					var tips = res.data.tips;
-					this.$message({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' }); 
 				}) 
 			},
 			doLogin(){

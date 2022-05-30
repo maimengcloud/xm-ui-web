@@ -58,9 +58,6 @@ const user = {
     SET_USER_INFO: (state, userInfo) => {
       state.userInfo = userInfo
     },
-	SET_WORK_SHOP:(state,workShop)=>{
-	  state.workShop = workShop
-	},
     SET_ROLES: (state, roles) => {
       state.roles = roles
     },
@@ -98,7 +95,7 @@ const user = {
 
   actions: {
     // 用户名登录
-    LoginByUserloginid({ commit }, loginParams) { 
+    LoginByUserloginid({ commit }, loginParams) {
       removeToken();
       return new Promise((resolve, reject) => {
         doLoginByUserloginid(loginParams.userloginid, loginParams.password,loginParams.grantType,loginParams.authType,loginParams.branchId,loginParams.deptid).then(res => {
@@ -128,26 +125,26 @@ const user = {
                 commit('SET_USER_INFO', userInfo)
                 commit('SET_ROLES', roles)
                 commit('SET_QXS', data.qxs)
-                commit('SET_TOKEN', data.data.accessToken.tokenValue) 
+                commit('SET_TOKEN', data.data.accessToken.tokenValue)
                 commit('SET_IS_LOAD_OK', false)
                 setToken( data.data.accessToken.tokenValue)
                 removeCacheUserInfo();
-        	} 
-            resolve(res) 
+        	}
+            resolve(res)
         }).catch(error => {
           reject(error)
         })
       })
     },
-     
+
 
     ParseUserInfo({commit},res){
       return new Promise((resolve, reject) => {
         if(res.data.tips.isOk==true){
           let userInfo = res.data.userInfo;
-          let roles = res.data.roles; 
+          let roles = res.data.roles;
           let qxs=res.data.qxs;
-          
+
           if(roles!=null && roles.length>0){
             roles.forEach(role=>{
               if(role.roleid=='superAdmin'){
@@ -167,8 +164,8 @@ const user = {
               }
             });
           }
-        
-          
+
+
           let branchs=res.data.branchs==null?[]:res.data.branchs;
           let depts=res.data.depts==null?[]:res.data.depts;
           let shops=res.data.shops==null?[]:res.data.shops;
@@ -176,14 +173,14 @@ const user = {
           locations.forEach(l=>{
             shops.forEach(s=>{
               if(s.shopId==l.shopId){
-                l.shopName=s.shopName 
+                l.shopName=s.shopName
               }
             })
             depts.forEach(d=>{
               if(d.deptid==l.deptid){
                 l.deptName=d.deptName
-                l.branchName=d.branchName 
-              } 
+                l.branchName=d.branchName
+              }
             })
           })
           let posts=res.data.posts==null?[]:res.data.posts;
@@ -204,20 +201,19 @@ const user = {
           })
           commit('SET_MYBRANCHS',branchs);
           commit('SET_MYDEPTS',depts);
-          commit('SET_MYLOCATIONS',locations); 
-          commit('SET_MYMENUS',res.data.menus); 
+          commit('SET_MYLOCATIONS',locations);
+          commit('SET_MYMENUS',res.data.menus);
           commit('SET_MYPOSTS', posts);
           commit('SET_USER_INFO',userInfo);
-          commit('SET_ROLES', roles) 
+          commit('SET_ROLES', roles)
           commit('SET_QXS', qxs)
-          commit('SET_WORK_SHOP',userInfo);
           commit('SET_IS_LOAD_OK', true)
-          resolve(res); 
+          resolve(res);
         }else{
           reject(res)
         }
       })
-      
+
     },
     // 获取用户信息
     GetUserInfo({ commit, state }) {
@@ -225,27 +221,27 @@ const user = {
         var cacheUserInfo=getCacheUserInfo();
         if(cacheUserInfo){
           this.dispatch("ParseUserInfo",cacheUserInfo).then(res2=>{
-            resolve(res2); 
+            resolve(res2);
           }).catch(error2=>{
             reject(error2)
           });
-    		  
+
         }else{
-          getUserInfo().then(res=>{ 
+          getUserInfo().then(res=>{
             this.dispatch("ParseUserInfo",res).then(res2=>{
               setCacheUserInfo(res);
-              resolve(res2); 
+              resolve(res2);
             }).catch(error2=>{
               reject(error2)
-            }); 
+            });
           }).catch(error => {
               reject(error)
-          }); 
+          });
         }
       })
     },
 
-  
+
     // 登出
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
@@ -256,7 +252,7 @@ const user = {
           commit('SET_MYBRANCHS', [])
           commit('SET_MYSHOPS', [])
           commit('SET_MYPOSTS', [])
-          commit('SET_USER_INFO', {}) 
+          commit('SET_USER_INFO', {})
           commit('SET_IS_LOAD_OK', false)
            removeToken()
            removeCacheUserInfo();
@@ -268,14 +264,14 @@ const user = {
     // 前端 登出
     FedLogOut({ commit }) {
       return new Promise((resolve, reject) => {
-           resolve() 
+           resolve()
       })
     },
 
     // 动态修改权限
     ChangeRoles({ commit }, role) {
       return new Promise(resolve => {
-         
+
         getUserInfo(role).then(response => {
             const data = response.data
             commit('SET_USER_INFO', data.userInfo)

@@ -8,13 +8,13 @@ import { getToken,setToken } from '@/utils/auth' // getToken from cookie
 NProgress.configure({ showSpinner: false })// NProgress Configuration
 
 // permissiom judge function
-function hasPermission(roles, permissionRoles) { 
+function hasPermission(roles, permissionRoles) {
   if (!permissionRoles) return true
   if (roles.some(role => role.roleid==='superAdmin')) return true // admin permission passed directly
   return roles.some(role => permissionRoles.indexOf(role) >= 0)
 }
 
-const whiteList = ['/login', '/authredirect']// no redirect whitelist
+const whiteList = ['/login', '/authredirect','/changeEmailStepOne','/changeEmailStepTwo']// no redirect whitelist
 
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
@@ -29,9 +29,9 @@ router.beforeEach((to, from, next) => {
 	  				querys=key+"="+to.query[key]
 	  			}else{
 	  				querys=querys+"&"+key+"="+to.query[key]
-	  			}  
+	  			}
   			}
-  			
+
   		});
   		if(querys!=''){
   			if(outUrl.indexOf("?")>0){
@@ -45,7 +45,7 @@ router.beforeEach((to, from, next) => {
   		outUrl=outUrl.replace("${router.path}",to.path);
 		}
   	if(outUrl.indexOf("${curlDomain}")>=0){
-			var curlDomain=window.location.protocol+"//"+window.location.host; //   返回https://mp.csdn.net
+		var curlDomain=window.location.protocol+"//"+window.location.host; //   返回https://mp.csdn.net
   		outUrl=outUrl.replace("${curlDomain}",curlDomain);
 		}
 		var indexOfHttp=outUrl.indexOf("://");
@@ -57,7 +57,7 @@ router.beforeEach((to, from, next) => {
 	window.open(outUrl,to.meta.title,null,true)
 	NProgress.done() // if current page is dashboard will not trigger	afterEach hook, so manually handle it
 	return;
-  } 
+  }
    if(to!=null && to.fullPath!=null){
 	var accessToken=getQueryVariable("accessToken",to.fullPath);
 	if(accessToken!=null){
@@ -80,7 +80,7 @@ router.beforeEach((to, from, next) => {
     			}else{
     				store.dispatch('GenerateRoutes', {roles:store.getters.roles ,menus:store.getters.myMenus} ).then(() => { // 根据roles权限生成可访问的路由表
 			              router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
-			              next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record 
+			              next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
 			          }).catch(() => {
 			            store.dispatch('FedLogOut').then(() => {
 			              Message.error('路由处理出错，请重新登陆')
@@ -88,12 +88,12 @@ router.beforeEach((to, from, next) => {
 			            })
 			          })
     			}
-	          
+
     		});
-    	}else if (store.getters.added==false ) { // 判断当前用户是否已拉取完user_info信息并且已经计算完毕动态路由 
+    	}else if (store.getters.added==false ) { // 判断当前用户是否已拉取完user_info信息并且已经计算完毕动态路由
 	        store.dispatch('GenerateRoutes', {roles:store.getters.roles ,menus:store.getters.myMenus} ).then(() => { // 根据roles权限生成可访问的路由表
 	           router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
-	           next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record 
+	           next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
 	        }).catch(() => {
 	          store.dispatch('FedLogOut').then(() => {
 	            Message.error('路由处理出错，请重新登陆')
@@ -121,11 +121,11 @@ router.beforeEach((to, from, next) => {
   }
 })
 
-function getQueryVariable(variable,url){	   
+function getQueryVariable(variable,url){
 	var query =url;
 	if(url==null || url==undefined || url==''){
 		query=window.location.href;
-		
+
 	}
 	//alert(query);
 	var query2=query.split("?");
@@ -135,7 +135,7 @@ function getQueryVariable(variable,url){
 		query=""
 		return null;
 	}
-	
+
        var vars = query.split("&");
        for (var i=0;i<vars.length;i++) {
                var pair = vars[i].split("=");
@@ -143,8 +143,8 @@ function getQueryVariable(variable,url){
        }
        return null;
 }
-var accessToken=getQueryVariable('accessToken'); 
-if(accessToken!=null){ 
+var accessToken=getQueryVariable('accessToken');
+if(accessToken!=null){
 	//alert(access_token);
 	setToken(accessToken);
 }

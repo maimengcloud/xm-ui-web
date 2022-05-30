@@ -1,22 +1,22 @@
 <template>
 	<section>
-		<el-row class="page-container border"> 
+		<el-row class="app-container"> 
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
-			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchPosts">查询</el-button>
+			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchPosts" icon="el-icon-search"></el-button>
 			 
 			<el-button type="primary" @click="confirmPostSelect" v-loading="load.add==true">确定</el-button> 
 			<el-tooltip class="item" effect="light" content="如果没有查询到岗位，有可能是所有岗位已经加入该部门，可在岗位管理中定义新的岗位，再到此将岗位加入部门" placement="top-start">
 		       <i class="el-icon-question"></i>
 		    </el-tooltip>
 		</el-row>
-		<el-row class="page-container border"> 
+		<el-row class="app-container"> 
 			<!--列表 Post sys_post-->
-			<el-table :data="posts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-				<el-table-column type="selection" width="55"></el-table-column>
+			<el-table :max-height="tableHeight" :data="posts" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+				<el-table-column type="selection" width="40"></el-table-column>
 				<el-table-column type="index" width="60"></el-table-column>
-				<el-table-column prop="postName" label="岗位名称" min-width="80" ></el-table-column>
-				<el-table-column prop="remark" label="备注" min-width="80" ></el-table-column>
-				<el-table-column prop="cdate" label="创建日期" min-width="80" ></el-table-column> 
+				<el-table-column prop="postName" label="岗位名称" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="remark" label="备注" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="cdate" label="创建日期" min-width="80" show-overflow-tooltip></el-table-column> 
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		 
@@ -26,7 +26,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import Sticky from '@/components/Sticky' // 粘性header组件
+	//import Sticky from '@/components/Sticky' // 粘性header组件
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { listPost, delPost, batchDelPost,listPostNotInDeptid } from '@/api/mdp/sys/post/post';  
 	import { mapGetters } from 'vuex'
@@ -43,7 +43,7 @@
 	    },
 		computed: {
 		    ...mapGetters([
-		      'workShop'
+		      'userInfo'
 		    ])
 		},
 		data() {
@@ -74,7 +74,8 @@
 				//编辑post界面初始化数据
 				editForm: {
 					id:'',postName:'',remark:'',branchId:'',cdate:''
-				}
+				},
+				tableHeight:500,
 				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -138,7 +139,7 @@
 						this.pageInfo.count=false;
 						this.posts = res.data.data;
 					}else{
-						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
+						this.$notify({ message: tips.msg, type: 'error' });
 					} 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -179,7 +180,7 @@
 			confirmPostSelect(){
 				
 				if(this.sels.length<=0){
-					this.$notify({position:'bottom-left',showClose:true,message:'请选择角色', type: 'error'});
+					this.$notify({ message:'请选择角色', type: 'error'});
 					return;
 				}
 				this.load.add=true;
@@ -191,10 +192,13 @@
 			
 		},//end methods
 		components: {   
-		    'sticky': Sticky
+		     
 		    //在下面添加其它组件
 		},
-		mounted() { 
+		mounted() {    
+			this.$nextTick(() => {
+				this.tableHeight = window.innerHeight - 250;   
+			}); 
 			this.$nextTick(() => {
 				this.getPosts();
         	}); 

@@ -271,7 +271,7 @@
               this.flowStartVisible = true;
             } else if (res.data.data.length > 1) {
               this.flowStartVisible = false;
-              this.$message.success("请选中一个流程")
+              this.$notify.success("请选中一个流程")
             }
             
           } else {

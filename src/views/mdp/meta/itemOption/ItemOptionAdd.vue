@@ -1,6 +1,7 @@
 <template>
 	<section>
-		 <el-row class="page-container border padding"> 
+		<el-row>
+			<!--新增界面 ItemOption 数据项取值列表--> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
 				<el-form-item label="选项值" prop="optionValue">
 					<el-input v-model="addForm.optionValue" auto-complete="off"></el-input>
@@ -8,8 +9,8 @@
 				<el-form-item label="选项名称" prop="optionName">
 					<el-input v-model="addForm.optionName" auto-complete="off"></el-input>
 				</el-form-item> 
-				<el-form-item label="快捷键" prop="keys">
-					<el-input v-model="addForm.keys" auto-complete="off"></el-input>
+				<el-form-item label="快捷键" prop="Keyes">
+					<el-input v-model="addForm.Keyes" auto-complete="off"></el-input>
 				</el-form-item> 
 				<el-form-item label="" prop="isShow">
 					<el-col :span=8>
@@ -89,7 +90,7 @@
 				},
 				//新增界面数据 数据项取值列表
 				addForm: {
-					itemId:'',id:'',optionValue:'',optionName:'',keys:'',isShow:'',seqOrder:'',fp:'',tp:'',sp:'',isDefault:'',cdate:'',branchId:'',deptid:''
+					itemId:'',id:'',optionValue:'',optionName:'',Keyes:'',isShow:'',seqOrder:'',fp:'',tp:'',sp:'',isDefault:'',cdate:'',branchId:'',deptid:''
 				}
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				
@@ -117,7 +118,7 @@
 									this.$refs['addForm'].resetFields();
 									this.$emit('submit');//  @submit="afterAddSubmit"
 								}
-								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch(() => {
 								this.load.add=false
 							});

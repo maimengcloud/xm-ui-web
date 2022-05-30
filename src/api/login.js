@@ -87,7 +87,8 @@ export function doRegister( userInfo ) {
     password:userInfo.password,
     phoneno:userInfo.phoneno,
     smsCode:userInfo.smsCode,
-    deptid:userInfo.deptid
+    deptid:userInfo.deptid,
+    branchId:userInfo.branchId
   }
   return axios({
     url: base+'/user/register',
