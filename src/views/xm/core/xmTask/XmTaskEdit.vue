@@ -621,7 +621,7 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 						 Object.assign(row,params) 
 						 this.editFormBak=Object.assign({},row)
 					}else{
-						debugger;
+						;
 						Object.assign(this.editForm,this.editFormBak)
 						this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 					}

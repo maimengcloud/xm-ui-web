@@ -1099,7 +1099,7 @@
 				
 				
 				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
-				debugger;
+				;
 				this.getXmQuestions();
 			});
 				initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','priority','bugRepRate']).then(res=>{

@@ -267,12 +267,11 @@ export default {
                     loginParams.branchId=params.branchId
                 }
                 this.$store.dispatch("LoginByUserloginid",loginParams).then(res => {
-                    debugger;
+                    ;
                     this.loading = false 
                     if(res.data.tips.isOk==true){
                         this.loading = true;
-                        this.$store.dispatch('GetUserInfo').then((res2)=>{ 
-                            debugger;
+                        this.$store.dispatch('GetUserInfo').then((res2)=>{  
                             this.loading = false
                             if(res2.data.tips.isOk==true){ 
                                 this.userDeptid=res2.data.userInfo.deptid
@@ -312,15 +311,16 @@ export default {
         },
         //角色身份验证
         rolesChecked(){ 
+            var indexPath=localStorage.getItem("index-path");
+            if(!indexPath){
+                indexPath="/"
+            }
             if(this.userInfo.isSuperAdmin){ 
-                    this.$router.push({ path: '/' });
-                    this.$notify.info("欢迎登陆，超级管理员"); 
+                    this.$router.push({ path: indexPath }); 
             }else if(this.userInfo.isPlatformAdmin){ 
-                this.$router.push({ path: '/' });
-                this.$notify.info("欢迎登陆，平台管理员"); 
+                this.$router.push({ path: indexPath }); 
             }else{
-                this.$router.push({ path: '/' }); 
-                this.$notify.info("欢迎登陆"); 
+                this.$router.push({ path: indexPath });  
             }
         },   
         

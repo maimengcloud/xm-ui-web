@@ -273,7 +273,7 @@ export default {
 				}
 
 				editXmTaskSomeFields(params).then(res=>{
-          debugger;
+          ;
 					var tips = res.data.tips;
 					if(tips.isOk){
 						if(this.sels.length>0){

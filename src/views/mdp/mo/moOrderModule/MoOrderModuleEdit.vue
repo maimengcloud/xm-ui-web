@@ -173,7 +173,7 @@
             },
 
             editSomeFields(row,fieldName,$event){
-				debugger;
+				;
                 if(this.opType=='add'){
                     return;
                 }

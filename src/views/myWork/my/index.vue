@@ -93,7 +93,7 @@ export default {
   methods: {
 
     gotolink(context,path) {
-      debugger;
+      ;
       if(context==process.env.CONTEXT){
         this.$router.push({path:path});
       }else{

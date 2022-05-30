@@ -169,7 +169,7 @@
                 }else{
 
                 }
-				debugger;
+				;
 				if(this.editForm.discount){
 					this.discount=JSON.parse(this.editForm.discount)
 				}

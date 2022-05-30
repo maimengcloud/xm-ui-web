@@ -143,6 +143,22 @@ function getQueryVariable(variable,url){
        }
        return null;
 }
+
+
+function setIndexPath() {  
+	var indexPath=null
+	var url=window.location.href;
+	if(url.indexOf("/login")<=0){
+		var indexOf=url.indexOf("/#")
+		if(indexOf > 0){
+		indexPath=url.substring(indexOf+2)
+		localStorage.setItem("index-path",indexPath);
+		}else{
+		localStorage.setItem("index-path",null);
+		}
+	} 
+}
+setIndexPath();
 var accessToken=getQueryVariable('accessToken');
 if(accessToken!=null){
 	//alert(access_token);

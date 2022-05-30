@@ -115,7 +115,7 @@
 							this.load.edit=true
 							let params = Object.assign({}, this.editForm); 
 							editBankAccount(params).then((res) => {
-								debugger;
+								;
 								this.load.edit=false
 								var tips=res.data.tips;
 								this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' }); 
