@@ -173,7 +173,7 @@ export default {
     
     methods: {
         onDropdownClick(){
-            if( this.branchUsersCount.defalut){
+            if( this.branchUsersCount.defalut||this.branchUsersCount.branchId!=this.userInfo.branchId){
                 this.getBranchInterestsDetail();
             }
         },
