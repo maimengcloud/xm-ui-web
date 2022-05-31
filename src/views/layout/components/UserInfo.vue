@@ -99,7 +99,7 @@
             </el-table-column>
             <el-table-column  label="操作">
 					<template slot-scope="scope"> 
-						<el-button type="primary" @click="toLogin(scope.row)">登录</el-button> 
+						<el-button type="primary" @click="toLogin(scope.row)">登录222</el-button> 
 					</template>
             </el-table-column>
           </el-table>
@@ -126,10 +126,11 @@
 <script>
 
 import NProgress from 'nprogress' // progress bar
-import config from '../../../common/config';
+import config from '../../../common/config'; 
+import { setToken,removeCacheUserInfo} from '@/utils/auth'
 import { mapGetters } from 'vuex'
-import dayjs from 'dayjs'
-
+import dayjs from 'dayjs' 
+import md5 from 'js-md5';
 import {  queryMyUsers,switchUser } from '@/api/login';
 
 import {  getBranchInterestsDetail } from '@/api/branch';
@@ -235,16 +236,18 @@ export default {
 
         },
         toLogin(user) {
+            debugger;
                 this.$prompt('请输入密码', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',  
                 }).then(({ value }) => { 
-                        let params={ 
+                    let params={ 
                         password:md5(value),  
                         userloginid:user.userid,
                         authType:'password_display_userid' ,
                         grantType:"password"
                     } 
+                    debugger;
                     //userloginid, password,grantType,authType,deptid,userid
                     switchUser(params.userloginid,params.password,params.grantType,params.authType,'',params.userloginid).then(res => {
                         this.phonenoUsersVisible=false;
