@@ -38,7 +38,7 @@ export default {
 </script>
 
 <style lang="scss">
-.el-menu  .menu-wrapper .menu-item:first-of-type :first-child { 
+.el-menu  .menu-wrapper .menu-item:first-of-type  .submenu-title-noDropdown:first-child {
   background-image: linear-gradient(to right, rgba(42,63,104,.2), rgb(52,87,150), rgb(62,111,225)) !important;
   color: #fff !important;
 }
