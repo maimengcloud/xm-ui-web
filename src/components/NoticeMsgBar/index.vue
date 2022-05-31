@@ -1,13 +1,10 @@
 <template v-loadding="load.list">
+    <!--
     <el-dropdown trigger="hover"  class="avatar-container"  @command="handleNoticeMsgClick">
       <div class="avatar-wrapper" @click="goToMsgCenter">
           <i class="el-icon-bell"></i>
-          <span>消息中心</span>
-          <!-- <el-badge :value="noticeMsg.totalNum" class="item">
-            <img class="user-avatar" src="../../assets/image/platform/module-notice.png">
-          </el-badge> -->
-      </div>
-      <!--
+          <span>消息中心</span> 
+      </div> 
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item command="toPay" >待付款订单(<font color=red>{{noticeMsg.toPayNum || 0}}</font>)</el-dropdown-item>
         <el-dropdown-item command="toSend" >待发货订单(<font color=red>{{noticeMsg.toSendNum || 0}}</font>)</el-dropdown-item>
@@ -17,9 +14,15 @@
         <el-dropdown-item command="toApprova" >待审核订单(<font color=red>{{noticeMsg.toApprovaNum || 0}}</font>)</el-dropdown-item>
        <el-dropdown-item command="hadApprova" >已审核订单(<font color=red>{{noticeMsg.hadApprovaNum}}</font>)</el-dropdown-item>
         <el-dropdown-item command="doGetNoticeMsg" >刷新 </el-dropdown-item>
-      </el-dropdown-menu>
-      -->
+      </el-dropdown-menu> 
     </el-dropdown>
+    -->
+    <div trigger="hover"  class="avatar-container"  @command="handleNoticeMsgClick">
+      <div class="avatar-wrapper" @click="goToMsgCenter">
+          <i class="el-icon-bell"></i>
+          <span>消息中心</span> 
+      </div> 
+    </div>
 </template>
 
 <script>
