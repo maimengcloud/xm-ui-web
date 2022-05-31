@@ -99,7 +99,7 @@
             </el-table-column>
             <el-table-column  label="操作">
 					<template slot-scope="scope"> 
-						<el-button type="primary" @click="toLogin(scope.row)">登录222</el-button> 
+						<el-button type="primary" @click="toLogin(scope.row)">登录</el-button> 
 					</template>
             </el-table-column>
           </el-table>
