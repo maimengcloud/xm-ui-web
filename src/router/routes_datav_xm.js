@@ -15,12 +15,13 @@ export default {
         title: '项目大屏',
         icon: 'project'
       },
+      hidden:true,
       // leaf: true,//只有一个节点
       children: [
         // { path: 'project/projectDatavFullScreen', component: _import('datav/xm/project/index'), name: 'projectDatavFullScreen', meta: {   title: '项目大屏' }},
-        { path: 'project/projectDatavFullScreen', component: _import('datav/xm/project1/index'), name: 'projectDatavFullScreen', meta: {   title: '项目大屏' }},  
+        { path: 'project/projectDatavFullScreen', component: _import('datav/xm/project1/index'), name: 'projectDatavFullScreen', meta: {   title: '项目大屏' },hidden:true,},  
         // { path: 'branch/branchDatavFullScreen', component: _import('datav/xm/branch/index'), name: 'branchDatavFullScreen', meta: {   title: '机构大屏' }}, 
-        { path: 'branch/branchDatavFullScreen', component: _import('datav/xm/branch1/index'), name: 'branchDatavFullScreen', meta: {   title: '机构大屏' }}, 
+        { path: 'branch/branchDatavFullScreen', component: _import('datav/xm/branch1/index'), name: 'branchDatavFullScreen', meta: {   title: '机构大屏' },hidden:true,}, 
       ]
     }
   ]

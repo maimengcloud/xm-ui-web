@@ -14,9 +14,10 @@ export default {
 				title: '招聘管理',
 				icon: 'record'
 			},
+			hidden: true,
 			// leaf: true,//只有一个节点
 			children: [
-				{ path: 'ZpDemandApply', component: _import('oa/zp/ZpDemandApply'), name: 'ZpDemandApply', meta: { title: '招聘需求申请' } },
+				{ path: 'ZpDemandApply', component: _import('oa/zp/ZpDemandApply'), name: 'ZpDemandApply', meta: { title: '招聘需求申请' }, hidden: true, },
 			]
 		},	
 	]

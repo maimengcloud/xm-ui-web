@@ -14,10 +14,11 @@ export default {
 		       title: 'IntelligentForm',
 		       icon: 'capacity-form'
 		    },
+			hidden: true,
 	        //leaf: true,//只有一个节点
 	        children: [
-	        	{ path: 'formDef/FormDefAdd', component: _import("mdp/form/formDef/FormDefAdd"), name: 'FormDefAdd',meta:{title:'FormDefAdd'} },
-	            { path: 'formDef/FormDefMng', component: _import("mdp/form/formDef/FormDefMng"), name: 'FormDefMng' ,meta:{title:'FormDefMng'}},
+	        	{ path: 'formDef/FormDefAdd', component: _import("mdp/form/formDef/FormDefAdd"), name: 'FormDefAdd',meta:{title:'FormDefAdd'}  , hidden: true},
+	            { path: 'formDef/FormDefMng', component: _import("mdp/form/formDef/FormDefMng"), name: 'FormDefMng' ,meta:{title:'FormDefMng'} , hidden: true},
 	            { path: 'formData/FormDataMng', component: _import("mdp/form/formData/FormDataMng"), name: 'FormDataMng', meta:{title:'FormDataMng'} , hidden: true}
 	        ]
 	    }

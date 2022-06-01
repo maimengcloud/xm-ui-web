@@ -21,7 +21,9 @@ export default {
         { path: 'xmRecord/XmRecord', component: _import('xm/core/xmRecord/XmRecord'), name: 'XmRecord', meta: { title: '项目动态' }},
         { path: 'xmProject/XmProjectTplMng', component: _import('xm/core/xmProject/XmProjectTplMng'), name: 'XmProjectTplMng', meta: { title: '项目模板' }},
         { path: 'xmEnvList/XmEnvListMng', component: _import('xm/core/xmEnvList/XmEnvListMng'), name: 'XmEnvListMng', meta: { title: '环境清单' }},
-
+        { path: 'xmTask/XmTaskCenter', component: _import('xm/core/xmTask/XmTaskCenter'), name: 'xmTaskCenter', meta: { title: '任务大厅' }},
+        { path: 'xmTask/XmMyTaskCenter', component: _import('xm/core/xmTask/XmMyTaskCenter'), name: 'xmMyTaskCenter', meta: { title: '任务(我的)' }},
+       
       ]
     },
     {
@@ -30,10 +32,10 @@ export default {
       name: 'XmProjectInfoRoute',
       iconCls: 'fa el-icon-menu',
       meta: {
-        title: '项目管理',
+        title: '项目管理-路由跳转',
         icon: 'project',
-        hidden:true
-      },
+      }, 
+      hidden:true
     },
     {
       path: '/xm/core',
@@ -54,30 +56,14 @@ export default {
         { path: 'xmTestCaseExec/XmTestCaseExecMng', component: _import('xm/core/xmTestCaseExec/XmTestCaseExecMng'), name: 'XmTestCaseExecMng', meta: { title: '测试执行' }},
 
       ]
-    },
+    }, 
     {
       path: '/xm/core',
       component: Layout,
-      name: '项目任务',
+      name: 'crowd',
       iconCls: 'fa el-icon-menu',
       meta: {
-        title: '项目任务',
-        icon: 'task'
-      },
-      // leaf: true,//只有一个节点
-      children: [
-
-        { path: 'xmTask/XmTaskCenter', component: _import('xm/core/xmTask/XmTaskCenter'), name: 'xmTaskCenter', meta: { title: '任务大厅' }},
-        { path: 'xmTask/XmMyTaskCenter', component: _import('xm/core/xmTask/XmMyTaskCenter'), name: 'xmMyTaskCenter', meta: { title: '任务(我的)' }},
-      ]
-    },
-    {
-      path: '/xm/core',
-      component: Layout,
-      name: '众包任务',
-      iconCls: 'fa el-icon-menu',
-      meta: {
-        title: '众包任务',
+        title: '众包管理',
         icon: 'task'
       },
       // leaf: true,//只有一个节点
@@ -88,17 +74,6 @@ export default {
  
       ]
     },
-    {
-      path: '/xm/core/xmProduct/XmProductInfoRoute',
-      component: _import('xm/core/xmProduct/XmProductInfoRoute'),
-      name: 'XmProductInfoRoute',
-      iconCls: 'fa el-icon-menu',
-      meta: {
-        title: '产品管理',
-        icon: 'product',
-        hidden:true
-      },
-    },
     
     {
       path: '/xm/rpt', 
@@ -107,12 +82,14 @@ export default {
       iconCls: 'fa el-icon-menu',
       meta: {
         title: '效能分析',
-        icon: 'report',
-        hidden:true
+        icon: 'chart'
       },
       
       children: [
-        { path: 'reportIndex', component: _import('xm/rpt/reportIndex'), name: 'reportIndex', meta: { title: '效能分析',  icon: 'chart' }}, 
+        { path: 'reportIndex', component: _import('xm/rpt/reportIndex'), name: 'reportIndex', meta: { title: '指标分析' }}, 
+        
+         { path: 'project/projectDatavFullScreen',  name: 'projectDatavFullScreen', meta: {   title: '项目效能',openTab:true,outUrl:"/#/datav/xm/project/projectDatavFullScreen" }},  
+         { path: 'branch/branchDatavFullScreen',   name: 'branchDatavFullScreen', meta: {   title: '机构效能',openTab:true,outUrl:"/#/datav/xm/branch/branchDatavFullScreen" }}, 
       ]
     },
     {
@@ -135,7 +112,20 @@ export default {
 
         { path: 'xmMenu/XmMenuMng', component: _import('xm/core/xmMenu/XmMenuMng'), name: 'XmMenuMng', meta: { title: '需求管理' }},
          { path: 'xmMenuExchange/XmMenuExchangeMng', component: _import('xm/core/xmMenuExchange/XmMenuExchangeMng'), name: 'XmMenuExchangeMng', meta: { title: '互动评论' }},
+         
       ]
+    }, 
+    
+    {
+      path: '/xm/core/xmProduct/XmProductInfoRoute',
+      component: _import('xm/core/xmProduct/XmProductInfoRoute'),
+      name: 'XmProductInfoRoute',
+      iconCls: 'fa el-icon-menu',
+      meta: {
+        title: '产品管理-如有跳转',
+        icon: 'product',
+      },
+      hidden:true
     },
     {
       path: '/xm/core/xmIteration/XmIterationInfoRoute',
@@ -143,24 +133,10 @@ export default {
       name: 'XmIterationInfoRoute',
       iconCls: 'fa el-icon-menu',
       meta: {
-        title: '迭代管理',
+        title: '迭代管理-路由跳转',
         icon: 'flow',
-        hidden:true
       },
-    },
-    {
-      path: '/xm/core',
-      component: Layout,
-      name: '迭代管理',
-      iconCls: 'fa el-icon-menu',
-      meta: {
-        title: '迭代管理',
-        icon: 'flow'
-      },
-      // leaf: true,//只有一个节点
-      children: [
-         { path: 'xmIteration/XmIterationMng', component: _import('xm/core/xmIteration/XmIterationMng'), name: 'XmIterationMng', meta: { title: '迭代管理',icon: 'flow' }},
-       ]
+      hidden:true
     },
     {
       path: '/xm/core',
