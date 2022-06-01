@@ -5,18 +5,7 @@
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm"> 
 				<el-form-item label="上级菜单" prop="pid"> 
 					 <menu-tree v-loading="load.list"  :refresh="refresh" :expand-on-click-node="false" showCheckbox  @check-change="menuTreeCheckChange" ref="pmenuTree"></menu-tree> 
-				</el-form-item> 
-				<el-form-item label="归属模块" prop="moduleId">
-				  <el-select v-model="addForm.moduleId" placeholder="请选择归属模块">
-				    <el-option
-				      v-for="item in menuModules"
-				      :key="item.id"
-				      :label="item.name"
-				      :value="item.id">
-				    </el-option>
-				  </el-select> 
-				</el-form-item>  
-				
+				</el-form-item>    
 				<el-form-item label="导入范围">
 				   <el-radio v-model="onlyLeaf" label="1">只导入选中的菜单树中叶子节点，不导入父亲节点</el-radio>
 					  <el-radio v-model="onlyLeaf" label="0">全部选中的菜单都导入</el-radio>
@@ -155,39 +144,29 @@
 				}else{
 					routers=this.$refs.permissionRoutersTree.getCheckedNodes(false,this.onlyLeaf=='1'?false:true)
 				} 
-				let pids=this.$refs.pmenuTree.$refs.nodeTree.getCheckedKeys(false,false);
+ 
+				let checkedNodes=this.$refs.pmenuTree.$refs.nodeTree.getCheckedNodes(false,false);
 				
-				if(pids==null || pids.length!=1 ){
+				
+				if(checkedNodes==null || checkedNodes.length!=1 ){
 					this.$notify.error("请先选择需要导入到的上级菜单");
 					return;
 				}
-				let checkedNodes=this.$refs.pmenuTree.$refs.nodeTree.getCheckedNodes(false,false);
-				
-				if(this.addForm.moduleId==''||this.addForm.moduleId==null){
-					this.$notify.error("请选择导入模块");
-					return
-				}else{ 
-					if(checkedNodes[0].id!='M0'){
-						if(this.addForm.moduleId!=checkedNodes[0].moduleId){
-							this.$notify.error("导入模块与上级模块不一致，不允许导入");
-							return
-						}
-					}
-					
-				}
+				var pid=checkedNodes[0].isModule==true?'M0':checkedNodes[0].id
 				let menus=[]; 
 				if(routers.length<=0){
 					this.$notify.error("没有需要导入的菜单");
 					return;
 				}  
+				debugger;
 
 				routers.forEach(i=>{
 					if(i.pid==null || i.pid=='' || i.pid=='undefined'||this.onlyLeaf=='1'){
-						i.pid=pids[0]
+						i.pid=pid
 					}else{
 						//如果上级被选中，则以上级的编号作为pid,如果上级没呗选中，以客户指定的上级为上级
 						if(!routers.some(r=>r.id==i.pid)){
-							i.pid=pids[0]
+							i.pid=pid
 						}
 					}
 					i.moduleId=this.addForm.moduleId
@@ -251,11 +230,13 @@
 				});
 			},
 			/**begin 在下面加自定义方法,记得补上面的一个逗号**/
-			menuTreeCheckChange: function(data,checked,leafChecked){
+			menuTreeCheckChange: function(data,checked,leafChecked){ 
 				if(checked){
 					this.addForm.moduleId=data.moduleId;
+					this.addForm.mcate=data.mcate
 				}else{
 					this.addForm.moduleId='';
+					this.addForm.mcate=''
 				}
 			},
 			routersTreeDataFill: function(routers,prouter){ 

@@ -73,7 +73,11 @@
 			treeData(){
 				var treeData= treeTool.translateDataToTree(this.menuDefs,'pid','id'); 
 				var modules=JSON.parse(JSON.stringify(this.menuModules))
-				var defModule={id:'un-set-module',pid:'Mo',mname:'未分配模块',children:[]}
+				var defModule={id:'un-set-module',pid:'Mo',mname:'未分配模块',children:[],moduleId:'un-set-module',isModule:true}
+				modules.forEach(i=>{
+					i.moduleId=i.id
+					i.isModule=true
+				})
 				treeData.forEach(m=>{ 
 					var module=modules.find(mo=>m.moduleId==mo.id)
 					if(!module){
