@@ -41,7 +41,7 @@ export const constantRouterMap = [
   { path: '/login', component: _import('login/index'), hidden: true },
   { path: '/404', component: _import('errorPage/404'), hidden: true },
   { path: '/401', component: _import('errorPage/401'), hidden: true }, 
-  { path: '/menus', component: _import('mdp/menu/menuDef/MenuDefMng'), name: 'MenuDefMng', meta: { title: 'MenuDefMng' ,menu:true},hidden:true}, 
+  { path: '/menus', component: _import('mdp/menu/menuDef/MenuDefMng'), name: 'MenuDefMng', meta: { title: '菜单管理' ,menu:true},hidden:true}, 
   {
     path: '',
     component: Layout,
