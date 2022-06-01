@@ -230,7 +230,7 @@ export default {
                 }
                 
                 if(command=='userLoginRecord'){ 
-                    window.open(prefixUrl+'/my/work/userLoginRecord') 
+                    window.open(prefixUrl+'my/work/userLoginRecord') 
                     NProgress.done()
                 }
             }
