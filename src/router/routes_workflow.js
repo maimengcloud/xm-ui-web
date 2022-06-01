@@ -16,6 +16,23 @@ export default {
 			children: [
 				{ path: 'task/TaskListAssigneeToMe', component: _import("mdp/workflow/ru/task/TaskListAssigneeToMe"), name: 'TaskListAssigneeToMe', meta: { title: '审批中心',icon: 'task',openTab:true,outUrl:'${curlDomain}/workflow/'+process.env.VERSION+'/#/${router.path}' } },
 			]
+		},
+		{
+			path: '/mdp/workflow',
+			component: Layout,
+			name: '审批管理',
+			iconCls: 'fa el-icon-menu',
+			meta: {
+				title: 'flowCenter',
+				icon: 'flow'
+			},
+			hidden:true,
+			//leaf: true,//只有一个节点
+			children: [ 
+ 				{ path: 're/procdef/ProcdefListForBizStart', component: _import("mdp/workflow/re/procdef/ProcdefListForBizStart"), name: 'ProcdefListForBizStart', meta: { title: 'ProcdefListForBizStart' },  hidden:true, }, 
+				 
+  			]
 		}, 
+		
 	]
 }
