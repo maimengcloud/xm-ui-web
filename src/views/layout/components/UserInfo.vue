@@ -76,6 +76,7 @@
                     <p class="el-icon-user" @click="switchUser">切换账户</p> 
                     <p class="el-icon-edit" @click="handleCommand('updateUserInfo')">账户明细</p>
                     <p class="el-icon-user-solid"  @click="handleCommand('branchSet')">团队管理</p>
+                    <p class="el-icon-tickets"  @click="handleCommand('userLoginRecord')">登录日志</p>
                     <p @click="logout" class="el-icon-switch-button">退出登录</p>
                 </div>
 
@@ -211,6 +212,9 @@ export default {
                 if(command=='branchSet'){
                     this.$router.push({path:'/mdp/sys/branch/branchSet'})
                 }
+                if(command=='userLoginRecord'){
+                    this.$router.push({path:'/my/work/userLoginRecord'})
+                }
             }else{
                 var prefixUrl=config.getBaseDomainUrl()+'/sys/'+process.env.VERSION+'/#/'
                 if(command=='updateUserInfo'){ 
@@ -222,6 +226,11 @@ export default {
                 }
                 if(command=='branchSet'){ 
                     window.open(prefixUrl+'mdp/sys/branch/branchSet') 
+                    NProgress.done()
+                }
+                
+                if(command=='userLoginRecord'){ 
+                    window.open(prefixUrl+'/my/work/userLoginRecord') 
                     NProgress.done()
                 }
             }
@@ -388,7 +397,7 @@ export default {
     }
 
     .bottomBox2 {
-        height: 120px;
+        height: 150px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -396,10 +405,11 @@ export default {
         p {
             display: flex;
             cursor: pointer;
-            width: 100%;
-            height: 40px;
+            width: 100%; 
             text-align: left;
             align-items: center;
+            margin-top: 5px;
+            margin-bottom: 5px;
         }
         p:hover {
             background: rgb(243, 243, 243);

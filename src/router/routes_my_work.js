@@ -16,6 +16,7 @@ export default {
 				title: '我的工作台',
 				icon: 'task'
 			},
+			hidden: true,
 			iconCls: 'fa el-icon-menu',
             // leaf: true,
 			children: [
@@ -26,7 +27,8 @@ export default {
 					meta: {
 						title: '我的',
 						icon: 'component'
-					}
+					},
+					hidden: true,
 				},
                 {
                     path: 'updateUserInfo',
@@ -35,7 +37,8 @@ export default {
                     meta: {
                     	title: '设置',
                     	icon: 'component'
-                    }
+                    },
+					hidden: true,
                 },
 				{
                     path: 'message',
@@ -44,7 +47,8 @@ export default {
                     meta: {
                     	title: '消息中心',
                     	icon: 'component'
-                    }
+                    },
+					hidden: true,
                 },
 				{
 					path: 'userLoginRecord',
@@ -53,7 +57,8 @@ export default {
 					meta: {
 						title: '登录日志',
 						icon: 'component'
-					}
+					},
+					hidden: true,
 				},
 			]
 		}
