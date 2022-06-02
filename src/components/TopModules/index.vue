@@ -56,7 +56,8 @@
 <script> 
 
 import NProgress from 'nprogress' // progress bar  
-const topModulesData = require("./top_modules_"+process.env.CONTEXT+".js") 
+//const topModulesData = require("./top_modules_"+process.env.CONTEXT+".js") 
+const topModulesData = require("./all_modules.js") 
 const allModulesData = require("./all_modules.js") 
 import allMenus from '../ModulesMenu/allMenus'
 
