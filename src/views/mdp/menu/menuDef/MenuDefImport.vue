@@ -59,12 +59,14 @@
 
 	    computed: {
 	    	'routersTreeData': function(){
-	    		var routers=this.permission_routers.filter(i=>i.meta&&i.meta.title); 
+				debugger;
+	    		var routers=this.permission_routers.filter(i=>i.meta&&i.meta.title&&!i.hidden); 
 	    		routers.forEach((i,index)=>{ 
 	    			i.rpath=i.path
 					i.id=seq.sn()
 	    			i.mname=i.meta&&i.meta.title?this.generateTitle(i.meta.title):i.name;
 	    			i.isShow='1'
+					i.pid="M0"
 					if(index<10){
 						i.msort="0"+index
 					}else{
@@ -73,6 +75,7 @@
 					
 	    			this.routersTreeDataFill(i.children,i)
 	    		})
+				debugger;
 	    		return routers;
 	    	},
 		    ...mapGetters([
@@ -115,7 +118,7 @@
 				jsonRouters:[],
 				jsonRoutersText:'',
 				refresh:false,//
-				onlyLeaf:'1',
+				onlyLeaf:'0',
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data
@@ -133,6 +136,7 @@
 				this.jsonRouters=eval('(' + this.jsonRoutersText + ')');
 			},
 			batchImportMenus(){
+				debugger;
 				let routers=this.jsonRouters;
 				if(this.importType=='1'){
 					try{
@@ -158,14 +162,14 @@
 					this.$notify.error("没有需要导入的菜单");
 					return;
 				}  
-				debugger;
-
+				
+				var routersInit=JSON.parse(JSON.stringify(routers))
 				routers.forEach(i=>{
-					if(i.pid==null || i.pid=='' || i.pid=='undefined'||this.onlyLeaf=='1'){
+					if(!i.pid||this.onlyLeaf=='1'){
 						i.pid=pid
 					}else{
 						//如果上级被选中，则以上级的编号作为pid,如果上级没呗选中，以客户指定的上级为上级
-						if(!routers.some(r=>r.id==i.pid)){
+						if(!routersInit.some(r=>r.id==i.pid)){
 							i.pid=pid
 						}
 					}
