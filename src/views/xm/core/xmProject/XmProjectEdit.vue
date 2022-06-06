@@ -68,12 +68,16 @@
 								</el-col>
 							</el-row> 
 						<el-tabs value="1" accordion>
-						<el-tab-pane label="基本信息" name="1">
-							<el-form-item label="项目描述" prop="description">
-								<el-input type="textarea" :rows="6" v-model="editForm.description" placeholder="项目描述" ></el-input>
-							</el-form-item>    
+						<el-tab-pane label="项目描述" name="1"> 
+								<el-input type="textarea" :rows="6" v-model="editForm.description" placeholder="项目描述" ></el-input> 
 						</el-tab-pane>
 						<el-tab-pane label="控制开关" name="2">  
+							<el-row>  
+									
+									<span v-if="opType!=='add'" style="float:right;">
+ 										<el-button icon="el-icon-watch" type="warning"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_baseinfo_change_approva'})">基本信息修改申请</el-button>  
+ 									</span>
+							</el-row>
 							<el-form-item label="报工方式" prop="wtype">  
 								<el-select v-model="editForm.wtype">
 									<el-option   label="无须报工" value="0"  ></el-option> 
@@ -181,6 +185,13 @@
 						</el-form-item> 
 						</el-tab-pane> 
 						<el-tab-pane label="收入及盈利水平" name="5">  
+							
+							
+							<el-row>  
+ 									<span v-if="opType!=='add'" style="float:right;">
+ 										<el-button icon="el-icon-edit" type="warning"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_budget_change_approva'})">项目金额变更申请</el-button>
+ 									</span>
+							</el-row>
 							<el-form-item label="总成本">  
 								<el-row> 
 									 {{editForm.planTotalCost}}元  <el-tag> {{this.toFixed(autoParams.planTotalCost/10000)}}万元</el-tag>
