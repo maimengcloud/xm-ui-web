@@ -22,10 +22,10 @@
 							<el-option   value="not-join-curr-iteration"  :label="'未加入迭代【'+filters.iteration.iterationName+'】'"  v-if="filters.iteration && filters.iteration.id"></el-option>  
 							<el-option   value="join-curr-iteration"  :label="'已加入本迭代【'+filters.iteration.iterationName+'】'" v-if="filters.iteration && filters.iteration.id"></el-option>  
 						</el-select>  	    
-					 <el-select v-model="filters.priority" placeholder="优先级"  clearable style="width: 9	0px;">
+					 <el-select v-model="filters.priority" placeholder="优先级" class="hidden-md-and-down" clearable style="width: 90px;">
 							<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option> 
 					</el-select>      
-					<el-select  v-model="filters.status" placeholder="需求状态" clearable style="width: 90px;">
+					<el-select  v-model="filters.status" placeholder="需求状态" class="hidden-md-and-down" clearable style="width: 90px;">
 						<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option> 
 					</el-select> 
 					<el-input v-model="filters.key" style="width: 100px;" placeholder="需求名称查询" clearable> 
