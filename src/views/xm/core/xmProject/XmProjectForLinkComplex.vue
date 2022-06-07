@@ -40,6 +40,10 @@
 					<el-tab-pane label="需求" lazy name="menus" v-if="selProject&&selProject.id">
 						<xm-menu-mng v-if="selProject && showPanel=='menus'"   :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"  :disabled-mng="false"></xm-menu-mng>
 					</el-tab-pane>
+					
+					<el-tab-pane label="计划" lazy name="plan" v-if="selProject&&selProject.id">
+						<xm-plan v-if="selProject && showPanel=='plan'"  queryScope="plan" ptype="0" :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-plan>
+					</el-tab-pane>
 					<el-tab-pane label="任务" lazy name="tasks" v-if="selProject&&selProject.id">
 						<xm-task-mng v-if="selProject && showPanel=='tasks'"  queryScope="task" ptype="0" :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-task-mng>
 					</el-tab-pane>
@@ -80,6 +84,7 @@ import XmProjectOverview from "./XmProjectOverview";
 
 import XmProductProjectLinkMng from '../xmProductProjectLink/XmProductProjectLinkMng.vue';
 import XmIterationLinkForProject from '../xmIterationLink/XmIterationLinkForProject.vue';
+import XmPlan from '../xmTask/XmPlan.vue';
 	export default {
 		computed: {
 		    ...mapGetters([
@@ -140,6 +145,7 @@ import XmIterationLinkForProject from '../xmIterationLink/XmIterationLinkForProj
       XmProjectOverview,
 	  XmProductProjectLinkMng,
 	  XmIterationLinkForProject,
+XmPlan,
 		},
 		mounted() {
 		this.$nextTick(() => {

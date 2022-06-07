@@ -8,9 +8,7 @@
       >
         <el-row> 
             <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
-        	<el-select v-model="filters.lvls" placeholder="层级" clearable multiple v-if="queryScope!='task'">
-									<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.xm_plan_lvl" :key="index"></el-option> 
-          </el-select>
+
 					<el-select style="width: 100px" v-model="filters.taskState" placeholder="状态" clearable>
 									<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.taskState" :key="index"></el-option> 
           </el-select>
@@ -317,7 +315,7 @@
             placement="top-start"
             title="选择展示方式"
             width="400"
-            trigger="hover"
+            trigger="click"
           >
             <el-row>
               <el-radio v-model="displayType" label="grant">甘特图</el-radio>

@@ -220,7 +220,7 @@
             placement="top-start"
             title="选择展示方式"
             width="400"
-            trigger="hover"
+            trigger="click"
           >
             <el-row>
               <el-radio v-model="displayType" label="grant">甘特图</el-radio>
