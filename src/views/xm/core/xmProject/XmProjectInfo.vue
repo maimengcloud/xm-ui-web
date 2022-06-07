@@ -24,9 +24,11 @@
 				<el-menu-item   index="产品"  class="hidden-sm-and-down">
 					 <span slot="title"><i class="el-icon-s-flag" ></i>产品</span> 
 				</el-menu-item>
+				<!--
 				<el-menu-item label="需求" index="需求">
 					 <span slot="title"><i class="el-icon-document"></i>需求</span> 
 				</el-menu-item>
+				-->
 				<el-menu-item   index="任务">
 					 <span slot="title"><i class="el-icon-s-operation"></i>任务</span> 
 				</el-menu-item>
@@ -127,7 +129,7 @@
 			  <xm-question v-if="infotype=='缺陷'" :qtype="'1'" :sel-project='selProject' ref="xmQuestion"></xm-question>
 			  <xm-group-mng v-if="infotype=='团队'" :sel-project="selProject"></xm-group-mng>
 			  <xm-file-mng v-if="infotype=='文档'" :sel-project="selProject"></xm-file-mng>
-			   <xm-task-mng v-if="infotype=='计划'" ref="projectPlan" ptype="0" queryScope="planTask" :sel-project="selProject" key="projectPlan"></xm-task-mng>
+			   <xm-plan v-if="infotype=='计划'" ref="projectPlan" ptype="0" queryScope="planTask" :sel-project="selProject" key="projectPlan"></xm-plan>
 			 <!-- <xm-phase-mng v-if="infotype=='计划'" ref="xmPhaseMng" :sel-project="selProject" ></xm-phase-mng> -->
 			  <xm-test-case-exec-mng v-if="infotype=='测试计划'" :visible="infotype=='测试计划'"  :sel-project='selProject' ref="xmQuestion"></xm-test-case-exec-mng>
 			<xm-menu-with-plan v-if="infotype=='需求监控'" ref="xmMenuWithPlan" :sel-project="selProject"></xm-menu-with-plan>
@@ -166,8 +168,7 @@
 	import xmCost from './XmProjectCost';
 	import xmBudget from './XmProjectBudgetCost';
 	import xmContract from '../xmContract/XmContractMng';
-	import xmEnvList from '../xmProjectEnvList/XmProjectEnvListMng';
-	import xmPhaseMng from '../xmPhase/XmPhaseMng';
+	import xmEnvList from '../xmProjectEnvList/XmProjectEnvListMng'; 
 	import xmMenuMng from '../xmMenu/XmMenuMng';
 	import xmMenuWithPlan from '../xmMenu/XmMenuWithPlan';
 	import xmProjectStateMng from '../xmProjectState/XmProjectStateMng';
@@ -177,6 +178,7 @@
 	import XmProductForLinkComplex from '../xmProduct/XmProductForLinkComplex.vue';
 
  	import XmReport from '@/views/xm/rpt/reportIndex';
+import XmPlan from '../xmTask/XmPlan.vue';
 
 	export default {
 		props: ["selProject","visible"],
@@ -374,8 +376,7 @@
 
 		},//end methods
 		components: { 
-			xmTaskMng,
-			xmPhaseMng,
+			xmTaskMng, 
 			xmGroupMng,
 			xmExchange,
 			xmQuestion,
@@ -396,6 +397,7 @@
 			XmProjectOverviewComplex,
 			XmProductForLinkComplex,
 			XmReport,
+XmPlan,
 			//在下面添加其它组件
 		},
 		mounted() {

@@ -25,10 +25,11 @@
 				<el-menu-item label="需求" index="需求">
 					 <span slot="title"><i class="el-icon-document"  ></i>需求</span>
 				</el-menu-item>
-				
+				<!--
 				<el-menu-item index="项目任务">
 					<span slot="title"><i class="el-icon-s-operation"></i>任务</span>
 				</el-menu-item> 
+				-->
 				<!--
 				<el-submenu index="任务">
 					<template slot="title"><i class="el-icon-s-operation"></i>任务</template>
@@ -69,10 +70,11 @@
 							<span slot="title"><i class="el-icon-video-camera"></i>项目计划</span>
 						</el-menu-item> 
 				</el-submenu >
-				-->
+				
 				<el-menu-item index="项目计划">
 							<span slot="title"><i class="el-icon-odometer"></i>计划</span>
 						</el-menu-item> 
+						-->
 				<el-submenu index="财务" class="hidden-sm-and-down">
 					<template slot="title"><i class="el-icon-coin"></i>财务</template> 
 						<el-menu-item   index="合同管理">
@@ -164,9 +166,9 @@
 			  <xm-group-mng v-if="infotype=='项目团队'" pgClass="0" :xm-product="xmProduct" key="projectGroup"></xm-group-mng>
 			  <xm-group-mng v-if="infotype=='产品团队'" pgClass="1" :xm-product="xmProduct" key="productGroup"></xm-group-mng>
 			  <xm-file-mng v-if="infotype=='文档'" :xm-product="xmProduct"></xm-file-mng>
-			  <xm-task-mng v-if="infotype=='产品计划'" ref="productPlan" ptype="1" queryScope="planTask"  :xm-product="xmProduct" key="productPlan"></xm-task-mng> 
+			  <xm-plan v-if="infotype=='产品计划'" ref="productPlan" ptype="1" queryScope="planTask"  :xm-product="xmProduct" key="productPlan"></xm-plan> 
 
-			  <xm-task-mng v-if="infotype=='项目计划'" ref="projectPlan" ptype="0" queryScope="planTask"  :xm-product="xmProduct" key="projectPlan"></xm-task-mng> 
+			  <xm-plan v-if="infotype=='项目计划'" ref="projectPlan" ptype="0" queryScope="planTask"  :xm-product="xmProduct" key="projectPlan"></xm-plan> 
 			  <!--<xm-phase-for-product v-if="infotype=='计划'" ref="xmPhaseMng" :xm-product="xmProduct" ></xm-phase-for-product> -->
 			  <xm-test-case-exec-mng v-if="infotype=='测试计划'" :visible="infotype=='测试计划'"  :xm-product='xmProduct' ref="xmQuestion"></xm-test-case-exec-mng>
 			<xm-menu-with-plan v-if="infotype=='需求监控'" ref="xmMenuWithPlan" :xm-product="xmProduct"></xm-menu-with-plan>
@@ -195,6 +197,7 @@
 
 	import { mapGetters } from 'vuex';
 	import xmTaskMng from '../xmTask/XmTaskMng';
+	import xmPlan from '../xmTask/XmPlan';
 	import xmGroupMng from '../xmGroup/XmGroupMng';
 	import xmGroupSelect from '../xmGroup/XmGroupSelect';
 
@@ -450,6 +453,7 @@
 			XmProjectForLinkComplex,
 			XmProjectForLink,
 			XmReport,
+			xmPlan,
 			//在下面添加其它组件
 		},
 		mounted() {

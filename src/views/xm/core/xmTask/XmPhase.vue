@@ -6,156 +6,59 @@
         class="padding-left"
         :class="{ 'flex-box': displayType == 'agil' }"
       >
-        <el-row> 
-            <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
-        	<el-select v-model="filters.lvls" placeholder="层级" clearable multiple v-if="queryScope!='task'">
-									<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.xm_plan_lvl" :key="index"></el-option> 
-          </el-select>
-					<el-select style="width: 100px" v-model="filters.taskState" placeholder="状态" clearable>
-									<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.taskState" :key="index"></el-option> 
-          </el-select>
-          <el-select
-            v-model="selkey"
-            placeholder="场景"
-            clearable
-            @change="changeSelKey"
-            style="width: 100px"
-          >
-            <el-option class="showall" value="" label="全部场景"
-              >全部场景</el-option
-            >
-            <el-option value="work" label="未达到100%">未达到100%</el-option>
-            <el-option value="finish" label="已达100%">已达100%</el-option>
-            <el-option value="myFocus" label="我关注">我关注</el-option>
-            <el-option value="myExecuserStatus0" label="我排队"
-              >我排队</el-option
-            >
-            <el-option value="myCreate" label="我是责任人"
-              >我是责任人</el-option
-            >
-            <el-option value="myExecuserStatus1" label="我执行"
-              >我执行</el-option
-            > 
-            <el-option value="myExecuserStatus7" label="我放弃的"
-              >我放弃的</el-option
-            >
-          </el-select>
-          <el-select
-            class="hidden-md-and-down"
-            v-model="filters.taskType"
-            placeholder="类型"
-            style="width: 100px"
-            clearable
-            @change="changeTaskType"
-          >
-            <el-option class="showall" value="" label="全部类型"
-              >全部类型</el-option
-            >
-            <el-option
-              v-for="(i, index) in dicts.taskType"
-              :value="i.id"
-              :label="i.name"
-              :key="index"
-              >{{ i.name }}</el-option
-            >
-          </el-select>
-          <el-checkbox
-            class="hidden-md-and-down"
-            v-model="filters.taskOut"
-            true-label="1"
-            false-label=""
-            >众包</el-checkbox
-          >
-          <el-button
-            class="hidden-md-and-down"
-            v-if="!filters.skillTags || filters.skillTags.length == 0"
-            icon="el-icon-search"
-            @click="showSkillSelect"
-            >技能</el-button
-          >
-          <el-tag
-            class="hidden-md-and-down"
-            closable
-            v-for="(skill, index) in filters.skillTags"
-            :key="index"
-            @click="showSkillSelect"
-            @close="skillTagClear(skill)"
-            >{{ skill.skillName }}</el-tag
-          >
-          <el-button
-            style="margin-top: 10px;"
-            v-if="!filters.tags || filters.tags.length == 0"
-            @click.native="$refs.tagDialog.open()"
-            >标签</el-button
-          >
-          <el-tag
-            v-else
-            @click="$refs.tagDialog.open()"
-            closable
-            @close="clearFiltersTag(filters.tags[0])"
-            >{{ filters.tags[0].tagName.substr(0, 5) }}等({{
-              filters.tags.length
-            }})个</el-tag
-          >
-          <el-input
-            style="width: 150px"
-            v-model="filters.key"
-            placeholder="计划/任务名称"
-          >
-          </el-input>
-          <el-button
-            @click="searchXmTasks"
-            type="primary"
-            icon="el-icon-search"
-            v-loading="load.list"
-          ></el-button>
+        <el-row>    
+           <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
           <span style="float:right;"> 
           <el-popover
             placement="top-start"
-            title="选择任务的方式"
+            title="选择创建计划/任务的方式"
             width="300"
             trigger="hover"
           >
-            <el-row> 
-              <el-col :span="24" style="padding-top: 5px"> 
-                <div    class="icon" :style="{backgroundColor:   '#409EFF'}">
-                  <i :class=" 'el-icon-s-operation' " ></i>
+            <el-row>
+              <el-col :span="24" style="padding-top: 5px">
+                
+                <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
+                  <i :class=" 'el-icon-odometer' " ></i>
                 </div>  
                 <el-button
                   v-if="isTaskCenter != '1' && isMy != '1'"
                   @click="showMenu"
                   type="primary"
                   icon="el-icon-plus"
-                  >由用户故事快速创建任务(推荐)</el-button
+                  >由用户故事快速创建计划 (推荐)</el-button
                 >
               </el-col>
               <el-col :span="24" style="padding-top: 5px">
                 
-                <div    class="icon" :style="{backgroundColor:   '#409EFF'}">
-                  <i :class=" 'el-icon-s-operation' " ></i>
+                <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
+                  <i :class=" 'el-icon-odometer' " ></i>
                 </div>  
                 <el-button
                   v-if="isTaskCenter != '1' && isMy != '1'"
                   @click="showTaskTemplate"
                   icon="el-icon-plus"
-                  >从模板快速导入任务</el-button
+                  >从模板快速导入计划 </el-button
                 >
               </el-col>
               <el-col :span="24" style="padding-top: 5px">
                 
-                <div    class="icon" :style="{backgroundColor:   '#409EFF'}">
-                  <i :class=" 'el-icon-s-operation' " ></i>
+                <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
+                  <i :class=" 'el-icon-odometer' " ></i>
                 </div>  
                 <el-button
                   v-if="isTaskCenter != '1' && isMy != '1'"
-                  @click="showAdd('0')"
+                  @click="showAdd('1')"
                   icon="el-icon-plus"
-                  >直接创建任务</el-button
+                  >直接创建计划</el-button
                 >
-              </el-col>
+              </el-col> 
             </el-row>
             <el-button
-              slot="reference" 
+              slot="reference"
+              v-if="
+                 queryScope=='plan'||queryScope=='planTask'
+              "
               type="primary"
               round
               icon="el-icon-plus"
@@ -368,20 +271,21 @@
                 prop="name"
                 class-name="title"
                 fixed="left"
-                label="任务名称"
+                label="计划名称"
                 min-width="300" show-overflow-tooltip
               >
                 <template slot-scope="scope">
                   <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#409EFF'}">
 									<i :class="scope.row.ntype==='1'?'el-icon-odometer':'el-icon-s-operation'" ></i>
 									</div>  
-                  <span class="vlink"   type="primary" @click.stop="showDrawer(scope.row)">
+                  <span>
                     {{ scope.row.sortLevel }}&nbsp;  {{ scope.row.name }}
                     </span>
                   
 									<div class="tool-bar">
                     <span class="u-btn">
-                         <el-button    @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" circle plain size="mini"> </el-button>     
+                         <el-button   :style="{backgroundColor:  '#E6A23C'}"  @click="showSubAdd( scope.row,scope.$index,'1')" icon="el-icon-plus" title="新建计划" circle plain size="mini"> </el-button>   
+                        <el-button      @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle plain size="mini"> </el-button>     
                      </span>
 									</div>
                 </template>
@@ -402,150 +306,6 @@
 										 </el-select>
 									</span>
 								</template>
-              </el-table-column>
-              
-              <el-table-column
-                label="优先级"
-                type="level"
-                width="100"
-              >  
-								<template slot-scope="scope">
-									<div class="cell-text">
-										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in formatterPriorityDicts(scope.row.level)" :key="index">{{item.name}}</el-button>
-									</div>
-									<span class="cell-bar">
-										 <el-select @visible-change="selectVisible(scope.row,$event)"  v-model="scope.row.level" placeholder="优先级"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'level',$event)">
-												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.priority" :key="index"></el-option>
-										 </el-select>
-									</span>
-								</template>
-              </el-table-column>
-              <el-table-column
-                sortable
-                prop="budgetWorkload"
-                label="工时"
-                width="150"
-              >
-
-                <template slot-scope="scope">
-                  	<span title="实际工时 / 预算工时 或者 (剩余工时+实际工时)">{{scope.row.actWorkload}} &nbsp;/ &nbsp;{{scope.row.rworkload?parseInt(scope.row.actWorkload)+parseInt(scope.row.rworkload):scope.row.budgetWorkload}}h </span>
-                </template>
-              </el-table-column>
-              <el-table-column sortable prop="rate" label="进度" width="100">
-                <template slot-scope="scope">
-                  <el-link v-if="scope.row.ntype=='0'"
-                    style="border-radius: 30px"
-                    :type="scope.row.rate >= 100 ? 'success' : 'warning'"
-                    @click="showWorkload(scope.row)"
-                  >
-                    {{ (scope.row.rate != null ? scope.row.rate : 0) + "%" }}
-                  </el-link>  
-                  
-                  <el-link v-else
-                    style="border-radius: 30px"
-                    :type="scope.row.rate >= 100 ? 'success' : 'warning'"
-                    @click="calcProgress(scope.row)"
-                  >
-                    {{ (scope.row.rate != null ? scope.row.rate : 0) + "%" }}
-                  </el-link>  
-									<div class="cell-bar">
-                    <span class="u-btn">  
-                          <el-button v-if="scope.row.ntype==='0'"   @click="showWorkload(scope.row)" icon="el-icon-timer" title="登记工时进度" circle plain size="mini"> </el-button>     
-                       
-                           <el-button  v-else :disabled="load.calcProgress" v-loading="load.calcProgress"  @click="calcProgress(scope.row)" icon="el-icon-s-data" title="统计进度，逐级往上汇总" circle plain size="mini"> </el-button>     
-                     </span> 
-                  </div>
-                </template>
-              </el-table-column>
-
-              <el-table-column sortable prop="productId" label="产品" width="100" show-overflow-tooltip>
-              </el-table-column>
-              <el-table-column sortable prop="projectId" label="项目" width="100" show-overflow-tooltip>
-              </el-table-column>
-
-              <el-table-column sortable prop="tagNames" label="标签" width="100" show-overflow-tooltip>
-								<template slot-scope="scope">
-									<div class="cell-text"> 
-										{{scope.row.tagNames}}
-									</div>
-									<span class="cell-bar">
-										 <el-button @click="$refs.tagDialog.open({data:scope.row,action:'editTagIds'})">选标签</el-button>
-									</span>
-								</template>
-              </el-table-column>
-              <el-table-column
-                sortable
-                prop="createUsername"
-                label="负责人"
-                width="120"
-                show-overflow-tooltip
-              >
-								<template slot-scope="scope">
-									<div class="cell-text">
-										{{scope.row.createUsername}}
-									</div>
-									<span class="cell-bar">
-										 <el-button @click="$refs.xmGroupDialog.open({data:scope.row,action:'createUserid'})">选负责人</el-button>
-									</span>
-								</template>
-              </el-table-column>
-              <el-table-column
-                sortable
-                prop="exeUsernames"
-                label="执行人"
-                width="120"
-                show-overflow-tooltip
-              >
-                <template slot-scope="scope"> 
-                  <span v-if="scope.row.ntype=='0'">
-                  <span 
-                    v-for="(item, index) in [formatExeUsernames(scope.row)]"
-                    :key="index"
-                  >
-                    <el-link
-                      :type="item.type"
-                      @click.stop="showExecusers(scope.row)"
-                      >{{ item.showMsg }}</el-link
-                    >
-                  </span> 
-                  </span>
-                </template>
-              </el-table-column>
-              <el-table-column
-                sortable
-                prop="startTime"
-                label="起止时间"
-                width="120"
-                show-overflow-tooltip
-              >
-                <template slot-scope="scope">
-                  <el-link @click="timeVisible = true" :disabled="scope.row.ntype=='1'"
-                    >{{ getDateString(scope.row.startTime) }}&nbsp;~&nbsp;{{
-                      getDateString(scope.row.endTime)
-                    }}
-                  </el-link>
-                  <!--
-										<div v-for="(item,index) in [calcTaskStateByTime(scope.row.startTime,scope.row.endTime,scope.row)]" :key="index ">
-											<el-tag :type="item.type">{{getDateString(scope.row.startTime)}}~{{getDateString(scope.row.endTime)}} {{item.desc}}</el-tag>
-										</div>
-									-->
-
-                </template>
-              </el-table-column>
-              <el-table-column
-                prop="menuId"
-                label="需求"
-                width="120"
-                show-overflow-tooltip
-              > 
-								<template slot-scope="scope">
-									<div class="cell-text"> 
-                    <el-link @click.stop="toMenu(scope.row)">{{ scope.row.menuName ? scope.row.menuName : ""  }}</el-link>
-									</div>
-									<span class="cell-bar">
-										 <el-button @click="showBatchRelTasksWithMenuVisible">关联需求</el-button>
-									</span>
-								</template> 
               </el-table-column> 
             </el-table>
             <el-pagination
@@ -567,103 +327,7 @@
           ></xm-gantt>
         </el-row>
       </el-col>
-    </el-row> 
-    <el-drawer
-      v-if="timeVisible == true"
-      :size="600"
-      :visible.sync="timeVisible"
-      append-to-body
-    >
-      <el-row class="padding">
-        <el-row style="font-size: 12px; overflow-x: hidden">
-          <div class="task-header extra">
-            <div class="title">
-              {{ editForm.name }}
-              <el-tag style="border-radius: 30px">{{
-                taskStateList[parseInt(editForm.taskState)]
-              }}</el-tag>
-              <el-link
-                v-if="isTaskCenter == '1' && selkey == 'myFocus'"
-                type="warning"
-                @click.stop="focusOrUnfocus(editForm)"
-                >去取关</el-link
-              >
-              <el-link
-                v-if="isTaskCenter == '1' && selkey != 'myFocus'"
-                type="success"
-                @click.stop="focusOrUnfocus(editForm)"
-                >去关注</el-link
-              >
-            </div>
-            <div class="compact">
-              <el-tag
-                v-if="editForm.level != '' && editForm.level != null"
-                style="border-radius: 30px"
-                >{{ formateOption("priority", editForm.level) }}</el-tag
-              >
-              [{{ formateOption("taskType", editForm.taskType) }}]
-              <span> {{ editForm.projectName }} </span>
-              -
-              <span> {{ editForm.createUsername }} </span>
-              创建于 {{ editForm.createTime }}
-            </div>
-            <div class="remarks">
-              {{ editForm.remarks }}
-            </div>
-          </div>
-
-          <div class="exector extra">
-            <div class="field-label">需求</div>
-            <el-tag
-              v-if="editForm.menuName"
-              style="margin-left: 10px; border-radius: 30px"
-              >{{ editForm.menuName }}</el-tag
-            >
-          </div>
-
-          <div class="exector extra">
-            <div class="field-label">计划时间</div>
-            <el-date-picker
-              v-model="budgetDateRanger"
-              class="hidden-sm-and-down"
-              type="daterange"
-              align="right"
-              unlink-panels
-              range-separator="至"
-              start-placeholder="计划开始日期"
-              end-placeholder="计划完成日期"
-              value-format="yyyy-MM-dd HH:mm:ss"
-              :default-time="['00:00:00', '23:59:59']"
-              :picker-options="pickerOptions"
-            ></el-date-picker>
-            共{{ taskTime }}天
-          </div>
-          <div class="exector extra">
-            <div class="field-label">实际时间</div>
-            <el-date-picker
-              v-model="actDateRanger"
-              class="hidden-sm-and-down"
-              type="daterange"
-              align="right"
-              unlink-panels
-              range-separator="至"
-              start-placeholder="实际开始日期"
-              end-placeholder="实际完成日期"
-              value-format="yyyy-MM-dd HH:mm:ss"
-              :default-time="['00:00:00', '23:59:59']"
-              :picker-options="pickerOptions"
-            ></el-date-picker>
-            <el-button @click="editTime(editForm)">保存时间</el-button>
-          </div> 
-        </el-row>
-
-        <div
-          v-if="drawerkey == '1' && timeVisible == true"
-          style="overflow-x: hidden"
-        > 
-        </div>
-      </el-row>
-    </el-drawer>
+    </el-row>  
     <!--编辑 XmTask xm_task界面-->
     <el-dialog
       title="编辑任务"
@@ -684,24 +348,7 @@
         @edit-fields="onEditSomeFields"
       ></xm-task-edit>
     </el-dialog>
-    
-    <!--编辑 XmTask xm_task界面-->
-    <el-dialog
-      :title="'【'+editForm.name+'】登记工时'"
-      :visible.sync="taskWorkloadVisible"
-      width="60%"
-      top="20px"
-      append-to-body
-      :close-on-click-modal="false"
-    >
-      <xm-task-workload-edit 
-        :xm-task="editForm"
-        :visible="taskWorkloadVisible" 
-        op-type="add"
-        @cancel="taskWorkloadVisible=false"
-        @submit="onTaskWorkloadSubmit"
-      ></xm-task-workload-edit>
-    </el-dialog>
+     
 
     <!-- 新增 XmTask xm_task界面-->
     <el-dialog
@@ -724,56 +371,13 @@
         @submit="afterAddSubmit"
       ></xm-task-add>
     </el-dialog>
-
-    <el-drawer
-      :title="'任务' + currTaskName + '的执行人'"
-      :visible.sync="execUserVisible"
-      :size="650"
-      append-to-body
-      :close-on-click-modal="false"
-    >
-      <xm-execuser-mng
-        :visible="execUserVisible"
-        :xm-task="editForm"
-        :is-my="isMy"
-        @after-add-submit="afterExecuserSubmit"
-        @after-edit-submit="afterExecuserSubmit"
-        @after-delete-submit="afterExecuserSubmit"
-        ref="execuserMng"
-      ></xm-execuser-mng>
-    </el-drawer>
+ 
  			<tag-dialog ref="tagDialog"   @select-confirm="onTagSelected">
 			</tag-dialog>
     <!-- <el-drawer :title="'技能要求——'+currTaskName" :visible.sync="skillVisible"  size="80%" append-to-body  :close-on-click-modal="false">
 			<xm-skill-mng :visible="skillVisible" :task-id="currTaskId" :task-name="currTaskName"></xm-skill-mng>
 		</el-drawer> -->
-
-    <el-drawer
-      :title="'任务' + currTaskName + '的技能要求'"
-      :visible.sync="skillVisible"
-      :size="750"
-      append-to-body
-      :close-on-click-modal="false"
-    >
-      <skill-mng
-        :task-skills="taskSkills"
-        :jump="true"
-        @select-confirm="onTaskSkillsSelected"
-      ></skill-mng>
-    </el-drawer>
-    <el-drawer
-      :title="'技能条件'"
-      :visible.sync="showSkillSearchVisible"
-      :size="750"
-      append-to-body
-      :close-on-click-modal="false"
-    >
-      <skill-mng
-        :task-skills="filters.skillTags"
-        :jump="true"
-        @select-confirm="onTaskSkillsSearchSelected"
-      ></skill-mng>
-    </el-drawer>
+ 
 
     <el-drawer
       title="任务模板"
@@ -788,87 +392,11 @@
         @select-confirm="onTaskTemplatesSelected"
       ></xm-task-template-mng>
     </el-drawer>
-
-    <el-drawer
-      :title="currentProject == null ? '项目明细' : currentProject.name"
-      center
-      :fullscreen="true"
-      :visible.sync="projectInfoVisible"
-      size="50%"
-      :close-on-click-modal="false"
-      append-to-body
-    >
-      <xm-project-info
-        :sel-project="currentProject"
-        @changeShowInfo="changeShowInfo"
-        @submit="changeShowInfo"
-      ></xm-project-info>
-    </el-drawer>
-
-    <el-drawer
-      append-to-body
-      title="需求选择"
-      :visible.sync="batchRelTasksWithMenuVisible"
-      size="60%"
-      :close-on-click-modal="false"
-    >
-      <xm-menu-select
-        :visible="batchRelTasksWithMenuVisible"
-        :is-select-menu="true"
-        checkScope="3"
-         @selected="onBatchRelTasksWithMenu"
-         :xm-product="filters.product"
-        :sel-project="filters.selProject"
-      ></xm-menu-select>
-    </el-drawer>
-    <el-drawer
-      append-to-body
-      title="需求选择"
-      :visible.sync="menuVisible"
-      size="70%"
-      :close-on-click-modal="false"
-    >
-      <xm-menu-select
-        :visible="menuVisible"
-        :is-select-menu="true"
-        :multi="true"
-         :xm-product="filters.product"
-         :sel-project="filters.selProject"
-        @menus-selected="onSelectedMenus"
-      ></xm-menu-select>
-    </el-drawer>
-    <el-drawer
-      append-to-body
-      title="需求选择"
-      :visible.sync="menuStory"
-      size="70%"
-      :close-on-click-modal="false"
-    >
-      <xm-menu-select
-        :visible="menuStory"
-        :is-select-menu="true"
-        :multi="true"
-        @menus-selected="onSelectedStory"
-         :xm-product="filters.product"
-         :sel-project="filters.selProject"
-      ></xm-menu-select>
-    </el-drawer>
+  
 
  			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="filters.selProject" :xm-product="filters.xmProduct" @user-confirm="selectCreateUserConfirm">
 			</xm-group-dialog>  
-    <el-drawer
-      append-to-body
-      title="需求明细"
-      :visible.sync="menuDetailVisible"
-      :size="650"
-      :close-on-click-modal="false"
-    >
-      <xm-menu-rich-detail
-        :visible="menuDetailVisible"
-        :reload="true"
-        :xm-menu="{ menuId: editForm.menuId, menuName: editForm.menuName }"
-      ></xm-menu-rich-detail>
-    </el-drawer>  
+    
 		<el-drawer title="选中上级" :visible.sync="selectParentTaskVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
 			<xm-task-list check-scope="plan" queryScope="plan" :sel-project="filters.selProject"   @task-selected="onSelectedParentTask"></xm-task-list>
 		</el-drawer>
@@ -901,33 +429,20 @@ import {
 import XmTaskAdd from "./XmTaskAdd"; //新增界面
 import XmTaskEdit from "./XmTaskEdit"; //修改界面
  import XmTaskAgileKanban from "./XmTaskAgileKanban"; //敏捷看板
-import { mapGetters } from "vuex";
-import xmExecuserMng from "../xmTaskExecuser/XmTaskExecuserForTask";
-import xmSkillMng from "../xmTaskSkill/XmTaskSkillMng";
-import skillMng from "@/views/xm/core/skill/skillMng";
-import { batchAddSkill } from "@/api/xm/core/xmTaskSkill"; 
+import { mapGetters } from "vuex";    
 import { sn } from "@/common/js/sequence";
-import xmTaskTemplateMng from "../xmTaskTemplate/XmTaskTemplateMng";
-import xmExchangeMng from "../xmExchange/XmExchangeMng";
-import xmMenuSelect from "../xmMenu/XmMenuSelect";
-
-import { addXmMyFocus, delXmMyFocus } from "@/api/xm/core/xmMyFocus";
+import xmTaskTemplateMng from "../xmTaskTemplate/XmTaskTemplateMng";  
 
 import XmProjectSelect from "@/views/xm/core/components/XmProjectSelect";
-import XmProductSelect from "@/views/xm/core/components/XmProductSelect";
-
-import XmMenuRichDetail from "../xmMenu/XmMenuRichDetail"; 
-import TagMng from "@/views/mdp/arc/tag/TagMng";
+import XmProductSelect from "@/views/xm/core/components/XmProductSelect";  
 
 import XmGantt from "../components/xm-gantt";
-import XmGroupSelect from "../xmGroup/XmGroupSelect.vue";
-	import XmTaskList from '../xmTask/XmTaskList';
+import XmGroupSelect from "../xmGroup/XmGroupSelect.vue"; 
  
 	import  XmTableConfig from '@/views/xm/core/components/XmTableConfig';//修改界面
 	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面
   
-  	import TagDialog from "@/views/mdp/arc/tag/TagDialog";
-  	import XmTaskWorkloadEdit from "@/views/xm/core/xmTaskWorkload/XmTaskWorkloadEdit";
+  	import TagDialog from "@/views/mdp/arc/tag/TagDialog"; 
 
 export default {
   computed: {
@@ -965,7 +480,6 @@ export default {
 
   },
   props: [
-    "parentTask",
     "selProject",
     "isTaskCenter",
     "isMy",
@@ -997,9 +511,6 @@ export default {
     xmIteration: function () {
       this.getXmTasks();
     },
-    "parentTask.id":function(){
-      this.searchXmTasks();
-    }
   },
   data() {
     const beginDate = new Date();
@@ -1131,7 +642,8 @@ export default {
       skillVisible: false,
       skillIds: [],
       taskSkills: [],
-      taskTemplateVisible: false, 
+      taskTemplateVisible: false,
+      parentTask: null,
       projectInfoVisible: false, 
       menuVisible: false,
       menuDetailVisible: false,
@@ -1505,7 +1017,8 @@ export default {
     showAdd: function (ntype) {
       if(!this.checkCanAdd()){
         return;
-      }   
+      }  
+      this.parentTask = null;
       this.addForm.ntype=ntype;
       this.addFormVisible = true;
     },
@@ -1590,7 +1103,7 @@ export default {
     rowClick: function (row) { 
       this.editForm = row; 
       this.editFormBak=Object.assign({},row)
-      // this.$emit('row-click',row,);//  @row-click="rowClick"
+      this.$emit('row-click',row,);//  @row-click="rowClick"
     },
 
     showDrawer: function (row) {
@@ -1973,6 +1486,7 @@ export default {
     onProjectRowClick: function (project) {
       this.filters.selProject = project;
       this.projectVisible=false;
+      this.$emit("project-row-click",project)
       this.searchXmTasks();
     },
     onProjectClear(){
@@ -2265,9 +1779,6 @@ export default {
       if(this.queryScope=="planTask"||this.queryScope=='plan'){
         params.lvls=this.filters.lvls
       }
-      if(this.parentTask && this.parentTask.id){
-        params.parentTaskid=this.parentTask.id
-      }
       return params;
     },
     loadXmTaskLazy(tree, treeNode, resolve) {
@@ -2483,25 +1994,16 @@ export default {
   components: {
     "xm-task-add": XmTaskAdd,
     "xm-task-edit": XmTaskEdit,
-    XmTaskAgileKanban,
-    xmExecuserMng,
-    xmSkillMng,
-    skillMng, 
+    XmTaskAgileKanban,   
     xmTaskTemplateMng,
-    XmProjectSelect,
-    xmExchangeMng,
-    xmMenuSelect,
-    XmMenuRichDetail,
+    XmProjectSelect,   
     XmGantt, 
     XmGroupSelect,
     XmProductSelect,
-    XmTaskAgileKanban,
-    TagMng,
-    XmTaskList,
+    XmTaskAgileKanban,  
     TagDialog,
     XmGroupDialog,
-    XmTableConfig,
-    XmTaskWorkloadEdit,
+    XmTableConfig, 
     //在下面添加其它组件
   },
   mounted() {
