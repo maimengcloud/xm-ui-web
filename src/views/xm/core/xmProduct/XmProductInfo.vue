@@ -159,7 +159,7 @@
 		  	<xm-product-overview-complex v-if="infotype=='产品概览'" :xm-product="xmProduct"></xm-product-overview-complex>  
 			 <xm-iteration-for-link-complex  v-if="infotype=='迭代'" ref="xmIterationMng" :xm-product="xmProduct"></xm-iteration-for-link-complex>
  			 <xm-project-for-link-complex v-if="infotype=='项目'" ref="xmProjectForLink" :xm-product="xmProduct"></xm-project-for-link-complex> 
-			  <xm-menu-mng v-if="infotype=='需求'" :xm-product="xmProduct"></xm-menu-mng>
+			  <xm-menu-box v-if="infotype=='需求'" :xm-product="xmProduct"></xm-menu-box>
 			  <xm-task-mng v-if="infotype=='产品任务'" ptype="1" queryScope="task"  ref="productXmTaskMng" :xm-product="xmProduct" key="productXmTaskMng"></xm-task-mng>
 			 <xm-task-mng v-if="infotype=='项目任务'" ptype="0" queryScope="task"  ref="projectXmTaskMng" :xm-product="xmProduct" key="projectXmTaskMng"></xm-task-mng>
 			  <xm-question v-if="infotype=='缺陷'"  :xm-product='xmProduct' ref="xmQuestion"></xm-question>
@@ -211,8 +211,7 @@
 	import xmBudget from '../xmProject/XmProjectBudgetCost';
 	import xmContract from '../xmContract/XmContractMng';
 	import xmEnvList from '../xmProjectEnvList/XmProjectEnvListMng';
-	import xmPhaseForProduct from '../xmPhase/xmPhaseForProduct';
-	import xmMenuMng from '../xmMenu/XmMenuMng';
+	import xmPhaseForProduct from '../xmPhase/xmPhaseForProduct'; 
 	import xmMenuWithPlan from '../xmMenu/XmMenuWithPlan';
 	import xmProjectStateMng from '../xmProjectState/XmProjectStateMng';
 	import xmTestCaseExecMng from '../xmTestCaseExec/XmTestCaseExecMng';  
@@ -222,6 +221,7 @@
 	import XmProjectForLink from '../xmProject/XmProjectForLink.vue';
 
  	import XmReport from '@/views/xm/rpt/reportIndex';
+import XmMenuBox from '../xmMenu/XmMenuBox.vue';
 
 
 	export default {
@@ -442,7 +442,7 @@
 			xmBudget,
 			xmContract,
 			xmEnvList,
-			xmMenuMng,
+			XmMenuBox,
 			xmMenuWithPlan,
 			xmProjectStateMng,
 			xmTestCaseExecMng,
@@ -454,6 +454,7 @@
 			XmProjectForLink,
 			XmReport,
 			xmPlan,
+XmMenuBox,
 			//在下面添加其它组件
 		},
 		mounted() {

@@ -271,16 +271,18 @@
 					this.addForm.pmenuId=this.parentMenu.menuId
 					this.addForm.pmenuName=this.parentMenu.menuName
 					this.addForm.menuName=this.parentMenu.menuName+'-请修改补充'
-
-					if(this.parentMenu.dclass==='3'){
-						this.addForm.dclass='4'
-					}else if(this.parentMenu.dclass==='2'){
-						this.addForm.dclass='3'
-					}else if(this.parentMenu.dclass==='1'){
-						this.addForm.dclass='2'
-					}else if(this.parentMenu.dclass==='0'){
-						this.addForm.dclass='1'
+					if(!this.addForm.dclass){
+						if(this.parentMenu.dclass==='3'){
+							this.addForm.dclass='4'
+						}else if(this.parentMenu.dclass==='2'){
+							this.addForm.dclass='3'
+						}else if(this.parentMenu.dclass==='1'){
+							this.addForm.dclass='2'
+						}else if(this.parentMenu.dclass==='0'){
+							this.addForm.dclass='1'
+						}
 					}
+					
 					if(this.addForm.dclass<3){
 						this.addForm.calcType="3"
 					}else{
