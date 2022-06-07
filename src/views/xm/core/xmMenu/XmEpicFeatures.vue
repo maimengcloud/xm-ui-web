@@ -1,8 +1,8 @@
 <template>
-	<section class="padding">
+	<section>
 		<el-row>
 			<el-col :span="24" class="padding-left">
-					<el-row>
+					<el-row v-if="!disabledMng">
 						<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="!xmProduct && !xmIteration"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select> 
 						<span style="float:right;">
 						<el-popover style="padding-left:10px;"
@@ -44,10 +44,13 @@
 						<el-button  class="hidden-md-and-down"  v-if=" disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing" title="汇总进度"></el-button> 
 						</span>
 					 </el-row>
-					<el-row class="padding-top">
+					<el-row>
 						<el-table :cell-style="cellStyleCalc" :expand-row-keys="expandRowKeysCpd" :header-cell-style="cellStyleCalc" :row-style="{height:'60px'}"   stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
-							<el-table-column sortable type="selection" width="40"></el-table-column> 
-							<el-table-column prop="menuName" label="史诗、特性名称" min-width="300" fixed="left">
+							<template v-if="!disabledMng">
+								<el-table-column sortable type="selection" width="40"></el-table-column> 
+							</template>
+							
+							<el-table-column prop="menuName" label="史诗、特性名称" min-width="150" >
 								<template slot-scope="scope">
 									<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
 									<i class="el-icon-s-promotion"></i>
@@ -59,9 +62,9 @@
 									<i class="el-icon-document"></i>
 									</div>
 									<span>{{scope.row.seqNo}} &nbsp; {{scope.row.menuName}} </span>
-									<div class="tool-bar">
+									<div class="tool-bar" v-if="!disabledMng">
 									<span class="u-btn">
-										<el-tooltip  v-if=" scope.row.dclass==='1'" :content=" '新建特性'">
+										<el-tooltip  v-if=" scope.row.dclass==='1' " :content=" '新建特性'">
 												<el-button   @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建" circle plain size="mini"> </el-button>
 											    
 
@@ -71,7 +74,8 @@
 									</div>
   								</template> 
 							</el-table-column> 
-							<el-table-column prop="status" label="状态"  min-width="80"  sortable>
+							<template v-if="!disabledMng">
+							<el-table-column prop="status" label="状态"  width="100"  sortable >
 								<template slot-scope="scope">
 									<div class="cell-text">
 										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in formatterMenuStatusDicts(scope.row.status)" :key="index">{{item.name}}</el-button>
@@ -83,6 +87,7 @@
 									</span>
 								</template>
 							</el-table-column> 
+							</template>
 						</el-table>
 
 
@@ -122,7 +127,7 @@
 				</el-drawer>
 			</el-col>
 		</el-row>
-		<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+		<el-pagination  layout="total, sizes, prev,  next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 
  			<tag-dialog ref="tagDialog" :tagIds="filters.tags?filters.tags.map(i=>i.tagId):[]" :jump="true" @select-confirm="onTagSelected">
 			</tag-dialog>

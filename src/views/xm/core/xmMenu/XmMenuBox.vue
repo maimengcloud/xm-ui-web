@@ -1,11 +1,11 @@
 <template>
-	<section> 
+	<section class="padding"> 
 		<el-row>
 			<el-col :span="8">
-				<xm-epic-features :xm-product="xmProduct" :sel-project="selProject" queryScope="plan" @row-click="onEpicFeaturesRowClick"></xm-epic-features>
+				<xm-epic-features :xm-product="xmProduct" :sel-project="selProject"  @row-click="onEpicFeaturesRowClick"></xm-epic-features>
 			</el-col> 
 			<el-col :span="16">
-				<xm-menu-mng :xm-product="xmProduct" :sel-project="selProject" queryScope="task" :parent-menu="parentMenu"></xm-menu-mng>
+				<xm-menu-mng class="padding-left" :xm-product="xmProduct" :sel-project="selProject"  :parent-menu="parentMenu"></xm-menu-mng>
 			</el-col>
 		</el-row>
 	</section>

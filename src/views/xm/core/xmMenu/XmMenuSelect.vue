@@ -1,7 +1,10 @@
 <template>
 	<section> 
 		<el-row>   
-			<el-col :span="24"  style="padding-left:12px;" >
+			<el-col :span="7">
+				<xm-epic-features class="padding-right" :xm-product="xmProduct"  @row-click="onEpicFeaturesRowClick" :disabledMng="true"></xm-epic-features>
+			</el-col>
+			<el-col :span="17" >
 				<el-row>     
 						<xm-product-select style="display:inline;" v-if="!xmProduct&&!xmIteration" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" ref="xmProductMng" :iteration-id="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select>
  
@@ -19,15 +22,15 @@
 							<el-option   value="not-join-curr-iteration"  :label="'未加入迭代【'+filters.iteration.iterationName+'】'"  v-if="filters.iteration && filters.iteration.id"></el-option>  
 							<el-option   value="join-curr-iteration"  :label="'已加入本迭代【'+filters.iteration.iterationName+'】'" v-if="filters.iteration && filters.iteration.id"></el-option>  
 						</el-select>  	    
-					 <el-select v-model="filters.priority" placeholder="优先级"  clearable style="width: 100px;">
+					 <el-select v-model="filters.priority" placeholder="优先级"  clearable style="width: 9	0px;">
 							<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option> 
 					</el-select>      
-					<el-select  v-model="filters.status" placeholder="需求状态" clearable style="width: 100px;">
+					<el-select  v-model="filters.status" placeholder="需求状态" clearable style="width: 90px;">
 						<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option> 
 					</el-select> 
-					<el-input v-model="filters.key" style="width: 15%;" placeholder="需求名称查询" clearable> 
+					<el-input v-model="filters.key" style="width: 100px;" placeholder="需求名称查询" clearable> 
 					</el-input> 
-					<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search">查询</el-button>
+					<el-button  v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search">查询</el-button>
 					 
  					<el-popover
 						placement="top-start"
@@ -135,9 +138,9 @@
 						<el-button  slot="reference" icon="el-icon-more"></el-button>
 					</el-popover>  
 					
-					<el-button  style="float:right;" type="primary" v-if="multi"  v-on:click="multiSelectedConfirm">确认选择</el-button>
+					<el-button  style="float:right;" type="primary" v-if="multi"  v-on:click="multiSelectedConfirm">确认</el-button>
 				</el-row>   
-				<el-row style="padding-top:12px;">
+				<el-row>
 					<el-table ref="table" class="menu-table"   :height="maxTableHeight" :data="xmMenusTreeData"   row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column v-if="multi" type="selection" width="50"></el-table-column>  
 						
@@ -156,14 +159,15 @@
 								<span class="vlink" @click="toMenu(scope.row)">{{scope.row.seqNo}}&nbsp;
 								{{scope.row.menuName}}</span> 
 							</template>
-						</el-table-column> 
-						<el-table-column prop="productId" label="产品" min-width="100" >   </el-table-column>
+						</el-table-column>  
 						<el-table-column prop="iterationName" label="迭代" min-width="140" >   </el-table-column>
+						<template v-if="!multi">
 						<el-table-column label="操作"    width="100" fixed="right"  >
 							<template slot-scope="scope"> 
 								<el-button  :disabled=" checkScope!==scope.row.dclass"  type="primary" @click="selectedMenu( scope.row,scope.$index)">选择</el-button> 
 							</template>
 						</el-table-column>
+						</template>
 					</el-table>
 					<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 					
@@ -201,6 +205,7 @@
 	import {sn} from '@/common/js/sequence'
 
 	import { mapGetters } from 'vuex'
+import XmEpicFeatures from './XmEpicFeatures.vue';
 	
 	export default { 
 		props:['isSelectMenu','multi','visible','xmIteration','xmProduct','selProject','checkScope'/**1-史诗，2-特性，3-用户故事 */,'iterationFilterType','taskFilterType'],
@@ -236,7 +241,7 @@
 			},
 			"selProject"(){ 
 				this.searchXmMenus();
-			}
+			} 
 		},
 		data() {
 			const beginDate = new Date();
@@ -250,6 +255,7 @@
 					iterationFilterType:'',////join,not-join,''
 					mmUser:null,
 					taskFilterType:'',//join,not-join,''
+					dclasss:['3'],
 				},
 				xmMenus: [],//查询结果
 				pageInfo:{//分页数据
@@ -386,6 +392,14 @@
 				if(this.filters.tags && this.filters.tags.length>0){
 					params.tagIdList=this.filters.tags.map(i=>i.tagId)
 				} 
+				
+				if(this.filters.dclasss){
+					params.dclasss=this.filters.dclasss
+				}
+				
+				if(this.parentMenu && this.parentMenu.menuId){
+					params.pmenuId=this.parentMenu.menuId
+				}
 				return params;
 			},
 			loadMenusLazy(tree, treeNode, resolve) {  
@@ -434,8 +448,7 @@
 				if(!params.productId && !params.iterationId && !params.linkIterationId){ 
 					this.$notify({position:'bottom-left',showClose:true,message: "请先选择产品", type: 'warning' });
 					return; 
-				}
-				params.withParents="1"
+				} 
 				this.load.list = true;
 				listXmMenu(params).then((res) => {
 					var tips=res.data.tips;
@@ -533,11 +546,17 @@
 				}
 				this.searchXmMenus();
 			},
+			
+			 onEpicFeaturesRowClick(menu){
+				 this.parentMenu=menu
+				 this.searchXmMenus();
+			 }
 			/**end 自定义函数请在上面加**/
 			
 		},//end methods
 		components: { 
  			XmProductSelect,XmMenuRichDetail,UsersSelect,XmIterationSelect,TagMng,
+XmEpicFeatures,
  		    
 		    //在下面添加其它组件
 		},

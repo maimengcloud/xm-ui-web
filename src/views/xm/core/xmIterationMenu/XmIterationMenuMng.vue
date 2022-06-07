@@ -1,15 +1,16 @@
 <template>
-	<section class="page-container">
+	<section>
 
 		<el-row class="padding-top">
-			<el-col :span="10">
+			<el-col :span="24">
 				<el-row class="padding-left">
 					<el-input v-model="filters.key" style="width: 60%;" placeholder="模糊查询">
 					</el-input>
 					<el-button v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterationMenus" icon="el-icon-search"></el-button>
 
 					<span style="float:right;">
- 						<el-button type="primary" @click="batchDel" icon="el-icon-right">批量移出</el-button>
+ 						<el-button type="danger" @click="batchDel" icon="el-icon-delete">批量移出</el-button>
+ 						<el-button type="primary" @click="showAdd" icon="el-icon-plus">选择故事</el-button>
 					</span>
 
 				</el-row>
@@ -37,17 +38,17 @@
 						</el-table-column>
 						<el-table-column label="操作" width="100" fixed="right">
 							<template slot-scope="scope">
-								<el-button type="primary" @click="handleDel(scope.row,scope.$index)" icon="el-icon-right">移出</el-button>
+								<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete">移出</el-button>
 							</template>
 						</el-table-column>
 					</el-table>
 					<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 				</el-row>
-			</el-col>
-			<el-col :span="14">
-				<xm-menu-select ref="menusSelect" iterationFilterType="not-join-curr-iteration" checkScope="3" :xm-product="xmIteration?{id:xmIteration.productId}:null" :xm-iteration="xmIteration" :visible="menuVisible" :is-select-menu="true" :multi="true"   @menus-selected="onSelectedMenus" ></xm-menu-select>
-			</el-col>
+			</el-col> 
   		</el-row>
+		  <el-dialog :visible.sync="menuVisible" width="80%" top="20" append-to-body title="选择用户故事加入迭代">
+			  <xm-menu-select ref="menusSelect" iterationFilterType="not-join-curr-iteration" checkScope="3" :xm-product="xmIteration?{id:xmIteration.productId}:null" :xm-iteration="xmIteration" :visible="menuVisible" :is-select-menu="true" :multi="true"   @menus-selected="onSelectedMenus" ></xm-menu-select>
+		  </el-dialog>
 	</section>
 </template>
 
