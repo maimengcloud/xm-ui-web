@@ -16,13 +16,12 @@
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询  
 	import { mapGetters } from 'vuex'	 
 	
- 	import  XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';//新增界面
- 	import  XmPhase from '@/views/xm/core/xmTask/XmPhase';//新增界面
+  	import  XmPhase from '@/views/xm/core/xmTask/XmPhase';//新增界面
  	import  XmTaskMng from '@/views/xm/core/xmTask/XmTaskMng';//新增界面
 	export default { 
         
 		components: {   
-			XmProjectSelect,XmPhase,XmTaskMng
+			XmPhase,XmTaskMng
 		},
         props:['xmProduct','selProject'],
 		computed: {
@@ -37,13 +36,9 @@
 	    },
 		data() {
 			return { 
-				parentTask:null,
-				xmProject:null,
+				parentTask:null, 
 				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
-				load:{ list: false, edit: false, del: false, add: false },//查询中... 
-				dateRanger:[], 
-                maxTableHeight:300, 
-                visible:false, 
+				load:{ list: false, edit: false, del: false, add: false },//查询中...  
 
 			}//end return
 		},//end data
