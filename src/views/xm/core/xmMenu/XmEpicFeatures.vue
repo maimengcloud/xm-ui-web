@@ -3,8 +3,12 @@
 		<el-row>
 			<el-col :span="24" class="padding-left">
 					<el-row >
+						
+						<span style="float:left;">
 						<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="!xmProduct && !xmIteration"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select> 
-						<span style="float:right;" v-if="!disabledMng">
+						
+						<el-input style="width:120px;" v-model="filters.key" placeholder="名称模糊查询"  clearable></el-input>
+						<el-button icon="el-icon-search" @click="searchXmMenus()"></el-button> 
 						<el-popover style="padding-left:10px;"
 							placement="top-start"
 							width="250"
@@ -62,6 +66,12 @@
 									<i class="el-icon-document"></i>
 									</div>
 									<span>{{scope.row.seqNo}} &nbsp; {{scope.row.menuName}} </span>
+									
+									<span  
+										:style="{borderRadius: '30px',color:scope.row.rate >= 100 ? 'green' : 'blue'}" 
+									>
+										{{ (scope.row.rate != null ? scope.row.rate : 0) + "%" }}
+									</span>  
 									<div class="tool-bar" v-if="!disabledMng">
 									<span class="u-btn">
 										<el-tooltip  v-if=" scope.row.dclass==='1' " :content=" '新建特性'">

@@ -804,16 +804,15 @@
 
     <el-drawer
       append-to-body
-      title="需求选择"
+      title="选择需要关联的故事"
       :visible.sync="batchRelTasksWithMenuVisible"
       size="60%"
       :close-on-click-modal="false"
     >
       <xm-menu-select
         :visible="batchRelTasksWithMenuVisible"
-        :is-select-menu="true"
-        checkScope="3"
-         @selected="onBatchRelTasksWithMenu"
+        :is-select-menu="true" 
+         @select="onBatchRelTasksWithMenu"
          :xm-product="filters.product"
         :sel-project="filters.selProject"
       ></xm-menu-select>

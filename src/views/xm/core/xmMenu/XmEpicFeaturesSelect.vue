@@ -3,8 +3,11 @@
 		<el-row>
 			<el-col :span="24" class="padding-left">
 					<el-row >
+
 						<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="!xmProduct && !xmIteration"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select> 
 						 
+						<el-input style="width:120px;" v-model="filters.key" placeholder="名称模糊查询"  clearable></el-input>
+						<el-button icon="el-icon-search" @click="searchXmMenus()"></el-button> 
 					 </el-row>
 					<el-row>
 						<el-table    stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
@@ -23,7 +26,7 @@
 									<span>{{scope.row.seqNo}} &nbsp; {{scope.row.menuName}} </span> 
   								</template> 
 							</el-table-column> 
-							<template>
+							<template v-if="showSelect!==false">
 							<el-table-column   label="操作"  width="100"  > 
 								<template slot-scope="scope"> 
 									<el-button      @click="select( scope.row,scope.$index)"   title="选择" type="primary"> 选择</el-button>     
@@ -53,7 +56,7 @@
 	import { mapGetters } from 'vuex'
 
 	export default {
-		props:['selProject','xmIteration','xmProduct','disabledMng'],
+		props:['selProject','xmIteration','xmProduct','disabledMng','showSelect'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -71,7 +74,7 @@
 				this.filters.iteration=this.xmIteration
 				this.getXmMenus()
 			},
-			xmProduct:function(){
+			"xmProduct.id":function(){
 					this.filters.product=this.xmProduct
 					this.getXmMenus()
 			},
@@ -296,16 +299,16 @@
 				this.sels = sels;
 			},
 			onProductSelected:function(product){
-				this.filters.product=product
-				this.productVisible=false;
+				this.filters.product=product 
 				this.xmMenus=[]
 				this.getXmMenus()
+				this.$emit("prodcut-select",product)
 			},
 			onProductClearSelect:function(){
-				this.filters.product=null
-				this.productVisible=false;
+				this.filters.product=null 
 				this.xmMenus=[]
-				this.getXmMenus()
+				this.getXmMenus() 
+				this.$emit("prodcut-select",null)
 			},  
 			select(row){
 				this.$emit("select",row)
@@ -332,9 +335,6 @@
 				  Object.assign(this.dicts,res.data.data) 
 			})
 			this.filters.product=this.xmProduct
-			if(this.xmProduct && this.xmProduct.id){
-				this.productVisible=false;
-			}
 
 			if(this.xmIteration && this.xmIteration.id){
 				this.filters.iterationFilterType='join-curr-iteration'
@@ -342,7 +342,11 @@
 			}
 			this.$nextTick(() => {
 				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
-				this.getXmMenus();
+				
+				if(this.xmProduct && this.xmProduct.id){ 
+					this.getXmMenus();
+				}
+				
           });
 		}
 	}

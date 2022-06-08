@@ -1,13 +1,11 @@
 <template>
 	<section> 
-		<el-row v-if="xmProduct">   
+		<el-row>   
 			<el-col :span="7">
-				<xm-epic-features class="padding-right" :xm-product="xmProduct"  @row-click="onEpicFeaturesRowClick" :disabledMng="true"></xm-epic-features>
+				<xm-epic-features class="padding-right" :xm-product="xmProduct"  @row-click="onEpicFeaturesRowClick" :show-select="false"></xm-epic-features>
 			</el-col>
 			<el-col :span="17" >
-				<el-row>     
-						<xm-product-select style="display:inline;" v-if="!xmProduct&&!xmIteration" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" ref="xmProductMng" :iteration-id="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select>
- 
+				<el-row>    
 						<xm-iteration-select style="display:inline;"  v-if="!xmIteration" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onIterationSelected" ref="xmIterationMng" :product-id="xmProduct?xmProduct.id:null"  @clear="onIterationClearSelect"></xm-iteration-select>
 						 
 						<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable v-if="taskFilterType">
@@ -205,7 +203,7 @@
 	import {sn} from '@/common/js/sequence'
 
 	import { mapGetters } from 'vuex'
-import XmEpicFeatures from './XmEpicFeatures.vue';
+import XmEpicFeatures from './XmEpicFeaturesSelect.vue';
 	
 	export default { 
 		props:['isSelectMenu','multi','visible','xmIteration','xmProduct','selProject','checkScope'/**1-史诗，2-特性，3-用户故事 */,'iterationFilterType','taskFilterType'],

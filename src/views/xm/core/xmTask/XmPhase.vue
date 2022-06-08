@@ -5,9 +5,12 @@
         :span="24"
         class="padding-left" 
       >
-        <el-row>    
+        <el-row>     
+          
+          <span style="float:left;"> 
            <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
-          <span style="float:right;"> 
+           <el-input style="width:120px;" v-model="filters.key" placeholder="名称模糊查询"  clearable></el-input>
+           <el-button icon="el-icon-search" @click="searchXmTasks()"></el-button> 
           <el-popover
             placement="top-start"
             title="选择创建计划/任务的方式"
@@ -54,10 +57,7 @@
               </el-col> 
             </el-row>
             <el-button
-              slot="reference"
-              v-if="
-                 queryScope=='plan'||queryScope=='planTask'
-              "
+              slot="reference" 
               type="primary"
               round
               icon="el-icon-plus"
@@ -518,6 +518,12 @@ export default {
       this.load.calcProgress=true
       calcProgress({id:row.id}).then(res=>{  
         this.load.calcProgress=false
+        var tips =res.data.tips;
+        this.$notify({
+              showClose: true,
+              message: tips.msg,
+              type: tips.isOk?"success":"error",
+            });
         this.getXmTasks();
       })
     }, 

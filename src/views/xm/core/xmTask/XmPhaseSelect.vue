@@ -6,8 +6,9 @@
         class="padding-left" 
       >
         <el-row>    
-           <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
-           
+            <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
+           <el-input style="width:150px;" v-model="filters.key" placeholder="名称模糊查询" clearable></el-input>
+           <el-button icon="el-icon-search" @click="searchXmTasks()" type="primary"></el-button> 
         </el-row>
 
         <el-row class="padding-top"> 
