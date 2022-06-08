@@ -472,6 +472,7 @@
 					this.$refs.xmProductSelect1.searchXmProducts();
 					this.$notify({position:'bottom-left',showClose:true,message: "请先选择一个产品", type: 'warning'});
 				}
+				this.addForm.dclass=dclass
 
 				//this.addForm=Object.assign({}, this.editForm);
 			},
