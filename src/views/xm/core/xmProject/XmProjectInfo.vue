@@ -29,6 +29,10 @@
 					 <span slot="title"><i class="el-icon-document"></i>需求</span> 
 				</el-menu-item>
 				-->
+				
+				<el-menu-item index="计划"> 
+					<span slot="title"><i class="el-icon-odometer"></i>计划</span>
+				</el-menu-item>
 				<el-menu-item   index="任务">
 					 <span slot="title"><i class="el-icon-s-operation"></i>任务</span> 
 				</el-menu-item>
@@ -37,9 +41,6 @@
 				</el-menu-item>
 				<el-menu-item  index="团队">
 					 <span slot="title"><i class="el-icon-user-solid"></i>团队</span>
-				</el-menu-item>
-				<el-menu-item index="计划"> 
-					<span slot="title"><i class="el-icon-odometer"></i>计划</span>
 				</el-menu-item>
 				<el-submenu index="财务" class="hidden-sm-and-down">
 					<template slot="title"><i class="el-icon-coin"></i>财务</template> 

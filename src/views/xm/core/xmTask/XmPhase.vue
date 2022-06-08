@@ -396,10 +396,10 @@
 
  			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="filters.selProject" :xm-product="filters.xmProduct" @user-confirm="selectCreateUserConfirm">
 			</xm-group-dialog>  
-    
-		<el-drawer title="选中上级" :visible.sync="selectParentTaskVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
-			<xm-task-list check-scope="plan" queryScope="plan" :sel-project="filters.selProject"   @task-selected="onSelectedParentTask"></xm-task-list>
-		</el-drawer>
+     
+    <el-dialog title="选择新的上级计划" append-to-body :visible.sync="selectParentTaskVisible" width="60%" top="20px">
+      <xm-phase-select :sel-project="filters.selProject" @select="onSelectedParentTask"></xm-phase-select>
+    </el-dialog>
   </section>
 </template>
 
@@ -438,6 +438,8 @@ import XmProductSelect from "@/views/xm/core/components/XmProductSelect";
 
 import XmGantt from "../components/xm-gantt";
 import XmGroupSelect from "../xmGroup/XmGroupSelect.vue"; 
+
+import XmPhaseSelect from "./XmPhaseSelect.vue"; 
  
 	import  XmTableConfig from '@/views/xm/core/components/XmTableConfig';//修改界面
 	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面
@@ -2004,6 +2006,7 @@ export default {
     TagDialog,
     XmGroupDialog,
     XmTableConfig, 
+    XmPhaseSelect,
     //在下面添加其它组件
   },
   mounted() {

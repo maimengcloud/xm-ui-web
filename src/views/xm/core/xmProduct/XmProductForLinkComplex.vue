@@ -1,8 +1,8 @@
 <template>
-	<section class="page-container border">
+	<section>
 		<el-row> 
 			<el-col :span="24">
-				<el-tabs type="border-card"  :value="showPanel"  @tab-click="tabClick">
+				<el-tabs   :value="showPanel"  @tab-click="tabClick">
 					<el-tab-pane disabled> 
 						<div  slot="label">
 								<xm-product-select ref="xmProductSelect" :auto-select="true" :link-project-id="selProject?selProject.id:null" :iterationId="xmIteration?xmIteration.id:null"  @row-click="onProductRowClick" @clear="onProductClearSelect"></xm-product-select>
@@ -61,7 +61,7 @@
 	import config from '@/common/config';//全局公共库
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import XmIterationMng from '../xmIteration/XmIterationMng.vue'
-	import XmMenuMng from '../xmMenu/XmMenuMng.vue'
+	import XmMenuMng from '../xmMenu/XmMenuBox.vue'
 	import XmIterationStateShow from '../xmIterationState/XmIterationStateShow.vue'
 	import { mapGetters } from 'vuex'
 import XmProductMng from './XmProductMng.vue';
