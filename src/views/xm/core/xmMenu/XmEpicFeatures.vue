@@ -2,9 +2,9 @@
 	<section>
 		<el-row>
 			<el-col :span="24" class="padding-left">
-					<el-row v-if="!disabledMng">
+					<el-row >
 						<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="!xmProduct && !xmIteration"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select> 
-						<span style="float:right;">
+						<span style="float:right;" v-if="!disabledMng">
 						<el-popover style="padding-left:10px;"
 							placement="top-start"
 							width="250"
@@ -103,25 +103,7 @@
 				</el-dialog>
 				<el-drawer title="需求模板" :visible.sync="menuTemplateVisible"   size="80%"  append-to-body   :close-on-click-modal="false">
 					<xm-menu-template-mng  :is-select-menu="true"  :visible="menuTemplateVisible" @cancel="menuTemplateVisible=false" @selected-menus="onSelectedMenuTemplates"></xm-menu-template-mng>
-				</el-drawer>
-
-				<el-drawer title="需求谈论" :visible.sync=" menuDetailVisible"   size="80%"  append-to-body   :close-on-click-modal="false">
-					<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="false" :xm-menu="editForm" ></xm-menu-rich-detail>
-				</el-drawer>
-				<el-drawer title="选中任务" :visible.sync="selectTaskVisible"   size="80%"  append-to-body   :close-on-click-modal="false">
-					<xm-task-list :xm-product="filters.product" :sel-project="selProject" query-scope="planTask" check-scope="task"  :is-multi-select="true"  @tasks-selected="onSelectedTasks"></xm-task-list>
-				</el-drawer>
-				<el-drawer title="查看任务" :visible.sync="taskListForMenuVisible" :with-header="false"  size="80%"  append-to-body   :close-on-click-modal="false">
-					<xm-task-list-for-menu  :xm-product="filters.product"  :is-multi-select="true" :menu-id="editForm.menuId"></xm-task-list-for-menu>
-				</el-drawer>
-				<el-drawer
-					append-to-body
-					title="任务"
-					:visible.sync="taskMngVisible"
-					:with-header="false"
-					size="80%">
-					<xm-task-mng :sel-project="selProject"   :menu-id="editForm.menuId" :menu-name="editForm.menuName"></xm-task-mng>
-				</el-drawer>
+				</el-drawer>   
 				<el-drawer title="选择员工" :visible.sync="selectFiltersMmUserVisible" size="60%" append-to-body>
 					<users-select  @confirm="onFiltersMmUserSelected" ref="selectFiltersMmUser"></users-select>
 				</el-drawer>
@@ -132,22 +114,10 @@
  			<tag-dialog ref="tagDialog" :tagIds="filters.tags?filters.tags.map(i=>i.tagId):[]" :jump="true" @select-confirm="onTagSelected">
 			</tag-dialog>
  			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="selProject" :xm-product="filters.xmProduct" @user-confirm="onGroupUserSelect">
-			</xm-group-dialog>
-		<el-drawer
-		append-to-body
-		title="需求选择"
-		:visible.sync="parentMenuVisible"
-		size="70%"
-		:close-on-click-modal="false"
-		>
-		<xm-menu-select
-			:visible="parentMenuVisible"
-			:is-select-menu="true"
-			check-scope="1"
-			@selected="onParentMenuSelected"
-			:xm-product="filters.product"
-		></xm-menu-select>
-		</el-drawer>
+			</xm-group-dialog> 
+			<el-dialog append-to-body width="60%" top="20px" :visible.sync="parentMenuVisible">
+				<xm-epic-features-select :xm-product="xmProduct" @select="onParentMenuSelected"></xm-epic-features-select>
+			</el-dialog>
 	</section>
 </template>
 
@@ -164,21 +134,13 @@
 
 	import  XmMenuAdd from './XmMenuAdd';//新增界面
 	import  XmMenuEdit from './XmMenuEdit';//修改界面
-	import  XmMenuMngBatch from './XmMenuMngBatch';//修改界面
-	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//新增界面
+ 	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//新增界面
 	import  XmMenuTemplateMng from '../xmMenuTemplate/XmMenuTemplateMng';//新增界面
-	import XmMenuRichDetail from './XmMenuRichDetail';
-	import XmTaskList from '../xmTask/XmTaskList';
-	import XmTaskMng from '../xmTask/XmTaskMng';
-	import XmTaskListForMenu from '../xmTask/XmTaskListForMenu';
-	import  XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';//修改界面
-	import  XmMenuWorkload from '@/views/xm/core/components/XmMenuWorkload';//修改界面
-	import  XmTableConfig from '@/views/xm/core/components/XmTableConfig';//修改界面
-	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面
+       	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
-
-	import XmMenuSelect from "../xmMenu/XmMenuSelect";
+ 
   	import TagDialog from "@/views/mdp/arc/tag/TagDialog";
+  	import XmEpicFeaturesSelect from "@/views/xm/core/xmMenu/XmEpicFeaturesSelect";
 
 	import {sn} from '@/common/js/sequence'
 
@@ -1080,27 +1042,17 @@
 				Object.assign(this.editForm,params)
 			},
 			onAddSubMenu(row){
-				treeTool.reloadAllChildren(this.$refs.table,this.maps,[this.editForm,row],'pmenuId',this.loadXmMenusLazy)
-			}
+ 			}
 
 		},//end methods
 		components: {
 		    'xm-menu-add':XmMenuAdd,
 			'xm-menu-edit':XmMenuEdit,
 			XmProductSelect,
-			XmMenuTemplateMng,
-			XmMenuRichDetail,
-			XmTaskList,
-			XmTaskMng,
-			XmTaskListForMenu,
-			UsersSelect,
-			XmMenuMngBatch,
-		    TagDialog,
-			XmMenuSelect,
-			XmMenuWorkload,
-			XmTableConfig,
-			XmGroupDialog,
-			XmIterationSelect,
+			XmMenuTemplateMng,   
+			UsersSelect, 
+		    TagDialog,   
+			XmGroupDialog, XmEpicFeaturesSelect,
 		    //在下面添加其它组件
 		},
 		mounted() {

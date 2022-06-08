@@ -1,6 +1,6 @@
 <template>
 	<section> 
-		<el-row>   
+		<el-row v-if="xmProduct">   
 			<el-col :span="7">
 				<xm-epic-features class="padding-right" :xm-product="xmProduct"  @row-click="onEpicFeaturesRowClick" :disabledMng="true"></xm-epic-features>
 			</el-col>
