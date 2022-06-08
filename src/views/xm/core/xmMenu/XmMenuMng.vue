@@ -381,18 +381,15 @@
 			</xm-group-dialog>
 		<el-drawer
 		append-to-body
-		title="需求选择"
+		title="选择上级需求"
 		:visible.sync="parentMenuVisible"
-		size="70%"
+		size="60%"
 		:close-on-click-modal="false"
 		>
-		<xm-menu-select
-			:visible="parentMenuVisible"
-			:is-select-menu="true"
-			check-scope="1"
-			@selected="onParentMenuSelected"
+		<xm-epic-features-select 
+			@select="onParentMenuSelected"
 			:xm-product="filters.product"
-		></xm-menu-select>
+		></xm-epic-features-select>
 		</el-drawer>
 	</section>
 </template>
@@ -423,7 +420,7 @@
 	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
 
-	import XmMenuSelect from "../xmMenu/XmMenuSelect";
+	import XmEpicFeaturesSelect from "../xmMenu/XmEpicFeaturesSelect";
   	import TagDialog from "@/views/mdp/arc/tag/TagDialog";
 
 	import {sn} from '@/common/js/sequence'
@@ -1329,7 +1326,7 @@
 			UsersSelect,
 			XmMenuMngBatch,
 		    TagDialog,
-			XmMenuSelect,
+			XmEpicFeaturesSelect,
 			XmMenuWorkload,
 			XmTableConfig,
 			XmGroupDialog,
