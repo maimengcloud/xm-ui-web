@@ -65,8 +65,7 @@
             ></el-button>
           </el-popover>
           <el-button
-            @click="showParentTaskList" 
-            v-if="  queryScope=='plan'||queryScope=='planTask'"
+            @click="showParentTaskList"  
             title="更换任务的上级，实现任务搬家功能"
             icon="el-icon-upload2"
             v-loading="load.edit"
@@ -138,25 +137,15 @@
                   >查询</el-button
                 >
               </el-col>
-            </el-row>
-            <el-row> 
-              <el-col :span="24" style="padding-top: 5px">
-                <el-button type="danger"
-                  v-if="isTaskCenter != '1' && isMy != '1'"
-                  @click="batchDel"
-                  v-loading="load.edit"
-                  icon="el-icon-edit"
-                  >批量删除</el-button
-                >
-              </el-col>
-            </el-row>
+            </el-row> 
             <el-row> 
               <el-col :span="24" style="padding-top: 5px">
                 <el-button  title="一般情况下默认半个小时会统一更新一次，不需要手动更新，如需要立即汇总数据到上级计划，可以手动执行刷新操作"
-                  v-if="queryScope=='planTask'||queryScope=='plan'"
+                   
                   @click="calcProjectProgress"
                   v-loading="load.edit"
                   icon="el-icon-edit"
+                  type="warning"
                   >刷新全部计划进度数据</el-button
                 >
               </el-col>

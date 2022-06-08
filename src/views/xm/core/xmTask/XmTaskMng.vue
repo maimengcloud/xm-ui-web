@@ -161,8 +161,7 @@
             ></el-button>
           </el-popover>
           <el-button
-            @click="showParentTaskList" 
-            v-if="  queryScope=='plan'||queryScope=='planTask'"
+            @click="showParentTaskList"  
             title="更换任务的上级，实现任务搬家功能"
             icon="el-icon-upload2"
             v-loading="load.edit"
@@ -373,7 +372,7 @@
                   <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#409EFF'}">
 									<i :class="scope.row.ntype==='1'?'el-icon-odometer':'el-icon-s-operation'" ></i>
 									</div>  
-                  <span class="vlink"   type="primary" @click.stop="showDrawer(scope.row)">
+                  <span    type="primary">
                     {{ scope.row.sortLevel }}&nbsp;  {{ scope.row.name }}
                     </span>
                   
@@ -866,10 +865,10 @@
         :reload="true"
         :xm-menu="{ menuId: editForm.menuId, menuName: editForm.menuName }"
       ></xm-menu-rich-detail>
-    </el-drawer>  
-		<el-drawer title="选中上级" :visible.sync="selectParentTaskVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
-			<xm-task-list check-scope="plan" queryScope="plan" :sel-project="filters.selProject"   @task-selected="onSelectedParentTask"></xm-task-list>
-		</el-drawer>
+    </el-drawer>    
+    <el-dialog title="选择新的上级计划" append-to-body :visible.sync="selectParentTaskVisible" width="60%" top="20px">
+      <xm-phase-select :sel-project="filters.selProject"   @select="onSelectedParentTask"></xm-phase-select>
+    </el-dialog>
   </section>
 </template>
 
@@ -926,6 +925,8 @@ import XmGroupSelect from "../xmGroup/XmGroupSelect.vue";
   
   	import TagDialog from "@/views/mdp/arc/tag/TagDialog";
   	import XmTaskWorkloadEdit from "@/views/xm/core/xmTaskWorkload/XmTaskWorkloadEdit";
+    
+import XmPhaseSelect from "./XmPhaseSelect.vue"; 
 
 export default {
   computed: {
@@ -2500,6 +2501,7 @@ export default {
     XmGroupDialog,
     XmTableConfig,
     XmTaskWorkloadEdit,
+    XmPhaseSelect,
     //在下面添加其它组件
   },
   mounted() {
