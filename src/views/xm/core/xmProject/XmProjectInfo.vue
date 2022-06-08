@@ -33,6 +33,7 @@
 				<el-menu-item index="计划"> 
 					<span slot="title"><i class="el-icon-odometer"></i>计划</span>
 				</el-menu-item>
+				
 				<el-menu-item   index="任务">
 					 <span slot="title"><i class="el-icon-s-operation"></i>任务</span> 
 				</el-menu-item>

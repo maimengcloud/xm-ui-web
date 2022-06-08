@@ -854,7 +854,7 @@
 				this.editForm=row
 				this.editFormBak=Object.assign({},row)
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
-      },
+      		},
       handleExport() {
         this.downloadLoading = true
         const pageNum = this.pageInfo.pageNum;

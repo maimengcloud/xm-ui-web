@@ -605,18 +605,11 @@ export default {
       }else if(this.queryScope==='task'){
         params.ntype="0"
       }
-      
-      if(this.ptype==='1' && !this.isTaskCenter){
-        if(!params.productId){
-          this.$notify.warning("请先选中产品")
-          return;
-        }
-      }else if(this.ptype==='0' && !this.isTaskCenter){
+
         if(!params.projectId){
           this.$notify.warning("请先选中项目")
           return;
         }
-      } 
       //params.ptype=this.ptype
 
       getTask(params)
@@ -799,27 +792,14 @@ export default {
     },
     rowClick: function (row) { 
       this.editForm = row; 
-      this.editFormBak=Object.assign({},row)
+      this.editFormBak=Object.assign({},row) 
       this.$emit('row-click',row,);//  @row-click="rowClick"
-    },
-
-    showDrawer: function (row) {
-      this.editFormVisible = true;
-
-      this.editForm = row; 
-      this.editFormBak=Object.assign({},row)
-      // this.$emit('row-click',row,);//  @row-click="rowClick"
     }, 
     selectVisible(row,visible){
       if(visible==true){
         this.rowClick(row);
       }
-    },
-    showExecusers(row) {
-      this.editForm = row;
-      this.execUserVisible = true;
-    },
-
+    }, 
     showSkill(row) {
       this.editForm = row;
       this.skillVisible = true;

@@ -218,9 +218,7 @@
 						this.load.del=false;
 						var tips=res.data.tips;
 						if(tips.isOk){
-							this.pageInfo.count=true;
-
-							this.$refs.menusSelect.reloadChildren([row]);
+							this.pageInfo.count=true; 
 							this.getXmIterationMenus();
 						}
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
@@ -243,8 +241,7 @@
 					batchDelXmIterationMenu(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if( tips.isOk ){
-							this.$refs.menusSelect.reloadChildren(this.sels);
+						if( tips.isOk ){ 
 							this.pageInfo.count=true;
 							this.getXmIterationMenus();
 						}
@@ -269,8 +266,7 @@
 					this.menuVisible=false
 					var tips = res.data.tips
 					if(tips.isOk){
-						this.getXmIterationMenus()
-						this.$refs.menusSelect.reloadChildren(menus);
+						this.getXmIterationMenus() 
 					}
 					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 				})

@@ -2,11 +2,11 @@
 	<section> 
 		<el-row>   
 			<el-col :span="7">
-				<xm-epic-features class="padding-right" :xm-product="xmProduct"  @row-click="onEpicFeaturesRowClick" :show-select="false"></xm-epic-features>
+				<xm-epic-features class="padding-right" :xm-product="xmProduct"  @row-click="onEpicFeaturesRowClick" :show-select="false" @product-select="onProductSelected"></xm-epic-features>
 			</el-col>
-			<el-col :span="17" >
-				<el-row>    
-						<xm-iteration-select style="display:inline;"  v-if="!xmIteration" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onIterationSelected" ref="xmIterationMng" :product-id="xmProduct?xmProduct.id:null"  @clear="onIterationClearSelect"></xm-iteration-select>
+			<el-col :span="17" ref="table">
+				<el-row v-if="filters.product && filters.product.id">    
+						<xm-iteration-select style="display:inline;"  v-if="!xmIteration" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onIterationSelected" ref="xmIterationMng" :product-id="filters.product?filters.product.id:null"  @clear="onIterationClearSelect"></xm-iteration-select>
 						 
 						<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable v-if="taskFilterType">
 							<el-option   value="not-join-any-project"  label="未分配过任务的需求"></el-option>  
@@ -138,8 +138,8 @@
 					
 					<el-button  style="float:right;" type="primary" v-if="multi"  v-on:click="multiSelectedConfirm">确认</el-button>
 				</el-row>   
-				<el-row>
-					<el-table ref="table" class="menu-table"   :height="maxTableHeight" :data="xmMenusTreeData"   row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+				<el-row v-if="filters.product && filters.product.id">
+					<el-table  class="menu-table"   :height="maxTableHeight" :data="xmMenusTreeData"   row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column v-if="multi" type="selection" width="50"></el-table-column>  
 						
 						<el-table-column prop="menuName" label="需求名称" min-width="140" > 
@@ -162,7 +162,7 @@
 						<template v-if="!multi">
 						<el-table-column label="操作"    width="100" fixed="right"  >
 							<template slot-scope="scope"> 
-								<el-button  :disabled=" checkScope!==scope.row.dclass"  type="primary" @click="selectedMenu( scope.row,scope.$index)">选择</el-button> 
+								<el-button  type="primary" @click="selectedMenu( scope.row,scope.$index)">选择</el-button> 
 							</template>
 						</el-table-column>
 						</template>

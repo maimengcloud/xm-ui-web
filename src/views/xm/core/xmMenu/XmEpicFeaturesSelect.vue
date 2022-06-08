@@ -276,6 +276,9 @@
 					params.productId=this.filters.product.id
 				}
 				params=this.getParams(params); 
+				if(!params.productId){
+					return;
+				}
 				let callback= (res)=>{
 					var tips=res.data.tips;
 					if(tips.isOk){
@@ -302,13 +305,13 @@
 				this.filters.product=product 
 				this.xmMenus=[]
 				this.getXmMenus()
-				this.$emit("prodcut-select",product)
+				this.$emit("product-select",product)
 			},
 			onProductClearSelect:function(){
 				this.filters.product=null 
 				this.xmMenus=[]
 				this.getXmMenus() 
-				this.$emit("prodcut-select",null)
+				this.$emit("product-select",null)
 			},  
 			select(row){
 				this.$emit("select",row)
@@ -323,8 +326,12 @@
 					params={label:'用户故事',icon:'el-icon-document',color:' rgb(79, 140, 255)'};
 				}
 				return params;
-			}, 
+			},
 
+			rowClick: function(row, event, column){
+				this.editForm=row 
+				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
+      		},
 		},//end methods
 		components: { 
 			XmProductSelect, 
