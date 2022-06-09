@@ -125,7 +125,7 @@
 		    ]),
 			
 			calcMenuLabel(){ 
-				debugger;
+				;
 				var params={label:'用户故事',icon:'el-icon-document',color:' rgb(79, 140, 255)'};
 				if(this.addForm.dclass==='1'){
 					params={label:'史诗',icon:'el-icon-s-promotion',color:'rgb(255, 153, 51)'};

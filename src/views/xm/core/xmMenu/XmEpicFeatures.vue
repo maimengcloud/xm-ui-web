@@ -453,7 +453,7 @@
 			},
 			//显示新增界面 XmMenu xm_project_menu
 			showAdd: function (dclass) {
-				debugger;
+				;
 				Object.assign(this.addForm,this.addFormInit) 
 				if(this.filters.product && this.filters.product.id){
 					this.parentMenu=null;
