@@ -9,7 +9,7 @@
             <div class="middle">
               <dv-decoration-8 class="dv-dec-8" :color="['#568aea', '#000000']" />
               <div class="title">
-                <span class="title-text">综合数据监控</span>
+                <span class="title-text">项目综合数据监控</span>
                 <dv-decoration-6 class="dv-dec-6" :reverse="true" :color="['#50e3c2', '#67a1e5']"></dv-decoration-6>
               </div>
               <dv-decoration-8 class="dv-dec-8" :reverse="true" :color="['#568aea', '#000000']" />
@@ -62,8 +62,7 @@ import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 import { listXmProjectState  } from '@/api/xm/core/xmProjectState'; 
 import { listXmGroupState} from '@/api/xm/core/xmGroupState';
 import { listXmProjectTaskTypeState } from '@/api/xm/core/xmProjectTaskTypeState';
-import { listXmRecord } from '@/api/xm/core/xmRecord';
-import { listXmPhase } from '@/api/xm/core/xmPhase';
+import { listXmRecord } from '@/api/xm/core/xmRecord'; 
 import { mapGetters } from 'vuex'
 
 import Vue from 'vue' 
@@ -407,30 +406,7 @@ export default {
     },
     //获取列表 XmPhase 功能状态表,无需前端维护，所有数据由汇总统计得出
     getXmPhases() {
-      let params = {
-        pageSize: this.xmPhasePageInfo.pageSize,
-        pageNum: this.xmPhasePageInfo.pageNum,
-        total: this.xmPhasePageInfo.total,
-        count:this.xmPhasePageInfo.count
-      };
-      if(this.xmPhasePageInfo.orderFields!=null && this.xmPhasePageInfo.orderFields.length>0){
-        let orderBys=[];
-        for(var i=0;i<this.xmPhasePageInfo.orderFields.length;i++){ 
-          orderBys.push(this.xmPhasePageInfo.orderFields[i]+" "+this.xmPhasePageInfo.orderDirs[i])
-        }  
-        params.orderBy= orderBys.join(",")
-      } 
-
-      params.projectId=this.filters.projectId
-       listXmPhase(params).then((res) => {
-        var tips=res.data.tips;
-        if(tips.isOk){ 
-          this.xmPhasePageInfo.total = res.data.total;
-          this.xmPhasePageInfo.count=false;
-          this.xmPhases = res.data.data;
-        }else{
-         } 
-       }) ;
+       
     },
     floatValue(value){
       if(!value){
@@ -442,9 +418,11 @@ export default {
   },
 
   mounted(){
-    if(this.$route.params){
-				this.filters.projectId=this.$route.params.projectId;
-		}
+    if(this.$route.query && this.$route.query.projectId){
+				this.filters.projectId=this.$route.query.projectId;
+		}else{
+      return;
+    }
 
     this.getXmProjectState();
     this.getXmGroupStates();

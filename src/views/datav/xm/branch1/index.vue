@@ -9,7 +9,7 @@
             <div class="middle">
               <dv-decoration-8 class="dv-dec-8" :color="['#568aea', '#000000']" />
               <div class="title">
-                <span class="title-text">唛盟项目管理综合数据监控</span>
+                <span class="title-text">机构综合数据监控</span>
                 <dv-decoration-6 class="dv-dec-6" :reverse="true" :color="['#50e3c2', '#67a1e5']"></dv-decoration-6>
               </div>
               <dv-decoration-8 class="dv-dec-8" :reverse="true" :color="['#568aea', '#000000']" />
@@ -94,7 +94,7 @@ export default {
         {
           title: '累计金额',
           number: {
-            number: [(this.floatValue(this.xmBranchState.totalBudgetNouserAmount) + this.floatValue(this.xmBranchState.totalBudgetIuserAmount) + this.floatValue(this.xmBranchState.totalBudgetOuserAmount))/10000],
+            number: [(this.floatValue(this.xmBranchState.budgetNouserAt) + this.floatValue(this.xmBranchState.budgetIuserAt) + this.floatValue(this.xmBranchState.budgetOuserAt))/10000],
             content: '{nt}',
             textAlign: 'right',
             style: {
@@ -107,7 +107,7 @@ export default {
         {
           title: '发布总任务数',
           number: {
-            number: [this.xmBranchState.totalTaskCnt ],
+            number: [this.xmBranchState.taskCnt ],
             content: '{nt}',
             textAlign: 'right',
             style: {
@@ -133,7 +133,7 @@ export default {
         {
           title: '参与人数',
           number: {
-            number: [this.xmBranchState.totalStaffCnt],
+            number: [this.xmBranchState.planWorkerCnt],
             content: '{nt}',
             textAlign: 'right',
             style: {
@@ -216,7 +216,7 @@ export default {
         return [];
       }
       var rankingBoardData=this.xmProjectStates.map(i=>{
-        return {name:i.projectName,value:i.totalProgress+'%'}
+        return {name:i.projectName,value:i.finishRate+'%'}
       })
       return rankingBoardData
     },
@@ -256,8 +256,8 @@ export default {
     waterLevelChartData(){
       if(this.xmBranchState){
         var data={}
-        var allAmount=this.floatValue(this.xmBranchState.totalBudgetNouserAmount) + this.floatValue(this.xmBranchState.totalBudgetIuserAmount) + this.floatValue(this.xmBranchState.totalBudgetOuserAmount);
-        data.finishNum= this.floatValue(this.xmBranchState.totalCostNouserAmount) + this.floatValue(this.xmBranchState.totalCostIuserAmount) +this.floatValue(this.xmBranchState.totalCostOuserAmount) 
+        var allAmount=this.floatValue(this.xmBranchState.budgetNouserAt) + this.floatValue(this.xmBranchState.budgetIuserAt) + this.floatValue(this.xmBranchState.budgetOuserAt);
+        data.finishNum= this.floatValue(this.xmBranchState.actNouserAt) + this.floatValue(this.xmBranchState.actIuserAt) +this.floatValue(this.xmBranchState.actOuserAt) 
         data.finishPercent= parseFloat(data.finishNum/allAmount * 100).toFixed(0)
         return data;
      }else{
@@ -277,12 +277,13 @@ export default {
 
     cardsData(){
       if(this.xmProductStates && this.xmProductStates.length>0){
-        var totalPlanWorkload=this.floatValue(this.xmBranchState.totalPlanWorkload)
-        this.xmProductStates.map(i=>{
-           i.totalPlanWorkload=totalPlanWorkload
+        //var totalPlanWorkload=this.floatValue(this.xmBranchState.budgetWorkload)
+        var totalPlanWorkload=100000
+        var xmProductStates=this.xmProductStates.map(i=>{
+           i['totalPlanWorkload']=totalPlanWorkload
            return i;
         })
-        return this.xmProductStates.slice(0, 5);
+        return xmProductStates.slice(0, 5);
       }else{
         return null;
       }
@@ -315,7 +316,7 @@ export default {
         pageSize:20,//每页数据
         count:false,//是否需要重新计算总记录数
         pageNum:1,//当前页码、从1开始计算
-        orderFields:["calc_time"],//排序列 如 ['sex','student_id']，必须为数据库字段
+        orderFields:["budget_workload"],//排序列 如 ['sex','student_id']，必须为数据库字段
         orderDirs:["desc"]//升序 asc,降序desc 如 性别 升序、学生编号降序 ['asc','desc']
       },
       
@@ -325,7 +326,7 @@ export default {
         pageSize:20,//每页数据
         count:false,//是否需要重新计算总记录数
         pageNum:1,//当前页码、从1开始计算
-        orderFields:["calc_time"],//排序列 如 ['sex','student_id']，必须为数据库字段
+        orderFields:["budget_workload"],//排序列 如 ['sex','student_id']，必须为数据库字段
         orderDirs:["desc"]//升序 asc,降序desc 如 性别 升序、学生编号降序 ['asc','desc']
       },
     }

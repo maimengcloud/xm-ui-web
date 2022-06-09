@@ -87,9 +87,7 @@ export default {
       
       children: [
         { path: 'reportIndex', component: _import('xm/rpt/reportIndex'), name: 'reportIndex', meta: { title: '指标分析' }}, 
-        
-         { path: 'project/projectDatavFullScreen',  name: 'projectDatavFullScreen', meta: {   title: '项目效能',openTab:true,outUrl:"${curlDomain}/"+process.env.CONTEXT+"/"+process.env.VERSION+"/#/datav/xm/project/projectDatavFullScreen" }},  
-         { path: 'branch/branchDatavFullScreen',   name: 'branchDatavFullScreen', meta: {   title: '机构效能',openTab:true,outUrl:"${curlDomain}/"+process.env.CONTEXT+"/"+process.env.VERSION+"/#/datav/xm/branch/branchDatavFullScreen" }}, 
+        { path: 'branch/branchDatavFullScreen',   name: 'branchDatavFullScreen', meta: {   title: '机构效能',openTab:true,outUrl:"${curlDomain}/"+process.env.CONTEXT+"/"+process.env.VERSION+"/#/datav/xm/branch/branchDatavFullScreen" }}, 
       ]
     },
     {

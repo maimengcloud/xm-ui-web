@@ -38,10 +38,10 @@ export default {
        var cards= this.data.map(i=>{
            var card=JSON.parse(JSON.stringify(this.cardConfig))
            card.title=i.productName
-           card.total.number=[i.planWorkload/8/20];//累计工作量 人月
+           card.total.number=[i.budgetWorkload/8/20];//累计工作量 人月
            card.num.number=[i.finishRate];//当前进度
            //资金占比
-           card.ring.series[0].data[0].value=(i.planWorkload/i.totalPlanWorkload) //工作量占比
+           card.ring.series[0].data[0].value=parseInt(i.budgetWorkload/i.totalPlanWorkload*100)  //工作量占比
            return card
         });
         if(cards.length<5){
