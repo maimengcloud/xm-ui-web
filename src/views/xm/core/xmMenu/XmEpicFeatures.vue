@@ -825,6 +825,10 @@
 						this.$notify({position:'bottom-left',showClose:true,message:'请先选择一个或者多个需求',type:'warning'})
 						return;
 					}
+					if(this.sels.some(k=>k.dclass=='1')){
+						this.$notify({position:'bottom-left',showClose:true,message:"只能调整特性的上级，请选择特性",type:'warning'})
+						return;
+					}
 					this.parentMenuVisible=true;
 				}else{
 					this.$notify({position:'bottom-left',showClose:true,message:'请先选择产品',type:'warning'})
@@ -833,11 +837,17 @@
 
 			},
 			onParentMenuSelected(menu){
+				
 
 				if(!menu||!menu.menuId){
 					this.$notify({position:'bottom-left',showClose:true,message:'请先选择一个上级需求',type:'warning'})
 					return;
 				}
+				if(menu.dclass!='1'){
+					this.$notify({position:'bottom-left',showClose:true,message:menu.menuName+'是特性，不能作为上级，请选择史诗作为上级',type:'warning'})
+					return;
+				}
+				
 				this.parentMenuVisible=false;
 				var params={
 					menuIds:this.sels.map(i=>i.menuId),
