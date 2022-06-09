@@ -603,7 +603,7 @@ import XmTaskList from '../xmTask/XmTaskList.vue';
 						if( tips.isOk ){  
 							this.pageInfo.count=true; 
 							this.searchXmPhases() 
-							treeTool.reloadAllChildren(this.$refs.table,this.maps,phases,'parentPhaseId',this.loadXmPhaseLazy)
+							//treeTool.reloadAllChildren(this.$refs.table,this.maps,phases,'parentPhaseId',this.loadXmPhaseLazy)
 								 
 						}
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});

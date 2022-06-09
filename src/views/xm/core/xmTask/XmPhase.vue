@@ -1143,7 +1143,7 @@ export default {
             this.searchXmTasks();
             
             var rows=[...this.sels,{id:'xxxxx',parentTaskid:task.id}]
-            treeTool.reloadAllChildren(this.$refs.table,this.maps,rows,'parentTaskid',this.loadXmTaskLazy)
+            //treeTool.reloadAllChildren(this.$refs.table,this.maps,rows,'parentTaskid',this.loadXmTaskLazy)
           }
           this.$notify({
             showClose: true,

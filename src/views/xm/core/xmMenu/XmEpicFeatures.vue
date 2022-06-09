@@ -103,12 +103,12 @@
 
 					</el-row>
 				<!--编辑 XmMenu xm_project_menu界面-->
-				<el-dialog title="编辑需求" :visible.sync="editFormVisible" :with-header="false" width="80%" top="20px" center  append-to-body   :close-on-click-modal="false" >
+				<el-dialog :title="'编辑'+(editForm.dclass=='1'?'史诗':'特性')" :visible.sync="editFormVisible"  width="80%" top="20px"    append-to-body   :close-on-click-modal="false" >
 					<xm-menu-edit :xm-menu="editForm" :sel-project="selProject" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @add-sub-menu="onAddSubMenu" @edit-fields="onEditSomeFields"></xm-menu-edit>
 				</el-dialog>
 
 				<!--新增 XmMenu xm_project_menu界面-->
-				<el-dialog title="新增需求" :visible.sync="addFormVisible"  :with-header="false" width="80%" top="20px" center  append-to-body   :close-on-click-modal="false">
+				<el-dialog :title="'新增'+(addForm.dclass=='1'?'史诗':'特性')" :visible.sync="addFormVisible"    width="80%" top="20px"    append-to-body   :close-on-click-modal="false">
 					<xm-menu-add  :parent-menu="parentMenu"  :xm-menu="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-menu-add>
 				</el-dialog>
 				<el-drawer title="需求模板" :visible.sync="menuTemplateVisible"   size="80%"  append-to-body   :close-on-click-modal="false">
@@ -453,7 +453,8 @@
 			},
 			//显示新增界面 XmMenu xm_project_menu
 			showAdd: function (dclass) {
-				this.addForm={...this.addFormInit}
+				debugger;
+				Object.assign(this.addForm,this.addFormInit) 
 				if(this.filters.product && this.filters.product.id){
 					this.parentMenu=null;
 					this.addForm.productId=this.filters.product.id
@@ -494,6 +495,7 @@
 					this.addForm.iterationName=this.filters.iteration.iterationName
 					this.addFormVisible = true;
 				}
+				this.addForm.dclass=(parseInt(row.dclass)+1)+"";
 				this.addFormVisible=true
 			},
 			showProdcutAdd:function(){
@@ -507,7 +509,7 @@
 				if(this.parentMenu){
 					this.parentMenu.childrenCnt=this.parentMenu.childrenCnt?this.parentMenu.childrenCnt+1:1;
 				}
-				treeTool.reloadAllChildren(this.$refs.table,this.maps,[row,{...this.parentMenu}],'pmenuId',this.loadXmMenusLazy)
+				//treeTool.reloadAllChildren(this.$refs.table,this.maps,[row,{...this.parentMenu}],'pmenuId',this.loadXmMenusLazy)
 
 				this.parentMenu=null;
 
@@ -580,7 +582,7 @@
 						if( tips.isOk ){
 							this.pageInfo.count=true;
 							this.getXmMenus();
-							treeTool.reloadAllChildren(this.$refs.table,this.maps,this.sels,'pmenuId',this.loadXmMenusLazy)
+							//treeTool.reloadAllChildren(this.$refs.table,this.maps,this.sels,'pmenuId',this.loadXmMenusLazy)
 						}
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
@@ -699,7 +701,7 @@
 					if(tips.isOk){
 						this.getXmMenus()
 						if(this.parentMenu && this.parentMenu.menuId){
-							treeTool.reloadAllChildren(this.$refs.table,this.maps,this.parentMenu.menuId,'pmenuId',this.loadXmMenusLazy)
+							//treeTool.reloadAllChildren(this.$refs.table,this.maps,this.parentMenu.menuId,'pmenuId',this.loadXmMenusLazy)
 						}
 					}else{
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
@@ -846,7 +848,7 @@
 					if(tips.isOk){
 						this.searchXmMenus();
 						var rows=[...this.sels,{menuId:'',pmenuId:menu.menuId}]
-						treeTool.reloadAllChildren(this.$refs.table,this.maps,rows,'pmenuId',this.loadXmMenusLazy)
+						//treeTool.reloadAllChildren(this.$refs.table,this.maps,rows,'pmenuId',this.loadXmMenusLazy)
 					}
 					this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 				})

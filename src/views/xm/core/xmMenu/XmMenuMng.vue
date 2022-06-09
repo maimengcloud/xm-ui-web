@@ -339,12 +339,12 @@
 
 					</el-row>
 				<!--编辑 XmMenu xm_project_menu界面-->
-				<el-dialog title="编辑需求" :visible.sync="editFormVisible" :with-header="false" width="80%" top="20px" center  append-to-body   :close-on-click-modal="false" >
+				<el-dialog title="编辑故事" :visible.sync="editFormVisible" :with-header="false" width="80%" top="20px"    append-to-body   :close-on-click-modal="false" >
 					<xm-menu-edit :xm-menu="editForm" :sel-project="selProject" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @add-sub-menu="onAddSubMenu" @edit-fields="onEditSomeFields"></xm-menu-edit>
 				</el-dialog>
 
 				<!--新增 XmMenu xm_project_menu界面-->
-				<el-dialog title="新增需求" :visible.sync="addFormVisible"  :with-header="false" width="80%" top="20px" center  append-to-body   :close-on-click-modal="false">
+				<el-dialog title="新增故事" :visible.sync="addFormVisible"  :with-header="false" width="80%" top="20px"    append-to-body   :close-on-click-modal="false">
 					<xm-menu-add  :parent-menu="parentMenu"  :xm-menu="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-menu-add>
 				</el-dialog>
 				<el-drawer title="需求模板" :visible.sync="menuTemplateVisible"   size="80%"  append-to-body   :close-on-click-modal="false">

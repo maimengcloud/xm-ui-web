@@ -1322,7 +1322,7 @@ export default {
         var tips=res.data.tips;
         if(tips.isOk){
           this.getXmTasks();
-          treeTool.reloadAllChildren(this.$refs.table,this.maps,this.sels,'parentTaskid',this.loadXmTaskLazy)
+          //treeTool.reloadAllChildren(this.$refs.table,this.maps,this.sels,'parentTaskid',this.loadXmTaskLazy)
         }
         this.$notify({
             showClose: true,
@@ -1574,7 +1574,7 @@ export default {
             if (tips.isOk) {
               this.pageInfo.count = true;
 							this.searchXmTasks()
-							treeTool.reloadAllChildren(this.$refs.table,this.maps,this.sels,'parentTaskid',this.loadXmTaskLazy)
+							//treeTool.reloadAllChildren(this.$refs.table,this.maps,this.sels,'parentTaskid',this.loadXmTaskLazy)
             }
             this.$notify({
               showClose: true,
@@ -2386,7 +2386,7 @@ export default {
             this.searchXmTasks();
             
             var rows=[...this.sels,{id:'xxxxx',parentTaskid:task.id}]
-            treeTool.reloadAllChildren(this.$refs.table,this.maps,rows,'parentTaskid',this.loadXmTaskLazy)
+            //treeTool.reloadAllChildren(this.$refs.table,this.maps,rows,'parentTaskid',this.loadXmTaskLazy)
           }
           this.$notify({
             showClose: true,
@@ -2470,7 +2470,7 @@ export default {
       onTaskWorkloadSubmit(){
         this.taskWorkloadVisible=false;
         this.searchXmTasks();
-        treeTool.reloadAllChildren(this.$refs.table,this.maps,[this.editForm],'parentTaskid',this.loadXmTaskLazy)
+        //treeTool.reloadAllChildren(this.$refs.table,this.maps,[this.editForm],'parentTaskid',this.loadXmTaskLazy)
       },
       showWorkload(row){
         this.editForm=row

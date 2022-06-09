@@ -125,6 +125,7 @@
 		    ]),
 			
 			calcMenuLabel(){ 
+				debugger;
 				var params={label:'用户故事',icon:'el-icon-document',color:' rgb(79, 140, 255)'};
 				if(this.addForm.dclass==='1'){
 					params={label:'史诗',icon:'el-icon-s-promotion',color:'rgb(255, 153, 51)'};
@@ -165,7 +166,7 @@
 				//新增界面数据 项目需求表
 				addForm: {
 						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'0',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'1',mmUserid:'',mmUsername:'',ntype:'0',childrenCnt:0,sinceVersion:'',
-					proposerId:'',proposerName:'',dlvl:'0',dtype:'0',priority:'0',source:'1'
+					proposerId:'',proposerName:'',dlvl:'0',dtype:'0',priority:'0',source:'1',dclass:'3',
 				},
 				proposerSelectVisible:false,
 				mmUserSelectVisible:false,
@@ -262,7 +263,7 @@
 				this.addForm.mmUserid=this.userInfo.userid
 				this.addForm.mmUsername=this.userInfo.username
 				this.addForm.remark="作为   ，我需要   ，以便我能够   。"
-				if(this.parentMenu){
+				if(this.parentMenu && this.parentMenu.menuId){
 					if(this.parentMenu.childrenCnt){
 						this.addForm.seqNo=this.parentMenu.seqNo+"."+(this.parentMenu.childrenCnt+1)
 					}else{

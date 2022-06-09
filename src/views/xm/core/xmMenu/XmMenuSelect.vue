@@ -419,7 +419,7 @@ import XmEpicFeatures from './XmEpicFeaturesSelect.vue';
 				
 			},
 			reloadChildren(rows){  
-            	treeTool.reloadAllChildren(this.$refs.table,this.maps,rows,'pmenuId',this.loadMenusLazy) 
+            	//treeTool.reloadAllChildren(this.$refs.table,this.maps,rows,'pmenuId',this.loadMenusLazy) 
 			},
 			//获取列表 XmMenu xm_project_menu
 			getXmMenus() {
