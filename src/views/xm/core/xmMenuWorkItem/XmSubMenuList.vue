@@ -124,11 +124,11 @@ export default {
     
 			calcMenuLabel(){ 
 				var params={label:'工作项',icon:'',color:''};
-				if(this.parentXmMenu.dclass==='0'){
+				if(this.addForm.dclass==='1'){
 					params={label:'史诗',icon:'el-icon-s-promotion',color:'rgb(255, 153, 51)'};
-				}else if(this.parentXmMenu.dclass==='1'){
+				}else if(this.addForm.dclass==='2'){
 					params={label:'特性',icon:'el-icon-s-flag',color:'rgb(0, 153, 51)'};
-				}else if(this.parentXmMenu.dclass==='2'){
+				}else if(this.addForm.dclass==='3'){
 					params={label:'故事',icon:'el-icon-document',color:' rgb(79, 140, 255)'};
 				} 
 				return params;
@@ -150,8 +150,8 @@ export default {
     return{
       load:{edit:false,list:false,add:false,del:false}, 
       xmMenus:[],
-      editForm:{menuName:''},
-	  addForm:{menuName:''},
+      editForm:{menuName:'',dclass:'3'},
+	  addForm:{menuName:'',dclass:'3'},
 	  addFormVisible:false,
 	  addFormRules:{
 		  menuName:[
@@ -286,10 +286,10 @@ export default {
              menu.mmUsername=this.userInfo.username
              menu.seqNo=this.parentXmMenu.seqNo+"."+(parseInt(this.parentXmMenu.childrenCnt)+1)
              menu.pmenuId=this.parentXmMenu.menuId
-             menu.pmenuName=this.parentXmMenu.menuName
-             menu.dclass=(parseInt(this.parentXmMenu.dclass)+1)+'';
+             menu.pmenuName=this.parentXmMenu.menuName  
              menu.menuId=null;
              menu.menuName=this.addForm.menuName
+			 menu.dclass=this.addForm.dclass
              
              addXmMenu(menu).then((res) => {
 								this.load.edit=false
@@ -302,8 +302,11 @@ export default {
 								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.edit=false);
     },  
-      showAdd() {
+      showAdd(dclass) {
 		  this.addForm.menuName=this.parentXmMenu.menuName+'---请修改'
+		  if(dclass){
+			  this.addForm.dclass=dclass
+		  }
          this.addFormVisible=true;
     },
     

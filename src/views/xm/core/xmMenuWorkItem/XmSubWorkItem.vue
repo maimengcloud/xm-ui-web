@@ -4,14 +4,14 @@
        <font>共{{subWorkItemNum}}个子工作项</font> &nbsp;&nbsp;
       <span style="float:right;">
         <xm-project-select style="display:inline;" :auto-select="false" v-if="parentXmMenu&&parentXmMenu.menuId && parentXmMenu.dclass==='3' && !linkProjectId" :link-product-id="parentXmMenu.productId" @row-click="xmProject=$event"></xm-project-select>
-      <el-button v-if="parentXmMenu.dclass==='1'" icon="el-icon-plus" @click="showAdd(2)">
+      <el-button v-if="parentXmMenu.dclass==='1'" icon="el-icon-plus" @click="showAdd('2')">
           <div class="icon" style="background-color:  rgb(0, 153, 51);">
             <i class="el-icon-s-flag"></i>
           </div>  添加特性
       </el-button>
-      <el-button v-if="parentXmMenu.dclass==='2'" icon="el-icon-plus" @click="showAdd(3)">
-        <div  class="icon" :style="{backgroundColor: calcMenuLabel.color }">
-          <i :class="calcMenuLabel.icon"></i>
+      <el-button v-if="parentXmMenu.dclass==='2'||parentXmMenu.dclass==='1'" icon="el-icon-plus" @click="showAdd('3')">
+        <div  class="icon" :style="{backgroundColor: 'rgb(79, 140, 255)' }">
+          <i :class="'el-icon-document'"></i>
         </div>
         添加用户故事
       </el-button>
@@ -99,7 +99,7 @@ export default {
     },
       showAdd(dclass) {
         if(dclass<4){
-        this.$refs.menuList.showAdd();
+        this.$refs.menuList.showAdd(dclass);
         }else if(dclass==='4'){
           if(!this.linkProjectId && !this.xmProject){
             this.$notify({position:'bottom-left',showClose:true,message:'请先选择一个项目',type:'warning'})

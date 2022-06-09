@@ -52,7 +52,7 @@ export default {
      
     styleObj:{
         typeof:Object,
-        default:function(){return {'display':'block-inline'}}
+        default:function(){return {'display':'inline'}}
     },
     
     endKey: {

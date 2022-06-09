@@ -252,7 +252,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 				}else{
 					this.editForm = {...this.xmMenu}; 
 				}
-				
+				this.activateTabPaneName="4"
 				this.editFormBak=Object.assign({},this.editForm)
 	      	}
 	      },
