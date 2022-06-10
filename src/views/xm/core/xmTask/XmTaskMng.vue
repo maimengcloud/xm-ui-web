@@ -57,15 +57,8 @@
               >{{ i.name }}</el-option
             >
           </el-select> 
-          <el-checkbox
-            class="hidden-md-and-down"
-            v-model="filters.taskOut"
-            true-label="1"
-            false-label=""
-            >众包</el-checkbox
-          > 
           <el-input
-            style="width: 150px"
+            style="width: 120px"
             v-model="filters.key"
             placeholder="计划/任务名称"
           >
@@ -164,7 +157,7 @@
                 <font class="more-label-font">技能:</font>
                 <el-button
                   v-if="!filters.skillTags || filters.skillTags.length == 0"
-                  icon="el-icon-search"
+                  icon="el-icon-search"  
                   @click="showSkillSelect"
                   >技能</el-button
                 >
@@ -180,8 +173,7 @@
               </el-col>
               <el-col :span="24" style="padding-top: 5px">
                 <font class="more-label-font">标签:</font>
-                <el-button
-                  style="margin-top: 10px;"
+                <el-button 
                   v-if="!filters.tags || filters.tags.length == 0"
                   @click.native="$refs.tagDialog.open()"
                   >标签</el-button
@@ -196,7 +188,19 @@
                   }})个</el-tag
                 >
               </el-col>
+              
               <el-col :span="24" style="padding-top: 5px">
+                <font class="more-label-font">是否为众包任务:</font>
+                 
+                <el-checkbox
+                  class="padding-top"
+                  v-model="filters.taskOut"
+                  true-label="1"
+                  false-label=""
+                  >众包</el-checkbox
+                > 
+              </el-col>
+              <el-col :span="24" style="padding-top: 10px">
                 <el-button
                   type="primary"
                   icon="el-icon-search"

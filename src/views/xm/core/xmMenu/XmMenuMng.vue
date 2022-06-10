@@ -23,7 +23,7 @@
 							<el-row>
 								<el-col  :span="24"  style="padding-top:5px;" >
 									<font class="more-label-font">标签条件:</font>
-									<el-button type="text" v-if="!filters.tags||filters.tags.length==0" @click.native="$refs.tagDialog.open()">标签</el-button>
+									<el-button  v-if="!filters.tags||filters.tags.length==0" @click.native="$refs.tagDialog.open()">标签</el-button>
 									<el-tag v-else @click="$refs.tagDialog.open()"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
 
 								</el-col>
