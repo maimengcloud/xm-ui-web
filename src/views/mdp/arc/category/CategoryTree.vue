@@ -116,7 +116,7 @@
 	    		return this.nodeKey?this.nodeKey:'id'
 	    	},
 			...mapGetters([
-			  'workShop'
+			  'userInfo'
 			])
 	    },
 	    props: ['value','isLeaf','visible','nodeKey','showCount','countTips','showFilter','rootKey','multiple','checkedKeys','refresh','defaultExpandAll','expandOnClickNode','showCheckbox','indent'],
@@ -182,7 +182,7 @@
 				this.addCategory.isShow='1'
 				this.addCategory.branchId=this.currentCategory.branchId
 				if(!this.addCategory.branchId){
-					this.addCategory.branchId=this.workShop.branchId
+					this.addCategory.branchId=this.userInfo.branchId
 				}
 				this.$refs.addCategory.validate((valid) => {
 					if (valid) {
@@ -250,7 +250,7 @@
 							branchId:data.branchId
 						}
 						if(!params.branchId){
-							params.branchId=this.workShop.branchId
+							params.branchId=this.userInfo.branchId
 						}
 						this.$confirm('确认删除吗？', '提示', {}).then(() => { 
 							delCategory(params).then(res=>{
@@ -276,7 +276,7 @@
 				}
 				let params = { 
 					id: id,
-					branchId:this.workShop.branchId,
+					branchId:this.userInfo.branchId,
 				};
  				if(refresh){
  					params.refresh=true;

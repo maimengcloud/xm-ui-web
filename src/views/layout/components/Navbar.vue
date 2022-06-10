@@ -9,13 +9,13 @@
     <div class="right-menu">
       <!--
       <div class="hidden-sm-and-down" style="float:left;display:flex;align-items: center;height:100%;">				
-        <el-tooltip v-if="workShop.locationName" class="item" effect="dark" :content="workShop.branchId+' '+workShop.shopId+' '+workShop.locationId" placement="top-start">
-				  <el-tag>{{workShop.branchName}} {{workShop.locationName}}</el-tag>
+        <el-tooltip v-if="userInfo.locationName" class="item" effect="dark" :content="userInfo.branchId+' '+userInfo.shopId+' '+userInfo.locationId" placement="top-start">
+				  <el-tag>{{userInfo.branchName}} {{userInfo.locationName}}</el-tag>
 				</el-tooltip>
-        <el-tooltip v-else class="item" effect="dark" :content="workShop.branchId+' '+workShop.deptid" placement="top-start">
-				  <el-tag>{{workShop.branchName}} {{workShop.deptName}}</el-tag>
+        <el-tooltip v-else class="item" effect="dark" :content="userInfo.branchId+' '+userInfo.deptid" placement="top-start">
+				  <el-tag>{{userInfo.branchName}} {{userInfo.deptName}}</el-tag>
 				</el-tooltip>
-				<el-button @click="showSelectShopMethod" type="primary" v-if="workShop.isSuperAdmin||workShop.isPlatFormAdmin">切换商户</el-button>
+				<el-button @click="showSelectShopMethod" type="primary" v-if="userInfo.isSuperAdmin||userInfo.isPlatFormAdmin">切换商户</el-button>
 			</div>
       -->
      
@@ -157,7 +157,7 @@ export default {
       'myPosts',
       'myLocations',
       'myShops',
-			'workShop'
+			'userInfo'
     ]),
     'deptPostsTree':function(){
     	var deptPostsTree=[]
@@ -240,13 +240,13 @@ export default {
 		},
 		sureMethod(row) {
 			this.selectShopVisible = false;
-			this.workShop.shopId=row.shopId;
-			this.workShop.branchId=row.branchId;
-			this.workShop.branchName=row.sysBranchName;
-			this.workShop.locationId=row.id;
-			this.workShop.deptid=row.deptid;
-			this.workShop.locationName=row.businessName;
-			this.$store.commit('SET_WORK_SHOP',this.workShop);
+			this.userInfo.shopId=row.shopId;
+			this.userInfo.branchId=row.branchId;
+			this.userInfo.branchName=row.sysBranchName;
+			this.userInfo.locationId=row.id;
+			this.userInfo.deptid=row.deptid;
+			this.userInfo.locationName=row.businessName;
+			this.$store.commit('SET_WORK_SHOP',this.userInfo);
 		},
     jumpToOtherSystem(name) {
       let href = window.location.protocol + "//" + window.location.host + "/" + name + "/" + process.env.VERSION;

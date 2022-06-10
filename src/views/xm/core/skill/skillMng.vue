@@ -116,7 +116,7 @@ import { mapGetters } from "vuex";
 import { addHrSkillCategory } from "@/api/xm/core/hrSkillCategory";
 export default {
   computed: {
-    ...mapGetters(["workShop", "userInfo"]),
+    ...mapGetters(["userInfo", "userInfo"]),
   },
 
   props: ["jump", "visible", "skillIds"],
@@ -158,7 +158,7 @@ export default {
   methods: {
     getAllHrSkill() {
       let params = {};
-      params.branchId = this.workShop.branchId;
+      params.branchId = this.userInfo.branchId;
       this.sectionLoading = true;
       getAllHrSkill(params)
         .then((res) => {
@@ -256,8 +256,8 @@ export default {
         return;
       }
       let params = {
-        branchId: this.workShop.branchId,
-        shopId: this.workShop.shopId,
+        branchId: this.userInfo.branchId,
+        shopId: this.userInfo.shopId,
         categoryName: this.needAddTagCategoryNameInputValue,
         isPub: this.isPub,
       };
@@ -293,8 +293,8 @@ export default {
         return;
       }
       let params = {
-        shopId: this.workShop.shopId,
-        branchId: this.workShop.branchId,
+        shopId: this.userInfo.shopId,
+        branchId: this.userInfo.branchId,
         id: categoryId,
       }; 
       this.$confirm(
@@ -361,8 +361,8 @@ export default {
       let skillName = this.convertSkills[index].showAddButtonInputValue;
       let categoryId = this.convertSkills[index].categoryId;
       let params = {
-        branchId: that.workShop.branchId,
-        shopId: that.workShop.shopId,
+        branchId: that.userInfo.branchId,
+        shopId: that.userInfo.shopId,
         categoryId: categoryId,
         skillName: skillName,
         isPub: this.isPub,

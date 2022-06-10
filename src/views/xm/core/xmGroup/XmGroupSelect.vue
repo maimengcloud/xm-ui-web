@@ -36,7 +36,7 @@ import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 	export default {
 		computed: {
 			...mapGetters([
-				'workShop','userInfo','roles'
+				'userInfo','userInfo','roles'
 			])
 		},
 		//

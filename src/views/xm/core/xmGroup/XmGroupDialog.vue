@@ -16,7 +16,7 @@
     name:"tagDialog",
     computed: {
       ...mapGetters([
-        'workShop', 'userInfo'
+        'userInfo', 'userInfo'
       ])
     },
     //

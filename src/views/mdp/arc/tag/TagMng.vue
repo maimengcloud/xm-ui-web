@@ -124,7 +124,7 @@
   export default {
     computed: {
       ...mapGetters([
-        'workShop', 'userInfo'
+        'userInfo', 'userInfo'
       ])
     },
     //
@@ -265,8 +265,8 @@
           //params.xxx=xxxxx
         }
 
-        params.shopId = this.workShop.shopId;
-        params.branchId = this.workShop.branchId;
+        params.shopId = this.userInfo.shopId;
+        params.branchId = this.userInfo.branchId;
         this.sectionLoading = true;
         this.convertTags = [];
         getAllTag(params).then((res) => {
@@ -450,8 +450,8 @@
         let tagName = this.convertTags[index].showAddButtonInputValue;
         let categoryId = this.convertTags[index].categoryId;
         let params = {
-          "branchId": that.workShop.branchId,
-          "shopId": that.workShop.shopId,
+          "branchId": that.userInfo.branchId,
+          "shopId": that.userInfo.shopId,
           "categoryId": categoryId,
           "tagName": tagName,
           "isPub": this.isPub
@@ -554,8 +554,8 @@
           return;
         }
         let params = {
-          "branchId": this.workShop.branchId,
-          "shopId": this.workShop.shopId,
+          "branchId": this.userInfo.branchId,
+          "shopId": this.userInfo.shopId,
           "categoryName": this.needAddTagCategoryNameInputValue,
           "isPub": this.isPub
         };
@@ -604,8 +604,8 @@
           return;
         };
         let params = {
-          "shopId": this.workShop.shopId,
-          "branchId": this.workShop.branchId,
+          "shopId": this.userInfo.shopId,
+          "branchId": this.userInfo.branchId,
           "id": categoryId
         }
         if (!this.userInfo.isPlatformAdmin && !this.userInfo.isSuperAdmin) {

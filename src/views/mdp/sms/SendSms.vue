@@ -113,7 +113,7 @@
 	export default {
 		computed: {
 			...mapGetters([
-				'workShop'
+				'userInfo'
 			])
 		},
 		props: ['visible', 'smsBodyParams','smsUserList','loadPhonenoByUserid'],
@@ -177,9 +177,9 @@
 				this.getSmsTemplates();
 			},
 			showSendDialogVisibleMethod() {
-				this.shopId = this.workShop.shopId;
-				this.locationId = this.workShop.locationId;
-				this.branchId = this.workShop.branchId;
+				this.shopId = this.userInfo.shopId;
+				this.locationId = this.userInfo.locationId;
+				this.branchId = this.userInfo.branchId;
 				this.sendSmsVisible = true;
 				//获取短信签名
 				this.getSmsSigns();
@@ -278,7 +278,7 @@
 					"smsTemplateId": this.smsTemplatesSelectValue.id,
 					"smsTtemplateText": this.smsTemplatesSelectValue.text,
 					"nationCode": "86",
-					"userid": this.workShop.userid,
+					"userid": this.userInfo.userid,
 					"branchId": this.smsTemplatesSelectValue.branchId,
 					"shopId": this.smsTemplatesSelectValue.shopId,
 					"locationId": this.smsTemplatesSelectValue.locationId,
@@ -312,9 +312,9 @@
 			//查询短信模板
 			getSmsTemplates() {
 				let params = {
-					"shopId": this.workShop.shopId,
-					"locationId": this.workShop.locationId,
-					"branchId": this.workShop.branchId,
+					"shopId": this.userInfo.shopId,
+					"locationId": this.userInfo.locationId,
+					"branchId": this.userInfo.branchId,
 					"status": "0"
 				};
 				this.finallyShowContent = '';
@@ -338,7 +338,7 @@
 			getSmsSigns() {
 				let params = {
 					"status": "0",
-					"shopId": this.workShop.shopId
+					"shopId": this.userInfo.shopId
 				};
 				this.smsSignsOptions = [];
 				listSmsSign(params).then((res) => {
@@ -382,7 +382,7 @@
 				this.mobilesStr = '';
 				if(this.loadPhonenoByUserid==true){
 					let userids=this.smsUserList.map(user=>user.userid);
-					listUser({userids:userids,branchId:this.workShop.branchId}).then(res=>{
+					listUser({userids:userids,branchId:this.userInfo.branchId}).then(res=>{
 						if(res.data.tips.isOk){
 							let users=res.data.data;
 							 let phonenoList=users.map(user=>user.phoneno);
