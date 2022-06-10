@@ -257,6 +257,15 @@ table tr.hover-row{
     display:none;
   }
 }
+ /**
+ *解决表格固定列无法滚动问题
+ */
+.el-table {
+  .el-table__fixed {
+    height:auto !important; 
+    bottom:17px !important;  
+  }
+}
 
 .icon {
   color: #fff;

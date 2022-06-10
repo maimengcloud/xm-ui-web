@@ -9,7 +9,7 @@
         <el-row> 
             <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
 
-					<el-select style="width: 100px" v-model="filters.taskState" placeholder="状态" clearable>
+					<el-select style="width: 100px" v-model="filters.taskState" placeholder="状态" clearable class="hidden-md-and-down">
 									<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.taskState" :key="index"></el-option> 
           </el-select>
           <el-select
@@ -39,7 +39,7 @@
             >
           </el-select>
           <el-select
-            class="hidden-md-and-down"
+            class="hidden-lg-and-down"
             v-model="filters.taskType"
             placeholder="类型"
             style="width: 100px"
@@ -58,7 +58,7 @@
             >
           </el-select>
           <el-checkbox
-            class="hidden-md-and-down"
+            class="hidden-lg-and-down"
             v-model="filters.taskOut"
             true-label="1"
             false-label=""

@@ -177,15 +177,13 @@
               <el-table-column
                 label="全选"
                 type="selection"
-                width="50"
-                fixed="left"
+                width="50" 
               >
               </el-table-column> 
               <el-table-column
                 sortable
                 prop="name"
-                class-name="title"
-                fixed="left"
+                class-name="title" 
                 label="计划名称"
                 min-width="300"
               >
@@ -211,14 +209,14 @@
                      </span>
 									</div>
                 </template>
-              </el-table-column>
-              
-              <el-table-column
+              </el-table-column>  
+              <el-table-column 
                 label="状态"
                 type="taskState"
-                width="100"
+                width="100" 
               >  
-								<template slot-scope="scope">
+								<template slot-scope="scope" 
+               >
 									<div class="cell-text">
 										<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'taskState',scope.row.taskState)" :key="index" :type="item.className">{{item.name}}</el-tag>
    
@@ -229,7 +227,7 @@
 										 </el-select>
 									</span>
 								</template>
-              </el-table-column> 
+              </el-table-column>   
             </el-table>
             <el-pagination
               ref="pagination"
