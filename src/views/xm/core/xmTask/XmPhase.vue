@@ -403,7 +403,7 @@ export default {
         taskType: "",
         tags: [],
         taskState:'',//任务状态
-        lvls:['1','2'],
+        lvls:[],
       },
       xmTasks: [], //查询结果
       pageInfo: {
@@ -1048,7 +1048,7 @@ export default {
       if (this.filters.tags && this.filters.tags.length>0) {
         params.tagIdList = this.filters.tags.map(i=>i.tagId);
       }
-      if(this.queryScope=="planTask"||this.queryScope=='plan'){
+      if(this.filters.lvls.length>0){
         params.lvls=this.filters.lvls
       }
       return params;

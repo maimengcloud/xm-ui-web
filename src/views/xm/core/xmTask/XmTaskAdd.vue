@@ -563,6 +563,21 @@
 					this.addForm.planType=this.parentTask.planType 
 					this.addForm.ptype=this.parentTask.ptype
 					this.addForm.name=this.parentTask.name+"-请修改"
+					this.addForm.budgetAt=0
+					this.addForm.budgetWorkload=0
+					this.addForm.actAt=0
+					this.addForm.actWorkload=0
+					this.addForm.rate=0
+					this.addForm.actStartTime=null
+					this.addForm.actEndTime=null
+					this.addForm.exeUserids=null
+					this.addForm.exeUsernames=null
+					this.addForm.executorUserid=null
+					this.addForm.executorUsername=null
+					this.addForm.shareFee=0
+					this.addForm.taskOut="0"
+					this.addForm.toTaskCenter="0"
+					this.addForm.crowd="0"
 				} 
 				if(this.xmProject){
 					this.addForm.projectId=this.xmProject.id
