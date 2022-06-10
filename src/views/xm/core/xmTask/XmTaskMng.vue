@@ -58,43 +58,12 @@
             >
           </el-select>
           <el-checkbox
-            class="hidden-lg-and-down"
+            class="hidden-md-and-down"
             v-model="filters.taskOut"
             true-label="1"
             false-label=""
             >众包</el-checkbox
-          >
-          <el-button
-            class="hidden-md-and-down"
-            v-if="!filters.skillTags || filters.skillTags.length == 0"
-            icon="el-icon-search"
-            @click="showSkillSelect"
-            >技能</el-button
-          >
-          <el-tag
-            class="hidden-md-and-down"
-            closable
-            v-for="(skill, index) in filters.skillTags"
-            :key="index"
-            @click="showSkillSelect"
-            @close="skillTagClear(skill)"
-            >{{ skill.skillName }}</el-tag
-          >
-          <el-button
-            style="margin-top: 10px;"
-            v-if="!filters.tags || filters.tags.length == 0"
-            @click.native="$refs.tagDialog.open()"
-            >标签</el-button
-          >
-          <el-tag
-            v-else
-            @click="$refs.tagDialog.open()"
-            closable
-            @close="clearFiltersTag(filters.tags[0])"
-            >{{ filters.tags[0].tagName.substr(0, 5) }}等({{
-              filters.tags.length
-            }})个</el-tag
-          >
+          > 
           <el-input
             style="width: 150px"
             v-model="filters.key"
@@ -259,12 +228,12 @@
                 ></el-date-picker>
               </el-col>
               <el-col :span="24" style="padding-top: 5px">
-                <font class="more-label-font">标签:</font>
+                <font class="more-label-font">技能:</font>
                 <el-button
                   v-if="!filters.skillTags || filters.skillTags.length == 0"
                   icon="el-icon-search"
                   @click="showSkillSelect"
-                  >选择标签</el-button
+                  >技能</el-button
                 >
                 <el-tag
                   v-else
@@ -274,6 +243,24 @@
                   @click="showSkillSelect"
                   @close="skillTagClear(skill)"
                   >{{ skill.skillName }}</el-tag
+                >
+              </el-col>
+              <el-col :span="24" style="padding-top: 5px">
+                <font class="more-label-font">标签:</font>
+                <el-button
+                  style="margin-top: 10px;"
+                  v-if="!filters.tags || filters.tags.length == 0"
+                  @click.native="$refs.tagDialog.open()"
+                  >标签</el-button
+                >
+                <el-tag
+                  v-else
+                  @click="$refs.tagDialog.open()"
+                  closable
+                  @close="clearFiltersTag(filters.tags[0])"
+                  >{{ filters.tags[0].tagName.substr(0, 5) }}等({{
+                    filters.tags.length
+                  }})个</el-tag
                 >
               </el-col>
               <el-col :span="24" style="padding-top: 5px">
