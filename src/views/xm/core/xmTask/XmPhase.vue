@@ -715,6 +715,10 @@ export default {
       }  
       this.parentTask = null;
       this.addForm.ntype=ntype;
+      
+      this.addForm.taskOut="0";
+      this.addForm.crowd="0";
+      this.addForm.toTaskCenter="0";
       this.addFormVisible = true;
     },
     afterAddSubmit(row) {
