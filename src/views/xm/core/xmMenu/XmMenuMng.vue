@@ -179,8 +179,7 @@
 
 						<el-button  @click="showParentMenu" icon="el-icon-top" title="更换上级"></el-button>
  						<el-button  v-if="disabledMng!=false"  type="danger" @click="batchDel" icon="el-icon-delete" title="删除"></el-button>
-						<el-button  class="hidden-md-and-down"  v-if=" disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing" title="汇总进度"></el-button>
-
+ 
 						<xm-table-config ref="tableConfig" style="display:inline;" :table="$refs.table"></xm-table-config>
 
 						</span>

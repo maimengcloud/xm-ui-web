@@ -6,8 +6,8 @@
         class="padding-left"
         :class="{ 'flex-box': displayType == 'agil' }"
       >
-        <el-row> 
-            <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
+        <el-row class="padding-top">    
+          <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
 
 					<el-select style="width: 100px" v-model="filters.taskState" placeholder="状态" clearable class="hidden-md-and-down">
 									<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.taskState" :key="index"></el-option> 
@@ -38,8 +38,8 @@
               >我放弃的</el-option
             >
           </el-select>
-          <el-select
-            class="hidden-lg-and-down"
+          <el-select 
+            class="hidden-md-and-down"
             v-model="filters.taskType"
             placeholder="类型"
             style="width: 100px"
@@ -56,7 +56,7 @@
               :key="index"
               >{{ i.name }}</el-option
             >
-          </el-select>
+          </el-select> 
           <el-checkbox
             class="hidden-md-and-down"
             v-model="filters.taskOut"
@@ -75,75 +75,8 @@
             type="primary"
             icon="el-icon-search"
             v-loading="load.list"
-          ></el-button>
-          <span style="float:right;"> 
-          <el-popover
-            placement="top-start"
-            title="选择任务的方式"
-            width="300"
-            trigger="hover"
-          >
-            <el-row> 
-              <el-col :span="24" style="padding-top: 5px"> 
-                <div    class="icon" :style="{backgroundColor:   '#409EFF'}">
-                  <i :class=" 'el-icon-s-operation' " ></i>
-                </div>  
-                <el-button
-                  v-if="isTaskCenter != '1' && isMy != '1'"
-                  @click="showMenu"
-                  type="primary"
-                  icon="el-icon-plus"
-                  >由用户故事快速创建任务(推荐)</el-button
-                >
-              </el-col>
-              <el-col :span="24" style="padding-top: 5px">
-                
-                <div    class="icon" :style="{backgroundColor:   '#409EFF'}">
-                  <i :class=" 'el-icon-s-operation' " ></i>
-                </div>  
-                <el-button
-                  v-if="isTaskCenter != '1' && isMy != '1'"
-                  @click="showTaskTemplate"
-                  icon="el-icon-plus"
-                  >从模板快速导入任务</el-button
-                >
-              </el-col>
-              <el-col :span="24" style="padding-top: 5px">
-                
-                <div    class="icon" :style="{backgroundColor:   '#409EFF'}">
-                  <i :class=" 'el-icon-s-operation' " ></i>
-                </div>  
-                <el-button
-                  v-if="isTaskCenter != '1' && isMy != '1'"
-                  @click="showAdd('0')"
-                  icon="el-icon-plus"
-                  >直接创建任务</el-button
-                >
-              </el-col>
-            </el-row>
-            <el-button
-              slot="reference" 
-              type="primary"
-              round
-              icon="el-icon-plus"
-              title="新建计划、任务"
-            ></el-button>
-          </el-popover>
-          <el-button
-            @click="showParentTaskList"  
-            title="更换任务的上级，实现任务搬家功能"
-            icon="el-icon-upload2"
-            v-loading="load.edit"
-          > </el-button> 
-          <el-button type="danger"
-            v-if="isTaskCenter != '1' && isMy != '1'"
-            @click="batchDel"
-            v-loading="load.del"
-            icon="el-icon-delete"
-            title="批量删除"
-            ></el-button
-          >
-
+          ></el-button>  
+          
           <el-popover
             placement="top-start"
             title=""
@@ -271,31 +204,77 @@
                   >查询</el-button
                 >
               </el-col>
-            </el-row>
+            </el-row>  
+            <el-button   slot="reference">更多</el-button>
+          </el-popover> 
+          <span style="float:right;"> 
+          <el-popover
+            placement="top-start"
+            title="选择任务的方式"
+            width="300"
+            trigger="hover"
+          >
             <el-row> 
-              <el-col :span="24" style="padding-top: 5px">
-                <el-button type="danger"
+              <el-col :span="24" style="padding-top: 5px"> 
+                <div    class="icon" :style="{backgroundColor:   '#409EFF'}">
+                  <i :class=" 'el-icon-s-operation' " ></i>
+                </div>  
+                <el-button
                   v-if="isTaskCenter != '1' && isMy != '1'"
-                  @click="batchDel"
-                  v-loading="load.edit"
-                  icon="el-icon-edit"
-                  >批量删除</el-button
+                  @click="showMenu"
+                  type="primary"
+                  icon="el-icon-plus"
+                  >由用户故事快速创建任务(推荐)</el-button
                 >
               </el-col>
-            </el-row>
-            <el-row> 
               <el-col :span="24" style="padding-top: 5px">
-                <el-button  title="一般情况下默认半个小时会统一更新一次，不需要手动更新，如需要立即汇总数据到上级计划，可以手动执行刷新操作"
-                  v-if="queryScope=='planTask'||queryScope=='plan'"
-                  @click="calcProjectProgress"
-                  v-loading="load.edit"
-                  icon="el-icon-edit"
-                  >刷新全部计划进度数据</el-button
+                
+                <div    class="icon" :style="{backgroundColor:   '#409EFF'}">
+                  <i :class=" 'el-icon-s-operation' " ></i>
+                </div>  
+                <el-button
+                  v-if="isTaskCenter != '1' && isMy != '1'"
+                  @click="showTaskTemplate"
+                  icon="el-icon-plus"
+                  >从模板快速导入任务</el-button
+                >
+              </el-col>
+              <el-col :span="24" style="padding-top: 5px">
+                
+                <div    class="icon" :style="{backgroundColor:   '#409EFF'}">
+                  <i :class=" 'el-icon-s-operation' " ></i>
+                </div>  
+                <el-button
+                  v-if="isTaskCenter != '1' && isMy != '1'"
+                  @click="showAdd('0')"
+                  icon="el-icon-plus"
+                  >直接创建任务</el-button
                 >
               </el-col>
             </el-row>
-            <el-button style="margin-top: 10px;" slot="reference">更多</el-button>
+            <el-button
+              slot="reference" 
+              type="primary"
+              round
+              icon="el-icon-plus"
+              title="新建计划、任务"
+            ></el-button>
           </el-popover>
+          <el-button
+            @click="showParentTaskList"  
+            title="更换任务的上级，实现任务搬家功能"
+            icon="el-icon-upload2"
+            v-loading="load.edit"
+          > </el-button> 
+          <el-button type="danger"
+            v-if="isTaskCenter != '1' && isMy != '1'"
+            @click="batchDel"
+            v-loading="load.del"
+            icon="el-icon-delete"
+            title="批量删除"
+            ></el-button
+          >
+
 
           <el-popover
             placement="top-start"
