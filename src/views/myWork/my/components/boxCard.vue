@@ -30,6 +30,7 @@
                     <wdrw source="GZT" v-if="item.menuid == 'wdrw'"></wdrw>
                     <wdcp source="GZT" v-if="item.menuid == 'wdcp'"></wdcp>
                     <wdxm source="GZT" v-if="item.menuid == 'wdxm'"></wdxm>
+                    <my-focus source="GZT" v-if="item.menuid == 'myFocus'"></my-focus>
                 </grid-item>
             </grid-layout>
         </div>
@@ -41,6 +42,8 @@ import dsp from  '@/views/mdp/workflow/ru/task/TaskListAssigneeToMe.vue';
 import wdrw from '@/views/xm/core/xmTask/xmMyTaskCenter.vue';
 import wdcp from '@/views/xm/core/xmProduct/XmProductAllMng.vue';
 import wdxm from '@/views/xm/core/xmProject/XmProjectMng';
+
+import myFocus from '@/views/xm/core/xmMyFocus/XmMyFocusList';
 import VueGridLayout from 'vue-grid-layout';
 import { mapGetters } from 'vuex'
 
@@ -50,6 +53,7 @@ export default {
         wdrw,
         wdcp,
         wdxm,
+        myFocus,
         GridLayout: VueGridLayout.GridLayout,
         GridItem: VueGridLayout.GridItem
     },
@@ -68,6 +72,7 @@ export default {
                 val.forEach((element, index) => {
                    this.addItem(element, index);
                 });
+                this.addItem({menuid:'myFocus',menuname:'我的关注'}, val.length+1);
             }
         }
     },
@@ -100,7 +105,7 @@ export default {
 
     mounted() {
         this.$nextTick(() => {
-            this.$store.dispatch('getUserFavoriteMenu', {userid: this.userInfo.displayUserid});
+            this.$store.dispatch('getUserFavoriteMenu', {userid: this.userInfo.userid});
         })
     },
 

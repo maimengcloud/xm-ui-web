@@ -1,75 +1,69 @@
 <template>
-	<section class="page-container border padding">
-		<el-row>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
-			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmMyFocuss" icon="el-icon-search">查询</el-button>
-			<span style="float:right;">
-			    <el-button type="primary" @click="showAdd" icon="el-icon-plus" plain> </el-button>
-			    <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete" plain></el-button>
-		    </span>
-		</el-row>
-		<el-row class="padding-top">
-			<!--列表 XmMyFocus 我关注的项目或者任务-->
-			<el-table ref="xmMyFocusTable" :data="xmMyFocuss" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-				<el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column>
-				<el-table-column sortable type="index" width="55" show-overflow-tooltip  fixed="left"></el-table-column>
-				<!--
-				<el-table-column sortable prop="username" width="55" show-overflow-tooltip  fixed="left">
-				    <span class="cell-text">  {{scope.row.username}}}  </span>
-				    <span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
-				</el-table-column>
-				-->
-				<el-table-column prop="userid" label="用户编号" min-width="120" show-overflow-tooltip  fixed="left"></el-table-column>				<el-table-column prop="bizId" label="关注的对象主键" min-width="120" show-overflow-tooltip  fixed="left"></el-table-column>				<el-table-column prop="pbizId" label="对象上级编号,项目时填项目编号，任务时填项目编号，产品时填产品编号，需求时填产品编号，bug时填产品编号" min-width="120" show-overflow-tooltip  fixed="left"></el-table-column>
-				<el-table-column prop="username" label="用户名称" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.username}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="focusType" label="对象类型:项目-1/任务-2/产品-3/需求-4/bug-5" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.focusType}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="bizName" label="任务名称" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.bizName}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="pbizName" label="对象上级名称" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.pbizName}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="ftime" label="关注时间" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.ftime}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="ubranchId" label="用户归属机构" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.ubranchId}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column label="操作" width="180" fixed="right">
-				    <template scope="scope">
-				        <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"  plain></el-button>
-				        <el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"  plain></el-button>
-				    </template>
-				</el-table-column>
-			</el-table>
-			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
-		</el-row>
-		<el-row>
-			<!--编辑 XmMyFocus 我关注的项目或者任务界面-->
-			<el-drawer title="编辑我关注的项目或者任务" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
-			    <xm-my-focus-edit op-type="edit" :xm-my-focus="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-my-focus-edit>
-			</el-drawer>
-
-			<!--新增 XmMyFocus 我关注的项目或者任务界面-->
-			<el-drawer title="新增我关注的项目或者任务" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
-			    <xm-my-focus-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-my-focus-edit>
-			</el-drawer>
-	    </el-row>
+	<section> 
+		<el-row :gutter="20">
+            <el-col :span="8">
+                <el-card class="box-card">
+                    <div slot="header" class="clearfix"> 
+                        <div class="avatar-container">
+							<div class="avatar-wrapper">
+ 								<img   class="user-avatar" src="../../../myWork/img/cp.png">
+								<span class="username"> 产品</span> 
+							</div>    
+						</div>
+                    </div>
+                    <div v-for="(o,index) in cps" :key="index" class="list-item">
+                        <el-link @click="toBizPage(o)">{{o.bizName }}</el-link>
+                        <div class="tool-bar">
+                            <span class="u-btn"> 
+                                <el-button     type="text"  @click="handleDel(o,index)" icon="el-icon-remove-outline" title="取消关注" >取消关注 </el-button>     
+                            </span>
+                        </div>
+                        
+                    </div>
+                </el-card>
+            </el-col>
+             
+            <el-col :span="8">
+                <el-card class="box-card">
+                    <div slot="header" class="clearfix"> 
+                        <div class="avatar-container">
+							<div class="avatar-wrapper">
+ 								<img   class="user-avatar" src="../../../myWork/img/xmgl.png">
+								<span class="username"> 项目</span> 
+							</div>    
+						</div>
+                    </div>
+                    <div v-for="(o,index) in xms" :key="index" class="list-item">
+                        <el-link @click="toBizPage(o)">{{o.bizName }}</el-link>
+                        <div class="tool-bar">
+                            <span class="u-btn"> 
+                                <el-button   type="text"  circle @click="handleDel(o,index)" icon="el-icon-remove-outline" title="取消关注">取消关注 </el-button>     
+                            </span>
+                        </div> 
+                    </div>
+                </el-card>
+            </el-col>
+            <el-col :span="8">
+                <el-card class="box-card">
+                    <div slot="header" class="clearfix">
+                        <div class="avatar-container">
+							<div class="avatar-wrapper">
+ 								<img   class="user-avatar" src="../../../myWork/img/xqgl.png">
+								<span class="username">需求、任务、缺陷</span> 
+							</div>    
+						</div>
+                    </div>
+                    <div v-for="(o,index) in oths" :key="index" class="list-item">
+                        <el-link @click="toBizPage(o)">{{o.bizName }}</el-link>
+                        <div class="tool-bar">
+                            <span class="u-btn"> 
+                                <el-button   type="text" @click="handleDel(o,index)" icon="el-icon-remove-outline" title="取消关注"> 取消关注</el-button>     
+                            </span>
+                        </div> 
+                    </div>
+                </el-card>
+            </el-col> 
+ 		</el-row> 
 	</section>
 </template>
 
@@ -77,7 +71,7 @@
 
 import util from '@/common/js/util';//全局公共库
 import config from '@/common/config';//全局公共库
-import { initDicts,listXmMyFocus, delXmMyFocus, batchDelXmMyFocus,editSomeFieldsXmMyFocus } from '@/api/xm/core/xmMyFocus';
+import { initDicts,myFocusForIndex, delXmMyFocus, batchDelXmMyFocus,editSomeFieldsXmMyFocus } from '@/api/xm/core/xmMyFocus';
 import  XmMyFocusEdit from './XmMyFocusEdit';//新增修改界面
 import { mapGetters } from 'vuex'
 
@@ -89,6 +83,15 @@ export default {
     props:['visible'],
     computed: {
         ...mapGetters(['userInfo']),
+        cps(){
+            return this.xmMyFocuss.filter(k=>k.focusType=='3')
+        },
+        xms(){
+            return this.xmMyFocuss.filter(k=>k.focusType=='1')
+        }, 
+        oths(){
+            return this.xmMyFocuss.filter(k=>k.focusType!='1' && k.focusType!='3')
+        }
 
     },
     watch:{
@@ -184,7 +187,7 @@ export default {
             }
 
             this.load.list = true;
-            listXmMyFocus(params).then((res) => {
+            myFocusForIndex(params).then((res) => {
                 var tips=res.data.tips;
                 if(tips.isOk){
                     this.pageInfo.total = res.data.total;
@@ -201,6 +204,13 @@ export default {
         showEdit: function ( row,index ) {
             this.editFormVisible = true;
             this.editForm = Object.assign({}, row);
+        },
+        toBizPage(bizObj){
+            if(bizObj.focusType=='1'){
+                this.$router.push({path:'/xm/core/xmProject/XmProjectInfoRoute',query:{id:bizObj.bizId}})
+            }else if(bizObj.focusType=='3'){
+                 this.$router.push({path:'/xm/core/xmProduct/XmProductInfoRoute',query:{id:bizObj.bizId}})
+            }
         },
         //显示新增界面 XmMyFocus 我关注的项目或者任务
         showAdd: function () {
@@ -220,21 +230,18 @@ export default {
             this.sels = sels;
         },
         //删除xmMyFocus
-        handleDel: function (row,index) {
-            this.$confirm('确认删除该记录吗?', '提示', {
-                type: 'warning'
-            }).then(() => {
-                this.load.del=true;
-                let params = {  userid:row.userid,  bizId:row.bizId,  pbizId:row.pbizId };
-                delXmMyFocus(params).then((res) => {
-                    this.load.del=false;
-                    var tips=res.data.tips;
-                    if(tips.isOk){
-                        this.searchXmMyFocuss();
-                    }
-                    this.$notify({ position:'bottom-left', showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
-                }).catch( err  => this.load.del=false );
-            });
+        handleDel: function (row,index) { 
+            this.load.del=true;
+            let params = {  userid:row.userid,  bizId:row.bizId,  pbizId:row.pbizId };
+            delXmMyFocus(params).then((res) => {
+                this.load.del=false;
+                var tips=res.data.tips;
+                if(tips.isOk){
+                    this.searchXmMyFocuss();
+                }
+                this.$notify({ position:'bottom-left', showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
+            }).catch( err  => this.load.del=false );
+            
         },
         //批量删除xmMyFocus
         batchDel: function () {
@@ -300,7 +307,7 @@ export default {
             initDicts(this);
             this.initData()
             this.searchXmMyFocuss();
-            this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmMyFocusTable.$el)
+            //this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmMyFocusTable.$el)
 
         });
     }
@@ -308,5 +315,53 @@ export default {
 
 </script>
 
-<style scoped>
+<style lang="scss"  scoped>
+.box-card{
+    height: 450px;
+}
+
+.avatar-container {
+    height: 20px;
+    display: flex;
+    align-items: center; 
+    .avatar-wrapper {
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        .user-avatar {
+            height: 34px;
+            width: 34px;
+            border-radius: 50%;
+            margin-right: 12px;
+        }
+        .username{
+            color: #7D7D7D;
+            font-size: 18px;
+            margin-right: 2px;
+        }
+        .el-icon-caret-bottom {
+            font-size: 22px;
+        }
+    }
+}
+
+
+.tool-bar{
+	visibility: hidden;
+	float: right;
+}
+
+.list-item{
+    margin-bottom: 20px;
+}
+
+.list-item:hover{
+	.tool-bar{
+		visibility: visible;
+		.u-btn{   
+			float: right;
+		} 
+	}
+}
 </style>

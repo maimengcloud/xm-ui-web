@@ -3,12 +3,13 @@
     <div class="m_content">
       <div class="m_top">
         <el-avatar class="m_avatar" :src="userInfo.headimgurl">
-          <img src="../../../assets/image/user_img.gif"/> 
+          <img src="../../../assets/image/user_img.gif"/>
         </el-avatar>
         <div class="m_msg">
           <p>{{getDate}}</p>
           <p>{{getTimeStatus}}，{{userInfo.username}}，今天也要元气满满哦！</p>
-        </div> 
+        </div>
+        <el-button class="m_btn" type="primary" @click="moduleSetVisible = true">模块编辑</el-button>
       </div>
 
       <div class="m_middle">
@@ -47,8 +48,10 @@
             <span>缺陷管理</span>
           </div>
         </div>
-      </div> 
-    </div> 
+      </div>
+      <box-card />
+    </div>
+    <module-set v-model="moduleSetVisible" />
   </div>
 </template>
 
@@ -57,14 +60,14 @@ import NProgress from 'nprogress' // progress bar
 
 import moduleSet from './components/moduleSet'
 import boxCard from './components/boxCard'
-import { mapGetters } from 'vuex' 
+import { mapGetters } from 'vuex'
 import dayjs from 'dayjs'
 
 export default {
   components: {moduleSet, boxCard},
   computed: {
     ...mapGetters([
-      'userInfo' 
+      'userInfo'
     ]),
     getDate() {
       return dayjs().format('YYYY/M/D');
@@ -101,14 +104,14 @@ export default {
         window.open(prefixUrl+path)
         NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
       }
-      
+
     },
 
   },
 
 
   mounted() {
-    
+
   }
 }
 </script>

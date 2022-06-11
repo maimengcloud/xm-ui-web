@@ -227,9 +227,10 @@
 						
 						<el-table-column  label="操作" width="200" fixed="right">
 							<template slot-scope="scope">
+											<el-button v-if="menukey=='myFocus'"  type="primary" @click.stop="focusOrUnfocus(scope.row)" >取消关注</el-button> 
+											<el-button v-else  type="text" @click.stop="focusOrUnfocus(scope.row)" >关注</el-button>  
 											<el-button id="guider-five" type="text"  title="通过复制创建新的产品" @click="onCopyToBtnClick(scope.row)" :disabled="load.add" v-loading="load.add">复制</el-button>
-											<el-button  type="text" @click="intoInfo(scope.row)" icon="el-icon-s-data">视图</el-button>  
-											<el-button  type="text" v-loading="load.del" @click="handleDel(scope.row)" :disabled="load.del==true" icon="el-icon-delete">删除</el-button> 
+ 											<el-button  type="text" v-loading="load.del" @click="handleDel(scope.row)" :disabled="load.del==true" icon="el-icon-delete">删除</el-button> 
 							</template>
 						</el-table-column>
 					</el-table>
@@ -319,6 +320,7 @@
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
 	import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';
 	import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'; 
+	import { addXmMyFocus , delXmMyFocus } from '@/api/xm/core/xmMyFocus';
 
 	import Guider from '@/components/Guider/Index.js';
 
@@ -711,6 +713,23 @@
 			/**end 自定义函数请在上面加**/
 			guiderStart(forceDisplayWhileClosed) { // 初始化引导页
 				Guider.startByName('xmProductMng',forceDisplayWhileClosed); 
+			},
+			
+			focusOrUnfocus:function(row){
+				if(this.menukey=="myFocus"){
+					delXmMyFocus({pbizId:row.id,bizId:row.id}).then(res=>{
+						var tips=res.data.tips;
+						if(tips.isOk){
+							this.getXmProjects(); 
+						} 
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+					})
+				}else{
+					addXmMyFocus({pbizId:row.id,focusType:'3',bizId:row.id,bizName:row.productName}).then(res=>{
+						var tips=res.data.tips;
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+					})
+				}
 			},
 		},//end methods
 		components: {

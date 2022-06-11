@@ -1,119 +1,169 @@
 <template>
-	<section class="page-container  padding border">
-		<el-row> 
-		<!--编辑界面 XmMyFocus xm_my_focus--> 
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
+	<section  class="page-container padding">
+	    <el-row class="page-header">
+	    </el-row>
+		<el-row class="page-main" :style="{overflowX:'auto',height:maxTableHeight+'px'}" ref="table">
+		<!--编辑界面 XmMyFocus 我关注的项目或者任务--> 
+			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">
 				<el-form-item label="用户编号" prop="userid">
-					<el-input v-model="editForm.userid" placeholder="用户编号"></el-input>
+					<el-input v-model="editForm.userid" placeholder="用户编号" :maxlength="50" @change="editSomeFields(editForm,'userid',$event)"></el-input>
 				</el-form-item> 
 				<el-form-item label="用户名称" prop="username">
-					<el-input v-model="editForm.username" placeholder="用户名称"></el-input>
+					<el-input v-model="editForm.username" placeholder="用户名称" :maxlength="255" @change="editSomeFields(editForm,'username',$event)"></el-input>
 				</el-form-item> 
-				<el-form-item label="关注的任务主键" prop="taskId">
-					<el-input v-model="editForm.taskId" placeholder="关注的任务主键"></el-input>
+				<el-form-item label="关注的对象主键" prop="bizId">
+					<el-input v-model="editForm.bizId" placeholder="关注的对象主键" :maxlength="50" @change="editSomeFields(editForm,'bizId',$event)"></el-input>
 				</el-form-item> 
-				<el-form-item label="对象类型项目-project/任务-task" prop="focusType">
-					<el-input v-model="editForm.focusType" placeholder="对象类型项目-project/任务-task"></el-input>
+				<el-form-item label="对象类型:项目-1/任务-2/产品-3/需求-4/bug-5" prop="focusType">
+					<el-input v-model="editForm.focusType" placeholder="对象类型:项目-1/任务-2/产品-3/需求-4/bug-5" :maxlength="1" @change="editSomeFields(editForm,'focusType',$event)"></el-input>
 				</el-form-item> 
-				<el-form-item label="项目编号" prop="projectId">
-					<el-input v-model="editForm.projectId" placeholder="项目编号"></el-input>
+				<el-form-item label="对象上级编号,项目时填项目编号，任务时填项目编号，产品时填产品编号，需求时填产品编号，bug时填产品编号" prop="pbizId">
+					<el-input v-model="editForm.pbizId" placeholder="对象上级编号,项目时填项目编号，任务时填项目编号，产品时填产品编号，需求时填产品编号，bug时填产品编号" :maxlength="50" @change="editSomeFields(editForm,'pbizId',$event)"></el-input>
 				</el-form-item> 
-				<el-form-item label="主键" prop="id">
-					<el-input v-model="editForm.id" placeholder="主键"></el-input>
+				<el-form-item label="任务名称" prop="bizName">
+					<el-input v-model="editForm.bizName" placeholder="任务名称" :maxlength="50" @change="editSomeFields(editForm,'bizName',$event)"></el-input>
 				</el-form-item> 
-				<el-form-item label="项目名称" prop="projectName">
-					<el-input v-model="editForm.projectName" placeholder="项目名称"></el-input>
+				<el-form-item label="对象上级名称" prop="pbizName">
+					<el-input v-model="editForm.pbizName" placeholder="对象上级名称" :maxlength="255" @change="editSomeFields(editForm,'pbizName',$event)"></el-input>
 				</el-form-item> 
-				<el-form-item label="任务名称" prop="taskName">
-					<el-input v-model="editForm.taskName" placeholder="任务名称"></el-input>
+				<el-form-item label="关注时间" prop="ftime">
+					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.ftime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
 				</el-form-item> 
-				<el-form-item> 
-					<el-col :span="24" :offset="8"> 
-						<el-button @click.native="handleCancel">取消</el-button>  
-						<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>  
-					</el-col> 
+				<el-form-item label="用户归属机构" prop="ubranchId">
+					<el-input v-model="editForm.ubranchId" placeholder="用户归属机构" :maxlength="50" @change="editSomeFields(editForm,'ubranchId',$event)"></el-input>
 				</el-form-item> 
 			</el-form>
+		</el-row>
+
+		<el-row v-if="opType=='add'" class="page-bottom bottom-fixed">
+		    <el-button @click.native="handleCancel">取消</el-button>
+            <el-button v-loading="load.edit" type="primary" @click.native="saveSubmit" :disabled="load.edit==true">提交</el-button>
 		</el-row>
 	</section>
 </template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { editXmMyFocus } from '@/api/xm/core/xmMyFocus';
+	import config from "@/common/config"; //全局公共库import
+ 	import { initDicts, addXmMyFocus,editXmMyFocus,editSomeFieldsXmMyFocus } from '@/api/xm/core/xmMyFocus';
 	import { mapGetters } from 'vuex'
 	
-	export default { 
+	export default {
+	    name:'xmMyFocusEdit',
+	    components: {
+
+        },
 		computed: {
-		    ...mapGetters([
-		      'userInfo','roles'
-		    ])
+		    ...mapGetters([ 'userInfo'  ]),
+
 		},
-		props:['xmMyFocus','visible'],
+		props:['xmMyFocus','visible','opType'],
+
 		watch: {
 	      'xmMyFocus':function( xmMyFocus ) {
-	        this.editForm = xmMyFocus;
+	        if(xmMyFocus){
+	            this.editForm = {...xmMyFocus};
+	        }
+
 	      },
 	      'visible':function(visible) { 
 	      	if(visible==true){
-	      		//从新打开页面时某些数据需要重新加载，可以在这里添加
+ 	      		this.initData()
 	      	}
 	      } 
 	    },
 		data() {
 			return {
-				dicts:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
-				load:{ list: false, edit: false, del: false, add: false },//查询中...
+			    currOpType:'add',//add/edit
+ 				load:{ list: false, edit: false, del: false, add: false },//查询中...
+				dicts:{},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				editFormRules: {
-					id: [
-						//{ required: true, message: '主键不能为空', trigger: 'blur' }
+					userid: [
+						//{ required: true, message: '用户编号不能为空', trigger: 'blur' }
 					]
 				},
-				//编辑界面数据  XmMyFocus xm_my_focus
 				editForm: {
-					userid:'',username:'',taskId:'',focusType:'',projectId:'',id:'',projectName:'',taskName:''
-				}
-				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
-				
-				/**end 在上面加自定义属性**/
+					userid:'',username:'',bizId:'',focusType:'',pbizId:'',bizName:'',pbizName:'',ftime:'',ubranchId:''
+				},
+                maxTableHeight:300,
 			}//end return
 		},//end data
 		methods: {
+
+		    ...util,
+
 			// 取消按钮点击 父组件监听@cancel="editFormVisible=false" 监听
 			handleCancel:function(){
-				this.$refs['editForm'].resetFields();
+				this.$refs['editFormRef'].resetFields();
 				this.$emit('cancel');
 			},
-			//编辑提交XmMyFocus xm_my_focus父组件监听@submit="afterEditSubmit"
-			editSubmit: function () {
-				this.$refs.editForm.validate((valid) => {
+			//新增、编辑提交XmMyFocus 我关注的项目或者任务父组件监听@submit="afterEditSubmit"
+			saveSubmit: function () {
+				this.$refs.editFormRef.validate((valid) => {
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
 							this.load.edit=true
-							let params = Object.assign({}, this.editForm); 
-							editXmMyFocus(params).then((res) => {
-								this.load.edit=false
-								var tips=res.data.tips;
-								if(tips.isOk){
-									this.$refs['editForm'].resetFields();
-									this.$emit('submit');//  @submit="afterEditSubmit"
-								}
-								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
-							}).catch( err =>this.load.edit=false);
+							let params = Object.assign({}, this.editForm);
+							var func=addXmMyFocus
+							if(this.currOpType=='edit'){
+							    func=editXmMyFocus
+							}
+							func(params).then((res) => {
+                                this.load.edit=false
+                                var tips=res.data.tips;
+                                if(tips.isOk){
+                                    this.editForm=res.data.data
+                                    this.initData()
+                                    this.currOpType="edit";
+                                    this.$emit('submit');//  @submit="afterAddSubmit"
+                                }
+                                this.$notify({ position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
+                            }).catch( err =>this.load.edit=false);
 						});
+					}else{
+					    this.$notify({ showClose:true, message: "表单验证不通过，请修改表单数据再提交", type: 'error' });
 					}
 				});
-			}
-			/**begin 在下面加自定义方法,记得补上面的一个逗号**/
-				
-			/**end 在上面加自定义方法**/
+			},
+			initData: function(){
+			    this.currOpType=this.opType
+			    if(this.xmMyFocus){
+                    this.editForm = Object.assign({},this.xmMyFocus);
+                }
+
+                if(this.opType=='edit'){
+
+                }else{
+
+                }
+                this.editFormBak={...this.editForm}
+            },
+
+            editSomeFields(row,fieldName,$event){
+                if(this.opType=='add'){
+                    return;
+                }
+                let params={};
+                params['pkList']=[row].map(i=>{ return { userid:i.userid,  bizId:i.bizId,  pbizId:i.pbizId}})
+                params[fieldName]=$event
+                var func = editSomeFieldsXmMyFocus
+                func(params).then(res=>{
+                  let tips = res.data.tips;
+                  if(tips.isOk){
+                    this.editFormBak=[...this.editForm]
+                  }else{
+                    Object.assign(this.editForm,this.editFormBak)
+                    this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+                  }
+                }).catch((e)=>Object.assign(this.editForm,this.editFormBak))
+            },
 		},//end method
-		components: {  
-		    //在下面添加其它组件 'xm-my-focus-edit':XmMyFocusEdit
-		},
 		mounted() {
-			this.editForm=Object.assign(this.editForm, this.xmMyFocus);  
+		    this.$nextTick(() => {
+                initDicts(this);
+                this.initData()
+                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el)
+            });
 		}
 	}
 
