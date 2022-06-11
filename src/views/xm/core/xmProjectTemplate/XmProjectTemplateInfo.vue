@@ -5,13 +5,11 @@
 				<div class="info-type">
 					<el-radio-group v-model="infotype" size="medium">
 						<el-radio-button label="任务"></el-radio-button>
-						<el-radio-button label="计划"></el-radio-button> 
-					</el-radio-group> 
+ 					</el-radio-group> 
 				</div>
 				<div class="info-detail">
 					<xm-task-template-mng v-if="infotype=='任务'" :sel-project-template="selProjectTemplate" ></xm-task-template-mng>
-					<xm-phase-template-mng v-if="infotype=='计划'" :sel-project-template="selProjectTemplate" ></xm-phase-template-mng> 
-				</div>
+ 				</div>
 			</div>
 		</el-row>
 	</section>
@@ -24,8 +22,7 @@
 	import { listXmProjectTemplate,editStatus , delXmProjectTemplate, batchDelXmProjectTemplate } from '@/api/xm/core/xmProject'; 
 	import { mapGetters } from 'vuex';
 	import xmTaskTemplateMng from '../xmTaskTemplate/XmTaskTemplateMng'; 
-	import xmProjectTemplateEdit from './XmProjectTemplateEdit';
- 	import xmPhaseTemplateMng from '../xmPhaseTemplate/XmPhaseTemplateMng'; 
+	import xmProjectTemplateEdit from './XmProjectTemplateEdit'; 
  
 	export default { 
 		props: ["selProjectTemplate"],
