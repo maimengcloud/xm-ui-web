@@ -65,8 +65,7 @@
 	import xmCost from '../xmProject/XmProjectCost';
 	import xmBudget from '../xmProject/XmProjectBudgetCost';
 	import xmContract from '../xmContract/XmContractMng';
-	import xmEnvList from '../xmProjectEnvList/XmProjectEnvListMng';
-	import xmPhaseMng from '../xmPhase/XmPhaseMng';
+	import xmEnvList from '../xmProjectEnvList/XmProjectEnvListMng'; 
 	import xmMenuMng from '../xmMenu/XmMenuMng';
 	import xmMenuWithPlan from '../xmMenu/XmMenuWithPlan';
 	import xmProjectStateMng from '../xmProjectState/XmProjectStateMng';
@@ -283,8 +282,7 @@
 
 		},//end methods
 		components: { 
-			xmTaskMng,
-			xmPhaseMng,
+			xmTaskMng, 
 			xmGroupMng,
 			xmExchange,
 			xmQuestion,

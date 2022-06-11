@@ -210,8 +210,7 @@
 	import xmCost from '../xmProject/XmProjectCost';
 	import xmBudget from '../xmProject/XmProjectBudgetCost';
 	import xmContract from '../xmContract/XmContractMng';
-	import xmEnvList from '../xmProjectEnvList/XmProjectEnvListMng';
-	import xmPhaseForProduct from '../xmPhase/xmPhaseForProduct'; 
+	import xmEnvList from '../xmProjectEnvList/XmProjectEnvListMng'; 
 	import xmMenuWithPlan from '../xmMenu/XmMenuWithPlan';
 	import xmProjectStateMng from '../xmProjectState/XmProjectStateMng';
 	import xmTestCaseExecMng from '../xmTestCaseExec/XmTestCaseExecMng';  
@@ -429,8 +428,7 @@ import XmMenuBox from '../xmMenu/XmMenuBox.vue';
 
 		},//end methods
 		components: { 
-			xmTaskMng,
-			xmPhaseForProduct,
+			xmTaskMng, 
 			xmGroupMng,
 			xmExchange,
 			xmQuestion,
