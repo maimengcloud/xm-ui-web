@@ -163,7 +163,7 @@ export default {
             }
             this.getXmMyFocuss();
         },
-        searchXmMyFocuss(){
+        searchXmMyFocuss:function(){
              this.pageInfo.count=true;
              this.getXmMyFocuss();
         },
@@ -195,7 +195,7 @@ export default {
                     this.pageInfo.total = res.data.total;
                     this.pageInfo.count=false;
                     this.xmMyFocuss = res.data.data;
-                    localStorage.setItem('xm-my-foucus-list',JSON.stringify( this.xmMyFocuss ))
+                    localStorage.setItem('xm-my-focus-list',JSON.stringify( this.xmMyFocuss ))
                 }else{
                     this.$notify({ position:'bottom-left',showClose:true, message: tips.msg, type: 'error' });
                 }
@@ -318,7 +318,7 @@ export default {
         this.$nextTick(() => {
             initDicts(this);
             this.initData()
-            var myFocusList=localStorage.getItem('xm-my-foucus-list')
+            var myFocusList=localStorage.getItem('xm-my-focus-list')
             if(myFocusList){
                 this.xmMyFocuss=JSON.parse(myFocusList)
             }else{

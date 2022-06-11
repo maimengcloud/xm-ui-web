@@ -49,9 +49,9 @@
           </div>
         </div>
       </div>
-      <box-card />
+      <box-card ref="boxCard" />
     </div>
-    <module-set v-model="moduleSetVisible" />
+    <module-set v-model="moduleSetVisible" @submit="onModuleSet"/>
   </div>
 </template>
 
@@ -95,8 +95,7 @@ export default {
 
   methods: {
 
-    gotolink(context,path) {
-      ;
+    gotolink(context,path) { 
       if(context==process.env.CONTEXT){
         this.$router.push({path:path});
       }else{
@@ -106,6 +105,9 @@ export default {
       }
 
     },
+    onModuleSet(){
+      this.$refs.boxCard.getFMenus();
+    }
 
   },
 

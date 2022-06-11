@@ -6,8 +6,7 @@ import permission from './modules/permission'
 import tagsView from './modules/tagsView'
 import user from './modules/user'
 import noticeMsg from './modules/noticeMsg'
-import getters from './getters'
-import menuFavorite from './modules/menuFavorite'
+import getters from './getters' 
 
 Vue.use(Vuex)
 
@@ -18,8 +17,7 @@ const store = new Vuex.Store({
     permission,
     tagsView,
     user,
-    noticeMsg,
-    menuFavorite,
+    noticeMsg, 
   },
   getters
 })

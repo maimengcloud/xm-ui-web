@@ -23,7 +23,7 @@
             </div>
         </div>
     </div>
-    <div class="nav" v-loading="menuFavorite.loading.search">
+    <div class="nav">
        <div class="nav_item" :class="{itemActive: item.isChecked}" v-for="(item, index) in (tempMenu.length > 0 ?  tempMenu : menus)" :key="index" @click="selectItem(item, index)">
            <img :src="item.icon" alt="">
            <div class="desc">
@@ -37,7 +37,7 @@
     </div>
     <span slot="footer" class="dialog-footer">
         <el-button @click="visible = false">取 消</el-button>
-        <el-button type="primary" :loading="menuFavorite.loading.add" @click="save">确 定</el-button>
+        <el-button type="primary" @click="save">确 定</el-button>
     </span>
   </el-dialog>
 </template>
@@ -49,6 +49,7 @@ import img3 from '../../img/wdxm.png'
 import img4 from '../../img/wdcp.png'
 import { mapGetters } from 'vuex'
 
+import { userMenuFavoriteList, saveMenuFavoriteList} from '@/api/mdp/sys/menuFavorite'
 
 export default {
     props: ['value'],
@@ -69,14 +70,10 @@ export default {
                 this.$emit('input', val);
             }
         },
-        
-        menuFavorite() {
-            return this.$store.state.menuFavorite;
-        }
     },
 
     watch: {
-        'menuFavorite.fMenu' : {
+        'fMenus' : {
             handler(val, oval) {
                 if(!val || val.length < 1) return
                 this.menus.forEach(m => {
@@ -94,6 +91,7 @@ export default {
         return {
             searchResult: '',
             tempMenu: [],
+            fMenus:[],
             menus: [
                 {
                     menuid: 'dsp',
@@ -144,7 +142,10 @@ export default {
         },
 
         getUserModules() {
-            this.$store.dispatch('getUserFavoriteMenu', {userid: this.userInfo.displayUserid});
+            userMenuFavoriteList({}).then(res=>{
+                localStorage.setItem('fMenus',JSON.stringify(res.data.data));
+                this.fMenus=res.data.data;
+            }) 
         },
 
         save() {
@@ -153,9 +154,11 @@ export default {
                 if(m.isChecked) {
                     saveModules.push(m);
                 }
-            })
-            this.$store.dispatch('saveUserFavoriteMenu', {data: saveModules, userid: this.userInfo.displayUserid}).then(() => {
+            }) 
+            saveMenuFavoriteList({data: saveModules, userid: this.userInfo.displayUserid}).then(() => {
                 this.visible = false
+                localStorage.removeItem('fMenus');
+                this.$emit("submit")
                 this.$notify.success("设置成功");
             })
         }

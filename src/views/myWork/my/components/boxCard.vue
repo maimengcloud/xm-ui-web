@@ -24,13 +24,13 @@
                     :i="item.i"
                     :key="item.i">
                     <div class="m_content_card_title">
-                        <span><b>{{item.menuname}}</b></span>
+                        <span><b>{{item.menuname}}</b></span><span v-if="item.menuid=='myFocus'" style="float:right;"><el-button icon="el-icon-refresh" @click="refreshMyFocus">刷新</el-button></span>
                     </div>
                     <dsp  source="GZT" v-if="item.menuid == 'dsp'"></dsp>
                     <wdrw source="GZT" v-if="item.menuid == 'wdrw'"></wdrw>
                     <wdcp source="GZT" v-if="item.menuid == 'wdcp'"></wdcp>
                     <wdxm source="GZT" v-if="item.menuid == 'wdxm'"></wdxm>
-                    <my-focus source="GZT" v-if="item.menuid == 'myFocus'"></my-focus>
+                    <my-focus source="GZT" v-if="item.menuid == 'myFocus'" ref="refMyFocus"></my-focus>
                 </grid-item>
             </grid-layout>
         </div>
@@ -42,6 +42,7 @@ import dsp from  '@/views/mdp/workflow/ru/task/TaskListAssigneeToMe.vue';
 import wdrw from '@/views/xm/core/xmTask/xmMyTaskCenter.vue';
 import wdcp from '@/views/xm/core/xmProduct/XmProductAllMng.vue';
 import wdxm from '@/views/xm/core/xmProject/XmProjectMng';
+import { userMenuFavoriteList, saveMenuFavoriteList} from '@/api/mdp/sys/menuFavorite'
 
 import myFocus from '@/views/xm/core/xmMyFocus/XmMyFocusList';
 import VueGridLayout from 'vue-grid-layout';
@@ -59,20 +60,18 @@ export default {
     },
 
     computed: {
-        ...mapGetters(['userInfo']),
-        menuFavorite() {
-            return this.$store.state.menuFavorite.fMenu;
-        }
+        ...mapGetters(['userInfo']), 
     },
 
     watch: {
-        'menuFavorite': {
+        'fMenus': {
             handler(val, oval) {
                 this.layout = [];
+                this.addItem({menuid:'myFocus',menuname:'我的关注'}, val.length+1);
                 val.forEach((element, index) => {
                    this.addItem(element, index);
                 });
-                this.addItem({menuid:'myFocus',menuname:'我的关注'}, val.length+1);
+               
             }
         }
     },
@@ -83,10 +82,14 @@ export default {
             layout: [],
             // 布局列数
             layoutColNum: 12,
+            fMenus:[],
         }
     },
 
     methods: {
+        refreshMyFocus(){ 
+            this.$refs['refMyFocus'][0].searchXmMyFocuss();
+        },
         addItem: function(element, index) {
             this.layout.push(
                 {
@@ -101,11 +104,23 @@ export default {
                 }
             )
         },
+        getFMenus(){
+            userMenuFavoriteList({}).then(res=>{
+                localStorage.setItem('fMenus',JSON.stringify(res.data.data));
+                this.fMenus=res.data.data;
+            }) 
+        }
     },
 
     mounted() {
         this.$nextTick(() => {
-            this.$store.dispatch('getUserFavoriteMenu', {userid: this.userInfo.userid});
+            var fMenus=localStorage.getItem("fMenus")
+            if(!fMenus){
+                this.getFMenus();
+            }else{
+                this.fMenus=JSON.parse(fMenus)
+            }
+            
         })
     },
 
