@@ -23,6 +23,7 @@ export default {
         { path: 'xmEnvList/XmEnvListMng', component: _import('xm/core/xmEnvList/XmEnvListMng'), name: 'XmEnvListMng', meta: { title: '环境清单' }},
         { path: 'xmTask/XmTaskCenter', component: _import('xm/core/xmTask/XmTaskCenter'), name: 'xmTaskCenter', meta: { title: '任务大厅' }},
         { path: 'xmTask/XmMyTaskCenter', component: _import('xm/core/xmTask/XmMyTaskCenter'), name: 'xmMyTaskCenter', meta: { title: '任务(我的)' }},
+        { path: 'xmTask/XmTaskDetailRoute', component: _import('xm/core/xmTask/XmTaskDetailRoute'), name: 'XmTaskDetailRoute', meta: { title: '任务详情' },hidden:true},
        
       ]
     },
@@ -54,6 +55,7 @@ export default {
         { path: 'xmQuestion/XmQuestionMngMy', component: _import('xm/core/xmQuestion/XmQuestionMngMy'), name: 'XmQuestionMngMy', meta: { title: '我的缺陷' }},
         { path: 'xmTestCase/XmTestCaseMng', component: _import('xm/core/xmTestCase/XmTestCaseMng'), name: 'XmTestCaseMng', meta: { title: '测试设计' }},
         { path: 'xmTestCaseExec/XmTestCaseExecMng', component: _import('xm/core/xmTestCaseExec/XmTestCaseExecMng'), name: 'XmTestCaseExecMng', meta: { title: '测试执行' }},
+        { path: 'xmQuestion/XmQuestionDetailRoute', component: _import('xm/core/xmQuestion/XmQuestionDetailRoute'), name: 'XmQuestionDetailRoute', meta: { title: '缺陷明细' },hidden:true},
 
       ]
     }, 
@@ -107,6 +109,7 @@ export default {
          { path: 'xmProduct/XmProductRecycle', component: _import('xm/core/xmProduct/XmProductRecycle'), name: 'XmProductRecycle', meta: { title: '产品回收站' }},
 
          { path: 'xmProduct/XmProductTplMng', component: _import('xm/core/xmProduct/XmProductTplMng'), name: 'XmProductTplMng', meta: { title: '产品模板' }},
+         { path: 'xmMenu/XmMenuDetailRoute', component: _import('xm/core/xmMenu/XmMenuDetailRoute'), name: 'XmMenuDetailRoute', meta: { title: '需求明细' },hidden:true},
 
         { path: 'xmMenu/XmMenuMng', component: _import('xm/core/xmMenu/XmMenuMng'), name: 'XmMenuMng', meta: { title: '需求管理' }},
          { path: 'xmMenuExchange/XmMenuExchangeMng', component: _import('xm/core/xmMenuExchange/XmMenuExchangeMng'), name: 'XmMenuExchangeMng', meta: { title: '互动评论' }},

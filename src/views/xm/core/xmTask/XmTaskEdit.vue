@@ -219,6 +219,9 @@
 							<el-step title="提现" description="企业付款完成后，个人对钱包中余额进行提现"></el-step>
 						</el-steps> 
 					</el-tab-pane>
+					<el-tab-pane label="关注" name="91"> 
+						<xm-my-do-focus v-if="activateTabPaneName=='91'" :biz-id="editForm.id" :pbiz-id="editForm.projectId" :biz-name="editForm.name" focus-type="2"></xm-my-do-focus>
+					</el-tab-pane>
 					<el-tab-pane label="日志" name="9">
 						 <xm-record v-if="activateTabPaneName=='9'"  :biz-id="editForm.id" :obj-type="'task'"></xm-record>
 					</el-tab-pane>
@@ -282,7 +285,8 @@
 	import XmSubWorkItem from "@/views/xm/core/xmTaskWorkItem/XmSubWorkItem";
 	import xmQuestionForTask from "@/views/xm/core/xmQuestion/XmQuestionForTask";
 	import XmTaskWorkloadRecord from "../xmTaskWorkload/XmTaskWorkloadRecord"
-import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
+	import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
+	import XmMyDoFocus from '../xmMyFocus/XmMyDoFocus.vue';
 	export default { 
 		computed: {
 			...mapGetters([
@@ -307,7 +311,7 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 				}
 			}
 		},
-		props:['xmTask','visible','xmProject','projectPhase',"parentTask"],
+		props:['xmTask','visible','xmProject',"parentTask"],
 		watch: {
 			'xmTask':function( xmTask ) {  
 			},
@@ -631,7 +635,7 @@ import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 		components: { 
  			xmSkillMng,
 			skillMng,xmMenuSelect,XmTaskList,XmExecuserMng,XmGroupSelect,XmMenuRichDetail,TagMng,XmSubWorkItem,XmTaskWorkloadRecord,XmMenuEdit,
-			XmRecord,xmQuestionForTask,
+			XmRecord,xmQuestionForTask,XmMyDoFocus,
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},
 		mounted() { 

@@ -39,6 +39,7 @@ export const myFocusForIndex = params => { return axios.get(`${base}/xm/core/xmM
 //初始化页面上的字典
 export const initDicts = (that) => {
  var itemCodes=[];//在此添加要加载的字典 如['sex','grade','lvl']
+ that.dicts['focusType']=[{id:'1',name:'项目'},{id:'2',name:'任务'},{id:'3',name:'产品'},{id:'4',name:'需求'},{id:'5',name:'缺陷'},]
  if(itemCodes.length>0){
     initSimpleDicts('all',itemCodes).then(res=>{
         Object.assign(that.dicts,res.data.data)

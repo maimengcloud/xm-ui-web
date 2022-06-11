@@ -54,7 +54,8 @@
 						</div>
                     </div>
                     <div v-for="(o,index) in oths" :key="index" class="list-item">
-                        <el-link @click="toBizPage(o)">{{o.bizName }}</el-link>
+                        <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'focusType',o.focusType)" :key="index" :type="item.className">{{item.name}}</el-tag>
+                        <el-link @click="toBizPage(o)"> {{o.bizName }}</el-link>
                         <div class="tool-bar">
                             <span class="u-btn"> 
                                 <el-button   type="text" @click="handleDel(o,index)" icon="el-icon-remove-outline" title="取消关注"> 取消关注</el-button>     
@@ -205,11 +206,20 @@ export default {
             this.editFormVisible = true;
             this.editForm = Object.assign({}, row);
         },
+        /**
+         *  that.dicts['focusType']=[{id:'1',name:'项目'},{id:'2',name:'任务'},{id:'3',name:'产品'},{id:'4',name:'需求'},{id:'5',name:'缺陷'},]
+         */
         toBizPage(bizObj){
             if(bizObj.focusType=='1'){
                 this.$router.push({path:'/xm/core/xmProject/XmProjectInfoRoute',query:{id:bizObj.bizId}})
             }else if(bizObj.focusType=='3'){
                  this.$router.push({path:'/xm/core/xmProduct/XmProductInfoRoute',query:{id:bizObj.bizId}})
+            }else if(bizObj.focusType=='2'){
+                 this.$router.push({path:'/xm/core/xmTask/XmTaskDetailRoute',query:{id:bizObj.bizId}})
+            }else if(bizObj.focusType=='4'){
+                 this.$router.push({path:'/xm/core/xmMenu/XmMenuDetailRoute',query:{id:bizObj.bizId}})
+            }else if(bizObj.focusType=='5'){
+                 this.$router.push({path:'/xm/core/xmQuestion/XmQuestionDetailRoute',query:{id:bizObj.bizId}})
             }
         },
         //显示新增界面 XmMyFocus 我关注的项目或者任务

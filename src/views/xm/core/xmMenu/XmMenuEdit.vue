@@ -174,6 +174,9 @@
 					<el-tab-pane label="附件" name="8">
 						上传附件
 					</el-tab-pane>
+					<el-tab-pane label="关注" name="91"> 
+						<xm-my-do-focus v-if="activateTabPaneName=='91'" :biz-id="editForm.menuId" :pbiz-id="editForm.productId" :biz-name="editForm.menuName" focus-type="4"></xm-my-do-focus>
+					</el-tab-pane>
 					<el-tab-pane label="日志" name="9">
 						 <xm-record v-if="activateTabPaneName=='9'"  :biz-id="editForm.menuId" :obj-type="'menu'"></xm-record>
 					</el-tab-pane>
@@ -207,7 +210,8 @@ import XmMenuOverview from './XmMenuOverview.vue';
 import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
   	import TagMng from "@/views/mdp/arc/tag/TagMng";
 	import XmSubWorkItem from "@/views/xm/core/xmMenuWorkItem/XmSubWorkItem";
-	import XmRecord from '../xmRecord/XmRecord' 
+	import XmRecord from '../xmRecord/XmRecord'  
+	import XmMyDoFocus from '../xmMyFocus/XmMyDoFocus.vue';
 
 	export default {
 		computed: {
@@ -484,7 +488,8 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 			TagMng,
 			XmMenuExchangeMng,
 			XmSubWorkItem,
-			XmRecord
+			XmRecord,
+			XmMyDoFocus
 		},
 		mounted() {
 

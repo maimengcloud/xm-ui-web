@@ -64,7 +64,7 @@
 								</el-form-item>
 							</el-col>
 						</el-row>
-						<el-tabs value="1">
+						<el-tabs v-model="activateTabPaneName">
 							<el-tab-pane name="1" label="基本信息">
 								<el-row> 
 									
@@ -177,8 +177,10 @@
 
 									</div>
 								</el-form-item>
-							</el-tab-pane> 
-
+							</el-tab-pane>  
+							<el-tab-pane label="关注" name="91"> 
+								<xm-my-do-focus v-if="activateTabPaneName=='91'" :biz-id="editForm.id" :pbiz-id="editForm.projectId" :biz-name="editForm.name" focus-type="5"></xm-my-do-focus>
+							</el-tab-pane>
 							
 							
 							
@@ -230,6 +232,7 @@
   	import TagMng from "@/views/mdp/arc/tag/TagMng";
 	  
 	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
+	import XmMyDoFocus from '../xmMyFocus/XmMyDoFocus.vue';
 
 	export default {
 		computed: {
@@ -315,6 +318,7 @@
 				expectResultEditorVisible:false,
 				opStepEditorVisible:false,
 				xmProductVersions:[{id:"1.0.0" ,name:'1.0.0'}],
+				activateTabPaneName:'1',
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data
@@ -524,6 +528,7 @@
 		components: {
 				//在下面添加其它组件 'xm-question-edit':XmQuestionEdit
 				'upload': AttachmentUpload,XmGroupMng,VueEditor,XmTaskList,xmMenuSelect,XmQuestionHandleMng,TagMng,XmProjectSelect,
+			XmMyDoFocus
 		},
 		mounted() {
 			console.log("question_add");
