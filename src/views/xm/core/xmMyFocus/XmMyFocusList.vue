@@ -98,8 +98,7 @@ export default {
     watch:{
         visible(val){
             if(val==true){
-                this.initData();
-                this.searchXmMyFocuss()
+                this.initData(); 
             }
         }
     },
@@ -170,6 +169,7 @@ export default {
         },
         //获取列表 XmMyFocus 我关注的项目或者任务
         getXmMyFocuss() {
+            debugger;
             let params = {
                 pageSize: this.pageInfo.pageSize,
                 pageNum: this.pageInfo.pageNum,
@@ -189,11 +189,13 @@ export default {
 
             this.load.list = true;
             myFocusForIndex(params).then((res) => {
+                debugger;
                 var tips=res.data.tips;
                 if(tips.isOk){
                     this.pageInfo.total = res.data.total;
                     this.pageInfo.count=false;
                     this.xmMyFocuss = res.data.data;
+                    localStorage.setItem('xm-my-foucus-list',JSON.stringify( this.xmMyFocuss ))
                 }else{
                     this.$notify({ position:'bottom-left',showClose:true, message: tips.msg, type: 'error' });
                 }
@@ -316,7 +318,13 @@ export default {
         this.$nextTick(() => {
             initDicts(this);
             this.initData()
-            this.searchXmMyFocuss();
+            var myFocusList=localStorage.getItem('xm-my-foucus-list')
+            if(myFocusList){
+                this.xmMyFocuss=JSON.parse(myFocusList)
+            }else{
+                this.searchXmMyFocuss();
+            }
+            
             //this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmMyFocusTable.$el)
 
         });
