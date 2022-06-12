@@ -31,6 +31,7 @@
                  :default-checked-keys="defaultCheckedKeys"
                  auto-expand-parent
                  highlight-current
+				 style="min-height:100px;"
                  @check-change="handleCheckChange"
                  @current-change="handleCurrentChange"
                  @node-click="handleNodeClick"
