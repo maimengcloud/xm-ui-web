@@ -73,8 +73,11 @@
  				<el-table-column prop="adminUsername" label="负责人姓名" min-width="80" show-overflow-tooltip></el-table-column>
  				<el-table-column prop="distBudgetWorkload" label="已分配工作量" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="actWorkload" label="实际工作量" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column label="操作" width="100" fixed="right">
+				<el-table-column label="操作" width="150" fixed="right">
 					<template slot-scope="scope">
+						
+						<el-button v-if="menukey=='myFocus'"  type="primary" @click.stop="focusOrUnfocus(scope.row)" >取消关注</el-button> 
+						<el-button v-else  type="text" @click.stop="focusOrUnfocus(scope.row)" >关注</el-button>  
  						<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"></el-button>
 					</template>
 				</el-table-column>
@@ -118,7 +121,7 @@
 
 	import { mapGetters } from 'vuex'
 import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';
-
+	import { addXmMyFocus , delXmMyFocus } from '@/api/xm/core/xmMyFocus';
 	export default {
 		computed: {
 		    ...mapGetters([
@@ -450,7 +453,23 @@ import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue'
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					})
 				})
-			}
+			},
+			focusOrUnfocus:function(row){
+				if(this.menukey=="myFocus"){
+					delXmMyFocus({pbizId:row.productId,focusType:'6',bizId:row.id,bizName:row.iterationName}).then(res=>{
+						var tips=res.data.tips;
+						if(tips.isOk){
+							this.getXmIterations(); 
+						} 
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+					})
+				}else{
+					addXmMyFocus({pbizId:row.productId,focusType:'6',bizId:row.id,bizName:row.iterationName}).then(res=>{
+						var tips=res.data.tips;
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+					})
+				}
+			},
 		},//end methods
 		components: {
 		    'xm-iteration-add':XmIterationAdd,

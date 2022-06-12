@@ -7,11 +7,12 @@
                         <div class="avatar-container">
 							<div class="avatar-wrapper">
  								<img   class="user-avatar" src="../../../myWork/img/cp.png">
-								<span class="username"> 产品</span> 
+								<span class="username"> 产品、项目</span> 
 							</div>    
 						</div>
                     </div>
-                    <div v-for="(o,index) in cps" :key="index" class="list-item">
+                    <div v-for="(o,index) in pps" :key="index" class="list-item">
+                        <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'focusType',o.focusType)" :key="index" :type="item.className">{{item.name}}</el-tag>
                         <el-link @click="toBizPage(o)">{{o.bizName }}</el-link>
                         <div class="tool-bar">
                             <span class="u-btn"> 
@@ -29,11 +30,12 @@
                         <div class="avatar-container">
 							<div class="avatar-wrapper">
  								<img   class="user-avatar" src="../../../myWork/img/xmgl.png">
-								<span class="username"> 项目</span> 
+								<span class="username"> 迭代、需求</span> 
 							</div>    
 						</div>
                     </div>
-                    <div v-for="(o,index) in xms" :key="index" class="list-item">
+                    <div v-for="(o,index) in ims" :key="index" class="list-item">
+                        <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'focusType',o.focusType)" :key="index" :type="item.className">{{item.name}}</el-tag>
                         <el-link @click="toBizPage(o)">{{o.bizName }}</el-link>
                         <div class="tool-bar">
                             <span class="u-btn"> 
@@ -49,11 +51,11 @@
                         <div class="avatar-container">
 							<div class="avatar-wrapper">
  								<img   class="user-avatar" src="../../../myWork/img/xqgl.png">
-								<span class="username">需求、任务、缺陷</span> 
+								<span class="username">任务、缺陷</span> 
 							</div>    
 						</div>
                     </div>
-                    <div v-for="(o,index) in oths" :key="index" class="list-item">
+                    <div v-for="(o,index) in tbs" :key="index" class="list-item">
                         <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'focusType',o.focusType)" :key="index" :type="item.className">{{item.name}}</el-tag>
                         <el-link @click="toBizPage(o)"> {{o.bizName }}</el-link>
                         <div class="tool-bar">
@@ -84,14 +86,14 @@ export default {
     props:['visible'],
     computed: {
         ...mapGetters(['userInfo']),
-        cps(){
-            return this.xmMyFocuss.filter(k=>k.focusType=='3')
+        pps(){
+            return this.xmMyFocuss.filter(k=>k.focusType=='1'||k.focusType=='3')
         },
-        xms(){
-            return this.xmMyFocuss.filter(k=>k.focusType=='1')
+        ims(){
+            return this.xmMyFocuss.filter(k=>k.focusType=='4'||k.focusType=='6')
         }, 
-        oths(){
-            return this.xmMyFocuss.filter(k=>k.focusType!='1' && k.focusType!='3')
+        tbs(){
+            return this.xmMyFocuss.filter(k=>k.focusType=='2' || k.focusType=='5')
         }
 
     },
@@ -222,7 +224,11 @@ export default {
                  this.$router.push({path:'/xm/core/xmMenu/XmMenuDetailRoute',query:{id:bizObj.bizId}})
             }else if(bizObj.focusType=='5'){
                  this.$router.push({path:'/xm/core/xmQuestion/XmQuestionDetailRoute',query:{id:bizObj.bizId}})
+            }else if(bizObj.focusType=='6'){
+                 this.$router.push({path:'/xm/core/xmIteration/XmIterationInfoRoute',query:{id:bizObj.bizId}})
             }
+
+            
         },
         //显示新增界面 XmMyFocus 我关注的项目或者任务
         showAdd: function () {
@@ -371,7 +377,7 @@ export default {
 }
 
 .list-item{
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .list-item:hover{
