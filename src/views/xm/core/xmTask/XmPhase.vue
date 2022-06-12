@@ -138,18 +138,6 @@
                 >
               </el-col>
             </el-row> 
-            <el-row> 
-              <el-col :span="24" style="padding-top: 5px">
-                <el-button  title="一般情况下默认半个小时会统一更新一次，不需要手动更新，如需要立即汇总数据到上级计划，可以手动执行刷新操作"
-                   
-                  @click="calcProjectProgress"
-                  v-loading="load.edit"
-                  icon="el-icon-edit"
-                  type="warning"
-                  >刷新全部计划进度数据</el-button
-                >
-              </el-col>
-            </el-row>
             <el-button style="margin-top: 10px;" slot="reference">更多</el-button>
           </el-popover> 
           </span>
