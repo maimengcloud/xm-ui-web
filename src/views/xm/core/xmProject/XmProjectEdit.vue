@@ -103,13 +103,12 @@
 							</el-row>
 							<el-form-item label="起止时间" >  
 							<el-row>
-								<date-range
+								<date-range 
 									v-model="editForm"
 									class="hidden-sm-and-down"
 									type="daterange"
 									start-key="startTime"
-									end-key="endTime"
-									align="right"
+									end-key="endTime" 
 									:auto-default="opType=='add'"
 									unlink-panels
 									range-separator="至"

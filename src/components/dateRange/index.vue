@@ -1,4 +1,4 @@
-<template>  
+<template>   
   <el-date-picker :type="type" :style="styleObj"  v-model="dateRange" :value-format="valueFormat" :format="format" 
        unlink-panels
       :range-separator="rangeSepaSrator"
@@ -6,8 +6,8 @@
       :end-placeholder="endPlaceholder"
       :default-range="[-30,0]"
       @change="onDateRangeChange"
-      :picker-options="pickerOptions"
-      ></el-date-picker>  
+      :picker-options="pickerOptions"   
+      ></el-date-picker>   
 </template>
 
 <script> 
@@ -52,7 +52,7 @@ export default {
      
     styleObj:{
         typeof:Object,
-        default:function(){return {'display':'inline'}}
+        default:function(){return { }}
     },
     
     endKey: {
