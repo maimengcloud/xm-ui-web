@@ -49,20 +49,20 @@
 							</el-row>   
 							<el-row>
 								<el-col :span="8">
-							<el-form-item label="项目总控"  prop="admUserid">
-								<el-input readonly v-model="editForm.admUsername" @click.native="showUserVisible('admUserid')"></el-input>
+							<el-form-item label=" 项目总控"  prop="admUserid">
+								<el-input style="width:80%;" readonly v-model="editForm.admUsername" @click.native="showUserVisible('admUserid')"></el-input>
 								<font style="font-size:12px;" color="blue"></font> 
 							</el-form-item>  
 								</el-col>
 								<el-col :span="8">
-							<el-form-item label="项目经理" prop="pmUserid"> 
-								<el-input readonly v-model="editForm.pmUsername" @click.native="showUserVisible('pmUserid')"></el-input>
+							<el-form-item label=" 项目经理" prop="pmUserid"> 
+								<el-input style="width:80%;" readonly v-model="editForm.pmUsername" @click.native="showUserVisible('pmUserid')"></el-input>
 								<font style="font-size:12px;" color="blue"></font> 
 							</el-form-item> 
 								</el-col>
 								<el-col :span="8">
-							<el-form-item label="副经理、助理" prop="assUserid"> 
-								<el-input readonly v-model="editForm.assUsername" @click.native="showUserVisible('assUserid')"></el-input>
+							<el-form-item label=" 副经理、助理" prop="assUserid"> 
+								<el-input style="width:80%;" readonly v-model="editForm.assUsername" @click.native="showUserVisible('assUserid')"></el-input>
 								<font style="font-size:12px;" color="blue"></font> 
 							</el-form-item>  
 								</el-col>
@@ -221,7 +221,7 @@
 				</el-form>    
 		</el-row>
 		<el-row>  
-				<el-button   type="text" @click.native="handleCancel" >关闭</el-button>  
+				<!-- <el-button   type="text" @click.native="handleCancel" >关闭</el-button>   -->
 				<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>  
 				<span v-if="opType!=='add'" style="float:right;">
  					<el-button icon="el-icon-star-on"  type="success"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_start_approva'})">立项申请</el-button>
