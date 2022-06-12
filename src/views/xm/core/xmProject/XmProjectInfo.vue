@@ -249,12 +249,12 @@ import XmPlan from '../xmTask/XmPlan.vue';
 
 
       },
-      setInfotype(infotype){
-		  this.infotype=infotype;
+      setInfotype(infotype){ 
 		  
 		  if(infotype=='返回'){
 				this.goBack()
 		}else{
+			this.infotype=infotype;
 			localStorage.setItem('project-infotype',infotype);
 		}
 	  },

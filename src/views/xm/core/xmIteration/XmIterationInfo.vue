@@ -84,16 +84,7 @@
 		      'userInfo','roles'
 				]),
 		},
-		watch:{
-			xmIteration:function(xmIteration){
-				var oldInfotype=this.infotype
-				this.infotype=''
-				this.$nextTick(()=>{
-
-					this.infotype=oldInfotype
-				})
-
-			}
+		watch:{ 
 		},
 		data() {
 			return {
@@ -159,8 +150,10 @@
 		  
 			if(infotype=='返回'){
 				this.goBack()
+			}else{
+				localStorage.setItem('iteration-infotype',infotype);
 			}
-			localStorage.setItem('iteration-infotype',infotype);
+			
 	  },
       handleExport() {
         this.downloadLoading = true
