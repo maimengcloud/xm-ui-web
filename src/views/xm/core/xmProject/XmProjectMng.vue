@@ -213,7 +213,7 @@
 									placement="left"
 									trigger="hover"> -->
 									 
-										<el-button v-if="menukey=='myFocus'"  type="primary" @click.stop="focusOrUnfocus(scope.row)" >取消关注</el-button> 
+										<el-button v-if="menukey=='myFocus'"  type="text" @click.stop="focusOrUnfocus(scope.row)" >取消关注</el-button> 
 										<el-button v-else  type="text" @click.stop="focusOrUnfocus(scope.row)" >关注</el-button>  
 										<el-button    type="text" @click.stop="intoInfo(scope.row)" >视图</el-button> 
 										<el-button   type="text" title="通过复制快速创建新项目" @click.stop="onCopyToBtnClick(scope.row)" v-loading="load.add">复制</el-button>
