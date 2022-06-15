@@ -40,12 +40,28 @@
 						</el-form>
 					</template>
 				</el-table-column>
-				<el-table-column prop="username" label="姓名" min-width="300" >
+				<el-table-column prop="username" label="姓名" min-width="150" >
 					<template slot-scope="scope">
 						<div>
-						{{scope.row.username}} <el-tag type="info">{{scope.row.quoteStartTime }}~{{scope.row.quoteEndTime}}</el-tag> <el-tooltip  content="报价金额"><el-tag type="danger">{{scope.row.quoteAmount}}元</el-tag></el-tooltip>
-						<el-popover trigger="hover"
-							width="400" >
+						{{scope.row.username}}  
+						</div>
+					</template>
+				</el-table-column> 
+				
+				<el-table-column prop="quoteStartTime" label="报价工期" min-width="150" >
+					<template slot-scope="scope"> 
+						{{scope.row.quoteStartTime }}~{{scope.row.quoteEndTime}}
+					</template>
+				</el-table-column> 
+				
+				<el-table-column prop="status" label="状态" width="100" >
+					<template slot-scope="scope"> 
+						 <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'projectTaskExecuserStatus',scope.row.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
+					</template>
+				</el-table-column> 
+				
+				<el-table-column  label="操作"   width="200" >
+					<template slot-scope="scope"> 
 							<el-row>
   									<!--结算状态0未结算1已部分结算2无需结算4已申请结算5结算失败6已全部结算--> 
 									<el-button type="primary" v-if="scope.row.status=='7' " @click="becomeCandidate(scope.row)">成为候选人</el-button>
@@ -54,15 +70,6 @@
 									<el-button type="primary" v-if="scope.row.status=='0'"   @click="execute(scope.row)">成为执行人</el-button>
 									<el-button type="warning" v-if="scope.row.status!='7' " @click="leave(scope.row)">离开任务</el-button> 
 							</el-row>
-								<font slot="reference">
-										<el-link type="primary" v-if="scope.row.status=='0'">候选中({{formatToDoByStatus(scope.row)}})</el-link>
-										<el-link type="success" v-else-if="scope.row.status=='1'">执行中({{formatToDoByStatus(scope.row)}})</el-link> 
-										<el-link type="info" v-else-if="scope.row.status=='7'">已放弃任务({{formatToDoByStatus(scope.row)}})</el-link>
-										<el-link type="danger" v-else-if="scope.row.status=='8'">黑名单({{formatToDoByStatus(scope.row)}})</el-link> 
-								</font>
-
-						</el-popover>
-						</div>
 					</template>
 				</el-table-column> 
 			</el-table>
@@ -205,6 +212,7 @@
 			}
 		},//end data
 		methods: {
+			...util,
 			handleSizeChange(pageSize) {
 				this.pageInfo.pageSize=pageSize;
 				this.getXmTaskExecusers();
