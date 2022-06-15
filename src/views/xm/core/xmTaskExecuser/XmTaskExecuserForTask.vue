@@ -60,15 +60,15 @@
 					</template>
 				</el-table-column> 
 				
-				<el-table-column  label="操作"   width="200" >
+				<el-table-column  label="操作"   width="350" >
 					<template slot-scope="scope"> 
 							<el-row>
   									<!--结算状态0未结算1已部分结算2无需结算4已申请结算5结算失败6已全部结算--> 
-									<el-button type="primary" v-if="scope.row.status=='7' " @click="becomeCandidate(scope.row)">成为候选人</el-button>
-									<el-button type="danger" v-if="scope.row.status=='7' " @click="handleDel(scope.row)">删除</el-button>
-									<el-button type="warning" v-if="scope.row.status=='0'"  @click="showQuotePrice(scope.row)">修改报价信息</el-button>
-									<el-button type="primary" v-if="scope.row.status=='0'"   @click="execute(scope.row)">成为执行人</el-button>
-									<el-button type="warning" v-if="scope.row.status!='7' " @click="leave(scope.row)">离开任务</el-button> 
+									<el-button type="text" v-if="scope.row.status=='7' " @click="becomeCandidate(scope.row)">成为候选人</el-button>
+									<el-button type="text" v-if="scope.row.status=='7' " @click="handleDel(scope.row)">删除</el-button>
+									<el-button type="text" v-if="scope.row.status=='0'"  @click="showQuotePrice(scope.row)">修改报价</el-button>
+									<el-button type="text" v-if="scope.row.status=='0'"   @click="execute(scope.row)">成为执行人</el-button>
+									<el-button type="text" v-if="scope.row.status!='7' " @click="leave(scope.row)">离开任务</el-button> 
 							</el-row>
 					</template>
 				</el-table-column> 
