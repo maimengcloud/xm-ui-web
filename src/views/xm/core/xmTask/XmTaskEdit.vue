@@ -167,6 +167,10 @@
 					<el-tab-pane label="缺陷" name="41" v-if="editForm.ntype!='1'">  
 						<xm-question-for-task v-if="activateTabPaneName=='41'"  :xm-task="editForm" :sel-project="xmProject"></xm-question-for-task>
 					</el-tab-pane>
+					
+					<el-tab-pane label="执行人" name="42" v-if="editForm.ntype!='1'"> 
+						<xm-task-execuser-for-task v-if="activateTabPaneName=='42'" :xm-task="editForm" ></xm-task-execuser-for-task>
+					</el-tab-pane>
 					<el-tab-pane label="工时" name="5"> 
 						 <xm-task-workload-record v-if="activateTabPaneName=='5'" :xm-task="editForm" ></xm-task-workload-record>
 					</el-tab-pane>
@@ -287,6 +291,7 @@
 	import XmTaskWorkloadRecord from "../xmTaskWorkload/XmTaskWorkloadRecord"
 	import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 	import XmMyDoFocus from '../xmMyFocus/XmMyDoFocus.vue';
+	import XmTaskExecuserForTask from '../xmTaskExecuser/XmTaskExecuserForTask.vue';
 	export default { 
 		computed: {
 			...mapGetters([
@@ -635,7 +640,7 @@
 		components: { 
  			xmSkillMng,
 			skillMng,xmMenuSelect,XmTaskList,XmExecuserMng,XmGroupSelect,XmMenuRichDetail,TagMng,XmSubWorkItem,XmTaskWorkloadRecord,XmMenuEdit,
-			XmRecord,xmQuestionForTask,XmMyDoFocus,
+			XmRecord,xmQuestionForTask,XmMyDoFocus,XmTaskExecuserForTask
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},
 		mounted() { 
