@@ -24,7 +24,7 @@
                     :i="item.i"
                     :key="item.i">
                     <div class="m_content_card_title">
-                        <span><b>{{item.menuname}}</b></span><span v-if="item.menuid=='myFocus'" style="float:right;"><el-button icon="el-icon-refresh" @click="refreshMyFocus">刷新</el-button></span>
+                        <span><b>{{item.menuname}}</b><font style="font-size:14px;color: #7D7D7D;opacity: 0.53;">(及时取消关注不常用的，常用的5个排在最前面)</font></span><span v-if="item.menuid=='myFocus'" style="float:right;"><el-button icon="el-icon-refresh" @click="refreshMyFocus">刷新</el-button></span>
                     </div>
                     <dsp  source="GZT" v-if="item.menuid == 'dsp'"></dsp>
                     <wdrw source="GZT" v-if="item.menuid == 'wdrw'"></wdrw>

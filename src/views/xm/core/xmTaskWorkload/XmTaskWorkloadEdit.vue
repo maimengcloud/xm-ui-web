@@ -35,24 +35,35 @@
 				
 				
 				<el-row>
-
-					<el-col :span="12">
-						<el-form-item label="工作时长" prop="workload">
-							<el-input  type="number" style="width:80%;" :step="8" :min="0" :max="1000" v-model="editForm.workload" placeholder="工作时长"></el-input> 小时
-							 
-						</el-form-item>  
-					</el-col> 
+					
 					<el-col :span="12"> 
-						<el-form-item label="计算方式" prop="workloadFillType">
+						<el-form-item label="计时方式" prop="workloadFillType">
  							<el-select v-model="workloadFillType" style="display:inline;">
 								<el-option value="1" label="正常报工(都适用)"></el-option>
 								<el-option value="2" label="按报价工时减去已登记工时一次性填满（适合众包报价任务）"></el-option>
 								<el-option value="3" label="按预估工时减去已登记工时一次性填满（适合不严格要求报工，但为了统计进度等）"></el-option>
 							</el-select>
 						</el-form-item>  
-					</el-col>
-				
+					</el-col> 
+					<el-col :span="12"> 
+						<el-form-item label="任务执行人">
+ 							 {{xmTask.executorUsername}}
+						</el-form-item>  
+					</el-col> 
+				</el-row>
+				<el-row>
+					<el-col :span="12">
+						<el-form-item label="工作时长" prop="workload">
+							<el-input  type="number" style="width:80%;" :step="8" :min="0" :max="1000" v-model="editForm.workload" placeholder="工作时长"></el-input> 小时
+							 
+						</el-form-item>  
+					</el-col> 
 					
+					<el-col :span="12">
+						<el-form-item label="工时归属" prop="username">
+							<el-input   style="width:80%;" v-model="editForm.username" placeholder="工时归属工作人员，点击更换" @click.native="groupUserSelectVisible=true"></el-input> 
+						</el-form-item>  
+					</el-col> 
 				</el-row>  
 				<el-row v-if="workloadFillType=='2'">  
 					<el-form-item label="报价工时" prop="quoteWorkload">
@@ -64,9 +75,7 @@
 					<el-col :span="12">
 						<el-form-item label="未来工时" prop="rworkload">
 							<el-input :step="8"   :max="1000"  type="number" style="width:80%;" v-model="editForm.rworkload" placeholder="预计还要多少工时能够完成工作"></el-input>  小时
-							
-						</el-form-item>  
-						
+						</el-form-item>   
 					</el-col>   <font color="blue">注意：未来工时指完成工作还需要继续投入的工时，一般在原始预估出现比较大的偏差时，需要对预估偏差进行重新调整才填写。</font>
 				</el-row>  
 				
@@ -79,6 +88,10 @@
 		    <el-button @click.native="handleCancel">取消</el-button>
             <el-button v-loading="load.edit" type="primary" @click.native="saveSubmit" :disabled="load.edit==true">提交</el-button>
 		</el-row>
+		
+		<el-drawer append-to-body title="选择负责人"  :visible.sync="groupUserSelectVisible" size="60%"    :close-on-click-modal="false">
+			<xm-group-select  :visible="groupUserSelectVisible" :sel-project="{id:xmTask.projectId,projectName:xmTask.projectName}" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-group-select>
+		</el-drawer>
 	</section>
 </template>
 
@@ -89,12 +102,13 @@
 	import { addXmTaskWorkload,editXmTaskWorkload } from '@/api/xm/core/xmTaskWorkload';
 	import { listXmTaskExecuser  } from '@/api/xm/core/xmTaskExecuser';
 
+	import XmGroupSelect from '../xmGroup/XmGroupSelect.vue';
 	import { mapGetters } from 'vuex'
 
 	export default {
 	    name:'xmTaskWorkloadEdit',
 	    components: {
-
+			XmGroupSelect
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
@@ -168,6 +182,7 @@
 				},
 				execuser:null,
 				workloadFillType:'1',//工时填写方式
+				groupUserSelectVisible:false,
 			}//end return
 		},//end data
 		methods: {
@@ -216,13 +231,16 @@
                 }else{
 					if(this.xmTask){
 						this.editForm.taskId=this.xmTask.id
-						this.editForm.ttype=this.xmTask.taskType
+						this.editForm.ttype=this.xmTask.taskType 
 					}
 					this.editForm.bizDate=util.getDate();
 					if(!this.editForm.ttype){
 						this.editForm.ttype="4"
 					}
 					this.editForm.workload=8
+					this.editForm.userid=this.userInfo.userid
+					this.editForm.username=this.userInfo.username
+					this.editForm.ubranchId=this.userInfo.branchId
                 }
             },
 			listXmTaskExecuser(){
@@ -236,6 +254,17 @@
 						this.$notify({position:'bottom-left',showClose:true,message:'没有找到报价信息',type:'error'})
 					}
 				});
+			},
+			groupUserSelectConfirm(users){
+				if(!users||users.length<=0){
+					this.$notify({position:'bottom-left',showClose:true,message:'请选择一个用户',type:'error'})
+					return;
+				}
+				this.groupUserSelectVisible=false;
+				var user=users[0]
+				this.editForm.userid=user.userid
+				this.editForm.username=user.username
+				this.editForm.ubranchId=user.obranchId
 			}
 
 		},//end method
