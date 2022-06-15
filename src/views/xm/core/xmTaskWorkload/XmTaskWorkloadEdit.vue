@@ -76,7 +76,7 @@
 						<el-form-item label="未来工时" prop="rworkload">
 							<el-input :step="8"   :max="1000"  type="number" style="width:80%;" v-model="editForm.rworkload" placeholder="预计还要多少工时能够完成工作"></el-input>  小时
 						</el-form-item>   
-					</el-col>   <font color="blue">注意：未来工时指完成工作还需要继续投入的工时，一般在原始预估出现比较大的偏差时，需要对预估偏差进行重新调整才填写。</font>
+					</el-col>   <font color="blue">注意：未来工时指完成工作还需要继续投入的工时，一般在原始预估出现比较大的偏差时，需要对预估偏差进行重新调整才填写。0代表百分百完成</font>
 				</el-row>  
 				
 				<el-form-item label="工作说明" prop="remark">
@@ -113,8 +113,8 @@
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
 			
-			budgetWorkload(){
-				if(this.editForm.rworkload>0){
+			budgetWorkload(){ 
+				if(this.editForm.rworkload!=null && this.editForm.rworkload!="" && this.editForm.rworkload>=0){
 					return parseFloat(this.editForm.rworkload)+parseFloat(this.editForm.workload?this.editForm.workload:0)+parseFloat(this.xmTask.actWorkload?this.xmTask.actWorkload:0)
 				}else{
 					return this.xmTask.budgetWorkload;
@@ -122,7 +122,7 @@
 			},
 			
 			rate(){
-				if(this.editForm.rworkload>0){
+				if(this.editForm.rworkload!=null && this.editForm.rworkload!="" &&  this.editForm.rworkload>=0){
 					return Math.round((parseFloat(this.editForm.workload?this.editForm.workload:0)+parseFloat(this.xmTask.actWorkload?this.xmTask.actWorkload:0))/(parseFloat(this.editForm.rworkload)+parseFloat(this.editForm.workload?this.editForm.workload:0)+parseFloat(this.xmTask.actWorkload?this.xmTask.actWorkload:0))*100)
 				}else{
 					return Math.round((parseFloat(this.editForm.workload?this.editForm.workload:0)+parseFloat(this.xmTask.actWorkload?this.xmTask.actWorkload:0))/this.xmTask.budgetWorkload *100);
@@ -135,7 +135,7 @@
 		watch: {
 	      'xmTaskWorkload':function( xmTaskWorkload ) {
 	        if(xmTaskWorkload){
-	            this.editForm = xmTaskWorkload;
+	           Object.assign(this.editForm,xmTaskWorkload);
 	        }
 
 	      },
@@ -173,7 +173,7 @@
 					]
 				},
 				editForm: {
-					userid:'',username:'',ctime:'',taskId:'',cuserid:'',bizDate:'',wstatus:'',remark:'',ttype:'',id:'',sbillId:'',stime:'',sstatus:'',amt:'',samt:'',workload:'',rwokkload:''
+					userid:'',username:'',ctime:'',taskId:'',cuserid:'',bizDate:'',wstatus:'',remark:'',ttype:'',id:'',sbillId:'',stime:'',sstatus:'',amt:'',samt:'',workload:'',rworkload:''
 				},
 				rwokkload:0,
                 maxTableHeight:300,
@@ -241,6 +241,8 @@
 					this.editForm.userid=this.userInfo.userid
 					this.editForm.username=this.userInfo.username
 					this.editForm.ubranchId=this.userInfo.branchId
+					this.editForm.rworkload=""; 
+					this.editForm.workloadFillType="1";
                 }
             },
 			listXmTaskExecuser(){
