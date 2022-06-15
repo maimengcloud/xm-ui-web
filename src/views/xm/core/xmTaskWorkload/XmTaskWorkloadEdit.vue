@@ -173,7 +173,7 @@
 					]
 				},
 				editForm: {
-					userid:'',username:'',ctime:'',taskId:'',cuserid:'',bizDate:'',wstatus:'',remark:'',ttype:'',id:'',sbillId:'',stime:'',sstatus:'',amt:'',samt:'',workload:'',rworkload:''
+					userid:'',username:'',ctime:'',taskId:'',cuserid:'',bizDate:'',wstatus:'',remark:'',ttype:'',id:'',sbillId:'',stime:'',sstatus:'',amt:'',samt:'',workload:'',rworkload:null
 				},
 				rwokkload:0,
                 maxTableHeight:300,
@@ -241,7 +241,7 @@
 					this.editForm.userid=this.userInfo.userid
 					this.editForm.username=this.userInfo.username
 					this.editForm.ubranchId=this.userInfo.branchId
-					this.editForm.rworkload=""; 
+					this.editForm.rworkload=null; 
 					this.editForm.workloadFillType="1";
                 }
             },
