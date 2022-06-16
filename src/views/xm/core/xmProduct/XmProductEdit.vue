@@ -12,20 +12,29 @@
 		</el-row>
 		<el-row class="page-main">
 			<!--新增界面 XmProduct 产品表--> 
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
-				<el-form-item label="产品代号" prop="code">
-					<el-input v-model="editForm.code" placeholder="产品编码" ></el-input>
-					<font color="blue" style="font-size:10px;">产品代号为合同上的产品代号，甲乙方共享;产品内部编号为代号-四位随机码</font>
-				</el-form-item> 
-				<el-form-item label="产品名称" prop="productName">
+			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm"> 
+				<el-form-item label="名称" prop="productName">
 					<el-input v-model="editForm.productName" placeholder="产品名称" ></el-input>
 				</el-form-item>  
-				
-				<el-form-item label="状态" prop="pstatus">
-					<el-select v-model="editForm.pstatus" placeholder="状态" >
-						<el-option v-for="(item,index) in dicts['xmProductPstatus']" :label="item.name" :value="item.id" :key="index"></el-option>
-					</el-select>
-				</el-form-item>  
+				<el-row>
+					<el-col :span="8">
+						<el-form-item label="编号" prop="id">
+							 {{editForm.code}}
+						</el-form-item>  
+					</el-col>
+					<el-col :span="8">
+						<el-form-item label="产品代号" prop="code">
+							 {{editForm.code}}
+						</el-form-item>  
+					</el-col>
+					<el-col :span="8"> 
+						<el-form-item label="状态" prop="pstatus">
+							<el-select v-model="editForm.pstatus" placeholder="状态" >
+								<el-option v-for="(item,index) in dicts['xmProductPstatus']" :label="item.name" :value="item.id" :key="index"></el-option>
+							</el-select>
+						</el-form-item>  
+					</el-col>
+				</el-row> 
 				<el-row>
 					<el-col :span="8">
 				<el-form-item label="总监"  prop="admUserid">
@@ -47,7 +56,7 @@
 					</el-col>
 				</el-row> 
 				<el-form-item label="备注" prop="remark">
-					<el-input v-model="editForm.remark" type="textarea" :autosize="{ minRows: 4, maxRows: 20}"  placeholder="备注" ></el-input>
+					<el-input v-model="editForm.remark" :rows="10" type="textarea" :autosize="{ minRows: 4, maxRows: 20}"  placeholder="备注" ></el-input>
 				</el-form-item>  
 			</el-form>
 			
@@ -107,14 +116,14 @@
 				dicts:{xmProductPstatus:[]},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, add: false, del: false, edit: false },//查询中...
 				editFormRules: {
-					id: [
-						{ required: true, message: '产品编号不能为空', trigger: 'blur' }
+					productName: [
+						{ required: true, message: '产品名称不能为空', trigger: 'change' },
+						{ min:10,max:250, message: '名称长度在10-250个字符', trigger: 'change' }
 					],
 					
-					productName: [
-						{ required: true, message: '产品名称不能为空', trigger: 'blur' }
-					], 
-					
+					id: [
+						{ required: true, message: '产品编号不能为空', trigger: 'change' }
+					],
 					code: [
 						{ required: true, message: '产品代号不能为空', trigger: 'change' }
 					],
@@ -125,6 +134,9 @@
 					
 					admUserid: [
 						{ required: true, message: '产品总监不能为空', trigger: 'change' }
+					],
+					remark:[ 
+						{ min:0,max:250, message: '备注长度在10-250个字符', trigger: 'change' }
 					]
 				},
 				//新增界面数据 产品表
@@ -162,6 +174,8 @@
 								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err  => this.load.edit=false);
 						});
+					}else{
+						this.$notify({position:'bottom-left',showClose:true,message: "表单验证不通过，请修改后提交", type: 'error' }); 
 					}
 				});
 			},

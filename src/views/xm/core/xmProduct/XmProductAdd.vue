@@ -87,7 +87,8 @@
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				addFormRules: {  
 					productName: [
-						{ required: true, message: '产品名称不能为空', trigger: 'change' }
+						{ required: true, message: '产品名称不能为空', trigger: 'change' },
+						{ min:10,max:250, message: '名称长度在10-250个字符', trigger: 'change' }
 					],
 					
 					code: [
@@ -100,6 +101,9 @@
 					
 					admUserid: [
 						{ required: true, message: '产品总监不能为空', trigger: 'change' }
+					],
+					remark:[ 
+						{ min:0,max:250, message: '备注长度在10-250个字符', trigger: 'change' }
 					]
 				},
 				//新增界面数据 产品表
