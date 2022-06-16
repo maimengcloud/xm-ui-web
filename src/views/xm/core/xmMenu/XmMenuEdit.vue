@@ -294,13 +294,17 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 						//{ required: true, message: '需求编号不能为空', trigger: 'blur' }
 					],
 					menuName: [
-						{ required: true, message: '需求名称不能为空', trigger: 'blur' }
+						{ required: true, message: '需求名称不能为空', trigger: 'change' },
+						{ min: 2, max: 250, message: '长度在 2 到 250 个字符', trigger: 'change' },//长度
 					],
 					seqNo: [
-						{ required: true, message: '序号不能为空', trigger: 'blur' }
+						{ required: true, message: '序号不能为空', trigger: 'change' }
 					],
 					mmUserid: [
-						{ required: true, message: '负责人不能为空', trigger: 'blur' }
+						{ required: true, message: '负责人不能为空', trigger: 'change' }
+					], 
+					remark: [ 
+						{ max: 1000, message: '长度在 0 到 1000 个字符', trigger: 'change' },//长度 
 					],
 				},
 				//新增界面数据 项目需求表
@@ -446,20 +450,44 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 					}
 				}
 
-				editXmMenuSomeFields(params).then(res=>{ 
-					var tips = res.data.tips;
-					if(tips.isOk){
-						Object.assign(row,params)
-						Object.assign(this.editFormBak,row)
-						this.$emit("edit-fields",params);
-						if(fieldName==='remark'||fieldName==='link'){
+				var func=(params)=>{
+					editXmMenuSomeFields(params).then(res=>{ 
+						var tips = res.data.tips;
+						if(tips.isOk){
+							Object.assign(row,params)
+							Object.assign(this.editFormBak,row)
+							this.$emit("edit-fields",params);
+							if(fieldName==='remark'||fieldName==='link'){
+								this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+							}
+						}else{ 
+							Object.assign(this.editForm,this.editFormBak)
 							this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 						}
-					}else{ 
-						Object.assign(this.editForm,this.editFormBak)
-						this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
-					}
-				})
+					})
+				}
+				
+				if(fieldName=='remark'){
+					this.$refs.editForm.validateField('remark',err=>{
+						if(err){ 
+							this.$notify({position:'bottom-left',showClose:true,message: err,type: 'error'})
+							return;
+						}else{
+							func(params)
+						}
+					})
+				}else if(fieldName=='menuName'){  
+					this.$refs.editForm.validateField('menuName',err=>{
+						if(err){
+							this.$notify({position:'bottom-left',showClose:true,message: err,type: 'error'})
+							return;
+						}else{
+							func(params)
+						}
+					})
+				}else{
+					func(params)
+				}
 			},
 			onAddSubMenu(menu){
 				

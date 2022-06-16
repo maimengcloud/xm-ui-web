@@ -237,14 +237,25 @@
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				addFormRules: {
 					name: [
-						{required: true, message: '缺陷标题不可为空', trigger: 'blur' }
+						{required: true, message: '缺陷标题不可为空', trigger: 'change' },
+						{ min: 2, max: 250, message: '长度在 2 到 250 个字符', trigger: 'change' },//长度
 					],
 					askUsername: [
-						{required: true, message: '提出人不可为空', trigger: 'blur' }
+						{required: true, message: '提出人不可为空', trigger: 'change' }
 					],
 					handlerUsername: [
-						{required: true, message: '请指派给一个人', trigger: 'blur' }
+						{required: true, message: '请指派给一个人', trigger: 'change' }
 					],
+					description: [ 
+						{ min: 0, max: 250, message: '缺陷描述长度在 0 到 1000 个字符', trigger: 'change' },//长度
+					],
+					opStep: [ 
+						{ min: 0, max: 250, message: '测试步骤长度在 0 到 1000 个字符', trigger: 'change' },//长度
+					],
+					expectResult: [ 
+						{ min: 0, max: 250, message: '预期结果长度在 0 到 1000 个字符', trigger: 'change' },//长度
+					],
+					
 				},
 				//新增界面数据 xm_question
 				addForm: {
@@ -310,6 +321,8 @@
 								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.add=false);
 						});
+					}else{
+						this.$notify({position:'bottom-left',showClose:true,message: "表单验证不通过", type: 'error' });
 					}
 				});
 			},

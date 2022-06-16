@@ -306,9 +306,14 @@
 					xmTaskSettleSchemel:[],
 				},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
-				addFormRules: {
+				addFormRules: { 
 					name: [
-						{ required: true, message: '任务名称不能为空', trigger: 'change' }
+						{ required: true, message: '任务名称不能为空', trigger: 'change' },
+						{ min: 2, max: 150, message: '长度在 2 到 150 个字符', trigger: 'change' },//长度
+
+					],
+					description: [ 
+						{ max: 1000, message: '长度在 0 到 1000 个字符', trigger: 'change' },//长度 
 					],
 					taskState: [
 						{ required: true, message: '请选择任务状态', trigger: 'change' }

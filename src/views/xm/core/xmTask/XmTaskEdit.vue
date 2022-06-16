@@ -346,10 +346,15 @@
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				editFormRules: {
 					name: [
-						{ required: true, message: '任务名称不能为空', trigger: 'blur' }
+						{ required: true, message: '任务名称不能为空', trigger: 'change' },
+						{ min: 2, max: 150, message: '长度在 2 到 150 个字符', trigger: 'change' },//长度
+
+					],
+					description: [ 
+						{ max: 1000, message: '长度在 0 到 1000 个字符', trigger: 'change' },//长度 
 					],
 					taskState: [
-						{ required: true, message: '请选择任务状态', trigger: 'blur' }
+						{ required: true, message: '请选择任务状态', trigger: 'change' }
 					],  
 					// execuser:[{
 					// 	validator: validateExec, trigger: 'blur'
@@ -577,6 +582,20 @@
 			},
 			
 			editXmTaskSomeFields(row,fieldName,$event){
+				var that=this;
+				var func=(params)=>{
+					editXmTaskSomeFields(params).then(res=>{
+						var tips = res.data.tips;
+						if(tips.isOk){
+							this.$emit('edit-fields',params)
+							Object.assign(row,params) 
+							this.editFormBak=Object.assign({},row)
+						}else{   
+							Object.assign(this.editForm,this.editFormBak)
+							this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+						}
+					})
+				}
 				var params={ids:[row.id]}; 
 				if(fieldName==='menuId'){
 					if($event){
@@ -622,19 +641,29 @@
 				}else{
 					params[fieldName]=$event
 				}
-
-				editXmTaskSomeFields(params).then(res=>{
-					var tips = res.data.tips;
-					if(tips.isOk){
-						this.$emit('edit-fields',params)
-						 Object.assign(row,params) 
-						 this.editFormBak=Object.assign({},row)
-					}else{
-						;
-						Object.assign(this.editForm,this.editFormBak)
-						this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
-					}
-				})
+				
+				
+				if(fieldName=='description'){
+					this.$refs.editForm.validateField('description',err=>{
+						if(err){ 
+							this.$notify({position:'bottom-left',showClose:true,message: err,type: 'error'})
+							return;
+						}else{
+							func(params)
+						}
+					})
+				}else if(fieldName=='name'){  
+					this.$refs.editForm.validateField('name',err=>{
+						if(err){
+							this.$notify({position:'bottom-left',showClose:true,message: err,type: 'error'})
+							return;
+						}else{
+							func(params)
+						}
+					})
+				}else{
+					func(params)
+				}
 			},
 		},//end method
 		components: { 
