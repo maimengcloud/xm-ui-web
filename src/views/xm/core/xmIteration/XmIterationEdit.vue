@@ -94,10 +94,11 @@
 				load:{ list: false, add: false, del: false, edit: false },//查询中...
 				editFormRules: { 
 					iterationName: [
-						{ required: true, message: '迭代名称不能为空', trigger: 'blur' }
+						{ required: true, message: '迭代名称不能为空', trigger: 'change' },
+						{ min:10,max:250, message: '名称长度在10-250个字符', trigger: 'change' }
 					],
 					seqNo: [
-						{ required: true, message: '序号不能为空', trigger: 'blur' }
+						{ required: true, message: '序号不能为空', trigger: 'change' }
 					]
 				},
 				//新增界面数据 迭代定义
@@ -136,6 +137,8 @@
 								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err  => this.load.edit=false);
 						});
+					}else{
+						this.$notify({position:'bottom-left',showClose:true,message: "表单验证不通过", type: 'error' }); 
 					}
 				});
 			},

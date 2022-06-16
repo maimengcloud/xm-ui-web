@@ -15,16 +15,14 @@
 										<el-button type="primary" @click.native="createProjectCode">自动生成</el-button>
 									</template>
 								</el-input>
-								<font color="blue" style="font-size:10px;">项目代号为合同上的项目代号，甲乙方共享;项目内部编号为 &nbsp;代号-四位随机码</font>
+								 项目代号为合同上的项目代号，甲乙方共享;项目内部编号为 &nbsp;代号-四位随机码 
+							</el-form-item>  	
+							<el-form-item label="编号代号" prop="code" v-else>  
+								 项目代号为<strong> {{editForm.code}} </strong>,打印在合同上，甲乙方共享;项目内部编号为<strong> {{editForm.id}} </strong>，用于内部流转，&nbsp;生成规则:代号-四位随机码 
 							</el-form-item>  					
 							<el-form-item label="名称" prop="name"  v-show="opType==='add'">  
 									<el-input  v-model="editForm.name" placeholder="项目名称" ></el-input> 
-							</el-form-item>  
-							<el-form-item label="项目代号|名称" prop="name" v-show="opType!=='add'">
-								<el-input v-model="editForm.code" placeholder="项目代号，不可为空" style="width:20%;" ></el-input><el-input style="width:80%;" v-model="editForm.name" placeholder="项目名称" ></el-input>
-							    <font color="blue" style="font-size:10px;">项目代号为合同上的项目代号，甲乙方共享;项目内部编号为 &nbsp;代号-四位随机码</font>
-
-							</el-form-item>  
+							</el-form-item>   
 							<el-row>
 								<el-col :span="8">
 									<el-form-item label="项目类型"  prop="xmType">
@@ -68,8 +66,11 @@
 								</el-col>
 							</el-row> 
 						<el-tabs value="1" accordion>
-						<el-tab-pane label="项目描述" name="1"> 
-								<el-input type="textarea" :rows="6" v-model="editForm.description" placeholder="项目描述" ></el-input> 
+						<el-tab-pane label="项目描述" name="1">  
+							<el-form-item label="" prop="description" label-width="0px"> 
+								<el-input type="textarea" :rows="10" v-model="editForm.description" placeholder="项目描述" ></el-input> 
+							</el-form-item>  
+								
 						</el-tab-pane>
 						<el-tab-pane label="控制开关" name="2">  
 							<el-row>  
@@ -446,11 +447,15 @@
 				editFormRules: {
 					name: [{
 						required: true, message: '项目名称不可为空' , trigger: 'change'
-					}], 
+					},
+						{ min:5,max:50, message: '名称长度在2-50个字符', trigger: 'change' }
+					], 
 					
 					code: [{
 						required: true, message: '项目代号不可为空', trigger: 'change'
-					}],
+					},
+						{ min:5,max:40, message: '项目代号长度在5-40个字符', trigger: 'change' }
+					],
 					xmType: [{
 						required: true, message: '项目类型不可为空', trigger: 'change'
 					}],  
@@ -466,6 +471,9 @@
 					pmUserid: [{
 						required: true, message: '项目经理不能为空', trigger: 'change'
 					}], 
+					description:[ 
+						{ min:0,max:250, message: '项目描述长度在0-250', trigger: 'change' }
+					]
 				},
 				//编辑界面数据  XmProject xm_project
 				editForm: {

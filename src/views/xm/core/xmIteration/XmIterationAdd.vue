@@ -100,7 +100,7 @@
 				addFormRules: {
 					iterationName: [
 						{ required: true, message: '迭代名称不能为空', trigger: 'change' },
-						{ min:10, message: '名称长度必须大于10个字符', trigger: 'change' }
+						{ min:10,max:250, message: '名称长度在10-250个字符', trigger: 'change' }
 					], 
 					productId: [
 						{ required: true, message: '产品编号不能为空', trigger: 'change' }
