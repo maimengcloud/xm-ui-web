@@ -1,6 +1,6 @@
 <template>   
   <el-date-picker :type="type" :style="styleObj"  v-model="dateRange" :value-format="valueFormat" :format="format" 
-       unlink-panels
+       unlink-panels 
       :range-separator="rangeSepaSrator"
       :start-placeholder="startPlaceholder"
       :end-placeholder="endPlaceholder"

@@ -170,6 +170,9 @@
 					],
 					workload:[
 						{ required: true, message: '上班时长不能为空', trigger: 'change' }
+					],
+					remark:[ 
+						{ min: 0, max: 250, message: '工作描述长度在 0 到 250 个字符', trigger: 'change' },//长度
 					]
 				},
 				editForm: {

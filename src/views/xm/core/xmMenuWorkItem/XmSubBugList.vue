@@ -9,10 +9,10 @@
 					<i class="el-icon-warning"></i>
 					</div>
 					
-					<span class="cell-text">
+					<span class="my-cell-text">
 						 {{scope.row.name}}
 					</span>
-					<span class="cell-bar" >
+					<span class="my-cell-bar" >
 							  <el-input title="名称" placeholder="名称" v-model="scope.row.name"  style="width:100%;"  @change="editXmQuestionSomeFields(scope.row,'name',$event)"></el-input> 
 					</span> 
 			  </template>
@@ -407,6 +407,19 @@ export default {
 };
 </script>
 
-<style scoped> 
-  
+<style lang="less" scoped> 
+    .my-cell-bar{
+    display: none; 
+  }
+
+.el-table__row td:hover{
+	.my-cell-bar{
+    width:90%;
+    padding-right:1px;
+		display: inline-block;  
+	}
+  .my-cell-text{
+    display:none;
+  }
+}
 </style>

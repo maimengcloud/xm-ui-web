@@ -423,6 +423,8 @@ export default {
 
 .el-table__row td:hover{
 	.my-cell-bar{
+    width:80%;
+    padding-right:0px;
 		display: inline-block;  
 	}
   .my-cell-text{

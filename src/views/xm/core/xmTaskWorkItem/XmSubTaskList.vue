@@ -1,21 +1,32 @@
 <template>
     <el-row  v-show="xmTasks.length>0">
       <el-row>
-        <el-table :data="xmTasks"  :max-height="400" v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
+        <el-table :data="xmTasks"  :row-style="{height:'60px'}" :max-height="400"  v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
           <el-table-column type="selection" label="全选"></el-table-column>
           <el-table-column prop="name" label="名称"> 
                 <template slot-scope="scope"> 
-                  <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#1CC7EA'}">
-									<i :class="scope.row.ntype==='1'?'el-icon-odometer':'el-icon-s-operation'" ></i>
-									</div>    
-									<span class="my-cell-text">
+
+									<span class="my-cell-text">  
+                     <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#1CC7EA'}">
+                        <i :class="scope.row.ntype==='1'?'el-icon-odometer':'el-icon-s-operation'" ></i>
+                      </div>   
 										 {{scope.row.sortLevel}}&nbsp;{{scope.row.name}}
-									</span>
-									<span class="my-cell-bar">
-									  	<el-input title="序号" style="width:20%;"  v-model="scope.row.sortLevel" placeholder="序号"  @change="editXmTaskSomeFields(scope.row,'sortLevel',$event)"></el-input><el-input title="名称" style="width:78%;" placeholder="名称" v-model="scope.row.name" @change="editXmTaskSomeFields(scope.row,'name',$event)"></el-input> 
 									</span> 
+                    <el-row class="my-cell-bar">  
+                      <el-col :span="1">
+                        <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#1CC7EA'}">
+                          <i :class="scope.row.ntype==='1'?'el-icon-odometer':'el-icon-s-operation'" ></i>
+                        </div>  
+                      </el-col>
+                      <el-col :span="5">
+                        	<el-input title="序号"  v-model="scope.row.sortLevel" placeholder="序号"  @change="editXmTaskSomeFields(scope.row,'sortLevel',$event)"></el-input>
+                      </el-col>
+                      <el-col :span="18">
+                        <el-input title="名称"  placeholder="名称" v-model="scope.row.name" @change="editXmTaskSomeFields(scope.row,'name',$event)"></el-input> 
+                      </el-col>
+                    </el-row> 
                 </template>
-          </el-table-column>
+              </el-table-column> 
               <el-table-column
                 label="状态"
                 type="taskState"
@@ -80,8 +91,8 @@
         </el-table> 
       </el-row>
       <el-dialog :title="ntype==='0'?'新增任务':'新增计划'" :visible.sync="addFormVisible" append-to-body modal-append-to-body>
-          <el-form :model="editForm" :rules="addFormRules">
-            <el-form-item label="任务名称">
+          <el-form :model="addForm" :rules="addFormRules" ref="addForm">
+            <el-form-item label="任务名称" prop="name">
               
                 <template slot="label">
                   <div    class="icon" :style="{backgroundColor:   ntype==='1'?'#E6A23C':'#409EFF'}">
@@ -145,11 +156,12 @@ export default {
     return{
       load:{edit:false,list:false,add:false,del:false,}, 
       xmTasks:[],
-      editForm:{},
+      editForm:{name:''},
       addForm:{name:''},
       addFormRules:{
 					name: [
-						{ required: true, message: '任务名称不能为空', trigger: 'change' }
+						{ required: true, message: '名称不能为空', trigger: 'change' },
+						{ min: 2, max: 150, message: '名称长度在 0 到 150 个字符', trigger: 'change' },//长度
 					],
       },
       sels:[],
@@ -199,7 +211,8 @@ export default {
         this.getXmTasks();
     }, 
     addXmTask(){ 
-       var task={...this.parentXmTask,name:this.addForm.name,id:null,parentTaskid:this.parentXmTask.id,parentTaskname:this.parentXmTask.name}
+      this.$refs.addForm.validate().then(res=>{
+        var task={...this.parentXmTask,name:this.addForm.name,id:null,parentTaskid:this.parentXmTask.id,parentTaskname:this.parentXmTask.name}
              task.priority='3'
              task.verNum=this.parentXmTask.sinceVersion;
              task.pverNum=this.parentXmTask.sinceVersion;
@@ -219,9 +232,12 @@ export default {
 								}
 								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.edit=false);
+      })
+       
     },  
       showAdd(ntype) {
         this.ntype=ntype; 
+        this.addForm.name=this.parentXmTask.name+"-请修改"
         this.addFormVisible=true;
         
     },
@@ -416,11 +432,13 @@ export default {
   }
 
 .el-table__row td:hover{
-	.my-cell-bar{
+	.my-cell-bar{  
+    width:100%;
+    padding-right: 0px;
 		display: inline-block;  
 	}
   .my-cell-text{
     display:none;
   }
-}
+} 
 </style>

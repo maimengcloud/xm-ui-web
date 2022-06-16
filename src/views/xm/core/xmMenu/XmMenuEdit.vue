@@ -58,16 +58,13 @@
 									</el-select>
 								</el-form-item>
 							</el-col>
-							<el-col :span="8">
-								<el-form-item label="进度" prop="finishRate"> 
-									{{editForm.finishRate?editForm.finishRate:0}}%
-								</el-form-item>
-							</el-col>
-							<el-col :span="8">
-								<el-form-item label="截止时间" prop="startTime" >
-									 <date-range type="daterange" :auto-default="false"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="editForm" start-key="startTime" end-key="endTime"  @change="editXmMenuSomeFields(editForm,'startTime',editForm)"></date-range>
+							<el-col :span="16">  
+								<el-form-item label="时间进度" prop="startTime" >
+										<date-range type="daterange" :auto-default="false" :style-object="{display:'inline'}"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="editForm" start-key="startTime" end-key="endTime"  @change="editXmMenuSomeFields(editForm,'startTime',editForm)"></date-range>
+										{{editForm.finishRate?editForm.finishRate:0}}% 
 
-								</el-form-item>
+								</el-form-item>    
+									
 							</el-col>
 						</el-row>
 					<el-tabs  v-model="activateTabPaneName" >
@@ -109,14 +106,14 @@
 										<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
 									</el-select>
 								</el-form-item>
-							</el-col>
-							<el-col :span="12">
-							<el-form-item  label="优先级" prop="priority" >
-								<el-select v-model="editForm.priority" @change="editXmMenuSomeFields(editForm,'priority',$event)">
-										<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
-								</el-select>
-							</el-form-item>
-							</el-col>
+							</el-col> 
+							<el-col :span="12"> 
+								<el-form-item  label="优先级" prop="priority" >
+									<el-select v-model="editForm.priority" @change="editXmMenuSomeFields(editForm,'priority',$event)">
+											<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
+									</el-select>
+								</el-form-item>
+							</el-col> 
 						</el-row>
 					</el-tab-pane >
 						<el-tab-pane label="概述" name="4">
@@ -128,10 +125,7 @@
 							 <xm-sub-work-item v-if="this.activateTabPaneName=='6'" :parent-xm-menu="editForm" :link-project-id="selProject?selProject.id:null" @sub-work-item-num="setSubWorkItemNum" @add-sub-menu="onAddSubMenu"></xm-sub-work-item>
 						</el-tab-pane>
 						<el-tab-pane :label="'工时('+editForm.actWorkload+' h)'" name="2">
-							 
-							<el-form-item label="工时进度" prop="finishRate" >
-								<el-progress style="width:60%;" :text-inside="true" :stroke-width="15" :percentage="editForm.finishRate?editForm.finishRate:0"></el-progress>
- 							</el-form-item>
+							
 							<el-form-item label="预估工期" prop="budgetHours">
 								<el-input-number :disabled="editForm.calcType!=='2'  " style="width:200px;"  v-model="editForm.budgetHours"  :precision="2" :step="8" :min="0" placeholder="预计工期(小时)"></el-input-number> &nbsp;h
 							</el-form-item>

@@ -62,14 +62,9 @@
 											<el-option v-for="i in dicts.taskState" :label="i.name" :key="i.id" :value="i.id"></el-option> 
 									</el-select>    
 								</el-form-item> 
-							</el-col>
-							<el-col :span="8"> 
-								<el-form-item label="当前进度" prop="rate"> 
-									{{editForm.rate?editForm.rate:0}}%
-								</el-form-item>  
-							</el-col>  
-							<el-col :span="8"> 
-								<el-form-item label="预计时间">  
+							</el-col> 
+							<el-col :span="16"> 
+								<el-form-item label="时间进度">  
 										<date-range 
 											v-model="editForm"
 											start-key="startTime"
@@ -85,6 +80,7 @@
 											:default-time="['00:00:00','23:59:59']"
 											:picker-options="pickerOptions"
 										></date-range>
+										{{editForm.rate?editForm.rate:0}}%
 								</el-form-item>  
 							</el-col> 
 
