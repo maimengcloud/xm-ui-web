@@ -325,6 +325,7 @@ export default {
             initDicts(this);
             this.initData()
             var myFocusList=localStorage.getItem('xm-my-focus-list')
+            debugger;
             if(myFocusList){
                 this.xmMyFocuss=JSON.parse(myFocusList)
             }else{

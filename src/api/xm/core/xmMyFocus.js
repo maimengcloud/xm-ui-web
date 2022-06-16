@@ -16,8 +16,8 @@ let base = config.getCoreBasePath();
 export const listXmMyFocus = params => { return axios.get(`${base}/xm/core/xmMyFocus/list`, { params: params }); };
 
 //删除一条我关注的项目或者任务 params={userid:'用户编号 主键',bizId:'关注的对象主键 主键',pbizId:'对象上级编号,项目时填项目编号，任务时填项目编号，产品时填产品编号，需求时填产品编号，bug时填产品编号 主键'}
-export const delXmMyFocus = params => { 
-    localStorage.removeItem('xm-my-foucus-list')
+export const delXmMyFocus = params => {  
+    localStorage.removeItem('xm-my-focus-list')
     return axios.post(`${base}/xm/core/xmMyFocus/del`,params); 
 };
 
@@ -28,8 +28,9 @@ export const batchDelXmMyFocus = params => { return axios.post(`${base}/xm/core/
 export const editXmMyFocus = params => { return axios.post(`${base}/xm/core/xmMyFocus/edit`, params); };
 
 //新增一条我关注的项目或者任务
-export const addXmMyFocus = params => { 
-    localStorage.removeItem('xm-my-foucus-list')
+export const addXmMyFocus = params => {  
+    debugger;
+    localStorage.removeItem('xm-my-focus-list')
     return axios.post(`${base}/xm/core/xmMyFocus/add`, params); 
 };
 
