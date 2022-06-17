@@ -1394,7 +1394,7 @@ export default {
           if(tips.isOk){
             var row=this.editForm
               this.getXmTasks()
-              treeTool.reloadChildren(this.$refs.table,this.maps,row.parentTaskid,'parentTaskid',this.loadXmTaskLazy)
+              //treeTool.reloadChildren(this.$refs.table,this.maps,row.parentTaskid,'parentTaskid',this.loadXmTaskLazy)
           }
           this.$notify({
             showClose: true,
@@ -1460,16 +1460,7 @@ export default {
       return true;
 
 
-    },
-    showSubAdd(row,index,ntype) {
-      if(!this.checkCanAdd(row)){
-        return;
-      }
-      this.parentTask = row;
-      this.editForm = row;
-      this.addForm.ntype=ntype;
-      this.addFormVisible = true;
-    },
+    }, 
     //显示新增界面 XmTask xm_task
     showAdd: function (ntype) {
       if(!this.checkCanAdd()){
@@ -1482,19 +1473,19 @@ export default {
       this.addFormVisible = false;
       this.pageInfo.count = true;
         this.getXmTasks()
-        treeTool.reloadChildren(this.$refs.table,this.maps,row.parentTaskid,'parentTaskid',this.loadXmTaskLazy)
+        //treeTool.reloadChildren(this.$refs.table,this.maps,row.parentTaskid,'parentTaskid',this.loadXmTaskLazy)
     },
     afterEditSubmit() {
       this.editFormVisible = false;
       var row=this.editForm
       this.getXmTasks()
-      treeTool.reloadChildren(this.$refs.table,this.maps,row.parentTaskid,'parentTaskid',this.loadXmTaskLazy)
+      //treeTool.reloadChildren(this.$refs.table,this.maps,row.parentTaskid,'parentTaskid',this.loadXmTaskLazy)
     },
 
     afterExecEditSubmit() {
       var row=this.editForm
       this.getXmTasks()
-      treeTool.reloadChildren(this.$refs.table,this.maps,row.parentTaskid,'parentTaskid',this.loadXmTaskLazy)
+      //treeTool.reloadChildren(this.$refs.table,this.maps,row.parentTaskid,'parentTaskid',this.loadXmTaskLazy)
     },
     onEditSomeFields(params){
       Object.assign(this.editForm,params )
@@ -1517,7 +1508,7 @@ export default {
             if (tips.isOk) {
               this.pageInfo.count = true;
               this.getXmTasks()
-              treeTool.reloadChildren(this.$refs.table,this.maps,row.parentTaskid,'parentTaskid',this.loadXmTaskLazy)
+              //treeTool.reloadChildren(this.$refs.table,this.maps,row.parentTaskid,'parentTaskid',this.loadXmTaskLazy)
             }
             this.$notify({
               showClose: true,
@@ -1605,11 +1596,10 @@ export default {
       );
       this.searchXmTasks();
     },
-    showMenu: function (parentTask) {
-      if(!this.checkCanAdd(parentTask)){
+    showMenu: function () {
+      if(!this.checkCanAdd(this.parentTask)){
         return;
-      }
-      this.parentTask = parentTask;
+      } 
       this.menuVisible = true;
     },
     onSelectedMenus(menus) {
@@ -1650,10 +1640,9 @@ export default {
       this.menuStory = false;
     },
     onTaskTemplatesSelected(taskTemplates) {
-
+      debugger;
       if (taskTemplates == null || taskTemplates.length == 0) {
         this.taskTemplateVisible = false;
-        this.parentTask = null;
         return;
       }
       var taskTemplates2 = JSON.parse(JSON.stringify(taskTemplates));
@@ -1667,40 +1656,20 @@ export default {
         }
       })
       this.load.add = true;
-      var projectId=null;
-      var productId=null;
-      if(this.ptype==='0'){
-        if(this.parentTask && this.parentTask.id){
-          projectId=this.parentTask.projectId
-        }else{
-          projectId=this.filters.selProject.id
-        } 
+      var projectId=null; 
+      if(this.parentTask && this.parentTask.id){
+        projectId=this.parentTask.projectId
       }else{
-         if(this.parentTask && this.parentTask.id){
-          productId=this.parentTask.productId
-        }else{
-          productId=this.filters.product.id
+        projectId=this.filters.selProject.id
+      }  
+      taskTemplates2.forEach((i) => { 
+        i.ptype="0"
+        if(i.isTpl=='1'){
+          i.productId=null;
+          i.menuId=null;
+          i.menuName=null;
         }
-      }
-      taskTemplates2.forEach((i) => {
-        if(this.ptype==='1'){
-          i.ptype="1"
-          i.projectId=null;
-          i.projectName=null;
-          if(productId!=i.productId){
-            i.menuId=null;
-            i.menuName=null;
-          }
-          i.productId=productId
-        }else if(this.ptype==='0'){
-          i.ptype="0"
-          if(i.isTpl=='1'){
-            i.productId=null;
-            i.menuId=null;
-            i.menuName=null;
-          }
-          i.projectId=projectId
-        }
+        i.projectId=projectId 
         i.budgetAt = 0;
         i.budgetWorkload = 80;
         i.level = i.level ? i.level : "3";
@@ -1728,13 +1697,9 @@ export default {
       });
       var params={
         xmTasks:taskTemplates2,
-        ptype:this.ptype
-      }
-      if(this.ptype==='0'){
-        params.projectId=projectId
-      }else{
-        params.productId=productId
-      }
+        ptype:"0"
+      } 
+      params.projectId=projectId 
       if(this.parentTask && this.parentTask.id){
         params.parentTaskid=this.parentTask.id
       }
@@ -1743,11 +1708,7 @@ export default {
         .then((res) => {
           var tips = res.data.tips;
           if (tips.isOk) {
-            this.getXmTasks();
-            if(this.parentTask && this.parentTask.id){
-              treeTool.reloadChildren(this.$refs.table,this.maps,this.parentTask.id,'parentTaskid',this.loadXmTaskLazy)
-            }
-
+            this.getXmTasks();  
           }
           this.taskTemplateVisible = false;
           this.$notify({
@@ -1950,14 +1911,10 @@ export default {
       this.xmTasks=[]
       this.searchXmTasks();
     },
-    handleCommand(command) {
-      if (command.type == "showSubAdd") {
-        this.showSubAdd(command.data);
-      } else if (command.type == "showTaskTemplate") {
-        this.parentTask = command.data;
+    handleCommand(command) { 
+       if (command.type == "showTaskTemplate") { 
         this.showTaskTemplate(command.data);
-      } else if (command.type == "showMenu") {
-        this.parentTask = command.data;
+      } else if (command.type == "showMenu") { 
         this.showMenu(command.data);
       } else if (command.type == "showDrawer") {
         this.showDrawer(command.data);
@@ -1985,7 +1942,7 @@ export default {
 
       var row=this.editForm
         this.getXmTasks()
-        treeTool.reloadChildren(this.$refs.table,this.maps,row.parentTaskid,'parentTaskid',this.loadXmTaskLazy)
+        //treeTool.reloadChildren(this.$refs.table,this.maps,row.parentTaskid,'parentTaskid',this.loadXmTaskLazy)
     },
     toJoin() {
       if (
