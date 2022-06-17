@@ -74,12 +74,9 @@
 									</span>  
 									<div class="tool-bar" v-if="!disabledMng">
 									<span class="u-btn">
-										<el-tooltip  v-if=" scope.row.dclass==='1' " :content=" '新建特性'">
-												<el-button   @click="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建" circle plain size="mini"> </el-button>
-											    
-
-										</el-tooltip> 
-										<el-button      @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle plain size="mini"> </el-button>     
+ 												<el-button  v-if=" scope.row.dclass==='1' "  @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建特性" circle plain size="mini"> </el-button>
+											     
+										<el-button      @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle plain size="mini"> </el-button>     
 									</span>
 									</div>
   								</template> 
@@ -103,7 +100,7 @@
 
 					</el-row>
 				<!--编辑 XmMenu xm_project_menu界面-->
-				<el-dialog :title="'编辑'+(editForm.dclass=='1'?'史诗':'特性')" :visible.sync="editFormVisible"  width="80%" top="20px"    append-to-body   :close-on-click-modal="false" >
+				<el-dialog :title="'编辑'+(editForm&&editForm.dclass=='1'?'史诗':'特性')" :visible.sync="editFormVisible"  width="80%" top="20px"    append-to-body   :close-on-click-modal="false" >
 					<xm-menu-edit :xm-menu="editForm" :sel-project="selProject" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @add-sub-menu="onAddSubMenu" @edit-fields="onEditSomeFields"></xm-menu-edit>
 				</el-dialog>
 
@@ -273,8 +270,11 @@
 		},//end data
 		methods: {
 			selectVisible(row,visible){
-				if(visible){
-					this.rowClick(row)
+				if(visible==true){ 
+					this.$refs.table.setCurrentRow(row);  
+					this.editForm = row; 
+					this.editFormBak=Object.assign({},row) 
+					this.$emit('row-click',row,);//  @row-click="rowClick"
 				}
 			},
 			handleSizeChange(pageSize) {
@@ -448,12 +448,16 @@
 
 			//显示编辑界面 XmMenu xm_project_menu
 			showEdit: function ( row,index ) {
+				this.$refs.table.setCurrentRow(row)
+				if(this.editForm && row.menuId!=this.editForm.menuId){ 
+					this.$refs.table.setCurrentRow(row); 
+					this.$emit("row-click",row) 
+				}
 				this.editForm =row
 				this.editFormVisible = true;
 			},
 			//显示新增界面 XmMenu xm_project_menu
-			showAdd: function (dclass) {
-				;
+			showAdd: function (dclass) { 
 				Object.assign(this.addForm,this.addFormInit) 
 				if(this.filters.product && this.filters.product.id){
 					this.parentMenu=null;
@@ -478,12 +482,17 @@
 				//this.addForm=Object.assign({}, this.editForm);
 			},
 			showSubAdd:function(row){
-
+				this.$refs.table.setCurrentRow(row)
+				if(this.editForm && row.menuId!=this.editForm.menuId){ 
+					this.$refs.table.setCurrentRow(row); 
+					this.$emit("row-click",row) 
+				}
 				this.addForm={...this.addFormInit}
 				this.editForm=row
 				this.parentMenu=row
 				this.expandRowKeysCpd.push(row.pmenuId);
-				this.addForm.productId=row.productId
+				this.addForm.productId=row.productId 
+
 				if(this.filters.product && row.productId==this.filters.product.id){
 					this.addForm.productName=this.filters.product.productName
 				}else{
@@ -590,8 +599,14 @@
 			},
 
 			rowClick: function(row, event, column){
+				if(this.editForm && row.menuId===this.editForm.menuId){
+					this.editForm=null;
+					this.$emit('row-click',null)
+					this.$refs.table.setCurrentRow(); 
+					return;
+				}  
 				this.editForm=row
-				this.editFormBak=Object.assign({},row)
+				this.editFormBak=Object.assign({},row) 
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
       },
       handleExport() {

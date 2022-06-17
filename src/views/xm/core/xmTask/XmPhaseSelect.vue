@@ -346,6 +346,12 @@ export default {
     },
      
     rowClick: function (row) { 
+      if(this.editForm && row.menuId===this.editForm.menuId){
+        this.editForm=null;
+        this.$emit('row-click',null)
+        this.$refs.table.setCurrentRow(); 
+        return;
+      }  
       this.editForm = row; 
       this.editFormBak=Object.assign({},row)
       this.$emit('row-click',row,);//  @row-click="rowClick"

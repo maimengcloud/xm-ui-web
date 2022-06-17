@@ -329,6 +329,12 @@
 			},
 
 			rowClick: function(row, event, column){
+				if(this.editForm && row.menuId===this.editForm.menuId){
+					this.editForm=null;
+					this.$emit('row-click',null)
+					this.$refs.table.setCurrentRow(); 
+					return;
+				}  
 				this.editForm=row 
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
       		},

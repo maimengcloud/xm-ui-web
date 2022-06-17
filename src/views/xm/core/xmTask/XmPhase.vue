@@ -635,12 +635,13 @@ export default {
     },
     //显示编辑界面 XmTask xm_task
     showEdit: function (row, index) {
-      this.editFormVisible = true;
+      
       if(this.editForm && row.id!=this.editForm.id){ 
         this.$refs.table.setCurrentRow(row); 
         this.$emit("row-click",row) 
       }
       this.editForm=row 
+      this.editFormVisible = true;
     },
     showTaskTemplate: function (row) {
       if(!this.checkCanAdd(row)){
@@ -788,11 +789,10 @@ export default {
           .catch((err) => (this.load.del = false));
       });
     },
-    rowClick: function (row,column) { 
-     
-      if(this.editForm && row.id===this.editForm.id && column.label!='状态'){
-        this.editForm=null;
+    rowClick: function (row,column) {  
+      if(this.editForm && row.id===this.editForm.id){ 
         this.$emit('row-click',null)
+        this.editForm=null
         this.$refs.table.setCurrentRow(); 
         return;
       }  
@@ -1161,7 +1161,7 @@ export default {
         });
       })
     },
-    initData(){
+    initData(){ 
       if (this.selProject) {
         this.filters.selProject = this.selProject;
       }
