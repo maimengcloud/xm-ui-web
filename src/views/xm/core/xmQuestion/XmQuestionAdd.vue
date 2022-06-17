@@ -238,7 +238,7 @@
 				addFormRules: {
 					name: [
 						{required: true, message: '缺陷标题不可为空', trigger: 'change' },
-						{ min: 2, max: 250, message: '长度在 2 到 250 个字符', trigger: 'change' },//长度
+						{ min: 5, max: 250, message: '缺陷标题长度在 5 到 250 个字符', trigger: 'change' },//长度
 					],
 					askUsername: [
 						{required: true, message: '提出人不可为空', trigger: 'change' }

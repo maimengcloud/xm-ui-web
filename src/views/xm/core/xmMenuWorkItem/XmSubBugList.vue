@@ -146,7 +146,7 @@ export default {
 	  addFormRules:{
 		  name:[
 			  {required:true,message:'名称不能为空',trigger:'change'},
-			  { min: 2, max: 250, message: '名称长度在 2 到 250 个字符', trigger: 'change' },//长度
+			  { min: 5, max: 250, message: '名称长度在 5 到 250 个字符', trigger: 'change' },//长度
 		  ]
 	  },
       sels:[],
