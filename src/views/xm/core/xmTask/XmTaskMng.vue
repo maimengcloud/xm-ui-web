@@ -782,7 +782,7 @@
       <xm-menu-select
         :visible="batchRelTasksWithMenuVisible"
         :is-select-menu="true" 
-         @select="onBatchRelTasksWithMenu"
+         @selected="onBatchRelTasksWithMenu"
          :xm-product="filters.product"
         :sel-project="filters.selProject"
       ></xm-menu-select>
@@ -1269,6 +1269,7 @@ export default {
       this.batchRelTasksWithMenuVisible=true;
     },
     onBatchRelTasksWithMenu(menu){
+      debugger;
       var params={
         menuId:menu.menuId, 
       }
