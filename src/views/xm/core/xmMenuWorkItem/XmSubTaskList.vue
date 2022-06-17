@@ -81,8 +81,8 @@
       </el-row>
       
       <el-dialog title="新增任务" :visible.sync="addFormVisible" append-to-body modal-append-to-body>
-          <el-form :model="addForm" :rules="addFormRules">
-            <el-form-item label="任务名称">
+          <el-form :model="addForm" :rules="addFormRules" ref="addForm">
+            <el-form-item label="任务名称" prop="name">
               
             <template slot="label">
             <div class="icon" style="background-color:  #1CC7EA;">
@@ -151,7 +151,8 @@ export default {
       addForm:{name:''},
       addFormRules: {
 					name: [
-						{ required: true, message: '任务名称不能为空', trigger: 'change' }
+						{ required: true, message: '任务名称不能为空', trigger: 'change' },
+						{ min: 2, max: 150, message: '任务名称长度在 2 到 150 个字符', trigger: 'change' },//长度
 					],  
 				},
       addFormVisible:false,
@@ -204,6 +205,7 @@ export default {
       } 
     }, 
     addXmTask(){ 
+      this.$refs.addForm.validate().then(valid=>{ 
        var task={...this.addForm,menuId:this.parentXmMenu.menuId,menuName:this.parentXmMenu.menuName,productId:this.parentXmMenu.productId,iterationId:this.parentXmMenu.iterationId,iterationName:this.parentXmMenu.iterationName}
              task.priority='3'
              task.verNum=this.parentXmMenu.sinceVersion;
@@ -226,6 +228,7 @@ export default {
 								}
 								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.edit=false);
+        })
     },  
       showAdd() {
         this.addForm.name=this.parentXmMenu.menuName

@@ -87,8 +87,8 @@
 
 			
       <el-dialog :title="'新增'+calcMenuLabel.label" :visible.sync="addFormVisible" append-to-body modal-append-to-body>
-          <el-form :model="addForm" :rules="addFormRules">
-            <el-form-item>
+          <el-form :model="addForm" :rules="addFormRules" ref="addForm">
+            <el-form-item  prop="menuName">
 				<template slot="label">
 				<div  class="icon" :style="{backgroundColor: calcMenuLabel.color }">
 					<i :class="calcMenuLabel.icon"></i>
@@ -155,7 +155,8 @@ export default {
 	  addFormVisible:false,
 	  addFormRules:{
 		  menuName:[
-			  {required:true,message:'名称不能为空',trigger:'change'}
+			  {required:true,message:'名称不能为空',trigger:'change'},
+			  { min: 2, max: 250, message: '名称长度在 2 到 250 个字符', trigger: 'change' },//长度
 		  ]
 	  },
       dicts:{},
@@ -281,7 +282,8 @@ export default {
       } 
     }, 
     addXmMenu( ){ 
-       var menu={...this.parentXmMenu}
+		this.$refs.addForm.validate().then(valid=>{
+       		var menu={...this.parentXmMenu}
              menu.mmUserid=this.userInfo.userid
              menu.mmUsername=this.userInfo.username
              menu.seqNo=this.parentXmMenu.seqNo+"."+(parseInt(this.parentXmMenu.childrenCnt)+1)
@@ -301,6 +303,7 @@ export default {
 								}
 								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.edit=false);
+		});
     },  
       showAdd(dclass) {
 		  this.addForm.menuName=this.parentXmMenu.menuName+'---请修改'

@@ -79,8 +79,8 @@
       </el-row>
       <xm-group-dialog ref="xmGroupDialog" :sel-project=" {id:linkProjectId} " :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-dialog> 
 	        <el-dialog :title="'新增缺陷'" :visible.sync="addFormVisible" append-to-body modal-append-to-body>
-          <el-form :model="addForm" :rules="addFormRules">
-            <el-form-item>
+          <el-form :model="addForm" :rules="addFormRules" ref="addForm">
+            <el-form-item  prop="name">
 				<template slot="label">
 				<div class="icon" style="background-color: #F56C6C;">
 					<i class="el-icon-warning"></i>
@@ -145,7 +145,8 @@ export default {
 	  addFormVisible:false,
 	  addFormRules:{
 		  name:[
-			  {required:true,message:'名称不能为空',trigger:'change'}
+			  {required:true,message:'名称不能为空',trigger:'change'},
+			  { min: 2, max: 250, message: '名称长度在 2 到 250 个字符', trigger: 'change' },//长度
 		  ]
 	  },
       sels:[],
@@ -199,6 +200,7 @@ export default {
       } 
     }, 
     addXmBug(){ 
+		this.$refs.addForm.validate().then(res=>{ 
        var question={menuId:this.parentXmMenu.menuId,menuName:this.parentXmMenu.menuName,productId:this.parentXmMenu.productId,iterationId:this.parentXmMenu.iterationId,iterationName:this.parentXmMenu.iterationName}
              question.priority='3'
              question.verNum=this.parentXmMenu.sinceVersion;
@@ -220,6 +222,7 @@ export default {
 								}
 								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.edit=false);
+		})
     },  
       showAdd() {
           this.addFormVisible=true;

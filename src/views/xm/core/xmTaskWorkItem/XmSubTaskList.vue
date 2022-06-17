@@ -161,7 +161,7 @@ export default {
       addFormRules:{
 					name: [
 						{ required: true, message: '名称不能为空', trigger: 'change' },
-						{ min: 2, max: 150, message: '名称长度在 0 到 150 个字符', trigger: 'change' },//长度
+						{ min: 2, max: 150, message: '名称长度在 2 到 150 个字符', trigger: 'change' },//长度
 					],
       },
       sels:[],
@@ -211,7 +211,7 @@ export default {
         this.getXmTasks();
     }, 
     addXmTask(){ 
-      this.$refs.addForm.validate().then(res=>{
+      this.$refs.addForm.validate().then(valid=>{
         var task={...this.parentXmTask,name:this.addForm.name,id:null,parentTaskid:this.parentXmTask.id,parentTaskname:this.parentXmTask.name}
              task.priority='3'
              task.verNum=this.parentXmTask.sinceVersion;
