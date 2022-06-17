@@ -185,15 +185,15 @@
                   <el-link  
                     style="border-radius: 30px"
                     :type="scope.row.rate >= 100 ? 'success' : 'warning'"
-                    @click="calcProgress(scope.row)"
+                    @click.stop="calcProgress(scope.row)"
                     class="el-icon-refresh"
                   >
                     {{ (scope.row.rate != null ? scope.row.rate : 0) + "%" }}
                   </el-link>  
 									<div class="tool-bar">
                     <span class="u-btn">
-                         <el-button   :style="{backgroundColor:  '#E6A23C'}"  @click="showSubAdd( scope.row,scope.$index,'1')" icon="el-icon-plus" title="新建计划" circle plain size="mini"> </el-button>   
-                        <el-button      @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle plain size="mini"> </el-button>     
+                         <el-button   :style="{backgroundColor:  '#E6A23C'}"  @click.stop="showSubAdd( scope.row,scope.$index,'1')" icon="el-icon-plus" title="新建计划" circle plain size="mini"> </el-button>   
+                        <el-button      @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle plain size="mini"> </el-button>     
                      </span>
 									</div>
                 </template>
@@ -636,6 +636,10 @@ export default {
     //显示编辑界面 XmTask xm_task
     showEdit: function (row, index) {
       this.editFormVisible = true;
+      if(this.editForm && row.id!=this.editForm.id){ 
+        this.$refs.table.setCurrentRow(row); 
+        this.$emit("row-click",row) 
+      }
       this.editForm=row 
     },
     showTaskTemplate: function (row) {
@@ -688,10 +692,14 @@ export default {
     showSubAdd(row,index,ntype) {
       if(!this.checkCanAdd(row)){
         return;
+      } 
+      if(this.editForm && row.id!=this.editForm.id){ 
+        this.$refs.table.setCurrentRow(row); 
+        this.$emit("row-click",row) 
       }
       this.parentTask = row;
       this.editForm = row;
-      this.addForm.ntype=ntype;
+      this.addForm.ntype=ntype; 
       this.addFormVisible = true;
     },
     //显示新增界面 XmTask xm_task
@@ -780,14 +788,24 @@ export default {
           .catch((err) => (this.load.del = false));
       });
     },
-    rowClick: function (row) { 
+    rowClick: function (row,column) { 
+     
+      if(this.editForm && row.id===this.editForm.id && column.label!='状态'){
+        this.editForm=null;
+        this.$emit('row-click',null)
+        this.$refs.table.setCurrentRow(); 
+        return;
+      }  
       this.editForm = row; 
       this.editFormBak=Object.assign({},row) 
       this.$emit('row-click',row,);//  @row-click="rowClick"
     }, 
     selectVisible(row,visible){
-      if(visible==true){
-        this.rowClick(row);
+      if(visible==true){ 
+        this.$refs.table.setCurrentRow(row);  
+        this.editForm = row; 
+        this.editFormBak=Object.assign({},row) 
+        this.$emit('row-click',row,);//  @row-click="rowClick"
       }
     }, 
     showSkill(row) {
