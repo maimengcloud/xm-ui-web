@@ -240,7 +240,7 @@
 			 </el-row>
 			<!--编辑 XmQuestion xm_question界面-->
 			<el-dialog  title="编辑缺陷"   :visible.sync="editFormVisible"   width="80%"  top="20px"  :close-on-click-modal="false" append-to-body>
-					<xm-question-edit :sel-project=" {id:editForm.projectId,name:editForm.projectName} " :xm-question="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-question-edit>
+					<xm-question-edit :sel-project=" {id:editForm.projectId,name:editForm.projectName} " :xm-question="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @edit-fields="onEditFields"></xm-question-edit>
 			</el-dialog>
 
 			<!--新增 XmQuestion xm_question界面-->
@@ -1108,6 +1108,9 @@
 					return item?item.name:cellValue;
 				}
 			},
+			onEditFields(row){
+				Object.assign(this.editForm,row) 
+			}
 		},//end methods
 		components: {
 				'xm-question-add':XmQuestionAdd,

@@ -45,22 +45,22 @@
 						</el-row>
 						<el-row>
 							<el-col :span="8">
-								<el-form-item label="严重程度" prop="bugSeverity">
-								<el-select v-model="editForm.bugSeverity" placeholder="请选择严重程度">
-									<el-option v-for="(i,index) in dicts['bugSeverity']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
+								<el-form-item label="状态" prop="bugStatus">
+								<el-select v-model="editForm.bugStatus" placeholder="状态" @change="editXmQuestionSomeFields(editForm,'bugStatus',$event)">
+									<el-option v-for="(i,index) in dicts['bugStatus']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
 								</el-select> 
 								</el-form-item>
 							</el-col> 
 							<el-col :span="8">
 								<el-form-item label="优先级别" prop="priority">
-									<el-select v-model="editForm.priority" placeholder="请选择优先级">
+									<el-select v-model="editForm.priority" placeholder="请选择优先级" @change="editXmQuestionSomeFields(editForm,'priority',$event)">
 										<el-option v-for="(i,index) in dicts['priority']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
 									</el-select> 
 								</el-form-item> 
 							</el-col>
 							<el-col :span="8">
 								<el-form-item label="结束时间" prop="endTime">
-										<el-date-picker value-format="yyyy-MM-dd HH:mm:ss" v-model="editForm.endTime"></el-date-picker>
+										<el-date-picker value-format="yyyy-MM-dd HH:mm:ss" v-model="editForm.endTime" @change="editXmQuestionSomeFields(editForm,'endTime',$event)"></el-date-picker>
 								</el-form-item>
 							</el-col>
 						</el-row>
@@ -75,7 +75,7 @@
 										</el-col>
 										<el-col :span="8">
 											<el-form-item label="复现频率" prop="repRate">
-												<el-select v-model="editForm.repRate" placeholder="请选择复现频率">
+												<el-select v-model="editForm.repRate" placeholder="请选择复现频率" @change="editXmQuestionSomeFields(editForm,'repRate',$event)">
 													<el-option v-for="(i,index) in dicts['bugRepRate']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
 												</el-select> 
 											</el-form-item>
@@ -83,17 +83,24 @@
 										</el-col> 
 										<el-col :span="8">
 											<el-form-item label="复现版本" prop="verNum">
-												<el-select v-model="editForm.verNum" placeholder="请选择版本">
+												<el-select v-model="editForm.verNum" placeholder="请选择版本" @change="editXmQuestionSomeFields(editForm,'verNum',$event)">
 													<el-option v-for="(i,index) in xmProductVersions" :label="i.name" :value="i.id" :key="index">{{i.id}}</el-option>
 												</el-select> 
 											</el-form-item>
 										</el-col>  
 								</el-row>
 								<el-row>
-									
+								
+								<el-col :span="8">
+									<el-form-item label="严重程度" prop="bugSeverity">
+									<el-select v-model="editForm.bugSeverity" placeholder="请选择严重程度" @change="editXmQuestionSomeFields(editForm,'bugSeverity',$event)">
+										<el-option v-for="(i,index) in dicts['bugSeverity']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
+									</el-select> 
+									</el-form-item>
+								</el-col> 	
 								<el-col :span="8">
 									<el-form-item label="原因分析" prop="bugReason">
-										<el-select v-model="editForm.bugReason" placeholder="请选择原因">
+										<el-select v-model="editForm.bugReason" placeholder="请选择原因" @change="editXmQuestionSomeFields(editForm,'bugReason',$event)">
 											<el-option v-for="(i,index) in dicts['bugReason']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
 										</el-select> 
 									</el-form-item>
@@ -101,25 +108,26 @@
 								
 								<el-col :span="8">
 									<el-form-item label="解决方案" prop="solution">
-										<el-select v-model="editForm.solution" placeholder="请选择解决方案">
+										<el-select v-model="editForm.solution" placeholder="请选择解决方案" @change="editXmQuestionSomeFields(editForm,'solution',$event)">
 											<el-option v-for="(i,index) in dicts['bugSolution']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
 										</el-select> 
 									</el-form-item>
 								</el-col> 
 								<el-col :span="8">
 											<el-form-item label="缺陷类别" prop="bugType">
-												<el-select v-model="editForm.bugType" placeholder="请选择缺陷类别">
+												<el-select v-model="editForm.bugType" placeholder="请选择缺陷类别" @change="editXmQuestionSomeFields(editForm,'bugType',$event)">
 													<el-option v-for="(i,index) in dicts['bugType']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
 												</el-select> 
 											</el-form-item>
 											
 										</el-col> 
-								</el-row>
-
-								
-								<el-form-item label="缺陷描述" prop="description">
+								</el-row> 
+							</el-tab-pane>
+							
+							<el-tab-pane label="缺陷描述" name="12">
+								<el-form-item label="" prop="description" label-width="0px">
 									<el-tooltip content="点击切换为富文本编辑|普通文本">
-										<el-button icon="el-icon-refresh" @click="descriptionEditorVisible=!descriptionEditorVisible" type="text"></el-button>
+										<el-button icon="el-icon-refresh" @click="descriptionEditorVisible=!descriptionEditorVisible" type="text">切换为富文本输入</el-button>
 									</el-tooltip>
 									<div v-if="descriptionEditorVisible==false">
 										<el-input  style="width:100%;" v-model="editForm.description" type="textarea" :rows="6"> </el-input>
@@ -128,9 +136,13 @@
 										<vue-editor class="rich-context" :id="'description_'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.description"></vue-editor>
 									</div>
 								</el-form-item>
+								<el-row class="page-bottom">
+										<el-button @click.native="handleCancel">取消</el-button>
+										<el-button v-loading="load.edit"  v-if="editForm.description!==editFormBak.description" type="primary" @click.native="editXmQuestionSomeFields(editForm,'description',editForm.description)" :disabled="load.edit==true">保存</el-button> 
+								</el-row>
 							</el-tab-pane>
 							<el-tab-pane label="测试步骤" name="2">
-								<el-form-item label="测试步骤" prop="opStep">
+								<el-form-item label="" prop="opStep"  label-width="0px">
 									<el-tooltip content="点击切换为富文本编辑|普通文本">
 										<el-button icon="el-icon-refresh" @click="opStepEditorVisible=!opStepEditorVisible" type="text"></el-button>
 									</el-tooltip>
@@ -141,9 +153,14 @@
 										<vue-editor  :id="'opStep'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.opStep" ref="opStep"></vue-editor>
 									</div>
 								</el-form-item>
+								
+								<el-row class="page-bottom">
+										<el-button @click.native="handleCancel">取消</el-button>
+										<el-button v-loading="load.edit" v-if="editForm.opStep!=editFormBak.opStep" type="primary" @click.native="editXmQuestionSomeFields(editForm,'opStep',editForm.opStep)" :disabled="load.edit==true">保存</el-button> 
+								</el-row>
 							</el-tab-pane>
 							<el-tab-pane label="预期结果" name="3">
-								<el-form-item label="预期结果" prop="expectResult">
+								<el-form-item label="" prop="expectResult" label-width="0px">
 									<el-tooltip content="点击切换为富文本编辑|普通文本">
 										<el-button icon="el-icon-refresh" @click="expectResultEditorVisible=!expectResultEditorVisible" type="text"></el-button>
 									</el-tooltip>
@@ -154,6 +171,11 @@
 										<vue-editor v-if="expectResultEditorVisible==true" :id="'expectResult'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.expectResult"  ref="expectResult"></vue-editor>
 									</div>
 								</el-form-item>
+								
+								<el-row class="page-bottom">
+										<el-button @click.native="handleCancel">取消</el-button>
+										<el-button v-loading="load.edit" v-if="editForm.expectResult!=editFormBak.expectResult" type="primary" @click.native="editXmQuestionSomeFields(editForm,'expectResult',editForm.expectResult)" :disabled="load.edit==true">保存</el-button> 
+								</el-row>
 							</el-tab-pane> 
 
 							<el-tab-pane label="处理意见" name="4">
@@ -177,6 +199,11 @@
 
 									</div>
 								</el-form-item>
+								
+								<el-row class="page-bottom">
+										<el-button @click.native="handleCancel">取消</el-button>
+										<el-button v-if="editForm.receiptMessage!=editFormBak.receiptMessage" v-loading="load.edit" type="primary" @click.native="editXmQuestionSomeFields(editForm,'receiptMessage',editForm.receiptMessage)" :disabled="load.edit==true">保存</el-button> 
+								</el-row>
 							</el-tab-pane>  
 							<el-tab-pane label="关注" name="91"> 
 								<xm-my-do-focus v-if="activateTabPaneName=='91'" :biz-id="editForm.id" :pbiz-id="editForm.projectId" :biz-name="editForm.name" focus-type="5"></xm-my-do-focus>
@@ -196,12 +223,8 @@
 				<el-drawer append-to-body title="需求选择" :visible.sync="selectMenuVisible"   size="60%"   :close-on-click-modal="false">
 					<xm-menu-select :is-select-menu="true" checkScope="3"  @selected="onSelectedMenu" :sel-project="selProject"></xm-menu-select>
 				</el-drawer>
-			</el-row>
-		</el-row>
-		<el-row class="page-bottom">
-				<el-button @click.native="handleCancel">取消</el-button>
-				<el-button v-loading="load.edit" type="primary" @click.native="handleQuestion(editForm.bugStatus)" :disabled="load.edit==true">保存</el-button> 
-		</el-row>
+			</el-row> 
+
 		
 
 			<!--新增 XmQuestion xm_question界面-->
@@ -219,7 +242,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { editXmQuestion } from '@/api/xm/core/xmQuestion'; 
+	import { editXmQuestion,editXmQuestionSomeFields } from '@/api/xm/core/xmQuestion'; 
 	import { mapGetters } from 'vuex';
 	import AttachmentUpload from "@/views/mdp/arc/archiveAttachment/AttachmentUpload"; //上传组件
 	import {sn} from '@/common/js/sequence';
@@ -263,11 +286,11 @@
 	      },
 	      'visible':function(visible) {
 	      	if(visible==true){
-				  //this.getXmQuestionHandle();
-	      		//从新打开页面时某些数据需要重新加载，可以在这里添加
+				this.editFormBak={...this.editForm}
 	      	}else{
 			  this.flowInfoVisible=false;
 			}
+			this.activateTabPaneName='12'
 	      }
 	    },
 		data() {
@@ -317,6 +340,15 @@
 					verNum:'',
 					bugReason:'',
 				},
+				editFormBak: {
+					id:'',name:'',projectId:'',projectName:'',taskId:'',taskName:'',endTime:'',askUserid:'',askUsername:'',handlerUserid:'',handlerUsername:'',priority:'',solution:'',processTime:'',receiptMessage:'',receiptTime:'',description:'',createUserid:'',createUsername:'',createTime:'',bugStatus:'',receiptMessage:'',
+					iterationId:'',iterationName:'',productId:'',
+					qtype:'',
+					attachment: [],
+					repRate:'',
+					verNum:'',
+					bugReason:'',
+				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				fileVisible: true,
 				selectUserVisible: false,
@@ -332,7 +364,7 @@
 				expectResultEditorVisible:false,
 				opStepEditorVisible:false,
 				xmProductVersions:[{id:"1.0.0" ,name:'1.0.0'}],
-				activateTabPaneName:'1',
+				activateTabPaneName:'12',
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data
@@ -540,6 +572,44 @@
 				this.editForm.projectId=''
 				this.editForm.projectName=''
 			},
+			
+			editXmQuestionSomeFields(row,fieldName,$event){
+				var params={ids:[row.id]}; 
+				if(fieldName==='handlerUserid'){
+					if($event){ 	
+						params[fieldName]=$event[0].userid;
+						params.handlerUsername=$event[0].username 
+					}else{
+						return;
+					}
+				}else if(fieldName==='tagIds'){
+					if($event){ 	
+						params[fieldName]=$event.map(i=>i.tagId).join(",");
+						params.tagNames=$event.map(i=>i.tagName).join(","); 
+					}else{
+						return;
+					}
+				}else if(fieldName==='workload'){
+					params={...params,...$event}
+				}else if(fieldName==='projectId'){
+					params.projectId=$event.id
+				}else if(fieldName==='productId'){
+					params.productId=$event.id
+				}else{
+					params[fieldName]=$event
+				}
+				
+				editXmQuestionSomeFields(params).then(res=>{
+					var tips = res.data.tips;
+					if(tips.isOk){ 
+						 this.editFormBak={...this.editForm}
+						 this.$emit('edit-fields',this.editForm)
+					}else{
+						Object.assign(this.editForm,this.editFormBak)
+						this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+					}
+				})
+			},
 		},//end method
 		components: {
 				//在下面添加其它组件 'xm-question-edit':XmQuestionEdit
@@ -549,6 +619,7 @@
 		mounted() {
 			console.log("question_add");
 			this.editForm=Object.assign(this.editForm, this.xmQuestion);
+			this.editFormBak={...this.editForm}
 			initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','priority','bugRepRate','bugReason']).then(res=>{
 				if(res.data.tips.isOk){
 					 this.dicts=res.data.data
