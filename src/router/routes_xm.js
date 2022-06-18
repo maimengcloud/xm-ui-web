@@ -56,7 +56,7 @@ export default {
         { path: 'xmTestCase/XmTestCaseMng', component: _import('xm/core/xmTestCase/XmTestCaseMng'), name: 'XmTestCaseMng', meta: { title: '测试设计' }},
         { path: 'xmTestCaseExec/XmTestCaseExecMng', component: _import('xm/core/xmTestCaseExec/XmTestCaseExecMng'), name: 'XmTestCaseExecMng', meta: { title: '测试执行' }},
         { path: 'xmQuestion/XmQuestionDetailRoute', component: _import('xm/core/xmQuestion/XmQuestionDetailRoute'), name: 'XmQuestionDetailRoute', meta: { title: '缺陷明细' },hidden:true},
-
+ 
       ]
     }, 
     {
