@@ -81,11 +81,10 @@
 											</el-form-item>
 											
 										</el-col> 
-										<el-col :span="8">
+										<el-col :span="8"> 
 											<el-form-item label="复现版本" prop="verNum">
-												<el-select v-model="editForm.verNum" placeholder="请选择版本" @change="editXmQuestionSomeFields(editForm,'verNum',$event)">
-													<el-option v-for="(i,index) in xmProductVersions" :label="i.name" :value="i.id" :key="index">{{i.id}}</el-option>
-												</el-select> 
+												<el-input v-model="editForm.verNum" placeholder="请填写版本号" @change="editXmQuestionSomeFields(editForm,'verNum',$event)"> 
+												</el-input> 
 											</el-form-item>
 										</el-col>  
 								</el-row>
