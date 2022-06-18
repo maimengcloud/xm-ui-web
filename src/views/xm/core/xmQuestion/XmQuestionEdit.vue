@@ -179,9 +179,9 @@
 
 							<el-tab-pane label="处理意见" name="4">
 								<el-form-item v-if="!flowInfoVisible" label="流转意见" prop="remarks">
-									<el-col v-if="editForm.remarks" :span="24" >
+									<el-col v-if="editFormBak.remarks" :span="24" >
 									<div class="wf-main-context-box"  >
-										<div   class="wf-main-context rich-context" v-html="editForm.remarks"></div>
+										<div   class="wf-main-context rich-context" v-html="editFormBak.remarks"></div>
 									</div>
 									</el-col>
 									<font v-else>无</font> 
@@ -191,17 +191,17 @@
 										<el-button icon="el-icon-refresh" @click="receiptMessageEditorVisible=!receiptMessageEditorVisible" type="text"></el-button>
 									</el-tooltip>
 									<div v-if="receiptMessageEditorVisible==false">
-										<el-input  style="width:100%;" v-model="editForm.receiptMessage" type="textarea" :rows="6"> </el-input>
+										<el-input  style="width:100%;" v-model="editForm.remarks" type="textarea" :rows="6"> </el-input>
 									</div>
 									<div v-else>
-										<vue-editor :id="'receiptMessage_'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.receiptMessage"></vue-editor>
+										<vue-editor :id="'receiptMessage_'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.remarks"></vue-editor>
 
 									</div>
 								</el-form-item>
 								
 								<el-row class="page-bottom">
 										<el-button @click.native="handleCancel">取消</el-button>
-										<el-button v-if="editForm.receiptMessage!=editFormBak.receiptMessage" v-loading="load.edit" type="primary" @click.native="editXmQuestionSomeFields(editForm,'receiptMessage',editForm.receiptMessage)" :disabled="load.edit==true">保存</el-button> 
+										<el-button v-if="editForm.remarks!=editFormBak.remarks" v-loading="load.edit" type="primary" @click.native="editXmQuestionSomeFields(editForm,'remarks',editForm.remarks)" :disabled="load.edit==true">保存</el-button> 
 								</el-row>
 							</el-tab-pane>  
 							<el-tab-pane label="关注" name="91"> 

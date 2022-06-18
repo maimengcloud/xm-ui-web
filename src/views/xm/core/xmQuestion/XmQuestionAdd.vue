@@ -203,7 +203,7 @@
 					   this.addForm.qtype='1'
 				  }
 				  
-				   this.addForm.id=sn('bug_')
+				   this.addForm.id=sn()
 				   this.initByExec();
 
 	      	}
@@ -346,7 +346,7 @@
 			},
 
 			setDefaultData() {
-				this.addForm.id = sn('bug_');
+				this.addForm.id = sn();
 				if(this.filters.selProject){
 
 					this.addForm.projectId = this.filters.selProject.id;
