@@ -361,8 +361,8 @@
               >  
 								<template slot-scope="scope">
 									<div class="cell-text">
-										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in formatterTaskStateDicts(scope.row.taskState)" :key="index">{{item.name}}</el-button>
-									</div>
+                    <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'taskState',scope.row.taskState)" :key="index" :type="item.className">{{item.name}}</el-tag>
+ 									</div>
 									<span class="cell-bar">
 										 <el-select @visible-change="selectVisible(scope.row,$event)"  v-model="scope.row.taskState" placeholder="任务状态"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'taskState',$event)">
 												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.taskState" :key="index"></el-option>
@@ -468,8 +468,8 @@
               >  
 								<template slot-scope="scope">
 									<div class="cell-text">
-										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in formatterPriorityDicts(scope.row.level)" :key="index">{{item.name}}</el-button>
-									</div>
+                    <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'priority',scope.row.level)" :key="index" :type="item.className">{{item.name}}</el-tag>
+ 									</div>
 									<span class="cell-bar">
 										 <el-select @visible-change="selectVisible(scope.row,$event)"  v-model="scope.row.level" placeholder="优先级"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'level',$event)">
 												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.priority" :key="index"></el-option>
@@ -566,9 +566,9 @@
               <el-tag
                 v-if="editForm.level != '' && editForm.level != null"
                 style="border-radius: 30px"
-                >{{ formateOption("priority", editForm.level) }}</el-tag
+                >{{ formatDicts(dicts,"priority", editForm.level) }}</el-tag
               >
-              [{{ formateOption("taskType", editForm.taskType) }}]
+              [{{ formatDicts(dicts,"taskType", editForm.taskType) }}]
               <span> {{ editForm.projectName }} </span>
               -
               <span> {{ editForm.createUsername }} </span>
@@ -1122,6 +1122,7 @@ export default {
     };
   }, //end data
   methods: {
+    ...util,
     calcProjectProgress(){
       calcProjectProgress().then(res=>{
         this.searchXmTasks();
@@ -1766,7 +1767,7 @@ export default {
         return dateStr.substr(0, 10);
       }
     },
-    formateOption: function (itemCode, value) {
+    formatDicts: function (itemCode, value) {
       if (this.dicts[itemCode]) {
         var dicts = this.dicts[itemCode].filter(
           (i) => i.id == value
@@ -1780,29 +1781,7 @@ export default {
         return value;
       }
     },
-
-    formatterOption: function (row, column, cellValue, index) {
-      var columnName = column.property;
-      var key = "";
-      if (columnName == "settleSchemel") {
-        key = "xmTaskSettleSchemel";
-      } else {
-        return cellValue;
-      }
-      if (
-        this.dicts[key] == undefined ||
-        this.dicts[key] == null ||
-        this.dicts[key].length == 0
-      ) {
-        return cellValue;
-      }
-      var list = this.dicts[key].filter((i) => i.id == cellValue);
-      if (list.length > 0) {
-        return list[0].name;
-      } else {
-        return cellValue;
-      }
-    },
+ 
     toFixed(floatValue, xsd) {
       if (floatValue == null || floatValue == "" || floatValue == undefined) {
         return 0;
@@ -1813,21 +1792,7 @@ export default {
           return parseFloat(floatValue).toFixed(0);
         }
       }
-    },
-    decrease: function () {
-      if (parseFloat(this.editForm.rate) - 20 < 0) {
-        this.editForm.rate = 0;
-      } else {
-        this.editForm.rate = parseFloat(this.editForm.rate) - 20;
-      }
-    },
-    increase: function () {
-      if (parseFloat(this.editForm.rate) + 20 > 100) {
-        this.editForm.rate = 100;
-      } else {
-        this.editForm.rate = parseFloat(this.editForm.rate) + 20;
-      }
-    },
+    },  
 
     focusOrUnfocus: function (row) {
       if (this.selkey == "myFocus") {
@@ -1867,34 +1832,7 @@ export default {
           });
         });
       }
-    }, 
-    getRowSum(row) {
-      var budgetAt = this.getFloatValue(row.budgetAt);
-      if (row.taskOut == "1") {
-        row.taskBudgetOuserAt = budgetAt;
-        row.taskBudgetIuserAt = 0;
-        row.taskBudgetNouserAt = 0;
-      } else {
-        row.taskBudgetOuserAt = 0;
-        row.taskBudgetIuserAt = budgetAt;
-        row.taskBudgetNouserAt = 0;
-      }
-      return budgetAt;
-    },
-    getFloatValue(value, digit) {
-      if (isNaN(value)) {
-        return 0;
-      }
-      if (value == null || value == "" || value == undefined) {
-        return 0;
-      }
-      return parseFloat(value);
-    },
-
-    clearProduct() {
-      this.filters.product = null;
-      this.searchXmTasks();
-    }, 
+    },    
     onProductSelected(product) {
       this.filters.product = product;
       this.productSelectVisible = false;
@@ -1910,26 +1848,7 @@ export default {
       this.projectVisible=false;
       this.xmTasks=[]
       this.searchXmTasks();
-    },
-    handleCommand(command) { 
-       if (command.type == "showTaskTemplate") { 
-        this.showTaskTemplate(command.data);
-      } else if (command.type == "showMenu") { 
-        this.showMenu(command.data);
-      } else if (command.type == "showDrawer") {
-        this.showDrawer(command.data);
-      } else if (command.type == "showEdit") {
-        this.showEdit(command.data);
-      } else if (command.type == "showExecusers") {
-        this.showExecusers(command.data);
-      } else if (command.type == "showSkill") {
-        this.showSkill(command.data);
-      } else if (command.type == "focusOrUnfocus") {
-        this.focusOrUnfocus(command.data);
-      } else if (command.type == "handleDel") {
-        this.handleDel(command.data);
-      }
-    },
+    }, 
     toMenu(task) {
       this.editForm = task;
       if (task.menuId) {
@@ -1956,32 +1875,7 @@ export default {
       this.$nextTick(() => {
         this.$refs.execuserMng.toJoin();
       });
-    },
-    clearProject() {
-      this.filters.selProject = null;
-      this.getXmTasks();
-    },
-    showGroupUserSelect: function (task) {
-      this.editForm = task;
-      this.groupUserSelectVisible = true;
-    },
-    groupUserSelectConfirm: function (users) {
-      if (users == null || users.length == 0) {
-        this.groupUserSelectVisible = false;
-        return;
-      }
-      this.editForm.createUserid = users[0].userid;
-      this.editForm.createUsername = users[0].username;
-      setTaskCreateUser(this.editForm).then((res) => {
-        var tips = res.data.tips;
-        if (tips.isOk) {
-          this.$notify.success("设置成功");
-          this.groupUserSelectVisible = false;
-        } else {
-          this.$notify.error(tips.msg);
-        }
-      });
-    },
+    },   
     //查询时选择责任人
     selectCreateUserConfirm(groupUsers,option) { 
       if(option && option.action==='createUserid'){
@@ -2005,15 +1899,6 @@ export default {
         this.searchXmTasks(); 
       }
       
-    },
-    seleExecutor(executors) {
-      if (executors && executors.length > 0) {
-        this.filters.executor = executors[0];
-      } else {
-        this.filters.executor = null;
-      }
-      this.searchXmTasks();
-      this.menuExecutor = false;
     }, 
     setFiltersCreateUserAsMySelf() {
       this.filters.createUser = this.userInfo;
@@ -2059,18 +1944,7 @@ export default {
         respons.showMsg = "去设置";
       }
       return respons;
-    },
-    getAmountDesc(amount) {
-      if (!amount) {
-        return 0 + "元";
-      } else {
-        if (amount > 10000) {
-          return parseFloat(amount / 10000).toFixed(0) + "万元";
-        } else {
-          return amount + "元";
-        }
-      }
-    },
+    }, 
     editTime(row) {
       var params = {
         id: row.id,
@@ -2195,31 +2069,7 @@ export default {
         params.parentTaskid=this.parentTask.id
       }
       return params;
-    },
-    loadXmTaskLazy(tree, treeNode, resolve) {
-      this.maps.set(tree.id, { tree, treeNode, resolve }) //储存数据
-        var params={parentTaskid:tree.id}
-        params=this.getParams(params);
-        if(params.projectId && params.productId){
-          params.ptype=""
-        }
-        params.isTop=""
-        this.load.list = true;
-        var func=listXmTask
-        func(params).then(res=>{
-          this.load.list = false
-          var tips = res.data.tips;
-          if(tips.isOk){
-            var xmTasks=this.xmTasks.filter(i=>i.parentTaskid!=tree.id)
-            xmTasks.push(...res.data.data)
-            this.xmTasks=xmTasks;
-            resolve(res.data.data)
-          }else{
-            resolve([])
-          }
-        }).catch( err => this.load.list = false );
-
-    },
+    }, 
     showParentTaskList(){
       if(this.sels.length==0){
         this.$notify({position:'bottom-left',showClose:true,message:"请先选择一个或者多个需要更换上级的计划/任务",type:'warning'})
@@ -2331,66 +2181,8 @@ export default {
       if (this.xmProduct) {
         this.filters.product = this.xmProduct;
       }
-    },
-    
-			formatterPriorityDicts(cellValue){
-				if(!cellValue && cellValue!=='0'){
-					return []
-				}
-				var key="priority";
-				if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0   ){
-					return [{id:cellValue,name:cellValue,className:'primary'}];
-				}
-				var list=this.dicts[key].filter(i=>i.id==cellValue)
-				if(list.length>0){
-					var data= {...list[0],className:'primary'}
-					if(data.id=='0'){
-						data.className='danger'
-					}else if(data.id=='1'){
-						data.className='warning'
-					}else if(data.id=='2'){
-						data.className='success'
-					}else if(data.id=='3'){
-						data.className='primary'
-					}else if(data.id=='4'){
-						data.className='info'
-					}else{
-						data.className='primary'
-					}
-					return [data];
-				}else{
-					return [{id:cellValue,name:cellValue,className:'primary'}]
-				}
-
-			},
-			formatterTaskStateDicts: function(cellValue){
-				if(!cellValue && cellValue!=='0'){
-					return []
-				}
-				var key="taskState";
-				if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0   ){
-					return [{id:cellValue,name:cellValue,className:'primary'}];
-				}
-				var list=this.dicts[key].filter(i=>i.id==cellValue)
-				if(list.length>0){
-					var data= {...list[0],className:'primary'}
-					if(data.id=='0'){
-						data.className='primary'
-					}else if(data.id=='1'){
-						data.className='warning'
-					}else if(data.id=='2'){
-						data.className='success'
-					}else if(data.id=='3'){
-						data.className='info'
-					} else{
-						data.className='danger'
-					}
-					return [data];
-				}else{
-					return [{id:cellValue,name:cellValue,className:'primary'}]
-				}
-
-			},
+    }, 
+		 
       onProductClearSelect(){
         this.filters.xmProduct=null;
         this.searchXmTasks();
