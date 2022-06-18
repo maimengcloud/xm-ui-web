@@ -121,7 +121,7 @@
 		data() {
 			return {
                 filters:{
-                    category:'', 
+                    category:'项目级', 
                 },
 				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中... 
@@ -172,7 +172,13 @@
 				this.dicts=res.data.data;
 			}) 
              */
-            
+            if(this.xmIteration && this.xmIteration.id){
+                this.filters.category="迭代级"
+            }else if(this.xmProject && this.xmProject.id){
+                this.filters.category="项目级"
+            }else if(this.xmProduct && this.xmProduct.id){
+                this.filters.category="产品级"
+            }
             this.maxTableHeight = this.source == 'GZT' ? this.maxTableHeight : util.calcTableMaxHeight(this.$refs.table.$el); 
 			
 		}//end mounted
