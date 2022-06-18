@@ -21,7 +21,7 @@
 						{{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}}
 					</span>
 					<span class="my-cell-bar">
-							<el-input title="序号" style="width:20%;"  v-model="scope.row.seqNo" placeholder="序号"  @change="editXmMenuSomeFields(scope.row,'seqNo',$event)"></el-input><el-input title="名称" placeholder="名称" v-model="scope.row.menuName"  style="width:80%;"  @change="editXmMenuSomeFields(scope.row,'menuName',$event)"></el-input> 
+							<el-input title="序号" style="width:18%;"  v-model="scope.row.seqNo" placeholder="序号"  @change="editXmMenuSomeFields(scope.row,'seqNo',$event)"></el-input><el-input title="名称" placeholder="名称" v-model="scope.row.menuName"  style="width:80%;"  @change="editXmMenuSomeFields(scope.row,'menuName',$event)"></el-input> 
 					</span> 
 			  </template>
 		  </el-table-column>
@@ -420,8 +420,8 @@ export default {
 .el-table__row td:hover{
 	.my-cell-bar{
     width:90%;
-    padding-right:1px;
-		display: inline-block;  
+    padding-right:0px;
+	display: inline-block;  
 	}
   .my-cell-text{
     display:none;

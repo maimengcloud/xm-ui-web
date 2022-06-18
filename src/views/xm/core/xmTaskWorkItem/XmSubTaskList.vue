@@ -5,26 +5,16 @@
           <el-table-column type="selection" label="全选"></el-table-column>
           <el-table-column prop="name" label="名称"> 
                 <template slot-scope="scope"> 
-
-									<span class="my-cell-text">  
-                     <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#1CC7EA'}">
-                        <i :class="scope.row.ntype==='1'?'el-icon-odometer':'el-icon-s-operation'" ></i>
-                      </div>   
+                  <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#1CC7EA'}">
+                    <i :class="scope.row.ntype==='1'?'el-icon-odometer':'el-icon-s-operation'" ></i>
+                  </div>   
+									<span class="my-cell-text">   
 										 {{scope.row.sortLevel}}&nbsp;{{scope.row.name}}
 									</span> 
-                    <el-row class="my-cell-bar">  
-                      <el-col :span="1">
-                        <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#1CC7EA'}">
-                          <i :class="scope.row.ntype==='1'?'el-icon-odometer':'el-icon-s-operation'" ></i>
-                        </div>  
-                      </el-col>
-                      <el-col :span="5">
-                        	<el-input title="序号"  v-model="scope.row.sortLevel" placeholder="序号"  @change="editXmTaskSomeFields(scope.row,'sortLevel',$event)"></el-input>
-                      </el-col>
-                      <el-col :span="18">
-                        <el-input title="名称"  placeholder="名称" v-model="scope.row.name" @change="editXmTaskSomeFields(scope.row,'name',$event)"></el-input> 
-                      </el-col>
-                    </el-row> 
+                    <span class="my-cell-bar">      
+                        <el-input title="序号" style="width:18%;" v-model="scope.row.sortLevel" placeholder="序号"  @change="editXmTaskSomeFields(scope.row,'sortLevel',$event)"></el-input> <el-input title="名称"  style="width:80%;" placeholder="名称" v-model="scope.row.name" @change="editXmTaskSomeFields(scope.row,'name',$event)"></el-input> 
+                      
+                    </span> 
                 </template>
               </el-table-column> 
               <el-table-column
@@ -53,6 +43,16 @@
                     <span class="cell-bar">   
                         <el-button @click="workloadRecord(scope.row)">登记工时</el-button>
                     </span> 
+              </template>
+            </el-table-column>
+					
+            <el-table-column prop="rate" label="进度"  width="100">
+              <template slot-scope="scope">    
+                  <el-tag 
+                    :type="scope.row.rate >= 100 ? 'success' : 'warning'" 
+                  >
+                    {{ (scope.row.rate != null ? scope.row.rate : 0) + "%" }}
+                  </el-tag>  
               </template>
             </el-table-column>
               
@@ -432,13 +432,13 @@ export default {
   }
 
 .el-table__row td:hover{
-	.my-cell-bar{  
-    width:100%;
-    padding-right: 0px;
+	.my-cell-bar{
+    width:90%;
+    padding-right:0px;
 		display: inline-block;  
 	}
   .my-cell-text{
     display:none;
   }
-} 
+}
 </style>

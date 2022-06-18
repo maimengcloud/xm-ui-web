@@ -3,7 +3,7 @@
       <el-row>
         <el-table :data="xmTasks"  :max-height="400" v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
           <el-table-column type="selection" label="全选"></el-table-column>
-          <el-table-column prop="name" label="名称"  show-overflow-tooltip>
+          <el-table-column prop="name" label="名称">
                 <template slot-scope="scope">
                   <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#1CC7EA'}">
 									<i :class="scope.row.ntype==='1'?'el-icon-odometer':'el-icon-s-operation'" ></i>
@@ -12,7 +12,7 @@
 										 {{scope.row.sortLevel}}&nbsp;{{scope.row.name}}
 									</span>
 									<span class="my-cell-bar">
-									  	<el-input title="序号" style="width:20%;"  v-model="scope.row.sortLevel" placeholder="序号"  @change="editXmTaskSomeFields(scope.row,'sortLevel',$event)"></el-input><el-input title="名称" placeholder="名称" v-model="scope.row.name" @change="editXmTaskSomeFields(scope.row,'name',$event)"></el-input> 
+									  	<el-input title="序号" style="width:18%;"  v-model="scope.row.sortLevel" placeholder="序号"  @change="editXmTaskSomeFields(scope.row,'sortLevel',$event)"></el-input><el-input title="名称" placeholder="名称" style="width:80%;" v-model="scope.row.name" @change="editXmTaskSomeFields(scope.row,'name',$event)"></el-input> 
 									</span>
                 </template>
               </el-table-column>
@@ -43,8 +43,16 @@
                         <el-button @click="workloadRecord(scope.row)">登记工时</el-button>
                     </span> 
               </template>
+            </el-table-column> 
+            <el-table-column prop="rate" label="进度"  width="100">
+              <template slot-scope="scope">    
+                  <el-tag 
+                    :type="scope.row.rate >= 100 ? 'success' : 'warning'" 
+                  >
+                    {{ (scope.row.rate != null ? scope.row.rate : 0) + "%" }}
+                  </el-tag>  
+              </template>
             </el-table-column>
-              
               <el-table-column
                 label="优先级"
                 type="level"
@@ -426,7 +434,7 @@ export default {
 
 .el-table__row td:hover{
 	.my-cell-bar{
-    width:80%;
+    width:90%;
     padding-right:0px;
 		display: inline-block;  
 	}
