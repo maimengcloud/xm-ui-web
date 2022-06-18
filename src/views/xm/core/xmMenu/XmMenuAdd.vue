@@ -75,6 +75,12 @@
 						
 						<el-row> 
 							<el-col :span="8">
+								<el-form-item  label="版本号" prop="sinceVersion" >   
+									<el-input style="max-width:90%;" v-model="addForm.sinceVersion" placeholder="请输入需求归属的版本号"> 
+									</el-input>  
+								</el-form-item>   
+							</el-col> 
+							<el-col :span="8">
 								<el-form-item label="提出人" prop="proposerId">
 									<el-tag type="text" v-if="addForm.proposerId" closable @close="clearProposer">{{addForm.proposerName}}</el-tag> 
 									<el-button type="text" @click="selectProposer">选提出人</el-button>

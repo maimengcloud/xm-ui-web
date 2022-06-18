@@ -52,7 +52,7 @@ export default {
      
     styleObj:{
         typeof:Object,
-        default:function(){return { }}
+        default:function(){return { maxWidth:'100%' }}
     },
     
     endKey: {
