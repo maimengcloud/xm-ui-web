@@ -370,34 +370,6 @@
 									</span>
 								</template>
               </el-table-column>
-              
-              <el-table-column
-                label="优先级"
-                type="level"
-                width="100"
-              >  
-								<template slot-scope="scope">
-									<div class="cell-text">
-										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in formatterPriorityDicts(scope.row.level)" :key="index">{{item.name}}</el-button>
-									</div>
-									<span class="cell-bar">
-										 <el-select @visible-change="selectVisible(scope.row,$event)"  v-model="scope.row.level" placeholder="优先级"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'level',$event)">
-												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.priority" :key="index"></el-option>
-										 </el-select>
-									</span>
-								</template>
-              </el-table-column>
-              <el-table-column
-                sortable
-                prop="budgetWorkload"
-                label="工时"
-                width="150"
-              >
-
-                <template slot-scope="scope">
-                  	<span title="实际工时 / 预算工时 或者 (剩余工时+实际工时)">{{scope.row.actWorkload}} &nbsp;/ &nbsp;{{scope.row.rworkload?parseInt(scope.row.actWorkload)+parseInt(scope.row.rworkload):scope.row.budgetWorkload}}h </span>
-                </template>
-              </el-table-column>
               <el-table-column sortable prop="rate" label="进度" width="100">
                 <template slot-scope="scope">
                   <el-link v-if="scope.row.ntype=='0'"
@@ -424,21 +396,16 @@
                   </div>
                 </template>
               </el-table-column>
+              <el-table-column
+                sortable
+                prop="budgetWorkload"
+                label="工时"
+                width="150"
+              >
 
-              <el-table-column sortable prop="productId" label="产品" width="100" show-overflow-tooltip>
-              </el-table-column>
-              <el-table-column sortable prop="projectId" label="项目" width="100" show-overflow-tooltip>
-              </el-table-column>
-
-              <el-table-column sortable prop="tagNames" label="标签" width="100" show-overflow-tooltip>
-								<template slot-scope="scope">
-									<div class="cell-text"> 
-										{{scope.row.tagNames}}
-									</div>
-									<span class="cell-bar">
-										 <el-button @click="$refs.tagDialog.open({data:scope.row,action:'editTagIds'})">选标签</el-button>
-									</span>
-								</template>
+                <template slot-scope="scope">
+                  	<span title="实际工时 / 预算工时 或者 (剩余工时+实际工时)">{{scope.row.actWorkload}} &nbsp;/ &nbsp;{{scope.row.rworkload?parseInt(scope.row.actWorkload)+parseInt(scope.row.rworkload):scope.row.budgetWorkload}}h </span>
+                </template>
               </el-table-column>
               <el-table-column
                 sortable
@@ -478,6 +445,39 @@
                   </span>
                 </template>
               </el-table-column>
+              <el-table-column sortable prop="productId" label="产品" width="100" show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column sortable prop="projectId" label="项目" width="100" show-overflow-tooltip>
+              </el-table-column>
+
+              <el-table-column sortable prop="tagNames" label="标签" width="100" show-overflow-tooltip>
+								<template slot-scope="scope">
+									<div class="cell-text"> 
+										{{scope.row.tagNames}}
+									</div>
+									<span class="cell-bar">
+										 <el-button @click="$refs.tagDialog.open({data:scope.row,action:'editTagIds'})">选标签</el-button>
+									</span>
+								</template>
+              </el-table-column>
+              
+              <el-table-column
+                label="优先级"
+                type="level"
+                width="100"
+              >  
+								<template slot-scope="scope">
+									<div class="cell-text">
+										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in formatterPriorityDicts(scope.row.level)" :key="index">{{item.name}}</el-button>
+									</div>
+									<span class="cell-bar">
+										 <el-select @visible-change="selectVisible(scope.row,$event)"  v-model="scope.row.level" placeholder="优先级"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'level',$event)">
+												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.priority" :key="index"></el-option>
+										 </el-select>
+									</span>
+								</template>
+              </el-table-column>
+              
               <el-table-column
                 sortable
                 prop="startTime"

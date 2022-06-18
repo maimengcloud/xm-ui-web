@@ -68,9 +68,9 @@
 									<span>{{scope.row.seqNo}} &nbsp; {{scope.row.menuName}} </span>
 									
 									<span  
-										:style="{borderRadius: '30px',color:scope.row.rate >= 100 ? 'green' : 'blue'}" 
+										:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue'}" 
 									>
-										{{ (scope.row.rate != null ? scope.row.rate : 0) + "%" }}
+										{{ (scope.row.finishRate != null ? scope.row.finishRate : 0) + "%" }}
 									</span>  
 									<div class="tool-bar" v-if="!disabledMng">
 									<span class="u-btn">

@@ -2,7 +2,7 @@
 	<section>
 		<el-row class="page-main ">
 			<el-form :model="editForm"  label-width="100px" label-position="left" :rules="editFormRules" ref="editForm">
-						<el-row :gutter="10">
+						<el-row>
 							<el-col :span="6">
 								<el-form-item label="序号名称" prop="seqNo" >
 									<template slot="label">
@@ -21,7 +21,7 @@
 								</el-form-item>
 							</el-col>
 						</el-row>
-						<el-row :gutter="10">
+						<el-row>
 							<el-col :span="8">
 								<el-form-item label="归属产品" prop="productId">
 									<font v-if="editForm.productId">{{editForm.productName?editForm.productName:editForm.productId}}</font>
@@ -50,7 +50,7 @@
 								</el-col>
 						</el-row>
 
-						<el-row :gutter="10">
+						<el-row>
 							<el-col :span="8">
 								<el-form-item label="需求状态" prop="status">
 									<el-select style="display:block;width:100px;" v-model="editForm.status"  @change="editXmMenuSomeFields(editForm,'status',$event)">
@@ -58,13 +58,16 @@
 									</el-select>
 								</el-form-item>
 							</el-col>
-							<el-col :span="16">  
-								<el-form-item label="时间进度" prop="startTime" >
-										<date-range type="daterange" :auto-default="false" :style-object="{display:'inline'}"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="editForm" start-key="startTime" end-key="endTime"  @change="editXmMenuSomeFields(editForm,'startTime',editForm)"></date-range>
-										{{editForm.finishRate?editForm.finishRate:0}}% 
-
-								</el-form-item>    
-									
+							<el-col :span="8">  
+								<el-form-item label="进度" prop="finishRate" >
+ 										 {{editForm.finishRate?editForm.finishRate:0}}%  
+								</el-form-item>   
+							</el-col>  
+							<el-col :span="8">  
+								<el-form-item label="起止时间" prop="startTime,endTime" >
+										<date-range type="daterange" :style-obj="{maxWidth:'100%'}" :auto-default="false"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="editForm" start-key="startTime" end-key="endTime"  @change="editXmMenuSomeFields(editForm,'startTime',editForm)"></date-range>
+ 
+								</el-form-item> 
 							</el-col>
 						</el-row>
 					<el-tabs  v-model="activateTabPaneName" >
@@ -325,7 +328,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 				},
 				tagSelectVisible:false, 
 				subWorkItemNum:-1,
-				activateTabPaneName:'1'
+				activateTabPaneName:'4'
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 
 				/**end 在上面加自定义属性**/

@@ -212,6 +212,16 @@
 							<template>
 							<el-table-column prop="productId" label="产品" width="100" show-overflow-tooltip sortable>
 							</el-table-column>
+							
+							<el-table-column prop="finishRate" label="进度" width="100" show-overflow-tooltip sortable>
+								<template slot-scope="scope">
+									<span  
+										:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue'}" 
+									>
+										{{ (scope.row.finishRate != null ? scope.row.finishRate : 0) + "%" }}
+									</span>  
+								</template>
+							</el-table-column>
 							<el-table-column prop="status" label="状态"  min-width="80"  sortable>
 								<template slot-scope="scope">
 									<div class="cell-text">
@@ -296,12 +306,7 @@
 								<template slot-scope="scope"> 
 									<span title="实际工时 / 预算工时 或者 (剩余工时+实际工时)">{{scope.row.mactWorkload}} &nbsp;/ &nbsp;{{scope.row.rworkload?parseInt(scope.row.mactWorkload)+parseInt(scope.row.rworkload):scope.row.budgetWorkload}}h </span>
 								</template> 
-							</el-table-column>
-							<el-table-column prop="mactRate" label="进度"  min-width="80" show-overflow-tooltip sortable>
-								<template slot-scope="scope"> 
-										 <span v-if="scope.row.mactRate"><el-tag :type="scope.row.mactRate>=100?'success':'warning'">{{scope.row.mactRate}}%</el-tag></span> 
-								</template> 
-							</el-table-column>
+							</el-table-column> 
 							<el-table-column prop="bugs" label="缺陷"  min-width="100" show-overflow-tooltip sortable>
 
 								<template slot="header">

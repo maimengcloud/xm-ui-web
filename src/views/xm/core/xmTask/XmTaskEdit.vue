@@ -63,9 +63,15 @@
 									</el-select>    
 								</el-form-item> 
 							</el-col> 
-							<el-col :span="16"> 
-								<el-form-item label="时间进度">  
+							<el-col :span="8"> 
+								<el-form-item label="进度">   
+										{{editForm.rate?editForm.rate:0}}%
+								</el-form-item>  
+							</el-col> 
+							<el-col :span="8"> 
+								<el-form-item label="起止时间">  
 										<date-range 
+											:style-obj="{maxWidth:'100%'}"
 											v-model="editForm"
 											start-key="startTime"
 											end-key="endTime"
@@ -79,8 +85,7 @@
 											value-format="yyyy-MM-dd HH:mm:ss"
 											:default-time="['00:00:00','23:59:59']"
 											:picker-options="pickerOptions"
-										></date-range>
-										{{editForm.rate?editForm.rate:0}}%
+										></date-range> 
 								</el-form-item>  
 							</el-col> 
 
@@ -323,7 +328,7 @@
 					this.editForm=Object.assign(this.editForm, this.xmTask);      
 					this.editFormBak=Object.assign({},this.editForm)
 					this.setSkills()
-					this.activateTabPaneName="1"
+					this.activateTabPaneName="2"
 					//从新打开页面时某些数据需要重新加载，可以在这里添加
 				}
 			}, 
@@ -376,7 +381,7 @@
 				pickerOptions:  util.getPickerOptions('datarange'),
 				tagSelectVisible:false,
 				subWorkItemNum:0,
-				activateTabPaneName:'1'
+				activateTabPaneName:'2'
 				 /**end 在上面加自定义属性**/
 			}//end return
 		},//end data

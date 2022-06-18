@@ -80,7 +80,7 @@ export default {
     }, 
     rangeSepaSrator:{ 
       type: String,
-      default: '至'
+      default: '-'
     },
     pickerOptions:{
         typeof:Object,
