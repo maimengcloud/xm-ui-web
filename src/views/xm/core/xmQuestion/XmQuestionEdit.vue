@@ -177,16 +177,8 @@
 								</el-row>
 							</el-tab-pane> 
 
-							<el-tab-pane label="处理意见" name="4">
-								<el-form-item v-if="!flowInfoVisible" label="流转意见" prop="remarks">
-									<el-col v-if="editFormBak.remarks" :span="24" >
-									<div class="wf-main-context-box"  >
-										<div   class="wf-main-context rich-context" v-html="editFormBak.remarks"></div>
-									</div>
-									</el-col>
-									<font v-else>无</font> 
-								</el-form-item>
-								<el-form-item label="处理意见" prop="receiptMessage"> 
+							<el-tab-pane label="处理意见" name="4"> 
+								<el-form-item  prop="remarks" label-width="0px"> 
 									<el-tooltip content="点击切换为富文本编辑|普通文本">
 										<el-button icon="el-icon-refresh" @click="receiptMessageEditorVisible=!receiptMessageEditorVisible" type="text"></el-button>
 									</el-tooltip>
