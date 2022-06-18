@@ -119,7 +119,7 @@
 							</el-col> 
 							<el-col :span="12"> 
 								<el-form-item  label="版本号" prop="sinceVersion" >
-									<el-input style="max-width:90%;" v-model="editForm.priority" @change="editXmMenuSomeFields(editForm,'sinceVersion',$event)"> 
+									<el-input style="max-width:90%;" v-model="editForm.sinceVersion" @change="editXmMenuSomeFields(editForm,'sinceVersion',$event)"> 
 									</el-input>
 								</el-form-item>
 							</el-col> 
