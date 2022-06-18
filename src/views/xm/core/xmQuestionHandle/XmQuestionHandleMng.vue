@@ -1,34 +1,20 @@
 <template>
-	<section class="page-container padding border">
-		<el-row class="page-main"> 
+	<section>
+		<el-row> 
 			<!--列表 XmQuestionHandle xm_question_handle-->
 			<el-table ref="table" :height="tableHeight" :data="xmQuestionHandles" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
- 				<el-table-column sortable type="index" width="60"></el-table-column>
- 				<el-table-column prop="handlerUsername" label="指派" min-width="80" >
-					<template slot-scope="scope">
-						<div v-if="scope.row.targetUserid==scope.row.handlerUserid">
-							{{scope.row.handlerUsername}}&nbsp;&nbsp;提交\保存
-						</div>
-						<div v-if="scope.row.targetUserid!=scope.row.handlerUserid">
-							{{scope.row.handlerUsername}}&nbsp;&nbsp;指派给&nbsp;&nbsp;{{scope.row.targetUsername}}
-						</div>
-					</template>
-				</el-table-column>
-				<el-table-column prop="receiptMessage" label="处理意见" min-width="80" ></el-table-column>
-				<el-table-column prop="receiptTime" label="时间" min-width="80" ></el-table-column> 
-				<el-table-column prop="handleStatus" label="状态" min-width="80" > 
+ 				
+				<el-table-column prop="handleStatus" label="bug状态" width="100" > 
 					<template slot-scope="scope"> 
-							<el-tag type="info" v-if="scope.row.handleStatus=='create' ">创建</el-tag>
-							<el-tag type="primary" v-else-if="scope.row.handleStatus=='active'">已激活</el-tag>
-							<el-tag type="warning" v-else-if="scope.row.handleStatus=='confirm'">确认</el-tag>
-							<el-tag type="warning" v-else-if="scope.row.handleStatus=='confirmed'">已确认</el-tag>
-							<el-tag type="success" v-else-if="scope.row.handleStatus=='solve'">解决</el-tag>
-							<el-tag type="success" v-else-if="scope.row.handleStatus=='resolved'">已解决</el-tag>
-							<el-tag type="success" v-else-if="scope.row.handleStatus=='close'">关闭</el-tag>
-							<el-tag type="success" v-else-if="scope.row.handleStatus=='closed'">已关闭</el-tag>
-							<el-tag v-else>{{scope.row.handleStatus}}</el-tag>   
+						<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'bugStatus',scope.row.handleStatus)" :key="index" :type="item.className">{{item.name}}</el-tag> 
 					</template>
-				</el-table-column> 
+				</el-table-column>  
+				<el-table-column prop="receiptMessage" label="处理意见" min-width="150" > 
+					<template slot-scope="scope"> 
+						<div style="max-height:100px;overflow:auto;" v-html="scope.row.receiptMessage"></div>
+					</template> 
+				</el-table-column>
+				<el-table-column prop="receiptTime" label="时间" width="100" ></el-table-column>  
  			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		</el-row>
@@ -38,7 +24,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { listXmQuestionHandle, delXmQuestionHandle, batchDelXmQuestionHandle } from '@/api/xm/core/xmQuestionHandle';
 	import { mapGetters } from 'vuex'
 	
@@ -73,7 +59,9 @@
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				dicts:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				dicts:{
+					bugStatus:[],
+				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				
 				addFormVisible: false,//新增xmQuestionHandle界面是否显示
 				//新增xmQuestionHandle界面初始化数据
@@ -93,6 +81,7 @@
 			}
 		},//end data
 		methods: { 
+			...util,
 			handleSizeChange(pageSize) { 
 				this.pageInfo.pageSize=pageSize; 
 				this.getXmQuestionHandles();
@@ -230,6 +219,11 @@
 		mounted() { 
 			this.$nextTick(() => {
 				
+			initSimpleDicts('all',[ 'bugStatus' ]).then(res=>{
+				if(res.data.tips.isOk){
+					 this.dicts=res.data.data
+				}
+			});
 				this.tableHeight = util.calcTableMaxHeight(this.$refs.table.$el); 
 				this.getXmQuestionHandles();
         	}); 

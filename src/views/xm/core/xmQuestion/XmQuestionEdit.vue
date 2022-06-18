@@ -8,8 +8,8 @@
 						<el-divider direction="vertical"></el-divider>
 						<el-tag v-if="editForm.tagNames">{{editForm.tagNames?editForm.tagNames:''}} </el-tag>
 						<el-button type="text" icon="el-icon-plus" @click="tagSelectVisible=true">标签</el-button>
-						<el-divider direction="vertical"></el-divider>
-						<el-button type="text" icon="el-icon-search" @click="flowInfoVisible=true">日志</el-button>  
+						<el-divider direction="vertical"></el-divider> 
+						<el-button type="text" icon="el-icon-copy" @click="copyLink=true">拷贝链接</el-button>
 				</el-form-item> 
 						<el-row>
 							<el-col :span="8">
@@ -60,7 +60,7 @@
 							</el-col>
 							<el-col :span="8">
 								<el-form-item label="结束时间" prop="endTime">
-										<el-date-picker value-format="yyyy-MM-dd HH:mm:ss" v-model="editForm.endTime" @change="editXmQuestionSomeFields(editForm,'endTime',$event)"></el-date-picker>
+										<el-date-picker style="max-width:100%;" value-format="yyyy-MM-dd HH:mm:ss" v-model="editForm.endTime" @change="editXmQuestionSomeFields(editForm,'endTime',$event)"></el-date-picker>
 								</el-form-item>
 							</el-col>
 						</el-row>
@@ -178,22 +178,30 @@
 							</el-tab-pane> 
 
 							<el-tab-pane label="处理意见" name="4"> 
-								<el-form-item  prop="remarks" label-width="0px"> 
-									<el-tooltip content="点击切换为富文本编辑|普通文本">
-										<el-button icon="el-icon-refresh" @click="receiptMessageEditorVisible=!receiptMessageEditorVisible" type="text"></el-button>
-									</el-tooltip>
-									<div v-if="receiptMessageEditorVisible==false">
-										<el-input  style="width:100%;" v-model="editForm.remarks" type="textarea" :rows="6"> </el-input>
-									</div>
-									<div v-else>
-										<vue-editor :id="'receiptMessage_'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.remarks"></vue-editor>
+								<el-row>
+									<el-col :span="16">
+										<el-form-item  prop="remarks" label-width="0px">  
+											<el-button icon="el-icon-refresh" @click="receiptMessageEditorVisible=!receiptMessageEditorVisible" type="text">点击切换为富文本编辑|普通文本</el-button>
+											 
+											<el-button   @click="flowInfoVisible=!flowInfoVisible" type="text">流转历史</el-button>
 
-									</div>
-								</el-form-item>
-								
-								<el-row class="page-bottom">
-										<el-button @click.native="handleCancel">取消</el-button>
-										<el-button v-if="editForm.remarks!=editFormBak.remarks" v-loading="load.edit" type="primary" @click.native="editXmQuestionSomeFields(editForm,'remarks',editForm.remarks)" :disabled="load.edit==true">保存</el-button> 
+											<div v-if="receiptMessageEditorVisible==false">
+												<el-input  style="width:100%;" v-model="editForm.remarks" type="textarea" :rows="6"> </el-input>
+											</div>
+											<div v-else>
+												<vue-editor style="max-width:100%;" :id="'receiptMessage_'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.remarks"></vue-editor>
+
+											</div>
+										</el-form-item>
+										
+										<el-row class="page-bottom">
+												<el-button @click.native="handleCancel">取消</el-button>
+												<el-button v-if="editForm.remarks!=editFormBak.remarks" v-loading="load.edit" type="primary" @click.native="editXmQuestionSomeFields(editForm,'remarks',editForm.remarks)" :disabled="load.edit==true">保存</el-button> 
+										</el-row>
+									</el-col>
+									<el-col :span="8">
+										<xm-question-handle-mng class="padding-left" v-if="activateTabPaneName=='4' && flowInfoVisible==true" :bug="editForm" :visible="flowInfoVisible"></xm-question-handle-mng>
+									</el-col>
 								</el-row>
 							</el-tab-pane>  
 							<el-tab-pane label="关注" name="91"> 
@@ -214,15 +222,7 @@
 				<el-drawer append-to-body title="需求选择" :visible.sync="selectMenuVisible"   size="60%"   :close-on-click-modal="false">
 					<xm-menu-select :is-select-menu="true" checkScope="3"  @selected="onSelectedMenu" :sel-project="selProject"></xm-menu-select>
 				</el-drawer>
-			</el-row> 
-
-		
-
-			<!--新增 XmQuestion xm_question界面-->
-			<el-drawer title="流转日志"  :visible.sync="flowInfoVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
-				<xm-question-handle-mng :bug="editForm" :visible="flowInfoVisible"></xm-question-handle-mng>
-			</el-drawer>
-			
+			</el-row>  
 			<el-drawer append-to-body title="标签" :visible.sync="tagSelectVisible" class="dialog-body" size="60%">
 				<tag-mng :tagIds="editForm.tagIds?editForm.tagIds.split(','):[]" :jump="true" @select-confirm="onTagSelected">
 				</tag-mng>
