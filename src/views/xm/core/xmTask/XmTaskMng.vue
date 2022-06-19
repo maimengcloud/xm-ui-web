@@ -1613,6 +1613,7 @@ export default {
         i.id = i.menuId;
         i.parentTaskid = i.pmenuId;
         i.name = i.menuName;
+        i.ntype="1"
       });
       this.onTaskTemplatesSelected(menus2);
       this.menuVisible = false;
@@ -1640,8 +1641,7 @@ export default {
       this.getXmTasks();
       this.menuStory = false;
     },
-    onTaskTemplatesSelected(taskTemplates) {
-      debugger;
+    onTaskTemplatesSelected(taskTemplates) { 
       if (taskTemplates == null || taskTemplates.length == 0) {
         this.taskTemplateVisible = false;
         return;
@@ -1701,6 +1701,12 @@ export default {
         ptype:"0"
       } 
       params.projectId=projectId 
+      if(this.filters.xmProduct && this.filters.xmProduct.id){
+         params.productId=this.filters.xmProduct.id
+      }else if(taskTemplates2.some(k=>k.productId)){
+          params.productId=taskTemplates2.find(k=>k.productId).productId
+      }
+     
       if(this.parentTask && this.parentTask.id){
         params.parentTaskid=this.parentTask.id
       }
@@ -1766,21 +1772,7 @@ export default {
         }
         return dateStr.substr(0, 10);
       }
-    },
-    formatDicts: function (itemCode, value) {
-      if (this.dicts[itemCode]) {
-        var dicts = this.dicts[itemCode].filter(
-          (i) => i.id == value
-        );
-        if (dicts && dicts.length > 0) {
-          return dicts[0].name;
-        } else {
-          return value;
-        }
-      } else {
-        return value;
-      }
-    },
+    }, 
  
     toFixed(floatValue, xsd) {
       if (floatValue == null || floatValue == "" || floatValue == undefined) {
@@ -2163,7 +2155,7 @@ export default {
           if(tips.isOk){
             this.searchXmTasks();
             
-            var rows=[...this.sels,{id:'xxxxx',parentTaskid:task.id}]
+            var rows=[...this.sels]
             //treeTool.reloadAllChildren(this.$refs.table,this.maps,rows,'parentTaskid',this.loadXmTaskLazy)
           }
           this.$notify({
