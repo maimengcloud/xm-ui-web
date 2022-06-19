@@ -25,7 +25,7 @@
                 </div>  
                 <el-button
                   v-if="isTaskCenter != '1' && isMy != '1'"
-                  @click="showMenu"
+                  @click="showEpicFeaturesForCreateTask"
                   type="primary"
                   icon="el-icon-plus"
                   >由用户故事快速创建计划 (推荐)</el-button
@@ -303,6 +303,23 @@
     <el-dialog title="选择新的上级计划" append-to-body :visible.sync="selectParentTaskVisible" width="60%" top="20px">
       <xm-phase-select :sel-project="filters.selProject" @select="onSelectedParentTask"></xm-phase-select>
     </el-dialog>
+    
+    <el-drawer
+      append-to-body
+      title="史诗特性选择"
+      :visible.sync="epicFeaturesForImportTaskVisible"
+      size="70%"
+      :close-on-click-modal="false"
+    >
+      <xm-epic-features-select
+        :visible="epicFeaturesForImportTaskVisible"
+        :is-select-menu="true"
+        :multi="true"
+         :xm-product="filters.product"
+         :sel-project="filters.selProject"
+        @menus-selected="onEpicFeaturesForImportTask"
+      ></xm-epic-features-select>
+    </el-drawer>
   </section>
 </template>
 
@@ -339,6 +356,8 @@ import XmPhaseSelect from "./XmPhaseSelect.vue";
 	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面
   
   	import TagDialog from "@/views/mdp/arc/tag/TagDialog"; 
+
+import XmEpicFeaturesSelect from "../xmMenu/XmEpicFeaturesSelect";
 
 export default {
   computed: {
@@ -492,6 +511,7 @@ export default {
        tableHeight: 300, 
        selectParentTaskVisible:false, 
       execUserVisible:false,  
+      epicFeaturesForImportTaskVisible:false,
     };
   }, //end data
   methods: {  
@@ -626,12 +646,34 @@ export default {
         .catch((err) => (this.load.list = false));
     },
        
-    showMenu: function (parentTask) {
+    showEpicFeaturesForCreateSubTask: function (parentTask) {
       if(!this.checkCanAdd(parentTask)){
         return;
       }
       this.parentTask = parentTask;
-      this.menuVisible = true;
+      this.epicFeaturesForImportTaskVisible = true;
+    },
+    showEpicFeaturesForCreateTask(){
+      if(!this.checkCanAdd(null)){
+        return;
+      }
+      this.parentTask = null;
+      this.epicFeaturesForImportTaskVisible = true;
+    },
+    onEpicFeaturesForImportTask(menus) {
+      if (menus == null || menus.length == 0) {
+        this.epicFeaturesForImportTaskVisible = false;
+        return;
+      }
+      var menus2 = JSON.parse(JSON.stringify(menus));
+      menus2.forEach((i) => {
+        i.id = i.menuId;
+        i.parentTaskid = i.pmenuId;
+        i.name = i.menuName;
+        i.ntype="1"
+      });
+      this.onTaskTemplatesSelected(menus2);
+      this.epicFeaturesForImportTaskVisible = false;
     },
     //显示编辑界面 XmTask xm_task
     showEdit: function (row, index) {
@@ -842,39 +884,30 @@ export default {
       })
       this.load.add = true;
       var projectId=null;
-      var productId=null;
-      if(this.ptype==='0'){
-        if(this.parentTask && this.parentTask.id){
-          projectId=this.parentTask.projectId
-        }else{
-          projectId=this.filters.selProject.id
-        } 
+      var productId=null; 
+      if(this.parentTask && this.parentTask.id){
+        projectId=this.parentTask.projectId
       }else{
-         if(this.parentTask && this.parentTask.id){
-          productId=this.parentTask.productId
-        }else{
-          productId=this.filters.product.id
-        }
+        projectId=this.filters.selProject.id
+      } 
+      if(this.filters.xmProduct && this.filters.xmProduct.id){
+        productId=this.filters.xmProduct.id
+      }else{
+        if(taskTemplates2.some(k=>k.productId && k.isTpl!=='1')){
+          productId=taskTemplates2.find(k=>k.productId).productId
+        } 
       }
-      taskTemplates2.forEach((i) => {
-        if(this.ptype==='1'){
-          i.ptype="1"
-          i.projectId=null;
-          i.projectName=null;
-          if(productId!=i.productId){
-            i.menuId=null;
-            i.menuName=null;
-          }
-          i.productId=productId
-        }else if(this.ptype==='0'){
+       
+      taskTemplates2.forEach((i) => { 
           i.ptype="0"
           if(i.isTpl=='1'){
-            i.productId=null;
+            i.productId=productId;
             i.menuId=null;
             i.menuName=null;
-          }
-          i.projectId=projectId
-        }
+            
+          } 
+        i.ntype="1"
+        i.projectId=projectId 
         i.budgetAt = 0;
         i.budgetWorkload = 80;
         i.level = i.level ? i.level : "3";
@@ -902,13 +935,9 @@ export default {
       });
       var params={
         xmTasks:taskTemplates2,
-        ptype:this.ptype
-      }
-      if(this.ptype==='0'){
-        params.projectId=projectId
-      }else{
-        params.productId=productId
-      }
+        ptype:"0"
+      } 
+      params.projectId=projectId 
       if(this.parentTask && this.parentTask.id){
         params.parentTaskid=this.parentTask.id
       }
@@ -917,11 +946,7 @@ export default {
         .then((res) => {
           var tips = res.data.tips;
           if (tips.isOk) {
-            this.getXmTasks();
-            if(this.parentTask && this.parentTask.id){
-              treeTool.reloadChildren(this.$refs.table,this.maps,this.parentTask.id,'parentTaskid',this.loadXmTaskLazy)
-            }
-
+            this.getXmTasks();  
           }
           this.taskTemplateVisible = false;
           this.$notify({
@@ -1191,6 +1216,7 @@ export default {
     XmGroupDialog,
     XmTableConfig, 
     XmPhaseSelect,
+    XmEpicFeaturesSelect,
     //在下面添加其它组件
   },
   mounted() {

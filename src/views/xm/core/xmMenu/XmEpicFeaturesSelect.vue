@@ -8,10 +8,14 @@
 						 
 						<el-input style="width:120px;" v-model="filters.key" placeholder="名称模糊查询"  clearable></el-input>
 						<el-button icon="el-icon-search" @click="searchXmMenus()"></el-button> 
+						<el-button v-if="showSelect!==false && multi===true" type="primary" @click="selectConfirm()">确认选择</el-button> 
 					 </el-row>
 					<el-row>
 						<el-table    stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
-							 
+							<template v-if="showSelect!==false && multi===true">
+								<el-table-column   label="" type="selection"  width="60"  >  
+								</el-table-column> 
+							</template>
 							<el-table-column prop="menuName" label="史诗、特性名称" min-width="150" >
 								<template slot-scope="scope">
 									<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
@@ -26,7 +30,7 @@
 									<span>{{scope.row.seqNo}} &nbsp; {{scope.row.menuName}} </span> 
   								</template> 
 							</el-table-column> 
-							<template v-if="showSelect!==false">
+							<template v-if="showSelect!==false && multi!==true">
 							<el-table-column   label="操作"  width="100"  > 
 								<template slot-scope="scope"> 
 									<el-button      @click="select( scope.row,scope.$index)"   title="选择" type="primary"> 选择</el-button>     
@@ -56,7 +60,7 @@
 	import { mapGetters } from 'vuex'
 
 	export default {
-		props:['selProject','xmIteration','xmProduct','disabledMng','showSelect'],
+		props:['selProject','xmIteration','xmProduct','showSelect','multi'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -338,6 +342,9 @@
 				this.editForm=row 
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
       		},
+			selectConfirm(){
+				this.$emit('menus-selected',this.sels)
+			}
 		},//end methods
 		components: { 
 			XmProductSelect, 

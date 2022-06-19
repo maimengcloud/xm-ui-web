@@ -1670,6 +1670,7 @@ export default {
           i.menuId=null;
           i.menuName=null;
         }
+        i.ntype="0"
         i.projectId=projectId 
         i.budgetAt = 0;
         i.budgetWorkload = 80;
