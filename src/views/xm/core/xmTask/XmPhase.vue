@@ -23,12 +23,10 @@
                 <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
                   <i :class=" 'el-icon-odometer' " ></i>
                 </div>  
-                <el-button
-                  v-if="isTaskCenter != '1' && isMy != '1'"
-                  @click="showEpicFeaturesForCreateTask"
-                  type="primary"
+                <el-button 
+                  @click="showEpicFeaturesForCreateTask" 
                   icon="el-icon-plus"
-                  >由用户故事快速创建计划 (推荐)</el-button
+                  >由史诗特性快速创建计划 (推荐)</el-button
                 >
               </el-col>
               <el-col :span="24" style="padding-top: 5px">
@@ -36,8 +34,7 @@
                 <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
                   <i :class=" 'el-icon-odometer' " ></i>
                 </div>  
-                <el-button
-                  v-if="isTaskCenter != '1' && isMy != '1'"
+                <el-button 
                   @click="showTaskTemplate"
                   icon="el-icon-plus"
                   >从模板快速导入计划 </el-button
@@ -48,8 +45,7 @@
                 <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
                   <i :class=" 'el-icon-odometer' " ></i>
                 </div>  
-                <el-button
-                  v-if="isTaskCenter != '1' && isMy != '1'"
+                <el-button 
                   @click="showAdd('1')"
                   icon="el-icon-plus"
                   >直接创建计划</el-button
@@ -61,7 +57,7 @@
               type="primary"
               round
               icon="el-icon-plus"
-              title="新建计划、任务"
+              title="新建计划"
             ></el-button>
           </el-popover>
           <el-button
@@ -192,7 +188,45 @@
                   </el-link>  
 									<div class="tool-bar">
                     <span class="u-btn">
-                         <el-button   :style="{backgroundColor:  '#E6A23C'}"  @click.stop="showSubAdd( scope.row,scope.$index,'1')" icon="el-icon-plus" title="新建计划" circle plain size="mini"> </el-button>   
+                        <el-popover
+                          placement="top-start"
+                          title="选择创建计划/任务的方式"
+                          width="300"
+                          trigger="hover"
+                        >
+                          <el-row>
+                            <el-col :span="24" style="padding-top: 5px">
+                              
+                              <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
+                                <i :class=" 'el-icon-odometer' " ></i>
+                              </div>  
+                              <el-button 
+                                @click="showEpicFeaturesForCreateSubTask(scope.row)" 
+                                icon="el-icon-plus"
+                                >由史诗特性快速创建子计划 (推荐)</el-button
+                              >
+                            </el-col>
+                            <el-col :span="24" style="padding-top: 5px">
+                              
+                              <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
+                                <i :class=" 'el-icon-odometer' " ></i>
+                              </div>  
+                              <el-button 
+                                @click="showTaskTemplate"
+                                icon="el-icon-plus"
+                                >从模板快速导入子计划 </el-button
+                              >
+                            </el-col>
+                            <el-col :span="24" style="padding-top: 5px">
+                              
+                              <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
+                                <i :class=" 'el-icon-odometer' " ></i>
+                              </div>  
+                              <el-button   @click.stop="showSubAdd( scope.row,scope.$index,'1')" icon="el-icon-plus" title="新建子计划">直接创建子计划 </el-button>   
+                            </el-col> 
+                          </el-row> 
+                           <el-button   slot="reference"  :style="{backgroundColor:  '#E6A23C'}"   icon="el-icon-plus" title="新建子计划" circle plain size="mini"> </el-button>   
+                        </el-popover> 
                         <el-button      @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle plain size="mini"> </el-button>     
                      </span>
 									</div>

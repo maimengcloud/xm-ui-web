@@ -225,8 +225,7 @@
                 </div>  
                 <el-button
                   v-if="isTaskCenter != '1' && isMy != '1'"
-                  @click="showMenu"
-                  type="primary"
+                  @click="showMenu" 
                   icon="el-icon-plus"
                   >由用户故事快速创建任务(推荐)</el-button
                 >
