@@ -93,10 +93,8 @@
 
 								
 								<el-form-item label="缺陷描述" prop="description">
-									<el-tooltip content="点击切换为富文本编辑|普通文本">
-										<el-button icon="el-icon-refresh" @click="descriptionEditorVisible=!descriptionEditorVisible" type="text"></el-button>
-									</el-tooltip>
-									<div v-if="descriptionEditorVisible==false">
+ 										<el-button icon="el-icon-refresh" @click="descriptionEditorVisible=!descriptionEditorVisible" type="text">点击切换为富文本编辑|普通文本</el-button>
+ 									<div v-if="descriptionEditorVisible==false">
 										<el-input  style="width:100%;" v-model="addForm.description" type="textarea" :rows="6"> </el-input>
 									</div>
 									<div v-else>
@@ -106,10 +104,8 @@
 							</el-tab-pane>
 							<el-tab-pane label="测试步骤" name="2">
 								<el-form-item label="测试步骤" prop="opStep">
-									<el-tooltip content="点击切换为富文本编辑|普通文本">
-										<el-button icon="el-icon-refresh" @click="opStepEditorVisible=!opStepEditorVisible" type="text"></el-button>
-									</el-tooltip>
-									<div v-if="opStepEditorVisible==false">
+ 										<el-button icon="el-icon-refresh" @click="opStepEditorVisible=!opStepEditorVisible" type="text">点击切换为富文本编辑|普通文本</el-button>
+ 									<div v-if="opStepEditorVisible==false">
 										<el-input  style="width:100%;" v-model="addForm.opStep" type="textarea" :rows="6"> </el-input>
 									</div>
 									<div v-else>
@@ -119,10 +115,8 @@
 							</el-tab-pane>
 							<el-tab-pane label="预期结果" name="3">
 								<el-form-item label="预期结果" prop="expectResult">
-									<el-tooltip content="点击切换为富文本编辑|普通文本">
-										<el-button icon="el-icon-refresh" @click="expectResultEditorVisible=!expectResultEditorVisible" type="text"></el-button>
-									</el-tooltip>
-									<div v-if="expectResultEditorVisible==false">
+ 										<el-button icon="el-icon-refresh" @click="expectResultEditorVisible=!expectResultEditorVisible" type="text">点击切换为富文本编辑|普通文本</el-button>
+ 									<div v-if="expectResultEditorVisible==false">
 										<el-input  style="width:100%;" v-model="addForm.expectResult" type="textarea" :rows="6"> </el-input>
 									</div>
 									<div v-else>

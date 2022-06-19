@@ -36,7 +36,7 @@
 											<el-row>
 												<el-button type="text" @click="sendToAsk">提出人</el-button><br>
 												<el-button type="text"  @click="sendToCreater">创建人</el-button><br>
-												<el-button type="text"  @click="showGroupUsers('handlerUsername')">其它人</el-button><br>
+												<el-button type="text"  @click="showGroupUsers('handlerUserid')">其它人</el-button><br>
 											</el-row>
 										<el-button slot="reference" type="text">指派给</el-button>
 									</el-popover>
@@ -70,7 +70,7 @@
 									
 										<el-col :span="8">
 											<el-form-item label="提出人" prop="askUsername">
-												<el-tag @click="showGroupUsers('askUsername')">{{editForm.askUsername?editForm.askUsername:'未关联提出人'}}</el-tag> 
+												<el-tag @click="showGroupUsers('askUserid')">{{editForm.askUsername?editForm.askUsername:'未关联提出人'}}</el-tag> 
 											</el-form-item> 
 										</el-col>
 										<el-col :span="8">
@@ -124,11 +124,9 @@
 							</el-tab-pane>
 							
 							<el-tab-pane label="缺陷描述" name="12">
-								<el-form-item label="" prop="description" label-width="0px">
-									<el-tooltip content="点击切换为富文本编辑|普通文本">
-										<el-button icon="el-icon-refresh" @click="descriptionEditorVisible=!descriptionEditorVisible" type="text">切换为富文本输入</el-button>
-									</el-tooltip>
-									<div v-if="descriptionEditorVisible==false">
+								<el-form-item label="" prop="description" label-width="0px"> 
+										<el-button icon="el-icon-refresh" @click="descriptionEditorVisible=!descriptionEditorVisible" type="text">点击切换为富文本编辑|普通文本</el-button>
+ 									<div v-if="descriptionEditorVisible==false">
 										<el-input  style="width:100%;" v-model="editForm.description" type="textarea" :rows="6"> </el-input>
 									</div>
 									<div v-else>
@@ -142,10 +140,8 @@
 							</el-tab-pane>
 							<el-tab-pane label="测试步骤" name="2">
 								<el-form-item label="" prop="opStep"  label-width="0px">
-									<el-tooltip content="点击切换为富文本编辑|普通文本">
-										<el-button icon="el-icon-refresh" @click="opStepEditorVisible=!opStepEditorVisible" type="text"></el-button>
-									</el-tooltip>
-									<div v-if="opStepEditorVisible==false">
+ 										<el-button icon="el-icon-refresh" @click="opStepEditorVisible=!opStepEditorVisible" type="text">点击切换为富文本编辑|普通文本</el-button>
+ 									<div v-if="opStepEditorVisible==false">
 										<el-input  style="width:100%;" v-model="editForm.opStep" type="textarea" :rows="6"> </el-input>
 									</div>
 									<div v-else>
@@ -160,10 +156,8 @@
 							</el-tab-pane>
 							<el-tab-pane label="预期结果" name="3">
 								<el-form-item label="" prop="expectResult" label-width="0px">
-									<el-tooltip content="点击切换为富文本编辑|普通文本">
-										<el-button icon="el-icon-refresh" @click="expectResultEditorVisible=!expectResultEditorVisible" type="text"></el-button>
-									</el-tooltip>
-									<div v-if="expectResultEditorVisible==false">
+ 										<el-button icon="el-icon-refresh" @click="expectResultEditorVisible=!expectResultEditorVisible" type="text">点击切换为富文本编辑|普通文本</el-button>
+ 									<div v-if="expectResultEditorVisible==false">
 										<el-input  style="width:100%;" v-model="editForm.expectResult" type="textarea" :rows="6"> </el-input>
 									</div>
 									<div v-else>
@@ -435,54 +429,21 @@
 			},
 			onUserConfirm:function(groupUsers){
 				if(groupUsers==null || groupUsers.length==0){
-					if(this.userFieldName=='askUsername'){
-						this.editForm.askUserid=''
-						this.editForm.askUsername=''
-					}else if(this.userFieldName=='handlerUsername'){
-						this.editForm.handlerUserid=''
-						this.editForm.handlerUsername='';
-					}
-				}else{
-					var user=groupUsers[0]
-					if(this.userFieldName=='askUsername'){
-						this.editForm.askUserid=user.userid
-						this.editForm.askUsername=user.username
-					}else if(this.userFieldName=='handlerUsername'){
-						this.editForm.handlerUserid=user.userid
-						this.editForm.handlerUsername=user.username
-					}
+					 
+				}else{  
+					if(this.userFieldName==='handlerUserid'){
+						this.editForm.handlerUserid=groupUsers[0].userid
+						this.editForm.handlerUsername=groupUsers[0].username
+					}else if(this.userFieldName==='askUserid'){
+						this.editForm.askUserid=groupUsers[0].userid
+						this.editForm.askUsername=groupUsers[0].username
+					} 
+					this.editXmQuestionSomeFields(this.editForm,this.userFieldName,groupUsers) 
 				}
 				this.selectUserVisible=false
 			},
 			handleQuestion:function(tardgetBugStatus){ 
 				this.editSubmit(tardgetBugStatus);
-			},
-			formatterOption: function(row,column,cellValue, index){
-				var columnName=column.property;
-				var key="";
-				if(columnName=='handleStatus'){
-					key="bugStatus"
-				}else if(columnName=='bugType'){
-					key="bugType"
-				}else if(columnName=='handleSolution'){
-					key="bugSolution"
-				}else if(columnName=='bugSeverity'){
-					key="bugSeverity"
-				}else if(columnName=='priority'){
-					key="priority"
-				}else{
-					return cellValue
-				}
-				if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0   ){
-					return cellValue;
-				}
-				var list=this.dicts[key].filter(i=>i.id==cellValue)
-				if(list.length>0){
-					return list[0].name
-				}else{
-					return cellValue;
-				}
-
 			}, 
 			showSelectTask:function(){
 				if(this.selProject==null){
@@ -514,10 +475,13 @@
 			sendToCreater(){
 				this.editForm.handlerUsername=this.editForm.createUsername
 				this.editForm.handlerUserid=this.editForm.createUserid
+				this.editXmQuestionSomeFields(this.editForm,"handlerUserid",[{userid:this.editForm.createUserid,username:this.editForm.createUsername}])
+
 			},
 			sendToAsk(){ 
 				this.editForm.handlerUsername=this.editForm.askUsername
 				this.editForm.handlerUserid=this.editForm.askUserid
+				this.editXmQuestionSomeFields(this.editForm,"handlerUserid",[{userid:this.editForm.askUserid,username:this.editForm.askUsername}])
 			}, 
 			/**end 在上面加自定义方法**/
 
@@ -570,6 +534,13 @@
 					if($event){ 	
 						params[fieldName]=$event[0].userid;
 						params.handlerUsername=$event[0].username 
+					}else{
+						return;
+					}
+				}else if(fieldName==='askUserid'){
+					if($event){ 	
+						params[fieldName]=$event[0].userid;
+						params.askUsername=$event[0].username 
 					}else{
 						return;
 					}
