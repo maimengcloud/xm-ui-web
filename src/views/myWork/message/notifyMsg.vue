@@ -1,7 +1,7 @@
 <template>
   <div class="m_container">  
     <div class="message_content" v-if="notifyMsgs.length>0">
-      <div class="message_content_box" v-for="(item, index) in notifyMsgs" :key="index" @click="goToImPrichatMessage(item)">
+      <div class="message_content_box" v-for="(item, index) in notifyMsgs" :key="index" @click="goToPage(item)">
         <p class="title">{{item.sendUsername}}</p>
         <p class="date">{{item.opTime}}</p>
         <span class="text">{{item.msg}}</span>
@@ -16,7 +16,10 @@
         :total="pageInfo.total">
       </el-pagination>
     </div> 
-    <div  class="message_content_box" v-else>暂无消息</div>
+    <div  class="message_content_box" v-else>
+      <el-result icon="success"  subTitle="暂时没有消息"> 
+      </el-result>
+    </div>
   </div>
 </template>
 
@@ -74,17 +77,20 @@ export default {
           }
           params.orderBy= orderBys.join(",")
       }  
-      params.toUserid=this.userInfo.userid
-      params.msgClass=this.msgClass||''
+      params.toUserid=this.userInfo.userid 
       getNoticeMsg(params).then(res=>{
         this.notifyMsgs=res.data.data;
         this.pageInfo.total=res.data.total
         this.pageInfo.count=false;
       })
     },
-    goToImPrichatMessage(item){
+    /**
+     * objType:对象类型:项目-1/任务-2/产品-3/需求-4/bug-5/迭代-6/团队-7
+     * 
+     */
+    goToPage(item){
       var curlDomain=window.location.protocol+"//"+window.location.host; //   返回https://mp.csdn.net
-      if(item.msgClass=='0'){
+      if(item.objType=='0'){
          window.open(curlDomain+"/im/"+process.env.VERSION+"/#/prichat?groupId="+item.groupId)
       }else if(item.msgClass=='4'){
         this.$router.push('/mdp/workflow/ru/task/TaskListAssigneeToMe')
