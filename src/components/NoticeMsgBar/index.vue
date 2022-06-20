@@ -17,12 +17,10 @@
       </el-dropdown-menu> 
     </el-dropdown>
     -->
-    <div trigger="hover"  class="avatar-container"  @command="handleNoticeMsgClick">
-      <div class="avatar-wrapper" @click="goToMsgCenter">
-          <i class="el-icon-bell"></i>
-          <span>消息中心</span> 
-      </div> 
-    </div>
+    
+      <div class="notify-box" > 
+          <el-link @click="goToMsgCenter"><el-badge :value="unreadMsgCount"><i class="el-icon-bell"></i>消息中心</el-badge></el-link> 
+      </div>  
 </template>
 
 <script>
@@ -33,41 +31,25 @@ export default {
   computed: {
     noticeMsg() {
       return this.$store.getters.noticeMsg
+    },
+    unreadMsgCount(){
+      var msgs=this.$store.getters.noticeMsg
+      if(!msgs){
+        return 0;
+      }
+      return msgs.filter(k=>k.hadRead!='1').length;
     }
   },
   data(){
     return {
-      load:{list:false},
-      commandLinks:[
-        {command:'toPay',path:'/mallm/OrderCenter/orders/OrdersMng',query:null,params:null},
-        {command:'toSend',path:'/mallm/OrderCenter/orders/OrdersDeliver',query:null,params:null},
-        {command:'toRece',path:'/mallm/OrderCenter/orders/OrdersReceiptConfirm',query:null,params:null},
-        {command:'hadFinish',path:'/mallm/OrderCenter/orders/OrdersMng',query:null,params:null},
-        {command:'hadCancel',path:'/mallm/OrderCenter/orders/OrdersMng',query:null,params:null},
-        {command:'toApprova',path:'/mallm/OrderCenter/orders/OrdersMngBizFlow',query:null,params:null},
-        {command:'hadApprova',path:'/mallm/OrderCenter/orders/OrdersMngBizFlow',query:null,params:null},
-        {command:'hadclose',path:'/mallm/OrderCenter/orders/OrdersMng',query:null,params:null},
-      ]
+      load:{list:false}, 
     }
   },
   methods: {
-    goToMsgCenter(){
-      this.$router.push("/my/work/message");
-    },
-    doGetNoticeMsg(){
-      this.load.list=true;
-       getNoticeMsg({}).then(res=>{
-         this.load.list=false;
-           var tips = res.data.tips;
-           if(tips.isOk){
-             this.$message.success("刷新数据成功")
-             this.$store.dispatch("setNoticeMsg",res.data.data)
-           }else{
-             this.$message.error(tips.msg)
-           }
-         })
-    },
-
+    goToMsgCenter(){ 
+      this.$router.push({path:"/my/work/message"});
+    },  
+     
     doGetNoticeMsgNoTips(){
       this.load.list=true;
        getNoticeMsg({}).then(res=>{
@@ -79,29 +61,7 @@ export default {
              this.$message.error(tips.msg)
            }
          })
-    },
-    handleNoticeMsgClick(command) {
-       if(command=='doGetNoticeMsg'){
-        this.doGetNoticeMsg();
-       }else{
-         if(this.commandLinks.some(c=>c.command==command)){
-          var link=this.commandLinks.find(c=>c.command==command)
-          if(link==null || !link.path){
-            return;
-          }
-          this.$store.dispatch("FindRouter",link.path).then(res=>{
-            if(res==null){
-              this.$message.error("该链接已不存在或者您无权限访问")
-              return
-            }else{
-              this.$router.push({path:res.fullPath,query:res.query,params:res.params});
-            }
-          })
-         }else{
-
-         }
-       }
-    }
+    }, 
   },
   mounted(){
     this.doGetNoticeMsgNoTips()
@@ -110,23 +70,9 @@ export default {
 </script>
 
 <style rel="stylesheet/scss"  lang="scss" scoped>
-.avatar-container {
-  height: 50px;
-  .avatar-wrapper {
-    cursor: pointer;
-    position: relative;
-    font-size: 16px;
-    .user-avatar {
-      height: 30px;
-      border-radius: 10px;
-    }
-    .el-icon-caret-bottom {
-      position: absolute;
-      right: -20px;
-      top: 25px;
-      font-size: 12px;
-    }
-  }
+.notify-box {
+  margin-top:0px;
+  margin-right:10px;
 }
 </style>
 

@@ -1,16 +1,8 @@
 const noticeMsg = {
   state: { 
-    noticeMsg:{ 
-       toPayNum:0,
-       toSendNum:0,
-       toReceNum:0,
-       toApprovaNum:0,
-       hadApprovaNum:0,
-       hadFinishNum:0,
-       hadCloseNum:0,
-       hadCancelNum:0,
-       totalNum:0,
-    },
+    noticeMsg:[
+      /**{id:'消息编号 主键',sendUserid:'操作人id',sendUsername:'操作人名字',operTime:'操作时间',objType:'对象类型:项目-1/任务-2/产品-3/需求-4/bug-5/迭代-6/团队-7',msg:'备注-完整描述',gloNo:'全局根踪号，用于跟踪日志',branchId:'机构编号',ip:'ip地址',bizId:'业务主键编号',pbizId:'对象上级编号,项目时填项目编号，任务时填项目编号，产品时填产品编号，需求时填产品编号，bug时填产品编号，迭代时填产品编号',bizName:'对象名称',toUserid:'接收用户编号',toUsername:'接收用户名称',hadRead:'是否已读'} */
+    ],
      
   },
 
@@ -36,6 +28,6 @@ const noticeMsg = {
 var noticeMsgLocal=localStorage.getItem("noticeMsg");
 if(noticeMsgLocal){
    
-  noticeMsg.state.noticeMsg=Object.assign( noticeMsg.state.noticeMsg,JSON.parse(noticeMsgLocal))
+  noticeMsg.state.noticeMsg=JSON.parse(noticeMsgLocal)
 }
 export default noticeMsg
