@@ -30,24 +30,24 @@
 			 
 			 
 			 initByQueryId(){
-				 if(this.$route.query && this.$route.query.id){
+				 if(this.$route.query && this.$route.query.menuId){
 					var localStorageXmMenu=localStorage.getItem("xm-menu-info-route")
 					var menu=null;
 					if(localStorageXmMenu){
 						menu=JSON.parse(localStorageXmMenu)
-						if(menu && menu.id==this.$route.query.id){
+						if(menu && menu.menuId==this.$route.query.menuId){
 							this.xmMenu=menu
 							this.showInfo=true;
 						}else{
-							this.getXmMenu(this.$route.query.id);
+							this.getXmMenu(this.$route.query.menuId);
 						}
 					}else{
-						this.getXmMenu(this.$route.query.id);
+						this.getXmMenu(this.$route.query.menuId);
 					} 
 				} 
 			 },
-			 getXmMenu(id){
-				 listXmMenu({id:id}).then(res=>{
+			 getXmMenu(menuId){
+				 listXmMenu({menuId:menuId}).then(res=>{
 					 var tips = res.data.tips;
 					 if(tips.isOk){
 						 this.xmMenu=res.data.data[0]

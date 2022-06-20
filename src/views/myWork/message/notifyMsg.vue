@@ -2,8 +2,7 @@
   <div class="m_container">  
     <div class="message_content" v-if="notifyMsgs.length>0">
       <div class="message_content_box" v-for="(item, index) in notifyMsgs" :key="index" @click="goToPage(item)">
-        <p class="title">{{item.sendUsername}}</p>
-        <p class="date">{{item.opTime}}</p>
+         <p class="date"><strong>发送者:</strong><span style="font-size:14px;">{{item.sendUsername}}</span> <strong>&nbsp;&nbsp;发送时间：</strong> <span style="font-size:14px;">{{item.operTime}}</span> <el-tag :type="item.hadRead=='1'?'primary':'danger'">{{item.hadRead=='1'?'已读':'未读'}}</el-tag> </p> 
         <span class="text">{{item.msg}}</span>
         <div class="line"></div>
       </div>
@@ -27,6 +26,10 @@
 	import {
 		getNoticeMsg
 	} from '@/api/cpd'
+  
+	import {
+		editSomeFieldsNotifyMsg
+	} from '@/api/mdp/sys/notifyMsg'
 import { mapGetters } from 'vuex'
 export default {
   props:['msgClass'],
@@ -43,7 +46,7 @@ export default {
           pageSize:10,//每页数据
           count:false,//是否需要重新计算总记录数
           pageNum:1,//当前页码、从1开始计算
-          orderFields:['op_time'],//排序列 如 ['sex','student_id']，必须为数据库字段
+          orderFields:['oper_time'],//排序列 如 ['sex','student_id']，必须为数据库字段
           orderDirs:['desc']//升序 asc,降序desc 如 性别 升序、学生编号降序 ['asc','desc']
       },
     }
@@ -89,20 +92,55 @@ export default {
      * 
      */
     goToPage(item){
-      var curlDomain=window.location.protocol+"//"+window.location.host; //   返回https://mp.csdn.net
-      if(item.objType=='0'){
-         window.open(curlDomain+"/im/"+process.env.VERSION+"/#/prichat?groupId="+item.groupId)
-      }else if(item.msgClass=='4'){
-        this.$router.push('/mdp/workflow/ru/task/TaskListAssigneeToMe')
-      }else if(item.msgClass=='5'){
-        if(process.env.CONTEXT=='xm'){
-          this.$router.push('/xm/core/xmTask/XmMyTaskCenter')
-        }else{
-          window.open(curlDomain+"/xm/"+process.env.VERSION+"/#/xm/core/xmTask/XmMyTaskCenter")
-        } 
+      if(item.hadRead!='1'){
+        editSomeFieldsNotifyMsg({ids:[item.id],hadRead:'1'}).then(res=>{
+          item.hadRead="1"
+        })
       }
-      
-     
+      var curlDomain=window.location.protocol+"//"+window.location.host; //   返回https://mp.csdn.net 
+      if(item.objType=='1'){
+        if(process.env.CONTEXT=='xm'){
+          this.$router.push({path:"/xm/core/xmProject/XmProjectInfoRoute",query:{id:item.bizId}})
+        }else{
+          window.open(curlDomain+"/xm/"+process.env.VERSION+"/#/xm/core/xmProject/XmProjectInfoRoute?id="+item.bizId)
+        }
+      }else if(item.objType=='2'){
+        if(process.env.CONTEXT=='xm'){
+          this.$router.push({path:"/xm/core/xmTask/XmTaskDetailRoute",query:{id:item.bizId}})
+        }else{
+          window.open(curlDomain+"/xm/"+process.env.VERSION+"/#/xm/core/xmTask/XmTaskDetailRoute?id="+item.bizId)
+        }
+      }else if(item.objType=='3'){
+        if(process.env.CONTEXT=='xm'){
+          this.$router.push({path:"/xm/core/xmProduct/XmProductInfoRoute",query:{id:item.bizId}})
+        }else{
+          window.open(curlDomain+"/xm/"+process.env.VERSION+"/#/xm/core/xmProduct/XmProductInfoRoute?id="+item.bizId)
+        }
+      }else if(item.objType=='4'){
+        if(process.env.CONTEXT=='xm'){
+          this.$router.push({path:"/xm/core/xmMenu/XmMenuDetailRoute",query:{menuId:item.bizId}})
+        }else{
+          window.open(curlDomain+"/xm/"+process.env.VERSION+"/#/xm/core/xmMenu/XmMenuDetailRoute?menuId="+item.bizId)
+        }
+      }else if(item.objType=='5'){
+        if(process.env.CONTEXT=='xm'){
+          this.$router.push({path:"/xm/core/xmQuestion/XmQuestionDetailRoute",query:{id:item.bizId}})
+        }else{
+          window.open(curlDomain+"/xm/"+process.env.VERSION+"/#/xm/core/xmQuestion/XmQuestionDetailRoute?id="+item.bizId)
+        }
+      }else if(item.objType=='6'){
+        if(process.env.CONTEXT=='xm'){
+          this.$router.push({path:"/xm/core/xmIteration/XmIterationInfoRoute",query:{id:item.bizId}})
+        }else{
+          window.open(curlDomain+"/xm/"+process.env.VERSION+"/#/xm/core/xmIteration/XmIterationInfoRoute?id="+item.bizId)
+        }
+      }else if(item.objType=='7'){
+        if(process.env.CONTEXT=='xm'){
+          this.$router.push({path:"/xm/core/xmGroup/xmGroupRoute",query:{projectId:item.pbizId}})
+        }else{
+          window.open(curlDomain+"/xm/"+process.env.VERSION+"/#/xm/core/xmGroup/xmGroupRoute?projectId="+item.pbizId)
+        }
+      }
     }
   },
 
