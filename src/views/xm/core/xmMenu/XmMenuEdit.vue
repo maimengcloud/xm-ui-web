@@ -214,7 +214,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
   	import TagMng from "@/views/mdp/arc/tag/TagMng";
 	import XmSubWorkItem from "@/views/xm/core/xmMenuWorkItem/XmSubWorkItem";
 	import XmRecord from '../xmRecord/XmRecord'  
-	import XmMyDoFocus from '../xmMyFocus/XmMyDoFocus.vue';
+	import XmMyDoFocus from '@/views/myWork/my/components/DoFocus';
 
 	export default {
 		computed: {

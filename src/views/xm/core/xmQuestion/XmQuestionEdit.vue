@@ -240,7 +240,7 @@
   	import TagMng from "@/views/mdp/arc/tag/TagMng";
 	  
 	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
-	import XmMyDoFocus from '../xmMyFocus/XmMyDoFocus.vue';
+	import XmMyDoFocus from '@/views/myWork/my/components/DoFocus';
 
 	export default {
 		computed: {

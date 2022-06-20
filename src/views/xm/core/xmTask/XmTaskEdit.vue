@@ -292,7 +292,7 @@
 	import xmQuestionForTask from "@/views/xm/core/xmQuestion/XmQuestionForTask";
 	import XmTaskWorkloadRecord from "../xmTaskWorkload/XmTaskWorkloadRecord"
 	import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
-	import XmMyDoFocus from '../xmMyFocus/XmMyDoFocus.vue';
+	import XmMyDoFocus from '@/views/myWork/my/components/DoFocus';
 	import XmTaskExecuserForTask from '../xmTaskExecuser/XmTaskExecuserForTask.vue';
 	export default { 
 		computed: {

@@ -44,7 +44,7 @@ import wdcp from '@/views/xm/core/xmProduct/XmProductAllMng.vue';
 import wdxm from '@/views/xm/core/xmProject/XmProjectMng';
 import { userMenuFavoriteList, saveMenuFavoriteList} from '@/api/mdp/sys/menuFavorite'
 
-import myFocus from '@/views/xm/core/xmMyFocus/XmMyFocusList';
+import myFocus from './MyFocusList';
 import VueGridLayout from 'vue-grid-layout';
 import { mapGetters } from 'vuex'
 
