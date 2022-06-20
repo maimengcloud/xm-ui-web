@@ -111,8 +111,8 @@ export default {
   },
   mounted(){
     this.doGetNoticeMsgNoTips()
-    //setInterval(this.doGetNoticeMsgNoRead, 60000 * 5);
-    setInterval(this.doGetNoticeMsgNoRead, 5000);
+    setInterval(this.doGetNoticeMsgNoRead, 60000 * 5);
+    //setInterval(this.doGetNoticeMsgNoRead, 5000);
   }
 }
 </script>
