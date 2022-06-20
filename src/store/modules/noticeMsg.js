@@ -25,9 +25,5 @@ const noticeMsg = {
  
   }
 } 
-var noticeMsgLocal=localStorage.getItem("noticeMsg");
-if(noticeMsgLocal){
-   
-  noticeMsg.state.noticeMsg=JSON.parse(noticeMsgLocal)
-}
+ 
 export default noticeMsg

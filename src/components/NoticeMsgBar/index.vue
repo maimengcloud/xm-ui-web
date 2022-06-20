@@ -23,9 +23,9 @@
       </div>  
 </template>
 
-<script>
+<script> 
 	import {
-		getNoticeMsg
+		getNoticeMsg,goToPage
 	} from '@/api/cpd'
 export default {
   computed: {
@@ -36,8 +36,27 @@ export default {
       var msgs=this.$store.getters.noticeMsg
       if(!msgs){
         return 0;
+      } 
+       return msgs.filter(k=>k.hadRead!='1').length;
+    }
+  },
+  watch:{
+    unreadMsgCount(count){ 
+       var that = this;
+      if(count>1){
+        this.$notify.warning({title:'未读消息',message:'有'+count+'条未读消息待处理',showClose:true,position:'bottom-right',
+          onClick:function(){
+            that.goToMsgCenter();
+          }
+        })
+      }else if(count==1){
+        var msgObj=this.noticeMsg.filter(k=>k.hadRead!='1')[0]
+         that.$notify.warning({title:'未读消息',message:msgObj.msg,showClose:true,position:'bottom-right',
+          onClick:function(){
+            that.goToPage(msgObj);
+          }
+        })
       }
-      return msgs.filter(k=>k.hadRead!='1').length;
     }
   },
   data(){
@@ -49,10 +68,18 @@ export default {
     goToMsgCenter(){ 
       this.$router.push({path:"/my/work/message"});
     },  
-     
+    goToPage(item){
+      if(item.hadRead!='1'){
+        editSomeFieldsNotifyMsg({ids:[item.id],hadRead:'1'}).then(res=>{
+          item.hadRead="1"
+          this.$store.dispatch("setNoticeMsg",this.notifyMsgs)
+        })
+      }
+      goToPage(this,item);
+    },
     doGetNoticeMsgNoTips(){
       this.load.list=true;
-       getNoticeMsg({}).then(res=>{
+       getNoticeMsg({pageSize:20,pageNum:1,count:false,orderBy:'oper_time desc'}).then(res=>{
          this.load.list=false;
            var tips = res.data.tips;
            if(tips.isOk){
@@ -62,9 +89,22 @@ export default {
            }
          })
     }, 
+    doGetNoticeMsgNoRead(){
+      this.load.list=true;
+       getNoticeMsg({hadRead:'0',pageSize:20,pageNum:1,count:false,orderBy:'oper_time desc'}).then(res=>{
+         this.load.list=false;
+           var tips = res.data.tips;
+           if(tips.isOk&&res.data.data.length>0){
+             this.$store.dispatch("setNoticeMsg",res.data.data)
+           }else if(!tips.isOk){
+             this.$message.error(tips.msg)
+           }
+         })
+    }, 
   },
   mounted(){
     this.doGetNoticeMsgNoTips()
+    setInterval(this.doGetNoticeMsgNoRead, 60000 * 5);
   }
 }
 </script>
