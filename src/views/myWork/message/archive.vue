@@ -2,9 +2,10 @@
   <div class="m_container">  
     <div class="message_content">
       <div class="message_content_box" v-for="(item, index) in arcArchives" :key="index" @click="goToArchive(item)">
-        <p class="title">{{item.archiveAbstract||item.tagNames||item.authorName}}</p>
-        <p class="date">{{item.archivingDate}}</p>
-        <span class="text">{{item.archiveTitle}}</span>
+        <p class="title">{{item.archiveTitle||item.tagNames||item.authorName}}</p> 
+        <p class="date"> 作者: <span style="font-size:14px;">{{item.authorName}}</span>  &nbsp;&nbsp;时间：  <span style="font-size:14px;">{{item.archivingDate}}</span>  </p> 
+
+        <span class="text">{{item.archiveAbstract||item.archiveContext}}</span>
         <div class="line"></div>
       </div>
       <el-pagination

@@ -2,7 +2,7 @@
   <div class="m_container">  
     <div class="message_content" v-if="notifyMsgs.length>0">
       <div class="message_content_box" v-for="(item, index) in notifyMsgs" :key="index" @click="goToPage(item)">
-         <p class="date"><strong>发送者:</strong><span style="font-size:14px;">{{item.sendUsername}}</span> <strong>&nbsp;&nbsp;发送时间：</strong> <span style="font-size:14px;">{{item.operTime}}</span> <el-tag :type="item.hadRead=='1'?'primary':'danger'">{{item.hadRead=='1'?'已读':'未读'}}</el-tag> </p> 
+         <p class="date"> 发送者: <span style="font-size:14px;">{{item.sendUsername}}</span> &nbsp;&nbsp;发送时间： <span style="font-size:14px;">{{item.operTime}}</span> <el-tag :type="item.hadRead=='1'?'primary':'danger'">{{item.hadRead=='1'?'已读':'未读'}}</el-tag> </p> 
         <span class="text">{{item.msg}}</span>
         <div class="line"></div>
       </div>
