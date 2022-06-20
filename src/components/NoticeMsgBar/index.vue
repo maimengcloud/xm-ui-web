@@ -24,6 +24,10 @@
 </template>
 
 <script> 
+
+	import {
+		editSomeFieldsNotifyMsg
+	} from '@/api/mdp/sys/notifyMsg'
 	import {
 		getNoticeMsg,goToPage
 	} from '@/api/cpd'
@@ -41,8 +45,11 @@ export default {
     }
   },
   watch:{
-    unreadMsgCount(count){ 
+    unreadMsgCount(count,old){ 
        var that = this;
+       if(old>count){
+        return;
+       }
       if(count>1){
         this.$notify.warning({title:'未读消息',message:'有'+count+'条未读消息待处理',showClose:true,position:'bottom-right',
           onClick:function(){
@@ -104,7 +111,8 @@ export default {
   },
   mounted(){
     this.doGetNoticeMsgNoTips()
-    setInterval(this.doGetNoticeMsgNoRead, 60000 * 5);
+    //setInterval(this.doGetNoticeMsgNoRead, 60000 * 5);
+    setInterval(this.doGetNoticeMsgNoRead, 5000);
   }
 }
 </script>
