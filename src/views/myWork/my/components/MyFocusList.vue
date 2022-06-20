@@ -75,6 +75,7 @@
 import util from '@/common/js/util';//全局公共库
 import config from '@/common/config';//全局公共库
 import { initDicts,myFocusForIndex, delUserFocus, batchDelUserFocus,editSomeFieldsUserFocus } from '@/api/mdp/sys/userFocus';
+import { goToPage } from '@/api/cpd';
 import { mapGetters } from 'vuex'
 
 export default {
@@ -213,21 +214,8 @@ export default {
          *  that.dicts['focusType']=[{id:'1',name:'项目'},{id:'2',name:'任务'},{id:'3',name:'产品'},{id:'4',name:'需求'},{id:'5',name:'缺陷'},]
          */
         toBizPage(bizObj){
-            if(bizObj.focusType=='1'){
-                this.$router.push({path:'/xm/core/xmProject/XmProjectInfoRoute',query:{id:bizObj.bizId}})
-            }else if(bizObj.focusType=='3'){
-                 this.$router.push({path:'/xm/core/xmProduct/XmProductInfoRoute',query:{id:bizObj.bizId}})
-            }else if(bizObj.focusType=='2'){
-                 this.$router.push({path:'/xm/core/xmTask/XmTaskDetailRoute',query:{id:bizObj.bizId}})
-            }else if(bizObj.focusType=='4'){
-                 this.$router.push({path:'/xm/core/xmMenu/XmMenuDetailRoute',query:{id:bizObj.bizId}})
-            }else if(bizObj.focusType=='5'){
-                 this.$router.push({path:'/xm/core/xmQuestion/XmQuestionDetailRoute',query:{id:bizObj.bizId}})
-            }else if(bizObj.focusType=='6'){
-                 this.$router.push({path:'/xm/core/xmIteration/XmIterationInfoRoute',query:{id:bizObj.bizId}})
-            }
-
-            
+            bizObj.objType=bizObj.focusType
+            goToPage(this,bizObj) 
         },
         //显示新增界面 UserFocus 我关注的项目或者任务
         showAdd: function () {
