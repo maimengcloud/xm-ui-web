@@ -88,7 +88,7 @@ export default {
 
     methods: {
         refreshMyFocus(){ 
-            this.$refs['refMyFocus'][0].searchXmMyFocuss();
+            this.$refs['refMyFocus'][0].searchUserFocuss();
         },
         addItem: function(element, index) {
             this.layout.push(
