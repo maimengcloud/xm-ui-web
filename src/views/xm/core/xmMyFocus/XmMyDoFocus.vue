@@ -13,7 +13,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import config from "@/common/config"; //全局公共库import
- 	import { initDicts, listXmMyFocus,addXmMyFocus,delXmMyFocus } from '@/api/xm/core/xmMyFocus';
+ 	import { initDicts, listXmMyFocus,addUserFocus,delUserFocus } from '@/api/mdp/sys/userFocus';
 	import { mapGetters } from 'vuex'
 	
 	export default {
@@ -72,7 +72,7 @@
 				var row=this.xmMyFocuss[0]
 				this.load.del=true;
 				let params = {  userid:row.userid,  bizId:row.bizId,  pbizId:row.pbizId };
-				delXmMyFocus(params).then((res) => {
+				delUserFocus(params).then((res) => {
 					this.load.del=false;
 					var tips=res.data.tips;
 					if(tips.isOk){
@@ -85,7 +85,7 @@
 			saveSubmit: function () { 
 				this.load.edit=true
 				let params = {pbizId:this.pbizId,bizId:this.bizId,focusType:this.focusType,bizName:this.bizName}
-				var func=addXmMyFocus 
+				var func=addUserFocus 
 				func(params).then((res) => {
 					this.load.edit=false
 					var tips=res.data.tips;

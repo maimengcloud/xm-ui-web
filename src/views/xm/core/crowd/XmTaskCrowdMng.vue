@@ -621,7 +621,7 @@ import { batchAddSkill } from "@/api/xm/core/xmTaskSkill";
 import xmTaskTemplateMng from "../xmTaskTemplate/XmTaskTemplateMng";
 import xmExchangeMng from "../xmExchange/XmExchangeMng"; 
 
-import { addXmMyFocus, delXmMyFocus } from "@/api/xm/core/xmMyFocus"; 
+import { addUserFocus, delUserFocus } from "@/api/mdp/sys/userFocus"; 
 
 import XmMenuRichDetail from "../xmMenu/XmMenuRichDetail"; 
 import TagMng from "@/views/mdp/arc/tag/TagMng";
@@ -1065,7 +1065,7 @@ export default {
 
     focusOrUnfocus: function (row) {
       if (this.selkey == "myFocus") {
-        delXmMyFocus({
+        delUserFocus({
           projectId: row.projectId,
           focusType: "task",
           taskId: row.id,
@@ -1084,7 +1084,7 @@ export default {
           });
         });
       } else {
-        addXmMyFocus({
+        addUserFocus({
           projectId: row.projectId,
           projectName: row.projectName,
           focusType: "task",

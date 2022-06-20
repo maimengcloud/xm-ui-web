@@ -320,7 +320,7 @@
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
 	import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';
 	import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'; 
-	import { addXmMyFocus , delXmMyFocus } from '@/api/xm/core/xmMyFocus';
+	import { addUserFocus , delUserFocus } from '@/api/mdp/sys/userFocus';
 
 	import Guider from '@/components/Guider/Index.js';
 
@@ -717,7 +717,7 @@
 			
 			focusOrUnfocus:function(row){
 				if(this.menukey=="myFocus"){
-					delXmMyFocus({pbizId:row.id,bizId:row.id}).then(res=>{
+					delUserFocus({pbizId:row.id,bizId:row.id}).then(res=>{
 						var tips=res.data.tips;
 						if(tips.isOk){
 							this.getXmProjects(); 
@@ -725,7 +725,7 @@
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 					})
 				}else{
-					addXmMyFocus({pbizId:row.id,focusType:'3',bizId:row.id,bizName:row.productName}).then(res=>{
+					addUserFocus({pbizId:row.id,focusType:'3',bizId:row.id,bizName:row.productName}).then(res=>{
 						var tips=res.data.tips;
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 					})

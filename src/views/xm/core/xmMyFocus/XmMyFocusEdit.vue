@@ -45,7 +45,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import config from "@/common/config"; //全局公共库import
- 	import { initDicts, addXmMyFocus,editXmMyFocus,editSomeFieldsXmMyFocus } from '@/api/xm/core/xmMyFocus';
+ 	import { initDicts, addUserFocus,editXmMyFocus,editSomeFieldsXmMyFocus } from '@/api/mdp/sys/userFocus';
 	import { mapGetters } from 'vuex'
 	
 	export default {
@@ -104,7 +104,7 @@
 						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
 							this.load.edit=true
 							let params = Object.assign({}, this.editForm);
-							var func=addXmMyFocus
+							var func=addUserFocus
 							if(this.currOpType=='edit'){
 							    func=editXmMyFocus
 							}

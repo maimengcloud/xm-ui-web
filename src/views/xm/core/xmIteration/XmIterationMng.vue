@@ -121,7 +121,7 @@
 
 	import { mapGetters } from 'vuex'
 import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';
-	import { addXmMyFocus , delXmMyFocus } from '@/api/xm/core/xmMyFocus';
+	import { addUserFocus , delUserFocus } from '@/api/mdp/sys/userFocus';
 	export default {
 		computed: {
 		    ...mapGetters([
@@ -456,7 +456,7 @@ import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue'
 			},
 			focusOrUnfocus:function(row){
 				if(this.menukey=="myFocus"){
-					delXmMyFocus({pbizId:row.productId,focusType:'6',bizId:row.id,bizName:row.iterationName}).then(res=>{
+					delUserFocus({pbizId:row.productId,focusType:'6',bizId:row.id,bizName:row.iterationName}).then(res=>{
 						var tips=res.data.tips;
 						if(tips.isOk){
 							this.getXmIterations(); 
@@ -464,7 +464,7 @@ import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue'
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 					})
 				}else{
-					addXmMyFocus({pbizId:row.productId,focusType:'6',bizId:row.id,bizName:row.iterationName}).then(res=>{
+					addUserFocus({pbizId:row.productId,focusType:'6',bizId:row.id,bizName:row.iterationName}).then(res=>{
 						var tips=res.data.tips;
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 					})

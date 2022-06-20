@@ -313,7 +313,7 @@
 	import { listXmProject, editStatus, delXmProject, batchDelXmProject,copyTo,createProjectCode ,getDefOptions} from '@/api/xm/core/xmProject'; 
 	import {  loadTasksToXmProjectState , loadTasksSettleToXmProjectState} from '@/api/xm/core/xmProjectState';
 
-	import { addXmMyFocus , delXmMyFocus } from '@/api/xm/core/xmMyFocus';
+	import { addUserFocus , delUserFocus } from '@/api/mdp/sys/userFocus';
 	import  XmProjectAdd from './XmProjectEdit';//新增界面
 	import  XmProjectEdit from './XmProjectEdit';//修改界面
 	import { mapGetters } from 'vuex'
@@ -761,7 +761,7 @@
 			},
 			focusOrUnfocus:function(row){
 				if(this.menukey=="myFocus"){
-					delXmMyFocus({pbizId:row.id,focusType:'1',bizId:row.id,bizName:row.name}).then(res=>{
+					delUserFocus({pbizId:row.id,focusType:'1',bizId:row.id,bizName:row.name}).then(res=>{
 						var tips=res.data.tips;
 						if(tips.isOk){
 							this.getXmProjects(); 
@@ -769,7 +769,7 @@
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 					})
 				}else{
-					addXmMyFocus({pbizId:row.id,focusType:'1',bizId:row.id,bizName:row.name}).then(res=>{
+					addUserFocus({pbizId:row.id,focusType:'1',bizId:row.id,bizName:row.name}).then(res=>{
 						var tips=res.data.tips;
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 					})

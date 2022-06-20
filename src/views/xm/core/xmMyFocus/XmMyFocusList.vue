@@ -74,7 +74,7 @@
 
 import util from '@/common/js/util';//全局公共库
 import config from '@/common/config';//全局公共库
-import { initDicts,myFocusForIndex, delXmMyFocus, batchDelXmMyFocus,editSomeFieldsXmMyFocus } from '@/api/xm/core/xmMyFocus';
+import { initDicts,myFocusForIndex, delUserFocus, batchDelXmMyFocus,editSomeFieldsXmMyFocus } from '@/api/mdp/sys/userFocus';
 import  XmMyFocusEdit from './XmMyFocusEdit';//新增修改界面
 import { mapGetters } from 'vuex'
 
@@ -251,7 +251,7 @@ export default {
         handleDel: function (row,index) { 
             this.load.del=true;
             let params = {  userid:row.userid,  bizId:row.bizId,  pbizId:row.pbizId };
-            delXmMyFocus(params).then((res) => {
+            delUserFocus(params).then((res) => {
                 this.load.del=false;
                 var tips=res.data.tips;
                 if(tips.isOk){

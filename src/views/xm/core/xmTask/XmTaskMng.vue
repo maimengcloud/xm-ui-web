@@ -876,7 +876,7 @@ import xmTaskTemplateMng from "../xmTaskTemplate/XmTaskTemplateMng";
 import xmExchangeMng from "../xmExchange/XmExchangeMng";
 import xmMenuSelect from "../xmMenu/XmMenuSelect";
 
-import { addXmMyFocus, delXmMyFocus } from "@/api/xm/core/xmMyFocus";
+import { addUserFocus, delUserFocus } from "@/api/mdp/sys/userFocus";
 
 import XmProjectSelect from "@/views/xm/core/components/XmProjectSelect";
 import XmProductSelect from "@/views/xm/core/components/XmProductSelect";
@@ -1788,7 +1788,7 @@ export default {
 
     focusOrUnfocus: function (row) {
       if (this.selkey == "myFocus") {
-        delXmMyFocus({
+        delUserFocus({
           projectId: row.projectId,
           focusType: "task",
           taskId: row.id,
@@ -1807,7 +1807,7 @@ export default {
           });
         });
       } else {
-        addXmMyFocus({
+        addUserFocus({
           projectId: row.projectId,
           projectName: row.projectName,
           focusType: "task",

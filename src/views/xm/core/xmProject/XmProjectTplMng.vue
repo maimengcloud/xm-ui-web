@@ -86,7 +86,7 @@
 	import config from "@/common/config"; //全局公共库
 	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { listXmProject, editStatus, delXmProject, batchDelXmProject,copyTo,createProjectCode} from '@/api/xm/core/xmProject'; 
-	import { addXmMyFocus , delXmMyFocus } from '@/api/xm/core/xmMyFocus'; 
+	import { addUserFocus , delUserFocus } from '@/api/mdp/sys/userFocus'; 
  	import { mapGetters } from 'vuex'  
 
 	 
@@ -495,7 +495,7 @@
 			},
 			focusOrUnfocus:function(row){
 				if(this.menukey=="myFocus"){
-					delXmMyFocus({projectId:row.id,focusType:'project',userid:this.userInfo.userid,username:this.userInfo.username}).then(res=>{
+					delUserFocus({projectId:row.id,focusType:'project',userid:this.userInfo.userid,username:this.userInfo.username}).then(res=>{
 						var tips=res.data.tips;
 						if(tips.isOk){
 							this.getXmProjects(); 
@@ -503,7 +503,7 @@
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 					})
 				}else{
-					addXmMyFocus({projectId:row.id,focusType:'project',projectName:row.name,userid:this.userInfo.userid,username:this.userInfo.username}).then(res=>{
+					addUserFocus({projectId:row.id,focusType:'project',projectName:row.name,userid:this.userInfo.userid,username:this.userInfo.username}).then(res=>{
 						var tips=res.data.tips;
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 					})
