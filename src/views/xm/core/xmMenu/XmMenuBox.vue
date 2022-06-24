@@ -1,5 +1,5 @@
 <template>
-	<section class="padding"> 
+	<section> 
 		<el-row>
 			<el-col :span="8">
 				<xm-epic-features :xm-product="xmProduct" :sel-project="selProject"  @row-click="onEpicFeaturesRowClick"></xm-epic-features>
@@ -55,6 +55,5 @@
 
 </script>
 
-<style scoped>
- 
+<style lang="less" scoped> 
 </style>

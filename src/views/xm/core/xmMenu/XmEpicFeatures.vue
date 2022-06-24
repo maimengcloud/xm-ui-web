@@ -72,7 +72,8 @@
 									>
 										{{ (scope.row.finishRate != null ? scope.row.finishRate : 0) + "%" }}
 									</span>  
-									<div class="tool-bar" v-if="!disabledMng">
+									 <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'menuStatus',scope.row.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
+									 <div class="tool-bar" v-if="!disabledMng">
 									<span class="u-btn">
  												<el-button  v-if=" scope.row.dclass==='1' "  @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建特性" circle plain size="mini"> </el-button>
 											     
@@ -81,20 +82,6 @@
 									</div>
   								</template> 
 							</el-table-column> 
-							<template v-if="!disabledMng">
-							<el-table-column prop="status" label="状态"  width="100"  sortable >
-								<template slot-scope="scope">
-									<div class="cell-text">
-										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in formatterMenuStatusDicts(scope.row.status)" :key="index">{{item.name}}</el-button>
-									</div>
-									<span class="cell-bar">
-										 <el-select @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.status" placeholder="需求状态"  style="display:block;"  @change="editXmMenuSomeFields(scope.row,'status',$event)">
-												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option>
-										 </el-select>
-									</span>
-								</template>
-							</el-table-column> 
-							</template>
 						</el-table>
 
 
@@ -269,6 +256,7 @@
 			}
 		},//end data
 		methods: {
+			...util,
 			selectVisible(row,visible){
 				if(visible==true){ 
 					this.$refs.table.setCurrentRow(row);  
@@ -597,12 +585,13 @@
 					}).catch( err  => this.load.del=false );
 				});
 			},
-
+			unselectRow(){
+				this.editForm=null;
+				this.$emit('row-click',null)
+				this.$refs.table.setCurrentRow(); 
+			},
 			rowClick: function(row, event, column){
-				if(this.editForm && row.menuId===this.editForm.menuId){
-					this.editForm=null;
-					this.$emit('row-click',null)
-					this.$refs.table.setCurrentRow(); 
+				if(this.editForm && row.menuId===this.editForm.menuId){ 
 					return;
 				}  
 				this.editForm=row
@@ -877,26 +866,7 @@
 					}
 					this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 				})
-			},
-			formaterByDicts(row,property,cellValue){
-				var property=property
-				var dict=null;
-				if(property=='source'){
-					dict=this.dicts['demandSource']
-				}else if(property=='dlvl'){
-					dict=this.dicts['demandLvl']
-				}else if(property=='dtype'){
-					dict=this.dicts['demandType']
-				}else if(property=='priority'){
-					dict=this.dicts['priority']
-				}
-				if(!dict){
-					return cellValue;
-				}else{
-					var item=dict.find(i=>i.id==cellValue)
-					return item?item.name:cellValue;
-				}
-			},
+			}, 
 			doBatchDelXmIterationMenu(){
 
 				if(!this.filters.iteration||!this.filters.iteration.id){
@@ -1016,66 +986,7 @@
 				}else{
 					return "";
 				}
-			},
-
-			formatterPriorityDicts(cellValue){
-				if(!cellValue && cellValue!=='0'){
-					return []
-				}
-				var key="priority";
-				if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0   ){
-					return [{id:cellValue,name:cellValue,className:'primary'}];
-				}
-				var list=this.dicts[key].filter(i=>i.id==cellValue)
-				if(list.length>0){
-					var data= {...list[0],className:'primary'}
-					if(data.id=='0'){
-						data.className='danger'
-					}else if(data.id=='1'){
-						data.className='warning'
-					}else if(data.id=='2'){
-						data.className='success'
-					}else if(data.id=='3'){
-						data.className='primary'
-					}else if(data.id=='4'){
-						data.className='info'
-					}else{
-						data.className='primary'
-					}
-					return [data];
-				}else{
-					return [{id:cellValue,name:cellValue,className:'primary'}]
-				}
-
-			},
-			formatterMenuStatusDicts: function(cellValue){
-				if(!cellValue && cellValue!=='0'){
-					return []
-				}
-				var key="menuStatus";
-				if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0   ){
-					return [{id:cellValue,name:cellValue,className:'primary'}];
-				}
-				var list=this.dicts[key].filter(i=>i.id==cellValue)
-				if(list.length>0){
-					var data= {...list[0],className:'primary'}
-					if(data.id=='0'){
-						data.className='primary'
-					}else if(data.id=='1'){
-						data.className='warning'
-					}else if(data.id=='2'){
-						data.className='success'
-					}else if(data.id=='3'){
-						data.className='info'
-					} else{
-						data.className='danger'
-					}
-					return [data];
-				}else{
-					return [{id:cellValue,name:cellValue,className:'primary'}]
-				}
-
-			},
+			}, 
 			onEditSomeFields(params){
 				Object.assign(this.editForm,params)
 			},
