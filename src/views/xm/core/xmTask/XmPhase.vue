@@ -10,12 +10,12 @@
           <span style="float:left;"> 
            <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
            <el-input style="width:120px;" v-model="filters.key" placeholder="名称模糊查询"  clearable></el-input>
-           <el-button icon="el-icon-search" @click="searchXmTasks()"></el-button> 
+           <el-button icon="el-icon-search" @click="searchXmTasks()"></el-button>  
           <el-popover
             placement="top-start"
             title="选择创建计划/任务的方式"
             width="300"
-            trigger="hover"
+            trigger="click"
           >
             <el-row>
               <el-col :span="24" style="padding-top: 5px">
@@ -67,7 +67,7 @@
             v-loading="load.edit"
           > </el-button> 
           <el-button type="danger"
-            v-if="isTaskCenter != '1' && isMy != '1'"
+          class="hidden-md-and-down"
             @click="batchDel"
             v-loading="load.del"
             icon="el-icon-delete"
@@ -79,9 +79,14 @@
             placement="top-start"
             title=""
             width="400"
-            trigger="click"
+            trigger="manual"
+            v-model="moreVisible"
           >
             <el-row>
+              <el-col :span="24" style="padding-top: 5px" v-if="editForm && editForm.id">
+                <font class="more-label-font">当前选中的计划:</font> 
+                <el-tag closable @close="unselectRow()">{{editForm.name}}</el-tag>  
+              </el-col> 
               <el-col :span="24" style="padding-top: 5px">
                 <font class="more-label-font">产品:</font
                 > <xm-product-select :auto-select="false" :link-project-id="filters.selProject && filters.selProject.id?filters.selProject.id:null" @row-click="onProductSelected" @clear="onProductClearSelect"></xm-product-select>
@@ -132,9 +137,15 @@
                   @click="searchXmTasks"
                   >查询</el-button
                 >
+                <el-button 
+                  type="text"
+                  icon="el-icon-close"
+                  @click="moreVisible=false"
+                  >关闭</el-button
+                >
               </el-col>
             </el-row> 
-            <el-button style="margin-top: 10px;" slot="reference">更多</el-button>
+            <el-button style="margin-top: 10px;" slot="reference" @click="moreVisible=true">更多</el-button>
           </el-popover> 
           </span>
         </el-row>
@@ -170,11 +181,13 @@
                 class-name="title" 
                 label="计划名称"
                 min-width="300"
-              >
+              > 
                 <template slot-scope="scope">
+                  <!--
                   <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#409EFF'}">
 									<i :class="scope.row.ntype==='1'?'el-icon-odometer':'el-icon-s-operation'" ></i>
 									</div>  
+                  -->
                   <span>
                     {{ scope.row.sortLevel }}&nbsp;  {{ scope.row.name }}
                     </span>
@@ -185,14 +198,14 @@
                     class="el-icon-refresh"
                   >
                     {{ (scope.row.rate != null ? scope.row.rate : 0) + "%" }}
-                  </el-link>  
+                  </el-link>  <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'taskState',scope.row.taskState)" :key="index" :type="item.className">{{item.name}}</el-tag>
 									<div class="tool-bar">
                     <span class="u-btn">
                         <el-popover
                           placement="top-start"
                           title="选择创建计划/任务的方式"
                           width="300"
-                          trigger="hover"
+                          trigger="click"
                         >
                           <el-row>
                             <el-col :span="24" style="padding-top: 5px">
@@ -231,25 +244,7 @@
                      </span>
 									</div>
                 </template>
-              </el-table-column>  
-              <el-table-column 
-                label="状态"
-                type="taskState"
-                width="100" 
-              >  
-								<template slot-scope="scope" 
-               >
-									<div class="cell-text">
-										<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'taskState',scope.row.taskState)" :key="index" :type="item.className">{{item.name}}</el-tag>
-   
-									</div>
-									<span class="cell-bar">
-										 <el-select @visible-change="selectVisible(scope.row,$event)"  v-model="scope.row.taskState" placeholder="任务状态"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'taskState',$event)">
-												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.taskState" :key="index"></el-option>
-										 </el-select>
-									</span>
-								</template>
-              </el-table-column>   
+              </el-table-column>    
             </el-table>
             <el-pagination
               ref="pagination"
@@ -546,6 +541,7 @@ export default {
        selectParentTaskVisible:false, 
       execUserVisible:false,  
       epicFeaturesForImportTaskVisible:false,
+      moreVisible:false,
     };
   }, //end data
   methods: {  
@@ -709,6 +705,11 @@ export default {
       this.onTaskTemplatesSelected(menus2);
       this.epicFeaturesForImportTaskVisible = false;
     },
+    unselectRow(){
+      this.$refs.table.setCurrentRow(); 
+      this.editForm=null;
+      this.$emit("row-click",null) 
+    },
     //显示编辑界面 XmTask xm_task
     showEdit: function (row, index) {
       
@@ -866,10 +867,7 @@ export default {
       });
     },
     rowClick: function (row,column) {  
-      if(this.editForm && row.id===this.editForm.id){ 
-        this.$emit('row-click',null)
-        this.editForm=null
-        this.$refs.table.setCurrentRow(); 
+      if(this.editForm && row.id===this.editForm.id){  
         return;
       }  
       this.editForm = row; 

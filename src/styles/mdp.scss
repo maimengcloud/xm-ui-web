@@ -246,7 +246,8 @@ table tr.hover-row{
 	float: right;
 } 
 
-.el-table__row td:hover{
+.el-table__row td:hover{ 
+  cursor: pointer;
 	.cell-bar{
 		display: inline; 
     .u-btn{   

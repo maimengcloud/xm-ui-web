@@ -1,7 +1,7 @@
 <template>
 	<section> 
-		<el-row>
-			<el-col :span="8">
+		<el-row class="box">
+			<el-col :span="8" class="left">
 				<xm-phase :xm-product="xmProduct" :sel-project="selProject" queryScope="plan" @row-click="onPhaseRowClick"></xm-phase>
 			</el-col> 
 			<el-col :span="16">
@@ -53,8 +53,12 @@
 		}//end mounted
 	}
 
-</script>
+</script> 
 
-<style scoped>
- 
+<style lang="less" scoped> 
+.box{
+	.left{
+		background-color:#f4f5f8;
+	}
+}
 </style>
