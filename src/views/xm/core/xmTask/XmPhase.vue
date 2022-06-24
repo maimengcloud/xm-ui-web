@@ -137,6 +137,14 @@
                   @click="searchXmTasks"
                   >查询</el-button
                 >
+                 <el-button type="danger"
+                  class="hidden-lg-and-up"
+                    @click="batchDel"
+                    v-loading="load.del"
+                    icon="el-icon-delete"
+                    title="批量删除"
+                    ></el-button
+                  >
                 <el-button 
                   type="text"
                   icon="el-icon-close"
