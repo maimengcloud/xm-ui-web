@@ -235,8 +235,7 @@
                 <div    class="icon" :style="{backgroundColor:   '#409EFF'}">
                   <i :class=" 'el-icon-s-operation' " ></i>
                 </div>  
-                <el-button
-                  v-if="isTaskCenter != '1' && isMy != '1'"
+                <el-button 
                   @click="showTaskTemplate"
                   icon="el-icon-plus"
                   >从模板快速导入任务</el-button
@@ -248,7 +247,6 @@
                   <i :class=" 'el-icon-s-operation' " ></i>
                 </div>  
                 <el-button
-                  v-if="isTaskCenter != '1' && isMy != '1'"
                   @click="showAdd('0')"
                   icon="el-icon-plus"
                   >直接创建任务</el-button
@@ -256,6 +254,8 @@
               </el-col>
             </el-row>
             <el-button
+              
+              v-if="isTaskCenter != '1' && isMy != '1'"
               slot="reference" 
               type="primary"
               round
