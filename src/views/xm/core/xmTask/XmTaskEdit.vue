@@ -295,6 +295,7 @@
 	import XmMyDoFocus from '@/views/myWork/my/components/DoFocus';
 	import XmTaskExecuserForTask from '../xmTaskExecuser/XmTaskExecuserForTask.vue';
 	export default { 
+		name:'xmTaskEdit',
 		computed: {
 			...mapGetters([
 				'userInfo','roles'

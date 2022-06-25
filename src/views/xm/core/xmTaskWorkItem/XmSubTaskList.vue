@@ -145,8 +145,7 @@ import treeTool from "@/common/js/treeTool"; //全局公共库
 	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面
 	import { mapGetters } from 'vuex'
 import XmTaskWorkloadRecordDialog from '../xmTaskWorkload/XmTaskWorkloadRecordDialog.vue';
-
-import XmTaskEdit from "../xmTask/XmTaskEdit"; //修改界面
+ 
 
 export default {
   computed: {
@@ -477,7 +476,7 @@ export default {
       }
   }, //end methods
   components: {  
-    XmTaskWorkloadRecordDialog,XmGroupDialog,XmTaskEdit,
+    XmTaskWorkloadRecordDialog,XmGroupDialog,'xm-task-edit':()=>import('../xmTask/XmTaskEdit'),
   },
   mounted() { 
     this.initData();
