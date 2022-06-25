@@ -1246,7 +1246,7 @@ export default {
         }
       } 
       //params.ptype=this.ptype
-
+      this.load.list=true 
       getTask(params)
         .then((res) => {
           var tips = res.data.tips;
