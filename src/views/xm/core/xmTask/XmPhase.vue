@@ -146,7 +146,6 @@
                     ></el-button
                   >
                 <el-button 
-                  type="text"
                   icon="el-icon-close"
                   @click="moreVisible=false"
                   >关闭</el-button
