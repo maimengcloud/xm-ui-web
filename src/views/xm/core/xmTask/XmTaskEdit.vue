@@ -110,12 +110,12 @@
 							
 							<el-col :span="12">
 								<el-form-item  label="优先级别" prop="level">  
-									<el-select v-model="editForm.level" @change="editXmTaskSomeFields(editForm,'planType',$event)">
+									<el-select v-model="editForm.level" @change="editXmTaskSomeFields(editForm,'level',$event)">
 											<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option> 
 									</el-select>    
 								</el-form-item>  
 							</el-col>
-							<el-col :span="12"> 
+							<el-col :span="12"  prop="planType"> 
 								<el-form-item label="工期类型"> 
 								<el-select v-model=" editForm.planType" @change="editXmTaskSomeFields(editForm,'planType',$event)">
 									<el-option v-for="i in this.dicts.planType" :label="i.name" :key="i.id" :value="i.id"></el-option>

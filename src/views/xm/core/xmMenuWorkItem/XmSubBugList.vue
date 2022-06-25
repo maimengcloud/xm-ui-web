@@ -14,6 +14,8 @@
 					</span>
 					<span class="my-cell-bar" >
 							  <el-input title="名称" placeholder="名称" v-model="scope.row.name"  style="width:98%;"  @change="editXmQuestionSomeFields(scope.row,'name',$event)"></el-input> 
+							   <el-button    @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑缺陷" circle plain size="mini"> </el-button>     
+
 					</span> 
 			  </template>
             </el-table-column> 
@@ -21,7 +23,7 @@
 					<el-table-column prop="bugStatus" label="状态"  width="100">
 						<template slot-scope="scope">   
 									<div class="cell-text">
-										 <el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in [formatterBugStatusDicts(scope.row.bugStatus)]" :key="index">{{item.name}}</el-button>
+										 <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'bugStatus',scope.row.bugStatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
 									</div>
 									<span class="cell-bar">   
 										 <el-select @visible-change="selectVisible(scope.row,$event)"   v-model="scope.row.bugStatus" placeholder="类型"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugStatus',$event)">
@@ -44,7 +46,7 @@
 					<el-table-column prop="priority" label="优先级"  width="100">
 						<template slot-scope="scope">   
 									<div class="cell-text">
-										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in [formatterPriorityDicts(scope.row.priority)]" :key="index">{{item.name}}</el-button>
+										<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'priority',scope.row.priority)" :key="index" :type="item.className">{{item.name}}</el-tag>
 									</div>
 									<span class="cell-bar">   
 										 <el-select @visible-change="selectVisible(scope.row,$event)"   v-model="scope.row.priority" placeholder="优先级"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'priority',$event)">
@@ -56,7 +58,8 @@
 					<el-table-column prop="solution" label="解决方案"  width="100">
 						<template slot-scope="scope">   
 									<div class="cell-text">
-										{{formaterByDicts(scope.row,'solution',scope.row.solution)}}
+										
+										<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'bugSolution',scope.row.solution)" :key="index" :type="item.className">{{item.name}}</el-tag>
 									</div>
 									<span class="cell-bar">   
 										 <el-select @visible-change="selectVisible(scope.row,$event)"   v-model="scope.row.solution" placeholder="类型"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'solution',$event)">
@@ -95,6 +98,10 @@
             <el-button type="primary" @click="addXmBug">确 定</el-button>
           </div>
       </el-dialog>
+		<!--编辑 XmQuestion xm_question界面-->
+		<el-dialog  title="编辑缺陷"   :visible.sync="editFormVisible"   width="90%"  top="20px"  :close-on-click-modal="false" append-to-body>
+				<xm-question-edit :sel-project=" {id:editForm.projectId,name:editForm.projectName} " :xm-question="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @edit-fields="afterEditSubmit"></xm-question-edit>
+		</el-dialog>
     </el-row> 
 </template>
 
@@ -140,8 +147,17 @@ export default {
     return{
       load:{edit:false,list:false,add:false,del:false,}, 
       xmBugs:[],
-      editForm:null,
+		editForm: {
+			id:'',name:'',projectId:'',projectName:'',taskId:'',taskName:'',endTime:'',askUserid:'',askUsername:'',handlerUserid:'',handlerUsername:'',priority:'',solution:'',processTime:'',receiptMessage:'',receiptTime:'',description:'',createUserid:'',createUsername:'',createTime:'',bugStatus:'',receiptMessage:'',
+			iterationId:'',iterationName:'',productId:'',
+			qtype:'',
+			attachment: [],
+			repRate:'',
+			verNum:'',
+			bugReason:'',
+		},
 	  addForm:{name:''},
+	  editFormVisible:false,
 	  addFormVisible:false,
 	  addFormRules:{
 		  name:[
@@ -161,7 +177,7 @@ export default {
     }
   }, //end data
   methods: { 
-    
+    ...util,
     selectVisible(row,visible){
       if(visible){
         this.rowClick(row)
@@ -188,7 +204,9 @@ export default {
         }
       })
     },
-     
+     afterEditSubmit(row){
+		Object.assign(this.editForm,row)
+	 },
     initData(){  
       this.xmBugs=[] 
       if(!this.parentXmMenu || !this.parentXmMenu.menuId){
@@ -300,6 +318,11 @@ export default {
 				})
 			},
     
+			showEdit(row,index){
+				this.editForm=row
+				this.editFormVisible=true
+			},
+    
 			onUserConfirm:function(groupUsers,option){
 				 if(option.action=='editHandlerUserid'){
 					 this.editXmQuestionSomeFields(option.data,"handlerUserid",groupUsers)
@@ -307,96 +330,10 @@ export default {
 				}  
  				this.getXmBugs();
 
-			}, 
-      
-			formatterPriorityDicts(cellValue){
-				var key="priority";  
-				if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0   ){
-					return {id:cellValue,name:cellValue,className:'primary'};
-				}
-				var list=this.dicts[key].filter(i=>i.id==cellValue)
-				if(list.length>0){
-					var data= {...list[0],className:'primary'}
-					if(data.id=='0'){
-						data.className='danger'
-					}else if(data.id=='1'){
-						data.className='warning'
-					}else if(data.id=='2'){
-						data.className='success'
-					}else if(data.id=='3'){
-						data.className='primary'
-					}else if(data.id=='4'){
-						data.className='info'
-					}else{
-						data.className='primary'
-					}
-					return data;
-				}else{
-					return {id:cellValue,name:cellValue,className:'primary'}
-				}
-
-			},
-			formatterBugStatusDicts: function(cellValue){
-				var key="bugStatus";  
-				if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0   ){
-					return {id:cellValue,name:cellValue,className:'primary'};
-				}
-				var list=this.dicts[key].filter(i=>i.id==cellValue)
-				if(list.length>0){
-					var data= {...list[0],className:'primary'}
-					if(data.id=='1'){
-						data.className='primary'
-					}else if(data.id=='2'){
-						data.className='primary'
-					}else if(data.id=='3'){
-						data.className='success'
-					}else if(data.id=='4'){
-						data.className='warning'
-					}else if(data.id=='5'){
-						data.className='success'
-					}else if(data.id=='6'){
-						data.className='info'
-					}else if(data.id=='7'){
-						data.className='info'
-					}else{
-						data.className='danger'
-					}
-					return data;
-				}else{
-					return {id:cellValue,name:cellValue,className:'primary'}
-				}
-
-			}, 
-      
-			/**
-			 * 'bugSeverity','bugSolution','bugStatus','bugType','priority'bugRepRate
-			 */
-			formaterByDicts(row,property,cellValue){ 
-				var property=property
-				var dict=null;
-				if(property=='bugSeverity'){
-					dict=this.dicts['bugSeverity']
-				}else if(property=='solution'){
-					dict=this.dicts['bugSolution']
-				}else if(property=='bugStatus'){
-					dict=this.dicts['bugStatus']
-				}else if(property=='priority'){
-					dict=this.dicts['priority']
-				}else if(property=='bugType'){
-					dict=this.dicts['bugType']
-				}else if(property=='repRate'){
-					dict=this.dicts['bugRepRate']
-				}  
-				if(!dict){
-					return cellValue;
-				}else{
-					var item=dict.find(i=>i.id==cellValue)
-					return item?item.name:cellValue;
-				}
-			},
+			},  
   }, //end methods
   components: { 
-    XmGroupDialog,
+    XmGroupDialog,'xm-question-edit':()=>import('../xmQuestion/XmQuestionEdit')
   },
   mounted() { 
     this.initData();

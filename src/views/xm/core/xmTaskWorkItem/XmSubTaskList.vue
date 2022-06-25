@@ -122,11 +122,9 @@
         :xm-project="{id:editForm.projectId,name:editForm.projectName}"
         :xm-task="editForm"
         :visible="editFormVisible"
-        @cancel="editFormVisible = false"
-        @after-add-submit="afterExecEditSubmit"
-        @after-edit-submit="afterExecEditSubmit"
-        @submit="afterEditSubmit"
-        @edit-fields="onEditSomeFields"
+        @cancel="editFormVisible = false" 
+        @submit="onEditXmTaskSomeFields"
+        @edit-fields="onEditXmTaskSomeFields"
       ></xm-task-edit>
     </el-dialog>
  			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="linkProjectId?{id:linkProjectId}:null" :xm-product="parentXmTask?{id:parentXmTask.productId}:null" @user-confirm="selectCreateUserConfirm">
