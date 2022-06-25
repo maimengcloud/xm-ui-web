@@ -1,12 +1,11 @@
 <template>
 	<section>
 		<el-row>
-			<el-col :span="24" class="padding-left">
+			<el-col :span="24">
 					<el-row >
 						
 						<span style="float:left;">
-						<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="!xmProduct && !xmIteration"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select> 
-						
+ 						
 						<el-input style="width:120px;" v-model="filters.key" placeholder="名称模糊查询"  clearable></el-input>
 						<el-button icon="el-icon-search" @click="searchXmMenus()"></el-button> 
 						<el-popover style="padding-left:10px;"
@@ -75,7 +74,7 @@
 								>
 							</el-col>
 							</el-row> 
-							<el-button style="margin-top: 10px;" slot="reference" @click="moreVisible=!moreVisible" icon="el-icon-more"></el-button>
+							<el-button  slot="reference" @click="moreVisible=!moreVisible" icon="el-icon-more"></el-button>
 						</el-popover> 
 						</span>
 					 </el-row>

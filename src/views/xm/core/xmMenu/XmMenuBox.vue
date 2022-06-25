@@ -1,6 +1,6 @@
 <template>
 	<section> 
-		<el-row>
+		<el-row class="padding-left padding-right">
 			<el-col :span="8">
 				<xm-epic-features :xm-product="xmProduct" :sel-project="selProject"  @row-click="onEpicFeaturesRowClick"></xm-epic-features>
 			</el-col> 
@@ -56,4 +56,5 @@
 </script>
 
 <style lang="less" scoped> 
+
 </style>
