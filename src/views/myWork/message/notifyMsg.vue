@@ -1,6 +1,9 @@
 <template>
   <div class="m_container">  
-    <div class="message_content" v-if="notifyMsgs.length>0">
+    <div class="message_content" v-if="notifyMsgs.length>0" v-loading="load.list" 
+      element-loading-text="拼命加载中"
+      element-loading-spinner="el-icon-loading"
+    >
       <div class="message_content_box" v-for="(item, index) in notifyMsgs" :key="index" @click="goToPage(item)">
          <p class="date"> 发送者: <span style="font-size:14px;">{{item.sendUsername}}</span> &nbsp;&nbsp;发送时间： <span style="font-size:14px;">{{item.operTime}}</span> <el-tag :type="item.hadRead=='1'?'primary':'danger'">{{item.hadRead=='1'?'已读':'未读'}}</el-tag> </p> 
         <span class="text">{{item.msg}}</span>
@@ -15,10 +18,14 @@
         :total="pageInfo.total">
       </el-pagination>
     </div> 
-    <div  class="message_content_box" v-else>
+    <div  class="message_content_box" v-else v-loading="load.list"
+      element-loading-text="拼命加载中"
+      element-loading-spinner="el-icon-loading"
+    >
       <el-result icon="success"  subTitle="暂时没有消息"> 
       </el-result>
     </div>
+    
   </div>
 </template>
 
@@ -41,6 +48,7 @@ export default {
   },
   data() {
     return {  
+      load:{list:false},
       notifyMsgs:[],
       
       pageInfo:{//分页数据
@@ -83,7 +91,9 @@ export default {
           params.orderBy= orderBys.join(",")
       }  
       params.toUserid=this.userInfo.userid 
+      this.load.list=true
       getNoticeMsg(params).then(res=>{
+        this.load.list=false
         this.notifyMsgs=res.data.data;
         this.pageInfo.total=res.data.total
         this.pageInfo.count=false;
