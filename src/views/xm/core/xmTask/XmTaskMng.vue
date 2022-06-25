@@ -2191,8 +2191,7 @@ export default {
       },
       onTaskWorkloadSubmit(){
         this.taskWorkloadVisible=false;
-        this.searchXmTasks();
-        //treeTool.reloadAllChildren(this.$refs.table,this.maps,[this.editForm],'parentTaskid',this.loadXmTaskLazy)
+        this.searchXmTasks(); 
       },
       showWorkload(row){
         this.editForm=row

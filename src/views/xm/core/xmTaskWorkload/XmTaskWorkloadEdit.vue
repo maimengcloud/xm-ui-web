@@ -211,8 +211,7 @@
                                 this.load.edit=false
                                 var tips=res.data.tips;
                                 if(tips.isOk){
-                                    this.editForm=res.data.data
-                                    this.initData() 
+                                    this.editForm=res.data.data 
                                     this.$emit('submit');//  @submit="afterAddSubmit"
                                 }
                                 this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
