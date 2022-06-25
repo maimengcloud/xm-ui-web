@@ -23,6 +23,7 @@
 					<el-row  class="page-main">
 						<el-table
 							ref="taskTable"  
+							 element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"
 							:data="tasksTreeData"
 							@sort-change="sortChange"
 							v-loading="load.list"

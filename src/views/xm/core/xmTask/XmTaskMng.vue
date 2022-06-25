@@ -74,7 +74,7 @@
             placement="top-start"
             title=""
             width="400"
-            trigger="click"
+            trigger="moreVisible"
           >
             <el-row>
               <el-col :span="24" style="padding-top: 5px">
@@ -208,8 +208,15 @@
                   >查询</el-button
                 >
               </el-col>
+              <el-col :span="24" style="padding-top: 10px">
+                <el-button 
+                  icon="el-icon-close"
+                  @click="moreVisible=false"
+                  >关闭</el-button
+                >
+              </el-col>
             </el-row>  
-            <el-button   slot="reference">更多</el-button>
+            <el-button   slot="reference" @click="moreVisible=true">更多</el-button>
           </el-popover> 
           <span style="float:right;"> 
           <el-popover
@@ -305,6 +312,7 @@
             ></xm-task-agile-kanban>
             <el-table class="task-table"
               v-else 
+               element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"
               :data="tasksTreeData"
               @sort-change="sortChange"
               v-loading="load.list"
@@ -1118,6 +1126,7 @@ export default {
       execUserVisible:false,
       taskWorkloadVisible:false,
       maps:new Map(),
+      moreVisible:false,
     };
   }, //end data
   methods: {

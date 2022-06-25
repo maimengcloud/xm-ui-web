@@ -160,6 +160,7 @@
 
         <el-row class="padding-top"> 
             <el-table class="task-table" 
+             element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"
               :data="tasksTreeData"
               @sort-change="sortChange"
               v-loading="load.list"

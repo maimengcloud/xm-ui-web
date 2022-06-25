@@ -41,15 +41,49 @@
 								</el-col>
 							</el-row>
 							<el-button type="primary"  round  slot="reference" icon="el-icon-plus"></el-button>
-						</el-popover>
-
-						<el-button  @click="showParentMenu" icon="el-icon-top" title="更换上级"></el-button>
- 						<el-button  v-if="disabledMng!=false"  type="danger" @click="batchDel" icon="el-icon-delete" title="删除"></el-button>
-						<el-button  class="hidden-md-and-down"  v-if=" disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing" title="汇总进度"></el-button> 
+						</el-popover> 
+						<el-popover
+							placement="top-start"
+							title=""
+							width="400"
+							trigger="manual"
+							v-model="moreVisible"
+						>
+							<el-row>
+							<el-col :span="24" style="padding-top: 5px" v-if="editForm && editForm.menuId">
+								<font class="more-label-font">当前选中的史诗、特性:</font> 
+								<el-tag closable @close="unselectRow()">{{editForm.menuName}}</el-tag>  
+							</el-col>  
+							<el-col :span="24" style="padding-top: 5px"> 
+							
+								<el-button type="primary"  @click="showParentMenu" icon="el-icon-top" title="更换上级">更换上级</el-button> 
+								<el-button type="danger" 
+									@click="batchDel"
+									v-loading="load.del"
+									icon="el-icon-delete"
+									title="批量删除"
+									>批量删除</el-button
+								>
+								<el-button          @click="loadTasksToXmMenuState" icon="el-icon-s-marketing" title="汇总进度">汇总进度</el-button> 
+ 
+							</el-col>
+							<el-col :span="24" style="padding-top: 5px"> 
+							 	<el-button  
+								icon="el-icon-close"
+								@click="moreVisible=false"
+								>关闭</el-button
+								>
+							</el-col>
+							</el-row> 
+							<el-button style="margin-top: 10px;" slot="reference" @click="moreVisible=true" icon="el-icon-more"></el-button>
+						</el-popover> 
 						</span>
 					 </el-row>
 					<el-row>
-						<el-table :cell-style="cellStyleCalc" :expand-row-keys="expandRowKeysCpd" :header-cell-style="cellStyleCalc" :row-style="{height:'60px'}"   stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
+						<el-table :cell-style="cellStyleCalc" :expand-row-keys="expandRowKeysCpd" :header-cell-style="cellStyleCalc" :row-style="{height:'60px'}"   stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick"
+							element-loading-text="努力加载中"
+							element-loading-spinner="el-icon-loading" 
+						>
 							<template v-if="!disabledMng">
 								<el-table-column sortable type="selection" width="40"></el-table-column> 
 							</template>
@@ -252,6 +286,7 @@
 				linkIterationPopoverVisible:false,
  				/**begin 自定义属性请在下面加 请加备注**/
 				expandRowKeysCpd:[],
+				moreVisible:false,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -373,28 +408,7 @@
 					params.productId=this.filters.productId
 				}
 				return params;
-			},
-			loadXmMenusLazy(tree, treeNode, resolve) {
-
-      			this.maps.set(tree.menuId, { tree, treeNode, resolve }) //储存数据
-					var params={pmenuId:tree.menuId}
-					params=this.getParams(params); 
-					this.load.list = true;
-					var func=listXmMenuWithState
-					if(this.selProject&&this.selProject.id){
-						func=listXmMenuWithPlan
-					}
-					func(params).then(res=>{
-						this.load.list = false
-						var tips = res.data.tips;
-						if(tips.isOk){
-							resolve(res.data.data)
-						}else{
-							resolve([])
-						}
-					}).catch( err => this.load.list = false );
-
-			},
+			}, 
 			//获取列表 XmMenu xm_project_menu
 			getXmMenus() {
 				let params = {
@@ -505,16 +519,14 @@
 				this.xmMenus.push(row); 
 				if(this.parentMenu){
 					this.parentMenu.childrenCnt=this.parentMenu.childrenCnt?this.parentMenu.childrenCnt+1:1;
-				}
-				//treeTool.reloadAllChildren(this.$refs.table,this.maps,[row,{...this.parentMenu}],'pmenuId',this.loadXmMenusLazy)
+				} 
 
 				this.parentMenu=null;
 
 			},
 			afterEditSubmit(row){
 				this.editFormVisible=false;
-				//this.getXmMenus();
-				treeTool.reloadChildren(this.$refs.table,this.maps,row.pmenuId,'pmenuId',this.loadXmMenusLazy)
+				//this.getXmMenus(); 
 			},
 			//选择行xmMenu
 			selsChange: function (sels) {
@@ -553,9 +565,7 @@
 						this.load.del=false;
 						var tips=res.data.tips;
 						if(tips.isOk){
-							this.pageInfo.count=true;
-
-							treeTool.reloadChildren(this.$refs.table,this.maps,row.pmenuId,'pmenuId',this.loadXmMenusLazy)
+							this.pageInfo.count=true;  
 							this.getXmMenus();
 
 						}
@@ -578,8 +588,7 @@
 						var tips=res.data.tips;
 						if( tips.isOk ){
 							this.pageInfo.count=true;
-							this.getXmMenus();
-							//treeTool.reloadAllChildren(this.$refs.table,this.maps,this.sels,'pmenuId',this.loadXmMenusLazy)
+							this.getXmMenus(); 
 						}
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
@@ -703,10 +712,7 @@
 					this.load.add=false
 					var tips =res.data.tips
 					if(tips.isOk){
-						this.getXmMenus()
-						if(this.parentMenu && this.parentMenu.menuId){
-							//treeTool.reloadAllChildren(this.$refs.table,this.maps,this.parentMenu.menuId,'pmenuId',this.loadXmMenusLazy)
-						}
+						this.getXmMenus() 
 					}else{
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					}
@@ -861,8 +867,7 @@
 					var tips = res.data.tips;
 					if(tips.isOk){
 						this.searchXmMenus();
-						var rows=[...this.sels,{menuId:'',pmenuId:menu.menuId}]
-						//treeTool.reloadAllChildren(this.$refs.table,this.maps,rows,'pmenuId',this.loadXmMenusLazy)
+						var rows=[...this.sels,{menuId:'',pmenuId:menu.menuId}] 
 					}
 					this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 				})

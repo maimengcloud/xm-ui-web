@@ -139,7 +139,7 @@
 					<el-button  style="float:right;" type="primary" v-if="multi"  v-on:click="multiSelectedConfirm">确认</el-button>
 				</el-row>   
 				<el-row v-if="filters.product && filters.product.id">
-					<el-table  class="menu-table"   :height="maxTableHeight" :data="xmMenusTreeData"   row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+					<el-table  element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"  class="menu-table"   :height="maxTableHeight" :data="xmMenusTreeData"   row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column v-if="multi" type="selection" width="50"></el-table-column>  
 						
 						<el-table-column prop="menuName" label="需求名称" min-width="140" > 

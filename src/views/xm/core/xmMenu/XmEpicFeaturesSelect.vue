@@ -11,7 +11,7 @@
 						<el-button v-if="showSelect!==false && multi===true" type="primary" @click="selectConfirm()">确认选择</el-button> 
 					 </el-row>
 					<el-row>
-						<el-table    stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
+						<el-table element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"    stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
 							<template v-if="showSelect!==false && multi===true">
 								<el-table-column   label="" type="selection"  width="60"  >  
 								</el-table-column> 
