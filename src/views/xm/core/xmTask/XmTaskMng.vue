@@ -74,7 +74,8 @@
             placement="top-start"
             title=""
             width="400"
-            trigger="moreVisible"
+            trigger="manual"
+            v-model="moreVisible"
           >
             <el-row>
               <el-col :span="24" style="padding-top: 5px">
@@ -216,7 +217,7 @@
                 >
               </el-col>
             </el-row>  
-            <el-button   slot="reference" @click="moreVisible=true">更多</el-button>
+            <el-button   slot="reference" @click="moreVisible=!moreVisible">更多</el-button>
           </el-popover> 
           <span style="float:right;"> 
           <el-popover

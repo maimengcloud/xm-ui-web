@@ -153,7 +153,7 @@
                 >
               </el-col>
             </el-row> 
-            <el-button style="margin-top: 10px;" slot="reference" @click="moreVisible=true">更多</el-button>
+            <el-button style="margin-top: 10px;" slot="reference" @click="moreVisible=!moreVisible">更多</el-button>
           </el-popover> 
           </span>
         </el-row>

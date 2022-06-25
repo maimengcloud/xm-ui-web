@@ -19,7 +19,8 @@
 							placement="top-start"
 							title=""
 							width="400"
-							trigger="click" >
+							v-model="moreVisible"
+							trigger="manual" >
 							<el-row>
 								<el-col  :span="24"  style="padding-top:5px;" >
 									<font class="more-label-font">标签条件:</font>
@@ -131,6 +132,7 @@
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
 									<el-button type="primary"  @click="searchXmMenus" icon="el-icon-search">查询</el-button>
+									<el-button  @click="moreVisible=false" icon="el-icon-close" >关闭</el-button>
  								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
 									<el-button    @click="handleExport" icon="el-icon-download">导出</el-button>
@@ -138,7 +140,7 @@
 
 								</el-col>
 							</el-row>
-								<el-button  slot="reference" icon="el-icon-more"></el-button>
+								<el-button  slot="reference" icon="el-icon-more" @click="moreVisible=!moreVisible"></el-button>
 						</el-popover>
 						<span style="float:right;">
 						<el-popover style="padding-left:10px;"
@@ -546,6 +548,7 @@
 				linkIterationPopoverVisible:false,
  				/**begin 自定义属性请在下面加 请加备注**/
 				expandRowKeysCpd:[],
+				moreVisible:false,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data

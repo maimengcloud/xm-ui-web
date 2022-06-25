@@ -75,7 +75,7 @@
 								>
 							</el-col>
 							</el-row> 
-							<el-button style="margin-top: 10px;" slot="reference" @click="moreVisible=true" icon="el-icon-more"></el-button>
+							<el-button style="margin-top: 10px;" slot="reference" @click="moreVisible=!moreVisible" icon="el-icon-more"></el-button>
 						</el-popover> 
 						</span>
 					 </el-row>
