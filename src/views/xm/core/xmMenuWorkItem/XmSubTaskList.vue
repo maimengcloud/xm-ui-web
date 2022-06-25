@@ -12,8 +12,10 @@
 										 {{scope.row.sortLevel}}&nbsp;{{scope.row.name}}
 									</span>
 									<span class="my-cell-bar">
-									  	<el-input title="序号" style="width:18%;"  v-model="scope.row.sortLevel" placeholder="序号"  @change="editXmTaskSomeFields(scope.row,'sortLevel',$event)"></el-input><el-input title="名称" placeholder="名称" style="width:80%;" v-model="scope.row.name" @change="editXmTaskSomeFields(scope.row,'name',$event)"></el-input> 
-									</span>
+									  	<el-input title="序号" style="width:15%;"  v-model="scope.row.sortLevel" placeholder="序号"  @change="editXmTaskSomeFields(scope.row,'sortLevel',$event)"></el-input><el-input title="名称" placeholder="名称" style="width:75%;" v-model="scope.row.name" @change="editXmTaskSomeFields(scope.row,'name',$event)"></el-input> 
+                      <el-button    @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" circle plain size="mini"> </el-button>     
+
+                </span>
                 </template>
               </el-table-column>
               <el-table-column
@@ -88,6 +90,27 @@
         </el-table> 
       </el-row>
       
+    <!--编辑 XmTask xm_task界面-->
+    <el-dialog
+      title="编辑任务"
+      :visible.sync="editFormVisible"
+      width="90%"
+      top="20px"
+      append-to-body
+      :close-on-click-modal="false"
+    >
+      <xm-task-edit
+        v-if="editForm && editForm.id"
+        :xm-project="{id:editForm.projectId,name:editForm.projectName}"
+        :xm-task="editForm"
+        :visible="editFormVisible"
+        @cancel="editFormVisible = false"
+        @after-add-submit="afterExecEditSubmit"
+        @after-edit-submit="afterExecEditSubmit"
+        @submit="afterEditSubmit"
+        @edit-fields="onEditSomeFields"
+      ></xm-task-edit> 
+      </el-dialog>
       <el-dialog title="新增任务" :visible.sync="addFormVisible" append-to-body modal-append-to-body>
           <el-form :model="addForm" :rules="addFormRules" ref="addForm">
             <el-form-item label="任务名称" prop="name">
@@ -155,7 +178,43 @@ export default {
     return{
       load:{edit:false,list:false,add:false,del:false,}, 
       xmTasks:[],
-      editForm:{name:''},
+      
+      //编辑xmTask界面初始化数据
+      editForm: {
+        id: "",
+        name: "",
+        parentTaskid: "",
+        parentTaskname: "",
+        projectId: "",
+        projectName: "",
+        level: "",
+        sortLevel: "",
+        executorUserid: "",
+        executorUsername: "",
+        preTaskid: "",
+        preTaskname: "",
+        startTime: "",
+        endTime: "",
+        milestone: "",
+        description: "",
+        remarks: "",
+        createUserid: "",
+        createUsername: "",
+        createTime: "",
+        rate: "",
+        budgetAt: "",
+        budgetWorkload: "",
+        actAt: "",
+        actWorkload: "",
+        taskState: "",
+        taskType: "",
+        taskClass: "",
+        toTaskCenter: "",
+        actStartTime: "",
+        actEndTime: "",
+        uniInnerPrice:80,uniOutPrice:100,
+      },
+      editFormVisible:false, 
       addForm:{name:''},
       addFormRules: {
 					name: [
@@ -243,6 +302,10 @@ export default {
         this.addFormVisible=true;
     },
     
+    showEdit(row,index){
+      this.editForm=row
+      this.editFormVisible=true
+    },
     //查询时选择责任人
     selectCreateUserConfirm(groupUsers,option) {
       if(option && option.action==='createUserid'){
@@ -415,7 +478,7 @@ export default {
       }
   }, //end methods
   components: {  
-    XmTaskWorkloadRecordDialog,XmGroupDialog
+    XmTaskWorkloadRecordDialog,XmGroupDialog,'xm-task-edit':()=>import('../xmTask/XmTaskEdit'),
   },
   mounted() { 
     this.initData();
