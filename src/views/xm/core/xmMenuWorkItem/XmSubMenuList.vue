@@ -21,7 +21,9 @@
 						{{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}}
 					</span>
 					<span class="my-cell-bar">
-							<el-input title="序号" style="width:18%;"  v-model="scope.row.seqNo" placeholder="序号"  @change="editXmMenuSomeFields(scope.row,'seqNo',$event)"></el-input><el-input title="名称" placeholder="名称" v-model="scope.row.menuName"  style="width:80%;"  @change="editXmMenuSomeFields(scope.row,'menuName',$event)"></el-input> 
+							<el-input title="序号" style="width:15%;"  v-model="scope.row.seqNo" placeholder="序号"  @change="editXmMenuSomeFields(scope.row,'seqNo',$event)"></el-input><el-input title="名称" placeholder="名称" v-model="scope.row.menuName"  style="width:75%;"  @change="editXmMenuSomeFields(scope.row,'menuName',$event)"></el-input> 
+							 <el-button    @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑需求" circle plain size="mini"> </el-button>     
+
 					</span> 
 			  </template>
 		  </el-table-column>
@@ -103,6 +105,10 @@
             <el-button type="primary" @click="addXmMenu">确 定</el-button>
           </div>
       </el-dialog>
+	<!--编辑 XmMenu xm_project_menu界面-->
+	<el-dialog title="编辑故事" :visible.sync="editFormVisible" :with-header="false" width="80%" top="20px"    append-to-body   :close-on-click-modal="false" >
+		<xm-menu-edit :xm-menu="editForm"   :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @add-sub-menu="onAddSubMenu" @edit-fields="onEditSomeFields"></xm-menu-edit>
+	</el-dialog>
   </section>
 </template>
 
@@ -149,9 +155,13 @@ export default {
   data() { 
     return{
       load:{edit:false,list:false,add:false,del:false}, 
-      xmMenus:[],
-      editForm:{menuName:'',dclass:'3'},
+      xmMenus:[], 
+		//编辑xmMenu界面初始化数据
+		editForm: {
+				menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',ntype:'0',childrenCnt:0,sinceVersion:'',proposerId:'',proposerName:'',dlvl:'0',dtype:'0',priority:'0',source:'1',dclass:'3'
+		}, 
 	  addForm:{menuName:'',dclass:'3'},
+	  editFormVisible:false,
 	  addFormVisible:false,
 	  addFormRules:{
 		  menuName:[
@@ -269,6 +279,11 @@ export default {
           this.xmMenus=[];
         }
       })
+    },
+    
+    showEdit(row,index){
+      this.editForm=row
+      this.editFormVisible=true
     },
      
     initData(){  
@@ -401,6 +416,7 @@ export default {
 			XmMenuWorkload, 
 			XmGroupDialog,
 			XmIterationSelect,
+			'xm-menu-edit':()=>import('../xmMenu/XmMenuEdit')
   },
   mounted() { 
     this.initData();
