@@ -12,8 +12,8 @@
 										 {{scope.row.sortLevel}}&nbsp;{{scope.row.name}}
 									</span> 
                     <span class="my-cell-bar">      
-                        <el-input title="序号" style="width:18%;" v-model="scope.row.sortLevel" placeholder="序号"  @change="editXmTaskSomeFields(scope.row,'sortLevel',$event)"></el-input> <el-input title="名称"  style="width:80%;" placeholder="名称" v-model="scope.row.name" @change="editXmTaskSomeFields(scope.row,'name',$event)"></el-input> 
-                      
+                        <el-input title="序号" style="width:15%;" v-model="scope.row.sortLevel" placeholder="序号"  @change="editXmTaskSomeFields(scope.row,'sortLevel',$event)"></el-input> <el-input title="名称"  style="width:75%;" placeholder="名称" v-model="scope.row.name" @change="editXmTaskSomeFields(scope.row,'name',$event)"></el-input> 
+                        <el-button    @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" circle plain size="mini"> </el-button>     
                     </span> 
                 </template>
               </el-table-column> 
@@ -107,6 +107,28 @@
             <el-button type="primary" @click="addXmTask">确 定</el-button>
           </div>
       </el-dialog>
+      
+    <!--编辑 XmTask xm_task界面-->
+    <el-dialog
+      title="编辑任务"
+      :visible.sync="editFormVisible"
+      width="90%"
+      top="20px"
+      append-to-body
+      :close-on-click-modal="false"
+    >
+      <xm-task-edit
+        v-if="editForm && editForm.id"
+        :xm-project="{id:editForm.projectId,name:editForm.projectName}"
+        :xm-task="editForm"
+        :visible="editFormVisible"
+        @cancel="editFormVisible = false"
+        @after-add-submit="afterExecEditSubmit"
+        @after-edit-submit="afterExecEditSubmit"
+        @submit="afterEditSubmit"
+        @edit-fields="onEditSomeFields"
+      ></xm-task-edit>
+    </el-dialog>
  			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="linkProjectId?{id:linkProjectId}:null" :xm-product="parentXmTask?{id:parentXmTask.productId}:null" @user-confirm="selectCreateUserConfirm">
 			</xm-group-dialog>  
       <xm-task-workload-record-dialog ref="workloadRecordDialog" @submi="afterWorkloadSubmit" @edit-xm-task-some-fields="onEditXmTaskSomeFields" @submit="onWorkloadSubmit"></xm-task-workload-record-dialog>
@@ -123,6 +145,8 @@ import treeTool from "@/common/js/treeTool"; //全局公共库
 	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面
 	import { mapGetters } from 'vuex'
 import XmTaskWorkloadRecordDialog from '../xmTaskWorkload/XmTaskWorkloadRecordDialog.vue';
+
+import XmTaskEdit from "../xmTask/XmTaskEdit"; //修改界面
 
 export default {
   computed: {
@@ -156,7 +180,43 @@ export default {
     return{
       load:{edit:false,list:false,add:false,del:false,}, 
       xmTasks:[],
-      editForm:{name:''},
+      editFormVisible:false,
+      
+      //编辑xmTask界面初始化数据
+      editForm: {
+        id: "",
+        name: "",
+        parentTaskid: "",
+        parentTaskname: "",
+        projectId: "",
+        projectName: "",
+        level: "",
+        sortLevel: "",
+        executorUserid: "",
+        executorUsername: "",
+        preTaskid: "",
+        preTaskname: "",
+        startTime: "",
+        endTime: "",
+        milestone: "",
+        description: "",
+        remarks: "",
+        createUserid: "",
+        createUsername: "",
+        createTime: "",
+        rate: "",
+        budgetAt: "",
+        budgetWorkload: "",
+        actAt: "",
+        actWorkload: "",
+        taskState: "",
+        taskType: "",
+        taskClass: "",
+        toTaskCenter: "",
+        actStartTime: "",
+        actEndTime: "",
+        uniInnerPrice:80,uniOutPrice:100,
+      },
       addForm:{name:''},
       addFormRules:{
 					name: [
@@ -402,7 +462,10 @@ export default {
       afterWorkloadSubmit(xmTask){
 
       },
-      
+      showEdit(row,index){
+        this.editForm=row
+        this.editFormVisible=true
+      },
 			onEditXmTaskSomeFields(data){
         
         Object.assign(this.editForm,data)
@@ -414,7 +477,7 @@ export default {
       }
   }, //end methods
   components: {  
-    XmTaskWorkloadRecordDialog,XmGroupDialog,
+    XmTaskWorkloadRecordDialog,XmGroupDialog,XmTaskEdit,
   },
   mounted() { 
     this.initData();
