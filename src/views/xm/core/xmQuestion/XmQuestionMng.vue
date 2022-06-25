@@ -28,7 +28,8 @@
 					placement="top-start"
 					title="更多查询条件或操作"
 					width="600"
-					trigger="click" >
+					v-model="moreVisible"
+					trigger="manual" >
 					<el-row> 
 						<el-col :span="24"  style="padding-top:12px;">
 							<font class="more-label-font">需求:</font>
@@ -114,9 +115,10 @@
 						<el-col :span="24" style="padding-top:5px;">
 							<el-button   type="primary" icon="el-icon-search" @click="searchXmQuestions">查询</el-button>
 							<el-button @click="handleExport"   icon="el-icon-download">导出</el-button>
+							<el-button @click="moreVisible=false"   icon="el-icon-close">关闭</el-button>
 						</el-col>
 					</el-row>
-					<el-button  slot="reference" icon="el-icon-more"></el-button>
+					<el-button  slot="reference" icon="el-icon-more" @click="moreVisible=!moreVisible"></el-button>
 				</el-popover> 
 				<span style="float:right;"> 
    					<el-button v-if="filters.selProject && filters.selProject.id"  type="primary" icon="el-icon-plus"  @click="showAdd"  round> </el-button> 
@@ -128,7 +130,7 @@
 			 </el-row> 
 			 <el-row class="padding-top">
 				<!--列表 XmQuestion xm_question-->
-				<el-table  ref="table" :height="maxTableHeight" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+				<el-table  element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"  ref="table" :height="maxTableHeight" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  					<el-table-column  label="全选" type="selection" min-width="50"  fixed="left"></el-table-column>
 					  <el-table-column prop="id" label="缺陷编号" width="100" show-overflow-tooltip fixed="left"></el-table-column>
 					 <el-table-column prop="name" label="缺陷名称"  min-width="150" show-overflow-tooltip fixed="left">
@@ -402,6 +404,7 @@
 				pickerOptions:  util.getPickerOptions('datarange'),
 				userType:'',//createUser、handlerUser
 				tagSelectVisible:false,
+				moreVisible:false,
 				/**end 自定义属性请在上面加 请加备注**/
 
 			}
