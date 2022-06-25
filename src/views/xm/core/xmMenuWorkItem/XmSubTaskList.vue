@@ -104,11 +104,9 @@
         :xm-project="{id:editForm.projectId,name:editForm.projectName}"
         :xm-task="editForm"
         :visible="editFormVisible"
-        @cancel="editFormVisible = false"
-        @after-add-submit="afterExecEditSubmit"
-        @after-edit-submit="afterExecEditSubmit"
+        @cancel="editFormVisible = false" 
         @submit="afterEditSubmit"
-        @edit-fields="onEditSomeFields"
+        @edit-fields="afterEditSubmit"
       ></xm-task-edit> 
       </el-dialog>
       <el-dialog title="新增任务" :visible.sync="addFormVisible" append-to-body modal-append-to-body>
@@ -306,6 +304,10 @@ export default {
       this.editForm=row
       this.editFormVisible=true
     },
+    
+    afterEditSubmit(row){
+      Object.assign(this.editForm,row)
+    },
     //查询时选择责任人
     selectCreateUserConfirm(groupUsers,option) {
       if(option && option.action==='createUserid'){
@@ -465,6 +467,9 @@ export default {
 			},
       afterWorkloadSubmit(xmTask){
 
+      },
+      afterEditSubmit(row){
+        Object.assign(this.editForm,row)
       },
       
 			onEditXmTaskSomeFields(data){

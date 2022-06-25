@@ -30,7 +30,7 @@
           <el-table-column prop="status" label="状态"  min-width="80"  sortable>
 								<template slot-scope="scope">
 									<div class="cell-text">
-										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in formatterMenuStatusDicts(scope.row.status)" :key="index">{{item.name}}</el-button>
+										<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'menuStatus',scope.row.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
 									</div>
 									<span class="cell-bar">
 										 <el-select @visible-change="selectVisible(scope.row,$event)"   v-model="scope.row.status" placeholder="需求状态"  style="display:block;"  @change="editXmMenuSomeFields(scope.row,'status',$event)">
@@ -42,8 +42,8 @@
 							<el-table-column prop="priority"  label="优先级" width="100" sortable>
 								<template slot-scope="scope">
 									<div class="cell-text">
-										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in formatterPriorityDicts(scope.row.priority)" :key="index">{{item.name}}</el-button>
- 									</div>
+										<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'priority',scope.row.priority)" :key="index" :type="item.className">{{item.name}}</el-tag>
+  									</div>
 									<span class="cell-bar">
 										 <el-select @visible-change="selectVisible(scope.row,$event)"   v-model="scope.row.priority" placeholder="优先级"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'priority',$event)">
 												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.priority" :key="index"> </el-option>
@@ -106,8 +106,8 @@
           </div>
       </el-dialog>
 	<!--编辑 XmMenu xm_project_menu界面-->
-	<el-dialog title="编辑故事" :visible.sync="editFormVisible" :with-header="false" width="80%" top="20px"    append-to-body   :close-on-click-modal="false" >
-		<xm-menu-edit :xm-menu="editForm"   :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @add-sub-menu="onAddSubMenu" @edit-fields="onEditSomeFields"></xm-menu-edit>
+	<el-dialog title="编辑故事" :visible.sync="editFormVisible" :with-header="false" width="90%" top="20px"    append-to-body   :close-on-click-modal="false" >
+		<xm-menu-edit :xm-menu="editForm"   :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @edit-fields="afterEditSubmit"></xm-menu-edit>
 	</el-dialog>
   </section>
 </template>
@@ -176,6 +176,7 @@ export default {
     }
   }, //end data
   methods: { 
+	...util,
     selectVisible(row,visible){
       if(visible){
         this.rowClick(row)
@@ -185,91 +186,15 @@ export default {
 	selsChange: function (sels) {
 		this.sels = sels;
 	},
-
+	afterEditSubmit(row){
+		Object.assign(this.editForm,row)
+	},
 
 	rowClick: function(row, event, column){ 
         this.editForm=row
 		this.editFormBak=Object.assign({},this.editForm)
       },
-      
-
-			formaterByDicts(row,property,cellValue){
-				var property=property
-				var dict=null;
-				if(property=='source'){
-					dict=this.dicts['demandSource']
-				}else if(property=='dlvl'){
-					dict=this.dicts['demandLvl']
-				}else if(property=='dtype'){
-					dict=this.dicts['demandType']
-				}else if(property=='priority'){
-					dict=this.dicts['priority']
-				}
-				if(!dict){
-					return cellValue;
-				}else{
-					var item=dict.find(i=>i.id==cellValue)
-					return item?item.name:cellValue;
-				}
-			},
-			formatterPriorityDicts(cellValue){
-				if(!cellValue && cellValue!=='0'){
-					return []
-				}
-				var key="priority";
-				if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0   ){
-					return [{id:cellValue,name:cellValue,className:'primary'}];
-				}
-				var list=this.dicts[key].filter(i=>i.id==cellValue)
-				if(list.length>0){
-					var data= {...list[0],className:'primary'}
-					if(data.id=='0'){
-						data.className='danger'
-					}else if(data.id=='1'){
-						data.className='warning'
-					}else if(data.id=='2'){
-						data.className='success'
-					}else if(data.id=='3'){
-						data.className='primary'
-					}else if(data.id=='4'){
-						data.className='info'
-					}else{
-						data.className='primary'
-					}
-					return [data];
-				}else{
-					return [{id:cellValue,name:cellValue,className:'primary'}]
-				}
-
-			},
-			formatterMenuStatusDicts: function(cellValue){
-				if(!cellValue && cellValue!=='0'){
-					return []
-				}
-				var key="menuStatus";
-				if(this.dicts[key]==undefined || this.dicts[key]==null || this.dicts[key].length==0   ){
-					return [{id:cellValue,name:cellValue,className:'primary'}];
-				}
-				var list=this.dicts[key].filter(i=>i.id==cellValue)
-				if(list.length>0){
-					var data= {...list[0],className:'primary'}
-					if(data.id=='0'){
-						data.className='primary'
-					}else if(data.id=='1'){
-						data.className='warning'
-					}else if(data.id=='2'){
-						data.className='success'
-					}else if(data.id=='3'){
-						data.className='info'
-					} else{
-						data.className='danger'
-					}
-					return [data];
-				}else{
-					return [{id:cellValue,name:cellValue,className:'primary'}]
-				}
-
-			},
+       
     getXmMenus(){
       listXmMenuWithState({pmenuId:this.parentXmMenu.menuId}).then(res=>{
         var tips = res.data.tips;
