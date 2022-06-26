@@ -440,16 +440,23 @@
               >
                 <template slot-scope="scope"> 
                   <span v-if="scope.row.ntype=='0'">
-                  <span 
-                    v-for="(item, index) in [formatExeUsernames(scope.row)]"
-                    :key="index"
-                  >
-                    <el-link
-                      :type="item.type"
-                      @click.stop="showExecusers(scope.row)"
-                      >{{ item.showMsg }}</el-link
-                    >
-                  </span> 
+                    <span v-if="scope.row.crowd=='1'||scope.row.executorUserid">
+                      <span 
+                        v-for="(item, index) in [formatExeUsernames(scope.row)]"
+                        :key="index"
+                      >
+                        <el-link
+                          :type="item.type"
+                          @click.stop="showExecusers(scope.row)"
+                          >{{ item.showMsg }}</el-link
+                        >
+                      </span> 
+                    </span> 
+                    <span v-else-if="!scope.row.executorUserid">
+                      <el-link 
+                          @click="$refs.xmGroupDialog.open({data:scope.row,action:'executorUserid'})"
+                          >去设置</el-link>
+                    </span>
                   </span>
                 </template>
               </el-table-column>
@@ -823,7 +830,7 @@
     </el-drawer>
 
  			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="filters.selProject" :xm-product="filters.xmProduct" @user-confirm="selectCreateUserConfirm">
-			</xm-group-dialog>  
+			</xm-group-dialog>   
     <el-drawer
       append-to-body
       title="需求明细"
@@ -898,6 +905,7 @@ import XmGroupSelect from "../xmGroup/XmGroupSelect.vue";
   	import XmTaskWorkloadEdit from "@/views/xm/core/xmTaskWorkload/XmTaskWorkloadEdit";
     
 import XmPhaseSelect from "./XmPhaseSelect.vue"; 
+	import { addXmTaskExecuser } from '@/api/xm/core/xmTaskExecuser';
 
 export default {
   computed: {
@@ -1886,6 +1894,32 @@ export default {
           this.filters.createUser = null;
         }
         this.searchXmTasks(); 
+      }else if(option.action==='executorUserid'){
+        var user= groupUsers[0];
+        var params={}
+        var row=option.data;
+        params.taskId = row.id;
+        params.projectId=row.projectId 
+        params.projectName=row.projectName
+        params.taskName=row.name 
+        params.quoteStartTime=row.startTime
+        params.quoteEndTime=row.endTime
+        params.quoteAmount=row.budgetAt
+        params.quoteWorkload=row.budgetWorkload
+        params.userid=user.userid
+        params.username=user.username
+        addXmTaskExecuser(params).then(res=>{
+          var tips = res.data.tips
+          if(tips.isOk){
+            //this.searchXmTasks();
+            row.executorUserid=user.userid
+            row.executorUsername=user.username
+            row.exeUserids=user.userid
+            row.exeUsernames=user.username
+          }else{
+            this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:'error'})
+          }
+        })
       }else{
         if (groupUsers && groupUsers.length > 0) {
           this.filters.executor = groupUsers[0];
@@ -1895,7 +1929,7 @@ export default {
         this.searchXmTasks(); 
       }
       
-    }, 
+    },  
     setFiltersCreateUserAsMySelf() {
       this.filters.createUser = this.userInfo;
       this.searchXmTasks();
