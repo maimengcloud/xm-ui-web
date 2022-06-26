@@ -630,13 +630,7 @@
             ></el-date-picker>
             <el-button @click="editTime(editForm)">保存时间</el-button>
           </div> 
-        </el-row>
-
-        <div
-          v-if="drawerkey == '1' && timeVisible == true"
-          style="overflow-x: hidden"
-        > 
-        </div>
+        </el-row> 
       </el-row>
     </el-drawer>
     <!--编辑 XmTask xm_task界面-->
