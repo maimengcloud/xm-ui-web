@@ -5,11 +5,12 @@
 						<el-row>   
 							<el-input v-model="filters.key" style="width:20%;"  clearable  placeholder="按 标题 摘要 作者 模糊查询"> 
 							</el-input> 
-							
+							<!--
 							<el-select v-if="!archiveType" v-model="filters.categoryType"  placeholder="请选择主题" clearable>
 									<el-option v-for="(it,index) in dicts.categoryType" :key="index" :value="it.id" :label="it.name">
 									</el-option>
 							</el-select>
+							-->
 							<el-button type="primary"   v-loading="load.list" v-on:click="searchArchives" icon="el-icon-search"> </el-button> 
   							<el-button type="primary"   @click="showAdd">新增</el-button> 
 							<!--把记录变为取消发布 ，就是把状态变为2 并把ArchiveCategory删除对应的记录-->
@@ -143,7 +144,7 @@
 	
 			<!--新增 Archive 档案信息表界面-->
 			<el-dialog title="新增文章" :visible.sync="addFormVisible" fullscreen :modal="false"  :close-on-click-modal="false" append-to-body>
-					<archive-add v-if="addFormVisible"  :op-type="'add'" style="margin-top:-20px;" :archive="addForm" :archive-type="archiveType" :category-name="categorys[0].name" :category-id="categorys[0].id" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></archive-add>
+					<archive-add v-if="addFormVisible" :xm-product="xmProduct"  :op-type="'add'" style="margin-top:-20px;" :archive="addForm" :archive-type="archiveType"   :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></archive-add>
 			</el-dialog>   
 	</section>
 </template>
@@ -219,6 +220,8 @@
 				tableHeight:300,
 				showLeft:true,
 				moreVisible:false,
+				archiveType:'0',
+				categorys:[],
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -324,9 +327,10 @@
 				this.editFormVisible = true;
 				this.editForm = row;
 			},
-			showDetail: function ( row,index ) { 
-				let routerJump = this.$router.resolve({ path: '/mdp/arc/mate/archive/ArchiveDetail/'+row.id});
-				window.open(routerJump.href, '_blank');  
+			showDetail: function ( row,index ) {  
+				var curlDomain=window.location.protocol+"//"+window.location.host; //   返回https://mp.csdn.net
+				var href=curlDomain+"/api/"+process.env.VERSION+"/arc/arc/arc/archive/showArchive?id="+row.id
+ 				window.open(href, '_blank');  
 			},
 			//显示新增界面 Archive 档案信息表
 			showAdd: function () {
@@ -334,7 +338,8 @@
 					this.addFormVisible = true;
 					this.addForm.categoryId=this.categorys[0].id;
 				}else{
-					this.$message({ message: '请先选择分类', type: 'warning' });
+					//this.$message({ message: '请先选择分类', type: 'warning' });
+					this.addFormVisible = true;
 				}
 				
 				

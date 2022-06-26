@@ -39,7 +39,7 @@
 		      'userInfo'
 		    ])
 		},
-		props:['archive','opType'],
+		props:['xmProduct','archive','opType'],
 		watch: {
 	      'archive.id':function( id ) { 
 				this.initData(); 
@@ -85,6 +85,7 @@
 				var addParmas={archive:{...this.editForm},categoryId:this.xmProduct.id} 
  				addParmas.archive.bizKey=this.xmProduct.id
 				addParmas.archive.pbizKey=this.xmProduct.id
+				addParmas.archive.archiveType='0'
 				addArchive(addParmas).then((res) => {
 					this.load.edit = false; 
 					var tips=res.data.tips;

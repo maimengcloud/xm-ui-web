@@ -81,6 +81,7 @@
 				addParmas.archive.archiveTitle=this.xmMenu.menuName
 				addParmas.archive.bizKey=this.xmMenu.menuId
 				addParmas.archive.pbizKey=this.xmMenu.productId
+				addParmas.archive.archiveType='0'
 				addArchive(addParmas).then((res) => {
 					this.load.edit = false; 
 					var tips=res.data.tips;
