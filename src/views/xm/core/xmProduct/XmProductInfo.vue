@@ -93,6 +93,10 @@
 				</el-menu-item>  
 				<el-submenu index="知识" class="hidden-md-and-down">
 					<template slot="title">知识</template>
+					
+						<el-menu-item  index="wiki" >
+							<span slot="title"><i class="el-icon-document"></i>wiki</span>
+						</el-menu-item> 
 						<el-menu-item  index="文档" >
 							<span slot="title"><i class="el-icon-document"></i>文档</span>
 						</el-menu-item> 
@@ -159,13 +163,15 @@
 		  	<xm-product-overview-complex v-if="infotype=='产品概览'" :xm-product="xmProduct"></xm-product-overview-complex>  
 			 <xm-iteration-for-link-complex  v-if="infotype=='迭代'" ref="xmIterationMng" :xm-product="xmProduct"></xm-iteration-for-link-complex>
  			 <xm-project-for-link-complex v-if="infotype=='项目'" ref="xmProjectForLink" :xm-product="xmProduct"></xm-project-for-link-complex> 
-			  <xm-menu-box v-if="infotype=='需求'" :xm-product="xmProduct"></xm-menu-box>
+			  <xm-menu-box v-if="infotype=='需求'" :xm-product="xmProduct" class="padding-top"></xm-menu-box>
 			  <xm-task-mng v-if="infotype=='产品任务'" ptype="1" queryScope="task"  ref="productXmTaskMng" :xm-product="xmProduct" key="productXmTaskMng"></xm-task-mng>
 			 <xm-task-mng v-if="infotype=='项目任务'" ptype="0" queryScope="task"  ref="projectXmTaskMng" :xm-product="xmProduct" key="projectXmTaskMng"></xm-task-mng>
 			  <xm-question v-if="infotype=='缺陷'"  :xm-product='xmProduct' ref="xmQuestion"></xm-question>
 			  <xm-group-mng v-if="infotype=='项目团队'" pgClass="0" :xm-product="xmProduct" key="projectGroup"></xm-group-mng>
 			  <xm-group-mng v-if="infotype=='产品团队'" pgClass="1" :xm-product="xmProduct" key="productGroup"></xm-group-mng>
-			  <xm-file-mng v-if="infotype=='文档'" :xm-product="xmProduct"></xm-file-mng>
+			  <xm-file-mng v-if="infotype=='文档'" :xm-product="xmProduct"></xm-file-mng>			  
+			  <wiki-list v-if="infotype=='wiki'" :xm-product="xmProduct"></wiki-list>
+
 			  <xm-plan v-if="infotype=='产品计划'" ref="productPlan" ptype="1" queryScope="planTask"  :xm-product="xmProduct" key="productPlan"></xm-plan> 
 
 			  <xm-plan v-if="infotype=='项目计划'" ref="projectPlan" ptype="0" queryScope="planTask"  :xm-product="xmProduct" key="projectPlan"></xm-plan> 
@@ -221,6 +227,7 @@
 
  	import XmReport from '@/views/xm/rpt/reportIndex';
 import XmMenuBox from '../xmMenu/XmMenuBox.vue';
+import WikiList from '../wiki/archive/WikiList.vue';
 
 
 	export default {
@@ -452,7 +459,7 @@ import XmMenuBox from '../xmMenu/XmMenuBox.vue';
 			XmProjectForLink,
 			XmReport,
 			xmPlan,
-XmMenuBox,
+			WikiList, 
 			//在下面添加其它组件
 		},
 		mounted() {

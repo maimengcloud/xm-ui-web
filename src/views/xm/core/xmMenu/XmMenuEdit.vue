@@ -215,7 +215,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 	import XmSubWorkItem from "@/views/xm/core/xmMenuWorkItem/XmSubWorkItem";
 	import XmRecord from '../xmRecord/XmRecord'  
 	import XmMyDoFocus from '@/views/myWork/my/components/DoFocus';
-	import ArchiveEdit from '@/views/xm/core/wiki/archive/ArchiveEdit';
+	import ArchiveEdit from '@/views/xm/core/wiki/archive/WikiMenuEdit';
 
 	export default {
 		computed: {

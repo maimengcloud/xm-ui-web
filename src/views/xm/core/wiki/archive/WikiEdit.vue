@@ -5,11 +5,17 @@
 			<!--新增界面 Archive 档案信息表--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">  
 				<el-form-item label="" label-width="0px"> 
+					<el-input placeholder="请输入标题"  v-model="editForm.archiveTitle" @change="editSomeFields(editForm,'archiveTitle',$event)"></el-input>  
+				</el-form-item> 
+				<el-form-item label="" label-width="0px"> 
 					<vue-ueditor :key="editForm.id" class="rich-context" v-model="editForm.archiveContext"></vue-ueditor>  
 				</el-form-item> 
 			</el-form>
-			<el-row  class="padding">
+			<el-row  class="padding" v-if="this.currOpType=='edit'">
  				<el-button @click="saveSubmit()" type="primary" v-if="editForm.archiveContext!=editFormBak.archiveContext">保存</el-button>
+			</el-row>
+			<el-row  class="padding" v-if="this.currOpType=='add'">
+ 				<el-button @click="saveSubmit()" type="primary">保存</el-button>
 			</el-row>
 			</el-col> 
 		</el-row>
@@ -22,9 +28,7 @@
 	import seq from '@/common/js/sequence';//全局公共库
 	import config from '@/common/config';//全局公共库import 
 	import {initDicts, addArchive,editArchive, getOneArchive,editSomeFieldsArchive,listArchive  } from '@/api/mdp/arc/archive';
- 	import Editor from '@/components/Tinymce';  
-	import ShearImage from '@/components/Image/Single'
- 	import { mapGetters } from 'vuex'  
+  	import { mapGetters } from 'vuex'  
 	import VueUeditor from '@/components/Tinymce/index';
  	
  	 
@@ -35,9 +39,9 @@
 		      'userInfo'
 		    ])
 		},
-		props:['xmMenu'],
+		props:['archive','opType'],
 		watch: {
-	      'xmMenu.menuId':function( menuId ) { 
+	      'archive.id':function( id ) { 
 				this.initData(); 
 	      } 
 	    },	
@@ -78,11 +82,9 @@
 			},
 
 			addSubmit(){  
-				var addParmas={archive:{...this.editForm},categoryId:this.xmMenu.productId}
-				addParmas.archive.id=this.xmMenu.menuId
-				addParmas.archive.archiveTitle=this.xmMenu.menuName
-				addParmas.archive.bizKey=this.xmMenu.menuId
-				addParmas.archive.pbizKey=this.xmMenu.productId
+				var addParmas={archive:{...this.editForm},categoryId:this.xmProduct.id} 
+ 				addParmas.archive.bizKey=this.xmProduct.id
+				addParmas.archive.pbizKey=this.xmProduct.id
 				addArchive(addParmas).then((res) => {
 					this.load.edit = false; 
 					var tips=res.data.tips;
@@ -101,7 +103,7 @@
 			 
 			getArchvieDetail(){
 				this.load.list=true
-				getOneArchive({id:this.xmMenu.menuId}).then(res=>{
+				getOneArchive({id:this.archive.id}).then(res=>{
 					this.load.list=false
 					if(res.data.tips.isOk){
 						if(res.data.data && res.data.data.id){
@@ -137,13 +139,11 @@
 				}).catch((e)=>Object.assign(this.editForm,this.editFormBak))
 			},
 			initData(){
+				this.currOpType=this.opType
 				this.getArchvieDetail();
 			}
 		},//end method
-		components: {  
-		    //在下面添加其它组件 'archive-edit':ArchiveEdit
-			'editor':Editor,  
-		     'shear-image':ShearImage,
+		components: {   
 			 VueUeditor
 		},
 		mounted() { 
