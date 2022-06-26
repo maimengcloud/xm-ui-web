@@ -33,7 +33,7 @@
 				 if(this.$route.query && this.$route.query.id){
 					var localStorageProduct=localStorage.getItem("xm-product-info-route")
 					var product=null;
-					if(localStorageProduct){
+					if(localStorageProduct  && localStorageProduct!='undefined'){
 						product=JSON.parse(localStorageProduct)
 						if(product && product.id==this.$route.query.id){
 							this.xmProduct=product

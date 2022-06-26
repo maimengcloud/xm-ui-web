@@ -1,6 +1,7 @@
 import axios from '@/utils/request'
 
-import config from '@/common/config'
+import config from '@/common/config' 
+import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
 
 let base=config.getArcBasePath();
 
@@ -44,3 +45,19 @@ export const unPublish = params => { return axios.post(`${base}/mdp/arc/archive/
 
 //新增一个
 export const addWorkflowArchive = params => { return axios.post(`${base}/mdp/arc/archive/add/workflow`, params); };
+
+//批量修改某些字段
+export const editSomeFieldsArchive = params => { return axios.post(`${base}/mdp/arc/archive/editSomeFields`, params); };
+
+
+
+/**-------------------------前端mng|add|edit界面公共函数---------------请写在下面----------------------------------------------- */
+//初始化页面上的字典
+export const initDicts = (that) => {
+ var itemCodes=['categoryType','archiveStatus'];//在此添加要加载的字典 如['sex','grade','lvl']
+ if(itemCodes.length>0){
+    initSimpleDicts('all',itemCodes).then(res=>{
+        Object.assign(that.dicts,res.data.data)
+    });
+ }
+};

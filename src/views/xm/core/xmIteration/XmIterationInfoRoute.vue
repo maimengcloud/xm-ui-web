@@ -31,7 +31,7 @@
 				 if(this.$route.query && this.$route.query.id){
 					var localStorageIteration=localStorage.getItem("xm-iteration-info-route")
 					var iteration=null;
-					if(localStorageIteration){
+					if(localStorageIteration && localStorageIteration!='undefined'){
 						iteration=JSON.parse(localStorageIteration)
 						if(iteration && iteration.id==this.$route.query.id){
 							this.xmIteration=iteration

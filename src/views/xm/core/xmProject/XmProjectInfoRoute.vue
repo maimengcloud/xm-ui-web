@@ -36,7 +36,7 @@
 				 if(this.$route.query && this.$route.query.id){
 					var localStorageProject=localStorage.getItem("xm-project-info-route")
 					var project=null;
-					if(localStorageProject){
+					if(localStorageProject && localStorageProject!='undefined'){
 						project=JSON.parse(localStorageProject)
 						if(project && project.id==this.$route.query.id){
 							this.selProject=project

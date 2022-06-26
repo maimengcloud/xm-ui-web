@@ -33,7 +33,7 @@
 				 if(this.$route.query && this.$route.query.id){
 					var localStorageXmQuestion=localStorage.getItem("xm-question-info-route")
 					var question=null;
-					if(localStorageXmQuestion){
+					if(localStorageXmQuestion && localStorageXmQuestion!='undefined'){
 						question=JSON.parse(localStorageXmQuestion)
 						if(question && question.id==this.$route.query.id){
 							this.xmQuestion=question

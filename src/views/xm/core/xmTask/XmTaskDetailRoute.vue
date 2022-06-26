@@ -33,7 +33,7 @@
 				 if(this.$route.query && this.$route.query.id){
 					var localStorageTask=localStorage.getItem("xm-task-info-route")
 					var task=null;
-					if(localStorageTask){
+					if(localStorageTask && localStorageTask!='undefined'){
 						task=JSON.parse(localStorageTask)
 						if(task && task.id==this.$route.query.id){
 							this.xmTask=task

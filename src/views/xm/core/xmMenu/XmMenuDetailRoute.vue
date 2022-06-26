@@ -33,7 +33,7 @@
 				 if(this.$route.query && this.$route.query.menuId){
 					var localStorageXmMenu=localStorage.getItem("xm-menu-info-route")
 					var menu=null;
-					if(localStorageXmMenu){
+					if(localStorageXmMenu  && localStorageXmMenu!='undefined'){
 						menu=JSON.parse(localStorageXmMenu)
 						if(menu && menu.menuId==this.$route.query.menuId){
 							this.xmMenu=menu
