@@ -117,6 +117,9 @@
 				loadTasksToXmIterationState({id:this.xmIteration.id}).then(res=>{
 					this.load.calcIteration=false;
 					var tips =res.data.tips; 
+					if(this.$refs['xmIterationSelect']){
+						this.$refs['xmIterationSelect'].reloadOne();
+					}
 					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 				});
 			},

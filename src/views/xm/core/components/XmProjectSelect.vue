@@ -334,7 +334,16 @@
 					this.hadInit=true;
 				}
 				this.projectVisible=!this.projectVisible;
-			}
+			},
+			reloadOne(){
+				listXmProject({id:this.editForm.id}).then((res) => {
+					var tips = res.data.tips;
+					if(tips.isOk && rea.data.data && res.data.data.length>0){
+						Object.assign(this.editForm,res.data.data[0])
+						this.rowClick(this.editForm)
+					}
+				})
+			},
 		},//end methods
 		components: {
 			UsersSelect,

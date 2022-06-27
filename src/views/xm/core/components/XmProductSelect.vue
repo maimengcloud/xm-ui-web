@@ -330,7 +330,17 @@
 					this.hadInit=true;
 				}
 				this.productVisible=!this.productVisible;
-			}
+			},
+			
+			reloadOne(){
+				listXmProductWithState({id:this.editForm.id}).then((res) => {
+					var tips = res.data.tips;
+					if(tips.isOk && rea.data.data && res.data.data.length>0){
+						Object.assign(this.editForm,res.data.data[0])
+						this.rowClick(this.editForm)
+					}
+				})
+			},
 		},//end methods
 		components: {
 			UsersSelect,

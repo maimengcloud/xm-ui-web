@@ -24,6 +24,21 @@
 						 <xm-product-overview v-if="xmProduct && showPanel=='productOverview'"  :xm-product="xmProduct" :sel-project="selProject"></xm-product-overview>
 
           			</el-tab-pane>
+					<el-tab-pane label="执行统计"   name="productCalc" v-if="xmProduct && xmProduct.id">
+						<div v-if="showPanel=='productCalc'" class="padding-left padding-right">
+							<el-row>
+								<el-button type="primary" @click="loadTasksToXmProductState" v-loading="load.calcProduct">计算产品汇总数据</el-button>
+								<br>
+								<font color="blue" style="font-size:10px;">将从项目任务及产品任务中汇总进度、预算工作量、实际工作量、预算金额、实际金额、缺陷数、需求数等数据到产品统计表</font>
+							</el-row>
+							<el-row>
+								<el-button  type="primary" @click="loadTasksToXmMenuState"  v-loading="load.calcMenu">计算所有需求数据</el-button>
+								<br>
+								<font color="blue"  style="font-size:10px;">将从项目任务汇总进度、预算工作量、实际工作量、预算金额、实际金额等数据到需求统计表</font>
+							</el-row>
+						</div> 
+
+          			</el-tab-pane>
 
 					  
 					<el-tab-pane label="产品详情"   name="detail" v-if="xmProduct && xmProduct.id">
@@ -75,6 +90,8 @@ import XmProductOverview from "./XmProductOverview";
 import XmIterationLinkForProduct from '../xmIterationLink/XmIterationLinkForProduct.vue';
 import XmProductProjectLinkMng from '../xmProductProjectLink/XmProductProjectLinkMng.vue'; 
 
+import { loadTasksToXmProductState } from '@/api/xm/core/xmProductState';
+import { loadTasksToXmMenuState} from '@/api/xm/core/xmMenuState'; 
 import XmProductEdit from './XmProductEdit.vue';
 	import  XmProductAdd from './XmProductAdd';//新增界面
 
@@ -93,6 +110,9 @@ import XmProductEdit from './XmProductEdit.vue';
 		},
 		data() {
 			 return{
+				load:{
+					calcProduct:false,
+				},
 				xmProduct:null,
 				showPanel:'productOverview',//menus,tasks,bugs,iterationStateShow 
 				productVisible:true,
@@ -101,6 +121,30 @@ import XmProductEdit from './XmProductEdit.vue';
 			}
 		},//end data
 		methods: {
+			loadTasksToXmProductState: function () {
+				this.load.calcProduct=true;
+
+				let params = { productId: this.xmProduct.id };
+				loadTasksToXmProductState(params).then((res) => {
+					this.load.calcProduct=false;
+					var tips=res.data.tips; 
+					if(this.$refs['xmProductSelect']){
+						this.$refs['xmProductSelect'].reloadOne()
+					}
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
+				}).catch( err  => this.load.calcProduct=false );
+			},
+      
+			 
+			loadTasksToXmMenuState: function () {  
+				this.load.calcMenu=true; 
+				let params = { productId: this.xmProduct.id };
+				loadTasksToXmMenuState(params).then((res) => {
+					this.load.calcMenu=false;
+					var tips=res.data.tips; 
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+				}).catch( err  => this.load.calcMenu=false ); 
+			},
 
 			/**end 自定义函数请在上面加**/
 			onProductRowClick(xmProduct){

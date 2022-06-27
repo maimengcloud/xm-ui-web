@@ -299,7 +299,16 @@
 					this.hadInit=true;
 				}
 				this.iterationVisible=!this.iterationVisible;
-			}
+			},
+			reloadOne(){
+				listXmIterationWithState({id:this.editForm.id}).then((res) => {
+					var tips = res.data.tips;
+					if(tips.isOk && rea.data.data && res.data.data.length>0){
+						Object.assign(this.editForm,res.data.data[0])
+						this.rowClick(this.editForm)
+					}
+				})
+			},
 		},//end methods
 		components: { 
 		    //在下面添加其它组件
