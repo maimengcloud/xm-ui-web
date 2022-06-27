@@ -28,8 +28,13 @@
 									<i class="el-icon-document"></i>
 									</div>
 									<span>{{scope.row.seqNo}} &nbsp; {{scope.row.menuName}} </span> 
+									<span  
+										:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue'}" 
+									>
+										{{ (scope.row.finishRate != null ? scope.row.finishRate : 0) + "%" }}
+									</span> 
   								</template> 
-							</el-table-column> 
+							</el-table-column>  
 							<template v-if="showSelect!==false && multi!==true">
 							<el-table-column   label="操作"  width="100"  > 
 								<template slot-scope="scope"> 

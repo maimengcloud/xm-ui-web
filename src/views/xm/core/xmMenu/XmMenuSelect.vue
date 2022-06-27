@@ -4,7 +4,7 @@
 			<el-col :span="7">
 				<xm-epic-features class="padding-right" :xm-product="xmProduct"  @row-click="onEpicFeaturesRowClick" :show-select="false" @product-select="onProductSelected"></xm-epic-features>
 			</el-col>
-			<el-col :span="17" ref="table">
+			<el-col :span="17" >
 				<el-row v-if="filters.product && filters.product.id">    
 						<xm-iteration-select style="display:inline;"  v-if="!xmIteration" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onIterationSelected" ref="xmIterationMng" :product-id="filters.product?filters.product.id:null"  @clear="onIterationClearSelect"></xm-iteration-select>
 						 
@@ -138,7 +138,7 @@
 					
 					<el-button  style="float:right;" type="primary" v-if="multi"  v-on:click="multiSelectedConfirm">确认</el-button>
 				</el-row>   
-				<el-row v-if="filters.product && filters.product.id">
+				<el-row v-if="filters.product && filters.product.id" ref="table">
 					<el-table  element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"  class="menu-table"   :height="maxTableHeight" :data="xmMenusTreeData"   row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column v-if="multi" type="selection" width="50"></el-table-column>  
 						
@@ -156,6 +156,11 @@
 								</div>
 								<span class="vlink" @click="toMenu(scope.row)">{{scope.row.seqNo}}&nbsp;
 								{{scope.row.menuName}}</span> 
+								<span  
+									:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue'}" 
+								>
+									{{ (scope.row.finishRate != null ? scope.row.finishRate : 0) + "%" }}
+								</span> 
 							</template>
 						</el-table-column>  
 						<el-table-column prop="iterationName" label="迭代" min-width="140" >   </el-table-column>
@@ -170,6 +175,7 @@
 					<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 					
 				</el-row>
+				<el-row v-else ref="table"></el-row>
 			</el-col>  
 			
 			<el-drawer title="选择员工" :visible.sync="selectFiltersMmUserVisible" size="60%" append-to-body>

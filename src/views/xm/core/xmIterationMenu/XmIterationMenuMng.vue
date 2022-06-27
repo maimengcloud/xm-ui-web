@@ -1,53 +1,69 @@
 <template>
 	<section>
+		<el-row  class="padding-top">
+			<el-col :span="8">
+				<xm-epic-features-select :xm-product="{id:xmIteration.productId,name:''}" :show-select="false" @row-click="onEpicFeatureSelect"></xm-epic-features-select>
+			</el-col>
+			<el-col :span="16">
+				<el-row>
+					<el-col :span="24">
+						<el-row class="padding-left">
+							<el-input v-model="filters.key" style="width: 60%;" placeholder="模糊查询" clearable>
+							</el-input>
+							<el-button v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterationMenus" icon="el-icon-search"></el-button>
 
-		<el-row class="padding-top">
-			<el-col :span="24">
-				<el-row class="padding-left">
-					<el-input v-model="filters.key" style="width: 60%;" placeholder="模糊查询">
-					</el-input>
-					<el-button v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterationMenus" icon="el-icon-search"></el-button>
+							<span style="float:right;">
+								<el-button type="danger" @click="batchDel" icon="el-icon-delete">批量移出</el-button>
+								<el-button type="primary" @click="showAdd" icon="el-icon-plus">选择故事</el-button>
+							</span>
 
-					<span style="float:right;">
- 						<el-button type="danger" @click="batchDel" icon="el-icon-delete">批量移出</el-button>
- 						<el-button type="primary" @click="showAdd" icon="el-icon-plus">选择故事</el-button>
-					</span>
+						</el-row>
+						<el-row class="page-main padding-top padding-left">
+							<!--列表 XmIterationMenu 迭代定义-->
+							<el-table ref="table" :height="maxTableHeight" :data="xmIterationMenusTreeData"  row-key="menuId" :tree-props="{children: 'children'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+								<el-table-column  type="selection" width="45"></el-table-column>
 
+								<el-table-column prop="menuName" label="已加入迭代的用户故事" min-width="140" >
+									<template slot-scope="scope">
+
+									<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
+										<i class="el-icon-s-promotion"></i>
+										</div>
+										<div v-if="scope.row.dclass=='2'" class="icon" style="background-color:  rgb(0, 153, 51);">
+										<i class="el-icon-s-flag"></i>
+										</div>
+										<div v-if="scope.row.dclass=='3'" class="icon" style="background-color:  rgb(79, 140, 255);">
+										<i class="el-icon-document"></i>
+									</div>
+										<span class="vlink" type="primary">{{scope.row.seqNo}}
+										&nbsp;&nbsp;{{scope.row.menuName}}
+										</span>
+									</template>
+								</el-table-column> 
+								<el-table-column prop="finishRate" label="进度" width="100" show-overflow-tooltip sortable>
+									<template slot-scope="scope">
+										<span  
+											:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue'}" 
+										>
+											{{ (scope.row.finishRate != null ? scope.row.finishRate : 0) + "%" }}
+										</span>  
+									</template>
+								</el-table-column>
+								<el-table-column label="操作" width="100" fixed="right">
+									<template slot-scope="scope">
+										<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete">移出</el-button>
+									</template>
+								</el-table-column>
+							</el-table>
+							<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+						</el-row>
+					</el-col> 
 				</el-row>
-				<el-row class="page-main padding-top padding-left">
-					<!--列表 XmIterationMenu 迭代定义-->
-					<el-table ref="table" :height="maxTableHeight" :data="xmIterationMenusTreeData"  row-key="menuId" :tree-props="{children: 'children'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-						<el-table-column  type="selection" width="45"></el-table-column>
-
-						<el-table-column prop="menuName" label="已加入迭代的用户故事" min-width="140" >
-							<template slot-scope="scope">
-
-							<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
-								<i class="el-icon-s-promotion"></i>
-								</div>
-								<div v-if="scope.row.dclass=='2'" class="icon" style="background-color:  rgb(0, 153, 51);">
-								<i class="el-icon-s-flag"></i>
-								</div>
-								<div v-if="scope.row.dclass=='3'" class="icon" style="background-color:  rgb(79, 140, 255);">
-								<i class="el-icon-document"></i>
-							</div>
-								<span class="vlink" type="primary">{{scope.row.seqNo}}
-								&nbsp;&nbsp;{{scope.row.menuName}}
-								</span>
-							</template>
-						</el-table-column>
-						<el-table-column label="操作" width="100" fixed="right">
-							<template slot-scope="scope">
-								<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete">移出</el-button>
-							</template>
-						</el-table-column>
-					</el-table>
-					<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
-				</el-row>
-			</el-col> 
-  		</el-row>
-		  <el-dialog :visible.sync="menuVisible" width="80%" top="20" append-to-body title="选择用户故事加入迭代">
-			  <xm-menu-select ref="menusSelect" iterationFilterType="not-join-curr-iteration" checkScope="3" :xm-product="xmIteration?{id:xmIteration.productId}:null" :xm-iteration="xmIteration" :visible="menuVisible" :is-select-menu="true" :multi="true"   @menus-selected="onSelectedMenus" ></xm-menu-select>
+			</el-col>
+		</el-row>
+		
+		  <el-dialog :visible.sync="menuVisible" width="80%" top="20px" append-to-body title="选择用户故事加入迭代">
+			  <xm-menu-select ref="menusSelect" style="margin-top:-30px;" iterationFilterType="not-join-curr-iteration" checkScope="3" :xm-product="xmIteration?{id:xmIteration.productId}:null" :xm-iteration="xmIteration" :visible="menuVisible" :is-select-menu="true" :multi="true"   @menus-selected="onSelectedMenus" ></xm-menu-select>
 		  </el-dialog>
 	</section>
 </template>
@@ -61,7 +77,7 @@
 	import  XmIterationMng from '@/views/xm/core/components/XmIterationSelect';//修改界面
 	import { mapGetters } from 'vuex'
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
-
+	import XmEpicFeaturesSelect from '../xmMenu/XmEpicFeaturesSelect'
 
 	export default {
 		props:['xmIteration'],
@@ -84,7 +100,8 @@
 		data() {
 			return {
 				filters: {
-					key: ''
+					key: '',
+					pmenuId:'',
 				},
 				xmIterationMenus: [],//查询结果
 				pageInfo:{//分页数据
@@ -121,6 +138,15 @@
 			}
 		},//end data
 		methods: {
+			onEpicFeatureSelect(parentMenu){
+				if(parentMenu && parentMenu.menuId){
+					this.filters.pmenuId=parentMenu.menuId
+				}else{
+					this.filters.pmenuId=''
+				}
+				this.searchXmIterationMenus();
+				
+			},
 			handleSizeChange(pageSize) {
 				this.pageInfo.pageSize=pageSize;
 				this.getXmIterationMenus();
@@ -170,6 +196,9 @@
 				}else{
 					this.$notify({position:'bottom-left',showClose:true,message: "请先在左边选择迭代", type: 'success' });
 					return;
+				}
+				if(this.filters.pmenuId){
+					params.pmenuId=this.filters.pmenuId
 				}
 				this.load.list = true;
 				listXmIterationMenu(params).then((res) => {
@@ -286,6 +315,7 @@
 		components: {
 			XmIterationMng,
 			xmMenuSelect,
+			XmEpicFeaturesSelect,
 		    //在下面添加其它组件
 		},
 		mounted() {
