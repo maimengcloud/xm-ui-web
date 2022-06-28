@@ -1,12 +1,14 @@
 <template>
-  <section>
-    <el-row :style="{overflowX: 'hidden',height:maxTableHeight+'px'}" ref="table">
+  <section class="page-container padding">
+    <el-row class="page-main" :style="{overflowX:'hidden',height:maxTableHeight+'px'}" ref="pageMainRef">
       <el-row style="margin-bottom:10px">
         <el-card class="box-card" style="padding:0px ;height:100px">
           <div>
-            <el-row style="padding:10px">
-              <el-steps :active="calcIterationCurrStep" align-center finish-status="success">
-                <el-step :title="item.name" v-for="(item,index) in dicts['iterationStatus']" :key="index"></el-step> 
+            <el-row style="padding:10px"> 
+              <el-steps :active="calcXmIterationPstatusStep" align-center finish-status="success">
+                <el-step  v-for="(i,index) in dicts['iterationStatus']" :title="i.name" :key="index" >
+                   
+                </el-step> 
               </el-steps>
             </el-row>
           </div>
@@ -20,7 +22,7 @@
               </div>
               <el-row style="margin-bottom:18px">
                 <el-row>
-                  <span>负责人</span> <span v-text="this.xmIteration.adminUsername"></span>
+                  <span>迭代负责人</span><span v-text="this.xmIteration.pmUsername"></span>
                 </el-row> 
               </el-row>
               <el-row style="margin-bottom:18px">
@@ -31,7 +33,7 @@
                     </div>
                     <div class="info">
                       <div v-text="this.xmIteration.taskCnt"></div>
-                      <div class="title">总任务量</div>
+                      <div class="title">任务总数</div>
                     </div>
                   </div>
                 </el-col>
@@ -53,7 +55,7 @@
                       <i class="el-icon-check"></i>
                     </div>
                     <div class="info">
-                      <div v-text="this.xmIteration.taskCnt-notStart" >
+                      <div v-text="this.xmIteration.taskCnt-this.notStart" >
                       </div>
                       <div class="title">已完成</div>
                     </div>
@@ -66,7 +68,7 @@
                     <i class="el-icon-date"></i>
                   </div>
                   <div class="info">
-                    <div v-text="iterationStartTime+'~'+iterationEndTime">
+                    <div v-text="productStartTime+'~'+productEndTime">
                     </div>
                     <div class="title">迭代计划周期</div>
                   </div>
@@ -81,17 +83,7 @@
                     <div class="title"> 需求数： {{this.xmIteration.menuCnt}}</div>
                   </div>
                 </div>
-              </el-row>
-              <el-row style="margin-bottom:18px">
-                <div class="item">
-                  <div class="icon2" style="background-color:  rgb(204, 204, 204);">
-                    <i class="el-icon-refresh"></i>
-                  </div>
-                  <div class="info">
-                    <div class="title"> 产品数： {{(this.xmIteration.productCnt)}} </div>
-                  </div>
-                </div>
-              </el-row>
+              </el-row> 
               <el-row style="margin-bottom:18px">
                 <div class="item">
                   <div class="icon2" style="background-color:  rgb(204, 204, 204);">
@@ -99,8 +91,8 @@
                   </div>
                   <div>
                     <div class="progress-item">
-                      <el-progress :percentage="taskProgress"></el-progress>
-                      <div class="title">任务进度</div>
+                      <el-progress  :percentage="taskProgress"></el-progress>
+                      <div class="title" style="width: 100%">任务进度</div>
                     </div>
                   </div>
                 </div>
@@ -130,92 +122,91 @@
         </el-row>
       <el-row :gutter="10" style="margin-bottom:10px">
         <el-col :span="8" >
-            <el-card class="box-card" style="padding:0px ;height:425px">
-              <div slot="header" class="clearfix">
-                <span>迭代工时</span>
-              </div>
-              <div>
-                <el-row >
-                  <div class="item">
-                    <el-col :span="8">
-                      <div>
-                        <div style="text-align:center;">
-                          <span style="font-size:24px;" v-text="this.xmIteration.estimateWorkload"></span>
-                          <span style="font-size:5px;">h</span>
-                        </div>
-                        <div style="text-align:center;font-size:5px;">预估工时</div>
-                      </div>
-                    </el-col>
-                    <el-col :span="8">
-                      <div>
-                        <div style="text-align:center;">
-                          <span style="font-size:24px;" v-text="this.xmIteration.actWorkload"></span>
-                          <span style="font-size:5px;">h</span>
-                        </div>
-                        <div style="text-align:center;font-size:5px;">登记工时</div>
-                      </div>
-                    </el-col>
-                    <el-col :span="8">
-                      <div>
-                        <div style="text-align:center;">
-                          <span style="font-size:24px;" v-text="workloadProgress"></span>
-                          <span style="font-size:5px;">%</span>
-                        </div>
-                        <div style="text-align:center;font-size:5px;">工时进度</div>
-                      </div>
-                    </el-col>
-                  </div>
-                </el-row>
-                <el-row  >
-                  <div class="item">
-                    <el-col :span="8">
-                      <div>
-                        <div style="text-align:center;">
-                          <span style="font-size:24px;" v-text="remainWorkload"></span>
-                          <span style="font-size:5px;">h</span>
-                        </div>
-                        <div style="text-align:center;font-size:5px;">剩余工时</div>
-                      </div>
-                    </el-col>
-                    <el-col :span="8">
-                      <div>
-                        <div style="text-align:center;">
-                          <span style="font-size:24px;" v-text="deviation"></span>
-                          <span style="font-size:5px;">h</span>
-                        </div>
-                        <div style="text-align:center;font-size:5px;">预估偏差</div>
-                      </div>
-                    </el-col>
-                    <el-col :span="8">
-                      <div>
-                        <div style="text-align:center;">
-                          <span style="font-size:24px;" v-text="deviationRate"></span>
-                          <span style="font-size:5px;">%</span>
-                        </div>
-                        <div style="text-align:center;font-size:5px;">预估偏差率</div>
-                      </div>
-                    </el-col>
-                  </div>
-                </el-row>
-                <el-row>
-                  <span style="margin-left:20px;">项目预计进度</span>
-                  <el-progress style="width: 90%;margin-left:20px;margin-top: 10px;margin-bottom: 20px;"   :stroke-width="14" :percentage="planProgress"></el-progress>
-                </el-row>
-                <el-row>
-                  <span style="margin-left:20px;">项目实际进度</span>
-                  <el-progress style="width: 90%;margin-left:20px;margin-top: 10px;" color="#47CBF6"    :stroke-width="14" :percentage="realProgress"></el-progress>
-                </el-row>
-
-              </div>
-            </el-card>
-          </el-col>
-        <el-col :span="8" >
-          <el-card class="box-card" style="padding:0px ;height:425px">
+          <el-card class="box-card" style="height:425px">
             <div slot="header" class="clearfix">
-              <span>迭代相关联产品与项目数</span>
+              <span>迭代工时</span>
             </div>
             <div>
-              <div id="productAndProject" :style="{width: '100%', height: '350px'}"></div>
+              <el-row >
+                <div class="item">
+                  <el-col :span="8">
+                    <div>
+                      <div style="text-align:center;">
+                        <span style="font-size:24px;" v-text="this.xmIterationCpd.estimateWorkload"></span>
+                        <span style="font-size:5px;">h</span>
+                      </div>
+                      <div style="text-align:center;font-size:5px;">预估工时</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="8">
+                    <div>
+                      <div style="text-align:center;">
+                        <span style="font-size:24px;" v-text="this.xmIteration.actWorkload"></span>
+                        <span style="font-size:5px;">h</span>
+                      </div>
+                      <div style="text-align:center;font-size:5px;">登记工时</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="8">
+                    <div>
+                      <div style="text-align:center;">
+                        <span style="font-size:24px;" v-text="workloadProgress"></span>
+                        <span style="font-size:5px;">%</span>
+                      </div>
+                      <div style="text-align:center;font-size:5px;">工时进度</div>
+                    </div>
+                  </el-col>
+                </div>
+              </el-row>
+              <el-row >
+                <div class="item">
+                  <el-col :span="8">
+                    <div>
+                      <div style="text-align:center;">
+                        <span style="font-size:24px;" v-text="remainWorkload"></span>
+                        <span style="font-size:5px;">h</span>
+                      </div>
+                      <div style="text-align:center;font-size:5px;">剩余工时</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="8">
+                    <div>
+                      <div style="text-align:center;">
+                        <span style="font-size:24px;" v-text="deviation"></span>
+                        <span style="font-size:5px;">h</span>
+                      </div>
+                      <div style="text-align:center;font-size:5px;">预估偏差</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="8">
+                    <div>
+                      <div style="text-align:center;">
+                        <span style="font-size:24px;" v-text="deviationRate"></span>
+                        <span style="font-size:5px;">%</span>
+                      </div>
+                      <div style="text-align:center;font-size:5px;">预估偏差率</div>
+                    </div>
+                  </el-col>
+                </div>
+              </el-row>
+              <el-row>
+                <span style="margin-left:20px;">工时预计进度</span>
+                <el-progress style="width: 90%;margin-left:20px;margin-top: 10px;margin-bottom: 20px;"   :stroke-width="14" :percentage="planProgress"></el-progress>
+              </el-row>
+              <el-row>
+                <span style="margin-left:20px;">工时实际进度</span>
+                <el-progress style="width: 90%;margin-left:20px;margin-top: 10px;" color="#47CBF6" :stroke-width="14" :percentage="realProgress"></el-progress>
+              </el-row>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="8" >
+          <el-card class="box-card" style="height:425px">
+            <div slot="header" class="clearfix">
+              <span>迭代相关联项目与迭代数</span>
+            </div>
+            <div>
+              <div id="projectAndIteration" :style="{width: '100%', height: '350px'}"></div>
             </div>
           </el-card>
         </el-col>
@@ -236,8 +227,9 @@
 
 <script>
 import util from "@/common/js/util"; // 全局公共库
-import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 import { mapGetters } from "vuex";
+
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 
 export default {
   computed: {
@@ -246,37 +238,57 @@ export default {
       return this.xmIteration.taskUnstartCnt+this.xmIteration.taskExecCnt;
     },
     taskProgress: function (){
-      return this.xmIteration.finishRate||0;
+      return this.xmIteration.finishRate?parseInt(this.xmIteration.finishRate):0;
     },
-    iterationStartTime: function (){
-      return this.xmIteration.startTime?this.xmIteration.startTime.substring(0,10):'';
+    productStartTime: function (){
+      if(this.xmIteration.planStartTime){
+        return this.xmIteration.planStartTime.substring(0,10);
+      } else{
+        return '暂无';
+      }
     },
-    iterationEndTime: function (){
-      return this.xmIteration.endTime?this.xmIteration.endTime.substring(0,10):'';
+    productEndTime: function (){
+      if(this.xmIteration.planEndTime){
+        return this.xmIteration.planEndTime.substring(0,10);
+      } else{
+        return '暂无';
+      }
     },
     workloadProgress:function (){
-      if(!this.xmIteration.budgetWorkload || !this.xmIteration.actWorkload){
+      if(this.xmIteration.budgetWorkload>0){
+         return Math.round(this.xmIteration.actWorkload/this.xmIteration.budgetWorkload*100);
+      }else{
         return 0;
       }
-      return Math.round(this.xmIteration.actWorkload/this.xmIteration.budgetWorkload*100);
-    },
-    deviation:function (){ 
-        return this.xmIteration.actWorkload -this.xmIteration.estimateWorkload
-    },
-    deviationRate:function (){
-      if(!this.xmIteration.estimateWorkload){
-        return 0;
-      }
-      return Math.round(this.deviation/this.xmIteration.estimateWorkload*100);
+     
     },
     remainWorkload:function (){
       return this.xmIteration.budgetWorkload - this.xmIteration.actWorkload;
     },
-    planProgress:function (){
-      if(!this.xmIteration.budgetWorkload){
-        return 0;
+    deviation:function (){
+      let now = new Date();
+      let productStartTime = new Date(this.xmIteration.planStartTime);
+      let productEndTime = new Date(this.xmIteration.planEndTime);
+      if(now<=productEndTime){
+        let allDays=productEndTime-productStartTime;
+        return this.xmIteration.budgetWorkload - Math.round((now-productStartTime)/allDays*this.xmIteration.budgetWorkload);
+      }else{
+        return this.xmIteration.actWorkload - this.xmIteration.budgetWorkload;
       }
-        return Math.round(this.xmIteration.estimateWorkload/this.xmIteration.budgetWorkload*100)
+    },
+    deviationRate:function (){
+      return Math.round(this.deviation/this.xmIteration.budgetWorkload*100);
+    },
+    planProgress:function (){
+      let now = new Date();
+      let productStartTime = new Date(this.xmIteration.planStartTime);
+      let productEndTime = new Date(this.xmIteration.planEndTime);
+      if(now<=productEndTime){
+        let allDays=productEndTime-productStartTime;
+        return Math.round((now-productStartTime)/allDays*100)
+      }else{
+        return 100;
+      }
     },
     realProgress:function (){
       if(this.xmIteration.actWorkload < this.xmIteration.budgetWorkload){
@@ -285,39 +297,43 @@ export default {
         return 100;
       }
     },
-    xmIterationStateCpd(){
-      return this.xmIteration
+    xmIterationCpd(){
+      return this.xmIteration;
     },
-    calcIterationCurrStep(){
-				var istatus= this.dicts.iterationStatus
-				if(!istatus){
-					return 1;
+    calcXmIterationPstatusStep(){
+				if(this.dicts['iterationStatus']){
+					var index=this.dicts['iterationStatus'].findIndex(i=>{
+						if(i.id==this.xmIterationCpd.pstatus){
+							return true;
+						}else{
+							return false;
+						}
+					})
+					return index+1;
 				}else{
-					var status=istatus.findIndex(i=>this.xmIteration.iphase==i.id)
-					if(status>=0){
-						return status+1;
-					}else{
-						return 1;
-					}
+					return 0;
 				}
-			} 
+
+    }
   },
 
   props:['xmIteration'],
   watch:{
-    xmIterationStateCpd:function(){
+    xmIterationCpd:function(){
       this.drawAllBar();
       this.drawPieBug();
-      this.drawProductAndProject();
+      this.drawProjectAndIteration();
       this.drawCasePie();
-    }
+    },
   },
   data() {
     return {
       isActive: true,
+      dicts:{
+        iterationStatus:[]
+      },
       maxTableHeight:300,
-      dicts:{},
-      };
+    };
   },
 
   methods:{
@@ -459,8 +475,8 @@ export default {
       // 绘制图表
       bugPieChart.setOption(option);
     },
-    drawProductAndProject() {
-      let productAndProject = this.$echarts.init(document.getElementById("productAndProject"));
+    drawProjectAndIteration() {
+      let projectAndIteration = this.$echarts.init(document.getElementById("projectAndIteration"));
       let option = {
         tooltip: {
           trigger: 'axis',
@@ -471,7 +487,7 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: ['产品数', '项目数']
+          data: ['项目数', '迭代数']
         },
         yAxis: {
           type: 'value'
@@ -484,7 +500,7 @@ export default {
               color:'#000000',
             }
           },
-          data: [this.xmIteration.productCnt, this.xmIteration.projectCnt],
+          data: [this.xmIteration.projectCnt, this.xmIteration.iterationCnt],
           type: 'bar',
           showBackground: true,
           itemStyle: {
@@ -499,7 +515,7 @@ export default {
       };
 
       // 绘制图表
-      productAndProject.setOption(option);
+      projectAndIteration.setOption(option);
     },
     drawCasePie() {
       let casePie = this.$echarts.init(document.getElementById("casePie"));
@@ -571,16 +587,18 @@ export default {
   },
 
   mounted() {
-    
-    initSimpleDicts('all',['iterationStatus'] ).then(res=>{
-      this.dicts=res.data.data;
-    })
-    this.$nextTick(() => { 
-      this.maxTableHeight=util.calcTableMaxHeight(this.$refs.table.$el)
+			
+			initSimpleDicts('all',['iterationStatus'] ).then(res=>{
+				if(res.data.tips.isOk){ 
+					this.dicts['iterationStatus']=res.data.data.iterationStatus   
+				}
+			});
+    this.$nextTick(() => {
+      this.maxTableHeight=util.calcTableMaxHeight(this.$refs.pageMainRef.$el)
     });
     this.drawAllBar();
     this.drawPieBug();
-    this.drawProductAndProject();
+    this.drawProjectAndIteration();
     this.drawCasePie();
   },
 
@@ -637,7 +655,7 @@ export default {
   position: relative;
   .progress-item{
     position:absolute; width:80%;
-  }
+  };
 }
 
 .card-font {
