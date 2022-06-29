@@ -740,7 +740,7 @@
 		
 		mounted() { 
 			this.filters.selProject=this.selProject; 
-			this.filters.execUser=this.userInfo;
+			//this.filters.execUser=this.userInfo;
 			this.$nextTick(() => {
 				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
 				this.getXmTestCaseExecs();

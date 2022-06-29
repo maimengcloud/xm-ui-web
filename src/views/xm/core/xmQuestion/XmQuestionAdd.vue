@@ -9,7 +9,7 @@
 							<el-col :span="8">
 								<el-form-item label="归属项目" prop="projectId">
 									<font v-if="filters.selProject">{{this.filters.selProject?this.filters.selProject.name:''}}</font>
- 									 <xm-project-select ref="xmProjectSelect" v-if="!selProject" @row-click="onPorjectConfirm"></xm-project-select>
+ 									 <xm-project-select ref="xmProjectSelect" v-if="!selProject" @row-click="onPorjectConfirm" :auto-select="false"></xm-project-select>
 								</el-form-item>
 							</el-col>
 							<el-col  :span="8">
@@ -182,7 +182,7 @@
 				 
 			}
 		},
-		props:['xmQuestion','visible',"selProject",'qtype','xmTestCaseExec','xmTestCase','xmProduct'],
+		props:['xmQuestion','visible',"selProject",'qtype','xmTestCase','xmTestCase','xmProduct'],
 		watch: {
 	      'xmQuestion':function( xmQuestion ) {
 		   this.addForm=Object.assign(this.addForm, this.xmQuestion);
@@ -198,7 +198,7 @@
 				  }
 				  
 				   this.addForm.id=sn()
-				   this.initByExec();
+				   this.initByCase();
 
 	      	}
 		  },
@@ -450,18 +450,15 @@
 				this.addForm.projectId=''
 				this.addForm.projectName=''
 			},
-			initByExec(){
-				if(this.xmTestCaseExec){
-					this.addForm.caseExecId=this.xmTestCaseExec.id
-					this.addForm.caseName=this.xmTestCaseExec.caseName
-					this.addForm.caseId=this.xmTestCaseExec.caseId
+			initByCase(){
+				if(this.xmTestCase){ 
+					this.addForm.caseName=this.xmTestCase.caseName
+					this.addForm.caseId=this.xmTestCase.id
 					this.addForm.opStep=this.xmTestCase.testStep
 					this.addForm.expectResult=this.xmTestCase.expectResult
-					this.addForm.menuId=this.xmTestCaseExec.menuId
-					this.addForm.menuName=this.xmTestCaseExec.menuName
-					this.addForm.taskId=this.xmTestCaseExec.taskId
-					this.addForm.taskName=this.xmTestCaseExec.taskName
-					this.addForm.name=this.xmTestCaseExec.caseName
+					this.addForm.menuId=this.xmTestCase.menuId
+					this.addForm.menuName=this.xmTestCase.menuName 
+					this.addForm.name=this.xmTestCase.caseName 
 
 				}
 			}
@@ -482,7 +479,7 @@
 			}
 			this.addForm.qtype=this.qtype
 			this.setDefaultData();
-			this.initByExec();
+			this.initByCase();
 			initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','priority','bugRepRate']).then(res=>{
 				if(res.data.tips.isOk){
 					this.dicts['bugSeverity']=res.data.data.bugSeverity

@@ -16,13 +16,13 @@
 				</el-form-item>
 
 				<el-form-item label="测试步骤" prop="testStep"> 
-							<vue-editor :id="'testStep3'" :branch-id="userInfo.branchId" v-model="addForm.testStep" ref="testStep" key="1"></vue-editor>
+							<vue-editor  v-if="visible" :id="'testStep3'" :branch-id="userInfo.branchId" v-model="addForm.testStep" ref="testStep" key="1"></vue-editor>
 				 
  					 
  				</el-form-item>
 				<el-form-item label="预期结果" prop="expectResult"> 
  				 
-							<vue-editor :id="'expectResult3'" :branch-id="userInfo.branchId" v-model="addForm.expectResult"  ref="expectResult" key="2"></vue-editor>
+							<vue-editor v-if="visible" :id="'expectResult3'" :branch-id="userInfo.branchId" v-model="addForm.expectResult"  ref="expectResult" key="2"></vue-editor>
 					 
  				</el-form-item>
 				<el-form-item>
@@ -34,7 +34,7 @@
 			</el-form>
 
 		<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible" size="60%"    :close-on-click-modal="false">
-			<xm-menu-select :visible="menuVisible" checkScope="3" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
+			<xm-menu-select :xm-product="xmProduct" :visible="menuVisible" checkScope="3" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
 		</el-drawer>
 		</el-row>
 	</section>
@@ -56,7 +56,7 @@
 		      'userInfo','roles'
 		    ])
 		},
-		props:['xmTestCase','visible'],
+		props:['xmTestCase','visible','xmProduct','xmMenu'],
 		watch: {
 	      'xmTestCase':function( xmTestCase ) {
 	        //this.addForm = xmTestCase;
@@ -64,6 +64,18 @@
 	      'visible':function(visible) {
 	      	if(visible==true){
 	      		//从新打开页面时某些数据需要重新加载，可以在这里添加
+				if(this.xmProduct && this.xmProduct.id){
+					this.addForm.productId=this.xmProduct.id
+				}else{
+					this.addForm.productId=''
+				}
+				if(this.xmMenu && this.xmMenu.menuId){
+					this.addForm.menuId=this.xmMenu.menuId
+					this.addForm.menuName=this.xmMenu.menuName
+				}else{
+					this.addForm.menuId=''
+					this.addForm.menuName=''
+				}
 	      	}
 	      }
 	    },
@@ -148,6 +160,18 @@
 			xmMenuSelect,VueEditor
 		},
 		mounted() {
+			if(this.xmProduct && this.xmProduct.id){
+				this.addForm.productId=this.xmProduct.id
+			}else{
+				this.addForm.productId=''
+			}
+			if(this.xmMenu && this.xmMenu.menuId){
+				this.addForm.menuId=this.xmMenu.menuId
+				this.addForm.menuName=this.xmMenu.menuName
+			}else{
+				this.addForm.menuId=''
+				this.addForm.menuName=''
+			}
 			//this.addForm=Object.assign(this.addForm, this.xmTestCase);
 			/**在下面写其它函数***/
 

@@ -145,6 +145,10 @@
 								<el-input-number :disabled="editForm.calcType!=='2'  " style="width:200px;"  v-model="editForm.actWorkload" :precision="2" :step="8" :min="0" placeholder="实际工时(小时)"></el-input-number> &nbsp;h
 							</el-form-item>  
 						</el-tab-pane>
+						
+						<el-tab-pane label="测试案例" name="62">
+							 <xm-test-case-mng  v-if="activateTabPaneName=='62'" :xm-product="{id:editForm.productId,productName:editForm.productName}" :xm-menu="editForm"></xm-test-case-mng>
+						</el-tab-pane>
 						<el-tab-pane label="成本" name="3">
 							<el-form-item label="预估金额" prop="budgetAt">
 								<el-input-number :disabled="editForm.calcType!=='2'  "  style="width:200px;"  v-model="editForm.budgetAt" :precision="2" :step="100" :min="0" placeholder="预算金额"></el-input-number>   元
@@ -209,13 +213,14 @@
 	import {listXmMenuWithState,editXmMenu,editXmMenuSomeFields } from '@/api/xm/core/xmMenu';
 	import { mapGetters } from 'vuex'
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
-import XmMenuOverview from './XmMenuOverview.vue';
-import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
+	import XmMenuOverview from './XmMenuOverview.vue';
+	import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
   	import TagMng from "@/views/mdp/arc/tag/TagMng";
 	import XmSubWorkItem from "@/views/xm/core/xmMenuWorkItem/XmSubWorkItem";
 	import XmRecord from '../xmRecord/XmRecord'  
 	import XmMyDoFocus from '@/views/myWork/my/components/DoFocus';
 	import ArchiveEdit from '@/views/xm/core/wiki/archive/WikiMenuEdit';
+	import XmTestCaseMng from '@/views/xm/core/xmTestCase/XmTestCaseMng';
 
 	export default {
 		computed: {
@@ -523,6 +528,7 @@ import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
 			XmRecord,
 			XmMyDoFocus,
 			ArchiveEdit,
+			XmTestCaseMng,
 		},
 		mounted() {
 

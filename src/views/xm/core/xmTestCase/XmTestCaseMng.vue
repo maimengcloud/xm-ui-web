@@ -3,9 +3,12 @@
 		<el-row> 
 			<div>
 				
-				<xm-product-select style="display:inline;" :auto-select="false" :link-project-id="filters.selProject?filters.selProject.id:null"   @row-click="onProductSelected" @clear="filters.xmProduct=null"></xm-product-select>
+				<xm-product-select v-if="!xmProduct || !xmProduct.id" style="display:inline;" :auto-select="false" :link-project-id="filters.selProject?filters.selProject.id:null"   @row-click="onProductSelected" @clear="filters.product=null"></xm-product-select>
+ 				<xm-iteration-select   style="display:inline;" :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
+ 				<span v-if="!xmMenu||!xmMenu.menuId">
 				<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 选择需求</el-button>
 				<el-tag v-else   closable @close=" clearFiltersMenu(filters.menus[0])">{{filters.menus[0].menuName.substr(0,5)}}等({{filters.menus.length}})个</el-tag>
+				</span>
 				<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
 					<template slot="append"> 
 						<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTestCases" icon="el-icon-search"></el-button>
@@ -17,8 +20,8 @@
 					width="400"
 					trigger="click" > 
 					<el-row>
-						<el-col :span="24" style="padding-top:5px;">
-							<xm-product-select :auto-select="false" :link-project-id="filters.selProject?filters.selProject.id:null"   @row-click="onProductSelected" @clear="filters.xmProduct=null"></xm-product-select>
+						<el-col :span="24" style="padding-top:5px;" v-if="!xmProduct || !xmProduct.id">
+							<xm-product-select :auto-select="false" :link-project-id="filters.selProject?filters.selProject.id:null"   @row-click="onProductSelected" @clear="filters.product=null"></xm-product-select>
 						</el-col> 
 						<el-col :span="24" style="padding-top:5px;" v-if="!selProject" >
 							<xm-project-select :auto-select="false" :link-product-id="filters.product?filters.product.id:null"   @row-click="onPorjectConfirm" @clear="filters.selProject=null"></xm-project-select>
@@ -91,9 +94,9 @@
 					</template>
 				</el-table-column>
 				<el-table-column v-if="!multiSelect" label="操作" width="160" fixed="right">
-					<template scope="scope">
-						<el-button type="primary"  @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"></el-button>
-						<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"></el-button>
+					<template scope="scope">  
+ 						<el-button type="text" @click="showAddBug(scope.row,scope.$index)" icon="el-icon-plus">bug</el-button>
+						<el-button type="text"  @click="showBugs(scope.row,scope.$index)" icon="el-icon-s-data">查bug</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -106,15 +109,23 @@
 	
 			<!--新增 XmTestCase 测试用例界面-->
 			<el-drawer title="新增测试用例" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
-				<xm-test-case-add :xm-test-case="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-test-case-add>
+				<xm-test-case-add :xm-product="filters.product" :xm-menu="xmMenu" :xm-test-case="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-test-case-add>
 			</el-drawer>  
 			<el-drawer title="选中用户" :visible.sync="selectUserForFiltersVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
 				<xm-group-mng v-if="filters.selProject" :sel-project=" filters.selProject " :is-select-single-user="1" @user-confirm="onFiltersUserConfirm"></xm-group-mng>
 			</el-drawer> 
 		</el-row>
 		<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible"    size="60%"   :close-on-click-modal="false">
-			<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
+			<xm-menu-select :xm-product="filters.product" :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
 		</el-drawer> 
+		
+			<el-dialog title="缺陷列表" :visible.sync="bugsVisible"  width="80%" top="20px" append-to-body   :close-on-click-modal="false">
+				  <xm-question-mng v-if="bugsVisible" :xm-test-case="editForm"  :sel-project="filters.selProject" :visible="bugsVisible" @cancel="bugsVisible=false" ></xm-question-mng>
+			</el-dialog> 
+			<!--新增 XmQuestion xm_question界面-->
+			<el-dialog title="新增缺陷" :visible.sync="addBugVisible"   width="80%" top="20px"  append-to-body   :close-on-click-modal="false">
+				<xm-question-add  v-if="addBugVisible"   :xm-test-case="editForm"  :sel-project=" filters.selProject "   :visible="addBugVisible" @cancel="addBugVisible=false"></xm-question-add>
+			</el-dialog> 
 	</section>
 </template>
 
@@ -131,6 +142,9 @@
 
 	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
 	import XmGroupMng from '../xmGroup/XmGroupMng';
+	import XmQuestionMng from '../xmQuestion/XmQuestionMng';
+	import XmQuestionAdd from '../xmQuestion/XmQuestionAdd';
+	import  XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';//修改界面
 	
 	export default { 
 		computed: {
@@ -138,7 +152,25 @@
 		      'userInfo','roles'
 		    ])
 		},
-		props:['multiSelect','selProject'],
+		props:['multiSelect','selProject','xmProduct','xmMenu'],
+		watch:{
+			'xmProduct.id':function(val){
+				if(this.xmProduct && this.xmProduct.id){
+					this.filters.product=this.xmProduct
+				}else{
+					this.filters.product=null
+				}
+				this.searchXmTestCases();
+			},
+			'xmMenu.menuId':function(val){
+				
+				if(this.xmMenu && this.xmMenu.menuId){
+					this.filters.menus=[this.xmMenu]
+				}else{
+					this.filters.menus=[]
+				}
+			}
+		},
 		data() {
 			const beginDate = new Date();
 			const endDate = new Date();
@@ -149,6 +181,7 @@
 					product:null,
 					selProject:null,
 					luser:null,
+					iteration:null,
 				},
 				xmTestCases: [],//查询结果
 				pageInfo:{//分页数据
@@ -187,6 +220,8 @@
 				nextAction:'',
 				dateRanger: [ ],  
 				pickerOptions:  util.getPickerOptions('datarange'),
+				addBugVisible:false,
+				bugsVisible:false,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -254,6 +289,9 @@
 					params.projectId=this.filters.selProject.id
 				} 
 				
+				if(this.filters.iteration){
+					params.iterationId=this.filters.iteration.id
+				} 
 				if(this.filters.key){
 					params.key='%'+this.filters.key+'%'
 				}
@@ -295,14 +333,7 @@
 			}, 
 			//删除xmTestCase
 			handleDel: function (row,index) { 
-				if( !this.roles.some(i=>i.roleid=='testAdmin') && !this.roles.some(i=>i.roleid=='tester') && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
-					this.$notify({position:'bottom-left',showClose: true,message:"只有测试经理、测试组长、测试员可以操作",type:"error"});
-					return ;
-				}
-				if(!this.roles.some(i=>i.roleid=='testAdmin')){
-					this.$notify({position:'bottom-left',showClose:true,message: "只有测试管理员才能删除测试用例", type: 'error' });
-					return;
-				}
+				 
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
 				}).then(() => { 
@@ -321,14 +352,7 @@
 			},
 			//批量删除xmTestCase
 			batchDel: function () {
-				if( !this.roles.some(i=>i.roleid=='testAdmin') && !this.roles.some(i=>i.roleid=='tester') && !this.roles.some(i=>i.roleid=='testTeamAdmin') ){
-					this.$notify({position:'bottom-left',showClose: true,message:"只有测试经理、测试组长、测试员可以操作",type:"error"});
-					return ;
-				}
-				if(!this.roles.some(i=>i.roleid=='testAdmin')){
-					this.$notify({position:'bottom-left',showClose:true,message: "只有测试管理员才能删除测试用例", type: 'error' });
-					return;
-				}
+				 
 				this.$confirm('确认删除选中记录吗？', '提示', {
 					type: 'warning'
 				}).then(() => { 
@@ -429,19 +453,48 @@
 			setFiltersHandlerAsMySelf(){
 				this.filters.luser=this.userInfo; 
 				this.searchXmTestCases();
-			}
+			}, 
+			showBugs(row){
+				this.editForm=row 
+				this.bugsVisible=true; 
+			},
+			showAddBug(row){
+				this.editForm=row 
+				this.addBugVisible=true;
+				 
+      		},
+			
+			onIterationSelected(iteration){
+				this.filters.iteration=iteration 
+				this.searchXmTestCases()
+			},
+			
+			onIterationClear(){
+				this.filters.iteration=null  
+				this.searchXmTestCases()
+			},
 			/**end 自定义函数请在上面加**/
 			
 		},//end methods
 		components: { 
 		    'xm-test-case-add':XmTestCaseAdd,
 			'xm-test-case-edit':XmTestCaseEdit, 
-			xmMenuSelect,XmProductSelect,XmProjectSelect,XmGroupMng
+			xmMenuSelect,XmProductSelect,XmProjectSelect,XmGroupMng,XmQuestionAdd,
+			XmQuestionMng,XmIterationSelect,
 		    //在下面添加其它组件
 		},
 		mounted() { 
 			this.$nextTick(() => {
-				this.filters.luser=this.userInfo; 
+				if(this.xmProduct && this.xmProduct.id){
+					this.filters.product=this.xmProduct
+				}else{
+					this.filters.product=null
+				}
+				if(this.xmMenu && this.xmMenu.menuId){
+					this.filters.menus=[this.xmMenu]
+				}else{
+					this.filters.menus=[]
+				} 
 				this.getXmTestCases(); 
 				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
         	}); 

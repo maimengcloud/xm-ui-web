@@ -20,13 +20,13 @@
 
 				</el-form-item>
 				<el-form-item label="测试步骤" prop="testStep"> 
-							<vue-editor :id="'testStep3'" :branch-id="userInfo.branchId" v-model="editForm.testStep" ref="testStep" key="1"></vue-editor>
+							<vue-editor v-if="visible"  :id="'testStep3'" :branch-id="userInfo.branchId" v-model="editForm.testStep" ref="testStep" key="1"></vue-editor>
 				 
  					 
  				</el-form-item>
 				<el-form-item label="预期结果" prop="expectResult"> 
  				 
-							<vue-editor :id="'expectResult3'" :branch-id="userInfo.branchId" v-model="editForm.expectResult"  ref="expectResult" key="2"></vue-editor>
+							<vue-editor v-if="visible" :id="'expectResult3'" :branch-id="userInfo.branchId" v-model="editForm.expectResult"  ref="expectResult" key="2"></vue-editor>
 					 
  				</el-form-item>
 				<el-form-item>
