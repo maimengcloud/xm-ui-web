@@ -45,6 +45,12 @@
 									</template>
 									<font v-if="editForm.parentTaskid" >{{editForm.parentTaskname?editForm.parentTaskname:editForm.parentTaskid}}</font> 
 									<font v-else>无上级(视为顶级)</font> 
+									
+									<el-button
+										@click="selectParentTaskVisible=true"  
+										title="更换任务的上级，实现任务搬家功能"
+										icon="el-icon-upload2" 
+									> </el-button> 
 								</el-form-item>
 							</el-col> 
 							<el-col :span="8"> 
@@ -268,13 +274,17 @@
 			<tag-mng :tagIds="editForm.tagIds?editForm.tagIds.split(','):[]" :jump="true" @select-confirm="onTagSelected">
 			</tag-mng>
 		</el-drawer>
+		
+		<el-dialog title="选择新的上级计划" append-to-body :visible.sync="selectParentTaskVisible" width="60%" top="20px">
+		<xm-phase-select :sel-project="xmProject"   @select="onSelectedParentTask"></xm-phase-select>
+		</el-dialog>
 	</section>
 </template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询 
-	import {editXmTask,setTaskCreateUser,editXmTaskSomeFields } from '@/api/xm/core/xmTask';
+	import {editXmTask,setTaskCreateUser,editXmTaskSomeFields,batchChangeParentTask } from '@/api/xm/core/xmTask';
 	import { mapGetters } from 'vuex';
  	import {sn} from '@/common/js/sequence';
  	import xmSkillMng from '../xmTaskSkill/XmTaskSkillMng';
@@ -294,6 +304,7 @@
 	import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 	import XmMyDoFocus from '@/views/myWork/my/components/DoFocus';
 	import XmTaskExecuserForTask from '../xmTaskExecuser/XmTaskExecuserForTask.vue';
+	import XmPhaseSelect from "./XmPhaseSelect.vue"; 
 	export default { 
 		name:'xmTaskEdit',
 		computed: {
@@ -382,7 +393,8 @@
 				pickerOptions:  util.getPickerOptions('datarange'),
 				tagSelectVisible:false,
 				subWorkItemNum:0,
-				activateTabPaneName:'2'
+				activateTabPaneName:'2',
+				selectParentTaskVisible:false,
 				 /**end 在上面加自定义属性**/
 			}//end return
 		},//end data
@@ -668,11 +680,38 @@
 					func(params)
 				}
 			},
+			onSelectedParentTask(task){
+				 if(task==null || !task.id){
+					this.$notify({position:'bottom-left',showClose:true,message:"请选择上级计划/任务",type:'warning'})
+					return;
+				}
+
+				var params={taskIds:[this.editForm.id],parentTaskid:task.id}
+				this.$confirm("确认更新任务的上级为【"+task.name+"】吗?", "提示", {
+					type: "warning",
+				}).then(() => {
+					batchChangeParentTask(params).then(res=>{
+					var tips = res.data.tips;
+					if(tips.isOk){ 
+						this.editForm.parentTaskid=task.id
+						this.editForm.parentTaskname=task.name  
+						this.editFormBak=Object.assign({},this.editForm)
+						this.$emit('edit-fields',this.editForm)
+						
+					}
+					this.$notify({
+						showClose: true,
+						message: tips.msg,
+						type: tips.isOk ? "success" : "error",
+					});
+					});
+				})
+			},
 		},//end method
 		components: { 
  			xmSkillMng,
 			skillMng,xmMenuSelect,XmTaskList,XmExecuserMng,XmGroupSelect,XmMenuRichDetail,TagMng,XmSubWorkItem,XmTaskWorkloadRecord,XmMenuEdit,
-			XmRecord,xmQuestionForTask,XmMyDoFocus,XmTaskExecuserForTask
+			XmRecord,xmQuestionForTask,XmMyDoFocus,XmTaskExecuserForTask,XmPhaseSelect
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},
 		mounted() { 
