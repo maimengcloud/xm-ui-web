@@ -82,13 +82,13 @@
 				addFormVisible: false,//新增xmEnvList界面是否显示
 				//新增xmEnvList界面初始化数据
 				addForm: {
-					id:'',name:'',remark:'',ipAddress:'',port:'',branchId:'',accessUserid:'',accessPassword:'',effect:'',accessUrl:'',supplier:'',webIpAddress:'',webPort:'',otherRemark:'',createUserid:'',createUsername:'',createTime:'',envState:'1',startTime:'',endTime:'',feeAmount:'',feeRule:'',readQx:'3',writeQx:'3',projectId:'',projectName:''
+					id:'',name:'',remark:'',ipAddress:'',port:'',branchId:'',accessUserid:'',accessPassword:'',effect:'',accessUrl:'',supplier:'',webIpAddress:'',webPort:'',otherRemark:'',createUserid:'',createUsername:'',createTime:'',envState:'1',startTime:'',endTime:'',feeAmount:'',feeRule:'',readQx:'2',writeQx:'3',projectId:'',projectName:''
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmEnvList界面初始化数据
 				editForm: {
-					id:'',name:'',remark:'',ipAddress:'',port:'',branchId:'',accessUserid:'',accessPassword:'',effect:'',accessUrl:'',supplier:'',webIpAddress:'',webPort:'',otherRemark:'',createUserid:'',createUsername:'',createTime:'',envState:'',startTime:'',endTime:'',feeAmount:'',feeRule:'',readQx:'3',writeQx:'3',projectId:'',projectName:''
+					id:'',name:'',remark:'',ipAddress:'',port:'',branchId:'',accessUserid:'',accessPassword:'',effect:'',accessUrl:'',supplier:'',webIpAddress:'',webPort:'',otherRemark:'',createUserid:'',createUsername:'',createTime:'',envState:'',startTime:'',endTime:'',feeAmount:'',feeRule:'',readQx:'2',writeQx:'3',projectId:'',projectName:''
 				},
 				/**begin 自定义属性请在下面加 请加备注**/
 				
