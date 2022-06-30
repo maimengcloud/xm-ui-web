@@ -182,7 +182,7 @@
 				 
 			}
 		},
-		props:['xmQuestion','visible',"selProject",'qtype','xmTestCase','xmTestCase','xmProduct'],
+		props:['xmQuestion','visible',"selProject",'qtype','xmTestCase','xmProduct'],
 		watch: {
 	      'xmQuestion':function( xmQuestion ) {
 		   this.addForm=Object.assign(this.addForm, this.xmQuestion);

@@ -4,7 +4,7 @@
 			<div>
 				
 				<xm-product-select v-if="!xmProduct || !xmProduct.id" style="display:inline;" :auto-select="false" :link-project-id="filters.selProject?filters.selProject.id:null"   @row-click="onProductSelected" @clear="filters.product=null"></xm-product-select>
- 				<xm-iteration-select   style="display:inline;" :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
+ 				<xm-iteration-select   style="display:inline;" :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="filters.selProject?filters.selProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
  				<span v-if="!xmMenu||!xmMenu.menuId">
 				<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 选择需求</el-button>
 				<el-tag v-else   closable @close=" clearFiltersMenu(filters.menus[0])">{{filters.menus[0].menuName.substr(0,5)}}等({{filters.menus.length}})个</el-tag>
@@ -76,7 +76,7 @@
 				<el-table-column sortable type="index" width="45"></el-table-column>
 				<el-table-column prop="caseName" label="标题" min-width="100" show-overflow-tooltip>
 					<template scope="scope">
-						{{scope.row.id}}&nbsp;&nbsp;<el-link type="primary" @click="showEdit(scope.row)">{{scope.row.caseName}}</el-link>
+						<el-link type="primary" @click="showEdit(scope.row)"> {{scope.row.id}}&nbsp;&nbsp;{{scope.row.caseName}}</el-link>
 					</template>
 				</el-table-column>
  				<el-table-column prop="caseRemark" label="备注" min-width="80" show-overflow-tooltip></el-table-column> 
@@ -119,7 +119,7 @@
 			<xm-menu-select :xm-product="filters.product" :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
 		</el-drawer> 
 		
-			<el-dialog title="缺陷列表" :visible.sync="bugsVisible"  width="80%" top="20px" append-to-body   :close-on-click-modal="false">
+			<el-dialog title="缺陷列表" :visible.sync="bugsVisible"  width="90%" top="20px" append-to-body   :close-on-click-modal="false">
 				  <xm-question-mng v-if="bugsVisible" :xm-test-case="editForm"  :sel-project="filters.selProject" :visible="bugsVisible" @cancel="bugsVisible=false" ></xm-question-mng>
 			</el-dialog> 
 			<!--新增 XmQuestion xm_question界面-->
