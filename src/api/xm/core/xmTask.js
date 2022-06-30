@@ -1,5 +1,7 @@
 import axios from '@/utils/request'
 
+import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
+
 import config from '@/common/config'
 
 let base = config.getCoreBasePath();
@@ -74,6 +76,19 @@ export const getXmTaskAttDist = params => { return axios.get(`${base}/xm/core/xm
 export const getXmTaskAgeDist = params => { return axios.get(`${base}/xm/core/xmTask/getXmTaskAgeDist`, { params: params }); };
 export const getXmTaskSort = params => { return axios.get(`${base}/xm/core/xmTask/getXmTaskSort`, { params: params }); };
 
+//任务类型字典taskState,交易模式字典tranMode,能力要求字典capaLvl,保障要求字典supRequire,会员权益等级memInterestLvl
+
+/**-------------------------前端mng|add|edit界面公共函数---------------请写在下面----------------------------------------------- */
+//初始化页面上的字典
+export const initDicts = (that) => {
+    //任务类型字典taskState,交易模式字典tranMode,能力要求字典capaLvl,保障要求字典supRequire,会员权益等级memInterestLvl
+    var itemCodes=['planType','taskType','priority','xmTaskSettleSchemel','taskState','bidStep','tranMode','capaLvl','supRequire','memInterestLvl'];//在此添加要加载的字典 如['sex','grade','lvl']
+    if(itemCodes.length>0){
+       initSimpleDicts('all',itemCodes).then(res=>{
+           Object.assign(that.dicts,res.data.data)
+       });
+    }
+   };
 
 
 

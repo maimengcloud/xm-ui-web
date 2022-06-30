@@ -207,6 +207,9 @@
 						</el-form-item>
 					</el-tab-pane>
 					<el-tab-pane label="众包、互联网访问" name="8" v-if="editForm.ntype!='1'">
+						<el-steps :active="calcTaskStep" align-center simple v-if="editForm.crowd==='1'">
+							<el-step v-for="(item,index) in dicts.bidStep" :title="item.name" :description="item.name" :key="index"></el-step> 
+						</el-steps> 
 					 	<el-form-item> 
 							 <el-checkbox v-model="editForm.taskOut" true-label="1" false-label="0" id="taskOut" @change="editXmTaskSomeFields(editForm,'taskOut',$event)">外购</el-checkbox>   
  						 
@@ -221,15 +224,45 @@
  							<el-input type="number" style="width:150px;"    v-model="editForm.shareFee" :precision="2" :step="100" :min="0" placeholder="分享赚佣金" @change="editXmTaskSomeFields(editForm,'shareFee',$event)"></el-input  >   元
 							 <font color="blue">开通分享赚后起效，佣金从任务预算中扣除，如果未发生分享佣金，则不扣除。一般建议为任务佣金的1%-5%</font>
 						</el-form-item>
-						<el-steps :active="calcTaskStep" align-center simple>
-							<el-step title="发布" description="任务创建成功后即发布"></el-step>
-							<el-step title="竞标" description="候选人参与竞标，或者由责任人主动设置候选人"></el-step>
-							<el-step title="执行" description="候选人中标后，成为执行人，执行任务"></el-step>
-							<el-step title="验收" description="任务完成后提交验收，验收通过，即可进行结算"></el-step>
-							<el-step title="结算" description="提交结算申请审批流程，审批过程自动根据审批结果进行结算"></el-step>
-							<el-step title="企业付款" description="结算流程审批通过，自动付款到个人钱包"></el-step>
-							<el-step title="提现" description="企业付款完成后，个人对钱包中余额进行提现"></el-step>
-						</el-steps> 
+						
+						<el-form-item label="推广"  v-if="editForm.crowd==='1'">
+ 							<el-checkbox v-model="editForm.hot" true-label="1" false-label="0" id="hot" @change="editXmTaskSomeFields(editForm,'hot',$event)">热门</el-checkbox>  
+ 							<el-checkbox v-model="editForm.top" true-label="1" false-label="0" id="top" @change="editXmTaskSomeFields(editForm,'top',$event)">置顶</el-checkbox>  
+ 							<el-checkbox v-model="editForm.urgent" true-label="1" false-label="0" id="urgent" @change="editXmTaskSomeFields(editForm,'urgent',$event)">加急</el-checkbox>  
+ 							<el-checkbox v-model="editForm.crmSup" true-label="1" false-label="0" id="crmSup" @change="editXmTaskSomeFields(editForm,'crmSup',$event)">客服包办</el-checkbox>  
+						</el-form-item> 
+						<el-row>
+							<el-col :span="12"> 
+								<el-form-item label="交易模式" prop="tranMode"  v-if="editForm.crowd==='1'"> 
+									<el-select v-model="editForm.tranMode" @change="editXmTaskSomeFields(editForm,'tranMode',$event)">
+										<el-option v-for="(item,index) in dicts['tranMode']" :key="index" :value="item.id" :label="item.name"></el-option>
+									</el-select>
+								</el-form-item> 
+							</el-col>
+							<el-col :span="12"> 
+								<el-form-item label="最低能力等级" prop="capaLvls"  v-if="editForm.crowd==='1'"> 
+									<el-select v-model="editForm.capaLvls" @change="editXmTaskSomeFields(editForm,'capaLvls',$event)">
+										<el-option v-for="(item,index) in dicts['capaLvl']" :key="index" :value="item.id" :label="item.name"></el-option>
+									</el-select>
+								</el-form-item> 
+							</el-col>
+						</el-row>
+						<el-row>
+							<el-col :span="12"> 
+								<el-form-item label="服务保障" prop="supRequires"  v-if="editForm.crowd==='1'"> 
+									<el-select v-model="supRequires" @change="editXmTaskSomeFields(editForm,'supRequires',$event)" multiple>
+										<el-option v-for="(item,index) in dicts['supRequire']" :key="index" :value="item.id" :label="item.name"></el-option>
+									</el-select>
+								</el-form-item> 
+							</el-col>
+							<el-col :span="12"> 
+								<el-form-item label="最低会员等级" prop="interestLvls"  v-if="editForm.crowd==='1'"> 
+									<el-select v-model="editForm.interestLvls" @change="editXmTaskSomeFields(editForm,'interestLvls',$event)">
+										<el-option v-for="(item,index) in dicts['memInterestLvl']" :key="index" :value="item.id" :label="item.name"></el-option>
+									</el-select>
+								</el-form-item> 
+							</el-col>
+						</el-row>
 					</el-tab-pane>
 					<el-tab-pane label="关注" name="91"> 
 						<xm-my-do-focus v-if="activateTabPaneName=='91'" :biz-id="editForm.id" :pbiz-id="editForm.projectId" :biz-name="editForm.name" focus-type="2"></xm-my-do-focus>
@@ -282,9 +315,8 @@
 </template>
 
 <script>
-	import util from '@/common/js/util';//全局公共库
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询 
-	import {editXmTask,setTaskCreateUser,editXmTaskSomeFields,batchChangeParentTask } from '@/api/xm/core/xmTask';
+	import util from '@/common/js/util';//全局公共库 
+	import {initDicts,editXmTask,setTaskCreateUser,editXmTaskSomeFields,batchChangeParentTask } from '@/api/xm/core/xmTask';
 	import { mapGetters } from 'vuex';
  	import {sn} from '@/common/js/sequence';
  	import xmSkillMng from '../xmTaskSkill/XmTaskSkillMng';
@@ -312,22 +344,7 @@
 				'userInfo','roles'
 			]),   
 			calcTaskStep(){
-				if(!this.editForm.executorUserid){
-					return 1
-				}else if(this.editForm.exeUsernames) {
-					
-					if(this.editForm.exeUsernames.indexOf('执行中')>=0){
-						return 3
-					}else if(this.editForm.exeUsernames.indexOf('已验收')>=0){
-						return 4
-					}else if(this.editForm.exeUsernames.indexOf('已验收')>=0){
-						return 4
-					}else if(this.editForm.exeUsernames.indexOf('已验收')>=0){
-						return 4
-					} if(this.editForm.exeUsernames.indexOf('已结算')>=0){
-						return 5
-					}
-				}
+				return this.dicts['bidStep'].findIndex(i=>i.id==this.editForm.bidStep)
 			}
 		},
 		props:['xmTask','visible','xmProject',"parentTask"],
@@ -341,6 +358,7 @@
 					this.editFormBak=Object.assign({},this.editForm)
 					this.setSkills()
 					this.activateTabPaneName="2"
+					this.supRequires=this.editForm.supRequires?this.editForm.supRequires.split(","):[]
 					//从新打开页面时某些数据需要重新加载，可以在这里添加
 				}
 			}, 
@@ -356,6 +374,7 @@
 					planType:[],
 					priority:[],
 					xmTaskSettleSchemel:[],
+					bidStep:[],
 				},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				editFormRules: {
@@ -379,7 +398,7 @@
 					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'3',sortLevel:'0',executorUserid:'',executorUsername:'',
 					preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',taskOut:'0',
 					rate:0,budgetAt:'',budgetWorkload:'',actAt:'',actWorkload:'',taskState:'0',taskClass:'0',toTaskCenter:'0',actStartTime:'',actEndTime:'',taskType:'4',planType:'w2',settleSchemel:'1',ntype:'0',childrenCnt:0,wtype:'',rworkload:0,
-					uniInnerPrice:80,uniOutPrice:100,crowd:'0',oshare:'0',shareFee:0,menuName:''
+					uniInnerPrice:80,uniOutPrice:100,crowd:'0',oshare:'0',shareFee:0,menuName:'',hot:'0',top:'0',urgent:'0',crmSup:'0',bidStep:'0',capaLvls:'',interestLvls:'0',supRequires:'0',tranMode:'0'
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
  				menuVisible:false,
@@ -394,11 +413,13 @@
 				tagSelectVisible:false,
 				subWorkItemNum:0,
 				activateTabPaneName:'2',
-				selectParentTaskVisible:false,
+				selectParentTaskVisible:false, 
+				supRequires:[]
 				 /**end 在上面加自定义属性**/
 			}//end return
 		},//end data
 		methods: {  
+			...util,
 			setSubWorkItemNum(val){
 				this.subWorkItemNum=val;
 			},
@@ -597,6 +618,7 @@
 			},
 			
 			editXmTaskSomeFields(row,fieldName,$event){
+				debugger;
 				var that=this;
 				var func=(params)=>{
 					editXmTaskSomeFields(params).then(res=>{
@@ -653,6 +675,8 @@
 						return;
 					}
 					params.shareFee=$event
+				}else if(fieldName==='supRequires'){
+					params.supRequires=$event.join(",") 
 				}else{
 					params[fieldName]=$event
 				}
@@ -715,12 +739,12 @@
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},
 		mounted() { 
+			
+			initDicts(this);
 			this.editForm=Object.assign(this.editForm, this.xmTask);    
-			this.editFormBak=Object.assign({},this.editForm)
+			this.editFormBak=Object.assign({},this.editForm) 
+			this.supRequires=this.editForm.supRequires?this.editForm.supRequires.split(","):[]
 			this.setSkills();
-			initSimpleDicts('all',['planType','taskType','priority','xmTaskSettleSchemel','taskState']).then(res=>{
-				this.dicts=res.data.data;
-			})
 			/**在下面写其它函数***/
 			
 		}//end mounted
