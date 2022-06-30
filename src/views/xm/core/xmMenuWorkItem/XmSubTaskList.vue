@@ -111,6 +111,15 @@
       </el-dialog>
       <el-dialog title="新增任务" :visible.sync="addFormVisible" append-to-body modal-append-to-body>
           <el-form :model="addForm" :rules="addFormRules" ref="addForm">
+            <el-form-item label="上级计划" prop="parentTaskname"> 
+              {{addForm.parentTaskname?addForm.parentTaskname:'无上级'}} 
+									<el-button
+										@click="selectParentTaskVisible=true"  
+										title="选择上级计划"
+                    type="text"
+										icon="el-icon-upload2" 
+									> 选择上级计划 </el-button> 
+            </el-form-item> 
             <el-form-item label="任务名称" prop="name">
               
             <template slot="label">
@@ -126,6 +135,11 @@
             <el-button @click="addFormVisible = false">取 消</el-button>
             <el-button type="primary" @click="addXmTask">确 定</el-button>
           </div>
+      </el-dialog>
+      
+		
+      <el-dialog title="选择新的上级计划" append-to-body :visible.sync="selectParentTaskVisible" width="60%" top="20px">
+        <xm-phase-select :sel-project="{id:this.linkProjectId,name:''}"   @select="onSelectedParentTask"></xm-phase-select>
       </el-dialog>
  			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="linkProjectId?{id:linkProjectId}:null" :xm-product="parentXmMenu?{id:parentXmMenu.productId}:null" @user-confirm="selectCreateUserConfirm">
 			</xm-group-dialog>  
@@ -144,6 +158,7 @@ import treeTool from "@/common/js/treeTool"; //全局公共库
 	import { mapGetters } from 'vuex'
 import XmTaskWorkloadRecordDialog from '../xmTaskWorkload/XmTaskWorkloadRecordDialog.vue';
 
+	import XmPhaseSelect from "../xmTask/XmPhaseSelect.vue"; 
 export default {
   computed: {
     ...mapGetters(["userInfo", "roles"]), 
@@ -230,7 +245,7 @@ export default {
         xmTaskSettleSchemel: [],
         taskState:[],
       }, //下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
-
+      selectParentTaskVisible:false,
 
 
     }
@@ -298,6 +313,8 @@ export default {
       showAdd() {
         this.addForm.name=this.parentXmMenu.menuName
         this.addFormVisible=true;
+        this.addForm.parentTaskid=''
+        this.addForm.parentTaskname=''
     },
     
     showEdit(row,index){
@@ -480,10 +497,15 @@ export default {
       onWorkloadSubmit(data){
          Object.assign(this.editForm,data)
         this.$emit('workload-submit',data)
+      },
+      onSelectedParentTask(task){
+        this.addForm.parentTaskid=task.id
+        this.addForm.parentTaskname=task.name
+        this.selectParentTaskVisible=false
       }
   }, //end methods
   components: {  
-    XmTaskWorkloadRecordDialog,XmGroupDialog,'xm-task-edit':()=>import('../xmTask/XmTaskEdit'),
+    XmTaskWorkloadRecordDialog,XmGroupDialog,'xm-task-edit':()=>import('../xmTask/XmTaskEdit'),XmPhaseSelect,
   },
   mounted() { 
     this.initData();
