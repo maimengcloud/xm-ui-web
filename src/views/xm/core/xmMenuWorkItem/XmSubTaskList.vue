@@ -228,7 +228,7 @@ export default {
         uniInnerPrice:80,uniOutPrice:100,
       },
       editFormVisible:false, 
-      addForm:{name:''},
+      addForm:{name:'',parentTaskid:'',parentTaskname:''},
       addFormRules: {
 					name: [
 						{ required: true, message: '任务名称不能为空', trigger: 'change' },
