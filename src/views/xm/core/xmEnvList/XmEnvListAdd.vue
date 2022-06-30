@@ -2,7 +2,7 @@
 	<section class="page-container  padding border">
 		<el-row>
 			<!--新增界面 XmEnvList xm_env_list--> 
-			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
+			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm"> 
 				<el-form-item label="内网ip地址" prop="ipAddress">
 					<el-input v-model="addForm.ipAddress" placeholder="内网ip地址" ></el-input>
 				</el-form-item> 
@@ -14,25 +14,16 @@
 				</el-form-item> 
 				<el-form-item label="访问密码" prop="accessPassword">
 					<el-input v-model="addForm.accessPassword" placeholder="访问密码" show-password ></el-input>
-				</el-form-item> 
-				<el-form-item label="作用说明" prop="effect">
-					<el-input v-model="addForm.effect" placeholder="作用说明" ></el-input>
-				</el-form-item> 
+				</el-form-item>  
 				<el-form-item label="访问链接" prop="accessUrl">
 					<el-input v-model="addForm.accessUrl" placeholder="访问链接" ></el-input>
-				</el-form-item> 
-				<el-form-item label="供应商" prop="supplier">
-					<el-input v-model="addForm.supplier" placeholder="供应商" ></el-input>
-				</el-form-item> 
+				</el-form-item>  
 				<el-form-item label="外网ip地址" prop="webIpAddress">
 					<el-input v-model="addForm.webIpAddress" placeholder="外网ip地址" ></el-input>
 				</el-form-item> 
 				<el-form-item label="外网端口" prop="webPort">
 					<el-input type="number" min="0"  v-model="addForm.webPort" placeholder="外网端口" ></el-input>
-				</el-form-item> 
-				<el-form-item label="其它说明" prop="otherRemark">
-					<el-input v-model="addForm.otherRemark" placeholder="其它说明" ></el-input>
-				</el-form-item> 
+				</el-form-item>  
 				
 				<el-form-item label="状态" prop="envState">
 					<el-radio-group v-model="addForm.envState">
@@ -40,21 +31,19 @@
 						<el-radio label="1">已启用</el-radio>
 						<el-radio label="2">已过期</el-radio>
 					</el-radio-group>
+				</el-form-item>  
+				<el-form-item label="浏览权限" prop="readQx"> 
+				    <el-select v-model="addForm.readQx">
+						<el-option v-for="(item,index) in dicts['readQx']" :key="index" :value="item.id" :label="item.name"></el-option>
+					</el-select>
+				</el-form-item>  
+				<el-form-item label="修改权限" prop="writeQx"> 
+				    <el-select v-model="addForm.writeQx">
+						<el-option v-for="(item,index) in dicts['writeQx']" :key="index" :value="item.id" :label="item.name"></el-option>
+					</el-select>
 				</el-form-item> 
-				<el-form-item label="有效日期开始" prop="startTime">
-					<el-date-picker type="date" placeholder="选择日期" v-model="addForm.startTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
-				</el-form-item> 
-				<el-form-item label="有效日期结束" prop="endTime">
-					<el-date-picker type="date" placeholder="选择日期" v-model="addForm.endTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
-				</el-form-item> 
-				<el-form-item label="费用" prop="feeAmount">
-					<el-input type="number" min="0"  v-model="addForm.feeAmount" placeholder="费用"></el-input>
-				</el-form-item> 
-				<el-form-item label="计费规则" prop="feeRule">
-					<el-input v-model="addForm.feeRule" placeholder="计费规则" ></el-input>
-				</el-form-item>
 				<el-form-item label="备注说明" prop="remark">
-					<el-input v-model="addForm.remark" placeholder="备注说明" ></el-input>
+					<el-input type="textarea" rows="4" v-model="addForm.remark" placeholder="备注说明" ></el-input>
 				</el-form-item>
 				<el-form-item label="添加人员姓名" prop="createUsername">
 					{{userInfo.username}}
@@ -73,7 +62,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询 
-	import { addXmEnvList } from '@/api/xm/core/xmEnvList';
+	import { initDicts,addXmEnvList } from '@/api/xm/core/xmEnvList';
 	import { mapGetters } from 'vuex'
 	
 	export default { 
@@ -82,7 +71,7 @@
 		      'userInfo','roles'
 		    ])
 		},
-		props:['xmEnvList','visible'],
+		props:['xmEnvList','visible','xmProject'],
 		watch: {
 	      'xmEnvList':function( xmEnvList ) {
 	        this.addForm = xmEnvList;
@@ -119,7 +108,7 @@
 			};
 
 			return {
-				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				dicts:{readQx:[],wrightQx:[]},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				addFormRules: {
 					startTime: [
@@ -137,7 +126,7 @@
 				},
 				//新增界面数据 xm_env_list
 				addForm: {
-					id:'',remark:'',ipAddress:'',port:'',branchId:'',accessUserid:'',accessPassword:'',effect:'',accessUrl:'',supplier:'',webIpAddress:'',webPort:'',otherRemark:'',createUserid:'',createUsername:'',createTime:'',envState:'',startTime:'',endTime:'',feeAmount:'',feeRule:''
+					id:'',remark:'',ipAddress:'',port:'',branchId:'',accessUserid:'',accessPassword:'',effect:'',accessUrl:'',supplier:'',webIpAddress:'',webPort:'',otherRemark:'',createUserid:'',createUsername:'',createTime:'',envState:'1',startTime:'',endTime:'',feeAmount:'',feeRule:'',readQx:'9',writeQx:'9'
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				
@@ -174,12 +163,12 @@
 						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
 							this.load.add=true
 							let params = Object.assign({}, this.addForm); 
+							params.projectId=this.xmProject.id
 							addXmEnvList(params).then((res) => {
 								this.load.add=false
 								var tips=res.data.tips;
 								if(tips.isOk){
-									this.$refs['addForm'].resetFields();
-									this.$emit('submit');//  @submit="afterAddSubmit"
+ 									this.$emit('submit');//  @submit="afterAddSubmit"
 								}
 								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err  => this.load.add=false);
@@ -210,6 +199,7 @@
 		    //在下面添加其它组件 'xm-env-list-edit':XmEnvListEdit
 		},
 		mounted() {
+			initDicts(this)
 			this.addForm=Object.assign(this.addForm, this.xmEnvList);  
 			/**在下面写其它函数***/
 			

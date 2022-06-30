@@ -1,17 +1,13 @@
 <template>
 	<section>
-		<el-row v-if="!InfoVisible" class="xm-file">
-			<el-menu disable active-text-color="#00abfc"
-			default-active="all"
-			class="el-menu-demo" mode="horizontal">
-			<!-- :default-active="selkey" 
-			@select="changeSelKey"  -->
-				<el-menu-item class="showall" index="all">全部</el-menu-item>
-				<div style="line-height:50px;float:right;margin-right:10px;">
-					<el-input style="width:200px;" v-model="searchFile" placeholder="文档搜索"></el-input>
+		<el-row v-if="!InfoVisible" class="xm-file"> 
+			<el-row class="padding">
+				<el-input style="width:200px;" v-model="searchFile" placeholder="文档搜索"></el-input>
+				<el-button @click="searchXmFiles" type="plian" icon="el-icon-search">查询</el-button>
+				<div style=" float:right; "> 
 					<el-button @click="showAdd" type="plian">新建文档</el-button>
-				</div>
-			</el-menu> 
+				</div> 
+			</el-row>
 			<!--列表 XmFile xm_file-->
 			<el-table ref="table" :height="tableHeight" :data="xmFiles" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="selection" width="40"></el-table-column>
@@ -24,8 +20,8 @@
 							placement="left"
 							trigger="hover"> -->
 							<el-button-group>
-								<el-button size="small" type="primary" @click.stop="showEdit(scope.row,scope.$index)">编辑</el-button>
-								<el-button size="small" type="primary" @click.stop="handleDel(scope.row,scope.$index)">删除</el-button>
+								<el-button size="mini" type="primary" @click.stop="showEdit(scope.row,scope.$index)">编辑</el-button>
+								<el-button size="mini" type="danger" @click.stop="handleDel(scope.row,scope.$index)">删除</el-button>
 							</el-button-group>
 							<!-- <el-button slot="reference" class="see-more" type="text" icon="el-icon-more"></el-button>
 						</el-popover>	 -->
@@ -183,7 +179,7 @@
 					if(tips.isOk){ 
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
-						this.selProject.file = res.data.data;
+						this.xmFiles = res.data.data;
 					}else{
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					} 

@@ -3,34 +3,26 @@
 		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmEnvLists">查询</el-button>
-			<el-button type="primary" @click="showAdd">添加环境清单</el-button>
-			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
+			<span style="float:right;">
+			<el-button type="primary" @click="showAdd" icon="el-icon-plus">添加环境清单</el-button>
+			</span>
 		</el-row>
 		<el-row class="page-main "> 
 			<!--列表 XmEnvList xm_env_list-->
 			<el-table ref="table" :height="maxTableHeight" :data="xmEnvLists" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="selection" width="40"></el-table-column>
-				<el-table-column prop="ipAddress" label="内网ip地址" min-width="80" ></el-table-column>
-				<el-table-column prop="port" label="内网访问端口" min-width="80" ></el-table-column>
-				<el-table-column prop="accessUserid" label="访问用户编号" min-width="80" ></el-table-column>
-				<el-table-column prop="accessPassword" label="访问密码" min-width="80" ></el-table-column>
-				<el-table-column prop="effect" label="作用说明" min-width="80" ></el-table-column>
+				<el-table-column prop="ipAddress" label="内网ip" min-width="80" ></el-table-column>
+				<el-table-column prop="port" label="内网端口" min-width="80" ></el-table-column>
+				<el-table-column prop="accessUserid" label="用户编号" min-width="80" ></el-table-column>
 				<el-table-column prop="accessUrl" label="访问链接" min-width="80" ></el-table-column>
-				<el-table-column prop="supplier" label="供应商" min-width="80" ></el-table-column>
-				<el-table-column prop="webIpAddress" label="外网ip地址" min-width="80" ></el-table-column>
+				<el-table-column prop="webIpAddress" label="外网ip" min-width="80" ></el-table-column>
 				<el-table-column prop="webPort" label="外网端口" min-width="80" ></el-table-column>
 				<el-table-column prop="envState" label="状态" min-width="80" >
 					<template slot-scope="scope">
 						{{envStateList[parseInt(scope.row.envState)]}}
 					</template>
 				</el-table-column>
-				<el-table-column prop="startTime" label="有效日期开始" min-width="80" ></el-table-column>
-				<el-table-column prop="endTime" label="有效日期结束" min-width="80" ></el-table-column>
-				<el-table-column prop="feeAmount" label="费用" min-width="80" ></el-table-column>
-				<el-table-column prop="feeRule" label="计费规则" min-width="80" ></el-table-column>
 				<el-table-column prop="remark" label="备注说明" min-width="80" ></el-table-column>
-				<el-table-column prop="otherRemark" label="其它说明" min-width="80" ></el-table-column>
-				<el-table-column prop="createTime" label="添加时间" min-width="80" ></el-table-column>
 				<el-table-column prop="createUsername" label="添加人姓名" min-width="80" ></el-table-column>
 				<el-table-column label="操作" width="160" fixed="right"  >
 					<template slot-scope="scope">
@@ -48,7 +40,7 @@
 	
 			<!--新增 XmEnvList xm_env_list界面-->
 			<el-drawer title="新增环境清单" :visible.sync="addFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
-				<xm-env-list-add :xm-env-list="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-env-list-add>
+				<xm-env-list-add :xm-project="selProject" :xm-env-list="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-env-list-add>
 			</el-drawer> 
 		</el-row>
 	</section>
@@ -69,6 +61,7 @@
 		      'userInfo','roles'
 		    ])
 		},
+		props:['selProject'],
 		data() {
 			return {
 				filters: {
@@ -90,13 +83,13 @@
 				addFormVisible: false,//新增xmEnvList界面是否显示
 				//新增xmEnvList界面初始化数据
 				addForm: {
-					id:'',remark:'',ipAddress:'',port:'',branchId:'',accessUserid:'',accessPassword:'',effect:'',accessUrl:'',supplier:'',webIpAddress:'',webPort:'',otherRemark:'',createUserid:'',createUsername:'',createTime:'',envState:'',startTime:'',endTime:'',feeAmount:'',feeRule:''
+					id:'',remark:'',ipAddress:'',port:'',branchId:'',accessUserid:'',accessPassword:'',effect:'',accessUrl:'',supplier:'',webIpAddress:'',webPort:'',otherRemark:'',createUserid:'',createUsername:'',createTime:'',envState:'1',startTime:'',endTime:'',feeAmount:'',feeRule:'',readQx:'3',writeQx:'3'
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmEnvList界面初始化数据
 				editForm: {
-					id:'',remark:'',ipAddress:'',port:'',branchId:'',accessUserid:'',accessPassword:'',effect:'',accessUrl:'',supplier:'',webIpAddress:'',webPort:'',otherRemark:'',createUserid:'',createUsername:'',createTime:'',envState:'',startTime:'',endTime:'',feeAmount:'',feeRule:''
+					id:'',remark:'',ipAddress:'',port:'',branchId:'',accessUserid:'',accessPassword:'',effect:'',accessUrl:'',supplier:'',webIpAddress:'',webPort:'',otherRemark:'',createUserid:'',createUsername:'',createTime:'',envState:'',startTime:'',endTime:'',feeAmount:'',feeRule:'',readQx:'3',writeQx:'3'
 				},
 				/**begin 自定义属性请在下面加 请加备注**/
 				
@@ -163,8 +156,9 @@
 				if(this.filters.key!==""){
 					params.fuzzy = '%'+this.filters.key+'%';
 					//params.xxx=this.filters.key
-				}else{
-					//params.xxx=xxxxx
+				} 
+				if(this.selProject && this.selProject.id){
+					params.projectId=this.selProject.id
 				}
 				this.load.list = true;
 				params.branchId = this.userInfo.branchId;

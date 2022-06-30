@@ -14,25 +14,16 @@
 				</el-form-item> 
 				<el-form-item label="访问密码" prop="accessPassword">
 					<el-input v-model="editForm.accessPassword" placeholder="访问密码" show-password ></el-input>
-				</el-form-item> 
-				<el-form-item label="作用说明" prop="effect">
-					<el-input v-model="editForm.effect" placeholder="作用说明" ></el-input>
-				</el-form-item> 
+				</el-form-item>  
 				<el-form-item label="访问链接" prop="accessUrl">
 					<el-input v-model="editForm.accessUrl" placeholder="访问链接" ></el-input>
-				</el-form-item> 
-				<el-form-item label="供应商" prop="supplier">
-					<el-input v-model="editForm.supplier" placeholder="供应商" ></el-input>
-				</el-form-item> 
+				</el-form-item>  
 				<el-form-item label="外网ip地址" prop="webIpAddress">
 					<el-input v-model="editForm.webIpAddress" placeholder="外网ip地址" ></el-input>
 				</el-form-item> 
 				<el-form-item label="外网端口" prop="webPort">
 					<el-input type="number" min="0" v-model="editForm.webPort" placeholder="外网端口" ></el-input>
-				</el-form-item> 
-				<el-form-item label="其它说明" prop="otherRemark">
-					<el-input v-model="editForm.otherRemark" placeholder="其它说明" ></el-input>
-				</el-form-item> 
+				</el-form-item>  
 				
 				<el-form-item label="状态" prop="envState">
 					<el-radio-group v-model="editForm.envState">
@@ -41,23 +32,28 @@
 						<el-radio label="2">已过期</el-radio>
 					</el-radio-group>
 				</el-form-item> 
+				
+				<el-form-item label="浏览权限" prop="readQx"> 
+				    <el-select v-model="editForm.readQx">
+						<el-option v-for="(item,index) in dicts['readQx']" :key="index" :value="item.id" :label="item.name"></el-option>
+					</el-select>
+				</el-form-item>  
+				<el-form-item label="修改权限" prop="writeQx"> 
+				    <el-select v-model="editForm.writeQx">
+						<el-option v-for="(item,index) in dicts['writeQx']" :key="index" :value="item.id" :label="item.name"></el-option>
+					</el-select>
+				</el-form-item> 
 				<el-form-item label="有效日期开始" prop="startTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.startTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
 				</el-form-item> 
 				<el-form-item label="有效日期结束" prop="endTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.endTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
-				</el-form-item> 
-				<el-form-item label="费用" prop="feeAmount">
-					<el-input type="number" min="0" v-model="editForm.feeAmount" placeholder="费用"></el-input>
-				</el-form-item> 
-				<el-form-item label="计费规则" prop="feeRule">
-					<el-input v-model="editForm.feeRule" placeholder="计费规则" ></el-input>
-				</el-form-item>
+				</el-form-item>   
 				<el-form-item label="备注说明" prop="remark">
-					<el-input v-model="editForm.remark" placeholder="备注说明" ></el-input>
+					<el-input type="textarea" rows="4" v-model="editForm.remark" placeholder="备注说明" ></el-input>
 				</el-form-item>
-				<el-form-item label="添加人员姓名" prop="createUsername">
-					{{userInfo.username}}
+				<el-form-item label="创建者姓名" prop="createUsername">
+					{{editForm.createUsername}}
 				</el-form-item> 
 				<el-form-item> 
 					<el-col :span="24" :offset="8"> 
@@ -73,7 +69,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { editXmEnvList } from '@/api/xm/core/xmEnvList';
+	import { initDicts,editXmEnvList } from '@/api/xm/core/xmEnvList';
 	import { mapGetters } from 'vuex'
 	
 	export default { 
@@ -98,7 +94,7 @@
 	    },
 		data() {
 			return {
-				dicts:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				dicts:{readQx:[],wrightQx:[]},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				editFormRules: {
 					id: [
@@ -148,6 +144,7 @@
 		    //在下面添加其它组件 'xm-env-list-edit':XmEnvListEdit
 		},
 		mounted() {
+			initDicts(this),
 			this.editForm=Object.assign(this.editForm, this.xmEnvList);  
 		}
 	}

@@ -216,7 +216,7 @@
 	import xmCost from '../xmProject/XmProjectCost';
 	import xmBudget from '../xmProject/XmProjectBudgetCost';
 	import xmContract from '../xmContract/XmContractMng';
-	import xmEnvList from '../xmProjectEnvList/XmProjectEnvListMng'; 
+	import xmEnvList from '../xmEnvList/XmEnvListMng'; 
 	import xmMenuWithPlan from '../xmMenu/XmMenuWithPlan';
 	import xmProjectStateMng from '../xmProjectState/XmProjectStateMng';
 	import xmTestCaseExecMng from '../xmTestCaseExec/XmTestCaseExecMng';  

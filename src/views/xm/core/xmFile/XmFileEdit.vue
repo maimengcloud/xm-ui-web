@@ -10,7 +10,7 @@
 					<el-input v-model="editForm.name" placeholder="文件名称"></el-input>
 				</el-form-item>
 				<el-form-item label="文件说明" prop="description">
-					<vue-editor :branch-id="userInfo.branchId" v-model="editForm.description"></vue-editor>
+					<vue-editor v-if="visible" :branch-id="userInfo.branchId" v-model="editForm.description"></vue-editor>
 				</el-form-item>
 				<el-form-item label="附件">
 					<upload :archiveId="editForm.id" :branchId="userInfo.branchId"  @on-change="onChange"></upload>
