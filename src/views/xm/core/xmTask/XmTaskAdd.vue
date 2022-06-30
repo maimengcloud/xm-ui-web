@@ -27,13 +27,9 @@
 						
 						<el-row>
 							<el-col :span="12"> 
-								 <el-form-item v-if="addForm.ptype==='0'" label="归属项目" prop="projectId"> 
+								 <el-form-item  label="归属项目" prop="projectId"> 
 									{{addForm.projectName?addForm.projectName:addForm.projectId}}
-								</el-form-item>
-								
-								<el-form-item v-if="addForm.ptype==='1'" label="归属产品" prop="productId">
-									{{addForm.productName?addForm.productName:addForm.productId}}
-								</el-form-item>
+								</el-form-item> 
 							</el-col>
 							<el-col :span="12"> 
 								 <el-form-item label="上级计划" prop="parentTaskname">  
@@ -583,7 +579,10 @@
 					this.addForm.taskOut="0"
 					this.addForm.toTaskCenter="0"
 					this.addForm.crowd="0"
-				} 
+				}else{ 
+					this.addForm.parentTaskid=''
+					this.addForm.parentTaskname='';
+				}
 				if(this.xmProject){
 					this.addForm.projectId=this.xmProject.id
 					this.addForm.projectName=this.xmProject.name

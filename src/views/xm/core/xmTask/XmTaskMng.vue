@@ -221,6 +221,7 @@
           </el-popover> 
           <span style="float:right;"> 
           <el-popover
+            v-if="parentTask&&parentTask.id"
             placement="top-start"
             title="选择任务的方式"
             width="300"
@@ -1433,7 +1434,14 @@ export default {
       this.taskTemplateVisible = true;
     },
     checkCanAdd( parentTask){
-
+      if(!parentTask||!parentTask.id){
+         this.$notify({
+              showClose: true,
+              message: "请先选择上级计划",
+              type: "warning",
+            });
+            return false;
+      }
       if(parentTask && parentTask.id){
         if(parentTask.ntype=='0'){
            this.$notify({
@@ -1475,7 +1483,7 @@ export default {
     }, 
     //显示新增界面 XmTask xm_task
     showAdd: function (ntype) {
-      if(!this.checkCanAdd()){
+      if(!this.checkCanAdd(this.parentTask)){
         return;
       }   
       this.addForm.ntype=ntype;
