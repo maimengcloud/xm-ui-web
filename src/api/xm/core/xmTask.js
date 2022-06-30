@@ -82,7 +82,7 @@ export const getXmTaskSort = params => { return axios.get(`${base}/xm/core/xmTas
 //初始化页面上的字典
 export const initDicts = (that) => {
     //任务类型字典taskState,交易模式字典tranMode,能力要求字典capaLvl,保障要求字典supRequire,会员权益等级memInterestLvl
-    var itemCodes=['planType','taskType','priority','xmTaskSettleSchemel','taskState','bidStep','tranMode','capaLvl','supRequire','memInterestLvl'];//在此添加要加载的字典 如['sex','grade','lvl']
+    var itemCodes=['planType','taskType','priority','xmTaskSettleSchemel','taskState','bidStep','tranMode','capaLvl','supRequire','memInterestLvl','regionType'];//在此添加要加载的字典 如['sex','grade','lvl']
     if(itemCodes.length>0){
        initSimpleDicts('all',itemCodes).then(res=>{
            Object.assign(that.dicts,res.data.data)

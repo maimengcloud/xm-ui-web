@@ -1056,6 +1056,7 @@ export default {
         actStartTime: "",
         actEndTime: "",
         uniInnerPrice:80,uniOutPrice:100,
+        cityId:'',cityName:'',regionType:'0'
       },
 
       editFormVisible: false, //编辑界面是否显示
@@ -1093,6 +1094,7 @@ export default {
         actStartTime: "",
         actEndTime: "",
         uniInnerPrice:80,uniOutPrice:100,
+        cityId:'',cityName:'',regionType:'0'
       },
       /**begin 自定义属性请在下面加 请加备注**/
       taskStateList: ["待领取", "已领取执行中", "已完工", "已结算"],

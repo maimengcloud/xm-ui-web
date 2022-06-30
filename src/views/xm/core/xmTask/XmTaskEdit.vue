@@ -262,6 +262,23 @@
 									</el-select>
 								</el-form-item> 
 							</el-col>
+							
+						</el-row>
+						<el-row>
+							<el-col :span="12"> 
+								<el-form-item label="地区限制" prop="regionType"  v-if="editForm.crowd==='1'"> 
+									<el-select v-model="editForm.regionType" @change="editXmTaskSomeFields(editForm,'regionType',$event)" >
+										<el-option v-for="(item,index) in dicts['regionType']" :key="index" :value="item.id" :label="item.name"></el-option>
+									</el-select>
+								</el-form-item> 
+							</el-col>
+							<el-col :span="12"> 
+								<el-form-item label="城市名称" prop="cityName"  v-if="editForm.crowd==='1'"> 
+									<el-input v-model="editForm.cityName" placeholder="城市名称" @change="editXmTaskSomeFields(editForm,'cityName',$event)"></el-input>   
+
+								</el-form-item> 
+							</el-col>
+							
 						</el-row>
 					</el-tab-pane>
 					<el-tab-pane label="关注" name="91"> 
@@ -398,7 +415,7 @@
 					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'3',sortLevel:'0',executorUserid:'',executorUsername:'',
 					preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',taskOut:'0',
 					rate:0,budgetAt:'',budgetWorkload:'',actAt:'',actWorkload:'',taskState:'0',taskClass:'0',toTaskCenter:'0',actStartTime:'',actEndTime:'',taskType:'4',planType:'w2',settleSchemel:'1',ntype:'0',childrenCnt:0,wtype:'',rworkload:0,
-					uniInnerPrice:80,uniOutPrice:100,crowd:'0',oshare:'0',shareFee:0,menuName:'',hot:'0',top:'0',urgent:'0',crmSup:'0',bidStep:'0',capaLvls:'',interestLvls:'0',supRequires:'0',tranMode:'0'
+					uniInnerPrice:80,uniOutPrice:100,crowd:'0',oshare:'0',shareFee:0,menuName:'',hot:'0',top:'0',urgent:'0',crmSup:'0',bidStep:'0',capaLvls:'',interestLvls:'0',supRequires:'0',tranMode:'0',cityId:'',cityName:'',regionType:'0'
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
  				menuVisible:false,
