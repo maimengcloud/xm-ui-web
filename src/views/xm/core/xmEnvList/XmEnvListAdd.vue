@@ -1,8 +1,18 @@
 <template>
-	<section class="page-container  padding border">
+	<section class="padding">
 		<el-row>
 			<!--新增界面 XmEnvList xm_env_list--> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm"> 
+				<el-form-item label="归属项目" prop="projectName">
+					<el-input v-model="addForm.projectName" placeholder="项目名称" readonly></el-input>
+					 <xm-project-select style="display:inline;" v-if="!xmProject||!xmProject.id" :auto-select="false"   :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" >
+					 	<div slot="title">选择项目</div>
+					 </xm-project-select>
+
+				</el-form-item> 
+				<el-form-item label="名称" prop="name">
+					<el-input v-model="addForm.name" placeholder="名称" ></el-input>
+				</el-form-item> 
 				<el-form-item label="内网ip地址" prop="ipAddress">
 					<el-input v-model="addForm.ipAddress" placeholder="内网ip地址" ></el-input>
 				</el-form-item> 
@@ -63,6 +73,7 @@
 	import util from '@/common/js/util';//全局公共库
 	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询 
 	import { initDicts,addXmEnvList } from '@/api/xm/core/xmEnvList';
+	import XmProjectSelect from "@/views/xm/core/components/XmProjectSelect";
 	import { mapGetters } from 'vuex'
 	
 	export default { 
@@ -71,14 +82,14 @@
 		      'userInfo','roles'
 		    ])
 		},
-		props:['xmEnvList','visible','xmProject'],
+		props:['xmEnvList','visible','xmProject','xmProduct'],
 		watch: {
 	      'xmEnvList':function( xmEnvList ) {
-	        this.addForm = xmEnvList;
+	        Object.assign(this.addForm,xmEnvList)
 	      },
 	      'visible':function(visible) {
 	      	if(visible==true){
-						this.$refs['addForm'].resetFields();
+				this.initData();
 	      		//从新打开页面时某些数据需要重新加载，可以在这里添加
 	      	}
 	      } 
@@ -110,23 +121,17 @@
 			return {
 				dicts:{readQx:[],wrightQx:[]},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
-				addFormRules: {
-					startTime: [
-						{ validator: validateStart, trigger: 'blur' },
-					],
-					endTime: [
-						{ validator: validateEnd, trigger: 'blur' },
-					],
+				addFormRules: { 
 					envState: [
-						{ required: true, message: '状态不能为空', trigger: 'blur' }
+						{ required: true, message: '状态不能为空', trigger: 'change' }
 					],
-					id: [
-						//{ required: true, message: '主键不能为空', trigger: 'blur' }
+					name: [
+						{ required: true, message: '名称不能为空', trigger: 'change' }
 					]
 				},
 				//新增界面数据 xm_env_list
 				addForm: {
-					id:'',remark:'',ipAddress:'',port:'',branchId:'',accessUserid:'',accessPassword:'',effect:'',accessUrl:'',supplier:'',webIpAddress:'',webPort:'',otherRemark:'',createUserid:'',createUsername:'',createTime:'',envState:'1',startTime:'',endTime:'',feeAmount:'',feeRule:'',readQx:'9',writeQx:'9'
+					id:'',name:'',remark:'',ipAddress:'',port:'',branchId:'',accessUserid:'',accessPassword:'',effect:'',accessUrl:'',supplier:'',webIpAddress:'',webPort:'',otherRemark:'',createUserid:'',createUsername:'',createTime:'',envState:'1',startTime:'',endTime:'',feeAmount:'',feeRule:'',readQx:'9',writeQx:'9',projectId:'',projectName:''
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				
@@ -162,8 +167,7 @@
 						
 						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
 							this.load.add=true
-							let params = Object.assign({}, this.addForm); 
-							params.projectId=this.xmProject.id
+							let params = Object.assign({}, this.addForm);  
 							addXmEnvList(params).then((res) => {
 								this.load.add=false
 								var tips=res.data.tips;
@@ -191,16 +195,31 @@
 			isEmpty(val) {
 				return val == "" || val == null || typeof(val) == undefined;
 			},
-
+			onProjectRowClick(project){
+				this.addForm.projectId=project.id
+				this.addForm.projectName=project.name
+			},
+			initData(){
+				if(this.xmProject && this.xmProject.id){
+					this.addForm.projectId=this.xmProject.id
+					this.addForm.projectName=this.xmProject.name
+				}else{
+					this.addForm.projectId=''
+					this.addForm.projectName=''
+				}
+			}
 			/**end 在上面加自定义方法**/
 			
 		},//end method
 		components: {  
+			XmProjectSelect,
 		    //在下面添加其它组件 'xm-env-list-edit':XmEnvListEdit
 		},
 		mounted() {
-			initDicts(this)
 			this.addForm=Object.assign(this.addForm, this.xmEnvList);  
+			this.initData();
+			initDicts(this)
+			
 			/**在下面写其它函数***/
 			
 		}//end mounted

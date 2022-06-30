@@ -1,8 +1,11 @@
 <template>
-	<section class="page-container  padding border">
+	<section class="padding border">
 		<el-row> 
 		<!--编辑界面 XmEnvList xm_env_list--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
+				<el-form-item label="名称" prop="name">
+					<el-input v-model="editForm.name" placeholder="名称" ></el-input>
+				</el-form-item> 
 				<el-form-item label="内网ip地址" prop="ipAddress">
 					<el-input v-model="editForm.ipAddress" placeholder="内网ip地址" ></el-input>
 				</el-form-item> 
@@ -43,12 +46,9 @@
 						<el-option v-for="(item,index) in dicts['writeQx']" :key="index" :value="item.id" :label="item.name"></el-option>
 					</el-select>
 				</el-form-item> 
-				<el-form-item label="有效日期开始" prop="startTime">
-					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.startTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
-				</el-form-item> 
-				<el-form-item label="有效日期结束" prop="endTime">
-					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.endTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
-				</el-form-item>   
+				<el-form-item label="有效日期" prop="startTime,endTime">
+					<date-range type="daterange" placeholder="选择日期" :auto-default="false" v-model="editForm" start-key="startTime" end-key="endTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></date-range>
+				</el-form-item>    
 				<el-form-item label="备注说明" prop="remark">
 					<el-input type="textarea" rows="4" v-model="editForm.remark" placeholder="备注说明" ></el-input>
 				</el-form-item>
@@ -97,13 +97,13 @@
 				dicts:{readQx:[],wrightQx:[]},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				editFormRules: {
-					id: [
-						//{ required: true, message: '主键不能为空', trigger: 'blur' }
+					name: [
+						{ required: true, message: '名称不能为空', trigger: 'change' }
 					]
 				},
 				//编辑界面数据  XmEnvList xm_env_list
 				editForm: {
-					id:'',remark:'',ipAddress:'',port:'',branchId:'',accessUserid:'',accessPassword:'',effect:'',accessUrl:'',supplier:'',webIpAddress:'',webPort:'',otherRemark:'',createUserid:'',createUsername:'',createTime:'',envState:'',startTime:'',endTime:'',feeAmount:'',feeRule:''
+					id:'',name:'',remark:'',ipAddress:'',port:'',branchId:'',accessUserid:'',accessPassword:'',effect:'',accessUrl:'',supplier:'',webIpAddress:'',webPort:'',otherRemark:'',createUserid:'',createUsername:'',createTime:'',envState:'',startTime:'',endTime:'',feeAmount:'',feeRule:''
 				}
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				
