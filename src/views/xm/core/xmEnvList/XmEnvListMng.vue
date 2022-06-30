@@ -23,8 +23,6 @@
 						{{envStateList[parseInt(scope.row.envState)]}}
 					</template>
 				</el-table-column>
-				<el-table-column prop="remark" label="备注说明" min-width="80" ></el-table-column>
-				<el-table-column prop="createUsername" label="添加人姓名" min-width="80" ></el-table-column>
 				<el-table-column label="操作" width="160" fixed="right"  >
 					<template slot-scope="scope">
 						<el-button  @click="showEdit( scope.row,scope.$index)">改</el-button>
