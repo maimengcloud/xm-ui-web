@@ -34,7 +34,7 @@ export const addXmEnvList = params => { return axios.post(`${base}/xm/core/xmEnv
 //初始化页面上的字典
 export const initDicts = (that) => {
     var itemCodes=[];//在此添加要加载的字典 如['sex','grade','lvl']
-    that.dicts['readQx']=[{id:'0',name:'全部可读'},{id:'1',name:'同机构可读'},{id:'2',name:'同项目可读'},{id:'3',name:'创建者的上级可读'},{id:'9',name:'仅自己可读'},]
+    that.dicts['readQx']=[{id:'0',name:'全部可读'},{id:'1',name:'同机构可读'},{id:'2',name:'同项目可读'},{id:'9',name:'仅自己可读'},]
     that.dicts['writeQx']=[{id:'0',name:'全部可写'},{id:'1',name:'同机构可写'},{id:'2',name:'同项目可写'},{id:'3',name:'创建者的上级可写'},{id:'9',name:'仅自己可写'},]
     if(itemCodes.length>0){
        initSimpleDicts('all',itemCodes).then(res=>{

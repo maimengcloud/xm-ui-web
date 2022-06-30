@@ -205,7 +205,8 @@ import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue'
 				pid: 'pid',
 				startDate: 'startTime',
 				endDate: 'endTime',
-				}
+				},
+				menukey:'unFocus',
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
