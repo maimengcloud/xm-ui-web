@@ -19,6 +19,11 @@ const whiteList = ['/login', '/authredirect','/changeEmailStepOne','/changeEmail
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
   var outUrl="";
+  if (whiteList.indexOf(to.path) !== -1) { //在免登录白名单，直接进入
+    next()
+    NProgress.done() //如果当前页面为登录页，则在每个afterEach钩子后都不会触发，因此请手动处理它
+    return;
+  }
   if(to.meta.openTab==true && to.meta.outUrl){
 	outUrl=to.meta.outUrl;
   	if(to.query){
