@@ -303,7 +303,7 @@ export default {
     calcXmIterationPstatusStep(){
 				if(this.dicts['iterationStatus']){
 					var index=this.dicts['iterationStatus'].findIndex(i=>{
-						if(i.id==this.xmIterationCpd.pstatus){
+						if(i.id==this.xmIterationCpd.iphase){
 							return true;
 						}else{
 							return false;
