@@ -334,6 +334,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库 
 	import {initDicts,editXmTask,setTaskCreateUser,editXmTaskSomeFields,batchChangeParentTask } from '@/api/xm/core/xmTask';
+	import {addXmRecordVisit } from '@/api/xm/core/xmRecordVisit';
 	import { mapGetters } from 'vuex';
  	import {sn} from '@/common/js/sequence';
  	import xmSkillMng from '../xmTaskSkill/XmTaskSkillMng';
@@ -375,7 +376,8 @@
 					this.editFormBak=Object.assign({},this.editForm)
 					this.setSkills()
 					this.activateTabPaneName="2"
-					this.supRequires=this.editForm.supRequires?this.editForm.supRequires.split(","):[]
+					this.supRequires=this.editForm.supRequires?this.editForm.supRequires.split(","):[] 
+					this.doAddXmRecordVisit()
 					//从新打开页面时某些数据需要重新加载，可以在这里添加
 				}
 			}, 
@@ -748,6 +750,9 @@
 					});
 				})
 			},
+			doAddXmRecordVisit(){
+				addXmRecordVisit({bizId:this.editForm.id,objType:'2',pbizId:this.editForm.projectId})
+			}
 		},//end method
 		components: { 
  			xmSkillMng,
@@ -762,6 +767,7 @@
 			this.editFormBak=Object.assign({},this.editForm) 
 			this.supRequires=this.editForm.supRequires?this.editForm.supRequires.split(","):[]
 			this.setSkills();
+			this.doAddXmRecordVisit()
 			/**在下面写其它函数***/
 			
 		}//end mounted
