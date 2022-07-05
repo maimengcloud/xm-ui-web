@@ -1,9 +1,13 @@
 <template>
   <div class="m_container">  
+     
     <div class="message_content" v-if="notifyMsgs.length>0" v-loading="load.list" 
       element-loading-text="拼命加载中"
       element-loading-spinner="el-icon-loading"
     >
+       <el-row>
+            <el-button @click="filters.hadRead=''">全部</el-button><el-button @click="filters.hadRead='0'">未读消息</el-button><el-button @click="filters.hadRead='1'">已读信息</el-button><el-button @click="setAllHadRead" v-if="filters.hadRead!='1'">全部标记为已读</el-button>
+      </el-row>
       <div class="message_content_box" v-for="(item, index) in notifyMsgs" :key="index" @click="goToPage(item)">
          <p class="date"> 发送者: <span style="font-size:14px;">{{item.sendUsername}}</span> &nbsp;&nbsp;发送时间： <span style="font-size:14px;">{{item.operTime}}</span> <el-tag :type="item.hadRead=='1'?'primary':'danger'">{{item.hadRead=='1'?'已读':'未读'}}</el-tag> </p> 
         <span class="text">{{item.msg}}</span>
@@ -22,6 +26,10 @@
       element-loading-text="拼命加载中"
       element-loading-spinner="el-icon-loading"
     >
+      
+       <el-row>
+            <el-button @click="filters.hadRead=''">全部</el-button><el-button @click="filters.hadRead='0'">未读消息</el-button><el-button @click="filters.hadRead='1'">已读信息</el-button><el-button @click="setAllHadRead" v-if="filters.hadRead!='1'">全部标记为已读</el-button>
+      </el-row>
       <el-result icon="success"  subTitle="暂时没有消息"> 
       </el-result>
     </div>
@@ -50,6 +58,9 @@ export default {
     return {  
       load:{list:false},
       notifyMsgs:[],
+      filters:{
+        hadRead:'',
+      },
       
       pageInfo:{//分页数据
           total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
@@ -59,6 +70,11 @@ export default {
           orderFields:['oper_time'],//排序列 如 ['sex','student_id']，必须为数据库字段
           orderDirs:['desc']//升序 asc,降序desc 如 性别 升序、学生编号降序 ['asc','desc']
       },
+    }
+  },
+  watch:{
+    'filters.hadRead':function(){
+      this.searchNoticeMsg();
     }
   },
 
@@ -90,6 +106,9 @@ export default {
           }
           params.orderBy= orderBys.join(",")
       }  
+      if(this.filters.hadRead){
+        params.hadRead=this.filters.hadRead
+      }
       params.toUserid=this.userInfo.userid 
       this.load.list=true
       getNoticeMsg(params).then(res=>{
@@ -111,6 +130,18 @@ export default {
         })
       }
       goToPage(this,item);
+    },
+    setAllHadRead(){
+      var ids=this.notifyMsgs.filter(k=>k.hadRead!=='1').map(i=>i.id)
+      if(ids.length<=0){
+        return;
+      }
+      editSomeFieldsNotifyMsg({ids:ids,hadRead:'1'}).then(res=>{ 
+        var tips = res.data.tips
+        this.searchNoticeMsg(); 
+        this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+
+      })
     }
   },
 
