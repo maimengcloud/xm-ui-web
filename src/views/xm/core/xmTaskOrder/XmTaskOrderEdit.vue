@@ -41,8 +41,8 @@
 				<el-form-item label="其它费用" prop="othFee">
 					<el-input v-model="editForm.othFee" placeholder="其它费用" :maxlength="10"></el-input>
 				</el-form-item> 
-				<el-form-item label="原始价格=top_fee+urgent_fee+crm_sup_fee+hot_fee+efunds" prop="originFee">
-					<el-input v-model="editForm.originFee" placeholder="原始价格=top_fee+urgent_fee+crm_sup_fee+hot_fee+efunds" :maxlength="20"></el-input>
+				<el-form-item label="原始价格=top_fee+urgent_fee+crm_sup_fee+hot_fee+efunds+share_fee" prop="originFee">
+					<el-input v-model="editForm.originFee" placeholder="原始价格=top_fee+urgent_fee+crm_sup_fee+hot_fee+efunds+share_fee" :maxlength="20"></el-input>
 				</el-form-item> 
 				<el-form-item label="最终付款金额-客户付款后回填" prop="payAt">
 					<el-input v-model="editForm.payAt" placeholder="最终付款金额-客户付款后回填" :maxlength="20"></el-input>
@@ -137,6 +137,12 @@
 				<el-form-item label="计算时间" prop="calcTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.calcTime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
 				</el-form-item> 
+				<el-form-item label="是否开启分享赚" prop="oshare">
+					<el-input v-model="editForm.oshare" placeholder="是否开启分享赚" :maxlength="1" @change="editSomeFields(editForm,'oshare',$event)"></el-input>
+				</el-form-item> 
+				<el-form-item label="分享赚佣金" prop="shareFee">
+					<el-input v-model="editForm.shareFee" placeholder="分享赚佣金" :maxlength="20"></el-input>
+				</el-form-item> 
 			</el-form>
 		</el-row>
 
@@ -188,7 +194,7 @@
 					]
 				},
 				editForm: {
-					userid:'',branchId:'',ostatus:'',ctime:'',ltime:'',payType:'',payStatus:'',payTime:'',prepayId:'',id:'',finalFee:'',othFee:'',originFee:'',payAt:'',payAuthId:'',payOpenid:'',payUserid:'',payUsername:'',discount:'',topFee:'',topStime:'',topEtime:'',hotFee:'',hotStime:'',hotEtime:'',top:'',hot:'',crmSupFee:'',urgentFee:'',urgent:'',crmSup:'',efunds:'',estate:'',etoPlatTime:'',etoDevTime:'',ebackTime:'',taskId:'',topDays:'',hotDays:'',urgentDays:'',urgentStime:'',urgentEtime:'',calcStatus:'',calcTime:''
+					userid:'',branchId:'',ostatus:'',ctime:'',ltime:'',payType:'',payStatus:'',payTime:'',prepayId:'',id:'',finalFee:'',othFee:'',originFee:'',payAt:'',payAuthId:'',payOpenid:'',payUserid:'',payUsername:'',discount:'',topFee:'',topStime:'',topEtime:'',hotFee:'',hotStime:'',hotEtime:'',top:'',hot:'',crmSupFee:'',urgentFee:'',urgent:'',crmSup:'',efunds:'',estate:'',etoPlatTime:'',etoDevTime:'',ebackTime:'',taskId:'',topDays:'',hotDays:'',urgentDays:'',urgentStime:'',urgentEtime:'',calcStatus:'',calcTime:'',oshare:'',shareFee:''
 				},
                 maxTableHeight:300,
 			}//end return

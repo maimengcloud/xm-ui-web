@@ -75,7 +75,7 @@
 				        <span> {{scope.row.othFee}} </span>
                     </template>
 				</el-table-column>
-				<el-table-column prop="originFee" label="原始价格=top_fee+urgent_fee+crm_sup_fee+hot_fee+efunds" min-width="120" show-overflow-tooltip>
+				<el-table-column prop="originFee" label="原始价格=top_fee+urgent_fee+crm_sup_fee+hot_fee+efunds+share_fee" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
 				        <span> {{scope.row.originFee}} </span>
                     </template>
@@ -235,6 +235,16 @@
 				        <span> {{scope.row.calcTime}} </span>
                     </template>
 				</el-table-column>
+				<el-table-column prop="oshare" label="是否开启分享赚" min-width="120" show-overflow-tooltip>
+				    <template slot-scope="scope">
+				        <span> {{scope.row.oshare}} </span>
+                    </template>
+				</el-table-column>
+				<el-table-column prop="shareFee" label="分享赚佣金" min-width="120" show-overflow-tooltip>
+				    <template slot-scope="scope">
+				        <span> {{scope.row.shareFee}} </span>
+                    </template>
+				</el-table-column>
 				<el-table-column label="操作" width="180" fixed="right">
 				    <template scope="scope">
 				        <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"  plain></el-button>
@@ -305,12 +315,12 @@ export default {
             },//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
             addFormVisible: false,//新增xmTaskOrder界面是否显示
             addForm: {
-                userid:'',branchId:'',ostatus:'',ctime:'',ltime:'',payType:'',payStatus:'',payTime:'',prepayId:'',id:'',finalFee:'',othFee:'',originFee:'',payAt:'',payAuthId:'',payOpenid:'',payUserid:'',payUsername:'',discount:'',topFee:'',topStime:'',topEtime:'',hotFee:'',hotStime:'',hotEtime:'',top:'',hot:'',crmSupFee:'',urgentFee:'',urgent:'',crmSup:'',efunds:'',estate:'',etoPlatTime:'',etoDevTime:'',ebackTime:'',taskId:'',topDays:'',hotDays:'',urgentDays:'',urgentStime:'',urgentEtime:'',calcStatus:'',calcTime:''
+                userid:'',branchId:'',ostatus:'',ctime:'',ltime:'',payType:'',payStatus:'',payTime:'',prepayId:'',id:'',finalFee:'',othFee:'',originFee:'',payAt:'',payAuthId:'',payOpenid:'',payUserid:'',payUsername:'',discount:'',topFee:'',topStime:'',topEtime:'',hotFee:'',hotStime:'',hotEtime:'',top:'',hot:'',crmSupFee:'',urgentFee:'',urgent:'',crmSup:'',efunds:'',estate:'',etoPlatTime:'',etoDevTime:'',ebackTime:'',taskId:'',topDays:'',hotDays:'',urgentDays:'',urgentStime:'',urgentEtime:'',calcStatus:'',calcTime:'',oshare:'',shareFee:''
             },
 
             editFormVisible: false,//编辑界面是否显示
             editForm: {
-                userid:'',branchId:'',ostatus:'',ctime:'',ltime:'',payType:'',payStatus:'',payTime:'',prepayId:'',id:'',finalFee:'',othFee:'',originFee:'',payAt:'',payAuthId:'',payOpenid:'',payUserid:'',payUsername:'',discount:'',topFee:'',topStime:'',topEtime:'',hotFee:'',hotStime:'',hotEtime:'',top:'',hot:'',crmSupFee:'',urgentFee:'',urgent:'',crmSup:'',efunds:'',estate:'',etoPlatTime:'',etoDevTime:'',ebackTime:'',taskId:'',topDays:'',hotDays:'',urgentDays:'',urgentStime:'',urgentEtime:'',calcStatus:'',calcTime:''
+                userid:'',branchId:'',ostatus:'',ctime:'',ltime:'',payType:'',payStatus:'',payTime:'',prepayId:'',id:'',finalFee:'',othFee:'',originFee:'',payAt:'',payAuthId:'',payOpenid:'',payUserid:'',payUsername:'',discount:'',topFee:'',topStime:'',topEtime:'',hotFee:'',hotStime:'',hotEtime:'',top:'',hot:'',crmSupFee:'',urgentFee:'',urgent:'',crmSup:'',efunds:'',estate:'',etoPlatTime:'',etoDevTime:'',ebackTime:'',taskId:'',topDays:'',hotDays:'',urgentDays:'',urgentStime:'',urgentEtime:'',calcStatus:'',calcTime:'',oshare:'',shareFee:''
             },
             maxTableHeight:300,
         }
