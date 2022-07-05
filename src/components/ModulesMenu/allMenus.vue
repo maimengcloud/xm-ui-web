@@ -149,8 +149,15 @@ export default {
 
         goBuy(item) {
             this.visible = false;
-            //前往购买页面
-            this.$router.push({path:'/my/order/index',query:{moduleId:item.id}})
+            if(process.env.CONTEXT=='sys'){
+                //前往购买页面
+                this.$router.push({path:'/my/order/index',query:{moduleId:item.id}})
+            }else{
+                var fullpath=config.getBaseDomainUrl()+"/sys/"+process.env.VERSION+"/#/my/order/index?moduleId="+item.id
+                window.open(fullpath);
+                NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
+            }
+            
         },
 
         //获取所有模块
