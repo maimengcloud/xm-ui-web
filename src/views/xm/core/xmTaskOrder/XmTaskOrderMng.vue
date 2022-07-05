@@ -140,12 +140,12 @@
 				        <span> {{scope.row.hotEtime}} </span>
                     </template>
 				</el-table-column>
-				<el-table-column prop="top" label="是否置顶" min-width="120" show-overflow-tooltip>
+				<el-table-column prop="top" label="是否置顶0否1待付款2已开通3已过期" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
 				        <span> {{scope.row.top}} </span>
                     </template>
 				</el-table-column>
-				<el-table-column prop="hot" label="是否热搜" min-width="120" show-overflow-tooltip>
+				<el-table-column prop="hot" label="是否热搜0否1待付款2已开通3已过期" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
 				        <span> {{scope.row.hot}} </span>
                     </template>
@@ -160,12 +160,12 @@
 				        <span> {{scope.row.urgentFee}} </span>
                     </template>
 				</el-table-column>
-				<el-table-column prop="urgent" label="是否加急" min-width="120" show-overflow-tooltip>
+				<el-table-column prop="urgent" label="是否加急0否1待付款2已开通3已过期" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
 				        <span> {{scope.row.urgent}} </span>
                     </template>
 				</el-table-column>
-				<el-table-column prop="crmSup" label="是否客服包办" min-width="120" show-overflow-tooltip>
+				<el-table-column prop="crmSup" label="是否客服包办0否1待付款2已开通3已过期" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
 				        <span> {{scope.row.crmSup}} </span>
                     </template>
@@ -175,7 +175,7 @@
 				        <span> {{scope.row.efunds}} </span>
                     </template>
 				</el-table-column>
-				<el-table-column prop="estate" label="资金托管状况0-无须托管，1-已托管，2-已付款给服务商，3-已退款" min-width="120" show-overflow-tooltip>
+				<el-table-column prop="estate" label="资金托管状况0-无须托管，1-待付款，2-已托管资金，3-已付款给服务商，4-已退款" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
 				        <span> {{scope.row.estate}} </span>
                     </template>
@@ -235,7 +235,7 @@
 				        <span> {{scope.row.calcTime}} </span>
                     </template>
 				</el-table-column>
-				<el-table-column prop="oshare" label="是否开启分享赚" min-width="120" show-overflow-tooltip>
+				<el-table-column prop="oshare" label="是否开启分享赚0否1待付款2已开通3已过期" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
 				        <span> {{scope.row.oshare}} </span>
                     </template>

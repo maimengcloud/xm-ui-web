@@ -80,11 +80,11 @@
 				<el-form-item label="热搜结束时间" prop="hotEtime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.hotEtime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
 				</el-form-item> 
-				<el-form-item label="是否置顶" prop="top">
-					<el-input v-model="editForm.top" placeholder="是否置顶" :maxlength="1" @change="editSomeFields(editForm,'top',$event)"></el-input>
+				<el-form-item label="是否置顶0否1待付款2已开通3已过期" prop="top">
+					<el-input v-model="editForm.top" placeholder="是否置顶0否1待付款2已开通3已过期" :maxlength="1" @change="editSomeFields(editForm,'top',$event)"></el-input>
 				</el-form-item> 
-				<el-form-item label="是否热搜" prop="hot">
-					<el-input v-model="editForm.hot" placeholder="是否热搜" :maxlength="1" @change="editSomeFields(editForm,'hot',$event)"></el-input>
+				<el-form-item label="是否热搜0否1待付款2已开通3已过期" prop="hot">
+					<el-input v-model="editForm.hot" placeholder="是否热搜0否1待付款2已开通3已过期" :maxlength="1" @change="editSomeFields(editForm,'hot',$event)"></el-input>
 				</el-form-item> 
 				<el-form-item label="客服包办费用" prop="crmSupFee">
 					<el-input v-model="editForm.crmSupFee" placeholder="客服包办费用" :maxlength="1" @change="editSomeFields(editForm,'crmSupFee',$event)"></el-input>
@@ -92,17 +92,17 @@
 				<el-form-item label="加急费用" prop="urgentFee">
 					<el-input v-model="editForm.urgentFee" placeholder="加急费用" :maxlength="20"></el-input>
 				</el-form-item> 
-				<el-form-item label="是否加急" prop="urgent">
-					<el-input v-model="editForm.urgent" placeholder="是否加急" :maxlength="1" @change="editSomeFields(editForm,'urgent',$event)"></el-input>
+				<el-form-item label="是否加急0否1待付款2已开通3已过期" prop="urgent">
+					<el-input v-model="editForm.urgent" placeholder="是否加急0否1待付款2已开通3已过期" :maxlength="1" @change="editSomeFields(editForm,'urgent',$event)"></el-input>
 				</el-form-item> 
-				<el-form-item label="是否客服包办" prop="crmSup">
-					<el-input v-model="editForm.crmSup" placeholder="是否客服包办" :maxlength="1" @change="editSomeFields(editForm,'crmSup',$event)"></el-input>
+				<el-form-item label="是否客服包办0否1待付款2已开通3已过期" prop="crmSup">
+					<el-input v-model="editForm.crmSup" placeholder="是否客服包办0否1待付款2已开通3已过期" :maxlength="1" @change="editSomeFields(editForm,'crmSup',$event)"></el-input>
 				</el-form-item> 
 				<el-form-item label="托管金额" prop="efunds">
 					<el-input v-model="editForm.efunds" placeholder="托管金额" :maxlength="20"></el-input>
 				</el-form-item> 
-				<el-form-item label="资金托管状况0-无须托管，1-已托管，2-已付款给服务商，3-已退款" prop="estate">
-					<el-input v-model="editForm.estate" placeholder="资金托管状况0-无须托管，1-已托管，2-已付款给服务商，3-已退款" :maxlength="1" @change="editSomeFields(editForm,'estate',$event)"></el-input>
+				<el-form-item label="资金托管状况0-无须托管，1-待付款，2-已托管资金，3-已付款给服务商，4-已退款" prop="estate">
+					<el-input v-model="editForm.estate" placeholder="资金托管状况0-无须托管，1-待付款，2-已托管资金，3-已付款给服务商，4-已退款" :maxlength="1" @change="editSomeFields(editForm,'estate',$event)"></el-input>
 				</el-form-item> 
 				<el-form-item label="托管资金付款给平台的时间" prop="etoPlatTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.etoPlatTime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
@@ -137,8 +137,8 @@
 				<el-form-item label="计算时间" prop="calcTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.calcTime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
 				</el-form-item> 
-				<el-form-item label="是否开启分享赚" prop="oshare">
-					<el-input v-model="editForm.oshare" placeholder="是否开启分享赚" :maxlength="1" @change="editSomeFields(editForm,'oshare',$event)"></el-input>
+				<el-form-item label="是否开启分享赚0否1待付款2已开通3已过期" prop="oshare">
+					<el-input v-model="editForm.oshare" placeholder="是否开启分享赚0否1待付款2已开通3已过期" :maxlength="1" @change="editSomeFields(editForm,'oshare',$event)"></el-input>
 				</el-form-item> 
 				<el-form-item label="分享赚佣金" prop="shareFee">
 					<el-input v-model="editForm.shareFee" placeholder="分享赚佣金" :maxlength="20"></el-input>

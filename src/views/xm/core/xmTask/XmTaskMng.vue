@@ -1022,80 +1022,17 @@ export default {
       }, //下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
 
       addFormVisible: false, //新增xmTask界面是否显示
-      //新增xmTask界面初始化数据
-      addForm: {
-        id: "",
-        name: "",
-        parentTaskid: "",
-        parentTaskname: "",
-        projectId: "",
-        projectName: "",
-        level: "",
-        sortLevel: "",
-        executorUserid: "",
-        executorUsername: "",
-        preTaskid: "",
-        preTaskname: "",
-        startTime: "",
-        endTime: "",
-        milestone: "",
-        description: "",
-        remarks: "",
-        createUserid: "",
-        createUsername: "",
-        createTime: "",
-        rate: "",
-        budgetAt: "",
-        budgetWorkload: "",
-        actAt: "",
-        actWorkload: "",
-        taskState: "",
-        taskType: "",
-        taskClass: "",
-        toTaskCenter: "",
-        actStartTime: "",
-        actEndTime: "",
-        uniInnerPrice:80,uniOutPrice:100,
-        cityId:'',cityName:'',regionType:'0'
-      },
+      //新增xmTask界面初始化数据 
+		addForm: {
+			id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'',sortLevel:'',executorUserid:'',executorUsername:'',preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',rate:0,budgetAt:0,budgetWorkload:0,actAt:0,actWorkload:0,taskState:'0',taskType:'4',taskClass:'',toTaskCenter:'0',actStartTime:'',actEndTime:'',bizProcInstId:'',bizFlowState:'',phaseId:'',phaseName:'',taskSkillNames:'',exeUsernames:'',taskSkillIds:'',exeUserids:'',taskOut:'0',planType:'w2',settleSchemel:'1',menuId:'',menuName:'',productId:'',cbranchId:'',cdeptid:'',tagIds:'',tagNames:'',ntype:'',childrenCnt:'',ltime:'',pidPaths:'',lvl:'',isTpl:'',keyPath:'',uniInnerPrice:80,uniOutPrice:100,calcType:'',ptype:'',wtype:'',bctrl:'',initWorkload:'',shareFee:'',oshare:'',crowd:'',browseUsers:'',execUsers:'',cityId:'',cityName:'',regionType:'',browseTimes:'',capaLvls:'',tranMode:'',supRequires:'',hot:'0',top:'0',urgent:'0',crmSup:'0',bidStep:'0',interestLvls:'',filePaths:'',estate:'0',efunds:0,etoPlatTime:'',etoDevTime:'',ebackTime:'',topStime:'',topEtime:'',hotStime:'',hotEtime:'',urgentStime:'',urgentEtime:''
+		},
 
       editFormVisible: false, //编辑界面是否显示
       //编辑xmTask界面初始化数据
-      editForm: {
-        id: "",
-        name: "",
-        parentTaskid: "",
-        parentTaskname: "",
-        projectId: "",
-        projectName: "",
-        level: "",
-        sortLevel: "",
-        executorUserid: "",
-        executorUsername: "",
-        preTaskid: "",
-        preTaskname: "",
-        startTime: "",
-        endTime: "",
-        milestone: "",
-        description: "",
-        remarks: "",
-        createUserid: "",
-        createUsername: "",
-        createTime: "",
-        rate: "",
-        budgetAt: "",
-        budgetWorkload: "",
-        actAt: "",
-        actWorkload: "",
-        taskState: "",
-        taskType: "",
-        taskClass: "",
-        toTaskCenter: "",
-        actStartTime: "",
-        actEndTime: "",
-        uniInnerPrice:80,uniOutPrice:100,
-        cityId:'',cityName:'',regionType:'0'
-      },
+      
+		editForm: {
+			id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'',sortLevel:'',executorUserid:'',executorUsername:'',preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',rate:0,budgetAt:0,budgetWorkload:0,actAt:0,actWorkload:0,taskState:'0',taskType:'4',taskClass:'',toTaskCenter:'0',actStartTime:'',actEndTime:'',bizProcInstId:'',bizFlowState:'',phaseId:'',phaseName:'',taskSkillNames:'',exeUsernames:'',taskSkillIds:'',exeUserids:'',taskOut:'0',planType:'w2',settleSchemel:'1',menuId:'',menuName:'',productId:'',cbranchId:'',cdeptid:'',tagIds:'',tagNames:'',ntype:'',childrenCnt:'',ltime:'',pidPaths:'',lvl:'',isTpl:'',keyPath:'',uniInnerPrice:80,uniOutPrice:100,calcType:'',ptype:'',wtype:'',bctrl:'',initWorkload:'',shareFee:'',oshare:'',crowd:'',browseUsers:'',execUsers:'',cityId:'',cityName:'',regionType:'',browseTimes:'',capaLvls:'',tranMode:'',supRequires:'',hot:'0',top:'0',urgent:'0',crmSup:'0',bidStep:'0',interestLvls:'',filePaths:'',estate:'0',efunds:0,etoPlatTime:'',etoDevTime:'',ebackTime:'',topStime:'',topEtime:'',hotStime:'',hotEtime:'',urgentStime:'',urgentEtime:''
+		},
       /**begin 自定义属性请在下面加 请加备注**/
       taskStateList: ["待领取", "已领取执行中", "已完工", "已结算"],
 
