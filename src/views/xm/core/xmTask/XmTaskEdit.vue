@@ -217,20 +217,95 @@
 						 
 							<el-checkbox v-model="editForm.toTaskCenter" v-if="editForm.taskOut==='1'" true-label="1" false-label="0" id="toTaskCenter" @change="editXmTaskSomeFields(editForm,'toTaskCenter',$event)">发布到互联网任务大厅</el-checkbox> 
 						</el-form-item>
-						<el-form-item label="分享赚" prop="oshare"  v-if="editForm.taskOut==='1'">
- 							<el-checkbox v-model="editForm.oshare" true-label="1" false-label="0" id="oshare" @change="editXmTaskSomeFields(editForm,'oshare',$event)">开通分享赚</el-checkbox>  
-						</el-form-item> 
-						<el-form-item label="分享佣金" prop="shareFee" v-if="editForm.oshare==='1' && editForm.taskOut==='1'">
- 							<el-input type="number" style="width:150px;"    v-model="editForm.shareFee" :precision="2" :step="100" :min="0" placeholder="分享赚佣金" @change="editXmTaskSomeFields(editForm,'shareFee',$event)"></el-input  >   元
-							 <font color="blue">开通分享赚后起效，佣金从任务预算中扣除，如果未发生分享佣金，则不扣除。一般建议为任务佣金的1%-5%</font>
-						</el-form-item>
+
 						
-						<el-form-item label="推广"  v-if="editForm.crowd==='1'">
- 							<el-checkbox v-model="editForm.hot" true-label="1" false-label="0" id="hot" @change="editXmTaskSomeFields(editForm,'hot',$event)">热门</el-checkbox>  
- 							<el-checkbox v-model="editForm.top" true-label="1" false-label="0" id="top" @change="editXmTaskSomeFields(editForm,'top',$event)">置顶</el-checkbox>  
- 							<el-checkbox v-model="editForm.urgent" true-label="1" false-label="0" id="urgent" @change="editXmTaskSomeFields(editForm,'urgent',$event)">加急</el-checkbox>  
- 							<el-checkbox v-model="editForm.crmSup" true-label="1" false-label="0" id="crmSup" @change="editXmTaskSomeFields(editForm,'crmSup',$event)">客服包办</el-checkbox>  
-						</el-form-item> 
+						<el-row v-if="editForm.crowd==='1'">
+							<el-col :span="18"> 
+								<el-row>
+									<el-col :span="6">
+										<el-form-item label="托管资金" prop="estate"  v-if="editForm.taskOut==='1'">
+											<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'estate',editForm.hot)" :key="index" :type="item.className">{{item.name}}</el-tag>
+										</el-form-item> 
+									</el-col>
+									<el-col :span="18">
+										<el-form-item label="任务佣金" prop="efunds" v-if="editForm.taskOut==='1'">
+											 {{editForm.budgetAt}}元
+										</el-form-item>
+									</el-col>
+								</el-row>
+								<el-row>
+									<el-col :span="6">
+										<el-form-item label="分享赚" prop="oshare"  v-if="editForm.taskOut==='1'">
+											<el-checkbox v-model="editForm.oshare" v-if="editForm.oshare!='2'" true-label="1" false-label="0" id="oshare" @change="editXmTaskSomeFields(editForm,'oshare',$event)">分享赚</el-checkbox>  
+											<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'marketState',editForm.oshare)" :key="index" :type="item.className">{{item.name}}</el-tag>
+										</el-form-item> 
+									</el-col>
+									<el-col :span="18">
+										<el-form-item label="分享佣金" prop="shareFee" v-if="editForm.oshare==='1' && editForm.taskOut==='1'">
+											<el-input type="number" style="width:100px;"    v-model="editForm.shareFee" :precision="2" :step="2" :min="0" placeholder="分享赚佣金" @change="editXmTaskSomeFields(editForm,'shareFee',$event)"></el-input  >   元
+											<font color="blue">一般建议为任务佣金的1%-5%</font>
+										</el-form-item>
+									</el-col>
+								</el-row> 
+								<el-row>
+									<el-col :span="6">
+										<el-form-item label="热门" prop="hot"  v-if="editForm.taskOut==='1'">
+										 	<el-checkbox v-model="editForm.hot" v-if="editForm.hot!='2'" true-label="1" false-label="0" id="hot" @change="editXmTaskSomeFields(editForm,'hot',$event)">热门</el-checkbox>  
+											<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'marketState',editForm.hot)" :key="index" :type="item.className">{{item.name}}</el-tag>
+										</el-form-item> 
+									</el-col>
+									<el-col :span="18">
+										<el-form-item label="热门费用" prop="hotFee" v-if="editForm.hot==='1' && editForm.taskOut==='1'">
+											 {{editForm.hotFee}}&nbsp;元
+										</el-form-item>
+									</el-col>
+								</el-row>
+								<el-row>
+									<el-col :span="6">
+										<el-form-item label="置顶" prop="top"  v-if="editForm.taskOut==='1'">
+											<el-checkbox v-model="editForm.top" v-if="editForm.top!='2'" true-label="1" false-label="0" id="hot" @change="editXmTaskSomeFields(editForm,'top',$event)">置顶</el-checkbox>  
+											<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'marketState',editForm.top)" :key="index" :type="item.className">{{item.name}}</el-tag>
+										</el-form-item> 
+									</el-col>
+									<el-col :span="18">
+										<el-form-item label="置顶费用" prop="topFee" v-if="editForm.top==='1' && editForm.taskOut==='1'">
+											 {{editForm.topFee}}&nbsp;元
+										</el-form-item>
+									</el-col>
+								</el-row>
+								<el-row>
+									<el-col :span="6">
+										<el-form-item label="加急" prop="urgent"  v-if="editForm.taskOut==='1'">
+											<el-checkbox v-model="editForm.urgent" v-if="editForm.hot!='2'" true-label="1" false-label="0" id="urgent" @change="editXmTaskSomeFields(editForm,'urgent',$event)">加急</el-checkbox>  
+											<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'marketState',editForm.urgent)" :key="index" :type="item.className">{{item.name}}</el-tag>
+										</el-form-item> 
+									</el-col>
+									<el-col :span="18">
+										<el-form-item label="加急费用" prop="urgentFee" v-if="editForm.urgent==='1' && editForm.taskOut==='1'">
+											 {{editForm.urgentFee}}&nbsp;元
+										</el-form-item>
+									</el-col>
+								</el-row>
+								<el-row>
+									<el-col :span="6">
+										<el-form-item label="客服包办" prop="crmSup"  v-if="editForm.taskOut==='1'">
+											<el-checkbox v-model="editForm.crmSup" v-if="editForm.crmSup!='2'" true-label="1" false-label="0" id="hot" @change="editXmTaskSomeFields(editForm,'crmSup',$event)">客服包办</el-checkbox>  
+											<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'marketState',editForm.crmSup)" :key="index" :type="item.className">{{item.name}}</el-tag>
+										</el-form-item> 
+									</el-col>
+									<el-col :span="18">
+										<el-form-item label="客服包办费用" prop="crmSupFee" v-if="editForm.crmSup==='1' && editForm.taskOut==='1'">
+											 {{editForm.crmSupFee}}&nbsp;元
+										</el-form-item>
+									</el-col>
+								</el-row>
+							</el-col>
+							<el-col :span="6"> 
+								<strong> 合计待付款￥:</strong>&nbsp;&nbsp;<font style="font-size:48px;color:red;"> {{needPayAt}}&nbsp;</font>元
+								 <br/>
+								 <el-button class="padding" @click="toPayAt">去付款</el-button>
+							</el-col> 
+						</el-row> 
 						<el-row>
 							<el-col :span="12"> 
 								<el-form-item label="交易模式" prop="tranMode"  v-if="editForm.crowd==='1'"> 
@@ -355,6 +430,7 @@
 	import XmMyDoFocus from '@/views/myWork/my/components/DoFocus';
 	import XmTaskExecuserForTask from '../xmTaskExecuser/XmTaskExecuserForTask.vue';
 	import XmPhaseSelect from "./XmPhaseSelect.vue"; 
+	import { initSysDicts } from '../../../../api/xm/core/xmTask';
 	export default { 
 		name:'xmTaskEdit',
 		computed: {
@@ -363,6 +439,28 @@
 			]),   
 			calcTaskStep(){
 				return this.dicts['bidStep'].findIndex(i=>i.id==this.editForm.bidStep)
+			},
+			needPayAt(){
+				var toPayAt=0;
+				if(this.editForm.oshare=='1'){
+					toPayAt=toPayAt+parseFloat(this.editForm.shareFee||0)
+				}
+				if(this.editForm.top=='1'){
+					toPayAt=toPayAt+parseFloat(this.editForm.topFee||0)
+				}
+				if(this.editForm.hot=='1'){
+					toPayAt=toPayAt+parseFloat(this.editForm.hotFee||0)
+				}
+				if(this.editForm.urgent=='1'){
+					toPayAt=toPayAt+parseFloat(this.editForm.urgentFee||0)
+				}
+				if(this.editForm.crmSup=='1'){
+					toPayAt=toPayAt+parseFloat(this.editForm.crmSupFee||0)
+				}
+				if(this.editForm.estate=='1'||this.editForm.crowd==='1'){
+					toPayAt=toPayAt+parseFloat(this.editForm.efunds||this.editForm.budgetAt)
+				}
+				return toPayAt;
 			}
 		},
 		props:['xmTask','visible','xmProject',"parentTask"],
@@ -378,9 +476,10 @@
 					this.activateTabPaneName="2"
 					this.supRequires=this.editForm.supRequires?this.editForm.supRequires.split(","):[] 
 					this.doAddXmRecordVisit()
+					 this.doInitMarket(this.dicts.crowd_task_market)
 					//从新打开页面时某些数据需要重新加载，可以在这里添加
 				}
-			}, 
+			},  
 		},
 		data() { 
 			const beginDate = new Date();
@@ -394,6 +493,8 @@
 					priority:[],
 					xmTaskSettleSchemel:[],
 					bidStep:[],
+					marketState:[],
+					crowd_task_market:null,
 				},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				editFormRules: {
@@ -415,7 +516,7 @@
 				//新增界面数据 xm_task
 				
 				editForm: {
-					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'',sortLevel:'',executorUserid:'',executorUsername:'',preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',rate:0,budgetAt:0,budgetWorkload:0,actAt:0,actWorkload:0,taskState:'0',taskType:'4',taskClass:'',toTaskCenter:'0',actStartTime:'',actEndTime:'',bizProcInstId:'',bizFlowState:'',phaseId:'',phaseName:'',taskSkillNames:'',exeUsernames:'',taskSkillIds:'',exeUserids:'',taskOut:'0',planType:'w2',settleSchemel:'1',menuId:'',menuName:'',productId:'',cbranchId:'',cdeptid:'',tagIds:'',tagNames:'',ntype:'0',childrenCnt:0,ltime:'',pidPaths:'',lvl:'',isTpl:'',keyPath:'',uniInnerPrice:80,uniOutPrice:100,calcType:'',ptype:'',wtype:'',bctrl:'',initWorkload:'',shareFee:'',oshare:'',crowd:'',browseUsers:'',execUsers:'',cityId:'',cityName:'',regionType:'',browseTimes:'',capaLvls:'',tranMode:'',supRequires:'',hot:'0',top:'0',urgent:'0',crmSup:'0',bidStep:'0',interestLvls:'',filePaths:'',estate:'0',efunds:0,etoPlatTime:'',etoDevTime:'',ebackTime:'',topStime:'',topEtime:'',hotStime:'',hotEtime:'',urgentStime:'',urgentEtime:''
+					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'',sortLevel:'',executorUserid:'',executorUsername:'',preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',rate:0,budgetAt:0,budgetWorkload:0,actAt:0,actWorkload:0,taskState:'0',taskType:'4',taskClass:'',toTaskCenter:'0',actStartTime:'',actEndTime:'',bizProcInstId:'',bizFlowState:'',phaseId:'',phaseName:'',taskSkillNames:'',exeUsernames:'',taskSkillIds:'',exeUserids:'',taskOut:'0',planType:'w2',settleSchemel:'1',menuId:'',menuName:'',productId:'',cbranchId:'',cdeptid:'',tagIds:'',tagNames:'',ntype:'0',childrenCnt:0,ltime:'',pidPaths:'',lvl:'',isTpl:'',keyPath:'',uniInnerPrice:80,uniOutPrice:100,calcType:'',ptype:'',wtype:'',bctrl:'',initWorkload:'',shareFee:'',oshare:'',crowd:'',browseUsers:'',execUsers:'',cityId:'',cityName:'',regionType:'',browseTimes:'',capaLvls:'',tranMode:'',supRequires:'',hot:'0',top:'0',urgent:'0',crmSup:'0',bidStep:'0',interestLvls:'',filePaths:'',estate:'0',efunds:0,etoPlatTime:'',etoDevTime:'',ebackTime:'',topStime:'',topEtime:'',hotStime:'',hotEtime:'',urgentStime:'',urgentEtime:'',urgentFee:0,topFee:0,hotFee:0
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
  				menuVisible:false,
@@ -465,6 +566,28 @@
 					}
 				});
 			}, 
+			doInitMarket(data){ 
+				var extInfos=new Map();
+				if(data.extInfos){
+					var ext=JSON.parse(data.extInfos)
+					ext.forEach(k=>{
+						extInfos.set(k.id,k.value)
+					})
+
+				}
+				if(this.editForm.top=='1'){
+					this.editForm.topFee=parseFloat(extInfos.get("topFee")||0)
+				}
+				if(this.editForm.hot=='1'){
+					this.editForm.hotFee=parseFloat(extInfos.get("hotFee")||0)
+				}
+				if(this.editForm.urgent=='1'){
+					this.editForm.urgentFee=parseFloat(extInfos.get("urgentFee")||0)
+				}
+				if(this.editForm.crmSup=='1'){
+					this.editForm.crmSupFee=parseFloat(extInfos.get("crmSupFee")||0)
+				}  
+			},
 			formatDate: function(time) {
 				const date = new Date(time);
 				const m = date.getMonth()+1;
@@ -750,6 +873,10 @@
 			},
 			doAddXmRecordVisit(){
 				addXmRecordVisit({bizId:this.editForm.id,objType:'2',pbizId:this.editForm.projectId})
+			},
+
+			toPayAt(){
+
 			}
 		},//end method
 		components: { 
@@ -759,13 +886,18 @@
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},
 		mounted() { 
+			this.$nextTick(()=>{
+				initDicts(this); 
+				this.editForm=Object.assign(this.editForm, this.xmTask);    
+				this.editFormBak=Object.assign({},this.editForm) 
+				this.supRequires=this.editForm.supRequires?this.editForm.supRequires.split(","):[]
+				this.setSkills();
+				this.doAddXmRecordVisit()
+				initSysDicts(this).then(res=>{ 
+					this.doInitMarket(res.data.data.crowd_task_market)
+				})
+			})
 			
-			initDicts(this);
-			this.editForm=Object.assign(this.editForm, this.xmTask);    
-			this.editFormBak=Object.assign({},this.editForm) 
-			this.supRequires=this.editForm.supRequires?this.editForm.supRequires.split(","):[]
-			this.setSkills();
-			this.doAddXmRecordVisit()
 			/**在下面写其它函数***/
 			
 		}//end mounted
