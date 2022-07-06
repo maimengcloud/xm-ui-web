@@ -28,6 +28,7 @@
 			title="微信支付"
 			:visible.sync="weixinPayVisible"
 			:show-close="false"
+			append-to-body
 			@close="closeDialog"
 			width="350px"
 			>
@@ -85,13 +86,13 @@
 					label: '支付宝',
 					val: '2',
 					icon: aliPayImg,
-					isChecked: true
+					isChecked: false
 					},
 					{
 					label: '微信',
 					val: '1',
 					icon: weixinPayImg,
-					isChecked: false
+					isChecked: true
 					}
 				],
 				agreementChecked:false,
