@@ -290,7 +290,7 @@
 							</el-col> 
 						</el-row>  
 						</p>
-						 <to-pay v-else-if="toPayVisible " :task-id="editForm.id" :visible="toPayVisible" @cancel="toPayVisible=false" @pay-success="onTaskPaySuccess"></to-pay>
+						 <to-pay v-else-if="toPayVisible" :biz-type="'1'" :task-id="editForm.id" :visible="toPayVisible" @cancel="toPayVisible=false" @pay-success="onTaskPaySuccess"></to-pay>
 					</el-tab-pane>
 					
 					<el-tab-pane label="营销推广" name="82" v-if="editForm.ntype!='1'">
@@ -375,7 +375,7 @@
 							</el-col> 
 						</el-row>  
 						</p>
-						 <to-pay v-else :task-id="editForm.id" :visible="toPayVisible" @cancel="toPayVisible=false" @pay-success="onTaskPaySuccess"></to-pay>
+						 <to-pay v-else :task-id="editForm.id" :visible="toPayVisible" :biz-type="'2'" @cancel="toPayVisible=false" @pay-success="onTaskPaySuccess"></to-pay>
 					</el-tab-pane>
 					<el-tab-pane label="关注" name="91"> 
 						<xm-my-do-focus v-if="activateTabPaneName=='91'" :biz-id="editForm.id" :pbiz-id="editForm.projectId" :biz-name="editForm.name" focus-type="2"></xm-my-do-focus>

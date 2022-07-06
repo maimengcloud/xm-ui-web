@@ -54,7 +54,7 @@
 		    ...mapGetters([ 'userInfo'  ]),
 
 		},
-		props:['taskId'],
+		props:['taskId','visible','bizType'],
 
 		watch: { 
 	      'visible':function(visible) { 
@@ -117,7 +117,7 @@
 				this.$emit('cancel');
 			}, 
 			calcOrder(){
-				var params={taskId:this.taskId,payType:this.payType}
+				var params={taskId:this.taskId,payType:this.payType,bizType:this.bizType}
 				calcXmTaskOrder(params).then(res=>{
 					var tips = res.data.tips
 					if(tips.isOk){
@@ -128,7 +128,7 @@
 				})
 			},
 			createOrder() { 
-			var params={taskId:this.taskId,payType:this.payType}
+			var params={taskId:this.taskId,payType:this.payType,bizType:this.bizType}
 			addXmTaskOrder(params).then(res => {
 				if(res.data.tips.isOk){
 				//获取订单号
