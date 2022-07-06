@@ -22,7 +22,7 @@
 
 		<el-row  class="page-bottom bottom-fixed">
 		    <el-button @click.native="handleCancel">取消</el-button>
-            <el-button v-loading="load.edit" type="primary" @click.native="createOrder" :disabled="load.edit==true">提交</el-button>
+            <el-button v-loading="load.add" type="primary" @click.native="createOrder" :disabled="load.add==true">提交</el-button>
 		</el-row>
 		<el-dialog
 			title="微信支付"
@@ -129,8 +129,14 @@
 				})
 			},
 			createOrder() { 
+				if(!this.agreementChecked){ 
+                    this.$notify({position:'bottom-left',showClose:true,message:"请仔细阅读协议，并勾选同意",type: 'error'})
+					return;
+				}
+				this.load.add=true;
 			var params={taskId:this.taskId,payType:this.payType,bizType:this.bizType}
 			addXmTaskOrder(params).then(res => {
+				this.load.add=false;
 				if(res.data.tips.isOk){
 				//获取订单号
 				Object.assign(this.editForm,res.data.data)
@@ -154,12 +160,15 @@
 			},
 
 			toAliPay(orderId) {
+				this.load.add=true;
 			let params = { 
 				id: orderId,
 				otype: '3',
 				returnUrl: `${window.location.protocol+"//"+window.location.host}/${process.env.CONTEXT}/${process.env.VERSION}/#/my/order/paySuccess`
 			}
 			aliPay(params).then(res => {
+				
+				this.load.add=false;
 				if(res.data.tips.isOk) {
 				const div = document.createElement("divform");
 				div.innerHTML = res.data.data.htmlStr;
@@ -176,12 +185,14 @@
 			},
 
 			toWeixinPay(orderId) {
+				this.load.add=true;
 			let params = {
 				id: orderId,
 				otype: '3',
 				returnUrl: ""
 			}
 			weixinPay(params).then(res => {
+				this.load.add=false;
 				if(res.data.tips.isOk) {
 				this.codeUrl = res.data.data.codeUrl;
 				this.weixinPayVisible = true;
