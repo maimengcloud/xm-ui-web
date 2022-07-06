@@ -210,6 +210,7 @@
 						<el-steps :active="calcTaskStep" align-center simple v-if="editForm.crowd==='1'">
 							<el-step v-for="(item,index) in dicts.bidStep" :title="item.name" :description="item.name" :key="index"></el-step> 
 						</el-steps> 
+						<p v-if="!toPayVisible">
 					 	<el-form-item> 
 							 <el-checkbox v-model="editForm.taskOut" true-label="1" false-label="0" id="taskOut" @change="editXmTaskSomeFields(editForm,'taskOut',$event)">外购</el-checkbox>   
  						 
@@ -217,7 +218,55 @@
 						 
 							<el-checkbox v-model="editForm.toTaskCenter" v-if="editForm.taskOut==='1'" true-label="1" false-label="0" id="toTaskCenter" @change="editXmTaskSomeFields(editForm,'toTaskCenter',$event)">发布到互联网任务大厅</el-checkbox> 
 						</el-form-item>
+						<el-row>
+							<el-col :span="12"> 
+								<el-form-item label="交易模式" prop="tranMode"  v-if="editForm.crowd==='1'"> 
+									<el-select v-model="editForm.tranMode" @change="editXmTaskSomeFields(editForm,'tranMode',$event)">
+										<el-option v-for="(item,index) in dicts['tranMode']" :key="index" :value="item.id" :label="item.name"></el-option>
+									</el-select>
+								</el-form-item> 
+							</el-col>
+							<el-col :span="12"> 
+								<el-form-item label="最低能力等级" prop="capaLvls"  v-if="editForm.crowd==='1'"> 
+									<el-select v-model="editForm.capaLvls" @change="editXmTaskSomeFields(editForm,'capaLvls',$event)">
+										<el-option v-for="(item,index) in dicts['capaLvl']" :key="index" :value="item.id" :label="item.name"></el-option>
+									</el-select>
+								</el-form-item> 
+							</el-col>
+						</el-row>
+						<el-row>
+							<el-col :span="12"> 
+								<el-form-item label="服务保障" prop="supRequires"  v-if="editForm.crowd==='1'"> 
+									<el-select v-model="supRequires" @change="editXmTaskSomeFields(editForm,'supRequires',$event)" multiple>
+										<el-option v-for="(item,index) in dicts['supRequire']" :key="index" :value="item.id" :label="item.name"></el-option>
+									</el-select>
+								</el-form-item> 
+							</el-col>
+							<el-col :span="12"> 
+								<el-form-item label="最低会员等级" prop="interestLvls"  v-if="editForm.crowd==='1'"> 
+									<el-select v-model="editForm.interestLvls" @change="editXmTaskSomeFields(editForm,'interestLvls',$event)">
+										<el-option v-for="(item,index) in dicts['memInterestLvl']" :key="index" :value="item.id" :label="item.name"></el-option>
+									</el-select>
+								</el-form-item> 
+							</el-col>
+							
+						</el-row>
+						<el-row>
+							<el-col :span="12"> 
+								<el-form-item label="地区限制" prop="regionType"  v-if="editForm.crowd==='1'"> 
+									<el-select v-model="editForm.regionType" @change="editXmTaskSomeFields(editForm,'regionType',$event)" >
+										<el-option v-for="(item,index) in dicts['regionType']" :key="index" :value="item.id" :label="item.name"></el-option>
+									</el-select>
+								</el-form-item> 
+							</el-col>
+							<el-col :span="12"> 
+								<el-form-item label="城市名称" prop="cityName"  v-if="editForm.crowd==='1'"> 
+									<el-input v-model="editForm.cityName" placeholder="城市名称" @change="editXmTaskSomeFields(editForm,'cityName',$event)"></el-input>   
 
+								</el-form-item> 
+							</el-col>
+							
+						</el-row>
 						
 						<el-row v-if="editForm.crowd==='1'">
 							<el-col :span="18"> 
@@ -300,61 +349,14 @@
 									</el-col>
 								</el-row>
 							</el-col>
-							<el-col :span="6"> 
+							<el-col :span="6">  
 								<strong> 合计待付款￥:</strong>&nbsp;&nbsp;<font style="font-size:48px;color:red;"> {{needPayAt}}&nbsp;</font>元
 								 <br/>
-								 <el-button class="padding" @click="toPayAt">去付款</el-button>
+								 <el-button class="padding" @click="toPayAt" type="primary">去付款</el-button> 
 							</el-col> 
-						</el-row> 
-						<el-row>
-							<el-col :span="12"> 
-								<el-form-item label="交易模式" prop="tranMode"  v-if="editForm.crowd==='1'"> 
-									<el-select v-model="editForm.tranMode" @change="editXmTaskSomeFields(editForm,'tranMode',$event)">
-										<el-option v-for="(item,index) in dicts['tranMode']" :key="index" :value="item.id" :label="item.name"></el-option>
-									</el-select>
-								</el-form-item> 
-							</el-col>
-							<el-col :span="12"> 
-								<el-form-item label="最低能力等级" prop="capaLvls"  v-if="editForm.crowd==='1'"> 
-									<el-select v-model="editForm.capaLvls" @change="editXmTaskSomeFields(editForm,'capaLvls',$event)">
-										<el-option v-for="(item,index) in dicts['capaLvl']" :key="index" :value="item.id" :label="item.name"></el-option>
-									</el-select>
-								</el-form-item> 
-							</el-col>
-						</el-row>
-						<el-row>
-							<el-col :span="12"> 
-								<el-form-item label="服务保障" prop="supRequires"  v-if="editForm.crowd==='1'"> 
-									<el-select v-model="supRequires" @change="editXmTaskSomeFields(editForm,'supRequires',$event)" multiple>
-										<el-option v-for="(item,index) in dicts['supRequire']" :key="index" :value="item.id" :label="item.name"></el-option>
-									</el-select>
-								</el-form-item> 
-							</el-col>
-							<el-col :span="12"> 
-								<el-form-item label="最低会员等级" prop="interestLvls"  v-if="editForm.crowd==='1'"> 
-									<el-select v-model="editForm.interestLvls" @change="editXmTaskSomeFields(editForm,'interestLvls',$event)">
-										<el-option v-for="(item,index) in dicts['memInterestLvl']" :key="index" :value="item.id" :label="item.name"></el-option>
-									</el-select>
-								</el-form-item> 
-							</el-col>
-							
-						</el-row>
-						<el-row>
-							<el-col :span="12"> 
-								<el-form-item label="地区限制" prop="regionType"  v-if="editForm.crowd==='1'"> 
-									<el-select v-model="editForm.regionType" @change="editXmTaskSomeFields(editForm,'regionType',$event)" >
-										<el-option v-for="(item,index) in dicts['regionType']" :key="index" :value="item.id" :label="item.name"></el-option>
-									</el-select>
-								</el-form-item> 
-							</el-col>
-							<el-col :span="12"> 
-								<el-form-item label="城市名称" prop="cityName"  v-if="editForm.crowd==='1'"> 
-									<el-input v-model="editForm.cityName" placeholder="城市名称" @change="editXmTaskSomeFields(editForm,'cityName',$event)"></el-input>   
-
-								</el-form-item> 
-							</el-col>
-							
-						</el-row>
+						</el-row>  
+						</p>
+						 <to-pay v-else :task-id="editForm.id" :visible="toPayVisible" @cancel="toPayVisible=false"></to-pay>
 					</el-tab-pane>
 					<el-tab-pane label="关注" name="91"> 
 						<xm-my-do-focus v-if="activateTabPaneName=='91'" :biz-id="editForm.id" :pbiz-id="editForm.projectId" :biz-name="editForm.name" focus-type="2"></xm-my-do-focus>
@@ -430,6 +432,7 @@
 	import XmMyDoFocus from '@/views/myWork/my/components/DoFocus';
 	import XmTaskExecuserForTask from '../xmTaskExecuser/XmTaskExecuserForTask.vue';
 	import XmPhaseSelect from "./XmPhaseSelect.vue"; 
+	import ToPay from "../xmTaskOrder/ToPay.vue"; 
 	import { initSysDicts } from '../../../../api/xm/core/xmTask';
 	export default { 
 		name:'xmTaskEdit',
@@ -532,7 +535,8 @@
 				subWorkItemNum:0,
 				activateTabPaneName:'2',
 				selectParentTaskVisible:false, 
-				supRequires:[]
+				supRequires:[],
+				toPayVisible:false,
 				 /**end 在上面加自定义属性**/
 			}//end return
 		},//end data
@@ -876,13 +880,13 @@
 			},
 
 			toPayAt(){
-
+				this.toPayVisible=true;
 			}
 		},//end method
 		components: { 
  			xmSkillMng,
 			skillMng,xmMenuSelect,XmTaskList,XmExecuserMng,XmGroupSelect,XmMenuRichDetail,TagMng,XmSubWorkItem,XmTaskWorkloadRecord,XmMenuEdit,
-			XmRecord,xmQuestionForTask,XmMyDoFocus,XmTaskExecuserForTask,XmPhaseSelect
+			XmRecord,xmQuestionForTask,XmMyDoFocus,XmTaskExecuserForTask,XmPhaseSelect,ToPay
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},
 		mounted() { 

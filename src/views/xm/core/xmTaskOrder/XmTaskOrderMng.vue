@@ -20,14 +20,14 @@
 				</el-table-column>
 				-->
 				<el-table-column prop="id" label="订单编号" min-width="120" show-overflow-tooltip  fixed="left"></el-table-column>
-				<el-table-column prop="userid" label="用户编号" min-width="120" show-overflow-tooltip>
+				<el-table-column prop="ouserid" label="下单用户编号" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-				        <span> {{scope.row.userid}} </span>
+				        <span> {{scope.row.ouserid}} </span>
                     </template>
 				</el-table-column>
-				<el-table-column prop="branchId" label="公司ID-下单客户对应的企业" min-width="120" show-overflow-tooltip>
+				<el-table-column prop="obranchId" label="公司ID-下单客户对应的企业" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-				        <span> {{scope.row.branchId}} </span>
+				        <span> {{scope.row.obranchId}} </span>
                     </template>
 				</el-table-column>
 				<el-table-column prop="ostatus" label="订单状态0-初始，1-待确认，2-待付款，3-已付款，4-已完成，5-已取消-未付款前可取消，取消后可删除，6-退单-退单后变为已取消，8已关闭-售后完成后可以关闭订单" min-width="120" show-overflow-tooltip>
@@ -245,6 +245,26 @@
 				        <span> {{scope.row.shareFee}} </span>
                     </template>
 				</el-table-column>
+				<el-table-column prop="payId" label="付款流水号(内部生成，传给第三方原样传回，如果不正确，不允许更新数据库，防止作弊)" min-width="120" show-overflow-tooltip>
+				    <template slot-scope="scope">
+				        <span> {{scope.row.payId}} </span>
+                    </template>
+				</el-table-column>
+				<el-table-column prop="tranId" label="第三方付款事务号" min-width="120" show-overflow-tooltip>
+				    <template slot-scope="scope">
+				        <span> {{scope.row.tranId}} </span>
+                    </template>
+				</el-table-column>
+				<el-table-column prop="remark" label="订单备注" min-width="120" show-overflow-tooltip>
+				    <template slot-scope="scope">
+				        <span> {{scope.row.remark}} </span>
+                    </template>
+				</el-table-column>
+				<el-table-column prop="name" label="订单名称" min-width="120" show-overflow-tooltip>
+				    <template slot-scope="scope">
+				        <span> {{scope.row.name}} </span>
+                    </template>
+				</el-table-column>
 				<el-table-column label="操作" width="180" fixed="right">
 				    <template scope="scope">
 				        <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"  plain></el-button>
@@ -315,12 +335,12 @@ export default {
             },//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
             addFormVisible: false,//新增xmTaskOrder界面是否显示
             addForm: {
-                userid:'',branchId:'',ostatus:'',ctime:'',ltime:'',payType:'',payStatus:'',payTime:'',prepayId:'',id:'',finalFee:'',othFee:'',originFee:'',payAt:'',payAuthId:'',payOpenid:'',payUserid:'',payUsername:'',discount:'',topFee:'',topStime:'',topEtime:'',hotFee:'',hotStime:'',hotEtime:'',top:'',hot:'',crmSupFee:'',urgentFee:'',urgent:'',crmSup:'',efunds:'',estate:'',etoPlatTime:'',etoDevTime:'',ebackTime:'',taskId:'',topDays:'',hotDays:'',urgentDays:'',urgentStime:'',urgentEtime:'',calcStatus:'',calcTime:'',oshare:'',shareFee:''
+                ouserid:'',obranchId:'',ostatus:'',ctime:'',ltime:'',payType:'',payStatus:'',payTime:'',prepayId:'',id:'',finalFee:'',othFee:'',originFee:'',payAt:'',payAuthId:'',payOpenid:'',payUserid:'',payUsername:'',discount:'',topFee:'',topStime:'',topEtime:'',hotFee:'',hotStime:'',hotEtime:'',top:'',hot:'',crmSupFee:'',urgentFee:'',urgent:'',crmSup:'',efunds:'',estate:'',etoPlatTime:'',etoDevTime:'',ebackTime:'',taskId:'',topDays:'',hotDays:'',urgentDays:'',urgentStime:'',urgentEtime:'',calcStatus:'',calcTime:'',oshare:'',shareFee:'',payId:'',tranId:'',remark:'',name:''
             },
 
             editFormVisible: false,//编辑界面是否显示
             editForm: {
-                userid:'',branchId:'',ostatus:'',ctime:'',ltime:'',payType:'',payStatus:'',payTime:'',prepayId:'',id:'',finalFee:'',othFee:'',originFee:'',payAt:'',payAuthId:'',payOpenid:'',payUserid:'',payUsername:'',discount:'',topFee:'',topStime:'',topEtime:'',hotFee:'',hotStime:'',hotEtime:'',top:'',hot:'',crmSupFee:'',urgentFee:'',urgent:'',crmSup:'',efunds:'',estate:'',etoPlatTime:'',etoDevTime:'',ebackTime:'',taskId:'',topDays:'',hotDays:'',urgentDays:'',urgentStime:'',urgentEtime:'',calcStatus:'',calcTime:'',oshare:'',shareFee:''
+                ouserid:'',obranchId:'',ostatus:'',ctime:'',ltime:'',payType:'',payStatus:'',payTime:'',prepayId:'',id:'',finalFee:'',othFee:'',originFee:'',payAt:'',payAuthId:'',payOpenid:'',payUserid:'',payUsername:'',discount:'',topFee:'',topStime:'',topEtime:'',hotFee:'',hotStime:'',hotEtime:'',top:'',hot:'',crmSupFee:'',urgentFee:'',urgent:'',crmSup:'',efunds:'',estate:'',etoPlatTime:'',etoDevTime:'',ebackTime:'',taskId:'',topDays:'',hotDays:'',urgentDays:'',urgentStime:'',urgentEtime:'',calcStatus:'',calcTime:'',oshare:'',shareFee:'',payId:'',tranId:'',remark:'',name:''
             },
             maxTableHeight:300,
         }

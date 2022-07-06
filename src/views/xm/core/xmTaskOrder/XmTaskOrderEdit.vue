@@ -5,11 +5,11 @@
 		<el-row class="page-main" :style="{overflowX:'auto',height:maxTableHeight+'px'}" ref="table">
 		<!--编辑界面 XmTaskOrder 任务相关费用订单表--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">
-				<el-form-item label="用户编号" prop="userid">
-					<el-input v-model="editForm.userid" placeholder="用户编号" :maxlength="50" @change="editSomeFields(editForm,'userid',$event)"></el-input>
+				<el-form-item label="下单用户编号" prop="ouserid">
+					<el-input v-model="editForm.ouserid" placeholder="下单用户编号" :maxlength="50" @change="editSomeFields(editForm,'ouserid',$event)"></el-input>
 				</el-form-item> 
-				<el-form-item label="公司ID-下单客户对应的企业" prop="branchId">
-					<el-input v-model="editForm.branchId" placeholder="公司ID-下单客户对应的企业" :maxlength="50" @change="editSomeFields(editForm,'branchId',$event)"></el-input>
+				<el-form-item label="公司ID-下单客户对应的企业" prop="obranchId">
+					<el-input v-model="editForm.obranchId" placeholder="公司ID-下单客户对应的企业" :maxlength="50" @change="editSomeFields(editForm,'obranchId',$event)"></el-input>
 				</el-form-item> 
 				<el-form-item label="订单状态0-初始，1-待确认，2-待付款，3-已付款，4-已完成，5-已取消-未付款前可取消，取消后可删除，6-退单-退单后变为已取消，8已关闭-售后完成后可以关闭订单" prop="ostatus">
 					<el-input v-model="editForm.ostatus" placeholder="订单状态0-初始，1-待确认，2-待付款，3-已付款，4-已完成，5-已取消-未付款前可取消，取消后可删除，6-退单-退单后变为已取消，8已关闭-售后完成后可以关闭订单" :maxlength="1" @change="editSomeFields(editForm,'ostatus',$event)"></el-input>
@@ -72,7 +72,7 @@
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.topEtime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
 				</el-form-item> 
 				<el-form-item label="热搜费用" prop="hotFee">
-					<el-input v-model="editForm.hotFee" placeholder="热搜费用" :maxlength="1" @change="editSomeFields(editForm,'hotFee',$event)"></el-input>
+					<el-input v-model="editForm.hotFee" placeholder="热搜费用" :maxlength="20"></el-input>
 				</el-form-item> 
 				<el-form-item label="热搜开始时间" prop="hotStime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.hotStime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
@@ -87,7 +87,7 @@
 					<el-input v-model="editForm.hot" placeholder="是否热搜0否1待付款2已开通3已过期" :maxlength="1" @change="editSomeFields(editForm,'hot',$event)"></el-input>
 				</el-form-item> 
 				<el-form-item label="客服包办费用" prop="crmSupFee">
-					<el-input v-model="editForm.crmSupFee" placeholder="客服包办费用" :maxlength="1" @change="editSomeFields(editForm,'crmSupFee',$event)"></el-input>
+					<el-input v-model="editForm.crmSupFee" placeholder="客服包办费用" :maxlength="20"></el-input>
 				</el-form-item> 
 				<el-form-item label="加急费用" prop="urgentFee">
 					<el-input v-model="editForm.urgentFee" placeholder="加急费用" :maxlength="20"></el-input>
@@ -143,6 +143,18 @@
 				<el-form-item label="分享赚佣金" prop="shareFee">
 					<el-input v-model="editForm.shareFee" placeholder="分享赚佣金" :maxlength="20"></el-input>
 				</el-form-item> 
+				<el-form-item label="付款流水号(内部生成，传给第三方原样传回，如果不正确，不允许更新数据库，防止作弊)" prop="payId">
+					<el-input v-model="editForm.payId" placeholder="付款流水号(内部生成，传给第三方原样传回，如果不正确，不允许更新数据库，防止作弊)" :maxlength="50" @change="editSomeFields(editForm,'payId',$event)"></el-input>
+				</el-form-item> 
+				<el-form-item label="第三方付款事务号" prop="tranId">
+					<el-input v-model="editForm.tranId" placeholder="第三方付款事务号" :maxlength="50" @change="editSomeFields(editForm,'tranId',$event)"></el-input>
+				</el-form-item> 
+				<el-form-item label="订单备注" prop="remark">
+					<el-input v-model="editForm.remark" placeholder="订单备注" :maxlength="255" @change="editSomeFields(editForm,'remark',$event)"></el-input>
+				</el-form-item> 
+				<el-form-item label="订单名称" prop="name">
+					<el-input v-model="editForm.name" placeholder="订单名称" :maxlength="255" @change="editSomeFields(editForm,'name',$event)"></el-input>
+				</el-form-item> 
 			</el-form>
 		</el-row>
 
@@ -194,7 +206,7 @@
 					]
 				},
 				editForm: {
-					userid:'',branchId:'',ostatus:'',ctime:'',ltime:'',payType:'',payStatus:'',payTime:'',prepayId:'',id:'',finalFee:'',othFee:'',originFee:'',payAt:'',payAuthId:'',payOpenid:'',payUserid:'',payUsername:'',discount:'',topFee:'',topStime:'',topEtime:'',hotFee:'',hotStime:'',hotEtime:'',top:'',hot:'',crmSupFee:'',urgentFee:'',urgent:'',crmSup:'',efunds:'',estate:'',etoPlatTime:'',etoDevTime:'',ebackTime:'',taskId:'',topDays:'',hotDays:'',urgentDays:'',urgentStime:'',urgentEtime:'',calcStatus:'',calcTime:'',oshare:'',shareFee:''
+					ouserid:'',obranchId:'',ostatus:'',ctime:'',ltime:'',payType:'',payStatus:'',payTime:'',prepayId:'',id:'',finalFee:'',othFee:'',originFee:'',payAt:'',payAuthId:'',payOpenid:'',payUserid:'',payUsername:'',discount:'',topFee:'',topStime:'',topEtime:'',hotFee:'',hotStime:'',hotEtime:'',top:'',hot:'',crmSupFee:'',urgentFee:'',urgent:'',crmSup:'',efunds:'',estate:'',etoPlatTime:'',etoDevTime:'',ebackTime:'',taskId:'',topDays:'',hotDays:'',urgentDays:'',urgentStime:'',urgentEtime:'',calcStatus:'',calcTime:'',oshare:'',shareFee:'',payId:'',tranId:'',remark:'',name:''
 				},
                 maxTableHeight:300,
 			}//end return
