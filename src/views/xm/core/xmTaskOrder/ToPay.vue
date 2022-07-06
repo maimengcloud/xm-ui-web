@@ -95,6 +95,7 @@
 					}
 				],
 				agreementChecked:false,
+				timer:0,
 			}//end return
 		},//end data
 		methods: {
@@ -154,7 +155,7 @@
 			toAliPay(orderId) {
 			let params = { 
 				id: orderId,
-				otype: 1,
+				otype: '3',
 				returnUrl: `${window.location.protocol+"//"+window.location.host}/${process.env.CONTEXT}/${process.env.VERSION}/#/my/order/paySuccess`
 			}
 			aliPay(params).then(res => {
@@ -176,7 +177,7 @@
 			toWeixinPay(orderId) {
 			let params = {
 				id: orderId,
-				otype: 1,
+				otype: '3',
 				returnUrl: ""
 			}
 			weixinPay(params).then(res => {
@@ -199,9 +200,10 @@
 			//查询订单支付状态
 			queryOrderStatus(orderId) {
 			console.log("查询订单");
-			checkWxPayStatus({'orderId': orderId, "otype": "1"}).then(res => {
+			checkWxPayStatus({'orderId': orderId, "otype": "3"}).then(res => {
 				if(res.data.tips.isOk) {
-				this.$router.push({path:'/my/order/paySuccess', query:{total_amount: this.data.amount, out_trade_no: orderId}});
+				//this.$router.push({path:'/my/order/paySuccess', query:{total_amount: this.data.amount, out_trade_no: orderId}});
+				this.$emit("pay-success",orderId)
 				clearInterval(this.timer);
 				}else {
 				}

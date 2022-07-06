@@ -20,8 +20,8 @@
 				<el-form-item label="更新时间" prop="ltime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.ltime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
 				</el-form-item> 
-				<el-form-item label="支付方式" prop="payType">
-					<el-input v-model="editForm.payType" placeholder="支付方式" :maxlength="1" @change="editSomeFields(editForm,'payType',$event)"></el-input>
+				<el-form-item label="支付方式1微信2支付宝" prop="payType">
+					<el-input v-model="editForm.payType" placeholder="支付方式1微信2支付宝" :maxlength="1" @change="editSomeFields(editForm,'payType',$event)"></el-input>
 				</el-form-item> 
 				<el-form-item label="支付状态0待付款，1已付款" prop="payStatus">
 					<el-input v-model="editForm.payStatus" placeholder="支付状态0待付款，1已付款" :maxlength="1" @change="editSomeFields(editForm,'payStatus',$event)"></el-input>
@@ -155,6 +155,9 @@
 				<el-form-item label="订单名称" prop="name">
 					<el-input v-model="editForm.name" placeholder="订单名称" :maxlength="255" @change="editSomeFields(editForm,'name',$event)"></el-input>
 				</el-form-item> 
+				<el-form-item label="订单业务类型1-保证金，2-营销推广活动" prop="bizType">
+					<el-input v-model="editForm.bizType" placeholder="订单业务类型1-保证金，2-营销推广活动" :maxlength="1" @change="editSomeFields(editForm,'bizType',$event)"></el-input>
+				</el-form-item> 
 			</el-form>
 		</el-row>
 
@@ -206,7 +209,7 @@
 					]
 				},
 				editForm: {
-					ouserid:'',obranchId:'',ostatus:'',ctime:'',ltime:'',payType:'',payStatus:'',payTime:'',prepayId:'',id:'',finalFee:'',othFee:'',originFee:'',payAt:'',payAuthId:'',payOpenid:'',payUserid:'',payUsername:'',discount:'',topFee:'',topStime:'',topEtime:'',hotFee:'',hotStime:'',hotEtime:'',top:'',hot:'',crmSupFee:'',urgentFee:'',urgent:'',crmSup:'',efunds:'',estate:'',etoPlatTime:'',etoDevTime:'',ebackTime:'',taskId:'',topDays:'',hotDays:'',urgentDays:'',urgentStime:'',urgentEtime:'',calcStatus:'',calcTime:'',oshare:'',shareFee:'',payId:'',tranId:'',remark:'',name:''
+					ouserid:'',obranchId:'',ostatus:'',ctime:'',ltime:'',payType:'',payStatus:'',payTime:'',prepayId:'',id:'',finalFee:'',othFee:'',originFee:'',payAt:'',payAuthId:'',payOpenid:'',payUserid:'',payUsername:'',discount:'',topFee:'',topStime:'',topEtime:'',hotFee:'',hotStime:'',hotEtime:'',top:'',hot:'',crmSupFee:'',urgentFee:'',urgent:'',crmSup:'',efunds:'',estate:'',etoPlatTime:'',etoDevTime:'',ebackTime:'',taskId:'',topDays:'',hotDays:'',urgentDays:'',urgentStime:'',urgentEtime:'',calcStatus:'',calcTime:'',oshare:'',shareFee:'',payId:'',tranId:'',remark:'',name:'',bizType:''
 				},
                 maxTableHeight:300,
 			}//end return

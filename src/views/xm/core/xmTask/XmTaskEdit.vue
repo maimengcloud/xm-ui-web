@@ -281,7 +281,26 @@
 											 {{editForm.budgetAt}}元
 										</el-form-item>
 									</el-col>
-								</el-row>
+								</el-row> 
+							</el-col>
+							<el-col :span="6" v-if="editForm.bidStep=='4'">  
+								<strong> 合计待付款￥:</strong>&nbsp;&nbsp;<font style="font-size:48px;color:red;"> {{needPayEfundsAt}}&nbsp;</font>元
+								 <br/>
+								 <el-button class="padding" @click="toPayAt" type="primary">去付款</el-button> 
+							</el-col> 
+						</el-row>  
+						</p>
+						 <to-pay v-else-if="toPayVisible " :task-id="editForm.id" :visible="toPayVisible" @cancel="toPayVisible=false" @pay-success="onTaskPaySuccess"></to-pay>
+					</el-tab-pane>
+					
+					<el-tab-pane label="营销推广" name="82" v-if="editForm.ntype!='1'">
+						<el-steps :active="calcTaskStep" align-center simple v-if="editForm.crowd==='1'">
+							<el-step v-for="(item,index) in dicts.bidStep" :title="item.name" :description="item.name" :key="index"></el-step> 
+						</el-steps> 
+						<p v-if="!toPayVisible">  
+						
+						<el-row v-if="editForm.crowd==='1'">
+							<el-col :span="18">  
 								<el-row>
 									<el-col :span="6">
 										<el-form-item label="分享赚" prop="oshare"  v-if="editForm.taskOut==='1'">
@@ -325,7 +344,7 @@
 								<el-row>
 									<el-col :span="6">
 										<el-form-item label="加急" prop="urgent"  v-if="editForm.taskOut==='1'">
-											<el-checkbox v-model="editForm.urgent" v-if="editForm.hot!='2'" true-label="1" false-label="0" id="urgent" @change="editXmTaskSomeFields(editForm,'urgent',$event)">加急</el-checkbox>  
+											<el-checkbox v-model="editForm.urgent" v-if="editForm.urgent!='2'" true-label="1" false-label="0" id="urgent" @change="editXmTaskSomeFields(editForm,'urgent',$event)">加急</el-checkbox>  
 											<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'marketState',editForm.urgent)" :key="index" :type="item.className">{{item.name}}</el-tag>
 										</el-form-item> 
 									</el-col>
@@ -350,13 +369,13 @@
 								</el-row>
 							</el-col>
 							<el-col :span="6">  
-								<strong> 合计待付款￥:</strong>&nbsp;&nbsp;<font style="font-size:48px;color:red;"> {{needPayAt}}&nbsp;</font>元
+								<strong> 合计待付款￥:</strong>&nbsp;&nbsp;<font style="font-size:48px;color:red;"> {{needPayMarketAt}}&nbsp;</font>元
 								 <br/>
 								 <el-button class="padding" @click="toPayAt" type="primary">去付款</el-button> 
 							</el-col> 
 						</el-row>  
 						</p>
-						 <to-pay v-else :task-id="editForm.id" :visible="toPayVisible" @cancel="toPayVisible=false"></to-pay>
+						 <to-pay v-else :task-id="editForm.id" :visible="toPayVisible" @cancel="toPayVisible=false" @pay-success="onTaskPaySuccess"></to-pay>
 					</el-tab-pane>
 					<el-tab-pane label="关注" name="91"> 
 						<xm-my-do-focus v-if="activateTabPaneName=='91'" :biz-id="editForm.id" :pbiz-id="editForm.projectId" :biz-name="editForm.name" focus-type="2"></xm-my-do-focus>
@@ -410,7 +429,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库 
-	import {initDicts,editXmTask,setTaskCreateUser,editXmTaskSomeFields,batchChangeParentTask } from '@/api/xm/core/xmTask';
+	import {initDicts,editXmTask,setTaskCreateUser,editXmTaskSomeFields,batchChangeParentTask,listXmTask } from '@/api/xm/core/xmTask';
 	import {addXmRecordVisit } from '@/api/xm/core/xmRecordVisit';
 	import { mapGetters } from 'vuex';
  	import {sn} from '@/common/js/sequence';
@@ -443,7 +462,15 @@
 			calcTaskStep(){
 				return this.dicts['bidStep'].findIndex(i=>i.id==this.editForm.bidStep)
 			},
-			needPayAt(){
+			needPayEfundsAt(){
+				var toPayAt=0; 
+				if(this.editForm.estate=='1' && this.editForm.crowd==='1' && this.editForm.bidStep=='4'){
+					toPayAt=toPayAt+parseFloat(this.editForm.efunds||this.editForm.budgetAt)
+				}
+				return toPayAt;
+			},
+			
+			needPayMarketAt(){
 				var toPayAt=0;
 				if(this.editForm.oshare=='1'){
 					toPayAt=toPayAt+parseFloat(this.editForm.shareFee||0)
@@ -459,10 +486,7 @@
 				}
 				if(this.editForm.crmSup=='1'){
 					toPayAt=toPayAt+parseFloat(this.editForm.crmSupFee||0)
-				}
-				if(this.editForm.estate=='1'||this.editForm.crowd==='1'){
-					toPayAt=toPayAt+parseFloat(this.editForm.efunds||this.editForm.budgetAt)
-				}
+				} 
 				return toPayAt;
 			}
 		},
@@ -881,6 +905,14 @@
 
 			toPayAt(){
 				this.toPayVisible=true;
+			},
+			onTaskPaySuccess(orderId){ 
+				listXmTask({ids:[this.editForm.id]}).then(res=>{
+					Object.assign(this.editForm,res.data.data[0])
+					this.editFormBak={...this.editForm}
+				})
+				this.$emit("pay-success",this.editForm)
+				this.toPayVisible=false;
 			}
 		},//end method
 		components: { 
