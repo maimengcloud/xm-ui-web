@@ -210,7 +210,7 @@
 						<el-steps :active="calcTaskStep" align-center simple v-if="editForm.crowd==='1'">
 							<el-step v-for="(item,index) in dicts.bidStep" :title="item.name" :description="item.name" :key="index"></el-step> 
 						</el-steps> 
-						<p v-if="!toPayVisible">
+						<p v-if="!toPayVisible &&  activateTabPaneName=='8'">
 					 	<el-form-item> 
 							 <el-checkbox v-model="editForm.taskOut" true-label="1" false-label="0" id="taskOut" @change="editXmTaskSomeFields(editForm,'taskOut',$event)">外购</el-checkbox>   
  						 
@@ -290,14 +290,14 @@
 							</el-col> 
 						</el-row>  
 						</p>
-						 <to-pay v-else-if="toPayVisible" :biz-type="'1'" :task-id="editForm.id" :visible="toPayVisible" @cancel="toPayVisible=false" @pay-success="onTaskPaySuccess"></to-pay>
+						 <to-pay v-else-if="toPayVisible &&  activateTabPaneName=='8'" :biz-type="'1'" :task-id="editForm.id" :visible="toPayVisible" @cancel="toPayVisible=false" @pay-success="onTaskPaySuccess"></to-pay>
 					</el-tab-pane>
 					
 					<el-tab-pane label="营销推广" name="82" v-if="editForm.ntype!='1'">
 						<el-steps :active="calcTaskStep" align-center simple v-if="editForm.crowd==='1'">
 							<el-step v-for="(item,index) in dicts.bidStep" :title="item.name" :description="item.name" :key="index"></el-step> 
 						</el-steps> 
-						<p v-if="!toPayVisible">  
+						<p v-if="!toPayVisible &&  activateTabPaneName=='82'">  
 						
 						<el-row v-if="editForm.crowd==='1'">
 							<el-col :span="18">  
@@ -368,14 +368,14 @@
 									</el-col>
 								</el-row>
 							</el-col>
-							<el-col :span="6">  
+							<el-col :span="6" v-if="needPayMarketAt>0">  
 								<strong> 合计待付款￥:</strong>&nbsp;&nbsp;<font style="font-size:48px;color:red;"> {{needPayMarketAt}}&nbsp;</font>元
 								 <br/>
 								 <el-button class="padding" @click="toPayAt" type="primary">去付款</el-button> 
 							</el-col> 
 						</el-row>  
 						</p>
-						 <to-pay v-else :task-id="editForm.id" :visible="toPayVisible" :biz-type="'2'" @cancel="toPayVisible=false" @pay-success="onTaskPaySuccess"></to-pay>
+						 <to-pay v-else-if=" toPayVisible &&  activateTabPaneName=='82'" :task-id="editForm.id" :visible="toPayVisible" :biz-type="'2'" @cancel="toPayVisible=false" @pay-success="onTaskPaySuccess"></to-pay>
 					</el-tab-pane>
 					<el-tab-pane label="关注" name="91"> 
 						<xm-my-do-focus v-if="activateTabPaneName=='91'" :biz-id="editForm.id" :pbiz-id="editForm.projectId" :biz-name="editForm.name" focus-type="2"></xm-my-do-focus>
@@ -595,6 +595,9 @@
 				});
 			}, 
 			doInitMarket(data){ 
+				if(!data){
+					return;
+				}
 				var extInfos=new Map();
 				if(data.extInfos){
 					var ext=JSON.parse(data.extInfos)
@@ -828,20 +831,7 @@
 				}else if(fieldName==='dateRange'){
 					params.startTime=$event.startTime
 					params.endTime=$event.endTime
-				}else if(fieldName==='shareFee'){ 
-					if($event>1000){
-						this.editForm.shareFee=this.xmTask.shareFee
-						this.$notify({position:'bottom-left',showClose:true,message:'分享佣金不能超过1000元',type: 'error'})
-						return;
-					}else if(!this.editForm.budgetAt){
-						this.editForm.shareFee=this.xmTask.shareFee
-						this.$notify({position:'bottom-left',showClose:true,message:'请先设置预算金额',type: 'error'})
-						return;
-					}else if(this.editForm.shareFee/this.editForm.budgetAt>0.05){
-						this.editForm.shareFee=this.xmTask.shareFee
-						this.$notify({position:'bottom-left',showClose:true,message:'分享佣金不能超过预算金额的5%',type: 'error'})
-						return;
-					}
+				}else if(fieldName==='shareFee'){  
 					params.shareFee=$event
 				}else if(fieldName==='supRequires'){
 					params.supRequires=$event.join(",") 
@@ -910,9 +900,10 @@
 				listXmTask({ids:[this.editForm.id]}).then(res=>{
 					Object.assign(this.editForm,res.data.data[0])
 					this.editFormBak={...this.editForm}
+					this.$emit("pay-success",this.editForm)
+					this.toPayVisible=false;
 				})
-				this.$emit("pay-success",this.editForm)
-				this.toPayVisible=false;
+				
 			}
 		},//end method
 		components: { 
