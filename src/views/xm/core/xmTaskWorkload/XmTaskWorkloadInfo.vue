@@ -104,8 +104,11 @@
           </template>
         </el-table-column>
 				<el-table-column prop="toConfirmWorkload" label="待确认工时" width="120" show-overflow-tooltip  sortable>
-          <template slot-scope="scope">
-            {{scope.row.toConfirmWorkload}}h
+          <template slot-scope="scope"> 
+              <el-popover title="当前任务所有待确认工时记录">
+                   <xm-task-workload-simple-list :visible="scope.row.id==editForm.id" :wstatus="'0'" :xm-task="{id:scope.row.taskId,name:scope.row.taskName,projectName:scope.row.projectName,projectId:scope.row.projectId,budgetWorkload:scope.row.budgetWorkload,actWorkload:scope.row.actWorkload}"  ref="xmTaskWorkloadSimpleList2"  @edit-some-fields="searchXmTaskWorkloads"></xm-task-workload-simple-list>
+                        <el-link slot="reference" style="display:inline;">{{scope.row.toConfirmWorkload}}h</el-link>
+               </el-popover>
           </template>
         </el-table-column>
 				<el-table-column prop="hadConfirmWorkload" label="已确认工时" width="120" show-overflow-tooltip  sortable>
