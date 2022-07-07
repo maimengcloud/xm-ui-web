@@ -51,26 +51,19 @@
 	import config from '@/common/config';//全局公共库
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
 	import { listXmTaskWorkload, delXmTaskWorkload, batchDelXmTaskWorkload,editXmTaskWorkloadSomeFields,initDicts } from '@/api/xm/core/xmTaskWorkload';
-	import  XmTaskWorkloadEdit from './XmTaskWorkloadEdit';//新增修改界面
 	import { mapGetters } from 'vuex'
 
 	export default {
 	    name:'xmTaskWorkloadSimpleListForBizDate',
 		components: {
-		    XmTaskWorkloadEdit,
 		},
-		props:[ 'visible','wstatus','sstatus','bizDate','projectId','userid','taskId'],
+		props:[ 'wstatus','sstatus','bizDate','projectId','userid','taskId','bizMonth'],
 		computed: {
 		    ...mapGetters(['userInfo']),
 
 		},
 		watch:{
-            visible(val){
-                if(val==true){
-                    this.initData();
-                    this.searchXmTaskWorkloads()
-                }
-            }
+             
 		},
 		data() {
 			return {
@@ -206,6 +199,10 @@
 				if(this.sstatus){
 					params.sstatus=this.sstatus
 				}
+
+				if(this.bizMonth){
+					params.bizMonth=this.bizMonth
+				}
 				
 				if(this.bizDate){
 					params.bizDate=this.bizDate
@@ -302,11 +299,9 @@
 		},//end methods
 		mounted() {
 			this.$nextTick(() => { 
-				initDicts(this);
-				if(this.visible==true){ 
-					this.initData()
-					this.searchXmTaskWorkloads();
-				}
+				initDicts(this); 
+				this.initData() 
+				this.searchXmTaskWorkloads(); 
                 this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmTaskWorkloadTable.$el)
 
         	});
