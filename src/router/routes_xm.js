@@ -172,8 +172,8 @@ export default {
         { path: 'xmProject/XmProjectCost', component: _import('xm/core/xmProject/XmProjectCost'), name: 'XmProjectCost', meta: { title: '应付款'}},    
 
         { path: 'xmTaskSbill/XmTaskSbillMng', component: _import('xm/core/xmTaskSbill/XmTaskSbillMng'), name: 'XmTaskSbilllMng', meta: { title: '任务结算单'}},    
-         { path: 'xmTaskWorkload/WorkloadSetDayListMy', component: _import('xm/core/xmTaskWorkload/WorkloadSetDayListMy'), name: 'WorkloadSetDayListMy', meta: { title: '工时日报表(我)'}},
-        { path: 'xmTaskWorkload/WorkloadSetMonthListMy', component: _import('xm/core/xmTaskWorkload/WorkloadSetMonthListMy'), name: 'WorkloadSetMonthListMy', meta: { title: '工时月报表(我)'}},
+         { path: 'xmTaskWorkload/WorkloadSetDayListMy', component: _import('xm/core/xmTaskWorkload/WorkloadSetDayListMy'), name: 'WorkloadSetDayListMy', meta: { title: '工时日报(我)'}},
+        { path: 'xmTaskWorkload/WorkloadSetMonthListMy', component: _import('xm/core/xmTaskWorkload/WorkloadSetMonthListMy'), name: 'WorkloadSetMonthListMy', meta: { title: '工时月报(我)'}},
         { path: 'xmTaskWorkload/XmTaskWorkloadInfoToSet', component: _import('xm/core/xmTaskWorkload/XmTaskWorkloadInfoToSet'), name: 'XmTaskWorkloadInfoToSet', meta: { title: '待结算工时'}}, 
          { path: 'xmTaskWorkload/WorkloadSetDayList', component: _import('xm/core/xmTaskWorkload/WorkloadSetDayList'), name: 'WorkloadSetDayList', meta: { title: '工时日报'}},
         { path: 'xmTaskWorkload/WorkloadSetMonthList', component: _import('xm/core/xmTaskWorkload/WorkloadSetMonthList'), name: 'WorkloadSetMonthList', meta: { title: '工时月报'}},
