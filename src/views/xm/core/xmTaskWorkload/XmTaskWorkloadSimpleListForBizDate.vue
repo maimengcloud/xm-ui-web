@@ -30,13 +30,15 @@
 						</span>
 					 </template>
 				 </el-table-column>
-				<el-table-column prop="remark" label="备注" width="120" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="ttype" label="任务类型" width="80" show-overflow-tooltip>
+				 <el-table-column prop="ttype" label="任务类型" width="80" show-overflow-tooltip>
 					 <template slot-scope="scope">
 						<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'taskType',scope.row.ttype)" :key="index" :type="item.className">{{item.name}}</el-tag>
 					 </template>
 
 				</el-table-column>
+				<el-table-column prop="remark" label="备注" width="120" show-overflow-tooltip></el-table-column> 
+				<el-table-column prop="taskName" label="任务" width="120" show-overflow-tooltip></el-table-column>
+				
 
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
