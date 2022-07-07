@@ -324,7 +324,7 @@
 									</el-col>
 									<el-col :span="18">
 										<el-form-item label="热门费用" prop="hotFee" v-if="editForm.hot==='1' && editForm.taskOut==='1'">
-											 {{editForm.hotFee}}&nbsp;元
+											 {{needPayMarketAt.hotFee}}&nbsp;元
 										</el-form-item>
 									</el-col>
 								</el-row>
@@ -337,7 +337,7 @@
 									</el-col>
 									<el-col :span="18">
 										<el-form-item label="置顶费用" prop="topFee" v-if="editForm.top==='1' && editForm.taskOut==='1'">
-											 {{editForm.topFee}}&nbsp;元
+											 {{needPayMarketAt.topFee}}&nbsp;元
 										</el-form-item>
 									</el-col>
 								</el-row>
@@ -350,7 +350,7 @@
 									</el-col>
 									<el-col :span="18">
 										<el-form-item label="加急费用" prop="urgentFee" v-if="editForm.urgent==='1' && editForm.taskOut==='1'">
-											 {{editForm.urgentFee}}&nbsp;元
+											 {{needPayMarketAt.urgentFee}}&nbsp;元
 										</el-form-item>
 									</el-col>
 								</el-row>
@@ -363,13 +363,13 @@
 									</el-col>
 									<el-col :span="18">
 										<el-form-item label="客服包办费用" prop="crmSupFee" v-if="editForm.crmSup==='1' && editForm.taskOut==='1'">
-											 {{editForm.crmSupFee}}&nbsp;元
+											 {{needPayMarketAt.crmSupFee}}&nbsp;元
 										</el-form-item>
 									</el-col>
 								</el-row>
 							</el-col>
-							<el-col :span="6" v-if="needPayMarketAt>0">  
-								<strong> 合计待付款￥:</strong>&nbsp;&nbsp;<font style="font-size:48px;color:red;"> {{needPayMarketAt}}&nbsp;</font>元
+							<el-col :span="6" v-if="needPayMarketAt.total>0">  
+								<strong> 合计待付款￥:</strong>&nbsp;&nbsp;<font style="font-size:48px;color:red;"> {{needPayMarketAt.total}}&nbsp;</font>元
 								 <br/>
 								 <el-button class="padding" @click="toPayMarketVisible=true" type="primary">去付款</el-button> 
 							</el-col> 
@@ -465,30 +465,36 @@
 			needPayEfundsAt(){
 				var toPayAt=0; 
 				if(this.editForm.estate=='1' && this.editForm.crowd==='1' && this.editForm.bidStep=='4'){
-					toPayAt=toPayAt+parseFloat(this.editForm.efunds||this.editForm.budgetAt)
+					toPayAt=toPayAt+parseFloat(this.editForm.efunds||this.editForm.quoteFinalAt)
 				}
 				return toPayAt;
 			},
 			
 			needPayMarketAt(){
+				debugger;
+				var toPayAtObj={total:0,topFee:0,hotFee:0,urgentFee:0,crmSup:0,shareFee:0}
 				var toPayAt=0;
+				var extInfos=this.doInitMarket(this.dicts.crowd_task_market)  
+				Object.assign(toPayAtObj,extInfos)
 				if(this.editForm.oshare=='1'){
 					toPayAt=toPayAt+parseFloat(this.editForm.shareFee||0)
 				}
 				if(this.editForm.top=='1'){
-					toPayAt=toPayAt+parseFloat(this.editForm.topFee||0)
+					toPayAt=toPayAt+parseFloat(extInfos.topFee||0)
 				}
 				if(this.editForm.hot=='1'){
-					toPayAt=toPayAt+parseFloat(this.editForm.hotFee||0)
+					toPayAt=toPayAt+parseFloat(extInfos.hotFee||0)
 				}
 				if(this.editForm.urgent=='1'){
-					toPayAt=toPayAt+parseFloat(this.editForm.urgentFee||0)
+					toPayAt=toPayAt+parseFloat(extInfos.urgentFee||0)
 				}
 				if(this.editForm.crmSup=='1'){
-					toPayAt=toPayAt+parseFloat(this.editForm.crmSupFee||0)
+					toPayAt=toPayAt+parseFloat(extInfos.crmSupFee||0)
 				} 
-				return toPayAt;
-			}
+				toPayAtObj.total=toPayAt;
+				return toPayAtObj;
+			},
+
 		},
 		props:['xmTask','visible','xmProject',"parentTask"],
 		watch: {
@@ -502,8 +508,7 @@
 					this.setSkills()
 					this.activateTabPaneName="2"
 					this.supRequires=this.editForm.supRequires?this.editForm.supRequires.split(","):[] 
-					this.doAddXmRecordVisit()
-					 this.doInitMarket(this.dicts.crowd_task_market)
+					this.doAddXmRecordVisit() 
 					//从新打开页面时某些数据需要重新加载，可以在这里添加
 				}
 			},  
@@ -521,7 +526,7 @@
 					xmTaskSettleSchemel:[],
 					bidStep:[],
 					marketState:[],
-					crowd_task_market:null,
+					crowd_task_market:{},
 				},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				editFormRules: {
@@ -595,30 +600,19 @@
 					}
 				});
 			}, 
-			doInitMarket(data){ 
+			doInitMarket(data){  
 				if(!data){
-					return;
+					return {};
 				}
-				var extInfos=new Map();
+				var extInfos={};
 				if(data.extInfos){
 					var ext=JSON.parse(data.extInfos)
 					ext.forEach(k=>{
-						extInfos.set(k.id,k.value)
+						extInfos[k.id]=k.value
 					})
 
 				}
-				if(this.editForm.top=='1'){
-					this.editForm.topFee=parseFloat(extInfos.get("topFee")||0)
-				}
-				if(this.editForm.hot=='1'){
-					this.editForm.hotFee=parseFloat(extInfos.get("hotFee")||0)
-				}
-				if(this.editForm.urgent=='1'){
-					this.editForm.urgentFee=parseFloat(extInfos.get("urgentFee")||0)
-				}
-				if(this.editForm.crmSup=='1'){
-					this.editForm.crmSupFee=parseFloat(extInfos.get("crmSupFee")||0)
-				}  
+				return extInfos; 
 			},
 			formatDate: function(time) {
 				const date = new Date(time);
@@ -918,9 +912,7 @@
 				this.supRequires=this.editForm.supRequires?this.editForm.supRequires.split(","):[]
 				this.setSkills();
 				this.doAddXmRecordVisit()
-				initSysDicts(this).then(res=>{ 
-					this.doInitMarket(res.data.data.crowd_task_market)
-				})
+				initSysDicts(this)
 			})
 			
 			/**在下面写其它函数***/
