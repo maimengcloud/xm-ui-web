@@ -57,13 +57,17 @@
 	    name:'xmTaskWorkloadSimpleListForBizDate',
 		components: {
 		},
-		props:[ 'wstatus','sstatus','bizDate','projectId','userid','taskId','bizMonth'],
+		props:[ 'visible','wstatus','sstatus','bizDate','projectId','userid','taskId','bizMonth'],
 		computed: {
 		    ...mapGetters(['userInfo']),
 
 		},
 		watch:{
-             
+             visible(val){
+				if(val){
+					this.searchXmTaskWorkloads();
+				}
+			 }
 		},
 		data() {
 			return {

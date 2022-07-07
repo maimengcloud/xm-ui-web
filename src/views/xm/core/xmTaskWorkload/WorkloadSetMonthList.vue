@@ -92,7 +92,7 @@
         >
           <template slot-scope="scope">  
 		  	<el-popover :title="'【'+ scope.row.bizMonth + '】所有工时记录'">
-                   <xm-task-workload-simple-list-for-biz-month v-if="scope.row.bizMonth==editForm.bizMonth && columnProp=='workload'"   :task-id="filters.taskId" :project-id="filters.project?filters.project.id:null"  ref="xmTaskWorkloadSimpleList2" :biz-month="scope.row.bizMonth"></xm-task-workload-simple-list-for-biz-month>
+                   <xm-task-workload-simple-list-for-biz-month v-if="scope.row.bizMonth==editForm.bizMonth && columnProp=='workload'"    :task-id="filters.taskId" :project-id="filters.project?filters.project.id:null"  ref="xmTaskWorkloadSimpleList2" :biz-month="scope.row.bizMonth"></xm-task-workload-simple-list-for-biz-month>
                         <el-link type="primary" slot="reference" style="display:inline;">{{scope.row.workload}}h</el-link>
                </el-popover>
 		  </template>
