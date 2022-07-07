@@ -296,7 +296,24 @@
 					<el-tab-pane label="营销推广" name="82" v-if="editForm.ntype!='1'">
 						<el-steps :active="calcTaskStep" align-center simple v-if="editForm.crowd==='1'">
 							<el-step v-for="(item,index) in dicts.bidStep" :title="item.name" :description="item.name" :key="index"></el-step> 
-						</el-steps> 
+						</el-steps>  
+						<el-row>
+							<el-col :span="6">
+								<el-form-item label="浏览人次" prop="browseUsers">
+									 {{editForm.browseUsers}}
+								</el-form-item> 
+							</el-col>
+							<el-col :span="6">
+								 <el-form-item label="浏览数" prop="browseTimes">
+									 {{editForm.browseTimes}}
+								</el-form-item> 
+							</el-col>
+							<el-col :span="6">
+								 <el-form-item label="候选人数" prop="execUsers">
+									 {{editForm.execUsers}}
+								</el-form-item> 
+							</el-col>
+						</el-row>  
 						<p v-if="!toPayMarketVisible &&  activateTabPaneName=='82'">  
 						
 						<el-row v-if="editForm.crowd==='1'">
@@ -650,9 +667,10 @@
 					this.load.add=false
 					var tips=res.data.tips;
 					if(tips.isOk){
-						this.skillVisible = false; 
-						// this.getXmTasks();
-						this.$emit("submit",this.editForm)
+						this.skillVisible = false;
+						this.editForm.taskSkillIds = skills.map(s=>s.skillId).join(",")
+						this.editForm.taskSkillNames = skills.map(s=>s.skillName).join(",")
+						this.editFormBak={...this.editForm}
 					}
 					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 				}).catch( err  => this.load.add=false);
