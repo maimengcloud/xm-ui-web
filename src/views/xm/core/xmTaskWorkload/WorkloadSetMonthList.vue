@@ -123,7 +123,7 @@
 		  	
 		  	<el-popover :title="'【'+ scope.row.bizMonth + '】【已确认】工时记录'">
                    <xm-task-workload-simple-list-for-biz-month :visible="scope.row.bizMonth==editForm.bizMonth && columnProp=='hadConfirmWorkload'"  wstatus="1"  :task-id="filters.taskId" :project-id="filters.project?filters.project.id:null"  ref="xmTaskWorkloadSimpleList2" :biz-month="scope.row.bizMonth"></xm-task-workload-simple-list-for-biz-month>
-                        <el-link type="primary" slot="reference" >{{scope.row.hadConfirmWorkload}}h</el-link>
+                        <el-link type="success" slot="reference" >{{scope.row.hadConfirmWorkload}}h</el-link>
                </el-popover>
 		  </template>
         </el-table-column>
@@ -138,7 +138,7 @@
 		  	
 		  	<el-popover :title="'【'+ scope.row.bizMonth + '】【无须结算】工时记录'">
                    <xm-task-workload-simple-list-for-biz-month :visible="scope.row.bizMonth==editForm.bizMonth && columnProp=='notNeedSetWorkload'" wstatus="1" sstatus="0"  :task-id="filters.taskId" :project-id="filters.project?filters.project.id:null"  ref="xmTaskWorkloadSimpleList2" :biz-month="scope.row.bizMonth"></xm-task-workload-simple-list-for-biz-month>
-                        <el-link type="primary" slot="reference" >{{scope.row.notNeedSetWorkload}}h</el-link>
+                        <el-link type="info" slot="reference" >{{scope.row.notNeedSetWorkload}}h</el-link>
                </el-popover>
 		  </template>
         </el-table-column>
@@ -153,7 +153,7 @@
 		  	
 		  	<el-popover :title="'【'+ scope.row.bizMonth + '】【待结算】工时记录'">
                    <xm-task-workload-simple-list-for-biz-month :visible="scope.row.bizMonth==editForm.bizMonth && columnProp=='toSetSworkload'" wstatus="1" sstatus="1"  :task-id="filters.taskId" :project-id="filters.project?filters.project.id:null"  ref="xmTaskWorkloadSimpleList2" :biz-month="scope.row.bizMonth"></xm-task-workload-simple-list-for-biz-month>
-                        <el-link type="primary" slot="reference" >{{scope.row.toSetSworkload}}h</el-link>
+                        <el-link type="warning" slot="reference" >{{scope.row.toSetSworkload}}h</el-link>
                </el-popover>
 		  </template>
         </el-table-column>
@@ -201,7 +201,7 @@
 		  	
 		  	<el-popover :title="'【'+ scope.row.bizMonth + '】【已结算】工时记录'">
                    <xm-task-workload-simple-list-for-biz-month :visible="scope.row.bizMonth==editForm.bizMonth && columnProp=='hadSetSworkload'"  wstatus="1" sstatus="4" :task-id="filters.taskId" :project-id="filters.project?filters.project.id:null"  ref="xmTaskWorkloadSimpleList2" :biz-month="scope.row.bizMonth"></xm-task-workload-simple-list-for-biz-month>
-                        <el-link type="primary" slot="reference" >{{scope.row.hadSetSworkload}}h</el-link>
+                        <el-link type="danger" slot="reference" >{{scope.row.hadSetSworkload}}h</el-link>
                </el-popover>
 		  </template>
         </el-table-column> 
