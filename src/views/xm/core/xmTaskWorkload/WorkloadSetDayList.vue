@@ -156,8 +156,7 @@
                         <el-link type="warning" slot="reference" style="display:inline;">{{scope.row.toSetSworkload}}h</el-link>
                </el-popover>
 		  </template>
-        </el-table-column>
-		<!--
+        </el-table-column> 
         <el-table-column
           prop="hadCommitSworkload"
           label="已提交审核"
@@ -188,8 +187,7 @@
                         <el-link type="primary" slot="reference" style="display:inline;">{{scope.row.hadAgreeSworkload}}h</el-link>
                </el-popover>
 		  </template>
-        </el-table-column> 
-		-->
+        </el-table-column>  
         <el-table-column
           prop="hadSetSworkload"
           label="已结算"
@@ -245,8 +243,8 @@ export default {
           "待结算",
           ...this.xmProjectWorkloadSetDays.map((i) => i.toSetSWorkload),
         ],
-        //[  "已提交审核",  ...this.xmProjectWorkloadSetDays.map((i) => i.hadCommitSworkload), ],
-        //['已审核',...this.xmProjectWorkloadSetDays.map(i=>i.hadAgreeSworkload)],
+        [  "已提交审核",  ...this.xmProjectWorkloadSetDays.map((i) => i.hadCommitSworkload), ],
+        ['已审核',...this.xmProjectWorkloadSetDays.map(i=>i.hadAgreeSworkload)],
         [
           "已结算",
           ...this.xmProjectWorkloadSetDays.map((i) => i.hadSetSworkload),
@@ -391,8 +389,7 @@ export default {
             seriesLayoutBy: "row",
             smooth: true,
             emphasis: { focus: "series" },
-          },
-		  /**
+          }, 
           {
             name: "已提交审核",
             type: "line",
@@ -406,8 +403,7 @@ export default {
         					seriesLayoutBy: 'row',
 							smooth:true,
         					emphasis: { focus: 'series' },  
-						},
-						 */
+						}, 
           {
             name: "已结算",
             type: "line",

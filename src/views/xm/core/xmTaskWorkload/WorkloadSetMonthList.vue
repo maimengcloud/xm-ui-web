@@ -157,7 +157,6 @@
                </el-popover>
 		  </template>
         </el-table-column>
-		<!--
         <el-table-column
           prop="hadCommitSworkload"
           label="已提交审核"
@@ -168,7 +167,7 @@
           <template slot-scope="scope">  
 		  	
 		  	<el-popover :title="'【'+ scope.row.bizMonth + '】【已提交审核】工时记录'">
-                   <xm-task-workload-simple-list-for-biz-month :visible="scope.row.bizMonth==editForm.bizMonth && columnProp=='workload'" wstatus="1" sstatus="2"  :task-id="filters.taskId" :project-id="filters.project?filters.project.id:null"  ref="xmTaskWorkloadSimpleList2" :biz-month="scope.row.bizMonth"></xm-task-workload-simple-list-for-biz-month>
+                   <xm-task-workload-simple-list-for-biz-month :visible="scope.row.bizMonth==editForm.bizMonth && columnProp=='hadCommitSworkload'" wstatus="1" sstatus="2"  :task-id="filters.taskId" :project-id="filters.project?filters.project.id:null"  ref="xmTaskWorkloadSimpleList2" :biz-month="scope.row.bizMonth"></xm-task-workload-simple-list-for-biz-month>
                         <el-link type="primary" slot="reference" >{{scope.row.hadCommitSworkload}}h</el-link>
                </el-popover>
 			
@@ -189,7 +188,6 @@
                </el-popover>
 		  </template>
         </el-table-column> 
-		-->
         <el-table-column
           prop="hadSetSworkload"
           label="已结算"
@@ -245,8 +243,8 @@ export default {
           "待结算",
           ...this.xmProjectWorkloadSetMonths.map((i) => i.toSetSworkload),
         ],
-        //[  "已提交审核",  ...this.xmProjectWorkloadSetMonths.map((i) => i.hadCommitSworkload), ],
-        //['已审核',...this.xmProjectWorkloadSetMonths.map(i=>i.hadAgreeSworkload)],
+        [  "已提交审核",  ...this.xmProjectWorkloadSetMonths.map((i) => i.hadCommitSworkload), ],
+        ['已审核',...this.xmProjectWorkloadSetMonths.map(i=>i.hadAgreeSworkload)],
         [
           "已结算",
           ...this.xmProjectWorkloadSetMonths.map((i) => i.hadSetSworkload),
@@ -392,7 +390,6 @@ export default {
             smooth: true,
             emphasis: { focus: "series" },
           },
-		  /**
           {
             name: "已提交审核",
             type: "line",
@@ -407,7 +404,6 @@ export default {
 							smooth:true,
         					emphasis: { focus: 'series' },  
 						},
-						 */
           {
             name: "已结算",
             type: "line",

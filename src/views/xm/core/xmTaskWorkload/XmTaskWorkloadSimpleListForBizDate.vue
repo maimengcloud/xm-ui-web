@@ -35,33 +35,38 @@
 						<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'taskState',scope.row.taskState)" :key="index" :type="item.className">{{item.name}}</el-tag>
 					 </template>
 
-				</el-table-column>
-				 <el-table-column prop="ttype" label="任务类型" width="80" show-overflow-tooltip>
-					 <template slot-scope="scope">
-						<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'taskType',scope.row.ttype)" :key="index" :type="item.className">{{item.name}}</el-tag>
-					 </template>
-
-				</el-table-column>
+				</el-table-column> 
 				<el-table-column prop="remark" label="备注" width="120" show-overflow-tooltip></el-table-column> 
 				<el-table-column prop="taskName" label="任务" width="120" show-overflow-tooltip></el-table-column>
+				<el-table-column fixed="right" label="操作" width="120">
+					<template slot-scope="scope">
+               				<xm-task-sbill-select style="display:inline;"  :auto-select="false"  :project-id="scope.row.projectId"    placeholder="结算"  @row-click="batchJoinToSbill(scope.row,$event)">
+								<span slot="title">{{scope.row.sbillId?'结算单:'+scope.row.sbillId:'选择结算单'}}</span>
+							</xm-task-sbill-select> 
+ 					</template>
+				</el-table-column>
 				
 
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
-		</el-row>
+		</el-row> 
 	</section>
 </template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库
+  	import {batchJoinToSbill} from "@/api/xm/core/xmTaskSbill";
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
 	import { listXmTaskWorkload, delXmTaskWorkload, batchDelXmTaskWorkload,editXmTaskWorkloadSomeFields,initDicts } from '@/api/xm/core/xmTaskWorkload';
 	import { mapGetters } from 'vuex'
+	
+  import XmTaskSbillSelect from "./XmTaskSbillSelect";
 
 	export default {
 	    name:'xmTaskWorkloadSimpleListForBizDate',
 		components: {
+			XmTaskSbillSelect
 		},
 		props:[ 'visible','wstatus','sstatus','bizDate','projectId','userid','taskId','bizMonth'],
 		computed: {
@@ -108,6 +113,7 @@
 					userid:'',username:'',ctime:'',taskId:'',cuserid:'',bizDate:'',wstatus:'',remark:'',ttype:'',id:'',sbillId:'',stime:'',sstatus:'',amt:'',samt:'',workload:''
 				},
 				maxTableHeight:300,
+				sbillVisible:false,
 			}
 		},//end data
 		methods: {
@@ -305,6 +311,39 @@
             initData: function(){
 
             },
+			showSbill(row){
+				this.editForm=row
+				this.sbillVisible=true;
+			},
+			//批量删除xmTaskWorkload
+			batchJoinToSbill: function (row,sbill) {
+				if(!sbill || sbill.id==null){
+				this.$notify({position:'bottom-left',showClose:true,message:'请选择结算单',type:'warning'})
+				return;
+				}
+				this.sbillVisible=false;
+				let params={
+				workloadIds:[row.id],
+				sbillId:sbill.id
+				};
+				if(this.sels.length>0){
+				if(this.sels.some(k=>k.projectId!=row.projectId)){
+					this.$notify({position:'bottom-left',showClose:true,message:'存在不同项目的工时单，请重新选择',type:'warning'})
+					return;
+				}
+				params.workloadIds=this.sels.map(i=>i.id); 
+				}  
+				this.load.edit=true;
+				batchJoinToSbill(params).then((res) => {
+					this.load.edit=false;
+					var tips=res.data.tips;
+					if( tips.isOk ){
+						this.pageInfo.count=true;
+						this.getXmTaskWorkloads();
+					}
+					this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
+				}).catch( err  => this.load.edit=false ); 
+			},
 
 		},//end methods
 		mounted() {
