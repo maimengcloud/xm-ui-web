@@ -30,6 +30,12 @@
 						</span>
 					 </template>
 				 </el-table-column>
+				 <el-table-column prop="taskState" label="任务状态" width="80" show-overflow-tooltip>
+					 <template slot-scope="scope">
+						<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'taskState',scope.row.taskState)" :key="index" :type="item.className">{{item.name}}</el-tag>
+					 </template>
+
+				</el-table-column>
 				 <el-table-column prop="ttype" label="任务类型" width="80" show-overflow-tooltip>
 					 <template slot-scope="scope">
 						<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'taskType',scope.row.ttype)" :key="index" :type="item.className">{{item.name}}</el-tag>

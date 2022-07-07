@@ -1,6 +1,6 @@
 <template>
   <section class="padding">
-    <el-row :gutter="5">
+    <el-row :gutter="5" v-loading="load.list">
       <el-col :span="18">
         <div>
           <div
@@ -300,10 +300,12 @@ export default {
       if (this.filters.taskId) {
         params.taskId = this.filters.taskId;
       }
+	  this.load.list=true;
       listProjectWorkloadSetMonth(params).then((res) => {
         this.xmProjectWorkloadSetMonths = res.data.tips.isOk
           ? res.data.data
           : this.xmProjectWorkloadSetMonths;
+		  this.load.list=false;
       });
     },
     initData() {
