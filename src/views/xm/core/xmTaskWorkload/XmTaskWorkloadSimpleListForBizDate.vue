@@ -305,7 +305,7 @@
 			this.$nextTick(() => { 
 				initDicts(this); 
 				this.initData() 
-				this.searchXmTaskWorkloads(); 
+				//this.searchXmTaskWorkloads(); 
                 this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmTaskWorkloadTable.$el)
 
         	});
