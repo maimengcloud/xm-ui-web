@@ -1,11 +1,11 @@
 <template>
 	<section>
 		<el-row v-if="userFocuss.length>0">
-	   <el-tag type="success">已关注</el-tag> <el-button @click="handleDel">取消关注</el-button>
+	   		<el-tag type="success">已关注</el-tag> <el-button @click="handleDel">取消关注</el-button>
 	   </el-row>
 	   
 	   <el-row v-if="userFocuss.length<=0">
-	   <el-tag type="primary">未关注</el-tag> <el-button @click="saveSubmit">去关注</el-button>
+	   		<el-tag type="primary">未关注</el-tag> <el-button @click="saveSubmit">去关注</el-button>
 	   </el-row>
 	</section>
 </template>
