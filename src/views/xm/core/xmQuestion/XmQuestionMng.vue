@@ -135,9 +135,12 @@
 					  <el-table-column prop="id" label="缺陷编号" width="100" show-overflow-tooltip fixed="left"></el-table-column>
 					 <el-table-column prop="name" label="缺陷名称"  min-width="150" show-overflow-tooltip fixed="left">
 						<template slot-scope="scope">  
-								<span class="vlink" @click="showEdit(scope.row)" :title="scope.row.name">  
-									 {{scope.row.name}}
-								</span>    
+ 									 {{scope.row.name}}   
+									<div class="tool-bar">
+										<span class="u-btn">
+											<el-button    @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑缺陷" circle plain size="mini"> </el-button>     
+										</span>
+									</div> 
 						</template>
 					</el-table-column>
 					<el-table-column prop="bugStatus" label="状态"  width="100">
