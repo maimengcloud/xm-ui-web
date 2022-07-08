@@ -132,15 +132,19 @@
 				<!--列表 XmQuestion xm_question-->
 				<el-table  element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"  ref="table" :height="maxTableHeight" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  					<el-table-column  label="全选" type="selection" min-width="50"  fixed="left"></el-table-column>
-					  <el-table-column prop="id" label="缺陷编号" width="100" show-overflow-tooltip fixed="left"></el-table-column>
-					 <el-table-column prop="name" label="缺陷名称"  min-width="150" show-overflow-tooltip fixed="left">
+					  <el-table-column prop="id" label="缺陷编号" width="140" show-overflow-tooltip fixed="left">
+						<template slot-scope="scope">  
+							{{scope.row.id}}
+							<div class="tool-bar">
+								<span class="u-btn">
+									<el-button    @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑缺陷" circle plain size="mini"> </el-button>     
+								</span>
+							</div> 
+						</template>
+					  </el-table-column>
+					 <el-table-column prop="name" label="缺陷名称"  min-width="200" show-overflow-tooltip fixed="left">
 						<template slot-scope="scope">  
  									 {{scope.row.name}}   
-									<div class="tool-bar">
-										<span class="u-btn">
-											<el-button    @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑缺陷" circle plain size="mini"> </el-button>     
-										</span>
-									</div> 
 						</template>
 					</el-table-column>
 					<el-table-column prop="bugStatus" label="状态"  width="100">
