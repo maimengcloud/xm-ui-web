@@ -4,7 +4,7 @@
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
 			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTaskSbillDetails" icon="el-icon-search">查询</el-button>
 			<span style="float:right;">
-			    <!--<el-button type="primary" @click="showAdd" icon="el-icon-plus" plain> </el-button>-->
+			    <el-button type="primary" @click="showAdd" icon="el-icon-plus" plain> </el-button>
 			    <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete" plain></el-button>
 		    </span>
 		</el-row>
@@ -20,30 +20,24 @@
 				</el-table-column>
 				--> 
 				<el-table-column prop="username" label="姓名" min-width="120" show-overflow-tooltip fixed="left">
-                    <template slot-scope="scope"> 
-						<span class="cell-text">
-							{{scope.row.username}}
-						</span>
-						<span class="cell-bar">
-							<el-popover :title="'【'+scope.row.username+'】在本任务的所有工时记录'" fixed="left">
-							<xm-task-workload-simple-list :visible="scope.row.id==editForm.id" :userid="scope.row.userid" :xm-task="{id:scope.row.taskId,name:scope.row.taskName,projectName:scope.row.projectName,projectId:scope.row.projectId,budgetWorkload:scope.row.budgetWorkload,actWorkload:scope.row.actWorkload}"  ref="xmTaskWorkloadSimpleList1" @edit-some-fields="searchXmTaskSbillDetails"></xm-task-workload-simple-list>
-							<el-button slot="reference" icon="el-icon-search" style="display:inline;">所有工时记录</el-button>
-							</el-popover>
-						</span>
+                    <template slot-scope="scope">  
+						<el-link title="查看该人员在当前任务下的所有工时记录"
+						type="primary"
+						style="display: inline"
+						@click="showPopover(scope.row, 'username', '', '')"
+						>{{ scope.row.username }}</el-link
+						> 
                     </template>
 				</el-table-column> 
 				<el-table-column prop="taskName" label="任务" min-width="120" show-overflow-tooltip fixed="left">
                     <template slot-scope="scope">  
-						<span class="cell-text">
-						{{scope.row.taskName}}
-						</span>
-						<span class="cell-bar">
-						<el-popover title="当前任务所有工时记录">
-							<xm-task-workload-simple-list :visible="scope.row.id==editForm.id" :xm-task="{id:scope.row.taskId,name:scope.row.taskName,projectName:scope.row.projectName,projectId:scope.row.projectId,budgetWorkload:scope.row.budgetWorkload,actWorkload:scope.row.actWorkload}"  ref="xmTaskWorkloadSimpleList2"  @edit-some-fields="searchXmTaskSbillDetails"></xm-task-workload-simple-list>
-							<el-button slot="reference" icon="el-icon-search" style="display:inline;">所有工时记录</el-button>
-						</el-popover>
-               
-						</span>
+						
+						<el-link title="查看该任务下的所有工时记录"
+						type="primary"
+						style="display: inline"
+						@click="showPopover(scope.row, 'taskName', '', '')"
+						>{{ scope.row.taskName }}</el-link
+						> 
                     </template>
 				</el-table-column> 
 				<el-table-column label="结算信息">    
@@ -70,6 +64,26 @@
 							<span> ￥ {{scope.row.uniPrice}}&nbsp;元 &nbsp;/ &nbsp;h </span>
 						</template>
 					</el-table-column>
+					<el-table-column prop="sworkload" label="待结工时" min-width="120" show-overflow-tooltip>
+						<template slot-scope="scope">
+							<el-link title="查看登记工时明细"
+								type="primary"
+								style="display: inline"
+								@click="showPopover(scope.row, 'sworkload', '', '')"
+								>{{ scope.row.workload }} h</el-link
+							> 
+						</template>
+					</el-table-column> 
+					<el-table-column prop="samt" label="待结金额" min-width="120" show-overflow-tooltip>
+						<template slot-scope="scope">
+							  ￥ {{scope.row.samt}}元   
+						</template>
+					</el-table-column>
+					<el-table-column prop="tactAt" label="已结金额" min-width="120" show-overflow-tooltip>
+						<template slot-scope="scope">  
+							￥ {{scope.row.tactAt}}元   
+ 						</template>
+					</el-table-column>  
 					<el-table-column prop="budgetAt" label="预算金额" min-width="120" show-overflow-tooltip>
 						<template slot-scope="scope">
 							<span> ￥ {{scope.row.budgetAt}}元 </span>
@@ -80,11 +94,6 @@
 							<span> ￥ {{scope.row.quoteAt}}元 </span>
 						</template>
 					</el-table-column>
-					<el-table-column prop="tactAt" label="已结金额" min-width="120" show-overflow-tooltip>
-						<template slot-scope="scope">  
-							￥ {{scope.row.tactAt}}元   
- 						</template>
-					</el-table-column>  
 					<el-table-column prop="sfee" label="服务费" min-width="120" show-overflow-tooltip>
 						<template slot-scope="scope">  
 							￥ {{scope.row.sfee}}元   
@@ -99,11 +108,6 @@
 						<template slot-scope="scope"> 
 						 	<span class="cell-text">  ￥ {{scope.row.othFee}} 元 </span>
                      		<span class="cell-bar"><el-input style="display:inline;" type="number" v-model="scope.row.othFee" placeholder="" @change="editSomeFields(scope.row,'othFee',$event)"></el-input></span>
-						</template>
-					</el-table-column>
-					<el-table-column prop="samt" label="结算金额" min-width="120" show-overflow-tooltip>
-						<template slot-scope="scope">
-							  ￥ {{scope.row.samt}}元   
 						</template>
 					</el-table-column>
 					<el-table-column prop="bizMonth" label="月份" min-width="120" show-overflow-tooltip>
@@ -135,7 +139,12 @@
 					</el-table-column>
 					<el-table-column prop="workload" label="登记工时" min-width="120" show-overflow-tooltip>
 						<template slot-scope="scope">
-							<span> {{scope.row.workload}} </span>
+							<el-link title="查看登记工时明细"
+								type="primary"
+								style="display: inline"
+								@click="showPopover(scope.row, 'workload', '', '')"
+								>{{ scope.row.workload }} h</el-link
+							> 
 						</template>
 					</el-table-column> 
 					<el-table-column prop="budgetAt" label="预算金额" min-width="120" show-overflow-tooltip>
@@ -191,6 +200,46 @@
 				<xm-task-sbill-detail-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-task-sbill-detail-edit>
 			</el-drawer>
 	    </el-row>
+		
+
+		<el-dialog
+		:title="
+			popoverConfig.subTitle
+		"
+		append-to-body
+		:visible.sync="popoverConfig.workloadDialogVisible"
+		top="20px"
+		width="80%"
+		>
+		<xm-task-workload-simple-list-for-biz-date
+			:visible="popoverConfig.workloadDialogVisible"
+			:task-id="popoverConfig.taskId"
+			:project-id="popoverConfig.projectId"
+			:sbill-id="popoverConfig.sbillId"
+			:detail-id="popoverConfig.detailId"
+			:wstatus="popoverConfig.wstatus"
+			:sstatus="popoverConfig.sstatus"   
+			:userid="popoverConfig.userid"
+		></xm-task-workload-simple-list-for-biz-date>
+		</el-dialog>
+		
+		<el-dialog
+		:title="
+			popoverPlusConfig.subTitle
+		"
+		append-to-body
+		:visible.sync="popoverPlusConfig.workloadDialogVisible"
+		top="20px"
+		width="80%"
+		@close="searchXmTaskSbillDetails()"
+		>
+		<xm-task-workload-simple-list-for-biz-date
+			:visible="popoverPlusConfig.workloadDialogVisible" 
+			:project-id="popoverPlusConfig.projectId" 
+			:wstatus="popoverPlusConfig.wstatus"
+			:sstatus="popoverPlusConfig.sstatus"    
+		></xm-task-workload-simple-list-for-biz-date>
+		</el-dialog>
 	</section>
 </template>
 
@@ -200,12 +249,12 @@
  	import { initDicts,listXmTaskSbillDetail, delXmTaskSbillDetail, batchDelXmTaskSbillDetail,editSomeFieldsXmTaskSbillDetail } from '@/api/xm/core/xmTaskSbillDetail';
 	import  XmTaskSbillDetailEdit from './XmTaskSbillDetailEdit';//新增修改界面
 	import { mapGetters } from 'vuex'
-  	import XmTaskWorkloadSimpleList from '../xmTaskWorkload/XmTaskWorkloadSimpleList';
+  	import XmTaskWorkloadSimpleListForBizDate from '../xmTaskWorkload/XmTaskWorkloadSimpleListForBizDate';
 	
 	export default {
 	    name:'xmTaskSbillDetailMng',
 		components: {
-		    XmTaskSbillDetailEdit,XmTaskWorkloadSimpleList,
+		    XmTaskSbillDetailEdit,XmTaskWorkloadSimpleListForBizDate,
 		},
 		props:['visible','branchId','userid','bizMonth','projectId','sbillId'],
 		computed: {
@@ -249,6 +298,24 @@
 					userid:'',username:'',ctime:'',taskId:'',bizDate:'',remark:'',id:'',sbillId:'',stime:'',sstatus:'',amt:'',samt:'',workload:'',projectId:'',sworkload:'',bizMonth:'',budgetAt:'',budgetWorkload:'',initWorkload:'',quoteAt:'',quoteWorkload:'',sschemel:'',uniPrice:'',qendTime:'',qstartTime:'',actEndTime:'',actStartTime:''
 				},
 				maxTableHeight:300,
+				popoverConfig:{
+					workloadDialogVisible:false,
+					wstatus:'',
+					sstatus:'',
+					subTitle:'',
+					taskId:'',
+					projectId:'',
+					sbillId:'',
+					detailId:'',
+					userid:'',
+				},
+				popoverPlusConfig:{
+					workloadDialogVisible:false,
+					wstatus:'1',
+					sstatus:'1',
+					subTitle:'查询项目下的所有【待结算】工时记录', 
+					projectId:'',
+				}
 			}
 		},//end data
 		methods: {
@@ -342,9 +409,9 @@
 				this.editForm = Object.assign({}, row);
 			},
 			//显示新增界面 XmTaskSbillDetail 工时登记表
-			showAdd: function () {
-				this.addFormVisible = true;
-				//this.addForm=Object.assign({}, this.editForm);
+			showAdd: function () { 
+				this.popoverPlusConfig.workloadDialogVisible=true
+				this.popoverPlusConfig.projectId=this.projectId
 			},
 			afterAddSubmit(){
 				this.addFormVisible=false;
@@ -461,6 +528,38 @@
 
             },
 			
+			showPopover(row, fieldName, wstatus, sstatus) {
+				this.editForm = row;
+				this.popoverConfig={
+					workloadDialogVisible:false,
+					wstatus:'',
+					sstatus:'',
+					subTitle:'',
+					taskId:'',
+					projectId:'',
+					subTitle:'',
+					sbillId:'',
+					detailId:'',
+					userid:'',
+				}
+				this.popoverConfig.workloadDialogVisible = true; 
+				this.popoverConfig.wstatus = wstatus;
+				this.popoverConfig.sstatus = sstatus;
+				if(fieldName=='username'){
+					this.popoverConfig.subTitle="查看【"+row.username+"】在任务【"+row.taskName+"】下的所有报工记录"
+					this.popoverConfig.taskId=row.taskId
+					this.popoverConfig.userid=row.userid
+				}else if(fieldName=='taskName'){ 
+					this.popoverConfig.subTitle="查看任务【"+row.taskName+"】下的所有报工记录"
+					this.popoverConfig.taskId=row.taskId
+				}else if(fieldName=='sworkload'||fieldName=='workload'){ 
+					this.popoverConfig.subTitle="查看【"+row.username+"】已加入当前任务，当前结算单的待结工时明细"
+					this.popoverConfig.taskId=row.taskId	
+					this.popoverConfig.detailId=row.id 
+					this.popoverConfig.userid=row.userid
+				} 
+				
+			},
 		},//end methods
 		mounted() {
 			this.$nextTick(() => {

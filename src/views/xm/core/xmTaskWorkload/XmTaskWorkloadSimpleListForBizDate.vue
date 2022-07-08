@@ -68,7 +68,7 @@
 		components: {
 			XmTaskSbillSelect
 		},
-		props:[ 'visible','wstatus','sstatus','bizDate','projectId','userid','taskId','bizMonth'],
+		props:[ 'visible','wstatus','sstatus','bizDate','projectId','userid','taskId','bizMonth','detailId','sbillId'],
 		computed: {
 		    ...mapGetters(['userInfo']),
 
@@ -222,6 +222,14 @@
 				
 				if(this.bizDate){
 					params.bizDate=this.bizDate
+				}
+
+				if(this.detailId){
+					params.detailId=this.detailId
+				}
+				
+				if(this.sbillId){
+					params.sbillId=this.sbillId
 				}
 				this.load.list = true;
 				listXmTaskWorkload(params).then((res) => {

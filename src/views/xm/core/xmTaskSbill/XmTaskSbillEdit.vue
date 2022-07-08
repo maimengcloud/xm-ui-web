@@ -118,6 +118,7 @@
             <el-row v-if="editForm.id &&activateName=='1'">
               <xm-task-sbill-detail-mng
                 :sbill-id="editForm.id"
+                :project-id="editForm.projectId"
               ></xm-task-sbill-detail-mng>
             </el-row>
           </el-tab-pane>
