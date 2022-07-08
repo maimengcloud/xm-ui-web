@@ -326,8 +326,7 @@
               fit
               border
               tooltip-effect="light"
-              :height="tableHeight"
-              :tree-props="{ children: 'children'  }"
+              :height="tableHeight" 
               row-key="id"
               ref="table"
               :row-style="{height:'60px'}"
@@ -936,10 +935,8 @@ export default {
         return 0;
       }
     },
-    tasksTreeData() {
-      let xmTasks = JSON.parse(JSON.stringify(this.xmTasks || []));
-      const tasksTreeData = treeTool.translateDataToTree(xmTasks,"parentTaskid","id");
-      return tasksTreeData;
+    tasksTreeData() { 
+      return this.xmTasks;
     },
 
   },

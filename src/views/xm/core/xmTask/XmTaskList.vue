@@ -32,8 +32,7 @@
 							highlight-current-row
 							stripe
 							fit
-							border
-							:tree-props="{children: 'children' }"
+							border 
 							row-key="id"
 							 :height="tableHeight"
 							>
@@ -106,10 +105,8 @@
 				'userInfo','roles'
 			]),  
 			tasksTreeData() {
-				
-				var d=JSON.parse(JSON.stringify(this.xmTasks))
-				 var data= treeTool.translateDataToTree(d,"parentTaskid","id");
-				 return data;
+				 
+				 return this.xmTasks;
 			},
 			  
 		},

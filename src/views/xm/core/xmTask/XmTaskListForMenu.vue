@@ -103,7 +103,7 @@
 			]), 
 			 
 			tasksTreeData() {
-				 return this.translateDataToTree(this.xmTasks);
+				 return this.xmTasks;
 			},
 			  
 		},
