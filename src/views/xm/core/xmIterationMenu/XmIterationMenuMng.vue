@@ -38,6 +38,11 @@
 										<span class="vlink" type="primary">{{scope.row.seqNo}}
 										&nbsp;&nbsp;{{scope.row.menuName}}
 										</span>
+										<div class="tool-bar">
+											<span class="u-btn"> 
+												<el-button      @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle plain size="mini"> </el-button>     
+											</span>
+										</div>
 									</template>
 								</el-table-column> 
 								<el-table-column prop="finishRate" label="进度" width="100" show-overflow-tooltip sortable>
@@ -65,6 +70,10 @@
 		  <el-dialog :visible.sync="menuVisible" width="80%" top="20px" append-to-body title="选择用户故事加入迭代">
 			  <xm-menu-select ref="menusSelect" style="margin-top:-30px;" iterationFilterType="not-join-curr-iteration" checkScope="3" :xm-product="xmIteration?{id:xmIteration.productId}:null" :xm-iteration="xmIteration" :visible="menuVisible" :is-select-menu="true" :multi="true"   @menus-selected="onSelectedMenus" ></xm-menu-select>
 		  </el-dialog>
+		<!--编辑 XmMenu xm_project_menu界面-->
+			<el-dialog title="编辑故事" :visible.sync="editFormVisible" :with-header="false" width="90%" top="20px"    append-to-body   :close-on-click-modal="false" >
+				<xm-menu-edit :xm-menu="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"   @edit-fields="onEditSomeFields"></xm-menu-edit>
+			</el-dialog>
 	</section>
 </template>
 
@@ -77,6 +86,7 @@
 	import  XmIterationMng from '@/views/xm/core/components/XmIterationSelect';//修改界面
 	import { mapGetters } from 'vuex'
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
+	import xmMenuEdit from '../xmMenu/xmMenuEdit';
 	import XmEpicFeaturesSelect from '../xmMenu/XmEpicFeaturesSelect'
 
 	export default {
@@ -308,6 +318,9 @@
 			onIterationClearSelect(){
 				this.iteration=null;
 				this.getXmIterationMenus();
+			},
+			onEditSomeFields(row){
+				Object.assign(this.editForm,row)
 			}
 			/**end 自定义函数请在上面加**/
 
@@ -316,6 +329,7 @@
 			XmIterationMng,
 			xmMenuSelect,
 			XmEpicFeaturesSelect,
+			xmMenuEdit
 		    //在下面添加其它组件
 		},
 		mounted() {

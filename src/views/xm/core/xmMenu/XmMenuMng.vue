@@ -187,7 +187,7 @@
 						</span>
 					 </el-row>
 					<el-row>
-						<el-table  element-loading-text="努力加载中" element-loading-spinner="el-icon-loading" :cell-style="cellStyleCalc" :expand-row-keys="expandRowKeysCpd" :header-cell-style="cellStyleCalc" :row-style="{height:'60px'}"   stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
+						<el-table  element-loading-text="努力加载中" element-loading-spinner="el-icon-loading" :cell-style="cellStyleCalc" :expand-row-keys="expandRowKeysCpd" :header-cell-style="cellStyleCalc" :row-style="{height:'60px'}"   stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId"  @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
 							<el-table-column sortable type="selection" width="40"></el-table-column>
 
 							<el-table-column prop="menuName" label="故事名称" min-width="300" fixed="left">
@@ -412,8 +412,7 @@
 	import {   batchDelXmIterationMenu,batchAddXmIterationMenu } from '@/api/xm/core/xmIterationMenu';
 
 	import  XmMenuAdd from './XmMenuAdd';//新增界面
-	import  XmMenuEdit from './XmMenuEdit';//修改界面
-	import  XmMenuMngBatch from './XmMenuMngBatch';//修改界面
+	import  XmMenuEdit from './XmMenuEdit';//修改界面 
 	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//新增界面
 	import  XmMenuTemplateMng from '../xmMenuTemplate/XmMenuTemplateMng';//新增界面
 	import XmMenuRichDetail from './XmMenuRichDetail';
@@ -440,10 +439,8 @@
 		      'userInfo','roles'
 			]),
 
-      		xmMenusTreeData() {
-				let xmMenus = JSON.parse(JSON.stringify(this.xmMenus || []));
-				let xmMenusTreeData = treeTool.translateDataToTree(xmMenus,"pmenuId","menuId");
-				 return xmMenusTreeData;
+      		xmMenusTreeData() { 
+				 return this.xmMenus;
 			},
 		},
 		watch:{
@@ -1330,8 +1327,7 @@
 			XmTaskList,
 			XmTaskMng,
 			XmTaskListForMenu,
-			UsersSelect,
-			XmMenuMngBatch,
+			UsersSelect, 
 		    TagDialog,
 			XmEpicFeaturesSelect,
 			XmMenuWorkload,
