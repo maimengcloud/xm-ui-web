@@ -37,8 +37,8 @@
 
 				</el-table-column> 
 				<el-table-column prop="remark" label="备注" width="120" show-overflow-tooltip></el-table-column> 
-				<el-table-column prop="taskName" label="任务" width="120" show-overflow-tooltip></el-table-column>
-				<el-table-column fixed="right" label="操作" width="120">
+				<el-table-column prop="taskName" label="任务" min-width="120" show-overflow-tooltip></el-table-column>
+				<el-table-column fixed="right" label="操作" min-width="120">
 					<template slot-scope="scope">
                				<xm-task-sbill-select style="display:inline;"  :auto-select="false"  :project-id="scope.row.projectId"    placeholder="结算"  @row-click="batchJoinToSbill(scope.row,$event)">
 								<span slot="title">{{scope.row.sbillId?'结算单:'+scope.row.sbillId:'选择结算单'}}</span>
@@ -350,7 +350,7 @@
 			this.$nextTick(() => { 
 				initDicts(this); 
 				this.initData() 
-				//this.searchXmTaskWorkloads(); 
+				this.searchXmTaskWorkloads(); 
                 this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmTaskWorkloadTable.$el)
 
         	});

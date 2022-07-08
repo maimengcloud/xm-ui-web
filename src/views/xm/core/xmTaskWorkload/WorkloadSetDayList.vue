@@ -58,7 +58,7 @@
         :row-style="{ height: '50px' }"
         highlight-current-row
         v-loading="load.list"
-		@row-click="rowClick"
+        @row-click="rowClick"
         border
         style="width: 100%"
         :header-cell-style="{ 'text-align': 'center' }"
@@ -90,12 +90,14 @@
           show-overflow-tooltip
           sortable
         >
-          <template slot-scope="scope">  
-		  	<el-popover :title="'【'+ scope.row.bizDate + '】所有工时记录'">
-                   <xm-task-workload-simple-list-for-biz-date  :visible="scope.row.bizDate==editForm.bizDate && columnProp=='workload'"    :task-id="filters.taskId" :project-id="filters.project?filters.project.id:null"  ref="xmTaskWorkloadSimpleList2" :biz-date="scope.row.bizDate"></xm-task-workload-simple-list-for-biz-date>
-                        <el-link type="primary" slot="reference" style="display:inline;">{{scope.row.workload}}h</el-link>
-               </el-popover>
-		  </template>
+          <template slot-scope="scope">
+            <el-link
+              type="primary"
+              style="display: inline"
+              @click="showPopover(scope.row, 'workload', '', '')"
+              >{{ scope.row.workload }}h</el-link
+            >
+          </template>
         </el-table-column>
         <el-table-column
           prop="toConfirmWorkload"
@@ -104,13 +106,15 @@
           show-overflow-tooltip
           sortable
         >
-          <template slot-scope="scope">  
-		  	
-		  	<el-popover :title="'【'+ scope.row.bizDate + '】【待确认】工时记录'">
-                   <xm-task-workload-simple-list-for-biz-date  :visible="scope.row.bizDate==editForm.bizDate && columnProp=='toConfirmWorkload'"   wstatus="0" :task-id="filters.taskId" :project-id="filters.project?filters.project.id:null"  ref="xmTaskWorkloadSimpleList2" :biz-date="scope.row.bizDate"></xm-task-workload-simple-list-for-biz-date>
-                        <el-link type="primary" slot="reference" style="display:inline;">{{scope.row.toConfirmWorkload}}h</el-link>
-               </el-popover>
-		  </template>
+          <template slot-scope="scope">
+            <el-link
+              type="primary"
+              slot="reference"
+              style="display: inline"
+              @click="showPopover(scope.row, 'toConfirmWorkload', '0', '')"
+              >{{ scope.row.toConfirmWorkload }}h</el-link
+            >
+          </template>
         </el-table-column>
         <el-table-column
           prop="hadConfirmWorkload"
@@ -119,13 +123,15 @@
           show-overflow-tooltip
           sortable
         >
-          <template slot-scope="scope"> 
-		  	
-		  	<el-popover :title="'【'+ scope.row.bizDate + '】【已确认】工时记录'">
-                   <xm-task-workload-simple-list-for-biz-date  :visible="scope.row.bizDate==editForm.bizDate && columnProp=='hadConfirmWorkload'"   wstatus="1"  :task-id="filters.taskId" :project-id="filters.project?filters.project.id:null"  ref="xmTaskWorkloadSimpleList2" :biz-date="scope.row.bizDate"></xm-task-workload-simple-list-for-biz-date>
-                        <el-link type="success" slot="reference" style="display:inline;">{{scope.row.hadConfirmWorkload}}h</el-link>
-               </el-popover>
-		  </template>
+          <template slot-scope="scope">
+            <el-link
+              type="success"
+              slot="reference"
+              style="display: inline"
+              @click="showPopover(scope.row, 'hadConfirmWorkload', '1', '')"
+              >{{ scope.row.hadConfirmWorkload }}h</el-link
+            >
+          </template>
         </el-table-column>
         <el-table-column
           prop="notNeedSetWorkload"
@@ -134,13 +140,15 @@
           show-overflow-tooltip
           sortable
         >
-          <template slot-scope="scope"> 
-		  	
-		  	<el-popover :title="'【'+ scope.row.bizDate + '】【无须结算】工时记录'">
-                   <xm-task-workload-simple-list-for-biz-date  :visible="scope.row.bizDate==editForm.bizDate && columnProp=='notNeedSetWorkload'"  wstatus="1" sstatus="0"  :task-id="filters.taskId" :project-id="filters.project?filters.project.id:null"  ref="xmTaskWorkloadSimpleList2" :biz-date="scope.row.bizDate"></xm-task-workload-simple-list-for-biz-date>
-                        <el-link type="info" slot="reference" style="display:inline;">{{scope.row.notNeedSetWorkload}}h</el-link>
-               </el-popover>
-		  </template>
+          <template slot-scope="scope">
+            <el-link
+              type="info"
+              slot="reference"
+              style="display: inline"
+              @click="showPopover(scope.row, 'notNeedSetWorkload', '1', '0')"
+              >{{ scope.row.notNeedSetWorkload }}h</el-link
+            >
+          </template>
         </el-table-column>
         <el-table-column
           prop="toSetSworkload"
@@ -150,13 +158,15 @@
           sortable
         >
           <template slot-scope="scope">
-		  	
-		  	<el-popover :title="'【'+ scope.row.bizDate + '】【待结算】工时记录'">
-                   <xm-task-workload-simple-list-for-biz-date  :visible="scope.row.bizDate==editForm.bizDate && columnProp=='toSetSworkload'"  wstatus="1" sstatus="1"  :task-id="filters.taskId" :project-id="filters.project?filters.project.id:null"  ref="xmTaskWorkloadSimpleList2" :biz-date="scope.row.bizDate"></xm-task-workload-simple-list-for-biz-date>
-                        <el-link type="warning" slot="reference" style="display:inline;">{{scope.row.toSetSworkload}}h</el-link>
-               </el-popover>
-		  </template>
-        </el-table-column> 
+            <el-link
+              type="warning"
+              slot="reference"
+              style="display: inline"
+              @click="showPopover(scope.row, 'toSetSworkload', '1', '1')"
+              >{{ scope.row.toSetSworkload }}h</el-link
+            >
+          </template>
+        </el-table-column>
         <el-table-column
           prop="hadCommitSworkload"
           label="已提交审核"
@@ -164,14 +174,15 @@
           show-overflow-tooltip
           sortable
         >
-          <template slot-scope="scope">  
-		  	
-		  	<el-popover :title="'【'+ scope.row.bizDate + '】【已提交审核】工时记录'">
-                   <xm-task-workload-simple-list-for-biz-date  :visible="scope.row.bizDate==editForm.bizDate && columnProp=='hadCommitSworkload'"  wstatus="1" sstatus="2"  :task-id="filters.taskId" :project-id="filters.project?filters.project.id:null"  ref="xmTaskWorkloadSimpleList2" :biz-date="scope.row.bizDate"></xm-task-workload-simple-list-for-biz-date>
-                        <el-link type="primary" slot="reference" style="display:inline;">{{scope.row.hadCommitSworkload}}h</el-link>
-               </el-popover>
-			
-		</template>
+          <template slot-scope="scope">
+            <el-link
+              type="primary"
+              slot="reference"
+              style="display: inline"
+              @click="showPopover(scope.row, 'hadCommitSworkload', '1', '2')"
+              >{{ scope.row.hadCommitSworkload }}h</el-link
+            >
+          </template>
         </el-table-column>
         <el-table-column
           prop="hadAgreeSworkload"
@@ -180,14 +191,16 @@
           show-overflow-tooltip
           sortable
         >
-          <template slot-scope="scope">  
-		  	
-		  	<el-popover :title="'【'+ scope.row.bizDate + '】【已审核】工时记录'">
-                   <xm-task-workload-simple-list-for-biz-date  :visible="scope.row.bizDate==editForm.bizDate && columnProp=='hadAgreeSworkload'"   wstatus="1" sstatus="3" :task-id="filters.taskId" :project-id="filters.project?filters.project.id:null"  ref="xmTaskWorkloadSimpleList2" :biz-date="scope.row.bizDate"></xm-task-workload-simple-list-for-biz-date>
-                        <el-link type="primary" slot="reference" style="display:inline;">{{scope.row.hadAgreeSworkload}}h</el-link>
-               </el-popover>
-		  </template>
-        </el-table-column>  
+          <template slot-scope="scope">
+            <el-link
+              type="primary"
+              slot="reference"
+              style="display: inline"
+              @click="showPopover(scope.row, 'hadAgreeSworkload', '1', '3')"
+              >{{ scope.row.hadAgreeSworkload }}h</el-link
+            >
+          </template>
+        </el-table-column>
         <el-table-column
           prop="hadSetSworkload"
           label="已结算"
@@ -195,16 +208,37 @@
           show-overflow-tooltip
           sortable
         >
-          <template slot-scope="scope">  
-		  	
-		  	<el-popover :title="'【'+ scope.row.bizDate + '】【已结算】工时记录'">
-                   <xm-task-workload-simple-list-for-biz-date  :visible="scope.row.bizDate==editForm.bizDate && columnProp=='hadSetSworkload'"   wstatus="1" sstatus="4" :task-id="filters.taskId" :project-id="filters.project?filters.project.id:null"  ref="xmTaskWorkloadSimpleList2" :biz-date="scope.row.bizDate"></xm-task-workload-simple-list-for-biz-date>
-                        <el-link type="danger" slot="reference" style="display:inline;">{{scope.row.hadSetSworkload}}h</el-link>
-               </el-popover>
-		  </template>
-        </el-table-column> 
+          <template slot-scope="scope">
+            <el-link
+              type="danger"
+              slot="reference"
+              style="display: inline"
+              @click="showPopover(scope.row, 'hadSetSworkload', '1', '4')"
+              >{{ scope.row.hadSetSworkload }}h</el-link
+            >
+          </template>
+        </el-table-column>
       </el-table>
     </el-row>
+
+    <el-dialog
+      :title="
+        '【' + editForm.bizDate + '】【' + stateName[columnProp] + '】工时记录'
+      "
+      append-to-body
+      :visible.sync="workloadDialogVisible"
+      top="20px"
+      width="80%"
+    >
+      <xm-task-workload-simple-list-for-biz-date
+        :visible="workloadDialogVisible"
+        :wstatus="wstatus"
+        :sstatus="sstatus"
+        :task-id="filters.taskId"
+        :project-id="filters.project ? filters.project.id : null"
+        :biz-date="editForm.bizDate"
+      ></xm-task-workload-simple-list-for-biz-date>
+    </el-dialog>
   </section>
 </template>
 
@@ -215,10 +249,11 @@ import { mapGetters } from "vuex";
 
 import XmProjectSelect from "@/views/xm/core/components/XmProjectSelect"; //新增界面
 import { listProjectWorkloadSetDay } from "@/api/xm/core/xmTaskWorkload";
-import XmTaskWorkloadSimpleListForBizDate from '@/views/xm/core/xmTaskWorkload/XmTaskWorkloadSimpleListForBizDate'
+import XmTaskWorkloadSimpleListForBizDate from "@/views/xm/core/xmTaskWorkload/XmTaskWorkloadSimpleListForBizDate";
 export default {
   components: {
-    XmProjectSelect,XmTaskWorkloadSimpleListForBizDate,
+    XmProjectSelect,
+    XmTaskWorkloadSimpleListForBizDate,
   },
   props: ["xmProduct", "xmProject", "queryScope"],
   computed: {
@@ -243,8 +278,14 @@ export default {
           "待结算",
           ...this.xmProjectWorkloadSetDays.map((i) => i.toSetSWorkload),
         ],
-        [  "已提交审核",  ...this.xmProjectWorkloadSetDays.map((i) => i.hadCommitSworkload), ],
-        ['已审核',...this.xmProjectWorkloadSetDays.map(i=>i.hadAgreeSworkload)],
+        [
+          "已提交审核",
+          ...this.xmProjectWorkloadSetDays.map((i) => i.hadCommitSworkload),
+        ],
+        [
+          "已审核",
+          ...this.xmProjectWorkloadSetDays.map((i) => i.hadAgreeSworkload),
+        ],
         [
           "已结算",
           ...this.xmProjectWorkloadSetDays.map((i) => i.hadSetSworkload),
@@ -277,8 +318,28 @@ export default {
       maxTableHeight: 300,
       visible: false,
       xmProjectWorkloadSetDays: [],
-	    editForm:{bizDate:'',toConfirmWorkload:0,hadConfirmWorkload:0,toSetSWorkload:0,hadAgreeSworkload:0,hadCommitSworkload:0},
-      columnProp:'',
+      editForm: {
+        bizDate: "",
+        toConfirmWorkload: 0,
+        hadConfirmWorkload: 0,
+        toSetSWorkload: 0,
+        hadAgreeSworkload: 0,
+        hadCommitSworkload: 0,
+      },
+      columnProp: "",
+      workloadDialogVisible: false,
+      wstatus: "",
+      sstatus: "",
+      stateName: {
+        workload: "所有",
+        toConfirmWorkload: "待确认",
+        hadConfirmWorkload: "已确认",
+		    notNeedSetWorkload:'无需结算',
+        toSetSworkload: "待结算", 
+        hadAgreeSworkload: "已审核待结算",
+        hadCommitSworkload: "已提交待审核",
+        hadSetSworkload: "已结算",
+      },
     }; //end return
   }, //end data
   methods: {
@@ -298,12 +359,12 @@ export default {
       if (this.filters.taskId) {
         params.taskId = this.filters.taskId;
       }
-      this.load.list=true
+      this.load.list = true;
       listProjectWorkloadSetDay(params).then((res) => {
         this.xmProjectWorkloadSetDays = res.data.tips.isOk
           ? res.data.data
           : this.xmProjectWorkloadSetDays;
-          this.load.list=false;
+        this.load.list = false;
       });
     },
     initData() {
@@ -389,7 +450,7 @@ export default {
             seriesLayoutBy: "row",
             smooth: true,
             emphasis: { focus: "series" },
-          }, 
+          },
           {
             name: "已提交审核",
             type: "line",
@@ -397,13 +458,14 @@ export default {
             smooth: true,
             emphasis: { focus: "series" },
           },
-          
-						{ 	name:'已审核',
-							type: 'line',
-        					seriesLayoutBy: 'row',
-							smooth:true,
-        					emphasis: { focus: 'series' },  
-						}, 
+
+          {
+            name: "已审核",
+            type: "line",
+            seriesLayoutBy: "row",
+            smooth: true,
+            emphasis: { focus: "series" },
+          },
           {
             name: "已结算",
             type: "line",
@@ -443,12 +505,18 @@ export default {
 
       this.xmProjectWorkloadSetDays = [];
     },
-    rowClick(row, column, event){ 
-      this.editForm=row 
-      this.columnProp=column.property
-    }
+    rowClick(row, column, event) {
+      this.editForm = row;
+      this.columnProp = column.property;
+    },
+    showPopover(row, fieldName, wstatus, sstatus) {
+      this.editForm = row;
+      this.workloadDialogVisible = true;
+      this.wstatus = wstatus;
+      this.sstatus = sstatus;
+    },
   }, //end method
-  mounted() { 
+  mounted() {
     this.initData();
   }, //end mounted
 };
