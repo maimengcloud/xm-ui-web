@@ -780,10 +780,17 @@
 			},
 			
 			afterAddExecSubmit(execForm){ 
+				debugger;
 				this.$emit("after-add-submit",execForm);
 			},
 			afterEditExecSubmit(execForm){  
-				this.$emit("after-edit-submit",execForm);
+				debugger;
+				listXmTask({ids:[this.editForm.id]}).then(res=>{
+						Object.assign(this.editForm,res.data.data[0])
+						this.editFormBak={...this.editForm}  
+						this.$emit("after-edit-submit",execForm);
+					}) 
+				
 			},     
 			onTagSelected(tags) {
 				this.tagSelectVisible = false; 
