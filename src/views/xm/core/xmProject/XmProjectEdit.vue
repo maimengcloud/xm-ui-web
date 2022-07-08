@@ -448,7 +448,7 @@
 					name: [{
 						required: true, message: '项目名称不可为空' , trigger: 'change'
 					},
-						{ min:5,max:50, message: '名称长度在2-50个字符', trigger: 'change' }
+						{ min:2,max:50, message: '名称长度在2-50个字符', trigger: 'change' }
 					], 
 					
 					code: [{

@@ -88,7 +88,7 @@
 				addFormRules: {  
 					productName: [
 						{ required: true, message: '产品名称不能为空', trigger: 'change' },
-						{ min:10,max:250, message: '名称长度在10-250个字符', trigger: 'change' }
+						{ min:2,max:250, message: '名称长度在2-250个字符', trigger: 'change' }
 					],
 					
 					code: [
