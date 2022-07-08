@@ -76,7 +76,7 @@
 				<el-table-column sortable type="index" width="45"></el-table-column>
 				<el-table-column prop="caseName" label="标题" min-width="100" show-overflow-tooltip>
 					<template scope="scope">
-						<el-link type="primary" @click="showEdit(scope.row)"> {{scope.row.id}}&nbsp;&nbsp;{{scope.row.caseName}}</el-link>
+						<el-link type="primary" @click="showEdit(scope.row)">  {{scope.row.caseName}}</el-link>
 					</template>
 				</el-table-column>
  				<el-table-column prop="caseRemark" label="备注" min-width="80" show-overflow-tooltip></el-table-column> 
