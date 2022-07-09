@@ -194,7 +194,7 @@
 					</el-tab-pane>
 					
 					<el-tab-pane label="执行人" name="42" v-if="editForm.ntype!='1'"> 
-						<xm-task-execuser-for-task v-if="activateTabPaneName=='42'" :xm-task="editForm" ></xm-task-execuser-for-task>
+						<xm-task-execuser-for-task v-if="activateTabPaneName=='42'" :xm-task="editForm" @after-add-submit="afterAddExecSubmit" @after-edit-submit="afterEditExecSubmit" @after-delete-submit="afterEditExecSubmit"></xm-task-execuser-for-task>
 					</el-tab-pane>
 					<el-tab-pane label="结算信息" name="7" v-if="editForm.ntype!='1'">
 						<el-form-item label="" prop="taskClass">
@@ -207,7 +207,7 @@
 						</el-form-item>
 					</el-tab-pane>
 					<el-tab-pane label="众包、互联网访问" name="8" v-if="editForm.ntype!='1'">
-						<el-steps :active="calcTaskStep" align-center simple v-if="editForm.crowd==='1'">
+						<el-steps :active="calcTaskStep" align-center simple v-if="editForm.crowd==='1'" finish-status="success" process-status="process">
 							<el-step v-for="(item,index) in dicts.bidStep" :title="item.name" :description="item.name" :key="index"></el-step> 
 						</el-steps> 
 						<p v-if="!toPayEfundsVisible &&  activateTabPaneName=='8'">
@@ -424,10 +424,7 @@
 		<el-drawer title="选中任务"  :visible.sync="selectTaskVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 			<xm-task-list :ptype="editForm.ptype" :xm-product="{id:editForm.productId,productName:''}" :sel-project="xmProject"   @task-selected="onSelectedTask"></xm-task-list>
 		</el-drawer> 	
-		
-		<el-drawer :title="'任务'+editForm.name+'的候选人'"  :visible.sync="execUserVisible" fullscreen size="60%" append-to-body  :close-on-click-modal="false">
-			<xm-execuser-mng :visible="execUserVisible" :xm-task="editForm"   @after-add-submit="afterAddExecSubmit" @after-edit-submit="afterEditExecSubmit" @after-delete-submit="afterEditExecSubmit" ref="execuserMng"></xm-execuser-mng>
-		</el-drawer>
+		 
 
 		<el-dialog append-to-body title="需求明细"  :visible.sync="menuDetailVisible" width="80%"  top="20px"  :close-on-click-modal="false">
 			<xm-menu-edit :visible="menuDetailVisible"  :reload="true" :xm-menu="{menuId:editForm.menuId,menuName:editForm.menuName}" ></xm-menu-edit>
@@ -477,7 +474,7 @@
 				'userInfo','roles'
 			]),   
 			calcTaskStep(){
-				return this.dicts['bidStep'].findIndex(i=>i.id==this.editForm.bidStep)
+				return this.dicts['bidStep'].findIndex(i=>i.id==this.editForm.bidStep)+1;
 			},
 			needPayEfundsAt(){
 				var toPayAt=0; 
