@@ -36,7 +36,7 @@
 								<span v-else-if="item.id=='5'"> <!--工作中-->
 								
 								<el-button type="primary" size="mini" v-if="editForm.bidStep>'1'" @click="activateTabPaneName='5'" plain>报工、报进度</el-button>
-								<el-button type="primary" size="mini" v-if="(editForm.bidStep=='4'||editForm.bidStep=='3') && (editForm.estate=='2')" @click="editXmTaskSomeFields(editForm,'bidStep','5')" plain>开始工作</el-button>
+								<el-button type="primary" size="mini" v-if="(editForm.bidStep=='4'||editForm.bidStep=='3') && (editForm.estate>='2')" @click="editXmTaskSomeFields(editForm,'bidStep','5')" plain>开始工作</el-button>
 								 
 								<el-button type="primary" size="mini" v-else-if="editForm.bidStep=='5' && (editForm.taskState=='1'||editForm.taskState=='0')" @click="editXmTaskSomeFields(editForm,'taskState','2')" plain>去提交任务</el-button>
 								<span v-else-if="editForm.bidStep=='5' && editForm.taskState=='2'">
@@ -325,11 +325,17 @@
 									<el-col :span="6">
 										<el-form-item label="托管资金" prop="estate"  v-if="editForm.taskOut==='1'">
 											<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'estate',editForm.estate)" :key="index" :type="item.className">{{item.name}}</el-tag>
+											<span v-if="editForm.efunds>0 && (editForm.estate=='2'||editForm.estate=='3')">{{editForm.efunds}}元</span>
 										</el-form-item> 
 									</el-col>
-									<el-col :span="18">
-										<el-form-item label="任务佣金" prop="efunds" v-if="editForm.taskOut==='1'">
+									<el-col :span="6">
+										<el-form-item label="预算佣金" prop="budgetAt" v-if="editForm.taskOut==='1'">
 											 {{editForm.budgetAt}}元
+										</el-form-item>
+									</el-col>
+									<el-col :span="6">
+										<el-form-item label="中标人总价" prop="quoteFinalAt" v-if="editForm.taskOut==='1'">
+											 {{editForm.quoteFinalAt}}元
 										</el-form-item>
 									</el-col>
 								</el-row> 
