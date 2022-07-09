@@ -30,7 +30,7 @@
 								</span>
 								<span v-else-if="item.id=='4'"> <!--拓管资金-->
 								<el-button type="primary" size="mini" v-if="(editForm.bidStep=='4'||editForm.bidStep=='3') && (editForm.estate=='0'||editForm.estate==''||editForm.estate=='1')" @click="activateTabPaneName='8'" plain>去托管佣金￥：{{needPayEfundsAt}}</el-button>
-								<el-button type="primary" size="mini" v-else-if="(editForm.bidStep=='4'||editForm.bidStep=='3') && (editForm.estate>'1')" @click="activateTabPaneName='8'" plain>已托管佣金￥：{{editForm.efunds}}</el-button>
+								<el-button type="primary" size="mini" v-if=" (editForm.estate>'1')" @click="activateTabPaneName='8'" plain>已托管佣金￥：{{editForm.efunds}}</el-button>
 								<span v-else>付款给平台</span>
 								</span>
 								<span v-else-if="item.id=='5'"> <!--工作中-->
@@ -46,7 +46,7 @@
 								<span v-else><br/>服务商提交任务、雇主验收</span>
 								</span>
 								<span v-else-if="item.id=='6'"> <!--付款完成-->
-								<el-button type="primary" size="mini" v-if="editForm.bidStep=='6'" plain>去关闭</el-button>
+								<el-button type="primary" size="mini" v-if="editForm.bidStep=='6'&&editForm.taskState=='4'" plain @click="editXmTaskSomeFields(editForm,'taskState','9')">去关闭</el-button> 
 								<span v-else>雇主付款、关闭任务</span>
 								</span>
 						</span>
