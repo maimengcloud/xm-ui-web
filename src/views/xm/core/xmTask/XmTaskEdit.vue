@@ -1,7 +1,7 @@
 <template>
 	<section>  
-		<el-row>
-			<el-col :span="editForm.crowd==='1'?4:0">
+		<el-row :gutter="20" >
+			<el-col :span="editForm.crowd==='1'?4:0" class="border padding">
 				<el-steps :active="calcTaskStep" align-center  v-if="editForm.crowd==='1'" finish-status="success" process-status="process" direction="vertical">
 					<el-step v-for="(item,index) in dicts.bidStep" :title="item.name" :description="item.name" :key="index"> 
 						<span slot="description">
@@ -10,7 +10,11 @@
 								</span> 
 								<span v-else-if="item.id=='1'"> <!--需求-->
 								<el-button type="primary" size="mini" v-if="editForm.bidStep=='0'" @click="editXmTaskSomeFields(editForm,'bidStep','1')" plain>去发布</el-button> 
-								<el-button type="primary" size="mini" v-else-if="editForm.bidStep=='1'" @click="editXmTaskSomeFields(editForm,'bidStep','0')" plain>取消发布</el-button> 
+								<span v-else-if="editForm.bidStep>='1'">
+									<el-button type="primary" size="mini" v-if="editForm.bidStep=='1'" @click="editXmTaskSomeFields(editForm,'bidStep','0')" plain>去取消发布</el-button> 
+									<el-button type="warning" size="mini" v-if="editForm.bidStep>='1'" @click="activateTabPaneName='82'" plain>参加推广活动</el-button> 
+								</span>
+								
 								<span v-else>发布、取消发布</span>
 
 								</span>
@@ -25,17 +29,21 @@
 								<span v-else>雇主选标、中标人管理</span>
 								</span>
 								<span v-else-if="item.id=='4'"> <!--拓管资金-->
-								<el-button type="primary" size="mini" v-if="(editForm.bidStep=='4'||editForm.bidStep=='3') && (editForm.estate=='0'||editForm.estate=='1')" @click="activateTabPaneName='8'" plain>去拓管资金</el-button>
+								<el-button type="primary" size="mini" v-if="(editForm.bidStep=='4'||editForm.bidStep=='3') && (editForm.estate=='0'||editForm.estate==''||editForm.estate=='1')" @click="activateTabPaneName='8'" plain>去托管佣金￥：{{needPayEfundsAt}}</el-button>
+								<el-button type="primary" size="mini" v-else-if="(editForm.bidStep=='4'||editForm.bidStep=='3') && (editForm.estate>'1')" @click="activateTabPaneName='8'" plain>已托管佣金￥：{{editForm.efunds}}</el-button>
 								<span v-else>付款给平台</span>
 								</span>
 								<span v-else-if="item.id=='5'"> <!--工作中-->
+								
+								<el-button type="primary" size="mini" v-if="editForm.bidStep>'1'" @click="activateTabPaneName='5'" plain>报工、报进度</el-button>
 								<el-button type="primary" size="mini" v-if="(editForm.bidStep=='4'||editForm.bidStep=='3') && (editForm.estate=='2')" @click="editXmTaskSomeFields(editForm,'bidStep','5')" plain>开始工作</el-button>
+								 
 								<el-button type="primary" size="mini" v-else-if="editForm.bidStep=='5' && (editForm.taskState=='1'||editForm.taskState=='0')" @click="editXmTaskSomeFields(editForm,'taskState','2')" plain>去提交任务</el-button>
 								<span v-else-if="editForm.bidStep=='5' && editForm.taskState=='2'">
 									<el-button type="primary" size="mini"  @click="editXmTaskSomeFields(editForm,'taskState','3')" plain>验收成功</el-button> 
 									<el-button type="primary" size="mini" @click="editXmTaskSomeFields(editForm,'taskState','1')" plain>验收不成功</el-button> 
 								</span> 
-								<span v-else>服务商提交任务、雇主验收</span>
+								<span v-else><br/>服务商提交任务、雇主验收</span>
 								</span>
 								<span v-else-if="item.id=='6'"> <!--付款完成-->
 								<el-button type="primary" size="mini" v-if="editForm.bidStep=='6'" plain>去关闭</el-button>
@@ -316,7 +324,7 @@
 								<el-row>
 									<el-col :span="6">
 										<el-form-item label="托管资金" prop="estate"  v-if="editForm.taskOut==='1'">
-											<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'estate',editForm.hot)" :key="index" :type="item.className">{{item.name}}</el-tag>
+											<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'estate',editForm.estate)" :key="index" :type="item.className">{{item.name}}</el-tag>
 										</el-form-item> 
 									</el-col>
 									<el-col :span="18">
@@ -519,8 +527,8 @@
 			},
 			needPayEfundsAt(){
 				var toPayAt=0; 
-				if(this.editForm.estate=='1' && this.editForm.crowd==='1' && this.editForm.bidStep=='4'){
-					toPayAt=toPayAt+parseFloat(this.editForm.efunds||this.editForm.quoteFinalAt)
+				if((this.editForm.estate=='1'||this.editForm.estate=='0'||this.editForm.estate=='') && this.editForm.crowd==='1' && this.editForm.bidStep<='4'){
+					toPayAt=toPayAt+parseFloat(this.editForm.efunds||this.editForm.quoteFinalAt||this.editForm.budgetAt)
 				}
 				return toPayAt;
 			},
