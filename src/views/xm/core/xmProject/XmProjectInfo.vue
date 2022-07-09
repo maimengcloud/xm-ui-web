@@ -166,43 +166,78 @@
                <el-row v-else-if="i.id=='1'"><!--售前-->
 			   		<span v-if="selProject.status==i.id">
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">需求管理</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">项目正式立项</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">项目立项</el-button>
 					</span>
 					<span v-if="selProject.status!=i.id">
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">产品管理</el-button>   
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">需求管理</el-button> 
 					</span> 
 			   </el-row>
                <el-row v-else-if="i.id=='2'"><!--立项中-->
 			   		<span v-if="selProject.status==i.id">
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">创建产品</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">进入售前</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='合同管理'">签订合同</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='团队'">创建团队</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='计划'">创建计划</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='预算'">预算管理</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">进入实施</el-button>
 					</span>
 					<span v-if="selProject.status!=i.id">
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">产品管理</el-button>   
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='合同管理'">合同管理</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='团队'">团队管理</el-button>  
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='计划'">计划管理</el-button> 
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='预算'">预算管理</el-button>
 					</span> 
 			   </el-row>
                <el-row v-else-if="i.id=='3'"><!--实施中-->
 			   		<span v-if="selProject.status==i.id">
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">创建产品</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">进入售前</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='迭代'">迭代管理</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='计划'">任务管理</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='缺陷'">缺陷管理</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='缺陷'">工时进度</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">暂停项目</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">结项申请</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">变更申请</el-button>
 					</span>
 					<span v-if="selProject.status!=i.id">
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">产品管理</el-button>   
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='迭代'">迭代管理</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='计划'">任务管理</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='缺陷'">缺陷管理</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">结项申请</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">变更申请</el-button>
 					</span> 
 			   </el-row>
                <el-row v-else-if="i.id=='4'"><!--暂停中-->
-					
+			   		<span v-if="selProject.status==i.id"> 
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">重新实施</el-button>
+					</span>  
 			   </el-row>
                <el-row v-else-if="i.id=='5'"><!--结项中-->
-					
+			   		<span v-if="selProject.status==i.id"> 
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">结项审批</el-button>
+					</span>
+					<span v-if="selProject.status!=i.id">
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='迭代'">结项审批</el-button> 
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='效能'">效能分析</el-button> 
+					</span>  
 			   </el-row>
-               <el-row v-else-if="i.id=='6'"><!--已结项-->
-					
+               <el-row v-else-if="i.id=='6'"><!--已结项--> 
+			   		<span v-if="selProject.status==i.id"> 
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='财务'">财务结算</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">转入售后</el-button>
+					</span> 
+					<span v-if="selProject.status!=i.id">
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='财务'">财务结算</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">转入售后</el-button>
+					</span>  
 			   </el-row>
                <el-row v-else-if="i.id=='7'"><!--售后-->
-					
+					<span v-if="selProject.status==i.id"> 
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">设为已完成</el-button>
+					</span> 
 			   </el-row>
                <el-row v-else-if="i.id=='8'"><!--已完成-->
+					<span v-if="selProject.status==i.id"> 
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">关闭项目</el-button>
+					</span> 
 					
 			   </el-row>
                <el-row v-else-if="i.id=='9'"><!--已关闭-->
