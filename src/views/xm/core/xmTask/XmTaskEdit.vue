@@ -1,8 +1,53 @@
 <template>
 	<section>  
 		<el-row>
+			<el-col :span="editForm.crowd==='1'?4:0">
+				<el-steps :active="calcTaskStep" align-center  v-if="editForm.crowd==='1'" finish-status="success" process-status="process" direction="vertical">
+					<el-step v-for="(item,index) in dicts.bidStep" :title="item.name" :description="item.name" :key="index"> 
+						<span slot="description">
+								<span v-if="item.id=='0'"><!--草稿-->
+									<span>修改任务信息</span>
+								</span> 
+								<span v-else-if="item.id=='1'"> <!--需求-->
+								<el-button type="primary" size="mini" v-if="editForm.bidStep=='0'" @click="editXmTaskSomeFields(editForm,'bidStep','1')" plain>去发布</el-button> 
+								<el-button type="primary" size="mini" v-else-if="editForm.bidStep=='1'" @click="editXmTaskSomeFields(editForm,'bidStep','0')" plain>取消发布</el-button> 
+								<span v-else>发布、取消发布</span>
+
+								</span>
+								<span v-else-if="item.id=='2'"> <!--投标中-->
+								<el-button type="primary" size="mini" v-if="editForm.bidStep=='1'" @click="activateTabPaneName='42'" plain>去投标</el-button> 
+								<el-button type="primary" size="mini" v-else-if="editForm.bidStep>'1'" @click="activateTabPaneName='42'" plain>投标人管理</el-button> 
+								<span v-else>投标、投标人管理</span>
+								</span>
+								<span v-else-if="item.id=='3'"> <!--选标-->
+								<el-button type="primary" size="mini" v-if="editForm.bidStep=='2'" @click="activateTabPaneName='42'" plain>去选标</el-button>
+								<el-button type="primary" size="mini" v-else-if="editForm.bidStep>'2'" @click="activateTabPaneName='42'" plain>中标人管理</el-button>
+								<span v-else>雇主选标、中标人管理</span>
+								</span>
+								<span v-else-if="item.id=='4'"> <!--拓管资金-->
+								<el-button type="primary" size="mini" v-if="(editForm.bidStep=='4'||editForm.bidStep=='3') && (editForm.estate=='0'||editForm.estate=='1')" @click="activateTabPaneName='8'" plain>去拓管资金</el-button>
+								<span v-else>付款给平台</span>
+								</span>
+								<span v-else-if="item.id=='5'"> <!--工作中-->
+								<el-button type="primary" size="mini" v-if="(editForm.bidStep=='4'||editForm.bidStep=='3') && (editForm.estate=='2')" @click="editXmTaskSomeFields(editForm,'bidStep','5')" plain>开始工作</el-button>
+								<el-button type="primary" size="mini" v-else-if="editForm.bidStep=='5' && (editForm.taskState=='1'||editForm.taskState=='0')" @click="editXmTaskSomeFields(editForm,'taskState','2')" plain>去提交任务</el-button>
+								<span v-else-if="editForm.bidStep=='5' && editForm.taskState=='2'">
+									<el-button type="primary" size="mini"  @click="editXmTaskSomeFields(editForm,'taskState','3')" plain>验收成功</el-button> 
+									<el-button type="primary" size="mini" @click="editXmTaskSomeFields(editForm,'taskState','1')" plain>验收不成功</el-button> 
+								</span> 
+								<span v-else>服务商提交任务、雇主验收</span>
+								</span>
+								<span v-else-if="item.id=='6'"> <!--付款完成-->
+								<el-button type="primary" size="mini" v-if="editForm.bidStep=='6'" plain>去关闭</el-button>
+								<span v-else>雇主付款、关闭任务</span>
+								</span>
+						</span>
+					</el-step> 
+				</el-steps> 
+			</el-col>
+			<el-col :span="editForm.crowd==='1'?20:24">
 			<!--新增界面 XmTask xm_task--> 
-			<el-form :model="editForm"  label-width="120px" label-position="left" :rules="editFormRules" ref="editForm"> 
+			<el-form :model="editForm"  label-width="120px" label-position="left" :rules="editFormRules" ref="editForm">  
 						<el-row :gutter="10">
 							<el-col :span="6">
 								<el-form-item label="序号" prop="sortLevel" >  
@@ -207,9 +252,7 @@
 						</el-form-item>
 					</el-tab-pane>
 					<el-tab-pane label="众包、互联网访问" name="8" v-if="editForm.ntype!='1'">
-						<el-steps :active="calcTaskStep" align-center simple v-if="editForm.crowd==='1'" finish-status="success" process-status="process">
-							<el-step v-for="(item,index) in dicts.bidStep" :title="item.name" :description="item.name" :key="index"></el-step> 
-						</el-steps> 
+						
 						<p v-if="!toPayEfundsVisible &&  activateTabPaneName=='8'">
 					 	<el-form-item> 
 							 <el-checkbox v-model="editForm.taskOut" true-label="1" false-label="0" id="taskOut" @change="editXmTaskSomeFields(editForm,'taskOut',$event)">外购</el-checkbox>   
@@ -293,10 +336,7 @@
 						 <to-pay v-else-if="toPayEfundsVisible &&  activateTabPaneName=='8'" :biz-type="'1'" :task-id="editForm.id" :visible="toPayEfundsVisible" @cancel="toPayEfundsVisible=false" @pay-success="onTaskPaySuccess"></to-pay>
 					</el-tab-pane>
 					
-					<el-tab-pane label="营销推广" name="82" v-if="editForm.ntype!='1'">
-						<el-steps :active="calcTaskStep" align-center simple v-if="editForm.crowd==='1'">
-							<el-step v-for="(item,index) in dicts.bidStep" :title="item.name" :description="item.name" :key="index"></el-step> 
-						</el-steps>  
+					<el-tab-pane label="营销推广" name="82" v-if="editForm.ntype!='1'"> 
 						<el-row>
 							<el-col :span="6">
 								<el-form-item label="浏览人次" prop="browseUsers">
@@ -402,6 +442,7 @@
 					</el-tab-pane>
 				</el-tabs>   
 			</el-form>
+			</el-col>
 		</el-row> 
 
 		<!-- <el-drawer append-to-body :title="'技能要求'" :visible.sync="skillVisible"  size="80%"  append-to-body   :close-on-click-modal="false">

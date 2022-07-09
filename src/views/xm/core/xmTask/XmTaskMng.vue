@@ -643,9 +643,8 @@
     <!--编辑 XmTask xm_task界面-->
     <el-dialog
       title="编辑任务"
-      :visible.sync="editFormVisible"
-      width="90%"
-      top="20px"
+      :visible.sync="editFormVisible" 
+      fullscreen
       append-to-body
       :close-on-click-modal="false"
     >
