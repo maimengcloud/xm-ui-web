@@ -1,8 +1,8 @@
 <template>
 	<section>  
 		<el-row :gutter="20" >
-			<el-col v-if="editForm.crowd==='1'" :span="4" class="border padding">
-				<el-steps :active="calcTaskStep" align-center  v-if="editForm.crowd==='1'" finish-status="success" process-status="process" direction="vertical">
+			<el-col v-if="editForm.crowd==='1' && editForm.taskOut=='1'" :span="4" class="border padding">
+				<el-steps :active="calcTaskStep" align-center  finish-status="success" process-status="process" direction="vertical">
 					<el-step v-for="(item,index) in dicts.bidStep" :title="item.name" :description="item.name" :key="index"> 
 						<span slot="description">
 								<span v-if="item.id=='0'"><!--草稿-->
@@ -57,9 +57,9 @@
 					</el-step> 
 				</el-steps> 
 			</el-col>
-			<el-col v-if="editForm.crowd!='1'" :span="4" class="border padding">
-				<el-steps :active="calcTaskStep" align-center  v-if="editForm.crowd==='1'" finish-status="success" process-status="process" direction="vertical">
-					<el-step v-for="(item,index) in dicts.bidStep" :title="item.name" :description="item.name" :key="index"> 
+			<el-col v-if="editForm.crowd!='1' ||  editForm.taskOut!='1'" :span="4" class="border padding">
+				<el-steps :active="calcTaskStep" align-center   finish-status="success" process-status="process" direction="vertical">
+					<el-step v-for="(item,index) in dicts.taskState" :title="item.name" :description="item.name" :key="index"> 
 						<span slot="description">
 								<span v-if="item.id=='0'"><!--草稿-->
 									<span>修改任务信息</span>
@@ -589,7 +589,12 @@
 				'userInfo','roles'
 			]),   
 			calcTaskStep(){
-				return this.dicts['bidStep'].findIndex(i=>i.id==this.editForm.bidStep)+1;
+				if(  this.editForm.crowd=='1' && this.editForm.taskOut=='1'){
+					return this.dicts['bidStep'].findIndex(i=>i.id==this.editForm.bidStep)+1;
+				}else{
+					return this.dicts['taskState'].findIndex(i=>i.id==this.editForm.taskState)+1;
+				}
+				
 			},
 			needPayEfundsAt(){
 				var toPayAt=0; 
