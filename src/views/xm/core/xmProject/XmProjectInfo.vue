@@ -428,6 +428,7 @@ export default {
       groupUserVisible: false,
       exportArr: ["任务", "计划", "需求监控"],
       dicts:  getDefOptions(),
+	  historyLength:0,
       /**end 自定义属性请在上面加 请加备注**/
     };
   }, //end data
@@ -716,8 +717,12 @@ export default {
       }
     },
     goBack() {
-      localStorage.setItem("project-infotype", "项目概览");
-      this.$router.back();
+      localStorage.setItem("project-infotype", "项目概览"); 
+	  if(this.historyLength>0){
+		this.$router.back();
+	  }else{
+		this.$router.push({path:'/xm/core/xmProject/XmProjectMng'})
+	  }
     },
   }, //end methods
   components: {
@@ -744,6 +749,9 @@ export default {
     XmReport,
     XmPlan,
     //在下面添加其它组件
+  },
+  activated: function () {
+	this.historyLength=window.history.length 
   },
   mounted() {
     this.$nextTick(() => {
