@@ -235,11 +235,9 @@
 			   </el-row>
                <el-row v-else-if="i.id=='6'"><!--已结项--> 
 			   		<span v-if="selProject.status==i.id"> 
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='财务'">财务结算</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','7')">转入售后</el-button>
 					</span> 
 					<span v-if="selProject.status!=i.id">
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='财务'">财务结算</el-button>
 					</span>  
 			   </el-row>
                <el-row v-else-if="i.id=='7'"><!--售后-->
