@@ -1,7 +1,7 @@
 <template>
 	<section>
 		<el-row class="xm-detail" v-loading.lock="load.edit || load.list"> 
-			<xm-project-edit :sel-project="selProject" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-edit> 
+			<xm-project-edit :sel-project="selProject" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @edit-fields="onEditFields"></xm-project-edit> 
 		</el-row>
 	</section>
 </template>
@@ -34,6 +34,10 @@
 				this.editFormVisible=true;
 				this.$emit("submit",params);
 			},
+			onEditFields(row){ 
+				Object.assign(this.selProject,row)
+				this.$emit("edit-fields",row);
+			}
 			/**end 自定义函数请在上面加**/
 		},//end methods
 		components: { 

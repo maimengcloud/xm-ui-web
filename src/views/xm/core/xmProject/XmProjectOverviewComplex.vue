@@ -23,7 +23,7 @@
         </el-menu-item>    
       </el-menu>
        <xm-project-overview  v-if="showPanelName=='overview'" :sel-project="selProject"></xm-project-overview>
-        <xm-project-detail  v-if="showPanelName=='detail'" :sel-project="selProject" @submit="afterEditSubmit"></xm-project-detail> 
+        <xm-project-detail  v-if="showPanelName=='detail'" :sel-project="selProject" @submit="afterEditSubmit" @edit-fields="onEditFields"></xm-project-detail> 
         <xm-product-project-link-mng v-if="showPanelName=='productProjectLink'" :sel-project="selProject"></xm-product-project-link-mng>
         <xm-iteration-link-for-project v-if="showPanelName=='iterationProjectLink'" :sel-project="selProject"></xm-iteration-link-for-project>
         
@@ -113,7 +113,12 @@ export default {
           this.afterEditSubmit(selProject)
         }
       })
-    }
+    },
+    
+			onEditFields(row){ 
+				Object.assign(this.selProject,row)
+				this.$emit("edit-fields",row);
+			}
   },
 
   mounted() {

@@ -1,6 +1,6 @@
 <template>
 	<section>
-		 <xm-project-info v-if="selProject" :sel-project="selProject" :visible="showInfo" @submit="afterEditSubmit"></xm-project-info>
+		 <xm-project-info v-if="selProject" :sel-project="selProject" :visible="showInfo" @submit="afterEditSubmit" @edit-fields="onEditFields"></xm-project-info>
 	</section>
 </template>
 
@@ -60,6 +60,11 @@
 
 					 }
 				 })
+			 },
+			 onEditFields(row){
+				Object.assign(this.selProject,row)
+				this.$emit('edit-fields',row)
+        		localStorage.setItem("xm-project-info-route",JSON.stringify(row)) 
 			 }
 			 
 			

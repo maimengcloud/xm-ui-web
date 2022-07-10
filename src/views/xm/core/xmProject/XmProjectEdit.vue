@@ -69,6 +69,11 @@
 							</el-row>
 						</el-tab-pane>
 						<el-tab-pane label="控制开关" name="2">   
+							<el-form-item label="项目状态" prop="status">  
+								<el-select v-model="editForm.status"  @change="editXmProjectSomeFields(editForm,'status',$event)">
+									<el-option v-for="(item,index) in dicts['projectStatus']" :key="index" :value="item.id" :label="item.name"></el-option>
+								</el-select>  
+							</el-form-item>  
 							<el-form-item label="报工方式" prop="wtype">  
 								<el-select v-model="editForm.wtype"  @change="editXmProjectSomeFields(editForm,'wtype',$event)">
 									<el-option   label="无须报工" value="0"  ></el-option> 
@@ -80,7 +85,10 @@
 								<el-checkbox  v-model="editForm.budgetCtrl"  :true-label="'1'" :false-label="'0'"   @change="editXmProjectSomeFields(editForm,'budgetCtrl',$event)">项目计划总预算大于项目总预算后将无法添加新的计划任务，进行项目预算变更后方可继续添加计划任务。</el-checkbox>  
  							</el-form-item>  
 							<el-form-item label="总预算超额预警" prop="budgetEarly">
-								<el-checkbox  v-model="editForm.budgetEarly"  :true-label="'1'" :false-label="'0'"   @change="editXmProjectSomeFields(editForm,'budgetEarly',$event)">总预算超出&nbsp;<el-input v-if="editForm.budgetEarly" type="number" v-model="editForm.earlyAmt" placeholder="预警额度" style="width:180px;" ></el-input> &nbsp;元将进入预警清单</el-checkbox> 
+								<el-checkbox  v-model="editForm.budgetEarly"  :true-label="'1'" :false-label="'0'"   @change="editXmProjectSomeFields(editForm,'budgetEarly',$event)">总预算超出&nbsp;<el-input  type="number" v-model="editForm.earlyAmt" placeholder="预警额度" style="width:180px;" @change="editXmProjectSomeFields(editForm,'earlyAmt',$event)"></el-input> &nbsp;元将进入预警清单</el-checkbox> 
+ 							</el-form-item> 
+							<el-form-item label="单个任务最大金额" prop="maxTaskAmt">
+								  预算金额超出&nbsp;<el-input  type="number" v-model="editForm.maxTaskAmt"  style="width:180px;" @change="editXmProjectSomeFields(editForm,'maxTaskAmt',$event)"></el-input> &nbsp;元的任务将被禁止保存 
  							</el-form-item> 
 							<el-form-item label="实际金额控制" prop="phaseActCtrl">
 								<el-checkbox  v-model="editForm.phaseActCtrl"  :true-label="'1'" :false-label="'0'"  @change="editXmProjectSomeFields(editForm,'phaseActCtrl',$event)">每条计划实际金额不能大于预算金额; 任务的实际金额合计不能大于与任务关联的上级计划的预算。</el-checkbox>  
@@ -468,10 +476,10 @@
 				},
 				//编辑界面数据  XmProject xm_project
 				editForm: {
-					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:0,bizProcInstId:'',bizFlowState:'',taxRate:6,planNouserAt:0,planIuserAt:0,planOuserAt:0,locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:0,totalReceivables:0,budgetMarginRate:13,contractAmt:0,planIuserPrice:85,planOuserPrice:100,planOuserCnt:1,planIuserCnt:1,planWorkingHours:0,planIuserWorkload:0,planOuserWorkload:0,budgetCtrl:'0',admUserid:'',admUsername:'',pmUserid:'',pmUsername:'',assUserid:'',assUsername:'',workType:'',wtype:'',earlyAmt:0,budgetEarly:'0',phaseActCtrl:'0'
+					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:0,bizProcInstId:'',bizFlowState:'',taxRate:6,planNouserAt:0,planIuserAt:0,planOuserAt:0,locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:0,totalReceivables:0,budgetMarginRate:13,contractAmt:0,planIuserPrice:85,planOuserPrice:100,planOuserCnt:1,planIuserCnt:1,planWorkingHours:0,planIuserWorkload:0,planOuserWorkload:0,budgetCtrl:'0',admUserid:'',admUsername:'',pmUserid:'',pmUsername:'',assUserid:'',assUsername:'',workType:'',wtype:'',earlyAmt:0,budgetEarly:'0',phaseActCtrl:'0',maxTaskAmt:0,
 				},
 				editFormBak: {
-					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:0,bizProcInstId:'',bizFlowState:'',taxRate:6,planNouserAt:0,planIuserAt:0,planOuserAt:0,locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:0,totalReceivables:0,budgetMarginRate:13,contractAmt:0,planIuserPrice:85,planOuserPrice:100,planOuserCnt:1,planIuserCnt:1,planWorkingHours:0,planIuserWorkload:0,planOuserWorkload:0,budgetCtrl:'0',admUserid:'',admUsername:'',pmUserid:'',pmUsername:'',assUserid:'',assUsername:'',workType:'',wtype:'',earlyAmt:0,budgetEarly:'0',phaseActCtrl:'0'
+					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:0,bizProcInstId:'',bizFlowState:'',taxRate:6,planNouserAt:0,planIuserAt:0,planOuserAt:0,locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:0,totalReceivables:0,budgetMarginRate:13,contractAmt:0,planIuserPrice:85,planOuserPrice:100,planOuserCnt:1,planIuserCnt:1,planWorkingHours:0,planIuserWorkload:0,planOuserWorkload:0,budgetCtrl:'0',admUserid:'',admUsername:'',pmUserid:'',pmUsername:'',assUserid:'',assUsername:'',workType:'',wtype:'',earlyAmt:0,budgetEarly:'0',phaseActCtrl:'0',maxTaskAmt:0,
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				xmGroups:[],
@@ -842,8 +850,10 @@
 					editXmProjectSomeFields(params).then(res=>{
 						var tips = res.data.tips;
 						if(tips.isOk){
-							this.$emit('edit-fields',params)
+							
 							Object.assign(row,params) 
+							Object.assign(this.selProject,row) 
+							this.$emit('edit-fields',row)
 							this.editFormBak=Object.assign({},row)
 						}else{   
 							Object.assign(this.editForm,this.editFormBak)

@@ -168,7 +168,7 @@
                <el-row v-else-if="i.id=='1'"><!--售前-->
 			   		<span v-if="selProject.status==i.id">
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">需求管理</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','2')">项目立项</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','2')">设为立项中</el-button>
 					</span>
 					<span v-if="selProject.status!=i.id">
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">需求管理</el-button> 
@@ -180,7 +180,7 @@
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='团队'">创建团队</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='计划'">创建计划</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='预算'">预算管理</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','3')">进入实施</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','3')">立项申请</el-button>
 					</span>
 					<span v-if="selProject.status!=i.id">
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='合同管理'">合同管理</el-button>
@@ -228,7 +228,7 @@
                <el-row v-else-if="i.id=='6'"><!--已结项--> 
 			   		<span v-if="selProject.status==i.id"> 
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='财务'">财务结算</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">转入售后</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','7')">转入售后</el-button>
 					</span> 
 					<span v-if="selProject.status!=i.id">
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='财务'">财务结算</el-button>
@@ -257,6 +257,7 @@
           v-if="infotype == '项目概览'"
           :sel-project="selProject"
           @submit="afterEditSubmit"
+          @edit-fields="onEditFields"
         ></xm-project-overview-complex>
         <xm-iteration-for-link-complex
           v-if="infotype == '迭代'"
@@ -308,16 +309,7 @@
           :visible="infotype == '测试计划'"
           :sel-project="selProject"
           ref="xmQuestion"
-        ></xm-test-case-exec-mng>
-        <xm-menu-with-plan
-          v-if="infotype == '需求监控'"
-          ref="xmMenuWithPlan"
-          :sel-project="selProject"
-        ></xm-menu-with-plan>
-        <xm-project-state-mng
-          v-if="infotype == '项目监控'"
-          :sel-project="selProject"
-        ></xm-project-state-mng>
+        ></xm-test-case-exec-mng> 
         <xm-budget
           v-if="infotype == '预算'"
           :sel-project="selProject"
@@ -775,12 +767,17 @@ export default {
     },
     goBack() {
       localStorage.setItem("project-infotype", "项目概览"); 
-	  if(this.historyLength>0){
-		this.$router.back();
-	  }else{
-		this.$router.push({path:'/xm/core/xmProject/XmProjectMng'})
-	  }
+      if(this.historyLength>0){
+      this.$router.back();
+      }else{
+      this.$router.push({path:'/xm/core/xmProject/XmProjectMng'})
+      }
     },
+    
+			onEditFields(row){ 
+				Object.assign(this.selProject,row)
+				this.$emit("edit-fields",row);
+			}
   }, //end methods
   components: {
     xmTaskMng,
