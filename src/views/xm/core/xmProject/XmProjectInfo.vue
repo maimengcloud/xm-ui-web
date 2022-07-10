@@ -102,16 +102,16 @@
         </el-submenu>
         <el-submenu index="更多">
           <template slot="title">更多 </template>
-          <el-menu-item index="需求监控">
+          <el-menu-item index="每日工时">
             <span slot="title"
-              ><i class="el-icon-video-camera"></i>需求监控</span
+              ><i class="el-icon-video-camera"></i>每日工时</span
             >
           </el-menu-item>
-          <el-menu-item index="项目监控">
+          <el-menu-item index="每月工时">
             <span slot="title"
-              ><i class="el-icon-video-camera"></i>项目监控</span
+              ><i class="el-icon-video-camera"></i>每月工时</span
             >
-          </el-menu-item>
+          </el-menu-item> 
           <el-menu-item index="预算">
             <span slot="title"><i class="el-icon-coin"></i>预算</span>
           </el-menu-item>
@@ -157,10 +157,12 @@
                <el-row v-if="i.id=='0'"><!--初始-->
 			   		<span v-if="selProject.status==i.id">
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">创建产品</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='环境清单'">环境清单</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','1')">进入售前</el-button>
 					</span>
 					<span v-if="selProject.status!=i.id">
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">产品管理</el-button>   
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='环境清单'">环境清单</el-button>
 					</span> 
 			   </el-row>
                <el-row v-else-if="i.id=='1'"><!--售前-->
@@ -192,7 +194,9 @@
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='迭代'">迭代管理</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='计划'">任务管理</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='缺陷'">缺陷管理</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='缺陷'">工时进度</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='每日工时'">每日工时</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='每月工时'">每月工时</el-button> 
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='效能'">效能分析</el-button> 
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','4')">暂停项目</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','5')">结项申请</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">变更申请</el-button>
@@ -201,6 +205,9 @@
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='迭代'">迭代管理</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='计划'">任务管理</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='缺陷'">缺陷管理</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='每日工时'">每日工时</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='每月工时'">每月工时</el-button> 
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='效能'">效能分析</el-button> 
 						<el-button v-if="selProject.status<i.id" class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','5')">结项申请</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">变更申请</el-button>
 					</span> 
@@ -215,8 +222,7 @@
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">结项审批</el-button>
 					</span>
 					<span v-if="selProject.status!=i.id">
- 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='迭代'">结项审批</el-button> 
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='效能'">效能分析</el-button> 
+ 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='迭代'">结项审批</el-button>  
 					</span>  
 			   </el-row>
                <el-row v-else-if="i.id=='6'"><!--已结项--> 
@@ -359,6 +365,16 @@
           v-if="infotype == '效能'"
           :xm-project="selProject"
         ></xm-report>
+
+        <xm-workload-set-day-list
+          v-if="infotype == '每日工时'"
+          :xm-project="selProject"
+        ></xm-workload-set-day-list>
+
+        <xm-workload-set-month-list
+          v-if="infotype == '每月工时'"
+          :xm-project="selProject"
+        ></xm-workload-set-month-list>
       </el-col>
     </el-row>
   </section>
@@ -372,8 +388,7 @@ import { mapGetters } from "vuex";
 import xmTaskMng from "../xmTask/XmTaskMng";
 import xmGroupMng from "../xmGroup/XmGroupMng";
 import xmGroupSelect from "../xmGroup/XmGroupSelect";
-
-import xmExchange from "../xmExchange/XmExchangeMng";
+ 
 import xmQuestion from "../xmQuestion/XmQuestionMng";
 import xmFileMng from "../xmFile/XmFileMng";
 import xmDetail from "./XmProjectDetail";
@@ -383,13 +398,13 @@ import xmCost from "./XmProjectCost";
 import xmBudget from "./XmProjectBudgetCost";
 import xmContract from "../xmContract/XmContractMng";
 import xmEnvList from "../xmEnvList/XmEnvListMng";
-import xmMenuMng from "../xmMenu/XmMenuMng";
-import xmMenuWithPlan from "../xmMenu/XmMenuWithPlan";
-import xmProjectStateMng from "../xmProjectState/XmProjectStateMng";
+import xmMenuMng from "../xmMenu/XmMenuMng"; 
 import xmTestCaseExecMng from "../xmTestCaseExec/XmTestCaseExecMng";
 import XmIterationForLinkComplex from "../xmIteration/XmIterationForLinkComplex.vue";
 import XmProjectOverviewComplex from "./XmProjectOverviewComplex.vue";
 import XmProductForLinkComplex from "../xmProduct/XmProductForLinkComplex.vue";
+import XmWorkloadSetDayList from "../xmTaskWorkload/WorkloadSetDayList.vue";
+import XmWorkloadSetMonthList from "../xmTaskWorkload/WorkloadSetMonthList.vue";
 
 import XmReport from "@/views/xm/rpt/reportIndex";
 import XmPlan from "../xmTask/XmPlan.vue";
@@ -769,8 +784,7 @@ export default {
   }, //end methods
   components: {
     xmTaskMng,
-    xmGroupMng,
-    xmExchange,
+    xmGroupMng, 
     xmQuestion,
     xmFileMng,
     xmDetail,
@@ -780,9 +794,7 @@ export default {
     xmBudget,
     xmContract,
     xmEnvList,
-    xmMenuMng,
-    xmMenuWithPlan,
-    xmProjectStateMng,
+    xmMenuMng, 
     xmTestCaseExecMng,
     xmGroupSelect,
     XmIterationForLinkComplex,
@@ -790,6 +802,8 @@ export default {
     XmProductForLinkComplex,
     XmReport,
     XmPlan,
+    XmWorkloadSetDayList,
+    XmWorkloadSetMonthList
     //在下面添加其它组件
   },
   activated: function () {
