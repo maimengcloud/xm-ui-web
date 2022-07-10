@@ -1,7 +1,7 @@
 <template>
 	<section>
 		<el-row class="xm-detail" v-loading.lock="load.edit || load.list"> 
-			<xm-project-edit :sel-project="selProject" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @edit-fields="onEditFields"></xm-project-edit> 
+			<xm-project-edit :sel-project="selProject" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @edit-fields="onEditFields" ref="projectEdit"></xm-project-edit> 
 		</el-row>
 	</section>
 </template>

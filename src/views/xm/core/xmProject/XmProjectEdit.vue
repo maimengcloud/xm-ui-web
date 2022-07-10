@@ -59,7 +59,7 @@
 							</el-form-item>  
 								</el-col>
 							</el-row> 
-						<el-tabs value="1" accordion>
+						<el-tabs v-model="currTabPane" accordion>
 						<el-tab-pane label="项目描述" name="1">  
 							<el-form-item label="" prop="description" label-width="0px"> 
 								<el-input type="textarea" :rows="10" v-model="editForm.description" placeholder="项目描述"  ></el-input> 
@@ -224,8 +224,8 @@
 				
 				<el-button v-if="opType==='add'" v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>  
 				<span v-if="opType!=='add'" style="float:right;">
- 					<el-button icon="el-icon-star-on"  type="success"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_start_approva'})">立项申请</el-button>
-					<el-button icon="el-icon-success"  type="success" @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_over_approva'})">结项申请</el-button> 
+ 					<el-button icon="el-icon-star-on"  type="success" :disabled="editForm.status>'2'" @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_start_approva'})">立项申请</el-button>
+					<el-button icon="el-icon-success"  type="success" :disabled="editForm.status>'5'" @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_over_approva'})">结项申请</el-button> 
 				</span>
 		</el-row>
 		
@@ -384,6 +384,13 @@
 				this.fillBudgetMarginRateToField()
 			  } 
 		  },
+		  selProject:{
+			handler(newValue, oldValue) {
+				this.initData();
+			},
+			deep:true
+			
+		  },
 		  
 		  editForm:{  
 				handler(newValue, oldValue) {
@@ -490,6 +497,7 @@
 				maxTableHeight:300,
 				currUserType:'',
 				autoSet:false,
+				currTabPane:'1',
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data
