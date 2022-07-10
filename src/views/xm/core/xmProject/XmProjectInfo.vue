@@ -199,7 +199,7 @@
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='效能'">效能分析</el-button> 
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','4')">暂停项目</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','5')">结项申请</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">变更申请</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="projectChangeRequire()">变更申请</el-button>
 					</span>
 					<span v-if="selProject.status!=i.id">
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='迭代'">迭代管理</el-button>
@@ -209,7 +209,7 @@
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='每月工时'">每月工时</el-button> 
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='效能'">效能分析</el-button> 
 						<el-button v-if="selProject.status<i.id" class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','5')">结项申请</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">变更申请</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="showDetail()">变更申请</el-button>
 					</span> 
 			   </el-row>
                <el-row v-else-if="i.id=='4'"><!--暂停中-->
@@ -217,13 +217,13 @@
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','3')">重新激活</el-button>
 					</span>  
 			   </el-row>
-               <el-row v-else-if="i.id=='5'"><!--结项中-->
+        <el-row v-else-if="i.id=='5'"><!--结项中-->
 			   		<span v-if="selProject.status==i.id"> 
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">结项审批</el-button>
-					</span>
-					<span v-if="selProject.status!=i.id">
- 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='迭代'">结项审批</el-button>  
-					</span>  
+              <el-button class="step-btn" type="warning" size="mini"   plain @click="showCurrFlow()">结项审批</el-button>
+            </span>
+            <span v-if="selProject.status!=i.id">
+              <el-button class="step-btn" type="warning" size="mini"   plain @click="showHisFlow()">结项审批</el-button>  
+            </span>  
 			   </el-row>
                <el-row v-else-if="i.id=='6'"><!--已结项--> 
 			   		<span v-if="selProject.status==i.id"> 
@@ -258,6 +258,7 @@
           :sel-project="selProject"
           @submit="afterEditSubmit"
           @edit-fields="onEditFields"
+          ref="项目概览"
         ></xm-project-overview-complex>
         <xm-iteration-for-link-complex
           v-if="infotype == '迭代'"
@@ -777,7 +778,16 @@ export default {
 			onEditFields(row){ 
 				Object.assign(this.selProject,row)
 				this.$emit("edit-fields",row);
-			}
+			},
+      showCurrFlow(){
+        this.$refs['项目概览'].showPanelName='currFlow'
+      },
+      showHisFlow(){
+        this.$refs['项目概览'].showPanelName='hisFlow'
+      },
+      showDetail(){
+        this.$refs['项目概览'].showPanelName='detail'
+      }
   }, //end methods
   components: {
     xmTaskMng,
