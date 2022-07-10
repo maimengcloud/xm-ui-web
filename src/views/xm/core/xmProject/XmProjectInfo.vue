@@ -147,6 +147,7 @@
     </el-row>
     <el-row>
       <el-col :span="infotype=='项目概览'?4:0" class="padding border">
+      <h4 class="padding-bottom">常用功能快捷导航</h4>
         <el-steps :active="calcProjectStatusStep" finish-status="success" direction="vertical">
           <el-step
             v-for="(i, index) in dicts['projectStatus']"
@@ -200,6 +201,7 @@
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='缺陷'">缺陷管理</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='每日工时'">每日工时</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='每月工时'">每月工时</el-button> 
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='费用'">费用管理</el-button> 
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='效能'">效能分析</el-button> 
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','4')">暂停项目</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="projectChangeRequire()">变更申请</el-button>
@@ -211,6 +213,7 @@
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='缺陷'">缺陷管理</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='每日工时'">每日工时</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='每月工时'">每月工时</el-button> 
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='费用'">费用管理</el-button> 
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='效能'">效能分析</el-button> 
 						<el-button v-if="selProject.status<i.id" class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','5')">结项申请</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="showDetail()">变更申请</el-button>
