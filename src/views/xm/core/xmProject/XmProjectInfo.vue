@@ -157,7 +157,7 @@
                <el-row v-if="i.id=='0'"><!--初始-->
 			   		<span v-if="selProject.status==i.id">
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">创建产品</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">进入售前</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','1')">进入售前</el-button>
 					</span>
 					<span v-if="selProject.status!=i.id">
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">产品管理</el-button>   
@@ -166,7 +166,7 @@
                <el-row v-else-if="i.id=='1'"><!--售前-->
 			   		<span v-if="selProject.status==i.id">
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">需求管理</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">项目立项</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','2')">项目立项</el-button>
 					</span>
 					<span v-if="selProject.status!=i.id">
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">需求管理</el-button> 
@@ -178,7 +178,7 @@
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='团队'">创建团队</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='计划'">创建计划</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='预算'">预算管理</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">进入实施</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','3')">进入实施</el-button>
 					</span>
 					<span v-if="selProject.status!=i.id">
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='合同管理'">合同管理</el-button>
@@ -193,21 +193,21 @@
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='计划'">任务管理</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='缺陷'">缺陷管理</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='缺陷'">工时进度</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">暂停项目</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">结项申请</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','4')">暂停项目</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','5')">结项申请</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">变更申请</el-button>
 					</span>
 					<span v-if="selProject.status!=i.id">
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='迭代'">迭代管理</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='计划'">任务管理</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='缺陷'">缺陷管理</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">结项申请</el-button>
+						<el-button v-if="selProject.status<i.id" class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','5')">结项申请</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">变更申请</el-button>
 					</span> 
 			   </el-row>
                <el-row v-else-if="i.id=='4'"><!--暂停中-->
 			   		<span v-if="selProject.status==i.id"> 
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">重新实施</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','3')">重新激活</el-button>
 					</span>  
 			   </el-row>
                <el-row v-else-if="i.id=='5'"><!--结项中-->
@@ -215,7 +215,7 @@
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">结项审批</el-button>
 					</span>
 					<span v-if="selProject.status!=i.id">
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='迭代'">结项审批</el-button> 
+ 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='迭代'">结项审批</el-button> 
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='效能'">效能分析</el-button> 
 					</span>  
 			   </el-row>
@@ -226,17 +226,16 @@
 					</span> 
 					<span v-if="selProject.status!=i.id">
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='财务'">财务结算</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">转入售后</el-button>
 					</span>  
 			   </el-row>
                <el-row v-else-if="i.id=='7'"><!--售后-->
 					<span v-if="selProject.status==i.id"> 
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">设为已完成</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','8')">设为已完成</el-button>
 					</span> 
 			   </el-row>
                <el-row v-else-if="i.id=='8'"><!--已完成-->
 					<span v-if="selProject.status==i.id"> 
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">关闭项目</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','9')">关闭项目</el-button>
 					</span> 
 					
 			   </el-row>
@@ -396,7 +395,7 @@ import XmReport from "@/views/xm/rpt/reportIndex";
 import XmPlan from "../xmTask/XmPlan.vue";
 
 import { initSimpleDicts } from "@/api/mdp/meta/item"; //下拉框数据查询
-import { getDefOptions } from "@/api/xm/core/xmProject";
+import { getDefOptions,editXmProjectSomeFields } from "@/api/xm/core/xmProject";
 
 export default {
   props: ["selProject", "visible"],
@@ -714,6 +713,49 @@ export default {
         return "";
       } else {
         return dateStr.substr(0, 10);
+      }
+    }, 
+
+    editXmProjectSomeFields(row,fieldName,$event){ 
+      var that=this;
+      var func=(params)=>{
+        editXmProjectSomeFields(params).then(res=>{
+          var tips = res.data.tips;
+          if(tips.isOk){
+            this.$emit('edit-fields',params)
+            Object.assign(row,params) 
+            this.selProjectBak=Object.assign({},row)
+          }else{   
+            Object.assign(this.selProject,this.selProjectBak)
+            this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+          }
+        })
+      }
+      var params={ids:[row.id]}; 
+        
+      params[fieldName]=$event 
+      
+      
+      if(fieldName=='description'){
+        this.$refs.selProject.validateField('description',err=>{
+          if(err){ 
+            this.$notify({position:'bottom-left',showClose:true,message: err,type: 'error'})
+            return;
+          }else{
+            func(params)
+          }
+        })
+      }else if(fieldName=='name'){  
+        this.$refs.selProject.validateField('name',err=>{
+          if(err){
+            this.$notify({position:'bottom-left',showClose:true,message: err,type: 'error'})
+            return;
+          }else{
+            func(params)
+          }
+        })
+      }else{
+        func(params)
       }
     },
     goBack() {

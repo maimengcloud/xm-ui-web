@@ -2,13 +2,7 @@
 	<section class="page-container padding border"> 
 		<el-row class="page-main" ref="table" :style="{overflowX:'auto',height:maxTableHeight+'px'}">  
 				<el-form :model="editForm"  label-width="120px" label-position="left" :rules="editFormRules" ref="editForm" class="editForm"> 
-							<el-row>  
-									
-									<span v-if="opType!=='add'" style="float:right;">
-										<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">保存</el-button>  
-										<el-button icon="el-icon-watch" type="warning"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_baseinfo_change_approva'})">基本信息修改申请</el-button>  
- 									</span>
-							</el-row>
+						 
 							<el-form-item label="项目代号" prop="code" v-if="opType==='add'">
 								<el-input v-model="editForm.code"  placeholder="项目代号，不可为空" >
 									<template slot="append">
@@ -68,17 +62,13 @@
 						<el-tabs value="1" accordion>
 						<el-tab-pane label="项目描述" name="1">  
 							<el-form-item label="" prop="description" label-width="0px"> 
-								<el-input type="textarea" :rows="10" v-model="editForm.description" placeholder="项目描述"  @change="editXmProjectSomeFields(editForm,'description',$event)"></el-input> 
-							</el-form-item>  
-								
-						</el-tab-pane>
-						<el-tab-pane label="控制开关" name="2">  
-							<el-row>  
-									
-									<span v-if="opType!=='add'" style="float:right;">
- 										<el-button icon="el-icon-watch" type="warning"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_baseinfo_change_approva'})">基本信息修改申请</el-button>  
- 									</span>
+								<el-input type="textarea" :rows="10" v-model="editForm.description" placeholder="项目描述"  ></el-input> 
+							</el-form-item>   
+							<el-row v-if="opType!=='add' && editForm.description!=editFormBak.description">  
+ 									<el-button v-loading="load.edit" type="primary" @click.native=" editXmProjectSomeFields(editForm,'description',editForm.description)" :disabled="load.edit==true">保存描述</el-button>   
 							</el-row>
+						</el-tab-pane>
+						<el-tab-pane label="控制开关" name="2">   
 							<el-form-item label="报工方式" prop="wtype">  
 								<el-select v-model="editForm.wtype"  @change="editXmProjectSomeFields(editForm,'wtype',$event)">
 									<el-option   label="无须报工" value="0"  ></el-option> 
@@ -223,7 +213,8 @@
 		</el-row>
 		<el-row>  
 				<!-- <el-button   type="text" @click.native="handleCancel" >关闭</el-button>   -->
-				<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>  
+				
+				<el-button v-if="opType==='add'" v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>  
 				<span v-if="opType!=='add'" style="float:right;">
  					<el-button icon="el-icon-star-on"  type="success"  @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_start_approva'})">立项申请</el-button>
 					<el-button icon="el-icon-success"  type="success" @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_over_approva'})">结项申请</el-button>
@@ -477,6 +468,9 @@
 				},
 				//编辑界面数据  XmProject xm_project
 				editForm: {
+					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:0,bizProcInstId:'',bizFlowState:'',taxRate:6,planNouserAt:0,planIuserAt:0,planOuserAt:0,locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:0,totalReceivables:0,budgetMarginRate:13,contractAmt:0,planIuserPrice:85,planOuserPrice:100,planOuserCnt:1,planIuserCnt:1,planWorkingHours:0,planIuserWorkload:0,planOuserWorkload:0,budgetCtrl:'0',admUserid:'',admUsername:'',pmUserid:'',pmUsername:'',assUserid:'',assUsername:'',workType:'',wtype:'',earlyAmt:0,budgetEarly:'0',phaseActCtrl:'0'
+				},
+				editFormBak: {
 					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:0,bizProcInstId:'',bizFlowState:'',taxRate:6,planNouserAt:0,planIuserAt:0,planOuserAt:0,locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:0,totalReceivables:0,budgetMarginRate:13,contractAmt:0,planIuserPrice:85,planOuserPrice:100,planOuserCnt:1,planIuserCnt:1,planWorkingHours:0,planIuserWorkload:0,planOuserWorkload:0,budgetCtrl:'0',admUserid:'',admUsername:'',pmUserid:'',pmUsername:'',assUserid:'',assUsername:'',workType:'',wtype:'',earlyAmt:0,budgetEarly:'0',phaseActCtrl:'0'
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
@@ -838,6 +832,7 @@
 				}else{ 
 				 	this.autoSet=false;
 				}
+				this.editFormBak={...this.editForm}
 			},
 			
 			
