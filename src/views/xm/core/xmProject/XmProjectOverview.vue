@@ -9,7 +9,7 @@
               </div>
               <el-row style="margin-bottom:18px">
                 <el-row>
-                  <span>项目负责人</span><span v-text="taskMng"></span>
+                  <span>项目负责人</span>&nbsp;<span><b>{{taskMng}}</b></span>
                 </el-row> 
               </el-row>
               <el-row style="margin-bottom:18px">

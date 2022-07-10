@@ -21,27 +21,27 @@
 								 项目代号为<strong> {{editForm.code}} </strong>,打印在合同上，甲乙方共享;项目内部编号为<strong> {{editForm.id}} </strong>，用于内部流转，&nbsp;生成规则:代号-四位随机码 
 							</el-form-item>  					
 							<el-form-item label="名称" prop="name"  v-show="opType==='add'">  
-									<el-input  v-model="editForm.name" placeholder="项目名称" ></el-input> 
+									<el-input  v-model="editForm.name" placeholder="项目名称" @change="editXmProjectSomeFields(editForm,'name',$event)"></el-input> 
 							</el-form-item>   
 							<el-row>
 								<el-col :span="8">
 									<el-form-item label="项目类型"  prop="xmType">
-										<el-select v-model="editForm.xmType">
+										<el-select v-model="editForm.xmType"  @change="editXmProjectSomeFields(editForm,'xmType',$event)">
 											<el-option v-for="(i,index) in dicts['projectType']" :label="i.name" :value="i.id" :key="index"></el-option> 
 										</el-select>   
 									</el-form-item>  
 								</el-col>
 								<el-col :span="8">
 									<el-form-item label="优先级别" prop="priority">  
-										<el-select v-model="editForm.priority">
+										<el-select v-model="editForm.priority" @change="editXmProjectSomeFields(editForm,'priority',$event)">
 											<el-option v-for="(i,index) in dicts['priority']" :label="i.name" :value="i.id" :key="index"></el-option> 
 										</el-select> 
 									</el-form-item> 
 								</el-col>  
 								<el-col :span="8">
-									<el-form-item label="工作方式"  prop="workType">
-										 <el-radio label="1" v-model="editForm.workType">scrum</el-radio>
-										 <el-radio label="2" v-model="editForm.workType">看板</el-radio>
+									<el-form-item label="工作方式"  prop="workType"  >
+										 <el-radio label="1" v-model="editForm.workType" @change="editXmProjectSomeFields(editForm,'workType',$event)">scrum</el-radio>
+										 <el-radio label="2" v-model="editForm.workType" @change="editXmProjectSomeFields(editForm,'workType',$event)">看板</el-radio>
 									</el-form-item>  
 								</el-col> 
 							</el-row>   
@@ -68,7 +68,7 @@
 						<el-tabs value="1" accordion>
 						<el-tab-pane label="项目描述" name="1">  
 							<el-form-item label="" prop="description" label-width="0px"> 
-								<el-input type="textarea" :rows="10" v-model="editForm.description" placeholder="项目描述" ></el-input> 
+								<el-input type="textarea" :rows="10" v-model="editForm.description" placeholder="项目描述"  @change="editXmProjectSomeFields(editForm,'description',$event)"></el-input> 
 							</el-form-item>  
 								
 						</el-tab-pane>
@@ -80,20 +80,20 @@
  									</span>
 							</el-row>
 							<el-form-item label="报工方式" prop="wtype">  
-								<el-select v-model="editForm.wtype">
+								<el-select v-model="editForm.wtype"  @change="editXmProjectSomeFields(editForm,'wtype',$event)">
 									<el-option   label="无须报工" value="0"  ></el-option> 
 									<el-option   label="每日报工" value="1"  ></el-option> 
 									<el-option   label="工期内任意日报工" value="2"  ></el-option> 
 								</el-select>  
 							</el-form-item>   
 							<el-form-item label="总预算控制" prop="budgetCtrl">
-								<el-checkbox  v-model="editForm.budgetCtrl"  :true-label="'1'" :false-label="'0'"  >项目计划总预算大于项目总预算后将无法添加新的计划任务，进行项目预算变更后方可继续添加计划任务。</el-checkbox>  
+								<el-checkbox  v-model="editForm.budgetCtrl"  :true-label="'1'" :false-label="'0'"   @change="editXmProjectSomeFields(editForm,'budgetCtrl',$event)">项目计划总预算大于项目总预算后将无法添加新的计划任务，进行项目预算变更后方可继续添加计划任务。</el-checkbox>  
  							</el-form-item>  
 							<el-form-item label="总预算超额预警" prop="budgetEarly">
-								<el-checkbox  v-model="editForm.budgetEarly"  :true-label="'1'" :false-label="'0'"  >总预算超出&nbsp;<el-input v-if="editForm.budgetEarly" type="number" v-model="editForm.earlyAmt" placeholder="预警额度" style="width:180px;" ></el-input> &nbsp;元将进入预警清单</el-checkbox> 
+								<el-checkbox  v-model="editForm.budgetEarly"  :true-label="'1'" :false-label="'0'"   @change="editXmProjectSomeFields(editForm,'budgetEarly',$event)">总预算超出&nbsp;<el-input v-if="editForm.budgetEarly" type="number" v-model="editForm.earlyAmt" placeholder="预警额度" style="width:180px;" ></el-input> &nbsp;元将进入预警清单</el-checkbox> 
  							</el-form-item> 
 							<el-form-item label="实际金额控制" prop="phaseActCtrl">
-								<el-checkbox  v-model="editForm.phaseActCtrl"  :true-label="'1'" :false-label="'0'" >每条计划实际金额不能大于预算金额; 任务的实际金额合计不能大于与任务关联的上级计划的预算。</el-checkbox>  
+								<el-checkbox  v-model="editForm.phaseActCtrl"  :true-label="'1'" :false-label="'0'"  @change="editXmProjectSomeFields(editForm,'phaseActCtrl',$event)">每条计划实际金额不能大于预算金额; 任务的实际金额合计不能大于与任务关联的上级计划的预算。</el-checkbox>  
  							</el-form-item>      
 						</el-tab-pane>
 						<el-tab-pane label="工期" name="3">
@@ -117,7 +117,7 @@
 									end-placeholder="计划完成日期"
 									value-format="yyyy-MM-dd HH:mm:ss"
 									:default-time="['00:00:00','23:59:59']"
-									:picker-options="pickerOptions"
+									:picker-options="pickerOptions" 
 								></date-range>    
 								<el-input  style="width:150px;" type="number" v-model="editForm.planWorkingHours" :precision="2" :step="8" :min="0" placeholder="预计工时"></el-input>小时 &nbsp;&nbsp;<el-tag>参考工时{{autoParams.weekday*8}}小时,工作日{{autoParams.weekday}}天</el-tag>  
 								<br>
@@ -245,7 +245,7 @@
 
 	import config from "@/common/config"; //全局公共库
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { addXmProject,editXmProject,getDefOptions,createProjectCode } from '@/api/xm/core/xmProject'; 
+	import { addXmProject,editXmProject,getDefOptions,createProjectCode,editXmProjectSomeFields } from '@/api/xm/core/xmProject'; 
 	import { uploadBase64 } from '@/api/mdp/arc/image'; 
 	
 	import { mapGetters } from 'vuex';  
@@ -838,7 +838,51 @@
 				}else{ 
 				 	this.autoSet=false;
 				}
-			}
+			},
+			
+			
+			editXmProjectSomeFields(row,fieldName,$event){ 
+				var that=this;
+				var func=(params)=>{
+					editXmProjectSomeFields(params).then(res=>{
+						var tips = res.data.tips;
+						if(tips.isOk){
+							this.$emit('edit-fields',params)
+							Object.assign(row,params) 
+							this.editFormBak=Object.assign({},row)
+						}else{   
+							Object.assign(this.editForm,this.editFormBak)
+							this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+						}
+					})
+				}
+				var params={ids:[row.id]}; 
+				 
+				params[fieldName]=$event 
+				
+				
+				if(fieldName=='description'){
+					this.$refs.editForm.validateField('description',err=>{
+						if(err){ 
+							this.$notify({position:'bottom-left',showClose:true,message: err,type: 'error'})
+							return;
+						}else{
+							func(params)
+						}
+					})
+				}else if(fieldName=='name'){  
+					this.$refs.editForm.validateField('name',err=>{
+						if(err){
+							this.$notify({position:'bottom-left',showClose:true,message: err,type: 'error'})
+							return;
+						}else{
+							func(params)
+						}
+					})
+				}else{
+					func(params)
+				}
+			},
 			/**end 在上面加自定义方法**/
 		},//end method
 		components: {  html2canvas,UsersSelect,

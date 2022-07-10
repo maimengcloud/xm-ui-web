@@ -46,6 +46,8 @@ export const createProjectCode = params => { return axios.post(`${base}/xm/core/
 export const unDelXmProject = params => { return axios.post(`${base}/xm/core/xmProject/unDel`, params); };
 
 
+export const editXmProjectSomeFields = params => { return axios.post(`${base}/xm/core/xmProject/editSomeFields`, params); }; 
+
 export const getDefOptions= ()=>{
     
     var options={
