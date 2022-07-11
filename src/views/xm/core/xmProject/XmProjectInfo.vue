@@ -439,8 +439,7 @@ export default {
       load: { list: false, edit: false },
       groupUserVisible: false,
       exportArr: ["任务", "计划", "需求监控"],
-      dicts:  getDefOptions(),
-	    historyLength:0,
+      dicts:  getDefOptions(), 
       maxTableHeight:300,
       /**end 自定义属性请在上面加 请加备注**/
     };
@@ -774,8 +773,9 @@ export default {
     },
     goBack() {
       localStorage.setItem("project-infotype", "项目概览"); 
-      if(this.historyLength>0){
-      this.$router.back();
+      
+      if(window.history.length>0){
+      this.$router.back(-1);
       }else{
       this.$router.push({path:'/xm/core/xmProject/XmProjectMng'})
       }
@@ -838,10 +838,7 @@ export default {
     XmWorkloadSetDayList,
     XmWorkloadSetMonthList
     //在下面添加其它组件
-  },
-  activated: function () {
-	this.historyLength=window.history.length 
-  },
+  }, 
   mounted() {
     this.$nextTick(() => {
       

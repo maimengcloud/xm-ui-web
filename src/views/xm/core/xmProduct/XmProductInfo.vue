@@ -427,11 +427,17 @@ import WikiList from '../wiki/archive/WikiList.vue';
 				}else{
 					return dateStr.substr(0,10);
 				}
-			},
-			goBack(){ 
+			}, 
+			
+			goBack() {
 				localStorage.setItem('product-infotype',"产品概览");
-				this.$router.back()
-			}
+				
+				if(window.history.length>0){
+					this.$router.back(-1);
+				}else{
+					this.$router.push({path:'/xm/core/xmProduct/XmProductMng'})
+				}
+			},
 
 		},//end methods
 		components: { 
