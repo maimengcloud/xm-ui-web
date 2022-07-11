@@ -209,13 +209,13 @@
 							<el-step title="提现" description="企业付款完成后，个人对钱包中余额进行提现"></el-step>
 						</el-steps> 
 					</el-tab-pane>
-				</el-tabs>   
+				</el-tabs>    
+				<el-row class="padding" style="float:right;">
+					<el-button @click.native="handleCancel">取消</el-button>
+					<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">提交</el-button>
+				</el-row> 
 			</el-form>
 		</el-row>
-		<el-row class="page-bottom padding">
-			<el-button @click.native="handleCancel">取消</el-button>
-			<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">提交</el-button>
-		</el-row> 
 		<el-drawer append-to-body title="选择负责人" :visible.sync="groupUserSelectVisible" size="60%"    :close-on-click-modal="false">
 			<xm-group-select :visible="groupUserSelectVisible" :sel-project="xmProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-group-select>
 		</el-drawer>

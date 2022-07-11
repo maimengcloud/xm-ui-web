@@ -21,11 +21,9 @@
 				<el-form-item label="负责人姓名" prop="adminUsername">
 					{{addForm.adminUsername}} <el-button @click="userSelectVisible=true">选择负责人</el-button>
 				</el-form-item>     
-				<el-form-item>
-					<el-col :span="24" :offset="8"> 
+				<el-form-item  style="float:right;"> 
 						<el-button @click.native="handleCancel">取消</el-button>  
-						<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">提交</el-button>  
-					</el-col>
+						<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">提交</el-button>   
 				</el-form-item> 
 			</el-form>
 		</el-row>
