@@ -29,7 +29,7 @@
 					</el-col>
 					<el-col :span="8"> 
 						<el-form-item label="状态" prop="pstatus">
-							<el-select v-model="editForm.pstatus" placeholder="状态" >
+							<el-select v-model="editForm.pstatus" placeholder="状态" @change="editSomeFields(editForm,'pstatus',$event)">
 								<el-option v-for="(item,index) in dicts['xmProductPstatus']" :label="item.name" :value="item.id" :key="index"></el-option>
 							</el-select>
 						</el-form-item>  
@@ -56,7 +56,7 @@
 					</el-col>
 				</el-row> 
 				<el-form-item label="备注" prop="remark">
-					<el-input v-model="editForm.remark" :rows="10" type="textarea" :autosize="{ minRows: 4, maxRows: 20}"  placeholder="备注" ></el-input>
+					<el-input v-model="editForm.remark" :rows="10" type="textarea" :autosize="{ minRows: 4, maxRows: 20}"  placeholder="备注"  @change="editSomeFields(editForm,'remark',$event)"></el-input>
 				</el-form-item>  
 			</el-form>
 			
@@ -64,18 +64,13 @@
 		<el-drawer title="选择员工" :visible.sync="userSelectVisible" size="60%" append-to-body>
        		 <users-select  @confirm="onUserSelected" ref="usersSelect"></users-select>
       	</el-drawer>	
-		</el-row>
-		
-		<el-row style="float:right;"> 
-			<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button> 
-		</el-row>
+		</el-row> 
 	</section>
 </template>
 
 <script>
-	import util from '@/common/js/util';//全局公共库
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询 
-	import { editXmProduct } from '@/api/xm/core/xmProduct';
+	import util from '@/common/js/util';//全局公共库 
+	import { initDicts,editXmProduct,editXmProductSomeFields } from '@/api/xm/core/xmProduct';
 	import { mapGetters } from 'vuex'	
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
 
@@ -102,8 +97,14 @@
 		},
 		props:['xmProduct','visible'],
 		watch: {
-	      'xmProduct':function( xmProduct ) {
-	        this.editForm = xmProduct;
+
+	      'xmProduct': {
+			handler(){
+				 this.editForm = this.xmProduct;
+				 this.editFormBak={...this.editForm}
+			},
+			deep:true,
+	       
 	      },
 	      'visible':function(visible) { 
 	      	if(visible==true){
@@ -141,6 +142,9 @@
 				},
 				//新增界面数据 产品表 
 				editForm: {
+					id:'',productName:'',branchId:'',remark:'',version:'',pmUserid:'',pmUsername:'',ctime:'',deptid:'',pstatus:'',startTime:'',endTime:'',deptName:'',admUserid:'',admUsername:'',assUserid:'',assUsername:'',bizProcInstId:'',bizFlowState:'',isTpl:'',baselineId:'',baseTime:'',code:'',pbudgetWorkload:'',pbudgetAmount:'',pmenuBudgetWorkload:'',pmenuBudgetAmount:'',budgetCtrl:'',phaseBudgetCtrl:'',phaseActCtrl:'',locked:'',del:'',ltime:''
+				},
+				editFormBak: {
 					id:'',productName:'',branchId:'',remark:'',version:'',pmUserid:'',pmUsername:'',ctime:'',deptid:'',pstatus:'',startTime:'',endTime:'',deptName:'',admUserid:'',admUsername:'',assUserid:'',assUsername:'',bizProcInstId:'',bizFlowState:'',isTpl:'',baselineId:'',baseTime:'',code:'',pbudgetWorkload:'',pbudgetAmount:'',pmenuBudgetWorkload:'',pmenuBudgetAmount:'',budgetCtrl:'',phaseBudgetCtrl:'',phaseActCtrl:'',locked:'',del:'',ltime:''
 				},
 				userSelectVisible:false,
@@ -189,21 +193,44 @@
 				var user={userid:'',username:''}; 
 				if(users && users.length>0){
 					user=users[0]
-				}
-				 
-				if(this.currUserType=='admUserid'){ 
-					this.editForm.admUserid=user.userid
-					this.editForm.admUsername=user.username
-				}else if(this.currUserType=='assUserid'){ 
-					this.editForm.assUserid=user.userid
-					this.editForm.assUsername=user.username
-				}else if(this.currUserType=='pmUserid'){ 
-					this.editForm.pmUserid=user.userid
-					this.editForm.pmUsername=user.username
-				}
+				} 
+				this.editSomeFields(this.editForm,this.currUserType,user)
 				this.currUserType="";
 				
 			},  
+
+            editSomeFields(row,fieldName,$event){ 
+                let params={};
+                params['ids']=[row].map(i=>i.id)
+				if(fieldName=='adminUserid'){
+					params['adminUserid']=$event.userid 
+					params['adminUsername']=$event.username
+				}else if(fieldName=='assUserid'){
+					params['assUserid']=$event.userid 
+					params['assUsername']=$event.username
+				}else if(fieldName=='pmUserid'){
+					params['pmUserid']=$event.userid 
+					params['pmUsername']=$event.username
+				}else if(fieldName=='startTime'){
+					params['startTime']=row.startTime
+					params['endTime']=row.endTime
+				}else{
+					params[fieldName]=$event
+				}
+                
+                var func = editXmProductSomeFields
+                func(params).then(res=>{
+                  let tips = res.data.tips;
+                  if(tips.isOk){
+                    this.editFormBak=[...this.editForm]
+					Object.assign(this.editForm,params)
+					this.$emit('edit-fields',params)
+                  }else{
+                    Object.assign(this.editForm,this.editFormBak)
+                    this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+                  }
+                }).catch((e)=>Object.assign(this.editForm,this.editFormBak))
+            },
 			/**end 在上面加自定义方法**/
 			
 		},//end method
@@ -212,14 +239,9 @@
 			UsersSelect
 		},
 		mounted() {
-			
-			
-			initSimpleDicts('all',['xmProductPstatus'] ).then(res=>{
-				if(res.data.tips.isOk){ 
-					this.dicts['xmProductPstatus']=res.data.data.xmProductPstatus   
-				}
-			});
-			this.editForm= this.xmProduct;   
+			this.editForm= this.xmProduct;    
+			this.editFormBak={...this.editForm}
+			initDicts(this)
 			/**在下面写其它函数***/
 			
 		}//end mounted
