@@ -1,6 +1,6 @@
 <template>
 	<section>
-		 <xm-product-info v-if="xmProduct" :xm-product="xmProduct" :visible="showInfo"></xm-product-info>
+		 <xm-product-info v-if="xmProduct" :xm-product="xmProduct" :visible="showInfo" @edit-fields="onEditFields"></xm-product-info>
 	</section>
 </template>
 
@@ -57,7 +57,14 @@
 
 					 }
 				 })
-			 }
+			 },
+			 
+
+			onEditFields(row) {
+				Object.assign(this.xmProduct, row);
+				localStorage.setItem("xm-product-info-route",JSON.stringify(this.xmProduct)) 
+				this.$emit("edit-fields", row);
+			},
 			
 		},//end methods
 		components: {  

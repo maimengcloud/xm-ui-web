@@ -1,6 +1,6 @@
 <template>
   <section class="padding-left padding-right">
-      <el-menu mode="horizontal" default-active="overview"  @select="onMenuToolBarSelect">
+      <el-menu mode="horizontal" :default-active="showPanelName"  @select="onMenuToolBarSelect">
         <el-menu-item index="overview">
           <span slot="title">产品概览</span>
         </el-menu-item>

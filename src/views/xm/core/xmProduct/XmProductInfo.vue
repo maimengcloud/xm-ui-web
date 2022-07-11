@@ -180,7 +180,7 @@
 	  </el-row>
       <el-row ref="pageBody">
         <el-col
-          :span="infotype == '产品概览' ? 6 : 0"
+          :span="infotype == '产品概览' ? 4 : 0"
           class="padding border"
           :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"
         >
@@ -197,31 +197,23 @@
             >
               <el-row slot="description">
                 <el-row v-if="i.id == '0'"
-                  ><!--初始-->
+                  ><!--打开-->
                   <span v-if="xmProduct.pstatus == i.id">
                     <el-button
                       class="step-btn"
                       type="warning"
                       size="mini"
                       plain
-                      @click="createProduct()"
-                      >创建产品</el-button
+                      @click="infotype='需求'"
+                      >需求管理</el-button
                     >
                     <el-button
                       class="step-btn"
                       type="warning"
                       size="mini"
                       plain
-                      @click="linkProduct()"
-                      >关联产品</el-button
-                    >
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="infotype = '环境清单'"
-                      >环境清单</el-button
+                      @click="linkProject()"
+                      >关联项目</el-button
                     >
                     <el-button
                       class="step-btn"
@@ -229,9 +221,9 @@
                       size="mini"
                       plain
                       @click="
-                        editXmProjectSomeFields(xmProduct, 'status', '1')
+                        editXmProductSomeFields(xmProduct, 'pstatus', '1')
                       "
-                      >进入售前</el-button
+                      >设为研发中</el-button
                     >
                   </span>
                   <span v-if="xmProduct.pstatus != i.id">
@@ -240,230 +232,52 @@
                       type="warning"
                       size="mini"
                       plain
-                      @click="infotype = '产品'"
-                      >产品管理</el-button
+                      @click="infotype = '需求'"
+                      >需求管理</el-button
                     >
                     <el-button
                       class="step-btn"
                       type="warning"
                       size="mini"
                       plain
-                      @click="linkProduct()"
-                      >关联产品</el-button
-                    >
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="infotype = '环境清单'"
-                      >环境清单</el-button
-                    >
+                      @click="linkProject()"
+                      >关联项目</el-button
+                    > 
                   </span>
                 </el-row>
                 <el-row v-else-if="i.id == '1'"
-                  ><!--售前-->
+                  ><!--研发中-->
                   <span v-if="xmProduct.pstatus == i.id">
                     <el-button
                       class="step-btn"
                       type="warning"
                       size="mini"
                       plain
-                      @click="showMenusPage"
-                      >需求管理</el-button
-                    >
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="
-                        editXmProjectSomeFields(xmProduct, 'status', '2')
-                      "
-                      >设为立项中</el-button
-                    >
-                  </span>
-                  <span v-if="xmProduct.pstatus != i.id">
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="showMenusPage"
-                      >需求管理</el-button
-                    >
-                  </span>
-                </el-row>
-                <el-row v-else-if="i.id == '2'"
-                  ><!--立项中-->
-                  <span v-if="xmProduct.pstatus == i.id">
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="infotype = '合同管理'"
-                      >签订合同</el-button
-                    >
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="infotype = '团队'"
-                      >创建团队</el-button
-                    >
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="infotype = '计划'"
-                      >创建计划</el-button
-                    >
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="infotype = '预算'"
-                      >预算清单</el-button
-                    >
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="showProjectGaiSuan()"
-                      >项目估算</el-button
-                    >
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="showProjectShouYi()"
-                      >项目收益</el-button
-                    >
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="
-                        editXmProjectSomeFields(xmProduct, 'status', '3')
-                      "
-                      >设为立项中</el-button
-                    >
-                  </span>
-                  <span v-if="xmProduct.pstatus != i.id">
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="infotype = '合同管理'"
-                      >合同管理</el-button
-                    >
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="infotype = '团队'"
-                      >团队管理</el-button
-                    >
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="infotype = '计划'"
-                      >计划管理</el-button
-                    >
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="infotype = '预算'"
-                      >预算管理</el-button
-                    >
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="showProjectGaiSuan()"
-                      >项目估算</el-button
-                    >
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="showProjectShouYi()"
-                      >项目收益</el-button
-                    >
-                  </span>
-                </el-row>
-                <el-row v-else-if="i.id == '3'"
-                  ><!--实施中-->
-                  <span v-if="xmProduct.pstatus == i.id">
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="infotype = '迭代'"
+                      @click="infotype='迭代'"
                       >迭代管理</el-button
                     >
-                    <el-button
+					<el-button
                       class="step-btn"
                       type="warning"
                       size="mini"
                       plain
-                      @click="infotype = '计划'"
-                      >任务管理</el-button
-                    >
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="infotype = '缺陷'"
+                      @click="infotype='缺陷'"
                       >缺陷管理</el-button
                     >
-                    <el-button
+					<el-button
                       class="step-btn"
                       type="warning"
                       size="mini"
                       plain
-                      @click="infotype = '每日工时'"
-                      >每日工时</el-button
+                      @click="infotype='项目'"
+                      >项目管理</el-button
                     >
-                    <el-button
+					<el-button
                       class="step-btn"
                       type="warning"
                       size="mini"
                       plain
-                      @click="infotype = '每月工时'"
-                      >每月工时</el-button
-                    >
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="infotype = '费用'"
-                      >费用管理</el-button
-                    >
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="infotype = '效能'"
+                      @click="infotype='效能'"
                       >效能分析</el-button
                     >
                     <el-button
@@ -472,208 +286,91 @@
                       size="mini"
                       plain
                       @click="
-                        editXmProjectSomeFields(xmProduct, 'status', '4')
-                      "
-                      >暂停项目</el-button
-                    >
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="projectChangeRequire()"
-                      >变更申请</el-button
-                    >
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="
-                        editXmProjectSomeFields(xmProduct, 'status', '5')
-                      "
-                      >设为结项中</el-button
-                    >
-                  </span>
-                  <span v-if="xmProduct.pstatus != i.id">
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="infotype = '迭代'"
-                      >迭代管理</el-button
-                    >
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="infotype = '计划'"
-                      >任务管理</el-button
-                    >
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="infotype = '缺陷'"
-                      >缺陷管理</el-button
-                    >
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="infotype = '每日工时'"
-                      >每日工时</el-button
-                    >
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="infotype = '每月工时'"
-                      >每月工时</el-button
-                    >
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="infotype = '费用'"
-                      >费用管理</el-button
-                    >
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="infotype = '效能'"
-                      >效能分析</el-button
-                    >
-                    <el-button
-                      v-if="xmProduct.pstatus < i.id"
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="
-                        editXmProjectSomeFields(xmProduct, 'status', '5')
-                      "
-                      >结项申请</el-button
-                    >
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="showDetail()"
-                      >变更申请</el-button
-                    >
-                  </span>
-                </el-row>
-                <el-row v-else-if="i.id == '4'"
-                  ><!--暂停中-->
-                  <span v-if="xmProduct.pstatus == i.id">
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="
-                        editXmProjectSomeFields(xmProduct, 'status', '3')
-                      "
-                      >重新激活</el-button
-                    >
-                  </span>
-                </el-row>
-                <el-row v-else-if="i.id == '5'"
-                  ><!--结项中-->
-                  <span v-if="xmProduct.pstatus == i.id">
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="showDetail()"
-                      >结项申请</el-button
-                    >
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="showCurrFlow()"
-                      >结项审批</el-button
-                    >
-                  </span>
-                  <span v-if="xmProduct.pstatus != i.id">
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="showHisFlow()"
-                      >结项审批</el-button
-                    >
-                  </span>
-                </el-row>
-                <el-row v-else-if="i.id == '6'"
-                  ><!--已结项-->
-                  <span v-if="xmProduct.pstatus == i.id">
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="
-                        editXmProjectSomeFields(xmProduct, 'status', '7')
-                      "
-                      >转入售后</el-button
-                    >
-                  </span>
-                  <span v-if="xmProduct.pstatus != i.id"> </span>
-                </el-row>
-                <el-row v-else-if="i.id == '7'"
-                  ><!--售后-->
-                  <span v-if="xmProduct.pstatus == i.id">
-                    <el-button
-                      class="step-btn"
-                      type="warning"
-                      size="mini"
-                      plain
-                      @click="
-                        editXmProjectSomeFields(xmProduct, 'status', '8')
+                        editXmProductSomeFields(xmProduct, 'pstatus', '2')
                       "
                       >设为已完成</el-button
                     >
                   </span>
+                  <span v-if="xmProduct.pstatus != i.id"> 
+                    <el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="infotype='迭代'"
+                      >迭代管理</el-button
+                    >
+					<el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="infotype='缺陷'"
+                      >缺陷管理</el-button
+                    >
+					<el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="infotype='项目'"
+                      >项目管理</el-button
+                    >
+					<el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="infotype='效能'"
+                      >效能分析</el-button
+                    >
+                  </span>
                 </el-row>
-                <el-row v-else-if="i.id == '8'"
+                <el-row v-else-if="i.id == '2'"
                   ><!--已完成-->
-                  <span v-if="xmProduct.pstatus == i.id">
+                  <span v-if="xmProduct.pstatus == i.id"> 
                     <el-button
                       class="step-btn"
                       type="warning"
                       size="mini"
                       plain
                       @click="
-                        editXmProjectSomeFields(xmProduct, 'status', '9')
+                        editXmProductSomeFields(xmProduct, 'pstatus', '3')
                       "
-                      >关闭项目</el-button
+                      >设为已关闭</el-button
                     >
                   </span>
+                  <span v-if="xmProduct.pstatus != i.id">
+                     
+                  </span>
                 </el-row>
-                <el-row v-else-if="i.id == '9'"><!--已关闭--> </el-row>
+                <el-row v-else-if="i.id == '3'"
+                  ><!--已关闭-->
+                  <span v-if="xmProduct.pstatus == i.id"> 
+                    <el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="
+                        editXmProductSomeFields(xmProduct, 'pstatus', '0')
+                      "
+                      >重新打开</el-button
+                    >
+                  </span>
+                  <span v-if="xmProduct.pstatus != i.id">
+                     
+                  </span>
+                </el-row> 
               </el-row>
             </el-step>
           </el-steps>
         </el-col>
-        <el-col :span="infotype == '产品概览' ? 18 : 24">
+        <el-col :span="infotype == '产品概览' ? 20 : 24">
           <xm-product-overview-complex
             v-if="infotype == '产品概览'"
             :xm-product="xmProduct"
+			ref="xmProductComplex"
           ></xm-product-overview-complex>
           <xm-iteration-for-link-complex
             v-if="infotype == '迭代'"
@@ -1270,8 +967,8 @@ export default {
         this.$refs["xmProductComplex"].showPanel = "menus";
       });
     },
-    linkProduct() {
-      this.$refs["产品概览"].showPanelName = "productProjectLink";
+    linkProject() {
+      this.$refs["xmProductComplex"].showPanelName = "productProjectLink";
     },
     createProduct() {
       this.infotype = "产品";

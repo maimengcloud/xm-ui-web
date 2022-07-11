@@ -394,6 +394,7 @@
 				},
 				copyToVisible:false,
 				templateVisible:false, 
+				menukey:'',
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
