@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container  padding border">
+	<section class="padding border">
 		<el-row>
 			<!--新增界面 XmIteration 迭代定义--> 
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">   
@@ -11,22 +11,16 @@
 				<el-form-item label="迭代名称" prop="iterationName">
 					<el-input v-model="addForm.iterationName" placeholder="迭代名称" minlength="10"></el-input>
 					<font color="blue">格式如下： 上线日期+主题+V版本号 例如： 2021.6.15购书商城V1.0.9 &nbsp;&nbsp;留空，选日期后自动填写迭代名称</font>
-				</el-form-item> 
-				<el-form-item label="开始时间" prop="startTime">
-					<el-date-picker type="date" placeholder="选择日期" v-model="addForm.startTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
-				</el-form-item> 
-				<el-form-item label="结束时间" prop="endTime">
-					<el-date-picker type="date" placeholder="选择日期" v-model="addForm.endTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
-				</el-form-item> 
+				</el-form-item>  
+				<el-form-item label="起止时间" prop="startTime">
+					<date-range :auto-default="true" start-key="startTime" end-key="endTime" v-model="addForm" placeholder="选择日期"   value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" ></date-range>
+				</el-form-item>   
 				<el-form-item label="上线时间" prop="onlineTime">
-					<el-date-picker type="date" placeholder="选择日期" v-model="addForm.onlineTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
+					<el-date-picker type="date" placeholder="选择日期" v-model="addForm.onlineTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'onlineTime',$event)"></el-date-picker>
 				</el-form-item>   
 				<el-form-item label="负责人姓名" prop="adminUsername">
 					{{addForm.adminUsername}} <el-button @click="userSelectVisible=true">选择负责人</el-button>
-				</el-form-item>  
-				<el-form-item label="预算工作量" prop="budgetWorkload">
-					<el-input v-model="addForm.budgetWorkload" type="number" style="width:60%;" min="0" placeholder="预算工作量"></el-input> 人时 ，1人工作1日=8人时
-				</el-form-item>    
+				</el-form-item>     
 				<el-form-item>
 					<el-col :span="24" :offset="8"> 
 						<el-button @click.native="handleCancel">取消</el-button>  
@@ -75,7 +69,7 @@
 				}
 	      	}
 	      },
-		  'addForm.endTime':function(val){
+		  'addForm.onlineTime':function(val){
 			  if(!val){
 				  return;
 			  }
@@ -104,7 +98,13 @@
 					], 
 					productId: [
 						{ required: true, message: '产品编号不能为空', trigger: 'change' }
-					]
+					], 
+					onlineTime: [
+						{ required: true, message: '上线时间不能为空', trigger: 'change' }
+					],
+					startTime:[ 
+						{ required: true, message: '开始时间不能为空', trigger: 'change' }
+					],
 				},
 				//新增界面数据 迭代定义,
 				addForm: {

@@ -2,7 +2,7 @@
 	<section class="padding border">
 		 
 		<el-row style="padding-left:70px;">
-			 <font color="blue" style="text-align:center;">注意：请尽量在评审会阶段把需求明确，进入计划会后，不允许再添加需求进入迭代。原则上需求评审后需求只出不进。</font>
+			 <font color="blue" style="text-align:center;">注意：请尽量在评审会阶段把需求明确.<br/>进入计划会后，不允许再添加需求进入迭代。原则上需求评审后需求只出不进。</font>
 		</el-row>
 		<el-row>
 			<!--新增界面 XmIteration 迭代定义--> 
@@ -27,10 +27,7 @@
 				</el-form-item>   
 				<el-form-item label="负责人姓名" prop="adminUsername">
 					{{editForm.adminUsername}} <el-button type="text" @click="userSelectVisible=true">选择负责人</el-button>
-				</el-form-item>  
-				<el-form-item label="预算工作量" prop="budgetWorkload">
-					<el-input v-model="editForm.budgetWorkload" type="number" min="0" style="width:60%;" placeholder="预算工作量" @change="editSomeFields(editForm,'budgetWorkload',$event)"></el-input> 人时 ，1人工作1日=8人时
-				</el-form-item>     
+				</el-form-item>      
 			</el-form>
 		</el-row>
 		

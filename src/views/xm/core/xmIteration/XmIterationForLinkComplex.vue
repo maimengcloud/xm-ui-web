@@ -6,16 +6,9 @@
 					<el-col :span="20">
 						<xm-iteration-select ref="xmIterationSelect" :auto-select="true" :link-project-id="selProject?selProject.id:null" :product-id="xmProduct?xmProduct.id:null"  @row-click="onIterationRowClick" @clear="onIterationClearSelect"></xm-iteration-select>
  					</el-col>
-					<el-col :span="4">
-						<el-popover
-							placement="bottom"
-							width="800"
-							v-model="iterationAddVisible"
-							trigger="manual">  
-									<xm-iteration-add  :xm-product="xmProduct" :sel-project="selProject" :visible="iterationAddVisible" @cancel="iterationAddVisible=false" @submit="afterIterationAddSubmit"></xm-iteration-add>
-							<el-link type="warning" slot="reference" @click="iterationAddVisible=true" icon="el-icon-plus">迭代</el-link> 
-						</el-popover> 
-					</el-col>
+					<el-col :span="4">  
+ 							<el-link type="warning" @click="iterationAddVisible=true" icon="el-icon-plus">迭代</el-link> 
+ 					</el-col>
  				 </el-row> 
 				<el-row ref="pageMainRef" class="padding border" :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"> 
 								<h4 class="padding-bottom">迭代常用功能快捷导航</h4>
@@ -315,6 +308,10 @@
 			</el-col>
 
 		</el-row>
+		
+		<el-dialog  width="60%" top="20px" :visible.sync="iterationAddVisible" append-to-body>  
+					<xm-iteration-add  :xm-product="xmProduct" :sel-project="selProject" :visible="iterationAddVisible" @cancel="iterationAddVisible=false" @submit="afterIterationAddSubmit"></xm-iteration-add>
+ 		</el-dialog> 
 	</section>
 </template>
 
