@@ -1,5 +1,7 @@
 import axios from '@/utils/request'
 
+import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
+
 import config from '@/common/config'
 
 let base = config.getCoreBasePath();
@@ -47,6 +49,20 @@ export const unDelXmProject = params => { return axios.post(`${base}/xm/core/xmP
 
 
 export const editXmProjectSomeFields = params => { return axios.post(`${base}/xm/core/xmProject/editSomeFields`, params); }; 
+
+
+/**-------------------------前端mng|add|edit界面公共函数---------------请写在下面----------------------------------------------- */
+//初始化页面上的字典
+export const initDicts = (that) => {
+    //任务类型字典taskState,交易模式字典tranMode,能力要求字典capaLvl,保障要求字典supRequire,会员权益等级memInterestLvl
+    var itemCodes=["projectType", "priority", "projectStatus"];//在此添加要加载的字典 如['sex','grade','lvl']
+     if(itemCodes.length>0){
+       initSimpleDicts('all',itemCodes).then(res=>{
+           Object.assign(that.dicts,res.data.data)
+       });
+    }
+   };
+
 
 export const getDefOptions= ()=>{
     

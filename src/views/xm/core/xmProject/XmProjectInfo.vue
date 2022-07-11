@@ -407,9 +407,8 @@ import XmWorkloadSetMonthList from "../xmTaskWorkload/WorkloadSetMonthList.vue";
 
 import XmReport from "@/views/xm/rpt/reportIndex";
 import XmPlan from "../xmTask/XmPlan.vue";
-
-import { initSimpleDicts } from "@/api/mdp/meta/item"; //下拉框数据查询
-import { getDefOptions,editXmProjectSomeFields } from "@/api/xm/core/xmProject";
+ 
+import { initDicts,getDefOptions,editXmProjectSomeFields } from "@/api/xm/core/xmProject";
 
 export default {
   props: ["selProject", "visible"],
@@ -852,11 +851,7 @@ export default {
         this.infotype = infotype;
       }
     });
-    initSimpleDicts("all", ["projectType", "priority", "projectStatus"]).then(
-      (res) => {
-        this.dicts = res.data.data;
-      }
-    );
+    initDicts(this)
   },
 };
 </script>
