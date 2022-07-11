@@ -106,9 +106,9 @@
 						{ required: true, message: '产品编号不能为空', trigger: 'change' }
 					]
 				},
-				//新增界面数据 迭代定义
+				//新增界面数据 迭代定义,
 				addForm: {
-					id:'',branchId:'',iterationName:'',startTime:'',endTime:'',onlineTime:'',pid:'',adminUserid:'',adminUsername:'',ctime:'',budgetCost:'',budgetWorkload:'',distBudgetCost:'',distBudgetWorkload:'',actCost:'',actWorkload:'',actStaffNum:'',seqNo:'',productName:'',productId:'',
+					id:'',branchId:'',iterationName:'',startTime:'',endTime:'',onlineTime:'',pid:'',adminUserid:'',adminUsername:'',ctime:'',budgetCost:'',budgetWorkload:'',seqNo:'',istatus:'',cuserid:'',cusername:'',remark:'',iphase:'',isTpl:'',productId:''
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				userSelectVisible:false,

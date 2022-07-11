@@ -101,9 +101,9 @@
 						{ required: true, message: '序号不能为空', trigger: 'change' }
 					]
 				},
-				//新增界面数据 迭代定义
+				//新增界面数据 迭代定义,
 				editForm: {
-					id:'',branchId:'',iterationName:'',startTime:'',endTime:'',onlineTime:'',pid:'',adminUserid:'',adminUsername:'',ctime:'',budgetCost:'',budgetWorkload:'',distBudgetCost:'',distBudgetWorkload:'',actCost:'',actWorkload:'',actStaffNum:'',seqNo:'',iphase:'0'
+					id:'',branchId:'',iterationName:'',startTime:'',endTime:'',onlineTime:'',pid:'',adminUserid:'',adminUsername:'',ctime:'',budgetCost:'',budgetWorkload:'',seqNo:'',istatus:'',cuserid:'',cusername:'',remark:'',iphase:'',isTpl:'',productId:''
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				userSelectVisible:false,
@@ -154,6 +154,25 @@
 				this.editForm.adminUsername=user.username
 				this.userSelectVisible = false;
 			},	
+
+            editSomeFields(row,fieldName,$event){
+                if(this.opType=='add'){
+                    return;
+                }
+                let params={};
+                params['ids']=[row].map(i=>i.id)
+                params[fieldName]=$event
+                var func = editSomeFieldsXmIteration
+                func(params).then(res=>{
+                  let tips = res.data.tips;
+                  if(tips.isOk){
+                    this.editFormBak=[...this.editForm]
+                  }else{
+                    Object.assign(this.editForm,this.editFormBak)
+                    this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+                  }
+                }).catch((e)=>Object.assign(this.editForm,this.editFormBak))
+            },
 			/**end 在上面加自定义方法**/
 			
 		},//end method
