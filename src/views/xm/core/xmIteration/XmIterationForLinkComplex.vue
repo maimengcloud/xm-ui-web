@@ -1,7 +1,7 @@
 <template>
 	<section>
 		<el-row> 
-			<el-col :span="6" class="padding-right padding-left">
+			<el-col :span="4" class="padding-right padding-left">
 				 <el-row class="padding">
 					<el-col :span="20">
 						<xm-iteration-select ref="xmIterationSelect" :auto-select="true" :link-project-id="selProject?selProject.id:null" :product-id="xmProduct?xmProduct.id:null"  @row-click="onIterationRowClick" @clear="onIterationClearSelect"></xm-iteration-select>
@@ -260,7 +260,7 @@
 								</el-steps> 
 						</el-row>			 
 			</el-col>
-			<el-col :span="18">
+			<el-col :span="20">
 				<el-tabs :value="showPanel" @tab-click="tabClick">  
 					<el-tab-pane label="迭代概览" lazy  name="iterationOverview" v-if="xmIteration && xmIteration.id"> 
 						 
@@ -468,4 +468,7 @@
   	float:left;
   	padding-top:5px;
   }
+.step-btn{
+	margin-left:0px;margin-bottom: 5px;
+}
 </style>

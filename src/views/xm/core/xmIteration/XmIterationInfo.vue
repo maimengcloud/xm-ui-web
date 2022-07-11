@@ -66,7 +66,7 @@
     </el-row>
     <el-row ref="pageMainRef">
       <el-col
-        :span="infotype == '迭代概览' ? 6 : 0"
+        :span="infotype == '迭代概览' ? 4 : 0"
         class="padding border"
         :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"
       >
@@ -318,7 +318,7 @@
           </el-step>
         </el-steps>
       </el-col>
-      <el-col :span="infotype == '迭代概览' ? 18 : 24">
+      <el-col :span="infotype == '迭代概览' ? 20 : 24">
         <xm-iteration-overview-complex
           v-if="infotype == '迭代概览'"
 		  ref="迭代概览"

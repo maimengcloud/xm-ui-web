@@ -201,4 +201,7 @@ import XmProductEdit from './XmProductEdit.vue';
   	float:left;
   	padding-top:5px;
   }
+.step-btn{
+	margin-left:0px;margin-bottom: 5px;
+}
 </style>
