@@ -1,5 +1,5 @@
 <template>
-  <section class="page-container padding">
+  <section>
     <el-row class="page-main" :style="{overflowX:'hidden',height:maxTableHeight+'px'}" ref="pageMainRef"> 
       <el-row :gutter="10" style="margin-bottom:10px">
           <el-col :span="8" >
