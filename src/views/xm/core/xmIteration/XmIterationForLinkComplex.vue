@@ -1,7 +1,7 @@
 <template>
 	<section>
 		<el-row> 
-			<el-col :span="6" class="padding-right">
+			<el-col :span="6" class="padding-right padding-left">
 				 <el-row class="padding">
 					<el-col :span="20">
 						<xm-iteration-select ref="xmIterationSelect" :auto-select="true" :link-project-id="selProject?selProject.id:null" :product-id="xmProduct?xmProduct.id:null"  @row-click="onIterationRowClick" @clear="onIterationClearSelect"></xm-iteration-select>
@@ -18,7 +18,7 @@
 					</el-col>
  				 </el-row> 
 				<el-row ref="pageMainRef" class="padding border" :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"> 
-								<h4 class="padding-bottom">常用功能快捷导航</h4>
+								<h4 class="padding-bottom">迭代常用功能快捷导航</h4>
 								<el-steps
 								:active="calcIterationStatusStep"
 								finish-status="success"
