@@ -38,6 +38,9 @@ export const createProductCode = params => { return axios.post(`${base}/xm/core/
 
 export const unDelXmProduct = params => { return axios.post(`${base}/xm/core/xmProduct/unDel`, params); };
 
+
+export const editXmProductSomeFields = params => { return axios.post(`${base}/xm/core/xmProduct/editSomeFields`, params); }; 
+
 /**-------------------------前端mng|add|edit界面公共函数---------------请写在下面----------------------------------------------- */
 //初始化页面上的字典
 export const initDicts = (that) => {
