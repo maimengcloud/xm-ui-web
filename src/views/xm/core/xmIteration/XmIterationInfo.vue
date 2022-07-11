@@ -323,6 +323,7 @@
           v-if="infotype == '迭代概览'"
 		  ref="迭代概览"
           :xm-iteration="xmIteration"
+		  @edit-fields="onEditFields"
         ></xm-iteration-overview-complex>
         <xm-project-complex
           v-if="infotype == '项目'"
@@ -742,6 +743,7 @@ export default {
 			let tips = res.data.tips;
 			if(tips.isOk){
 			  Object.assign(row,params)
+			  this.$emit('edit-fields',params)
 			}else{ 
 				this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 			}
@@ -752,7 +754,11 @@ export default {
 	},
 	showIterationDetail(){
 		this.$refs['迭代概览'].showPanelName='detail'
-	}
+	},
+    onEditFields(row){
+      Object.assign(this.xmIteration,row)
+      this.$emit('edit-fields',row)
+    }
   }, //end methods
   components: {
     xmTaskMng,

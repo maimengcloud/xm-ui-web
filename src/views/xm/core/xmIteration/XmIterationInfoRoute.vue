@@ -1,6 +1,6 @@
 <template>
 	<section>
-		 <xm-iteration-info v-if="xmIteration" :xm-iteration="xmIteration" :visible="showInfo"></xm-iteration-info>
+		 <xm-iteration-info v-if="xmIteration" :xm-iteration="xmIteration" :visible="showInfo" @edit-fields="onEditFields"></xm-iteration-info>
 	</section>
 </template>
 
@@ -55,7 +55,12 @@
 
 					 }
 				 })
-			 }
+			 },
+			onEditFields(row){
+				debugger;
+				Object.assign(this.xmIteration,row)
+				localStorage.setItem("xm-iteration-info-route",JSON.stringify(this.xmIteration)); 
+			}
 			 
 			
 		},//end methods

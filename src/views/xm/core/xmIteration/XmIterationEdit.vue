@@ -1,15 +1,6 @@
 <template>
 	<section class="padding border">
-		
-		<el-row>
-			<el-steps :active="calcIterationCurrStep" simple finish-status="success">
- 				<el-step  v-for="(i,index) in dicts['iterationStatus']" :title="i.name" :key="index" @click.native.stop="editForm.iphase=i.id">
-					 <el-link slot="title" >
-						 {{i.name}} 
-					 </el-link>
-				</el-step> 
-			</el-steps>
-		</el-row>
+		 
 		<el-row style="padding-left:70px;">
 			 <font color="blue" style="text-align:center;">注意：请尽量在评审会阶段把需求明确，进入计划会后，不允许再添加需求进入迭代。原则上需求评审后需求只出不进。</font>
 		</el-row>
@@ -22,8 +13,14 @@
 				<el-form-item label="序号" prop="seqNo">
 					<el-input v-model="editForm.seqNo" placeholder="如1.0，2.0，1.1.1等"  @change="editSomeFields(editForm,'seqNo',$event)"></el-input>
 				</el-form-item> 
-				<el-form-item label="开始时间" prop="startTime">
-					<date-range start-key="startTime" end-key="endTime" v-model="editForm" placeholder="选择日期"   value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'startTime',$event)"></date-range>
+				<el-form-item label="状态" prop="istatus">
+					
+					<el-select v-model="editForm.istatus" @change="editSomeFields(editForm,'istatus',$event)">
+					<el-option v-for="(item,index) in dicts['iterationStatus']" :key="index" :value="item.id" :label="item.name"></el-option>
+					</el-select>
+				</el-form-item> 
+				<el-form-item label="起止时间" prop="startTime">
+					<date-range :auto-default="false" start-key="startTime" end-key="endTime" v-model="editForm" placeholder="选择日期"   value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'startTime',$event)"></date-range>
 				</el-form-item>  
 				<el-form-item label="上线时间" prop="onlineTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.onlineTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'onlineTime',$event)"></el-date-picker>
@@ -85,7 +82,7 @@
 	    },
 		data() {
 			return {
-				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				dicts:{iterationStatus:[]},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, add: false, del: false, edit: false },//查询中...
 				editFormRules: { 
 					iterationName: [
@@ -113,36 +110,10 @@
 			handleCancel:function(){
 				this.$refs['editForm'].resetFields();
 				this.$emit('cancel');
-			},
-			//新增提交XmIteration 迭代定义 父组件监听@submit="afterAddSubmit"
-			editSubmit: function () {
-				if(!this.roles.some(i=>i.roleid=='iterationAdmin')){
-					this.$notify({position:'bottom-left',showClose:true,message: "只有迭代管理员可以修改迭代", type:  'error' }); 
-					return ;
-				}
-				this.$refs.editForm.validate((valid) => {
-					if (valid) {
-						
-						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
-							this.load.edit=true
-							let params = Object.assign({}, this.editForm); 
-							editXmIteration(params).then((res) => {
-								this.load.edit=false
-								var tips=res.data.tips;
-								if(tips.isOk){
-									this.$emit('submit');//  @submit="afterAddSubmit"
-								}
-								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
-							}).catch( err  => this.load.edit=false);
-						});
-					}else{
-						this.$notify({position:'bottom-left',showClose:true,message: "表单验证不通过", type: 'error' }); 
-					}
-				});
-			},
+			}, 
 			/**begin 在下面加自定义方法,记得补上面的一个逗号**/
 			
-			onUserSelected: function(users) {  
+			onUserSelected: function(users) {   
 				if(users.length>1){
 					this.$notify.error("只能选一个人");
 					return;
@@ -159,8 +130,8 @@
 					params['adminUserid']=$event.userid 
 					params['adminUsername']=$event.username
 				}else if(fieldName=='startTime'){
-					params['adminUserid']=row.startTime
-					params['adminUsername']=row.endTime
+					params['startTime']=row.startTime
+					params['endTime']=row.endTime
 				}else{
 					params[fieldName]=$event
 				}
@@ -186,9 +157,12 @@
 			UsersSelect
 		},
 		mounted() { 
-			initDicts(this)
-			this.editForm=Object.assign(this.editForm, this.xmIteration);   
-			this.editFormBak={...this.editForm}
+			this.$nextTick(()=>{
+				initDicts(this)
+				this.editForm=Object.assign(this.editForm, this.xmIteration);   
+				this.editFormBak={...this.editForm}
+			})
+			
 			/**在下面写其它函数***/
 			
 		}//end mounted

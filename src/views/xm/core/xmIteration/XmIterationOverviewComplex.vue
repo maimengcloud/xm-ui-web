@@ -25,7 +25,7 @@
         -->
       </el-menu> 
        <xm-iteration-overview class="padding-top" v-if="showPanelName=='overview'" :xm-iteration="xmIteration"></xm-iteration-overview>
-        <xm-iteration-edit v-if="showPanelName=='detail'" :xm-iteration="xmIteration"></xm-iteration-edit>
+        <xm-iteration-edit v-if="showPanelName=='detail'" :xm-iteration="xmIteration" @edit-fields="onEditFields"></xm-iteration-edit>
       <xm-iteration-link-for-product  v-if="showPanelName=='iterationProductLink'" :xm-iteration="xmIteration"></xm-iteration-link-for-product>
       <xm-iteration-link-for-project  v-if="showPanelName=='iterationProjectLink'" :xm-iteration="xmIteration"></xm-iteration-link-for-project>
       <xm-iteration-menu-mng v-if="showPanelName=='iterationMenuMng'" :xm-iteration="xmIteration"  ref="iterationMenuMng"></xm-iteration-menu-mng>
@@ -82,6 +82,10 @@ export default {
 			},
     onMenuToolBarSelect(menuIndex){
       this.showPanelName=menuIndex;
+    },
+    onEditFields(row){
+      Object.assign(this.xmIteration,row)
+      this.$emit('edit-fields',row)
     }
   },
 
