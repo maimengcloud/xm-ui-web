@@ -17,44 +17,35 @@
 			<!--新增界面 XmIteration 迭代定义--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">  
 				<el-form-item label="迭代名称" prop="iterationName">
-					<el-input v-model="editForm.iterationName" placeholder="迭代名称" ></el-input>
+					<el-input v-model="editForm.iterationName" placeholder="迭代名称"  @change="editSomeFields(editForm,'iterationName',$event)"></el-input>
 				</el-form-item> 
 				<el-form-item label="序号" prop="seqNo">
-					<el-input v-model="editForm.seqNo" placeholder="如1.0，2.0，1.1.1等" ></el-input>
+					<el-input v-model="editForm.seqNo" placeholder="如1.0，2.0，1.1.1等"  @change="editSomeFields(editForm,'seqNo',$event)"></el-input>
 				</el-form-item> 
 				<el-form-item label="开始时间" prop="startTime">
-					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.startTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
-				</el-form-item> 
-				<el-form-item label="结束时间" prop="endTime">
-					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.endTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
-				</el-form-item> 
+					<date-range start-key="startTime" end-key="endTime" v-model="editForm" placeholder="选择日期"   value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'startTime',$event)"></date-range>
+				</el-form-item>  
 				<el-form-item label="上线时间" prop="onlineTime">
-					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.onlineTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
+					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.onlineTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'onlineTime',$event)"></el-date-picker>
 				</el-form-item>   
 				<el-form-item label="负责人姓名" prop="adminUsername">
 					{{editForm.adminUsername}} <el-button type="text" @click="userSelectVisible=true">选择负责人</el-button>
 				</el-form-item>  
 				<el-form-item label="预算工作量" prop="budgetWorkload">
-					<el-input v-model="editForm.budgetWorkload" type="number" min="0" style="width:60%;" placeholder="预算工作量"></el-input> 人时 ，1人工作1日=8人时
-				</el-form-item>    
-				<el-form-item>
-					<el-col :span="24" :offset="8">  
-						<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>  
-					</el-col>
-				</el-form-item> 
+					<el-input v-model="editForm.budgetWorkload" type="number" min="0" style="width:60%;" placeholder="预算工作量" @change="editSomeFields(editForm,'budgetWorkload',$event)"></el-input> 人时 ，1人工作1日=8人时
+				</el-form-item>     
 			</el-form>
 		</el-row>
 		
 		<el-drawer append-to-body title="选择员工" :visible.sync="userSelectVisible" size="60%">
-        	<users-select :select-userids="[]" @confirm="onUserSelected" ref="usersSelect"></users-select>
+        	<users-select v-if="userSelectVisible" :select-userids="[]" @confirm="onUserSelected" ref="usersSelect"></users-select>
       	</el-drawer>
 	</section>
 </template>
 
 <script>
-	import util from '@/common/js/util';//全局公共库
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询 
-	import { editXmIteration } from '@/api/xm/core/xmIteration';
+	import util from '@/common/js/util';//全局公共库 
+	import { initDicts,editXmIteration,editSomeFieldsXmIteration } from '@/api/xm/core/xmIteration';
 	import { mapGetters } from 'vuex'	
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
 
@@ -80,9 +71,13 @@
 		},
 		props:['xmIteration','visible'],
 		watch: {
-	      'xmIteration':function( xmIteration ) {
-	       	this.editForm=Object.assign(this.editForm, this.xmIteration);
-	      },
+			'xmIteration':{
+				handler(){
+					this.editForm=Object.assign(this.editForm, this.xmIteration);
+					this.editFormBak={...this.editForm}
+				},
+				deep:true,
+			}, 
 	      'visible':function(visible) { 
 	      	if(visible==true){ 
 	      	}
@@ -103,6 +98,9 @@
 				},
 				//新增界面数据 迭代定义,
 				editForm: {
+					id:'',branchId:'',iterationName:'',startTime:'',endTime:'',onlineTime:'',pid:'',adminUserid:'',adminUsername:'',ctime:'',budgetCost:'',budgetWorkload:'',seqNo:'',istatus:'',cuserid:'',cusername:'',remark:'',iphase:'',isTpl:'',productId:''
+				},
+				editFormBak: {
 					id:'',branchId:'',iterationName:'',startTime:'',endTime:'',onlineTime:'',pid:'',adminUserid:'',adminUsername:'',ctime:'',budgetCost:'',budgetWorkload:'',seqNo:'',istatus:'',cuserid:'',cusername:'',remark:'',iphase:'',isTpl:'',productId:''
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
@@ -144,29 +142,36 @@
 			},
 			/**begin 在下面加自定义方法,记得补上面的一个逗号**/
 			
-			onUserSelected: function(users) {
+			onUserSelected: function(users) {  
 				if(users.length>1){
 					this.$notify.error("只能选一个人");
 					return;
 				}
-				var user=users[0]
-				this.editForm.adminUserid=user.userid
-				this.editForm.adminUsername=user.username
+				var user=users[0] 
+				this.editSomeFields(this.editForm,'adminUserid',user)
 				this.userSelectVisible = false;
 			},	
 
-            editSomeFields(row,fieldName,$event){
-                if(this.opType=='add'){
-                    return;
-                }
+            editSomeFields(row,fieldName,$event){ 
                 let params={};
                 params['ids']=[row].map(i=>i.id)
-                params[fieldName]=$event
+				if(fieldName=='adminUserid'){
+					params['adminUserid']=$event.userid 
+					params['adminUsername']=$event.username
+				}else if(fieldName=='startTime'){
+					params['adminUserid']=row.startTime
+					params['adminUsername']=row.endTime
+				}else{
+					params[fieldName]=$event
+				}
+                
                 var func = editSomeFieldsXmIteration
                 func(params).then(res=>{
                   let tips = res.data.tips;
                   if(tips.isOk){
                     this.editFormBak=[...this.editForm]
+					Object.assign(this.editForm,params)
+					this.$emit('edit-fields',params)
                   }else{
                     Object.assign(this.editForm,this.editFormBak)
                     this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
@@ -181,10 +186,9 @@
 			UsersSelect
 		},
 		mounted() { 
-			initSimpleDicts('all',['iterationStatus'] ).then(res=>{
-			this.dicts=res.data.data;
-			})
+			initDicts(this)
 			this.editForm=Object.assign(this.editForm, this.xmIteration);   
+			this.editFormBak={...this.editForm}
 			/**在下面写其它函数***/
 			
 		}//end mounted

@@ -90,7 +90,7 @@
                     type="warning"
                     size="mini"
                     plain
-                    @click="infotype = '产品'"
+                    @click="infotype = '需求'"
                     >需求管理</el-button
                   > 
                   <el-button
@@ -98,7 +98,7 @@
                     type="warning"
                     size="mini"
                     plain
-                    @click="infotype = '产品'"
+                    @click="showIterationMenu"
                     >配置需求范围</el-button
                   > 
                   <el-button
@@ -106,7 +106,7 @@
                     type="warning"
                     size="mini"
                     plain
-                    @click="infotype = '产品'"
+                    @click="editSomeFields(xmIteration, 'istatus', '1')"
                     >开启需求评审</el-button
                   > 
                 </span>
@@ -116,7 +116,7 @@
                     type="warning"
                     size="mini"
                     plain
-                    @click="infotype = '产品'"
+                    @click="infotype = '需求'"
                     >需求管理</el-button
                   > 
                   <el-button
@@ -124,8 +124,8 @@
                     type="warning"
                     size="mini"
                     plain
-                    @click="infotype = '产品'"
-                    >配置需求范围</el-button
+                    @click="showIterationMenu"
+                    >需求范围</el-button
                   > 
                 </span>
               </el-row>
@@ -137,7 +137,7 @@
                     type="warning"
                     size="mini"
                     plain
-                    @click="infotype = '产品'"
+                    @click="showIterationMenu"
                     >确认需求范围</el-button
                   > 
                   <el-button
@@ -145,7 +145,7 @@
                     type="warning"
                     size="mini"
                     plain
-                    @click="editXmProjectSomeFields(xmIteration, 'istatus', '2')"
+                    @click="infotype='缺陷'"
                     >缺陷登记</el-button
                   >
                   <el-button
@@ -153,7 +153,7 @@
                     type="warning"
                     size="mini"
                     plain
-                    @click="infotype = '产品'"
+                    @click="editSomeFields(xmIteration, 'istatus', '2')"
                     >进入计划会</el-button
                   >
                 </span>
@@ -169,7 +169,7 @@
                     type="warning"
                     size="mini"
                     plain
-                    @click="infotype = '合同管理'"
+                    @click="showIterationDetail"
                     >迭代计划</el-button
                   >
                   <el-button
@@ -177,9 +177,17 @@
                     type="warning"
                     size="mini"
                     plain
-                    @click="infotype = '团队'"
+                    @click="infotype = '任务'"
                     >任务管理</el-button
                   > 
+                  <el-button
+                    class="step-btn"
+                    type="warning"
+                    size="mini"
+                    plain
+                    @click="editSomeFields(xmIteration, 'istatus', '3')"
+                    >设为研发中</el-button
+                  >
                 </span>
                 <span v-if="xmIteration.istatus != i.id">
                   <el-button
@@ -187,7 +195,7 @@
                     type="warning"
                     size="mini"
                     plain
-                    @click="infotype = '合同管理'"
+                    @click="showIterationDetail"
                     >迭代计划</el-button
                   >
                   <el-button
@@ -195,7 +203,7 @@
                     type="warning"
                     size="mini"
                     plain
-                    @click="infotype = '团队'"
+                    @click="infotype = '任务'"
                     >任务管理</el-button
                   > 
                 </span>
@@ -208,7 +216,7 @@
                     type="warning"
                     size="mini"
                     plain
-                    @click="infotype = '团队'"
+                    @click="infotype = '任务'"
                     >任务管理</el-button
                   >  
                   <el-button
@@ -224,20 +232,11 @@
                     type="warning"
                     size="mini"
                     plain
-                    @click="editXmProjectSomeFields(xmIteration, 'istatus', '5')"
+                    @click="editSomeFields(xmIteration, 'istatus', '4')"
                     >设为测试中</el-button
                   >
                 </span>
-                <span v-if="xmIteration.istatus != i.id">
-                   
-                  <el-button
-                    class="step-btn"
-                    type="warning"
-                    size="mini"
-                    plain
-                    @click="infotype = '缺陷'"
-                    >缺陷管理</el-button
-                  >  
+                <span v-if="xmIteration.istatus != i.id"> 
                   <el-button
                     class="step-btn"
                     type="warning"
@@ -264,7 +263,7 @@
                     type="warning"
                     size="mini"
                     plain
-                    @click="editXmProjectSomeFields(xmIteration, 'istatus', '5')"
+                    @click="editSomeFields(xmIteration, 'istatus', '5')"
                     >设为待上线</el-button
                   >
                 </span>
@@ -278,7 +277,7 @@
                     type="warning"
                     size="mini"
                     plain
-                    @click="editXmProjectSomeFields(xmIteration, 'istatus', '5')"
+                    @click="editSomeFields(xmIteration, 'istatus', '6')"
                     >设为已完成</el-button
                   >
                 </span>
@@ -294,7 +293,7 @@
                     type="warning"
                     size="mini"
                     plain
-                    @click="editXmProjectSomeFields(xmIteration, 'istatus', '7')"
+                    @click="editSomeFields(xmIteration, 'istatus', '7')"
                     >设为已关闭</el-button
                   >
                 </span>
@@ -310,7 +309,7 @@
                     type="warning"
                     size="mini"
                     plain
-                    @click="editXmProjectSomeFields(xmIteration, 'istatus', '7')"
+                    @click="editSomeFields(xmIteration, 'istatus', '0')"
                     >重新打开</el-button
                   >
                 </span> 
@@ -322,6 +321,7 @@
       <el-col :span="infotype == '迭代概览' ? 18 : 24">
         <xm-iteration-overview-complex
           v-if="infotype == '迭代概览'"
+		  ref="迭代概览"
           :xm-iteration="xmIteration"
         ></xm-iteration-overview-complex>
         <xm-project-complex
@@ -399,7 +399,9 @@ import xmTestCaseExecMng from "../xmTestCaseExec/XmTestCaseExecMng";
 import XmIterationForProjectComplex from "./XmIterationForLinkComplex.vue";
 import XmIterationOverviewComplex from "../xmIteration/XmIterationOverviewComplex.vue";
 import XmProductForProjectComplex from "../xmProduct/XmProductForLinkComplex.vue";
-import XmProjectComplex from "../xmProject/XmProjectForLinkComplex.vue";
+import XmProjectComplex from "../xmProject/XmProjectForLinkComplex.vue";	
+import {initDicts, listXmIteration, editSomeFieldsXmIteration } from '@/api/xm/core/xmIteration';
+
 
 import XmReport from "@/views/xm/rpt/reportIndex";
 
@@ -729,6 +731,28 @@ export default {
       localStorage.setItem("iteration-infotype", "迭代概览");
       this.$router.back();
     },
+	
+
+	editSomeFields(row,fieldName,$event){ 
+		let params={};
+		params['ids']=[row].map(i=>i.id)
+		params[fieldName]=$event
+		var func = editSomeFieldsXmIteration
+		func(params).then(res=>{
+			let tips = res.data.tips;
+			if(tips.isOk){
+			  Object.assign(row,params)
+			}else{ 
+				this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+			}
+		}).catch((e)=>Object.assign(this.editForm,this.editFormBak))
+	},
+	showIterationMenu(){
+		this.$refs['迭代概览'].showPanelName='iterationMenuMng'
+	},
+	showIterationDetail(){
+		this.$refs['迭代概览'].showPanelName='detail'
+	}
   }, //end methods
   components: {
     xmTaskMng,
@@ -757,11 +781,7 @@ export default {
   },
   mounted() {
     this.$nextTick(() => { 
-		initSimpleDicts("all", ["iterationStatus"]).then((res) => {
-		if (res.data.tips.isOk) {
-			this.dicts["iterationStatus"] = res.data.data.iterationStatus;
-		}
-		});
+	  initDicts(this);
       var infotype = localStorage.getItem("iteration-infotype");
       if (infotype) {
         this.infotype = infotype;
