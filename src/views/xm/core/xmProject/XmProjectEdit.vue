@@ -219,7 +219,7 @@
 					</el-tabs>    
 				</el-form>    
 		</el-row>
-		<el-row>  
+		<el-row  style="float:right;">  
 				<!-- <el-button   type="text" @click.native="handleCancel" >关闭</el-button>   -->
 				
 				<el-button v-if="opType==='add'" v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>  
