@@ -1,15 +1,5 @@
 <template>
-	<section class="page-container padding border">
-		
-		<el-row style="padding-left:250px;padding-right:250px;padding-top:20px;padding-bottom:20px;">
-			<el-steps :active="calcXmProductPstatusStep" finish-status="success">
- 				<el-step  v-for="(i,index) in dicts['xmProductPstatus']" :title="i.name" :key="index" @click.native.stop="editForm.pstatus=i.id">
-					 <el-link slot="title" >
-						 {{i.name}} 
-					 </el-link>
-				</el-step> 
-			</el-steps>
-		</el-row>
+	<section class="padding border"> 
 		<el-row class="page-main">
 			<!--新增界面 XmProduct 产品表--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm"> 
