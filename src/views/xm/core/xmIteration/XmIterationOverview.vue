@@ -1,19 +1,6 @@
 <template>
   <section class="page-container padding">
-    <el-row class="page-main" :style="{overflowX:'hidden',height:maxTableHeight+'px'}" ref="pageMainRef">
-      <el-row style="margin-bottom:10px">
-        <el-card class="box-card" style="padding:0px ;height:100px">
-          <div>
-            <el-row style="padding:10px"> 
-              <el-steps :active="calcXmIterationPstatusStep" align-center finish-status="success">
-                <el-step  v-for="(i,index) in dicts['iterationStatus']" :title="i.name" :key="index" >
-                   
-                </el-step> 
-              </el-steps>
-            </el-row>
-          </div>
-        </el-card>
-      </el-row>
+    <el-row class="page-main" :style="{overflowX:'hidden',height:maxTableHeight+'px'}" ref="pageMainRef"> 
       <el-row :gutter="10" style="margin-bottom:10px">
           <el-col :span="8" >
             <el-card class="box-card" style="padding:0px ;height:425px">
