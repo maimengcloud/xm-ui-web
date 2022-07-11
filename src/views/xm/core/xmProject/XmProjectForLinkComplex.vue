@@ -67,47 +67,33 @@
 						</span> 
 				</el-row>
 				<el-row v-else-if="i.id=='2'"><!--立项中-->
-						<span v-if="selProject.status==i.id">
-							<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='合同管理'">签订合同</el-button>
-							<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='团队'">创建团队</el-button>
-							<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='计划'">创建计划</el-button>
-							<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='预算'">预算清单</el-button>
+						<span v-if="selProject.status==i.id"> 
+							<el-button class="step-btn" type="warning" size="mini"   plain @click="showPanel='group'">创建团队</el-button>
+							<el-button class="step-btn" type="warning" size="mini"   plain @click="showPanel='plan'">创建计划</el-button> 
 							<el-button class="step-btn" type="warning" size="mini"   plain @click="showProjectGaiSuan()">项目估算</el-button>
 							<el-button class="step-btn" type="warning" size="mini"   plain @click="showProjectShouYi()">项目收益</el-button>
 							<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','3')">设为立项中</el-button>
 						</span>
 						<span v-if="selProject.status!=i.id">
-							<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='合同管理'">合同管理</el-button>
-							<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='团队'">团队管理</el-button>  
-							<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='计划'">计划管理</el-button> 
-							<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='预算'">预算管理</el-button>
+ 							<el-button class="step-btn" type="warning" size="mini"   plain @click="showPanel='group'">团队管理</el-button>  
+							<el-button class="step-btn" type="warning" size="mini"   plain @click="showPanel='plan'">计划管理</el-button>  
 							<el-button class="step-btn" type="warning" size="mini"   plain @click="showProjectGaiSuan()">项目估算</el-button>
 							<el-button class="step-btn" type="warning" size="mini"   plain @click="showProjectShouYi()">项目收益</el-button>
 						</span> 
 				</el-row>
 				<el-row v-else-if="i.id=='3'"><!--实施中-->
-						<span v-if="selProject.status==i.id">
-							<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='迭代'">迭代管理</el-button>
-							<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='计划'">任务管理</el-button>
-							<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='缺陷'">缺陷管理</el-button>
-							<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='每日工时'">每日工时</el-button>
-							<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='每月工时'">每月工时</el-button> 
-							<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='费用'">费用管理</el-button> 
-							<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='效能'">效能分析</el-button> 
-							<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','4')">暂停项目</el-button>
+						<span v-if="selProject.status==i.id"> 
+							<el-button class="step-btn" type="warning" size="mini"   plain @click="showPanel='tasks'">任务管理</el-button>
+							<el-button class="step-btn" type="warning" size="mini"   plain @click="showPanel='bugs'">缺陷管理</el-button> 
+ 							<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','4')">暂停项目</el-button>
 							<el-button class="step-btn" type="warning" size="mini"   plain @click="projectChangeRequire()">变更申请</el-button>
 							<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','5')">设为结项中</el-button>
 						</span>
-						<span v-if="selProject.status!=i.id">
-							<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='迭代'">迭代管理</el-button>
-							<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='计划'">任务管理</el-button>
-							<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='缺陷'">缺陷管理</el-button>
-							<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='每日工时'">每日工时</el-button>
-							<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='每月工时'">每月工时</el-button> 
-							<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='费用'">费用管理</el-button> 
-							<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='效能'">效能分析</el-button> 
-							<el-button v-if="selProject.status<i.id" class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','5')">结项申请</el-button>
-							<el-button class="step-btn" type="warning" size="mini"   plain @click="showDetail()">变更申请</el-button>
+						<span v-if="selProject.status!=i.id"> 
+							<el-button class="step-btn" type="warning" size="mini"   plain @click="showPanel='tasks'">任务管理</el-button>
+							<el-button class="step-btn" type="warning" size="mini"   plain @click="showPanel='bugs'">缺陷管理</el-button> 
+ 							<el-button v-if="selProject.status<i.id" class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','5')">结项申请</el-button>
+							<el-button class="step-btn" type="warning" size="mini"   plain @click="projectChangeRequire()">变更申请</el-button>
 						</span> 
 				</el-row>
 				<el-row v-else-if="i.id=='4'"><!--暂停中-->
@@ -116,12 +102,10 @@
 						</span>  
 				</el-row>
 			<el-row v-else-if="i.id=='5'"><!--结项中-->
-						<span v-if="selProject.status==i.id"> 
-				<el-button class="step-btn" type="warning" size="mini"   plain @click="showDetail()">结项申请</el-button>
-				<el-button class="step-btn" type="warning" size="mini"   plain @click="showCurrFlow()">结项审批</el-button>
+						<span v-if="selProject.status==i.id">  
 				</span>
 				<span v-if="selProject.status!=i.id">
-				<el-button class="step-btn" type="warning" size="mini"   plain @click="showHisFlow()">结项审批</el-button>  
+				 
 				</span>  
 				</el-row>
 				<el-row v-else-if="i.id=='6'"><!--已结项--> 
@@ -205,6 +189,8 @@
               v-if="showPanel == 'detail'"
               :sel-project="selProject"
               @submit="afterEditSubmit"
+			  ref="detail"
+			  @edit-fields="onEditFields"
             ></xm-project-detail>
           </el-tab-pane>
           <el-tab-pane
@@ -280,8 +266,18 @@
               :sel-project="selProject"
             ></xm-question-mng>
           </el-tab-pane>
-        </el-tabs>
-        <el-row> </el-row>
+          <el-tab-pane
+            label="团队"
+            lazy
+            name="group"
+            v-if="selProject && selProject.id"
+          >
+			<xm-group-mng
+			v-if="showPanel == 'group'"
+			:sel-project="selProject"
+			></xm-group-mng>
+          </el-tab-pane>
+        </el-tabs> 
       </el-col>
     </el-row>
   </section>
@@ -310,6 +306,7 @@ import XmProjectDetail from "./XmProjectDetail"; //新增界面
 import XmProductProjectLinkMng from "../xmProductProjectLink/XmProductProjectLinkMng.vue";
 import XmIterationLinkForProject from "../xmIterationLink/XmIterationLinkForProject.vue";
 import XmPlan from "../xmTask/XmPlan.vue";
+import xmGroupMng from "../xmGroup/XmGroupMng";
  
 import {
 	initDicts,
@@ -421,35 +418,34 @@ export default {
       this.$emit("edit-fields", row);
     },
     showCurrFlow() {
-      this.$refs["项目概览"].showPanelName = "currFlow";
+      this.showPanel = "currFlow";
     },
     showHisFlow() {
-      this.$refs["项目概览"].showPanelName = "hisFlow";
+      this.showPanel = "hisFlow";
     },
     showDetail() {
-      this.$refs["项目概览"].showPanelName = "detail";
+      this.showPanel = "detail";
+    },
+    projectChangeRequire() {
+      this.showPanel = "detail";
+      this.$nextTick(() => {
+        this.$refs["detail"].$refs['projectEdit'].currTabPane = "3";
+      });
     },
     showProjectGaiSuan() {
-      this.$refs["项目概览"].showPanelName = "detail";
+      this.showPanel = "detail";
       this.$nextTick(() => {
-        this.$refs["项目概览"].$refs["detail"].$refs[
-          "projectEdit"
-        ].currTabPane = "4";
+        this.$refs["detail"].$refs['projectEdit'].currTabPane = "4";
       });
     },
     showProjectShouYi() {
-      this.$refs["项目概览"].showPanelName = "detail";
+      this.showPanel = "detail";
       this.$nextTick(() => {
-        this.$refs["项目概览"].$refs["detail"].$refs[
-          "projectEdit"
-        ].currTabPane = "5";
+        this.$refs["detail"].$refs['projectEdit'].currTabPane = "5";
       });
     },
     showMenusPage() {
-      this.infotype = "产品";
-      this.$nextTick(() => {
-        this.$refs["xmProductComplex"].showPanel = "menus";
-      });
+      this.showPanel = "menus"; 
     },
   }, //end methods
   components: {
@@ -470,6 +466,7 @@ export default {
     XmProductProjectLinkMng,
     XmIterationLinkForProject,
     XmPlan,
+	xmGroupMng,
   },
   mounted() {
 	
