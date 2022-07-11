@@ -157,12 +157,14 @@
             <el-row slot="description">
                <el-row v-if="i.id=='0'"><!--初始-->
 			   		<span v-if="selProject.status==i.id">
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">创建产品</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="createProduct()">创建产品</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="linkProduct()">关联产品</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='环境清单'">环境清单</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','1')">进入售前</el-button>
 					</span>
 					<span v-if="selProject.status!=i.id">
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">产品管理</el-button>   
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="linkProduct()">关联产品</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='环境清单'">环境清单</el-button>
 					</span> 
 			   </el-row>
@@ -813,6 +815,15 @@ export default {
           this.$refs['xmProductComplex'].showPanel="menus"
         })
         
+      },
+      linkProduct(){
+        this.$refs['项目概览'].showPanelName='productProjectLink' 
+      },
+      createProduct(){
+        this.infotype='产品'
+        this.$nextTick(()=>{
+          this.$refs['xmProductComplex'].addProductVisible=true
+        })
       }
   }, //end methods
   components: {
