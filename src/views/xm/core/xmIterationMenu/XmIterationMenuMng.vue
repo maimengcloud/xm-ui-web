@@ -13,8 +13,8 @@
 							<el-button v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterationMenus" icon="el-icon-search"></el-button>
 
 							<span style="float:right;">
-								<el-button type="danger" @click="batchDel" icon="el-icon-delete">批量移出</el-button>
-								<el-button type="primary" @click="showAdd" icon="el-icon-plus">选择故事</el-button>
+								<el-button type="danger" @click="batchDel" icon="el-icon-delete">移出</el-button>
+								<el-button type="primary" @click="showAdd" icon="el-icon-plus">故事</el-button>
 							</span>
 
 						</el-row>

@@ -184,7 +184,7 @@
           class="padding border"
           :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"
         >
-          <h4 class="padding-bottom">常用功能快捷导航</h4>
+          <h4 class="padding-bottom">常用功能导航</h4>
           <el-steps
             :active="calcProductPstatusStep"
             finish-status="success"

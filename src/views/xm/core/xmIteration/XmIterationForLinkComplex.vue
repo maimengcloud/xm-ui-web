@@ -11,7 +11,7 @@
  					</el-col>
  				 </el-row> 
 				<el-row ref="pageMainRef" class="padding border" :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"> 
-								<h4 class="padding-bottom">迭代常用功能快捷导航</h4>
+								<h4 class="padding-bottom">常用功能导航</h4>
 								<el-steps
 								:active="calcIterationStatusStep"
 								finish-status="success"
@@ -374,6 +374,7 @@
 				xmIteration:null,
 				showPanel:'iterationOverview',//menus,tasks,bugs,iterationStateShow 
 				iterationAddVisible:false,
+				maxTableHeight:300,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -455,6 +456,8 @@
 		mounted() { 
 			this.$nextTick(() => {
 				initDicts(this)
+				
+      this.maxTableHeight = util.calcTableMaxHeight(this.$refs.pageMainRef.$el);
 				});
 
 			}
