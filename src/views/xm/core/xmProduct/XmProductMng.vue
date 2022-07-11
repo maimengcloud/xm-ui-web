@@ -368,14 +368,15 @@
 
 				addFormVisible: false,//新增xmProduct界面是否显示
 				//新增xmProduct界面初始化数据
+				
 				addForm: {
-					id:'',productName:'',branchId:'',remark:''
+					id:'',productName:'',branchId:'',remark:'',version:'',pmUserid:'',pmUsername:'',ctime:'',deptid:'',pstatus:'',startTime:'',endTime:'',deptName:'',admUserid:'',admUsername:'',assUserid:'',assUsername:'',bizProcInstId:'',bizFlowState:'',isTpl:'',baselineId:'',baseTime:'',code:'',pbudgetWorkload:'',pbudgetAmount:'',pmenuBudgetWorkload:'',pmenuBudgetAmount:'',budgetCtrl:'',phaseBudgetCtrl:'',phaseActCtrl:'',locked:'',del:'',ltime:''
 				},
 
 				editFormVisible: false,//编辑界面是否显示
-				//编辑xmProduct界面初始化数据
+				//编辑xmProduct界面初始化数据 
 				editForm: {
-					id:'',productName:'',branchId:'',remark:''
+					id:'',productName:'',branchId:'',remark:'',version:'',pmUserid:'',pmUsername:'',ctime:'',deptid:'',pstatus:'',startTime:'',endTime:'',deptName:'',admUserid:'',admUsername:'',assUserid:'',assUsername:'',bizProcInstId:'',bizFlowState:'',isTpl:'',baselineId:'',baseTime:'',code:'',pbudgetWorkload:'',pbudgetAmount:'',pmenuBudgetWorkload:'',pmenuBudgetAmount:'',budgetCtrl:'',phaseBudgetCtrl:'',phaseActCtrl:'',locked:'',del:'',ltime:''
 				},
 				iterationVisible:false,
 				iterationSelectVisible:false,

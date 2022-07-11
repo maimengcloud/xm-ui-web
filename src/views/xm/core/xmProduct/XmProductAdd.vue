@@ -106,9 +106,9 @@
 						{ min:0,max:250, message: '备注长度在10-250个字符', trigger: 'change' }
 					]
 				},
-				//新增界面数据 产品表
+				//新增界面数据 产品表 
 				addForm: {
-					id:'',code:'',productName:'',branchId:'',remark:'',pmUserid:'',pmUsername:'',pstatus:'',ctime:'',admUserid:'',admUsername:'',assUserid:'',assUsername:'',del:'',locked:''
+					id:'',productName:'',branchId:'',remark:'',version:'',pmUserid:'',pmUsername:'',ctime:'',deptid:'',pstatus:'',startTime:'',endTime:'',deptName:'',admUserid:'',admUsername:'',assUserid:'',assUsername:'',bizProcInstId:'',bizFlowState:'',isTpl:'',baselineId:'',baseTime:'',code:'',pbudgetWorkload:'',pbudgetAmount:'',pmenuBudgetWorkload:'',pmenuBudgetAmount:'',budgetCtrl:'',phaseBudgetCtrl:'',phaseActCtrl:'',locked:'',del:'',ltime:''
 				},
 				userSelectVisible:false,
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
