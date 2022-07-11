@@ -168,11 +168,11 @@
 			   </el-row>
                <el-row v-else-if="i.id=='1'"><!--售前-->
 			   		<span v-if="selProject.status==i.id">
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">需求管理</el-button>
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="showMenusPage">需求管理</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','2')">设为立项中</el-button>
 					</span>
 					<span v-if="selProject.status!=i.id">
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">需求管理</el-button> 
+						<el-button class="step-btn" type="warning" size="mini"   plain @click="showMenusPage">需求管理</el-button> 
 					</span> 
 			   </el-row>
                <el-row v-else-if="i.id=='2'"><!--立项中-->
@@ -274,7 +274,7 @@
         <xm-product-for-link-complex
           v-if="infotype == '产品'"
           ref="xmProductComplex"
-          :sel-project="selProject"
+          :sel-project="selProject" 
         ></xm-product-for-link-complex>
         <xm-menu-mng
           v-if="infotype == '需求'"
@@ -805,6 +805,13 @@ export default {
         this.$refs['项目概览'].showPanelName='detail' 
         this.$nextTick(()=>{  
           this.$refs['项目概览'].$refs['detail'].$refs['projectEdit'].currTabPane='5'
+        })
+        
+      },
+      showMenusPage(){
+        this.infotype='产品'
+        this.$nextTick(()=>{
+          this.$refs['xmProductComplex'].showPanel="menus"
         })
         
       }
