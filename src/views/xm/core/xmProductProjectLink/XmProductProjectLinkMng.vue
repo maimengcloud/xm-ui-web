@@ -25,8 +25,11 @@
 				</el-table-column>  
 				<el-table-column prop="ctime" label="加入时间" min-width="80" ></el-table-column> 
 				<el-table-column prop="cusername" label="操作者" min-width="80" ></el-table-column>
- 				<el-table-column label="操作" width="120" fixed="right"> 
+ 				<el-table-column label="操作" width="250" fixed="right"> 
 					<template scope="scope">
+						<el-button v-if="xmProduct && xmProduct.id" type="primary" @click="goToProject(scope.row,scope.$index)" icon="el-icon-search" >进入项目</el-button>
+						<el-button v-if="selProject && selProject.id" type="primary" @click="goToProduct(scope.row,scope.$index)" icon="el-icon-search" >进入产品</el-button>
+
  						<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete" v-loading="load.del">移出</el-button>
 					</template>
 				</el-table-column>
@@ -291,7 +294,13 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue'
               }
             }).catch((e)=>Object.assign(this.editForm,this.editFormBak))
           },
-				
+			
+			goToProject(row){
+				this.$router.push({path:'/xm/core/xmProject/XmProjectInfoRoute',query:{id:row.projectId}})
+			},	
+			goToProduct(row){
+				this.$router.push({path:'/xm/core/xmProduct/XmProductInfoRoute',query:{id:row.productId}})
+			},	
 			/**end 自定义函数请在上面加**/
 			
 		},//end methods

@@ -21,6 +21,7 @@
 				<el-table-column label="操作" width="245" fixed="right">
 					<template slot-scope="scope">  
 							<el-button-group>
+								<el-button   type="primary" @click.stop="goToProject(scope.row)" >项目视图</el-button>  
 								<el-button v-if="!xmIteration"  type="primary" @click.stop="doDelXmProductProjectLink(scope.row)" >移出产品</el-button>  
 							</el-button-group> 
 							<!-- <el-button style="width:100%;" slot="reference" class="see-more" type="text" icon="el-icon-more"></el-button>
@@ -168,6 +169,9 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue';
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			}, 
+			goToProject(row){
+				this.$router.push({path:'/xm/core/xmProject/XmProjectInfoRoute',query:{id:row.id}})
+			},
 			selectProject:function(row){
 				this.editForm=row
 				this.$emit('project-confirm',this.editForm);
