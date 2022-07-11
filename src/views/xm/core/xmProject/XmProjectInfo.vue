@@ -145,8 +145,8 @@
         </el-submenu>
       </el-menu>
     </el-row>
-    <el-row>
-      <el-col :span="infotype=='项目概览'?4:0" class="padding border">
+    <el-row ref="pageBody">
+      <el-col :span="infotype=='项目概览'?6:0" class="padding border" :style="{maxHeight:maxTableHeight+'px',overflowY:'auto'}">
       <h4 class="padding-bottom">常用功能快捷导航</h4>
         <el-steps :active="calcProjectStatusStep" finish-status="success" direction="vertical">
           <el-step
@@ -258,7 +258,7 @@
           </el-step>
         </el-steps>
       </el-col>
-      <el-col :span="infotype=='项目概览'?20:24">
+      <el-col :span="infotype=='项目概览'?18:24">
         <xm-project-overview-complex
           v-if="infotype == '项目概览'"
           :sel-project="selProject"
@@ -441,7 +441,8 @@ export default {
       groupUserVisible: false,
       exportArr: ["任务", "计划", "需求监控"],
       dicts:  getDefOptions(),
-	  historyLength:0,
+	    historyLength:0,
+      maxTableHeight:300,
       /**end 自定义属性请在上面加 请加备注**/
     };
   }, //end data
@@ -837,6 +838,8 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
+      
+      this.maxTableHeight = this.source == 'GZT' ?  this.maxTableHeight : util.calcTableMaxHeight(this.$refs.pageBody.$el);
       var infotype = localStorage.getItem("project-infotype");
       if (infotype) {
         this.infotype = infotype;
