@@ -66,7 +66,7 @@
       	</el-drawer>	
 		</el-row>
 		
-		<el-row> 
+		<el-row style="float:right;"> 
 			<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button> 
 		</el-row>
 	</section>
