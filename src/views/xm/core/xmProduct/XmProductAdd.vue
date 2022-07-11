@@ -46,7 +46,7 @@
        		 <users-select  @confirm="onUserSelected" ref="usersSelect"></users-select>
       	</el-drawer>	
 		</el-row>
-		<el-row> 
+		<el-row style="float:right;"> 
 			<el-button @click.native="handleCancel">取消</el-button>  
 			<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">提交</el-button>   
 		</el-row>

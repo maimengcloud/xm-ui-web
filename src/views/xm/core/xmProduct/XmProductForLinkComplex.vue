@@ -9,16 +9,9 @@
 						</div>
 					</el-tab-pane>
 					<el-tab-pane disabled> 
-						<div  slot="label">
-							<el-popover
-								placement="bottom"
-								width="800"
-								v-model="addProductVisible"
-								trigger="manual"> 
-								<xm-product-add  @cancel="addProductVisible=false"  :sel-project="selProject"  @submit="afterAddProductSubmit"></xm-product-add>
- 								 <el-link type="warning" slot="reference" @click="addProductVisible=true" icon="el-icon-plus">产品</el-link> 
-							</el-popover> 
-						</div>
+						<div  slot="label"> 
+  								 <el-link type="warning" slot="reference" @click="addProductVisible=true" icon="el-icon-plus">产品</el-link> 
+ 						</div>
 					</el-tab-pane>
 					<el-tab-pane label="产品概览"   name="productOverview" v-if="xmProduct && xmProduct.id">
 						 <xm-product-overview v-if="xmProduct && showPanel=='productOverview'"  :xm-product="xmProduct" :sel-project="selProject"></xm-product-overview>
@@ -68,6 +61,13 @@
 			</el-col>
 
 		</el-row>
+		
+		<el-dialog append-to-body
+			top="20px"
+			width="60%"
+			:visible.sync="addProductVisible" > 
+			<xm-product-add  @cancel="addProductVisible=false"  :sel-project="selProject"  @submit="afterAddProductSubmit"></xm-product-add>
+ 		</el-dialog> 
 	</section>
 </template>
 
