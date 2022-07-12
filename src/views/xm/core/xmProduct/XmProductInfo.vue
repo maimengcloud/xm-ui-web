@@ -540,7 +540,7 @@ import xmEnvList from "../xmEnvList/XmEnvListMng";
 import xmMenuWithPlan from "../xmMenu/XmMenuWithPlan";
 import xmProjectStateMng from "../xmProjectState/XmProjectStateMng";
 import xmTestCaseExecMng from "../xmTestCaseExec/XmTestCaseExecMng";
-import XmIterationForLinkComplex from "../xmIteration/XmIterationForLinkComplex.vue";
+import XmIterationForLinkComplex from "../xmIteration/XmIterationBox.vue";
 import XmProductOverviewComplex from "../xmProduct/XmProductOverviewComplex.vue";
 import XmProductForLinkComplex from "./XmProductForLinkComplex.vue";
 import XmProjectForLink from "../xmProject/XmProjectForLink.vue";

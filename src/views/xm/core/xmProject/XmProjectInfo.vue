@@ -53,12 +53,10 @@
         </el-menu-item>
         <el-menu-item index="产品" class="hidden-sm-and-down">
           <span slot="title"><i class="el-icon-s-flag"></i>产品</span>
-        </el-menu-item>
-        <!--
+        </el-menu-item> 
 				<el-menu-item label="需求" index="需求">
 					 <span slot="title"><i class="el-icon-document"></i>需求</span> 
-				</el-menu-item>
-				-->
+				</el-menu-item> 
 
         <el-menu-item index="计划">
           <span slot="title"><i class="el-icon-odometer"></i>计划</span>
@@ -162,8 +160,7 @@
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='环境清单'">环境清单</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','1')">进入售前</el-button>
 					</span>
-					<span v-if="selProject.status!=i.id">
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='产品'">产品管理</el-button>   
+					<span v-if="selProject.status!=i.id"> 
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="linkProduct()">关联产品</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='环境清单'">环境清单</el-button>
 					</span> 
@@ -399,11 +396,11 @@ import xmCost from "./XmProjectCost";
 import xmBudget from "./XmProjectBudgetCost";
 import xmContract from "../xmContract/XmContractMng";
 import xmEnvList from "../xmEnvList/XmEnvListMng";
-import xmMenuMng from "../xmMenu/XmMenuMng"; 
+import xmMenuMng from "../xmMenu/XmMenuBox"; 
 import xmTestCaseExecMng from "../xmTestCaseExec/XmTestCaseExecMng";
-import XmIterationForLinkComplex from "../xmIteration/XmIterationForLinkComplex.vue";
+import XmIterationForLinkComplex from "../xmIteration/XmIterationMng.vue"; 
 import XmProjectOverviewComplex from "./XmProjectOverviewComplex.vue";
-import XmProductForLinkComplex from "../xmProduct/XmProductForLinkComplex.vue";
+import XmProductForLinkComplex from "../xmProductProjectLink/XmProductProjectLinkMng.vue";
 import XmWorkloadSetDayList from "../xmTaskWorkload/WorkloadSetDayList.vue";
 import XmWorkloadSetMonthList from "../xmTaskWorkload/WorkloadSetMonthList.vue";
 
@@ -810,11 +807,7 @@ export default {
         
       },
       showMenusPage(){
-        this.infotype='产品'
-        this.$nextTick(()=>{
-          this.$refs['xmProductComplex'].showPanel="menus"
-        })
-        
+        this.infotype='需求'  
       },
       linkProduct(){
         this.$refs['项目概览'].showPanelName='productProjectLink' 
@@ -847,7 +840,7 @@ export default {
     XmReport,
     XmPlan,
     XmWorkloadSetDayList,
-    XmWorkloadSetMonthList
+    XmWorkloadSetMonthList, 
     //在下面添加其它组件
   }, 
   mounted() {
