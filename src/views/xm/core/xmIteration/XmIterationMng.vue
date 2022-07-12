@@ -92,7 +92,7 @@
 
 			<!--新增 XmIteration 迭代定义界面-->
 			<el-drawer title="新增迭代定义" :visible.sync="addFormVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
-				<xm-iteration-add :xm-iteration="addForm" :parent-iteration="parentIteration" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-iteration-add>
+				<xm-iteration-add :xm-product="xmProduct" :sel-project="selProject" :xm-iteration="addForm" :parent-iteration="parentIteration" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-iteration-add>
 			</el-drawer>
 
 			<!--新增 XmIteration 迭代定义界面-->
@@ -320,12 +320,8 @@ import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue'
 			},
 			afterAddSubmit(xmIteration){
 				this.addFormVisible=false;
-				this.pageInfo.count=true;
-				if(this.xmProduct){//如果是产品试图界面添加的迭代，直接添加产品与迭代的关联关系
-					this.onXmIterationSelect(xmIteration);
-				}else{
-					this.getXmIterations();
-				}
+				this.pageInfo.count=true; 
+				this.getXmIterations(); 
 			},
 			afterEditSubmit(){
 				this.editFormVisible=false;
