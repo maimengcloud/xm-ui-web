@@ -191,22 +191,33 @@
 									<el-row v-else-if="i.id == '4'"
 										><!--测试中-->
 										<span v-if="xmIteration.istatus == i.id"> 
-										<el-button
-											class="step-btn"
-											type="warning"
-											size="mini"
-											plain
-											@click="showPanel = 'bugs'"
-											>缺陷管理</el-button
-										>  
-										<el-button
-											class="step-btn"
-											type="warning"
-											size="mini"
-											plain
-											@click="editSomeFields(xmIteration, 'istatus', '5')"
-											>设为待上线</el-button
-										>
+											<el-button
+												class="step-btn"
+												type="warning"
+												size="mini"
+												plain
+												@click="showPanel = 'bugs'"
+												>缺陷管理</el-button
+											>  
+											<el-button
+												class="step-btn"
+												type="warning"
+												size="mini"
+												plain
+												@click="editSomeFields(xmIteration, 'istatus', '5')"
+												>设为待上线</el-button
+											>
+										</span>
+										
+										<span v-if="xmIteration.istatus != i.id">
+											<el-button
+												class="step-btn"
+												type="warning"
+												size="mini"
+												plain
+												@click="showPanel = 'bugs'"
+												>缺陷管理</el-button
+											>   
 										</span>
 									</el-row>
 									<el-row v-else-if="i.id == '5'"

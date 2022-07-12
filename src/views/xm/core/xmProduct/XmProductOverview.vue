@@ -9,7 +9,7 @@
               </div>
               <el-row style="margin-bottom:18px">
                 <el-row>
-                  <span>产品负责人</span><span v-text="this.xmProduct.pmUsername"></span>
+                  <span>产品负责人:</span><span><b>{{xmProduct.pmUsername}}</b></span>
                 </el-row> 
               </el-row>
               <el-row style="margin-bottom:18px">
