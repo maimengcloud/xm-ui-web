@@ -271,7 +271,7 @@
           :sel-project="selProject"
         ></xm-iteration-for-link-complex>
         <xm-product-for-link-complex
-          v-if="infotype == '产品'" class="padding-top"
+          v-if="infotype == '产品'" class="padding"
           ref="xmProductComplex"
           :sel-project="selProject" 
         ></xm-product-for-link-complex>
@@ -400,7 +400,7 @@ import xmMenuMng from "../xmMenu/XmMenuBox";
 import xmTestCaseExecMng from "../xmTestCaseExec/XmTestCaseExecMng";
 import XmIterationForLinkComplex from "../xmIteration/XmIterationMng.vue"; 
 import XmProjectOverviewComplex from "./XmProjectOverviewComplex.vue";
-import XmProductForLinkComplex from "../xmProductProjectLink/XmProductProjectLinkMng.vue";
+import XmProductForLinkComplex from "../xmProduct/XmProductForLinkComplex.vue";
 import XmWorkloadSetDayList from "../xmTaskWorkload/WorkloadSetDayList.vue";
 import XmWorkloadSetMonthList from "../xmTaskWorkload/WorkloadSetMonthList.vue";
 
