@@ -379,6 +379,10 @@
         </el-drawer>
       </el-col>
     </el-row>
+    
+		<el-dialog  width="60%" top="20px" :visible.sync="iterationAddVisible" append-to-body>  
+					<xm-iteration-add  :xm-product="xmProduct" :sel-project="selProject" :visible="iterationAddVisible" @cancel="iterationAddVisible=false" @submit="afterIterationAddSubmit"></xm-iteration-add>
+ 		</el-dialog> 
   </section>
 </template>
 
