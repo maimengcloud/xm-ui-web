@@ -1,5 +1,5 @@
 <template>
-	<section class="padding">
+	<section class="padding-left padding-right">
 			<el-row>
 				<xm-product-select v-if="!xmProduct&&!xmIteration" style="display:inline;" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="clearProduct"></xm-product-select>
 			  	<xm-project-select v-if="!selProject" style="display:inline;" ref="xmProjectSelect" :auto-select="false" :link-product-id="xmProduct?xmProduct.id:null" @row-click="onProjectConfirm" @clear="clearProject"></xm-project-select>
@@ -128,7 +128,7 @@
 					<el-button @click="batchDel" type="danger" icon="el-icon-delete"></el-button>
 				</span>
 			 </el-row> 
-			 <el-row class="padding-top">
+			 <el-row>
 				<!--列表 XmQuestion xm_question-->
 				<el-table  element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"  ref="table" :height="maxTableHeight" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  					<el-table-column  label="全选" type="selection" min-width="50"  fixed="left"></el-table-column>
