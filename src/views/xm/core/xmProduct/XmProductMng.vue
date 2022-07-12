@@ -1,10 +1,10 @@
 <template>
-	<section class="page-container">
+	<section>
 		<el-row>
 		<el-col :span="6" v-if="templateVisible"> 
 			<xm-product-tpl-mng @copy="searchXmProducts" ref="xmProductTplMngRef" show-type="simple"></xm-product-tpl-mng>
 		</el-col> 
-		<el-col :span="templateVisible?18:24" class="padding-top padding-left border padding-right">
+		<el-col :span="templateVisible?18:24" class="padding-left border padding-right">
 			<el-row >
 				<el-row>
 					<el-select   v-model="filters.queryScope"    placeholder="产品查询范围">
@@ -119,7 +119,7 @@
 					</el-popover>
 					</span>
 				</el-row>
-				<el-row  class="page-main "  v-show="showType">
+				<el-row v-show="showType">
 					<!--列表 XmProject xm_project-->
 					<el-row v-loading="load.list">
 						<el-col  v-cloak v-for="(p,i) in xmProducts" :key="i" :xl="4" :lg="6" :md="8" :sm="12">
@@ -234,9 +234,10 @@
 							</template>
 						</el-table-column>
 					</el-table>
-					</el-row>
 					<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 
+					</el-row>
+					
 							<!--编辑 XmProduct 产品表界面-->
 					<el-drawer title="编辑产品" :visible.sync="editFormVisible"  size="60%"   append-to-body   :close-on-click-modal="false">
 						<xm-product-edit :xm-product="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-product-edit>

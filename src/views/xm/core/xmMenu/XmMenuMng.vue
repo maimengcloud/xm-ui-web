@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<el-row>
+		<el-row class="padding-left padding-right" :class="{'padding-top':paddingTop!==false}">
 			<el-col :span="24">
 					<el-row>
 						<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="!xmProduct && !xmIteration"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select>
@@ -433,7 +433,7 @@
 	import { mapGetters } from 'vuex'
 
 	export default {
-		props:['selProject','xmIteration','xmProduct','disabledMng','parentMenu'],
+		props:['selProject','xmIteration','xmProduct','disabledMng','parentMenu','paddingTop'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'

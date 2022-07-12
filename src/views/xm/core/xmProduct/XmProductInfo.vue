@@ -406,6 +406,7 @@
           <xm-question
             v-if="infotype == '缺陷'"
             :xm-product="xmProduct"
+            :padding-top="false"
             ref="xmQuestion"
           ></xm-question>
           <xm-group-mng
