@@ -115,8 +115,8 @@
 									</div>
   								</template> 
 							</el-table-column> 
-						</el-table>
-
+						</el-table> 
+						<el-pagination  layout="total, sizes, prev,  next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 
 					</el-row>
 				<!--编辑 XmMenu xm_project_menu界面-->
@@ -136,8 +136,7 @@
 				</el-drawer>
 			</el-col>
 		</el-row>
-		<el-pagination  layout="total, sizes, prev,  next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
-
+		
  			<tag-dialog ref="tagDialog" :tagIds="filters.tags?filters.tags.map(i=>i.tagId):[]" :jump="true" @select-confirm="onTagSelected">
 			</tag-dialog>
  			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="selProject" :xm-product="filters.xmProduct" @user-confirm="onGroupUserSelect">

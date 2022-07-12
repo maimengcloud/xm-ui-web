@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<el-row  class="padding-top">
+		<el-row>
 			<el-col :span="8">
 				<xm-epic-features-select :xm-product="{id:xmIteration.productId,name:''}" :show-select="false" @row-click="onEpicFeatureSelect"></xm-epic-features-select>
 			</el-col>
@@ -18,7 +18,7 @@
 							</span>
 
 						</el-row>
-						<el-row class="page-main padding-top padding-left">
+						<el-row class="page-main padding-left">
 							<!--列表 XmIterationMenu 迭代定义-->
 							<el-table ref="table" :height="maxTableHeight" :data="xmIterationMenusTreeData"  row-key="menuId"   @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 								<el-table-column  type="selection" width="45"></el-table-column>

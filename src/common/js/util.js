@@ -82,8 +82,16 @@ export default {
     var defaultInnerHeight=616;  
     var pageHeight=32/defaultInnerHeight*innerHeight 
     var top=148/defaultInnerHeight*innerHeight;
-    var bottomHeight=32/defaultInnerHeight*innerHeight
-    if(table!=null){
+    var bottomHeight=38/defaultInnerHeight*innerHeight
+    if(innerHeight>=916){
+      bottomHeight=20/defaultInnerHeight*innerHeight
+    }else if(innerHeight>=800){
+      bottomHeight=28/defaultInnerHeight*innerHeight
+    }else if(innerHeight>=700){
+      bottomHeight=32/defaultInnerHeight*innerHeight
+    }
+    
+    if(table!=null){  
       var rect=table.getBoundingClientRect()    
       if(rect && rect.top!=0){ 
         top=rect.top;
