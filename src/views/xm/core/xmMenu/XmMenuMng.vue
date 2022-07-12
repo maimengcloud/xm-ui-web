@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<el-row class="padding-left padding-right" :class="{'padding-top':paddingTop!==false}">
+		<el-row class="padding-left padding-right">
 			<el-col :span="24">
 					<el-row>
 						<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="!xmProduct && !xmIteration"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select>
