@@ -44,9 +44,10 @@
 										> 
 										<el-button
 											class="step-btn"
-											type="warning"
+											type="danger"
 											size="mini"
 											plain
+											icon="el-icon-d-caret" 
 											@click="editSomeFields(xmIteration, 'istatus', '1')"
 											>开启需求评审</el-button
 										> 
@@ -91,9 +92,10 @@
 										>
 										<el-button
 											class="step-btn"
-											type="warning"
+											type="danger"
 											size="mini"
 											plain
+											icon="el-icon-d-caret"
 											@click="editSomeFields(xmIteration, 'istatus', '2')"
 											>进入计划会</el-button
 										>
@@ -123,9 +125,10 @@
 										> 
 										<el-button
 											class="step-btn"
-											type="warning"
+											type="danger"
 											size="mini"
 											plain
+											icon="el-icon-d-caret"
 											@click="editSomeFields(xmIteration, 'istatus', '3')"
 											>设为研发中</el-button
 										>
@@ -170,9 +173,10 @@
 										> 
 										<el-button
 											class="step-btn"
-											type="warning"
+											type="danger"
 											size="mini"
 											plain
+											icon="el-icon-d-caret"
 											@click="editSomeFields(xmIteration, 'istatus', '4')"
 											>设为测试中</el-button
 										>
@@ -201,9 +205,10 @@
 											>  
 											<el-button
 												class="step-btn"
-												type="warning"
+												type="danger"
 												size="mini"
 												plain
+												icon="el-icon-d-caret"
 												@click="editSomeFields(xmIteration, 'istatus', '5')"
 												>设为待上线</el-button
 											>
@@ -226,9 +231,10 @@
 										
 										<el-button
 											class="step-btn"
-											type="warning"
+											type="danger"
 											size="mini"
 											plain
+											icon="el-icon-d-caret"
 											@click="editSomeFields(xmIteration, 'istatus', '6')"
 											>设为已完成</el-button
 										>
@@ -242,9 +248,10 @@
 										<span v-if="xmIteration.istatus == i.id">
 										<el-button
 											class="step-btn"
-											type="warning"
+											type="danger"
 											size="mini"
 											plain
+											icon="el-icon-d-caret"
 											@click="editSomeFields(xmIteration, 'istatus', '7')"
 											>设为已关闭</el-button
 										>
@@ -258,9 +265,10 @@
 										<span v-if="xmIteration.istatus == i.id">
 										<el-button
 											class="step-btn"
-											type="warning"
+											type="danger"
 											size="mini"
 											plain
+											icon="el-icon-d-caret"
 											@click="editSomeFields(xmIteration, 'istatus', '0')"
 											>重新打开</el-button
 										>
