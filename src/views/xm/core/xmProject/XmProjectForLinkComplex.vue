@@ -135,38 +135,6 @@
             ></xm-project-overview>
           </el-tab-pane>
           <el-tab-pane
-            label="执行统计"
-            name="projectCalc"
-            v-if="selProject && selProject.id"
-          >
-            <div v-if="showPanel == 'projectCalc'">
-              <el-row>
-                <el-button
-                  type="primary"
-                  @click="loadTasksToXmProjectState"
-                  v-loading="load.calcProject"
-                  >计算项目预算数据</el-button
-                >
-                <br />
-                <font color="blue" style="font-size: 10px"
-                  >将从项目任务中汇总进度、预算工作量、实际工作量、预算金额、实际金额、缺陷数、需求数等数据到项目统计表</font
-                >
-              </el-row>
-              <el-row>
-                <el-button
-                  type="primary"
-                  @click="loadTasksSettleToXmProjectState"
-                  v-loading="load.calcSettle"
-                  >计算项目结算数据</el-button
-                >
-                <br />
-                <font color="blue" style="font-size: 10px"
-                  >将从项目任务汇总结算数据项目统计表</font
-                >
-              </el-row>
-            </div>
-          </el-tab-pane>
-          <el-tab-pane
             label="项目详情"
             name="detail"
             v-if="selProject && selProject.id"
@@ -262,6 +230,38 @@
 			v-if="showPanel == 'group'"
 			:sel-project="selProject"
 			></xm-group-mng>
+          </el-tab-pane>
+          <el-tab-pane
+            label="执行统计"
+            name="projectCalc"
+            v-if="selProject && selProject.id"
+          >
+            <div v-if="showPanel == 'projectCalc'">
+              <el-row>
+                <el-button
+                  type="primary"
+                  @click="loadTasksToXmProjectState"
+                  v-loading="load.calcProject"
+                  >计算项目预算数据</el-button
+                >
+                <br />
+                <font color="blue" style="font-size: 10px"
+                  >将从项目任务中汇总进度、预算工作量、实际工作量、预算金额、实际金额、缺陷数、需求数等数据到项目统计表</font
+                >
+              </el-row>
+              <el-row>
+                <el-button
+                  type="primary"
+                  @click="loadTasksSettleToXmProjectState"
+                  v-loading="load.calcSettle"
+                  >计算项目结算数据</el-button
+                >
+                <br />
+                <font color="blue" style="font-size: 10px"
+                  >将从项目任务汇总结算数据项目统计表</font
+                >
+              </el-row>
+            </div>
           </el-tab-pane>
         </el-tabs> 
       </el-col>

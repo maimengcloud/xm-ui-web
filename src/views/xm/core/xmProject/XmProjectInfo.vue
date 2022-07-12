@@ -48,12 +48,12 @@
             >
           </span>
         </el-menu-item>
-        <el-menu-item index="迭代" class="hidden-sm-and-down">
-          <span slot="title"><i class="el-icon-document-copy"></i>迭代</span>
-        </el-menu-item>
-        <el-menu-item index="产品" class="hidden-sm-and-down">
+        <el-menu-item index="产品">
           <span slot="title"><i class="el-icon-s-flag"></i>产品</span>
         </el-menu-item> 
+        <el-menu-item index="迭代">
+          <span slot="title"><i class="el-icon-document-copy"></i>迭代</span>
+        </el-menu-item>
 				<el-menu-item label="需求" index="需求">
 					 <span slot="title"><i class="el-icon-document"></i>需求</span> 
 				</el-menu-item> 
@@ -265,16 +265,16 @@
           @edit-fields="onEditFields"
           ref="项目概览"
         ></xm-project-overview-complex>
-        <xm-iteration-for-link-complex
-          v-if="infotype == '迭代'"
-          ref="xmIterationMng"
-          :sel-project="selProject"
-        ></xm-iteration-for-link-complex>
         <xm-product-for-link-complex
           v-if="infotype == '产品'" class="padding"
           ref="xmProductComplex"
           :sel-project="selProject" 
         ></xm-product-for-link-complex>
+        <xm-iteration-for-link-complex
+          v-if="infotype == '迭代'"
+          ref="xmIterationMng"
+          :sel-project="selProject"
+        ></xm-iteration-for-link-complex>
         <xm-menu-mng
           v-if="infotype == '需求'"
           :sel-project="selProject"
