@@ -384,8 +384,7 @@
           ></xm-project-for-link-complex>
           <xm-menu-box
             v-if="infotype == '需求'"
-            :xm-product="xmProduct"
-            class="padding-top"
+            :xm-product="xmProduct" 
           ></xm-menu-box>
           <xm-task-mng
             v-if="infotype == '产品任务'"

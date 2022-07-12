@@ -1217,7 +1217,7 @@ export default {
       this.batchRelTasksWithMenuVisible=true;
     },
     onBatchRelTasksWithMenu(menu){
-      debugger;
+      
       var params={
         menuId:menu.menuId, 
       }

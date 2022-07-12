@@ -583,7 +583,7 @@
 			},
 			
 			needPayMarketAt(){
-				debugger;
+				
 				var toPayAtObj={total:0,topFee:0,hotFee:0,urgentFee:0,crmSup:0,shareFee:0}
 				var toPayAt=0;
 				var extInfos=this.doInitMarket(this.dicts.crowd_task_market)  
@@ -875,11 +875,11 @@
 			},
 			
 			afterAddExecSubmit(execForm){ 
-				debugger;
+				
 				this.$emit("after-add-submit",execForm);
 			},
 			afterEditExecSubmit(execForm){  
-				debugger;
+				
 				listXmTask({ids:[this.editForm.id]}).then(res=>{
 						Object.assign(this.editForm,res.data.data[0])
 						this.editFormBak={...this.editForm}  
@@ -904,7 +904,7 @@
 			},
 			
 			editXmTaskSomeFields(row,fieldName,$event){
-				debugger;
+				
 				var that=this;
 				var func=(params)=>{
 					editXmTaskSomeFields(params).then(res=>{

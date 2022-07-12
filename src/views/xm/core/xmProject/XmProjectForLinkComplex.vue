@@ -42,8 +42,8 @@
           class="padding border"
           :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"
         >
-			<h4 class="padding-bottom">常用功能快捷导航</h4>
-			<el-steps :active="calcProjectStatusStep" finish-status="success" direction="vertical">
+			<h4 class="padding-bottom" v-if="selProject">常用功能快捷导航</h4>
+			<el-steps :active="calcProjectStatusStep" finish-status="success" direction="vertical" v-if="selProject">
 			<el-step
 				v-for="(i, index) in dicts['projectStatus']"
 				:title="i.name"

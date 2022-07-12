@@ -168,7 +168,7 @@
 				returnUrl: `${window.location.protocol+"//"+window.location.host}/${process.env.CONTEXT}/${process.env.VERSION}/#/xm/core/xmTask/XmTaskDetailRoute?id=${taskId}&load=true`
 			}
 			aliPay(params).then(res => {
-				debugger;
+				
 				this.load.add=false;
 				if(res.data.tips.isOk) {
 				const div = document.createElement("divform"+orderId);

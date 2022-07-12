@@ -171,7 +171,7 @@ export default {
         },
         //获取列表 XmMyFocus 我关注的项目或者任务
         getXmMyFocuss() {
-            debugger;
+            
             let params = {
                 pageSize: this.pageInfo.pageSize,
                 pageNum: this.pageInfo.pageNum,
@@ -191,7 +191,7 @@ export default {
 
             this.load.list = true;
             myFocusForIndex(params).then((res) => {
-                debugger;
+                
                 var tips=res.data.tips;
                 if(tips.isOk){
                     this.pageInfo.total = res.data.total;
@@ -325,7 +325,7 @@ export default {
             initDicts(this);
             this.initData()
             var myFocusList=localStorage.getItem('xm-my-focus-list')
-            debugger;
+            
             if(myFocusList){
                 this.xmMyFocuss=JSON.parse(myFocusList)
             }else{

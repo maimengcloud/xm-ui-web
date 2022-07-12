@@ -5,10 +5,10 @@
 				<el-row class="padding-left padding-right" v-if="!xmProduct||!xmProduct.id" > 
 						<xm-product-select ref="xmProductSelect1" style="display:inline;"  :auto-select="true" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="onProductClearSelect"></xm-product-select>
 				</el-row>
-				<xm-epic-features v-if="filters.xmProduct && filters.xmProduct.id" :xm-product="this.filters.xmProduct" :sel-project="selProject"  @row-click="onEpicFeaturesRowClick"></xm-epic-features>
+				<xm-epic-features v-if="filters.xmProduct && filters.xmProduct.id" :xm-product="filters.xmProduct" :sel-project="selProject"  @row-click="onEpicFeaturesRowClick"></xm-epic-features>
 			</el-col> 
 			<el-col :span="16" v-if="filters.xmProduct && filters.xmProduct.id">
-				<xm-menu-mng class="padding-left" :xm-product="this.filters.xmProduct" :sel-project="selProject"  :parent-menu="parentMenu"></xm-menu-mng>
+				<xm-menu-mng class="padding-left" :xm-product="filters.xmProduct" :sel-project="selProject"  :parent-menu="parentMenu"></xm-menu-mng>
 			</el-col>
 		</el-row>
 	</section>
@@ -66,7 +66,7 @@
 			 }
 		},//end method
 		mounted() {
-			 this.filters.xmProduct=this.product
+			 this.filters.xmProduct=this.xmProduct
 			
 		}//end mounted
 	}

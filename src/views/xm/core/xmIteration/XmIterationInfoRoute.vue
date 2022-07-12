@@ -57,7 +57,7 @@
 				 })
 			 },
 			onEditFields(row){
-				debugger;
+				
 				Object.assign(this.xmIteration,row)
 				localStorage.setItem("xm-iteration-info-route",JSON.stringify(this.xmIteration)); 
 			}
