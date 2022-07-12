@@ -77,19 +77,19 @@ export default {
     var table=cssSelector;
     if(typeof cssSelector == 'string'){
       table=document.querySelector(cssSelector);
-    }
-    debugger;
+    } 
     var innerHeight=window.innerHeight  
-    var defaultInnerHeight=913;  
-    var pageHeight=90/defaultInnerHeight*innerHeight 
-    var top=200/defaultInnerHeight*innerHeight; 
+    var defaultInnerHeight=616;  
+    var pageHeight=32/defaultInnerHeight*innerHeight 
+    var top=148/defaultInnerHeight*innerHeight;
+    var bottomHeight=32/defaultInnerHeight*innerHeight
     if(table!=null){
       var rect=table.getBoundingClientRect()    
-      if(rect && rect.top!=0){
+      if(rect && rect.top!=0){ 
         top=rect.top;
       } 
     } 
-    var maxTableHeight =innerHeight-top-pageHeight;  
+    var maxTableHeight =innerHeight-top-pageHeight-bottomHeight;  
     return maxTableHeight;
   }, 
   getPositionTop(node) { 

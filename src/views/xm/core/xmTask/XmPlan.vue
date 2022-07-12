@@ -56,9 +56,5 @@
 </script> 
 
 <style lang="less" scoped> 
-.box{
-	.left{
-		background-color:#f4f5f8;
-	}
-}
+ 
 </style>

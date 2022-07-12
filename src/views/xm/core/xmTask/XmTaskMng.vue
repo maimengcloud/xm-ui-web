@@ -6,7 +6,7 @@
         class="padding-left"
         :class="{ 'flex-box': displayType == 'agil' }"
       >
-        <el-row class="padding-top">    
+        <el-row>    
           <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
 
 					<el-select style="width: 100px" v-model="filters.taskState" placeholder="状态" clearable class="hidden-md-and-down">
@@ -304,7 +304,7 @@
           </span>
         </el-row>
 
-        <el-row class="padding-top">
+        <el-row>
           <template v-if="displayType != 'grant'">
             <xm-task-agile-kanban
               :tableHeight="tableHeight"
@@ -539,7 +539,7 @@
               :current-page="pageInfo.pageNum"
               :page-size="pageInfo.pageSize"
               :total="pageInfo.total"
-              style="float: right; margin-top: 10px;"
+              style="float: right;"
             ></el-pagination>
           </template>
           <xm-gantt

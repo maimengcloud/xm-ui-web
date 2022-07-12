@@ -152,12 +152,12 @@
                 >
               </el-col>
             </el-row> 
-            <el-button style="margin-top: 10px;" slot="reference" @click="moreVisible=!moreVisible">更多</el-button>
+            <el-button slot="reference" @click="moreVisible=!moreVisible">更多</el-button>
           </el-popover> 
           </span>
         </el-row>
 
-        <el-row class="padding-top"> 
+        <el-row> 
             <el-table class="task-table" 
              element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"
               :data="tasksTreeData"
@@ -263,7 +263,7 @@
               :current-page="pageInfo.pageNum"
               :page-size="pageInfo.pageSize"
               :total="pageInfo.total"
-              style="float: right; margin-top: 10px;"
+              style="float: right;"
             ></el-pagination>  
         </el-row>
       </el-col>
