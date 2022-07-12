@@ -1,5 +1,5 @@
 <template>
-	<section class="app-container">
+	<section>
 		<el-row> 
 			<span style="float:right;">
 				<xm-product-select @row-click="onProductSelect" :autoSelect="false" v-if="selProject && selProject.id">
@@ -12,14 +12,22 @@
 				</xm-project-select> 
  			</span>
 		</el-row>
-		<el-row style="padding-top:10px;">
+		<el-row>
 			<!--列表 XmProductProjectLink 产品与项目的关联关系表，一般由产品经理挂接项目到产品上-->
 			<el-table ref="xmProductProjectLink" :data="xmProductProjectLinks" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
- 				<el-table-column prop="name" v-if="xmProduct" label="包含的项目名称" min-width="150" ></el-table-column>
-				<el-table-column prop="productName" v-if="selProject" label="包含的产品名称" min-width="150" ></el-table-column>
+ 				<el-table-column prop="name" v-if="xmProduct" label="包含的项目名称" min-width="150" >
+					<template scope="scope">
+						<el-link type="primary" @click="goToProject(scope.row,scope.$index)">{{scope.row.name}}</el-link>
+					</template>
+				</el-table-column>
+				<el-table-column prop="productName" v-if="selProject" label="包含的产品名称" min-width="150" >
+					<template scope="scope"> 
+						<el-link type="primary" @click="goToProduct(scope.row,scope.$index)">{{scope.row.productName}}</el-link>
+					</template>
+				</el-table-column>
 				<el-table-column prop="seq" label="顺序" min-width="80" sortable>
 					<template scope="scope">
-				     <span class="cell-text">  {{scope.row.seq}}  </span>
+				       {{scope.row.seq}}   
                      <span class="cell-bar"><el-input style="display:inline;" title="0-999之间，数值越小越靠前" v-model="scope.row.seq" placeholder="" @change="editSomeFields(scope.row,'seq',$event)" :maxlength="22"></el-input></span>
 					</template>
 				</el-table-column>  

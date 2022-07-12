@@ -184,7 +184,7 @@
             name="productProjectLink"
             v-if="selProject && selProject.id && !xmProduct"
           >
-            <xm-product-project-link-mng
+            <xm-product-project-link-mng class="padding-top"
               v-if="showPanel == 'productProjectLink'"
               :sel-project="selProject"
             ></xm-product-project-link-mng>

@@ -271,7 +271,7 @@
           :sel-project="selProject"
         ></xm-iteration-for-link-complex>
         <xm-product-for-link-complex
-          v-if="infotype == '产品'"
+          v-if="infotype == '产品'" class="padding-top"
           ref="xmProductComplex"
           :sel-project="selProject" 
         ></xm-product-for-link-complex>

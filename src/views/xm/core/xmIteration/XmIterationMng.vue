@@ -259,7 +259,7 @@ import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue'
 					params.productId=this.xmProduct.id
 				}
 				if(this.selProject){
-					params.projectId=this.selProject.id
+					params.linkProjectId=this.selProject.id
 				}
 				if(this.menuId){
 					params.menuId=this.menuId
