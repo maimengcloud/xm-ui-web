@@ -1,7 +1,194 @@
 <template>
 	<section>
-		<el-row> 
-			<el-col :span="24">
+		<el-row>  
+			<el-col :span="4">
+      <el-row ref="pageBody" 
+          class="padding border"
+          :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"> 
+          <h4 class="padding-bottom">常用功能导航</h4>
+          <el-steps
+            :active="calcProductPstatusStep"
+            finish-status="success"
+            direction="vertical"
+          >
+            <el-step
+              v-for="(i, index) in dicts['xmProductPstatus']"
+              :title="i.name"
+              :key="index"
+            >
+              <el-row slot="description">
+                <el-row v-if="i.id == '0'"
+                  ><!--打开-->
+                  <span v-if="xmProduct.pstatus == i.id">
+                    <el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="infotype='需求'"
+                      >需求管理</el-button
+                    >
+                    <el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="linkProject()"
+                      >关联项目</el-button
+                    >
+                    <el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="
+                        editXmProductSomeFields(xmProduct, 'pstatus', '1')
+                      "
+                      >设为研发中</el-button
+                    >
+                  </span>
+                  <span v-if="xmProduct.pstatus != i.id">
+                    <el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="infotype = '需求'"
+                      >需求管理</el-button
+                    >
+                    <el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="linkProject()"
+                      >关联项目</el-button
+                    > 
+                  </span>
+                </el-row>
+                <el-row v-else-if="i.id == '1'"
+                  ><!--研发中-->
+                  <span v-if="xmProduct.pstatus == i.id">
+                    <el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="infotype='迭代'"
+                      >迭代管理</el-button
+                    >
+					<el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="infotype='缺陷'"
+                      >缺陷管理</el-button
+                    >
+					<el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="infotype='项目'"
+                      >项目管理</el-button
+                    >
+					<el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="infotype='效能'"
+                      >效能分析</el-button
+                    >
+                    <el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="
+                        editXmProductSomeFields(xmProduct, 'pstatus', '2')
+                      "
+                      >设为已完成</el-button
+                    >
+                  </span>
+                  <span v-if="xmProduct.pstatus != i.id"> 
+                    <el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="infotype='迭代'"
+                      >迭代管理</el-button
+                    >
+					<el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="infotype='缺陷'"
+                      >缺陷管理</el-button
+                    >
+					<el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="infotype='项目'"
+                      >项目管理</el-button
+                    >
+					<el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="infotype='效能'"
+                      >效能分析</el-button
+                    >
+                  </span>
+                </el-row>
+                <el-row v-else-if="i.id == '2'"
+                  ><!--已完成-->
+                  <span v-if="xmProduct.pstatus == i.id"> 
+                    <el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="
+                        editXmProductSomeFields(xmProduct, 'pstatus', '3')
+                      "
+                      >设为已关闭</el-button
+                    >
+                  </span>
+                  <span v-if="xmProduct.pstatus != i.id">
+                     
+                  </span>
+                </el-row>
+                <el-row v-else-if="i.id == '3'"
+                  ><!--已关闭-->
+                  <span v-if="xmProduct.pstatus == i.id"> 
+                    <el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="
+                        editXmProductSomeFields(xmProduct, 'pstatus', '0')
+                      "
+                      >重新打开</el-button
+                    >
+                  </span>
+                  <span v-if="xmProduct.pstatus != i.id">
+                     
+                  </span>
+                </el-row> 
+              </el-row>
+            </el-step>
+          </el-steps>
+		  </el-row>
+        </el-col> 
+			<el-col :span="20">
 				<el-tabs   :value="showPanel"  @tab-click="tabClick">
 					<el-tab-pane disabled> 
 						<div  slot="label">
@@ -73,8 +260,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import config from '@/common/config';//全局公共库
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+	import config from '@/common/config';//全局公共库 
 	import XmIterationMng from '../xmIteration/XmIterationMng.vue'
 	import XmMenuMng from '../xmMenu/XmMenuBox.vue'
 	import XmIterationStateShow from '../xmIterationState/XmIterationStateShow.vue'
@@ -91,6 +277,7 @@ import XmIterationLinkForProduct from '../xmIterationLink/XmIterationLinkForProd
 import XmProductProjectLinkMng from '../xmProductProjectLink/XmProductProjectLinkMng.vue'; 
 
 import { loadTasksToXmProductState } from '@/api/xm/core/xmProductState';
+import { initDicts,editXmProductSomeFields } from '@/api/xm/core/xmProduct';
 import { loadTasksToXmMenuState} from '@/api/xm/core/xmMenuState'; 
 import XmProductEdit from './XmProductEdit.vue';
 	import  XmProductAdd from './XmProductAdd';//新增界面
@@ -100,6 +287,21 @@ import XmProductEdit from './XmProductEdit.vue';
 		    ...mapGetters([
 		      'userInfo','roles'
 			]),
+
+			calcProductPstatusStep() {
+			if (this.dicts["xmProductPstatus"] && this.xmProduct) {
+				var index = this.dicts["xmProductPstatus"].findIndex((i) => {
+				if (i.id == this.xmProduct.pstatus) {
+					return true;
+				} else {
+					return false;
+				}
+				});
+				return index + 1;
+			} else {
+				return 0;
+			}
+			},
 		},
 		props:['visible','selProject','xmIteration'],
 		watch:{
@@ -113,10 +315,12 @@ import XmProductEdit from './XmProductEdit.vue';
 				load:{
 					calcProduct:false,
 				},
+				dicts:{xmProductPstatus:[]},
 				xmProduct:null,
 				showPanel:'productOverview',//menus,tasks,bugs,iterationStateShow 
 				productVisible:true,
 				addProductVisible:false,
+				maxTableHeight:300,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -165,7 +369,105 @@ import XmProductEdit from './XmProductEdit.vue';
 					this.$notify({position:'bottom-left',showClose:true,message:"请先选中左边产品", type: 'warning'});
 				}
 				 this.showPanel=tab.name
+			},
+
+			editXmProductSomeFields(row,fieldName,$event){ 
+			var that=this;
+			var func=(params)=>{
+				editXmProductSomeFields(params).then(res=>{
+				var tips = res.data.tips;
+				if(tips.isOk){
+					this.$emit('edit-fields',params)
+					Object.assign(row,params) 
+					this.xmProductBak=Object.assign({},row)
+				}else{   
+					Object.assign(this.xmProduct,this.xmProductBak)
+					this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+				}
+				})
 			}
+			var params={ids:[row.id]}; 
+				
+			params[fieldName]=$event 
+			
+			
+			if(fieldName=='description'){
+				this.$refs.xmProduct.validateField('description',err=>{
+				if(err){ 
+					this.$notify({position:'bottom-left',showClose:true,message: err,type: 'error'})
+					return;
+				}else{
+					func(params)
+				}
+				})
+			}else if(fieldName=='name'){  
+				this.$refs.xmProduct.validateField('name',err=>{
+				if(err){
+					this.$notify({position:'bottom-left',showClose:true,message: err,type: 'error'})
+					return;
+				}else{
+					func(params)
+				}
+				})
+			}else{
+				func(params)
+			}
+			},
+
+			goBack() {
+			localStorage.setItem("product-infotype", "产品概览");
+
+			if (window.history.length > 0) {
+				this.$router.back(-1);
+			} else {
+				this.$router.push({ path: "/xm/core/xmProduct/XmProductMng" });
+			}
+			},
+
+			onEditFields(row) {
+			Object.assign(this.xmProduct, row);
+			this.$emit("edit-fields", row);
+			},
+			showCurrFlow() {
+			this.$refs["产品概览"].showPanelName = "currFlow";
+			},
+			showHisFlow() {
+			this.$refs["产品概览"].showPanelName = "hisFlow";
+			},
+			showDetail() {
+			this.$refs["产品概览"].showPanelName = "detail";
+			},
+			showProjectGaiSuan() {
+			this.$refs["产品概览"].showPanelName = "detail";
+			this.$nextTick(() => {
+				this.$refs["产品概览"].$refs["detail"].$refs[
+				"projectEdit"
+				].currTabPane = "4";
+			});
+			},
+			showProjectShouYi() {
+			this.$refs["产品概览"].showPanelName = "detail";
+			this.$nextTick(() => {
+				this.$refs["产品概览"].$refs["detail"].$refs[
+				"projectEdit"
+				].currTabPane = "5";
+			});
+			},
+			showMenusPage() {
+			this.infotype = "产品";
+			this.$nextTick(() => {
+				this.$refs["xmProductComplex"].showPanel = "menus";
+			});
+			},
+			linkProject() {
+			this.$refs["xmProductComplex"].showPanelName = "productProjectLink";
+			},
+			createProduct() {
+			this.infotype = "产品";
+			this.$nextTick(() => {
+				this.$refs["xmProductComplex"].addProductVisible = true;
+			});
+			},
 		},//end methods
 		components: {
 		    //在下面添加其它组件
@@ -187,6 +489,9 @@ import XmProductEdit from './XmProductEdit.vue';
 		},
 		mounted() { 
 		this.$nextTick(() => {
+			initDicts(this)
+		
+			this.maxTableHeight  = util.calcTableMaxHeight(this.$refs.pageBody.$el);
 
         	});
 
