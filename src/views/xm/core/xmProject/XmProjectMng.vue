@@ -1,13 +1,13 @@
 <template>
-	<section class="page-container">
-		<el-row>
-			<el-col :span="6" class="padding-top  padding-left" v-if="templateVisible"> 
+	<section>
+		<el-row class="padding-left padding-right">
+			<el-col :span="6" v-if="templateVisible"> 
 				<el-row>
 					<xm-project-tpl-mng @copy="searchXmProjects" :show-type="'simple'" ref="xmProjectTplMngRef"></xm-project-tpl-mng>
 				</el-row>
 			</el-col> 
-			<el-col :span="templateVisible?18:24" class="border padding-top padding-right"> 
-				<el-row class="padding-left"> 
+			<el-col :span="templateVisible?18:24" > 
+				<el-row > 
 					<xm-product-select style="display:inline;" class="hidden-md-and-down" :auto-select="false" @row-click="onProductSelected" @clear="onProductClose"></xm-product-select> 
 					<el-select v-model="menukey" @change="handleSelect" clearable>
 						<el-option value="all" label="全部"></el-option>
@@ -98,7 +98,7 @@
 							</el-popover>  
 						</span>
 				</el-row> 
-				<el-row  class="page-main"> 
+				<el-row> 
 					<!--列表 XmProject xm_project-->
 					<el-row v-show="showType" v-loading="load.list" :style="{overflowX:'hidden',height:maxTableHeight+'px'}" ref="table1">
 						<el-col  v-cloak v-for="(p,i) in ScreenData" :key="i" :xl="8" :lg="8" :md="8" :sm="12">

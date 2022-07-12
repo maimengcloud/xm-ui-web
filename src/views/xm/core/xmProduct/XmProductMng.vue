@@ -155,7 +155,7 @@
 						</el-col>
 					</el-row>
 				</el-row>
-				<el-row  class="padding-top" v-show="!showType">
+				<el-row v-show="!showType">
 					<!--列表 XmProduct 产品表-->
 					<el-table ref="table"  :height="maxTableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						
