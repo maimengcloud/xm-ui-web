@@ -3,12 +3,12 @@
 		<el-row class="padding-left padding-right">
 			<el-col :span="8">
 				<el-row class="padding-left padding-right" v-if="!xmProduct||!xmProduct.id" > 
-						<xm-product-select ref="xmProductSelect1" style="display:inline;"  :auto-select="true" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="onProductClearSelect"></xm-product-select>
+						<xm-product-select ref="xmProductSelect1" style="display:inline;"  :auto-select="true" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="onProductClearSelect" ></xm-product-select>
 				</el-row>
-				<xm-epic-features v-if="filters.xmProduct && filters.xmProduct.id" :xm-product="filters.xmProduct" :sel-project="selProject"  @row-click="onEpicFeaturesRowClick"></xm-epic-features>
+				<xm-epic-features v-if="filters.xmProduct && filters.xmProduct.id" :xm-product="filters.xmProduct" :sel-project="selProject"  @row-click="onEpicFeaturesRowClick" :disabled-mng="xmIteration&&xmIteration.id?true:false"></xm-epic-features>
 			</el-col> 
 			<el-col :span="16" v-if="filters.xmProduct && filters.xmProduct.id">
-				<xm-menu-mng class="padding-left" :xm-product="filters.xmProduct" :sel-project="selProject"  :parent-menu="parentMenu"></xm-menu-mng>
+				<xm-menu-mng class="padding-left" :xm-product="filters.xmProduct" :sel-project="selProject"  :parent-menu="parentMenu" :xm-iteration="xmIteration" :disabled-mng="xmIteration&&xmIteration.id?true:false"></xm-menu-mng>
 			</el-col>
 		</el-row>
 	</section>
@@ -27,7 +27,7 @@
 		components: {   
 			XmEpicFeatures,XmMenuMng,XmProductSelect
 		},
-        props:['xmProduct','selProject'],
+        props:['xmProduct','selProject','xmIteration'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'

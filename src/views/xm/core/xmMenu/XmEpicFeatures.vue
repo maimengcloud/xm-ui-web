@@ -39,7 +39,7 @@
 									<el-button  @click="showImportFromMenuTemplate()" icon="el-icon-upload2">由模板快速导入需求</el-button>
 								</el-col>
 							</el-row>
-							<el-button type="primary"  round  slot="reference" icon="el-icon-plus"></el-button>
+							<el-button type="primary" v-if="!disabledMng" round  slot="reference" icon="el-icon-plus"></el-button>
 						</el-popover> 
 						<el-popover
 							placement="top-start"
@@ -60,7 +60,7 @@
 									@click="batchDel"
 									v-loading="load.del"
 									icon="el-icon-delete"
-									title="批量删除"
+									title="批量删除" v-if="!disabledMng"
 									>批量删除</el-button
 								>
 								<el-button          @click="loadTasksToXmMenuState" icon="el-icon-s-marketing" title="汇总进度">汇总进度</el-button> 
@@ -74,7 +74,7 @@
 								>
 							</el-col>
 							</el-row> 
-							<el-button  slot="reference" @click="moreVisible=!moreVisible" icon="el-icon-more"></el-button>
+							<el-button slot="reference" @click="moreVisible=!moreVisible" icon="el-icon-more"></el-button>
 						</el-popover> 
 						</span>
 					 </el-row>

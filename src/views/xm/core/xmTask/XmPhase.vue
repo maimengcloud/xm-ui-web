@@ -9,7 +9,7 @@
           
           <span style="float:left;"> 
            <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
-           <el-input style="width:120px;" v-model="filters.key" placeholder="名称模糊查询"  clearable></el-input>
+           <el-input style="width:120px;" v-model="filters.key" placeholder="名称模糊查询"  class="hidden-md-and-down" clearable></el-input>
            <el-button icon="el-icon-search" @click="searchXmTasks()"></el-button>  
           <el-popover
             placement="top-start"
@@ -61,13 +61,14 @@
             ></el-button>
           </el-popover>
           <el-button
+            class="hidden-lg-and-down"
             @click="showParentTaskList"  
             title="更换任务的上级，实现任务搬家功能"
             icon="el-icon-upload2"
             v-loading="load.edit"
           > </el-button> 
           <el-button type="danger"
-          class="hidden-md-and-down"
+          class="hidden-lg-and-down"
             @click="batchDel"
             v-loading="load.del"
             icon="el-icon-delete"
@@ -138,13 +139,20 @@
                   >查询</el-button
                 >
                  <el-button type="danger"
-                  class="hidden-lg-and-up"
+                  class="hidden-xl-only"
                     @click="batchDel"
                     v-loading="load.del"
                     icon="el-icon-delete"
                     title="批量删除"
                     ></el-button
                   >
+                <el-button
+                  class="hidden-xl-only"
+                  @click="showParentTaskList"  
+                  title="更换任务的上级，实现任务搬家功能"
+                  icon="el-icon-upload2"
+                  v-loading="load.edit"
+                > </el-button> 
                 <el-button 
                   icon="el-icon-close"
                   @click="moreVisible=false"
@@ -1108,11 +1116,11 @@ export default {
       if (this.filters.executor) {
         params.executorUserid = this.filters.executor.userid;
       }
-      if (this.filters.product) {
-        params.productId = this.filters.product.id;
+      if (this.filters.product) {//上级不需要按产品过滤
+        //params.productId = this.filters.product.id;
       }
-      if (this.xmIteration) {
-        params.iterationId = this.xmIteration.id;
+      if (this.xmIteration) {//上级不需要按迭代过滤
+        //params.iterationId = this.xmIteration.id;
       }
       if (this.filters.tags && this.filters.tags.length>0) {
         params.tagIdList = this.filters.tags.map(i=>i.tagId);

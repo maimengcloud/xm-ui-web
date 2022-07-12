@@ -1,7 +1,7 @@
 <template>
   <section>
     <el-row>
-      <el-col :span="6" class="padding-right padding-left">
+      <el-col :span="4" class="padding-right padding-left">
         <el-row class="padding">
           <el-col :span="20">
             <xm-project-select
@@ -13,28 +13,14 @@
               @clear="onProjectClearSelect"
             ></xm-project-select>
           </el-col>
-          <el-col :span="4">
-            <el-popover
-              placement="bottom"
-              width="800"
-              v-model="projectAddVisible"
-              trigger="manual"
-            >
-              <xm-project-add
-                :visible="projectAddVisible"
-                op-type="add"
-                :xm-product="xmProduct"
-                @cancel="projectAddVisible = false"
-                @submit="afterProjectAddSubmit"
-              ></xm-project-add>
+          <el-col :span="4" v-if="xmProduct">
+             
               <el-link
-                type="warning"
-                slot="reference"
+                type="warning" 
                 @click="projectAddVisible = true"
                 icon="el-icon-plus"
                 ><font style="font-size: 14px">项目</font></el-link
-              >
-            </el-popover>
+              > 
           </el-col>
         </el-row>
         <el-row
@@ -134,7 +120,7 @@
 			</el-steps>
         </el-row>
       </el-col>
-      <el-col :span="18">
+      <el-col :span="20">
         <el-tabs :value="showPanel" @tab-click="tabClick">
           <el-tab-pane
             label="项目概览"
@@ -222,7 +208,7 @@
               :disabled-mng="false"
             ></xm-menu-mng>
           </el-tab-pane>
-
+          
           <el-tab-pane
             label="计划"
             lazy
@@ -280,6 +266,21 @@
         </el-tabs> 
       </el-col>
     </el-row>
+    
+            <el-dialog 
+              width="80%"
+              :visible.sync="projectAddVisible" 
+              top="20px"
+              append-to-body
+            >
+              <xm-project-add
+                :visible="projectAddVisible"
+                op-type="add"
+                :xm-product="xmProduct"
+                @cancel="projectAddVisible = false"
+                @submit="afterProjectAddSubmit"
+              ></xm-project-add> 
+            </el-dialog>
   </section>
 </template>
 
@@ -287,7 +288,7 @@
 import util from "@/common/js/util"; //全局公共库
 import config from "@/common/config"; //全局公共库
 import XmIterationMng from "../xmIteration/XmIterationMng.vue";
-import XmMenuMng from "../xmMenu/XmMenuMng.vue";
+import XmMenuMng from "../xmMenu/XmMenuBox.vue";
 import XmIterationStateShow from "../xmIterationState/XmIterationStateShow.vue";
 import { mapGetters } from "vuex";
 import XmProductMng from "../xmProduct/XmProductMng.vue";

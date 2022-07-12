@@ -136,7 +136,7 @@
  								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
 									<el-button    @click="handleExport" icon="el-icon-download">导出</el-button>
-									<el-button   v-if="  disabledMng!=false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>
+									<el-button   v-if="  disabledMng!==false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>
 
 								</el-col>
 							</el-row>
@@ -176,13 +176,13 @@
 									<el-button  @click="showImportFromMenuTemplate()" icon="el-icon-upload2">由模板快速导入需求</el-button>
 								</el-col>
 							</el-row>
-							<el-button type="primary"  round  slot="reference" icon="el-icon-plus"></el-button>
+							<el-button type="primary" v-if="!disabledMng"  round  slot="reference" icon="el-icon-plus"></el-button>
 						</el-popover>
 
-						<el-button  @click="showParentMenu" icon="el-icon-top" title="更换上级"></el-button>
- 						<el-button  v-if="disabledMng!=false"  type="danger" @click="batchDel" icon="el-icon-delete" title="删除"></el-button>
+						<el-button class="hidden-md-and-down" @click="showParentMenu" icon="el-icon-top" title="更换上级"></el-button>
+ 						<el-button class="hidden-md-and-down"  v-if="!disabledMng "  type="danger" @click="batchDel" icon="el-icon-delete" title="删除"></el-button>
  
-						<xm-table-config ref="tableConfig" style="display:inline;" :table="$refs.table"></xm-table-config>
+						<xm-table-config class="hidden-lg-and-down" ref="tableConfig" style="display:inline;" :table="$refs.table"></xm-table-config>
 
 						</span>
 					 </el-row>

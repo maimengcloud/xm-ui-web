@@ -1,5 +1,5 @@
 <template>
-  <section class="page-container">
+  <section>
     <el-row>
       <el-menu
         :default-active="infotype"
@@ -341,7 +341,7 @@
         <xm-menu-mng
           v-if="infotype == '需求'"
           :xm-iteration="xmIteration"
-          :disabled-mng="false"
+          :xm-product="{id:xmIteration.productId,name:xmIteration.productName}" 
         ></xm-menu-mng>
         <xm-task-mng
           v-if="infotype == '任务'"
@@ -405,7 +405,7 @@ import xmCost from "../xmProject/XmProjectCost";
 import xmBudget from "../xmProject/XmProjectBudgetCost";
 import xmContract from "../xmContract/XmContractMng";
 import xmEnvList from "../xmEnvList/XmEnvListMng";
-import xmMenuMng from "../xmMenu/XmMenuMng";
+import xmMenuMng from "../xmMenu/XmMenuBox";
 import xmMenuWithPlan from "../xmMenu/XmMenuWithPlan";
 import xmProjectStateMng from "../xmProjectState/XmProjectStateMng";
 import xmTestCaseExecMng from "../xmTestCaseExec/XmTestCaseExecMng";

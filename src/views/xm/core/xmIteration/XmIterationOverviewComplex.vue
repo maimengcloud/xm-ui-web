@@ -1,5 +1,5 @@
 <template>
-  <section class="page-container  padding-left padding-right">
+  <section class="padding-left padding-right">
       <el-menu mode="horizontal" :default-active="showPanelName"  @select="onMenuToolBarSelect">
         <el-menu-item index="overview">
           <span slot="title">迭代概览</span>
@@ -28,7 +28,7 @@
         <xm-iteration-edit v-if="showPanelName=='detail'" :xm-iteration="xmIteration" @edit-fields="onEditFields"></xm-iteration-edit>
       <xm-iteration-link-for-product  v-if="showPanelName=='iterationProductLink'" :xm-iteration="xmIteration"></xm-iteration-link-for-product>
       <xm-iteration-link-for-project  v-if="showPanelName=='iterationProjectLink'" :xm-iteration="xmIteration"></xm-iteration-link-for-project>
-      <xm-iteration-menu-mng v-if="showPanelName=='iterationMenuMng'" :xm-iteration="xmIteration"  ref="iterationMenuMng"></xm-iteration-menu-mng>
+      <xm-iteration-menu-mng v-if="showPanelName=='iterationMenuMng'" :xm-iteration="xmIteration"  ref="iterationMenuMng"  class="padding-top"></xm-iteration-menu-mng>
       <div v-if="showPanelName=='iterationCalc'" class="padding">
         <el-row>
           <el-button type="primary" @click="loadTasksToXmIterationState" v-loading="load.calcIteration">计算迭代统计数据</el-button>
