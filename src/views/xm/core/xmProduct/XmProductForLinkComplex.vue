@@ -27,8 +27,8 @@
           class="padding border"
           :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"
         >
-          <h4 class="padding-bottom">常用功能导航</h4>
-          <el-steps
+          <h4 class="padding-bottom" v-if="xmProduct && xmProduct.id">常用功能导航</h4>
+          <el-steps v-if="xmProduct && xmProduct.id"
             :active="calcProductPstatusStep"
             finish-status="success"
             direction="vertical"
