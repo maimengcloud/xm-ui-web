@@ -303,8 +303,7 @@ import XmProjectOverview from "./XmProjectOverview";
 import XmProjectAdd from "./XmProjectEdit"; //新增界面
 import XmProjectDetail from "./XmProjectDetail"; //新增界面
 
-import XmProductProjectLinkMng from "../xmProductProjectLink/XmProductProjectLinkMng.vue";
-import XmIterationLinkForProject from "../xmIterationLink/XmIterationLinkForProject.vue";
+import XmProductProjectLinkMng from "../xmProductProjectLink/XmProductProjectLinkMng.vue"; 
 import XmPlan from "../xmTask/XmPlan.vue";
 import xmGroupMng from "../xmGroup/XmGroupMng";
  
@@ -463,8 +462,7 @@ export default {
     XmProjectAdd,
     XmProjectDetail,
     XmProjectOverview,
-    XmProductProjectLinkMng,
-    XmIterationLinkForProject,
+    XmProductProjectLinkMng, 
     XmPlan,
 	xmGroupMng,
   },

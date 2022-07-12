@@ -48,15 +48,13 @@ import util from "@/common/js/util"; // 全局公共库
 //import Sticky from "@/components/Sticky"; // 粘性header组件
 import { mapGetters } from "vuex";
  import XmIterationOverview from './XmIterationOverview.vue';
-import XmIterationEdit from './XmIterationEdit.vue';
- import XmIterationLinkForProduct from '../xmIterationLink/XmIterationLinkForProduct.vue';
- import XmIterationLinkForProject from '../xmIterationLink/XmIterationLinkForProject.vue';
+import XmIterationEdit from './XmIterationEdit.vue'; 
 import XmIterationMenuMng from '../xmIterationMenu/XmIterationMenuMng.vue';
 	import { loadTasksToXmIterationState } from '@/api/xm/core/xmIteration';
 
 
 export default {
-  components: {XmIterationOverview,XmIterationEdit, XmIterationLinkForProduct,XmIterationLinkForProject, XmIterationMenuMng },
+  components: {XmIterationOverview,XmIterationEdit, XmIterationMenuMng },
   computed: {
     ...mapGetters(["userInfo"]),
   },

@@ -51,8 +51,7 @@ import util from "@/common/js/util"; // 全局公共库
 import { mapGetters } from "vuex"; 
 import XmProjectOverview from './XmProjectOverview.vue';
 import XmProjectDetail from './XmProjectDetail.vue';
-import XmProductProjectLinkMng from '../xmProductProjectLink/XmProductProjectLinkMng.vue';
-import XmIterationLinkForProject from '../xmIterationLink/XmIterationLinkForProject.vue';
+import XmProductProjectLinkMng from '../xmProductProjectLink/XmProductProjectLinkMng.vue'; 
 
 import TaskMng from '@/views/mdp/workflow/ru/task/TaskMng'; 
 import ProcinstMng from '@/views//mdp/workflow/hi/procinst/ProcinstMng';
@@ -61,7 +60,7 @@ import { listXmProject} from '@/api/xm/core/xmProject';
 
 
 export default {
-  components: { XmProjectOverview, XmProjectDetail, XmProductProjectLinkMng ,XmIterationLinkForProject,TaskMng,ProcinstMng},
+  components: { XmProjectOverview, XmProjectDetail, XmProductProjectLinkMng ,TaskMng,ProcinstMng},
   computed: {
     ...mapGetters(["userInfo"]),
   },

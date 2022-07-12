@@ -314,8 +314,7 @@ import XmProjectForLink from "../xmProject/XmProjectForLink.vue";
 
 import XmProductSelect from "@/views/xm/core/components/XmProductSelect.vue";
 import XmProductProjectForLink from "./XmProductProjectForLink.vue";
-import XmProductOverview from "./XmProductOverview";
-import XmIterationLinkForProduct from "../xmIterationLink/XmIterationLinkForProduct.vue";
+import XmProductOverview from "./XmProductOverview"; 
 import XmProductProjectLinkMng from "../xmProductProjectLink/XmProductProjectLinkMng.vue";
 
 import { loadTasksToXmProductState } from "@/api/xm/core/xmProductState";
@@ -552,8 +551,7 @@ export default {
     XmProjectForLink,
     XmProductProjectForLink,
     XmProductOverview,
-    XmProductAdd,
-    XmIterationLinkForProduct,
+    XmProductAdd, 
     XmProductProjectLinkMng,
     XmProductEdit,
   },

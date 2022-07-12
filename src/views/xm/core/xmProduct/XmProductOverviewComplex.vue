@@ -54,15 +54,14 @@ import util from "@/common/js/util"; // 全局公共库
 //import Sticky from "@/components/Sticky"; // 粘性header组件
 import { mapGetters } from "vuex";
 import XmProductOverview from './XmProductOverview.vue';
-import XmProductEdit from './XmProductEdit.vue';
-import XmIterationLinkForProduct from '../xmIterationLink/XmIterationLinkForProduct.vue';
+import XmProductEdit from './XmProductEdit.vue'; 
 import XmProductProjectLinkMng from '../xmProductProjectLink/XmProductProjectLinkMng.vue'; 
 import { loadTasksToXmProductState } from '@/api/xm/core/xmProductState';
 import { loadTasksToXmMenuState} from '@/api/xm/core/xmMenuState'; 
 import TaskMng from '@/views/mdp/workflow/ru/task/TaskMng'; 
 import ProcinstMng from '@/views//mdp/workflow/hi/procinst/ProcinstMng';
 export default {
-  components: { XmProductOverview, XmProductEdit, XmIterationLinkForProduct, XmProductProjectLinkMng,TaskMng,ProcinstMng,},
+  components: { XmProductOverview, XmProductEdit, XmProductProjectLinkMng,TaskMng,ProcinstMng,},
   computed: {
     ...mapGetters(["userInfo"]),
   },

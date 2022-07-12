@@ -350,9 +350,7 @@
 	import XmQuestionMng from '../xmQuestion/XmQuestionMng.vue';
 	import XmIterationOverview from "./XmIterationOverview";
 
-	import XmIterationEdit from './XmIterationEdit.vue';
- 	import XmIterationLinkForProduct from '../xmIterationLink/XmIterationLinkForProduct.vue';
- 	import XmIterationLinkForProject from '../xmIterationLink/XmIterationLinkForProject.vue';
+	import XmIterationEdit from './XmIterationEdit.vue'; 
 	import  XmIterationAdd from './XmIterationAdd';//新增界面
 	import XmReport from "@/views/xm/rpt/reportIndex";
 
@@ -465,9 +463,7 @@
 			XmQuestionMng,
 			XmProjectForLink,
 			XmIterationAdd,
-			XmIterationEdit,
-			XmIterationLinkForProduct,
-			XmIterationLinkForProject,
+			XmIterationEdit, 
 			XmIterationMenuMng,
 			XmReport,
 
