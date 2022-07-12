@@ -851,6 +851,9 @@
 			
 			
 			editXmProjectSomeFields(row,fieldName,$event){ 
+				if(this.opType=='add'){
+					return;
+				}
 				var that=this;
 				var func=(params)=>{
 					editXmProjectSomeFields(params).then(res=>{
