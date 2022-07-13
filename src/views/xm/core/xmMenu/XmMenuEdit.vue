@@ -1,16 +1,53 @@
 <template>
 	<section>
-		<el-row class="page-main ">
+		<el-row :gutter="20" > 
+			<el-col :span="4" class="border padding">
+				<h3 class="padding-bottom">
+					<div  class="icon" :style="{backgroundColor: calcMenuLabel.color }">
+						<i :class="calcMenuLabel.icon"></i>
+					</div>
+					{{calcMenuLabel.label}}
+				</h3> 
+				<el-steps :active="calcMenuCurrStep" align-center   finish-status="success" process-status="process" direction="vertical">
+					<el-step v-for="(item,index) in dicts.menuStatus" :title="item.name" :description="item.name" :key="index"> 
+						<span slot="description">
+								<span v-if="item.id=='0'"><!--待领取-->
+									<el-button class="step-btn"  type="primary" size="mini"  @click="activateTabPaneName='6'" plain>预算管理</el-button>
+									<el-button class="step-btn" type="primary" size="mini" v-if="editForm.ntype=='0' && !editForm.executorUserid" @click="activateTabPaneName='42'" plain>去指派执行人</el-button> 
+									<el-button class="step-btn" type="primary" size="mini" v-if="editForm.ntype=='0' && editForm.executorUserid" @click="activateTabPaneName='42'" plain>执行人管理</el-button>  
+								<el-button class="step-btn" type="primary" size="mini" v-if="editForm.taskState=='0'" @click="editXmTaskSomeFields(editForm,'taskState','1')" plain>设为执行中</el-button> 
+								</span> 
+								<span v-else-if="item.id=='1'"> <!--已领取执行中-->
+								<el-button class="step-btn"  type="primary" size="mini" v-if="editForm.ntype=='1'" @click="activateTabPaneName='4'" plain>子工作项管理</el-button>
+								<el-button class="step-btn"  type="primary" size="mini" v-if="editForm.ntype=='0'" @click="activateTabPaneName='41'" plain>缺陷跟踪</el-button>
+								<el-button class="step-btn"  type="primary" size="mini" v-if="editForm.ntype=='0'" @click="activateTabPaneName='5'" plain>报工、报进度</el-button>
+								<el-button class="step-btn" type="primary" size="mini" v-if="editForm.taskState=='1'" @click="editXmTaskSomeFields(editForm,'taskState','2')" plain>设为已完工、待验收</el-button> 
+								  
+
+								</span>
+								<span v-else-if="item.id=='2'"> <!--已完工-->
+									<el-button class="step-btn" type="primary" size="mini" v-if="  editForm.taskState=='2'" @click="editXmTaskSomeFields(editForm,'taskState','3')" plain>设为已验收、待结算</el-button> 
+									<el-button class="step-btn" type="primary" size="mini" v-if=" editForm.taskState=='2'" @click="editXmTaskSomeFields(editForm,'taskState','1')" plain>设为验收不过，待执行</el-button> 
+ 								</span>
+								<span v-else-if="item.id=='3'"> <!--已验收-->
+								
+								<el-button class="step-btn" type="primary" size="mini" v-if=" editForm.taskState=='3'" @click="editXmTaskSomeFields(editForm,'taskState','4')" plain>设为已结算</el-button> 
+ 								</span>
+								<span v-else-if="item.id=='4'"> <!--已结算-->
+								
+								<el-button class="step-btn" type="primary" size="mini" v-if=" editForm.taskState=='4'" @click="editXmTaskSomeFields(editForm,'taskState','9')" plain>设为已关闭</el-button> 
+								</span>
+								<span v-else-if="item.id=='9'"> <!--已关闭-->
+								</span>
+						</span>
+					</el-step> 
+				</el-steps> 
+			</el-col>
+			<el-col :span="20"> 
 			<el-form :model="editForm"  label-width="100px" label-position="left" :rules="editFormRules" ref="editForm">
 						<el-row>
 							<el-col :span="6">
-								<el-form-item label="序号名称" prop="seqNo" >
-									<template slot="label">
-										<div  class="icon" :style="{backgroundColor: calcMenuLabel.color }">
-											<i :class="calcMenuLabel.icon"></i>
-										</div>
-										{{calcMenuLabel.label}}
-									</template>
+								<el-form-item label="序号名称" prop="seqNo" > 
 										<el-input v-model="editForm.seqNo" title="序号 如 1.1，1.2.3，1.3.2等" style="width:100%;" placeholder="如1.0 ， 1.1 ， 1.1.1等"  @change="editXmMenuSomeFields(editForm,'seqNo',$event)"></el-input>
 
 								</el-form-item>
@@ -189,6 +226,8 @@
 					</el-tab-pane>
 				</el-tabs>
 			</el-form>
+			</el-col> 
+			</el-row>
 			<el-drawer title="选择提出人" :visible.sync="proposerSelectVisible" size="60%" append-to-body>
 				<users-select  @confirm="onProposerSelected" ref="usersSelect"></users-select>
 			</el-drawer>
@@ -196,7 +235,7 @@
 			<el-drawer title="选择跟进人" :visible.sync="mmUserSelectVisible" size="60%" append-to-body>
 				<users-select  @confirm="onMmUserSelected" ref="mmUsersSelect"></users-select>
 			</el-drawer>
-		</el-row>
+		
 
 			<el-drawer append-to-body title="标签" :visible.sync="tagSelectVisible" class="dialog-body" size="60%">
 				<tag-mng :tagIds="editForm.tagIds?editForm.tagIds.split(','):[]" :jump="true" @select-confirm="onTagSelected">
@@ -226,19 +265,10 @@
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
-		    ]),
-			calcMenuCurrStep(){
-				var menuStatus= this.dicts.menuStatus
-				if(!menuStatus){
-					return 1;
-				}else{
-					var status=menuStatus.findIndex(i=>this.editForm.status==i.id)
-					if(status>=0){
-						return status+1;
-					}else{
-						return 1;
-					}
-				}
+		    ]), 
+			calcMenuCurrStep(){ 
+				var status=this.dicts['menuStatus'].findIndex(i=>this.editForm.status==i.id) +1
+				return status; 
 			},
 			calcMenuLabel(){
 				var params={label:'工作项',icon:'',color:''};
@@ -324,18 +354,7 @@
 				proposerSelectVisible:false,
 				mmUserSelectVisible:false,
 				dicts:{
-					menuStatus:[
-
-							{id:"0", name:"初始"},
-							{id:"1", name:"待评审"},
-							{id:"2", name:"待设计"},
-							{id:"3", name:"待开发"},
-							{id:"4", name:"待SIT"},
-							{id:"5", name:"待UAT"},
-							{id:"6", name:"待上线"},
-							{id:"7", name:"运行中"},
-							{id:"8", name:"已下线"},
-							{id:"9", name:"已删除"},
+					menuStatus:[ 
 					]
 				},
 				tagSelectVisible:false, 
@@ -560,5 +579,8 @@
   font-size: 14px;
   display: inline-block;
   margin-right: 5px;
+}
+.step-btn{
+	margin-left:0px;margin-bottom: 5px;
 }
 </style>

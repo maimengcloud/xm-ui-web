@@ -2,7 +2,12 @@
 	<section>  
 		<el-row :gutter="20" >
 			<el-col v-if="editForm.crowd==='1' && editForm.taskOut=='1'" :span="4" class="border padding">
-				 <h2 class="padding-top padding-bottom">众包{{editForm.ntype=='1'?'计划':'任务'}}</h2> 
+				 <h3 class="padding-bottom">
+					<div    class="icon" :style="{backgroundColor:   editForm.ntype==='0'?'#409EFF':'#E6A23C'}">
+						<i :class="  editForm.ntype==='0'?'el-icon-s-operation':'el-icon-odometer' " ></i>
+					</div>  
+					众包{{editForm.ntype=='1'?'计划':'任务'}}
+				</h3> 
 				<el-steps :active="calcTaskStep" align-center  finish-status="success" process-status="process" direction="vertical">
 					<el-step v-for="(item,index) in dicts.bidStep" :title="item.name" :description="item.name" :key="index"> 
 						<span slot="description">
@@ -55,7 +60,12 @@
 				</el-steps> 
 			</el-col>
 			<el-col v-if="editForm.crowd!='1' ||  editForm.taskOut!='1'" :span="4" class="border padding">
-				<h2 class="padding-top padding-bottom">普通{{editForm.ntype=='1'?'计划':'任务'}}</h2> 
+				<h3 class="padding-bottom">
+				<div    class="icon" :style="{backgroundColor:   editForm.ntype==='0'?'#409EFF':'#E6A23C'}">
+					<i :class="  editForm.ntype==='0'?'el-icon-s-operation':'el-icon-odometer' " ></i>
+				</div>  
+				普通{{editForm.ntype=='1'?'计划':'任务'}}
+			</h3> 
 				<el-steps :active="calcTaskStep" align-center   finish-status="success" process-status="process" direction="vertical">
 					<el-step v-for="(item,index) in dicts.taskState" :title="item.name" :description="item.name" :key="index"> 
 						<span slot="description">
