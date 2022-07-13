@@ -11,13 +11,13 @@
 				<el-steps :active="calcMenuCurrStep" align-center   finish-status="success" process-status="process" direction="vertical">
 					<el-step v-for="(item,index) in dicts.menuStatus" :title="item.name" :description="item.name" :key="index"> 
 						<span slot="description">
-								<span v-if="item.id=='0'"><!--待领取-->
+								<span v-if="item.id=='0'"><!--打开-->
 									<el-button class="step-btn"  type="primary" size="mini"  @click="activateTabPaneName='6'" plain>预算管理</el-button>
 									<el-button class="step-btn" type="primary" size="mini" v-if="editForm.ntype=='0' && !editForm.executorUserid" @click="activateTabPaneName='42'" plain>去指派执行人</el-button> 
 									<el-button class="step-btn" type="primary" size="mini" v-if="editForm.ntype=='0' && editForm.executorUserid" @click="activateTabPaneName='42'" plain>执行人管理</el-button>  
 								<el-button class="step-btn" type="primary" size="mini" v-if="editForm.taskState=='0'" @click="editXmTaskSomeFields(editForm,'taskState','1')" plain>设为执行中</el-button> 
 								</span> 
-								<span v-else-if="item.id=='1'"> <!--已领取执行中-->
+								<span v-else-if="item.id=='1'"> <!--执行中-->
 								<el-button class="step-btn"  type="primary" size="mini" v-if="editForm.ntype=='1'" @click="activateTabPaneName='4'" plain>子工作项管理</el-button>
 								<el-button class="step-btn"  type="primary" size="mini" v-if="editForm.ntype=='0'" @click="activateTabPaneName='41'" plain>缺陷跟踪</el-button>
 								<el-button class="step-btn"  type="primary" size="mini" v-if="editForm.ntype=='0'" @click="activateTabPaneName='5'" plain>报工、报进度</el-button>
@@ -29,16 +29,10 @@
 									<el-button class="step-btn" type="primary" size="mini" v-if="  editForm.taskState=='2'" @click="editXmTaskSomeFields(editForm,'taskState','3')" plain>设为已验收、待结算</el-button> 
 									<el-button class="step-btn" type="primary" size="mini" v-if=" editForm.taskState=='2'" @click="editXmTaskSomeFields(editForm,'taskState','1')" plain>设为验收不过，待执行</el-button> 
  								</span>
-								<span v-else-if="item.id=='3'"> <!--已验收-->
+								<span v-else-if="item.id=='3'"> <!--已关闭-->
 								
 								<el-button class="step-btn" type="primary" size="mini" v-if=" editForm.taskState=='3'" @click="editXmTaskSomeFields(editForm,'taskState','4')" plain>设为已结算</el-button> 
- 								</span>
-								<span v-else-if="item.id=='4'"> <!--已结算-->
-								
-								<el-button class="step-btn" type="primary" size="mini" v-if=" editForm.taskState=='4'" @click="editXmTaskSomeFields(editForm,'taskState','9')" plain>设为已关闭</el-button> 
-								</span>
-								<span v-else-if="item.id=='9'"> <!--已关闭-->
-								</span>
+ 								</span> 
 						</span>
 					</el-step> 
 				</el-steps> 
