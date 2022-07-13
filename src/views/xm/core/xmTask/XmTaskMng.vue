@@ -220,8 +220,7 @@
             <el-button   slot="reference" @click="moreVisible=!moreVisible">更多</el-button>
           </el-popover> 
           <span style="float:right;"> 
-          <el-popover
-            v-if="parentTask&&parentTask.id"
+          <el-popover 
             placement="top-start"
             title="选择任务的方式"
             width="300"
@@ -1372,7 +1371,7 @@ export default {
       if(!parentTask||!parentTask.id){
          this.$notify({
               showClose: true,
-              message: "请先选择上级计划",
+              message: "任务必须挂在计划下，先选择上级计划或者转入计划模块进行创建任务",
               type: "warning",
             });
             return false;
