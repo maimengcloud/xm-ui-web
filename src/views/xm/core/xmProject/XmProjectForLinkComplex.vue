@@ -2,8 +2,8 @@
   <section>
     <el-row>
       <el-col :span="4" class="padding-right padding-left">
-        <el-row class="padding">
-          <el-col :span="20">
+        <el-row>
+          <el-col :span="24">
             <xm-project-select
               ref="xmProjectSelect"
               :auto-select="true"
@@ -12,20 +12,12 @@
               @row-click="onProjectRowClick"
               @clear="onProjectClearSelect"
             ></xm-project-select>
-          </el-col>
-          <el-col :span="4" v-if="xmProduct">
-             
-              <el-link
-                type="warning" 
-                @click="projectAddVisible = true"
-                icon="el-icon-plus"
-                ><font style="font-size: 14px">项目</font></el-link
-              > 
-          </el-col>
+          </el-col> 
         </el-row>
         <el-row
           ref="pageBody"
-          class="padding border"
+          class="padding"
+          :class="{border:selProject&&selProject.id}"
           :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"
         >
 			<h4 class="padding-bottom" v-if="selProject">常用功能快捷导航</h4>
@@ -121,7 +113,7 @@
         </el-row>
       </el-col>
       <el-col :span="20">
-        <el-tabs :value="showPanel" @tab-click="tabClick">
+        <el-tabs :value="showPanel" @tab-click="tabClick" style="margin-top:-10px;">
           <el-tab-pane
             label="项目概览"
             name="projectOverview"

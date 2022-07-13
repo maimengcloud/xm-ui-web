@@ -1,7 +1,7 @@
 <template>
   <section>
     <el-row>
-      <el-col :span="4">
+      <el-col :span="4" class="padding-right padding-left">
 	  <el-row>
           <el-col :span="24"> 
               <xm-product-select
