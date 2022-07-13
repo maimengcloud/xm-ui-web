@@ -4,17 +4,10 @@
 							placement="bottom"
 							width="400"
 							trigger="manual"
-							v-model="productVisible">
-
-								<el-row >
-									<!--列表 XmProduct 产品表-->
-									<el-table  ref="table" :height="maxTableHeight" :data="xmProducts" :row-class-name="tableRowClassName" @sort-change="sortChange" :highlight-current-row="true" current-row-key="id" v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-										<el-table-column prop="productName"  label="产品名称">
-											<template slot="header" slot-scope="scope">
-												产品名称
-												<span style="float:right;">
-												<el-button type="text" @click="clearSelect">清空</el-button>&nbsp;&nbsp;
-												<el-button type="text" @click="close">关闭</el-button>&nbsp;&nbsp;
+							v-model="productVisible">  
+								<el-row>
+									 <el-button type="text" icon="el-icon-refresh" @click="refreshSelect" title="重新从后台刷新数据回来">刷新</el-button>&nbsp;&nbsp;
+												<el-button v-if="editForm && editForm.id" type="text" icon="el-icon-circle-close" @click="clearSelect" title="清空当前选中的产品">清除选中</el-button>&nbsp;&nbsp;
 												<el-popover
 													placement="top-start"
 													title=""
@@ -63,9 +56,33 @@
 															<el-button type="text"  @click="moreVisible=false" >关闭</el-button><el-button type="primary"  @click="searchXmProducts" >查询</el-button>
 														</el-col>
 													</el-row>
-													<el-button type="text" slot="reference" @click="moreVisible=!moreVisible" style="float:right;">更多条件</el-button>
+													<el-button type="text" slot="reference" @click="moreVisible=!moreVisible">更多条件</el-button> 
 												</el-popover>
-												</span>
+												<el-button style="float:right;" type="text" @click="close" icon="el-icon-close" title="关闭当前窗口">关闭</el-button>  
+								</el-row>
+								<el-row v-if="load.list==false && (!xmProducts ||xmProducts.length==0)">
+									<el-row v-if="linkProjectId">
+										<el-row>没有查到与项目【{{linkProjectId}}】关联的产品,您可以尝试&nbsp;&nbsp;												
+										<el-button type="text" icon="el-icon-refresh" @click="refreshSelect" title="重新从后台刷新数据回来">刷新</el-button>&nbsp;&nbsp;
+										重新从后台加载，或者<el-button @click="addProductVisible=true" icon="el-icon-plus" type="text">创建产品</el-button> ，并自动关联项目【{{linkProjectId}}】，或者到【项目->关联产品->加入更多产品到项目】手动关联一个已存在的产品。
+										</el-row>
+ 									</el-row>
+									<el-row v-else>
+										<el-row>没有查到相关产品,您可以尝试&nbsp;&nbsp;												
+										<el-button type="text" icon="el-icon-refresh" @click="refreshSelect" title="重新从后台刷新数据回来">刷新</el-button>&nbsp;&nbsp;
+										重新从后台加载，或者<el-button @click="addProductVisible=true" icon="el-icon-plus" type="text">创建产品</el-button>
+										</el-row>
+									</el-row>
+									<el-dialog append-to-body :visible.sync="addProductVisible" width="70%">
+										<xm-product-add :sel-project="{id:linkProjectId,name:''}" @cancel="addProductVisible=false" @submit="afterAddSubmit"> </xm-product-add>
+									</el-dialog>
+								</el-row>
+								<el-row>
+									<!--列表 XmProduct 产品表-->
+									<el-table  ref="table" :height="maxTableHeight" :data="xmProducts" :row-class-name="tableRowClassName" @sort-change="sortChange" :highlight-current-row="true" current-row-key="id" v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+										<el-table-column prop="productName"  label="产品名称">
+											<template slot="header" slot-scope="scope">
+												产品名称 
 											</template>
 											<template slot-scope="scope">
 												<font>{{scope.row.productName}}</font>
@@ -74,7 +91,7 @@
 									</el-table>
 									<el-pagination  layout="total, prev, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 								</el-row>
-								<slot name="reference"><el-link title="产品，点击选择、清除选择" @click="referenceClick" type="warning" slot="reference"   icon="el-icon-search"><font style="font-size:14px;"><slot name="title">{{editForm && editForm.id?editForm.productName:'选择产品'}}</slot></font></el-link> </slot>
+								<slot name="reference"><el-link title="产品，点击选择、清除选择" @click="referenceClick" type="warning" slot="reference" v-loading="load.list"  icon="el-icon-search"><font style="font-size:14px;"><slot name="title">{{editForm && editForm.id?editForm.productName:'选择产品'}}</slot></font></el-link> </slot>
 						</el-popover>
 	</section>
 </template>
@@ -86,6 +103,7 @@
 	import { listXmProductWithState } from '@/api/xm/core/xmProduct';
 	import { mapGetters } from 'vuex'
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
+	import XmProductAdd from '../xmProduct/XmProductAdd.vue';
 	const map=new Map();
 
 	export default {
@@ -144,6 +162,7 @@
 				productVisible:false,
 				moreVisible:false,
 				hadInit:false,
+				addProductVisible:false,
 				/**begin 自定义属性请在下面加 请加备注**/
 
 				/**end 自定义属性请在上面加 请加备注**/
@@ -223,6 +242,8 @@
 							var row=this.xmProducts[0];
 							this.$refs.table.setCurrentRow(row);
 							this.rowClick(row);
+						}else{
+							this.editForm=null
 						}
 					}else{
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
@@ -285,6 +306,10 @@
 				this.productVisible=false;
 				this.moreVisible=false;
 			},
+			refreshSelect(){  
+				this.searchXmProducts(); 
+				this.moreVisible=false;
+			},
 			close(){
 				this.productVisible=false;
 				this.moreVisible=false;
@@ -341,9 +366,24 @@
 					}
 				})
 			},
+			afterAddSubmit(row){ 
+				this.xmProducts.push(row)
+				if(this.iterationId){
+					map.set(this.iterationId,this.xmProducts)
+				}else if(this.linkProjectId){
+					map.set(this.linkProjectId,this.xmProducts)
+				}
+				if(this.autoSelect!==false&&this.xmProducts.length>0 && this.productVisible==false){
+					var row=this.xmProducts[0];
+					this.$refs.table.setCurrentRow(row);
+					this.rowClick(row);
+				}
+				this.addProductVisible=false;
+			}
 		},//end methods
 		components: {
 			UsersSelect,
+			XmProductAdd,
 		    //在下面添加其它组件
 		},
 		mounted() {

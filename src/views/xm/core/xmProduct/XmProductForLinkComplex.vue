@@ -3,7 +3,7 @@
     <el-row>
       <el-col :span="4">
 	  <el-row class="padding">
-          <el-col :span="20"> 
+          <el-col :span="24"> 
               <xm-product-select
                 ref="xmProductSelect"
                 :auto-select="true"
@@ -12,19 +12,11 @@
                 @row-click="onProductRowClick"
                 @clear="onProductClearSelect"
               ></xm-product-select>
-          </el-col>
-          <el-col :span="4">  
-				<el-link
-					type="warning" 
-					@click="addProductVisible = true"
-					icon="el-icon-plus"
-					>产品</el-link
-				> 
-          </el-col>
+          </el-col> 
         </el-row>
         <el-row
           ref="pageBody"
-          class="padding border"
+          class="padding"
           :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"
         >
           <h4 class="padding-bottom" v-if="xmProduct && xmProduct.id">常用功能导航</h4>
