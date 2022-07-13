@@ -7,17 +7,17 @@
 						<xm-product-select v-if="!xmProduct||!xmProduct.id" ref="xmProductSelect" :auto-select="true" :link-project-id="selProject?selProject.id:null"   @row-click="onProductRowClick" @clear="onProductClearSelect" @close="productSelectVisible=false"></xm-product-select>
  
 					<span v-else>{{addForm.productName}}</span>
-				</el-form-item>
+				</el-form-item> 
+				<el-form-item label="上线时间" prop="onlineTime">
+					<el-date-picker type="date" placeholder="选择日期" v-model="addForm.onlineTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'onlineTime',$event)"></el-date-picker>
+				</el-form-item>   
+				<el-form-item label="起止时间" prop="startTime">
+					<date-range :auto-default="true" start-key="startTime" end-key="endTime" v-model="addForm" placeholder="选择日期"   value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" ></date-range>
+				</el-form-item>   
 				<el-form-item label="迭代名称" prop="iterationName">
 					<el-input v-model="addForm.iterationName" placeholder="迭代名称" minlength="10"></el-input>
 					<font color="blue">格式如下： 上线日期+主题+V版本号 例如： 2021.6.15购书商城V1.0.9 &nbsp;&nbsp;留空，选日期后自动填写迭代名称</font>
 				</el-form-item>  
-				<el-form-item label="起止时间" prop="startTime">
-					<date-range :auto-default="true" start-key="startTime" end-key="endTime" v-model="addForm" placeholder="选择日期"   value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" ></date-range>
-				</el-form-item>   
-				<el-form-item label="上线时间" prop="onlineTime">
-					<el-date-picker type="date" placeholder="选择日期" v-model="addForm.onlineTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'onlineTime',$event)"></el-date-picker>
-				</el-form-item>   
 				<el-form-item label="负责人姓名" prop="adminUsername">
 					{{addForm.adminUsername}} <el-button @click="userSelectVisible=true">选择负责人</el-button>
 				</el-form-item>     

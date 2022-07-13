@@ -5,7 +5,7 @@
         v-if="!xmProduct || !xmProduct.id"
         ref="xmProductSelect1"
         style="display: inline"
-        :auto-select="true"
+        :auto-select="false"
         :link-project-id="selProject ? selProject.id : null"
         @row-click="onProductSelected"
         @clear="onProductClearSelect"
@@ -124,14 +124,14 @@
           aria-disabled
           width="55"
         ></el-table-column>
-        <el-table-column prop="iterationName" label="迭代名称" min-width="260">
+        <el-table-column prop="iterationName" label="迭代名称" min-width="260"  sortable>
           <template slot-scope="scope">
             <el-link type="primary" @click="intoInfo(scope.row, scope.$index)">
-              {{ scope.row.seqNo }} &nbsp;&nbsp;{{ scope.row.iterationName }}
+              {{ scope.row.iterationName }}
             </el-link>
           </template>
         </el-table-column>
-        <el-table-column prop="finishRate" label="总进度" min-width="80">
+        <el-table-column prop="finishRate" label="总进度" min-width="80" sortable>
           <template slot-scope="scope">
             <font
               ><el-tag
@@ -149,14 +149,14 @@
             </font>
           </template>
         </el-table-column>
-        <el-table-column
+        <el-table-column  sortable
           prop="startTime"
           label="开始时间"
           min-width="80"
           :formatter="formatterDate"
           show-overflow-tooltip
         ></el-table-column>
-        <el-table-column
+        <el-table-column sortable
           prop="endTime"
           label="结束时间"
           min-width="80"
@@ -164,26 +164,26 @@
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="onlineTime"
+          prop="onlineTime"  sortable
           label="上线时间"
           min-width="80"
           :formatter="formatterDate"
           show-overflow-tooltip
         ></el-table-column>
-        <el-table-column
+        <el-table-column  sortable
           prop="adminUsername"
           label="负责人姓名"
           min-width="80"
           show-overflow-tooltip
         ></el-table-column>
-        <el-table-column
-          prop="distBudgetWorkload"
+        <el-table-column  sortable
+          prop="budgetWorkload"
           label="已分配工作量"
           min-width="80"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          prop="actWorkload"
+          prop="actWorkload"  sortable
           label="实际工作量"
           min-width="80"
           show-overflow-tooltip
@@ -302,9 +302,11 @@ import {
   listXmIteration,
   listXmIterationWithState,
   delXmIteration,
-  batchDelXmIteration,
-  loadTasksToXmIterationState,
+  batchDelXmIteration, 
 } from "@/api/xm/core/xmIteration";
+import { 
+  loadTasksToXmIterationState,
+} from "@/api/xm/core/xmIterationState";
 import {
   addXmIterationLink,
   delXmIterationLink,
@@ -353,6 +355,7 @@ export default {
         key: "",
         queryScope: "", //迭代查询范围 iterationId\branchId\compete\''
         id: "", //迭代编号
+		xmProduct:null,
       },
       pickerOptions: util.getPickerOptions("datarange"),
       dateRanger: [], //创建时间选择范围
@@ -729,69 +732,7 @@ export default {
       } else {
         return cellValue;
       }
-    },
-    onXmIterationSelect: function (row) {
-      var xmIteration = row;
-      var xmProduct = this.xmProduct;
-      this.$confirm(
-        "确认将产品【" +
-          xmProduct.productName +
-          "】加入迭代计划【" +
-          xmIteration.iterationName +
-          "】吗？",
-        "提示",
-        {
-          type: "warning",
-        }
-      ).then(() => {
-        addXmIterationLink({
-          iterationId: xmIteration.id,
-          productId: xmProduct.id,
-        }).then((res) => {
-          var tips = res.data.tips;
-          if (tips.isOk) {
-            this.getXmIterations();
-          }
-          this.$notify({
-            position: "bottom-left",
-            showClose: true,
-            message: tips.msg,
-            type: tips.isOk ? "success" : "error",
-          });
-        });
-      });
-    },
-    doDelXmIterationLink(row) {
-      var xmIteration = row;
-      var xmProduct = this.xmProduct;
-      this.$confirm(
-        "确认将产品【" +
-          xmProduct.productName +
-          "】与迭代【" +
-          xmIteration.iterationName +
-          "】进行脱钩吗？脱钩后，产品与迭代互相查看不到对方信息。",
-        "提示",
-        {
-          type: "warning",
-        }
-      ).then(() => {
-        delXmIterationLink({
-          iterationId: xmIteration.id,
-          productId: xmProduct.id,
-        }).then((res) => {
-          var tips = res.data.tips;
-          if (tips.isOk) {
-            this.getXmIterations();
-          }
-          this.$notify({
-            position: "bottom-left",
-            showClose: true,
-            message: tips.msg,
-            type: tips.isOk ? "success" : "error",
-          });
-        });
-      });
-    },
+    },  
     focusOrUnfocus: function (row) {
       if (this.menukey == "myFocus") {
         delUserFocus({
