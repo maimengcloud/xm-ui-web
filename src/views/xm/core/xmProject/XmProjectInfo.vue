@@ -10,13 +10,7 @@
         text-color="rgb(191, 203, 217)"
         active-text-color="#ffd04b"
       >
-        <el-menu-item index="返回">
-          <span slot="title" style="font-size: 18px">
-            <span slot="title" @click.stop="goBack"
-              ><i class="el-icon-back"></i
-            ></span>
-          </span>
-        </el-menu-item>
+        
         <el-menu-item index="项目概览">
           <span
             slot="title"
@@ -26,11 +20,11 @@
           >
             <font v-if="selProject.name.length >= 15"
               ><strong
-                >项目:&nbsp;&nbsp;{{ selProject.name.substring(0, 15) }}</strong
+                >&nbsp;&nbsp;项目:&nbsp;&nbsp;{{ selProject.name.substring(0, 15) }}</strong
               ></font
             >
             <font type="danger" v-else
-              ><strong>项目:&nbsp;&nbsp;{{ selProject.name }}</strong></font
+              ><strong>&nbsp;&nbsp;项目:&nbsp;&nbsp;{{ selProject.name }}</strong></font
             >
           </span>
 
@@ -51,18 +45,18 @@
         <el-menu-item index="产品">
           <span slot="title"><i class="el-icon-s-flag"></i>产品</span>
         </el-menu-item> 
+				<el-menu-item label="需求" index="需求" class="hidden-md-and-down">
+					 <span slot="title"><i class="el-icon-document"></i>需求</span> 
+				</el-menu-item> 
         <el-menu-item index="迭代">
           <span slot="title"><i class="el-icon-document-copy"></i>迭代</span>
         </el-menu-item>
-				<el-menu-item label="需求" index="需求">
-					 <span slot="title"><i class="el-icon-document"></i>需求</span> 
-				</el-menu-item> 
 
         <el-menu-item index="计划">
           <span slot="title"><i class="el-icon-odometer"></i>计划</span>
         </el-menu-item>
 
-        <el-menu-item index="任务">
+        <el-menu-item index="任务" class="hidden-md-and-down">
           <span slot="title"><i class="el-icon-s-operation"></i>任务</span>
         </el-menu-item>
         <el-menu-item index="缺陷">
@@ -141,6 +135,16 @@
             <span slot="title"><i class="el-icon-date"></i>客服</span>
           </el-menu-item>
         </el-submenu>
+        <el-menu-item index="首页">
+          <span slot="title" @click.stop="goHome"
+            ><i class="el-icon-s-home"></i>首页</span
+          >
+        </el-menu-item> 
+        <el-menu-item index="上一页" class="hidden-md-and-down">
+          <span slot="title" @click.stop="goBack"
+            ><i class="el-icon-back"></i>上一页</span
+          >
+        </el-menu-item> 
       </el-menu>
     </el-row>
     <el-row ref="pageBody">
@@ -771,13 +775,12 @@ export default {
       }
     },
     goBack() {
-      localStorage.setItem("project-infotype", "项目概览"); 
-      
-      if(window.history.length>0){
-      this.$router.back(-1);
-      }else{
-      this.$router.push({path:'/xm/core/xmProject/XmProjectMng'})
-      }
+      localStorage.setItem("project-infotype", "项目概览");  
+      this.$router.back(-1); 
+    },
+    goHome(){ 
+      localStorage.setItem("project-infotype", "项目概览");  
+      this.$router.push({path:'/'}) 
     },
     
 			onEditFields(row){ 
