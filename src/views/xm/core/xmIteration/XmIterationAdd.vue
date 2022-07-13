@@ -6,7 +6,7 @@
 				<el-form-item label="归属产品" prop="productId">  
 						<xm-product-select v-if="!xmProduct||!xmProduct.id" ref="xmProductSelect" :auto-select="true" :link-project-id="selProject?selProject.id:null"   @row-click="onProductRowClick" @clear="onProductClearSelect" @close="productSelectVisible=false"></xm-product-select>
  
-					<span v-else>{{addForm.productName}}</span>
+					<span v-else>{{addForm.productName?addForm.pproductName:addForm.productId}}</span>
 				</el-form-item> 
 				<el-form-item label="上线时间" prop="onlineTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="addForm.onlineTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'onlineTime',$event)"></el-date-picker>
@@ -73,16 +73,16 @@
 			  }
 			  var date=val.substr(0,10)
 			  date=date.replaceAll('-','');
-			  this.addForm.iterationName=date+this.addForm.productName+'V1.0.0'
+			  this.addForm.iterationName=date+(this.addForm.productName?this.addForm.productName:'-请修改-')+'V1.0.0'
 		  },
 		  'addForm.productName':function(val){
-			  var date=this.addForm.endTime
+			  var date=this.addForm.onlineTime
 			  if(!date){
 				  return;
 			  }
 			  date=date.substr(0,10)
 			  date=date.replaceAll('-','');
-			  this.addForm.iterationName=date+this.addForm.productName+'V1.0.0'
+			  this.addForm.iterationName=date+(this.addForm.productName?this.addForm.productName:'-请修改-')+'V1.0.0'
 		  }
 	    },
 		data() {

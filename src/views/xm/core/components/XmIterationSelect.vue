@@ -6,52 +6,104 @@
 			v-model="iterationVisible"
 			trigger="manual" >  
 			<el-row>
+				<el-button
+				type="text"
+				icon="el-icon-refresh"
+				@click="refreshSelect"
+				title="重新从后台刷新数据回来"
+				>刷新</el-button>&nbsp;&nbsp;
+				<el-button v-if="clearable!==false && editForm && editForm.id" type="text" icon="el-icon-circle-close" @click="clearSelectIteration" title="清空当前选中的迭代">清空&nbsp;&nbsp;</el-button> 
+				
+				<el-button
+					@click="addIterationVisible = true"
+					icon="el-icon-plus"
+					type="text"
+					>创建迭代</el-button>&nbsp;&nbsp;
+				<el-popover 
+					placement="top-start"
+					title=""
+					v-model="moreVisible"
+					width="400"
+					trigger="manual" >
+					<el-row>   
+						<el-col :span="24"  style="padding-top:5px;"> 
+							<font class="more-label-font">迭代编号:</font><el-input  v-model="filters.id"   placeholder="输入迭代编号">  
+							</el-input> 
+						</el-col>
+						<el-col  :span="24"  style="padding-top:5px;">
+							<font class="more-label-font">上线时间:</font>
+							<el-date-picker 
+								v-model="dateRangerOnline"
+								type="daterange"
+								align="right"
+								unlink-panels
+								range-separator="至"
+								start-placeholder="开始日期"
+								end-placeholder="完成日期"
+								value-format="yyyy-MM-dd HH:mm:ss"
+								:default-time="['00:00:00','23:59:59']"
+								:picker-options="pickerOptions"
+							></el-date-picker>
+						</el-col>
+						<el-col :span="24" style="padding-top:5px;">
+								<font class="more-label-font">迭代名称:</font><el-input  v-model="filters.key"  placeholder="模糊查询"></el-input>
+						</el-col> 
+						<el-col :span="24" style="padding-top:5px;">
+							<el-button  type="text"   @click="moreVisible=false">关闭</el-button>
+							<el-button  type="primary" icon="el-icon-search" @click="searchXmIterations">查询</el-button>
+						</el-col> 
+					</el-row>
+					<el-button type="text" slot="reference" @click="moreVisible=!moreVisible"  icon="el-icon-search">更多条件</el-button>
+				</el-popover>
+				<el-button type="text" @click="close" style="float:right;" icon="el-icon-close">关闭</el-button> 
+			</el-row>
+			<el-row
+        v-if="load.list == false && (!xmIterations || xmIterations.length == 0)"
+      >
+        <el-row v-if="linkProjectId">
+          <el-row
+            >没有查到与项目【{{
+              linkProjectId
+            }}】关联的迭代,您可以尝试&nbsp;&nbsp;
+            <el-button
+              type="text"
+              icon="el-icon-refresh"
+              @click="refreshSelect"
+              title="重新从后台刷新数据回来"
+              >刷新</el-button
+            >&nbsp;&nbsp; 重新从后台加载，或者<el-button
+              @click="addIterationVisible = true"
+              icon="el-icon-plus"
+              type="text"
+              >创建迭代</el-button
+            >
+            ，并自动关联项目【{{
+              linkProjectId
+            }}】。
+          </el-row>
+        </el-row>
+        <el-row v-else>
+          <el-row
+            >没有查到相关迭代,您可以尝试&nbsp;&nbsp;
+            <el-button
+              type="text"
+              icon="el-icon-refresh"
+              @click="refreshSelect"
+              title="重新从后台刷新数据回来"
+              >刷新</el-button
+            >&nbsp;&nbsp; 重新从后台加载，或者<el-button
+              @click="addIterationVisible = true"
+              icon="el-icon-plus"
+              type="text"
+              >创建迭代</el-button
+            >
+          </el-row>
+        </el-row>
+      </el-row>
+			<el-row>
 				<el-table ref="table" :height="maxTableHeight" :data="xmIterations" row-key="id"    @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
- 					<el-table-column prop="iterationName" label="迭代" >
-						<template slot="header" slot-scope="scope">
-						迭代 &nbsp;&nbsp;&nbsp;
-						<span style="float:right;">
-						<el-button v-if="clearable!==false && editForm && editForm.id" type="text" @click="clearSelectIteration">清空</el-button> &nbsp;&nbsp;<el-button type="text" @click="close">关闭</el-button>&nbsp;&nbsp;
-						<el-popover 
-							placement="top-start"
-							title=""
-							v-model="moreVisible"
-							width="400"
-							trigger="manual" >
-							<el-row>   
-								<el-col :span="24"  style="padding-top:5px;"> 
-									<font class="more-label-font">迭代编号:</font><el-input  v-model="filters.id"   placeholder="输入迭代编号">  
-									</el-input> 
-								</el-col>
-								<el-col  :span="24"  style="padding-top:5px;">
-									<font class="more-label-font">上线时间:</font>
-									<el-date-picker 
-										v-model="dateRangerOnline"
-										type="daterange"
-										align="right"
-										unlink-panels
-										range-separator="至"
-										start-placeholder="开始日期"
-										end-placeholder="完成日期"
-										value-format="yyyy-MM-dd HH:mm:ss"
-										:default-time="['00:00:00','23:59:59']"
-										:picker-options="pickerOptions"
-									></el-date-picker>
-								</el-col>
-								<el-col :span="24" style="padding-top:5px;">
-										<font class="more-label-font">迭代名称:</font><el-input  v-model="filters.key"  placeholder="模糊查询"></el-input>
-								</el-col> 
-								<el-col :span="24" style="padding-top:5px;">
-									<el-button  type="text"   @click="moreVisible=false">关闭</el-button>
-									<el-button  type="primary" icon="el-icon-search" @click="searchXmIterations">查询</el-button>
-								</el-col> 
-							</el-row>
-							<el-button type="text" slot="reference" style="float:right;" @click="moreVisible=!moreVisible"  icon="el-icon-search">更多条件</el-button>
-						</el-popover>
-						</span>
-					</template>
-						<template slot-scope="scope">
-
+ 					<el-table-column prop="iterationName" label="迭代" > 
+						<template slot-scope="scope"> 
 							{{scope.row.iterationName}}  <font   :color="calcFinishRate(scope.row)==100?'green':'#FF8C00'">{{calcFinishRate(scope.row)}}%</font>
 						</template>
 					</el-table-column> 
@@ -61,6 +113,17 @@
 			</el-row>
 			<el-link title="点击选中迭代" @click="referenceClick"  type="warning" slot="reference" icon="el-icon-search"><font style="font-size:14px;"><slot name="title">{{editForm&&editForm.id?editForm.iterationName:'选择迭代'}}</slot></font></el-link> 
 		</el-popover> 
+		
+	
+        <el-dialog append-to-body :visible.sync="addIterationVisible" width="70%">
+          <xm-iteration-add
+            :xm-product="productId?{ id: productId, name: '' }:null"
+			:sel-project="linkProjectId?{id:linkProjectId,name:''}:null"
+            @cancel="addIterationVisible = false"
+            @submit="afterAddSubmit"
+          >
+          </xm-iteration-add>
+        </el-dialog>
 	</section>
 </template>
 
@@ -72,6 +135,7 @@
   
 	const map=new Map();
 	import { mapGetters } from 'vuex' 
+	import XmIterationAdd from "../xmIteration/XmIterationAdd.vue";
 
 	export default {
 		computed: {
@@ -134,6 +198,7 @@
 				iterationVisible:false,
 				moreVisible:false,
 				hadInit:false,
+				addIterationVisible:false,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -213,7 +278,7 @@
 								this.rowClick(row)
 							} 
 						}else{
-							this.clearSelectIteration()
+							this.editForm=null
 						}
 					}else{
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
@@ -293,6 +358,10 @@
 				this.moreVisible=false;
 				this.$emit('clear',null );//  @row-click="rowClick"
 			}, 
+			refreshSelect() {
+				this.searchXmIterations();
+				this.moreVisible = false;
+			},
 			referenceClick(){
 				if(!this.hadInit){
 					this.initData();
@@ -309,8 +378,28 @@
 					}
 				})
 			},
+			
+			afterAddSubmit(row) {
+				this.xmIterations.push(row);
+				if (this.productId) {
+					map.set(this.productId, this.xmIterations);
+				} else if (this.linkProjectId) {
+					map.set(this.linkProjectId, this.xmIterations);
+				}
+				if (
+					this.autoSelect !== false &&
+					this.xmIterations.length > 0 &&
+					this.iterationVisible == false
+				) {
+					var row = this.xmIterations[0];
+					this.$refs.table.setCurrentRow(row);
+					this.rowClick(row);
+				}
+				this.addIterationVisible = false;
+			}, 
 		},//end methods
 		components: { 
+			XmIterationAdd,
 		    //在下面添加其它组件
 		},
 		mounted() {
