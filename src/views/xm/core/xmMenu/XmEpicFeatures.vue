@@ -48,6 +48,16 @@
 							trigger="manual"
 							v-model="moreVisible"
 						>
+							<el-row> 
+								<el-col :span="24"> 
+									<el-button  style="float:right;"
+									icon="el-icon-close"
+									@click="moreVisible=false"
+									type="text"
+									>关闭</el-button
+									>
+								</el-col>
+							</el-row> 
 							<el-row>
 							<el-col :span="24" style="padding-top: 5px" v-if="editForm && editForm.menuId">
 								<font class="more-label-font">当前选中的史诗、特性:</font> 
@@ -65,14 +75,7 @@
 								>
 								<el-button          @click="loadTasksToXmMenuState" icon="el-icon-s-marketing" title="汇总进度">汇总进度</el-button> 
  
-							</el-col>
-							<el-col :span="24" style="padding-top: 5px"> 
-							 	<el-button  
-								icon="el-icon-close"
-								@click="moreVisible=false"
-								>关闭</el-button
-								>
-							</el-col>
+							</el-col> 
 							</el-row> 
 							<el-button slot="reference" @click="moreVisible=!moreVisible" icon="el-icon-more"></el-button>
 						</el-popover> 

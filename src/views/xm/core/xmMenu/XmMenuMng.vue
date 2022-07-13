@@ -21,6 +21,17 @@
 							width="400"
 							v-model="moreVisible"
 							trigger="manual" >
+							
+							<el-row> 
+								<el-col :span="24"> 
+									<el-button  style="float:right;"
+									icon="el-icon-close"
+									@click="moreVisible=false"
+									type="text"
+									>关闭</el-button
+									>
+								</el-col>
+							</el-row> 
 							<el-row>
 								<el-col  :span="24"  style="padding-top:5px;" >
 									<font class="more-label-font">标签条件:</font>
@@ -131,8 +142,7 @@
 									<el-input v-model="filters.productId" style="width: 220px;" placeholder="产品编号查询" clearable></el-input>
 								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
-									<el-button type="primary"  @click="searchXmMenus" icon="el-icon-search">查询</el-button>
-									<el-button  @click="moreVisible=false" icon="el-icon-close" >关闭</el-button>
+									<el-button type="primary"  @click="searchXmMenus" icon="el-icon-search">查询</el-button> 
  								</el-col>
 								<el-col  :span="24"  style="padding-top:5px;">
 									<el-button    @click="handleExport" icon="el-icon-download">导出</el-button>
