@@ -300,19 +300,18 @@
 					<el-tab-pane label="迭代详情" lazy name="detail" v-if="xmIteration&&xmIteration.id">
 						<xm-iteration-edit v-if="showPanel=='detail'" :xm-iteration="xmIteration" @edit-fields="onEditFields"></xm-iteration-edit>
 					</el-tab-pane> 
-					<el-tab-pane label="配置需求范围" lazy name="iterationMenuMng" v-if="xmIteration&&xmIteration.id">
-      					<xm-iteration-menu-mng v-if="showPanel=='iterationMenuMng'" :xm-iteration="xmIteration"></xm-iteration-menu-mng>
-					</el-tab-pane>
 					<el-tab-pane label="需求列表" lazy name="menus" v-if="xmIteration&&xmIteration.id">
 						<xm-menu-mng v-if="xmIteration && showPanel=='menus'" :xm-product="xmProduct"  :xm-iteration="xmIteration" :sel-project="selProject"></xm-menu-mng>
 					</el-tab-pane>
+					<el-tab-pane label="配置需求范围" lazy name="iterationMenuMng" v-if="xmIteration&&xmIteration.id">
+      					<xm-iteration-menu-mng v-if="showPanel=='iterationMenuMng'" :xm-iteration="xmIteration"></xm-iteration-menu-mng>
+					</el-tab-pane>
 					<el-tab-pane label="任务列表" lazy name="tasks" v-if="xmIteration&&xmIteration.id">
 						<xm-task-mng v-if="xmIteration && showPanel=='tasks'" :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-task-mng>
-					</el-tab-pane> 
+					</el-tab-pane>  
 					<el-tab-pane label="缺陷列表" lazy name="bugs" v-if="xmIteration&&xmIteration.id">
 						<xm-question-mng v-if="xmIteration && showPanel=='bugs'" :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-question-mng>
 					</el-tab-pane> 
-					
 					<el-tab-pane label="效能分析" lazy name="效能" v-if="xmIteration&&xmIteration.id"> 
 						<xm-report v-if="xmIteration && showPanel=='效能'" :xm-iteration="xmIteration" ></xm-report>
  					</el-tab-pane> 
