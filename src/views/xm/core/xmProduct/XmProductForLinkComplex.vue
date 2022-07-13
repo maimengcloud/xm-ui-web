@@ -2,7 +2,7 @@
   <section>
     <el-row>
       <el-col :span="4">
-	  <el-row class="padding">
+	  <el-row>
           <el-col :span="24"> 
               <xm-product-select
                 ref="xmProductSelect"
@@ -17,6 +17,7 @@
         <el-row
           ref="pageBody"
           class="padding"
+		  :class="{border:xmProduct && xmProduct.id}"
           :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"
         >
           <h4 class="padding-bottom" v-if="xmProduct && xmProduct.id">常用功能导航</h4>
@@ -151,7 +152,7 @@
         </el-row>
       </el-col>
       <el-col :span="20" class="padding-left">
-        <el-tabs :value="showPanel" @tab-click="tabClick"> 
+        <el-tabs :value="showPanel" @tab-click="tabClick" style="margin-top:-20px;"> 
           <el-tab-pane
             label="产品概览"
             name="productOverview"
@@ -190,7 +191,7 @@
             name="iterationProductLink"
             v-if="xmProduct && xmProduct.id"
           >
-            <xm-iteration-mng
+            <xm-iteration-mng style="margin-top:-10px;"
               v-if="showPanel == 'iterationProductLink'"
               :xm-product="xmProduct"
             ></xm-iteration-mng>

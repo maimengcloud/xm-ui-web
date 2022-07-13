@@ -1,6 +1,6 @@
 <template>
-  <section class="padding">
-    <el-row class="page-main" :style="{overflowX:'hidden',height:maxTableHeight+'px'}" ref="pageMainRef"> 
+  <section ref="pageMainRef">
+    <el-row :style="{overflowX:'hidden',height:maxTableHeight+'px'}" > 
       <el-row :gutter="10" style="margin-bottom:10px">
           <el-col :span="8" >
             <el-card class="box-card" style="padding:0px ;height:425px">
@@ -13,7 +13,7 @@
                 </el-row> 
               </el-row>
               <el-row style="margin-bottom:18px">
-                <el-col :span="8" @click="">
+                <el-col :span="8">
                   <div class="item">
                     <div class="icon" style="background-color:  rgb(79, 140, 255);">
                       <i class="el-icon-right"></i>
