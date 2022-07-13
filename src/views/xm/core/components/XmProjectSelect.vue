@@ -20,8 +20,13 @@
           icon="el-icon-circle-close"
           @click="clearSelect"
           title="清空当前选中的项目"
-          >清除选中</el-button
-        >&nbsp;&nbsp;
+          >清除选中&nbsp;&nbsp;</el-button
+        >
+		<el-button
+              @click="addProjectVisible = true"
+              icon="el-icon-plus"
+              type="text"
+              >创建项目</el-button>
                 <el-popover
                   placement="top-start"
                   title=""
@@ -148,15 +153,6 @@
             >
           </el-row>
         </el-row>
-        <el-dialog append-to-body :visible.sync="addProjectVisible" width="70%">
-          <xm-project-add
-		  	:op-type="'add'"
-            :xm-product="{ id: linkProductId, name: '' }"
-            @cancel="addProjectVisible = false"
-            @submit="afterAddSubmit"
-          >
-          </xm-project-add>
-        </el-dialog>
       </el-row>
       <el-row>
         <!--列表 XmProject 项目表-->
@@ -220,6 +216,16 @@
         ref="usersSelect"
       ></users-select>
     </el-drawer>
+	
+        <el-dialog append-to-body :visible.sync="addProjectVisible" width="70%" top="20px">
+          <xm-project-add
+		  	:op-type="'add'"
+            :xm-product="{ id: linkProductId, name: '' }"
+            @cancel="addProjectVisible = false"
+            @submit="afterAddSubmit"
+          >
+          </xm-project-add>
+        </el-dialog>
   </section>
 </template>
 

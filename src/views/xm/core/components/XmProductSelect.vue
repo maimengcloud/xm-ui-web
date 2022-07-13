@@ -20,8 +20,13 @@
           icon="el-icon-circle-close"
           @click="clearSelect"
           title="清空当前选中的产品"
-          >清除选中</el-button
-        >&nbsp;&nbsp;
+          >清除选中&nbsp;&nbsp;</el-button
+        >
+		<el-button
+              @click="addProductVisible = true"
+              icon="el-icon-plus"
+              type="text"
+              >创建产品</el-button>&nbsp;&nbsp;
         <el-popover
           placement="top-start"
           title=""
@@ -90,7 +95,7 @@
           </el-row>
           <el-button
             type="text"
-            slot="reference"
+            slot="reference" 
             @click="moreVisible = !moreVisible"
             >更多条件</el-button
           >
@@ -146,14 +151,6 @@
             >
           </el-row>
         </el-row>
-        <el-dialog append-to-body :visible.sync="addProductVisible" width="70%">
-          <xm-product-add
-            :sel-project="{ id: linkProjectId, name: '' }"
-            @cancel="addProductVisible = false"
-            @submit="afterAddSubmit"
-          >
-          </xm-product-add>
-        </el-dialog>
       </el-row>
       <el-row>
         <!--列表 XmProduct 产品表-->
@@ -205,6 +202,15 @@
         >
       </slot>
     </el-popover>
+	
+        <el-dialog append-to-body :visible.sync="addProductVisible" width="70%">
+          <xm-product-add
+            :sel-project="{ id: linkProjectId, name: '' }"
+            @cancel="addProductVisible = false"
+            @submit="afterAddSubmit"
+          >
+          </xm-product-add>
+        </el-dialog>
   </section>
 </template>
 
