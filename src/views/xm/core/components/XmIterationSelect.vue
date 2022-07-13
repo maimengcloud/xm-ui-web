@@ -292,7 +292,7 @@
 				this.sels = sels;
 			},  
 			rowClick: function(row, event, column){ 
-				var oldId=this.editForm.id
+				var oldId=this.editForm&&this.editForm.id?this.editForm.id:null
 				this.editForm=row
 				this.iterationVisible=false;
 				this.moreVisible=false;
