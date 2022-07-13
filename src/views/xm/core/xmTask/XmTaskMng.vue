@@ -77,6 +77,16 @@
             trigger="manual"
             v-model="moreVisible"
           >
+							<el-row> 
+								<el-col :span="24"> 
+									<el-button  style="float:right;"
+									icon="el-icon-close"
+									@click="moreVisible=false"
+									type="text"
+									>关闭</el-button
+									>
+								</el-col>
+							</el-row> 
             <el-row>
               <el-col :span="24" style="padding-top: 5px">
                 <font class="more-label-font">产品:</font
@@ -201,21 +211,14 @@
                   >众包</el-checkbox
                 > 
               </el-col>
-              <el-col :span="24" style="padding-top: 10px">
-                <el-button
+              <el-col :span="24" style="padding-top: 10px;">
+                <el-button 
                   type="primary"
                   icon="el-icon-search"
                   @click="searchXmTasks"
                   >查询</el-button
                 >
-              </el-col>
-              <el-col :span="24" style="padding-top: 10px">
-                <el-button 
-                  icon="el-icon-close"
-                  @click="moreVisible=false"
-                  >关闭</el-button
-                >
-              </el-col>
+              </el-col> 
             </el-row>  
             <el-button   slot="reference" @click="moreVisible=!moreVisible">更多</el-button>
           </el-popover> 

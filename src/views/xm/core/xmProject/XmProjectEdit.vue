@@ -2,7 +2,11 @@
 	<section class="page-container padding border"> 
 		<el-row class="page-main" ref="table" :style="{overflowX:'auto',height:maxTableHeight+'px'}">  
 				<el-form :model="editForm"  label-width="120px" label-position="left" :rules="editFormRules" ref="editForm" class="editForm"> 
-						 
+						 					
+							<el-form-item label="名称" prop="name"  v-show="opType==='add'">  
+									<el-input  v-model="editForm.name" placeholder="项目名称" @change="editXmProjectSomeFields(editForm,'name',$event)"></el-input> 
+							</el-form-item>   
+							
 							<el-form-item label="项目代号" prop="code" v-if="opType==='add'">
 								<el-input v-model="editForm.code"  placeholder="项目代号，不可为空" >
 									<template slot="append">
@@ -13,10 +17,7 @@
 							</el-form-item>  	
 							<el-form-item label="编号代号" prop="code" v-else>  
 								 项目代号为<strong> {{editForm.code}} </strong>,打印在合同上，甲乙方共享;项目内部编号为<strong> {{editForm.id}} </strong>，用于内部流转，&nbsp;生成规则:代号-四位随机码 
-							</el-form-item>  					
-							<el-form-item label="名称" prop="name"  v-show="opType==='add'">  
-									<el-input  v-model="editForm.name" placeholder="项目名称" @change="editXmProjectSomeFields(editForm,'name',$event)"></el-input> 
-							</el-form-item>   
+							</el-form-item>  
 							<el-row>
 								<el-col :span="8">
 									<el-form-item label="项目类型"  prop="xmType">

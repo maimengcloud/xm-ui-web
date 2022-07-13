@@ -83,6 +83,16 @@
             trigger="manual"
             v-model="moreVisible"
           >
+							<el-row> 
+								<el-col :span="24"> 
+									<el-button  style="float:right;"
+									icon="el-icon-close"
+									@click="moreVisible=false"
+									type="text"
+									>关闭</el-button
+									>
+								</el-col>
+							</el-row> 
             <el-row>
               <el-col :span="24" style="padding-top: 5px" v-if="editForm && editForm.id">
                 <font class="more-label-font">当前选中的计划:</font> 
@@ -152,12 +162,7 @@
                   title="更换任务的上级，实现任务搬家功能"
                   icon="el-icon-upload2"
                   v-loading="load.edit"
-                > </el-button> 
-                <el-button 
-                  icon="el-icon-close"
-                  @click="moreVisible=false"
-                  >关闭</el-button
-                >
+                > </el-button>  
               </el-col>
             </el-row> 
             <el-button slot="reference" @click="moreVisible=!moreVisible">更多</el-button>
