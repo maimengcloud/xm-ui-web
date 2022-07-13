@@ -1,7 +1,7 @@
 <template>
   <section>
     <el-row>
-      <el-col :span="4" class="padding-right padding-left">
+      <el-col :span="4" class="padding">
         <el-row>
           <el-col :span="24">
             <xm-project-select
@@ -112,8 +112,8 @@
 			</el-steps>
         </el-row>
       </el-col>
-      <el-col :span="20">
-        <el-tabs :value="showPanel" @tab-click="tabClick" style="margin-top:-10px;">
+      <el-col :span="20" class="padding-left padding-right">
+        <el-tabs :value="showPanel" @tab-click="tabClick">
           <el-tab-pane
             label="项目概览"
             name="projectOverview"

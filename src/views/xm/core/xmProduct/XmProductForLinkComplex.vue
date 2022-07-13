@@ -1,7 +1,7 @@
 <template>
   <section>
     <el-row>
-      <el-col :span="4" class="padding-right padding-left">
+      <el-col :span="4" class="padding">
 	  <el-row>
           <el-col :span="24"> 
               <xm-product-select
@@ -151,8 +151,8 @@
           </el-steps>
         </el-row>
       </el-col>
-      <el-col :span="20" class="padding-left">
-        <el-tabs :value="showPanel" @tab-click="tabClick" style="margin-top:-20px;"> 
+      <el-col :span="20" class="padding-left padding-right">
+        <el-tabs :value="showPanel" @tab-click="tabClick"> 
           <el-tab-pane
             label="产品概览"
             name="productOverview"

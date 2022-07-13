@@ -4,8 +4,7 @@
       <el-menu
         :default-active="infotype"
         mode="horizontal"
-        @select="setInfotype"
-        class="menus"
+        @select="setInfotype" 
         background-color="rgb(48, 65, 86)"
         text-color="rgb(191, 203, 217)"
         active-text-color="#409eff"
@@ -366,7 +365,7 @@
             </el-step>
           </el-steps>
         </el-col>
-        <el-col :span="infotype == '产品概览' ? 20 : 24">
+        <el-col :span="infotype == '产品概览' ? 20 : 24" class="padding-left padding-right">
           <xm-product-overview-complex
             v-if="infotype == '产品概览'"
             :xm-product="xmProduct"

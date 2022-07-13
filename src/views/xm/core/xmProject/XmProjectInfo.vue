@@ -144,7 +144,7 @@
       </el-menu>
     </el-row>
     <el-row ref="pageBody">
-      <el-col :span="infotype=='项目概览'?6:0" class="padding border" :style="{maxHeight:maxTableHeight+'px',overflowY:'auto'}">
+      <el-col :span="infotype=='项目概览'?4:0" class="padding border" :style="{maxHeight:maxTableHeight+'px',overflowY:'auto'}">
       <h4 class="padding-bottom">常用功能快捷导航</h4>
         <el-steps :active="calcProjectStatusStep" finish-status="success" direction="vertical">
           <el-step
@@ -257,7 +257,7 @@
           </el-step>
         </el-steps>
       </el-col>
-      <el-col :span="infotype=='项目概览'?18:24">
+      <el-col :span="infotype=='项目概览'?20:24">
         <xm-project-overview-complex
           v-if="infotype == '项目概览'"
           :sel-project="selProject"
@@ -266,7 +266,7 @@
           ref="项目概览"
         ></xm-project-overview-complex>
         <xm-product-for-link-complex
-          v-if="infotype == '产品'" class="padding"
+          v-if="infotype == '产品'"
           ref="xmProductComplex"
           :sel-project="selProject" 
         ></xm-product-for-link-complex>
