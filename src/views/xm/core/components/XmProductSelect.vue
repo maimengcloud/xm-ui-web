@@ -374,9 +374,13 @@ export default {
               var row = this.xmProducts[0];
               this.$refs.table.setCurrentRow(row);
               this.rowClick(row);
-            } else {
-              this.editForm = null;
-            }
+            }else{
+				if(this.xmProducts.length==0 ){
+					if(this.editForm && this.editForm.id){
+						this.clearSelect()
+					}
+				}
+			}
           } else {
             this.$notify({
               position: "bottom-left",

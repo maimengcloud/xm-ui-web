@@ -278,7 +278,11 @@
 								this.rowClick(row)
 							} 
 						}else{
-							this.editForm=null
+							if(this.xmIterations.length==0 ){
+								if(this.editForm && this.editForm.id){
+									this.clearSelectIteration()
+								}
+							}
 						}
 					}else{
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
