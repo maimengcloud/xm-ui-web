@@ -4,16 +4,13 @@
       <el-menu
         :default-active="infotype"
         mode="horizontal"
+        class="menus"
         @select="setInfotype" 
         background-color="rgb(48, 65, 86)"
         text-color="rgb(191, 203, 217)"
         active-text-color="#409eff"
       >
-        <el-menu-item index="返回">
-          <span slot="title" @click.stop="goBack"
-            ><i class="el-icon-back"></i
-          ></span>
-        </el-menu-item>
+         
         <el-menu-item index="产品概览">
           <span
             slot="title"
@@ -23,11 +20,11 @@
           >
             <font v-if="xmProduct.productName.length >= 15">
               <strong>
-                产品:&nbsp;{{ xmProduct.productName.substring(0, 15) }}</strong
+                &nbsp;&nbsp;产品:&nbsp;{{ xmProduct.productName.substring(0, 15) }}</strong
               ></font
             >
             <font type="danger" v-else>
-              <strong>产品:&nbsp;{{ xmProduct.productName }}</strong></font
+              <strong>&nbsp;&nbsp;产品:&nbsp;{{ xmProduct.productName }}</strong></font
             >
           </span>
           <span
@@ -37,10 +34,10 @@
             :title="xmProduct.productName"
           >
             <font v-if="xmProduct.productName.length >= 15">
-              产品:&nbsp;{{ xmProduct.productName.substring(0, 15) }}</font
+              &nbsp;&nbsp;产品:&nbsp;{{ xmProduct.productName.substring(0, 15) }}</font
             >
             <font type="danger" v-else>
-              产品:&nbsp;{{ xmProduct.productName }}</font
+              &nbsp;&nbsp;产品:&nbsp;{{ xmProduct.productName }}</font
             >
           </span>
         </el-menu-item>
@@ -175,6 +172,16 @@
             <span slot="title"><i class="el-icon-date"></i>客服</span>
           </el-menu-item>
         </el-submenu>
+        <el-menu-item index="首页" @click.native="goHome">
+          <span slot="title"
+            ><i class="el-icon-s-home"></i></span
+          >
+        </el-menu-item> 
+        <el-menu-item index="上一页" class="hidden-md-and-down"  @click.native="goBack">
+          <span slot="title"
+            ><i class="el-icon-back"></i></span
+          >
+        </el-menu-item> 
       </el-menu>
 	  </el-row>
       <el-row ref="pageBody">
@@ -919,17 +926,7 @@ export default {
       }else{
         func(params)
       }
-    },
-
-    goBack() {
-      localStorage.setItem("product-infotype", "产品概览");
-
-      if (window.history.length > 0) {
-        this.$router.back(-1);
-      } else {
-        this.$router.push({ path: "/xm/core/xmProduct/XmProductMng" });
-      }
-    },
+    }, 
 
     onEditFields(row) {
       Object.assign(this.xmProduct, row);
@@ -974,6 +971,14 @@ export default {
       this.$nextTick(() => {
         this.$refs["xmProductComplex"].addProductVisible = true;
       });
+    },
+    goBack() {
+      localStorage.setItem("product-infotype", "产品概览");
+      this.$router.back(-1); 
+    },
+    goHome(){ 
+      localStorage.setItem("product-infotype", "产品概览");
+      this.$router.push({path:'/'}) 
     },
   }, //end methods
   components: {

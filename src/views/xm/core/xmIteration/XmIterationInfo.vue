@@ -9,10 +9,7 @@
         background-color="rgb(48, 65, 86)"
         text-color="rgb(191, 203, 217)"
         active-text-color="#409eff"
-      >
-        <el-menu-item index="返回">
-          <span slot="title"><i class="el-icon-back"></i></span>
-        </el-menu-item>
+      > 
         <el-menu-item index="迭代概览">
           <span
             slot="title"
@@ -22,14 +19,14 @@
           >
             <font v-if="xmIteration.iterationName.length >= 15"
               ><strong
-                >迭代:&nbsp;&nbsp;{{
+                >&nbsp;&nbsp;迭代:&nbsp;&nbsp;{{
                   xmIteration.iterationName.substring(0, 15)
                 }}</strong
               ></font
             >
             <font type="danger" v-else
               ><strong
-                >迭代:&nbsp;&nbsp;{{ xmIteration.iterationName }}</strong
+                >&nbsp;&nbsp;迭代:&nbsp;&nbsp;{{ xmIteration.iterationName }}</strong
               ></font
             >
           </span>
@@ -40,10 +37,10 @@
             :title="xmIteration.iterationName"
           >
             <font v-if="xmIteration.iterationName.length >= 15"
-              >迭代:&nbsp;{{ xmIteration.iterationName.substring(0, 15) }}</font
+              >&nbsp;&nbsp;迭代:&nbsp;{{ xmIteration.iterationName.substring(0, 15) }}</font
             >
             <font type="danger" v-else
-              >迭代:&nbsp;{{ xmIteration.iterationName }}</font
+              >&nbsp;&nbsp;迭代:&nbsp;{{ xmIteration.iterationName }}</font
             >
           </span>
         </el-menu-item>
@@ -62,6 +59,16 @@
         <el-menu-item index="效能">
           <span slot="title"><i class="el-icon-s-data"></i>效能</span>
         </el-menu-item>
+        <el-menu-item index="首页" @click.native="goHome">
+          <span slot="title"
+            ><i class="el-icon-s-home"></i></span
+          >
+        </el-menu-item> 
+        <el-menu-item index="上一页" class="hidden-md-and-down"  @click.native="goBack">
+          <span slot="title"
+            ><i class="el-icon-back"></i></span
+          >
+        </el-menu-item> 
       </el-menu>
     </el-row>
     <el-row ref="pageMainRef">
@@ -739,12 +746,15 @@ export default {
       } else {
         return dateStr.substr(0, 10);
       }
-    },
+    }, 
     goBack() {
       localStorage.setItem("iteration-infotype", "迭代概览");
-      this.$router.back();
+      this.$router.back(-1); 
     },
-	
+    goHome(){ 
+      localStorage.setItem("iteration-infotype", "迭代概览");
+      this.$router.push({path:'/'}) 
+    },
 
 	editSomeFields(row,fieldName,$event){ 
 		let params={};

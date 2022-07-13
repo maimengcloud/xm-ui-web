@@ -135,14 +135,14 @@
             <span slot="title"><i class="el-icon-date"></i>客服</span>
           </el-menu-item>
         </el-submenu>
-        <el-menu-item index="首页">
-          <span slot="title" @click.stop="goHome"
-            ><i class="el-icon-s-home"></i>首页</span
+        <el-menu-item index="首页" @click.native="goHome">
+          <span slot="title"
+            ><i class="el-icon-s-home"></i></span
           >
         </el-menu-item> 
-        <el-menu-item index="上一页" class="hidden-md-and-down">
-          <span slot="title" @click.stop="goBack"
-            ><i class="el-icon-back"></i>上一页</span
+        <el-menu-item index="上一页" class="hidden-md-and-down"  @click.native="goBack">
+          <span slot="title"
+            ><i class="el-icon-back"></i></span
           >
         </el-menu-item> 
       </el-menu>
