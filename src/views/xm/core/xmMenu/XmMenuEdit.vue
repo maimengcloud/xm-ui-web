@@ -12,26 +12,39 @@
 					<el-step v-for="(item,index) in dicts.menuStatus" :title="item.name" :description="item.name" :key="index"> 
 						<span slot="description">
 								<span v-if="item.id=='0'"><!--打开-->
-									<el-button class="step-btn"  type="primary" size="mini"  @click="activateTabPaneName='6'" plain>预算管理</el-button>
-									<el-button class="step-btn" type="primary" size="mini" v-if="editForm.ntype=='0' && !editForm.executorUserid" @click="activateTabPaneName='42'" plain>去指派执行人</el-button> 
-									<el-button class="step-btn" type="primary" size="mini" v-if="editForm.ntype=='0' && editForm.executorUserid" @click="activateTabPaneName='42'" plain>执行人管理</el-button>  
-								<el-button class="step-btn" type="primary" size="mini" v-if="editForm.taskState=='0'" @click="editXmTaskSomeFields(editForm,'taskState','1')" plain>设为执行中</el-button> 
+									<el-button class="step-btn"  type="primary" size="mini"  @click="activateTabPaneName='6'" plain>基础信息</el-button>
+									<el-button class="step-btn"  type="primary" size="mini"  @click="activateTabPaneName='6'" plain>概述</el-button>
+										<el-button class="step-btn" type="primary" size="mini"  icon="el-icon-d-caret" @click="editXmMenuSomeFields(editForm,'status','2')" plain>设为进行中</el-button> 
 								</span> 
 								<span v-else-if="item.id=='1'"> <!--执行中-->
-								<el-button class="step-btn"  type="primary" size="mini" v-if="editForm.ntype=='1'" @click="activateTabPaneName='4'" plain>子工作项管理</el-button>
-								<el-button class="step-btn"  type="primary" size="mini" v-if="editForm.ntype=='0'" @click="activateTabPaneName='41'" plain>缺陷跟踪</el-button>
-								<el-button class="step-btn"  type="primary" size="mini" v-if="editForm.ntype=='0'" @click="activateTabPaneName='5'" plain>报工、报进度</el-button>
-								<el-button class="step-btn" type="primary" size="mini" v-if="editForm.taskState=='1'" @click="editXmTaskSomeFields(editForm,'taskState','2')" plain>设为已完工、待验收</el-button> 
-								  
+									<span v-if="editForm.dclass<='1'">
+										<el-button class="step-btn"  type="primary" size="mini" @click="activateTabPaneName='4'" plain>创建特性</el-button>
+										<el-button class="step-btn"  type="primary" size="mini" @click="activateTabPaneName='4'" plain>创建故事</el-button>
+									</span>
+									<span v-else-if="editForm.dclass=='2'">
+										<el-button class="step-btn"  type="primary" size="mini" @click="activateTabPaneName='4'" plain>创建故事</el-button> 
+									</span>
+									<span v-else-if="editForm.dclass>='3'">
+										<el-button class="step-btn"  type="primary" size="mini" @click="activateTabPaneName='4'" plain>创建任务</el-button>
+										<el-button class="step-btn"  type="primary" size="mini" @click="activateTabPaneName='4'" plain>测试用例</el-button>
+										<el-button class="step-btn"  type="primary" size="mini" @click="activateTabPaneName='4'" plain>创建缺陷</el-button>
+										
 
+									</span> 
+									
+										<el-button class="step-btn" type="primary" size="mini"  icon="el-icon-d-caret" @click="editXmMenuSomeFields(editForm,'status','2')" plain>设为已完工</el-button> 
 								</span>
-								<span v-else-if="item.id=='2'"> <!--已完工-->
-									<el-button class="step-btn" type="primary" size="mini" v-if="  editForm.taskState=='2'" @click="editXmTaskSomeFields(editForm,'taskState','3')" plain>设为已验收、待结算</el-button> 
-									<el-button class="step-btn" type="primary" size="mini" v-if=" editForm.taskState=='2'" @click="editXmTaskSomeFields(editForm,'taskState','1')" plain>设为验收不过，待执行</el-button> 
+								<span v-else-if="item.id=='2'"> <!--已完工--> 
+									<span v-if="editForm.dclass>='3'">
+										<el-button class="step-btn"  type="primary" size="mini" @click="activateTabPaneName='4'" plain>wiki</el-button>
+										<el-button class="step-btn"  type="primary" size="mini" @click="activateTabPaneName='4'" plain>附件</el-button>
+										<el-button class="step-btn"  type="primary" size="mini" @click="activateTabPaneName='4'" plain>成本</el-button>
+										<el-button class="step-btn" type="primary" size="mini"  icon="el-icon-d-caret" @click="editXmMenuSomeFields(editForm,'status','3')" plain>去关闭</el-button> 
+
+									</span> 
  								</span>
-								<span v-else-if="item.id=='3'"> <!--已关闭-->
-								
-								<el-button class="step-btn" type="primary" size="mini" v-if=" editForm.taskState=='3'" @click="editXmTaskSomeFields(editForm,'taskState','4')" plain>设为已结算</el-button> 
+								<span v-else-if="item.id=='3'"> <!--已关闭--> 
+									<el-button class="step-btn" type="primary" size="mini"  icon="el-icon-d-caret" @click="editXmMenuSomeFields(editForm,'status','0')" plain>去重新打开</el-button> 
  								</span> 
 						</span>
 					</el-step> 
