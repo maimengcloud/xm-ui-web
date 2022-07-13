@@ -1,5 +1,5 @@
 <template>
-  <section class="page-container">
+  <section>
     <el-row>
       <el-menu
         :default-active="infotype"
