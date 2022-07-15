@@ -349,10 +349,11 @@
 				return leader.some(i=>i.leadType=='负责人' && i.userid == this.userInfo.userid);
 			},
 
-			//进入info界面
+			//进入info界面 
 			intoInfo(row) {
 				this.selectProject = row;
-				this.$router.push({ name:'XmProjectInfoRoute', params: row })
+				this.$router.push({ name:'XmProjectInfoRoute', query: {id:row.id} })
+				localStorage.setItem("xm-project-info-route",JSON.stringify(row)) 
 				//this.showInfo = true;
 			},
 

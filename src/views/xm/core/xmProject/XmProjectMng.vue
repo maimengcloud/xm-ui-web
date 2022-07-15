@@ -1,15 +1,22 @@
 <template>
 	<section>
 		<el-row class="padding-left padding-right">
-			<el-col :span="6" v-if="templateVisible"> 
+			<el-col :span="6" class="border padding" > 
 				<el-row>
+					<div v-if="xmProjects.length<=0">
+						您当前没有关联项目，或者无权限访问项.<br/>
+						您可以通过<el-button   @click="showAdd" icon="el-icon-plus" type="primary" plain>项目</el-button>创建一个新项目,
+						<br/>或者通过下面的模板创建新的项目 
+					</div>
+				</el-row>
+				<el-row v-if="templateVisible" class="padding-top">
 					<xm-project-tpl-mng @copy="searchXmProjects" :show-type="'simple'" ref="xmProjectTplMngRef"></xm-project-tpl-mng>
 				</el-row>
 			</el-col> 
-			<el-col :span="templateVisible?18:24" > 
+			<el-col :span="18" class="padding-left"> 
 				<el-row > 
 					<xm-product-select style="display:inline;" class="hidden-md-and-down" :auto-select="false" @row-click="onProductSelected" @clear="onProductClose"></xm-product-select> 
-					<el-select v-model="menukey" @change="handleSelect" clearable>
+					<el-select v-model="menukey" @change="handleSelect" clearable style="width:100px;">
 						<el-option value="all" label="全部"></el-option>
 						<el-option value="compete"  label="我参与"></el-option>
 						<el-option value="leader"  label="我管理"></el-option> 
@@ -20,11 +27,11 @@
 						<el-option  value="myExecuserStatus1"  label="我执行"></el-option> 
 						<el-option  value="myExecuserStatus7"  label="我放弃"></el-option> 
 					</el-select> 
-					<el-select  v-model="filters.status" clearable placeholder="项目状态">
+					<el-select  v-model="filters.status" clearable placeholder="项目状态"  style="width:100px;">
 						<el-option v-for="(item,index) in dicts['projectStatus']" :value="item.id" :label="item.name" :key="index"></el-option> 
 					</el-select>  
 					
-  					<el-input v-model="filters.key" style="width:15%;" placeholder="项目名称模糊查询" clearable>
+  					<el-input v-model="filters.key" style="width:15%;" placeholder="项目名称模糊查询" clearable >
 					</el-input>
 					<el-button  style="margin-top: 10px;" type="primary" icon="el-icon-search" @click="searchXmProjects">查询</el-button> 
 						<el-popover
@@ -101,14 +108,14 @@
 				<el-row> 
 					<!--列表 XmProject xm_project-->
 					<el-row v-show="showType" v-loading="load.list" :style="{overflowX:'hidden',height:maxTableHeight+'px'}" ref="table1">
-						<el-col  v-cloak v-for="(p,i) in ScreenData" :key="i" :xl="8" :lg="8" :md="8" :sm="12">
+						<el-col  v-cloak v-for="(p,i) in ScreenData" :key="i" :xl="8" :lg="8" :md="12" :sm="12">
 							<el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always" id="prj-view-box">
 								<div class="project-name" title="这是项目名称">{{p.name}}</div>
 								<div class="project-id"><span title="项目代号">{{p.code}} </span>
 									<el-tag title="项目状态" v-for="(item,index) in formatDictsWithClass(dicts,'projectStatus',p.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
  									<el-link id="prj-del-btn" type="danger" style="font-size:14px;float:right;margin-left:2px;"  title="删除项目" @click.stop="handleDel(p)" v-loading="load.add">删除</el-link>
 									<el-link id="prj-copy-btn" type="primary" style="font-size:14px;float:right;margin-left:2px;"  title="通过复制快速创建新项目" @click.stop="onCopyToBtnClick(p)" v-loading="load.add">复制</el-link> 
-									<el-link id="prj-calc-btn" type="warning" style="font-size:14px;float:right;margin-left:2px;"  title="统计项目的工作量、进度、需求、bugs等数据" @click.stop="loadTasksToXmProjectState(p)" v-loading="load.add">统计</el-link>
+									<!--<el-link id="prj-calc-btn" type="warning" style="font-size:14px;float:right;margin-left:2px;"  title="统计项目的工作量、进度、需求、bugs等数据" @click.stop="loadTasksToXmProjectState(p)" v-loading="load.add">统计</el-link>-->
 								</div>
 								<div class="project-info"> 
 									
@@ -120,6 +127,7 @@
 										</span>
 										<span class="item-type">需求</span>
 									</div>
+									<!--
 									<div class="info-task" title="已完成 / 预算工作量 ，单位人天 ">
 										<span>
 											<span class="item-total finish-task">{{p.actWorkload==null?0:parseInt(p.actWorkload/8)}}</span>
@@ -128,6 +136,7 @@
 										</span>
 										<span class="item-type">工作量</span>
 									</div>
+									-->
 									<div class="info-task"   title="已完成 / 总任务数 ">
 										<span>
 											<span class="item-total finish-task">{{p.taskFinishCnt==null?0:p.taskFinishCnt}}</span>
@@ -392,7 +401,7 @@
 				},
 				/**begin 自定义属性请在下面加 请加备注**/
 				menukey: "all",
-				showType: false,
+				showType: true,
 				showInfo: false,
 				selectProject: null,
 				finishFlag: false,
@@ -405,7 +414,7 @@
 					id:'',name:'',code:'',isTpl:'',copyPhase:'1',copyTask:'1',copyGroup:'1',copyGroupUser:'0'
 				},
 				copyToVisible:false,
-				templateVisible:false,
+				templateVisible:true,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
