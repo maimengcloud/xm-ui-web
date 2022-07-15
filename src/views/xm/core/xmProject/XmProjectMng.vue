@@ -1,21 +1,7 @@
 <template>
 	<section>
-		<el-row class="padding-left padding-right">
-			<el-col :span="6" class="border padding" > 
-				<el-row>
-					<el-row>
-						您可以通过 &nbsp;<el-button   @click="showAdd" icon="el-icon-plus" type="primary" plain>项目</el-button>&nbsp;创建一个新项目
-					</el-row>
-					<el-row> 
-						通过&nbsp;<el-button @click="templateVisible=true" type="primary" plain style="margin-bottom:5px;">公共模板</el-button>&nbsp;体验项目的过程。<br/>
-					</el-row>
-					<el-row> 
-						通过&nbsp;<el-button @click="templateVisible=true" type="primary" plain style="margin-bottom:5px;">拷贝模板</el-button>&nbsp;快速创建新项目。<br/>
-					</el-row>
-				</el-row>
-				
-			</el-col> 
-			<el-col :span="18" class="padding-left"> 
+		<el-row class="padding-left padding-right"> 
+			<el-col :span="24" class="padding-left"> 
 				<el-row > 
 					<xm-product-select style="display:inline;" class="hidden-md-and-down" :auto-select="false" @row-click="onProductSelected" @clear="onProductClose"></xm-product-select> 
 					<el-select v-model="menukey" @change="handleSelect" clearable style="width:100px;">
@@ -49,7 +35,7 @@
 									</el-row>
 								</el-col>  
 								<el-col  :span="24"  style="padding-top:5px; " class="hidden-lg-and-up">  
-									<font v-if="filters.productId" class="more-label-font">产品:</font>  
+									<font v-if="filters.productId" class="more-label-font">项目:</font>  
 									<xm-product-select style="display:inline;"  :auto-select="false" @row-click="onProductSelected" @clear="onProductClose"></xm-product-select> 
 								</el-col> 
 										
@@ -94,7 +80,7 @@
 								</el-col>  
 								<el-col :span="24" style="padding-top:5px;">
 									<el-badge value="进阶">
-									<el-button type="primary" icon="el-icon-plus">通过【产品-复制】一键创建新的项目</el-button> 
+									<el-button type="primary" icon="el-icon-plus">通过【项目-复制】一键创建新的项目</el-button> 
 									</el-badge>
 								</el-col> 
 								<el-col :span="24" style="padding-top:5px;">
@@ -107,67 +93,102 @@
 							</el-popover>  
 						</span>
 				</el-row> 
-				<el-row> 
+				<el-row ref="table1"> 
 					<!--列表 XmProject xm_project-->
-					<el-row v-show="showType" v-loading="load.list" :style="{overflowX:'hidden',height:maxTableHeight+'px'}" ref="table1">
-						<el-col  v-cloak v-for="(p,i) in ScreenData" :key="i" :xl="8" :lg="8" :md="12" :sm="12">
-							<el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always" id="prj-view-box">
-								<div class="project-name" title="这是项目名称">{{p.name}}</div>
-								<div class="project-id"><span title="项目代号">{{p.code}} </span>
-									<el-tag title="项目状态" v-for="(item,index) in formatDictsWithClass(dicts,'projectStatus',p.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
- 									<el-link id="prj-del-btn" type="danger" style="font-size:14px;float:right;margin-left:2px;"  title="删除项目" @click.stop="handleDel(p)" v-loading="load.add">删除</el-link>
-									<el-link id="prj-copy-btn" type="primary" style="font-size:14px;float:right;margin-left:2px;"  title="通过复制快速创建新项目" @click.stop="onCopyToBtnClick(p)" v-loading="load.add">复制&nbsp;</el-link> 
-									<!--<el-link id="prj-calc-btn" type="warning" style="font-size:14px;float:right;margin-left:2px;"  title="统计项目的工作量、进度、需求、bugs等数据" @click.stop="loadTasksToXmProjectState(p)" v-loading="load.add">统计</el-link>-->
-								</div>
-								<div class="project-info"> 
-									
-									<div class="info-task"  title="已完成需求数 / 总需求数 ">
-										<span>
-											<span class="item-total finish-task">{{p.menuFinishCnt==null?0:p.menuFinishCnt}}</span>
-											<span style="margin: 0 .25rem !important;">/</span>
-											<span class="item-type total-task">{{p.menuCnt==null?0:p.menuCnt}}</span>
-										</span>
-										<span class="item-type">需求</span>
+					<el-row v-show="showType" v-loading="load.list" :style="{overflowX:'hidden',height:maxTableHeight+'px'}" >
+						<el-row>
+							<el-col  v-cloak v-for="(p,i) in ScreenData" :key="i" :xl="6" :lg="8" :md="8" :sm="12">
+								<el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always" id="prj-view-box">
+									<div class="project-name" title="这是项目名称">{{p.name}}</div>
+									<div class="project-id"><span title="项目代号">{{p.id}} </span>
+										<el-tag title="项目状态" v-for="(item,index) in formatDictsWithClass(dicts,'projectStatus',p.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
+										<el-link id="prj-del-btn" type="danger" style="font-size:14px;float:right;margin-left:2px;"  title="删除项目" @click.stop="handleDel(p)" v-loading="load.add">删除</el-link>
+										<el-link id="prj-copy-btn" type="primary" style="font-size:14px;float:right;margin-left:2px;"  title="通过复制快速创建新项目" @click.stop="onCopyToBtnClick(p)" v-loading="load.add">复制&nbsp;</el-link> 
+										<!--<el-link id="prj-calc-btn" type="warning" style="font-size:14px;float:right;margin-left:2px;"  title="统计项目的工作量、进度、需求、bugs等数据" @click.stop="loadTasksToXmProjectState(p)" v-loading="load.add">统计</el-link>-->
 									</div>
-									<!--
-									<div class="info-task" title="已完成 / 预算工作量 ，单位人天 ">
-										<span>
-											<span class="item-total finish-task">{{p.actWorkload==null?0:parseInt(p.actWorkload/8)}}</span>
-											<span style="margin: 0 .25rem !important;">/</span>
-											<span class="item-type total-task">{{p.budgetWorkload==null?0:parseInt(p.budgetWorkload/8)}}</span>
-										</span>
-										<span class="item-type">工作量</span>
+									<div class="project-info"> 
+										
+										<div class="info-task"  title="已完成需求数 / 总需求数 ">
+											<span>
+												<span class="item-total finish-task">{{p.menuFinishCnt==null?0:p.menuFinishCnt}}</span>
+												<span style="margin: 0 .25rem !important;">/</span>
+												<span class="item-type total-task">{{p.menuCnt==null?0:p.menuCnt}}</span>
+											</span>
+											<span class="item-type">需求</span>
+										</div>
+										<!--
+										<div class="info-task" title="已完成 / 预算工作量 ，单位人天 ">
+											<span>
+												<span class="item-total finish-task">{{p.actWorkload==null?0:parseInt(p.actWorkload/8)}}</span>
+												<span style="margin: 0 .25rem !important;">/</span>
+												<span class="item-type total-task">{{p.budgetWorkload==null?0:parseInt(p.budgetWorkload/8)}}</span>
+											</span>
+											<span class="item-type">工作量</span>
+										</div>
+										-->
+										<div class="info-task"   title="已完成 / 总任务数 ">
+											<span>
+												<span class="item-total finish-task">{{p.taskFinishCnt==null?0:p.taskFinishCnt}}</span>
+												<span style="margin: 0 .25rem !important;">/</span>
+												<span class="item-type total-task">{{p.taskCnt==null?0:p.taskCnt}}</span>
+											</span>
+											<span class="item-type">任务</span>
+										</div>
+										<div class="info-task"  title="已关闭 / 总缺陷数 ">
+											<span>
+												<span class="item-total finish-task">{{p.closedBugs==null?0:p.closedBugs}}</span>
+												<span style="margin: 0 .25rem !important;">/</span>
+												<span class="item-type total-task">{{p.bugCnt==null?0:p.bugCnt}}</span>
+											</span>
+											<span class="item-type">缺陷</span>
+										</div>
 									</div>
-									-->
-									<div class="info-task"   title="已完成 / 总任务数 ">
-										<span>
-											<span class="item-total finish-task">{{p.taskFinishCnt==null?0:p.taskFinishCnt}}</span>
-											<span style="margin: 0 .25rem !important;">/</span>
-											<span class="item-type total-task">{{p.taskCnt==null?0:p.taskCnt}}</span>
-										</span>
-										<span class="item-type">任务</span>
+									<div class="project-rate">
+										<el-progress :percentage="(p.finishRate==null?0:p.finishRate)"></el-progress>
 									</div>
-									<div class="info-task"  title="已关闭 / 总缺陷数 ">
-										<span>
-											<span class="item-total finish-task">{{p.closedBugs==null?0:p.closedBugs}}</span>
-											<span style="margin: 0 .25rem !important;">/</span>
-											<span class="item-type total-task">{{p.bugCnt==null?0:p.bugCnt}}</span>
-										</span>
-										<span class="item-type">缺陷</span>
+									<div class="project-footer">
+										<div class="project-type" title="项目经理">{{p.pmUsername?p.pmUsername:p.createUsername}}</div>
+										<div class="project-period">{{p.startTime?p.startTime.substr(0,10):''}} ~{{p.endTime?p.endTime.substr(0,10):''}}</div>
 									</div>
-								</div>
-								<div class="project-rate">
-									<el-progress :percentage="(p.finishRate==null?0:p.finishRate)"></el-progress>
-								</div>
-								<div class="project-footer">
-									<div class="project-type" title="项目经理">{{p.pmUsername?p.pmUsername:p.createUsername}}</div>
-									<div class="project-period">{{p.startTime?p.startTime.substr(0,10):''}} ~{{p.endTime?p.endTime.substr(0,10):''}}</div>
-								</div>
-							</el-card>
-						</el-col>
-					</el-row>
-
+								</el-card>
+							</el-col>
+						</el-row>
+						<el-row  v-if="!load.list && xmProjects.length<=0">
+								<el-result icon="info" title="信息提示" subTitle="没有查到相关项目，有可能是您暂时还没有项目，有可能是您无权限查询项目。">
+									<template slot="extra">
+										<el-row>
+											<el-row>
+												您可以通过 &nbsp;<el-button   @click="showAdd" icon="el-icon-plus" type="primary" plain>项目</el-button>&nbsp;创建一个新项目
+											</el-row>
+											<el-row> 
+												通过&nbsp;<el-button @click="templateVisible=true" type="primary" plain style="margin-bottom:5px;">公共模板</el-button>&nbsp;体验项目的过程。<br/>
+											</el-row>
+											<el-row> 
+												通过&nbsp;<el-button @click="templateVisible=true" type="primary" plain style="margin-bottom:5px;">拷贝模板</el-button>&nbsp;快速创建新项目。<br/>
+											</el-row>
+										</el-row>
+									</template>
+								</el-result>
+						</el-row>
+					</el-row> 
 					<el-table  ref="table" :height="maxTableHeight" v-cloak v-show="!showType" fit stripe :data="ScreenData" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+						<el-row slot="empty">
+								<el-result icon="info" title="信息提示" subTitle="没有查到相关项目，有可能是您暂时还没有项目，有可能是您无权限查询项目。">
+									<template slot="extra">
+										<el-row>
+											<el-row>
+												您可以通过 &nbsp;<el-button   @click="showAdd" icon="el-icon-plus" type="primary" plain>项目</el-button>&nbsp;创建一个新项目
+											</el-row>
+											<el-row> 
+												通过&nbsp;<el-button @click="templateVisible=true" type="primary" plain style="margin-bottom:5px;">公共模板</el-button>&nbsp;体验项目的过程。<br/>
+											</el-row>
+											<el-row> 
+												通过&nbsp;<el-button @click="templateVisible=true" type="primary" plain style="margin-bottom:5px;">拷贝模板</el-button>&nbsp;快速创建新项目。<br/>
+											</el-row>
+										</el-row>
+									</template>
+								</el-result>
+						</el-row>
 						<el-table-column  type="index" label="序号" width="60" fixed="left"></el-table-column>
 						<el-table-column prop="id" label="项目编码" min-width="150" sortable show-overflow-tooltip  fixed="left"></el-table-column>
 						<el-table-column prop="name" label="标题" sortable min-width="250"  fixed="left">
@@ -189,7 +210,7 @@
 								</font>
 							</template>
 						</el-table-column> 
-						<el-table-column prop="productCnt" label="产品数" sortable min-width="120" >  
+						<el-table-column prop="productCnt" label="项目数" sortable min-width="120" >  
 						</el-table-column> 
 						<el-table-column prop="iterationCnt" label="迭代数" sortable min-width="120" >  
 						</el-table-column> 

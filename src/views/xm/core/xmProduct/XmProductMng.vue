@@ -1,6 +1,7 @@
 <template>
 	<section>
 		<el-row  class="padding-left padding-right">
+			<!--
 		<el-col :span="6" class="border padding" > 
 			<el-row>
 				<el-row>
@@ -12,10 +13,10 @@
 				<el-row> 
 					通过&nbsp;<el-button @click="templateVisible=true" type="primary" plain style="margin-bottom:5px;">拷贝模板</el-button>&nbsp;快速创建新项目。<br/>
 				</el-row>
-			</el-row>
-			
+			</el-row> 
 		</el-col> 
-		<el-col :span="18" class="padding-left">
+		-->
+		<el-col :span="24" class="padding-left">
 			<el-row >
 				<el-row>
 					<el-select   v-model="filters.queryScope"  style="width:120px;"  placeholder="产品查询范围" clear>
@@ -130,13 +131,17 @@
 					</el-popover>
 					</span>
 				</el-row>
-				<el-row v-show="showType">
+				<el-row v-show="showType" v-loading="load.list" ref="table1" :style="{overflowX:'hidden',height:maxTableHeight+'px'}">
 					<!--列表 XmProject xm_project-->
-					<el-row v-loading="load.list">
-						<el-col  v-cloak v-for="(p,i) in xmProducts" :key="i" :xl="8" :lg="8" :md="12" :sm="12">
+					<el-row  v-if="xmProducts.length>0">
+						<el-col  v-cloak v-for="(p,i) in xmProducts" :key="i" :xl="6" :lg="8" :md="8" :sm="12">
 							<el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always">
 								<div class="project-name" title="这是产品名称">{{p.productName}}</div>
-								<div class="project-id eui-text-truncate">{{p.code}}</div>
+								<div class="project-id eui-text-truncate">{{p.id}}
+									<el-tag title="产品状态" v-for="(item,index) in formatDictsWithClass(dicts,'xmProductPstatus',p.pstatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
+									<el-link id="prj-del-btn" type="danger" style="font-size:14px;float:right;margin-left:2px;"  title="删除产品" @click.stop="handleDel(p)" v-loading="load.add">删除</el-link>
+									<el-link id="prj-copy-btn" type="primary" style="font-size:14px;float:right;margin-left:2px;"  title="通过复制快速创建新产品" @click.stop="onCopyToBtnClick(p)" v-loading="load.add">复制&nbsp;</el-link> 
+								</div> 
 								<div class="project-info">
 									<div class="info-item">
 										<span class="item-total">{{p.totalBugCnt==null?0:p.totalBugCnt}}</span>
@@ -165,11 +170,44 @@
 							</el-card>
 						</el-col>
 					</el-row>
+					<el-row  v-if="!load.list && xmProducts.length<=0">
+							<el-result icon="info" title="信息提示" subTitle="没有查到相关产品，有可能是您暂时还没有产品，有可能是您无权限查询产品。">
+								<template slot="extra">
+									<el-row>
+										<el-row>
+											您可以通过 &nbsp;<el-button   @click="showAdd" icon="el-icon-plus" type="primary" plain>产品</el-button>&nbsp;创建一个新产品
+										</el-row>
+										<el-row> 
+											通过&nbsp;<el-button @click="templateVisible=true" type="primary" plain style="margin-bottom:5px;">公共模板</el-button>&nbsp;体验产品的过程。<br/>
+										</el-row>
+										<el-row> 
+											通过&nbsp;<el-button @click="templateVisible=true" type="primary" plain style="margin-bottom:5px;">拷贝模板</el-button>&nbsp;快速创建新产品。<br/>
+										</el-row>
+									</el-row>
+								</template>
+							</el-result>
+					</el-row>
 				</el-row>
 				<el-row v-show="!showType">
 					<!--列表 XmProduct 产品表-->
 					<el-table ref="table"  :height="maxTableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-						
+						<el-row slot="empty">  
+							<el-result icon="info" title="信息提示" subTitle="没有查到相关产品，有可能是您暂时还没有产品，有可能是您无权限查询产品。">
+								<template slot="extra">
+									<el-row>
+										<el-row>
+											您可以通过 &nbsp;<el-button   @click="showAdd" icon="el-icon-plus" type="primary" plain>产品</el-button>&nbsp;创建一个新产品
+										</el-row>
+										<el-row> 
+											通过&nbsp;<el-button @click="templateVisible=true" type="primary" plain style="margin-bottom:5px;">公共模板</el-button>&nbsp;体验产品的过程。<br/>
+										</el-row>
+										<el-row> 
+											通过&nbsp;<el-button @click="templateVisible=true" type="primary" plain style="margin-bottom:5px;">拷贝模板</el-button>&nbsp;快速创建新产品。<br/>
+										</el-row>
+									</el-row>
+								</template>
+							</el-result> 
+						</el-row>
 						<el-table-column type="index" width="60"  fixed="left"> 
 						</el-table-column>
 						<el-table-column prop="id" label="产品编码" min-width="150" sortable fixed="left"> 
@@ -415,6 +453,7 @@
 			}
 		},//end data
 		methods: {
+			...util,
 			handleSizeChange(pageSize) {
 				this.pageInfo.pageSize=pageSize;
 				this.getXmProducts();
@@ -769,7 +808,7 @@
 				}
 			});
 			this.$nextTick(() => { 
-				this.maxTableHeight = this.source == 'GZT' ? this.maxTableHeight : util.calcTableMaxHeight(this.$refs.table.$el); 
+				this.maxTableHeight = this.source == 'GZT' ? this.maxTableHeight : util.calcTableMaxHeight(this.$refs.table1.$el); 
 				this.getXmProducts(this.guiderStart);  
         	});
 		},
