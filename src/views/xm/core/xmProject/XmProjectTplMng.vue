@@ -5,9 +5,9 @@
 			<el-input style="width:300px;" v-model="filters.key" placeholder="模板名字"></el-input>
 			<el-button @click="searchXmProjects" icon="el-icon-search"></el-button>
 		</el-row>
-		<el-row v-if="showType=='simple'"> 
+		<el-row v-if="showType=='simple'" title="通过复制快速创建新的项目"> 
 					<el-col :span="24">
-					<el-checkbox v-model="filters.isMy" false-label="0" true-label="1">我的模板</el-checkbox> <font style="font-size:10px;" color="blue">通过复制快速创建新的项目</font>
+					<el-checkbox v-model="filters.isMy" false-label="0" true-label="1">我的模板</el-checkbox>  
 					</el-col>
 					<el-col :span="16"><el-input  v-model="filters.key" placeholder="模板名字"></el-input>
 					</el-col>
@@ -46,6 +46,7 @@
 		<el-dialog
 			title="通过复制创建新的模板或者新的项目"
 			:visible.sync="copyToVisible"
+			append-to-body
 			width="30%" > 
 			<el-form>
 			<el-form-item label="项目名称">

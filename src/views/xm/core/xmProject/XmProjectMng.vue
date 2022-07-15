@@ -3,15 +3,17 @@
 		<el-row class="padding-left padding-right">
 			<el-col :span="6" class="border padding" > 
 				<el-row>
-					<div v-if="xmProjects.length<=0">
-						您当前没有关联项目，或者无权限访问项.<br/>
-						您可以通过<el-button   @click="showAdd" icon="el-icon-plus" type="primary" plain>项目</el-button>创建一个新项目,
-						<br/>或者通过下面的模板创建新的项目 
-					</div>
+					<el-row>
+						您可以通过<el-button   @click="showAdd" icon="el-icon-plus" type="primary" plain>项目</el-button>创建一个新项目
+					</el-row>
+					<el-row> 
+						通过<el-button @click="templateVisible=true" type="primary" plain style="margin-bottom:5px;">公共模板</el-button>体验一下项目的过程。<br/>
+					</el-row>
+					<el-row> 
+						通过<el-button @click="templateVisible=true" type="primary" plain style="margin-bottom:5px;">拷贝模板</el-button>成为一个新项目。<br/>
+					</el-row>
 				</el-row>
-				<el-row v-if="templateVisible" class="padding-top">
-					<xm-project-tpl-mng @copy="searchXmProjects" :show-type="'simple'" ref="xmProjectTplMngRef"></xm-project-tpl-mng>
-				</el-row>
+				
 			</el-col> 
 			<el-col :span="18" class="padding-left"> 
 				<el-row > 
@@ -114,7 +116,7 @@
 								<div class="project-id"><span title="项目代号">{{p.code}} </span>
 									<el-tag title="项目状态" v-for="(item,index) in formatDictsWithClass(dicts,'projectStatus',p.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
  									<el-link id="prj-del-btn" type="danger" style="font-size:14px;float:right;margin-left:2px;"  title="删除项目" @click.stop="handleDel(p)" v-loading="load.add">删除</el-link>
-									<el-link id="prj-copy-btn" type="primary" style="font-size:14px;float:right;margin-left:2px;"  title="通过复制快速创建新项目" @click.stop="onCopyToBtnClick(p)" v-loading="load.add">复制</el-link> 
+									<el-link id="prj-copy-btn" type="primary" style="font-size:14px;float:right;margin-left:2px;"  title="通过复制快速创建新项目" @click.stop="onCopyToBtnClick(p)" v-loading="load.add">复制&nbsp;</el-link> 
 									<!--<el-link id="prj-calc-btn" type="warning" style="font-size:14px;float:right;margin-left:2px;"  title="统计项目的工作量、进度、需求、bugs等数据" @click.stop="loadTasksToXmProjectState(p)" v-loading="load.add">统计</el-link>-->
 								</div>
 								<div class="project-info"> 
@@ -309,6 +311,9 @@
 				<el-button type="primary" @click="onCopyToConfirm" :disabled="load.add" v-loading="load.add">确 定</el-button>
 			</span>
 		</el-dialog> 
+		<el-dialog :visible.sync="templateVisible" append-to-body width="60%" top="20px">
+			<xm-project-tpl-mng @copy="searchXmProjects" :show-type="'simple'" ref="xmProjectTplMngRef"></xm-project-tpl-mng>
+		</el-dialog>
 	</section> 
 
 </template>
@@ -414,7 +419,7 @@
 					id:'',name:'',code:'',isTpl:'',copyPhase:'1',copyTask:'1',copyGroup:'1',copyGroupUser:'0'
 				},
 				copyToVisible:false,
-				templateVisible:true,
+				templateVisible:false,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -889,7 +894,7 @@
 				initSimpleDicts('all',['projectType','priority','projectStatus','bizFlowState']).then(res=>{
 					this.dicts=res.data.data;
 				})
-                this.maxTableHeight = this.source == 'GZT' ?  this.maxTableHeight : util.calcTableMaxHeight(this.$refs.table.$el);
+                this.maxTableHeight = this.source == 'GZT' ?  this.maxTableHeight : util.calcTableMaxHeight(this.$refs.table1.$el);
 				this.showInfo = false;
 				this.getXmProjects(this.guiderStart);
 			}); 
