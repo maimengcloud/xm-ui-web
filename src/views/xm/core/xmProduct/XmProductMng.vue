@@ -1,24 +1,35 @@
 <template>
 	<section>
-		<el-row>
-		<el-col :span="6" v-if="templateVisible"> 
-			<xm-product-tpl-mng @copy="searchXmProducts" ref="xmProductTplMngRef" show-type="simple"></xm-product-tpl-mng>
+		<el-row  class="padding-left padding-right">
+		<el-col :span="6" class="border padding" > 
+			<el-row>
+				<el-row>
+					您可以通过 &nbsp;<el-button   @click="showAdd" icon="el-icon-plus" type="primary" plain>项目</el-button>&nbsp;创建一个新项目
+				</el-row>
+				<el-row> 
+					通过&nbsp;<el-button @click="templateVisible=true" type="primary" plain style="margin-bottom:5px;">公共模板</el-button>&nbsp;体验项目的过程。<br/>
+				</el-row>
+				<el-row> 
+					通过&nbsp;<el-button @click="templateVisible=true" type="primary" plain style="margin-bottom:5px;">拷贝模板</el-button>&nbsp;快速创建新项目。<br/>
+				</el-row>
+			</el-row>
+			
 		</el-col> 
-		<el-col :span="templateVisible?18:24" class="padding-left border padding-right">
+		<el-col :span="18" class="padding-left">
 			<el-row >
 				<el-row>
-					<el-select   v-model="filters.queryScope"    placeholder="产品查询范围">
+					<el-select   v-model="filters.queryScope"  style="width:120px;"  placeholder="产品查询范围" clear>
 						<el-option :label="userInfo.branchName+'机构下所有的产品'" value="branchId"></el-option>
 						<el-option label="我相关的产品" value="compete"></el-option>
 						<el-option label="按产品编号精确查找" value="productId"></el-option>
 					</el-select>
 					
-					<el-select  v-model="filters.pstatus" clearable placeholder="状态">
+					<el-select  v-model="filters.pstatus" clearable placeholder="状态"  style="width:100px;">
 						<el-option v-for="(item,index) in dicts['xmProductPstatus']" :value="item.id" :label="item.name" :key="index"></el-option> 
 					</el-select>  
-					<el-input v-if="filters.queryScope=='productId'" style="width:20%;"  v-model="filters.id"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">
+					<el-input v-if="filters.queryScope=='productId'" style="width:20%;"  v-model="filters.id"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts" clearable>
 					</el-input>
-					<el-input v-model="filters.key" style="width: 20%;" placeholder="名称查询" clearable>   
+					<el-input v-if="filters.queryScope!='productId'" v-model="filters.key" style="width: 20%;" placeholder="名称查询" clearable>   
 					</el-input>
 					<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProducts" icon="el-icon-search">查询</el-button>
 					
@@ -122,7 +133,7 @@
 				<el-row v-show="showType">
 					<!--列表 XmProject xm_project-->
 					<el-row v-loading="load.list">
-						<el-col  v-cloak v-for="(p,i) in xmProducts" :key="i" :xl="4" :lg="6" :md="8" :sm="12">
+						<el-col  v-cloak v-for="(p,i) in xmProducts" :key="i" :xl="8" :lg="8" :md="12" :sm="12">
 							<el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always">
 								<div class="project-name" title="这是产品名称">{{p.productName}}</div>
 								<div class="project-id eui-text-truncate">{{p.code}}</div>
@@ -270,7 +281,7 @@
 					<el-dialog
 						title="通过复制创建新的模板或者新的产品"
 						:visible.sync="copyToVisible"
-						width="30%" > 
+						width="600" > 
 						<el-form>
 						<el-form-item label="产品名称">
 							<el-input v-model="xmProductCopy.productName" placeholder="新的产品名称"></el-input> 
@@ -301,6 +312,10 @@
 			</el-row>
 		</el-col>
 		</el-row> 
+		
+		<el-dialog :visible.sync="templateVisible" append-to-body width="60%" top="20px">
+			<xm-product-tpl-mng @copy="searchXmProducts" :show-type="'simple'" ref="xmProductTplMngRef"></xm-product-tpl-mng>
+		</el-dialog>
 	</section>
 </template>
 
@@ -389,7 +404,7 @@
 				pickerOptions:  util.getPickerOptions('datarange'),
 				projectVisible:false,
 				productSelectVisible:false,
-				showType:false,
+				showType:true,
 				xmProductCopy:{
 					id:'',productName:'',code:'',isTpl:'',copyMenu:'1',copyPhase:'1',copyGroup:'1',copyGroupUser:'0'
 				},

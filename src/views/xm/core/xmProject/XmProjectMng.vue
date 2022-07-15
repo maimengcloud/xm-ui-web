@@ -4,13 +4,13 @@
 			<el-col :span="6" class="border padding" > 
 				<el-row>
 					<el-row>
-						您可以通过<el-button   @click="showAdd" icon="el-icon-plus" type="primary" plain>项目</el-button>创建一个新项目
+						您可以通过 &nbsp;<el-button   @click="showAdd" icon="el-icon-plus" type="primary" plain>项目</el-button>&nbsp;创建一个新项目
 					</el-row>
 					<el-row> 
-						通过<el-button @click="templateVisible=true" type="primary" plain style="margin-bottom:5px;">公共模板</el-button>体验一下项目的过程。<br/>
+						通过&nbsp;<el-button @click="templateVisible=true" type="primary" plain style="margin-bottom:5px;">公共模板</el-button>&nbsp;体验项目的过程。<br/>
 					</el-row>
 					<el-row> 
-						通过<el-button @click="templateVisible=true" type="primary" plain style="margin-bottom:5px;">拷贝模板</el-button>成为一个新项目。<br/>
+						通过&nbsp;<el-button @click="templateVisible=true" type="primary" plain style="margin-bottom:5px;">拷贝模板</el-button>&nbsp;快速创建新项目。<br/>
 					</el-row>
 				</el-row>
 				
@@ -281,7 +281,7 @@
 		<el-dialog
 			title="通过复制创建新的模板或者新的项目"
 			:visible.sync="copyToVisible"
-			width="30%" > 
+			width="600" > 
 			<el-form>
 			<el-form-item label="项目名称">
 				<el-input v-model="xmProjectCopy.name" placeholder="新的项目名称"></el-input> 

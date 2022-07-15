@@ -86,7 +86,7 @@
 		<el-dialog
 			title="通过复制创建新的模板或者新的产品"
 			:visible.sync="copyToVisible"
-			width="30%" > 
+			width="600" > 
 			<el-form>
 			<el-form-item label="产品名称">
 				<el-input v-model="xmProductCopy.productName" placeholder="新的产品名称"></el-input> 
