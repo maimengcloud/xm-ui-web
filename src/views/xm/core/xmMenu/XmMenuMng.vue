@@ -222,6 +222,16 @@
 
 							</el-table-column>
 							<template>
+							<el-table-column prop="mmUsername" label="跟进人"  min-width="100" show-overflow-tooltip  sortable>
+								<template slot-scope="scope">
+									<div class="cell-text">
+										{{scope.row.mmUsername}}
+									</div>
+									<span class="cell-bar">
+										 <el-button @click="$refs.xmGroupDialog.open({data:scope.row,action:'editMmUserid'})">选跟进人</el-button>
+									</span>
+								</template>
+							</el-table-column>
 							<el-table-column prop="productId" label="产品" width="100" show-overflow-tooltip sortable>
 							</el-table-column>
 							
@@ -336,16 +346,6 @@
 									</div>
 									<span class="cell-bar">
 										 <el-button @click="$refs.tagDialog.open({data:scope.row,action:'editTagIds'})">选标签</el-button>
-									</span>
-								</template>
-							</el-table-column>
-							<el-table-column prop="mmUsername" label="跟进人"  min-width="100" show-overflow-tooltip  sortable>
-								<template slot-scope="scope">
-									<div class="cell-text">
-										{{scope.row.mmUsername}}
-									</div>
-									<span class="cell-bar">
-										 <el-button @click="$refs.xmGroupDialog.open({data:scope.row,action:'editMmUserid'})">选跟进人</el-button>
 									</span>
 								</template>
 							</el-table-column>

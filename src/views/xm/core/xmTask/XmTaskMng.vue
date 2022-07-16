@@ -408,17 +408,6 @@
               </el-table-column>
               <el-table-column
                 sortable
-                prop="budgetWorkload"
-                label="工时"
-                width="150"
-              >
-
-                <template slot-scope="scope">
-                  	<span title="实际工时 / 预算工时 或者 (剩余工时+实际工时)">{{scope.row.actWorkload}} &nbsp;/ &nbsp;{{scope.row.rworkload?parseInt(scope.row.actWorkload)+parseInt(scope.row.rworkload):scope.row.budgetWorkload}}h </span>
-                </template>
-              </el-table-column>
-              <el-table-column
-                sortable
                 prop="createUsername"
                 label="负责人"
                 width="120"
@@ -460,6 +449,17 @@
                           >去设置</el-link>
                     </span>
                   </span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                sortable
+                prop="budgetWorkload"
+                label="工时"
+                width="150"
+              >
+
+                <template slot-scope="scope">
+                  	<span title="实际工时 / 预算工时 或者 (剩余工时+实际工时)">{{scope.row.actWorkload}} &nbsp;/ &nbsp;{{scope.row.rworkload?parseInt(scope.row.actWorkload)+parseInt(scope.row.rworkload):scope.row.budgetWorkload}}h </span>
                 </template>
               </el-table-column>
               <el-table-column sortable prop="productId" label="产品" width="100" show-overflow-tooltip>

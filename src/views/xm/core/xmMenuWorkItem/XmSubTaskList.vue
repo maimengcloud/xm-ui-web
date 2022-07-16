@@ -87,6 +87,22 @@
 									</span>
 								</template>
               </el-table-column>
+              <el-table-column
+                sortable
+                prop="executorUsername"
+                label="执行人"
+                width="120"
+                show-overflow-tooltip
+              >
+								<template slot-scope="scope">
+									<div class="cell-text">
+										{{scope.row.executorUsername}}
+									</div>
+									<span class="cell-bar">
+										 <el-button @click="$refs.xmGroupDialog.open({data:scope.row,action:'executorUserid'})">选执行人</el-button>
+									</span>
+								</template>
+              </el-table-column>
         </el-table> 
       </el-row>
       
@@ -159,6 +175,8 @@ import treeTool from "@/common/js/treeTool"; //全局公共库
 import XmTaskWorkloadRecordDialog from '../xmTaskWorkload/XmTaskWorkloadRecordDialog.vue';
 
 	import XmPhaseSelect from "../xmTask/XmPhaseSelect.vue"; 
+	import { addXmTaskExecuser } from '@/api/xm/core/xmTaskExecuser';
+
 export default {
   computed: {
     ...mapGetters(["userInfo", "roles"]), 
@@ -332,6 +350,32 @@ export default {
           var user= groupUsers[0];
           this.editXmTaskSomeFields(option.data,option.action,user)
         }  
+      }else if(option.action==='executorUserid'){ 
+        var user= groupUsers[0];
+        var params={}
+        var row=option.data;
+        params.taskId = row.id;
+        params.projectId=row.projectId 
+        params.projectName=row.projectName
+        params.taskName=row.name 
+        params.quoteStartTime=row.startTime
+        params.quoteEndTime=row.endTime
+        params.quoteAmount=row.budgetAt
+        params.quoteWorkload=row.budgetWorkload
+        params.userid=user.userid
+        params.username=user.username
+        addXmTaskExecuser(params).then(res=>{
+          var tips = res.data.tips
+          if(tips.isOk){
+            //this.searchXmTasks();
+            row.executorUserid=user.userid
+            row.executorUsername=user.username
+            row.exeUserids=user.userid
+            row.exeUsernames=user.username
+          }else{
+            this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:'error'})
+          }
+        })
       }
       
     },
