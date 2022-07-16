@@ -111,7 +111,8 @@
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { listXmIteration,listXmIterationWithState, delXmIteration, batchDelXmIteration,loadTasksToXmIterationState } from '@/api/xm/core/xmIteration';
+	import { listXmIteration,listXmIterationWithState, delXmIteration, batchDelXmIteration } from '@/api/xm/core/xmIteration';
+	import {  loadTasksToXmIterationState } from '@/api/xm/core/xmIterationState';
 	import { addXmIterationLink,delXmIterationLink } from '@/api/xm/core/xmIterationLink';
 
 	import  XmIterationAdd from './XmIterationAdd';//新增界面

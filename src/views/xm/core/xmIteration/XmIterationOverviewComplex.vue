@@ -49,8 +49,8 @@ import util from "@/common/js/util"; // 全局公共库
 import { mapGetters } from "vuex";
  import XmIterationOverview from './XmIterationOverview.vue';
 import XmIterationEdit from './XmIterationEdit.vue'; 
-import XmIterationMenuMng from '../xmIterationMenu/XmIterationMenuMng.vue';
-	import { loadTasksToXmIterationState } from '@/api/xm/core/xmIteration';
+import XmIterationMenuMng from '../xmIterationMenu/XmIterationMenuMng.vue'; 
+	import {  loadTasksToXmIterationState } from '@/api/xm/core/xmIterationState';
 
 
 export default {

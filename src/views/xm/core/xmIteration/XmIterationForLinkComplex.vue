@@ -351,7 +351,8 @@
 	import XmReport from "@/views/xm/rpt/reportIndex";
 
 	import XmIterationMenuMng from '../xmIterationMenu/XmIterationMenuMng.vue';
-	import { initDicts,loadTasksToXmIterationState,editSomeFieldsXmIteration } from '@/api/xm/core/xmIteration';
+	import { initDicts,editSomeFieldsXmIteration } from '@/api/xm/core/xmIteration';
+	import {  loadTasksToXmIterationState } from '@/api/xm/core/xmIterationState';
 	export default {
 		computed: {
 		    ...mapGetters([
