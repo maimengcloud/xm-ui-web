@@ -29,7 +29,7 @@ export const editXmMyFocus = params => { return axios.post(`${base}/xm/core/xmMy
 
 //新增一条我关注的项目或者任务
 export const addXmMyFocus = params => {  
-    debugger;
+    
     localStorage.removeItem('xm-my-focus-list')
     return axios.post(`${base}/xm/core/xmMyFocus/add`, params); 
 };

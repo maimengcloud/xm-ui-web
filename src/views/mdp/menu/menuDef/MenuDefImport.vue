@@ -59,7 +59,7 @@
 
 	    computed: {
 	    	'routersTreeData': function(){
-				debugger;
+				
 	    		var routers=this.permission_routers.filter(i=>i.meta&&i.meta.title&&!i.hidden); 
 	    		routers.forEach((i,index)=>{ 
 	    			i.rpath=i.path
@@ -75,7 +75,7 @@
 					
 	    			this.routersTreeDataFill(i.children,i)
 	    		})
-				debugger;
+				
 	    		return routers;
 	    	},
 		    ...mapGetters([
@@ -136,7 +136,7 @@
 				this.jsonRouters=eval('(' + this.jsonRoutersText + ')');
 			},
 			batchImportMenus(){
-				debugger;
+				
 				let routers=this.jsonRouters;
 				if(this.importType=='1'){
 					try{

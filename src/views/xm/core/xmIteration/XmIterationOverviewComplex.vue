@@ -49,9 +49,9 @@ import util from "@/common/js/util"; // 全局公共库
 import { mapGetters } from "vuex";
  import XmIterationOverview from './XmIterationOverview.vue';
 import XmIterationEdit from './XmIterationEdit.vue'; 
-import XmIterationMenuMng from '../xmIterationMenu/XmIterationMenuMng.vue'; 
+import XmIterationMenuMng from '../xmIterationMenu/XmIterationMenuMng.vue';  
 	import {  loadTasksToXmIterationState } from '@/api/xm/core/xmIterationState';
-
+import {  listXmIterationWithState } from "@/api/xm/core/xmIteration";
 
 export default {
   components: {XmIterationOverview,XmIterationEdit, XmIterationMenuMng },
@@ -75,6 +75,16 @@ export default {
 				loadTasksToXmIterationState({id:this.xmIteration.id}).then(res=>{
 					this.load.edit=false;
 					var tips =res.data.tips; 
+          if(tips.isOk){
+            listXmIterationWithState({id:this.xmIteration.id}).then(res2=>{
+              var tips2=res2.data.tips;
+              if(tips2.isOk && res2.data.data.length>0){
+                var data=res2.data.data[0]
+                Object.assign(this.xmIteration,data);
+                 this.$emit('edit-fields',data)
+              }
+            })
+          }
 					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 				});
 			},

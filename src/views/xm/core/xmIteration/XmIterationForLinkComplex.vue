@@ -407,8 +407,10 @@
 
 			/**end 自定义函数请在上面加**/
 			onIterationRowClick(iteration){
-
-				this.xmIteration=iteration
+				
+				this.$nextTick(()=>{
+					this.xmIteration=iteration 
+				})
 			},
 
 			onIterationClearSelect(){

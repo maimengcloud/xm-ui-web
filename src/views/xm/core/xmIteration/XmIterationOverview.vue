@@ -284,7 +284,7 @@ export default {
         return 100;
       }
     },
-    xmIterationCpd(){
+    xmIterationCpd(){ 
       return this.xmIteration;
     },
     calcXmIterationPstatusStep(){

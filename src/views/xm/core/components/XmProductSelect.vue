@@ -502,7 +502,7 @@ export default {
     reloadOne() {
       listXmProductWithState({ id: this.editForm.id }).then((res) => {
         var tips = res.data.tips;
-        if (tips.isOk && rea.data.data && res.data.data.length > 0) {
+        if (tips.isOk && res.data.data && res.data.data.length > 0) {
           Object.assign(this.editForm, res.data.data[0]);
           this.rowClick(this.editForm);
         }

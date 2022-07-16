@@ -245,7 +245,7 @@ export default {
 
         },
         toLogin(user) {
-            debugger;
+            
                 this.$prompt('请输入密码', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',  
@@ -256,7 +256,7 @@ export default {
                         authType:'password_display_userid' ,
                         grantType:"password"
                     } 
-                    debugger;
+                    
                     //userloginid, password,grantType,authType,deptid,userid
                     switchUser(params.userloginid,params.password,params.grantType,params.authType,'',params.userloginid).then(res => {
                         this.phonenoUsersVisible=false;

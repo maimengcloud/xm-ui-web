@@ -56,7 +56,7 @@ import { mapGetters } from "vuex";
 import XmProductOverview from './XmProductOverview.vue';
 import XmProductEdit from './XmProductEdit.vue'; 
 import XmProductProjectLinkMng from '../xmProductProjectLink/XmProductProjectLinkMng.vue'; 
-import { loadTasksToXmProductState } from '@/api/xm/core/xmProductState';
+import { loadTasksToXmProductState,listXmProductWithState } from '@/api/xm/core/xmProductState';
 import { loadTasksToXmMenuState} from '@/api/xm/core/xmMenuState'; 
 import TaskMng from '@/views/mdp/workflow/ru/task/TaskMng'; 
 import ProcinstMng from '@/views//mdp/workflow/hi/procinst/ProcinstMng';
@@ -84,10 +84,26 @@ export default {
 				loadTasksToXmProductState(params).then((res) => {
 					this.load.calcProduct=false;
 					var tips=res.data.tips; 
+          if(tips.isOk){
+            this.getProduct(this.xmProduct.id)
+          }
 					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 				}).catch( err  => this.load.calcProduct=false );
 			},
       
+			 getProduct(id){
+				 listXmProductWithState({id:id}).then(res=>{
+					 var tips = res.data.tips;
+					 if(tips.isOk){ 
+             Object.assign(this.xmProduct,res.data.data[0])
+						 localStorage.setItem("xm-product-info-route",JSON.stringify(this.xmProduct)) 
+             this.$emit('edit-fields',this.xmProduct)
+						this.showInfo=true;
+					 }else{
+
+					 }
+				 })
+			 },
 			 
 			loadTasksToXmMenuState: function () {  
 				this.load.calcMenu=true; 

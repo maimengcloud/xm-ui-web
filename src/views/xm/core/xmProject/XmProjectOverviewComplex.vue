@@ -90,6 +90,13 @@ export default {
       loadTasksToXmProjectState(params).then((res) => {
           this.load.calcProject=false;
           var tips=res.data.tips; 
+          listXmProject({id:this.selProject.id}).then(res=>{
+            var tips = res.data.tips;
+            if(tips.isOk){
+              var selProject=res.data.data[0] 
+              this.onEditFields(selProject)
+            }
+          })
           this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
         }).catch( err  => this.load.calcProject=false ); 
     },
