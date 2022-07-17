@@ -14,7 +14,7 @@
         width="200"
       >
         <template slot-scope="scope">
-          <div class="menu">{{ scope.row.menuName }}</div>
+          <div class="menu"><el-link type="primary" @click="showMenuEdit(scope.row)">{{ scope.row.menuName }}</el-link></div>
         </template>
       </el-table-column>
       <template v-for="(type, tt) in taskStateCpd">
@@ -24,8 +24,8 @@
           width="450"
         >
           <template slot-scope="scope">
-			<el-row>
-
+			<el-row class="my-cell-bar">
+				<el-button icon="el-icon-plus" @click="showAddTask(scope.row,type)" type="primary" plain>任务</el-button> 
 			</el-row>
             <draggable
               :name="scope.row.menuId"
@@ -64,8 +64,7 @@
                          {{task.executorUsername?task.executorUsername:'未设置执行人'}}
                       </span>  <el-link title="进度"
                           style="border-radius: 30px"
-                          :type="task.rate >= 100 ? 'success' : 'warning'"
-                          @click.stop="showEditForm(task)"
+                          :type="task.rate >= 100 ? 'success' : 'warning'" 
                         >
                           {{ (task.rate != null ? task.rate : 0) + "%" }}
                         </el-link>  <el-tag type="info" title="预算金额、工时"
@@ -74,7 +73,7 @@
                           }}万,{{ task.budgetWorkload }}人时</el-tag >  
                       <el-link
                         type="primary"
-                        @click.stop="showEditForm(task)"
+                        @click.stop="showTaskEdit(task)"
                         >{{ task.name }}</el-link
                       >
                     </span>
@@ -254,7 +253,7 @@ export default {
       this.tasks = tasks;
       this.menus = menus;
     },
-    showEditForm(task) {
+    showTaskEdit(task) {
       this.editForm = task;
       this.editFormVisible = true;
     },
@@ -354,6 +353,25 @@ export default {
     width: 200px;
     background: #fff;
     margin: 10px 0 0 10px;
+  }
+}
+
+
+.my-cell-bar{ 
+	visibility: hidden;
+	float: left;
+} 
+
+.el-table__row td:hover{ 
+  cursor: pointer;
+	.my-cell-bar{ 
+		visibility:visible;
+    .u-btn{   
+			float: left;
+		}   
+	}
+  .my-cell-text{
+    display:none;
   }
 }
 </style>
