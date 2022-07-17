@@ -234,8 +234,7 @@ export default {
 								this.load.edit=false
 								var tips=res.data.tips;
 								if(tips.isOk){
- 									this.$emit('submit',res.data.data);//  @submit="afterAddSubmit"
-									 this.addFormVisible=false;
+ 									this.$emit('submit',res.data.data);//  @submit="afterAddSubmit" 
                    this.xmBugs.push(res.data.data)
 								}
 								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });

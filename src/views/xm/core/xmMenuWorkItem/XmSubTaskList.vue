@@ -147,8 +147,8 @@
               <el-input v-model="addForm.name" autocomplete="off" ></el-input>
             </el-form-item> 
           </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="addFormVisible = false">取 消</el-button>
+          <div slot="footer" class="dialog-footer"> 
+             <el-button  @click="handleCancel">关闭</el-button>
             <el-button type="primary" @click="addXmTask">确 定</el-button>
           </div>
       </el-dialog>
@@ -321,8 +321,7 @@ export default {
 								var tips=res.data.tips;
 								if(tips.isOk){
  									this.$emit('submit',res.data.data);//  @submit="afterAddSubmit"
-                   this.xmTasks.push(res.data.data)
-                   this.addFormVisible=false;
+                   this.xmTasks.push(res.data.data) 
 								}
 								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.edit=false);
