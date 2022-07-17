@@ -14,7 +14,11 @@
         width="200"
       >
         <template slot-scope="scope">
-          <div class="menu"><el-link type="primary" @click="showMenuEdit(scope.row)">{{ scope.row.menuName }}</el-link></div>
+          <div class="menu">
+            <el-link type="primary" @click="showMenuEdit(scope.row)">{{
+              scope.row.menuName
+            }}</el-link>
+          </div>
         </template>
       </el-table-column>
       <template v-for="(type, tt) in taskStateCpd">
@@ -24,9 +28,15 @@
           width="450"
         >
           <template slot-scope="scope">
-			<el-row class="my-cell-bar">
-				<el-button icon="el-icon-plus" @click="showAddTask(scope.row,type)" type="primary" plain>任务</el-button> 
-			</el-row>
+            <el-row class="my-cell-bar">
+              <el-button
+                icon="el-icon-plus"
+                @click="showAddTask(scope.row, type)"
+                type="primary"
+                plain
+                >任务</el-button
+              >
+            </el-row>
             <draggable
               :name="scope.row.menuId"
               :sort="false"
@@ -58,19 +68,37 @@
                     :key="task.id + t"
                   >
                     <span>
-                      {{ task.sortLevel }}&nbsp;<el-tag title="优先级" v-for="(item,index) in formatDictsWithClass(dicts,'priority',task.level)" :key="task.id+index" :type="item.className">{{item.name}}</el-tag>
-                       
+                      {{ task.sortLevel }}&nbsp;<el-tag
+                        title="优先级"
+                        v-for="(item, index) in formatDictsWithClass(
+                          dicts,
+                          'priority',
+                          task.level
+                        )"
+                        :key="task.id + index"
+                        :type="item.className"
+                        >{{ item.name }}</el-tag
+                      >
+
                       <span title="执行人">
-                         {{task.executorUsername?task.executorUsername:'未设置执行人'}}
-                      </span>  <el-link title="进度"
-                          style="border-radius: 30px"
-                          :type="task.rate >= 100 ? 'success' : 'warning'" 
-                        >
-                          {{ (task.rate != null ? task.rate : 0) + "%" }}
-                        </el-link>  <el-tag type="info" title="预算金额、工时"
-                          >{{
-                            parseFloat(task.budgetAt / 10000).toFixed(2)
-                          }}万,{{ task.budgetWorkload }}人时</el-tag >  
+                        {{
+                          task.executorUsername
+                            ? task.executorUsername
+                            : "未设置执行人"
+                        }}
+                      </span>
+                      <el-link
+                        title="进度"
+                        style="border-radius: 30px"
+                        :type="task.rate >= 100 ? 'success' : 'warning'"
+                      >
+                        {{ (task.rate != null ? task.rate : 0) + "%" }}
+                      </el-link>
+                      <el-tag type="info" title="预算金额、工时"
+                        >{{ parseFloat(task.budgetAt / 10000).toFixed(2) }}万,{{
+                          task.budgetWorkload
+                        }}人时</el-tag
+                      >
                       <el-link
                         type="primary"
                         @click.stop="showTaskEdit(task)"
@@ -88,8 +116,8 @@
     <el-dialog
       title="编辑任务"
       :visible.sync="editFormVisible"
-      :with-header="false"  
-	  fullscreen
+      :with-header="false"
+      fullscreen
       append-to-body
       :close-on-click-modal="false"
     >
@@ -105,23 +133,284 @@
         @submit="afterEditSubmit"
       ></xm-task-edit>
     </el-dialog>
+
+    <el-dialog
+      title="新增任务"
+      :visible.sync="addFormVisible"
+      append-to-body
+      modal-append-to-body
+    >
+      <el-form :model="addForm" :rules="addFormRules" ref="addForm">
+        <el-form-item label="上级计划" prop="parentTaskname">
+          {{ addForm.parentTaskname ? addForm.parentTaskname : "无上级" }}
+          <el-button
+            @click="selectParentTaskVisible = true"
+            title="选择上级计划"
+            type="text"
+            icon="el-icon-upload2"
+          >
+            选择上级计划
+          </el-button>
+        </el-form-item>
+        <el-form-item label="任务名称" prop="name">
+          <template slot="label">
+            <div class="icon" style="background-color: #1cc7ea">
+              <i class="el-icon-s-operation"></i>
+            </div>
+            任务名称
+          </template>
+          <el-input v-model="addForm.name" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="addFormVisible = false">关闭</el-button>
+        <el-button type="primary" @click="addXmTask">确 定</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog
+      title="选择新的上级计划"
+      append-to-body
+      :visible.sync="selectParentTaskVisible"
+      width="60%"
+      top="20px"
+    >
+      <xm-phase-select
+        :sel-project="selProject"
+        @select="onSelectedParentTask"
+      ></xm-phase-select>
+    </el-dialog>
+	
+
+	<el-dialog append-to-body title="需求明细"  :visible.sync="menuDetailVisible" width="80%"  top="20px"  :close-on-click-modal="false">
+		<xm-menu-edit :visible="menuDetailVisible"  :reload="true" :xm-menu="{menuId:editForm.menuId,menuName:editForm.menuName}" ></xm-menu-edit>
+	</el-dialog>
   </section>
 </template>
 
 <script>
-import util from '@/common/js/util';//全局公共库
+import util from "@/common/js/util"; //全局公共库
 import draggable from "vuedraggable";
-import { initDicts,editXmTaskSomeFields } from "@/api/xm/core/xmTask";
+import { initDicts, editXmTaskSomeFields, addTask } from "@/api/xm/core/xmTask";
 import XmTaskEdit from "./XmTaskEdit"; //修改界面
+import XmPhaseSelect from "../xmTask/XmPhaseSelect.vue";
+
+	import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
+import { mapGetters } from "vuex";
 
 export default {
   name: "XmTaskAgileKanban",
-  props: ["xmTasks", "tableHeight"],
+  props: ["xmTasks", "tableHeight", "selProject"],
+
   data() {
     return {
-      editForm: null,
+		load:{add:false,edit:false,list:false},
+      editForm: {
+        id: "",
+        name: "",
+        parentTaskid: "",
+        parentTaskname: "",
+        projectId: "",
+        projectName: "",
+        level: "",
+        sortLevel: "",
+        executorUserid: "",
+        executorUsername: "",
+        preTaskid: "",
+        preTaskname: "",
+        startTime: "",
+        endTime: "",
+        milestone: "",
+        description: "",
+        remarks: "",
+        createUserid: "",
+        createUsername: "",
+        createTime: "",
+        rate: 0,
+        budgetAt: 0,
+        budgetWorkload: 0,
+        actAt: 0,
+        actWorkload: 0,
+        taskState: "0",
+        taskType: "4",
+        taskClass: "",
+        toTaskCenter: "0",
+        actStartTime: "",
+        actEndTime: "",
+        bizProcInstId: "",
+        bizFlowState: "",
+        phaseId: "",
+        phaseName: "",
+        taskSkillNames: "",
+        exeUsernames: "",
+        taskSkillIds: "",
+        exeUserids: "",
+        taskOut: "0",
+        planType: "w2",
+        settleSchemel: "1",
+        menuId: "",
+        menuName: "",
+        productId: "",
+        cbranchId: "",
+        cdeptid: "",
+        tagIds: "",
+        tagNames: "",
+        ntype: "",
+        childrenCnt: "",
+        ltime: "",
+        pidPaths: "",
+        lvl: "",
+        isTpl: "",
+        keyPath: "",
+        uniInnerPrice: 80,
+        uniOutPrice: 100,
+        calcType: "",
+        ptype: "",
+        wtype: "",
+        bctrl: "",
+        initWorkload: "",
+        shareFee: "",
+        oshare: "",
+        crowd: "",
+        browseUsers: "",
+        execUsers: "",
+        cityId: "",
+        cityName: "",
+        regionType: "",
+        browseTimes: "",
+        capaLvls: "",
+        tranMode: "",
+        supRequires: "",
+        hot: "0",
+        top: "0",
+        urgent: "0",
+        crmSup: "0",
+        bidStep: "0",
+        interestLvls: "",
+        filePaths: "",
+        estate: "0",
+        efunds: 0,
+        etoPlatTime: "",
+        etoDevTime: "",
+        ebackTime: "",
+        topStime: "",
+        topEtime: "",
+        hotStime: "",
+        hotEtime: "",
+        urgentStime: "",
+        urgentEtime: "",
+      },
 
+      addForm: {
+        id: "",
+        name: "",
+        parentTaskid: "",
+        parentTaskname: "",
+        projectId: "",
+        projectName: "",
+        level: "",
+        sortLevel: "",
+        executorUserid: "",
+        executorUsername: "",
+        preTaskid: "",
+        preTaskname: "",
+        startTime: "",
+        endTime: "",
+        milestone: "",
+        description: "",
+        remarks: "",
+        createUserid: "",
+        createUsername: "",
+        createTime: "",
+        rate: 0,
+        budgetAt: 0,
+        budgetWorkload: 0,
+        actAt: 0,
+        actWorkload: 0,
+        taskState: "0",
+        taskType: "4",
+        taskClass: "",
+        toTaskCenter: "0",
+        actStartTime: "",
+        actEndTime: "",
+        bizProcInstId: "",
+        bizFlowState: "",
+        phaseId: "",
+        phaseName: "",
+        taskSkillNames: "",
+        exeUsernames: "",
+        taskSkillIds: "",
+        exeUserids: "",
+        taskOut: "0",
+        planType: "w2",
+        settleSchemel: "1",
+        menuId: "",
+        menuName: "",
+        productId: "",
+        cbranchId: "",
+        cdeptid: "",
+        tagIds: "",
+        tagNames: "",
+        ntype: "",
+        childrenCnt: "",
+        ltime: "",
+        pidPaths: "",
+        lvl: "",
+        isTpl: "",
+        keyPath: "",
+        uniInnerPrice: 80,
+        uniOutPrice: 100,
+        calcType: "",
+        ptype: "",
+        wtype: "",
+        bctrl: "",
+        initWorkload: "",
+        shareFee: "",
+        oshare: "",
+        crowd: "",
+        browseUsers: "",
+        execUsers: "",
+        cityId: "",
+        cityName: "",
+        regionType: "",
+        browseTimes: "",
+        capaLvls: "",
+        tranMode: "",
+        supRequires: "",
+        hot: "0",
+        top: "0",
+        urgent: "0",
+        crmSup: "0",
+        bidStep: "0",
+        interestLvls: "",
+        filePaths: "",
+        estate: "0",
+        efunds: 0,
+        etoPlatTime: "",
+        etoDevTime: "",
+        ebackTime: "",
+        topStime: "",
+        topEtime: "",
+        hotStime: "",
+        hotEtime: "",
+        urgentStime: "",
+        urgentEtime: "",
+      },
+      addFormRules: {
+        name: [
+          { required: true, message: "任务名称不能为空", trigger: "change" },
+          {
+            min: 2,
+            max: 150,
+            message: "长度在 2 到 150 个字符",
+            trigger: "change",
+          }, //长度
+        ],
+      },
       editFormVisible: false,
+      addFormVisible: false,
+      selectParentTaskVisible: false,
+	  menuDetailVisible:false,
       taskState: [
         { label: "待领取", status: "0", number: 0 },
         { label: "执行中", status: "1", number: 0 },
@@ -130,14 +419,14 @@ export default {
         { label: "已结算", status: "4", number: 0 },
         { label: "已关闭", status: "9", number: 0 },
       ],
-      taskStateInit:  [], 
+      taskStateInit: [],
       dicts: {
         priority: [],
         taskType: [],
-        planType: [], 
+        planType: [],
         xmTaskSettleSchemel: [],
-        taskState:[],
-        xm_plan_lvl:[],
+        taskState: [],
+        xm_plan_lvl: [],
       },
       tasks: {},
       menus: [],
@@ -147,13 +436,14 @@ export default {
       },
     };
   },
-  components: { draggable, XmTaskEdit },
+  components: { draggable, XmTaskEdit, XmPhaseSelect,XmMenuEdit },
   watch: {
     xmTasks() {
       this.initData();
     },
   },
   computed: {
+    ...mapGetters(["userInfo", "roles"]),
     menusCpd() {
       return this.menus;
     },
@@ -165,7 +455,7 @@ export default {
     },
   },
   methods: {
-	...util,
+    ...util,
     onMove(e) {
       console.log("onMove--e==", e);
 
@@ -200,15 +490,15 @@ export default {
         let task = this.xmTasks.find((d) => d.id === targetEl.taskId);
         let taskIndex = this.xmTasks.findIndex((d) => d.id === targetEl.taskId);
         //const params = { ...task, taskState: toEl.taskState };
-		const params = { ids:[task.id], taskState: toEl.taskState };
+        const params = { ids: [task.id], taskState: toEl.taskState };
         editXmTaskSomeFields(params).then((res) => {
           //this.$emit('submit');
           var tips = res.data.tips;
           if (tips.isOk) {
-			var taskStateIndex=this.getTaskStateIndex(task.taskState)
+            var taskStateIndex = this.getTaskStateIndex(task.taskState);
             this.taskState[taskStateIndex].number =
               this.taskState[taskStateIndex].number - 1;
-			  var toTaskStateIndex=this.getTaskStateIndex(params.taskState)
+            var toTaskStateIndex = this.getTaskStateIndex(params.taskState);
             this.taskState[toTaskStateIndex].number =
               this.taskState[toTaskStateIndex].number + 1;
             task.taskState = params.taskState;
@@ -227,13 +517,13 @@ export default {
         return false;
       }
     },
-     
+
     initData() {
       var xmTasks = this.xmTasks;
-	  this.taskState=JSON.parse(JSON.stringify(this.taskStateInit))
+      this.taskState = JSON.parse(JSON.stringify(this.taskStateInit));
       let menus = [],
         menuIds = {},
-        tasks = {}; 
+        tasks = {};
       xmTasks.forEach((d, i) => {
         if (!d.menuId) {
           d.menuId = "noMenuId";
@@ -244,13 +534,16 @@ export default {
           menuIds[d.menuId] = true;
         }
         if (!tasks[d.menuId]) {
-          tasks[d.menuId] = [[], [], [], [],[],[]];
+          tasks[d.menuId] = [[], [], [], [], [], []];
         }
-		var taskStateIndex=this.getTaskStateIndex(d.taskState)
+        var taskStateIndex = this.getTaskStateIndex(d.taskState);
         tasks[d.menuId][taskStateIndex].push(d);
         this.taskState[taskStateIndex].number += 1;
       });
       this.tasks = tasks;
+	  menus.sort((v1,v2)=>{
+		return v1.menuId<v2.menuId
+	  })
       this.menus = menus;
     },
     showTaskEdit(task) {
@@ -261,16 +554,74 @@ export default {
       let taskIndex = this.xmTasks.findIndex((d) => d.id === task.id);
       this.$set(this.xmTasks, taskIndex, task);
     },
-	getTaskStateIndex(taskState){
-		return this.taskState.findIndex(i=>i.status==taskState)
-	},
+    getTaskStateIndex(taskState) {
+      return this.taskState.findIndex((i) => i.status == taskState);
+    },
     afterExecEditSubmit() {},
+	showMenuEdit(task){
+		this.editForm=task;
+		if(task.menuId=='noMenuId'||!task.menuId){
+			this.$notify({
+              position: "bottom-left",
+              showClose: true,
+              message: '没有关联任务故事',
+              type: "error",
+            });
+			return;
+		}
+		this.menuDetailVisible=true;
+	},
+    addXmTask() {
+		this.load.add=true;
+      this.$refs.addForm.validate().then((valid) => {
+        var task = { ...this.addForm };
+        addTask(task)
+          .then((res) => {
+            this.load.add = false;
+            var tips = res.data.tips;
+            if (tips.isOk) {
+              this.$emit("submit", res.data.data); //  @submit="afterAddSubmit"
+              this.xmTasks.push(res.data.data);
+            }
+            this.$notify({
+              position: "bottom-left",
+              showClose: true,
+              message: tips.msg,
+              type: tips.isOk ? "success" : "error",
+            });
+          })
+          .catch((err) => (this.load.add = false));
+      });
+    },
+    onSelectedParentTask(task) {
+      this.addForm.parentTaskid = task.id;
+      this.addForm.parentTaskname = task.name;
+      this.selectParentTaskVisible = false;
+    },
+    showAddTask(task, type) {
+      this.addForm.menuId = task.menuId;
+      this.addForm.menuName = task.menuName;
+      this.addForm.productId = task.productId;
+      this.addForm.taskState = type.status;
+      this.addForm.projectId = task.projectId;
+      this.addForm.parentTaskid = task.parentTaskid;
+      this.addForm.parentTaskname = task.parentTaskname;
+      this.addForm.priority = task.priority;
+      this.addForm.sortLevel = task.sortLevel;
+      this.addForm.verNum = task.verNum;
+      this.addForm.pverNum = task.pverNum;
+      this.addForm.createUserid = this.userInfo.userid;
+      this.addForm.createUsername = this.userInfo.username;
+      this.addForm.qtype = "1";
+      this.addForm.ntype = "0";
+      this.addForm.ptype = "0";
+      this.addFormVisible = true;
+    },
   },
-  mounted() { 
-	initDicts(this)
-	this.taskStateInit=JSON.parse(JSON.stringify(this.taskState))
+  mounted() {
+    initDicts(this);
+    this.taskStateInit = JSON.parse(JSON.stringify(this.taskState));
     this.initData();
-
   },
 };
 </script>
@@ -356,22 +707,21 @@ export default {
   }
 }
 
+.my-cell-bar {
+  visibility: hidden;
+  float: left;
+}
 
-.my-cell-bar{ 
-	visibility: hidden;
-	float: left;
-} 
-
-.el-table__row td:hover{ 
+.el-table__row td:hover {
   cursor: pointer;
-	.my-cell-bar{ 
-		visibility:visible;
-    .u-btn{   
-			float: left;
-		}   
-	}
-  .my-cell-text{
-    display:none;
+  .my-cell-bar {
+    visibility: visible;
+    .u-btn {
+      float: left;
+    }
+  }
+  .my-cell-text {
+    display: none;
   }
 }
 </style>
