@@ -24,6 +24,9 @@
           width="450"
         >
           <template slot-scope="scope">
+			<el-row>
+
+			</el-row>
             <draggable
               :name="scope.row.menuId"
               :sort="false"
@@ -55,43 +58,20 @@
                     :key="task.id + t"
                   >
                     <span>
-                      {{ task.sortLevel }}&nbsp;
-                      <el-tag v-if="task.level <= '2'" type="info">轻微</el-tag>
-                      <el-tag v-else-if="task.level == '3'" type="warning"
-                        >一般</el-tag
-                      >
-                      <el-tag v-else-if="task.level == '4'" type="danger"
-                        >紧急</el-tag
-                      >
-                      <el-tag v-else type="danger">特急</el-tag>
-                      <span
-                        v-for="(item, index) in [formatExeUsernames(task)]"
-                        :key="index"
-                      >
-                        <el-tooltip :content="item.exeUsernames"
-                          ><el-link
-                            :type="item.type"
-                            @click.stop="showEditForm(task)"
-                            >{{ item.showMsg }}</el-link
-                          ></el-tooltip
-                        >
-                      </span>
-                      <el-tooltip content="进度"
-                        ><el-link
+                      {{ task.sortLevel }}&nbsp;<el-tag title="优先级" v-for="(item,index) in formatDictsWithClass(dicts,'priority',task.level)" :key="task.id+index" :type="item.className">{{item.name}}</el-tag>
+                       
+                      <span title="执行人">
+                         {{task.executorUsername?task.executorUsername:'未设置执行人'}}
+                      </span>  <el-link title="进度"
                           style="border-radius: 30px"
                           :type="task.rate >= 100 ? 'success' : 'warning'"
                           @click.stop="showEditForm(task)"
                         >
                           {{ (task.rate != null ? task.rate : 0) + "%" }}
-                        </el-link></el-tooltip
-                      >
-                      <el-tooltip content="预算金额、工时"
-                        ><el-tag type="info"
+                        </el-link>  <el-tag type="info" title="预算金额、工时"
                           >{{
                             parseFloat(task.budgetAt / 10000).toFixed(2)
-                          }}万,{{ task.budgetWorkload }}人时</el-tag
-                        ></el-tooltip
-                      >
+                          }}万,{{ task.budgetWorkload }}人时</el-tag >  
                       <el-link
                         type="primary"
                         @click.stop="showEditForm(task)"
@@ -109,9 +89,8 @@
     <el-dialog
       title="编辑任务"
       :visible.sync="editFormVisible"
-      :with-header="false"
-      width="80%"
-      top="20px"
+      :with-header="false"  
+	  fullscreen
       append-to-body
       :close-on-click-modal="false"
     >
@@ -131,8 +110,9 @@
 </template>
 
 <script>
+import util from '@/common/js/util';//全局公共库
 import draggable from "vuedraggable";
-import { editXmTaskSomeFields } from "@/api/xm/core/xmTask";
+import { initDicts,editXmTaskSomeFields } from "@/api/xm/core/xmTask";
 import XmTaskEdit from "./XmTaskEdit"; //修改界面
 
 export default {
@@ -151,7 +131,15 @@ export default {
         { label: "已结算", status: "4", number: 0 },
         { label: "已关闭", status: "9", number: 0 },
       ],
-      taskStateInit:  [],
+      taskStateInit:  [], 
+      dicts: {
+        priority: [],
+        taskType: [],
+        planType: [], 
+        xmTaskSettleSchemel: [],
+        taskState:[],
+        xm_plan_lvl:[],
+      },
       tasks: {},
       menus: [],
       drag: {
@@ -178,6 +166,7 @@ export default {
     },
   },
   methods: {
+	...util,
     onMove(e) {
       console.log("onMove--e==", e);
 
@@ -239,42 +228,7 @@ export default {
         return false;
       }
     },
-    formatExeUsernames(row) {
-      var exeUsernames = row.exeUsernames;
-      var respons = {
-        type: "info",
-        executorUsername: row.executorUsername,
-        showMsg: "",
-        exeUsernames: exeUsernames,
-        executorUserid: row.executorUserid,
-      };
-      if (!row.executorUserid && exeUsernames) {
-        var exeStatuss = exeUsernames.split(",");
-        respons.showMsg = exeStatuss.length + "人候选中";
-        return respons;
-      } else if (!row.executorUserid && !exeUsernames) {
-        respons.showMsg = "候选中";
-        return respons;
-      }
-      if (row.executorUserid && exeUsernames && exeUsernames.length > 0) {
-        var exeStatuss = exeUsernames.split(",").filter((i) => {
-          return i.indexOf(row.executorUsername) >= 0;
-        });
-        if (exeStatuss.length <= 0) {
-          respons.showMsg = "去设置";
-          return respons;
-        }
-        respons.showMsg = exeStatuss.join(",");
-        if (respons.showMsg.indexOf("验收不过") >= 0) {
-          respons.type = "danger";
-        } else if (respons.showMsg.indexOf("已验收") >= 0) {
-          respons.type = "success";
-        }
-      } else {
-        respons.showMsg = "去设置";
-      }
-      return respons;
-    },
+     
     initData() {
       var xmTasks = this.xmTasks;
 	  this.taskState=JSON.parse(JSON.stringify(this.taskStateInit))
@@ -314,6 +268,7 @@ export default {
     afterExecEditSubmit() {},
   },
   mounted() { 
+	initDicts(this)
 	this.taskStateInit=JSON.parse(JSON.stringify(this.taskState))
     this.initData();
 

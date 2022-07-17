@@ -77,7 +77,7 @@
             trigger="manual"
             v-model="moreVisible"
           >
-							<el-row> 
+							<el-row style="margin-top:-10px;"> 
 								<el-col :span="24"> 
 									<el-button  style="float:right;"
 									icon="el-icon-close"
@@ -87,7 +87,17 @@
 									>
 								</el-col>
 							</el-row> 
-            <el-row>
+            <el-row> 
+              
+              <el-col :span="24" style="padding-top: 5px;">
+                <font class="more-label-font">显示方式:</font
+                >  <el-row>
+                    <el-radio v-model="displayType" label="grant">甘特图</el-radio>
+                    <el-radio v-model="displayType" label="agile">敏捷看板</el-radio>
+                    <el-radio v-model="displayType" label="table">表格</el-radio>
+                  </el-row> 
+              </el-col>
+           
               <el-col :span="24" style="padding-top: 5px">
                 <font class="more-label-font">产品:</font
                 > <xm-product-select :auto-select="false" :link-project-id="filters.selProject && filters.selProject.id?filters.selProject.id:null" @row-click="onProductSelected" @clear="onProductClearSelect"></xm-product-select>
@@ -150,21 +160,6 @@
                 >
               </el-col>
               <el-col :span="24" style="padding-top: 5px">
-                <font class="more-label-font">创建时间:</font>
-                <el-date-picker
-                  v-model="dateRanger"
-                  type="daterange"
-                  align="right"
-                  unlink-panels
-                  range-separator="至"
-                  start-placeholder="开始日期"
-                  end-placeholder="完成日期"
-                  value-format="yyyy-MM-dd HH:mm:ss"
-                  :default-time="['00:00:00', '23:59:59']"
-                  :picker-options="pickerOptions"
-                ></el-date-picker>
-              </el-col>
-              <el-col :span="24" style="padding-top: 5px">
                 <font class="more-label-font">技能:</font>
                 <el-button
                   v-if="!filters.skillTags || filters.skillTags.length == 0"
@@ -201,15 +196,29 @@
               </el-col>
               
               <el-col :span="24" style="padding-top: 5px">
-                <font class="more-label-font">是否为众包任务:</font>
-                 
-                <el-checkbox
-                  class="padding-top"
+                <font class="more-label-font">众包任务:</font>
+                  
+                <el-checkbox 
                   v-model="filters.taskOut"
                   true-label="1"
                   false-label=""
                   >众包</el-checkbox
                 > 
+              </el-col>
+              <el-col :span="24" style="padding-top: 5px">
+                <font class="more-label-font">创建时间:</font>
+                <el-date-picker
+                  v-model="dateRanger"
+                  type="daterange"
+                  align="right"
+                  unlink-panels
+                  range-separator="至"
+                  start-placeholder="开始日期"
+                  end-placeholder="完成日期"
+                  value-format="yyyy-MM-dd HH:mm:ss"
+                  :default-time="['00:00:00', '23:59:59']"
+                  :picker-options="pickerOptions"
+                ></el-date-picker>
               </el-col>
               <el-col :span="24" style="padding-top: 10px;">
                 <el-button 
@@ -287,26 +296,11 @@
             icon="el-icon-delete"
             title="批量删除"
             ></el-button
-          >
-
-
-          <el-popover
-            placement="top-start"
-            title="选择展示方式"
-            width="400"
-            trigger="click"
-          >
-            <el-row>
-              <el-radio v-model="displayType" label="grant">甘特图</el-radio>
-              <el-radio v-model="displayType" label="agile">敏捷看板</el-radio>
-              <el-radio v-model="displayType" label="table">表格</el-radio>
-            </el-row>
-            <el-button slot="reference">视图</el-button>
-          </el-popover>
+          > 
           </span>
         </el-row>
 
-        <el-row>
+        <el-row ref="table">
           <template v-if="displayType != 'grant'">
             <xm-task-agile-kanban
               :tableHeight="tableHeight"
@@ -329,8 +323,7 @@
               border
               tooltip-effect="light"
               :height="tableHeight" 
-              row-key="id"
-              ref="table"
+              row-key="id" 
               :row-style="{height:'60px'}"
             >
               <el-table-column
@@ -2152,6 +2145,11 @@ export default {
     initData(){
       if (this.selProject) {
         this.filters.selProject = this.selProject;
+        if(this.selProject.workType=='2'){
+          this.displayType='agile'
+        }else{
+          this.displayType='table'
+        }
       }
       if (this.xmProduct) {
         this.filters.product = this.xmProduct;
