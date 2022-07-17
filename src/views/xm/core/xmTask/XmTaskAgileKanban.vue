@@ -67,6 +67,7 @@
                     v-for="(task, t) in tasks[scope.row.menuId][tt]"
                     :key="task.id + t"
                   >
+				  	<span class="cell-bar"><el-button type="danger" icon="el-icon-delete" plain @click="handleDel(task,tt)"></el-button></span>
                     <span>
                       {{ task.sortLevel }}&nbsp;<el-tag
                         title="优先级"
@@ -191,7 +192,7 @@
 <script>
 import util from "@/common/js/util"; //全局公共库
 import draggable from "vuedraggable";
-import { initDicts, editXmTaskSomeFields, addTask } from "@/api/xm/core/xmTask";
+import { initDicts, editXmTaskSomeFields, addTask,delXmTask } from "@/api/xm/core/xmTask";
 import XmTaskEdit from "./XmTaskEdit"; //修改界面
 import XmPhaseSelect from "../xmTask/XmPhaseSelect.vue";
 
@@ -204,7 +205,7 @@ export default {
 
   data() {
     return {
-		load:{add:false,edit:false,list:false},
+		load:{add:false,edit:false,list:false,del:false},
       editForm: {
         id: "",
         name: "",
@@ -580,7 +581,7 @@ export default {
             this.load.add = false;
             var tips = res.data.tips;
             if (tips.isOk) {
-              this.$emit("submit", res.data.data); //  @submit="afterAddSubmit"
+              //this.$emit("submit", res.data.data); //  @submit="afterAddSubmit"
               this.xmTasks.push(res.data.data);
             }
             this.$notify({
@@ -616,6 +617,31 @@ export default {
       this.addForm.ntype = "0";
       this.addForm.ptype = "0";
       this.addFormVisible = true;
+    },
+	
+    //删除xmTask
+    handleDel: function (row, index) {
+      this.$confirm("确认删除该记录吗?", "提示", {
+        type: "warning",
+      }).then(() => {
+        this.load.del = true;
+        let params = Object.assign({}, row);
+        delXmTask(params)
+          .then((res) => {
+            this.load.del = false;
+            var tips = res.data.tips;
+            if (tips.isOk) { 
+				var index=this.xmTasks.findIndex(k=>k.id==row.id)
+				this.xmTasks.splice(index,1)
+             }
+            this.$notify({
+              showClose: true,
+              message: tips.msg,
+              type: tips.isOk ? "success" : "error",
+            });
+          })
+          .catch((err) => (this.load.del = false));
+      });
     },
   },
   mounted() {
