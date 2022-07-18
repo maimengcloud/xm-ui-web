@@ -59,7 +59,7 @@
 								</el-form-item>
 							</el-col>
 						</el-row>
-						<el-tabs v-model="activateTabPaneName">
+						<el-tabs v-model="activateTabPaneName" class="padding-left padding-right">
 							<el-tab-pane name="1" label="基本信息">
 								<el-row> 
 										<el-col :span="6">
