@@ -59,7 +59,7 @@
 								</el-form-item>
 							</el-col>
 						</el-row>
-						<el-tabs value="1">
+						<el-tabs v-model="activateTabPaneName">
 							<el-tab-pane name="1" label="基本信息">
 								<el-row> 
 										<el-col :span="6">
@@ -93,35 +93,22 @@
 
 								
 								<el-form-item label="缺陷描述" prop="description">
- 										<el-button icon="el-icon-refresh" @click="descriptionEditorVisible=!descriptionEditorVisible" type="text">点击切换为富文本编辑|普通文本</el-button>
- 									<div v-if="descriptionEditorVisible==false">
-										<el-input  style="width:100%;" v-model="addForm.description" type="textarea" :rows="6"> </el-input>
-									</div>
-									<div v-else>
-										<vue-editor class="rich-context" :id="'description_'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.description"></vue-editor>
-									</div>
+ 										 
+										<vue-editor v-if="visible && activateTabPaneName=='1'" class="rich-context" :id="'description_'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.description"></vue-editor>
+									 
 								</el-form-item>
 							</el-tab-pane>
 							<el-tab-pane label="测试步骤" name="2">
 								<el-form-item label="测试步骤" prop="opStep">
- 										<el-button icon="el-icon-refresh" @click="opStepEditorVisible=!opStepEditorVisible" type="text">点击切换为富文本编辑|普通文本</el-button>
- 									<div v-if="opStepEditorVisible==false">
-										<el-input  style="width:100%;" v-model="addForm.opStep" type="textarea" :rows="6"> </el-input>
-									</div>
-									<div v-else>
-										<vue-editor  :id="'opStep'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.opStep" ref="opStep"></vue-editor>
-									</div>
+ 										 
+										<vue-editor  v-if="visible && activateTabPaneName=='2'"   :id="'opStep'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.opStep" ref="opStep"></vue-editor>
+									 
 								</el-form-item>
 							</el-tab-pane>
 							<el-tab-pane label="预期结果" name="3">
-								<el-form-item label="预期结果" prop="expectResult">
- 										<el-button icon="el-icon-refresh" @click="expectResultEditorVisible=!expectResultEditorVisible" type="text">点击切换为富文本编辑|普通文本</el-button>
- 									<div v-if="expectResultEditorVisible==false">
-										<el-input  style="width:100%;" v-model="addForm.expectResult" type="textarea" :rows="6"> </el-input>
-									</div>
-									<div v-else>
-										<vue-editor v-if="expectResultEditorVisible==true" :id="'expectResult'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.expectResult"  ref="expectResult"></vue-editor>
-									</div>
+								<el-form-item label="预期结果" prop="expectResult"> 
+										<vue-editor v-if="visible && activateTabPaneName=='3'" :id="'expectResult'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.expectResult"  ref="expectResult"></vue-editor>
+									 
 								</el-form-item>
 							</el-tab-pane> 
 						</el-tabs> 
@@ -265,12 +252,9 @@
 				userFieldName:'',
 				selectTaskVisible:false,
 				selectMenuVisible:false,
-				selectProjectVisible:false,
-				opStepEditorVisible:false,
-				expectResultEditorVisible:false,
-				descriptionEditorVisible:false,
-				xmProductVersions:[{id:"1.0.0" ,name:'1.0.0'}],
-
+				selectProjectVisible:false,   
+				xmProductVersions:[{id:"1.0.0" ,name:'1.0.0'}], 
+				activateTabPaneName:'1',
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data

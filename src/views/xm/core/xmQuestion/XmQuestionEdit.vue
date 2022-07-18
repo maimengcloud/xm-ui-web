@@ -124,14 +124,8 @@
 							</el-tab-pane>
 							
 							<el-tab-pane label="缺陷描述" name="12">
-								<el-form-item label="" prop="description" label-width="0px"> 
-										<el-button icon="el-icon-refresh" @click="descriptionEditorVisible=!descriptionEditorVisible" type="text">点击切换为富文本编辑|普通文本</el-button>
- 									<div v-if="descriptionEditorVisible==false">
-										<el-input  style="width:100%;" v-model="editForm.description" type="textarea" :rows="6"> </el-input>
-									</div>
-									<div v-else>
-										<vue-editor class="rich-context" :id="'description_'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.description"></vue-editor>
-									</div>
+								<el-form-item label="" prop="description" label-width="0px">  
+										<vue-editor v-if="visible && activateTabPaneName=='12'" class="rich-context" :id="'description_'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.description"></vue-editor> 
 								</el-form-item>
 								<el-row class="page-bottom">
 										<el-button @click.native="handleCancel">取消</el-button>
@@ -140,13 +134,9 @@
 							</el-tab-pane>
 							<el-tab-pane label="测试步骤" name="2">
 								<el-form-item label="" prop="opStep"  label-width="0px">
- 										<el-button icon="el-icon-refresh" @click="opStepEditorVisible=!opStepEditorVisible" type="text">点击切换为富文本编辑|普通文本</el-button>
- 									<div v-if="opStepEditorVisible==false">
-										<el-input  style="width:100%;" v-model="editForm.opStep" type="textarea" :rows="6"> </el-input>
-									</div>
-									<div v-else>
-										<vue-editor  :id="'opStep'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.opStep" ref="opStep"></vue-editor>
-									</div>
+  									 
+										<vue-editor  v-if="visible && activateTabPaneName=='2'" class="rich-context"   :id="'opStep'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.opStep" ref="opStep"></vue-editor>
+									 
 								</el-form-item>
 								
 								<el-row class="page-bottom">
@@ -156,13 +146,9 @@
 							</el-tab-pane>
 							<el-tab-pane label="预期结果" name="3">
 								<el-form-item label="" prop="expectResult" label-width="0px">
- 										<el-button icon="el-icon-refresh" @click="expectResultEditorVisible=!expectResultEditorVisible" type="text">点击切换为富文本编辑|普通文本</el-button>
- 									<div v-if="expectResultEditorVisible==false">
-										<el-input  style="width:100%;" v-model="editForm.expectResult" type="textarea" :rows="6"> </el-input>
-									</div>
-									<div v-else>
-										<vue-editor v-if="expectResultEditorVisible==true" :id="'expectResult'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.expectResult"  ref="expectResult"></vue-editor>
-									</div>
+ 										 
+										<vue-editor v-if="visible && activateTabPaneName=='3'" class="rich-context"  :id="'expectResult'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.expectResult"  ref="expectResult"></vue-editor>
+									 
 								</el-form-item>
 								
 								<el-row class="page-bottom">
@@ -173,19 +159,15 @@
 
 							<el-tab-pane label="处理意见" name="4"> 
 								<el-row>
-									<el-col :span="16">
+									<el-col :span="flowInfoVisible?16:24">
+										<el-button class="padding"  @click="flowInfoVisible=!flowInfoVisible" type="text">{{flowInfoVisible?'去隐藏':'去显示'}}流转记录</el-button>
 										<el-form-item  prop="remarks" label-width="0px">  
-											<el-button icon="el-icon-refresh" @click="receiptMessageEditorVisible=!receiptMessageEditorVisible" type="text">点击切换为富文本编辑|普通文本</el-button>
 											 
-											<el-button   @click="flowInfoVisible=!flowInfoVisible" type="text">流转历史</el-button>
+											
+ 
+												<vue-editor v-if="visible && activateTabPaneName=='4'" class="rich-context" :id="'receiptMessage_'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.remarks"></vue-editor>
 
-											<div v-if="receiptMessageEditorVisible==false">
-												<el-input  style="width:100%;" v-model="editForm.remarks" type="textarea" :rows="6"> </el-input>
-											</div>
-											<div v-else>
-												<vue-editor style="max-width:100%;" :id="'receiptMessage_'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.remarks"></vue-editor>
-
-											</div>
+											 
 										</el-form-item>
 										
 										<el-row class="page-bottom">
@@ -193,7 +175,8 @@
 												<el-button v-if="editForm.remarks!=editFormBak.remarks" v-loading="load.edit" type="primary" @click.native="editXmQuestionSomeFields(editForm,'remarks',editForm.remarks)" :disabled="load.edit==true">保存</el-button> 
 										</el-row>
 									</el-col>
-									<el-col :span="8">
+									<el-col :span="flowInfoVisible?8:0">
+										
 										<xm-question-handle-mng class="padding-left" v-if="activateTabPaneName=='4' && flowInfoVisible==true" :bug="editForm" :visible="flowInfoVisible"></xm-question-handle-mng>
 									</el-col>
 								</el-row>
