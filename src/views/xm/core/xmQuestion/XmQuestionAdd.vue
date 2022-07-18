@@ -92,22 +92,22 @@
 								</el-row>
 
 								
-								<el-form-item label="缺陷描述" prop="description">
+								<el-form-item label="" prop="description"  label-width="0px">
  										 
 										<vue-editor v-if="visible && activateTabPaneName=='1'" class="rich-context" :id="'description_'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.description"></vue-editor>
 									 
 								</el-form-item>
 							</el-tab-pane>
 							<el-tab-pane label="测试步骤" name="2">
-								<el-form-item label="测试步骤" prop="opStep">
+								<el-form-item label="" prop="opStep" label-width="0px">
  										 
-										<vue-editor  v-if="visible && activateTabPaneName=='2'"   :id="'opStep'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.opStep" ref="opStep"></vue-editor>
+										<vue-editor  v-if="visible && activateTabPaneName=='2'" class="rich-context"  :id="'opStep'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.opStep" ref="opStep"></vue-editor>
 									 
 								</el-form-item>
 							</el-tab-pane>
 							<el-tab-pane label="预期结果" name="3">
-								<el-form-item label="预期结果" prop="expectResult"> 
-										<vue-editor v-if="visible && activateTabPaneName=='3'" :id="'expectResult'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.expectResult"  ref="expectResult"></vue-editor>
+								<el-form-item label="" prop="expectResult"  label-width="0px"> 
+										<vue-editor v-if="visible && activateTabPaneName=='3'" class="rich-context" :id="'expectResult'+addForm.id" :branch-id="userInfo.branchId" v-model="addForm.expectResult"  ref="expectResult"></vue-editor>
 									 
 								</el-form-item>
 							</el-tab-pane> 
