@@ -2,15 +2,15 @@
 	<section class="page-container border padding">
 		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
-			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestCases" icon="el-icon-search">查询</el-button>
+			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestPlanCases" icon="el-icon-search">查询</el-button>
 			<span style="float:right;">
 			    <el-button type="primary" @click="showAdd" icon="el-icon-plus" plain> </el-button>
 			    <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete" plain></el-button>
 		    </span>
 		</el-row>
 		<el-row class="padding-top">
-			<!--列表 XmTestCase 测试用例-->
-			<el-table ref="xmTestCaseTable" :data="xmTestCases" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<!--列表 XmTestPlanCase 测试计划与用例关系表-->
+			<el-table ref="xmTestPlanCaseTable" :data="xmTestPlanCases" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column>
 				<el-table-column sortable type="index" width="55" show-overflow-tooltip  fixed="left"></el-table-column>
 				<!--
@@ -19,40 +19,15 @@
 				    <span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
 				</el-table-column>
 				-->
-				<el-table-column prop="id" label="主键" min-width="120" show-overflow-tooltip  fixed="left"></el-table-column>
-				<el-table-column prop="caseName" label="标题" min-width="120" show-overflow-tooltip>
+				<el-table-column prop="caseId" label="测试用例编号" min-width="120" show-overflow-tooltip  fixed="left"></el-table-column>				<el-table-column prop="planId" label="计划编号" min-width="120" show-overflow-tooltip  fixed="left"></el-table-column>
+				<el-table-column prop="bugs" label="bug数目" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-				        <span> {{scope.row.caseName}} </span>
+				        <span> {{scope.row.bugs}} </span>
                     </template>
 				</el-table-column>
-				<el-table-column prop="caseRemark" label="备注" min-width="120" show-overflow-tooltip>
+				<el-table-column prop="execUserid" label="执行人" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-				        <span> {{scope.row.caseRemark}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="testStep" label="测试步骤" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.testStep}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="expectResult" label="期望结果" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.expectResult}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="menuId" label="关联的故事" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.menuId}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="menuName" label="关联故事名" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.menuName}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="ctime" label="创建时间" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.ctime}} </span>
+				        <span> {{scope.row.execUserid}} </span>
                     </template>
 				</el-table-column>
 				<el-table-column prop="ltime" label="更新时间" min-width="120" show-overflow-tooltip>
@@ -60,64 +35,39 @@
 				        <span> {{scope.row.ltime}} </span>
                     </template>
 				</el-table-column>
-				<el-table-column prop="luserid" label="更新人编号" min-width="120" show-overflow-tooltip>
+				<el-table-column prop="ctime" label="创建时间" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-				        <span> {{scope.row.luserid}} </span>
+				        <span> {{scope.row.ctime}} </span>
                     </template>
 				</el-table-column>
-				<el-table-column prop="lusername" label="更新人姓名" min-width="120" show-overflow-tooltip>
+				<el-table-column prop="execStatus" label="0-未测，1-通过，2-受阻，3-忽略，4-失败" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-				        <span> {{scope.row.lusername}} </span>
+				        <span> {{scope.row.execStatus}} </span>
                     </template>
 				</el-table-column>
-				<el-table-column prop="cbranchId" label="创建机构" min-width="120" show-overflow-tooltip>
+				<el-table-column prop="execUsername" label="执行人姓名" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-				        <span> {{scope.row.cbranchId}} </span>
+				        <span> {{scope.row.execUsername}} </span>
                     </template>
 				</el-table-column>
-				<el-table-column prop="moduleId" label="模块编号" min-width="120" show-overflow-tooltip>
+				<el-table-column prop="caseName" label="用例名称" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-				        <span> {{scope.row.moduleId}} </span>
+				        <span> {{scope.row.caseName}} </span>
                     </template>
 				</el-table-column>
-				<el-table-column prop="moduleName" label="模块名称" min-width="120" show-overflow-tooltip>
+				<el-table-column prop="priority" label="优先级" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-				        <span> {{scope.row.moduleName}} </span>
+				        <span> {{scope.row.priority}} </span>
                     </template>
 				</el-table-column>
-				<el-table-column prop="caseStatus" label="用例状态1正常0废弃" min-width="120" show-overflow-tooltip>
+				<el-table-column prop="remark" label="执行备注" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-				        <span> {{scope.row.caseStatus}} </span>
+				        <span> {{scope.row.remark}} </span>
                     </template>
 				</el-table-column>
-				<el-table-column prop="cuserid" label="创建人编号" min-width="120" show-overflow-tooltip>
+				<el-table-column prop="testStep" label="测试步骤" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-				        <span> {{scope.row.cuserid}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="cusername" label="创建人姓名" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.cusername}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="productId" label="产品编号" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.productId}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="verNum" label="版本号" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.verNum}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="casedbId" label="用例库编号" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.casedbId}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="casedbName" label="用例库名称" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.casedbName}} </span>
+				        <span> {{scope.row.testStep}} </span>
                     </template>
 				</el-table-column>
 				<el-table-column label="操作" width="180" fixed="right">
@@ -130,14 +80,14 @@
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 		</el-row>
 		<el-row>
-			<!--编辑 XmTestCase 测试用例界面-->
-			<el-drawer title="编辑测试用例" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
-			    <xm-test-case-edit op-type="edit" :xm-test-case="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-test-case-edit>
+			<!--编辑 XmTestPlanCase 测试计划与用例关系表界面-->
+			<el-drawer title="编辑测试计划与用例关系表" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
+			    <xm-test-plan-case-edit op-type="edit" :xm-test-plan-case="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-test-plan-case-edit>
 			</el-drawer>
 
-			<!--新增 XmTestCase 测试用例界面-->
-			<el-drawer title="新增测试用例" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
-			    <xm-test-case-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-test-case-edit>
+			<!--新增 XmTestPlanCase 测试计划与用例关系表界面-->
+			<el-drawer title="新增测试计划与用例关系表" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
+			    <xm-test-plan-case-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-test-plan-case-edit>
 			</el-drawer>
 	    </el-row>
 	</section>
@@ -147,14 +97,14 @@
 
 import util from '@/common/js/util';//全局公共库
 import config from '@/common/config';//全局公共库
-import { initDicts,listXmTestCase, delXmTestCase, batchDelXmTestCase,editSomeFieldsXmTestCase } from '@/api/xm/core/xmTestCase';
-import  XmTestCaseEdit from './XmTestCaseEdit';//新增修改界面
+import { initDicts,listXmTestPlanCase, delXmTestPlanCase, batchDelXmTestPlanCase,editSomeFieldsXmTestPlanCase } from '@/api/xm/core/xmTestPlanCase';
+import  XmTestPlanCaseEdit from './XmTestPlanCaseEdit';//新增修改界面
 import { mapGetters } from 'vuex'
 
 export default {
-    name:'xmTestCaseMng',
+    name:'xmTestPlanCaseMng',
     components: {
-        XmTestCaseEdit,
+        XmTestPlanCaseEdit,
     },
     props:['visible'],
     computed: {
@@ -165,7 +115,7 @@ export default {
         visible(val){
             if(val==true){
                 this.initData();
-                this.searchXmTestCases()
+                this.searchXmTestPlanCases()
             }
         }
     },
@@ -174,7 +124,7 @@ export default {
             filters: {
                 key: ''
             },
-            xmTestCases: [],//查询结果
+            xmTestPlanCases: [],//查询结果
             pageInfo:{//分页数据
                 total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
                 pageSize:10,//每页数据
@@ -188,14 +138,14 @@ export default {
             dicts:{
                 //sex: [{id:'1',name:'男'},{id:'2',name:'女'}]
             },//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
-            addFormVisible: false,//新增xmTestCase界面是否显示
+            addFormVisible: false,//新增xmTestPlanCase界面是否显示
             addForm: {
-                id:'',caseName:'',caseRemark:'',testStep:'',expectResult:'',menuId:'',menuName:'',ctime:'',ltime:'',luserid:'',lusername:'',cbranchId:'',moduleId:'',moduleName:'',caseStatus:'',cuserid:'',cusername:'',productId:'',verNum:'',casedbId:'',casedbName:''
+                bugs:'',execUserid:'',caseId:'',ltime:'',ctime:'',execStatus:'',execUsername:'',planId:'',caseName:'',priority:'',remark:'',testStep:''
             },
 
             editFormVisible: false,//编辑界面是否显示
             editForm: {
-                id:'',caseName:'',caseRemark:'',testStep:'',expectResult:'',menuId:'',menuName:'',ctime:'',ltime:'',luserid:'',lusername:'',cbranchId:'',moduleId:'',moduleName:'',caseStatus:'',cuserid:'',cusername:'',productId:'',verNum:'',casedbId:'',casedbName:''
+                bugs:'',execUserid:'',caseId:'',ltime:'',ctime:'',execStatus:'',execUsername:'',planId:'',caseName:'',priority:'',remark:'',testStep:''
             },
             maxTableHeight:300,
         }
@@ -206,11 +156,11 @@ export default {
 
         handleSizeChange(pageSize) {
             this.pageInfo.pageSize=pageSize;
-            this.getXmTestCases();
+            this.getXmTestPlanCases();
         },
         handleCurrentChange(pageNum) {
             this.pageInfo.pageNum = pageNum;
-            this.getXmTestCases();
+            this.getXmTestPlanCases();
         },
         // 表格排序 obj.order=ascending/descending,需转化为 asc/desc ; obj.prop=表格中的排序字段,字段驼峰命名
         sortChange( obj ){
@@ -228,14 +178,14 @@ export default {
                 this.pageInfo.orderFields=[util.toLine(obj.prop)];
                 this.pageInfo.orderDirs=[dir];
             }
-            this.getXmTestCases();
+            this.getXmTestPlanCases();
         },
-        searchXmTestCases(){
+        searchXmTestPlanCases(){
              this.pageInfo.count=true;
-             this.getXmTestCases();
+             this.getXmTestPlanCases();
         },
-        //获取列表 XmTestCase 测试用例
-        getXmTestCases() {
+        //获取列表 XmTestPlanCase 测试计划与用例关系表
+        getXmTestPlanCases() {
             let params = {
                 pageSize: this.pageInfo.pageSize,
                 pageNum: this.pageInfo.pageNum,
@@ -254,12 +204,12 @@ export default {
             }
 
             this.load.list = true;
-            listXmTestCase(params).then((res) => {
+            listXmTestPlanCase(params).then((res) => {
                 var tips=res.data.tips;
                 if(tips.isOk){
                     this.pageInfo.total = res.data.total;
                     this.pageInfo.count=false;
-                    this.xmTestCases = res.data.data;
+                    this.xmTestPlanCases = res.data.data;
                 }else{
                     this.$notify({ position:'bottom-left',showClose:true, message: tips.msg, type: 'error' });
                 }
@@ -267,12 +217,12 @@ export default {
             }).catch( err => this.load.list = false );
         },
 
-        //显示编辑界面 XmTestCase 测试用例
+        //显示编辑界面 XmTestPlanCase 测试计划与用例关系表
         showEdit: function ( row,index ) {
             this.editFormVisible = true;
             this.editForm = Object.assign({}, row);
         },
-        //显示新增界面 XmTestCase 测试用例
+        //显示新增界面 XmTestPlanCase 测试计划与用例关系表
         showAdd: function () {
             this.addFormVisible = true;
             //this.addForm=Object.assign({}, this.editForm);
@@ -280,49 +230,49 @@ export default {
         afterAddSubmit(){
             this.addFormVisible=false;
             this.pageInfo.count=true;
-            this.getXmTestCases();
+            this.getXmTestPlanCases();
         },
         afterEditSubmit(){
             this.editFormVisible=false;
         },
-        //选择行xmTestCase
+        //选择行xmTestPlanCase
         selsChange: function (sels) {
             this.sels = sels;
         },
-        //删除xmTestCase
+        //删除xmTestPlanCase
         handleDel: function (row,index) {
             this.$confirm('确认删除该记录吗?', '提示', {
                 type: 'warning'
             }).then(() => {
                 this.load.del=true;
-                let params = {  id:row.id };
-                delXmTestCase(params).then((res) => {
+                let params = {  caseId:row.caseId,  planId:row.planId };
+                delXmTestPlanCase(params).then((res) => {
                     this.load.del=false;
                     var tips=res.data.tips;
                     if(tips.isOk){
-                        this.searchXmTestCases();
+                        this.searchXmTestPlanCases();
                     }
                     this.$notify({ position:'bottom-left', showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
                 }).catch( err  => this.load.del=false );
             });
         },
-        //批量删除xmTestCase
+        //批量删除xmTestPlanCase
         batchDel: function () {
             if(this.sels.length<=0){
                 return;
             }
             var params=this.sels.map(i=>{
-                return { id:i.id}
+                return { caseId:i.caseId,  planId:i.planId}
             })
             this.$confirm('确认删除选中记录吗？', '提示', {
                 type: 'warning'
             }).then(() => {
                 this.load.del=true;
-                batchDelXmTestCase(params).then((res) => {
+                batchDelXmTestPlanCase(params).then((res) => {
                     this.load.del=false;
                     var tips=res.data.tips;
                     if( tips.isOk ){
-                        this.searchXmTestCases();
+                        this.searchXmTestPlanCases();
                     }
                     this.$notify({ position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
                 }).catch( err  => this.load.del=false );
@@ -331,22 +281,22 @@ export default {
       editSomeFields(row,fieldName,$event){
         let params={};
         if(this.sels.length>0){
-          if(!this.sels.some(k=> k.id==row.id)){
+          if(!this.sels.some(k=> k.caseId==row.caseId &&  k.planId==row.planId)){
             this.$notify({position:'bottom-left',showClose:true,message:'请编辑选中的行',type:'warning'})
             Object.assign(this.editForm,this.editFormBak)
             return;
           }
-            params['ids']=this.sels.map(i=>i.id)
+            params['pkList']=this.sels.map(i=>{ return { caseId:i.caseId,  planId:i.planId}})
         }else{
-            params['ids']=[row].map(i=>i.id)
+            params['pkList']=[row].map(i=>{ return { caseId:i.caseId,  planId:i.planId}})
         }
         params[fieldName]=$event
-        var func = editSomeFieldsXmTestCase
+        var func = editSomeFieldsXmTestPlanCase
         func(params).then(res=>{
           let tips = res.data.tips;
           if(tips.isOk){
             if(this.sels.length>0){
-                this.searchXmTestCases();
+                this.searchXmTestPlanCases();
             }
             this.editFormBak=[...this.editForm]
           }else{
@@ -369,8 +319,8 @@ export default {
         this.$nextTick(() => {
             initDicts(this);
             this.initData()
-            this.searchXmTestCases();
-            this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmTestCaseTable.$el)
+            this.searchXmTestPlanCases();
+            this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmTestPlanCaseTable.$el)
 
         });
     }

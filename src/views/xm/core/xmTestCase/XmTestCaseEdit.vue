@@ -1,154 +1,206 @@
 <template>
-	<section class="padding">
-		<el-row>
-			<!--新增界面 XmTestCase 测试用例-->
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
+	<section  class="page-container padding">
+	    <el-row class="page-header">
+	    </el-row>
+		<el-row class="page-main" :style="{overflowX:'auto',height:maxTableHeight+'px'}" ref="table">
+		<!--编辑界面 XmTestCase 测试用例--> 
+			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">
+				<el-form-item label="主键" prop="id">
+					<el-input v-model="editForm.id" placeholder="主键" :maxlength="50" @change="editSomeFields(editForm,'id',$event)"></el-input>
+				</el-form-item> 
 				<el-form-item label="标题" prop="caseName">
-					<el-input v-model="editForm.caseName" placeholder="标题" ></el-input>
-				</el-form-item>
+					<el-input v-model="editForm.caseName" placeholder="标题" :maxlength="255" @change="editSomeFields(editForm,'caseName',$event)"></el-input>
+				</el-form-item> 
+				<el-form-item label="备注" prop="caseRemark">
+					<el-input v-model="editForm.caseRemark" placeholder="备注" :maxlength="2147483647" @change="editSomeFields(editForm,'caseRemark',$event)"></el-input>
+				</el-form-item> 
+				<el-form-item label="测试步骤" prop="testStep">
+					<el-input v-model="editForm.testStep" placeholder="测试步骤" :maxlength="2147483647" @change="editSomeFields(editForm,'testStep',$event)"></el-input>
+				</el-form-item> 
+				<el-form-item label="期望结果" prop="expectResult">
+					<el-input v-model="editForm.expectResult" placeholder="期望结果" :maxlength="2147483647" @change="editSomeFields(editForm,'expectResult',$event)"></el-input>
+				</el-form-item> 
+				<el-form-item label="关联的故事" prop="menuId">
+					<el-input v-model="editForm.menuId" placeholder="关联的故事" :maxlength="50" @change="editSomeFields(editForm,'menuId',$event)"></el-input>
+				</el-form-item> 
+				<el-form-item label="关联故事名" prop="menuName">
+					<el-input v-model="editForm.menuName" placeholder="关联故事名" :maxlength="255" @change="editSomeFields(editForm,'menuName',$event)"></el-input>
+				</el-form-item> 
+				<el-form-item label="创建时间" prop="ctime">
+					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.ctime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
+				</el-form-item> 
+				<el-form-item label="更新时间" prop="ltime">
+					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.ltime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
+				</el-form-item> 
+				<el-form-item label="更新人编号" prop="luserid">
+					<el-input v-model="editForm.luserid" placeholder="更新人编号" :maxlength="50" @change="editSomeFields(editForm,'luserid',$event)"></el-input>
+				</el-form-item> 
+				<el-form-item label="更新人姓名" prop="lusername">
+					<el-input v-model="editForm.lusername" placeholder="更新人姓名" :maxlength="255" @change="editSomeFields(editForm,'lusername',$event)"></el-input>
+				</el-form-item> 
+				<el-form-item label="创建机构" prop="cbranchId">
+					<el-input v-model="editForm.cbranchId" placeholder="创建机构" :maxlength="50" @change="editSomeFields(editForm,'cbranchId',$event)"></el-input>
+				</el-form-item> 
+				<el-form-item label="模块编号" prop="moduleId">
+					<el-input v-model="editForm.moduleId" placeholder="模块编号" :maxlength="50" @change="editSomeFields(editForm,'moduleId',$event)"></el-input>
+				</el-form-item> 
 				<el-form-item label="模块名称" prop="moduleName">
-					<el-input v-model="editForm.moduleName" placeholder="模块名称" ></el-input>
-				</el-form-item>
-				<el-form-item label="关联的需求" prop="menuId">
-					<el-tag v-if="editForm.menuId && editForm.menuId!=''"  @close="clearFiltersMneu">{{editForm.menuName?editForm.menuName:editForm.menuId}}</el-tag>
-					<el-tag v-else>还没关联任何需求</el-tag>
-					<el-button v-if="!editForm.menuId"  @click="showMenu">关联需求</el-button>
-				</el-form-item>
-				<el-form-item label="状态" prop="moduleName">
-					<el-radio v-model="editForm.caseStatus" label="1" placeholder="状态" >正常</el-radio>
-					<el-radio v-model="editForm.caseStatus" label="0" placeholder="状态" >作废</el-radio>
-
-				</el-form-item>
-				<el-form-item label="测试步骤" prop="testStep"> 
-							<vue-editor v-if="visible"  :id="'testStep3'" :branch-id="userInfo.branchId" v-model="editForm.testStep" ref="testStep" key="1"></vue-editor>
-				 
- 					 
- 				</el-form-item>
-				<el-form-item label="预期结果" prop="expectResult"> 
- 				 
-							<vue-editor v-if="visible" :id="'expectResult3'" :branch-id="userInfo.branchId" v-model="editForm.expectResult"  ref="expectResult" key="2"></vue-editor>
-					 
- 				</el-form-item>
-				<el-form-item>
- 						<el-button @click.native="handleCancel">取消</el-button>
-						<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>
- 				</el-form-item>
+					<el-input v-model="editForm.moduleName" placeholder="模块名称" :maxlength="255" @change="editSomeFields(editForm,'moduleName',$event)"></el-input>
+				</el-form-item> 
+				<el-form-item label="用例状态1正常0废弃" prop="caseStatus">
+					<el-input v-model="editForm.caseStatus" placeholder="用例状态1正常0废弃" :maxlength="1" @change="editSomeFields(editForm,'caseStatus',$event)"></el-input>
+				</el-form-item> 
+				<el-form-item label="创建人编号" prop="cuserid">
+					<el-input v-model="editForm.cuserid" placeholder="创建人编号" :maxlength="50" @change="editSomeFields(editForm,'cuserid',$event)"></el-input>
+				</el-form-item> 
+				<el-form-item label="创建人姓名" prop="cusername">
+					<el-input v-model="editForm.cusername" placeholder="创建人姓名" :maxlength="255" @change="editSomeFields(editForm,'cusername',$event)"></el-input>
+				</el-form-item> 
+				<el-form-item label="产品编号" prop="productId">
+					<el-input v-model="editForm.productId" placeholder="产品编号" :maxlength="50" @change="editSomeFields(editForm,'productId',$event)"></el-input>
+				</el-form-item> 
+				<el-form-item label="版本号" prop="verNum">
+					<el-input v-model="editForm.verNum" placeholder="版本号" :maxlength="50" @change="editSomeFields(editForm,'verNum',$event)"></el-input>
+				</el-form-item> 
+				<el-form-item label="用例库编号" prop="casedbId">
+					<el-input v-model="editForm.casedbId" placeholder="用例库编号" :maxlength="50" @change="editSomeFields(editForm,'casedbId',$event)"></el-input>
+				</el-form-item> 
+				<el-form-item label="用例库名称" prop="casedbName">
+					<el-input v-model="editForm.casedbName" placeholder="用例库名称" :maxlength="255" @change="editSomeFields(editForm,'casedbName',$event)"></el-input>
+				</el-form-item> 
 			</el-form>
+		</el-row>
 
-		<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible" size="60%"   :close-on-click-modal="false">
-			<xm-menu-select checkScope="3" :visible="menuVisible" :is-select-menu="true" :multi="true"  @menus-selected="onSelectedMenus" ></xm-menu-select>
-		</el-drawer>
+		<el-row v-if="opType=='add'" class="page-bottom bottom-fixed">
+		    <el-button @click.native="handleCancel">取消</el-button>
+            <el-button v-loading="load.edit" type="primary" @click.native="saveSubmit" :disabled="load.edit==true">提交</el-button>
 		</el-row>
 	</section>
 </template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { editXmTestCase } from '@/api/xm/core/xmTestCase';
+	import config from "@/common/config"; //全局公共库import
+ 	import { initDicts, addXmTestCase,editXmTestCase,editSomeFieldsXmTestCase } from '@/api/xm/core/xmTestCase';
 	import { mapGetters } from 'vuex'
-	import xmMenuSelect from '../xmMenu/XmMenuSelect';
-	import VueEditor from '@/components/Tinymce/index';
-
+	
 	export default {
+	    name:'xmTestCaseEdit',
+	    components: {
+
+        },
 		computed: {
-		    ...mapGetters([
-		      'userInfo','roles'
-		    ])
+		    ...mapGetters([ 'userInfo'  ]),
+
 		},
-		props:['xmTestCase','visible'],
+		props:['xmTestCase','visible','opType'],
+
 		watch: {
 	      'xmTestCase':function( xmTestCase ) {
-	        this.editForm = xmTestCase;
+	        if(xmTestCase){
+	            this.editForm = {...xmTestCase};
+	        }
+
 	      },
-	      'visible':function(visible) {
+	      'visible':function(visible) { 
 	      	if(visible==true){
-	      		//从新打开页面时某些数据需要重新加载，可以在这里添加
+ 	      		this.initData()
 	      	}
-	      }
+	      } 
 	    },
 		data() {
 			return {
-				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
-				load:{ list: false, add: false, del: false, edit: false },//查询中...
+			    currOpType:'add',//add/edit
+ 				load:{ list: false, edit: false, del: false, add: false },//查询中...
+				dicts:{},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				editFormRules: {
-					menuId: [
-						{ required: true, message: '需求不能为空', trigger: 'blur' }
-					],
-					caseName: [
-						{ required: true, message: '标题不能为空', trigger: 'blur' }
+					id: [
+						//{ required: true, message: '主键不能为空', trigger: 'blur' }
 					]
 				},
-				//新增界面数据 测试用例
 				editForm: {
-					id:'',caseName:'',caseRemark:'',testStep:'',expectResult:'',menuId:'',menuName:'',ctime:'',ltime:'',luserid:'',lusername:'',cbranchId:'',moduleId:'',moduleName:'',caseStatus:''
+					id:'',caseName:'',caseRemark:'',testStep:'',expectResult:'',menuId:'',menuName:'',ctime:'',ltime:'',luserid:'',lusername:'',cbranchId:'',moduleId:'',moduleName:'',caseStatus:'',cuserid:'',cusername:'',productId:'',verNum:'',casedbId:'',casedbName:''
 				},
-				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
-				menuVisible:false,
-
-				/**end 在上面加自定义属性**/
+                maxTableHeight:300,
 			}//end return
 		},//end data
 		methods: {
+
+		    ...util,
+
 			// 取消按钮点击 父组件监听@cancel="editFormVisible=false" 监听
 			handleCancel:function(){
-				this.$refs['editForm'].resetFields();
+				this.$refs['editFormRef'].resetFields();
 				this.$emit('cancel');
 			},
-			//新增提交XmTestCase 测试用例 父组件监听@submit="afterAddSubmit"
-			editSubmit: function () { 
-				this.$refs.editForm.validate((valid) => {
+			//新增、编辑提交XmTestCase 测试用例父组件监听@submit="afterEditSubmit"
+			saveSubmit: function () {
+				this.$refs.editFormRef.validate((valid) => {
 					if (valid) {
-
-						this.$confirm('确认提交吗？', '提示', {}).then(() => {
+						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
 							this.load.edit=true
 							let params = Object.assign({}, this.editForm);
- 							params.luserid=this.userInfo.userid
-							params.lusername=this.userInfo.username
-							editXmTestCase(params).then((res) => {
-								this.load.edit=false
-								var tips=res.data.tips;
-								if(tips.isOk){
- 									this.$emit('submit');//  @submit="afterAddSubmit"
-								}
-								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
-							}).catch( err  => this.load.edit=false);
+							var func=addXmTestCase
+							if(this.currOpType=='edit'){
+							    func=editXmTestCase
+							}
+							func(params).then((res) => {
+                                this.load.edit=false
+                                var tips=res.data.tips;
+                                if(tips.isOk){
+                                    this.editForm=res.data.data
+                                    this.initData()
+                                    this.currOpType="edit";
+                                    this.$emit('submit');//  @submit="afterAddSubmit"
+                                }
+                                this.$notify({ position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
+                            }).catch( err =>this.load.edit=false);
 						});
+					}else{
+					    this.$notify({ showClose:true, message: "表单验证不通过，请修改表单数据再提交", type: 'error' });
 					}
 				});
 			},
-			/**begin 在下面加自定义方法,记得补上面的一个逗号**/
-			showMenu(){
-				this.menuVisible=true;
-			},
-			onSelectedMenus(menus){
-				if(!menus || menus.length==0){
-					this.menuVisible=false
-					return;
-				}
-				this.menuVisible=false
-				this.editForm.menuId= menus[0].menuId
-				this.editForm.menuName= menus[0].menuName
-				this.$refs.editForm.validateField('menuId',valid=>{})
+			initData: function(){
+			    this.currOpType=this.opType
+			    if(this.xmTestCase){
+                    this.editForm = Object.assign({},this.xmTestCase);
+                }
 
- 			},
-			clearFiltersMneu(menu){
-				this.editForm.menuId=""
-				this.editForm.menuName=""
-				this.$refs.editForm.validateField('menuId',valid=>{})
-   			}
-			/**end 在上面加自定义方法**/
+                if(this.opType=='edit'){
 
+                }else{
+
+                }
+                this.editFormBak={...this.editForm}
+            },
+
+            editSomeFields(row,fieldName,$event){
+                if(this.opType=='add'){
+                    return;
+                }
+                let params={};
+                params['ids']=[row].map(i=>i.id)
+                params[fieldName]=$event
+                var func = editSomeFieldsXmTestCase
+                func(params).then(res=>{
+                  let tips = res.data.tips;
+                  if(tips.isOk){
+                    this.editFormBak=[...this.editForm]
+                  }else{
+                    Object.assign(this.editForm,this.editFormBak)
+                    this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+                  }
+                }).catch((e)=>Object.assign(this.editForm,this.editFormBak))
+            },
 		},//end method
-		components: {
-			//在下面添加其它组件 'xm-test-case-edit':XmTestCaseEdit
-			xmMenuSelect,VueEditor
-		},
 		mounted() {
-			this.editForm=Object.assign(this.editForm, this.xmTestCase);
-			/**在下面写其它函数***/
-
-		}//end mounted
+		    this.$nextTick(() => {
+                initDicts(this);
+                this.initData()
+                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el)
+            });
+		}
 	}
 
 </script>
