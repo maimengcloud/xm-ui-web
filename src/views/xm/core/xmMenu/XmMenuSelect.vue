@@ -398,10 +398,9 @@ import XmEpicFeatures from './XmEpicFeaturesSelect.vue';
 				
 				if(this.filters.dclasss){
 					params.dclasss=this.filters.dclasss
-				}
-				
+				} 
 				if(this.parentMenu && this.parentMenu.menuId){
-					params.pmenuId=this.parentMenu.menuId
+					params.pidPathsLike=this.parentMenu.pidPaths
 				}
 				return params;
 			},

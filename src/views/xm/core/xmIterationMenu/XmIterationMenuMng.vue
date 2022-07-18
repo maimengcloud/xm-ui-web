@@ -148,9 +148,9 @@
 		methods: {
 			onEpicFeatureSelect(parentMenu){
 				if(parentMenu && parentMenu.menuId){
-					this.filters.pmenuId=parentMenu.menuId
+					this.filters.parentMenu=parentMenu
 				}else{
-					this.filters.pmenuId=''
+					this.filters.parentMenu=null
 				}
 				this.searchXmIterationMenus();
 				
@@ -205,8 +205,8 @@
 					this.$notify({position:'bottom-left',showClose:true,message: "请先在左边选择迭代", type: 'success' });
 					return;
 				}
-				if(this.filters.pmenuId){
-					params.pmenuId=this.filters.pmenuId
+				if(this.filters.parentMenu){
+					params.pidPathsLike=this.filters.parentMenu.pidPaths
 				}
 				this.load.list = true;
 				listXmIterationMenu(params).then((res) => {
