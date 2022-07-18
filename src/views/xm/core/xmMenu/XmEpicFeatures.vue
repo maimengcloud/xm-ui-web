@@ -4,11 +4,9 @@
 			<el-col :span="24">
 					<el-row >
 						
-						<span style="float:left;">
- 						
-						<el-input style="width:120px;" v-model="filters.key" placeholder="名称模糊查询"  clearable></el-input>
-						<el-button icon="el-icon-search" @click="searchXmMenus()"></el-button> 
-						<el-popover style="padding-left:10px;"
+						<span style="float:left;"> 
+						<el-input style="width:60%;" v-model="filters.key" placeholder="名称 按回车"  clearable @keyup.enter.native="searchXmMenus()"></el-input>
+ 						<el-popover style="padding-left:10px;"
 							placement="top-start"
 							width="250"
 							trigger="click" >
@@ -90,7 +88,8 @@
 								<el-table-column sortable type="selection" width="40"></el-table-column> 
 							</template>
 							
-							<el-table-column prop="menuName" label="史诗、特性名称" min-width="150" >
+							<el-table-column prop="menuName" label="史诗、特性名称" min-width="150" > 
+								<template slot="header">史诗、特性名称 &nbsp;<el-button type="text" @click="unselectRow()">清除选中的行</el-button></template>
 								<template slot-scope="scope">
 									<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
 									<i class="el-icon-s-promotion"></i>

@@ -17,6 +17,7 @@
 								</el-table-column> 
 							</template>
 							<el-table-column prop="menuName" label="史诗、特性名称" min-width="150" >
+								<template slot="header">史诗、特性名称 &nbsp;<el-button type="text" @click="unselectRow()">清除选中的行</el-button></template>
 								<template slot-scope="scope">
 									<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
 									<i class="el-icon-s-promotion"></i>
@@ -338,19 +339,19 @@
 				return params;
 			},
 
-			rowClick: function(row, event, column){
-				if(this.editForm && row.menuId===this.editForm.menuId){
-					this.editForm=null;
-					this.$emit('row-click',null)
-					this.$refs.table.setCurrentRow(); 
-					return;
-				}  
+			rowClick: function(row, event, column){ 
 				this.editForm=row 
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
       		},
 			selectConfirm(){
 				this.$emit('menus-selected',this.sels)
-			}
+			},
+			
+			unselectRow(){
+				this.editForm=null;
+				this.$emit('row-click',null)
+				this.$refs.table.setCurrentRow(); 
+			},
 		},//end methods
 		components: { 
 			XmProductSelect, 
