@@ -15,6 +15,9 @@
       >
         <template slot-scope="scope">
           <div class="menu">
+			<div  class="icon" style="background-color:  rgb(79, 140, 255);">
+				<i class="el-icon-document"></i>
+			</div>
             <el-link type="primary" @click="showMenuEdit(scope.row)">{{
               scope.row.menuName
             }}</el-link>
@@ -25,7 +28,7 @@
         <el-table-column
           :label="type.label + '(' + type.number + ')'"
           :key="tt"
-          width="450"
+          width="200"
         >
           <template slot-scope="scope">
             <el-row class="my-cell-bar">
@@ -67,9 +70,9 @@
                     v-for="(task, t) in tasks[scope.row.menuId][tt]"
                     :key="task.id + t"
                   >
-				  	<span class="cell-bar"><el-button type="danger" icon="el-icon-delete" plain @click="handleDel(task,tt)"></el-button></span>
+				  	<span class="my-cell-bar"><el-button   size="mini" type="danger" icon="el-icon-delete" plain @click="handleDel(task,tt)"></el-button></span>
                     <span>
-                      {{ task.sortLevel }}&nbsp;<el-tag
+                      <el-tag
                         title="优先级"
                         v-for="(item, index) in formatDictsWithClass(
                           dicts,
@@ -94,12 +97,7 @@
                         :type="task.rate >= 100 ? 'success' : 'warning'"
                       >
                         {{ (task.rate != null ? task.rate : 0) + "%" }}
-                      </el-link>
-                      <el-tag type="info" title="预算金额、工时"
-                        >{{ parseFloat(task.budgetAt / 10000).toFixed(2) }}万,{{
-                          task.budgetWorkload
-                        }}人时</el-tag
-                      >
+                      </el-link> 
                       <el-link
                         type="primary"
                         @click.stop="showTaskEdit(task)"
@@ -721,21 +719,20 @@ export default {
     }
   }
 }
-.transition-group {
-  display: flex;
-  flex-wrap: wrap;
-  min-height: 100px;
+.transition-group {   
   width: 100%;
-  .task {
-    width: 200px;
+  .task { 
+	
+  	min-height: 100px;
     background: #fff;
-    margin: 10px 0 0 10px;
+    margin: 5px 5px 10px 5px;
+	padding: 5px;
   }
 }
 
 .my-cell-bar {
   visibility: hidden;
-  float: left;
+  float: right;
 }
 
 .el-table__row td:hover {
@@ -743,7 +740,7 @@ export default {
   .my-cell-bar {
     visibility: visible;
     .u-btn {
-      float: left;
+      float: right;
     }
   }
   .my-cell-text {
