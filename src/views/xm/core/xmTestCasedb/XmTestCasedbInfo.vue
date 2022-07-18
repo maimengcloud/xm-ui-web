@@ -1,65 +1,17 @@
 <template>
-	<section class="page-container border padding">
+	<section>
+        <el-row class="center">
+            <el-menu  :default-active="activeIndex"   mode="horizontal" @select="handleSelect">
+                <el-menu-item index="testCase">用例管理</el-menu-item>
+                <el-menu-item index="caseFlow">用例评审</el-menu-item>
+                <el-menu-item index="testPlan">测试计划</el-menu-item>
+                <el-menu-item index="testRpt">统计报表</el-menu-item> 
+            </el-menu>
+        </el-row>
 		<el-row>
-            <xm-product-select v-if="!xmProduct" style="display:inline;" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="clearProduct"></xm-product-select>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
-			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestCasedbs" icon="el-icon-search">查询</el-button>
-			<span style="float:right;">
-			    <el-button type="primary" @click="showAdd" icon="el-icon-plus" plain> </el-button>
-			    <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete" plain></el-button>
-		    </span>
-		</el-row>
-		<el-row class="padding-top">
-			<!--列表 XmTestCasedb 测试用例库-->
-			<el-table ref="xmTestCasedbTable" :data="xmTestCasedbs" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-				<el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column>
-				<el-table-column sortable type="index" width="55" show-overflow-tooltip  fixed="left"></el-table-column>
-				<!--
-				<el-table-column sortable prop="username" width="55" show-overflow-tooltip  fixed="left">
-				    <span class="cell-text">  {{scope.row.username}}}  </span>
-				    <span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
-				</el-table-column>
-				-->
- 				<el-table-column prop="name" label="用例库名称" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span><el-link @click="goCasedbInfo">{{scope.row.name}} </el-link> </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="productName" label="产品名称" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.productName}} </span>
-                    </template>
-				</el-table-column> 
-				<el-table-column prop="cusername" label="创建人" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.cusername}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="ctime" label="创建日期" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.ctime}} </span>
-                    </template>
-				</el-table-column>   
-				<el-table-column label="操作" width="180" fixed="right">
-				    <template scope="scope">
-				        <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"  plain></el-button>
-				        <el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"  plain></el-button>
-				    </template>
-				</el-table-column>
-			</el-table>
-			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
-		</el-row>
-		<el-row>
-			<!--编辑 XmTestCasedb 测试用例库界面-->
-			<el-drawer title="编辑测试用例库" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
-			    <xm-test-casedb-edit op-type="edit" :xm-test-casedb="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-test-casedb-edit>
-			</el-drawer>
-
-			<!--新增 XmTestCasedb 测试用例库界面-->
-			<el-drawer title="新增测试用例库" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
-			    <xm-test-casedb-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-test-casedb-edit>
-			</el-drawer>
-	    </el-row>
+            <xm-test-case-mng v-if="activeIndex=='testCase'"></xm-test-case-mng>
+            <xm-test-plan-mng v-else-if="activeIndex=='testPlan'"> </xm-test-plan-mng>
+        </el-row>     
 	</section>
 </template>
 
@@ -69,13 +21,15 @@ import util from '@/common/js/util';//全局公共库
 import config from '@/common/config';//全局公共库
 import { initDicts,listXmTestCasedb, delXmTestCasedb, batchDelXmTestCasedb,editSomeFieldsXmTestCasedb } from '@/api/xm/core/xmTestCasedb';
 import  XmTestCasedbEdit from './XmTestCasedbEdit';//新增修改界面
+import  XmTestCaseMng from '../xmTestCase/XmTestCaseMng';//新增修改界面
+import  XmTestPlanMng from '../xmTestPlan/XmTestPlanMng';//新增修改界面
 import { mapGetters } from 'vuex'
 import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修改界面
 
 export default {
     name:'xmTestCasedbMng',
     components: {
-        XmTestCasedbEdit,XmProductSelect,
+        XmTestCasedbEdit,XmProductSelect,XmTestCaseMng,XmTestPlanMng,
     },
     props:['visible','xmProduct','selProject'],
     computed: {
@@ -119,6 +73,7 @@ export default {
                 id:'',name:'',cuserid:'',cusername:'',ctime:'',cbranchId:'',productId:'',productName:''
             },
             maxTableHeight:300,
+            activeIndex:'testPlan',
         }
     },//end data
     methods: {
@@ -299,6 +254,9 @@ export default {
         goCasedbInfo(row){
             localStorage.setItem('xm-test-casedb-info',JSON.stringify(row));
             this.$route.push({path:'/xm/core/testCasedbRoute',query:{id:row.id}})
+        },
+        handleSelect(index){
+            this.activeIndex=index
         }
     },//end methods
     mounted() {
@@ -314,5 +272,13 @@ export default {
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.center{
+    align-items: center; /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+}
+.el-menu{
+    align-items: center; /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+}
 </style>
