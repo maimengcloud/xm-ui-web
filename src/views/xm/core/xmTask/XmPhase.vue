@@ -9,9 +9,8 @@
           
           <span style="float:left;"> 
            <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
-           <el-input style="width:120px;" v-model="filters.key" placeholder="名称模糊查询"  class="hidden-md-and-down" clearable></el-input>
-           <el-button icon="el-icon-search" @click="searchXmTasks()"></el-button>  
-          <el-popover
+           <el-input style="width:60%;" v-model="filters.key" placeholder="名称 按回车"  class="hidden-md-and-down" clearable @keyup.enter.native="searchXmTasks()"></el-input>
+           <el-popover
             placement="top-start"
             title="选择创建计划/任务的方式"
             width="300"
@@ -93,11 +92,7 @@
 									>
 								</el-col>
 							</el-row> 
-            <el-row>
-              <el-col :span="24" style="padding-top: 5px" v-if="editForm && editForm.id">
-                <font class="more-label-font">当前选中的计划:</font> 
-                <el-tag closable @close="unselectRow()">{{editForm.name}}</el-tag>  
-              </el-col> 
+            <el-row> 
               <el-col :span="24" style="padding-top: 5px">
                 <font class="more-label-font">产品:</font
                 > <xm-product-select :auto-select="false" :link-project-id="filters.selProject && filters.selProject.id?filters.selProject.id:null" @row-click="onProductSelected" @clear="onProductClearSelect"></xm-product-select>
@@ -196,13 +191,13 @@
                 width="50" 
               >
               </el-table-column> 
-              <el-table-column
-                sortable
+              <el-table-column 
                 prop="name"
                 class-name="title" 
                 label="计划名称"
                 min-width="300"
               > 
+              <template slot="header">计划名称 &nbsp;<el-button type="text" @click="unselectRow()">清除选中的行</el-button></template>
                 <template slot-scope="scope">
                   <!--
                   <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#409EFF'}">

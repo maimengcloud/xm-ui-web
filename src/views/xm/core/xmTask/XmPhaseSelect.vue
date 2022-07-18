@@ -38,14 +38,15 @@
                 fixed="left"
               >
               </el-table-column> 
-              <el-table-column
-                sortable
+              <el-table-column 
                 prop="name"
                 class-name="title"
                 fixed="left"
                 label="计划名称"
                 min-width="300" show-overflow-tooltip
               >
+              
+              <template slot="header">计划名称 &nbsp;<el-button type="text" @click="unselectRow()">清除选中的行</el-button></template>
                 <template slot-scope="scope">
                   <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#409EFF'}">
 									<i :class="scope.row.ntype==='1'?'el-icon-odometer':'el-icon-s-operation'" ></i>

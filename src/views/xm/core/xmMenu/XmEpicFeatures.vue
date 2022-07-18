@@ -56,11 +56,7 @@
 									>
 								</el-col>
 							</el-row> 
-							<el-row>
-							<el-col :span="24" style="padding-top: 5px" v-if="editForm && editForm.menuId">
-								<font class="more-label-font">当前选中的史诗、特性:</font> 
-								<el-tag closable @close="unselectRow()">{{editForm.menuName}}</el-tag>  
-							</el-col>  
+							<el-row> 
 							<el-col :span="24" style="padding-top: 5px"> 
 							
 								<el-button type="primary"  @click="showParentMenu" icon="el-icon-top" title="更换上级">更换上级</el-button> 
