@@ -22,7 +22,7 @@
 				-->
  				<el-table-column prop="name" label="用例库名称" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-				        <span><el-link @click="goCasedbInfo(scope.row)">{{scope.row.name}} </el-link> </span>
+				        <span><el-link @click="goCasedbInfo">{{scope.row.name}} </el-link> </span>
                     </template>
 				</el-table-column>
 				<el-table-column prop="productName" label="产品名称" min-width="120" show-overflow-tooltip>
@@ -298,7 +298,7 @@ export default {
         },
         goCasedbInfo(row){
             localStorage.setItem('xm-test-casedb-info',JSON.stringify(row));
-            this.$router.push({path:'/xm/core/testCasedbRoute',query:{id:row.id}})
+            this.$route.push({path:'/xm/core/testCasedbRoute',query:{id:row.id}})
         }
     },//end methods
     mounted() {

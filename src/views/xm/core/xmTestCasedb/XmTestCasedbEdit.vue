@@ -5,30 +5,26 @@
 		<el-row class="page-main" :style="{overflowX:'auto',height:maxTableHeight+'px'}" ref="table">
 		<!--编辑界面 XmTestCasedb 测试用例库--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">
-				<el-form-item label="主键" prop="id">
-					<el-input v-model="editForm.id" placeholder="主键" :maxlength="50" @change="editSomeFields(editForm,'id',$event)"></el-input>
-				</el-form-item> 
+			
 				<el-form-item label="用例库名称" prop="name">
 					<el-input v-model="editForm.name" placeholder="用例库名称" :maxlength="255" @change="editSomeFields(editForm,'name',$event)"></el-input>
 				</el-form-item> 
-				<el-form-item label="创建人" prop="cuserid">
-					<el-input v-model="editForm.cuserid" placeholder="创建人" :maxlength="50" @change="editSomeFields(editForm,'cuserid',$event)"></el-input>
+				<el-form-item label="测试库编号" prop="id">
+					<el-input v-if="opType=='add'" v-model="editForm.id" placeholder="测试库编号" :maxlength="50" @change="editSomeFields(editForm,'id',$event)"></el-input>
+					<div v-else>{{editForm.id}}</div>
+				</el-form-item>  
+				
+				<el-form-item label="产品名称" prop="productName">
+					 <xm-product-select v-if="!xmProduct" style="display:inline;" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="clearProduct"></xm-product-select>
+ 					<div v-else>{{editForm.productName}}</div>
 				</el-form-item> 
 				<el-form-item label="创建人姓名" prop="cusername">
-					<el-input v-model="editForm.cusername" placeholder="创建人姓名" :maxlength="255" @change="editSomeFields(editForm,'cusername',$event)"></el-input>
+					<el-input v-if="opType=='add'" v-model="editForm.cusername" placeholder="创建人姓名" :maxlength="255" @change="editSomeFields(editForm,'cusername',$event)"></el-input>
+					<div v-else>{{editForm.cusername}}</div>
 				</el-form-item> 
 				<el-form-item label="创建日期" prop="ctime">
-					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.ctime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
-				</el-form-item> 
-				<el-form-item label="归属机构编号" prop="cbranchId">
-					<el-input v-model="editForm.cbranchId" placeholder="归属机构编号" :maxlength="50" @change="editSomeFields(editForm,'cbranchId',$event)"></el-input>
-				</el-form-item> 
-				<el-form-item label="产品编号" prop="productId">
-					<el-input v-model="editForm.productId" placeholder="产品编号" :maxlength="50" @change="editSomeFields(editForm,'productId',$event)"></el-input>
-				</el-form-item> 
-				<el-form-item label="产品名称" prop="productName">
-					<el-input v-model="editForm.productName" placeholder="产品名称" :maxlength="255" @change="editSomeFields(editForm,'productName',$event)"></el-input>
-				</el-form-item> 
+					 {{editForm.ctime}}
+				</el-form-item>   
 			</el-form>
 		</el-row>
 
@@ -45,16 +41,17 @@
  	import { initDicts, addXmTestCasedb,editXmTestCasedb,editSomeFieldsXmTestCasedb } from '@/api/xm/core/xmTestCasedb';
 	import { mapGetters } from 'vuex'
 	
+import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修改界面
 	export default {
 	    name:'xmTestCasedbEdit',
 	    components: {
-
+			XmProductSelect,
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
 
 		},
-		props:['xmTestCasedb','visible','opType'],
+		props:['xmTestCasedb','visible','opType','xmProduct','selProject'],
 
 		watch: {
 	      'xmTestCasedb':function( xmTestCasedb ) {
@@ -131,7 +128,10 @@
                 if(this.opType=='edit'){
 
                 }else{
-
+					if(this.xmProduct && this.xmProduct.id){
+						this.editForm.productId=this.xmProduct.id
+						this.editForm.productName=this.xmProduct.productName
+					}
                 }
                 this.editFormBak={...this.editForm}
             },
@@ -154,6 +154,17 @@
                   }
                 }).catch((e)=>Object.assign(this.editForm,this.editFormBak))
             },
+
+			clearProduct(){  
+				
+				this.editForm.productId=''
+				this.editForm.productName=''
+			}, 
+			onProductSelected(product){ 
+				
+				this.editForm.productId=product.id
+				this.editForm.productName=product.productName
+			},
 		},//end method
 		mounted() {
 		    this.$nextTick(() => {

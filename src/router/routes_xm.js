@@ -38,6 +38,8 @@ export default {
       }, 
       hidden:true
     },
+    
+    { path: '/xm/core/testCasedbRoute', component: _import('xm/core/xmTestCasedb/XmTestCasedbRoute'), name: 'XmTestCasedbRoute', meta: { title: '测试库管理' },hidden:true},
     {
       path: '/xm/core',
       component: Layout,
@@ -54,6 +56,7 @@ export default {
         { path: 'xmQuestion/XmQuestionMng', component: _import('xm/core/xmQuestion/XmQuestionMngRoute'), name: 'XmQuestionMng', meta: { title: '缺陷管理' }},
         { path: 'xmQuestion/XmQuestionMngMy', component: _import('xm/core/xmQuestion/XmQuestionMngMy'), name: 'XmQuestionMngMy', meta: { title: '我的缺陷' }},
         { path: 'xmTestCase/XmTestCaseMng', component: _import('xm/core/xmTestCase/XmTestCaseMng'), name: 'XmTestCaseMng', meta: { title: '测试设计' }},
+        { path: 'xmTestCasedb/XmTestCasedbMng', component: _import('xm/core/xmTestCasedb/XmTestCasedbMng'), name: 'XmTestCasedbMng', meta: { title: '测试库管理' }},
         //{ path: 'xmTestCaseExec/XmTestCaseExecMng', component: _import('xm/core/xmTestCaseExec/XmTestCaseExecMng'), name: 'XmTestCaseExecMng', meta: { title: '测试执行' }},
         { path: 'xmQuestion/XmQuestionDetailRoute', component: _import('xm/core/xmQuestion/XmQuestionDetailRoute'), name: 'XmQuestionDetailRoute', meta: { title: '缺陷明细' },hidden:true},
  
