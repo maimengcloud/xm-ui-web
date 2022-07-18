@@ -493,16 +493,15 @@
 				this.selectMenuVisible=true;
 			},
 			onSelectedMenu(menu){
-				if(menu.ntype=='1'){
-					this.$notify({position:'bottom-left',showClose:true,message: "您选择的【"+menu.menuName+"】属于需求池，请重新选择。建议选择树中叶子节点", type: 'error' });
+				if(menu.dclass<'3'){
+					this.$notify({position:'bottom-left',showClose:true,message: "您选择的【"+menu.menuName+"】不属于用户故事,请重新选择。", type: 'error' });
 					return;
 				}
 				this.editForm.menuId=menu.menuId
 				this.editForm.menuName=menu.menuName
 				this.editForm.productId=menu.productId
-				this.editForm.iterationId=menu.iterationId
-				this.editForm.iterationName=menu.iterationName
 				this.selectMenuVisible=false;
+				this.editXmQuestionSomeFields(this.editForm,'menuId',menu)
 			},
 			handleCloseMenuTag:function(){
 				this.editForm.menuId=''
@@ -557,6 +556,10 @@
 					params.projectId=$event.id
 				}else if(fieldName==='productId'){
 					params.productId=$event.id
+				}else if(fieldName==='menuId'){
+					params.productId=$event.productId
+					params.menuId=$event.menuId
+					params.menuName=$event.menuName
 				}else{
 					params[fieldName]=$event
 				}
