@@ -2035,7 +2035,7 @@ export default {
         params.lvls=this.filters.lvls
       }
       if(this.parentTask && this.parentTask.id){
-        params.parentTaskid=this.parentTask.id
+        params.pidPathsLike=this.parentTask.pidPaths
       }
       return params;
     }, 
