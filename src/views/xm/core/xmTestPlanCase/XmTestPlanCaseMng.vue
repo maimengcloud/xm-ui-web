@@ -86,7 +86,7 @@
 			</el-drawer>
 
 			<!--新增 XmTestPlanCase 测试计划与用例关系表界面-->
-			<el-dialog title="选择测试用例" :visible.sync="addFormVisible"  size="80%" top="20px" append-to-body  :close-on-click-modal="false">
+			<el-dialog title="选择测试用例" :visible.sync="addFormVisible"  width="80%" top="20px" append-to-body  :close-on-click-modal="false">
 			    <xm-test-case-select :xm-test-plan="xmTestPlan"  :visible="addFormVisible" @cancel="addFormVisible=false" @select="onXmTestCaseSelect"></xm-test-case-select>
 			</el-dialog>
 	    </el-row>
