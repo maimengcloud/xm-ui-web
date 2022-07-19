@@ -54,46 +54,13 @@
 				        <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'bizFlowState',scope.row.flowState)" :key="index" :type="item.className">{{item.name}}</el-tag>
                     </template>
 				</el-table-column>
-				<el-table-column prop="totalCases" label="总用例数" min-width="120" show-overflow-tooltip>
+				<el-table-column prop="totalCases" label="进度" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-				        <span> {{scope.row.totalCases}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="okCases" label="通过用例数" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.okCases}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="errCases" label="失败用例数" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.errCases}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="igCases" label="忽略用例数" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.igCases}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="blCases" label="阻塞用例数" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.blCases}} </span>
-                    </template>
-				</el-table-column> 
-				<el-table-column prop="casedbName" label="用例库名称" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.casedbName}} </span>
-                    </template>
-				</el-table-column> 
-				<el-table-column prop="projectName" label="项目名称" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.projectName}} </span>
-                    </template>
+                        <el-tooltip open-delay="500" :content="'总用例数:'+scope.row.totalCases+'   成功:'+scope.row.okCases +'  失败:'+scope.row.errCases+'  忽略:'+scope.row.igCases+'  阻塞:'+scope.row.blCases">
+                            <el-progress   :stroke-width="22" :text-inside="true"  :status="scope.row.totalCases>0 && scope.row.errCases<=0 ?'success':'exception'" :percentage="scope.row.totalCases>0?parseInt((parseInt(scope.row.okCases)+parseInt(scope.row.igCases)+parseInt(scope.row.errCases)+parseInt(scope.row.blCases))*100/parseInt(scope.row.totalCases)):0"></el-progress>
+                        </el-tooltip>
+                     </template>
 				</el-table-column>  
-				<el-table-column prop="productName" label="产品名称" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.productName}} </span>
-                    </template>
-				</el-table-column>
 				<el-table-column label="操作" width="180" fixed="right">
 				    <template scope="scope">
 				        <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"  plain></el-button>
