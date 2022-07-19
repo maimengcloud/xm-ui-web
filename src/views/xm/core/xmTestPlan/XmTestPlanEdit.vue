@@ -21,12 +21,10 @@
 					<el-input v-model="editForm.cusername" placeholder="负责人" :maxlength="255" @change="editSomeFields(editForm,'cusername',$event)"></el-input>
 				</el-form-item> 
 				 
-				<el-form-item label="开始时间" prop="stime">
-					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.stime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'stime',$event)"></el-date-picker>
-				</el-form-item> 
-				<el-form-item label="结束时间" prop="etime">
-					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.etime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'etime',$event)"></el-date-picker>
-				</el-form-item> 
+				<el-form-item label="起止时间" prop="stime">
+					<date-range :auto-default="false" placeholder="选择日期" v-model="editForm" start-key="stime" end-key="etime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'stime',editForm)"></date-range>
+				</el-form-item>  
+				<div v-if="opType!=='add'">
 				<el-form-item label="状态" prop="status"> 
 					<el-select v-model="editForm.status" @change="editSomeFields(editForm,'status',$event)">
 						<el-option v-for="(item,index) in dicts['testPlanStatus']" :key="index" :value="item.id" :label="item.name"></el-option>
@@ -37,6 +35,7 @@
 					<el-option v-for="(item,index) in dicts['testPlanTcode']" :key="index" :value="item.id" :label="item.name"></el-option>
 				</el-select>				
 				</el-form-item>  
+				</div>
 				<el-form-item label="产品名称" prop="productName">
 					 {{editForm.productName}}
 				</el-form-item>  
@@ -157,7 +156,13 @@
                 }
                 let params={};
                 params['ids']=[row].map(i=>i.id)
-                params[fieldName]=$event
+                
+				if(fieldName=='stime'){
+					params[fieldName]=$event.stime
+					params.etime=$event.etime
+				}else{
+					params[fieldName]=$event
+				}
                 var func = editSomeFieldsXmTestPlan
                 func(params).then(res=>{
                   let tips = res.data.tips;
