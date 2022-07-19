@@ -47,7 +47,7 @@
                                 <el-tag class="cell-text" v-for="(item,index) in formatDictsWithClass(dicts,'testCaseStatus',scope.row.caseStatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
                                  
                                 <el-select class="cell-bar" v-model="scope.row.caseStatus" @change="editSomeFields(scope.row,'caseStatus',$event)">
-                                <el-option v-for="(item,index) in dicts['testCaseStatus']" :key="index" :value="item.id" :label="item.name"></el-option>
+                                    <el-option v-for="(item,index) in dicts['testCaseStatus']" :key="index" :value="item.id" :label="item.name"></el-option>
                                 </el-select>
                             </template>
                         </el-table-column>      

@@ -12,16 +12,20 @@
 			<!--列表 XmTestPlan 测试计划-->
 			<el-table ref="xmTestPlanTable" :data="xmTestPlans" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column>
-				<el-table-column sortable type="index" width="55" show-overflow-tooltip  fixed="left"></el-table-column>
-				<!--
+ 				<!--
 				<el-table-column sortable prop="username" width="55" show-overflow-tooltip  fixed="left">
 				    <span class="cell-text">  {{scope.row.username}}}  </span>
 				    <span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
 				</el-table-column>
 				-->
- 				<el-table-column prop="name" label="计划名称" min-width="120" show-overflow-tooltip>
+ 				<el-table-column prop="name" label="计划名称" min-width="250" show-overflow-tooltip>
 				    <template slot-scope="scope">
 				        <span> <el-link @click="goToTestPlanCase(scope.row)"> {{scope.row.name}}</el-link> </span>
+                        <span  class="tool-bar">
+                            
+                         <el-button type="primary" @click="goToTestPlanCase(scope.row)" icon="el-icon-finished"  plain circle title="规划用例"></el-button> 
+                         <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"  plain circle title="编辑用例"></el-button> 
+                        </span>
                     </template>
 				</el-table-column> 
                 <el-table-column prop="cusername" label="负责人" min-width="120" show-overflow-tooltip>
@@ -29,44 +33,40 @@
 				        <span>   {{scope.row.cusername}} </span>
                     </template>
 				</el-table-column> 
-				<el-table-column prop="status" label="状态" min-width="120" show-overflow-tooltip>
+				<el-table-column prop="status" label="状态" width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-				        <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'testPlanStatus',scope.row.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
-                    </template>
+				        <el-tag class="cell-text" v-for="(item,index) in formatDictsWithClass(dicts,'testPlanStatus',scope.row.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
+                        <el-select class="cell-bar" v-model="scope.row.status" @change="editSomeFields(scope.row,'status',$event)">
+                            <el-option v-for="(item,index) in dicts['testPlanStatus']" :key="index" :value="item.id" :label="item.name"></el-option>
+                        </el-select>
+                   </template>
 				</el-table-column>
-				<el-table-column prop="tcode" label="测试结果" min-width="120" show-overflow-tooltip>
+				<el-table-column prop="tcode" label="测试结果" width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-				        <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'testPlanTcode',scope.row.tcode)" :key="index" :type="item.className">{{item.name}}</el-tag>
+				        <el-tag class="cell-text" v-for="(item,index) in formatDictsWithClass(dicts,'testPlanTcode',scope.row.tcode)" :key="index" :type="item.className">{{item.name}}</el-tag>
+                        
+                        <el-select class="cell-bar" v-model="scope.row.tcode" @change="editSomeFields(scope.row,'tcode',$event)">
+                            <el-option v-for="(item,index) in dicts['testPlanTcode']" :key="index" :value="item.id" :label="item.name"></el-option>
+                        </el-select>
                     </template>
-				</el-table-column>
-				<el-table-column prop="stime" label="开始时间" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.stime}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="etime" label="结束时间" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.etime}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="flowState" label="评审结果" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'bizFlowState',scope.row.flowState)" :key="index" :type="item.className">{{item.name}}</el-tag>
-                    </template>
-				</el-table-column>
+				</el-table-column> 
 				<el-table-column prop="totalCases" label="进度" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
                         <el-tooltip :open-delay="500" :content="'总用例数:'+scope.row.totalCases+'   成功:'+scope.row.okCases +'  失败:'+scope.row.errCases+'  忽略:'+scope.row.igCases+'  阻塞:'+scope.row.blCases">
                             <el-progress   :stroke-width="22" :text-inside="true"  :status="scope.row.totalCases>0 && scope.row.errCases<=0 ?'success':'exception'" :percentage="scope.row.totalCases>0?parseInt((parseInt(scope.row.okCases)+parseInt(scope.row.igCases)+parseInt(scope.row.errCases)+parseInt(scope.row.blCases))*100/parseInt(scope.row.totalCases)):0"></el-progress>
                         </el-tooltip>
                      </template>
-				</el-table-column>  
-				<el-table-column label="操作" width="180" fixed="right">
-				    <template scope="scope">
-				        <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"  plain></el-button>
-				        <el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"  plain></el-button>
-				    </template>
+				</el-table-column>   
+				<el-table-column prop="stime" label="开始时间"  width="120" show-overflow-tooltip>
+				    <template slot-scope="scope">
+				        <span> {{scope.row.stime}} </span>
+                    </template>
 				</el-table-column>
+				<el-table-column prop="etime" label="结束时间"  width="120" show-overflow-tooltip>
+				    <template slot-scope="scope">
+				        <span> {{scope.row.etime}} </span>
+                    </template>
+				</el-table-column> 
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 		</el-row>
