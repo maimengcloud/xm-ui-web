@@ -13,28 +13,21 @@
 					<el-input v-model="editForm.verNum" placeholder="版本号" :maxlength="50" @change="editSomeFields(editForm,'verNum',$event)"></el-input>
 				</el-form-item>  
 				<el-form-item label="测试步骤" prop="testStep">
-					 <test-step-config v-model="editForm.testStep"></test-step-config>
+					 <test-step-config v-model="editForm.testStep" @finish="editSomeFields(editForm,'testStep',$event)"></test-step-config>
 				</el-form-item>    
 				<el-form-item label="关联需求" prop="menuName">
 					 {{editForm.menuName?editForm.menuName:'暂无关联需求'}} <el-button type="text" @click="menuVisible=true">选择需求</el-button>
 				</el-form-item> 
 				<el-form-item label="关联模块" prop="funcName">
 					{{editForm.funcName?editForm.funcName:'暂无关联模块'}} <el-button type="text" @click="funcVisible=true">选择模块</el-button>
-				</el-form-item> 
-				<el-form-item label="创建时间" prop="ctime">
-					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.ctime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
-				</el-form-item> 
-				<el-form-item label="更新时间" prop="ltime">
-					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.ltime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
 				</el-form-item>  
-				<el-form-item label="更新人姓名" prop="lusername">
-					<el-input v-model="editForm.lusername" placeholder="更新人姓名" :maxlength="255" @change="editSomeFields(editForm,'lusername',$event)"></el-input>
+				<el-form-item label="状态" prop="caseStatus" v-if="opType!='add'">
+ 					    <el-select v-model="editForm.caseStatus" @change="editSomeFields(editForm,'caseStatus',$event)">
+							<el-option v-for="(item,index) in dicts['testCaseStatus']" :key="index" :value="item.id" :label="item.name"></el-option>
+						</el-select>
 				</el-form-item>  
-				<el-form-item label="用例状态1正常0废弃" prop="caseStatus">
-					<el-input v-model="editForm.caseStatus" placeholder="用例状态1正常0废弃" :maxlength="1" @change="editSomeFields(editForm,'caseStatus',$event)"></el-input>
-				</el-form-item>  
-				<el-form-item label="创建人姓名" prop="cusername">
-					<el-input v-model="editForm.cusername" placeholder="创建人姓名" :maxlength="255" @change="editSomeFields(editForm,'cusername',$event)"></el-input>
+				<el-form-item label="负责人" prop="cusername">
+					<el-input v-model="editForm.cusername" placeholder="负责人" :maxlength="255" @change="editSomeFields(editForm,'cusername',$event)"></el-input>
 				</el-form-item>  
 			</el-form>
 		</el-row>
