@@ -9,8 +9,8 @@
             </el-menu>
         </el-row>
 		<el-row ref="xmTestCasedbTable">
-            <xm-test-case-mng v-if="activeIndex=='testCase'"></xm-test-case-mng>
-            <xm-test-plan-info v-else-if="activeIndex=='testPlan'"> </xm-test-plan-info>
+            <xm-test-case-mng  v-if="activeIndex=='testCase'" :xm-test-casedb="xmTestCasedb"></xm-test-case-mng>
+            <xm-test-plan-info v-else-if="activeIndex=='testPlan'" :xm-test-casedb="xmTestCasedb"> </xm-test-plan-info>
         </el-row>     
 	</section>
 </template>
@@ -31,7 +31,7 @@ export default {
     components: {
         XmTestCasedbEdit,XmProductSelect,XmTestCaseMng,XmTestPlanInfo,
     },
-    props:['visible','xmProduct','selProject'],
+    props:['visible','xmTestCasedb'],
     computed: {
         ...mapGetters(['userInfo']),
 

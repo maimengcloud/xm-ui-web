@@ -65,7 +65,7 @@ TestStepConfig,
 		    ...mapGetters([ 'userInfo'  ]),
 
 		},
-		props:['xmTestCase','visible','opType'],
+		props:['xmTestCase','visible','opType','xmTestCasedb'],
 
 		watch: {
 	      'xmTestCase':function( xmTestCase ) {
@@ -172,8 +172,7 @@ TestStepConfig,
 					 params['cusername']=$event.username 
 				}else{
 					 params[fieldName]=$event
-				}
-                params[fieldName]=$event
+				} 
                 var func = editSomeFieldsXmTestCase
                 func(params).then(res=>{
                   let tips = res.data.tips;
@@ -191,7 +190,7 @@ TestStepConfig,
 				this.editForm.menuName=row.menuName
 				this.menuVisible=false;
 				if(this.opType!=='add'){
-					this.editSomeFieldsXmTestCase(this.editForm,'menuId',row)
+					this.editSomeFields(this.editForm,'menuId',row)
 				}
 			},
 			onFuncSelected(row){
@@ -199,7 +198,7 @@ TestStepConfig,
 				this.editForm.funcName=row.name
 				this.funcVisible=false;
 				if(this.opType!=='add'){
-					this.editSomeFieldsXmTestCase(this.editForm,'funcId',row)
+					this.editSomeFields(this.editForm,'funcId',row)
 				}
 			}
 		},//end method

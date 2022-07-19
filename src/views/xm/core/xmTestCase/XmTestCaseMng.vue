@@ -2,7 +2,7 @@
 	<section>
         <el-row>
             <el-col :span="6">
-                <xm-func-select class="padding-right padding-left" :xm-product="{id:'xxxxx',name:'xxxxxxx'}" @row-click="onXmFuncRowClick"> 
+                <xm-func-select v-if="xmTestCasedb && xmTestCasedb.productId" class="padding-right padding-left" :xm-product="{id:xmTestCasedb.productId,productName:xmTestCasedb.productName}" @row-click="onXmFuncRowClick"> 
                 </xm-func-select>
             </el-col>
             <el-col :span="18">
@@ -184,6 +184,9 @@ export default {
 
             if(this.filters.xmFunc && this.filters.xmFunc.id){
                 params.funcPidPathsLike=this.filters.xmFunc.pidPaths
+            }
+            if(this.xmTestCasedb && this.xmTestCasedb.id){
+                params.casedbId=this.xmTestCasedb.id
             }
 
             this.load.list = true;
