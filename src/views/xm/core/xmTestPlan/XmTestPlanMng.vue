@@ -19,45 +19,24 @@
 				    <span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
 				</el-table-column>
 				-->
-				<el-table-column prop="id" label="测试计划编号" min-width="120" show-overflow-tooltip  fixed="left"></el-table-column>
-				<el-table-column prop="name" label="计划名称" min-width="120" show-overflow-tooltip>
+ 				<el-table-column prop="name" label="计划名称" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
 				        <span> <el-link @click="goToTestPlanCase(scope.row)"> {{scope.row.name}}</el-link> </span>
                     </template>
-				</el-table-column>
-				<el-table-column prop="casedbId" label="用例库编号" min-width="120" show-overflow-tooltip>
+				</el-table-column> 
+                <el-table-column prop="cusername" label="负责人" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-				        <span> {{scope.row.casedbId}} </span>
+				        <span>   {{scope.row.cusername}} </span>
+                    </template>
+				</el-table-column> 
+				<el-table-column prop="status" label="状态" min-width="120" show-overflow-tooltip>
+				    <template slot-scope="scope">
+				        <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'testPlanStatus',scope.row.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
                     </template>
 				</el-table-column>
-				<el-table-column prop="casedbName" label="用例库名称" min-width="120" show-overflow-tooltip>
+				<el-table-column prop="tcode" label="测试结果" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-				        <span> {{scope.row.casedbName}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="projectId" label="项目编号" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.projectId}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="projectName" label="项目名称" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.projectName}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="cuserid" label="创建人编号" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.cuserid}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="cusername" label="创建人名称" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.cusername}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="ctime" label="创建时间" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.ctime}} </span>
+				        <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'testPlanTcode',scope.row.tcode)" :key="index" :type="item.className">{{item.name}}</el-tag>
                     </template>
 				</el-table-column>
 				<el-table-column prop="stime" label="开始时间" min-width="120" show-overflow-tooltip>
@@ -70,14 +49,9 @@
 				        <span> {{scope.row.etime}} </span>
                     </template>
 				</el-table-column>
-				<el-table-column prop="status" label="状态0-未开始，1-进行中，2已结束" min-width="120" show-overflow-tooltip>
+				<el-table-column prop="flowState" label="评审结果" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-				        <span> {{scope.row.status}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="tcode" label="测试结果0未通过，1已通过" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.tcode}} </span>
+				        <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'bizFlowState',scope.row.flowState)" :key="index" :type="item.className">{{item.name}}</el-tag>
                     </template>
 				</el-table-column>
 				<el-table-column prop="totalCases" label="总用例数" min-width="120" show-overflow-tooltip>
@@ -104,20 +78,20 @@
 				    <template slot-scope="scope">
 				        <span> {{scope.row.blCases}} </span>
                     </template>
-				</el-table-column>
-				<el-table-column prop="productId" label="产品编号" min-width="120" show-overflow-tooltip>
+				</el-table-column> 
+				<el-table-column prop="casedbName" label="用例库名称" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-				        <span> {{scope.row.productId}} </span>
+				        <span> {{scope.row.casedbName}} </span>
                     </template>
-				</el-table-column>
+				</el-table-column> 
+				<el-table-column prop="projectName" label="项目名称" min-width="120" show-overflow-tooltip>
+				    <template slot-scope="scope">
+				        <span> {{scope.row.projectName}} </span>
+                    </template>
+				</el-table-column>  
 				<el-table-column prop="productName" label="产品名称" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
 				        <span> {{scope.row.productName}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="flowState" label="评审结果0-待评审，1-已评审通过，2-已拒绝" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.flowState}} </span>
                     </template>
 				</el-table-column>
 				<el-table-column label="操作" width="180" fixed="right">
@@ -186,6 +160,7 @@ export default {
             load:{ list: false, edit: false, del: false, add: false },//查询中...
             sels: [],//列表选中数据
             dicts:{
+                testPlanStatus:[],testPlanTcode:[],testStepTcode:[],priority:[],bizFlowState:[]
                 //sex: [{id:'1',name:'男'},{id:'2',name:'女'}]
             },//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
             addFormVisible: false,//新增xmTestPlan界面是否显示

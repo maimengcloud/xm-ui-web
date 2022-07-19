@@ -8,7 +8,7 @@
                 <el-menu-item index="testRpt">统计报表</el-menu-item> 
             </el-menu>
         </el-row>
-		<el-row>
+		<el-row ref="xmTestCasedbTable">
             <xm-test-case-mng v-if="activeIndex=='testCase'"></xm-test-case-mng>
             <xm-test-plan-info v-else-if="activeIndex=='testPlan'"> </xm-test-plan-info>
         </el-row>     
@@ -264,7 +264,7 @@ export default {
             initDicts(this);
             this.initData()
             this.searchXmTestCasedbs();
-            this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmTestCasedbTable.$el)
+            //this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmTestCasedbTable.$el)
 
         });
     }
