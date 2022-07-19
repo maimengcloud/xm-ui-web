@@ -1,8 +1,8 @@
 <template>
-	<section  class="page-container padding">
-	    <el-row class="page-header">
+	<section>
+	    <el-row>
 	    </el-row>
-		<el-row class="page-main" :style="{overflowX:'auto',height:maxTableHeight+'px'}" ref="table">
+		<el-row>
 		<!--编辑界面 XmTestCase 测试用例--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef" label-position="left"> 
 				<el-form-item label="标题" prop="caseName">
@@ -13,7 +13,7 @@
 					<el-input v-model="editForm.verNum" placeholder="版本号" :maxlength="50" @change="editSomeFields(editForm,'verNum',$event)"></el-input>
 				</el-form-item>  
 				<el-form-item label="测试步骤" prop="testStep">
-					<el-input v-model="editForm.testStep" placeholder="测试步骤" :maxlength="2147483647" @change="editSomeFields(editForm,'testStep',$event)"></el-input>
+					 <test-step-config v-model="editForm.testStep"></test-step-config>
 				</el-form-item>    
 				<el-form-item label="关联需求" prop="menuName">
 					 {{editForm.menuName?editForm.menuName:'暂无关联需求'}} <el-button type="text" @click="menuVisible=true">选择需求</el-button>
@@ -39,15 +39,17 @@
 			</el-form>
 		</el-row>
 
-		<el-row v-if="opType=='add'" class="page-bottom bottom-fixed">
+		<el-row v-if="opType=='add'" >
+			<span style="float:right;">
 		    <el-button @click.native="handleCancel">取消</el-button>
             <el-button v-loading="load.edit" type="primary" @click.native="saveSubmit" :disabled="load.edit==true">提交</el-button>
+			</span>
 		</el-row>
 		<el-dialog append-to-body title="需求选择"  :visible.sync="menuVisible" width="80%" top="20px"  :close-on-click-modal="false">
 			<xm-menu-select :is-select-menu="true" checkScope="3"  @selected="onMenuSelected" :xm-product="{id:editForm.productId}"></xm-menu-select>
 		</el-dialog>
 		<el-dialog append-to-body title="模块选择"  :visible.sync="funcVisible" width="60%" top="20px"  :close-on-click-modal="false">
-			<xm-func-select  @selected="onFuncSelected" :xm-product="{id:editForm.productId}"></xm-func-select>
+			<xm-func-select  @row-click="onFuncSelected" :xm-product="{id:editForm.productId}"></xm-func-select>
 		</el-dialog>
 	</section>
 </template>
@@ -59,10 +61,12 @@
 	import { mapGetters } from 'vuex'
 	import XmMenuSelect from '../xmMenu/XmMenuSelect' 
 	import XmFuncSelect from '../xmFunc/XmFuncSelect'
+import TestStepConfig from './TestStepConfig.vue';
 	export default {
 	    name:'xmTestCaseEdit',
 	    components: {
 			XmMenuSelect,XmFuncSelect,
+TestStepConfig,
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
@@ -179,17 +183,18 @@
 			onMenuSelected(row){
 				this.editForm.menuId=row.menuId
 				this.editForm.menuName=row.menuName
+				this.menuVisible=false;
 			},
 			onFuncSelected(row){
 				this.editForm.funcId=row.id
 				this.editForm.funcName=row.name
+				this.funcVisible=false;
 			}
 		},//end method
 		mounted() {
 		    this.$nextTick(() => {
                 initDicts(this);
-                this.initData()
-                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el)
+                this.initData() 
             });
 		}
 	}

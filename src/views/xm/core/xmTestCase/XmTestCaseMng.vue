@@ -57,14 +57,14 @@
                 
 		<el-row>
 			<!--编辑 XmTestCase 测试用例界面-->
-			<el-drawer title="编辑测试用例" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
+			<el-dialog title="编辑测试用例" :visible.sync="editFormVisible"  width="60%" top="20px"  append-to-body   :close-on-click-modal="false">
 			    <xm-test-case-edit op-type="edit" :xm-test-case="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-test-case-edit>
-			</el-drawer>
+			</el-dialog>
 
 			<!--新增 XmTestCase 测试用例界面-->
-			<el-drawer title="新增测试用例" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
+			<el-dialog title="新增测试用例" :visible.sync="addFormVisible"  width="60%" top="20px"  append-to-body  :close-on-click-modal="false">
 			    <xm-test-case-edit op-type="add" :xm-test-casedb="xmTestCasedb" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-test-case-edit>
-			</el-drawer>
+			</el-dialog>
 	    </el-row>
 	</section>
 </template>
