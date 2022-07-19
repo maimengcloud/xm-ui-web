@@ -18,120 +18,36 @@
                     <!--列表 XmTestCase 测试用例-->
                     <el-table ref="xmTestCaseTable" :data="xmTestCases" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
                         <el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column>
-                        <el-table-column sortable type="index" width="55" show-overflow-tooltip  fixed="left"></el-table-column>
-                        <!--
+                         <!--
                         <el-table-column sortable prop="username" width="55" show-overflow-tooltip  fixed="left">
                             <span class="cell-text">  {{scope.row.username}}}  </span>
                             <span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
                         </el-table-column>
                         -->
-                        <el-table-column prop="id" label="编号" min-width="120" show-overflow-tooltip  fixed="left"></el-table-column>
-                        <el-table-column prop="caseName" label="标题" min-width="120" show-overflow-tooltip>
+                        <el-table-column prop="id" label="编号" min-width="120" show-overflow-tooltip  fixed="left"></el-table-column> 
+                        <el-table-column prop="caseName" label="标题" min-width="250" show-overflow-tooltip fixed="left">
                             <template slot-scope="scope">
                                 <span> {{scope.row.caseName}} </span>
+                                <span class="tool-bar">
+                                    <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" circle  plain></el-button> 
+                                </span>
                             </template>
-                        </el-table-column>
-                        <el-table-column prop="caseRemark" label="备注" min-width="120" show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                <span> {{scope.row.caseRemark}} </span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="testStep" label="测试步骤" min-width="120" show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                <span> {{scope.row.testStep}} </span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="expectResult" label="期望结果" min-width="120" show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                <span> {{scope.row.expectResult}} </span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="menuId" label="关联的故事" min-width="120" show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                <span> {{scope.row.menuId}} </span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="menuName" label="关联故事名" min-width="120" show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                <span> {{scope.row.menuName}} </span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="ctime" label="创建时间" min-width="120" show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                <span> {{scope.row.ctime}} </span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="ltime" label="更新时间" min-width="120" show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                <span> {{scope.row.ltime}} </span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="luserid" label="更新人编号" min-width="120" show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                <span> {{scope.row.luserid}} </span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="lusername" label="更新人姓名" min-width="120" show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                <span> {{scope.row.lusername}} </span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="cbranchId" label="创建机构" min-width="120" show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                <span> {{scope.row.cbranchId}} </span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="moduleId" label="模块编号" min-width="120" show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                <span> {{scope.row.moduleId}} </span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="moduleName" label="模块名称" min-width="120" show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                <span> {{scope.row.moduleName}} </span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="caseStatus" label="用例状态1正常0废弃" min-width="120" show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                <span> {{scope.row.caseStatus}} </span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="cuserid" label="创建人编号" min-width="120" show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                <span> {{scope.row.cuserid}} </span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="cusername" label="创建人姓名" min-width="120" show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                <span> {{scope.row.cusername}} </span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="productId" label="产品编号" min-width="120" show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                <span> {{scope.row.productId}} </span>
-                            </template>
-                        </el-table-column>
+                        </el-table-column>    
                         <el-table-column prop="verNum" label="版本号" min-width="120" show-overflow-tooltip>
                             <template slot-scope="scope">
                                 <span> {{scope.row.verNum}} </span>
                             </template>
-                        </el-table-column>
-                        <el-table-column prop="casedbId" label="用例库编号" min-width="120" show-overflow-tooltip>
+                        </el-table-column>   
+                        <el-table-column prop="caseStatus" label="状态" width="100" show-overflow-tooltip>
                             <template slot-scope="scope">
-                                <span> {{scope.row.casedbId}} </span>
+                                <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'testCaseStatus',scope.row.caseStatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
                             </template>
-                        </el-table-column>
-                        <el-table-column prop="casedbName" label="用例库名称" min-width="120" show-overflow-tooltip>
+                        </el-table-column>      
+                        <el-table-column prop="cusername" label="创建人姓名" min-width="120" show-overflow-tooltip>
                             <template slot-scope="scope">
-                                <span> {{scope.row.casedbName}} </span>
+                                <span> {{scope.row.cusername}} </span>
                             </template>
-                        </el-table-column>
-                        <el-table-column label="操作" width="180" fixed="right">
-                            <template scope="scope">
-                                <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"  plain></el-button>
-                                <el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"  plain></el-button>
-                            </template>
-                        </el-table-column>
+                        </el-table-column> 
                     </el-table>
                     <el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
                 </el-row>
@@ -147,7 +63,7 @@
 
 			<!--新增 XmTestCase 测试用例界面-->
 			<el-drawer title="新增测试用例" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
-			    <xm-test-case-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-test-case-edit>
+			    <xm-test-case-edit op-type="add" :xm-test-casedb="xmTestCasedb" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-test-case-edit>
 			</el-drawer>
 	    </el-row>
 	</section>
@@ -167,7 +83,7 @@ export default {
     components: {
         XmTestCaseEdit,XmFuncSelect
     },
-    props:['visible'],
+    props:['visible','xmTestCasedb'],
     computed: {
         ...mapGetters(['userInfo']),
 
@@ -198,6 +114,7 @@ export default {
             load:{ list: false, edit: false, del: false, add: false },//查询中...
             sels: [],//列表选中数据
             dicts:{
+                testCaseStatus:[]
                 //sex: [{id:'1',name:'男'},{id:'2',name:'女'}]
             },//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
             addFormVisible: false,//新增xmTestCase界面是否显示
