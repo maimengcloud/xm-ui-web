@@ -1,8 +1,6 @@
 <template>
-	<section  class="page-container padding">
-	    <el-row class="page-header">
-	    </el-row>
-		<el-row class="page-main" :style="{overflowX:'auto',height:maxTableHeight+'px'}" ref="table">
+	<section> 
+		<el-row ref="table" class="padding">
 		<!--编辑界面 XmFunc 功能模块表--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">
 
@@ -15,9 +13,11 @@
 			</el-form>
 		</el-row>
 
-		<el-row v-if="opType=='add'" class="page-bottom bottom-fixed">
+		<el-row v-if="opType=='add'">
+			<span class="padding" style="float:right;">
 		    <el-button @click.native="handleCancel">取消</el-button>
             <el-button v-loading="load.edit" type="primary" @click.native="saveSubmit" :disabled="load.edit==true">提交</el-button>
+			</span>
 		</el-row>
 	</section>
 </template>
