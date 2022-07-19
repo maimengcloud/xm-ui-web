@@ -58,7 +58,7 @@
 		<el-row>
 			<!--编辑 XmTestCase 测试用例界面-->
 			<el-dialog title="编辑测试用例" :visible.sync="editFormVisible"  width="60%" top="20px"  append-to-body   :close-on-click-modal="false">
-			    <xm-test-case-edit op-type="edit" :xm-test-case="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-test-case-edit>
+			    <xm-test-case-edit op-type="edit" :xm-test-case="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @edit-fields="onEditFields"></xm-test-case-edit>
 			</el-dialog>
 
 			<!--新增 XmTestCase 测试用例界面-->
@@ -299,6 +299,10 @@ export default {
         onXmFuncRowClick(row){
             this.filters.xmFunc=row
             this.searchXmTestCases();
+        },
+        onEditFields(params){
+            Object.assign(this.editForm,params)
+            this.editFormBak={...this.editForm}
         }
 
     },//end methods

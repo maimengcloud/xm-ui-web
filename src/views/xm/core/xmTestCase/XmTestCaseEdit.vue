@@ -161,12 +161,25 @@ TestStepConfig,
                 }
                 let params={};
                 params['ids']=[row].map(i=>i.id)
+				if(fieldName=='funcId'){
+					 params[fieldName]=$event.id
+					 params['funcName']=$event.name
+				}else if(fieldName=='menuId'){ 
+					 params[fieldName]=$event.menuId
+					 params['menuName']=$event.menuName
+				}else if(fieldName=='cuserid'){
+					 params[fieldName]=$event.userid
+					 params['cusername']=$event.username 
+				}else{
+					 params[fieldName]=$event
+				}
                 params[fieldName]=$event
                 var func = editSomeFieldsXmTestCase
                 func(params).then(res=>{
                   let tips = res.data.tips;
                   if(tips.isOk){
                     this.editFormBak=[...this.editForm]
+					this.$emit('edit-fields',params)
                   }else{
                     Object.assign(this.editForm,this.editFormBak)
                     this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
@@ -177,11 +190,17 @@ TestStepConfig,
 				this.editForm.menuId=row.menuId
 				this.editForm.menuName=row.menuName
 				this.menuVisible=false;
+				if(this.opType!=='add'){
+					this.editSomeFieldsXmTestCase(this.editForm,'menuId',row)
+				}
 			},
 			onFuncSelected(row){
 				this.editForm.funcId=row.id
 				this.editForm.funcName=row.name
 				this.funcVisible=false;
+				if(this.opType!=='add'){
+					this.editSomeFieldsXmTestCase(this.editForm,'funcId',row)
+				}
 			}
 		},//end method
 		mounted() {
