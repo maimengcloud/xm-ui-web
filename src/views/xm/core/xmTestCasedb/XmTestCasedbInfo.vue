@@ -10,7 +10,7 @@
         </el-row>
 		<el-row>
             <xm-test-case-mng v-if="activeIndex=='testCase'"></xm-test-case-mng>
-            <xm-test-plan-mng v-else-if="activeIndex=='testPlan'"> </xm-test-plan-mng>
+            <xm-test-plan-info v-else-if="activeIndex=='testPlan'"> </xm-test-plan-info>
         </el-row>     
 	</section>
 </template>
@@ -22,14 +22,14 @@ import config from '@/common/config';//全局公共库
 import { initDicts,listXmTestCasedb, delXmTestCasedb, batchDelXmTestCasedb,editSomeFieldsXmTestCasedb } from '@/api/xm/core/xmTestCasedb';
 import  XmTestCasedbEdit from './XmTestCasedbEdit';//新增修改界面
 import  XmTestCaseMng from '../xmTestCase/XmTestCaseMng';//新增修改界面
-import  XmTestPlanMng from '../xmTestPlan/XmTestPlanMng';//新增修改界面
+import  XmTestPlanInfo from '../xmTestPlan/XmTestPlanInfo';//新增修改界面
 import { mapGetters } from 'vuex'
 import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修改界面
 
 export default {
     name:'xmTestCasedbMng',
     components: {
-        XmTestCasedbEdit,XmProductSelect,XmTestCaseMng,XmTestPlanMng,
+        XmTestCasedbEdit,XmProductSelect,XmTestCaseMng,XmTestPlanInfo,
     },
     props:['visible','xmProduct','selProject'],
     computed: {

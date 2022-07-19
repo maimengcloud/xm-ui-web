@@ -22,7 +22,7 @@
 				<el-table-column prop="id" label="测试计划编号" min-width="120" show-overflow-tooltip  fixed="left"></el-table-column>
 				<el-table-column prop="name" label="计划名称" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-				        <span> {{scope.row.name}} </span>
+				        <span> <el-link @click="goToTestPlanCase(scope.row)"> {{scope.row.name}}</el-link> </span>
                     </template>
 				</el-table-column>
 				<el-table-column prop="casedbId" label="用例库编号" min-width="120" show-overflow-tooltip>
@@ -363,6 +363,9 @@ export default {
         initData: function(){
 
         },
+        goToTestPlanCase(row){ 
+            this.$emit('select',row);//  @row-click="rowClick"
+        }
 
     },//end methods
     mounted() {
