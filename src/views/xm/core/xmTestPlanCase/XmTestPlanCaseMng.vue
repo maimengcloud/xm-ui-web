@@ -1,63 +1,72 @@
 <template>
-	<section class="page-container border padding">
-		<el-row>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
-			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestPlanCases" icon="el-icon-search">查询</el-button>
-			<span style="float:right;">
-			    <el-button type="primary" @click="showAdd" icon="el-icon-plus" plain> </el-button>
-			    <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete" plain></el-button>
-		    </span>
-		</el-row>
-		<el-row class="padding-top">
-			<!--列表 XmTestPlanCase 测试计划与用例关系表-->
-			<el-table ref="xmTestPlanCaseTable" :data="xmTestPlanCases" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-				<el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column>
- 				<!--
-				<el-table-column sortable prop="username" width="55" show-overflow-tooltip  fixed="left">
-				    <span class="cell-text">  {{scope.row.username}}}  </span>
-				    <span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
-				</el-table-column>
-				-->
-				<el-table-column prop="caseId" label="用例编号" width="120" show-overflow-tooltip  fixed="left"></el-table-column>	 
-                
-				<el-table-column prop="execStatus" label="执行状态" width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        
-				        <el-tag class="cell-text" v-for="(item,index) in formatDictsWithClass(dicts,'testStepTcode',scope.row.execStatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
-                        <el-select class="cell-bar" v-model="scope.row.execStatus" @change="editSomeFields(scope.row,'execStatus',$event)">
-                            <el-option v-for="(item,index) in dicts['testStepTcode']" :key="index" :value="item.id" :label="item.name"></el-option>
-                        </el-select>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="caseName" label="用例名称" min-width="250" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> <el-link @click="showEdit( scope.row,scope.$index)">{{scope.row.caseName}} </el-link></span>
-                        <span class="tool-bar">
-                             <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" circle plain size="mini"></el-button> 
-                        </span>
-                    </template>
-				</el-table-column>	 
-				<el-table-column prop="execUsername" label="执行人姓名" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.execUsername}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="priority" label="优先级" width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <el-tag class="cell-text" v-for="(item,index) in formatDictsWithClass(dicts,'priority',scope.row.execStatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
-                        <el-select class="cell-bar" v-model="scope.row.priority" @change="editSomeFields(scope.row,'priority',$event)">
-                            <el-option v-for="(item,index) in dicts['priority']" :key="index" :value="item.id" :label="item.name"></el-option>
-                        </el-select>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="remark" label="执行备注" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.remark}} </span>
-                    </template>
-				</el-table-column>  
-			</el-table>
-			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
-		</el-row>
+	<section>
+        <el-row>
+            
+            <el-col :span="6">
+                <xm-func-select v-if="xmTestCasedb && xmTestCasedb.productId" class="padding-right padding-left" :xm-product="{id:xmTestCasedb.productId,productName:xmTestCasedb.productName}" @row-click="onXmFuncRowClick"> 
+                </xm-func-select>
+            </el-col>
+            <el-col :span="18">
+                <el-row>
+                    <el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
+                    <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestPlanCases" icon="el-icon-search">查询</el-button>
+                    <span style="float:right;">
+                        <el-button type="primary" @click="showAdd" icon="el-icon-plus" plain> </el-button>
+                        <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete" plain></el-button>
+                    </span>
+                </el-row>
+                <el-row>
+                    <!--列表 XmTestPlanCase 测试计划与用例关系表-->
+                    <el-table ref="xmTestPlanCaseTable" :data="xmTestPlanCases" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+                        <el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column>
+                        <!--
+                        <el-table-column sortable prop="username" width="55" show-overflow-tooltip  fixed="left">
+                            <span class="cell-text">  {{scope.row.username}}}  </span>
+                            <span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
+                        </el-table-column>
+                        -->
+                        <el-table-column prop="caseId" label="用例编号" width="120" show-overflow-tooltip  fixed="left"></el-table-column>	 
+                        
+                        <el-table-column prop="execStatus" label="执行结果" width="120" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                
+                                <el-tag class="cell-text" v-for="(item,index) in formatDictsWithClass(dicts,'testStepTcode',scope.row.execStatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
+                                <el-select class="cell-bar" v-model="scope.row.execStatus" @change="editSomeFields(scope.row,'execStatus',$event)">
+                                    <el-option v-for="(item,index) in dicts['testStepTcode']" :key="index" :value="item.id" :label="item.name"></el-option>
+                                </el-select>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="caseName" label="用例名称" min-width="250" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span> <el-link @click="showEdit( scope.row,scope.$index)">{{scope.row.caseName}} </el-link></span>
+                                <span class="tool-bar">
+                                    <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" circle plain size="mini"></el-button> 
+                                </span>
+                            </template>
+                        </el-table-column>	 
+                        <el-table-column prop="execUsername" label="执行人姓名" min-width="120" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span> {{scope.row.execUsername}} </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="priority" label="优先级" width="120" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <el-tag class="cell-text" v-for="(item,index) in formatDictsWithClass(dicts,'priority',scope.row.execStatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
+                                <el-select class="cell-bar" v-model="scope.row.priority" @change="editSomeFields(scope.row,'priority',$event)">
+                                    <el-option v-for="(item,index) in dicts['priority']" :key="index" :value="item.id" :label="item.name"></el-option>
+                                </el-select>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="remark" label="执行备注" min-width="120" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span> {{scope.row.remark}} </span>
+                            </template>
+                        </el-table-column>  
+                    </el-table>
+                    <el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+                </el-row>
+            </el-col>
+        </el-row>
 		<el-row>
 			<!--编辑 XmTestPlanCase 测试计划与用例关系表界面-->
 			<el-drawer title="编辑测试计划与用例关系表" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
@@ -66,7 +75,7 @@
 
 			<!--新增 XmTestPlanCase 测试计划与用例关系表界面-->
 			<el-dialog title="选择测试用例" :visible.sync="addFormVisible"  width="80%" top="20px" append-to-body  :close-on-click-modal="false">
-			    <xm-test-case-select :xm-test-plan="xmTestPlan"  :visible="addFormVisible" @cancel="addFormVisible=false" @select="onXmTestCaseSelect"></xm-test-case-select>
+			    <xm-test-case-select :xm-test-plan="xmTestPlan" :xm-test-casedb="xmTestCasedb" :visible="addFormVisible" @cancel="addFormVisible=false" @select="onXmTestCaseSelect"></xm-test-case-select>
 			</el-dialog>
 	    </el-row>
 	</section>
@@ -78,16 +87,16 @@ import util from '@/common/js/util';//全局公共库
 import config from '@/common/config';//全局公共库
 import { initDicts,listXmTestPlanCase, delXmTestPlanCase, batchDelXmTestPlanCase,editSomeFieldsXmTestPlanCase,importFromTestCase } from '@/api/xm/core/xmTestPlanCase';
 import  XmTestPlanCaseEdit from './XmTestPlanCaseEdit';//新增修改界面
-import  XmTestCaseSelect from '../xmTestCase/XmTestCaseSelect';//新增修改界面
-
+import  XmTestCaseSelect from '../xmTestCase/XmTestCaseSelect';//新增修改界面 
+import  XmFuncSelect from '../xmFunc/XmFuncSelect';//新增修改界面
 import { mapGetters } from 'vuex'
 
 export default {
     name:'xmTestPlanCaseMng',
     components: {
-        XmTestPlanCaseEdit,XmTestCaseSelect,
+        XmTestPlanCaseEdit,XmTestCaseSelect,XmFuncSelect,
     },
-    props:['visible','xmTestPlan'],
+    props:['visible','xmTestPlan','xmTestCasedb'],
     computed: {
         ...mapGetters(['userInfo']),
 
@@ -103,7 +112,8 @@ export default {
     data() {
         return {
             filters: {
-                key: ''
+                key: '',
+                xmFunc:null,
             },
             xmTestPlanCases: [],//查询结果
             pageInfo:{//分页数据
@@ -182,6 +192,15 @@ export default {
             }
             if(this.filters.key){
                 params.key=this.filters.key
+            }
+            if(this.xmTestCasedb && this.xmTestCasedb.id){
+                params.casedbId=this.xmTestCasedb.id
+            }
+            if(this.xmTestPlan && this.xmTestPlan.id){
+                params.planId=this.xmTestPlan.id
+            }
+            if(this.filters.xmFunc && this.filters.xmFunc.id){
+                params.funcPidPathsLike=this.filters.xmFunc.pidPaths
             }
 
             this.load.list = true;
@@ -304,8 +323,11 @@ export default {
             importFromTestCase({planId:this.xmTestPlan.id,caseIds:cases.map(i=>i.id)}).then(res=>{
                 this.searchXmTestPlanCases();
             })
-        }
-
+        } ,
+        onXmFuncRowClick(row){
+            this.filters.xmFunc=row
+            this.searchXmTestPlanCases();
+        },
     },//end methods
     mounted() {
         this.$nextTick(() => {
