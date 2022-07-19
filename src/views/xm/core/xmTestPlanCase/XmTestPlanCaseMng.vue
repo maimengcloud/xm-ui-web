@@ -19,6 +19,16 @@
 				</el-table-column>
 				-->
 				<el-table-column prop="caseId" label="用例编号" width="120" show-overflow-tooltip  fixed="left"></el-table-column>	 
+                
+				<el-table-column prop="execStatus" label="执行状态" width="120" show-overflow-tooltip>
+				    <template slot-scope="scope">
+				        
+				        <el-tag class="cell-text" v-for="(item,index) in formatDictsWithClass(dicts,'testStepTcode',scope.row.execStatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
+                        <el-select class="cell-bar" v-model="scope.row.execStatus" @change="editSomeFields(scope.row,'execStatus',$event)">
+                            <el-option v-for="(item,index) in dicts['testStepTcode']" :key="index" :value="item.id" :label="item.name"></el-option>
+                        </el-select>
+                    </template>
+				</el-table-column>
 				<el-table-column prop="caseName" label="用例名称" min-width="250" show-overflow-tooltip>
 				    <template slot-scope="scope">
 				        <span> <el-link @click="showEdit( scope.row,scope.$index)">{{scope.row.caseName}} </el-link></span>
@@ -30,15 +40,6 @@
 				<el-table-column prop="execUsername" label="执行人姓名" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
 				        <span> {{scope.row.execUsername}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="execStatus" label="执行状态" width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        
-				        <el-tag class="cell-text" v-for="(item,index) in formatDictsWithClass(dicts,'testStepTcode',scope.row.execStatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
-                        <el-select class="cell-bar" v-model="scope.row.execStatus" @change="editSomeFields(scope.row,'execStatus',$event)">
-                            <el-option v-for="(item,index) in dicts['testStepTcode']" :key="index" :value="item.id" :label="item.name"></el-option>
-                        </el-select>
                     </template>
 				</el-table-column>
 				<el-table-column prop="priority" label="优先级" width="120" show-overflow-tooltip>
