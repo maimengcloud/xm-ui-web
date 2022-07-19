@@ -8,6 +8,10 @@
             <el-col :span="18">
                 <el-row>
                     <el-input v-model="filters.key" style="width: 20%;" placeholder="名称 按回车" @keyup.enter.native="searchXmTestCases"></el-input>
+                    
+                    <el-select v-model="filters.caseStatus" style="width:100px;">
+                        <el-option v-for="(item,index) in dicts['testCaseStatus']" :key="index" :value="item.id" :label="item.name"></el-option>
+                    </el-select>
                     <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestCases" icon="el-icon-search">查询</el-button>
                     <span style="float:right;">
                         <el-button type="primary" @click="showAdd" icon="el-icon-plus" plain> </el-button>
@@ -39,8 +43,12 @@
                             </template>
                         </el-table-column>   
                         <el-table-column prop="caseStatus" label="状态" width="100" show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'testCaseStatus',scope.row.caseStatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
+                            <template slot-scope="scope"> 
+                                <el-tag class="cell-text" v-for="(item,index) in formatDictsWithClass(dicts,'testCaseStatus',scope.row.caseStatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
+                                 
+                                <el-select class="cell-bar" v-model="scope.row.caseStatus" @change="editSomeFields(scope.row,'caseStatus',$event)">
+                                <el-option v-for="(item,index) in dicts['testCaseStatus']" :key="index" :value="item.id" :label="item.name"></el-option>
+                                </el-select>
                             </template>
                         </el-table-column>      
                         <el-table-column prop="cusername" label="创建人姓名" min-width="120" show-overflow-tooltip>
