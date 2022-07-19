@@ -1,84 +1,43 @@
 <template>
-	<section class="page-container border padding">
+	<section>
 		<el-row>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
-			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestPlans" icon="el-icon-search">查询</el-button>
+			<el-input v-model="filters.key" style="width: 60%;" placeholder="名称 按回车" @keyup.enter.native="searchXmFuncs" clearable></el-input> 
 			<span style="float:right;">
 			    <el-button type="primary" @click="showAdd" icon="el-icon-plus" plain> </el-button>
-			    <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete" plain></el-button>
 		    </span>
 		</el-row>
-		<el-row class="padding-top">
-			<!--列表 XmTestPlan 测试计划-->
-			<el-table ref="xmTestPlanTable" :data="xmTestPlans" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-				<el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column>
-				<el-table-column sortable type="index" width="55" show-overflow-tooltip  fixed="left"></el-table-column>
-				<!--
-				<el-table-column sortable prop="username" width="55" show-overflow-tooltip  fixed="left">
-				    <span class="cell-text">  {{scope.row.username}}}  </span>
-				    <span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
-				</el-table-column>
-				-->
- 				<el-table-column prop="name" label="计划名称" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> <el-link @click="goToTestPlanCase(scope.row)"> {{scope.row.name}}</el-link> </span>
-                    </template>
-				</el-table-column> 
-                <el-table-column prop="cusername" label="负责人" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span>   {{scope.row.cusername}} </span>
-                    </template>
-				</el-table-column> 
-				<el-table-column prop="status" label="状态" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'testPlanStatus',scope.row.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="tcode" label="测试结果" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'testPlanTcode',scope.row.tcode)" :key="index" :type="item.className">{{item.name}}</el-tag>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="stime" label="开始时间" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.stime}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="etime" label="结束时间" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.etime}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="flowState" label="评审结果" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'bizFlowState',scope.row.flowState)" :key="index" :type="item.className">{{item.name}}</el-tag>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="totalCases" label="进度" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-                        <el-tooltip :open-delay="500" :content="'总用例数:'+scope.row.totalCases+'   成功:'+scope.row.okCases +'  失败:'+scope.row.errCases+'  忽略:'+scope.row.igCases+'  阻塞:'+scope.row.blCases">
-                            <el-progress   :stroke-width="22" :text-inside="true"  :status="scope.row.totalCases>0 && scope.row.errCases<=0 ?'success':'exception'" :percentage="scope.row.totalCases>0?parseInt((parseInt(scope.row.okCases)+parseInt(scope.row.igCases)+parseInt(scope.row.errCases)+parseInt(scope.row.blCases))*100/parseInt(scope.row.totalCases)):0"></el-progress>
-                        </el-tooltip>
-                     </template>
-				</el-table-column>  
-				<el-table-column label="操作" width="180" fixed="right">
-				    <template scope="scope">
-				        <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"  plain></el-button>
-				        <el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"  plain></el-button>
-				    </template>
-				</el-table-column>
+		<el-row>
+			<!--列表 XmFunc 功能模块表-->
+			<el-table ref="xmFuncTable"  element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"  :data="xmFuncsTreeData" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;" current-row-key="id" row-key="id" :tree-props="{children: 'children'}" >
+				 
+                <el-table-column prop="name" label="模块" min-width="150" > 
+								<template slot="header"> 模块 &nbsp;<slot name="title-bar"></slot><el-button type="text" @click="unselectRow()">清除选中的行</el-button></template>
+								<template slot-scope="scope">
+									 
+									<span> {{scope.row.name}} </span> 
+ 									 <div class="tool-bar">
+                                        <span class="u-btn">
+                                                    <el-button    @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建子功能模块" circle plain size="mini"> </el-button>
+                                                    
+                                            <el-button      @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle plain size="mini"> </el-button>    
+                                            <el-button type="danger" v-loading="load.del" @click="handleDel(scope.row)" :disabled=" !editForm || !editForm.id || load.del==true" icon="el-icon-delete" circle plain size="mini"></el-button>
+ 
+                                        </span>
+									</div>
+  								</template> 
+							</el-table-column> 
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 		</el-row>
 		<el-row>
-			<!--编辑 XmTestPlan 测试计划界面-->
-			<el-drawer title="编辑测试计划" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
-			    <xm-test-plan-edit op-type="edit" :xm-test-plan="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-test-plan-edit>
+			<!--编辑 XmFunc 功能模块表界面-->
+			<el-drawer title="编辑功能模块表" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
+			    <xm-func-edit op-type="edit" :xm-func="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-func-edit>
 			</el-drawer>
 
-			<!--新增 XmTestPlan 测试计划界面-->
-			<el-drawer title="新增测试计划" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
-			    <xm-test-plan-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-test-plan-edit>
+			<!--新增 XmFunc 功能模块表界面-->
+			<el-drawer title="新增功能模块表" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
+			    <xm-func-edit op-type="add" :xm-func="addForm" :parent-func="parentFunc" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-func-edit>
 			</el-drawer>
 	    </el-row>
 	</section>
@@ -87,26 +46,33 @@
 <script>
 
 import util from '@/common/js/util';//全局公共库
+import treeTool from '@/common/js/treeTool';//全局公共库
 import config from '@/common/config';//全局公共库
-import { initDicts,listXmTestPlan, delXmTestPlan, batchDelXmTestPlan,editSomeFieldsXmTestPlan } from '@/api/xm/core/xmTestPlan';
-import  XmTestPlanEdit from './XmTestPlanEdit';//新增修改界面
+import { initDicts,listXmFunc, delXmFunc, batchDelXmFunc,editSomeFieldsXmFunc } from '@/api/xm/core/xmFunc';
+import  XmFuncEdit from './XmFuncEdit';//新增修改界面
 import { mapGetters } from 'vuex'
 
 export default {
-    name:'xmTestPlanMng',
+    name:'xmFuncMng',
     components: {
-        XmTestPlanEdit,
+        XmFuncEdit,
     },
-    props:['visible'],
+    props:['visible','xmProduct'],
     computed: {
         ...mapGetters(['userInfo']),
 
+
+        xmFuncsTreeData() {
+            let xmFuncs = JSON.parse(JSON.stringify(this.xmFuncs || []));
+            let xmFuncsTreeData = treeTool.translateDataToTree(xmFuncs,"pid","id");
+                return xmFuncsTreeData;
+        },
     },
     watch:{
         visible(val){
             if(val==true){
                 this.initData();
-                this.searchXmTestPlans()
+                this.searchXmFuncs()
             }
         }
     },
@@ -115,7 +81,7 @@ export default {
             filters: {
                 key: ''
             },
-            xmTestPlans: [],//查询结果
+            xmFuncs: [],//查询结果
             pageInfo:{//分页数据
                 total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
                 pageSize:10,//每页数据
@@ -127,18 +93,18 @@ export default {
             load:{ list: false, edit: false, del: false, add: false },//查询中...
             sels: [],//列表选中数据
             dicts:{
-                testPlanStatus:[],testPlanTcode:[],testStepTcode:[],priority:[],bizFlowState:[]
                 //sex: [{id:'1',name:'男'},{id:'2',name:'女'}]
             },//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
-            addFormVisible: false,//新增xmTestPlan界面是否显示
+            addFormVisible: false,//新增xmFunc界面是否显示
             addForm: {
-                id:'',name:'',casedbId:'',casedbName:'',projectId:'',projectName:'',cuserid:'',cusername:'',ctime:'',stime:'',etime:'',status:'',tcode:'',totalCases:'',okCases:'',errCases:'',igCases:'',blCases:'',productId:'',productName:'',flowState:''
+                id:'',name:'',pid:'',pname:'',pidPaths:'',productId:'',lvl:''
             },
 
             editFormVisible: false,//编辑界面是否显示
             editForm: {
-                id:'',name:'',casedbId:'',casedbName:'',projectId:'',projectName:'',cuserid:'',cusername:'',ctime:'',stime:'',etime:'',status:'',tcode:'',totalCases:'',okCases:'',errCases:'',igCases:'',blCases:'',productId:'',productName:'',flowState:''
+                id:'',name:'',pid:'',pname:'',pidPaths:'',productId:'',lvl:''
             },
+            parentFunc:{ id:'',name:'',pid:'',pname:'',pidPaths:'',productId:'',lvl:''},
             maxTableHeight:300,
         }
     },//end data
@@ -148,11 +114,11 @@ export default {
 
         handleSizeChange(pageSize) {
             this.pageInfo.pageSize=pageSize;
-            this.getXmTestPlans();
+            this.getXmFuncs();
         },
         handleCurrentChange(pageNum) {
             this.pageInfo.pageNum = pageNum;
-            this.getXmTestPlans();
+            this.getXmFuncs();
         },
         // 表格排序 obj.order=ascending/descending,需转化为 asc/desc ; obj.prop=表格中的排序字段,字段驼峰命名
         sortChange( obj ){
@@ -170,14 +136,14 @@ export default {
                 this.pageInfo.orderFields=[util.toLine(obj.prop)];
                 this.pageInfo.orderDirs=[dir];
             }
-            this.getXmTestPlans();
+            this.getXmFuncs();
         },
-        searchXmTestPlans(){
+        searchXmFuncs(){
              this.pageInfo.count=true;
-             this.getXmTestPlans();
+             this.getXmFuncs();
         },
-        //获取列表 XmTestPlan 测试计划
-        getXmTestPlans() {
+        //获取列表 XmFunc 功能模块表
+        getXmFuncs() {
             let params = {
                 pageSize: this.pageInfo.pageSize,
                 pageNum: this.pageInfo.pageNum,
@@ -194,14 +160,17 @@ export default {
             if(this.filters.key){
                 params.key=this.filters.key
             }
+            if(this.xmProduct && this.xmProduct.id){
+                params.productId=this.xmProduct.id
+            }
 
             this.load.list = true;
-            listXmTestPlan(params).then((res) => {
+            listXmFunc(params).then((res) => {
                 var tips=res.data.tips;
                 if(tips.isOk){
                     this.pageInfo.total = res.data.total;
                     this.pageInfo.count=false;
-                    this.xmTestPlans = res.data.data;
+                    this.xmFuncs = res.data.data;
                 }else{
                     this.$notify({ position:'bottom-left',showClose:true, message: tips.msg, type: 'error' });
                 }
@@ -209,46 +178,67 @@ export default {
             }).catch( err => this.load.list = false );
         },
 
-        //显示编辑界面 XmTestPlan 测试计划
+        //显示编辑界面 XmFunc 功能模块表
         showEdit: function ( row,index ) {
             this.editFormVisible = true;
             this.editForm = Object.assign({}, row);
         },
-        //显示新增界面 XmTestPlan 测试计划
+        //显示新增界面 XmFunc 功能模块表
         showAdd: function () {
+            this.parentFunc=null;
+            this.addForm.productId=this.xmProduct.id
+            this.addForm.productName=this.xmProduct.productName
             this.addFormVisible = true;
             //this.addForm=Object.assign({}, this.editForm);
+        },
+        showSubAdd:function(row){
+            this.$refs.xmFuncTable.setCurrentRow(row)
+            if(this.editForm && row.id!=this.editForm.id){ 
+                this.$refs.xmFuncTable.setCurrentRow(row); 
+                this.$emit("row-click",row) 
+            }
+            this.addForm={...this.addFormInit}
+            this.editForm=row
+            this.parentFunc=row 
+            this.addForm.productId=row.productId 
+
+            if(this.xmProduct && row.productId==this.xmProduct.id){
+                this.addForm.productName=this.xmProduct.productName
+            }else{
+                this.addForm.productName=null;
+            }  
+            this.addFormVisible=true
         },
         afterAddSubmit(){
             this.addFormVisible=false;
             this.pageInfo.count=true;
-            this.getXmTestPlans();
+            this.getXmFuncs();
         },
         afterEditSubmit(){
             this.editFormVisible=false;
         },
-        //选择行xmTestPlan
+        //选择行xmFunc
         selsChange: function (sels) {
             this.sels = sels;
         },
-        //删除xmTestPlan
+        //删除xmFunc
         handleDel: function (row,index) {
             this.$confirm('确认删除该记录吗?', '提示', {
                 type: 'warning'
             }).then(() => {
                 this.load.del=true;
                 let params = {  id:row.id };
-                delXmTestPlan(params).then((res) => {
+                delXmFunc(params).then((res) => {
                     this.load.del=false;
                     var tips=res.data.tips;
                     if(tips.isOk){
-                        this.searchXmTestPlans();
+                        this.searchXmFuncs();
                     }
                     this.$notify({ position:'bottom-left', showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
                 }).catch( err  => this.load.del=false );
             });
         },
-        //批量删除xmTestPlan
+        //批量删除xmFunc
         batchDel: function () {
             if(this.sels.length<=0){
                 return;
@@ -260,11 +250,11 @@ export default {
                 type: 'warning'
             }).then(() => {
                 this.load.del=true;
-                batchDelXmTestPlan(params).then((res) => {
+                batchDelXmFunc(params).then((res) => {
                     this.load.del=false;
                     var tips=res.data.tips;
                     if( tips.isOk ){
-                        this.searchXmTestPlans();
+                        this.searchXmFuncs();
                     }
                     this.$notify({ position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
                 }).catch( err  => this.load.del=false );
@@ -283,12 +273,12 @@ export default {
             params['ids']=[row].map(i=>i.id)
         }
         params[fieldName]=$event
-        var func = editSomeFieldsXmTestPlan
+        var func = editSomeFieldsXmFunc
         func(params).then(res=>{
           let tips = res.data.tips;
           if(tips.isOk){
             if(this.sels.length>0){
-                this.searchXmTestPlans();
+                this.searchXmFuncs();
             }
             this.editFormBak=[...this.editForm]
           }else{
@@ -305,17 +295,19 @@ export default {
         initData: function(){
 
         },
-        goToTestPlanCase(row){ 
-            this.$emit('select',row);//  @row-click="rowClick"
-        }
 
+        unselectRow(){
+            this.editForm=null;
+            this.$emit('row-click',null)
+            this.$refs.xmFuncTable.setCurrentRow(); 
+        },
     },//end methods
     mounted() {
         this.$nextTick(() => {
             initDicts(this);
             this.initData()
-            this.searchXmTestPlans();
-            this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmTestPlanTable.$el)
+            this.searchXmFuncs();
+            this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmFuncTable.$el)
 
         });
     }

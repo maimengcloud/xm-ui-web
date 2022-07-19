@@ -5,27 +5,13 @@
 		<el-row class="page-main" :style="{overflowX:'auto',height:maxTableHeight+'px'}" ref="table">
 		<!--编辑界面 XmFunc 功能模块表--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">
-				<el-form-item label="主键" prop="id">
-					<el-input v-model="editForm.id" placeholder="主键" :maxlength="50" @change="editSomeFields(editForm,'id',$event)"></el-input>
-				</el-form-item> 
+
+				<el-form-item label="编号" prop="id">
+					<el-input v-model="editForm.id" :disabled="opType!='add'" placeholder="编号，留空则后台自动生成" :maxlength="50" @change="editSomeFields(editForm,'id',$event)"></el-input>
+				</el-form-item>   
 				<el-form-item label="名称" prop="name">
 					<el-input v-model="editForm.name" placeholder="名称" :maxlength="255" @change="editSomeFields(editForm,'name',$event)"></el-input>
-				</el-form-item> 
-				<el-form-item label="上级编号" prop="pid">
-					<el-input v-model="editForm.pid" placeholder="上级编号" :maxlength="50" @change="editSomeFields(editForm,'pid',$event)"></el-input>
-				</el-form-item> 
-				<el-form-item label="上级名称" prop="pname">
-					<el-input v-model="editForm.pname" placeholder="上级名称" :maxlength="255" @change="editSomeFields(editForm,'pname',$event)"></el-input>
-				</el-form-item> 
-				<el-form-item label="上级路径，直到自身，逗号分割，包含自身" prop="pidPaths">
-					<el-input v-model="editForm.pidPaths" placeholder="上级路径，直到自身，逗号分割，包含自身" :maxlength="255" @change="editSomeFields(editForm,'pidPaths',$event)"></el-input>
-				</el-form-item> 
-				<el-form-item label="产品编号" prop="productId">
-					<el-input v-model="editForm.productId" placeholder="产品编号" :maxlength="50" @change="editSomeFields(editForm,'productId',$event)"></el-input>
-				</el-form-item> 
-				<el-form-item label="菜单级别0-根，1，2，3，4，5依次类推" prop="lvl">
-					<el-input-number v-model="editForm.lvl" :min="0" :max="200"></el-input-number>
-				</el-form-item> 
+				</el-form-item>    
 			</el-form>
 		</el-row>
 
@@ -51,7 +37,7 @@
 		    ...mapGetters([ 'userInfo'  ]),
 
 		},
-		props:['xmFunc','visible','opType'],
+		props:['xmFunc','visible','opType','parentFunc'],
 
 		watch: {
 	      'xmFunc':function( xmFunc ) {
@@ -128,7 +114,13 @@
                 if(this.opType=='edit'){
 
                 }else{
-
+					if(this.parentFunc && this.parentFunc.id){ 
+						this.editForm.pid=this.parentFunc.id
+						this.editForm.pname=this.parentFunc.name 
+					}else{
+						this.editForm.pid=null
+						this.editForm.pname=null
+					}
                 }
                 this.editFormBak={...this.editForm}
             },

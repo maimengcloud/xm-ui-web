@@ -1,134 +1,144 @@
 <template>
-	<section class="page-container border padding">
-		<el-row>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
-			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestCases" icon="el-icon-search">查询</el-button>
-			<span style="float:right;">
-			    <el-button type="primary" @click="showAdd" icon="el-icon-plus" plain> </el-button>
-			    <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete" plain></el-button>
-		    </span>
-		</el-row>
-		<el-row class="padding-top">
-			<!--列表 XmTestCase 测试用例-->
-			<el-table ref="xmTestCaseTable" :data="xmTestCases" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-				<el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column>
-				<el-table-column sortable type="index" width="55" show-overflow-tooltip  fixed="left"></el-table-column>
-				<!--
-				<el-table-column sortable prop="username" width="55" show-overflow-tooltip  fixed="left">
-				    <span class="cell-text">  {{scope.row.username}}}  </span>
-				    <span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
-				</el-table-column>
-				-->
-				<el-table-column prop="id" label="主键" min-width="120" show-overflow-tooltip  fixed="left"></el-table-column>
-				<el-table-column prop="caseName" label="标题" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.caseName}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="caseRemark" label="备注" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.caseRemark}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="testStep" label="测试步骤" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.testStep}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="expectResult" label="期望结果" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.expectResult}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="menuId" label="关联的故事" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.menuId}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="menuName" label="关联故事名" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.menuName}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="ctime" label="创建时间" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.ctime}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="ltime" label="更新时间" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.ltime}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="luserid" label="更新人编号" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.luserid}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="lusername" label="更新人姓名" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.lusername}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="cbranchId" label="创建机构" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.cbranchId}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="moduleId" label="模块编号" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.moduleId}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="moduleName" label="模块名称" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.moduleName}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="caseStatus" label="用例状态1正常0废弃" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.caseStatus}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="cuserid" label="创建人编号" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.cuserid}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="cusername" label="创建人姓名" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.cusername}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="productId" label="产品编号" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.productId}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="verNum" label="版本号" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.verNum}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="casedbId" label="用例库编号" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.casedbId}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="casedbName" label="用例库名称" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.casedbName}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column label="操作" width="180" fixed="right">
-				    <template scope="scope">
-				        <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"  plain></el-button>
-				        <el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"  plain></el-button>
-				    </template>
-				</el-table-column>
-			</el-table>
-			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
-		</el-row>
+	<section>
+        <el-row>
+            <el-col :span="6">
+                <xm-func-select class="padding-right padding-left" :xm-product="{id:'xxxxx',name:'xxxxxxx'}" @row-click="onXmFuncRowClick"> 
+                </xm-func-select>
+            </el-col>
+            <el-col :span="18">
+                <el-row>
+                    <el-input v-model="filters.key" style="width: 20%;" placeholder="名称 按回车" @keyup.enter.native="searchXmTestCases"></el-input>
+                    <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestCases" icon="el-icon-search">查询</el-button>
+                    <span style="float:right;">
+                        <el-button type="primary" @click="showAdd" icon="el-icon-plus" plain> </el-button>
+                        <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete" plain></el-button>
+                    </span>
+                </el-row>
+                <el-row>
+                    <!--列表 XmTestCase 测试用例-->
+                    <el-table ref="xmTestCaseTable" :data="xmTestCases" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+                        <el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column>
+                        <el-table-column sortable type="index" width="55" show-overflow-tooltip  fixed="left"></el-table-column>
+                        <!--
+                        <el-table-column sortable prop="username" width="55" show-overflow-tooltip  fixed="left">
+                            <span class="cell-text">  {{scope.row.username}}}  </span>
+                            <span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
+                        </el-table-column>
+                        -->
+                        <el-table-column prop="id" label="编号" min-width="120" show-overflow-tooltip  fixed="left"></el-table-column>
+                        <el-table-column prop="caseName" label="标题" min-width="120" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span> {{scope.row.caseName}} </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="caseRemark" label="备注" min-width="120" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span> {{scope.row.caseRemark}} </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="testStep" label="测试步骤" min-width="120" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span> {{scope.row.testStep}} </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="expectResult" label="期望结果" min-width="120" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span> {{scope.row.expectResult}} </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="menuId" label="关联的故事" min-width="120" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span> {{scope.row.menuId}} </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="menuName" label="关联故事名" min-width="120" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span> {{scope.row.menuName}} </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="ctime" label="创建时间" min-width="120" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span> {{scope.row.ctime}} </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="ltime" label="更新时间" min-width="120" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span> {{scope.row.ltime}} </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="luserid" label="更新人编号" min-width="120" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span> {{scope.row.luserid}} </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="lusername" label="更新人姓名" min-width="120" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span> {{scope.row.lusername}} </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="cbranchId" label="创建机构" min-width="120" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span> {{scope.row.cbranchId}} </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="moduleId" label="模块编号" min-width="120" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span> {{scope.row.moduleId}} </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="moduleName" label="模块名称" min-width="120" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span> {{scope.row.moduleName}} </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="caseStatus" label="用例状态1正常0废弃" min-width="120" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span> {{scope.row.caseStatus}} </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="cuserid" label="创建人编号" min-width="120" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span> {{scope.row.cuserid}} </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="cusername" label="创建人姓名" min-width="120" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span> {{scope.row.cusername}} </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="productId" label="产品编号" min-width="120" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span> {{scope.row.productId}} </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="verNum" label="版本号" min-width="120" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span> {{scope.row.verNum}} </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="casedbId" label="用例库编号" min-width="120" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span> {{scope.row.casedbId}} </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="casedbName" label="用例库名称" min-width="120" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span> {{scope.row.casedbName}} </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="操作" width="180" fixed="right">
+                            <template scope="scope">
+                                <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"  plain></el-button>
+                                <el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"  plain></el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+                </el-row>
+            
+            </el-col>
+        </el-row>
+                
 		<el-row>
 			<!--编辑 XmTestCase 测试用例界面-->
 			<el-drawer title="编辑测试用例" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
@@ -149,12 +159,13 @@ import util from '@/common/js/util';//全局公共库
 import config from '@/common/config';//全局公共库
 import { initDicts,listXmTestCase, delXmTestCase, batchDelXmTestCase,editSomeFieldsXmTestCase } from '@/api/xm/core/xmTestCase';
 import  XmTestCaseEdit from './XmTestCaseEdit';//新增修改界面
+import  XmFuncSelect from '../xmFunc/XmFuncSelect';//新增修改界面
 import { mapGetters } from 'vuex'
 
 export default {
     name:'xmTestCaseMng',
     components: {
-        XmTestCaseEdit,
+        XmTestCaseEdit,XmFuncSelect
     },
     props:['visible'],
     computed: {
@@ -172,7 +183,8 @@ export default {
     data() {
         return {
             filters: {
-                key: ''
+                key: '',
+                xmFunc:null,
             },
             xmTestCases: [],//查询结果
             pageInfo:{//分页数据
@@ -251,6 +263,10 @@ export default {
             }
             if(this.filters.key){
                 params.key=this.filters.key
+            } 
+
+            if(this.filters.xmFunc && this.filters.xmFunc.id){
+                params.funcPidPathsLike=this.filters.xmFunc.pidPaths
             }
 
             this.load.list = true;
@@ -363,6 +379,10 @@ export default {
         initData: function(){
 
         },
+        onXmFuncRowClick(row){
+            this.filters.xmFunc=row
+            this.searchXmTestCases();
+        }
 
     },//end methods
     mounted() {
