@@ -10,7 +10,7 @@
         </el-row>
 		<el-row ref="xmTestCasedbTable">
             <xm-test-case-mng  v-if="activeIndex=='testCase'" :xm-test-casedb="xmTestCasedb"></xm-test-case-mng>
-            <xm-test-plan-info v-else-if="activeIndex=='testPlan'" :xm-test-casedb="xmTestCasedb"> </xm-test-plan-info>
+            <xm-test-plan-info v-else-if="activeIndex=='testPlan'" :xm-test-casedb="xmTestCasedb" ref="testPlan"> </xm-test-plan-info>
         </el-row>     
 	</section>
 </template>
@@ -257,6 +257,12 @@ export default {
         },
         handleSelect(index){
             this.activeIndex=index
+            if(index=='testPlan'){
+                this.$nextTick(()=>{
+                    this.$refs.testPlan.activeIndex='testPlan'
+                })
+                
+            }
         }
     },//end methods
     mounted() {

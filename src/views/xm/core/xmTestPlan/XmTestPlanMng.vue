@@ -73,12 +73,12 @@
 		<el-row>
 			<!--编辑 XmTestPlan 测试计划界面-->
 			<el-drawer title="编辑测试计划" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
-			    <xm-test-plan-edit op-type="edit" :xm-test-plan="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-test-plan-edit>
+			    <xm-test-plan-edit op-type="edit" :xm-test-plan="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @edit-fields="onEditFields"></xm-test-plan-edit>
 			</el-drawer>
 
 			<!--新增 XmTestPlan 测试计划界面-->
 			<el-drawer title="新增测试计划" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
-			    <xm-test-plan-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-test-plan-edit>
+			    <xm-test-plan-edit op-type="add" :xm-test-plan="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-test-plan-edit>
 			</el-drawer>
 	    </el-row>
 	</section>
@@ -97,7 +97,7 @@ export default {
     components: {
         XmTestPlanEdit,
     },
-    props:['visible'],
+    props:['visible','xmTestCasedb'],
     computed: {
         ...mapGetters(['userInfo']),
 
@@ -216,6 +216,10 @@ export default {
         },
         //显示新增界面 XmTestPlan 测试计划
         showAdd: function () {
+            this.addForm.casedbId=this.xmTestCasedb.id
+            this.addForm.casedbName=this.xmTestCasedb.name
+            this.addForm.productId=this.xmTestCasedb.productId
+            this.addForm.productName=this.xmTestCasedb.productName
             this.addFormVisible = true;
             //this.addForm=Object.assign({}, this.editForm);
         },
@@ -226,6 +230,10 @@ export default {
         },
         afterEditSubmit(){
             this.editFormVisible=false;
+        },
+        onEditFields(row){
+            Object.assign(this.editForm,row)
+            this.editFormBak={...this.editForm}
         },
         //选择行xmTestPlan
         selsChange: function (sels) {

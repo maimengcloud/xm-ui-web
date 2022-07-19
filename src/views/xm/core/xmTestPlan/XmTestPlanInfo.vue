@@ -4,8 +4,8 @@
             
         </el-row>
 		<el-row>
-            <xm-test-plan-case-mng  v-if="activeIndex=='testPlanCase'&& xmTestPlan && xmTestPlan.id" :xm-test-plan="xmTestPlan"></xm-test-plan-case-mng>
-            <xm-test-plan-mng v-else @select="onTestPlanSelect"> </xm-test-plan-mng>
+            <xm-test-plan-case-mng  v-if="activeIndex=='testPlanCase'&& xmTestPlan && xmTestPlan.id" :xm-test-plan="xmTestPlan" :xm-test-casedb="xmTestCasedb"></xm-test-plan-case-mng>
+            <xm-test-plan-mng v-else @select="onTestPlanSelect" :xm-test-casedb="xmTestCasedb"> </xm-test-plan-mng>
         </el-row>     
 	</section>
 </template>
@@ -25,7 +25,7 @@ export default {
     components: {
         XmProductSelect, XmTestPlanMng,XmTestPlanCaseMng
     },
-    props:['visible','xmProduct','selProject'],
+    props:['visible','xmTestCasedb'],
     computed: {
         ...mapGetters(['userInfo']),
 

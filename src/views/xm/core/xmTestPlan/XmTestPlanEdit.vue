@@ -1,79 +1,53 @@
 <template>
-	<section  class="page-container padding">
-	    <el-row class="page-header">
-	    </el-row>
-		<el-row class="page-main" :style="{overflowX:'auto',height:maxTableHeight+'px'}" ref="table">
+	<section  class="padding"> 
+		<el-row ref="table">
 		<!--编辑界面 XmTestPlan 测试计划--> 
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">
-				<el-form-item label="测试计划编号" prop="id">
-					<el-input v-model="editForm.id" placeholder="测试计划编号" :maxlength="50" @change="editSomeFields(editForm,'id',$event)"></el-input>
-				</el-form-item> 
+			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef" label-position="left">
+				 
 				<el-form-item label="计划名称" prop="name">
 					<el-input v-model="editForm.name" placeholder="计划名称" :maxlength="255" @change="editSomeFields(editForm,'name',$event)"></el-input>
+				</el-form-item>  
+				<el-form-item label="归属用例库" prop="casedbName">
+					 {{editForm.casedbName}}
+				</el-form-item>   
+				
+				<el-form-item label="归属项目" prop="projectId">
+					<font v-if="editForm.projectId">{{editForm.projectName?editForm.projectName:editForm.projectId}}</font>
+						<xm-project-select ref="xmProjectSelect"  @row-click="onPorjectConfirm" :auto-select="false">
+							<span slot="title">选择项目</span>
+						</xm-project-select>
 				</el-form-item> 
-				<el-form-item label="用例库编号" prop="casedbId">
-					<el-input v-model="editForm.casedbId" placeholder="用例库编号" :maxlength="50" @change="editSomeFields(editForm,'casedbId',$event)"></el-input>
+				<el-form-item label="负责人" prop="cusername">
+					<el-input v-model="editForm.cusername" placeholder="负责人" :maxlength="255" @change="editSomeFields(editForm,'cusername',$event)"></el-input>
 				</el-form-item> 
-				<el-form-item label="用例库名称" prop="casedbName">
-					<el-input v-model="editForm.casedbName" placeholder="用例库名称" :maxlength="255" @change="editSomeFields(editForm,'casedbName',$event)"></el-input>
-				</el-form-item> 
-				<el-form-item label="项目编号" prop="projectId">
-					<el-input v-model="editForm.projectId" placeholder="项目编号" :maxlength="50" @change="editSomeFields(editForm,'projectId',$event)"></el-input>
-				</el-form-item> 
-				<el-form-item label="项目名称" prop="projectName">
-					<el-input v-model="editForm.projectName" placeholder="项目名称" :maxlength="255" @change="editSomeFields(editForm,'projectName',$event)"></el-input>
-				</el-form-item> 
-				<el-form-item label="创建人编号" prop="cuserid">
-					<el-input v-model="editForm.cuserid" placeholder="创建人编号" :maxlength="50" @change="editSomeFields(editForm,'cuserid',$event)"></el-input>
-				</el-form-item> 
-				<el-form-item label="创建人名称" prop="cusername">
-					<el-input v-model="editForm.cusername" placeholder="创建人名称" :maxlength="255" @change="editSomeFields(editForm,'cusername',$event)"></el-input>
-				</el-form-item> 
-				<el-form-item label="创建时间" prop="ctime">
-					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.ctime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
-				</el-form-item> 
+				 
 				<el-form-item label="开始时间" prop="stime">
-					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.stime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
+					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.stime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'stime',$event)"></el-date-picker>
 				</el-form-item> 
 				<el-form-item label="结束时间" prop="etime">
-					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.etime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
+					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.etime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'etime',$event)"></el-date-picker>
 				</el-form-item> 
-				<el-form-item label="状态0-未开始，1-进行中，2已结束" prop="status">
-					<el-input v-model="editForm.status" placeholder="状态0-未开始，1-进行中，2已结束" :maxlength="1" @change="editSomeFields(editForm,'status',$event)"></el-input>
-				</el-form-item> 
-				<el-form-item label="测试结果0未通过，1已通过" prop="tcode">
-					<el-input v-model="editForm.tcode" placeholder="测试结果0未通过，1已通过" :maxlength="1" @change="editSomeFields(editForm,'tcode',$event)"></el-input>
-				</el-form-item> 
-				<el-form-item label="总用例数" prop="totalCases">
-					<el-input-number v-model="editForm.totalCases" :min="0" :max="200"></el-input-number>
-				</el-form-item> 
-				<el-form-item label="通过用例数" prop="okCases">
-					<el-input-number v-model="editForm.okCases" :min="0" :max="200"></el-input-number>
-				</el-form-item> 
-				<el-form-item label="失败用例数" prop="errCases">
-					<el-input-number v-model="editForm.errCases" :min="0" :max="200"></el-input-number>
-				</el-form-item> 
-				<el-form-item label="忽略用例数" prop="igCases">
-					<el-input-number v-model="editForm.igCases" :min="0" :max="200"></el-input-number>
-				</el-form-item> 
-				<el-form-item label="阻塞用例数" prop="blCases">
-					<el-input-number v-model="editForm.blCases" :min="0" :max="200"></el-input-number>
-				</el-form-item> 
-				<el-form-item label="产品编号" prop="productId">
-					<el-input v-model="editForm.productId" placeholder="产品编号" :maxlength="50" @change="editSomeFields(editForm,'productId',$event)"></el-input>
-				</el-form-item> 
+				<el-form-item label="状态" prop="status"> 
+					<el-select v-model="editForm.status" @change="editSomeFields(editForm,'status',$event)">
+						<el-option v-for="(item,index) in dicts['testPlanStatus']" :key="index" :value="item.id" :label="item.name"></el-option>
+					</el-select>
+ 				</el-form-item> 
+				<el-form-item label="测试结果" prop="tcode"> 
+				<el-select v-model="editForm.tcode" @change="editSomeFields(editForm,'tcode',$event)">
+					<el-option v-for="(item,index) in dicts['testPlanTcode']" :key="index" :value="item.id" :label="item.name"></el-option>
+				</el-select>				
+				</el-form-item>  
 				<el-form-item label="产品名称" prop="productName">
-					<el-input v-model="editForm.productName" placeholder="产品名称" :maxlength="255" @change="editSomeFields(editForm,'productName',$event)"></el-input>
-				</el-form-item> 
-				<el-form-item label="评审结果0-待评审，1-已评审通过，2-已拒绝" prop="flowState">
-					<el-input v-model="editForm.flowState" placeholder="评审结果0-待评审，1-已评审通过，2-已拒绝" :maxlength="1" @change="editSomeFields(editForm,'flowState',$event)"></el-input>
-				</el-form-item> 
+					 {{editForm.productName}}
+				</el-form-item>  
 			</el-form>
 		</el-row>
 
-		<el-row v-if="opType=='add'" class="page-bottom bottom-fixed">
+		<el-row v-if="opType=='add'" >
+			<span style="float:right;">
 		    <el-button @click.native="handleCancel">取消</el-button>
             <el-button v-loading="load.edit" type="primary" @click.native="saveSubmit" :disabled="load.edit==true">提交</el-button>
+			</span>
 		</el-row>
 	</section>
 </template>
@@ -83,11 +57,12 @@
 	import config from "@/common/config"; //全局公共库import
  	import { initDicts, addXmTestPlan,editXmTestPlan,editSomeFieldsXmTestPlan } from '@/api/xm/core/xmTestPlan';
 	import { mapGetters } from 'vuex'
+	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
 	
 	export default {
 	    name:'xmTestPlanEdit',
 	    components: {
-
+			XmProjectSelect,
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
@@ -114,8 +89,9 @@
  				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				dicts:{},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				editFormRules: {
-					id: [
-						//{ required: true, message: '测试计划编号不能为空', trigger: 'blur' }
+					name: [
+						{ required: true, message: '测试计划名称不能为空', trigger: 'change' },
+						{ min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'change' },//长度
 					]
 				},
 				editForm: {
@@ -187,12 +163,17 @@
                   let tips = res.data.tips;
                   if(tips.isOk){
                     this.editFormBak=[...this.editForm]
+					this.$emit('edit-fields',params)
                   }else{
                     Object.assign(this.editForm,this.editFormBak)
                     this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
                   }
                 }).catch((e)=>Object.assign(this.editForm,this.editFormBak))
             },
+			onPorjectConfirm(row){
+				this.editForm.projectId=row.id
+				this.editForm.projectName=row.name
+			}
 		},//end method
 		mounted() {
 		    this.$nextTick(() => {
