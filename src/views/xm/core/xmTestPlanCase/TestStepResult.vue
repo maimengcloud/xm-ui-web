@@ -7,10 +7,10 @@
 						<el-col :span="1">
 							步骤
 						</el-col>
-						<el-col :span="13">
+						<el-col :span="11">
 							操作
 						</el-col> 
-						<el-col :span="6">
+						<el-col :span="8">
 							实际结果
 						</el-col>
 						<el-col :span="2">
@@ -25,11 +25,11 @@
 						<el-col :span="1">
 							{{index+1}}
 						</el-col>
-						<el-col :span="13">
+						<el-col :span="11">
 							<span><span style="color:#C0C4CC;">操作：</span>{{item.op}}</span><br/>
 							<span><span style="color:#C0C4CC;">预期：</span>{{item.eresult}}</span>
  						</el-col> 
-						<el-col :span="6">
+						<el-col :span="8">
 							<my-input class="padding-right" v-model="item.aresult" clearable placeholder="步骤结果"></my-input> 
 						</el-col>
 						<el-col :span="2">

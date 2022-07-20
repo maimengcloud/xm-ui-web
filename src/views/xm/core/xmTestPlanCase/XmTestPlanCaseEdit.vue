@@ -24,7 +24,12 @@
 					<el-input v-model="editForm.remark" placeholder="执行备注" :maxlength="2147483647" @change="editSomeFields(editForm,'remark',$event)"></el-input>
 				</el-form-item> 
 				<el-form-item label="测试步骤" prop="testStep">
+					<el-row>
 					 <test-step-result v-model="editForm.testStep"></test-step-result>
+					 </el-row> 
+					<el-row v-if="opType!='add' && editFormBak.testStep!=editForm.testStep" > 
+						<el-button v-loading="load.edit" type="primary" @click.native="editSomeFields(editForm,'testStep',editForm.testStep)" :disabled="load.edit==true">保存测试步骤</el-button>
+					</el-row>
 				</el-form-item> 
 				
 				<el-form-item label="测试结果" prop="execStatus">
@@ -41,9 +46,6 @@
 		</el-row>
 
 		
-		<el-row v-if="opType!='add' && editFormBak.testStep!=editForm.testStep" > 
-            <el-button v-loading="load.edit" type="primary" @click.native="editSomeFields(editForm,'testStep',editForm.testStep)" :disabled="load.edit==true">保存</el-button>
-		</el-row>
 	</section>
 </template>
 
@@ -156,6 +158,11 @@ TestStepResult,
                 let params={};
                 params['pkList']=[row].map(i=>{ return { caseId:i.caseId,  planId:i.planId}})
                 params[fieldName]=$event
+				if(fieldName!='testStep'){
+					if(this.editForm.testStep!=this.editFormBak.testStep){
+						params.testStep=this.editForm.testStep
+					}
+				}
                 var func = editSomeFieldsXmTestPlanCase
                 func(params).then(res=>{
                   let tips = res.data.tips;
