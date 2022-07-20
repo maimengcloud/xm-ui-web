@@ -4,11 +4,126 @@
 	    </el-row>
 		<el-row ref="table">
 		<!--编辑界面 XmTestPlanCase 测试计划与用例关系表--> 
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef" label-position="left"> 
+			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef" label-position="left" > 
 
-				<el-form-item label="用例名称" prop="caseName">
-					<el-input v-model="editForm.caseName" placeholder="用例名称" :maxlength="255" @change="editSomeFields(editForm,'caseName',$event)"></el-input>
-				</el-form-item>  
+				<el-form-item label="" prop="caseName" label-width="0px">  
+					<el-row>
+					<span class="padding-left"><i class="el-icon-s-operation"></i>模块：</span><span>{{editForm.funcName}}</span>
+					</el-row>
+					<el-row>
+					<span class="title-font-size">{{editForm.caseName}}</span> 
+					</el-row>
+					<el-row class="padding">
+						<el-col :span="8" class="avater-box"> 
+							<el-avatar class="avater"> {{editForm.execUsername}} </el-avatar> 
+							<div class="msg">
+								<span class="title">{{editForm.execUsername}} </span>
+								<span class="sub-title">执行人</span>
+							</div>   
+						</el-col> 
+						<el-col :span="8" class="avater-box"> 
+							<el-avatar class="avater" icon="el-icon-top" style="background-color:rgb(255, 117, 117);"></el-avatar> 
+							<div class="msg">
+								<span class="title">{{formatDicts(dicts,'priority',editForm.priority)}} </span>
+								<span class="sub-title">优先级</span>
+							</div>   
+						</el-col> 
+						
+						<el-col :span="8" class="avater-box">  
+							<div>    
+  								<el-button size="medium " v-if="editForm.execStatus=='0'" type="info" icon="el-icon-arrow-up" circle></el-button>
+  								<el-button size="medium " v-if="editForm.execStatus=='1'" type="success" icon="el-icon-check" circle></el-button>
+  								<el-button size="medium " v-if="editForm.execStatus=='2'" type="warning" icon="el-icon-minus" circle></el-button>
+  								<el-button size="medium " v-if="editForm.execStatus=='3'" type="primary" icon="el-icon-right" circle></el-button>
+  								<el-button size="medium " v-if="editForm.execStatus=='4'" type="danger" icon="el-icon-close" circle></el-button>
+							</div>
+							<div class="msg">
+								<span class="title">{{formatDicts(dicts,'testStepTcode',editForm.execStatus)}} </span>
+								<span class="sub-title">执行结果</span>
+							</div>   
+						</el-col> 
+					</el-row>
+ 				</el-form-item>  
+				<el-tabs>
+					<el-tab-pane name="1" label="用例信息">
+						<el-row class="padding-top">
+							<el-col :span="6">
+								<el-row class="label-font-size">
+									用例状态
+								</el-row>
+								<el-row>
+									<el-tag class="cell-text" v-for="(item,index) in formatDictsWithClass(dicts,'testCaseStatus',editForm.caseStatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
+                                 
+								</el-row>
+							</el-col>
+							<el-col :span="6">
+								<el-row  class="label-font-size">
+									用例版本
+								</el-row>
+								<el-row>
+									{{editForm.verNum}}
+								</el-row>
+							</el-col>
+							<el-col :span="6">
+								
+								<el-row  class="label-font-size">
+									用例类型
+								</el-row>
+								<el-row>
+									<el-tag  v-for="(item,index) in formatDictsWithClass(dicts,'caseType',editForm.caseType)" :key="index" :type="item.className">{{item.name}}</el-tag>
+
+								</el-row>
+							</el-col>
+							<el-col :span="6">
+								
+								<el-row  class="label-font-size">
+									紧急程度
+								</el-row>
+								<el-row>
+									<el-tag  v-for="(item,index) in formatDictsWithClass(dicts,'priority',editForm.priority)" :key="index" :type="item.className">{{item.name}}</el-tag>
+
+								</el-row>
+							</el-col>
+						</el-row> 
+						
+						<el-row class="padding-top"> 
+							<el-row class="label-font-size padding-top">
+								前置条件
+							</el-row> 
+							<el-row class="padding">
+								{{editForm.preRemark?editForm.preRemark:'无'}}
+							</el-row>  
+						</el-row>
+						<el-row class="padding-top"> 
+							<el-row class="label-font-size padding-top">
+								测试步骤
+							</el-row> 
+							<el-row class="padding">
+								<test-step-result class="padding" v-model="editForm.testStep"></test-step-result>
+							</el-row> 
+							<el-row v-if="opType!='add' && editFormBak.testStep!=editForm.testStep" > 
+								<el-button v-loading="load.edit" type="primary" @click.native="editSomeFields(editForm,'testStep',editForm.testStep)" :disabled="load.edit==true">保存测试步骤</el-button>
+							</el-row>
+						</el-row>
+						<el-row class="padding-top"> 
+							<el-row class="label-font-size padding-top">
+								备注
+							</el-row> 
+							<el-row class="padding">
+								{{editForm.caseRemark?editForm.caseRemark:'无'}}
+							</el-row>  
+						</el-row>
+ 					</el-tab-pane>
+					<el-tab-pane name="2" label="需求">
+
+					</el-tab-pane>
+					<el-tab-pane name="3" label="缺陷">
+
+					</el-tab-pane>
+					<el-tab-pane name="4" label="附件">
+
+					</el-tab-pane>
+				</el-tabs>
 				<el-form-item label="测试用例编号" prop="caseId">
 					<el-input v-model="editForm.caseId" placeholder="测试用例编号" :maxlength="50" @change="editSomeFields(editForm,'caseId',$event)"></el-input>
 				</el-form-item>   
@@ -23,14 +138,7 @@
 				<el-form-item label="执行备注" prop="remark">
 					<el-input v-model="editForm.remark" placeholder="执行备注" :maxlength="2147483647" @change="editSomeFields(editForm,'remark',$event)"></el-input>
 				</el-form-item> 
-				<el-form-item label="测试步骤" prop="testStep">
-					<el-row>
-					 <test-step-result v-model="editForm.testStep"></test-step-result>
-					 </el-row> 
-					<el-row v-if="opType!='add' && editFormBak.testStep!=editForm.testStep" > 
-						<el-button v-loading="load.edit" type="primary" @click.native="editSomeFields(editForm,'testStep',editForm.testStep)" :disabled="load.edit==true">保存测试步骤</el-button>
-					</el-row>
-				</el-form-item> 
+				
 				
 				<el-form-item label="测试结果" prop="execStatus">
 					<el-select v-model="editForm.execStatus" @change="editSomeFields(editForm,'execStatus',$event)">
@@ -55,11 +163,12 @@
  	import { initDicts, addXmTestPlanCase,editXmTestPlanCase,editSomeFieldsXmTestPlanCase } from '@/api/xm/core/xmTestPlanCase';
 	import { mapGetters } from 'vuex'
 import TestStepResult from './TestStepResult.vue';
+	import MyInput from '@/components/MDinput/index';
 	
 	export default {
 	    name:'xmTestPlanCaseEdit',
 	    components: {
-TestStepResult,
+TestStepResult,MyInput,
 
         },
 		computed: {
@@ -85,7 +194,7 @@ TestStepResult,
 			return {
 			    currOpType:'add',//add/edit
  				load:{ list: false, edit: false, del: false, add: false },//查询中...
-				dicts:{},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
+				dicts:{'testPlanStatus':[],'testPlanTcode':[],'testStepTcode':[],'priority':[],'testCaseStatus':[],'caseType':[]},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				editFormRules: {
 					caseId: [
 						//{ required: true, message: '测试用例编号不能为空', trigger: 'blur' }
@@ -187,6 +296,41 @@ TestStepResult,
 
 </script>
 
-<style scoped>
+<style lang="scss">
+.my-input input {
+	font-size: 28px !important; 
+}
 
+
+.avater-box {  
+    display: flex;
+    align-items: center;
+	cursor: pointer;
+    .avater { 
+		background-color:#FF9F73;
+    }
+
+    .msg {
+        margin-left: 10px;
+        display: flex;
+        flex-direction: column;
+        .title { 
+			margin-top: 5px;
+            font-size: 16px; 
+        } 
+		.sub-title{  
+			margin-top: -10px;
+			 font-size: 14px;
+			 color: #C0C4CC;
+		}
+        
+    }
+	.btn{
+		margin-top: 0px;
+		visibility:hidden; 
+	} 
+}
+ .avater-box:hover .btn{
+		visibility: visible !important;
+}
 </style>

@@ -5,7 +5,7 @@
 				<!-- 扩展字段[{name:'中文名称',id:'编号',value:'值',remark:'备注',type:'支持简单的1-普通文本2-数字，3-日期，8-富文本，9单图文，15-是否'}] -->
 				<el-row>
 						<el-col :span="1">
-							步骤
+							#
 						</el-col>
 						<el-col :span="11">
 							操作
@@ -20,33 +20,49 @@
 							缺陷
 						</el-col>
 					</el-row>
-				<el-row v-for="(item, index) in extInfosList" :key="index">
+					<el-divider></el-divider>
+					<div v-for="(item, index) in extInfosList" :key="index">
+				<el-row >
 					 
 						<el-col :span="1">
 							{{index+1}}
 						</el-col>
 						<el-col :span="11">
-							<span><span style="color:#C0C4CC;">操作：</span>{{item.op}}</span><br/>
+							<span><span></span>{{item.op}}</span><br/>
 							<span><span style="color:#C0C4CC;">预期：</span>{{item.eresult}}</span>
  						</el-col> 
 						<el-col :span="8">
 							<my-input class="padding-right" v-model="item.aresult" clearable placeholder="步骤结果"></my-input> 
 						</el-col>
-						<el-col :span="2">
-							<el-select class="padding-right"  v-model="item.tcode" clearable>
-								<el-option v-for="(item,index) in dicts['testStepTcode']" :key="index" :value="item.id" :label="item.name"></el-option>
-							</el-select>
+						<el-col :span="2" class="avater-box"> 
+								<div>    
+									<el-button size="medium " v-if="item.tcode=='0'" type="info" icon="el-icon-arrow-up" circle></el-button>
+									<el-button size="medium " v-if="item.tcode=='1'" type="success" icon="el-icon-check" circle></el-button>
+									<el-button size="medium " v-if="item.tcode=='2'" type="warning" icon="el-icon-minus" circle></el-button>
+									<el-button size="medium " v-if="item.tcode=='3'" type="primary" icon="el-icon-right" circle></el-button>
+									<el-button size="medium " v-if="item.tcode=='4'" type="danger" icon="el-icon-close" circle></el-button>
+								</div>
+								<div class="msg">
+									<span class="title">{{formatDicts(dicts,'testStepTcode',item.tcode)}} </span>
+									<span class="sub-title">执行结果</span>
+								</div>    
+								<el-select class="padding-right"  v-model="item.tcode" clearable>
+									<el-option v-for="(item,index) in dicts['testStepTcode']" :key="index" :value="item.id" :label="item.name"></el-option>
+								</el-select>
  						</el-col> 
 						<el-col :span="2"> 
  							<el-button @click="addBug(item,index)" icon="el-icon-plus"  type="text"></el-button> 
 						</el-col>  
 				</el-row> 
+				<el-divider></el-divider>
+				</div>
 			</el-form>  
 		   </el-row>
 	</section>
 </template>
 
 <script> 
+	import util from '@/common/js/util';//全局公共库
 	import { mapGetters } from 'vuex'
 	import { initDicts } from '@/api/xm/core/xmTestPlanCase';
 
@@ -86,6 +102,7 @@
 			}
 		},//end data
 		methods: { 
+			...util,
 			save(){
 				if(this.value instanceof Array){
 					this.$emit("finish",this.extInfosList)
@@ -132,6 +149,34 @@
 
 </script>
 
-<style scoped>
+<style  lang="scss" scoped>
 	 
+.avater-box {  
+    display: flex;
+    align-items: center;
+	cursor: pointer;
+    .avater { 
+		background-color:#FF9F73;
+    }
+
+    .msg {
+        margin-left: 10px;
+        display: flex;
+        flex-direction: column;
+        .title { 
+			margin-top: 5px;
+            font-size: 16px; 
+        } 
+		.sub-title{  
+			margin-top: -10px;
+			 font-size: 14px;
+			 color: #C0C4CC;
+		}
+        
+    }
+	.btn{
+		margin-top: 0px;
+		visibility:hidden; 
+	} 
+}
 </style>

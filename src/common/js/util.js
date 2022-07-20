@@ -39,7 +39,7 @@ export default {
    * 通过字典值获取其名称，返回根值相同的字典,并自动计算其对应显示样式
    * 界面上可以类似使用
    * 显示：
-      <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'xxxx',scope.row.xxxx)" :key="index" :type="item.className">{{item.name}}</el-tag>
+      <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'xxxx',scope.row.xxxx)" :key="index" :type="item.className" effect="dark">{{item.name}}</el-tag>
    
    * 下拉框：
       <el-select v-model="editForm.xxxx" @change="editSomeFields(editForm,'xxxx',$event)">
@@ -49,7 +49,7 @@ export default {
    * @param {*} dicts 
    * @param {*} itemCode 
    * @param {*} cellValue 
-   * @returns [{id:'',name:'',className:''}]
+   * @returns [{id:'',name:'',className:'',color:'',icon:''}]
    */
   formatDictsWithClass: function(dicts,itemCode,cellValue){ 
     

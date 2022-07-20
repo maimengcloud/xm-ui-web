@@ -31,6 +31,11 @@
 							<el-option v-for="(item,index) in dicts['testCaseStatus']" :key="index" :value="item.id" :label="item.name"></el-option>
 						</el-select>
 				</el-form-item>  
+				<el-form-item label="用例类型" prop="caseType">
+ 					    <el-select v-model="editForm.caseType" @change="editSomeFields(editForm,'caseType',$event)">
+							<el-option v-for="(item,index) in dicts['caseType']" :key="index" :value="item.id" :label="item.name"></el-option>
+						</el-select>
+				</el-form-item>  
 				<el-form-item label="负责人" prop="cusername">
 					<el-input v-model="editForm.cusername" placeholder="负责人" :maxlength="255" @change="editSomeFields(editForm,'cusername',$event)"></el-input>
 				</el-form-item>  
@@ -89,7 +94,7 @@ TestStepConfig,
 			return {
 			    currOpType:'add',//add/edit
  				load:{ list: false, edit: false, del: false, add: false },//查询中...
-				dicts:{},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
+				dicts:{caseType:[]},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				editFormRules: {
 					id: [
 						//{ required: true, message: '主键不能为空', trigger: 'blur' }
