@@ -7,17 +7,14 @@
 						<el-col :span="1">
 							步骤
 						</el-col>
-						<el-col :span="7">
+						<el-col :span="13">
 							操作
-						</el-col>
-						<el-col :span="6">
-							预期结果
 						</el-col> 
 						<el-col :span="6">
 							实际结果
 						</el-col>
 						<el-col :span="2">
-							结论
+							步骤结果
 						</el-col>
 						<el-col :span="2">
 							缺陷
@@ -28,14 +25,12 @@
 						<el-col :span="1">
 							{{index+1}}
 						</el-col>
-						<el-col :span="7">
-							<el-input class="padding-left" v-model="item.op" clearable placeholder="操作步骤"></el-input>
-						</el-col>
+						<el-col :span="13">
+							<span><span style="color:#C0C4CC;">操作：</span>{{item.op}}</span><br/>
+							<span><span style="color:#C0C4CC;">预期：</span>{{item.eresult}}</span>
+ 						</el-col> 
 						<el-col :span="6">
-							<el-input class="padding-left"  v-model="item.eresult" clearable placeholder="预期结果"></el-input>
-						</el-col>
-						<el-col :span="6">
-							<el-input class="padding-left" v-model="item.aresult" clearable placeholder="实际结果"></el-input> 
+							<my-input class="padding-left" v-model="item.aresult" clearable placeholder="步骤结果"></my-input> 
 						</el-col>
 						<el-col :span="2">
 							<el-select class="padding-left"  v-model="item.tcode" clearable>
@@ -53,8 +48,9 @@
 
 <script> 
 	import { mapGetters } from 'vuex'
-	 import { initDicts } from '@/api/xm/core/xmTestPlanCase';
+	import { initDicts } from '@/api/xm/core/xmTestPlanCase';
 
+	import MyInput from '@/components/MDinput/index';
  	
 	export default {  
 		name: 'testStepConfig',
@@ -122,7 +118,7 @@
 			}
 		},//end methods
 		components: {  
-			 
+			 MyInput
 		},
 		mounted() { 
 			this.$nextTick(()=>{
