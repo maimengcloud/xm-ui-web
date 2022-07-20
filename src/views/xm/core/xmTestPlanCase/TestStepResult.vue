@@ -51,7 +51,9 @@
 								</el-select>
  						</el-col> 
 						<el-col :span="1"> 
- 							<el-button @click="addBug(item,index)" icon="el-icon-plus"  type="text"></el-button> 
+							<slot name="addBug">
+ 								<el-button @click="addBug(item,index)" icon="el-icon-plus"  circle></el-button> 
+							</slot>
 						</el-col>  
 				</el-row> 
 				<el-divider></el-divider>

@@ -190,6 +190,7 @@
 									</span> 
 						</template>
 					</el-table-column>
+					<!--
 					<el-table-column prop="projectId" label="项目"  width="100" show-overflow-tooltip> 
 						<template slot-scope="scope">   
 									<div class="cell-text">
@@ -218,6 +219,7 @@
 					
 					<el-table-column prop="ltime" label="更新时间" sortable  width="100" show-overflow-tooltip> 
 					</el-table-column>
+					-->
 					<el-table-column prop="handlerUsername" label="负责人"  width="100" show-overflow-tooltip> 
 						<template slot-scope="scope">   
 									<div class="cell-text">
@@ -284,7 +286,7 @@
 				'userInfo','roles'
 			]),
 		},
-		props: ["selProject",'qtype','xmTestCaseExec','xmTestCase','xmIteration','xmProduct','queryScene'],
+		props: ["selProject",'qtype','xmTestPlanCase','xmTestCase','xmIteration','xmProduct','queryScene'],
 		watch:{
 			selProject:function(selProject){
 				this.filters.selProject=this.selProject
@@ -518,8 +520,9 @@
 				if(this.filters.selProject){
 					params.projectId = this.filters.selProject.id;
 				}
-				if(this.xmTestCaseExec){
-					params.caseExecId=this.xmTestCaseExec.id
+				if(this.xmTestPlanCase){
+					params.planId=this.xmTestPlanCase.planId 
+					params.caseId=this.xmTestPlanCase.caseId
 				}
 				if(this.xmTestCase){
 					params.caseId=this.xmTestCase.id

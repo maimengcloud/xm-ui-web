@@ -1,8 +1,6 @@
 <template>
-	<section>
-	    <el-row>
-	    </el-row>
-		<el-row :style="{overflowX:'auto',height:maxTableHeight+'px'}" ref="table">
+	<section > 
+		<el-row :style="{overflow:'auto',maxHeight:maxTableHeight+'px'}" ref="table">
 		<!--编辑界面 XmTestPlanCase 测试计划与用例关系表--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef" label-position="left" > 
 
@@ -48,8 +46,9 @@
 						</el-col> 
 					</el-row>
  				</el-form-item>  
-				<el-tabs>
-					<el-tab-pane name="1" label="用例信息">
+				<el-tabs v-model="activateName" >
+					<el-tab-pane name="1" label="用例信息"  >
+						<el-row  >
 						<el-row class="padding-top">
 							<el-col :span="6">
 								<el-row class="label-font-size">
@@ -103,7 +102,9 @@
 								测试步骤
 							</el-row> 
 							<el-row class="padding">
-								<test-step-result class="padding" v-model="editForm.testStep"></test-step-result>
+								<test-step-result class="padding" v-model="editForm.testStep">
+									<el-button slot="addBug" @click="addBugVisible=true" icon="el-icon-plus"  circle></el-button> 
+								</test-step-result>
 							</el-row> 
 							<el-row v-if="opType!='add' && editFormBak.testStep!=editForm.testStep" > 
 								<el-button v-loading="load.edit" type="primary" @click.native="editSomeFields(editForm,'testStep',editForm.testStep)" :disabled="load.edit==true">保存测试步骤</el-button>
@@ -121,6 +122,7 @@
 						<el-form-item label="执行备注" prop="remark">
 							<el-input type="textarea" :rows="6" v-model="editForm.remark" placeholder="执行备注" :maxlength="2147483647" @change="editSomeFields(editForm,'remark',$event)"></el-input>
 						</el-form-item> 
+						</el-row>
  					</el-tab-pane>
 					<el-tab-pane name="2" label="需求"> 
 						<el-row>
@@ -137,17 +139,17 @@
 							</el-col> 
 						</el-row>
 					</el-tab-pane>
-					<el-tab-pane name="3" label="缺陷">
-
+					<el-tab-pane name="3" label="缺陷"> 
+						<el-row v-if="activateName=='3'">
+							<xm-question-mng   :xm-test-plan-case="editForm"  :xm-product="{id:xmTestPlanCase.productId,productName:xmTestPlanCase.productName}" :sel-project="{id:xmTestPlanCase.projectId,name:xmTestPlanCase.projectName}"></xm-question-mng>
+						</el-row>
 					</el-tab-pane>
 					<el-tab-pane name="4" label="附件">
 
 					</el-tab-pane>
 				</el-tabs>  
-			</el-form>
+			</el-form> 
 		</el-row>
-		
-				
 		<el-row> 
 			<el-col :span="8">
 				<el-checkbox v-model="next">继续下一条执行用例</el-checkbox>
@@ -174,10 +176,16 @@
 		    <el-button @click.native="handleCancel">取消</el-button>
             <el-button v-loading="load.edit" type="primary" @click.native="saveSubmit" :disabled="load.edit==true">提交</el-button>
 		</el-row>
+				
+		
 		<el-dialog append-to-body title="需求明细"  :visible.sync="menuVisible" width="80%"  top="20px"  :close-on-click-modal="false">
 			<xm-menu-edit :visible="menuVisible"  :reload="true" :xm-menu="{menuId:editForm.menuId,menuName:editForm.menuName}" ></xm-menu-edit>
 		</el-dialog>
 		
+		<!--新增 XmQuestion xm_question界面-->
+		<el-dialog title="新增缺陷"  :visible.sync="addBugVisible"   width="90%" top="20px"  append-to-body   :close-on-click-modal="false">
+			<xm-question-add   :xm-product="{id:editForm.productId,productName:editForm.productName}" :xm-test-plan-case="editForm" :qtype="qtype" :sel-project=" {id:editForm.projectId,name:editForm.projectName} "  :visible="addBugVisible" @cancel="addBugVisible=false" ></xm-question-add>
+		</el-dialog>
 	</section>
 </template>
 
@@ -189,11 +197,13 @@
 import TestStepResult from './TestStepResult.vue';
 	import MyInput from '@/components/MDinput/index';
 	import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
-	
+import  XmQuestionMng from '@/views/xm/core/xmQuestion/XmQuestionMng';//修改界面
+		import  XmQuestionAdd from '../xmQuestion/XmQuestionAdd';//新增界面
+
 	export default {
 	    name:'xmTestPlanCaseEdit',
 	    components: {
-TestStepResult,MyInput,XmMenuEdit,
+			TestStepResult,MyInput,XmMenuEdit,XmQuestionMng,XmQuestionAdd,
 
         },
 		computed: {
@@ -234,6 +244,8 @@ TestStepResult,MyInput,XmMenuEdit,
                 maxTableHeight:300,
 				menuVisible:false,
 				next:false,
+				activateName:'1',
+				addBugVisible:false,
 			}//end return
 		},//end data
 		methods: {
@@ -325,7 +337,7 @@ TestStepResult,MyInput,XmMenuEdit,
 		    this.$nextTick(() => {
                 initDicts(this);  
                 this.initData()
-                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el)
+                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el)-100
             });
 		}
 	}

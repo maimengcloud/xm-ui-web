@@ -69,7 +69,7 @@
         </el-row>
 		<el-row>
 			<!--编辑 XmTestPlanCase 测试计划与用例关系表界面-->
-			<el-dialog title="测试执行" :visible.sync="editFormVisible"   width="80%" top="20px"  append-to-body   :close-on-click-modal="false">
+			<el-dialog title="测试执行" :visible.sync="editFormVisible"    width="90%" top="20px"  append-to-body   :close-on-click-modal="false">
 			    <xm-test-plan-case-edit op-type="edit" :xm-test-plan-case="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @edit-fields="onEditFields"></xm-test-plan-case-edit>
 			</el-dialog>
 
