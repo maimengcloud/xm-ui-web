@@ -13,7 +13,12 @@
 					<el-input v-model="editForm.verNum" placeholder="版本号" :maxlength="50" @change="editSomeFields(editForm,'verNum',$event)"></el-input>
 				</el-form-item>  
 				<el-form-item label="测试步骤" prop="testStep">
-					 <test-step-config v-model="editForm.testStep" @finish="editSomeFields(editForm,'testStep',$event)"></test-step-config>
+					<el-row>
+					 	<test-step-config v-model="editForm.testStep" @finish="editSomeFields(editForm,'testStep',$event)"></test-step-config>
+					 </el-row>
+					 <el-row v-if="opType!=='add' && editForm.testStep!=editFormBak.testStep">
+						<el-button type="primary" @click="editSomeFields(editForm,'testStep',editForm.testStep)">保存测试步骤</el-button>
+					 </el-row>
 				</el-form-item>    
 				<el-form-item label="关联需求" prop="menuName">
 					 {{editForm.menuName?editForm.menuName:'暂无关联需求'}} <el-button type="text" @click="menuVisible=true">选择需求</el-button>
@@ -89,6 +94,9 @@ TestStepConfig,
 					id: [
 						//{ required: true, message: '主键不能为空', trigger: 'blur' }
 					]
+				},
+				editFormBak: {
+					id:'',caseName:'',caseRemark:'',testStep:'',expectResult:'',menuId:'',menuName:'',ctime:'',ltime:'',luserid:'',lusername:'',cbranchId:'',moduleId:'',moduleName:'',caseStatus:'',cuserid:'',cusername:'',productId:'',verNum:'',casedbId:'',casedbName:''
 				},
 				editForm: {
 					id:'',caseName:'',caseRemark:'',testStep:'',expectResult:'',menuId:'',menuName:'',ctime:'',ltime:'',luserid:'',lusername:'',cbranchId:'',moduleId:'',moduleName:'',caseStatus:'',cuserid:'',cusername:'',productId:'',verNum:'',casedbId:'',casedbName:''
@@ -177,7 +185,7 @@ TestStepConfig,
                 func(params).then(res=>{
                   let tips = res.data.tips;
                   if(tips.isOk){
-                    this.editFormBak=[...this.editForm]
+                    this.editFormBak={...this.editForm}
 					this.$emit('edit-fields',params)
                   }else{
                     Object.assign(this.editForm,this.editFormBak)

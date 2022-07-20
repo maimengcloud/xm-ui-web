@@ -154,8 +154,7 @@ export default {
   }
 
   // Component:
-  .material-input__component {
-    margin-top: 36px;
+  .material-input__component { 
     position: relative;
     * {
       box-sizing: border-box;

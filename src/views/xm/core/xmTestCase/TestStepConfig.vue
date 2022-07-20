@@ -23,19 +23,18 @@
 							{{index+1}}
 						</el-col>
 						<el-col :span="9">
-							<el-input style="width:95%;" v-model="item.op" clearable placeholder="操作步骤"></el-input>
+							<my-input class="padding-right" v-model="item.op" clearable placeholder="操作步骤"></my-input>
 						</el-col>
 						<el-col :span="9">
-							<el-input style="width:95%;" v-model="item.eresult" clearable placeholder="预期结果"></el-input>
+							<my-input class="padding-right" v-model="item.eresult" clearable placeholder="预期结果"></my-input>
 						</el-col>
-						<el-col :span="4">
+						<el-col :span="4" style="margin-bottom:0px;">
 							<el-button  @click.prevent="removeExtInfosItem(item,index)" icon="el-icon-delete">
 							</el-button><el-button @click="addExtInfosItem(item,index)" icon="el-icon-plus"></el-button> 
 						</el-col> 
 				</el-row>
-				<el-form-item> 
-					<el-button @click="addExtInfosFirstItem" icon="el-icon-plus"><slot>新增一行</slot></el-button> 
-					<el-button @click="save" icon="el-icon-save"><slot>完成</slot></el-button> 
+				<el-form-item v-if="!extInfosList || extInfosList.length<=0"> 
+					<el-button @click="addExtInfosFirstItem" icon="el-icon-plus"><slot>新增一行</slot></el-button>  
 				</el-form-item>
 			</el-form>  
 		   </el-row>
@@ -45,6 +44,7 @@
 <script> 
 	import { mapGetters } from 'vuex'
 	 
+	import MyInput from '@/components/MDinput/index';
  	
 	export default {  
 		name: 'testStepConfig',
@@ -109,7 +109,7 @@
 			}
 		},//end methods
 		components: {  
-			 
+			 MyInput
 		},
 		mounted() { 
 			 this.initData();
