@@ -39,40 +39,104 @@ export default {
    * 通过字典值获取其名称，返回根值相同的字典,并自动计算其对应显示样式
    * 界面上可以类似使用
    * 显示：
-      <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'xxxx',scope.row.xxxx)" :key="index" :type="item.className" effect="dark">{{item.name}}</el-tag>
+      <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'xxxx',scope.row.xxxx)" :key="index" :type="item.className">{{item.name}}</el-tag>
    
    * 下拉框：
       <el-select v-model="editForm.xxxx" @change="editSomeFields(editForm,'xxxx',$event)">
-      <el-option v-for="(item,index) in dicts['xxxx']" :key="index" :value="item.id" :label="item.name"></el-option>
+        <el-option style="margin-top:5px;" v-for="(item,index) in dicts['xxxx']" :key="index" :value="item.id" :label="item.name">
+           <span :style="{backgroundColor:item.color}"> 
+              <i  v-if="item.icon" :class="item.icon"></i>
+              {{item.name}}
+           </span> 
+        </el-option>
       </el-select>
+
+      0|xx|#909399
+      1|xx|#409EFF
+      2|xx|#67C23A
+      3|xx|#E6A23C
+      4|xx|#F56C6C
+      5|xx|#00ced1
+      6|xx|#c71585
+      7|xx|#ff8c00
+      8|xx|#c7158577
+      9|xx|#ffd700
    * 
    * @param {*} dicts 
    * @param {*} itemCode 
    * @param {*} cellValue 
    * @returns [{id:'',name:'',className:'',color:'',icon:''}]
-   */
+   */ 
   formatDictsWithClass: function(dicts,itemCode,cellValue){ 
     
-    var classNames=['info','primary','success','warning','danger'];
+    var classNames=['info','primary','success','warning','danger']; 
+    var colors=['#909399','#409EFF','#67C23A','#E6A23C','#F56C6C','#00ced1','#c71585','#ff8c00','#c7158577','#ffd700'];
+
     let key=itemCode;
     if(!cellValue){
       return [];
     }
+    var cellValueInt=parseInt(cellValue)
+      if( isNaN(cellValueInt) ){
+        cellValueInt=cellValue.chartCodeAt(cellValue.length-1)
+      }
+      var colorIndex=cellValueInt % 10
+      if(cellValueInt > 0 && colorIndex==0){
+        colorIndex=1
+      }
+      var typeIndex=cellValueInt % 5
+      if(cellValueInt > 0 && typeIndex==0){
+        typeIndex=1
+      }
     if(dicts[key]==undefined || dicts[key]==null || dicts[key].length==0   ){
-      var className=cellValue%5;
-      return [{id:cellValue,name:cellValue,className:classNames[cellValue%5]}];
+      
+      return [{id:cellValue,name:cellValue,className:classNames[typeIndex],color:colors[colorIndex]}];
     }
-    let data=dicts[key].find(i=>i.id===cellValue)
-    let index=dicts[key].findIndex(i=>i.id===cellValue)
+    let data=dicts[key].find(i=>i.id===cellValue) 
     if(data){ 
-      data['className']=classNames[index%5]
+      data['className']=classNames[typeIndex]
+      if(!data.color){
+        data.color=colors[colorIndex]
+      } 
       return [data];
     }else{
-      return [{id:cellValue,name:cellValue,className:classNames[cellValue%5]}]
+      return [{id:cellValue,name:cellValue,className:classNames[typeIndex],color:colors[colorIndex]}]
     }
 
-  }, 
+  },  
 
+  getColor(cellValue){ 
+    var colors=['#909399','#409EFF','#67C23A','#E6A23C','#F56C6C','#00ced1','#c71585','#ff8c00','#c7158577','#ffd700'];
+    if(!cellValue){
+      return colors[0]
+    }
+    var cellValueInt=parseInt(cellValue)
+      if( isNaN(cellValueInt) ){
+        cellValueInt=cellValue.chartCodeAt(cellValue.length-1)
+      }
+      var colorIndex=cellValueInt % 10
+      if(cellValueInt > 0 && colorIndex==0){
+        colorIndex=1
+      }
+      return  colors[colorIndex]
+  },
+
+  getType(cellValue){ 
+    var classNames=['info','primary','success','warning','danger']; 
+
+    if(!cellValue){
+      return classNames[0]
+    }
+    var cellValueInt=parseInt(cellValue)
+      if( isNaN(cellValueInt) ){
+        cellValueInt=cellValue.chartCodeAt(cellValue.length-1)
+      } 
+      var typeIndex=cellValueInt % 5
+      if(cellValueInt > 0 && typeIndex==0){
+        typeIndex=1
+      }
+      return classNames[typeIndex]
+  },
   calcTableMaxHeight(cssSelector) {     
     var table=cssSelector;
     if(typeof cssSelector == 'string'){

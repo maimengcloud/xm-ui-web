@@ -31,11 +31,7 @@
 						
 						<el-col :span="8" class="avater-box">  
 							<div>    
-  								<el-button size="medium " v-if="editForm.execStatus=='0'" type="info" icon="el-icon-arrow-up" circle></el-button>
-  								<el-button size="medium " v-if="editForm.execStatus=='1'" type="success" icon="el-icon-check" circle></el-button>
-  								<el-button size="medium " v-if="editForm.execStatus=='2'" type="warning" icon="el-icon-minus" circle></el-button>
-  								<el-button size="medium " v-if="editForm.execStatus=='3'" type="primary" icon="el-icon-right" circle></el-button>
-  								<el-button size="medium " v-if="editForm.execStatus=='4'" type="danger" icon="el-icon-close" circle></el-button>
+  								<el-button size="medium " :type="getType(editForm.execStatus)" :icon="getExecStatusIcon(editForm.execStatus)" circle></el-button>
 							</div>
 							<div class="msg">
 								<span class="title">{{formatDicts(dicts,'testStepTcode',editForm.execStatus)}} </span>
@@ -132,7 +128,12 @@
 				</el-form-item>  
 				<el-form-item label="优先级" prop="priority">
 					<el-select  v-model="editForm.priority" @change="editSomeFields(editForm,'priority',$event)">
-						<el-option v-for="(item,index) in dicts['priority']" :key="index" :value="item.id" :label="item.name"></el-option>
+						<el-option style="margin-top:5px;" v-for="(item,index) in dicts['priority']" :key="index" :value="item.id" :label="item.name">
+							<span :style="{backgroundColor:item.color,color:'aliceblue'}" class="padding"> 
+								<i  v-if="item.icon" :class="item.icon"></i>
+								{{item.name}}
+							</span> 
+						</el-option>
 					</el-select>
 				</el-form-item> 
 				<el-form-item label="执行备注" prop="remark">
@@ -142,7 +143,12 @@
 				
 				<el-form-item label="测试结果" prop="execStatus">
 					<el-select v-model="editForm.execStatus" @change="editSomeFields(editForm,'execStatus',$event)">
-						<el-option v-for="(item,index) in dicts['testStepTcode']" :key="index" :value="item.id" :label="item.name"></el-option>
+						<el-option style="margin-top:5px;" v-for="(item,index) in dicts['testStepTcode']" :key="index" :value="item.id" :label="item.name">
+							<span :style="{backgroundColor:item.color,color:'aliceblue'}" class="padding"> 
+								<i  :class="getExecStatusIcon(item.id)"></i>
+								{{item.name}}
+							</span> 
+						</el-option>
 					</el-select>
 				</el-form-item> 
 			</el-form>
@@ -283,11 +289,19 @@ TestStepResult,MyInput,
                     this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
                   }
                 }).catch((e)=>Object.assign(this.editForm,this.editFormBak))
-            },
+            }, 
+
+			getExecStatusIcon(execStatus){
+				var icons=['el-icon-arrow-up','el-icon-right','el-icon-check','el-icon-minus','el-icon-close'];
+				if(!execStatus){
+					return icons[0]
+				}
+				return icons[parseInt(execStatus)]
+			}
 		},//end method
 		mounted() {
 		    this.$nextTick(() => {
-                initDicts(this);
+                initDicts(this);  
                 this.initData()
                 this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el)
             });

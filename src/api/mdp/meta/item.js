@@ -63,6 +63,27 @@ export const initSimpleDicts=function(categoryId,itemCodes){
                     data.forEach(dict=>{
                         if(dict.optionList){
                             dict.options=JSON.parse(dict.optionList)
+                            dict.options.forEach(k=>{
+                                var cellValue=k.id
+                                var classNames=['info','primary','success','warning','danger']; 
+                                var colors=['#909399','#409EFF','#67C23A','#E6A23C','#F56C6C','#00ced1','#c71585','#ff8c00','#c7158577','#ffd700'];
+                                var cellValueInt=parseInt(cellValue)
+                                if( isNaN(cellValueInt) ){
+                                  cellValueInt=cellValue.chartCodeAt(cellValue.length-1)
+                                }
+                                var colorIndex=cellValueInt % 10
+                                if(cellValueInt > 0 && colorIndex==0){
+                                  colorIndex=1
+                                }
+                                var typeIndex=cellValueInt % 5
+                                if(cellValueInt > 0 && typeIndex==0){
+                                  typeIndex=1
+                                }
+                                if(!k.color){
+                                    k.color=colors[colorIndex]
+                                }
+                                k.className=classNames[typeIndex]
+                            })
                         }else{
                         dict.options=[]
                         }
