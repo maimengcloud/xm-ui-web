@@ -30,15 +30,15 @@
 							<span><span style="color:#C0C4CC;">预期：</span>{{item.eresult}}</span>
  						</el-col> 
 						<el-col :span="6">
-							<my-input class="padding-left" v-model="item.aresult" clearable placeholder="步骤结果"></my-input> 
+							<my-input class="padding-right" v-model="item.aresult" clearable placeholder="步骤结果"></my-input> 
 						</el-col>
 						<el-col :span="2">
-							<el-select class="padding-left"  v-model="item.tcode" clearable>
+							<el-select class="padding-right"  v-model="item.tcode" clearable>
 								<el-option v-for="(item,index) in dicts['testStepTcode']" :key="index" :value="item.id" :label="item.name"></el-option>
 							</el-select>
  						</el-col> 
 						<el-col :span="2"> 
- 							<el-button class="padding-left" @click="addBug(item,index)" icon="el-icon-plus"  type="text"></el-button> 
+ 							<el-button @click="addBug(item,index)" icon="el-icon-plus"  type="text"></el-button> 
 						</el-col>  
 				</el-row> 
 			</el-form>  
