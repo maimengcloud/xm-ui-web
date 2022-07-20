@@ -33,7 +33,8 @@
             </el-menu>
         </el-row>
 		<el-row ref="xmTestCasedbTable">
-            <xm-test-case-mng  v-if="activeIndex=='testCase'" :xm-test-casedb="xmTestCasedb"></xm-test-case-mng>
+            <xm-test-case-mng  v-if="activeIndex=='testCase'" :xm-test-casedb="xmTestCasedb" key="1"></xm-test-case-mng>  
+            <xm-test-case-mng  v-if="activeIndex=='caseFlow'" :xm-test-casedb="xmTestCasedb" scene="caseFlow" key="2"></xm-test-case-mng>  
             <xm-test-plan-info v-else-if="activeIndex=='testPlan'" :xm-test-casedb="xmTestCasedb" ref="testPlan"> </xm-test-plan-info>
         </el-row>     
 	</section>

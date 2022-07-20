@@ -9,7 +9,7 @@
                 <el-row>
                     <el-input v-model="filters.key" style="width: 20%;" placeholder="名称 按回车" @keyup.enter.native="searchXmTestCases"></el-input>
                     
-                    <el-select v-model="filters.caseStatus" style="width:100px;">
+                    <el-select v-model="filters.caseStatus" style="width:120px;" clearable>
                         <el-option v-for="(item,index) in dicts['testCaseStatus']" :key="index" :value="item.id" :label="item.name"></el-option>
                     </el-select>
                     <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestCases" icon="el-icon-search">查询</el-button>
@@ -91,7 +91,7 @@ export default {
     components: {
         XmTestCaseEdit,XmFuncSelect
     },
-    props:['visible','xmTestCasedb'],
+    props:['visible','xmTestCasedb','scene'],
     computed: {
         ...mapGetters(['userInfo']),
 
@@ -109,6 +109,7 @@ export default {
             filters: {
                 key: '',
                 xmFunc:null,
+                caseStatus:'',
             },
             xmTestCases: [],//查询结果
             pageInfo:{//分页数据
@@ -190,6 +191,9 @@ export default {
                 params.key=this.filters.key
             } 
 
+            if(this.filters.caseStatus){
+                params.caseStatus=this.filters.caseStatus
+            }
             if(this.filters.xmFunc && this.filters.xmFunc.id){
                 params.funcPidPathsLike=this.filters.xmFunc.pidPaths
             }
@@ -305,7 +309,10 @@ export default {
             this.$emit('row-click',row, event, column);//  @row-click="rowClick"
         },
         initData: function(){
-
+            
+            if(this.scene){
+                this.filters.caseStatus='1'
+            }
         },
         onXmFuncRowClick(row){
             this.filters.xmFunc=row
