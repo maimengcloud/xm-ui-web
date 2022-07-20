@@ -1,11 +1,35 @@
 <template>
 	<section>
-        <el-row class="center">
-            <el-menu  :default-active="activeIndex"   mode="horizontal" @select="handleSelect">
+        <el-row >
+            <el-menu  :default-active="activeIndex"   mode="horizontal" @select="handleSelect" 
+                background-color="rgb(48, 65, 86)"
+                text-color="rgb(191, 203, 217)"
+                active-text-color="#409eff"
+            >
+                 <el-menu-item index="测试库">
+                    <span
+                        slot="title"
+                        style="font-size: 18px; color: #409eff" 
+                        :title="xmTestCasedb.name"
+                    > 
+                        测试库:<strong>&nbsp;{{ xmTestCasedb.name }}</strong> 
+                    </span> 
+                    </el-menu-item>
                 <el-menu-item index="testCase">用例管理</el-menu-item>
                 <el-menu-item index="caseFlow">用例评审</el-menu-item>
                 <el-menu-item index="testPlan">测试计划</el-menu-item>
                 <el-menu-item index="testRpt">统计报表</el-menu-item> 
+                
+                <el-menu-item index="首页" @click.native="goHome">
+                <span slot="title"
+                    ><i class="el-icon-s-home"></i></span
+                >
+                </el-menu-item> 
+                <el-menu-item index="上一页" class="hidden-md-and-down"  @click.native="goBack">
+                <span slot="title"
+                    ><i class="el-icon-back"></i></span
+                >
+                </el-menu-item> 
             </el-menu>
         </el-row>
 		<el-row ref="xmTestCasedbTable">
@@ -263,7 +287,14 @@ export default {
                 })
                 
             }
-        }
+        },
+        
+        goBack() {
+         this.$router.back(-1); 
+        },
+        goHome(){ 
+         this.$router.push({path:'/'}) 
+        },
     },//end methods
     mounted() {
         this.$nextTick(() => {
