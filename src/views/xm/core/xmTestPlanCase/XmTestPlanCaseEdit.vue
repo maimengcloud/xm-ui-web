@@ -2,7 +2,7 @@
 	<section>
 	    <el-row>
 	    </el-row>
-		<el-row ref="table">
+		<el-row :style="{overflowX:'auto',height:maxTableHeight+'px'}" ref="table">
 		<!--编辑界面 XmTestPlanCase 测试计划与用例关系表--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef" label-position="left" > 
 
@@ -22,11 +22,19 @@
 							</div>   
 						</el-col> 
 						<el-col :span="8" class="avater-box"> 
-							<el-avatar class="avater" icon="el-icon-top" style="background-color:rgb(255, 117, 117);"></el-avatar> 
+							<el-avatar class="avater" icon="el-icon-top" :style="{backgroundColor:getColor(editForm.priority)}"></el-avatar> 
 							<div class="msg">
 								<span class="title">{{formatDicts(dicts,'priority',editForm.priority)}} </span>
 								<span class="sub-title">优先级</span>
 							</div>   
+							<el-select class="select" v-model="editForm.priority" @change="editSomeFields(editForm,'priority',$event)" clearable>
+								<el-option style="margin-top:5px;" v-for="(item,index) in dicts['priority']" :key="index" :value="item.id" :label="item.name">
+									<span :style="{backgroundColor:item.color,color:'aliceblue'}" class="padding"> 
+										<i  v-if="item.icon" :class="item.icon"></i>
+										{{item.name}}
+									</span> 
+								</el-option>
+							</el-select>
 						</el-col> 
 						
 						<el-col :span="8" class="avater-box">  
@@ -109,9 +117,25 @@
 								{{editForm.caseRemark?editForm.caseRemark:'无'}}
 							</el-row>  
 						</el-row>
+						
+						<el-form-item label="执行备注" prop="remark">
+							<el-input type="textarea" :rows="6" v-model="editForm.remark" placeholder="执行备注" :maxlength="2147483647" @change="editSomeFields(editForm,'remark',$event)"></el-input>
+						</el-form-item> 
  					</el-tab-pane>
-					<el-tab-pane name="2" label="需求">
-
+					<el-tab-pane name="2" label="需求"> 
+						<el-row>
+							<el-col :span="12"> 
+								<el-form-item  label="归属产品" prop="productId"> 
+									 {{editForm.productId}}
+								</el-form-item>  
+							</el-col>
+							<el-col :span="12"> 
+								<el-form-item  label="用户故事" prop="menuId" id="menuInfo"> 
+									{{editForm.menuName}} &nbsp;&nbsp;&nbsp; <el-link @click="menuVisible=true" type="primary">{{editForm.menuName?'更改':'设置'}}</el-link>&nbsp;&nbsp;&nbsp;
+									<el-link v-if="editForm.menuName" @click="menuVisible=true" type="primary">查看需求</el-link>
+								</el-form-item> 
+							</el-col> 
+						</el-row>
 					</el-tab-pane>
 					<el-tab-pane name="3" label="缺陷">
 
@@ -119,46 +143,40 @@
 					<el-tab-pane name="4" label="附件">
 
 					</el-tab-pane>
-				</el-tabs>
-				<el-form-item label="测试用例编号" prop="caseId">
-					<el-input v-model="editForm.caseId" placeholder="测试用例编号" :maxlength="50" @change="editSomeFields(editForm,'caseId',$event)"></el-input>
-				</el-form-item>   
-				<el-form-item label="执行人" prop="execUsername">
-					<el-input v-model="editForm.execUsername" placeholder="执行人姓名" :maxlength="255" @change="editSomeFields(editForm,'execUsername',$event)"></el-input>
-				</el-form-item>  
-				<el-form-item label="优先级" prop="priority">
-					<el-select  v-model="editForm.priority" @change="editSomeFields(editForm,'priority',$event)">
-						<el-option style="margin-top:5px;" v-for="(item,index) in dicts['priority']" :key="index" :value="item.id" :label="item.name">
-							<span :style="{backgroundColor:item.color,color:'aliceblue'}" class="padding"> 
-								<i  v-if="item.icon" :class="item.icon"></i>
-								{{item.name}}
-							</span> 
-						</el-option>
-					</el-select>
-				</el-form-item> 
-				<el-form-item label="执行备注" prop="remark">
-					<el-input v-model="editForm.remark" placeholder="执行备注" :maxlength="2147483647" @change="editSomeFields(editForm,'remark',$event)"></el-input>
-				</el-form-item> 
-				
-				
-				<el-form-item label="测试结果" prop="execStatus">
-					<el-select v-model="editForm.execStatus" @change="editSomeFields(editForm,'execStatus',$event)">
-						<el-option style="margin-top:5px;" v-for="(item,index) in dicts['testStepTcode']" :key="index" :value="item.id" :label="item.name">
-							<span :style="{backgroundColor:item.color,color:'aliceblue'}" class="padding"> 
-								<i  :class="getExecStatusIcon(item.id)"></i>
-								{{item.name}}
-							</span> 
-						</el-option>
-					</el-select>
-				</el-form-item> 
+				</el-tabs>  
 			</el-form>
 		</el-row>
-
+		
+				
+		<el-row> 
+			<el-col :span="8">
+				<el-checkbox v-model="next">继续下一条执行用例</el-checkbox>
+			</el-col>
+			<el-col :span="8" class="avater-box">  
+				<div>    
+					<el-button size="medium " :type="getType(editForm.execStatus)" :icon="getExecStatusIcon(editForm.execStatus)" circle></el-button>
+				</div>
+				<div class="msg">
+					<span class="title">{{formatDicts(dicts,'testStepTcode',editForm.execStatus)}} </span> 
+				</div> 
+				<el-select class="select" v-model="editForm.execStatus" @change="editSomeFields(editForm,'execStatus',$event)">
+				<el-option style="margin-top:5px;" v-for="(item,index) in dicts['testStepTcode']" :key="index" :value="item.id" :label="item.name">
+					<span :style="{backgroundColor:item.color,color:'aliceblue'}" class="padding"> 
+						<i  :class="getExecStatusIcon(item.id)"></i>
+						{{item.name}}
+					</span> 
+				</el-option>
+			</el-select>   
+			</el-col> 
+			
+		</el-row>
 		<el-row v-if="opType=='add'">
 		    <el-button @click.native="handleCancel">取消</el-button>
             <el-button v-loading="load.edit" type="primary" @click.native="saveSubmit" :disabled="load.edit==true">提交</el-button>
 		</el-row>
-
+		<el-dialog append-to-body title="需求明细"  :visible.sync="menuVisible" width="80%"  top="20px"  :close-on-click-modal="false">
+			<xm-menu-edit :visible="menuVisible"  :reload="true" :xm-menu="{menuId:editForm.menuId,menuName:editForm.menuName}" ></xm-menu-edit>
+		</el-dialog>
 		
 	</section>
 </template>
@@ -170,11 +188,12 @@
 	import { mapGetters } from 'vuex'
 import TestStepResult from './TestStepResult.vue';
 	import MyInput from '@/components/MDinput/index';
+	import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 	
 	export default {
 	    name:'xmTestPlanCaseEdit',
 	    components: {
-TestStepResult,MyInput,
+TestStepResult,MyInput,XmMenuEdit,
 
         },
 		computed: {
@@ -213,6 +232,8 @@ TestStepResult,MyInput,
 					bugs:'',execUserid:'',caseId:'',ltime:'',ctime:'',execStatus:'',execUsername:'',planId:'',caseName:'',priority:'',remark:'',testStep:''
 				},
                 maxTableHeight:300,
+				menuVisible:false,
+				next:false,
 			}//end return
 		},//end data
 		methods: {
@@ -283,6 +304,7 @@ TestStepResult,MyInput,
                   let tips = res.data.tips;
                   if(tips.isOk){
                     this.editFormBak={...this.editForm}
+					params.next=this.next
 					this.$emit('edit-fields',params)
                   }else{
                     Object.assign(this.editForm,this.editFormBak)
@@ -339,12 +361,18 @@ TestStepResult,MyInput,
 		}
         
     }
+	.select{
+		visibility:hidden; 
+	}
 	.btn{
 		margin-top: 0px;
 		visibility:hidden; 
 	} 
 }
  .avater-box:hover .btn{
+		visibility: visible !important;
+}
+ .avater-box:hover .select{
 		visibility: visible !important;
 }
 </style>

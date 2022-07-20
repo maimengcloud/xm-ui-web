@@ -13,10 +13,10 @@
 						<el-col :span="8">
 							实际结果
 						</el-col>
-						<el-col :span="2">
+						<el-col :span="3">
 							步骤结果
 						</el-col>
-						<el-col :span="2">
+						<el-col :span="1">
 							缺陷
 						</el-col>
 					</el-row>
@@ -34,23 +34,23 @@
 						<el-col :span="8">
 							<my-input class="padding-right" v-model="item.aresult" clearable placeholder="步骤结果"></my-input> 
 						</el-col>
-						<el-col :span="2" class="avater-box"> 
+						<el-col :span="3" class="avater-box"> 
 								<div>    
-									<el-button size="medium " v-if="item.tcode=='0'" type="info" icon="el-icon-arrow-up" circle></el-button>
-									<el-button size="medium " v-if="item.tcode=='1'" type="success" icon="el-icon-check" circle></el-button>
-									<el-button size="medium " v-if="item.tcode=='2'" type="warning" icon="el-icon-minus" circle></el-button>
-									<el-button size="medium " v-if="item.tcode=='3'" type="primary" icon="el-icon-right" circle></el-button>
-									<el-button size="medium " v-if="item.tcode=='4'" type="danger" icon="el-icon-close" circle></el-button>
+									<el-button size="medium "  :type="getType(item.tcode)" :icon="getExecStatusIcon(item.tcode)" circle></el-button> 
 								</div>
 								<div class="msg">
 									<span class="title">{{formatDicts(dicts,'testStepTcode',item.tcode)}} </span>
-									<span class="sub-title">执行结果</span>
-								</div>    
-								<el-select class="padding-right"  v-model="item.tcode" clearable>
-									<el-option v-for="(item,index) in dicts['testStepTcode']" :key="index" :value="item.id" :label="item.name"></el-option>
+ 								</div>    
+								<el-select class="select" v-model="item.tcode">
+									<el-option style="margin-top:5px;" v-for="(item,index) in dicts['testStepTcode']" :key="index" :value="item.id" :label="item.name">
+										<span :style="{backgroundColor:item.color,color:'aliceblue'}" class="padding"> 
+											<i  :class="getExecStatusIcon(item.tcode)"></i>
+											{{item.name}}
+										</span> 
+									</el-option>
 								</el-select>
  						</el-col> 
-						<el-col :span="2"> 
+						<el-col :span="1"> 
  							<el-button @click="addBug(item,index)" icon="el-icon-plus"  type="text"></el-button> 
 						</el-col>  
 				</el-row> 
@@ -132,6 +132,15 @@
 				}else{
 					this.extInfosList=[]
 				}
+			},
+			
+
+			getExecStatusIcon(execStatus){
+				var icons=['el-icon-arrow-up','el-icon-right','el-icon-check','el-icon-minus','el-icon-close'];
+				if(!execStatus){
+					return icons[0]
+				}
+				return icons[parseInt(execStatus)]
 			}
 		},//end methods
 		components: {  
@@ -172,11 +181,19 @@
 			 font-size: 14px;
 			 color: #C0C4CC;
 		}
-        
-    }
+	}
+	.select{
+		visibility:hidden; 
+	}
 	.btn{
 		margin-top: 0px;
 		visibility:hidden; 
 	} 
+}
+ .avater-box:hover .btn{
+		visibility: visible !important;
+}
+ .avater-box:hover .select{
+		visibility: visible !important;
 }
 </style>

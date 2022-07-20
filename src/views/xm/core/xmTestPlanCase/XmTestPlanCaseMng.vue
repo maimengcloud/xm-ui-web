@@ -330,7 +330,18 @@ export default {
         },
         onEditFields(row){
             Object.assign(this.editForm,row)
-            this.editFormBak={...this.editForm}
+            this.editFormBak={...this.editForm} 
+            if(row.execStatus && row.next){
+                var index=this.xmTestPlanCases.findIndex(k=>k.caseId==this.editForm.caseId) 
+                if(index==this.xmTestPlanCases.length-1){
+                    this.editFormVisible=false;
+                    this.$notify({position:'bottom-left',showClose:true,message:"已是最后一条数据",type:'error'})
+                    return;
+                }
+                this.editForm=this.xmTestPlanCases[index+1]
+                this.$refs.xmTestPlanCaseTable.setCurrentRow(this.editForm)
+                this.editFormBak={...this.editForm}
+            }
         }
     },//end methods
     mounted() {
