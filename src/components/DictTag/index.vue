@@ -78,7 +78,7 @@
         cursor: pointer;
         .item-info{
             display:inherit; 
-            height: 60px;
+            height: 33px;
         }
         .item-select{
             display: none;
