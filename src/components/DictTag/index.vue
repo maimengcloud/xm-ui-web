@@ -1,10 +1,10 @@
 <template>    
     <div class="item-box">
-        <div class="item-info">
+        <div :class="{'item-info':disabled!==true}">
             <el-tag v-if="currentItem"  :type="currentItem.className" :closable="closable" :effect="effect">{{currentItem.name}}</el-tag>
         </div>
-        <div class="item-select">
-            <dict-select :dict="dict" v-model="myVal" @change="onChange"></dict-select>
+        <div v-if="disabled!==true" class="item-select">
+            <dict-select :dict="dict" v-model="myVal" @change="onChange" :clearable="closable"></dict-select>
         </div>
     </div>
     
@@ -38,6 +38,10 @@
         },  
     },
     props: {
+        disabled:{
+            type:Boolean,
+            default:false,
+        },
         closable:{
             type:Boolean,
             default:false,

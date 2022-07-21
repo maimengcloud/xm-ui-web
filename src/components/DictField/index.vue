@@ -11,7 +11,7 @@
                 </slot>
                 </slot>
 							</div>   
-							<slot class="my-select" name="select" :dict="dict" :value="myVal">
+							<slot v-if="disabled!==true" class="my-select" name="select" :dict="dict" :value="myVal">
                 <dict-select  :dict="dict" v-model="myVal" @change="onChange"></dict-select>
               </slot>
 						</div> 
@@ -49,6 +49,11 @@
       }
     },
     props: {
+      
+        disabled:{
+            type:Boolean,
+            default:false,
+        },
        label:{
         type:String,
         default:''

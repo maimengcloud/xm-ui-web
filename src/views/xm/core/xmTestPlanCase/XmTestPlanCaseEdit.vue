@@ -37,7 +37,7 @@
 									用例状态
 								</el-row>
 								<el-row>
-                                 	 <dict-tag :dict="dicts['testCaseStatus']" v-model="editForm.caseStatus"></dict-tag>
+                                 	 <dict-tag :dict="dicts['testCaseStatus']" v-model="editForm.caseStatus" :disabled="true"></dict-tag>
 								</el-row>
 							</el-col>
 							<el-col :span="6">
