@@ -36,6 +36,9 @@
           }
            
         },  
+        myVal(){
+            this.$emit('input',this.myVal)
+        }
     },
     props: {
         disabled:{

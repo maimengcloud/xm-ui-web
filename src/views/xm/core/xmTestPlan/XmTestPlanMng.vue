@@ -34,20 +34,15 @@
                     </template>
 				</el-table-column> 
 				<el-table-column prop="status" label="状态" width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <el-tag class="cell-text" v-for="(item,index) in formatDictsWithClass(dicts,'testPlanStatus',scope.row.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
-                        <el-select class="cell-bar" v-model="scope.row.status" @change="editSomeFields(scope.row,'status',$event)">
-                            <el-option v-for="(item,index) in dicts['testPlanStatus']" :key="index" :value="item.id" :label="item.name"></el-option>
-                        </el-select>
+				    <template slot-scope="scope"> 
+                        <dict-tag :dict="dicts['testPlanStatus']" v-model="scope.row.status" effect="dark" @change="editSomeFields(scope.row,'status',$event)"></dict-tag> 
                    </template>
 				</el-table-column>
 				<el-table-column prop="tcode" label="测试结果" width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-				        <el-tag class="cell-text" v-for="(item,index) in formatDictsWithClass(dicts,'testPlanTcode',scope.row.tcode)" :key="index" :type="item.className">{{item.name}}</el-tag>
                         
-                        <el-select class="cell-bar" v-model="scope.row.tcode" @change="editSomeFields(scope.row,'tcode',$event)">
-                            <el-option v-for="(item,index) in dicts['testPlanTcode']" :key="index" :value="item.id" :label="item.name"></el-option>
-                        </el-select>
+                        <dict-tag :dict="dicts['testPlanTcode']" v-model="scope.row.tcode" effect="dark" @change="editSomeFields(scope.row,'tcode',$event)"></dict-tag> 
+                          
                     </template>
 				</el-table-column> 
 				<el-table-column prop="totalCases" label="进度" min-width="120" show-overflow-tooltip>
