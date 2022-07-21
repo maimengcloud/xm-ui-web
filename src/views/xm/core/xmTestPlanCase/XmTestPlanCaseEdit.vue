@@ -3,7 +3,8 @@
 		<el-row :style="{overflow:'auto',maxHeight:maxTableHeight+'px'}" ref="table">
 		<!--编辑界面 XmTestPlanCase 测试计划与用例关系表--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef" label-position="left" > 
-
+				<el-row>
+					<el-col :span="18" class="border padding">
 				<el-form-item label="" prop="caseName" label-width="0px">  
 					<el-row>
 					<span><span class="label-font-color">用例编号:</span>&nbsp;&nbsp;{{editForm.caseId}} &nbsp;&nbsp;<i class="el-icon-s-operation"></i><span class="label-font-color">模块：</span></span><span>{{editForm.funcName}}</span>
@@ -128,6 +129,27 @@
 
 					</el-tab-pane>
 				</el-tabs>  
+				
+				
+					</el-col>
+					<el-col  :span="6" class="border padding">
+					
+						<el-form-item label="测试库" prop="casedbName">
+							{{editForm.casedbName?editForm.casedbName:editForm.casedbId }}  
+						</el-form-item> 
+						
+						<el-form-item label="产品" prop="productId">
+							{{editForm.productName?editForm.productName:editForm.productId }}  
+						</el-form-item> 
+						<el-form-item label="关联需求" prop="menuName">
+							{{editForm.menuName?editForm.menuName:'暂无关联需求'}} <el-button type="text" @click="menuVisible=true">选择需求</el-button>
+						</el-form-item> 
+						
+						<el-form-item label="版本号" prop="verNum">
+							<el-input v-model="editForm.verNum" placeholder="版本号" :maxlength="50" @change="editSomeFields(editForm,'verNum',$event)"></el-input>
+						</el-form-item>   
+					</el-col>
+				</el-row>    
 			</el-form> 
 		</el-row>
 		<el-row>  
