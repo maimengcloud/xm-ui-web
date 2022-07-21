@@ -125,19 +125,18 @@
         margin-left: 10px;
         display: flex;
         flex-direction: column;
-        .field-value { 
-			      margin-top: 5px;
+        .field-value {  
             font-size: 16px; 
         } 
-      .field-label{  
-        margin-top: -10px;
-        font-size: 14px;
-        color: #C0C4CC;
-      }
+        .field-label{   
+          font-size: 14px;
+          color: #C0C4CC;
+        }
         
     }
 	.my-select{
     margin-left: 5px;
+    margin-right:5px;
     max-width: 120px;
 		visibility:hidden;  
 	}

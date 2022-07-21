@@ -6,7 +6,7 @@
 
 				<el-form-item label="" prop="caseName" label-width="0px">  
 					<el-row>
-					<span class="padding-left"><i class="el-icon-s-operation"></i>模块：</span><span>{{editForm.funcName}}</span>
+					<span><span class="label-font-color">用例编号:</span>&nbsp;&nbsp;{{editForm.caseId}} &nbsp;&nbsp;<i class="el-icon-s-operation"></i><span class="label-font-color">模块：</span></span><span>{{editForm.funcName}}</span>
 					</el-row>
 					<el-row>
 					<span class="title-font-size">{{editForm.caseName}}</span> 

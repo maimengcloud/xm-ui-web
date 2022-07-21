@@ -34,21 +34,8 @@
 						<el-col :span="8">
 							<my-input class="padding-right" v-model="item.aresult" clearable placeholder="步骤结果"></my-input> 
 						</el-col>
-						<el-col :span="3" class="avater-box"> 
-								<div>    
-									<el-button size="medium "  :type="getType(item.tcode)" :icon="getExecStatusIcon(item.tcode)" circle></el-button> 
-								</div>
-								<div class="msg">
-									<span class="title">{{formatDicts(dicts,'testStepTcode',item.tcode)}} </span>
- 								</div>    
-								<el-select class="select" v-model="item.tcode">
-									<el-option style="margin-top:5px;" v-for="(item,index) in dicts['testStepTcode']" :key="index" :value="item.id" :label="item.name">
-										<span :style="{backgroundColor:item.color,color:'aliceblue'}" class="padding"> 
-											<i  :class="getExecStatusIcon(item.tcode)"></i>
-											{{item.name}}
-										</span> 
-									</el-option>
-								</el-select>
+						<el-col :span="3">  
+								<dict-field   :dict="dicts['testStepTcode']" v-model="item.tcode" :get-icon="getExecStatusIcon"></dict-field> 
  						</el-col> 
 						<el-col :span="1"> 
 							<slot name="addBug">
@@ -161,41 +148,5 @@
 </script>
 
 <style  lang="scss" scoped>
-	 
-.avater-box {  
-    display: flex;
-    align-items: center;
-	cursor: pointer;
-    .avater { 
-		background-color:#FF9F73;
-    }
-
-    .msg {
-        margin-left: 10px;
-        display: flex;
-        flex-direction: column;
-        .title { 
-			margin-top: 5px;
-            font-size: 16px; 
-        } 
-		.sub-title{  
-			margin-top: -10px;
-			 font-size: 14px;
-			 color: #C0C4CC;
-		}
-	}
-	.select{
-		visibility:hidden; 
-	}
-	.btn{
-		margin-top: 0px;
-		visibility:hidden; 
-	} 
-}
- .avater-box:hover .btn{
-		visibility: visible !important;
-}
- .avater-box:hover .select{
-		visibility: visible !important;
-}
+	  
 </style>
