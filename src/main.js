@@ -28,6 +28,8 @@ import DictSelect from '@/components/DictSelect/index'
 import DictTag from '@/components/DictTag/index'
 import DictField from '@/components/DictField/index'
 import MyInput from '@/components/MDinput/index'
+import DateField from '@/components/DateField/index'
+import UserField from '@/components/UserField/index'
 
 Vue.prototype.$echarts = echarts
 Vue.use(Print); //注册
@@ -36,6 +38,8 @@ Vue.component('dict-select',DictSelect)
 Vue.component('dict-tag',DictTag)
 Vue.component('dict-field',DictField)
 Vue.component('my-input',MyInput)
+Vue.component('date-field',DateField)
+Vue.component('user-field',UserField)
 Vue.use(Element, {
   size: 'small', // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)

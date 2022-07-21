@@ -1,9 +1,9 @@
 <template>
 	<section>  
-		<el-row class="page-main ">
-			<el-form :model="editForm" label-width="120px" label-position="left" :rules="editFormRules" ref="editForm"> 
+		<el-row>
+			<el-form :model="editForm" label-width="120px"  :rules="editFormRules" ref="editForm" label-position="top"> 
 				<el-row>
-					<el-col :span="18"> 
+					<el-col :span="18" class="border padding"> 
 						<el-form-item label="" prop="name" label-width="0px">
 														<el-row>
 							<span><span v-if="opType=='edit'" class="label-font-color">用例编号:</span>&nbsp;&nbsp;{{editForm.caseId}} &nbsp;&nbsp;</span><span class="label-font-color"><i class="el-icon-s-operation"></i>模块：</span><span>{{editForm.funcName}} <el-button type="text" @click="funcVisible=true">选择模块</el-button></span>
@@ -17,9 +17,8 @@
 								<el-button type="text" icon="el-icon-copy" @click="copyLink">拷贝链接(快速分享)</el-button>
 						</el-form-item> 
 								<el-row> 
-									<el-col :span="8">
-										<el-form-item label="负责人" prop="handlerUsername">
-											{{editForm.handlerUsername}}    
+									<el-col :span="6"> 
+											<user-field label="责任人" v-model="editForm" userid-key="handlerUserid" username-key="handlerUsername" @change="editXmQuestionSomeFields(editForm,'handlerUserid',$event)"></user-field>
 											<el-popover
 												placement="top-start"
 												title="重新指派给"
@@ -31,30 +30,20 @@
 														<el-button type="text"  @click="showGroupUsers('handlerUserid')">其它人</el-button><br>
 													</el-row>
 												<el-button slot="reference" type="text">指派给</el-button>
-											</el-popover>
-										</el-form-item>
+											</el-popover> 
 									</el-col>
 									
-									<el-col :span="8">
-										<el-form-item label="状态" prop="bugStatus">
-										<el-select v-model="editForm.bugStatus" placeholder="状态" @change="editXmQuestionSomeFields(editForm,'bugStatus',$event)">
-											<el-option v-for="(i,index) in dicts['bugStatus']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
-										</el-select> 
-										</el-form-item>
+									<el-col :span="6">
+										<dict-field label="状态" :dict="dicts['bugStatus']" v-model="editForm.bugStatus" @change="editXmQuestionSomeFields(editForm,'bugStatus',$event)"></dict-field> 
 									</el-col> 
-									<el-col :span="8">
-										<el-form-item label="优先级别" prop="priority">
-											<el-select v-model="editForm.priority" placeholder="请选择优先级" @change="editXmQuestionSomeFields(editForm,'priority',$event)">
-												<el-option v-for="(i,index) in dicts['priority']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
-											</el-select> 
-										</el-form-item> 
+
+									<el-col :span="6">
+										<dict-field label="优先级" :dict="dicts['priority']" v-model="editForm.priority" @change="editXmQuestionSomeFields(editForm,'priority',$event)"></dict-field> 
 									</el-col>
 									
-									<el-col :span="8">
-										<el-form-item label="结束时间" prop="endTime">
-												<el-date-picker style="max-width:100%;" value-format="yyyy-MM-dd HH:mm:ss" v-model="editForm.endTime" @change="editXmQuestionSomeFields(editForm,'endTime',$event)"></el-date-picker>
-										</el-form-item>
-									</el-col>
+									<el-col :span="6"> 
+												<date-field label="结束时间" style="max-width:100%;" value-format="yyyy-MM-dd HH:mm:ss" v-model="editForm.endTime" @change="editXmQuestionSomeFields(editForm,'endTime',$event)"></date-field>
+ 									</el-col>
 								</el-row>
 								<el-row>
 								</el-row>
@@ -68,10 +57,8 @@
 													</el-form-item> 
 												</el-col>
 												<el-col :span="8">
-													<el-form-item label="复现频率" prop="repRate">
-														<el-select v-model="editForm.repRate" placeholder="请选择复现频率" @change="editXmQuestionSomeFields(editForm,'repRate',$event)">
-															<el-option v-for="(i,index) in dicts['bugRepRate']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
-														</el-select> 
+													<el-form-item label="复现频率" prop="repRate"> 
+														<dict-tag  :dict="dicts['bugRepRate']" v-model="editForm.repRate" @change="editXmQuestionSomeFields(editForm,'repRate',$event)"></dict-tag>
 													</el-form-item>
 													
 												</el-col> 
@@ -86,31 +73,27 @@
 										
 										<el-col :span="8">
 											<el-form-item label="严重程度" prop="bugSeverity">
-											<el-select v-model="editForm.bugSeverity" placeholder="请选择严重程度" @change="editXmQuestionSomeFields(editForm,'bugSeverity',$event)">
-												<el-option v-for="(i,index) in dicts['bugSeverity']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
-											</el-select> 
+												<dict-tag  :dict="dicts['bugSeverity']" v-model="editForm.bugSeverity" @change="editXmQuestionSomeFields(editForm,'bugSeverity',$event)"></dict-tag>
+											 
 											</el-form-item>
 										</el-col> 	
 										<el-col :span="8">
 											<el-form-item label="原因分析" prop="bugReason">
-												<el-select v-model="editForm.bugReason" placeholder="请选择原因" @change="editXmQuestionSomeFields(editForm,'bugReason',$event)">
-													<el-option v-for="(i,index) in dicts['bugReason']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
-												</el-select> 
+												<dict-tag  :dict="dicts['bugReason']" v-model="editForm.bugReason" @change="editXmQuestionSomeFields(editForm,'bugReason',$event)"></dict-tag>
+												 
 											</el-form-item>
 										</el-col>
 										
 										<el-col :span="8">
 											<el-form-item label="解决方案" prop="solution">
-												<el-select v-model="editForm.solution" placeholder="请选择解决方案" @change="editXmQuestionSomeFields(editForm,'solution',$event)">
-													<el-option v-for="(i,index) in dicts['bugSolution']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
-												</el-select> 
+												<dict-tag  :dict="dicts['bugSolution']" v-model="editForm.solution" @change="editXmQuestionSomeFields(editForm,'solution',$event)"></dict-tag>
+ 
 											</el-form-item>
 										</el-col> 
 										<el-col :span="8">
 													<el-form-item label="缺陷类别" prop="bugType">
-														<el-select v-model="editForm.bugType" placeholder="请选择缺陷类别" @change="editXmQuestionSomeFields(editForm,'bugType',$event)">
-															<el-option v-for="(i,index) in dicts['bugType']" :label="i.name" :value="i.id" :key="index">{{i.name}}</el-option>
-														</el-select> 
+														<dict-tag  :dict="dicts['bugType']" v-model="editForm.bugType" @change="editXmQuestionSomeFields(editForm,'bugType',$event)"></dict-tag>
+ 
 													</el-form-item>
 													
 												</el-col> 
@@ -248,7 +231,7 @@
 				 
 			}
 		},
-		props:['xmQuestion','visible',"selProject"],
+		props:['xmQuestion','visible',"selProject",'opType'],
 		watch: {
 	      'xmQuestion':function( xmQuestion ) {
 	        this.editForm = {...xmQuestion};
