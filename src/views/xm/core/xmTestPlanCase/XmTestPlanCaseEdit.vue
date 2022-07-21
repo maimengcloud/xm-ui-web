@@ -19,20 +19,8 @@
 								<span class="field-label">执行人</span>
 							</div>   
 						</el-col> 
-						<el-col :span="8" class="field-box"> 
-							<el-avatar class="avater" icon="el-icon-top" :style="{backgroundColor:getColor(editForm.priority)}"></el-avatar> 
-							<div class="msg">
-								<span class="field-value">{{formatDicts(dicts,'priority',editForm.priority)}} </span>
-								<span class="field-label">优先级</span>
-							</div>   
-							<el-select class="my-select" v-model="editForm.priority" @change="editSomeFields(editForm,'priority',$event)" clearable>
-								<el-option style="margin-top:5px;" v-for="(item,index) in dicts['priority']" :key="index" :value="item.id" :label="item.name">
-									<span :style="{backgroundColor:item.color,color:'aliceblue'}" class="padding"> 
-										<i  v-if="item.icon" :class="item.icon"></i>
-										{{item.name}}
-									</span> 
-								</el-option>
-							</el-select>
+						<el-col :span="8">  
+							<dict-field label="优先级" :dict="dicts['priority']" v-model="editForm.priority"></dict-field>
 						</el-col> 
 						
 						<el-col :span="8" class="field-box">  
