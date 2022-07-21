@@ -57,7 +57,7 @@
 								用例描述
 							</el-row> 
 							<el-row>
-								<el-input type="textarea" :rows="4" v-model="editForm.caseRmark" placeholder="请输入用例描述"  @change="editSomeFields(editForm,'caseRmark',$event)"></el-input>
+								<el-input type="textarea" :rows="4" v-model="editForm.caseRemark" placeholder="请输入用例描述"  @change="editSomeFields(editForm,'caseRemark',$event)"></el-input>
 							</el-row> 
 						</el-form-item>  
 				

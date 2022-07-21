@@ -98,7 +98,7 @@ export default {
                 id:'',name:'',cuserid:'',cusername:'',ctime:'',cbranchId:'',productId:'',productName:''
             },
             maxTableHeight:300,
-            activeIndex:'testPlan',
+            activeIndex:'testCase',
         }
     },//end data
     methods: {
