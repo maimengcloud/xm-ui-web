@@ -15,15 +15,15 @@
 						<el-col :span="8" class="field-box"> 
 							<el-avatar class="avater"> {{editForm.execUsername}} </el-avatar> 
 							<div class="msg">
-								<span class="title">{{editForm.execUsername}} </span>
-								<span class="sub-title">执行人</span>
+								<span class="field-value">{{editForm.execUsername}} </span>
+								<span class="field-label">执行人</span>
 							</div>   
 						</el-col> 
 						<el-col :span="8" class="field-box"> 
 							<el-avatar class="avater" icon="el-icon-top" :style="{backgroundColor:getColor(editForm.priority)}"></el-avatar> 
 							<div class="msg">
-								<span class="title">{{formatDicts(dicts,'priority',editForm.priority)}} </span>
-								<span class="sub-title">优先级</span>
+								<span class="field-value">{{formatDicts(dicts,'priority',editForm.priority)}} </span>
+								<span class="field-label">优先级</span>
 							</div>   
 							<el-select class="my-select" v-model="editForm.priority" @change="editSomeFields(editForm,'priority',$event)" clearable>
 								<el-option style="margin-top:5px;" v-for="(item,index) in dicts['priority']" :key="index" :value="item.id" :label="item.name">
@@ -40,8 +40,8 @@
   								<el-button size="medium " :type="getType(editForm.execStatus)" :icon="getExecStatusIcon(editForm.execStatus)" circle></el-button>
 							</div>
 							<div class="msg">
-								<span class="title">{{formatDicts(dicts,'testStepTcode',editForm.execStatus)}} </span>
-								<span class="sub-title">执行结果</span>
+								<span class="field-value">{{formatDicts(dicts,'testStepTcode',editForm.execStatus)}} </span>
+								<span class="field-label">执行结果</span>
 							</div>   
 						</el-col> 
 					</el-row>
@@ -55,8 +55,7 @@
 									用例状态
 								</el-row>
 								<el-row>
-									<el-tag class="cell-text" v-for="(item,index) in formatDictsWithClass(dicts,'testCaseStatus',editForm.caseStatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
-                                 
+                                 	 <dict-tag class="cell-text" :dict="dicts['testCaseStatus']" v-model="editForm.caseStatus"></dict-tag>
 								</el-row>
 							</el-col>
 							<el-col :span="6">
@@ -73,7 +72,7 @@
 									用例类型
 								</el-row>
 								<el-row>
-									<el-tag  v-for="(item,index) in formatDictsWithClass(dicts,'caseType',editForm.caseType)" :key="index" :type="item.className">{{item.name}}</el-tag>
+									<dict-tag  :dict="dicts['caseType']" v-model="editForm.caseType"></dict-tag>
 
 								</el-row>
 							</el-col>
@@ -156,19 +155,10 @@
 					<el-button size="medium " :type="getType(editForm.execStatus)" :icon="getExecStatusIcon(editForm.execStatus)" circle></el-button>
 				</div>
 				<div class="msg">
-					<span class="title">{{formatDicts(dicts,'testStepTcode',editForm.execStatus)}} </span> 
+					<span class="field-value">{{formatDicts(dicts,'testStepTcode',editForm.execStatus)}} </span> 
 				</div> 
-				<el-select class="my-select" v-model="editForm.execStatus" @change="editSomeFields(editForm,'execStatus',$event)">
-					<el-option style="margin-top:5px;" v-for="(item,index) in dicts['testStepTcode']" :key="index" :value="item.id" :label="item.name"> 
-						
-						<span :style="{backgroundColor:item.color,color:'aliceblue'}" class="padding"> 
-							<i  :class="getExecStatusIcon(item.id)"></i>
-							{{item.name}}
-						</span> 
-						<i v-if="editForm.execStatus==item.id" class="el-icon-check"></i> 
-						<i v-else>&nbsp;&nbsp;</i>
-					</el-option>
-				</el-select>   
+				<dict-select class="my-select" v-model="editForm.execStatus" :dict="dicts['testStepTcode']" @change="editSomeFields(editForm,'execStatus',$event)"> 
+				</dict-select>   
 				<el-button style="margin-left:10px;" @click="$emit('next')">下一条</el-button>
 			</el-col> 
 			
@@ -185,7 +175,7 @@
 		
 		<!--新增 XmQuestion xm_question界面-->
 		<el-dialog title="新增缺陷"  :visible.sync="addBugVisible"   width="90%" top="20px"  append-to-body   :close-on-click-modal="false">
-			<xm-question-add   :xm-product="{id:editForm.productId,productName:editForm.productName}" :xm-test-plan-case="editForm" :qtype="qtype" :sel-project=" {id:editForm.projectId,name:editForm.projectName} "  :visible="addBugVisible" @cancel="addBugVisible=false" ></xm-question-add>
+			<xm-question-add   :xm-product="{id:editForm.productId,productName:editForm.productName}" :xm-test-plan-case="editForm"  :sel-project=" {id:editForm.projectId,name:editForm.projectName} "  :visible="addBugVisible" @cancel="addBugVisible=false" ></xm-question-add>
 		</el-dialog>
 	</section>
 </template>
@@ -237,10 +227,10 @@ import  XmQuestionMng from '@/views/xm/core/xmQuestion/XmQuestionMng';//修改�
 					]
 				},
 				editForm: {
-					bugs:'',execUserid:'',caseId:'',ltime:'',ctime:'',execStatus:'',execUsername:'',planId:'',caseName:'',priority:'',remark:'',testStep:''
+					bugs:'',execUserid:'',caseId:'',ltime:'',ctime:'',execStatus:'',execUsername:'',planId:'',caseName:'',priority:'',remark:'',testStep:'',caseType:''
 				},
 				editFormBak: {
-					bugs:'',execUserid:'',caseId:'',ltime:'',ctime:'',execStatus:'',execUsername:'',planId:'',caseName:'',priority:'',remark:'',testStep:''
+					bugs:'',execUserid:'',caseId:'',ltime:'',ctime:'',execStatus:'',execUsername:'',planId:'',caseName:'',priority:'',remark:'',testStep:'',caseType:''
 				},
                 maxTableHeight:300,
 				menuVisible:false,
@@ -367,7 +357,7 @@ import  XmQuestionMng from '@/views/xm/core/xmQuestion/XmQuestionMng';//修改�
 			margin-top: 5px;
             font-size: 16px; 
         } 
-		.sub-title{  
+		.field-label{  
 			margin-top: -10px;
 			 font-size: 14px;
 			 color: #C0C4CC;
