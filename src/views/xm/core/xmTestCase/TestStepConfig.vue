@@ -5,7 +5,7 @@
 				<!-- 扩展字段[{name:'中文名称',id:'编号',value:'值',remark:'备注',type:'支持简单的1-普通文本2-数字，3-日期，8-富文本，9单图文，15-是否'}] -->
 				<el-row>
 						<el-col :span="2">
-							步骤
+							#
 						</el-col>
 						<el-col :span="9">
 							操作
@@ -17,6 +17,7 @@
 							操作
 						</el-col>
 					</el-row>
+					<el-divider></el-divider>
 				<el-row v-for="(item, index) in extInfosList" :key="index">
 					 
 						<el-col :span="2">
@@ -29,12 +30,13 @@
 							<my-input class="padding-right" v-model="item.eresult" clearable placeholder="预期结果"></my-input>
 						</el-col>
 						<el-col :span="4" style="margin-bottom:0px;">
-							<el-button  @click.prevent="removeExtInfosItem(item,index)" icon="el-icon-delete">
-							</el-button><el-button @click="addExtInfosItem(item,index)" icon="el-icon-plus"></el-button> 
+							<el-button  @click.prevent="removeExtInfosItem(item,index)" type="danger" icon="el-icon-delete">
+							</el-button><el-button @click="addExtInfosItem(item,index)" type="primary" icon="el-icon-plus"></el-button> 
 						</el-col> 
 				</el-row>
+				<el-divider v-if="extInfosList.length>0"></el-divider>
 				<el-form-item v-if="!extInfosList || extInfosList.length<=0"> 
-					<el-button @click="addExtInfosFirstItem" icon="el-icon-plus"><slot>新增一行</slot></el-button>  
+					<el-button @click="addExtInfosFirstItem" icon="el-icon-plus" type="primary"><slot>新增步骤</slot></el-button>  
 				</el-form-item>
 			</el-form>  
 		   </el-row>
@@ -105,6 +107,7 @@
 					}
 				}else{
 					this.extInfosList=[]
+					this.addExtInfosFirstItem();
 				}
 			}
 		},//end methods

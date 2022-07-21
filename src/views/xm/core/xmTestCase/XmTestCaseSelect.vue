@@ -37,8 +37,7 @@
                         
                         <el-table-column prop="caseStatus" label="状态" min-width="120" show-overflow-tooltip>
                             <template slot-scope="scope">
-                                <el-tag  v-for="(item,index) in formatDictsWithClass(dicts,'testCaseStatus',scope.row.caseStatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
-                                        
+                                <dict-tag :dict="dicts['testCaseStatus']" v-model="scope.row.caseStatus" effect="dark" :disabled="true"></dict-tag>                                         
                             </template>
                         </el-table-column> 
                         <el-table-column prop="caseRemark" label="备注" min-width="120" show-overflow-tooltip>

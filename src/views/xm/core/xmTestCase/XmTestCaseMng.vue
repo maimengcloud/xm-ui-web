@@ -31,24 +31,20 @@
                         <el-table-column prop="id" label="编号" min-width="120" show-overflow-tooltip  fixed="left"></el-table-column> 
                         <el-table-column prop="caseName" label="标题" min-width="250" show-overflow-tooltip fixed="left">
                             <template slot-scope="scope">
-                                <span> {{scope.row.caseName}} </span>
+                                <span> <el-link  @click="showEdit( scope.row,scope.$index)">{{scope.row.caseName}} </el-link></span>
                                 <span class="tool-bar">
                                     <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" circle  plain></el-button> 
                                 </span>
                             </template>
-                        </el-table-column>    
+                        </el-table-column>  
+                        <el-table-column prop="caseStatus" label="状态" width="100" show-overflow-tooltip>
+                            <template slot-scope="scope"> 
+                                <dict-tag :dict="dicts['testCaseStatus']" v-model="scope.row.caseStatus" effect="dark" @change="editSomeFields(scope.row,'caseStatus',$event)"></dict-tag> 
+                            </template>
+                        </el-table-column>      
                         <el-table-column prop="verNum" label="版本号" min-width="120" show-overflow-tooltip>
                             <template slot-scope="scope">
                                 <span> {{scope.row.verNum}} </span>
-                            </template>
-                        </el-table-column>   
-                        <el-table-column prop="caseStatus" label="状态" width="100" show-overflow-tooltip>
-                            <template slot-scope="scope"> 
-                                <el-tag class="cell-text" v-for="(item,index) in formatDictsWithClass(dicts,'testCaseStatus',scope.row.caseStatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
-                                 
-                                <el-select class="cell-bar" v-model="scope.row.caseStatus" @change="editSomeFields(scope.row,'caseStatus',$event)">
-                                    <el-option v-for="(item,index) in dicts['testCaseStatus']" :key="index" :value="item.id" :label="item.name"></el-option>
-                                </el-select>
                             </template>
                         </el-table-column>      
                         <el-table-column prop="cusername" label="创建人姓名" min-width="120" show-overflow-tooltip>
@@ -65,12 +61,12 @@
                 
 		<el-row>
 			<!--编辑 XmTestCase 测试用例界面-->
-			<el-dialog title="编辑测试用例" :visible.sync="editFormVisible"  width="60%" top="20px"  append-to-body   :close-on-click-modal="false">
+			<el-dialog title="编辑测试用例" :visible.sync="editFormVisible"  width="90%" top="20px"  append-to-body   :close-on-click-modal="false">
 			    <xm-test-case-edit op-type="edit" :xm-test-case="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @edit-fields="onEditFields"></xm-test-case-edit>
 			</el-dialog>
 
 			<!--新增 XmTestCase 测试用例界面-->
-			<el-dialog title="新增测试用例" :visible.sync="addFormVisible"  width="60%" top="20px"  append-to-body  :close-on-click-modal="false">
+			<el-dialog title="新增测试用例" :visible.sync="addFormVisible"  width="90%" top="20px"  append-to-body  :close-on-click-modal="false">
 			    <xm-test-case-edit op-type="add" :xm-test-casedb="xmTestCasedb" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-test-case-edit>
 			</el-dialog>
 	    </el-row>

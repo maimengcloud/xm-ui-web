@@ -4,41 +4,78 @@
 	    </el-row>
 		<el-row>
 		<!--编辑界面 XmTestCase 测试用例--> 
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef" label-position="left"> 
-				<el-form-item label="标题" prop="caseName">
-					<el-input v-model="editForm.caseName" placeholder="标题" :maxlength="255" @change="editSomeFields(editForm,'caseName',$event)"></el-input>
-				</el-form-item>  
+			<el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-position="left"> 
+				<el-row :gutter="20">
+					<el-col :span="18" class="border">
+
+						<el-form-item label="" prop="caseName" label-width="0px">  
+							<el-row>
+							<span><span v-if="opType=='edit'" class="label-font-color">用例编号:</span>&nbsp;&nbsp;{{editForm.caseId}} &nbsp;&nbsp;</span><span class="label-font-color"><i class="el-icon-s-operation"></i>模块：</span><span>{{editForm.funcName}} <el-button type="text" @click="funcVisible=true">选择模块</el-button></span>
+							</el-row>
+							<el-row>
+								<my-input v-model="editForm.caseName" placeholder="测试用例 标题"  @change="editSomeFields(editForm,'caseName',$event)"></my-input> 
+							</el-row>
+							<el-row class="padding">
+								<el-col :span="8" class="field-box"> 
+									<el-avatar class="avater"> {{editForm.execUsername}} </el-avatar> 
+									<div class="msg">
+										<span class="field-value">{{editForm.execUsername}} </span>
+										<span class="field-label">执行人</span>
+									</div>   
+								</el-col> 
+								<el-col :span="8">  
+									<dict-field label="优先级" :dict="dicts['priority']" v-model="editForm.cpriority"  @change="editSomeFields(editForm,'cpriority',$event)"></dict-field>
+								</el-col> 
+								
+								<el-col :span="8">  
+									<dict-field label="状态" :dict="dicts['testCaseStatus']" v-model="editForm.caseStatus"  @change="editSomeFields(editForm,'caseStatus',$event)"></dict-field> 
+								</el-col> 
+							</el-row>
+						</el-form-item>    
+						
+						<el-form-item label="" prop="preRmark" label-width="0px">
+							<el-row class="label-font-color padding-top">
+								前置条件
+							</el-row> 
+							<el-row>
+								<el-input type="textarea" :rows="4" v-model="editForm.preRemark" placeholder="请输入前置条件"  @change="editSomeFields(editForm,'preRmark',$event)"></el-input>
+							</el-row> 
+						</el-form-item>   
+						<el-form-item label="" prop="testStep" label-width="0px">
+							<el-row class="label-font-color padding-top">
+								测试步骤
+							</el-row> 
+							<el-row>
+								<test-step-config v-model="editForm.testStep"></test-step-config>
+							</el-row>
+							<el-row v-if="opType!=='add' && editForm.testStep!=editFormBak.testStep">
+								<el-button type="primary" @click="editSomeFields(editForm,'testStep',editForm.testStep)">保存测试步骤</el-button>
+							</el-row>
+						</el-form-item>     
+						<el-form-item label="" prop="caseRmark" label-width="0px">
+							<el-row class="label-font-color padding-top">
+								用例描述
+							</el-row> 
+							<el-row>
+								<el-input type="textarea" :rows="4" v-model="editForm.caseRmark" placeholder="请输入用例描述"  @change="editSomeFields(editForm,'caseRmark',$event)"></el-input>
+							</el-row> 
+						</el-form-item>  
 				
-				<el-form-item label="版本号" prop="verNum">
-					<el-input v-model="editForm.verNum" placeholder="版本号" :maxlength="50" @change="editSomeFields(editForm,'verNum',$event)"></el-input>
-				</el-form-item>  
-				<el-form-item label="测试步骤" prop="testStep">
-					<el-row>
-					 	<test-step-config v-model="editForm.testStep" @finish="editSomeFields(editForm,'testStep',$event)"></test-step-config>
-					 </el-row>
-					 <el-row v-if="opType!=='add' && editForm.testStep!=editFormBak.testStep">
-						<el-button type="primary" @click="editSomeFields(editForm,'testStep',editForm.testStep)">保存测试步骤</el-button>
-					 </el-row>
-				</el-form-item>    
-				<el-form-item label="关联需求" prop="menuName">
-					 {{editForm.menuName?editForm.menuName:'暂无关联需求'}} <el-button type="text" @click="menuVisible=true">选择需求</el-button>
-				</el-form-item> 
-				<el-form-item label="关联模块" prop="funcName">
-					{{editForm.funcName?editForm.funcName:'暂无关联模块'}} <el-button type="text" @click="funcVisible=true">选择模块</el-button>
-				</el-form-item>  
-				<el-form-item label="状态" prop="caseStatus" v-if="opType!='add'">
- 					    <el-select v-model="editForm.caseStatus" @change="editSomeFields(editForm,'caseStatus',$event)">
-							<el-option v-for="(item,index) in dicts['testCaseStatus']" :key="index" :value="item.id" :label="item.name"></el-option>
-						</el-select>
-				</el-form-item>  
-				<el-form-item label="用例类型" prop="caseType">
- 					    <el-select v-model="editForm.caseType" @change="editSomeFields(editForm,'caseType',$event)">
-							<el-option v-for="(item,index) in dicts['caseType']" :key="index" :value="item.id" :label="item.name"></el-option>
-						</el-select>
-				</el-form-item>  
-				<el-form-item label="负责人" prop="cusername">
-					<el-input v-model="editForm.cusername" placeholder="负责人" :maxlength="255" @change="editSomeFields(editForm,'cusername',$event)"></el-input>
-				</el-form-item>  
+					</el-col>
+					<el-col  :span="6" class="border">
+						<el-form-item label="关联需求" prop="menuName">
+							{{editForm.menuName?editForm.menuName:'暂无关联需求'}} <el-button type="text" @click="menuVisible=true">选择需求</el-button>
+						</el-form-item> 
+						
+						<el-form-item label="版本号" prop="verNum">
+							<el-input v-model="editForm.verNum" placeholder="版本号" :maxlength="50" @change="editSomeFields(editForm,'verNum',$event)"></el-input>
+						</el-form-item>  
+						<el-form-item label="用例类型" prop="caseType">
+							<dict-select :dict="dicts['caseType']" v-model="editForm.caseType" @change="editSomeFields(editForm,'caseType',$event)">
+							</dict-select> 
+						</el-form-item> 
+					</el-col>
+				</el-row>     
 			</el-form>
 		</el-row>
 
@@ -65,11 +102,12 @@
 	import XmMenuSelect from '../xmMenu/XmMenuSelect' 
 	import XmFuncSelect from '../xmFunc/XmFuncSelect'
 import TestStepConfig from './TestStepConfig.vue';
+
+	import MyInput from '@/components/MDinput/index';
 	export default {
 	    name:'xmTestCaseEdit',
 	    components: {
-			XmMenuSelect,XmFuncSelect,
-TestStepConfig,
+			XmMenuSelect,XmFuncSelect,MyInput,TestStepConfig,
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
@@ -96,15 +134,16 @@ TestStepConfig,
  				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				dicts:{caseType:[]},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				editFormRules: {
-					id: [
-						//{ required: true, message: '主键不能为空', trigger: 'blur' }
+					caseName: [
+						{ required: true, message: '测试用例名称不能为空', trigger: 'change' },
+						{ max:250,min:2,  message: '测试用例名称长度为2-250个字符之间', trigger: 'change' }
 					]
 				},
 				editFormBak: {
-					id:'',caseName:'',caseRemark:'',testStep:'',expectResult:'',menuId:'',menuName:'',ctime:'',ltime:'',luserid:'',lusername:'',cbranchId:'',moduleId:'',moduleName:'',caseStatus:'',cuserid:'',cusername:'',productId:'',verNum:'',casedbId:'',casedbName:''
+					id:'',caseName:'',caseRemark:'',testStep:'',expectResult:'',menuId:'',menuName:'',ctime:'',ltime:'',luserid:'',lusername:'',cbranchId:'',moduleId:'',moduleName:'',caseStatus:'0',cuserid:'',cusername:'',productId:'',verNum:'',casedbId:'',casedbName:'',cpriority:'0',funcId:'',funcName:'',preRemark:'',caseType:'0'
 				},
 				editForm: {
-					id:'',caseName:'',caseRemark:'',testStep:'',expectResult:'',menuId:'',menuName:'',ctime:'',ltime:'',luserid:'',lusername:'',cbranchId:'',moduleId:'',moduleName:'',caseStatus:'',cuserid:'',cusername:'',productId:'',verNum:'',casedbId:'',casedbName:''
+					id:'',caseName:'',caseRemark:'',testStep:'',expectResult:'',menuId:'',menuName:'',ctime:'',ltime:'',luserid:'',lusername:'',cbranchId:'',moduleId:'',moduleName:'',caseStatus:'0',cuserid:'',cusername:'',productId:'',verNum:'1.0',casedbId:'',casedbName:'',cpriority:'0',funcId:'',funcName:'',preRemark:'',caseType:'0'
 				},
                 maxTableHeight:300,
 				menuVisible:false,
@@ -163,6 +202,7 @@ TestStepConfig,
 						this.editForm.casedbId=this.xmTestCasedb.id
 						this.editForm.casedbName=this.xmTestCasedb.name
 					}
+					this.editForm.id=null
 					
                 }
                 this.editFormBak={...this.editForm}
