@@ -37,7 +37,7 @@
 									用例状态
 								</el-row>
 								<el-row>
-                                 	 <dict-tag class="cell-text" :dict="dicts['testCaseStatus']" v-model="editForm.caseStatus"></dict-tag>
+                                 	 <dict-tag :dict="dicts['testCaseStatus']" v-model="editForm.caseStatus"></dict-tag>
 								</el-row>
 							</el-col>
 							<el-col :span="6">
@@ -64,8 +64,7 @@
 									紧急程度
 								</el-row>
 								<el-row>
-									<el-tag  v-for="(item,index) in formatDictsWithClass(dicts,'priority',editForm.priority)" :key="index" :type="item.className">{{item.name}}</el-tag>
-
+									 <dict-tag :dict="dicts['priority']" v-model="editForm.priority"></dict-tag> 
 								</el-row>
 							</el-col>
 						</el-row> 
@@ -136,7 +135,7 @@
 				<dict-field label="执行结果" :dict="dicts['testStepTcode']" v-model="editForm.execStatus" :get-icon="getExecStatusIcon" @change="editSomeFields(editForm,'execStatus',$event)">
 					<span slot="label"></span>
 				</dict-field>   
-				<el-button @click="$emit('next')">下一条</el-button>
+				<el-button @click="$emit('next')" type="primary">下一条</el-button>
 			</el-col> 
 		</el-row>
 		<el-row v-if="opType=='add'">

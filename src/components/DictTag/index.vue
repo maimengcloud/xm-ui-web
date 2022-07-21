@@ -1,5 +1,5 @@
 <template>    
-    <el-tag v-if="currentItem"  :type="currentItem.className" :closable="closable">{{currentItem.name}}</el-tag>
+    <el-tag v-if="currentItem"  :type="currentItem.className" :closable="closable" :effect="effect">{{currentItem.name}}</el-tag>
   </template>
   
   <script>  
@@ -33,6 +33,10 @@
         closable:{
             type:Boolean,
             default:false,
+        },
+        effect:{
+            type:String,
+            default:'light'//dark / light / plain	
         },
       dict:{
         type:Array,
