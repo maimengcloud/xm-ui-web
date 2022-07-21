@@ -43,8 +43,9 @@
 							</slot>
 						</el-col>  
 				</el-row> 
-				<el-divider></el-divider>
 				</div>
+				
+				<el-divider v-if="extInfosList.length>0"></el-divider>
 			</el-form>  
 		   </el-row>
 	</section>
