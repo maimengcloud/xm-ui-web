@@ -4,7 +4,7 @@
             <el-option :style="styleObj" v-for="(item,index) in dict" :key="index" :value="item.id" :label="item.name"> 
              <slot :item="item" :dict="dict"> 
                     <span :style="{backgroundColor:getMyColor(item),color:'aliceblue'}" class="padding">  
-                            <i  v-if="item.icon||getIcon" :class="getMyIcon(item)" ></i> 
+                            <i  :class="getMyIcon(item)" ></i> 
                         {{item.name}}
                     </span>  
                     <i v-if="myVal==item.id" class="el-icon-check"></i> 
@@ -68,10 +68,10 @@
              this.myVal=this.value
             
         },
+        
         getMyColor(item){
-            if(!item){
-                return "";
-            }
+          if(item){
+           
             if(this.getColor){
                 return this.getColor(item.id)
             }
@@ -79,11 +79,17 @@
                 return item.color
             }
             return ""
+            
+          }else{
+            if(this.getColor){
+                return this.getColor(this.myVal)
+            }else{
+              return ""
+            }
+          }
         },
         getMyIcon(item){
-            if(!item){
-                return "";
-            }
+          if(item){ 
             if(this.getIcon){
                 return this.getIcon(item.id)
             }
@@ -91,6 +97,13 @@
                 return item.icon
             }
             return "";
+          }else{
+            if(this.getIcon){
+                return this.getIcon(this.myVal)
+            }else{
+              return ""
+            }
+          }
         },
         onChange(data){ 
             this.$emit('change',data)

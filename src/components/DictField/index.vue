@@ -12,7 +12,7 @@
                 </slot>
 							</div>   
 							<slot v-if="disabled!==true" class="my-select" name="select" :dict="dict" :value="myVal">
-                <dict-select  :dict="dict" v-model="myVal" @change="onChange"></dict-select>
+                <dict-select  :dict="dict" v-model="myVal" @change="onChange" :get-icon="getIcon" :get-color="getColor"></dict-select>
               </slot>
 						</div> 
   </template>
@@ -86,9 +86,8 @@
           }
         },
         getMyColor(item){
-          if(!item){
-            return ""
-          }
+          if(item){
+           
             if(this.getColor){
                 return this.getColor(item.id)
             }
@@ -96,11 +95,17 @@
                 return item.color
             }
             return ""
+            
+          }else{
+            if(this.getColor){
+                return this.getColor(this.myVal)
+            }else{
+              return ""
+            }
+          }
         },
         getMyIcon(item){
-          if(!item){
-            return ""
-          }
+          if(item){ 
             if(this.getIcon){
                 return this.getIcon(item.id)
             }
@@ -108,6 +113,13 @@
                 return item.icon
             }
             return "";
+          }else{
+            if(this.getIcon){
+                return this.getIcon(this.myVal)
+            }else{
+              return ""
+            }
+          }
         },
         initData(){
              this.myVal=this.value
