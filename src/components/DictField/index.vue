@@ -1,13 +1,18 @@
 <template>    
     
-						<div class="field-box"> 
-							<el-avatar class="avater" icon="el-icon-top" :style="{backgroundColor:getMyColor(currentItem)}"></el-avatar> 
-							<div class="msg">
+						<div class="field-box">  
+							<el-avatar class="avater" :icon="getMyIcon(currentItem)" :style="{backgroundColor:getMyColor(currentItem)}">{{currentItem && currentItem.icon?'':currentItem.name}}</el-avatar> 
+							
+              <div class="field-info">
+                <slot name="field-info" :dict="dict" :item="currentItem">
 								<span class="field-value">{{currentItem.name}} </span>
-								<span class="field-label">{{label}}</span>
+                <slot name="label" :dict="dict" :item="currentItem">
+								  <span class="field-label">{{label}}</span>
+                </slot>
+                </slot>
 							</div>   
-							<slot name="select" :dict="dict" :value="myVal">
-                <dict-select :dict="dict" v-model="myVal" @change="onChange"></dict-select>
+							<slot class="my-select" name="select" :dict="dict" :value="myVal">
+                <dict-select  :dict="dict" v-model="myVal" @change="onChange"></dict-select>
               </slot>
 						</div> 
   </template>
@@ -19,7 +24,7 @@
     computed: {
        currentItem(){
         if(this.dict){
-           return this.dict.find(k=>k.id==this.myVal)
+           return this.dict.find(k=>k.id==this.myVal) 
         }else{
             return null;
         }
@@ -109,28 +114,31 @@
 
 .field-box {  
     display: flex;
+    margin-right:5px;
     align-items: center;
-	cursor: pointer;
+	  cursor: pointer;
     .avater { 
-		background-color:#FF9F73;
+		  background-color:#FF9F73;
     }
 
-    .msg {
+    .field-info {
         margin-left: 10px;
         display: flex;
         flex-direction: column;
-        .title { 
-			margin-top: 5px;
+        .field-value { 
+			      margin-top: 5px;
             font-size: 16px; 
         } 
-		.field-label{  
-			margin-top: -10px;
-			 font-size: 14px;
-			 color: #C0C4CC;
-		}
+      .field-label{  
+        margin-top: -10px;
+        font-size: 14px;
+        color: #C0C4CC;
+      }
         
     }
 	.my-select{
+    margin-left: 5px;
+    max-width: 120px;
 		visibility:hidden;  
 	}
 	.btn{
@@ -143,6 +151,8 @@
 		visibility: visible !important;
 }
  .field-box:hover .my-select{
+  
+    margin-left: 5px;
 		visibility: visible !important;
 } 
 </style>

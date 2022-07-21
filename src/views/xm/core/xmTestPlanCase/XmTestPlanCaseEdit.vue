@@ -23,14 +23,8 @@
 							<dict-field label="优先级" :dict="dicts['priority']" v-model="editForm.priority"></dict-field>
 						</el-col> 
 						
-						<el-col :span="8" class="field-box">  
-							<div>    
-  								<el-button size="medium " :type="getType(editForm.execStatus)" :icon="getExecStatusIcon(editForm.execStatus)" circle></el-button>
-							</div>
-							<div class="msg">
-								<span class="field-value">{{formatDicts(dicts,'testStepTcode',editForm.execStatus)}} </span>
-								<span class="field-label">执行结果</span>
-							</div>   
+						<el-col :span="8">  
+							<dict-field label="执行结果" :dict="dicts['testStepTcode']" v-model="editForm.execStatus" :get-icon="getExecStatusIcon"></dict-field> 
 						</el-col> 
 					</el-row>
  				</el-form-item>  
@@ -138,18 +132,12 @@
 			</el-form> 
 		</el-row>
 		<el-row>  
-			<el-col :offset="16" :span="8" class="field-box">  
-				<div>    
-					<el-button size="medium " :type="getType(editForm.execStatus)" :icon="getExecStatusIcon(editForm.execStatus)" circle></el-button>
-				</div>
-				<div class="msg">
-					<span class="field-value">{{formatDicts(dicts,'testStepTcode',editForm.execStatus)}} </span> 
-				</div> 
-				<dict-select class="my-select" v-model="editForm.execStatus" :dict="dicts['testStepTcode']" @change="editSomeFields(editForm,'execStatus',$event)"> 
-				</dict-select>   
-				<el-button style="margin-left:10px;" @click="$emit('next')">下一条</el-button>
+			<el-col :offset="12" :span="12" style="display: flex;">  
+				<dict-field label="执行结果" :dict="dicts['testStepTcode']" v-model="editForm.execStatus" :get-icon="getExecStatusIcon" @change="editSomeFields(editForm,'execStatus',$event)">
+					<span slot="label"></span>
+				</dict-field>   
+				<el-button @click="$emit('next')">下一条</el-button>
 			</el-col> 
-			
 		</el-row>
 		<el-row v-if="opType=='add'">
 		    <el-button @click.native="handleCancel">取消</el-button>
@@ -328,43 +316,5 @@ import  XmQuestionMng from '@/views/xm/core/xmQuestion/XmQuestionMng';//修改�
 	font-size: 28px !important; 
 }
 
-
-.field-box {  
-    display: flex;
-    align-items: center;
-	cursor: pointer;
-    .avater { 
-		background-color:#FF9F73;
-    }
-
-    .msg {
-        margin-left: 10px;
-        display: flex;
-        flex-direction: column;
-        .title { 
-			margin-top: 5px;
-            font-size: 16px; 
-        } 
-		.field-label{  
-			margin-top: -10px;
-			 font-size: 14px;
-			 color: #C0C4CC;
-		}
-        
-    }
-	.my-select{
-		visibility:hidden;  
-	}
-	.btn{
-		margin-top: 0px;
-		visibility:hidden; 
-	} 
-	 
-}
- .field-box:hover .btn{
-		visibility: visible !important;
-}
- .field-box:hover .my-select{
-		visibility: visible !important;
-} 
+ 
 </style>
