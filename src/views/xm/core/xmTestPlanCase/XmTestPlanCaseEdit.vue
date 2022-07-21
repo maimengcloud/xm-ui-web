@@ -12,20 +12,20 @@
 					<span class="title-font-size">{{editForm.caseName}}</span> 
 					</el-row>
 					<el-row class="padding">
-						<el-col :span="8" class="avater-box"> 
+						<el-col :span="8" class="field-box"> 
 							<el-avatar class="avater"> {{editForm.execUsername}} </el-avatar> 
 							<div class="msg">
 								<span class="title">{{editForm.execUsername}} </span>
 								<span class="sub-title">执行人</span>
 							</div>   
 						</el-col> 
-						<el-col :span="8" class="avater-box"> 
+						<el-col :span="8" class="field-box"> 
 							<el-avatar class="avater" icon="el-icon-top" :style="{backgroundColor:getColor(editForm.priority)}"></el-avatar> 
 							<div class="msg">
 								<span class="title">{{formatDicts(dicts,'priority',editForm.priority)}} </span>
 								<span class="sub-title">优先级</span>
 							</div>   
-							<el-select class="select" v-model="editForm.priority" @change="editSomeFields(editForm,'priority',$event)" clearable>
+							<el-select class="my-select" v-model="editForm.priority" @change="editSomeFields(editForm,'priority',$event)" clearable>
 								<el-option style="margin-top:5px;" v-for="(item,index) in dicts['priority']" :key="index" :value="item.id" :label="item.name">
 									<span :style="{backgroundColor:item.color,color:'aliceblue'}" class="padding"> 
 										<i  v-if="item.icon" :class="item.icon"></i>
@@ -35,7 +35,7 @@
 							</el-select>
 						</el-col> 
 						
-						<el-col :span="8" class="avater-box">  
+						<el-col :span="8" class="field-box">  
 							<div>    
   								<el-button size="medium " :type="getType(editForm.execStatus)" :icon="getExecStatusIcon(editForm.execStatus)" circle></el-button>
 							</div>
@@ -151,19 +151,22 @@
 			</el-form> 
 		</el-row>
 		<el-row>  
-			<el-col :offset="16" :span="8" class="avater-box">  
+			<el-col :offset="16" :span="8" class="field-box">  
 				<div>    
 					<el-button size="medium " :type="getType(editForm.execStatus)" :icon="getExecStatusIcon(editForm.execStatus)" circle></el-button>
 				</div>
 				<div class="msg">
 					<span class="title">{{formatDicts(dicts,'testStepTcode',editForm.execStatus)}} </span> 
 				</div> 
-				<el-select class="select" v-model="editForm.execStatus" @change="editSomeFields(editForm,'execStatus',$event)">
-					<el-option style="margin-top:5px;" v-for="(item,index) in dicts['testStepTcode']" :key="index" :value="item.id" :label="item.name">
+				<el-select class="my-select" v-model="editForm.execStatus" @change="editSomeFields(editForm,'execStatus',$event)">
+					<el-option style="margin-top:5px;" v-for="(item,index) in dicts['testStepTcode']" :key="index" :value="item.id" :label="item.name"> 
+						
 						<span :style="{backgroundColor:item.color,color:'aliceblue'}" class="padding"> 
 							<i  :class="getExecStatusIcon(item.id)"></i>
 							{{item.name}}
 						</span> 
+						<i v-if="editForm.execStatus==item.id" class="el-icon-check"></i> 
+						<i v-else>&nbsp;&nbsp;</i>
 					</el-option>
 				</el-select>   
 				<el-button style="margin-left:10px;" @click="$emit('next')">下一条</el-button>
@@ -342,13 +345,13 @@ import  XmQuestionMng from '@/views/xm/core/xmQuestion/XmQuestionMng';//修改�
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .my-input input {
 	font-size: 28px !important; 
 }
 
 
-.avater-box {  
+.field-box {  
     display: flex;
     align-items: center;
 	cursor: pointer;
@@ -371,18 +374,19 @@ import  XmQuestionMng from '@/views/xm/core/xmQuestion/XmQuestionMng';//修改�
 		}
         
     }
-	.select{
-		visibility:hidden; 
+	.my-select{
+		visibility:hidden;  
 	}
 	.btn{
 		margin-top: 0px;
 		visibility:hidden; 
 	} 
+	 
 }
- .avater-box:hover .btn{
+ .field-box:hover .btn{
 		visibility: visible !important;
 }
- .avater-box:hover .select{
+ .field-box:hover .my-select{
 		visibility: visible !important;
-}
+} 
 </style>
