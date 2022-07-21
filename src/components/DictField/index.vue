@@ -1,11 +1,11 @@
 <template>    
     
 						<div class="field-box">  
-							<el-avatar class="avater" :icon="getMyIcon(currentItem)" :style="{backgroundColor:getMyColor(currentItem)}">{{currentItem && currentItem.icon?'':currentItem.name}}</el-avatar> 
+							<el-avatar class="avater" :icon="getMyIcon(currentItem)" :style="{backgroundColor:getMyColor(currentItem)}">{{getMyAvaterInfo(currentItem)}}</el-avatar> 
 							
               <div class="field-info">
                 <slot name="field-info" :dict="dict" :item="currentItem">
-								<span class="field-value">{{currentItem.name}} </span>
+								<span class="field-value">{{currentItem?currentItem.name:''}} </span>
                 <slot name="label" :dict="dict" :item="currentItem">
 								  <span class="field-label">{{label}}</span>
                 </slot>
@@ -73,8 +73,17 @@
       } ,
     },
     methods: { 
-        
+        getMyAvaterInfo(item){
+          if(!item){
+            return ""
+          }else{
+            return item.icon?"":item.name
+          }
+        },
         getMyColor(item){
+          if(!item){
+            return ""
+          }
             if(this.getColor){
                 return this.getColor(item.id)
             }
@@ -84,6 +93,9 @@
             return ""
         },
         getMyIcon(item){
+          if(!item){
+            return ""
+          }
             if(this.getIcon){
                 return this.getIcon(item.id)
             }

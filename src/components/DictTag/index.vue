@@ -1,11 +1,19 @@
 <template>    
-    <el-tag v-if="currentItem"  :type="currentItem.className" :closable="closable" :effect="effect">{{currentItem.name}}</el-tag>
+    <div class="item-box">
+        <div class="item-info">
+            <el-tag v-if="currentItem"  :type="currentItem.className" :closable="closable" :effect="effect">{{currentItem.name}}</el-tag>
+        </div>
+        <div class="item-select">
+            <dict-select :dict="dict" v-model="myVal" @change="onChange"></dict-select>
+        </div>
+    </div>
+    
   </template>
   
-  <script>  
+  <script> 
   export default {
     name: 'dict-tag',
-    components: {   },
+    components: {  },
     computed: {
        currentItem(){
         if(this.dict){
@@ -45,9 +53,14 @@
       value: {
         
       },   
+      
+        
     },
     methods: { 
         
+        onChange(data){  
+          this.$emit('change',data)
+        },
         initData(){
              this.myVal=this.value
             
@@ -60,5 +73,22 @@
   </script>
   
   <style rel="stylesheet/scss" lang="scss" scoped> 
+    .item-box{
+        display: flex;
+        cursor: pointer;
+        .item-info{
+            display:inherit; 
+            height: 60px;
+        }
+        .item-select{
+            display: none;
+        }  
+    }
+    .item-box:hover .item-info{
+       display: none;
+    }
+    .item-box:hover .item-select{
+        display:inherit;
+    }
   </style>
   

@@ -69,6 +69,9 @@
             
         },
         getMyColor(item){
+            if(!item){
+                return "";
+            }
             if(this.getColor){
                 return this.getColor(item.id)
             }
@@ -78,6 +81,9 @@
             return ""
         },
         getMyIcon(item){
+            if(!item){
+                return "";
+            }
             if(this.getIcon){
                 return this.getIcon(item.id)
             }
