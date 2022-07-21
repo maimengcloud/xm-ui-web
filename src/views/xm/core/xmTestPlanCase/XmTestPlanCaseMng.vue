@@ -70,7 +70,7 @@
 		<el-row>
 			<!--编辑 XmTestPlanCase 测试计划与用例关系表界面-->
 			<el-dialog title="测试执行" :visible.sync="editFormVisible"    width="90%" top="20px"  append-to-body   :close-on-click-modal="false">
-			    <xm-test-plan-case-edit op-type="edit" :xm-test-plan-case="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @edit-fields="onEditFields"></xm-test-plan-case-edit>
+			    <xm-test-plan-case-edit op-type="edit" :xm-test-plan-case="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @edit-fields="onEditFields" @next="nextEdit"></xm-test-plan-case-edit>
 			</el-dialog>
 
 			<!--新增 XmTestPlanCase 测试计划与用例关系表界面-->
@@ -330,18 +330,18 @@ export default {
         },
         onEditFields(row){
             Object.assign(this.editForm,row)
-            this.editFormBak={...this.editForm} 
-            if(row.execStatus && row.next){
-                var index=this.xmTestPlanCases.findIndex(k=>k.caseId==this.editForm.caseId) 
-                if(index==this.xmTestPlanCases.length-1){
-                    this.editFormVisible=false;
-                    this.$notify({position:'bottom-left',showClose:true,message:"已是最后一条数据",type:'error'})
-                    return;
-                }
-                this.editForm=this.xmTestPlanCases[index+1]
-                this.$refs.xmTestPlanCaseTable.setCurrentRow(this.editForm)
-                this.editFormBak={...this.editForm}
+            this.editFormBak={...this.editForm}  
+        },
+        nextEdit(){  
+            var index=this.xmTestPlanCases.findIndex(k=>k.caseId==this.editForm.caseId) 
+            if(index==this.xmTestPlanCases.length-1){
+                this.editFormVisible=false;
+                this.$notify({position:'bottom-left',showClose:true,message:"已是最后一条数据",type:'error'})
+                return;
             }
+            this.editForm=this.xmTestPlanCases[index+1]
+            this.$refs.xmTestPlanCaseTable.setCurrentRow(this.editForm)
+            this.editFormBak={...this.editForm} 
         }
     },//end methods
     mounted() {

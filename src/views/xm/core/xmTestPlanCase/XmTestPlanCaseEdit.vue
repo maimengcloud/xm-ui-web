@@ -150,11 +150,8 @@
 				</el-tabs>  
 			</el-form> 
 		</el-row>
-		<el-row> 
-			<el-col :span="8">
-				<el-checkbox v-model="next">继续下一条执行用例</el-checkbox>
-			</el-col>
-			<el-col :span="8" class="avater-box">  
+		<el-row>  
+			<el-col :offset="16" :span="8" class="avater-box">  
 				<div>    
 					<el-button size="medium " :type="getType(editForm.execStatus)" :icon="getExecStatusIcon(editForm.execStatus)" circle></el-button>
 				</div>
@@ -162,13 +159,14 @@
 					<span class="title">{{formatDicts(dicts,'testStepTcode',editForm.execStatus)}} </span> 
 				</div> 
 				<el-select class="select" v-model="editForm.execStatus" @change="editSomeFields(editForm,'execStatus',$event)">
-				<el-option style="margin-top:5px;" v-for="(item,index) in dicts['testStepTcode']" :key="index" :value="item.id" :label="item.name">
-					<span :style="{backgroundColor:item.color,color:'aliceblue'}" class="padding"> 
-						<i  :class="getExecStatusIcon(item.id)"></i>
-						{{item.name}}
-					</span> 
-				</el-option>
-			</el-select>   
+					<el-option style="margin-top:5px;" v-for="(item,index) in dicts['testStepTcode']" :key="index" :value="item.id" :label="item.name">
+						<span :style="{backgroundColor:item.color,color:'aliceblue'}" class="padding"> 
+							<i  :class="getExecStatusIcon(item.id)"></i>
+							{{item.name}}
+						</span> 
+					</el-option>
+				</el-select>   
+				<el-button style="margin-left:10px;" @click="$emit('next')">下一条</el-button>
 			</el-col> 
 			
 		</el-row>
