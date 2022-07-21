@@ -27,6 +27,7 @@ import DateRange from '@/components/dateRange/index'
 import DictSelect from '@/components/DictSelect/index'
 import DictTag from '@/components/DictTag/index'
 import DictField from '@/components/DictField/index'
+import MyInput from '@/components/MDinput/index'
 
 Vue.prototype.$echarts = echarts
 Vue.use(Print); //注册
@@ -34,6 +35,7 @@ Vue.component('date-range',DateRange)
 Vue.component('dict-select',DictSelect)
 Vue.component('dict-tag',DictTag)
 Vue.component('dict-field',DictField)
+Vue.component('my-input',MyInput)
 Vue.use(Element, {
   size: 'small', // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)
