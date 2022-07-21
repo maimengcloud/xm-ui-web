@@ -400,8 +400,7 @@ import xmCost from "./XmProjectCost";
 import xmBudget from "./XmProjectBudgetCost";
 import xmContract from "../xmContract/XmContractMng";
 import xmEnvList from "../xmEnvList/XmEnvListMng";
-import xmMenuMng from "../xmMenu/XmMenuBox"; 
-import xmTestCaseExecMng from "../xmTestCaseExec/XmTestCaseExecMng";
+import xmMenuMng from "../xmMenu/XmMenuBox";  
 import XmIterationForLinkComplex from "../xmIteration/XmIterationForLinkComplex.vue"; 
 import XmProjectOverviewComplex from "./XmProjectOverviewComplex.vue";
 import XmProductForLinkComplex from "../xmProduct/XmProductForLinkComplex.vue";
@@ -834,8 +833,7 @@ export default {
     xmBudget,
     xmContract,
     xmEnvList,
-    xmMenuMng, 
-    xmTestCaseExecMng,
+    xmMenuMng,  
     xmGroupSelect,
     XmIterationForLinkComplex,
     XmProjectOverviewComplex,

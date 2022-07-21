@@ -489,10 +489,7 @@
 				this.load.list = true;
 				if(this.filters.selProject){
 					params.projectId = this.filters.selProject.id;
-				}
-				if(this.xmTestCaseExec){
-					params.caseExecId=this.xmTestCaseExec.id
-				}
+				} 
 				if(this.xmTestCase){
 					params.caseId=this.xmTestCase.id
 				}

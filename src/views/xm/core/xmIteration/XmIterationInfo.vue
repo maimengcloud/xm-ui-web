@@ -414,8 +414,7 @@ import xmContract from "../xmContract/XmContractMng";
 import xmEnvList from "../xmEnvList/XmEnvListMng";
 import xmMenuMng from "../xmMenu/XmMenuBox";
 import xmMenuWithPlan from "../xmMenu/XmMenuWithPlan";
-import xmProjectStateMng from "../xmProjectState/XmProjectStateMng";
-import xmTestCaseExecMng from "../xmTestCaseExec/XmTestCaseExecMng";
+import xmProjectStateMng from "../xmProjectState/XmProjectStateMng"; 
 import XmIterationForProjectComplex from "./XmIterationForLinkComplex.vue";
 import XmIterationOverviewComplex from "../xmIteration/XmIterationOverviewComplex.vue";
 import XmProductForProjectComplex from "../xmProduct/XmProductForLinkComplex.vue";
@@ -797,8 +796,7 @@ export default {
     xmEnvList,
     xmMenuMng,
     xmMenuWithPlan,
-    xmProjectStateMng,
-    xmTestCaseExecMng,
+    xmProjectStateMng, 
     xmGroupSelect,
     XmIterationForProjectComplex,
     XmIterationOverviewComplex,

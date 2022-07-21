@@ -164,7 +164,7 @@ import TestStepResult from './TestStepResult.vue';
 	import MyInput from '@/components/MDinput/index';
 	import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 import  XmQuestionMng from '@/views/xm/core/xmQuestion/XmQuestionMng';//修改界面
-		import  XmQuestionAdd from '../xmQuestion/XmQuestionAdd';//新增界面
+		import  XmQuestionAdd from '../xmQuestion/XmQuestionEdit';//新增界面
 
 	export default {
 	    name:'xmTestPlanCaseEdit',
