@@ -1,7 +1,5 @@
 <template>
-	<section>
-	    <el-row>
-	    </el-row>
+	<section> 
 		<el-row>
 		<!--编辑界面 XmTestCase 测试用例--> 
 			<el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-position="left"> 
@@ -10,26 +8,30 @@
 
 						<el-form-item label="" prop="caseName" label-width="0px">  
 							<el-row>
-							<span><span v-if="opType=='edit'" class="label-font-color">用例编号:</span>&nbsp;&nbsp;{{editForm.caseId}} &nbsp;&nbsp;</span><span class="label-font-color"><i class="el-icon-s-operation"></i>模块：</span><span>{{editForm.funcName}} <el-button type="text" @click="funcVisible=true">选择模块</el-button></span>
+							<span><span v-if="opType=='edit'" class="label-font-color">用例编号:</span>&nbsp;&nbsp;{{editForm.id}} &nbsp;&nbsp;</span><span class="label-font-color"><i class="el-icon-s-operation"></i>模块：</span><span>{{editForm.funcName}} <el-button type="text" @click="funcVisible=true">选择模块</el-button></span>
 							</el-row>
 							<el-row>
 								<my-input v-model="editForm.caseName" placeholder="测试用例 标题"  @change="editSomeFields(editForm,'caseName',$event)"></my-input> 
 							</el-row>
 							<el-row class="padding">
-								<el-col :span="8" class="field-box"> 
+								
+								<el-col :span="6">  
+									<dict-field label="状态" :dict="dicts['testCaseStatus']" v-model="editForm.caseStatus"  @change="editSomeFields(editForm,'caseStatus',$event)"></dict-field> 
+								</el-col> 
+								<el-col :span="6" class="field-box"> 
 									<el-avatar class="avater"> {{editForm.execUsername}} </el-avatar> 
 									<div class="msg">
 										<span class="field-value">{{editForm.execUsername}} </span>
 										<span class="field-label">执行人</span>
 									</div>   
+								</el-col>  
+								<el-col :span="6">  
+									<dict-field label="用例类型" :dict="dicts['caseType']" v-model="editForm.caseType"  @change="editSomeFields(editForm,'caseType',$event)"></dict-field>
 								</el-col> 
-								<el-col :span="8">  
+								<el-col :span="6">  
 									<dict-field label="优先级" :dict="dicts['priority']" v-model="editForm.cpriority"  @change="editSomeFields(editForm,'cpriority',$event)"></dict-field>
 								</el-col> 
 								
-								<el-col :span="8">  
-									<dict-field label="状态" :dict="dicts['testCaseStatus']" v-model="editForm.caseStatus"  @change="editSomeFields(editForm,'caseStatus',$event)"></dict-field> 
-								</el-col> 
 							</el-row>
 						</el-form-item>    
 						
@@ -63,17 +65,21 @@
 				
 					</el-col>
 					<el-col  :span="6" class="border">
+					
+						<el-form-item label="测试库" prop="casedbName">
+							{{editForm.casedbName?editForm.casedbName:editForm.casedbId }}  
+						</el-form-item> 
+						
+						<el-form-item label="产品" prop="productId">
+							{{editForm.productName?editForm.productName:editForm.productId }}  
+						</el-form-item> 
 						<el-form-item label="关联需求" prop="menuName">
 							{{editForm.menuName?editForm.menuName:'暂无关联需求'}} <el-button type="text" @click="menuVisible=true">选择需求</el-button>
 						</el-form-item> 
 						
 						<el-form-item label="版本号" prop="verNum">
 							<el-input v-model="editForm.verNum" placeholder="版本号" :maxlength="50" @change="editSomeFields(editForm,'verNum',$event)"></el-input>
-						</el-form-item>  
-						<el-form-item label="用例类型" prop="caseType">
-							<dict-select :dict="dicts['caseType']" v-model="editForm.caseType" @change="editSomeFields(editForm,'caseType',$event)">
-							</dict-select> 
-						</el-form-item> 
+						</el-form-item>   
 					</el-col>
 				</el-row>     
 			</el-form>
