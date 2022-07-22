@@ -110,14 +110,16 @@
 										</el-row>
 									</el-tab-pane>
 									<el-tab-pane label="测试步骤" name="2">
-										<el-form-item label="" prop="opStep"  label-width="0px">
-											
-												<vue-editor  v-if="visible && activateTabPaneName=='2'" class="rich-context"   :id="'opStep'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.opStep" ref="opStep"></vue-editor>
-											
+										<el-form-item label="" prop="opStep"  label-width="0px" v-if="stepConfigVisible==false">
+											<test-step-result v-model="editForm.opStep"></test-step-result> 
 										</el-form-item>
 										
+										<el-form-item label="" prop="opStep"  label-width="0px" v-if="stepConfigVisible==true">
+											<test-step-config v-model="editForm.opStep"></test-step-config> 
+										</el-form-item>
 										<el-row class="page-bottom">
 												<el-button @click.native="handleCancel">取消</el-button>
+												<el-button @click="stepConfigVisible=!stepConfigVisible">{{stepConfigVisible?'完成步骤配置':'去配置步骤'}}</el-button>
 												<el-button v-loading="load.edit" v-if="editForm.opStep!=editFormBak.opStep" type="primary" @click.native="editXmQuestionSomeFields(editForm,'opStep',editForm.opStep)" :disabled="load.edit==true">保存</el-button> 
 										</el-row>
 									</el-tab-pane> 
@@ -210,6 +212,8 @@
 
 	import XmFuncSelect from '../xmFunc/XmFuncSelect'
 	import XmUserField from '@/views/xm/core/components/XmUserField/index'
+import TestStepConfig from '../xmTestCase/TestStepConfig.vue';
+import TestStepResult from '../xmTestPlanCase/TestStepResult.vue';
 	export default {
 		computed: {
 			...mapGetters([
@@ -270,16 +274,16 @@
 						{required: true, message: '请指派给一个人', trigger: 'change' }
 					],
 					description: [ 
-						{ min: 0, max: 250, message: '缺陷描述长度在 0 到 1000 个字符', trigger: 'change' },//长度
+						{ min: 0, max: 1000, message: '缺陷描述长度在 0 到 1000 个字符', trigger: 'change' },//长度
 					],
 					opStep: [ 
-						{ min: 0, max: 250, message: '测试步骤长度在 0 到 1000 个字符', trigger: 'change' },//长度
+						{ min: 0, max: 1000, message: '测试步骤长度在 0 到 1000 个字符', trigger: 'change' },//长度
 					],
 					expectResult: [ 
-						{ min: 0, max: 250, message: '预期结果长度在 0 到 1000 个字符', trigger: 'change' },//长度
+						{ min: 0, max: 1000, message: '预期结果长度在 0 到 1000 个字符', trigger: 'change' },//长度
 					],
 					remarks: [ 
-						{ min: 0, max: 250, message: '处理意见长度在 0 到 1000 个字符', trigger: 'change' },//长度
+						{ min: 0, max: 1000, message: '处理意见长度在 0 到 1000 个字符', trigger: 'change' },//长度
 					],
 					
 				},
@@ -309,16 +313,12 @@
 				xmQuestionHandles:[],
 				selectTaskVisible:false,
 				flowInfoVisible:false,
-				selectMenuVisible:false,
-				receiptMessageEditorVisible:false,
-				tagSelectVisible:false,
-				descriptionEditorVisible:false,
-				descriptionEditorVisible:false,
-				expectResultEditorVisible:false,
-				opStepEditorVisible:false,
+				selectMenuVisible:false, 
+				tagSelectVisible:false, 
 				xmProductVersions:[{id:"1.0.0" ,name:'1.0.0'}],
 				activateTabPaneName:'12',
 				funcVisible:false,
+				stepConfigVisible:false,
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data
@@ -340,15 +340,7 @@
 							this.load.edit=true
 							let params = Object.assign({}, this.editForm);
 							params.tardgetBugStatus=tardgetBugStatus;
-
-							if(params.expectResult){
-								params.expectResult=params.expectResult.replace(/<p>\n<br>\n<\p>/g,"");
-								params.expectResult=params.expectResult.replace(/<p><br><\/p>/g,"");
-							}
-							if(params.opStep){
-								params.opStep=params.opStep.replace(/<p>\n<br>\n<\/p>/g,"");
-								params.opStep=params.opStep.replace(/<p><br><\/p>/g,"");
-							}
+ 
 							if(params.description){
 								params.description=params.description.replace(/<p>\n<br>\n<\/p>/g,"");
 								params.description=params.description.replace(/<p><br><\/p>/g,"");
@@ -571,7 +563,7 @@
 		components: {
 				//在下面添加其它组件 'xm-question-edit':XmQuestionEdit
 				'upload': AttachmentUpload,XmGroupMng,VueEditor,XmTaskList,xmMenuSelect,XmQuestionHandleMng,TagMng,XmProjectSelect,
-			XmMyDoFocus,XmFuncSelect,XmUserField,
+			XmMyDoFocus,XmFuncSelect,XmUserField,TestStepConfig,TestStepResult,
 		},
 		mounted() {
 			console.log("question_add");

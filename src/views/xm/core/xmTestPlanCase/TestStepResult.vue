@@ -132,6 +132,9 @@
 					return icons[0]
 				}
 				return icons[parseInt(execStatus)]
+			},
+			addBug(item,index){
+
 			}
 		},//end methods
 		components: {  

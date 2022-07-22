@@ -107,7 +107,7 @@
 					}
 				}else{
 					this.extInfosList=[]
-					this.addExtInfosFirstItem();
+					//this.addExtInfosFirstItem();
 				}
 			}
 		},//end methods
