@@ -7,7 +7,7 @@
 							 
 					<el-button   type="primary" @click="userConfirm" icon="el-icon-finished">确认选择</el-button>  
 		</el-row>  
-		<el-row class="padding-top" v-loading="load.list" :style="{overflowX:'auto',height:maxTableHeight+'px'}" ref="table">
+		<el-row class="padding-top" v-loading="load.list" :style="{height:maxTableHeight+'px'}" ref="table">
 			<el-row v-for="(item,index) in xmGroupFormworkSels" :key="index"> 
 				<h3>
 					<div class="padding-top">{{item.groupName}}

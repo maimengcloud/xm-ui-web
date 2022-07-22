@@ -27,17 +27,17 @@
                         </div>
                       </el-option> 
                       <el-option value="" >
-                          <el-row><el-button :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button><el-button v-if="projectId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button> </el-row>
+                          <el-row><el-button :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button><el-button v-if="projectId||productId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button> </el-row>
                       </el-option>
                   </el-select> 
               </div>
 						</div> 
-            <el-dialog :visible.sync="deptUserVisible" append-to-body top="20px" width="60%">
+            <el-dialog v-if="disabled!==true" :visible.sync="deptUserVisible" append-to-body top="20px" width="60%">
                <users-select :visible="deptUserVisible" :isSingleUser="true"  :isSelectByDept="true" @confirm="onConfirmUsers"></users-select>
             </el-dialog>
             
-            <el-dialog :visible.sync="projectVisible" append-to-body top="20px" width="60%">
-               <xm-group-select :sel-project="{id:projectId}" :isSelectSingleUser="true" @user-confirm="onProjectUsersConfirm"></xm-group-select>
+            <el-dialog v-if="disabled!==true" :visible.sync="projectVisible" append-to-body top="20px" width="60%">
+               <xm-group-select :sel-project="{id:projectId}" :xm-product="{id:productId}" :isSelectSingleUser="true" @user-confirm="onProjectUsersConfirm"></xm-group-select>
             </el-dialog>
     </el-row>
   </template>
@@ -97,6 +97,10 @@
           default:''
         },
       
+        productId:{
+          type:String,
+          default:''
+        },
         disabled:{
             type:Boolean,
             default:false,

@@ -16,9 +16,9 @@
 								<el-divider direction="vertical"></el-divider> 
 								<el-button type="text" icon="el-icon-copy" @click="copyLink">拷贝链接(快速分享)</el-button>
 						</el-form-item> 
-								<el-row> 
+								<el-row class="padding"> 
 									<el-col :span="6"> 
-											<xm-user-field :project-id="editForm.projectId" label="责任人" v-model="editForm" userid-key="handlerUserid" username-key="handlerUsername" @change="editXmQuestionSomeFields(editForm,'handlerUserid',$event)"></xm-user-field>
+											<xm-user-field :project-id="editForm.projectId" :product-id="editForm.productId" label="责任人" v-model="editForm" userid-key="handlerUserid" username-key="handlerUsername" @change="editXmQuestionSomeFields(editForm,'handlerUserid',$event)"></xm-user-field>
 											<el-popover
 												placement="top-start"
 												title="重新指派给"
@@ -53,8 +53,8 @@
 											
 												<el-col :span="8">
 													<el-form-item label="提出人" prop="askUsername">
-														<el-tag @click="showGroupUsers('askUserid')">{{editForm.askUsername?editForm.askUsername:'未关联提出人'}}</el-tag> 
-													</el-form-item> 
+														<xm-user-field :project-id="editForm.projectId" :product-id="editForm.productId" label="责任人" v-model="editForm" userid-key="askUserid" username-key="askUsername" @change="editXmQuestionSomeFields(editForm,'askUserid',$event)"></xm-user-field>
+ 													</el-form-item> 
 												</el-col>
 												<el-col :span="8">
 													<el-form-item label="复现频率" prop="repRate"> 
@@ -154,7 +154,7 @@
 									
 								</el-tabs> 
 						</el-col>
-						<el-col :span="6">
+						<el-col :span="6" class="padding border">
 							<el-form-item label="归属项目" prop="projectId">
 								{{editForm.projectId}}
 							</el-form-item>
