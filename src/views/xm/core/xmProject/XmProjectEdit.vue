@@ -1,62 +1,56 @@
 <template>
-	<section class="page-container padding border"> 
-		<el-row class="page-main" ref="table" :style="{overflowX:'auto',height:maxTableHeight+'px'}">  
+	<section class="padding border"> 
+		<el-row>  
 				<el-form :model="editForm"  label-width="120px" label-position="left" :rules="editFormRules" ref="editForm" class="editForm"> 
-						 					
-							<el-form-item label="名称" prop="name"  v-show="opType==='add'">  
-									<el-input  v-model="editForm.name" placeholder="项目名称" @change="editXmProjectSomeFields(editForm,'name',$event)"></el-input> 
-							</el-form-item>   
-							
+						 			
+							 <el-row v-if="opType!=='add'" class="padding-top">
+								<span class="label-font-color">项目代号:</span>  {{editForm.code}} &nbsp;&nbsp;<span class="label-font-color">项目编号:</span>  {{editForm.id}} <el-tooltip content="项目代号用于签订合同等甲乙方共享的场景;项目编号为内部编号，用于内部流转,编号生成规则:项目代号+四位随机码 "><i class="el-icon-question"></i></el-tooltip>
+							</el-row>
+							<el-form-item  prop="name"  label-width="0px">  
+									<my-input  v-model="editForm.name" placeholder="项目名称" @change="editXmProjectSomeFields(editForm,'name',$event)"></my-input> 
+							</el-form-item>    
 							<el-form-item label="项目代号" prop="code" v-if="opType==='add'">
-								<el-input v-model="editForm.code"  placeholder="项目代号，不可为空" >
-									<template slot="append">
-										<el-button type="primary" @click.native="createProjectCode">自动生成</el-button>
-									</template>
-								</el-input>
-								 项目代号为合同上的项目代号，甲乙方共享;项目内部编号为 &nbsp;代号-四位随机码 
-							</el-form-item>  	
-							<el-form-item label="编号代号" prop="code" v-else>  
-								 项目代号为<strong> {{editForm.code}} </strong>,打印在合同上，甲乙方共享;项目内部编号为<strong> {{editForm.id}} </strong>，用于内部流转，&nbsp;生成规则:代号-四位随机码 
-							</el-form-item>  
-							<el-row>
+ 
+								<el-input v-model="editForm.code" style="width:200px;" placeholder="项目代号，不可为空" > 
+								</el-input> 
+								<el-button  @click.native="createProjectCode">自动生成</el-button>
+								 <el-tooltip content="项目代号用于签订合同等甲乙方共享的场景;项目编号为内部编号，用于内部流转，生成规则:项目代号+四位随机码 "><i class="el-icon-question"></i></el-tooltip>
+							</el-form-item> 	 
+							<el-row class="padding-left padding-right">
 								<el-col :span="8">
-									<el-form-item label="项目类型"  prop="xmType">
-										<el-select v-model="editForm.xmType"  @change="editXmProjectSomeFields(editForm,'xmType',$event)">
-											<el-option v-for="(i,index) in dicts['projectType']" :label="i.name" :value="i.id" :key="index"></el-option> 
-										</el-select>   
+									<el-form-item prop="xmType" label-width="0px"> 
+										<dict-field label="项目类型" :dict="dicts['projectType']" v-model="editForm.xmType" @change="editXmProjectSomeFields(editForm,'xmType',$event)"></dict-field>
 									</el-form-item>  
 								</el-col>
 								<el-col :span="8">
-									<el-form-item label="优先级别" prop="priority">  
-										<el-select v-model="editForm.priority" @change="editXmProjectSomeFields(editForm,'priority',$event)">
-											<el-option v-for="(i,index) in dicts['priority']" :label="i.name" :value="i.id" :key="index"></el-option> 
-										</el-select> 
-									</el-form-item> 
+								
+									<el-form-item prop="status" label-width="0px"> 
+										<dict-field label="项目状态" :dict="dicts['projectStatus']" v-model="editForm.priority" @change="editXmProjectSomeFields(editForm,'status',$event)"></dict-field>
+									</el-form-item>   
 								</el-col>  
-								<el-col :span="8">
-									<el-form-item label="工作方式"  prop="workType"  >
-										 <el-radio label="1" v-model="editForm.workType" @change="editXmProjectSomeFields(editForm,'workType',$event)">scrum</el-radio>
-										 <el-radio label="2" v-model="editForm.workType" @change="editXmProjectSomeFields(editForm,'workType',$event)">看板</el-radio>
-									</el-form-item>  
+								<el-col :span="8"> 
+									<el-form-item prop="workType" label-width="0px"> 
+										<dict-field label="工作方式" :dict="dicts['workType']" v-model="editForm.priority" @change="editXmProjectSomeFields(editForm,'workType',$event)"></dict-field>
+									</el-form-item>   
 								</el-col> 
 							</el-row>   
-							<el-row>
+							<el-row class="padding">
 								<el-col :span="8">
-							<el-form-item label=" 项目总控"  prop="admUserid">
-								<el-input style="width:80%;" readonly v-model="editForm.admUsername" @click.native="showUserVisible('admUserid')"></el-input>
-								<font style="font-size:12px;" color="blue"></font> 
+							<el-form-item  prop="admUserid" label-width="0px"> 
+								<user-field label=" 项目总控" userid-key="admUserid" username-key="admUsername" v-model="editForm" @change="editXmProjectSomeFields(editForm,'admUserid',$event)"></user-field>
 							</el-form-item>  
 								</el-col>
 								<el-col :span="8">
-							<el-form-item label=" 项目经理" prop="pmUserid"> 
-								<el-input style="width:80%;" readonly v-model="editForm.pmUsername" @click.native="showUserVisible('pmUserid')"></el-input>
-								<font style="font-size:12px;" color="blue"></font> 
+								
+							<el-form-item prop="pmUserid" label-width="0px"> 
+								<user-field label=" 项目经理" userid-key="pmUserid" username-key="pmUsername" v-model="editForm" @change="editXmProjectSomeFields(editForm,'pmUserid',$event)"></user-field>
+ 
 							</el-form-item> 
 								</el-col>
 								<el-col :span="8">
-							<el-form-item label=" 副经理、助理" prop="assUserid"> 
-								<el-input style="width:80%;" readonly v-model="editForm.assUsername" @click.native="showUserVisible('assUserid')"></el-input>
-								<font style="font-size:12px;" color="blue"></font> 
+							<el-form-item  prop="assUserid" label-width="0px"> 
+								<user-field label=" 副经理、助理" userid-key="assUserid" username-key="assUsername" v-model="editForm" @change="editXmProjectSomeFields(editForm,'assUserid',$event)"></user-field>
+  
 							</el-form-item>  
 								</el-col>
 							</el-row> 
@@ -70,10 +64,11 @@
 							</el-row>
 						</el-tab-pane>
 						<el-tab-pane label="控制开关" name="2">   
-							<el-form-item label="项目状态" prop="status">  
-								<el-select v-model="editForm.status"  @change="editXmProjectSomeFields(editForm,'status',$event)">
-									<el-option v-for="(item,index) in dicts['projectStatus']" :key="index" :value="item.id" :label="item.name"></el-option>
-								</el-select>  
+							<el-form-item label="优先级" prop="priority">   
+								
+ 									<el-select v-model="editForm.wtype"  @change="editXmProjectSomeFields(editForm,'priority',$event)">
+										<el-option v-for="(item,index) in dicts['priority']" :key="index" :value="item.id" :label="item.name"></el-option>
+									</el-select>
 							</el-form-item>  
 							<el-form-item label="报工方式" prop="wtype">  
 								<el-select v-model="editForm.wtype"  @change="editXmProjectSomeFields(editForm,'wtype',$event)">
@@ -224,16 +219,16 @@
 							</el-form-item> 
 						</el-tab-pane> 
 					</el-tabs>    
-				</el-form>    
-		</el-row>
-		<el-row  style="float:right;">  
-				<!-- <el-button   type="text" @click.native="handleCancel" >关闭</el-button>   -->
-				
-				<el-button v-if="opType==='add'" v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>  
-				<span v-if="opType!=='add'" style="float:right;">
- 					<el-button icon="el-icon-star-on"  type="success" :disabled="editForm.status>'2'" @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_start_approva'})">立项申请</el-button>
-					<el-button icon="el-icon-success"  type="success" :disabled="editForm.status>'5'" @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_over_approva'})">结项申请</el-button> 
-				</span>
+				</el-form>     
+				<el-row  style="float:right;">  
+						<!-- <el-button   type="text" @click.native="handleCancel" >关闭</el-button>   -->
+						
+						<el-button v-if="opType==='add'" v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>  
+						<span v-if="opType!=='add'" style="float:right;">
+							<el-button icon="el-icon-star-on"  type="success" :disabled="editForm.status>'2'" @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_start_approva'})">立项申请</el-button>
+							<el-button icon="el-icon-success"  type="success" :disabled="editForm.status>'5'" @click="handleCommand({type:'sendToProcessApprova',data:editForm,bizKey:'xm_project_over_approva'})">结项申请</el-button> 
+						</span>
+				</el-row>
 		</el-row>
 		
 		<el-drawer append-to-body title="选择员工" :visible.sync="userSelectVisible" size="60%">
@@ -848,7 +843,7 @@
 					this.editForm.earlyAmt=this.editForm.earlyAmt||-10000;
 					this.editForm.budgetCtrl=this.editForm.budgetCtrl||"0";
 					this.editForm.taxRate=this.editForm.taxRate||6
-					this.editForm.budgetMarginRate=this.editForm.budgetMarginRate||13
+					this.editForm.budgetMarginRate=this.editForm.budgetMarginRate||13 
 					this.autoSet=true;
 				}else{ 
 				 	this.autoSet=false;
@@ -909,10 +904,9 @@
 		components: {  html2canvas,UsersSelect,
 		    //在下面添加其它组件 'xm-project-add':XmProjectEdit
 		},
-		mounted() { 
-			this.maxTableHeight=util.calcTableMaxHeight(this.$refs.table.$el)-20; 
+		mounted() {  
 			this.initData();
-				initSimpleDicts('all',['projectType','priority','projectStatus']).then(res=>{
+				initSimpleDicts('all',['projectType','priority','projectStatus','workType']).then(res=>{
 					this.dicts=res.data.data;
 				})
 			

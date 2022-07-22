@@ -74,7 +74,7 @@
             }else{
               if(this.value[this.useridKey]!=this.myVal.userid){ 
                 this.value[this.useridKey]=this.myVal.userid
-                this.value[this.usernameKey]=this.myVal.userid 
+                this.value[this.usernameKey]=this.myVal.username 
                 this.$emit('input',this.value) 
               }
             }
