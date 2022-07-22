@@ -3,6 +3,17 @@
 		<el-row ref="table">
 		<!--编辑界面 XmTestPlan 测试计划--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef" label-position="left">
+			
+				<el-form-item label="归属项目" prop="projectId">
+					 
+					<span v-if="opType=='add'">
+					 	<xm-project-select v-if="!selProject || !selProject.id" ref="xmProjectSelect" :link-product-id="xmTestCasedb? xmTestCasedb.productId:null"  @row-click="onPorjectConfirm" :auto-select="false">
+							<span slot="title">选择项目</span>
+						</xm-project-select>
+						<div v-else>{{editForm.projectName}}</div>
+					</span> 
+ 					<div v-else>{{editForm.projectName}}</div>
+				</el-form-item>  
 				 <el-form-item prop="name" label-width="0px">
 				  <el-row class="padding-bottom">
 					<my-input v-model="editForm.name" placeholder="计划名称" :maxlength="255" @change="editSomeFields(editForm,'name',$event)"></my-input>
@@ -25,12 +36,6 @@
 				</el-form-item>  
 				<el-form-item label="归属产品" prop="productName">
 					{{editForm.productName}}
-				</el-form-item>  
-				<el-form-item label="归属项目" prop="projectId">
-					<font v-if="editForm.projectId">{{editForm.projectName?editForm.projectName:editForm.projectId}}</font>
-						<xm-project-select ref="xmProjectSelect"  @row-click="onPorjectConfirm" :auto-select="false">
-							<span slot="title">选择项目</span>
-						</xm-project-select>
 				</el-form-item>  
 				 
 				<el-form-item label="起止时间" prop="stime">
@@ -65,7 +70,7 @@ import  XmUserField from '@/views/xm/core/components/XmUserField';//修改界面
 		    ...mapGetters([ 'userInfo'  ]),
 
 		},
-		props:['xmTestPlan','visible','opType'],
+		props:['xmTestPlan','visible','opType','selProject','xmTestCasedb'],
 
 		watch: {
 	      'xmTestPlan':function( xmTestPlan ) {
@@ -186,6 +191,7 @@ import  XmUserField from '@/views/xm/core/components/XmUserField';//修改界面
 			onPorjectConfirm(row){
 				this.editForm.projectId=row.id
 				this.editForm.projectName=row.name
+				this.editForm.name=this.editForm.projectName+'-测试计划-V1.0'
 			}
 		},//end method
 		mounted() {

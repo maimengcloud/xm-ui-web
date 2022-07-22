@@ -176,7 +176,7 @@ import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修�
 			onProductSelected(product){  
 				this.editForm.productId=product.id
 				this.editForm.productName=product.productName
-				this.editForm.name=this.editForm.productName+"测试库"
+				this.editForm.name=this.editForm.productName+"-测试库-V1.0"
 			},
 		},//end method
 		mounted() {
