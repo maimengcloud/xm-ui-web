@@ -1,34 +1,41 @@
 <template>
-	<section  class="page-container padding">
-	    <el-row class="page-header">
-	    </el-row>
-		<el-row class="page-main" :style="{overflowX:'auto',height:maxTableHeight+'px'}" ref="table">
+	<section class="padding"> 
+		<el-row  ref="table">
 		<!--编辑界面 XmTestCasedb 测试用例库--> 
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">
+			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef" label-position="left">
 			
-				<el-form-item label="用例库名称" prop="name">
-					<el-input v-model="editForm.name" placeholder="用例库名称" :maxlength="255" @change="editSomeFields(editForm,'name',$event)"></el-input>
-				</el-form-item> 
-				<el-form-item label="测试库编号" prop="id">
-					<el-input v-if="opType=='add'" v-model="editForm.id" placeholder="测试库编号" :maxlength="50" @change="editSomeFields(editForm,'id',$event)"></el-input>
-					<div v-else>{{editForm.id}}</div>
-				</el-form-item>  
-				
+
 				<el-form-item label="产品名称" prop="productName">
-					 <xm-product-select v-if="!xmProduct" style="display:inline;" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="clearProduct"></xm-product-select>
+					<span v-if="opType=='add'">
+					 	<xm-product-select v-if="!xmProduct" style="display:inline;" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="clearProduct"></xm-product-select>
+						<div v-else>{{editForm.productName}}</div>
+					</span> 
  					<div v-else>{{editForm.productName}}</div>
-				</el-form-item> 
-				<el-form-item label="创建人姓名" prop="cusername">
-					<el-input v-if="opType=='add'" v-model="editForm.cusername" placeholder="创建人姓名" :maxlength="255" @change="editSomeFields(editForm,'cusername',$event)"></el-input>
-					<div v-else>{{editForm.cusername}}</div>
-				</el-form-item> 
-				<el-form-item label="创建日期" prop="ctime">
-					 {{editForm.ctime}}
-				</el-form-item>   
+				</el-form-item>  
+				<el-form-item label="" prop="name" label-width="0px">
+					<my-input v-model="editForm.name" placeholder="用例库名称" :maxlength="255" @change="editSomeFields(editForm,'name',$event)"></my-input>
+				</el-form-item>  
+				<el-row class="padding">
+					<el-col :span="8">
+						<el-form-item prop="cuserid" label-width="0px">
+							<xm-user-field label="负责人" userid-key="cuserid" username-key="cusername" v-model="editForm" @change="editSomeFields(editForm,'cuserid',$event)"></xm-user-field>
+						</el-form-item>  
+					</el-col>
+					<el-col :span="8">
+						 
+						<dict-field label="状态" :dict="dicts['casedbStatus']" v-model="editForm.status"  @change="editSomeFields(editForm,'status',$event)"></dict-field>
+						 
+					</el-col>
+					
+					<el-col :span="8">
+					 
+						<date-field label="创建日期" v-model="editForm.ctime"  @change="editSomeFields(editForm,'ctime',$event)"></date-field>
+					</el-col>
+				</el-row>    
 			</el-form>
 		</el-row>
 
-		<el-row v-if="opType=='add'" class="page-bottom bottom-fixed">
+		<el-row v-if="opType=='add'" style="float:right;">
 		    <el-button @click.native="handleCancel">取消</el-button>
             <el-button v-loading="load.edit" type="primary" @click.native="saveSubmit" :disabled="load.edit==true">提交</el-button>
 		</el-row>
@@ -41,11 +48,13 @@
  	import { initDicts, addXmTestCasedb,editXmTestCasedb,editSomeFieldsXmTestCasedb } from '@/api/xm/core/xmTestCasedb';
 	import { mapGetters } from 'vuex'
 	
+import  XmUserField from '@/views/xm/core/components/XmUserField';//修改界面
 import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修改界面
+
 	export default {
 	    name:'xmTestCasedbEdit',
 	    components: {
-			XmProductSelect,
+			XmProductSelect,XmUserField,
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
@@ -70,10 +79,14 @@ import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修�
 			return {
 			    currOpType:'add',//add/edit
  				load:{ list: false, edit: false, del: false, add: false },//查询中...
-				dicts:{},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
+				dicts:{casedbStatus:[]},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				editFormRules: {
-					id: [
-						//{ required: true, message: '主键不能为空', trigger: 'blur' }
+					name: [
+						{ required: true, message: '测试库名称不能为空', trigger: 'change' },
+						{ max:50,min:2, message: '测试库名称2-50个字符之间', trigger: 'change' }
+					],
+					productName: [
+						{ required: true, message: '产品不能为空', trigger: 'change' }
 					]
 				},
 				editForm: {
@@ -160,10 +173,10 @@ import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修�
 				this.editForm.productId=''
 				this.editForm.productName=''
 			}, 
-			onProductSelected(product){ 
-				
+			onProductSelected(product){  
 				this.editForm.productId=product.id
 				this.editForm.productName=product.productName
+				this.editForm.name=this.editForm.productName+"测试库"
 			},
 		},//end method
 		mounted() {

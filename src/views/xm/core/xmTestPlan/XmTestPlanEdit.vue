@@ -3,42 +3,39 @@
 		<el-row ref="table">
 		<!--编辑界面 XmTestPlan 测试计划--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef" label-position="left">
-				 
-				<el-form-item label="计划名称" prop="name">
-					<el-input v-model="editForm.name" placeholder="计划名称" :maxlength="255" @change="editSomeFields(editForm,'name',$event)"></el-input>
+				 <el-form-item prop="name" label-width="0px">
+				  <el-row class="padding-bottom">
+					<my-input v-model="editForm.name" placeholder="计划名称" :maxlength="255" @change="editSomeFields(editForm,'name',$event)"></my-input>
+ 				  </el-row>
+				  </el-form-item>
+				<el-row class="padding">
+					<el-col :span="8">
+						<xm-user-field label="负责人" userid-key="cuserid" username-key="cusername" v-model="editForm" @change="editSomeFields(editForm,'cuserid',$event)"></xm-user-field>
+					</el-col>
+					<el-col :span="8">
+						<dict-field label="状态" :dict="dicts['testPlanStatus']" v-model="editForm.status"  @change="editSomeFields(editForm,'status',$event)"></dict-field>
+					</el-col>
+					
+					<el-col :span="8">
+						<dict-field label="测试结果" :dict="dicts['testPlanTcode']" v-model="editForm.tcode"  @change="editSomeFields(editForm,'tcode',$event)"></dict-field>
+					</el-col>
+				</el-row>   
+ 				<el-form-item label="归属测试库" prop="casedbName">
+					{{editForm.casedbName}}
 				</el-form-item>  
-				<el-form-item label="归属用例库" prop="casedbName">
-					 {{editForm.casedbName}}
-				</el-form-item>   
-				
+				<el-form-item label="归属产品" prop="productName">
+					{{editForm.productName}}
+				</el-form-item>  
 				<el-form-item label="归属项目" prop="projectId">
 					<font v-if="editForm.projectId">{{editForm.projectName?editForm.projectName:editForm.projectId}}</font>
 						<xm-project-select ref="xmProjectSelect"  @row-click="onPorjectConfirm" :auto-select="false">
 							<span slot="title">选择项目</span>
 						</xm-project-select>
-				</el-form-item> 
-				<el-form-item label="负责人" prop="cusername">
-					<el-input v-model="editForm.cusername" placeholder="负责人" :maxlength="255" @change="editSomeFields(editForm,'cusername',$event)"></el-input>
-				</el-form-item> 
+				</el-form-item>  
 				 
 				<el-form-item label="起止时间" prop="stime">
 					<date-range :auto-default="false" placeholder="选择日期" v-model="editForm" start-key="stime" end-key="etime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'stime',editForm)"></date-range>
-				</el-form-item>  
-				<div v-if="opType!=='add'">
-				<el-form-item label="状态" prop="status"> 
-					<el-select v-model="editForm.status" @change="editSomeFields(editForm,'status',$event)">
-						<el-option v-for="(item,index) in dicts['testPlanStatus']" :key="index" :value="item.id" :label="item.name"></el-option>
-					</el-select>
- 				</el-form-item> 
-				<el-form-item label="测试结果" prop="tcode"> 
-				<el-select v-model="editForm.tcode" @change="editSomeFields(editForm,'tcode',$event)">
-					<el-option v-for="(item,index) in dicts['testPlanTcode']" :key="index" :value="item.id" :label="item.name"></el-option>
-				</el-select>				
-				</el-form-item>  
-				</div>
-				<el-form-item label="产品名称" prop="productName">
-					 {{editForm.productName}}
-				</el-form-item>  
+				</el-form-item>   
 			</el-form>
 		</el-row>
 
@@ -58,10 +55,11 @@
 	import { mapGetters } from 'vuex'
 	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
 	
+import  XmUserField from '@/views/xm/core/components/XmUserField';//修改界面
 	export default {
 	    name:'xmTestPlanEdit',
 	    components: {
-			XmProjectSelect,
+			XmProjectSelect,XmUserField,
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
@@ -86,12 +84,19 @@
 			return {
 			    currOpType:'add',//add/edit
  				load:{ list: false, edit: false, del: false, add: false },//查询中...
-				dicts:{},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
+				dicts:{
+					testPlanStatus:[],
+					testPlanTcode:[],
+
+				},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				editFormRules: {
 					name: [
 						{ required: true, message: '测试计划名称不能为空', trigger: 'change' },
 						{ min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'change' },//长度
-					]
+					],
+					projectId: [
+						{ required: true, message: '项目不能为空', trigger: 'change' }, 
+					],
 				},
 				editForm: {
 					id:'',name:'',casedbId:'',casedbName:'',projectId:'',projectName:'',cuserid:'',cusername:'',ctime:'',stime:'',etime:'',status:'',tcode:'',totalCases:'',okCases:'',errCases:'',igCases:'',blCases:'',productId:'',productName:'',flowState:''
@@ -160,6 +165,9 @@
 				if(fieldName=='stime'){
 					params[fieldName]=$event.stime
 					params.etime=$event.etime
+				}else if(fieldName=='cuserid'){
+					params[fieldName]=$event[0].userid
+					params.cusername=$event[0].username
 				}else{
 					params[fieldName]=$event
 				}
