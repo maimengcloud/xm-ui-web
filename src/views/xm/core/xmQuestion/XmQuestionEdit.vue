@@ -6,10 +6,10 @@
 					<el-col :span="18" class="border padding"> 
 						<el-form-item label="" prop="name" label-width="0px">
 														<el-row>
-							<span><span v-if="opType!='add'" class="label-font-color">用例编号:</span>&nbsp;&nbsp;{{editForm.caseId}} &nbsp;&nbsp;</span><span class="label-font-color"><i class="el-icon-s-operation"></i>模块：</span><span>{{editForm.funcName}} <el-button type="text" @click="funcVisible=true">选择模块</el-button></span>
+							<span><span v-if="opType!=='add'" class="label-font-color">用例编号:</span>&nbsp;&nbsp;{{editForm.caseId}} &nbsp;&nbsp;</span><span class="label-font-color"><i class="el-icon-s-operation"></i>模块：</span><span>{{editForm.funcName}} <el-button type="text" @click="funcVisible=true">选择模块</el-button></span>
 							</el-row>
-							<my-input   v-model="editForm.name"></my-input>
-								<span v-if="opType!='add'">
+							<my-input   v-model="editForm.name" placeholder="缺陷标题"></my-input>
+								<span v-if="opType!=='add'">
 								<el-tag>{{editForm.createUsername}} 于 {{editForm.createTime}} 创建 </el-tag>
 								<el-divider direction="vertical"></el-divider>
 								<el-tag v-if="editForm.tagNames">{{editForm.tagNames?editForm.tagNames:''}} </el-tag>
