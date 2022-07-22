@@ -64,7 +64,8 @@
         value:{  
           handler(){
              this.initData();
-          }
+          },
+          deep:true,
            
         },  
         

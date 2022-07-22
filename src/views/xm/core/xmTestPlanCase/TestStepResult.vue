@@ -134,7 +134,11 @@
 				return icons[parseInt(execStatus)]
 			},
 			addBug(item,index){
-
+				if(this.value instanceof Array){
+					this.$emit("add-bug",val)
+				}else{ 
+					this.$emit("add-bug",JSON.stringify(val))
+				} 
 			}
 		},//end methods
 		components: {  

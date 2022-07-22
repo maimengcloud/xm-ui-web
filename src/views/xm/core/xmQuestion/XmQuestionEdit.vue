@@ -53,7 +53,7 @@
 											
 												<el-col :span="8">
 													<el-form-item label="提出人" prop="askUsername">
-														<xm-user-field :project-id="editForm.projectId" :product-id="editForm.productId" label="责任人" v-model="editForm" userid-key="askUserid" username-key="askUsername" @change="editXmQuestionSomeFields(editForm,'askUserid',$event)"></xm-user-field>
+														<xm-user-field :project-id="editForm.projectId" :product-id="editForm.productId" label="提出人" v-model="editForm" userid-key="askUserid" username-key="askUsername" @change="editXmQuestionSomeFields(editForm,'askUserid',$event)"></xm-user-field>
  													</el-form-item> 
 												</el-col>
 												<el-col :span="8">
@@ -124,13 +124,13 @@
 										</el-row>
 									</el-tab-pane> 
 
-									<el-tab-pane label="意见" name="4"> 
+									<el-tab-pane label="意见" name="4" v-if="opType!='add'"> 
 										<el-row> 
 												<xm-question-handle-mng v-if="activateTabPaneName=='4'" :bug="editForm" :visible="activateTabPaneName=='4'"></xm-question-handle-mng>
 											 
 										</el-row>
 									</el-tab-pane>  
-									<el-tab-pane label="关注" name="91"> 
+									<el-tab-pane label="关注" name="91" v-if="opType!='add'"> 
 										<xm-my-do-focus v-if="activateTabPaneName=='91'" :biz-id="editForm.id" :pbiz-id="editForm.projectId" :biz-name="editForm.name" focus-type="5"></xm-my-do-focus>
 									</el-tab-pane>
 									
@@ -150,6 +150,9 @@
 								</div> {{editForm.menuName?editForm.menuName:"未关联需求"}}</el-tag> 
 							</el-form-item>
 						</el-col>
+					</el-row>
+					<el-row style="float:right;" v-if="opType==='add'">
+						<el-button type="primary" @click="saveSubmit">保存</el-button>
 					</el-row>
 				</el-form>
 				<el-drawer title="选中用户" :visible.sync="selectUserVisible"  size="70%"  append-to-body   :close-on-click-modal="false">
@@ -177,7 +180,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { editXmQuestion,editXmQuestionSomeFields } from '@/api/xm/core/xmQuestion'; 
+	import { addXmQuestion,editXmQuestionSomeFields } from '@/api/xm/core/xmQuestion'; 
 	import { mapGetters } from 'vuex';
 	import AttachmentUpload from "@/views/mdp/arc/archiveAttachment/AttachmentUpload"; //上传组件
 	import {sn} from '@/common/js/sequence';
@@ -218,17 +221,15 @@
 				 
 			}
 		},
-		props:['xmQuestion','visible',"selProject",'opType'],
+		props:['xmQuestion','visible',"selProject",'opType','xmProduct','xmTestCase','xmTestPlanCase'],
 		watch: {
 	      'xmQuestion':function( xmQuestion ) {
 	        this.editForm = {...xmQuestion};
 	      },
 	      'visible':function(visible) {
 	      	if(visible==true){
-				this.editFormBak={...this.editForm}
-	      	}else{
-			  this.flowInfoVisible=false;
-			}
+				this.initData(); 
+	      	}
 			this.activateTabPaneName='12'
 	      }
 	    },
@@ -293,8 +294,7 @@
 				selectUserVisible: false,
 				userFieldName:'',
 				xmQuestionHandles:[],
-				selectTaskVisible:false,
-				flowInfoVisible:false,
+				selectTaskVisible:false, 
 				selectMenuVisible:false, 
 				tagSelectVisible:false, 
 				xmProductVersions:[{id:"1.0.0" ,name:'1.0.0'}],
@@ -310,7 +310,7 @@
 				this.$emit('cancel');
 			},
 			//新增提交XmQuestion xm_question 父组件监听@submit="afterAddSubmit"
-			editSubmit: function (tardgetBugStatus) {
+			saveSubmit: function (tardgetBugStatus) {
 				this.$refs.editForm.validate((valid) => { 
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
@@ -327,7 +327,7 @@
 								params.description=params.description.replace(/<p>\n<br>\n<\/p>/g,"");
 								params.description=params.description.replace(/<p><br><\/p>/g,"");
 							}
-							editXmQuestion(params).then((res) => {
+							addXmQuestion(params).then((res) => {
 								this.load.edit=false
 								var tips=res.data.tips;
 								if(tips.isOk){
@@ -540,6 +540,60 @@
 				if(this.opType!=='add'){
 					this.editXmQuestionSomeFields(this.editForm,'funcId',row)
 				}
+			},
+			initData(){
+				this.editForm=Object.assign(this.editForm, this.xmQuestion);
+				if(this.opType==='add'){ 
+					this.editForm.askUserid=this.userInfo.userid
+					this.editForm.askUsername=this.userInfo.username
+					this.editForm.handlerUserid=this.userInfo.userid
+					this.editForm.handlerUsername=this.userInfo.username  
+					this.editForm.bugReason="0"
+					this.editForm.bugReason="0"
+					this.editForm.qtype="1"
+					this.editForm.bugSeverity="1"
+					this.editForm.priority="3"
+					this.editForm.bugStatus="0"
+					if(this.selProject && this.selProject.id){
+						this.editForm.projectId=this.selProject.id
+						this.editForm.projectName=this.selProject.name
+					}
+					if(this.xmProduct && this.xmProduct.id){
+						this.editForm.productId=this.xmProduct.id
+						this.editForm.productName=this.xmProduct.productName
+					}
+					if(this.xmTestCase && this.xmTestCase.id){
+						this.editForm.productId=this.xmTestCase.productId
+						this.editForm.productName=this.xmTestCase.productName
+						this.editForm.caseId=this.xmTestCase.caseId
+						this.editForm.caseName=this.xmTestCase.caseName
+						this.editForm.casedbId=this.xmTestCase.casedbId  
+						this.editForm.funcId=this.xmTestCase.funcId
+						this.editForm.funcName=this.xmTestCase.funcName 
+						this.editForm.menuId=this.xmTestCase.menuId
+						this.editForm.menuName=this.xmTestCase.menuName 
+						this.editForm.opStep=this.xmTestCase.testStep 
+						this.editForm.name=this.xmTestCase.caseName
+					} 
+					if(this.xmTestPlanCase  && this.xmTestPlanCase.planId){
+						this.editForm.planId=this.xmTestPlanCase.planId
+						this.editForm.productId=this.xmTestPlanCase.productId
+						this.editForm.productName=this.xmTestPlanCase.productName
+						this.editForm.caseId=this.xmTestPlanCase.caseId
+						this.editForm.caseName=this.xmTestPlanCase.caseName
+						this.editForm.casedbId=this.xmTestPlanCase.casedbId  
+						this.editForm.funcId=this.xmTestPlanCase.funcId
+						this.editForm.funcName=this.xmTestPlanCase.funcName 
+						this.editForm.menuId=this.xmTestPlanCase.menuId
+						this.editForm.menuName=this.xmTestPlanCase.menuName  
+						this.editForm.opStep=this.xmTestPlanCase.testStep
+						this.editForm.name=this.xmTestPlanCase.caseName
+						this.editForm.projectId=this.xmTestPlanCase.projectId
+					}
+				}else{
+
+				}
+				this.editFormBak={...this.editForm}
 			}
 		},//end method
 		components: {
@@ -547,10 +601,8 @@
 				'upload': AttachmentUpload,XmGroupMng,VueEditor,XmTaskList,xmMenuSelect,XmQuestionHandleMng,TagMng,XmProjectSelect,
 			XmMyDoFocus,XmFuncSelect,XmUserField,TestStepConfig,TestStepResult,
 		},
-		mounted() {
-			console.log("question_add");
-			this.editForm=Object.assign(this.editForm, this.xmQuestion);
-			this.editFormBak={...this.editForm}
+		mounted() { 
+			this.initData();
 			initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','priority','bugRepRate','bugReason']).then(res=>{
 				if(res.data.tips.isOk){
 					 this.dicts=res.data.data

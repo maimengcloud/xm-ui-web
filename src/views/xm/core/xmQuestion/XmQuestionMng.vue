@@ -286,7 +286,7 @@
 				'userInfo','roles'
 			]),
 		},
-		props: ["selProject",'qtype','xmTestPlanCase','xmTestCase','xmIteration','xmProduct','queryScene'],
+		props: ["selProject",'qtype','xmTestPlanCase','xmTestCase','xmTestPlan','xmIteration','xmProduct','queryScene'],
 		watch:{
 			selProject:function(selProject){
 				this.filters.selProject=this.selProject
@@ -523,6 +523,11 @@
 				if(this.xmTestPlanCase){
 					params.planId=this.xmTestPlanCase.planId 
 					params.caseId=this.xmTestPlanCase.caseId
+				}
+				
+				if(this.xmTestPlan){
+					params.planId=this.xmTestPlan.id  
+					params.projectId=this.xmTestPlan.projectId
 				}
 				if(this.xmTestCase){
 					params.caseId=this.xmTestCase.id

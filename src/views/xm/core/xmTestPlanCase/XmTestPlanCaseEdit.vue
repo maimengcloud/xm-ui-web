@@ -172,7 +172,7 @@
 		
 		<!--新增 XmQuestion xm_question界面-->
 		<el-dialog title="新增缺陷"  :visible.sync="addBugVisible"   width="90%" top="20px"  append-to-body   :close-on-click-modal="false">
-			<xm-question-add   op-type="add" :xm-product="{id:editForm.productId,productName:editForm.productName}" :xm-test-plan-case="editForm"  :sel-project=" {id:editForm.projectId,name:editForm.projectName} "  :visible="addBugVisible" @cancel="addBugVisible=false" ></xm-question-add>
+			<xm-question-add  op-type="add" :xm-product="{id:editForm.productId,productName:editForm.productName}" :xm-test-plan-case="editForm"  :sel-project=" {id:editForm.projectId,name:editForm.projectName} "  :visible="addBugVisible" @cancel="addBugVisible=false" ></xm-question-add>
 		</el-dialog>
 	</section>
 </template>

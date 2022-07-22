@@ -14,7 +14,7 @@
 						<div style="max-height:100px;overflow:auto;" v-html="scope.row.receiptMessage"></div>
 					</template> 
 				</el-table-column>
-				<el-table-column prop="receiptTime" label="时间" width="100" ></el-table-column>  
+				<el-table-column prop="receiptTime" label="时间" width="150" ></el-table-column>  
  			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		</el-row>
