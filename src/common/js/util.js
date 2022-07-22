@@ -109,10 +109,23 @@ export default {
     var colors=['#909399','#409EFF','#67C23A','#E6A23C','#F56C6C','#00ced1','#c71585','#ff8c00','#c7158577','#ffd700'];
     if(!cellValue){
       return colors[0]
-    }
+    } 
     var cellValueInt=parseInt(cellValue)
       if( isNaN(cellValueInt) ){
-        cellValueInt=cellValue.chartCodeAt(cellValue.length-1)
+        
+        if(cellValue instanceof String && cellValue.length>0){
+          cellValueInt=cellValue.chartCodeAt(cellValue.length-1)
+        }else if(cellValue instanceof Object){
+          if(cellValue['userid']){
+            cellValueInt=cellValue.chartCodeAt(cellValue['userid'].length-1)
+          }else{
+            cellValueInt=0;
+          }
+          
+        }else{
+          cellValueInt=0;
+        }
+       
       }
       var colorIndex=cellValueInt % 10
       if(cellValueInt > 0 && colorIndex==0){

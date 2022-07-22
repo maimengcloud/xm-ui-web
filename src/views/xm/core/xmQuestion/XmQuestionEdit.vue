@@ -18,7 +18,7 @@
 						</el-form-item> 
 								<el-row> 
 									<el-col :span="6"> 
-											<user-field label="责任人" v-model="editForm" userid-key="handlerUserid" username-key="handlerUsername" @change="editXmQuestionSomeFields(editForm,'handlerUserid',$event)"></user-field>
+											<xm-user-field :project-id="editForm.projectId" label="责任人" v-model="editForm" userid-key="handlerUserid" username-key="handlerUsername" @change="editXmQuestionSomeFields(editForm,'handlerUserid',$event)"></xm-user-field>
 											<el-popover
 												placement="top-start"
 												title="重新指派给"
@@ -209,6 +209,7 @@
 	import XmMyDoFocus from '@/views/myWork/my/components/DoFocus';
 
 	import XmFuncSelect from '../xmFunc/XmFuncSelect'
+	import XmUserField from '@/views/xm/core/components/XmUserField/index'
 	export default {
 		computed: {
 			...mapGetters([
@@ -570,7 +571,7 @@
 		components: {
 				//在下面添加其它组件 'xm-question-edit':XmQuestionEdit
 				'upload': AttachmentUpload,XmGroupMng,VueEditor,XmTaskList,xmMenuSelect,XmQuestionHandleMng,TagMng,XmProjectSelect,
-			XmMyDoFocus,XmFuncSelect,
+			XmMyDoFocus,XmFuncSelect,XmUserField,
 		},
 		mounted() {
 			console.log("question_add");

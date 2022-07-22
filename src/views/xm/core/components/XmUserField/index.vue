@@ -12,8 +12,9 @@
                 </slot>
 							</div>   
 							<div v-if="disabled!==true" class="my-select" name="select" :value="myVal">
-                 <el-select v-model="myVal" @change="onSelectChange" :clearable="clearable">  
-                      <el-option disabled value="" style="margin-bottom:5px;">
+                 <el-select v-model="myVal" @change="onSelectChange" :clearable="clearable" filterable>  
+                      
+                      <el-option value="" disabled v-if="users && users.length>10">
                           <el-row><el-button :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button><el-button v-if="projectId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button> </el-row>
                       </el-option>
                       <el-option class="avatar-container" v-for="(item,index) in users" :key="index" :value="item" :label="item.username">  
@@ -25,13 +26,19 @@
                               <i v-else>&nbsp;&nbsp;</i>  
                         </div>
                       </el-option> 
+                      <el-option value="" >
+                          <el-row><el-button :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button><el-button v-if="projectId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button> </el-row>
+                      </el-option>
                   </el-select> 
               </div>
 						</div> 
             <el-dialog :visible.sync="deptUserVisible" append-to-body top="20px" width="60%">
                <users-select :visible="deptUserVisible" :isSingleUser="true"  :isSelectByDept="true" @confirm="onConfirmUsers"></users-select>
             </el-dialog>
-           
+            
+            <el-dialog :visible.sync="projectVisible" append-to-body top="20px" width="60%">
+               <xm-group-select :sel-project="{id:projectId}" :isSelectSingleUser="true" @user-confirm="onProjectUsersConfirm"></xm-group-select>
+            </el-dialog>
     </el-row>
   </template>
   
@@ -39,9 +46,10 @@
   
   import util  from '@/common/js/util';//全局公共库
   import UsersSelect from '@/views/mdp/sys/user/UsersSelectOnly.vue'
+  import XmGroupSelect from '@/views/xm/core/xmGroup/XmGroupSelect.vue'
   export default {
     name: 'user-field',
-    components: { UsersSelect,  },
+    components: { UsersSelect, XmGroupSelect },
     computed: { 
     },
     data(){
@@ -207,6 +215,22 @@
         },
         onChange(data){   
           this.$emit('change',data)
+        },
+        onProjectUsersConfirm(users){
+          this.onChange(users)
+          this.myVal=users[0]
+          this.projectVisible=false;
+          var notHad=false;
+           users.forEach(u=>{
+					 if(!this.users.some(k=>k.userid==u.userid)){
+						 notHad=true;
+						 this.users.unshift(u)
+					 }
+				 })
+				 if(notHad){ 
+					 var us=JSON.stringify(this.users)
+				 	localStorage.setItem("mdp-his-users",us)
+				 }
         },
         onConfirmUsers(users){ 
           this.onChange(users)
