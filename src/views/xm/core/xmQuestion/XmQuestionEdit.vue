@@ -124,28 +124,10 @@
 										</el-row>
 									</el-tab-pane> 
 
-									<el-tab-pane label="处理意见" name="4"> 
-										<el-row>
-											<el-col :span="flowInfoVisible?16:24">
-												<el-button class="padding"  @click="flowInfoVisible=!flowInfoVisible" type="text">{{flowInfoVisible?'去隐藏':'去显示'}}流转记录</el-button>
-												<el-form-item  prop="remarks" label-width="0px">  
-													
-													
-		
-														<vue-editor v-if="visible && activateTabPaneName=='4'" class="rich-context" :id="'receiptMessage_'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.remarks"></vue-editor>
-
-													
-												</el-form-item>
-												
-												<el-row class="page-bottom">
-														<el-button @click.native="handleCancel">取消</el-button>
-														<el-button v-if="editForm.remarks!=editFormBak.remarks" v-loading="load.edit" type="primary" @click.native="editXmQuestionSomeFields(editForm,'remarks',editForm.remarks)" :disabled="load.edit==true">保存</el-button> 
-												</el-row>
-											</el-col>
-											<el-col :span="flowInfoVisible?8:0">
-												
-												<xm-question-handle-mng class="padding-left" v-if="activateTabPaneName=='4' && flowInfoVisible==true" :bug="editForm" :visible="flowInfoVisible"></xm-question-handle-mng>
-											</el-col>
+									<el-tab-pane label="意见" name="4"> 
+										<el-row> 
+												<xm-question-handle-mng v-if="activateTabPaneName=='4'" :bug="editForm" :visible="activateTabPaneName=='4'"></xm-question-handle-mng>
+											 
 										</el-row>
 									</el-tab-pane>  
 									<el-tab-pane label="关注" name="91"> 
