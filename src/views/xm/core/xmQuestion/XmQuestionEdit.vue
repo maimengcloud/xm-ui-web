@@ -194,8 +194,8 @@
 
 	import XmFuncSelect from '../xmFunc/XmFuncSelect'
 	import XmUserField from '@/views/xm/core/components/XmUserField/index'
-import TestStepConfig from '../xmTestCase/TestStepConfig.vue';
-import TestStepResult from '../xmTestPlanCase/TestStepResult.vue';
+	import TestStepConfig from '../xmTestCase/TestStepConfig.vue';
+	import TestStepResult from '../xmTestPlanCase/TestStepResult.vue';
 	export default {
 		computed: {
 			...mapGetters([
