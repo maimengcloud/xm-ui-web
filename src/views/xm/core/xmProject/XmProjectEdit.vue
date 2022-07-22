@@ -824,6 +824,7 @@
 			initData(){
 				this.editForm=Object.assign(this.editForm,this.selProject)
 				if(this.opType==='add'){
+					debugger;
 					this.editForm.pmUserid=this.userInfo.userid
 					this.editForm.pmUsername=this.userInfo.username
 					this.editForm.admUserid=this.userInfo.userid
