@@ -106,6 +106,8 @@ import treeTool from "@/common/js/treeTool"; //全局公共库
 //import Sticky from '@/components/Sticky' // 粘性header组件
 import { initSimpleDicts } from '@/api/mdp/meta/item'; //下拉框数据查询
 import {
+  
+  initDicts,
   getTask,
   listXmTask, 
   calcProgress,
@@ -401,13 +403,12 @@ export default {
   mounted() {
     this.initData();
     this.$nextTick(() => {
+      initDicts(this)
       if(this.isTaskCenter ||(this.selProject && this.selProject.id)){
         this.getXmTasks();
       } 
       this.tableHeight = this.source == 'GZT' ? this.tableHeight : util.calcTableMaxHeight(this.$refs.table.$el);
-      initSimpleDicts( "all", ["planType","taskType","priority","xmTaskSettleSchemel","priority","taskState",'xm_plan_lvl' ]).then((res) => { 
-        Object.assign(this.dicts,res.data.data)
-      });
+ 
     });
   },
 };

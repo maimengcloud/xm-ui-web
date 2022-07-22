@@ -117,7 +117,7 @@ export default {
           cellValueInt=cellValue.chartCodeAt(cellValue.length-1)
         }else if(cellValue instanceof Object){
           if(cellValue['userid']){
-            cellValueInt=cellValue.chartCodeAt(cellValue['userid'].length-1)
+            cellValueInt=cellValue['userid'].chartCodeAt(cellValue['userid'].length-1)
           }else{
             cellValueInt=0;
           }

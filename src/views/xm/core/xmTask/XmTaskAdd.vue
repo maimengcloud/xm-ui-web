@@ -246,7 +246,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import {addTask,addXmTask } from '@/api/xm/core/xmTask';
+	import {initDicts,addTask,addXmTask } from '@/api/xm/core/xmTask';
 	import { mapGetters } from 'vuex';
  	import {sn} from '@/common/js/sequence';
  	import xmSkillMng from '../xmTaskSkill/XmTaskSkillMng';
@@ -634,10 +634,8 @@
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},
 		mounted() { 
- 			this.initData();
- 			initSimpleDicts('all',['planType','taskType','priority','xmTaskSettleSchemel','taskState']).then(res=>{
-				this.dicts=res.data.data;
-			})
+ 			this.initData(); 
+			initDicts(this)
 			/**在下面写其它函数***/
 
 		}//end mounted
