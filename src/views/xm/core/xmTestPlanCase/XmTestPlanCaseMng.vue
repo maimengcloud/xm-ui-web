@@ -1,9 +1,8 @@
 <template>
 	<section>
-        <el-row>
-            
+        <el-row> 
             <el-col :span="6">
-                <xm-func-select v-if="xmTestCasedb && xmTestCasedb.productId" class="padding-right padding-left" :xm-product="{id:xmTestCasedb.productId,productName:xmTestCasedb.productName}" @row-click="onXmFuncRowClick"> 
+                <xm-func-select v-if="xmProductCpd && xmProductCpd.id" class="padding-right padding-left" :xm-product="xmProductCpd" @row-click="onXmFuncRowClick"> 
                 </xm-func-select>
             </el-col>
             <el-col :span="18">
@@ -32,7 +31,7 @@
                                 <dict-tag :dict="dicts['testStepTcode']" v-model="scope.row.execStatus" effect="dark" @change="editSomeFields(scope.row,'execStatus',$event)"></dict-tag> 
                             </template>
                         </el-table-column>
-                        <el-table-column prop="caseName" label="用例名称" min-width="250" show-overflow-tooltip>
+                        <el-table-column prop="caseName" label="用例名称" min-width="250">
                             <template slot-scope="scope">
                                 <span> <el-link @click="showEdit( scope.row,scope.$index)">{{scope.row.caseName}} </el-link></span>
                                 <span class="tool-bar">
@@ -40,17 +39,17 @@
                                 </span>
                             </template>
                         </el-table-column>	 
-                        <el-table-column prop="execUsername" label="执行人姓名" min-width="120" show-overflow-tooltip>
+                        <el-table-column prop="execUsername" label="执行人姓名" min-width="120" >
                             <template slot-scope="scope">
                                 <span> {{scope.row.execUsername}} </span>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="priority" label="优先级" width="120" show-overflow-tooltip>
+                        <el-table-column prop="priority" label="优先级" width="120" >
                             <template slot-scope="scope">
                                 <dict-tag :dict="dicts['priority']" v-model="scope.row.priority" @change="editSomeFields(scope.row,'priority',$event)"></dict-tag>  
                             </template>
                         </el-table-column>
-                        <el-table-column prop="remark" label="执行备注" min-width="120" show-overflow-tooltip>
+                        <el-table-column prop="remark" label="执行备注" min-width="150" show-overflow-tooltip>
                             <template slot-scope="scope">
                                 <span> {{scope.row.remark}} </span>
                             </template>
@@ -89,9 +88,20 @@ export default {
     components: {
         XmTestPlanCaseEdit,XmTestCaseSelect,XmFuncSelect,
     },
-    props:['visible','xmTestPlan','xmTestCasedb'],
+    props:['visible','xmTestPlan','xmTestCasedb','xmTestCase'],
     computed: {
         ...mapGetters(['userInfo']),
+        xmProductCpd(){
+            if(this.xmTestCasedb && this.xmTestCasedb.id){
+                return {id:this.xmTestCasedb.productId,productName:this.xmTestCasedb.productName}
+            }
+            if(this.xmTestPlan && this.xmTestPlan.id){
+                return {id:this.xmTestPlan.productId,productName:this.xmTestPlan.productName}
+            }
+            if(this.xmTestCase && this.xmTestCase.id){
+                return {id:this.xmTestCase.productId,productName:this.xmTestCase.productName}
+            }
+        }
 
     },
     watch:{

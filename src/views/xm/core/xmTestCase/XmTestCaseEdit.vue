@@ -3,8 +3,25 @@
 		<el-row>
 		<!--编辑界面 XmTestCase 测试用例--> 
 			<el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-position="left"> 
-				<el-row :gutter="20">
-					<el-col :span="18" class="border">
+				<el-row>
+					<el-col  :span="6" class="padding border">
+					
+						<el-form-item label="测试库" prop="casedbName">
+							{{editForm.casedbName?editForm.casedbName:editForm.casedbId }}  
+						</el-form-item> 
+						
+						<el-form-item label="产品" prop="productId">
+							{{editForm.productName?editForm.productName:editForm.productId }}  
+						</el-form-item> 
+						<el-form-item label="关联需求" prop="menuName">
+							{{editForm.menuName?editForm.menuName:'暂无关联需求'}} <el-button type="text" @click="menuVisible=true">选择需求</el-button>
+						</el-form-item> 
+						
+						<el-form-item label="版本号" prop="verNum">
+							<el-input v-model="editForm.verNum" placeholder="版本号" :maxlength="50" @change="editSomeFields(editForm,'verNum',$event)"></el-input>
+						</el-form-item>   
+					</el-col>
+					<el-col :span="18" class="border padding">
 
 						<el-form-item label="" prop="caseName" label-width="0px">  
 							<el-row>
@@ -34,53 +51,49 @@
 								
 							</el-row>
 						</el-form-item>    
+						<el-tabs v-model="activeTab">
+							<el-tab-pane name="1" label="基本信息">
+								<el-form-item label="" prop="preRmark" label-width="0px">
+									<el-row class="label-font-color padding-top">
+										前置条件
+									</el-row> 
+									<el-row>
+										<el-input type="textarea" :rows="4" v-model="editForm.preRemark" placeholder="请输入前置条件"  @change="editSomeFields(editForm,'preRmark',$event)"></el-input>
+									</el-row> 
+								</el-form-item>   
+								<el-form-item label="" prop="testStep" label-width="0px">
+									<el-row class="label-font-color padding-top">
+										测试步骤
+									</el-row> 
+									<el-row>
+										<test-step-config v-model="editForm.testStep"></test-step-config>
+									</el-row>
+									<el-row v-if="opType!=='add' && editForm.testStep!=editFormBak.testStep">
+										<el-button type="primary" @click="editSomeFields(editForm,'testStep',editForm.testStep)">保存测试步骤</el-button>
+									</el-row>
+								</el-form-item>     
+								<el-form-item label="" prop="caseRmark" label-width="0px">
+									<el-row class="label-font-color padding-top">
+										用例描述
+									</el-row> 
+									<el-row>
+										<el-input type="textarea" :rows="4" v-model="editForm.caseRemark" placeholder="请输入用例描述"  @change="editSomeFields(editForm,'caseRemark',$event)"></el-input>
+									</el-row> 
+								</el-form-item>  
+							</el-tab-pane>
+							
+							<el-tab-pane name="2" label="缺陷"  v-if="opType!=='add'">
+								<xm-question-mng  v-if="activeTab=='2'" :xm-test-case="editForm"  :xm-product="{id:editForm.productId,productName:editForm.productName}" :sel-project="{id:editForm.projectId,name:editForm.projectName}"></xm-question-mng>
+							</el-tab-pane>
+							<el-tab-pane name="3" label="执行记录" v-if="opType!=='add'">
+								<xm-test-plan-case-mng :xm-test-casedb="xmTestCasedb" :xm-test-case="editForm" v-if="activeTab=='3'"></xm-test-plan-case-mng>
+							</el-tab-pane>
+							<el-tab-pane name="4" label="日志" v-if="opType!=='add'"></el-tab-pane>
+						</el-tabs>
 						
-						<el-form-item label="" prop="preRmark" label-width="0px">
-							<el-row class="label-font-color padding-top">
-								前置条件
-							</el-row> 
-							<el-row>
-								<el-input type="textarea" :rows="4" v-model="editForm.preRemark" placeholder="请输入前置条件"  @change="editSomeFields(editForm,'preRmark',$event)"></el-input>
-							</el-row> 
-						</el-form-item>   
-						<el-form-item label="" prop="testStep" label-width="0px">
-							<el-row class="label-font-color padding-top">
-								测试步骤
-							</el-row> 
-							<el-row>
-								<test-step-config v-model="editForm.testStep"></test-step-config>
-							</el-row>
-							<el-row v-if="opType!=='add' && editForm.testStep!=editFormBak.testStep">
-								<el-button type="primary" @click="editSomeFields(editForm,'testStep',editForm.testStep)">保存测试步骤</el-button>
-							</el-row>
-						</el-form-item>     
-						<el-form-item label="" prop="caseRmark" label-width="0px">
-							<el-row class="label-font-color padding-top">
-								用例描述
-							</el-row> 
-							<el-row>
-								<el-input type="textarea" :rows="4" v-model="editForm.caseRemark" placeholder="请输入用例描述"  @change="editSomeFields(editForm,'caseRemark',$event)"></el-input>
-							</el-row> 
-						</el-form-item>  
 				
 					</el-col>
-					<el-col  :span="6" class="border">
 					
-						<el-form-item label="测试库" prop="casedbName">
-							{{editForm.casedbName?editForm.casedbName:editForm.casedbId }}  
-						</el-form-item> 
-						
-						<el-form-item label="产品" prop="productId">
-							{{editForm.productName?editForm.productName:editForm.productId }}  
-						</el-form-item> 
-						<el-form-item label="关联需求" prop="menuName">
-							{{editForm.menuName?editForm.menuName:'暂无关联需求'}} <el-button type="text" @click="menuVisible=true">选择需求</el-button>
-						</el-form-item> 
-						
-						<el-form-item label="版本号" prop="verNum">
-							<el-input v-model="editForm.verNum" placeholder="版本号" :maxlength="50" @change="editSomeFields(editForm,'verNum',$event)"></el-input>
-						</el-form-item>   
-					</el-col>
 				</el-row>     
 			</el-form>
 		</el-row>
@@ -109,11 +122,13 @@
 	import XmFuncSelect from '../xmFunc/XmFuncSelect'
 import TestStepConfig from './TestStepConfig.vue';
 
+import  XmQuestionMng from '@/views/xm/core/xmQuestion/XmQuestionMng';//修改界面
+import  XmTestPlanCaseMng from '@/views/xm/core/xmTestPlanCase/XmTestPlanCaseMng';//修改界面
 	import MyInput from '@/components/MDinput/index';
 	export default {
 	    name:'xmTestCaseEdit',
 	    components: {
-			XmMenuSelect,XmFuncSelect,MyInput,TestStepConfig,
+			XmMenuSelect,XmFuncSelect,MyInput,TestStepConfig,XmQuestionMng,XmTestPlanCaseMng,
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
@@ -154,6 +169,7 @@ import TestStepConfig from './TestStepConfig.vue';
                 maxTableHeight:300,
 				menuVisible:false,
 				funcVisible:false,
+				activeTab:'1',
 			}//end return
 		},//end data
 		methods: {
