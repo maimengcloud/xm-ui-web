@@ -14,7 +14,7 @@
 							<div v-if="disabled!==true" class="my-select" name="select" :value="myVal">
                  <el-select v-model="myVal" @change="onSelectChange" :clearable="clearable" filterable>  
                       
-                      <el-option value="" disabled v-if="users && users.length>10">
+                      <el-option :value="myVal" disabled v-if="users && users.length>10">
                           <el-row><el-button :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button><el-button v-if="projectId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button> </el-row>
                       </el-option>
                       <el-option class="avatar-container" v-for="(item,index) in users" :key="index" :value="item" :label="item.username">  
@@ -26,7 +26,7 @@
                               <i v-else>&nbsp;&nbsp;</i>  
                         </div>
                       </el-option> 
-                      <el-option value="" >
+                      <el-option :value="myVal" disabled>
                           <el-row><el-button :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button><el-button v-if="projectId||productId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button> </el-row>
                       </el-option>
                   </el-select> 
@@ -69,10 +69,7 @@
            
         },  
         
-      myVal(){
-        if(this.value instanceof String){
-               this.$emit('input',this.myVal)
-          }else if(this.value instanceof Object){
+      myVal(){  
             if(!this.myVal||!this.myVal.userid){
               if(this.value[this.useridKey]){
                 this.value[this.useridKey]=""
@@ -83,12 +80,10 @@
             }else{
               if(this.value[this.useridKey]!=this.myVal.userid){ 
                 this.value[this.useridKey]=this.myVal.userid
-                this.value[this.usernameKey]=this.myVal.userid 
+                this.value[this.usernameKey]=this.myVal.username 
                 this.$emit('input',this.value) 
               }
-            }
-            
-          }
+            } 
         
       }
     },
@@ -129,13 +124,10 @@
      
     },
     methods: {    
-      showMyValue(myVal){
+      showMyValue(myVal){ 
         if(!myVal){
           return ""
-        }else{
-         if(this.value instanceof String){
-               return myVal
-          }else if(this.value instanceof Object){
+        }else{ 
             if(!myVal||!myVal.userid){
               return ""
             }
@@ -145,32 +137,13 @@
               return myVal.userid
             }else{
               return ""
-            }
-          }
+            } 
         }
       },
         getMyAvaterInfo(item){
           return this.showMyValue(item)
         },
-        getMyColor(item){
-           if(this.value instanceof String){ 
-            if(item){
-            
-              if(this.getColor){
-                  return this.getColor(item)
-              } 
-              return util.getColor(item)
-              
-            }else{
-              if(this.getColor){
-                  return this.getColor("0")
-              }else{
-                return util.getColor(0)
-              }
-            }
-
-
-          }else if(this.value instanceof Object){
+        getMyColor(item){ 
 
             if(item&&item.userid){
             
@@ -185,9 +158,7 @@
               }else{
                 return util.getColor(0)
               }
-            }
-
-          }
+            } 
           
         },
         getMyIcon(item){
@@ -205,14 +176,11 @@
           }
         }, 
 
-         initData(){  
-           if(this.value instanceof String){
-              this.myVal=this.value
-          }else if(this.value instanceof Object){
-            this.myVal={}
-            this.myVal.userid=this.value[this.useridKey]
-            this.myVal.username=this.value[this.usernameKey] 
-          }
+         initData(){   
+            var myVal={}
+            myVal.userid=this.value[this.useridKey]
+            myVal.username=this.value[this.usernameKey]  
+            this.myVal=myVal
           
       }, 
         onSelectChange(item){

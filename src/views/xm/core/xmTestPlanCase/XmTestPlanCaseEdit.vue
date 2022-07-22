@@ -13,12 +13,8 @@
 					<span class="title-font-size">{{editForm.caseName}}</span> 
 					</el-row>
 					<el-row class="padding">
-						<el-col :span="8" class="field-box"> 
-							<el-avatar class="avater"> {{editForm.execUsername}} </el-avatar> 
-							<div class="msg">
-								<span class="field-value">{{editForm.execUsername}} </span>
-								<span class="field-label">执行人</span>
-							</div>   
+						<el-col :span="8"> 
+							   <xm-user-field label="执行人" userid-key="execUserid" username-key="execUsername" v-model="editForm" @change="editSomeFields(editForm,'execUserid',$event)"></xm-user-field>
 						</el-col> 
 						<el-col :span="8">  
 							<dict-field label="优先级" :dict="dicts['priority']" v-model="editForm.priority"></dict-field>
@@ -55,7 +51,7 @@
 									用例类型
 								</el-row>
 								<el-row>
-									<dict-tag  :dict="dicts['caseType']" v-model="editForm.caseType"></dict-tag>
+									<dict-tag  :dict="dicts['caseType']" v-model="editForm.caseType" :disabled="true" ></dict-tag>
 
 								</el-row>
 							</el-col>
@@ -65,7 +61,7 @@
 									紧急程度
 								</el-row>
 								<el-row>
-									 <dict-tag :dict="dicts['priority']" v-model="editForm.priority"></dict-tag> 
+									 <dict-tag :dict="dicts['priority']" v-model="editForm.cpriority"  :disabled="true"></dict-tag> 
 								</el-row>
 							</el-col>
 						</el-row> 
@@ -186,12 +182,13 @@ import TestStepResult from './TestStepResult.vue';
 	import MyInput from '@/components/MDinput/index';
 	import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 import  XmQuestionMng from '@/views/xm/core/xmQuestion/XmQuestionMng';//修改界面
+import  XmUserField from '@/views/xm/core/components/XmUserField';//修改界面
 		import  XmQuestionAdd from '../xmQuestion/XmQuestionEdit';//新增界面
 
 	export default {
 	    name:'xmTestPlanCaseEdit',
 	    components: {
-			TestStepResult,MyInput,XmMenuEdit,XmQuestionMng,XmQuestionAdd,
+			TestStepResult,MyInput,XmMenuEdit,XmQuestionMng,XmQuestionAdd,XmUserField,
 
         },
 		computed: {
@@ -293,12 +290,19 @@ import  XmQuestionMng from '@/views/xm/core/xmQuestion/XmQuestionMng';//修改�
                 }
                 let params={};
                 params['pkList']=[row].map(i=>{ return { caseId:i.caseId,  planId:i.planId}})
-                params[fieldName]=$event
+                
+				if(fieldName=='execUserid'){
+					params.execUserid=$envent[0].userid
+					params.execUsername=$envent[0].username
+				}else{
+					params[fieldName]=$event
+				}
 				if(fieldName!='testStep'){
 					if(this.editForm.testStep!=this.editFormBak.testStep){
 						params.testStep=this.editForm.testStep
 					}
 				}
+				
                 var func = editSomeFieldsXmTestPlanCase
                 func(params).then(res=>{
                   let tips = res.data.tips;
