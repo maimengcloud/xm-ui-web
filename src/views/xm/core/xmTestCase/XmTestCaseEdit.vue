@@ -35,12 +35,9 @@
 								<el-col :span="6">  
 									<dict-field label="状态" :dict="dicts['testCaseStatus']" v-model="editForm.caseStatus"  @change="editSomeFields(editForm,'caseStatus',$event)"></dict-field> 
 								</el-col> 
-								<el-col :span="6" class="field-box"> 
-									<el-avatar class="avater"> {{editForm.execUsername}} </el-avatar> 
-									<div class="msg">
-										<span class="field-value">{{editForm.execUsername}} </span>
-										<span class="field-label">执行人</span>
-									</div>   
+								<el-col :span="6"> 
+									 <xm-user-field label="维护人" userid-key="luserid" username-key="lusername" v-model="editForm" @change="editSomeFields(editForm,'luserid',$event)"></xm-user-field>
+ 
 								</el-col>  
 								<el-col :span="6">  
 									<dict-field label="用例类型" :dict="dicts['caseType']" v-model="editForm.caseType"  @change="editSomeFields(editForm,'caseType',$event)"></dict-field>
@@ -124,11 +121,13 @@ import TestStepConfig from './TestStepConfig.vue';
 
 import  XmQuestionMng from '@/views/xm/core/xmQuestion/XmQuestionMng';//修改界面
 import  XmTestPlanCaseMng from '@/views/xm/core/xmTestPlanCase/XmTestPlanCaseMng';//修改界面
-	import MyInput from '@/components/MDinput/index';
+ 	import MyInput from '@/components/MDinput/index';
+	
+import  XmUserField from '@/views/xm/core/components/XmUserField';//修改界面
 	export default {
 	    name:'xmTestCaseEdit',
 	    components: {
-			XmMenuSelect,XmFuncSelect,MyInput,TestStepConfig,XmQuestionMng,XmTestPlanCaseMng,
+			XmMenuSelect,XmFuncSelect,MyInput,TestStepConfig,XmQuestionMng,XmTestPlanCaseMng,XmUserField,
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
@@ -243,8 +242,11 @@ import  XmTestPlanCaseMng from '@/views/xm/core/xmTestPlanCase/XmTestPlanCaseMng
 					 params[fieldName]=$event.menuId
 					 params['menuName']=$event.menuName
 				}else if(fieldName=='cuserid'){
-					 params[fieldName]=$event.userid
-					 params['cusername']=$event.username 
+					 params[fieldName]=$event[0].userid
+					 params['cusername']=$event[0].username 
+				}else if(fieldName=='luserid'){
+					 params[fieldName]=$event[0].userid
+					 params['lusername']=$event[0].username 
 				}else{
 					 params[fieldName]=$event
 				} 
