@@ -6,7 +6,7 @@
                 text-color="rgb(191, 203, 217)"
                 active-text-color="#409eff"
             >
-                 <el-menu-item index="测试库">
+                 <el-menu-item index="testCasedb">
                     <span
                         slot="title"
                         style="font-size: 18px; color: #409eff" 
@@ -33,6 +33,7 @@
             </el-menu>
         </el-row>
 		<el-row ref="xmTestCasedbTable">
+            <xm-test-casedb-edit op-type="edit" v-if="activeIndex=='testCasedb'" :xm-test-casedb="xmTestCasedb" key="1"></xm-test-casedb-edit>  
             <xm-test-case-mng  v-if="activeIndex=='testCase'" :xm-test-casedb="xmTestCasedb" key="1"></xm-test-case-mng>  
             <xm-test-case-mng  v-if="activeIndex=='caseFlow'" :xm-test-casedb="xmTestCasedb" scene="caseFlow" key="2"></xm-test-case-mng>  
             <xm-test-plan-info v-else-if="activeIndex=='testPlan'" :xm-test-casedb="xmTestCasedb" ref="testPlan"> </xm-test-plan-info>
