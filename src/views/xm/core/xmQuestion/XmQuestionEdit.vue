@@ -126,7 +126,7 @@
 										</el-row>
 									</el-tab-pane> 
 
-									<el-tab-pane label="意见" name="4" v-if="opType!='add'"> 
+									<el-tab-pane label="日志" name="4" v-if="opType!='add'"> 
 										<el-row> 
 												<xm-question-handle-mng v-if="activateTabPaneName=='4'" :bug="editForm" :visible="activateTabPaneName=='4'"></xm-question-handle-mng>
 											 

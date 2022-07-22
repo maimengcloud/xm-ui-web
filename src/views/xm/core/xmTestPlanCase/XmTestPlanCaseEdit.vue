@@ -122,7 +122,7 @@
 					</el-tab-pane>
 					<el-tab-pane name="3" label="缺陷"> 
 						<el-row v-if="activateName=='3'">
-							<xm-question-mng   :xm-test-plan-case="editForm"  :xm-product="{id:xmTestPlanCase.productId,productName:xmTestPlanCase.productName}" :sel-project="{id:xmTestPlanCase.projectId,name:xmTestPlanCase.projectName}"></xm-question-mng>
+							<xm-question-mng   :xm-test-plan-case="editForm"  :xm-product="{id:editForm.productId,productName:editForm.productName}" :sel-project="{id:editForm.projectId,name:editForm.projectName}"></xm-question-mng>
 						</el-row>
 					</el-tab-pane>
 					<el-tab-pane name="4" label="附件">

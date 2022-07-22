@@ -251,7 +251,7 @@
 
 			<!--新增 XmQuestion xm_question界面-->
 			<el-dialog title="新增缺陷"  :visible.sync="addFormVisible"   width="90%" top="20px"  append-to-body   :close-on-click-modal="false">
-				<xm-question-add   op-type="add" :xm-product="filters.product" :xm-test-case="xmTestCase" :qtype="qtype" :sel-project=" filters.selProject " :xm-question="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-question-add>
+				<xm-question-add   op-type="add" :xm-test-plan-case="xmTestPlanCase" :xm-test-plan="xmTestPlan" :xm-product="filters.product" :xm-test-case="xmTestCase" :qtype="qtype" :sel-project=" filters.selProject " :xm-question="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-question-add>
 			</el-dialog>
  			<xm-group-dialog ref="xmGroupDialog" :sel-project=" filters.selProject " :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-dialog> 
 			<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible"    size="60%"   :close-on-click-modal="false">
@@ -607,8 +607,7 @@
 				}
 				this.addFormVisible = true;
 			},
-			showAddAfterProjectSelect(project){
-				this.$refs.xmProjectSelect.editForm=project; 
+			showAddAfterProjectSelect(project){ 
 				this.filters.selProject=project;
 				this.addFormVisible = true;
 				this.searchXmQuestions();
