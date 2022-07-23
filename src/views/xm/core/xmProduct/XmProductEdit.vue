@@ -5,8 +5,8 @@
       <el-form
         :model="editForm"
         label-width="120px"
-        :rules="editFormRules"
-		label-position="top"
+        :rules="editFormRules" 
+		label-position="left"
         ref="editForm"
       >
         <el-row  v-if="opType !== 'add'" class="padding-top label-font-color">
@@ -99,6 +99,9 @@
       </el-form>
  
     </el-row>
+	<el-row v-if="opType==='add'">
+		<el-button type="primary" @click="editSubmit">保存</el-button>
+	</el-row> 
   </section>
 </template>
 
@@ -106,8 +109,9 @@
 import util from "@/common/js/util"; //全局公共库
 import {
   initDicts,
-  editXmProduct,
+  addXmProduct,
   editSomeFields,
+  createProductCode
 } from "@/api/xm/core/xmProduct";
 import { mapGetters } from "vuex"; 
 
@@ -273,7 +277,7 @@ export default {
             this.load.edit = true;
             let params = Object.assign({}, this.editForm);
             params.branchId = this.userInfo.branchId;
-            editXmProduct(params)
+            addXmProduct(params)
               .then((res) => {
                 this.load.edit = false;
                 var tips = res.data.tips;
@@ -343,6 +347,17 @@ export default {
         })
         .catch((e) => Object.assign(this.editForm, this.editFormBak));
     },
+	
+			
+	createProductCode(){ 
+		createProductCode({}).then(res=>{
+			var tips=res.data.tips;
+			if(tips.isOk){  
+				this.$set(this.editForm,'code',res.data.data)
+			}
+			this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+		})
+	},
     /**end 在上面加自定义方法**/
   }, //end method
   components: { 
