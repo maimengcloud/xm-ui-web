@@ -253,7 +253,7 @@
         append-to-body
         :close-on-click-modal="false"
       >
-        <xm-iteration-add
+        <xm-iteration-add op-type="add"
           :xm-product="xmProduct"
           :sel-project="selProject"
           :xm-iteration="addForm"
@@ -312,7 +312,7 @@ import {
   delXmIterationLink,
 } from "@/api/xm/core/xmIterationLink";
 
-import XmIterationAdd from "./XmIterationAdd"; //新增界面
+import XmIterationAdd from "./XmIterationEdit"; //新增界面
 import XmIterationEdit from "./XmIterationEdit"; //修改界面
 import XmIterationStateMng from "../xmIterationState/XmIterationStateMng"; //修改界面
 import XmGantt from "../components/xm-gantt";

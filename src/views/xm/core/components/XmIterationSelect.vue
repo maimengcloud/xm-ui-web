@@ -116,7 +116,7 @@
 		
 	
         <el-dialog append-to-body :visible.sync="addIterationVisible" width="70%">
-          <xm-iteration-add
+          <xm-iteration-add op-type="add"
             :xm-product="productId?{ id: productId, name: '' }:null"
 			:sel-project="linkProjectId?{id:linkProjectId,name:''}:null"
             @cancel="addIterationVisible = false"
@@ -136,7 +136,7 @@
   
 	const map=new Map();
 	import { mapGetters } from 'vuex' 
-	import XmIterationAdd from "../xmIteration/XmIterationAdd.vue";
+	import XmIterationAdd from "../xmIteration/XmIterationEdit.vue";
 
 	export default {
 		computed: {

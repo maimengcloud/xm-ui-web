@@ -96,38 +96,22 @@
           if(!item){
             return ""
           }else{
-            return item.icon?"":item.name
+            return item
           }
         },
         getMyColor(item){
-          if(item){
-           
-            if(this.getColor){
-                return this.getColor(item)
-            } 
-            return util.getColor(item)
-            
+          if(this.getColor){
+             return this.getColor(item)
           }else{
-            if(this.getColor){
-                return this.getColor(this.myVal)
-            }else{
-              return util.getColor(this.myVal)
-            }
-          }
+            return util.getColor(item)
+          } 
         },
         getMyIcon(item){
-          if(item){ 
-            if(this.getIcon){
+           if(this.getIcon){
                 return this.getIcon(item)
-            } 
-            return "el-icon-date";
-          }else{
-            if(this.getIcon){
-                return this.getIcon(this.myVal)
             }else{
               return "el-icon-date"
             }
-          }
         },
         initData(){
              this.myVal=this.value

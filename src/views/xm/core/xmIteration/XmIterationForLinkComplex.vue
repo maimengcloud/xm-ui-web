@@ -325,7 +325,7 @@
 		</el-row>
 		
 		<el-dialog  width="60%" top="20px" :visible.sync="iterationAddVisible" append-to-body>  
-					<xm-iteration-add  :xm-product="xmProduct" :sel-project="selProject" :visible="iterationAddVisible" @cancel="iterationAddVisible=false" @submit="afterIterationAddSubmit"></xm-iteration-add>
+					<xm-iteration-add op-type="add"  :xm-product="xmProduct" :sel-project="selProject" :visible="iterationAddVisible" @cancel="iterationAddVisible=false" @submit="afterIterationAddSubmit"></xm-iteration-add>
  		</el-dialog> 
 	</section>
 </template>
@@ -347,7 +347,7 @@
 	import XmIterationOverview from "./XmIterationOverview";
 
 	import XmIterationEdit from './XmIterationEdit.vue'; 
-	import  XmIterationAdd from './XmIterationAdd';//新增界面
+	import  XmIterationAdd from './XmIterationEdit';//新增界面
 	import XmReport from "@/views/xm/rpt/reportIndex";
 
 	import XmIterationMenuMng from '../xmIterationMenu/XmIterationMenuMng.vue';

@@ -1,39 +1,44 @@
 <template>
-	<section class="padding border">
-		 
-		<el-row style="padding-left:70px;">
-			 <font color="blue" style="text-align:center;">注意：请尽量在评审会阶段把需求明确.<br/>进入计划会后，不允许再添加需求进入迭代。原则上需求评审后需求只出不进。</font>
-		</el-row>
+	<section class="padding border"> 
 		<el-row>
 			<!--新增界面 XmIteration 迭代定义--> 
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">  
+			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm" label-position="left">  
 				<el-form-item label="迭代名称" prop="iterationName">
-					<el-input v-model="editForm.iterationName" placeholder="迭代名称"  @change="editSomeFields(editForm,'iterationName',$event)"></el-input>
+					<el-input v-model="editForm.iterationName" placeholder="迭代名称 选择上线日期后会自动生成名字"  @change="editSomeFields(editForm,'iterationName',$event)"></el-input>
+
 				</el-form-item> 
-				<el-form-item label="序号" prop="seqNo">
+				<el-form-item label="序号" prop="seqNo" v-if="opType!=='add'">
 					<el-input v-model="editForm.seqNo" placeholder="如1.0，2.0，1.1.1等"  @change="editSomeFields(editForm,'seqNo',$event)"></el-input>
 				</el-form-item> 
-				<el-form-item label="状态" prop="istatus">
-					
-					<el-select v-model="editForm.istatus" @change="editSomeFields(editForm,'istatus',$event)">
-					<el-option v-for="(item,index) in dicts['iterationStatus']" :key="index" :value="item.id" :label="item.name"></el-option>
-					</el-select>
-				</el-form-item> 
-				<el-form-item label="起止时间" prop="startTime">
-					<date-range :auto-default="false" start-key="startTime" end-key="endTime" v-model="editForm" placeholder="选择日期"   value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'startTime',$event)"></date-range>
-				</el-form-item>  
-				<el-form-item label="上线时间" prop="onlineTime">
-					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.onlineTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'onlineTime',$event)"></el-date-picker>
-				</el-form-item>   
-				<el-form-item label="负责人姓名" prop="adminUsername">
-					{{editForm.adminUsername}} <el-button type="text" @click="userSelectVisible=true">选择负责人</el-button>
-				</el-form-item>      
+				<el-row>
+					 
+					<el-col :span="12"> 
+						<el-form-item prop="onlineTime" label-width="0px">
+							<date-field label="上线时间"  type="date" placeholder="选择日期" v-model="editForm.onlineTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'onlineTime',$event)"></date-field>
+						</el-form-item>   
+					</el-col>
+					<el-col :span="12"> 
+				
+						<el-form-item prop="startTime"  label-width="0px">
+							<date-range-field label="起止时间" :auto-default="false" start-key="startTime" end-key="endTime" v-model="editForm" placeholder="选择日期"   value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'startTime',$event)"></date-range-field>
+						</el-form-item>  
+					</el-col>
+				</el-row>   
+				<el-row>
+					<el-col :span="12"> 
+						<el-form-item prop="adminUserid" label-width="0px">
+							<xm-user-field label="负责人姓名" v-model="editForm" userid-key="adminUserid" username-key="adminUsername"  @change="editSomeFields(editForm,'adminUserid',$event)"></xm-user-field>
+						</el-form-item>   
+					</el-col>
+					<el-col :span="12">
+						<el-form-item  prop="istatus" label-width="0px">
+							<dict-field label="状态" :dict="dicts['iterationStatus']" v-model="editForm.istatus" @change="editSomeFields(editForm,'istatus',$event)"></dict-field>
+							
+						</el-form-item> 
+					</el-col> 
+				</el-row>   
 			</el-form>
-		</el-row>
-		
-		<el-drawer append-to-body title="选择员工" :visible.sync="userSelectVisible" size="60%">
-        	<users-select v-if="userSelectVisible" :select-userids="[]" @confirm="onUserSelected" ref="usersSelect"></users-select>
-      	</el-drawer>
+		</el-row> 
 	</section>
 </template>
 
@@ -41,8 +46,8 @@
 	import util from '@/common/js/util';//全局公共库 
 	import { initDicts,editXmIteration,editSomeFieldsXmIteration } from '@/api/xm/core/xmIteration';
 	import { mapGetters } from 'vuex'	
-	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
-
+ 
+	import XmUserField from "@/views/xm/core/components/XmUserField";
 	
 	export default { 
 		computed: {
@@ -63,7 +68,7 @@
 				}
 			} 
 		},
-		props:['xmIteration','visible'],
+		props:['xmIteration','visible','opType'],
 		watch: {
 			'xmIteration':{
 				handler(){
@@ -121,11 +126,14 @@
 			},	
 
             editSomeFields(row,fieldName,$event){ 
+				if(this.opType==='add'){
+					return;
+				}
                 let params={};
                 params['ids']=[row].map(i=>i.id)
 				if(fieldName=='adminUserid'){
-					params['adminUserid']=$event.userid 
-					params['adminUsername']=$event.username
+					params['adminUserid']=$event[0].userid 
+					params['adminUsername']=$event[0].username
 				}else if(fieldName=='startTime'){
 					params['startTime']=row.startTime
 					params['endTime']=row.endTime
@@ -151,7 +159,7 @@
 		},//end method
 		components: {  
 			//在下面添加其它组件 'xm-iteration-edit':XmIterationEdit
-			UsersSelect
+			XmUserField
 		},
 		mounted() { 
 			this.$nextTick(()=>{

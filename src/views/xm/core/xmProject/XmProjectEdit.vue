@@ -880,9 +880,9 @@
 				 
 				
 				
-				if (fieldName == "adminUserid") {
-					params["adminUserid"] = $event[0].userid;
-					params["adminUsername"] = $event[0].username;
+				if (fieldName == "admUserid") {
+					params["admUserid"] = $event[0].userid;
+					params["admUsername"] = $event[0].username;
 				} else if (fieldName == "assUserid") {
 					params["assUserid"] = $event[0].userid;
 					params["assUsername"] = $event[0].username;

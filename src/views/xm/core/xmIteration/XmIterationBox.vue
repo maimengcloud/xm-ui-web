@@ -92,7 +92,7 @@
 
 			<!--新增 XmIteration 迭代定义界面-->
 			<el-drawer title="新增迭代定义" :visible.sync="addFormVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
-				<xm-iteration-add :xm-iteration="addForm" :parent-iteration="parentIteration" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-iteration-add>
+				<xm-iteration-add op-type="add" :xm-iteration="addForm" :parent-iteration="parentIteration" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-iteration-add>
 			</el-drawer>
 
 			<!--新增 XmIteration 迭代定义界面-->
@@ -115,7 +115,7 @@
 	import {  loadTasksToXmIterationState } from '@/api/xm/core/xmIterationState';
 	import { addXmIterationLink,delXmIterationLink } from '@/api/xm/core/xmIterationLink';
 
-	import  XmIterationAdd from './XmIterationAdd';//新增界面
+	import  XmIterationAdd from './XmIterationEdit';//新增界面
 	import  XmIterationEdit from './XmIterationEdit';//修改界面
 	import  XmIterationStateMng from '../xmIterationState/XmIterationStateMng';//修改界面
   import XmGantt from '../components/xm-gantt';
