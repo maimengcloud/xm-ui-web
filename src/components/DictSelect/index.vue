@@ -1,5 +1,5 @@
 <template>   
-    <el-select class="my-select" v-model="myVal" @change="onChange" :clearable="clearable">
+    <el-select class="my-select" ref="selectRef" v-model="myVal" @change="onChange" :clearable="clearable">
         <slot>
             <el-option :style="styleObj" v-for="(item,index) in dict" :key="index" :value="item.id" :label="item.name"> 
              <slot :item="item" :dict="dict"> 

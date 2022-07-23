@@ -1,19 +1,14 @@
 <template>    
     
-						<div class="field-box">  
+						<div class="field-box" @click="showSelect">  
 							<el-avatar class="avater" :icon="getMyIcon(currentItem)" :style="{backgroundColor:getMyColor(currentItem)}">{{getMyAvaterInfo(currentItem)}}</el-avatar> 
 							
-              <div class="field-info">
-                <slot name="field-info" :dict="dict" :item="currentItem">
-								<span class="field-value">{{currentItem?currentItem.name:''}} </span>
-                <slot name="label" :dict="dict" :item="currentItem">
-								  <span class="field-label">{{label}}</span> 
-                <slot v-if="disabled!==true" class="my-select" name="select" :dict="dict" :value="myVal">
-                  <dict-select  :dict="dict" v-model="myVal" @change="onChange" :get-icon="getIcon" :get-color="getColor"></dict-select>
-                </slot>
-                </slot>
-                </slot>
-							</div>   
+              <div class="field-info" > 
+								<span class="field-value" v-if="showVal">{{showVal}} </span> 
+								<span class="field-value" v-else>无</span> 
+								  <span class="field-label" >{{label}}</span>  
+                  <dict-select  :dict="dict" ref="selectRef" v-model="myVal" @change="onChange" :get-icon="getIcon" :get-color="getColor"></dict-select> 
+							</div>    
 						</div> 
   </template>
   
@@ -28,6 +23,18 @@
         }else{
             return null;
         }
+       },
+       showVal(){
+          if(this.dict){
+            var item= this.dict.find(k=>k.id==this.myVal) 
+            if(item){
+              return item.name
+            }else{
+              return this.myVal
+            }
+          }else{
+              return this.myVal
+          }
        }
     },
     data(){
@@ -78,6 +85,9 @@
       } ,
     },
     methods: { 
+      showSelect(){
+        this.$refs["selectRef"].$refs["selectRef"].toggleMenu();
+      },
         getMyAvaterInfo(item){
           if(!item){
             return ""
@@ -146,25 +156,35 @@
     margin-right:5px;
     align-items: center;
 	  cursor: pointer;
+    height: 40px;
+    line-height: 40px;
     .avater { 
 		  background-color:#FF9F73;
     }
 
     .field-info {
+      
+        height: 40px;
+        line-height: 40px;
         margin-left: 10px;
         display: flex;
         flex-direction: column;
         .field-value {  
-            font-size: 16px; 
+            height: 20px;
+            line-height: 20px;
+            font-size: 0.75rem; 
         } 
         .field-label{   
-          height: 40px;
-          font-size: 14px;
+          height: 20px;
+          line-height: 20px;
+            font-size: 0.75rem; 
           color: #C0C4CC;
         }
         
     }
 	.my-select{
+    height: 20px;
+    line-height: 20px;
     margin-left: 5px;
     margin-right:5px;
     max-width: 120px;
@@ -176,7 +196,7 @@
   display: none;
 }
  .field-box:hover .my-select{
-    height: 40px;
+    height: 20px;
     margin-left: 5px; 
     display: inline;
 } 
