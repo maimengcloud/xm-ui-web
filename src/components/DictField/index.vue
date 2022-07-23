@@ -7,12 +7,15 @@
 								<span class="field-value" v-if="!avaterCpd.isNull">{{avaterCpd.innerText}} </span> 
 								<span class="field-value" v-else><span class="label-font-color">无</span></span> 
 								  <span class="field-label" >{{label}}</span>  
-                  <dict-select  :dict="dict" ref="selectRef" v-model="myVal" @change="onChange" :get-icon="getIcon" :get-color="getColor"></dict-select> 
+                  <dict-select  :dict="dict" ref="selectRef" v-model="myVal" @change="onChange" :get-icon="getIcon" :get-color="getColor" :icon="icon"></dict-select> 
 							</div>    
 						</div> 
   </template>
   
-  <script>  
+  <script> 
+
+  
+import util from '@/common/js/util'
   export default {
     name: 'dict-field',
     components: {   },
@@ -25,10 +28,14 @@
         }
        },
       avaterCpd(){
+        var currentItem = null
+        if(this.dict){
+          currentItem= this.dict.find(k=>k.id==this.myVal) 
+        } 
         var isEmpty=this.isEmpty(this.myVal)
         var obj={isNull:isEmpty,icon:'el-icon-full-screen',color:'#FFFFFF',innerText:''} 
           if(this.getColor){
-            obj.color= this.getColor(this.currentItem)
+            obj.color= this.getColor(currentItem)
           }else{
             if(!isEmpty){
               obj.color= util.getColor(this.myVal)
@@ -36,24 +43,25 @@
           } 
           if(this.getIcon||this.icon){
             if(this.getIcon){
-              obj.icon= this.getIcon(this.currentItem)
+              obj.icon= this.getIcon(currentItem)
             }else if(this.icon){
              obj.icon=this.icon
-            }else {
-               if(!isEmpty){
-                obj.icon= ''
-               } 
             }
+          }else {
+            if(!isEmpty){
+              obj.icon= ''
+            } 
           }
+          debugger;
           if(isEmpty){
             obj.innerText=""
           }else{
             if(currentItem==null){
               obj.innerText=this.myVal
             }else{
-              obj.innerText=this.currentItem.name
+              obj.innerText=currentItem.name
             }
-          }
+          }   
         return obj;
       }
     },
@@ -97,6 +105,10 @@
         
       },   
       
+      icon:{
+         type:String,
+         default:null, 
+      },
       getIcon:{
          type:Function 
       },
@@ -160,6 +172,7 @@
           this.$emit('change',data)
         },
         isEmpty(v) {
+          debugger;
           switch (typeof v) {
           case 'undefined':
               return true;
