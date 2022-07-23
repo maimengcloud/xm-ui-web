@@ -1,6 +1,6 @@
 <template>   
 <div class="field-box">  
-							<el-avatar class="avater" :icon="avaterCpd.icon" :style="{backgroundColor:avaterCpd.color}">{{avaterCpd.innerText}}</el-avatar> 
+							<el-avatar class="avater" :class="{'dashed-circle':avaterCpd.isNull}"  :icon="avaterCpd.icon" :style="{backgroundColor:avaterCpd.color}">{{avaterCpd.innerText}}</el-avatar> 
 							
               <div class="field-info">
                 <slot name="field-info" :value="dateRange">

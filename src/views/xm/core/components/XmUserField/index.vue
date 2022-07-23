@@ -1,12 +1,13 @@
 <template>    
     <el-row>
 						<div class="field-box">  
-							<el-avatar class="avater" :icon="getMyIcon(myVal)" :style="{backgroundColor:getMyColor(myVal)}">{{getMyAvaterInfo(myVal)}}</el-avatar> 
+							<el-avatar class="avater" :class="{'dashed-circle':avaterCpd.isNull}"  :icon="avaterCpd.icon" :style="{backgroundColor:avaterCpd.color}">{{avaterCpd.innerText}}</el-avatar> 
 							
               <div class="field-info">
                 <slot name="field-info" :value="myVal">
-								<span class="field-value">{{showMyValue( myVal )}} </span>
-                <slot name="label" >
+								<span class="field-value" v-if="!avaterCpd.isNull">{{avaterCpd.innerText}} </span>
+								<span class="field-value" v-else><span class="label-font-color">无</span></span> 
+                <slot name="label">
 								  <span class="field-label">{{label}}</span> 
                 </slot>
                   <div v-if="disabled!==true" class="my-select" name="select" :value="myVal">
@@ -52,6 +53,32 @@
     name: 'user-field',
     components: { UsersSelect, XmGroupSelect },
     computed: { 
+      avaterCpd(){  
+        var isEmpty=this.isEmpty(this.myVal)
+        var username=isEmpty?"":this.myVal.username?this.myVal.username:this.myVal.userid
+        var obj={isNull:isEmpty,icon:'el-icon-user',color:'#E4E7ED',innerText:username} 
+          if(this.getColor||this.color){
+            if(this.getColor){
+               obj.color= this.getColor(this.myVal)
+            }else{
+              obj.color=this.color
+            }
+           
+          }else{
+            if(!isEmpty){ 
+                 obj.color= util.getColor(this.myVal.userid) 
+            } 
+          } 
+          if(this.getIcon||this.icon){
+            if(this.getIcon){
+              obj.icon= this.getIcon(this.myVal)
+            }else if(this.icon){
+             obj.icon=this.icon
+            }
+          } 
+          
+        return obj;
+      }
     },
     data(){
         return {
@@ -125,25 +152,25 @@
      
     },
     methods: {    
-      showMyValue(myVal){ 
-        if(!myVal){
-          return ""
-        }else{ 
-            if(!myVal||!myVal.userid){
-              return ""
-            }
-            if(myVal.username){
-              return myVal.username
-            }else if(myVal.userid){
-              return myVal.userid
-            }else{
-              return ""
-            } 
-        }
-      },
-        getMyAvaterInfo(item){
-          return this.showMyValue(item)
-        },
+        
+      
+        isEmpty(v) { 
+          switch (typeof v) {
+          case 'undefined':
+              return true;
+          case 'string':
+              if(v.length == 0) return true;
+              break; 
+          case 'object':
+              if (null === v || v.length === 0) return true;
+              for (var i in v) {
+                  return false;
+              }
+              return true;
+          }
+          return false;
+        }, 
+       
         getMyColor(item){ 
 
             if(item&&item.userid){
@@ -237,55 +264,69 @@
 <style lang="scss" scoped>
  
 
-
 .field-box {  
     display: flex;
     margin-right:5px;
     align-items: center;
 	  cursor: pointer;
+    height: 40px;
+    line-height: 40px;
     .avater { 
 		  background-color:#FF9F73;
     }
 
     .field-info {
+      
+        height: 40px;
+        line-height: 40px;
         margin-left: 10px;
         display: flex;
         flex-direction: column;
         .field-value {  
-            font-size: 16px;  
+            height: 20px;
+            line-height: 20px;
+            font-size: 0.75rem; 
         } 
         .field-label{   
-          height: 40px;
-          font-size: 14px;
+          height: 20px;
+          line-height: 20px;
+            font-size: 0.75rem; 
           color: #C0C4CC;
         }
         
     }
 	.my-select{
+    height: 20px;
+    line-height: 20px;
     margin-left: 5px;
     margin-right:5px;
-    max-width: 120px;
-		display: none;  
-	}
-	.btn{
-		margin-top: 0px;
-		visibility:hidden; 
+    max-width: 250px;
+    display: none;
 	} 
 	 
 }
  .field-box:hover .field-label{
-		display: none;
+  display: none;
 }
  .field-box:hover .my-select{
-    height: 40px;
-    margin-left: 5px;
+    height: 20px;
+    margin-left: 5px; 
     display: inline;
-} 
-
+}
+.dashed-circle{ 
+	width:40px;
+	height:40px;
+	border:2px dashed #000000;
+	border-radius:40px/40px;
+}
+.field-box:hover .dashed-circle{
+  
+	border:2px dashed #409EFF;
+}
 
 
 .avatar-container {
-    height: 50px;
+    height: 40px;
     display: flex;
     align-items: center;
     .avatar-wrapper {
@@ -301,7 +342,7 @@
         }
         .username{
             color: #7D7D7D;
-            font-size: 14px; 
+            font-size: 0.75rem; 
         }
         .el-icon-caret-bottom {
             font-size: 22px;
