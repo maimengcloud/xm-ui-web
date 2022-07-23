@@ -7,15 +7,15 @@
                 <slot name="field-info" :value="myVal">
 								<span class="field-value">{{myVal?formatDate( new Date(myVal),format):'' }} </span>
                 <slot name="label">
-								  <span class="field-label">{{label}}</span>
+								  <span class="field-label">{{label}}</span> 
+                  <div v-if="disabled!==true" class="my-select" name="select" :value="myVal">
+                    <el-date-picker    v-model="myVal" :value-format="valueFormat" :format="format"   
+                    @change="onChange"
+                    :picker-options="pickerOptions"></el-date-picker>
+                  </div>
                 </slot>
                 </slot>
 							</div>   
-							<div v-if="disabled!==true" class="my-select" name="select" :value="myVal">
-                <el-date-picker    v-model="myVal" :value-format="valueFormat" :format="format"   
-                @change="onChange"
-                :picker-options="pickerOptions"></el-date-picker>
-              </div>
 						</div> 
   </template>
   
@@ -150,6 +150,7 @@
             font-size: 16px;  
         } 
         .field-label{   
+          height: 40px;
           font-size: 14px;
           color: #C0C4CC;
         }
@@ -172,10 +173,11 @@
 }
  .field-box:hover .my-select{
   
+    height: 40px;
     margin-left: 5px;
     display: inline;
 } 
- .field-box:hover .field-info{ 
+ .field-box:hover .field-label{ 
     display: none;
 } 
 </style>

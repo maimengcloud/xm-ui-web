@@ -7,26 +7,26 @@
                 <slot name="field-info" :value="myVal">
 								<span class="field-value">{{showMyValue( myVal )}} </span>
                 <slot name="label">
-								  <span class="field-label">{{label}}</span>
+								  <span class="field-label">{{label}}</span> 
+                  <div v-if="disabled!==true" class="my-select" name="select" :value="myVal">
+                    <el-select v-model="myVal" @change="onSelectChange" :clearable="clearable">  
+                          <el-option disabled value="" style="margin-bottom:5px;">
+                              <el-row><el-button :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button><el-button v-if="projectId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button> </el-row>
+                          </el-option>
+                          <el-option class="avatar-container" v-for="(item,index) in users" :key="index" :value="item" :label="item.username">  
+                          
+                            <div class="avatar-wrapper">
+                                  <el-avatar class="user-avatar"  :style="{backgroundColor:getMyColor(item)}">{{item.username}}</el-avatar> 
+                                  <span class="username">{{item.username}}</span>
+                                  <i v-if="myVal.userid==item.userid" class="el-icon-check"></i> 
+                                  <i v-else>&nbsp;&nbsp;</i>  
+                            </div>
+                          </el-option> 
+                      </el-select> 
+                  </div>
                 </slot>
                 </slot>
 							</div>   
-							<div v-if="disabled!==true" class="my-select" name="select" :value="myVal">
-                 <el-select v-model="myVal" @change="onSelectChange" :clearable="clearable">  
-                      <el-option disabled value="" style="margin-bottom:5px;">
-                          <el-row><el-button :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button><el-button v-if="projectId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button> </el-row>
-                      </el-option>
-                      <el-option class="avatar-container" v-for="(item,index) in users" :key="index" :value="item" :label="item.username">  
-                      
-                        <div class="avatar-wrapper">
-                              <el-avatar class="user-avatar"  :style="{backgroundColor:getMyColor(item)}">{{item.username}}</el-avatar> 
-                              <span class="username">{{item.username}}</span>
-                               <i v-if="myVal.userid==item.userid" class="el-icon-check"></i> 
-                              <i v-else>&nbsp;&nbsp;</i>  
-                        </div>
-                      </el-option> 
-                  </el-select> 
-              </div>
 						</div> 
             <el-dialog :visible.sync="deptUserVisible" append-to-body top="20px" width="60%">
                <users-select :visible="deptUserVisible" :isSingleUser="true"  :isSelectByDept="true" @confirm="onConfirmUsers"></users-select>
@@ -258,6 +258,7 @@
             font-size: 16px;  
         } 
         .field-label{   
+          height: 40px;
           font-size: 14px;
           color: #C0C4CC;
         }
@@ -275,11 +276,11 @@
 	} 
 	 
 }
- .field-box:hover .btn{
-		visibility: visible !important;
+ .field-box:hover .field-label{
+  display: none;
 }
  .field-box:hover .my-select{
-  
+    height: 40px;
     margin-left: 5px;
     display: inline;
 } 

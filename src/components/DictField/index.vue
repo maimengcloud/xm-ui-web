@@ -7,13 +7,13 @@
                 <slot name="field-info" :dict="dict" :item="currentItem">
 								<span class="field-value">{{currentItem?currentItem.name:''}} </span>
                 <slot name="label" :dict="dict" :item="currentItem">
-								  <span class="field-label">{{label}}</span>
+								  <span class="field-label">{{label}}</span> 
+                <slot v-if="disabled!==true" class="my-select" name="select" :dict="dict" :value="myVal">
+                  <dict-select  :dict="dict" v-model="myVal" @change="onChange" :get-icon="getIcon" :get-color="getColor"></dict-select>
+                </slot>
                 </slot>
                 </slot>
 							</div>   
-							<slot v-if="disabled!==true" class="my-select" name="select" :dict="dict" :value="myVal">
-                <dict-select  :dict="dict" v-model="myVal" @change="onChange" :get-icon="getIcon" :get-color="getColor"></dict-select>
-              </slot>
 						</div> 
   </template>
   
@@ -158,6 +158,7 @@
             font-size: 16px; 
         } 
         .field-label{   
+          height: 40px;
           font-size: 14px;
           color: #C0C4CC;
         }
@@ -167,21 +168,17 @@
     margin-left: 5px;
     margin-right:5px;
     max-width: 120px;
-		visibility:hidden;  
-	}
-	.btn{
-		margin-top: 0px;
-		visibility:hidden; 
+    display: none;
 	} 
 	 
 }
- .field-box:hover .btn{
-		visibility: visible !important;
+ .field-box:hover .field-label{
+  display: none;
 }
  .field-box:hover .my-select{
-  
-    margin-left: 5px;
-		visibility: visible !important;
+    height: 40px;
+    margin-left: 5px; 
+    display: inline;
 } 
 </style>
   

@@ -7,21 +7,22 @@
 								<span class="field-value">{{formatDateRange(dateRange) }} </span>
                 <slot name="label">
 								  <span class="field-label">{{label}}</span>
+                  
+                  <div v-if="disabled!==true" class="my-select" name="select" :value="dateRange">
+                    
+                  <el-date-picker :type="type" :style="styleObj"  v-model="dateRange" :value-format="valueFormat" :format="format" 
+                      unlink-panels 
+                      :range-separator="rangeSepaSrator"
+                      :start-placeholder="startPlaceholder"
+                      :end-placeholder="endPlaceholder"
+                      :default-range="[-30,0]"
+                      @change="onDateRangeChange"
+                      :picker-options="pickerOptions"   
+                      ></el-date-picker>  
+                  </div>
                 </slot>
                 </slot>
 							</div>   
-							<div v-if="disabled!==true" class="my-select" name="select" :value="dateRange">
-                
-              <el-date-picker :type="type" :style="styleObj"  v-model="dateRange" :value-format="valueFormat" :format="format" 
-                  unlink-panels 
-                  :range-separator="rangeSepaSrator"
-                  :start-placeholder="startPlaceholder"
-                  :end-placeholder="endPlaceholder"
-                  :default-range="[-30,0]"
-                  @change="onDateRangeChange"
-                  :picker-options="pickerOptions"   
-                  ></el-date-picker>  
-              </div>
 						</div>  
 </template>
 
@@ -224,6 +225,7 @@ export default {
             font-size: 16px;  
         } 
         .field-label{   
+          height: 40px;
           font-size: 14px;
           color: #C0C4CC;
         }
@@ -244,11 +246,12 @@ export default {
 		visibility: visible !important;
 }
  .field-box:hover .my-select{
-  
+
     margin-left: 5px;
     display: inline;
+    height: 40px;
 } 
- .field-box:hover .field-info{ 
+ .field-box:hover .field-label{ 
     display: none;
 } 
 </style>
