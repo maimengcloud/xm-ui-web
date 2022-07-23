@@ -7,7 +7,7 @@
 								<span class="field-value" v-if="!avaterCpd.isNull">{{avaterCpd.innerText}} </span> 
 								<span class="field-value" v-else><span class="label-font-color">无</span></span> 
 								  <span class="field-label" >{{label}}</span>  
-                  <dict-select  :dict="dict" ref="selectRef" v-model="myVal" @change="onChange" :get-icon="getIcon" :get-color="getColor" :icon="icon"></dict-select> 
+                  <dict-select v-if="disabled!==true" :dict="dict" ref="selectRef" v-model="myVal" @change="onChange" :get-icon="getIcon" :get-color="getColor" :icon="icon"></dict-select> 
 							</div>    
 						</div> 
   </template>
@@ -130,6 +130,9 @@ import util from '@/common/js/util'
     },
     methods: { 
       showSelect(){
+        if(this.disabled){
+          return;
+        }
         this.$refs["selectRef"].$refs["selectRef"].toggleMenu();
       }, 
         initData(){
