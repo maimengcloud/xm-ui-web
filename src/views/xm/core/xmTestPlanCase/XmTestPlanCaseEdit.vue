@@ -189,7 +189,7 @@ import  XmUserField from '@/views/xm/core/components/XmUserField';//修改界面
 	export default {
 	    name:'xmTestPlanCaseEdit',
 	    components: {
-			TestStepResult,MyInput,XmMenuEdit,XmQuestionMng,XmQuestionAdd,XmUserField,
+			TestStepResult,MyInput,XmMenuEdit:()=>import('../xmMenu/XmMenuEdit.vue'),XmQuestionMng,XmQuestionAdd,XmUserField,
 
         },
 		computed: {
