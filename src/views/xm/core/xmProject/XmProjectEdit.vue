@@ -16,7 +16,7 @@
 								<el-button  @click.native="createProjectCode">自动生成</el-button>
 								 <el-tooltip content="项目代号用于签订合同等甲乙方共享的场景;项目编号为内部编号，用于内部流转，生成规则:项目代号+四位随机码 "><i class="el-icon-question"></i></el-tooltip>
 							</el-form-item> 	 
-							<el-row class="padding-left padding-right">
+							<el-row class="padding-left padding-right padding-top">
 								<el-col :span="8">
 									<el-form-item prop="xmType" label-width="0px"> 
 										<dict-field label="项目类型" :dict="dicts['projectType']" v-model="editForm.xmType" @change="editXmProjectSomeFields(editForm,'xmType',$event)"></dict-field>
@@ -25,12 +25,12 @@
 								<el-col :span="8">
 								
 									<el-form-item prop="status" label-width="0px"> 
-										<dict-field label="项目状态" :dict="dicts['projectStatus']" v-model="editForm.priority" @change="editXmProjectSomeFields(editForm,'status',$event)"></dict-field>
+										<dict-field label="项目状态" :dict="dicts['projectStatus']" v-model="editForm.status" @change="editXmProjectSomeFields(editForm,'status',$event)"></dict-field>
 									</el-form-item>   
 								</el-col>  
 								<el-col :span="8"> 
 									<el-form-item prop="workType" label-width="0px"> 
-										<dict-field label="工作方式" :dict="dicts['workType']" v-model="editForm.priority" @change="editXmProjectSomeFields(editForm,'workType',$event)"></dict-field>
+										<dict-field label="工作方式" :dict="dicts['workType']" v-model="editForm.workType" @change="editXmProjectSomeFields(editForm,'workType',$event)"></dict-field>
 									</el-form-item>   
 								</el-col> 
 							</el-row>   
@@ -823,8 +823,7 @@
 			},
 			initData(){
 				this.editForm=Object.assign(this.editForm,this.selProject)
-				if(this.opType==='add'){
-					debugger;
+				if(this.opType==='add'){ 
 					this.editForm.pmUserid=this.userInfo.userid
 					this.editForm.pmUsername=this.userInfo.username
 					this.editForm.admUserid=this.userInfo.userid
@@ -875,9 +874,20 @@
 				}
 				var params={ids:[row.id]}; 
 				 
-				params[fieldName]=$event 
 				
 				
+				if (fieldName == "adminUserid") {
+					params["adminUserid"] = $event[0].userid;
+					params["adminUsername"] = $event[0].username;
+				} else if (fieldName == "assUserid") {
+					params["assUserid"] = $event[0].userid;
+					params["assUsername"] = $event[0].username;
+				} else if (fieldName == "pmUserid") {
+					params["pmUserid"] = $event[0].userid;
+					params["pmUsername"] = $event[0].username;
+				}else{
+					params[fieldName]=$event 
+				}
 				if(fieldName=='description'){
 					this.$refs.editForm.validateField('description',err=>{
 						if(err){ 

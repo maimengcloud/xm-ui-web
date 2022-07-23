@@ -204,7 +204,7 @@
     </el-popover>
 	
         <el-dialog append-to-body :visible.sync="addProductVisible" width="70%">
-          <xm-product-add
+          <xm-product-add op-type="add"
             :sel-project="{ id: linkProjectId, name: '' }"
             @cancel="addProductVisible = false"
             @submit="afterAddSubmit"
@@ -221,7 +221,7 @@ import util from "@/common/js/util"; //全局公共库
 import { listXmProductWithState } from "@/api/xm/core/xmProduct";
 import { mapGetters } from "vuex";
 import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
-import XmProductAdd from "../xmProduct/XmProductAdd.vue";
+import XmProductAdd from "../xmProduct/XmProductEdit.vue";
 const map = new Map();
 
 export default {

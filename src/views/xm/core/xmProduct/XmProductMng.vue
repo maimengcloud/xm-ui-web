@@ -294,7 +294,7 @@
 
 					<!--新增 XmProduct 产品表界面-->
 					<el-drawer title="新增产品" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
-						<xm-product-add :xm-product="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-product-add>
+						<xm-product-add  op-type="add" :xm-product="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-product-add>
 					</el-drawer>
 					<el-drawer title="产品状态数据" :visible.sync="productStateVisible"  width="100%"  append-to-body  :close-on-click-modal="false">
 						<xm-product-state-mng :xm-product="editForm" :visible="productStateVisible" @cancel="productStateVisible=false"></xm-product-state-mng>
@@ -364,7 +364,7 @@
 	import { listXmProduct,listXmProductWithState, delXmProduct, batchDelXmProduct,copyTo,createProductCode } from '@/api/xm/core/xmProduct';
 	import { addXmIterationLink,delXmIterationLink } from '@/api/xm/core/xmIterationLink';
 	import { loadTasksToXmProductState } from '@/api/xm/core/xmProductState';
-	import  XmProductAdd from './XmProductAdd';//新增界面
+	import  XmProductAdd from './XmProductEdit';//新增界面
 	import  XmProductEdit from './XmProductEdit';//修改界面
 	import  XmProductTplMng from './XmProductTplMng';//修改界面
 	import { mapGetters } from 'vuex'

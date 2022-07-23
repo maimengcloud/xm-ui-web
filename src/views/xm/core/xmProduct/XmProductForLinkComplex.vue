@@ -284,7 +284,7 @@
       width="60%"
       :visible.sync="addProductVisible"
     >
-      <xm-product-add
+      <xm-product-add  op-type="add"
         @cancel="addProductVisible = false"
         :sel-project="selProject"
         @submit="afterAddProductSubmit"
@@ -314,7 +314,7 @@ import { loadTasksToXmProductState } from "@/api/xm/core/xmProductState";
 import { initDicts, editXmProductSomeFields } from "@/api/xm/core/xmProduct";
 import { loadTasksToXmMenuState } from "@/api/xm/core/xmMenuState";
 import XmProductEdit from "./XmProductEdit.vue";
-import XmProductAdd from "./XmProductAdd"; //新增界面
+import XmProductAdd from "./XmProductEdit"; //新增界面
 
 export default {
   computed: {
