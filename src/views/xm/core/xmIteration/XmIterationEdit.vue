@@ -3,10 +3,18 @@
 		<el-row>
 			<!--新增界面 XmIteration 迭代定义--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm" label-position="left">  
-				<el-row class="label-font-color"> <span v-if="opType!=='add'">迭代编号：{{editForm.id}} &nbsp;&nbsp;</span>归属产品：{{editForm.productName?editForm.productName:editForm.productId}}</el-row>
+				<el-row class="label-font-color" v-if="opType!=='add'"> <span >迭代编号：{{editForm.id}} &nbsp;&nbsp;</span>归属产品：{{editForm.productName?editForm.productName:editForm.productId}}
+					 
+						
+				 
+				</el-row>
 				<el-form-item label="迭代名称" prop="iterationName">
 					<el-input v-model="editForm.iterationName" placeholder="迭代名称 选择上线日期后会自动生成名字"  @change="editSomeFields(editForm,'iterationName',$event)"></el-input>
 
+				</el-form-item> 
+				<el-form-item label="归属产品" prop="seqNo" v-if="opType==='add'">
+					<xm-product-select v-if=" (!xmProduct||!xmProduct.id)" ref="xmProductSelect" :auto-select="true" :link-project-id="selProject?selProject.id:null"   @row-click="onProductRowClick" @clear="onProductClearSelect"></xm-product-select>
+					{{ xmProduct && xmProduct.id?xmProduct.productName||xmProduct.id:''}}
 				</el-form-item> 
 				<el-form-item label="序号" prop="seqNo" v-if="opType!=='add'">
 					<el-input v-model="editForm.seqNo" placeholder="如1.0，2.0，1.1.1等"  @change="editSomeFields(editForm,'seqNo',$event)"></el-input>
@@ -39,16 +47,20 @@
 					</el-col> 
 				</el-row>   
 			</el-form>
+			<el-row v-if="opType=='add'" style="float:right;">
+				<el-button type="primary" @click="addSubmit">保存</el-button>
+			</el-row>
 		</el-row> 
 	</section>
 </template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库 
-	import { initDicts,editXmIteration,editSomeFieldsXmIteration } from '@/api/xm/core/xmIteration';
+	import { initDicts,addXmIteration,editSomeFieldsXmIteration } from '@/api/xm/core/xmIteration';
 	import { mapGetters } from 'vuex'	
  
 	import XmUserField from "@/views/xm/core/components/XmUserField";
+	import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 	
 	export default { 
 		computed: {
@@ -69,7 +81,7 @@
 				}
 			} 
 		},
-		props:['xmIteration','visible','opType','xmProduct'],
+		props:['xmIteration','visible','opType','xmProduct','selProject'],
 		watch: {
 			'xmIteration':{
 				handler(){
@@ -192,13 +204,42 @@
 					} 
 				} 
 				this.editFormBak={...this.editForm}
-			}
+			},
+			onProductRowClick(product){
+				this.editForm.productId=product.id
+				this.editForm.productName=product.productName 
+			}, 
+			onProductClearSelect(){ 
+				this.editForm.productId=''
+				this.editForm.productName='' 
+			},
+						//新增提交XmIteration 迭代定义 父组件监听@submit="afterAddSubmit"
+			addSubmit: function () {  
+				this.$refs.editForm.validate((valid) => {
+					if (valid) {  
+						var params={...this.editForm} 
+						this.$confirm('确认提交迭代吗？', '提示', {}).then(() => { 
+							this.load.add=true 
+							addXmIteration(params).then((res) => {
+								this.load.add=false
+								var tips=res.data.tips;
+								if(tips.isOk){ 
+									this.$emit('submit',res.data.data);//  @submit="afterAddSubmit"
+								}
+								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+							}).catch( err  => this.load.add=false);
+						});
+					}else{
+						this.$notify({position:'bottom-left',showClose:true,message: "表单验证不通过", type: 'error' }); 
+					}
+				});
+			},
 			/**end 在上面加自定义方法**/
 			
 		},//end method
 		components: {  
 			//在下面添加其它组件 'xm-iteration-edit':XmIterationEdit
-			XmUserField
+			XmUserField,XmProductSelect,
 		},
 		mounted() { 
 			this.$nextTick(()=>{

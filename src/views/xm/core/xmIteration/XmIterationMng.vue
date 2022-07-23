@@ -277,19 +277,7 @@
           :visible="iterationStateVisible"
           @cancel="iterationStateVisible = false"
         ></xm-iteration-state-mng>
-      </el-drawer>
-
-      <el-drawer
-        title="迭代报告"
-        :visible.sync="iterationSelectVisible"
-        fullscreen
-        append-to-body
-        :close-on-click-modal="false"
-      >
-        <xm-iteration-select
-          @row-click="onXmIterationSelect"
-        ></xm-iteration-select>
-      </el-drawer>
+      </el-drawer> 
     </el-row>
   </section>
 </template>
