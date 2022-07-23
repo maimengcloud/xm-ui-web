@@ -34,9 +34,9 @@ export default {
   components: {   },
   computed: {
      avaterCpd(){  
-        var isEmpty=this.isEmpty(this.dateRange)
-        var formatDate=this.formatDateRange(this.dateRange);
-        var obj={isNull:isEmpty,icon:'el-icon-full-screen',color:'#E4E7ED',innerText:formatDate} 
+        var isEmpty=this.dateRange==null ||this.dateRange.length==0
+        var formatDate=isEmpty?"":this.formatDateRange(this.dateRange);
+        var obj={isNull:isEmpty,icon:'el-icon-date',color:'#E4E7ED',innerText:formatDate} 
           if(this.getColor||this.color){
             if(this.getColor){
                obj.color= this.getColor(this.dateRange)
@@ -55,10 +55,6 @@ export default {
             }else if(this.icon){
              obj.icon=this.icon
             }
-          }else {
-            if(!isEmpty){ 
-                obj.icon='' 
-            } 
           } 
             
         return obj;

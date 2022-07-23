@@ -1,11 +1,12 @@
 <template>    
     
 						<div class="field-box">  
-							<el-avatar class="avater" :icon="getMyIcon(myVal)" :style="{backgroundColor:getMyColor(myVal)}">{{getMyAvaterInfo(myVal)}}</el-avatar> 
+							<el-avatar class="avater" :icon="avaterCpd.icon" :style="{backgroundColor:avaterCpd.color}">{{avaterCpd.innerText}}</el-avatar> 
 							
               <div class="field-info">
-                <slot name="field-info" :value="myVal">
-								<span class="field-value">{{myVal?formatDate( new Date(myVal),format):'' }} </span>
+                <slot name="field-info" :value="dateRange">
+								<span class="field-value" v-if="!avaterCpd.isNull">{{avaterCpd.innerText}} </span> 
+								<span class="field-value" v-else><span class="label-font-color">无</span></span> 
                 <slot name="label">
 								  <span class="field-label">{{label}}</span> 
                   <div v-if="disabled!==true" class="my-select" name="select" :value="myVal">
@@ -26,6 +27,36 @@
     name: 'date-field',
     components: {   },
     computed: { 
+      
+      avaterCpd(){ 
+         
+        var isEmpty=!this.myVal
+        var date=isEmpty?"":this.formatDate(new Date(this.myVal),this.format)
+        var obj={isNull:isEmpty,icon:'el-icon-date',color:'#E4E7ED',innerText:date} 
+          if(this.getColor||this.color){
+            if(this.getColor){
+               obj.color= this.getColor(this.myVal)
+            }else{
+              obj.color=this.color
+            }
+           
+          }else{
+            if(!isEmpty){ 
+                 obj.color= util.getColor(this.myVal) 
+            } 
+          } 
+          if(this.getIcon||this.icon){
+            if(this.getIcon){
+              obj.icon= this.getIcon(this.myVal )
+            }else if(this.icon){
+             obj.icon=this.icon
+            }
+          } 
+          if(isEmpty){
+            obj.innerText=''
+          }  
+        return obj;
+      }
     },
     data(){
         return {
