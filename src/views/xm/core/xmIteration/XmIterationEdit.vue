@@ -3,6 +3,7 @@
 		<el-row>
 			<!--新增界面 XmIteration 迭代定义--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm" label-position="left">  
+				<el-row class="label-font-color"> <span v-if="opType!=='add'">迭代编号：{{editForm.id}} &nbsp;&nbsp;</span>归属产品：{{editForm.productName?editForm.productName:editForm.productId}}</el-row>
 				<el-form-item label="迭代名称" prop="iterationName">
 					<el-input v-model="editForm.iterationName" placeholder="迭代名称 选择上线日期后会自动生成名字"  @change="editSomeFields(editForm,'iterationName',$event)"></el-input>
 
@@ -68,19 +69,43 @@
 				}
 			} 
 		},
-		props:['xmIteration','visible','opType'],
+		props:['xmIteration','visible','opType','xmProduct'],
 		watch: {
 			'xmIteration':{
 				handler(){
-					this.editForm=Object.assign(this.editForm, this.xmIteration);
-					this.editFormBak={...this.editForm}
+					 this.initData();
 				},
 				deep:true,
 			}, 
 	      'visible':function(visible) { 
 	      	if(visible==true){ 
+				this.initData();
 	      	}
-	      } 
+	      },
+		  'editForm.onlineTime':function(val){
+			  if(!val){
+				  return;
+			  }
+			  if(this.opType!=='add'){
+				return;
+			  }
+			  var date=val.substr(0,10)
+			  date=date.replaceAll('-','');
+			  this.editForm.iterationName=date+(this.editForm.productName?this.editForm.productName:'-请修改-')+'V1.0.0'
+		  },
+		  'editForm.productName':function(val){
+			  var date=this.editForm.onlineTime
+			  if(!date){
+				  return;
+			  }
+			  
+			  if(this.opType!=='add'){
+				return;
+			  }
+			  date=date.substr(0,10)
+			  date=date.replaceAll('-','');
+			  this.editForm.iterationName=date+(this.editForm.productName?this.editForm.productName:'-请修改-')+'V1.0.0'
+		  }
 	    },
 		data() {
 			return {
@@ -154,6 +179,20 @@
                   }
                 }).catch((e)=>Object.assign(this.editForm,this.editFormBak))
             },
+			initData(){ 
+				this.editForm=Object.assign(this.editForm, this.xmIteration);   
+				if(this.opType==='add'){
+					this.editForm.cuserid=this.userInfo.userid
+					this.editForm.cusername=this.userInfo.username
+					this.editForm.adminUserid=this.userInfo.userid
+					this.editForm.adminUsername=this.userInfo.username;
+					if(this.xmProduct && this.xmProduct.id){ 
+						this.editForm.productId=this.xmProduct.id
+						this.editForm.productName=this.xmProduct.productName;
+					} 
+				} 
+				this.editFormBak={...this.editForm}
+			}
 			/**end 在上面加自定义方法**/
 			
 		},//end method
@@ -164,8 +203,8 @@
 		mounted() { 
 			this.$nextTick(()=>{
 				initDicts(this)
-				this.editForm=Object.assign(this.editForm, this.xmIteration);   
-				this.editFormBak={...this.editForm}
+				this.initData()
+				
 			})
 			
 			/**在下面写其它函数***/
