@@ -6,9 +6,13 @@
 							 <el-row v-if="opType!=='add'" class="padding-top label-font-color">
 								 项目代号:   {{editForm.code}} &nbsp;&nbsp; 项目编号:   {{editForm.id}} <el-tooltip content="项目代号用于签订合同等甲乙方共享的场景;项目编号为内部编号，用于内部流转,编号生成规则:项目代号+四位随机码 "><i class="el-icon-question"></i></el-tooltip>
 							</el-row>
-							<el-form-item  prop="name"  label-width="0px">  
-									<my-input  v-model="editForm.name" placeholder="项目名称" @change="editXmProjectSomeFields(editForm,'name',$event)"></my-input> 
+							<el-form-item  prop="name"  label-width="0px" class="title-box" v-if="opType!=='add'">  
+									<el-input   v-model="editForm.name" placeholder="请填写 项目名称" @change="editXmProjectSomeFields(editForm,'name',$event)"></el-input> 
 							</el-form-item>    
+							
+							<el-form-item  label="项目名称" prop="name" v-if="opType==='add'">  
+									<el-input   v-model="editForm.name" placeholder="请填写 项目名称" @change="editXmProjectSomeFields(editForm,'name',$event)"></el-input> 
+							</el-form-item>   
 							<el-form-item label="项目代号" prop="code" v-if="opType==='add'">
  
 								<el-input v-model="editForm.code" style="width:200px;" placeholder="项目代号，不可为空" > 
@@ -926,14 +930,5 @@
 
 </script>
 
-<style scoped>
-.line{
-  float:right;
-  width: 100%;
-  height: 1px;
-  margin-top: -0.5em;
-  background:#d4c4c4;
-  position: relative;
-  text-align: center;
-}
+<style  scoped> 
 </style>

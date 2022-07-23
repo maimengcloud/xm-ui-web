@@ -274,11 +274,42 @@ table tr.hover-row{
   display: inline-block;
   margin-right: 5px;
 }  
-/*2.隐藏滚动条，太丑了
-.el-drawer__container ::-webkit-scrollbar{
-  display: none;
+
+
+
+.label-font-color{
+  color: #C0C4CC;
 }
-*/
+
+.title-font-size{
+  font-size:28px;
+}
+
+.title-box{
+
+	height: 40px;
+}
+.title-box:hover .el-input .el-input__inner{  
+   	border: 1px solid #dcdfe6 !important;
+	padding:0 0px;
+	font-size:1.5rem;
+	height: 40px; 
+
+} 
+ .title-box:hover .el-input .el-input__inner:focus{  
+   	border: 1px solid #7287ef !important;
+	padding:0 0px;
+	font-size:1.5rem;
+	height: 40px; 
+
+} 
+.title-box .el-input .el-input__inner{ 
+    border: 0px solid #dcdfe6 !important;
+	padding:0 1px; 
+	font-size:1.5rem; 
+	height: 40px;
+}
+ 
 /*此处根据不同屏幕分配率显示不同的样式*/
 /*手机端*/
 @media only screen and (min-width: 0px) and (max-width: 768px) {  
@@ -316,22 +347,3 @@ table tr.hover-row{
   }
 }
 
-.label-font-color{
-  color: #C0C4CC;
-}
-
-.title-font-size{
-  font-size:28px;
-}
-
-.title-box:hover.el-input >>> .el-input__inner{  
-  border: 1px solid #dcdfe6 !important;
-padding:0 0px;
-font-size:1.5rem;
-
-}
-.title-box.el-input >>> .el-input__inner{ 
-    border: 0px solid #dcdfe6 !important;
-  padding:0 1px; 
-  font-size:1.5rem;
-}

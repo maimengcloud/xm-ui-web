@@ -6,7 +6,7 @@
         :model="editForm"
         label-width="120px"
         :rules="editFormRules" 
-		label-position="left"
+		label-position="top"
         ref="editForm"
       >
         <el-row  v-if="opType !== 'add'" class="padding-top label-font-color">
@@ -20,14 +20,13 @@
             ><i class="el-icon-question"></i
           ></el-tooltip>
         </el-row>   
-        <el-form-item prop="productName" label-width="0px" v-if="opType !== 'add'">  
-				<el-input class="title-box" size="medium"
+        <el-form-item prop="productName" label-width="0px" v-if="opType !== 'add'" class="title-box">  
+				<el-input  
 					v-model="editForm.productName"
 					placeholder="产品名称"
 					@change="editSomeFields(editForm, 'productName', $event)"
 				></el-input>   
-        </el-form-item> 
-		
+        </el-form-item>  
         <el-form-item label="产品名称" prop="productName" v-if="opType === 'add'">  
 				<el-input
 					v-model="editForm.productName"
@@ -97,11 +96,11 @@
           ></el-input>
         </el-form-item>
       </el-form>
- 
+		
+		<el-row v-if="opType==='add'" style="float:right;">
+			<el-button type="primary" @click="editSubmit">保存</el-button>
+		</el-row> 
     </el-row>
-	<el-row v-if="opType==='add'">
-		<el-button type="primary" @click="editSubmit">保存</el-button>
-	</el-row> 
   </section>
 </template>
 
@@ -144,6 +143,8 @@ export default {
     },
     visible: function (visible) {
       if (visible == true) {
+        
+        this.initData();
         //从新打开页面时某些数据需要重新加载，可以在这里添加
       }
     },
@@ -358,30 +359,31 @@ export default {
 			this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 		})
 	},
+  
+			initData(){
+				this.editForm=Object.assign(this.editForm,this.xmProduct)
+				if(this.opType==='add'){ 
+					this.editForm.pmUserid=this.userInfo.userid
+					this.editForm.pmUsername=this.userInfo.username
+					this.editForm.admUserid=this.userInfo.userid
+					this.editForm.admUsername=this.userInfo.username
+					this.editForm.assUserid=this.userInfo.userid
+					this.editForm.assUsername=this.userInfo.username 
+				} 
+				this.editFormBak={...this.editForm}
+			},
     /**end 在上面加自定义方法**/
   }, //end method
   components: { 
   },
-  mounted() {
-    this.editForm = this.xmProduct;
-    this.editFormBak = { ...this.editForm };
+  mounted() { 
     initDicts(this);
+    this.initData();
     /**在下面写其它函数***/
   }, //end mounted
 };
 </script>
 
 <style  lang="scss" scoped> 
-
-.title-box:hover.el-input >>> .el-input__inner{  
-  border: 1px solid #dcdfe6 !important;
-padding:0 0px;
-font-size:1.5rem;
-
-}
-.title-box.el-input >>> .el-input__inner{ 
-    border: 0px solid #dcdfe6 !important;
-  padding:0 1px; 
-  font-size:1.5rem;
-}
+ 
 </style>
