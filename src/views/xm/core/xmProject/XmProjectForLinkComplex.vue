@@ -134,7 +134,7 @@
             <xm-project-detail
               v-if="showPanel == 'detail'"
               :sel-project="selProject"
-              @submit="afterEditSubmit"
+              @submit="onEditFields"
 			  ref="detail"
 			  @edit-fields="onEditFields"
             ></xm-project-detail>

@@ -264,7 +264,7 @@ export default {
       return this.selProject.taskCnt;
     },
     taskProgress: function (){
-      return this.selProject.finishRate;
+      return this.selProject.finishRate?parseInt(selProject.finishRate):0;
     },
     taskStartTime: function (){
       return this.selProject.startTime?this.selProject.startTime.substring(0,10):'';
@@ -276,6 +276,9 @@ export default {
       return this.selProject.createUsername;
     },
     workloadProgress:function (){
+      if(!this.selProject.actWorkload||!this.selProject.budgetWorkload){
+        return 0;
+      }
       return Math.round(this.selProject.actWorkload/this.selProject.budgetWorkload*100);
     },
     deviation:function (){
@@ -290,9 +293,15 @@ export default {
       return this.selProject.budgetWorkload - this.selProject.actWorkload;
     },
     planProgress:function (){
+      if(!this.selProject.estimateWorkload||!this.selProject.budgetWorkload){
+        return 0;
+      }
         return Math.round(this.selProject.estimateWorkload/this.selProject.budgetWorkload*100);
     },
     realProgress:function (){
+      if(!this.selProject.actWorkload||!this.selProject.budgetWorkload){
+        return 0;
+      }
       if(this.selProject.actWorkload < this.selProject.budgetWorkload){
         return Math.round(this.selProject.actWorkload/this.selProject.budgetWorkload*100)
       }else{

@@ -1,7 +1,7 @@
 <template>    
     
 						<div class="field-box" @click="showSelect">  
-							<el-avatar class="avater" :class="{dashedCircle:avaterCpd.isNull}" :icon="avaterCpd.icon" :style="{backgroundColor:avaterCpd.color}">{{avaterCpd.innerText}}</el-avatar> 
+							<el-avatar class="avater" :class="{'dashed-circle':avaterCpd.isNull}" :icon="avaterCpd.icon" :style="{backgroundColor:avaterCpd.color}">{{avaterCpd.innerText}}</el-avatar> 
 							
               <div class="field-info" > 
 								<span class="field-value" v-if="!avaterCpd.isNull">{{avaterCpd.innerText}} </span> 
@@ -27,13 +27,13 @@ import util from '@/common/js/util'
             return null;
         }
        },
-      avaterCpd(){
+      avaterCpd(){ 
         var currentItem = null
         if(this.dict){
           currentItem= this.dict.find(k=>k.id==this.myVal) 
-        }  
+        }   
         var isEmpty=this.isEmpty(this.myVal)
-        var obj={isNull:isEmpty,icon:'el-icon-full-screen',color:'#FFFFFF',innerText:''} 
+        var obj={isNull:isEmpty,icon:'el-icon-full-screen',color:'#E4E7ED',innerText:''} 
           if(this.getColor||this.color){
             if(this.getColor){
                obj.color= this.getColor(this.myVal,currentItem,this.dict)
@@ -131,50 +131,7 @@ import util from '@/common/js/util'
     methods: { 
       showSelect(){
         this.$refs["selectRef"].$refs["selectRef"].toggleMenu();
-      },
-        getMyAvaterInfo(item){
-          if(!item){
-            return ""
-          }else{
-            return item.icon?"":item.name
-          }
-        },
-        getMyColor(item){ 
-          if(item){
-           
-            if(this.getColor){
-                return this.getColor(item.id)
-            }
-            if(item.color){
-                return item.color
-            }
-            return ""
-            
-          }else{
-            if(this.getColor){
-                return this.getColor(this.myVal)
-            }else{
-              return ""
-            }
-          }
-        },
-        getMyIcon(item){
-          if(item){ 
-            if(this.getIcon){
-                return this.getIcon(item.id)
-            }
-            if(item.icon){
-                return item.icon
-            }
-            return "";
-          }else{
-            if(this.getIcon){
-                return this.getIcon(this.myVal)
-            }else{
-              return ""
-            }
-          }
-        },
+      }, 
         initData(){
              this.myVal=this.value
             
@@ -260,13 +217,13 @@ import util from '@/common/js/util'
     margin-left: 5px; 
     display: inline;
 }
-.dashedCircle{ 
+.dashed-circle{ 
 	width:40px;
 	height:40px;
 	border:2px dashed #000000;
 	border-radius:40px/40px;
 }
-.field-box:hover .dashedCircle{
+.field-box:hover .dashed-circle{
   
 	border:2px dashed #409EFF;
 }

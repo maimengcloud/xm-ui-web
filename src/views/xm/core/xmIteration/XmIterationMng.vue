@@ -387,6 +387,7 @@ export default {
         iphase: "",
         isTpl: "",
         productId: "",
+        productName:''
       },
 
       editFormVisible: false, //编辑界面是否显示
@@ -412,6 +413,7 @@ export default {
         iphase: "",
         isTpl: "",
         productId: "",
+        productName:''
       },
       editFormInit: {
         id: "",
@@ -434,6 +436,7 @@ export default {
         iphase: "",
         isTpl: "",
         productId: "",
+        productName:''
       },
 
       /**begin 自定义属性请在下面加 请加备注**/
@@ -569,24 +572,13 @@ export default {
       this.editForm = Object.assign({}, row);
     },
     //显示新增界面 XmIteration 迭代定义
-    showAdd: function () {
-      if (!this.roles.some((i) => i.roleid == "iterationAdmin")) {
-        this.$notify({
-          position: "bottom-left",
-          showClose: true,
-          message: "只有迭代管理员可以新增迭代",
-          type: "error",
-        });
-        return;
-      }
+    showAdd: function () { 
       this.parentIteration = null;
-      this.addFormVisible = true;
-      //this.addForm=Object.assign({}, this.editForm);
+      this.addFormVisible = true; 
     },
     showSubAdd: function (row) {
       this.parentIteration = row;
-      this.addFormVisible = true;
-      //this.addForm=Object.assign({}, this.editForm);
+      this.addFormVisible = true; 
     },
     afterAddSubmit(xmIteration) {
       this.addFormVisible = false;
