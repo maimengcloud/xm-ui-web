@@ -6,12 +6,12 @@
         :model="editForm"
         label-width="120px"
         :rules="editFormRules"
-		label-position="left"
+		label-position="top"
         ref="editForm"
       >
-        <el-row v-if="opType !== 'add'" class="padding-top">
-          <span class="label-font-color">产品代号:</span>
-          {{ editForm.code }} &nbsp;&nbsp;<span class="label-font-color"
+        <el-row  v-if="opType !== 'add'" class="padding-top label-font-color">
+          <span >产品代号:</span>
+          {{ editForm.code }} &nbsp;&nbsp;<span  
             >产品编号:</span
           >
           {{ editForm.id }}
@@ -19,14 +19,21 @@
             content="产品代号用于签订合同等甲乙方共享的场景;产品编号为内部编号，用于内部流转,编号生成规则:产品代号+四位随机码 "
             ><i class="el-icon-question"></i
           ></el-tooltip>
-        </el-row>
-        <el-form-item prop="productName" label-width="0px">
-          <my-input
-            v-model="editForm.productName"
-            placeholder="产品名称"
-            @change="editSomeFields(editForm, 'productName', $event)"
-          ></my-input>
-        </el-form-item>
+        </el-row>   
+        <el-form-item prop="productName" label-width="0px" v-if="opType !== 'add'">  
+				<el-input class="title-box" size="medium"
+					v-model="editForm.productName"
+					placeholder="产品名称"
+					@change="editSomeFields(editForm, 'productName', $event)"
+				></el-input>   
+        </el-form-item> 
+		
+        <el-form-item label="产品名称" prop="productName" v-if="opType === 'add'">  
+				<el-input
+					v-model="editForm.productName"
+					placeholder="产品名称" 
+				></el-input>   
+        </el-form-item> 
         <el-form-item label="产品代号" prop="code" v-if="opType === 'add'">
           <el-input
             v-model="editForm.code"
@@ -40,7 +47,9 @@
             ><i class="el-icon-question"></i
           ></el-tooltip>
         </el-form-item> 
+		 <el-form-item label="管理成员">
         <el-row class="padding padding-top">
+			
           <el-col :span="8">
             <el-form-item prop="admUserid" label-width="0px">
               <user-field
@@ -74,8 +83,9 @@
               ></user-field>
             </el-form-item>
           </el-col>
-        </el-row>
-		<el-divider></el-divider>
+		
+        </el-row> 
+		</el-form-item> 
         <el-form-item label="备注" prop="remark">
           <el-input
             v-model="editForm.remark"
@@ -87,18 +97,7 @@
           ></el-input>
         </el-form-item>
       </el-form>
-
-      <el-drawer
-        title="选择员工"
-        :visible.sync="userSelectVisible"
-        size="60%"
-        append-to-body
-      >
-        <users-select
-          @confirm="onUserSelected"
-          ref="usersSelect"
-        ></users-select>
-      </el-drawer>
+ 
     </el-row>
   </section>
 </template>
@@ -110,8 +109,7 @@ import {
   editXmProduct,
   editSomeFields,
 } from "@/api/xm/core/xmProduct";
-import { mapGetters } from "vuex";
-import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
+import { mapGetters } from "vuex"; 
 
 export default {
   computed: {
@@ -301,23 +299,12 @@ export default {
           });
         }
       });
-    },
-    showUserVisible(userType) {
-      this.currUserType = userType;
-      this.userSelectVisible = true;
-    },
-    //选择人员
-    onUserSelected: function (users) {
-      this.userSelectVisible = false;
-      var user = { userid: "", username: "" };
-      if (users && users.length > 0) {
-        user = users[0];
-      }
-      this.editSomeFields(this.editForm, this.currUserType, user);
-      this.currUserType = "";
-    },
+    },  
 
     editSomeFields(row, fieldName, $event) {
+		if(this.opType==='add'){
+			return;
+		}
       let params = {};
       params["ids"] = [row].map((i) => i.id);
       if (fieldName == "adminUserid") {
@@ -358,9 +345,7 @@ export default {
     },
     /**end 在上面加自定义方法**/
   }, //end method
-  components: {
-    //在下面添加其它组件 'xm-product-edit':XmProductEdit
-    UsersSelect,
+  components: { 
   },
   mounted() {
     this.editForm = this.xmProduct;
@@ -371,5 +356,17 @@ export default {
 };
 </script>
 
-<style scoped>
+<style  lang="scss" scoped> 
+
+.title-box:hover.el-input >>> .el-input__inner{  
+  border: 1px solid #dcdfe6 !important;
+padding:0 0px;
+font-size:1.5rem;
+
+}
+.title-box.el-input >>> .el-input__inner{ 
+    border: 0px solid #dcdfe6 !important;
+  padding:0 1px; 
+  font-size:1.5rem;
+}
 </style>

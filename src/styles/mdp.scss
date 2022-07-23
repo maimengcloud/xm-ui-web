@@ -323,3 +323,15 @@ table tr.hover-row{
 .title-font-size{
   font-size:28px;
 }
+
+.title-box:hover.el-input >>> .el-input__inner{  
+  border: 1px solid #dcdfe6 !important;
+padding:0 0px;
+font-size:1.5rem;
+
+}
+.title-box.el-input >>> .el-input__inner{ 
+    border: 0px solid #dcdfe6 !important;
+  padding:0 1px; 
+  font-size:1.5rem;
+}
