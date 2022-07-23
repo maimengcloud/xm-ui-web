@@ -4,7 +4,8 @@
 							
               <div class="field-info">
                 <slot name="field-info" :value="dateRange">
-								<span class="field-value">{{avaterCpd.innerText? avaterCpd.innerText:'无'}} </span>
+								<span class="field-value" v-if="!avaterCpd.isNull">{{avaterCpd.innerText}} </span> 
+								<span class="field-value" v-else><span class="label-font-color">无</span></span> 
                 <slot name="label">
 								  <span class="field-label">{{label}}</span>
                   
