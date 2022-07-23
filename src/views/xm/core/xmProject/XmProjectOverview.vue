@@ -264,7 +264,7 @@ export default {
       return this.selProject.taskCnt;
     },
     taskProgress: function (){
-      return this.selProject.finishRate?parseInt(selProject.finishRate):0;
+      return this.selProject.finishRate?parseInt(this.selProject.finishRate):0;
     },
     taskStartTime: function (){
       return this.selProject.startTime?this.selProject.startTime.substring(0,10):'';
