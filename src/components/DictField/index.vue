@@ -1,11 +1,11 @@
 <template>    
     
 						<div class="field-box" @click="showSelect">  
-							<el-avatar class="avater" :icon="getMyIcon(currentItem)" :style="{backgroundColor:getMyColor(currentItem)}">{{getMyAvaterInfo(currentItem)}}</el-avatar> 
+							<el-avatar class="avater" :class="{dashedCircle:!showVal}" :icon="getMyIcon(currentItem)" :style="{backgroundColor:(!showVal?'#FFFFFF':getMyColor(currentItem))}">{{getMyAvaterInfo(currentItem)}}</el-avatar> 
 							
               <div class="field-info" > 
 								<span class="field-value" v-if="showVal">{{showVal}} </span> 
-								<span class="field-value" v-else>无</span> 
+								<span class="field-value" v-else><span class="label-font-color">无</span></span> 
 								  <span class="field-label" >{{label}}</span>  
                   <dict-select  :dict="dict" ref="selectRef" v-model="myVal" @change="onChange" :get-icon="getIcon" :get-color="getColor"></dict-select> 
 							</div>    
@@ -199,6 +199,16 @@
     height: 20px;
     margin-left: 5px; 
     display: inline;
-} 
+}
+.dashedCircle{ 
+	width:40px;
+	height:40px;
+	border:2px dashed #000000;
+	border-radius:40px/40px;
+}
+.field-box:hover .dashedCircle{
+  
+	border:2px dashed #409EFF;
+}
 </style>
   
