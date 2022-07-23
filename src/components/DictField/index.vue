@@ -51,10 +51,9 @@ import util from '@/common/js/util'
             if(!isEmpty){
               obj.icon= ''
             } 
-          }
-          debugger;
+          } 
           if(isEmpty){
-            obj.innerText=""
+            obj.innerText=''
           }else{
             if(currentItem==null){
               obj.innerText=this.myVal
