@@ -35,7 +35,7 @@ import util from '@/common/js/util'
         var isEmpty=this.isEmpty(this.myVal)
         var obj={isNull:isEmpty,icon:'el-icon-full-screen',color:'#FFFFFF',innerText:''} 
           if(this.getColor){
-            obj.color= this.getColor(currentItem)
+            obj.color= this.getColor(this.myVal,currentItem,this.dict)
           }else{
             if(!isEmpty){
               obj.color= util.getColor(this.myVal)
@@ -43,7 +43,7 @@ import util from '@/common/js/util'
           } 
           if(this.getIcon||this.icon){
             if(this.getIcon){
-              obj.icon= this.getIcon(currentItem)
+              obj.icon= this.getIcon(this.myVal,currentItem,this.dict)
             }else if(this.icon){
              obj.icon=this.icon
             }
