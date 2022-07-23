@@ -1,10 +1,10 @@
 <template>   
 <div class="field-box">  
-							<el-avatar class="avater" :icon="getMyIcon(dateRange)" :style="{backgroundColor:getMyColor(dateRange)}">{{getMyAvaterInfo(dateRange)}}</el-avatar> 
+							<el-avatar class="avater" :icon="avaterCpd.icon" :style="{backgroundColor:avaterCpd.color}">{{avaterCpd.innerText}}</el-avatar> 
 							
               <div class="field-info">
                 <slot name="field-info" :value="dateRange">
-								<span class="field-value">{{formatDateRange(dateRange) }} </span>
+								<span class="field-value">{{avaterCpd.innerText? avaterCpd.innerText:'无'}} </span>
                 <slot name="label">
 								  <span class="field-label">{{label}}</span>
                   
@@ -32,7 +32,36 @@ export default {
   name: 'date-range',
   components: {   },
   computed: {
-     
+     avaterCpd(){  
+        var isEmpty=this.isEmpty(this.dateRange)
+        var formatDate=this.formatDateRange(this.dateRange);
+        var obj={isNull:isEmpty,icon:'el-icon-full-screen',color:'#E4E7ED',innerText:formatDate} 
+          if(this.getColor||this.color){
+            if(this.getColor){
+               obj.color= this.getColor(this.dateRange)
+            }else{
+              obj.color=this.color
+            }
+           
+          }else{
+            if(!isEmpty){ 
+                 obj.color= util.getColor(this.dateRange) 
+            } 
+          } 
+          if(this.getIcon||this.icon){
+            if(this.getIcon){
+              obj.icon= this.getIcon(this.dateRange)
+            }else if(this.icon){
+             obj.icon=this.icon
+            }
+          }else {
+            if(!isEmpty){ 
+                obj.icon='' 
+            } 
+          } 
+            
+        return obj;
+      }
   },
   data(){
       return {
@@ -213,45 +242,58 @@ export default {
     margin-right:5px;
     align-items: center;
 	  cursor: pointer;
+    height: 40px;
+    line-height: 40px;
     .avater { 
 		  background-color:#FF9F73;
     }
 
     .field-info {
+      
+        height: 40px;
+        line-height: 40px;
         margin-left: 10px;
         display: flex;
         flex-direction: column;
         .field-value {  
-            font-size: 16px;  
+            height: 20px;
+            line-height: 20px;
+            font-size: 0.75rem; 
         } 
         .field-label{   
-          height: 40px;
-          font-size: 14px;
+          height: 20px;
+          line-height: 20px;
+            font-size: 0.75rem; 
           color: #C0C4CC;
         }
         
     }
 	.my-select{
+    height: 20px;
+    line-height: 20px;
     margin-left: 5px;
-    margin-right:5px; 
-		display: none;  
-	}
-	.btn{
-		margin-top: 0px;
-		visibility:hidden; 
+    margin-right:5px;
+    max-width: 250px;
+    display: none;
 	} 
 	 
 }
- .field-box:hover .btn{
-		visibility: visible !important;
+ .field-box:hover .field-label{
+  display: none;
 }
  .field-box:hover .my-select{
-
-    margin-left: 5px;
+    height: 20px;
+    margin-left: 5px; 
     display: inline;
-    height: 40px;
-} 
- .field-box:hover .field-label{ 
-    display: none;
-} 
+}
+.dashed-circle{ 
+	width:40px;
+	height:40px;
+	border:2px dashed #000000;
+	border-radius:40px/40px;
+}
+.field-box:hover .dashed-circle{
+  
+	border:2px dashed #409EFF;
+}
 </style>

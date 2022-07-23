@@ -207,7 +207,7 @@ import util from '@/common/js/util'
     line-height: 20px;
     margin-left: 5px;
     margin-right:5px;
-    max-width: 120px;
+    max-width: 250px;
     display: none;
 	} 
 	 
