@@ -53,9 +53,9 @@ export const editXmProjectSomeFields = params => { return axios.post(`${base}/xm
 
 /**-------------------------前端mng|add|edit界面公共函数---------------请写在下面----------------------------------------------- */
 //初始化页面上的字典
-export const initDicts = (that) => {
+export const initDicts = (that) => { 
     //任务类型字典taskState,交易模式字典tranMode,能力要求字典capaLvl,保障要求字典supRequire,会员权益等级memInterestLvl
-    var itemCodes=["projectType", "priority", "projectStatus"];//在此添加要加载的字典 如['sex','grade','lvl']
+    var itemCodes=["projectType", "priority", "projectStatus",'xmType','workType'];//在此添加要加载的字典 如['sex','grade','lvl']
      if(itemCodes.length>0){
        initSimpleDicts('all',itemCodes).then(res=>{
            Object.assign(that.dicts,res.data.data)
@@ -68,68 +68,68 @@ export const getDefOptions= ()=>{
     
     var options={
     "projectStatus" : [ {
-        "optionValue" : "0",
-        "optionName" : "初始"
+        "id" : "0",
+        "name" : "初始"
         }, {
-        "optionValue" : "1",
-        "optionName" : "售前"
+        "id" : "1",
+        "name" : "售前"
         }, {
-        "optionValue" : "2",
-        "optionName" : "立项中"
+        "id" : "2",
+        "name" : "立项中"
         }, {
-        "optionValue" : "3",
-        "optionName" : "实施中"
+        "id" : "3",
+        "name" : "实施中"
         }, {
-        "optionValue" : "4",
-        "optionName" : "暂停中"
+        "id" : "4",
+        "name" : "暂停中"
         }, {
-        "optionValue" : "5",
-        "optionName" : "结项中"
+        "id" : "5",
+        "name" : "结项中"
         }, {
-        "optionValue" : "6",
-        "optionName" : "已结项"
+        "id" : "6",
+        "name" : "已结项"
         }, {
-        "optionValue" : "7",
-        "optionName" : "售后"
+        "id" : "7",
+        "name" : "售后"
         }, {
-        "optionValue" : "8",
-        "optionName" : "已完成"
+        "id" : "8",
+        "name" : "已完成"
         }, {
-        "optionValue" : "9",
-        "optionName" : "已关闭"
+        "id" : "9",
+        "name" : "已关闭"
         } ],
         "projectType" : [ {
-        "optionValue" : "0",
-        "optionName" : "it-新建-瀑布"
+        "id" : "0",
+        "name" : "it-新建-瀑布"
         }, {
-        "optionValue" : "2",
-        "optionName" : "it-新建-敏捷"
+        "id" : "2",
+        "name" : "it-新建-敏捷"
         }, {
-        "optionValue" : "1",
-        "optionName" : "it-存量-瀑布"
+        "id" : "1",
+        "name" : "it-存量-瀑布"
         } ],
         "priority" : [ {
-        "optionValue" : "zyx",
-        "optionName" : "最优先"
+        "id" : "zyx",
+        "name" : "最优先"
         }, {
-        "optionValue" : "yb",
-        "optionName" : "一般优先"
+        "id" : "yb",
+        "name" : "一般优先"
         }, {
-        "optionValue" : "ksh",
-        "optionName" : "可稍缓"
+        "id" : "ksh",
+        "name" : "可稍缓"
         } ],
         "urgencyLevel" : [ {
-        "optionValue" : "1",
-        "optionName" : "非常紧急"
+        "id" : "1",
+        "name" : "非常紧急"
         }, {
-        "optionValue" : "3",
-        "optionName" : "一般紧急"
+        "id" : "3",
+        "name" : "一般紧急"
         }, {
-        "optionValue" : "2",
-        "optionName" : "紧急"
+        "id" : "2",
+        "name" : "紧急"
         }, {
-        "optionValue" : "4",
-        "optionName" : "低"
+        "id" : "4",
+        "name" : "低"
         } ]
         }
         return options;

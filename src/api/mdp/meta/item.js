@@ -22,8 +22,7 @@ export const getDicts = params => { return axios.get(`${base}/mdp/meta/item/dict
     grade:[{id:'1',name:'等级1'},{id:'2',name:'等级2'}]
 }
 **/
-export const initSimpleDicts=function(categoryId,itemCodes){
-    
+export const initSimpleDicts=function(categoryId,itemCodes){ 
     if(!categoryId){
         categoryId="all"
     }

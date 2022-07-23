@@ -31,14 +31,23 @@ import util from '@/common/js/util'
         var currentItem = null
         if(this.dict){
           currentItem= this.dict.find(k=>k.id==this.myVal) 
-        } 
+        }  
         var isEmpty=this.isEmpty(this.myVal)
         var obj={isNull:isEmpty,icon:'el-icon-full-screen',color:'#FFFFFF',innerText:''} 
-          if(this.getColor){
-            obj.color= this.getColor(this.myVal,currentItem,this.dict)
+          if(this.getColor||this.color){
+            if(this.getColor){
+               obj.color= this.getColor(this.myVal,currentItem,this.dict)
+            }else{
+              obj.color=this.color
+            }
+           
           }else{
             if(!isEmpty){
-              obj.color= util.getColor(this.myVal)
+              if(currentItem&&currentItem.color){
+                obj.color=currentItem.color
+              }else{
+                 obj.color= util.getColor(this.myVal)
+              } 
             } 
           } 
           if(this.getIcon||this.icon){
@@ -49,7 +58,11 @@ import util from '@/common/js/util'
             }
           }else {
             if(!isEmpty){
-              obj.icon= ''
+              if(currentItem && currentItem.icon){
+                obj.icon= currentItem.icon
+              }else{
+                obj.icon=''
+              }
             } 
           } 
           if(isEmpty){
@@ -170,8 +183,7 @@ import util from '@/common/js/util'
         onChange(data){  
           this.$emit('change',data)
         },
-        isEmpty(v) {
-          debugger;
+        isEmpty(v) { 
           switch (typeof v) {
           case 'undefined':
               return true;

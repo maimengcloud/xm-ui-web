@@ -246,9 +246,8 @@
 	import util from '@/common/js/util';//全局公共库
 	import {sn} from '@/common/js/sequence';//全局公共库
 
-	import config from "@/common/config"; //全局公共库
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { addXmProject,editXmProject,getDefOptions,createProjectCode,editXmProjectSomeFields } from '@/api/xm/core/xmProject'; 
+	import config from "@/common/config"; //全局公共库 
+	import { initDicts,addXmProject,editXmProject,createProjectCode,editXmProjectSomeFields } from '@/api/xm/core/xmProject'; 
 	import { uploadBase64 } from '@/api/mdp/arc/image'; 
 	
 	import { mapGetters } from 'vuex';  
@@ -452,7 +451,9 @@
 				filters: {
 					ids: [],
 				},
-				dicts: getDefOptions(),//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				dicts: {
+					"projectType":[], "priority":[], "projectStatus":[],'xmType':[],'workType':[]
+				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, add: false, del: false, edit: false },//查询中...
 				editFormRules: {
 					name: [{
@@ -920,10 +921,11 @@
 		    //在下面添加其它组件 'xm-project-add':XmProjectEdit
 		},
 		mounted() {  
-			this.initData();
-				initSimpleDicts('all',['projectType','priority','projectStatus','workType']).then(res=>{
-					this.dicts=res.data.data;
-				})
+			this.$nextTick(()=>{ 
+				initDicts(this)
+				this.initData();
+			})
+				 
 			
 		}
 	}

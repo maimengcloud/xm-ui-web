@@ -133,8 +133,7 @@
 
 <script>
 import util from "@/common/js/util"; // 全局公共库
-import { mapGetters } from "vuex";
-import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
+import { mapGetters } from "vuex"; 
 import { listXmBranchState  } from '@/api/xm/core/xmBranchState'; 
 import { listXmBranchFiveDayTaskCnt  } from '@/api/xm/core/xmBranchStateHis';
 import Guider from '@/components/Guider/Index.js';
