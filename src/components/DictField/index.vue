@@ -1,10 +1,10 @@
 <template>    
     
 						<div class="field-box" @click="showSelect">  
-							<el-avatar class="avater" :class="{dashedCircle:!showVal}" :icon="getMyIcon(currentItem)" :style="{backgroundColor:(!showVal?'#FFFFFF':getMyColor(currentItem))}">{{getMyAvaterInfo(currentItem)}}</el-avatar> 
+							<el-avatar class="avater" :class="{dashedCircle:avaterCpd.isNull}" :icon="avaterCpd.icon" :style="{backgroundColor:avaterCpd.color}">{{avaterCpd.innerText}}</el-avatar> 
 							
               <div class="field-info" > 
-								<span class="field-value" v-if="showVal">{{showVal}} </span> 
+								<span class="field-value" v-if="!avaterCpd.isNull">{{avaterCpd.innerText}} </span> 
 								<span class="field-value" v-else><span class="label-font-color">无</span></span> 
 								  <span class="field-label" >{{label}}</span>  
                   <dict-select  :dict="dict" ref="selectRef" v-model="myVal" @change="onChange" :get-icon="getIcon" :get-color="getColor"></dict-select> 
@@ -24,18 +24,38 @@
             return null;
         }
        },
-       showVal(){
-          if(this.dict){
-            var item= this.dict.find(k=>k.id==this.myVal) 
-            if(item){
-              return item.name
-            }else{
-              return this.myVal
-            }
+      avaterCpd(){
+        var isEmpty=this.isEmpty(this.myVal)
+        var obj={isNull:isEmpty,icon:'el-icon-full-screen',color:'#FFFFFF',innerText:''} 
+          if(this.getColor){
+            obj.color= this.getColor(this.currentItem)
           }else{
-              return this.myVal
+            if(!isEmpty){
+              obj.color= util.getColor(this.myVal)
+            } 
+          } 
+          if(this.getIcon||this.icon){
+            if(this.getIcon){
+              obj.icon= this.getIcon(this.currentItem)
+            }else if(this.icon){
+             obj.icon=this.icon
+            }else {
+               if(!isEmpty){
+                obj.icon= ''
+               } 
+            }
           }
-       }
+          if(isEmpty){
+            obj.innerText=""
+          }else{
+            if(currentItem==null){
+              obj.innerText=this.myVal
+            }else{
+              obj.innerText=this.currentItem.name
+            }
+          }
+        return obj;
+      }
     },
     data(){
         return {
@@ -95,7 +115,7 @@
             return item.icon?"":item.name
           }
         },
-        getMyColor(item){
+        getMyColor(item){ 
           if(item){
            
             if(this.getColor){
@@ -138,6 +158,22 @@
         
         onChange(data){  
           this.$emit('change',data)
+        },
+        isEmpty(v) {
+          switch (typeof v) {
+          case 'undefined':
+              return true;
+          case 'string':
+              if(v.length == 0) return true;
+              break; 
+          case 'object':
+              if (null === v || v.length === 0) return true;
+              for (var i in v) {
+                  return false;
+              }
+              return true;
+          }
+          return false;
         }
     },
     mounted(){
