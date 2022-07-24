@@ -104,6 +104,11 @@
 			<el-col :span="20">
 			<!--新增界面 XmTask xm_task--> 
 			<el-form :model="editForm"  label-width="120px" label-position="left" :rules="editFormRules" ref="editForm">  
+						<el-row class="label-font-color"> 
+									<span>任务编号：{{editForm.id}} &nbsp;&nbsp;</span>
+ 									<span>归属项目：{{editForm.projectName?editForm.projectName:''}}{{editForm.projectId?'('+editForm.projectId+')':''}} &nbsp;&nbsp;</span>
+ 									<span v-if="editForm.productId">归属产品：{{editForm.productId?editForm.productId:''}}  </span>
+						</el-row>
 						<el-row :gutter="10">
 							<el-col :span="6">
 								<el-form-item label="序号" prop="sortLevel" >  
@@ -126,16 +131,7 @@
 						</el-row>
 						
 						
-						<el-row>
-							<el-col :span="8"> 
-								 <el-form-item v-if="editForm.ptype==='0'" label="归属项目" prop="projectId"> 
-									{{editForm.projectName?editForm.projectName:editForm.projectId}}
-								</el-form-item>
-								
-								<el-form-item v-if="editForm.ptype==='1'" label="归属产品" prop="productId">
-									{{editForm.productName?editForm.productName:editForm.productId}}
-								</el-form-item>
-							</el-col>
+						<el-row> 
 							<el-col :span="8"> 
 								 <el-form-item label="上级计划" prop="parentTaskname">  
 									<template slot="label"> 
