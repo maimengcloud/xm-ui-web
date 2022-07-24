@@ -362,15 +362,9 @@
                 type="taskState"
                 width="100"
               >  
-								<template slot-scope="scope">
-									<div class="cell-text">
-                    <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'taskState',scope.row.taskState)" :key="index" :type="item.className">{{item.name}}</el-tag>
- 									</div>
-									<span class="cell-bar">
-										 <el-select @visible-change="selectVisible(scope.row,$event)"  v-model="scope.row.taskState" placeholder="任务状态"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'taskState',$event)">
-												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.taskState" :key="index"></el-option>
-										 </el-select>
-									</span>
+								<template slot-scope="scope"> 
+										 <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)"  :dict="dicts['taskState']" v-model="scope.row.taskState" placeholder="任务状态"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'taskState',$event)">
+ 										 </mdp-select-dict-tag> 
 								</template>
               </el-table-column>
               <el-table-column sortable prop="rate" label="进度" width="100">
@@ -476,15 +470,10 @@
                 type="level"
                 width="100"
               >  
-								<template slot-scope="scope">
-									<div class="cell-text">
-                    <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'priority',scope.row.level)" :key="index" :type="item.className">{{item.name}}</el-tag>
- 									</div>
-									<span class="cell-bar">
-										 <el-select @visible-change="selectVisible(scope.row,$event)"  v-model="scope.row.level" placeholder="优先级"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'level',$event)">
-												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.priority" :key="index"></el-option>
-										 </el-select>
-									</span>
+								<template slot-scope="scope"> 
+										 <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['priority']" v-model="scope.row.level" placeholder="优先级"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'level',$event)">
+ 										 </mdp-select-dict-tag>
+									 
 								</template>
               </el-table-column>
               
