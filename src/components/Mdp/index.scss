@@ -4,33 +4,33 @@
   margin-right: 5px;
   align-items: center;
   cursor: pointer;
-  height: 40px;
-  line-height: 40px;
-  .field-avater {
+  height: 36px;
+  line-height: 36px;
+  .field-avater {  
     background-color: #ff9f73;
   }
 
   .field-info {
-    height: 40px;
-    line-height: 40px;
+    height: 36px;
+    line-height: 36px;
     margin-left: 10px;
     display: flex;
     flex-direction: column;
     .field-value {
-      height: 20px;
-      line-height: 20px;
+      height: 18px;
+      line-height: 18px;
       font-size: 0.75rem;
     }
     .field-label {
-      height: 20px;
-      line-height: 20px;
+      height: 18px;
+      line-height: 18px;
       font-size: 0.75rem;
       color: #c0c4cc;
     }
   }
   .field-oper {
-    height: 40px;
-    line-height: 40px;
+    height: 36px;
+    line-height: 36px;
     margin-left: 5px;
     margin-right: 5px; 
     display: none;
@@ -43,10 +43,10 @@
   display: inline;
 }
 .dashed-circle {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border: 2px dashed #000000;
-  border-radius: 40px/40px;
+  border-radius: 36px/36px;
 }
 .field-box:hover .dashed-circle {
   border: 2px dashed #409eff;
@@ -54,7 +54,7 @@
 
 
 .avatar-container {
-  height: 40px;
+  height: 36px;
   display: flex;
   align-items: center;
   .avatar-wrapper {

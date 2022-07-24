@@ -75,6 +75,8 @@
 			</el-col>
 			<el-col :span="20"> 
 			<el-form :model="editForm"  label-width="100px" label-position="left" :rules="editFormRules" ref="editForm">
+						<el-row class="label-font-color">编号：{{editForm.menuId}} &nbsp;&nbsp;<span v-if="editForm.productName">归属产品：{{ editForm.productName}} &nbsp;&nbsp;</span>归属产品编号：{{ editForm.productId }}</el-row>
+
 						<el-row>
 							<el-col :span="6">
 								<el-form-item label="序号名称" prop="seqNo" > 
@@ -88,12 +90,7 @@
 								</el-form-item>
 							</el-col>
 						</el-row>
-						<el-row>
-							<el-col :span="8">
-								<el-form-item label="归属产品" prop="productId">
-									<font v-if="editForm.productId">{{editForm.productName?editForm.productName:editForm.productId}}</font>
-								</el-form-item>
-							</el-col>
+						<el-row> 
 							<el-col :span="8">
 								<el-form-item v-if="!editForm.pmenuId" :label="editForm.dclass==='3'?'归属特性':(editForm.dclass==='2'?'归属史诗':'归属')" prop="pmenuId">
 										无

@@ -2,51 +2,38 @@
 	<section class="padding">
 		<el-row class="page-main ">
 			<!--新增界面 XmMenu 项目需求表--> 
-			<el-form :model="addForm"  label-width="120px" label-position="left" :rules="addFormRules" ref="addForm"> 
-						<el-row :gutter="10"> 
-							<el-col :span="6">
-								<el-form-item label="序号名称" prop="seqNo" > 
+			<el-form :model="addForm"  label-width="125px" label-position="left" :rules="addFormRules" ref="addForm"> 
+						<el-row class="label-font-color">归属产品：{{ addForm.productName}} &nbsp;&nbsp;产品编号：{{ addForm.productId }}</el-row>
+						<el-row :gutter="10">  
+							<el-col :span="24">
+								<el-form-item prop="menuName">
 									<template slot="label">
 										<div  class="icon" :style="{backgroundColor: calcMenuLabel.color }">
 											<i :class="calcMenuLabel.icon"></i>
-										</div>  
+										</div>   
 										{{calcMenuLabel.label}}
-									</template>
-									<el-input v-model="addForm.seqNo" title="序号 如 1.1，1.2.3，1.3.2等" style="width:100%;" placeholder="如1.0 ， 1.1 ， 1.1.1等" ></el-input> 
-								</el-form-item>  
-							</el-col>
-							<el-col :span="18">
-								<el-form-item label="" prop="menuName" label-width="0px">
-									<el-input v-model="addForm.menuName" placeholder="名称" title="名称"></el-input>
+									</template> 
+									<el-input v-model="addForm.menuName" placeholder="名称" title="名称"> 
+									</el-input>
 								</el-form-item>   
 							</el-col>
 						</el-row>
-						<el-row>
-							<el-col :span="8">
-								<el-form-item label="归属产品" prop="productId">
-									<font v-if="addForm.productId">{{addForm.productName?addForm.productName:addForm.productId}}</font>
-								</el-form-item>
-							</el-col>
-							<el-col :span="8">
-								<el-form-item v-if="!addForm.pmenuId" :label="addForm.dclass==='3'?'归属特性':(addForm.dclass==='2'?'归属史诗':'归属')" prop="pmenuId">
-										无
-									</el-form-item>  
-									
-									<el-form-item  v-else :label="addForm.dclass==='3'?'归属特性':(addForm.dclass==='2'?'归属史诗':'归属')" prop="pmenuId">  
-										<div   v-if="addForm.dclass==='2'"  class="icon" style="background-color:  rgb(255, 153, 51);">
-											<i class="el-icon-s-promotion"></i>
-										</div> 
-										<div   v-if="addForm.dclass==='3'"  class="icon" style="background-color:  rgb(0, 153, 51);">
-											<i class="el-icon-s-flag"></i>
-										</div> 
-										  {{addForm.pmenuName?addForm.pmenuName:addForm.pmenuId}} 
-									</el-form-item>  
-							</el-col> 
+						<el-row class="padding"> 
+								<el-col :span="8">
+									<mdp-field-x v-if="!addForm.pmenuId" v-model="addForm.pmenuName" :disabled="true" label="上级需求"> </mdp-field-x>
+
+									<mdp-field-x v-else v-model="addForm.pmenuName" :label="addForm.dclass==='3'?'归属特性':(addForm.dclass==='2'?'归属史诗':'归属')" :icon="addForm.dclass==='2'?'el-icon-s-promotion':'el-icon-s-flag'" :color="addForm.dclass==='2'?'rgb(255, 153, 51)':'rgb(0, 153, 51)'">
+										<el-button slot="oper"
+											@click="showPmenu"  
+											title="查看上级"
+											icon="el-icon-upload2"> 查看上级</el-button> 
+									</mdp-field-x>  
+								</el-col> 
 								<el-col  :span="8">
-									<el-form-item label="负责人" prop="mmUserid">
-										<el-tag type="text" v-if="addForm.mmUserid" closable @close="clearMmUser">{{addForm.mmUsername}}</el-tag> 
-										<el-button type="text" @click="mmUserSelectVisible=true">选跟进人</el-button>
-									</el-form-item>   
+									<mdp-select-user-xm  label="负责人" v-model="addForm" userid-key="mmUserid" username-key="mmUsername" @change="editXmTaskSomeFields(addForm,'mmUserid',$event)"></mdp-select-user-xm>   
+								</el-col>
+								<el-col  :span="8">
+									<mdp-select-user-xm  label="提出人" v-model="addForm" userid-key="proposerId" username-key="proposerName" @change="editXmTaskSomeFields(addForm,'proposerId',$event)"></mdp-select-user-xm>   
 								</el-col>
 						</el-row> 
 						<el-row>
@@ -74,18 +61,19 @@
 						</el-row>
 						
 						<el-row> 
+							
+							<el-col :span="8">
+								<el-form-item label="排序序号" prop="seqNo">  
+									 <el-input style="max-width:90%;" v-model="addForm.seqNo" placeholder="请输入排序序号"> 
+									</el-input>  
+								</el-form-item>
+							</el-col> 
 							<el-col :span="8">
 								<el-form-item  label="版本号" prop="sinceVersion" >   
 									<el-input style="max-width:90%;" v-model="addForm.sinceVersion" placeholder="请输入需求归属的版本号"> 
 									</el-input>  
 								</el-form-item>   
-							</el-col> 
-							<el-col :span="8">
-								<el-form-item label="提出人" prop="proposerId">
-									<el-tag type="text" v-if="addForm.proposerId" closable @close="clearProposer">{{addForm.proposerName}}</el-tag> 
-									<el-button type="text" @click="selectProposer">选提出人</el-button>
-								</el-form-item>   
-							</el-col>
+							</el-col>  
 							<el-col :span="8">
 								<el-form-item label="截止时间" prop="startTime">  
 									 <mdp-date-range type="daterange" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="addForm" start-key="startTime" end-key="endTime"></mdp-date-range>
@@ -123,6 +111,7 @@
 	import { mapGetters } from 'vuex'	
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
 
+	import MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm'
 	
 	export default { 
 		computed: {
@@ -305,7 +294,7 @@
 		},//end method
 		components: {  
 			//在下面添加其它组件 'xm-menu-edit':XmMenuEdit
-			UsersSelect
+			UsersSelect,MdpSelectUserXm
 		},
 		mounted() {
 			
@@ -326,12 +315,12 @@
 
 .icon {
   color: #fff;
-  height: 20px;
-  width: 20px;
+  height: 36px;
+  width: 36px;
   border-radius: 15px;
   text-align: center;
-  line-height: 20px;
-  font-size: 14px;
+  line-height: 36px;
+  font-size: 18px;
   display: inline-block;
   margin-right: 5px;
 } 
