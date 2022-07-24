@@ -108,7 +108,7 @@
 							</el-row>
 							<el-form-item label="起止时间" >  
 							<el-row>
-								<date-range 
+								< mdp-date-range 
 									v-model="editForm"
 									class="hidden-sm-and-down"
 									type="daterange"
@@ -122,7 +122,7 @@
 									value-format="yyyy-MM-dd HH:mm:ss"
 									:default-time="['00:00:00','23:59:59']"
 									:picker-options="pickerOptions" 
-								></date-range>    
+								></ mdp-date-range>    
 								<el-input  style="width:150px;" type="number" v-model="editForm.planWorkingHours" :precision="2" :step="8" :min="0" placeholder="预计工时"></el-input>小时 &nbsp;&nbsp;<el-tag>参考工时{{autoParams.weekday*8}}小时,工作日{{autoParams.weekday}}天</el-tag>  
 								<br>
 								<el-checkbox v-model="autoSet">工期变化自动更新预估成本/合同金额/预估工时等关联数据</el-checkbox>

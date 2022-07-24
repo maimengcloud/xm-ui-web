@@ -29,7 +29,7 @@
 					<el-col :span="12"> 
 				
 						<el-form-item prop="startTime"  label-width="0px">
-							<date-range-field label="起止时间" :auto-default="false" start-key="startTime" end-key="endTime" v-model="editForm" placeholder="选择日期"   value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'startTime',$event)"></date-range-field>
+							< mdp-date-range-x label="起止时间" :auto-default="false" start-key="startTime" end-key="endTime" v-model="editForm" placeholder="选择日期"   value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'startTime',$event)"></ mdp-date-range-x>
 						</el-form-item>  
 					</el-col>
 				</el-row>   

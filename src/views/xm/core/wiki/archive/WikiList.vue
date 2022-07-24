@@ -33,7 +33,7 @@
 
 									<el-col :span="24"  style="padding-top:5px;">
 										<font class="more-label-font">创建日期:</font>
-										<date-range
+										< mdp-date-range
 											v-model="filters"
 											type="daterange" 
 											unlink-panels
@@ -43,7 +43,7 @@
 											start-placeholder="创建日期"
 											end-placeholder="创建日期" 
 											:auto-default="false" >
-										</date-range>  
+										</ mdp-date-range>  
 									</el-col> 
 									<el-col :span="24" style="padding-top:5px;">
 										<el-button size="mini" type="primary" icon="el-icon-search" @click="searchArchives">查询</el-button>

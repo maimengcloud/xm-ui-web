@@ -167,7 +167,7 @@
 							</el-col> 
 							
 							<el-col :span="8">  
-										<date-range-field
+										< mdp-date-range-x
 											:style-obj="{maxWidth:'100%'}"
 											v-model="editForm"
 											start-key="startTime"
@@ -182,7 +182,7 @@
 											value-format="yyyy-MM-dd HH:mm:ss"
 											:default-time="['00:00:00','23:59:59']"
 											:picker-options="pickerOptions"
-										></date-range-field>  
+										></ mdp-date-range-x>  
 							</el-col> 
 
 							

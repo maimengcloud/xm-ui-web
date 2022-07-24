@@ -39,7 +39,7 @@
 				</el-form-item>  
 				 
 				<el-form-item label="起止时间" prop="stime">
-					<date-range :auto-default="false" placeholder="选择日期" v-model="editForm" start-key="stime" end-key="etime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'stime',editForm)"></date-range>
+					< mdp-date-range :auto-default="false" placeholder="选择日期" v-model="editForm" start-key="stime" end-key="etime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'stime',editForm)"></ mdp-date-range>
 				</el-form-item>   
 			</el-form>
 		</el-row>
