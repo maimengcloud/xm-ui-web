@@ -23,8 +23,8 @@
 					</el-col>
 					<el-col :span="18" class="border padding">
 				<el-form-item label="" prop="caseName" label-width="0px">  
-					<el-row>
-					<span><span class="label-font-color">用例编号:</span>&nbsp;&nbsp;{{editForm.caseId}} &nbsp;&nbsp;<i class="el-icon-s-operation"></i><span class="label-font-color">模块：</span></span><span>{{editForm.funcName}}</span>
+					<el-row class="label-font-color">
+					<span ><span >用例编号:</span>&nbsp;&nbsp;{{editForm.caseId}} &nbsp;&nbsp;<i class="el-icon-s-operation"></i><span>模块：</span></span><span>{{editForm.funcName}}</span>
 					</el-row>
 					<el-row>
 					<span class="title-font-size">{{editForm.caseName}}</span> 

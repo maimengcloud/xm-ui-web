@@ -24,12 +24,12 @@
 					<el-col :span="18" class="border padding">
 
 						<el-form-item label="" prop="caseName" label-width="0px">  
-							<el-row>
-							<span><span v-if="opType=='edit'" class="label-font-color">用例编号:</span>&nbsp;&nbsp;{{editForm.id}} &nbsp;&nbsp;</span><span class="label-font-color"><i class="el-icon-s-operation"></i>模块：</span><span>{{editForm.funcName}} <el-button type="text" @click="funcVisible=true">选择模块</el-button></span>
+							<el-row class="label-font-color">
+							<span><span v-if="opType=='edit'">用例编号:</span>&nbsp;&nbsp;{{editForm.id}} &nbsp;&nbsp;</span><span class="label-font-color"><i class="el-icon-s-operation"></i>模块：</span><span>{{editForm.funcName}} <el-button type="text" @click="funcVisible=true">选择模块</el-button></span>
 							</el-row>
 							<el-row>
-								<my-input v-model="editForm.caseName" placeholder="测试用例 标题"  @change="editSomeFields(editForm,'caseName',$event)"></my-input> 
-							</el-row>
+ 									<my-input v-model="editForm.caseName" placeholder="测试用例 标题"  @change="editSomeFields(editForm,'caseName',$event)"></my-input> 
+ 							</el-row>
 							<el-row class="padding">
 								
 								<el-col :span="6">  

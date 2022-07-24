@@ -5,14 +5,14 @@
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef" label-position="left">
 			
 
-				<el-form-item label="产品名称" prop="productName">
+				<el-form-item label="归属产品" prop="productName">
 					<span v-if="opType=='add'">
 					 	<xm-product-select v-if="!xmProduct" style="display:inline;" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="clearProduct"></xm-product-select>
 						<div v-else>{{editForm.productName}}</div>
 					</span> 
  					<div v-else>{{editForm.productName}}</div>
 				</el-form-item>  
-				<el-form-item label="" prop="name" label-width="0px">
+				<el-form-item label="用例库名称" prop="name">
 					<my-input v-model="editForm.name" placeholder="用例库名称" :maxlength="255" @change="editSomeFields(editForm,'name',$event)"></my-input>
 				</el-form-item>  
 				<el-row class="padding">
@@ -155,7 +155,13 @@ import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修�
                 }
                 let params={};
                 params['ids']=[row].map(i=>i.id)
-                params[fieldName]=$event
+				if(fieldName=='cuserid'){
+					params.cuserid=$event[0].userid
+					params.cusername=$event[0].username
+				}else{
+					params[fieldName]=$event
+				}
+                
                 var func = editSomeFieldsXmTestCasedb
                 func(params).then(res=>{
                   let tips = res.data.tips;
