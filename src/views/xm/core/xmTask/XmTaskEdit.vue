@@ -105,7 +105,7 @@
 			<!--新增界面 XmTask xm_task--> 
 			<el-form :model="editForm"  label-width="120px" label-position="left" :rules="editFormRules" ref="editForm">  
 						<el-row class="label-font-color"> 
-									<span>任务编号：{{editForm.id}} &nbsp;&nbsp;</span>
+									<span>任务编号：{{editForm.id}}</span>&nbsp;&nbsp;
  									<span>归属项目：{{editForm.projectName?editForm.projectName:''}}{{editForm.projectId?'('+editForm.projectId+')':''}} &nbsp;&nbsp;</span>
  									<span v-if="editForm.productId">归属产品：{{editForm.productId?editForm.productId:''}}  </span>
 						</el-row>
