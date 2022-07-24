@@ -24,11 +24,11 @@
 						<mdp-select-user-xm label="负责人" userid-key="cuserid" username-key="cusername" v-model="editForm" @change="editSomeFields(editForm,'cuserid',$event)"></mdp-select-user-xm>
 					</el-col>
 					<el-col :span="8">
-						<mdp-select-user-xm label="状态" :dict="dicts['testPlanStatus']" v-model="editForm.status"  @change="editSomeFields(editForm,'status',$event)"></mdp-select-user-xm>
+						<mdp-select-dict-x label="状态" :dict="dicts['testPlanStatus']" v-model="editForm.status"  @change="editSomeFields(editForm,'status',$event)"></mdp-select-dict-x>
 					</el-col>
 					
 					<el-col :span="8">
-						<mdp-select-user-xm label="测试结果" :dict="dicts['testPlanTcode']" v-model="editForm.tcode"  @change="editSomeFields(editForm,'tcode',$event)"></mdp-select-user-xm>
+						<mdp-select-dict-x label="测试结果" :dict="dicts['testPlanTcode']" v-model="editForm.tcode"  @change="editSomeFields(editForm,'tcode',$event)"></mdp-select-dict-x>
 					</el-col>
 				</el-row>   
  				<el-form-item label="归属测试库" prop="casedbName">
