@@ -143,51 +143,27 @@
 						</template>
 					</el-table-column>
 					<el-table-column prop="bugStatus" label="状态"  width="100">
-						<template slot-scope="scope">   
-									<div class="cell-text">
-										 <el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in [formatterBugStatusDicts(scope.row.bugStatus)]" :key="index">{{item.name}}</el-button>
-									</div>
-									<span class="cell-bar">   
-										 <el-select  v-model="scope.row.bugStatus" placeholder="类型"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugStatus',$event)">
-												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.bugStatus" :key="index"></el-option> 
-										 </el-select>  
-									</span> 
+						<template slot-scope="scope">    
+										 <mdp-select-dict-tag  v-model="scope.row.bugStatus" placeholder="类型" :dict="dicts['bugStatus']" style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugStatus',$event)">
+ 										 </mdp-select-dict-tag>   
 						</template>
 					</el-table-column>
 					<el-table-column prop="priority" label="优先级"  width="100">
-						<template slot-scope="scope">   
-									<div class="cell-text">
-										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in [formatterPriorityDicts(scope.row.priority)]" :key="index">{{item.name}}</el-button>
-									</div>
-									<span class="cell-bar">   
-										 <el-select  v-model="scope.row.priority" placeholder="优先级"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'priority',$event)">
-												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.priority" :key="index"></el-option> 
-										 </el-select>  
-									</span> 
-						</template>
+						<template slot-scope="scope">    
+										 <mdp-select-dict-tag  v-model="scope.row.priority" placeholder="优先级" :dict="dicts['priority']"   style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'priority',$event)">
+ 										 </mdp-select-dict-tag>  
+ 						</template>
 					</el-table-column> 
 					<el-table-column prop="solution" label="解决方案"  width="100">
-						<template slot-scope="scope">   
-									<div class="cell-text">
-										{{formaterByDicts(scope.row,'solution',scope.row.solution)}}
-									</div>
-									<span class="cell-bar">   
-										 <el-select  v-model="scope.row.solution" placeholder="类型"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'solution',$event)">
-												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.bugSolution" :key="index"></el-option> 
-										 </el-select>  
-									</span> 
+						<template slot-scope="scope">    
+										 <mdp-select-dict-tag  v-model="scope.row.solution" placeholder="类型" :dict="dicts['bugSolution']"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'solution',$event)">
+ 										 </mdp-select-dict-tag>   
 						</template>
 					</el-table-column>
 					<el-table-column prop="bugSeverity" label="严重程度"  width="100">
-						<template slot-scope="scope">   
-									<div class="cell-text">
-										{{formaterByDicts(scope.row,'bugSeverity',scope.row.bugSeverity)}}
-									</div>
-									<span class="cell-bar">   
-										 <el-select  v-model="scope.row.bugSeverity" placeholder="类型"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugSeverity',$event)">
-												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.bugSeverity" :key="index"></el-option> 
-										 </el-select>  
-									</span> 
+						<template slot-scope="scope">    
+										 <mdp-select-dict-tag  v-model="scope.row.bugSeverity" placeholder="类型" :dict="dicts['bugSeverity']"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugSeverity',$event)">
+ 										 </mdp-select-dict-tag>   
 						</template>
 					</el-table-column>
 					<!--
