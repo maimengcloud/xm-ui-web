@@ -1,0 +1,79 @@
+
+.field-box {
+  display: flex;
+  margin-right: 5px;
+  align-items: center;
+  cursor: pointer;
+  height: 40px;
+  line-height: 40px;
+  .field-avater {
+    background-color: #ff9f73;
+  }
+
+  .field-info {
+    height: 40px;
+    line-height: 40px;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    .field-value {
+      height: 20px;
+      line-height: 20px;
+      font-size: 0.75rem;
+    }
+    .field-label {
+      height: 20px;
+      line-height: 20px;
+      font-size: 0.75rem;
+      color: #c0c4cc;
+    }
+  }
+  .field-oper {
+    height: 40px;
+    line-height: 40px;
+    margin-left: 5px;
+    margin-right: 5px; 
+    display: none;
+  }
+}
+.field-box:hover .field-info.enabled {
+  display: none;
+}
+.field-box:hover .field-oper.enabled {
+  display: inline;
+}
+.dashed-circle {
+  width: 40px;
+  height: 40px;
+  border: 2px dashed #000000;
+  border-radius: 40px/40px;
+}
+.field-box:hover .dashed-circle {
+  border: 2px dashed #409eff;
+}
+
+
+.avatar-container {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  .avatar-wrapper {
+      cursor: pointer;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      .user-avatar {
+          height: 34px;
+          width: 34px;
+          border-radius: 50%;
+          margin-right: 12px;
+      }
+      .username{
+          color: #7D7D7D;
+          font-size: 0.75rem; 
+      }
+      .el-icon-caret-bottom {
+          font-size: 22px;
+      }
+  }
+}

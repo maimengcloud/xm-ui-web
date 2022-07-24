@@ -3,13 +3,16 @@
 						<div class="field-box">  
 							<el-avatar class="avater" :class="{'dashed-circle':avaterCpd.isNull}"  :icon="avaterCpd.icon" :style="{backgroundColor:avaterCpd.color}">{{avaterCpd.innerText}}</el-avatar> 
 							
-              <div class="field-info">
-                <slot name="field-info" :value="myVal">
+              <div class="field-info"  :class="{disabled:disabled===true,enabled:disabled!==true}">
+                <slot name="info" :value="myVal">
 								<span class="field-value" v-if="!avaterCpd.isNull">{{avaterCpd.innerText}} </span>
 								<span class="field-value" v-else><span class="label-font-color">无</span></span> 
                 <slot name="label">
-								  <span class="field-label">{{label}}</span> 
-                  <div v-if="disabled!==true" class="my-select" name="select" :value="myVal">
+								  <span class="field-label">{{label}}</span>  
+                </slot>
+                </slot>
+							</div>  
+              <div v-if="disabled!==true" class="field-oper" :value="myVal"  :class="{disabled:disabled===true,enabled:disabled!==true}">
                     <el-select v-model="myVal" @change="onSelectChange" :clearable="clearable">  
                           <el-option disabled value="" style="margin-bottom:5px;">
                               <el-row><el-button :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button><el-button v-if="projectId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button> </el-row>
@@ -24,10 +27,7 @@
                             </div>
                           </el-option> 
                       </el-select> 
-                  </div>
-                </slot>
-                </slot>
-							</div>   
+                  </div> 
 						</div> 
             <el-dialog :visible.sync="deptUserVisible" append-to-body top="20px" width="60%">
                <users-select :visible="deptUserVisible" :isSingleUser="true"  :isSelectByDept="true" @confirm="onConfirmUsers"></users-select>
@@ -258,95 +258,9 @@
   }
   </script>
   
-
-<style lang="scss" scoped>
- 
-
-
-.field-box {  
-    display: flex;
-    margin-right:5px;
-    align-items: center;
-	  cursor: pointer;
-    height: 40px;
-    line-height: 40px;
-    .avater { 
-		  background-color:#FF9F73;
-    }
-
-    .field-info {
-      
-        height: 40px;
-        line-height: 40px;
-        margin-left: 10px;
-        display: flex;
-        flex-direction: column;
-        .field-value {  
-            height: 20px;
-            line-height: 20px;
-            font-size: 0.75rem; 
-        } 
-        .field-label{   
-          height: 20px;
-          line-height: 20px;
-            font-size: 0.75rem; 
-          color: #C0C4CC;
-        }
-        
-    }
-	.my-select{
-    height: 20px;
-    line-height: 20px;
-    margin-left: 5px;
-    margin-right:5px;
-    max-width: 250px;
-    display: none;
-	} 
-	 
-}
- .field-box:hover .field-label{
-  display: none;
-}
- .field-box:hover .my-select{
-    height: 20px;
-    margin-left: 5px; 
-    display: inline;
-}
-.dashed-circle{ 
-	width:40px;
-	height:40px;
-	border:2px dashed #000000;
-	border-radius:40px/40px;
-}
-.field-box:hover .dashed-circle{
-  
-	border:2px dashed #409EFF;
-}
-
-
-.avatar-container {
-    height: 40px;
-    display: flex;
-    align-items: center;
-    .avatar-wrapper {
-        cursor: pointer;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        .user-avatar {
-            height: 34px;
-            width: 34px;
-            border-radius: 50%;
-            margin-right: 12px;
-        }
-        .username{
-            color: #7D7D7D;
-            font-size: 0.75rem; 
-        }
-        .el-icon-caret-bottom {
-            font-size: 22px;
-        }
-    }
-}
+<style lang="scss" scoped>  
+  @import '../Mdp/index.scss';
 </style>
+
+ 
   

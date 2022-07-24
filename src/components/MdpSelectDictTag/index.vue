@@ -1,9 +1,9 @@
 <template>    
-    <div class="item-box">
-        <div :class="{'item-info':disabled!==true}">
-            <el-tag v-if="currentItem"  :type="currentItem.className" :closable="closable" :effect="effect">{{currentItem.name}}</el-tag>
+    <div class="field-box">
+        <div class="field-info" :class="{disabled:disabled===true,enabled:disabled!==true}">
+           <div><el-tag   v-if="currentItem"  :type="currentItem.className" :closable="closable" :effect="effect">{{currentItem.name}}</el-tag></div> 
         </div>
-        <div v-if="disabled!==true" class="item-select">
+        <div v-if="disabled!==true" class="field-oper" :class="{disabled:disabled===true,enabled:disabled!==true}">
             <mdp-select-dict :dict="dict" v-model="myVal" @change="onChange" :clearable="closable"></mdp-select-dict>
         </div>
     </div>
@@ -78,24 +78,7 @@
     }
   }
   </script>
-  
-  <style rel="stylesheet/scss" lang="scss" scoped> 
-    .item-box{
-        display: flex;
-        cursor: pointer;
-        .item-info{
-            display:inherit; 
-            height: 33px;
-        }
-        .item-select{
-            display: none;
-        }  
-    }
-    .item-box:hover .item-info{
-       display: none;
-    }
-    .item-box:hover .item-select{
-        display:inherit;
-    }
-  </style>
+<style lang="scss" scoped>  
+    @import '../Mdp/index.scss';
+</style> 
   

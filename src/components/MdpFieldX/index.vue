@@ -1,8 +1,11 @@
 <template>    
     
 						<div class="field-box" @click="showSelect">  
-							<el-avatar class="avater" :class="{'dashed-circle':avaterCpd.isNull}" :icon="avaterCpd.icon" :style="{backgroundColor:avaterCpd.color}">{{avaterCpd.innerText}}</el-avatar>  
-              <div class="field-info" > 
+              <slot>
+                <slot name="avater" :value="myVal" :field="{label:label,color:color,getColor:getColor,icon:icon,getIcon:getIcon,disabled:disabled,clearable:clearable}">
+							    <el-avatar class="field-avater" :class="{'dashed-circle':avaterCpd.isNull}" :icon="avaterCpd.icon" :style="{backgroundColor:avaterCpd.color}">{{avaterCpd.innerText}}</el-avatar>  
+                </slot>
+              <div class="field-info"  :class="{disabled:disabled===true,enabled:disabled!==true}"> 
                 <slot name="info">
                   <span class="field-value">
                     <slot name="value" :value="myVal" :field="{label:label,color:color,getColor:getColor,icon:icon,getIcon:getIcon,disabled:disabled,clearable:clearable}">
@@ -12,14 +15,16 @@
                   </span>  
                     <span class="field-label" >
                       <slot name="label"> {{label}}</slot> 
-                    </span>  
-                    <span class="oper" ref="operRef">
+                    </span>   
+                </slot>
+							</div>  
+              <div class="field-oper" ref="operRef"  :class="{disabled:disabled===true,enabled:disabled!==true}"> 
                       <slot name="oper"   :value="myVal" :field="{label:label,color:color,getColor:getColor,icon:icon,getIcon:getIcon,disabled:disabled,clearable:clearable}">
 
-                      </slot>
-                    </span>
-                </slot>
-							</div>    
+                      </slot>  
+              </div>  
+              
+              </slot>
 						</div> 
   </template>
   
@@ -161,68 +166,7 @@ import util from '@/common/js/util'
   </script>
   
 
-<style lang="scss" scoped>
- 
-
-
-.field-box {  
-    display: flex;
-    margin-right:5px;
-    align-items: center;
-	  cursor: pointer;
-    height: 40px;
-    line-height: 40px;
-    .avater { 
-		  background-color:#FF9F73;
-    }
-
-    .field-info {
-      
-        height: 40px;
-        line-height: 40px;
-        margin-left: 10px;
-        display: flex;
-        flex-direction: column;
-        .field-value {  
-            height: 20px;
-            line-height: 20px;
-            font-size: 0.75rem; 
-        } 
-        .field-label{   
-          height: 20px;
-          line-height: 20px;
-            font-size: 0.75rem; 
-          color: #C0C4CC;
-        }
-        
-    }
-	.oper{
-    height: 20px;
-    line-height: 20px;
-    margin-left: 5px;
-    margin-right:5px;
-    max-width: 250px;
-    display: none;
-	} 
-	 
-}
- .field-box:hover .field-label{
-  display: none;
-}
- .field-box:hover .oper{
-    height: 20px;
-    margin-left: 5px; 
-    display: inline;
-}
-.dashed-circle{ 
-	width:40px;
-	height:40px;
-	border:2px dashed #000000;
-	border-radius:40px/40px;
-}
-.field-box:hover .dashed-circle{
-  
-	border:2px dashed #409EFF;
-}
-</style>
+<style lang="scss" scoped>  
+    @import '../Mdp/index.scss';
+</style> 
   
