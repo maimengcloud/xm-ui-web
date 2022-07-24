@@ -20,12 +20,16 @@
           >
             <font v-if="xmProduct.productName.length >= 15">
               <strong>
-                &nbsp;&nbsp;产品:&nbsp;{{ xmProduct.productName.substring(0, 15) }}</strong
+                
+                &nbsp;<el-avatar class="top-icon" icon="el-icon-s-opportunity" style="background-color:#409EFF"></el-avatar>&nbsp;{{ xmProduct.productName.substring(0, 15) }}</strong
               ></font
             >
-            <font type="danger" v-else>
-              <strong>&nbsp;&nbsp;产品:&nbsp;{{ xmProduct.productName }}</strong></font
+            <div  v-else>
+           
+            <font type="danger">
+              <strong>&nbsp; <el-avatar class="top-icon" icon="el-icon-s-opportunity" style="background-color:#409EFF"></el-avatar>&nbsp;产品:&nbsp;{{ xmProduct.productName }}</strong></font
             >
+            </div>
           </span>
           <span
             slot="title"
@@ -34,10 +38,10 @@
             :title="xmProduct.productName"
           >
             <font v-if="xmProduct.productName.length >= 15">
-              &nbsp;&nbsp;产品:&nbsp;{{ xmProduct.productName.substring(0, 15) }}</font
+              &nbsp;<el-avatar class="top-icon" icon="el-icon-s-opportunity" style="background-color:#409EFF"></el-avatar>&nbsp;产品:&nbsp;{{ xmProduct.productName.substring(0, 15) }}</font
             >
             <font type="danger" v-else>
-              &nbsp;&nbsp;产品:&nbsp;{{ xmProduct.productName }}</font
+              &nbsp;<el-avatar class="top-icon" icon="el-icon-s-opportunity" style="background-color:#409EFF"></el-avatar>&nbsp;产品:&nbsp;{{ xmProduct.productName }}</font
             >
           </span>
         </el-menu-item>
@@ -1027,6 +1031,7 @@ export default {
     padding-left: 0px !important;
   }
 }
+ 
 /* 超过宽度则用...代替 */
 .truncate {
   overflow: hidden;

@@ -275,7 +275,12 @@ table tr.hover-row{
   margin-right: 5px;
 }  
 
-
+ /**
+ *解决项目、产品视图顶部左边图标不居中的问题
+ */
+.el-menu-item .top-icon > [class^=el-icon-] { 
+  margin-right: 0px !important; 
+}
 
 .label-font-color{
   color: #C0C4CC;
@@ -289,14 +294,14 @@ table tr.hover-row{
   color: #fff;
   height: 36px;
   width: 36px;
-  border-radius: 15px;
+  border-radius: 36px;
   text-align: center;
   line-height: 36px;
   font-size: 18px;
   display: inline-block; 
 } 
 .icon {
-  border-radius: 15px;
+  border-radius: 20px;
   color: #fff;
   display: inline-block;
   font-size: 14px;
