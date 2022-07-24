@@ -2,30 +2,21 @@
 	<section> 
 		<el-row>
 			<!--新增界面 XmTask xm_task-->
-			<el-form :model="addForm"  label-width="120px" label-position="left" :rules="addFormRules" ref="addForm"> 
+			<el-form :model="addForm"  label-width="125px" label-position="left" :rules="addFormRules" ref="addForm"> 
 						<el-row class="label-font-color"> 
   									<span>归属项目：{{addForm.projectName?addForm.projectName:''}}{{addForm.projectId?'('+addForm.projectId+')':''}} &nbsp;&nbsp;</span>
  									<span v-if="addForm.productId">归属产品：{{addForm.productId?addForm.productId:''}}  </span>
 						</el-row>
-						<el-row :gutter="10">
-							<el-col :span="6">
-								<el-form-item label="序号" prop="sortLevel" >  
+						<el-row :gutter="10"> 
+								<el-form-item  prop="name"> 
 									<template slot="label"> 
 									<div    class="big-icon" :style="{backgroundColor:   addForm.ntype==='0'?'#409EFF':'#E6A23C'}">
 										<i :class="  addForm.ntype==='0'?'el-icon-s-operation':'el-icon-odometer' " ></i>
 									</div>  
-									{{addForm.ntype==='0'?'序号/任务':'序号/计划'}}
+									{{addForm.ntype==='0'?'任务名称':'计划名称'}}
 									</template>
-									<el-input  v-model="addForm.sortLevel"    placeholder="如1.0或者1.2.3等" title="序号，如1.0、1.1.1或者1，2，3等"></el-input> 
- 
-								</el-form-item>  
-							</el-col>
-							<el-col :span="18"> 
-								<el-form-item label="" prop="name" label-width="0"> 
 										<el-input v-model="addForm.name" placeholder="名称" ></el-input>   
-								</el-form-item> 
-							</el-col>
-							
+								</el-form-item>   
 						</el-row>
 						
 						
@@ -96,13 +87,11 @@
 								</el-form-item> 
 							</el-col>  
 						</el-row> 
-						<el-row> 
+						<el-row>  
 							
 							<el-col :span="12">
-								<el-form-item  label="优先级别" prop="level">  
-									<el-select v-model="addForm.level">
-											<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option> 
-									</el-select>    
+								<el-form-item label="排序序号" prop="sortLevel" >   
+									<el-input  v-model="addForm.sortLevel" style="max-width:90%;"   placeholder="如1.0或者1.2.3等" title="序号，如1.0、1.1.1或者1，2，3等" ></el-input> 
 								</el-form-item>  
 							</el-col>
 							<el-col :span="12"> 
@@ -316,10 +305,7 @@
 					],
 					taskState: [
 						{ required: true, message: '请选择任务状态', trigger: 'change' }
-					],
-					sortLevel: [
-						{ required: true, message: '排序号不能为空', trigger: 'change' }
-					],
+					], 
 					// execuser:[{
 					// 	validator: validateExec, trigger: 'blur'
 					// }],

@@ -110,21 +110,15 @@
  									<span>归属项目：{{editForm.projectName?editForm.projectName:''}}{{editForm.projectId?'('+editForm.projectId+')':''}} &nbsp;&nbsp;</span>
  									<span v-if="editForm.productId">归属产品：{{editForm.productId?editForm.productId:''}}  </span>
 						</el-row>
-						<el-row :gutter="10">
-							<el-col :span="6">
-								<el-form-item label="序号" prop="sortLevel" >  
+						<el-row :gutter="10"> 
+							<el-col :span="24"> 
+								<el-form-item  prop="name" > 
 									<template slot="label"> 
 									<div    class="big-icon" :style="{backgroundColor:   editForm.ntype==='0'?'#409EFF':'#E6A23C'}">
 										<i :class="  editForm.ntype==='0'?'el-icon-s-operation':'el-icon-odometer' " ></i>
 									</div>  
-									{{editForm.ntype==='0'?'序号/任务':'序号/计划'}}
+									{{editForm.ntype==='0'?' 任务名称':' 计划名称'}}
 									</template>
-									<el-input  v-model="editForm.sortLevel"    placeholder="如1.0或者1.2.3等" title="序号，如1.0、1.1.1或者1，2，3等"  @change="editXmTaskSomeFields(editForm,'sortLevel',$event)"></el-input> 
- 
-								</el-form-item>  
-							</el-col>
-							<el-col :span="18"> 
-								<el-form-item label="" prop="name" label-width="0"> 
 										<el-input v-model="editForm.name" placeholder="名称" @change="editXmTaskSomeFields(editForm,'name',$event)"></el-input>   
 								</el-form-item> 
 							</el-col>
@@ -132,7 +126,7 @@
 						</el-row>
 						
 						
-						<el-row> 
+						<el-row class="padding"> 
 							<el-col :span="8"> 
 								<mdp-field-x v-model="editForm.parentTaskname" label="上级计划" icon="el-icon-odometer" color="#E6A23C">
 									<el-button slot="oper"
@@ -153,7 +147,7 @@
  							</el-col>  
 							
 						</el-row>
-						<el-row> 
+						<el-row class="padding"> 
 							<el-col :span="8"> 
  									<mdp-select-dict-x  :label="editForm.ntype=='0'?'任务状态':'计划状态'" :dict="dicts['taskState']" v-model="editForm.taskState" @change="editXmTaskSomeFields(editForm,'taskState',$event)"></mdp-select-dict-x>
 							</el-col> 
@@ -209,6 +203,11 @@
 						</el-row> 
 						<el-row> 
 							
+							<el-col :span="12">
+								<el-form-item label="排序序号" prop="sortLevel" >   
+									<el-input  v-model="editForm.sortLevel" style="max-width:90%;"   placeholder="如1.0或者1.2.3等" title="序号，如1.0、1.1.1或者1，2，3等" ></el-input> 
+								</el-form-item>  
+							</el-col>
 							<el-col :span="12">
 								<el-form-item  label="优先级别" prop="level">  
 									<el-select v-model="editForm.level" @change="editXmTaskSomeFields(editForm,'level',$event)">
@@ -1045,13 +1044,7 @@
 
 </script>
 
-<style scoped>
-.el-form-item{
-	margin-bottom: 15px;
-}
-.el-form-item__content{
-	margin-left: 0;
-}
+<style scoped> 
  
 
 .step-btn{
