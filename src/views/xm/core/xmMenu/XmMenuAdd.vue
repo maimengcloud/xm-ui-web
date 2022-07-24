@@ -151,10 +151,7 @@
 					menuName: [
 						{ required: true, message: '需求名称不能为空', trigger: 'change' },
 						{ min: 2, max: 250, message: '长度在 2 到 250 个字符', trigger: 'change' },//长度
-					],
-					seqNo: [
-						{ required: true, message: '序号不能为空', trigger: 'change' }
-					],
+					], 
 					mmUserid: [
 						{ required: true, message: '负责人不能为空', trigger: 'change' }
 					], 
