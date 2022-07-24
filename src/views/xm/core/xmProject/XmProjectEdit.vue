@@ -532,7 +532,7 @@
 					this.$notify({position:'bottom-left',showClose:true,message: "只有初始状态的项目可以修改，如确实需要修改，请进行项目变更审批", type: 'error' }); 
 					return;
 				}
-				var msg=this.xmProduct&&this.xmProduct.id?'将自动关联产品【'+this.xmProduct.productName+'】':''; 
+				var msg=this.xmProduct&&this.xmProduct.id?'将自动关联产品【'+(this.xmProduct.productName?this.xmProduct.productName:this.xmProduct.id)+'】':''; 
 				this.$refs.editForm.validate((valid) => {
 					if (valid) {
 						this.$confirm('确认提交吗？'+msg, '提示', {}).then(() => { 

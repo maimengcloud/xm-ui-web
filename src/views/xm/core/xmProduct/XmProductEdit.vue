@@ -98,7 +98,7 @@
       </el-form>
 		
 		<el-row v-if="opType==='add'" style="float:right;">
-			<el-button type="primary" @click="editSubmit">保存</el-button>
+			<el-button type="primary" @click="addSubmit">保存</el-button>
 		</el-row> 
     </el-row>
   </section>
@@ -132,7 +132,7 @@ export default {
       }
     },
   },
-  props: ["xmProduct", "visible", "opType"],
+  props: ["xmProduct", "visible", "opType",'selProject'],
   watch: {
     xmProduct: {
       handler() {
@@ -271,40 +271,34 @@ export default {
       this.$emit("cancel");
     },
     //新增提交XmProduct 产品表 父组件监听@submit="afterAddSubmit"
-    editSubmit: function () {
-      this.$refs.editForm.validate((valid) => {
-        if (valid) {
-          this.$confirm("确认提交吗？", "提示", {}).then(() => {
-            this.load.edit = true;
-            let params = Object.assign({}, this.editForm);
-            params.branchId = this.userInfo.branchId;
-            addXmProduct(params)
-              .then((res) => {
-                this.load.edit = false;
-                var tips = res.data.tips;
-                if (tips.isOk) {
-                  //this.$refs['editForm'].resetFields();
-                  this.$emit("submit"); //  @submit="afterAddSubmit"
-                }
-                this.$notify({
-                  position: "bottom-left",
-                  showClose: true,
-                  message: tips.msg,
-                  type: tips.isOk ? "success" : "error",
-                });
-              })
-              .catch((err) => (this.load.edit = false));
-          });
-        } else {
-          this.$notify({
-            position: "bottom-left",
-            showClose: true,
-            message: "表单验证不通过，请修改后提交",
-            type: "error",
-          });
-        }
-      });
-    },  
+    addSubmit: function () {
+				
+				this.$refs.editForm.validate((valid) => {
+					if (valid) {
+            debugger;
+						var msg=this.selProject&&this.selProject.id?'将自动关联项目【'+(this.selProject.name?this.selProject.name:this.selProject.id)+'】':'';
+						this.$confirm('确认提交吗？'+msg, '提示', {}).then(() => { 
+							this.load.add=true
+							let params = Object.assign({}, this.editForm); 
+							if(this.selProject &&this.selProject.id){
+								params.links=[{projectId:this.selProject.id}]
+							}
+							params.branchId=this.userInfo.branchId
+							addXmProduct(params).then((res) => {
+								this.load.add=false
+								var tips=res.data.tips;
+								if(tips.isOk){
+									//this.$refs['addForm'].resetFields();
+									this.$emit('submit',res.data.data);//  @submit="afterAddSubmit"
+								}
+								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+							}).catch( err  => this.load.add=false);
+						});
+					}else{
+						this.$notify({position:'bottom-left',showClose:true,message: "表单检查不通过", type: 'error' }); 
+					}
+				});
+			},
 
     editSomeFields(row, fieldName, $event) {
 		if(this.opType==='add'){
