@@ -18,18 +18,18 @@
 				<el-row class="padding">
 					<el-col :span="8">
 						<el-form-item prop="cuserid" label-width="0px">
-							<xm-user-field label="负责人" userid-key="cuserid" username-key="cusername" v-model="editForm" @change="editSomeFields(editForm,'cuserid',$event)"></xm-user-field>
+							<xm- mdp-select-user-x label="负责人" userid-key="cuserid" username-key="cusername" v-model="editForm" @change="editSomeFields(editForm,'cuserid',$event)"></xm- mdp-select-user-x>
 						</el-form-item>  
 					</el-col>
 					<el-col :span="8">
 						 
-						<dict-field label="状态" :dict="dicts['casedbStatus']" v-model="editForm.status"  @change="editSomeFields(editForm,'status',$event)"></dict-field>
+						< mdp-select-dict-x label="状态" :dict="dicts['casedbStatus']" v-model="editForm.status"  @change="editSomeFields(editForm,'status',$event)"></ mdp-select-dict-x>
 						 
 					</el-col>
 					
 					<el-col :span="8">
 					 
-						<date-field label="创建日期" v-model="editForm.ctime"  @change="editSomeFields(editForm,'ctime',$event)"></date-field>
+						< mdp-date-x label="创建日期" v-model="editForm.ctime"  @change="editSomeFields(editForm,'ctime',$event)"></ mdp-date-x>
 					</el-col>
 				</el-row>    
 			</el-form>

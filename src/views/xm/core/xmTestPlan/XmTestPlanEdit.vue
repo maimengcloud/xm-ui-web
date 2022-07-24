@@ -21,14 +21,14 @@
 				  </el-form-item>
 				<el-row class="padding">
 					<el-col :span="8">
-						<xm-user-field label="负责人" userid-key="cuserid" username-key="cusername" v-model="editForm" @change="editSomeFields(editForm,'cuserid',$event)"></xm-user-field>
+						<xm- mdp-select-user-x label="负责人" userid-key="cuserid" username-key="cusername" v-model="editForm" @change="editSomeFields(editForm,'cuserid',$event)"></xm- mdp-select-user-x>
 					</el-col>
 					<el-col :span="8">
-						<dict-field label="状态" :dict="dicts['testPlanStatus']" v-model="editForm.status"  @change="editSomeFields(editForm,'status',$event)"></dict-field>
+						< mdp-select-dict-x label="状态" :dict="dicts['testPlanStatus']" v-model="editForm.status"  @change="editSomeFields(editForm,'status',$event)"></ mdp-select-dict-x>
 					</el-col>
 					
 					<el-col :span="8">
-						<dict-field label="测试结果" :dict="dicts['testPlanTcode']" v-model="editForm.tcode"  @change="editSomeFields(editForm,'tcode',$event)"></dict-field>
+						< mdp-select-dict-x label="测试结果" :dict="dicts['testPlanTcode']" v-model="editForm.tcode"  @change="editSomeFields(editForm,'tcode',$event)"></ mdp-select-dict-x>
 					</el-col>
 				</el-row>   
  				<el-form-item label="归属测试库" prop="casedbName">

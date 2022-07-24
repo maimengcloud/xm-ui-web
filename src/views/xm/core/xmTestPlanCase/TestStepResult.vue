@@ -35,7 +35,7 @@
 							<my-input class="padding-right" v-model="item.aresult" clearable placeholder="步骤结果"></my-input> 
 						</el-col>
 						<el-col :span="3">  
-								<dict-field   :dict="dicts['testStepTcode']" v-model="item.tcode" :get-icon="getExecStatusIcon"></dict-field> 
+								< mdp-select-dict-x   :dict="dicts['testStepTcode']" v-model="item.tcode" :get-icon="getExecStatusIcon"></ mdp-select-dict-x> 
  						</el-col> 
 						<el-col :span="1"> 
 							<slot name="addBug">

@@ -160,10 +160,10 @@
 						<el-row>
 							
 							<el-col :span="8">  
-									<xm-user-field  label="总负责人" v-model="editForm" userid-key="createUserid" username-key="createUsername" @change="editXmTaskSomeFields(editForm,'createUserid',$event)"></xm-user-field> 
+									<xm- mdp-select-user-x  label="总负责人" v-model="editForm" userid-key="createUserid" username-key="createUsername" @change="editXmTaskSomeFields(editForm,'createUserid',$event)"></xm- mdp-select-user-x> 
  							</el-col>  
 							<el-col :span="8"> 
- 									<dict-field  :label="editForm.ntype=='0'?'任务状态':'计划状态'" :dict="dicts['taskState']" v-model="editForm.taskState" @change="editXmTaskSomeFields(editForm,'taskState',$event)"></dict-field>
+ 									< mdp-select-dict-x  :label="editForm.ntype=='0'?'任务状态':'计划状态'" :dict="dicts['taskState']" v-model="editForm.taskState" @change="editXmTaskSomeFields(editForm,'taskState',$event)"></ mdp-select-dict-x>
 							</el-col> 
 							
 							<el-col :span="8">  

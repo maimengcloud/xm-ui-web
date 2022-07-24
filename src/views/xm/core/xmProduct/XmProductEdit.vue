@@ -51,35 +51,35 @@
 			
           <el-col :span="8">
             <el-form-item prop="admUserid" label-width="0px">
-              <user-field
+              < mdp-select-user-x
                 label=" 产品总控"
                 userid-key="admUserid"
                 username-key="admUsername"
                 v-model="editForm"
                 @change="editSomeFields(editForm, 'admUserid', $event)"
-              ></user-field>
+              ></ mdp-select-user-x>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item prop="pmUserid" label-width="0px">
-              <user-field
+              < mdp-select-user-x
                 label=" 产品经理"
                 userid-key="pmUserid"
                 username-key="pmUsername"
                 v-model="editForm"
                 @change="editSomeFields(editForm, 'pmUserid', $event)"
-              ></user-field>
+              ></ mdp-select-user-x>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item prop="assUserid" label-width="0px">
-              <user-field
+              < mdp-select-user-x
                 label=" 副经理、助理"
                 userid-key="assUserid"
                 username-key="assUsername"
                 v-model="editForm"
                 @change="editSomeFields(editForm, 'assUserid', $event)"
-              ></user-field>
+              ></ mdp-select-user-x>
             </el-form-item>
           </el-col>
 		

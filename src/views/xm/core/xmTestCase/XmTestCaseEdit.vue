@@ -33,17 +33,17 @@
 							<el-row class="padding">
 								
 								<el-col :span="6">  
-									<dict-field label="状态" :dict="dicts['testCaseStatus']" v-model="editForm.caseStatus"  @change="editSomeFields(editForm,'caseStatus',$event)"></dict-field> 
+									< mdp-select-dict-x label="状态" :dict="dicts['testCaseStatus']" v-model="editForm.caseStatus"  @change="editSomeFields(editForm,'caseStatus',$event)"></ mdp-select-dict-x> 
 								</el-col> 
 								<el-col :span="6"> 
-									 <xm-user-field label="维护人" userid-key="luserid" username-key="lusername" v-model="editForm" @change="editSomeFields(editForm,'luserid',$event)"></xm-user-field>
+									 <xm- mdp-select-user-x label="维护人" userid-key="luserid" username-key="lusername" v-model="editForm" @change="editSomeFields(editForm,'luserid',$event)"></xm- mdp-select-user-x>
  
 								</el-col>  
 								<el-col :span="6">  
-									<dict-field label="用例类型" :dict="dicts['caseType']" v-model="editForm.caseType"  @change="editSomeFields(editForm,'caseType',$event)"></dict-field>
+									< mdp-select-dict-x label="用例类型" :dict="dicts['caseType']" v-model="editForm.caseType"  @change="editSomeFields(editForm,'caseType',$event)"></ mdp-select-dict-x>
 								</el-col> 
 								<el-col :span="6">  
-									<dict-field label="优先级" :dict="dicts['priority']" v-model="editForm.cpriority"  @change="editSomeFields(editForm,'cpriority',$event)"></dict-field>
+									< mdp-select-dict-x label="优先级" :dict="dicts['priority']" v-model="editForm.cpriority"  @change="editSomeFields(editForm,'cpriority',$event)"></ mdp-select-dict-x>
 								</el-col> 
 								
 							</el-row>

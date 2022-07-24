@@ -35,13 +35,13 @@
 				</el-table-column> 
 				<el-table-column prop="status" label="状态" width="120" show-overflow-tooltip>
 				    <template slot-scope="scope"> 
-                        <dict-tag :dict="dicts['testPlanStatus']" v-model="scope.row.status" effect="dark" @change="editSomeFields(scope.row,'status',$event)"></dict-tag> 
+                        < mdp-select-dict-tag :dict="dicts['testPlanStatus']" v-model="scope.row.status" effect="dark" @change="editSomeFields(scope.row,'status',$event)"></ mdp-select-dict-tag> 
                    </template>
 				</el-table-column>
 				<el-table-column prop="tcode" label="测试结果" width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
                         
-                        <dict-tag :dict="dicts['testPlanTcode']" v-model="scope.row.tcode" effect="dark" @change="editSomeFields(scope.row,'tcode',$event)"></dict-tag> 
+                        < mdp-select-dict-tag :dict="dicts['testPlanTcode']" v-model="scope.row.tcode" effect="dark" @change="editSomeFields(scope.row,'tcode',$event)"></ mdp-select-dict-tag> 
                           
                     </template>
 				</el-table-column> 
