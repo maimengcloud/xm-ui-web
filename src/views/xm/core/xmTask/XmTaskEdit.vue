@@ -4,7 +4,7 @@
 			<el-col v-if="editForm.crowd==='1' && editForm.taskOut=='1'" :span="4" class="border padding">
 				 <h3 class="padding-bottom">
 					<div    class="big-icon" :style="{backgroundColor:   editForm.ntype==='0'?'#409EFF':'#E6A23C'}">
-						<i :class="  editForm.ntype==='0'?'el-icon-s-operation':'el-icon-odometer' " ></i>
+						<i :class="  editForm.ntype==='0'?'el-icon-s-operation':'el-icon-time' " ></i>
 					</div>  
 					众包{{editForm.ntype=='1'?'计划':'任务'}}
 				</h3> 
@@ -62,7 +62,7 @@
 			<el-col v-if="editForm.crowd!='1' ||  editForm.taskOut!='1'" :span="4" class="border padding">
 				<h3 class="padding-bottom">
 				<div    class="big-icon" :style="{backgroundColor:   editForm.ntype==='0'?'#409EFF':'#E6A23C'}">
-					<i :class="  editForm.ntype==='0'?'el-icon-s-operation':'el-icon-odometer' " ></i>
+					<i :class="  editForm.ntype==='0'?'el-icon-s-operation':'el-icon-time' " ></i>
 				</div>  
 				普通{{editForm.ntype=='1'?'计划':'任务'}}
 			</h3> 
@@ -115,7 +115,7 @@
 								<el-form-item  prop="name" > 
 									<template slot="label"> 
 									<div    class="big-icon" :style="{backgroundColor:   editForm.ntype==='0'?'#409EFF':'#E6A23C'}">
-										<i :class="  editForm.ntype==='0'?'el-icon-s-operation':'el-icon-odometer' " ></i>
+										<i :class="  editForm.ntype==='0'?'el-icon-s-operation':'el-icon-time' " ></i>
 									</div>  
 									{{editForm.ntype==='0'?' 任务名称':' 计划名称'}}
 									</template>
@@ -128,7 +128,7 @@
 						
 						<el-row class="padding"> 
 							<el-col :span="8"> 
-								<mdp-field-x v-model="editForm.parentTaskname" label="上级计划" icon="el-icon-odometer" color="#E6A23C">
+								<mdp-field-x v-model="editForm.parentTaskname" label="上级计划" icon="el-icon-time" color="#E6A23C">
 									<el-button slot="oper"
 										@click="selectParentTaskVisible=true"  
 										title="更换任务的上级，实现任务搬家功能"

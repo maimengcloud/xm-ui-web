@@ -11,7 +11,7 @@
 								<el-form-item  prop="name"> 
 									<template slot="label"> 
 									<div    class="big-icon" :style="{backgroundColor:   addForm.ntype==='0'?'#409EFF':'#E6A23C'}">
-										<i :class="  addForm.ntype==='0'?'el-icon-s-operation':'el-icon-odometer' " ></i>
+										<i :class="  addForm.ntype==='0'?'el-icon-s-operation':'el-icon-time' " ></i>
 									</div>  
 									{{addForm.ntype==='0'?'任务名称':'计划名称'}}
 									</template>
@@ -22,7 +22,7 @@
 						
 						<el-row class="padding"> 
 							<el-col :span="8"> 
-								<mdp-field-x v-model="addForm.parentTaskname" label="上级计划" icon="el-icon-odometer" color="#E6A23C">
+								<mdp-field-x v-model="addForm.parentTaskname" label="上级计划" icon="el-icon-time" color="#E6A23C">
 									<el-button slot="oper"
 										@click="selectParentTaskVisible=true"  
 										title="更换任务的上级，实现任务搬家功能"

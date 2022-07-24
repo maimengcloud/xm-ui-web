@@ -20,7 +20,7 @@
               <el-col :span="24" style="padding-top: 5px">
                 
                 <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
-                  <i :class=" 'el-icon-odometer' " ></i>
+                  <i :class=" 'el-icon-time' " ></i>
                 </div>  
                 <el-button 
                   @click="showEpicFeaturesForCreateTask" 
@@ -31,7 +31,7 @@
               <el-col :span="24" style="padding-top: 5px">
                 
                 <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
-                  <i :class=" 'el-icon-odometer' " ></i>
+                  <i :class=" 'el-icon-time' " ></i>
                 </div>  
                 <el-button 
                   @click="showTaskTemplate"
@@ -42,7 +42,7 @@
               <el-col :span="24" style="padding-top: 5px">
                 
                 <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
-                  <i :class=" 'el-icon-odometer' " ></i>
+                  <i :class=" 'el-icon-time' " ></i>
                 </div>  
                 <el-button 
                   @click="showAdd('1')"
@@ -201,7 +201,7 @@
                 <template slot-scope="scope">
                   <!--
                   <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#409EFF'}">
-									<i :class="scope.row.ntype==='1'?'el-icon-odometer':'el-icon-s-operation'" ></i>
+									<i :class="scope.row.ntype==='1'?'el-icon-time':'el-icon-s-operation'" ></i>
 									</div>  
                   -->
                   <span>
@@ -227,7 +227,7 @@
                             <el-col :span="24" style="padding-top: 5px">
                               
                               <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
-                                <i :class=" 'el-icon-odometer' " ></i>
+                                <i :class=" 'el-icon-time' " ></i>
                               </div>  
                               <el-button 
                                 @click="showEpicFeaturesForCreateSubTask(scope.row)" 
@@ -238,7 +238,7 @@
                             <el-col :span="24" style="padding-top: 5px">
                               
                               <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
-                                <i :class=" 'el-icon-odometer' " ></i>
+                                <i :class=" 'el-icon-time' " ></i>
                               </div>  
                               <el-button 
                                 @click="showTaskTemplate"
@@ -249,7 +249,7 @@
                             <el-col :span="24" style="padding-top: 5px">
                               
                               <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
-                                <i :class=" 'el-icon-odometer' " ></i>
+                                <i :class=" 'el-icon-time' " ></i>
                               </div>  
                               <el-button   @click.stop="showSubAdd( scope.row,scope.$index,'1')" icon="el-icon-plus" title="新建子计划">直接创建子计划 </el-button>   
                             </el-col> 

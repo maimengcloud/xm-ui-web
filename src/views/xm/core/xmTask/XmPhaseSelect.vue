@@ -49,7 +49,7 @@
               <template slot="header">计划名称 &nbsp;<el-button type="text" @click="unselectRow()">清除选中的行</el-button></template>
                 <template slot-scope="scope">
                   <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#409EFF'}">
-									<i :class="scope.row.ntype==='1'?'el-icon-odometer':'el-icon-s-operation'" ></i>
+									<i :class="scope.row.ntype==='1'?'el-icon-time':'el-icon-s-operation'" ></i>
 									</div>  
                   <span>
                     {{ scope.row.sortLevel }}&nbsp;  {{ scope.row.name }}

@@ -6,7 +6,7 @@
           <el-table-column prop="name" label="名称"> 
                 <template slot-scope="scope"> 
                   <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#1CC7EA'}">
-                    <i :class="scope.row.ntype==='1'?'el-icon-odometer':'el-icon-s-operation'" ></i>
+                    <i :class="scope.row.ntype==='1'?'el-icon-time':'el-icon-s-operation'" ></i>
                   </div>   
 									<span class="my-cell-text">   
 										 {{scope.row.sortLevel}}&nbsp;{{scope.row.name}}
@@ -112,7 +112,7 @@
               
                 <template slot="label">
                   <div    class="icon" :style="{backgroundColor:   ntype==='1'?'#E6A23C':'#409EFF'}">
-									<i :class=" ntype==='1'?'el-icon-odometer':'el-icon-s-operation'" ></i>
+									<i :class=" ntype==='1'?'el-icon-time':'el-icon-s-operation'" ></i>
 									</div>  {{ntype==='1'?'计划名称':'任务名称'}}
                 </template>
               <el-input v-model="addForm.name" autocomplete="off" ></el-input>

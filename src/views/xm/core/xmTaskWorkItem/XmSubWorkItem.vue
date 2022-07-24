@@ -5,7 +5,7 @@
       <span style="float:right;"> 
       <el-button v-if="parentXmTask.ntype==='1'" icon="el-icon-plus" @click="showAdd('1')"> 
         <div class="icon" style="background-color:  #E6A23C;">
-            <i class="el-icon-odometer"></i>
+            <i class="el-icon-time"></i>
           </div>
         添加子计划
       </el-button>
@@ -39,7 +39,7 @@ export default {
 			calcMenuLabel(){
 				var params={label:'工作项',icon:'',color:''};
 				if(this.parentXmTask.ntype==='0'){
-					params={label:'计划',icon:'el-icon-odometer',color:'#E6A23C'};
+					params={label:'计划',icon:'el-icon-time',color:'#E6A23C'};
 				}else if(this.parentXmTask.ntype==='1'){
 					params={label:'任务',icon:'el-icon-s-operation',color:'#409EFF'};
 				} 

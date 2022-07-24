@@ -86,7 +86,7 @@
         </el-menu-item>
         <!--
 				<el-submenu index="计划">
-					<template slot="title"><i class="el-icon-odometer"></i>计划</template>
+					<template slot="title"><i class="el-icon-time"></i>计划</template>
 						
 						<el-menu-item   index="产品计划">
 							<span slot="title"><i class="el-icon-view"></i>产品计划</span> 
@@ -98,7 +98,7 @@
 				</el-submenu >
 				
 				<el-menu-item index="项目计划">
-							<span slot="title"><i class="el-icon-odometer"></i>计划</span>
+							<span slot="title"><i class="el-icon-time"></i>计划</span>
 						</el-menu-item> 
 						-->
         <el-submenu index="财务" class="hidden-sm-and-down">

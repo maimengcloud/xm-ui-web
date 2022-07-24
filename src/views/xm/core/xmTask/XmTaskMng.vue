@@ -343,7 +343,7 @@
               >
                 <template slot-scope="scope">
                   <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#409EFF'}">
-									<i :class="scope.row.ntype==='1'?'el-icon-odometer':'el-icon-s-operation'" ></i>
+									<i :class="scope.row.ntype==='1'?'el-icon-time':'el-icon-s-operation'" ></i>
 									</div>  
                   <span    type="primary">
                     {{ scope.row.sortLevel }}&nbsp;  {{ scope.row.name }}
