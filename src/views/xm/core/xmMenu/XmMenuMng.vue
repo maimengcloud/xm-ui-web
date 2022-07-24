@@ -245,64 +245,35 @@
 								</template>
 							</el-table-column>
 							<el-table-column prop="status" label="状态"  min-width="80"  sortable>
-								<template slot-scope="scope">
-									<div class="cell-text">
-										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in formatterMenuStatusDicts(scope.row.status)" :key="index">{{item.name}}</el-button>
-									</div>
-									<span class="cell-bar">
-										 <el-select @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.status" placeholder="需求状态"  style="display:block;"  @change="editXmMenuSomeFields(scope.row,'status',$event)">
-												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option>
-										 </el-select>
-									</span>
-								</template>
+								<template slot-scope="scope"> 
+										 <mdp-select-dict-tag  @visible-change="selectVisible(scope.row,$event)" :dict="dicts['menuStatus']" v-model="scope.row.status" label="需求状态"   @change="editXmMenuSomeFields(scope.row,'status',$event)">
+ 										 </mdp-select-dict-tag> 
+ 								</template>
 							</el-table-column>
 							<el-table-column prop="priority"  label="优先级" width="100" sortable>
-								<template slot-scope="scope">
-									<div class="cell-text">
-										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in formatterPriorityDicts(scope.row.priority)" :key="index">{{item.name}}</el-button>
- 									</div>
-									<span class="cell-bar">
-										 <el-select @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.priority" placeholder="优先级"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'priority',$event)">
-												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.priority" :key="index"> </el-option>
-										 </el-select>
-									</span>
-								</template>
+								<template slot-scope="scope"> 
+										 <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['priority']" v-model="scope.row.priority" placeholder="优先级"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'priority',$event)">
+ 										 </mdp-select-dict-tag>
+ 								</template>
 							</el-table-column>
 							<el-table-column prop="dtype" label="类型" width="100"  sortable v-if="false">
-								<template slot-scope="scope">
-									<div class="cell-text">
-										{{formaterByDicts(scope.row,'dtype',scope.row.dtype)}}
-									</div>
-									<span class="cell-bar">
-										 <el-select @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.dtype" placeholder="类型"  style="display:block;"  @change="editXmMenuSomeFields(scope.row,'dtype',$event)">
-												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.demandType" :key="index"></el-option>
-										 </el-select>
-									</span>
-								</template>
+								<template slot-scope="scope"> 
+										 <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['demandType']" v-model="scope.row.dtype" placeholder="类型"  style="display:block;"  @change="editXmMenuSomeFields(scope.row,'dtype',$event)">
+ 										 </mdp-select-dict-tag>
+ 								</template>
 							</el-table-column>
 							<el-table-column prop="source"  label="来源" width="100"  :formatter="formaterByDicts"  show-overflow-tooltip sortable  v-if="false">
 								<template slot-scope="scope">
-									<div class="cell-text">
-										{{formaterByDicts(scope.row,'source',scope.row.source)}}
-									</div>
-									<span class="cell-bar">
-										 <el-select @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.source" placeholder="来源"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'source',$event)">
-												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.demandSource" :key="index"></el-option>
-										 </el-select>
-									</span>
-								</template>
+									 
+										 <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['demandSource']" v-model="scope.row.source" placeholder="来源"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'source',$event)">
+ 										 </mdp-select-dict-tag>
+ 								</template>
 							</el-table-column>
 							<el-table-column prop="dlvl"  label="层次" width="100" sortable>
-								<template slot-scope="scope">
-									<div class="cell-text">
-										{{formaterByDicts(scope.row,'dlvl',scope.row.dlvl)}}
-									</div>
-									<span class="cell-bar">
-										 <el-select @visible-change="selectVisible(scope.row,$event)"  v-model="scope.row.dlvl" placeholder="层次"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'dlvl',$event)">
-												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.demandLvl" :key="index"></el-option>
-										 </el-select>
-									</span>
-								</template>
+								<template slot-scope="scope"> 
+										 <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['demandLvl']"  v-model="scope.row.dlvl" placeholder="层次"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'dlvl',$event)">
+ 										 </mdp-select-dict-tag>
+ 								</template>
 							</el-table-column>
 							<el-table-column prop="iterationName" label="迭代" width="150" show-overflow-tooltip sortable>
 								<template slot-scope="scope">
