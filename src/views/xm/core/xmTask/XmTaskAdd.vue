@@ -53,7 +53,7 @@
 							</el-col> 
 							<el-col :span="12"> 
 								<el-form-item label="预估时间">  
-										< mdp-date-range  
+										<mdp-date-range  
 											v-model="addForm"
 											@change="onBudgetDateRangerChange" 
 											start-key="startTime"
@@ -66,7 +66,7 @@
 											value-format="yyyy-MM-dd HH:mm:ss"
 											:default-time="['00:00:00','23:59:59']"
 											:picker-options="pickerOptions"
-										></ mdp-date-range>
+										></mdp-date-range>
 								</el-form-item>  
 							</el-col> 
 

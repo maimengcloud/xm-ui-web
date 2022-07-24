@@ -21,14 +21,14 @@
 				  </el-form-item>
 				<el-row class="padding">
 					<el-col :span="8">
-						<xm- mdp-select-user-x label="负责人" userid-key="cuserid" username-key="cusername" v-model="editForm" @change="editSomeFields(editForm,'cuserid',$event)"></xm- mdp-select-user-x>
+						<mdp-select-user-xm label="负责人" userid-key="cuserid" username-key="cusername" v-model="editForm" @change="editSomeFields(editForm,'cuserid',$event)"></mdp-select-user-xm>
 					</el-col>
 					<el-col :span="8">
-						< mdp-select-dict-x label="状态" :dict="dicts['testPlanStatus']" v-model="editForm.status"  @change="editSomeFields(editForm,'status',$event)"></ mdp-select-dict-x>
+						<mdp-select-user-xm label="状态" :dict="dicts['testPlanStatus']" v-model="editForm.status"  @change="editSomeFields(editForm,'status',$event)"></mdp-select-user-xm>
 					</el-col>
 					
 					<el-col :span="8">
-						< mdp-select-dict-x label="测试结果" :dict="dicts['testPlanTcode']" v-model="editForm.tcode"  @change="editSomeFields(editForm,'tcode',$event)"></ mdp-select-dict-x>
+						<mdp-select-user-xm label="测试结果" :dict="dicts['testPlanTcode']" v-model="editForm.tcode"  @change="editSomeFields(editForm,'tcode',$event)"></mdp-select-user-xm>
 					</el-col>
 				</el-row>   
  				<el-form-item label="归属测试库" prop="casedbName">
@@ -39,7 +39,7 @@
 				</el-form-item>  
 				 
 				<el-form-item label="起止时间" prop="stime">
-					< mdp-date-range :auto-default="false" placeholder="选择日期" v-model="editForm" start-key="stime" end-key="etime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'stime',editForm)"></ mdp-date-range>
+					<mdp-date-range :auto-default="false" placeholder="选择日期" v-model="editForm" start-key="stime" end-key="etime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'stime',editForm)"></mdp-date-range>
 				</el-form-item>   
 			</el-form>
 		</el-row>
@@ -60,7 +60,7 @@
 	import { mapGetters } from 'vuex'
 	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
 	
-import  XmUserField from '@/views/xm/core/components/XmUserField';//修改界面
+import  XmUserField from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
 	export default {
 	    name:'xmTestPlanEdit',
 	    components: {

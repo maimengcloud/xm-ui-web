@@ -23,25 +23,25 @@
 					 
 					<el-col :span="12"> 
 						<el-form-item prop="onlineTime" label-width="0px">
-							< mdp-date-x label="上线时间"  type="date" placeholder="选择日期" v-model="editForm.onlineTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'onlineTime',$event)"></ mdp-date-x>
+							<mdp-date-x label="上线时间"  type="date" placeholder="选择日期" v-model="editForm.onlineTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'onlineTime',$event)"></mdp-date-x>
 						</el-form-item>   
 					</el-col>
 					<el-col :span="12"> 
 				
 						<el-form-item prop="startTime"  label-width="0px">
-							< mdp-date-range-x label="起止时间" :auto-default="false" start-key="startTime" end-key="endTime" v-model="editForm" placeholder="选择日期"   value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'startTime',$event)"></ mdp-date-range-x>
+							<mdp-date-range-x label="起止时间" :auto-default="false" start-key="startTime" end-key="endTime" v-model="editForm" placeholder="选择日期"   value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'startTime',$event)"></mdp-date-range-x>
 						</el-form-item>  
 					</el-col>
 				</el-row>   
 				<el-row>
 					<el-col :span="12"> 
 						<el-form-item prop="adminUserid" label-width="0px">
-							<xm- mdp-select-user-x label="负责人姓名" v-model="editForm" userid-key="adminUserid" username-key="adminUsername"  @change="editSomeFields(editForm,'adminUserid',$event)"></xm- mdp-select-user-x>
+							<mdp-select-user-xm label="负责人姓名" v-model="editForm" userid-key="adminUserid" username-key="adminUsername"  @change="editSomeFields(editForm,'adminUserid',$event)"></mdp-select-user-xm>
 						</el-form-item>   
 					</el-col>
 					<el-col :span="12">
 						<el-form-item  prop="istatus" label-width="0px">
-							< mdp-select-dict-x label="状态" :dict="dicts['iterationStatus']" v-model="editForm.istatus" @change="editSomeFields(editForm,'istatus',$event)"></ mdp-select-dict-x>
+							<mdp-select-user-xm label="状态" :dict="dicts['iterationStatus']" v-model="editForm.istatus" @change="editSomeFields(editForm,'istatus',$event)"></mdp-select-user-xm>
 							
 						</el-form-item> 
 					</el-col> 
@@ -59,7 +59,7 @@
 	import { initDicts,addXmIteration,editSomeFieldsXmIteration } from '@/api/xm/core/xmIteration';
 	import { mapGetters } from 'vuex'	
  
-	import XmUserField from "@/views/xm/core/components/XmUserField";
+	import XmUserField from "@/views/xm/core/components/MdpSelectUserXm";
 	import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 	
 	export default { 

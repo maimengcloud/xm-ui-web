@@ -88,7 +88,7 @@
 							</el-col>
 							<el-col :span="8">
 								<el-form-item label="截止时间" prop="startTime">  
-									 < mdp-date-range type="daterange" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="addForm" start-key="startTime" end-key="endTime"></ mdp-date-range>
+									 <mdp-date-range type="daterange" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="addForm" start-key="startTime" end-key="endTime"></mdp-date-range>
 								  
 								</el-form-item>
 							</el-col> 

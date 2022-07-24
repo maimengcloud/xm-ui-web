@@ -160,14 +160,14 @@
 						<el-row>
 							
 							<el-col :span="8">  
-									<xm- mdp-select-user-x  label="总负责人" v-model="editForm" userid-key="createUserid" username-key="createUsername" @change="editXmTaskSomeFields(editForm,'createUserid',$event)"></xm- mdp-select-user-x> 
+									<mdp-select-user-xm  label="总负责人" v-model="editForm" userid-key="createUserid" username-key="createUsername" @change="editXmTaskSomeFields(editForm,'createUserid',$event)"></mdp-select-user-xm> 
  							</el-col>  
 							<el-col :span="8"> 
- 									< mdp-select-dict-x  :label="editForm.ntype=='0'?'任务状态':'计划状态'" :dict="dicts['taskState']" v-model="editForm.taskState" @change="editXmTaskSomeFields(editForm,'taskState',$event)"></ mdp-select-dict-x>
+ 									<mdp-select-user-xm  :label="editForm.ntype=='0'?'任务状态':'计划状态'" :dict="dicts['taskState']" v-model="editForm.taskState" @change="editXmTaskSomeFields(editForm,'taskState',$event)"></mdp-select-user-xm>
 							</el-col> 
 							
 							<el-col :span="8">  
-										< mdp-date-range-x
+										<mdp-date-range-x
 											:style-obj="{maxWidth:'100%'}"
 											v-model="editForm"
 											start-key="startTime"
@@ -182,7 +182,7 @@
 											value-format="yyyy-MM-dd HH:mm:ss"
 											:default-time="['00:00:00','23:59:59']"
 											:picker-options="pickerOptions"
-										></ mdp-date-range-x>  
+										></mdp-date-range-x>  
 							</el-col> 
 
 							
@@ -549,7 +549,7 @@
 	import XmMenuRichDetail from '../xmMenu/XmMenuRichDetail';
 	import TagMng from "@/views/mdp/arc/tag/TagMng";
 	import XmRecord from '../xmRecord/XmRecord' 
-	import XmUserField from '@/views/xm/core/components/XmUserField'
+	import XmUserField from '@/views/xm/core/components/MdpSelectUserXm'
 	import XmSubWorkItem from "@/views/xm/core/xmTaskWorkItem/XmSubWorkItem";
 	import xmQuestionForTask from "@/views/xm/core/xmQuestion/XmQuestionForTask";
 	import XmTaskWorkloadRecord from "../xmTaskWorkload/XmTaskWorkloadRecord"

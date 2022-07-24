@@ -23,37 +23,37 @@
 							<el-row class="padding-left padding-right padding-top">
 								<el-col :span="8">
 									<el-form-item prop="xmType" label-width="0px"> 
-										< mdp-select-dict-x label="项目类型" :dict="dicts['projectType']" v-model="editForm.xmType" @change="editXmProjectSomeFields(editForm,'xmType',$event)"></ mdp-select-dict-x>
+										<mdp-select-user-xm label="项目类型" :dict="dicts['projectType']" v-model="editForm.xmType" @change="editXmProjectSomeFields(editForm,'xmType',$event)"></mdp-select-user-xm>
 									</el-form-item>  
 								</el-col>
 								<el-col :span="8">
 								
 									<el-form-item prop="status" label-width="0px"> 
-										< mdp-select-dict-x label="项目状态" :dict="dicts['projectStatus']" v-model="editForm.status" @change="editXmProjectSomeFields(editForm,'status',$event)"></ mdp-select-dict-x>
+										<mdp-select-user-xm label="项目状态" :dict="dicts['projectStatus']" v-model="editForm.status" @change="editXmProjectSomeFields(editForm,'status',$event)"></mdp-select-user-xm>
 									</el-form-item>   
 								</el-col>  
 								<el-col :span="8"> 
 									<el-form-item prop="workType" label-width="0px"> 
-										< mdp-select-dict-x label="工作方式" :dict="dicts['workType']" v-model="editForm.workType" @change="editXmProjectSomeFields(editForm,'workType',$event)"></ mdp-select-dict-x>
+										<mdp-select-user-xm label="工作方式" :dict="dicts['workType']" v-model="editForm.workType" @change="editXmProjectSomeFields(editForm,'workType',$event)"></mdp-select-user-xm>
 									</el-form-item>   
 								</el-col> 
 							</el-row>   
 							<el-row class="padding">
 								<el-col :span="8">
 							<el-form-item  prop="admUserid" label-width="0px"> 
-								< mdp-select-user-x label=" 项目总控" userid-key="admUserid" username-key="admUsername" v-model="editForm" @change="editXmProjectSomeFields(editForm,'admUserid',$event)"></ mdp-select-user-x>
+								<mdp-select-user-x label=" 项目总控" userid-key="admUserid" username-key="admUsername" v-model="editForm" @change="editXmProjectSomeFields(editForm,'admUserid',$event)"></mdp-select-user-x>
 							</el-form-item>  
 								</el-col>
 								<el-col :span="8">
 								
 							<el-form-item prop="pmUserid" label-width="0px"> 
-								< mdp-select-user-x label=" 项目经理" userid-key="pmUserid" username-key="pmUsername" v-model="editForm" @change="editXmProjectSomeFields(editForm,'pmUserid',$event)"></ mdp-select-user-x>
+								<mdp-select-user-x label=" 项目经理" userid-key="pmUserid" username-key="pmUsername" v-model="editForm" @change="editXmProjectSomeFields(editForm,'pmUserid',$event)"></mdp-select-user-x>
  
 							</el-form-item> 
 								</el-col>
 								<el-col :span="8">
 							<el-form-item  prop="assUserid" label-width="0px"> 
-								< mdp-select-user-x label=" 副经理、助理" userid-key="assUserid" username-key="assUsername" v-model="editForm" @change="editXmProjectSomeFields(editForm,'assUserid',$event)"></ mdp-select-user-x>
+								<mdp-select-user-x label=" 副经理、助理" userid-key="assUserid" username-key="assUsername" v-model="editForm" @change="editXmProjectSomeFields(editForm,'assUserid',$event)"></mdp-select-user-x>
   
 							</el-form-item>  
 								</el-col>
@@ -108,7 +108,7 @@
 							</el-row>
 							<el-form-item label="起止时间" >  
 							<el-row>
-								< mdp-date-range 
+								<mdp-date-range 
 									v-model="editForm"
 									class="hidden-sm-and-down"
 									type="daterange"
@@ -122,7 +122,7 @@
 									value-format="yyyy-MM-dd HH:mm:ss"
 									:default-time="['00:00:00','23:59:59']"
 									:picker-options="pickerOptions" 
-								></ mdp-date-range>    
+								></mdp-date-range>    
 								<el-input  style="width:150px;" type="number" v-model="editForm.planWorkingHours" :precision="2" :step="8" :min="0" placeholder="预计工时"></el-input>小时 &nbsp;&nbsp;<el-tag>参考工时{{autoParams.weekday*8}}小时,工作日{{autoParams.weekday}}天</el-tag>  
 								<br>
 								<el-checkbox v-model="autoSet">工期变化自动更新预估成本/合同金额/预估工时等关联数据</el-checkbox>

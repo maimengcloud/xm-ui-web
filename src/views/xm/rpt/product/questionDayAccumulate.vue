@@ -15,7 +15,7 @@
   					  </el-form-item>    
 					<el-form-item label="日期区间">
 						<br>
-							< mdp-date-range v-model="filters" value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></ mdp-date-range>
+							<mdp-date-range v-model="filters" value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></mdp-date-range>
   					</el-form-item>  
 					<el-form-item>
 						 <el-button type="primary" icon="el-icon-search" @click="listXmProductStateHis">查询</el-button>

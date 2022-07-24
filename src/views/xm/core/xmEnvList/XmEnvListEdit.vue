@@ -47,7 +47,7 @@
 					</el-select>
 				</el-form-item> 
 				<el-form-item label="有效日期" prop="startTime,endTime">
-					< mdp-date-range type="daterange" placeholder="选择日期" :auto-default="false" v-model="editForm" start-key="startTime" end-key="endTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></ mdp-date-range>
+					<mdp-date-range type="daterange" placeholder="选择日期" :auto-default="false" v-model="editForm" start-key="startTime" end-key="endTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></mdp-date-range>
 				</el-form-item>    
 				<el-form-item label="备注说明" prop="remark">
 					<el-input type="textarea" rows="4" v-model="editForm.remark" placeholder="备注说明" ></el-input>

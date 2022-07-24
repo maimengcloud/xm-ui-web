@@ -20,7 +20,7 @@
 						</el-form-item> 
 								<el-row class="padding"> 
 									<el-col :span="6"> 
-											<xm- mdp-select-user-x :project-id="editForm.projectId" :product-id="editForm.productId" label="责任人" v-model="editForm" userid-key="handlerUserid" username-key="handlerUsername" @change="editXmQuestionSomeFields(editForm,'handlerUserid',$event)"></xm- mdp-select-user-x>
+											<mdp-select-user-xm :project-id="editForm.projectId" :product-id="editForm.productId" label="责任人" v-model="editForm" userid-key="handlerUserid" username-key="handlerUsername" @change="editXmQuestionSomeFields(editForm,'handlerUserid',$event)"></mdp-select-user-xm>
 											<el-popover
 												placement="top-start"
 												title="重新指派给"
@@ -36,15 +36,15 @@
 									</el-col>
 									
 									<el-col :span="6">
-										< mdp-select-dict-x label="状态" :dict="dicts['bugStatus']" v-model="editForm.bugStatus" @change="editXmQuestionSomeFields(editForm,'bugStatus',$event)"></ mdp-select-dict-x> 
+										<mdp-select-user-xm label="状态" :dict="dicts['bugStatus']" v-model="editForm.bugStatus" @change="editXmQuestionSomeFields(editForm,'bugStatus',$event)"></mdp-select-user-xm> 
 									</el-col> 
 
 									<el-col :span="6">
-										< mdp-select-dict-x label="优先级" :dict="dicts['priority']" v-model="editForm.priority" @change="editXmQuestionSomeFields(editForm,'priority',$event)"></ mdp-select-dict-x> 
+										<mdp-select-user-xm label="优先级" :dict="dicts['priority']" v-model="editForm.priority" @change="editXmQuestionSomeFields(editForm,'priority',$event)"></mdp-select-user-xm> 
 									</el-col>
 									
 									<el-col :span="6"> 
-												< mdp-date-x label="结束时间" style="max-width:100%;" value-format="yyyy-MM-dd HH:mm:ss" v-model="editForm.endTime" @change="editXmQuestionSomeFields(editForm,'endTime',$event)"></ mdp-date-x>
+												<mdp-date-x label="结束时间" style="max-width:100%;" value-format="yyyy-MM-dd HH:mm:ss" v-model="editForm.endTime" @change="editXmQuestionSomeFields(editForm,'endTime',$event)"></mdp-date-x>
  									</el-col>
 								</el-row>
 								<el-row>
@@ -55,12 +55,12 @@
 											
 												<el-col :span="8">
 													<el-form-item label="提出人" prop="askUsername">
-														<xm- mdp-select-user-x :project-id="editForm.projectId" :product-id="editForm.productId" label="提出人" v-model="editForm" userid-key="askUserid" username-key="askUsername" @change="editXmQuestionSomeFields(editForm,'askUserid',$event)"></xm- mdp-select-user-x>
+														<mdp-select-user-xm :project-id="editForm.projectId" :product-id="editForm.productId" label="提出人" v-model="editForm" userid-key="askUserid" username-key="askUsername" @change="editXmQuestionSomeFields(editForm,'askUserid',$event)"></mdp-select-user-xm>
  													</el-form-item> 
 												</el-col>
 												<el-col :span="8">
 													<el-form-item label="复现频率" prop="repRate"> 
-														< mdp-select-dict-tag  :dict="dicts['bugRepRate']" v-model="editForm.repRate" @change="editXmQuestionSomeFields(editForm,'repRate',$event)"></ mdp-select-dict-tag>
+														<mdp-select-dict-tag  :dict="dicts['bugRepRate']" v-model="editForm.repRate" @change="editXmQuestionSomeFields(editForm,'repRate',$event)"></mdp-select-dict-tag>
 													</el-form-item>
 													
 												</el-col> 
@@ -75,26 +75,26 @@
 										
 										<el-col :span="8">
 											<el-form-item label="严重程度" prop="bugSeverity">
-												< mdp-select-dict-tag  :dict="dicts['bugSeverity']" v-model="editForm.bugSeverity" @change="editXmQuestionSomeFields(editForm,'bugSeverity',$event)"></ mdp-select-dict-tag>
+												<mdp-select-dict-tag  :dict="dicts['bugSeverity']" v-model="editForm.bugSeverity" @change="editXmQuestionSomeFields(editForm,'bugSeverity',$event)"></mdp-select-dict-tag>
 											 
 											</el-form-item>
 										</el-col> 	
 										<el-col :span="8">
 											<el-form-item label="原因分析" prop="bugReason">
-												< mdp-select-dict-tag  :dict="dicts['bugReason']" v-model="editForm.bugReason" @change="editXmQuestionSomeFields(editForm,'bugReason',$event)"></ mdp-select-dict-tag>
+												<mdp-select-dict-tag  :dict="dicts['bugReason']" v-model="editForm.bugReason" @change="editXmQuestionSomeFields(editForm,'bugReason',$event)"></mdp-select-dict-tag>
 												 
 											</el-form-item>
 										</el-col>
 										
 										<el-col :span="8">
 											<el-form-item label="解决方案" prop="solution">
-												< mdp-select-dict-tag  :dict="dicts['bugSolution']" v-model="editForm.solution" @change="editXmQuestionSomeFields(editForm,'solution',$event)"></ mdp-select-dict-tag>
+												<mdp-select-dict-tag  :dict="dicts['bugSolution']" v-model="editForm.solution" @change="editXmQuestionSomeFields(editForm,'solution',$event)"></mdp-select-dict-tag>
  
 											</el-form-item>
 										</el-col> 
 										<el-col :span="8">
 													<el-form-item label="缺陷类别" prop="bugType">
-														< mdp-select-dict-tag  :dict="dicts['bugType']" v-model="editForm.bugType" @change="editXmQuestionSomeFields(editForm,'bugType',$event)"></ mdp-select-dict-tag>
+														<mdp-select-dict-tag  :dict="dicts['bugType']" v-model="editForm.bugType" @change="editXmQuestionSomeFields(editForm,'bugType',$event)"></mdp-select-dict-tag>
  
 													</el-form-item>
 													
@@ -198,7 +198,7 @@
 	import XmMyDoFocus from '@/views/myWork/my/components/DoFocus';
 
 	import XmFuncSelect from '../xmFunc/XmFuncSelect'
-	import XmUserField from '@/views/xm/core/components/XmUserField/index'
+	import XmUserField from '@/views/xm/core/components/MdpSelectUserXm/index'
 	import TestStepConfig from '../xmTestCase/TestStepConfig.vue';
 	import TestStepResult from '../xmTestPlanCase/TestStepResult.vue';
 	export default {

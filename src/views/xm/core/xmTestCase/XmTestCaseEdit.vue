@@ -33,17 +33,17 @@
 							<el-row class="padding">
 								
 								<el-col :span="6">  
-									< mdp-select-dict-x label="状态" :dict="dicts['testCaseStatus']" v-model="editForm.caseStatus"  @change="editSomeFields(editForm,'caseStatus',$event)"></ mdp-select-dict-x> 
+									<mdp-select-user-xm label="状态" :dict="dicts['testCaseStatus']" v-model="editForm.caseStatus"  @change="editSomeFields(editForm,'caseStatus',$event)"></mdp-select-user-xm> 
 								</el-col> 
 								<el-col :span="6"> 
-									 <xm- mdp-select-user-x label="维护人" userid-key="luserid" username-key="lusername" v-model="editForm" @change="editSomeFields(editForm,'luserid',$event)"></xm- mdp-select-user-x>
+									 <mdp-select-user-xm label="维护人" userid-key="luserid" username-key="lusername" v-model="editForm" @change="editSomeFields(editForm,'luserid',$event)"></mdp-select-user-xm>
  
 								</el-col>  
 								<el-col :span="6">  
-									< mdp-select-dict-x label="用例类型" :dict="dicts['caseType']" v-model="editForm.caseType"  @change="editSomeFields(editForm,'caseType',$event)"></ mdp-select-dict-x>
+									<mdp-select-user-xm label="用例类型" :dict="dicts['caseType']" v-model="editForm.caseType"  @change="editSomeFields(editForm,'caseType',$event)"></mdp-select-user-xm>
 								</el-col> 
 								<el-col :span="6">  
-									< mdp-select-dict-x label="优先级" :dict="dicts['priority']" v-model="editForm.cpriority"  @change="editSomeFields(editForm,'cpriority',$event)"></ mdp-select-dict-x>
+									<mdp-select-user-xm label="优先级" :dict="dicts['priority']" v-model="editForm.cpriority"  @change="editSomeFields(editForm,'cpriority',$event)"></mdp-select-user-xm>
 								</el-col> 
 								
 							</el-row>
@@ -123,7 +123,7 @@ import  XmQuestionMng from '@/views/xm/core/xmQuestion/XmQuestionMng';//修改�
 import  XmTestPlanCaseMng from '@/views/xm/core/xmTestPlanCase/XmTestPlanCaseMng';//修改界面
  	import MyInput from '@/components/MDinput/index';
 	
-import  XmUserField from '@/views/xm/core/components/XmUserField';//修改界面
+import  XmUserField from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
 	export default {
 	    name:'xmTestCaseEdit',
 	    components: {

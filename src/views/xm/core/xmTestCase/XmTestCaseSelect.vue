@@ -37,7 +37,7 @@
                         
                         <el-table-column prop="caseStatus" label="状态" min-width="120" show-overflow-tooltip>
                             <template slot-scope="scope">
-                                < mdp-select-dict-tag :dict="dicts['testCaseStatus']" v-model="scope.row.caseStatus" effect="dark" :disabled="true"></ mdp-select-dict-tag>                                         
+                                <mdp-select-dict-tag :dict="dicts['testCaseStatus']" v-model="scope.row.caseStatus" effect="dark" :disabled="true"></mdp-select-dict-tag>                                         
                             </template>
                         </el-table-column> 
                         <el-table-column prop="caseRemark" label="备注" min-width="120" show-overflow-tooltip>

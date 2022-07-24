@@ -28,7 +28,7 @@
                         
                         <el-table-column prop="execStatus" label="执行结果" width="120" show-overflow-tooltip>
                             <template slot-scope="scope"> 
-                                < mdp-select-dict-tag :dict="dicts['testStepTcode']" v-model="scope.row.execStatus" effect="dark" @change="editSomeFields(scope.row,'execStatus',$event)"></ mdp-select-dict-tag> 
+                                <mdp-select-dict-tag :dict="dicts['testStepTcode']" v-model="scope.row.execStatus" effect="dark" @change="editSomeFields(scope.row,'execStatus',$event)"></mdp-select-dict-tag> 
                             </template>
                         </el-table-column>
                         <el-table-column prop="caseName" label="用例名称" min-width="250">
@@ -46,7 +46,7 @@
                         </el-table-column>
                         <el-table-column prop="priority" label="优先级" width="120" >
                             <template slot-scope="scope">
-                                < mdp-select-dict-tag :dict="dicts['priority']" v-model="scope.row.priority" @change="editSomeFields(scope.row,'priority',$event)"></ mdp-select-dict-tag>  
+                                <mdp-select-dict-tag :dict="dicts['priority']" v-model="scope.row.priority" @change="editSomeFields(scope.row,'priority',$event)"></mdp-select-dict-tag>  
                             </template>
                         </el-table-column>
                         <el-table-column prop="remark" label="执行备注" min-width="150" show-overflow-tooltip>

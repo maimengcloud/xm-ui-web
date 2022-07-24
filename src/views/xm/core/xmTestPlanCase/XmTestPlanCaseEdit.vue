@@ -31,14 +31,14 @@
 					</el-row>
 					<el-row class="padding">
 						<el-col :span="8"> 
-							   <xm- mdp-select-user-x label="执行人" userid-key="execUserid" username-key="execUsername" v-model="editForm" @change="editSomeFields(editForm,'execUserid',$event)"></xm- mdp-select-user-x>
+							   <mdp-select-user-xm label="执行人" userid-key="execUserid" username-key="execUsername" v-model="editForm" @change="editSomeFields(editForm,'execUserid',$event)"></mdp-select-user-xm>
 						</el-col> 
 						<el-col :span="8">  
-							< mdp-select-dict-x label="优先级" :dict="dicts['priority']" v-model="editForm.priority"></ mdp-select-dict-x>
+							<mdp-select-user-xm label="优先级" :dict="dicts['priority']" v-model="editForm.priority"></mdp-select-user-xm>
 						</el-col> 
 						
 						<el-col :span="8">  
-							< mdp-select-dict-x label="执行结果" :dict="dicts['testStepTcode']" v-model="editForm.execStatus" :get-icon="getExecStatusIcon"></ mdp-select-dict-x> 
+							<mdp-select-user-xm label="执行结果" :dict="dicts['testStepTcode']" v-model="editForm.execStatus" :get-icon="getExecStatusIcon"></mdp-select-user-xm> 
 						</el-col> 
 					</el-row>
  				</el-form-item>  
@@ -51,7 +51,7 @@
 									用例状态
 								</el-row>
 								<el-row>
-                                 	 < mdp-select-dict-tag :dict="dicts['testCaseStatus']" v-model="editForm.caseStatus" :disabled="true"></ mdp-select-dict-tag>
+                                 	 <mdp-select-dict-tag :dict="dicts['testCaseStatus']" v-model="editForm.caseStatus" :disabled="true"></mdp-select-dict-tag>
 								</el-row>
 							</el-col>
 							<el-col :span="6">
@@ -68,7 +68,7 @@
 									用例类型
 								</el-row>
 								<el-row>
-									< mdp-select-dict-tag  :dict="dicts['caseType']" v-model="editForm.caseType" :disabled="true" ></ mdp-select-dict-tag>
+									<mdp-select-dict-tag  :dict="dicts['caseType']" v-model="editForm.caseType" :disabled="true" ></mdp-select-dict-tag>
 
 								</el-row>
 							</el-col>
@@ -78,7 +78,7 @@
 									紧急程度
 								</el-row>
 								<el-row>
-									 < mdp-select-dict-tag :dict="dicts['priority']" v-model="editForm.cpriority"  :disabled="true"></ mdp-select-dict-tag> 
+									 <mdp-select-dict-tag :dict="dicts['priority']" v-model="editForm.cpriority"  :disabled="true"></mdp-select-dict-tag> 
 								</el-row>
 							</el-col>
 						</el-row> 
@@ -151,9 +151,9 @@
 		</el-row>
 		<el-row>  
 			<el-col :offset="12" :span="12" style="display: flex;">  
-				< mdp-select-dict-x label="执行结果" :dict="dicts['testStepTcode']" v-model="editForm.execStatus" :get-icon="getExecStatusIcon" @change="editSomeFields(editForm,'execStatus',$event)">
+				<mdp-select-user-xm label="执行结果" :dict="dicts['testStepTcode']" v-model="editForm.execStatus" :get-icon="getExecStatusIcon" @change="editSomeFields(editForm,'execStatus',$event)">
 					<span slot="label"></span>
-				</ mdp-select-dict-x>   
+				</mdp-select-user-xm>   
 				<el-button @click="$emit('next')" type="primary">下一条</el-button>
 			</el-col> 
 		</el-row>
@@ -183,7 +183,7 @@ import TestStepResult from './TestStepResult.vue';
 	import MyInput from '@/components/MDinput/index';
 	import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 import  XmQuestionMng from '@/views/xm/core/xmQuestion/XmQuestionMng';//修改界面
-import  XmUserField from '@/views/xm/core/components/XmUserField';//修改界面
+import  XmUserField from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
 		import  XmQuestionAdd from '../xmQuestion/XmQuestionEdit';//新增界面
 
 	export default {
