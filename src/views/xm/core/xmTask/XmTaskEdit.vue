@@ -139,13 +139,14 @@
 										@click="selectParentTaskVisible=true"  
 										title="更换任务的上级，实现任务搬家功能"
 										icon="el-icon-upload2" 
-									> </el-button> 
+									> 选择新的上级</el-button> 
 								</mdp-field-x> 
 							</el-col> 
 							
 							<el-col :span="8">   
 								<mdp-field-x v-model="editForm.rate" label="进度"> 
-									<div slot="info"><el-progress slot="info" :text-inside="true" :stroke-width="20" :percentage="editForm.rate" status="exception"></el-progress></div>
+									<div slot="value" style="width:200px;"><el-progress  :percentage="editForm.rate"></el-progress></div>
+									<el-button slot="oper" @click="activateTabPaneName='5'" type="primary">去填写工时更新进度</el-button>
 								</mdp-field-x> 
 										
 								 
