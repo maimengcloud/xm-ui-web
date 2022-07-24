@@ -34,13 +34,13 @@ import MyInput from '@/components/MDinput/index'
 
 Vue.prototype.$echarts = echarts
 Vue.use(Print); //注册
-Vue.component('date-range',MdpDateRange) 
+Vue.component('mdp-date-range',MdpDateRange) 
 Vue.component('dict-select',MdpSelectDict)
 Vue.component('dict-tag',MdpSelectDictTag)
 Vue.component('dict-field',MdpSelectDictX)
 Vue.component('my-input',MyInput)
 Vue.component('date-field',MdpDateX)
-Vue.component('date-range-field',MdpDateRangeX)
+Vue.component('mdp-date-range-x',MdpDateRangeX)
 Vue.component('user-field',MdpSelectUserX)
 Vue.use(Element, {
   size: 'small', // set element-ui default size
