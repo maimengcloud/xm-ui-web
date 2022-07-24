@@ -107,83 +107,49 @@
 								<el-col  :span="8">
 									<mdp-select-user-xm  label="提出人" v-model="editForm" userid-key="proposerId" username-key="proposerName" @change="editXmTaskSomeFields(editForm,'proposerId',$event)"></mdp-select-user-xm>   
 								</el-col>
-						</el-row> 
-						<el-row>
-							<el-col :span="6">
-								<el-form-item label="序号名称" prop="seqNo" > 
-										<el-input v-model="editForm.seqNo" title="序号 如 1.1，1.2.3，1.3.2等" style="width:100%;" placeholder="如1.0 ， 1.1 ， 1.1.1等"  @change="editXmMenuSomeFields(editForm,'seqNo',$event)"></el-input>
+						</el-row>   
 
-								</el-form-item>
+						<el-row class="padding">
+							<el-col :span="8"> 
+									<mdp-select-dict-x label="状态" v-model="editForm.status" :dict="dicts['menuStatus']" @change="editXmMenuSomeFields(editForm,'status',$event)">
+ 									</mdp-select-dict-x> 
 							</el-col>
-							<el-col :span="18">
-								<el-form-item label="" prop="menuName" label-width="0px">
-									<el-input v-model="editForm.menuName" placeholder="名称" title="名称"  @change="editXmMenuSomeFields(editForm,'menuName',$event)"></el-input>
-								</el-form-item>
-							</el-col>
-						</el-row>
-						<el-row> 
-							<el-col :span="8">
-								<el-form-item v-if="!editForm.pmenuId" :label="editForm.dclass==='3'?'归属特性':(editForm.dclass==='2'?'归属史诗':'归属')" prop="pmenuId">
-										无
-									</el-form-item>
-
-									<el-form-item  v-else :label="editForm.dclass==='3'?'归属特性':(editForm.dclass==='2'?'归属史诗':'归属')" prop="pmenuId">
-										<div   v-if="editForm.dclass==='2'"  class="big-icon" style="background-color:  rgb(255, 153, 51);">
-											<i class="el-icon-s-promotion"></i>
-										</div>
-										<div   v-if="editForm.dclass==='3'"  class="big-icon" style="background-color:  rgb(0, 153, 51);">
-											<i class="el-icon-s-flag"></i>
-										</div>
-										  {{editForm.pmenuName?editForm.pmenuName:editForm.pmenuId}}
-									</el-form-item>
-							</el-col>
-								<el-col  :span="8">
-									<el-form-item label="负责人" prop="mmUserid">
-										<el-tag type="text" v-if="editForm.mmUserid" closable @close="clearMmUser">{{editForm.mmUsername}}</el-tag>
-										<el-button type="text" @click="mmUserSelectVisible=true">选跟进人</el-button>
-									</el-form-item>
-								</el-col>
-						</el-row>
-
-						<el-row>
-							<el-col :span="8">
-								<el-form-item label="需求状态" prop="status">
-									<el-select style="display:block;width:100px;" v-model="editForm.status"  @change="editXmMenuSomeFields(editForm,'status',$event)">
-										<el-option v-for="i in this.dicts.menuStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>
-									</el-select>
-								</el-form-item>
-							</el-col>
-							<el-col :span="8">  
-								<el-form-item label="进度" prop="finishRate" >
- 										 {{editForm.finishRate?editForm.finishRate:0}}%  
-								</el-form-item>   
+							
+							<el-col :span="8">   
+								<mdp-field-x v-model="editForm.finishRate" label="进度"> 
+									<div slot="value" style="min-width:150px;"><el-progress  :percentage="editForm.finishRate"></el-progress></div>
+									<div slot="oper"><el-button  @click="activateTabPaneName='2'" type="primary">查看工时</el-button><el-button  @click="activateTabPaneName='6'" type="primary">查看子工作项</el-button></div>
+								</mdp-field-x>  
 							</el-col>  
 							<el-col :span="8">  
-								<el-form-item label="起止时间" prop="startTime,endTime" >
-										<mdp-date-range type="daterange" :style-obj="{maxWidth:'100%'}" :auto-default="false"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="editForm" start-key="startTime" end-key="endTime"  @change="editXmMenuSomeFields(editForm,'startTime',editForm)"></mdp-date-range>
+ 										<mdp-date-range-x label="起止时间" type="daterange" :style-obj="{maxWidth:'100%'}" :auto-default="false"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="editForm" start-key="startTime" end-key="endTime"  @change="editXmMenuSomeFields(editForm,'startTime',editForm)"></mdp-date-range-x>
  
-								</el-form-item> 
-							</el-col>
-						</el-row>
+ 							</el-col> 
+						</el-row> 
 					<el-tabs  v-model="activateTabPaneName" >
 					<el-tab-pane label="基本信息" name="1" >
 
-
+ 
 						<el-row>
+							
 							<el-col :span="12">
-								<el-form-item label="提出人" prop="proposerId">
-									<el-tag type="text" v-if="editForm.proposerId" closable @close="clearProposer">{{editForm.proposerName}}</el-tag>
-									<el-button type="text" @click="selectProposer">选提出人</el-button>
+								<el-form-item label="排序序号" prop="seqNo" > 
+										<el-input style="max-width:90%;" v-model="editForm.seqNo" title="序号 如 1.1，1.2.3，1.3.2等" placeholder="如1.0 ， 1.1 ， 1.1.1等"  @change="editXmMenuSomeFields(editForm,'seqNo',$event)"></el-input>
+
 								</el-form-item>
 							</el-col>
+							<el-col :span="12"> 
+								<el-form-item  label="版本号" prop="sinceVersion" >
+									<el-input style="max-width:90%;" v-model="editForm.sinceVersion" @change="editXmMenuSomeFields(editForm,'sinceVersion',$event)"> 
+									</el-input>
+								</el-form-item>
+							</el-col> 
+							
 							<el-col :span="12">
 								<el-form-item label="提出时间" prop="ctime" >
 									<el-date-picker value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="editForm.ctime"  @change="editXmMenuSomeFields(editForm,'ctime',$event)"></el-date-picker>
 								</el-form-item>
 							</el-col>
-						</el-row>
-						<el-row>
-
 							<el-col :span="12">
 								<el-form-item  label="需求类型" prop="dtype" >
 									<el-select v-model="editForm.dtype"  @change="editXmMenuSomeFields(editForm,'dtype',$event)">
@@ -210,12 +176,6 @@
 									<el-select v-model="editForm.priority" @change="editXmMenuSomeFields(editForm,'priority',$event)">
 											<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
 									</el-select>
-								</el-form-item>
-							</el-col> 
-							<el-col :span="12"> 
-								<el-form-item  label="版本号" prop="sinceVersion" >
-									<el-input style="max-width:90%;" v-model="editForm.sinceVersion" @change="editXmMenuSomeFields(editForm,'sinceVersion',$event)"> 
-									</el-input>
 								</el-form-item>
 							</el-col> 
 						</el-row>
@@ -319,6 +279,7 @@
 	import ArchiveEdit from '@/views/xm/core/wiki/archive/WikiMenuEdit';
 	import XmTestCaseMng from '@/views/xm/core/xmTestCase/XmTestCaseMng';
 
+	import MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm'
 	export default {
 		computed: {
 		    ...mapGetters([
@@ -605,7 +566,7 @@
 			XmRecord,
 			XmMyDoFocus,
 			ArchiveEdit,
-			XmTestCaseMng,
+			XmTestCaseMng,MdpSelectUserXm,
 		},
 		mounted() {
 
