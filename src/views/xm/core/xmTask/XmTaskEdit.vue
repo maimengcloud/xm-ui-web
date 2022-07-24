@@ -142,28 +142,28 @@
 									> 选择新的上级</el-button> 
 								</mdp-field-x> 
 							</el-col> 
-							
-							<el-col :span="8">   
-								<mdp-field-x v-model="editForm.rate" label="进度"> 
-									<div slot="value" style="width:200px;"><el-progress  :percentage="editForm.rate"></el-progress></div>
-									<el-button slot="oper" @click="activateTabPaneName='5'" type="primary">去填写工时更新进度</el-button>
-								</mdp-field-x> 
-										
-								 
-							</el-col> 
-							
-							<el-col :span="8"> 
- 									<mdp-select-dict-x label="优先级别" :dict="dicts['priority']" v-model="editForm.level" @change="editXmTaskSomeFields(editForm,'level',$event)"></mdp-select-dict-x>
-							</el-col> 
-						</el-row>
-						<el-row>
-							
 							<el-col :span="8">  
-									<mdp-select-user-xm  label="总负责人" v-model="editForm" userid-key="createUserid" username-key="createUsername" @change="editXmTaskSomeFields(editForm,'createUserid',$event)"></mdp-select-user-xm> 
+									<mdp-select-user-xm  label="负责人" v-model="editForm" userid-key="createUserid" username-key="createUsername" @change="editXmTaskSomeFields(editForm,'createUserid',$event)"></mdp-select-user-xm> 
+ 							</el-col>   
+							<el-col :span="8" v-if="editForm.ntype=='0'">  
+									<mdp-field-x v-if="editForm.crowd=='1'"  label="执行人" v-model="executorUsername">
+										<el-button slot="oper">去管理竞标人</el-button>
+									</mdp-field-x> 
+									<mdp-select-user-xm v-if="editForm.crowd!='1'" label="执行人" v-model="editForm" userid-key="executorUserid" username-key="executorUsername" @change="editXmTaskSomeFields(editForm,'executorUserid',$event)"></mdp-select-user-xm> 
  							</el-col>  
+							
+						</el-row>
+						<el-row> 
 							<el-col :span="8"> 
  									<mdp-select-dict-x  :label="editForm.ntype=='0'?'任务状态':'计划状态'" :dict="dicts['taskState']" v-model="editForm.taskState" @change="editXmTaskSomeFields(editForm,'taskState',$event)"></mdp-select-dict-x>
 							</el-col> 
+							<el-col :span="8">   
+								<mdp-field-x v-model="editForm.rate" label="进度"> 
+									<div slot="value" style="min-width:150px;"><el-progress  :percentage="editForm.rate"></el-progress></div>
+									<el-button slot="oper" @click="activateTabPaneName='5'" type="primary">去填写工时</el-button>
+								</mdp-field-x>  
+							</el-col> 
+							
 							
 							<el-col :span="8">  
 										<mdp-date-range-x
@@ -187,6 +187,12 @@
 							
 						</el-row>
 					<el-tabs v-model="activateTabPaneName" >
+					
+						<el-tab-pane label="概述" name="2">  
+							<el-form-item   prop="description" label-width="0px">  
+								<el-input type="textarea" :autosize="{ minRows: 12, maxRows: 20}" v-model="editForm.description" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划"  @change="editXmTaskSomeFields(editForm,'description',$event)"></el-input> 
+							</el-form-item> 
+						</el-tab-pane>
 						<el-tab-pane label="基础信息" name="1"> 	
 						<el-row>  
 							<el-col :span="10">
@@ -234,11 +240,6 @@
 								</el-form-item>   
 							</el-col>
 						</el-row>  
-					</el-tab-pane>
-					<el-tab-pane label="概述" name="2">  
-						<el-form-item  label="任务概述" prop="description">  
- 							<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="editForm.description" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划"  @change="editXmTaskSomeFields(editForm,'description',$event)"></el-input> 
-						</el-form-item> 
 					</el-tab-pane>
 					
 					<el-tab-pane label="需求" name="3">  

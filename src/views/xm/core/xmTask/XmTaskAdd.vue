@@ -3,6 +3,10 @@
 		<el-row>
 			<!--新增界面 XmTask xm_task-->
 			<el-form :model="addForm"  label-width="120px" label-position="left" :rules="addFormRules" ref="addForm"> 
+						<el-row class="label-font-color"> 
+  									<span>归属项目：{{addForm.projectName?addForm.projectName:''}}{{addForm.projectId?'('+addForm.projectId+')':''}} &nbsp;&nbsp;</span>
+ 									<span v-if="addForm.productId">归属产品：{{addForm.productId?addForm.productId:''}}  </span>
+						</el-row>
 						<el-row :gutter="10">
 							<el-col :span="6">
 								<el-form-item label="序号" prop="sortLevel" >  
@@ -25,40 +29,40 @@
 						</el-row>
 						
 						
-						<el-row>
-							<el-col :span="12"> 
-								 <el-form-item  label="归属项目" prop="projectId"> 
-									{{addForm.projectName?addForm.projectName:addForm.projectId}}
-								</el-form-item> 
-							</el-col>
-							<el-col :span="12"> 
-								 <el-form-item label="上级计划" prop="parentTaskname">  
-									<template slot="label"> 
-										<div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
-										<i :class=" 'el-icon-odometer' " ></i>
-										</div> 
-										上级计划
-									</template>
-									<font v-if="addForm.parentTaskid" >{{addForm.parentTaskname?addForm.parentTaskname:addForm.parentTaskid}}</font> 
-									<font v-else>无上级(视为顶级)</font> 
-								</el-form-item>
+						<el-row class="padding"> 
+							<el-col :span="8"> 
+								<mdp-field-x v-model="addForm.parentTaskname" label="上级计划" icon="el-icon-odometer" color="#E6A23C">
+									<el-button slot="oper"
+										@click="selectParentTaskVisible=true"  
+										title="更换任务的上级，实现任务搬家功能"
+										icon="el-icon-upload2" 
+									> 选择新的上级</el-button> 
+								</mdp-field-x> 
 							</el-col>  
-						</el-row>
-						<el-row>
-							<el-col :span="12">  
-								<el-form-item label="总负责人"> 
-									<el-tag  v-if="addForm.createUserid" style="margin-left:10px;border-radius:30px;"  >{{addForm.createUsername}}</el-tag>
-									<el-button type="text" @click="showGroupUserSelect(addForm)" icon="el-icon-setting">设置负责人</el-button>
-								</el-form-item> 
+							
+							<el-col :span="8"> 
+ 									<mdp-select-dict-x  :label="addForm.ntype=='0'?'任务状态':'计划状态'" :dict="dicts['taskState']" v-model="addForm.taskState" @change="editXmTaskSomeFields(addForm,'taskState',$event)"></mdp-select-dict-x>
 							</el-col> 
-							<el-col :span="12"> 
-								<el-form-item label="预估时间">  
-										<mdp-date-range  
+							
+							<el-col :span="8"> 
+ 									<mdp-select-dict-x label="优先级别" :dict="dicts['priority']" v-model="addForm.level" @change="editXmTaskSomeFields(addForm,'level',$event)"></mdp-select-dict-x>
+							</el-col> 
+							
+						</el-row>
+						<el-row class="padding">
+							
+							<el-col :span="8">  
+									<mdp-select-user-xm  label="负责人" v-model="addForm" userid-key="createUserid" username-key="createUsername" @change="editXmTaskSomeFields(addForm,'createUserid',$event)"></mdp-select-user-xm> 
+ 							</el-col>   
+							<el-col :span="8">  
+										<mdp-date-range-x
+											:style-obj="{maxWidth:'100%'}"
 											v-model="addForm"
-											@change="onBudgetDateRangerChange" 
 											start-key="startTime"
 											end-key="endTime"
-											type="daterange" 
+											@change="onBudgetDateRangerChange" 
+											type="daterange"
+											:auto-default="false" 
 											unlink-panels
 											range-separator="-"
 											start-placeholder="开始日期"
@@ -66,13 +70,17 @@
 											value-format="yyyy-MM-dd HH:mm:ss"
 											:default-time="['00:00:00','23:59:59']"
 											:picker-options="pickerOptions"
-										></mdp-date-range>
-								</el-form-item>  
+										></mdp-date-range-x>  
 							</el-col> 
-
 							
 						</el-row>
 					<el-tabs v-model="activateTabPaneName">
+					
+						<el-tab-pane label="概述" name="2">  
+							<el-form-item prop="description" label-width="0px">  
+								<el-input type="textarea" :autosize="{ minRows:12, maxRows: 20}" v-model="addForm.description" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input> 
+							</el-form-item> 
+						</el-tab-pane> 
 						<el-tab-pane label="基础信息" name="1"> 	
 						<el-row>  
 							<el-col :span="10">
@@ -122,11 +130,6 @@
 							</el-col>
 						</el-row>  
 					</el-tab-pane>
-					<el-tab-pane label="概述" name="2">  
-						<el-form-item  label="任务概述" prop="description">  
- 							<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="addForm.description" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input> 
-						</el-form-item> 
-					</el-tab-pane> 
 					<el-tab-pane label="工时" name="5">  
 								<el-form-item label="报工方式" prop="wtype" > 
 									<el-select v-model="addForm.wtype">
@@ -254,8 +257,8 @@
 	import {batchAddSkill } from '@/api/xm/core/xmTaskSkill';
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
 	import XmTaskList from '../xmTask/XmTaskList';
-	import XmGroupSelect from '../xmGroup/XmGroupSelect.vue';
-
+	import XmGroupSelect from '../xmGroup/XmGroupSelect.vue'; 
+	import MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm'
 	export default {
 		computed: {
 			...mapGetters([
@@ -630,7 +633,7 @@
 		},//end method
 		components: {
  			xmSkillMng,
-			skillMng,xmMenuSelect,XmTaskList,XmGroupSelect
+			skillMng,xmMenuSelect,XmTaskList,XmGroupSelect,MdpSelectUserXm
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},
 		mounted() { 
