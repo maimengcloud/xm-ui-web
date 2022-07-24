@@ -284,32 +284,27 @@ table tr.hover-row{
 .title-font-size{
   font-size:28px;
 }
-
-.title-box{
-
-	height: 40px;
-}
-.title-box:hover .el-input .el-input__inner{  
-   	border: 1px solid #dcdfe6 !important;
-	padding:0 0px;
-	font-size:1.5rem;
-	height: 40px; 
-
-} 
- .title-box:hover .el-input .el-input__inner:focus{  
-   	border: 1px solid #7287ef !important;
-	padding:0 0px;
-	font-size:1.5rem;
-	height: 40px; 
-
-} 
-.title-box .el-input .el-input__inner{ 
-    border: 0px solid #dcdfe6 !important;
-	padding:0 1px; 
-	font-size:1.5rem; 
-	height: 40px;
-}
  
+.big-icon {
+  color: #fff;
+  height: 36px;
+  width: 36px;
+  border-radius: 15px;
+  text-align: center;
+  line-height: 36px;
+  font-size: 18px;
+  display: inline-block; 
+} 
+.small-icon {
+  color: #fff;
+  height: 36px;
+  width: 36px;
+  border-radius: 15px;
+  text-align: center;
+  line-height: 36px;
+  font-size: 18px;
+  display: inline-block; 
+} 
 /*此处根据不同屏幕分配率显示不同的样式*/
 /*手机端*/
 @media only screen and (min-width: 0px) and (max-width: 768px) {  

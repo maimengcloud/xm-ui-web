@@ -76,7 +76,38 @@
 			<el-col :span="20"> 
 			<el-form :model="editForm"  label-width="100px" label-position="left" :rules="editFormRules" ref="editForm">
 						<el-row class="label-font-color">编号：{{editForm.menuId}} &nbsp;&nbsp;<span v-if="editForm.productName">归属产品：{{ editForm.productName}} &nbsp;&nbsp;</span>归属产品编号：{{ editForm.productId }}</el-row>
+						<el-row :gutter="10">  
+							<el-col :span="24">
+								<el-form-item prop="menuName">
+									<template slot="label">
+										<div  class="icon" :style="{backgroundColor: calcMenuLabel.color }">
+											<i :class="calcMenuLabel.icon"></i>
+										</div>   
+										{{calcMenuLabel.label}}
+									</template> 
+									<el-input v-model="editForm.menuName" placeholder="名称" title="名称"> 
+									</el-input>
+								</el-form-item>   
+							</el-col>
+						</el-row>
+						<el-row class="padding"> 
+								<el-col :span="8">
+									<mdp-field-x v-if="!editForm.pmenuId" v-model="editForm.pmenuName" :disabled="true" label="上级需求"> </mdp-field-x>
 
+									<mdp-field-x v-else v-model="editForm.pmenuName" :label="editForm.dclass==='3'?'归属特性':(editForm.dclass==='2'?'归属史诗':'归属')" :icon="editForm.dclass==='2'?'el-icon-s-promotion':'el-icon-s-flag'" :color="editForm.dclass==='2'?'rgb(255, 153, 51)':'rgb(0, 153, 51)'">
+										<el-button slot="oper"
+											@click="showPmenu"  
+											title="查看上级"
+											icon="el-icon-upload2"> 查看上级</el-button> 
+									</mdp-field-x>  
+								</el-col> 
+								<el-col  :span="8">
+									<mdp-select-user-xm  label="负责人" v-model="editForm" userid-key="mmUserid" username-key="mmUsername" @change="editXmTaskSomeFields(editForm,'mmUserid',$event)"></mdp-select-user-xm>   
+								</el-col>
+								<el-col  :span="8">
+									<mdp-select-user-xm  label="提出人" v-model="editForm" userid-key="proposerId" username-key="proposerName" @change="editXmTaskSomeFields(editForm,'proposerId',$event)"></mdp-select-user-xm>   
+								</el-col>
+						</el-row> 
 						<el-row>
 							<el-col :span="6">
 								<el-form-item label="序号名称" prop="seqNo" > 

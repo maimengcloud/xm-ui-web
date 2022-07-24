@@ -313,15 +313,5 @@
 
 <style scoped>
 
-.icon {
-  color: #fff;
-  height: 36px;
-  width: 36px;
-  border-radius: 15px;
-  text-align: center;
-  line-height: 36px;
-  font-size: 18px;
-  display: inline-block;
-  margin-right: 5px;
-} 
+
 </style>
