@@ -123,11 +123,11 @@ import  XmQuestionMng from '@/views/xm/core/xmQuestion/XmQuestionMng';//修改�
 import  XmTestPlanCaseMng from '@/views/xm/core/xmTestPlanCase/XmTestPlanCaseMng';//修改界面
  	import MyInput from '@/components/MDinput/index';
 	
-import  XmUserField from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
+import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
 	export default {
 	    name:'xmTestCaseEdit',
 	    components: {
-			XmMenuSelect,XmFuncSelect,MyInput,TestStepConfig,XmQuestionMng,XmTestPlanCaseMng,XmUserField,
+			XmMenuSelect,XmFuncSelect,MyInput,TestStepConfig,XmQuestionMng,XmTestPlanCaseMng,MdpSelectUserXm,
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),

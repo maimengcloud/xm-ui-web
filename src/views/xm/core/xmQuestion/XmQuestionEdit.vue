@@ -198,7 +198,7 @@
 	import XmMyDoFocus from '@/views/myWork/my/components/DoFocus';
 
 	import XmFuncSelect from '../xmFunc/XmFuncSelect'
-	import XmUserField from '@/views/xm/core/components/MdpSelectUserXm/index'
+	import MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm/index'
 	import TestStepConfig from '../xmTestCase/TestStepConfig.vue';
 	import TestStepResult from '../xmTestPlanCase/TestStepResult.vue';
 	export default {
@@ -601,7 +601,7 @@
 		components: {
 				//在下面添加其它组件 'xm-question-edit':XmQuestionEdit
 				'upload': AttachmentUpload,XmGroupMng,VueEditor,XmTaskList,xmMenuSelect,XmQuestionHandleMng,TagMng,XmProjectSelect,
-			XmMyDoFocus,XmFuncSelect,XmUserField,TestStepConfig,TestStepResult,
+			XmMyDoFocus,XmFuncSelect,MdpSelectUserXm,TestStepConfig,TestStepResult,
 		},
 		mounted() { 
 			this.initData();

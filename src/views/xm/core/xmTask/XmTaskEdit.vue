@@ -163,7 +163,7 @@
 									<mdp-select-user-xm  label="总负责人" v-model="editForm" userid-key="createUserid" username-key="createUsername" @change="editXmTaskSomeFields(editForm,'createUserid',$event)"></mdp-select-user-xm> 
  							</el-col>  
 							<el-col :span="8"> 
- 									<mdp-select-user-xm  :label="editForm.ntype=='0'?'任务状态':'计划状态'" :dict="dicts['taskState']" v-model="editForm.taskState" @change="editXmTaskSomeFields(editForm,'taskState',$event)"></mdp-select-user-xm>
+ 									<mdp-select-dict-x  :label="editForm.ntype=='0'?'任务状态':'计划状态'" :dict="dicts['taskState']" v-model="editForm.taskState" @change="editXmTaskSomeFields(editForm,'taskState',$event)"></mdp-select-dict-x>
 							</el-col> 
 							
 							<el-col :span="8">  
@@ -549,7 +549,7 @@
 	import XmMenuRichDetail from '../xmMenu/XmMenuRichDetail';
 	import TagMng from "@/views/mdp/arc/tag/TagMng";
 	import XmRecord from '../xmRecord/XmRecord' 
-	import XmUserField from '@/views/xm/core/components/MdpSelectUserXm'
+	import MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm'
 	import XmSubWorkItem from "@/views/xm/core/xmTaskWorkItem/XmSubWorkItem";
 	import xmQuestionForTask from "@/views/xm/core/xmQuestion/XmQuestionForTask";
 	import XmTaskWorkloadRecord from "../xmTaskWorkload/XmTaskWorkloadRecord"
@@ -1021,7 +1021,7 @@
 		components: { 
  			xmSkillMng,
 			skillMng,xmMenuSelect,XmTaskList,XmExecuserMng,XmGroupSelect,XmMenuRichDetail,TagMng,XmSubWorkItem,XmTaskWorkloadRecord,XmMenuEdit,
-			XmRecord,xmQuestionForTask,XmMyDoFocus,XmTaskExecuserForTask,XmPhaseSelect,ToPay,XmUserField
+			XmRecord,xmQuestionForTask,XmMyDoFocus,XmTaskExecuserForTask,XmPhaseSelect,ToPay,MdpSelectUserXm
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},
 		mounted() { 

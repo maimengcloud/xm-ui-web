@@ -48,13 +48,13 @@
  	import { initDicts, addXmTestCasedb,editXmTestCasedb,editSomeFieldsXmTestCasedb } from '@/api/xm/core/xmTestCasedb';
 	import { mapGetters } from 'vuex'
 	
-import  XmUserField from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
+import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
 import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修改界面
 
 	export default {
 	    name:'xmTestCasedbEdit',
 	    components: {
-			XmProductSelect,XmUserField,
+			XmProductSelect,MdpSelectUserXm,
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),

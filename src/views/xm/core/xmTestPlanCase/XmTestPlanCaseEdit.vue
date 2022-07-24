@@ -183,13 +183,13 @@ import TestStepResult from './TestStepResult.vue';
 	import MyInput from '@/components/MDinput/index';
 	import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 import  XmQuestionMng from '@/views/xm/core/xmQuestion/XmQuestionMng';//修改界面
-import  XmUserField from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
+import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
 		import  XmQuestionAdd from '../xmQuestion/XmQuestionEdit';//新增界面
 
 	export default {
 	    name:'xmTestPlanCaseEdit',
 	    components: {
-			TestStepResult,MyInput,XmMenuEdit:()=>import('../xmMenu/XmMenuEdit.vue'),XmQuestionMng,XmQuestionAdd,XmUserField,
+			TestStepResult,MyInput,XmMenuEdit:()=>import('../xmMenu/XmMenuEdit.vue'),XmQuestionMng,XmQuestionAdd,MdpSelectUserXm,
 
         },
 		computed: {

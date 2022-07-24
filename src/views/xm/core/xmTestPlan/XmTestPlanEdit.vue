@@ -60,11 +60,11 @@
 	import { mapGetters } from 'vuex'
 	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
 	
-import  XmUserField from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
+import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
 	export default {
 	    name:'xmTestPlanEdit',
 	    components: {
-			XmProjectSelect,XmUserField,
+			XmProjectSelect,MdpSelectUserXm,
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),

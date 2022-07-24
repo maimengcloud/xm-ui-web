@@ -59,7 +59,7 @@
 	import { initDicts,addXmIteration,editSomeFieldsXmIteration } from '@/api/xm/core/xmIteration';
 	import { mapGetters } from 'vuex'	
  
-	import XmUserField from "@/views/xm/core/components/MdpSelectUserXm";
+	import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm";
 	import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 	
 	export default { 
@@ -239,7 +239,7 @@
 		},//end method
 		components: {  
 			//在下面添加其它组件 'xm-iteration-edit':XmIterationEdit
-			XmUserField,XmProductSelect,
+			MdpSelectUserXm,XmProductSelect,
 		},
 		mounted() { 
 			this.$nextTick(()=>{
