@@ -4,7 +4,7 @@
             <el-tag v-if="currentItem"  :type="currentItem.className" :closable="closable" :effect="effect">{{currentItem.name}}</el-tag>
         </div>
         <div v-if="disabled!==true" class="item-select">
-            <dict-select :dict="dict" v-model="myVal" @change="onChange" :clearable="closable"></dict-select>
+            <mdp-select-dict :dict="dict" v-model="myVal" @change="onChange" :clearable="closable"></mdp-select-dict>
         </div>
     </div>
     
@@ -12,7 +12,7 @@
   
   <script> 
   export default {
-    name: 'dict-tag',
+    name: 'mdp-select-dict-tag',
     components: {  },
     computed: {
        currentItem(){

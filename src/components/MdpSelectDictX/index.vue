@@ -7,7 +7,7 @@
 								<span class="field-value" v-if="!avaterCpd.isNull">{{avaterCpd.innerText}} </span> 
 								<span class="field-value" v-else><span class="label-font-color">无</span></span> 
 								  <span class="field-label" >{{label}}</span>  
-                  <dict-select v-if="disabled!==true" :dict="dict" ref="selectRef" v-model="myVal" @change="onChange" :get-icon="getIcon" :get-color="getColor" :icon="icon"></dict-select> 
+                  <mdp-select-dict v-if="disabled!==true" :dict="dict" ref="selectRef" v-model="myVal" @change="onChange" :get-icon="getIcon" :get-color="getColor" :icon="icon"></mdp-select-dict> 
 							</div>    
 						</div> 
   </template>
@@ -17,7 +17,7 @@
   
 import util from '@/common/js/util'
   export default {
-    name: 'dict-field',
+    name: 'mdp-select-dict-x',
     components: {   },
     computed: {
        currentItem(){
@@ -133,7 +133,11 @@ import util from '@/common/js/util'
         if(this.disabled){
           return;
         }
-        this.$refs["selectRef"].$refs["selectRef"].toggleMenu();
+        if(this.$refs["selectRef"]){
+          if(this.$refs["selectRef"].$refs["selectRef"]){ 
+            this.$refs["selectRef"].$refs["selectRef"].toggleMenu();
+          }
+        }
       }, 
         initData(){
              this.myVal=this.value

@@ -17,7 +17,7 @@
   
   <script>  
   export default {
-    name: 'dict-select',
+    name: 'mdp-select-dict',
     components: {   },
     computed: {
        

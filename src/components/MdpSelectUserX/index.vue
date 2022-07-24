@@ -41,7 +41,7 @@
   import util  from '@/common/js/util';//全局公共库
   import UsersSelect from '@/views/mdp/sys/user/UsersSelectOnly.vue'
   export default {
-    name: 'user-field',
+    name: 'mdp-select-user-x',
     components: { UsersSelect,  },
     computed: { 
       
