@@ -11,7 +11,7 @@
 							<el-col :span="6">
 								<el-form-item label="序号" prop="sortLevel" >  
 									<template slot="label"> 
-									<div    class="icon" :style="{backgroundColor:   addForm.ntype==='0'?'#409EFF':'#E6A23C'}">
+									<div    class="big-icon" :style="{backgroundColor:   addForm.ntype==='0'?'#409EFF':'#E6A23C'}">
 										<i :class="  addForm.ntype==='0'?'el-icon-s-operation':'el-icon-odometer' " ></i>
 									</div>  
 									{{addForm.ntype==='0'?'序号/任务':'序号/计划'}}

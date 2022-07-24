@@ -3,7 +3,7 @@
 		<el-row :gutter="20" >
 			<el-col v-if="editForm.crowd==='1' && editForm.taskOut=='1'" :span="4" class="border padding">
 				 <h3 class="padding-bottom">
-					<div    class="icon" :style="{backgroundColor:   editForm.ntype==='0'?'#409EFF':'#E6A23C'}">
+					<div    class="big-icon" :style="{backgroundColor:   editForm.ntype==='0'?'#409EFF':'#E6A23C'}">
 						<i :class="  editForm.ntype==='0'?'el-icon-s-operation':'el-icon-odometer' " ></i>
 					</div>  
 					众包{{editForm.ntype=='1'?'计划':'任务'}}
@@ -61,7 +61,7 @@
 			</el-col>
 			<el-col v-if="editForm.crowd!='1' ||  editForm.taskOut!='1'" :span="4" class="border padding">
 				<h3 class="padding-bottom">
-				<div    class="icon" :style="{backgroundColor:   editForm.ntype==='0'?'#409EFF':'#E6A23C'}">
+				<div    class="big-icon" :style="{backgroundColor:   editForm.ntype==='0'?'#409EFF':'#E6A23C'}">
 					<i :class="  editForm.ntype==='0'?'el-icon-s-operation':'el-icon-odometer' " ></i>
 				</div>  
 				普通{{editForm.ntype=='1'?'计划':'任务'}}
@@ -114,7 +114,7 @@
 							<el-col :span="6">
 								<el-form-item label="序号" prop="sortLevel" >  
 									<template slot="label"> 
-									<div    class="icon" :style="{backgroundColor:   editForm.ntype==='0'?'#409EFF':'#E6A23C'}">
+									<div    class="big-icon" :style="{backgroundColor:   editForm.ntype==='0'?'#409EFF':'#E6A23C'}">
 										<i :class="  editForm.ntype==='0'?'el-icon-s-operation':'el-icon-odometer' " ></i>
 									</div>  
 									{{editForm.ntype==='0'?'序号/任务':'序号/计划'}}

@@ -3,7 +3,7 @@
 		<el-row :gutter="20" > 
 			<el-col :span="4" class="border padding">
 				<h3 class="padding-bottom">
-					<div  class="icon" :style="{backgroundColor: calcMenuLabel.color }">
+					<div  class="big-icon" :style="{backgroundColor: calcMenuLabel.color }">
 						<i :class="calcMenuLabel.icon"></i>
 					</div>
 					{{calcMenuLabel.label}}
@@ -80,7 +80,7 @@
 							<el-col :span="24">
 								<el-form-item prop="menuName">
 									<template slot="label">
-										<div  class="icon" :style="{backgroundColor: calcMenuLabel.color }">
+										<div  class="big-icon" :style="{backgroundColor: calcMenuLabel.color }">
 											<i :class="calcMenuLabel.icon"></i>
 										</div>   
 										{{calcMenuLabel.label}}
@@ -128,10 +128,10 @@
 									</el-form-item>
 
 									<el-form-item  v-else :label="editForm.dclass==='3'?'归属特性':(editForm.dclass==='2'?'归属史诗':'归属')" prop="pmenuId">
-										<div   v-if="editForm.dclass==='2'"  class="icon" style="background-color:  rgb(255, 153, 51);">
+										<div   v-if="editForm.dclass==='2'"  class="big-icon" style="background-color:  rgb(255, 153, 51);">
 											<i class="el-icon-s-promotion"></i>
 										</div>
-										<div   v-if="editForm.dclass==='3'"  class="icon" style="background-color:  rgb(0, 153, 51);">
+										<div   v-if="editForm.dclass==='3'"  class="big-icon" style="background-color:  rgb(0, 153, 51);">
 											<i class="el-icon-s-flag"></i>
 										</div>
 										  {{editForm.pmenuName?editForm.pmenuName:editForm.pmenuId}}

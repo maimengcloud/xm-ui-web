@@ -8,7 +8,7 @@
 							<el-col :span="24">
 								<el-form-item prop="menuName">
 									<template slot="label">
-										<div  class="icon" :style="{backgroundColor: calcMenuLabel.color }">
+										<div  class="big-icon" :style="{backgroundColor: calcMenuLabel.color }">
 											<i :class="calcMenuLabel.icon"></i>
 										</div>   
 										{{calcMenuLabel.label}}
