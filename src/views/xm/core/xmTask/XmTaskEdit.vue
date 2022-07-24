@@ -150,30 +150,24 @@
 									> </el-button> 
 								</el-form-item>
 							</el-col> 
-							<el-col :span="8"> 
-								<el-form-item label="总负责人"> 
-									<el-tag  v-if="editForm.createUserid" style="margin-left:10px;border-radius:30px;"  >{{editForm.createUsername}}</el-tag>
-									<el-button type="text" @click="showGroupUserSelect(editForm)" icon="el-icon-setting">设置负责人</el-button>
-								</el-form-item> 
-							</el-col>  
-						</el-row>
-						<el-row>
-							<el-col :span="8"> 
-								<el-form-item :label="editForm.ntype=='0'?'任务状态':'计划状态'">  
-									
-									<el-select v-model="editForm.taskState" @change="editXmTaskSomeFields(editForm,'taskState',$event)">
-											<el-option v-for="i in dicts.taskState" :label="i.name" :key="i.id" :value="i.id"></el-option> 
-									</el-select>    
-								</el-form-item> 
-							</el-col> 
+							
 							<el-col :span="8"> 
 								<el-form-item label="进度">   
 										{{editForm.rate?editForm.rate:0}}%
 								</el-form-item>  
 							</el-col> 
+						</el-row>
+						<el-row>
+							
+							<el-col :span="8">  
+									<xm-user-field  label="总负责人" v-model="editForm" userid-key="createUserid" username-key="createUsername" @change="editXmTaskSomeFields(editForm,'createUserid',$event)"></xm-user-field> 
+ 							</el-col>  
 							<el-col :span="8"> 
-								<el-form-item label="起止时间">  
-										<date-range 
+ 									<dict-field  :label="editForm.ntype=='0'?'任务状态':'计划状态'" :dict="dicts['taskState']" v-model="editForm.taskState" @change="editXmTaskSomeFields(editForm,'taskState',$event)"></dict-field>
+							</el-col> 
+							
+							<el-col :span="8">  
+										<date-range-field
 											:style-obj="{maxWidth:'100%'}"
 											v-model="editForm"
 											start-key="startTime"
@@ -188,8 +182,7 @@
 											value-format="yyyy-MM-dd HH:mm:ss"
 											:default-time="['00:00:00','23:59:59']"
 											:picker-options="pickerOptions"
-										></date-range> 
-								</el-form-item>  
+										></date-range-field>  
 							</el-col> 
 
 							
@@ -556,7 +549,7 @@
 	import XmMenuRichDetail from '../xmMenu/XmMenuRichDetail';
 	import TagMng from "@/views/mdp/arc/tag/TagMng";
 	import XmRecord from '../xmRecord/XmRecord' 
-
+	import XmUserField from '@/views/xm/core/components/XmUserField'
 	import XmSubWorkItem from "@/views/xm/core/xmTaskWorkItem/XmSubWorkItem";
 	import xmQuestionForTask from "@/views/xm/core/xmQuestion/XmQuestionForTask";
 	import XmTaskWorkloadRecord from "../xmTaskWorkload/XmTaskWorkloadRecord"
@@ -1028,7 +1021,7 @@
 		components: { 
  			xmSkillMng,
 			skillMng,xmMenuSelect,XmTaskList,XmExecuserMng,XmGroupSelect,XmMenuRichDetail,TagMng,XmSubWorkItem,XmTaskWorkloadRecord,XmMenuEdit,
-			XmRecord,xmQuestionForTask,XmMyDoFocus,XmTaskExecuserForTask,XmPhaseSelect,ToPay
+			XmRecord,xmQuestionForTask,XmMyDoFocus,XmTaskExecuserForTask,XmPhaseSelect,ToPay,XmUserField
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},
 		mounted() { 
