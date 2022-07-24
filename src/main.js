@@ -23,25 +23,25 @@ import VueQriously from 'vue-qriously'
 Vue.use(VueQriously)
 
 
-import DateRange from '@/components/dateRange/index'
-import DictSelect from '@/components/DictSelect/index'
-import DictTag from '@/components/DictTag/index'
-import DictField from '@/components/DictField/index'
+import MdpDateX from '@/components/MdpDateX/index'
+import MdpDateRange from '@/components/MdpDateRange/index'
+import MdpDateRangeX from '@/components/MdpDateRangeX/index'
+import MdpSelectDict from '@/components/MdpSelectDict/index'
+import MdpSelectDictTag from '@/components/MdpSelectDictTag/index'
+import MdpSelectDictX from '@/components/MdpSelectDictX/index'
+import MdpSelectUserX from '@/components/MdpSelectUserX/index'
 import MyInput from '@/components/MDinput/index'
-import DateField from '@/components/DateField/index'
-import DateRangeField from '@/components/DateRangeField/index'
-import UserField from '@/components/UserField/index'
 
 Vue.prototype.$echarts = echarts
 Vue.use(Print); //注册
-Vue.component('date-range',DateRange) 
-Vue.component('dict-select',DictSelect)
-Vue.component('dict-tag',DictTag)
-Vue.component('dict-field',DictField)
+Vue.component('date-range',MdpDateRange) 
+Vue.component('dict-select',MdpSelectDict)
+Vue.component('dict-tag',MdpSelectDictTag)
+Vue.component('dict-field',MdpSelectDictX)
 Vue.component('my-input',MyInput)
-Vue.component('date-field',DateField)
-Vue.component('date-range-field',DateRangeField)
-Vue.component('user-field',UserField)
+Vue.component('date-field',MdpDateX)
+Vue.component('date-range-field',MdpDateRangeX)
+Vue.component('user-field',MdpSelectUserX)
 Vue.use(Element, {
   size: 'small', // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)
