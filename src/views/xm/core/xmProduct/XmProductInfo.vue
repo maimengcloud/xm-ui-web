@@ -42,11 +42,11 @@
           </span>
         </el-menu-item>
         <el-menu-item index="迭代" class="hidden-sm-and-down">
-          <span slot="title"><i class="el-icon-document-copy"></i>迭代</span>
+          <span slot="title"><i class="el-icon-connection"></i>迭代</span>
         </el-menu-item>
 
         <el-menu-item label="项目" index="项目" class="hidden-sm-and-down">
-          <span slot="title"><i class="el-icon-s-unfold"></i>项目</span>
+          <span slot="title"><i class="el-icon-odometer"></i>项目</span>
         </el-menu-item>
         <el-menu-item label="需求" index="需求">
           <span slot="title"><i class="el-icon-document"></i>需求</span>

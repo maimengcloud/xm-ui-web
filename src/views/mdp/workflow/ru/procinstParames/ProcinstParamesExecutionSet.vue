@@ -18,7 +18,7 @@
 					<div v-if="modelFilesVisible==true" style="text-align: right; margin: 0"> 
 							<attachment-upload  :branch-id="userInfo.branchId" :deptid="userInfo.deptid" :archive-id="procDefId" :category-id="taskInfo.categoryId"></attachment-upload>
 					</div> 
-					<el-button slot="reference"   type="text"    class="hidden-sm-and-down"  v-on:click="modelFilesVisible=!modelFilesVisible"  icon="el-icon-document-copy">附件模板</el-button>
+					<el-button slot="reference"   type="text"    class="hidden-sm-and-down"  v-on:click="modelFilesVisible=!modelFilesVisible"  icon="el-icon-connection">附件模板</el-button>
 				</el-popover>				
 				<el-popover 
 					placement="top"
@@ -28,7 +28,7 @@
 					<div v-if="modelFilesVisible==true" style="text-align: right; margin: 0"> 
 							<attachment-upload  :branch-id="userInfo.branchId" :deptid="userInfo.deptid" :archive-id="taskInfo.paramsId" :category-id="taskInfo.categoryId"></attachment-upload>
 					</div> 
-					<el-button slot="reference"   type="text"    class="hidden-sm-and-down"  v-on:click="modelFilesVisible=!modelFilesVisible"  icon="el-icon-document-copy">流程附件</el-button>
+					<el-button slot="reference"   type="text"    class="hidden-sm-and-down"  v-on:click="modelFilesVisible=!modelFilesVisible"  icon="el-icon-connection">流程附件</el-button>
 				</el-popover> 
 	    </el-row> 
 		<el-row class="page-title padding-top"> 
