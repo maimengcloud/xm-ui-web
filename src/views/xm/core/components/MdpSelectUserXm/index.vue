@@ -50,7 +50,7 @@
   import UsersSelect from '@/views/mdp/sys/user/UsersSelectOnly.vue'
   import XmGroupSelect from '@/views/xm/core/xmGroup/XmGroupSelect.vue'
   export default {
-    name: 'mdp-select-user-x',
+    name: 'mdp-select-user-xm',
     components: { UsersSelect, XmGroupSelect },
     computed: { 
       avaterCpd(){  
