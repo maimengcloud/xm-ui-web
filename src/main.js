@@ -23,6 +23,7 @@ import VueQriously from 'vue-qriously'
 Vue.use(VueQriously)
 
 
+import MdpFieldX from '@/components/MdpFieldX/index'
 import MdpDateX from '@/components/MdpDateX/index'
 import MdpDateRange from '@/components/MdpDateRange/index'
 import MdpDateRangeX from '@/components/MdpDateRangeX/index'
@@ -35,6 +36,7 @@ import MyInput from '@/components/MDinput/index'
 Vue.prototype.$echarts = echarts
 Vue.use(Print); //注册
 Vue.component('mdp-date-range',MdpDateRange) 
+Vue.component('mdp-field-x',MdpFieldX) 
 Vue.component('mdp-select-dict',MdpSelectDict)
 Vue.component('mdp-select-dict-tag',MdpSelectDictTag)
 Vue.component('mdp-select-dict-x',MdpSelectDictX)

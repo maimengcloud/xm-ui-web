@@ -100,7 +100,7 @@
 						</span>
 					</el-step> 
 				</el-steps> 
-				
+
 			</el-col>
 			<el-col :span="20">
 			<!--新增界面 XmTask xm_task--> 
@@ -134,28 +134,25 @@
 						
 						<el-row> 
 							<el-col :span="8"> 
-								 <el-form-item label="上级计划" prop="parentTaskname">  
-									<template slot="label"> 
-										<div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
-										<i :class=" 'el-icon-odometer' " ></i>
-										</div> 
-										上级计划
-									</template>
-									<font v-if="editForm.parentTaskid" >{{editForm.parentTaskname?editForm.parentTaskname:editForm.parentTaskid}}</font> 
-									<font v-else>无上级(视为顶级)</font> 
-									
-									<el-button
+								<mdp-field-x v-model="editForm.parentTaskname" label="上级计划" icon="el-icon-odometer" color="#E6A23C">
+									<el-button slot="oper"
 										@click="selectParentTaskVisible=true"  
 										title="更换任务的上级，实现任务搬家功能"
 										icon="el-icon-upload2" 
 									> </el-button> 
-								</el-form-item>
+								</mdp-field-x> 
+							</el-col> 
+							
+							<el-col :span="8">   
+								<mdp-field-x v-model="editForm.rate" label="进度"> 
+									<div slot="info"><el-progress slot="info" :text-inside="true" :stroke-width="20" :percentage="editForm.rate" status="exception"></el-progress></div>
+								</mdp-field-x> 
+										
+								 
 							</el-col> 
 							
 							<el-col :span="8"> 
-								<el-form-item label="进度">   
-										{{editForm.rate?editForm.rate:0}}%
-								</el-form-item>  
+ 									<mdp-select-dict-x label="优先级别" :dict="dicts['priority']" v-model="editForm.level" @change="editXmTaskSomeFields(editForm,'level',$event)"></mdp-select-dict-x>
 							</el-col> 
 						</el-row>
 						<el-row>
@@ -1017,6 +1014,9 @@
 					this.toPayMarketVisible=false;
 				})
 				
+			},
+			getRateColor(rate){
+				return "#F56C6C"
 			}
 		},//end method
 		components: { 
