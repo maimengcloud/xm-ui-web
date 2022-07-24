@@ -34,11 +34,11 @@
 							   <mdp-select-user-xm label="执行人" userid-key="execUserid" username-key="execUsername" v-model="editForm" @change="editSomeFields(editForm,'execUserid',$event)"></mdp-select-user-xm>
 						</el-col> 
 						<el-col :span="8">  
-							<mdp-select-user-xm label="优先级" :dict="dicts['priority']" v-model="editForm.priority"></mdp-select-user-xm>
+							<mdp-select-dict-x label="优先级" :dict="dicts['priority']" v-model="editForm.priority"></mdp-select-dict-x>
 						</el-col> 
 						
 						<el-col :span="8">  
-							<mdp-select-user-xm label="执行结果" :dict="dicts['testStepTcode']" v-model="editForm.execStatus" :get-icon="getExecStatusIcon"></mdp-select-user-xm> 
+							<mdp-select-dict-x label="执行结果" :dict="dicts['testStepTcode']" v-model="editForm.execStatus" :get-icon="getExecStatusIcon"></mdp-select-dict-x> 
 						</el-col> 
 					</el-row>
  				</el-form-item>  
@@ -151,9 +151,9 @@
 		</el-row>
 		<el-row>  
 			<el-col :offset="12" :span="12" style="display: flex;">  
-				<mdp-select-user-xm label="执行结果" :dict="dicts['testStepTcode']" v-model="editForm.execStatus" :get-icon="getExecStatusIcon" @change="editSomeFields(editForm,'execStatus',$event)">
+				<mdp-select-dict-x label="执行结果" :dict="dicts['testStepTcode']" v-model="editForm.execStatus" :get-icon="getExecStatusIcon" @change="editSomeFields(editForm,'execStatus',$event)">
 					<span slot="label"></span>
-				</mdp-select-user-xm>   
+				</mdp-select-dict-x>   
 				<el-button @click="$emit('next')" type="primary">下一条</el-button>
 			</el-col> 
 		</el-row>

@@ -23,18 +23,18 @@
 							<el-row class="padding-left padding-right padding-top">
 								<el-col :span="8">
 									<el-form-item prop="xmType" label-width="0px"> 
-										<mdp-select-user-xm label="项目类型" :dict="dicts['projectType']" v-model="editForm.xmType" @change="editXmProjectSomeFields(editForm,'xmType',$event)"></mdp-select-user-xm>
+										<mdp-select-dict-x label="项目类型" :dict="dicts['projectType']" v-model="editForm.xmType" @change="editXmProjectSomeFields(editForm,'xmType',$event)"></mdp-select-dict-x>
 									</el-form-item>  
 								</el-col>
 								<el-col :span="8">
 								
 									<el-form-item prop="status" label-width="0px"> 
-										<mdp-select-user-xm label="项目状态" :dict="dicts['projectStatus']" v-model="editForm.status" @change="editXmProjectSomeFields(editForm,'status',$event)"></mdp-select-user-xm>
+										<mdp-select-dict-x label="项目状态" :dict="dicts['projectStatus']" v-model="editForm.status" @change="editXmProjectSomeFields(editForm,'status',$event)"></mdp-select-dict-x>
 									</el-form-item>   
 								</el-col>  
 								<el-col :span="8"> 
 									<el-form-item prop="workType" label-width="0px"> 
-										<mdp-select-user-xm label="工作方式" :dict="dicts['workType']" v-model="editForm.workType" @change="editXmProjectSomeFields(editForm,'workType',$event)"></mdp-select-user-xm>
+										<mdp-select-dict-x label="工作方式" :dict="dicts['workType']" v-model="editForm.workType" @change="editXmProjectSomeFields(editForm,'workType',$event)"></mdp-select-dict-x>
 									</el-form-item>   
 								</el-col> 
 							</el-row>   

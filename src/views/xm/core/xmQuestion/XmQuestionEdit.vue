@@ -36,11 +36,11 @@
 									</el-col>
 									
 									<el-col :span="6">
-										<mdp-select-user-xm label="状态" :dict="dicts['bugStatus']" v-model="editForm.bugStatus" @change="editXmQuestionSomeFields(editForm,'bugStatus',$event)"></mdp-select-user-xm> 
+										<mdp-select-dict-x label="状态" :dict="dicts['bugStatus']" v-model="editForm.bugStatus" @change="editXmQuestionSomeFields(editForm,'bugStatus',$event)"></mdp-select-dict-x> 
 									</el-col> 
 
 									<el-col :span="6">
-										<mdp-select-user-xm label="优先级" :dict="dicts['priority']" v-model="editForm.priority" @change="editXmQuestionSomeFields(editForm,'priority',$event)"></mdp-select-user-xm> 
+										<mdp-select-dict-x label="优先级" :dict="dicts['priority']" v-model="editForm.priority" @change="editXmQuestionSomeFields(editForm,'priority',$event)"></mdp-select-dict-x> 
 									</el-col>
 									
 									<el-col :span="6"> 
