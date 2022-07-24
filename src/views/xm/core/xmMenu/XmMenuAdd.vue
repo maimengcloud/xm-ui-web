@@ -261,7 +261,7 @@
 				Object.assign(this.addForm, this.xmMenu);  
 				this.addForm.mmUserid=this.userInfo.userid
 				this.addForm.mmUsername=this.userInfo.username
-				this.addForm.remark="作为   ，我需要   ，以便我能够   。"
+				this.addForm.remark=""
 				if(this.parentMenu && this.parentMenu.menuId){
 					if(this.parentMenu.childrenCnt){
 						this.addForm.seqNo=this.parentMenu.seqNo+"."+(this.parentMenu.childrenCnt+1)
