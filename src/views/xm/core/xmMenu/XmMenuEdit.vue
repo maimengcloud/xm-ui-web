@@ -626,18 +626,7 @@
 </script>
 
 <style scoped>
-
-.icon {
-  color: #fff;
-  height: 20px;
-  width: 20px;
-  border-radius: 15px;
-  text-align: center;
-  line-height: 20px;
-  font-size: 14px;
-  display: inline-block;
-  margin-right: 5px;
-}
+ 
 .step-btn{
 	margin-left:0px;margin-bottom: 5px;
 }
