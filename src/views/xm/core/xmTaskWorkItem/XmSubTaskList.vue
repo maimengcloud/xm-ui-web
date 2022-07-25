@@ -22,16 +22,10 @@
                 type="taskState"
                 width="100"
               >  
-								<template slot-scope="scope">
-									<div class="cell-text">
-										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in formatterTaskStateDicts(scope.row.taskState)" :key="index">{{item.name}}</el-button>
-									</div>
-									<span class="cell-bar">
-										 <el-select @visible-change="selectVisible(scope.row,$event)"   v-model="scope.row.taskState" placeholder="任务状态"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'taskState',$event)">
-												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.taskState" :key="index"></el-option>
-										 </el-select>
-									</span>
-								</template>
+								<template slot-scope="scope"> 
+										 <mdp-select-dict-tag  :dict="dicts.taskState"   v-model="scope.row.taskState" placeholder="任务状态"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'taskState',$event)">
+ 										 </mdp-select-dict-tag>
+ 								</template>
               </el-table-column>
 					
             <el-table-column prop="budgetWorkload" label="工时"  width="100">
@@ -61,15 +55,9 @@
                 type="level"
                 width="100"
               >  
-								<template slot-scope="scope">
-									<div class="cell-text">
-										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in formatterPriorityDicts(scope.row.level)" :key="index">{{item.name}}</el-button>
-									</div>
-									<span class="cell-bar">
-										 <el-select @visible-change="selectVisible(scope.row,$event)"   v-model="scope.row.level" placeholder="优先级"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'level',$event)">
-												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.priority" :key="index"></el-option>
-										 </el-select>
-									</span>
+								<template slot-scope="scope"> 
+										 <mdp-select-dict-tag :dict="dicts.priority"   v-model="scope.row.level" placeholder="优先级"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'level',$event)">
+ 										 </mdp-select-dict-tag> 
 								</template>
               </el-table-column> 
               <el-table-column
@@ -79,13 +67,9 @@
                 width="120"
                 show-overflow-tooltip
               >
-								<template slot-scope="scope">
-									<div class="cell-text">
-										{{scope.row.createUsername}}
-									</div>
-									<span class="cell-bar">
-										 <el-button @click="$refs.xmGroupDialog.open({data:scope.row,action:'createUserid'})">选负责人</el-button>
-									</span>
+								<template slot-scope="scope"> 
+                  <mdp-select-user-xm userid-key="creatorUserid" username-key="creatorUsername" :project-id="scope.row.projectId" v-model="scope.row" @change="editXmTaskSomeFields(scope.row,'creatorUserid',$event)"></mdp-select-user-xm>
+
 								</template>
               </el-table-column>
               <el-table-column
@@ -95,13 +79,8 @@
                 width="120"
                 show-overflow-tooltip
               >
-								<template slot-scope="scope">
-									<div class="cell-text">
-										{{scope.row.createUsername}}
-									</div>
-									<span class="cell-bar">
-										 <el-button @click="$refs.xmGroupDialog.open({data:scope.row,action:'executorUsername'})">选负责人</el-button>
-									</span>
+								<template slot-scope="scope"> 
+                  <mdp-select-user-xm userid-key="executorUserid" username-key="executorUsername" :project-id="scope.row.projectId" v-model="scope.row" @change="editXmTaskSomeFields(scope.row,'executorUserid',$event)"></mdp-select-user-xm>
 								</template>
               </el-table-column>
         </el-table> 
@@ -161,6 +140,7 @@ import treeTool from "@/common/js/treeTool"; //全局公共库
 import XmTaskWorkloadRecordDialog from '../xmTaskWorkload/XmTaskWorkloadRecordDialog.vue';
  
 	import { addXmTaskExecuser } from '@/api/xm/core/xmTaskExecuser';
+	import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm/index';//修改界面
 
 export default {
   computed: {
@@ -516,7 +496,7 @@ export default {
       }
   }, //end methods
   components: {  
-    XmTaskWorkloadRecordDialog,XmGroupDialog,'xm-task-edit':()=>import('../xmTask/XmTaskEdit'),
+    XmTaskWorkloadRecordDialog,XmGroupDialog,'xm-task-edit':()=>import('../xmTask/XmTaskEdit'),MdpSelectUserXm,
   },
   mounted() { 
     this.initData();
