@@ -171,7 +171,7 @@
           <el-table-column prop="productName" label="产品名称">
             <template slot="header" slot-scope="scope"> 产品名称 </template>
             <template slot-scope="scope">
-              <font>{{ scope.row.productName }}</font>
+              <div class="icon" style="background-color:#409eff"><i class="el-icon-s-opportunity" ></i></div><font>{{ scope.row.productName }}</font>
             </template>
           </el-table-column>
         </el-table>
@@ -190,12 +190,13 @@
         ><el-link
           title="产品，点击选择、清除选择"
           @click="referenceClick"
-          type="warning"
+          type="primary"
           slot="reference"
           v-loading="load.list"
-          icon="el-icon-search"
+          icon="el-icon-s-opportunity"
           ><font style="font-size: 14px"
-            ><slot name="title">{{
+            ><slot name="title">
+               {{
               editForm && editForm.id ? editForm.productName : "选择产品"
             }}</slot></font
           ></el-link

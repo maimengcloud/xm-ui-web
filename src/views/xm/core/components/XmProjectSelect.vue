@@ -175,7 +175,7 @@
               项目名称 
             </template>
             <template slot-scope="scope">
-              <font>{{ scope.row.name }}</font>
+             <div class="icon" style="background-color:#ffd04b"><i class="el-icon-odometer" ></i></div><font>{{ scope.row.name }}</font>
             </template>
           </el-table-column>
         </el-table>
@@ -195,7 +195,7 @@
           ><el-link
             title="项目，点击选择、清除选择"
             type="warning"
-            icon="el-icon-search"
+            icon="el-icon-odometer"
             ><font style="font-size: 14px"
               ><slot name="title">{{
                 editForm && editForm.id ? editForm.name : "选择项目"

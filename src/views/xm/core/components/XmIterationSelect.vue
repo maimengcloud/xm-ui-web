@@ -104,14 +104,14 @@
 				<el-table ref="table" :height="maxTableHeight" :data="xmIterations" row-key="id"    @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  					<el-table-column prop="iterationName" label="迭代" > 
 						<template slot-scope="scope"> 
-							{{scope.row.iterationName}}  <font   :color="calcFinishRate(scope.row)==100?'green':'#FF8C00'">{{calcFinishRate(scope.row)}}%</font>
+							<div class="icon" style="background-color:#409eff"><i class="el-icon-connection" ></i></div>{{scope.row.iterationName}}  <font   :color="calcFinishRate(scope.row)==100?'green':'#FF8C00'">{{calcFinishRate(scope.row)}}%</font>
 						</template>
 					</el-table-column> 
 				</el-table>
 				<el-pagination  layout="total, prev,  next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 
 			</el-row>
-			<el-link title="点击选中迭代" @click="referenceClick"  type="warning" slot="reference" icon="el-icon-search"><font style="font-size:14px;"><slot name="title">{{editForm&&editForm.id?editForm.iterationName:'选择迭代'}}</slot></font></el-link> 
+			<el-link title="点击选中迭代" @click="referenceClick"  type="primary" slot="reference" icon="el-icon-connection"><font style="font-size:14px;"><slot name="title">{{editForm&&editForm.id?editForm.iterationName:'选择迭代'}}</slot></font></el-link> 
 		</el-popover> 
 		
 	
