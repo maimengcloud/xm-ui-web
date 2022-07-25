@@ -41,8 +41,7 @@
 									<el-col :span="6"> 
 											<mdp-select-user-xm :project-id="editForm.projectId" :product-id="editForm.productId" label="责任人" v-model="editForm" userid-key="handlerUserid" username-key="handlerUsername" @change="editXmQuestionSomeFields(editForm,'handlerUserid',$event)">
 												<el-row slot="extOper">
-														<el-button type="text" @click="sendToAsk">指派给提出人</el-button> 
-														<el-button type="text"  @click="sendToCreater">指派给创建人</el-button>  
+														指派给 <el-button type="text" @click="sendToAsk"> 提出人</el-button>  <el-button type="text"  @click="sendToCreater"> 创建人</el-button>  
 													</el-row> 
 											</mdp-select-user-xm>
  
