@@ -144,7 +144,7 @@
 									<mdp-select-user-xm  label="负责人" v-model="editForm" userid-key="createUserid" username-key="createUsername" @change="editXmTaskSomeFields(editForm,'createUserid',$event)"></mdp-select-user-xm> 
  							</el-col>   
 							<el-col :span="8" v-if="editForm.ntype=='0'">  
-									<mdp-field-x v-if="editForm.crowd=='1'"  label="执行人" v-model="executorUsername">
+									<mdp-field-x v-if="editForm.crowd=='1'"  label="执行人" v-model="editForm.executorUsername">
 										<el-button slot="oper" @click="activateTabPaneName='42'">去管理竞标人</el-button>
 									</mdp-field-x> 
 									<mdp-select-user-xm v-if="editForm.crowd!='1'" label="执行人" v-model="editForm" userid-key="executorUserid" username-key="executorUsername" @change="editXmTaskSomeFields(editForm,'executorUserid',$event)"></mdp-select-user-xm> 

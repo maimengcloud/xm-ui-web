@@ -14,7 +14,7 @@
 							</div>  
               <div v-if="disabled!==true" class="field-oper" :value="myVal"  :class="{disabled:disabled===true,enabled:disabled!==true}">
                 <slot name="oper">
-                    <el-select v-model="myVal" @change="onSelectChange" :clearable="clearable">  
+                    <el-select v-model="myVal" @change="onSelectChange" :clearable="clearable" value-key="userid">  
                           <el-option disabled value="" style="margin-bottom:5px;">
                               <el-row><el-button :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button><el-button v-if="projectId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button> </el-row>
                           </el-option>
@@ -23,7 +23,7 @@
                             <div class="avatar-wrapper">
                                   <el-avatar class="user-avatar"  :style="{backgroundColor:getMyColor(item)}">{{item.username}}</el-avatar> 
                                   <span class="username">{{item.username}}</span>
-                                  <i v-if="myVal.userid==item.userid" class="el-icon-check"></i> 
+                                  <i v-if=" myVal && myVal.userid==item.userid" class="el-icon-check"></i> 
                                   <i v-else>&nbsp;&nbsp;</i>  
                             </div>
                           </el-option> 
@@ -52,7 +52,7 @@
       
       avaterCpd(){  
         var isEmpty=this.isEmpty(this.myVal)
-        var username=isEmpty?"":this.myVal.username?this.myVal.username:this.myVal.userid
+        var username=isEmpty?"":(this.myVal.username?this.myVal.username:this.myVal.userid)
         var obj={isNull:isEmpty,icon:'el-icon-user',color:'#E4E7ED',innerText:username} 
           if(this.getColor||this.color){
             if(this.getColor){
@@ -79,7 +79,7 @@
     },
     data(){
         return {
-            myVal:null, 
+            myVal:{userid:'',username:''}, 
             users:[],
             deptUserVisible:false,
             projectVisible:false,
@@ -95,25 +95,23 @@
         },  
         
       myVal(){
-        if(this.value instanceof String){
-               this.$emit('input',this.myVal)
-          }else if(this.value instanceof Object){
-            if(!this.myVal||!this.myVal.userid){
-              if(this.value[this.useridKey]){
+         if(!this.myVal||!this.myVal.userid){
+              if(this.value && this.value[this.useridKey]){
                 this.value[this.useridKey]=""
                 this.value[this.usernameKey]=""
                 this.$emit('input',this.value)
               }
              
             }else{
-              if(this.value[this.useridKey]!=this.myVal.userid){ 
-                this.value[this.useridKey]=this.myVal.userid
-                this.value[this.usernameKey]=this.myVal.username 
-                this.$emit('input',this.value) 
+              if(this.value){
+                 if(this.value[this.useridKey]!=this.myVal.userid){ 
+                  this.value[this.useridKey]=this.myVal.userid
+                  this.value[this.usernameKey]=this.myVal.username 
+                  this.$emit('input',this.value) 
+                }
               }
-            }
-            
-          }
+             
+            } 
         
       }
     },
@@ -167,25 +165,7 @@
           }
           return false;
         }, 
-        getMyColor(item){
-           if(this.value instanceof String){ 
-            if(item){
-            
-              if(this.getColor){
-                  return this.getColor(item)
-          }
-              return util.getColor(item)
-              
-            }else{
-              if(this.getColor){
-                  return this.getColor("0")
-              }else{
-                return util.getColor(0)
-              }
-            }
-
-
-          }else if(this.value instanceof Object){
+        getMyColor(item){ 
 
             if(item&&item.userid){
             
@@ -200,9 +180,7 @@
               }else{
                 return util.getColor(0)
               }
-            }
-
-          }
+            } 
           
         },
         getMyIcon(item){
@@ -218,16 +196,17 @@
               return "el-icon-user"
             }
           }
-        },
+        }, 
 
          initData(){  
-           if(this.value instanceof String){
-              this.myVal=this.value
-          }else if(this.value instanceof Object){
-            this.myVal={}
-            this.myVal.userid=this.value[this.useridKey]
-            this.myVal.username=this.value[this.usernameKey] 
-          }
+            var myVal={}
+            if(this.value){
+              myVal.userid=this.value[this.useridKey]
+              myVal.username=this.value[this.usernameKey]  
+              this.myVal=myVal
+            }else{
+              this.myVal={userid:'',username:''}
+            }
           
       }, 
         onSelectChange(item){

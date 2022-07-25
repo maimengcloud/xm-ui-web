@@ -24,7 +24,7 @@
                               <div class="avatar-wrapper">
                                     <el-avatar class="user-avatar"  :style="{backgroundColor:getMyColor(item)}">{{item.username}}</el-avatar> 
                                     <span class="username">{{item.username}}</span>
-                                    <i v-if="myVal.userid==item.userid" class="el-icon-check"></i> 
+                                    <i v-if="myVal && myVal.userid==item.userid" class="el-icon-check"></i> 
                                     <i v-else>&nbsp;&nbsp;</i>  
                               </div>
                             </el-option> 
@@ -59,7 +59,7 @@
     computed: { 
       avaterCpd(){  
         var isEmpty=this.isEmpty(this.myVal)
-        var username=isEmpty?"":this.myVal.username?this.myVal.username:this.myVal.userid
+        var username=isEmpty?"":(this.myVal.username?this.myVal.username:this.myVal.userid)
         var obj={isNull:isEmpty,icon:'el-icon-user',color:'#E4E7ED',innerText:username} 
           if(this.getColor||this.color){
             if(this.getColor){
@@ -86,7 +86,7 @@
     },
     data(){
         return {
-            myVal:null, 
+            myVal:{userid:'',username:''}, 
             users:[],
             deptUserVisible:false,
             projectVisible:false,
@@ -103,18 +103,21 @@
         
       myVal(){  
             if(!this.myVal||!this.myVal.userid){
-              if(this.value[this.useridKey]){
+              if(this.value && this.value[this.useridKey]){
                 this.value[this.useridKey]=""
                 this.value[this.usernameKey]=""
                 this.$emit('input',this.value)
               }
              
             }else{
-              if(this.value[this.useridKey]!=this.myVal.userid){ 
-                this.value[this.useridKey]=this.myVal.userid
-                this.value[this.usernameKey]=this.myVal.username 
-                this.$emit('input',this.value) 
+              if(this.value){
+                 if(this.value[this.useridKey]!=this.myVal.userid){ 
+                  this.value[this.useridKey]=this.myVal.userid
+                  this.value[this.usernameKey]=this.myVal.username 
+                  this.$emit('input',this.value) 
+                }
               }
+             
             } 
         
       }
@@ -192,27 +195,18 @@
               }
             } 
           
-        },
-        getMyIcon(item){
-          if(item){ 
-            if(this.getIcon){
-                return this.getIcon(item)
-            } 
-            return "el-icon-user";
-          }else{
-            if(this.getIcon){
-                return this.getIcon(this.myVal)
-            }else{
-              return "el-icon-user"
-            }
-          }
         }, 
 
          initData(){   
             var myVal={}
-            myVal.userid=this.value[this.useridKey]
-            myVal.username=this.value[this.usernameKey]  
-            this.myVal=myVal
+            if(this.value){
+              myVal.userid=this.value[this.useridKey]
+              myVal.username=this.value[this.usernameKey]  
+              this.myVal=myVal
+            }else{
+              this.myVal={userid:'',username:''}
+            }
+           
           
       }, 
         onSelectChange(item){
@@ -256,8 +250,7 @@
     },
     mounted(){
       var us=localStorage.getItem("mdp-his-users")
-			this.users=us?JSON.parse(us):[]
-			 
+			this.users=us?JSON.parse(us):[] 
       this.initData();
 
     }
