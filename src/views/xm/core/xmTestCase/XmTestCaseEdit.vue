@@ -2,7 +2,7 @@
 	<section> 
 		<el-row>
 		<!--编辑界面 XmTestCase 测试用例--> 
-			<el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-position="left"> 
+			<el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editFormRef" label-position="left"> 
 				<el-row>
 					<el-col  :span="6" class="padding border">
 					
@@ -13,24 +13,26 @@
 						<el-form-item label="产品" prop="productId">
 							{{editForm.productName?editForm.productName:editForm.productId }}  
 						</el-form-item> 
-						<el-form-item label="关联需求" prop="menuName">
-							{{editForm.menuName?editForm.menuName:'暂无关联需求'}} <el-button type="text" @click="menuVisible=true">选择需求</el-button>
+						<el-form-item label="关联模块" prop="menuName">
+							{{editForm.funcName?editForm.funcName:'暂无关联需求'}} <el-button type="text" @click="funcVisible=true">选择模块</el-button>
+						</el-form-item>   
+						<el-form-item  label="关联需求" prop="menuId" id="menuInfo"> 
+							{{editForm.menuName}} &nbsp;&nbsp;&nbsp; <el-link @click="menuVisible=true" type="primary">{{editForm.menuName?'更改':'设置'}}</el-link>&nbsp;&nbsp;&nbsp;
+							<el-link v-if="editForm.menuId" @click="menuFormVisible=true" type="primary">查看需求</el-link>
 						</el-form-item> 
-						
 						<el-form-item label="版本号" prop="verNum">
 							<el-input v-model="editForm.verNum" placeholder="版本号" :maxlength="50" @change="editSomeFields(editForm,'verNum',$event)"></el-input>
 						</el-form-item>   
 					</el-col>
 					<el-col :span="18" class="border padding">
 
-						<el-form-item label="" prop="caseName" label-width="0px">  
-							<el-row class="label-font-color">
-							<span><span v-if="opType=='edit'">用例编号:</span>&nbsp;&nbsp;{{editForm.id}} &nbsp;&nbsp;</span><span class="label-font-color"><i class="el-icon-s-operation"></i>模块：</span><span>{{editForm.funcName}} <el-button type="text" @click="funcVisible=true">选择模块</el-button></span>
+						<el-form-item label="用例标题" prop="caseName">    
+ 									<el-input v-model="editForm.caseName" placeholder="测试用例 标题"  @change="editSomeFields(editForm,'caseName',$event)"></el-input> 
+ 							<el-row class="label-font-color" v-if="opType=='edit'">
+							<span><span >用例编号:</span>&nbsp;&nbsp;{{editForm.id}} &nbsp;&nbsp;</span> 
 							</el-row>
-							<el-row>
- 									<my-input v-model="editForm.caseName" placeholder="测试用例 标题"  @change="editSomeFields(editForm,'caseName',$event)"></my-input> 
- 							</el-row>
-							<el-row class="padding">
+						</el-form-item>    
+						<el-row class="padding">
 								
 								<el-col :span="6">  
 									<mdp-select-dict-x label="状态" :dict="dicts['testCaseStatus']" v-model="editForm.caseStatus"  @change="editSomeFields(editForm,'caseStatus',$event)"></mdp-select-dict-x> 
@@ -47,7 +49,6 @@
 								</el-col> 
 								
 							</el-row>
-						</el-form-item>    
 						<el-tabs v-model="activeTab">
 							<el-tab-pane name="1" label="基本信息">
 								<el-form-item label="" prop="preRmark" label-width="0px">
@@ -107,6 +108,9 @@
 		<el-dialog append-to-body title="模块选择"  :visible.sync="funcVisible" width="60%" top="20px"  :close-on-click-modal="false">
 			<xm-func-select  @row-click="onFuncSelected" :xm-product="{id:editForm.productId}"></xm-func-select>
 		</el-dialog>
+		<el-dialog title="需求详情" :visible.sync="menuFormVisible" :with-header="false" width="90%" top="20px"    append-to-body   :close-on-click-modal="false" >
+			<xm-menu-edit v-if="menuFormVisible" :reload="true" :xm-menu="{menuId:editForm.menuId}"  :visible="menuFormVisible" @cancel="menuFormVisible=false"></xm-menu-edit>
+		</el-dialog>
 	</section>
 </template>
 
@@ -127,7 +131,7 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 	export default {
 	    name:'xmTestCaseEdit',
 	    components: {
-			XmMenuSelect,XmFuncSelect,MyInput,TestStepConfig,XmQuestionMng,XmTestPlanCaseMng,MdpSelectUserXm,
+			XmMenuSelect,XmFuncSelect,MyInput,TestStepConfig,XmQuestionMng,XmTestPlanCaseMng,MdpSelectUserXm,XmMenuEdit:()=>import("../xmMenu/XmMenuDetail")
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
@@ -167,6 +171,7 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 				},
                 maxTableHeight:300,
 				menuVisible:false,
+				menuFormVisible:false,
 				funcVisible:false,
 				activeTab:'1',
 			}//end return

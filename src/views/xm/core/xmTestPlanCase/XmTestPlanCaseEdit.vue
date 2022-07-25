@@ -8,13 +8,21 @@
 					
 						<el-form-item label="测试库" prop="casedbName">
 							{{editForm.casedbName?editForm.casedbName:editForm.casedbId }}  
-						</el-form-item> 
-						
-						<el-form-item label="产品" prop="productId">
+						</el-form-item>  
+						<el-form-item label="归属计划" prop="planId">
+							{{editForm.planId?editForm.planId:editForm.planId }}  
+						</el-form-item>  
+						<el-form-item label="归属项目" prop="projectId">
+							{{editForm.projectId?editForm.projectId:editForm.projectId }}  
+						</el-form-item>  
+						<el-form-item label="归属产品" prop="productId">
 							{{editForm.productName?editForm.productName:editForm.productId }}  
+						</el-form-item>  
+						<el-form-item label="关联模块" prop="menuName">
+							{{editForm.funcName?editForm.funcName:'暂无关联需求'}}  
 						</el-form-item> 
 						<el-form-item label="关联需求" prop="menuName">
-							{{editForm.menuName?editForm.menuName:'暂无关联需求'}} <el-button type="text" @click="menuVisible=true">选择需求</el-button>
+							{{editForm.menuName?editForm.menuName:'暂无关联需求'}} <el-button type="text" @click="menuFormVisible=true">查看需求</el-button>
 						</el-form-item> 
 						
 						<el-form-item label="版本号" prop="verNum">
@@ -23,11 +31,12 @@
 					</el-col>
 					<el-col :span="18" class="border padding">
 				<el-form-item label="" prop="caseName" label-width="0px">  
-					<el-row class="label-font-color">
-					<span ><span >用例编号:</span>&nbsp;&nbsp;{{editForm.caseId}} &nbsp;&nbsp;<i class="el-icon-s-operation"></i><span>模块：</span></span><span>{{editForm.funcName}}</span>
-					</el-row>
+					
 					<el-row>
 					<span class="title-font-size">{{editForm.caseName}}</span> 
+					</el-row>
+					<el-row class="label-font-color">
+					<span > 用例编号:  {{editForm.caseId}}  </span> 
 					</el-row>
 					<el-row class="padding">
 						<el-col :span="8"> 
@@ -117,22 +126,7 @@
 							<el-input type="textarea" :rows="6" v-model="editForm.remark" placeholder="执行备注" :maxlength="2147483647" @change="editSomeFields(editForm,'remark',$event)"></el-input>
 						</el-form-item> 
 						</el-row>
- 					</el-tab-pane>
-					<el-tab-pane name="2" label="需求"> 
-						<el-row>
-							<el-col :span="12"> 
-								<el-form-item  label="归属产品" prop="productId"> 
-									 {{editForm.productId}}
-								</el-form-item>  
-							</el-col>
-							<el-col :span="12"> 
-								<el-form-item  label="用户故事" prop="menuId" id="menuInfo"> 
-									{{editForm.menuName}} &nbsp;&nbsp;&nbsp; <el-link @click="menuVisible=true" type="primary">{{editForm.menuName?'更改':'设置'}}</el-link>&nbsp;&nbsp;&nbsp;
-									<el-link v-if="editForm.menuName" @click="menuVisible=true" type="primary">查看需求</el-link>
-								</el-form-item> 
-							</el-col> 
-						</el-row>
-					</el-tab-pane>
+ 					</el-tab-pane> 
 					<el-tab-pane name="3" label="缺陷"> 
 						<el-row v-if="activateName=='3'">
 							<xm-question-mng   :xm-test-plan-case="editForm"  :xm-product="{id:editForm.productId,productName:editForm.productName}" :sel-project="{id:editForm.projectId,name:editForm.projectName}"></xm-question-mng>
@@ -163,14 +157,14 @@
 		</el-row>
 				
 		
-		<el-dialog append-to-body title="需求明细"  :visible.sync="menuVisible" width="80%"  top="20px"  :close-on-click-modal="false">
-			<xm-menu-edit :visible="menuVisible"  :reload="true" :xm-menu="{menuId:editForm.menuId,menuName:editForm.menuName}" ></xm-menu-edit>
+		<el-dialog append-to-body title="需求明细"  :visible.sync="menuFormVisible" width="80%"  top="20px"  :close-on-click-modal="false">
+			<xm-menu-edit :visible="menuFormVisible"  :reload="true" :xm-menu="{menuId:editForm.menuId,menuName:editForm.menuName}" ></xm-menu-edit>
 		</el-dialog>
 		
 		<!--新增 XmQuestion xm_question界面-->
 		<el-dialog title="新增缺陷"  :visible.sync="addBugVisible"   width="90%" top="20px"  append-to-body   :close-on-click-modal="false">
 			<xm-question-add  op-type="add" :xm-product="{id:editForm.productId,productName:editForm.productName}" :xm-test-plan-case="editForm"  :sel-project=" {id:editForm.projectId,name:editForm.projectName} "  :visible="addBugVisible" @cancel="addBugVisible=false" ></xm-question-add>
-		</el-dialog>
+		</el-dialog> 
 	</section>
 </template>
 
@@ -229,6 +223,7 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 				},
                 maxTableHeight:300,
 				menuVisible:false,
+				menuFormVisible:false,
 				next:false,
 				activateName:'1',
 				addBugVisible:false,
