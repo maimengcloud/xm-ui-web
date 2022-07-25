@@ -92,13 +92,22 @@
 						</el-row>
 						<el-row class="padding"> 
 								<el-col :span="8">
-									<mdp-field-x v-if="!editForm.pmenuId" v-model="editForm.pmenuName" :disabled="true" label="上级需求"> </mdp-field-x>
+									<mdp-field-x v-if="!editForm.pmenuId" v-model="editForm.pmenuId" :disabled="true" label="上级需求"> 
+									
+									</mdp-field-x>
 
-									<mdp-field-x v-else v-model="editForm.pmenuName" :label="editForm.dclass==='3'?'归属特性':(editForm.dclass==='2'?'归属史诗':'归属')" :icon="editForm.dclass==='2'?'el-icon-s-promotion':'el-icon-s-flag'" :color="editForm.dclass==='2'?'rgb(255, 153, 51)':'rgb(0, 153, 51)'">
-										<el-button slot="oper"
-											@click="showPmenu"  
+									<mdp-field-x v-else v-model="editForm.pmenuId" :label="editForm.dclass==='3'?'归属特性':(editForm.dclass==='2'?'归属史诗':'归属')" :icon="editForm.dclass==='2'?'el-icon-s-promotion':'el-icon-s-flag'" :color="editForm.dclass==='2'?'rgb(255, 153, 51)':'rgb(0, 153, 51)'">
+										<div slot="oper"> 							
+										<el-button 
+											@click="pmenuFormVisible=true"  
 											title="查看上级"
-											icon="el-icon-upload2"> 查看上级</el-button> 
+											icon="el-icon-upload2"> 查看上级</el-button> 	
+										
+										<el-button
+											@click="changePmenu"  
+											title="更换上级"
+											icon="el-icon-upload2"> 更换上级</el-button> 
+											</div>
 									</mdp-field-x>  
 								</el-col> 
 								<el-col  :span="8">
@@ -259,7 +268,10 @@
 				<tag-mng :tagIds="editForm.tagIds?editForm.tagIds.split(','):[]" :jump="true" @select-confirm="onTagSelected">
 				</tag-mng>
 			</el-drawer>
-
+ 
+				<el-dialog title="上级需求详情" :visible.sync="pmenuFormVisible" :with-header="false" width="90%" top="20px"    append-to-body   :close-on-click-modal="false" >
+					<xm-menu-edit v-if="pmenuFormVisible" :reload="true" :xm-menu="{menuId:editForm.pmenuId}" :sel-project="selProject" :visible="pmenuFormVisible" @cancel="pmenuFormVisible=false"></xm-menu-edit>
+				</el-dialog>
 
 	</section>
 </template>
@@ -375,7 +387,9 @@
 				},
 				tagSelectVisible:false, 
 				subWorkItemNum:-1,
-				activateTabPaneName:'4'
+				activateTabPaneName:'4',
+				pmenuFormVisible:false,
+
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 
 				/**end 在上面加自定义属性**/
@@ -388,6 +402,12 @@
 			// 取消按钮点击 父组件监听@cancel="editFormVisible=false" 监听
 			handleCancel:function(){
  				this.$emit('cancel');
+			},
+			showPmenu(){
+				
+			},
+			changePmenu(){
+
 			},
 			//新增提交XmMenu 项目需求表 父组件监听@submit="afterAddSubmit"
 			editSubmit: function () {
@@ -564,6 +584,7 @@
 			XmMyDoFocus,
 			ArchiveEdit,
 			XmTestCaseMng,MdpSelectUserXm,
+			'xm-menu-edit':()=>import("./XmMenuDetail")
 		},
 		mounted() {
 
