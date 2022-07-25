@@ -190,7 +190,7 @@
 						</el-row>
 					</el-tab-pane >
 						<el-tab-pane label="概述" name="4">
-							<el-form-item label="需求概述" prop="remark">
+							<el-form-item prop="remark" label-width="0px">
 								<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="editForm.remark"  @change="editXmMenuSomeFields(editForm,'remark',editForm.remark)" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
 							</el-form-item> 
 						</el-tab-pane>
