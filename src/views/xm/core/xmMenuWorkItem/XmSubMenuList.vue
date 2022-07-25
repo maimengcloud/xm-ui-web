@@ -28,27 +28,15 @@
 			  </template>
 		  </el-table-column>
           <el-table-column prop="status" label="状态"  min-width="80"  sortable>
-								<template slot-scope="scope">
-									<div class="cell-text">
-										<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'menuStatus',scope.row.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
-									</div>
-									<span class="cell-bar">
-										 <el-select @visible-change="selectVisible(scope.row,$event)"   v-model="scope.row.status" placeholder="需求状态"  style="display:block;"  @change="editXmMenuSomeFields(scope.row,'status',$event)">
-												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option>
-										 </el-select>
-									</span>
+								<template slot-scope="scope"> 
+										 <mdp-select-dict-tag :dict="dicts.menuStatus"  v-model="scope.row.status" placeholder="需求状态"  style="display:block;"  @change="editXmMenuSomeFields(scope.row,'status',$event)">
+ 										 </mdp-select-dict-tag> 
 								</template>
 							</el-table-column>
 							<el-table-column prop="priority"  label="优先级" width="100" sortable>
-								<template slot-scope="scope">
-									<div class="cell-text">
-										<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'priority',scope.row.priority)" :key="index" :type="item.className">{{item.name}}</el-tag>
-  									</div>
-									<span class="cell-bar">
-										 <el-select @visible-change="selectVisible(scope.row,$event)"   v-model="scope.row.priority" placeholder="优先级"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'priority',$event)">
-												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.priority" :key="index"> </el-option>
-										 </el-select>
-									</span>
+								<template slot-scope="scope"> 
+										 <mdp-select-dict-tag :dict="dicts.priority"  v-model="scope.row.priority" placeholder="优先级"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'priority',$event)">
+ 										 </mdp-select-dict-tag> 
 								</template>
 							</el-table-column> 
 							<el-table-column prop="iterationName" label="迭代" width="150" show-overflow-tooltip sortable>
@@ -71,21 +59,14 @@
 							</el-table-column> 
 							<el-table-column prop="mmUsername" label="跟进人"  min-width="100" show-overflow-tooltip  sortable>
 								<template slot-scope="scope">
-									<div class="cell-text">
-										{{scope.row.mmUsername}}
-									</div>
-									<span class="cell-bar">
-										 <el-button @click="$refs.xmGroupDialog.open({data:scope.row,action:'editMmUserid'})">选跟进人</el-button>
-									</span>
+									 <mdp-select-user-xm userid-key="mmUserid" username-key="mmUsername" :project-id="linkProjectId" v-model="scope.row" @change="editXmMenuSomeFields(scope.row,'mmUserid',$enent)"></mdp-select-user-xm>
 								</template>
 							</el-table-column>
         </el-table> 
       </el-row>
     </el-row> 
     <tag-dialog ref="tagDialog"  :jump="true" @select-confirm="onTagSelected">
-			</tag-dialog>
- 			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="linkProjectId?{id:linkProjectId}:null" :xm-product="parentXmMenu&&parentXmMenu.productId?{id:parentXmMenu.productId}:null" @user-confirm="onGroupUserSelect">
-			</xm-group-dialog>
+			</tag-dialog> 
 
 			
       <el-dialog :title="'新增'+calcMenuLabel.label" :visible.sync="addFormVisible" append-to-body modal-append-to-body>
@@ -121,6 +102,7 @@ import treeTool from "@/common/js/treeTool"; //全局公共库
 	import  XmMenuWorkload from '@/views/xm/core/components/XmMenuWorkload';//修改界面
  	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面
 	import  XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';//修改界面
+	import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm/index';//修改界面
    	import TagDialog from "@/views/mdp/arc/tag/TagDialog";
 	import { mapGetters } from 'vuex'
 
@@ -309,11 +291,7 @@ export default {
 					this.editXmMenuSomeFields(option.data,"tagIds",tags)
 				} 
 
-			},
-      
-			onGroupUserSelect(users,option){
-				 this.editXmMenuSomeFields(option.data,"mmUserid",users);
-			},
+			}, 
       //批量删除xmMenu
 			batchDel: function () {
 				if(this.sels.length==0){
@@ -337,9 +315,9 @@ export default {
   }, //end methods
   components: {  
 		  TagDialog, 
-			XmMenuWorkload, 
-			XmGroupDialog,
+			XmMenuWorkload,  
 			XmIterationSelect,
+			MdpSelectUserXm,
 			'xm-menu-edit':()=>import('../xmMenu/XmMenuEdit')
   },
   mounted() { 

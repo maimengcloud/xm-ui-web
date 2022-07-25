@@ -21,15 +21,9 @@
             </el-table-column> 
 
 					<el-table-column prop="bugStatus" label="状态"  width="100">
-						<template slot-scope="scope">   
-									<div class="cell-text">
-										 <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'bugStatus',scope.row.bugStatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
-									</div>
-									<span class="cell-bar">   
-										 <el-select @visible-change="selectVisible(scope.row,$event)"   v-model="scope.row.bugStatus" placeholder="类型"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugStatus',$event)">
-												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.bugStatus" :key="index"></el-option> 
-										 </el-select>  
-									</span> 
+						<template slot-scope="scope">    
+										 <mdp-select-dict-tag :dict="dicts.bugStatus"    v-model="scope.row.bugStatus" placeholder="类型"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugStatus',$event)">
+ 										 </mdp-select-dict-tag>   
 						</template>
 					</el-table-column>
 					
@@ -44,38 +38,21 @@
 						</template>
 					</el-table-column>
 					<el-table-column prop="priority" label="优先级"  width="100">
-						<template slot-scope="scope">   
-									<div class="cell-text">
-										<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'priority',scope.row.priority)" :key="index" :type="item.className">{{item.name}}</el-tag>
-									</div>
-									<span class="cell-bar">   
-										 <el-select @visible-change="selectVisible(scope.row,$event)"   v-model="scope.row.priority" placeholder="优先级"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'priority',$event)">
-												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.priority" :key="index"></el-option> 
-										 </el-select>  
-									</span> 
+						<template slot-scope="scope">    
+										 <mdp-select-dict-tag :dict="dicts.priority"    v-model="scope.row.priority" placeholder="优先级"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'priority',$event)">
+ 										 </mdp-select-dict-tag>   
 						</template>
 					</el-table-column> 
 					<el-table-column prop="solution" label="解决方案"  width="100">
-						<template slot-scope="scope">   
-									<div class="cell-text">
-										
-										<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'bugSolution',scope.row.solution)" :key="index" :type="item.className">{{item.name}}</el-tag>
-									</div>
-									<span class="cell-bar">   
-										 <el-select @visible-change="selectVisible(scope.row,$event)"   v-model="scope.row.solution" placeholder="类型"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'solution',$event)">
-												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.bugSolution" :key="index"></el-option> 
-										 </el-select>  
-									</span> 
+						<template slot-scope="scope">    
+										 <mdp-select-dict-tag :dict="dicts.bugSolution"   v-model="scope.row.solution" placeholder="类型"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'solution',$event)">
+ 										 </mdp-select-dict-tag>   
 						</template>
 					</el-table-column>
 					<el-table-column prop="handlerUsername" label="负责人"  width="100" show-overflow-tooltip> 
-						<template slot-scope="scope">   
-									<div class="cell-text">
-										{{ scope.row.handlerUsername}}
-									</div>
-									<span class="cell-bar">   
-										 <el-button @click="showGroupUsers('editHandlerUserid',scope.row)">负责人</el-button>
-									</span> 
+						<template slot-scope="scope">    
+								<mdp-select-user-xm userid-key="handlerUserid" username-key="handlerUsername" :project-id="scope.row.projectId" v-model="scope.row" @change="editXmTaskSomeFields(scope.row,'handlerUserid',$event)"></mdp-select-user-xm>
+
 						</template>
 					</el-table-column>
         </el-table> 
@@ -114,6 +91,7 @@ import treeTool from "@/common/js/treeTool"; //全局公共库
 
 	import XmGroupDialog from '../xmGroup/XmGroupDialog';
 	import { mapGetters } from 'vuex'
+	import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm/index';//修改界面
 
 export default {
   computed: {
@@ -332,7 +310,7 @@ export default {
 			},  
   }, //end methods
   components: { 
-    XmGroupDialog,'xm-question-edit':()=>import('../xmQuestion/XmQuestionEdit')
+    XmGroupDialog,'xm-question-edit':()=>import('../xmQuestion/XmQuestionEdit'),MdpSelectUserXm,
   },
   mounted() { 
     this.initData();
