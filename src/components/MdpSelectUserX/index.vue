@@ -13,6 +13,7 @@
                 </slot>
 							</div>  
               <div v-if="disabled!==true" class="field-oper" :value="myVal"  :class="{disabled:disabled===true,enabled:disabled!==true}">
+                <slot name="oper">
                     <el-select v-model="myVal" @change="onSelectChange" :clearable="clearable">  
                           <el-option disabled value="" style="margin-bottom:5px;">
                               <el-row><el-button :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button><el-button v-if="projectId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button> </el-row>
@@ -27,6 +28,10 @@
                             </div>
                           </el-option> 
                       </el-select> 
+                      <slot name="extOper">
+
+                      </slot>
+                      </slot>
                   </div> 
 						</div> 
             <el-dialog :visible.sync="deptUserVisible" append-to-body top="20px" width="60%">

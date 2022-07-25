@@ -13,24 +13,29 @@
                 </slot>
 							</div>  
               <div v-if="disabled!==true" class="field-oper" :class="{disabled:disabled===true,enabled:disabled!==true}">
-                    <el-select v-model="myVal" @change="onSelectChange" :clearable="clearable" filterable value-key="userid">  
+                <slot name="oper">
+                      <el-select v-model="myVal" @change="onSelectChange" :clearable="clearable" filterable value-key="userid">  
+                            
+                            <el-option :value="myVal" disabled v-if="users && users.length>10">
+                                <el-row><el-button :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button><el-button v-if="projectId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button> </el-row>
+                            </el-option>
+                            <el-option class="avatar-container" v-for="(item,index) in users" :key="index" :value="item" :label="item.username">  
+                            
+                              <div class="avatar-wrapper">
+                                    <el-avatar class="user-avatar"  :style="{backgroundColor:getMyColor(item)}">{{item.username}}</el-avatar> 
+                                    <span class="username">{{item.username}}</span>
+                                    <i v-if="myVal.userid==item.userid" class="el-icon-check"></i> 
+                                    <i v-else>&nbsp;&nbsp;</i>  
+                              </div>
+                            </el-option> 
+                            <el-option :value="myVal" disabled>
+                                <el-row><el-button :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button><el-button v-if="projectId||productId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button> </el-row>
+                            </el-option>
+                        </el-select> 
+                        <slot name="extOper">
                           
-                          <el-option :value="myVal" disabled v-if="users && users.length>10">
-                              <el-row><el-button :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button><el-button v-if="projectId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button> </el-row>
-                          </el-option>
-                          <el-option class="avatar-container" v-for="(item,index) in users" :key="index" :value="item" :label="item.username">  
-                          
-                            <div class="avatar-wrapper">
-                                  <el-avatar class="user-avatar"  :style="{backgroundColor:getMyColor(item)}">{{item.username}}</el-avatar> 
-                                  <span class="username">{{item.username}}</span>
-                                  <i v-if="myVal.userid==item.userid" class="el-icon-check"></i> 
-                                  <i v-else>&nbsp;&nbsp;</i>  
-                            </div>
-                          </el-option> 
-                          <el-option :value="myVal" disabled>
-                              <el-row><el-button :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button><el-button v-if="projectId||productId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button> </el-row>
-                          </el-option>
-                      </el-select> 
+                        </slot>
+                      </slot>
                   </div>
 						</div> 
             <el-dialog v-if="disabled!==true" :visible.sync="deptUserVisible" append-to-body top="20px" width="60%">
