@@ -13,34 +13,34 @@
         <el-menu-item index="迭代概览">
           <span
             slot="title"
-            style="font-size: 18px; color: #409eff"
+            style="font-size: 18px; color: #ff8c00"
             class="hidden-md-and-down"
             :title="xmIteration.iterationName"
           >
             <font v-if="xmIteration.iterationName.length >= 15"
               ><strong
-                >&nbsp;<el-avatar class="top-icon" icon="el-icon-connection" style="background-color:#67C23A"></el-avatar>&nbsp;迭代:&nbsp;&nbsp;{{
+                >&nbsp;<el-avatar class="top-icon" icon="el-icon-connection" style="background-color:#ff8c00"></el-avatar>&nbsp;迭代:&nbsp;&nbsp;{{
                   xmIteration.iterationName.substring(0, 15)
                 }}</strong
               ></font
             >
             <font type="danger" v-else
               ><strong
-                >&nbsp;<el-avatar class="top-icon" icon="el-icon-connection" style="background-color:#67C23A"></el-avatar>&nbsp;迭代:&nbsp;&nbsp;{{ xmIteration.iterationName }}</strong
+                >&nbsp;<el-avatar class="top-icon" icon="el-icon-connection" style="background-color:#ff8c00"></el-avatar>&nbsp;迭代:&nbsp;&nbsp;{{ xmIteration.iterationName }}</strong
               ></font
             >
           </span>
           <span
             slot="title"
-            style="color: #409eff"
+            style="color: #ff8c00"
             class="hidden-lg-and-up"
             :title="xmIteration.iterationName"
           >
             <font v-if="xmIteration.iterationName.length >= 15"
-              >&nbsp;<el-avatar class="top-icon" icon="el-icon-connection" style="background-color:##67C23A"></el-avatar>&nbsp;迭代:&nbsp;{{ xmIteration.iterationName.substring(0, 15) }}</font
+              >&nbsp;<el-avatar class="top-icon" icon="el-icon-connection" style="background-color:#ff8c00"></el-avatar>&nbsp;迭代:&nbsp;{{ xmIteration.iterationName.substring(0, 15) }}</font
             >
             <font type="danger" v-else
-              >&nbsp;<el-avatar class="top-icon" icon="el-icon-connection" style="background-color:##67C23A"></el-avatar>&nbsp;迭代:&nbsp;{{ xmIteration.iterationName }}</font
+              >&nbsp;<el-avatar class="top-icon" icon="el-icon-connection" style="background-color:#ff8c00"></el-avatar>&nbsp;迭代:&nbsp;{{ xmIteration.iterationName }}</font
             >
           </span>
         </el-menu-item>
@@ -385,11 +385,7 @@
           ></xm-group-select>
         </el-drawer>
       </el-col>
-    </el-row>
-    
-		<el-dialog  width="60%" top="20px" :visible.sync="iterationAddVisible" append-to-body>  
-					<xm-iteration-add op-type="add"  :xm-product="xmProduct" :sel-project="selProject" :visible="iterationAddVisible" @cancel="iterationAddVisible=false" @submit="afterIterationAddSubmit"></xm-iteration-add>
- 		</el-dialog> 
+    </el-row> 
   </section>
 </template>
 
@@ -454,7 +450,7 @@ export default {
       load: { list: false, edit: false },
       groupUserVisible: false,
       exportArr: ["任务", "计划", "需求监控"],
-      maxTableHeight: 300,
+      maxTableHeight: 300, 
       /**end 自定义属性请在上面加 请加备注**/
     };
   }, //end data

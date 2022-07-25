@@ -8,7 +8,7 @@
         class="menus"
         background-color="rgb(48, 65, 86)"
         text-color="rgb(191, 203, 217)"
-        active-text-color="#ffd04b"
+        active-text-color="#409eff"
       >
         
         <el-menu-item index="项目概览">
