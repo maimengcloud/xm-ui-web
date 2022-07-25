@@ -129,11 +129,19 @@
 						<el-row class="padding"> 
 							<el-col :span="8"> 
 								<mdp-field-x v-model="editForm.parentTaskname" label="上级计划" icon="el-icon-time" color="#E6A23C">
-									<el-button slot="oper"
-										@click="selectParentTaskVisible=true"  
-										title="更换任务的上级，实现任务搬家功能"
-										icon="el-icon-upload2" 
-									> 选择新的上级</el-button> 
+									<div slot="oper"> 
+										<el-button  
+											@click="selectParentPlanVisible=true"  
+											title="更换任务的上级，实现任务搬家功能"
+											icon="el-icon-upload2" 
+										> 选择新的上级</el-button> 
+										
+										<el-button  v-if="editForm.parentTaskid"
+											@click="parentPlanVisible=true"  
+											title="查看上级计划明细"
+											icon="el-icon-upload2" 
+										> 查看上级计划</el-button> 
+									</div>
 								</mdp-field-x> 
 							</el-col> 
 							<el-col :span="8">  
@@ -526,8 +534,25 @@
 			</tag-mng>
 		</el-drawer>
 		
-		<el-dialog title="选择新的上级计划" append-to-body :visible.sync="selectParentTaskVisible" width="60%" top="20px">
+		<el-dialog title="选择新的上级计划" append-to-body :visible.sync="selectParentPlanVisible" width="60%" top="20px">
 		<xm-phase-select :sel-project="xmProject"   @select="onSelectedParentTask"></xm-phase-select>
+		</el-dialog>
+
+		<!--编辑 XmTask xm_task界面-->
+		<el-dialog
+			title="编辑任务"
+			:visible.sync="parentPlanVisible" 
+			fullscreen
+			append-to-body
+			:close-on-click-modal="false"
+			>
+			<xm-task-edit
+				:xm-project="{id:editForm.projectId,name:editForm.projectName}"
+				:xm-task="{id:editForm.parentTaskid,name:editForm.parentTaskname}"
+				:visible="parentPlanVisible"
+				:reload="true"
+				@cancel="parentPlanVisible = false" 
+			></xm-task-edit>
 		</el-dialog>
 	</section>
 </template>
@@ -673,10 +698,11 @@
 				tagSelectVisible:false,
 				subWorkItemNum:0,
 				activateTabPaneName:'2',
-				selectParentTaskVisible:false, 
+				selectParentPlanVisible:false, 
 				supRequires:[],
 				toPayEfundsVisible:false,
 				toPayMarketVisible:false,
+				parentPlanVisible:false,
 				 /**end 在上面加自定义属性**/
 			}//end return
 		},//end data
@@ -980,7 +1006,7 @@
 		components: { 
  			xmSkillMng,
 			skillMng,xmMenuSelect,XmTaskList,XmExecuserMng,XmGroupSelect,XmMenuRichDetail,TagMng,XmSubWorkItem,XmTaskWorkloadRecord,XmMenuEdit,
-			XmRecord,xmQuestionForTask,XmMyDoFocus,XmTaskExecuserForTask,XmPhaseSelect,ToPay,MdpSelectUserXm
+			XmRecord,xmQuestionForTask,XmMyDoFocus,XmTaskExecuserForTask,XmPhaseSelect,ToPay,MdpSelectUserXm,'xm-task-edit':()=>import("./XmTaskDetail"),
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},
 		mounted() { 
