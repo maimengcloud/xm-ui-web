@@ -115,8 +115,8 @@
 							</template>
 								<el-input v-model="editForm.name" placeholder="名称" @change="editXmTaskSomeFields(editForm,'name',$event)"></el-input>   
 							<el-row class="label-font-color"> 
-									<span>任务编号：{{editForm.id}}</span>&nbsp;&nbsp;
- 									<span>归属项目：{{editForm.projectName?editForm.projectName:''}}{{editForm.projectId?'('+editForm.projectId+')':''}} &nbsp;&nbsp;</span>
+									<span>任务编号：{{editForm.id}}</span><el-divider direction="vertical"></el-divider>
+ 									<span>归属项目：{{editForm.projectName?editForm.projectName:''}}{{editForm.projectId?'('+editForm.projectId+')':''}}  </span><el-divider direction="vertical"></el-divider>
  									<span v-if="editForm.productId">归属产品：{{editForm.productId?editForm.productId:''}}  </span>
 							</el-row>
 						</el-form-item>  

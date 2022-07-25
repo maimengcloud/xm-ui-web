@@ -18,7 +18,7 @@
 				></el-input>   
          <el-row   class=" label-font-color">
           <span >产品代号:</span>
-          {{ editForm.code }} &nbsp;&nbsp;<span  
+          {{ editForm.code }}  <el-divider direction="vertical"></el-divider><span  
             >产品编号:</span
           >
           {{ editForm.id }}
