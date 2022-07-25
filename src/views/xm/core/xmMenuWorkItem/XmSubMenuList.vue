@@ -29,13 +29,13 @@
 		  </el-table-column>
           <el-table-column prop="status" label="状态"  min-width="80"  sortable>
 								<template slot-scope="scope"> 
-										 <mdp-select-dict-tag :dict="dicts.menuStatus"  v-model="scope.row.status" placeholder="需求状态"  style="display:block;"  @change="editXmMenuSomeFields(scope.row,'status',$event)">
+										 <mdp-select-dict-tag  @visible-change="selectVisible(scope.row,$event)" :dict="dicts.menuStatus"  v-model="scope.row.status" placeholder="需求状态"  style="display:block;"  @change="editXmMenuSomeFields(scope.row,'status',$event)">
  										 </mdp-select-dict-tag> 
 								</template>
 							</el-table-column>
 							<el-table-column prop="priority"  label="优先级" width="100" sortable>
 								<template slot-scope="scope"> 
-										 <mdp-select-dict-tag :dict="dicts.priority"  v-model="scope.row.priority" placeholder="优先级"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'priority',$event)">
+										 <mdp-select-dict-tag  @visible-change="selectVisible(scope.row,$event)" :dict="dicts.priority"  v-model="scope.row.priority" placeholder="优先级"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'priority',$event)">
  										 </mdp-select-dict-tag> 
 								</template>
 							</el-table-column> 
@@ -59,7 +59,7 @@
 							</el-table-column> 
 							<el-table-column prop="mmUsername" label="跟进人"  min-width="100" show-overflow-tooltip  sortable>
 								<template slot-scope="scope">
-									 <mdp-select-user-xm userid-key="mmUserid" username-key="mmUsername" :project-id="linkProjectId" v-model="scope.row" @change="editXmMenuSomeFields(scope.row,'mmUserid',$enent)"></mdp-select-user-xm>
+									 <mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)" userid-key="mmUserid" username-key="mmUsername" :project-id="linkProjectId" v-model="scope.row" @change="editXmMenuSomeFields(scope.row,'mmUserid',$enent)"></mdp-select-user-xm>
 								</template>
 							</el-table-column>
         </el-table> 

@@ -22,7 +22,7 @@
 
 					<el-table-column prop="bugStatus" label="状态"  width="100">
 						<template slot-scope="scope">    
-										 <mdp-select-dict-tag :dict="dicts.bugStatus"    v-model="scope.row.bugStatus" placeholder="类型"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugStatus',$event)">
+										 <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts.bugStatus"    v-model="scope.row.bugStatus" placeholder="类型"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugStatus',$event)">
  										 </mdp-select-dict-tag>   
 						</template>
 					</el-table-column>
@@ -39,19 +39,19 @@
 					</el-table-column>
 					<el-table-column prop="priority" label="优先级"  width="100">
 						<template slot-scope="scope">    
-										 <mdp-select-dict-tag :dict="dicts.priority"    v-model="scope.row.priority" placeholder="优先级"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'priority',$event)">
+										 <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts.priority"    v-model="scope.row.priority" placeholder="优先级"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'priority',$event)">
  										 </mdp-select-dict-tag>   
 						</template>
 					</el-table-column> 
 					<el-table-column prop="solution" label="解决方案"  width="100">
 						<template slot-scope="scope">    
-										 <mdp-select-dict-tag :dict="dicts.bugSolution"   v-model="scope.row.solution" placeholder="类型"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'solution',$event)">
+										 <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts.bugSolution"   v-model="scope.row.solution" placeholder="类型"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'solution',$event)">
  										 </mdp-select-dict-tag>   
 						</template>
 					</el-table-column>
 					<el-table-column prop="handlerUsername" label="负责人"  width="100" show-overflow-tooltip> 
 						<template slot-scope="scope">    
-								<mdp-select-user-xm userid-key="handlerUserid" username-key="handlerUsername" :project-id="scope.row.projectId" v-model="scope.row" @change="editXmTaskSomeFields(scope.row,'handlerUserid',$event)"></mdp-select-user-xm>
+								<mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)" userid-key="handlerUserid" username-key="handlerUsername" :project-id="scope.row.projectId" v-model="scope.row" @change="editXmTaskSomeFields(scope.row,'handlerUserid',$event)"></mdp-select-user-xm>
 
 						</template>
 					</el-table-column>
