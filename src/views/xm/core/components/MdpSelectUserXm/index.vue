@@ -53,6 +53,8 @@
   import util  from '@/common/js/util';//全局公共库
   import UsersSelect from '@/views/mdp/sys/user/UsersSelectOnly.vue'
   import XmGroupSelect from '@/views/xm/core/xmGroup/XmGroupSelect.vue'
+  var us=localStorage.getItem("mdp-his-users") 
+  var users=us?JSON.parse(us):[] 
   export default {
     name: 'mdp-select-user-xm',
     components: { UsersSelect, XmGroupSelect },
@@ -248,9 +250,8 @@
 				 }
         }
     },
-    mounted(){
-      var us=localStorage.getItem("mdp-his-users")
-			this.users=us?JSON.parse(us):[] 
+    mounted(){  
+			this.users=users
       this.initData();
 
     }
