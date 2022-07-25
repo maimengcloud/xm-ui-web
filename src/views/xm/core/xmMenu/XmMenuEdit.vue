@@ -104,7 +104,7 @@
 											icon="el-icon-upload2"> 查看上级</el-button> 	
 										
 										<el-button
-											@click="changePmenu"  
+											@click="parentMenuVisible=true"  
 											title="更换上级"
 											icon="el-icon-upload2"> 更换上级</el-button> 
 											</div>
@@ -272,14 +272,26 @@
 				<el-dialog title="上级需求详情" :visible.sync="pmenuFormVisible" :with-header="false" width="90%" top="20px"    append-to-body   :close-on-click-modal="false" >
 					<xm-menu-edit v-if="pmenuFormVisible" :reload="true" :xm-menu="{menuId:editForm.pmenuId}" :sel-project="selProject" :visible="pmenuFormVisible" @cancel="pmenuFormVisible=false"></xm-menu-edit>
 				</el-dialog>
-
+			
+		<el-drawer
+		append-to-body
+		title="选择上级需求"
+		:visible.sync="parentMenuVisible"
+		size="60%"
+		:close-on-click-modal="false"
+		>
+		<xm-epic-features-select 
+			@select="onParentMenuSelected"
+			:xm-product="{id:editForm.productId,productName:editForm.productName}"
+		></xm-epic-features-select>
+		</el-drawer>
 	</section>
 </template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import {listXmMenuWithState,editXmMenu,editXmMenuSomeFields } from '@/api/xm/core/xmMenu';
+	import {listXmMenuWithState,editXmMenu,editXmMenuSomeFields,batchChangeParentMenu } from '@/api/xm/core/xmMenu';
 	import { mapGetters } from 'vuex'
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
 	import XmMenuOverview from './XmMenuOverview.vue';
@@ -291,6 +303,7 @@
 	import ArchiveEdit from '@/views/xm/core/wiki/archive/WikiMenuEdit';
 	import XmTestCaseMng from '@/views/xm/core/xmTestCase/XmTestCaseMng';
 
+	import XmEpicFeaturesSelect from "../xmMenu/XmEpicFeaturesSelect";
 	import MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm'
 	export default {
 		computed: {
@@ -389,6 +402,7 @@
 				subWorkItemNum:-1,
 				activateTabPaneName:'4',
 				pmenuFormVisible:false,
+				parentMenuVisible:false,
 
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 
@@ -571,7 +585,28 @@
 				this.load.list = true; 
 				var params={menuId:this.xmMenu.menuId}
 					listXmMenuWithState(params).then( callback ).catch( err => this.load.list = false ); 
-			}
+			}, 
+			onParentMenuSelected(menu){
+
+				if(!menu||!menu.menuId){
+					this.$notify({position:'bottom-left',showClose:true,message:'请先选择一个上级需求',type:'warning'})
+					return;
+				}
+				this.parentMenuVisible=false;
+				var params={
+					menuIds:[this.editForm.menuId],
+					pmenuId:menu.menuId
+				}
+				batchChangeParentMenu(params).then(res=>{
+					var tips = res.data.tips;
+					if(tips.isOk){
+						this.editForm.pmenuId=menu.menuId
+						this.editFormBak={...this.editForm}
+						this.$emit("edit-fields",params);
+					}
+					this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+				})
+			},
 		},//end method
 		components: {
 			//在下面添加其它组件 'xm-menu-edit':XmMenuEdit
@@ -584,7 +619,8 @@
 			XmMyDoFocus,
 			ArchiveEdit,
 			XmTestCaseMng,MdpSelectUserXm,
-			'xm-menu-edit':()=>import("./XmMenuDetail")
+			'xm-menu-edit':()=>import("./XmMenuDetail"),
+			XmEpicFeaturesSelect,
 		},
 		mounted() {
 
