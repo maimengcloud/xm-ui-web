@@ -105,28 +105,24 @@
 			<el-col :span="20">
 			<!--新增界面 XmTask xm_task--> 
 			<el-form :model="editForm"  label-width="120px" label-position="left" :rules="editFormRules" ref="editForm">  
-						<el-row class="label-font-color"> 
+ 
+						<el-form-item  prop="name" > 
+							<template slot="label"> 
+							<div    class="big-icon" :style="{backgroundColor:   editForm.ntype==='0'?'#409EFF':'#E6A23C'}">
+								<i :class="  editForm.ntype==='0'?'el-icon-s-operation':'el-icon-time' " ></i>
+							</div>  
+							{{editForm.ntype==='0'?' 任务名称':' 计划名称'}}
+							</template>
+								<el-input v-model="editForm.name" placeholder="名称" @change="editXmTaskSomeFields(editForm,'name',$event)"></el-input>   
+							<el-row class="label-font-color"> 
 									<span>任务编号：{{editForm.id}}</span>&nbsp;&nbsp;
  									<span>归属项目：{{editForm.projectName?editForm.projectName:''}}{{editForm.projectId?'('+editForm.projectId+')':''}} &nbsp;&nbsp;</span>
  									<span v-if="editForm.productId">归属产品：{{editForm.productId?editForm.productId:''}}  </span>
-						</el-row>
-						<el-row :gutter="10"> 
-							<el-col :span="24"> 
-								<el-form-item  prop="name" > 
-									<template slot="label"> 
-									<div    class="big-icon" :style="{backgroundColor:   editForm.ntype==='0'?'#409EFF':'#E6A23C'}">
-										<i :class="  editForm.ntype==='0'?'el-icon-s-operation':'el-icon-time' " ></i>
-									</div>  
-									{{editForm.ntype==='0'?' 任务名称':' 计划名称'}}
-									</template>
-										<el-input v-model="editForm.name" placeholder="名称" @change="editXmTaskSomeFields(editForm,'name',$event)"></el-input>   
-								</el-form-item> 
-							</el-col>
-							
-						</el-row>
+							</el-row>
+						</el-form-item>  
 						
 						
-						<el-row class="padding"> 
+						<el-row class="padding-left padding-right"> 
 							<el-col :span="8"> 
 								<mdp-field-x v-model="editForm.parentTaskname" label="上级计划" icon="el-icon-time" color="#E6A23C">
 									<div slot="oper"> 

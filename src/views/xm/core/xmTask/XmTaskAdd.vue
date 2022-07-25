@@ -3,24 +3,23 @@
 		<el-row>
 			<!--新增界面 XmTask xm_task-->
 			<el-form :model="addForm"  label-width="125px" label-position="left" :rules="addFormRules" ref="addForm"> 
-						<el-row class="label-font-color"> 
+						 
+					<el-form-item  prop="name"> 
+						<template slot="label"> 
+						<div    class="big-icon" :style="{backgroundColor:   addForm.ntype==='0'?'#409EFF':'#E6A23C'}">
+							<i :class="  addForm.ntype==='0'?'el-icon-s-operation':'el-icon-time' " ></i>
+						</div>  
+						{{addForm.ntype==='0'?'任务名称':'计划名称'}}
+						</template>
+							<el-input v-model="addForm.name" placeholder="名称" ></el-input>   
+							<span class="label-font-color"> 
   									<span>归属项目：{{addForm.projectName?addForm.projectName:''}}{{addForm.projectId?'('+addForm.projectId+')':''}} &nbsp;&nbsp;</span>
  									<span v-if="addForm.productId">归属产品：{{addForm.productId?addForm.productId:''}}  </span>
-						</el-row>
-						<el-row :gutter="10"> 
-								<el-form-item  prop="name"> 
-									<template slot="label"> 
-									<div    class="big-icon" :style="{backgroundColor:   addForm.ntype==='0'?'#409EFF':'#E6A23C'}">
-										<i :class="  addForm.ntype==='0'?'el-icon-s-operation':'el-icon-time' " ></i>
-									</div>  
-									{{addForm.ntype==='0'?'任务名称':'计划名称'}}
-									</template>
-										<el-input v-model="addForm.name" placeholder="名称" ></el-input>   
-								</el-form-item>   
-						</el-row>
+						</span>
+					</el-form-item>    
 						
 						
-						<el-row class="padding"> 
+						<el-row class="padding-left padding-right"> 
 							<el-col :span="8"> 
 								<mdp-field-x v-model="addForm.parentTaskname" label="上级计划" icon="el-icon-time" color="#E6A23C">
 									<el-button slot="oper"

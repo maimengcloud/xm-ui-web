@@ -3,9 +3,7 @@
 		<el-row class="page-main ">
 			<!--新增界面 XmMenu 项目需求表--> 
 			<el-form :model="addForm"  label-width="125px" label-position="left" :rules="addFormRules" ref="addForm"> 
-						<el-row class="label-font-color">归属产品：{{ addForm.productName}} &nbsp;&nbsp;产品编号：{{ addForm.productId }}</el-row>
-						<el-row :gutter="10">  
-							<el-col :span="24">
+						 
 								<el-form-item prop="menuName">
 									<template slot="label">
 										<div  class="big-icon" :style="{backgroundColor: calcMenuLabel.color }">
@@ -15,9 +13,8 @@
 									</template> 
 									<el-input v-model="addForm.menuName" placeholder="名称" title="名称"> 
 									</el-input>
-								</el-form-item>   
-							</el-col>
-						</el-row>
+									<el-row class="label-font-color">归属产品：{{ addForm.productName}} &nbsp;&nbsp;产品编号：{{ addForm.productId }}</el-row>
+								</el-form-item>    
 						<el-row class="padding"> 
 								<el-col :span="8">
 									<mdp-field-x v-if="!addForm.pmenuId" v-model="addForm.pmenuName" :disabled="true" label="上级需求"> </mdp-field-x>

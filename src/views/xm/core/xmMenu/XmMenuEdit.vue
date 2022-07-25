@@ -75,9 +75,7 @@
 			</el-col>
 			<el-col :span="20"> 
 			<el-form :model="editForm"  label-width="100px" label-position="left" :rules="editFormRules" ref="editForm">
-						<el-row class="label-font-color">编号：{{editForm.menuId}} &nbsp;&nbsp;<span v-if="editForm.productName">归属产品：{{ editForm.productName}} &nbsp;&nbsp;</span>归属产品编号：{{ editForm.productId }}</el-row>
-						<el-row :gutter="10">  
-							<el-col :span="24">
+						 
 								<el-form-item prop="menuName">
 									<template slot="label">
 										<div  class="big-icon" :style="{backgroundColor: calcMenuLabel.color }">
@@ -87,9 +85,8 @@
 									</template> 
 									<el-input v-model="editForm.menuName" placeholder="名称" title="名称"> 
 									</el-input>
-								</el-form-item>   
-							</el-col>
-						</el-row>
+									<el-row class="label-font-color">编号：{{editForm.menuId}} &nbsp;&nbsp;<span v-if="editForm.productName">归属产品：{{ editForm.productName}} &nbsp;&nbsp;</span>归属产品编号：{{ editForm.productId }}</el-row>
+								</el-form-item>    
 						<el-row class="padding"> 
 								<el-col :span="8">
 									<mdp-field-x v-if="!editForm.pmenuId" v-model="editForm.pmenuId" :disabled="true" label="上级需求"> 
