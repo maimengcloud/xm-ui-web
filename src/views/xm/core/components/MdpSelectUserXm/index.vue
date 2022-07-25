@@ -14,7 +14,7 @@
 							</div>  
               <div v-if="disabled!==true" class="field-oper" :class="{disabled:disabled===true,enabled:disabled!==true}">
                 <slot name="oper">
-                      <el-select v-model="myVal" @change="onSelectChange" :clearable="clearable" filterable value-key="userid">  
+                      <el-select v-model="myVal" @change="onSelectChange" :clearable="clearable" filterable value-key="userid" @visible-change="$emit('visible-change',$event)" @focus="$emit('focus',$event)" @blur="$emit('blur',$event)" @clear="$emit('blur',$event)" @click="$emit('click',$event)">  
                             
                             <el-option :value="myVal" disabled v-if="users && users.length>10">
                                 <el-row><el-button :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button><el-button v-if="projectId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button> </el-row>
@@ -33,7 +33,7 @@
                             </el-option>
                         </el-select> 
                         <slot name="extOper">
-                          
+
                         </slot>
                       </slot>
                   </div>
@@ -94,7 +94,7 @@
     },
     watch:{ 
         value:{  
-          handler(){
+          handler(){ 
              this.initData();
           },
           deep:true,

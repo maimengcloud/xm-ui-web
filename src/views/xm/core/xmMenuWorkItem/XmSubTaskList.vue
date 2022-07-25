@@ -67,7 +67,7 @@
                 show-overflow-tooltip
               >
 								<template slot-scope="scope"> 
-                  <mdp-select-user-xm userid-key="creatorUserid" username-key="creatorUsername" :project-id="scope.row.projectId" v-model="scope.row" @change="editXmTaskSomeFields(scope.row,'creatorUserid',$event)"></mdp-select-user-xm>
+                  <mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)" userid-key="creatorUserid" username-key="creatorUsername" :project-id="scope.row.projectId" v-model="scope.row" @change="editXmTaskSomeFields(scope.row,'creatorUserid',$event)"></mdp-select-user-xm>
 
 								</template>
               </el-table-column>
@@ -79,7 +79,7 @@
                 show-overflow-tooltip
               >
 								<template slot-scope="scope"> 
-                  <mdp-select-user-xm userid-key="executorUserid" username-key="executorUsername" :project-id="scope.row.projectId" v-model="scope.row" @change="editXmTaskSomeFields(scope.row,'executorUserid',$event)"></mdp-select-user-xm>
+                  <mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)" userid-key="executorUserid" username-key="executorUsername" :project-id="scope.row.projectId" v-model="scope.row" @change="selectExecUserConfirm(scope.row,'executorUserid',$event)"></mdp-select-user-xm>
 								</template>
               </el-table-column>
         </el-table> 
@@ -321,43 +321,7 @@ export default {
     
     afterEditSubmit(row){
       Object.assign(this.editForm,row)
-    },
-    //查询时选择责任人
-    selectCreateUserConfirm(groupUsers,option) {
-      if(option && option.action==='createUserid'){
-        if (groupUsers && groupUsers.length > 0) {
-          var user= groupUsers[0];
-          this.editXmTaskSomeFields(option.data,option.action,user)
-        }  
-      }else if(option.action==='executorUserid'){ 
-        var user= groupUsers[0];
-        var params={}
-        var row=option.data;
-        params.taskId = row.id;
-        params.projectId=row.projectId 
-        params.projectName=row.projectName
-        params.taskName=row.name 
-        params.quoteStartTime=row.startTime
-        params.quoteEndTime=row.endTime
-        params.quoteAmount=row.budgetAt
-        params.quoteWorkload=row.budgetWorkload
-        params.userid=user.userid
-        params.username=user.username
-        addXmTaskExecuser(params).then(res=>{
-          var tips = res.data.tips
-          if(tips.isOk){
-            //this.searchXmTasks();
-            row.executorUserid=user.userid
-            row.executorUsername=user.username
-            row.exeUserids=user.userid
-            row.exeUsernames=user.username
-          }else{
-            this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:'error'})
-          }
-        })
-      }
-      
-    },
+    }, 
 			editXmTaskSomeFields(row,fieldName,$event){
 				var params={ids:[row.id]};
 				if(this.sels.length>0){
@@ -525,7 +489,38 @@ export default {
         this.addForm.parentTaskid=task.id
         this.addForm.parentTaskname=task.name
         this.selectParentTaskVisible=false
-      }
+      },
+      
+    //查询时选择责任人
+    selectExecUserConfirm(row,fieldName,users) {
+ 
+        var user= users[0];
+        var params={} 
+        params.taskId = row.id;
+        params.projectId=row.projectId 
+        params.projectName=row.projectName
+        params.taskName=row.name 
+        params.quoteStartTime=row.startTime
+        params.quoteEndTime=row.endTime
+        params.quoteAmount=row.budgetAt
+        params.quoteWorkload=row.budgetWorkload
+        params.userid=user.userid
+        params.username=user.username
+        addXmTaskExecuser(params).then(res=>{
+          var tips = res.data.tips
+          if(tips.isOk){ 
+            row.executorUserid=user.userid
+            row.executorUsername=user.username
+            row.exeUserids=user.userid
+            row.exeUsernames=user.username
+          }else{
+            row.executorUserid=this.editFormBak.executorUserid
+            row.executorUsername=this.editFormBak.executorUsername
+            this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:'error'})
+          }
+        }) 
+      
+    },
   }, //end methods
   components: {  
     XmTaskWorkloadRecordDialog,XmGroupDialog,'xm-task-edit':()=>import('../xmTask/XmTaskEdit'),XmPhaseSelect,MdpSelectUserXm,

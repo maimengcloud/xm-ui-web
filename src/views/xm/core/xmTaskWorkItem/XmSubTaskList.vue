@@ -68,7 +68,7 @@
                 show-overflow-tooltip
               >
 								<template slot-scope="scope"> 
-                  <mdp-select-user-xm userid-key="creatorUserid" username-key="creatorUsername" :project-id="scope.row.projectId" v-model="scope.row" @change="editXmTaskSomeFields(scope.row,'creatorUserid',$event)"></mdp-select-user-xm>
+                  <mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)" userid-key="creatorUserid" username-key="creatorUsername" :project-id="scope.row.projectId" v-model="scope.row" @change="editXmTaskSomeFields(scope.row,'creatorUserid',$event)"></mdp-select-user-xm>
 
 								</template>
               </el-table-column>
@@ -80,7 +80,7 @@
                 show-overflow-tooltip
               >
 								<template slot-scope="scope"> 
-                  <mdp-select-user-xm userid-key="executorUserid" username-key="executorUsername" :project-id="scope.row.projectId" v-model="scope.row" @change="editXmTaskSomeFields(scope.row,'executorUserid',$event)"></mdp-select-user-xm>
+                  <mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)" userid-key="executorUserid" username-key="executorUsername" :project-id="scope.row.projectId" v-model="scope.row" @change="selectExecUserConfirm(scope.row,'executorUserid',$event)"></mdp-select-user-xm>
 								</template>
               </el-table-column>
         </el-table> 
@@ -121,9 +121,7 @@
         @submit="onEditXmTaskSomeFields"
         @edit-fields="onEditXmTaskSomeFields"
       ></xm-task-edit>
-    </el-dialog>
- 			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="linkProjectId?{id:linkProjectId}:(parentXmTask&&parentXmTask.projectId?{id:parentXmTask.projectId}:null)" :xm-product="parentXmTask?{id:parentXmTask.productId}:null" @user-confirm="selectCreateUserConfirm">
-			</xm-group-dialog>  
+    </el-dialog>  
       <xm-task-workload-record-dialog ref="workloadRecordDialog" @submi="afterWorkloadSubmit" @edit-xm-task-some-fields="onEditXmTaskSomeFields" @submit="onWorkloadSubmit"></xm-task-workload-record-dialog>
     </el-row> 
 </template>
@@ -178,6 +176,41 @@ export default {
       
       //编辑xmTask界面初始化数据
       editForm: {
+        id: "",
+        name: "",
+        parentTaskid: "",
+        parentTaskname: "",
+        projectId: "",
+        projectName: "",
+        level: "",
+        sortLevel: "",
+        executorUserid: "",
+        executorUsername: "",
+        preTaskid: "",
+        preTaskname: "",
+        startTime: "",
+        endTime: "",
+        milestone: "",
+        description: "",
+        remarks: "",
+        createUserid: "",
+        createUsername: "",
+        createTime: "",
+        rate: "",
+        budgetAt: "",
+        budgetWorkload: "",
+        actAt: "",
+        actWorkload: "",
+        taskState: "",
+        taskType: "",
+        taskClass: "",
+        toTaskCenter: "",
+        actStartTime: "",
+        actEndTime: "",
+        uniInnerPrice:80,uniOutPrice:100,
+      },
+      
+      editFormBak: {
         id: "",
         name: "",
         parentTaskid: "",
@@ -296,16 +329,10 @@ export default {
     },
     
     //查询时选择责任人
-    selectCreateUserConfirm(groupUsers,option) {
-      if(option && option.action==='createUserid'){
-        if (groupUsers && groupUsers.length > 0) {
-          var user= groupUsers[0];
-          this.editXmTaskSomeFields(option.data,option.action,user)
-        }  
-      }else if(option.action==='executorUserid'){
-        var user= groupUsers[0];
-        var params={}
-        var row=option.data;
+    selectExecUserConfirm(row,fieldName,users) {
+ 
+        var user= users[0];
+        var params={} 
         params.taskId = row.id;
         params.projectId=row.projectId 
         params.projectName=row.projectName
@@ -318,17 +345,17 @@ export default {
         params.username=user.username
         addXmTaskExecuser(params).then(res=>{
           var tips = res.data.tips
-          if(tips.isOk){
-            //this.searchXmTasks();
+          if(tips.isOk){ 
             row.executorUserid=user.userid
             row.executorUsername=user.username
             row.exeUserids=user.userid
             row.exeUsernames=user.username
           }else{
+            row.executorUserid=this.editFormBak.executorUserid
+            row.executorUsername=this.editFormBak.executorUsername
             this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:'error'})
           }
-        })
-      }
+        }) 
       
     },
 			editXmTaskSomeFields(row,fieldName,$event){
@@ -415,7 +442,7 @@ export default {
       });
     },
     rowClick: function (row) {
-      this.editForm = row;
+      this.editForm = row; 
       this.editFormBak=Object.assign({},this.editForm)
       // this.$emit('row-click',row,);//  @row-click="rowClick"
     },
