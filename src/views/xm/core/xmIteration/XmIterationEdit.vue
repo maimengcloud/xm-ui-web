@@ -3,21 +3,15 @@
 		<el-row>
 			<!--新增界面 XmIteration 迭代定义--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm" label-position="left">  
-				<el-row class="label-font-color" v-if="opType!=='add'"> <span >迭代编号：{{editForm.id}} &nbsp;&nbsp;</span>归属产品：{{editForm.productName?editForm.productName:editForm.productId}}
-					 
-						
-				 
-				</el-row>
+
 				<el-form-item label="迭代名称" prop="iterationName">
 					<el-input v-model="editForm.iterationName" placeholder="迭代名称 选择上线日期后会自动生成名字"  @change="editSomeFields(editForm,'iterationName',$event)"></el-input>
-
+						<el-row class="label-font-color" v-if="opType!=='add'"> <span >迭代编号：{{editForm.id}} &nbsp;&nbsp;</span>归属产品：{{editForm.productName?editForm.productName:editForm.productId}}
+					</el-row>
 				</el-form-item> 
 				<el-form-item label="归属产品" prop="seqNo" v-if="opType==='add'">
 					<xm-product-select v-if=" (!xmProduct||!xmProduct.id)" ref="xmProductSelect" :auto-select="true" :link-project-id="selProject?selProject.id:null"   @row-click="onProductRowClick" @clear="onProductClearSelect"></xm-product-select>
 					{{ xmProduct && xmProduct.id?xmProduct.productName||xmProduct.id:''}}
-				</el-form-item> 
-				<el-form-item label="序号" prop="seqNo" v-if="opType!=='add'">
-					<el-input v-model="editForm.seqNo" placeholder="如1.0，2.0，1.1.1等"  @change="editSomeFields(editForm,'seqNo',$event)"></el-input>
 				</el-form-item> 
 				<el-row>
 					 

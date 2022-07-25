@@ -29,6 +29,8 @@
 						<el-form-item label="缺陷标题" prop="name">
 							<el-input   v-model="editForm.name" placeholder="缺陷标题"></el-input>
 								<span v-if="opType!=='add'">
+								<span class="label-font-color">缺陷编号：{{editForm.id}} </span>
+								<el-divider direction="vertical"></el-divider>
 								<span class="label-font-color">{{editForm.createUsername}} 于 {{editForm.createTime}} 创建 </span>
 								<el-divider direction="vertical"></el-divider>
 								<el-tag v-if="editForm.tagNames">{{editForm.tagNames?editForm.tagNames:''}} </el-tag>
