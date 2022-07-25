@@ -1,16 +1,35 @@
 <template>
 	<section>  
 		<el-row>
-			<el-form :model="editForm" label-width="120px"  :rules="editFormRules" ref="editForm" label-position="top"> 
+			<el-form :model="editForm" label-width="120px"  :rules="editFormRules" ref="editForm" label-position="left"> 
 				<el-row>
+					<el-col :span="6" class="padding border">
+
+							<el-form-item label="归属项目" prop="projectId">
+								{{editForm.projectId}}
+							</el-form-item>
+							<el-form-item label="归属产品" prop="productId">
+								{{editForm.productId}}
+							</el-form-item>
+							<el-form-item label="关联用例" prop="caseId">
+								<span>{{editForm.caseName?editForm.caseName:'无'}} <el-button type="text" @click="caseVisible=true">选择用例</el-button></span>
+							</el-form-item>
+							<el-form-item label="归属模块" prop="funcId">
+								<span>{{editForm.funcName?editForm.funcName:'无'}} <el-button type="text" @click="funcVisible=true">选择模块</el-button></span>
+							</el-form-item>
+							<el-form-item label="归属需求" prop="menuId"> 
+								<el-tag title="隶属需求" closable @click="showSelectMenu" @close.stop="handleCloseMenuTag">
+								<div class="icon" :style="{backgroundColor:   'rgb(79, 140, 255)' }">
+									<i :class="  'el-icon-document'  " ></i>
+								</div> {{editForm.menuName?editForm.menuName:"未关联需求"}}</el-tag> 
+							</el-form-item>
+						</el-col>
 					<el-col :span="18" class="border padding"> 
-						<el-form-item label="" prop="name" label-width="0px">
-														<el-row>
-							<span><span v-if="opType!=='add'" class="label-font-color">用例编号:</span>&nbsp;&nbsp;{{editForm.caseId}} &nbsp;&nbsp;</span><span class="label-font-color"><i class="el-icon-s-operation"></i>模块：</span><span>{{editForm.funcName}} <el-button type="text" @click="funcVisible=true">选择模块</el-button></span>
-							</el-row>
-							<my-input   v-model="editForm.name" placeholder="缺陷标题"></my-input>
+					
+						<el-form-item label="缺陷标题" prop="name">
+							<el-input   v-model="editForm.name" placeholder="缺陷标题"></el-input>
 								<span v-if="opType!=='add'">
-								<el-tag>{{editForm.createUsername}} 于 {{editForm.createTime}} 创建 </el-tag>
+								<span class="label-font-color">{{editForm.createUsername}} 于 {{editForm.createTime}} 创建 </span>
 								<el-divider direction="vertical"></el-divider>
 								<el-tag v-if="editForm.tagNames">{{editForm.tagNames?editForm.tagNames:''}} </el-tag>
 								<el-button type="text" icon="el-icon-plus" @click="tagSelectVisible=true">标签</el-button>
@@ -50,6 +69,16 @@
 								<el-row>
 								</el-row>
 								<el-tabs v-model="activateTabPaneName">
+								
+									<el-tab-pane label="缺陷描述" name="12">
+										<el-form-item label="" prop="description" label-width="0px">  
+												<vue-editor v-if="visible && activateTabPaneName=='12'" class="rich-context" :id="'description_'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.description"></vue-editor> 
+										</el-form-item>
+										<el-row style="float:right;">
+												<el-button @click.native="handleCancel">取消</el-button>
+												<el-button v-loading="load.edit"  v-if="editForm.description!==editFormBak.description" type="primary" @click.native="editXmQuestionSomeFields(editForm,'description',editForm.description)" :disabled="load.edit==true">保存</el-button> 
+										</el-row>
+									</el-tab-pane>
 									<el-tab-pane name="1" label="基本信息">
 										<el-row> 
 											
@@ -102,15 +131,6 @@
 										</el-row> 
 									</el-tab-pane>
 									
-									<el-tab-pane label="缺陷描述" name="12">
-										<el-form-item label="" prop="description" label-width="0px">  
-												<vue-editor v-if="visible && activateTabPaneName=='12'" class="rich-context" :id="'description_'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.description"></vue-editor> 
-										</el-form-item>
-										<el-row class="page-bottom">
-												<el-button @click.native="handleCancel">取消</el-button>
-												<el-button v-loading="load.edit"  v-if="editForm.description!==editFormBak.description" type="primary" @click.native="editXmQuestionSomeFields(editForm,'description',editForm.description)" :disabled="load.edit==true">保存</el-button> 
-										</el-row>
-									</el-tab-pane>
 									<el-tab-pane label="测试步骤" name="2">
 										<el-form-item label="" prop="opStep"  label-width="0px" v-if="stepConfigVisible==false">
 											<test-step-result v-model="editForm.opStep"></test-step-result> 
@@ -140,18 +160,7 @@
 									
 								</el-tabs> 
 						</el-col>
-						<el-col :span="6" class="padding border">
-							<el-form-item label="归属项目" prop="projectId">
-								{{editForm.projectId}}
-							</el-form-item>
-							
-							<el-form-item label="隶属需求" prop="menuId"> 
-								<el-tag title="隶属需求" closable @click="showSelectMenu" @close.stop="handleCloseMenuTag">
-								<div class="icon" :style="{backgroundColor:   'rgb(79, 140, 255)' }">
-									<i :class="  'el-icon-document'  " ></i>
-								</div> {{editForm.menuName?editForm.menuName:"未关联需求"}}</el-tag> 
-							</el-form-item>
-						</el-col>
+						
 					</el-row>
 					<el-row style="float:right;" v-if="opType==='add'">
 						<el-button type="primary" @click="saveSubmit">保存</el-button>
