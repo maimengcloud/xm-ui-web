@@ -19,14 +19,14 @@
           >
             <font v-if="xmIteration.iterationName.length >= 15"
               ><strong
-                >&nbsp;&nbsp;迭代:&nbsp;&nbsp;{{
+                >&nbsp;<el-avatar class="top-icon" icon="el-icon-connection" style="background-color:#67C23A"></el-avatar>&nbsp;迭代:&nbsp;&nbsp;{{
                   xmIteration.iterationName.substring(0, 15)
                 }}</strong
               ></font
             >
             <font type="danger" v-else
               ><strong
-                >&nbsp;&nbsp;迭代:&nbsp;&nbsp;{{ xmIteration.iterationName }}</strong
+                >&nbsp;<el-avatar class="top-icon" icon="el-icon-connection" style="background-color:#67C23A"></el-avatar>&nbsp;迭代:&nbsp;&nbsp;{{ xmIteration.iterationName }}</strong
               ></font
             >
           </span>
@@ -37,10 +37,10 @@
             :title="xmIteration.iterationName"
           >
             <font v-if="xmIteration.iterationName.length >= 15"
-              >&nbsp;&nbsp;迭代:&nbsp;{{ xmIteration.iterationName.substring(0, 15) }}</font
+              >&nbsp;<el-avatar class="top-icon" icon="el-icon-connection" style="background-color:##67C23A"></el-avatar>&nbsp;迭代:&nbsp;{{ xmIteration.iterationName.substring(0, 15) }}</font
             >
             <font type="danger" v-else
-              >&nbsp;&nbsp;迭代:&nbsp;{{ xmIteration.iterationName }}</font
+              >&nbsp;<el-avatar class="top-icon" icon="el-icon-connection" style="background-color:##67C23A"></el-avatar>&nbsp;迭代:&nbsp;{{ xmIteration.iterationName }}</font
             >
           </span>
         </el-menu-item>
