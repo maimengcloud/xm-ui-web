@@ -9,7 +9,14 @@
 		label-position="top"
         ref="editForm"
       >
-        <el-row  v-if="opType !== 'add'" class="padding-top label-font-color">
+       
+        <el-form-item label="产品名称" prop="productName"   v-if="opType !== 'add'">  
+				<el-input  
+					v-model="editForm.productName"
+					placeholder="产品名称"
+					@change="editSomeFields(editForm, 'productName', $event)"
+				></el-input>   
+         <el-row   class=" label-font-color">
           <span >产品代号:</span>
           {{ editForm.code }} &nbsp;&nbsp;<span  
             >产品编号:</span
@@ -20,12 +27,6 @@
             ><i class="el-icon-question"></i
           ></el-tooltip>
         </el-row>   
-        <el-form-item prop="productName" label-width="0px" v-if="opType !== 'add'" class="title-box">  
-				<el-input  
-					v-model="editForm.productName"
-					placeholder="产品名称"
-					@change="editSomeFields(editForm, 'productName', $event)"
-				></el-input>   
         </el-form-item>  
         <el-form-item label="产品名称" prop="productName" v-if="opType === 'add'">  
 				<el-input

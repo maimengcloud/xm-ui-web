@@ -3,16 +3,13 @@
 		<el-row>  
 				<el-form :model="editForm"  label-width="120px" label-position="left" :rules="editFormRules" ref="editForm" class="editForm"> 
 						 			
-							 <el-row v-if="opType!=='add'" class="padding-top label-font-color">
-								 项目代号:   {{editForm.code}} &nbsp;&nbsp; 项目编号:   {{editForm.id}} <el-tooltip content="项目代号用于签订合同等甲乙方共享的场景;项目编号为内部编号，用于内部流转,编号生成规则:项目代号+四位随机码 "><i class="el-icon-question"></i></el-tooltip>
-							</el-row>
-							<el-form-item  prop="name"  label-width="0px" class="title-box" v-if="opType!=='add'">  
+
+							<el-form-item  label="项目名称" prop="name" >  
 									<el-input   v-model="editForm.name" placeholder="请填写 项目名称" @change="editXmProjectSomeFields(editForm,'name',$event)"></el-input> 
-							</el-form-item>    
-							
-							<el-form-item  label="项目名称" prop="name" v-if="opType==='add'">  
-									<el-input   v-model="editForm.name" placeholder="请填写 项目名称" @change="editXmProjectSomeFields(editForm,'name',$event)"></el-input> 
-							</el-form-item>   
+									<el-row class="label-font-color" v-if="opType!=='add'">
+										项目代号:   {{editForm.code}} &nbsp;&nbsp; 项目编号:   {{editForm.id}} <el-tooltip content="项目代号用于签订合同等甲乙方共享的场景;项目编号为内部编号，用于内部流转,编号生成规则:项目代号+四位随机码 "><i class="el-icon-question"></i></el-tooltip>
+									</el-row>
+							</el-form-item>     
 							<el-form-item label="项目代号" prop="code" v-if="opType==='add'">
  
 								<el-input v-model="editForm.code" style="width:200px;" placeholder="项目代号，不可为空" > 
