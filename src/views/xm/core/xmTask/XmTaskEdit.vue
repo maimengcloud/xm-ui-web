@@ -141,7 +141,7 @@
  							</el-col>   
 							<el-col :span="8" v-if="editForm.ntype=='0'">  
 									<mdp-field-x v-if="editForm.crowd=='1'"  label="执行人" v-model="executorUsername">
-										<el-button slot="oper">去管理竞标人</el-button>
+										<el-button slot="oper" @click="activateTabPaneName='42'">去管理竞标人</el-button>
 									</mdp-field-x> 
 									<mdp-select-user-xm v-if="editForm.crowd!='1'" label="执行人" v-model="editForm" userid-key="executorUserid" username-key="executorUsername" @change="editXmTaskSomeFields(editForm,'executorUserid',$event)"></mdp-select-user-xm> 
  							</el-col>  
@@ -666,8 +666,7 @@
 				menuDetailVisible:false,
 				skillVisible: false,
 				taskSkills: [],
-				selectTaskVisible:false,
-				execUserVisible:false,
+				selectTaskVisible:false, 
 				groupUserSelectVisible:false,
 				execGroupUserSelectVisible:false,  
 				pickerOptions:  util.getPickerOptions('datarange'),
@@ -824,50 +823,8 @@
 						}
 					})
 				}
-			},
-			
-			showExecusers() {
-				this.execUserVisible = true;
-			},
-			
-			toJoin(){
-				if(this.editForm.exeUserids && this.editForm.exeUserids.indexOf(this.userInfo.userid)>=0){
-					this.$notify.success("你已经加入该任务了");
-					return;
-				}
-				this.execUserVisible=true;
-				this.$nextTick(()=>{
-					this.$refs.execuserMng.toJoin();
-
-				})
-			},
-			/**end 在上面加自定义方法**/
-			
-			showGroupUserSelect:function(){
-				this.groupUserSelectVisible=true;
-			},
-			groupUserSelectConfirm:function(users){
-				if( users==null || users.length==0 ){
-					this.groupUserSelectVisible=false; 
-					return
-				}   
-				this.editForm.createUserid=users[0].userid
-				this.editForm.createUsername=users[0].username 
-				this.groupUserSelectVisible=false; 
-				
-				this.editXmTaskSomeFields(this.editForm,'createUserid',users[0] );
-			},
-			
-			execGroupUserSelectConfirm:function(users){
-				if( users==null || users.length==0 ){
-					this.execGroupUserSelectVisible=false; 
-					return
-				} 
-				this.editForm.executorUserid=users[0].userid
-				this.editForm.executorUsername=users[0].username 
-				this.execGroupUserSelectVisible=false; 
-				this.editXmTaskSomeFields(this.editForm,'executorUserid',users[0]);
-			},
+			},  
+			/**end 在上面加自定义方法**/ 
 			
 			toMenu(){
 				this.menuDetailVisible=true
