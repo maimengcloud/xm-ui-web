@@ -4,7 +4,7 @@
            <div><el-tag   v-if="currentItem"  :type="currentItem.className" :closable="closable" :effect="effect">{{currentItem.name}}</el-tag></div> 
         </div>
         <div v-if="disabled!==true" class="field-oper" :class="{disabled:disabled===true,enabled:disabled!==true}">
-            <mdp-select-dict :dict="dict" v-model="myVal" @change="onChange" :clearable="closable"></mdp-select-dict>
+            <mdp-select-dict :dict="dict" v-model="myVal" @change="onChange" :clearable="closable" @visible-change="$emit('visible-change',$event)" @focus="$emit('focus',$event)" @blur="$emit('blur',$event)" @clear="$emit('blur',$event)" @click="$emit('click',$event)"></mdp-select-dict>
         </div>
     </div>
     

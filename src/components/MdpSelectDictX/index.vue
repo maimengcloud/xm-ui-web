@@ -22,7 +22,7 @@
     </div>
     <div class="field-oper" :class="{disabled:disabled===true,enabled:disabled!==true}">
       <slot name="oper">
-        <mdp-select-dict
+        <mdp-select-dict @visible-change="$emit('visible-change',$event)" @focus="$emit('focus',$event)" @blur="$emit('blur',$event)" @clear="$emit('blur',$event)" @click="$emit('click',$event)"
           v-if="disabled !== true"
           :dict="dict"
           ref="selectRef"
