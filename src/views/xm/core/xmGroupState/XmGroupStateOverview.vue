@@ -328,7 +328,7 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: ['测试案例', '任务', '缺陷']
+          data: ['测试用例', '任务', '缺陷']
         },
         series: [
           {
@@ -484,21 +484,21 @@ export default {
                     color: '#73C0DE'
                   }
                 },
-                name: '测试中案例'},
+                name: '测试中用例'},
               {value: this.xmGroupState.designCases,
                 itemStyle: {
                   normal:{
                     color: '#FAC858'
                   }
                 },
-                name: '设计中案例'},
+                name: '设计中用例'},
               {value: this.xmGroupState.finishCases,
                 itemStyle: {
                   normal:{
                     color: '#91CC75'
                   }
                 },
-                name: '完成案例'},
+                name: '完成用例'},
             ],
             emphasis: {
               itemStyle: {

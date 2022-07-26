@@ -17,10 +17,10 @@
 				<el-table-column prop="actWorkload" label="实际工作量从任务表汇总而来" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="actStaffNum" label="实际投入人员数" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="finishRate" label="进度" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="testCases" label="测试案例总数" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="execCases" label="测试中案例总数" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="designCases" label="设计中案例总数" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="finishCases" label="完成案例总数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="testCases" label="测试用例总数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="execCases" label="测试中用例总数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="designCases" label="设计中用例总数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="finishCases" label="完成用例总数" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="projectCnt" label="关联项目数" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="productCnt" label="关联产品数" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="menuCnt" label="关联故事数" min-width="80" show-overflow-tooltip></el-table-column>

@@ -207,7 +207,7 @@
 							</el-form-item>  
 						</el-tab-pane>
 						
-						<el-tab-pane label="测试案例" name="62">
+						<el-tab-pane label="测试用例" name="62">
 							 <xm-test-case-mng  v-if="activateTabPaneName=='62'" :xm-product="{id:editForm.productId,productName:editForm.productName}" :xm-menu="editForm"></xm-test-case-mng>
 						</el-tab-pane>
 						<el-tab-pane label="成本" name="3">

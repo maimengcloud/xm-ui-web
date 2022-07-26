@@ -138,16 +138,16 @@
 				<el-form-item label="外购人力总工作量-应该大于或等于计划外购人力总成本" prop="totalPlanOuserWorkload">
 					<el-input v-model="addForm.totalPlanOuserWorkload" placeholder="外购人力总工作量-应该大于或等于计划外购人力总成本"></el-input>
 				</el-form-item> 
-				<el-form-item label="测试案例总数" prop="testCases">
+				<el-form-item label="测试用例总数" prop="testCases">
 					<el-input-number v-model="addForm.testCases" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
-				<el-form-item label="测试中案例总数" prop="execCases">
+				<el-form-item label="测试中用例总数" prop="execCases">
 					<el-input-number v-model="addForm.execCases" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
-				<el-form-item label="设计中案例总数" prop="designCases">
+				<el-form-item label="设计中用例总数" prop="designCases">
 					<el-input-number v-model="addForm.designCases" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
-				<el-form-item label="完成案例总数" prop="finishCases">
+				<el-form-item label="完成用例总数" prop="finishCases">
 					<el-input-number v-model="addForm.finishCases" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
 				<el-form-item label="迭代数" prop="iterationCnt">

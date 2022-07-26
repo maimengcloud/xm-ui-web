@@ -55,10 +55,10 @@
 				<el-table-column prop="totalNeedPayUserCnt" label="待付款总人数" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="totalPlanIuserWorkload" label="内部人力总工作量-应该大于或等于阶段计划内部人力总成本" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="totalPlanOuserWorkload" label="外购人力总工作量-应该大于或等于阶段计划外购人力总成本" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="testCases" label="测试案例总数" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="execCases" label="测试中案例总数" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="designCases" label="设计中案例总数" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="finishCases" label="完成案例总数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="testCases" label="测试用例总数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="execCases" label="测试中用例总数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="designCases" label="设计中用例总数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="finishCases" label="完成用例总数" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="iterationCnt" label="迭代数" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="productCnt" label="产品数" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="menuCnt" label="故事数" min-width="80" show-overflow-tooltip></el-table-column>

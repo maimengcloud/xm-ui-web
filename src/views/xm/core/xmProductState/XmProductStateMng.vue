@@ -38,10 +38,10 @@
 				<el-table-column prop="resolvedBugs" label="已解决bugs总数" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="productId" label="产品编号" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="productName" label="产品名称" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="testCases" label="测试案例总数" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="execCases" label="测试中案例总数" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="designCases" label="设计中案例总数" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="finishCases" label="完成案例总数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="testCases" label="测试用例总数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="execCases" label="测试中用例总数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="designCases" label="设计中用例总数" min-width="80" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="finishCases" label="完成用例总数" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="projectCnt" label="关联项目数" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="iterationCnt" label="关联迭代数" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="taskCnt" label="任务总数" min-width="80" show-overflow-tooltip></el-table-column>

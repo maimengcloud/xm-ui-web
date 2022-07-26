@@ -86,16 +86,16 @@
 				<el-form-item label="产品名称" prop="productName">
 					<el-input v-model="editForm.productName" placeholder="产品名称"></el-input>
 				</el-form-item> 
-				<el-form-item label="测试案例总数" prop="testCases">
+				<el-form-item label="测试用例总数" prop="testCases">
 					<el-input-number v-model="editForm.testCases" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
-				<el-form-item label="测试中案例总数" prop="execCases">
+				<el-form-item label="测试中用例总数" prop="execCases">
 					<el-input-number v-model="editForm.execCases" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
-				<el-form-item label="设计中案例总数" prop="designCases">
+				<el-form-item label="设计中用例总数" prop="designCases">
 					<el-input-number v-model="editForm.designCases" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
-				<el-form-item label="完成案例总数" prop="finishCases">
+				<el-form-item label="完成用例总数" prop="finishCases">
 					<el-input-number v-model="editForm.finishCases" :min="0" :max="200"></el-input-number>
 				</el-form-item> 
 				<el-form-item label="关联项目数" prop="projectCnt">

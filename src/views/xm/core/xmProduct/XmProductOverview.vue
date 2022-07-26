@@ -210,7 +210,7 @@
         <el-col :span="8" >
           <el-card class="box-card" style="height:425px">
             <div slot="header" class="clearfix">
-              <span>案例情况</span>
+              <span>用例情况</span>
             </div>
             <div>
               <div id="casePie" :style="{width: '100%', height: '410px'}"></div>
@@ -546,21 +546,21 @@ export default {
                     color: '#73C0DE'
                   }
                 },
-                name: '测试中案例'},
+                name: '测试中用例'},
               {value: this.xmProduct.designCases,
                 itemStyle: {
                   normal:{
                     color: '#FAC858'
                   }
                 },
-                name: '设计中案例'},
+                name: '设计中用例'},
               {value: this.xmProduct.finishCases,
                 itemStyle: {
                   normal:{
                     color: '#91CC75'
                   }
                 },
-                name: '完成案例'},
+                name: '完成用例'},
             ],
             emphasis: {
               itemStyle: {
