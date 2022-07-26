@@ -137,7 +137,7 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//ä¿®æ
 		    ...mapGetters([ 'userInfo'  ]),
 
 		},
-		props:['xmTestCase','visible','opType','xmTestCasedb'],
+		props:['xmTestCase','visible','opType','xmTestCasedb','xmProduct','xmMenu'],
 
 		watch: {
 	      'xmTestCase':function( xmTestCase ) {
@@ -227,6 +227,18 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//ä¿®æ
 						this.editForm.productName=this.xmTestCasedb.productName
 						this.editForm.casedbId=this.xmTestCasedb.id
 						this.editForm.casedbName=this.xmTestCasedb.name
+					}
+					
+					if(this.xmProduct && this.xmProduct.id){
+						this.editForm.productId=this.xmProduct.id
+						this.editForm.productName=this.xmProduct.productName  
+					}
+					
+					if(this.xmMenu && this.xmMenu.menuId){
+						this.editForm.productId=this.xmMenu.productId
+						this.editForm.productName=this.xmMenu.productName
+						this.editForm.menuId=this.xmMenu.menuId
+						this.editForm.menuName=this.xmMenu.menuName
 					}
 					this.editForm.id=null
 					

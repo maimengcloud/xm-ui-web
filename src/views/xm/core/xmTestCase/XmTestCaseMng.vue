@@ -67,7 +67,7 @@
 
 			<!--新增 XmTestCase 测试用例界面-->
 			<el-dialog title="新增测试用例" :visible.sync="addFormVisible"  width="90%" top="20px"  append-to-body  :close-on-click-modal="false">
-			    <xm-test-case-edit op-type="add" :xm-test-casedb="xmTestCasedb" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-test-case-edit>
+			    <xm-test-case-edit op-type="add" :xm-menu="xmMenu" :xm-product="xmProduct" :xm-test-casedb="xmTestCasedb" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-test-case-edit>
 			</el-dialog>
 	    </el-row>
 	</section>
@@ -87,7 +87,7 @@ export default {
     components: {
         XmTestCaseEdit,XmFuncSelect
     },
-    props:['visible','xmTestCasedb','scene'],
+    props:['visible','xmTestCasedb','scene','xmMenu','xmProduct'],
     computed: {
         ...mapGetters(['userInfo']),
 
@@ -197,6 +197,13 @@ export default {
                 params.casedbId=this.xmTestCasedb.id
             }
 
+            if(this.xmProduct && this.xmProduct.id){
+                params.productId=this.xmProduct.id
+            }
+            
+            if(this.xmMenu && this.xmMenu.menuId){
+                params.menuId=this.xmMenu.menuId
+            }
             this.load.list = true;
             listXmTestCase(params).then((res) => {
                 var tips=res.data.tips;
