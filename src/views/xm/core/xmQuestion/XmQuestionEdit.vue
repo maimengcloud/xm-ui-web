@@ -181,6 +181,10 @@
 			<el-dialog append-to-body title="模块选择"  :visible.sync="funcVisible" width="60%" top="20px"  :close-on-click-modal="false">
 				<xm-func-select  @row-click="onFuncSelected" :xm-product="{id:editForm.productId}"></xm-func-select>
 			</el-dialog>
+			
+			<el-dialog append-to-body title="执行用例选择"  :visible.sync="caseVisible" width="80%" top="20px"  :close-on-click-modal="false">
+				<xm-test-plan-case-mng :select="true" :visible="caseVisible" :xm-product="editForm.productId?{id:editForm.productId,productName:editForm.productName}:null" @select="onTestPlanCaseSelected" ></xm-test-plan-case-mng>
+			</el-dialog>
 	</section>
 </template>
 
@@ -308,6 +312,7 @@
 				activateTabPaneName:'12',
 				funcVisible:false,
 				stepConfigVisible:false,
+				caseVisible:false,
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data
@@ -518,6 +523,8 @@
 					params.productId=$event.productId
 					params.funcId=$event.id
 					params.funcName=$event.name 
+				}else if(fieldName==='caseId'){
+					 params=Object.assign(params,$event)
 				}else{
 					params[fieldName]=$event
 				}
@@ -613,12 +620,32 @@
 
 				}
 				this.editFormBak={...this.editForm}
+			},
+			onTestPlanCaseSelected(xmTestPlanCase){ 
+				var params={};
+				params.planId=xmTestPlanCase.planId
+				params.productId=xmTestPlanCase.productId
+				params.productName=xmTestPlanCase.productName
+				params.caseId=xmTestPlanCase.caseId
+				params.caseName=xmTestPlanCase.caseName
+				params.casedbId=xmTestPlanCase.casedbId  
+				params.funcId=xmTestPlanCase.funcId
+				params.funcName=xmTestPlanCase.funcName 
+				params.menuId=xmTestPlanCase.menuId
+				params.menuName=xmTestPlanCase.menuName  
+				params.opStep=xmTestPlanCase.testStep
+				params.name=xmTestPlanCase.caseName
+				params.projectId=xmTestPlanCase.projectId 
+				Object.assign(this.editForm,params)
+				this.editXmQuestionSomeFields(this.editForm,"caseId",params)
+				this.caseVisible=false;
 			}
 		},//end method
 		components: {
 				//在下面添加其它组件 'xm-question-edit':XmQuestionEdit
 				'upload': AttachmentUpload,XmGroupMng,VueEditor,XmTaskList,xmMenuSelect,XmQuestionHandleMng,TagMng,XmProjectSelect,
 			XmMyDoFocus,XmFuncSelect,MdpSelectUserXm,TestStepConfig,TestStepResult,
+			xmTestPlanCaseMng:()=>import('../xmTestPlanCase/XmTestPlanCaseMng')
 		},
 		mounted() { 
 			this.initData();

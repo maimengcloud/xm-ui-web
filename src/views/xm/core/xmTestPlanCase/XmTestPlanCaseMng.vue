@@ -26,11 +26,6 @@
                         -->
                         <el-table-column prop="caseId" label="用例编号" width="120" show-overflow-tooltip  fixed="left"></el-table-column>	 
                         
-                        <el-table-column prop="execStatus" label="执行结果" width="120" show-overflow-tooltip>
-                            <template slot-scope="scope"> 
-                                <mdp-select-dict-tag :dict="dicts['testStepTcode']" v-model="scope.row.execStatus" effect="dark" @change="editSomeFields(scope.row,'execStatus',$event)"></mdp-select-dict-tag> 
-                            </template>
-                        </el-table-column>
                         <el-table-column prop="caseName" label="用例名称" min-width="250">
                             <template slot-scope="scope">
                                 <span> <el-link @click="showEdit( scope.row,scope.$index)">{{scope.row.caseName}} </el-link></span>
@@ -38,22 +33,37 @@
                                     <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" circle plain size="mini"></el-button> 
                                 </span>
                             </template>
-                        </el-table-column>	 
-                        <el-table-column prop="execUsername" label="执行人姓名" min-width="120" >
-                            <template slot-scope="scope">
-                                <span> {{scope.row.execUsername}} </span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="priority" label="优先级" width="120" >
-                            <template slot-scope="scope">
-                                <mdp-select-dict-tag :dict="dicts['priority']" v-model="scope.row.priority" @change="editSomeFields(scope.row,'priority',$event)"></mdp-select-dict-tag>  
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="remark" label="执行备注" min-width="150" show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                <span> {{scope.row.remark}} </span>
-                            </template>
-                        </el-table-column>  
+                        </el-table-column>	
+                        <template v-if="select!==true"> 
+                            <el-table-column prop="execStatus" label="执行结果" width="120" show-overflow-tooltip>
+                                <template slot-scope="scope"> 
+                                    <mdp-select-dict-tag :dict="dicts['testStepTcode']" v-model="scope.row.execStatus" effect="dark" @change="editSomeFields(scope.row,'execStatus',$event)"></mdp-select-dict-tag> 
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="execUsername" label="执行人姓名" min-width="120" >
+                                <template slot-scope="scope">
+                                    <span> {{scope.row.execUsername}} </span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="priority" label="优先级" width="120" >
+                                <template slot-scope="scope">
+                                    <mdp-select-dict-tag :dict="dicts['priority']" v-model="scope.row.priority" @change="editSomeFields(scope.row,'priority',$event)"></mdp-select-dict-tag>  
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="remark" label="执行备注" min-width="150" show-overflow-tooltip>
+                                <template slot-scope="scope">
+                                    <span> {{scope.row.remark}} </span>
+                                </template>
+                            </el-table-column>  
+                        </template>  
+                         <template v-if="select==true"> 
+                         
+                            <el-table-column  label="操作" min-width="150">
+                                <template slot-scope="scope">
+                                    <el-button type="primary" @click="$emit('select',scope.row)">选择</el-button>
+                                </template>
+                            </el-table-column>  
+                         </template>
                     </el-table>
                     <el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
                 </el-row>
@@ -88,10 +98,13 @@ export default {
     components: {
         XmTestPlanCaseEdit,XmTestCaseSelect,XmFuncSelect,
     },
-    props:['visible','xmTestPlan','xmTestCasedb','xmTestCase'],
+    props:['visible','xmTestPlan','xmTestCasedb','xmTestCase','xmProduct','select'],
     computed: {
         ...mapGetters(['userInfo']),
         xmProductCpd(){
+            if(this.xmProduct&& this.xmProduct.id){
+                return this.xmProduct
+            }
             if(this.xmTestCasedb && this.xmTestCasedb.id){
                 return {id:this.xmTestCasedb.productId,productName:this.xmTestCasedb.productName}
             }
