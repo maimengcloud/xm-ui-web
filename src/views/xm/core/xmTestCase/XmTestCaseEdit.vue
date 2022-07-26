@@ -114,7 +114,7 @@
 		</el-dialog>
 		
 		<el-dialog title="选择测试库" :visible.sync="testCasedbVisible" :with-header="false" width="90%" top="20px"    append-to-body   :close-on-click-modal="false" >
-			<xm-test-casedb-mng v-if="testCasedbVisible" :select="true" :xm-product="xmProduct?xmProduct:(xmMenu?{id:xmMenu.productId,productName:xmMenu.productName}:null)"  :visible="testCasedbVisible" @cancel="testCasedbVisible=false" @select="onTestCasedbSelect"></xm-test-casedb-mng>
+			<xm-test-casedb-mng v-if="testCasedbVisible" :select="true" :xm-product="xmProduct&&xmProduct.id?xmProduct:(xmMenu&&xmMenu.menuId?{id:xmMenu.productId,productName:xmMenu.productName}:null)"  :visible="testCasedbVisible" @cancel="testCasedbVisible=false" @select="onTestCasedbSelect"></xm-test-casedb-mng>
 		</el-dialog>
 	</section>
 </template>

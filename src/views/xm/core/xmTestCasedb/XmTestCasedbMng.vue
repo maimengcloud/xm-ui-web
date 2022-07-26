@@ -22,8 +22,10 @@
 				-->
  				<el-table-column prop="name" label="用例库名称" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-				        <span><el-link @click="goCasedbInfo(scope.row)">{{scope.row.name}} </el-link> </span>
-                        <span class="tool-bar">
+				        <span v-if="select!==true"><el-link @click="goCasedbInfo(scope.row)">{{scope.row.name}} </el-link> </span>
+                        <span v-else> {{scope.row.name}}  </span>
+                        <span class="tool-bar"> 
+                            <el-button type="warning" @click="goCasedbInfo(scope.row)" icon="el-icon-s-data"  plain circle title="视图"></el-button>  
                             <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"  plain circle></el-button>  
                         </span>
                     </template>

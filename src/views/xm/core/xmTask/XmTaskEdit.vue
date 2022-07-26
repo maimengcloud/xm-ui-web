@@ -283,7 +283,8 @@
 							 <xm-sub-work-item v-if="activateTabPaneName=='4'" :parent-xm-task="editForm"  @sub-work-item-num="setSubWorkItemNum" @add-sub-task="onAddSubTask"></xm-sub-work-item>
 					</el-tab-pane>
 					<el-tab-pane label="缺陷" name="41" v-if="editForm.ntype!='1'">  
-						<xm-question-for-task v-if="activateTabPaneName=='41'"  :xm-task="editForm" :sel-project="xmProject"></xm-question-for-task>
+						<xm-question-mng v-if="activateTabPaneName=='41' && editForm.menuId" :xm-product="editForm.productId?{id:editForm.productId,productName:editForm.productName}:null" :xm-menu="editForm.menuId?{menuId:editForm.menuId,menuName:editForm.menuName}:null" :sel-project="xmProject"></xm-question-mng>
+						<div v-else-if="activateTabPaneName=='41'">缺陷由用户故事关联得出，请先关联用户故事. <el-button @click="activateTabPaneName=3">去关联</el-button></div>
 					</el-tab-pane>
 					
 					<el-tab-pane label="执行人" name="42" v-if="editForm.ntype!='1'"> 
@@ -565,7 +566,7 @@
 	import XmRecord from '../xmRecord/XmRecord' 
 	import MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm'
 	import XmSubWorkItem from "@/views/xm/core/xmTaskWorkItem/XmSubWorkItem";
-	import xmQuestionForTask from "@/views/xm/core/xmQuestion/XmQuestionForTask";
+	import xmQuestionMng from "@/views/xm/core/xmQuestion/XmQuestionMng";
 	import XmTaskWorkloadRecord from "../xmTaskWorkload/XmTaskWorkloadRecord"
 	import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 	import XmMyDoFocus from '@/views/myWork/my/components/DoFocus';
@@ -996,7 +997,7 @@
 		components: { 
  			xmSkillMng,
 			skillMng,xmMenuSelect,XmTaskList,XmExecuserMng,XmGroupSelect,XmMenuRichDetail,TagMng,XmSubWorkItem,XmTaskWorkloadRecord,XmMenuEdit,
-			XmRecord,xmQuestionForTask,XmMyDoFocus,XmTaskExecuserForTask,XmPhaseSelect,ToPay,MdpSelectUserXm,'xm-task-edit':()=>import("./XmTaskDetail"),
+			XmRecord,xmQuestionMng,XmMyDoFocus,XmTaskExecuserForTask,XmPhaseSelect,ToPay,MdpSelectUserXm,'xm-task-edit':()=>import("./XmTaskDetail"),
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},
 		mounted() { 

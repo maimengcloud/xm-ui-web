@@ -228,7 +228,7 @@
 				 
 			}
 		},
-		props:['xmQuestion','visible',"selProject",'opType','xmProduct','xmTestCase','xmTestPlanCase'],
+		props:['xmQuestion','visible',"selProject",'opType','xmProduct','xmTestCase','xmTestPlanCase','xmMenu'],
 		watch: {
 	      'xmQuestion':function( xmQuestion ) {
 	        this.editForm = {...xmQuestion};
@@ -596,6 +596,18 @@
 						this.editForm.opStep=this.xmTestPlanCase.testStep
 						this.editForm.name=this.xmTestPlanCase.caseName
 						this.editForm.projectId=this.xmTestPlanCase.projectId
+					}
+					if(this.xmMenu && this.xmMenu.menuId){
+						this.editForm.menuId=this.xmMenu.menuId
+						this.editForm.menuName=this.xmMenu.menuName
+						if(this.xmMenu.productId){
+							this.editForm.productId=this.xmMenu.id
+							this.editForm.productName=this.xmMenu.productName
+						}
+						if(this.xmMenu.funcId){ 
+							this.editForm.funcId=this.xmTestPlanCase.funcId
+							this.editForm.funcName=this.xmTestPlanCase.funcName 
+						}
 					}
 				}else{
 
