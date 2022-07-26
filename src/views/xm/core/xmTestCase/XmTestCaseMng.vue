@@ -2,7 +2,7 @@
 	<section>
         <el-row>
             <el-col :span="6">
-                <xm-func-select v-if="xmTestCasedb && xmTestCasedb.productId" class="padding-right padding-left" :xm-product="{id:xmTestCasedb.productId,productName:xmTestCasedb.productName}" @row-click="onXmFuncRowClick"> 
+                <xm-func-select v-if="xmProductCpd" class="padding-right padding-left" :xm-product="xmProductCpd" @row-click="onXmFuncRowClick"> 
                 </xm-func-select>
             </el-col>
             <el-col :span="18">
@@ -90,6 +90,17 @@ export default {
     props:['visible','xmTestCasedb','scene','xmMenu','xmProduct'],
     computed: {
         ...mapGetters(['userInfo']),
+        xmProductCpd(){
+            if(this.xmProduct&& this.xmProduct.id){
+                return this.xmProduct
+            }
+            if(this.xmTestCasedb && this.xmTestCasedb.id){
+                return {id:this.xmTestCasedb.productId,productName:this.xmTestCasedb.productName}
+            } 
+            if(this.xmMenu && this.xmMenu.id){
+                return {id:this.xmMenu.productId,productName:this.xmMenu.productName}
+            }
+        }
 
     },
     watch:{
