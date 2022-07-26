@@ -255,8 +255,8 @@
 							</el-col>
 							<el-col :span="12"> 
 								<el-form-item  label="用户故事" prop="menuId" id="menuInfo" v-if="editForm.ntype!='1'"> 
-									{{editForm.menuName}} &nbsp;&nbsp;&nbsp; <el-link @click="menuVisible=true" type="primary">{{editForm.menuName?'更改':'设置'}}</el-link>&nbsp;&nbsp;&nbsp;
-									<el-link v-if="editForm.menuName" @click="toMenu" type="primary">查看需求</el-link>
+									{{editForm.menuName?editForm.menuName:(editForm.menuId?editForm.menuId:'')}} &nbsp;&nbsp;&nbsp; <el-link  @click="menuVisible=true" type="primary">{{editForm.menuName?'更改':'设置'}}</el-link>&nbsp;&nbsp;&nbsp;
+									<el-link v-if="editForm.menuId" @click="toMenu" type="primary">查看需求</el-link>
 								</el-form-item> 
 							</el-col> 
 						</el-row>
