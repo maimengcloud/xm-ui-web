@@ -33,7 +33,7 @@
                 <template v-if="select!==true">
                     <el-table-column prop="productName" label="产品名称" min-width="120" show-overflow-tooltip>
                         <template slot-scope="scope">
-                            <span> {{scope.row.productName}} </span>
+                            <span> {{scope.row.xmProductName}} </span>
                         </template>
                     </el-table-column> 
                     <el-table-column prop="cusername" label="创建人" min-width="120" show-overflow-tooltip>
@@ -66,7 +66,7 @@
 
 			<!--新增 XmTestCasedb 测试用例库界面-->
 			<el-drawer title="新增测试用例库" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
-			    <xm-test-casedb-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-test-casedb-edit>
+			    <xm-test-casedb-edit op-type="add" :xm-product="filters.xmProduct" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-test-casedb-edit>
 			</el-drawer>
 	    </el-row>
 	</section>
@@ -102,7 +102,8 @@ export default {
     data() {
         return {
             filters: {
-                key: ''
+                key: '',
+                xmProduct:null,
             },
             xmTestCasedbs: [],//查询结果
             pageInfo:{//分页数据
@@ -182,8 +183,8 @@ export default {
             if(this.filters.key){
                 params.key=this.filters.key
             }
-            if(this.filters.product && this.filters.product.id){
-                params.productId=this.filters.product.id
+            if(this.filters.xmProduct && this.filters.xmProduct.id){
+                params.xmProductId=this.filters.xmProduct.id
             }
 
             this.load.list = true;
@@ -294,15 +295,15 @@ export default {
             this.$emit('row-click',row, event, column);//  @row-click="rowClick"
         },
         initData: function(){
-            this.filters.product=this.xmProduct
+            this.filters.xmProduct=this.xmProduct
         },
 
         clearProduct(){
-            this.filters.product=null;
+            this.filters.xmProduct=null;
             this.searchXmTestCasedbs();
         }, 
         onProductSelected(product){
-            this.filters.product=product; 
+            this.filters.xmProduct=product; 
             this.searchXmTestCasedbs();
         },
         goCasedbInfo(row){

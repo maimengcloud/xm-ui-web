@@ -315,7 +315,8 @@ export default {
             
             if(this.scene){
                 this.filters.caseStatus='1'
-            }
+            } 
+            this.filters.xmProduct=this.xmProduct 
         },
         onXmFuncRowClick(row){
             this.filters.xmFunc=row
