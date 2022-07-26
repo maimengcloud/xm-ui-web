@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container border padding">
+	<section class="border padding">
 		<el-row>
             <xm-product-select v-if="!xmProduct" style="display:inline;" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="clearProduct"></xm-product-select>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
@@ -9,7 +9,7 @@
 			    <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete" plain></el-button>
 		    </span>
 		</el-row>
-		<el-row class="padding-top">
+		<el-row>
 			<!--列表 XmTestCasedb 测试用例库-->
 			<el-table ref="xmTestCasedbTable" :data="xmTestCasedbs" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column>
@@ -23,29 +23,36 @@
  				<el-table-column prop="name" label="用例库名称" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
 				        <span><el-link @click="goCasedbInfo(scope.row)">{{scope.row.name}} </el-link> </span>
+                        <span class="tool-bar">
+                            <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"  plain circle></el-button>  
+                        </span>
                     </template>
 				</el-table-column>
-				<el-table-column prop="productName" label="产品名称" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.productName}} </span>
-                    </template>
-				</el-table-column> 
-				<el-table-column prop="cusername" label="创建人" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.cusername}} </span>
-                    </template>
-				</el-table-column>
-				<el-table-column prop="ctime" label="创建日期" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.ctime}} </span>
-                    </template>
-				</el-table-column>   
-				<el-table-column label="操作" width="180" fixed="right">
-				    <template scope="scope">
-				        <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"  plain></el-button>
-				        <el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"  plain></el-button>
-				    </template>
-				</el-table-column>
+                <template v-if="select!==true">
+                    <el-table-column prop="productName" label="产品名称" min-width="120" show-overflow-tooltip>
+                        <template slot-scope="scope">
+                            <span> {{scope.row.productName}} </span>
+                        </template>
+                    </el-table-column> 
+                    <el-table-column prop="cusername" label="创建人" min-width="120" show-overflow-tooltip>
+                        <template slot-scope="scope">
+                            <span> {{scope.row.cusername}} </span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="ctime" label="创建日期" min-width="120" show-overflow-tooltip>
+                        <template slot-scope="scope">
+                            <span> {{scope.row.ctime}} </span>
+                        </template>
+                    </el-table-column>    
+                </template>
+				<template v-else> 
+                    <el-table-column label="操作" width="180" fixed="right">
+                        <template scope="scope">
+                            <el-button type="primary" @click="$emit('select',scope.row)">选择</el-button> 
+                        </template>
+				    </el-table-column>
+                </template>
+				
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 		</el-row>
@@ -77,7 +84,7 @@ export default {
     components: {
         XmTestCasedbEdit,XmProductSelect,
     },
-    props:['visible','xmProduct','selProject'],
+    props:['visible','xmProduct','selProject','select'],
     computed: {
         ...mapGetters(['userInfo']),
 

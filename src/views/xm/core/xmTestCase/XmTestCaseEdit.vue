@@ -8,6 +8,7 @@
 					
 						<el-form-item label="测试库" prop="casedbName">
 							{{editForm.casedbName?editForm.casedbName:editForm.casedbId }}  
+							<el-button type="text" @click="testCasedbVisible=true" v-if="opType==='add' && (!xmTestCasedb||!xmTestCasedb.id)">选择测试库</el-button>
 						</el-form-item> 
 						
 						<el-form-item label="产品" prop="productId">
@@ -111,6 +112,10 @@
 		<el-dialog title="需求详情" :visible.sync="menuFormVisible" :with-header="false" width="90%" top="20px"    append-to-body   :close-on-click-modal="false" >
 			<xm-menu-edit v-if="menuFormVisible" :reload="true" :xm-menu="{menuId:editForm.menuId}"  :visible="menuFormVisible" @cancel="menuFormVisible=false"></xm-menu-edit>
 		</el-dialog>
+		
+		<el-dialog title="选择测试库" :visible.sync="testCasedbVisible" :with-header="false" width="90%" top="20px"    append-to-body   :close-on-click-modal="false" >
+			<xm-test-casedb-mng v-if="testCasedbVisible" :select="true" :xm-product="xmProduct?xmProduct:(xmMenu?{id:xmMenu.productId,productName:xmMenu.productName}:null)"  :visible="testCasedbVisible" @cancel="testCasedbVisible=false" @select="onTestCasedbSelect"></xm-test-casedb-mng>
+		</el-dialog>
 	</section>
 </template>
 
@@ -131,7 +136,9 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 	export default {
 	    name:'xmTestCaseEdit',
 	    components: {
-			XmMenuSelect,XmFuncSelect,MyInput,TestStepConfig,XmQuestionMng,XmTestPlanCaseMng,MdpSelectUserXm,XmMenuEdit:()=>import("../xmMenu/XmMenuDetail")
+			XmMenuSelect,XmFuncSelect,MyInput,TestStepConfig,XmQuestionMng,XmTestPlanCaseMng,MdpSelectUserXm,
+			XmMenuEdit:()=>import("../xmMenu/XmMenuDetail"),
+			XmTestCasedbMng:()=>import('../xmTestCasedb/XmTestCasedbMng')
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
@@ -174,6 +181,7 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 				menuFormVisible:false,
 				funcVisible:false,
 				activeTab:'1',
+				testCasedbVisible:false,
 			}//end return
 		},//end data
 		methods: {
@@ -294,6 +302,16 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 				if(this.opType!=='add'){
 					this.editSomeFields(this.editForm,'funcId',row)
 				}
+			},
+			onTestCasedbSelect(testCasedb){
+				this.editForm.casedbId=testCasedb.id
+				this.editForm.casedbName=testCasedb.Name
+				if(testCasedb.productId){
+					this.editForm.productId=testCasedb.productId
+					this.editForm.productName=testCasedb.productName
+				}
+				this.testCasedbVisible=false;
+				
 			}
 		},//end method
 		mounted() {
