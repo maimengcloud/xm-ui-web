@@ -1,8 +1,6 @@
 <template>
-	<section  class="page-container padding">
-	    <el-row class="page-header">
-	    </el-row>
-		<el-row class="page-main" ref="table">
+	<section  class="padding"> 
+		<el-row  ref="table">
 		<!--编辑界面 XmWorkload 工时登记表-->
 			<el-form :model="editForm"  label-width="120px"  :rules="editFormRules" ref="editFormRef">
 				<el-row>
@@ -84,7 +82,7 @@
 				</el-form-item>
 			</el-form>
 		</el-row>
-		<el-row   class="page-bottom bottom-fixed">
+		<el-row style="float:right">
 		    <el-button @click.native="handleCancel">取消</el-button>
             <el-button v-loading="load.edit" type="primary" @click.native="saveSubmit" :disabled="load.edit==true">提交</el-button>
 		</el-row>
@@ -130,7 +128,8 @@
 			},
 
 		},
-		props:['xmTask','xmWorkload','visible','opType'],
+		props:['xmTask','xmWorkload','visible','opType','bizType'/*报工类型1-任务，2-缺陷，3-测试用例设计，4-测试执行 */,
+		'xmMenu','xmTestCase','xmQuestion','xmTestPlanCase'],
 
 		watch: {
 	      'xmWorkload':function( xmWorkload ) {
@@ -231,14 +230,29 @@
                 if(this.opType=='edit'){
 
                 }else{
-					if(this.xmTask){
-						this.editForm.taskId=this.xmTask.id
-						this.editForm.ttype=this.xmTask.taskType 
-					}
+					this.editForm.bizType=this.bizType 
 					this.editForm.bizDate=util.getDate();
 					if(!this.editForm.ttype){
 						this.editForm.ttype="4"
-					}
+					} 
+					if( this.xmTask && this.xmTask.id){
+						this.editForm.taskId=this.xmTask.id 
+						this.editForm.ttype=this.xmTask.taskType 
+					} 
+					if( this.xmMenu && this.xmMenu.menuId){
+						this.editForm.menuId=this.xmMenu.menuId
+					} 
+					if( this.xmQuestion && this.xmQuestion.id){
+						this.editForm.bugId=this.xmQuestion.id
+					} 
+					if( this.xmTestCase && this.xmTestCase.id){
+						this.editForm.caseId=this.xmTestCase.id
+					} 
+					if( this.xmTestPlanCase && this.xmTestPlanCase.planId){
+						this.editForm.planId=this.xmTestPlanCase.planId
+						this.editForm.caseId=this.xmTestPlanCase.caseId
+					}  
+
 					this.editForm.workload=8
 					this.editForm.userid=this.userInfo.userid
 					this.editForm.username=this.userInfo.username

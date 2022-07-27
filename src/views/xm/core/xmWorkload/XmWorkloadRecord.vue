@@ -8,12 +8,12 @@
 				<el-row v-if="editForm.ntype==='0'"> 
 					<el-col :span="8">  
 						<el-form-item label="原估工时" prop="initWorkload">
-							 <el-input :controls="false" type="number" :step="8" style="width:80%;"  v-model="editForm.initWorkload" placeholder="原估工时" @change="editXmTaskSomeFields(editForm,'initWorkload',$event)"></el-input> &nbsp;小时
+							 <el-input :controls="false" type="number" :step="8" style="width:80%;"  v-model="editForm.initWorkload" placeholder="原估工时" @change="editSomeFields(editForm,'initWorkload',$event)"></el-input> &nbsp;小时
 						</el-form-item>
 					</el-col>  
 					<el-col :span="8">
 						<el-form-item label="预估工时" prop="budgetWorkload">
-							 <el-input :controls="false" type="number" :step="8" style="width:80%;"  v-model="editForm.budgetWorkload" placeholder="预估工时" @change="editXmTaskSomeFields(editForm,'budgetWorkload',$event)"></el-input> &nbsp;小时
+							 <el-input :controls="false" type="number" :step="8" style="width:80%;"  v-model="editForm.budgetWorkload" placeholder="预估工时" @change="editSomeFields(editForm,'budgetWorkload',$event)"></el-input> &nbsp;小时
 						</el-form-item>
 					</el-col>
 					<el-col :span="8">
@@ -25,7 +25,7 @@
 				<el-row v-else> 
 					<el-col :span="8"> 
 							<el-form-item label="原估工时" prop="initWorkload">
-								<el-input :controls="false" type="number" :step="8" style="width:80%;"  v-model="editForm.initWorkload" placeholder="原估工时" @change="editXmTaskSomeFields(editForm,'initWorkload',$event)"></el-input> &nbsp;小时
+								<el-input :controls="false" type="number" :step="8" style="width:80%;"  v-model="editForm.initWorkload" placeholder="原估工时" @change="editSomeFields(editForm,'initWorkload',$event)"></el-input> &nbsp;小时
 							</el-form-item> 
 					</el-col>  
 					<el-col :span="8">
@@ -42,7 +42,7 @@
 			</el-form>
 		</el-row>
 		<el-row>
-			<xm-workload-list v-if="editForm.ntype==='0'" :visible="visible" :xm-task="editForm" @submit="onWorkloadSubmit"></xm-workload-list>
+			<xm-workload-list v-if="(bizType=='1'&& editForm.ntype=='0')||(bizType=='5' && editForm.dclass=='3')||bizType=='2'||bizType=='3'||bizType=='4'" :visible="visible" :biz-type="bizType" :xm-task="xmTask" :xm-menu="xmMenu" :xm-test-case="xmTestCase" :xm-test-plan-case="xmTestPlanCase" :xm-question="xmQuestion"  @submit="onWorkloadSubmit"></xm-workload-list>
 		</el-row> 
 	</section>
 </template>
@@ -52,6 +52,10 @@
 	import config from "@/common/config"; //全局公共库import
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
 	import { getTask, editXmTaskSomeFields } from '@/api/xm/core/xmTask';
+	
+	import { editSomeFieldsXmTestCase } from '@/api/xm/core/xmTestCase';
+	import { editSomeFieldsXmTestPlanCase } from '@/api/xm/core/xmTestPlanCase';
+	import { editXmQuestionSomeFields } from '@/api/xm/core/xmQuestion'; 
 	import { mapGetters } from 'vuex'
 	import XmWorkloadList from './XmWorkloadList';
 
@@ -62,22 +66,62 @@
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
+			val(){
+				var params={}
+				if( this.xmTask && this.xmTask.id){
+					params.id=this.xmTask.id
+					params.initWorkload=this.xmTask.initWorkload
+					params.budgetWorkload=this.xmTask.budgetWorkload
+					params.actWorkload=this.xmTask.actWorkload
+					params.ntype=this.xmTask.ntype
+				} 
+				if( this.xmMenu && this.xmMenu.menuId){
+					params.menuId=this.xmMenu.menuId 
+					params.initWorkload=this.xmMenu.initWorkload
+					params.budgetWorkload=this.xmMenu.budgetWorkload
+					params.actWorkload=this.xmMenu.actWorkload
+					params.ntype=this.xmMenu.ntype
+					params.dclass=this.xmMenu.dclass
+				} 
+				if( this.xmQuestion && this.xmQuestion.id){
+					params.id=this.xmQuestion.id
+					params.initWorkload=this.xmMenu.initWorkload
+					params.budgetWorkload=this.xmMenu.budgetWorkload
+					params.actWorkload=this.xmMenu.actWorkload
+				} 
+				if( this.xmTestCase && this.xmTestCase.id){
+					params.id=this.xmTestCase.id
+					params.initWorkload=this.xmTestCase.initWorkload
+					params.budgetWorkload=this.xmTestCase.budgetWorkload
+					params.actWorkload=this.xmTestCase.actWorkload
+				} 
+				if( this.xmTestPlanCase && this.xmTestPlanCase.planId){
+					params.planId=this.xmTestPlanCase.planId 
+					params.caseId=this.xmTestPlanCase.caseId
+					params.initWorkload=this.xmTestPlanCase.initWorkload
+					params.budgetWorkload=this.xmTestPlanCase.budgetWorkload
+					params.actWorkload=this.xmTestPlanCase.actWorkload
+				} 
+				return params
+			}
 
 		},
-		props:['xmTask','visible'],
+		props:['xmTask','visible','bizType'/*报工类型1-任务，2-缺陷，3-测试用例设计，4-测试执行 */,
+		'xmMenu','xmTestCase','xmQuestion','xmTestPlanCase'],
 
 		watch: {
-	      'xmTask':{ 
-			  handler(){
-				  this.initData()
-			  }
- 	      		
-	      },
+		  
 	      'visible':function(visible) {
 	      	if(visible==true){
  	      		this.initData()
 	      	}
-	      }
+	      },
+			val:{
+				handler(){ 
+					this.initData(); 
+				},
+				deep:true,
+			}
 	    },
 		data() {
 			return { 
@@ -106,13 +150,31 @@
 			saveSubmit: function () {
 			},
 			initData: function(){ 
-				this.editForm=Object.assign({},this.xmTask)
+				this.editForm=Object.assign({},this.val)
 				this.editFormBak=Object.assign({},this.editForm)
             },
+
+			 
 			
-			editXmTaskSomeFields(row,fieldName,$event){
-				
+			editSomeFields(row,fieldName,$event){
+				var func=null;
+				var emit="edit-some-fields"
 				var params={ids:[row.id]}; 
+				if(this.bizType==='1'){
+					func=editXmTaskSomeFields
+					
+				}else if(this.bizType==='2'){ 
+					func=editXmQuestionSomeFields
+				}else if(this.bizType==='3'){
+					func=editSomeFieldsXmTestCase
+				}else if(this.bizType==='4'){
+					func=editSomeFieldsXmTestPlanCase
+					params={pkList:[{planId:row.planId,caseId:row.caseId}]}; 
+				}else if(this.bizType==='5'){
+					this.editForm=Object.assign(this.editForm,this.editFormBak)
+					this.$notify({position:'bottom-left',showClose:true,message:"需求数据不允许手工修改",type:tips.isOk?'success':'error'})
+					return  
+				} 
 				params[fieldName]=$event
 				if(fieldName==='rworkload'||fieldName==='budgetWorkload'){ 
 					var total=row.budgetWorkload;
@@ -126,11 +188,10 @@
 					params.rate=rate
 					row.rate=rate
 				}
-				editXmTaskSomeFields(params).then(res=>{
+				func(params).then(res=>{
 					var tips = res.data.tips;
-					if(tips.isOk){ 
-						//Object.assign(row,params) 
-						this.$emit("edit-xm-task-some-fields",params);
+					if(tips.isOk){  
+						this.$emit(emit,params);
 					}else{
 						this.editForm=Object.assign(this.editForm,this.editFormBak)
 						this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
@@ -138,17 +199,19 @@
 				})
 			},
 			onWorkloadSubmit(){
-				getTask({id:this.xmTask.id}).then(res=>{
-					var tips = res.data.tips
-					if(tips.isOk){
-						if(res.data.data.length>0){
-							Object.assign(this.xmTask,res.data.data[0])
-							Object.assign(this.editForm,this.xmTask) 
-							Object.assign(this.editFormBak,this.xmTask)
-							this.$emit('submit',this.editForm)
+				if(this.bizType=='1'){ 
+					getTask({id:this.xmTask.id}).then(res=>{
+						var tips = res.data.tips
+						if(tips.isOk){
+							if(res.data.data.length>0){
+								Object.assign(this.xmTask,res.data.data[0])
+								Object.assign(this.editForm,this.xmTask) 
+								Object.assign(this.editFormBak,this.xmTask)
+								this.$emit('submit',this.editForm)
+							}
 						}
-					}
-				})
+					})
+				}
 			}
 		},//end method
 		mounted() {

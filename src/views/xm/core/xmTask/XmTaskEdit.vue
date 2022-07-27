@@ -263,7 +263,7 @@
 					</el-tab-pane>
 					
 					<el-tab-pane label="工时" name="5"> 
-						 <xm-workload-record v-if="activateTabPaneName=='5'" :xm-task="editForm" ></xm-workload-record>
+						 <xm-workload-record v-if="activateTabPaneName=='5'" biz-type="1" :xm-task="editForm" ></xm-workload-record>
 					</el-tab-pane>
 					<el-tab-pane label="预算金额" name="6"> 
 						<el-form-item label="自研工时单价" prop="uniInnerPrice">

@@ -238,7 +238,8 @@
       UsersSelect,
       XmWorkloadSimpleList,
 		},
-		props:['visible','wstatuses','sstatuses','queryScope'/**my/all */,'sbillId'],
+		props:['visible','wstatuses','sstatuses','queryScope'/**my/all */,'sbillId','bizType'/*报工类型1-任务，2-缺陷，3-测试用例设计，4-测试执行 */,
+		'xmMenu','xmTestCase','xmQuestion','xmTestPlanCase'],
 		computed: {
 		    ...mapGetters(['userInfo']),
 

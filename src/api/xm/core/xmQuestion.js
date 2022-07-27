@@ -41,6 +41,7 @@ export const getXmQuestionAttDist = params => { return axios.get(`${base}/xm/cor
 export const getXmQuestionAgeDist = params => { return axios.get(`${base}/xm/core/xmQuestion/getXmQuestionAgeDist`, { params: params }); };
 export const getXmQuestionSort = params => { return axios.get(`${base}/xm/core/xmQuestion/getXmQuestionSort`, { params: params }); };
 
+ 
 
 
 

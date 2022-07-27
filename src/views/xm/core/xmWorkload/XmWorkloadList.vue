@@ -30,7 +30,7 @@
 
 			<!--新增 XmWorkload 工时登记表界面-->
 			<el-dialog :title="'任务【'+xmTask.name+'】新增工时'" :visible.sync="addFormVisible"  width="60%" top="20px"  append-to-body  :close-on-click-modal="false">
-				<xm-workload-edit op-type="add" :xm-task="xmTask" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-workload-edit>
+				<xm-workload-edit op-type="add" :biz-type="bizType" :xm-task="xmTask" :xm-menu="xmMenu" :xm-test-case="xmTestCase" :xm-test-plan-case="xmTestPlanCase" :xm-question="xmQuestion" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-workload-edit>
 			</el-dialog>
 	    </el-row>
 	</section>
@@ -49,7 +49,8 @@
 		components: {
 		    XmWorkloadEdit,
 		},
-		props:['xmTask','visible','scene','xmMenu','xmTestCase','xmQuestion','xmTestPlanCase'],
+		props:['xmTask','visible','bizType'/*报工类型1-任务，2-缺陷，3-测试用例设计，4-测试执行 */,
+		'xmMenu','xmTestCase','xmQuestion','xmTestPlanCase'],
 		computed: {
 		    ...mapGetters(['userInfo']),
 			val(){
@@ -203,7 +204,7 @@
 					params.planId=this.xmTestPlanCase.planId
 					params.caseId=this.xmTestPlanCase.caseId
 				}  
-				if(this.scene!=='all'&&!params.planId&&!params.caseId&&!params.caseId &&!params.bugId&&!params.taskId&&!params.menuId){
+				if(this.bizType!=='all'&&!params.planId&&!params.caseId&&!params.caseId &&!params.bugId&&!params.taskId&&!params.menuId){
 					return;
 				}
 
