@@ -5,15 +5,15 @@
 		<el-row class="page-main"  ref="table">
 		<!--编辑界面 XmWorkload 工时登记表-->
 			<el-form :model="editForm" label-width="100px"  :rules="editFormRules" ref="editFormRef">
-				<el-row v-if="editForm.ntype==='0'"> 
+				<el-row v-if="bizType=='1' && editForm.ntype==='0'"> 
 					<el-col :span="8">  
 						<el-form-item label="原估工时" prop="initWorkload">
-							 <el-input :controls="false" type="number" :step="8" style="width:80%;"  v-model="editForm.initWorkload" placeholder="原估工时" @change="editSomeFields(editForm,'initWorkload',$event)"></el-input> &nbsp;小时
+							 <el-input  :controls="false" type="number" :step="8" style="width:80%;"  v-model="editForm.initWorkload" placeholder="原估工时" @change="editSomeFields(editForm,'initWorkload',$event)"></el-input> &nbsp;小时
 						</el-form-item>
 					</el-col>  
 					<el-col :span="8">
 						<el-form-item label="预估工时" prop="budgetWorkload">
-							 <el-input :controls="false" type="number" :step="8" style="width:80%;"  v-model="editForm.budgetWorkload" placeholder="预估工时" @change="editSomeFields(editForm,'budgetWorkload',$event)"></el-input> &nbsp;小时
+							 <el-input  :controls="false" type="number" :step="8" style="width:80%;"  v-model="editForm.budgetWorkload" placeholder="预估工时" @change="editSomeFields(editForm,'budgetWorkload',$event)"></el-input> &nbsp;小时
 						</el-form-item>
 					</el-col>
 					<el-col :span="8">
@@ -25,7 +25,7 @@
 				<el-row v-else> 
 					<el-col :span="8"> 
 							<el-form-item label="原估工时" prop="initWorkload">
-								<el-input :controls="false" type="number" :step="8" style="width:80%;"  v-model="editForm.initWorkload" placeholder="原估工时" @change="editSomeFields(editForm,'initWorkload',$event)"></el-input> &nbsp;小时
+								<el-input  :controls="false" type="number" :step="8" style="width:80%;"  v-model="editForm.initWorkload" placeholder="原估工时" @change="editSomeFields(editForm,'initWorkload',$event)"></el-input> &nbsp;小时
 							</el-form-item> 
 					</el-col>  
 					<el-col :span="8">
