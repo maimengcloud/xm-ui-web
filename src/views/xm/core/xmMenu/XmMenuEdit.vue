@@ -318,15 +318,20 @@
 				if(this.subWorkItemNum>0){
 					return this.subWorkItemNum
 				}else{
-					var bugCnt=0;
-					var taskCnt=0;
-					if(this.editForm.bugCnt){
-						bugCnt=parseInt(this.editForm.bugCnt)
+					if(this.editForm.dclass=='3'){
+						var bugCnt=0;
+						var taskCnt=0;
+						if(this.editForm.bugCnt){
+							bugCnt=parseInt(this.editForm.bugCnt)
+						}
+						if(this.editForm.taskCnt){
+							taskCnt=parseInt(this.editForm.taskCnt)
+						}
+						return bugCnt+taskCnt;
+					}else{
+						return this.editForm.childrenCnt
 					}
-					if(this.editForm.taskCnt){
-						taskCnt=parseInt(this.editForm.taskCnt)
-					}
-					return bugCnt+taskCnt;
+					
 				} 
 			}
 		},
