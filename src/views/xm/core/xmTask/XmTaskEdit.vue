@@ -262,7 +262,7 @@
 						</el-row>
 					</el-tab-pane>
 					
-					<el-tab-pane label="工时" name="5"> 
+					<el-tab-pane :label="'工时( '+editForm.actWorkload+' / '+editForm.budgetWorkload+' h )'" name="5"> 
 						 <xm-workload-record v-if="activateTabPaneName=='5'" biz-type="1" :xm-task="editForm" ></xm-workload-record>
 					</el-tab-pane>
 					<el-tab-pane label="预算金额" name="6"> 
@@ -279,7 +279,7 @@
 						</el-form-item> 
 
 					</el-tab-pane>
-					<el-tab-pane :label="'子工作项('+subWorkItemNum+')'" name="4" v-if="editForm.ntype==='1'">  
+					<el-tab-pane :label="'子工作项('+subWorkitemCpd+')'" name="4" v-if="editForm.ntype==='1'">  
 							 <xm-sub-work-item v-if="activateTabPaneName=='4'" :parent-xm-task="editForm"  @sub-work-item-num="setSubWorkItemNum" @add-sub-task="onAddSubTask"></xm-sub-work-item>
 					</el-tab-pane>
 					<el-tab-pane label="缺陷" name="41" v-if="editForm.ntype!='1'">  
@@ -620,6 +620,19 @@
 				toPayAtObj.total=toPayAt;
 				return toPayAtObj;
 			},
+			
+			subWorkitemCpd(){
+				if(this.subWorkItemNum>0){
+					return this.subWorkItemNum
+				}else{
+					if(this.editForm.ntype=='1'){ 
+						return this.editForm.childrenCnt
+					}else{
+						return this.subWorkItemNum
+					}
+					
+				} 
+			}
 
 		},
 		props:['xmTask','visible','xmProject',"parentTask"],
@@ -629,6 +642,7 @@
 			'visible':function(visible) { 
 				this.fileVisible = visible;
 				if(visible==true){ 
+					this.subWorkItemNum=0
 					this.editForm=Object.assign(this.editForm, this.xmTask);      
 					this.editFormBak=Object.assign({},this.editForm)
 					this.setSkills()

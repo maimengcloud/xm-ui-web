@@ -191,7 +191,7 @@
 								<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="editForm.remark"  @change="editXmMenuSomeFields(editForm,'remark',editForm.remark)" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
 							</el-form-item> 
 						</el-tab-pane>
-						<el-tab-pane :label="'子工作项('+subWorkitemCpd+')'" name="6">
+						<el-tab-pane :label="'子工作项( '+subWorkitemCpd+' )'" name="6">
 							 <xm-sub-work-item v-if="this.activateTabPaneName=='6'" :parent-xm-menu="editForm" :link-project-id="selProject?selProject.id:null" @sub-work-item-num="setSubWorkItemNum" @add-sub-menu="onAddSubMenu"></xm-sub-work-item>
 						</el-tab-pane> 
 						<el-tab-pane :label="'测试用例('+editForm.testCases+')'" name="62">
@@ -207,7 +207,7 @@
 						</el-tab-pane>
 						
 					
-					<el-tab-pane :label="'工时('+editForm.actWorkload+' / '+editForm.budgetWorkload+' h)'" name="51"> 
+					<el-tab-pane :label="'工时( '+editForm.actWorkload+' / '+editForm.budgetWorkload+' h )'" name="51"> 
 						 <xm-workload-record v-if="activateTabPaneName=='51'" biz-type="5" :xm-menu="editForm" ></xm-workload-record>
 					</el-tab-pane>
 					<el-tab-pane label="链接" name="5">
