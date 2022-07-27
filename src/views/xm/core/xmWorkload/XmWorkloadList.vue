@@ -49,22 +49,41 @@
 		components: {
 		    XmWorkloadEdit,
 		},
-		props:['xmTask','visible'],
+		props:['xmTask','visible','scene','xmMenu','xmTestCase','xmQuestion','xmTestPlanCase'],
 		computed: {
 		    ...mapGetters(['userInfo']),
+			val(){
+				var params={}
+				if( this.xmTask && this.xmTask.id){
+					params.id=this.xmTask.id
+				} 
+				if( this.xmMenu && this.xmMenu.menuId){
+					params.id=this.xmMenu.menuId
+				} 
+				if( this.xmQuestion && this.xmQuestion.id){
+					params.id=this.xmQuestion.id
+				} 
+				if( this.xmTestCase && this.xmTestCase.id){
+					params.id=this.xmTestCase.id
+				} 
+				if( this.xmTestPlanCase && this.xmTestPlanCase.planId){
+					params.id=this.xmTestPlanCase.planId 
+				} 
+				return params.id
+			}
 
 		},
-		watch:{
-			'xmTask.id':function(){ 
-				this.initData();
-                this.searchXmWorkloads()
-			},
+		watch:{ 
             visible(val){
                 if(val==true){
                     this.initData();
                     this.searchXmWorkloads()
                 }
-            }
+            },
+			val(){
+				this.initData();
+                this.searchXmWorkloads()
+			}
 		},
 		data() {
 			return {
@@ -167,12 +186,26 @@
 				}
 				if(this.filters.key){
 					params.key=this.filters.key
-				}
-				if(!this.xmTask || !this.xmTask.id){
+				} 
+				if( this.xmTask && this.xmTask.id){
+					params.taskId=this.xmTask.id
+				} 
+				if( this.xmMenu && this.xmMenu.menuId){
+					params.menuId=this.xmMenu.menuId
+				} 
+				if( this.xmQuestion && this.xmQuestion.id){
+					params.bugId=this.xmQuestion.id
+				} 
+				if( this.xmTestCase && this.xmTestCase.id){
+					params.caseId=this.xmTestCase.id
+				} 
+				if( this.xmTestPlanCase && this.xmTestPlanCase.planId){
+					params.planId=this.xmTestPlanCase.planId
+					params.caseId=this.xmTestPlanCase.caseId
+				}  
+				if(this.scene!=='all'&&!params.planId&&!params.caseId&&!params.caseId &&!params.bugId&&!params.taskId&&!params.menuId){
 					return;
 				}
-
-				params.taskId=this.xmTask.id
 
 				this.load.list = true;
 				listXmWorkload(params).then((res) => {
