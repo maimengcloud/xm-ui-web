@@ -509,13 +509,13 @@
       append-to-body
       :close-on-click-modal="false"
     >
-      <xm-task-workload-edit 
+      <xm-workload-edit 
         :xm-task="editForm"
         :visible="taskWorkloadVisible" 
         op-type="add"
         @cancel="taskWorkloadVisible=false"
         @submit="onTaskWorkloadSubmit"
-      ></xm-task-workload-edit>
+      ></xm-workload-edit>
     </el-dialog> 
 
  			<tag-dialog ref="tagDialog"   @select-confirm="onTagSelected">
@@ -631,7 +631,7 @@ import XmGantt from "../components/xm-gantt";
 	import  XmTableConfig from '@/views/xm/core/components/XmTableConfig';//修改界面 
   
   	import TagDialog from "@/views/mdp/arc/tag/TagDialog";
-  	import XmTaskWorkloadEdit from "@/views/xm/core/xmTaskWorkload/XmTaskWorkloadEdit";
+  	import XmWorkloadEdit from "@/views/xm/core/xmWorkload/XmWorkloadEdit";
 
 export default {
   computed: {
@@ -1436,7 +1436,7 @@ export default {
     TagMng, 
     TagDialog, 
     XmTableConfig,
-    XmTaskWorkloadEdit,
+    XmWorkloadEdit,
     //在下面添加其它组件
   },
   mounted() {

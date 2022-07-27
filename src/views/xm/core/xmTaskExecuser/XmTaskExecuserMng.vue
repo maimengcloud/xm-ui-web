@@ -156,13 +156,13 @@
 				append-to-body
 				:close-on-click-modal="false"
 				>
-				<xm-task-workload-edit 
+				<xm-workload-edit 
 					:xm-task="xmTask"
 					:visible="taskWorkloadVisible" 
 					op-type="add"
 					@cancel="taskWorkloadVisible=false"
 					@submit="onTaskWorkloadSubmit"
-				></xm-task-workload-edit>
+				></xm-workload-edit>
 			</el-dialog>
 		</el-row>
 	</section>
@@ -180,7 +180,7 @@
 	import { mapGetters } from 'vuex'
 	import html2canvas from 'html2canvas'
 	import { uploadBase64 } from '@/api/mdp/arc/image';
-  	import XmTaskWorkloadEdit from "@/views/xm/core/xmTaskWorkload/XmTaskWorkloadEdit";
+  	import XmWorkloadEdit from "@/views/xm/core/xmWorkload/XmWorkloadEdit";
 
 	export default {
 		computed: {
@@ -828,7 +828,7 @@
 		},//end methods
 		components: {
 		    'xm-task-execuser-add':XmTaskExecuserAdd,
-		    'xm-task-execuser-edit':XmTaskExecuserEdit, XmTaskWorkloadEdit,
+		    'xm-task-execuser-edit':XmTaskExecuserEdit, XmWorkloadEdit,
 		    //在下面添加其它组件
 		},
 		mounted() {

@@ -3,7 +3,7 @@
 	    <el-row class="page-header">
 	    </el-row>
 		<el-row class="page-main" ref="table">
-		<!--编辑界面 XmTaskWorkload 工时登记表-->
+		<!--编辑界面 XmWorkload 工时登记表-->
 			<el-form :model="editForm"  label-width="120px"  :rules="editFormRules" ref="editFormRef">
 				<el-row>
 					<el-col :span="12">
@@ -99,14 +99,14 @@
 	import util from '@/common/js/util';//全局公共库
 	import config from "@/common/config"; //全局公共库import
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
-	import { addXmTaskWorkload,editXmTaskWorkload } from '@/api/xm/core/xmTaskWorkload';
+	import { addXmWorkload,editXmWorkload } from '@/api/xm/core/xmWorkload';
 	import { listXmTaskExecuser  } from '@/api/xm/core/xmTaskExecuser';
 
 	import XmGroupSelect from '../xmGroup/XmGroupSelect.vue';
 	import { mapGetters } from 'vuex'
 
 	export default {
-	    name:'xmTaskWorkloadEdit',
+	    name:'xmWorkloadEdit',
 	    components: {
 			XmGroupSelect
         },
@@ -130,12 +130,12 @@
 			},
 
 		},
-		props:['xmTask','xmTaskWorkload','visible','opType'],
+		props:['xmTask','xmWorkload','visible','opType'],
 
 		watch: {
-	      'xmTaskWorkload':function( xmTaskWorkload ) {
-	        if(xmTaskWorkload){
-	           Object.assign(this.editForm,xmTaskWorkload);
+	      'xmWorkload':function( xmWorkload ) {
+	        if(xmWorkload){
+	           Object.assign(this.editForm,xmWorkload);
 	        }
 
 	      },
@@ -194,16 +194,16 @@
 			handleCancel:function(){
 				this.$emit('cancel');
 			},
-			//新增、编辑提交XmTaskWorkload 工时登记表父组件监听@submit="afterEditSubmit"
+			//新增、编辑提交XmWorkload 工时登记表父组件监听@submit="afterEditSubmit"
 			saveSubmit: function () {
 				this.$refs.editFormRef.validate((valid) => {
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
 							this.load.edit=true
 							let params = Object.assign({}, this.editForm);
-							var func=addXmTaskWorkload
+							var func=addXmWorkload
 							if(this.currOpType=='edit'){
-							    func=editXmTaskWorkload
+							    func=editXmWorkload
 							}else{
 								params.id=null;
 							}
@@ -224,8 +224,8 @@
 			},
 			initData: function(){
 			    this.currOpType=this.opType
-			    if(this.xmTaskWorkload){
-                    this.editForm = Object.assign({},this.xmTaskWorkload);
+			    if(this.xmWorkload){
+                    this.editForm = Object.assign({},this.xmWorkload);
                 }
 
                 if(this.opType=='edit'){

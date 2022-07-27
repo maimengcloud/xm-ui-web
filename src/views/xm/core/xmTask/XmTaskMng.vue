@@ -653,13 +653,13 @@
       append-to-body
       :close-on-click-modal="false"
     >
-      <xm-task-workload-edit 
+      <xm-workload-edit 
         :xm-task="editForm"
         :visible="taskWorkloadVisible" 
         op-type="add"
         @cancel="taskWorkloadVisible=false"
         @submit="onTaskWorkloadSubmit"
-      ></xm-task-workload-edit>
+      ></xm-workload-edit>
     </el-dialog>
 
     <!-- 新增 XmTask xm_task界面-->
@@ -883,7 +883,7 @@ import XmGroupSelect from "../xmGroup/XmGroupSelect.vue";
 	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面
   
   	import TagDialog from "@/views/mdp/arc/tag/TagDialog";
-  	import XmTaskWorkloadEdit from "@/views/xm/core/xmTaskWorkload/XmTaskWorkloadEdit";
+  	import XmWorkloadEdit from "@/views/xm/core/xmWorkload/XmWorkloadEdit";
     
 import XmPhaseSelect from "./XmPhaseSelect.vue"; 
 	import { addXmTaskExecuser } from '@/api/xm/core/xmTaskExecuser';
@@ -2179,7 +2179,7 @@ export default {
     TagDialog,
     XmGroupDialog,
     XmTableConfig,
-    XmTaskWorkloadEdit,
+    XmWorkloadEdit,
     XmPhaseSelect,
     //在下面添加其它组件
   },

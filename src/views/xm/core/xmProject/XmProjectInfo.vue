@@ -404,8 +404,8 @@ import xmMenuMng from "../xmMenu/XmMenuBox";
 import XmIterationForLinkComplex from "../xmIteration/XmIterationForLinkComplex.vue"; 
 import XmProjectOverviewComplex from "./XmProjectOverviewComplex.vue";
 import XmProductForLinkComplex from "../xmProduct/XmProductForLinkComplex.vue";
-import XmWorkloadSetDayList from "../xmTaskWorkload/WorkloadSetDayList.vue";
-import XmWorkloadSetMonthList from "../xmTaskWorkload/WorkloadSetMonthList.vue";
+import XmWorkloadSetDayList from "../xmWorkload/WorkloadSetDayList.vue";
+import XmWorkloadSetMonthList from "../xmWorkload/WorkloadSetMonthList.vue";
 
 import XmReport from "@/views/xm/rpt/reportIndex";
 import XmPlan from "../xmTask/XmPlan.vue";

@@ -1,7 +1,7 @@
 <template>
 	<section>
 	     <el-dialog append-to-body width="80%" top="20px" :visible.sync="visible" :title="'任务【'+editForm.name+'】工时登记'">
-			 <xm-task-workload-record :visible="visible" :xm-task="editForm" @edit-xm-task-some-fields="onEditXmTaskSomeFields" @submit="onWorkloadSubmit"></xm-task-workload-record></el-dialog>
+			 <xm-workload-record :visible="visible" :xm-task="editForm" @edit-xm-task-some-fields="onEditXmTaskSomeFields" @submit="onWorkloadSubmit"></xm-workload-record></el-dialog>
 	</section>
 </template>
 
@@ -10,12 +10,12 @@
 	import config from "@/common/config"; //全局公共库import
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表 
 	import { mapGetters } from 'vuex'
-	import XmTaskWorkloadRecord from './XmTaskWorkloadRecord';
+	import XmWorkloadRecord from './XmWorkloadRecord';
 
 	export default {
-	    name:'xmTaskWorkloadRecordDialog',
+	    name:'xmWorkloadRecordDialog',
 	    components: {
-			XmTaskWorkloadRecord,
+			XmWorkloadRecord,
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
@@ -42,7 +42,7 @@
 				this.visible=false;
 				this.$emit('cancel');
 			},
-			//新增、编辑提交XmTaskWorkload 工时登记表父组件监听@submit="afterEditSubmit"
+			//新增、编辑提交XmWorkload 工时登记表父组件监听@submit="afterEditSubmit"
 			saveSubmit: function () {
 				 
 			},

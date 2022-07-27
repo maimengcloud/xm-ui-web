@@ -122,7 +122,7 @@
         @edit-fields="onEditXmTaskSomeFields"
       ></xm-task-edit>
     </el-dialog>  
-      <xm-task-workload-record-dialog ref="workloadRecordDialog" @submi="afterWorkloadSubmit" @edit-xm-task-some-fields="onEditXmTaskSomeFields" @submit="onWorkloadSubmit"></xm-task-workload-record-dialog>
+      <xm-workload-record-dialog ref="workloadRecordDialog" @submi="afterWorkloadSubmit" @edit-xm-task-some-fields="onEditXmTaskSomeFields" @submit="onWorkloadSubmit"></xm-workload-record-dialog>
     </el-row> 
 </template>
 
@@ -135,7 +135,7 @@ import treeTool from "@/common/js/treeTool"; //全局公共库
 
 	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面
 	import { mapGetters } from 'vuex'
-import XmTaskWorkloadRecordDialog from '../xmTaskWorkload/XmTaskWorkloadRecordDialog.vue';
+import XmWorkloadRecordDialog from '../xmWorkload/XmWorkloadRecordDialog.vue';
  
 	import { addXmTaskExecuser } from '@/api/xm/core/xmTaskExecuser';
 	import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm/index';//修改界面
@@ -523,7 +523,7 @@ export default {
       }
   }, //end methods
   components: {  
-    XmTaskWorkloadRecordDialog,XmGroupDialog,'xm-task-edit':()=>import('../xmTask/XmTaskEdit'),MdpSelectUserXm,
+    XmWorkloadRecordDialog,XmGroupDialog,'xm-task-edit':()=>import('../xmTask/XmTaskEdit'),MdpSelectUserXm,
   },
   mounted() { 
     this.initData();

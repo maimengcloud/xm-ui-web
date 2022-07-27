@@ -40,7 +40,7 @@
 	import { mapGetters } from 'vuex'	 
 	
 	import  XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';//新增界面
-	import { listProjectWorkloadSetMonth } from '@/api/xm/core/xmTaskWorkload';
+	import { listProjectWorkloadSetMonth } from '@/api/xm/core/xmWorkload';
 	export default { 
         
 		components: {  

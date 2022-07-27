@@ -211,7 +211,7 @@
 		top="20px"
 		width="80%"
 		>
-		<xm-task-workload-simple-list-for-biz-date
+		<xm-workload-simple-list-for-biz-date
 			:visible="popoverConfig.workloadDialogVisible"
 			:task-id="popoverConfig.taskId"
 			:project-id="popoverConfig.projectId"
@@ -220,7 +220,7 @@
 			:wstatus="popoverConfig.wstatus"
 			:sstatus="popoverConfig.sstatus"   
 			:userid="popoverConfig.userid"
-		></xm-task-workload-simple-list-for-biz-date>
+		></xm-workload-simple-list-for-biz-date>
 		</el-dialog>
 		
 		<el-dialog
@@ -233,12 +233,12 @@
 		width="80%"
 		@close="searchXmTaskSbillDetails()"
 		>
-		<xm-task-workload-simple-list-for-biz-date
+		<xm-workload-simple-list-for-biz-date
 			:visible="popoverPlusConfig.workloadDialogVisible" 
 			:project-id="popoverPlusConfig.projectId" 
 			:wstatus="popoverPlusConfig.wstatus"
 			:sstatus="popoverPlusConfig.sstatus"    
-		></xm-task-workload-simple-list-for-biz-date>
+		></xm-workload-simple-list-for-biz-date>
 		</el-dialog>
 	</section>
 </template>
@@ -249,12 +249,12 @@
  	import { initDicts,listXmTaskSbillDetail, delXmTaskSbillDetail, batchDelXmTaskSbillDetail,editSomeFieldsXmTaskSbillDetail } from '@/api/xm/core/xmTaskSbillDetail';
 	import  XmTaskSbillDetailEdit from './XmTaskSbillDetailEdit';//新增修改界面
 	import { mapGetters } from 'vuex'
-  	import XmTaskWorkloadSimpleListForBizDate from '../xmTaskWorkload/XmTaskWorkloadSimpleListForBizDate';
+  	import XmWorkloadSimpleListForBizDate from '../xmWorkload/XmWorkloadSimpleListForBizDate';
 	
 	export default {
 	    name:'xmTaskSbillDetailMng',
 		components: {
-		    XmTaskSbillDetailEdit,XmTaskWorkloadSimpleListForBizDate,
+		    XmTaskSbillDetailEdit,XmWorkloadSimpleListForBizDate,
 		},
 		props:['visible','branchId','userid','bizMonth','projectId','sbillId'],
 		computed: {

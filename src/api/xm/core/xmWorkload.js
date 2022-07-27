@@ -14,39 +14,39 @@ let base = config.getCoreBasePath();
  **/
 
 //普通查询 条件之间and关系
-export const listXmTaskWorkload = params => { return axios.get(`${base}/xm/core/xmTaskWorkload/list`, { params: params }); };
+export const listXmWorkload = params => { return axios.get(`${base}/xm/core/xmWorkload/list`, { params: params }); };
 
 //模糊查询工时登记表 条件之间or关系
-//export const listXmTaskWorkloadKey = params => { return axios.get(`${base}/xm/core/xmTaskWorkload/listKey`, { params: params }); };
+//export const listXmWorkloadKey = params => { return axios.get(`${base}/xm/core/xmWorkload/listKey`, { params: params }); };
 
 //删除一条工时登记表 params={id:'主键 主键'}
-export const delXmTaskWorkload = params => { return axios.post(`${base}/xm/core/xmTaskWorkload/del`,params); };
+export const delXmWorkload = params => { return axios.post(`${base}/xm/core/xmWorkload/del`,params); };
 
 //批量删除工时登记表  params=[{id:'主键 主键'}]
-export const batchDelXmTaskWorkload = params => { return axios.post(`${base}/xm/core/xmTaskWorkload/batchDel`, params); };
+export const batchDelXmWorkload = params => { return axios.post(`${base}/xm/core/xmWorkload/batchDel`, params); };
 
 //修改一条工时登记表记录
-export const editXmTaskWorkload = params => { return axios.post(`${base}/xm/core/xmTaskWorkload/edit`, params); };
+export const editXmWorkload = params => { return axios.post(`${base}/xm/core/xmWorkload/edit`, params); };
 
 //新增一条工时登记表
-export const addXmTaskWorkload = params => { return axios.post(`${base}/xm/core/xmTaskWorkload/add`, params); };
+export const addXmWorkload = params => { return axios.post(`${base}/xm/core/xmWorkload/add`, params); };
 
 //普通查询 条件之间and关系
-export const listByProject = params => { return axios.get(`${base}/xm/core/xmTaskWorkload/listByProject`, { params: params }); };
+export const listByProject = params => { return axios.get(`${base}/xm/core/xmWorkload/listByProject`, { params: params }); };
 
-export const editWorkloadToSbill = params => { return axios.post(`${base}/xm/core/xmTaskWorkload/editWorkloadToSbill`, params); };
+export const editWorkloadToSbill = params => { return axios.post(`${base}/xm/core/xmWorkload/editWorkloadToSbill`, params); };
 
-export const editXmTaskWorkloadSomeFields = params => { return axios.post(`${base}/xm/core/xmTaskWorkload/editSomeFields`, params); };
-
-
-export const listProjectWorkloadSetDay = params => { return axios.get(`${base}/xm/core/xmTaskWorkload/listProjectWorkloadSetDay`, { params: params }); };
-export const listProjectWorkloadSetMonth = params => { return axios.get(`${base}/xm/core/xmTaskWorkload/listProjectWorkloadSetMonth`, { params: params }); };
-export const batchSetSbillIdNull = params => { return axios.post(`${base}/xm/core/xmTaskWorkload/batchSetSbillIdNull`, params); };
+export const editXmWorkloadSomeFields = params => { return axios.post(`${base}/xm/core/xmWorkload/editSomeFields`, params); };
 
 
-export const listXmTaskWorkloadGroupByTaskIdAndUserid = params => { return axios.get(`${base}/xm/core/xmTaskWorkload/ListGroupByTaskIdAndUserid`, { params: params }); };
+export const listProjectWorkloadSetDay = params => { return axios.get(`${base}/xm/core/xmWorkload/listProjectWorkloadSetDay`, { params: params }); };
+export const listProjectWorkloadSetMonth = params => { return axios.get(`${base}/xm/core/xmWorkload/listProjectWorkloadSetMonth`, { params: params }); };
+export const batchSetSbillIdNull = params => { return axios.post(`${base}/xm/core/xmWorkload/batchSetSbillIdNull`, params); };
 
-export const listXmTaskWorkloadGroupByTaskIdAndUseridToSet = params => { return axios.get(`${base}/xm/core/xmTaskWorkload/ListGroupByTaskIdAndUseridToSet`, { params: params }); };
+
+export const listXmWorkloadGroupByTaskIdAndUserid = params => { return axios.get(`${base}/xm/core/xmWorkload/ListGroupByTaskIdAndUserid`, { params: params }); };
+
+export const listXmWorkloadGroupByTaskIdAndUseridToSet = params => { return axios.get(`${base}/xm/core/xmWorkload/ListGroupByTaskIdAndUseridToSet`, { params: params }); };
 
  
 

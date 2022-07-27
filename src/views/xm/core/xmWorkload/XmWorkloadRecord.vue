@@ -3,7 +3,7 @@
 	    <el-row class="page-header">
 	    </el-row>
 		<el-row class="page-main"  ref="table">
-		<!--编辑界面 XmTaskWorkload 工时登记表-->
+		<!--编辑界面 XmWorkload 工时登记表-->
 			<el-form :model="editForm" label-width="100px"  :rules="editFormRules" ref="editFormRef">
 				<el-row v-if="editForm.ntype==='0'"> 
 					<el-col :span="8">  
@@ -42,7 +42,7 @@
 			</el-form>
 		</el-row>
 		<el-row>
-			<xm-task-workload-list v-if="editForm.ntype==='0'" :visible="visible" :xm-task="editForm" @submit="onWorkloadSubmit"></xm-task-workload-list>
+			<xm-workload-list v-if="editForm.ntype==='0'" :visible="visible" :xm-task="editForm" @submit="onWorkloadSubmit"></xm-workload-list>
 		</el-row> 
 	</section>
 </template>
@@ -53,12 +53,12 @@
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
 	import { getTask, editXmTaskSomeFields } from '@/api/xm/core/xmTask';
 	import { mapGetters } from 'vuex'
-	import XmTaskWorkloadList from './XmTaskWorkloadList';
+	import XmWorkloadList from './XmWorkloadList';
 
 	export default {
-	    name:'xmTaskWorkloadEdit',
+	    name:'xmWorkloadEdit',
 	    components: {
-			XmTaskWorkloadList,
+			XmWorkloadList,
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
@@ -102,7 +102,7 @@
 			handleCancel:function(){ 
 				this.$emit('cancel');
 			},
-			//新增、编辑提交XmTaskWorkload 工时登记表父组件监听@submit="afterEditSubmit"
+			//新增、编辑提交XmWorkload 工时登记表父组件监听@submit="afterEditSubmit"
 			saveSubmit: function () {
 			},
 			initData: function(){ 

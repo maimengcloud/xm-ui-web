@@ -263,7 +263,7 @@
 					</el-tab-pane>
 					
 					<el-tab-pane label="工时" name="5"> 
-						 <xm-task-workload-record v-if="activateTabPaneName=='5'" :xm-task="editForm" ></xm-task-workload-record>
+						 <xm-workload-record v-if="activateTabPaneName=='5'" :xm-task="editForm" ></xm-workload-record>
 					</el-tab-pane>
 					<el-tab-pane label="预算金额" name="6"> 
 						<el-form-item label="自研工时单价" prop="uniInnerPrice">
@@ -567,7 +567,7 @@
 	import MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm'
 	import XmSubWorkItem from "@/views/xm/core/xmTaskWorkItem/XmSubWorkItem";
 	import xmQuestionMng from "@/views/xm/core/xmQuestion/XmQuestionMng";
-	import XmTaskWorkloadRecord from "../xmTaskWorkload/XmTaskWorkloadRecord"
+	import XmWorkloadRecord from "../xmWorkload/XmWorkloadRecord"
 	import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 	import XmMyDoFocus from '@/views/myWork/my/components/DoFocus';
 	import XmTaskExecuserForTask from '../xmTaskExecuser/XmTaskExecuserForTask.vue';
@@ -996,7 +996,7 @@
 		},//end method
 		components: { 
  			xmSkillMng,
-			skillMng,xmMenuSelect,XmTaskList,XmExecuserMng,XmGroupSelect,XmMenuRichDetail,TagMng,XmSubWorkItem,XmTaskWorkloadRecord,XmMenuEdit,
+			skillMng,xmMenuSelect,XmTaskList,XmExecuserMng,XmGroupSelect,XmMenuRichDetail,TagMng,XmSubWorkItem,XmWorkloadRecord,XmMenuEdit,
 			XmRecord,xmQuestionMng,XmMyDoFocus,XmTaskExecuserForTask,XmPhaseSelect,ToPay,MdpSelectUserXm,'xm-task-edit':()=>import("./XmTaskDetail"),
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},

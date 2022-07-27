@@ -1,12 +1,12 @@
 <template>
   <section>
-    <xm-task-workload-info queryScope="my"></xm-task-workload-info>
+    <xm-workload-info queryScope="my"></xm-workload-info>
   </section>
 </template>
 
 <script>
 import {mapGetters} from "vuex";
-import XmTaskWorkloadInfo from "./XmTaskWorkloadInfo";
+import XmWorkloadInfo from "./XmWorkloadInfo";
 
 export default {
   computed: {
@@ -29,7 +29,7 @@ export default {
 
   },//end methods
   components: {
-    XmTaskWorkloadInfo,
+    XmWorkloadInfo,
   },
   mounted() {
     this.$nextTick(() => {

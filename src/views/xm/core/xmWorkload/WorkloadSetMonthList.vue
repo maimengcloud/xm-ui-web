@@ -5,7 +5,7 @@
         <div>
           <div
             class="main"
-            id="projectWorkloadSetDayList"
+            id="projectWorkloadSetMonthList"
             style="width: 100%; height: 600px; margin: 0 auto"
           ></div>
         </div>
@@ -43,7 +43,7 @@
             <el-button
               type="primary"
               icon="el-icon-search"
-              @click="listProjectWorkloadSetDay"
+              @click="listProjectWorkloadSetMonth"
               >查询</el-button
             >
           </el-form-item>
@@ -51,10 +51,10 @@
       </el-col>
     </el-row>
     <el-row class="padding-top">
-      <!--列表 XmTaskWorkload 工时登记表-->
+      <!--列表 XmWorkload 工时登记表-->
       <el-table
-        ref="xmTaskWorkloadTable"
-        :data="xmProjectWorkloadSetDays"
+        ref="xmWorkloadTable"
+        :data="xmProjectWorkloadSetMonths"
         :row-style="{ height: '50px' }"
         highlight-current-row
         v-loading="load.list"
@@ -72,7 +72,7 @@
           fixed="left"
         ></el-table-column>
         <el-table-column
-          prop="bizDate"
+          prop="bizMonth"
           label="工时日期"
           width="120"
           show-overflow-tooltip
@@ -80,7 +80,7 @@
           fixed="left"
         >
           <template slot-scope="scope">
-            <span>{{ scope.row.bizDate }}</span>
+            <span>{{ scope.row.bizMonth }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -223,21 +223,21 @@
 
     <el-dialog
       :title="
-        '【' + editForm.bizDate + '】【' + stateName[columnProp] + '】工时记录'
+        '【' + editForm.bizMonth + '】【' + stateName[columnProp] + '】工时记录'
       "
       append-to-body
       :visible.sync="workloadDialogVisible"
       top="20px"
       width="80%"
     >
-      <xm-task-workload-simple-list-for-biz-date
+      <xm-workload-simple-list-for-biz-date
         :visible="workloadDialogVisible"
         :wstatus="wstatus"
         :sstatus="sstatus"
         :task-id="filters.taskId"
         :project-id="filters.project ? filters.project.id : null"
-        :biz-date="editForm.bizDate"
-      ></xm-task-workload-simple-list-for-biz-date>
+        :biz-month="editForm.bizMonth"
+      ></xm-workload-simple-list-for-biz-date>
     </el-dialog>
   </section>
 </template>
@@ -248,47 +248,47 @@ import { initSimpleDicts } from "@/api/mdp/meta/item"; //下拉框数据查询
 import { mapGetters } from "vuex";
 
 import XmProjectSelect from "@/views/xm/core/components/XmProjectSelect"; //新增界面
-import { listProjectWorkloadSetDay } from "@/api/xm/core/xmTaskWorkload";
-import XmTaskWorkloadSimpleListForBizDate from "@/views/xm/core/xmTaskWorkload/XmTaskWorkloadSimpleListForBizDate";
+import { listProjectWorkloadSetMonth } from "@/api/xm/core/xmWorkload";
+import XmWorkloadSimpleListForBizDate from "@/views/xm/core/xmWorkload/XmWorkloadSimpleListForBizDate";
 export default {
   components: {
     XmProjectSelect,
-    XmTaskWorkloadSimpleListForBizDate,
+    XmWorkloadSimpleListForBizDate,
   },
   props: ["xmProduct", "xmProject", "queryScope"],
   computed: {
     ...mapGetters(["userInfo", "roles"]),
     dataSetCpd() {
       return [
-        ["日期", ...this.xmProjectWorkloadSetDays.map((i) => i.bizDate)],
-        //['登记工时',...this.xmProjectWorkloadSetDays.map(i=>i.workload)],
+        ["日期", ...this.xmProjectWorkloadSetMonths.map((i) => i.bizMonth)],
+        //['登记工时',...this.xmProjectWorkloadSetMonths.map(i=>i.workload)],
         [
           "待确认",
-          ...this.xmProjectWorkloadSetDays.map((i) => i.toConfirmWorkload),
+          ...this.xmProjectWorkloadSetMonths.map((i) => i.toConfirmWorkload),
         ],
         [
           "已确认",
-          ...this.xmProjectWorkloadSetDays.map((i) => i.hadConfirmWorkload),
+          ...this.xmProjectWorkloadSetMonths.map((i) => i.hadConfirmWorkload),
         ],
         [
           "无需结算",
-          ...this.xmProjectWorkloadSetDays.map((i) => i.notNeedSetWorkload),
+          ...this.xmProjectWorkloadSetMonths.map((i) => i.notNeedSetWorkload),
         ],
         [
           "待结算",
-          ...this.xmProjectWorkloadSetDays.map((i) => i.toSetSWorkload),
+          ...this.xmProjectWorkloadSetMonths.map((i) => i.toSetSWorkload),
         ],
         [
           "已提交审核",
-          ...this.xmProjectWorkloadSetDays.map((i) => i.hadCommitSworkload),
+          ...this.xmProjectWorkloadSetMonths.map((i) => i.hadCommitSworkload),
         ],
         [
           "已审核",
-          ...this.xmProjectWorkloadSetDays.map((i) => i.hadAgreeSworkload),
+          ...this.xmProjectWorkloadSetMonths.map((i) => i.hadAgreeSworkload),
         ],
         [
           "已结算",
-          ...this.xmProjectWorkloadSetDays.map((i) => i.hadSetSworkload),
+          ...this.xmProjectWorkloadSetMonths.map((i) => i.hadSetSworkload),
         ],
       ];
     },
@@ -317,9 +317,9 @@ export default {
       dateRanger: [],
       maxTableHeight: 300,
       visible: false,
-      xmProjectWorkloadSetDays: [],
+      xmProjectWorkloadSetMonths: [],
       editForm: {
-        bizDate: "",
+        bizMonth: "",
         toConfirmWorkload: 0,
         hadConfirmWorkload: 0,
         toSetSWorkload: 0,
@@ -334,8 +334,8 @@ export default {
         workload: "所有",
         toConfirmWorkload: "待确认",
         hadConfirmWorkload: "已确认",
-		    notNeedSetWorkload:'无需结算',
-        toSetSworkload: "待结算", 
+		notNeedSetWorkload:'无需结算',
+        toSetSworkload: "待结算",
         hadAgreeSworkload: "已审核待结算",
         hadCommitSworkload: "已提交待审核",
         hadSetSworkload: "已结算",
@@ -343,7 +343,7 @@ export default {
     }; //end return
   }, //end data
   methods: {
-    listProjectWorkloadSetDay() {
+    listProjectWorkloadSetMonth() {
       var params = {};
       if (this.filters.project) {
         params.projectId = this.filters.project.id;
@@ -360,10 +360,10 @@ export default {
         params.taskId = this.filters.taskId;
       }
       this.load.list = true;
-      listProjectWorkloadSetDay(params).then((res) => {
-        this.xmProjectWorkloadSetDays = res.data.tips.isOk
+      listProjectWorkloadSetMonth(params).then((res) => {
+        this.xmProjectWorkloadSetMonths = res.data.tips.isOk
           ? res.data.data
-          : this.xmProjectWorkloadSetDays;
+          : this.xmProjectWorkloadSetMonths;
         this.load.list = false;
       });
     },
@@ -371,19 +371,19 @@ export default {
       this.filters.product = this.xmProduct;
       this.filters.project = this.xmProject;
       this.filters.iteration = this.xmIteration;
-      this.xmProjectWorkloadSetDays = [];
+      this.xmProjectWorkloadSetMonths = [];
       if (this.queryScope == "my") {
         this.filters.userid = this.userInfo.userid;
       }
       this.$nextTick(() => {
         if (this.$refs["xmProjectSelect"])
           this.$refs["xmProjectSelect"].clearSelect();
-        this.listProjectWorkloadSetDay();
+        this.listProjectWorkloadSetMonth();
       });
     },
     drawCharts() {
       this.myChart = this.$echarts.init(
-        document.getElementById("projectWorkloadSetDayList")
+        document.getElementById("projectWorkloadSetMonthList")
       );
       var that = this;
       this.myChart.on("updateAxisPointer", function (event) {
@@ -496,14 +496,14 @@ export default {
 
     onProjectSelected(project) {
       this.filters.project = project;
-      this.xmProjectWorkloadSetDays = [];
-      this.listProjectWorkloadSetDay();
+      this.xmProjectWorkloadSetMonths = [];
+      this.listProjectWorkloadSetMonth();
     },
 
     onProjectClear() {
       this.filters.project = null;
 
-      this.xmProjectWorkloadSetDays = [];
+      this.xmProjectWorkloadSetMonths = [];
     },
     rowClick(row, column, event) {
       this.editForm = row;

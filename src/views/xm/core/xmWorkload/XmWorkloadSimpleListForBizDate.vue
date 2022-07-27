@@ -1,7 +1,7 @@
 <template>
 	<section> 
 		<el-row class="padding-top"> 
-			<el-table ref="xmTaskWorkloadTable" :max-height="maxTableHeight" :data="xmTaskWorkloads" :row-style="{height:'50px'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="xmWorkloadTable" :max-height="maxTableHeight" :data="xmWorkloads" :row-style="{height:'50px'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip></el-table-column>
  				<el-table-column prop="username" label="姓名" width="120" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="bizDate" label="登记日期" width="120" show-overflow-tooltip></el-table-column>
@@ -12,7 +12,7 @@
 							<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'wstatus',scope.row.wstatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
 						</div>
 						<span class="cell-bar">
-							<el-select  v-model="scope.row.wstatus" placeholder="工时状态"  style="display:block;"  @change="editXmTaskWorkloadSomeFields(scope.row,'wstatus',$event)">
+							<el-select  v-model="scope.row.wstatus" placeholder="工时状态"  style="display:block;"  @change="editXmWorkloadSomeFields(scope.row,'wstatus',$event)">
 								<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.wstatus" :key="index"></el-option>
 							</el-select>
 						</span>
@@ -24,7 +24,7 @@
 							<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'sstatus',scope.row.sstatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
 						</div>
 						<span class="cell-bar">
-							<el-select  v-model="scope.row.sstatus" placeholder="结算状态"  style="display:block;"  @change="editXmTaskWorkloadSomeFields(scope.row,'sstatus',$event)">
+							<el-select  v-model="scope.row.sstatus" placeholder="结算状态"  style="display:block;"  @change="editXmWorkloadSomeFields(scope.row,'sstatus',$event)">
 								<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.sstatus" :key="index"></el-option>
 							</el-select>
 						</span>
@@ -58,13 +58,13 @@
 	import config from '@/common/config';//全局公共库
   	import {batchJoinToSbill} from "@/api/xm/core/xmTaskSbill";
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
-	import { listXmTaskWorkload, delXmTaskWorkload, batchDelXmTaskWorkload,editXmTaskWorkloadSomeFields,initDicts } from '@/api/xm/core/xmTaskWorkload';
+	import { listXmWorkload, delXmWorkload, batchDelXmWorkload,editXmWorkloadSomeFields,initDicts } from '@/api/xm/core/xmWorkload';
 	import { mapGetters } from 'vuex'
 	
   import XmTaskSbillSelect from "./XmTaskSbillSelect";
 
 	export default {
-	    name:'xmTaskWorkloadSimpleListForBizDate',
+	    name:'xmWorkloadSimpleListForBizDate',
 		components: {
 			XmTaskSbillSelect
 		},
@@ -76,7 +76,7 @@
 		watch:{
              visible(val){
 				if(val){
-					this.searchXmTaskWorkloads();
+					this.searchXmWorkloads();
 				}
 			 }
 		},
@@ -85,7 +85,7 @@
 				filters: {
 					key: ''
 				},
-				xmTaskWorkloads: [],//查询结果
+				xmWorkloads: [],//查询结果
 				pageInfo:{//分页数据
 					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
 					pageSize:10,//每页数据
@@ -103,7 +103,7 @@
 					sstatus:[],
 				    //sex: [{id:'1',name:'男'},{id:'2',name:'女'}]
 				},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
-				addFormVisible: false,//新增xmTaskWorkload界面是否显示
+				addFormVisible: false,//新增xmWorkload界面是否显示
 				addForm: {
 					userid:'',username:'',ctime:'',taskId:'',cuserid:'',bizDate:'',wstatus:'',remark:'',ttype:'',id:'',sbillId:'',stime:'',sstatus:'',amt:'',samt:'',workload:''
 				},
@@ -118,7 +118,7 @@
 		},//end data
 		methods: {
 			...util,
-			editXmTaskWorkloadSomeFields(row,fieldName,$event){  
+			editXmWorkloadSomeFields(row,fieldName,$event){  
 				let params={
 				ids:[row.id],
 				};
@@ -132,7 +132,7 @@
 				params.ids = [row.id]; 
 				params[fieldName]=$event
 				}
-				var func = editXmTaskWorkloadSomeFields
+				var func = editXmWorkloadSomeFields
 				if(fieldName==='sbillId'){
 				func = editWorkloadToSbill
 				params.sbillId=$event.id
@@ -141,7 +141,7 @@
 				}
 				func(params).then(res=>{
 				let tips = res.data.tips; 
-				this.getXmTaskWorkloads();
+				this.getXmWorkloads();
 				if(tips.isOk){
 					this.$emit("edit-some-fields",params)
 				}else{
@@ -151,11 +151,11 @@
 			},  
 			handleSizeChange(pageSize) {
 				this.pageInfo.pageSize=pageSize;
-				this.getXmTaskWorkloads();
+				this.getXmWorkloads();
 			},
 			handleCurrentChange(pageNum) {
 				this.pageInfo.pageNum = pageNum;
-				this.getXmTaskWorkloads();
+				this.getXmWorkloads();
 			},
 			// 表格排序 obj.order=ascending/descending,需转化为 asc/desc ; obj.prop=表格中的排序字段,字段驼峰命名
 			sortChange( obj ){
@@ -173,14 +173,14 @@
 					this.pageInfo.orderFields=[util.toLine(obj.prop)];
 					this.pageInfo.orderDirs=[dir];
 				}
-				this.getXmTaskWorkloads();
+				this.getXmWorkloads();
 			},
-			searchXmTaskWorkloads(){
+			searchXmWorkloads(){
 				 this.pageInfo.count=true;
-				 this.getXmTaskWorkloads();
+				 this.getXmWorkloads();
 			},
-			//获取列表 XmTaskWorkload 工时登记表
-			getXmTaskWorkloads() {
+			//获取列表 XmWorkload 工时登记表
+			getXmWorkloads() {
 				let params = {
 					pageSize: this.pageInfo.pageSize,
 					pageNum: this.pageInfo.pageNum,
@@ -232,12 +232,12 @@
 					params.sbillId=this.sbillId
 				}
 				this.load.list = true;
-				listXmTaskWorkload(params).then((res) => {
+				listXmWorkload(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
-						this.xmTaskWorkloads = res.data.data;
+						this.xmWorkloads = res.data.data;
 					}else{
 						this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: 'error' });
 					}
@@ -245,12 +245,12 @@
 				}).catch( err => this.load.list = false );
 			},
 
-			//显示编辑界面 XmTaskWorkload 工时登记表
+			//显示编辑界面 XmWorkload 工时登记表
 			showEdit: function ( row,index ) {
 				this.editFormVisible = true;
 				this.editForm = Object.assign({}, row);
 			},
-			//显示新增界面 XmTaskWorkload 工时登记表
+			//显示新增界面 XmWorkload 工时登记表
 			showAdd: function () {
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);
@@ -258,37 +258,37 @@
 			afterAddSubmit(){
 				this.addFormVisible=false;
 				this.pageInfo.count=true;
-				this.getXmTaskWorkloads();
+				this.getXmWorkloads();
 				this.$emit('submit',this.editForm)
 			},
 			afterEditSubmit(){
 				this.editFormVisible=false;
 				this.$emit('submit',this.editForm)
 			},
-			//选择行xmTaskWorkload
+			//选择行xmWorkload
 			selsChange: function (sels) {
 				this.sels = sels;
 			},
-			//删除xmTaskWorkload
+			//删除xmWorkload
 			handleDel: function (row,index) {
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
 				}).then(() => {
 					this.load.del=true;
 					let params = {  id:row.id };
-					delXmTaskWorkload(params).then((res) => {
+					delXmWorkload(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
 						if(tips.isOk){
 							this.pageInfo.count=true;
-							this.getXmTaskWorkloads();
+							this.getXmWorkloads();
 							this.$emit('submit',this.editForm)
 						}
 						this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
-			//批量删除xmTaskWorkload
+			//批量删除xmWorkload
 			batchDel: function () {
 				if(this.sels.length<=0){
 				    return;
@@ -300,12 +300,12 @@
 					type: 'warning'
 				}).then(() => {
 					this.load.del=true;
-					batchDelXmTaskWorkload(params).then((res) => {
+					batchDelXmWorkload(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
 						if( tips.isOk ){
 							this.pageInfo.count=true;
-							this.getXmTaskWorkloads();
+							this.getXmWorkloads();
 							this.$emit('submit')
 						}
 						this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
@@ -323,7 +323,7 @@
 				this.editForm=row
 				this.sbillVisible=true;
 			},
-			//批量删除xmTaskWorkload
+			//批量删除xmWorkload
 			batchJoinToSbill: function (row,sbill) {
 				if(!sbill || sbill.id==null){
 				this.$notify({position:'bottom-left',showClose:true,message:'请选择结算单',type:'warning'})
@@ -347,7 +347,7 @@
 					var tips=res.data.tips;
 					if( tips.isOk ){
 						this.pageInfo.count=true;
-						this.getXmTaskWorkloads();
+						this.getXmWorkloads();
 					}
 					this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
 				}).catch( err  => this.load.edit=false ); 
@@ -358,8 +358,8 @@
 			this.$nextTick(() => { 
 				initDicts(this); 
 				this.initData() 
-				this.searchXmTaskWorkloads(); 
-                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmTaskWorkloadTable.$el)
+				this.searchXmWorkloads(); 
+                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmWorkloadTable.$el)
 
         	});
 		}

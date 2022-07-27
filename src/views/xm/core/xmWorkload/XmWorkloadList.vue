@@ -2,15 +2,15 @@
 	<section>
 		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
-			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTaskWorkloads" icon="el-icon-search">已登记工时查询</el-button>
+			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmWorkloads" icon="el-icon-search">已登记工时查询</el-button>
 			<span style="float:right;">
 			<el-button type="primary" @click="showAdd" icon="el-icon-plus"> 登记工时</el-button>
 			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>
 			</span>
 		</el-row>
 		<el-row class="padding-top">
-			<!--列表 XmTaskWorkload 工时登记表-->
-			<el-table ref="xmTaskWorkloadTable" :data="xmTaskWorkloads"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<!--列表 XmWorkload 工时登记表-->
+			<el-table ref="xmWorkloadTable" :data="xmWorkloads"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip></el-table-column>
  				<el-table-column prop="username" label="姓名" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="bizDate" label="报送日期" min-width="80" show-overflow-tooltip></el-table-column>
@@ -28,9 +28,9 @@
 		</el-row>
 		<el-row>
 
-			<!--新增 XmTaskWorkload 工时登记表界面-->
+			<!--新增 XmWorkload 工时登记表界面-->
 			<el-dialog :title="'任务【'+xmTask.name+'】新增工时'" :visible.sync="addFormVisible"  width="60%" top="20px"  append-to-body  :close-on-click-modal="false">
-				<xm-task-workload-edit op-type="add" :xm-task="xmTask" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-task-workload-edit>
+				<xm-workload-edit op-type="add" :xm-task="xmTask" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-workload-edit>
 			</el-dialog>
 	    </el-row>
 	</section>
@@ -40,14 +40,14 @@
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
-	import { listXmTaskWorkload, delXmTaskWorkload, batchDelXmTaskWorkload } from '@/api/xm/core/xmTaskWorkload';
-	import  XmTaskWorkloadEdit from './XmTaskWorkloadEdit';//新增修改界面
+	import { listXmWorkload, delXmWorkload, batchDelXmWorkload } from '@/api/xm/core/xmWorkload';
+	import  XmWorkloadEdit from './XmWorkloadEdit';//新增修改界面
 	import { mapGetters } from 'vuex'
 
 	export default {
-	    name:'xmTaskWorkloadMng',
+	    name:'xmWorkloadMng',
 		components: {
-		    XmTaskWorkloadEdit,
+		    XmWorkloadEdit,
 		},
 		props:['xmTask','visible'],
 		computed: {
@@ -57,12 +57,12 @@
 		watch:{
 			'xmTask.id':function(){ 
 				this.initData();
-                this.searchXmTaskWorkloads()
+                this.searchXmWorkloads()
 			},
             visible(val){
                 if(val==true){
                     this.initData();
-                    this.searchXmTaskWorkloads()
+                    this.searchXmWorkloads()
                 }
             }
 		},
@@ -71,7 +71,7 @@
 				filters: {
 					key: ''
 				},
-				xmTaskWorkloads: [],//查询结果
+				xmWorkloads: [],//查询结果
 				pageInfo:{//分页数据
 					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
 					pageSize:10,//每页数据
@@ -86,7 +86,7 @@
 					taskType:[],
 				    //sex: [{id:'1',name:'男'},{id:'2',name:'女'}]
 				},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
-				addFormVisible: false,//新增xmTaskWorkload界面是否显示
+				addFormVisible: false,//新增xmWorkload界面是否显示
 				addForm: {
 					userid:'',username:'',ctime:'',taskId:'',cuserid:'',bizDate:'',wstatus:'',remark:'',ttype:'',id:'',sbillId:'',stime:'',sstatus:'',amt:'',samt:'',workload:''
 				},
@@ -122,11 +122,11 @@
 			},
 			handleSizeChange(pageSize) {
 				this.pageInfo.pageSize=pageSize;
-				this.getXmTaskWorkloads();
+				this.getXmWorkloads();
 			},
 			handleCurrentChange(pageNum) {
 				this.pageInfo.pageNum = pageNum;
-				this.getXmTaskWorkloads();
+				this.getXmWorkloads();
 			},
 			// 表格排序 obj.order=ascending/descending,需转化为 asc/desc ; obj.prop=表格中的排序字段,字段驼峰命名
 			sortChange( obj ){
@@ -144,14 +144,14 @@
 					this.pageInfo.orderFields=[util.toLine(obj.prop)];
 					this.pageInfo.orderDirs=[dir];
 				}
-				this.getXmTaskWorkloads();
+				this.getXmWorkloads();
 			},
-			searchXmTaskWorkloads(){
+			searchXmWorkloads(){
 				 this.pageInfo.count=true;
-				 this.getXmTaskWorkloads();
+				 this.getXmWorkloads();
 			},
-			//获取列表 XmTaskWorkload 工时登记表
-			getXmTaskWorkloads() {
+			//获取列表 XmWorkload 工时登记表
+			getXmWorkloads() {
 				let params = {
 					pageSize: this.pageInfo.pageSize,
 					pageNum: this.pageInfo.pageNum,
@@ -175,12 +175,12 @@
 				params.taskId=this.xmTask.id
 
 				this.load.list = true;
-				listXmTaskWorkload(params).then((res) => {
+				listXmWorkload(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
-						this.xmTaskWorkloads = res.data.data;
+						this.xmWorkloads = res.data.data;
 					}else{
 						this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: 'error' });
 					}
@@ -188,12 +188,12 @@
 				}).catch( err => this.load.list = false );
 			},
 
-			//显示编辑界面 XmTaskWorkload 工时登记表
+			//显示编辑界面 XmWorkload 工时登记表
 			showEdit: function ( row,index ) {
 				this.editFormVisible = true;
 				this.editForm = Object.assign({}, row);
 			},
-			//显示新增界面 XmTaskWorkload 工时登记表
+			//显示新增界面 XmWorkload 工时登记表
 			showAdd: function () {
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);
@@ -201,37 +201,37 @@
 			afterAddSubmit(){
 				this.addFormVisible=false;
 				this.pageInfo.count=true;
-				this.getXmTaskWorkloads();
+				this.getXmWorkloads();
 				this.$emit('submit',this.editForm)
 			},
 			afterEditSubmit(){
 				this.editFormVisible=false;
 				this.$emit('submit',this.editForm)
 			},
-			//选择行xmTaskWorkload
+			//选择行xmWorkload
 			selsChange: function (sels) {
 				this.sels = sels;
 			},
-			//删除xmTaskWorkload
+			//删除xmWorkload
 			handleDel: function (row,index) {
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
 				}).then(() => {
 					this.load.del=true;
 					let params = {  id:row.id };
-					delXmTaskWorkload(params).then((res) => {
+					delXmWorkload(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
 						if(tips.isOk){
 							this.pageInfo.count=true;
-							this.getXmTaskWorkloads();
+							this.getXmWorkloads();
 							this.$emit('submit',this.editForm)
 						}
 						this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
-			//批量删除xmTaskWorkload
+			//批量删除xmWorkload
 			batchDel: function () {
 				if(this.sels.length<=0){
 				    return;
@@ -243,12 +243,12 @@
 					type: 'warning'
 				}).then(() => {
 					this.load.del=true;
-					batchDelXmTaskWorkload(params).then((res) => {
+					batchDelXmWorkload(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
 						if( tips.isOk ){
 							this.pageInfo.count=true;
-							this.getXmTaskWorkloads();
+							this.getXmWorkloads();
 							this.$emit('submit')
 						}
 						this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
@@ -271,8 +271,8 @@
 					this.dicts=res.data.data;
 				})
 			    this.initData()
-				this.searchXmTaskWorkloads();
-                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmTaskWorkloadTable.$el)
+				this.searchXmWorkloads();
+                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmWorkloadTable.$el)
 
         	});
 		}

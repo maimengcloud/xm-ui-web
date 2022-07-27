@@ -146,7 +146,7 @@
 	import { mapGetters } from 'vuex' 
   import {editXmTaskSbill} from "../../../../api/xm/core/xmTaskSbill";
   import dateUtil from "../../../../common/js/dateUtil";
-  import {editXmTaskWorkload} from "../../../../api/xm/core/xmTaskWorkload";
+  import {editXmWorkload} from "../../../../api/xm/core/xmWorkload";
   import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
   import XmProjectSelect from "../components/XmProjectSelect";
 
@@ -381,7 +381,7 @@
         //修改xmTaskSbill
         this.changeXmTaskSbill(this.thisBillRow);
         //更新xmTaskWokload现状
-        this.changeXmTaskWorkload(row,this.thisBillRow);
+        this.changeXmWorkload(row,this.thisBillRow);
         this.getXmTaskSbills();
       },
       changeXmTaskSbill(data){
@@ -395,14 +395,14 @@
         }).catch( err =>{});
       },
       //添加到结算的要修改工时登记的状态
-      changeXmTaskWorkload(data,sbill){
+      changeXmWorkload(data,sbill){
         let params={
           id:data.id,
           sstatus:'2',//2为已提交结算
           stime:this.dateFormat("YYYY-mm-dd HH:MM:SS",new Date()),
           sbillId:sbill.id
         }
-        editXmTaskWorkload(params).then((res) => {
+        editXmWorkload(params).then((res) => {
           let tips=res.data.tips;
           if(tips.isOk){
           }

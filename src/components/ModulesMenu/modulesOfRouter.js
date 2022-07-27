@@ -117,7 +117,7 @@ export const modulesOfRouter = [
     },
     {
         id: 'xm-workload',
-        path: '/xm/core/xmTaskWorkload/XmTaskWorkloadInfoMy',
+        path: '/xm/core/xmWorkload/XmWorkloadInfoMy',
         context: 'xm'
     },
     {
