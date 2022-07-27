@@ -132,6 +132,10 @@
 							<xm-question-mng   :xm-test-plan-case="editForm"  :xm-product="{id:editForm.productId,productName:editForm.productName}" :sel-project="{id:editForm.projectId,name:editForm.projectName}"></xm-question-mng>
 						</el-row>
 					</el-tab-pane>
+					
+					<el-tab-pane label="工时" name="55"> 
+						<xm-workload-record v-if="activateName=='55'" biz-type="4" :xm-test-plan-case="editForm" ></xm-workload-record>
+					</el-tab-pane>
 					<el-tab-pane name="4" label="附件">
 
 					</el-tab-pane>
@@ -184,6 +188,7 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 	    name:'xmTestPlanCaseEdit',
 	    components: {
 			TestStepResult,MyInput,XmMenuEdit:()=>import('../xmMenu/XmMenuEdit.vue'),XmQuestionMng,XmQuestionAdd,MdpSelectUserXm,
+			'xm-workload-record':()=>import("../xmWorkload/XmWorkloadRecord"),
 
         },
 		computed: {

@@ -29,7 +29,7 @@
 		<el-row>
 
 			<!--新增 XmWorkload 工时登记表界面-->
-			<el-dialog :title="'任务【'+xmTask.name+'】新增工时'" :visible.sync="addFormVisible"  width="60%" top="20px"  append-to-body  :close-on-click-modal="false">
+			<el-dialog :title="'【'+editForm.name+'】新增工时'" :visible.sync="addFormVisible"  width="60%" top="20px"  append-to-body  :close-on-click-modal="false">
 				<xm-workload-edit op-type="add" :biz-type="bizType" :xm-task="xmTask" :xm-menu="xmMenu" :xm-test-case="xmTestCase" :xm-test-plan-case="xmTestPlanCase" :xm-question="xmQuestion" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-workload-edit>
 			</el-dialog>
 	    </el-row>
@@ -57,33 +57,61 @@
 				var params={}
 				if( this.xmTask && this.xmTask.id){
 					params.id=this.xmTask.id
+					params.initWorkload=this.xmTask.initWorkload
+					params.budgetWorkload=this.xmTask.budgetWorkload
+					params.actWorkload=this.xmTask.actWorkload
+					params.ntype=this.xmTask.ntype
+					params.name=this.xmTask.name
 				} 
 				if( this.xmMenu && this.xmMenu.menuId){
-					params.id=this.xmMenu.menuId
+					params.menuId=this.xmMenu.menuId 
+					params.initWorkload=this.xmMenu.initWorkload
+					params.budgetWorkload=this.xmMenu.budgetWorkload
+					params.actWorkload=this.xmMenu.actWorkload
+					params.ntype=this.xmMenu.ntype
+					params.dclass=this.xmMenu.dclass
+					params.name=this.xmMenu.name
+					params.menuName=this.xmMenu.menuName
 				} 
 				if( this.xmQuestion && this.xmQuestion.id){
 					params.id=this.xmQuestion.id
+					params.initWorkload=this.xmQuestion.initWorkload
+					params.budgetWorkload=this.xmQuestion.budgetWorkload
+					params.actWorkload=this.xmQuestion.actWorkload
+					params.name=this.xmQuestion.name
 				} 
 				if( this.xmTestCase && this.xmTestCase.id){
 					params.id=this.xmTestCase.id
+					params.initWorkload=this.xmTestCase.initWorkload
+					params.budgetWorkload=this.xmTestCase.budgetWorkload
+					params.actWorkload=this.xmTestCase.actWorkload
+					params.name=this.xmTestCase.caseName
+					params.caseName=this.xmTestCase.caseName
 				} 
 				if( this.xmTestPlanCase && this.xmTestPlanCase.planId){
-					params.id=this.xmTestPlanCase.planId 
+					params.planId=this.xmTestPlanCase.planId 
+					params.caseId=this.xmTestPlanCase.caseId
+					params.initWorkload=this.xmTestPlanCase.initWorkload
+					params.budgetWorkload=this.xmTestPlanCase.budgetWorkload
+					params.actWorkload=this.xmTestPlanCase.actWorkload
+					params.name=this.xmTestPlanCase.caseName
+					params.caseName=this.xmTestPlanCase.caseName
 				} 
-				return params.id
+				return params
 			}
 
 		},
 		watch:{ 
             visible(val){
-                if(val==true){
-                    this.initData();
+                if(val==true){  
                     this.searchXmWorkloads()
                 }
             },
-			val(){
-				this.initData();
-                this.searchXmWorkloads()
+			val:{
+				handler(){ 
+					this.initData();  
+				},
+				deep:true,
 			}
 		},
 		data() {
@@ -294,7 +322,8 @@
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
             initData: function(){
-
+				this.editForm=Object.assign(this.editForm,this.val)
+				this.editFormBak={...this.editForm}
             },
 
 		},//end methods

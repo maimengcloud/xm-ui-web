@@ -141,7 +141,11 @@
 												<el-button v-loading="load.edit" v-if="editForm.opStep!=editFormBak.opStep" type="primary" @click.native="editXmQuestionSomeFields(editForm,'opStep',editForm.opStep)" :disabled="load.edit==true">保存</el-button> 
 										</el-row>
 									</el-tab-pane> 
-
+									
+					
+									<el-tab-pane label="工时" name="55"> 
+										<xm-workload-record v-if="activateTabPaneName=='55'" biz-type="2" :xm-question="editForm" ></xm-workload-record>
+									</el-tab-pane>
 									<el-tab-pane label="日志" name="4" v-if="opType!='add'"> 
 										<el-row> 
 												<xm-question-handle-mng v-if="activateTabPaneName=='4'" :bug="editForm" :visible="activateTabPaneName=='4'"></xm-question-handle-mng>
@@ -645,7 +649,8 @@
 				//在下面添加其它组件 'xm-question-edit':XmQuestionEdit
 				'upload': AttachmentUpload,XmGroupMng,VueEditor,XmTaskList,xmMenuSelect,XmQuestionHandleMng,TagMng,XmProjectSelect,
 			XmMyDoFocus,XmFuncSelect,MdpSelectUserXm,TestStepConfig,TestStepResult,
-			xmTestPlanCaseMng:()=>import('../xmTestPlanCase/XmTestPlanCaseMng')
+			xmTestPlanCaseMng:()=>import('../xmTestPlanCase/XmTestPlanCaseMng'),
+			'xm-workload-record':()=>import("../xmWorkload/XmWorkloadRecord"),
 		},
 		mounted() { 
 			this.initData();

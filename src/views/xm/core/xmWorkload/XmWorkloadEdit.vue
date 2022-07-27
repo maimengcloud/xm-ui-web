@@ -6,12 +6,12 @@
 				<el-row>
 					<el-col :span="12">
 						<el-form-item label="预估工时" prop="budgetWorkload">
-							{{xmTask.budgetWorkload?xmTask.budgetWorkload:0}}&nbsp;&nbsp;小时 <font color="red"> &nbsp;&nbsp;>>&nbsp; &nbsp;{{budgetWorkload}} &nbsp;小时</font>
+							{{val.budgetWorkload?val.budgetWorkload:0}}&nbsp;&nbsp;小时 <font color="red"> &nbsp;&nbsp;>>&nbsp; &nbsp;{{budgetWorkload}} &nbsp;小时</font>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
 						<el-form-item label="已登工时" prop="actWorkload">
-							{{xmTask.actWorkload?xmTask.actWorkload:0}}&nbsp;小时, <el-tag type="primary"> {{xmTask.rate}}% </el-tag><el-tag type="danger">&nbsp;&nbsp;>>&nbsp; &nbsp;{{rate}}% &nbsp;</el-tag> 
+							{{val.actWorkload?val.actWorkload:0}}&nbsp;小时, <el-tag type="primary"> {{val.rate}}% </el-tag><el-tag type="danger">&nbsp;&nbsp;>>&nbsp; &nbsp;{{rate}}% &nbsp;</el-tag> 
 						</el-form-item>
 					</el-col> 
 				</el-row>
@@ -45,7 +45,7 @@
 					</el-col> 
 					<el-col :span="12"> 
 						<el-form-item label="任务执行人">
- 							 {{xmTask.executorUsername}}
+ 							 {{val.executorUsername}}
 						</el-form-item>  
 					</el-col> 
 				</el-row>
@@ -88,7 +88,7 @@
 		</el-row>
 		
 		<el-drawer append-to-body title="选择负责人"  :visible.sync="groupUserSelectVisible" size="60%"    :close-on-click-modal="false">
-			<xm-group-select  :visible="groupUserSelectVisible" :sel-project="{id:xmTask.projectId,projectName:xmTask.projectName}" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-group-select>
+			<xm-group-select  :visible="groupUserSelectVisible" :sel-project="{id:val.projectId,projectName:val.projectName}" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-group-select>
 		</el-drawer>
 	</section>
 </template>
@@ -113,19 +113,65 @@
 			
 			budgetWorkload(){ 
 				if(this.editForm.rworkload!=null && this.editForm.rworkload!="" && this.editForm.rworkload>=0){
-					return parseFloat(this.editForm.rworkload)+parseFloat(this.editForm.workload?this.editForm.workload:0)+parseFloat(this.xmTask.actWorkload?this.xmTask.actWorkload:0)
+					return parseFloat(this.editForm.rworkload)+parseFloat(this.editForm.workload?this.editForm.workload:0)+parseFloat(this.val.actWorkload?this.val.actWorkload:0)
 				}else{
-					return this.xmTask.budgetWorkload;
+					return this.val.budgetWorkload;
 				}
 			},
 			
 			rate(){
 				if(this.editForm.rworkload!=null && this.editForm.rworkload!="" &&  this.editForm.rworkload>=0){
-					return Math.round((parseFloat(this.editForm.workload?this.editForm.workload:0)+parseFloat(this.xmTask.actWorkload?this.xmTask.actWorkload:0))/(parseFloat(this.editForm.rworkload)+parseFloat(this.editForm.workload?this.editForm.workload:0)+parseFloat(this.xmTask.actWorkload?this.xmTask.actWorkload:0))*100)
+					return Math.round((parseFloat(this.editForm.workload?this.editForm.workload:0)+parseFloat(this.val.actWorkload?this.val.actWorkload:0))/(parseFloat(this.editForm.rworkload)+parseFloat(this.editForm.workload?this.editForm.workload:0)+parseFloat(this.val.actWorkload?this.val.actWorkload:0))*100)
 				}else{
-					return Math.round((parseFloat(this.editForm.workload?this.editForm.workload:0)+parseFloat(this.xmTask.actWorkload?this.xmTask.actWorkload:0))/this.xmTask.budgetWorkload *100);
+					return Math.round((parseFloat(this.editForm.workload?this.editForm.workload:0)+parseFloat(this.val.actWorkload?this.val.actWorkload:0))/this.val.budgetWorkload *100);
 				}
 			},
+			val(){
+				var params={}
+				if( this.xmTask && this.xmTask.id){
+					params.id=this.xmTask.id
+					params.initWorkload=this.xmTask.initWorkload
+					params.budgetWorkload=this.xmTask.budgetWorkload
+					params.actWorkload=this.xmTask.actWorkload
+					params.ntype=this.xmTask.ntype
+					params.name=this.xmTask.name
+				} 
+				if( this.xmMenu && this.xmMenu.menuId){
+					params.menuId=this.xmMenu.menuId 
+					params.initWorkload=this.xmMenu.initWorkload
+					params.budgetWorkload=this.xmMenu.budgetWorkload
+					params.actWorkload=this.xmMenu.actWorkload
+					params.ntype=this.xmMenu.ntype
+					params.dclass=this.xmMenu.dclass
+					params.name=this.xmMenu.name
+					params.menuName=this.xmMenu.menuName
+				} 
+				if( this.xmQuestion && this.xmQuestion.id){
+					params.id=this.xmQuestion.id
+					params.initWorkload=this.xmQuestion.initWorkload
+					params.budgetWorkload=this.xmQuestion.budgetWorkload
+					params.actWorkload=this.xmQuestion.actWorkload
+					params.name=this.xmQuestion.name
+				} 
+				if( this.xmTestCase && this.xmTestCase.id){
+					params.id=this.xmTestCase.id
+					params.initWorkload=this.xmTestCase.initWorkload
+					params.budgetWorkload=this.xmTestCase.budgetWorkload
+					params.actWorkload=this.xmTestCase.actWorkload
+					params.name=this.xmTestCase.caseName
+					params.caseName=this.xmTestCase.caseName
+				} 
+				if( this.xmTestPlanCase && this.xmTestPlanCase.planId){
+					params.planId=this.xmTestPlanCase.planId 
+					params.caseId=this.xmTestPlanCase.caseId
+					params.initWorkload=this.xmTestPlanCase.initWorkload
+					params.budgetWorkload=this.xmTestPlanCase.budgetWorkload
+					params.actWorkload=this.xmTestPlanCase.actWorkload
+					params.name=this.xmTestPlanCase.caseName
+					params.caseName=this.xmTestPlanCase.caseName
+				} 
+				return params
+			}
 
 		},
 		props:['xmTask','xmWorkload','visible','opType','bizType'/*报工类型1-任务，2-缺陷，3-测试用例设计，4-测试执行 */,
@@ -148,7 +194,7 @@
 				  this.listXmTaskExecuser();
 			  }
 			  if(val==='3'){
-				  this.editForm.workload=this.xmTask.budgetWorkload-this.xmTask.actWorkload
+				  this.editForm.workload=this.val.budgetWorkload-this.val.actWorkload
 			  }
 			  if(val==='1'){
 				  this.editForm.workload=8
@@ -262,11 +308,11 @@
                 }
             },
 			listXmTaskExecuser(){
-				listXmTaskExecuser({userid:this.userInfo.userid,taskId:this.xmTask.id}).then(res=>{
+				listXmTaskExecuser({userid:this.userInfo.userid,taskId:this.val.id}).then(res=>{
 					if(res.data.tips.isOk&& res.data.data.length>0){
 						this.execuser=res.data.data[0]
 						if(this.workloadFillType=='2'){
-							this.editForm.workload=this.execuser.quoteWorkload-this.xmTask.actWorkload
+							this.editForm.workload=this.execuser.quoteWorkload-this.val.actWorkload
 						}
 					}else{
 						this.$notify({position:'bottom-left',showClose:true,message:'没有找到报价信息',type:'error'})

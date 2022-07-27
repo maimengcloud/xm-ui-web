@@ -998,6 +998,7 @@
  			xmSkillMng,
 			skillMng,xmMenuSelect,XmTaskList,XmExecuserMng,XmGroupSelect,XmMenuRichDetail,TagMng,XmSubWorkItem,XmWorkloadRecord,XmMenuEdit,
 			XmRecord,xmQuestionMng,XmMyDoFocus,XmTaskExecuserForTask,XmPhaseSelect,ToPay,MdpSelectUserXm,'xm-task-edit':()=>import("./XmTaskDetail"),
+			'xm-workload-record':()=>import("../xmWorkload/XmWorkloadRecord"),
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},
 		mounted() { 

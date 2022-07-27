@@ -218,6 +218,11 @@
 								<el-input-number :disabled="editForm.calcType!=='2'  "  style="width:200px;"  v-model="editForm.actAt" :precision="2" :step="100" :min="0" placeholder="实际金额"></el-input-number>   元
 							</el-form-item>
 						</el-tab-pane>
+						
+					
+					<el-tab-pane label="工时" name="51"> 
+						 <xm-workload-record v-if="activateTabPaneName=='51'" biz-type="5" :xm-menu="editForm" ></xm-workload-record>
+					</el-tab-pane>
 					<el-tab-pane label="链接" name="5">
 						<el-form-item label="需求链接" prop="demandUrl">
 							<el-input v-model="editForm.demandUrl" placeholder="需求链接" ></el-input>
@@ -617,6 +622,7 @@
 			ArchiveEdit,
 			XmTestCaseMng,MdpSelectUserXm,
 			'xm-menu-edit':()=>import("./XmMenuDetail"),
+			'xm-workload-record':()=>import("../xmWorkload/XmWorkloadRecord"),
 			XmEpicFeaturesSelect,
 		},
 		mounted() {
