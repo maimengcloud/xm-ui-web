@@ -134,7 +134,7 @@
 					params.budgetWorkload=this.xmTask.budgetWorkload
 					params.actWorkload=this.xmTask.actWorkload
 					params.ntype=this.xmTask.ntype
-					params.name=this.xmTask.name
+					params.name=this.xmTask.name 
 				} 
 				if( this.xmMenu && this.xmMenu.menuId){
 					params.menuId=this.xmMenu.menuId 
@@ -284,19 +284,24 @@
 					if( this.xmTask && this.xmTask.id){
 						this.editForm.taskId=this.xmTask.id 
 						this.editForm.ttype=this.xmTask.taskType 
+						this.editForm.bizName=this.xmTask.name
 					} 
 					if( this.xmMenu && this.xmMenu.menuId){
 						this.editForm.menuId=this.xmMenu.menuId
+						this.editForm.bizName=this.xmMenu.menuName
 					} 
 					if( this.xmQuestion && this.xmQuestion.id){
 						this.editForm.bugId=this.xmQuestion.id
+						this.editForm.bizName=this.xmQuestion.name
 					} 
 					if( this.xmTestCase && this.xmTestCase.id){
 						this.editForm.caseId=this.xmTestCase.id
+						this.editForm.bizName=this.xmTestCase.caseName
 					} 
 					if( this.xmTestPlanCase && this.xmTestPlanCase.planId){
 						this.editForm.planId=this.xmTestPlanCase.planId
 						this.editForm.caseId=this.xmTestPlanCase.caseId
+						this.editForm.bizName=this.xmTestPlanCase.caseName
 					}  
 
 					this.editForm.workload=8
