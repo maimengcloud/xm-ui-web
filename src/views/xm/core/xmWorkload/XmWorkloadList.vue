@@ -4,7 +4,7 @@
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
 			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmWorkloads" icon="el-icon-search">已登记工时查询</el-button>
 			<span style="float:right;">
-			<el-button type="primary" @click="showAdd" icon="el-icon-plus"> 登记工时</el-button>
+			<el-button type="primary" @click="showAdd" icon="el-icon-plus" v-if="bizType!='5'"> 登记工时</el-button>
 			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>
 			</span>
 		</el-row>
@@ -22,7 +22,7 @@
 				 </el-table-column>
 				<el-table-column prop="bizName" label="业务标题" min-width="150" show-overflow-tooltip>
 					<template slot-scope="scope">
-						<el-link @click="goToBizDetail">{{scope.row.bizName}}</el-link>
+						<el-link @click="goToBizDetail(scope.row)">{{scope.row.bizName}}</el-link>
 					</template>
 				</el-table-column>
 				<el-table-column prop="remark" label="备注" min-width="80" show-overflow-tooltip></el-table-column>
@@ -37,6 +37,26 @@
 			<el-dialog :title="'【'+editForm.name+'】新增工时'" :visible.sync="addFormVisible"  width="60%" top="20px"  append-to-body  :close-on-click-modal="false">
 				<xm-workload-edit op-type="add" :biz-type="bizType" :xm-task="xmTask" :xm-menu="xmMenu" :xm-test-case="xmTestCase" :xm-test-plan-case="xmTestPlanCase" :xm-question="xmQuestion" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-workload-edit>
 			</el-dialog>
+			
+		<el-dialog title="任务明细" :visible.sync="taskDetailVisible" width="90%" top="20px" append-to-body>
+			<xm-task-detail :visible="taskDetailVisible" :xm-task="{id:editForm.taskId,name:editForm.bizName}" :reload="true"></xm-task-detail>
+		</el-dialog>
+		
+		<el-dialog title="缺陷明细" :visible.sync="bugDetailVisible" width="90%" top="20px" append-to-body>
+			<xm-question-detail :visible="bugDetailVisible" :xm-question="{id:editForm.bugId,name:editForm.bizName}" :reload="true"></xm-question-detail>
+		</el-dialog>
+		
+		<el-dialog title="测试用例明细" :visible.sync="caseDetailVisible" width="90%" top="20px" append-to-body>
+			<xm-test-case-detail :visible="caseDetailVisible" :xm-test-case="{id:editForm.caseId,name:editForm.bizName}" :reload="true"></xm-test-case-detail>
+		</el-dialog>
+		
+		<el-dialog title="执行用例明细" :visible.sync="planCaseDetailVisible" width="90%" top="20px" append-to-body>
+			<xm-test-plan-case-detail :visible="planCaseDetailVisible" :xm-plan-test-case="{planId:editForm.planId,caseId:editForm.caseId,name:editForm.bizName}" :reload="true"></xm-test-plan-case-detail>
+		</el-dialog>
+		
+		<el-dialog title="需求明细" :visible.sync="menuDetailVisible" width="90%" top="20px" append-to-body>
+			<xm-menu-detail :visible="menuDetailVisible" :xm-menu="{id:editForm.menuId,name:editForm.bizName}" :reload="true"></xm-menu-detail>
+		</el-dialog>
 	    </el-row>
 	</section>
 </template>
@@ -53,6 +73,12 @@
 	    name:'xmWorkloadMng',
 		components: {
 		    XmWorkloadEdit,
+			
+			"xm-task-detail":()=>import("../xmTask/XmTaskDetail"),
+			"xm-question-detail":()=>import("../xmQuestion/XmQuestionMng"),
+			"xm-test-case-detail":()=>import("../xmTestCase/XmTestCaseDetail"),
+			"xm-test-plan-case-detail":()=>import("../xmTestPlanCase/XmTestPlanCaseDetail"),
+			"xm-menu-detail":()=>import("../xmMenu/XmMenuDetail"),
 		},
 		props:['xmTask','visible','bizType'/*报工类型1-任务，2-缺陷，3-测试用例设计，4-测试执行 */,
 		'xmMenu','xmTestCase','xmQuestion','xmTestPlanCase'],
@@ -149,6 +175,13 @@
 					userid:'',username:'',ctime:'',taskId:'',cuserid:'',bizDate:'',wstatus:'',remark:'',ttype:'',id:'',sbillId:'',stime:'',sstatus:'',amt:'',samt:'',workload:''
 				},
 				maxTableHeight:300,
+
+				
+				taskDetailVisible:false,
+				bugDetailVisible:false,
+				caseDetailVisible:false,
+				planCaseDetailVisible:false,
+				menuDetailVisible:false, 
 			}
 		},//end data
 		methods: {
@@ -332,7 +365,15 @@
             },
 			goToBizDetail(row){
 				if(row.bizType=='1'){
-
+					this.taskDetailVisible=true
+				}else if(row.bizType=='2'){
+					this.bugDetailVisible=true
+				}else if(this.bizType=='3'){
+					this.caseDetailVisible=true
+				}else if(this.bizType=='4'){
+					this.planCaseDetailVisible=true
+				}else if(this.bizType=='5'){
+					this.menuDetailVisible=true
 				}
 			}
 
