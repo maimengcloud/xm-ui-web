@@ -20,6 +20,11 @@
 						 {{scope.row.wstatus==='1'?'已确认':'待确认'}}
 					 </template>
 				 </el-table-column>
+				<el-table-column prop="bizName" label="业务标题" min-width="150" show-overflow-tooltip>
+					<template slot-scope="scope">
+						<el-link @click="goToBizDetail">{{scope.row.bizName}}</el-link>
+					</template>
+				</el-table-column>
 				<el-table-column prop="remark" label="备注" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="ttype" label="任务类型" min-width="80" show-overflow-tooltip :formatter="formatterOption"></el-table-column>
 
@@ -325,6 +330,11 @@
 				this.editForm=Object.assign(this.editForm,this.val)
 				this.editFormBak={...this.editForm}
             },
+			goToBizDetail(row){
+				if(row.bizType=='1'){
+
+				}
+			}
 
 		},//end methods
 		mounted() {

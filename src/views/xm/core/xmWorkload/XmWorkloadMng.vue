@@ -62,11 +62,11 @@
               </span>
             </template>
         </el-table-column>
-				<el-table-column prop="taskId" label="任务" min-width="120" show-overflow-tooltip  sortable  fixed="left">
+				<el-table-column prop="bizName" label="业务" min-width="120" show-overflow-tooltip  sortable  fixed="left">
           <template slot-scope="scope">
             
             <span class="cell-text">
-               {{scope.row.taskName}}
+               {{scope.row.bizName}}
             </span>
             <span class="cell-bar">
               <el-popover>

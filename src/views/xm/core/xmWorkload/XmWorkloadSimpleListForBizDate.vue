@@ -29,16 +29,19 @@
 							</el-select>
 						</span>
 					 </template>
-				 </el-table-column>
-				 <el-table-column prop="taskState" label="任务状态" width="80" show-overflow-tooltip>
-					 <template slot-scope="scope">
-						<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'taskState',scope.row.taskState)" :key="index" :type="item.className">{{item.name}}</el-tag>
-					 </template>
-
+				 </el-table-column> 
+				<el-table-column prop="bizType" label="报工类型" width="120" show-overflow-tooltip>
+					<template slot-scope="scope">
+						<mdp-select-dict-tag :disabled="true" v-model="scope.row.bizType" :dict="dicts['wlBizType']"></mdp-select-dict-tag>
+					</template> 
 				</el-table-column> 
-				<el-table-column prop="remark" label="备注" width="120" show-overflow-tooltip></el-table-column> 
-				<el-table-column prop="taskName" label="任务" min-width="120" show-overflow-tooltip></el-table-column>
-				<el-table-column fixed="right" label="操作" min-width="120">
+				<el-table-column prop="bizName" label="报工业务" width="120" show-overflow-tooltip>
+					<template slot-scope="scope">
+						<el-link @click="openDialog(scope.row)"></el-link>
+					</template>
+				</el-table-column> 
+				<el-table-column prop="remark" label="报工备注" width="120" show-overflow-tooltip></el-table-column> 
+ 				<el-table-column fixed="right" label="操作" min-width="120">
 					<template slot-scope="scope">
                				<xm-task-sbill-select style="display:inline;"  :auto-select="false"  :project-id="scope.row.projectId"    placeholder="结算"  @row-click="batchJoinToSbill(scope.row,$event)">
 								<span slot="title">{{scope.row.sbillId?'结算单:'+scope.row.sbillId:'选择结算单'}}</span>
@@ -50,6 +53,25 @@
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 		</el-row> 
+		<el-dialog title="任务明细" :visible.sync="taskDetailVisible" width="90%" top="20px" append-to-body>
+			<xm-task-detail :visible="taskDetailVisible" :xm-task="{id:editForm.taskId,name:editForm.bizName}" :reload="true"></xm-task-detail>
+		</el-dialog>
+		
+		<el-dialog title="缺陷明细" :visible.sync="bugDetailVisible" width="90%" top="20px" append-to-body>
+			<xm-question-detail :visible="bugDetailVisible" :xm-question="{id:editForm.bugId,name:editForm.bizName}" :reload="true"></xm-question-detail>
+		</el-dialog>
+		
+		<el-dialog title="测试用例明细" :visible.sync="caseDetailVisible" width="90%" top="20px" append-to-body>
+			<xm-test-case-detail :visible="caseDetailVisible" :xm-test-case="{id:editForm.caseId,name:editForm.bizName}" :reload="true"></xm-test-case-detail>
+		</el-dialog>
+		
+		<el-dialog title="执行用例明细" :visible.sync="planCaseDetailVisible" width="90%" top="20px" append-to-body>
+			<xm-test-plan-case-detail :visible="planCaseDetailVisible" :xm-plan-test-case="{planId:editForm.planId,caseId:editForm.caseId,name:editForm.bizName}" :reload="true"></xm-test-plan-case-detail>
+		</el-dialog>
+		
+		<el-dialog title="需求明细" :visible.sync="menuDetailVisible" width="90%" top="20px" append-to-body>
+			<xm-menu-detail :visible="menuDetailVisible" :xm-menu="{id:editForm.menuId,name:editForm.bizName}" :reload="true"></xm-menu-detail>
+		</el-dialog>
 	</section>
 </template>
 
@@ -66,7 +88,12 @@
 	export default {
 	    name:'xmWorkloadSimpleListForBizDate',
 		components: {
-			XmTaskSbillSelect
+			XmTaskSbillSelect,
+			"xm-task-detail":()=>import("../xmTask/XmTaskDetail"),
+			"xm-question-detail":()=>import("../xmQuestion/XmQuestionMng"),
+			"xm-test-case-detail":()=>import("../xmTestCase/XmTestCaseDetail"),
+			"xm-test-plan-case-detail":()=>import("../xmTestPlanCase/XmTestPlanCaseDetail"),
+			"xm-menu-detail":()=>import("../xmMenu/XmMenuDetail"),
 		},
 		props:[ 'visible','wstatus','sstatus','bizDate','projectId','userid','taskId','bizMonth','detailId','sbillId'],
 		computed: {
@@ -101,6 +128,7 @@
 					taskState:[],
 					wstatus:[],
 					sstatus:[],
+					wlBizType:[],
 				    //sex: [{id:'1',name:'男'},{id:'2',name:'女'}]
 				},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				addFormVisible: false,//新增xmWorkload界面是否显示
@@ -114,6 +142,11 @@
 				},
 				maxTableHeight:300,
 				sbillVisible:false,
+				taskDetailVisible:false,
+				bugDetailVisible:false,
+				caseDetailVisible:false,
+				planCaseDetailVisible:false,
+				menuDetailVisible:false, 
 			}
 		},//end data
 		methods: {
@@ -352,6 +385,19 @@
 					this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
 				}).catch( err  => this.load.edit=false ); 
 			},
+			openDialog(row){
+				if(row.bizType=='1'){
+					this.taskDetailVisible=true
+				}else if(row.bizType=='2'){
+					this.bugDetailVisible=true
+				}else if(this.bizType=='3'){
+					this.caseDetailVisible=true
+				}else if(this.bizType=='4'){
+					this.planCaseDetailVisible=true
+				}else if(this.bizType=='5'){
+					this.menuDetailVisible=true
+				}
+			}
 
 		},//end methods
 		mounted() {
