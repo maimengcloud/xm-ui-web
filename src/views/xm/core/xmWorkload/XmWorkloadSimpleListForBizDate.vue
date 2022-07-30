@@ -90,7 +90,7 @@
 		components: {
 			XmTaskSbillSelect,
 			"xm-task-detail":()=>import("../xmTask/XmTaskDetail"),
-			"xm-question-detail":()=>import("../xmQuestion/XmQuestionMng"),
+			"xm-question-detail":()=>import("../xmQuestion/XmQuestionDetail"),
 			"xm-test-case-detail":()=>import("../xmTestCase/XmTestCaseDetail"),
 			"xm-test-plan-case-detail":()=>import("../xmTestPlanCase/XmTestPlanCaseDetail"),
 			"xm-menu-detail":()=>import("../xmMenu/XmMenuDetail"),
@@ -386,6 +386,7 @@
 				}).catch( err  => this.load.edit=false ); 
 			},
 			openDialog(row){
+				this.editForm=row
 				if(row.bizType=='1'){
 					this.taskDetailVisible=true
 				}else if(row.bizType=='2'){
