@@ -93,7 +93,7 @@
 			"xm-test-case-detail":()=>import("../xmTestCase/XmTestCaseDetail"),
 			"xm-test-plan-case-detail":()=>import("../xmTestPlanCase/XmTestPlanCaseDetail"),
 			"xm-menu-detail":()=>import("../xmMenu/XmMenuDetail"),
-			"project-workload-set-day-list":()=>import("../../rpt/project/projectWorkloadSetDayList")
+			"workload-set-day-list":()=>import("./WorkloadSetDayList")
 		},
 		props:['xmTask','visible','bizType'/*报工类型1-任务，2-缺陷，3-测试用例设计，4-测试执行 */,
 		'xmMenu','xmTestCase','xmQuestion','xmTestPlanCase'],
@@ -397,7 +397,21 @@
 			queryUserWorkload(row){
 				this.editForm=row
 				this.userWorkloadDayListVisible=true;
-			}
+			}, 
+			openDialog(row){
+				this.editForm=row
+				if(row.bizType=='1'){
+					this.taskDetailVisible=true
+				}else if(row.bizType=='2'){
+					this.bugDetailVisible=true
+				}else if(this.bizType=='3'){
+					this.caseDetailVisible=true
+				}else if(this.bizType=='4'){
+					this.planCaseDetailVisible=true
+				}else if(this.bizType=='5'){
+					this.menuDetailVisible=true
+				}
+			}, 
 
 		},//end methods
 		mounted() {
