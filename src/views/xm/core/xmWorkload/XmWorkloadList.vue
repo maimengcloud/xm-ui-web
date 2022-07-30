@@ -364,6 +364,7 @@
 				this.editFormBak={...this.editForm}
             },
 			goToBizDetail(row){
+				this.editForm=row
 				if(row.bizType=='1'){
 					this.taskDetailVisible=true
 				}else if(row.bizType=='2'){
