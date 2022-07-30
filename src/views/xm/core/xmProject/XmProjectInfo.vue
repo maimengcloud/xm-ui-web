@@ -140,7 +140,7 @@
             ><i class="el-icon-s-home"></i></span
           >
         </el-menu-item> 
-        <el-menu-item index="上一页" class="hidden-md-and-down"  @click.native="goBack">
+        <el-menu-item index="上一页" class="hidden-lg-and-down"  @click.native="goBack">
           <span slot="title"
             ><i class="el-icon-back"></i></span
           >

@@ -121,7 +121,7 @@
         <el-menu-item index="效能">
           <span slot="title"><i class="el-icon-s-data"></i>效能</span>
         </el-menu-item>
-        <el-submenu index="知识" class="hidden-md-and-down">
+        <el-submenu index="知识" class="hidden-lg-and-down">
           <template slot="title">知识</template>
 
           <el-menu-item index="wiki">
@@ -181,7 +181,7 @@
             ><i class="el-icon-s-home"></i></span
           >
         </el-menu-item> 
-        <el-menu-item index="上一页" class="hidden-md-and-down"  @click.native="goBack">
+        <el-menu-item index="上一页" class="hidden-lg-and-down"  @click.native="goBack">
           <span slot="title"
             ><i class="el-icon-back"></i></span
           >
