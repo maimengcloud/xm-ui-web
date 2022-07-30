@@ -136,8 +136,6 @@
       <el-dialog title="选择新的上级计划" append-to-body :visible.sync="selectParentTaskVisible" width="60%" top="20px">
         <xm-phase-select :sel-project="{id:this.linkProjectId,name:''}"   @select="onSelectedParentTask"></xm-phase-select>
       </el-dialog>
- 			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="linkProjectId?{id:linkProjectId}:null" :xm-product="parentXmMenu?{id:parentXmMenu.productId}:null" @user-confirm="selectCreateUserConfirm">
-			</xm-group-dialog>  
       <xm-workload-record-dialog ref="workloadRecordDialog" @submi="afterWorkloadSubmit" @edit-xm-task-some-fields="onEditXmTaskSomeFields" @submit="onWorkloadSubmit"></xm-workload-record-dialog>
     </el-row> 
 </template>

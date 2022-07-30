@@ -17,7 +17,7 @@
 		watch:{
 			 'visible':function(){
 				if(this.visible){
-					if(this.reload){ 
+					if(this.reload&&this.xmTask && this.xmTask.id){ 
 						this.getTask(this.xmTask.id)
 					}else{
 						this.xmTaskDb=this.xmTask
@@ -39,6 +39,7 @@
 		methods: { 
 			  
 			 getTask(id){
+				debugger;
 				if(!id){
 					this.xmTaskDb=null
 					return;
@@ -60,12 +61,9 @@
 			//在下面添加其它组件
 		},  
 		mounted() {  
-			  if(this.reload){
-
+			  if(this.reload&&this.visible&&this.xmTask && this.xmTask.id){
 					this.getTask(this.xmTask.id)
-				}else{
-					this.xmTaskDb=this.xmTask
-				}
+				} 
 		}
 	}
 </script>
