@@ -967,7 +967,8 @@
 .el-menu--horizontal>.el-submenu .el-submenu__title:hover{
 	background-color: transparent;
 }
-.project-card{
+.project-card{ 
+	cursor: pointer;
 	font-size: 12px;
 	color: #999;
 	margin: 10px 12px;
