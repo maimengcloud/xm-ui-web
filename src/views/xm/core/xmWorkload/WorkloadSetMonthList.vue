@@ -24,7 +24,7 @@
             ></xm-project-select>
           </el-form-item>
           <el-form-item label="人员编号" v-if="queryScope !== 'my'">
-            <el-input v-model="filters.userid"></el-input>
+              <mdp-select-user-xm :clearable="true" label="选择人员" v-model="filters" userid-key="userid" username-key="username" :project-id="filters.project?filters.project.id:null"></mdp-select-user-xm>
           </el-form-item>
 
           <el-form-item label="任务编号编号">
@@ -254,6 +254,7 @@ export default {
   components: {
     XmProjectSelect,
     XmWorkloadSimpleListForBizDate,
+    "mdp-select-user-xm":()=>import("@/views/xm/core/components/MdpSelectUserXm/index")
   },
   props: ["xmProduct", "xmProject", "queryScope"],
   computed: {
@@ -310,6 +311,7 @@ export default {
         startBizDate: "",
         endBizDate: "",
         userid: "",
+        username:'',
         taskId: "",
       },
       dicts: {}, //下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
