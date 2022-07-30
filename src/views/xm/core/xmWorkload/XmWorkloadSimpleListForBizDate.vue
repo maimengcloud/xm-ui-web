@@ -3,7 +3,11 @@
 		<el-row class="padding-top"> 
 			<el-table ref="xmWorkloadTable" :max-height="maxTableHeight" :data="xmWorkloads" :row-style="{height:'50px'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip></el-table-column>
- 				<el-table-column prop="username" label="姓名" width="120" show-overflow-tooltip></el-table-column>
+ 				<el-table-column prop="username" label="姓名" width="120" show-overflow-tooltip> 
+					<template slot-scope="scope">
+						<el-link @click="queryUserWorkload(scope.row)">{{scope.row.username}}</el-link>
+					</template>
+				</el-table-column>
 				<el-table-column prop="bizDate" label="登记日期" width="120" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="workload" label="登记工时" width="120" show-overflow-tooltip></el-table-column>
  				<el-table-column prop="wstatus" label="确认状态" width="120" show-overflow-tooltip>
@@ -72,6 +76,11 @@
 		<el-dialog title="需求明细" :visible.sync="menuDetailVisible" width="90%" top="20px" append-to-body>
 			<xm-menu-detail :visible="menuDetailVisible" :xm-menu="{id:editForm.menuId,name:editForm.bizName}" :reload="true"></xm-menu-detail>
 		</el-dialog>
+		
+		<el-dialog :title="'【'+editForm.username+'】在项目【'+editForm.projectId+'】的工时记录情况'" :visible.sync="userWorkloadDayListVisible" width="90%" top="20px" append-to-body>
+			<workload-set-day-list :xm-project="{id:editForm.projectId}" :user="{userid:editForm.userid,username:editForm.username}"></workload-set-day-list>
+		</el-dialog>
+			
 	</section>
 </template>
 
@@ -94,6 +103,7 @@
 			"xm-test-case-detail":()=>import("../xmTestCase/XmTestCaseDetail"),
 			"xm-test-plan-case-detail":()=>import("../xmTestPlanCase/XmTestPlanCaseDetail"),
 			"xm-menu-detail":()=>import("../xmMenu/XmMenuDetail"),
+			"workload-set-day-list":()=>import("./WorkloadSetDayList"),
 		},
 		props:[ 'visible','wstatus','sstatus','bizDate','projectId','userid','taskId','bizMonth','detailId','sbillId'],
 		computed: {
@@ -147,6 +157,8 @@
 				caseDetailVisible:false,
 				planCaseDetailVisible:false,
 				menuDetailVisible:false, 
+
+				userWorkloadDayListVisible:false,
 			}
 		},//end data
 		methods: {
@@ -398,6 +410,10 @@
 				}else if(this.bizType=='5'){
 					this.menuDetailVisible=true
 				}
+			}, 
+			queryUserWorkload(row){
+				this.editForm=row 
+				this.userWorkloadDayListVisible=true;
 			}
 
 		},//end methods

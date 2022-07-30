@@ -1,11 +1,11 @@
 <template>
 	<section>
-        <el-dialog :title="(filters.project?'【'+filters.project.name+'】':'')+'结算工时按日分布趋势图'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
+        <el-dialog :title="(filters.project?'【'+(filters.project.name?filters.project.name:filters.project.id)+'】':'')+'结算工时按日分布趋势图'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
  
 			<el-row :gutter="5">
 				<el-col :span="18"> 
 					<div> 
-						<div class="main" id="projectWorkloadSetDayList" style="width:100%;height:600px;margin:0 auto;"></div> 
+						<div class="main" :id="id" style="width:100%;height:600px;margin:0 auto;"></div> 
 					</div>
 				</el-col>
 				<el-col :span="6" class="border padding">
@@ -36,6 +36,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
+	import seq from '@/common/js/sequence';//全局公共库
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询  
 	import { mapGetters } from 'vuex'	 
 	
@@ -66,7 +67,7 @@
 			
         }, 
 		watch: {  
-			dataSetCpd(){ 
+			dataSetCpd(){  
 				this.$nextTick(()=>{
 					this.drawCharts();
 				})
@@ -91,6 +92,7 @@
                 maxTableHeight:300, 
                 visible:false,
 				xmProjectWorkloadSetDays:[],
+				id:seq.sn(),
 
 			}//end return
 		},//end data
@@ -121,8 +123,7 @@
 				this.filters.product=params.xmProduct
 				this.filters.project=params.xmProject
 				this.filters.iteration=params.xmIteration
-				this.xmProjectWorkloadSetDays=[]
-				
+				this.xmProjectWorkloadSetDays=[] 
 				this.$nextTick(()=>{
 					if(this.$refs['xmProjectSelect'])this.$refs['xmProjectSelect'].clearSelect();
 					this.listProjectWorkloadSetDay();
@@ -130,7 +131,7 @@
 				
 			},
 			drawCharts() {
-				this.myChart = this.$echarts.init(document.getElementById("projectWorkloadSetDayList")); 
+				this.myChart = this.$echarts.init(document.getElementById(this.id)); 
 				var that=this;
 				this.myChart.on('updateAxisPointer', function (event) {
 					const xAxisInfo = event.axesInfo[0];

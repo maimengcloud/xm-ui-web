@@ -5,7 +5,7 @@
         <div>
           <div
             class="main"
-            id="projectWorkloadSetDayList"
+            :id="id"
             style="width: 100%; height: 600px; margin: 0 auto"
           ></div>
         </div>
@@ -23,7 +23,7 @@
               @clear="onProjectClear"
             ></xm-project-select>
           </el-form-item>
-          <el-form-item label="人员编号" v-if="queryScope !== 'my'">
+          <el-form-item label="人员编号" v-if="queryScope !== 'my' && (!user|| !user.userid)">
             <el-input v-model="filters.userid"></el-input>
           </el-form-item>
 
@@ -244,6 +244,7 @@
 
 <script>
 import util from "@/common/js/util"; //全局公共库
+import seq from '@/common/js/sequence';//全局公共库
 import { initSimpleDicts } from "@/api/mdp/meta/item"; //下拉框数据查询
 import { mapGetters } from "vuex";
 
@@ -255,7 +256,7 @@ export default {
     XmProjectSelect,
     XmWorkloadSimpleListForBizDate,
   },
-  props: ["xmProduct", "xmProject", "queryScope"],
+  props: ["xmProduct", "xmProject", "queryScope",'user'],
   computed: {
     ...mapGetters(["userInfo", "roles"]),
     dataSetCpd() {
@@ -340,6 +341,7 @@ export default {
         hadCommitSworkload: "已提交待审核",
         hadSetSworkload: "已结算",
       },
+      id:seq.sn(),
     }; //end return
   }, //end data
   methods: {
@@ -358,6 +360,9 @@ export default {
       }
       if (this.filters.taskId) {
         params.taskId = this.filters.taskId;
+      }
+      if(this.user && this.user.userid){
+       params.userid = this.user.userid;
       }
       this.load.list = true;
       listProjectWorkloadSetDay(params).then((res) => {
@@ -383,7 +388,7 @@ export default {
     },
     drawCharts() {
       this.myChart = this.$echarts.init(
-        document.getElementById("projectWorkloadSetDayList")
+        document.getElementById(this.id)
       );
       var that = this;
       this.myChart.on("updateAxisPointer", function (event) {

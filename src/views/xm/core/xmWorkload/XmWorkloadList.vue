@@ -12,7 +12,11 @@
 			<!--列表 XmWorkload 工时登记表-->
 			<el-table ref="xmWorkloadTable" :data="xmWorkloads"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip></el-table-column>
- 				<el-table-column prop="username" label="姓名" min-width="80" show-overflow-tooltip></el-table-column>
+ 				<el-table-column prop="username" label="姓名" min-width="80" show-overflow-tooltip>
+					<template slot-scope="scope">
+						<el-link @click="queryUserWorkload(scope.row)">{{scope.row.username}}</el-link>
+					</template>
+				</el-table-column>
 				<el-table-column prop="bizDate" label="报送日期" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="workload" label="报送工时" min-width="80" show-overflow-tooltip></el-table-column>
  				<el-table-column prop="wstatus" label="状态" min-width="80" show-overflow-tooltip>
@@ -63,6 +67,10 @@
 		<el-dialog title="需求明细" :visible.sync="menuDetailVisible" width="90%" top="20px" append-to-body>
 			<xm-menu-detail :visible="menuDetailVisible" :xm-menu="{id:editForm.menuId,name:editForm.bizName}" :reload="true"></xm-menu-detail>
 		</el-dialog>
+
+		<el-dialog :title="'【'+editForm.username+'】在项目【'+editForm.projectId+'】的工时记录情况'" :visible.sync="userWorkloadDayListVisible" width="90%" top="20px" append-to-body>
+				<workload-set-day-list :xm-project="{id:editForm.projectId}" :user="{userid:editForm.userid,username:editForm.username}"></workload-set-day-list>
+			</el-dialog>
 	    </el-row>
 	</section>
 </template>
@@ -85,6 +93,7 @@
 			"xm-test-case-detail":()=>import("../xmTestCase/XmTestCaseDetail"),
 			"xm-test-plan-case-detail":()=>import("../xmTestPlanCase/XmTestPlanCaseDetail"),
 			"xm-menu-detail":()=>import("../xmMenu/XmMenuDetail"),
+			"project-workload-set-day-list":()=>import("../../rpt/project/projectWorkloadSetDayList")
 		},
 		props:['xmTask','visible','bizType'/*报工类型1-任务，2-缺陷，3-测试用例设计，4-测试执行 */,
 		'xmMenu','xmTestCase','xmQuestion','xmTestPlanCase'],
@@ -188,6 +197,8 @@
 				caseDetailVisible:false,
 				planCaseDetailVisible:false,
 				menuDetailVisible:false, 
+
+				userWorkloadDayListVisible:false,
 			}
 		},//end data
 		methods: {
@@ -382,6 +393,10 @@
 				}else if(this.bizType=='5'){
 					this.menuDetailVisible=true
 				}
+			}, 
+			queryUserWorkload(row){
+				this.editForm=row
+				this.userWorkloadDayListVisible=true;
 			}
 
 		},//end methods
