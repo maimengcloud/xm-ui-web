@@ -14,7 +14,8 @@
 							 <xm-project-select  v-if="!xmProject"  ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProjectSelected"   @clear="onProjectClear"></xm-project-select>
   					</el-form-item>  
 					<el-form-item label="人员编号">
-							<el-input v-model="filters.userid"></el-input>
+						<mdp-select-user-xm label="选择人员" :clearable="true" v-model="filters" userid-key="userid" username-key="username" :project-id="filters.project?filters.project.id:null"></mdp-select-user-xm>
+
   					</el-form-item>  
 					  
 					<el-form-item label="任务编号编号">
@@ -45,7 +46,8 @@
 	export default { 
         
 		components: {  
-			XmProjectSelect, 
+			XmProjectSelect,
+    		"mdp-select-user-xm":()=>import("@/views/xm/core/components/MdpSelectUserXm/index")
 		},
         props:['xmProduct','xmProject'],
 		computed: {
