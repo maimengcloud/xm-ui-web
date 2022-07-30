@@ -1,6 +1,6 @@
 <template>
 	<section>
-		 <xm-question-edit v-if="xmQuestionDb" :xm-question="xmQuestionDb"  :visible="showInfo"></xm-question-edit>
+		 <xm-question-edit v-load="load.list" v-if="xmQuestionDb" :xm-question="xmQuestionDb"  :visible="showInfo"></xm-question-edit>
 	</section>
 </template>
 
@@ -33,6 +33,7 @@
 		},
 		data() {
 			return { 
+				load:{list:false},
 				 xmQuestionDb:null,
 				 showInfo:false,
 			}
@@ -40,7 +41,11 @@
 		methods: { 
 			  
 			 getXmQuestion(id){
+				
+					this.load.list=true;
 				 listXmQuestion({id:id}).then(res=>{
+					
+					this.load.list=false;
 					 var tips = res.data.tips;
 					 if(tips.isOk){
 						 this.xmQuestionDb=res.data.data[0]

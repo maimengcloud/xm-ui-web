@@ -1,5 +1,5 @@
 <template>
- 	<xm-test-plan-case-edit v-if="xmTestPlanCaseDb&&xmTestPlanCaseDb.caseId && showInfo" :xm-test-case="xmTestPlanCaseDb"  :visible="showInfo"></xm-test-plan-case-edit>
+ 	<xm-test-plan-case-edit v-loading="load.list" v-if="xmTestPlanCaseDb&&xmTestPlanCaseDb.caseId && showInfo" :xm-test-case="xmTestPlanCaseDb"  :visible="showInfo"></xm-test-plan-case-edit>
  </template>
 
 <script> 
@@ -32,6 +32,7 @@
 		},
 		data() {
 			return { 
+				load:{list:false},
 				 xmTestPlanCaseDb:null, 
 				 showInfo:false,
 			}
@@ -43,7 +44,11 @@
 					this.xmTestPlanCaseDb=null
 					return;
 				}
+				
+					this.load.list=true;
 				 listXmTestPlanCase({planId:planId,caseId:caseId}).then(res=>{
+					
+					this.load.list=false;
 					 var tips = res.data.tips;
 					 if(tips.isOk){
 						 this.xmTestPlanCaseDb=res.data.data[0] 

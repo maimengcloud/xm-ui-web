@@ -1,5 +1,5 @@
 <template> 
-	<xm-menu-edit v-if="xmMenu" :xm-menu="xmMenu" :reload="reload" :visible="xmMenu&&xmMenu.menuId"></xm-menu-edit> 
+	<xm-menu-edit v-loading="load.list" v-if="xmMenu" :xm-menu="xmMenu" :reload="reload" :visible="xmMenu&&xmMenu.menuId"></xm-menu-edit> 
 </template>
 
 <script>    
@@ -7,7 +7,7 @@
 		props:['xmMenu','reload'],  
 		data() {
 			 return {
-				
+				load:{list:false}
 			 }
 		},//end data
 		methods: { 

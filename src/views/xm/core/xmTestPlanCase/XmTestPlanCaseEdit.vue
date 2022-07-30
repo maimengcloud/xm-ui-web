@@ -133,7 +133,7 @@
 						</el-row>
 					</el-tab-pane>
 					
-					<el-tab-pane label="工时" name="55"> 
+					<el-tab-pane :label="'工时( '+(editForm.actWorkload?editForm.actWorkload:0)+' / '+(editForm.budgetWorkload?editForm.budgetWorkload:0)+' h )'" name="55"> 
 						<xm-workload-record v-if="activateName=='55'" biz-type="4" :xm-test-plan-case="editForm" ></xm-workload-record>
 					</el-tab-pane>
 					<el-tab-pane name="4" label="附件">

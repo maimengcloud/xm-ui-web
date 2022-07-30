@@ -262,7 +262,7 @@
 						</el-row>
 					</el-tab-pane>
 					
-					<el-tab-pane :label="'工时( '+editForm.actWorkload+' / '+editForm.budgetWorkload+' h )'" name="5"> 
+					<el-tab-pane :label="'工时( '+(editForm.actWorkload?editForm.actWorkload:0)+' / '+(editForm.budgetWorkload?editForm.budgetWorkload:0)+' h )'" name="5"> 
 						 <xm-workload-record v-if="activateTabPaneName=='5'" biz-type="1" :xm-task="editForm" ></xm-workload-record>
 					</el-tab-pane>
 					<el-tab-pane label="预算金额" name="6"> 

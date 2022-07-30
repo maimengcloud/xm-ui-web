@@ -1,5 +1,5 @@
 <template>
- 	<xm-test-case-edit v-if="xmTestCaseDb&&xmTestCaseDb.id && showInfo" :xm-test-case="xmTestCaseDb"  :visible="showInfo"></xm-test-case-edit>
+ 	<xm-test-case-edit v-load="load.list" v-if="xmTestCaseDb&&xmTestCaseDb.id && showInfo" :xm-test-case="xmTestCaseDb"  :visible="showInfo"></xm-test-case-edit>
  </template>
 
 <script> 
@@ -32,6 +32,7 @@
 		},
 		data() {
 			return { 
+				load:{list:false},
 				 xmTestCaseDb:null, 
 				 showInfo:false,
 			}
@@ -43,7 +44,9 @@
 					this.xmTestCaseDb=null
 					return;
 				}
-				 listXmTestCase({id:id}).then(res=>{
+				this.load.list=true;
+				 listXmTestCase({id:id}).then(res=>{ 
+					this.load.list=false;
 					 var tips = res.data.tips;
 					 if(tips.isOk){
 						 this.xmTestCaseDb=res.data.data[0] 

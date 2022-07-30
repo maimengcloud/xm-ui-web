@@ -88,7 +88,7 @@
 								<xm-test-plan-case-mng :xm-test-casedb="xmTestCasedb" :xm-test-case="editForm" v-if="activeTab=='3'"></xm-test-plan-case-mng>
 							</el-tab-pane>
 							
-							<el-tab-pane label="工时" name="55"> 
+							<el-tab-pane :label="'工时( '+(editForm.actWorkload?editForm.actWorkload:0)+' / '+(editForm.budgetWorkload?editForm.budgetWorkload:0)+' h )'" name="55"> 
 								<xm-workload-record v-if="activeTab=='55'" biz-type="3" :xm-test-case="editForm" ></xm-workload-record>
 							</el-tab-pane>
 							<el-tab-pane name="4" label="日志" v-if="opType!=='add'"></el-tab-pane>

@@ -75,7 +75,7 @@
 		    XmWorkloadEdit,
 			
 			"xm-task-detail":()=>import("../xmTask/XmTaskDetail"),
-			"xm-question-detail":()=>import("../xmQuestion/XmQuestionMng"),
+			"xm-question-detail":()=>import("../xmQuestion/XmQuestionDetail"),
 			"xm-test-case-detail":()=>import("../xmTestCase/XmTestCaseDetail"),
 			"xm-test-plan-case-detail":()=>import("../xmTestPlanCase/XmTestPlanCaseDetail"),
 			"xm-menu-detail":()=>import("../xmMenu/XmMenuDetail"),

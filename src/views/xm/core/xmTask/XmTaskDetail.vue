@@ -1,5 +1,5 @@
 <template>
- 	<xm-task-edit v-if="xmTaskDb&&xmTaskDb.id && showInfo" :xm-task="xmTaskDb"  :visible="showInfo"></xm-task-edit>
+ 	<xm-task-edit v-loading="load.list" v-if="xmTaskDb&&xmTaskDb.id && showInfo" :xm-task="xmTaskDb"  :visible="showInfo"></xm-task-edit>
  </template>
 
 <script> 
@@ -32,19 +32,24 @@
 		},
 		data() {
 			return { 
+				load:{list:false},
 				 xmTaskDb:null, 
 				 showInfo:false,
 			}
 		},//end data
 		methods: { 
 			  
-			 getTask(id){
-				debugger;
+			 getTask(id){ 
+
 				if(!id){
 					this.xmTaskDb=null
 					return;
 				}
+				
+					this.load.list=true;
 				 listXmTask({id:id}).then(res=>{
+					
+					this.load.list=false;
 					 var tips = res.data.tips;
 					 if(tips.isOk){
 						 this.xmTaskDb=res.data.data[0] 
