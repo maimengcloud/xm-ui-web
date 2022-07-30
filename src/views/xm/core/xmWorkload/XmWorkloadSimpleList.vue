@@ -42,13 +42,17 @@
 						</span>
 					 </template>
 				 </el-table-column>
-				<el-table-column prop="remark" label="备注" width="120" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="ttype" label="任务类型" width="80" show-overflow-tooltip>
-					 <template slot-scope="scope">
-						<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'taskType',scope.row.ttype)" :key="index" :type="item.className">{{item.name}}</el-tag>
-					 </template>
-
-				</el-table-column>
+				<el-table-column prop="bizType" label="报工类型" width="120" show-overflow-tooltip>
+					<template slot-scope="scope">
+						<mdp-select-dict-tag :disabled="true" v-model="scope.row.bizType" :dict="dicts['wlBizType']"></mdp-select-dict-tag>
+					</template> 
+				</el-table-column> 
+				<el-table-column prop="bizName" label="报工业务" width="120" show-overflow-tooltip>
+					<template slot-scope="scope">
+						<el-link @click="openDialog(scope.row)">{{scope.row.bizName}}</el-link>
+					</template>
+				</el-table-column> 
+				<el-table-column prop="remark" label="报工备注" width="120" show-overflow-tooltip></el-table-column>  
 
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
@@ -58,6 +62,27 @@
 			<!--新增 XmWorkload 工时登记表界面-->
 			<el-dialog :title="'任务【'+xmTask.name+'】新增工时'" :visible.sync="addFormVisible"  width="60%" top="20px"  append-to-body  :close-on-click-modal="false">
 				<xm-workload-edit op-type="add" :xm-task="xmTask" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-workload-edit>
+			</el-dialog>
+
+			
+			<el-dialog title="任务明细" :visible.sync="taskDetailVisible" width="90%" top="20px" append-to-body>
+				<xm-task-detail :visible="taskDetailVisible" :xm-task="{id:editForm.taskId,name:editForm.bizName}" :reload="true"></xm-task-detail>
+			</el-dialog>
+			
+			<el-dialog title="缺陷明细" :visible.sync="bugDetailVisible" width="90%" top="20px" append-to-body>
+				<xm-question-detail :visible="bugDetailVisible" :xm-question="{id:editForm.bugId,name:editForm.bizName}" :reload="true"></xm-question-detail>
+			</el-dialog>
+			
+			<el-dialog title="测试用例明细" :visible.sync="caseDetailVisible" width="90%" top="20px" append-to-body>
+				<xm-test-case-detail :visible="caseDetailVisible" :xm-test-case="{id:editForm.caseId,name:editForm.bizName}" :reload="true"></xm-test-case-detail>
+			</el-dialog>
+			
+			<el-dialog title="执行用例明细" :visible.sync="planCaseDetailVisible" width="90%" top="20px" append-to-body>
+				<xm-test-plan-case-detail :visible="planCaseDetailVisible" :xm-plan-test-case="{planId:editForm.planId,caseId:editForm.caseId,name:editForm.bizName}" :reload="true"></xm-test-plan-case-detail>
+			</el-dialog>
+			
+			<el-dialog title="需求明细" :visible.sync="menuDetailVisible" width="90%" top="20px" append-to-body>
+				<xm-menu-detail :visible="menuDetailVisible" :xm-menu="{id:editForm.menuId,name:editForm.bizName}" :reload="true"></xm-menu-detail>
 			</el-dialog>
 	    </el-row>
 	</section>
@@ -74,7 +99,12 @@
 	export default {
 	    name:'xmWorkloadSimpleList',
 		components: {
-		    XmWorkloadEdit,
+		    XmWorkloadEdit, 
+			"xm-task-detail":()=>import("../xmTask/XmTaskDetail"),
+			"xm-question-detail":()=>import("../xmQuestion/XmQuestionDetail"),
+			"xm-test-case-detail":()=>import("../xmTestCase/XmTestCaseDetail"),
+			"xm-test-plan-case-detail":()=>import("../xmTestPlanCase/XmTestPlanCaseDetail"),
+			"xm-menu-detail":()=>import("../xmMenu/XmMenuDetail"),
 		},
 		props:['xmTask','visible','userid','wstatus','sstatus'],
 		computed: {
@@ -311,8 +341,21 @@
 			},
             initData: function(){
 
-            },
-
+            }, 
+			openDialog(row){
+				this.editForm=row
+				if(row.bizType=='1'){
+					this.taskDetailVisible=true
+				}else if(row.bizType=='2'){
+					this.bugDetailVisible=true
+				}else if(this.bizType=='3'){
+					this.caseDetailVisible=true
+				}else if(this.bizType=='4'){
+					this.planCaseDetailVisible=true
+				}else if(this.bizType=='5'){
+					this.menuDetailVisible=true
+				}
+			}
 		},//end methods
 		mounted() {
 			this.$nextTick(() => { 

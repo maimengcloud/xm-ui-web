@@ -37,10 +37,10 @@
 				</el-table-column> 
 				<el-table-column prop="bizName" label="报工业务" width="120" show-overflow-tooltip>
 					<template slot-scope="scope">
-						<el-link @click="openDialog(scope.row)"></el-link>
+						<el-link @click="openDialog(scope.row)">{{scope.row.bizName}}</el-link>
 					</template>
 				</el-table-column> 
-				<el-table-column prop="remark" label="报工备注" width="120" show-overflow-tooltip></el-table-column> 
+				<el-table-column prop="remark" label="报工备注" width="120" show-overflow-tooltip></el-table-column>  
  				<el-table-column fixed="right" label="操作" min-width="120">
 					<template slot-scope="scope">
                				<xm-task-sbill-select style="display:inline;"  :auto-select="false"  :project-id="scope.row.projectId"    placeholder="结算"  @row-click="batchJoinToSbill(scope.row,$event)">
