@@ -1,6 +1,6 @@
 <template>
 	<section>
-        <el-dialog :title="(	filters.iteration?'【'+filters.iteration.iterationName+'】':'')+'迭代燃尽图'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
+        <el-dialog fullscreen :title="(	filters.iteration?'【'+filters.iteration.iterationName+'】':'')+'迭代燃尽图'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
 			
 			 
 			<el-row :gutter="5">

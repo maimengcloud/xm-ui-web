@@ -1,6 +1,6 @@
 <template>
 	<section>
-        <el-dialog :title="(filters.project?'【'+filters.project.name+'】':'')+'任务属性分布'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
+        <el-dialog fullscreen :title="(filters.project?'【'+filters.project.name+'】':'')+'任务属性分布'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
 			<el-row :gutter="5">
 				<el-col :span="18"> 
 					<div>
