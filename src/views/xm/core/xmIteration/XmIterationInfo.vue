@@ -58,17 +58,20 @@
         </el-menu-item>
         <el-menu-item index="效能">
           <span slot="title"><i class="el-icon-s-data"></i>效能</span>
-        </el-menu-item>
-        <el-menu-item index="首页" @click.native="goHome">
-          <span slot="title"
-            ><i class="el-icon-s-home"></i></span
-          >
         </el-menu-item> 
-        <el-menu-item index="上一页" class="hidden-md-and-down"  @click.native="goBack">
-          <span slot="title"
-            ><i class="el-icon-back"></i></span
-          >
-        </el-menu-item> 
+        <el-submenu index="回退">
+          <template slot="title"><i class="el-icon-back"></i>回退</template>
+           <el-menu-item index="上一页"  @click.native="goBack">
+              <span slot="title"
+                ><i class="el-icon-back"></i>上一页</span
+              >
+            </el-menu-item> 
+            <el-menu-item index="首页" @click.native="goHome">
+              <span slot="title"
+                ><i class="el-icon-s-home"></i>首页</span
+              >
+            </el-menu-item> 
+        </el-submenu>
       </el-menu>
     </el-row>
     <el-row ref="pageMainRef">
