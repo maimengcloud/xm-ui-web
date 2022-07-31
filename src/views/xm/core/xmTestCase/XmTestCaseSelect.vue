@@ -28,8 +28,7 @@
                             <span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
                         </el-table-column>
                         -->
-                        <el-table-column prop="id" label="编号" width="120" show-overflow-tooltip  fixed="left"></el-table-column>
-                        <el-table-column prop="caseName" label="标题" min-width="250" show-overflow-tooltip>
+                         <el-table-column prop="caseName" label="标题" min-width="250" show-overflow-tooltip>
                             <template slot-scope="scope">
                                 <span><el-link @click="showEdit(scope.row)"> {{scope.row.caseName}} </el-link></span>
                             </template>
