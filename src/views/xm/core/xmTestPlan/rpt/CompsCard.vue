@@ -52,6 +52,10 @@ import { mapGetters } from 'vuex'
 import XmTestPlanMng from '@/views/xm/core/xmTestPlan/XmTestPlanMng'
 import CompsSet from '@/views/xm/core/xmTestPlan/rpt/CompsSet'
 import XmQuestionAgeDist from '@/views/xm/core/xmTestPlan/rpt/biz/questionAgeDist'
+import xmQuestionDayTrend from '@/views/xm/core/xmTestPlan/rpt/biz/questionDayTrend'
+import xmQuestionDayAccumulate from '@/views/xm/core/xmTestPlan/rpt/biz/questionDayAccumulate'
+import xmQuestionAttDist from '@/views/xm/core/xmTestPlan/rpt/biz/questionAttDist' 
+import xmQuestionSort from '@/views/xm/core/xmTestPlan/rpt/biz/questionSort'
 
 import { initDicts,listXmRptConfig, delXmRptConfig, batchDelXmRptConfig,editSomeFieldsXmRptConfig } from '@/api/xm/core/xmRptConfig';
 
@@ -61,6 +65,10 @@ export default {
         GridItem: VueGridLayout.GridItem,
         XmTestPlanMng,
         XmQuestionAgeDist,
+        xmQuestionDayTrend,
+        xmQuestionDayAccumulate,
+        xmQuestionAttDist,
+        xmQuestionSort,
         CompsSet,
 
     },
@@ -87,48 +95,19 @@ export default {
             maxTableHeight:300,
             // 布局位置数据
             layout: [
-                 { 
-                    // x: (this.layout.length * 6) % (this.layoutColNum || 12),
-                    x: 0,
-                    // y: this.layout.length + (this.layoutColNum || 12),
-                    y: 12,
-                    w: 12,
-                    h: 4,
-                    i: 0,
-                    compId:'xm-test-plan-mng', 
-                },
-                { 
-                    // x: (this.layout.length * 6) % (this.layoutColNum || 12),
-                    x: 0,
-                    // y: this.layout.length + (this.layoutColNum || 12),
-                    y: 12,
-                    w: 12,
-                    h: 4,
-                    i: 1,
-                    compId:'xm-question-age-dist', 
-                }
+                 {   i: 0, x: 0,  y: 12,  w: 12, h: 4, compId:'XmQuestionAgeDist',  },
+                 {   i: 1, x: 0,  y: 12,  w: 12, h: 4, compId:'xmQuestionDayTrend',  },
+                 {   i: 2, x: 0,  y: 12,  w: 12, h: 4, compId:'xmQuestionDayAccumulate',  },
+                 {   i: 3, x: 0,  y: 12,  w: 12, h: 4, compId:'xmQuestionAttDist',  },
+                 {   i: 4, x: 0,  y: 12,  w: 12, h: 4, compId:'xmQuestionSort',  }, 
+                 
             ],
             // 布局列数
             layoutColNum: 12, 
         }
     },
 
-    methods: { 
-        addItem: function(element, index) {
-            this.layout.push(
-                {
-                    ...element,
-                    // x: (this.layout.length * 6) % (this.layoutColNum || 12),
-                    x: 0,
-                    // y: this.layout.length + (this.layoutColNum || 12),
-                    y: 12,
-                    w: 12,
-                    h: 4,
-                    i: index,
-                    compId:'xm-test-plan-mng', 
-                }
-            )
-        },
+    methods: {  
         getXmRptConfig(){
             if(!this.bizId){
                 return;
