@@ -13,7 +13,7 @@
                      <el-link :type="subPage=='testPlanCase'?'primary':''" @click="subPage='testPlanCase'"><i class="el-icon-video-play"></i>&nbsp;执行测试</el-link>
                      <el-divider direction="vertical"></el-divider>
                      <el-link :type="subPage=='testBug'?'primary':''"  @click="subPage='testBug'"><i class="el-icon-question"></i>&nbsp;缺陷</el-link>
-                     
+
                     <el-divider direction="vertical"> 
                     </el-divider>
                         <el-link :type="subPage=='testRpt'?'primary':''"  @click="subPage='testRpt'"><span><i class="el-icon-pie-chart"></i>&nbsp;报告</span></el-link>
@@ -24,8 +24,10 @@
                            <div style="display:inline-flex"><el-progress  style="width:100px;" :stroke-width="22" :text-inside="true"  :status="calcYiCeshiCases>0 && xmTestPlan.errCases<=0 ?'success':'exception'" :percentage="calcProgress"></el-progress>
                            </div>
                         </span>
+                        <span v-if="subPage=='testRpt'">
                         <el-divider direction="vertical"></el-divider>
-
+                        <el-button @click="showRptConfig">配置报告</el-button>
+                        </span>
                      </span>
                 </el-row> 
                 
@@ -37,7 +39,7 @@
                 </el-row>
                 
                 <el-row v-if="subPage=='testRpt'">
-                     <xm-test-plan-rpt   :xm-test-plan="xmTestPlan"></xm-test-plan-rpt >
+                     <xm-test-plan-rpt  ref="rpt" :xm-test-plan="xmTestPlan"></xm-test-plan-rpt >
                 </el-row>
             </el-row> 
             <xm-test-plan-mng v-else @select="onTestPlanSelect" :xm-test-casedb="xmTestCasedb"> </xm-test-plan-mng>
@@ -133,6 +135,9 @@ export default {
         onTestPlanSelect(row){
             this.activeIndex='testPlanCase'
             this.xmTestPlan=row
+        },
+        showRptConfig(){
+            this.$refs['rpt'].rptConfigVisible=true
         }
  
     },//end methods
