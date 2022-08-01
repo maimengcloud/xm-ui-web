@@ -1,19 +1,19 @@
 <template>
 	<section>
 		<el-row class="padding">
-			<span>{{comp?comp.compName:'执行结果分布'}}</span>
+			<span>{{comp?comp.compName:'成员执行结果分布'}}</span>
 			<el-popover   trigger="manual" v-model="conditionBtnVisible" style="float:right;" width="300">  
 				<el-button slot="reference" icon="el-icon-more" @click="conditionBtnVisible=!conditionBtnVisible"></el-button> 
 					<el-form :model="filters">    
 					<el-form-item>
-						  <el-button type="primary" icon="el-icon-search" @click="searchXmTestPlanCaseResultDist">查询</el-button>
+						  <el-button type="primary" icon="el-icon-search" @click="searchXmTestPlanCaseUserDist">查询</el-button>
 					</el-form-item>  
 					</el-form> 
 			</el-popover>
 		</el-row>
 		<el-row>  
 			<div>
-				<div class="main" id="xmTestPlanCaseResultDist"
+				<div class="main" id="xmTestPlanCaseUserDist"
 					style="width:100%;height:600px;margin:0 auto;"></div>
 				<div class="progress"></div>
 			</div> 
@@ -26,7 +26,7 @@
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询  
 	import { mapGetters } from 'vuex'	 
 	  
-	import { getXmTestPlanCaseResultDist } from '@/api/xm/core/xmTestPlanCase';
+	import { getXmTestPlanCaseUserDist } from '@/api/xm/core/xmTestPlanCase';
 	
 	import  XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';//修改界面 
 	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//新增界面
@@ -41,12 +41,12 @@
 		    ...mapGetters([
 		      'userInfo','roles'
 		    ]), 
-			xmTestPlanCaseResultDistsCpd(){
-				if(this.xmTestPlanCaseResultDists.length==0){
+			xmTestPlanCaseUserDistsCpd(){
+				if(this.xmTestPlanCaseUserDists.length==0){
 					return []
 				}else{ 
 					var itemId="testPlanTcode"; 
-					return this.xmTestPlanCaseResultDists.map(i=>{
+					return this.xmTestPlanCaseUserDists.map(i=>{
 						var data={...i}
 						data.name=this.formatDict(itemId,data.name)
 						return data;
@@ -54,7 +54,7 @@
 				}
 			},
 			title(){
-				return  '执行结果数量分布'
+				return  '成员执行结果数量分布'
 			},
 			legendCpd(){
 				var itemId="testPlanTcode"; 
@@ -63,7 +63,7 @@
 			
         }, 
 		watch: {  
-			xmTestPlanCaseResultDistsCpd(){
+			xmTestPlanCaseUserDistsCpd(){
 				this.drawCharts();
 			}
 	    },
@@ -78,7 +78,7 @@
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmTestPlanCaseResultDists:[],
+				xmTestPlanCaseUserDists:[],
 				conditionBtnVisible:false,
 
 			}//end return
@@ -95,7 +95,7 @@
 				return val;
 			}, 
 			drawCharts() {
-				this.myChart = this.$echarts.init(document.getElementById("xmTestPlanCaseResultDist")); 
+				this.myChart = this.$echarts.init(document.getElementById("xmTestPlanCaseUserDist")); 
 				this.myChart.setOption(   
 					{
 						title: {
@@ -114,7 +114,7 @@
 							{
 							type: 'pie',
 							radius: '50%',
-							data: this.xmTestPlanCaseResultDistsCpd,
+							data: this.xmTestPlanCaseUserDistsCpd,
 							emphasis: {
 								itemStyle: {
 								shadowBlur: 10,
@@ -133,12 +133,12 @@
 				)
 			},
 			onXmQuestionSomeFieldsChange(fieldName,$event){
-				this.xmTestPlanCaseResultDists=[]
+				this.xmTestPlanCaseUserDists=[]
 			},
-			searchXmTestPlanCaseResultDist(){ 
+			searchXmTestPlanCaseUserDist(){ 
 				var params={...this.filters} 
-				getXmTestPlanCaseResultDist(params).then(res=>{
-					this.xmTestPlanCaseResultDists=res.data.data
+				getXmTestPlanCaseUserDist(params).then(res=>{
+					this.xmTestPlanCaseUserDists=res.data.data
 				})
 				
 			},
@@ -179,7 +179,7 @@
 				this.dicts=res.data.data;
 			}) 
 			this.initData();
-			this.searchXmTestPlanCaseResultDist();
+			this.searchXmTestPlanCaseUserDist();
 			//this.charts();
 			//this.drawCharts();
 			

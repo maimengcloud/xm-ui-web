@@ -56,7 +56,8 @@ import xmQuestionDayTrend from '@/views/xm/core/xmTestPlan/rpt/biz/questionDayTr
 import xmQuestionDayAccumulate from '@/views/xm/core/xmTestPlan/rpt/biz/questionDayAccumulate'
 import xmQuestionAttDist from '@/views/xm/core/xmTestPlan/rpt/biz/questionAttDist' 
 import xmQuestionSort from '@/views/xm/core/xmTestPlan/rpt/biz/questionSort'
-import xmTestPlanCaseResultDist from '@/views/xm/core/xmTestPlan/rpt/biz/testPlanCaseResultDist'
+import xmTestPlanCaseExecStatusDist from '@/views/xm/core/xmTestPlan/rpt/biz/testPlanCaseExecStatusDist'
+import xmTestPlanCaseUserDist from '@/views/xm/core/xmTestPlan/rpt/biz/testPlanCaseUserDist'
 
 
 import { initDicts,listXmRptConfig, delXmRptConfig, batchDelXmRptConfig,editSomeFieldsXmRptConfig } from '@/api/xm/core/xmRptConfig';
@@ -71,7 +72,8 @@ export default {
         xmQuestionDayAccumulate,
         xmQuestionAttDist,
         xmQuestionSort,
-        xmTestPlanCaseResultDist,
+        xmTestPlanCaseExecStatusDist,
+        xmTestPlanCaseUserDist,
         CompsSet,
 
     },
@@ -98,12 +100,11 @@ export default {
             maxTableHeight:300,
             // 布局位置数据
             layout: [
-                 {   i: 0, x: 0,  y: 12,  w: 12, h: 4, compId:'XmQuestionAgeDist',  },
-                 {   i: 1, x: 0,  y: 12,  w: 12, h: 4, compId:'xmQuestionDayTrend',  },
-                 {   i: 2, x: 0,  y: 12,  w: 12, h: 4, compId:'xmQuestionDayAccumulate',  },
+                 {   i: 0, x: 0,  y: 12,  w: 12, h: 4, compId:'XmQuestionAgeDist',  }, 
                  {   i: 3, x: 0,  y: 12,  w: 12, h: 4, compId:'xmQuestionAttDist',  },
                  {   i: 4, x: 0,  y: 12,  w: 12, h: 4, compId:'xmQuestionSort',  }, 
-                 {   i: 4, x: 0,  y: 12,  w: 12, h: 4, compId:'xmTestPlanCaseResultDist',  }, 
+                 {   i: 4, x: 0,  y: 12,  w: 12, h: 4, compId:'xmTestPlanCaseExecStatusDist',  }, 
+                 {   i: 4, x: 0,  y: 12,  w: 12, h: 4, compId:'xmTestPlanCaseUserDist',  }, 
                  
                  
             ],

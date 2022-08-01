@@ -15,6 +15,13 @@ let base = config.getCoreBasePath();
 //普通查询 条件之间and关系  
 export const listXmTestPlanCase = params => { return axios.get(`${base}/xm/core/xmTestPlanCase/list`, { params: params }); };
 
+//查询执行结果分布
+export const getXmTestPlanCaseExecStatusDist = params => { return axios.get(`${base}/xm/core/xmTestPlanCase/getXmTestPlanCaseExecStatusDist`, { params: params }); };
+
+//查询执行结果分布
+export const getXmTestPlanCaseUserDist = params => { return axios.get(`${base}/xm/core/xmTestPlanCase/getXmTestPlanCaseUserDist`, { params: params }); };
+
+
 //删除一条测试计划与用例关系表 params={caseId:'测试用例编号 主键',planId:'计划编号 主键'}
 export const delXmTestPlanCase = params => { return axios.post(`${base}/xm/core/xmTestPlanCase/del`,params); };
 

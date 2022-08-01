@@ -60,14 +60,14 @@ export default {
                     isChecked: false,
                 },
                 {
-                    compId: 'xmTestPlanCaseResultDist',
+                    compId: 'xmTestPlanCaseExecStatusDist',
                     icon: img3,
                     compName: '执行结果分布',
                     compDesc: '可以直接显示全部项目列表，也可根据项目状态产品筛选单条项目',
                     isChecked: false,
                 },
                 {
-                    compId: 'xmTestPlanCaseUserResultDist',
+                    compId: 'xmTestPlanCaseUserDist',
                     icon: img3,
                     compName: '成员执行结果分布',
                     compDesc: '可以直接显示全部项目列表，也可根据项目状态产品筛选单条项目',
