@@ -40,12 +40,10 @@ export default {
 
 
   mounted() {
-
+    
   }
 }
 </script>
 
-<style lang="scss" scoped>
-@import './common.scss';
-@import './index.scss';
+<style lang="scss" scoped> 
 </style>

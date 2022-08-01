@@ -1,11 +1,12 @@
 <template>
-    <el-row v-if="rptConfigVisible">
-        <el-col :span="6">
+<section>
+    <el-row v-if="rptConfigVisible"  class="page-center border">
+        <el-col :span="6" :style="{height:maxTableHeight+'px',overflow:'auto'}">
             <comps-set :comp-ids="compIds"></comps-set>
         </el-col>
-        <el-col :span="18">
+        <el-col :span="18" :style="{height:maxTableHeight+'px',overflow:'auto'}" ref="table">
             <div>
-                <div class="empty" v-if="layout.length == 0">
+                <div class="empty" v-if="layout.length == 0" >
                     <el-empty description="暂未选择模块"></el-empty>
                 </div>
                 <div v-else style="width: 100%; min-height: 800px; margin-top: 10px">
@@ -35,16 +36,17 @@
             </div>
         </el-col> 
     </el-row>
-    <el-row v-else class="page-center border">
+    <el-row v-if="rptConfigVisible==false" :style="{height:maxTableHeight+'px',overflow:'auto'}" ref="table" class="page-center border"> 
         <el-row v-for="(item,index) in layout" :key="index">
-             <component :is="item.compId"></component>
+            <component :is="item.compId"></component>
         </el-row>
-    </el-row>
-   
+    </el-row> 
+    </section>
 </template>
 
 <script>  
  
+import util from '@/common/js/util';//全局公共库
 import VueGridLayout from 'vue-grid-layout';
 import { mapGetters } from 'vuex'
 import XmTestPlanMng from '@/views/xm/core/xmTestPlan/XmTestPlanMng'
@@ -82,6 +84,7 @@ export default {
     data() {
         return {
             xmRptConfig:null,
+            maxTableHeight:300,
             // 布局位置数据
             layout: [
                  { 
@@ -140,6 +143,7 @@ export default {
     mounted() {
         this.$nextTick(() => {
              
+            this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el)
         })
     },
 
