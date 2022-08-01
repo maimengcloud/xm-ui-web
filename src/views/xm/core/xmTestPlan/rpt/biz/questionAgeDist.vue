@@ -1,16 +1,11 @@
 <template>
 	<section> 
 		<el-row class="padding">
-			<span>缺陷年龄分布</span>
+			<span>{{comp?comp.compName:'缺陷年龄数量分布'}}</span>
 			<el-popover   trigger="manual" v-model="conditionBtnVisible" style="float:right;" width="300">  
 				<el-button slot="reference" icon="el-icon-more" @click="conditionBtnVisible=!conditionBtnVisible"></el-button> 
 					<el-form :model="filters">   
-						<el-form-item label="归属产品"  v-if="!xmProduct && !xmIteration">
-							 <xm-product-select   ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
-						</el-form-item>
-						<el-form-item label="归属迭代" v-if="!xmIteration || !xmIteration.id">
-							<xm-iteration-select ref="xmIterationSelect"    :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
-						</el-form-item>
+						  
 						 <el-form-item label="缺陷状态" prop="bugStatus">
 							<el-select   v-model="filters.bugStatus"  @change="onXmQuestionSomeFieldsChange('bugStatus',$event)" clearable>
 								<el-option v-for="i in this.dicts.bugStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>
@@ -79,7 +74,7 @@
 		components: {   
 			XmIterationSelect,XmProductSelect,
 		},
-        props:['xmTestPlan'],
+        props:['xmTestPlan','xmRptConfig','comp'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -112,9 +107,19 @@
 	    },
 		data() {
 			return {
-                filters:{
-                    product:null,  
-					iteration:null,
+                filters:{ 
+					planId:'',
+					productId:'',
+					projectId:'',
+					bugStatus:'',
+					bugType:'',
+					bugReason:'',
+					bugSeverity:'',
+					priority:'',
+					solution:'',
+					repRate:'',
+
+
                 }, 
 				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中... 
@@ -169,10 +174,11 @@
 				this.xmQuestionAgeDists=[]
 			},
 			searchXmQuestionAgeDist(){ 
-				var params={}
+				var params={...this.filters}
 				 if(this.xmTestPlan && this.xmTestPlan.id){
 					params.planId=this.xmTestPlan.id
 				 }
+				 
 				getXmQuestionAgeDist(params).then(res=>{
 					this.xmQuestionAgeDists=res.data.data
 				})
@@ -193,12 +199,28 @@
 			
 			onIterationClear(){
 				this.filters.iteration=null
+			},
+			initData(){
+				if(this.xmTestPlan){
+					this.filters.productId=this.xmTestPlan.productId
+					this.filters.projectId=this.xmTestPlan.projectId
+					this.filters.planId=this.xmTestPlan.id
+				}
+				if(this.xmRptConfig && this.xmRptConfig.cfg){
+					var compCfg=this.xmRptConfig.cfg.find(k=>k.id==this.comp.id)
+					if(compCfg && compCfg.params){
+						compCfg.params.forEach(k=>{
+							this.filters[k.id]=k.value
+						})
+					}
+				}
 			}
 		},//end method
 		mounted() {  
  			initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','priority','bugRepRate','bugReason'] ).then(res=>{
 				this.dicts=res.data.data;
 			}) 
+			this.initData();
 			this.searchXmQuestionAgeDist();
 			//this.charts();
 			//this.drawCharts();
