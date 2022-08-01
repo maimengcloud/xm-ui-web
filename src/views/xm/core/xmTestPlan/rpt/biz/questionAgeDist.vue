@@ -1,10 +1,64 @@
 <template>
 	<section> 
-		<div>
-			<div class="main" id="xmQuestionAgeDist"
-				style="width:100%;height:600px;margin:0 auto;"></div>
-			<div class="progress"></div>
-		</div> 
+		<el-row :gutter="5">
+				<el-col :span="18"> 
+					<div>
+						<div class="main" id="xmQuestionAgeDist"
+							style="width:100%;height:600px;margin:0 auto;"></div>
+						<div class="progress"></div>
+					</div>
+				</el-col>
+				<el-col :span="6" class="border padding">
+					<el-form :model="filters">   
+						<el-form-item label="归属产品"  v-if="!xmProduct && !xmIteration">
+							 <xm-product-select   ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
+						</el-form-item>
+						<el-form-item label="归属迭代" v-if="!xmIteration || !xmIteration.id">
+							<xm-iteration-select ref="xmIterationSelect"    :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
+						</el-form-item>
+						 <el-form-item label="缺陷状态" prop="bugStatus">
+							<el-select   v-model="filters.bugStatus"  @change="onXmQuestionSomeFieldsChange('bugStatus',$event)" clearable>
+								<el-option v-for="i in this.dicts.bugStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>
+							</el-select>
+						</el-form-item>  
+						<el-form-item  label="缺陷类型" prop="bugType" >
+							<el-select v-model="filters.bugType"  @change="onXmQuestionSomeFieldsChange('bugType',$event)" clearable>
+								<el-option v-for="i in this.dicts.bugType" :label="i.name" :key="i.id" :value="i.id"></el-option>
+							</el-select>
+						</el-form-item> 
+						<el-form-item  label="缺陷原因" prop="bugReason">
+							<el-select v-model="filters.bugReason"  @change="onXmQuestionSomeFieldsChange('bugReason',$event)" clearable>
+								<el-option v-for="i in this.dicts.bugReason" :label="i.name" :key="i.id" :value="i.id"></el-option>
+							</el-select>
+						</el-form-item> 
+						<el-form-item  label="严重程度" prop="bugSeverity" >
+							<el-select v-model="filters.bugSeverity"  @change="onXmQuestionSomeFieldsChange('bugSeverity',$event)" clearable>
+								<el-option v-for="i in this.dicts.bugSeverity" :label="i.name" :key="i.id" :value="i.id"></el-option>
+							</el-select>
+						</el-form-item> 
+					<el-form-item  label="优先级" prop="priority" >
+						<el-select v-model="filters.priority" @change="onXmQuestionSomeFieldsChange('priority',$event)" clearable>
+								<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
+						</el-select>
+					</el-form-item>  
+					<el-form-item  label="解决方案" prop="solution" >
+						<el-select v-model="filters.solution" @change="onXmQuestionSomeFieldsChange('solution',$event)" clearable>
+								<el-option v-for="i in dicts.bugSolution" :label="i.name" :key="i.id" :value="i.id"></el-option>
+						</el-select>
+					</el-form-item>  
+
+					<el-form-item  label="重现频率" prop="repRate" >
+						<el-select v-model="filters.repRate" @change="onXmQuestionSomeFieldsChange('repRate',$event)" clearable>
+								<el-option v-for="i in dicts.bugRepRate" :label="i.name" :key="i.id" :value="i.id"></el-option>
+						</el-select>
+					</el-form-item>  
+					
+					<el-form-item>
+						 <el-button type="primary" icon="el-icon-search" @click="searchXmQuestionAgeDist">查询</el-button>
+					</el-form-item>  
+					</el-form>
+				</el-col>
+			</el-row>
  	</section>
 </template>
 
