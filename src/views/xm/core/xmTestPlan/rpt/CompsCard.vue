@@ -56,6 +56,8 @@ import xmQuestionDayTrend from '@/views/xm/core/xmTestPlan/rpt/biz/questionDayTr
 import xmQuestionDayAccumulate from '@/views/xm/core/xmTestPlan/rpt/biz/questionDayAccumulate'
 import xmQuestionAttDist from '@/views/xm/core/xmTestPlan/rpt/biz/questionAttDist' 
 import xmQuestionSort from '@/views/xm/core/xmTestPlan/rpt/biz/questionSort'
+import xmTestPlanCaseResultDist from '@/views/xm/core/xmTestPlan/rpt/biz/testPlanCaseResultDist'
+
 
 import { initDicts,listXmRptConfig, delXmRptConfig, batchDelXmRptConfig,editSomeFieldsXmRptConfig } from '@/api/xm/core/xmRptConfig';
 
@@ -69,6 +71,7 @@ export default {
         xmQuestionDayAccumulate,
         xmQuestionAttDist,
         xmQuestionSort,
+        xmTestPlanCaseResultDist,
         CompsSet,
 
     },
@@ -100,6 +103,8 @@ export default {
                  {   i: 2, x: 0,  y: 12,  w: 12, h: 4, compId:'xmQuestionDayAccumulate',  },
                  {   i: 3, x: 0,  y: 12,  w: 12, h: 4, compId:'xmQuestionAttDist',  },
                  {   i: 4, x: 0,  y: 12,  w: 12, h: 4, compId:'xmQuestionSort',  }, 
+                 {   i: 4, x: 0,  y: 12,  w: 12, h: 4, compId:'xmTestPlanCaseResultDist',  }, 
+                 
                  
             ],
             // 布局列数
