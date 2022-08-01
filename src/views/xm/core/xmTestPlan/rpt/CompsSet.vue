@@ -58,7 +58,7 @@ export default {
             get: function () {
                 if(this.value) {
                     //查询用户设置的模块
-                    this.getUserModules();
+                    
                 }
                 return this.value;
             },
@@ -139,13 +139,7 @@ export default {
         selectItem(item, index) {
            this.$set(item, 'isChecked', !item.isChecked)
         },
-
-        getUserModules() {
-            userMenuFavoriteList({}).then(res=>{
-                localStorage.setItem('fMenus',JSON.stringify(res.data.data));
-                this.fMenus=res.data.data;
-            }) 
-        },
+        
 
         save() {
             let saveModules = [];

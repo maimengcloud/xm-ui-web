@@ -35,12 +35,14 @@
 import VueGridLayout from 'vue-grid-layout';
 import { mapGetters } from 'vuex'
 import XmTestPlanMng from '@/views/xm/core/xmTestPlan/XmTestPlanMng'
+import XmQuestionAgeDist from '@/views/xm/core/xmTestPlan/rpt/biz/questionAgeDist'
 
 export default {
     components: { 
         GridLayout: VueGridLayout.GridLayout,
         GridItem: VueGridLayout.GridItem,
         XmTestPlanMng,
+        XmQuestionAgeDist,
     },
 
     computed: {
@@ -62,8 +64,18 @@ export default {
                     y: 12,
                     w: 12,
                     h: 4,
-                    i: index,
+                    i: 0,
                     compName:'xm-test-plan-mng', 
+                },
+                { 
+                    // x: (this.layout.length * 6) % (this.layoutColNum || 12),
+                    x: 0,
+                    // y: this.layout.length + (this.layoutColNum || 12),
+                    y: 12,
+                    w: 12,
+                    h: 4,
+                    i: 1,
+                    compName:'xm-question-age-dist', 
                 }
             ],
             // 布局列数

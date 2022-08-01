@@ -61,6 +61,7 @@ export default {
     name:'xmTestCasedbMng',
     components: {
         XmProductSelect, XmTestPlanMng,XmTestPlanCaseMng,XmQuestionMng,
+        "xm-test-plan-rpt":()=>import("./rpt/index.vue")
     },
     props:['visible','xmTestCasedb'],
     computed: {
