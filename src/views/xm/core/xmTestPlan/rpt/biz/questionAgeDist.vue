@@ -1,14 +1,9 @@
 <template>
 	<section> 
-		<el-row :gutter="5">
-				<el-col :span="18"> 
-					<div>
-						<div class="main" id="xmQuestionAgeDist"
-							style="width:100%;height:600px;margin:0 auto;"></div>
-						<div class="progress"></div>
-					</div>
-				</el-col>
-				<el-col :span="6" class="border padding">
+		<el-row class="padding">
+			<span>缺陷年龄分布</span>
+			<el-popover   trigger="manual" v-model="conditionBtnVisible" style="float:right;" width="300">  
+				<el-button slot="reference" icon="el-icon-more" @click="conditionBtnVisible=!conditionBtnVisible"></el-button> 
 					<el-form :model="filters">   
 						<el-form-item label="归属产品"  v-if="!xmProduct && !xmIteration">
 							 <xm-product-select   ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
@@ -56,8 +51,15 @@
 					<el-form-item>
 						 <el-button type="primary" icon="el-icon-search" @click="searchXmQuestionAgeDist">查询</el-button>
 					</el-form-item>  
-					</el-form>
-				</el-col>
+					</el-form> 
+			</el-popover>
+		</el-row>
+		<el-row> 
+					<div>
+						<div class="main" id="xmQuestionAgeDist"
+							style="width:100%;height:600px;margin:0 auto;"></div>
+						<div class="progress"></div>
+					</div>  
 			</el-row>
  	</section>
 </template>
@@ -120,6 +122,7 @@
                 maxTableHeight:300, 
                 visible:false,
 				xmQuestionAgeDists:[],
+				conditionBtnVisible:false,
 
 			}//end return
 		},//end data

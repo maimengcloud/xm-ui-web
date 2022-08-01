@@ -46,33 +46,68 @@ export default {
         return { 
             comps: [
                 {
-                    compId: 'dsp',
+                    compId: 'xmTestRptOverview',
                     icon: img1,
-                    compName: '待审批',
+                    compName: '报告总览',
                     compDesc: '可以直接显示全部待审批列表，也可根据审批分类详细筛选单条待审批事项',
                     isChecked: false,
                 },
                 {
-                    compId: 'wdrw',
+                    compId: 'xmTestRptSummary',
                     icon: img2,
-                    compName: '我的任务',
+                    compName: '报告总结',
                     compDesc: '可以直接显示全部任务列表，也可根据状态、类型详细筛选分类的任务',
                     isChecked: false,
                 },
                 {
-                    compId: 'wdxm',
+                    compId: 'xmTestExecResultDist',
                     icon: img3,
-                    compName: '我的项目',
+                    compName: '执行结果分布',
                     compDesc: '可以直接显示全部项目列表，也可根据项目状态产品筛选单条项目',
                     isChecked: false,
                 },
                 {
-                    compId: 'wdcp',
+                    compId: 'xmTestDayTimesCalc',
                     icon: img4,
-                    compName: '我的产品',
+                    compName: '每日测试次数统计',
                     compDesc: '可以直接显示全部产品列表，可新增我的产品',
                     isChecked: false,
-                }
+                },
+                {
+                    compId: 'xmQuestionFuncDist',
+                    icon: img4,
+                    compName: '缺陷模块分布',
+                    compDesc: '可以直接显示全部产品列表，可新增我的产品',
+                    isChecked: false,
+                },
+                {
+                    compId: 'xmQuestionStateDist',
+                    icon: img4,
+                    compName: '缺陷状态分布',
+                    compDesc: '可以直接显示全部产品列表，可新增我的产品',
+                    isChecked: false,
+                },
+                {
+                    compId: 'xmQuestionReTestingDist',
+                    icon: img4,
+                    compName: '缺陷回归分布',
+                    compDesc: '可以直接显示全部产品列表，可新增我的产品',
+                    isChecked: false,
+                },
+                {
+                    compId: 'xmQuestionAttDist',
+                    icon: img4,
+                    compName: '缺陷属性分布',
+                    compDesc: '可以直接显示全部产品列表，可新增我的产品',
+                    isChecked: false,
+                },
+                {
+                    compId: 'xmQuestionAgeDist',
+                    icon: img4,
+                    compName: '缺陷年龄分布',
+                    compDesc: '可以直接显示全部产品列表，可新增我的产品',
+                    isChecked: false,
+                } 
             ],
             
         }

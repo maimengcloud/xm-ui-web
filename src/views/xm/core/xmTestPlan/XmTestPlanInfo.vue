@@ -26,7 +26,7 @@
                         </span>
                         <span v-if="subPage=='testRpt'">
                         <el-divider direction="vertical"></el-divider>
-                        <el-button @click="showRptConfig">配置报告</el-button>
+                        <el-button @click="showRptConfig" icon="el-icon-s-tools">配置报告</el-button>
                         </span>
                      </span>
                 </el-row> 
