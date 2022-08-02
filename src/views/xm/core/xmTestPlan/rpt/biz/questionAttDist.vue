@@ -1,7 +1,7 @@
 <template>
 	<section>
 		<el-row class="padding">
-			<span>{{comp?comp.compName:'缺陷属性数量分布'}}</span>
+			<span>{{compCfg?compCfg.name:'缺陷属性数量分布'}}</span>
 			<el-popover   trigger="manual" v-model="conditionBtnVisible" style="float:right;" width="300">  
 				<el-button slot="reference" icon="el-icon-more" @click="conditionBtnVisible=!conditionBtnVisible"></el-button> 
 					<el-form :model="filters">   
@@ -55,7 +55,7 @@
 		</el-row>
 		<el-row>  
 			<div>
-				<div class="main" id="xmQuestionAttDist"
+				<div class="main" :id="id"
 					style="width:100%;height:600px;margin:0 auto;"></div>
 				<div class="progress"></div>
 			</div> 
@@ -78,7 +78,7 @@
 		components: {   
 			XmIterationSelect,XmProductSelect,
 		},
-        props:['xmTestPlan','xmRptConfig','comp'],
+        props:['xmTestPlan','xmRptConfig','compCfg'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -132,7 +132,10 @@
 				} 
 
 				return this.dicts[itemId].map(i=>i.name)
-			}
+			},
+			id(){
+				return this.compCfg.id
+			},
 			
         }, 
 		watch: {  
@@ -206,7 +209,7 @@
 				
 			},
 			drawCharts() {
-				this.myChart = this.$echarts.init(document.getElementById("xmQuestionAttDist")); 
+				this.myChart = this.$echarts.init(document.getElementById(this.id)); 
 				this.myChart.setOption(   
 					{
 						title: {
@@ -281,7 +284,7 @@
 					this.filters.planId=this.xmTestPlan.id
 				}
 				if(this.xmRptConfig && this.xmRptConfig.cfg){
-					var compCfg=this.xmRptConfig.cfg.find(k=>k.id==this.comp.id)
+					var compCfg=this.xmRptConfig.cfg.find(k=>k.id==this.compCfg.id)
 					if(compCfg && compCfg.params){
 						compCfg.params.forEach(k=>{
 							this.filters[k.id]=k.value
