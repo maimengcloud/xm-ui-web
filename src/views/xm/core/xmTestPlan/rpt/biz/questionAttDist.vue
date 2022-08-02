@@ -4,6 +4,9 @@
 			<span>{{compCfg?compCfg.name:'缺陷属性数量分布'}}</span>
 			<el-popover   trigger="manual" v-model="conditionBtnVisible" style="float:right;" width="300">  
 				<el-button slot="reference" icon="el-icon-more" @click="conditionBtnVisible=!conditionBtnVisible"></el-button> 
+				<el-row>
+				  <el-button style="float:right;" type="text" icon="el-icon-close" @click="conditionBtnVisible=false">关闭</el-button> 
+				</el-row>
 					<el-form :model="filters">   
 						<el-form-item label="分组属性">
 							<el-select   v-model="filters.groupBy"  @change="onXmQuestionSomeFieldsChange('groupBy',$event)" clearable>

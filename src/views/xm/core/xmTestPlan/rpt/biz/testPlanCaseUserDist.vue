@@ -4,6 +4,9 @@
 			<span>{{compCfg?compCfg.name:'成员执行结果分布'}}</span>
 			<el-popover   trigger="manual" v-model="conditionBtnVisible" style="float:right;" width="300">  
 				<el-button slot="reference" icon="el-icon-more" @click="conditionBtnVisible=!conditionBtnVisible"></el-button> 
+				<el-row>
+				  <el-button style="float:right;" type="text" icon="el-icon-close" @click="conditionBtnVisible=false">关闭</el-button> 
+				</el-row>
 					<el-form :model="filters">    
 					<el-form-item>
 						  <el-button type="primary" icon="el-icon-search" @click="searchXmTestPlanCaseUserDist">查询</el-button>
