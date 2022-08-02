@@ -1,7 +1,7 @@
 <template> 
 <section> 
   <el-row>
-     <question-sort ref="questionSort" :xm-test-plan="xmTestPlan" :comp-cfg="compCfg"  :rpt-config-visible="rptConfigVisible" :group-by="'handler_userid'"/>  
+     <question-sort ref="questionSort" :xm-test-plan="xmTestPlan" :comp-cfg="compCfg"  :rpt-config-visible="rptConfigVisible" :group-by="'handler_userid'"  @delete="$emit('delete',$event)"/>  
   </el-row>
 </section>     
 </template>

@@ -6,6 +6,7 @@
 
 				<el-button slot="reference" icon="el-icon-more" @click="conditionBtnVisible=!conditionBtnVisible"></el-button> 
 				<el-row>
+					<el-button type="danger" icon="el-icon-delete" @click="doDelete">删除</el-button>
 				  <el-button style="float:right;" type="text" icon="el-icon-close" @click="conditionBtnVisible=false">关闭</el-button> 
 				</el-row>
 					<el-form :model="filters">   
@@ -202,6 +203,9 @@
 			
 			onIterationSelected(iteration){
 				this.filters.iteration=iteration
+			},
+			doDelete(){
+				this.$emit("delete",this.compCfg)
 			},
 			
 			onIterationClear(){

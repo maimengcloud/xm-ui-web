@@ -1,7 +1,7 @@
 <template> 
 <section>
   <el-row v-if="rptConfigVisible">
-   <span style="float:right;"> <el-button @click="rptConfigVisible=false">取消配置</el-button><el-button @click="rptConfigVisible=true" type="primary">保存配置</el-button></span>
+   <span style="float:right;"> <el-button @click="rptConfigVisible=false">取消配置</el-button><el-button @click="saveXmRptConfig" type="primary">保存配置</el-button></span>
   </el-row>
   <el-row>
      <comps-card ref="compsCard" :xm-test-plan="xmTestPlan" :rpt-config-visible="rptConfigVisible"/>  
@@ -36,7 +36,12 @@ export default {
   },
 
   methods: {  
-
+    saveXmRptConfig(){
+      var callback=()=>{
+        this.rptConfigVisible=false;
+      }
+      this.$refs['compsCard'].submitXmPrtConfig(callback)
+    }
   },
 
 

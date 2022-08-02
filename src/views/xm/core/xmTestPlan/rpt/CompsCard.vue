@@ -1,10 +1,10 @@
 <template>
 <section>
-    <el-row v-if="rptConfigVisible"  class="page-center border">
-        <el-col :span="6" :style="{height:maxTableHeight+'px',overflow:'auto'}">
+    <el-row  class="page-center border">
+        <el-col :span="rptConfigVisible?6:0" :style="{height:maxTableHeight+'px',overflow:'auto'}">
             <comps-set :comp-ids="compIds" @row-click="onCompSelect"></comps-set>
         </el-col>
-        <el-col :span="18" :style="{height:maxTableHeight+'px',overflow:'auto'}" ref="table">
+        <el-col :span="rptConfigVisible?18:24" :style="{height:maxTableHeight+'px',overflow:'auto'}" ref="table">
             <div>
                 <div class="empty" v-if="compCfgList.length == 0" >
                     <el-empty description="暂未选择模块"></el-empty>
@@ -29,17 +29,12 @@
                             :h="item.h"
                             :i="item.i"
                             :key="index">
-                            <component :is="item.compId" :xm-test-plan="xmTestPlan" :comp-cfg="item"></component>
+                            <component :is="item.compId" :xm-test-plan="xmTestPlan" :comp-cfg="item" :ref="item.id" @delete="doDelete"></component>
                         </grid-item>
                     </grid-layout>
                 </div>
             </div>
         </el-col> 
-    </el-row>
-    <el-row v-if="rptConfigVisible==false" :style="{height:maxTableHeight+'px',overflow:'auto'}" ref="table" class="page-center border"> 
-        <el-row v-for="(item,index) in initCompCfg" :key="index">
-            <component :is="item.compId" :xm-test-plan="xmTestPlan" :comp-cfg="item"></component>
-        </el-row>
     </el-row> 
     </section>
 </template>
@@ -62,8 +57,8 @@ import xmTestPlanCaseExecStatusDist from '@/views/xm/core/xmTestPlan/rpt/biz/tes
 import xmTestPlanCaseUserDist from '@/views/xm/core/xmTestPlan/rpt/biz/testPlanCaseUserDist'
 
 
-import { initDicts,listXmRptConfig, delXmRptConfig, batchDelXmRptConfig,editSomeFieldsXmRptConfig } from '@/api/xm/core/xmRptConfig';
-
+import { initDicts,listXmRptConfig, delXmRptConfig,editXmRptConfig,addXmRptConfig,batchDelXmRptConfig,editSomeFieldsXmRptConfig } from '@/api/xm/core/xmRptConfig';
+ 
 export default {
     components: { 
         GridLayout: VueGridLayout.GridLayout,
@@ -124,6 +119,9 @@ export default {
     },
 
     methods: {  
+        initData(){
+           this.getXmRptConfig();
+        },
         getXmRptConfig(){
             if(!this.xmTestPlan){
                 return;
@@ -140,16 +138,60 @@ export default {
                 this.compCfgList=JSON.parse(JSON.stringify(this.initCompCfg))
             }
         },
-        onCompSelect(comp){
-            var compCfg={i:this.compCfgList.length+1, x: 0,  y: 12,  w: 12, h: 6, compId:comp.compId,name:comp.name,id:comp.compId+seq.sn(),params:{}} 
+        onCompSelect(comp){ 
+            var compCfgListTemp=JSON.parse(JSON.stringify(this.compCfgList))
+            compCfgListTemp.sort((i1,i2)=>{
+                return i2.i-i1.i
+            })
+            var maxI=(compCfgListTemp.length>0?(compCfgListTemp[0].i+1):1);
+            compCfgListTemp.sort((i1,i2)=>{
+                return i2.y-i1.y
+            })
+            var maxY=(compCfgListTemp.length>0?(compCfgListTemp[0].y+6):0);
+            var compCfg={i:maxI, x: 0,  y: maxY,  w: 12, h: 6, compId:comp.compId,name:comp.name,id:comp.compId+seq.sn(),params:{}} 
                 this.compCfgList.push(compCfg) 
+        },
+        submitXmPrtConfig(callback){
+            if(this.xmRptConfig==null){
+                var xmRptConfig={name:this.xmTestPlan.name,bizId:this.xmTestPlan.id,cfg:[]}
+                var compCfgList=JSON.parse(JSON.stringify(this.compCfgList))
+                compCfgList.forEach(k=>{
+                    k.params=this.$refs[k.id].filters
+                })
+                xmRptConfig.cfg=JSON.stringify(compCfgList)
+                addXmRptConfig(xmRptConfig).then(res=>{
+                    this.xmRptConfig=xmRptConfig;
+                    callback()
+                })
+            }else{
+                var xmRptConfig={id:this.xmRptConfig.id,name:this.xmTestPlan.name,bizId:this.xmTestPlan.id,cfg:[]}
+                var compCfgList=JSON.parse(JSON.stringify(this.compCfgList))
+                compCfgList.forEach(k=>{
+                    k.params=this.$refs[k.id].filters
+                })
+                xmRptConfig.cfg=JSON.stringify(compCfgList)
+                editXmRptConfig(xmRptConfig).then(res=>{
+                    this.xmRptConfig=xmRptConfig; 
+                    callback()
+                })
+            }
+        },
+        doDelete(compCfg){
+            if(this.rptConfigVisible==false){
+                 this.$notify({ position:'bottom-left', showClose:true, message: "当前报告为预览模式，不能删除，请切换为配置报告模式", type:  'error' });
+                 return;
+            }
+            var index=this.compCfgList.findIndex(k=>k.id==compCfg.id) 
+            if(index>=0){ 
+                this.compCfgList.splice(index,1)
+            }
         }
          
     },
 
     mounted() {
         this.$nextTick(() => {
-             
+            this.initData();
             this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el)
         })
     },
