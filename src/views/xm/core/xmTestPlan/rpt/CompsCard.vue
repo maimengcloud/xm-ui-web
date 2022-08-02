@@ -9,7 +9,7 @@
                 <div class="empty" v-if="compCfgList.length == 0" >
                     <el-empty description="暂未选择模块"></el-empty>
                 </div>
-                <div v-else style="width: 100%; min-height: 800px; margin-top: 10px">
+                <div v-else>
                     <grid-layout
                         :layout.sync="compCfgList"
                         :col-num="layoutColNum"
@@ -20,15 +20,15 @@
                         :vertical-compact="true"
                         :margin="[10, 10]"
                         :use-css-transforms="true"
-                    >
+                    > 
                         <grid-item
-                            v-for="(item) in compCfgList"
+                            v-for="(item,index) in compCfgList"
                             :x="item.x"
                             :y="item.y"
                             :w="item.w"
                             :h="item.h"
                             :i="item.i"
-                            :key="item.i">
+                            :key="index">
                             <component :is="item.compId" :xm-test-plan="xmTestPlan" :comp-cfg="item"></component>
                         </grid-item>
                     </grid-layout>
@@ -107,14 +107,14 @@ export default {
             maxTableHeight:300,
             // 布局位置数据
             initCompCfg: [
-                 {   id:'xmQuestionAgeDist',name:'缺陷年龄分布',compId:'xmQuestionAgeDist', params:[] }, 
-                 {   id:'xmQuestionAttDist',name:'缺陷属性分布',compId:'xmQuestionAttDist',  },
-                 {   id:'xmQuestionHandlerUserSort',name:'缺陷负责人排行榜',compId:'xmQuestionHandlerUserSort',  }, 
-                 {   id:'xmQuestionAskUserSort',name:'缺陷提出人排行榜', compId:'xmQuestionAskUserSort',  }, 
-                 {   id:'xmQuestionMenuSort',name:'缺陷需求分布', compId:'xmQuestionMenuSort',  }, 
-                 {   id:'xmQuestionFuncSort',name:'缺陷模块分布', compId:'xmQuestionFuncSort',  },  
-                 {   id:'xmTestPlanCaseExecStatusDist',name:'用例执行结果分布', compId:'xmTestPlanCaseExecStatusDist',  }, 
-                 {   id:'xmTestPlanCaseUserDist',name:'用例执行人情况分布', compId:'xmTestPlanCaseUserDist',  }, 
+                 { i:1, x: 0,  y: 12,  w: 12, h: 4,  id:'xmQuestionAgeDist',name:'缺陷年龄分布',compId:'xmQuestionAgeDist', params:[] }, 
+                 { i: 2, x: 0,  y: 12,  w: 12, h: 4, id:'xmQuestionAttDist',name:'缺陷属性分布',compId:'xmQuestionAttDist',  },
+                 { i: 3, x: 0,  y: 12,  w: 12, h: 4,   id:'xmQuestionHandlerUserSort',name:'缺陷负责人排行榜',compId:'xmQuestionHandlerUserSort',  }, 
+                 { i: 4, x: 0,  y: 12,  w: 12, h: 4,   id:'xmQuestionAskUserSort',name:'缺陷提出人排行榜', compId:'xmQuestionAskUserSort',  }, 
+                 { i:5, x: 0,  y: 12,  w: 12, h: 4,   id:'xmQuestionMenuSort',name:'缺陷需求分布', compId:'xmQuestionMenuSort',  }, 
+                 { i: 6, x: 0,  y: 12,  w: 12, h: 4,   id:'xmQuestionFuncSort',name:'缺陷模块分布', compId:'xmQuestionFuncSort',  },  
+                 { i: 7, x: 0,  y: 12,  w: 12, h: 4,   id:'xmTestPlanCaseExecStatusDist',name:'用例执行结果分布', compId:'xmTestPlanCaseExecStatusDist',  }, 
+                 { i: 8, x: 0,  y: 12,  w: 12, h: 4,   id:'xmTestPlanCaseUserDist',name:'用例执行人情况分布', compId:'xmTestPlanCaseUserDist',  }, 
                  
                  
             ],
@@ -141,8 +141,8 @@ export default {
             }
         },
         onCompSelect(comp){
-            var compCfg={compId:comp.compId,name:comp.name,id:comp.compId+seq.sn(),params:[]}
-            this.compCfgList.push(compCfg)
+            var compCfg={i:this.compCfgList.length+1, x: 0,  y: 0,  w: 12, h: 6, compId:comp.compId,name:comp.name,id:comp.compId+seq.sn(),params:[]} 
+                this.compCfgList.push(compCfg) 
         }
          
     },
