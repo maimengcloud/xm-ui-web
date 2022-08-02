@@ -107,7 +107,7 @@ export default {
             maxTableHeight:300,
             // 布局位置数据
             initCompCfg: [
-                 { i:1, x: 0,  y: 12,  w: 12, h: 6,  id:'xmQuestionAgeDist',name:'缺陷年龄分布',compId:'xmQuestionAgeDist', params:[] }, 
+                 { i:1, x: 0,  y: 12,  w: 12, h: 6,  id:'xmQuestionAgeDist',name:'缺陷年龄分布',compId:'xmQuestionAgeDist', params:{} }, 
                  { i: 2, x: 0,  y: 12,  w: 12, h: 6, id:'xmQuestionAttDist',name:'缺陷属性分布',compId:'xmQuestionAttDist',  },
                  { i: 3, x: 0,  y: 12,  w: 12, h: 6,   id:'xmQuestionHandlerUserSort',name:'缺陷负责人排行榜',compId:'xmQuestionHandlerUserSort',  }, 
                  { i: 4, x: 0,  y: 12,  w: 12, h: 6,   id:'xmQuestionAskUserSort',name:'缺陷提出人排行榜', compId:'xmQuestionAskUserSort',  }, 
@@ -141,7 +141,7 @@ export default {
             }
         },
         onCompSelect(comp){
-            var compCfg={i:this.compCfgList.length+1, x: 0,  y: 12,  w: 12, h: 6, compId:comp.compId,name:comp.name,id:comp.compId+seq.sn(),params:[]} 
+            var compCfg={i:this.compCfgList.length+1, x: 0,  y: 12,  w: 12, h: 6, compId:comp.compId,name:comp.name,id:comp.compId+seq.sn(),params:{}} 
                 this.compCfgList.push(compCfg) 
         }
          

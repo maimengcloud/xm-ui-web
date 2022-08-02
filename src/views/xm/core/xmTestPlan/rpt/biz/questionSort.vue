@@ -226,9 +226,7 @@
 				}
 				if(this.compCfg && this.compCfg.id){ 
 					if(this.compCfg && this.compCfg.params){
-						this.compCfg.params.forEach(k=>{
-							this.filters[k.id]=k.value
-						})
+						Object.assign(this.filters,compCfg.params)
 					}
 				}
 			}

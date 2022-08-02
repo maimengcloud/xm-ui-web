@@ -173,9 +173,7 @@
 				if(this.xmRptConfig && this.xmRptConfig.cfg){
 					var compCfg=this.xmRptConfig.cfg.find(k=>k.id==this.compCfg.id)
 					if(compCfg && compCfg.params){
-						compCfg.params.forEach(k=>{
-							this.filters[k.id]=k.value
-						})
+						Object.assign(this.filters,compCfg.params)
 					}
 				}
 			}
