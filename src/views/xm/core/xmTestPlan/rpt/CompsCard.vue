@@ -6,12 +6,12 @@
         </el-col>
         <el-col :span="18" :style="{height:maxTableHeight+'px',overflow:'auto'}" ref="table">
             <div>
-                <div class="empty" v-if="layout.length == 0" >
+                <div class="empty" v-if="compCfgList.length == 0" >
                     <el-empty description="暂未选择模块"></el-empty>
                 </div>
                 <div v-else style="width: 100%; min-height: 800px; margin-top: 10px">
                     <grid-layout
-                        :layout.sync="layout"
+                        :layout.sync="compCfgList"
                         :col-num="layoutColNum"
                         :row-height="120"
                         :is-draggable="true"
@@ -22,14 +22,14 @@
                         :use-css-transforms="true"
                     >
                         <grid-item
-                            v-for="(item) in layout"
+                            v-for="(item) in compCfgList"
                             :x="item.x"
                             :y="item.y"
                             :w="item.w"
                             :h="item.h"
                             :i="item.i"
                             :key="item.i">
-                            <component :is="item.compId"></component>
+                            <component :is="item.compId" :xm-test-plan="xmTestPlan" :comp-cfg="item"></component>
                         </grid-item>
                     </grid-layout>
                 </div>
@@ -37,8 +37,8 @@
         </el-col> 
     </el-row>
     <el-row v-if="rptConfigVisible==false" :style="{height:maxTableHeight+'px',overflow:'auto'}" ref="table" class="page-center border"> 
-        <el-row v-for="(item,index) in layout" :key="index">
-            <component :is="item.compId"></component>
+        <el-row v-for="(item,index) in initCompCfg" :key="index">
+            <component :is="item.compId" :xm-test-plan="xmTestPlan" :comp-cfg="item"></component>
         </el-row>
     </el-row> 
     </section>
@@ -52,10 +52,11 @@ import { mapGetters } from 'vuex'
 import XmTestPlanMng from '@/views/xm/core/xmTestPlan/XmTestPlanMng'
 import CompsSet from '@/views/xm/core/xmTestPlan/rpt/CompsSet'
 import XmQuestionAgeDist from '@/views/xm/core/xmTestPlan/rpt/biz/questionAgeDist'
-import xmQuestionDayTrend from '@/views/xm/core/xmTestPlan/rpt/biz/questionDayTrend'
-import xmQuestionDayAccumulate from '@/views/xm/core/xmTestPlan/rpt/biz/questionDayAccumulate'
 import xmQuestionAttDist from '@/views/xm/core/xmTestPlan/rpt/biz/questionAttDist' 
-import xmQuestionSort from '@/views/xm/core/xmTestPlan/rpt/biz/questionSort'
+import xmQuestionHandlerUserSort from '@/views/xm/core/xmTestPlan/rpt/biz/questionHandlerUserSort'
+import xmQuestionAskUserSort from '@/views/xm/core/xmTestPlan/rpt/biz/questionAskUserSort'
+import xmQuestionMenuSort from '@/views/xm/core/xmTestPlan/rpt/biz/questionMenuSort'
+import xmQuestionFuncSort from '@/views/xm/core/xmTestPlan/rpt/biz/questionFuncSort'
 import xmTestPlanCaseExecStatusDist from '@/views/xm/core/xmTestPlan/rpt/biz/testPlanCaseExecStatusDist'
 import xmTestPlanCaseUserDist from '@/views/xm/core/xmTestPlan/rpt/biz/testPlanCaseUserDist'
 
@@ -69,40 +70,50 @@ export default {
         XmTestPlanMng,
         XmQuestionAgeDist, 
         xmQuestionAttDist,
-        xmQuestionSort,
+        xmQuestionHandlerUserSort,xmQuestionAskUserSort,xmQuestionMenuSort,xmQuestionFuncSort,
         xmTestPlanCaseExecStatusDist,
         xmTestPlanCaseUserDist,
         CompsSet,
 
     },
-    props:['bizId','rptConfigVisible'],
+    props:['xmTestPlan','rptConfigVisible'],
     computed: {
         ...mapGetters(['userInfo']), 
         compIds(){
             if(this.xmRptConfig && this.xmRptConfig.cfg){
                 var cfgJson=JSON.parse(this.xmRptConfig.cfg)
-                return cfgJson.map(k=>k.id)
+                return cfgJson.map(k=>k.compId)
             }else{
                 return []
             }
-        }
+        },
+        
     },
 
     watch: {
-        
+        xmRptConfig:{
+            handler(){
+                this.initCompCfgList();
+            },
+            deep:true,
+        }
     },
 
     data() {
         return {
             xmRptConfig:null,
+            compCfgList:[],
             maxTableHeight:300,
             // 布局位置数据
-            layout: [
-                 {   i: 0, x: 0,  y: 12,  w: 12, h: 4, compId:'XmQuestionAgeDist',  }, 
-                 {   i: 3, x: 0,  y: 12,  w: 12, h: 4, compId:'xmQuestionAttDist',  },
-                 {   i: 4, x: 0,  y: 12,  w: 12, h: 4, compId:'xmQuestionSort',  }, 
-                 {   i: 4, x: 0,  y: 12,  w: 12, h: 4, compId:'xmTestPlanCaseExecStatusDist',  }, 
-                 {   i: 4, x: 0,  y: 12,  w: 12, h: 4, compId:'xmTestPlanCaseUserDist',  }, 
+            initCompCfg: [
+                 {   id:'xmQuestionAgeDist',name:'缺陷年龄分布',compId:'xmQuestionAgeDist', params:[] }, 
+                 {   id:'xmQuestionAttDist',name:'缺陷属性分布',compId:'xmQuestionAttDist',  },
+                 {   id:'xmQuestionHandlerUserSort',name:'缺陷负责人排行榜',compId:'xmQuestionHandlerUserSort',  }, 
+                 {   id:'xmQuestionAskUserSort',name:'缺陷提出人排行榜', compId:'xmQuestionAskUserSort',  }, 
+                 {   id:'xmQuestionMenuSort',name:'缺陷需求分布', compId:'xmQuestionMenuSort',  }, 
+                 {   id:'xmQuestionFuncSort',name:'缺陷模块分布', compId:'xmQuestionFuncSort',  },  
+                 {   id:'xmTestPlanCaseExecStatusDist',name:'用例执行结果分布', compId:'xmTestPlanCaseExecStatusDist',  }, 
+                 {   id:'xmTestPlanCaseUserDist',name:'用例执行人情况分布', compId:'xmTestPlanCaseUserDist',  }, 
                  
                  
             ],
@@ -113,12 +124,20 @@ export default {
 
     methods: {  
         getXmRptConfig(){
-            if(!this.bizId){
+            if(!this.xmTestPlan){
                 return;
             }
-            listXmRptConfig({bizId:this.bizId}).then(res=>{
+            listXmRptConfig({bizId:this.xmTestPlan.id}).then(res=>{
                 this.xmRptConfig=res.data.data[0] 
             })
+        },
+        initCompCfgList(){
+            if(this.xmRptConfig && this.xmRptConfig.cfg){
+                var cfgJson=JSON.parse(this.xmRptConfig.cfg) 
+                this.compCfgList=cfgJson;
+            }else{
+                this.compCfgList=JSON.parse(JSON.stringify(this.initCompCfg))
+            }
         }
          
     },

@@ -1,7 +1,7 @@
 <template> 
 <section> 
   <el-row>
-     <question-sort ref="questionSort" :rpt-config-visible="rptConfigVisible" :group-by="'menu_id'"/>  
+     <question-sort ref="questionSort" :xm-test-plan="xmTestPlan" :comp-cfg="compCfg"  :rpt-config-visible="rptConfigVisible" :group-by="'menu_id'"/>  
   </el-row>
 </section>     
 </template>
@@ -13,6 +13,7 @@ import { mapGetters } from 'vuex'
 import dayjs from 'dayjs'
 
 export default {
+  props:['xmTestPlan','compCfg'],
   components: {questionSort}, 
   computed: {
     ...mapGetters([

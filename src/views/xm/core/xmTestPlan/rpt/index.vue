@@ -4,7 +4,7 @@
    <span style="float:right;"> <el-button @click="rptConfigVisible=false">取消配置</el-button><el-button @click="rptConfigVisible=true" type="primary">保存配置</el-button></span>
   </el-row>
   <el-row>
-     <comps-card ref="compsCard" :rpt-config-visible="rptConfigVisible"/>  
+     <comps-card ref="compsCard" :xm-test-plan="xmTestPlan" :rpt-config-visible="rptConfigVisible"/>  
   </el-row>
 </section>     
 </template>
@@ -18,6 +18,7 @@ import { mapGetters } from 'vuex'
 import dayjs from 'dayjs'
 
 export default {
+  props:['xmTestPlan'],
   components: {compsSet, compsCard}, 
   computed: {
     ...mapGetters([

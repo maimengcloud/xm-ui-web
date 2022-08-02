@@ -60,7 +60,7 @@
 			</el-row>
  			<el-row > 
 					<div>
-						<div class="main" id="xmQuestionSort"
+						<div class="main" :id="id"
 							style="width:100%;height:600px;margin:0 auto;"></div>
 						<div class="progress"></div>
 					</div> 
@@ -83,7 +83,7 @@
 		components: {   
 			XmIterationSelect,XmProductSelect,
 		},
-        props:['xmTestPlan','xmRptConfig','comp','groupBy'],
+        props:['xmTestPlan','compCfg','groupBy'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -96,7 +96,7 @@
 				}
 			},
 			title(){
-				return this.groupBys.find(i=>i.id==this.filters.groupBy).name+'排行榜'
+				return compCfg.name
 			},
 			legendCpd(){
 				if(this.xmQuestionSorts.length==0){
@@ -104,7 +104,11 @@
 				}else{ 
 					return this.xmQuestionSorts.map(i=>i.name)
 				}
-			}
+			},
+			id(){
+				return compCfg.id
+			},
+			 
 			
         }, 
 		watch: {  
@@ -151,7 +155,7 @@
 				
 			},
 			drawCharts() {
-				this.myChart = this.$echarts.init(document.getElementById("xmQuestionSort")); 
+				this.myChart = this.$echarts.init(document.getElementById(this.id)); 
 				this.myChart.setOption(   
 					{
 						xAxis: {
@@ -184,35 +188,7 @@
 					total: this.pageInfo.total,
 					count: this.pageInfo.count,
 				};
-				if(this.filters.solution){
-					params.solution=this.filters.solution
-				}
-				if(this.filters.bugType){
-					params.bugType=this.filters.bugType
-				}
-				if(this.filters.bugStatus){
-					params.bugStatus=this.filters.bugStatus
-				}
-				if(this.filters.bugReason){
-					params.bugReason=this.filters.bugReason
-				}
-				if(this.filters.bugSeverity){
-					params.bugSeverity=this.filters.bugSeverity
-				}
-				if(this.filters.repRate){
-					params.repRate=this.filters.repRate
-				}
-				if(this.filters.priority){
-					params.priority=this.filters.priority
-				} 
-				params.groupBy=this.filters.groupBy
-				if(this.filters.product){
-					params.productId=this.filters.product.id
-				}
-				
-				if(this.filters.iteration){
-					params.iterationId=this.filters.iteration.id
-				}
+				Object.assign(params,this.filters)
 
 				
 				if (
@@ -257,8 +233,7 @@
 					this.filters.projectId=this.xmTestPlan.projectId
 					this.filters.planId=this.xmTestPlan.id
 				}
-				if(this.xmRptConfig && this.xmRptConfig.cfg){
-					var compCfg=this.xmRptConfig.cfg.find(k=>k.id==this.comp.id)
+				if(this.compCfg && compCfg.id){ 
 					if(compCfg && compCfg.params){
 						compCfg.params.forEach(k=>{
 							this.filters[k.id]=k.value

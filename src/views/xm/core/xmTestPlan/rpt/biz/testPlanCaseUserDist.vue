@@ -44,21 +44,15 @@
 			xmTestPlanCaseUserDistsCpd(){
 				if(this.xmTestPlanCaseUserDists.length==0){
 					return []
-				}else{ 
-					var itemId="testPlanTcode"; 
-					return this.xmTestPlanCaseUserDists.map(i=>{
-						var data={...i}
-						data.name=this.formatDict(itemId,data.name)
-						return data;
-					})
+				}else{  
+					return this.xmTestPlanCaseUserDists 
 				}
 			},
 			title(){
 				return  '成员执行结果数量分布'
 			},
-			legendCpd(){
-				var itemId="testPlanTcode"; 
-				return this.dicts[itemId].map(i=>i.name)
+			legendCpd(){ 
+				return ['已执行','未执行']
 			}
 			
         }, 
