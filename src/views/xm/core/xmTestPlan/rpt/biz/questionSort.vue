@@ -1,15 +1,10 @@
 <template>
 	<section>
- 			<el-row :gutter="5">
-				<el-col :span="18"> 
-					<div>
-						<div class="main" id="xmQuestionSort"
-							style="width:100%;height:600px;margin:0 auto;"></div>
-						<div class="progress"></div>
-					</div>
-				</el-col>
-				<el-col :span="6" class="border padding">
-					<el-form :model="filters">
+		<el-row class="padding">
+			<span>{{comp?comp.compName:'缺陷排行榜'}}</span>
+			<el-popover   trigger="manual" v-model="conditionBtnVisible" style="float:right;" width="300">  
+				<el-button slot="reference" icon="el-icon-more" @click="conditionBtnVisible=!conditionBtnVisible"></el-button> 
+				<el-form :model="filters">
 						<el-form-item label="分组属性">
 							<el-select   v-model="groupBy"  @change="onXmQuestionSomeFieldsChange('groupBy',$event)" clearable>
 								<el-option v-for="i in this.groupBys" :label="i.name" :key="i.id" :value="i.id"></el-option>
@@ -61,7 +56,14 @@
 						 <el-button type="primary" icon="el-icon-search" @click="searchXmQuestionSort">查询</el-button>
 					</el-form-item>  
 					</el-form>
-				</el-col>
+				</el-popover>
+			</el-row>
+ 			<el-row > 
+					<div>
+						<div class="main" id="xmQuestionSort"
+							style="width:100%;height:600px;margin:0 auto;"></div>
+						<div class="progress"></div>
+					</div> 
 			</el-row>
  	</section>
 </template>
@@ -81,7 +83,7 @@
 		components: {   
 			XmIterationSelect,XmProductSelect,
 		},
-        props:['xmProduct','xmIteration','xmProject'],
+        props:['xmTestPlan','xmRptConfig','comp','groupBy'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -94,7 +96,7 @@
 				}
 			},
 			title(){
-				return this.groupBys.find(i=>i.id==this.groupBy).name+'排行榜'
+				return this.groupBys.find(i=>i.id==this.filters.groupBy).name+'排行榜'
 			},
 			legendCpd(){
 				if(this.xmQuestionSorts.length==0){
@@ -112,11 +114,9 @@
 	    },
 		data() {
 			return {
-                filters:{
-                    product:null,  
-					iteration:null,
+                filters:{  
+					groupBy:'handler_userid',
                 },
-				groupBy:'handler_userid',
 				groupBys:[
 					{id:'create_userid', name:'创建人'},
 					{id:'ask_userid', name:'提出人'},
@@ -174,7 +174,7 @@
 				this.xmQuestionSorts=[]
 			},
 			searchXmQuestionSort(){
-				if(!this.groupBy){
+				if(!this.filters.groupBy){
 					this.$notify({position:'bottom-left',showClose:true,message:'请选中分组属性',type:'warning'})
 					return 
 				}
@@ -205,7 +205,7 @@
 				if(this.filters.priority){
 					params.priority=this.filters.priority
 				} 
-				params.groupBy=this.groupBy
+				params.groupBy=this.filters.groupBy
 				if(this.filters.product){
 					params.productId=this.filters.product.id
 				}
@@ -247,12 +247,32 @@
 			
 			onIterationClear(){
 				this.filters.iteration=null
+			} ,
+			initData(){
+				if(this.groupBy){
+					this.filters.groupBy=this.groupBy
+				}
+				if(this.xmTestPlan){
+					this.filters.productId=this.xmTestPlan.productId
+					this.filters.projectId=this.xmTestPlan.projectId
+					this.filters.planId=this.xmTestPlan.id
+				}
+				if(this.xmRptConfig && this.xmRptConfig.cfg){
+					var compCfg=this.xmRptConfig.cfg.find(k=>k.id==this.comp.id)
+					if(compCfg && compCfg.params){
+						compCfg.params.forEach(k=>{
+							this.filters[k.id]=k.value
+						})
+					}
+				}
 			}
 		},//end method
 		mounted() { 
  			initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','priority','bugRepRate','bugReason'] ).then(res=>{
 				this.dicts=res.data.data;
 			}) 
+			this.initData();
+			this.searchXmQuestionSort();
 			//this.charts();
 			//this.drawCharts();
 			

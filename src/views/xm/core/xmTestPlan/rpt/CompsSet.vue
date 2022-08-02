@@ -88,6 +88,27 @@ export default {
                     isChecked: false,
                 },
                 {
+                    compId: 'xmQuestionMenuDist',
+                    icon: img4,
+                    compName: '缺陷故事分布',
+                    compDesc: '可以直接显示全部产品列表，可新增我的产品',
+                    isChecked: false,
+                }, 
+                {
+                    compId: 'xmQuestionAskUserSort',
+                    icon: img4,
+                    compName: '缺陷提出人排行榜',
+                    compDesc: '可以直接显示全部产品列表，可新增我的产品',
+                    isChecked: false,
+                },
+                {
+                    compId: 'xmQuestionHandlerUserSort',
+                    icon: img4,
+                    compName: '缺陷人员排行榜',
+                    compDesc: '可以直接显示全部产品列表，可新增我的产品',
+                    isChecked: false,
+                },
+                {
                     compId: 'xmQuestionStateDist',
                     icon: img4,
                     compName: '缺陷状态分布',
