@@ -2,7 +2,7 @@
 <section>
     <el-row v-if="rptConfigVisible"  class="page-center border">
         <el-col :span="6" :style="{height:maxTableHeight+'px',overflow:'auto'}">
-            <comps-set :comp-ids="compIds"></comps-set>
+            <comps-set :comp-ids="compIds" @row-click="onCompSelect"></comps-set>
         </el-col>
         <el-col :span="18" :style="{height:maxTableHeight+'px',overflow:'auto'}" ref="table">
             <div>
@@ -47,6 +47,7 @@
 <script>  
  
 import util from '@/common/js/util';//全局公共库
+import seq from '@/common/js/sequence';//全局公共库
 import VueGridLayout from 'vue-grid-layout';
 import { mapGetters } from 'vuex'
 import XmTestPlanMng from '@/views/xm/core/xmTestPlan/XmTestPlanMng'
@@ -138,6 +139,10 @@ export default {
             }else{
                 this.compCfgList=JSON.parse(JSON.stringify(this.initCompCfg))
             }
+        },
+        onCompSelect(comp){
+            var compCfg={compId:comp.compId,name:comp.name,id:comp.compId+seq.sn(),params:[]}
+            this.compCfgList.push(compCfg)
         }
          
     },

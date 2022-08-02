@@ -4,7 +4,7 @@
        <div class="nav_item" :class="{itemActive: item.isChecked}" v-for="(item, index) in compsCpd" :key="index" @click="selectItem(item, index)">
            <img :src="item.icon" alt="">
            <div class="desc">
-               <p>{{item.compName}}</p>
+               <p>{{item.name}}</p>
                <span>
                   {{item.compDesc}}
                </span>
@@ -48,91 +48,91 @@ export default {
                 {
                     compId: 'xmTestRptOverview',
                     icon: img1,
-                    compName: '报告总览',
+                    name: '报告总览',
                     compDesc: '可以直接显示全部待审批列表，也可根据审批分类详细筛选单条待审批事项',
                     isChecked: false,
                 },
                 {
                     compId: 'xmTestRptSummary',
                     icon: img2,
-                    compName: '报告总结',
+                    name: '报告总结',
                     compDesc: '可以直接显示全部任务列表，也可根据状态、类型详细筛选分类的任务',
                     isChecked: false,
                 },
                 {
                     compId: 'xmTestPlanCaseExecStatusDist',
                     icon: img3,
-                    compName: '执行结果分布',
+                    name: '执行结果分布',
                     compDesc: '可以直接显示全部项目列表，也可根据项目状态产品筛选单条项目',
                     isChecked: false,
                 },
                 {
                     compId: 'xmTestPlanCaseUserDist',
                     icon: img3,
-                    compName: '成员执行结果分布',
+                    name: '成员执行结果分布',
                     compDesc: '可以直接显示全部项目列表，也可根据项目状态产品筛选单条项目',
                     isChecked: false,
                 },
                 {
                     compId: 'xmTestDayTimesCalc',
                     icon: img4,
-                    compName: '每日测试次数统计',
+                    name: '每日测试次数统计',
                     compDesc: '可以直接显示全部产品列表，可新增我的产品',
                     isChecked: false,
                 },
                 {
                     compId: 'xmQuestionFuncDist',
                     icon: img4,
-                    compName: '缺陷模块分布',
+                    name: '缺陷模块分布',
                     compDesc: '可以直接显示全部产品列表，可新增我的产品',
                     isChecked: false,
                 },
                 {
                     compId: 'xmQuestionMenuDist',
                     icon: img4,
-                    compName: '缺陷故事分布',
+                    name: '缺陷故事分布',
                     compDesc: '可以直接显示全部产品列表，可新增我的产品',
                     isChecked: false,
                 }, 
                 {
                     compId: 'xmQuestionAskUserSort',
                     icon: img4,
-                    compName: '缺陷提出人排行榜',
+                    name: '缺陷提出人排行榜',
                     compDesc: '可以直接显示全部产品列表，可新增我的产品',
                     isChecked: false,
                 },
                 {
                     compId: 'xmQuestionHandlerUserSort',
                     icon: img4,
-                    compName: '缺陷人员排行榜',
+                    name: '缺陷人员排行榜',
                     compDesc: '可以直接显示全部产品列表，可新增我的产品',
                     isChecked: false,
                 },
                 {
                     compId: 'xmQuestionStateDist',
                     icon: img4,
-                    compName: '缺陷状态分布',
+                    name: '缺陷状态分布',
                     compDesc: '可以直接显示全部产品列表，可新增我的产品',
                     isChecked: false,
                 },
                 {
                     compId: 'xmQuestionReTestingDist',
                     icon: img4,
-                    compName: '缺陷回归分布',
+                    name: '缺陷回归分布',
                     compDesc: '可以直接显示全部产品列表，可新增我的产品',
                     isChecked: false,
                 },
                 {
                     compId: 'xmQuestionAttDist',
                     icon: img4,
-                    compName: '缺陷属性分布',
+                    name: '缺陷属性分布',
                     compDesc: '可以直接显示全部产品列表，可新增我的产品',
                     isChecked: false,
                 },
                 {
                     compId: 'xmQuestionAgeDist',
                     icon: img4,
-                    compName: '缺陷年龄分布',
+                    name: '缺陷年龄分布',
                     compDesc: '可以直接显示全部产品列表，可新增我的产品',
                     isChecked: false,
                 } 
@@ -142,8 +142,8 @@ export default {
     },
 
     methods: {
-         selectItem(item){
-            item.isChecked=!item.isChecked
+         selectItem(item){ 
+             this.$emit("row-click",item)
          }
 
 

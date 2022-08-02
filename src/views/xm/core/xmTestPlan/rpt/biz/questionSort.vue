@@ -1,7 +1,7 @@
 <template>
 	<section>
 		<el-row class="padding">
-			<span>{{comp?comp.compName:'缺陷排行榜'}}</span>
+			<span>{{compCfg?compCfg.name:'缺陷排行榜'}}</span>
 			<el-popover   trigger="manual" v-model="conditionBtnVisible" style="float:right;" width="300">  
 				<el-button slot="reference" icon="el-icon-more" @click="conditionBtnVisible=!conditionBtnVisible"></el-button> 
 				<el-form :model="filters">
@@ -9,13 +9,7 @@
 							<el-select   v-model="groupBy"  @change="onXmQuestionSomeFieldsChange('groupBy',$event)" clearable>
 								<el-option v-for="i in this.groupBys" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>
-						</el-form-item>      
-						<el-form-item label="归属产品"  v-if="!xmProduct && !xmIteration">
-							<xm-product-select    ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
-						</el-form-item>
-						<el-form-item label="归属迭代" v-if="!xmIteration || !xmIteration.id">
-							<xm-iteration-select ref="xmIterationSelect"   :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
- 						</el-form-item>  
+						</el-form-item>       
 						<el-form-item label="缺陷状态" prop="bugStatus">
 							<el-select   v-model="filters.bugStatus"  @change="onXmQuestionSomeFieldsChange('bugStatus',$event)" clearable>
 								<el-option v-for="i in this.dicts.bugStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>
@@ -89,24 +83,24 @@
 		      'userInfo','roles'
 		    ]), 
 			xmQuestionSortsCpd(){
-				if(this.xmQuestionSorts.length==0){
+				if(!this.xmQuestionSorts || this.xmQuestionSorts.length==0){
 					return []
 				}else{ 
 					return this.xmQuestionSorts.map(i=>i.value)
 				}
 			},
 			title(){
-				return compCfg.name
+				return this.compCfg.name
 			},
 			legendCpd(){
-				if(this.xmQuestionSorts.length==0){
+				if(!this.xmQuestionSorts || this.xmQuestionSorts.length==0){
 					return []
 				}else{ 
 					return this.xmQuestionSorts.map(i=>i.name)
 				}
 			},
 			id(){
-				return compCfg.id
+				return this.compCfg.id
 			},
 			 
 			
@@ -134,6 +128,7 @@
                 maxTableHeight:300, 
                 visible:false,
 				xmQuestionSorts:[], 
+				conditionBtnVisible:false,
 				pageInfo: {
 					//分页数据
 					total: 0, //服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
@@ -146,14 +141,7 @@
 
 			}//end return
 		},//end data
-		methods: { 
-			open(params){
-				this.visible=true;
-				this.filters.product=params.xmProduct
-				this.filters.project=params.xmProject
-				this.filters.Product=params.xmProduct 
-				
-			},
+		methods: {  
 			drawCharts() {
 				this.myChart = this.$echarts.init(document.getElementById(this.id)); 
 				this.myChart.setOption(   
@@ -233,9 +221,9 @@
 					this.filters.projectId=this.xmTestPlan.projectId
 					this.filters.planId=this.xmTestPlan.id
 				}
-				if(this.compCfg && compCfg.id){ 
-					if(compCfg && compCfg.params){
-						compCfg.params.forEach(k=>{
+				if(this.compCfg && this.compCfg.id){ 
+					if(this.compCfg && this.compCfg.params){
+						this.compCfg.params.forEach(k=>{
 							this.filters[k.id]=k.value
 						})
 					}
