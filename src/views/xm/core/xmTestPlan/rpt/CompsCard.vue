@@ -56,6 +56,7 @@ import xmQuestionFuncSort from '@/views/xm/core/xmTestPlan/rpt/biz/questionFuncS
 import xmTestPlanCaseExecStatusDist from '@/views/xm/core/xmTestPlan/rpt/biz/testPlanCaseExecStatusDist'
 import xmTestPlanCaseUserDist from '@/views/xm/core/xmTestPlan/rpt/biz/testPlanCaseUserDist'
 
+import xmTestRptOverview from '@/views/xm/core/xmTestPlan/xmTestRptOverview'
 
 import { initDicts,listXmRptConfig, delXmRptConfig,editXmRptConfig,addXmRptConfig,batchDelXmRptConfig,editSomeFieldsXmRptConfig } from '@/api/xm/core/xmRptConfig';
  
@@ -70,18 +71,14 @@ export default {
         xmTestPlanCaseExecStatusDist,
         xmTestPlanCaseUserDist,
         CompsSet,
+        xmTestRptOverview,
 
     },
     props:['xmTestPlan','rptConfigVisible'],
     computed: {
         ...mapGetters(['userInfo']), 
         compIds(){
-            if(this.xmRptConfig && this.xmRptConfig.cfg){
-                var cfgJson=JSON.parse(this.xmRptConfig.cfg)
-                return cfgJson.map(k=>k.compId)
-            }else{
-                return []
-            }
+           return this.compCfgList.map(k=>k.compId)
         },
         
     },
@@ -112,6 +109,8 @@ export default {
             maxTableHeight:300,
             // 布局位置数据
             initCompCfg: [
+                
+                 { i:0, x: 0,  y: 12,  w: 12, h: 6,  id:'xmTestRptOverview',name:'测试计划总览',compId:'xmTestRptOverview', params:{} }, 
                  { i:1, x: 0,  y: 12,  w: 12, h: 6,  id:'xmQuestionAgeDist',name:'缺陷年龄分布',compId:'xmQuestionAgeDist', params:{} }, 
                  { i: 2, x: 0,  y: 12,  w: 12, h: 6, id:'xmQuestionAttDist',name:'缺陷属性分布',compId:'xmQuestionAttDist',  },
                  { i: 3, x: 0,  y: 12,  w: 12, h: 6,   id:'xmQuestionHandlerUserSort',name:'缺陷负责人排行榜',compId:'xmQuestionHandlerUserSort',  }, 
