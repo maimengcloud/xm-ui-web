@@ -152,11 +152,17 @@ export default {
                 this.compCfgList.push(compCfg) 
         },
         submitXmPrtConfig(callback){
+            debugger;
             if(this.xmRptConfig==null){
                 var xmRptConfig={name:this.xmTestPlan.name,bizId:this.xmTestPlan.id,cfg:[]}
                 var compCfgList=JSON.parse(JSON.stringify(this.compCfgList))
                 compCfgList.forEach(k=>{
-                    k.params=this.$refs[k.id].filters
+                    if(this.$refs[k.id] && this.$refs[k.id][0].$refs && this.$refs[k.id][0].$refs[k.id]){ 
+                         k.params=this.$refs[k.id][0].$refs[k.id].filters
+                    }else{ 
+                         k.params=this.$refs[k.id][0].filters
+                    }
+                   
                 })
                 xmRptConfig.cfg=JSON.stringify(compCfgList)
                 addXmRptConfig(xmRptConfig).then(res=>{
@@ -167,7 +173,11 @@ export default {
                 var xmRptConfig={id:this.xmRptConfig.id,name:this.xmTestPlan.name,bizId:this.xmTestPlan.id,cfg:[]}
                 var compCfgList=JSON.parse(JSON.stringify(this.compCfgList))
                 compCfgList.forEach(k=>{
-                    k.params=this.$refs[k.id].filters
+                    if(this.$refs[k.id] && this.$refs[k.id][0].$refs && this.$refs[k.id][0].$refs[k.id]){ 
+                         k.params=this.$refs[k.id][0].$refs[k.id].filters
+                    }else{ 
+                         k.params=this.$refs[k.id][0].filters
+                    }
                 })
                 xmRptConfig.cfg=JSON.stringify(compCfgList)
                 editXmRptConfig(xmRptConfig).then(res=>{

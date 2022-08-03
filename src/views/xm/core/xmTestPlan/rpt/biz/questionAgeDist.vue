@@ -108,7 +108,7 @@
 			}
 			
         }, 
-		watch: {  
+		watch: {   
 			xmQuestionAgeDistsCpd(){
 				this.drawCharts();
 			}
@@ -212,17 +212,15 @@
 				this.filters.iteration=null
 			},
 			initData(){
+				debugger;
 				if(this.xmTestPlan){
 					this.filters.productId=this.xmTestPlan.productId
 					this.filters.projectId=this.xmTestPlan.projectId
 					this.filters.planId=this.xmTestPlan.id
-				}
-				if(this.xmRptConfig && this.xmRptConfig.cfg){
-					var compCfg=this.xmRptConfig.cfg.find(k=>k.id==this.compCfg.id)
-					if(compCfg && compCfg.params){
-						Object.assign(this.filters,compCfg.params) 
-					}
-				}
+				} 
+				if(this.compCfg && this.compCfg.params){
+					Object.assign(this.filters,this.compCfg.params) 
+				} 
 			}
 		},//end method
 		mounted() {  

@@ -225,11 +225,10 @@
 					this.filters.projectId=this.xmTestPlan.projectId
 					this.filters.planId=this.xmTestPlan.id
 				}
-				if(this.compCfg && this.compCfg.id){ 
-					if(this.compCfg && this.compCfg.params){
-						Object.assign(this.filters,compCfg.params)
-					}
-				}
+
+				if(this.compCfg && this.compCfg.params){
+					Object.assign(this.filters,this.compCfg.params) 
+				} 
 			},
 			doDelete(){
 				this.$emit("delete",this.compCfg)
