@@ -41,6 +41,9 @@ export default {
         this.rptConfigVisible=false;
       }
       this.$refs['compsCard'].submitXmPrtConfig(callback)
+    },
+    showPrint(){
+      this.$refs.compsCard.printVisible=true;
     }
   },
 

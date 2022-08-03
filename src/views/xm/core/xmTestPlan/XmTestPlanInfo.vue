@@ -26,6 +26,8 @@
                         </span>
                         <span v-if="subPage=='testRpt'">
                         <el-divider direction="vertical"></el-divider>
+
+                        <el-button @click="print">打印</el-button> 
                         <el-button @click="showRptConfig" icon="el-icon-s-tools">配置报告</el-button>
                         </span>
                      </span>
@@ -138,6 +140,9 @@ export default {
         },
         showRptConfig(){
             this.$refs['rpt'].rptConfigVisible=true
+        },
+        print(){
+           this.$refs['rpt'].showPrint()
         }
  
     },//end methods

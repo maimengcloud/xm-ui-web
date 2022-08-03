@@ -1,6 +1,6 @@
 <template>
 <section>
-    <el-row  class="page-center border">
+    <el-row  class="page-center border" v-if="printVisible==false">
         <el-col :span="6" :style="{height:maxTableHeight+'px',overflow:'auto'}">
             <comps-set v-if="rptConfigVisible" :comp-ids="compIds" @row-click="onCompSelect"></comps-set>
         </el-col>
@@ -36,6 +36,16 @@
             </div>
         </el-col> 
     </el-row> 
+    <el-row v-if="printVisible" class="page-center border" style="width:1000px;">
+        <el-row>
+           <span style="float:right;"><el-button @click="printVisible=false">取消打印</el-button> <el-button v-print="'#printBody'">打印</el-button></span> 
+        </el-row>
+        <el-row id="printBody">
+            <el-row v-for="(item,index) in compCfgList" :key="index">
+                <component  :is="item.compId" :xm-test-plan="xmTestPlan" :comp-cfg="item" :ref="item.id" @delete="doDelete"></component>
+            </el-row> 
+        </el-row>
+    </el-row>
     </section>
 </template>
 
@@ -124,6 +134,7 @@ export default {
             ],
             // 布局列数
             layoutColNum: 12, 
+            printVisible:false,
         }
     },
 
