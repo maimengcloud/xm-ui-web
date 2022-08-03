@@ -92,6 +92,16 @@ export default {
                 this.initCompCfgList();
             },
             deep:true,
+        },
+        rptConfigVisible(){
+            if(this.rptConfigVisible==true){
+                this.$nextTick(()=>{
+                    this.compCfgList.forEach(k=>{
+                        this.sizeAutoChange(k);
+                    })
+                })
+                
+            }
         }
     },
 
