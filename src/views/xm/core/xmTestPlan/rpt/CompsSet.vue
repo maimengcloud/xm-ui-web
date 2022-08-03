@@ -20,6 +20,14 @@ import img1 from '../../../../myWork/img/dsp.png'
 import img2 from '../../../../myWork/img/wdrw.png'
 import img3 from '../../../../myWork/img/wdxm.png'
 import img4 from '../../../../myWork/img/wdcp.png'
+
+import pieSimple from './images/pie-simple.png'
+import lineStack from './images/line-stack.png'
+import areaStack from './images/area-stack.png'
+import ranjintu from './images/ranjintu.png'
+import datasetLink from './images/dataset-link.png'
+import bar from './images/bar.png'
+
 import { mapGetters } from 'vuex'
  
 
@@ -49,84 +57,84 @@ export default {
                     compId: 'xmTestRptOverview',
                     icon: img1,
                     name: '报告总览',
-                    compDesc: '可以直接显示全部待审批列表，也可根据审批分类详细筛选单条待审批事项',
+                    compDesc: '测试报告总体概览，包括测试总结，测试用例总数、通过率、覆盖率、缺陷数、测试时间等',
                     isChecked: false,
                 }, 
                 {
                     compId: 'xmTestPlanCaseExecStatusDist',
-                    icon: img3,
+                    icon: pieSimple,
                     name: '执行结果分布',
-                    compDesc: '可以直接显示全部项目列表，也可根据项目状态产品筛选单条项目',
+                    compDesc: '按测试用例执行结果统计，通过、失败、忽略、阻塞',
                     isChecked: false,
                 },
                 {
                     compId: 'xmTestPlanCaseUserDist',
-                    icon: img3,
+                    icon: bar,
                     name: '成员执行结果分布',
-                    compDesc: '可以直接显示全部项目列表，也可根据项目状态产品筛选单条项目',
+                    compDesc: '统计测试用例负责人用例执行情况',
                     isChecked: false,
                 },
                 {
                     compId: 'xmTestDayTimesCalc',
-                    icon: img4,
+                    icon: lineStack,
                     name: '每日测试次数统计',
-                    compDesc: '可以直接显示全部产品列表，可新增我的产品',
+                    compDesc: '统计每日执行的测试用例数',
                     isChecked: false,
                 },
                 {
                     compId: 'xmQuestionFuncDist',
-                    icon: img4,
+                    icon: lineStack,
                     name: '缺陷模块分布',
-                    compDesc: '可以直接显示全部产品列表，可新增我的产品',
+                    compDesc: '统计缺陷在各个模块的分布情况',
                     isChecked: false,
                 },
                 {
                     compId: 'xmQuestionMenuDist',
-                    icon: img4,
+                    icon: lineStack,
                     name: '缺陷故事分布',
-                    compDesc: '可以直接显示全部产品列表，可新增我的产品',
+                    compDesc: '统计缺陷在各个用户故事的分布情况',
                     isChecked: false,
                 }, 
                 {
                     compId: 'xmQuestionAskUserSort',
-                    icon: img4,
+                    icon: bar,
                     name: '缺陷提出人排行榜',
-                    compDesc: '可以直接显示全部产品列表，可新增我的产品',
+                    compDesc: '统计每个提出人的缺陷总数，并按大小进行排序',
                     isChecked: false,
                 },
                 {
                     compId: 'xmQuestionHandlerUserSort',
-                    icon: img4,
+                    icon: bar,
                     name: '缺陷人员排行榜',
-                    compDesc: '可以直接显示全部产品列表，可新增我的产品',
+                    compDesc: '统计每个负责人的缺陷总数，并按大小进行排序',
                     isChecked: false,
                 },
                 {
                     compId: 'xmQuestionStateDist',
-                    icon: img4,
+                    icon: pieSimple,
                     name: '缺陷状态分布',
-                    compDesc: '可以直接显示全部产品列表，可新增我的产品',
+                    compDesc: '按缺陷处理情况进行统计',
                     isChecked: false,
                 },
                 {
                     compId: 'xmQuestionReTestingDist',
-                    icon: img4,
+                    icon: pieSimple,
                     name: '缺陷回归分布',
-                    compDesc: '可以直接显示全部产品列表，可新增我的产品',
+                    compDesc: '统计回归测试的缺陷数',
                     isChecked: false,
                 },
                 {
                     compId: 'xmQuestionAttDist',
-                    icon: img4,
+                    icon: pieSimple,
                     name: '缺陷属性分布',
-                    compDesc: '可以直接显示全部产品列表，可新增我的产品',
+                    compDesc: '按缺陷的属性进行统计，多种属性可选择',
                     isChecked: false,
                 },
                 {
                     compId: 'xmQuestionAgeDist',
-                    icon: img4,
+                    icon: pieSimple,
                     name: '缺陷年龄分布',
-                    compDesc: '可以直接显示全部产品列表，可新增我的产品',
+                    compDesc: '统计各个时间长度的缺陷总数',
                     isChecked: false,
                 } 
             ],
@@ -208,6 +216,7 @@ export default {
             position: relative;
             cursor: pointer;
             margin-top: 10px;
+            width:100%;
             img {
                 width: 94px;
                 height: 94px;
