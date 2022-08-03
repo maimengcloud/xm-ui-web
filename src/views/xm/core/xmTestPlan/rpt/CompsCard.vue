@@ -28,7 +28,7 @@
                             :w="item.w"
                             :h="item.h"
                             :i="item.i"
-                            :key="index">
+                            :key="index" @resize="sizeAutoChange(item)">
                             <component :is="item.compId" :xm-test-plan="xmTestPlan" :comp-cfg="item" :ref="item.id" @delete="doDelete"></component>
                         </grid-item>
                     </grid-layout>
@@ -195,6 +195,14 @@ export default {
             if(index>=0){ 
                 this.compCfgList.splice(index,1)
             }
+        },
+        sizeAutoChange(k){ 
+             if(this.$refs[k.id] && this.$refs[k.id][0].$refs && this.$refs[k.id][0].$refs[k.id]){ 
+                   this.$refs[k.id][0].$refs[k.id].sizeAutoChange();
+            }else{ 
+                   this.$refs[k.id][0].sizeAutoChange();
+            }
+            
         }
          
     },

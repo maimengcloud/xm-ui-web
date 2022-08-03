@@ -221,6 +221,9 @@
 				if(this.compCfg && this.compCfg.params){
 					Object.assign(this.filters,this.compCfg.params) 
 				} 
+			},
+			sizeAutoChange(){
+				this.myChart.resize();
 			}
 		},//end method
 		mounted() {  

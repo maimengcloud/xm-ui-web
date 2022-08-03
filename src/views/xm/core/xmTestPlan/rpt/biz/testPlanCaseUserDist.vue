@@ -172,7 +172,10 @@
 			},
 			doDelete(){
 				this.$emit("delete",this.compCfg)
-			},
+			}, 
+			sizeAutoChange(){
+				this.myChart.resize();
+			}
 		},//end method
 		mounted() { 
  			initSimpleDicts('all',['testPlanTcode'] ).then(res=>{

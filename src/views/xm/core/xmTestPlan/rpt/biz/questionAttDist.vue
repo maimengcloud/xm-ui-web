@@ -295,6 +295,9 @@
 			doDelete(){
 				this.$emit("delete",this.compCfg)
 			},
+			sizeAutoChange(){
+				this.myChart.resize();
+			}
 		},//end method
 		mounted() { 
  			initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','priority','bugRepRate','bugReason'] ).then(res=>{
