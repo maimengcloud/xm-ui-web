@@ -39,6 +39,11 @@
             <xm-test-case-mng  v-if="activeIndex=='testCase'" :xm-test-casedb="xmTestCasedb" key="1"></xm-test-case-mng>  
             <xm-test-case-mng  v-if="activeIndex=='caseFlow'" :xm-test-casedb="xmTestCasedb" scene="caseFlow" key="2"></xm-test-case-mng>  
             <xm-test-plan-info v-else-if="activeIndex=='testPlan'" :xm-test-casedb="xmTestCasedb" ref="testPlan"> </xm-test-plan-info>
+            
+          <xm-report
+           v-if="activeIndex=='testRpt'"
+            :xm-product="{id:xmTestCasedb.productId,productName:xmTestCasedb.productName}"
+          ></xm-report>
         </el-row>     
 	</section>
 </template>
@@ -54,10 +59,11 @@ import  XmTestPlanInfo from '../xmTestPlan/XmTestPlanInfo';//新增修改界面
 import { mapGetters } from 'vuex'
 import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修改界面
 
+import XmReport from "@/views/xm/rpt/reportIndex";
 export default {
     name:'xmTestCasedbMng',
     components: {
-        XmTestCasedbEdit,XmProductSelect,XmTestCaseMng,XmTestPlanInfo,
+        XmTestCasedbEdit,XmProductSelect,XmTestCaseMng,XmTestPlanInfo,XmReport,
     },
     props:['visible','xmTestCasedb'],
     computed: {
