@@ -71,11 +71,15 @@
 				</el-form-item>   
 			</el-form>
 		</el-row>
-
-		<el-row v-if="opType=='add'" >
-			<span style="float:right;">
-		    <el-button @click.native="handleCancel">取消</el-button>
-            <el-button v-loading="load.edit" type="primary" @click.native="saveSubmit" :disabled="load.edit==true">提交</el-button>
+		<el-row class="padding-bottom">
+			<span>报告总结</span>
+		</el-row>
+		<el-row> 
+			<el-input  type="textarea" :rows="8" v-model="editForm.summaryRemark"></el-input>
+		</el-row>
+		<el-row v-if="editForm.summaryRemark!==editFormBak.summaryRemark" >
+			<span style="float:right;"> 
+            <el-button type="primary" @click.native="editSomeFields(editForm,'summaryRemark',editForm.summaryRemark)">提交</el-button>
 			</span>
 		</el-row>
 	</section>
@@ -126,9 +130,14 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 					 
 				},
 				editForm: {
-					id:'',name:'',casedbId:'',casedbName:'',projectId:'',projectName:'',cuserid:'',cusername:'',ctime:'',stime:'',etime:'',status:'',tcode:'',totalCases:'',okCases:'',errCases:'',igCases:'',blCases:'',productId:'',productName:'',flowState:''
+					id:'',name:'',casedbId:'',casedbName:'',projectId:'',projectName:'',cuserid:'',cusername:'',ctime:'',stime:'',etime:'',status:'',tcode:'',totalCases:'',okCases:'',errCases:'',igCases:'',blCases:'',productId:'',productName:'',flowState:'',summaryRemark:''
+				},
+				
+				editFormBak: {
+					id:'',name:'',casedbId:'',casedbName:'',projectId:'',projectName:'',cuserid:'',cusername:'',ctime:'',stime:'',etime:'',status:'',tcode:'',totalCases:'',okCases:'',errCases:'',igCases:'',blCases:'',productId:'',productName:'',flowState:'',summaryRemark:''
 				},
                 maxTableHeight:300,
+				summaryRemarkEditVisible:false,
 			}//end return
 		},//end data
 		methods: {
@@ -203,7 +212,7 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
                   let tips = res.data.tips;
                   if(tips.isOk){
                     this.editFormBak=[...this.editForm]
-					this.$emit('edit-fields',params)
+					this.$emit('edit-fields',params) 
                   }else{
                     Object.assign(this.editForm,this.editFormBak)
                     this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
@@ -214,7 +223,7 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 				this.editForm.projectId=row.id
 				this.editForm.projectName=row.name
 				this.editForm.name=this.editForm.projectName+'-测试计划-V1.0'
-			}
+			}, 
 		},//end method
 		mounted() {
 		    this.$nextTick(() => {

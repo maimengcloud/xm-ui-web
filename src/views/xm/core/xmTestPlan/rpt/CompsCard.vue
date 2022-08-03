@@ -1,10 +1,10 @@
 <template>
 <section>
     <el-row  class="page-center border">
-        <el-col :span="rptConfigVisible?6:0" :style="{height:maxTableHeight+'px',overflow:'auto'}">
-            <comps-set :comp-ids="compIds" @row-click="onCompSelect"></comps-set>
+        <el-col :span="6" :style="{height:maxTableHeight+'px',overflow:'auto'}">
+            <comps-set v-if="rptConfigVisible" :comp-ids="compIds" @row-click="onCompSelect"></comps-set>
         </el-col>
-        <el-col :span="rptConfigVisible?18:24" :style="{height:maxTableHeight+'px',overflow:'auto'}" ref="table">
+        <el-col :span="18" :style="{height:maxTableHeight+'px',overflow:'auto'}" ref="table" class="border">
             <div>
                 <div class="empty" v-if="compCfgList.length == 0" >
                     <el-empty description="暂未选择模块"></el-empty>

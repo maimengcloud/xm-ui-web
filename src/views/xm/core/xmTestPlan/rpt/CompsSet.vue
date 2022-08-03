@@ -51,14 +51,7 @@ export default {
                     name: '报告总览',
                     compDesc: '可以直接显示全部待审批列表，也可根据审批分类详细筛选单条待审批事项',
                     isChecked: false,
-                },
-                {
-                    compId: 'xmTestRptSummary',
-                    icon: img2,
-                    name: '报告总结',
-                    compDesc: '可以直接显示全部任务列表，也可根据状态、类型详细筛选分类的任务',
-                    isChecked: false,
-                },
+                }, 
                 {
                     compId: 'xmTestPlanCaseExecStatusDist',
                     icon: img3,
