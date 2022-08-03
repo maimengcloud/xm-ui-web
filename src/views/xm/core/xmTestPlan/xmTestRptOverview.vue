@@ -7,25 +7,25 @@
 			<el-row class="box">
 				<el-col :span="6" class="box-red">
 					<div class="box-info">  
-							<div class="num">1000</div>
+							<div class="num">{{xmTestPlan.totalCases?xmTestPlan.totalCases:'0'}}个</div>
 							<div class="label">用例数</div>   
 					</div>
 				</el-col>
 				<el-col :span="6" class="box-blue">
 					<div class="box-info">  
-							<div class="num">100%</div>
+							<div class="num">{{caseFuGaiLv}}%</div>
 							<div class="label">用例覆盖率</div>   
 					</div>
 				</el-col>
 				<el-col :span="6" class="box-green">
 					<div class="box-info">  
-							<div class="num">100%</div>
+							<div class="num">{{caseTongGuoLv}}%</div>
 							<div class="label">用例通过率</div>   
 					</div>
 				</el-col>
 				<el-col :span="6" class="box-orange">
 					<div class="box-info">  
-							<div class="num">20</div>
+							<div class="num">{{xmTestPlan.bugCnt?xmTestPlan.bugCnt:0}}个</div>
 							<div class="label">缺陷数</div>   
 					</div>
 				</el-col>
@@ -100,6 +100,30 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
+			caseFuGaiLv(){
+				if(!this.xmTestPlan.totalCases){
+					return 0
+				}
+				var okCases=parseInt(this.xmTestPlan.okCases>0?this.xmTestPlan.okCases:0)
+				var errCases=parseInt(this.xmTestPlan.errCases>0?this.xmTestPlan.errCases:0)
+				var igCases=parseInt(this.xmTestPlan.igCases>0?this.xmTestPlan.igCases:0)
+				var blCases=parseInt(this.xmTestPlan.blCases>0?this.xmTestPlan.blCases:0)
+				var totalExecs=okCases+errCases+igCases+blCases
+				var rate=parseInt(totalExecs/this.xmTestPlan.totalCases*100)
+				return rate;
+			},
+			caseTongGuoLv(){
+				if(!this.xmTestPlan.totalCases){
+					return 0
+				}
+				var okCases=parseInt(this.xmTestPlan.okCases>0?this.xmTestPlan.okCases:0)
+				var errCases=parseInt(this.xmTestPlan.errCases>0?this.xmTestPlan.errCases:0)
+				var igCases=parseInt(this.xmTestPlan.igCases>0?this.xmTestPlan.igCases:0)
+				var blCases=parseInt(this.xmTestPlan.blCases>0?this.xmTestPlan.blCases:0)
+				var totalExecs=okCases+igCases
+				var rate=parseInt(totalExecs/this.xmTestPlan.totalCases*100)
+				return rate;
+			}
 
 		},
 		props:['xmTestPlan','visible','opType','selProject','xmTestCasedb'],
