@@ -17,8 +17,8 @@
 							<el-form-item label="归属模块" prop="funcId">
 								<span>{{editForm.funcName?editForm.funcName:'无'}} <el-button type="text" @click="funcVisible=true">选择模块</el-button></span>
 							</el-form-item>
-							<el-form-item label="归属需求" prop="menuId"> 
-								<el-tag title="隶属需求" closable @click="showSelectMenu" @close.stop="handleCloseMenuTag">
+							<el-form-item label="归属需求" prop="menuId">  
+								<el-tag title="隶属需求" style="width:100%;" closable @click="showSelectMenu" @close.stop="handleCloseMenuTag">
 								<div class="icon" :style="{backgroundColor:   'rgb(79, 140, 255)' }">
 									<i :class="  'el-icon-document'  " ></i>
 								</div> {{editForm.menuName?editForm.menuName:"未关联需求"}}</el-tag> 
