@@ -4,7 +4,7 @@
 							<el-avatar class="avater" :class="{'dashed-circle':avaterCpd.isNull}"  :icon="avaterCpd.icon" :style="{backgroundColor:avaterCpd.color}">{{avaterCpd.innerText}}</el-avatar> 
 							
               <div class="field-info"  :class="{disabled:disabled===true,enabled:disabled!==true}">
-                <slot name="field-info" :value="dateRange">
+                <slot name="field-info">
 								<span class="field-value" v-if="!avaterCpd.isNull">{{avaterCpd.innerText}} </span> 
 								<span class="field-value" v-else><span class="label-font-color">无</span></span> 
                 <slot name="label">
