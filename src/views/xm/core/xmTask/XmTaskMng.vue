@@ -657,6 +657,7 @@
         :xm-task="editForm"
         :visible="taskWorkloadVisible" 
         op-type="add"
+        biz-type="1" 
         @cancel="taskWorkloadVisible=false"
         @submit="onTaskWorkloadSubmit"
       ></xm-workload-edit>
