@@ -1,6 +1,6 @@
 <template>
-  <section ref="pageMainRef">
-    <el-row :style="{overflowX:'hidden',height:maxTableHeight+'px'}" > 
+  <section >
+    <el-row ref="pageMainRef" :style="{overflowX:'hidden',height:maxTableHeight+'px'}" > 
       <el-row :gutter="10" style="margin-bottom:10px">
           <el-col :span="8" >
             <el-card class="box-card" style="padding:0px ;height:425px">
@@ -580,14 +580,14 @@ export default {
 
   mounted() {
 			
+    this.$nextTick(() => {
+      this.maxTableHeight=util.calcTableMaxHeight(this.$refs.pageMainRef.$el)
+    });
 			initSimpleDicts('all',['xmProductPstatus'] ).then(res=>{
 				if(res.data.tips.isOk){ 
 					this.dicts['xmProductPstatus']=res.data.data.xmProductPstatus   
 				}
 			});
-    this.$nextTick(() => {
-      this.maxTableHeight=util.calcTableMaxHeight(this.$refs.pageMainRef.$el)
-    });
     this.drawAllBar();
     this.drawPieBug();
     this.drawProjectAndIteration();
@@ -647,7 +647,7 @@ export default {
   position: relative;
   .progress-item{
     position:absolute; width:80%;
-  };
+  }
 }
 
 .card-font {
@@ -715,3 +715,4 @@ export default {
   padding-bottom: 0;
 }
 </style>
+ 
