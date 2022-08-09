@@ -128,7 +128,7 @@
           </el-form>
           <div slot="footer" class="dialog-footer"> 
              <el-button  @click="addFormVisible=false">关闭</el-button>
-            <el-button type="primary" @click="addXmTask">确 定</el-button>
+            <el-button type="primary" @click="addXmTask" v-loading="load.edit" :disabled="load.edit">确 定</el-button>
           </div>
       </el-dialog>
       
@@ -294,6 +294,7 @@ export default {
              task.id=null;
              task.sortLevel=this.parentXmMenu.seqNo
              task.projectId=this.linkProjectId
+             this.load.edit=true;
              addTask(task).then((res) => {
 								this.load.edit=false
 								var tips=res.data.tips;
