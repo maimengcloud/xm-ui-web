@@ -1,8 +1,7 @@
 <template>
   <section class="padding-right">
     <el-row>
-      <el-col
-        :span="24"
+      <el-row 
         class="padding-left" 
       >
         <el-row>     
@@ -17,7 +16,7 @@
             trigger="click"
           >
             <el-row>
-              <el-col :span="24" style="padding-top: 5px">
+              <el-row>
                 
                 <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
                   <i :class=" 'el-icon-time' " ></i>
@@ -27,8 +26,8 @@
                   icon="el-icon-plus"
                   >由史诗特性快速创建计划 (推荐)</el-button
                 >
-              </el-col>
-              <el-col :span="24" style="padding-top: 5px">
+              </el-row>
+              <el-row>
                 
                 <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
                   <i :class=" 'el-icon-time' " ></i>
@@ -38,8 +37,8 @@
                   icon="el-icon-plus"
                   >从模板快速导入计划 </el-button
                 >
-              </el-col>
-              <el-col :span="24" style="padding-top: 5px">
+              </el-row>
+              <el-row>
                 
                 <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
                   <i :class=" 'el-icon-time' " ></i>
@@ -49,7 +48,7 @@
                   icon="el-icon-plus"
                   >直接创建计划</el-button
                 >
-              </el-col> 
+             </el-row>
             </el-row>
             <el-button
               slot="reference" 
@@ -77,79 +76,27 @@
 
           <el-popover
             placement="top-start"
-            title=""
+            title="更多条件、操作"
             width="400"
             trigger="manual"
             v-model="moreVisible"
           >
-							<el-row> 
-								<el-col :span="24"> 
-									<el-button  style="float:right;"
+							<el-row>  
+									<el-button  style="float:right;margin-top:-40px;"
 									icon="el-icon-close"
 									@click="moreVisible=false"
 									type="text"
 									>关闭</el-button
-									>
-								</el-col>
+									> 
 							</el-row> 
-            <el-row> 
-              <el-col :span="24" style="padding-top: 5px">
-                <font class="more-label-font">产品:</font
-                > <xm-product-select :auto-select="false" :link-project-id="filters.selProject && filters.selProject.id?filters.selProject.id:null" @row-click="onProductSelected" @clear="onProductClearSelect"></xm-product-select>
-              </el-col> 
-              <el-col :span="24" style="padding-top: 5px">
-                <font class="more-label-font">责任人:</font>
-                <el-tag
-                  v-if="filters.createUser"
-                  closable
-                  @click="showMenuGroupUser"
-                  @close="clearFiltersCreateUser"
-                  >{{ this.filters.createUser.username }}</el-tag
-                >
-                <el-button v-else @click="showMenuGroupUser" type="plian"
-                  >选责任人</el-button
-                >
-                <el-button
-                  v-if="
-                    !filters.createUser ||
-                    filters.createUser.userid != userInfo.userid
-                  "
-                  @click="setFiltersCreateUserAsMySelf"
-                  >我的</el-button
-                >
-              </el-col>  
-              <el-col :span="24" style="padding-top: 5px">
-                <font class="more-label-font">标签:</font>
-                <el-button
-                  v-if="!filters.skillTags || filters.skillTags.length == 0"
-                  icon="el-icon-search"
-                  @click="showSkillSelect"
-                  >选择标签</el-button
-                >
-                <el-tag
-                  v-else
-                  closable
-                  v-for="(skill, index) in filters.skillTags"
-                  :key="index"
-                  @click="showSkillSelect"
-                  @close="skillTagClear(skill)"
-                  >{{ skill.skillName }}</el-tag
-                >
-              </el-col>
-              <el-col :span="24" style="padding-top: 5px">
-                <el-button
-                  type="primary"
-                  icon="el-icon-search"
-                  @click="searchXmTasks"
-                  >查询</el-button
-                >
+               <el-row>  
                  <el-button type="danger"
                   class="hidden-xl-only"
                     @click="batchDel"
                     v-loading="load.del"
                     icon="el-icon-delete"
                     title="批量删除"
-                    ></el-button
+                    >批量删除</el-button
                   >
                 <el-button
                   class="hidden-xl-only"
@@ -157,9 +104,16 @@
                   title="更换任务的上级，实现任务搬家功能"
                   icon="el-icon-upload2"
                   v-loading="load.edit"
-                > </el-button>  
-              </el-col>
-            </el-row> 
+                > 更换上级</el-button>    
+                <span style="float:right;"> 
+                 <el-button 
+                  type="primary"
+                  icon="el-icon-search"
+                  @click="searchXmTasks"
+                  >查询</el-button
+                >
+                </span>
+              </el-row> 
             <el-button slot="reference" @click="moreVisible=!moreVisible">更多</el-button>
           </el-popover> 
           </span>
@@ -224,7 +178,7 @@
                           trigger="click"
                         >
                           <el-row>
-                            <el-col :span="24" style="padding-top: 5px">
+                            <el-row>
                               
                               <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
                                 <i :class=" 'el-icon-time' " ></i>
@@ -234,8 +188,8 @@
                                 icon="el-icon-plus"
                                 >由史诗特性快速创建子计划 (推荐)</el-button
                               >
-                            </el-col>
-                            <el-col :span="24" style="padding-top: 5px">
+                            </el-row>
+                            <el-row>
                               
                               <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
                                 <i :class=" 'el-icon-time' " ></i>
@@ -245,14 +199,14 @@
                                 icon="el-icon-plus"
                                 >从模板快速导入子计划 </el-button
                               >
-                            </el-col>
-                            <el-col :span="24" style="padding-top: 5px">
+                            </el-row>
+                            <el-row>
                               
                               <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
                                 <i :class=" 'el-icon-time' " ></i>
                               </div>  
                               <el-button   @click.stop="showSubAdd( scope.row,scope.$index,'1')" icon="el-icon-plus" title="新建子计划">直接创建子计划 </el-button>   
-                            </el-col> 
+                           </el-row>
                           </el-row> 
                            <el-button   slot="reference"  :style="{backgroundColor:  '#E6A23C'}"   icon="el-icon-plus" title="新建子计划" circle plain size="mini"> </el-button>   
                         </el-popover> 
@@ -274,7 +228,7 @@
               style="float: right;"
             ></el-pagination>  
         </el-row>
-      </el-col>
+      </el-row>
     </el-row>  
     <!--编辑 XmTask xm_task界面-->
     <el-dialog
@@ -1283,12 +1237,7 @@ export default {
 };
 </script>
 
-<style scoped>
-.more-label-font {
-  text-align: center;
-  float: left;
-  padding-top: 5px;
-}
+<style scoped> 
 .align-right {
   float: right;
 }
