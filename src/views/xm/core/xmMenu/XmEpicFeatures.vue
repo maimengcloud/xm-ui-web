@@ -11,53 +11,51 @@
 							width="250"
 							trigger="click" >
 							<el-row>
-								<el-col :span="24" style="padding-top:5px;">
+								<el-row>
 									<div   class="icon" style="background-color:  rgb(255, 153, 51);">
  										<i class="el-icon-s-promotion"></i>
 									</div>
 									<el-button   @click="showAdd('1')">新建史诗</el-button>
-								</el-col>
+								</el-row>
 								<!--
-								<el-col :span="24" style="padding-top:5px;">
+								<el-row>
 									<div  class="icon" style="background-color:  rgb(0, 153, 51);">
 									<i class="el-icon-s-flag"></i>
 									</div>
 									<el-button   @click="showAdd('2')">新建特性</el-button>
-								</el-col>
-								<el-col :span="24" style="padding-top:5px;">
+								</el-row>
+								<el-row>
 
 									<div  class="icon" style="background-color:  rgb(79, 140, 255);">
 									<i class="el-icon-document"></i>
 									</div>
 									<el-button   @click="showAdd('3')"  >新建用户故事</el-button>
-								</el-col>
+								</el-row>
 								-->
 
-								<el-col :span="24" style="padding-top:5px;">
+								<el-row>
 									<el-button  @click="showImportFromMenuTemplate()" icon="el-icon-upload2">由模板快速导入需求</el-button>
-								</el-col>
+								</el-row>
 							</el-row>
 							<el-button type="primary" v-if="!disabledMng" round  slot="reference" icon="el-icon-plus"></el-button>
 						</el-popover> 
 						<el-popover
 							placement="top-start"
-							title=""
+							title="更多操作"
 							width="400"
 							trigger="manual"
 							v-model="moreVisible"
 						>
-							<el-row> 
-								<el-col :span="24"> 
-									<el-button  style="float:right;"
+							<el-row>  
+									<el-button  style="float:right;margin-top:-40px;"
 									icon="el-icon-close"
 									@click="moreVisible=false"
 									type="text"
 									>关闭</el-button
-									>
-								</el-col>
+									> 
 							</el-row> 
 							<el-row> 
-							<el-col :span="24" style="padding-top: 5px"> 
+							<el-row> 
 							
 								<el-button type="primary"  @click="showParentMenu" icon="el-icon-top" title="更换上级">更换上级</el-button> 
 								<el-button type="danger" 
@@ -69,7 +67,7 @@
 								>
 								<el-button          @click="loadTasksToXmMenuState" icon="el-icon-s-marketing" title="汇总进度">汇总进度</el-button> 
  
-							</el-col> 
+							</el-row> 
 							</el-row> 
 							<el-button slot="reference" @click="moreVisible=!moreVisible" icon="el-icon-more"></el-button>
 						</el-popover> 
