@@ -5,7 +5,7 @@
 					<el-row class="page-main padding-left">  
 						<el-popover
 							placement="bottom"
-							width="400"
+							width="600"
 							trigger="click"> 
 							<xm-project-select v-if="ptype!=='1' && (!selProject||!selProject.id)" :auto-select="true"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear="onProjectClear"></xm-project-select>
 								<el-link type="warning" slot="reference" v-if="ptype!=='1' && (!selProject||!selProject.id)"  icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link> 

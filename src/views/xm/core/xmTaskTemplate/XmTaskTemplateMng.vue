@@ -3,7 +3,7 @@
 				<el-row> 
 					<el-popover
 						placement="bottom"
-						width="400"
+						width="600"
 						trigger="click"> 
 						<xm-project-tpl-mng :auto-select="true" :isSelect="true" showType="simple"  @row-click="onProjectRowClick" @clear="onProjectClearSelect"></xm-project-tpl-mng>
 							<el-link type="warning" slot="reference" icon="el-icon-search"><font style="font-size:14px;">{{filters.project?filters.project.name:'选择项目模板'}}</font></el-link> 
@@ -11,7 +11,7 @@
 					
 					<el-popover
 						placement="bottom"
-						width="400"
+						width="600"
 						trigger="click"> 
 						<xm-product-tpl-mng :auto-select="true" :isSelect="true"  showType="simple"  @row-click="onProductRowClick" @clear="onProductClearSelect"></xm-product-tpl-mng>
 							<el-link type="warning" slot="reference" icon="el-icon-search"><font style="font-size:14px;">{{filters.product?filters.product.productName:'选择产品模板'}}</font></el-link> 

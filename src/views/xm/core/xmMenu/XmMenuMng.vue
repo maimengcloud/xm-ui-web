@@ -18,7 +18,7 @@
 						<el-popover
 							placement="top-start"
 							title="更多查询条件或者操作"
-							width="400"
+							width="600"
 							v-model="moreVisible"
 							trigger="manual" >
 							
@@ -30,6 +30,12 @@
 									>关闭</el-button
 									> 
 							</el-row> 
+							
+								<el-row> 
+									<el-button    @click="handleExport" icon="el-icon-download">导出</el-button>
+									<el-button   v-if="  disabledMng!==false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>
+ 								</el-row>
+								 <el-divider></el-divider>
 							<el-row>
 								<el-row>
 									<font class="more-label-font">标签条件:</font>
@@ -54,7 +60,7 @@
 								</el-row>
 								<el-row>
 									<font class="more-label-font">
-										需求是否已加入迭代:
+										是否加入迭代:
 									</font>
 									<el-select   v-model="filters.iterationFilterType" placeholder="加入过迭代？" clearable   >
 										<el-option   value="not-join-any-iteration"  label="未加入过迭代"></el-option>
@@ -65,7 +71,7 @@
 								</el-row>
 								<el-row>
 									<font class="more-label-font">
-										需求是否已分配了任务:
+										是否分配任务:
 									</font>
 									<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable >
 										<el-option   value="not-join-any-project"  label="未分配过任务的需求"></el-option>
@@ -162,12 +168,8 @@
 									></mdp-date-range>
 								</el-row> 
 								<el-row>
-									<span style="float:right;">
-									<el-button    @click="handleExport" icon="el-icon-download">导出</el-button>
-									<el-button   v-if="  disabledMng!==false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>
-									<el-button type="primary" style="float:right;" @click="searchXmMenus" icon="el-icon-search">查询</el-button> 
-									</span>
-								</el-row>
+  									<el-button type="primary" style="float:right;" @click="searchXmMenus" icon="el-icon-search">查询</el-button> 
+ 								</el-row>
 							</el-row>
 								<el-button  slot="reference" icon="el-icon-more" @click="moreVisible=!moreVisible"></el-button>
 						</el-popover>

@@ -2,7 +2,7 @@
   <section>
     <el-popover
       placement="bottom"
-      width="400"
+      width="600"
       trigger="manual"
       v-model="productVisible"
     >
@@ -30,7 +30,7 @@
         <el-popover
           placement="top-start"
           title="更多条件、操作"
-          width="400"
+          width="600"
           v-model="moreVisible"
           trigger="manual"
         >

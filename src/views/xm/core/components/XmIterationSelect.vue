@@ -2,7 +2,7 @@
 	<section>  
 		<el-popover style="display:inline;"
 			placement="bottom"
-			width="400"
+			width="600"
 			v-model="iterationVisible"
 			trigger="manual" >  
 			<el-row>
@@ -23,7 +23,7 @@
 					placement="top-start"
 					title="更多条件、操作"
 					v-model="moreVisible"
-					width="400"
+					width="600"
 					trigger="manual" >
 					<el-button  type="text" style="float:right;margin-top:-40px;"  @click="moreVisible=false" icon="el-icon-close">关闭</el-button>
 					<el-row>   

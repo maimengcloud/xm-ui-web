@@ -2,7 +2,7 @@
   <section>
     <el-popover
       placement="bottom"
-      width="400"
+      width="600"
       trigger="manual"
       v-model="sbillVisible">
 
@@ -18,7 +18,7 @@
 												<el-popover
                           placement="top-start"
                           title=""
-                          width="400"
+                          width="600"
                           v-model="moreVisible"
                           trigger="manual" >
 													<el-row>

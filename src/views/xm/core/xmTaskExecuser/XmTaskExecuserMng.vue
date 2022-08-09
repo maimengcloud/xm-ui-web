@@ -27,7 +27,7 @@
 					<el-table-column prop="status" label="候选状态"  width="100" sortable fixed="left"> 
 						<template slot-scope="scope">
 						<el-popover trigger="hover"
-							width="400" >
+							width="600" >
 							<el-row>
   									<!--结算状态0未结算1已部分结算2无需结算4已申请结算5结算失败6已全部结算--> 
 									<el-button type="primary" v-if="scope.row.status=='7' " @click="becomeCandidate(scope.row)">成为候选人</el-button>

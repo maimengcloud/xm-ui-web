@@ -42,7 +42,7 @@
 						<el-popover
 							placement="top-start"
 							title="更多操作"
-							width="400"
+							width="600"
 							trigger="manual"
 							v-model="moreVisible"
 						>

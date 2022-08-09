@@ -18,7 +18,7 @@
 							<el-popover
 								placement="top-start"
 								title=""
-								width="400"
+								width="600"
 								v-model="moreVisible"
 								trigger="manual" >
 								<el-row> 
