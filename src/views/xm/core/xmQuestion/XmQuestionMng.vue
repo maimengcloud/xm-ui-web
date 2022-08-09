@@ -26,63 +26,73 @@
 				<el-button @click="searchXmQuestions" type="primary" icon="el-icon-search"></el-button> 
 				<el-popover
 					placement="top-start"
-					title="更多查询条件或操作"
+					title="更多条件、操作"
 					width="600"
 					v-model="moreVisible"
 					trigger="manual" >
+					
+					<el-button @click="moreVisible=false" type="text" style="float:right;margin-top:-40px;"  icon="el-icon-close">关闭</el-button>
+					<el-row>
+						<el-button @click="handleExport"   icon="el-icon-download">导出</el-button>
+					</el-row>
+					 <el-divider></el-divider>
+					 	<el-row>
+							<font class="more-label-font">变更历史:</font>
+							曾经由<el-button v-if="!filters.hisHandler||!filters.hisHandler.userid" @click="showGroupUsers('hisHandler')">执行人</el-button>
+							<el-tag v-else closable @close="clearHisHandler"  @click="showGroupUsers('hisHandler')">{{filters.hisHandler.username}}</el-tag>
+							<el-button v-if="!filters.hisHandler||filters.hisHandler.userid!=userInfo.userid" @click="setFiltersHisHandlerAsMySelf">我</el-button>
+							变更状态为
+							<el-select v-model="filters.hisHandleStatus" placeholder="请选择状态" style="width:150px;" clearable @change="changeHisHandleStatus">
+								<el-option v-for="(b,index) in dicts['bugStatus']" :value="b.id"  :key="index" :label="b.name">{{b.name}}
+								</el-option>
+							</el-select>的缺陷
+						</el-row>
+						
+					 <el-divider></el-divider>
 					<el-row> 
-						<el-col :span="24"  style="padding-top:12px;">
+						<el-row>
 							<font class="more-label-font">需求:</font>
 							<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 需求</el-button>
 							<el-tag v-else  @click="showMenu"  closable @close="clearFiltersMenu(filters.menus[0])">{{filters.menus[0].menuName.substr(0,5)}}等({{filters.menus.length}})个</el-tag>
-						</el-col>
-						<el-col :span="24" style="padding-top:12px;">
+						</el-row>
+						<el-row>
 							<font class="more-label-font">创建者:</font>
 							<el-button v-if="!filters.createUser" @click="showGroupUsers('createUser')">选择创建人</el-button>
 							<el-tag v-else closable @close="clearCreateUser"  @click="showGroupUsers('createUser')">{{filters.createUser.username}}</el-tag>
 							<el-button v-if="!filters.createUser||filters.createUser.userid!=userInfo.userid" @click="setFiltersCreateUserAsMySelf">我的</el-button>
-						</el-col>
-						<el-col :span="24" style="padding-top:12px;">
+						</el-row>
+						<el-row>
 							<font class="more-label-font">指派给:</font>
 							<el-button v-if="!filters.handlerUsername" @click="showGroupUsers('handlerUser')">选择被指派人</el-button>
 							<el-tag v-else closable @close="clearHandler"  @click="showGroupUsers('handlerUser')">{{filters.handlerUsername}}</el-tag>
 							<el-button v-if="filters.handlerUserid!=userInfo.userid" @click="setFiltersHandlerAsMySelf">我的</el-button>
-						</el-col>
-
-						<el-col :span="24" style="padding-top:12px;">
-							曾经由<el-button v-if="!filters.hisHandler||!filters.hisHandler.userid" @click="showGroupUsers('hisHandler')">执行人</el-button>
-							<el-tag v-else closable @close="clearHisHandler"  @click="showGroupUsers('hisHandler')">{{filters.hisHandler.username}}</el-tag>
-							<el-button v-if="!filters.hisHandler||filters.hisHandler.userid!=userInfo.userid" @click="setFiltersHisHandlerAsMySelf">我的</el-button>
-							变更状态为
-							<el-select v-model="filters.hisHandleStatus" placeholder="请选择状态"  clearable @change="changeHisHandleStatus">
-								<el-option v-for="(b,index) in dicts['bugStatus']" :value="b.id"  :key="index" :label="b.name">{{b.name}}
-								</el-option>
-							</el-select>的缺陷
-						</el-col>
-						<el-col :span="24" style="padding-top:5px;">
+						</el-row> 
+						<el-row>
 								<font class="more-label-font">需求:</font>
 							<font  v-if="  filters.menus && filters.menus.length>0">
 								<el-tag  v-for="(item,index) in filters.menus" :key="index"  closable  @close="clearFiltersMenu(item)">{{item.menuName.substr(0,10)}}</el-tag>
 							</font>
 							<el-button v-else    @click="showMenu" type="plian">选需求</el-button>
-						</el-col> 
-						<el-col :span="24" style="padding-top:5px;">
+						</el-row> 
+						<el-row>
 								<font class="more-label-font">缺陷编号:</font>  
-								<el-input v-model="filters.id"></el-input>
-						</el-col>
-						<el-col :span="24" class="hidden-lg-and-up" style="padding-top:12px;">
+								<el-input v-model="filters.id" style="width:200px;"></el-input>
+						</el-row>
+						<el-row>
+							<font class="more-label-font">优先级:</font>  
 							<el-select   v-model="filters.priority" placeholder="请选择优先级" clearable @change="changePriority">
 								<el-option v-for="(b,index) in dicts['priority']" :value="b.id" :key="index" :label="b.name">{{b.name}}
 								</el-option>
 							</el-select>
-						</el-col>
-						<el-col :span="24"  style="padding-top:12px;">
+						</el-row>
+						<el-row>
+							<font class="more-label-font">解决方案:</font>  
 							<el-select  v-model="filters.solution" placeholder="请选择解决方案" clearable @change="changeSolution">
 								<el-option v-for="(b,index) in dicts['bugSolution']" :value="b.id" :key="index" :label="b.name">{{b.name}}
 								</el-option>
 							</el-select>
-						</el-col>
-						<el-col  :span="24"  style="padding-top:5px;">
+						</el-row>
+						<el-row>
 							<font class="more-label-font">创建时间:</font>
 							<el-date-picker
 								v-model="dateRanger"
@@ -96,9 +106,9 @@
 								:default-time="['00:00:00','23:59:59']"
 								:picker-options="pickerOptions"
 							></el-date-picker>
-						</el-col>
-						<el-col  :span="24"  style="padding-top:5px;">
-							<font class="more-label-font">最后更新时间:</font>
+						</el-row>
+						<el-row>
+							<font class="more-label-font">更新时间:</font>
 							<el-date-picker
 								v-model="ltimeRanger"
 								type="daterange"
@@ -111,12 +121,10 @@
 								:default-time="['00:00:00','23:59:59']"
 								:picker-options="pickerOptions"
 							></el-date-picker>
-						</el-col>
-						<el-col :span="24" style="padding-top:5px;">
-							<el-button   type="primary" icon="el-icon-search" @click="searchXmQuestions">查询</el-button>
-							<el-button @click="handleExport"   icon="el-icon-download">导出</el-button>
-							<el-button @click="moreVisible=false"   icon="el-icon-close">关闭</el-button>
-						</el-col>
+						</el-row>
+						<el-row>
+							<el-button   type="primary" style="float:right;" icon="el-icon-search" @click="searchXmQuestions">查询</el-button> 
+						</el-row>
 					</el-row>
 					<el-button  slot="reference" icon="el-icon-more" @click="moreVisible=!moreVisible"></el-button>
 				</el-popover> 
@@ -1139,12 +1147,7 @@
 </script>
 
 <style lang="scss" scoped>
-
-.more-label-font{
-	text-align:center;
-	float:left;
-	padding-top:5px;
-}
+ 
 
 .align-right{
 	float: right;
