@@ -67,7 +67,7 @@
                 show-overflow-tooltip
               >
 								<template slot-scope="scope"> 
-                  <mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)" userid-key="creatorUserid" username-key="creatorUsername" :project-id="scope.row.projectId" v-model="scope.row" @change="editXmTaskSomeFields(scope.row,'creatorUserid',$event)"></mdp-select-user-xm>
+                  <mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)" userid-key="createUserid" username-key="createUsername" :project-id="scope.row.projectId" v-model="scope.row" @change="editXmTaskSomeFields(scope.row,'creatorUserid',$event)"></mdp-select-user-xm>
 
 								</template>
               </el-table-column>
