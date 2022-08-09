@@ -722,12 +722,12 @@ export default {
 }
 .transition-group {   
   width: 100%;
-  .task { 
-	
+  .task {  
+    cursor: pointer;
   	min-height: 100px;
     background: #fff;
-    margin: 5px 5px 10px 5px;
-	padding: 5px;
+    margin: 0px 0px 10px 0px;
+	  padding: 5px;
   }
 }
 
