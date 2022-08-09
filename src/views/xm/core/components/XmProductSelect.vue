@@ -89,7 +89,7 @@
               <el-button @click="setFiltersPmUserAsMySelf()">我的</el-button>
             </el-row>
             <el-row>
-              <el-button type="primary" style="float:right;" @click="searchXmProducts"
+              <el-button type="primary" style="float:right;" @click="searchXmProducts" icon="el-icon-search"
                 >查询</el-button
               >
             </el-row>
@@ -97,7 +97,7 @@
           <el-button
             type="text"
             slot="reference" 
-            @click="moreVisible = !moreVisible"
+            @click="moreVisible = !moreVisible" icon="el-icon-search"
             >更多条件</el-button
           >
         </el-popover>

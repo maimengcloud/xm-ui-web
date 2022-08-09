@@ -29,13 +29,16 @@
               >创建项目</el-button>
                 <el-popover
                   placement="top-start"
-                  title=""
+                  title="更多条件、操作"
                   width="400"
                   v-model="moreVisible"
                   trigger="manual"
                 >
+                <el-button type="text" icon="el-icon-close" @click="moreVisible = false" style="float:right;margin-top:-40px;"
+                        >关闭</el-button
+                      >
                   <el-row>
-                    <el-col :span="24" style="padding-top: 5px">
+                    <el-row>
                       <font class="more-label-font">项目编号:</font>
                       <el-input
                         v-model="filters.id"
@@ -44,9 +47,9 @@
                         @keyup.enter.native="searchXmProjects"
                       >
                       </el-input>
-                    </el-col>
+                    </el-row>
 
-                    <el-col :span="24" style="padding-top: 5px">
+                    <el-row>
                       <font class="more-label-font">创建时间:</font>
                       <el-date-picker
                         v-model="dateRanger"
@@ -60,9 +63,9 @@
                         :default-time="['00:00:00', '23:59:59']"
                         :picker-options="pickerOptions"
                       ></el-date-picker>
-                    </el-col>
+                    </el-row>
 
-                    <el-col :span="24" style="padding-top: 5px">
+                    <el-row>
                       <font class="more-label-font"> 项目名称: </font>
                       <el-input
                         v-model="filters.key"
@@ -70,8 +73,8 @@
                         placeholder="输入项目名字关键字"
                       >
                       </el-input>
-                    </el-col>
-                    <el-col :span="24" style="padding-top: 5px">
+                    </el-row>
+                    <el-row>
                       <font class="more-label-font"> 项目经理: </font>
                       <el-tag
                         v-if="filters.pmUser"
@@ -86,19 +89,18 @@
                       <el-button @click="setFiltersPmUserAsMySelf()"
                         >我的</el-button
                       >
-                    </el-col>
-                    <el-col :span="24" style="padding-top: 5px">
-                      <el-button type="text" @click="moreVisible = false"
-                        >关闭</el-button
-                      ><el-button type="primary" @click="searchXmProjects"
+                    </el-row>
+                    <el-row>
+                      <el-button type="primary" @click="searchXmProjects" style="float:right;"
                         >查询</el-button
                       >
-                    </el-col>
+                    </el-row>
                   </el-row>
                   <el-button
                     type="text"
                     slot="reference"
                     @click="moreVisible = !moreVisible" 
+                    icon="el-icon-search"
                     >更多条件</el-button
                   >
                 </el-popover>
