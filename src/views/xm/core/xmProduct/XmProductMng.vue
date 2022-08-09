@@ -2,7 +2,7 @@
 	<section>
 		<el-row  class="padding-left padding-right">
 			<!--
-		<el-col :span="6" class="border padding" > 
+		<el-row :span="6" class="border padding" > 
 			<el-row>
 				<el-row>
 					您可以通过 &nbsp;<el-button   @click="showAdd" icon="el-icon-plus" type="primary" plain>项目</el-button>&nbsp;创建一个新项目
@@ -14,9 +14,9 @@
 					通过&nbsp;<el-button @click="templateVisible=true" type="primary" plain style="margin-bottom:5px;">拷贝模板</el-button>&nbsp;快速创建新项目。<br/>
 				</el-row>
 			</el-row> 
-		</el-col> 
+		</el-row> 
 		-->
-		<el-col :span="24" class="padding-left">
+		<el-row :span="24" class="padding-left">
 			<el-row >
 				<el-row>
 					<el-select   v-model="filters.queryScope"  style="width:120px;"  placeholder="产品查询范围" clear>
@@ -36,27 +36,61 @@
 					
 					<el-popover
 						placement="top-start"
-						title=""
+						title="更多查询条件、操作"
 						width="500"
 						trigger="click" >
-						<el-divider content-position="left"><strong>查询条件</strong></el-divider>
+						<el-row> 
+								<el-button   @click="templateVisible=!templateVisible" >{{templateVisible?"隐藏模板":"显示模板"}}</el-button>
+								<el-button  @click="guiderStart(true)" icon="el-icon-help">新手导航</el-button>
+						</el-row>
+						<el-divider></el-divider>
 						<el-row>
-							<el-col :span="24" style="padding-top:5px;">
+							<el-row>
 
 								<font class="more-label-font">
 									产品查询范围：
 								</font>
-								<el-select  v-model="filters.queryScope" style="width:100%;"   placeholder="产品查询范围">
+								<el-select  v-model="filters.queryScope" style="width:200px;"   placeholder="产品查询范围">
 									<el-option :label="userInfo.branchName+'机构下的产品'" value="branchId"></el-option>
 									<el-option label="我相关的产品" value="compete"></el-option>
 									<el-option label="按产品编号精确查找" value="productId"></el-option>
 								</el-select>
-							</el-col>
-							<el-col  :span="24"  style="padding-top:5px;">
-								<el-input v-if="filters.queryScope=='productId'"  v-model="filters.id" style="width:100%;"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">
+							</el-row>  
+							<el-row v-if="filters.queryScope=='productId'">
+								<font class="more-label-font">
+									产品编号：
+								</font>
+								<el-input   v-model="filters.id" style="width:200px;" placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">
 								</el-input>
-							</el-col>
-							<el-col v-show="!selProject&&filters.queryScope!='productId'" :span="24"  style="padding-top:5px;">
+							</el-row>
+							<el-row>
+								<font class="more-label-font">
+									产品名称:
+								</font>
+								<el-input   v-model="filters.key" style="width:200px;"  placeholder="输入产品名字关键字">
+								</el-input>
+							</el-row>
+							<el-row>
+								<font class="more-label-font">
+									产品经理:
+								</font>
+								<el-tag v-if="filters.pmUser" closable @click="selectFiltersPmUser" @close="clearFiltersPmUser()">{{filters.pmUser.username}}</el-tag>
+								<el-button   v-else @click="selectFiltersPmUser()">选责任人</el-button>
+								<el-button    @click="setFiltersPmUserAsMySelf()">我的</el-button>
+							</el-row>
+
+							<el-row v-if="selProject">
+								<font class="more-label-font">
+									项目  <el-tag v-if="selProject">{{selProject?selProject.name:''}}</el-tag>
+								</font>
+							</el-row>
+							<el-row  v-if="xmIteration">
+								<font class="more-label-font">
+									迭代 <el-tag v-if="xmIteration">{{xmIteration.iterationName}}</el-tag>
+								</font>
+							</el-row>
+							
+							<el-row v-show="!selProject&&filters.queryScope!='productId'">
 								<font class="more-label-font">创建时间:</font>
 								<el-date-picker
 									v-model="dateRanger"
@@ -70,38 +104,10 @@
 									:default-time="['00:00:00','23:59:59']"
 									:picker-options="pickerOptions"
 								></el-date-picker>
-							</el-col>
-							<el-col  :span="24"  style="padding-top:5px;">
-								<font class="more-label-font">
-									产品名称:
-								</font>
-								<el-input   v-model="filters.key" style="width:100%;"  placeholder="输入产品名字关键字">
-								</el-input>
-							</el-col>
-							<el-col  :span="24"  style="padding-top:5px;">
-								<font class="more-label-font">
-									产品经理:
-								</font>
-								<el-tag v-if="filters.pmUser" closable @click="selectFiltersPmUser" @close="clearFiltersPmUser()">{{filters.pmUser.username}}</el-tag>
-								<el-button   v-else @click="selectFiltersPmUser()">选责任人</el-button>
-								<el-button    @click="setFiltersPmUserAsMySelf()">我的</el-button>
-							</el-col>
-
-							<el-col v-if="selProject" :span="24"  style="padding-top:5px;">
-								<font class="more-label-font">
-									项目  <el-tag v-if="selProject">{{selProject?selProject.name:''}}</el-tag>
-								</font>
-							</el-col>
-							<el-col  v-if="xmIteration"  :span="24"  style="padding-top:5px;">
-								<font class="more-label-font">
-									迭代 <el-tag v-if="xmIteration">{{xmIteration.iterationName}}</el-tag>
-								</font>
-							</el-col>
-							<el-col :span="24"  style="padding-top:10px;">
-								<el-button type="primary" @click="searchXmProducts" >查询</el-button>
-								<el-button type="text"  @click="templateVisible=!templateVisible" >{{templateVisible?"隐藏模板":"显示模板"}}</el-button>
-								<el-button type="text"  @click="guiderStart(true)" icon="el-icon-help">新手导航</el-button>
-							</el-col>
+							</el-row>
+							<el-row>
+								<el-button type="primary" @click="searchXmProducts" style="float:right;" icon="el-icon-search">查询</el-button>
+							</el-row>
 						</el-row>
 						<el-button  slot="reference"  style="margin-top: 10px;" icon="el-icon-more" id="guider-two"></el-button>
 					</el-popover>
@@ -111,21 +117,21 @@
 							width="450" 
 							trigger="click" > 
 							<el-row> 
-								<el-col :span="24" style="padding-top:5px;">
+								<el-row>
 									<el-badge value="都适用">
 									<el-button   @click="showAdd" icon="el-icon-plus">直接添加新产品</el-button> 
 									</el-badge>
-								</el-col>  
-								<el-col :span="24" style="padding-top:5px;">
+								</el-row>  
+								<el-row>
 									<el-badge value="进阶">
 									<el-button type="primary" icon="el-icon-plus" >通过【产品-复制】一键创建新的产品</el-button> 
 									</el-badge>
-								</el-col> 
-								<el-col :span="24" style="padding-top:5px;">
+								</el-row> 
+								<el-row>
 									<el-badge value="新手">
 									<el-button type="warning" @click="templateVisible=!templateVisible" icon="el-icon-plus">通过【模板-复制】一键创建新的产品</el-button> 
 									</el-badge>
-								</el-col> 
+								</el-row> 
 							</el-row>   
  							<el-button type="primary" slot="reference"  style="margin-top: 10px;"  icon="el-icon-plus" v-if="!xmIteration" id="guider-one" round>产品</el-button>
 					</el-popover>
@@ -348,7 +354,7 @@
 						</span>
 					</el-dialog>
 			</el-row>
-		</el-col>
+		</el-row>
 		</el-row> 
 		
 		<el-dialog :visible.sync="templateVisible" append-to-body width="60%" top="20px">

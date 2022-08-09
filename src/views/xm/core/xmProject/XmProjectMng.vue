@@ -1,7 +1,7 @@
 <template>
 	<section>
 		<el-row class="padding-left padding-right"> 
-			<el-col :span="24" class="padding-left"> 
+			<el-row :span="24" class="padding-left"> 
 				<el-row > 
 					<xm-product-select style="display:inline;" class="hidden-md-and-down" :auto-select="false" @row-click="onProductSelected" @clear="onProductClose"></xm-product-select> 
 					<el-select v-model="menukey" @change="handleSelect" clearable style="width:100px;">
@@ -24,26 +24,30 @@
 					<el-button  style="margin-top: 10px;" type="primary" icon="el-icon-search" @click="searchXmProjects">查询</el-button> 
 						<el-popover
 							placement="top-start"
-							title="更多查询条件或操作"
+							title="更多条件、操作"
 							width="400"
 							trigger="click" >
 							<el-row>  
-								<el-col  :span="24"  style="padding-top:5px;">  
-									<el-row>
+								<el-row>   
+									<font class="more-label-font">显示方式:</font>   
 										<el-radio  v-model="showType" :label="false">表格</el-radio>
-										<el-radio  v-model="showType" :label="true">卡片</el-radio>
-									</el-row>
-								</el-col>  
-								<el-col  :span="24"  style="padding-top:5px; " class="hidden-lg-and-up">  
-									<font v-if="filters.productId" class="more-label-font">项目:</font>  
+										<el-radio  v-model="showType" :label="true">卡片</el-radio> 
+								</el-row>  
+								<el-row>    
+									<el-button type="text" @click="templateVisible=!templateVisible">{{templateVisible?'隐藏模板':'显示模板'}}</el-button>
+									<el-button type="text"  @click="guiderStart(true)" icon="el-icon-help">新手导航</el-button>
+								</el-row>  
+								 <el-divider></el-divider>
+								<el-row v-if="filters.productId">  
+									<font  class="more-label-font">项目:</font>  
 									<xm-product-select style="display:inline;"  :auto-select="false" @row-click="onProductSelected" @clear="onProductClose"></xm-product-select> 
-								</el-col> 
+								</el-row> 
 										
-								<el-col  :span="24"  style="padding-top:5px; ">  
+								<el-row>  
 									<font class="more-label-font">项目编号:</font>   
-									<el-input v-model="filters.id" clearable></el-input>
-								</el-col> 
-								<el-col  :span="24"  style="padding-top:5px;">
+									<el-input v-model="filters.id" clearable style="width:200px;"></el-input>
+								</el-row> 
+								<el-row>
 									<font class="more-label-font">创建时间:</font>  
 									<el-date-picker
 										v-model="dateRanger" 
@@ -57,13 +61,10 @@
 										:default-time="['00:00:00','23:59:59']"
 										:picker-options="pickerOptions"
 									></el-date-picker>   
-								</el-col>  
-								<el-col :span="24" style="padding-top:5px;">
-									<el-button  type="primary" icon="el-icon-search" @click="searchXmProjects">查询</el-button>
-									<el-button type="text" @click="templateVisible=!templateVisible">{{templateVisible?'隐藏模板':'显示模板'}}</el-button>
-									<el-button type="text"  @click="guiderStart(true)" icon="el-icon-help">新手导航</el-button>
-
-								</el-col>
+								</el-row>  
+								<el-row>
+									<el-button style="float:right;" type="primary" icon="el-icon-search" @click="searchXmProjects">查询</el-button> 
+								</el-row>
 							</el-row>
 							<el-button  slot="reference" icon="el-icon-more" id="prj-more-btn"></el-button>
 						</el-popover>
@@ -73,21 +74,21 @@
 							width="450" 
 							trigger="click" > 
 							<el-row> 
-								<el-col :span="24" style="padding-top:5px;">
+								<el-row>
 									<el-badge value="都适用">
 									<el-button   @click="showAdd" icon="el-icon-plus">直接添加新项目</el-button> 
 									</el-badge>
-								</el-col>  
-								<el-col :span="24" style="padding-top:5px;">
+								</el-row>  
+								<el-row>
 									<el-badge value="进阶">
 									<el-button type="primary" icon="el-icon-plus">通过【项目-复制】一键创建新的项目</el-button> 
 									</el-badge>
-								</el-col> 
-								<el-col :span="24" style="padding-top:5px;">
+								</el-row> 
+								<el-row>
 									<el-badge value="新手">
 									<el-button type="warning" @click="templateVisible=!templateVisible" icon="el-icon-plus">通过【模板-复制】一键创建新的项目</el-button> 
 									</el-badge>
-								</el-col> 
+								</el-row> 
 							</el-row>   
  							<el-button id="prj-plus-btn" type="primary" style="margin-top: 10px;" slot="reference"  icon="el-icon-plus" round>项目</el-button>
 							</el-popover>  
@@ -282,7 +283,7 @@
 					</el-table>
 					<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 				</el-row>
-			</el-col>
+			</el-row>
 		</el-row>
 		
 		<el-dialog title="项目新增" :visible.sync="addFormVisible" :with-header="false" width="80%" top="20px" :close-on-click-modal="false" append-to-body>
@@ -1085,10 +1086,5 @@
 		overflow-y: auto;
 	}
 }
-
-.more-label-font{
-	text-align:center;
-	float:left;
-	padding-top:5px;
-}
+ 
 </style>
