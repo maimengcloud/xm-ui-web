@@ -297,6 +297,8 @@
 					this.editForm.workload=8
 					this.editForm.userid=this.userInfo.userid
 					this.editForm.username=this.userInfo.username
+					this.editForm.cuserid=this.userInfo.userid
+					this.editForm.cusername=this.userInfo.username
 					this.editForm.ubranchId=this.userInfo.branchId
 					this.editForm.rworkload=null; 
 					this.editForm.workloadFillType="1";
@@ -313,18 +315,7 @@
 						this.$notify({position:'bottom-left',showClose:true,message:'没有找到报价信息',type:'error'})
 					}
 				});
-			},
-			groupUserSelectConfirm(users){
-				if(!users||users.length<=0){
-					this.$notify({position:'bottom-left',showClose:true,message:'请选择一个用户',type:'error'})
-					return;
-				}
-				this.groupUserSelectVisible=false;
-				var user=users[0]
-				this.editForm.userid=user.userid
-				this.editForm.username=user.username
-				this.editForm.ubranchId=user.obranchId
-			}
+			}, 
 
 		},//end method
 		mounted() {
