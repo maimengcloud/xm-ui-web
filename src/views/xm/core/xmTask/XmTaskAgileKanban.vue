@@ -25,11 +25,11 @@
           </div>
         </template>
       </el-table-column>
-      <template v-for="(type, tt) in taskStateCpd">
-        <el-table-column
+      <template v-for="(type, tt) in taskStateCpd" style="min-width:200px;">
+        <el-table-column 
           :label="type.label + '(' + type.number + ')'"
           :key="tt"
-          mini-width="200"
+          width="300"
         >
           <template slot-scope="scope">
             <el-row class="my-cell-bar">
@@ -63,17 +63,16 @@
 									<div class="drag-to-box">{{type.label}}</div>
 								</template> -->
                 <template v-if="tasks && tasksCpd[scope.row.menuId][tt].length">
-                  <div
+                  <div @click.stop="showTaskEdit(task)"
                     :data-menu-id="scope.row.menuId"
                     :data-task-id="task.id"
                     :data-task-state="task.taskState"
-                    class="task"
+                    class="task" 
                     v-for="(task, t) in tasks[scope.row.menuId][tt]"
                     :key="task.id + t"
                   >
-				  	<span class="my-cell-bar"><el-button   size="mini" type="danger" icon="el-icon-delete" plain @click="handleDel(task,tt)"></el-button></span>
-                    <span>
-                      <el-tag
+                  <el-row>
+                    <el-tag
                         title="优先级"
                         v-for="(item, index) in formatDictsWithClass(
                           dicts,
@@ -83,28 +82,29 @@
                         :key="task.id + index"
                         :type="item.className"
                         >{{ item.name }}</el-tag
-                      >
-
-                      <span title="执行人">
-                        {{
-                          task.executorUsername
-                            ? task.executorUsername
-                            : "未设置执行人"
-                        }}
-                      </span>
-                      <el-link
+                      > 
+                      <el-tag
                         title="进度"
                         style="border-radius: 30px"
                         :type="task.rate >= 100 ? 'success' : 'warning'"
                       >
                         {{ (task.rate != null ? task.rate : 0) + "%" }}
-                      </el-link> 
-                      <el-link
-                        type="primary"
-                        @click.stop="showTaskEdit(task)"
-                        >{{ task.name }}</el-link
-                      >
+                      </el-tag>  
+				  	        <span class="my-cell-bar"><el-button   size="mini" type="danger" icon="el-icon-delete" plain @click.stop="handleDel(task,tt)"></el-button></span>
+                  </el-row>
+                    <el-row>
+                      <span title="执行人" class="label-font-color">
+                      {{
+                        task.executorUsername
+                          ? task.executorUsername
+                          : "未设置执行人"
+                      }}
                     </span>
+                    </el-row>
+                     <el-row>
+                       <div class="title">{{ task.name }}</div> 
+                     </el-row>
+                   
                   </div>
                 </template>
               </transition-group>
@@ -655,52 +655,7 @@ export default {
   height: 100%;
   width: 100%;
   overflow: hidden;
-}
-.row {
-  width: 2000px;
-  display: flex;
-  flex-direction: row;
-  overflow: scroll;
-  border-top: 1px solid #ccc;
-  .item {
-    width: 200px;
-    padding: 10px;
-    border-left: 1px solid #ccc;
-    display: flex;
-    flex-wrap: wrap;
-    &.status {
-      width: 450px;
-    }
-    &:last-child {
-      border-right: 1px solid #ccc;
-    }
-  }
-  &:last-child {
-    border-bottom: 1px solid #ccc;
-  }
-  &.head-row {
-    font-size: 14px;
-    font-weight: 500;
-    background: #efefef;
-    color: #303030;
-  }
-  &.menu—row {
-    background: #f6f6f6;
-    .item-menu {
-      background: #ffffff;
-    }
-    .task {
-      width: 200px;
-      height: 100px;
-      margin: 10px 0 0 10px;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      border-radius: 3px;
-      background-color: #fff;
-    }
-  }
-}
+} 
 
 .draggable {
   display: flex;
@@ -722,8 +677,8 @@ export default {
 }
 .transition-group {   
   width: 100%;
+  cursor: pointer;
   .task {  
-    cursor: pointer;
   	min-height: 100px;
     background: #fff;
     margin: 0px 0px 10px 0px;
@@ -748,4 +703,15 @@ export default {
     display: none;
   }
 }
+
+.title { 
+    height: 40px;
+    overflow: hidden; //超出隐藏
+    text-overflow: ellipsis; //溢出用省略号显示
+    display: -webkit-box; // 将对象作为弹性伸缩盒子模型显示。
+    // 控制行数
+    -webkit-line-clamp: 2; //超出两行隐藏
+    -webkit-box-orient: vertical; // 从上到下垂直排列子元素
+    //（设置伸缩盒子的子元素排列方式）
+} 
 </style>
