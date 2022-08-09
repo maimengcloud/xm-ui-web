@@ -2,7 +2,7 @@
   <section>
     <el-popover
       placement="bottom"
-      width="600"
+      width="400"
       trigger="manual"
       v-model="projectVisible"
     >
@@ -42,7 +42,7 @@
                       <font class="more-label-font">项目编号:</font>
                       <el-input
                         v-model="filters.id"
-                        style="width: 100%"
+                        style="width: 200px;"
                         placeholder="输入项目编号"
                         @keyup.enter.native="searchXmProjects"
                       >
@@ -50,26 +50,10 @@
                     </el-row>
 
                     <el-row>
-                      <font class="more-label-font">创建时间:</font>
-                      <el-date-picker
-                        v-model="dateRanger"
-                        type="daterange"
-                        align="right"
-                        unlink-panels
-                        range-separator="至"
-                        start-placeholder="开始日期"
-                        end-placeholder="完成日期"
-                        value-format="yyyy-MM-dd HH:mm:ss"
-                        :default-time="['00:00:00', '23:59:59']"
-                        :picker-options="pickerOptions"
-                      ></el-date-picker>
-                    </el-row>
-
-                    <el-row>
                       <font class="more-label-font"> 项目名称: </font>
                       <el-input
                         v-model="filters.key"
-                        style="width: 100%"
+                        style="width: 200px;"
                         placeholder="输入项目名字关键字"
                       >
                       </el-input>
@@ -90,8 +74,24 @@
                         >我的</el-button
                       >
                     </el-row>
+
                     <el-row>
-                      <el-button type="primary" @click="searchXmProjects" style="float:right;"
+                      <font class="more-label-font">创建时间:</font>
+                      <el-date-picker
+                        v-model="dateRanger"
+                        type="daterange"
+                        align="right"
+                        unlink-panels
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="完成日期"
+                        value-format="yyyy-MM-dd HH:mm:ss"
+                        :default-time="['00:00:00', '23:59:59']"
+                        :picker-options="pickerOptions"
+                      ></el-date-picker>
+                    </el-row>
+                    <el-row>
+                      <el-button type="primary" @click="searchXmProjects" style="float:right;" icon="el-icon-search"
                         >查询</el-button
                       >
                     </el-row>

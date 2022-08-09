@@ -2,7 +2,7 @@
 	<section>  
 		<el-popover style="display:inline;"
 			placement="bottom"
-			width="600"
+			width="400"
 			v-model="iterationVisible"
 			trigger="manual" >  
 			<el-row>
@@ -28,9 +28,13 @@
 					<el-button  type="text" style="float:right;margin-top:-40px;"  @click="moreVisible=false" icon="el-icon-close">关闭</el-button>
 					<el-row>   
 						<el-row> 
-							<font class="more-label-font">迭代编号:</font><el-input  v-model="filters.id"   placeholder="输入迭代编号">  
+							<font class="more-label-font">迭代编号:</font><el-input  v-model="filters.id"  style="width:200px;"  placeholder="输入迭代编号">  
 							</el-input> 
 						</el-row>
+						<el-row>
+								<font class="more-label-font">迭代名称:</font><el-input  v-model="filters.key" style="width:200px;" placeholder="模糊查询"></el-input>
+						</el-row> 
+						
 						<el-row>
 							<font class="more-label-font">上线时间:</font>
 							<el-date-picker 
@@ -46,9 +50,6 @@
 								:picker-options="pickerOptions"
 							></el-date-picker>
 						</el-row>
-						<el-row>
-								<font class="more-label-font">迭代名称:</font><el-input  v-model="filters.key"  placeholder="模糊查询"></el-input>
-						</el-row> 
 						<el-row> 
 							<el-button style="float:right;" type="primary" icon="el-icon-search" @click="searchXmIterations">查询</el-button>
 						</el-row> 
