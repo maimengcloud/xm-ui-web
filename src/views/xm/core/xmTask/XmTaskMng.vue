@@ -652,6 +652,8 @@
               end-placeholder="计划完成日期"
               value-format="yyyy-MM-dd HH:mm:ss"
               :default-time="['00:00:00', '23:59:59']" 
+              @change="editTime(editForm)"
+              :auto-default="false"
             ></mdp-date-range>
             共{{ taskTime }}天
           </div>
@@ -668,6 +670,8 @@
               end-placeholder="实际完成日期"
               value-format="yyyy-MM-dd HH:mm:ss"
               :default-time="['00:00:00', '23:59:59']" 
+              @change="editTime(editForm)"
+              :auto-default="false"
             ></mdp-date-range> 
           </div>
         </el-row>
@@ -949,12 +953,12 @@ export default {
       }
     },
     taskTime() {
-      if (this.budgetDateRanger.length > 1) {
-        const s = new Date(this.budgetDateRanger[0]);
+      if (this.editForm.startTime) {
+        const s = new Date(this.editForm.startTime);
         const sy = s.getFullYear();
         const sm = s.getMonth();
         const sd = s.getDate();
-        const e = new Date(this.budgetDateRanger[1]);
+        const e = new Date(this.editForm.endTime);
         const ey = e.getFullYear();
         const em = e.getMonth();
         const ed = e.getDate();
@@ -1960,10 +1964,10 @@ export default {
       var params = {
         id: row.id,
         projectId: row.projectId,
-        startTime: this.budgetDateRanger[0],
-        endTime: this.budgetDateRanger[1],
-        actStartTime: this.actDateRanger[0],
-        actEndTime: this.actDateRanger[1],
+        startTime: row.startTime,
+        endTime: row.endTime,
+        actStartTime: row.actStartTime,
+        actEndTime: row.actEndTime,
       };
       this.load.edit = true;
       editTime(params)
@@ -1978,8 +1982,7 @@ export default {
           this.load.edit = false;
         })
         .catch((err) => {
-          this.load.edit = false;
-          this.editForm.rate = this.oldrate;
+          this.load.edit = false; 
           this.timeVisible = false;
         });
     },
