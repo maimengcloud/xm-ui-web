@@ -17,41 +17,42 @@
 
 						<el-popover
 							placement="top-start"
-							title=""
+							title="更多查询条件或者操作"
 							width="400"
 							v-model="moreVisible"
 							trigger="manual" >
 							
-							<el-row> 
-								<el-col :span="24"> 
-									<el-button  style="float:right;"
+							<el-row  style="float:right;margin-top:-40px">  
+									<el-button 
 									icon="el-icon-close"
 									@click="moreVisible=false"
 									type="text"
 									>关闭</el-button
-									>
-								</el-col>
+									> 
 							</el-row> 
 							<el-row>
-								<el-col  :span="24"  style="padding-top:5px;" >
+								<el-row>
 									<font class="more-label-font">标签条件:</font>
 									<el-button  v-if="!filters.tags||filters.tags.length==0" @click.native="$refs.tagDialog.open()">标签</el-button>
 									<el-tag v-else @click="$refs.tagDialog.open()"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
 
-								</el-col> 
-								<el-col  :span="24"  style="padding-top:5px;">
+								</el-row>
+								<el-row>
 									<font class="more-label-font">
 										责任人:
 									</font>
 									<el-tag v-if="filters.mmUser" closable @close="clearFiltersMmUser()">{{filters.mmUser.username}}</el-tag>
 									<el-button   v-else @click="selectFiltersMmUser()">选责任人</el-button>
 									<el-button    @click="setFiltersMmUserAsMySelf()">我的</el-button>
-								</el-col> 
-								<el-col  :span="24" v-if="!xmIteration || !xmIteration.id" style="padding-top:5px;">
+								</el-row>
+								<el-row v-if="!xmIteration || !xmIteration.id">
+									<font class="more-label-font">
+										迭代:
+									</font>
 									<xm-iteration-select v-if="!xmIteration || !xmIteration.id" style="display:inline;" :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="selProject?selProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClearSelect">
 					    			</xm-iteration-select> 
-								</el-col>
-								<el-col  :span="24"  style="padding-top:5px;">
+								</el-row>
+								<el-row>
 									<font class="more-label-font">
 										需求是否已加入迭代:
 									</font>
@@ -61,8 +62,8 @@
 										<el-option   value="not-join-curr-iteration"  :label="'未加入迭代【'+filters.iteration.iterationName+'】'"  v-if="filters.iteration && filters.iteration.id"></el-option>
 										<el-option   value="join-curr-iteration"  :label="'已加入本迭代【'+filters.iteration.iterationName+'】'" v-if="filters.iteration && filters.iteration.id"></el-option>
 									</el-select>
-								</el-col>
-								<el-col  :span="24"  style="padding-top:5px;" >
+								</el-row>
+								<el-row>
 									<font class="more-label-font">
 										需求是否已分配了任务:
 									</font>
@@ -72,61 +73,61 @@
 										<el-option   value="not-join-curr-project"  :label="'未分配任务到项目【'+selProject.name+'】'" v-if="selProject && selProject.id"></el-option>
 										<el-option   value="join-curr-project"  :label="'已分配任务到项目【'+selProject.name+'】'"  v-if="selProject && selProject.id"></el-option>
 									</el-select>
-								</el-col>
-								<el-col  :span="24"  style="padding-top:5px;" >
+								</el-row>
+								<el-row>
 									<font class="more-label-font">
 										需求类型:
 									</font>
 									<el-select  v-model="filters.dtype" clearable placeholder="需求类型" style="width: 120px;">
 										<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 									</el-select>
-								</el-col>
-								<el-col  :span="24"  style="padding-top:5px;" >
+								</el-row>
+								<el-row>
 									<font class="more-label-font">
 										需求来源:
 									</font>
 									<el-select v-model="filters.source" placeholder="需求来源"  clearable style="width: 120px;">
 										<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
 									</el-select>
-								</el-col>
-								<el-col  :span="24"  style="padding-top:5px;" >
+								</el-row>
+								<el-row>
 									<font class="more-label-font">
 										需求层次:
 									</font>
 									<el-select v-model="filters.dlvl" placeholder="需求层次"  clearable style="width: 120px;">
 										<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
 									</el-select>
-								</el-col>
-								<el-col  :span="24"  style="padding-top:5px;">
+								</el-row>
+								<el-row>
 									<font class="more-label-font">
 										优先级:
 									</font>
 									<el-select v-model="filters.priority" placeholder="优先级"  clearable style="width: 100px;">
 											<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
 									</el-select>
-								</el-col>
-								<el-col  :span="24"  style="padding-top:5px;" >
+								</el-row>
+								<el-row>
 									<font class="more-label-font">
 										需求状态:
 									</font>
 									<el-select v-model="filters.status" placeholder="需求状态" clearable style="width: 100px;">
 										<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option>
 									</el-select>
-								</el-col>
-								<el-col  :span="24"  style="padding-top:5px;" >
+								</el-row>
+								<el-row>
 									<font class="more-label-font">
 										需求编号:
 									</font>
 									<el-input v-model="filters.menuId" style="width: 220px;" placeholder="需求编号查询" clearable></el-input>
-								</el-col>
+								</el-row>
 								
-								<el-col  :span="24"  style="padding-top:5px;" >
+								<el-row>
 									<font class="more-label-font">
 										产品编号:
 									</font>
 									<el-input v-model="filters.productId" style="width: 220px;" placeholder="产品编号查询" clearable></el-input>
-								</el-col> 
-								<el-col :span="24" style="padding-top: 5px">
+								</el-row>
+								<el-row>
 									<font class="more-label-font">开始时间:</font>
 									<mdp-date-range
 									v-model="filters"
@@ -142,8 +143,8 @@
 									:auto-default="false"
 									key="planStartTime"
 									></mdp-date-range>
-								</el-col>
-								<el-col :span="24" style="padding-top: 5px">
+								</el-row>
+								<el-row>
 									<font class="more-label-font">结束时间:</font>
 									<mdp-date-range
 									v-model="filters"
@@ -159,15 +160,14 @@
 									:auto-default="false" 
 									key="planEndTime"
 									></mdp-date-range>
-								</el-col> 
-								<el-col  :span="24"  style="padding-top:5px;">
-									<el-button type="primary"  @click="searchXmMenus" icon="el-icon-search">查询</el-button> 
- 								</el-col>
-								<el-col  :span="24"  style="padding-top:5px;">
+								</el-row> 
+								<el-row>
+									<span style="float:right;">
 									<el-button    @click="handleExport" icon="el-icon-download">导出</el-button>
 									<el-button   v-if="  disabledMng!==false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>
-
-								</el-col>
+									<el-button type="primary" style="float:right;" @click="searchXmMenus" icon="el-icon-search">查询</el-button> 
+									</span>
+								</el-row>
 							</el-row>
 								<el-button  slot="reference" icon="el-icon-more" @click="moreVisible=!moreVisible"></el-button>
 						</el-popover>
@@ -178,32 +178,32 @@
 							trigger="click" >
 							<el-row>
 								<!--
-								<el-col :span="24" style="padding-top:5px;">
+								<el-row>
 									<div   class="icon" style="background-color:  rgb(255, 153, 51);">
  										<i class="el-icon-s-promotion"></i>
 									</div>
 									<el-button   @click="showAdd('1')">新建史诗</el-button>
-								</el-col>
+								</el-row>
 								
-								<el-col :span="24" style="padding-top:5px;">
+								<el-row>
 									<div  class="icon" style="background-color:  rgb(0, 153, 51);">
 									<i class="el-icon-s-flag"></i>
 									</div>
 									<el-button   @click="showAdd('2')">新建特性</el-button>
-								</el-col>
+								</el-row>
 								-->
-								<el-col :span="24" style="padding-top:5px;">
+								<el-row>
 
 									<div  class="icon" style="background-color:  rgb(79, 140, 255);">
 									<i class="el-icon-document"></i>
 									</div>
 									<el-button   @click="showAdd('3')"  >新建用户故事</el-button>
-								</el-col>
+								</el-row>
 								
 
-								<el-col :span="24" style="padding-top:5px;">
+								<el-row>
 									<el-button  @click="showImportFromMenuTemplate()" icon="el-icon-upload2">由模板快速导入需求</el-button>
-								</el-col>
+								</el-row>
 							</el-row>
 							<el-button type="primary" v-if="!disabledMng"  round  slot="reference" icon="el-icon-plus"></el-button>
 						</el-popover>
@@ -491,7 +491,7 @@
 				xmMenus: [],//查询结果
 				pageInfo:{//分页数据
 					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
-					pageSize:50,//每页数据
+					pageSize:20,//每页数据
 					count:false,//是否需要重新计算总记录数
 					pageNum:1,//当前页码、从1开始计算
 					orderFields:[],//排序列 如 ['sex','student_id']，必须为数据库字段
@@ -1376,12 +1376,7 @@
 </script>
 
 <style lang="scss" scoped>
-
-.more-label-font{
-	text-align:center;
-	float:left;
-	padding-top:5px;
-}
+ 
 .align-right{
 	float: right;
 }
