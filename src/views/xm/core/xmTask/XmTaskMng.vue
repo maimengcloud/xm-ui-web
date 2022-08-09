@@ -1977,8 +1977,7 @@ export default {
             showClose: true,
             message: tips.msg,
             type: tips.isOk ? "success" : "error",
-          });
-          this.getXmTasks();
+          }); 
           this.load.edit = false;
         })
         .catch((err) => {
