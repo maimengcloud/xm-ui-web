@@ -100,6 +100,7 @@ export default {
   methods: { 
       
       initData(){
+        debugger;
           this.dateRange=[];
           if(this.value instanceof Array){
               this.dateRange=this.value
@@ -122,7 +123,7 @@ export default {
           }
           
       },
-      onDateRangeChange(dates){ 
+      onDateRangeChange(dates){  
           if(this.value && this.value instanceof Object){
             if(dates && dates.length===2){
                 this.value[this.startKey]=dates[0]
@@ -133,6 +134,9 @@ export default {
             }else if(dates && dates.length===0){
                 this.value[this.startKey]=null
                 this.value[this.endKey]=null
+            }else if(!dates){
+               this.value[this.startKey]=null
+               this.value[this.endKey]=null
             }
             this.$emit('input',this.value)
           }else if(this.value instanceof Array){
