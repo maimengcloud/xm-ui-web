@@ -102,6 +102,11 @@
 					params.budgetWorkload=this.xmTestPlanCase.budgetWorkload
 					params.actWorkload=this.xmTestPlanCase.actWorkload
 				} 
+				if(params.budgetWorkload!==null && params.budgetWorkload!=='' && params.budgetWorkload>0){
+					params.rate= parseInt((params.actWorkload>0?params.actWorkload:0) / params.budgetWorkload * 100)
+				}else{
+					params.rate= 0
+				}
 				return params
 			}
 

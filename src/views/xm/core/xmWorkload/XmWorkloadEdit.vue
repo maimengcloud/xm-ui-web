@@ -102,18 +102,23 @@
 		    ...mapGetters([ 'userInfo'  ]),
 			
 			budgetWorkload(){ 
-				if(this.editForm.rworkload!=null && this.editForm.rworkload!="" && this.editForm.rworkload>=0){
-					return parseFloat(this.editForm.rworkload)+parseFloat(this.editForm.workload?this.editForm.workload:0)+parseFloat(this.val.actWorkload?this.val.actWorkload:0)
+				if(   this.editForm.rworkload !==null &&  this.editForm.rworkload!=='' && this.editForm.rworkload>=0){
+					return parseFloat(this.editForm.rworkload)+parseFloat(this.editForm.workload>0?this.editForm.workload:0)+parseFloat(this.val.actWorkload>0?this.val.actWorkload:0)
 				}else{
 					return this.val.budgetWorkload;
 				}
 			},
 			
 			rate(){
-				if(this.editForm.rworkload!=null && this.editForm.rworkload!="" &&  this.editForm.rworkload>=0){
-					return Math.round((parseFloat(this.editForm.workload?this.editForm.workload:0)+parseFloat(this.val.actWorkload?this.val.actWorkload:0))/(parseFloat(this.editForm.rworkload)+parseFloat(this.editForm.workload?this.editForm.workload:0)+parseFloat(this.val.actWorkload?this.val.actWorkload:0))*100)
+				if( this.editForm.rworkload>=0 && this.budgetWorkload>0){
+					return Math.round((parseFloat(this.editForm.workload?this.editForm.workload:0)+parseFloat(this.val.actWorkload?this.val.actWorkload:0))/ this.budgetWorkload *100)
 				}else{
-					return Math.round((parseFloat(this.editForm.workload?this.editForm.workload:0)+parseFloat(this.val.actWorkload?this.val.actWorkload:0))/this.val.budgetWorkload *100);
+					if(this.val.budgetWorkload>0){
+						return Math.round((parseFloat(this.editForm.workload>0?this.editForm.workload:0)+parseFloat(this.val.actWorkload>0?this.val.actWorkload:0))/this.val.budgetWorkload *100);
+					}else{
+						return 0;
+					}
+					
 				}
 			},
 			val(){
@@ -125,6 +130,8 @@
 					params.actWorkload=this.xmTask.actWorkload
 					params.ntype=this.xmTask.ntype
 					params.name=this.xmTask.name 
+					
+					
 				} 
 				if( this.xmMenu && this.xmMenu.menuId){
 					params.menuId=this.xmMenu.menuId 
@@ -160,6 +167,11 @@
 					params.name=this.xmTestPlanCase.caseName
 					params.caseName=this.xmTestPlanCase.caseName
 				} 
+				if(params.budgetWorkload>0){
+					params.rate= parseInt((params.actWorkload>0?params.actWorkload:0) / params.budgetWorkload * 100)
+				}else{
+					params.rate= 0
+				}
 				return params
 			}
 
