@@ -72,12 +72,12 @@
 
           <el-popover
             placement="top-start"
-            title=""
+            title="更多查询条件或者操作"
             width="400"
             trigger="manual"
             v-model="moreVisible"
           >
-							<el-row style="margin-top:-10px;">
+							<el-row style="margin-top:-40px;">
 								<el-col :span="24">
 									<el-button  style="float:right;"
 									icon="el-icon-close"
@@ -273,7 +273,7 @@
                 ></mdp-date-range>
               </el-col>
               <el-col :span="24" style="padding-top: 10px;">
-                <el-button
+                <el-button style="float:right;"
                   type="primary"
                   icon="el-icon-search"
                   @click="searchXmTasks"
@@ -2279,11 +2279,6 @@ export default {
 </script>
 
 <style scoped>
-.more-label-font {
-  text-align: center;
-  float: left;
-  padding-top: 5px;
-}
 .align-right {
   float: right;
 }

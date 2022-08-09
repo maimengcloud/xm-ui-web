@@ -160,9 +160,12 @@
     padding-top: 10px;
   }
 }
-.more-label-font {       
+
+.more-label-font {
+  text-align: left;
+  float: left; 
   min-width: 100px;
-} 
+}
 
 .tips{
   position:absolute;
