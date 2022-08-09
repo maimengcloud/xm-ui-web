@@ -29,13 +29,16 @@
               >创建产品</el-button>&nbsp;&nbsp;
         <el-popover
           placement="top-start"
-          title=""
+          title="更多条件、操作"
           width="400"
           v-model="moreVisible"
           trigger="manual"
         >
+        
+              <el-button type="text" style="float:right;margin-top:-40px;" @click="moreVisible = false" icon="el-icon-close"
+                >关闭</el-button>
           <el-row>
-            <el-col :span="24" style="padding-top: 5px">
+            <el-row>
               <font class="more-label-font">产品编号:</font>
               <el-input
                 v-model="filters.id"
@@ -44,9 +47,9 @@
                 @keyup.enter.native="searchXmProducts"
               >
               </el-input>
-            </el-col>
+            </el-row>
 
-            <el-col :span="24" style="padding-top: 5px">
+            <el-row>
               <font class="more-label-font">创建时间:</font>
               <el-date-picker
                 v-model="dateRanger"
@@ -60,9 +63,9 @@
                 :default-time="['00:00:00', '23:59:59']"
                 :picker-options="pickerOptions"
               ></el-date-picker>
-            </el-col>
+            </el-row>
 
-            <el-col :span="24" style="padding-top: 5px">
+            <el-row>
               <font class="more-label-font"> 产品名称: </font>
               <el-input
                 v-model="filters.key"
@@ -70,8 +73,8 @@
                 placeholder="输入产品名字关键字"
               >
               </el-input>
-            </el-col>
-            <el-col :span="24" style="padding-top: 5px">
+            </el-row>
+            <el-row>
               <font class="more-label-font"> 产品经理: </font>
               <el-tag
                 v-if="filters.pmUser"
@@ -84,14 +87,12 @@
                 >选责任人</el-button
               >
               <el-button @click="setFiltersPmUserAsMySelf()">我的</el-button>
-            </el-col>
-            <el-col :span="24" style="padding-top: 5px">
-              <el-button type="text" @click="moreVisible = false"
-                >关闭</el-button
-              ><el-button type="primary" @click="searchXmProducts"
+            </el-row>
+            <el-row>
+              <el-button type="primary" style="float:right;" @click="searchXmProducts"
                 >查询</el-button
               >
-            </el-col>
+            </el-row>
           </el-row>
           <el-button
             type="text"
@@ -544,12 +545,7 @@ export default {
   },
 };
 </script>
-<style scoped>
-.more-label-font {
-  text-align: center;
-  float: left;
-  padding-top: 5px;
-}
+<style scoped> 
 .align-right {
   float: right;
 }

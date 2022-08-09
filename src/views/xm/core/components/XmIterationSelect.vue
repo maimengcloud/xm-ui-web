@@ -21,16 +21,17 @@
 					>创建迭代</el-button>&nbsp;&nbsp;
 				<el-popover 
 					placement="top-start"
-					title=""
+					title="更多条件、操作"
 					v-model="moreVisible"
 					width="400"
 					trigger="manual" >
+					<el-button  type="text" style="float:right;margin-top:-40px;"  @click="moreVisible=false" icon="el-icon-close">关闭</el-button>
 					<el-row>   
-						<el-col :span="24"  style="padding-top:5px;"> 
+						<el-row> 
 							<font class="more-label-font">迭代编号:</font><el-input  v-model="filters.id"   placeholder="输入迭代编号">  
 							</el-input> 
-						</el-col>
-						<el-col  :span="24"  style="padding-top:5px;">
+						</el-row>
+						<el-row>
 							<font class="more-label-font">上线时间:</font>
 							<el-date-picker 
 								v-model="dateRangerOnline"
@@ -44,14 +45,13 @@
 								:default-time="['00:00:00','23:59:59']"
 								:picker-options="pickerOptions"
 							></el-date-picker>
-						</el-col>
-						<el-col :span="24" style="padding-top:5px;">
+						</el-row>
+						<el-row>
 								<font class="more-label-font">迭代名称:</font><el-input  v-model="filters.key"  placeholder="模糊查询"></el-input>
-						</el-col> 
-						<el-col :span="24" style="padding-top:5px;">
-							<el-button  type="text"   @click="moreVisible=false">关闭</el-button>
-							<el-button  type="primary" icon="el-icon-search" @click="searchXmIterations">查询</el-button>
-						</el-col> 
+						</el-row> 
+						<el-row> 
+							<el-button style="float:right;" type="primary" icon="el-icon-search" @click="searchXmIterations">查询</el-button>
+						</el-row> 
 					</el-row>
 					<el-button type="text" slot="reference" @click="moreVisible=!moreVisible"  icon="el-icon-search">更多条件</el-button>
 				</el-popover>
@@ -424,11 +424,7 @@
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-  .more-label-font{
-  	text-align:center;
-  	float:left;
-  	padding-top:5px; 
-  }
+ 
   .font-class{
 	  color: rgba(116, 85, 85, 0.493);
   }
