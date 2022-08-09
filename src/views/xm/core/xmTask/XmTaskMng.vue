@@ -77,32 +77,30 @@
             trigger="manual"
             v-model="moreVisible"
           >
-							<el-row style="margin-top:-40px;">
-								<el-col :span="24">
+							<el-row style="margin-top:-40px;"> 
 									<el-button  style="float:right;"
 									icon="el-icon-close"
 									@click="moreVisible=false"
 									type="text"
 									>关闭</el-button
-									>
-								</el-col>
+									> 
 							</el-row>
             <el-row>
 
-              <el-col :span="24" style="padding-top: 5px;">
+              <el-row>
                 <font class="more-label-font">显示方式:</font
                 >  <el-row>
                     <el-radio v-model="displayType" label="grant">甘特图</el-radio>
                     <el-radio v-model="displayType" label="agile">敏捷看板</el-radio>
                     <el-radio v-model="displayType" label="table">表格</el-radio>
                   </el-row>
-              </el-col>
+              </el-row>
 
-              <el-col :span="24" style="padding-top: 5px">
+              <el-row>
                 <font class="more-label-font">产品:</font
                 > <xm-product-select :auto-select="false" :link-project-id="filters.selProject && filters.selProject.id?filters.selProject.id:null" @row-click="onProductSelected" @clear="onProductClearSelect"></xm-product-select>
-              </el-col>
-              <el-col :span="24" style="padding-top: 5px">
+              </el-row>
+              <el-row>
                 <font class="more-label-font">需求:</font>
                 <font v-if="filters.menus && filters.menus.length > 0">
                   <el-tag
@@ -116,8 +114,8 @@
                 <el-button v-else @click="showMenuStory" type="plian"
                   >选需求</el-button
                 >
-              </el-col>
-              <el-col :span="24" style="padding-top: 5px">
+              </el-row>
+              <el-row>
                 <font class="more-label-font">责任人:</font>
                 <el-tag
                   v-if="filters.createUser"
@@ -137,8 +135,8 @@
                   @click="setFiltersCreateUserAsMySelf"
                   >我的</el-button
                 >
-              </el-col>
-              <el-col :span="24" style="padding-top: 5px">
+              </el-row>
+              <el-row>
                 <font class="more-label-font">执行人:</font>
                 <el-tag
                   v-if="filters.executor"
@@ -158,8 +156,8 @@
                   @click="setFiltersExecutorAsMySelf"
                   >我的</el-button
                 >
-              </el-col>
-              <el-col :span="24" style="padding-top: 5px">
+              </el-row>
+              <el-row>
                 <font class="more-label-font">技能:</font>
                 <el-button
                   v-if="!filters.skillTags || filters.skillTags.length == 0"
@@ -176,8 +174,8 @@
                   @close="skillTagClear(skill)"
                   >{{ skill.skillName }}</el-tag
                 >
-              </el-col>
-              <el-col :span="24" style="padding-top: 5px">
+              </el-row>
+              <el-row>
                 <font class="more-label-font">标签:</font>
                 <el-button
                   v-if="!filters.tags || filters.tags.length == 0"
@@ -193,9 +191,9 @@
                     filters.tags.length
                   }})个</el-tag
                 >
-              </el-col>
+              </el-row>
 
-              <el-col :span="24" style="padding-top: 5px">
+              <el-row>
                 <font class="more-label-font">众包任务:</font>
 
                 <el-checkbox
@@ -204,8 +202,8 @@
                   false-label=""
                   >众包</el-checkbox
                 >
-              </el-col>
-              <el-col :span="24" style="padding-top: 5px">
+              </el-row>
+              <el-row>
                 <font class="more-label-font">计划开始时间:</font>
                 <mdp-date-range
                   v-model="filters"
@@ -221,8 +219,8 @@
                   :auto-default="false"
                   key="planStartTime"
                 ></mdp-date-range>
-              </el-col>
-              <el-col :span="24" style="padding-top: 5px">
+              </el-row>
+              <el-row>
                 <font class="more-label-font">计划结束时间:</font>
                 <mdp-date-range
                   v-model="filters"
@@ -238,9 +236,9 @@
                   :auto-default="false" 
                   key="planEndTime"
                 ></mdp-date-range>
-              </el-col>
+              </el-row>
               
-              <el-col :span="24" style="padding-top: 5px">
+              <el-row>
                 <font class="more-label-font">实际开始时间:</font>
                 <mdp-date-range
                   v-model="filters"
@@ -255,8 +253,8 @@
                   :default-time="['00:00:00', '23:59:59']" 
                   :auto-default="false"
                 ></mdp-date-range>
-              </el-col>
-              <el-col :span="24" style="padding-top: 5px">
+              </el-row>
+              <el-row>
                 <font class="more-label-font">实际结束时间:</font>
                 <mdp-date-range
                   v-model="filters"
@@ -271,15 +269,15 @@
                   :default-time="['00:00:00', '23:59:59']" 
                   :auto-default="false"
                 ></mdp-date-range>
-              </el-col>
-              <el-col :span="24" style="padding-top: 10px;">
+              </el-row>
+              <el-row>
                 <el-button style="float:right;"
                   type="primary"
                   icon="el-icon-search"
                   @click="searchXmTasks"
                   >查询</el-button
                 >
-              </el-col>
+              </el-row>
             </el-row>
             <el-button   slot="reference" @click="moreVisible=!moreVisible">更多</el-button>
           </el-popover>
@@ -291,7 +289,7 @@
             trigger="hover"
           >
             <el-row>
-              <el-col :span="24" style="padding-top: 5px">
+              <el-row>
                 <div    class="icon" :style="{backgroundColor:   '#409EFF'}">
                   <i :class=" 'el-icon-s-operation' " ></i>
                 </div>
@@ -301,8 +299,8 @@
                   icon="el-icon-plus"
                   >由用户故事快速创建任务(推荐)</el-button
                 >
-              </el-col>
-              <el-col :span="24" style="padding-top: 5px">
+              </el-row>
+              <el-row>
 
                 <div    class="icon" :style="{backgroundColor:   '#409EFF'}">
                   <i :class=" 'el-icon-s-operation' " ></i>
@@ -312,8 +310,8 @@
                   icon="el-icon-plus"
                   >从模板快速导入任务</el-button
                 >
-              </el-col>
-              <el-col :span="24" style="padding-top: 5px">
+              </el-row>
+              <el-row>
 
                 <div    class="icon" :style="{backgroundColor:   '#409EFF'}">
                   <i :class=" 'el-icon-s-operation' " ></i>
@@ -323,7 +321,7 @@
                   icon="el-icon-plus"
                   >直接创建任务</el-button
                 >
-              </el-col>
+              </el-row>
             </el-row>
             <el-button
 
