@@ -38,22 +38,7 @@
 									<el-button  v-if="!filters.tags||filters.tags.length==0" @click.native="$refs.tagDialog.open()">标签</el-button>
 									<el-tag v-else @click="$refs.tagDialog.open()"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
 
-								</el-col>
-								<el-col :span="24"  style="padding-top:5px;">
-									<font class="more-label-font">创建日期:</font>
-									<el-date-picker
-										v-model="dateRanger"
-										type="daterange"
-										align="right"
-										unlink-panels
-										range-separator="至"
-										start-placeholder="创建日期"
-										end-placeholder="创建日期"
-										value-format="yyyy-MM-dd HH:mm:ss"
-										:default-time="['00:00:00','23:59:59']"
-										:picker-options="pickerOptions"
-									></el-date-picker>
-								</el-col>
+								</el-col> 
 								<el-col  :span="24"  style="padding-top:5px;">
 									<font class="more-label-font">
 										责任人:
@@ -140,7 +125,41 @@
 										产品编号:
 									</font>
 									<el-input v-model="filters.productId" style="width: 220px;" placeholder="产品编号查询" clearable></el-input>
+								</el-col> 
+								<el-col :span="24" style="padding-top: 5px">
+									<font class="more-label-font">开始时间:</font>
+									<mdp-date-range
+									v-model="filters"
+									type="daterange" 
+									start-key="planStartTimeStart"
+									end-key="planStartTimeEnd"
+									unlink-panels
+									range-separator="至"
+									start-placeholder="开始日期"
+									end-placeholder="完成日期"
+									value-format="yyyy-MM-dd HH:mm:ss" 
+									:default-time="['00:00:00', '23:59:59']" 
+									:auto-default="false"
+									key="planStartTime"
+									></mdp-date-range>
 								</el-col>
+								<el-col :span="24" style="padding-top: 5px">
+									<font class="more-label-font">结束时间:</font>
+									<mdp-date-range
+									v-model="filters"
+									type="daterange" 
+									start-key="planEndTimeStart"
+									end-key="planEndTimeEnd"
+									unlink-panels
+									range-separator="至"
+									start-placeholder="开始日期"
+									end-placeholder="完成日期"
+									value-format="yyyy-MM-dd HH:mm:ss" 
+									:default-time="['00:00:00', '23:59:59']" 
+									:auto-default="false" 
+									key="planEndTime"
+									></mdp-date-range>
+								</el-col> 
 								<el-col  :span="24"  style="padding-top:5px;">
 									<el-button type="primary"  @click="searchXmMenus" icon="el-icon-search">查询</el-button> 
  								</el-col>
@@ -463,7 +482,11 @@
 					source:'',
 					dclasss:['3'],
 					menuId:'',//需求编号
-					productId:'',//产品编号
+					productId:'',//产品编号 
+					planStartTimeStart:'',
+					planStartTimeEnd:'',
+					planEndTimeStart:'',
+					planEndTimeEnd:'',
 				},
 				xmMenus: [],//查询结果
 				pageInfo:{//分页数据
@@ -566,6 +589,19 @@
 
 				if( this.filters.key){
 					params.key="%"+this.filters.key+"%"
+				}
+				if (this.filters.planStartTimeStart) {
+					params.planStartTimeStart = this.filters.planStartTimeStart 
+				}
+				
+				if (this.filters.planStartTimeEnd) {
+					params.planStartTimeEnd = this.filters.planStartTimeEnd 
+				}
+				if (this.filters.planEndTimeStart) {
+					params.planEndTimeStart = this.filters.planEndTimeStart 
+				}
+				if (this.filters.planEndTimeEnd) {
+					params.planEndTimeEnd = this.filters.planEndTimeEnd 
 				}
 
 				if(this.filters.mmUser){
