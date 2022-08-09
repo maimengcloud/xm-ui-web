@@ -83,7 +83,7 @@
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="addFormVisible = false">关 闭</el-button>
-            <el-button type="primary" @click="addXmMenu">确 定</el-button>
+            <el-button type="primary" @click="addXmMenu" v-loading="load.edit" :disabled="load.edit">确 定</el-button>
           </div>
       </el-dialog>
 	<!--编辑 XmMenu xm_project_menu界面-->
@@ -214,7 +214,7 @@ export default {
              menu.menuId=null;
              menu.menuName=this.addForm.menuName
 			 menu.dclass=this.addForm.dclass
-             
+             this.load.edit=true;
              addXmMenu(menu).then((res) => {
 								this.load.edit=false
 								var tips=res.data.tips;

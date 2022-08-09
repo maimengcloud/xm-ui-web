@@ -72,7 +72,7 @@
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="addFormVisible = false">关 闭</el-button>
-            <el-button type="primary" @click="addXmBug">确 定</el-button>
+            <el-button type="primary" @click="addXmBug" v-loading="load.edit" :disabled="load.edit">确 定</el-button>
           </div>
       </el-dialog>
 		<!--编辑 XmQuestion xm_question界面-->
@@ -208,6 +208,7 @@ export default {
              question.name=this.addForm.name
              question.projectId=this.linkProjectId
              question.bugStatus="1"
+			 this.load.edit=true;
              addXmQuestion(question).then((res) => {
 								this.load.edit=false
 								var tips=res.data.tips;
