@@ -6,8 +6,7 @@
       header-cell-class-name="head-row"
       border
       :height="tableHeight"
-      style="width: 100%"
-      stripe
+      style="width: 100%" 
     >
       <el-table-column
         :label="'用户故事 (' + menus.length + ')'"
