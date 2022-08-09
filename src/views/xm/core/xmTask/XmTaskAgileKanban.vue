@@ -7,6 +7,7 @@
       border
       :height="tableHeight"
       style="width: 100%"
+      stripe
     >
       <el-table-column
         :label="'用户故事 (' + menus.length + ')'"
@@ -28,7 +29,7 @@
         <el-table-column
           :label="type.label + '(' + type.number + ')'"
           :key="tt"
-          width="200"
+          mini-width="200"
         >
           <template slot-scope="scope">
             <el-row class="my-cell-bar">
