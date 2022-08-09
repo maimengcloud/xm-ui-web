@@ -28,7 +28,7 @@
         <el-table-column 
           :label="type.label + '(' + type.number + ')'"
           :key="tt"
-          width="300"
+          width="250"
         >
           <template slot-scope="scope">
             <el-row class="my-cell-bar">
