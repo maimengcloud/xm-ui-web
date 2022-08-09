@@ -83,7 +83,7 @@
 										</div>   
 										{{calcMenuLabel.label}}
 									</template> 
-									<el-input v-model="editForm.menuName" placeholder="名称" title="名称"> 
+									<el-input v-model="editForm.menuName" placeholder="名称" title="名称" @change="editXmMenuSomeFields(editForm,'menuName',$event)"> 
 									</el-input>
 									<el-row class="label-font-color">编号：{{editForm.menuId}} <el-divider direction="vertical"></el-divider><span v-if="editForm.productName">归属产品：{{ editForm.productName}} <el-divider direction="vertical"></el-divider></span>归属产品编号：{{ editForm.productId }}</el-row>
 								</el-form-item>    
