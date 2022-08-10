@@ -13,7 +13,7 @@
 				
 			<el-popover
 				placement="bottom"
-				width="600"
+				width="500"
 				trigger="click"> 
 				 	<el-button   type="plain" @click="xmRecordVisible=true" icon="el-icon-document">变化日志</el-button>
 					<el-button   type="plain" @click="doSearchImGroupsByProjectId" icon="el-icon-document">绑定即聊情况</el-button>

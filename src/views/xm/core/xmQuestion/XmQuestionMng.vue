@@ -27,7 +27,7 @@
 				<el-popover
 					placement="top-start"
 					title="更多条件、操作"
-					width="600"
+					width="500"
 					v-model="moreVisible"
 					trigger="manual" >
 					

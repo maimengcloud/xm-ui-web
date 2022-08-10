@@ -30,7 +30,7 @@
                 <el-popover
                   placement="top-start"
                   title="更多条件、操作"
-                  width="600"
+                  width="500"
                   v-model="moreVisible"
                   trigger="manual"
                 >
@@ -60,19 +60,7 @@
                     </el-row>
                     <el-row>
                       <font class="more-label-font"> 项目经理: </font>
-                      <el-tag
-                        v-if="filters.pmUser"
-                        closable
-                        @click="selectFiltersPmUser"
-                        @close="clearFiltersPmUser()"
-                        >{{ filters.pmUser.username }}</el-tag
-                      >
-                      <el-button v-else @click="selectFiltersPmUser()"
-                        >选责任人</el-button
-                      >
-                      <el-button @click="setFiltersPmUserAsMySelf()"
-                        >我的</el-button
-                      >
+                      <mdp-select-user-xm label="选择项目经理" v-model="filters" userid-key="pmUserid" username-key="pmUsername" :clearable="true"></mdp-select-user-xm>
                     </el-row>
 
                     <el-row>
@@ -206,18 +194,7 @@
           >
         </slot>
       </span>
-    </el-popover>
-    <el-drawer
-      title="选择员工"
-      :visible.sync="selectFiltersPmUserVisible"
-      size="60%"
-      append-to-body
-    >
-      <users-select
-        @confirm="onFiltersPmUserSelected"
-        ref="usersSelect"
-      ></users-select>
-    </el-drawer>
+    </el-popover> 
 	
         <el-dialog append-to-body :visible.sync="addProjectVisible" width="70%" top="20px">
           <xm-project-add
@@ -236,10 +213,10 @@ import util from "@/common/js/util"; //全局公共库
 //import Sticky from '@/components/Sticky' // 粘性header组件
 //import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 import { listXmProject } from "@/api/xm/core/xmProject";
-import { mapGetters } from "vuex";
-import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
+import { mapGetters } from "vuex"; 
 const map = new Map();
 
+import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
 import XmProjectAdd from "../xmProject/XmProjectEdit.vue";
 
 export default {
@@ -264,7 +241,8 @@ export default {
       filters: {
         key: "",
         id: "", //项目编号
-        pmUser: null, //项目经理
+        pmUserid:'',
+        pmUsername:'',
       },
       xmProjects: [], //查询结果
       pageInfo: {
@@ -365,8 +343,8 @@ export default {
         params.id = this.filters.id;
       }
 
-      if (this.filters.pmUser) {
-        params.pmUserid = this.filters.pmUser.userid;
+      if (this.filters.pmUserid) {
+        params.pmUserid = this.filters.pmUserid;
       }
       this.load.list = true;
       listXmProject(params)
@@ -390,7 +368,7 @@ export default {
               this.$refs.table.setCurrentRow(row);
               this.rowClick(row);
             } else{
-				if(this.xmProjects.length==0 ){
+				if(this.xmProjects.length==0  && this.moreVisible==false){
 					if(this.editForm && this.editForm.id){
 						this.clearSelect()
 					}
@@ -426,29 +404,7 @@ export default {
       this.$emit("selected", row);
       this.projectVisible = false;
       this.moreVisible = false;
-    },
-
-    /**begin 自定义函数请在下面加**/
-    clearFiltersPmUser: function () {
-      this.filters.pmUser = null;
-      this.searchXmProjects();
-    },
-    selectFiltersPmUser() {
-      this.selectFiltersPmUserVisible = true;
-    },
-    onFiltersPmUserSelected(users) {
-      if (users && users.length > 0) {
-        this.filters.pmUser = users[0];
-      } else {
-        this.filters.pmUser = null;
-      }
-      this.selectFiltersPmUserVisible = false;
-      this.searchXmProjects();
-    },
-    setFiltersPmUserAsMySelf() {
-      this.filters.pmUser = this.userInfo;
-      this.searchXmProjects();
-    },
+    }, 
 
     tableRowClassName({ row, rowIndex }) {
       if (row && this.editForm && row.id == this.editForm.id) {
@@ -545,7 +501,7 @@ export default {
     }, 
   }, //end methods
   components: {
-    UsersSelect,XmProjectAdd,
+    MdpSelectUserXm,XmProjectAdd,
     //在下面添加其它组件
   },
   mounted() {

@@ -73,7 +73,7 @@
           <el-popover
             placement="top-start"
             title="更多查询条件或者操作"
-            width="600"
+            width="500"
             trigger="manual"
             v-model="moreVisible"
           >

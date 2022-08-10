@@ -13,7 +13,7 @@
 			<el-popover
 				placement="top-start"
 				title=""
-				width="600"
+				width="500"
 				trigger="click" >
 				<el-divider content-position="left"><strong>查询条件</strong></el-divider>
 				<el-row>

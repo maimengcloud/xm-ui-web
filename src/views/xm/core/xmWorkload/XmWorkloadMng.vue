@@ -23,7 +23,7 @@
 <!--			<el-button type="primary" @click="showAdd" icon="el-icon-plus"> </el-button>-->
       <el-button type="warning" v-loading="load.edit" @click="batchSetSbillIdNull" :disabled="this.sels.length===0 || load.edit==true" icon="el-icon-setting">移出结算单</el-button>
 			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>
-      <el-popover placement="top-start" title="更多查询条件" width="600" v-model="moreVisible" trigger="manual" >
+      <el-popover placement="top-start" title="更多查询条件" width="500" v-model="moreVisible" trigger="manual" >
         <el-row>
           <el-col :span="24"  style="padding-top:5px;">
             <span class="more-label-font">创建时间:</span>

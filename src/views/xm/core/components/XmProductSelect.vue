@@ -30,7 +30,7 @@
         <el-popover
           placement="top-start"
           title="更多条件、操作"
-          width="600"
+          width="500"
           v-model="moreVisible"
           trigger="manual"
         >
@@ -60,17 +60,7 @@
             </el-row>
             <el-row>
               <font class="more-label-font"> 产品经理: </font>
-              <el-tag
-                v-if="filters.pmUser"
-                closable
-                @click="selectFiltersPmUser"
-                @close="clearFiltersPmUser()"
-                >{{ filters.pmUser.username }}</el-tag
-              >
-              <el-button v-else @click="selectFiltersPmUser()"
-                >选责任人</el-button
-              >
-              <el-button @click="setFiltersPmUserAsMySelf()">我的</el-button>
+              <mdp-select-user-xm label="选择产品经理" v-model="filters" userid-key="pmUserid" username-key="pmUsername" :project-id="linkProjectId" :clearable="true"></mdp-select-user-xm>
             </el-row>
             
 
@@ -222,8 +212,8 @@ import util from "@/common/js/util"; //全局公共库
 //import Sticky from '@/components/Sticky' // 粘性header组件
 //import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 import { listXmProductWithState } from "@/api/xm/core/xmProduct";
-import { mapGetters } from "vuex";
-import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
+import { mapGetters } from "vuex"; 
+import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
 import XmProductAdd from "../xmProduct/XmProductEdit.vue";
 const map = new Map();
 
@@ -248,8 +238,9 @@ export default {
     return {
       filters: {
         key: "",
-        id: "", //产品编号
-        pmUser: null, //产品经理
+        id: "", //产品编号 
+        pmUserid:'',
+        pmUsername:'',
       },
       xmProducts: [], //查询结果
       pageInfo: {
@@ -353,8 +344,8 @@ export default {
         params.id = this.filters.id;
       }
 
-      if (this.filters.pmUser) {
-        params.pmUserid = this.filters.pmUser.userid;
+      if (this.filters.pmUserid) {
+        params.pmUserid = this.filters.pmUserid;
       }
       this.load.list = true;
       listXmProductWithState(params)
@@ -378,7 +369,7 @@ export default {
               this.$refs.table.setCurrentRow(row);
               this.rowClick(row);
             }else{
-				if(this.xmProducts.length==0 ){
+				if(this.xmProducts.length==0 && this.moreVisible==false ){
 					if(this.editForm && this.editForm.id){
 						this.clearSelect()
 					}
@@ -414,29 +405,7 @@ export default {
       this.$emit("selected", row);
       this.productVisible = false;
       this.moreVisible = false;
-    },
-
-    /**begin 自定义函数请在下面加**/
-    clearFiltersPmUser: function () {
-      this.filters.pmUser = null;
-      this.searchXmProducts();
-    },
-    selectFiltersPmUser() {
-      this.selectFiltersPmUserVisible = true;
-    },
-    onFiltersPmUserSelected(users) {
-      if (users && users.length > 0) {
-        this.filters.pmUser = users[0];
-      } else {
-        this.filters.pmUser = null;
-      }
-      this.selectFiltersPmUserVisible = false;
-      this.searchXmProducts();
-    },
-    setFiltersPmUserAsMySelf() {
-      this.filters.pmUser = this.userInfo;
-      this.searchXmProducts();
-    },
+    }, 
 
     tableRowClassName({ row, rowIndex }) {
       if (row && this.editForm && row.id == this.editForm.id) {
@@ -530,8 +499,8 @@ export default {
       this.addProductVisible = false;
     },
   }, //end methods
-  components: {
-    UsersSelect,
+  components: { 
+    MdpSelectUserXm,
     XmProductAdd,
     //在下面添加其它组件
   },

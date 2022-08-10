@@ -106,7 +106,7 @@
           <el-popover
             placement="top-start"
             title=""
-            width="600"
+            width="500"
             trigger="click"
           >
             <el-row>  
@@ -170,7 +170,7 @@
           <el-popover
             placement="top-start"
             title="选择展示方式"
-            width="600"
+            width="500"
             trigger="hover"
           >
             <el-row>

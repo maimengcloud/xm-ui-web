@@ -23,7 +23,7 @@
 					placement="top-start"
 					title="更多条件、操作"
 					v-model="moreVisible"
-					width="600"
+					width="500"
 					trigger="manual" >
 					<el-button  type="text" style="float:right;margin-top:-40px;"  @click="moreVisible=false" icon="el-icon-close">关闭</el-button>
 					<el-row>   
@@ -137,6 +137,8 @@
   
 	const map=new Map();
 	import { mapGetters } from 'vuex' 
+
+	import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
 	import XmIterationAdd from "../xmIteration/XmIterationEdit.vue";
 
 	export default {
@@ -405,6 +407,7 @@
 			}, 
 		},//end methods
 		components: { 
+			MdpSelectUserXm,
 			XmIterationAdd,
 		    //在下面添加其它组件
 		},

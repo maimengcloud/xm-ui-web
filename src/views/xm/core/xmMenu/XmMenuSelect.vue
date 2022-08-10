@@ -33,7 +33,7 @@
  					<el-popover
 						placement="top-start"
 						title=""
-						width="600"
+						width="500"
 						trigger="click" >
 						<el-row>  
 							<el-col  :span="24"  style="padding-top:5px;" >

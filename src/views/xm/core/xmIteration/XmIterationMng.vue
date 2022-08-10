@@ -42,7 +42,7 @@
         v-on:click="searchXmIterations"
         icon="el-icon-search"
       ></el-button>
-      <el-popover placement="top-start" title="" width="600" trigger="click">
+      <el-popover placement="top-start" title="" width="500" trigger="click">
         <el-divider content-position="left"
           ><strong>查询条件</strong></el-divider
         >

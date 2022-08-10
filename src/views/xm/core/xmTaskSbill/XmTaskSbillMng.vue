@@ -23,7 +23,7 @@
 			<el-input v-model="filters.key" clearable style="width: 20%;" placeholder="模糊查询:编号/标题/项目名称"></el-input>
 			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTaskSbills" icon="el-icon-search">查询</el-button>
 <!--			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>-->
-      <el-popover placement="top-start" title="更多查询条件" width="600" v-model="moreVisible" trigger="manual" >
+      <el-popover placement="top-start" title="更多查询条件" width="500" v-model="moreVisible" trigger="manual" >
         <el-row>
           <el-col :span="24"  style="padding-top:5px;">
             <span class="more-label-font">创建时间:</span>

@@ -47,7 +47,7 @@
 			title="通过复制创建新的模板或者新的项目"
 			:visible.sync="copyToVisible"
 			append-to-body
-			width="600" > 
+			width="500" > 
 			<el-form>
 			<el-form-item label="项目名称">
 				<el-input v-model="xmProjectCopy.name" placeholder="新的项目名称"></el-input> 

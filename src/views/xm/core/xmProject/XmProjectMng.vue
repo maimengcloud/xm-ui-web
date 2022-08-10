@@ -25,7 +25,7 @@
 						<el-popover
 							placement="top-start"
 							title="更多条件、操作"
-							width="600"
+							width="500"
 							trigger="click" >
 							<el-row>  
 								<el-row>   
@@ -303,7 +303,7 @@
 		<el-dialog
 			title="通过复制创建新的模板或者新的项目"
 			:visible.sync="copyToVisible"
-			width="600" > 
+			width="500" > 
 			<el-form>
 			<el-form-item label="项目名称">
 				<el-input v-model="xmProjectCopy.name" placeholder="新的项目名称"></el-input> 
