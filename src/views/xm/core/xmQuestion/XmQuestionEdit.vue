@@ -684,4 +684,12 @@
 .wf-main-context   p  > img {
 	max-width: 100%;
 }
+
+/**
+超宽度换行
+**/
+.el-tag{
+  white-space: normal !important;;
+  height:auto !important;;
+}
 </style>
