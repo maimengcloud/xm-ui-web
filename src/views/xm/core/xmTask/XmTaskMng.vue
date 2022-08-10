@@ -88,11 +88,12 @@
               <el-divider></el-divider>
               <el-row>
                 <font class="more-label-font">显示方式:</font
-                >  <el-row>
-                    <el-radio v-model="displayType" label="grant">甘特图</el-radio>
+                >   
+                <span class="more-label-font">
+                    <el-radio v-model="displayType" label="grant" >甘特图</el-radio>
                     <el-radio v-model="displayType" label="agile">敏捷看板</el-radio>
-                    <el-radio v-model="displayType" label="table">表格</el-radio>
-                  </el-row>
+                    <el-radio v-model="displayType" label="table">表格</el-radio> 
+                </span>
               </el-row>
               <el-divider></el-divider>
               <el-row>
@@ -161,7 +162,7 @@
               <el-row>
                 <font class="more-label-font">众包任务:</font>
 
-                <el-checkbox
+                <el-checkbox  class="more-label-font"
                   v-model="filters.taskOut"
                   true-label="1"
                   false-label=""

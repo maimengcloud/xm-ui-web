@@ -40,13 +40,18 @@
                   <el-row>
                     
 								<el-divider></el-divider>
+                
+                    <el-row>
+                      <font class="more-label-font"> 项目经理: </font>
+                     <mdp-select-user-xm label="选择项目经理" v-model="filters" userid-key="pmUserid" username-key="pmUsername" :clearable="true"></mdp-select-user-xm>
+                    </el-row>
                     <el-row>
                       <font class="more-label-font">项目编号:</font>
                       <el-input
                         v-model="filters.id"
                         style="width: 200px;"
-                        placeholder="输入项目编号"
-                        @keyup.enter.native="searchXmProjects"
+                        placeholder="输入项目编号" 
+                         clearable
                       >
                       </el-input>
                     </el-row>
@@ -57,12 +62,9 @@
                         v-model="filters.key"
                         style="width: 200px;"
                         placeholder="输入项目名字关键字"
+                         clearable
                       >
                       </el-input>
-                    </el-row>
-                    <el-row>
-                      <font class="more-label-font"> 项目经理: </font>
-                      <mdp-select-user-xm label="选择项目经理" v-model="filters" userid-key="pmUserid" username-key="pmUsername" :clearable="true"></mdp-select-user-xm>
                     </el-row>
 
                     <el-row>
@@ -217,8 +219,7 @@ import util from "@/common/js/util"; //全局公共库
 import { listXmProject } from "@/api/xm/core/xmProject";
 import { mapGetters } from "vuex"; 
 const map = new Map();
-
-import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
+ 
 import XmProjectAdd from "../xmProject/XmProjectEdit.vue";
 
 export default {
@@ -503,7 +504,7 @@ export default {
     }, 
   }, //end methods
   components: {
-    MdpSelectUserXm,XmProjectAdd,
+    "mdp-select-user-xm":()=>import("./MdpSelectUserXm/index.vue"),XmProjectAdd,
     //在下面添加其它组件
   },
   mounted() {

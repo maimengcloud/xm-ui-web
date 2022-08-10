@@ -40,13 +40,18 @@
           <el-row>
             
 						<el-divider></el-divider>
+            
+            <el-row>
+              <font class="more-label-font"> 产品经理: </font>
+              <mdp-select-user-xm label="选择产品经理" v-model="filters" userid-key="pmUserid" username-key="pmUsername" :project-id="linkProjectId" :clearable="true"></mdp-select-user-xm>
+            </el-row>
             <el-row>
               <font class="more-label-font">产品编号:</font>
               <el-input
                 v-model="filters.id"
                 style="width: 200px;"
                 placeholder="输入产品编号"
-                @keyup.enter.native="searchXmProducts"
+                 clearable 
               >
               </el-input>
             </el-row>
@@ -55,14 +60,10 @@
               <font class="more-label-font"> 产品名称: </font>
               <el-input
                 v-model="filters.key"
-                style="width: 200px;"
+                style="width: 200px;" clearable
                 placeholder="输入产品名字关键字"
               >
               </el-input>
-            </el-row>
-            <el-row>
-              <font class="more-label-font"> 产品经理: </font>
-              <mdp-select-user-xm label="选择产品经理" v-model="filters" userid-key="pmUserid" username-key="pmUsername" :project-id="linkProjectId" :clearable="true"></mdp-select-user-xm>
             </el-row>
             
 

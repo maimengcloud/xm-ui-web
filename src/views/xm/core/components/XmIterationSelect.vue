@@ -27,14 +27,19 @@
 					trigger="manual" >
 					<el-button  type="text" style="float:right;margin-top:-40px;"  @click="moreVisible=false" icon="el-icon-close">关闭</el-button>
 					
-					<el-divider></el-divider>
-					<el-row>   
+					<el-divider></el-divider> 
+					
+            
+						<el-row>
+							<font class="more-label-font"> 迭代管理员: </font>
+							<mdp-select-user-xm label="选择迭代管理员" v-model="filters" userid-key="adminUserid" username-key="adminUsername" :project-id="linkProjectId" :clearable="true"></mdp-select-user-xm>
+						</el-row>
 						<el-row> 
-							<font class="more-label-font">迭代编号:</font><el-input  v-model="filters.id"  style="width:200px;"  placeholder="输入迭代编号">  
+							<font class="more-label-font">迭代编号:</font><el-input  v-model="filters.id"  style="width:200px;"  placeholder="输入迭代编号" clearable>  
 							</el-input> 
 						</el-row>
 						<el-row>
-								<font class="more-label-font">迭代名称:</font><el-input  v-model="filters.key" style="width:200px;" placeholder="模糊查询"></el-input>
+								<font class="more-label-font">迭代名称:</font><el-input  v-model="filters.key" style="width:200px;" placeholder="模糊查询" clearable></el-input>
 						</el-row> 
 						
 						<el-row>
@@ -54,8 +59,7 @@
 						</el-row>
 						<el-row> 
 							<el-button style="float:right;" type="primary" icon="el-icon-search" @click="searchXmIterations">查询</el-button>
-						</el-row> 
-					</el-row>
+						</el-row>  
 					<el-button type="text" slot="reference" @click="moreVisible=!moreVisible"  icon="el-icon-search">更多条件</el-button>
 				</el-popover>
 				<el-button type="text" @click="close" style="float:right;" icon="el-icon-close">关闭</el-button> 
@@ -168,6 +172,8 @@
 					key: '',
 					queryScope:'',//迭代查询范围 iterationId\branchId\compete\''
 					id:'',//迭代编号
+					adminUserid:'',
+					adminUsername:'',
 				},
 				pickerOptions:  util.getPickerOptions('datarange'), 
 				dateRangerOnline: [ 
@@ -260,7 +266,9 @@
 				if(this.linkProjectId){
 					params.linkProjectId=this.linkProjectId
 				} 
-				
+				if(this.filters.adminUserid){
+					params.adminUserid=this.filters.adminUserid
+				}
 				if(this.dateRangerOnline && this.dateRangerOnline.length==2){
 					params.onlineTimeStart=this.dateRangerOnline[0] 
 					params.onlineTimeEnd=this.dateRangerOnline[1] 
@@ -284,7 +292,7 @@
 								this.rowClick(row)
 							} 
 						}else{
-							if(this.xmIterations.length==0 ){
+							if(this.xmIterations.length==0 && this.moreVisible==false){
 								if(this.editForm && this.editForm.id){
 									this.clearSelectIteration()
 								}
