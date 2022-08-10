@@ -8,7 +8,7 @@
 						<el-select   v-model="filters.priority" placeholder="优先级"  clearable style="width: 100px;">
 								<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
 						</el-select>
-						<el-select class="hidden-md-and-down" v-model="filters.status" placeholder="需求状态" clearable style="width: 100px;">
+						<el-select v-model="filters.status" placeholder="需求状态" clearable style="width: 100px;">
 							<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option>
 						</el-select>
 						<el-input v-model="filters.key" style="width: 220px;" placeholder="需求名称查询" clearable>
@@ -32,9 +32,12 @@
 							</el-row> 
 								<el-divider></el-divider>
 								<el-row> 
+									<el-button @click="showParentMenu" icon="el-icon-top" title="更换上级">更换上级</el-button> 
 									<el-button    @click="handleExport" icon="el-icon-download">导出</el-button>
-									<el-button   v-if="  disabledMng!==false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>
- 								</el-row>
+									<el-button     @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>
+									<el-button  type="danger" @click="batchDel" icon="el-icon-delete" title="删除">删除</el-button>
+ 
+								</el-row>
 								<el-divider></el-divider> 
 								<el-row>
 									<font class="more-label-font">
@@ -102,6 +105,7 @@
 										<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
 									</el-select>
 								</el-row>
+								<!--
 								<el-row>
 									<font class="more-label-font">
 										优先级:
@@ -110,6 +114,8 @@
 											<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
 									</el-select>
 								</el-row>
+								-->
+								<!--
 								<el-row>
 									<font class="more-label-font">
 										需求状态:
@@ -118,6 +124,7 @@
 										<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option>
 									</el-select>
 								</el-row>
+								-->
 								<el-row>
 									<font class="more-label-font">
 										需求编号:
