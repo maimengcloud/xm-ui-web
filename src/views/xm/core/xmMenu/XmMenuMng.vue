@@ -373,10 +373,7 @@
 					:with-header="false"
 					size="80%">
 					<xm-task-mng :sel-project="selProject"   :menu-id="editForm.menuId" :menu-name="editForm.menuName"></xm-task-mng>
-				</el-drawer>
-				<el-drawer title="选择员工" :visible.sync="selectFiltersMmUserVisible" size="60%" append-to-body>
-					<users-select  @confirm="onFiltersMmUserSelected" ref="selectFiltersMmUser"></users-select>
-				</el-drawer>
+				</el-drawer> 
 			</el-col>
 		</el-row>
 		
