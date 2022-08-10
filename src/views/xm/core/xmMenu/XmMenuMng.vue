@@ -46,10 +46,9 @@
 								<el-row>
 									<font class="more-label-font">
 										责任人:
-									</font>
-									<el-tag v-if="filters.mmUser" closable @close="clearFiltersMmUser()">{{filters.mmUser.username}}</el-tag>
-									<el-button   v-else @click="selectFiltersMmUser()">选责任人</el-button>
-									<el-button    @click="setFiltersMmUserAsMySelf()">我的</el-button>
+									</font> 
+									<mdp-select-user-xm label="选择责任人" v-model="filters.mmUser" :clearable="true"></mdp-select-user-xm> 
+
 								</el-row>
 								<el-row v-if="!xmIteration || !xmIteration.id">
 									<font class="more-label-font">
@@ -125,14 +124,7 @@
 										需求编号:
 									</font>
 									<el-input v-model="filters.menuId" style="width: 220px;" placeholder="需求编号查询" clearable></el-input>
-								</el-row>
-								
-								<el-row>
-									<font class="more-label-font">
-										产品编号:
-									</font>
-									<el-input v-model="filters.productId" style="width: 220px;" placeholder="产品编号查询" clearable></el-input>
-								</el-row>
+								</el-row> 
 								<el-row>
 									<font class="more-label-font">开始时间:</font>
 									<mdp-date-range
@@ -433,6 +425,7 @@
 	import {sn} from '@/common/js/sequence'
 
 	import { mapGetters } from 'vuex'
+	import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
 
 	export default {
 		props:['selProject','xmIteration','xmProduct','disabledMng','parentMenu','paddingTop'],
@@ -472,7 +465,7 @@
 				filters: {
 					key: '',
 					product:null,
-					mmUser:null,
+					mmUser:{},
 					iterationFilterType:'',//join、not-join、''
 					taskFilterType:'',//join、not-join、''
 					tags:[],
@@ -1053,28 +1046,7 @@
 			},
 			onGroupUserSelect(users,option){
 				 this.editXmMenuSomeFields(option.data,"mmUserid",users);
-			},
-			clearFiltersMmUser:function(){
-				 this.filters.mmUser=null;
-				  this.searchXmMenus();
-			},
-			selectFiltersMmUser(){
-				this.selectFiltersMmUserVisible=true;
-			},
-			onFiltersMmUserSelected(users){
-
-				 if(users && users.length>0){
-					 this.filters.mmUser=users[0]
-				 }else{
-					 this.filters.mmUser=null;
-				 }
-				 this.selectFiltersMmUserVisible=false;
-				 this.searchXmMenus();
-			},
-			setFiltersMmUserAsMySelf(){
-				this.filters.mmUser=this.userInfo;
-				this.searchXmMenus();
-			},
+			}, 
 			toSelectProduct(){
 				this.productVisible=true;
 			},
@@ -1353,6 +1325,7 @@
 			XmTableConfig,
 			XmGroupDialog,
 			XmIterationSelect,
+			MdpSelectUserXm,
 		    //在下面添加其它组件
 		},
 		mounted() {
