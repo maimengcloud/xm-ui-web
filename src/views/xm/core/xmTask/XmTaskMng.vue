@@ -116,46 +116,12 @@
                 >
               </el-row>
               <el-row>
-                <font class="more-label-font">责任人:</font>
-                <el-tag
-                  v-if="filters.createUser"
-                  closable
-                  @click="showMenuGroupUser"
-                  @close="clearFiltersCreateUser"
-                  >{{ this.filters.createUser.username }}</el-tag
-                >
-                <el-button v-else @click="showMenuGroupUser" type="plian"
-                  >选责任人</el-button
-                >
-                <el-button
-                  v-if="
-                    !filters.createUser ||
-                    filters.createUser.userid != userInfo.userid
-                  "
-                  @click="setFiltersCreateUserAsMySelf"
-                  >我的</el-button
-                >
+                <font class="more-label-font">责任人:</font> 
+                <mdp-select-user-xm label="选择责任人" v-model="filters.createUser" :clearable="true"></mdp-select-user-xm> 
               </el-row>
               <el-row>
-                <font class="more-label-font">执行人:</font>
-                <el-tag
-                  v-if="filters.executor"
-                  closable
-                  @click="showMenuExecutor"
-                  @close="clearFiltersExecutor"
-                  >{{ this.filters.executor.username }}</el-tag
-                >
-                <el-button v-else @click="showMenuExecutor" type="plian"
-                  >选执行人</el-button
-                >
-                <el-button
-                  v-if="
-                    !filters.executor ||
-                    filters.executor.userid != userInfo.userid
-                  "
-                  @click="setFiltersExecutorAsMySelf"
-                  >我的</el-button
-                >
+                <font class="more-label-font">执行人:</font> 
+                <mdp-select-user-xm label="选择执行人" v-model="filters.executor" :clearable="true"></mdp-select-user-xm> 
               </el-row>
               <el-row>
                 <font class="more-label-font">技能:</font>
@@ -939,6 +905,7 @@ import XmGroupSelect from "../xmGroup/XmGroupSelect.vue";
 
 import XmPhaseSelect from "./XmPhaseSelect.vue";
 	import { addXmTaskExecuser } from '@/api/xm/core/xmTaskExecuser';
+import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
 
 export default {
   computed: {
@@ -1022,8 +989,8 @@ export default {
         skillTags: [],
         taskOut: "", //1只查众包任务，0//只查本机构任务
         menus: [],
-        createUser: null, //负责人
-        executor: null, //执行人
+        createUser: {}, //负责人
+        executor: {}, //执行人
         taskType: "",
         tags: [],
         taskState:'',//任务状态
@@ -1144,15 +1111,7 @@ export default {
     },
     changeShowInfo() {
       this.projectInfoVisible = false;
-    },
-    clearFiltersCreateUser() {
-      this.filters.createUser = null;
-      this.searchXmTasks();
-    },
-    clearFiltersExecutor() {
-      this.filters.executor = null;
-      this.searchXmTasks();
-    },
+    }, 
     clearFiltersMenu(menu) {
       this.filters.menus = this.filters.menus.filter(
         (i) => i.menuId != menu.menuId
@@ -1870,13 +1829,6 @@ export default {
           var user= groupUsers[0];
           this.editXmTaskSomeFields(option.data,option.action,user)
         }
-      }else if(option.action=='filtersCreateUserid'){
-        if (groupUsers && groupUsers.length > 0) {
-          this.filters.createUser = groupUsers[0];
-        } else {
-          this.filters.createUser = null;
-        }
-        this.searchXmTasks();
       }else if(option.action==='executorUserid'){
         var user= groupUsers[0];
         var params={}
@@ -1903,24 +1855,10 @@ export default {
             this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:'error'})
           }
         })
-      }else{
-        if (groupUsers && groupUsers.length > 0) {
-          this.filters.executor = groupUsers[0];
-        } else {
-          this.filters.executor = null;
-        }
-        this.searchXmTasks();
-      }
+      } 
 
     },
-    setFiltersCreateUserAsMySelf() {
-      this.filters.createUser = this.userInfo;
-      this.searchXmTasks();
-    },
-    setFiltersExecutorAsMySelf() {
-      this.filters.executor = this.userInfo;
-      this.searchXmTasks();
-    },
+     
     formatExeUsernames(row) {
 
       var exeUsernames = row.exeUsernames;
@@ -2261,6 +2199,7 @@ export default {
     XmTableConfig,
     XmWorkloadEdit,
     XmPhaseSelect,
+    MdpSelectUserXm,
     //在下面添加其它组件
   },
   mounted() {
