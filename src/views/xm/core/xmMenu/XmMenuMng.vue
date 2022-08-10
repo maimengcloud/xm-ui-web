@@ -30,19 +30,12 @@
 									>关闭</el-button
 									> 
 							</el-row> 
-							
+								<el-divider></el-divider>
 								<el-row> 
 									<el-button    @click="handleExport" icon="el-icon-download">导出</el-button>
 									<el-button   v-if="  disabledMng!==false "       @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>
  								</el-row>
-								 <el-divider></el-divider>
-							<el-row>
-								<el-row>
-									<font class="more-label-font">标签条件:</font>
-									<el-button  v-if="!filters.tags||filters.tags.length==0" @click.native="$refs.tagDialog.open()">标签</el-button>
-									<el-tag v-else @click="$refs.tagDialog.open()"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
-
-								</el-row>
+								<el-divider></el-divider> 
 								<el-row>
 									<font class="more-label-font">
 										责任人:
@@ -78,6 +71,12 @@
 										<el-option   value="not-join-curr-project"  :label="'未分配任务到项目【'+selProject.name+'】'" v-if="selProject && selProject.id"></el-option>
 										<el-option   value="join-curr-project"  :label="'已分配任务到项目【'+selProject.name+'】'"  v-if="selProject && selProject.id"></el-option>
 									</el-select>
+								</el-row> 
+								<el-row>
+									<font class="more-label-font">标签条件:</font>
+									<el-button  v-if="!filters.tags||filters.tags.length==0" @click.native="$refs.tagDialog.open()">标签</el-button>
+									<el-tag v-else @click="$refs.tagDialog.open()"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
+
 								</el-row>
 								<el-row>
 									<font class="more-label-font">
@@ -161,8 +160,7 @@
 								</el-row> 
 								<el-row>
   									<el-button type="primary" style="float:right;" @click="searchXmMenus" icon="el-icon-search">查询</el-button> 
- 								</el-row>
-							</el-row>
+ 								</el-row> 
 								<el-button  slot="reference" icon="el-icon-more" @click="moreVisible=!moreVisible"></el-button>
 						</el-popover>
 						<span style="float:right;">
@@ -816,14 +814,10 @@
 				this.getXmMenus()
 			},
 			onIterationSelected:function(iteration){
-				this.filters.iteration=iteration
-				this.xmMenus=[]
-				this.getXmMenus()
+				this.filters.iteration=iteration 
 			},
 			onIterationClearSelect:function(){
-				this.filters.iteration=null
-				this.xmMenus=[]
-				this.getXmMenus()
+				this.filters.iteration=null 
 			},
 			//删除xmMenu
 			handleDel: function (row,index) {

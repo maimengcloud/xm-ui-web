@@ -32,40 +32,18 @@
 					trigger="manual" >
 					
 					<el-button @click="moreVisible=false" type="text" style="float:right;margin-top:-40px;"  icon="el-icon-close">关闭</el-button>
+					<el-divider></el-divider>
 					<el-row>
 						<el-button @click="handleExport"   icon="el-icon-download">导出</el-button>
 					</el-row>
-					 <el-divider></el-divider>
-					 	<el-row>
-							<font class="more-label-font">变更历史:</font>
-							曾经由<el-button v-if="!filters.hisHandler||!filters.hisHandler.userid" @click="showGroupUsers('hisHandler')">执行人</el-button>
-							<el-tag v-else closable @close="clearHisHandler"  @click="showGroupUsers('hisHandler')">{{filters.hisHandler.username}}</el-tag>
-							<el-button v-if="!filters.hisHandler||filters.hisHandler.userid!=userInfo.userid" @click="setFiltersHisHandlerAsMySelf">我</el-button>
-							变更状态为
-							<el-select v-model="filters.hisHandleStatus" placeholder="请选择状态" style="width:150px;" clearable @change="changeHisHandleStatus">
-								<el-option v-for="(b,index) in dicts['bugStatus']" :value="b.id"  :key="index" :label="b.name">{{b.name}}
-								</el-option>
-							</el-select>的缺陷
-						</el-row>
-						
-					 <el-divider></el-divider>
-					<el-row> 
-						<el-row>
-							<font class="more-label-font">需求:</font>
-							<el-button v-if=" !filters.menus || filters.menus.length==0" @click="showMenu"> 需求</el-button>
-							<el-tag v-else  @click="showMenu"  closable @close="clearFiltersMenu(filters.menus[0])">{{filters.menus[0].menuName.substr(0,5)}}等({{filters.menus.length}})个</el-tag>
-						</el-row>
+					 <el-divider></el-divider>  
 						<el-row>
 							<font class="more-label-font">创建者:</font>
-							<el-button v-if="!filters.createUser" @click="showGroupUsers('createUser')">选择创建人</el-button>
-							<el-tag v-else closable @close="clearCreateUser"  @click="showGroupUsers('createUser')">{{filters.createUser.username}}</el-tag>
-							<el-button v-if="!filters.createUser||filters.createUser.userid!=userInfo.userid" @click="setFiltersCreateUserAsMySelf">我的</el-button>
+							<mdp-select-user-xm label="选择创建者" v-model="filters.createUser" :clearable="true"></mdp-select-user-xm>  
 						</el-row>
 						<el-row>
 							<font class="more-label-font">指派给:</font>
-							<el-button v-if="!filters.handlerUsername" @click="showGroupUsers('handlerUser')">选择被指派人</el-button>
-							<el-tag v-else closable @close="clearHandler"  @click="showGroupUsers('handlerUser')">{{filters.handlerUsername}}</el-tag>
-							<el-button v-if="filters.handlerUserid!=userInfo.userid" @click="setFiltersHandlerAsMySelf">我的</el-button>
+							<mdp-select-user-xm label="选择创建者" v-model="filters.handlerUser" :clearable="true"></mdp-select-user-xm>   
 						</el-row> 
 						<el-row>
 								<font class="more-label-font">需求:</font>
@@ -76,18 +54,18 @@
 						</el-row> 
 						<el-row>
 								<font class="more-label-font">缺陷编号:</font>  
-								<el-input v-model="filters.id" style="width:200px;"></el-input>
+								<el-input v-model="filters.id" style="width:200px;" clearable></el-input>
 						</el-row>
 						<el-row>
 							<font class="more-label-font">优先级:</font>  
-							<el-select   v-model="filters.priority" placeholder="请选择优先级" clearable @change="changePriority">
+							<el-select   v-model="filters.priority" placeholder="请选择优先级" clearable>
 								<el-option v-for="(b,index) in dicts['priority']" :value="b.id" :key="index" :label="b.name">{{b.name}}
 								</el-option>
 							</el-select>
 						</el-row>
 						<el-row>
 							<font class="more-label-font">解决方案:</font>  
-							<el-select  v-model="filters.solution" placeholder="请选择解决方案" clearable @change="changeSolution">
+							<el-select  v-model="filters.solution" placeholder="请选择解决方案" clearable>
 								<el-option v-for="(b,index) in dicts['bugSolution']" :value="b.id" :key="index" :label="b.name">{{b.name}}
 								</el-option>
 							</el-select>
@@ -124,8 +102,7 @@
 						</el-row>
 						<el-row>
 							<el-button   type="primary" style="float:right;" icon="el-icon-search" @click="searchXmQuestions">查询</el-button> 
-						</el-row>
-					</el-row>
+						</el-row> 
 					<el-button  slot="reference" icon="el-icon-more" @click="moreVisible=!moreVisible"></el-button>
 				</el-popover> 
 				<span style="float:right;"> 
@@ -239,7 +216,7 @@
 			</el-dialog>
  			<xm-group-dialog ref="xmGroupDialog" :sel-project=" filters.selProject " :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-dialog> 
 			<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible"    size="60%"   :close-on-click-modal="false">
-				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"    @menus-selected="onSelectedMenus" ></xm-menu-select>
+				<xm-menu-select :visible="menuVisible" :is-select-menu="true" :multi="true"  :xm-product="filters.product"  @menus-selected="onSelectedMenus" ></xm-menu-select>
 			</el-drawer> 
 			
  			<tag-dialog ref="tagDialog" :tagIds="filters.tags?filters.tags.map(i=>i.tagId):[]" :jump="true" @select-confirm="onTagSelected"></tag-dialog>
@@ -260,6 +237,7 @@
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
 	import XmGroupDialog from '../xmGroup/XmGroupDialog';
 	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
+	import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
 
 	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修改界面
  	import TagDialog from '@/views/mdp/arc/tag/TagDialog.vue';
@@ -297,14 +275,13 @@
 					bugStatus:'',
 					priority:'',
 					solution:'',
-					bugSeverity:'',
-					handlerUserid:'',
-					handlerUsername:'',
+					bugSeverity:'', 
+					handlerUser:{},
 					selProject:null,
 					menus:[],
 					product:null,
-					createUser:null,
-					hisHandler:null,
+					createUser:{},
+					hisHandler:{},
 					hisHandleStatus:null,
 					tags:[],
 					id:'',
@@ -458,8 +435,8 @@
 				if( this.filters.bugSeverity!=null && this.filters.bugSeverity!=""){
 					params.bugSeverity=this.filters.bugSeverity
 				}
-				if( this.filters.handlerUserid!=null && this.filters.handlerUserid!=""){
-					params.handlerUserid=this.filters.handlerUserid
+				if( this.filters.handlerUser!=null && this.filters.handlerUser.userid){
+					params.handlerUserid=this.filters.handlerUser.userid
 				}
 				if(this.filters.menus && this.filters.menus.length==1){
 					params.menuId=this.filters.menus[0].menuId
@@ -473,7 +450,7 @@
 				if(this.filters.createUser){
 					params.createUserid=this.filters.createUser.userid;
 				}
-				if(this.filters.hisHandler){
+				if(this.filters.hisHandler && this.filters.hisHandler.userid){
 					if(this.filters.hisHandleStatus){
 						params.hisHandlerUserid=this.filters.hisHandler.userid;
 					}else{
@@ -486,7 +463,7 @@
 					params.id=this.filters.id
 				}
 				if(this.filters.hisHandleStatus){
-					if(this.filters.hisHandler){
+					if(this.filters.hisHandler&& this.filters.hisHandler.userid){
 						params.hisHandleStatus=this.filters.hisHandleStatus
 					}else{
 						this.$notify({position:'bottom-left',showClose:true,message: "请选择曾经的执行人", type: 'error' });
@@ -572,8 +549,7 @@
 			},
 			clearFiltersMenu(menu){
 				var index=this.filters.menus.findIndex(i=>i.menuId==menu.menuId)
-				this.filters.menus.splice(index,1);
-				this.searchXmQuestions();
+				this.filters.menus.splice(index,1); 
 			},
 			clearFiltersTag(tag){
 				var index=this.filters.tags.findIndex(i=>i.tagId==tag.tagId)
@@ -860,19 +836,8 @@
 				}else if(option.action=='editHandlerUserid'){
 					 this.editXmQuestionSomeFields(option.data,"handlerUserid",groupUsers)
 					 return;
-				}else{
-					if(groupUsers==null || groupUsers.length==0){
-						this.filters.handlerUserid=''
-						this.filters.handlerUsername='';
-					}else{
-						var user=groupUsers[0]
-							this.filters.handlerUserid=user.userid
-							this.filters.handlerUsername=user.username
-					}
-				}
-
-				this.selectUserVisible=false
-				this.searchXmQuestions();
+				}  
+				this.selectUserVisible=false 
 
 			}, 
 			onProjectConfirm:function(project){
@@ -959,43 +924,12 @@
 				this.filters.selProject=null
 				this.nextAction=""
 				this.searchXmQuestions()
-			},
-			clearCreateUser(){
-				this.filters.createUser=null;
-				this.searchXmQuestions();
-				this.nextAction=""
-			},
-			clearHandler(){
-
-				this.filters.handlerUserid=''
-				this.filters.handlerUsername='';
-				this.searchXmQuestions();
-				this.nextAction=""
-			},
-			clearHisHandler(){
-
-				this.filters.hisHandler=null
-				this.searchXmQuestions();
-				this.nextAction=""
-			},
+			}, 
 			handleCommand(command) {
 				if(command.type=='sendToProcessApprova'){
 					this.sendToProcessApprova(command.data,command.bizKey);
 				}
-			},
-			setFiltersHandlerAsMySelf(){
-				this.filters.handlerUserid=this.userInfo.userid;
-				this.filters.handlerUsername=this.userInfo.username;
-				this.searchXmQuestions();
-			},
-			setFiltersCreateUserAsMySelf(){
-				this.filters.createUser=this.userInfo
- 				this.searchXmQuestions();
-			},
-			setFiltersHisHandlerAsMySelf(){
-				this.filters.hisHandler=this.userInfo
- 				this.searchXmQuestions();
-			},
+			}, 
 			getBadge(row){
 				var msg="";
 				if(row.bugStatus=='closed'){
@@ -1115,7 +1049,7 @@
 		components: {
 				'xm-question-add':XmQuestionAdd,
 				'xm-question-edit':XmQuestionEdit,
-				XmGroupDialog,XmProjectSelect,xmMenuSelect,XmProductSelect, TagDialog 
+				XmGroupDialog,XmProjectSelect,xmMenuSelect,XmProductSelect, TagDialog,MdpSelectUserXm,
 				//在下面添加其它组件
 		},
 		mounted() {

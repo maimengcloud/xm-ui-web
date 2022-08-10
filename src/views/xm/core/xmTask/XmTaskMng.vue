@@ -85,8 +85,7 @@
 									>关闭</el-button
 									> 
 							</el-row>
-            <el-row>
-
+              <el-divider></el-divider>
               <el-row>
                 <font class="more-label-font">显示方式:</font
                 >  <el-row>
@@ -95,7 +94,15 @@
                     <el-radio v-model="displayType" label="table">表格</el-radio>
                   </el-row>
               </el-row>
-
+              <el-divider></el-divider>
+              <el-row>
+                <font class="more-label-font">责任人:</font> 
+                <mdp-select-user-xm label="选择责任人" v-model="filters.createUser" :clearable="true"></mdp-select-user-xm> 
+              </el-row>
+              <el-row>
+                <font class="more-label-font">执行人:</font> 
+                <mdp-select-user-xm label="选择执行人" v-model="filters.executor" :clearable="true"></mdp-select-user-xm> 
+              </el-row>
               <el-row>
                 <font class="more-label-font">产品:</font
                 > <xm-product-select :auto-select="false" :link-project-id="filters.selProject && filters.selProject.id?filters.selProject.id:null" @row-click="onProductSelected" @clear="onProductClearSelect"></xm-product-select>
@@ -114,14 +121,6 @@
                 <el-button v-else @click="showMenuStory" type="plian"
                   >选需求</el-button
                 >
-              </el-row>
-              <el-row>
-                <font class="more-label-font">责任人:</font> 
-                <mdp-select-user-xm label="选择责任人" v-model="filters.createUser" :clearable="true"></mdp-select-user-xm> 
-              </el-row>
-              <el-row>
-                <font class="more-label-font">执行人:</font> 
-                <mdp-select-user-xm label="选择执行人" v-model="filters.executor" :clearable="true"></mdp-select-user-xm> 
               </el-row>
               <el-row>
                 <font class="more-label-font">技能:</font>
@@ -244,7 +243,6 @@
                   >查询</el-button
                 >
               </el-row>
-            </el-row>
             <el-button   slot="reference" @click="moreVisible=!moreVisible">更多</el-button>
           </el-popover>
           <span style="float:right;">

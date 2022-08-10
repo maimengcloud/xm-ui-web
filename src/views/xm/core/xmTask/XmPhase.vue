@@ -57,27 +57,11 @@
               icon="el-icon-plus"
               title="新建计划"
             ></el-button>
-          </el-popover>
-          <el-button
-            class="hidden-lg-and-down"
-            @click="showParentTaskList"  
-            title="更换任务的上级，实现任务搬家功能"
-            icon="el-icon-upload2"
-            v-loading="load.edit"
-          > </el-button> 
-          <el-button type="danger"
-          class="hidden-lg-and-down"
-            @click="batchDel"
-            v-loading="load.del"
-            icon="el-icon-delete"
-            title="批量删除"
-            ></el-button
-          >
-
+          </el-popover>  
           <el-popover
             placement="top-start"
             title="更多条件、操作"
-            width="500"
+            width="400"
             trigger="manual"
             v-model="moreVisible"
           >

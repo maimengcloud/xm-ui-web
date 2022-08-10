@@ -42,25 +42,38 @@
         v-on:click="searchXmIterations"
         icon="el-icon-search"
       ></el-button>
-      <el-popover placement="top-start" title="" width="500" trigger="click">
-        <el-divider content-position="left"
-          ><strong>查询条件</strong></el-divider
-        >
-        <el-row>
-          <el-col :span="24" style="padding-top: 5px">
+      <el-popover placement="top-start" title="更多条件、操作" width="500" trigger="manual" v-model="moreVisible">
+        
+      <el-row  style="float:right;margin-top:-40px">  
+          <el-button 
+          icon="el-icon-close"
+          @click="moreVisible=false"
+          type="text"
+          >关闭</el-button
+          > 
+      </el-row> 
+        <el-divider></el-divider> 
+          
+          <el-row>
+            <font class="more-label-font">迭代名称:</font
+            ><el-input
+              v-model="filters.key"
+              style="width: 200px;"
+              placeholder="模糊查询"
+            ></el-input>
+          </el-row>
+          <el-row>
             <el-input
               v-if="filters.queryScope == 'iterationId'"
               v-model="filters.id"
-              style="width: 100%"
+              style="width: 200px;"
               placeholder="输入产品编号"
               @keyup.enter.native="searchXmProducts"
             >
             </el-input>
-          </el-col>
-          <el-col
+          </el-row>
+          <el-row
             v-if="filters.queryScope != 'iterationId'"
-            :span="24"
-            style="padding-top: 5px"
           >
             <font class="more-label-font">上线时间:</font>
             <el-date-picker
@@ -75,25 +88,17 @@
               :default-time="['00:00:00', '23:59:59']"
               :picker-options="pickerOptions"
             ></el-date-picker>
-          </el-col>
-          <el-col :span="24" style="padding-top: 5px">
-            <font class="more-label-font">迭代名称:</font
-            ><el-input
-              v-model="filters.key"
-              style="width: 60%"
-              placeholder="模糊查询"
-            ></el-input>
-          </el-col>
-          <el-col :span="24" style="padding-top: 10px">
+          </el-row>
+          <el-row>
             <el-button
+              style="float:right;"
               type="primary"
               icon="el-icon-search"
               @click="getXmIterations"
               >查询</el-button
             >
-          </el-col>
-        </el-row>
-        <el-button slot="reference" icon="el-icon-more"></el-button>
+          </el-row> 
+        <el-button slot="reference" icon="el-icon-more" @click="moreVisible=true"></el-button>
       </el-popover>
       <span style="float: right">
         <el-button type="primary" @click="showAdd" icon="el-icon-plus" round
@@ -343,7 +348,7 @@ export default {
         key: "",
         queryScope: "", //迭代查询范围 iterationId\branchId\compete\''
         id: "", //迭代编号
-		xmProduct:null,
+		    xmProduct:null,
       },
       pickerOptions: util.getPickerOptions("datarange"),
       dateRanger: [], //创建时间选择范围
@@ -446,6 +451,7 @@ export default {
       iterationSelectVisible: false,
       gstcVisible: false,
       maxTableHeight: 300,
+      moreVisible:false,
       ganrrColumns: {
         children: "children",
         name: "iterationName",
