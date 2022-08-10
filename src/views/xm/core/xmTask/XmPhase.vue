@@ -74,16 +74,14 @@
 									> 
 							</el-row> 
                <el-row>  
-                 <el-button type="danger"
-                  class="hidden-xl-only"
+                 <el-button type="danger" 
                     @click="batchDel"
                     v-loading="load.del"
                     icon="el-icon-delete"
                     title="批量删除"
                     >批量删除</el-button
                   >
-                <el-button
-                  class="hidden-xl-only"
+                <el-button 
                   @click="showParentTaskList"  
                   title="更换任务的上级，实现任务搬家功能"
                   icon="el-icon-upload2"

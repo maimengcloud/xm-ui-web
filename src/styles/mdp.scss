@@ -160,8 +160,22 @@
     padding-top: 10px;
   }
 }
+/**
+  修改弹出框关闭按钮，放大，原来的太小
+**/
+.el-dialog__headerbtn {
+  top: 8px !important; 
+  background-size: cover;
+ }
+ .el-dialog__headerbtn i { 
+  font-size: 32px; 
+ }
+
 
 .more-label-font {
+
+  height: 32px;
+  line-height: 32px;
   text-align: left;
   float: left; 
   min-width: 100px;
