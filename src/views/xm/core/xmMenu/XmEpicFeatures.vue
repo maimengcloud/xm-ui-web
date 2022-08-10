@@ -3,10 +3,9 @@
 		<el-row>
 			<el-col :span="24">
 					<el-row >
-						
-						<span style="float:left;"> 
-						<el-input style="width:60%;" v-model="filters.key" placeholder="名称 按回车"  clearable @keyup.enter.native="searchXmMenus()"></el-input>
- 						<el-popover style="padding-left:10px;"
+						<xm-product-select ref="xmProductSelect1" v-if="!((xmProduct && xmProduct.id) || (xmIteration && !xmIteration.id))" style="display:inline;"  :auto-select="true" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="onProductClearSelect" ></xm-product-select>
+						<span style="float:right;"> 
+  						<el-popover
 							placement="top-start"
 							width="250"
 							trigger="click" >
@@ -130,17 +129,12 @@
 				</el-dialog>
 				<el-drawer title="需求模板" :visible.sync="menuTemplateVisible"   size="80%"  append-to-body   :close-on-click-modal="false">
 					<xm-menu-template-mng  :is-select-menu="true"  :visible="menuTemplateVisible" @cancel="menuTemplateVisible=false" @selected-menus="onSelectedMenuTemplates"></xm-menu-template-mng>
-				</el-drawer>   
-				<el-drawer title="选择员工" :visible.sync="selectFiltersMmUserVisible" size="60%" append-to-body>
-					<users-select  @confirm="onFiltersMmUserSelected" ref="selectFiltersMmUser"></users-select>
-				</el-drawer>
+				</el-drawer>    
 			</el-col>
 		</el-row>
 		
  			<tag-dialog ref="tagDialog" :tagIds="filters.tags?filters.tags.map(i=>i.tagId):[]" :jump="true" @select-confirm="onTagSelected">
-			</tag-dialog>
- 			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="selProject" :xm-product="filters.xmProduct" @user-confirm="onGroupUserSelect">
-			</xm-group-dialog> 
+			</tag-dialog> 
 			<el-dialog append-to-body width="60%" top="20px" :visible.sync="parentMenuVisible">
 				<xm-epic-features-select :xm-product="xmProduct" @select="onParentMenuSelected"></xm-epic-features-select>
 			</el-dialog>
@@ -275,8 +269,7 @@
 				selectFiltersMmUserVisible:false,
 				maxTableHeight:300,
 				dateRanger: [ ],
-				pickerOptions:  util.getPickerOptions('datarange'),
-				productVisible:false,
+				pickerOptions:  util.getPickerOptions('datarange'), 
 				tagSelectVisible:false,
 				fieldTagVisible:false,
 				parentMenuVisible:false,
@@ -531,16 +524,17 @@
 				this.sels = sels;
 			},
 			onProductSelected:function(product){
-				this.filters.product=product
-				this.productVisible=false;
+				this.filters.product=product 
 				this.xmMenus=[]
 				this.getXmMenus()
+				this.$emit('product-selected',product)
 			},
 			onProductClearSelect:function(){
-				this.filters.product=null
-				this.productVisible=false;
+				this.filters.product=null 
 				this.xmMenus=[]
-				this.getXmMenus()
+				this.pageInfo.total=0;
+				//this.getXmMenus() 
+				this.$emit('product-clear')
 			},
 			onIterationSelected:function(iteration){
 				this.filters.iteration=iteration
@@ -777,34 +771,7 @@
 					}
 					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 				}).catch( err  => this.load.edit=false );
-			},
-			onGroupUserSelect(users,option){
-				 this.editXmMenuSomeFields(option.data,"mmUserid",users);
-			},
-			clearFiltersMmUser:function(){
-				 this.filters.mmUser=null;
-				  this.searchXmMenus();
-			},
-			selectFiltersMmUser(){
-				this.selectFiltersMmUserVisible=true;
-			},
-			onFiltersMmUserSelected(users){
-
-				 if(users && users.length>0){
-					 this.filters.mmUser=users[0]
-				 }else{
-					 this.filters.mmUser=null;
-				 }
-				 this.selectFiltersMmUserVisible=false;
-				 this.searchXmMenus();
-			},
-			setFiltersMmUserAsMySelf(){
-				this.filters.mmUser=this.userInfo;
-				this.searchXmMenus();
-			},
-			toSelectProduct(){
-				this.productVisible=true;
-			},
+			},    
 			searchSubMenus(row,index){
 				this.pageInfo.count=true;
 				this.searchXmMenus();
@@ -1011,10 +978,7 @@
   			initSimpleDicts("all",['menuStatus','demandSource','demandLvl','demandType','priority','dclass']).then(res=>{
 				  Object.assign(this.dicts,res.data.data) 
 			})
-			this.filters.product=this.xmProduct
-			if(this.xmProduct && this.xmProduct.id){
-				this.productVisible=false;
-			}
+			this.filters.product=this.xmProduct 
 
 			if(this.xmIteration && this.xmIteration.id){
 				this.filters.iterationFilterType='join-curr-iteration'

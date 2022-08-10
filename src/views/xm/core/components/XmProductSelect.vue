@@ -38,6 +38,8 @@
               <el-button type="text" style="float:right;margin-top:-40px;" @click="moreVisible = false" icon="el-icon-close"
                 >关闭</el-button>
           <el-row>
+            
+						<el-divider></el-divider>
             <el-row>
               <font class="more-label-font">产品编号:</font>
               <el-input
@@ -178,20 +180,22 @@
           style="float: right"
         ></el-pagination>
       </el-row>
-      <slot name="reference"
-        ><el-link
+      <slot name="reference"> 
+        <el-link
           title="产品，点击选择、清除选择"
           @click="referenceClick"
           type="primary"
           slot="reference"
           v-loading="load.list"
-          icon="el-icon-s-opportunity"
-          ><font style="font-size: 14px"
-            ><slot name="title">
+          icon="el-icon-s-opportunity" 
+            >
+            <span class="title">
+            <slot name="title">
                {{
               editForm && editForm.id ? editForm.productName : "选择产品"
-            }}</slot></font
-          ></el-link
+            }}</slot>
+            </span>
+            </el-link
         >
       </slot>
     </el-popover>
@@ -518,5 +522,13 @@ export default {
 <style scoped> 
 .align-right {
   float: right;
+}
+.title {
+
+  height: 32px;
+  line-height: 32px;
+  text-align: left;
+  float: left; 
+  min-width: 100px;
 }
 </style>

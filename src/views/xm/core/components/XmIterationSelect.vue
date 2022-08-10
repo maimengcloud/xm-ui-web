@@ -26,6 +26,8 @@
 					width="500"
 					trigger="manual" >
 					<el-button  type="text" style="float:right;margin-top:-40px;"  @click="moreVisible=false" icon="el-icon-close">关闭</el-button>
+					
+					<el-divider></el-divider>
 					<el-row>   
 						<el-row> 
 							<font class="more-label-font">迭代编号:</font><el-input  v-model="filters.id"  style="width:200px;"  placeholder="输入迭代编号">  
@@ -435,5 +437,13 @@
   
 .align-right{
 	float: right; 
+}
+.title {
+
+  height: 32px;
+  line-height: 32px;
+  text-align: left;
+  float: left; 
+  min-width: 100px;
 }
 </style>

@@ -38,6 +38,8 @@
                         >关闭</el-button
                       >
                   <el-row>
+                    
+								<el-divider></el-divider>
                     <el-row>
                       <font class="more-label-font">项目编号:</font>
                       <el-input
@@ -186,12 +188,12 @@
             title="项目，点击选择、清除选择"
             type="warning"
             icon="el-icon-odometer"
-            ><font style="font-size: 14px"
-              ><slot name="title">{{
+            > 
+             <span class="title">
+            <slot name="title">{{
                 editForm && editForm.id ? editForm.name : "选择项目"
-              }}</slot></font
-            ></el-link
-          >
+              }}</slot></span>
+              </el-link>
         </slot>
       </span>
     </el-popover> 
@@ -521,5 +523,13 @@ export default {
 <style scoped> 
 .align-right {
   float: right;
+}
+.title {
+
+  height: 32px;
+  line-height: 32px;
+  text-align: left;
+  float: left; 
+  min-width: 100px;
 }
 </style>
