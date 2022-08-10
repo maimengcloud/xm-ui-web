@@ -64,15 +64,14 @@
             width="400"
             trigger="manual"
             v-model="moreVisible"
-          >
-							<el-row>  
+          > 
 									<el-button  style="float:right;margin-top:-40px;"
 									icon="el-icon-close"
 									@click="moreVisible=false"
 									type="text"
 									>关闭</el-button
-									> 
-							</el-row> 
+									>  
+               <el-divider></el-divider>
                <el-row>  
                  <el-button type="danger" 
                     @click="batchDel"
