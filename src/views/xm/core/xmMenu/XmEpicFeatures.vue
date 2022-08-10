@@ -42,7 +42,7 @@
 						<el-popover
 							placement="top-start"
 							title="更多操作"
-							width="500"
+							width="400"
 							trigger="manual"
 							v-model="moreVisible"
 						>
@@ -53,8 +53,8 @@
 									type="text"
 									>关闭</el-button
 									> 
-							</el-row> 
-							<el-row> 
+							</el-row>  
+							<el-divider></el-divider>
 							<el-row> 
 							
 								<el-button type="primary"  @click="showParentMenu" icon="el-icon-top" title="更换上级">更换上级</el-button> 
@@ -66,9 +66,13 @@
 									>批量删除</el-button
 								>
 								<el-button          @click="loadTasksToXmMenuState" icon="el-icon-s-marketing" title="汇总进度">汇总进度</el-button> 
- 
-							</el-row> 
-							</el-row> 
+							</el-row>
+							<el-divider></el-divider>
+
+							<el-row> 
+								<el-input style="width:250px;" v-model="filters.key" placeholder="名称模糊查询"  clearable></el-input> 
+								<el-button    type="primary"      @click="searchXmMenus" icon="el-icon-search" title="查询" style="float:right;">查询</el-button> 
+							</el-row>  
 							<el-button slot="reference" @click="moreVisible=!moreVisible" icon="el-icon-more"></el-button>
 						</el-popover> 
 						</span>
@@ -1026,12 +1030,7 @@
 </script>
 
 <style lang="scss" scoped>
-
-.more-label-font{
-	text-align:center;
-	float:left;
-	padding-top:5px;
-}
+ 
 .align-right{
 	float: right;
 }

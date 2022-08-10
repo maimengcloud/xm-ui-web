@@ -157,7 +157,7 @@
 							</el-col> 
 							<el-col :span="8">   
 								<mdp-field-x v-model="editForm.rate" label="进度"> 
-									<div slot="value" style="min-width:150px;"><el-progress  :percentage="editForm.rate"></el-progress></div>
+									<div slot="value" style="min-width:150px;"><el-progress  :percentage="editForm.rate?editForm.rate:0"></el-progress></div>
 									<el-button slot="oper" @click="activateTabPaneName='5'" type="primary">去填写工时</el-button>
 								</mdp-field-x>  
 							</el-col> 

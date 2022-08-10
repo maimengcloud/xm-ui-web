@@ -163,7 +163,7 @@
     methods: {    
         
       
-        isEmpty(v) { 
+        isEmpty(v) {  
           switch (typeof v) {
           case 'undefined':
               return true;
@@ -172,9 +172,9 @@
               break; 
           case 'object':
               if (null === v || v.length === 0) return true;
-              for (var i in v) {
-                  return false;
-              }
+               if(v.userid){
+                return false;
+               }
               return true;
           }
           return false;

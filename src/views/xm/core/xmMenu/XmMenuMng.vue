@@ -49,12 +49,18 @@
 									</font>
 									<xm-iteration-select v-if="!xmIteration || !xmIteration.id" style="display:inline;" :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="selProject?selProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClearSelect">
 					    			</xm-iteration-select> 
+								</el-row> 
+								<el-row>
+									<font class="more-label-font">标签条件:</font>
+									<el-button  v-if="!filters.tags||filters.tags.length==0" @click.native="$refs.tagDialog.open()" icon="el-icon-search">标签</el-button>
+									<el-tag v-else @click="$refs.tagDialog.open()"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
+
 								</el-row>
 								<el-row>
 									<font class="more-label-font">
 										是否加入迭代:
 									</font>
-									<el-select   v-model="filters.iterationFilterType" placeholder="加入过迭代？" clearable   >
+									<el-select   v-model="filters.iterationFilterType" placeholder="加入过迭代？" clearable  style="width: 200px;" >
 										<el-option   value="not-join-any-iteration"  label="未加入过迭代"></el-option>
 										<el-option   value="join-any-iteration"  label="已加入过迭代"></el-option>
 										<el-option   value="not-join-curr-iteration"  :label="'未加入迭代【'+filters.iteration.iterationName+'】'"  v-if="filters.iteration && filters.iteration.id"></el-option>
@@ -65,7 +71,7 @@
 									<font class="more-label-font">
 										是否分配任务:
 									</font>
-									<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable >
+									<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable style="width: 200px;">
 										<el-option   value="not-join-any-project"  label="未分配过任务的需求"></el-option>
 										<el-option   value="join-any-project"  label="已分配过任务的需求"></el-option>
 										<el-option   value="not-join-curr-project"  :label="'未分配任务到项目【'+selProject.name+'】'" v-if="selProject && selProject.id"></el-option>
@@ -73,16 +79,10 @@
 									</el-select>
 								</el-row> 
 								<el-row>
-									<font class="more-label-font">标签条件:</font>
-									<el-button  v-if="!filters.tags||filters.tags.length==0" @click.native="$refs.tagDialog.open()">标签</el-button>
-									<el-tag v-else @click="$refs.tagDialog.open()"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
-
-								</el-row>
-								<el-row>
 									<font class="more-label-font">
 										需求类型:
 									</font>
-									<el-select  v-model="filters.dtype" clearable placeholder="需求类型" style="width: 120px;">
+									<el-select  v-model="filters.dtype" clearable placeholder="需求类型" style="width: 200px;">
 										<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 									</el-select>
 								</el-row>
@@ -90,7 +90,7 @@
 									<font class="more-label-font">
 										需求来源:
 									</font>
-									<el-select v-model="filters.source" placeholder="需求来源"  clearable style="width: 120px;">
+									<el-select v-model="filters.source" placeholder="需求来源"  clearable style="width: 200px;">
 										<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
 									</el-select>
 								</el-row>
@@ -98,7 +98,7 @@
 									<font class="more-label-font">
 										需求层次:
 									</font>
-									<el-select v-model="filters.dlvl" placeholder="需求层次"  clearable style="width: 120px;">
+									<el-select v-model="filters.dlvl" placeholder="需求层次"  clearable style="width: 200px;">
 										<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
 									</el-select>
 								</el-row>
@@ -106,7 +106,7 @@
 									<font class="more-label-font">
 										优先级:
 									</font>
-									<el-select v-model="filters.priority" placeholder="优先级"  clearable style="width: 100px;">
+									<el-select v-model="filters.priority" placeholder="优先级"  clearable style="width: 200px;">
 											<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
 									</el-select>
 								</el-row>
@@ -114,7 +114,7 @@
 									<font class="more-label-font">
 										需求状态:
 									</font>
-									<el-select v-model="filters.status" placeholder="需求状态" clearable style="width: 100px;">
+									<el-select v-model="filters.status" placeholder="需求状态" clearable style="width: 200px;">
 										<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option>
 									</el-select>
 								</el-row>
@@ -122,7 +122,7 @@
 									<font class="more-label-font">
 										需求编号:
 									</font>
-									<el-input v-model="filters.menuId" style="width: 220px;" placeholder="需求编号查询" clearable></el-input>
+									<el-input v-model="filters.menuId" style="width: 200px;" placeholder="需求编号查询" clearable></el-input>
 								</el-row> 
 								<el-row>
 									<font class="more-label-font">开始时间:</font>

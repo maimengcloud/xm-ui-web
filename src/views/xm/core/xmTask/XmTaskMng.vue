@@ -118,7 +118,7 @@
                     >{{ item.menuName.substr(0, 10) }}</el-tag
                   >
                 </font>
-                <el-button v-else @click="showMenuStory" type="plian"
+                <el-button v-else @click="showMenuStory" type="plian" icon="el-icon-search"
                   >选需求</el-button
                 >
               </el-row>
@@ -128,7 +128,7 @@
                   v-if="!filters.skillTags || filters.skillTags.length == 0"
                   icon="el-icon-search"
                   @click="showSkillSelect"
-                  >技能</el-button
+                  >选技能</el-button
                 >
                 <el-tag
                   v-else
@@ -144,8 +144,8 @@
                 <font class="more-label-font">标签:</font>
                 <el-button
                   v-if="!filters.tags || filters.tags.length == 0"
-                  @click.native="$refs.tagDialog.open()"
-                  >标签</el-button
+                  @click.native="$refs.tagDialog.open()" icon="el-icon-search"
+                  >选标签</el-button
                 >
                 <el-tag
                   v-else

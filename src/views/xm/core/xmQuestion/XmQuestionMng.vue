@@ -43,14 +43,14 @@
 						</el-row>
 						<el-row>
 							<font class="more-label-font">指派给:</font>
-							<mdp-select-user-xm label="选择创建者" v-model="filters.handlerUser" :clearable="true"></mdp-select-user-xm>   
+							<mdp-select-user-xm label="选择负责人" v-model="filters.handlerUser" :clearable="true"></mdp-select-user-xm>   
 						</el-row> 
 						<el-row>
 								<font class="more-label-font">需求:</font>
 							<font  v-if="  filters.menus && filters.menus.length>0">
 								<el-tag  v-for="(item,index) in filters.menus" :key="index"  closable  @close="clearFiltersMenu(item)">{{item.menuName.substr(0,10)}}</el-tag>
 							</font>
-							<el-button v-else    @click="showMenu" type="plian">选需求</el-button>
+							<el-button v-else    @click="showMenu" type="plian" icon="el-icon-search">选需求</el-button>
 						</el-row> 
 						<el-row>
 								<font class="more-label-font">缺陷编号:</font>  
@@ -58,14 +58,14 @@
 						</el-row>
 						<el-row>
 							<font class="more-label-font">优先级:</font>  
-							<el-select   v-model="filters.priority" placeholder="请选择优先级" clearable>
+							<el-select   v-model="filters.priority" placeholder="请选择优先级" clearable style="width:200px;">
 								<el-option v-for="(b,index) in dicts['priority']" :value="b.id" :key="index" :label="b.name">{{b.name}}
 								</el-option>
 							</el-select>
 						</el-row>
 						<el-row>
 							<font class="more-label-font">解决方案:</font>  
-							<el-select  v-model="filters.solution" placeholder="请选择解决方案" clearable>
+							<el-select  v-model="filters.solution" placeholder="请选择解决方案" clearable style="width:200px;">
 								<el-option v-for="(b,index) in dicts['bugSolution']" :value="b.id" :key="index" :label="b.name">{{b.name}}
 								</el-option>
 							</el-select>
