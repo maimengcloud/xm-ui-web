@@ -1,9 +1,8 @@
 <template>
   <section>
     <el-row>
-      <el-col :span="4" class="padding">
-	  <el-row>
-          <el-col :span="24"> 
+      <el-col :span="4" class="padding-left">
+	  <el-row> 
               <xm-product-select
                 ref="xmProductSelect"
                 :auto-select="true"
@@ -11,8 +10,7 @@
                 :iterationId="xmIteration ? xmIteration.id : null"
                 @row-click="onProductRowClick"
                 @clear="onProductClearSelect"
-              ></xm-product-select>
-          </el-col> 
+              ></xm-product-select> 
         </el-row>
         <el-row
           ref="pageBody"

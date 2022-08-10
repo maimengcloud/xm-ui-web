@@ -1,9 +1,8 @@
 <template>
   <section>
     <el-row>
-      <el-col :span="4" class="padding">
-        <el-row>
-          <el-col :span="24">
+      <el-col :span="4" class="padding-left">
+        <el-row> 
             <xm-project-select
               ref="xmProjectSelect"
               :auto-select="true"
@@ -11,8 +10,7 @@
               :link-product-id="xmProduct ? xmProduct.id : null"
               @row-click="onProjectRowClick"
               @clear="onProjectClearSelect"
-            ></xm-project-select>
-          </el-col> 
+            ></xm-project-select> 
         </el-row>
         <el-row
           ref="pageBody"
