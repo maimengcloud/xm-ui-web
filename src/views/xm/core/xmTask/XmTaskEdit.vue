@@ -941,17 +941,32 @@
 					params.shareFee=$event
 				}else if(fieldName==='supRequires'){
 					params.supRequires=$event.join(",") 
-				}else if(fieldName==='cityId'){ 
+				}else if(fieldName==='cityId'){  
 					if($event.area){
 						params.provinceId=$event.province.key
 						params.provinceName=$event.province.value
 						params.cityId=$event.city.key
 						params.cityName=$event.city.value
 						params.areaId=$event.area.key
-						params.areaName=$event.area.value
+						params.areaName=$event.area.value 
+					}else if($event.city){
+						params.provinceId=$event.province.key
+						params.provinceName=$event.province.value
+						params.cityId=$event.city.key
+						params.cityName=$event.city.value
+						params.areaId='-'
+						params.areaName='-'
+					}else if($event.province){
+						params.provinceId=$event.province.key
+						params.provinceName=$event.province.value
+						params.cityId='-'
+						params.cityName='-'
+						params.areaId='-'
+						params.areaName='-'
 					}else{
-						return;
-					}
+						 return;
+					} 
+						
 					
 				}else{
 					params[fieldName]=$event
