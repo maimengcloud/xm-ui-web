@@ -148,24 +148,43 @@
 									<el-link id="prj-del-btn" type="danger" style="font-size:14px;float:right;margin-left:2px;"  title="删除产品" @click.stop="handleDel(p)" v-loading="load.add">删除</el-link>
 									<el-link id="prj-copy-btn" type="primary" style="font-size:14px;float:right;margin-left:2px;"  title="通过复制快速创建新产品" @click.stop="onCopyToBtnClick(p)" v-loading="load.add">复制&nbsp;</el-link> 
 								</div> 
-								<div class="project-info">
-									<div class="info-item">
-										<span class="item-total">{{p.totalBugCnt==null?0:p.totalBugCnt}}</span>
-										<span class="item-type">缺陷</span>
+									<div class="project-info"> 
+										
+										<div class="info-task"  title="已完成需求数 / 总需求数 ">
+											<span>
+												<span class="item-total finish-task">{{p.menuFinishCnt==null?0:p.menuFinishCnt}}</span>
+												<span style="margin: 0 .25rem !important;">/</span>
+												<span class="item-type total-task">{{p.menuCnt==null?0:p.menuCnt}}</span>
+											</span>
+											<span class="item-type">需求</span>
+										</div>
+										<!--
+										<div class="info-task" title="已完成 / 预算工作量 ，单位人天 ">
+											<span>
+												<span class="item-total finish-task">{{p.actWorkload==null?0:parseInt(p.actWorkload/8)}}</span>
+												<span style="margin: 0 .25rem !important;">/</span>
+												<span class="item-type total-task">{{p.budgetWorkload==null?0:parseInt(p.budgetWorkload/8)}}</span>
+											</span>
+											<span class="item-type">工作量</span>
+										</div>
+										-->
+										<div class="info-task"   title="已完成 / 总任务数 ">
+											<span>
+												<span class="item-total finish-task">{{p.taskFinishCnt==null?0:p.taskFinishCnt}}</span>
+												<span style="margin: 0 .25rem !important;">/</span>
+												<span class="item-type total-task">{{p.taskCnt==null?0:p.taskCnt}}</span>
+											</span>
+											<span class="item-type">任务</span>
+										</div>
+										<div class="info-task"  title="已关闭 / 总缺陷数 ">
+											<span>
+												<span class="item-total finish-task">{{p.closedBugs==null?0:p.closedBugs}}</span>
+												<span style="margin: 0 .25rem !important;">/</span>
+												<span class="item-type total-task">{{p.bugCnt==null?0:p.bugCnt}}</span>
+											</span>
+											<span class="item-type">缺陷</span>
+										</div>
 									</div>
-									<div class="info-item">
-										<span class="item-total">{{p.totalFileCnt==null?0:p.totalFileCnt}}</span>
-										<span class="item-type">文档</span>
-									</div>
-									<div class="info-task">
-										<span>
-											<span class="item-total finish-task">{{p.totalCompleteTaskCnt==null?0:p.totalCompleteTaskCnt}}</span>
-											<span style="margin: 0 .25rem !important;">/</span>
-											<span class="item-type total-task">{{p.totalTaskCnt==null?0:p.totalTaskCnt}}</span>
-										</span>
-										<span class="item-type">任务完成</span>
-									</div>
-								</div>
 								<div class="project-rate">
 									<el-progress :percentage="(p.finishRate==null?0:p.finishRate)"></el-progress>
 								</div>
