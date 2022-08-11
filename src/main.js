@@ -44,6 +44,8 @@ Vue.component('my-input',MyInput)
 Vue.component('mdp-date-x',MdpDateX)
 Vue.component('mdp-date-range-x',MdpDateRangeX)
 Vue.component('mdp-select-user-x',MdpSelectUserX)
+ 
+
 Vue.use(Element, {
   size: 'small', // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)

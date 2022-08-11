@@ -353,8 +353,8 @@
 							</el-col>
 							<el-col :span="12"> 
 								<el-form-item label="城市名称" prop="cityName"  v-if="editForm.crowd==='1'"> 
-									<el-input v-model="editForm.cityName" placeholder="城市名称" @change="editXmTaskSomeFields(editForm,'cityName',$event)"></el-input>   
-
+									
+									 <v-region :value="{province:editForm.provinceId,city:editForm.cityId,area:editForm.areaId,town:''}" @change="editXmTaskSomeFields(editForm,'cityId',$event)"></v-region>
 								</el-form-item> 
 							</el-col>
 							
@@ -548,7 +548,8 @@
 	</section>
 </template>
 
-<script>
+<script> 
+
 	import util from '@/common/js/util';//全局公共库 
 	import {initDicts,editXmTask,setTaskCreateUser,editXmTaskSomeFields,batchChangeParentTask,listXmTask } from '@/api/xm/core/xmTask';
 	import {addXmRecordVisit } from '@/api/xm/core/xmRecordVisit';
@@ -573,7 +574,10 @@
 	import XmTaskExecuserForTask from '../xmTaskExecuser/XmTaskExecuserForTask.vue';
 	import XmPhaseSelect from "./XmPhaseSelect.vue"; 
 	import ToPay from "../xmTaskOrder/ToPay.vue"; 
-	import { initSysDicts } from '../../../../api/xm/core/xmTask';
+	import { initSysDicts } from '../../../../api/xm/core/xmTask'; 
+	import { RegionGroup  } from 'v-region'
+
+
 	export default { 
 		name:'xmTaskEdit',
 		computed: {
@@ -937,6 +941,18 @@
 					params.shareFee=$event
 				}else if(fieldName==='supRequires'){
 					params.supRequires=$event.join(",") 
+				}else if(fieldName==='cityId'){ 
+					if($event.area){
+						params.provinceId=$event.province.key
+						params.provinceName=$event.province.value
+						params.cityId=$event.city.key
+						params.cityName=$event.city.value
+						params.areaId=$event.area.key
+						params.areaName=$event.area.value
+					}else{
+						return;
+					}
+					
 				}else{
 					params[fieldName]=$event
 				}
@@ -1006,13 +1022,14 @@
 			},
 			getRateColor(rate){
 				return "#F56C6C"
-			}
+			}, 
 		},//end method
 		components: { 
  			xmSkillMng,
 			skillMng,xmMenuSelect,XmTaskList,XmExecuserMng,XmGroupSelect,XmMenuRichDetail,TagMng,XmSubWorkItem,XmWorkloadRecord,XmMenuEdit,
 			XmRecord,xmQuestionMng,XmMyDoFocus,XmTaskExecuserForTask,XmPhaseSelect,ToPay,MdpSelectUserXm,'xm-task-edit':()=>import("./XmTaskDetail"),
-			'xm-workload-record':()=>import("../xmWorkload/XmWorkloadRecord"),
+			'xm-workload-record':()=>import("../xmWorkload/XmWorkloadRecord"), 
+			"v-region":RegionGroup ,
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},
 		mounted() { 

@@ -100,7 +100,7 @@ export default {
   methods: { 
       
       initData(){
-        debugger;
+        
           this.dateRange=[];
           if(this.value instanceof Array){
               this.dateRange=this.value

@@ -172,7 +172,7 @@ export default {
                 this.compCfgList.push(compCfg) 
         },
         submitXmPrtConfig(callback){
-            debugger;
+            
             if(this.xmRptConfig==null){
                 var xmRptConfig={name:this.xmTestPlan.name,bizId:this.xmTestPlan.id,cfg:[]}
                 var compCfgList=JSON.parse(JSON.stringify(this.compCfgList))

@@ -126,7 +126,7 @@
 			
 
 			getExecStatusIcon(execStatus){
-				debugger;
+				
 				var icons=['el-icon-arrow-up','el-icon-right','el-icon-check','el-icon-minus','el-icon-close'];
 				if(!execStatus){
 					return icons[0]

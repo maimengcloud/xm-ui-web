@@ -212,7 +212,7 @@
 				this.filters.iteration=null
 			},
 			initData(){
-				debugger;
+				
 				if(this.xmTestPlan){
 					this.filters.productId=this.xmTestPlan.productId
 					this.filters.projectId=this.xmTestPlan.projectId

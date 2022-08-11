@@ -276,7 +276,7 @@ export default {
 				
 				this.$refs.editForm.validate((valid) => {
 					if (valid) {
-            debugger;
+            
 						var msg=this.selProject&&this.selProject.id?'将自动关联项目【'+(this.selProject.name?this.selProject.name:this.selProject.id)+'】':'';
 						this.$confirm('确认提交吗？'+msg, '提示', {}).then(() => { 
 							this.load.add=true
