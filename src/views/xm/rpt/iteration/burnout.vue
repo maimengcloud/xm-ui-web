@@ -65,7 +65,7 @@
 					var max=this.findMax(this.xmIterationStateHiss);
 					var length=this.xmIterationStateHiss.length;
 					return this.xmIterationStateHiss.map((i,index)=>{
-						return max.budgetWorkload*(length-index-1)/length
+						return parseInt(max.budgetWorkload*(length-index-1)/length)
 					})
 				}
 			},
