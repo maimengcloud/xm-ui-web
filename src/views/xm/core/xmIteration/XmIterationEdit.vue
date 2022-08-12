@@ -122,6 +122,15 @@
 						{ required: true, message: '迭代名称不能为空', trigger: 'change' },
 						{ min:10,max:250, message: '名称长度在10-250个字符', trigger: 'change' }
 					], 
+					startTime: [
+						{ required: true, message: '开始时间不能为空', trigger: 'change' }, 
+					], 
+					endTime: [
+						{ required: true, message: '结束时间不能为空', trigger: 'change' }, 
+					], 
+					onlineTime: [
+						{ required: true, message: '上线时间不能为空', trigger: 'change' }, 
+					], 
 				},
 				//新增界面数据 迭代定义,
 				editForm: {
