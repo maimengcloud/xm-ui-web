@@ -63,9 +63,19 @@
 					return []
 				}else{ 
 					var max=this.findMax(this.xmIterationStateHiss);
-					var length=this.xmIterationStateHiss.length;
+					var length=this.findLength();
+					if(length==0){
+						return [];
+					}  
+					var startDate=this.xmIteration.startTime.substring(0,10)
+					var endDate=this.xmIteration.endTime.substring(0,10)
+					var uniDayWorkload=max.budgetWorkload/(length+1)
 					return this.xmIterationStateHiss.map((i,index)=>{
-						return parseInt(max.budgetWorkload*(length-index-1)/length)
+						if(i.bizDate<startDate || i.bizDate>endDate){
+							return 0;
+						}
+						var days= util.timeDifference(i.bizDate+" 00:00:00",endDate+" 00:00:00")/60/24
+						return parseInt(uniDayWorkload*days)
 					})
 				}
 			},
@@ -112,16 +122,24 @@
 		},//end data
 		methods: { 
 			 findMax( list ) {
-				var i, max = list[0];
-				
+				var i, max = list[0]; 
 				if(list.length < 2) return max;
 			
-				for (i = 0; i < list.length; i++) {
+				for (i = 0; i < list.length; i++) { 
 					if (list[i].budgetWorkload > max.budgetWorkload) {
 						max = list[i];
 					}
 				}
 				return max;
+			},
+			findLength(){
+				if(this.xmIteration && this.xmIteration.id){
+					return parseInt(util.timeDifference(this.xmIteration.startTime.substring(0,10)+" 00:00:00",this.xmIteration.endTime.substring(0,10)+" 00:00:00")/60/24)
+				}else if(this.xmIterationStateHiss){
+					return this.xmIterationStateHiss.length;
+				}else{
+					return 0;
+				}
 			},
 			listXmIterationStateHis(){
 				if(!this.filters.iteration|| !this.filters.iteration.id){
