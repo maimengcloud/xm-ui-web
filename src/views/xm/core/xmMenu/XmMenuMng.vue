@@ -38,6 +38,15 @@
 									<el-button  type="danger" @click="batchDel" icon="el-icon-delete" title="删除">删除</el-button>
  
 								</el-row>
+								
+              					<el-row>
+									<font class="more-label-font">显示方式:</font
+									>   
+									<span class="more-label-font">  
+										<el-radio v-model="displayType" label="agileUser">故事看板</el-radio>
+										<el-radio v-model="displayType" label="table">列表</el-radio> 
+									</span>
+								</el-row>
 								<el-divider></el-divider> 
 								<el-row>
 									<font class="more-label-font">
@@ -213,8 +222,8 @@
 						<xm-table-config class="hidden-lg-and-down" ref="tableConfig" style="display:inline;" :table="$refs.table"></xm-table-config>
 
 						</span>
-					 </el-row>
-					<el-row>
+					 </el-row> 
+					<el-row v-if="displayType=='table'">
 						<el-table  element-loading-text="努力加载中" element-loading-spinner="el-icon-loading" :cell-style="cellStyleCalc" :expand-row-keys="expandRowKeysCpd" :header-cell-style="cellStyleCalc" :row-style="{height:'60px'}"   stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId"  @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
 							<el-table-column sortable type="selection" width="40"></el-table-column>
 
@@ -344,6 +353,9 @@
 
 
 					</el-row>
+					<el-row v-else-if="displayType=='agileUser'">
+						<xm-menu-agile-kanban-user :xm-menus="xmMenus" :xm-product="xmProduct" ref="table" :table-height="maxTableHeight"></xm-menu-agile-kanban-user>
+					</el-row> 
 				<!--编辑 XmMenu xm_project_menu界面-->
 				<el-dialog title="编辑故事" :visible.sync="editFormVisible" :with-header="false" width="90%" top="20px"    append-to-body   :close-on-click-modal="false" >
 					<xm-menu-edit :xm-menu="editForm" :sel-project="selProject" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @add-sub-menu="onAddSubMenu" @edit-fields="onEditSomeFields"></xm-menu-edit>
@@ -422,6 +434,7 @@
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
 
 	import XmEpicFeaturesSelect from "../xmMenu/XmEpicFeaturesSelect";
+	import XmMenuAgileKanbanUser from "../xmMenu/XmMenuAgileKanbanUser";
   	import TagDialog from "@/views/mdp/arc/tag/TagDialog";
 
 	import {sn} from '@/common/js/sequence'
@@ -547,6 +560,7 @@
  				/**begin 自定义属性请在下面加 请加备注**/
 				expandRowKeysCpd:[],
 				moreVisible:false,
+				displayType:'table'
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -1324,6 +1338,7 @@
 			XmGroupDialog,
 			XmIterationSelect,
 			MdpSelectUserXm,
+			XmMenuAgileKanbanUser,
 		    //在下面添加其它组件
 		},
 		mounted() {

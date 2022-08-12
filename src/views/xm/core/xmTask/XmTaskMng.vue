@@ -91,8 +91,9 @@
                 >   
                 <span class="more-label-font">
                     <el-radio v-model="displayType" label="grant" >甘特图</el-radio>
-                    <el-radio v-model="displayType" label="agile">敏捷看板</el-radio>
-                    <el-radio v-model="displayType" label="table">表格</el-radio> 
+                    <el-radio v-model="displayType" label="agile">故事分组</el-radio>
+                    <el-radio v-model="displayType" label="agileUser">执行人分组</el-radio>
+                    <el-radio v-model="displayType" label="table">列表</el-radio> 
                 </span>
               </el-row>
               <el-divider></el-divider>
@@ -316,15 +317,22 @@
         </el-row>
 
         <el-row ref="table">
-          <template v-if="displayType != 'grant'">
+          <template v-if="displayType!='grant'">
             <xm-task-agile-kanban
               :tableHeight="tableHeight"
               v-if="displayType == 'agile'"
               :xmTasks="xmTasks"
               @submit="afterEditSubmit"
             ></xm-task-agile-kanban>
+            
+            <xm-task-agile-kanban-user
+              :tableHeight="tableHeight"
+              v-else-if="displayType == 'agileUser'"
+              :xmTasks="xmTasks"
+              @submit="afterEditSubmit"
+            ></xm-task-agile-kanban-user>
             <el-table class="task-table"
-              v-else
+              v-else-if="displayType=='table'"
                element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"
               :data="tasksTreeData"
               @sort-change="sortChange"
@@ -541,8 +549,7 @@
               style="float: right;"
             ></el-pagination>
           </template>
-          <xm-gantt
-            v-if="displayType == 'grant'"
+          <xm-gantt  v-else-if="displayType == 'grant'"
             :tree-data="tasksTreeData"
             :useRealTime="true"
           ></xm-gantt>
@@ -874,6 +881,7 @@ import {
 import XmTaskAdd from "./XmTaskAdd"; //新增界面
 import XmTaskEdit from "./XmTaskEdit"; //修改界面
  import XmTaskAgileKanban from "./XmTaskAgileKanban"; //敏捷看板
+ import XmTaskAgileKanbanUser from "./XmTaskAgileKanbanUser"; //敏捷看板
 import { mapGetters } from "vuex";
 import xmExecuserMng from "../xmTaskExecuser/XmTaskExecuserForTask";
 import xmSkillMng from "../xmTaskSkill/XmTaskSkillMng";
@@ -2179,6 +2187,7 @@ export default {
     "xm-task-add": XmTaskAdd,
     "xm-task-edit": XmTaskEdit,
     XmTaskAgileKanban,
+    XmTaskAgileKanbanUser,
     xmExecuserMng,
     xmSkillMng,
     skillMng,
