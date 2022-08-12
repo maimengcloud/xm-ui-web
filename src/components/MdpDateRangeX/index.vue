@@ -192,6 +192,9 @@ export default {
             }else if(dates && dates.length===0){
                 this.value[this.startKey]=null
                 this.value[this.endKey]=null
+            }else{
+              this.value[this.startKey]=null
+              this.value[this.endKey]=null
             }
             this.$emit('input',this.value)
           }else if(this.value instanceof Array){

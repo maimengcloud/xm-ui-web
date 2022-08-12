@@ -162,34 +162,44 @@
 				this.userSelectVisible = false;
 			},	
 
-            editSomeFields(row,fieldName,$event){ 
+           editSomeFields(row,fieldName,$event){ 
 				if(this.opType==='add'){
 					return;
-				}
-                let params={};
-                params['ids']=[row].map(i=>i.id)
-				if(fieldName=='adminUserid'){
-					params['adminUserid']=$event[0].userid 
-					params['adminUsername']=$event[0].username
-				}else if(fieldName=='startTime'){
-					params['startTime']=row.startTime
-					params['endTime']=row.endTime
-				}else{
-					params[fieldName]=$event
-				}
+				} 
+				this.$refs.editForm.validate((vali)=>{
+					if(!vali){
+						this.$notify({position:'bottom-left',showClose:true,message:"表单检查不通过，请修改后提交", type: 'error' }); 
+						return;
+					}else{
+
+						let params={};
+						params['ids']=[row].map(i=>i.id)
+						if(fieldName=='adminUserid'){
+							params['adminUserid']=$event[0].userid 
+							params['adminUsername']=$event[0].username
+						}else if(fieldName=='startTime'){
+							params['startTime']=row.startTime
+							params['endTime']=row.endTime
+						}else{
+							params[fieldName]=$event
+						}
+						
+						var func = editSomeFieldsXmIteration
+						func(params).then(res=>{
+						let tips = res.data.tips;
+						if(tips.isOk){
+							this.editFormBak=[...this.editForm]
+							Object.assign(this.editForm,params)
+							this.$emit('edit-fields',params)
+						}else{
+							Object.assign(this.editForm,this.editFormBak)
+							this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+						}
+						}).catch((e)=>Object.assign(this.editForm,this.editFormBak))
+
+					}
+				});   
                 
-                var func = editSomeFieldsXmIteration
-                func(params).then(res=>{
-                  let tips = res.data.tips;
-                  if(tips.isOk){
-                    this.editFormBak=[...this.editForm]
-					Object.assign(this.editForm,params)
-					this.$emit('edit-fields',params)
-                  }else{
-                    Object.assign(this.editForm,this.editFormBak)
-                    this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
-                  }
-                }).catch((e)=>Object.assign(this.editForm,this.editFormBak))
             },
 			initData(){ 
 				this.editForm=Object.assign(this.editForm, this.xmIteration);   
