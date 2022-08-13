@@ -26,7 +26,9 @@
           width="250"
         >
           <template slot-scope="scope">
-            <el-row class="my-cell-bar">
+            <el-row class="my-cell-bar" 
+                :data-mm-userid="scope.row.mmUserid"
+                :data-status="type.status">
               <el-button
                 icon="el-icon-plus"
                 @click="showAddMenu(scope.row, type)"
@@ -40,7 +42,7 @@
               :sort="false"
               @start="onStart"
               @end="onEnd"
-              @move="onMove"
+              :move="onMove"
               :options="{ group: scope.row.mmUserid }"
               class="draggable"
               animation="300"
@@ -48,7 +50,7 @@
               scrollSensitivity="80"
               scrollSpeed="80"
             >
-              <transition-group
+              <transition-group 
                 class="transition-group"
                 :data-mm-userid="scope.row.mmUserid"
                 :data-status="type.status"
@@ -56,7 +58,7 @@
                 <!-- <template v-if="drag.mmUserid && drag.mmUserid === scope.row.mmUserid && drag.status !== type.status">
 									<div class="drag-to-box">{{type.label}}</div>
 								</template> -->
-                <template v-if="menus && menusCpd[scope.row.mmUserid][tt].length">
+                <template v-if="menus && menusCpd[scope.row.mmUserid][tt].length>0">  
                   <div @click.stop="showMenuEdit(menu)"
                     :data-mm-userid="scope.row.mmUserid"
                     :data-menu-id="menu.menuId"
@@ -99,9 +101,9 @@
                        <div class="title">{{ menu.menuName }}</div> 
                      </el-row>
                    
-                  </div>
-                </template>
-              </transition-group>
+                  </div> 
+                </template>  
+              </transition-group> 
             </draggable>
           </template>
         </el-table-column>
@@ -273,7 +275,7 @@ export default {
   },
   methods: {
     ...util,
-    onMove(e) {
+    onMove(e,e2) { 
       console.log("onMove--e==", e);
 
       let targetEl = { ...e.dragged.dataset };
@@ -295,7 +297,7 @@ export default {
       console.log("onStart--targetEl==", targetEl);
     },
     onEnd(e) {
-      console.log("onEnd--e==", e);
+      console.log("onEnd--e==", e); 
       this.drag = {};
       // targetEl：拖拽的故事数据; toEl拖拽后的位置.
       let targetEl = { ...e.item.dataset };
@@ -309,8 +311,7 @@ export default {
         //const params = { ...menu, status: toEl.status };
         const params = { menuIds: [menu.menuId], status: toEl.status };
         editXmMenuSomeFields(params).then((res) => {
-
-          debugger;
+ 
           //this.$emit('submit');
           var tips = res.data.tips;
           if (tips.isOk) {
@@ -490,9 +491,10 @@ export default {
 
 .draggable {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap; 
   min-height: 100px;
   width: 100%;
+  height: 100%;
 }
 .el-table {
   /deep/ .el-table__row {
