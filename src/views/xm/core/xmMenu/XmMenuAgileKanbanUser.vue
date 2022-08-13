@@ -51,7 +51,7 @@
               <transition-group
                 class="transition-group"
                 :data-mm-userid="scope.row.mmUserid"
-                :data-menu-state="type.status"
+                :data-status="type.status"
               >
                 <!-- <template v-if="drag.mmUserid && drag.mmUserid === scope.row.mmUserid && drag.status !== type.status">
 									<div class="drag-to-box">{{type.label}}</div>
@@ -60,7 +60,7 @@
                   <div @click.stop="showMenuEdit(menu)"
                     :data-mm-userid="scope.row.mmUserid"
                     :data-menu-id="menu.menuId"
-                    :data-menu-state="menu.status"
+                    :data-status="menu.status"
                     class="menu" 
                     v-for="(menu, t) in menus[scope.row.mmUserid][tt]"
                     :key="menu.menuId + t"
@@ -75,7 +75,7 @@
                         )"
                         :key="menu.menuId + index"
                         :type="item.className"
-                        >{{ item.menuName }}</el-tag
+                        >{{ item.name }}</el-tag
                       > 
                       <el-tag
                         title="进度"
@@ -307,8 +307,10 @@ export default {
         let menu = this.xmMenus.find((d) => d.menuId === targetEl.menuId);
         let menuIndex = this.xmMenus.findIndex((d) => d.menuId === targetEl.menuId);
         //const params = { ...menu, status: toEl.status };
-        const params = { ids: [menu.menuId], status: toEl.status };
+        const params = { menuIds: [menu.menuId], status: toEl.status };
         editXmMenuSomeFields(params).then((res) => {
+
+          debugger;
           //this.$emit('submit');
           var tips = res.data.tips;
           if (tips.isOk) {
