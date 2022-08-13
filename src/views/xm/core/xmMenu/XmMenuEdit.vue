@@ -108,10 +108,10 @@
 									</mdp-field-x>  
 								</el-col> 
 								<el-col  :span="8">
-									<mdp-select-user-xm  label="负责人" v-model="editForm" userid-key="mmUserid" username-key="mmUsername" @change="editXmTaskSomeFields(editForm,'mmUserid',$event)"></mdp-select-user-xm>   
+									<mdp-select-user-xm  label="负责人" v-model="editForm" userid-key="mmUserid" username-key="mmUsername" @change="editXmMenuSomeFields(editForm,'mmUserid',$event)"></mdp-select-user-xm>   
 								</el-col>
 								<el-col  :span="8">
-									<mdp-select-user-xm  label="提出人" v-model="editForm" userid-key="proposerId" username-key="proposerName" @change="editXmTaskSomeFields(editForm,'proposerId',$event)"></mdp-select-user-xm>   
+									<mdp-select-user-xm  label="提出人" v-model="editForm" userid-key="proposerId" username-key="proposerName" @change="editXmMenuSomeFields(editForm,'proposerId',$event)"></mdp-select-user-xm>   
 								</el-col>
 						</el-row>   
 

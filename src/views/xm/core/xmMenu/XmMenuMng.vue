@@ -355,6 +355,8 @@
 					</el-row>
 					<el-row v-else-if="displayType=='agileUser'">
 						<xm-menu-agile-kanban-user :xm-menus="xmMenus" :xm-product="xmProduct" ref="table" :table-height="maxTableHeight"></xm-menu-agile-kanban-user>
+						<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+
 					</el-row> 
 				<!--编辑 XmMenu xm_project_menu界面-->
 				<el-dialog title="编辑故事" :visible.sync="editFormVisible" :with-header="false" width="90%" top="20px"    append-to-body   :close-on-click-modal="false" >

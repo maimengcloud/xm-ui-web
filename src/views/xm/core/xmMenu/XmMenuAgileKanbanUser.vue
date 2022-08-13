@@ -494,7 +494,6 @@ export default {
   flex-wrap: wrap; 
   min-height: 100px;
   width: 100%;
-  height: 100%;
 }
 .el-table {
   /deep/ .el-table__row {
@@ -506,7 +505,7 @@ export default {
       height: 100%;
       vertical-align: top;
     }
-  }
+  } 
 }
 .transition-group {   
   width: 100%;
