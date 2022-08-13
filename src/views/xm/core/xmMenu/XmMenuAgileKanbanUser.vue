@@ -71,7 +71,7 @@
                         v-for="(item, index) in formatDictsWithClass(
                           dicts,
                           'priority',
-                          menu.level
+                          menu.priority
                         )"
                         :key="menu.menuId + index"
                         :type="item.className"
@@ -80,9 +80,9 @@
                       <el-tag
                         title="进度"
                         style="border-radius: 30px"
-                        :type="menu.rate >= 100 ? 'success' : 'warning'"
+                        :type="menu.finishRate >= 100 ? 'success' : 'warning'"
                       >
-                        {{ (menu.rate != null ? menu.rate : 0) + "%" }}
+                        {{ (menu.finishRate != null ? menu.finishRate : 0) + "%" }}
                       </el-tag>  
 				  	        <span class="my-cell-bar"><el-button   size="mini" type="danger" icon="el-icon-delete" plain @click.stop="handleDel(menu,tt)"></el-button></span>
                   </el-row>
@@ -165,12 +165,12 @@
     </el-dialog> 
 	
 
-	<el-dialog append-to-body title="需求明细"  :visible.sync="menuDetailVisible" width="80%"  top="20px"  :close-on-click-modal="false">
+	<el-dialog append-to-body title="需求明细"  :visible.sync="menuDetailVisible" width="90%"  top="20px"  :close-on-click-modal="false">
 		<xm-menu-edit :visible="menuDetailVisible" op-type="edit" :xm-menu="editForm" ></xm-menu-edit>
 	</el-dialog>
 
     <el-dialog title="上级需求详情" :visible.sync="pmenuFormVisible" :with-header="false" width="90%" top="20px"    append-to-body   :close-on-click-modal="false" >
-    <xm-menu-edit v-if="pmenuFormVisible" :reload="true" :xm-menu="{menuId:editForm.pmenuId}" :sel-project="selProject" :visible="pmenuFormVisible" @cancel="pmenuFormVisible=false"></xm-menu-edit>
+    <xm-menu-edit v-if="pmenuFormVisible" :reload="true" :xm-menu="{menuId:editForm.pmenuId}" :visible="pmenuFormVisible" @cancel="pmenuFormVisible=false"></xm-menu-edit>
   </el-dialog>
 			
 		<el-dialog
@@ -178,6 +178,7 @@
 		title="选择上级需求"
 		:visible.sync="selectParentMenuVisible"
 		width="80%"
+    top="20px"
 		:close-on-click-modal="false"
 		>
 		<xm-epic-features-select 
@@ -204,197 +205,15 @@ export default {
   data() {
     return {
 		load:{add:false,edit:false,list:false,del:false},
+      
       editForm: {
-        id: "",
-        name: "",
-        pmenuId: "",
-        pmenuId: "",
-        productId: "",
-        projectName: "",
-        level: "",
-        sortLevel: "",
-        mmUserid: "",
-        mmUsername: "",
-        preMenuid: "",
-        preMenuname: "",
-        startTime: "",
-        endTime: "",
-        milestone: "",
-        description: "",
-        remarks: "",
-        createUserid: "",
-        createUsername: "",
-        createTime: "",
-        rate: 0,
-        budgetAt: 0,
-        budgetWorkload: 0,
-        actAt: 0,
-        actWorkload: 0,
-        status: "0",
-        menuType: "4",
-        menuClass: "",
-        toMenuCenter: "0",
-        actStartTime: "",
-        actEndTime: "",
-        bizProcInstId: "",
-        bizFlowState: "",
-        phaseId: "",
-        phaseName: "",
-        menuSkillNames: "",
-        exeUsernames: "",
-        menuSkillIds: "",
-        exeUserids: "",
-        menuOut: "0",
-        planType: "w2",
-        settleSchemel: "1",
-        menuId: "",
-        menuName: "",
-        productId: "",
-        cbranchId: "",
-        cdeptid: "",
-        tagIds: "",
-        tagNames: "",
-        ntype: "",
-        childrenCnt: "",
-        ltime: "",
-        pidPaths: "",
-        lvl: "",
-        isTpl: "",
-        keyPath: "",
-        uniInnerPrice: 80,
-        uniOutPrice: 100,
-        calcType: "",
-        ptype: "",
-        wtype: "",
-        bctrl: "",
-        initWorkload: "",
-        shareFee: "",
-        oshare: "",
-        crowd: "",
-        browseUsers: "",
-        execUsers: "",
-        cityId: "",
-        cityName: "",
-        regionType: "",
-        browseTimes: "",
-        capaLvls: "",
-        tranMode: "",
-        supRequires: "",
-        hot: "0",
-        top: "0",
-        urgent: "0",
-        crmSup: "0",
-        bidStep: "0",
-        interestLvls: "",
-        filePaths: "",
-        estate: "0",
-        efunds: 0,
-        etoPlatTime: "",
-        etoDevTime: "",
-        ebackTime: "",
-        topStime: "",
-        topEtime: "",
-        hotStime: "",
-        hotEtime: "",
-        urgentStime: "",
-        urgentEtime: "",
-      },
-
+						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'1',mmUserid:'',mmUsername:'',ntype:'0',childrenCnt:0,sinceVersion:'',
+						proposerId:'',proposerName:'',dlvl:'',dtype:'',priority:'',source:'',calcType:'1',actWorkload:0,actAt:0,finishRate:0,ctime:'',dclass:'1',startTime:'',endTime:''
+				},
       addForm: {
-        id: "",
-        name: "",
-        pmenuId: "",
-        pmenuId: "",
-        productId: "",
-        projectName: "",
-        level: "",
-        sortLevel: "",
-        mmUserid: "",
-        mmUsername: "",
-        preMenuid: "",
-        preMenuname: "",
-        startTime: "",
-        endTime: "",
-        milestone: "",
-        description: "",
-        remarks: "",
-        createUserid: "",
-        createUsername: "",
-        createTime: "",
-        rate: 0,
-        budgetAt: 0,
-        budgetWorkload: 0,
-        actAt: 0,
-        actWorkload: 0,
-        status: "0",
-        menuType: "4",
-        menuClass: "",
-        toMenuCenter: "0",
-        actStartTime: "",
-        actEndTime: "",
-        bizProcInstId: "",
-        bizFlowState: "",
-        phaseId: "",
-        phaseName: "",
-        menuSkillNames: "",
-        exeUsernames: "",
-        menuSkillIds: "",
-        exeUserids: "",
-        menuOut: "0",
-        planType: "w2",
-        settleSchemel: "1",
-        menuId: "",
-        menuName: "",
-        productId: "",
-        cbranchId: "",
-        cdeptid: "",
-        tagIds: "",
-        tagNames: "",
-        ntype: "",
-        childrenCnt: "",
-        ltime: "",
-        pidPaths: "",
-        lvl: "",
-        isTpl: "",
-        keyPath: "",
-        uniInnerPrice: 80,
-        uniOutPrice: 100,
-        calcType: "",
-        ptype: "",
-        wtype: "",
-        bctrl: "",
-        initWorkload: "",
-        shareFee: "",
-        oshare: "",
-        crowd: "",
-        browseUsers: "",
-        execUsers: "",
-        cityId: "",
-        cityName: "",
-        regionType: "",
-        browseTimes: "",
-        capaLvls: "",
-        tranMode: "",
-        supRequires: "",
-        hot: "0",
-        top: "0",
-        urgent: "0",
-        crmSup: "0",
-        bidStep: "0",
-        interestLvls: "",
-        filePaths: "",
-        estate: "0",
-        efunds: 0,
-        etoPlatTime: "",
-        etoDevTime: "",
-        ebackTime: "",
-        topStime: "",
-        topEtime: "",
-        hotStime: "",
-        hotEtime: "",
-        urgentStime: "",
-        urgentEtime: "",
-      },
+						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'1',mmUserid:'',mmUsername:'',ntype:'0',childrenCnt:0,sinceVersion:'',
+						proposerId:'',proposerName:'',dlvl:'',dtype:'',priority:'',source:'',calcType:'1',actWorkload:0,actAt:0,finishRate:0,ctime:'',dclass:'1',startTime:'',endTime:''
+				},
       addFormRules: {
         menuName: [
           { required: true, message: "故事名称不能为空", trigger: "change" },
@@ -417,14 +236,14 @@ export default {
         { label: "已完工", status: "2", number: 0 },
         { label: "已关闭", status: "3", number: 0 }, 
       ],
-      statusInit: [],
+      statusInit: [], 
       dicts: {
+        menuStatus: [],
+        demandSource: [],
+        demandLvl: [],
+        demandType: [],
         priority: [],
-        menuType: [],
-        planType: [],
-        xmMenuSettleSchemel: [],
-        status: [],
-        xm_plan_lvl: [],
+        dclass: [],
       },
       menus: {},
       users: [],
@@ -524,7 +343,7 @@ export default {
         menus = {};
       xmMenus.forEach((d, i) => {
         if (!d.mmUserid) {
-          d.mmUserid = "noExecutorUserid";
+          d.mmUserid = "noMmUserid";
           d.mmUsername = "未设置负责人";
         }
         if (!users.length || !userids[d.mmUserid]) {
@@ -558,11 +377,11 @@ export default {
     afterExecEditSubmit() {},
 	showMenuEdit(menu){
 		this.editForm=menu;
-		if(menu.mmUserid=='noExecutorUserid'||!menu.mmUserid){
+		if(menu.mmUserid=='noMmUserid'||!menu.mmUserid){
 			this.$notify({
               position: "bottom-left",
               showClose: true,
-              message: '没有关联故事故事',
+              message: '没有关联用户',
               type: "error",
             });
 			return;
@@ -651,7 +470,10 @@ export default {
 			},
   },
   mounted() {
-    initDicts(this);
+    this.$nextTick(()=>{
+      initDicts(this);
+    })
+    
     this.statusInit = JSON.parse(JSON.stringify(this.status));
     this.initData();
   },
