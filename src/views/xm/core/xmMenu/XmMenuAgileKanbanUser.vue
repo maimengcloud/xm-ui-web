@@ -14,13 +14,8 @@
         width="200"
       >
         <template slot-scope="scope">
-          <div class="menu">
-			<div  class="icon" style="background-color:  rgb(79, 140, 255);">
-				<i class="el-icon-document"></i>
-			</div>
-            <el-link type="primary" @click="showMenuEdit(scope.row)">{{
-              scope.row.mmUsername
-            }}</el-link>
+          <div class="menu"> 
+              {{scope.row.mmUsername }}
           </div>
         </template>
       </el-table-column>
@@ -140,21 +135,23 @@
       modal-append-to-body
     >
       <el-form :model="addForm" :rules="addFormRules" ref="addForm">
-        <el-form-item label="上级计划" prop="parentMenuname">
-          {{ addForm.parentMenuname ? addForm.parentMenuname : "无上级" }}
-          <el-button
-            @click="selectParentMenuVisible = true"
-            title="选择上级计划"
-            type="text"
-            icon="el-icon-upload2"
-          >
-            选择上级计划
-          </el-button>
+        <el-form-item label="上级" prop="pmenuId">
+          {{ addForm.pmenuId ? addForm.pmenuId : "无上级" }} 
+          					<el-button 
+											@click="pmenuFormVisible=true"  
+											title="查看上级" v-if="addForm.pmenuId"
+											icon="el-icon-upload2"> 查看上级</el-button> 	
+										
+										<el-button
+											@click="selectParentMenuVisible=true"  
+											title="更换上级"
+											icon="el-icon-upload2"> 更换上级</el-button> 
         </el-form-item>
-        <el-form-item label="故事名称" prop="name">
+        <el-form-item label="故事名称" prop="menuName">
           <template slot="label">
-            <div class="icon" style="background-color: #1cc7ea">
-              <i class="el-icon-s-operation"></i>
+
+            <div  class="icon" style="background-color:  rgb(79, 140, 255);">
+            <i class="el-icon-document"></i>
             </div>
             故事名称
           </template>
@@ -171,13 +168,30 @@
 	<el-dialog append-to-body title="需求明细"  :visible.sync="menuDetailVisible" width="80%"  top="20px"  :close-on-click-modal="false">
 		<xm-menu-edit :visible="menuDetailVisible" op-type="edit" :xm-menu="editForm" ></xm-menu-edit>
 	</el-dialog>
+
+    <el-dialog title="上级需求详情" :visible.sync="pmenuFormVisible" :with-header="false" width="90%" top="20px"    append-to-body   :close-on-click-modal="false" >
+    <xm-menu-edit v-if="pmenuFormVisible" :reload="true" :xm-menu="{menuId:editForm.pmenuId}" :sel-project="selProject" :visible="pmenuFormVisible" @cancel="pmenuFormVisible=false"></xm-menu-edit>
+  </el-dialog>
+			
+		<el-dialog
+		append-to-body
+		title="选择上级需求"
+		:visible.sync="selectParentMenuVisible"
+		width="80%"
+		:close-on-click-modal="false"
+		>
+		<xm-epic-features-select 
+			@select="onParentMenuSelected"
+			:xm-product="xmProduct"
+		></xm-epic-features-select>
+		</el-dialog>
   </section>
 </template>
 
 <script>
 import util from "@/common/js/util"; //全局公共库
 import draggable from "vuedraggable";
-import { initDicts, editXmMenuSomeFields, addMenu,delXmMenu } from "@/api/xm/core/xmMenu";
+import { initDicts, editXmMenuSomeFields, addXmMenu,delXmMenu } from "@/api/xm/core/xmMenu";
 import XmMenuEdit from "./XmMenuEdit"; //修改界面
 import XmEpicFeaturesSelect from "../xmMenu/XmEpicFeaturesSelect.vue";
  
@@ -193,8 +207,8 @@ export default {
       editForm: {
         id: "",
         name: "",
-        parentMenuid: "",
-        parentMenuname: "",
+        pmenuId: "",
+        pmenuId: "",
         productId: "",
         projectName: "",
         level: "",
@@ -289,8 +303,8 @@ export default {
       addForm: {
         id: "",
         name: "",
-        parentMenuid: "",
-        parentMenuname: "",
+        pmenuId: "",
+        pmenuId: "",
         productId: "",
         projectName: "",
         level: "",
@@ -382,7 +396,7 @@ export default {
         urgentEtime: "",
       },
       addFormRules: {
-        name: [
+        menuName: [
           { required: true, message: "故事名称不能为空", trigger: "change" },
           {
             min: 2,
@@ -396,6 +410,7 @@ export default {
       addFormVisible: false,
       selectParentMenuVisible: false,
 	  menuDetailVisible:false,
+    pmenuFormVisible:false,
       status: [
         { label: "打开", status: "0", number: 0 },
         { label: "进行中", status: "1", number: 0 },
@@ -558,7 +573,7 @@ export default {
 		this.load.add=true;
       this.$refs.addForm.validate().then((valid) => {
         var menu = { ...this.addForm };
-        addMenu(menu)
+        addXmMenu(menu)
           .then((res) => {
             this.load.add = false;
             var tips = res.data.tips;
@@ -575,29 +590,24 @@ export default {
           })
           .catch((err) => (this.load.add = false));
       });
-    },
-    onSelectedParentMenu(menu) {
-      this.addForm.parentMenuid = menu.menuId;
-      this.addForm.parentMenuname = menu.menuName;
-      this.selectParentMenuVisible = false;
-    },
+    }, 
     showAddMenu(menu, type) {
-      this.addForm.menuId = menu.menuId;
-      this.addForm.menuName = menu.menuName;
+      this.addForm.menuId = "";
+      this.addForm.menuName = menu.menuName+"--请修改";
       this.addForm.productId = menu.productId;
       this.addForm.status = type.status;
       this.addForm.productId = menu.productId;
-      this.addForm.parentMenuid = menu.parentMenuid;
-      this.addForm.parentMenuname = menu.parentMenuname;
+      this.addForm.pmenuId = menu.pmenuId; 
       this.addForm.priority = menu.priority;
-      this.addForm.sortLevel = menu.sortLevel;
-      this.addForm.verNum = menu.verNum;
-      this.addForm.pverNum = menu.pverNum;
-      this.addForm.createUserid = this.userInfo.userid;
-      this.addForm.createUsername = this.userInfo.username;
-      this.addForm.qtype = "1";
-      this.addForm.ntype = "0";
-      this.addForm.ptype = "0";
+      this.addForm.seqNo = menu.seqNo;  
+      this.addForm.mmUserid = menu.mmUserid;
+      this.addForm.mmUsername = menu.mmUsername 
+      this.addForm.sinceVersion = menu.sinceVersion ;
+      this.addForm.funcId = menu.funcId ;
+      this.addForm.funcName = menu.funcName ;
+      this.addForm.proposerId=this.userInfo.userid
+      this.addForm.proposerName=this.userInfo.username
+      this.addForm.dclass=menu.dclass
       this.addFormVisible = true;
     },
 	
@@ -625,6 +635,20 @@ export default {
           .catch((err) => (this.load.del = false));
       });
     },
+    onParentMenuSelected(menu){
+
+				if(!menu||!menu.menuId){
+					this.$notify({position:'bottom-left',showClose:true,message:'请先选择一个上级需求',type:'warning'})
+					return;
+				} 
+        this.addForm.pmenuId=menu.menuId
+        this.addForm.pmenuName=menu.menuName
+        this.addForm.iterationId=menu.iterationId
+        this.addForm.iterationName=menu.iterationName
+        this.addForm.productId=menu.productId
+        this.addForm.productName=menu.productName
+        this.selectParentMenuVisible=false;
+			},
   },
   mounted() {
     initDicts(this);
