@@ -30,42 +30,15 @@
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 			<!--编辑 XmFile xm_file界面-->
-			<el-drawer title="编辑文档" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
+			<el-dialog title="编辑文档" :visible.sync="editFormVisible"  width="80%" top="20px"  append-to-body   :close-on-click-modal="false">
 				  <xm-file-edit :xm-file="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-file-edit>
-			</el-drawer>
+			</el-dialog>
 
 			<!--新增 XmFile xm_file界面-->
-			<el-drawer title="新增文档" :visible.sync="addFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
+			<el-dialog title="新增文档" :visible.sync="addFormVisible"  width="80%" top="20px"   append-to-body   :close-on-click-modal="false">
 				<xm-file-add :xm-file="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-file-add>
-			</el-drawer> 
-		</el-row>
-		<el-row v-else class="xm-file-detail">
-			<div class="title-bar">
-				文档详情
-				<el-button @click="InfoVisible=false" type="plian">返回</el-button>
-			</div>
-			<!--列表 XmFile xm_file-->
-			<el-form class="file-form" :model="selFile" label-width="120px">
-				<el-form-item label="项目名称">
-					<span>{{selFile.projectName}}</span>
-				</el-form-item> 
-				<el-form-item label="名称名称" prop="name">
-					<span>{{selFile.name}}</span>
-				</el-form-item> 
-				<el-form-item label="文件说明">
-					<span v-html="selFile.description"></span>
-				</el-form-item> 
-				<el-form-item label="创建人">
-					<span>{{selFile.createUsername}}</span>
-				</el-form-item>
-				<el-form-item label="创建时间">
-					<span>{{selFile.createTime}}</span>
-				</el-form-item>
-				<el-form-item label="附件">
-					<el-tag v-for="(item,i) in selFile.attachment" :key="i">{{item.name}}</el-tag>
-				</el-form-item> 
-			</el-form>
-		</el-row>
+			</el-dialog> 
+		</el-row> 
 	</section>
 </template>
 
@@ -248,8 +221,7 @@
 				});
 			},
 			rowClick: function(row, event, column){
-				this.selFile = row;
-				this.InfoVisible = true;
+				this.selFile = row; 
 				// this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
 			/**begin 自定义函数请在下面加**/

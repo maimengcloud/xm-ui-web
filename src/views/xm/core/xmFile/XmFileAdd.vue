@@ -1,14 +1,12 @@
 <template>
-	<section class="page-container  padding border">
+	<section>
 		<el-row>
 			<!--新增界面 XmFile xm_file-->
-			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
-				<el-form-item label="项目名称">
-					{{addForm.projectName}}
-					<!-- <el-input v-model="addForm.projectName" placeholder="项目名称" ></el-input> -->
-				</el-form-item>
+			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm"> 
 				<el-form-item label="文件名称" prop="name">
 					<el-input v-model="addForm.name" placeholder="文件名称" ></el-input>
+					<el-row class="label-font-color"> <span v-if="addForm.projectName">归属项目：{{ addForm.projectName}} <el-divider direction="vertical"></el-divider></span> </el-row>
+
 				</el-form-item>
 				<el-form-item label="文件说明" prop="description">
 					<vue-editor v-if="visible" :branch-id="userInfo.branchId" v-model="addForm.description"></vue-editor>
@@ -16,14 +14,11 @@
 				<el-form-item label="附件">
 					<upload v-if="fileVisible" :archiveId="addForm.id" :branchId="userInfo.branchId"  @on-change="onChange"></upload>
 				</el-form-item>
-				<el-form-item label="创建人">
-					{{userInfo.username}}
-				</el-form-item>
 				<el-form-item>
-					<el-col :span="24" :offset="8">
+					<span style="float:right;">
 						<el-button @click.native="handleCancel">取消</el-button>
 						<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">提交</el-button>
-					</el-col>
+					</span>
 				</el-form-item>
 			</el-form>
 		</el-row>
@@ -146,8 +141,5 @@
 
 </script>
 
-<style scoped>
-.el-form-item__content{
-	margin-left: 0;
-}
+<style scoped> 
 </style>

@@ -5,55 +5,77 @@
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
 				<el-form-item label="名称" prop="name">
 					<el-input v-model="editForm.name" placeholder="名称" ></el-input>
+					<el-row class="label-font-color"> <span v-if="editForm.projectName">归属项目：{{ editForm.projectName}} <el-divider direction="vertical"></el-divider></span> 
+					</el-row>
 				</el-form-item> 
-				<el-form-item label="内网ip地址" prop="ipAddress">
-					<el-input v-model="editForm.ipAddress" placeholder="内网ip地址" ></el-input>
-				</el-form-item> 
-				<el-form-item label="内网访问端口" prop="port">
-					<el-input type="number" min="0" v-model="editForm.port" placeholder="内网访问端口" ></el-input>
-				</el-form-item> 
-				<el-form-item label="访问用户编号" prop="accessUserid">
-					<el-input v-model="editForm.accessUserid" placeholder="访问用户编号" ></el-input>
-				</el-form-item> 
-				<el-form-item label="访问密码" prop="accessPassword">
-					<el-input v-model="editForm.accessPassword" placeholder="访问密码" show-password ></el-input>
-				</el-form-item>  
+				
 				<el-form-item label="访问链接" prop="accessUrl">
 					<el-input v-model="editForm.accessUrl" placeholder="访问链接" ></el-input>
 				</el-form-item>  
-				<el-form-item label="外网ip地址" prop="webIpAddress">
-					<el-input v-model="editForm.webIpAddress" placeholder="外网ip地址" ></el-input>
-				</el-form-item> 
-				<el-form-item label="外网端口" prop="webPort">
-					<el-input type="number" min="0" v-model="editForm.webPort" placeholder="外网端口" ></el-input>
-				</el-form-item>  
+				<el-row>
+					<el-col :span="8"> 
+						<el-form-item label="访问用户编号" prop="accessUserid">
+							<el-input v-model="editForm.accessUserid" placeholder="访问用户编号" style="width:99%;"></el-input>
+						</el-form-item> 
+					</el-col>
+					<el-col :span="8">
+						<el-form-item label="访问密码" prop="accessPassword">
+							<el-input v-model="editForm.accessPassword" placeholder="访问密码" show-password style="width:99%;"></el-input>
+						</el-form-item>  
+					</el-col>
+				</el-row> 
+				<el-row>
+					<el-col :span="8"> 
+						<el-form-item label="内网ip地址" prop="ipAddress">
+							<el-input v-model="editForm.ipAddress" style="width:99%;" placeholder="内网ip地址" ></el-input>
+						</el-form-item> 
+					</el-col>
+					<el-col :span="8">
+						<el-form-item label=" 访问端口" prop="port">
+							<el-input type="number" min="0"  v-model="editForm.port" placeholder="内网访问端口" style="width:99%;"></el-input>
+						</el-form-item> 
+					</el-col>
+				</el-row> 
+				<el-row>
+					<el-col :span="8"> 
+						<el-form-item label="外网ip地址" prop="webIpAddress">
+							<el-input v-model="editForm.webIpAddress" placeholder="外网ip地址" style="width:99%;"></el-input>
+						</el-form-item> 
+					</el-col>
+					<el-col :span="8">
+						<el-form-item label="外网端口" prop="webPort">
+							<el-input type="number" min="0"  v-model="editForm.webPort" placeholder="外网端口" style="width:99%;"></el-input>
+						</el-form-item>  
+					</el-col>
+				</el-row>  
 				
-				<el-form-item label="状态" prop="envState">
-					<el-radio-group v-model="editForm.envState">
-						<el-radio label="0">不可用</el-radio>
-						<el-radio label="1">已启用</el-radio>
-						<el-radio label="2">已过期</el-radio>
-					</el-radio-group>
-				</el-form-item> 
-				
-				<el-form-item label="浏览权限" prop="readQx"> 
-				    <el-select v-model="editForm.readQx">
-						<el-option v-for="(item,index) in dicts['readQx']" :key="index" :value="item.id" :label="item.name"></el-option>
-					</el-select>
-				</el-form-item>  
-				<el-form-item label="修改权限" prop="writeQx"> 
-				    <el-select v-model="editForm.writeQx">
-						<el-option v-for="(item,index) in dicts['writeQx']" :key="index" :value="item.id" :label="item.name"></el-option>
-					</el-select>
-				</el-form-item> 
-				<el-form-item label="有效日期" prop="startTime,endTime">
-					<mdp-date-range type="daterange" placeholder="选择日期" :auto-default="false" v-model="editForm" start-key="startTime" end-key="endTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></mdp-date-range>
-				</el-form-item>    
+				<el-row>
+					<el-col :span="8"> 
+							<el-form-item label="状态" prop="envState"> 
+								<el-select v-model="editForm.envState">
+									<el-option  value="0" label="不可用"></el-option>
+									<el-option  value="1" label="已启用"></el-option>
+									<el-option  value="2" label="已过期"></el-option>
+								</el-select>
+							</el-form-item>   
+					</el-col>
+					<el-col :span="8">
+						<el-form-item label="浏览权限" prop="readQx"> 
+							<el-select v-model="editForm.readQx">
+								<el-option v-for="(item,index) in dicts['readQx']" :key="index" :value="item.id" :label="item.name"></el-option>
+							</el-select>
+						</el-form-item>  
+					</el-col>
+					<el-col :span="8">
+					<el-form-item label="修改权限" prop="writeQx"> 
+						<el-select v-model="editForm.writeQx">
+							<el-option v-for="(item,index) in dicts['writeQx']" :key="index" :value="item.id" :label="item.name"></el-option>
+						</el-select>
+					</el-form-item> 
+				</el-col>
+				</el-row>
 				<el-form-item label="备注说明" prop="remark">
 					<el-input type="textarea" rows="4" v-model="editForm.remark" placeholder="备注说明" ></el-input>
-				</el-form-item>
-				<el-form-item label="创建者姓名" prop="createUsername">
-					{{editForm.createUsername}}
 				</el-form-item> 
 				<el-form-item> 
 					<el-col :span="24" :offset="8"> 
@@ -103,7 +125,7 @@
 				},
 				//编辑界面数据  XmEnvList xm_env_list
 				editForm: {
-					id:'',name:'',remark:'',ipAddress:'',port:'',branchId:'',accessUserid:'',accessPassword:'',effect:'',accessUrl:'',supplier:'',webIpAddress:'',webPort:'',otherRemark:'',createUserid:'',createUsername:'',createTime:'',envState:'',startTime:'',endTime:'',feeAmount:'',feeRule:''
+					id:'',name:'',remark:'',ipAddress:'',port:'',branchId:'',accessUserid:'',accessPassword:'',effect:'',accessUrl:'',supplier:'',webIpAddress:'',webPort:'',otherRemark:'',createUserid:'',createUsername:'',createTime:'',envState:'1',startTime:'',endTime:'',feeAmount:'',feeRule:'',readQx:'9',writeQx:'9',projectId:'',projectName:''
 				}
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				

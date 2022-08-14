@@ -33,12 +33,12 @@
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		
 			<!--编辑 XmEnvList xm_env_list界面-->
-			<el-dialog title="编辑环境清单" :visible.sync="editFormVisible"  width="60%" top="20px" append-to-body   :close-on-click-modal="false">
+			<el-dialog title="编辑环境清单" :visible.sync="editFormVisible"  width="80%" top="20px" append-to-body   :close-on-click-modal="false">
 				  <xm-env-list-edit :xm-env-list="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-env-list-edit>
 			</el-dialog>
 	
 			<!--新增 XmEnvList xm_env_list界面-->
-			<el-dialog title="新增环境清单" :visible.sync="addFormVisible"  top="20px"   append-to-body   :close-on-click-modal="false">
+			<el-dialog title="新增环境清单" :visible.sync="addFormVisible" width="80%"  top="20px"   append-to-body   :close-on-click-modal="false">
 				<xm-env-list-add :xm-project="selProject" :xm-product="xmProduct" :xm-env-list="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-env-list-add>
 			</el-dialog> 
 		</el-row>

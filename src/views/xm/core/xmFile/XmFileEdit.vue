@@ -1,31 +1,23 @@
 <template>
-	<section class="page-container  padding border">
+	<section>
 		<el-row>
 		<!--编辑界面 XmFile xm_file-->
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
-				<el-form-item label="项目名称" prop="projectName">
-					{{editForm.projectName}}
-				</el-form-item>
+			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm"> 
 				<el-form-item label="文件名称" prop="name">
 					<el-input v-model="editForm.name" placeholder="文件名称"></el-input>
+					<el-row class="label-font-color">编号：{{editForm.id}} <el-divider direction="vertical"></el-divider><span v-if="editForm.projectName">归属项目：{{ editForm.projectName}} <el-divider direction="vertical"></el-divider></span>创建人：{{ editForm.createUsername }}<el-divider direction="vertical"></el-divider> 创建时间：{{ editForm.createTime }}</el-row>
 				</el-form-item>
 				<el-form-item label="文件说明" prop="description">
 					<vue-editor v-if="visible" :branch-id="userInfo.branchId" v-model="editForm.description"></vue-editor>
 				</el-form-item>
 				<el-form-item label="附件">
 					<upload :archiveId="editForm.id" :branchId="userInfo.branchId"  @on-change="onChange"></upload>
-				</el-form-item>
-				<el-form-item label="创建人" prop="createUsername">
-					{{editForm.createUsername}}
-				</el-form-item>
-				<el-form-item label="创建时间" prop="createTime">
-					{{editForm.createTime}}
-				</el-form-item>
-				<el-form-item>
-					<el-col :span="24" :offset="8">
+				</el-form-item>  
+				<el-form-item> 
+					<span style="float:right;">
 						<el-button @click.native="handleCancel">取消</el-button>
-						<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button>
-					</el-col>
+						<el-button v-loading="load.edit" type="primary" @click.native="editSubmit" :disabled="load.edit==true">提交</el-button> 
+					</span>
 				</el-form-item>
 			</el-form>
 		</el-row>

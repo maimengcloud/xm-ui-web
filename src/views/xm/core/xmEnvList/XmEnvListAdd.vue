@@ -2,61 +2,84 @@
 	<section class="padding">
 		<el-row>
 			<!--新增界面 XmEnvList xm_env_list--> 
-			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm"> 
-				<el-form-item label="归属项目" prop="projectName">
-					<el-input v-model="addForm.projectName" placeholder="项目名称" readonly></el-input>
-					 <xm-project-select style="display:inline;" v-if="!xmProject||!xmProject.id" :auto-select="false"   :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" >
-					 	<div slot="title">选择项目</div>
-					 </xm-project-select>
-
-				</el-form-item> 
+			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm" label-position="left">  
 				<el-form-item label="名称" prop="name">
 					<el-input v-model="addForm.name" placeholder="名称" ></el-input>
+					<el-row class="label-font-color"> <span v-if="addForm.projectName">归属项目：{{ addForm.projectName}} <el-divider direction="vertical"></el-divider></span>
+					 
+						 <xm-project-select style="display:inline;" v-if="!xmProject||!xmProject.id" :auto-select="false"   :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" >
+							<div slot="title">选择项目</div>
+						</xm-project-select>
+					</el-row>
 				</el-form-item> 
-				<el-form-item label="内网ip地址" prop="ipAddress">
-					<el-input v-model="addForm.ipAddress" placeholder="内网ip地址" ></el-input>
-				</el-form-item> 
-				<el-form-item label="内网访问端口" prop="port">
-					<el-input type="number" min="0"  v-model="addForm.port" placeholder="内网访问端口" ></el-input>
-				</el-form-item> 
-				<el-form-item label="访问用户编号" prop="accessUserid">
-					<el-input v-model="addForm.accessUserid" placeholder="访问用户编号" ></el-input>
-				</el-form-item> 
-				<el-form-item label="访问密码" prop="accessPassword">
-					<el-input v-model="addForm.accessPassword" placeholder="访问密码" show-password ></el-input>
-				</el-form-item>  
+				
 				<el-form-item label="访问链接" prop="accessUrl">
 					<el-input v-model="addForm.accessUrl" placeholder="访问链接" ></el-input>
 				</el-form-item>  
-				<el-form-item label="外网ip地址" prop="webIpAddress">
-					<el-input v-model="addForm.webIpAddress" placeholder="外网ip地址" ></el-input>
-				</el-form-item> 
-				<el-form-item label="外网端口" prop="webPort">
-					<el-input type="number" min="0"  v-model="addForm.webPort" placeholder="外网端口" ></el-input>
-				</el-form-item>  
+				<el-row>
+					<el-col :span="8"> 
+						<el-form-item label="访问用户编号" prop="accessUserid">
+							<el-input v-model="addForm.accessUserid" placeholder="访问用户编号" style="width:99%;"></el-input>
+						</el-form-item> 
+					</el-col>
+					<el-col :span="8">
+						<el-form-item label="访问密码" prop="accessPassword">
+							<el-input v-model="addForm.accessPassword" placeholder="访问密码" show-password style="width:99%;"></el-input>
+						</el-form-item>  
+					</el-col>
+				</el-row> 
+				<el-row>
+					<el-col :span="8"> 
+						<el-form-item label="内网ip地址" prop="ipAddress">
+							<el-input v-model="addForm.ipAddress" style="width:99%;" placeholder="内网ip地址" ></el-input>
+						</el-form-item> 
+					</el-col>
+					<el-col :span="8">
+						<el-form-item label=" 访问端口" prop="port">
+							<el-input type="number" min="0"  v-model="addForm.port" placeholder="内网访问端口" style="width:99%;"></el-input>
+						</el-form-item> 
+					</el-col>
+				</el-row> 
+				<el-row>
+					<el-col :span="8"> 
+						<el-form-item label="外网ip地址" prop="webIpAddress">
+							<el-input v-model="addForm.webIpAddress" placeholder="外网ip地址" style="width:99%;"></el-input>
+						</el-form-item> 
+					</el-col>
+					<el-col :span="8">
+						<el-form-item label="外网端口" prop="webPort">
+							<el-input type="number" min="0"  v-model="addForm.webPort" placeholder="外网端口" style="width:99%;"></el-input>
+						</el-form-item>  
+					</el-col>
+				</el-row>  
 				
-				<el-form-item label="状态" prop="envState">
-					<el-radio-group v-model="addForm.envState">
-						<el-radio label="0">不可用</el-radio>
-						<el-radio label="1">已启用</el-radio>
-						<el-radio label="2">已过期</el-radio>
-					</el-radio-group>
-				</el-form-item>  
-				<el-form-item label="浏览权限" prop="readQx"> 
-				    <el-select v-model="addForm.readQx">
-						<el-option v-for="(item,index) in dicts['readQx']" :key="index" :value="item.id" :label="item.name"></el-option>
-					</el-select>
-				</el-form-item>  
-				<el-form-item label="修改权限" prop="writeQx"> 
-				    <el-select v-model="addForm.writeQx">
-						<el-option v-for="(item,index) in dicts['writeQx']" :key="index" :value="item.id" :label="item.name"></el-option>
-					</el-select>
-				</el-form-item> 
+				<el-row>
+					<el-col :span="8"> 
+							<el-form-item label="状态" prop="envState"> 
+								<el-select v-model="addForm.envState">
+									<el-option  value="0" label="不可用"></el-option>
+									<el-option  value="1" label="已启用"></el-option>
+									<el-option  value="2" label="已过期"></el-option>
+								</el-select>
+							</el-form-item>   
+					</el-col>
+					<el-col :span="8">
+						<el-form-item label="浏览权限" prop="readQx"> 
+							<el-select v-model="addForm.readQx">
+								<el-option v-for="(item,index) in dicts['readQx']" :key="index" :value="item.id" :label="item.name"></el-option>
+							</el-select>
+						</el-form-item>  
+					</el-col>
+					<el-col :span="8">
+					<el-form-item label="修改权限" prop="writeQx"> 
+						<el-select v-model="addForm.writeQx">
+							<el-option v-for="(item,index) in dicts['writeQx']" :key="index" :value="item.id" :label="item.name"></el-option>
+						</el-select>
+					</el-form-item> 
+				</el-col>
+				</el-row>
 				<el-form-item label="备注说明" prop="remark">
 					<el-input type="textarea" rows="4" v-model="addForm.remark" placeholder="备注说明" ></el-input>
-				</el-form-item>
-				<el-form-item label="添加人员姓名" prop="createUsername">
-					{{userInfo.username}}
 				</el-form-item> 
 				<el-form-item>
 					<el-col :span="24" :offset="8"> 
