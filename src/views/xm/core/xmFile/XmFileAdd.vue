@@ -2,7 +2,7 @@
 	<section>
 		<el-row>
 			<!--新增界面 XmFile xm_file-->
-			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm"> 
+			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm" label-position="left"> 
 				<el-form-item label="文件名称" prop="name">
 					<el-input v-model="addForm.name" placeholder="文件名称" ></el-input>
 					<el-row class="label-font-color"> <span v-if="addForm.projectName">归属项目：{{ addForm.projectName}} <el-divider direction="vertical"></el-divider></span> </el-row>

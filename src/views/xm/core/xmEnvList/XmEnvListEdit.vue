@@ -2,7 +2,7 @@
 	<section class="padding border">
 		<el-row> 
 		<!--编辑界面 XmEnvList xm_env_list--> 
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
+			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm" label-position="left">
 				<el-form-item label="名称" prop="name">
 					<el-input v-model="editForm.name" placeholder="名称" ></el-input>
 					<el-row class="label-font-color"> <span v-if="editForm.projectName">归属项目：{{ editForm.projectName}} <el-divider direction="vertical"></el-divider></span> 

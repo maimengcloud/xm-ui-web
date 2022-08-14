@@ -2,7 +2,7 @@
 	<section>
 		<el-row>
 		<!--编辑界面 XmFile xm_file-->
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm"> 
+			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm" label-position="left"> 
 				<el-form-item label="文件名称" prop="name">
 					<el-input v-model="editForm.name" placeholder="文件名称"></el-input>
 					<el-row class="label-font-color">编号：{{editForm.id}} <el-divider direction="vertical"></el-divider><span v-if="editForm.projectName">归属项目：{{ editForm.projectName}} <el-divider direction="vertical"></el-divider></span>创建人：{{ editForm.createUsername }}<el-divider direction="vertical"></el-divider> 创建时间：{{ editForm.createTime }}</el-row>
