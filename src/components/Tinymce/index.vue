@@ -32,7 +32,7 @@
 <script>
 import config from "@/common/config"; //全局公共库import
 import UploadImage from "@/components/Image/UploadImage";
-import { uploadBase64  } from '@/api/mdp/arc/image';
+import { uploadBase64,upload  } from '@/api/mdp/arc/image';
 import { mapGetters } from "vuex";
 import plugins from "./plugins";
 import toolbar from "./toolbar";
@@ -66,6 +66,7 @@ export default {
     var tinymceId="vue-tinymce-" + new Date().getTime() + ((Math.random() * 1000).toFixed(0) + "")
     return {
       uploadAction: config.getArcImagePath()+"/arc/image/upload", 
+      uploadBlogAction: config.getArcImagePath()+"/arc/image/upload/base64", 
       uploadOptions:{branchId:'',categoryId:'uploadImm',fileName:'',remark:'',deptid:''},//当前选择上传图片的类型
       imageList: [],
       dialogVisible: false,
@@ -156,6 +157,7 @@ export default {
           editor.on("FullscreenStateChanged", (e) => {
             _this.fullscreen = e.state;
           });  
+          /**
           editor.addButton('insertImage', {
             text: "插入图片",
             icon: false,
@@ -163,6 +165,7 @@ export default {
                 document.getElementById(_this.tinymceId+"-uploadImageBtn").click(); 
             },
           });
+          **/
           editor.addButton("imageList", {
             text: "图片库",
             icon: false,
@@ -189,17 +192,15 @@ export default {
         //   }, 0);
         //   return img
         // },
-        // images_upload_handler(blobInfo, success, failure, progress) { 
-        //     const formData = new FormData();  
-        //     formData.append('file', blobInfo.blob(), url);
-        //     var params=this.uploadOptions;
-        //     params.storedb="0"
-        //     params.fileData=blobInfo.blob();
-        //     uploadBase64(formData).then((res) => {
-        //        handleConfirm([res.data])
-        //     })
+        images_upload_handler(blobInfo, success, failure, progress) {   
+             const formData = new FormData();   
+             formData.append('file', blobInfo.blob()); 
+             formData.append("categoryId",_this.uploadOptions.categoryId) 
+             upload(formData).then((res) => {  
+                success(res.data.data.url)
+             })
           
-        // },
+         },
       });
       _this.setContent(_this.value);
     },
