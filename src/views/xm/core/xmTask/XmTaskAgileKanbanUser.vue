@@ -89,7 +89,7 @@
                       >
                         {{ (task.rate != null ? task.rate : 0) + "%" }}
                       </el-tag>  
-				  	        <span class="my-cell-bar"><el-button   size="mini" type="danger" icon="el-icon-delete" plain @click.stop="handleDel(task,tt)"></el-button></span>
+				  	        <span class="my-cell-btn"><el-button   size="mini" type="danger" icon="el-icon-delete" plain @click.stop="handleDel(task,tt)"></el-button></span>
                   </el-row>
                     <el-row>
                       <span title="执行人" class="label-font-color">
@@ -678,13 +678,17 @@ export default {
   width: 100%;
   cursor: pointer;
   .task {  
+    border:1px solid white;
   	min-height: 100px;
     background: #fff;
     margin: 0px 0px 10px 0px;
 	  padding: 5px;
   }
 }
-
+.my-cell-btn {
+  visibility: hidden;
+  float: right;
+}
 .my-cell-bar {
   visibility: hidden;
   float: right;
@@ -702,7 +706,13 @@ export default {
     display: none;
   }
 }
+.task:hover .my-cell-btn{
+   visibility: visible;
+}
 
+.task:hover{ 
+  border:1px solid blue;
+}
 .title { 
     height: 40px;
     overflow: hidden; //超出隐藏
