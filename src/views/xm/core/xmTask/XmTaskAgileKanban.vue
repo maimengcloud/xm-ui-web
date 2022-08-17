@@ -129,7 +129,8 @@
         @cancel="editFormVisible = false"
         @after-add-submit="afterExecEditSubmit"
         @after-edit-submit="afterExecEditSubmit"
-        @submit="afterEditSubmit"
+        @submit="afterEditSubmit" 
+        @edit-fields="onEditSomeFields"
       ></xm-task-edit>
     </el-dialog>
 
@@ -552,6 +553,14 @@ export default {
     afterEditSubmit(task) {
       let taskIndex = this.xmTasks.findIndex((d) => d.id === task.id);
       this.$set(this.xmTasks, taskIndex, task);
+    },
+    
+    onEditSomeFields(params){
+      var id=params.ids[0]
+      let taskIndex = this.xmTasks.findIndex((d) => d.id === id);
+      var task=this.xmTasks[taskIndex]
+      Object.assign(task,params )
+      this.$set(this.xmTasks, taskIndex, task); 
     },
     getTaskStateIndex(taskState) {
       return this.taskState.findIndex((i) => i.status == taskState);

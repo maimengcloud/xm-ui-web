@@ -1433,7 +1433,8 @@ export default {
     afterAddSubmit(row) {
       this.addFormVisible = false;
       this.pageInfo.count = true;
-        this.getXmTasks()
+      this.xmTasks.push(row)
+        //this.getXmTasks()
         //treeTool.reloadChildren(this.$refs.table,this.maps,row.parentTaskid,'parentTaskid',this.loadXmTaskLazy)
     },
     afterEditSubmit() {
