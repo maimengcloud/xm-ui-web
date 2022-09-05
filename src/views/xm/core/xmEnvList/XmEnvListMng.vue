@@ -15,7 +15,11 @@
 				<el-table-column prop="ipAddress" label="内网ip" min-width="80" ></el-table-column>
 				<el-table-column prop="port" label="内网端口" min-width="80" ></el-table-column>
 				<el-table-column prop="accessUserid" label="用户编号" min-width="80" ></el-table-column>
-				<el-table-column prop="accessUrl" label="访问链接" min-width="80" ></el-table-column>
+				<el-table-column prop="accessUrl" label="访问链接" min-width="80" >
+					<template slot-scope="scope">
+						<el-link @click="toAccessUrl(scope.row)">{{scope.row.accessUrl}}</el-link>
+					</template> 
+				</el-table-column>
 				<el-table-column prop="webIpAddress" label="外网ip" min-width="80" ></el-table-column>
 				<el-table-column prop="webPort" label="外网端口" min-width="80" ></el-table-column>
 				<el-table-column prop="envState" label="状态" min-width="80" >
@@ -239,6 +243,9 @@
 			},
 			rowClick: function(row, event, column){
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
+			},
+			toAccessUrl(row){
+				window.open(row.accessUrl,row.name,null,true)
 			}
 			/**begin 自定义函数请在下面加**/
 			
