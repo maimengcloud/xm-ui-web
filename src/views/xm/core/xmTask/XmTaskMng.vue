@@ -73,7 +73,7 @@
           <el-popover
             placement="top-start"
             title="更多查询条件或者操作"
-            width="500"
+            width="700"
             trigger="manual"
             v-model="moreVisible"
           >
@@ -92,7 +92,8 @@
                 <span class="more-label-font">
                     <el-radio v-model="displayType" label="grant" >甘特图</el-radio>
                     <el-radio v-model="displayType" label="agile">故事分组</el-radio>
-                    <el-radio v-model="displayType" label="agileUser">执行人分组</el-radio>
+                    <el-radio v-model="displayType" label="agileUser">执行人分组</el-radio> 
+                    <el-radio v-model="displayType" label="agileWeek">按周分组</el-radio>
                     <el-radio v-model="displayType" label="table">列表</el-radio> 
                 </span>
               </el-row>
@@ -331,6 +332,14 @@
               :xmTasks="xmTasks"
               @submit="afterEditSubmit"
             ></xm-task-agile-kanban-user>
+            
+            
+            <xm-task-agile-kanban-week
+              :tableHeight="tableHeight"
+              v-else-if="displayType == 'agileWeek'"
+              :xmTasks="xmTasks"
+              @submit="afterEditSubmit"
+            ></xm-task-agile-kanban-week>
             <el-table class="task-table"
               v-else-if="displayType=='table'"
                element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"
@@ -882,6 +891,7 @@ import XmTaskAdd from "./XmTaskAdd"; //新增界面
 import XmTaskEdit from "./XmTaskEdit"; //修改界面
  import XmTaskAgileKanban from "./XmTaskAgileKanban"; //敏捷看板
  import XmTaskAgileKanbanUser from "./XmTaskAgileKanbanUser"; //敏捷看板
+ import XmTaskAgileKanbanWeek from "./XmTaskAgileKanbanWeek"; //敏捷看板
 import { mapGetters } from "vuex";
 import xmExecuserMng from "../xmTaskExecuser/XmTaskExecuserForTask";
 import xmSkillMng from "../xmTaskSkill/XmTaskSkillMng";
@@ -1018,8 +1028,8 @@ export default {
         pageSize: 20, //每页数据
         count: false, //是否需要重新计算总记录数
         pageNum: 1, //当前页码、从1开始计算
-        orderFields: ['menu_id',"sort_level"], //排序列 如 ['sex','student_id']，必须为数据库字段
-        orderDirs: ["asc","asc"], //升序 asc,降序desc 如 性别 升序、学生编号降序 ['asc','desc']
+        orderFields: ['menu_id',"start_time"], //排序列 如 ['sex','student_id']，必须为数据库字段
+        orderDirs: ["asc","desc"], //升序 asc,降序desc 如 性别 升序、学生编号降序 ['asc','desc']
       },
       load: { list: false, edit: false, del: false, add: false,calcProgress:false, }, //查询中...
       sels: [], //列表选中数据
@@ -2189,6 +2199,7 @@ export default {
     "xm-task-edit": XmTaskEdit,
     XmTaskAgileKanban,
     XmTaskAgileKanbanUser,
+    XmTaskAgileKanbanWeek,
     xmExecuserMng,
     xmSkillMng,
     skillMng,

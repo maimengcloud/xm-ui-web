@@ -619,7 +619,9 @@ export default {
       this.addForm.verNum = task.verNum;
       this.addForm.pverNum = task.pverNum;
       this.addForm.createUserid = this.userInfo.userid;
-      this.addForm.createUsername = this.userInfo.username;
+      this.addForm.createUsername = this.userInfo.username; 
+      this.addForm.startTime=task.startTime
+      this.addForm.endTime=task.endTime
       this.addForm.qtype = "1";
       this.addForm.ntype = "0";
       this.addForm.ptype = "0";

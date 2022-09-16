@@ -2,25 +2,20 @@
   <section class="menu-box">
     <el-table
       ref="table"
-      :data="menusCpd"
+      :data="weeksCpd"
       header-cell-class-name="head-row"
       border
       :height="tableHeight"
       style="width: 100%" 
     >
       <el-table-column
-        :label="'用户故事 (' + menus.length + ')'"
+        :label="'计划周 (' + weeks.length + ')'"
         class-name="menu-name"
         width="200"
       >
         <template slot-scope="scope">
           <div class="menu">
-			<div  class="icon" style="background-color:  rgb(79, 140, 255);">
-				<i class="el-icon-document"></i>
-			</div>
-            <el-link type="primary" @click="showMenuEdit(scope.row)">{{
-              scope.row.menuName
-            }}</el-link>
+            {{scope.row.weekId}}
           </div>
         </template>
       </el-table-column>
@@ -41,12 +36,12 @@
               >
             </el-row>
             <draggable
-              :name="scope.row.menuId"
+              :name="scope.row.weekId"
               :sort="false"
               @start="onStart"
               @end="onEnd"
               @move="onMove"
-              :options="{ group: scope.row.menuId }"
+              :options="{ group: scope.row.weekId }"
               class="draggable"
               animation="300"
               scroll
@@ -55,19 +50,19 @@
             >
               <transition-group
                 class="transition-group"
-                :data-menu-id="scope.row.menuId"
+                :data-week-id="scope.row.weekId"
                 :data-task-state="type.status"
               >
                 <!-- <template v-if="drag.menuId && drag.menuId === scope.row.menuId && drag.taskState !== type.status">
 									<div class="drag-to-box">{{type.label}}</div>
 								</template> -->
-                <template v-if="tasks && tasksCpd[scope.row.menuId][tt].length">
+                <template v-if="tasks && tasksCpd[scope.row.weekId][tt].length">
                   <div @click.stop="showTaskEdit(task)"
-                    :data-menu-id="scope.row.menuId"
+                    :data-week-id="scope.row.weekId"
                     :data-task-id="task.id"
                     :data-task-state="task.taskState"
                     class="task" 
-                    v-for="(task, t) in tasks[scope.row.menuId][tt]"
+                    v-for="(task, t) in tasks[scope.row.weekId][tt]"
                     :key="task.id + t" 
                   >
                   <el-row >
@@ -429,9 +424,9 @@ export default {
         xm_plan_lvl: [],
       },
       tasks: {},
-      menus: [],
+      weeks: [],
       drag: {
-        menuId: "",
+        weekId: "",
         state: "",
       },
     };
@@ -444,8 +439,8 @@ export default {
   },
   computed: {
     ...mapGetters(["userInfo", "roles"]),
-    menusCpd() {
-      return this.menus;
+    weeksCpd() {
+      return this.weeks;
     },
     tasksCpd() {
       return this.tasks;
@@ -462,7 +457,7 @@ export default {
       let targetEl = { ...e.dragged.dataset };
       let toEl = { ...e.to.dataset };
       if (
-        targetEl.menuId === toEl.menuId &&
+        targetEl.weekId === toEl.weekId &&
         targetEl.taskState != toEl.taskState
       ) {
         console.log("onMove--true");
@@ -484,7 +479,7 @@ export default {
       let targetEl = { ...e.item.dataset };
       let toEl = { ...e.to.dataset };
       if (
-        targetEl.menuId === toEl.menuId &&
+        targetEl.weekId === toEl.weekId &&
         targetEl.taskState != toEl.taskState
       ) {
         let task = this.xmTasks.find((d) => d.id === targetEl.taskId);
@@ -518,33 +513,48 @@ export default {
       }
     },
 
+    getWeekIdByDateStr(dateStr){
+      var date=util.parseDate(dateStr,"yyyy-MM-dd HH:mm:ss")
+      var year=date.getFullYear();
+      var month=date.getMonth();
+      var w=date.getDay();//星期几
+      var days=date.getDate();//当前属于当月的几号
+      var week= Math.ceil((days+6-w)/7)//当月的第几周
+      return year+"年"+(month+1)+"月第"+week+"周"
+
+    },
+
     initData() {
       var xmTasks = this.xmTasks;
       this.taskState = JSON.parse(JSON.stringify(this.taskStateInit));
-      let menus = [],
-        menuIds = {},
+      let weeks = [],
+        weekIds = {},
         tasks = {};
       xmTasks.forEach((d, i) => {
-        if (!d.menuId) {
-          d.menuId = "noMenuId";
-          d.menuName = "未关联需求的任务";
+        if (!d.startTime) {
+          d.weekId = this.getWeekIdByDateStr(d.createTime) ;
+          d.weekName = "未设置计划时间";
+        }else{
+          d.weekId=this.getWeekIdByDateStr(d.startTime) 
+          d.weekName = d.weekId;
         }
-        if (!menus.length || !menuIds[d.menuId]) {
-          menus.push(d);
-          menuIds[d.menuId] = true;
+        if (!weeks.length || !weekIds[d.weekId]) {
+          weeks.push(d);
+          weekIds[d.weekId] = true;
         }
-        if (!tasks[d.menuId]) {
-          tasks[d.menuId] = [[], [], [], [], [], []];
+        if (!tasks[d.weekId]) {
+          tasks[d.weekId] = [[], [], [], [], [], []];
         }
         var taskStateIndex = this.getTaskStateIndex(d.taskState);
-        tasks[d.menuId][taskStateIndex].push(d);
+        tasks[d.weekId][taskStateIndex].push(d);
         this.taskState[taskStateIndex].number += 1;
       });
       this.tasks = tasks;
-	  menus.sort((v1,v2)=>{
-		return v1.menuId<v2.menuId
+	  weeks.sort((v1,v2)=>{
+        
+		return util.parseDate(v2.startTime?v2.startTime:v2.createTime,'yyyy-MM-dd HH:mm:ss').getTime()-util.parseDate(v1.startTime?v1.startTime:v1.createTime,'yyyy-MM-dd HH:mm:ss').getTime()
 	  })
-      this.menus = menus;
+      this.weeks = weeks;
     },
     showTaskEdit(task) {
       this.editForm = task;
