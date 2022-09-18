@@ -1,13 +1,13 @@
 <template>
-	<section>
-		<div class="exec-navbar">
+	<section class="padding">
+		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTaskExecusers">查询</el-button>
 			<el-button type="primary"  @click="toJoin">我要加入</el-button>
 			<el-button type="primary"  @click="showAdd">邀请他人加入</el-button>
 			<!-- <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button>  -->
-		</div>
-		<el-row class="page-main ">
+		</el-row>
+		<el-row>
 			<!--列表 XmTaskExecuser xm_task_execuser-->
 			<el-table ref="table" :height="tableHeight" :data="xmTaskExecusers" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				 <el-table-column type="expand">

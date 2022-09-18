@@ -59,7 +59,7 @@
           </el-select>
           <el-input
             style="width: 120px"
-            v-model="filters.key"
+            v-model="filters.key" clearable
             placeholder="计划/任务名称"
           >
           </el-input>
@@ -574,48 +574,12 @@
       <el-row class="padding">
         <el-row style="font-size: 12px; overflow-x: hidden">
           <div class="task-header extra">
-            <div class="title">
-              {{ editForm.name }}
-              <el-tag style="border-radius: 30px">{{
-                taskStateList[parseInt(editForm.taskState)]
-              }}</el-tag>
-              <el-link
-                v-if="isTaskCenter == '1' && selkey == 'myFocus'"
-                type="warning"
-                @click.stop="focusOrUnfocus(editForm)"
-                >去取关</el-link
-              >
-              <el-link
-                v-if="isTaskCenter == '1' && selkey != 'myFocus'"
-                type="success"
-                @click.stop="focusOrUnfocus(editForm)"
-                >去关注</el-link
-              >
-            </div>
-            <div class="compact">
-              <el-tag
-                v-if="editForm.level != '' && editForm.level != null"
-                style="border-radius: 30px"
-                >{{ formatDicts(dicts,"priority", editForm.level) }}</el-tag
-              >
-              [{{ formatDicts(dicts,"taskType", editForm.taskType) }}]
-              <span> {{ editForm.projectName }} </span>
-              -
-              <span> {{ editForm.createUsername }} </span>
-              创建于 {{ editForm.createTime }}
-            </div>
-            <div class="remarks">
-              {{ editForm.remarks }}
-            </div>
-          </div>
-
-          <div class="exector extra">
-            <div class="field-label">需求</div>
-            <el-tag
-              v-if="editForm.menuName"
-              style="margin-left: 10px; border-radius: 30px"
-              >{{ editForm.menuName }}</el-tag
-            >
+            <div class="title" v-if="sels.length==0">
+              {{ editForm.name }}   
+            </div>  
+            <div class="title" v-if="sels.length>0">
+              {{ editForm.name }} <font color="red">等{{sels.length}}个任务</font>
+            </div>  
           </div>
 
           <div class="exector extra">
@@ -631,7 +595,7 @@
               end-placeholder="计划完成日期"
               value-format="yyyy-MM-dd HH:mm:ss"
               :default-time="['00:00:00', '23:59:59']" 
-              @change="editTime(editForm)"
+              @change="editTime(editForm,'startTime')"
               :auto-default="false"
             ></mdp-date-range>
             共{{ taskTime }}天
@@ -649,7 +613,7 @@
               end-placeholder="实际完成日期"
               value-format="yyyy-MM-dd HH:mm:ss"
               :default-time="['00:00:00', '23:59:59']" 
-              @change="editTime(editForm)"
+              @change="editTime(editForm,'actStartTime')"
               :auto-default="false"
             ></mdp-date-range> 
           </div>
@@ -1914,30 +1878,17 @@ export default {
       }
       return respons;
     },
-    editTime(row) {
-      var params = {
-        id: row.id,
-        projectId: row.projectId,
-        startTime: row.startTime,
-        endTime: row.endTime,
-        actStartTime: row.actStartTime,
-        actEndTime: row.actEndTime,
-      };
-      this.load.edit = true;
-      editTime(params)
-        .then((res) => {
-          var tips = res.data.tips;
-          this.$notify({
-            showClose: true,
-            message: tips.msg,
-            type: tips.isOk ? "success" : "error",
-          }); 
-          this.load.edit = false;
-        })
-        .catch((err) => {
-          this.load.edit = false; 
-          this.timeVisible = false;
-        });
+    editTime(row,fieldName) {
+      var params={}
+      if(fieldName=='startTime'){
+        params.startTime=row.startTime
+        params.endTime=row.endTime
+      }
+      if(fieldName=='actStartTime'){
+        params.actStartTime=row.actStartTime
+        params.actEndTime=row.actEndTime
+      }
+      this.editXmTaskSomeFields( row,fieldName,params) 
     },
     clearFiltersTag(tag){
       var index=this.filters.tags.findIndex(i=>i.tagId==tag.tagId)
@@ -2114,6 +2065,12 @@ export default {
 				}else if(fieldName==='createUserid'){
 					params.createUserid=$event.userid
 					params.createUsername=$event.username
+				}else if(fieldName==='startTime'){
+					params.startTime=$event.startTime
+					params.endTime=$event.endTime
+				}else if(fieldName==='actStartTime'){
+					params.actStartTime=$event.actStartTime
+					params.actEndTime=$event.actEndTime
 				}else{
 					params[fieldName]=$event
 				}
