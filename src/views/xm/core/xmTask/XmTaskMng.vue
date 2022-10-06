@@ -1814,7 +1814,7 @@ export default {
       }else if(option.action==='executorUserid'){
         var user= groupUsers[0];
         var params={}
-        var row=option.data;
+        var row=option.data; 
         params.taskId = row.id;
         params.projectId=row.projectId
         params.projectName=row.projectName
@@ -1825,18 +1825,23 @@ export default {
         params.quoteWorkload=row.budgetWorkload
         params.userid=user.userid
         params.username=user.username
-        addXmTaskExecuser(params).then(res=>{
-          var tips = res.data.tips
-          if(tips.isOk){
-            //this.searchXmTasks();
-            row.executorUserid=user.userid
-            row.executorUsername=user.username
-            row.exeUserids=user.userid
-            row.exeUsernames=user.username
-          }else{
-            this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:'error'})
-          }
-        })
+        if(this.sels.length>0){ 
+          this.editXmTaskSomeFields(row,"executorUserid",params)
+        }else{
+          addXmTaskExecuser(params).then(res=>{
+            var tips = res.data.tips
+            if(tips.isOk){
+              //this.searchXmTasks();
+              row.executorUserid=user.userid
+              row.executorUsername=user.username
+              row.exeUserids=user.userid
+              row.exeUsernames=user.username
+            }else{
+              this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:'error'})
+            }
+          })
+        }
+       
       } 
 
     },

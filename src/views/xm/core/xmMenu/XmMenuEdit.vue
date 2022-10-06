@@ -198,6 +198,9 @@
 						<el-tab-pane :label="'测试用例('+editForm.testCases+')'" name="62">
 							 <xm-test-case-mng  v-if="activateTabPaneName=='62'" :xm-product="{id:editForm.productId,productName:editForm.productName}" :xm-menu="editForm"></xm-test-case-mng>
 						</el-tab-pane>
+						<el-tab-pane :label="'缺陷('+editForm.bugCnt+')'" name="63"> 
+							<xm-question-mng v-if="activateTabPaneName=='63'" :xm-product="editForm.productId?{id:editForm.productId,productName:editForm.productName}:null" :xm-menu="editForm"></xm-question-mng>
+						</el-tab-pane>
 						<el-tab-pane label="成本" name="3">
 							<el-form-item label="预估金额" prop="budgetAt">
 								<el-input-number :disabled="editForm.calcType!=='2'  "  style="width:200px;"  v-model="editForm.budgetAt" :precision="2" :step="100" :min="0" placeholder="预算金额"></el-input-number>   元
@@ -292,6 +295,8 @@
 	import XmMyDoFocus from '@/views/myWork/my/components/DoFocus';
 	import ArchiveEdit from '@/views/xm/core/wiki/archive/WikiMenuEdit';
 	import XmTestCaseMng from '@/views/xm/core/xmTestCase/XmTestCaseMng';
+	
+	import xmQuestionMng from "@/views/xm/core/xmQuestion/XmQuestionMng";
 
 	import XmEpicFeaturesSelect from "../xmMenu/XmEpicFeaturesSelect";
 	import MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm'
@@ -632,6 +637,7 @@
 			'xm-menu-edit':()=>import("./XmMenuDetail"),
 			'xm-workload-record':()=>import("../xmWorkload/XmWorkloadRecord"),
 			XmEpicFeaturesSelect,
+			xmQuestionMng,
 		},
 		mounted() {
 
