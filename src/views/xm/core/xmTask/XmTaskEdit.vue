@@ -284,7 +284,7 @@
 					</el-tab-pane>
 					<el-tab-pane label="缺陷" name="41" v-if="editForm.ntype!='1'">  
 						<xm-question-mng v-if="activateTabPaneName=='41' && editForm.menuId" :xm-product="editForm.productId?{id:editForm.productId,productName:editForm.productName}:null" :xm-menu="editForm.menuId?{menuId:editForm.menuId,menuName:editForm.menuName}:null" :sel-project="xmProject"></xm-question-mng>
-						<div v-else-if="activateTabPaneName=='41'">缺陷由用户故事关联得出，请先关联用户故事. <el-button @click="activateTabPaneName=3">去关联</el-button></div>
+						<div v-else-if="activateTabPaneName=='41'">缺陷由用户故事关联得出，请先关联用户故事. <el-button @click.stop="activateTabPaneName='3'">去关联</el-button></div>
 					</el-tab-pane>
 					
 					<el-tab-pane label="执行人" name="42" v-if="editForm.ntype!='1'"> 
