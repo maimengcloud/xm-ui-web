@@ -25,6 +25,7 @@
                 </el-form>
                 <div class="oper">
                     <a @click="isRestPwd = true">忘记密码</a>
+                    <a @click="loginByShowAccount">演示账户登录</a>
                     <a v-if="loginForm.authType == 'password_display_userid' " @click="loginForm.authType = 'sms'">手机号登录</a>
                     <a v-if="loginForm.authType == 'sms' " @click="loginForm.authType = 'password_display_userid' ">密码登录</a>
                 </div>
@@ -368,6 +369,38 @@ export default {
             //     this.$router.push({ path: '/' })
             //   })
             // }
+        },
+        loginByShowAccount(){ 
+                this.loading = true 
+                var loginParams={ } 
+                loginParams.userloginid="chenyc_002"
+                loginParams.password=md5("888888")
+                loginParams.grantType="password"
+                loginParams.authType='password_display_userid'  
+                this.$store.dispatch("LoginByUserloginid",loginParams).then(res => {
+                    ;
+                    this.loading = false 
+                    if(res.data.tips.isOk==true){
+                        this.loading = true;
+                        this.$store.dispatch('GetUserInfo').then((res2)=>{  
+                            this.loading = false
+                            if(res2.data.tips.isOk==true){ 
+                                this.userDeptid=res2.data.userInfo.deptid
+                                this.rolesChecked(); 
+                            }else{
+                                this.$notify.error(res2.data.tips.msg);
+                            }
+                            
+                        }).catch(err=>{
+                            console.log(err); 
+                            this.loading = false
+                        }); 
+                    }else{
+                        this.$notify.error(res.data.tips.msg);
+                    } 
+                }).catch((e) => {
+                    this.loading = false
+                }) 
         }
     },
     created() {
