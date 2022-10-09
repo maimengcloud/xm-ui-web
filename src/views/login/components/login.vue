@@ -373,7 +373,7 @@ export default {
         loginByShowAccount(){ 
                 this.loading = true 
                 var loginParams={ } 
-                loginParams.userloginid="chenyc_002"
+                loginParams.userloginid="demo-branch-01"
                 loginParams.password=md5("888888")
                 loginParams.grantType="password"
                 loginParams.authType='password_display_userid'  

@@ -24,7 +24,7 @@ if(indexOfHttp>0){
 // create an axios instance
 const service = axios.create({
   baseURL:baseApiUrl, // api的base_url
-  timeout: 15000 // request timeout
+  timeout: 25000 // request timeout
 })
 
 // request interceptor
@@ -71,13 +71,7 @@ service.interceptors.response.use(
              return;
 	    }
     }
-    
-    Message({
-      showClose:true,
-      message: '通讯错误',
-      type: 'error',
-      duration: 5 * 1000
-    })
+    Message.closeAll() 
     return Promise.reject(error)
   })
 

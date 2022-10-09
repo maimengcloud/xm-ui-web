@@ -840,22 +840,9 @@
 				if(!this.xmProjectCopy.code){
 					this.$notify({position:'bottom-left',showClose:true,message: '项目代号不能为空', type: 'error' });
 					return;
-				}
-				this.load.add=true;
-				copyTo(this.xmProjectCopy).then(res=>{ 
-					this.load.add=false;
-					var tips = res.data.tips;
-					if(tips.isOk){
-						this.copyToVisible=false;
-						if(this.xmProjectCopy.isTpl=='0'){
-							this.searchXmProjects()
-						}else{
-							this.$refs.xmProjectTplMngRef.searchXmProjects()
-						}
-					}
-					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
-
-				})
+				}  
+				copyTo(this.xmProjectCopy);
+				this.$notify({position:'bottom-left',showClose:true,message: "已提交拷贝任务，执行需要1-5分钟，请稍后刷新项目列表", type:  'success' });
 			}, 
 			createProjectCode(){
 				createProjectCode({}).then(res=>{
