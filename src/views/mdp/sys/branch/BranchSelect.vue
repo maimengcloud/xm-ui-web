@@ -52,7 +52,8 @@
 					pageSize:10,//每页数据
 					pageNum:1,//当前页码、从1开始计算
 					orderFields:[],//排序列 如 ['sex','student_id']，必须为数据库字段
-					orderDirs:[]//升序 asc,降序desc 如 性别 升序、学生编号降序 ['asc','desc']
+					orderDirs:[],//升序 asc,降序desc 如 性别 升序、学生编号降序 ['asc','desc']
+					count:false,
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
@@ -109,7 +110,7 @@
 				let params = {
 					pageSize: this.pageInfo.pageSize,
 					pageNum: this.pageInfo.pageNum,
-					total: this.pageInfo.total,countSql:this.pageInfo.countSql
+					total: this.pageInfo.total,count:this.pageInfo.count
 				};
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
@@ -119,10 +120,8 @@
 					params.orderBy= orderBys.join(",")
 				}
 				if(this.filters.key!==""){
-					//params.xxx=this.filters.key
-				}else{
-					//params.xxx=xxxxx
-				}
+					params.key=this.filters.key
+				} 
 				if( !this.userInfo.isSuperAdmin){
 					params.id=this.userInfo.branchId;
 				} 
@@ -130,7 +129,7 @@
 				listBranch(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 
-						this.pageInfo.total = res.data.data.total;this.pageInfo.countSql=false;
+						this.pageInfo.total = res.data.total;this.pageInfo.count=false;
 						this.branchs = res.data.data;
 					}else{
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });

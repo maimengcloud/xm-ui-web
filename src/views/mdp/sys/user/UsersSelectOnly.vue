@@ -184,6 +184,9 @@
 				if( deptids && deptids.length>0){
 					params.deptid=deptids[0]
 				}   
+				if(this.branch && this.branch.id){
+					params.branchId=this.branch.id
+				}
 				this.load.list = true;
 				listUser(params).then((res) => {
 					var tips=res.data.tips;

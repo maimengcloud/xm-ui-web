@@ -454,6 +454,10 @@ export default {
         if (params.deptid == null || params.deptid == "") {
           //params.deptid=this.userInfo.deptid;
         }
+      }else{
+        if(this.branch && this.branch.id){
+          params.branchId=this.branch.id
+        }
       }
       console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
       console.log(params);
