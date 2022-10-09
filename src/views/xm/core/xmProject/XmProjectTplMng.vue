@@ -2,12 +2,16 @@
 	<section class="page-container"> 
 		<el-row v-if="showType!='simple'" class="padding">
 			<el-checkbox v-model="filters.isMy" false-label="" true-label="1">我的模板</el-checkbox>
+			<el-radio v-model="filters.tplType" label="1">全网公开模板</el-radio>
+			<el-radio v-model="filters.tplType" label="2">本企业模板</el-radio>
 			<el-input style="width:300px;" v-model="filters.key" placeholder="模板名字"></el-input>
 			<el-button @click="searchXmProjects" icon="el-icon-search"></el-button>
 		</el-row>
 		<el-row v-if="showType=='simple'" title="通过复制快速创建新的项目"> 
 					<el-col :span="24">
-					<el-checkbox v-model="filters.isMy" false-label="0" true-label="1">我的模板</el-checkbox>  
+					<el-checkbox v-model="filters.isMy" false-label="0" true-label="1">我的模板</el-checkbox>   
+					<el-radio v-model="filters.tplType" label="1">全网公开模板</el-radio>
+					<el-radio v-model="filters.tplType" label="2">本企业模板</el-radio>
 					</el-col>
 					<el-col :span="16"><el-input  v-model="filters.key" placeholder="模板名字"></el-input>
 					</el-col>
@@ -64,11 +68,16 @@
 				<el-radio v-model="xmProjectCopy.isTpl" label="1">复制为新的模板</el-radio>
 				<el-radio v-model="xmProjectCopy.isTpl" label="0">复制为新的项目</el-radio>
 			</el-form-item>
+			<el-form-item  label="公开范围" v-if="xmProjectCopy.isTpl=='1'">
+				<el-radio v-model="xmProjectCopy.tplType" label="1">向全网公开</el-radio>
+				<el-radio v-model="xmProjectCopy.tplType" label="2">只向本企业公开</el-radio>
+			</el-form-item>
 			<el-form-item label="附加任务">
 				<el-checkbox v-model="xmProjectCopy.copyPhase" true-label="1" false-label="0">拷贝计划</el-checkbox> 
 				<el-checkbox v-model="xmProjectCopy.copyTask" true-label="1" false-label="0">拷贝任务</el-checkbox>  
 				<el-checkbox v-model="xmProjectCopy.copyGroup" true-label="1" false-label="0">拷贝项目组织架构</el-checkbox>  
 				<el-checkbox v-model="xmProjectCopy.copyGroupUser" true-label="1" false-label="0">拷贝项目组成员</el-checkbox>  
+				<el-checkbox v-model="xmProjectCopy.copyProduct" true-label="1" false-label="0">拷贝关联产品及需求明细</el-checkbox>  
 			</el-form-item>
 			</el-form>
 			<span slot="footer" class="dialog-footer">
@@ -122,6 +131,7 @@
 					key: '',
 					productId:'',
 					productName:'',
+					tplType:'1',
 				},
 				xmProjects: [],//查询结果
 				pageInfo:{//分页数据
@@ -158,7 +168,7 @@
 				dateRanger: [ ],  
 				pickerOptions:  util.getPickerOptions('datarange'),
 				xmProjectCopy:{
-					id:'',name:'',code:'',isTpl:'',copyPhase:'1',copyTask:'1',copyGroup:'1',copyGroupUser:'0'
+					id:'',name:'',code:'',isTpl:'',copyPhase:'1',copyTask:'1',copyGroup:'1',copyGroupUser:'0',copyProduct:'1',tplType:'2',
 				},
 				copyToVisible:false, 
 				/**end 自定义属性请在上面加 请加备注**/
@@ -201,12 +211,9 @@
 				};
 				if(this.filters.key!==""){
 					 params.key='%'+this.filters.key+'%';
-				} 
-				
-				if(this.dateRanger&&this.dateRanger.length==2){
-					 
-				} 
+				}  
 				params.isTpl="1"
+				params.tplType=this.filters.tplType
 				this.load.list = true; 
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
