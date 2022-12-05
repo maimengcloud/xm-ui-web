@@ -110,7 +110,7 @@ import util from "@/common/js/util"; //全局公共库
 import {
   initDicts,
   addXmProduct,
-  editSomeFields,
+  editXmProductSomeFields,
   createProductCode
 } from "@/api/xm/core/xmProduct";
 import { mapGetters } from "vuex"; 
@@ -323,7 +323,7 @@ export default {
         params[fieldName] = $event;
       }
 
-      var func = editSomeFields;
+      var func = editXmProductSomeFields;
       func(params)
         .then((res) => {
           let tips = res.data.tips;
