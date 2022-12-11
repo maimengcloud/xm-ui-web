@@ -1,7 +1,8 @@
 <template>    
     <div class="field-box">
         <div class="field-info" :class="{disabled:disabled===true,enabled:disabled!==true}">
-           <div><el-tag   v-if="currentItem"  :type="currentItem.className" :closable="closable" :effect="effect">{{currentItem.name}}</el-tag></div> 
+           <div v-if="(currentItem&&currentItem.id)"><el-tag     :type="currentItem.className" :closable="closable" :effect="effect">{{currentItem.name}}</el-tag></div> 
+           <div v-else> {{currentItem.name}} </div> 
         </div>
         <div v-if="disabled!==true" class="field-oper" :class="{disabled:disabled===true,enabled:disabled!==true}">
             <mdp-select-dict :dict="dict" v-model="myVal" @change="onChange" :clearable="closable" @visible-change="$emit('visible-change',$event)" @focus="$emit('focus',$event)" @blur="$emit('blur',$event)" @clear="$emit('blur',$event)" @click="$emit('click',$event)"></mdp-select-dict>
