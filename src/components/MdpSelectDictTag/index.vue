@@ -16,10 +16,18 @@
     components: {  },
     computed: {
        currentItem(){
+        if(this.myVal===''||this.myVal===null){
+            return {id:'',name:'无',className:'info'};
+        }
         if(this.dict){
-           return this.dict.find(k=>k.id==this.myVal)
+           var item= this.dict.find(k=>k.id==this.myVal)
+           if(item){
+            return item
+           }else{
+            return {id:this.myVal,name:this.myVal,className:'info'}
+           }
         }else{
-            return null;
+            return {id:this.myVal,name:this.myVal,className:'info'};
         }
        }
     },
