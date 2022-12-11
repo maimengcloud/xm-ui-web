@@ -781,8 +781,7 @@ export default {
   }, //end methods
   components: {
     xmTaskMng,
-    xmGroupMng,
-    xmExchange,
+    xmGroupMng, 
     xmQuestion,
     xmFileMng,
     xmDetail,
