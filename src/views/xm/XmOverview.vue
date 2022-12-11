@@ -3,39 +3,39 @@
     <div class="page-main">
       <div class="row_1">
         <div class="r r1">
-          <span style="color: #4779F6">{{xmBranchState.projectCnt || 0}}</span>
+          <span style="color: #4779F6">{{formatNum(xmBranchState.projectCnt,0) || 0}}</span>
           <p>项目数</p>
         </div>
         <div class="r r2">
-          <span style="color: #4779F6">{{xmBranchState.budgetWorkload || 0}}</span>
+          <span style="color: #4779F6">{{formatNum(xmBranchState.budgetWorkload,0) || 0}}</span>
           <p>项目总工时</p>
         </div>
         <div class="r r3">
-          <span style="color: #F6AE47">{{xmBranchState.productCnt || 0}}</span>
+          <span style="color: #F6AE47">{{formatNum(xmBranchState.productCnt,0) || 0}}</span>
           <p>产品数</p>
         </div>
         <div class="r r4">
-          <span style="color: #F6AE47">{{xmBranchState.productBudgetWorkload || 0}}</span>
+          <span style="color: #F6AE47">{{formatNum(xmBranchState.productBudgetWorkload,0) || 0}}</span>
           <p>产品总工时</p>
         </div>
         <div class="r r5">
-          <span style="color: #47CBF6">{{xmBranchState.phaseCnt || 0}}</span>
+          <span style="color: #47CBF6">{{formatNum(xmBranchState.phaseCnt,0) || 0}}</span>
           <p>计划数</p>
         </div>
         <div class="r r6">
-          <span style="color: #47CBF6">{{xmBranchState.iterationCnt || 0}}</span>
+          <span style="color: #47CBF6">{{formatNum(xmBranchState.iterationCnt,0) || 0}}</span>
           <p>迭代数</p>
         </div>
         <div class="r r7">
-          <span style="color: #F68D47">{{xmBranchState.planWorkerCnt || 0}}</span>
+          <span style="color: #F68D47">{{formatNum(xmBranchState.planWorkerCnt,0) || 0}}</span>
           <p>总人数</p>
         </div>
         <div class="r r8">
-          <span style="color: #7D7D7D">{{xmBranchState.taskCnt || 0}}</span>
+          <span style="color: #7D7D7D">{{formatNum(xmBranchState.taskCnt,0) || 0}}</span>
           <p>任务数</p>
         </div>
         <div class="r r9">
-          <span style="color: #7D7D7D">{{xmBranchState.menuCnt || 0}}</span>
+          <span style="color: #7D7D7D">{{formatNum(xmBranchState.menuCnt,0) || 0}}</span>
           <p>需求数</p>
         </div>
       </div>
@@ -45,27 +45,27 @@
           <p class="r_text">项目进度</p>
           <div class="message">
             <div>
-              <span>{{this.xmBranchState.estimateWorkload || 0}}h</span>
+              <span>{{formatNum(this.xmBranchState.estimateWorkload,0) || 0}}h</span>
               <p>预估工时</p>
             </div>
             <div>
-              <span>{{this.xmBranchState.actWorkload || 0}}h</span>
+              <span>{{formatNum(this.xmBranchState.actWorkload,0) || 0}}h</span>
               <p>登记工时</p>
             </div>
             <div>
-              <span>{{workloadProgress || 0}}%</span>
+              <span>{{ formatNum(workloadProgress,0) || 0}}%</span>
               <p>工时进度</p>
             </div>
             <div>
-              <span>{{remainWorkload || 0}}h</span>
+              <span>{{ formatNum(remainWorkload,0) || 0}}h</span>
               <p>剩余工时</p>
             </div>
             <div>
-              <span>{{deviation || 0}}h</span>
+              <span>{{ formatNum(deviation,0)|| 0}}h</span>
               <p>预估偏差</p>
             </div>
             <div>
-              <span>{{deviationRate || 0}}%</span>
+              <span>{{ formatNum(deviationRate,0) || 0}}%</span>
               <p>预估偏差率</p>
             </div>
           </div>
@@ -483,6 +483,13 @@ export default {
       taskChart.setOption(option);
     },
 
+    formatNum(num,defVal){
+      if(num){
+       return parseInt(num)
+      }else{
+        return defVal
+      }
+    },
     drawPieBug() {
       let bugPieChart = this.$echarts.init(document.getElementById("bugPieChart"));
       let option = {
