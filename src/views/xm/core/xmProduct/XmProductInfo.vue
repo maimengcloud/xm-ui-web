@@ -175,10 +175,8 @@
           <el-menu-item index="客服">
             <span slot="title"><i class="el-icon-date"></i>客服</span>
           </el-menu-item>
-        </el-submenu>   
-        <el-submenu index="回退">
-          <template slot="title"><i class="el-icon-back"></i>回退</template>
-           <el-menu-item index="上一页"  @click.native="goBack">
+          
+          <el-menu-item index="上一页"  @click.native="goBack">
               <span slot="title"
                 ><i class="el-icon-back"></i>上一页</span
               >
@@ -188,7 +186,7 @@
                 ><i class="el-icon-s-home"></i>首页</span
               >
             </el-menu-item> 
-        </el-submenu>
+        </el-submenu>    
       </el-menu>
 	  </el-row>
       <el-row ref="pageBody">
