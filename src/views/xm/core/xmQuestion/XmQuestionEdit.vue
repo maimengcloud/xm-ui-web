@@ -3,8 +3,8 @@
 		<el-row>
 			<el-form :model="editForm" label-width="120px"  :rules="editFormRules" ref="editForm" label-position="left"> 
 				<el-row>
-					<el-col :span="6" class="padding border">
-
+					<el-col :span="6" >
+						<el-row class="padding border">
 							<el-form-item label="归属项目" prop="projectId">
 								{{editForm.projectId}}
 							</el-form-item>
@@ -23,6 +23,14 @@
 									<i :class="  'el-icon-document'  " ></i>
 								</div> {{editForm.menuName?editForm.menuName:"未关联需求"}}</el-tag> 
 							</el-form-item>
+						</el-row>
+						
+						<el-row class="padding border">
+							<el-form-item label="最新意见" prop="remarks">
+								{{editForm.remarks||'暂无'}}
+							</el-form-item>
+							 
+						</el-row>
 						</el-col>
 					<el-col :span="18" class="border padding"> 
 					
@@ -38,7 +46,7 @@
 								<el-divider direction="vertical"></el-divider> 
 								<el-button type="text" icon="el-icon-copy" @click="copyLink">拷贝链接(快速分享)</el-button>
 								</span>
-						</el-form-item> 
+						</el-form-item>  
 								<el-row class="padding"> 
 									<el-col :span="6"> 
 											<mdp-select-user-xm :project-id="editForm.projectId" :product-id="editForm.productId" label="责任人" v-model="editForm" userid-key="handlerUserid" username-key="handlerUsername" @change="editXmQuestionSomeFields(editForm,'handlerUserid',$event)">
@@ -61,8 +69,6 @@
 									<el-col :span="6"> 
 												<mdp-date-x label="结束时间" style="max-width:100%;" value-format="yyyy-MM-dd HH:mm:ss" v-model="editForm.endTime" @change="editXmQuestionSomeFields(editForm,'endTime',$event)"></mdp-date-x>
  									</el-col>
-								</el-row>
-								<el-row>
 								</el-row>
 								<el-tabs v-model="activateTabPaneName">
 								
@@ -146,7 +152,7 @@
 									<el-tab-pane :label="'工时( '+(editForm.actWorkload?editForm.actWorkload:0)+' / '+(editForm.budgetWorkload?editForm.budgetWorkload:0)+' h )'" name="55"> 
 										<xm-workload-record v-if="activateTabPaneName=='55'" biz-type="2" :xm-question="editForm" ></xm-workload-record>
 									</el-tab-pane>
-									<el-tab-pane label="日志" name="4" v-if="opType!='add'">  
+									<el-tab-pane label="流转记录" name="4" v-if="opType!='add'">  
 										<xm-question-handle-mng v-if="activateTabPaneName=='4'" :bug="editForm" :visible="activateTabPaneName=='4'"></xm-question-handle-mng>
  									</el-tab-pane>  
 									<el-tab-pane label="关注" name="91" v-if="opType!='add'"> 
