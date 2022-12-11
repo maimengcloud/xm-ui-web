@@ -2,17 +2,17 @@
   <div class="comment-list-box">
     <div class="comment-list">
       <!-- 回复 -->
-      <div v-if="self.pcommentId" class="list-item clear-bd">
+      <div v-if="self.pid" class="list-item clear-bd">
         <div class="top-msg">
           <div class="info" @click="toPersonCenter(self)" style="cursor: pointer;">
             <img :src="getHeadimgurl(self.userid)" class="user-avatar" @error="onImgError(self.userid,$event)" />
             <span class="user-name">{{ self.username }} </span>
-            <span class="time">{{ self.createDate }}</span>
+            <span class="time">{{ self.cdate }}</span>
           </div>
           <div class="btns">
-            <span v-if="!self.isPraise" class="like"><img src="../../../../../static/images/like.png" class="like-logo" @click="praiseComment(self)" />{{ self.praiseSum }}</span>
-            <span v-else class="like"><img src="../../../../../static/images/like-selected.png" class="like-logo" />{{ self.praiseSum }}</span>
-            <span class="reply" @click="isShow = true"><i class="el-icon-s-comment"></i>&nbsp;回复</span>
+            <span v-if="!self.isPraise" class="like"><img src="../../../../../static/images/like.png" class="like-logo" @click="praiseComment(self)" />{{ self.ups }}</span>
+            <span v-else class="like"><img src="../../../../../static/images/like-selected.png" class="like-logo" />{{ self.ups }}</span>
+            <span class="reply" @click="isShow = true"><i class="el-icon-s-comment"></i>回复</span>
           </div>
         </div>
         <div class="bottom-con">
@@ -36,9 +36,9 @@
             <span class="time">{{ self.createDate }}</span>
           </div>
           <div class="btns">
-            <span v-if="!self.isPraise" class="like"><img src="../../../../../static/images/like-not.png" class="like-logo" @click="praiseComment(self)" />{{ self.praiseSum }}</span>
-            <span v-else class="like"><img src="../../../../../static/images/like-selected.png" class="like-logo" />{{ self.praiseSum }}</span>
-            <span class="reply" @click="isShow = true"><i class="el-icon-s-comment"></i>&nbsp;回复</span>
+            <span v-if="!self.isPraise" class="like"><img src="../../../../../static/images/like-not.png" class="like-logo" @click="praiseComment(self)" />{{ self.ups }}</span>
+            <span v-else class="like"><img src="../../../../../static/images/like-selected.png" class="like-logo" />{{ self.ups }}</span>
+            <span class="reply" @click="isShow = true"><i class="el-icon-s-comment"></i> 回复</span>
           </div>
         </div>
         <div class="bottom-con">
@@ -53,24 +53,25 @@
           <span @click="viewAll">{{ !showAll ? `查看全部 ${self.childNums} 条回复 >>` : `<< 收起 ${self.childList.length} 条回复` }}</span>
         </div>
       </div>
-    </div>
-    <el-dialog title="评论回复" :visible.sync="isShow" width="50%">
-      <div class="w-box">
+    </div> 
+    
+    <el-dialog title="评论回复" :visible.sync="isShow" width="50%" append-to-body>
+      <div class="w-box" v-if="isShow">
         <div class="edit">
           <el-input type="textarea" :rows="8" placeholder="请输入你的回复内容 ......" v-model="replyTxt"> </el-input>
         </div>
         <div class="bottom-btns">
-          <img src="../../../../../static/images/expression.png" class="expression" />
-          <el-button type="primary" @click="publishComment">发表评论</el-button>
+          <img src="../../../../../static/images/expression.png"  class="expression" /> 
+          <el-button  type="primary" @click="publishComment">发表评论</el-button> 
         </div>
       </div>
-    </el-dialog>
+    </el-dialog> 
   </div>
 </template>
 
 <script>
 
-import { initDicts,listXmMenuComment, delXmMenuComment, batchDelXmMenuComment,editSomeFieldsXmMenuComment } from '@/api/xm/core/xmMenuComment';
+import { initDicts,listXmMenuComment,addXmMenuComment,praiseXmMenuComment, delXmMenuComment, batchDelXmMenuComment,editSomeFieldsXmMenuComment } from '@/api/xm/core/xmMenuComment';
 import commentList from './comment-list.vue';
 
 import imgUtil from '@/api/imgUtil.js';
@@ -101,8 +102,8 @@ export default {
       });
     }, 
     praiseComment() {
-      this.self.praiseSum += 1;
-      praisearchiveComment(this.self).then((res) => {
+      this.self.ups += 1;
+      praiseXmMenuComment(this.self).then((res) => {
         let tips = res.data.tips;
         if (tips.isOk) {
           this.self.isPraise = true;
@@ -130,11 +131,11 @@ export default {
         return;
       }
       let params = {  
-          pcommentId:this.self.id 
+          pid:this.self.id 
       };
-      params.orderBy=" CREATE_DATE DESC "
+      params.orderBy=" CDATE DESC "
 
-      getCommentList(params).then((res) => { 
+      listXmMenuComment(params).then((res) => { 
         let tips = res.data.tips;
         if (tips.isOk) { 
           let list = res.data.data;
@@ -151,14 +152,14 @@ export default {
     },
     publishComment() {
       let params = {
-        archiveId: this.self.archiveId,
-        pcommentId: this.self.id,
+        menuId: this.self.menuId,
+        pid: this.self.id,
         toUserid: this.self.userid,
         toUsername: this.self.username,
         context: this.replyTxt,
       };
       if (params.context) {
-        addarchiveComment(params).then((res) => {
+        addXmMenuComment(params).then((res) => {
           let tips = res.data.tips;
           if (tips.isOk) {
             this.$message({
@@ -258,6 +259,7 @@ export default {
             }
           }
           .reply {
+            width: 100px;
             display: flex;
             align-items: center;
             cursor: pointer;
@@ -301,18 +303,25 @@ export default {
       border-bottom: none;
     }
   }
-  .w-box {
+}
+
+</style>
+
+
+<style lang="scss">
+
+.w-box {
     .edit {
       display: flex;
     }
     .bottom-btns {
-      margin-top: 14px;
+      margin-top: 24px;
       display: flex;
       justify-content: flex-end;
-      align-items: center;
+      align-items: center; 
       .expression {
-        width: 22px;
-        height: 22px;
+        width: 21px !important;
+        height: 21px !important;
         margin-right: 16px;
         border-radius: 50%;
         cursor: pointer;
@@ -322,5 +331,4 @@ export default {
       }
     }
   }
-}
 </style>

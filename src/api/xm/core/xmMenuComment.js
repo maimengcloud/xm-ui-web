@@ -27,6 +27,10 @@ export const editXmMenuComment = params => { return axios.post(`${base}/xm/core/
 //新增一条档案评论表
 export const addXmMenuComment = params => { return axios.post(`${base}/xm/core/xmMenuComment/add`, params); };
 
+
+//点赞一条评论
+export const praiseXmMenuComment = params => { return axios.post(`${base}/xm/core/xmMenuComment/praise`, params); };
+
 //批量修改某些字段
 export const editSomeFieldsXmMenuComment = params => { return axios.post(`${base}/xm/core/xmMenuComment/editSomeFields`, params); };
 

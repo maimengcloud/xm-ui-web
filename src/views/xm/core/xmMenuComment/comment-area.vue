@@ -13,7 +13,7 @@
       </div>
     </div>
     <div v-if="commentsList.length > 0" class="comment-list">
-      <comment-list v-for="(item, index) in commentsList" :self="item" :parent="item" :key="item.id" @getList="getCList">
+      <comment-list v-for="(item, index) in commentsList" :self="item" :parent="item" :key="item.id" @getList="getXmMenuComments">
       </comment-list>
       <div class="page-set">
         <el-pagination layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange"
@@ -30,7 +30,7 @@
 
 <script>
 
-import { initDicts,listXmMenuComment, delXmMenuComment, batchDelXmMenuComment,editSomeFieldsXmMenuComment } from '@/api/xm/core/xmMenuComment';
+import { initDicts,listXmMenuComment, addXmMenuComment,delXmMenuComment, batchDelXmMenuComment,editSomeFieldsXmMenuComment } from '@/api/xm/core/xmMenuComment';
 import commentList from './comment-list.vue';
 import { mapGetters } from 'vuex';
 
@@ -55,7 +55,7 @@ export default {
         pageSize: 10,//每页数据
         count: false,//是否需要重新计算总记录数
         pageNum: 1,//当前页码、从1开始计算
-        orderFields: ['CREATE_DATE'],//排序列 如 ['sex','student_id']，必须为数据库字段
+        orderFields: ['CDATE'],//排序列 如 ['sex','student_id']，必须为数据库字段
         orderDirs: ['desc']//升序 asc,降序desc 如 性别 升序、学生编号降序 ['asc','desc']
       },
     };
@@ -64,33 +64,33 @@ export default {
     ...imgUtil,
     handleSizeChange(pageSize) {
       this.pageInfo.pageSize = pageSize;
-      this.getCList();
+      this.getXmMenuComments();
     },
     handleCurrentChange(pageNum) {
       this.pageInfo.pageNum = pageNum;
-      this.getCList();
+      this.getXmMenuComments();
     }, 
     // 格式化评论数据
     commentListFormat() {
       this.commentsList.forEach((item) => {
         this.$set(item, 'childList', []);
         // 将回复该评论的评论放入childList中
-        let arr = this.commentsList.filter((i) => i.pcommentId === item.id);
+        let arr = this.commentsList.filter((i) => i.pid === item.id);
         if (arr.length > 0) {
           item.childList = arr;
         }
       });
       // 过滤出最高级
-      this.commentsList = this.commentsList.filter((item) => item.pcommentId === null);
+      this.commentsList = this.commentsList.filter((item) => item.pid === null);
     },
     publishComment() {
       if (this.userInfo.userid) {
         let params = {
-          archiveId: this.targetId,
+          menuId: this.targetId,
           context: this.commentTxt,
         };
         if (params.context) {
-          addarchiveComment(params).then((res) => {
+          addXmMenuComment(params).then((res) => {
             let tips = res.data.tips;
             if (tips.isOk) {
               this.$message({
@@ -98,7 +98,7 @@ export default {
                 message: '评论成功',
               });
               this.commentTxt = ''; 
-              this.getCList();
+              this.getXmMenuComments();
             } else {
               this.$message({
                 message: tips.msg,
@@ -119,7 +119,7 @@ export default {
         });
       }
     },
-    getCList() {
+    getXmMenuComments() {
       if (!this.targetId) {
         return;
       }
@@ -129,8 +129,8 @@ export default {
         pageNum: this.pageInfo.pageNum,
         total: this.pageInfo.total,
         count: this.pageInfo.count,
-        archiveId: this.targetId,
-        pcommentIdIsNull: "1",
+        menuId: this.targetId,
+        pidIsNull: "1",
       };
       if (this.pageInfo.orderFields != null && this.pageInfo.orderFields.length > 0) {
         let orderBys = [];
@@ -140,7 +140,7 @@ export default {
         params.orderBy = orderBys.join(",")
       }
 
-      getCommentList(params).then((res) => {
+      listXmMenuComment(params).then((res) => {
         let tips = res.data.tips;
         if (tips.isOk) {
           this.pageInfo.total = res.data.total;
@@ -163,7 +163,7 @@ export default {
     },
   },
   mounted() { 
-    this.getCList();
+    this.getXmMenuComments();
   },
 };
 </script>

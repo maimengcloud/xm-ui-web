@@ -234,7 +234,7 @@
 					</el-tab-pane>
 					<el-tab-pane label="wiki" name="7">
 						<archive-edit v-if="activateTabPaneName=='7' && editForm && editForm.menuId" :xm-menu="editForm"></archive-edit>
-					</el-tab-pane>
+					</el-tab-pane> 
 					<el-tab-pane label="附件" name="8">
 						上传附件
 					</el-tab-pane>
@@ -243,6 +243,9 @@
 					</el-tab-pane>
 					<el-tab-pane label="日志" name="9">
 						 <xm-record v-if="activateTabPaneName=='9'"  :biz-id="editForm.menuId" :obj-type="'menu'"></xm-record>
+					</el-tab-pane>
+					<el-tab-pane label="评论区" name="10">
+						 <comment-area v-if="activateTabPaneName=='10'"  :target-id="editForm.menuId"></comment-area>
 					</el-tab-pane>
 				</el-tabs>
 			</el-form>
@@ -300,6 +303,7 @@
 
 	import XmEpicFeaturesSelect from "../xmMenu/XmEpicFeaturesSelect";
 	import MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm'
+import CommentArea from '../xmMenuComment/comment-area.vue';
 	export default {
 		computed: {
 		    ...mapGetters([
@@ -638,6 +642,7 @@
 			'xm-workload-record':()=>import("../xmWorkload/XmWorkloadRecord"),
 			XmEpicFeaturesSelect,
 			xmQuestionMng,
+			CommentArea,
 		},
 		mounted() {
 
