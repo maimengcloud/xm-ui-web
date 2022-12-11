@@ -618,8 +618,7 @@ import xmExecuserMng from "../xmTaskExecuser/XmTaskExecuserForTask";
 import xmSkillMng from "../xmTaskSkill/XmTaskSkillMng";
 import skillMng from "@/views/xm/core/skill/skillMng";
 import { batchAddSkill } from "@/api/xm/core/xmTaskSkill"; 
-import xmTaskTemplateMng from "../xmTaskTemplate/XmTaskTemplateMng";
-import xmExchangeMng from "../xmExchange/XmExchangeMng"; 
+import xmTaskTemplateMng from "../xmTaskTemplate/XmTaskTemplateMng"; 
 
 import { addUserFocus, delUserFocus } from "@/api/mdp/sys/userFocus"; 
 

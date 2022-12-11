@@ -20,8 +20,7 @@
 	import util from '@/common/js/util';//全局公共库
 	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { editXmMenu,listXmMenu } from '@/api/xm/core/xmMenu';
-	import { mapGetters } from 'vuex'
- 	import  XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng';//修改界面
+	import { mapGetters } from 'vuex' 
 
 
 	
@@ -120,8 +119,7 @@
 			/**end 在上面加自定义方法**/
 		},//end method
 		components: {  
-			//在下面添加其它组件 'xm-menu-edit':XmMenuEdit
-			XmMenuExchangeMng
+			//在下面添加其它组件 'xm-menu-edit':XmMenuEdit 
 		},
 		mounted() {
 			this.editForm=Object.assign(this.editForm, this.xmMenu);  

@@ -862,8 +862,7 @@ import xmSkillMng from "../xmTaskSkill/XmTaskSkillMng";
 import skillMng from "@/views/xm/core/skill/skillMng";
 import { batchAddSkill } from "@/api/xm/core/xmTaskSkill";
 import { sn } from "@/common/js/sequence";
-import xmTaskTemplateMng from "../xmTaskTemplate/XmTaskTemplateMng";
-import xmExchangeMng from "../xmExchange/XmExchangeMng";
+import xmTaskTemplateMng from "../xmTaskTemplate/XmTaskTemplateMng"; 
 import xmMenuSelect from "../xmMenu/XmMenuSelect";
 
 import { addUserFocus, delUserFocus } from "@/api/mdp/sys/userFocus";

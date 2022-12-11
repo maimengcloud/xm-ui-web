@@ -290,8 +290,7 @@
 	import {listXmMenuWithState,editXmMenu,editXmMenuSomeFields,batchChangeParentMenu } from '@/api/xm/core/xmMenu';
 	import { mapGetters } from 'vuex'
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
-	import XmMenuOverview from './XmMenuOverview.vue';
-	import XmMenuExchangeMng from '../xmMenuExchange/XmMenuExchangeMng.vue';
+	import XmMenuOverview from './XmMenuOverview.vue'; 
   	import TagMng from "@/views/mdp/arc/tag/TagMng";
 	import XmSubWorkItem from "@/views/xm/core/xmMenuWorkItem/XmSubWorkItem";
 	import XmRecord from '../xmRecord/XmRecord'  
@@ -631,8 +630,7 @@ import CommentArea from '../xmMenuComment/comment-area.vue';
 			//在下面添加其它组件 'xm-menu-edit':XmMenuEdit
 			UsersSelect,
 			XmMenuOverview,
-			TagMng,
-			XmMenuExchangeMng,
+			TagMng, 
 			XmSubWorkItem,
 			XmRecord,
 			XmMyDoFocus,

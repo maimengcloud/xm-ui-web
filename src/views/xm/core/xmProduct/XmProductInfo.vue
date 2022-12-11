@@ -536,8 +536,7 @@ import xmTaskMng from "../xmTask/XmTaskMng";
 import xmPlan from "../xmTask/XmPlan";
 import xmGroupMng from "../xmGroup/XmGroupMng";
 import xmGroupSelect from "../xmGroup/XmGroupSelect";
-
-import xmExchange from "../xmExchange/XmExchangeMng";
+ 
 import xmQuestion from "../xmQuestion/XmQuestionMng";
 import xmFileMng from "../xmFile/XmFileMng";
 import xmDetail from "../xmProject/XmProjectDetail";
