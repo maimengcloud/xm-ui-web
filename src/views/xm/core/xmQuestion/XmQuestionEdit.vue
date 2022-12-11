@@ -26,8 +26,13 @@
 						</el-row>
 						
 						<el-row class="padding border">
-							<el-form-item label="最新意见" prop="remarks">
-								{{editForm.remarks||'暂无'}}
+							<el-form-item label="最新意见" prop="remarks" class="field">
+								<div class="field-text">
+									{{editForm.remarks||'暂无'}}
+								</div>
+								<div class="field-bar">
+									<el-input type="textarea" :rows="3"  v-model="editForm.remarks" placeholder="处理意见" @change="editXmQuestionSomeFields(editForm,'remarks',$event)"></el-input>
+								</div>
 							</el-form-item>
 							 
 						</el-row>
@@ -35,7 +40,7 @@
 					<el-col :span="18" class="border padding"> 
 					
 						<el-form-item label="缺陷标题" prop="name">
-							<el-input   v-model="editForm.name" placeholder="缺陷标题"></el-input>
+							<el-input   v-model="editForm.name" placeholder="缺陷标题" @change="editXmQuestionSomeFields(editForm,'name',$event)"></el-input>
 								<span v-if="opType!=='add'">
 								<span class="label-font-color">缺陷编号：{{editForm.id}} </span>
 								<el-divider direction="vertical"></el-divider>
@@ -695,4 +700,21 @@
   white-space: normal !important;;
   height:auto !important;;
 }
+
+.field-bar{
+    display:none;
+  }
+.field-text{
+    display:inline;
+  }
+.field:hover{ 
+  cursor: pointer;
+	.field-bar{
+		display: inline;  
+	}
+  .field-text{
+    display:none;
+  }
+}
+
 </style>
