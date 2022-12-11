@@ -11,13 +11,21 @@
 				</el-table-column>  
 				<el-table-column prop="receiptMessage" label="处理意见" min-width="150" > 
 					<template slot-scope="scope"> 
-						<div style="max-height:100px;overflow:auto;" v-html="scope.row.receiptMessage"></div>
+						<div style="max-height:100px;overflow:auto;" v-html="scope.row.receiptMessage" @click="showBigDialog(scope.row)"></div>
 					</template> 
 				</el-table-column>
 				<el-table-column prop="receiptTime" label="时间" width="150" ></el-table-column>  
  			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 		</el-row>
+
+		<el-dialog append-to-body
+			title="处理意见"
+			:visible.sync="bigDialogVisible"
+			width="850px" top="20px"
+			center>
+			<div v-html="editForm.receiptMessage"> </div> 
+			</el-dialog>
 	</section>
 </template>
 
@@ -75,6 +83,7 @@
 					id:'',handlerUserid:'',handlerUsername:'',handleSolution:'',receiptMessage:'',receiptTime:'',handleStatus:'',bizProcInstId:'',bizFlowState:'',questionId:'',lastUpdateTime:'',createTime:'',actWorkload:'',actCostAmount:'',urls:'',targetUserid:'',targetUsername:''
 				},
 				tableHeight:300,
+				bigDialogVisible:false,
 				/**begin 自定义属性请在下面加 请加备注**/
 					
 				/**end 自定义属性请在上面加 请加备注**/
@@ -205,6 +214,10 @@
 			},
 			rowClick: function(row, event, column){
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
+			},
+			showBigDialog(row){
+				this.editForm=row
+				this.bigDialogVisible=true;
 			}
 			/**begin 自定义函数请在下面加**/
 			
@@ -224,7 +237,7 @@
 					 this.dicts=res.data.data
 				}
 			});
-				this.tableHeight = util.calcTableMaxHeight(this.$refs.table.$el); 
+				this.tableHeight = util.calcTableMaxHeight(this.$refs.table.$el)-50; 
 				this.getXmQuestionHandles();
         	}); 
 		}
