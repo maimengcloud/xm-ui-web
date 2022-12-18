@@ -1976,6 +1976,12 @@ export default {
        if (this.filters.actEndTimeEnd) {
         params.actEndTimeEnd = this.filters.actEndTimeEnd 
       }
+       if (this.filters.ltimeStart) {
+        params.ltimeStart = this.filters.ltimeStart 
+      }
+       if (this.filters.ltimeEnd) {
+        params.ltimeEnd = this.filters.ltimeEnd 
+      }
 
 
       if (
