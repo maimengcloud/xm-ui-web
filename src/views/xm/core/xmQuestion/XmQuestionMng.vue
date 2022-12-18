@@ -27,7 +27,7 @@
 				<el-popover
 					placement="top-start"
 					title="更多条件、操作"
-					width="500"
+					width="800"
 					v-model="moreVisible"
 					trigger="manual" >
 					
@@ -38,39 +38,47 @@
 					</el-row>
 					 <el-divider></el-divider>  
 						<el-row>
-							<font class="more-label-font">创建者:</font>
-							<mdp-select-user-xm label="选择创建者" v-model="filters.createUser" :clearable="true"></mdp-select-user-xm>  
-						</el-row>
-						<el-row>
-							<font class="more-label-font">指派给:</font>
-							<mdp-select-user-xm label="选择负责人" v-model="filters.handlerUser" :clearable="true"></mdp-select-user-xm>   
+							<el-col :span="12">
+								<font class="more-label-font">创建者:</font>
+								<mdp-select-user-xm label="选择创建者" v-model="filters.createUser" :clearable="true"></mdp-select-user-xm>  
+							</el-col>  
+							<el-col :span="12">
+								<font class="more-label-font">指派给:</font>
+								<mdp-select-user-xm label="选择负责人" v-model="filters.handlerUser" :clearable="true"></mdp-select-user-xm>   
+							</el-col>
 						</el-row> 
 						<el-row>
+							<el-col :span="12">
 								<font class="more-label-font">需求:</font>
 							<font  v-if="  filters.menus && filters.menus.length>0">
 								<el-tag  v-for="(item,index) in filters.menus" :key="index"  closable  @close="clearFiltersMenu(item)">{{item.menuName.substr(0,10)}}</el-tag>
 							</font>
 							<el-button v-else    @click="showMenu" type="plian" icon="el-icon-search">选需求</el-button>
-						</el-row> 
-						<el-row>
+						
+							</el-col>  
+							<el-col :span="12">
 								<font class="more-label-font">缺陷编号:</font>  
 								<el-input v-model="filters.id" style="width:200px;" clearable></el-input>
+							</el-col>  
 						</el-row>
 						<el-row>
+							<el-col :span="12">
 							<font class="more-label-font">优先级:</font>  
 							<el-select   v-model="filters.priority" placeholder="请选择优先级" clearable style="width:200px;">
 								<el-option v-for="(b,index) in dicts['priority']" :value="b.id" :key="index" :label="b.name">{{b.name}}
 								</el-option>
 							</el-select>
-						</el-row>
-						<el-row>
+							</el-col>  
+							<el-col :span="12">
 							<font class="more-label-font">解决方案:</font>  
 							<el-select  v-model="filters.solution" placeholder="请选择解决方案" clearable style="width:200px;">
 								<el-option v-for="(b,index) in dicts['bugSolution']" :value="b.id" :key="index" :label="b.name">{{b.name}}
 								</el-option>
 							</el-select>
+							</el-col>  
 						</el-row>
 						<el-row>
+							<el-col :span="12">
 							<font class="more-label-font">创建时间:</font>
 							<el-date-picker
 								v-model="dateRanger"
@@ -84,8 +92,8 @@
 								:default-time="['00:00:00','23:59:59']"
 								:picker-options="pickerOptions"
 							></el-date-picker>
-						</el-row>
-						<el-row>
+							</el-col>  
+							<el-col :span="12">
 							<font class="more-label-font">更新时间:</font>
 							<el-date-picker
 								v-model="ltimeRanger"
@@ -99,6 +107,7 @@
 								:default-time="['00:00:00','23:59:59']"
 								:picker-options="pickerOptions"
 							></el-date-picker>
+							</el-col>  
 						</el-row>
 						<el-row>
 							<el-button   type="primary" style="float:right;" icon="el-icon-search" @click="searchXmQuestions">查询</el-button> 
@@ -1093,5 +1102,9 @@
 .badge-item {
   margin-top: 10px;
   margin-right: 40px;
+}
+
+>>> .el-date-editor--daterange.el-input, .el-date-editor--daterange.el-input__inner, .el-date-editor--timerange.el-input, .el-date-editor--timerange.el-input__inner {
+     width: 250px;
 }
 </style>

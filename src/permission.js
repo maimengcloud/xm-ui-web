@@ -153,13 +153,13 @@ function getQueryVariable(variable,url){
 function setIndexPath() {  
 	var indexPath=null
 	var url=window.location.href;
-	if(url.indexOf("/login")<=0){
+	if(url.indexOf("/login")<0){
 		var indexOf=url.indexOf("/#")
 		if(indexOf > 0){
 		indexPath=url.substring(indexOf+2)
-		localStorage.setItem("index-path",indexPath);
+		sessionStorage.setItem("index-path",indexPath);
 		}else{
-		localStorage.setItem("index-path",null);
+		sessionStorage.setItem("index-path",null);
 		}
 	} 
 }

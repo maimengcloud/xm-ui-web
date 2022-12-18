@@ -312,7 +312,7 @@ export default {
         },
         //角色身份验证
         rolesChecked(){ 
-            var indexPath=localStorage.getItem("index-path");
+            var indexPath=sessionStorage.getItem("index-path");
             if(!indexPath){
                 indexPath="/"
             }
