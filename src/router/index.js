@@ -69,11 +69,30 @@ export const constantRouterMap = [
   
 ]
 
-export default new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
-})
+
+
+function initRouter(proute) {
+  if(proute==null){
+    return;
+  }else{
+    if(!proute.fullPath){
+      if(proute.path){
+        proute.fullPath=proute.path
+      }else{
+        proute.fullPath=""
+      }
+    }
+    if(proute.children && proute.children.length>0){
+      proute.children.forEach(i=>{
+        if(!i.fullPath){
+          i.fullPath=proute.fullPath+"/"+i.path
+          i.fullPath=i.fullPath.replace("//","/")
+        }
+        initRouter(i)
+      })
+    } 
+  } 
+}
 
 let allRoutes = [] 
 allRoutes=allRoutes.concat(routesMyWork.routes);
@@ -84,4 +103,16 @@ allRoutes=allRoutes.concat(routesWorkflow.routes).concat(routesForm.routes)
 //allRoutes=allRoutes.concat(routesIm.routes);
 //allRoutes=allRoutes.concat(routesOrder.routes);
 
-export const asyncRouterMap = allRoutes
+/**
+ * 找到不需要登录的router
+ */
+initRouter({children:allRoutes})
+initRouter({children:constantRouterMap}) 
+constantRouterMap.push(...allRoutes)
+
+export default new Router({
+  // mode: 'history', // require service support
+  scrollBehavior: () => ({ y: 0 }),
+  routes: constantRouterMap
+})
+ 

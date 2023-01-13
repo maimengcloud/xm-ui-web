@@ -135,9 +135,9 @@ getDefHeadimg:function(userid){
   }
   if(rand){
     var dateTime=new Date().getTime();
-    return `/api/m1/arc/${dateTime}/arc/image/user/${userid}.jpg`
+    return `/api/${process.env.VERSION}/arc/${dateTime}/arc/image/user/${userid}.jpg`
   }else{
-    return `/api/m1/arc/arc/image/user/${userid}.jpg`
+    return `/api/${process.env.VERSION}/arc/arc/image/user/${userid}.jpg`
   }
      
  },
