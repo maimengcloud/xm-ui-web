@@ -1,4 +1,7 @@
-import axios from '@/utils/request'
+import axios from 'axios'//免登录访问
+import axiosAuth from '@/utils/request'//待token访问
+
+
 import { getToken, setToken, removeToken,getCacheUserInfo,setCacheUserInfo,removeCacheUserInfo} from '@/utils/auth'
 
 
@@ -6,31 +9,52 @@ import config from '@/common/config'
 
 let base=config.getOauth2LoginBasePath();
 
+
+var curlDomain=window.location.protocol+"//"+window.location.host; //   返回https://mp.csdn.net
+var baseApiUrl="";
+if(process.env.BASE_API ){
+  if(process.env.BASE_API.indexOf("http")<0 && process.env.BASE_API.indexOf("wwww.")<0){
+    baseApiUrl=curlDomain+"/"+process.env.BASE_API+"/"+process.env.VERSION;
+  }else{
+    baseApiUrl=process.env.BASE_API+"/"+process.env.VERSION;
+  }
+
+}else{
+  baseApiUrl=curlDomain+"/api/"+process.env.VERSION
+}
+var indexOfHttp=baseApiUrl.indexOf("://");
+if(indexOfHttp>0){
+  baseApiUrl=baseApiUrl.substr(0,indexOfHttp+3)+baseApiUrl.substr(indexOfHttp+3,baseApiUrl.length).replace("//","/");
+}else{
+  baseApiUrl=baseApiUrl.replace("//","/")
+}
+
+
 //let base='';
 export function doLoginByUserloginid(userloginid, password,grantType,authType,deptid,userid) {
   removeToken();
   const data = {
     userloginid: userloginid,
-    password: password, 
+    password: password,
     authType:authType,
     deptid:deptid,
     userid:userid,
   }
   return axios({
-    url: base+'/login/token?grantType='+grantType,
+    url: baseApiUrl+'/'+base+'/login/token?grantType='+grantType,
     method: 'post',
     data
   })
 }
-export function switchUser(userloginid, password,grantType,authType,deptid,userid) { 
+export function switchUser(userloginid, password,grantType,authType,deptid,userid) {
   const data = {
     userloginid: userloginid,
-    password: password, 
+    password: password,
     authType:authType,
     deptid:deptid,
     userid:userid,
   }
-  return axios({
+  return axiosAuth({
     url: base+'/login/token?grantType='+grantType,
     method: 'post',
     data
@@ -42,7 +66,7 @@ export function checkUserid(userid ) {
     userid: userid
   }
   return axios({
-    url: base+'/user/check/userid',
+    url: baseApiUrl+'/'+base+'/user/check/userid',
     method: 'post',
     data
   })
@@ -53,7 +77,7 @@ export function checkDisplayUserid(displayUserid ) {
     displayUserid: displayUserid
   }
   return axios({
-    url: base+'/user/check/displayUserid',
+    url: baseApiUrl+'/'+base+'/user/check/displayUserid',
     method: 'post',
     data
   })
@@ -65,14 +89,14 @@ export function checkPhoneno(phoneno ) {
     phoneno: phoneno
   }
   return axios({
-    url: base+'/user/check/phoneno',
+    url: baseApiUrl+'/'+base+'/user/check/phoneno',
     method: 'post',
     data
   })
 }
-export function queryByUserloginid( params ) {  
+export function queryByUserloginid( params ) {
   return axios({
-    url: base+'/user/queryByUserloginid',
+    url: baseApiUrl+'/'+base+'/user/queryByUserloginid',
     method: 'get',
     params:params
   })
@@ -82,7 +106,6 @@ export function doRegister( userInfo ) {
   removeToken();
   const data = {
     username:userInfo.username,
-    userid:userInfo.displayUserid,
     displayUserid:userInfo.displayUserid,
     password:userInfo.password,
     phoneno:userInfo.phoneno,
@@ -91,7 +114,7 @@ export function doRegister( userInfo ) {
     branchId:userInfo.branchId
   }
   return axios({
-    url: base+'/user/register',
+    url: baseApiUrl+'/'+base+'/user/register',
     method: 'post',
     data
   })
@@ -99,14 +122,14 @@ export function doRegister( userInfo ) {
 
 export function resetPasswordByPhoneno( userInfo ) {
   removeToken();
-  const data = {  
+  const data = {
     newPassword:userInfo.newPassword,
     phoneno:userInfo.phoneno,
-    smsCode:userInfo.smsCode, 
+    smsCode:userInfo.smsCode,
     userid:userInfo.userid
   }
   return axios({
-    url: base+'/user/password/reset?type=sms',
+    url: baseApiUrl+'/'+base+'/user/password/reset?type=sms',
     method: 'post',
     data
   })
@@ -128,7 +151,7 @@ export function getUserInfo(params) {
     }
   }
   const data=params;
-  return axios({
+  return axiosAuth({
     url: base+'/user/info',
     method: 'post',
     data
@@ -139,10 +162,10 @@ export function getUserInfo(params) {
  * 发送邮件
  */
 
-export function sendEmail(params) { 
+export function sendEmail(params) {
   const data=params;
   return axios({
-    url: base+'/user/sendEmail',
+    url: baseApiUrl+'/'+base+'/user/sendEmail',
     method: 'post',
     data
   })
@@ -151,9 +174,9 @@ export function sendEmail(params) {
  * 验证邮箱
  */
 
-export function validEmailCode(params) {  
+export function validEmailCode(params) {
   return axios({
-    url: base+'/user/validEmailCode',
+    url: baseApiUrl+'/'+base+'/user/validEmailCode',
     method: 'get',
     params:params
   })
@@ -162,22 +185,22 @@ export function validEmailCode(params) {
 
 /**
  * 获取第三方登录需要state参数，防止crfs攻击
- * @param 
- * @returns 
+ * @param
+ * @returns
  */
-export function getTpaState( ) {  
+export function getTpaState( ) {
   return axios({
-    url: '/tpa/login/wechat/wxpub/state',
-    method: 'post', 
+    url: baseApiUrl+'/tpa/login/wechat/wxpub/state',
+    method: 'post',
     data:{}
   })
 }
 /**
  * 获取查询当前登录账户的所有关联账户
-  * @returns 
+  * @returns
  */
- export function queryMyUsers( ) {  
-  return axios({
+ export function queryMyUsers( ) {
+  return axiosAuth({
     url: base+'/user/queryMyUsers',
     method: 'get'
   })

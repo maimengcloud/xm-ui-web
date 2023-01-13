@@ -7,24 +7,62 @@ import { getToken,setToken } from '@/utils/auth' // getToken from cookie
 
 NProgress.configure({ showSpinner: false })// NProgress Configuration
 
-// permissiom judge function
-function hasPermission(roles, permissionRoles) {
-  if (!permissionRoles) return true
-  if (roles.some(role => role.roleid==='superAdmin')) return true // admin permission passed directly
-  return roles.some(role => permissionRoles.indexOf(role) >= 0)
+
+function getQueryVariable(variable,url){
+	var query =url;
+	if(url==null || url==undefined || url==''){
+		query=window.location.href;
+
+	}
+	//alert(query);
+	var query2=query.split("?");
+	if(query2.length>1){
+		query=query2[1];
+	}else{
+		query=""
+		return null;
+	}
+
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return null;
 }
 
-const whiteList = ['/login', '/authredirect','/changeEmailStepOne','/changeEmailStepTwo']// no redirect whitelist
+
+var accessToken=getQueryVariable('accessToken'); 
+
+// permissiom judge function
+function hasPermission(roles, permissionRoles) {
+  if(!roles || roles.length==0){
+	return true;
+  }
+  if (!permissionRoles) return true
+  if (roles.some(role => role.roleid==='superAdmin')) return true // admin permission passed directly
+  return roles.some(role => permissionRoles.indexOf(role.roleid) >= 0)
+}
+
+//免登录白名单
+const whiteList = [
+]
 
 router.beforeEach((to, from, next) => {
-  NProgress.start() // start progress bar
-  var outUrl="";
-  if (whiteList.indexOf(to.path) !== -1) { //在免登录白名单，直接进入
-    next()
-    NProgress.done() //如果当前页面为登录页，则在每个afterEach钩子后都不会触发，因此请手动处理它
-    return;
+  NProgress.start() // start progress bar  
+  debugger;
+  if(to.path==='/' || to.path.indexOf('/404')>=0 || to.path.indexOf('/401')>=0 || to.path.indexOf('/login')>=0 ||to.path.indexOf('/logout')>=0){
+	next()  
+	NProgress.done()
+	return;
   }
-  if(to.meta.openTab==true && to.meta.outUrl){
+  if (whiteList.indexOf(to.path) !== -1) { // 在免登录白名单，直接进入
+	next()  
+	NProgress.done()
+	return; 
+  } 
+  var outUrl=""; 
+  if(to.meta && to.meta.openTab==true && to.meta.outUrl){
 	outUrl=to.meta.outUrl;
   	if(to.query){
   		var querys='';
@@ -63,24 +101,30 @@ router.beforeEach((to, from, next) => {
 	NProgress.done() // if current page is dashboard will not trigger	afterEach hook, so manually handle it
 	return;
   }
-   if(to!=null && to.fullPath!=null){
-	var accessToken=getQueryVariable("accessToken",to.fullPath);
-	if(accessToken!=null){
-		setToken(accessToken);
-	}
-   }
+  if (!to.meta || !to.meta.roles) {
+	next()// 
+	NProgress.done()
+	return;
+  }
   if (getToken()) { // determine if there has token
     /* has token*/
-    if (to.path === '/login') {
+    if (to.path.indexOf('/login')>=0) {
 		next()//
       NProgress.done() // if current page is dashboard will not trigger	afterEach hook, so manually handle it
+	  return;
     } else {
     	if(store.getters.isLoadOk==false ){
     		store.dispatch('GetUserInfo').then(res=>{
     			if(!res.data.tips.isOk){
     				 store.dispatch('FedLogOut').then(() => {
 			              Message.error('请重新登陆')
-			              next({ path: '/login' })
+						  if(accessToken && accessToken.length>0){
+							//window.open('/#/login',null,null,true)
+							next({ path: '/login',replace:true })
+						  }else{ 
+							next({ path: '/login' })
+						  }
+						  return
 			            })
     			}else{
     				store.dispatch('GenerateRoutes', {roles:store.getters.roles ,menus:store.getters.myMenus} ).then(() => { // 根据roles权限生成可访问的路由表
@@ -89,7 +133,13 @@ router.beforeEach((to, from, next) => {
 			          }).catch(() => {
 			            store.dispatch('FedLogOut').then(() => {
 			              Message.error('路由处理出错，请重新登陆')
-			              next({ path: '/login' })
+						  if(accessToken && accessToken.length>0){
+							//window.open('/#/login',null,null,true)
+							next({ path: '/login',replace:true })
+						  }else{ 
+							next({ path: '/login' })
+						  } 
+						  return
 			            })
 			          })
     			}
@@ -99,18 +149,28 @@ router.beforeEach((to, from, next) => {
 	        store.dispatch('GenerateRoutes', {roles:store.getters.roles ,menus:store.getters.myMenus} ).then(() => { // 根据roles权限生成可访问的路由表
 	           router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
 	           next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
-	        }).catch(() => {
+				return
+			}).catch(() => {
 	          store.dispatch('FedLogOut').then(() => {
 	            Message.error('路由处理出错，请重新登陆')
-	            next({ path: '/login' })
+	            if(accessToken && accessToken.length>0){
+					//window.open('/#/login',null,null,true)
+					
+					next({ path: '/login',replace:true })
+				  }else{ 
+					next({ path: '/login' })
+				  } 
+				return
 	          })
 	        })
       } else {
         // 没有动态改变权限的需求可直接next() 删除下方权限判断 ↓
-        if (hasPermission(store.getters.roles, to.meta.roles)) {
+        if (!to.meta || !to.meta.roles || !store.getters.roles || hasPermission(store.getters.roles, to.meta.roles)) {
           next()//
+		  return
         } else {
           next({ path: '/401', replace: true, query: { noGoBack: true }})
+		  return
         }
         // 可删 ↑
       }
@@ -119,55 +179,76 @@ router.beforeEach((to, from, next) => {
     /* has no token*/
     if (whiteList.indexOf(to.path) !== -1) { // 在免登录白名单，直接进入
       next()
+	  return
     } else {
-      next('/login') // 否则全部重定向到登录页
+      next({path:'/login'}) // 否则全部重定向到登录页
       NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
+	  return
     }
   }
 })
 
-function getQueryVariable(variable,url){
-	var query =url;
-	if(url==null || url==undefined || url==''){
-		query=window.location.href;
-
-	}
-	//alert(query);
-	var query2=query.split("?");
-	if(query2.length>1){
-		query=query2[1];
-	}else{
-		query=""
-		return null;
-	}
-
-       var vars = query.split("&");
-       for (var i=0;i<vars.length;i++) {
-               var pair = vars[i].split("=");
-               if(pair[0] == variable){return pair[1];}
-       }
-       return null;
+/**
+ * 防止禁用弹框 _self模式
+ * @param {} url 
+ */
+ function newWin(url) { 
+	var id='toOpenWindow'
+	var a = document.createElement('a');
+	a.setAttribute('href', url);
+	a.setAttribute('target', '_self');
+	a.setAttribute('id', id);
+	// 防止反复添加
+	if(!document.getElementById(id)) document.body.appendChild(a);
+	a.click();
 }
 
-
-function setIndexPath() {  
+function setIndexPath() {
 	var indexPath=null
-	var url=window.location.href;
-	if(url.indexOf("/login")<0){
-		var indexOf=url.indexOf("/#")
+	var url=window.location.href; 
+	var indexName="index-path-"+process.env.CONTEXT;
+	if(url.indexOf("/login")<=0){
+		var indexOf=url.indexOf("#/")
 		if(indexOf > 0){
-		indexPath=url.substring(indexOf+2)
-		sessionStorage.setItem("index-path",indexPath);
+		indexPath=url.substring(indexOf+1)
+		sessionStorage.setItem(indexName,indexPath);
 		}else{
-		sessionStorage.setItem("index-path",null);
+		sessionStorage.removeItem(indexName);
 		}
 	} 
 }
-setIndexPath();
-var accessToken=getQueryVariable('accessToken');
-if(accessToken!=null){
+setIndexPath(); 
+if(accessToken && accessToken.length>10){
 	//alert(access_token);
-	setToken(accessToken);
+	setToken(accessToken);   
+	store.dispatch('GetUserInfo').then(res=>{
+		if(!res.data.tips.isOk){
+			 store.dispatch('FedLogOut').then(() => {
+				  Message.error('请重新登陆')  
+				  newWin('/#/login') 
+				  return
+				})
+		}else{
+			store.dispatch('GenerateRoutes', {roles:store.getters.roles ,menus:store.getters.myMenus} ).then(() => { // 根据roles权限生成可访问的路由表
+				  router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表 
+					
+				  var indexName="index-path-"+process.env.CONTEXT;	
+				  var  indexPath=sessionStorage.getItem(indexName); 
+				  if(indexPath && indexPath.length>0){
+					newWin('/#'+indexPath)
+				  }else{
+					newWin('/')
+				  }
+			  }).catch(() => {
+				store.dispatch('FedLogOut').then(() => {
+				  Message.error('路由处理出错，请重新登陆') 
+				  newWin('/#/login')
+				  return
+				})
+			  })
+		}
+ 		
+	}); 
 }
 router.afterEach(() => {
   NProgress.done() // finish progress bar

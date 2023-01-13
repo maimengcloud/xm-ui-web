@@ -34,3 +34,50 @@ export const getAllTag = params => { return axios.get(`${base}/mdp/arc/tag/getAl
 
 //新增一条arc_tag
 export const deleteTagCategory= params => { return axios.post(`${base}/mdp/arc/tag/deleteTagCategory`, params); };
+
+//将tags转换成树状结构
+export const translateTagsToTree = data => { 
+  var tags=JSON.parse(JSON.stringify(data))
+    if(!tags||tags.length<=0){
+        return []
+    }
+    var cates={};
+    tags.forEach(k=>{
+        if(k.categoryId && k.categoryName){
+            cates[k.categoryId]={id:k.categoryId,name:k.categoryName,children:[],disabled:true} 
+        } 
+    }) 
+    tags.forEach(k=>{
+        k.name=k.tagName
+        k.id=k.tagId
+        k.disabled=false
+        var cate=cates[k.categoryId]
+        if(cate){
+            cate.children.push(k)
+        }
+         
+    })
+    var datas=[]
+    for(let key in cates){
+        datas.push(cates[key])
+    }
+    return datas;
+};
+
+export const initTags = callback => {   
+    var tagkey='forum-tags-list'
+    var tagStr=localStorage.getItem(tagkey);
+    if(!tagStr||tagStr=='null' || tagStr=='undefined'){
+      getAllTag().then(res=>{
+        var tips = res.data.tips;
+        if(tips.isOk){ 
+          localStorage.setItem(tagkey,JSON.stringify(res.data.data))
+          callback(res.data.data)
+        }else{
+          this.$message.error(tips.isOk)
+        } 
+      })
+    }else{ 
+        callback(JSON.parse(tagStr))
+    }
+  };

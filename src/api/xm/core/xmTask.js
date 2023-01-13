@@ -86,7 +86,11 @@ export const initDicts = (that) => {
     that.dicts['marketState']=[{id:'0',name:'关闭'},{id:'1',name:'待付款'},{id:'2',name:'已开通'},{id:'3',name:'已过期'}]
     if(itemCodes.length>0){
        initSimpleDicts('all',itemCodes).then(res=>{
-           Object.assign(that.dicts,res.data.data)
+        if(that.dicts){
+            Object.assign(that.dicts,res.data.data)
+        }else{
+            that.dicts=res.data.data
+        } 
        });
     }
    };
@@ -99,6 +103,155 @@ export const initDicts = (that) => {
         return res; 
    };
 
+   export const logBrowseTimes=(taskId)=>{
+    /**
+   * 登记浏览量
+   */
+     var taskReadNumsStr=localStorage.getItem('task-read-nums')
+     var date=new Date();
+     var taskReadNums={ltime:date.getTime(),data:[]}
+     if(taskReadNumsStr){
+       taskReadNums=JSON.parse(taskReadNumsStr)
+     }  
+     taskReadNums.data.push({ taskId: taskId,nums:1 })
+     localStorage.setItem('task-read-nums',JSON.stringify(taskReadNums));
+     var ntime=date.getTime();
+     if((ntime-taskReadNums.ltime)>=10*60*1000){
+       localStorage.removeItem('task-read-nums');
+       upBrowseTimes(taskReadNums.data);
+      
+     }
+     //upBrowseTimes(taskReadNums.data);
+}
+export const formatTask = taskMsg => { 
+    taskMsg.gradeId=taskMsg.capaLvls;
+    taskMsg.creditId=taskMsg.creditId;
+    taskMsg.guardId=taskMsg.supRequires;
+    taskMsg.ilvlId=taskMsg.interestLvls;
+    formatCreditLogo(taskMsg)
+    formatGradeLogo(taskMsg)
+    formatGuardLogo(taskMsg)
+    formatInterestsLogo(taskMsg)
+    taskMsg.skills = taskMsg.taskSkillNames ? taskMsg.taskSkillNames.split(',') : [];
+};
+
+
+
+export const formatAtRemark = at => {  
+if(!at){
+  return "请输入预算金额"
+}
+if(at<10000){
+  return ""
+}
+if(at<10000){
+  return "约 " +(at) +" 元"
+}else if(at<1000000){
+  return "约 " +(at/10000).toFixed(2)+" 万元"
+}else if(at<1000000){
+  return "约 " +(at/10000).toFixed(2)+" 万元"
+}else if(at<1000000){
+  return "约 " +(at/10000).toFixed(2)+" 万元"
+}else if(at>=1000000){
+  return "约 " +(at/1000000).toFixed(2)+" 百万元"
+}
+};
+
+
+export const formatWorkloadRemark = workload => {   
+if(!workload){
+  return "请输入估工时"
+}
+
+if(workload<8){
+  return ""
+}
+if(workload<1760){
+  return "约 " +(workload/8).toFixed(1)+" 人天 (1人天=8人时)"
+}else if(workload<1760*12){
+  return "约 " +(workload/(1760)).toFixed(1)+" 人月 (1人月=22人天)"
+}else if(workload>=1760*12){
+  return "约 " +(workload/1760*12).toFixed(2)+" 人年 (1人年=12人月)"
+}
+
+};
+
+//更新任务的某些字段
+export const editSomeFieldsTask = params => {
+  return axios.post(`${base}/xm/core/xmTask/editSomeFields`, params);
+};
+
+export const getTaskState= task => {
+  let obj = {
+    type: '',
+    state: '',
+    desc: '',
+  };
+  if (task.bidStep == '0') {
+    obj = {
+      type: 'info',
+      state: '草稿',
+      desc: '仅自己可见可编辑',
+    };
+    return obj;
+  } else if (task.bidStep == '1') {
+    obj = {
+      type: 'info',
+      state: '发布需求',
+      desc: '服务商可以搜素，但不可以投标。',
+    };
+    return obj;
+  } else if (task.bidStep == '2') {
+    obj = {
+      type: 'warning',
+      state: '投标进行中',
+      desc: '投标截止时间：'+((task.bidEtime ? task.bidEtime.slice(0,10) : '')||'未设置'),
+    };
+    return obj;
+  } else if (task.bidStep == '3') {
+    obj = {
+      type: 'warning',
+      state: '待选标',
+      desc: '投标截止时间：'+((task.bidEtime ? task.bidEtime.slice(0,10) : '')||'未设置'),
+    };
+    return obj;
+  } else if (task.bidStep == '4') {
+    obj = {
+      type: 'warning',
+      state: '托管赏金',
+      desc: '甲方将任务赏金拓管到平台',
+    };
+    return obj;
+  } else if (task.bidStep == '5') {
+    obj = {
+      type: 'danger',
+      state: '工作中',
+      desc: '服务商工作中',
+    };
+    return obj;
+  } else if (task.bidStep == '6') {
+    obj = {
+      type: 'success',
+      state: '确认验收',
+      desc: '甲方确认验收完毕，付款完毕',
+    };
+    return obj;
+  } else if (task.bidStep == '7') {
+    obj = {
+      type: 'success',
+      state: '确认验收',
+      desc: '甲方确认验收完毕，付款完毕',
+    };
+    return obj;
+  } else {
+    obj = {
+      type: 'danger',
+      state: '未知',
+      desc: '无法获取任务状态',
+    };
+    return obj;
+  } 
+};
 
 
 

@@ -52,7 +52,7 @@ export const constantRouterMap = [
         path: 'dashboard',
         component: _import('xm/XmOverview'),
         name: '首页',
-        meta: { title: '首页', icon: 'home-page', noCache: true }
+        meta: { title: '首页', icon: 'home-page', noCache: true ,roles:["user"]}
       },
       // {
       //   path: 'updateUserInfo',

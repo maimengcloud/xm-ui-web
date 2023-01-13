@@ -26,3 +26,69 @@ export const editCategory = params => { return axios.post(`${base}/mdp/arc/categ
 
 //新增一个
 export const addCategory = params => { return axios.post(`${base}/mdp/arc/category/add`, params); };
+
+//将列表数据转化为树状结构数据
+export const translateDataToTree = (data2) => { 
+
+    var data=JSON.parse(JSON.stringify(data2));
+
+    let parents = data.filter(value =>{  
+        //如果我的上级为空，则我是最上级
+        if(value.pid == 'undefined' || value.pid == null  || value.pid == ''||value.pid=='0'||value.pid=='C0'){
+            return true;
+
+            //如果我的上级不在列表中，我作为最上级
+        }else if(data.some(i=>value.pid==i.id)){
+            return false;
+        }else {
+            return true
+        }
+     
+    }) 
+    let children = data.filter(value =>{
+        if(data.some(i=>value.pid==i.id)){
+            return true;
+        }else{
+            return false;
+        } 
+    })  
+    let translator = (parents, children) => {
+        parents.forEach((parent) => {
+            children.forEach((current, index) => {
+                if (current.pid === parent.id) {
+                    let temp = JSON.parse(JSON.stringify(children))
+                    temp.splice(index, 1)
+                    translator([current], temp)
+                    typeof parent.children !== 'undefined' ? parent.children.push(current) : parent.children = [current]
+                }
+            }
+            )
+        }
+        )
+    }
+
+    translator(parents, children)
+
+    return parents
+};
+
+
+
+export const initCates = (callback) => {  
+    var ckey='forum-category-list'
+    var categorysStr=localStorage.getItem(ckey);
+    if(!categorysStr||categorysStr=='null' || categorysStr=='undefined'){
+      listTreeCategory({categoryType:'5'}).then(res=>{
+        var tips = res.data.tips;
+        if(tips.isOk){  
+          localStorage.setItem(ckey,JSON.stringify(res.data.data))
+          callback(res.data.data) 
+        }else{
+          this.$message.error(tips.isOk)
+        }
+        
+      })
+    }else{
+      callback(JSON.parse(categorysStr)) 
+    }
+  };
