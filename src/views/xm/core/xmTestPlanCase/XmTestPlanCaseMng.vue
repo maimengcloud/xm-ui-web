@@ -1,15 +1,15 @@
 <template>
 	<section>
         <el-row> 
-            <el-col :span="6">
+            <el-col :span="6" v-if="!xmTestCase||!xmTestCase.id">
                 <xm-func-select v-if="xmProductCpd && xmProductCpd.id" class="padding-right padding-left" :xm-product="xmProductCpd" @row-click="onXmFuncRowClick"> 
                 </xm-func-select>
             </el-col>
-            <el-col :span="18">
+            <el-col :span="!xmTestCase||!xmTestCase.id?18:24">
                 <el-row>
                     <el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"  clearable></el-input>
                     <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestPlanCases" icon="el-icon-search">查询</el-button>
-                    <span style="float:right;">
+                    <span style="float:right;" v-if="!xmTestCase||!xmTestCase.id">
                         <el-button type="primary" @click="showAdd" icon="el-icon-plus">将用例纳入计划</el-button>
                         <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>
                     </span>
@@ -217,6 +217,10 @@ export default {
             }
             if(this.xmTestCasedb && this.xmTestCasedb.id){
                 params.casedbId=this.xmTestCasedb.id
+            }
+            
+            if(this.xmTestCase && this.xmTestCase.id){
+                params.caseId=this.xmTestCase.id
             }
             if(this.xmTestPlan && this.xmTestPlan.id){
                 params.planId=this.xmTestPlan.id
