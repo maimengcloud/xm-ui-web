@@ -57,7 +57,7 @@
 										前置条件
 									</el-row> 
 									<el-row>
-										<el-input type="textarea" :rows="4" v-model="editForm.preRemark" placeholder="请输入前置条件"  @change="editSomeFields(editForm,'preRmark',$event)"></el-input>
+										<el-input type="textarea" :rows="4" v-model="editForm.preRemark" placeholder="请输入前置条件"  @change="editSomeFields(editForm,'preRemark',$event)"></el-input>
 									</el-row> 
 								</el-form-item>   
 								<el-form-item label="" prop="testStep" label-width="0px">

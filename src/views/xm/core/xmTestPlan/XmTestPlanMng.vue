@@ -1,7 +1,7 @@
 <template>
 	<section class="page-container border padding">
 		<el-row>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
+			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"  clearable></el-input>
 			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestPlans" icon="el-icon-search">查询</el-button>
 			<span style="float:right;">
 			    <el-button type="primary" @click="showAdd" icon="el-icon-plus">测试计划</el-button>

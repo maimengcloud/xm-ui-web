@@ -7,9 +7,9 @@
             </el-col>
             <el-col :span="18">
                 <el-row>
-                    <el-input v-model="filters.key" style="width: 20%;" placeholder="名称 按回车" @keyup.enter.native="searchXmTestCases"></el-input>
+                    <el-input v-model="filters.key" style="width: 20%;" placeholder="名称 按回车" @keyup.enter.native="searchXmTestCases" clearable></el-input>
                     
-                    <el-select v-model="filters.caseStatus" style="width:120px;" placeholder="审核状态" clearable>
+                    <el-select v-model="filters.caseStatus" style="width:120px;" placeholder="审核状态"  clearable>
                         <el-option v-for="(item,index) in dicts['testCaseStatus']" :key="index" :value="item.id" :label="item.name"></el-option>
                     </el-select>
                     <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestCases" icon="el-icon-search">查询</el-button>

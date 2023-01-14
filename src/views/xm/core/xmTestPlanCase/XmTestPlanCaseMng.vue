@@ -7,7 +7,7 @@
             </el-col>
             <el-col :span="18">
                 <el-row>
-                    <el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
+                    <el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"  clearable></el-input>
                     <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestPlanCases" icon="el-icon-search">查询</el-button>
                     <span style="float:right;">
                         <el-button type="primary" @click="showAdd" icon="el-icon-plus">将用例纳入计划</el-button>
@@ -32,6 +32,11 @@
                                 </span>
                             </template>
                         </el-table-column>	
+                        <el-table-column prop="caseStatus" label="用例状态" width="100" show-overflow-tooltip>
+                            <template slot-scope="scope"> 
+                                <mdp-select-dict-tag :dict="dicts['testCaseStatus']" v-model="scope.row.caseStatus" effect="dark" @change="editSomeFields(scope.row,'caseStatus',$event)"></mdp-select-dict-tag> 
+                            </template>
+                        </el-table-column>  
                         <template v-if="select!==true"> 
                             <el-table-column prop="execStatus" label="执行结果" width="120" show-overflow-tooltip>
                                 <template slot-scope="scope"> 
@@ -143,6 +148,7 @@ export default {
             load:{ list: false, edit: false, del: false, add: false },//查询中...
             sels: [],//列表选中数据
             dicts:{
+                testCaseStatus:[],
                 //sex: [{id:'1',name:'男'},{id:'2',name:'女'}]
             },//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
             addFormVisible: false,//新增xmTestPlanCase界面是否显示

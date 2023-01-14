@@ -2,7 +2,7 @@
 	<section class="border padding">
 		<el-row>
             <xm-product-select v-if="!xmProduct" style="display:inline;" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="clearProduct"></xm-product-select>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
+			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询" clearable></el-input>
 			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestCasedbs" icon="el-icon-search">查询</el-button>
 			<span style="float:right;">
 			    <el-button type="primary" @click="showAdd" icon="el-icon-plus">添加用例库 </el-button>
