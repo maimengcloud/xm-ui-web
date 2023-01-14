@@ -39,8 +39,9 @@
                                 </template>
                             </el-table-column>
                             <el-table-column prop="execUsername" label="执行人姓名" min-width="120" >
-                                <template slot-scope="scope">
-                                    <span> {{scope.row.execUsername}} </span>
+                                <template slot-scope="scope">  
+                                    <mdp-select-user-xm  userid-key="execUserid" username-key="execUsername" v-model="scope.row" :disabled="true"> 
+                                    </mdp-select-user-xm>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="priority" label="优先级" width="120" >
@@ -89,12 +90,13 @@ import { initDicts,listXmTestPlanCase, delXmTestPlanCase, batchDelXmTestPlanCase
 import  XmTestPlanCaseEdit from './XmTestPlanCaseEdit';//新增修改界面
 import  XmTestCaseSelect from '../xmTestCase/XmTestCaseSelect';//新增修改界面 
 import  XmFuncSelect from '../xmFunc/XmFuncSelect';//新增修改界面
+import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
 import { mapGetters } from 'vuex'
 
 export default {
     name:'xmTestPlanCaseMng',
     components: {
-        XmTestPlanCaseEdit,XmTestCaseSelect,XmFuncSelect,
+        XmTestPlanCaseEdit,XmTestCaseSelect,XmFuncSelect,MdpSelectUserXm,
     },
     props:['visible','xmTestPlan','xmTestCasedb','xmTestCase','xmProduct','select'],
     computed: {

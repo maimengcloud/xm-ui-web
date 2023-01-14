@@ -47,10 +47,19 @@
                             </template>
                         </el-table-column>      
                         <el-table-column prop="cusername" label="创建人姓名" min-width="120" show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                <span> {{scope.row.cusername}} </span>
+                            <template slot-scope="scope"> 
+                                <mdp-select-user-xm  userid-key="cuserid" username-key="cusername" v-model="scope.row" :disabled="true"> 
+                                </mdp-select-user-xm>
                             </template>
                         </el-table-column> 
+                        <el-table-column prop="lusername" label="维护人" min-width="120" show-overflow-tooltip>
+                            <template slot-scope="scope"> 
+                                <mdp-select-user-xm  userid-key="luserid" username-key="lusername" v-model="scope.row" :disabled="true"> 
+                                </mdp-select-user-xm>
+                            </template>
+                        </el-table-column> 
+
+
                     </el-table>
                     <el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
                 </el-row>
@@ -79,12 +88,13 @@ import config from '@/common/config';//全局公共库
 import { initDicts,listXmTestCase, delXmTestCase, batchDelXmTestCase,editSomeFieldsXmTestCase } from '@/api/xm/core/xmTestCase';
 import  XmTestCaseEdit from './XmTestCaseEdit';//新增修改界面
 import  XmFuncSelect from '../xmFunc/XmFuncSelect';//新增修改界面
+import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
 import { mapGetters } from 'vuex'
 
 export default {
     name:'xmTestCaseMng',
     components: {
-        XmTestCaseEdit,XmFuncSelect
+        XmTestCaseEdit,XmFuncSelect,MdpSelectUserXm
     },
     props:['visible','xmTestCasedb','scene','xmMenu','xmProduct'],
     computed: {

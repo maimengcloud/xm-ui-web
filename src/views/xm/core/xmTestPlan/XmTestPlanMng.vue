@@ -29,8 +29,9 @@
                     </template>
 				</el-table-column> 
                 <el-table-column prop="cusername" label="负责人" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span>   {{scope.row.cusername}} </span>
+				    <template slot-scope="scope"> 
+                        <mdp-select-user-xm  userid-key="cuserid" username-key="cusername" v-model="scope.row" :disabled="true"> 
+                                    </mdp-select-user-xm>
                     </template>
 				</el-table-column> 
 				<el-table-column prop="status" label="状态" width="120" show-overflow-tooltip>
@@ -85,12 +86,13 @@ import util from '@/common/js/util';//全局公共库
 import config from '@/common/config';//全局公共库
 import { initDicts,listXmTestPlan, delXmTestPlan, batchDelXmTestPlan,editSomeFieldsXmTestPlan } from '@/api/xm/core/xmTestPlan';
 import  XmTestPlanEdit from './XmTestPlanEdit';//新增修改界面
+import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
 import { mapGetters } from 'vuex'
 
 export default {
     name:'xmTestPlanMng',
     components: {
-        XmTestPlanEdit,
+        XmTestPlanEdit,MdpSelectUserXm,
     },
     props:['visible','xmTestCasedb'],
     computed: {

@@ -11,11 +11,11 @@
 
               <div class="field-info" :class="{disabled:disabled===true,enabled:disabled!==true}">
                 <slot name="field-info" :value="myVal"  >
-								<span :class="{'field-value':label,'field-value-center':!label}" v-if="!avaterCpd.isNull">{{avaterCpd.innerText}} </span>
-								<span :class="{'field-value':label,'field-value-center':!label}" v-else><span class="label-font-color">无</span></span> 
-                <slot name="label">
-								  <span class="field-label" v-if="label">{{label}}</span> 
-                </slot> 
+                  <span :class="{'field-value':label,'field-value-center':!label}" v-if="!avaterCpd.isNull">{{avaterCpd.innerText}} </span>
+                  <span :class="{'field-value':label,'field-value-center':!label}" v-else><span class="label-font-color">无</span></span> 
+                  <slot name="label">
+                    <span class="field-label" v-if="label">{{label}}</span> 
+                  </slot> 
                 </slot>
 							</div>  
               <div v-if="disabled!==true" class="field-oper" :class="{disabled:disabled===true,enabled:disabled!==true}">
