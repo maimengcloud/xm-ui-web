@@ -3,7 +3,7 @@
 		<el-row>
 			<el-input v-model="filters.key" style="width: 60%;" placeholder="名称 按回车" @keyup.enter.native="searchXmFuncs" clearable></el-input> 
 			<span style="float:right;">
-			    <el-button type="primary" @click="showAdd" icon="el-icon-plus" plain> </el-button>
+			    <el-button type="primary" @click="showAdd" icon="el-icon-plus"> </el-button>
 		    </span>
 		</el-row>
 		<el-row>
@@ -17,10 +17,10 @@
 									<span> {{scope.row.name}} </span> 
  									 <div class="tool-bar">
                                         <span class="u-btn">
-                                                    <el-button    @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建子功能模块" circle plain size="mini"> </el-button>
+                                                    <el-button    @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建子功能模块" circle size="mini"> </el-button>
                                                     
-                                            <el-button      @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle plain size="mini"> </el-button>    
-                                            <el-button type="danger" v-loading="load.del" @click="handleDel(scope.row)" :disabled=" !editForm || !editForm.id || load.del==true" icon="el-icon-delete" circle plain size="mini"></el-button>
+                                            <el-button      @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle size="mini"> </el-button>    
+                                            <el-button type="danger" v-loading="load.del" @click="handleDel(scope.row)" :disabled=" !editForm || !editForm.id || load.del==true" icon="el-icon-delete" circle size="mini"></el-button>
  
                                         </span>
 									</div>
@@ -31,14 +31,14 @@
 		</el-row>
 		<el-row>
 			<!--编辑 XmFunc 功能模块表界面-->
-			<el-drawer title="编辑功能模块表" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
+			<el-dialog title="编辑模块" :visible.sync="editFormVisible"  width="500px"  append-to-body   :close-on-click-modal="false">
 			    <xm-func-edit op-type="edit" :xm-func="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-func-edit>
-			</el-drawer>
+			</el-dialog>
 
 			<!--新增 XmFunc 功能模块表界面-->
-			<el-drawer title="新增功能模块表" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
+			<el-dialog title="新增模块" :visible.sync="addFormVisible"  width="500px"  append-to-body  :close-on-click-modal="false">
 			    <xm-func-edit op-type="add" :xm-func="addForm" :parent-func="parentFunc" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-func-edit>
-			</el-drawer>
+			</el-dialog>
 	    </el-row>
 	</section>
 </template>

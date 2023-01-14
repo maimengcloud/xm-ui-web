@@ -14,8 +14,8 @@
                     </el-select>
                     <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestCases" icon="el-icon-search">查询</el-button>
                     <span style="float:right;">
-                        <el-button type="primary" @click="showAdd" icon="el-icon-plus" plain> </el-button>
-                        <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete" plain></el-button>
+                        <el-button type="primary" @click="showAdd" icon="el-icon-plus"> </el-button>
+                        <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>
                     </span>
                 </el-row>
                 <el-row>
@@ -32,7 +32,7 @@
                             <template slot-scope="scope">
                                 <span> <el-link  @click="showEdit( scope.row,scope.$index)">{{scope.row.caseName}} </el-link></span>
                                 <span class="tool-bar">
-                                    <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" circle  plain></el-button> 
+                                    <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" circle ></el-button> 
                                 </span>
                             </template>
                         </el-table-column>  

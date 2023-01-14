@@ -4,8 +4,8 @@
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
 			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestPlans" icon="el-icon-search">查询</el-button>
 			<span style="float:right;">
-			    <el-button type="primary" @click="showAdd" icon="el-icon-plus" plain> </el-button>
-			    <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete" plain></el-button>
+			    <el-button type="primary" @click="showAdd" icon="el-icon-plus"> </el-button>
+			    <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>
 		    </span>
 		</el-row>
 		<el-row class="padding-top">
@@ -23,8 +23,8 @@
 				        <span> <el-link @click="goToTestPlanCase(scope.row)"> {{scope.row.name}}</el-link> </span>
                         <span  class="tool-bar">
                             
-                         <el-button type="primary" @click="goToTestPlanCase(scope.row)" icon="el-icon-finished"  plain circle title="规划用例"></el-button> 
-                         <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"  plain circle title="编辑用例"></el-button> 
+                         <el-button type="primary" @click="goToTestPlanCase(scope.row)" icon="el-icon-finished"  circle title="规划用例"></el-button> 
+                         <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"  circle title="编辑用例"></el-button> 
                         </span>
                     </template>
 				</el-table-column> 

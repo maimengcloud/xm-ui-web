@@ -5,8 +5,8 @@
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
 			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestCasedbs" icon="el-icon-search">查询</el-button>
 			<span style="float:right;">
-			    <el-button type="primary" @click="showAdd" icon="el-icon-plus" plain> </el-button>
-			    <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete" plain></el-button>
+			    <el-button type="primary" @click="showAdd" icon="el-icon-plus"> </el-button>
+			    <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>
 		    </span>
 		</el-row>
 		<el-row>
@@ -25,8 +25,8 @@
 				        <span v-if="select!==true"><el-link @click="goCasedbInfo(scope.row)">{{scope.row.name}} </el-link> </span>
                         <span v-else> {{scope.row.name}}  </span>
                         <span class="tool-bar"> 
-                            <el-button type="warning" @click="goCasedbInfo(scope.row)" icon="el-icon-s-data"  plain circle title="视图"></el-button>  
-                            <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"  plain circle></el-button>  
+                            <el-button type="warning" @click="goCasedbInfo(scope.row)" icon="el-icon-s-data"  circle title="视图"></el-button>  
+                            <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"  circle></el-button>  
                         </span>
                     </template>
 				</el-table-column>

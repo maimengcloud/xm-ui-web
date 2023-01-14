@@ -1,8 +1,8 @@
 <template>
 	<section> 
-		<el-row ref="table" class="padding">
+		<el-row ref="table">
 		<!--编辑界面 XmFunc 功能模块表--> 
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">
+			<el-form :model="editForm"   :rules="editFormRules" ref="editFormRef">
 
 				<el-form-item label="编号" prop="id">
 					<el-input v-model="editForm.id" :disabled="opType!='add'" placeholder="编号，留空则后台自动生成" :maxlength="50" @change="editSomeFields(editForm,'id',$event)"></el-input>
