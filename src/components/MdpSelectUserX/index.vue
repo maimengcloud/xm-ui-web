@@ -1,7 +1,7 @@
 <template>    
     <el-row>
 						<div class="field-box">  
-							<el-avatar class="avater" :class="{'dashed-circle':avaterCpd.isNull}"  :icon="avaterCpd.icon" :style="{backgroundColor:avaterCpd.color}">{{avaterCpd.innerText}}</el-avatar> 
+							<el-avatar class="avater" :class="{'dashed-circle':avaterCpd.isNull}"   :style="{backgroundColor:avaterCpd.color}" :src="getHeadimgurl(avaterCpd.userid,avaterCpd.headimgurl)" @error="onImgError(avaterCpd.userid,$event)">{{avaterCpd.innerText}}</el-avatar> 
 							
               <div class="field-info"  :class="{disabled:disabled===true,enabled:disabled!==true}">
                 <slot name="info" :value="myVal">
@@ -21,7 +21,7 @@
                           <el-option class="avatar-container" v-for="(item,index) in users" :key="index" :value="item" :label="item.username">  
                           
                             <div class="avatar-wrapper">
-                                  <el-avatar class="user-avatar"  :style="{backgroundColor:getMyColor(item)}">{{item.username}}</el-avatar> 
+                                  <el-avatar class="user-avatar"  :style="{backgroundColor:getMyColor(item)}" :src="getHeadimgurl(item.userid,item.headimgurl)" @error="onImgError(item.userid,$event)">{{item.username}}</el-avatar> 
                                   <span class="username">{{item.username}}</span>
                                   <i v-if=" myVal && myVal.userid==item.userid" class="el-icon-check"></i> 
                                   <i v-else>&nbsp;&nbsp;</i>  
@@ -44,6 +44,8 @@
   <script>  
   
   import util  from '@/common/js/util';//全局公共库
+  
+  import imtUtil  from '@/api/imgUtil';//全局公共库
   import UsersSelect from '@/views/mdp/sys/user/UsersSelectOnly.vue'
   export default {
     name: 'mdp-select-user-x',
@@ -53,7 +55,11 @@
       avaterCpd(){  
         var isEmpty=this.isEmpty(this.myVal)
         var username=isEmpty?"":(this.myVal.username?this.myVal.username:this.myVal.userid)
-        var obj={isNull:isEmpty,icon:'el-icon-user',color:'#E4E7ED',innerText:username} 
+        var obj={isNull:isEmpty,icon:'el-icon-user',color:'#E4E7ED',innerText:username,userid:'',headimgurl:''} 
+        if(!isEmpty){
+            obj.headimgurl=this.myVal.headimgurl
+            obj.userid=this.myVal.userid
+          }
           if(this.getColor||this.color){
             if(this.getColor){
                obj.color= this.getColor(this.myVal)
@@ -66,6 +72,8 @@
                  obj.color= util.getColor(this.myVal.userid) 
             } 
           } 
+
+
           if(this.getIcon||this.icon){
             if(this.getIcon){
               obj.icon= this.getIcon(this.myVal)
@@ -73,13 +81,15 @@
              obj.icon=this.icon
             }
           } 
+
+          debugger;
           
         return obj;
       }
     },
     data(){
         return {
-            myVal:{userid:'',username:''}, 
+            myVal:{userid:'',username:'',headimgurl:''}, 
             users:[],
             deptUserVisible:false,
             projectVisible:false,
@@ -148,7 +158,7 @@
      
     },
     methods: {     
-      
+      ...imtUtil,
         isEmpty(v) { 
           switch (typeof v) {
           case 'undefined':
@@ -205,7 +215,7 @@
               myVal.username=this.value[this.usernameKey]  
               this.myVal=myVal
             }else{
-              this.myVal={userid:'',username:''}
+              this.myVal={userid:'',username:'',headimgurl:''}
             }
           
       }, 
