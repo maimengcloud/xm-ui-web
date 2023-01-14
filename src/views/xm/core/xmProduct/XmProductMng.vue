@@ -188,8 +188,12 @@
 								<div class="project-rate">
 									<el-progress :percentage="(p.finishRate==null?0:p.finishRate)"></el-progress>
 								</div>
-								<div class="project-footer">
-									<div class="project-type">{{p.xmType}}</div>
+								<div class="project-footer"> 
+									<div class="project-type" title="产品经理">
+											<mdp-select-user-xm v-if="p.pmUserid" :value="p" userid-key="pmUserid" username-key="pmUsername" :disabled="true"></mdp-select-user-xm> 
+											<mdp-select-user-xm v-else-if="p.admUserid" :value="p" userid-key="admUserid" username-key="admUsername" :disabled="true"></mdp-select-user-xm> 
+										</div>
+										<div class="project-period">{{p.startTime?p.startTime.substr(0,10):''}} ~{{p.endTime?p.endTime.substr(0,10):''}}</div>
 									<!--<div class="project-period">{{p.startTime.substr(0,10)}} ~{{p.endTime.substr(0,10)}}</div>-->
 								</div>
 							</el-card>
@@ -262,8 +266,8 @@
 							</template>
 						</el-table-column>
 						<el-table-column prop="pmUsername" label="产品经理" width="150" sortable show-overflow-tooltip>
-							<template slot-scope="scope"> 						
-								<el-tag v-if="scope.row.pmUsername">{{scope.row.pmUsername}}</el-tag> 
+							<template slot-scope="scope"> 	
+								<mdp-select-user-xm v-model="scope.row" userid-key="pmUserid" username-key="pmUsername" :disabled="true"></mdp-select-user-xm>
 							</template>
 						</el-table-column>
 						
@@ -400,6 +404,7 @@
 	import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';
 	import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'; 
 	import { addUserFocus , delUserFocus } from '@/api/mdp/sys/userFocus';
+	import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
 
 	import Guider from '@/components/Guider/Index.js';
 
@@ -823,6 +828,7 @@
 			XmIterationSelect,
 			XmProductSelect,
 			XmProductTplMng, 
+			MdpSelectUserXm,
 		    //在下面添加其它组件
 		},
 		mounted() {

@@ -148,7 +148,11 @@
 										<el-progress :percentage="(p.finishRate==null?0:p.finishRate)"></el-progress>
 									</div>
 									<div class="project-footer">
-										<div class="project-type" title="项目经理">{{p.pmUsername?p.pmUsername:p.createUsername}}</div>
+										<div class="project-type" title="项目经理">
+											<mdp-select-user-xm v-if="p.pmUserid" :value="p" userid-key="pmUserid" username-key="pmUsername" :disabled="true"></mdp-select-user-xm> 
+											<mdp-select-user-xm v-else-if="p.createUserid" :value="p" userid-key="createUserid" username-key="createUsername" :disabled="true"></mdp-select-user-xm> 
+
+										</div>
 										<div class="project-period">{{p.startTime?p.startTime.substr(0,10):''}} ~{{p.endTime?p.endTime.substr(0,10):''}}</div>
 									</div>
 								</el-card>
@@ -362,6 +366,7 @@
 	import xmProjectInfo from './XmProjectInfo'; 
 	import XmProjectTplMng from './XmProjectTplMng'; 
 	import XmProductSelect from '@/views/xm/core/components/XmProductSelect';
+	import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
 
 	if(!Vue.component("xm-project-info")){
 		
@@ -896,7 +901,7 @@
 			
 			XmProductSelect,
 			xmTaskMng,
-			XmProjectTplMng,
+			XmProjectTplMng,MdpSelectUserXm
 		    //在下面添加其它组件
 		},
 		mounted() { 
