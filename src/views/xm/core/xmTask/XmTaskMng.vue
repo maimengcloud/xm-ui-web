@@ -467,14 +467,9 @@
                 width="120"
                 show-overflow-tooltip
               >
-								<template slot-scope="scope">
-									<div class="cell-text">
-										{{scope.row.createUsername}}
-									</div>
-									<span class="cell-bar">
-										 <el-button @click="$refs.xmGroupDialog.open({data:scope.row,action:'createUserid'})">选负责人</el-button>
-									</span>
-								</template>
+								<template slot-scope="scope"> 
+                    <mdp-select-user-xm v-model="scope.row" userid-key="createUserid" username-key="createUsername" :project-id="scope.row.projectId" @change="editXmTaskSomeFields(scope.row,'createUserid',$event)"></mdp-select-user-xm>
+ 								</template>
               </el-table-column>
               <el-table-column
                 sortable
@@ -483,27 +478,9 @@
                 width="120"
                 show-overflow-tooltip
               >
-                <template slot-scope="scope">
-                  <span v-if="scope.row.ntype=='0'">
-                    <span v-if="scope.row.crowd=='1'||scope.row.executorUserid">
-                      <span
-                        v-for="(item, index) in [formatExeUsernames(scope.row)]"
-                        :key="index"
-                      >
-                        <el-link
-                          :type="item.type"
-                          @click.stop="showExecusers(scope.row)"
-                          >{{ item.showMsg }}</el-link
-                        >
-                      </span>
-                    </span>
-                    <span v-else-if="!scope.row.executorUserid">
-                      <el-link
-                          @click="$refs.xmGroupDialog.open({data:scope.row,action:'executorUserid'})"
-                          >去设置</el-link>
-                    </span>
-                  </span>
-                </template>
+								<template slot-scope="scope"> 
+                    <mdp-select-user-xm :key="scope.row.id" v-model="scope.row" userid-key="executorUserid" username-key="executorUsername" :project-id="scope.row.projectId" @change="editXmTaskSomeFields(scope.row,'executorUserid',$event)"></mdp-select-user-xm>
+ 								</template>
               </el-table-column>
               <el-table-column
                 sortable
@@ -1839,7 +1816,7 @@ export default {
       });
     },
     //查询时选择责任人
-    selectCreateUserConfirm(groupUsers,option) {
+    selectCreateUserConfirm(user) {
       if(option && option.action==='createUserid'){
         if (groupUsers && groupUsers.length > 0) {
           var user= groupUsers[0];

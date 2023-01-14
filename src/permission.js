@@ -50,7 +50,7 @@ const whiteList = [
 
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar  
-  debugger;
+  ;
   if(to.path==='/' || to.path.indexOf('/404')>=0 || to.path.indexOf('/401')>=0 || to.path.indexOf('/login')>=0 ||to.path.indexOf('/logout')>=0){
 	next()  
 	NProgress.done()

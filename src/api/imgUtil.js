@@ -89,7 +89,7 @@ h55,h56,h57,h58,h59,h60,h61,h62,h63,h64,h64,h66,h67,h68,h69,h70
  export default {
 
   onImgError:function(userid,$event){
-    debugger;
+
     let img = $event.srcElement;
     img.src = this.getDefHeadimg(userid)
     img.onerror = null; //防止闪图
@@ -124,7 +124,7 @@ getDefHeadimg:function(userid){
  * @returns 
  */
  getHeadimgurl:function (userid,headimgurl,rand) {  
-  debugger;
+  ;
   if(!userid){
     return null;
   }

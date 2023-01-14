@@ -63,7 +63,7 @@
 
                 , ArrayBuffer = view.ArrayBuffer
                 , Uint8Array = view.Uint8Array
-                ;
+            
             FakeBlob.fake = FB_proto.fake = true;
             while (file_ex_code--) {
                 FileException.prototype[file_ex_codes[file_ex_code]] = file_ex_code + 1;
@@ -75,7 +75,7 @@
                 var
                     type = blob.type
                     , data_URI_header
-                    ;
+                
                 if (type === null) {
                     type = "application/octet-stream";
                 }
@@ -108,7 +108,7 @@
                         , buf = new Uint8Array(data)
                         , i = 0
                         , buf_len = buf.length
-                        ;
+                    
                     for (; i < buf_len; i++) {
                         str += String.fromCharCode(buf[i]);
                     }

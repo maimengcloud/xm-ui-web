@@ -268,7 +268,7 @@ export default {
                     loginParams.branchId=params.branchId
                 }
                 this.$store.dispatch("LoginByUserloginid",loginParams).then(res => {
-                    ;
+                
                     this.loading = false 
                     if(res.data.tips.isOk==true){
                         this.loading = true;
@@ -378,7 +378,7 @@ export default {
                 loginParams.grantType="password"
                 loginParams.authType='password_display_userid'  
                 this.$store.dispatch("LoginByUserloginid",loginParams).then(res => {
-                    ;
+                
                     this.loading = false 
                     if(res.data.tips.isOk==true){
                         this.loading = true;

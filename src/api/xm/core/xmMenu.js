@@ -59,7 +59,7 @@ export const initDicts = (that) => {
     var itemCodes=['menuStatus','demandSource','demandLvl','demandType','priority','dclass'];//在此添加要加载的字典 如['sex','grade','lvl']
     if(itemCodes.length>0){
        initSimpleDicts('all',itemCodes).then(res=>{
-        debugger;
+    
            Object.assign(that.dicts,res.data.data)
        });
     }

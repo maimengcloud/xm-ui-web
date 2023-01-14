@@ -53,7 +53,7 @@
     computed: { 
       
       avaterCpd(){  
-        debugger;
+    
         var isEmpty=this.isEmpty(this.myVal)
         var username=isEmpty?"":(this.myVal.username?this.myVal.username:this.myVal.userid)
         var obj={isNull:isEmpty,icon:'el-icon-user',color:'#E4E7ED',innerText:username,userid:'',headimgurl:''} 
@@ -83,7 +83,7 @@
             }
           } 
 
-          debugger;
+      
           
         return obj;
       }
@@ -106,7 +106,7 @@
         },  
         
       myVal(){
-        debugger;
+    
          if(!this.myVal||!this.myVal.userid){
               if(this.value && this.value[this.useridKey]){
                 this.value[this.useridKey]=""

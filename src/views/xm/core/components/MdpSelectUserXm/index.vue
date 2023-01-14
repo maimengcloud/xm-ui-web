@@ -11,10 +11,10 @@
 
               <div class="field-info" :class="{disabled:disabled===true,enabled:disabled!==true}">
                 <slot name="field-info" :value="myVal"  >
-								<span class="field-value" v-if="!avaterCpd.isNull">{{avaterCpd.innerText}} </span>
-								<span class="field-value" v-else><span class="label-font-color">无</span></span> 
+								<span :class="{'field-value':label,'field-value-center':!label}" v-if="!avaterCpd.isNull">{{avaterCpd.innerText}} </span>
+								<span :class="{'field-value':label,'field-value-center':!label}" v-else><span class="label-font-color">无</span></span> 
                 <slot name="label">
-								  <span class="field-label">{{label}}</span> 
+								  <span class="field-label" v-if="label">{{label}}</span> 
                 </slot> 
                 </slot>
 							</div>  
@@ -67,7 +67,7 @@
     components: { UsersSelect, XmGroupSelect },
     computed: { 
       avaterCpd(){  
-        debugger;
+        
         var isEmpty=this.isEmpty(this.myVal)
         var username=isEmpty?"":(this.myVal.username?this.myVal.username:this.myVal.userid)
         var obj={isNull:isEmpty,icon:'el-icon-user',color:'#E4E7ED',innerText:username,userid:'',headimgurl:''} 
@@ -97,7 +97,7 @@
             }
           } 
 
-          debugger;
+          
           
         return obj;
       }
@@ -116,6 +116,7 @@
              this.initData();
           },
           deep:true,
+          immediate:true,
            
         },  
         
@@ -215,16 +216,17 @@
           
         }, 
 
-         initData(){   
-          debugger;
+         initData(){    
+
             var myVal={userid:'',username:'',headimgurl:''}
             if(this.value){
+          
               myVal.userid=this.value[this.useridKey]
               myVal.username=this.value[this.usernameKey]  
               myVal.headimgurl=this.value.headimgurl
-              this.myVal=myVal
+              this.myVal={...myVal}
             }else{
-              this.myVal=myVal
+              this.myVal={...myVal}
             }
            
           
