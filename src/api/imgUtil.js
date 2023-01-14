@@ -89,9 +89,11 @@ h55,h56,h57,h58,h59,h60,h61,h62,h63,h64,h64,h66,h67,h68,h69,h70
  export default {
 
   onImgError:function(userid,$event){
+    debugger;
     let img = $event.srcElement;
     img.src = this.getDefHeadimg(userid)
     img.onerror = null; //防止闪图
+    return false;
   },
 
 /**
@@ -121,12 +123,16 @@ getDefHeadimg:function(userid){
  * @param {*} rand false || true ,是否给url添加随机数，用于立即刷新头像，否则头像更新后，会被cdn缓存一段时间
  * @returns 
  */
- getHeadimgurl:function (userid,headimgurl,rand) { 
+ getHeadimgurl:function (userid,headimgurl,rand) {  
+  debugger;
+  if(!userid){
+    return null;
+  }
   if(headimgurl){
     return headimgurl;
   }else{
     var authorStr=sessionStorage.getItem('authorMsg_' + userid) 
-    if(authorStr){
+    if(authorStr&&authorStr!='null'&& authorStr!='undefined'){
       var author=JSON.parse(authorStr)
       if(author && author.headimgurl){
         return author.headimgurl

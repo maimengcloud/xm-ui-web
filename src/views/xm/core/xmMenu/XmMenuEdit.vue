@@ -125,7 +125,7 @@
 								<mdp-field-x v-model="editForm.finishRate" label="进度"> 
 									<div slot="value" style="min-width:150px;"><el-progress  :percentage="editForm.finishRate?editForm.finishRate:0"></el-progress>
 									</div>
-									<div slot="oper"><el-button  @click="activateTabPaneName='2'" type="primary">查看工时</el-button><el-button  @click="activateTabPaneName='6'" type="primary">查看子工作项</el-button></div>
+									<div slot="oper"><el-button  @click="activateTabPaneName='51'" type="primary">查看工时</el-button><el-button  @click="activateTabPaneName='6'" type="primary">查看子工作项</el-button></div>
 								</mdp-field-x>  
 							</el-col>  
 							<el-col :span="8">  

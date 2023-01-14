@@ -1,8 +1,14 @@
 <template>    
     <el-row>
 						<div class="field-box">  
-							<el-avatar class="field-avater" :class="{'dashed-circle':avaterCpd.isNull}"  :icon="avaterCpd.icon" :style="{backgroundColor:avaterCpd.color}">{{avaterCpd.innerText}}</el-avatar> 
+              <div class="avatar-container">
+                <div class="avatar-wrapper">
+                  <img v-if="avaterCpd.userid" class="user-avatar" :class="{'dashed-circle':avaterCpd.isNull}"   :style="{backgroundColor:avaterCpd.color}" :src="getHeadimgurl(avaterCpd.userid,avaterCpd.headimgurl)" @error="onImgError(avaterCpd.userid,$event)"></img>  
+                  <el-avatar v-else class="field-avater" :class="{'dashed-circle':avaterCpd.isNull}"  :icon="avaterCpd.icon" :style="{backgroundColor:avaterCpd.color}">{{avaterCpd.innerText}}</el-avatar> 
 							
+                </div>
+              </div>
+
               <div class="field-info" :class="{disabled:disabled===true,enabled:disabled!==true}">
                 <slot name="field-info" :value="myVal"  >
 								<span class="field-value" v-if="!avaterCpd.isNull">{{avaterCpd.innerText}} </span>
@@ -17,19 +23,19 @@
                       <el-select v-model="myVal" @change="onSelectChange" :clearable="clearable" filterable value-key="userid" @visible-change="$emit('visible-change',$event)" @focus="$emit('focus',$event)" @blur="$emit('blur',$event)" @clear="$emit('blur',$event)" @click="$emit('click',$event)">  
                             
                             <el-option :value="myVal" disabled v-if="users && users.length>10">
-                                <el-row><el-button :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button><el-button v-if="projectId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button> </el-row>
+                                <el-row ><el-button v-if="users && users.length>0" :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button><el-button v-if="projectId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button> </el-row>
                             </el-option>
                             <el-option class="avatar-container" v-for="(item,index) in users" :key="index" :value="item" :label="item.username">  
                             
                               <div class="avatar-wrapper">
-                                    <el-avatar class="user-avatar"  :style="{backgroundColor:getMyColor(item)}">{{item.username}}</el-avatar> 
+                                    <img class="user-avatar"  :style="{backgroundColor:getMyColor(item)}" :src="getHeadimgurl(item.userid,item.headimgurl)" @error="onImgError(item.userid,$event)"></img>  
                                     <span class="username">{{item.username}}</span>
                                     <i v-if="myVal && myVal.userid==item.userid" class="el-icon-check"></i> 
                                     <i v-else>&nbsp;&nbsp;</i>  
                               </div>
                             </el-option> 
                             <el-option :value="myVal" disabled>
-                                <el-row><el-button :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button><el-button v-if="projectId||productId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button> </el-row>
+                                <el-row><el-button v-if="users && users.length>0" :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button><el-button v-if="projectId||productId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button> </el-row>
                             </el-option>
                         </el-select> 
                         <slot name="extOper">
@@ -54,15 +60,21 @@
   import UsersSelect from '@/views/mdp/sys/user/UsersSelectOnly.vue'
   import XmGroupSelect from '@/views/xm/core/xmGroup/XmGroupSelect.vue'
   var us=localStorage.getItem("mdp-his-users") 
+  import imtUtil  from '@/api/imgUtil';//全局公共库
   var users=us?JSON.parse(us):[] 
   export default {
     name: 'mdp-select-user-xm',
     components: { UsersSelect, XmGroupSelect },
     computed: { 
       avaterCpd(){  
+        debugger;
         var isEmpty=this.isEmpty(this.myVal)
         var username=isEmpty?"":(this.myVal.username?this.myVal.username:this.myVal.userid)
-        var obj={isNull:isEmpty,icon:'el-icon-user',color:'#E4E7ED',innerText:username} 
+        var obj={isNull:isEmpty,icon:'el-icon-user',color:'#E4E7ED',innerText:username,userid:'',headimgurl:''} 
+        if(!isEmpty){
+            obj.headimgurl=this.myVal.headimgurl
+            obj.userid=this.myVal.userid
+          }
           if(this.getColor||this.color){
             if(this.getColor){
                obj.color= this.getColor(this.myVal)
@@ -75,6 +87,8 @@
                  obj.color= util.getColor(this.myVal.userid) 
             } 
           } 
+
+
           if(this.getIcon||this.icon){
             if(this.getIcon){
               obj.icon= this.getIcon(this.myVal)
@@ -82,13 +96,15 @@
              obj.icon=this.icon
             }
           } 
+
+          debugger;
           
         return obj;
       }
     },
     data(){
         return {
-            myVal:{userid:'',username:''}, 
+            myVal:{userid:'',username:'',headimgurl:''}, 
             users:[],
             deptUserVisible:false,
             projectVisible:false,
@@ -161,7 +177,7 @@
      
     },
     methods: {    
-        
+        ...imtUtil,
       
         isEmpty(v) {  
           switch (typeof v) {
@@ -200,13 +216,15 @@
         }, 
 
          initData(){   
-            var myVal={}
+          debugger;
+            var myVal={userid:'',username:'',headimgurl:''}
             if(this.value){
               myVal.userid=this.value[this.useridKey]
               myVal.username=this.value[this.usernameKey]  
+              myVal.headimgurl=this.value.headimgurl
               this.myVal=myVal
             }else{
-              this.myVal={userid:'',username:''}
+              this.myVal=myVal
             }
            
           
@@ -252,7 +270,7 @@
     },
     mounted(){  
 			this.users=users
-      this.initData();
+      //this.initData();
 
     }
   }
