@@ -43,53 +43,53 @@
             >
           </span>
         </el-menu-item>
-        <el-menu-item index="/xm/core/project/productLink">
+        <el-menu-item index="/xm/core/project/product">
           <span slot="title"><i class="el-icon-s-opportunity"></i>产品</span>
         </el-menu-item> 
 				<el-menu-item label="需求" index="/xm/core/project/menu" class="hidden-md-and-down">
 					 <span slot="title"><i class="el-icon-document"></i>需求</span> 
 				</el-menu-item> 
-        <el-menu-item index="迭代">
+        <el-menu-item index="/xm/core/project/iteration">
           <span slot="title"><i class="el-icon-connection"></i>迭代</span>
         </el-menu-item>
 
-        <el-menu-item index="计划">
+        <el-menu-item index="/xm/core/project/plan">
           <span slot="title"><i class="el-icon-time"></i>计划</span>
         </el-menu-item>
 
-        <el-menu-item index="任务" class="hidden-md-and-down">
+        <el-menu-item index="/xm/core/project/task" class="hidden-md-and-down">
           <span slot="title"><i class="el-icon-s-operation"></i>任务</span>
         </el-menu-item>
-        <el-menu-item index="缺陷">
+        <el-menu-item index="/xm/core/project/question">
           <span slot="title"><i class="el-icon-question"></i>缺陷</span>
         </el-menu-item>
-        <el-menu-item index="团队">
+        <el-menu-item index="/xm/core/project/group">
           <span slot="title"><i class="el-icon-user-solid"></i>团队</span>
         </el-menu-item>
-        <el-submenu index="财务" class="hidden-sm-and-down">
+        <el-submenu  class="hidden-sm-and-down">
           <template slot="title"><i class="el-icon-coin"></i>财务</template>
-          <el-menu-item index="合同管理">
+          <el-menu-item index="/xm/core/project/contract">
             <span slot="title"><i class="el-icon-s-data"></i>合同管理</span>
           </el-menu-item>
-          <el-menu-item index="预算">
+          <el-menu-item index="/xm/core/project/budget">
             <span slot="title"><i class="el-icon-coin"></i>预算</span>
           </el-menu-item>
-          <el-menu-item index="费用">
+          <el-menu-item index="/xm/core/project/cost">
             <span slot="title"><i class="el-icon-coin"></i>费用</span>
           </el-menu-item>
         </el-submenu>
-        <el-menu-item index="效能">
+        <el-menu-item index="/xm/core/project/report">
           <span slot="title"><i class="el-icon-s-data"></i>效能</span>
         </el-menu-item>
-        <el-submenu index="知识" class="hidden-md-and-down">
+        <el-submenu  class="hidden-md-and-down">
           <template slot="title">知识</template>
-          <el-menu-item index="文档">
+          <el-menu-item index="/xm/core/project/file">
             <span slot="title"><i class="el-icon-document"></i>文档</span>
           </el-menu-item>
-          <el-menu-item index="环境清单">
+          <el-menu-item index="/xm/core/project/env">
             <span slot="title"><i class="el-icon-setting"></i>环境清单</span>
           </el-menu-item>
-          <el-menu-item index="日志">
+          <el-menu-item index="/xm/core/project/record">
             <span slot="title"><i class="el-icon-edit-outline"></i>日志</span>
           </el-menu-item>
         </el-submenu>

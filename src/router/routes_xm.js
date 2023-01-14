@@ -51,7 +51,7 @@ export default {
           hidden:true
         },
         {
-          path: 'productLink',
+          path: 'product',
           component: _import('xm/core/xmProduct/XmProductForLinkComplex'),
           name: 'projectProductLink',
           iconCls: 'fa el-icon-menu',
@@ -63,7 +63,7 @@ export default {
         },
         {
           path: 'menu',
-          component: _import('xm/core/xmMenu/XmMenuMng'),
+          component: _import('xm/core/xmMenu/XmMenuBox'),
           name: 'projectMenu',
           iconCls: 'fa el-icon-menu',
           meta: {
@@ -72,6 +72,161 @@ export default {
           }, 
           hidden:true
         },
+        {
+          path: 'iteration',
+          component: _import('xm/core/xmIteration/XmIterationForLinkComplex'),
+          name: 'projectIteration',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '项目-迭代',
+            icon: 'project',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'plan',
+          component: _import('xm/core/xmTask/XmPlan'),
+          name: 'projectPlan',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '项目-计划',
+            icon: 'project',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'task',
+          component: _import('xm/core/xmTask/XmTaskMng'),
+          name: 'projectMenu',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '项目-任务',
+            icon: 'project',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'env',
+          component: _import('xm/core/xmEnvList/XmEnvListMng'),
+          name: 'projectEnv',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '项目-环境清单',
+            icon: 'project',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'question',
+          component: _import('xm/core/xmQuestion/XmQuestionMng'),
+          name: 'projectQuestion',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '项目-缺陷',
+            icon: 'project',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'group',
+          component: _import('xm/core/xmGroup/XmGroupMng'),
+          name: 'projectGroup',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '项目-团队',
+            icon: 'project',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'contract',
+          component: _import('xm/core/xmContract/XmContractMng'),
+          name: 'projectContract',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '项目-合同',
+            icon: 'project',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'record',
+          component: _import('xm/core/xmRecord/XmRecordMng'),
+          name: 'projectRecord',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '项目-日志',
+            icon: 'project',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'budget',
+          component: _import('xm/core/xmProject/XmProjectBudgetCost'),
+          name: 'projectBudget',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '项目-预算',
+            icon: 'project',roles:["user"]
+          }, 
+          hidden:true
+        }, 
+        {
+          path: 'cost',
+          component: _import('xm/core/xmProject/XmProjectCost'),
+          name: 'projectCost',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '项目-费用',
+            icon: 'project',roles:["user"]
+          }, 
+          hidden:true
+        }, 
+        {
+          path: 'workloadDay',
+          component: _import('xm/core/xmWorkload/WorkloadSetDayList'),
+          name: 'projectBudget',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '项目-工时日报',
+            icon: 'project',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'workloadMonth',
+          component: _import('xm/core/xmWorkload/WorkloadSetMonthList'),
+          name: 'projectWorkloadMonth',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '项目-工时月报',
+            icon: 'project',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'file',
+          component: _import('xm/core/xmFile/XmFileMng'),
+          name: 'projectFile',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '项目-文档',
+            icon: 'project',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'report',
+          component: _import('xm/rpt/reportIndex'),
+          name: 'projectReport',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '项目-效能',
+            icon: 'project',roles:["user"]
+          }, 
+          hidden:true
+        },
+        
       ]
     },
     
