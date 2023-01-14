@@ -66,7 +66,7 @@
         <el-menu-item index="/xm/core/project/group">
           <span slot="title"><i class="el-icon-user-solid"></i>团队</span>
         </el-menu-item>
-        <el-submenu  class="hidden-sm-and-down">
+        <el-submenu index="caiwu" class="hidden-sm-and-down">
           <template slot="title"><i class="el-icon-coin"></i>财务</template>
           <el-menu-item index="/xm/core/project/contract">
             <span slot="title"><i class="el-icon-s-data"></i>合同管理</span>
@@ -81,7 +81,7 @@
         <el-menu-item index="/xm/core/project/report">
           <span slot="title"><i class="el-icon-s-data"></i>效能</span>
         </el-menu-item>
-        <el-submenu  class="hidden-md-and-down">
+        <el-submenu index="zhishi" class="hidden-md-and-down">
           <template slot="title">知识</template>
           <el-menu-item index="/xm/core/project/file">
             <span slot="title"><i class="el-icon-document"></i>文档</span>
@@ -95,12 +95,12 @@
         </el-submenu>
         <el-submenu index="更多">
           <template slot="title">更多 </template>
-          <el-menu-item index="每日工时">
+          <el-menu-item index="/xm/core/project/workloadDay">
             <span slot="title"
               ><i class="el-icon-video-camera"></i>每日工时</span
             >
           </el-menu-item>
-          <el-menu-item index="每月工时">
+          <el-menu-item index="/xm/core/project/workloadMonth">
             <span slot="title"
               ><i class="el-icon-video-camera"></i>每月工时</span
             >
@@ -135,9 +135,9 @@
           <el-menu-item index="客服">
             <span slot="title"><i class="el-icon-date"></i>客服</span>
           </el-menu-item>
-          <el-menu-item index="上一页"  @click.native="goBack">
+          <el-menu-item index="回到项目列表页"  @click.native="goBack">
               <span slot="title"
-                ><i class="el-icon-back"></i>上一页</span
+                ><i class="el-icon-back"></i>回到项目列表页</span
               >
             </el-menu-item> 
             <el-menu-item index="首页" @click.native="goHome">
@@ -315,11 +315,11 @@ export default {
     },
       
     goBack() {
-      localStorage.setItem("project-infotype", "项目概览");  
-      this.$router.back(-1); 
+       this.$router.push({
+        path:'/xm/core/xmProject/XmProjectMng'
+       })
     },
-    goHome(){ 
-      localStorage.setItem("project-infotype", "项目概览");  
+    goHome(){  
       this.$router.push({path:'/'}) 
     },
      
