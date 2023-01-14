@@ -15,7 +15,16 @@
 				</h3>
 				<el-col :span="24" style="margin-left:30px;display:flex;flex-wrap: wrap;width:100%;">  
 					<div  :class="v.isSelected=='1'?'checkCopyButton':'copyButton'" v-for="(v,valueIndex) in item.groupUsers" :key="valueIndex" @click="toggleSelected(index,valueIndex)">
-							{{v.username}}
+							
+						
+						
+						<div class="avatar-container">
+							<div class="avatar-wrapper">
+								<img class="user-avatar" :src="getHeadimgurl(v.userid)" @error="onImgError(v.userid,$event)"></img>		
+								<span class="username">{{v.username}}</span>								
+							</div>
+						</div>
+						
 					</div>  
 				</el-col>
 			</el-row>
@@ -25,6 +34,7 @@
 
 <script>
 	import util from '@/common/js/util'; //全局公共库
+	import imgUtil from '@/api/imgUtil';
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
    	import {  getGroups } from '@/api/xm/core/xmGroup';
@@ -89,6 +99,7 @@ import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 			}
 		}, //end data
 		methods: {
+			...imgUtil,
 			toggleSelected(index,valueIndex) {
 				if(this.isSelectSingleUser=='1' || this.isSelectMultiUser=='1'){
 					if(this.xmGroupFormworkSels[index].groupUsers[valueIndex].isSelected == '1'){
@@ -183,7 +194,9 @@ import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 	}
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+
+@import '@/components/Mdp/index.scss';
 .group-name{ 
 	color: rgb(107, 88, 88);
 }
@@ -191,7 +204,7 @@ import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 		margin-left: 10px;
 		margin-top:2px;
 		border-radius: 20px;
-		padding: 10px 1px;  
+		padding: 2px 2px;  
 		border: 1px solid rgb(220, 223, 230);
 		/* color:#039; */
 	}
@@ -208,7 +221,7 @@ import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 		margin-left: 10px;
 		margin-top:2px;
 		border-radius: 20px;
-		padding: 10px 1px;  
+		padding: 2px 2px;  
 		border: 1px solid #FFA00A;
 		/*background-color: rgba(230, 162, 60, .1);*/
 		/* background-color: #f9f9f9; */
