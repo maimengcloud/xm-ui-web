@@ -367,6 +367,8 @@
 	import XmProjectTplMng from './XmProjectTplMng'; 
 	import XmProductSelect from '@/views/xm/core/components/XmProductSelect';
 	import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
+	
+		import store from '@/store'
 
 	if(!Vue.component("xm-project-info")){
 		
@@ -662,7 +664,10 @@
 			//进入info界面
 			intoInfo(row) {
 				this.selectProject = row;
-				this.$router.push({ name:'XmProjectInfoRoute', query: {id:row.id} })
+				store.dispatch("setProject",row).then(res=>{
+					this.$router.push({ name:'projectOverviewComplex', query: {id:row.id} })
+				})
+				 
 				localStorage.setItem("xm-project-info-route",JSON.stringify(row)) 
 				//this.showInfo = true;
 			},

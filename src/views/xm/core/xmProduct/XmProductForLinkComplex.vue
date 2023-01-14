@@ -6,7 +6,7 @@
               <xm-product-select
                 ref="xmProductSelect"
                 :auto-select="true"
-                :link-project-id="selProject ? selProject.id : null"
+                :link-project-id="projectInfo ? projectInfo.id : null"
                 :iterationId="xmIteration ? xmIteration.id : null"
                 @row-click="onProductRowClick"
                 @clear="onProductClearSelect"
@@ -159,7 +159,7 @@
             <xm-product-overview
               v-if="xmProduct && showPanel == 'productOverview'"
               :xm-product="xmProduct"
-              :sel-project="selProject"
+              :sel-project="projectInfo"
             ></xm-product-overview>
           </el-tab-pane>
 
@@ -177,7 +177,7 @@
             label="配置关联的项目"
             lazy
             name="productProjectLink"
-            v-if="xmProduct && xmProduct.id && !selProject"
+            v-if="xmProduct && xmProduct.id && !projectInfo"
           >
             <xm-product-project-link-mng
               v-if="showPanel == 'productProjectLink'"
@@ -204,7 +204,7 @@
               v-if="xmProduct && showPanel == 'menus'"
               :xm-product="xmProduct"
               :xm-iteration="xmIteration"
-              :sel-project="selProject"
+              :sel-project="projectInfo"
               :disabled-mng="true"
             ></xm-menu-mng>
           </el-tab-pane>
@@ -220,7 +220,7 @@
               ptype="0"
               :xm-product="xmProduct"
               :xm-iteration="xmIteration"
-              :sel-project="selProject"
+              :sel-project="projectInfo"
             ></xm-task-mng>
           </el-tab-pane>
           <el-tab-pane
@@ -233,7 +233,7 @@
               v-if="xmProduct && showPanel == 'bugs'"
               :xm-product="xmProduct"
               :xm-iteration="xmIteration"
-              :sel-project="selProject"
+              :sel-project="projectInfo"
             ></xm-question-mng>
           </el-tab-pane>
           <el-tab-pane
@@ -284,7 +284,7 @@
     >
       <xm-product-add  op-type="add"
         @cancel="addProductVisible = false"
-        :sel-project="selProject"
+        :sel-project="projectInfo"
         @submit="afterAddProductSubmit"
       ></xm-product-add>
     </el-dialog>
@@ -316,7 +316,7 @@ import XmProductAdd from "./XmProductEdit"; //新增界面
 
 export default {
   computed: {
-    ...mapGetters(["userInfo", "roles"]),
+    ...mapGetters(["userInfo", "roles","projectInfo"]),
 
     calcProductPstatusStep() {
       if (this.dicts["xmProductPstatus"] && this.xmProduct) {
@@ -333,7 +333,7 @@ export default {
       }
     },
   },
-  props: ["visible", "selProject", "xmIteration"],
+  props: ["visible",   "xmIteration"],
   watch: {
     visible: function (visible) {
       if (visible == true) {

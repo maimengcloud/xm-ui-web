@@ -1,5 +1,6 @@
 /* Layout */
 import Layout from '../views/layout/Layout'
+import XmProjectLayout from '../views/xm/core/xmProject/index'
 const _import = require('./_import_' + process.env.NODE_ENV)
 
 export default {
@@ -14,7 +15,7 @@ export default {
         icon: 'project'
       },
       // leaf: true,//只有一个节点
-      children: [
+      children: [ 
         { path: 'xmProject/XmProjectAllMng', component: _import('xm/core/xmProject/XmProjectAllMng'), name: 'xmProjectAllMng', meta: { title: '项目总览',roles:["user"] }},
         { path: 'xmProject/XmProjectMng', component: _import('xm/core/xmProject/XmProjectMng'), name: 'xmProjectMng', meta: { title: '项目(我的)',roles:["user"] }},
         { path: 'xmProject/XmProjectRecycle', component: _import('xm/core/xmProject/XmProjectRecycle'), name: 'XmProjectRecycle', meta: { title: '项目回收站',roles:["user"] }},
@@ -25,18 +26,53 @@ export default {
         { path: 'xmTask/XmMyTaskCenter', component: _import('xm/core/xmTask/XmMyTaskCenter'), name: 'xmMyTaskCenter', meta: { title: '任务(我的)',roles:["user"] }},
         { path: 'xmTask/XmTaskDetailRoute', component: _import('xm/core/xmTask/XmTaskDetailRoute'), name: 'XmTaskDetailRoute', meta: { title: '任务详情',roles:["user"] },hidden:true},
        
+
       ]
-    },
-    {
-      path: '/xm/core/xmProject/XmProjectInfoRoute',
-      component: _import('xm/core/xmProject/XmProjectInfoRoute'),
-      name: 'XmProjectInfoRoute',
+    },{
+      path: '/xm/core/project',
+      component: XmProjectLayout,
+      name: '项目管理',
       iconCls: 'fa el-icon-menu',
       meta: {
-        title: '项目管理-路由跳转',
-        icon: 'project',roles:["user"]
-      }, 
-      hidden:true
+        title: '项目管理',
+        icon: 'project'
+      },
+      // leaf: true,//只有一个节点
+      children: [
+        {
+          path: 'overviewComplex',
+          component: _import('xm/core/xmProject/XmProjectOverviewComplex'),
+          name: 'projectOverviewComplex',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '项目-首页',
+            icon: 'project',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'productLink',
+          component: _import('xm/core/xmProduct/XmProductForLinkComplex'),
+          name: 'projectProductLink',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '项目-产品',
+            icon: 'project',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'menu',
+          component: _import('xm/core/xmMenu/XmMenuMng'),
+          name: 'projectMenu',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '项目-需求',
+            icon: 'project',roles:["user"]
+          }, 
+          hidden:true
+        },
+      ]
     },
     
     { path: '/xm/core/testCasedbRoute', component: _import('xm/core/xmTestCasedb/XmTestCasedbRoute'), name: 'XmTestCasedbRoute', meta: { title: '测试库管理',roles:["user"] },hidden:true},

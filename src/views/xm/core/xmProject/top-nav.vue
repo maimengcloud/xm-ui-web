@@ -9,22 +9,23 @@
         background-color="rgb(48, 65, 86)"
         text-color="rgb(191, 203, 217)"
         active-text-color="#409eff"
+        :router="true"
       >
         
-        <el-menu-item index="项目概览">
+        <el-menu-item index="/xm/core/project/overviewComplex">
           <span
             slot="title"
             style="font-size: 18px; color: #ffd04b"
             class="hidden-sm-and-down"
-            :title="selProject.name"
+            :title="projectInfo.name"
           >
-            <font v-if="selProject.name.length >= 15"
+            <font v-if="projectInfo.name.length >= 15"
               ><strong
-                >&nbsp;<el-avatar class="top-icon" icon="el-icon-odometer" style="background-color:#E6A23C"></el-avatar>&nbsp;项目:&nbsp;{{ selProject.name.substring(0, 15) }}</strong
+                >&nbsp;<el-avatar class="top-icon" icon="el-icon-odometer" style="background-color:#E6A23C"></el-avatar>&nbsp;项目:&nbsp;{{ projectInfo.name.substring(0, 15) }}</strong
               ></font
             >
             <font type="danger" v-else
-              ><strong>&nbsp;<el-avatar class="top-icon" icon="el-icon-odometer" style="background-color:#E6A23C"></el-avatar>&nbsp;项目:&nbsp;{{ selProject.name }}</strong></font
+              ><strong>&nbsp;<el-avatar class="top-icon" icon="el-icon-odometer" style="background-color:#E6A23C"></el-avatar>&nbsp;项目:&nbsp;{{ projectInfo.name }}</strong></font
             >
           </span>
 
@@ -32,20 +33,20 @@
             slot="title"
             style="color: #ffd04b"
             class="hidden-md-and-up"
-            :title="selProject.name"
+            :title="projectInfo.name"
           >
-            <font v-if="selProject.name.length >= 15"
-              >&nbsp;<el-avatar class="top-icon" icon="el-icon-odometer" style="background-color:#E6A23C"></el-avatar>&nbsp;项目:&nbsp;{{ selProject.name.substring(0, 15) }}</font
+            <font v-if="projectInfo.name.length >= 15"
+              >&nbsp;<el-avatar class="top-icon" icon="el-icon-odometer" style="background-color:#E6A23C"></el-avatar>&nbsp;项目:&nbsp;{{ projectInfo.name.substring(0, 15) }}</font
             >
             <font type="danger" v-else
-              >&nbsp;<el-avatar class="top-icon" icon="el-icon-odometer" style="background-color:#E6A23C"></el-avatar>&nbsp;项目:&nbsp;{{ selProject.name }}</font
+              >&nbsp;<el-avatar class="top-icon" icon="el-icon-odometer" style="background-color:#E6A23C"></el-avatar>&nbsp;项目:&nbsp;{{ projectInfo.name }}</font
             >
           </span>
         </el-menu-item>
-        <el-menu-item index="产品">
+        <el-menu-item index="/xm/core/project/productLink">
           <span slot="title"><i class="el-icon-s-opportunity"></i>产品</span>
         </el-menu-item> 
-				<el-menu-item label="需求" index="需求" class="hidden-md-and-down">
+				<el-menu-item label="需求" index="/xm/core/project/menu" class="hidden-md-and-down">
 					 <span slot="title"><i class="el-icon-document"></i>需求</span> 
 				</el-menu-item> 
         <el-menu-item index="迭代">
@@ -147,124 +148,12 @@
         </el-submenu>
       </el-menu>
     </el-row>
-    <el-row ref="pageBody">
-      <el-col :span="infotype=='项目概览'?4:0" class="padding border" :style="{maxHeight:maxTableHeight+'px',overflowY:'auto'}">
-      <h4 class="padding-bottom">常用功能快捷导航</h4>
-        <el-steps :active="calcProjectStatusStep" finish-status="success" direction="vertical">
-          <el-step
-            v-for="(i, index) in dicts['projectStatus']"
-            :title="i.name"
-            :key="index"
-          >
-            <el-row slot="description">
-               <el-row v-if="i.id=='0'"><!--初始-->
-			   		<span v-if="selProject.status==i.id">
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="createProduct()">创建产品</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="linkProduct()">关联产品</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='环境清单'">环境清单</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','1')">进入售前</el-button>
-					</span>
-					<span v-if="selProject.status!=i.id"> 
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="linkProduct()">关联产品</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='环境清单'">环境清单</el-button>
-					</span> 
-			   </el-row>
-               <el-row v-else-if="i.id=='1'"><!--售前-->
-			   		<span v-if="selProject.status==i.id">
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="showMenusPage">需求管理</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','2')">设为立项中</el-button>
-					</span>
-					<span v-if="selProject.status!=i.id">
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="showMenusPage">需求管理</el-button> 
-					</span> 
-			   </el-row>
-               <el-row v-else-if="i.id=='2'"><!--立项中-->
-			   		<span v-if="selProject.status==i.id">
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='合同管理'">签订合同</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='团队'">创建团队</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='计划'">创建计划</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='预算'">预算清单</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="showProjectGaiSuan()">项目估算</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="showProjectShouYi()">项目收益</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','3')">设为立项中</el-button>
-					</span>
-					<span v-if="selProject.status!=i.id">
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='合同管理'">合同管理</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='团队'">团队管理</el-button>  
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='计划'">计划管理</el-button> 
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='预算'">预算管理</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="showProjectGaiSuan()">项目估算</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="showProjectShouYi()">项目收益</el-button>
-					</span> 
-			   </el-row>
-               <el-row v-else-if="i.id=='3'"><!--实施中-->
-			   		<span v-if="selProject.status==i.id">
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='迭代'">迭代管理</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='计划'">任务管理</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='缺陷'">缺陷管理</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='每日工时'">每日工时</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='每月工时'">每月工时</el-button> 
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='费用'">费用管理</el-button> 
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='效能'">效能分析</el-button> 
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','4')">暂停项目</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="projectChangeRequire()">变更申请</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','5')">设为结项中</el-button>
-					</span>
-					<span v-if="selProject.status!=i.id">
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='迭代'">迭代管理</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='计划'">任务管理</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='缺陷'">缺陷管理</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='每日工时'">每日工时</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='每月工时'">每月工时</el-button> 
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='费用'">费用管理</el-button> 
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="infotype='效能'">效能分析</el-button> 
-						<el-button v-if="selProject.status<i.id" class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','5')">结项申请</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="showDetail()">变更申请</el-button>
-					</span> 
-			   </el-row>
-               <el-row v-else-if="i.id=='4'"><!--暂停中-->
-			   		<span v-if="selProject.status==i.id"> 
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','3')">重新激活</el-button>
-					</span>  
-			   </el-row>
-        <el-row v-else-if="i.id=='5'"><!--结项中-->
-			   		<span v-if="selProject.status==i.id"> 
-              <el-button class="step-btn" type="warning" size="mini"   plain @click="showDetail()">结项申请</el-button>
-              <el-button class="step-btn" type="warning" size="mini"   plain @click="showCurrFlow()">结项审批</el-button>
-            </span>
-            <span v-if="selProject.status!=i.id">
-              <el-button class="step-btn" type="warning" size="mini"   plain @click="showHisFlow()">结项审批</el-button>  
-            </span>  
-			   </el-row>
-               <el-row v-else-if="i.id=='6'"><!--已结项--> 
-			   		<span v-if="selProject.status==i.id"> 
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','7')">转入售后</el-button>
-					</span> 
-					<span v-if="selProject.status!=i.id">
-					</span>  
-			   </el-row>
-               <el-row v-else-if="i.id=='7'"><!--售后-->
-					<span v-if="selProject.status==i.id"> 
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','8')">设为已完成</el-button>
-					</span> 
-			   </el-row>
-               <el-row v-else-if="i.id=='8'"><!--已完成-->
-					<span v-if="selProject.status==i.id"> 
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(selProject,'status','9')">关闭项目</el-button>
-					</span> 
-					
-			   </el-row>
-               <el-row v-else-if="i.id=='9'"><!--已关闭-->
-					
-			   </el-row> 
-            </el-row>
-          </el-step>
-        </el-steps>
-      </el-col>
+    <!--
+    <el-row ref="pageBody"> 
       <el-col :span="infotype=='项目概览'?20:24">
         <xm-project-overview-complex
           v-if="infotype == '项目概览'"
-          :sel-project="selProject"
+          :sel-project="projectInfo"
           @submit="afterEditSubmit"
           @edit-fields="onEditFields"
           ref="项目概览"
@@ -272,21 +161,21 @@
         <xm-product-for-link-complex
           v-if="infotype == '产品'"
           ref="xmProductComplex"
-          :sel-project="selProject" 
+          :sel-project="projectInfo" 
         ></xm-product-for-link-complex>
         <xm-iteration-for-link-complex
           v-if="infotype == '迭代'"
           ref="xmIterationMng"
-          :sel-project="selProject"
+          :sel-project="projectInfo"
         ></xm-iteration-for-link-complex>
         <xm-menu-mng
           v-if="infotype == '需求'"
-          :sel-project="selProject"
+          :sel-project="projectInfo"
         ></xm-menu-mng>
         <xm-task-mng
           v-if="infotype == '任务'"
           ref="xmTaskMng"
-          :sel-project="selProject"
+          :sel-project="projectInfo"
           ptype="0"
           queryScope="task"
           key="task"
@@ -294,58 +183,57 @@
         <xm-question
           v-if="infotype == '缺陷'"
           :qtype="'1'"
-          :sel-project="selProject"
+          :sel-project="projectInfo"
           ref="xmQuestion"
         ></xm-question>
         <xm-group-mng
           v-if="infotype == '团队'"
-          :sel-project="selProject"
+          :sel-project="projectInfo"
         ></xm-group-mng>
         <xm-file-mng
           v-if="infotype == '文档'"
-          :sel-project="selProject"
+          :sel-project="projectInfo"
         ></xm-file-mng>
         <xm-plan
           v-if="infotype == '计划'"
           ref="projectPlan"
           ptype="0"
           queryScope="planTask"
-          :sel-project="selProject"
+          :sel-project="projectInfo"
           key="projectPlan"
-        ></xm-plan>
-        <!-- <xm-phase-mng v-if="infotype=='计划'" ref="xmPhaseMng" :sel-project="selProject" ></xm-phase-mng> -->
+        ></xm-plan> 
         <xm-test-case-exec-mng
           v-if="infotype == '测试计划'"
           :visible="infotype == '测试计划'"
-          :sel-project="selProject"
+          :sel-project="projectInfo"
           ref="xmQuestion"
         ></xm-test-case-exec-mng> 
         <xm-budget
           v-if="infotype == '预算'"
-          :sel-project="selProject"
+          :sel-project="projectInfo"
         ></xm-budget>
-        <xm-cost v-if="infotype == '费用'" :sel-project="selProject"></xm-cost>
+        <xm-cost v-if="infotype == '费用'" :sel-project="projectInfo"></xm-cost>
         <xm-project-kpi
           v-if="infotype == '考核'"
-          :sel-project="selProject"
+          :sel-project="projectInfo"
         ></xm-project-kpi>
         <xm-record
           v-if="infotype == '日志'"
           :visible="infotype == '日志'"
-          :sel-project="selProject"
+          :sel-project="projectInfo"
         ></xm-record>
         <xm-contract
           v-if="infotype == '合同管理'"
-          :sel-project="selProject"
+          :sel-project="projectInfo"
         ></xm-contract>
         <xm-env-list
           v-if="infotype == '环境清单'"
-          :sel-project="selProject"
+          :sel-project="projectInfo"
         ></xm-env-list>
         <xm-question
           v-if="infotype == '风险'"
           :qtype="'2'"
-          :sel-project="selProject"
+          :sel-project="projectInfo"
           ref="xmRisk"
         ></xm-question>
         <el-drawer
@@ -356,7 +244,7 @@
           :close-on-click-modal="false"
         >
           <xm-group-select
-            :sel-project="selProject"
+            :sel-project="projectInfo"
             :visible="groupUserVisible"
             is-select-multi-user="1"
             @user-confirm="onUserSelected"
@@ -365,62 +253,39 @@
 
         <xm-report
           v-if="infotype == '效能'"
-          :xm-project="selProject"
+          :xm-project="projectInfo"
         ></xm-report>
 
         <xm-workload-set-day-list
           v-if="infotype == '每日工时'"
-          :xm-project="selProject"
+          :xm-project="projectInfo"
         ></xm-workload-set-day-list>
 
         <xm-workload-set-month-list
           v-if="infotype == '每月工时'"
-          :xm-project="selProject"
+          :xm-project="projectInfo"
         ></xm-workload-set-month-list>
       </el-col>
     </el-row>
+    -->
   </section>
 </template>
 
-<script>
-import util from "@/common/js/util"; //全局公共库
-//import Sticky from '@/components/Sticky' // 粘性header组件
-//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-import { mapGetters } from "vuex";
-import xmTaskMng from "../xmTask/XmTaskMng";
-import xmGroupMng from "../xmGroup/XmGroupMng";
-import xmGroupSelect from "../xmGroup/XmGroupSelect";
- 
-import xmQuestion from "../xmQuestion/XmQuestionMng";
-import xmFileMng from "../xmFile/XmFileMng";
-import xmDetail from "./XmProjectDetail";
-import xmProjectKpi from "../xmProjectKpi/XmProjectKpiMng";
-import xmRecord from "../xmRecord/XmRecordMng";
-import xmCost from "./XmProjectCost";
-import xmBudget from "./XmProjectBudgetCost";
-import xmContract from "../xmContract/XmContractMng";
-import xmEnvList from "../xmEnvList/XmEnvListMng";
-import xmMenuMng from "../xmMenu/XmMenuBox";  
-import XmIterationForLinkComplex from "../xmIteration/XmIterationForLinkComplex.vue"; 
-import XmProjectOverviewComplex from "./XmProjectOverviewComplex.vue";
-import XmProductForLinkComplex from "../xmProduct/XmProductForLinkComplex.vue";
-import XmWorkloadSetDayList from "../xmWorkload/WorkloadSetDayList.vue";
-import XmWorkloadSetMonthList from "../xmWorkload/WorkloadSetMonthList.vue";
-
-import XmReport from "@/views/xm/rpt/reportIndex";
-import XmPlan from "../xmTask/XmPlan.vue";
+<script> 
  
 import { initDicts,getDefOptions,editXmProjectSomeFields } from "@/api/xm/core/xmProject";
 
+import { mapGetters } from 'vuex'
+
 export default {
-  props: ["selProject", "visible"],
+  props: ["visible"],
   computed: {
-    ...mapGetters(["userInfo", "roles"]),
+    ...mapGetters(["userInfo", "roles","projectInfo"]),
 
     calcProjectStatusStep() {
-      if (this.dicts["projectStatus"] && this.selProject) {
+      if (this.dicts["projectStatus"] && this.projectInfo) {
         var index = this.dicts["projectStatus"].findIndex((i) => {
-          if (i.id == this.selProject.status) {
+          if (i.id == this.projectInfo.status) {
             return true;
           } else {
             return false;
@@ -434,345 +299,21 @@ export default {
   },
   watch: {},
   data() {
-    return {
-      platformViewVisible: false,
-      tabPosition: "left",
-      infotype: "项目概览",
-      load: { list: false, edit: false },
-      groupUserVisible: false,
-      exportArr: ["任务", "计划", "需求监控"],
-      dicts:  getDefOptions(), 
-      maxTableHeight:300,
+    return { 
+      infotype:'',
+      dicts:  getDefOptions(),  
       /**end 自定义属性请在上面加 请加备注**/
     };
   }, //end data
-  methods: {
-    afterEditSubmit: function (project) {
-      this.selProject = Object.assign(this.selProject, project);
-      this.$emit("submit", project);
-    },
-    toArchive: function () {
-      this.$router.push({
-        path: "/mdp/arc/mate/archive/ArchiveMng",
-      });
-    },
-    toIm: function () {
-      this.groupUserVisible = true;
-    },
-    toHelpMe: function () {
-      this.$router.push({
-        path: "/mdp/im/messages/crmChat",
-        query: {
-          categoryId: "css",
-          sendContent: "咨询",
-        },
-      });
-    },
-    onUserSelected: function (users) {
-      if (this.groupUserVisible == true) {
-        var query = {};
-        if (users) {
-          if (users.length == 1) {
-            var user = users[0];
-            query.toUserid = user.userid;
-            query.toUsername = user.username;
-            query.msgType = "prichat";
-          } else if (users.length >= 2) {
-            query.users = JSON.stringify(
-              users.map((i) => {
-                return { userid: i.userid, username: i.username };
-              })
-            );
-            query.categoryId = "common";
-            query.msgType = "group";
-          }
-        }
-        this.$router.push({
-          path: "/mdp/im/messages/messageChat",
-          query: query,
-        });
-      }
-    },
+  methods: {    
     setInfotype(infotype) {
       if (infotype == "返回") {
         this.goBack();
       } else {
-        this.infotype = infotype;
-        localStorage.setItem("project-infotype", infotype);
+        this.infotype = infotype; 
       }
     },
-    handleExport() {
-      this.downloadLoading = true;
-      let list = [];
-      let header = [];
-      let keyList = [];
-      let pageNum = 1;
-      let infotypeKey = "";
-      if (this.infotype === "任务") {
-        header = [
-          "序号",
-          "任务名称",
-          "需求",
-          "预算(万)",
-          "工作量（人时）",
-          "执行人",
-          "进度",
-          "任务开始时间",
-          "任务结束时间",
-          "任务技能需求",
-        ];
-        keyList = [
-          "sortLevel",
-          "name",
-          "menuName",
-          "budgetCost",
-          "budgetWorkload",
-          "exeUsernames",
-          "rate",
-          "startTime",
-          "endTime",
-          "taskSkillNames",
-        ];
-        list = this.$refs.xmTaskMng.tasksTreeData;
-        pageNum = this.$refs.xmTaskMng.pageInfo.pageNum;
-      } else if (this.infotype === "计划") {
-        header = [
-          "序号",
-          "计划名称",
-          "开始时间",
-          "结束时间",
-          "进度(%)",
-          "状态",
-          "计划人数",
-          "实际人数",
-          "计划工期",
-          "实际工期",
-          "计划工作量（人时）",
-          "实际工作量（人时）",
-          "计划非人力成本(元)",
-          "实际非人力成本(元)",
-          "计划内购人力成本(元)",
-          "实际内购人力成本(元)",
-          "计划外购人力成本(元)",
-          "实际外购人力成本(元)",
-          "计划成本合计(元)",
-          "实际成本合计(元)",
-          "审批状态",
-          "备注",
-        ];
-        keyList = [
-          "seqNo",
-          "name",
-          "beginDate",
-          "endDate",
-          "actRate",
-          "phaseStatus",
-          "budgetOuserCnt",
-          "actStaffNu",
-          "budgetHours",
-          "actHours",
-          "budgetWorkload",
-          "actWorkload",
-          "budgetNouserAt",
-          "actNouserAt",
-          "budgetIuserAt",
-          "actIuserAt",
-          "budgetOuserAt",
-          "actOuserAt",
-          "budgetCostAt",
-          "actCostAt",
-          "bizFlowState",
-          "remark",
-        ];
-        list = this.$refs.xmPhaseMng.projectPhaseTreeData;
-        pageNum = this.$refs.xmPhaseMng.pageInfo.pageNum;
-      } else if (this.infotype === "需求监控") {
-        header = [
-          "序号",
-          "需求名称",
-          "计划状态",
-          "负责人",
-          "上线时间",
-          "计划开始时间",
-          "实际开始时间",
-          "计划结束时间",
-          "实际结束时间",
-          "计划工作量(人时)",
-          "实际工作量(人时)",
-          "计划成本(元)",
-          "实际成本(元)",
-          "总体完成比例%",
-          "需求完成比例%",
-          "设计完成比例%",
-          "开发完成比例%",
-          "sit完成比例%",
-          "uat完成比例%",
-          "上线状态",
-        ];
-        keyList = [
-          "seqNo",
-          "menuName",
-          "planStatus",
-          "chargeUsername",
-          "onlineTime",
-          "planStartTime",
-          "actStartTime",
-          "planEndTime",
-          "actEndTime",
-          "planWorkload",
-          "actWorkload",
-          "planCostAmount",
-          "actCostAmount",
-          "finishRate",
-          "demandRate",
-          "designRate",
-          "devRate",
-          "sitRate",
-          "uatRate",
-          "onlineStatus",
-        ];
-        list = this.$refs.xmMenuWithPlan.xmMenusTreeData;
-        pageNum = this.$refs.xmMenuWithPlan.pageInfo.pageNum;
-      }
-      const filename = `${this.selProject.name}_${this.infotype}_第${pageNum}页`;
-      const data = this.formatJson(keyList, list);
-
-      import("@/vendor/Export2Excel").then((excel) => {
-        excel.export_json_to_excel({
-          header,
-          data,
-          filename,
-          // autoWidth: this.autoWidth,
-          bookType: "xlsx",
-        });
-        this.downloadLoading = false;
-      });
-    },
-    formatJson(filterVal, jsonData, dataList = []) {
-      if (this.infotype == "任务") {
-        jsonData.forEach((v) => {
-          const row = filterVal.map((j) => {
-            let key = "";
-            return v[j];
-          });
-          dataList.push(row);
-          if (v.children && v.children.length) {
-            dataList = this.formatJson(filterVal, v.children, dataList);
-          }
-        });
-        return dataList;
-      } else if (this.infotype == "计划") {
-        const bizFlowStateDict = {
-          0: "未发审",
-          1: "审核中",
-          2: "已通过",
-          3: "未通过",
-          4: "已取消",
-        };
-        jsonData.forEach((v) => {
-          const row = filterVal.map((j) => {
-            let key = "";
-            if (j == "phaseStatus") {
-              return this.$refs.xmPhaseMng.formateOption(
-                "xmPhaseStatus",
-                v.phaseStatus
-              );
-            } else if (j == "bizFlowState") {
-              return `${bizFlowStateDict[parseInt(v[j]) || 0]}`;
-            } else {
-              return v[j];
-            }
-          });
-          dataList.push(row);
-          if (v.children && v.children.length) {
-            dataList = this.formatJson(filterVal, v.children, dataList);
-          }
-        });
-        return dataList;
-      } else if (this.infotype == "需求监控") {
-        jsonData.forEach((v) => {
-          const row = filterVal.map((j) => {
-            let key = "";
-            if (j == "planStatus") {
-              key = "xmMenuPlanStatus";
-            } else if (j == "onlineStatus") {
-              return parseInt(v[j]) ? "已上线" : "未上线";
-            } else {
-              return v[j];
-            }
-            const dicts = this.$refs.xmMenuWithPlan.dicts;
-            if (
-              dicts[key] == undefined ||
-              dicts[key] == null ||
-              dicts[key].length == 0
-            ) {
-              return v[j];
-            }
-            var rowData = dicts[key].filter((i) => i.id == v[j]);
-            if (rowData.length > 0) {
-              return rowData[0].name;
-            } else {
-              return v[j];
-            }
-          });
-          dataList.push(row);
-          if (v.children && v.children.length) {
-            dataList = this.formatJson(filterVal, v.children, dataList);
-          }
-        });
-        return dataList;
-      }
-    },
-    getDateString(dateStr) {
-      if (dateStr == null || dateStr == "" || dateStr == undefined) {
-        return "";
-      } else {
-        return dateStr.substr(0, 10);
-      }
-    }, 
-
-    editXmProjectSomeFields(row,fieldName,$event){ 
-      var that=this;
-      var func=(params)=>{
-        editXmProjectSomeFields(params).then(res=>{
-          var tips = res.data.tips;
-          if(tips.isOk){
-            this.$emit('edit-fields',params)
-            Object.assign(row,params) 
-            this.selProjectBak=Object.assign({},row)
-          }else{   
-            Object.assign(this.selProject,this.selProjectBak)
-            this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
-          }
-        })
-      }
-      var params={ids:[row.id]}; 
-        
-      params[fieldName]=$event 
       
-      
-      if(fieldName=='description'){
-        this.$refs.selProject.validateField('description',err=>{
-          if(err){ 
-            this.$notify({position:'bottom-left',showClose:true,message: err,type: 'error'})
-            return;
-          }else{
-            func(params)
-          }
-        })
-      }else if(fieldName=='name'){  
-        this.$refs.selProject.validateField('name',err=>{
-          if(err){
-            this.$notify({position:'bottom-left',showClose:true,message: err,type: 'error'})
-            return;
-          }else{
-            func(params)
-          }
-        })
-      }else{
-        func(params)
-      }
-    },
     goBack() {
       localStorage.setItem("project-infotype", "项目概览");  
       this.$router.back(-1); 
@@ -781,73 +322,16 @@ export default {
       localStorage.setItem("project-infotype", "项目概览");  
       this.$router.push({path:'/'}) 
     },
-    
-			onEditFields(row){ 
-				Object.assign(this.selProject,row)
-				this.$emit("edit-fields",row);
-			},
-      showCurrFlow(){
-        this.$refs['项目概览'].showPanelName='currFlow'
-      },
-      showHisFlow(){
-        this.$refs['项目概览'].showPanelName='hisFlow'
-      },
-      showDetail(){
-        this.$refs['项目概览'].showPanelName='detail'
-      },
-      showProjectGaiSuan(){ 
-        this.$refs['项目概览'].showPanelName='detail' 
-        this.$nextTick(()=>{ 
-          this.$refs['项目概览'].$refs['detail'].$refs['projectEdit'].currTabPane='4'
-        })
-      },
-      showProjectShouYi(){
-        this.$refs['项目概览'].showPanelName='detail' 
-        this.$nextTick(()=>{  
-          this.$refs['项目概览'].$refs['detail'].$refs['projectEdit'].currTabPane='5'
-        })
-        
-      },
-      showMenusPage(){
-        this.infotype='需求'  
-      },
-      linkProduct(){
-        this.$refs['项目概览'].showPanelName='productProjectLink' 
-      },
-      createProduct(){
-        this.infotype='产品'
-        this.$nextTick(()=>{
-          this.$refs['xmProductComplex'].addProductVisible=true
-        })
-      }
+     
   }, //end methods
   components: {
-    xmTaskMng,
-    xmGroupMng, 
-    xmQuestion,
-    xmFileMng,
-    xmDetail,
-    xmProjectKpi,
-    xmRecord,
-    xmCost,
-    xmBudget,
-    xmContract,
-    xmEnvList,
-    xmMenuMng,  
-    xmGroupSelect,
-    XmIterationForLinkComplex,
-    XmProjectOverviewComplex,
-    XmProductForLinkComplex,
-    XmReport,
-    XmPlan,
-    XmWorkloadSetDayList,
-    XmWorkloadSetMonthList, 
+     
     //在下面添加其它组件
   }, 
   mounted() {
     this.$nextTick(() => {
       
-      this.maxTableHeight = this.source == 'GZT' ?  this.maxTableHeight : util.calcTableMaxHeight(this.$refs.pageBody.$el);
+      //this.maxTableHeight = this.source == 'GZT' ?  this.maxTableHeight : util.calcTableMaxHeight(this.$refs.pageBody.$el);
       var infotype = localStorage.getItem("project-infotype");
       if (infotype) {
         this.infotype = infotype;

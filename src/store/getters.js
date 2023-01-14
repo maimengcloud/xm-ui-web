@@ -21,5 +21,7 @@ const getters = {
   added: state => state.permission.added,
   isLoadOk:state=>state.user.isLoadOk,
   noticeMsg:state=>state.noticeMsg.noticeMsg, 
+  projectInfo:state=>state.projectInfo.projectInfo, 
+  productInfo:state=>state.productInfo.productInfo, 
 }
 export default getters
