@@ -5,7 +5,7 @@
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
 			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestCasedbs" icon="el-icon-search">查询</el-button>
 			<span style="float:right;">
-			    <el-button type="primary" @click="showAdd" icon="el-icon-plus"> </el-button>
+			    <el-button type="primary" @click="showAdd" icon="el-icon-plus">添加用例库 </el-button>
 			    <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>
 		    </span>
 		</el-row>
@@ -33,7 +33,7 @@
                 <template v-if="select!==true">
                     <el-table-column prop="productName" label="产品名称" min-width="120" show-overflow-tooltip>
                         <template slot-scope="scope">
-                            <span> {{scope.row.xmProductName}} </span>
+                            <span> {{scope.row.productName}} </span>
                         </template>
                     </el-table-column> 
                     <el-table-column prop="cusername" label="创建人" min-width="120" show-overflow-tooltip>
@@ -187,7 +187,7 @@ export default {
                 params.key=this.filters.key
             }
             if(this.filters.xmProduct && this.filters.xmProduct.id){
-                params.xmProductId=this.filters.xmProduct.id
+                params.productId=this.filters.xmProduct.id
             }
 
             this.load.list = true;

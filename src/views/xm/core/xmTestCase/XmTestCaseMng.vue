@@ -1,6 +1,6 @@
 <template>
 	<section>
-        <el-row>
+        <el-row class="padding-right">
             <el-col :span="6">
                 <xm-func-select v-if="xmProductCpd" class="padding-right padding-left" :xm-product="xmProductCpd" @row-click="onXmFuncRowClick"> 
                 </xm-func-select>
@@ -9,16 +9,16 @@
                 <el-row>
                     <el-input v-model="filters.key" style="width: 20%;" placeholder="名称 按回车" @keyup.enter.native="searchXmTestCases"></el-input>
                     
-                    <el-select v-model="filters.caseStatus" style="width:120px;" clearable>
+                    <el-select v-model="filters.caseStatus" style="width:120px;" placeholder="审核状态" clearable>
                         <el-option v-for="(item,index) in dicts['testCaseStatus']" :key="index" :value="item.id" :label="item.name"></el-option>
                     </el-select>
                     <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestCases" icon="el-icon-search">查询</el-button>
                     <span style="float:right;">
-                        <el-button type="primary" @click="showAdd" icon="el-icon-plus"> </el-button>
+                        <el-button type="primary" @click="showAdd" icon="el-icon-plus">用例</el-button>
                         <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>
                     </span>
                 </el-row>
-                <el-row>
+                <el-row >
                     <!--列表 XmTestCase 测试用例-->
                     <el-table ref="xmTestCaseTable" :data="xmTestCases" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
                         <el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column>

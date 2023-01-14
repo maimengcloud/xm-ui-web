@@ -1,9 +1,9 @@
 <template>
 	<section>
 		<el-row>
-			<el-input v-model="filters.key" style="width: 60%;" placeholder="名称 按回车" @keyup.enter.native="searchXmFuncs" clearable></el-input> 
+			<el-input v-model="filters.key" style="width: 60%;" placeholder="模块名称 按回车" @keyup.enter.native="searchXmFuncs" clearable></el-input> 
 			<span style="float:right;">
-			    <el-button type="primary" @click="showAdd" icon="el-icon-plus"> </el-button>
+			    <el-button type="primary" @click="showAdd" icon="el-icon-plus" title="添加模块"> </el-button>
 		    </span>
 		</el-row>
 		<el-row>
