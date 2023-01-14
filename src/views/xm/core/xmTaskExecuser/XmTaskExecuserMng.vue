@@ -21,6 +21,9 @@
 				 <el-table-column  label="序号" type="index" width="60"  fixed="left"> 
 				</el-table-column>  
 					 <el-table-column prop="username" label="用户姓名"  width="150" sortable  show-overflow-tooltip fixed="left">  
+						 <template slot-scope="scope">
+							<mdp-select-user-xm :key="scope.row.id" v-model="scope.row" userid-key="userid" username-key="username" :project-id="scope.row.projectId" :disabled="true"></mdp-select-user-xm>
+						 </template> 
 					</el-table-column>    
 					<el-table-column prop="execUserBranchId" label="用户归属公司" width="150" sortable  show-overflow-tooltip fixed="left"> 
 					</el-table-column>   
@@ -181,6 +184,7 @@
 	import html2canvas from 'html2canvas'
 	import { uploadBase64 } from '@/api/mdp/arc/image';
   	import XmWorkloadEdit from "@/views/xm/core/xmWorkload/XmWorkloadEdit";
+	import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
 
 	export default {
 		computed: {
@@ -828,7 +832,7 @@
 		},//end methods
 		components: {
 		    'xm-task-execuser-add':XmTaskExecuserAdd,
-		    'xm-task-execuser-edit':XmTaskExecuserEdit, XmWorkloadEdit,
+		    'xm-task-execuser-edit':XmTaskExecuserEdit, XmWorkloadEdit,MdpSelectUserXm
 		    //在下面添加其它组件
 		},
 		mounted() {

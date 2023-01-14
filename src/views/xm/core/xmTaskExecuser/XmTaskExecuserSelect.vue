@@ -30,7 +30,7 @@
 				</el-table-column>  
 					 <el-table-column prop="username" label="用户姓名"  width="150" sortable  show-overflow-tooltip fixed="left">  
 						 <template slot-scope="scope">
-							 {{scope.row.username}} 
+							<mdp-select-user-xm :key="scope.row.id" v-model="scope.row" userid-key="userid" username-key="username" :project-id="scope.row.projectId" :disabled="true"></mdp-select-user-xm>
 						 </template>
 					</el-table-column>    
 					<el-table-column prop="execUserBranchId" label="用户归属公司" width="150" sortable  show-overflow-tooltip fixed="left"> 
@@ -85,8 +85,8 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import config from "@/common/config"; //全局公共库
-
+	import config from "@/common/config"; //全局公共库 
+	import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import { listXmTaskExecuserWithTask,editXmTaskExecuser,leaveTask,beExecutor,settleExec, delXmTaskExecuser, batchDelXmTaskExecuser,quotePrice,becomeCandidate,toTest,testSuccess,testFail } from '@/api/xm/core/xmTaskExecuser';
@@ -251,6 +251,7 @@
 		},//end methods
 		components: { 
 		    //在下面添加其它组件
+			MdpSelectUserXm
 		},
 		mounted() {
 			this.$nextTick(() => { 

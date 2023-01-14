@@ -12,7 +12,7 @@
 			<el-table ref="table" :height="tableHeight" :data="xmTaskExecusers" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				 <el-table-column type="expand">
 					<template slot-scope="props">
-						<el-form label-position="left"  class="demo-table-expand">
+						<el-form label-position="left"  class="padding">
 							<el-form-item label="报价">
 								工作量：<span>{{ props.row.quoteWorkload }} 人时</span> 金额：<span>{{ props.row.quoteAmount }}元</span>
 							</el-form-item>
@@ -41,11 +41,9 @@
 					</template>
 				</el-table-column>
 				<el-table-column prop="username" label="姓名" min-width="150" >
-					<template slot-scope="scope">
-						<div>
-						{{scope.row.username}}  
-						</div>
-					</template>
+						 <template slot-scope="scope">
+							<mdp-select-user-xm :key="scope.row.id" v-model="scope.row" userid-key="userid" username-key="username" :project-id="scope.row.projectId" :disabled="true"></mdp-select-user-xm>
+						 </template>
 				</el-table-column> 
 				
 				<el-table-column prop="quoteStartTime" label="报价工期" min-width="150" >
@@ -78,7 +76,9 @@
 			<el-drawer append-to-body title="报价" :visible.sync="quotePriceVisible" size="60%" :close-on-click-modal="false">
 				<el-form :model="quotePriceForm" label-width="100px" ref="quotePriceForm">
 					<el-form-item label="候选人名称">
-						<span>{{ quotePriceForm.username }} </span>
+						 <template slot-scope="scope">
+							<mdp-select-user-xm v-model="quotePriceForm" userid-key="userid" username-key="username" :disabled="true"></mdp-select-user-xm>
+						 </template>
 					</el-form-item>
 					<el-form-item label="报价工期" prop="quoteWeekday">
 						<div>
@@ -143,6 +143,7 @@
 	import { mapGetters } from 'vuex'
 	import html2canvas from 'html2canvas'
 	import { uploadBase64 } from '@/api/mdp/arc/image';
+	import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
 
 	export default {
 		computed: {
@@ -738,6 +739,7 @@
 		components: {
 		    'xm-task-execuser-add':XmTaskExecuserAdd,
 		    'xm-task-execuser-edit':XmTaskExecuserEdit, 
+			MdpSelectUserXm,
 		    //在下面添加其它组件
 		},
 		mounted() {
