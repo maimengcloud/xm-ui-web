@@ -191,13 +191,8 @@
 					</el-table-column>
 					-->
 					<el-table-column prop="handlerUsername" label="负责人"  width="100" show-overflow-tooltip> 
-						<template slot-scope="scope">   
-									<div class="cell-text">
-										{{ scope.row.handlerUsername}}
-									</div>
-									<span class="cell-bar">   
-										 <el-button @click="showGroupUsers('editHandlerUserid',scope.row)">负责人</el-button>
-									</span> 
+						<template slot-scope="scope">    
+							<mdp-select-user-xm :key="scope.row.id" v-model="scope.row" userid-key="handlerUserid" username-key="handlerUsername" :project-id="scope.row.projectId" @change="editXmQuestionSomeFields(scope.row,'handlerUserid',$event)"></mdp-select-user-xm>
 						</template>
 					</el-table-column>
 					<el-table-column prop="tagNames" label="标签"  width="100" show-overflow-tooltip> 
@@ -978,6 +973,7 @@
 				
 			}, 
 			editXmQuestionSomeFields(row,fieldName,$event){
+				debugger;
 				var params={ids:[row.id]};
 				if(this.sels.length>0){
 					if(!this.sels.some(k=>k.id==row.id)){
@@ -1009,7 +1005,7 @@
 				}else{
 					params[fieldName]=$event
 				}
-				
+				debugger;
 				editXmQuestionSomeFields(params).then(res=>{
 					var tips = res.data.tips;
 					if(tips.isOk){ 

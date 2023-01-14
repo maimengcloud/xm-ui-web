@@ -12,8 +12,7 @@
 
   .field-info {
     height: 40px;
-    line-height: 40px;
-    margin-left: 10px;
+    line-height: 40px; 
     display: flex;
     flex-direction: column;
     .field-value {
@@ -70,7 +69,7 @@
           height: 36px;
           width: 36px;
           border-radius: 50%;
-          margin-right: 12px;
+          margin-right: 5px;
       }
       .username{
           color: #7D7D7D;
