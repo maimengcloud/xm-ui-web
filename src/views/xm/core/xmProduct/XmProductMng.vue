@@ -936,6 +936,7 @@
 	width: 70%;
 }
 .project-period{
+	line-height: 40px;
 	text-align: right;
 }
 @media only screen and (max-height: 2400px) {

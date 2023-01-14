@@ -1038,6 +1038,7 @@
 	width: 70%;
 }
 .project-period{
+	line-height: 40px;
 	text-align: right;
 }
 .see-more > i{
