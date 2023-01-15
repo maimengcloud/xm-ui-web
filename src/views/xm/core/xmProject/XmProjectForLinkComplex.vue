@@ -309,7 +309,7 @@ import {
 } from "@/api/xm/core/xmProjectState";
 export default {
   computed: {
-    ...mapGetters(["userInfo", "roles"]),
+    ...mapGetters(["userInfo", "roles", "xmIteration", "xmProduct"]),
 
     calcProjectStatusStep() {
       if (this.dicts["projectStatus"] && this.selProject) {
@@ -326,7 +326,7 @@ export default {
       }
     },
   },
-  props: ["visible", "xmIteration", "xmProduct"],
+  props: ["visible"],
   watch: {
     visible: function (visible) {
       if (visible == true) {
