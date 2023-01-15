@@ -1,6 +1,6 @@
 <template>
 	<section>
-		 <xm-task-mng :xm-product="xmProduct" ptype="1" ntype="0"></xm-task-mng>
+		 <xm-task-mng :xm-product="xmProduct" ptype="1" query-scope="task"></xm-task-mng>
 	</section>
 </template>
 
@@ -13,10 +13,9 @@
 	export default { 
 		computed: {
 			...mapGetters([
-				'userInfo','roles'
+				'userInfo','roles','xmProduct'
 			]),   
-		},
-		props: ["xmProduct",'isMultiSelect'],
+		}, 
 		watch: {
 			"selkey": function(val) {
 				// console.log("任务类型");

@@ -255,12 +255,12 @@ export default {
           hidden:true
         },
         {
-          path: 'product',
-          component: _import('xm/core/xmProduct/XmProductForLinkComplex'),
-          name: 'productProductLink',
+          path: 'project',
+          component: _import('xm/core/xmProject/XmProjectForLinkComplex'),
+          name: 'productProjectLink',
           iconCls: 'fa el-icon-menu',
           meta: {
-            title: '产品-产品',
+            title: '产品-项目',
             icon: 'product',roles:["user"]
           }, 
           hidden:true

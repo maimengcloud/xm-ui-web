@@ -12,34 +12,37 @@
         :router="true"
       >
         
-        <el-menu-item :index="'/xm/core/product/overview?productId='+xmProduct.id">
+      <el-menu-item :index="'/xm/core/product/overview?productId='+xmProduct.id">
           <span
             slot="title"
-            style="font-size: 18px; color: #ffd04b"
-            class="hidden-sm-and-down"
+            style="font-size: 18px; color: #409eff"
+            class="hidden-md-and-down"
             :title="xmProduct.productName"
           >
-            <font v-if="xmProduct.productName.length >= 15"
-              ><strong
-                >&nbsp;<el-avatar class="top-icon" icon="el-icon-odometer" style="background-color:#E6A23C"></el-avatar>&nbsp;项目:&nbsp;{{ xmProduct.productName.substring(0, 15) }}</strong
+            <font v-if="xmProduct.productName.length >= 15">
+              <strong>
+                
+                &nbsp;<el-avatar class="top-icon" icon="el-icon-s-opportunity" style="background-color:#409EFF"></el-avatar>&nbsp;{{ xmProduct.productName.substring(0, 15) }}</strong
               ></font
             >
-            <font type="danger" v-else
-              ><strong>&nbsp;<el-avatar class="top-icon" icon="el-icon-odometer" style="background-color:#E6A23C"></el-avatar>&nbsp;项目:&nbsp;{{ xmProduct.productName }}</strong></font
+            <div  v-else>
+           
+            <font type="danger">
+              <strong>&nbsp; <el-avatar class="top-icon" icon="el-icon-s-opportunity" style="background-color:#409EFF"></el-avatar>&nbsp;产品:&nbsp;{{ xmProduct.productName }}</strong></font
             >
+            </div>
           </span>
-
           <span
             slot="title"
-            style="color: #ffd04b"
-            class="hidden-md-and-up"
+            style="color: #409eff"
+            class="hidden-lg-and-up"
             :title="xmProduct.productName"
           >
-            <font v-if="xmProduct.productName.length >= 15"
-              >&nbsp;<el-avatar class="top-icon" icon="el-icon-odometer" style="background-color:#E6A23C"></el-avatar>&nbsp;项目:&nbsp;{{ xmProduct.productName.substring(0, 15) }}</font
+            <font v-if="xmProduct.productName.length >= 15">
+              &nbsp;<el-avatar class="top-icon" icon="el-icon-s-opportunity" style="background-color:#409EFF"></el-avatar>&nbsp;产品:&nbsp;{{ xmProduct.productName.substring(0, 15) }}</font
             >
-            <font type="danger" v-else
-              >&nbsp;<el-avatar class="top-icon" icon="el-icon-odometer" style="background-color:#E6A23C"></el-avatar>&nbsp;项目:&nbsp;{{ xmProduct.productName }}</font
+            <font type="danger" v-else>
+              &nbsp;<el-avatar class="top-icon" icon="el-icon-s-opportunity" style="background-color:#409EFF"></el-avatar>&nbsp;产品:&nbsp;{{ xmProduct.productName }}</font
             >
           </span>
         </el-menu-item>

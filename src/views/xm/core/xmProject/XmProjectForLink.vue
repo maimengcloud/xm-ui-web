@@ -1,23 +1,31 @@
 <template>
-	<section>
+	<section class="padding">
 		<el-row>
 			
 			 <el-input v-model="filters.key" style="width:30%;" placeholder="请输入关键字进行查找项目" v-if="!xmIteration && !xmProduct"> 
 			</el-input>
 			<el-button @click="searchXmProjects" icon="el-icon-search" v-if="!xmIteration && !xmProduct"></el-button>
-			 <xm-project-select @row-click="onXmProjectSelect">
+			<span style="text-align:right;">
+			 <xm-project-select v-if="xmProduct && xmProduct.id" @row-click="onXmProjectSelect" :auto-select="false" :link-product-id="xmProduct.id">
 				 <font slot="title">添加更多项目到产品中</font>
 			 </xm-project-select>
+			 
+			 <xm-project-select v-if="xmIteration && xmIteration.id"  @row-click="onXmProjectSelect" :auto-select="false" :link-iteration-id="xmIteration.id">
+				 <font slot="title">添加更多项目到产品中</font>
+			 </xm-project-select>
+			</span>
 		</el-row>
-		<el-row class="page-main ">   
-			<el-table ref="table" :height="tableHeight"  stripe :data="xmProjects"  highlight-current-row v-loading="load.list"   style="width: 100%;">
+		<el-row>   
+			<el-table ref="table" :height="tableHeight"  stripe :data="xmProjects"  highlight-current-row v-loading="load.list" border  style="width: 100%;">
 				<el-table-column  type="index" label="序号" width="55" ></el-table-column>
 				<el-table-column prop="id" label="项目编码" min-width="80" ></el-table-column>
 				<el-table-column prop="name" label="标题名称" min-width="80" ></el-table-column> 
 				<el-table-column prop="seq" label="顺序" min-width="80" >
-				     <span class="cell-text">  {{scope.row.username}}}  </span>
-                     <span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
-				</el-table-column>  
+					<template slot-scope="scope">  
+				     <span class="cell-text">  {{scope.row.seq}}  </span>
+                     <span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'seq',$event)" :maxlength="22"></el-input></span>
+						</template>
+					</el-table-column>  
 				<el-table-column label="操作" width="245" fixed="right">
 					<template slot-scope="scope">  
 							<el-button-group>
@@ -48,15 +56,14 @@
 	import { listXmProject,  } from '@/api/xm/core/xmProject';  
 	import { mapGetters } from 'vuex' 
  	import { delXmProductProjectLink, addXmProductProjectLink,batchDelXmProductProjectLink,editSomeFieldsXmProductProjectLink } from '@/api/xm/core/xmProductProjectLink';
-import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue';
+	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue';
+    import store from '@/store'
 
 
-
-	export default {  
-		props:['xmProduct','xmIteration'],
+	export default {   
 		computed: {
 			...mapGetters([
-				'userInfo','roles'
+				'userInfo','roles','xmProduct','xmIteration'
 			]), 
 		}, 
 		watch:{
@@ -137,15 +144,19 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue';
 					total: this.pageInfo.total,
 					count:this.pageInfo.count,
 				};
+				debugger;
 				if(this.xmProduct){
-					params.productId=this.xmProduct.id
+					params.linkProductId=this.xmProduct.id
 				}
 				
 				if(this.xmIteration){
-					params.iterationId=this.xmIteration.id
+					params.linkIterationId=this.xmIteration.id
 				}
 				if(this.filters.key){
 					params.key='%'+this.filters.key+'%'
+				}
+				if( !params.linkIterationId && !params.linkProductId){
+					return;
 				}
 				this.load.list = true; 
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
@@ -170,7 +181,9 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue';
 				}).catch( err => this.load.list = false );
 			}, 
 			goToProject(row){
-				this.$router.push({path:'/xm/core/xmProject/XmProjectInfoRoute',query:{id:row.id}})
+				store.dispatch("setProjectInfo",row).then(res=>{
+					this.$router.push({path:'/xm/core/project/overview',query:{projectId:row.id}})
+				}) 
 			},
 			selectProject:function(row){
 				this.editForm=row
