@@ -320,5 +320,18 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
+.menus {
+  .el-menu-item {
+    padding-left: 0px !important;
+  }
+}
+/* 超过宽度则用...代替 */
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.step-btn{
+	margin-left:0px;margin-bottom: 5px;
+}
 </style>
