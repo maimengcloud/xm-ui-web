@@ -2,10 +2,10 @@
 	<section> 
 		<el-row class="box">
 			<el-col :span="8" class="left">
-				<xm-phase :xm-product="xmProduct" :sel-project="selProject" queryScope="plan" @row-click="onPhaseRowClick"></xm-phase>
+				<xm-phase   :sel-project="projectInfo" queryScope="plan" @row-click="onPhaseRowClick"></xm-phase>
 			</el-col> 
 			<el-col :span="16">
-				<xm-task-mng :xm-product="xmProduct" :sel-project="selProject" queryScope="task" :parent-task="parentTask"></xm-task-mng>
+				<xm-task-mng   :sel-project="projectInfo" queryScope="task" :parent-task="parentTask"></xm-task-mng>
 			</el-col>
 		</el-row>
 	</section>
@@ -22,11 +22,10 @@
         
 		components: {   
 			XmPhase,XmTaskMng
-		},
-        props:['xmProduct','selProject'],
+		}, 
 		computed: {
 		    ...mapGetters([
-		      'userInfo','roles'
+		      'userInfo','roles','projectInfo'
 		    ]), 
             
 			

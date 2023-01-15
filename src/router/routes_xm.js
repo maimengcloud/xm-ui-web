@@ -65,7 +65,7 @@ export default {
         },
         {
           path: 'menu',
-          component: _import('xm/core/xmMenu/XmMenuBox'),
+          component: _import('xm/core/xmMenu/XmMenuBoxForProject'),
           name: 'projectMenu',
           iconCls: 'fa el-icon-menu',
           meta: {
@@ -87,7 +87,7 @@ export default {
         },
         {
           path: 'plan',
-          component: _import('xm/core/xmTask/XmPlan'),
+          component: _import('xm/core/xmTask/XmPlanForProject'),
           name: 'projectPlan',
           iconCls: 'fa el-icon-menu',
           meta: {
@@ -267,7 +267,7 @@ export default {
         },
         {
           path: 'menu',
-          component: _import('xm/core/xmMenu/XmMenuBox'),
+          component: _import('xm/core/xmMenu/XmMenuBoxForProduct'),
           name: 'productMenu',
           iconCls: 'fa el-icon-menu',
           meta: {
@@ -289,7 +289,7 @@ export default {
         },
         {
           path: 'plan',
-          component: _import('xm/core/xmTask/XmPlan'),
+          component: _import('xm/core/xmTask/XmPlanForProduct'),
           name: 'productPlan',
           iconCls: 'fa el-icon-menu',
           meta: {

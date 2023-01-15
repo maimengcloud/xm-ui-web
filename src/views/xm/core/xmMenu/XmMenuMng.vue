@@ -3,7 +3,7 @@
 		<el-row class="padding-left padding-right">
 			<el-col :span="24">
 					<el-row>
-						<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="!xmProduct && !xmIteration"   :auto-select="false" :link-project-id="projectInfo?projectInfo.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select>
+						<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="!xmProduct&&!xmProduct.id && !xmIteration && !xmIteration.id"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select>
 
 						<el-select   v-model="filters.priority" placeholder="优先级"  clearable style="width: 100px;">
 								<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
@@ -59,7 +59,7 @@
 									<font class="more-label-font">
 										迭代:
 									</font>
-									<xm-iteration-select v-if="!xmIteration || !xmIteration.id" style="display:inline;" :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="projectInfo?projectInfo.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClearSelect">
+									<xm-iteration-select v-if="!xmIteration || !xmIteration.id" style="display:inline;" :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="selProject?selProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClearSelect">
 					    			</xm-iteration-select> 
 								</el-row> 
 								<el-row>
@@ -86,8 +86,8 @@
 									<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable style="width: 200px;">
 										<el-option   value="not-join-any-project"  label="未分配过任务的需求"></el-option>
 										<el-option   value="join-any-project"  label="已分配过任务的需求"></el-option>
-										<el-option   value="not-join-curr-project"  :label="'未分配任务到项目【'+projectInfo.name+'】'" v-if="projectInfo && projectInfo.id"></el-option>
-										<el-option   value="join-curr-project"  :label="'已分配任务到项目【'+projectInfo.name+'】'"  v-if="projectInfo && projectInfo.id"></el-option>
+										<el-option   value="not-join-curr-project"  :label="'未分配任务到项目【'+selProject.name+'】'" v-if="selProject && selProject.id"></el-option>
+										<el-option   value="join-curr-project"  :label="'已分配任务到项目【'+selProject.name+'】'"  v-if="selProject && selProject.id"></el-option>
 									</el-select>
 								</el-row> 
 								<el-row>
@@ -355,7 +355,7 @@
 					</el-row> 
 				<!--编辑 XmMenu xm_project_menu界面-->
 				<el-dialog title="编辑故事" :visible.sync="editFormVisible" :with-header="false" fullscreen width="90%" top="20px"    append-to-body   :close-on-click-modal="false" >
-					<xm-menu-edit :xm-menu="editForm" :sel-project="projectInfo" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @add-sub-menu="onAddSubMenu" @edit-fields="onEditSomeFields"></xm-menu-edit>
+					<xm-menu-edit :xm-menu="editForm" :sel-project="selProject" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @add-sub-menu="onAddSubMenu" @edit-fields="onEditSomeFields"></xm-menu-edit>
 				</el-dialog>
 
 				<!--新增 XmMenu xm_project_menu界面-->
@@ -370,7 +370,7 @@
 					<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="false" :xm-menu="editForm" ></xm-menu-rich-detail>
 				</el-drawer>
 				<el-drawer title="选中任务" :visible.sync="selectTaskVisible"   size="80%"  append-to-body   :close-on-click-modal="false">
-					<xm-task-list :xm-product="filters.product" :sel-project="projectInfo" query-scope="planTask" check-scope="task"  :is-multi-select="true"  @tasks-selected="onSelectedTasks"></xm-task-list>
+					<xm-task-list :xm-product="filters.product" :sel-project="selProject" query-scope="planTask" check-scope="task"  :is-multi-select="true"  @tasks-selected="onSelectedTasks"></xm-task-list>
 				</el-drawer>
 				<el-drawer title="查看任务" :visible.sync="taskListForMenuVisible" :with-header="false"  size="80%"  append-to-body   :close-on-click-modal="false">
 					<xm-task-list-for-menu  :xm-product="filters.product"  :is-multi-select="true" :menu-id="editForm.menuId"></xm-task-list-for-menu>
@@ -381,14 +381,14 @@
 					:visible.sync="taskMngVisible"
 					:with-header="false"
 					size="80%">
-					<xm-task-mng :sel-project="projectInfo"   :menu-id="editForm.menuId" :menu-name="editForm.menuName"></xm-task-mng>
+					<xm-task-mng :sel-project="selProject"   :menu-id="editForm.menuId" :menu-name="editForm.menuName"></xm-task-mng>
 				</el-drawer> 
 			</el-col>
 		</el-row>
 		
  			<tag-dialog ref="tagDialog" :tagIds="filters.tags?filters.tags.map(i=>i.tagId):[]" :jump="true" @select-confirm="onTagSelected">
 			</tag-dialog>
- 			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="projectInfo" :xm-product="filters.xmProduct" @user-confirm="onGroupUserSelect">
+ 			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="selProject" :xm-product="filters.xmProduct" @user-confirm="onGroupUserSelect">
 			</xm-group-dialog>
 		<el-drawer
 		append-to-body
@@ -440,10 +440,10 @@
 	import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
 
 	export default {
-		props:[ 'xmIteration','xmProduct','disabledMng','parentMenu','paddingTop'],
+		props:[ 'xmIteration','xmProduct','disabledMng','parentMenu','paddingTop','selProject'],
 		computed: {
 		    ...mapGetters([
-		      'userInfo','roles','projectInfo'
+		      'userInfo','roles'
 			]),
 
       		xmMenusTreeData() { 
@@ -460,7 +460,7 @@
 					this.filters.product=this.xmProduct
 					this.getXmMenus()
 			},
-			projectInfo:function(){
+			selProject:function(){
 				this.getXmMenus();
 			}
 			,
@@ -639,15 +639,15 @@
 					params.taskFilterType=this.filters.taskFilterType
 
 					if(params.taskFilterType==='not-join-curr-project'){
-						params.projectId=this.projectInfo.id
+						params.projectId=this.selProject.id
 					}
 					if(params.taskFilterType==='join-curr-project'){
-						params.projectId=this.projectInfo.id
+						params.projectId=this.selProject.id
 					}
 					params.ntype="0"
 				}
-				if(this.projectInfo && this.projectInfo.id){
-					params.linkProjectId=this.projectInfo.id
+				if(this.selProject && this.selProject.id){
+					params.linkProjectId=this.selProject.id
 				}
 				if(this.filters.product){
 					params.productId=this.filters.product.id
@@ -699,7 +699,7 @@
 					params=this.getParams(params); 
 					this.load.list = true;
 					var func=listXmMenuWithState
-					if(this.projectInfo&&this.projectInfo.id){
+					if(this.selProject&&this.selProject.id){
 						func=listXmMenuWithPlan
 					}
 					func(params).then(res=>{
@@ -745,7 +745,7 @@
 					this.load.list = false;
 				}
 				this.load.list = true;
-				if(!this.projectInfo){
+				if(!this.selProject){
 					listXmMenuWithState(params).then( callback ).catch( err => this.load.list = false );
 				}else{
 					listXmMenuWithPlan(params).then( callback ).catch( err => this.load.list = false );

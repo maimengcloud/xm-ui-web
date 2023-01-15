@@ -174,7 +174,7 @@
             v-if="selProject && selProject.id"
           >
             <xm-plan
-              v-if="selProject && showPanel == 'plan'"
+              v-if="selProject&&selProject.id && showPanel == 'plan'"
               queryScope="plan"
               ptype="0"
               :xm-product="xmProduct"
