@@ -1,6 +1,195 @@
 <template>
   <section class="padding-left padding-right">
-      <el-menu mode="horizontal" :default-active="showPanelName"  @select="onMenuToolBarSelect">
+    <el-row ref="pageBody">
+        <el-col
+          :span="4"
+          class="padding border"
+          :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"
+        >
+          <h4 class="padding-bottom">常用功能导航</h4>
+          <el-steps
+            :active="calcProductPstatusStep"
+            finish-status="success"
+            direction="vertical"
+          >
+            <el-step
+              v-for="(i, index) in dicts['xmProductPstatus']"
+              :title="i.name"
+              :key="index"
+            >
+              <el-row slot="description">
+                <el-row v-if="i.id == '0'"
+                  ><!--打开-->
+                  <span v-if="xmProduct.pstatus == i.id">
+                    <el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="jumpTo('productMenu')"
+                      >需求管理</el-button
+                    >
+                    <el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="linkProject()"
+                      >关联项目</el-button
+                    >
+                    <el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="
+                        editXmProductSomeFields(xmProduct, 'pstatus', '1')
+                      "
+                      >设为研发中</el-button
+                    >
+                  </span>
+                  <span v-if="xmProduct.pstatus != i.id">
+                    <el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="jumpTo('productMenu')"
+                      >需求管理</el-button
+                    >
+                    <el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="linkProject()"
+                      >关联项目</el-button
+                    > 
+                  </span>
+                </el-row>
+                <el-row v-else-if="i.id == '1'"
+                  ><!--研发中-->
+                  <span v-if="xmProduct.pstatus == i.id">
+                    <el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="jumpTo('productIteration')"
+                      >迭代管理</el-button
+                    >
+					<el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="jumpTo('productQuestion')"
+                      >缺陷管理</el-button
+                    >
+					<el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="jumpTo('productProjectLink')"
+                      >项目管理</el-button
+                    >
+					<el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="jumpTo('productReport')"
+                      >效能分析</el-button
+                    >
+                    <el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="
+                        editXmProductSomeFields(xmProduct, 'pstatus', '2')
+                      "
+                      >设为已完成</el-button
+                    >
+                  </span>
+                  <span v-if="xmProduct.pstatus != i.id"> 
+                    <el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="jumpTo('productIteration')"
+                      >迭代管理</el-button
+                    >
+					<el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="jumpTo('productQuestion')"
+                      >缺陷管理</el-button
+                    >
+					<el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="jumpTo('productProjectLink')"
+                      >项目管理</el-button
+                    >
+					<el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="jumpTo('productReport')"
+                      >效能分析</el-button
+                    >
+                  </span>
+                </el-row>
+                <el-row v-else-if="i.id == '2'"
+                  ><!--已完成-->
+                  <span v-if="xmProduct.pstatus == i.id"> 
+                    <el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="
+                        editXmProductSomeFields(xmProduct, 'pstatus', '3')
+                      "
+                      >设为已关闭</el-button
+                    >
+                  </span>
+                  <span v-if="xmProduct.pstatus != i.id">
+                     
+                  </span>
+                </el-row>
+                <el-row v-else-if="i.id == '3'"
+                  ><!--已关闭-->
+                  <span v-if="xmProduct.pstatus == i.id"> 
+                    <el-button
+                      class="step-btn"
+                      type="warning"
+                      size="mini"
+                      plain
+                      @click="
+                        editXmProductSomeFields(xmProduct, 'pstatus', '0')
+                      "
+                      >重新打开</el-button
+                    >
+                  </span>
+                  <span v-if="xmProduct.pstatus != i.id">
+                     
+                  </span>
+                </el-row> 
+              </el-row>
+            </el-step>
+          </el-steps>
+        </el-col>
+        <el-col :span="20">
+         <el-menu mode="horizontal" :default-active="showPanelName"  @select="onMenuToolBarSelect">
         <el-menu-item index="overview">
           <span slot="title">产品概览</span>
         </el-menu-item>
@@ -27,8 +216,8 @@
           <span slot="title">历史审批流</span>
         </el-menu-item> 
 
-      </el-menu>
-       <xm-product-overview  v-if="showPanelName=='overview'" :xm-product="xmProduct"></xm-product-overview>
+        </el-menu>
+        <xm-product-overview  v-if="showPanelName=='overview'" :xm-product="xmProduct"></xm-product-overview>
         <xm-product-edit  v-if="showPanelName=='detail'" :xm-product="xmProduct"></xm-product-edit>
         <xm-iteration-link-for-product v-if="showPanelName=='iterationProductLink'" :xm-product="xmProduct"></xm-iteration-link-for-product>
         <xm-product-project-link-mng  v-if="showPanelName=='productProjectLink'" :xm-product="xmProduct"></xm-product-project-link-mng>
@@ -44,8 +233,10 @@
               <font color="blue"  style="font-size:10px;">将从项目任务汇总进度、预算工作量、实际工作量、预算金额、实际金额等数据到需求统计表</font>
           </el-row>
         </div> 
-            <task-mng v-if="showPanelName === 'currFlow' " ref="currFlow" :biz-parent-pkid="xmProduct.id" > </task-mng>  
-            <procinst-mng v-if="showPanelName === 'hisFlow' " ref="hisFlow" isAll="true" :biz-parent-pkid="xmProduct.id"></procinst-mng> 
+        <task-mng v-if="showPanelName === 'currFlow' " ref="currFlow" :biz-parent-pkid="xmProduct.id" > </task-mng>  
+        <procinst-mng v-if="showPanelName === 'hisFlow' " ref="hisFlow" isAll="true" :biz-parent-pkid="xmProduct.id"></procinst-mng>   
+        </el-col>
+      </el-row>
    </section>
 </template>
 
@@ -61,21 +252,50 @@ import { listXmProductWithState } from '@/api/xm/core/xmProduct';
 import { loadTasksToXmMenuState} from '@/api/xm/core/xmMenuState'; 
 import TaskMng from '@/views/mdp/workflow/ru/task/TaskMng'; 
 import ProcinstMng from '@/views//mdp/workflow/hi/procinst/ProcinstMng';
+
+import { initDicts,editXmProductSomeFields } from "@/api/xm/core/xmProduct";
+
 export default {
   components: { XmProductOverview, XmProductEdit, XmProductProjectLinkMng,TaskMng,ProcinstMng,},
   computed: {
     ...mapGetters(["userInfo","xmProduct"]),
+    calcProductPstatusStep() {
+      if (this.dicts["xmProductPstatus"] && this.xmProduct) {
+        var index = this.dicts["xmProductPstatus"].findIndex((i) => {
+          if (i.id == this.xmProduct.pstatus) {
+            return true;
+          } else {
+            return false;
+          }
+        });
+        return index + 1;
+      } else {
+        return 0;
+      }
+    },
   }, 
   watch:{
   },
   data() {
     return {
+      
+	    dicts:{xmProductPstatus:[]},
+      maxTableHeight:500,
       showPanelName:'overview',
       load:{calcProduct:false,calcMenu:false}
     };
   },
 
   methods:{ 
+    
+    jumpTo(name){
+      this.$router.push({
+        name:name,
+        query:{
+          productId:this.xmProduct.id
+        }
+      })
+    },
 			loadTasksToXmProductState: function () {
 				this.load.calcProduct=true;
 
@@ -115,11 +335,92 @@ export default {
 			},
     onMenuToolBarSelect(menuIndex){
       this.showPanelName=menuIndex;
-    }
+    },
+    showCurrFlow() {
+      this.showPanelName = "currFlow";
+    },
+    showHisFlow() {
+      this.showPanelName = "hisFlow";
+    },
+    showDetail() {
+      this.showPanelName = "detail";
+    },
+    showProjectGaiSuan() {
+      this.showPanelName = "detail";
+      this.$nextTick(() => {
+        this.$refs[
+          "projectEdit"
+        ].currTabPane = "4";
+      });
+    },
+    showProjectShouYi() {
+      this.showPanelName = "detail";
+      this.$nextTick(() => {
+        this.$refs[
+          "projectEdit"
+        ].currTabPane = "5";
+      });
+    }, 
+    linkProject() {
+      this.showPanelName = "productProjectLink";
+    },
+    createProduct() {
+      this.infotype = "产品";
+      this.$nextTick(() => {
+        this.addProductVisible = true;
+      });
+    },
+    
+
+    editXmProductSomeFields(row,fieldName,$event){ 
+      var that=this;
+      var func=(params)=>{
+        editXmProductSomeFields(params).then(res=>{
+          var tips = res.data.tips;
+          if(tips.isOk){
+            this.$emit('edit-fields',params)
+            Object.assign(row,params) 
+            this.xmProductBak=Object.assign({},row)
+          }else{   
+            Object.assign(this.xmProduct,this.xmProductBak)
+            this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+          }
+        })
+      }
+      var params={ids:[row.id]}; 
+        
+      params[fieldName]=$event 
+      
+      
+      if(fieldName=='description'){
+        this.$refs.xmProduct.validateField('description',err=>{
+          if(err){ 
+            this.$notify({position:'bottom-left',showClose:true,message: err,type: 'error'})
+            return;
+          }else{
+            func(params)
+          }
+        })
+      }else if(fieldName=='name'){  
+        this.$refs.xmProduct.validateField('name',err=>{
+          if(err){
+            this.$notify({position:'bottom-left',showClose:true,message: err,type: 'error'})
+            return;
+          }else{
+            func(params)
+          }
+        })
+      }else{
+        func(params)
+      }
+    }, 
   },
 
   mounted() {
+    initDicts(this)
     this.$nextTick(() => {
+      
+      this.maxTableHeight  = util.calcTableMaxHeight(this.$refs.pageBody.$el);
     });
   },
 
@@ -128,4 +429,21 @@ export default {
 
 <style scoped lang="scss">
 
+.menus {
+  .el-menu-item {
+    padding-left: 0px !important;
+  }
+}
+ 
+/* 超过宽度则用...代替 */
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.step-btn {
+  margin-left: 0px;
+  margin-bottom: 5px;
+}
 </style>

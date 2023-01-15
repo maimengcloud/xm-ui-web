@@ -311,8 +311,9 @@ export default {
 
   mounted() {
     
-    this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.pageBody.$el);  
+    
     this.$nextTick(() => {
+      this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.pageBody.$el);  
     });
   },
 

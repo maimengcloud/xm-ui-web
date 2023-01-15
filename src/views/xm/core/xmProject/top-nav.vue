@@ -117,12 +117,12 @@
           <el-menu-item index="/helpCenter">
             <span slot="title"><i class="el-icon-date"></i>客服</span>
           </el-menu-item>
-          <el-menu-item index="回到项目列表页"  @click.native="goBack">
+          <el-menu-item index="/xm/core/xmProject/XmProjectMng">
               <span slot="title"
                 ><i class="el-icon-back"></i>回到项目列表页</span
               >
             </el-menu-item> 
-            <el-menu-item index="首页" @click.native="goHome">
+            <el-menu-item index="/">
               <span slot="title"
                 ><i class="el-icon-s-home"></i>首页</span
               >
@@ -296,32 +296,7 @@ export default {
   methods: {    
     setInfotype(infotype) {  
         this.infotype = infotype;  
-    },
-    /**
-     * 防止禁用弹框 _self模式
-     * @param {} url 
-     */
-    newWin(url) { 
-      var id='toOpenWindow'
-      var a = document.createElement('a');
-      a.setAttribute('href', url);
-      a.setAttribute('target', '_self');
-      a.setAttribute('id', id);
-      // 防止反复添加
-      if(!document.getElementById(id)) document.body.appendChild(a);
-      a.click();
-    },
-    toForum(){
-      this.newWin('https://www.maimengcloud.com/#/communityForum');
-    },
-    goBack() {
-       this.$router.push({
-        path:'/xm/core/xmProject/XmProjectMng'
-       })
-    },
-    goHome(){  
-      this.$router.push({path:'/'}) 
-    },
+    }, 
      
   }, //end methods
   components: {
