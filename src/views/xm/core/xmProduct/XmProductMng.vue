@@ -407,6 +407,7 @@
 	import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
 
 	import Guider from '@/components/Guider/Index.js';
+	import store from '@/store'
 
 	export default {
 		props:['selProject','xmIteration', 'source'],
@@ -621,8 +622,9 @@
 			//进入info界面
 			intoInfo(row) {
 				this.editForm = row;
-				this.$router.push({ name:'XmProductInfoRoute', query: {id:row.id} })
-				localStorage.setItem("xm-product-info-route",JSON.stringify(row));
+				store.dispatch("setXmProduct",row).then(res=>{
+					this.$router.push({ name:'productOverview', query: {productId:row.id} }) 
+				}) 
 				//this.showInfo = true;
 			},
 			//选择行xmProduct

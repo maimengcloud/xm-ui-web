@@ -60,7 +60,7 @@
 					return [];
 				},
 		},
-		props: ["selProject"],
+		props: ["selProject","xmProduct"],
 		data() {
 			return {
 				filters: {

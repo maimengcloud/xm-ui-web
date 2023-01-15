@@ -1,6 +1,7 @@
 /* Layout */
 import Layout from '../views/layout/Layout'
 import XmProjectLayout from '../views/xm/core/xmProject/index'
+import XmProductLayout from '../views/xm/core/xmProduct/index'
 const _import = require('./_import_' + process.env.NODE_ENV)
 
 export default {
@@ -230,7 +231,186 @@ export default {
         
       ]
     },
-
+    {
+      path: '/xm/core/product',
+      component: XmProductLayout,
+      name: '产品管理',
+      iconCls: 'fa el-icon-menu',
+      meta: {
+        title: '产品管理',
+        icon: 'product'
+      }, 
+      hidden:true,
+      // leaf: true,//只有一个节点
+      children: [
+        {
+          path: 'overview',
+          component: _import('xm/core/xmProduct/XmProductOverviewComplex'),
+          name: 'productOverview',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '产品-首页',
+            icon: 'product',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'product',
+          component: _import('xm/core/xmProduct/XmProductForLinkComplex'),
+          name: 'productProductLink',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '产品-产品',
+            icon: 'product',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'menu',
+          component: _import('xm/core/xmMenu/XmMenuBox'),
+          name: 'productMenu',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '产品-需求',
+            icon: 'product',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'iteration',
+          component: _import('xm/core/xmIteration/XmIterationForLinkComplex'),
+          name: 'productIteration',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '产品-迭代',
+            icon: 'product',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'plan',
+          component: _import('xm/core/xmTask/XmPlan'),
+          name: 'productPlan',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '产品-计划',
+            icon: 'product',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'task',
+          component: _import('xm/core/xmTask/XmTaskListForProduct'),
+          name: 'productMenu',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '产品-任务',
+            icon: 'product',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'env',
+          component: _import('xm/core/xmEnvList/XmEnvListMng'),
+          name: 'productEnv',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '产品-环境清单',
+            icon: 'product',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'question',
+          component: _import('xm/core/xmQuestion/XmQuestionForProduct'),
+          name: 'productQuestion',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '产品-缺陷',
+            icon: 'product',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'group',
+          component: _import('xm/core/xmGroup/XmGroupForProduct'),
+          name: 'productGroup',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '产品-团队',
+            icon: 'product',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'contract',
+          component: _import('xm/core/xmContract/XmContractForProduct'),
+          name: 'productContract',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '产品-合同',
+            icon: 'product',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'record',
+          component: _import('xm/core/xmRecord/XmRecordForProduct'),
+          name: 'productRecord',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '产品-日志',
+            icon: 'product',roles:["user"]
+          }, 
+          hidden:true
+        },  
+        {
+          path: 'workloadDay',
+          component: _import('xm/core/xmWorkload/WorkloadSetDayList'),
+          name: 'productBudget',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '产品-工时日报',
+            icon: 'product',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'workloadMonth',
+          component: _import('xm/core/xmWorkload/WorkloadSetMonthList'),
+          name: 'productWorkloadMonth',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '产品-工时月报',
+            icon: 'product',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'file',
+          component: _import('xm/core/xmFile/XmFileForProduct'),
+          name: 'productFile',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '产品-文档',
+            icon: 'product',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'report',
+          component: _import('xm/rpt/reportIndexForProduct'),
+          name: 'productReport',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '产品-效能',
+            icon: 'product',roles:["user"]
+          }, 
+          hidden:true
+        },
+        
+      ]
+    },
 
     { path: '/xm/core/testCasedbRoute', component: _import('xm/core/xmTestCasedb/XmTestCasedbRoute'), name: 'XmTestCasedbRoute', meta: { title: '测试库管理',roles:["user"] },hidden:true},
     {
@@ -361,7 +541,7 @@ export default {
       },
       //leaf: true,//只有一个节点
       children: [
-        { path: 'xmProject/XmProjectCost', component: _import('xm/core/xmProject/XmProjectCost'), name: 'XmProjectCost', meta: { title: '应付款',roles:["user"]}},    
+        { path: 'xmProduct/XmProjectCost', component: _import('xm/core/xmProject/XmProjectCost'), name: 'XmProjectCost', meta: { title: '应付款',roles:["user"]}},    
 
         { path: 'xmTaskSbill/XmTaskSbillMng', component: _import('xm/core/xmTaskSbill/XmTaskSbillMng'), name: 'XmTaskSbilllMng', meta: { title: '任务结算单',roles:["user"]}},    
          { path: 'xmWorkload/WorkloadSetDayListMy', component: _import('xm/core/xmWorkload/WorkloadSetDayListMy'), name: 'WorkloadSetDayListMy', meta: { title: '工时日报(我)',roles:["user"]}},

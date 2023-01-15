@@ -64,10 +64,8 @@ import ProcinstMng from '@/views//mdp/workflow/hi/procinst/ProcinstMng';
 export default {
   components: { XmProductOverview, XmProductEdit, XmProductProjectLinkMng,TaskMng,ProcinstMng,},
   computed: {
-    ...mapGetters(["userInfo"]),
-  },
-
-  props:['xmProduct'],
+    ...mapGetters(["userInfo","xmProduct"]),
+  }, 
   watch:{
   },
   data() {

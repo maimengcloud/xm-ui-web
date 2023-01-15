@@ -1,6 +1,7 @@
 <template>
 	<section>
 		 <xm-record v-if="selProject"  :visible="true" :project-id="selProject.id"></xm-record>
+		 <xm-record v-else-if="xmProduct"  :visible="true" :product-id="xmProduct.id"></xm-record>
 		<xm-record v-else :visible="true"></xm-record>
 	</section>
 </template>
@@ -17,7 +18,7 @@
 		      'userInfo','roles'
 		    ])
 		},
-		props:['selProject'],
+		props:['selProject','xmProduct'],
 		data() {
 			return {
 				 
