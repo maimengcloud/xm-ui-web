@@ -4,7 +4,7 @@
 			<el-col :span="4" class="padding">
 				 <el-row>
 					<el-col :span="24">
-						<xm-iteration-select ref="xmIterationSelect" :auto-select="true" :link-project-id="selProject?selProject.id:null" :product-id="xmProduct?xmProduct.id:null"  @row-click="onIterationRowClick" @clear="onIterationClearSelect"></xm-iteration-select>
+						<xm-iteration-select ref="xmIterationSelect" :auto-select="true" :link-project-id="projectInfo?projectInfo.id:null" :product-id="xmProduct?xmProduct.id:null"  @row-click="onIterationRowClick" @clear="onIterationClearSelect"></xm-iteration-select>
  					</el-col> 
  				 </el-row> 
 				<el-row ref="pageMainRef" class="padding" :class="{border:xmIteration&&xmIteration.id}" :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"> 
@@ -280,7 +280,7 @@
 				<el-tabs :value="showPanel" @tab-click="tabClick">  
 					<el-tab-pane label="迭代概览" lazy  name="iterationOverview" v-if="xmIteration && xmIteration.id"> 
 						 
-						<xm-iteration-overview v-if="xmIteration && showPanel=='iterationOverview'"  :xm-iteration="xmIteration" :sel-project="selProject"></xm-iteration-overview>
+						<xm-iteration-overview v-if="xmIteration && showPanel=='iterationOverview'"  :xm-iteration="xmIteration" :sel-project="projectInfo"></xm-iteration-overview>
 				 
 					</el-tab-pane>
 					<el-tab-pane label="执行统计" lazy  name="iterationCalc" v-if="xmIteration && xmIteration.id">
@@ -301,16 +301,16 @@
 						<xm-iteration-edit v-if="showPanel=='detail'" :xm-iteration="xmIteration" @edit-fields="onEditFields"></xm-iteration-edit>
 					</el-tab-pane> 
 					<el-tab-pane label="需求列表" lazy name="menus" v-if="xmIteration&&xmIteration.id">
-						<xm-menu-mng v-if="xmIteration && showPanel=='menus'" :xm-product="xmProduct"  :xm-iteration="xmIteration" :sel-project="selProject"></xm-menu-mng>
+						<xm-menu-mng v-if="xmIteration && showPanel=='menus'" :xm-product="xmProduct"  :xm-iteration="xmIteration" :sel-project="projectInfo"></xm-menu-mng>
 					</el-tab-pane>
 					<el-tab-pane label="配置需求范围" lazy name="iterationMenuMng" v-if="xmIteration&&xmIteration.id">
       					<xm-iteration-menu-mng v-if="showPanel=='iterationMenuMng'" :xm-iteration="xmIteration"></xm-iteration-menu-mng>
 					</el-tab-pane>
 					<el-tab-pane label="任务列表" lazy name="tasks" v-if="xmIteration&&xmIteration.id">
-						<xm-task-mng v-if="xmIteration && showPanel=='tasks'" :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-task-mng>
+						<xm-task-mng v-if="xmIteration && showPanel=='tasks'" :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="projectInfo"></xm-task-mng>
 					</el-tab-pane>  
 					<el-tab-pane label="缺陷列表" lazy name="bugs" v-if="xmIteration&&xmIteration.id">
-						<xm-question-mng v-if="xmIteration && showPanel=='bugs'" :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="selProject"></xm-question-mng>
+						<xm-question-mng v-if="xmIteration && showPanel=='bugs'" :xm-product="xmProduct" :xm-iteration="xmIteration" :sel-project="projectInfo"></xm-question-mng>
 					</el-tab-pane> 
 					<el-tab-pane label="效能分析" lazy name="效能" v-if="xmIteration&&xmIteration.id"> 
 						<xm-report v-if="xmIteration && showPanel=='效能'" :xm-iteration="xmIteration" ></xm-report>
@@ -325,7 +325,7 @@
 		</el-row>
 		
 		<el-dialog  width="60%" top="20px" :visible.sync="iterationAddVisible" append-to-body>  
-					<xm-iteration-add op-type="add"  :xm-product="xmProduct" :sel-project="selProject" :visible="iterationAddVisible" @cancel="iterationAddVisible=false" @submit="afterIterationAddSubmit"></xm-iteration-add>
+					<xm-iteration-add op-type="add"  :xm-product="xmProduct" :sel-project="projectInfo" :visible="iterationAddVisible" @cancel="iterationAddVisible=false" @submit="afterIterationAddSubmit"></xm-iteration-add>
  		</el-dialog> 
 	</section>
 </template>
@@ -356,7 +356,7 @@
 	export default {
 		computed: {
 		    ...mapGetters([
-		      'userInfo','roles'
+		      'userInfo','roles','projectInfo','xmProduct'
 			]),
 
 			calcIterationStatusStep() {
@@ -374,7 +374,7 @@
 			}
 			},
 		},
-		props:['visible','selProject','xmProduct'],
+		props:['visible'],
 		watch:{
 			visible:function(visible){
 				if(visible==true){

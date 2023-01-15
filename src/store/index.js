@@ -7,7 +7,9 @@ import tagsView from './modules/tagsView'
 import user from './modules/user'
 import noticeMsg from './modules/noticeMsg'
 import projectInfo from './modules/projectInfo'
-import productInfo from './modules/productInfo'
+import xmProduct from './modules/xmProduct'
+import iterationInfo from './modules/iterationInfo'
+
 import getters from './getters' 
 
 Vue.use(Vuex)
@@ -21,7 +23,8 @@ const store = new Vuex.Store({
     user,
     noticeMsg, 
     projectInfo,
-    productInfo
+    xmProduct,
+    iterationInfo,
   },
   getters
 })

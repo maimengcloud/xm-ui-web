@@ -316,7 +316,7 @@ import XmProductAdd from "./XmProductEdit"; //新增界面
 
 export default {
   computed: {
-    ...mapGetters(["userInfo", "roles","projectInfo"]),
+    ...mapGetters(["userInfo", "roles","projectInfo","xmIteration"]),
 
     calcProductPstatusStep() {
       if (this.dicts["xmProductPstatus"] && this.xmProduct) {
@@ -333,7 +333,7 @@ export default {
       }
     },
   },
-  props: ["visible",   "xmIteration"],
+  props: ["visible"],
   watch: {
     visible: function (visible) {
       if (visible == true) {

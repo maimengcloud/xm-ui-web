@@ -22,6 +22,6 @@ const getters = {
   isLoadOk:state=>state.user.isLoadOk,
   noticeMsg:state=>state.noticeMsg.noticeMsg, 
   projectInfo:state=>state.projectInfo.projectInfo, 
-  productInfo:state=>state.productInfo.productInfo, 
+  xmProduct:state=>state.xmProduct.xmProduct, 
 }
 export default getters

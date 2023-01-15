@@ -664,12 +664,9 @@
 			//进入info界面
 			intoInfo(row) {
 				this.selectProject = row;
-				store.dispatch("setProject",row).then(res=>{
-					this.$router.push({ name:'projectOverviewComplex', query: {id:row.id} })
-				})
-				 
-				localStorage.setItem("xm-project-info-route",JSON.stringify(row)) 
-				//this.showInfo = true;
+				store.dispatch("setProjectInfo",row).then(res=>{
+					this.$router.push({ name:'projectOverview', query: {projectId:row.id} })
+				}) 
 			},
 
 			//筛选项目

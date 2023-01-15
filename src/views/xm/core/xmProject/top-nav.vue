@@ -12,7 +12,7 @@
         :router="true"
       >
         
-        <el-menu-item index="/xm/core/project/overviewComplex">
+        <el-menu-item :index="'/xm/core/project/overview?projectId='+projectInfo.id">
           <span
             slot="title"
             style="font-size: 18px; color: #ffd04b"
@@ -43,64 +43,64 @@
             >
           </span>
         </el-menu-item>
-        <el-menu-item index="/xm/core/project/product">
+        <el-menu-item :index="'/xm/core/project/product?projectId='+projectInfo.id">
           <span slot="title"><i class="el-icon-s-opportunity"></i>产品</span>
         </el-menu-item> 
-				<el-menu-item label="需求" index="/xm/core/project/menu" class="hidden-md-and-down">
+				<el-menu-item label="需求" :index="'/xm/core/project/menu?projectId='+projectInfo.id" class="hidden-md-and-down">
 					 <span slot="title"><i class="el-icon-document"></i>需求</span> 
 				</el-menu-item> 
-        <el-menu-item index="/xm/core/project/iteration">
+        <el-menu-item :index="'/xm/core/project/iteration?projectId='+projectInfo.id">
           <span slot="title"><i class="el-icon-connection"></i>迭代</span>
         </el-menu-item>
 
-        <el-menu-item index="/xm/core/project/plan">
+        <el-menu-item :index="'/xm/core/project/plan?projectId='+projectInfo.id">
           <span slot="title"><i class="el-icon-time"></i>计划</span>
         </el-menu-item>
 
-        <el-menu-item index="/xm/core/project/task" class="hidden-md-and-down">
+        <el-menu-item :index="'/xm/core/project/task?projectId='+projectInfo.id" class="hidden-md-and-down">
           <span slot="title"><i class="el-icon-s-operation"></i>任务</span>
         </el-menu-item>
-        <el-menu-item index="/xm/core/project/question">
+        <el-menu-item :index="'/xm/core/project/question?projectId='+projectInfo.id">
           <span slot="title"><i class="el-icon-question"></i>缺陷</span>
         </el-menu-item>
-        <el-menu-item index="/xm/core/project/group">
+        <el-menu-item :index="'/xm/core/project/group?projectId='+projectInfo.id">
           <span slot="title"><i class="el-icon-user-solid"></i>团队</span>
         </el-menu-item>
         <el-submenu index="caiwu" class="hidden-sm-and-down">
           <template slot="title"><i class="el-icon-coin"></i>财务</template>
-          <el-menu-item index="/xm/core/project/contract">
+          <el-menu-item :index="'/xm/core/project/contract?projectId='+projectInfo.id">
             <span slot="title"><i class="el-icon-s-data"></i>合同管理</span>
           </el-menu-item>
-          <el-menu-item index="/xm/core/project/budget">
+          <el-menu-item :index="'/xm/core/project/budget?projectId='+projectInfo.id">
             <span slot="title"><i class="el-icon-coin"></i>预算</span>
           </el-menu-item>
-          <el-menu-item index="/xm/core/project/cost">
+          <el-menu-item :index="'/xm/core/project/cost?projectId='+projectInfo.id">
             <span slot="title"><i class="el-icon-coin"></i>费用</span>
           </el-menu-item>
         </el-submenu>
-        <el-menu-item index="/xm/core/project/report">
+        <el-menu-item :index="'/xm/core/project/report?projectId='+projectInfo.id">
           <span slot="title"><i class="el-icon-s-data"></i>效能</span>
         </el-menu-item>
         <el-submenu index="zhishi" class="hidden-md-and-down">
           <template slot="title">知识</template>
-          <el-menu-item index="/xm/core/project/file">
+          <el-menu-item :index="'/xm/core/project/file?projectId='+projectInfo.id">
             <span slot="title"><i class="el-icon-document"></i>文档</span>
           </el-menu-item>
-          <el-menu-item index="/xm/core/project/env">
+          <el-menu-item :index="'/xm/core/project/env?projectId='+projectInfo.id">
             <span slot="title"><i class="el-icon-setting"></i>环境清单</span>
           </el-menu-item>
-          <el-menu-item index="/xm/core/project/record">
+          <el-menu-item :index="'/xm/core/project/record?projectId='+projectInfo.id">
             <span slot="title"><i class="el-icon-edit-outline"></i>日志</span>
           </el-menu-item>
         </el-submenu>
         <el-submenu index="更多">
           <template slot="title">更多 </template>
-          <el-menu-item index="/xm/core/project/workloadDay">
+          <el-menu-item :index="'/xm/core/project/workloadDay?projectId='+projectInfo.id">
             <span slot="title"
               ><i class="el-icon-video-camera"></i>每日工时</span
             >
           </el-menu-item>
-          <el-menu-item index="/xm/core/project/workloadMonth">
+          <el-menu-item :index="'/xm/core/project/workloadMonth?projectId='+projectInfo.id">
             <span slot="title"
               ><i class="el-icon-video-camera"></i>每月工时</span
             >

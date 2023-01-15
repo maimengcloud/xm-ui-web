@@ -2,10 +2,10 @@
 var key='xm-project-info';
 const projectInfo = {
   state: {
-    projectInfo: {}
+    projectInfo: null,
   },
   mutations: {
-    SET_PROJECT: (state, projectInfo) => {
+    SET_PROJECT_INFO: (state, projectInfo) => {
       state.projectInfo=projectInfo
       if(projectInfo && projectInfo!='null' && projectInfo!='undefined' ){
         sessionStorage.setItem(key,JSON.stringify(projectInfo))
@@ -16,8 +16,8 @@ const projectInfo = {
     }
   },
   actions: {
-    setProject({ commit }, projectInfo) {
-      commit('SET_PROJECT', projectInfo)
+    setProjectInfo({ commit }, projectInfo) {
+      commit('SET_PROJECT_INFO', projectInfo)
     }
   }
 }

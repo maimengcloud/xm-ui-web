@@ -40,9 +40,9 @@ export default {
       // leaf: true,//只有一个节点
       children: [
         {
-          path: 'overviewComplex',
+          path: 'overview',
           component: _import('xm/core/xmProject/XmProjectOverviewComplex'),
-          name: 'projectOverviewComplex',
+          name: 'projectOverview',
           iconCls: 'fa el-icon-menu',
           meta: {
             title: '项目-首页',
