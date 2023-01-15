@@ -218,7 +218,7 @@ export default {
         },
         {
           path: 'report',
-          component: _import('xm/rpt/reportIndex'),
+          component: _import('xm/rpt/reportIndexForProject'),
           name: 'projectReport',
           iconCls: 'fa el-icon-menu',
           meta: {
