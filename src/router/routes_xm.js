@@ -96,7 +96,7 @@ export default {
         },
         {
           path: 'task',
-          component: _import('xm/core/xmTask/XmTaskMng'),
+          component: _import('xm/core/xmTask/XmTaskListForProject'),
           name: 'projectMenu',
           iconCls: 'fa el-icon-menu',
           meta: {
@@ -118,7 +118,7 @@ export default {
         },
         {
           path: 'question',
-          component: _import('xm/core/xmQuestion/XmQuestionMng'),
+          component: _import('xm/core/xmQuestion/XmQuestionForProject'),
           name: 'projectQuestion',
           iconCls: 'fa el-icon-menu',
           meta: {
@@ -129,7 +129,7 @@ export default {
         },
         {
           path: 'group',
-          component: _import('xm/core/xmGroup/XmGroupMng'),
+          component: _import('xm/core/xmGroup/XmGroupForProject'),
           name: 'projectGroup',
           iconCls: 'fa el-icon-menu',
           meta: {

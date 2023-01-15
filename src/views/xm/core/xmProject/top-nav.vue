@@ -297,21 +297,23 @@ export default {
       }
     },
   },
-  watch: {},
+  watch: {
+    $route:{
+      handler(newVal,oldValu){ 
+        this.infotype=newVal.fullPath 
+      },
+      deep:true,
+      immediate:true,
+    }
+  },
   data() {
     return { 
-      infotype:'',
-      dicts:  getDefOptions(),  
-      /**end 自定义属性请在上面加 请加备注**/
+      infotype:'',  
     };
   }, //end data
   methods: {    
-    setInfotype(infotype) {
-      if (infotype == "返回") {
-        this.goBack();
-      } else {
-        this.infotype = infotype; 
-      }
+    setInfotype(infotype) {  
+        this.infotype = infotype;  
     },
       
     goBack() {
@@ -328,16 +330,8 @@ export default {
      
     //在下面添加其它组件
   }, 
-  mounted() {
-    this.$nextTick(() => {
-      
-      //this.maxTableHeight = this.source == 'GZT' ?  this.maxTableHeight : util.calcTableMaxHeight(this.$refs.pageBody.$el);
-      var infotype = localStorage.getItem("project-infotype");
-      if (infotype) {
-        this.infotype = infotype;
-      }
-    });
-    initDicts(this)
+  mounted() {   
+    this.infotype=this.$route.fullPath
   },
 };
 </script>
