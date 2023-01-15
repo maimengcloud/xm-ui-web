@@ -1,7 +1,7 @@
 <template>
   <section class="page-container  padding-left padding-right">
     <el-row ref="pageBody">
-      <el-col :span="4" class="padding border" :style="{maxHeight:maxTableHeight+'px',overflowY:'auto'}">
+      <el-col :span="4" class="padding border" :style="{height:maxTableHeight+'px',overflowY:'auto'}">
       <h4 class="padding-bottom">常用功能快捷导航</h4>
         <el-steps :active="calcProjectStatusStep" finish-status="success" direction="vertical">
           <el-step

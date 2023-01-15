@@ -304,7 +304,7 @@
 			//进入info界面
 			intoInfo(row) {
 				this.editForm = row;
-				this.$router.push({ name:'XmProductInfoRoute', params: row })
+				this.$router.push({ name:'productOverview', query: {productId:row.id} })
 				//this.showInfo = true;
 			},
 			//选择行xmProduct

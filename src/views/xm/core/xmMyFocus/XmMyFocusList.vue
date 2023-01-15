@@ -215,9 +215,9 @@ export default {
          */
         toBizPage(bizObj){
             if(bizObj.focusType=='1'){
-                this.$router.push({path:'/xm/core/xmProject/XmProjectInfoRoute',query:{id:bizObj.bizId}})
+                this.$router.push({path:'/xm/core/project/overview',query:{projectId:bizObj.bizId}})
             }else if(bizObj.focusType=='3'){
-                 this.$router.push({path:'/xm/core/xmProduct/XmProductInfoRoute',query:{id:bizObj.bizId}})
+                 this.$router.push({path:'/xm/core/product/overview',query:{productId:bizObj.bizId}})
             }else if(bizObj.focusType=='2'){
                  this.$router.push({path:'/xm/core/xmTask/XmTaskDetailRoute',query:{id:bizObj.bizId}})
             }else if(bizObj.focusType=='4'){

@@ -488,19 +488,7 @@ export default {
           { path: 'xmIteration/XmIterationMng', component: _import('xm/core/xmIteration/XmIterationMng'), name: 'XmIterationMng', meta: { title: '迭代管理',roles:["user"] }},
          
       ]
-    }, 
-    
-    {
-      path: '/xm/core/xmProduct/XmProductInfoRoute',
-      component: _import('xm/core/xmProduct/XmProductInfoRoute'),
-      name: 'XmProductInfoRoute',
-      iconCls: 'fa el-icon-menu',
-      meta: {
-        title: '产品管理-如有跳转',
-        icon: 'product',roles:["user"]
-      },
-      hidden:true
-    },
+    },  
     {
       path: '/xm/core/xmIteration/XmIterationInfoRoute',
       component: _import('xm/core/xmIteration/XmIterationInfoRoute'),

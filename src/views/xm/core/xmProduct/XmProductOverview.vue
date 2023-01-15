@@ -1,6 +1,6 @@
 <template>
   <section >
-    <el-row ref="pageMainRef" :style="{overflowX:'hidden',height:maxTableHeight+'px'}" > 
+    <el-row class="page-main" ref="pageMainRef" :style="{overflowX:'hidden',height:maxTableHeight+'px'}" > 
       <el-row :gutter="10" style="margin-bottom:10px">
           <el-col :span="8" >
             <el-card class="box-card" style="padding:0px ;height:425px">
@@ -581,6 +581,7 @@ export default {
   mounted() {
 			
     this.$nextTick(() => {
+      debugger;
       this.maxTableHeight=util.calcTableMaxHeight(this.$refs.pageMainRef.$el)
     });
 			initSimpleDicts('all',['xmProductPstatus'] ).then(res=>{

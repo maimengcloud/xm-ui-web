@@ -1,10 +1,9 @@
 <template>
-  <section class="padding-left padding-right">
+  <section class="page-container padding-left padding-right">
     <el-row ref="pageBody">
         <el-col
           :span="4"
-          class="padding border"
-          :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"
+          class="padding border" :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"
         >
           <h4 class="padding-bottom">常用功能导航</h4>
           <el-steps
@@ -217,7 +216,8 @@
         </el-menu-item> 
 
         </el-menu>
-        <xm-product-overview  v-if="showPanelName=='overview'" :xm-product="xmProduct"></xm-product-overview>
+
+        <xm-product-overview  v-if="showPanelName=='overview' && xmProduct && xmProduct.id" :xm-product="xmProduct"></xm-product-overview>
         <xm-product-edit  v-if="showPanelName=='detail'" :xm-product="xmProduct"></xm-product-edit>
         <xm-iteration-link-for-product v-if="showPanelName=='iterationProductLink'" :xm-product="xmProduct"></xm-iteration-link-for-product>
         <xm-product-project-link-mng  v-if="showPanelName=='productProjectLink'" :xm-product="xmProduct"></xm-product-project-link-mng>
@@ -417,11 +417,11 @@ export default {
   },
 
   mounted() {
-    initDicts(this)
-    this.$nextTick(() => {
-      
+    
+    this.$nextTick(() => { 
       this.maxTableHeight  = util.calcTableMaxHeight(this.$refs.pageBody.$el);
     });
+    initDicts(this)
   },
 
 };

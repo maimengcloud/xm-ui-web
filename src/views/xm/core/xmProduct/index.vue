@@ -1,7 +1,7 @@
 <template>
   <section>
-    <top-nav/> 
-    <keep-alive><router-view></router-view></keep-alive> 
+    <top-nav v-if="xmProduct&&xmProduct.id"/> 
+    <keep-alive><router-view v-if="xmProduct && xmProduct.id"></router-view></keep-alive> 
   </section>
 </template>
 
@@ -12,7 +12,7 @@ import util from "@/common/js/util"; //全局公共库
 import { mapGetters } from "vuex"; 
 import topNav from './top-nav.vue' 
 import store from '@/store' 
-import { listXmProduct } from '@/api/xm/core/xmProduct'; 
+import { listXmProductWithState } from '@/api/xm/core/xmProduct'; 
 
 export default { 
   computed: {
@@ -31,12 +31,13 @@ export default {
     //在下面添加其它组件
   }, 
   mounted() {   
+    debugger;
     if(!this.$route.query.productId){
       this.$message.error("地址不合规")
       this.$route.back(-1)
     }
     if(!this.xmProduct||this.xmProduct.id!=this.$route.query.productId){  
-      listXmProduct({id:this.$route.query.productId}).then(res=>{
+      listXmProductWithState({id:this.$route.query.productId}).then(res=>{
         var tips = res.data.tips;
         if(tips.isOk ){
           if( res.data.data.length==1){

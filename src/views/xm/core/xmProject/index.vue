@@ -1,7 +1,7 @@
 <template>
   <section>
-    <top-nav/> 
-    <keep-alive><router-view></router-view></keep-alive> 
+    <top-nav v-if="projectInfo && projectInfo.id"/> 
+    <keep-alive><router-view v-if="projectInfo && projectInfo.id"></router-view></keep-alive> 
   </section>
 </template>
 

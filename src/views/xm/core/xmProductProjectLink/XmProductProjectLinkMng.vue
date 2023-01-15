@@ -304,10 +304,10 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue'
           },
 			
 			goToProject(row){
-				this.$router.push({path:'/xm/core/xmProject/XmProjectInfoRoute',query:{id:row.projectId}})
+				this.$router.push({path:'/xm/core/project/overview',query:{projectId:row.projectId}})
 			},	
 			goToProduct(row){
-				this.$router.push({path:'/xm/core/xmProduct/XmProductInfoRoute',query:{id:row.productId}})
+				this.$router.push({path:'/xm/core/product/overview',query:{productId:row.productId}})
 			},	
 			/**end 自定义函数请在上面加**/
 			
