@@ -152,7 +152,7 @@ export default {
         },
         {
           path: 'record',
-          component: _import('xm/core/xmRecord/XmRecordMng'),
+          component: _import('xm/core/xmRecord/XmRecordForProject'),
           name: 'projectRecord',
           iconCls: 'fa el-icon-menu',
           meta: {
@@ -207,7 +207,7 @@ export default {
         },
         {
           path: 'file',
-          component: _import('xm/core/xmFile/XmFileMng'),
+          component: _import('xm/core/xmFile/XmFileForProject'),
           name: 'projectFile',
           iconCls: 'fa el-icon-menu',
           meta: {

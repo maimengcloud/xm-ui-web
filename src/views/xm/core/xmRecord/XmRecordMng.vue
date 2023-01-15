@@ -1,6 +1,6 @@
 <template>
 	<section>
-		 <xm-record v-if="selProject"  :visible="true" :project-id="selProject.id" obj-type='all'></xm-record>
+		 <xm-record v-if="selProject"  :visible="true" :project-id="selProject.id"></xm-record>
 		<xm-record v-else :visible="true"></xm-record>
 	</section>
 </template>
