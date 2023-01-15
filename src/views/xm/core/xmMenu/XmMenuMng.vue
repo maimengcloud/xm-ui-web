@@ -11,7 +11,7 @@
 						<el-select v-model="filters.status" placeholder="需求状态" clearable style="width: 100px;">
 							<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option>
 						</el-select>
-						<el-input v-model="filters.key" style="width: 220px;" placeholder="需求名称查询" clearable>
+						<el-input v-model="filters.key" style="max-width: 200px;" placeholder="需求名称查询" clearable>
 						</el-input>
 						<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
 

@@ -58,7 +58,7 @@
             >
           </el-select>
           <el-input
-            style="width: 120px"
+            style="max-width: 200px"
             v-model="filters.key" clearable
             placeholder="计划/任务名称"
           >
@@ -948,7 +948,7 @@ export default {
   watch: {
     selProject: function (oval, val) {
       this.filters.selProject = this.selProject;
-      this.changeSelKey("all");
+      this.changeSelKey("");
     },
     menuId: function (menuId) {
       this.getXmTasks();

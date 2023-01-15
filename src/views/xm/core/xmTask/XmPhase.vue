@@ -6,97 +6,99 @@
       >
         <el-row>     
           
-          <span style="float:left;"> 
+          <span> 
            <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
-           <el-input style="width:60%;" v-model="filters.key" placeholder="名称 按回车"  class="hidden-md-and-down" clearable @keyup.enter.native="searchXmTasks()"></el-input>
-           <el-popover
-            placement="top-start"
-            title="选择创建计划/任务的方式"
-            width="300"
-            trigger="click"
-          >
-            <el-row>
+           <el-input style="width:150px;" v-model="filters.key" placeholder="名称 按回车"  class="hidden-md-and-down" clearable @keyup.enter.native="searchXmTasks()"></el-input>
+           <span style="float:right;">
+            <el-popover
+              placement="top-start"
+              title="选择创建计划/任务的方式"
+              width="300"
+              trigger="click"
+            >
               <el-row>
-                
-                <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
-                  <i :class=" 'el-icon-time' " ></i>
-                </div>  
-                <el-button 
-                  @click="showEpicFeaturesForCreateTask" 
-                  icon="el-icon-plus"
-                  >由史诗特性快速创建计划 (推荐)</el-button
-                >
-              </el-row>
-              <el-row>
-                
-                <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
-                  <i :class=" 'el-icon-time' " ></i>
-                </div>  
-                <el-button 
-                  @click="showTaskTemplate"
-                  icon="el-icon-plus"
-                  >从模板快速导入计划 </el-button
-                >
-              </el-row>
-              <el-row>
-                
-                <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
-                  <i :class=" 'el-icon-time' " ></i>
-                </div>  
-                <el-button 
-                  @click="showAdd('1')"
-                  icon="el-icon-plus"
-                  >直接创建计划</el-button
-                >
-             </el-row>
-            </el-row>
-            <el-button
-              slot="reference" 
-              type="primary"
-              round
-              icon="el-icon-plus"
-              title="新建计划"
-            ></el-button>
-          </el-popover>  
-          <el-popover
-            placement="top-start"
-            title="更多条件、操作"
-            width="400"
-            trigger="manual"
-            v-model="moreVisible"
-          > 
-									<el-button  style="float:right;margin-top:-40px;"
-									icon="el-icon-close"
-									@click="moreVisible=false"
-									type="text"
-									>关闭</el-button
-									>  
-               <el-divider></el-divider>
-               <el-row>  
-                 <el-button type="danger" 
-                    @click="batchDel"
-                    v-loading="load.del"
-                    icon="el-icon-delete"
-                    title="批量删除"
-                    >批量删除</el-button
+                <el-row>
+                  
+                  <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
+                    <i :class=" 'el-icon-time' " ></i>
+                  </div>  
+                  <el-button 
+                    @click="showEpicFeaturesForCreateTask" 
+                    icon="el-icon-plus"
+                    >由史诗特性快速创建计划 (推荐)</el-button
                   >
-                <el-button 
-                  @click="showParentTaskList"  
-                  title="更换任务的上级，实现任务搬家功能"
-                  icon="el-icon-upload2"
-                  v-loading="load.edit"
-                > 更换上级</el-button>    
-                <span style="float:right;"> 
-                 <el-button 
-                  type="primary"
-                  icon="el-icon-search"
-                  @click="searchXmTasks"
-                  >查询</el-button
-                >
-                </span>
-              </el-row> 
-            <el-button slot="reference" @click="moreVisible=!moreVisible">更多</el-button>
-          </el-popover> 
+                </el-row>
+                <el-row>
+                  
+                  <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
+                    <i :class=" 'el-icon-time' " ></i>
+                  </div>  
+                  <el-button 
+                    @click="showTaskTemplate"
+                    icon="el-icon-plus"
+                    >从模板快速导入计划 </el-button
+                  >
+                </el-row>
+                <el-row>
+                  
+                  <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
+                    <i :class=" 'el-icon-time' " ></i>
+                  </div>  
+                  <el-button 
+                    @click="showAdd('1')"
+                    icon="el-icon-plus"
+                    >直接创建计划</el-button
+                  >
+              </el-row>
+              </el-row>
+              <el-button
+                slot="reference" 
+                type="primary"
+                round
+                icon="el-icon-plus"
+                title="新建计划"
+              ></el-button>
+            </el-popover>  
+            <el-popover
+              placement="top-start"
+              title="更多条件、操作"
+              width="400"
+              trigger="manual"
+              v-model="moreVisible"
+            > 
+                    <el-button  style="float:right;margin-top:-40px;"
+                    icon="el-icon-close"
+                    @click="moreVisible=false"
+                    type="text"
+                    >关闭</el-button
+                    >  
+                <el-divider></el-divider>
+                <el-row>  
+                  <el-button type="danger" 
+                      @click="batchDel"
+                      v-loading="load.del"
+                      icon="el-icon-delete"
+                      title="批量删除"
+                      >批量删除</el-button
+                    >
+                  <el-button 
+                    @click="showParentTaskList"  
+                    title="更换任务的上级，实现任务搬家功能"
+                    icon="el-icon-upload2"
+                    v-loading="load.edit"
+                  > 更换上级</el-button>    
+                  <span style="float:right;"> 
+                  <el-button 
+                    type="primary"
+                    icon="el-icon-search"
+                    @click="searchXmTasks"
+                    >查询</el-button
+                  >
+                  </span>
+                </el-row> 
+              <el-button slot="reference" @click="moreVisible=!moreVisible">更多</el-button>
+            </el-popover> 
+          </span>
           </span>
         </el-row>
 

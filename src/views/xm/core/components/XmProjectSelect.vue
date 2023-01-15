@@ -193,7 +193,7 @@
             > 
              <span class="title">
             <slot name="title">{{
-                editForm && editForm.id ? editForm.name : "选择项目"
+                editForm && editForm.id ? editForm.name: "选择项目"
               }}</slot></span>
               </el-link>
         </slot>
@@ -531,6 +531,10 @@ export default {
   line-height: 32px;
   text-align: left;
   float: left; 
-  min-width: 100px;
+  min-width: 100px; 
+  max-width: 300px; 
+  overflow:hidden;  
+  text-overflow:ellipsis;  
+  white-space:nowrap; 
 }
 </style>
