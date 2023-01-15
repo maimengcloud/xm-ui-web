@@ -54,6 +54,10 @@ export const constantRouterMap = [
         name: '首页',
         meta: { title: '首页', icon: 'home-page', noCache: true ,roles:["user"]}
       },
+      { path: 'forum', name: 'forum', meta: { title: '论坛',openTab:true,outUrl:'${curlDomain}/#/communityForum' },hidden:true},
+      { path: 'im', name: 'im', meta: { title: '即聊',openTab:true,outUrl:'${curlDomain}/im/'+process.env.VERSION+'/' },hidden:true},
+      { path: 'helpCenter', name: 'helpCenter', meta: { title: '客服',openTab:true,outUrl:'${curlDomain}/#/helpCenter' },hidden:true},
+  
       // {
       //   path: 'updateUserInfo',
       //   component: _import('mdp/sys/user/UpdateUserInfo'),

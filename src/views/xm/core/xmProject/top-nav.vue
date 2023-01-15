@@ -104,35 +104,17 @@
             <span slot="title"
               ><i class="el-icon-video-camera"></i>每月工时</span
             >
-          </el-menu-item> 
-          <el-menu-item index="预算">
-            <span slot="title"><i class="el-icon-coin"></i>预算</span>
-          </el-menu-item>
-          <el-menu-item index="费用">
-            <span slot="title"><i class="el-icon-coin"></i>费用</span>
-          </el-menu-item>
-          <el-menu-item index="考核">
-            <span slot="title"><i class="el-icon-view"></i>考核</span>
-          </el-menu-item>
-          <el-menu-item index="日志">
-            <span slot="title"><i class="el-icon-edit-outline"></i>日志</span>
-          </el-menu-item>
-          <el-menu-item index="合同管理">
-            <span slot="title"><i class="el-icon-s-data"></i>合同管理</span>
-          </el-menu-item>
-          <el-menu-item index="环境清单">
+          </el-menu-item>   
+          <el-menu-item :index="'/xm/core/project/env?projectId='+projectInfo.id">
             <span slot="title"><i class="el-icon-setting"></i>环境清单</span>
-          </el-menu-item>
-          <el-menu-item index="风险">
-            <span slot="title"><i class="el-icon-question"></i>风险</span>
-          </el-menu-item>
-          <el-menu-item index="论坛">
+          </el-menu-item> 
+          <el-menu-item index="/forum">
             <span slot="title"><i class="el-icon-date"></i>论坛</span>
           </el-menu-item>
-          <el-menu-item index="即聊">
+          <el-menu-item index="/im">
             <span slot="title"><i class="el-icon-date"></i>即聊</span>
           </el-menu-item>
-          <el-menu-item index="客服">
+          <el-menu-item index="/helpCenter">
             <span slot="title"><i class="el-icon-date"></i>客服</span>
           </el-menu-item>
           <el-menu-item index="回到项目列表页"  @click.native="goBack">
@@ -315,7 +297,23 @@ export default {
     setInfotype(infotype) {  
         this.infotype = infotype;  
     },
-      
+    /**
+     * 防止禁用弹框 _self模式
+     * @param {} url 
+     */
+    newWin(url) { 
+      var id='toOpenWindow'
+      var a = document.createElement('a');
+      a.setAttribute('href', url);
+      a.setAttribute('target', '_self');
+      a.setAttribute('id', id);
+      // 防止反复添加
+      if(!document.getElementById(id)) document.body.appendChild(a);
+      a.click();
+    },
+    toForum(){
+      this.newWin('https://www.maimengcloud.com/#/communityForum');
+    },
     goBack() {
        this.$router.push({
         path:'/xm/core/xmProject/XmProjectMng'

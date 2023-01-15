@@ -230,7 +230,8 @@ export default {
         
       ]
     },
-    
+
+
     { path: '/xm/core/testCasedbRoute', component: _import('xm/core/xmTestCasedb/XmTestCasedbRoute'), name: 'XmTestCasedbRoute', meta: { title: '测试库管理',roles:["user"] },hidden:true},
     {
       path: '/xm/core',
