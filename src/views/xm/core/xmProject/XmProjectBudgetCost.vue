@@ -6,10 +6,10 @@
 					<el-radio-button label="预算清单"></el-radio-button>
 					<el-radio-button label="预算统计"></el-radio-button>
 				</el-radio-group>
-				<span style="margin-left:10px;font-size:14px;">项目总预算：</span> <el-tag type="success">{{selProjectBudget.planTotalCost}}</el-tag>
-				<span style="margin-left:10px;font-size:14px;">非人力总预算：</span><el-tag>{{selProjectBudget.planNouserAt}}</el-tag> 
-				<span style="margin-left:10px;font-size:14px;">内部人力总预算：</span><el-tag>{{selProjectBudget.planIuserAt}}</el-tag> 
-				<span style="margin-left:10px;font-size:14px;">外购人力总预算：</span><el-tag>{{selProjectBudget.planOuserAt}}</el-tag> 
+				<span style="margin-left:10px;font-size:14px;">项目总预算：</span> <el-tag type="success">{{projectInfoBudget.planTotalCost}}</el-tag>
+				<span style="margin-left:10px;font-size:14px;">非人力总预算：</span><el-tag>{{projectInfoBudget.planNouserAt}}</el-tag> 
+				<span style="margin-left:10px;font-size:14px;">内部人力总预算：</span><el-tag>{{projectInfoBudget.planIuserAt}}</el-tag> 
+				<span style="margin-left:10px;font-size:14px;">外购人力总预算：</span><el-tag>{{projectInfoBudget.planOuserAt}}</el-tag> 
 			</div>
 			<div class="title-bar">
 				<el-radio-group v-model="showType" size="medium">
@@ -88,14 +88,14 @@
 			</div>
 
 			<div v-else>
-				<xm-budget-labor v-if="showType == '人力'" :sel-project="selProject"></xm-budget-labor>
-				<xm-budget-nlabor v-else  :sel-project="selProject"></xm-budget-nlabor>
+				<xm-budget-labor v-if="showType == '人力'" :sel-project="projectInfo"></xm-budget-labor>
+				<xm-budget-nlabor v-else  :sel-project="projectInfo"></xm-budget-nlabor>
 			</div>
 			<el-drawer title="查看人力预算明细" :visible.sync="xmBudgetLaborVisible"  fullscreen  append-to-body   :close-on-click-modal="false">
-				<xm-budget-labor :xm-budget-labor="xmBudgetLabor" :visible="xmBudgetLaborVisible" :field-name="fieldName" :query-type="queryType" :sel-project="selProject"></xm-budget-labor>
+				<xm-budget-labor :xm-budget-labor="xmBudgetLabor" :visible="xmBudgetLaborVisible" :field-name="fieldName" :query-type="queryType" :sel-project="projectInfo"></xm-budget-labor>
 			</el-drawer> 
 			<el-drawer title="查看非人力预算明细" :visible.sync="xmBudgetNlaborVisible"  fullscreen  append-to-body   :close-on-click-modal="false">
-				<xm-budget-nlabor :xm-budget-nlabor="xmBudgetNlabor" :visible="xmBudgetNlaborVisible" :field-name="fieldName" :query-type="queryType" :sel-project="selProject"></xm-budget-nlabor>
+				<xm-budget-nlabor :xm-budget-nlabor="xmBudgetNlabor" :visible="xmBudgetNlaborVisible" :field-name="fieldName" :query-type="queryType" :sel-project="projectInfo"></xm-budget-nlabor>
 			</el-drawer> 
 		</el-row>
 	</section>
@@ -112,11 +112,10 @@
 	import xmBudgetLabor from '../xmBudgetLabor/XmBudgetLaborMng';
 	import xmBudgetNlabor from '../xmBudgetNlabor/XmBudgetNlaborMng'; 
 
-	export default { 
-		props: ["selProject"],
+	export default {  
 		computed: {
 			...mapGetters([
-				'userInfo','roles'
+				'userInfo','roles','projectInfo'
 			]),
 			selYearMonths:function(){
 				var selYear=this.selYear;
@@ -187,8 +186,8 @@
 					this.listSumXmBudgetNlabor();
 				}
 			},
-			'selProject': function(selProject){
-				 this.selProjectBudget=Object.assign({},this.selProject);
+			'projectInfo': function(projectInfo){
+				 this.projectInfoBudget=Object.assign({},this.projectInfo);
 			}
 		},
 		data() {
@@ -206,7 +205,7 @@
 				showType: "",
 				xmBudgetLabors: [],
 				xmBudgetNlabors: [],
-				selProjectBudget:{},
+				projectInfoBudget:{},
 				sumXmBudgetLabors:[],
 				xmBudgetLabor:null,
 				fieldName:'',
@@ -227,7 +226,7 @@
  
 			listSumXmBudgetLabor:function(){
 				var parmas={
-					projectId:this.selProject.id, 
+					projectId:this.projectInfo.id, 
 				}
 				listSumXmBudgetLabor(parmas).then(res=>{
 					this.sumXmBudgetLabors=res.data.data;
@@ -236,7 +235,7 @@
  
 			listSumXmBudgetNlabor:function(){
 				var parmas={
-					projectId:this.selProject.id, 
+					projectId:this.projectInfo.id, 
 				}
 				listSumXmBudgetNlabor(parmas).then(res=>{
 					this.sumXmBudgetNlabors=res.data.data;
@@ -256,38 +255,38 @@
 			},
 			/**begin 自定义函数请在下面加**/
 			// inputChange() {
-			// 	this.selProject.planTotalCost = this.selProject.planTotalCost.replace(/[^\d.]/g,"").replace(/^\./g,"").replace(/\.{1,}/g,".");
+			// 	this.projectInfo.planTotalCost = this.projectInfo.planTotalCost.replace(/[^\d.]/g,"").replace(/^\./g,"").replace(/\.{1,}/g,".");
 			// },
 			updateBudget() {
-				if(this.selProject.planTotalCost==undefined){
+				if(this.projectInfo.planTotalCost==undefined){
 					this.$notify({position:'bottom-left',showClose:true,message:"不允许修改", type:  'success'}); 
 					return;
 				}  
-				var planTotalCost=this.getFloatValue(this.selProjectBudget.planTotalCost)
-				var planIuserAt=this.getFloatValue(this.selProjectBudget.planIuserAt)
-				var planOuserAt=this.getFloatValue(this.selProjectBudget.planOuserAt)
-				var planNouserAt=this.getFloatValue(this.selProjectBudget.planNouserAt)
-				this.selProjectBudget.planTotalCost=planIuserAt+planOuserAt+planNouserAt
+				var planTotalCost=this.getFloatValue(this.projectInfoBudget.planTotalCost)
+				var planIuserAt=this.getFloatValue(this.projectInfoBudget.planIuserAt)
+				var planOuserAt=this.getFloatValue(this.projectInfoBudget.planOuserAt)
+				var planNouserAt=this.getFloatValue(this.projectInfoBudget.planNouserAt)
+				this.projectInfoBudget.planTotalCost=planIuserAt+planOuserAt+planNouserAt
 				this.$confirm('确定修改项目总预算吗?', '提示', {
 					type: 'warning'
 				}).then(() => { 
 					this.load.edit = true;
-					let params = this.selProjectBudget
+					let params = this.projectInfoBudget
 					editBudget(params).then((res) => {
 						var tips=res.data.tips;
 						if(tips.isOk){
-							this.selProject.planTotalCost=this.selProjectBudget.planTotalCost
-							this.selProject.planIuserAt=this.selProjectBudget.planIuserAt 
-							this.selProject.planOuserAt=this.selProjectBudget.planOuserAt 
-							this.selProject.planNouserAt=this.selProjectBudget.planNouserAt 
+							this.projectInfo.planTotalCost=this.projectInfoBudget.planTotalCost
+							this.projectInfo.planIuserAt=this.projectInfoBudget.planIuserAt 
+							this.projectInfo.planOuserAt=this.projectInfoBudget.planOuserAt 
+							this.projectInfo.planNouserAt=this.projectInfoBudget.planNouserAt 
 						}else{
-							this.selProjectBudget=Object.assign({},this.selProject)
+							this.projectInfoBudget=Object.assign({},this.projectInfo)
 						}	
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 						this.load.edit = false;
 					}).catch( err => this.load.edut = false );
 				}).catch(() => {
-					this.selProjectBudget=Object.assign({},this.selProject)
+					this.projectInfoBudget=Object.assign({},this.projectInfo)
 				});
 			},
 			
@@ -309,7 +308,7 @@
 			this.$nextTick(() => {   
 				this.tableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
 			}); 
-			  this.selProjectBudget=Object.assign({},this.selProject);
+			  this.projectInfoBudget=Object.assign({},this.projectInfo);
 		}
 	}
 

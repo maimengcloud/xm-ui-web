@@ -43,7 +43,7 @@
 	
 			<!--新增 XmEnvList xm_env_list界面-->
 			<el-dialog title="新增环境清单" :visible.sync="addFormVisible" width="80%"  top="20px"   append-to-body   :close-on-click-modal="false">
-				<xm-env-list-add :xm-project="selProject" :xm-product="xmProduct" :xm-env-list="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-env-list-add>
+				<xm-env-list-add :xm-project="projectInfo" :xm-product="xmProduct" :xm-env-list="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-env-list-add>
 			</el-dialog> 
 		</el-row>
 	</section>
@@ -61,10 +61,9 @@
 	export default { 
 		computed: {
 		    ...mapGetters([
-		      'userInfo','roles'
+		      'userInfo','roles','projectInfo','xmProduct'
 		    ])
-		},
-		props:['selProject','xmProduct'],
+		}, 
 		data() {
 			return {
 				filters: {
@@ -160,8 +159,8 @@
 					params.fuzzy = '%'+this.filters.key+'%';
 					//params.xxx=this.filters.key
 				} 
-				if(this.selProject && this.selProject.id){
-					params.projectId=this.selProject.id
+				if(this.projectInfo && this.projectInfo.id){
+					params.projectId=this.projectInfo.id
 				}
 				
 				if(this.xmProduct && this.xmProduct.id){

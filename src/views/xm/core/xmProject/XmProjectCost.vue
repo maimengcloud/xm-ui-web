@@ -87,14 +87,14 @@
 			</div>
 
 			<div v-else>
-				<xm-cost-labor v-if="showType == '人力'" :sel-project="selProject"></xm-cost-labor>
-				<xm-cost-nlabor v-else  :sel-project="selProject"></xm-cost-nlabor>
+				<xm-cost-labor v-if="showType == '人力'" :sel-project="projectInfo"></xm-cost-labor>
+				<xm-cost-nlabor v-else  :sel-project="projectInfo"></xm-cost-nlabor>
 			</div>
 			<el-drawer title="查看人力支出明细" :visible.sync="xmCostLaborVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
 				<xm-cost-labor v-if="xmCostLabor" :biz-month="queryType==='queryByBizMonth'?fieldName:null" :visible="xmCostLaborVisible" :userid="xmCostLabor.userid" :branch-id=" xmCostLabor.branchId " :project-id=" xmCostLabor.projectId "></xm-cost-labor>
 			</el-drawer> 
 			<el-drawer title="查看非人力支出明细" :visible.sync="xmCostNlaborVisible"  size="60%"   append-to-body   :close-on-click-modal="false">
-				<xm-cost-nlabor :xm-cost-nlabor="xmCostNlabor" :visible="xmCostNlaborVisible" :field-name="fieldName" :query-type="queryType" :sel-project="selProject"></xm-cost-nlabor>
+				<xm-cost-nlabor :xm-cost-nlabor="xmCostNlabor" :visible="xmCostNlaborVisible" :field-name="fieldName" :query-type="queryType" :sel-project="projectInfo"></xm-cost-nlabor>
 			</el-drawer> 
 		</el-row>
 	</section>
@@ -110,11 +110,10 @@
 	import xmCostLabor from '../xmTaskSbillDetail/XmTaskSbillDetailMng';
 	import xmCostNlabor from '../xmCostNlabor/XmCostNlaborMng'; 
 
-	export default { 
-		props: ["selProject"],
+	export default {  
 		computed: {
 			...mapGetters([
-				'laborInfo','roles'
+				'laborInfo','roles','projectInfo'
 			]),
 			selYearMonths:function(){
 				var selYear=this.selYear;
@@ -185,7 +184,7 @@
 					this.listSumXmCostNlabor();
 				}
 			},
-			'selProject': function(selProject){
+			'projectInfo': function(projectInfo){
 				
 			},
 			'selYear':function(){
@@ -233,8 +232,8 @@
 				var params={
 					bizYear:this.selYear, 
 				}
-				if(this.selProject){
-					params.projectId=this.selProject.id
+				if(this.projectInfo){
+					params.projectId=this.projectInfo.id
 				}
 				var func=listSumSamtGroupByUseridBizMonth
 				if(this.rptType==='1'){
@@ -254,7 +253,7 @@
  
 			listSumXmCostNlabor:function(){
 				var parmas={
-					projectId:this.selProject.id, 
+					projectId:this.projectInfo.id, 
 				}
 				listSumXmCostNlabor(parmas).then(res=>{
 					if(res.data.tips.isOk){

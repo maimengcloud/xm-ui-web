@@ -36,7 +36,8 @@ export default {
       meta: {
         title: '项目管理',
         icon: 'project'
-      },
+      }, 
+      hidden:true,
       // leaf: true,//只有一个节点
       children: [
         {
@@ -140,7 +141,7 @@ export default {
         },
         {
           path: 'contract',
-          component: _import('xm/core/xmContract/XmContractMng'),
+          component: _import('xm/core/xmContract/XmContractForProject'),
           name: 'projectContract',
           iconCls: 'fa el-icon-menu',
           meta: {
