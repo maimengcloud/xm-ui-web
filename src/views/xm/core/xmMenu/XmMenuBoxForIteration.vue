@@ -1,6 +1,6 @@
 <template>
 	<section>  
-		<xm-menu-box v-if="projectInfo && projectInfo.id" :sel-project="projectInfo"></xm-menu-box>
+		<xm-menu-box v-if="xmProduct&&xmProduct.id" :xm-iteration="xmIteration" :xm-product="xmProduct"></xm-menu-box>
 	</section>
 </template>
 
@@ -14,10 +14,16 @@
 		}, 
 		computed: {
 		    ...mapGetters([
-		      'userInfo','roles','projectInfo'
-		    ]), 
-            
-			
+		      'userInfo','roles','xmIteration'
+		    ]),  
+			xmProduct(){
+				if(this.xmIteration && this.xmIteration.id){
+					return {id:this.xmIteration.productId,productName:this.xmIteration.productName}
+				}else{
+					return null;
+				}
+				
+			}
         }, 
 		watch: {   
 	    },

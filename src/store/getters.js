@@ -23,5 +23,6 @@ const getters = {
   noticeMsg:state=>state.noticeMsg.noticeMsg, 
   projectInfo:state=>state.projectInfo.projectInfo, 
   xmProduct:state=>state.xmProduct.xmProduct, 
+  xmIteration:state=>state.xmIteration.xmIteration, 
 }
 export default getters

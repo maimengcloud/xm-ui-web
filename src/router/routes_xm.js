@@ -2,6 +2,7 @@
 import Layout from '../views/layout/Layout'
 import XmProjectLayout from '../views/xm/core/xmProject/index'
 import XmProductLayout from '../views/xm/core/xmProduct/index'
+import XmIterationLayout from '../views/xm/core/xmIteration/index'
 const _import = require('./_import_' + process.env.NODE_ENV)
 
 export default {
@@ -99,7 +100,7 @@ export default {
         {
           path: 'task',
           component: _import('xm/core/xmTask/XmTaskListForProject'),
-          name: 'projectMenu',
+          name: 'projectTask',
           iconCls: 'fa el-icon-menu',
           meta: {
             title: '项目-任务',
@@ -301,7 +302,7 @@ export default {
         {
           path: 'task',
           component: _import('xm/core/xmTask/XmTaskListForProduct'),
-          name: 'productMenu',
+          name: 'productTask',
           iconCls: 'fa el-icon-menu',
           meta: {
             title: '产品-任务',
@@ -412,6 +413,120 @@ export default {
       ]
     },
 
+    {
+      path: '/xm/core/iteration',
+      component: XmIterationLayout,
+      name: '迭代管理',
+      iconCls: 'fa el-icon-menu',
+      meta: {
+        title: '迭代管理',
+        icon: 'iteration'
+      }, 
+      hidden:true,
+      // leaf: true,//只有一个节点
+      children: [
+        {
+          path: 'overview',
+          component: _import('xm/core/xmIteration/XmIterationOverviewComplex'),
+          name: 'iterationOverview',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '迭代-首页',
+            icon: 'iteration',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'project',
+          component: _import('xm/core/xmProject/XmProjectForLinkComplex'),
+          name: 'iterationProjectLink',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '迭代-项目',
+            icon: 'iteration',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'menu',
+          component: _import('xm/core/xmMenu/XmMenuBoxForIteration'),
+          name: 'iterationMenu',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '迭代-需求',
+            icon: 'iteration',roles:["user"]
+          }, 
+          hidden:true
+        }, 
+        {
+          path: 'task',
+          component: _import('xm/core/xmTask/XmTaskListForIteration'),
+          name: 'iterationTask',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '迭代-任务',
+            icon: 'iteration',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'question',
+          component: _import('xm/core/xmQuestion/XmQuestionForIteration'),
+          name: 'iterationQuestion',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '迭代-缺陷',
+            icon: 'iteration',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'record',
+          component: _import('xm/core/xmRecord/XmRecordForIteration'),
+          name: 'iterationRecord',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '迭代-日志',
+            icon: 'iteration',roles:["user"]
+          }, 
+          hidden:true
+        },  
+        {
+          path: 'workloadDay',
+          component: _import('xm/core/xmWorkload/WorkloadSetDayList'),
+          name: 'iterationBudget',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '迭代-工时日报',
+            icon: 'iteration',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'workloadMonth',
+          component: _import('xm/core/xmWorkload/WorkloadSetMonthList'),
+          name: 'iterationWorkloadMonth',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '迭代-工时月报',
+            icon: 'iteration',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
+          path: 'report',
+          component: _import('xm/rpt/reportIndexForIteration'),
+          name: 'iterationReport',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '迭代-效能',
+            icon: 'iteration',roles:["user"]
+          }, 
+          hidden:true
+        },
+        
+      ]
+    },
     { path: '/xm/core/testCasedbRoute', component: _import('xm/core/xmTestCasedb/XmTestCasedbRoute'), name: 'XmTestCasedbRoute', meta: { title: '测试库管理',roles:["user"] },hidden:true},
     {
       path: '/xm/core',

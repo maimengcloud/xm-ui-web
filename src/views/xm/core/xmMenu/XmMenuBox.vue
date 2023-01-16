@@ -42,6 +42,12 @@
 					this.filters.xmProduct=this.xmProduct
 				},
 				deep:true,
+			 },
+			 xmIteration:{
+				handler(){
+					this.filters.xmProduct={id:this.xmIteration.productId,productName:this.xmIteration.productName}
+				},
+				deep:true,
 			 }
 	    },
 		data() {

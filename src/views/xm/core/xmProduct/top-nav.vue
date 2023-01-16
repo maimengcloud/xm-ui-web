@@ -49,7 +49,7 @@
         <el-menu-item :index="'/xm/core/product/project?productId='+xmProduct.id">
           <span slot="title"><i class="el-icon-odometer"></i>项目</span>
         </el-menu-item> 
-				<el-menu-item label="需求" :index="'/xm/core/product/menu?productId='+xmProduct.id" class="hidden-md-and-down">
+				<el-menu-item label="需求" :index="'/xm/core/product/menu?productId='+xmProduct.id">
 					 <span slot="title"><i class="el-icon-document"></i>需求</span> 
 				</el-menu-item> 
         <el-menu-item :index="'/xm/core/product/iteration?productId='+xmProduct.id">

@@ -182,7 +182,7 @@
 				</el-drawer>
 
 				<el-drawer append-to-body title="需求选择" :visible.sync="selectMenuVisible"   size="60%"   :close-on-click-modal="false">
-					<xm-menu-select :visible="selectMenuVisible" :is-select-menu="true" checkScope="3"  @selected="onSelectedMenu" :sel-project="selProject"></xm-menu-select>
+					<xm-menu-select :xm-product="xmProduct" :xm-iteration="xmIteration" :visible="selectMenuVisible" :is-select-menu="true" checkScope="3"  @selected="onSelectedMenu" :sel-project="selProject"></xm-menu-select>
 				</el-drawer>
 			</el-row>  
 			<el-drawer append-to-body title="标签" :visible.sync="tagSelectVisible" class="dialog-body" size="60%">
@@ -244,7 +244,7 @@
 				 
 			}
 		},
-		props:['xmQuestion','visible',"selProject",'opType','xmProduct','xmTestCase','xmTestPlanCase','xmMenu'],
+		props:['xmQuestion','visible',"selProject",'opType','xmProduct','xmTestCase','xmTestPlanCase','xmMenu','xmIteration'],
 		watch: {
 	      'xmQuestion':function( xmQuestion ) {
 	        this.editForm = {...xmQuestion};

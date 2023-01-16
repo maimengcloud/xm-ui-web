@@ -6,7 +6,7 @@
 			</el-col>
 			<el-col :span="17" >
 				<el-row v-if="filters.product && filters.product.id">    
-						<xm-iteration-select style="display:inline;"  v-if="!xmIteration" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onIterationSelected" ref="xmIterationMng" :product-id="filters.product?filters.product.id:null"  @clear="onIterationClearSelect"></xm-iteration-select>
+						<xm-iteration-select style="display:inline;"  v-if="!xmIteration||!xmIteration.id" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onIterationSelected" ref="xmIterationMng" :product-id="filters.product?filters.product.id:null"  @clear="onIterationClearSelect"></xm-iteration-select>
 						 
 						<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable v-if="taskFilterType">
 							<el-option   value="not-join-any-project"  label="未分配过任务的需求"></el-option>  

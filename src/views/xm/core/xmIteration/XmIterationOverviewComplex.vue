@@ -2,7 +2,7 @@
   <section class="padding-left padding-right">
     <el-row ref="pageMainRef">
       <el-col
-        :span="infotype == '迭代概览' ? 4 : 0"
+        :span="4"
         class="padding border"
         :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"
       >
@@ -262,7 +262,7 @@
           </el-step>
         </el-steps>
       </el-col>
-      <el-col>
+      <el-col :span="20">
       <el-menu mode="horizontal" :default-active="showPanelName"  @select="onMenuToolBarSelect">
         <el-menu-item index="overview">
           <span slot="title">迭代概览</span>

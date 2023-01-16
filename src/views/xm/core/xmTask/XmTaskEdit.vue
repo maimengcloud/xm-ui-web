@@ -508,7 +508,7 @@
 		</el-drawer>
 
 		<el-drawer append-to-body title="需求选择"  :visible.sync="menuVisible" size="80%"   :close-on-click-modal="false">
-			<xm-menu-select :is-select-menu="true" checkScope="3"  @selected="onMenuSelected" :sel-project="xmProject"></xm-menu-select>
+			<xm-menu-select :is-select-menu="true" checkScope="3"  @selected="onMenuSelected" :sel-project="xmProject" :xm-iteration="xmIteration"></xm-menu-select>
 		</el-drawer>
 		
 		<el-drawer title="选中任务"  :visible.sync="selectTaskVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
@@ -639,7 +639,7 @@
 			}
 
 		},
-		props:['xmTask','visible','xmProject',"parentTask"],
+		props:['xmTask','visible','xmProject',"parentTask",'xmIteration'],
 		watch: {
 			'xmTask':function( xmTask ) {  
 			},

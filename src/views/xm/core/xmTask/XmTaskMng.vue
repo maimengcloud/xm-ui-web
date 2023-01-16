@@ -685,6 +685,7 @@
         :xm-project="currentProject"
         :xm-product="xmProduct"
         :xm-task="addForm"
+        :xm-iteration="xmIteration"
         :parent-task="parentTask"
         :ptype="ptype"
         :visible="addFormVisible"

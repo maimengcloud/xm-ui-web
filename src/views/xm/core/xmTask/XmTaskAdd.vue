@@ -215,7 +215,7 @@
 		</el-drawer>
 
 		<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible" size="60%"   :close-on-click-modal="false">
-			<xm-menu-select :is-select-menu="true"  @selected="onMenuSelected" :sel-project="xmProject" :xm-product="xmProduct"></xm-menu-select>
+			<xm-menu-select :is-select-menu="true"  @selected="onMenuSelected" :sel-project="xmProject" :xm-product="xmProduct" :xm-iteration="xmIteration"></xm-menu-select>
 		</el-drawer>
 		<el-drawer append-to-body title="选择执行人"  :visible.sync="execGroupUserSelectVisible" size="60%"    :close-on-click-modal="false">
 			<xm-group-select :visible="execGroupUserSelectVisible" :sel-project="xmProject" :isSelectSingleUser="1" @user-confirm="execGroupUserSelectConfirm"></xm-group-select>
@@ -271,7 +271,7 @@
 				} 
 			}
 		},
-		props:['xmTask','visible','xmProject','xmProduct',"parentTask","ptype"],
+		props:['xmTask','visible','xmProject','xmProduct',"parentTask","ptype",'xmIteration'],
 		watch: {
 			'xmTask':function( xmTask ) {
 			},
@@ -336,6 +336,20 @@
 			},
 			//新增提交XmTask xm_task 父组件监听@submit="afterAddSubmit"
 			addSubmit: function () {
+				if(this.xmIteration && this.xmIteration.id){
+					if(!this.addForm.menuId){
+						this.$notify({position:'bottom-left',showClose:true,message:'在迭代视图中添加任务需要关联需求！请选择需求',type: 'error'})
+						this.menuVisible=true;
+						return;
+					}
+				}
+				if(this.xmProduct && this.xmProduct.id){
+					if(!this.addForm.menuId){
+						this.$notify({position:'bottom-left',showClose:true,message:'在产品视图中添加任务需要关联需求！请选择需求',type: 'error'})
+						this.menuVisible=true;
+						return;
+					}
+				}
 				this.$refs.addForm.validate((valid) => {
 					if (valid) {
 						if(this.addForm.oshare==='1'){

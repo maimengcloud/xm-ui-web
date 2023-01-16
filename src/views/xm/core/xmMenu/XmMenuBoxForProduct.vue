@@ -1,6 +1,6 @@
 <template>
 	<section>  
-		<xm-menu-box :xm-product="xmProduct"></xm-menu-box>
+		<xm-menu-box v-if="xmProduct&& xmProduct.id" :xm-product="xmProduct"></xm-menu-box>
 	</section>
 </template>
 

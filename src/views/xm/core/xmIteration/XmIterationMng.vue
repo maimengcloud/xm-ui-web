@@ -314,6 +314,7 @@ import { mapGetters } from "vuex";
 import XmIterationSelect from "@/views/xm/core/components/XmIterationSelect.vue";
 import XmProductSelect from "@/views/xm/core/components/XmProductSelect.vue";
 import { addUserFocus, delUserFocus } from "@/api/mdp/sys/userFocus";
+import store from '@/store'
 export default {
   computed: {
     ...mapGetters(["userInfo", "roles"]),
@@ -598,12 +599,14 @@ export default {
     //进入info界面
     intoInfo(row) {
       this.editForm = row;
-      localStorage.setItem("xm-iteration-info-route", JSON.stringify(row));
-      this.$router.push({
-        name: "XmIterationInfoRoute",
-        query: { id: row.id },
-      });
-      //this.showInfo = true;
+      store.dispatch('setXmIteration',row).then(res=>{
+        this.$router.push({
+          path:'/xm/core/iteration/overview',
+          query:{
+            iterationId:row.id 
+          }
+        })
+      })  
     },
     //选择行xmIteration
     selsChange: function (sels) {
