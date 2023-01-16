@@ -1,5 +1,268 @@
 <template>
   <section class="padding-left padding-right">
+    <el-row ref="pageMainRef">
+      <el-col
+        :span="infotype == '迭代概览' ? 4 : 0"
+        class="padding border"
+        :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"
+      >
+        <h4 class="padding-bottom">常用功能导航</h4>
+        <el-steps
+          :active="calcIterationStatusStep"
+          finish-status="success"
+          direction="vertical"
+        >
+          <el-step
+            v-for="(i, index) in dicts['iterationStatus']"
+            :title="i.name"
+            :key="index"
+          >
+            <el-row slot="description">
+              <el-row v-if="i.id == '0'"
+                ><!--打开-->
+                <span v-if="xmIteration.istatus == i.id">
+                  <el-button
+                    class="step-btn"
+                    type="warning"
+                    size="mini"
+                    plain
+                    @click="jumpTo('iterationMenu')"
+                    >需求管理</el-button
+                  > 
+                  <el-button
+                    class="step-btn"
+                    type="warning"
+                    size="mini"
+                    plain
+                    @click="showIterationMenu"
+                    >配置需求范围</el-button
+                  > 
+                  <el-button
+                    class="step-btn"
+                    type="danger"
+                    size="mini"
+                    plain
+										icon="el-icon-d-caret"
+                    @click="editSomeFields(xmIteration, 'istatus', '1')"
+                    >开启需求评审</el-button
+                  > 
+                </span>
+                <span v-if="xmIteration.istatus != i.id">
+                  <el-button
+                    class="step-btn"
+                    type="warning"
+                    size="mini"
+                    plain
+                    @click="jumpTo('iterationMenu')"
+                    >需求管理</el-button
+                  > 
+                  <el-button
+                    class="step-btn"
+                    type="warning"
+                    size="mini"
+                    plain
+                    @click="showIterationMenu"
+                    >需求范围</el-button
+                  > 
+                </span>
+              </el-row>
+              <el-row v-else-if="i.id == '1'"
+                ><!--需求评审-->
+                <span v-if="xmIteration.istatus == i.id"> 
+                  <el-button
+                    class="step-btn"
+                    type="warning"
+                    size="mini"
+                    plain
+                    @click="showIterationMenu"
+                    >确认需求范围</el-button
+                  > 
+                  <el-button
+                    class="step-btn"
+                    type="warning"
+                    size="mini"
+                    plain
+                    @click="jumpTo('iterationQuestion')"
+                    >缺陷登记</el-button
+                  >
+                  <el-button
+                    class="step-btn"
+                    type="danger"
+                    size="mini"
+                    plain
+										icon="el-icon-d-caret"
+                    @click="editSomeFields(xmIteration, 'istatus', '2')"
+                    >进入计划会</el-button
+                  >
+                </span>
+                <span v-if="xmIteration.istatus != i.id">
+                   
+                </span>
+              </el-row>
+              <el-row v-else-if="i.id == '2'"
+                ><!--计划会-->
+                <span v-if="xmIteration.istatus == i.id">
+                  <el-button
+                    class="step-btn"
+                    type="warning"
+                    size="mini"
+                    plain
+                    @click="showIterationDetail"
+                    >迭代计划</el-button
+                  >
+                  <el-button
+                    class="step-btn"
+                    type="warning"
+                    size="mini"
+                    plain
+                    @click="jumpTo('iterationTask')"
+                    >任务管理</el-button
+                  > 
+                  <el-button
+                    class="step-btn"
+                    type="danger"
+                    size="mini"
+                    plain
+										icon="el-icon-d-caret"
+                    @click="editSomeFields(xmIteration, 'istatus', '3')"
+                    >设为研发中</el-button
+                  >
+                </span>
+                <span v-if="xmIteration.istatus != i.id">
+                  <el-button
+                    class="step-btn"
+                    type="warning"
+                    size="mini"
+                    plain
+                    @click="showIterationDetail"
+                    >迭代计划</el-button
+                  >
+                  <el-button
+                    class="step-btn"
+                    type="warning"
+                    size="mini"
+                    plain
+                    @click="jumpTo('iterationTask')"
+                    >任务管理</el-button
+                  > 
+                </span>
+              </el-row>
+              <el-row v-else-if="i.id == '3'"
+                ><!--研发中-->
+                <span v-if="xmIteration.istatus == i.id"> 
+                  <el-button
+                    class="step-btn"
+                    type="warning"
+                    size="mini"
+                    plain
+                    @click="jumpTo('iterationTask')"
+                    >任务管理</el-button
+                  >  
+                  <el-button
+                    class="step-btn"
+                    type="warning"
+                    size="mini"
+                    plain
+                    @click="jumpTo('iterationReport')"
+                    >效能分析</el-button
+                  > 
+                  <el-button
+                    class="step-btn"
+                    type="danger"
+                    size="mini"
+                    plain
+										icon="el-icon-d-caret"
+                    @click="editSomeFields(xmIteration, 'istatus', '4')"
+                    >设为测试中</el-button
+                  >
+                </span>
+                <span v-if="xmIteration.istatus != i.id"> 
+                  <el-button
+                    class="step-btn"
+                    type="warning"
+                    size="mini"
+                    plain
+                    @click="jumpTo('iterationReport')"
+                    >效能分析</el-button
+                  > 
+                </span>
+              </el-row>
+              <el-row v-else-if="i.id == '4'"
+                ><!--测试中-->
+                <span v-if="xmIteration.istatus == i.id"> 
+                  <el-button
+                    class="step-btn"
+                    type="warning"
+                    size="mini"
+                    plain
+                    @click="jumpTo('iterationQuestion')"
+                    >缺陷管理</el-button
+                  >  
+                  <el-button
+                    class="step-btn"
+                    type="danger"
+                    size="mini"
+                    plain
+										icon="el-icon-d-caret"
+                    @click="editSomeFields(xmIteration, 'istatus', '5')"
+                    >设为待上线</el-button
+                  >
+                </span>
+              </el-row>
+              <el-row v-else-if="i.id == '5'"
+                ><!--上线中-->
+                <span v-if="xmIteration.istatus == i.id">
+                  
+                  <el-button
+                    class="step-btn"
+                    type="danger"
+                    size="mini"
+                    plain
+										icon="el-icon-d-caret"
+                    @click="editSomeFields(xmIteration, 'istatus', '6')"
+                    >设为已完成</el-button
+                  >
+                </span>
+                <span v-if="xmIteration.istatus != i.id">
+                  
+                </span>
+              </el-row>
+              <el-row v-else-if="i.id == '6'"
+                ><!--已完成-->
+                <span v-if="xmIteration.istatus == i.id">
+                  <el-button
+                    class="step-btn"
+                    type="danger"
+                    size="mini"
+                    plain
+										icon="el-icon-d-caret"
+                    @click="editSomeFields(xmIteration, 'istatus', '7')"
+                    >设为已关闭</el-button
+                  >
+                </span>
+                <span v-if="xmIteration.istatus != i.id"> 
+				   
+				</span>
+              </el-row>
+              <el-row v-else-if="i.id == '7'"
+                ><!--已关闭-->
+                <span v-if="xmIteration.istatus == i.id">
+                  <el-button
+                    class="step-btn"
+                    type="danger"
+                    size="mini"
+                    plain
+										icon="el-icon-d-caret"
+                    @click="editSomeFields(xmIteration, 'istatus', '0')"
+                    >重新打开</el-button
+                  >
+                </span> 
+              </el-row> 
+            </el-row>
+          </el-step>
+        </el-steps>
+      </el-col>
+      <el-col>
       <el-menu mode="horizontal" :default-active="showPanelName"  @select="onMenuToolBarSelect">
         <el-menu-item index="overview">
           <span slot="title">迭代概览</span>
@@ -40,6 +303,8 @@
             </font>
         </el-row> 
       </div>
+    </el-col>
+    </el-row>
    </section>
 </template>
 
@@ -52,18 +317,33 @@ import XmIterationEdit from './XmIterationEdit.vue';
 import XmIterationMenuMng from '../xmIterationMenu/XmIterationMenuMng.vue';  
 	import {  loadTasksToXmIterationState } from '@/api/xm/core/xmIterationState';
 import {  listXmIterationWithState } from "@/api/xm/core/xmIteration";
+import {initDicts, } from '@/api/xm/core/xmIteration';
 
 export default {
   components: {XmIterationOverview,XmIterationEdit, XmIterationMenuMng },
   computed: {
-    ...mapGetters(["userInfo"]),
+    ...mapGetters(["userInfo","xmIteration"]), 
+    calcIterationStatusStep() {
+      if (this.dicts["iterationStatus"] && this.xmIteration) {
+        var index = this.dicts["iterationStatus"].findIndex((i) => {
+          if (i.id == this.xmIteration.istatus) {
+            return true;
+          } else {
+            return false;
+          }
+        });
+        return index + 1;
+      } else {
+        return 0;
+      }
+    },
   },
 
-  props:['xmIteration'],
   watch:{
   },
   data() {
     return {
+      dicts:{iterationStatus:[]},
       load:{calcIteration:false,},
       showPanelName:'overview'
     };
@@ -98,6 +378,7 @@ export default {
   },
 
   mounted() {
+    initDicts(this)
     this.$nextTick(() => {
     });
   },

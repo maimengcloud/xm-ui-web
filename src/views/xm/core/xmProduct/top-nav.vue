@@ -145,21 +145,6 @@ export default {
   props: ["visible"],
   computed: {
     ...mapGetters(["userInfo", "roles","xmProduct"]),
-
-    calcProjectStatusStep() {
-      if (this.dicts["productStatus"] && this.xmProduct) {
-        var index = this.dicts["productStatus"].findIndex((i) => {
-          if (i.id == this.xmProduct.status) {
-            return true;
-          } else {
-            return false;
-          }
-        });
-        return index + 1;
-      } else {
-        return 0;
-      }
-    },
   },
   watch: {
     $route:{
