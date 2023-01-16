@@ -581,7 +581,7 @@ export default {
   mounted() {
 			
     this.$nextTick(() => {
-      debugger;
+      
       this.maxTableHeight=util.calcTableMaxHeight(this.$refs.pageMainRef.$el)
     });
 			initSimpleDicts('all',['xmProductPstatus'] ).then(res=>{

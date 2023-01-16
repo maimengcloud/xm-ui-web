@@ -144,7 +144,7 @@
 					total: this.pageInfo.total,
 					count:this.pageInfo.count,
 				};
-				debugger;
+				
 				if(this.xmProduct){
 					params.linkProductId=this.xmProduct.id
 				}

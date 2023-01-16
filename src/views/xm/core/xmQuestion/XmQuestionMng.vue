@@ -408,7 +408,7 @@
 			},
 			//获取列表 XmQuestion xm_question
 			getXmQuestions() {
-				debugger;
+				
 				let params = {
 					pageSize: this.pageInfo.pageSize,
 					pageNum: this.pageInfo.pageNum,
@@ -974,7 +974,7 @@
 				
 			}, 
 			editXmQuestionSomeFields(row,fieldName,$event){
-				debugger;
+				
 				var params={ids:[row.id]};
 				if(this.sels.length>0){
 					if(!this.sels.some(k=>k.id==row.id)){
@@ -1006,7 +1006,7 @@
 				}else{
 					params[fieldName]=$event
 				}
-				debugger;
+				
 				editXmQuestionSomeFields(params).then(res=>{
 					var tips = res.data.tips;
 					if(tips.isOk){ 

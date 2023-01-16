@@ -31,7 +31,7 @@ export default {
     //在下面添加其它组件
   }, 
   mounted() {   
-    debugger;
+    
     if(!this.$route.query.iterationId){
       this.$message.error("地址不合规")
       this.$route.back(-1)
