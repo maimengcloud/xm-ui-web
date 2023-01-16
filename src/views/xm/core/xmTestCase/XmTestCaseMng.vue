@@ -41,7 +41,12 @@
                                 <mdp-select-dict-tag :dict="dicts['testCaseStatus']" v-model="scope.row.caseStatus" effect="dark" @change="editSomeFields(scope.row,'caseStatus',$event)"></mdp-select-dict-tag> 
                             </template>
                         </el-table-column>      
-                        <el-table-column prop="verNum" label="版本号" min-width="120" show-overflow-tooltip>
+                        <el-table-column prop="funcName" label="模块" min-width="150" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span> {{scope.row.funcName}} </span>
+                            </template>
+                        </el-table-column>      
+                        <el-table-column prop="verNum" label="版本号" min-width="80" show-overflow-tooltip>
                             <template slot-scope="scope">
                                 <span> {{scope.row.verNum}} </span>
                             </template>

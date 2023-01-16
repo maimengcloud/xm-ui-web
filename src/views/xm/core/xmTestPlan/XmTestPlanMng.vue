@@ -192,6 +192,10 @@ export default {
                 params.key=this.filters.key
             }
 
+            if(this.xmTestCasedb && this.xmTestCasedb.id){
+                params.casedbId=this.xmTestCasedb.id
+            }
+
             this.load.list = true;
             listXmTestPlan(params).then((res) => {
                 var tips=res.data.tips;
