@@ -15,7 +15,7 @@
       <el-menu-item :index="'/xm/core/test/overview?casedbId='+testCasedb.id">
           <span
             slot="title"
-            style="font-size: 18px; color: #409eff"
+            style="font-size: 18px; color: #409eff" 
             class="hidden-md-and-down"
             :title="testCasedb.name"
           >
@@ -46,69 +46,23 @@
             >
           </span>
         </el-menu-item>
-        <el-menu-item :index="'/xm/core/product/project?productId='+testCasedb.id">
-          <span slot="title"><i class="el-icon-odometer"></i>项目</span>
+        <el-menu-item :index="'/xm/core/test/case?casedbId='+testCasedb.id">
+          <span slot="title"><i class="el-icon-odometer"></i>用例管理</span>
         </el-menu-item> 
-				<el-menu-item label="需求" :index="'/xm/core/product/menu?productId='+testCasedb.id">
-					 <span slot="title"><i class="el-icon-document"></i>需求</span> 
+				<el-menu-item label="需求" :index="'/xm/core/test/flow?casedbId='+testCasedb.id">
+					 <span slot="title"><i class="el-icon-document"></i>用例评审</span> 
 				</el-menu-item> 
-        <el-menu-item :index="'/xm/core/product/iteration?productId='+testCasedb.id">
-          <span slot="title"><i class="el-icon-connection"></i>迭代</span>
+        <el-menu-item :index="'/xm/core/test/plan?casedbId='+testCasedb.id">
+          <span slot="title"><i class="el-icon-connection"></i>测试计划</span>
         </el-menu-item>
 
-        <el-menu-item :index="'/xm/core/product/plan?productId='+testCasedb.id">
-          <span slot="title"><i class="el-icon-time"></i>计划</span>
+        <el-menu-item :index="'/xm/core/test/report?casedbId='+testCasedb.id">
+          <span slot="title"><i class="el-icon-time"></i>统计分析</span>
         </el-menu-item>
-
-        <el-menu-item :index="'/xm/core/product/task?productId='+testCasedb.id" class="hidden-md-and-down">
-          <span slot="title"><i class="el-icon-s-operation"></i>任务</span>
-        </el-menu-item>
-        <el-menu-item :index="'/xm/core/product/question?productId='+testCasedb.id">
-          <span slot="title"><i class="el-icon-question"></i>缺陷</span>
-        </el-menu-item>
-        <el-menu-item :index="'/xm/core/product/group?productId='+testCasedb.id">
-          <span slot="title"><i class="el-icon-user-solid"></i>团队</span>
-        </el-menu-item>
-        <el-submenu index="caiwu" class="hidden-sm-and-down">
-          <template slot="title"><i class="el-icon-coin"></i>财务</template>
-          <el-menu-item :index="'/xm/core/product/contract?productId='+testCasedb.id">
-            <span slot="title"><i class="el-icon-s-data"></i>合同管理</span>
-          </el-menu-item>
-          <el-menu-item :index="'/xm/core/product/budget?productId='+testCasedb.id">
-            <span slot="title"><i class="el-icon-coin"></i>预算</span>
-          </el-menu-item>
-          <el-menu-item :index="'/xm/core/product/cost?productId='+testCasedb.id">
-            <span slot="title"><i class="el-icon-coin"></i>费用</span>
-          </el-menu-item>
-        </el-submenu>
-        <el-menu-item :index="'/xm/core/product/report?productId='+testCasedb.id">
-          <span slot="title"><i class="el-icon-s-data"></i>效能</span>
-        </el-menu-item>
-        <el-submenu index="zhishi" class="hidden-md-and-down">
-          <template slot="title">知识</template>
-          <el-menu-item :index="'/xm/core/product/file?productId='+testCasedb.id">
-            <span slot="title"><i class="el-icon-document"></i>文档</span>
-          </el-menu-item>
-          <el-menu-item :index="'/xm/core/product/env?productId='+testCasedb.id">
-            <span slot="title"><i class="el-icon-setting"></i>环境清单</span>
-          </el-menu-item>
-          <el-menu-item :index="'/xm/core/product/record?productId='+testCasedb.id">
-            <span slot="title"><i class="el-icon-edit-outline"></i>日志</span>
-          </el-menu-item>
-        </el-submenu>
+ 
         <el-submenu index="更多">
-          <template slot="title">更多 </template>
-          <el-menu-item :index="'/xm/core/product/workloadDay?productId='+testCasedb.id">
-            <span slot="title"
-              ><i class="el-icon-video-camera"></i>每日工时</span
-            >
-          </el-menu-item>
-          <el-menu-item :index="'/xm/core/product/workloadMonth?productId='+testCasedb.id">
-            <span slot="title"
-              ><i class="el-icon-video-camera"></i>每月工时</span
-            >
-          </el-menu-item>   
-          <el-menu-item :index="'/xm/core/product/env?productId='+testCasedb.id">
+          <template slot="title">更多 </template> 
+          <el-menu-item :index="'/xm/core/test/env?casedbId='+testCasedb.id">
             <span slot="title"><i class="el-icon-setting"></i>环境清单</span>
           </el-menu-item> 
           <el-menu-item index="/forum">
@@ -120,9 +74,9 @@
           <el-menu-item index="/helpCenter">
             <span slot="title"><i class="el-icon-date"></i>客服</span>
           </el-menu-item>
-          <el-menu-item index="/xm/core/testCasedb/XmProductMng" >
+          <el-menu-item index="/xm/core/testCasedb/XmTestCasedbMng" >
               <span slot="title"
-                ><i class="el-icon-back"></i>回到产品列表页</span
+                ><i class="el-icon-back"></i>回到测试库列表页</span
               >
             </el-menu-item> 
             <el-menu-item index="/">

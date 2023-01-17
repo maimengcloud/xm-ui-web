@@ -195,7 +195,7 @@
 			</el-dialog>
 			
 			<el-dialog append-to-body title="执行用例选择"  :visible.sync="caseVisible" width="80%" top="20px"  :close-on-click-modal="false">
-				<xm-test-plan-case-mng :select="true" :visible="caseVisible" :xm-product="editForm.productId?{id:editForm.productId,productName:editForm.productName}:null" @select="onTestPlanCaseSelected" ></xm-test-plan-case-mng>
+				<xm-test-plan-case-mng :select="true" :visible="caseVisible" :xm-test-plan="xmTestPlan" :xm-product="editForm.productId?{id:editForm.productId,productName:editForm.productName}:null" @select="onTestPlanCaseSelected" ></xm-test-plan-case-mng>
 			</el-dialog>
 	</section>
 </template>
@@ -244,7 +244,7 @@
 				 
 			}
 		},
-		props:['xmQuestion','visible',"selProject",'opType','xmProduct','xmTestCase','xmTestPlanCase','xmMenu','xmIteration'],
+		props:['xmQuestion','visible',"selProject",'opType','xmProduct','xmTestCase','xmTestPlanCase','xmMenu','xmIteration','xmTestPlan'],
 		watch: {
 	      'xmQuestion':function( xmQuestion ) {
 	        this.editForm = {...xmQuestion};

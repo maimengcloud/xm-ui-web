@@ -3,6 +3,7 @@ import Layout from '../views/layout/Layout'
 import XmProjectLayout from '../views/xm/core/xmProject/index'
 import XmProductLayout from '../views/xm/core/xmProduct/index'
 import XmIterationLayout from '../views/xm/core/xmIteration/index'
+import XmTestLayout from '../views/xm/core/xmTestCasedb/index'
 const _import = require('./_import_' + process.env.NODE_ENV)
 
 export default {
@@ -527,8 +528,7 @@ export default {
         
       ]
     },
-    { path: '/xm/core/testCasedbRoute', component: _import('xm/core/xmTestCasedb/XmTestCasedbRoute'), name: 'XmTestCasedbRoute', meta: { title: '测试库管理',roles:["user"] },hidden:true},
-    {
+     {
       path: '/xm/core',
       component: Layout,
       name: '测试管理',
@@ -545,6 +545,26 @@ export default {
         { path: 'xmTestCasedb/XmTestCasedbMng', component: _import('xm/core/xmTestCasedb/XmTestCasedbMng'), name: 'XmTestCasedbMng', meta: { title: '测试管理',roles:["user"] }},
         { path: 'xmQuestion/XmQuestionDetailRoute', component: _import('xm/core/xmQuestion/XmQuestionDetailRoute'), name: 'XmQuestionDetailRoute', meta: { title: '缺陷明细',roles:["user"] },hidden:true},
  
+      ]
+    }, 
+    {
+      path: '/xm/core/test',
+      component: XmTestLayout,
+      name: '测试管理',
+      iconCls: 'fa el-icon-menu',
+      meta: {
+        title: '测试管理',
+        icon: 'bug'
+      },
+      // leaf: true,//只有一个节点
+      children: [
+
+        { path: 'overview', component: _import('xm/core/xmTestCasedb/Overview'), name: 'testOverview', meta: { title: '测试管理',roles:["user"] },hidden:true},
+        { path: 'case', component: _import('xm/core/xmTestCase/XmTestCaseList'), name: 'testCase', meta: { title: '用例管理',roles:["user"] },hidden:true},
+        { path: 'flow', component: _import('xm/core/xmTestCase/XmTestCaseFlow'), name: 'testFlow', meta: { title: '用例评审',roles:["user"] },hidden:true},
+        { path: 'plan', component: _import('xm/core/xmTestPlan/Overview'), name: 'testPlan', meta: { title: '测试计划',roles:["user"] },hidden:true},
+        { path: 'report', component: _import('xm/rpt/reportIndexForTest'), name: 'testReport', meta: { title: '统计分析',roles:["user"] },hidden:true},
+
       ]
     }, 
     {
