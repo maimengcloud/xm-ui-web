@@ -3,7 +3,7 @@
         <el-dialog fullscreen :title="(	filters.iteration?'【'+filters.iteration.iterationName+'】':'')+'迭代燃尽图'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
 			
 			 
-			<el-row :gutter="5">
+			<el-row :gutter="5" v-if="visible">
 				<el-col :span="18"> 
 					<div>
 						<div class="main" id="burnout"
