@@ -245,7 +245,7 @@
 						</el-row>  
 					</el-tab-pane>
 					
-					<el-tab-pane label="需求" name="3">  
+					<el-tab-pane label="需求" name="3" v-if="editForm.ntype!='1'">  
 						
 						<el-row>
 							<el-col :span="12"> 
@@ -525,9 +525,9 @@
 			</tag-mng>
 		</el-drawer>
 		
-		<el-dialog title="选择新的上级计划" append-to-body :visible.sync="selectParentPlanVisible" width="60%" top="20px">
+		<el-drawer title="选择新的上级计划" append-to-body :visible.sync="selectParentPlanVisible" size="60%">
 		<xm-phase-select :sel-project="xmProject"   @select="onSelectedParentTask"></xm-phase-select>
-		</el-dialog>
+		</el-drawer>
 
 		<!--编辑 XmTask xm_task界面-->
 		<el-dialog

@@ -1,7 +1,7 @@
 <template>
 	<section class="page-container border padding" >
 		<el-row>  
-			<xm-project-select style="display:inline;" v-if="!selProject" :auto-select="true"   :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @selected="onProjectRowClick" @clear="onProjectClearSelect"></xm-project-select>
+			<xm-project-select style="display:inline;" v-if="!selProject&&!xmProduct" :auto-select="true"   :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @selected="onProjectRowClick" @clear="onProjectClearSelect"></xm-project-select>
 			
 			<el-input v-model="filters.key" style="width:15%;" clearable placeholder="名称过滤"></el-input>   
 			<el-button  type="primary" @click="searchXmGroups" icon="el-icon-search">刷新</el-button> 
@@ -53,6 +53,10 @@
 				<el-row v-if="currNodeType=='project'">   
 					<el-button type="primary" @click="loadNexGroup" icon="el-icon-search" v-loading="load.add">加载下一级小组</el-button>  
 					<el-button @click="showProjectGroupAdd" icon="el-icon-plus" v-loading="load.add">新增项目小组</el-button>  
+				</el-row>  
+				<el-row v-else-if="currNodeType=='product'">   
+					<el-button type="primary" @click="loadNexGroup" icon="el-icon-search" v-loading="load.add">加载下一级小组</el-button>  
+					<el-button @click="showProductGroupAdd" icon="el-icon-plus" v-loading="load.add">新增产品小组</el-button>  
 				</el-row>  
 				<el-row v-else-if="currNodeType=='group'">  
 					<el-row>
@@ -263,6 +267,14 @@ XmTaskExecuserSelect,
 					topdata.leaderUsername=this.filters.selProject.pmUsername
 					topdata.assUserid=this.filters.selProject.assUserid
 					topdata.assUsername=this.filters.selProject.assUsername
+				}else if(this.xmProduct && this.xmProduct.id){
+					topLabel=this.xmProduct.productName+"-产品组织架构"
+					currNodeType='product'
+					topdata=this.xmProduct
+					topdata.leaderUserid=this.xmProduct.pmUserid
+					topdata.leaderUsername=this.xmProduct.pmUsername
+					topdata.assUserid=this.xmProduct.assUserid
+					topdata.assUsername=this.xmProduct.assUsername
 				}else{
 					return []
 				} 
@@ -286,6 +298,9 @@ XmTaskExecuserSelect,
 			
 			selProject(){
 				this.filters.selProject=this.selProject;
+				this.getXmGroup();
+			}, 
+			xmProduct(){ 
 				this.getXmGroup();
 			}, 
 			"filters.key":function(val) {
@@ -384,7 +399,7 @@ XmTaskExecuserSelect,
 					params.projectId=this.editForm.id
 					params.lvl=1
 				}else if(this.currNodeType=='product'){
-					//params.productId=this.editForm.id
+					params.productId=this.editForm.id
 					params.lvl=1
 				}else if(this.currNodeType=='group'){
 					params.pgroupId=this.editForm.id
@@ -399,9 +414,12 @@ XmTaskExecuserSelect,
 						var childrens = res.data.data;
 						childrens=childrens.filter(i=>!this.xmGroups.some(k=>k.id==i.id))
 						this.xmGroups.push(...childrens)
+						this.$notify({position:'bottom-left',showClose:true, message: tips.msg+",返回"+res.data.data.length+"条数据。", type: tips.isOk?'success':'error' });
 					}else{
-						this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: 'error' });
-					} 
+						this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
+					}
+					
+					 
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			},
@@ -420,11 +438,15 @@ XmTaskExecuserSelect,
 					}  
 					params.orderBy= orderBys.join(",")
 				}
-				if( !this.filters.selProject || !this.filters.selProject.id){
+				if( (!this.filters.selProject || !this.filters.selProject.id) && (!this.xmProduct || !this.xmProduct.id)){
 					return;
 				}
 				if(this.filters.selProject && this.filters.selProject.id){
 					params.projectId=this.filters.selProject.id
+				} 
+				
+				if(this.xmProduct && this.xmProduct.id){
+					params.productId=this.xmProduct.id
 				} 
 				if(this.filters.key){
 					params.key=this.filters.key

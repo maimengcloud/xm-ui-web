@@ -137,7 +137,7 @@ export default {
   watch: {
     selProject: function (oval, val) {
       this.filters.selProject = this.selProject;
-      this.changeSelKey("all");
+      this.changeSelKey("");
     }, 
     xmProduct: function () {
       this.filters.product = this.xmProduct;

@@ -226,7 +226,7 @@
 		</el-drawer>
 
 		<el-drawer title="选中上级" :visible.sync="selectParentTaskVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
-			<xm-task-list check-scope="plan" query-scope="plan" :sel-project="xmProject" :xm-product="xmProduct" :ptype="addForm.ptype"   @task-selected="onSelectedParentTask"></xm-task-list>
+			<xm-phase-select check-scope="plan" query-scope="plan" :sel-project="xmProject" :xm-product="xmProduct" :ptype="addForm.ptype"   @select="onSelectedParentTask"></xm-phase-select>
 		</el-drawer>
 		<el-drawer append-to-body title="需求明细" :visible.sync="menuDetailVisible" size="60%"    :close-on-click-modal="false">
 			<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="true" :xm-menu="{menuId:addForm.menuId,menuName:addForm.menuName}" ></xm-menu-rich-detail>
@@ -244,6 +244,7 @@
 	import skillMng from "@/views/xm/core/skill/skillMng";
 	import {batchAddSkill } from '@/api/xm/core/xmTaskSkill';
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
+	import XmPhaseSelect from './XmPhaseSelect';
 	import XmTaskList from '../xmTask/XmTaskList';
 	import XmGroupSelect from '../xmGroup/XmGroupSelect.vue'; 
 	import MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm'
@@ -314,6 +315,9 @@
 				addForm: {
 					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'',sortLevel:'',executorUserid:'',executorUsername:'',preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',rate:0,budgetAt:0,budgetWorkload:0,actAt:0,actWorkload:0,taskState:'0',taskType:'4',taskClass:'',toTaskCenter:'0',actStartTime:'',actEndTime:'',bizProcInstId:'',bizFlowState:'',phaseId:'',phaseName:'',taskSkillNames:'',exeUsernames:'',taskSkillIds:'',exeUserids:'',taskOut:'0',planType:'w2',settleSchemel:'1',menuId:'',menuName:'',productId:'',cbranchId:'',cdeptid:'',tagIds:'',tagNames:'',ntype:'',childrenCnt:'',ltime:'',pidPaths:'',lvl:'',isTpl:'',keyPath:'',uniInnerPrice:80,uniOutPrice:100,calcType:'',ptype:'',wtype:'',bctrl:'',initWorkload:'',shareFee:'',oshare:'',crowd:'',browseUsers:'',execUsers:'',cityId:'',cityName:'',regionType:'',browseTimes:'',capaLvls:'',tranMode:'',supRequires:'',hot:'0',top:'0',urgent:'0',crmSup:'0',bidStep:'0',interestLvls:'',filePaths:'',estate:'0',efunds:0,etoPlatTime:'',etoDevTime:'',ebackTime:'',topStime:'',topEtime:'',hotStime:'',hotEtime:'',urgentStime:'',urgentEtime:''
 				},
+				addFormInit: {
+					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'',sortLevel:'',executorUserid:'',executorUsername:'',preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',rate:0,budgetAt:0,budgetWorkload:0,actAt:0,actWorkload:0,taskState:'0',taskType:'4',taskClass:'',toTaskCenter:'0',actStartTime:'',actEndTime:'',bizProcInstId:'',bizFlowState:'',phaseId:'',phaseName:'',taskSkillNames:'',exeUsernames:'',taskSkillIds:'',exeUserids:'',taskOut:'0',planType:'w2',settleSchemel:'1',menuId:'',menuName:'',productId:'',cbranchId:'',cdeptid:'',tagIds:'',tagNames:'',ntype:'',childrenCnt:'',ltime:'',pidPaths:'',lvl:'',isTpl:'',keyPath:'',uniInnerPrice:80,uniOutPrice:100,calcType:'',ptype:'',wtype:'',bctrl:'',initWorkload:'',shareFee:'',oshare:'',crowd:'',browseUsers:'',execUsers:'',cityId:'',cityName:'',regionType:'',browseTimes:'',capaLvls:'',tranMode:'',supRequires:'',hot:'0',top:'0',urgent:'0',crmSup:'0',bidStep:'0',interestLvls:'',filePaths:'',estate:'0',efunds:0,etoPlatTime:'',etoDevTime:'',ebackTime:'',topStime:'',topEtime:'',hotStime:'',hotEtime:'',urgentStime:'',urgentEtime:''
+				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
  				menuVisible:false,
 				menuDetailVisible:false,
@@ -336,20 +340,16 @@
 			},
 			//新增提交XmTask xm_task 父组件监听@submit="afterAddSubmit"
 			addSubmit: function () {
-				if(this.xmIteration && this.xmIteration.id){
-					if(!this.addForm.menuId){
-						this.$notify({position:'bottom-left',showClose:true,message:'在迭代视图中添加任务需要关联需求！请选择需求',type: 'error'})
-						this.menuVisible=true;
-						return;
+				if(this.addForm.ntype!='1'){
+					if(this.xmIteration && this.xmIteration.id){
+						if(!this.addForm.menuId){
+							this.$notify({position:'bottom-left',showClose:true,message:'在迭代视图中添加任务需要关联需求！请选择需求',type: 'error'})
+							this.menuVisible=true;
+							return;
+						}
 					}
 				}
-				if(this.xmProduct && this.xmProduct.id){
-					if(!this.addForm.menuId){
-						this.$notify({position:'bottom-left',showClose:true,message:'在产品视图中添加任务需要关联需求！请选择需求',type: 'error'})
-						this.menuVisible=true;
-						return;
-					}
-				}
+				
 				this.$refs.addForm.validate((valid) => {
 					if (valid) {
 						if(this.addForm.oshare==='1'){
@@ -556,6 +556,7 @@
 				this.execGroupUserSelectVisible=false; 
 			},
 			initData(){
+				this.addForm={...this.addFormInit}
 				if(this.parentTask && this.parentTask.id){
 					this.addForm=Object.assign(this.addForm, this.parentTask);
 					this.addForm.parentTaskid=this.parentTask.id
@@ -590,6 +591,11 @@
 				if(this.xmProduct){
 					this.addForm.productId=this.xmProduct.id
 					this.addForm.productName=this.xmProduct.productName
+				} 
+				
+				if(this.xmIteration && !this.xmProduct && !this.addForm.productId){
+					this.addForm.productId=this.xmIteration.productId
+					this.addForm.productName=this.xmIteration.productName
 				} 
 				if(this.parentTask && this.parentTask.id){
 					if(this.parentTask.childrenCnt){
@@ -632,7 +638,7 @@
 		},//end method
 		components: {
  			xmSkillMng,
-			skillMng,xmMenuSelect,XmTaskList,XmGroupSelect,MdpSelectUserXm
+			skillMng,xmMenuSelect,XmTaskList,XmGroupSelect,MdpSelectUserXm,XmPhaseSelect
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},
 		mounted() { 

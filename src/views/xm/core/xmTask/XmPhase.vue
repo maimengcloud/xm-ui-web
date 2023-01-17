@@ -215,7 +215,7 @@
     </el-row>  
     <!--编辑 XmTask xm_task界面-->
     <el-dialog
-      title="编辑任务"
+      title="编辑计划"
       :visible.sync="editFormVisible"
       width="90%"
       top="20px"
@@ -238,7 +238,7 @@
     <!-- 新增 XmTask xm_task界面-->
     <el-dialog
       class="xm-task-add"
-      title="新增任务"
+      title="新增计划"
       :visible.sync="addFormVisible" 
       width="90%"
       top="20px"
