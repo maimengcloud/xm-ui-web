@@ -306,7 +306,25 @@ export default {
         this.$nextTick(()=>{
           this.$refs['xmProductComplex'].addProductVisible=true
         })
-      }
+      }, 
+      editXmProjectSomeFields(row,fieldName,$event){ 
+        var that=this;
+        var func=(params)=>{
+          editXmProjectSomeFields(params).then(res=>{
+            var tips = res.data.tips;
+            if(tips.isOk){
+              this.$emit('edit-fields',params)
+              Object.assign(row,params)  
+              store.dispathc("setProjectInfo",row)
+            }else{    
+              this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+            }
+          })
+        }
+        var params={ids:[row.id]};  
+        params[fieldName]=$event  
+        func(params) 
+      },
   },
 
   mounted() {

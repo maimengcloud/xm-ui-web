@@ -317,7 +317,8 @@ import XmIterationEdit from './XmIterationEdit.vue';
 import XmIterationMenuMng from '../xmIterationMenu/XmIterationMenuMng.vue';  
 	import {  loadTasksToXmIterationState } from '@/api/xm/core/xmIterationState';
 import {  listXmIterationWithState } from "@/api/xm/core/xmIteration";
-import {initDicts, } from '@/api/xm/core/xmIteration';
+import {initDicts,editSomeFieldsXmIteration } from '@/api/xm/core/xmIteration'; 
+import store from '@/store'
 
 export default {
   components: {XmIterationOverview,XmIterationEdit, XmIterationMenuMng },
@@ -350,6 +351,14 @@ export default {
   },
 
   methods:{
+      jumpTo(name){
+        this.$router.push({
+          name:name,
+          query:{
+            iterationId:this.xmIteration.id
+          }
+        })
+      },
 			loadTasksToXmIterationState(){ 
 				this.load.edit=true;
 				loadTasksToXmIterationState({id:this.xmIteration.id}).then(res=>{
@@ -374,7 +383,23 @@ export default {
     onEditFields(row){
       Object.assign(this.xmIteration,row)
       this.$emit('edit-fields',row)
-    }
+    }, 
+    editSomeFields(row,fieldName,$event){ 
+      let params={};
+      params['ids']=[row].map(i=>i.id)
+      params[fieldName]=$event
+      var func = editSomeFieldsXmIteration
+      func(params).then(res=>{
+        let tips = res.data.tips;
+        if(tips.isOk){
+          Object.assign(row,params)
+          store.dispatch("setXmIteration",row)
+          this.$emit('edit-fields',params)
+        }else{ 
+          this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+        }
+      }).catch((e)=>Object.assign(this.editForm,this.editFormBak))
+    },
   },
 
   mounted() {
@@ -387,5 +412,19 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.menus {
+  .el-menu-item {
+    padding-left: 0px !important;
+  }
+}
+/* 超过宽度则用...代替 */
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.step-btn{
+	margin-left:0px;margin-bottom: 5px;
+}
 
 </style>

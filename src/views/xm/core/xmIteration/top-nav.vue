@@ -45,9 +45,11 @@
             >
           </span>
         </el-menu-item>
+        <!--
         <el-menu-item :index="'/xm/core/iteration/project?iterationId='+xmIteration.id">
           <span slot="title"><i class="el-icon-odometer"></i>项目</span>
         </el-menu-item> 
+        -->
 				<el-menu-item label="需求" :index="'/xm/core/iteration/menu?iterationId='+xmIteration.id" class="hidden-md-and-down">
 					 <span slot="title"><i class="el-icon-document"></i>需求</span> 
 				</el-menu-item>     

@@ -254,6 +254,7 @@ import TaskMng from '@/views/mdp/workflow/ru/task/TaskMng';
 import ProcinstMng from '@/views//mdp/workflow/hi/procinst/ProcinstMng';
 
 import { initDicts,editXmProductSomeFields } from "@/api/xm/core/xmProduct";
+import store from '@/store'
 
 export default {
   components: { XmProductOverview, XmProductEdit, XmProductProjectLinkMng,TaskMng,ProcinstMng,},
@@ -372,47 +373,22 @@ export default {
     },
     
 
-    editXmProductSomeFields(row,fieldName,$event){ 
-      var that=this;
+    editXmProductSomeFields(row,fieldName,$event){  
       var func=(params)=>{
         editXmProductSomeFields(params).then(res=>{
           var tips = res.data.tips;
           if(tips.isOk){
             this.$emit('edit-fields',params)
-            Object.assign(row,params) 
-            this.xmProductBak=Object.assign({},row)
-          }else{   
-            Object.assign(this.xmProduct,this.xmProductBak)
+            Object.assign(row,params)  
+            store.dispatch("setXmProduct",row)
+          }else{    
             this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
           }
         })
       }
-      var params={ids:[row.id]}; 
-        
-      params[fieldName]=$event 
-      
-      
-      if(fieldName=='description'){
-        this.$refs.xmProduct.validateField('description',err=>{
-          if(err){ 
-            this.$notify({position:'bottom-left',showClose:true,message: err,type: 'error'})
-            return;
-          }else{
-            func(params)
-          }
-        })
-      }else if(fieldName=='name'){  
-        this.$refs.xmProduct.validateField('name',err=>{
-          if(err){
-            this.$notify({position:'bottom-left',showClose:true,message: err,type: 'error'})
-            return;
-          }else{
-            func(params)
-          }
-        })
-      }else{
-        func(params)
-      }
+      var params={ids:[row.id]};  
+      params[fieldName]=$event  
+      func(params) 
     }, 
   },
 
