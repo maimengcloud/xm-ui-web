@@ -21,8 +21,9 @@ const getters = {
   added: state => state.permission.added,
   isLoadOk:state=>state.user.isLoadOk,
   noticeMsg:state=>state.noticeMsg.noticeMsg, 
-  projectInfo:state=>state.projectInfo.projectInfo, 
-  xmProduct:state=>state.xmProduct.xmProduct, 
-  xmIteration:state=>state.xmIteration.xmIteration, 
+  projectInfo:state=>state.xm.projectInfo, 
+  xmProduct:state=>state.xm.xmProduct, 
+  xmIteration:state=>state.xm.xmIteration, 
+  testCasedb:state=>state.xm.testCasedb, 
 }
 export default getters

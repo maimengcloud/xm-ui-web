@@ -5,10 +5,8 @@ import errorLog from './modules/errorLog'
 import permission from './modules/permission'
 import tagsView from './modules/tagsView'
 import user from './modules/user'
-import noticeMsg from './modules/noticeMsg'
-import projectInfo from './modules/projectInfo'
-import xmProduct from './modules/xmProduct'
-import xmIteration from './modules/xmIteration'
+import noticeMsg from './modules/noticeMsg' 
+import xm from './modules/xm' 
 
 import getters from './getters' 
 
@@ -22,9 +20,7 @@ const store = new Vuex.Store({
     tagsView,
     user,
     noticeMsg, 
-    projectInfo,
-    xmProduct,
-    xmIteration,
+    xm, 
   },
   getters
 })
