@@ -13,7 +13,7 @@
 									</template> 
 									<el-input v-model="addForm.menuName" placeholder="名称" title="名称"> 
 									</el-input>
-									<el-row class="label-font-color">归属产品：{{ addForm.productName}} &nbsp;&nbsp;产品编号：{{ addForm.productId }}</el-row>
+									<el-row class="label-font-color"><span v-if="addForm.productName">归属产品：{{ addForm.productName}} &nbsp;&nbsp;|&nbsp;&nbsp;</span><span v-if="addForm.productId"> 产品编号：{{ addForm.productId }}&nbsp;&nbsp;|&nbsp;&nbsp;</span><span v-if="  addForm.iterationName ">迭代名称：{{addForm.iterationName}}&nbsp;&nbsp;|&nbsp;&nbsp;</span><span v-if="addForm.iterationId">迭代编号：{{addForm.iterationId}}</span></el-row>
 								</el-form-item>    
 						<el-row class="padding"> 
 								<el-col :span="8">
@@ -159,7 +159,7 @@
 				//新增界面数据 项目需求表
 				addForm: {
 						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'0',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'1',mmUserid:'',mmUsername:'',ntype:'0',childrenCnt:0,sinceVersion:'',
-					proposerId:'',proposerName:'',dlvl:'0',dtype:'0',priority:'0',source:'1',dclass:'3',
+					proposerId:'',proposerName:'',dlvl:'0',dtype:'0',priority:'0',source:'1',dclass:'3',productName:'',iterationName:''
 				},
 				proposerSelectVisible:false,
 				mmUserSelectVisible:false,
@@ -252,6 +252,7 @@
 			},
 			/**end 在上面加自定义方法**/
 			initData(){
+				debugger;
 				Object.assign(this.addForm, this.xmMenu);  
 				this.addForm.mmUserid=this.userInfo.userid
 				this.addForm.mmUsername=this.userInfo.username

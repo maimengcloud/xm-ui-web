@@ -7,10 +7,10 @@
 						<xm-product-select ref="xmProductSelect1" style="display:inline;"  :auto-select="true" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="onProductClearSelect" ></xm-product-select>
 				</el-row>
 				-->
-				<xm-epic-features :xm-product="xmProduct" :sel-project="selProject"  @row-click="onEpicFeaturesRowClick" :disabled-mng="xmIteration&&xmIteration.id?true:false" @product-selected="onProductSelected" @product-clear="onProductClearSelect"></xm-epic-features>
+				<xm-epic-features :xm-product="xmProduct" :sel-project="selProject"  @row-click="onEpicFeaturesRowClick"  @product-selected="onProductSelected" @product-clear="onProductClearSelect"></xm-epic-features>
 			</el-col> 
 			<el-col :span="16" v-if="filters.xmProduct && filters.xmProduct.id">
-				<xm-menu-mng class="padding-left" :xm-product="filters.xmProduct" :sel-project="selProject"  :parent-menu="parentMenu" :xm-iteration="xmIteration" :disabled-mng="xmIteration&&xmIteration.id?true:false"></xm-menu-mng>
+				<xm-menu-mng class="padding-left" :xm-product="filters.xmProduct" :sel-project="selProject"  :parent-menu="parentMenu" :xm-iteration="xmIteration" ></xm-menu-mng>
 			</el-col>
 		</el-row>
 	</section>
@@ -39,12 +39,15 @@
 		watch: {  
 			 xmProduct:{
 				handler(){
-					this.filters.xmProduct=this.xmProduct
+					this.filters.xmProduct={...this.xmProduct}
 				},
 				deep:true,
 			 },
 			 xmIteration:{
 				handler(){
+					if(this.xmProduct && this.xmProduct.id){
+						return;
+					}
 					this.filters.xmProduct={id:this.xmIteration.productId,productName:this.xmIteration.productName}
 				},
 				deep:true,
@@ -73,7 +76,12 @@
 			 }
 		},//end method
 		mounted() {
-			 this.filters.xmProduct=this.xmProduct
+			 this.filters.xmProduct={...this.xmProduct}
+			 if(this.xmIteration && this.xmIteration.id){
+				if(!this.xmProduct || !this.xmProduct.id){
+					this.filters.xmProduct={id:this.xmIteration.productId,productName:this.xmIteration.productName}
+				}
+			 }
 			
 		}//end mounted
 	}

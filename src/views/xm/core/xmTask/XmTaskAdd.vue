@@ -344,6 +344,7 @@
 					if(this.xmIteration && this.xmIteration.id){
 						if(!this.addForm.menuId){
 							this.$notify({position:'bottom-left',showClose:true,message:'在迭代视图中添加任务需要关联需求！请选择需求',type: 'error'})
+							this.activateTabPaneName="3"
 							this.menuVisible=true;
 							return;
 						}

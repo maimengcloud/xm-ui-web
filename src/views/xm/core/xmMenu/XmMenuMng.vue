@@ -526,15 +526,15 @@
 				addFormVisible: false,//新增xmMenu界面是否显示
 				//新增xmMenu界面初始化数据
 				addForm: {
-						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'0',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',ntype:'0',childrenCnt:0,sinceVersion:'',proposerId:'',proposerName:'',dlvl:'0',dtype:'0',priority:'0',source:'1'
+						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'0',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',ntype:'0',childrenCnt:0,sinceVersion:'',proposerId:'',proposerName:'',dlvl:'0',dtype:'0',priority:'0',source:'1',productName:'',iterationName:''
 				},
 				addFormInit: {
-						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',ntype:'0',childrenCnt:0,sinceVersion:'',proposerId:'',proposerName:'',dlvl:'0',dtype:'0',priority:'0',source:'1'
+						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',ntype:'0',childrenCnt:0,sinceVersion:'',proposerId:'',proposerName:'',dlvl:'0',dtype:'0',priority:'0',source:'1',productName:'',iterationName:''
 				},
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmMenu界面初始化数据
 				editForm: {
-						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',ntype:'0',childrenCnt:0,sinceVersion:'',proposerId:'',proposerName:'',dlvl:'0',dtype:'0',priority:'0',source:'1'
+						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',ntype:'0',childrenCnt:0,sinceVersion:'',proposerId:'',proposerName:'',dlvl:'0',dtype:'0',priority:'0',source:'1',productName:'',iterationName:''
 				}, 
 				menuTemplateVisible:false, 
 				valueChangeRows:[],
@@ -758,23 +758,27 @@
 				this.editFormVisible = true;
 			},
 			//显示新增界面 XmMenu xm_project_menu
-			showAdd: function (dclass) {
+			showAdd: function (dclass) { 
 				this.addForm={...this.addFormInit}
 				if(this.filters.product && this.filters.product.id){ 
 					this.addForm.productId=this.filters.product.id
 					this.addForm.productName=this.filters.product.productName
-					this.addForm.dclass=dclass
-					this.addFormVisible = true;
-				}else if(this.filters.iteration && this.filters.iteration.id){ 
-					this.addForm.productId=this.filters.iteration.productId
+					this.addForm.dclass=dclass 
+				}
+				if(this.filters.iteration && this.filters.iteration.id){ 
+					 
+					this.addForm.productId=this.filters.iteration.productId 
 					this.addForm.iterationId=this.filters.iteration.id
 					this.addForm.iterationName=this.filters.iteration.iterationName
 					this.addForm.dclass=dclass
-					this.addFormVisible = true;
-				}else{
+					
+				} 
+				if(!this.addForm.productId){
 					this.$refs.xmProductSelect1.productVisible=true;
 					this.$refs.xmProductSelect1.searchXmProducts();
 					this.$notify({position:'bottom-left',showClose:true,message: "请先选择一个产品", type: 'warning'});
+				}else{
+					this.addFormVisible = true;
 				}
 
 				//this.addForm=Object.assign({}, this.editForm);
