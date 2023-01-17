@@ -313,15 +313,17 @@
 				addFormVisible: false,//新增xmQuestion界面是否显示
 				//新增xmQuestion界面初始化数据
 				addForm: {
-					id:'',name:'',projectId:'',projectName:'',taskId:'',taskName:'',endTime:'',askUserid:'',askUsername:'',handlerUserid:'',handlerUsername:'',priority:'3',solution:'',processTime:'',receiptMessage:'',receiptTime:'',description:'',createUserid:'',createUsername:'',createTime:'',bugStatus:'',bugSeverity:'3',
-					attachment: [],
+					id:'',name:'',projectId:'',projectName:'',caseId:'',caseName:'',endTime:'',askUserid:'',askUsername:'',handlerUserid:'',handlerUsername:'',priority:'',solution:'',description:'',createUserid:'',createUsername:'',createTime:'',bugStatus:'',bizProcInstId:'',bizFlowState:'',menuId:'',menuName:'',budgetWorkload:'',budgetAt:'',actWorkload:'',actAt:'',expectResult:'',opStep:'',currResult:'',refRequire:'',bugSeverity:'',bugType:'',tagIds:'',tagNames:'',urls:'',ltime:'',qtype:'',caseExecId:'',remarks:'',productId:'',repRate:'',verNum:'',vpath:'',pverNum:'',bugReason:'',rate:'',initWorkload:'',taskOut:'',taskId:'',funcId:'',funcName:'',funcPnames:'',planId:'',casedbId:'',
+					attachment: [],  
+					productName:''
 				},
 
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmQuestion界面初始化数据
 				editForm: {
-					id:'',name:'',projectId:'',projectName:'',taskId:'',taskName:'',endTime:'',askUserid:'',askUsername:'',handlerUserid:'',handlerUsername:'',priority:'',solution:'',processTime:'',receiptMessage:'',receiptTime:'',description:'',createUserid:'',createUsername:'',createTime:'',bugStatus:'',bugSeverity:'3',
-					attachment: [],
+					id:'',name:'',projectId:'',projectName:'',caseId:'',caseName:'',endTime:'',askUserid:'',askUsername:'',handlerUserid:'',handlerUsername:'',priority:'',solution:'',description:'',createUserid:'',createUsername:'',createTime:'',bugStatus:'',bizProcInstId:'',bizFlowState:'',menuId:'',menuName:'',budgetWorkload:'',budgetAt:'',actWorkload:'',actAt:'',expectResult:'',opStep:'',currResult:'',refRequire:'',bugSeverity:'',bugType:'',tagIds:'',tagNames:'',urls:'',ltime:'',qtype:'',caseExecId:'',remarks:'',productId:'',repRate:'',verNum:'',vpath:'',pverNum:'',bugReason:'',rate:'',initWorkload:'',taskOut:'',taskId:'',funcId:'',funcName:'',funcPnames:'',planId:'',casedbId:'',
+					attachment: [],  
+					productName:''
 				},
 				/**begin 自定义属性请在下面加 请加备注**/
 				selectUserVisible:false,

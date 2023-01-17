@@ -295,22 +295,20 @@
 				},
 				//新增界面数据 xm_question
 				editForm: {
-					id:'',name:'',projectId:'',projectName:'',taskId:'',taskName:'',endTime:'',askUserid:'',askUsername:'',handlerUserid:'',handlerUsername:'',priority:'',solution:'',processTime:'',receiptMessage:'',receiptTime:'',description:'',createUserid:'',createUsername:'',createTime:'',bugStatus:'',receiptMessage:'',
-					iterationId:'',iterationName:'',productId:'',
-					qtype:'',
-					attachment: [],
-					repRate:'',
-					verNum:'',
-					bugReason:'',
+					id:'',name:'',projectId:'',projectName:'',caseId:'',caseName:'',endTime:'',askUserid:'',askUsername:'',handlerUserid:'',handlerUsername:'',priority:'',solution:'',description:'',createUserid:'',createUsername:'',createTime:'',bugStatus:'',bizProcInstId:'',bizFlowState:'',menuId:'',menuName:'',budgetWorkload:'',budgetAt:'',actWorkload:'',actAt:'',expectResult:'',opStep:'',currResult:'',refRequire:'',bugSeverity:'',bugType:'',tagIds:'',tagNames:'',urls:'',ltime:'',qtype:'',caseExecId:'',remarks:'',productId:'',repRate:'',verNum:'',vpath:'',pverNum:'',bugReason:'',rate:'',initWorkload:'',taskOut:'',taskId:'',funcId:'',funcName:'',funcPnames:'',planId:'',casedbId:'',
+					attachment: [],  
+					productName:''
+				},
+				//新增界面数据 xm_question
+				editFormInit: {
+					id:'',name:'',projectId:'',projectName:'',caseId:'',caseName:'',endTime:'',askUserid:'',askUsername:'',handlerUserid:'',handlerUsername:'',priority:'',solution:'',description:'',createUserid:'',createUsername:'',createTime:'',bugStatus:'',bizProcInstId:'',bizFlowState:'',menuId:'',menuName:'',budgetWorkload:'',budgetAt:'',actWorkload:'',actAt:'',expectResult:'',opStep:'',currResult:'',refRequire:'',bugSeverity:'',bugType:'',tagIds:'',tagNames:'',urls:'',ltime:'',qtype:'',caseExecId:'',remarks:'',productId:'',repRate:'',verNum:'',vpath:'',pverNum:'',bugReason:'',rate:'',initWorkload:'',taskOut:'',taskId:'',funcId:'',funcName:'',funcPnames:'',planId:'',casedbId:'',
+					attachment: [],  
+					productName:''
 				},
 				editFormBak: {
-					id:'',name:'',projectId:'',projectName:'',taskId:'',taskName:'',endTime:'',askUserid:'',askUsername:'',handlerUserid:'',handlerUsername:'',priority:'',solution:'',processTime:'',receiptMessage:'',receiptTime:'',description:'',createUserid:'',createUsername:'',createTime:'',bugStatus:'',receiptMessage:'',
-					iterationId:'',iterationName:'',productId:'',
-					qtype:'',
-					attachment: [],
-					repRate:'',
-					verNum:'',
-					bugReason:'',
+					id:'',name:'',projectId:'',projectName:'',caseId:'',caseName:'',endTime:'',askUserid:'',askUsername:'',handlerUserid:'',handlerUsername:'',priority:'',solution:'',description:'',createUserid:'',createUsername:'',createTime:'',bugStatus:'',bizProcInstId:'',bizFlowState:'',menuId:'',menuName:'',budgetWorkload:'',budgetAt:'',actWorkload:'',actAt:'',expectResult:'',opStep:'',currResult:'',refRequire:'',bugSeverity:'',bugType:'',tagIds:'',tagNames:'',urls:'',ltime:'',qtype:'',caseExecId:'',remarks:'',productId:'',repRate:'',verNum:'',vpath:'',pverNum:'',bugReason:'',rate:'',initWorkload:'',taskOut:'',taskId:'',funcId:'',funcName:'',funcPnames:'',planId:'',casedbId:'',
+					attachment: [],  
+					productName:''
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				fileVisible: true,
@@ -335,6 +333,13 @@
 			},
 			//新增提交XmQuestion xm_question 父组件监听@submit="afterAddSubmit"
 			saveSubmit: function (tardgetBugStatus) {
+				
+				if(this.xmIteration && this.xmIteration.id){
+					if(!this.editForm.menuId){
+						this.$notify({position:'bottom-left',showClose:true,message: '迭代视图中，新增缺陷必须关联需求，您可以通过设置【测试用例】或者【用户故事】达到关联需求目的。', type:  'error' });
+						return ;
+					}
+				}
 				this.$refs.editForm.validate((valid) => { 
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
@@ -568,6 +573,7 @@
 				}
 			},
 			initData(){
+				this.editForm=Object.assign(this.editForm,this.editFormInit)
 				this.editForm=Object.assign(this.editForm, this.xmQuestion);
 				if(this.opType==='add'){ 
 					this.editForm.askUserid=this.userInfo.userid
