@@ -15,7 +15,7 @@
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="createProduct()">创建产品</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="linkProduct()">关联产品</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="jumpTo('projectEnv')">环境清单</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(projectInfo,'status','1')">进入售前</el-button>
+						<el-button class="step-btn" type="danger" icon="el-icon-d-caret" size="mini"   plain @click="editXmProjectSomeFields(projectInfo,'status','1')">进入售前</el-button>
 					</span>
 					<span v-if="projectInfo.status!=i.id"> 
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="linkProduct()">关联产品</el-button>
@@ -25,7 +25,7 @@
                <el-row v-else-if="i.id=='1'"><!--售前-->
 			   		<span v-if="projectInfo.status==i.id">
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="jumpTo('projectMenu')">需求管理</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(projectInfo,'status','2')">设为立项中</el-button>
+						<el-button class="step-btn" type="danger" icon="el-icon-d-caret" size="mini"   plain @click="editXmProjectSomeFields(projectInfo,'status','2')">设为立项中</el-button>
 					</span>
 					<span v-if="projectInfo.status!=i.id">
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="jumpTo('projectMenu')">需求管理</el-button> 
@@ -39,7 +39,7 @@
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="jumpTo('projectBudget')">预算清单</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="showProjectGaiSuan()">项目估算</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="showProjectShouYi()">项目收益</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(projectInfo,'status','3')">设为立项中</el-button>
+						<el-button class="step-btn" type="danger" icon="el-icon-d-caret"  size="mini"   plain @click="editXmProjectSomeFields(projectInfo,'status','3')">设为立项中</el-button>
 					</span>
 					<span v-if="projectInfo.status!=i.id">
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="jumpTo('projectContract')">合同管理</el-button>
@@ -59,9 +59,9 @@
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="jumpTo('projectWorkloadMonth')">每月工时</el-button> 
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="jumpTo('projectCost')">费用管理</el-button> 
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="jumpTo('projectReport')">效能分析</el-button> 
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(projectInfo,'status','4')">暂停项目</el-button>
+						<el-button class="step-btn" type="danger" icon="el-icon-d-caret" size="mini"   plain @click="editXmProjectSomeFields(projectInfo,'status','4')">暂停项目</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="projectChangeRequire()">变更申请</el-button>
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(projectInfo,'status','5')">设为结项中</el-button>
+						<el-button class="step-btn" type="danger" icon="el-icon-d-caret" size="mini"   plain @click="editXmProjectSomeFields(projectInfo,'status','5')">设为结项中</el-button>
 					</span>
 					<span v-if="projectInfo.status!=i.id">
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="jumpTo('projectIteration')">迭代管理</el-button>
@@ -71,13 +71,13 @@
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="jumpTo('projectWorkloadMonth')">每月工时</el-button> 
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="jumpTo('projectCost')">费用管理</el-button> 
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="jumpTo('projectReport')">效能分析</el-button> 
-						<el-button v-if="projectInfo.status<i.id" class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(projectInfo,'status','5')">结项申请</el-button>
+						<el-button v-if="projectInfo.status<i.id" class="step-btn"  type="danger" icon="el-icon-d-caret" size="mini"   plain @click="editXmProjectSomeFields(projectInfo,'status','5')">结项申请</el-button>
 						<el-button class="step-btn" type="warning" size="mini"   plain @click="showDetail()">变更申请</el-button>
 					</span> 
 			   </el-row>
                <el-row v-else-if="i.id=='4'"><!--暂停中-->
 			   		<span v-if="projectInfo.status==i.id"> 
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(projectInfo,'status','3')">重新激活</el-button>
+						<el-button class="step-btn"  type="danger" icon="el-icon-d-caret" size="mini"   plain @click="editXmProjectSomeFields(projectInfo,'status','3')">重新激活</el-button>
 					</span>  
 			   </el-row>
         <el-row v-else-if="i.id=='5'"><!--结项中-->
@@ -91,19 +91,19 @@
 			   </el-row>
                <el-row v-else-if="i.id=='6'"><!--已结项--> 
 			   		<span v-if="projectInfo.status==i.id"> 
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(projectInfo,'status','7')">转入售后</el-button>
+						<el-button class="step-btn"  type="danger" icon="el-icon-d-caret" size="mini"   plain @click="editXmProjectSomeFields(projectInfo,'status','7')">转入售后</el-button>
 					</span> 
 					<span v-if="projectInfo.status!=i.id">
 					</span>  
 			   </el-row>
                <el-row v-else-if="i.id=='7'"><!--售后-->
 					<span v-if="projectInfo.status==i.id"> 
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(projectInfo,'status','8')">设为已完成</el-button>
+						<el-button class="step-btn"  type="danger" icon="el-icon-d-caret" size="mini"   plain @click="editXmProjectSomeFields(projectInfo,'status','8')">设为已完成</el-button>
 					</span> 
 			   </el-row>
                <el-row v-else-if="i.id=='8'"><!--已完成-->
 					<span v-if="projectInfo.status==i.id"> 
-						<el-button class="step-btn" type="warning" size="mini"   plain @click="editXmProjectSomeFields(projectInfo,'status','9')">关闭项目</el-button>
+						<el-button class="step-btn"  type="danger" icon="el-icon-d-caret" size="mini"   plain @click="editXmProjectSomeFields(projectInfo,'status','9')">关闭项目</el-button>
 					</span> 
 					
 			   </el-row>
