@@ -12,15 +12,24 @@
 					</div>
 				</el-col>
 				<el-col :span="6" class="border">
-					<el-form  :model="filters"> 
+					<el-form  :model="filters" label-position="top" class="padding"> 
 						<el-form-item label="归属产品" v-if="!xmProduct&&!xmIteration">
 								<xm-product-select     ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"   @clear="onProductClear"></xm-product-select>
 						</el-form-item>  
+						<el-form-item label="归属产品" v-if="xmProduct && xmProduct.id">
+							<span v-if="xmProduct.id">{{ xmProduct.id }}</span><br>
+							<span v-if="xmProduct.productName">{{ xmProduct.productName }}</span>
+ 						</el-form-item>  
  						<el-form-item label="归属迭代" v-if="!xmIteration || !xmIteration.id"> 
 							<xm-iteration-select  style="display:inline;" :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
 						</el-form-item>  
+ 						<el-form-item label="归属迭代" v-if="xmIteration &&xmIteration.id"> 
+							编号：<span v-if="xmIteration.id">{{ xmIteration.id }}</span><br>
+							名称：<span v-if="xmIteration.iterationName">{{ xmIteration.iterationName }}</span>
+
+ 						</el-form-item>  
 						<el-form-item>
-							<el-button type="primary" icon="el-icon-search" @click="listXmIterationStateHis">查询</el-button>
+							<div class="padding"> <el-button  type="primary" icon="el-icon-search" @click="listXmIterationStateHis">查询</el-button></div>
 						</el-form-item>  
 					</el-form>
 				</el-col>
@@ -48,7 +57,7 @@
         props:['xmProduct','xmIteration','xmProject'],
 		computed: {
 		    ...mapGetters([
-		      'userInfo','roles'
+		      'userInfo','roles', 
 		    ]), 
             datesCpd(){
 				if(this.xmIterationStateHiss.length==0){
@@ -67,8 +76,8 @@
 					if(length==0){
 						return [];
 					}  
-					var startDate=this.xmIteration.startTime.substring(0,10)
-					var endDate=this.xmIteration.endTime.substring(0,10)
+					var startDate=this.filters.iteration.startTime.substring(0,10)
+					var endDate=this.filters.iteration.endTime.substring(0,10)
 					var uniDayWorkload=max.budgetWorkload/(length+1)
 					return this.xmIterationStateHiss.map((i,index)=>{
 						if(i.bizDate<startDate || i.bizDate>endDate){
@@ -133,8 +142,8 @@
 				return max;
 			},
 			findLength(){
-				if(this.xmIteration && this.xmIteration.id){
-					return parseInt(util.timeDifference(this.xmIteration.startTime.substring(0,10)+" 00:00:00",this.xmIteration.endTime.substring(0,10)+" 00:00:00")/60/24)
+				if(this.filters.iteration && this.filters.iteration.id){
+					return parseInt(util.timeDifference(this.filters.iteration.startTime.substring(0,10)+" 00:00:00",this.filters.iteration.endTime.substring(0,10)+" 00:00:00")/60/24)
 				}else if(this.xmIterationStateHiss){
 					return this.xmIterationStateHiss.length;
 				}else{

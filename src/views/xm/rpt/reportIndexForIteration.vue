@@ -1,6 +1,6 @@
 <template>
 	<section>
-		 <report-index :xm-iteration="xmIteration" :xm-product="{id:xmIteration.productId,productName:xmIteration.productName}"></report-index>
+		 <report-index :xm-iteration="xmIteration" :xm-product="xmProduct"></report-index>
 	</section>
 </template>
 
@@ -14,6 +14,13 @@
 		    ...mapGetters([
 		      'userInfo','roles','xmIteration'
 				]), 
+			xmProduct:function(){
+				if(this.xmIteration && this.xmIteration.id){
+					return {id:this.xmIteration.productId,productName:this.xmIteration.productName}
+				}else{
+					return null;
+				}
+			}
 		}, 
 		watch:{
 			 
