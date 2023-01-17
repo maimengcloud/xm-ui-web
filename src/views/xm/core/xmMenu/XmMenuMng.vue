@@ -3,7 +3,7 @@
 		<el-row class="padding-left padding-right">
 			<el-col :span="24">
 					<el-row>
-						<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="!xmProduct&&!xmProduct.id && !xmIteration && !xmIteration.id"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select>
+						<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="(!xmProduct||!xmProduct.id)&&(!xmIteration||!xmIteration.id)"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select>
 
 						<el-select   v-model="filters.priority" placeholder="优先级"  clearable style="width: 100px;">
 								<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>

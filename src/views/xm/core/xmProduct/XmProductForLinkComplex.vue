@@ -42,8 +42,7 @@
                       >需求管理</el-button
                     > 
                     <el-button
-                      class="step-btn"
-                      type="warning"
+                      class="step-btn" type="danger" icon="el-icon-d-caret"
                       size="mini"
                       plain
                       @click="
@@ -83,8 +82,7 @@
                       >缺陷管理</el-button
                     >  
                     <el-button
-                      class="step-btn"
-                      type="warning"
+                      class="step-btn" type="danger" icon="el-icon-d-caret"
                       size="mini"
                       plain
                       @click="
@@ -116,8 +114,7 @@
                   ><!--已完成-->
                   <span v-if="xmProduct.pstatus == i.id">
                     <el-button
-                      class="step-btn"
-                      type="warning"
+                      class="step-btn" type="danger" icon="el-icon-d-caret"
                       size="mini"
                       plain
                       @click="
@@ -132,8 +129,7 @@
                   ><!--已关闭-->
                   <span v-if="xmProduct.pstatus == i.id">
                     <el-button
-                      class="step-btn"
-                      type="warning"
+                      class="step-btn" type="danger" icon="el-icon-d-caret"
                       size="mini"
                       plain
                       @click="
