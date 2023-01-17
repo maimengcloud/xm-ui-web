@@ -21,7 +21,7 @@
 
 									<mdp-field-x v-else v-model="addForm.pmenuName" :label="addForm.dclass==='3'?'归属特性':(addForm.dclass==='2'?'归属史诗':'归属')" :icon="addForm.dclass==='2'?'el-icon-s-promotion':'el-icon-s-flag'" :color="addForm.dclass==='2'?'rgb(255, 153, 51)':'rgb(0, 153, 51)'">
 										<el-button slot="oper"
-											@click="showPmenu"  
+											@click="pmenuFormVisible=true"  
 											title="查看上级"
 											icon="el-icon-upload2"> 查看上级</el-button> 
 									</mdp-field-x>  
@@ -98,6 +98,9 @@
 			<el-button @click.native="handleCancel">关闭</el-button>  
 			<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">提交</el-button>  
 		</el-row>
+		<el-dialog title="上级需求详情" :visible.sync="pmenuFormVisible" :with-header="false" width="90%" top="20px"    append-to-body   :close-on-click-modal="false" >
+			<xm-menu-edit v-if="pmenuFormVisible" :reload="true" :xm-menu="{menuId:addForm.pmenuId}" :sel-project="selProject" :visible="pmenuFormVisible" @cancel="pmenuFormVisible=false"></xm-menu-edit>
+		</el-dialog>
 	</section>
 </template>
 
@@ -141,6 +144,7 @@
 			return {
 				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
+				pmenuFormVisible:false,
 				addFormRules: {
 					menuId: [
 						//{ required: true, message: '需求编号不能为空', trigger: 'blur' }
@@ -288,7 +292,8 @@
 		},//end method
 		components: {  
 			//在下面添加其它组件 'xm-menu-edit':XmMenuEdit
-			UsersSelect,MdpSelectUserXm
+			UsersSelect,MdpSelectUserXm,
+			'xm-menu-edit':()=>import("./XmMenuDetail"),
 		},
 		mounted() {
 			
