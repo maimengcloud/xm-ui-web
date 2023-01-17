@@ -4,7 +4,7 @@
 			<el-col :span="24">
 					<el-row >
 						<xm-product-select ref="xmProductSelect1" v-if="!((xmProduct && xmProduct.id) || (xmIteration && !xmIteration.id))" style="display:inline;"  :auto-select="true" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="onProductClearSelect" ></xm-product-select>
-						 
+						 <span style="float:right;">
   						<el-popover
 							placement="top-start"
 							width="250"
@@ -74,6 +74,7 @@
 							</el-row>  
 							<el-button slot="reference" @click="moreVisible=!moreVisible" icon="el-icon-more"></el-button>
 						</el-popover>  
+						</span>
 					 </el-row>
 					<el-row>
 						<el-table :cell-style="cellStyleCalc" :expand-row-keys="expandRowKeysCpd" :header-cell-style="cellStyleCalc" :row-style="{height:'60px'}"   stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick"
