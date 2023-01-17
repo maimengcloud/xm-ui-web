@@ -17,8 +17,8 @@
 								<xm-product-select     ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"   @clear="onProductClear"></xm-product-select>
 						</el-form-item>  
 						<el-form-item label="归属产品" v-if="xmProduct && xmProduct.id">
-							<span v-if="xmProduct.id">{{ xmProduct.id }}</span><br>
-							<span v-if="xmProduct.productName">{{ xmProduct.productName }}</span>
+							<span v-if="xmProduct.id">编号：{{ xmProduct.id }}</span><br>
+							<span v-if="xmProduct.productName">名称：{{ xmProduct.productName }}</span>
  						</el-form-item>  
  						<el-form-item label="归属迭代" v-if="!xmIteration || !xmIteration.id"> 
 							<xm-iteration-select  style="display:inline;" :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
