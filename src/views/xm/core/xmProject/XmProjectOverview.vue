@@ -9,7 +9,7 @@
               </div>
               <el-row style="margin-bottom:18px">
                 <el-row>
-                  <span>项目负责人</span>&nbsp;<span><b>{{taskMng}}</b></span>
+                  <span>项目负责人</span>&nbsp;<span><b>{{pmUsername}}</b></span>
                 </el-row> 
               </el-row>
               <el-row style="margin-bottom:18px">
@@ -272,8 +272,8 @@ export default {
     taskEndTime: function (){
       return this.selProject.endTime?this.selProject.endTime.substring(0,10):'';
     },
-    taskMng: function (){
-      return this.selProject.createUsername;
+    pmUsername: function (){
+      return this.selProject.pmUsername;
     },
     workloadProgress:function (){
       if(!this.selProject.actWorkload||!this.selProject.budgetWorkload){
