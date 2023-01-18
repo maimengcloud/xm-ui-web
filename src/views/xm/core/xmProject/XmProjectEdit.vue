@@ -265,10 +265,9 @@
 	
 	import { mapGetters } from 'vuex';  
 	import { getGroups } from '@/api/xm/core/xmGroup';
-	import html2canvas from 'html2canvas'
-	
-	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
-	
+	import html2canvas from 'html2canvas' 
+	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
+	import store from '@/store'
 	export default { 
 		computed: {
 		    ...mapGetters([
@@ -910,6 +909,7 @@
 							Object.assign(row,params) 
 							Object.assign(this.selProject,row) 
 							this.$emit('edit-fields',row)
+							store.dispatch("setProjectInfo",this.selProject)
 							this.editFormBak=Object.assign({},row)
 						}else{   
 							Object.assign(this.editForm,this.editFormBak)

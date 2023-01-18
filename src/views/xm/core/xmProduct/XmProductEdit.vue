@@ -86,16 +86,68 @@
 		
         </el-row> 
 		</el-form-item> 
-        <el-form-item label="备注" prop="remark">
-          <el-input
-            v-model="editForm.remark"
-            :rows="10"
-            type="textarea"
-            :autosize="{ minRows: 4, maxRows: 20 }"
-            placeholder="备注"
-            @change="editSomeFields(editForm, 'remark', $event)"
-          ></el-input>
-        </el-form-item>
+    <el-tabs v-model="currTabPane" accordion>
+						<el-tab-pane label="产品描述" name="1">  
+							<el-form-item label="备注" prop="remark">
+                <el-input
+                  v-model="editForm.remark"
+                  :rows="10"
+                  type="textarea"
+                  :autosize="{ minRows: 4, maxRows: 20 }"
+                  placeholder="备注"
+                  @change="editSomeFields(editForm, 'remark', $event)"
+                ></el-input>
+              </el-form-item>
+						</el-tab-pane>
+						<el-tab-pane label="控制开关" name="2">   
+                 
+              <el-form-item label="需求控制"> 
+                <el-row> 
+                  <el-radio-group v-model="qxCode.menuScope" @change="editSomeFields(editForm,'menuScope',$event)">
+                    <el-radio label="0">不限制，任何人可以互相操作</el-radio>
+                    <el-radio label="1">同机构下的人员可以操作</el-radio>
+                    <el-radio label="2">同一个项目组内可以互相操作</el-radio>
+                    <el-radio label="3">同项目组下的同一个小组可以互相操作</el-radio>
+                  </el-radio-group>
+                  </el-row>
+                <el-row>
+                    <el-checkbox  v-model="qxCode.menuTransmit"  :true-label="'1'" :false-label="'0'"  @change="editSomeFields(editForm,'menuTransmit',$event)">任务指派及crud是否检查用户的上下级关系</el-checkbox>  
+                </el-row>
+                <!--0-代表不限制,1-同组织，2-同项目组（默认），3-同小组-->
+              </el-form-item>     
+                 
+                 <el-form-item label="迭代控制"> 
+                   <el-row> 
+                     <el-radio-group v-model="qxCode.iterationScope" @change="editSomeFields(editForm,'iterationScope',$event)">
+                       <el-radio label="0">不限制，任何人可以互相操作</el-radio>
+                       <el-radio label="1">同机构下的人员可以操作</el-radio>
+                       <el-radio label="2">同一个项目组内可以互相操作</el-radio>
+                       <el-radio label="3">同项目组下的同一个小组可以互相操作</el-radio>
+                     </el-radio-group>
+                     </el-row>
+                   <el-row>
+                       <el-checkbox  v-model="qxCode.iterationTransmit"  :true-label="'1'" :false-label="'0'"  @change="editSomeFields(editForm,'iterationTransmit',$event)">任务指派及crud是否检查用户的上下级关系</el-checkbox>  
+                   </el-row>
+                   <!--0-代表不限制,1-同组织，2-同项目组（默认），3-同小组-->
+                 </el-form-item> 
+                 
+                 <el-form-item label="需求控制"> 
+                   <el-row> 
+                     <el-radio-group v-model="qxCode.testScope" @change="editSomeFields(editForm,'testScope',$event)">
+                       <el-radio label="0">不限制，任何人可以互相操作</el-radio>
+                       <el-radio label="1">同机构下的人员可以操作</el-radio>
+                       <el-radio label="2">同一个项目组内可以互相操作</el-radio>
+                       <el-radio label="3">同项目组下的同一个小组可以互相操作</el-radio>
+                     </el-radio-group>
+                     </el-row>
+                   <el-row>
+                       <el-checkbox  v-model="qxCode.testTransmit"  :true-label="'1'" :false-label="'0'"  @change="editSomeFields(editForm,'testTransmit',$event)">任务指派及crud是否检查用户的上下级关系</el-checkbox>  
+                   </el-row>
+                   <!--0-代表不限制,1-同组织，2-同项目组（默认），3-同小组-->
+                 </el-form-item> 
+            </el-tab-pane>
+    </el-tabs>
+        
       </el-form>
 		
 		<el-row v-if="opType==='add'" style="float:right;">
@@ -114,7 +166,7 @@ import {
   createProductCode
 } from "@/api/xm/core/xmProduct";
 import { mapGetters } from "vuex"; 
-
+import store from '@/store'
 export default {
   computed: {
     ...mapGetters(["userInfo", "roles"]),
@@ -145,7 +197,8 @@ export default {
     visible: function (visible) {
       if (visible == true) {
         
-        this.initData();
+        this.initData(); 
+        this.initQxCode();
         //从新打开页面时某些数据需要重新加载，可以在这里添加
       }
     },
@@ -260,6 +313,26 @@ export default {
         ltime: "",
       },
       userSelectVisible: false,
+      currTabPane:"1",
+				/** 
+        权限码0,1,2,3,4,5,67,8,9，逗号分割
+        共10位,不定长，暂时只启用前6个位
+        第0位代表需求指派及crud权限：
+          0-代表不限制,1-同组织，2-同项目组（默认），3-同小组
+        第1位代表需求指派及crud时是否检查上下级关系：0-否（默认），1是 
+        第2位代表测试相关(包括测试用例、测试库、测试计划、测试报告)指派及crud权限同第0位，
+        第3位代表测试相关(包括测试用例、测试库、测试计划、测试报告)指派及crud时是否检查上下级关系，同第1位
+        第4位代表迭代指派及crud时权限，同第0位
+        第5位代表迭代指派及crud时是否检查上下级关系，同第1位
+					*/
+				qxCode:{
+					menuScope:'2',//0-代表不限制,1-同组织，2-同项目组（默认），3-同小组
+					menuTransmit:'0',//0-不控制，1任务指派及crud必须检查用户的上下级关系 
+					testScope:'2',//0-代表不限制,1-同组织，2-同项目组（默认），3-同小组
+					testTransmit:'0',//0-不控制，1任务指派及crud必须检查用户的上下级关系 
+					iterationScope:'2',//0-代表不限制,1-同组织，2-同项目组（默认），3-同小组
+					iterationTransmit:'0',//0-不控制，1任务指派及crud必须检查用户的上下级关系   
+				},
       /**begin 在下面加自定义属性,记得补上面的一个逗号**/
 
       /**end 在上面加自定义属性**/
@@ -319,6 +392,8 @@ export default {
       } else if (fieldName == "startTime") {
         params["startTime"] = row.startTime;
         params["endTime"] = row.endTime;
+      } else if (fieldName == "menuScope"||fieldName=="menuTransmit"||fieldName == "iterationScope"||fieldName=="iterationTransmit"||fieldName == "testScope"||fieldName=="testTransmit") {
+        params["qxCode"] = [this.qxCode.menuScope,this.qxCode.menuTransmit,this.qxCode.iterationScope,this.qxCode.iterationTransmit,this.qxCode.testScope,this.qxCode.testTransmit].join(",") 
       } else {
         params[fieldName] = $event;
       }
@@ -330,6 +405,7 @@ export default {
           if (tips.isOk) {
             this.editFormBak = [...this.editForm];
             Object.assign(this.editForm, params);
+            store.dispatch("setXmProduct",this.editForm)
             this.$emit("edit-fields", params);
           } else {
             Object.assign(this.editForm, this.editFormBak);
@@ -367,6 +443,35 @@ export default {
 				} 
 				this.editFormBak={...this.editForm}
 			},
+      
+			initQxCode(){
+				var qxCode=this.editForm.qxCode
+				if(!qxCode){
+					this.qxCode.menuScope="2"
+					this.qxCode.menuTransmit="1"
+					this.qxCode.iterationScope="2"
+					this.qxCode.iterationTransmit="1"
+					this.qxCode.testScope="2"
+					this.qxCode.testTransmit="1"
+				}else{
+					var qxCodes=qxCode.split(",")
+					if(qxCodes.length>=2){
+            this.qxCode.menuScope=qxCodes[0]
+            this.qxCode.menuTransmit=qxCodes[1]
+            this.qxCode.iterationScope=qxCodes[2]
+            this.qxCode.iterationTransmit=qxCodes[3]
+            this.qxCode.testScope=qxCodes[4]
+            this.qxCode.testTransmit=qxCodes[5]
+					}else{
+            this.qxCode.menuScope="2"
+            this.qxCode.menuTransmit="1"
+            this.qxCode.iterationScope="2"
+            this.qxCode.iterationTransmit="1"
+            this.qxCode.testScope="2"
+            this.qxCode.testTransmit="1"
+					}
+				}
+			},
     /**end 在上面加自定义方法**/
   }, //end method
   components: { 
@@ -374,6 +479,7 @@ export default {
   mounted() { 
     initDicts(this);
     this.initData();
+    this.initQxCode();
     /**在下面写其它函数***/
   }, //end mounted
 };
