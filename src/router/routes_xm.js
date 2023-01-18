@@ -543,7 +543,6 @@ export default {
          { path: 'xmQuestion/XmQuestionMng', component: _import('xm/core/xmQuestion/XmQuestionMngRoute'), name: 'XmQuestionMng', meta: { title: '缺陷管理',roles:["user"] }},
         { path: 'xmQuestion/XmQuestionMngMy', component: _import('xm/core/xmQuestion/XmQuestionMngMy'), name: 'XmQuestionMngMy', meta: { title: '我的缺陷' ,roles:["user"]}},
         { path: 'xmTestCasedb/XmTestCasedbMng', component: _import('xm/core/xmTestCasedb/XmTestCasedbMng'), name: 'XmTestCasedbMng', meta: { title: '测试管理',roles:["user"] }},
-        { path: 'xmQuestion/XmQuestionDetailRoute', component: _import('xm/core/xmQuestion/XmQuestionDetailRoute'), name: 'XmQuestionDetailRoute', meta: { title: '缺陷明细',roles:["user"] },hidden:true},
  
       ]
     }, 
