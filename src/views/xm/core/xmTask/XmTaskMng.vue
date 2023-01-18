@@ -468,7 +468,7 @@
                 show-overflow-tooltip
               >
 								<template slot-scope="scope"> 
-                    <mdp-select-user-xm v-model="scope.row" userid-key="createUserid" username-key="createUsername" :project-id="scope.row.projectId" @change="editXmTaskSomeFields(scope.row,'createUserid',$event)"></mdp-select-user-xm>
+                    <mdp-select-user-xm v-model="scope.row" userid-key="createUserid" @visible-change="selectVisible(scope.row,$event)" username-key="createUsername" :project-id="scope.row.projectId" @change="editXmTaskSomeFields(scope.row,'createUserid',$event)"></mdp-select-user-xm>
  								</template>
               </el-table-column>
               <el-table-column
@@ -479,7 +479,7 @@
                 show-overflow-tooltip
               >
 								<template slot-scope="scope"> 
-                    <mdp-select-user-xm :key="scope.row.id" v-model="scope.row" userid-key="executorUserid" username-key="executorUsername" :project-id="scope.row.projectId" @change="editXmTaskSomeFields(scope.row,'executorUserid',$event)"></mdp-select-user-xm>
+                    <mdp-select-user-xm :key="scope.row.id" v-model="scope.row" userid-key="executorUserid" @visible-change="selectVisible(scope.row,$event)" username-key="executorUsername" :project-id="scope.row.projectId" @change="editXmTaskSomeFields(scope.row,'executorUserid',$event)"></mdp-select-user-xm>
  								</template>
               </el-table-column>
               <el-table-column
@@ -1496,6 +1496,7 @@ export default {
       });
     },
     rowClick: function (row) {
+      debugger;
       this.editForm = row;
       this.editFormBak=Object.assign({},row)
       // this.$emit('row-click',row,);//  @row-click="rowClick"
@@ -2086,8 +2087,8 @@ export default {
 					params.executorUserid=$event[0].userid
 					params.executorUsername=$event[0].username
 				}else if(fieldName==='createUserid'){
-					params.createUserid=$event.userid
-					params.createUsername=$event.username
+					params.createUserid=$event[0].userid
+					params.createUsername=$event[0].username
 				}else if(fieldName==='startTime'){
 					params.startTime=$event.startTime
 					params.endTime=$event.endTime

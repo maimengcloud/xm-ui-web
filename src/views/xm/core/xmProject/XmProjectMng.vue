@@ -362,20 +362,12 @@
 	import  XmProjectAdd from './XmProjectEdit';//新增界面
 	import  XmProjectEdit from './XmProjectEdit';//修改界面
 	import { mapGetters } from 'vuex'
-	import xmTaskMng from '../xmTask/XmTaskMng'; 
-	import xmProjectInfo from './XmProjectInfo'; 
+	import xmTaskMng from '../xmTask/XmTaskMng';  
 	import XmProjectTplMng from './XmProjectTplMng'; 
 	import XmProductSelect from '@/views/xm/core/components/XmProductSelect';
 	import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
 	
-		import store from '@/store'
-
-	if(!Vue.component("xm-project-info")){
-		
-		Vue.component('xm-project-info',xmProjectInfo)
-		Vue.use(xmProjectInfo);
-	}
-	
+		import store from '@/store' 
 
 	import Guider from '@/components/Guider/Index.js';
 
@@ -430,13 +422,13 @@
 				addFormVisible: false,//新增xmProject界面是否显示
 				//新增xmProject界面初始化数据
 				addForm: {
-					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:0,bizProcInstId:'',bizFlowState:'',taxRate:6,planNouserAt:0,planIuserAt:0,planOuserAt:0,locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:0,totalReceivables:0,budgetMarginRate:13,contractAmt:0,planIuserPrice:85,planOuserPrice:100,planOuserCnt:1,planIuserCnt:1,planWorkingHours:0,planIuserWorkload:0,planOuserWorkload:0,budgetCtrl:'0',admUserid:'',admUsername:'',pmUserid:'',pmUsername:'',assUserid:'',assUsername:'',workType:'',wtype:'',earlyAmt:0,budgetEarly:'0'
+					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:'',bizProcInstId:'',bizFlowState:'',planNouserAt:'',planIuserAt:'',planOuserAt:'',locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:'0',totalReceivables:'0',budgetMarginRate:13,contractAmt:0,planIuserPrice:85,planOuserPrice:100,planOuserCnt:0,planIuserCnt:0,planWorkingHours:0,taxRate:3,planIuserWorkload:0,planOuserWorkload:0,fromTplId:'',budgetCtrl:'0',deptid:'',showOut:'0',isTpl:'0',pmUserid:'',pmUsername:'',assUserid:'',assUsername:'',admUserid:'',admUsername:'',budgetEarly:'',phaseActCtrl:'',del:'0',ltime:'',ostatus:'0',workType:'',wtype:'',earlyAmt:0,maxTaskAmt:0,menuLink:'0',phaseLink:'0',tplType:'',qxCode:''
 				},
 				
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmProject界面初始化数据
 				editForm: {
-					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:0,bizProcInstId:'',bizFlowState:'',taxRate:6,planNouserAt:0,planIuserAt:0,planOuserAt:0,locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:0,totalReceivables:0,budgetMarginRate:13,contractAmt:0,planIuserPrice:85,planOuserPrice:100,planOuserCnt:1,planIuserCnt:1,planWorkingHours:0,planIuserWorkload:0,planOuserWorkload:0,budgetCtrl:'0',admUserid:'',admUsername:'',pmUserid:'',pmUsername:'',assUserid:'',assUsername:'',workType:'',wtype:'',earlyAmt:0,budgetEarly:'0'
+					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:'',bizProcInstId:'',bizFlowState:'',planNouserAt:'',planIuserAt:'',planOuserAt:'',locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:'0',totalReceivables:'0',budgetMarginRate:13,contractAmt:0,planIuserPrice:85,planOuserPrice:100,planOuserCnt:0,planIuserCnt:0,planWorkingHours:0,taxRate:3,planIuserWorkload:0,planOuserWorkload:0,fromTplId:'',budgetCtrl:'0',deptid:'',showOut:'0',isTpl:'0',pmUserid:'',pmUsername:'',assUserid:'',assUsername:'',admUserid:'',admUsername:'',budgetEarly:'',phaseActCtrl:'',del:'0',ltime:'',ostatus:'0',workType:'',wtype:'',earlyAmt:0,maxTaskAmt:0,menuLink:'0',phaseLink:'0',tplType:'',qxCode:''
 				},
 				/**begin 自定义属性请在下面加 请加备注**/
 				menukey: "all",
@@ -899,8 +891,7 @@
 		},//end methods
 		components: { 
 		    'xm-project-add':XmProjectAdd,
-		    'xm-project-edit':XmProjectEdit,
-			
+		    'xm-project-edit':XmProjectEdit, 
 			XmProductSelect,
 			xmTaskMng,
 			XmProjectTplMng,MdpSelectUserXm
