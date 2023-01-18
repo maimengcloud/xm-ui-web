@@ -95,7 +95,23 @@
 									<el-checkbox  v-model="editForm.menuLink"  :true-label="'1'" :false-label="'0'"  @change="editXmProjectSomeFields(editForm,'menuLink',$event)">任务是否必须严格关联用户故事</el-checkbox>  
 									<el-checkbox  v-model="editForm.phaseLink"  :true-label="'1'" :false-label="'0'"  @change="editXmProjectSomeFields(editForm,'phaseLink',$event)">任务是否必须严格关联计划</el-checkbox>  
 								</el-row>
-							</el-form-item>       
+								
+								<el-row>
+ 									<el-checkbox  v-model="qxCode.taskTransmit"  :true-label="'1'" :false-label="'0'"  @change="editXmProjectSomeFields(editForm,'taskTransmit',$event)">任务指派及crud是否检查用户的上下级关系</el-checkbox>  
+								</el-row>
+								<!--0-代表不限制,1-同组织，2-同项目组（默认），3-同小组-->
+							</el-form-item>    
+							<el-form-item label="任务人员范围控制" title="指派及crud时任务人员范围控制"> 
+								<el-row> 
+									<el-radio-group v-model="qxCode.taskScope" @change="editXmProjectSomeFields(editForm,'taskScope',$event)">
+										<el-radio label="0">不限制，任何人可以互相操作</el-radio>
+										<el-radio label="1">同机构下的人员可以操作</el-radio>
+										<el-radio label="2">同一个项目组内可以互相操作</el-radio>
+										<el-radio label="3">同项目组下的同一个小组可以互相操作</el-radio>
+									</el-radio-group>
+ 								</el-row>
+								<!--0-代表不限制,1-同组织，2-同项目组（默认），3-同小组-->
+							</el-form-item>    
 						</el-tab-pane>
 						<el-tab-pane label="工期" name="3">
 							<el-row>  
@@ -366,6 +382,7 @@
 	      'visible':function(visible) { 
 	      	if(visible==true){ 
 				this.initData();
+				this.initQxCode()
 	      	}
 		  },
 		  'planTotalAt':{
@@ -388,12 +405,12 @@
 		  },
 		  selProject:{
 			handler(newValue, oldValue) {
-				this.initData();
+				this.initData(); 
 			},
 			deep:true
 			
 		  },
-		  
+
 		  editForm:{  
 				handler(newValue, oldValue) {
 					if(this.opType==='add'){
@@ -502,13 +519,39 @@
 				currUserType:'',
 				autoSet:false,
 				currTabPane:'1',
+				/**
+					权限码0,1,2,3,4,5,67,8,9，逗号分割
+					共10位,不定长，暂时只启用前2个位
+					第0位代表计划及任务指派及crud权限：
+						0-代表不限制,1-同组织，2-同项目组（默认），3-同小组
+					第1位代表计划及任务指派及crud时是否检查上下级关系：0-否（默认），1是 
+					*/
+				qxCode:{
+					taskScope:'2',//0-代表不限制,1-同组织，2-同项目组（默认），3-同小组
+					taskTransmit:'0',//0-不控制，1任务指派及crud必须检查用户的上下级关系 
+				},
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data
 		methods: { 
 			//打开用户选择 
 			//选择接收人 
- 
+			initQxCode(){
+				var qxCode=this.editForm.qxCode
+				if(!qxCode){
+					this.qxCode.taskScope="2"
+					this.qxCode.taskTransmit="1"
+				}else{
+					var qxCodes=qxCode.split(",")
+					if(qxCodes.length>=2){
+						this.qxCode.taskScope=qxCodes[0]
+						this.qxCode.taskTransmit=qxCodes[1]
+					}else{
+						this.qxCode.taskScope="2"
+						this.qxCode.taskTransmit="1"
+					}
+				}
+			},
 			showProjectGroups:function(){
 				this.getXmGroups();
 				this.groupSelectVisible=true;
@@ -849,7 +892,7 @@
 					this.autoSet=true;
 				}else{ 
 				 	this.autoSet=false;
-				}
+				} 
 				this.editFormBak={...this.editForm}
 			},
 			
@@ -887,6 +930,10 @@
 				} else if (fieldName == "pmUserid") {
 					params["pmUserid"] = $event[0].userid;
 					params["pmUsername"] = $event[0].username;
+				}else if (fieldName == "taskScope") { 
+					params.qxCode=[this.qxCode.taskScope,this.qxCode.taskTransmit].join(",")
+				}else if (fieldName == "taskTransmit") { 
+					params.qxCode=[this.qxCode.taskScope,this.qxCode.taskTransmit].join(",")
 				}else{
 					params[fieldName]=$event 
 				}
@@ -921,6 +968,7 @@
 			this.$nextTick(()=>{ 
 				initDicts(this)
 				this.initData();
+				this.initQxCode()
 			})
 				 
 			
