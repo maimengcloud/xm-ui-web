@@ -60,6 +60,9 @@
           <span slot="title"><i class="el-icon-time"></i>统计分析</span>
         </el-menu-item>
  
+        <el-menu-item :index="'/xm/core/test/group?casedbId='+testCasedb.id">
+          <span slot="title"><i class="el-icon-user-solid"></i>团队</span>
+        </el-menu-item>
         <el-submenu index="更多">
           <template slot="title">更多 </template> 
           <el-menu-item :index="'/xm/core/test/env?casedbId='+testCasedb.id">

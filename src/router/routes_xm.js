@@ -480,7 +480,9 @@ export default {
             icon: 'iteration',roles:["user"]
           }, 
           hidden:true
-        },
+        },        
+        { path: 'group', component: _import('xm/core/xmGroup/XmGroupForIteration'), name: 'iterationGroup', meta: { title: '团队',roles:["user"] },hidden:true},
+
         {
           path: 'record',
           component: _import('xm/core/xmRecord/XmRecordForIteration'),
@@ -563,6 +565,7 @@ export default {
         { path: 'case', component: _import('xm/core/xmTestCase/XmTestCaseList'), name: 'testCase', meta: { title: '用例管理',roles:["user"] },hidden:true},
         { path: 'flow', component: _import('xm/core/xmTestCase/XmTestCaseFlow'), name: 'testFlow', meta: { title: '用例评审',roles:["user"] },hidden:true},
         { path: 'plan', component: _import('xm/core/xmTestPlan/Overview'), name: 'testPlan', meta: { title: '测试计划',roles:["user"] },hidden:true},
+        { path: 'group', component: _import('xm/core/xmGroup/XmGroupForTest'), name: 'testGroup', meta: { title: '团队',roles:["user"] },hidden:true},
         { path: 'report', component: _import('xm/rpt/reportIndexForTest'), name: 'testReport', meta: { title: '统计分析',roles:["user"] },hidden:true},
 
       ]
