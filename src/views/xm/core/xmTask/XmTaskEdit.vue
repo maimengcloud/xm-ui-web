@@ -561,7 +561,6 @@
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
 	import XmTaskList from '../xmTask/XmTaskList';
 	import XmExecuserMng from '../xmTaskExecuser/XmTaskExecuserForTask';
-	import XmGroupSelect from '../xmGroup/XmGroupSelect.vue';
 	import XmMenuRichDetail from '../xmMenu/XmMenuRichDetail';
 	import TagMng from "@/views/mdp/arc/tag/TagMng";
 	import XmRecord from '../xmRecord/XmRecord' 
@@ -720,8 +719,6 @@
 				skillVisible: false,
 				taskSkills: [],
 				selectTaskVisible:false, 
-				groupUserSelectVisible:false,
-				execGroupUserSelectVisible:false,  
 				pickerOptions:  util.getPickerOptions('datarange'),
 				tagSelectVisible:false,
 				subWorkItemNum:0,
@@ -1060,7 +1057,7 @@
 		},//end method
 		components: { 
  			xmSkillMng,
-			skillMng,xmMenuSelect,XmTaskList,XmExecuserMng,XmGroupSelect,XmMenuRichDetail,TagMng,XmSubWorkItem,XmWorkloadRecord,XmMenuEdit,
+			skillMng,xmMenuSelect,XmTaskList,XmExecuserMng,XmMenuRichDetail,TagMng,XmSubWorkItem,XmWorkloadRecord,XmMenuEdit,
 			XmRecord,xmQuestionMng,XmMyDoFocus,XmTaskExecuserForTask,XmPhaseSelect,ToPay,MdpSelectUserXm,'xm-task-edit':()=>import("./XmTaskDetail"),
 			'xm-workload-record':()=>import("../xmWorkload/XmWorkloadRecord"), 
 			"v-region":RegionGroup ,

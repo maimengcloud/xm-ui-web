@@ -179,9 +179,6 @@
 						<el-button type="primary" @click="saveSubmit">保存</el-button>
 					</el-row>
 				</el-form>
-				<el-drawer title="选中用户" :visible.sync="selectUserVisible"  size="70%"  append-to-body   :close-on-click-modal="false">
-					<xm-group-mng  v-if="selectUserVisible"   :sel-project="selProject" :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-mng>
-				</el-drawer>
 				<el-drawer title="选中任务" :visible.sync="selectTaskVisible"  size="70%"    append-to-body   :close-on-click-modal="false">
 					<xm-task-list  v-if="selectTaskVisible"   :sel-project="selProject"   @task-selected="onSelectedTask"></xm-task-list>
 				</el-drawer>
@@ -212,8 +209,6 @@
 	import { mapGetters } from 'vuex';
 	import AttachmentUpload from "@/views/mdp/arc/archiveAttachment/AttachmentUpload"; //上传组件
 	import {sn} from '@/common/js/sequence';
-
-	import XmGroupMng from '../xmGroup/XmGroupSelect';
 	import VueEditor from '@/components/Tinymce/index';
 	import XmTaskList from '../xmTask/XmTaskList';
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
@@ -343,7 +338,6 @@
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				fileVisible: true,
-				selectUserVisible: false,
 				userFieldName:'',
 				xmQuestionHandles:[],
 				selectTaskVisible:false, 
@@ -425,25 +419,6 @@
 				const m = date.getMonth()+1;
 				const d = date.getDate();
 				return date.getFullYear()+"-"+(m < 10 ? "0"+m : m)+"-"+ (d < 10 ? "0"+d : d) + " 00:00:00";
-			},
-			showGroupUsers:function(fieldName){
-				this.userFieldName=fieldName;
-				this.selectUserVisible=true;
-			},
-			onUserConfirm:function(groupUsers){
-				if(groupUsers==null || groupUsers.length==0){
-					 
-				}else{  
-					if(this.userFieldName==='handlerUserid'){
-						this.editForm.handlerUserid=groupUsers[0].userid
-						this.editForm.handlerUsername=groupUsers[0].username
-					}else if(this.userFieldName==='askUserid'){
-						this.editForm.askUserid=groupUsers[0].userid
-						this.editForm.askUsername=groupUsers[0].username
-					} 
-					this.editXmQuestionSomeFields(this.editForm,this.userFieldName,groupUsers) 
-				}
-				this.selectUserVisible=false
 			},
 			handleQuestion:function(tardgetBugStatus){ 
 				this.editSubmit(tardgetBugStatus);
@@ -700,7 +675,7 @@
 		},//end method
 		components: {
 				//在下面添加其它组件 'xm-question-edit':XmQuestionEdit
-				'upload': AttachmentUpload,XmGroupMng,VueEditor,XmTaskList,xmMenuSelect,XmQuestionHandleMng,TagMng,XmProjectSelect,XmProductSelect,
+				'upload': AttachmentUpload,VueEditor,XmTaskList,xmMenuSelect,XmQuestionHandleMng,TagMng,XmProjectSelect,XmProductSelect,
 			XmMyDoFocus,XmFuncSelect,MdpSelectUserXm,TestStepConfig,TestStepResult,
 			xmTestPlanCaseMng:()=>import('../xmTestPlanCase/XmTestPlanCaseSelect'),
 			'xm-workload-record':()=>import("../xmWorkload/XmWorkloadRecord"),

@@ -2,7 +2,7 @@
 	<section class="border padding-left">
 		<el-row class="padding-top"> 
  
-						<xm-product-select style="display:inline;" v-if="!xmProduct" :auto-select="false" :xm-product="xmProduct"  @row-click="onProductRowClick" @clear="onProductClose"></xm-product-select>
+						<xm-product-select style="display:inline;" v-if="!xmProduct||!xmProduct.id" :auto-select="false" :link-project-id="selProject?selProject.id:null"   @row-click="onProductRowClick" @clear="onProductClose"></xm-product-select>
  
 							 
 					<el-button   type="primary" @click="userConfirm" icon="el-icon-finished">确认选择</el-button>  
@@ -49,7 +49,7 @@
 			])
 		},
 		//
-		props: ['visible','isSelectSingleUser','isSelectMultiUser','xmProduct'],
+		props: ['visible','isSelectSingleUser','isSelectMultiUser','selProject','xmProduct'],
 		watch: {
 			"selGroups": function(selGroups) {
 				if(this.selGroups){

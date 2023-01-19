@@ -11,7 +11,7 @@
   import {
     mapGetters
   } from 'vuex' 
-  import XmGroupSelect from "./XmGroupSelect.vue"
+  import XmGroupSelect from "./XmGroupSelectForProject.vue"
   export default {
     name:"tagDialog",
     computed: {

@@ -628,17 +628,6 @@ export default {
       ]
     },  
     {
-      path: '/xm/core/xmIteration/XmIterationInfoRoute',
-      component: _import('xm/core/xmIteration/XmIterationInfoRoute'),
-      name: 'XmIterationInfoRoute',
-      iconCls: 'fa el-icon-menu',
-      meta: {
-        title: '迭代管理-路由跳转',
-        icon: 'flow',roles:["user"]
-      },
-      hidden:true
-    },
-    {
       path: '/xm/core',
       component: Layout,
       name: 'GroupMng',
