@@ -362,6 +362,15 @@
 						}
 					}
 				}
+				if(!this.addForm.projectId){
+					this.$notify({position:'bottom-left',showClose:true,message:'请选择项目',type: 'error'})
+					return;
+				}
+				
+				if(!this.addForm.parentTaskid){
+					this.$notify({position:'bottom-left',showClose:true,message:'请选择上级计划',type: 'error'})
+					return;
+				}
 				
 				this.$refs.addForm.validate((valid) => {
 					if (valid) {
@@ -494,11 +503,14 @@
 					this.addForm.parentTaskid=parentTask.id
 					this.addForm.parentTaskname=parentTask.name;
 					this.addForm.taskType=parentTask.taskType
-					this.addForm.planType=parentTask.planType  
-					if(parentTask.childrenCnt){
+					this.addForm.planType=parentTask.planType   
+					
+					if(parentTask.childrenCnt && parentTask.sortLevel){
 						this.addForm.sortLevel=parentTask.sortLevel+"."+(parentTask.childrenCnt+1)
-					}else{
+					}else if(parentTask.sortLevel){
 						this.addForm.sortLevel=parentTask.sortLevel+"."+1
+					}else{
+						this.addForm.sortLevel=""+1
 					}
 				}
 			},
@@ -611,10 +623,12 @@
 					this.addForm.productName=this.xmIteration.productName
 				} 
 				if(this.parentTask && this.parentTask.id){
-					if(this.parentTask.childrenCnt){
+					if(this.parentTask.childrenCnt && this.parentTask.sortLevel){
 						this.addForm.sortLevel=this.parentTask.sortLevel+"."+(this.parentTask.childrenCnt+1)
-					}else{
+					}else if(this.parentTask.sortLevel){
 						this.addForm.sortLevel=this.parentTask.sortLevel+"."+1
+					}else{
+						this.addForm.sortLevel=""+1
 					}
 				}
 				if(!this.addForm.uniInnerPrice){
