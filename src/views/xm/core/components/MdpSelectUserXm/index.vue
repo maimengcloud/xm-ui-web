@@ -52,10 +52,10 @@
             </el-dialog>
             
             <el-dialog v-if="disabled!==true" :visible.sync="projectVisible" append-to-body top="20px" width="60%">
-               <xm-group-select-for-project :sel-project="projectId?{id:projectId}:null" :isSelectSingleUser="true" @user-confirm="onTeamUsersConfirm"></xm-group-select-for-project>
+               <xm-group-select-for-project :sel-project="projectId?{id:projectId}:null" :xm-product="productId?{id:productId}:null" :isSelectSingleUser="true" @user-confirm="onTeamUsersConfirm"></xm-group-select-for-project>
             </el-dialog> 
-            <el-dialog v-if="disabled!==true" :visible.sync="projectVisible" append-to-body top="20px" width="60%">
-               <xm-group-select-for-product :xm-product="productId?{id:productId}:null" :isSelectSingleUser="true" @user-confirm="onTeamUsersConfirm"></xm-group-select-for-product>
+            <el-dialog v-if="disabled!==true" :visible.sync="productVisible" append-to-body top="20px" width="60%">
+               <xm-group-select-for-product :sel-project="projectId?{id:projectId}:null" :xm-product="productId?{id:productId}:null" :isSelectSingleUser="true" @user-confirm="onTeamUsersConfirm"></xm-group-select-for-product>
             </el-dialog> 
     </el-row>
   </template>
