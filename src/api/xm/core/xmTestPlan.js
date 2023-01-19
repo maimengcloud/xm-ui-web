@@ -31,6 +31,7 @@ export const addXmTestPlan = params => { return axios.post(`${base}/xm/core/xmTe
 export const editSomeFieldsXmTestPlan = params => { return axios.post(`${base}/xm/core/xmTestPlan/editSomeFields`, params); };
 
 
+export const calcXmTestPlan = params => { return axios.post(`${base}/xm/core/xmTestPlan/calc`, params); };
 
 /**-------------------------前端mng|add|edit界面公共函数---------------请写在下面----------------------------------------------- */
 //初始化页面上的字典

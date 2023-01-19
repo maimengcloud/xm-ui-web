@@ -6,7 +6,7 @@
 		<el-row>
             <el-row v-if="activeIndex=='testPlanCase'&& xmTestPlan && xmTestPlan.id">
                 <el-row class="border padding-left padding-right">
-                     <el-button icon="el-icon-back" @click="activeIndex=testPlan" type="text"></el-button>
+                     <el-button icon="el-icon-back" @click="activeIndex='testPlan'" type="text"></el-button>
                      <el-divider direction="vertical"></el-divider>
                      {{xmTestPlan.name}}
                      <el-divider direction="vertical"></el-divider>
@@ -20,7 +20,7 @@
                      <span style="float:right;">
                         <span > 
                           <el-tag style="margin-top:5px;" v-for="(item,index) in formatDictsWithClass(dicts,'testPlanStatus',xmTestPlan.status)" :key="index" :type="item.className">{{item.name}}</el-tag> 
-                          <span style="color:#C0C4CC;">&nbsp;通过率&nbsp;</span>{{calcTongGuoRate}}&nbsp;&nbsp;<span style="color:#C0C4CC;">&nbsp;已测&nbsp;</span>{{calcYiCeshiCases}}&nbsp;/&nbsp;{{calcTotalCases}}&nbsp;&nbsp;
+                          <span style="color:#C0C4CC;">&nbsp;通过率&nbsp;</span>{{calcTongGuoRate}}&nbsp;&nbsp;<span style="color:#C0C4CC;">&nbsp;已测/总用例&nbsp;</span>{{calcYiCeshiCases}}&nbsp;/&nbsp;{{calcTotalCases}}&nbsp;&nbsp;
                            <div style="display:inline-flex"><el-progress  style="width:100px;" :stroke-width="22" :text-inside="true"  :status="calcYiCeshiCases>0 && xmTestPlan.errCases<=0 ?'success':'exception'" :percentage="calcProgress"></el-progress>
                            </div>
                         </span>

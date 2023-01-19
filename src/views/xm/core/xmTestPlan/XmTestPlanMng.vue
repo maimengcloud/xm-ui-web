@@ -47,12 +47,22 @@
                     </template>
 				</el-table-column> 
 				<el-table-column prop="totalCases" label="进度" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-                        <el-tooltip :open-delay="500" :content="'总用例数:'+scope.row.totalCases+'   成功:'+scope.row.okCases +'  失败:'+scope.row.errCases+'  忽略:'+scope.row.igCases+'  阻塞:'+scope.row.blCases">
+				    <template slot-scope="scope"> 
+                        <el-tooltip :open-delay="300" :content="'总用例数:'+scope.row.totalCases+'   成功:'+scope.row.okCases +'  失败:'+scope.row.errCases+'  忽略:'+scope.row.igCases+'  阻塞:'+scope.row.blCases">
                             <el-progress   :stroke-width="22" :text-inside="true"  :status="scope.row.totalCases>0 && scope.row.errCases<=0 ?'success':'exception'" :percentage="scope.row.totalCases>0?parseInt((parseInt(scope.row.okCases)+parseInt(scope.row.igCases)+parseInt(scope.row.errCases)+parseInt(scope.row.blCases))*100/parseInt(scope.row.totalCases)):0"></el-progress>
-                        </el-tooltip>
+                        </el-tooltip>  
                      </template>
-				</el-table-column>   
+				</el-table-column> 
+				<el-table-column prop="totalCases" label="统计" width="80" show-overflow-tooltip>
+				    <template slot-scope="scope">  
+                        <el-tooltip content="点击统计进度"
+                            ><el-button 
+                            icon="el-icon-video-play"
+                            @click.stop="calcXmTestPlan(scope.row)"
+                            ></el-button
+                        ></el-tooltip> 
+                     </template>
+				</el-table-column>    
 				<el-table-column prop="stime" label="开始时间"  width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
 				        <span> {{scope.row.stime}} </span>
@@ -84,7 +94,7 @@
 
 import util from '@/common/js/util';//全局公共库
 import config from '@/common/config';//全局公共库
-import { initDicts,listXmTestPlan, delXmTestPlan, batchDelXmTestPlan,editSomeFieldsXmTestPlan } from '@/api/xm/core/xmTestPlan';
+import { initDicts,listXmTestPlan, delXmTestPlan, batchDelXmTestPlan,editSomeFieldsXmTestPlan,calcXmTestPlan } from '@/api/xm/core/xmTestPlan';
 import  XmTestPlanEdit from './XmTestPlanEdit';//新增修改界面
 import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
 import { mapGetters } from 'vuex'
@@ -316,6 +326,15 @@ export default {
         },
         goToTestPlanCase(row){ 
             this.$emit('select',row);//  @row-click="rowClick"
+        },
+        calcXmTestPlan(row){
+            calcXmTestPlan({id:row.id}).then(res=>{ 
+                var tips=res.data.tips
+                this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+                if(tips.isOk){
+                    this.searchXmTestPlans();
+                }
+            })
         }
 
     },//end methods
