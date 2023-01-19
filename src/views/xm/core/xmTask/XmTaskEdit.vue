@@ -15,9 +15,9 @@
 								</span> 
 								<span v-else-if="item.id=='1'"> <!--需求-->
 								<el-button class="step-btn"  type="primary" size="mini"  @click="activateTabPaneName='6'" plain>预算管理</el-button>
-								<el-button class="step-btn" type="primary" size="mini" v-if="editForm.bidStep=='0'" @click="editXmTaskSomeFields(editForm,'bidStep','1')" plain>去发布</el-button> 
+								<el-button class="step-btn" type="danger" icon="el-icon-d-caret" size="mini" v-if="editForm.bidStep=='0'" @click="editXmTaskSomeFields(editForm,'bidStep','1')" plain>去发布</el-button> 
 								<span v-else-if="editForm.bidStep>='1'">
-									<el-button class="step-btn" type="primary" size="mini" v-if="editForm.bidStep=='1'" @click="editXmTaskSomeFields(editForm,'bidStep','0')" plain>去取消发布</el-button> 
+									<el-button class="step-btn" type="danger" icon="el-icon-d-caret" size="mini" v-if="editForm.bidStep=='1'" @click="editXmTaskSomeFields(editForm,'bidStep','0')" plain>去取消发布</el-button> 
 									<el-button class="step-btn" type="warning" size="mini" v-if="editForm.bidStep>='1'" @click="activateTabPaneName='82'" plain>参加推广活动</el-button> 
 								</span> 
 
@@ -38,16 +38,16 @@
 								<span v-else-if="item.id=='5'"> <!--工作中-->
 									<span v-if="editForm.bidStep==item.id">
 										<el-button class="step-btn"  type="primary" size="mini" v-if="editForm.bidStep>'1'" @click="activateTabPaneName='5'" plain>报工、报进度</el-button>
-										<el-button class="step-btn"  type="primary" size="mini" v-if="(editForm.bidStep=='4'||editForm.bidStep=='3') && (editForm.estate>='2')" @click="editXmTaskSomeFields(editForm,'bidStep','5')" plain>开始工作</el-button>
+										<el-button class="step-btn" type="danger" icon="el-icon-d-caret" size="mini" v-if="(editForm.bidStep=='4'||editForm.bidStep=='3') && (editForm.estate>='2')" @click="editXmTaskSomeFields(editForm,'bidStep','5')" plain>开始工作</el-button>
 										
-										<el-button class="step-btn"  type="primary" size="mini" v-if=" (editForm.taskState=='1'||editForm.taskState=='0')" @click="editXmTaskSomeFields(editForm,'taskState','2')" plain>设为已完工、待验收</el-button>
+										<el-button class="step-btn" type="danger" icon="el-icon-d-caret" size="mini" v-if=" (editForm.taskState=='1'||editForm.taskState=='0')" @click="editXmTaskSomeFields(editForm,'taskState','2')" plain>设为已完工、待验收</el-button>
 								 	</span>
  								</span>
 								<span v-else-if="item.id=='6'"> <!--付款完成-->
 									<span v-if="editForm.bidStep==item.id">
 										<span v-if="editForm.taskState=='2'">
-											<el-button class="step-btn"  type="primary" size="mini"  @click="editXmTaskSomeFields(editForm,'taskState','3')" plain>设为验收成功</el-button> 
-											<el-button class="step-btn"  type="primary" size="mini" @click="editXmTaskSomeFields(editForm,'taskState','1')" plain>设为验收不成功</el-button> 
+											<el-button class="step-btn" type="danger" icon="el-icon-d-caret" size="mini"  @click="editXmTaskSomeFields(editForm,'taskState','3')" plain>设为验收成功</el-button> 
+											<el-button class="step-btn" type="danger" icon="el-icon-d-caret" size="mini" @click="editXmTaskSomeFields(editForm,'taskState','1')" plain>设为验收不成功</el-button> 
 										</span> 
 									
 										<el-button class="step-btn"  type="primary" v-if="editForm.taskState=='3'" size="mini"  @click="editXmTaskSomeFields(editForm,'taskState','4')" plain>设为已结算</el-button> 
@@ -73,27 +73,27 @@
 									<el-button class="step-btn"  type="primary" size="mini"  @click="activateTabPaneName='6'" plain>预算管理</el-button>
 									<el-button class="step-btn" type="primary" size="mini" v-if="editForm.ntype=='0' && !editForm.executorUserid" @click="activateTabPaneName='42'" plain>去指派执行人</el-button> 
 									<el-button class="step-btn" type="primary" size="mini" v-if="editForm.ntype=='0' && editForm.executorUserid" @click="activateTabPaneName='42'" plain>执行人管理</el-button>  
-								<el-button class="step-btn" type="primary" size="mini" v-if="editForm.taskState=='0'" @click="editXmTaskSomeFields(editForm,'taskState','1')" plain>设为执行中</el-button> 
+								<el-button class="step-btn" type="danger" icon="el-icon-d-caret" size="mini" v-if="editForm.taskState=='0'" @click="editXmTaskSomeFields(editForm,'taskState','1')" plain>设为执行中</el-button> 
 								</span> 
 								<span v-else-if="item.id=='1'"> <!--已领取执行中-->
 								<el-button class="step-btn"  type="primary" size="mini" v-if="editForm.ntype=='1'" @click="activateTabPaneName='4'" plain>子工作项管理</el-button>
 								<el-button class="step-btn"  type="primary" size="mini" v-if="editForm.ntype=='0'" @click="activateTabPaneName='41'" plain>缺陷跟踪</el-button>
 								<el-button class="step-btn"  type="primary" size="mini" v-if="editForm.ntype=='0'" @click="activateTabPaneName='5'" plain>报工、报进度</el-button>
-								<el-button class="step-btn" type="primary" size="mini" v-if="editForm.taskState=='1'" @click="editXmTaskSomeFields(editForm,'taskState','2')" plain>设为已完工、待验收</el-button> 
+								<el-button class="step-btn" type="danger" icon="el-icon-d-caret" size="mini" v-if="editForm.taskState=='1'" @click="editXmTaskSomeFields(editForm,'taskState','2')" plain>设为已完工、待验收</el-button> 
 								  
 
 								</span>
 								<span v-else-if="item.id=='2'"> <!--已完工-->
-									<el-button class="step-btn" type="primary" size="mini" v-if="  editForm.taskState=='2'" @click="editXmTaskSomeFields(editForm,'taskState','3')" plain>设为已验收、待结算</el-button> 
-									<el-button class="step-btn" type="primary" size="mini" v-if=" editForm.taskState=='2'" @click="editXmTaskSomeFields(editForm,'taskState','1')" plain>设为验收不过，待执行</el-button> 
+									<el-button class="step-btn" type="danger" icon="el-icon-d-caret" size="mini" v-if="  editForm.taskState=='2'" @click="editXmTaskSomeFields(editForm,'taskState','3')" plain>设为已验收、待结算</el-button> 
+									<el-button class="step-btn" type="danger" icon="el-icon-d-caret" size="mini" v-if=" editForm.taskState=='2'" @click="editXmTaskSomeFields(editForm,'taskState','1')" plain>设为验收不过，待执行</el-button> 
  								</span>
 								<span v-else-if="item.id=='3'"> <!--已验收-->
 								
-								<el-button class="step-btn" type="primary" size="mini" v-if=" editForm.taskState=='3'" @click="editXmTaskSomeFields(editForm,'taskState','4')" plain>设为已结算</el-button> 
+								<el-button class="step-btn" type="danger" icon="el-icon-d-caret" size="mini" v-if=" editForm.taskState=='3'" @click="editXmTaskSomeFields(editForm,'taskState','4')" plain>设为已结算</el-button> 
  								</span>
 								<span v-else-if="item.id=='4'"> <!--已结算-->
 								
-								<el-button class="step-btn" type="primary" size="mini" v-if=" editForm.taskState=='4'" @click="editXmTaskSomeFields(editForm,'taskState','9')" plain>设为已关闭</el-button> 
+								<el-button class="step-btn" type="danger" icon="el-icon-d-caret" size="mini" v-if=" editForm.taskState=='4'" @click="editXmTaskSomeFields(editForm,'taskState','9')" plain>设为已关闭</el-button> 
 								</span>
 								<span v-else-if="item.id=='9'"> <!--已关闭-->
 								</span>
@@ -141,13 +141,13 @@
 								</mdp-field-x> 
 							</el-col> 
 							<el-col :span="8">  
-									<mdp-select-user-xm  label="负责人" v-model="editForm" userid-key="createUserid" username-key="createUsername" @change="editXmTaskSomeFields(editForm,'createUserid',$event)"></mdp-select-user-xm> 
+									<mdp-select-user-xm  label="负责人" v-model="editForm" userid-key="createUserid" username-key="createUsername" :project-id="xmProjectCpd?xmProjectCpd.id:null" :product-id="xmProductCpd?xmProductCpd.id:null" @change="editXmTaskSomeFields(editForm,'createUserid',$event)"></mdp-select-user-xm> 
  							</el-col>   
 							<el-col :span="8" v-if="editForm.ntype=='0'">  
-									<mdp-select-user-xm v-if="editForm.crowd=='1'"  label="执行人" v-model="editForm"  userid-key="executorUserid" username-key="executorUsername">
+									<mdp-select-user-xm v-if="editForm.crowd=='1'"  label="执行人" v-model="editForm"  userid-key="executorUserid" username-key="executorUsername" >
 										<el-button slot="oper" @click="activateTabPaneName='42'">去管理竞标人</el-button>
 									</mdp-select-user-xm> 
-									<mdp-select-user-xm v-if="editForm.crowd!='1'" label="执行人" v-model="editForm" userid-key="executorUserid" username-key="executorUsername" @change="editXmTaskSomeFields(editForm,'executorUserid',$event)"></mdp-select-user-xm> 
+									<mdp-select-user-xm v-if="editForm.crowd!='1'" label="执行人" v-model="editForm" userid-key="executorUserid" username-key="executorUsername" :project-id="xmProjectCpd?xmProjectCpd.id:null" :product-id="xmProductCpd?xmProductCpd.id:null" @change="editXmTaskSomeFields(editForm,'executorUserid',$event)"></mdp-select-user-xm> 
  							</el-col>  
 							
 						</el-row>
@@ -504,41 +504,41 @@
 			<xm-skill-mng :visible="skillVisible" :task-id="editForm.id" @cancel="skillVisible=false" @getSkill="getSkill"></xm-skill-mng>
 		</el-drawer> -->  
 		<el-drawer append-to-body title="新增技能"  :visible.sync="skillVisible" size="60%"    :close-on-click-modal="false">
-			<skill-mng :task-skills="taskSkills" :jump="true" @select-confirm="onTaskSkillsSelected"></skill-mng>
+			<skill-mng v-if="skillVisible" :task-skills="taskSkills" :jump="true" @select-confirm="onTaskSkillsSelected"></skill-mng>
 		</el-drawer>
 
 		<el-drawer append-to-body title="需求选择"  :visible.sync="menuVisible" size="80%"   :close-on-click-modal="false">
-			<xm-menu-select :is-select-menu="true" checkScope="3"  @selected="onMenuSelected" :sel-project="xmProject" :xm-iteration="xmIteration"></xm-menu-select>
+			<xm-menu-select v-if="menuVisible" :is-select-menu="true" checkScope="3"  @selected="onMenuSelected" :xm-product="xmProductCpd" :sel-project="xmProjectCpd" :xm-iteration="xmIteration"></xm-menu-select>
 		</el-drawer>
 		
 		<el-drawer title="选中任务"  :visible.sync="selectTaskVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
-			<xm-task-list :ptype="editForm.ptype" :xm-product="{id:editForm.productId,productName:''}" :sel-project="xmProject"   @task-selected="onSelectedTask"></xm-task-list>
+			<xm-task-list v-if="selectTaskVisible" :ptype="editForm.ptype" :xm-product="xmProductCpd" :sel-project="xmProjectCpd"   @task-selected="onSelectedTask"></xm-task-list>
 		</el-drawer> 	
 		 
 
 		<el-dialog append-to-body title="需求明细"  :visible.sync="menuDetailVisible" width="80%"  top="20px"  :close-on-click-modal="false">
-			<xm-menu-edit :visible="menuDetailVisible"  :reload="true" :xm-menu="{menuId:editForm.menuId,menuName:editForm.menuName}" ></xm-menu-edit>
+			<xm-menu-edit v-if="menuDetailVisible" :visible="menuDetailVisible"  :reload="true" :xm-menu="{menuId:editForm.menuId,menuName:editForm.menuName}" ></xm-menu-edit>
 		</el-dialog>
 			
 		<el-drawer append-to-body title="标签"  :visible.sync="tagSelectVisible" size="60%">
-			<tag-mng :tagIds="editForm.tagIds?editForm.tagIds.split(','):[]" :jump="true" @select-confirm="onTagSelected">
+			<tag-mng v-if="tagSelectVisible" :tagIds="editForm.tagIds?editForm.tagIds.split(','):[]" :jump="true" @select-confirm="onTagSelected">
 			</tag-mng>
 		</el-drawer>
 		
 		<el-drawer title="选择新的上级计划" append-to-body :visible.sync="selectParentPlanVisible" size="60%">
-		<xm-phase-select :sel-project="xmProject"   @select="onSelectedParentTask"></xm-phase-select>
+		<xm-phase-select v-if="selectParentPlanVisible" :sel-project="xmProjectCpd"   @select="onSelectedParentTask"></xm-phase-select>
 		</el-drawer>
 
 		<!--编辑 XmTask xm_task界面-->
 		<el-dialog
-			title="编辑任务"
+			title="上级任务明细"
 			:visible.sync="parentPlanVisible" 
 			fullscreen
 			append-to-body
 			:close-on-click-modal="false"
 			>
 			<xm-task-edit
-				:xm-project="{id:editForm.projectId,name:editForm.projectName}"
+				:xm-project="xmProjectCpd"
 				:xm-task="{id:editForm.parentTaskid,name:editForm.parentTaskname}"
 				:visible="parentPlanVisible"
 				:reload="true"
@@ -636,10 +636,29 @@
 					}
 					
 				} 
+			},
+			xmProjectCpd(){
+				if(this.xmProject && this.xmProject.id){
+					return this.xmProject
+				} 
+				if(this.xmTask.projectId){
+					return {id:this.xmTask.projectId,name:this.xmTask.projectName}
+				}
+				return null;
+			},
+			
+			xmProductCpd(){
+				if(this.xmTask && this.xmTask.id && this.xmTask.productId){
+					return {id:this.xmTask.productId,productName:this.xmTask.productName}
+				} 
+				if(this.xmIteration && this.xmIteration.id){
+					return {id:this.xmIteration.productId,productName:this.xmIteration.productName}
+				}
+				return null;
 			}
 
 		},
-		props:['xmTask','visible','xmProject',"parentTask",'xmIteration'],
+		props:['xmTask','visible','xmProject','xmIteration'],
 		watch: {
 			'xmTask':function( xmTask ) {  
 			},

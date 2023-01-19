@@ -28,7 +28,7 @@
 							<el-col :span="8"> 
 								<mdp-field-x v-model="addForm.parentTaskname" label="上级计划" icon="el-icon-time" color="#E6A23C">
 									<el-button slot="oper"
-										@click="selectParentTaskVisible=true"  
+										@click="toSelectParent"  
 										title="更换任务的上级，实现任务搬家功能"
 										icon="el-icon-upload2" 
 									> 选择新的上级</el-button> 
@@ -47,7 +47,7 @@
 						<el-row class="padding">
 							
 							<el-col :span="8">  
-									<mdp-select-user-xm  label="负责人" v-model="addForm" userid-key="createUserid" username-key="createUsername" @change="editXmTaskSomeFields(addForm,'createUserid',$event)"></mdp-select-user-xm> 
+									<mdp-select-user-xm  label="负责人" v-model="addForm" userid-key="createUserid" username-key="createUsername" :project-id="addForm.projectId?addForm.projectId:(xmProjectCpd?xmProjectCpd.id:null)" @change="editXmTaskSomeFields(addForm,'createUserid',$event)"></mdp-select-user-xm> 
  							</el-col>   
 							<el-col :span="8">  
 										<mdp-date-range-x
@@ -211,24 +211,21 @@
 					<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">提交</el-button>
 				</el-row> 
 			</el-form>
-		</el-row>
-		<el-drawer append-to-body title="选择负责人" :visible.sync="groupUserSelectVisible" size="60%"    :close-on-click-modal="false">
-			<xm-group-select v-if="groupUserSelectVisible" :visible="groupUserSelectVisible" :sel-project="addForm.projectId?{id:addForm.projectId,name:addForm.projectName}:xmProjectCpd" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-group-select>
-		</el-drawer>
+		</el-row> 
 		<el-drawer append-to-body title="新增技能" :visible.sync="skillVisible" size="60%"    :close-on-click-modal="false">
 			<skill-mng  v-if="skillVisible" :task-skills="taskSkills" :jump="true" @select-confirm="onTaskSkillsSelected"></skill-mng>
 		</el-drawer>
 
 		<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible" size="60%"   :close-on-click-modal="false">
-			<xm-menu-select v-if="menuVisible" :is-select-menu="true"  @selected="onMenuSelected" :sel-project="addForm.projectId?{id:addForm.projectId,name:addForm.projectName}:xmProjectCpd" :xm-product="xmProduct" :xm-iteration="xmIteration"></xm-menu-select>
+			<xm-menu-select v-if="menuVisible" :is-select-menu="true"  @selected="onMenuSelected" :sel-project="addForm.projectId?{id:addForm.projectId,name:addForm.projectName}:xmProjectCpd" :xm-product="xmProductCpd" :xm-iteration="xmIteration"></xm-menu-select>
 		</el-drawer> 
 
 		<el-drawer title="选中任务" :visible.sync="selectTaskVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
-			<xm-task-list  v-if="selectTaskVisible"  check-scope="task" query-scope="planTask" :sel-project="addForm.projectId?{id:addForm.projectId,name:addForm.projectName}:xmProjectCpd" :xm-product="xmProduct" :ptype="addForm.ptype"  @task-selected="onSelectedTask"></xm-task-list>
+			<xm-task-list  v-if="selectTaskVisible"  check-scope="task" query-scope="planTask" :sel-project="addForm.projectId?{id:addForm.projectId,name:addForm.projectName}:xmProjectCpd" :xm-product="xmProductCpd" :ptype="addForm.ptype"  @task-selected="onSelectedTask"></xm-task-list>
 		</el-drawer>
 
 		<el-drawer title="选中上级" :visible.sync="selectParentTaskVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
-			<xm-phase-select v-if="selectParentTaskVisible" check-scope="plan" query-scope="plan" :sel-project="addForm.projectId?{id:addForm.projectId,name:addForm.projectName}:xmProjectCpd" :xm-product="xmProduct" :ptype="addForm.ptype"   @select="onSelectedParentTask"></xm-phase-select>
+			<xm-phase-select v-if="selectParentTaskVisible" check-scope="plan" query-scope="plan" :sel-project="addForm.projectId?{id:addForm.projectId,name:addForm.projectName}:xmProjectCpd" :xm-product="xmProductCpd" :ptype="addForm.ptype"   @select="onSelectedParentTask"></xm-phase-select>
 		</el-drawer>
 		<el-drawer append-to-body title="需求明细" :visible.sync="menuDetailVisible" size="60%"    :close-on-click-modal="false">
 			<xm-menu-rich-detail v-if="menuDetailVisible" :visible="menuDetailVisible"  :reload="true" :xm-menu="{menuId:addForm.menuId,menuName:addForm.menuName}" ></xm-menu-rich-detail>
@@ -248,8 +245,7 @@
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
 	import XmPhaseSelect from './XmPhaseSelect';
 	import XmTaskList from '../xmTask/XmTaskList';
-	import XmGroupSelect from '../xmGroup/XmGroupSelect.vue'; 
-	import MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm'
+ 	import MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm'
 	import XmProjectSelect from "@/views/xm/core/components/XmProjectSelect";
 	export default {
 		computed: {
@@ -281,6 +277,23 @@
 				if(this.parentTask && this.parentTask.id && this.parentTask.projectId){
 					 return {id:this.parentTask.projectId,name:this.parentTask.projectName}
 				} 
+				if(this.xmTask.projectId){
+					return {id:this.xmTask.projectId,name:this.xmTask.projectName}
+				}
+				return null;
+			},
+			
+			xmProductCpd(){
+				if(this.xmProduct && this.xmProduct.id){
+					return this.xmProduct
+				}
+				if(this.xmIteration && this.xmIteration.id){
+					 return {id:this.xmIteration.productName,productName:this.xmIteration.productName}
+				} 
+				
+				if(this.xmTask.productId){
+					return {id:this.xmTask.productId,productName:this.xmTask.productName}
+				}
 				return null;
 			}
 		},
@@ -361,16 +374,19 @@
 							return;
 						}
 					}
+					/**
+					if(!this.addForm.parentTaskid){
+						this.$notify({position:'bottom-left',showClose:true,message:'请选择上级计划',type: 'error'})
+						return;
+					}
+					 */
 				}
 				if(!this.addForm.projectId){
 					this.$notify({position:'bottom-left',showClose:true,message:'请选择项目',type: 'error'})
 					return;
 				}
 				
-				if(!this.addForm.parentTaskid){
-					this.$notify({position:'bottom-left',showClose:true,message:'请选择上级计划',type: 'error'})
-					return;
-				}
+
 				
 				this.$refs.addForm.validate((valid) => {
 					if (valid) {
@@ -410,7 +426,13 @@
 			},
 			/**begin 在下面加自定义方法,记得补上面的一个逗号**/
 
-
+			toSelectParent(){
+				if(!this.addForm.projectId && !this.xmProjectCpd){
+					this.$notify({position:'bottom-left',showClose:true,message:"请先选择归属项目", type: 'error' });
+					return;
+				}
+				this.selectParentTaskVisible=true
+			},
 			showSkill(){
 				this.skillVisible = true;
 			},
@@ -550,36 +572,7 @@
 
 				})
 			},
-			/**end 在上面加自定义方法**/
-
-			showGroupUserSelect:function(){
-				this.groupUserSelectVisible=true;
-			},
-			groupUserSelectConfirm:function(users){
-				if( users==null || users.length==0 ){
-					this.addForm.createUserid=""
-					this.createUsername=""
-					this.groupUserSelectVisible=false;
-					return
-				}
-				this.addForm.createUserid=users[0].userid
-				this.addForm.createUsername=users[0].username 
-				this.groupUserSelectVisible=false;
-				 
-			},
-			
-			
-			execGroupUserSelectConfirm:function(users){
-				if( users==null || users.length==0 ){
-					this.execGroupUserSelectVisible=false; 
-					this.addForm.executorUserid='';
-					this.addForm.executorUsername=''
-					return
-				}
-				this.addForm.executorUserid=users[0].userid
-				this.addForm.executorUsername=users[0].username 
-				this.execGroupUserSelectVisible=false; 
-			},
+			/**end 在上面加自定义方法**/    
 			initData(){
 				this.addForm={...this.addFormInit}
 				if(this.parentTask && this.parentTask.id){
@@ -674,7 +667,7 @@
 		},//end method
 		components: {
  			xmSkillMng,
-			skillMng,xmMenuSelect,XmTaskList,XmGroupSelect,MdpSelectUserXm,XmPhaseSelect,XmProjectSelect
+			skillMng,xmMenuSelect,XmTaskList,MdpSelectUserXm,XmPhaseSelect,XmProjectSelect
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},
 		mounted() { 
