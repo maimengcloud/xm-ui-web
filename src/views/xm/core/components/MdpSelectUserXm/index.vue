@@ -23,7 +23,10 @@
                       <el-select v-model="myVal" @change="onSelectChange" :clearable="clearable" filterable value-key="userid" @visible-change="$emit('visible-change',$event)" @focus="$emit('focus',$event)" @blur="$emit('blur',$event)" @clear="$emit('blur',$event)" @click="$emit('click',$event)">  
                             
                             <el-option :value="myVal" disabled v-if="users && users.length>10">
-                                <el-row ><el-button v-if="users && users.length>0" :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button><el-button v-if="projectId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button> </el-row>
+                                <el-row ><el-button v-if="users && users.length>0" :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button>
+                                  <el-button v-if="projectId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button> 
+                                  <el-button v-if="productId" :type="productVisible?'primary':''"  @click.stop="productVisible=true">产品组</el-button> 
+                                </el-row>
                             </el-option>
                             <el-option class="avatar-container" v-for="(item,index) in users" :key="index" :value="item" :label="item.username">  
                             
@@ -45,12 +48,15 @@
                   </div>
 						</div> 
             <el-dialog v-if="disabled!==true" :visible.sync="deptUserVisible" append-to-body top="20px" width="60%">
-               <users-select :visible="deptUserVisible" :isSingleUser="true"  :isSelectByDept="true" @confirm="onConfirmUsers"></users-select>
+               <users-select :visible="deptUserVisible" :isSingleUser="true"  :isSelectByDept="true" @confirm="onTeamUsersConfirm"></users-select>
             </el-dialog>
             
             <el-dialog v-if="disabled!==true" :visible.sync="projectVisible" append-to-body top="20px" width="60%">
-               <xm-group-select :sel-project="{id:projectId}" :xm-product="{id:productId}" :isSelectSingleUser="true" @user-confirm="onProjectUsersConfirm"></xm-group-select>
-            </el-dialog>
+               <xm-group-select-for-project :sel-project="projectId?{id:projectId}:null" :isSelectSingleUser="true" @user-confirm="onTeamUsersConfirm"></xm-group-select-for-project>
+            </el-dialog> 
+            <el-dialog v-if="disabled!==true" :visible.sync="projectVisible" append-to-body top="20px" width="60%">
+               <xm-group-select-for-product :xm-product="productId?{id:productId}:null" :isSelectSingleUser="true" @user-confirm="onTeamUsersConfirm"></xm-group-select-for-product>
+            </el-dialog> 
     </el-row>
   </template>
   
@@ -58,13 +64,14 @@
   
   import util  from '@/common/js/util';//全局公共库
   import UsersSelect from '@/views/mdp/sys/user/UsersSelectOnly.vue'
-  import XmGroupSelect from '@/views/xm/core/xmGroup/XmGroupSelect.vue'
+  import XmGroupSelectForProject from '@/views/xm/core/xmGroup/XmGroupSelectForProject.vue'
+  import XmGroupSelectForProduct from '@/views/xm/core/xmGroup/XmGroupSelectForProduct.vue'
   var us=localStorage.getItem("mdp-his-users") 
   import imtUtil  from '@/api/imgUtil';//全局公共库
   var users=us?JSON.parse(us):[] 
   export default {
     name: 'mdp-select-user-xm',
-    components: { UsersSelect, XmGroupSelect },
+    components: { UsersSelect, XmGroupSelectForProject,XmGroupSelectForProduct },
     computed: { 
       avaterCpd(){  
         
@@ -108,6 +115,7 @@
             users:[],
             deptUserVisible:false,
             projectVisible:false,
+            productVisible:false,
         }
     },
     watch:{ 
@@ -237,25 +245,11 @@
         onChange(data){   
           this.$emit('change',data)
         },
-        onProjectUsersConfirm(users){
+        onTeamUsersConfirm(users){
           this.onChange(users)
           this.myVal=users[0]
           this.projectVisible=false;
-          var notHad=false;
-           users.forEach(u=>{
-					 if(!this.users.some(k=>k.userid==u.userid)){
-						 notHad=true;
-						 this.users.unshift(u)
-					 }
-				 })
-				 if(notHad){ 
-					 var us=JSON.stringify(this.users)
-				 	localStorage.setItem("mdp-his-users",us)
-				 }
-        },
-        onConfirmUsers(users){ 
-          this.onChange(users)
-          this.myVal=users[0]
+          this.productVisible=false; 
           this.deptUserVisible=false;
           var notHad=false;
            users.forEach(u=>{
@@ -268,7 +262,8 @@
 					 var us=JSON.stringify(this.users)
 				 	localStorage.setItem("mdp-his-users",us)
 				 }
-        }
+        },
+         
     },
     mounted(){  
 			this.users=users

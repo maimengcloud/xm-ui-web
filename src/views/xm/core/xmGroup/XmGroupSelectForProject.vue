@@ -40,8 +40,7 @@
    	import {  getGroups } from '@/api/xm/core/xmGroup';
    	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
 
-	import {mapGetters} from 'vuex' 
-import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
+	import {mapGetters} from 'vuex'  
 
 	export default {
 		computed: {
@@ -50,7 +49,7 @@ import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 			])
 		},
 		//
-		props: ['visible','selProject','isSelectSingleUser','isSelectMultiUser','xmProduct'],
+		props: ['visible','selProject','isSelectSingleUser','isSelectMultiUser'],
 		watch: {
 			"selGroups": function(selGroups) {
 				if(this.selGroups){
@@ -80,8 +79,7 @@ import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 			return { 
 				filters: {
 					key: '',
-					selProject:null,
-					xmProduct:null,
+					selProject:null, 
 				},
 				selGroups:[],
 				load: {list: false,edit: false,del: false,add: false}, //查询中...
@@ -92,8 +90,7 @@ import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 
 				/**begin 自定义属性请在下面加 请加备注**/
 				xmGroupFormworkSels: [],
-				selectProjectVisible:false,
-				selectProductVisible:false,
+				selectProjectVisible:false, 
 				maxTableHeight:300,
   				/**end 自定义属性请在上面加 请加备注**/
 			}
@@ -158,8 +155,7 @@ import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 			},
 			
 			onProjectRowClick:function(project){
-				this.filters.selProject=project
-				this.filters.xmProduct=null;
+				this.filters.selProject=project 
 				this.selectProjectVisible=false;
 				this.getGroups();
 			}, 
@@ -172,7 +168,7 @@ import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 		}, //end methods
 		components: {
 			
-			XmProjectSelect,XmProductSelect			 
+			XmProjectSelect  
 		},
 		mounted() {
 			this.$nextTick(() => { 
