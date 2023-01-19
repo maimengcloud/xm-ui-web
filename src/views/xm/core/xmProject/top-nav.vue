@@ -21,11 +21,11 @@
           >
             <font v-if="projectInfo.name.length >= 15"
               ><strong
-                >&nbsp;<el-avatar class="top-icon" icon="el-icon-odometer" style="background-color:#E6A23C"></el-avatar>&nbsp;项目:&nbsp;{{ projectInfo.name.substring(0, 15) }}</strong
+                >&nbsp;<el-avatar class="top-icon" style="background-color:#E6A23C">项目</el-avatar> {{ projectInfo.name.substring(0, 15) }}</strong
               ></font
             >
             <font type="danger" v-else
-              ><strong>&nbsp;<el-avatar class="top-icon" icon="el-icon-odometer" style="background-color:#E6A23C"></el-avatar>&nbsp;项目:&nbsp;{{ projectInfo.name }}</strong></font
+              ><strong>&nbsp;<el-avatar class="top-icon" style="background-color:#E6A23C">项目</el-avatar> {{ projectInfo.name }}</strong></font
             >
           </span>
 
@@ -36,10 +36,10 @@
             :title="projectInfo.name"
           >
             <font v-if="projectInfo.name.length >= 15"
-              >&nbsp;<el-avatar class="top-icon" icon="el-icon-odometer" style="background-color:#E6A23C"></el-avatar>&nbsp;项目:&nbsp;{{ projectInfo.name.substring(0, 15) }}</font
+              >&nbsp;<el-avatar class="top-icon" style="background-color:#E6A23C">项目</el-avatar>{{ projectInfo.name.substring(0, 15) }}</font
             >
             <font type="danger" v-else
-              >&nbsp;<el-avatar class="top-icon" icon="el-icon-odometer" style="background-color:#E6A23C"></el-avatar>&nbsp;项目:&nbsp;{{ projectInfo.name }}</font
+              >&nbsp;<el-avatar class="top-icon" style="background-color:#E6A23C">项目</el-avatar>{{ projectInfo.name }}</font
             >
           </span>
         </el-menu-item>

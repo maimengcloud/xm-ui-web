@@ -8,9 +8,8 @@
 					 
 					<span v-if="opType=='add'">
 					 	<xm-project-select v-if="!selProject || !selProject.id" ref="xmProjectSelect" :link-product-id="xmTestCasedb? xmTestCasedb.productId:null"  @row-click="onPorjectConfirm" :auto-select="false">
-							<span slot="title">选择项目</span>
+							
 						</xm-project-select>
-						<div v-else>{{editForm.projectName}}</div>
 					</span> 
  					<div v-else>{{editForm.projectName}}</div>
 				</el-form-item>  
