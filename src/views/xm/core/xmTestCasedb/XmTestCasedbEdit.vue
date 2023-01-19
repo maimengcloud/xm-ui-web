@@ -18,7 +18,7 @@
 				<el-row class="padding">
 					<el-col :span="8">
 						<el-form-item prop="cuserid" label-width="0px">
-							<mdp-select-user-xm label="负责人" userid-key="cuserid" username-key="cusername" v-model="editForm" @change="editSomeFields(editForm,'cuserid',$event)"></mdp-select-user-xm>
+							<mdp-select-user-xm label="负责人" userid-key="cuserid" username-key="cusername" v-model="editForm" @change="editSomeFields(editForm,'cuserid',$event)" :product-id="editForm.productId" :project-id="selProject?selProject.id:null"></mdp-select-user-xm>
 						</el-form-item>  
 					</el-col>
 					<el-col :span="8">

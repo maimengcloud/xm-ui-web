@@ -39,7 +39,7 @@
 									<mdp-select-dict-x label="状态" :dict="dicts['testCaseStatus']" v-model="editForm.caseStatus"  @change="editSomeFields(editForm,'caseStatus',$event)"></mdp-select-dict-x> 
 								</el-col> 
 								<el-col :span="6"> 
-									 <mdp-select-user-xm label="维护人" userid-key="luserid" username-key="lusername" v-model="editForm" @change="editSomeFields(editForm,'luserid',$event)"></mdp-select-user-xm>
+									 <mdp-select-user-xm label="维护人" userid-key="luserid" username-key="lusername" v-model="editForm" @change="editSomeFields(editForm,'luserid',$event)" :product-id="editForm.productId"></mdp-select-user-xm>
  
 								</el-col>  
 								<el-col :span="6">  

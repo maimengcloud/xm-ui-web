@@ -66,10 +66,13 @@
 			},
 			'visible': function(visible) {
 				if (visible == true) {
-					
+					if(this.selProject && this.projectOld!=this.selProject.id){
+						 this.getGroups();
+					}
 				}
 			},
-			selProject(selProject){
+			selProject(selProject){ 
+				this.projectOld=this.filters.selProject?this.filters.selProject.id:null
 				this.filters.selProject=selProject
 			}, 
  
@@ -77,6 +80,8 @@
 
 		data() {
 			return { 
+				
+				oldProjectId:null,
 				filters: {
 					key: '',
 					selProject:null, 

@@ -20,7 +20,7 @@
 				  </el-form-item>
 				<el-row class="padding">
 					<el-col :span="8">
-						<mdp-select-user-xm label="负责人" userid-key="cuserid" username-key="cusername" v-model="editForm" @change="editSomeFields(editForm,'cuserid',$event)"></mdp-select-user-xm>
+						<mdp-select-user-xm label="负责人" userid-key="cuserid" username-key="cusername" v-model="editForm" :project-id="editForm.projectId" :product-id="editForm.productId" @change="editSomeFields(editForm,'cuserid',$event)"></mdp-select-user-xm>
 					</el-col>
 					<el-col :span="8">
 						<mdp-select-dict-x label="状态" :dict="dicts['testPlanStatus']" v-model="editForm.status"  @change="editSomeFields(editForm,'status',$event)"></mdp-select-dict-x>

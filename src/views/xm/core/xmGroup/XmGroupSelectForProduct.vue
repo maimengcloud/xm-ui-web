@@ -66,10 +66,13 @@
 			},
 			'visible': function(visible) {
 				if (visible == true) {
-					
+					if(this.xmProduct && this.projectOld!=this.xmProduct.id){
+						 this.getGroups();
+					}
 				}
 			},
 			xmProduct(xmProduct){
+				this.oldProductId=xmProduct?xmProduct.id:null
 				this.filters.xmProduct=xmProduct
 			}, 
  
@@ -77,6 +80,7 @@
 
 		data() {
 			return { 
+				oldProductId:null,
 				filters: {
 					key: '', 
 					xmProduct:null,

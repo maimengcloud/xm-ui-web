@@ -69,12 +69,12 @@
 		<el-row>
 			<!--编辑 XmTestPlan 测试计划界面-->
 			<el-drawer title="编辑测试计划" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
-			    <xm-test-plan-edit op-type="edit" :xm-test-plan="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @edit-fields="onEditFields"></xm-test-plan-edit>
+			    <xm-test-plan-edit op-type="edit" :xm-test-plan="editForm" :xm-test-casedb="xmTestCasedb" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @edit-fields="onEditFields"></xm-test-plan-edit>
 			</el-drawer>
 
 			<!--新增 XmTestPlan 测试计划界面-->
 			<el-drawer title="新增测试计划" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
-			    <xm-test-plan-edit op-type="add" :xm-test-plan="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-test-plan-edit>
+			    <xm-test-plan-edit op-type="add" :xm-test-plan="addForm" :xm-test-casedb="xmTestCasedb" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-test-plan-edit>
 			</el-drawer>
 	    </el-row>
 	</section>
