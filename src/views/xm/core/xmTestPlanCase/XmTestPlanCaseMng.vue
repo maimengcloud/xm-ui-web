@@ -106,7 +106,7 @@ export default {
     props:['visible','xmTestPlan','xmTestCasedb','xmTestCase','xmProduct','select'],
     computed: {
         ...mapGetters(['userInfo']),
-        xmProductCpd(){
+        xmProductCpd(){ 
             if(this.xmProduct&& this.xmProduct.id){
                 return this.xmProduct
             }
@@ -227,6 +227,9 @@ export default {
             }
             if(this.filters.xmFunc && this.filters.xmFunc.id){
                 params.funcPidPathsLike=this.filters.xmFunc.pidPaths
+            }
+            if(this.xmProductCpd && this.xmProductCpd.id){
+                params.productId=this.xmProductCpd.id
             }
 
             this.load.list = true;

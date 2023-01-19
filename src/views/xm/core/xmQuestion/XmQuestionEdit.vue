@@ -9,20 +9,25 @@
 								{{editForm.projectId}}
 							</el-form-item>
 							<el-form-item label="归属产品" prop="productId">
-								{{editForm.productId}}
+								<span v-if="editForm.productId">{{editForm.productId}}</span> 
+								<span v-if="!xmProductCpd || !xmProductCpd.id">						
+									<xm-product-select ref="xmProductSelect1"   style="display:inline;"  :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="onProductClearSelect" ></xm-product-select>
+								</span>
 							</el-form-item>
-							<el-form-item label="关联用例" prop="caseId">
-								<span>{{editForm.caseName?editForm.caseName:'无'}} <el-button type="text" @click="caseVisible=true">选择用例</el-button></span>
-							</el-form-item>
-							<el-form-item label="归属模块" prop="funcId">
-								<span>{{editForm.funcName?editForm.funcName:'无'}} <el-button type="text" @click="funcVisible=true">选择模块</el-button></span>
-							</el-form-item>
-							<el-form-item label="归属需求" prop="menuId">  
-								<el-tag title="隶属需求" style="width:100%;" closable @click="showSelectMenu" @close.stop="handleCloseMenuTag">
-								<div class="icon" :style="{backgroundColor:   'rgb(79, 140, 255)' }">
-									<i :class="  'el-icon-document'  " ></i>
-								</div> {{editForm.menuName?editForm.menuName:"未关联需求"}}</el-tag> 
-							</el-form-item>
+							<span v-if="editForm.productId">
+								<el-form-item label="关联用例" prop="caseId">
+									<span>{{editForm.caseName?editForm.caseName:'无'}} <el-button type="text" @click="caseVisible=true">选择用例</el-button></span>
+								</el-form-item>
+								<el-form-item label="归属模块" prop="funcId">
+									<span>{{editForm.funcName?editForm.funcName:'无'}} <el-button type="text" @click="funcVisible=true">选择模块</el-button></span>
+								</el-form-item>
+								<el-form-item label="归属需求" prop="menuId">  
+									<el-tag title="隶属需求" style="width:100%;" closable @click="showSelectMenu" @close.stop="handleCloseMenuTag">
+									<div class="icon" :style="{backgroundColor:   'rgb(79, 140, 255)' }">
+										<i :class="  'el-icon-document'  " ></i>
+									</div> {{editForm.menuName?editForm.menuName:"未关联需求"}}</el-tag> 
+								</el-form-item>
+							</span>
 						</el-row>
 						
 						<el-row class="padding border">
@@ -182,7 +187,7 @@
 				</el-drawer>
 
 				<el-drawer append-to-body title="需求选择" :visible.sync="selectMenuVisible"   size="60%"   :close-on-click-modal="false">
-					<xm-menu-select :xm-product="xmProduct" :xm-iteration="xmIteration" :visible="selectMenuVisible" :is-select-menu="true" checkScope="3"  @selected="onSelectedMenu" :sel-project="selProject"></xm-menu-select>
+					<xm-menu-select :xm-product="editForm.productId?{id:editForm.productId,productName:editForm.productName}:xmProductCpd" :xm-iteration="xmIteration" :visible="selectMenuVisible" :is-select-menu="true" checkScope="3"  @selected="onSelectedMenu" :sel-project="selProject"></xm-menu-select>
 				</el-drawer>
 			</el-row>  
 			<el-drawer append-to-body title="标签" :visible.sync="tagSelectVisible" class="dialog-body" size="60%">
@@ -191,11 +196,11 @@
 			</el-drawer>
 			
 			<el-dialog append-to-body title="模块选择"  :visible.sync="funcVisible" width="60%" top="20px"  :close-on-click-modal="false">
-				<xm-func-select  @row-click="onFuncSelected" :xm-product="{id:editForm.productId}"></xm-func-select>
+				<xm-func-select  @row-click="onFuncSelected" :xm-product="editForm.productId?{id:editForm.productId,productName:editForm.productName}:xmProductCpd"></xm-func-select>
 			</el-dialog>
 			
 			<el-dialog append-to-body title="执行用例选择"  :visible.sync="caseVisible" width="80%" top="20px"  :close-on-click-modal="false">
-				<xm-test-plan-case-mng :select="true" :visible="caseVisible" :xm-test-plan="xmTestPlan" :xm-product="editForm.productId?{id:editForm.productId,productName:editForm.productName}:null" @select="onTestPlanCaseSelected" ></xm-test-plan-case-mng>
+				<xm-test-plan-case-mng :select="true" :visible="caseVisible" :xm-test-plan="xmTestPlan" :xm-product="editForm.productId?{id:editForm.productId,productName:editForm.productName}:xmProductCpd" @select="onTestPlanCaseSelected" ></xm-test-plan-case-mng>
 			</el-dialog>
 	</section>
 </template>
@@ -222,6 +227,7 @@
 	import MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm/index'
 	import TestStepConfig from '../xmTestCase/TestStepConfig.vue';
 	import TestStepResult from '../xmTestPlanCase/TestStepResult.vue';
+	import XmProductSelect from '@/views/xm/core/components/XmProductSelect'
 	export default {
 		computed: {
 			...mapGetters([
@@ -242,7 +248,32 @@
 					return 0;
 				}
 				 
-			}
+			},
+			xmProductCpd(){ 
+				if(this.xmQuestion && this.xmQuestion.id && this.xmQuestion.productId){
+					return {id:this.xmQuestion.productId,productName:this.xmQuestion.productName}
+				}
+				if(this.xmProduct&& this.xmProduct.id){
+					return this.xmProduct
+				} 
+				if(this.xmTestPlan && this.xmTestPlan.id){
+					return {id:this.xmTestPlan.productId,productName:this.xmTestPlan.productName}
+				}
+				if(this.xmTestPlanCase && this.xmTestPlanCase.id && this.xmTestPlanCase.productId){
+					return {id:this.xmTestPlanCase.productId,productName:this.xmTestPlanCase.productName}
+				}
+				if(this.xmTestCase && this.xmTestCase.id){
+					return {id:this.xmTestCase.productId,productName:this.xmTestCase.productName}
+				}
+				if(this.xmMenu && this.xmMenu.menuId){
+					return {id:this.xmMenu.productId,productName:this.xmMenu.productName}
+				}
+				
+				if(this.xmIteration && this.xmIteration.id){
+					return {id:this.xmIteration.productId,productName:this.xmIteration.productName}
+				}
+				return null
+        }
 		},
 		props:['xmQuestion','visible',"selProject",'opType','xmProduct','xmTestCase','xmTestPlanCase','xmMenu','xmIteration','xmTestPlan'],
 		watch: {
@@ -626,12 +657,12 @@
 						this.editForm.menuId=this.xmMenu.menuId
 						this.editForm.menuName=this.xmMenu.menuName
 						if(this.xmMenu.productId){
-							this.editForm.productId=this.xmMenu.id
+							this.editForm.productId=this.xmMenu.productId
 							this.editForm.productName=this.xmMenu.productName
 						}
 						if(this.xmMenu.funcId){ 
-							this.editForm.funcId=this.xmTestPlanCase.funcId
-							this.editForm.funcName=this.xmTestPlanCase.funcName 
+							this.editForm.funcId=this.xmMenu.funcId
+							this.editForm.funcName=this.xmMenu.funcName 
 						}
 					}
 				}else{
@@ -657,13 +688,21 @@
 				Object.assign(this.editForm,params)
 				this.editXmQuestionSomeFields(this.editForm,"caseId",params)
 				this.caseVisible=false;
-			}
+			},
+			onProductSelected(product){
+				this.editForm.productId=product.id
+				this.editForm.productName=product.productName
+			},
+			onProductClearSelect(){ 
+				this.editForm.productId=""
+				this.editForm.productName=""
+			} 
 		},//end method
 		components: {
 				//在下面添加其它组件 'xm-question-edit':XmQuestionEdit
-				'upload': AttachmentUpload,XmGroupMng,VueEditor,XmTaskList,xmMenuSelect,XmQuestionHandleMng,TagMng,XmProjectSelect,
+				'upload': AttachmentUpload,XmGroupMng,VueEditor,XmTaskList,xmMenuSelect,XmQuestionHandleMng,TagMng,XmProjectSelect,XmProductSelect,
 			XmMyDoFocus,XmFuncSelect,MdpSelectUserXm,TestStepConfig,TestStepResult,
-			xmTestPlanCaseMng:()=>import('../xmTestPlanCase/XmTestPlanCaseMng'),
+			xmTestPlanCaseMng:()=>import('../xmTestPlanCase/XmTestPlanCaseSelect'),
 			'xm-workload-record':()=>import("../xmWorkload/XmWorkloadRecord"),
 		},
 		mounted() { 

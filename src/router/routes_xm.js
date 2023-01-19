@@ -555,6 +555,7 @@ export default {
         title: '测试管理',
         icon: 'bug'
       },
+      hidden:true,
       // leaf: true,//只有一个节点
       children: [
 
