@@ -12,10 +12,15 @@
 						{{addForm.ntype==='0'?'任务名称':'计划名称'}}
 						</template>
 							<el-input v-model="addForm.name" placeholder="名称" ></el-input>   
-							<span class="label-font-color"> 
+							<span class="label-font-color" v-if="xmProjectCpd && xmProjectCpd.id"> 
   									<span>归属项目：{{addForm.projectName?addForm.projectName:''}}{{addForm.projectId?'('+addForm.projectId+')':''}} &nbsp;&nbsp;</span>
  									<span v-if="addForm.productId">归属产品：{{addForm.productId?addForm.productId:''}}  </span>
-						</span>
+							</span>
+							
+							<span class="label-font-color" v-if="!xmProjectCpd || !xmProjectCpd.id"> 
+								<span>归属项目：</span><xm-project-select style="display:inline;"  :auto-select="false"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
+								<span v-if="addForm.productId">归属产品：{{addForm.productId?addForm.productId:''}}  </span> 
+							</span>
 					</el-form-item>    
 						
 						
@@ -208,28 +213,25 @@
 			</el-form>
 		</el-row>
 		<el-drawer append-to-body title="选择负责人" :visible.sync="groupUserSelectVisible" size="60%"    :close-on-click-modal="false">
-			<xm-group-select :visible="groupUserSelectVisible" :sel-project="xmProject" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-group-select>
+			<xm-group-select v-if="groupUserSelectVisible" :visible="groupUserSelectVisible" :sel-project="addForm.projectId?{id:addForm.projectId,name:addForm.projectName}:xmProjectCpd" :isSelectSingleUser="1" @user-confirm="groupUserSelectConfirm"></xm-group-select>
 		</el-drawer>
 		<el-drawer append-to-body title="新增技能" :visible.sync="skillVisible" size="60%"    :close-on-click-modal="false">
-			<skill-mng :task-skills="taskSkills" :jump="true" @select-confirm="onTaskSkillsSelected"></skill-mng>
+			<skill-mng  v-if="skillVisible" :task-skills="taskSkills" :jump="true" @select-confirm="onTaskSkillsSelected"></skill-mng>
 		</el-drawer>
 
 		<el-drawer append-to-body title="需求选择" :visible.sync="menuVisible" size="60%"   :close-on-click-modal="false">
-			<xm-menu-select :is-select-menu="true"  @selected="onMenuSelected" :sel-project="xmProject" :xm-product="xmProduct" :xm-iteration="xmIteration"></xm-menu-select>
-		</el-drawer>
-		<el-drawer append-to-body title="选择执行人"  :visible.sync="execGroupUserSelectVisible" size="60%"    :close-on-click-modal="false">
-			<xm-group-select :visible="execGroupUserSelectVisible" :sel-project="xmProject" :isSelectSingleUser="1" @user-confirm="execGroupUserSelectConfirm"></xm-group-select>
-		</el-drawer>
+			<xm-menu-select v-if="menuVisible" :is-select-menu="true"  @selected="onMenuSelected" :sel-project="addForm.projectId?{id:addForm.projectId,name:addForm.projectName}:xmProjectCpd" :xm-product="xmProduct" :xm-iteration="xmIteration"></xm-menu-select>
+		</el-drawer> 
 
 		<el-drawer title="选中任务" :visible.sync="selectTaskVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
-			<xm-task-list  check-scope="task" query-scope="planTask" :sel-project="xmProject" :xm-product="xmProduct" :ptype="addForm.ptype"  @task-selected="onSelectedTask"></xm-task-list>
+			<xm-task-list  v-if="selectTaskVisible"  check-scope="task" query-scope="planTask" :sel-project="addForm.projectId?{id:addForm.projectId,name:addForm.projectName}:xmProjectCpd" :xm-product="xmProduct" :ptype="addForm.ptype"  @task-selected="onSelectedTask"></xm-task-list>
 		</el-drawer>
 
 		<el-drawer title="选中上级" :visible.sync="selectParentTaskVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
-			<xm-phase-select check-scope="plan" query-scope="plan" :sel-project="xmProject" :xm-product="xmProduct" :ptype="addForm.ptype"   @select="onSelectedParentTask"></xm-phase-select>
+			<xm-phase-select v-if="selectParentTaskVisible" check-scope="plan" query-scope="plan" :sel-project="addForm.projectId?{id:addForm.projectId,name:addForm.projectName}:xmProjectCpd" :xm-product="xmProduct" :ptype="addForm.ptype"   @select="onSelectedParentTask"></xm-phase-select>
 		</el-drawer>
 		<el-drawer append-to-body title="需求明细" :visible.sync="menuDetailVisible" size="60%"    :close-on-click-modal="false">
-			<xm-menu-rich-detail :visible="menuDetailVisible"  :reload="true" :xm-menu="{menuId:addForm.menuId,menuName:addForm.menuName}" ></xm-menu-rich-detail>
+			<xm-menu-rich-detail v-if="menuDetailVisible" :visible="menuDetailVisible"  :reload="true" :xm-menu="{menuId:addForm.menuId,menuName:addForm.menuName}" ></xm-menu-rich-detail>
 		</el-drawer>
 	</section>
 </template>
@@ -248,6 +250,7 @@
 	import XmTaskList from '../xmTask/XmTaskList';
 	import XmGroupSelect from '../xmGroup/XmGroupSelect.vue'; 
 	import MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm'
+	import XmProjectSelect from "@/views/xm/core/components/XmProjectSelect";
 	export default {
 		computed: {
 			...mapGetters([
@@ -270,6 +273,15 @@
 						return 5
 					}
 				} 
+			},
+			xmProjectCpd(){
+				if(this.xmProject && this.xmProject.id){
+					return this.xmProject
+				}
+				if(this.parentTask && this.parentTask.id && this.parentTask.projectId){
+					 return {id:this.parentTask.projectId,name:this.parentTask.projectName}
+				} 
+				return null;
 			}
 		},
 		props:['xmTask','visible','xmProject','xmProduct',"parentTask","ptype",'xmIteration'],
@@ -636,10 +648,19 @@
 			toMenu(){
 				this.menuDetailVisible=true
 			},
+			
+			onProjectRowClick: function (project) { 
+				this.addForm.projectId=project.id
+				this.addForm.projectName=project.name
+			},
+			onProjectClear(){ 
+				this.addForm.projectId=""
+				this.addForm.projectName=""
+			},
 		},//end method
 		components: {
  			xmSkillMng,
-			skillMng,xmMenuSelect,XmTaskList,XmGroupSelect,MdpSelectUserXm,XmPhaseSelect
+			skillMng,xmMenuSelect,XmTaskList,XmGroupSelect,MdpSelectUserXm,XmPhaseSelect,XmProjectSelect
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},
 		mounted() { 

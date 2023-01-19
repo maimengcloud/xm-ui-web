@@ -268,7 +268,12 @@ XmTaskExecuserSelect,
 					topdata.assUserid=this.filters.selProject.assUserid
 					topdata.assUsername=this.filters.selProject.assUsername
 				}else if(this.xmProduct && this.xmProduct.id){
-					topLabel=this.xmProduct.productName+"-产品组织架构"
+					
+					if(this.xmProduct.productName){
+						topLabel=this.xmProduct.productName+"-产品组织架构"
+					}else{
+						topLabel=this.xmProduct.id+"-产品组织架构"
+					}
 					currNodeType='product'
 					topdata=this.xmProduct
 					topdata.leaderUserid=this.xmProduct.pmUserid

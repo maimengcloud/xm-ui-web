@@ -180,14 +180,14 @@
 					</el-row>
 				</el-form>
 				<el-drawer title="选中用户" :visible.sync="selectUserVisible"  size="70%"  append-to-body   :close-on-click-modal="false">
-					<xm-group-mng  :sel-project="selProject" :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-mng>
+					<xm-group-mng  v-if="selectUserVisible"   :sel-project="selProject" :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-mng>
 				</el-drawer>
 				<el-drawer title="选中任务" :visible.sync="selectTaskVisible"  size="70%"    append-to-body   :close-on-click-modal="false">
-					<xm-task-list  :sel-project="selProject"   @task-selected="onSelectedTask"></xm-task-list>
+					<xm-task-list  v-if="selectTaskVisible"   :sel-project="selProject"   @task-selected="onSelectedTask"></xm-task-list>
 				</el-drawer>
 
 				<el-drawer append-to-body title="需求选择" :visible.sync="selectMenuVisible"   size="60%"   :close-on-click-modal="false">
-					<xm-menu-select :xm-product="editForm.productId?{id:editForm.productId,productName:editForm.productName}:xmProductCpd" :xm-iteration="xmIteration" :visible="selectMenuVisible" :is-select-menu="true" checkScope="3"  @selected="onSelectedMenu" :sel-project="selProject"></xm-menu-select>
+					<xm-menu-select v-if="selectMenuVisible" :xm-product="editForm.productId?{id:editForm.productId,productName:editForm.productName}:xmProductCpd" :xm-iteration="xmIteration" :visible="selectMenuVisible" :is-select-menu="true" checkScope="3"  @selected="onSelectedMenu" :sel-project="selProject"></xm-menu-select>
 				</el-drawer>
 			</el-row>  
 			<el-drawer append-to-body title="标签" :visible.sync="tagSelectVisible" class="dialog-body" size="60%">
@@ -196,11 +196,11 @@
 			</el-drawer>
 			
 			<el-dialog append-to-body title="模块选择"  :visible.sync="funcVisible" width="60%" top="20px"  :close-on-click-modal="false">
-				<xm-func-select  @row-click="onFuncSelected" :xm-product="editForm.productId?{id:editForm.productId,productName:editForm.productName}:xmProductCpd"></xm-func-select>
+				<xm-func-select v-if="funcVisible"  @row-click="onFuncSelected" :xm-product="editForm.productId?{id:editForm.productId,productName:editForm.productName}:xmProductCpd"></xm-func-select>
 			</el-dialog>
 			
 			<el-dialog append-to-body title="执行用例选择"  :visible.sync="caseVisible" width="80%" top="20px"  :close-on-click-modal="false">
-				<xm-test-plan-case-mng :select="true" :visible="caseVisible" :xm-test-plan="xmTestPlan" :xm-product="editForm.productId?{id:editForm.productId,productName:editForm.productName}:xmProductCpd" @select="onTestPlanCaseSelected" ></xm-test-plan-case-mng>
+				<xm-test-plan-case-mng  v-if="caseVisible" :select="true" :visible="caseVisible" :xm-test-plan="xmTestPlan" :xm-product="editForm.productId?{id:editForm.productId,productName:editForm.productName}:xmProductCpd" @select="onTestPlanCaseSelected" ></xm-test-plan-case-mng>
 			</el-dialog>
 	</section>
 </template>

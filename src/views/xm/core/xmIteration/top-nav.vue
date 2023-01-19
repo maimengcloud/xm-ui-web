@@ -58,12 +58,10 @@
         </el-menu-item>
         <el-menu-item :index="'/xm/core/iteration/question?iterationId='+xmIteration.id">
           <span slot="title"><i class="el-icon-question"></i>缺陷</span>
-        </el-menu-item>
-        <!--
+        </el-menu-item> 
         <el-menu-item :index="'/xm/core/iteration/group?iterationId='+xmIteration.id">
           <span slot="title"><i class="el-icon-user-solid"></i>团队</span>
-        </el-menu-item> 
-        -->
+        </el-menu-item>  
         <el-menu-item :index="'/xm/core/iteration/report?iterationId='+xmIteration.id">
           <span slot="title"><i class="el-icon-s-data"></i>效能</span>
         </el-menu-item> 
