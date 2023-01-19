@@ -38,7 +38,11 @@
                               </div>
                             </el-option> 
                             <el-option :value="myVal" disabled>
-                                <el-row><el-button v-if="users && users.length>0" :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button><el-button v-if="projectId||productId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button> </el-row>
+                                <el-row><el-button v-if="users && users.length>0" :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button>
+                                  <el-button v-if="projectId||productId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button>
+                                  <el-button v-if="productId" :type="productVisible?'primary':''"  @click.stop="productVisible=true">产品组</el-button> 
+
+                                </el-row>
                             </el-option>
                         </el-select> 
                         <slot name="extOper">
