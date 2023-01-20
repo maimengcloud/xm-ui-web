@@ -948,8 +948,8 @@
 					params.executorUserid=$event[0].userid
 					params.executorUsername=$event[0].username
 				}else if(fieldName==='createUserid'){
-					params.createUserid=$event.userid
-					params.createUsername=$event.username
+					params.createUserid=$event[0].userid
+					params.createUsername=$event[0].username
 				}else if(fieldName==='dateRange'){
 					params.startTime=$event.startTime
 					params.endTime=$event.endTime

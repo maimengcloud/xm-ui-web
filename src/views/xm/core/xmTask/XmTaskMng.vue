@@ -2086,7 +2086,7 @@ export default {
             this.$nextTick(()=>{
               Object.assign(this.editForm,this.editFormBak)
             }) 
-						this.$notify({position:'bottom-left',showClose:true,message:'外包任务不允许直接设置执行人，请倒执行人管理中选择',type:'error'})
+						this.$notify({position:'bottom-left',showClose:true,message:'外包任务不允许直接设置执行人，请到执行人管理中选择',type:'error'})
             return;
           }
 					params.executorUserid=$event[0].userid

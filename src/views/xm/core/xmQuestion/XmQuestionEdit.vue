@@ -506,6 +506,9 @@
 			},
 			
 			editXmQuestionSomeFields(row,fieldName,$event){
+				if(this.opType==='add'){
+					return;
+				}
 				var params={ids:[row.id]}; 
 				if(fieldName==='handlerUserid'){
 					if($event){ 	
