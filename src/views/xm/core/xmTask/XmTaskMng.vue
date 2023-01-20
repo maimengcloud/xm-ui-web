@@ -1494,8 +1494,7 @@ export default {
           .catch((err) => (this.load.del = false));
       });
     },
-    rowClick: function (row) {
-      debugger;
+    rowClick: function (row) { 
       this.editForm = row;
       this.editFormBak=Object.assign({},row)
       // this.$emit('row-click',row,);//  @row-click="rowClick"
@@ -2083,6 +2082,13 @@ export default {
 				}else if(fieldName==='workload'){
 					params={...params,...$event}
 				}else if(fieldName==='executorUserid'){
+          if(row.out=='1'||row.crowd=='1'){  
+            this.$nextTick(()=>{
+              Object.assign(this.editForm,this.editFormBak)
+            }) 
+						this.$notify({position:'bottom-left',showClose:true,message:'外包任务不允许直接设置执行人，请倒执行人管理中选择',type:'error'})
+            return;
+          }
 					params.executorUserid=$event[0].userid
 					params.executorUsername=$event[0].username
 				}else if(fieldName==='createUserid'){
