@@ -251,7 +251,7 @@
 							<template>
 							<el-table-column prop="mmUsername" label="跟进人"  min-width="100" show-overflow-tooltip  sortable>
 								<template slot-scope="scope"> 
-									<mdp-select-user-xm v-model="scope.row" userid-key="mmUserid" username-key="mmUsername" :project-id="scope.row.projectId" @change="editXmMenuSomeFields(scope.row,'mmUserid',$event)"></mdp-select-user-xm>
+									<mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)" :value="scope.row" userid-key="mmUserid" username-key="mmUsername" :project-id="scope.row.projectId" @change="editXmMenuSomeFields(scope.row,'mmUserid',$event)"></mdp-select-user-xm>
 								</template>
 							</el-table-column>
 							<el-table-column prop="productId" label="产品" width="100" show-overflow-tooltip sortable>
@@ -1237,16 +1237,13 @@
 					var tips = res.data.tips;
 					if(tips.isOk){
 						if(this.sels.length>0){
-							 this.sels.forEach(i=>{
-								 this.fieldTagVisible=false;
-								Object.assign(i,params)
-							 })
+							this.getXmMenus();
 						}else{
 							  Object.assign(row,params)
 						}
 						Object.assign(this.editFormBak,row)
-					}else{
-						Object.assign(this.editForm,this.editFormBak)
+					}else{ 
+						Object.assign(row,this.editFormBak)
 						this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 					}
 				})

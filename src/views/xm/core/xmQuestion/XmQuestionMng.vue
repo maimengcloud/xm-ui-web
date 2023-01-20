@@ -138,25 +138,25 @@
 					</el-table-column>
 					<el-table-column prop="bugStatus" label="状态"  width="100">
 						<template slot-scope="scope">    
-										 <mdp-select-dict-tag  v-model="scope.row.bugStatus" placeholder="类型" :dict="dicts['bugStatus']" style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugStatus',$event)">
+										 <mdp-select-dict-tag  @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.bugStatus" placeholder="类型" :dict="dicts['bugStatus']" style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugStatus',$event)">
  										 </mdp-select-dict-tag>   
 						</template>
 					</el-table-column>
 					<el-table-column prop="priority" label="优先级"  width="100">
 						<template slot-scope="scope">    
-										 <mdp-select-dict-tag  v-model="scope.row.priority" placeholder="优先级" :dict="dicts['priority']"   style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'priority',$event)">
+										 <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.priority" placeholder="优先级" :dict="dicts['priority']"   style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'priority',$event)">
  										 </mdp-select-dict-tag>  
  						</template>
 					</el-table-column> 
 					<el-table-column prop="solution" label="解决方案"  width="100">
 						<template slot-scope="scope">    
-										 <mdp-select-dict-tag  v-model="scope.row.solution" placeholder="类型" :dict="dicts['bugSolution']"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'solution',$event)">
+										 <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.solution" placeholder="类型" :dict="dicts['bugSolution']"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'solution',$event)">
  										 </mdp-select-dict-tag>   
 						</template>
 					</el-table-column>
 					<el-table-column prop="bugSeverity" label="严重程度"  width="100">
 						<template slot-scope="scope">    
-										 <mdp-select-dict-tag  v-model="scope.row.bugSeverity" placeholder="类型" :dict="dicts['bugSeverity']"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugSeverity',$event)">
+										 <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.bugSeverity" placeholder="类型" :dict="dicts['bugSeverity']"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugSeverity',$event)">
  										 </mdp-select-dict-tag>   
 						</template>
 					</el-table-column>
@@ -192,7 +192,7 @@
 					-->
 					<el-table-column prop="handlerUsername" label="负责人"  width="100" show-overflow-tooltip> 
 						<template slot-scope="scope">    
-							<mdp-select-user-xm :key="scope.row.id" v-model="scope.row" userid-key="handlerUserid" username-key="handlerUsername" :project-id="scope.row.projectId" @change="editXmQuestionSomeFields(scope.row,'handlerUserid',$event)"></mdp-select-user-xm>
+							<mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)" :key="scope.row.id" v-model="scope.row" userid-key="handlerUserid" username-key="handlerUsername" :project-id="scope.row.projectId" @change="editXmQuestionSomeFields(scope.row,'handlerUserid',$event)"></mdp-select-user-xm>
 						</template>
 					</el-table-column>
 					<el-table-column prop="tagNames" label="标签"  width="100" show-overflow-tooltip> 
@@ -317,7 +317,7 @@
 					attachment: [],  
 					productName:''
 				},
-
+				editFormBak:{},
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmQuestion界面初始化数据
 				editForm: {
@@ -527,7 +527,11 @@
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			},
-
+			selectVisible(row,visible){
+				if(visible){
+					this.rowClick(row)
+				}
+			},
 			clearProduct(){
 				this.filters.product=null;
 				this.searchXmQuestions();
@@ -637,6 +641,7 @@
 			},
 			rowClick: function(row, event, column){
 				this.editForm=row;
+				this.editFormBak={...row}
 			},
 
 
@@ -1013,13 +1018,12 @@
 					var tips = res.data.tips;
 					if(tips.isOk){ 
 						if(this.sels.length>0){
-							 this.sels.forEach(i=>{ 
-								Object.assign(i,params) 
-							 })
+							this.getXmQuestions();
 						}else{ 
 							Object.assign(row,params) 
 						}
 					}else{
+						Object.assign(row,this.editFormBak) 
 						this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 					}
 				})

@@ -534,6 +534,9 @@ import CommentArea from '../xmMenuComment/comment-area.vue';
 				}else if(fieldName==='mmUserid'){
 					params.mmUserid=$event[0].userid
 					params.mmUsername=$event[0].username
+				}else if(fieldName==='proposerId'){
+					params.proposerId=$event[0].userid
+					params.proposerName=$event[0].username
 				}else if(fieldName==='startTime'){
 					params.startTime=$event.startTime
 					params.endTime=$event.endTime
@@ -549,14 +552,19 @@ import CommentArea from '../xmMenuComment/comment-area.vue';
 					editXmMenuSomeFields(params).then(res=>{ 
 						var tips = res.data.tips;
 						if(tips.isOk){
-							Object.assign(row,params)
+							this.$nextTick(()=>{ 
+								Object.assign(row,params)
+							})
 							Object.assign(this.editFormBak,row)
 							this.$emit("edit-fields",params);
 							if(fieldName==='remark'||fieldName==='link'){
 								this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 							}
 						}else{ 
-							Object.assign(this.editForm,this.editFormBak)
+							this.$nextTick(()=>{ 
+								Object.assign(row,this.editFormBak)
+							})
+							
 							this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 						}
 					})
