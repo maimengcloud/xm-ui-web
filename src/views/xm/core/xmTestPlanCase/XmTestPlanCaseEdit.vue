@@ -147,13 +147,8 @@
 				</el-row>    
 			</el-form> 
 		</el-row>
-		<el-row>  
-			<el-col :offset="12" :span="12" style="display: flex;">  
-				<mdp-select-dict-x label="执行结果" :dict="dicts['testStepTcode']" v-model="editForm.execStatus" :get-icon="getExecStatusIcon" @change="editSomeFields(editForm,'execStatus',$event)">
-					<span slot="label"></span>
-				</mdp-select-dict-x>   
-				<el-button @click="$emit('next')" type="primary">下一条</el-button>
-			</el-col> 
+		<el-row>   
+				<el-button style="margin-top:12px;float:right;" @click="$emit('next')" type="primary">下一条</el-button> 
 		</el-row>
 		<el-row v-if="opType=='add'">
 		    <el-button @click.native="handleCancel">取消</el-button>

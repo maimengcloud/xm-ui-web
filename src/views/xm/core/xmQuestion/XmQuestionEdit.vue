@@ -532,8 +532,9 @@
 					params={...params,...$event}
 				}else if(fieldName==='projectId'){
 					params.projectId=$event.id
+					params.projectName=$event.name
 				}else if(fieldName==='productId'){
-					params.productId=$event.id
+					params.productId=$event.id 
 				}else if(fieldName==='menuId'){
 					params.productId=$event.productId
 					params.menuId=$event.menuId
@@ -579,6 +580,7 @@
 				}
 			},
 			initData(){
+				if(this.$refs['xmProductSelect1'])this.$refs['xmProductSelect1'].selectedProduct(null)
 				this.editForm=Object.assign(this.editForm,this.editFormInit)
 				this.editForm=Object.assign(this.editForm, this.xmQuestion);
 				if(this.opType==='add'){ 
@@ -603,7 +605,7 @@
 					if(this.xmTestCase && this.xmTestCase.id){
 						this.editForm.productId=this.xmTestCase.productId
 						this.editForm.productName=this.xmTestCase.productName
-						this.editForm.caseId=this.xmTestCase.caseId
+						this.editForm.caseId=this.xmTestCase.id
 						this.editForm.caseName=this.xmTestCase.caseName
 						this.editForm.casedbId=this.xmTestCase.casedbId  
 						this.editForm.funcId=this.xmTestCase.funcId
@@ -667,6 +669,9 @@
 			onProductSelected(product){
 				this.editForm.productId=product.id
 				this.editForm.productName=product.productName
+				if(this.opType!='add'){
+					this.editXmQuestionSomeFields(this.editForm,'productId',product);
+				}
 			},
 			onProductClearSelect(){ 
 				this.editForm.productId=""

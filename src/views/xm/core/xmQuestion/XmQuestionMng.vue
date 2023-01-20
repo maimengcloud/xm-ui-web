@@ -624,7 +624,7 @@
 					type: 'warning'
 				}).then(() => {
 					this.load.del=true;
-					batchDelXmQuestion(this.sels).then((res) => {
+					batchDelXmQuestion(this.sels.map(k=>{return {id:k.id}})).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
 						if( tips.isOk ){

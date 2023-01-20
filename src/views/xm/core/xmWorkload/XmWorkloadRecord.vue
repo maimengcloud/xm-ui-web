@@ -66,7 +66,8 @@
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
-			val(){
+			initVal(){
+				debugger;
 				var params={}
 				if( this.xmTask && this.xmTask.id){
 					params.id=this.xmTask.id
@@ -85,9 +86,9 @@
 				} 
 				if( this.xmQuestion && this.xmQuestion.id){
 					params.id=this.xmQuestion.id
-					params.initWorkload=this.xmMenu.initWorkload
-					params.budgetWorkload=this.xmMenu.budgetWorkload
-					params.actWorkload=this.xmMenu.actWorkload
+					params.initWorkload=this.xmQuestion.initWorkload
+					params.budgetWorkload=this.xmQuestion.budgetWorkload
+					params.actWorkload=this.xmQuestion.actWorkload
 				} 
 				if( this.xmTestCase && this.xmTestCase.id){
 					params.id=this.xmTestCase.id
@@ -121,7 +122,7 @@
  	      		this.initData()
 	      	}
 	      },
-			val:{
+			initVal:{
 				handler(){ 
 					this.initData(); 
 				},
@@ -156,13 +157,15 @@
 			saveSubmit: function () {
 			},
 			initData: function(){ 
-				this.editForm=Object.assign({},this.val)
+				debugger;
+				this.editForm=Object.assign({},this.initVal)
 				this.editFormBak=Object.assign({},this.editForm)
             },
 
 			 
 			
 			editSomeFields(row,fieldName,$event){
+				debugger;
 				var func=null;
 				var emit="edit-some-fields"
 				var params={ids:[row.id]}; 
