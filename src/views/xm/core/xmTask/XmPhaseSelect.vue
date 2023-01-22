@@ -168,7 +168,7 @@ export default {
         //分页数据
         total: 0, //服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
         pageSize: 100, //每页数据
-        countSql: false, //是否需要重新计算总记录数
+        countSql:true, //是否需要重新计算总记录数
         pageNum: 1, //当前页码、从1开始计算
         orderFields: ["sort_level"], //排序列 如 ['sex','student_id']，必须为数据库字段
         orderDirs: ["asc"], //升序 asc,降序desc 如 性别 升序、学生编号降序 ['asc','desc']
