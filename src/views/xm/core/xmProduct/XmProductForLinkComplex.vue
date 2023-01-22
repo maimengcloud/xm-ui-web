@@ -170,6 +170,13 @@
             ></xm-product-edit>
           </el-tab-pane>
           <el-tab-pane
+            label="产品团队"
+            name="group"
+            v-if="xmProduct && xmProduct.id"
+          > 
+		        <xm-group-mng v-if="showPanel == 'group'" :xm-product="xmProduct"  :visible="xmProduct && xmProduct.id"></xm-group-mng>
+          </el-tab-pane>
+          <el-tab-pane
             label="配置关联的项目"
             lazy
             name="productProjectLink"
@@ -309,6 +316,7 @@ import { initDicts, editXmProductSomeFields } from "@/api/xm/core/xmProduct";
 import { loadTasksToXmMenuState } from "@/api/xm/core/xmMenuState";
 import XmProductEdit from "./XmProductEdit.vue";
 import XmProductAdd from "./XmProductEdit"; //新增界面
+import XmGroupMng from '../xmGroup/XmGroupMng.vue'
 
 export default {
   computed: {
@@ -541,6 +549,7 @@ export default {
     XmProductAdd, 
     XmProductProjectLinkMng,
     XmProductEdit,
+    XmGroupMng,
   },
   mounted() {
     this.$nextTick(() => {
