@@ -229,7 +229,7 @@
 			...util,
 			handleSizeChange(pageSize) { 
 				this.pageInfo.pageSize=pageSize;
-				this.pageInfo.count=true;
+				this.pageInfo.countSql=true;
 				
 				this.getArchives();
 			},
@@ -253,7 +253,7 @@
 			},
 			searchArchives(){
 				 
-				 this.pageInfo.count=true;
+				 this.pageInfo.countSql=true;
 				 this.getArchives();
 			},
 			//获取列表 Archive 档案信息表
@@ -261,7 +261,7 @@
 				let params = {
 					pageSize: this.pageInfo.pageSize,
 					pageNum: this.pageInfo.pageNum,
-					total: this.pageInfo.total,count:this.pageInfo.count,
+					total: this.pageInfo.total,countSql:this.pageInfo.countSql,
 				};  
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
@@ -307,7 +307,7 @@
 					this.load.list=false;
 					var tips=res.data.tips;
 					if(tips.isOk){ 
-						this.pageInfo.total = res.data.data.total;this.pageInfo.count=false;
+						this.pageInfo.total = res.data.data.total;this.pageInfo.countSql=false;
 						this.archives = res.data.data; 
 					}else{
 						this.$message({ message: tips.msg, type: 'error' });
@@ -346,7 +346,7 @@
 			},
 			afterAddSubmit(){
 				this.addFormVisible=false;
-				this.pageInfo.count=true;
+				this.pageInfo.countSql=true;
 				this.categoryTree.refreshTree=!this.categoryTree.refreshTree
 				this.getArchives();
 			},
@@ -373,7 +373,7 @@
 						this.load.del = false;
 						var tips=res.data.tips;
 						if(tips.isOk){ 
-							this.pageInfo.count=true;
+							this.pageInfo.countSql=true;
 							this.getArchives();
 							this.categoryTree.refreshTree=!this.categoryTree.refreshTree
 						}
@@ -395,7 +395,7 @@
 						this.load.del = false;
 						var tips=res.data.tips;
 						if( tips.isOk ){ 
-							this.pageInfo.count=true;
+							this.pageInfo.countSql=true;
 							this.getArchives(); 
 							this.categoryTree.refreshTree=!this.categoryTree.refreshTree
 						}
