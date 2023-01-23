@@ -758,13 +758,7 @@
 				this.editFormVisible = true;
 			},
 			//显示新增界面 XmMenu xm_project_menu
-			showAdd: function (dclass) { 
-				if(dclass=='3'){
-					if(!this.parentMenu||!this.parentMenu.menuId){
-						this.$notify({position:'bottom-left',showClose:true,message: "请先选择上级", type: 'warning'});
-						return;
-					}	
-				}
+			showAdd: function (dclass) {  
 				this.addForm={...this.addFormInit}
 				if(this.filters.product && this.filters.product.id){ 
 					this.addForm.productId=this.filters.product.id

@@ -257,6 +257,10 @@
           this.deptUserVisible=false;
           var notHad=false;
            users.forEach(u=>{
+            if(u.obranchId && !u.branchId){
+              u.branchId=u.obranchId
+              u.branchName=u.obranchName
+            }
 					 if(!this.users.some(k=>k.userid==u.userid)){
 						 notHad=true;
 						 this.users.unshift(u)

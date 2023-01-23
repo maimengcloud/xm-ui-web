@@ -16,9 +16,13 @@
 									<el-row class="label-font-color"><span v-if="addForm.productName">归属产品：{{ addForm.productName}} &nbsp;&nbsp;|&nbsp;&nbsp;</span><span v-if="addForm.productId"> 产品编号：{{ addForm.productId }}&nbsp;&nbsp;|&nbsp;&nbsp;</span><span v-if="  addForm.iterationName ">迭代名称：{{addForm.iterationName}}&nbsp;&nbsp;|&nbsp;&nbsp;</span><span v-if="addForm.iterationId">迭代编号：{{addForm.iterationId}}</span></el-row>
 								</el-form-item>    
 						<el-row class="padding"> 
-								<el-col :span="8">
-									<mdp-field-x v-if="!addForm.pmenuId" v-model="addForm.pmenuName" :disabled="true" label="上级需求"> </mdp-field-x>
-
+								<el-col :span="8"> 
+									<mdp-field-x v-if="(!parentMenu || !parentMenu.menuId) && (!xmMenu || !xmMenu.pmenuId)" v-model="addForm.pmenuName" :label="addForm.dclass==='3'?'归属特性':(addForm.dclass==='2'?'归属史诗':'归属')" :icon="addForm.dclass==='2'?'el-icon-s-promotion':'el-icon-s-flag'" :color="addForm.dclass==='2'?'rgb(255, 153, 51)':'rgb(0, 153, 51)'">
+										<el-button slot="oper"
+											@click="parentMenuSelectVisible=true"  
+											title="选择上级"
+											icon="el-icon-upload2"> 选择上级</el-button> 
+									</mdp-field-x>  
 									<mdp-field-x v-else v-model="addForm.pmenuName" :label="addForm.dclass==='3'?'归属特性':(addForm.dclass==='2'?'归属史诗':'归属')" :icon="addForm.dclass==='2'?'el-icon-s-promotion':'el-icon-s-flag'" :color="addForm.dclass==='2'?'rgb(255, 153, 51)':'rgb(0, 153, 51)'">
 										<el-button slot="oper"
 											@click="pmenuFormVisible=true"  
@@ -27,10 +31,10 @@
 									</mdp-field-x>  
 								</el-col> 
 								<el-col  :span="8">
-									<mdp-select-user-xm  label="负责人" v-model="addForm" userid-key="mmUserid" username-key="mmUsername" @change="editXmTaskSomeFields(addForm,'mmUserid',$event)"></mdp-select-user-xm>   
+									<mdp-select-user-xm  label="负责人" v-model="addForm" userid-key="mmUserid" username-key="mmUsername"></mdp-select-user-xm>   
 								</el-col>
 								<el-col  :span="8">
-									<mdp-select-user-xm  label="提出人" v-model="addForm" userid-key="proposerId" username-key="proposerName" @change="editXmTaskSomeFields(addForm,'proposerId',$event)"></mdp-select-user-xm>   
+									<mdp-select-user-xm  label="提出人" v-model="addForm" userid-key="proposerId" username-key="proposerName"></mdp-select-user-xm>   
 								</el-col>
 						</el-row> 
 						<el-row>
@@ -83,15 +87,7 @@
 								<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="addForm.remark" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
 							</el-form-item>  
 						</el-row> 
-			</el-form>
-			
-			<el-drawer title="选择提出人" :visible.sync="proposerSelectVisible" size="60%" append-to-body>
-				<users-select  @confirm="onProposerSelected" ref="usersSelect"></users-select>
-			</el-drawer>
-			
-			<el-drawer title="选择跟进人" :visible.sync="mmUserSelectVisible" size="60%" append-to-body>
-				<users-select  @confirm="onMmUserSelected" ref="mmUsersSelect"></users-select>
-			</el-drawer>
+			</el-form> 
 			
 		</el-row>
 		<el-row class="padding">
@@ -100,6 +96,10 @@
 		</el-row>
 		<el-dialog title="上级需求详情" :visible.sync="pmenuFormVisible" :with-header="false" width="90%" top="20px"    append-to-body   :close-on-click-modal="false" >
 			<xm-menu-edit v-if="pmenuFormVisible" :reload="true" :xm-menu="{menuId:addForm.pmenuId}" :sel-project="selProject" :visible="pmenuFormVisible" @cancel="pmenuFormVisible=false"></xm-menu-edit>
+		</el-dialog>
+		
+		<el-dialog append-to-body width="60%" top="20px" :visible.sync="parentMenuSelectVisible">
+				<xm-epic-features-select v-if="parentMenuSelectVisible" :xm-product="xmProductCpd" @select="onParentMenuSelected"></xm-epic-features-select>
 		</el-dialog>
 	</section>
 </template>
@@ -119,6 +119,15 @@
 		      'userInfo','roles'
 		    ]),
 			
+			xmProductCpd(){
+				if(this.parentMenu && this.parentMenu.menuId){
+					return {id:this.parentMenu.productId,productName:this.parentMenu.productName}
+				}
+				if( this.xmMenu && this.xmMenu.productId){
+					return {id:this.xmMenu.productId,productName:this.xmMenu.productName}
+				}
+				return null;
+			},
 			calcMenuLabel(){ 
 				;
 				var params={label:'用户故事',icon:'el-icon-document',color:' rgb(79, 140, 255)'};
@@ -138,7 +147,7 @@
 	      	if(visible==true){ 
 				 this.initData();
 	      	}
-	      } 
+	      },
 	    },
 		data() {
 			return {
@@ -164,8 +173,11 @@
 				addForm: {
 					startTime:'',menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'0',online:'0',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'',mmUserid:'',mmUsername:'',ctime:'',ntype:'0',sinceVersion:'',childrenCnt:'0',ltime:'',tagIds:'',tagNames:'',pidPaths:'',lvl:'0',isTpl:'0',phaseId:'',iterationId:'',source:'1',proposerId:'',proposerName:'',dlvl:'0',dtype:'0',priority:'0',dclass:'',iterationName:'',endTime:'',funcId:'',funcName:'',comments:'',ups:'0',reads:'0'
 				},
-				proposerSelectVisible:false,
+				addFormInit: {
+					startTime:'',menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'0',online:'0',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'',mmUserid:'',mmUsername:'',ctime:'',ntype:'0',sinceVersion:'',childrenCnt:'0',ltime:'',tagIds:'',tagNames:'',pidPaths:'',lvl:'0',isTpl:'0',phaseId:'',iterationId:'',source:'1',proposerId:'',proposerName:'',dlvl:'0',dtype:'0',priority:'0',dclass:'',iterationName:'',endTime:'',funcId:'',funcName:'',comments:'',ups:'0',reads:'0'
+				}, 
 				mmUserSelectVisible:false,
+				parentMenuSelectVisible:false,
 				dateRanger:[],
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				
@@ -183,6 +195,10 @@
 					this.$notify({position:'bottom-left',showClose:true,message: '请选择产品/或者上级需求进行新增', type:'error' }); 
 					return;
 				} 
+				if(this.addForm.dclass==='3' && !this.addForm.pmenuId){
+					this.$notify({position:'bottom-left',showClose:true,message: '请选择上级(归属史诗、特性)', type:'error' });  
+					return;
+				}
 				this.$refs.addForm.validate((valid) => {
 					if (valid) {
 
@@ -218,32 +234,7 @@
 						this.$notify({position:'bottom-left',showClose:true,message:"表单检查不通过，请修改后提交", type: 'error' });
 					}
 				});
-			},
-			selectProposer(){
-				this.proposerSelectVisible=true;
-			},
-			onProposerSelected(users){
-				if(users && users.length>0){
-					this.addForm.proposerId=users[0].userid
-					this.addForm.proposerName=users[0].username
-				}
-				this.proposerSelectVisible=false
-			},
-			clearProposer:function(){
-				this.addForm.proposerId=''
-				this.addForm.proposerName=''
-			},
-			onMmUserSelected(users){
-				if(users && users.length>0){
-					this.addForm.mmUserid=users[0].userid
-					this.addForm.mmUsername=users[0].username
-				}
-				this.mmUserSelectVisible=false
-			},
-			clearMmUser:function(){
-				this.addForm.mmUserid=''
-				this.addForm.mmUsername=''
-			},
+			}, 
 			/**begin 在下面加自定义方法,记得补上面的一个逗号**/
 				
 			toFixed(floatValue){
@@ -254,8 +245,8 @@
 				}
 			},
 			/**end 在上面加自定义方法**/
-			initData(){
-				debugger;
+			initData(){ 
+				this.addForm={...this.addFormInit}
 				Object.assign(this.addForm, this.xmMenu);  
 				this.addForm.mmUserid=this.userInfo.userid
 				this.addForm.mmUsername=this.userInfo.username
@@ -288,12 +279,18 @@
 					}
 					
 				} 
+			},
+			onParentMenuSelected(pmenu){
+				this.addForm.pmenuId=pmenu.menuId
+				this.addForm.pmenuName=pmenu.menuName 
+				this.parentMenuSelectVisible=false;
 			}
 		},//end method
 		components: {  
 			//在下面添加其它组件 'xm-menu-edit':XmMenuEdit
-			UsersSelect,MdpSelectUserXm,
+			MdpSelectUserXm,
 			'xm-menu-edit':()=>import("./XmMenuDetail"),
+			'xm-epic-features-select':()=>import("./XmEpicFeaturesSelect"),
 		},
 		mounted() {
 			
