@@ -101,47 +101,62 @@
 						</el-tab-pane>
 						<el-tab-pane label="控制开关" name="2">   
                  
-              <el-form-item label="需求控制"> 
+                 <el-form-item label="团队相关:小组crud、加减人、小组组长管理等"> 
+                   <el-row> 
+                     <el-radio-group v-model="qxCode.groupScope" @change="editSomeFields(editForm,'groupScope',$event)">
+                       <el-radio label="0">不限制，允许任何人</el-radio>
+                       <el-radio label="1">同机构下的人员</el-radio>
+                       <el-radio label="2">同产品内人员</el-radio>
+                       <el-radio label="3">同产品下同小组内人员</el-radio>
+                     </el-radio-group>
+                     </el-row>
+                   <el-row>
+                       <el-checkbox  v-model="qxCode.groupTransmit"  :true-label="'1'" :false-label="'0'"  @change="editSomeFields(editForm,'groupTransmit',$event)">是否检查用户的上下级关系</el-checkbox>  
+                   </el-row>
+                   <!--0-代表不限制,1-同组织，2-同项目组（默认），3-同小组-->
+                 </el-form-item>   
+                 
+              <el-form-item label="测试相关：缺陷crud、用例crud、测试计划、测试执行等"> 
                 <el-row> 
-                  <el-radio-group v-model="qxCode.menuScope" @change="editSomeFields(editForm,'menuScope',$event)">
-                    <el-radio label="0">不限制，任何人可以互相操作</el-radio>
-                    <el-radio label="1">同机构下的人员可以操作</el-radio>
-                    <el-radio label="2">同一个项目组内可以互相操作</el-radio>
-                    <el-radio label="3">同项目组下的同一个小组可以互相操作</el-radio>
+                  <el-radio-group v-model="qxCode.testScope" @change="editSomeFields(editForm,'testScope',$event)">
+                       <el-radio label="0">不限制，允许任何人</el-radio>
+                       <el-radio label="1">同机构下的人员</el-radio>
+                       <el-radio label="2">同产品内人员</el-radio>
+                       <el-radio label="3">同产品下同小组内人员</el-radio>
                   </el-radio-group>
                   </el-row>
                 <el-row>
-                    <el-checkbox  v-model="qxCode.menuTransmit"  :true-label="'1'" :false-label="'0'"  @change="editSomeFields(editForm,'menuTransmit',$event)">任务指派及crud是否检查用户的上下级关系</el-checkbox>  
+                    <el-checkbox  v-model="qxCode.testTransmit"  :true-label="'1'" :false-label="'0'"  @change="editSomeFields(editForm,'testTransmit',$event)">缺陷、用例等指派及crud是否检查用户的上下级关系</el-checkbox>  
                 </el-row>
                 <!--0-代表不限制,1-同组织，2-同项目组（默认），3-同小组-->
               </el-form-item>     
                  
-                 <el-form-item label="迭代控制"> 
+                 <el-form-item label="迭代crud、迭代负责人管理"> 
                    <el-row> 
                      <el-radio-group v-model="qxCode.iterationScope" @change="editSomeFields(editForm,'iterationScope',$event)">
-                       <el-radio label="0">不限制，任何人可以互相操作</el-radio>
-                       <el-radio label="1">同机构下的人员可以操作</el-radio>
-                       <el-radio label="2">同一个项目组内可以互相操作</el-radio>
-                       <el-radio label="3">同项目组下的同一个小组可以互相操作</el-radio>
+                       <el-radio label="0">不限制，允许任何人</el-radio>
+                       <el-radio label="1">同机构下的人员</el-radio>
+                       <el-radio label="2">同产品内人员</el-radio>
+                       <el-radio label="3">同产品下同小组内人员</el-radio>
                      </el-radio-group>
                      </el-row>
                    <el-row>
-                       <el-checkbox  v-model="qxCode.iterationTransmit"  :true-label="'1'" :false-label="'0'"  @change="editSomeFields(editForm,'iterationTransmit',$event)">任务指派及crud是否检查用户的上下级关系</el-checkbox>  
+                       <el-checkbox  v-model="qxCode.iterationTransmit"  :true-label="'1'" :false-label="'0'"  @change="editSomeFields(editForm,'iterationTransmit',$event)">迭代指派及crud是否检查用户的上下级关系</el-checkbox>  
                    </el-row>
                    <!--0-代表不限制,1-同组织，2-同项目组（默认），3-同小组-->
                  </el-form-item> 
                  
-                 <el-form-item label="需求控制"> 
+                 <el-form-item label="需求相关：史诗、特性、故事的crud"> 
                    <el-row> 
-                     <el-radio-group v-model="qxCode.testScope" @change="editSomeFields(editForm,'testScope',$event)">
-                       <el-radio label="0">不限制，任何人可以互相操作</el-radio>
-                       <el-radio label="1">同机构下的人员可以操作</el-radio>
-                       <el-radio label="2">同一个项目组内可以互相操作</el-radio>
-                       <el-radio label="3">同项目组下的同一个小组可以互相操作</el-radio>
+                     <el-radio-group v-model="qxCode.menuTransmit" @change="editSomeFields(editForm,'menuScope',$event)">
+                       <el-radio label="0">不限制，允许任何人</el-radio>
+                       <el-radio label="1">同机构下的人员</el-radio>
+                       <el-radio label="2">同产品内人员</el-radio>
+                       <el-radio label="3">同产品下同小组内人员</el-radio>
                      </el-radio-group>
                      </el-row>
                    <el-row>
-                       <el-checkbox  v-model="qxCode.testTransmit"  :true-label="'1'" :false-label="'0'"  @change="editSomeFields(editForm,'testTransmit',$event)">任务指派及crud是否检查用户的上下级关系</el-checkbox>  
+                       <el-checkbox  v-model="qxCode.menuTransmit"  :true-label="'1'" :false-label="'0'"  @change="editSomeFields(editForm,'menuTransmit',$event)">需求指派及crud是否检查用户的上下级关系</el-checkbox>  
                    </el-row>
                    <!--0-代表不限制,1-同组织，2-同项目组（默认），3-同小组-->
                  </el-form-item> 
@@ -326,12 +341,14 @@ export default {
         第5位代表迭代指派及crud时是否检查上下级关系，同第1位
 					*/
 				qxCode:{
-					menuScope:'2',//0-代表不限制,1-同组织，2-同项目组（默认），3-同小组
-					menuTransmit:'0',//0-不控制，1任务指派及crud必须检查用户的上下级关系 
+          groupScope:'2',
+          groupTransmit:'1',
 					testScope:'2',//0-代表不限制,1-同组织，2-同项目组（默认），3-同小组
-					testTransmit:'0',//0-不控制，1任务指派及crud必须检查用户的上下级关系 
+					testTransmit:'1',//0-不控制，1任务指派及crud必须检查用户的上下级关系 
+					menuScope:'2',//0-代表不限制,1-同组织，2-同项目组（默认），3-同小组
+					menuTransmit:'1',//0-不控制，1任务指派及crud必须检查用户的上下级关系 
 					iterationScope:'2',//0-代表不限制,1-同组织，2-同项目组（默认），3-同小组
-					iterationTransmit:'0',//0-不控制，1任务指派及crud必须检查用户的上下级关系   
+					iterationTransmit:'1',//0-不控制，1任务指派及crud必须检查用户的上下级关系   
 				},
       /**begin 在下面加自定义属性,记得补上面的一个逗号**/
 
@@ -392,8 +409,8 @@ export default {
       } else if (fieldName == "startTime") {
         params["startTime"] = row.startTime;
         params["endTime"] = row.endTime;
-      } else if (fieldName == "menuScope"||fieldName=="menuTransmit"||fieldName == "iterationScope"||fieldName=="iterationTransmit"||fieldName == "testScope"||fieldName=="testTransmit") {
-        params["qxCode"] = [this.qxCode.menuScope,this.qxCode.menuTransmit,this.qxCode.iterationScope,this.qxCode.iterationTransmit,this.qxCode.testScope,this.qxCode.testTransmit].join(",") 
+      } else if (fieldName == "groupScope"||fieldName == "groupTransmit"||fieldName == "testScope"||fieldName=="testTransmit"||fieldName == "menuScope"||fieldName=="menuTransmit"||fieldName == "iterationScope"||fieldName=="iterationTransmit") {
+        params["qxCode"] = [,this.qxCode.groupScope,this.qxCode.groupTransmit,this.qxCode.testScope,this.qxCode.testTransmit,this.qxCode.menuScope,this.qxCode.menuTransmit,this.qxCode.iterationScope,this.qxCode.iterationTransmit].join(",") 
       } else {
         params[fieldName] = $event;
       }
@@ -409,6 +426,7 @@ export default {
             this.$emit("edit-fields", params);
           } else {
             Object.assign(this.editForm, this.editFormBak);
+            this.initQxCode()
             this.$notify({
               position: "bottom-left",
               showClose: true,
@@ -447,28 +465,34 @@ export default {
 			initQxCode(){
 				var qxCode=this.editForm.qxCode
 				if(!qxCode){
+					this.qxCode.groupScope="2"
+					this.qxCode.groupTransmit="1"
+					this.qxCode.testScope="2"
+					this.qxCode.testTransmit="1"
 					this.qxCode.menuScope="2"
 					this.qxCode.menuTransmit="1"
 					this.qxCode.iterationScope="2"
 					this.qxCode.iterationTransmit="1"
-					this.qxCode.testScope="2"
-					this.qxCode.testTransmit="1"
 				}else{
 					var qxCodes=qxCode.split(",")
-					if(qxCodes.length>=2){
-            this.qxCode.menuScope=qxCodes[0]
-            this.qxCode.menuTransmit=qxCodes[1]
-            this.qxCode.iterationScope=qxCodes[2]
-            this.qxCode.iterationTransmit=qxCodes[3]
-            this.qxCode.testScope=qxCodes[4]
-            this.qxCode.testTransmit=qxCodes[5]
+					if(qxCodes.length>=8){
+            this.qxCode.groupScope=qxCodes[0]
+            this.qxCode.groupTransmit=qxCodes[1]
+            this.qxCode.testScope=qxCodes[2]
+            this.qxCode.testTransmit=qxCodes[3]
+            this.qxCode.menuScope=qxCodes[4]
+            this.qxCode.menuTransmit=qxCodes[5]
+            this.qxCode.iterationScope=qxCodes[6]
+            this.qxCode.iterationTransmit=qxCodes[7]
 					}else{
+            this.qxCode.groupScope='2'
+            this.qxCode.groupTransmit='1'
+            this.qxCode.testScope="2"
+            this.qxCode.testTransmit="1"
             this.qxCode.menuScope="2"
             this.qxCode.menuTransmit="1"
             this.qxCode.iterationScope="2"
             this.qxCode.iterationTransmit="1"
-            this.qxCode.testScope="2"
-            this.qxCode.testTransmit="1"
 					}
 				}
 			},

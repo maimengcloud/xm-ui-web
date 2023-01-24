@@ -1,7 +1,7 @@
 <template>
 	<section class="padding border"> 
 		<el-row>  
-				<el-form :model="editForm"  label-width="120px" label-position="left" :rules="editFormRules" ref="editForm" class="editForm"> 
+				<el-form :model="editForm"  label-width="120px" label-position="top" :rules="editFormRules" ref="editForm" class="editForm"> 
 						 			
 
 							<el-form-item  label="项目名称" prop="name" >  
@@ -101,17 +101,50 @@
 								</el-row>
 								<!--0-代表不限制,1-同组织，2-同项目组（默认），3-同小组-->
 							</el-form-item>    
-							<el-form-item label="任务人员范围控制" title="指派及crud时任务人员范围控制"> 
+                 
+							<el-form-item label="团队相关:小组crud、加减人、小组组长管理等"> 
+								<el-row> 
+									<el-radio-group v-model="qxCode.groupScope" @change="editXmProjectSomeFields(editForm,'groupScope',$event)">
+									<el-radio label="0">不限制，允许任何人</el-radio>
+									<el-radio label="1">同机构下的人员</el-radio>
+									<el-radio label="2">同项目内人员</el-radio>
+									<el-radio label="3">同项目下同小组内人员</el-radio>
+									</el-radio-group>
+									</el-row>
+								<el-row>
+									<el-checkbox  v-model="qxCode.groupTransmit"  :true-label="'1'" :false-label="'0'"  @change="editXmProjectSomeFields(editForm,'groupTransmit',$event)">是否检查用户的上下级关系</el-checkbox>  
+								</el-row>
+								<!--0-代表不限制,1-同组织，2-同项目组（默认），3-同小组-->
+								</el-form-item>   
+								
+							<el-form-item label="测试相关：缺陷crud"> 
+								<el-row> 
+								<el-radio-group v-model="qxCode.testScope" @change="editXmProjectSomeFields(editForm,'testScope',$event)">
+									<el-radio label="0">不限制，允许任何人</el-radio>
+									<el-radio label="1">同机构下的人员</el-radio>
+									<el-radio label="2">同项目内人员</el-radio>
+									<el-radio label="3">同项目下同小组内人员</el-radio>
+								</el-radio-group>
+								</el-row>
+								<el-row>
+									<el-checkbox  v-model="qxCode.testTransmit"  :true-label="'1'" :false-label="'0'"  @change="editXmProjectSomeFields(editForm,'testTransmit',$event)">是否检查用户的上下级关系</el-checkbox>  
+								</el-row>
+								<!--0-代表不限制,1-同组织，2-同项目组（默认），3-同小组-->
+							</el-form-item>      
+							<el-form-item label="任务相关：计划crud、任务crud、任务指派、报工等"> 
 								<el-row> 
 									<el-radio-group v-model="qxCode.taskScope" @change="editXmProjectSomeFields(editForm,'taskScope',$event)">
-										<el-radio label="0">不限制，任何人可以互相操作</el-radio>
-										<el-radio label="1">同机构下的人员可以操作</el-radio>
-										<el-radio label="2">同一个项目组内可以互相操作</el-radio>
-										<el-radio label="3">同项目组下的同一个小组可以互相操作</el-radio>
+									<el-radio label="0">不限制，允许任何人</el-radio>
+									<el-radio label="1">同机构下的人员</el-radio>
+									<el-radio label="2">同项目内人员</el-radio>
+									<el-radio label="3">同项目下同小组内人员</el-radio>
 									</el-radio-group>
- 								</el-row>
-								<!--0-代表不限制,1-同组织，2-同项目组（默认），3-同小组-->
-							</el-form-item>    
+									</el-row>
+								<el-row>
+									<el-checkbox  v-model="qxCode.taskTransmit"  :true-label="'1'" :false-label="'0'"  @change="editXmProjectSomeFields(editForm,'taskTransmit',$event)">是否检查用户的上下级关系</el-checkbox>  
+								</el-row>
+							<!--0-代表不限制,1-同组织，2-同项目组（默认），3-同小组-->
+							</el-form-item> 
 						</el-tab-pane>
 						<el-tab-pane label="工期" name="3">
 							<el-row>  
@@ -535,19 +568,33 @@
 		methods: { 
 			//打开用户选择 
 			//选择接收人 
+			
+      
 			initQxCode(){
 				var qxCode=this.editForm.qxCode
 				if(!qxCode){
+					this.qxCode.groupScope="2"
+					this.qxCode.groupTransmit="1"
+					this.qxCode.testScope="2"
+					this.qxCode.testTransmit="1"
 					this.qxCode.taskScope="2"
-					this.qxCode.taskTransmit="1"
+					this.qxCode.taskTransmit="1" 
 				}else{
 					var qxCodes=qxCode.split(",")
-					if(qxCodes.length>=2){
-						this.qxCode.taskScope=qxCodes[0]
-						this.qxCode.taskTransmit=qxCodes[1]
+					if(qxCodes.length>=6){
+						this.qxCode.groupScope=qxCodes[0]
+						this.qxCode.groupTransmit=qxCodes[1]
+						this.qxCode.testScope=qxCodes[2]
+						this.qxCode.testTransmit=qxCodes[3]
+						this.qxCode.taskScope=qxCodes[4]
+						this.qxCode.taskTransmit=qxCodes[5] 
 					}else{
+						this.qxCode.groupScope='2'
+						this.qxCode.groupTransmit='1'
+						this.qxCode.testScope="2"
+						this.qxCode.testTransmit="1"
 						this.qxCode.taskScope="2"
-						this.qxCode.taskTransmit="1"
+						this.qxCode.taskTransmit="1" 
 					}
 				}
 			},
@@ -571,7 +618,7 @@
 					this.$notify({position:'bottom-left',showClose:true,message: "只有初始状态的项目可以修改，如确实需要修改，请进行项目变更审批", type: 'error' }); 
 					return;
 				}
-				var msg=this.xmProduct&&this.xmProduct.id?'将自动关联产品【'+(this.xmProduct.productName?this.xmProduct.productName:this.xmProduct.id)+'】':''; 
+				var msg=this.xmProduct&&this.xmProduct.id?'将自动关联项目【'+(this.xmProduct.productName?this.xmProduct.productName:this.xmProduct.id)+'】':''; 
 				this.$refs.editForm.validate((valid) => {
 					if (valid) {
 						this.$confirm('确认提交吗？'+msg, '提示', {}).then(() => { 
@@ -913,6 +960,7 @@
 							this.editFormBak=Object.assign({},row)
 						}else{   
 							Object.assign(this.editForm,this.editFormBak)
+							this.initQxCode();
 							this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 						}
 					})
@@ -930,11 +978,9 @@
 				} else if (fieldName == "pmUserid") {
 					params["pmUserid"] = $event[0].userid;
 					params["pmUsername"] = $event[0].username;
-				}else if (fieldName == "taskScope") { 
-					params.qxCode=[this.qxCode.taskScope,this.qxCode.taskTransmit].join(",")
-				}else if (fieldName == "taskTransmit") { 
-					params.qxCode=[this.qxCode.taskScope,this.qxCode.taskTransmit].join(",")
-				}else{
+				}else if (fieldName == "groupScope"||fieldName == "groupTransmit"||fieldName == "testScope"||fieldName=="testTransmit"||fieldName == "taskScope"||fieldName=="taskTransmit") {
+					params["qxCode"] = [this.qxCode.groupScope,this.qxCode.groupTransmit,this.qxCode.testScope,this.qxCode.testTransmit,this.qxCode.taskScope,this.qxCode.taskTransmit].join(",") 
+				} else{
 					params[fieldName]=$event 
 				}
 				if(fieldName=='description'){
