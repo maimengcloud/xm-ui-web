@@ -95,10 +95,6 @@
 									<el-checkbox  v-model="editForm.menuLink"  :true-label="'1'" :false-label="'0'"  @change="editXmProjectSomeFields(editForm,'menuLink',$event)">任务是否必须严格关联用户故事</el-checkbox>  
 									<el-checkbox  v-model="editForm.phaseLink"  :true-label="'1'" :false-label="'0'"  @change="editXmProjectSomeFields(editForm,'phaseLink',$event)">任务是否必须严格关联计划</el-checkbox>  
 								</el-row>
-								
-								<el-row>
- 									<el-checkbox  v-model="qxCode.taskTransmit"  :true-label="'1'" :false-label="'0'"  @change="editXmProjectSomeFields(editForm,'taskTransmit',$event)">任务指派及crud是否检查用户的上下级关系</el-checkbox>  
-								</el-row>
 								<!--0-代表不限制,1-同组织，2-同项目组（默认），3-同小组-->
 							</el-form-item>    
                  
