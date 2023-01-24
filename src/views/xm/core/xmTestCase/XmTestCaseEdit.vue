@@ -181,6 +181,9 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//ä¿®æ
 				editForm: {
 					id:'',caseName:'',caseRemark:'',testStep:'',expectResult:'',menuId:'',menuName:'',ctime:'',ltime:'',luserid:'',lusername:'',cbranchId:'',moduleId:'',moduleName:'',caseStatus:'0',cuserid:'',cusername:'',productId:'',verNum:'1.0',casedbId:'',casedbName:'',cpriority:'0',funcId:'',funcName:'',preRemark:'',caseType:'0'
 				},
+				editFormInit: {
+					id:'',caseName:'',caseRemark:'',testStep:'',expectResult:'',menuId:'',menuName:'',ctime:'',ltime:'',luserid:'',lusername:'',cbranchId:'',moduleId:'',moduleName:'',caseStatus:'0',cuserid:'',cusername:'',productId:'',verNum:'1.0',casedbId:'',casedbName:'',cpriority:'0',funcId:'',funcName:'',preRemark:'',caseType:'0'
+				},
                 maxTableHeight:300,
 				menuVisible:false,
 				menuFormVisible:false,
@@ -227,6 +230,7 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//ä¿®æ
 				});
 			},
 			initData: function(){
+				this.editForm={...this.editFormInit}
 			    this.currOpType=this.opType
 			    if(this.xmTestCase){
                     this.editForm = Object.assign({},this.xmTestCase);

@@ -105,6 +105,9 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//ä¿®æ
 				editForm: {
 					id:'',name:'',casedbId:'',casedbName:'',projectId:'',projectName:'',cuserid:'',cusername:'',ctime:'',stime:'',etime:'',status:'',tcode:'',totalCases:'',okCases:'',errCases:'',igCases:'',blCases:'',productId:'',productName:'',flowState:''
 				},
+				editFormInit: {
+					id:'',name:'',casedbId:'',casedbName:'',projectId:'',projectName:'',cuserid:'',cusername:'',ctime:'',stime:'',etime:'',status:'',tcode:'',totalCases:'',okCases:'',errCases:'',igCases:'',blCases:'',productId:'',productName:'',flowState:''
+				},
                 maxTableHeight:300,
 			}//end return
 		},//end data
@@ -146,6 +149,7 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//ä¿®æ
 				});
 			},
 			initData: function(){
+				this.editForm={...this.editFormInit}
 			    this.currOpType=this.opType
 			    if(this.xmTestPlan){
                     this.editForm = Object.assign({},this.xmTestPlan);
@@ -153,8 +157,8 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//ä¿®æ
 
                 if(this.opType=='edit'){
 
-                }else{
-
+                }else{ 
+					if(this.$refs['xmProjectSelect']) this.$refs['xmProjectSelect'].clearSelect()
                 }
                 this.editFormBak={...this.editForm}
             },
