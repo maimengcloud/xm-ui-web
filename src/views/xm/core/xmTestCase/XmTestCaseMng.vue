@@ -51,19 +51,12 @@
                                 <span> {{scope.row.verNum}} </span>
                             </template>
                         </el-table-column>      
-                        <el-table-column prop="cusername" label="创建人姓名" min-width="120" show-overflow-tooltip>
+                        <el-table-column prop="cusername" label="负责人姓名" min-width="120" show-overflow-tooltip>
                             <template slot-scope="scope"> 
                                 <mdp-select-user-xm  userid-key="cuserid" username-key="cusername" v-model="scope.row" :disabled="true"> 
                                 </mdp-select-user-xm>
                             </template>
-                        </el-table-column> 
-                        <el-table-column prop="lusername" label="维护人" min-width="120" show-overflow-tooltip>
-                            <template slot-scope="scope"> 
-                                <mdp-select-user-xm  userid-key="luserid" username-key="lusername" v-model="scope.row" :disabled="true"> 
-                                </mdp-select-user-xm>
-                            </template>
-                        </el-table-column> 
-
+                        </el-table-column>   
 
                     </el-table>
                     <el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
