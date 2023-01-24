@@ -53,7 +53,7 @@ export default {
       pageInfo: {//分页数据
         total: 0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
         pageSize: 10,//每页数据
-        countSql:true,//是否需要重新计算总记录数
+        count:true,//是否需要重新计算总记录数
         pageNum: 1,//当前页码、从1开始计算
         orderFields: ['CDATE'],//排序列 如 ['sex','student_id']，必须为数据库字段
         orderDirs: ['desc']//升序 asc,降序desc 如 性别 升序、学生编号降序 ['asc','desc']
@@ -128,7 +128,7 @@ export default {
         pageSize: this.pageInfo.pageSize,
         pageNum: this.pageInfo.pageNum,
         total: this.pageInfo.total,
-        countSql: this.pageInfo.countSql,
+        count: this.pageInfo.count,
         menuId: this.targetId,
         pidIsNull: "1",
       };
@@ -144,7 +144,7 @@ export default {
         let tips = res.data.tips;
         if (tips.isOk) {
           this.pageInfo.total = res.data.total;
-          this.pageInfo.countSql = false;
+          this.pageInfo.count = false;
           let list = res.data.data;
           this.commentsList = list;
           if (res.data.children && res.data.children.length > 0) {

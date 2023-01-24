@@ -122,7 +122,7 @@
 				pageInfo:{//分页数据
 					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
 					pageSize:10,//每页数据
-					countSql:true,//是否需要重新计算总记录数
+					count:true,//是否需要重新计算总记录数
 					pageNum:1,//当前页码、从1开始计算
 					orderFields:[],//排序列 如 ['sex','student_id']，必须为数据库字段
 					orderDirs:[]//升序 asc,降序desc 如 性别 升序、学生编号降序 ['asc','desc']
@@ -175,7 +175,7 @@
 				this.getXmBudgetNlabors();
 			},
 			searchXmBudgetNlabors(){
-				 this.pageInfo.countSql=true; 
+				 this.pageInfo.count=true; 
 				 this.getXmBudgetNlabors();
 			},
 			//获取列表 XmBudgetNlabor 项目人力成本预算
@@ -184,7 +184,7 @@
 					pageSize: this.pageInfo.pageSize,
 					pageNum: this.pageInfo.pageNum,
 					total: this.pageInfo.total,
-					countSql:this.pageInfo.countSql
+					count:this.pageInfo.count
 				};
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
@@ -215,7 +215,7 @@
 					var tips=res.data.tips;
 					if(tips.isOk){ 
 						this.pageInfo.total = res.data.total;
-						this.pageInfo.countSql=false;
+						this.pageInfo.count=false;
 						this.xmBudgetNlabors = res.data.data;
 					}else{
 						this.$notify({ position:'bottom-left',showClose:true, message: tips.msg, type: 'error' });
@@ -236,7 +236,7 @@
 			},
 			afterAddSubmit(){
 				this.addFormVisible=false;
-				this.pageInfo.countSql=true;
+				this.pageInfo.count=true;
 				this.getXmBudgetNlabors();
 			},
 			afterEditSubmit(){

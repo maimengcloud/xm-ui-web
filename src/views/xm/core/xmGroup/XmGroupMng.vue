@@ -325,7 +325,7 @@ XmTaskExecuserSelect,
 				pageInfo:{//分页数据
 					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
 					pageSize:50,//每页数据
-					countSql:true,//是否需要重新计算总记录数
+					count:true,//是否需要重新计算总记录数
 					pageNum:1,//当前页码、从1开始计算
 					orderFields:[],//排序列 如 ['sex','student_id']，必须为数据库字段
 					orderDirs:[]//升序 asc,降序desc 如 性别 升序、学生编号降序 ['asc','desc']
@@ -391,7 +391,7 @@ XmTaskExecuserSelect,
 				this.getXmGroups();
 			},
 			searchXmGroups(){
-				 this.pageInfo.countSql=true; 
+				 this.pageInfo.count=true; 
 				 this.getXmGroups();
 			},
 			loadNexGroup(){
@@ -415,7 +415,7 @@ XmTaskExecuserSelect,
 					var tips=res.data.tips;
 					if(tips.isOk){ 
 						this.pageInfo.total = res.data.total;
-						this.pageInfo.countSql=false;
+						this.pageInfo.count=false;
 						var childrens = res.data.data;
 						childrens=childrens.filter(i=>!this.xmGroups.some(k=>k.id==i.id))
 						this.xmGroups.push(...childrens)
@@ -434,7 +434,7 @@ XmTaskExecuserSelect,
 					pageSize: this.pageInfo.pageSize,
 					pageNum: this.pageInfo.pageNum,
 					total: this.pageInfo.total,
-					countSql:this.pageInfo.countSql
+					count:this.pageInfo.count
 				};
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
@@ -471,7 +471,7 @@ XmTaskExecuserSelect,
 					var tips=res.data.tips;
 					if(tips.isOk){ 
 						this.pageInfo.total = res.data.total;
-						this.pageInfo.countSql=false;
+						this.pageInfo.count=false;
 						this.xmGroups = res.data.data;
 					}else{
 						this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: 'error' });
@@ -542,7 +542,7 @@ XmTaskExecuserSelect,
 			},
 			afterAddSubmit(group){
 				this.addFormVisible=false;
-				//this.pageInfo.countSql=true;
+				//this.pageInfo.count=true;
 				this.groupOperSelectVisible=false;
 				this.xmGroups.push(group)
 				//this.getXmGroups();
@@ -568,7 +568,7 @@ XmTaskExecuserSelect,
 						this.load.del=false;
 						var tips=res.data.tips;
 						if(tips.isOk){ 
-							this.pageInfo.countSql=true;
+							this.pageInfo.count=true;
 							this.getXmGroups();
 						}
 						this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
@@ -587,7 +587,7 @@ XmTaskExecuserSelect,
 						this.groupOperSelectVisible=false;
 						var tips=res.data.tips;
 						if( tips.isOk ){ 
-							this.pageInfo.countSql=true;
+							this.pageInfo.count=true;
 							this.getXmGroups(); 
 						}
 						this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
@@ -761,7 +761,7 @@ XmTaskExecuserSelect,
 						var tips=res.data.tips;
 						if(tips.isOk){  
 							this.groupOperSelectVisible=false;
-							this.pageInfo.countSql=true;
+							this.pageInfo.count=true;
 							this.getXmGroups();
 						}
 						this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
