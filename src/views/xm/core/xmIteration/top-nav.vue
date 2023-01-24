@@ -53,9 +53,15 @@
 				<el-menu-item label="需求" :index="'/xm/core/iteration/menu?iterationId='+xmIteration.id" class="hidden-md-and-down">
 					 <span slot="title"><i class="el-icon-document"></i>需求</span> 
 				</el-menu-item>     
+				<el-menu-item label="模块" :index="'/xm/core/iteration/func?iterationId='+xmIteration.id" class="hidden-md-and-down">
+					 <span slot="title"><i class="el-icon-document"></i>模块</span> 
+				</el-menu-item>  
         <el-menu-item :index="'/xm/core/iteration/task?iterationId='+xmIteration.id" class="hidden-md-and-down">
           <span slot="title"><i class="el-icon-s-operation"></i>任务</span>
         </el-menu-item>
+        <el-menu-item :index="'/xm/core/iteration/casedb?iterationId='+xmIteration.id">
+          <span slot="title"><i class="el-icon-question"></i>测试</span>
+        </el-menu-item> 
         <el-menu-item :index="'/xm/core/iteration/question?iterationId='+xmIteration.id">
           <span slot="title"><i class="el-icon-question"></i>缺陷</span>
         </el-menu-item> 

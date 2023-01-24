@@ -52,6 +52,9 @@
 				<el-menu-item label="需求" :index="'/xm/core/product/menu?productId='+xmProduct.id">
 					 <span slot="title"><i class="el-icon-document"></i>需求</span> 
 				</el-menu-item> 
+				<el-menu-item label="模块" :index="'/xm/core/product/func?productId='+xmProduct.id">
+					 <span slot="title"><i class="el-icon-document"></i>模块</span> 
+				</el-menu-item> 
         <el-menu-item :index="'/xm/core/product/iteration?productId='+xmProduct.id">
           <span slot="title"><i class="el-icon-connection"></i>迭代</span>
         </el-menu-item>
@@ -62,6 +65,9 @@
 
         <el-menu-item :index="'/xm/core/product/task?productId='+xmProduct.id" class="hidden-md-and-down">
           <span slot="title"><i class="el-icon-s-operation"></i>任务</span>
+        </el-menu-item>
+        <el-menu-item :index="'/xm/core/product/casedb?productId='+xmProduct.id">
+          <span slot="title"><i class="el-icon-question"></i>测试</span>
         </el-menu-item>
         <el-menu-item :index="'/xm/core/product/question?productId='+xmProduct.id">
           <span slot="title"><i class="el-icon-question"></i>缺陷</span>

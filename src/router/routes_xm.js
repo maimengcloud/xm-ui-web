@@ -279,6 +279,17 @@ export default {
           hidden:true
         },
         {
+          path: 'func',
+          component: _import('xm/core/xmFunc/XmFuncForProduct'),
+          name: 'productFunc',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '产品-模块',
+            icon: 'product',roles:["user"]
+          }, 
+          hidden:true
+        },
+        {
           path: 'iteration',
           component: _import('xm/core/xmIteration/XmIterationForLinkComplex'),
           name: 'productIteration',
@@ -322,6 +333,17 @@ export default {
           }, 
           hidden:true
         },
+        {
+          path: 'casedb',
+          component: _import('xm/core/xmTestCasedb/XmTestCasedbMngForProduct'),
+          name: 'productCasedb',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '产品-测试管理',
+            icon: 'iteration',roles:["user"]
+          }, 
+          hidden:true
+        },  
         {
           path: 'question',
           component: _import('xm/core/xmQuestion/XmQuestionForProduct'),
@@ -460,6 +482,17 @@ export default {
           hidden:true
         }, 
         {
+          path: 'func',
+          component: _import('xm/core/xmFunc/XmFuncForIteration'),
+          name: 'iterationFunc',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '迭代-模块',
+            icon: 'iteration',roles:["user"]
+          }, 
+          hidden:true
+        }, 
+        {
           path: 'task',
           component: _import('xm/core/xmTask/XmTaskListForIteration'),
           name: 'iterationTask',
@@ -470,6 +503,17 @@ export default {
           }, 
           hidden:true
         },
+        {
+          path: 'casedb',
+          component: _import('xm/core/xmTestCasedb/XmTestCasedbMngForIteration'),
+          name: 'iterationCasedb',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '迭代-测试管理',
+            icon: 'iteration',roles:["user"]
+          }, 
+          hidden:true
+        },  
         {
           path: 'question',
           component: _import('xm/core/xmQuestion/XmQuestionForIteration'),
