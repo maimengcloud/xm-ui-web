@@ -22,13 +22,13 @@
             <font v-if="testCasedb.name.length >= 15">
               <strong>
                 
-                &nbsp;<el-avatar class="top-icon"   style="background-color:#409EFF">bugs</el-avatar>&nbsp;{{ testCasedb.name.substring(0, 15) }}</strong
+                &nbsp;<el-avatar class="top-icon"   style="background-color:#409EFF">测试</el-avatar>&nbsp;{{ testCasedb.name.substring(0, 15) }}</strong
               ></font
             >
             <div  v-else>
            
             <font type="danger">
-              <strong>&nbsp; <el-avatar class="top-icon" icon="bugs" style="background-color:#409EFF"></el-avatar>&nbsp;产品:&nbsp;{{ testCasedb.name }}</strong></font
+              <strong>&nbsp; <el-avatar class="top-icon" style="background-color:#409EFF">测试</el-avatar>{{ testCasedb.name }}</strong></font
             >
             </div>
           </span>
@@ -39,10 +39,10 @@
             :title="testCasedb.name"
           >
             <font v-if="testCasedb.name.length >= 15">
-              &nbsp;<el-avatar class="top-icon" icon="el-icon-s-opportunity" style="background-color:#409EFF"></el-avatar>&nbsp;产品:&nbsp;{{ testCasedb.name.substring(0, 15) }}</font
+              &nbsp;<el-avatar class="top-icon" style="background-color:#409EFF">测试</el-avatar>{{ testCasedb.name.substring(0, 15) }}</font
             >
             <font type="danger" v-else>
-              &nbsp;<el-avatar class="top-icon" icon="el-icon-s-opportunity" style="background-color:#409EFF"></el-avatar>&nbsp;产品:&nbsp;{{ testCasedb.name }}</font
+              &nbsp;<el-avatar class="top-icon" style="background-color:#409EFF">测试</el-avatar>{{ testCasedb.name }}</font
             >
           </span>
         </el-menu-item>

@@ -92,6 +92,9 @@ import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修�
 				editForm: {
 					id:'',name:'',cuserid:'',cusername:'',ctime:'',cbranchId:'',productId:'',productName:''
 				},
+				editFormInit: {
+					id:'',name:'',cuserid:'',cusername:'',ctime:'',cbranchId:'',productId:'',productName:''
+				},
                 maxTableHeight:300,
 			}//end return
 		},//end data
@@ -133,6 +136,7 @@ import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修�
 				});
 			},
 			initData: function(){
+				this.editForm={...this.editFormInit}
 			    this.currOpType=this.opType
 			    if(this.xmTestCasedb){
                     this.editForm = Object.assign({},this.xmTestCasedb);
@@ -144,6 +148,7 @@ import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修�
 					if(this.xmProduct && this.xmProduct.id){
 						this.editForm.productId=this.xmProduct.id
 						this.editForm.productName=this.xmProduct.productName
+						this.editForm.name=this.xmProduct.productName+"-测试库-V1.0"
 					}
                 }
                 this.editFormBak={...this.editForm}
