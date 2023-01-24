@@ -27,13 +27,14 @@
                         <span v-if="subPage=='testRpt'">
                         <el-divider direction="vertical"></el-divider>
 
+                        <el-button @click="calcRptData" icon="el-icon-video-play">统计</el-button> 
                         <el-button @click="print">打印</el-button> 
                         <el-button @click="showRptConfig" icon="el-icon-s-tools">配置报告</el-button>
                         </span>
                      </span>
                 </el-row> 
                 
-                <el-row v-if="subPage=='testPlanCase'">
+                <el-row v-if="subPage=='testPlanCase'" class="padding-right">
                      <xm-test-plan-case-mng   :xm-test-plan="xmTestPlan" :xm-test-casedb="xmTestCasedb"></xm-test-plan-case-mng>
                 </el-row>
                 <el-row v-if="subPage=='testBug'">
@@ -60,7 +61,8 @@ import { mapGetters } from 'vuex'
 import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修改界面
 import  XmQuestionMng from '@/views/xm/core/xmQuestion/XmQuestionMng';//修改界面
 import { initDicts } from '@/api/xm/core/xmTestPlan';
-
+import {  listXmTestPlan,calcXmTestPlan } from '@/api/xm/core/xmTestPlan'; 
+ 
 export default {
     name:'xmTestCasedbMng',
     components: {
@@ -143,6 +145,18 @@ export default {
         },
         print(){
            this.$refs['rpt'].showPrint()
+        },
+        calcRptData(){ 
+            var row=this.xmTestPlan
+            calcXmTestPlan({id:row.id}).then(res=>{ 
+                var tips=res.data.tips
+                this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+                if(tips.isOk){
+                    listXmTestPlan({id:row.id}).then(res2=>{
+                        this.xmTestPlan=res2.data.data[0]
+                    })
+                }
+            }) 
         }
  
     },//end methods
