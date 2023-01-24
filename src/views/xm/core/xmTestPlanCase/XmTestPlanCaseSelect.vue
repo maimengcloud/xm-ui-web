@@ -199,7 +199,7 @@ export default {
             if(this.xmProductCpd && this.xmProductCpd.id){
                 params.productId=this.xmProductCpd.id
             }
-
+            params.caseStatus="2"
             this.load.list = true;
             listXmTestPlanCase(params).then((res) => {
                 var tips=res.data.tips;

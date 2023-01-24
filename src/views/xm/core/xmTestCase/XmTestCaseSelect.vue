@@ -15,7 +15,7 @@
                     <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestCases" icon="el-icon-search">查询</el-button>
                     <span style="float:right;">
                         
-                        <el-button type="primary" v-loading="load.edit" @click="selectConfirm" :disabled="this.sels.length===0 || load.edit==true" icon="el-icon-finished" plain>确认选择</el-button>
+                        <el-button type="primary" v-loading="load.edit" @click="selectConfirm" :disabled="this.sels.length===0 || load.edit==true" icon="el-icon-finished">确认选择</el-button>
                     </span>
                 </el-row>
                 <el-row>
@@ -30,7 +30,7 @@
                         -->
                          <el-table-column prop="caseName" label="标题" min-width="250" show-overflow-tooltip>
                             <template slot-scope="scope">
-                                <span><el-link @click="showEdit(scope.row)"> {{scope.row.caseName}} </el-link></span>
+                                <span>  {{scope.row.caseName}}  </span>
                             </template>
                         </el-table-column>
                         
@@ -197,6 +197,7 @@ export default {
             if(this.xmTestCasedb && this.xmTestCasedb.id){
                 params.casedbId=this.xmTestCasedb.id
             }
+            params.caseStatus="2"
             this.load.list = true;
             listXmTestCase(params).then((res) => {
                 var tips=res.data.tips;

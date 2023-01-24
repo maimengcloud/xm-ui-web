@@ -34,7 +34,7 @@
                         </el-table-column>	
                         <el-table-column prop="caseStatus" label="用例状态" width="100" show-overflow-tooltip>
                             <template slot-scope="scope"> 
-                                <mdp-select-dict-tag :dict="dicts['testCaseStatus']" v-model="scope.row.caseStatus" effect="dark" @change="editSomeFields(scope.row,'caseStatus',$event)"></mdp-select-dict-tag> 
+                                <mdp-select-dict-tag :dict="dicts['testCaseStatus']" v-model="scope.row.caseStatus" effect="dark" @change="editSomeFields(scope.row,'caseStatus',$event)" :disabled="true"></mdp-select-dict-tag> 
                             </template>
                         </el-table-column>  
                         <template v-if="select!==true"> 

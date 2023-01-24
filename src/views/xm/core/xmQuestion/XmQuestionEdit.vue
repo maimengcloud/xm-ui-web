@@ -618,6 +618,15 @@
 						this.editForm.opStep=this.xmTestCase.testStep 
 						this.editForm.name=this.xmTestCase.caseName
 					} 
+					if(this.xmTestPlan && this.xmTestPlan.id){
+						this.editForm.casedbId=this.xmTestPlan.casedbId
+						this.editForm.casedbName=this.xmTestPlan.casedbName
+						this.editForm.planId=this.xmTestPlan.id
+						this.editForm.projectId=this.xmTestPlan.projectId
+						this.editForm.projectName=this.xmTestPlan.projectName
+						this.editForm.productId=this.xmTestPlan.productId
+						this.editForm.productName=this.xmTestPlan.productName
+					}
 					if(this.xmTestPlanCase  && this.xmTestPlanCase.planId){
 						this.editForm.planId=this.xmTestPlanCase.planId
 						this.editForm.productId=this.xmTestPlanCase.productId
