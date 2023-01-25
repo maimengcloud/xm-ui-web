@@ -80,8 +80,8 @@
 
     import xmQuestionDayTrend from './product/questionDayTrend'
     import xmQuestionDayAccumulate from './product/questionDayAccumulate'
-    import XmIterationXmQuestionDayTrend from './iteration/questionDayTrend'
-    import XmIterationXmQuestionDayAccumulate from './iteration/questionDayAccumulate'
+    import xmIterationXmQuestionDayTrend from './iteration/questionDayTrend'
+    import xmIterationXmQuestionDayAccumulate from './iteration/questionDayAccumulate'
 	import xmQuestionAttDist from './product/questionAttDist'
 	import xmQuestionAgeDist from './product/questionAgeDist'
 	import xmQuestionSort from './product/questionSort'
@@ -97,7 +97,8 @@
         
 		components: {   
             xmIterationBurnout,xmMenuDayTrend,xmMenuDayAccumulate,xmMenuAttDist,xmMenuAgeDist,xmMenuSort,xmProductWorkItemDayList,xmTaskDayTrend,xmTaskDayAccumulate,xmTaskAttDist,xmTaskAgeDist,xmTaskSort,xmProjectWorkItemDayList,xmProjectWorkloadSetDayList,xmProjectWorkloadSetMonthList,xmQuestionDayTrend,xmQuestionDayAccumulate,xmQuestionAttDist,xmQuestionAgeDist,xmQuestionSort,
-		},
+            xmIterationXmMenuDayTrend,xmIterationXmMenuDayAccumulate,xmIterationWorkItemDayList,xmIterationXmQuestionDayTrend,xmIterationXmQuestionDayAccumulate
+        },
         props:['xmProduct','xmIteration','xmProject','xmTestCasedb'],
 		computed: {
 		    ...mapGetters([

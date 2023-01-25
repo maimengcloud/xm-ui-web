@@ -27,7 +27,7 @@
 							<mdp-date-range v-model="filters" value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></mdp-date-range>
   					</el-form-item>    
 					<el-form-item>
-						 <el-button type="primary" icon="el-icon-search" @click="listXmProductStateHis">查询</el-button>
+						 <el-button type="primary" icon="el-icon-search" @click="listXmIterationStateHis">查询</el-button>
 					</el-form-item>  
 					</el-form>
 				</el-col>
@@ -41,7 +41,7 @@
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询  
 	import { mapGetters } from 'vuex'	 
 	
-	import { listXmProductStateHis } from '@/api/xm/core/xmProductStateHis';
+	import { listXmIterationStateHis } from '@/api/xm/core/xmIterationStateHis';
 	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//新增界面
 	export default { 
         
@@ -123,6 +123,7 @@
                     category:'', 
                     product:null, 
                     project:null,
+					iteration:null,
                 },
 				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中... 
@@ -134,29 +135,35 @@
 			}//end return
 		},//end data
 		methods: {  
-			listXmProductStateHis(){
+			listXmIterationStateHis(){
 				if(!this.filters.product){
 					this.$notify({position:'bottom-left',showClose:true,message:'请先选中产品',type:'warning'})
 					return;
 				}
-				var params={productId:this.filters.product.id,orderBy:'biz_date asc'}
+				
+				if(!this.filters.iteration){
+					this.$notify({position:'bottom-left',showClose:true,message:'请先选中迭代',type:'warning'})
+					return;
+				}
+				var params={productId:this.filters.product.id,iterationId:this.filters.iteration.id,orderBy:'biz_date asc'}
 				
 				if(this.filters.startBizDate && this.filters.endBizDate){
 					params.startBizDate=this.filters.startBizDate;
 					params.endBizDate=this.filters.endBizDate;
 				}
-				listXmProductStateHis(params).then(res=>{ 
+				listXmIterationStateHis(params).then(res=>{ 
 					this.xmProductStateHiss=res.data.tips.isOk?res.data.data:this.xmProductStateHiss;
 				})
 			},
 			open(params){
 				this.visible=true;
 				this.filters.product=params.xmProduct
-				this.filters.project=params.xmProject
-				this.filters.Product=params.xmProduct 
+				this.filters.project=params.xmProject 
+				this.filters.iteration=params.xmIteration 
 				if(this.$refs['xmProductSelect'])this.$refs['xmProductSelect'].clearSelect();
+				if(this.$refs['xmIterationSelect'])this.$refs['xmIterationSelect'].clearSelect();
 				this.$nextTick(()=>{
-					this.listXmProductStateHis();
+					this.listXmIterationStateHis();
 				})
 				
 			},
@@ -250,13 +257,11 @@
 			
 			onProductSelected(product){
 				this.filters.product=product
-				this.xmProductStateHiss=[];
-				this.listXmProductStateHis();
+				this.xmProductStateHiss=[]; 
 			},
 			
 			onProductClear(){
-				this.filters.product=null
-				
+				this.filters.product=null 
 				this.xmProductStateHiss=[];
 				
 			},
@@ -264,7 +269,7 @@
 			onIterationSelected(iteration){
 				this.filters.iteration=iteration
 				this.xmProductStateHiss=[];
-				this.listXmProductStateHis();
+				this.listXmIterationStateHis();
 			},
 			
 			onIterationClear(){
