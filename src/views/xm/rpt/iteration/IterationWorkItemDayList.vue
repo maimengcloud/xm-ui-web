@@ -27,7 +27,7 @@
 							<mdp-date-range v-model="filters" value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></mdp-date-range>
   					</el-form-item>  
 					<el-form-item>
-						 <el-button type="primary" icon="el-icon-search" @click="listXmIteationStateHis">查询</el-button>
+						 <el-button type="primary" icon="el-icon-search" @click="listXmIterationStateHis">查询</el-button>
 					</el-form-item>  
 					</el-form>
 				</el-col>
@@ -43,7 +43,7 @@
 	
 	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//产品选择界面
 	import  XmIterationSelect from '@/views/xm/core/components/XmIterationSelect';//迭代选择界面
-	import { listXmIteationStateHis } from '@/api/xm/core/xmIterationStateHis';
+	import { listXmIterationStateHis } from '@/api/xm/core/xmIterationStateHis';
 	export default { 
         
 		components: {  
@@ -112,18 +112,22 @@
 			}//end return
 		},//end data
 		methods: {  
-			listXmIteationStateHis(){
+			listXmIterationStateHis(){
 				if(!this.filters.product){
 					this.$notify({position:'bottom-left',showClose:true,message:'请先选中产品',type:'warning'})
 					return;
 				}
 				
-				var params={productId:this.filters.product.id,orderBy:'biz_date asc'}
+				if(!this.filters.iteration){
+					this.$notify({position:'bottom-left',showClose:true,message:'请先选中迭代',type:'warning'})
+					return;
+				}
+				var params={productId:this.filters.product.id,iterationId:this.filters.iteration.id,orderBy:'biz_date asc'}
 				if(this.filters.startBizDate && this.filters.endBizDate){
 					params.startBizDate=this.filters.startBizDate;
 					params.endBizDate=this.filters.endBizDate;
 				}
-				listXmIteationStateHis(params).then(res=>{ 
+				listXmIterationStateHis(params).then(res=>{ 
 					this.xmProductStateHiss=res.data.tips.isOk?res.data.data:this.xmProductStateHiss;
 				})
 			},
@@ -136,7 +140,7 @@
 				if(this.$refs['xmProductSelect'])this.$refs['xmProductSelect'].clearSelect();
 				if(this.$refs['xmIterationSelect'])this.$refs['xmIterationSelect'].clearSelect();
 				this.$nextTick(()=>{
-					this.listXmIteationStateHis();
+					this.listXmIterationStateHis();
 				})
 				
 			},
