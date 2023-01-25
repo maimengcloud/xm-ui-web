@@ -1,6 +1,6 @@
 <template>
 	<section>
-        <el-dialog fullscreen :title="(filters.product?'产品【'+filters.product.productName+'】':'')+'需求属性分布'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
+        <el-dialog fullscreen :title="dialogTitle" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
 			<el-row :gutter="5">
 				<el-col :span="18"> 
 					<div>
@@ -16,12 +16,16 @@
 								<el-option v-for="i in this.groupBys" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>
 						</el-form-item>      
-						<el-form-item label="归属产品"  v-if="!xmProduct && !xmIteration">
-							 <xm-product-select    ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
+						<el-form-item label="归属产品"  >
+							<xm-product-select v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
+							<span v-else>{{xmProductCpd.id}} <span v-if="xmProductCpd.productName"><br/>{{  xmProductCpd.productName  }} </span> </span>
 						</el-form-item>
-						<el-form-item label="归属迭代" v-if="!xmIteration || !xmIteration.id">
-							<xm-iteration-select ref="xmIterationSelect"    :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
- 						</el-form-item>  
+						<el-form-item label="归属迭代">
+							<xm-iteration-select  v-if="!xmIteration || !xmIteration.id" ref="xmIterationSelect"  :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
+							<span v-else>  {{xmIteration.id}}
+								<span v-if="xmIteration.iterationName"><br/>{{ xmIteration.iterationName  }} </span></span>
+
+						</el-form-item>  
 							
 						<el-form-item label="需求状态" prop="status">
 							<el-select   v-model="filters.status"  @change="onXmMenuSomeFieldsChange('status',$event)" clearable>
@@ -119,6 +123,23 @@
 				} 
 
 				return this.dicts[itemId].map(i=>i.name)
+			},
+			dialogTitle(){
+				if(this.xmIteration && this.xmIteration.id){
+					return (this.xmIteration?'迭代【'+this.xmIteration.iterationName+'】':'')+'需求属性数量分布'
+				}else {
+					return (filters.product?'产品【'+filters.product.productName+'】':'')+'需求属性数量分布'
+				}
+				
+			}, 
+			xmProductCpd(){
+				if(this.xmIteration && this.xmIteration.id){
+					return {id:this.xmIteration.productId,productName:this.xmIteration.productName}
+				}
+				if(this.xmProduct && this.xmProduct.id){
+					return this.xmProduct
+				}
+				return null;
 			}
 			
         }, 
