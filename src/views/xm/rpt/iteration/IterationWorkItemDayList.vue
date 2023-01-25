@@ -236,8 +236,7 @@
 			
 			onProductSelected(product){
 				this.filters.product=product
-				this.xmProductStateHiss=[];
-				this.listXmIteationStateHis();
+				this.xmProductStateHiss=[]; 
 			},
 			
 			onProductClear(){

@@ -215,8 +215,7 @@
 			
 			onProjectSelected(project){
 				this.filters.project=project
-				this.xmProjectStateHiss=[];
-				this.listXmProjectStateHis();
+				this.xmProjectStateHiss=[]; 
 			},
 			
 			onProjectClear(){

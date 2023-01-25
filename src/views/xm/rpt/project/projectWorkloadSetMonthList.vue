@@ -247,8 +247,7 @@
 			
 			onProjectSelected(project){
 				this.filters.project=project
-				this.xmProjectWorkloadSetMonths=[];
-				this.listProjectWorkloadSetMonth();
+				this.xmProjectWorkloadSetMonths=[]; 
 			},
 			
 			onProjectClear(){

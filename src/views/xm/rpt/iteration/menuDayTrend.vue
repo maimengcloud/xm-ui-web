@@ -268,8 +268,7 @@
 			
 			onIterationSelected(iteration){
 				this.filters.iteration=iteration
-				this.xmProductStateHiss=[];
-				this.listXmIterationStateHis();
+				this.xmProductStateHiss=[]; 
 			},
 			
 			onIterationClear(){

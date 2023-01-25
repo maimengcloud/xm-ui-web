@@ -247,8 +247,7 @@
 			
 			onProjectSelected(project){
 				this.filters.project=project
-				this.xmProjectWorkloadSetDays=[];
-				this.listProjectWorkloadSetDay();
+				this.xmProjectWorkloadSetDays=[]; 
 			},
 			
 			onProjectClear(){
