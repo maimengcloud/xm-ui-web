@@ -63,10 +63,8 @@
 			},
 			dialogTitle(){
 				if(this.xmIteration && this.xmIteration.id){
-					return (this.xmIteration?'迭代【'+this.xmIteration.iterationName+'】':'')+'需求年龄数量分布'
-				}else {
-					return (filters.product?'产品【'+filters.product.productName+'】':'')+'需求年龄数量分布'
-				}
+					return (this.xmIteration?'迭代【'+this.xmIteration.iterationName+'】':'')+'工作项每日趋势图'
+				} 
 				
 			},
 			xmProductCpd(){

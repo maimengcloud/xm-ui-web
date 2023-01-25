@@ -1,6 +1,6 @@
 <template>
 	<section>
-        <el-dialog fullscreen :title="(this.filters.product?'【'+this.filters.product.productName+'】':'')+'工作项按日分布趋势图'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
+        <el-dialog fullscreen :title="dialogTitle" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
  
 			<el-row :gutter="5">
 				<el-col :span="18"> 
@@ -54,6 +54,16 @@
 					['未关缺陷',...this.xmProductStateHiss.map(i=>i.bugCnt-i.closedBugs)],
 					['已关缺陷',...this.xmProductStateHiss.map(i=>i.closedBugs)]
 				]
+			},
+			dialogTitle(){ 
+				return (this.filters.product?'产品【'+this.filters.product.productName+'】':'')+'工作项每日趋势图' 
+				
+			}, 
+			xmProductCpd(){ 
+				if(this.xmProduct && this.xmProduct.id){
+					return this.xmProduct
+				}
+				return null;
 			}
 			
         }, 

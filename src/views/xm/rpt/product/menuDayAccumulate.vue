@@ -126,8 +126,7 @@
 			open(params){
 				this.visible=true;
 				this.filters.product=params.xmProduct
-				this.filters.project=params.xmProject
-				this.filters.Product=params.xmProduct
+				this.filters.project=params.xmProject 
 				this.xmProductStateHiss=[]
 				if(this.$refs['xmProductSelect'])this.$refs['xmProductSelect'].clearSelect();
 				this.$nextTick(()=>{

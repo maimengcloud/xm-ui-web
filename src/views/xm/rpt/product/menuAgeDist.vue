@@ -138,9 +138,12 @@
 		methods: {   
 			open(params){
 				this.visible=true;
-				this.filters.product=params.xmProduct
-				this.filters.project=params.xmProject
-				this.filters.Product=params.xmProduct 
+				this.filters.product=params.xmProduct 
+				this.filters.iteration=params.xmIteration 
+				
+				if((this.filters.product && this.filters.product.id) || ( this.filters.iteration && this.filters.iteration.id)){
+					this.searchXmMenuAgeDist()
+				}
 				
 			},
 			drawCharts() {
