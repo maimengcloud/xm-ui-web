@@ -24,6 +24,8 @@
         <xm-iteration-burnout ref="xmIterationBurnout" :xm-iteration="xmIteration" :xm-product="xmProduct" :xm-project="xmProject"></xm-iteration-burnout>
         <xm-menu-day-trend ref="xmMenuDayTrend" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-menu-day-trend>
         <xm-menu-day-accumulate ref="xmMenuDayAccumulate" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-menu-day-accumulate>
+        <xm-iteration-xm-menu-day-trend ref="xmIterationXmMenuDayTrend" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-iteration-xm-menu-day-trend>
+        <xm-iteration-xm-menu-day-accumulate ref="xmIterationXmMenuDayAccumulate" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-iteration-xm-menu-day-accumulate>
         <xm-menu-att-dist ref="xmMenuAttDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-menu-att-dist>
         <xm-menu-age-dist ref="xmMenuAgeDist" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration"></xm-menu-age-dist>
         <xm-menu-sort ref="xmMenuSort" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-menu-sort>
@@ -39,12 +41,15 @@
         <xm-project-workload-set-month-list ref="xmProjectWorkloadSetMonthList" :xm-product="xmProduct" :xm-project="xmProject"></xm-project-workload-set-month-list>
         
 
+        <xm-iteration-xm-question-day-trend ref="xmIterationXmQuestionDayTrend" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-iteration-xm-question-day-trend>
+        <xm-iteration-xm-question-day-accumulate ref="xmIterationXmQuestionDayAccumulate" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-iteration-xm-question-day-accumulate>
         <xm-question-day-trend ref="xmQuestionDayTrend" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-day-trend>
         <xm-question-day-accumulate ref="xmQuestionDayAccumulate" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-day-accumulate>
         <xm-question-att-dist ref="xmQuestionAttDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-att-dist>
         <xm-question-age-dist ref="xmQuestionAgeDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-age-dist>
         <xm-question-sort ref="xmQuestionSort" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-sort>
         <xm-product-work-item-day-list ref="xmProductWorkItemDayList" :xm-product="xmProduct" :xm-project="xmProject"></xm-product-work-item-day-list>
+        <xm-iteration-work-item-day-list ref="xmIterationWorkItemDayList" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration"></xm-iteration-work-item-day-list>
 	</section>
 </template>
 
@@ -55,10 +60,13 @@
     import xmIterationBurnout from './iteration/burnout'
     import xmMenuDayTrend from './product/menuDayTrend'
     import xmMenuDayAccumulate from './product/menuDayAccumulate'
+    import xmIterationXmMenuDayTrend from './iteration/menuDayTrend'
+    import xmIterationXmMenuDayAccumulate from './iteration/menuDayAccumulate'
 	import xmMenuAttDist from './product/menuAttDist'
 	import xmMenuAgeDist from './product/menuAgeDist'
 	import xmMenuSort from './product/menuSort'
 	import xmProductWorkItemDayList from './product/productWorkItemDayList'
+	import xmIterationWorkItemDayList from './iteration/iterationWorkItemDayList'
 
 
     import xmTaskDayTrend from './project/taskDayTrend'
@@ -72,6 +80,8 @@
 
     import xmQuestionDayTrend from './product/questionDayTrend'
     import xmQuestionDayAccumulate from './product/questionDayAccumulate'
+    import XmIterationXmQuestionDayTrend from './iteration/questionDayTrend'
+    import XmIterationXmQuestionDayAccumulate from './iteration/questionDayAccumulate'
 	import xmQuestionAttDist from './product/questionAttDist'
 	import xmQuestionAgeDist from './product/questionAgeDist'
 	import xmQuestionSort from './product/questionSort'
@@ -130,13 +140,13 @@
                 rptList:[/**{name:'报表名称',category:'报表分类，组织级、产品级、项目级、迭代级、需求、测试、任务',path:'路由路径',imgUrl:'图片路径',query:{参数}} */
                     //迭代报表
                     {rptName:'迭代燃尽图',category:'迭代级',ref:'xmIterationBurnout',desc:'跟踪迭代的剩余工作量按日期变化趋势，识别迭代当前进度情况',img:ranjintu },
-                    {rptName:'需求每日趋势',category:'迭代级',ref:'xmMenuDayTrend',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期变化趋势，识别需求工作情况',img:lineStack  },
-                    {rptName:'需求每日累积',category:'迭代级',ref:'xmMenuDayAccumulate',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期累积情况，识别需求工作的瓶颈',img:areaStack  },
+                    {rptName:'需求每日趋势',category:'迭代级',ref:'xmIterationXmMenuDayTrend',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期变化趋势，识别需求工作情况',img:lineStack  },
+                    {rptName:'需求每日累积',category:'迭代级',ref:'xmIterationXmMenuDayAccumulate',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期累积情况，识别需求工作的瓶颈',img:areaStack  },
                     {rptName:'需求属性分布',category:'迭代级',ref:'xmMenuAttDist',desc:'统计所有需求任意属性数量分布情况（实时数据）',img:pieSimple  },
                     {rptName:'需求年龄分布',category:'迭代级',ref:'xmMenuAgeDist',desc:'统计所有需求年龄分布情况（实时数据）',img:pieSimple  },
                     {rptName:'需求排行榜',category:'迭代级',ref:'xmMenuSort',desc:'需求提出人、负责人的用户故事数量排行（实时数据）',img:bar  },
-                    {rptName:'缺陷每日趋势',category:'迭代级',ref:'xmQuestionDayTrend',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
-                    {rptName:'缺陷每日累积',category:'迭代级',ref:'xmQuestionDayAccumulate',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期累积情况，识别缺陷处理工作的瓶颈',img:areaStack  },
+                    {rptName:'缺陷每日趋势',category:'迭代级',ref:'xmIterationXmQuestionDayTrend',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
+                    {rptName:'缺陷每日累积',category:'迭代级',ref:'xmIterationXmQuestionDayAccumulate',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期累积情况，识别缺陷处理工作的瓶颈',img:areaStack  },
                     {rptName:'缺陷属性分布',category:'迭代级',ref:'xmQuestionAttDist',desc:'统计所有缺陷任意属性数量分布情况（实时数据）',img:pieSimple  },
                     {rptName:'缺陷年龄分布',category:'迭代级',ref:'xmQuestionAgeDist',desc:'统计所有缺陷年龄分布情况（实时数据）',img:pieSimple  },
                     {rptName:'缺陷排行榜',category:'迭代级',ref:'xmQuestionSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },

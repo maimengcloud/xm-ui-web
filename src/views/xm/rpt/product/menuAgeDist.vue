@@ -89,6 +89,10 @@
 					return datas;
 				}
 			},
+			
+			legendCpd(){
+				 return ['0-2天','3-5天','6-7天','8-15天','16-30天','30天以上']
+			},
 			title(){
 				return '需求年龄数量分布'
 			},
@@ -99,9 +103,6 @@
 					return (filters.product?'产品【'+filters.product.productName+'】':'')+'需求年龄数量分布'
 				}
 				
-			},
-			legendCpd(){
-				 return ['0-2天','3-5天','6-7天','8-15天','16-30天','30天以上']
 			},
 			xmProductCpd(){
 				if(this.xmIteration && this.xmIteration.id){
