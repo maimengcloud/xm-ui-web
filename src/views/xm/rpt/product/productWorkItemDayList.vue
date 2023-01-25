@@ -1,6 +1,6 @@
 <template>
 	<section>
-        <el-dialog fullscreen :title="(filters.product?'【'+filters.product.productName+'】':'')+'工作项按日分布趋势图'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
+        <el-dialog fullscreen :title="(this.filters.product?'【'+this.filters.product.productName+'】':'')+'工作项按日分布趋势图'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
  
 			<el-row :gutter="5">
 				<el-col :span="18"> 

@@ -111,7 +111,7 @@
 				if(this.xmIteration && this.xmIteration.id){
 					return (this.xmIteration?'迭代【'+this.xmIteration.iterationName+'】':'')+'缺陷年龄数量分布'
 				}else {
-					return (filters.product?'产品【'+filters.product.productName+'】':'')+'缺陷年龄数量分布'
+					return (this.filters.product?'产品【'+this.filters.product.productName+'】':'')+'缺陷年龄数量分布'
 				}
 				
 			},
