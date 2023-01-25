@@ -1,6 +1,6 @@
 <template>
 	<section>
-        <el-dialog fullscreen :title="(filters.product?'产品【'+filters.product.productName+'】':'')+'缺陷每日趋势'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
+        <el-dialog fullscreen :title="dialogTitle" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
 			
 			<el-row :gutter="5">
 				<el-col :span="18"> 
@@ -12,15 +12,22 @@
 				</el-col>
 				<el-col :span="6" class="border padding">
 					<el-form :model="filters"> 
-						<el-form-item label="归属产品" v-if="!xmProduct" >
-							 <xm-product-select   ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"   @clear="onProductClear"></xm-product-select>
-  					  </el-form-item>  
+						
+						<el-form-item label="归属产品"  >
+							<xm-product-select v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
+							<span v-else>{{xmProductCpd.id}} <span v-if="xmProductCpd.productName"><br/>{{  xmProductCpd.productName  }} </span> </span>
+						</el-form-item>
+						<el-form-item label="归属迭代">
+							<xm-iteration-select  v-if="!xmIteration || !xmIteration.id" ref="xmIterationSelect"  :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
+							<span v-else>  {{xmIteration.id}}
+								<span v-if="xmIteration.iterationName"><br/>{{ xmIteration.iterationName  }} </span></span> 
+						</el-form-item>  
 					<el-form-item label="日期区间">
 						<br>
 							<mdp-date-range v-model="filters" value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></mdp-date-range>
   					</el-form-item>    
 					<el-form-item>
-						 <el-button type="primary" icon="el-icon-search" @click="listXmProductStateHis">查询</el-button>
+						 <el-button type="primary" icon="el-icon-search" @click="listXmIterationStateHis">查询</el-button>
 					</el-form-item>  
 					</el-form>
 				</el-col>
@@ -34,14 +41,14 @@
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询  
 	import { mapGetters } from 'vuex'	 
 	
-	import { listXmProductStateHis } from '@/api/xm/core/xmProductStateHis';
+	import { listXmIterationStateHis } from '@/api/xm/core/xmIterationStateHis';
 	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//新增界面
 	export default { 
         
 		components: {   
 			XmProductSelect,
 		},
-        props:['xmProduct','xmProject'],
+        props:['xmProduct','xmProject','xmIteration'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -82,6 +89,23 @@
 					return this.xmProductStateHiss.map(i=>i.resolvedBugs)
 				}
 			},
+			dialogTitle(){
+				if(this.xmIteration && this.xmIteration.id){
+					return (this.xmIteration?'迭代【'+this.xmIteration.iterationName+'】':'')+'缺陷每日趋势图'
+				}else {
+					return (filters.product?'产品【'+filters.product.productName+'】':'')+'缺陷每日趋势图'
+				}
+				
+			},
+			xmProductCpd(){
+				if(this.xmIteration && this.xmIteration.id){
+					return {id:this.xmIteration.productId,productName:this.xmIteration.productName}
+				}
+				if(this.xmProduct && this.xmProduct.id){
+					return this.xmProduct
+				}
+				return null;
+			}
 			
         }, 
 		watch: {  
@@ -99,6 +123,7 @@
                     category:'', 
                     product:null, 
                     project:null,
+                    iteration:null,
                 },
 				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中... 
@@ -110,18 +135,22 @@
 			}//end return
 		},//end data
 		methods: {  
-			listXmProductStateHis(){
+			listXmIterationStateHis(){
 				if(!this.filters.product){
 					this.$notify({position:'bottom-left',showClose:true,message:'请先选中产品',type:'warning'})
 					return;
 				}
-				var params={productId:this.filters.product.id,orderBy:'biz_date asc'}
+				if(!this.filters.iteration){
+					this.$notify({position:'bottom-left',showClose:true,message:'请先选中迭代',type:'warning'})
+					return;
+				}
+				var params={productId:this.filters.product.id,iterationId:this.filters.iteration.id,orderBy:'biz_date asc'}
 				
 				if(this.filters.startBizDate && this.filters.endBizDate){
 					params.startBizDate=this.filters.startBizDate;
 					params.endBizDate=this.filters.endBizDate;
 				}
-				listXmProductStateHis(params).then(res=>{ 
+				listXmIterationStateHis(params).then(res=>{ 
 					this.xmProductStateHiss=res.data.tips.isOk?res.data.data:this.xmProductStateHiss;
 				})
 			},
@@ -129,10 +158,11 @@
 				this.visible=true;
 				this.filters.product=params.xmProduct
 				this.filters.project=params.xmProject
-				this.filters.Product=params.xmProduct 
+				this.filters.iteration=params.xmIteration 
 				if(this.$refs['xmProductSelect'])this.$refs['xmProductSelect'].clearSelect();
+				if(this.$refs['xmIterationSelect'])this.$refs['xmIterationSelect'].clearSelect();
 				this.$nextTick(()=>{
-					this.listXmProductStateHis();
+					this.listXmIterationStateHis();
 				})
 				
 			},
@@ -226,16 +256,25 @@
 			
 			onProductSelected(product){
 				this.filters.product=product
-				this.xmProductStateHiss=[];
-				this.listXmProductStateHis();
+				this.xmProductStateHiss=[]; 
 			},
 			
 			onProductClear(){
-				this.filters.product=null
-				
+				this.filters.product=null 
 				this.xmProductStateHiss=[];
 				
 			},
+			
+			onIterationSelected(iteration){
+				this.filters.iteration=iteration
+				this.xmProductStateHiss=[];
+				this.listXmIterationStateHis();
+			},
+			
+			onIterationClear(){
+				this.filters.iteration=null 
+				this.xmProductStateHiss=[];
+			}
 		},//end method
 		mounted() {
 			/**

@@ -111,9 +111,9 @@
 			},
 			dialogTitle(){
 				if(this.xmIteration && this.xmIteration.id){
-					return (this.xmIteration?'迭代【'+this.xmIteration.iterationName+'】':'')+'需求年龄数量分布'
+					return (this.xmIteration?'迭代【'+this.xmIteration.iterationName+'】':'')+'缺陷数量排行榜'
 				}else {
-					return (filters.product?'产品【'+filters.product.productName+'】':'')+'需求年龄数量分布'
+					return (filters.product?'产品【'+filters.product.productName+'】':'')+'缺陷数量排行榜'
 				}
 				
 			},
