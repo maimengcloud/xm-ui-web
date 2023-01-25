@@ -4,7 +4,7 @@
       <el-col
         :span="4"
         class="padding border"
-        :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"
+        :style="{  overflowY: 'auto' }"
       >
         <h4 class="padding-bottom">常用功能导航</h4>
         <el-steps
@@ -34,7 +34,7 @@
                     type="warning"
                     size="mini"
                     plain
-                    @click="showIterationMenu"
+                    @click="showPanelName='iterationMenuMng'"
                     >配置需求范围</el-button
                   > 
                   <el-button
@@ -61,7 +61,7 @@
                     type="warning"
                     size="mini"
                     plain
-                    @click="showIterationMenu"
+                    @click="showPanelName='iterationMenuMng'"
                     >需求范围</el-button
                   > 
                 </span>
@@ -74,7 +74,7 @@
                     type="warning"
                     size="mini"
                     plain
-                    @click="showIterationMenu"
+                    @click="showPanelName='iterationMenuMng'"
                     >确认需求范围</el-button
                   > 
                   <el-button
@@ -107,7 +107,7 @@
                     type="warning"
                     size="mini"
                     plain
-                    @click="showIterationDetail"
+                    @click="showPanelName='detail'"
                     >迭代计划</el-button
                   >
                   <el-button
@@ -134,7 +134,7 @@
                     type="warning"
                     size="mini"
                     plain
-                    @click="showIterationDetail"
+                    @click="showPanelName='detail'"
                     >迭代计划</el-button
                   >
                   <el-button
