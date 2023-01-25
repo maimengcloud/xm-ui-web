@@ -1,6 +1,6 @@
 <template>
 	<section>
-        <el-dialog fullscreen :title="(this.filters.product?'产品【'+this.filters.product.productName+'】':'')+'缺陷每日趋势'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
+        <el-dialog fullscreen :title="dialogTitle" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
 			
 			<el-row :gutter="5">
 				<el-col :span="18"> 
@@ -12,9 +12,11 @@
 				</el-col>
 				<el-col :span="6" class="border padding">
 					<el-form :model="filters"> 
-						<el-form-item label="归属产品" v-if="!xmProduct" >
-							 <xm-product-select   ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"   @clear="onProductClear"></xm-product-select>
-  					  </el-form-item>  
+						
+						<el-form-item label="归属产品"  >
+							<xm-product-select v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
+							<span v-else>{{xmProductCpd.id}} <span v-if="xmProductCpd.productName"><br/>{{  xmProductCpd.productName  }} </span> </span>
+						</el-form-item>
 					<el-form-item label="日期区间">
 						<br>
 							<mdp-date-range v-model="filters" value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></mdp-date-range>
@@ -83,6 +85,28 @@
 				}
 			},
 			
+			
+			dialogTitle(){
+				var productName=""; 
+				if(this.filters.product && this.filters.product.id){
+					if(this.filters.product.productName){
+						productName=this.filters.product.productName
+					}else{ 
+						productName=this.filters.product.id
+					}
+				} 
+				if(productName){
+					return `产品【${productName}】缺陷每日趋势图`
+				}else{
+					return "产品缺陷每日趋势图"
+				}
+			},
+			xmProductCpd(){ 
+				if(this.xmProduct && this.xmProduct.id){
+					return this.xmProduct
+				}
+				return null;
+			}
         }, 
 		watch: {  
 			datesCpd(){

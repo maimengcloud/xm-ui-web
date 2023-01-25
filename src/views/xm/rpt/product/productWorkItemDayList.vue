@@ -10,9 +10,11 @@
 				</el-col>
 				<el-col :span="6" class="border padding">
 					<el-form  :model="filters"> 
-					<el-form-item label="归属产品">
-							<xm-product-select  v-if="!xmProduct"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"   @clear="onProductClear"></xm-product-select>
-  					</el-form-item>  
+						
+					<el-form-item label="归属产品"  >
+						<xm-product-select v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
+						<span v-else>{{xmProductCpd.id}} <span v-if="xmProductCpd.productName"><br/>{{  xmProductCpd.productName  }} </span> </span>
+					</el-form-item>
 					<el-form-item label="日期区间">
 						<br>
 							<mdp-date-range v-model="filters" value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></mdp-date-range>
@@ -54,11 +56,22 @@
 					['未关缺陷',...this.xmProductStateHiss.map(i=>i.bugCnt-i.closedBugs)],
 					['已关缺陷',...this.xmProductStateHiss.map(i=>i.closedBugs)]
 				]
-			},
-			dialogTitle(){ 
-				return (this.filters.product?'产品【'+this.filters.product.productName+'】':'')+'工作项每日趋势图' 
-				
 			}, 
+			dialogTitle(){
+				var productName=""; 
+				if(this.filters.product && this.filters.product.id){
+					if(this.filters.product.productName){
+						productName=this.filters.product.productName
+					}else{ 
+						productName=this.filters.product.id
+					}
+				} 
+				if(productName){
+					return `产品【${productName}】需求每日趋势图`
+				}else{
+					return "产品需求每日趋势图"
+				}
+			},
 			xmProductCpd(){ 
 				if(this.xmProduct && this.xmProduct.id){
 					return this.xmProduct
