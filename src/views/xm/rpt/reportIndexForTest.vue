@@ -1,6 +1,6 @@
 <template>
 	<section>
-		 <report-index :xm-product="xmProduct"></report-index>
+		 <report-index :xm-product="xmProduct" :xm-test-casedb="testCasedb"></report-index>
 	</section>
 </template>
 
