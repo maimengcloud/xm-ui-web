@@ -20,11 +20,14 @@
 							<xm-product-select v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
 							<span v-else>{{xmProductCpd.id}} <span v-if="xmProductCpd.productName"><br/>{{  xmProductCpd.productName  }} </span> </span>
 						</el-form-item>
-						<el-form-item label="归属迭代">
-							<xm-iteration-select  v-if="!xmIteration || !xmIteration.id" ref="xmIterationSelect"  :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
-							<span v-else>  {{xmIteration.id}}
-								<span v-if="xmIteration.iterationName"><br/>{{ xmIteration.iterationName  }} </span></span> 
+						<el-form-item label="归属迭代" v-if="xmIteration && xmIteration.id">
+ 							<span>  {{xmIteration.id}}
+								<span v-if="xmIteration.iterationName"><br/>{{ xmIteration.iterationName  }} </span>
+							</span> 
 						</el-form-item>  
+						<el-form-item label="归属迭代" v-else-if="filters.product && filters.product.id">
+							<xm-iteration-select  ref="xmIterationSelect"  :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
+						</el-form-item> 
 						 <el-form-item label="需求状态" prop="status">
 							<el-select   v-model="filters.status"  @change="onXmMenuSomeFieldsChange('status',$event)" clearable>
 								<el-option v-for="i in this.dicts.menuStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>

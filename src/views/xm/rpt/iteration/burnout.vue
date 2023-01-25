@@ -1,6 +1,6 @@
 <template>
 	<section>
-        <el-dialog fullscreen :title="(	filters.iteration?'【'+filters.iteration.iterationName+'】':'')+'迭代燃尽图'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
+        <el-dialog fullscreen :title="dialogTitle" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
 			
 			 
 			<el-row :gutter="5" v-if="visible">
@@ -12,22 +12,19 @@
 					</div>
 				</el-col>
 				<el-col :span="6" class="border">
-					<el-form  :model="filters" label-position="top" class="padding"> 
-						<el-form-item label="归属产品" v-if="!xmProduct&&!xmIteration">
-								<xm-product-select     ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"   @clear="onProductClear"></xm-product-select>
+					<el-form  :model="filters" label-position="top" class="padding">  
+						<el-form-item label="归属产品"  >
+							<xm-product-select v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
+							<span v-else>{{xmProductCpd.id}} <span v-if="xmProductCpd.productName"><br/>{{  xmProductCpd.productName  }} </span> </span>
+						</el-form-item>
+						<el-form-item label="归属迭代" v-if="xmIteration && xmIteration.id">
+ 							<span>  {{xmIteration.id}}
+								<span v-if="xmIteration.iterationName"><br/>{{ xmIteration.iterationName  }} </span>
+							</span> 
 						</el-form-item>  
-						<el-form-item label="归属产品" v-if="xmProduct && xmProduct.id">
-							<span v-if="xmProduct.id">编号：{{ xmProduct.id }}</span><br>
-							<span v-if="xmProduct.productName">名称：{{ xmProduct.productName }}</span>
- 						</el-form-item>  
- 						<el-form-item label="归属迭代" v-if="!xmIteration || !xmIteration.id"> 
-							<xm-iteration-select  style="display:inline;" :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
-						</el-form-item>  
- 						<el-form-item label="归属迭代" v-if="xmIteration &&xmIteration.id"> 
-							编号：<span v-if="xmIteration.id">{{ xmIteration.id }}</span><br>
-							名称：<span v-if="xmIteration.iterationName">{{ xmIteration.iterationName }}</span>
-
- 						</el-form-item>  
+						<el-form-item label="归属迭代" v-else-if="filters.product && filters.product.id">
+							<xm-iteration-select  ref="xmIterationSelect"  :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
+						</el-form-item> 
 						<el-form-item>
 							<div class="padding"> <el-button  type="primary" icon="el-icon-search" @click="listXmIterationStateHis">查询</el-button></div>
 						</el-form-item>  
@@ -101,6 +98,23 @@
 					return this.xmIterationStateHiss.map(i=>i.budgetWorkload-i.estimateWorkload)
 				}
 			},
+			dialogTitle(){
+				if(this.xmIteration && this.xmIteration.id){
+					return (this.xmIteration?'迭代【'+this.xmIteration.iterationName+'】':'')+'燃尽图'
+				}else{
+					return "迭代燃尽图"
+				}
+				
+			},
+			xmProductCpd(){
+				if(this.xmIteration && this.xmIteration.id){
+					return {id:this.xmIteration.productId,productName:this.xmIteration.productName}
+				}
+				if(this.xmProduct && this.xmProduct.id){
+					return this.xmProduct
+				}
+				return null;
+			}
 			
         }, 
 		watch: {  
