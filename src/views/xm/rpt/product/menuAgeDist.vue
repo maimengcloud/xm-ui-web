@@ -145,7 +145,7 @@
 				this.filters.iteration=params.xmIteration 
 				
 				if((this.filters.product && this.filters.product.id) || ( this.filters.iteration && this.filters.iteration.id)){
-					this.searchXmMenuAgeDist()
+ 					this.searchXmMenuAgeDist() 
 				}
 				
 			},
