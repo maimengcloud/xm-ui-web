@@ -5,7 +5,7 @@
 			<el-row :gutter="5">
 				<el-col :span="18"> 
 					<div> 
-						<div class="main" id="productWorkItemDayList" style="width:100%;height:600px;margin:0 auto;"></div> 
+						<div class="main" id="iterationWorkItemDayList" style="width:100%;height:600px;margin:0 auto;"></div> 
 					</div>
 				</el-col>
 				<el-col :span="6" class="border padding">
@@ -68,7 +68,9 @@
 			dialogTitle(){
 				if(this.xmIteration && this.xmIteration.id){
 					return (this.xmIteration?'迭代【'+this.xmIteration.iterationName+'】':'')+'工作项每日趋势图'
-				} 
+				}else{
+					return "迭代工作项每日趋势图"
+				}
 				
 			},
 			xmProductCpd(){
@@ -132,13 +134,14 @@
 				this.filters.iteration=params.xmIteration
 				this.xmProductStateHiss=[]
 				if(this.$refs['xmProductSelect'])this.$refs['xmProductSelect'].clearSelect();
+				if(this.$refs['xmIterationSelect'])this.$refs['xmIterationSelect'].clearSelect();
 				this.$nextTick(()=>{
 					this.listXmIteationStateHis();
 				})
 				
 			},
 			drawCharts() {
-				this.myChart = this.$echarts.init(document.getElementById("productWorkItemDayList")); 
+				this.myChart = this.$echarts.init(document.getElementById("iterationWorkItemDayList")); 
 				var that=this;
 				this.myChart.on('updateAxisPointer', function (event) {
 					const xAxisInfo = event.axesInfo[0];

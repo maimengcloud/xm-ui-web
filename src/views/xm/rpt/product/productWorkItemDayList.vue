@@ -67,9 +67,9 @@
 					}
 				} 
 				if(productName){
-					return `产品【${productName}】需求每日趋势图`
+					return `产品【${productName}】工作项每日分布图`
 				}else{
-					return "产品需求每日趋势图"
+					return "产品工作项每日分布图"
 				}
 			},
 			xmProductCpd(){ 
