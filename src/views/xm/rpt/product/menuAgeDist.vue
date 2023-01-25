@@ -63,8 +63,8 @@
 	  
 	import { getXmMenuAgeDist } from '@/api/xm/core/xmMenu';
 	
-	import  XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';//修改界面 
-	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//新增界面
+	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//产品选择界面
+	import  XmIterationSelect from '@/views/xm/core/components/XmIterationSelect';//迭代选择界面
 
 	export default { 
         
