@@ -4,7 +4,7 @@
 			
 			<el-row :gutter="5">
 				<el-col :span="18"> <div>
-					<div class="main" id="questionDayAccumulate"
+					<div class="main" id="iterationQuestionDayAccumulate"
 							style="width:100%;height:600px;margin:0 auto;"></div> 
 					</div>
 				</el-col>
@@ -168,7 +168,7 @@
 				
 			},
 			drawCharts() {
-				this.myChart = this.$echarts.init(document.getElementById("questionDayAccumulate")); 
+				this.myChart = this.$echarts.init(document.getElementById("iterationQuestionDayAccumulate")); 
 				this.myChart.setOption(  
 					{
 						title: {
