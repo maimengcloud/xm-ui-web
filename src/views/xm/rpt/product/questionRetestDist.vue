@@ -91,8 +91,16 @@
 		      'userInfo','roles'
 		    ]), 
 			xmQuestionRetestsCpd(){
+				var def=[
+						{name:"1次",value:0} ,
+						{name:"2次",value:0} ,
+						{name:"3次",value:0} ,
+						{name:"4次",value:0} ,
+						{name:"5次",value:0} ,
+						{name:"5次以上",value:0}
+					]
 				if(this.xmQuestionRetests.length==0){
-					return []
+					return def
 				}else{   
 					var datas=[]
 					this.xmQuestionRetests.forEach(i=>{
@@ -104,6 +112,11 @@
 						 }
 						 data.value=i.bugsNum
 						 datas.push(data)
+					})
+					def.forEach(k=>{
+						if(!datas.some(i=>k.name==i.name)){
+							datas.push(k)
+						}
 					})
 					return datas;
 				}
