@@ -59,6 +59,30 @@
 		    ...mapGetters([
 		      'userInfo','roles'
 		    ]), 
+			 
+			hadExecCpd(){
+				if(this.xmTestPlanCaseUserDists.length==0){
+					return []
+				}else{ 
+					return this.xmTestPlanCaseUserDists.map(i=>i.hadExec)
+				}
+			}, 
+			
+			notExecCpd(){
+				if(this.xmTestPlanCaseUserDists.length==0){
+					return []
+				}else{ 
+					return this.xmTestPlanCaseUserDists.map(i=>i.notExec)
+				}
+			}, 
+			legendCpd(){
+				if(this.xmTestPlanCaseUserDists.length==0){
+					return []
+				}else{ 
+					return this.xmTestPlanCaseUserDists.map(i=>i.execUsername)
+				}
+				
+			},
 			xmTestPlanCaseUserDistsCpd(){
 				if(this.xmTestPlanCaseUserDists.length==0){
 					return []
@@ -76,13 +100,7 @@
 			},
 			title(){
 				return  '测试用例执行结果数量分布'
-			},
-			/**0-未测，1-通过，2-受阻，3-忽略，4-失败 */
-			legendCpd(){
-				var itemId="testPlanTcode"; 
-				return this.dicts[itemId].map(i=>this.formatDict(itemId,i.id))
 			}, 
-			
 			xmProductCpd(){
 				if(this.xmTestPlan && this.xmTestPlan.id){
 					return {id:this.xmTestPlan.productId,productName:this.xmTestPlan.productName}
@@ -129,42 +147,37 @@
 			}, 
 			drawCharts() {
 				this.myChart = this.$echarts.init(document.getElementById("testPlanCaseUserDist")); 
-				this.myChart.setOption(   
+				this.myChart.setOption(      
 					{
-						title: {
-							text: this.title, 
-							left: 'center'
+						xAxis: {
+							type: 'category',
+							data: this.legendCpd
 						},
-						tooltip: {
-							trigger: 'item'
+						yAxis: {
+							type: 'value'
 						},
-						legend: { 
-							top:'5%',
-							left: 'center',
-							data:this.legendCpd,
-						},
-						series: [
+						series: [ 
 							{
-							type: 'pie',
-							radius: '50%',
-							data: this.xmTestPlanCaseUserDistsCpd,
-							emphasis: {
-								itemStyle: {
-								shadowBlur: 10,
-								shadowOffsetX: 0,
-								shadowColor: 'rgba(0, 0, 0, 0.5)'
-								}
+								name: '已执行',
+								type: 'bar',
+								barGap: 0, 
+								emphasis: {
+									focus: 'series'
+								},
+								data: this.hadExecCpd
 							},
-
-							label: {
-								show: true,
-								position: 'center'
+							{
+								name: '未执行',
+								type: 'bar', 
+								emphasis: {
+									focus: 'series'
+								},
+								data: this.notExecCpd
 							},
-							}
 						]
 					}
 				)
-			}, 
+			},
 			searchXmTestPlanCaseUserDist(){ 
 
 				var params={ } 
