@@ -13,6 +13,7 @@
 				<el-col :span="6" class="border padding">
 					<el-form  :model="filters">   
 						
+						
 						<el-form-item label="归属产品"  >
 							<xm-product-select v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmTestPlan?xmTestPlan.id:null"  @clear="onProductClear"></xm-product-select>
 							<span v-else>{{xmProductCpd.id}} <span v-if="xmProductCpd.productName"><br/>{{  xmProductCpd.productName  }} </span> </span>
@@ -26,6 +27,10 @@
 							<span v-if="filters.testPlan">{{ filters.testPlan.name }}</span><el-button type="primary" @click="$refs['xmTestPlanSelectRef'].open()">选择计划</el-button>
 						</el-form-item> 
 						 
+						<el-form-item label="归属项目"  >
+							<xm-project-select  v-if="!xmProject"  ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-product-id="xmProductCpd?xmProductCpd.id:null" @row-click="onProjectSelected" @clear="onProjectClear"></xm-project-select>
+							<span v-else>{{xmProject.id}} <span v-if="xmProject.name"><br/>{{  xmProject.name  }} </span> </span>
+						</el-form-item>
 					<el-form-item>
 						 <el-button type="primary" icon="el-icon-search" @click="searchXmTestPlanCaseExecStatusDist">查询</el-button>
 					</el-form-item>  
@@ -46,13 +51,14 @@
 	  
 	import { getXmTestPlanCaseExecStatusDist } from '@/api/xm/core/xmTestPlanCase';
 	
-	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//新增界面
+	import  XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';//项目
+	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//产品
 	import  xmTestPlanSelect from '@/views/xm/core/xmTestPlan/XmTestPlanSelect';//计划选择器
 
 	export default { 
         
 		components: {   
-			XmProductSelect,xmTestPlanSelect,
+			XmProjectSelect,XmProductSelect,xmTestPlanSelect,
 		},
         props:['xmProject','xmProduct','xmTestCasedb','xmTestPlan'],
 		computed: {
@@ -208,6 +214,14 @@
 				
 			},
 			
+			onProjectSelected(project){
+				this.filters.project=project
+			},
+			
+			onProjectClear(){
+				this.filters.project=null
+				
+			},
 			onXmTestPlanSelected(xmTestPlan){
 				this.filters.testPlan=xmTestPlan
 			},

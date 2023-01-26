@@ -26,6 +26,11 @@
 							<span v-if="filters.testPlan">{{ filters.testPlan.name }}</span><el-button type="primary" @click="$refs['xmTestPlanSelectRef'].open()">选择计划</el-button>
 						</el-form-item> 
 						 
+						 
+						<el-form-item label="归属项目"  >
+							<xm-project-select  v-if="!xmProject"  ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-product-id="xmProductCpd?xmProductCpd.id:null" @row-click="onProjectSelected" @clear="onProjectClear"></xm-project-select>
+							<span v-else>{{xmProject.id}} <span v-if="xmProject.name"><br/>{{  xmProject.name  }} </span> </span>
+						</el-form-item>
 					<el-form-item>
 						 <el-button type="primary" icon="el-icon-search" @click="searchXmTestPlanCaseUserDist">查询</el-button>
 					</el-form-item>  
@@ -45,14 +50,15 @@
 	import { mapGetters } from 'vuex'	 
 	  
 	import { getXmTestPlanCaseUserDist } from '@/api/xm/core/xmTestPlanCase';
-	
+
+	import  XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';//项目 
  	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//新增界面
 	import  xmTestPlanSelect from '@/views/xm/core/xmTestPlan/XmTestPlanSelect';//计划选择器
 
 	export default { 
         
 		components: {   
-			XmProductSelect,xmTestPlanSelect,
+			XmProjectSelect,XmProductSelect,xmTestPlanSelect,
 		},
         props:['xmProject','xmProduct','xmTestCasedb','xmTestPlan'],
 		computed: {
@@ -219,8 +225,15 @@
 			onProductClear(){
 				this.filters.product=null
 				
+			}, 
+			onProjectSelected(project){
+				this.filters.project=project
 			},
 			
+			onProjectClear(){
+				this.filters.project=null
+				
+			},
 			onXmTestPlanSelected(xmTestPlan){
 				this.filters.testPlan=xmTestPlan
 			},
