@@ -50,7 +50,13 @@
         <xm-question-sort ref="xmQuestionSort" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-sort>
         <xm-product-work-item-day-list ref="xmProductWorkItemDayList" :xm-product="xmProduct" :xm-project="xmProject"></xm-product-work-item-day-list>
         <xm-iteration-work-item-day-list ref="xmIterationWorkItemDayList" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration"></xm-iteration-work-item-day-list>
-	</section>
+	
+        <!--测试计划-->
+        <xm-test-plan-case-exec-status-dist ref="xmTestPlanCaseExecStatusDist" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-test-plan-case-exec-status-dist> 
+        <xm-test-plan-case-user-dist ref="xmTestPlanCaseUserDist" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-test-plan-case-user-dist>
+
+
+    </section>
 </template>
 
 <script>
@@ -85,6 +91,10 @@
 	import xmQuestionAttDist from './product/questionAttDist'
 	import xmQuestionAgeDist from './product/questionAgeDist'
 	import xmQuestionSort from './product/questionSort'
+
+    
+	import xmTestPlanCaseExecStatusDist from './testPlan/testPlanCaseExecStatusDist'
+	import xmTestPlanCaseUserDist from './testPlan/testPlanCaseUserDist'
     
     import pieSimple from './images/pie-simple.png'
     import lineStack from './images/line-stack.png'
@@ -97,9 +107,12 @@
         
 		components: {   
             xmIterationBurnout,xmMenuDayTrend,xmMenuDayAccumulate,xmMenuAttDist,xmMenuAgeDist,xmMenuSort,xmProductWorkItemDayList,xmTaskDayTrend,xmTaskDayAccumulate,xmTaskAttDist,xmTaskAgeDist,xmTaskSort,xmProjectWorkItemDayList,xmProjectWorkloadSetDayList,xmProjectWorkloadSetMonthList,xmQuestionDayTrend,xmQuestionDayAccumulate,xmQuestionAttDist,xmQuestionAgeDist,xmQuestionSort,
-            xmIterationXmMenuDayTrend,xmIterationXmMenuDayAccumulate,xmIterationWorkItemDayList,xmIterationXmQuestionDayTrend,xmIterationXmQuestionDayAccumulate
+            xmIterationXmMenuDayTrend,xmIterationXmMenuDayAccumulate,xmIterationWorkItemDayList,xmIterationXmQuestionDayTrend,xmIterationXmQuestionDayAccumulate,
+            
+            xmTestPlanCaseExecStatusDist,xmTestPlanCaseUserDist
+        
         },
-        props:['xmProduct','xmIteration','xmProject','xmTestCasedb'],
+        props:['xmProduct','xmIteration','xmProject','xmTestCasedb','xmTestPlan'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -177,16 +190,23 @@
                     {rptName:'项目结算工时每月趋势',category:'项目级',ref:'xmProjectWorkloadSetMonthList',desc:'统计项目每月登记工时、结算工时数量分布情况',img:datasetLink  },
 
                     //测试计划报表
-                    {rptName:'需求每日趋势',category:'测试库',ref:'xmMenuDayTrend',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期变化趋势，识别需求工作情况',img:lineStack  },
-                    {rptName:'需求每日累积',category:'测试库',ref:'xmMenuDayAccumulate',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期累积情况，识别需求工作的瓶颈',img:areaStack  },
-                    {rptName:'需求属性分布',category:'测试库',ref:'xmMenuAttDist',desc:'统计所有需求任意属性数量分布情况（实时数据）',img:pieSimple  },
-                    {rptName:'需求年龄分布',category:'测试库',ref:'xmMenuAgeDist',desc:'统计所有需求年龄分布情况（实时数据）',img:pieSimple  },
-                    {rptName:'需求排行榜',category:'测试库',ref:'xmMenuSort',desc:'需求提出人、负责人的用户故事数量排行（实时数据）',img:bar  },
-                    {rptName:'缺陷每日趋势',category:'测试库',ref:'xmQuestionDayTrend',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
-                    {rptName:'缺陷每日累积',category:'测试库',ref:'xmQuestionDayAccumulate',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期累积情况，识别缺陷处理工作的瓶颈',img:areaStack  },
-                    {rptName:'缺陷属性分布',category:'测试库',ref:'xmQuestionAttDist',desc:'统计所有缺陷任意属性数量分布情况（实时数据）',img:pieSimple  },
-                    {rptName:'缺陷年龄分布',category:'测试库',ref:'xmQuestionAgeDist',desc:'统计所有缺陷年龄分布情况（实时数据）',img:pieSimple  },
-                    {rptName:'缺陷排行榜',category:'测试库',ref:'xmQuestionSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
+                    
+                    {rptName:'测试用例执行状态分布',category:'测试计划级',ref:'xmTestPlanCaseExecStatusDist',desc:'按测试用例执行结果统计，通过、失败、忽略、阻塞',img:pieSimple  },
+                    
+                    {rptName:'测试用例执行用户分布',category:'测试计划级',ref:'xmTestPlanCaseUserDist',desc:'统计测试用例负责人用例执行情况',img:bar  },
+                    {rptName:'缺陷回归分布',category:'测试计划级',ref:'xmQuestionReTestingDist',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
+                    {rptName:'测试次数每日统计',category:'测试计划级',ref:'xmTestDayTimesCalc',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
+                    {rptName:'缺陷状态分布',category:'测试计划级',ref:'xmQuestionStateDist',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
+
+                    {rptName:'缺陷每日趋势',category:'测试计划级',ref:'xmQuestionDayTrend',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
+                    {rptName:'缺陷每日累积',category:'测试计划级',ref:'xmQuestionDayAccumulate',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期累积情况，识别缺陷处理工作的瓶颈',img:areaStack  },
+                    {rptName:'缺陷属性分布',category:'测试计划级',ref:'xmQuestionAttDist',desc:'统计所有缺陷任意属性数量分布情况（实时数据）',img:pieSimple  },
+                    {rptName:'缺陷年龄分布',category:'测试计划级',ref:'xmQuestionAgeDist',desc:'统计所有缺陷年龄分布情况（实时数据）',img:pieSimple  },
+                    {rptName:'缺陷提出人排行榜',category:'测试计划级',ref:'xmQuestionAskUserSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
+                    {rptName:'缺陷负责人排行榜',category:'测试计划级',ref:'xmQuestionHandlerUserSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
+                    {rptName:'缺陷模块排行榜',category:'测试计划级',ref:'xmQuestionSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
+                    {rptName:'缺陷需求排行榜',category:'测试计划级',ref:'xmQuestionSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
+
                     
                 ],
 			}//end return
@@ -212,7 +232,7 @@
             if(this.xmIteration && this.xmIteration.id){
                 this.filters.category="迭代级"
             }else if(this.xmTestCasedb && this.xmTestCasedb.id){
-                this.filters.category="测试库"
+                this.filters.category="测试计划级"
             }else if(this.xmProject && this.xmProject.id){
                 this.filters.category="项目级"
             }else if(this.xmProduct && this.xmProduct.id){
