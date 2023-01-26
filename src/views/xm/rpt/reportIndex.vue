@@ -46,8 +46,15 @@
         <xm-question-day-trend ref="xmQuestionDayTrend" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-day-trend>
         <xm-question-day-accumulate ref="xmQuestionDayAccumulate" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-day-accumulate>
         <xm-question-att-dist ref="xmQuestionAttDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-att-dist>
+        <xm-question-state-dist ref="xmQuestionStateDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-state-dist>
+
         <xm-question-age-dist ref="xmQuestionAgeDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-age-dist>
         <xm-question-sort ref="xmQuestionSort" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-sort>
+        <xm-question-ask-user-sort ref="xmQuestionAskUserSort" init-group-by="ask_userid" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-ask-user-sort>
+        <xm-question-handler-user-sort ref="xmQuestionHandlerUserSort" init-group-by="handler_userid"  :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-handler-user-sort>
+        <xm-question-func-sort ref="xmQuestionFuncSort" init-group-by="func_id"  :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-func-sort>
+        <xm-question-menu-sort ref="xmQuestionMenuSort" init-group-by="menu_id"  :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-menu-sort>
+        
         <xm-question-retest-dist ref="xmQuestionRetestDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-retest-dist>
         <xm-product-work-item-day-list ref="xmProductWorkItemDayList" :xm-product="xmProduct" :xm-project="xmProject"></xm-product-work-item-day-list>
         <xm-iteration-work-item-day-list ref="xmIterationWorkItemDayList" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration"></xm-iteration-work-item-day-list>
@@ -90,8 +97,13 @@
     import xmIterationXmQuestionDayTrend from './iteration/questionDayTrend'
     import xmIterationXmQuestionDayAccumulate from './iteration/questionDayAccumulate'
 	import xmQuestionAttDist from './product/questionAttDist'
+	import xmQuestionStateDist from './product/questionAttDist'
 	import xmQuestionAgeDist from './product/questionAgeDist'
 	import xmQuestionSort from './product/questionSort'
+	import xmQuestionAskUserSort from './product/questionSort'
+	import xmQuestionHandlerUserSort from './product/questionSort' 
+	import xmQuestionFuncSort from './product/questionSort'
+	import xmQuestionMenuSort from './product/questionSort' 
 	import xmQuestionRetestDist from './product/questionRetestDist'
 
     
@@ -111,7 +123,8 @@
             xmIterationBurnout,xmMenuDayTrend,xmMenuDayAccumulate,xmMenuAttDist,xmMenuAgeDist,xmMenuSort,xmProductWorkItemDayList,xmTaskDayTrend,xmTaskDayAccumulate,xmTaskAttDist,xmTaskAgeDist,xmTaskSort,xmProjectWorkItemDayList,xmProjectWorkloadSetDayList,xmProjectWorkloadSetMonthList,xmQuestionDayTrend,xmQuestionDayAccumulate,xmQuestionAttDist,xmQuestionAgeDist,xmQuestionSort,
             xmIterationXmMenuDayTrend,xmIterationXmMenuDayAccumulate,xmIterationWorkItemDayList,xmIterationXmQuestionDayTrend,xmIterationXmQuestionDayAccumulate,
             
-            xmTestPlanCaseExecStatusDist,xmTestPlanCaseUserDist,xmQuestionRetestDist
+            xmTestPlanCaseExecStatusDist,xmTestPlanCaseUserDist,xmQuestionRetestDist,xmQuestionStateDist,
+            xmQuestionAskUserSort,xmQuestionHandlerUserSort,xmQuestionFuncSort,xmQuestionMenuSort,
         
         },
         props:['xmProduct','xmIteration','xmProject','xmTestCasedb','xmTestPlan'],
@@ -206,8 +219,8 @@
                     {rptName:'缺陷年龄分布',category:'测试计划级',ref:'xmQuestionAgeDist',desc:'统计所有缺陷按照年龄的分布情况，跟踪缺陷的生命周期和响应情况',img:pieSimple  },
                     {rptName:'缺陷提出人排行榜',category:'测试计划级',ref:'xmQuestionAskUserSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
                     {rptName:'缺陷负责人排行榜',category:'测试计划级',ref:'xmQuestionHandlerUserSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
-                    {rptName:'缺陷模块排行榜',category:'测试计划级',ref:'xmQuestionSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
-                    {rptName:'缺陷需求排行榜',category:'测试计划级',ref:'xmQuestionSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
+                    {rptName:'缺陷模块排行榜',category:'测试计划级',ref:'xmQuestionFuncSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
+                    {rptName:'缺陷需求排行榜',category:'测试计划级',ref:'xmQuestionMenuSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
 
                     
                 ],

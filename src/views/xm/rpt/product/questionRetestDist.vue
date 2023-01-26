@@ -1,7 +1,7 @@
 <template>
 	<section>
         <el-dialog fullscreen :title="dialogTitle" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
-			<el-row :gutter="5">
+			<el-row :gutter="5" v-if="visible">
 				<el-col :span="18"> 
 					<div>
 						<div class="main" id="xmQuestionRetestDist"

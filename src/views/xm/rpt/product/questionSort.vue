@@ -1,7 +1,7 @@
 <template>
 	<section>
         <el-dialog fullscreen :title="dialogTitle" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
-			<el-row :gutter="5">
+			<el-row :gutter="5" v-if="visible">
 				<el-col :span="18"> 
 					<div>
 						<div class="main" id="xmQuestionSort"
@@ -90,7 +90,7 @@
 		components: {   
 			XmIterationSelect,XmProductSelect,
 		},
-        props:['xmProduct','xmIteration','xmProject'],
+        props:['xmProduct','xmIteration','xmProject','initGroupBy'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -148,6 +148,7 @@
 					{id:'ask_userid', name:'提出人'},
 					{id:'handler_userid', name:'负责人'},
 					{id:'menu_id', name:'故事'}, 
+					{id:'func_id', name:'模块'}, 
 					
 				],
 				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
@@ -174,7 +175,9 @@
 				this.filters.product=params.xmProduct
 				this.filters.project=params.xmProject
 				this.filters.iteration=params.xmIteration 
-				
+				if(this.initGroupBy){
+					this.groupBy=this.initGroupBy
+				}
 				if((this.filters.product && this.filters.product.id) || ( this.filters.iteration && this.filters.iteration.id)){
 					this.searchXmQuestionSort()
 				}
