@@ -196,7 +196,7 @@
                     {rptName:'测试用例执行状态分布',category:'测试计划级',ref:'xmTestPlanCaseExecStatusDist',desc:'按测试用例执行结果统计，通过、失败、忽略、阻塞',img:pieSimple  },
                     
                     {rptName:'测试用例执行用户分布',category:'测试计划级',ref:'xmTestPlanCaseUserDist',desc:'统计测试用例负责人用例执行情况',img:bar  },
-                    {rptName:'缺陷回归分布',category:'测试计划级',ref:'xmQuestionRetestDist',desc:'统计项目中缺陷在回归测试中分布情况，跟踪缺陷的重新打开率；',img:lineStack  },
+                    {rptName:'缺陷回归分布',category:'测试计划级',ref:'xmQuestionRetestDist',desc:'统计项目中缺陷在回归测试中分布情况，跟踪缺陷的重新打开率；',img:pieSimple  },
                     {rptName:'测试次数每日统计',category:'测试计划级',ref:'xmTestDayTimesCalc',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
                     {rptName:'缺陷状态分布',category:'测试计划级',ref:'xmQuestionStateDist',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
 
