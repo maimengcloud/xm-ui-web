@@ -46,14 +46,13 @@
 	  
 	import { getXmTestPlanCaseExecStatusDist } from '@/api/xm/core/xmTestPlanCase';
 	
-	import  XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';//修改界面 
 	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//新增界面
 	import  xmTestPlanSelect from '@/views/xm/core/xmTestPlan/XmTestPlanSelect';//计划选择器
 
 	export default { 
         
 		components: {   
-			XmIterationSelect,XmProductSelect,xmTestPlanSelect,
+			XmProductSelect,xmTestPlanSelect,
 		},
         props:['xmProject','xmProduct','xmTestCasedb','xmTestPlan'],
 		computed: {
