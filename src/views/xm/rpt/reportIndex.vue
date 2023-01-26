@@ -48,6 +48,7 @@
         <xm-question-att-dist ref="xmQuestionAttDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-att-dist>
         <xm-question-age-dist ref="xmQuestionAgeDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-age-dist>
         <xm-question-sort ref="xmQuestionSort" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-sort>
+        <xm-question-retest-dist ref="xmQuestionRetestDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-retest-dist>
         <xm-product-work-item-day-list ref="xmProductWorkItemDayList" :xm-product="xmProduct" :xm-project="xmProject"></xm-product-work-item-day-list>
         <xm-iteration-work-item-day-list ref="xmIterationWorkItemDayList" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration"></xm-iteration-work-item-day-list>
 	
@@ -91,6 +92,7 @@
 	import xmQuestionAttDist from './product/questionAttDist'
 	import xmQuestionAgeDist from './product/questionAgeDist'
 	import xmQuestionSort from './product/questionSort'
+	import xmQuestionRetestDist from './product/questionRetestDist'
 
     
 	import xmTestPlanCaseExecStatusDist from './testPlan/testPlanCaseExecStatusDist'
@@ -109,7 +111,7 @@
             xmIterationBurnout,xmMenuDayTrend,xmMenuDayAccumulate,xmMenuAttDist,xmMenuAgeDist,xmMenuSort,xmProductWorkItemDayList,xmTaskDayTrend,xmTaskDayAccumulate,xmTaskAttDist,xmTaskAgeDist,xmTaskSort,xmProjectWorkItemDayList,xmProjectWorkloadSetDayList,xmProjectWorkloadSetMonthList,xmQuestionDayTrend,xmQuestionDayAccumulate,xmQuestionAttDist,xmQuestionAgeDist,xmQuestionSort,
             xmIterationXmMenuDayTrend,xmIterationXmMenuDayAccumulate,xmIterationWorkItemDayList,xmIterationXmQuestionDayTrend,xmIterationXmQuestionDayAccumulate,
             
-            xmTestPlanCaseExecStatusDist,xmTestPlanCaseUserDist
+            xmTestPlanCaseExecStatusDist,xmTestPlanCaseUserDist,xmQuestionRetestDist
         
         },
         props:['xmProduct','xmIteration','xmProject','xmTestCasedb','xmTestPlan'],
@@ -194,14 +196,14 @@
                     {rptName:'测试用例执行状态分布',category:'测试计划级',ref:'xmTestPlanCaseExecStatusDist',desc:'按测试用例执行结果统计，通过、失败、忽略、阻塞',img:pieSimple  },
                     
                     {rptName:'测试用例执行用户分布',category:'测试计划级',ref:'xmTestPlanCaseUserDist',desc:'统计测试用例负责人用例执行情况',img:bar  },
-                    {rptName:'缺陷回归分布',category:'测试计划级',ref:'xmQuestionReTestingDist',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
+                    {rptName:'缺陷回归分布',category:'测试计划级',ref:'xmQuestionRetestDist',desc:'统计项目中缺陷在回归测试中分布情况，跟踪缺陷的重新打开率；',img:lineStack  },
                     {rptName:'测试次数每日统计',category:'测试计划级',ref:'xmTestDayTimesCalc',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
                     {rptName:'缺陷状态分布',category:'测试计划级',ref:'xmQuestionStateDist',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
 
                     {rptName:'缺陷每日趋势',category:'测试计划级',ref:'xmQuestionDayTrend',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
-                    {rptName:'缺陷每日累积',category:'测试计划级',ref:'xmQuestionDayAccumulate',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期累积情况，识别缺陷处理工作的瓶颈',img:areaStack  },
+                    {rptName:'缺陷每日累积',category:'测试计划级',ref:'xmQuestionDayAccumulate',desc:'跟踪一段时间内，各种程度和类别的缺陷累积情况，监控缺陷的变化趋势',img:areaStack  },
                     {rptName:'缺陷属性分布',category:'测试计划级',ref:'xmQuestionAttDist',desc:'统计所有缺陷任意属性数量分布情况（实时数据）',img:pieSimple  },
-                    {rptName:'缺陷年龄分布',category:'测试计划级',ref:'xmQuestionAgeDist',desc:'统计所有缺陷年龄分布情况（实时数据）',img:pieSimple  },
+                    {rptName:'缺陷年龄分布',category:'测试计划级',ref:'xmQuestionAgeDist',desc:'统计所有缺陷按照年龄的分布情况，跟踪缺陷的生命周期和响应情况',img:pieSimple  },
                     {rptName:'缺陷提出人排行榜',category:'测试计划级',ref:'xmQuestionAskUserSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
                     {rptName:'缺陷负责人排行榜',category:'测试计划级',ref:'xmQuestionHandlerUserSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
                     {rptName:'缺陷模块排行榜',category:'测试计划级',ref:'xmQuestionSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
