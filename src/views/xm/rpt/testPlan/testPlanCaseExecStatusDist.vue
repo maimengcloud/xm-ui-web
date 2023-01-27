@@ -243,11 +243,8 @@
 				this.filters.product=this.xmProduct
 				this.filters.project=this.xmProject
 				this.filters.testCasedb=this.xmTestCasedb
-				
-				if(this.xmTestPlan && this.xmTestPlan.id){ 
-						this.searchXmTestPlanCaseExecStatusDist(); 
-					
-				}
+				 
+				this.searchXmTestPlanCaseExecStatusDist();  
 				
 			}
 		},//end method
