@@ -17,6 +17,10 @@
 							</el-select>
 						</el-form-item>      
 						
+						<el-form-item label="归属项目">
+							 <xm-project-select  v-if="!xmProject"  ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-product-id="xmProductCpd.id?xmProductCpd.id.id:null" @row-click="onProjectSelected"  @clear="onProjectClear"></xm-project-select>
+							 <span v-else>{{xmProject.id}} <span v-if="xmProject.name"><br/>{{  xmProject.name  }} </span> </span>
+						</el-form-item> 
 						<el-form-item label="归属产品"  >
 							<xm-product-select v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
 							<span v-else>{{xmProductCpd.id}} <span v-if="xmProductCpd.productName"><br/>{{  xmProductCpd.productName  }} </span> </span>
