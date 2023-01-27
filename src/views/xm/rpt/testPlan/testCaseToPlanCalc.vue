@@ -2,7 +2,7 @@
 	<section>
 
 		<el-dialog fullscreen :title="title" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
-			<el-row :gutter="5">
+			<el-row :gutter="5" v-if="visible">
 				<el-col :span="18"> 
 					<div>
 						<div class="main" id="testPlanCaseExecStatusDist"
@@ -36,10 +36,11 @@
 					</el-form-item>  
 					</el-form>
 				</el-col>
+				<xm-test-plan-select  ref="xmTestPlanSelectRef" :casedb-id="xmTestCasedb?xmTestCasedb.id:null" :product-id="xmProduct?xmProduct.id:null" :project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @select="onXmTestPlanSelected" @clear="onXmTestPlanClear"></xm-test-plan-select >
+
 			</el-row>
         </el-dialog>
 
-		<xm-test-plan-select  ref="xmTestPlanSelectRef" :casedb-id="xmTestCasedb?xmTestCasedb.id:null" :product-id="xmProduct?xmProduct.id:null" :project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @select="onXmTestPlanSelected" @clear="onXmTestPlanClear"></xm-test-plan-select >
  
  	</section>
 </template>

@@ -1,11 +1,11 @@
 <template>
 	<section class="padding">
-		<el-row class="page-main "> 
+		<el-row> 
             <el-select v-model="filters.category" clearable>
                 <el-option v-for="(item,index) in categorys" :label="item" :value="item" :key="index"></el-option>
             </el-select>
 		</el-row>
-		<el-row class="padding">
+		<el-row>
 			 <el-row  :style="{overflowX:'hidden',height:maxTableHeight+'px'}"  ref="table" :gutter="5">
                 <el-col  v-cloak v-for="(p,i) in rptListCpd" :key="i" :xl="4" :lg="6" :md="8" :sm="12" :body-style="{ padding: '0px' }">
                     <el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always" id="prj-view-box">
