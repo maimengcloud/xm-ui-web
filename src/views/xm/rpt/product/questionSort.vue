@@ -18,7 +18,7 @@
 							</el-form-item>      
 							
 							<el-form-item label="归属项目">
-								<xm-project-select  v-if="!xmProject"  ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-product-id="xmProductCpd.id?xmProductCpd.id.id:null" @row-click="onProjectSelected"  @clear="onProjectClear"></xm-project-select>
+								<xm-project-select  v-if="!xmProject"  ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-product-id="xmProductCpd?xmProductCpd.id:null" @row-click="onProjectSelected"  @clear="onProjectClear"></xm-project-select>
 								<span v-else>{{xmProject.id}} <span v-if="xmProject.name"><br/>{{  xmProject.name  }} </span> </span>
 							</el-form-item> 
 							<el-form-item label="归属产品"  >
@@ -86,13 +86,14 @@
 	  
 	import { getXmQuestionSort } from '@/api/xm/core/xmQuestion';
 	
+	import  XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';//项目选择
 	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//产品选择界面
 	import  XmIterationSelect from '@/views/xm/core/components/XmIterationSelect';//迭代选择界面
 
 	export default { 
         
 		components: {   
-			XmIterationSelect,XmProductSelect,
+			XmProjectSelect,XmIterationSelect,XmProductSelect,
 		},
         props:['xmProduct','xmIteration','xmProject','initGroupBy'],
 		computed: {
@@ -241,15 +242,19 @@
 				if(this.filters.priority){
 					params.priority=this.filters.priority
 				} 
-				params.groupBy=this.groupBy
+
+				if(this.filters.project){
+					params.projectId=this.filters.project.id
+				} 
 				if(this.filters.product){
 					params.productId=this.filters.product.id
-				}
-				
+				} 
 				if(this.filters.iteration){
 					params.linkIterationId=this.filters.iteration.id
 				}
 
+				
+				params.groupBy=this.groupBy
 				
 				if (
 					this.pageInfo.orderFields != null &&
@@ -266,6 +271,14 @@
 				getXmQuestionSort(params).then(res=>{
 					this.xmQuestionSorts=res.data.data
 				})
+				
+			},
+			onProjectSelected(project){
+				this.filters.project=project
+			},
+			
+			onProjectClear(){
+				this.filters.project=null
 				
 			},
 			onProductSelected(product){
