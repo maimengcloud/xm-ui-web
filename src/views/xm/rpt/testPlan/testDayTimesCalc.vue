@@ -12,15 +12,32 @@
 				</el-col>
 				<el-col :span="6" class="border">
 					<el-form :model="filters" class="padding"> 
-						    
 						<el-form-item label="归属项目"  >
 							<xm-project-select  v-if="!xmProject"  ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-product-id="xmProductCpd?xmProductCpd.id:null" @row-click="onProjectSelected" @clear="onProjectClear"></xm-project-select>
 							<span v-else>{{xmProject.id}} <span v-if="xmProject.name"><br/>{{  xmProject.name  }} </span> </span>
 						</el-form-item>
 						<el-form-item label="归属产品"  >
-							<xm-product-select v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
+							<xm-product-select v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmTestPlan?xmTestPlan.id:null"  @clear="onProductClear"></xm-product-select>
 							<span v-else>{{xmProductCpd.id}} <span v-if="xmProductCpd.productName"><br/>{{  xmProductCpd.productName  }} </span> </span>
-						</el-form-item>
+						</el-form-item> 
+						<el-form-item label="归属迭代" v-if="xmIteration && xmIteration.id">
+							<span>  {{xmIteration.id}}
+								<span v-if="xmIteration.iterationName"><br/>{{ xmIteration.iterationName  }} </span>
+							</span> 
+						</el-form-item>  
+						<el-form-item label="归属迭代" v-else-if="filters.product && filters.product.id">
+							<xm-iteration-select  ref="xmIterationSelect"  :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
+						</el-form-item> 
+						<el-form-item label="测试计划" v-if="xmTestPlan && xmTestPlan.id">
+ 							<span>  {{xmTestPlan.id}}
+								<span v-if="xmTestPlan.name"><br/>{{ xmTestPlan.name  }} </span>
+							</span> 
+						</el-form-item>  
+						<el-form-item label="测试计划" v-else-if="filters.product && filters.product.id">
+							<span v-if="filters.testPlan">{{ filters.testPlan.name }}</span>
+							<el-button v-if="filters.testPlan" type="text" @click="filters.testPlan=null" plain icon="el-icon-circle-close">清除</el-button>
+							<el-button v-if="!filters.testPlan" type="text" @click="$refs['xmTestPlanSelectRef'].open()" plain>选择计划</el-button>
+						</el-form-item> 
 						<el-form-item label="日期区间">
 							<br>
 								<mdp-date-range v-model="filters" value-format="yyyy-MM-dd" start-key="startExecDate" end-key="endExecDate"></mdp-date-range>
@@ -31,6 +48,8 @@
 					</el-form>
 				</el-col>
 			</el-row>
+			<xm-test-plan-select  ref="xmTestPlanSelectRef" :casedb-id="xmTestCasedb?xmTestCasedb.id:null" :product-id="xmProduct?xmProduct.id:null" :project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @select="onXmTestPlanSelected" @clear="onXmTestPlanClear"></xm-test-plan-select >
+
         </el-dialog>
 	</section>
 </template>
@@ -40,11 +59,17 @@
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询  
 	import { mapGetters } from 'vuex'	 
 	import { getXmTestDayTimesList } from '@/api/xm/core/xmTestPlanCase'; 
-	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//新增界面
+	
+	
+	import  XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';//项目
+	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//产品
+	import  XmIterationSelect from '@/views/xm/core/components/XmIterationSelect';//迭代选择界面
+	import  xmTestPlanSelect from '@/views/xm/core/xmTestPlan/XmTestPlanSelect';//计划选择器
+
 	export default { 
         
 		components: {   
-			XmProductSelect,
+			XmProjectSelect,XmProductSelect,XmIterationSelect,xmTestPlanSelect,
 		},
         props:['xmProduct','xmProject'],
 		computed: {
@@ -116,19 +141,33 @@
 		},//end data
 		methods: {  
 			getXmTestDayTimesList(){
-				if(!this.filters.product){
-					this.$notify({position:'bottom-left',showClose:true,message:'请先选中产品',type:'warning'})
-					return;
-				}
-				var params={productId:this.filters.product.id}
 				
-				if(this.filters.startExecDate && this.filters.endExecDate){
-					params.startExecDate=this.filters.startExecDate;
-					params.endExecDate=this.filters.endExecDate;
+
+				var params={ } 
+				if(this.filters.product && this.filters.product.id){
+					params.productId=this.filters.product.id
 				}
-				getXmTestDayTimesList(params).then(res=>{ 
+				
+				if(this.filters.project && this.filters.project.id){
+					params.projectId=this.filters.project.id
+				} 
+				if(this.filters.iteration && this.filters.iteration.id){
+					params.linkIterationId=this.filters.iteration.id
+				} 
+				if(this.filters.testPlan && this.filters.testPlan.id){
+					params.planId=this.filters.testPlan.id
+				}
+				if(this.filters.testCasedb && this.filters.testCasedb.id){
+					params.casedbId=this.filters.testCasedb.id
+				}
+				if(params.productId || params.projectId || params.planId || params.casedbId || params.linkIterationId){
+					getXmTestDayTimesList(params).then(res=>{ 
 					this.xmTestDayTimesList=res.data.tips.isOk?res.data.data:this.xmTestDayTimesList;
 				})
+				}else{
+					this.$message.error("请选择查询条件，项目、产品、迭代、测试计划最少选择一个")
+				}
+				
 			},
 			open(params){
 				this.visible=true;
@@ -167,17 +206,37 @@
 					}
 				)
 			},
+			onProjectSelected(project){
+				this.filters.project=project
+			},
 			
+			onProjectClear(){
+				this.filters.project=null
+				
+			},
 			onProductSelected(product){
 				this.filters.product=product
-				this.xmTestDayTimesList=[]; 
 			},
 			
 			onProductClear(){
 				this.filters.product=null
 				
-				this.xmTestDayTimesList=[];
-				
+			},
+
+			onIterationSelected(iteration){
+				this.filters.iteration=iteration
+			},
+
+			onIterationClear(){
+				this.filters.iteration=null
+			},
+			
+			onXmTestPlanSelected(xmTestPlan){
+				this.filters.testPlan=xmTestPlan
+			},
+			
+			onXmTestPlanClear(){
+				this.filters.testPlan=null
 			},
 		},//end method
 		mounted() {

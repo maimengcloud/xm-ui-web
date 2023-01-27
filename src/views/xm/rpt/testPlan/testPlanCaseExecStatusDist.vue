@@ -19,14 +19,24 @@
 						<el-form-item label="归属产品"  >
 							<xm-product-select v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmTestPlan?xmTestPlan.id:null"  @clear="onProductClear"></xm-product-select>
 							<span v-else>{{xmProductCpd.id}} <span v-if="xmProductCpd.productName"><br/>{{  xmProductCpd.productName  }} </span> </span>
-						</el-form-item>
+						</el-form-item> 
+						<el-form-item label="归属迭代" v-if="xmIteration && xmIteration.id">
+							<span>  {{xmIteration.id}}
+								<span v-if="xmIteration.iterationName"><br/>{{ xmIteration.iterationName  }} </span>
+							</span> 
+						</el-form-item>  
+						<el-form-item label="归属迭代" v-else-if="filters.product && filters.product.id">
+							<xm-iteration-select  ref="xmIterationSelect"  :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
+						</el-form-item> 
 						<el-form-item label="测试计划" v-if="xmTestPlan && xmTestPlan.id">
  							<span>  {{xmTestPlan.id}}
 								<span v-if="xmTestPlan.name"><br/>{{ xmTestPlan.name  }} </span>
 							</span> 
 						</el-form-item>  
 						<el-form-item label="测试计划" v-else-if="filters.product && filters.product.id">
-							<span v-if="filters.testPlan">{{ filters.testPlan.name }}</span><el-button type="primary" @click="$refs['xmTestPlanSelectRef'].open()">选择计划</el-button>
+							<span v-if="filters.testPlan">{{ filters.testPlan.name }}</span>
+							<el-button v-if="filters.testPlan" type="text" @click="filters.testPlan=null" plain icon="el-icon-circle-close">清除</el-button>
+							<el-button v-if="!filters.testPlan" type="text" @click="$refs['xmTestPlanSelectRef'].open()" plain>选择计划</el-button>
 						</el-form-item> 
 					<el-form-item>
 						 <el-button type="primary" icon="el-icon-search" @click="searchXmTestPlanCaseExecStatusDist">查询</el-button>
@@ -50,12 +60,13 @@
 	
 	import  XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';//项目
 	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//产品
+	import  XmIterationSelect from '@/views/xm/core/components/XmIterationSelect';//迭代选择界面
 	import  xmTestPlanSelect from '@/views/xm/core/xmTestPlan/XmTestPlanSelect';//计划选择器
 
 	export default { 
         
 		components: {   
-			XmProjectSelect,XmProductSelect,xmTestPlanSelect,
+			XmProjectSelect,XmProductSelect,XmIterationSelect,xmTestPlanSelect,
 		},
         props:['xmProject','xmProduct','xmTestCasedb','xmTestPlan'],
 		computed: {
@@ -171,8 +182,7 @@
 			onXmQuestionSomeFieldsChange(fieldName,$event){
 				this.xmTestPlanCaseExecStatusDists=[]
 			},
-			searchXmTestPlanCaseExecStatusDist(){ 
-
+			searchXmTestPlanCaseExecStatusDist(){  
 				var params={ } 
 				if(this.filters.product && this.filters.product.id){
 					params.productId=this.filters.product.id
@@ -180,27 +190,31 @@
 				
 				if(this.filters.project && this.filters.project.id){
 					params.projectId=this.filters.project.id
-				}
-
-				
-				if(this.filters.project && this.filters.project.id){
-					params.projectId=this.filters.project.id
-				}
-
-				
+				} 
+				if(this.filters.iteration && this.filters.iteration.id){
+					params.linkIterationId=this.filters.iteration.id
+				} 
 				if(this.filters.testPlan && this.filters.testPlan.id){
 					params.planId=this.filters.testPlan.id
 				}
 				if(this.filters.testCasedb && this.filters.testCasedb.id){
 					params.casedbId=this.filters.testCasedb.id
 				}
-				if(params.productId || params.projectId || params.planId || params.casedbId){
+				if(params.productId || params.projectId || params.planId || params.casedbId || params.linkIterationId){
 					getXmTestPlanCaseExecStatusDist(params).then(res=>{
 						this.xmTestPlanCaseExecStatusDists=res.data.data
 					})
 				}else{
-					this.$message.error("请选择查询条件，产品、项目、测试计划最少选择一个")
-				}
+					this.$message.error("请选择查询条件，项目、产品、迭代、测试计划最少选择一个")
+				} 
+			},
+			onProjectSelected(project){
+				this.filters.project=project
+			},
+			
+			onProjectClear(){
+				this.filters.project=null
+				
 			},
 			onProductSelected(product){
 				this.filters.product=product
@@ -210,14 +224,13 @@
 				this.filters.product=null
 				
 			},
-			
-			onProjectSelected(project){
-				this.filters.project=project
+
+			onIterationSelected(iteration){
+				this.filters.iteration=iteration
 			},
-			
-			onProjectClear(){
-				this.filters.project=null
-				
+
+			onIterationClear(){
+				this.filters.iteration=null
 			},
 			onXmTestPlanSelected(xmTestPlan){
 				this.filters.testPlan=xmTestPlan
