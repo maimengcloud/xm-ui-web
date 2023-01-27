@@ -179,7 +179,9 @@
                     {rptName:'需求每日趋势',category:'迭代级',ref:'xmIterationXmMenuDayTrend',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期变化趋势，识别需求工作情况',img:lineStack  },
                     {rptName:'需求每日累积',category:'迭代级',ref:'xmIterationXmMenuDayAccumulate',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期累积情况，识别需求工作的瓶颈',img:areaStack  },
                     {rptName:'迭代工作项每日趋势',category:'迭代级',ref:'xmIterationWorkItemDayList',desc:'统计迭代每日工作项数量分布情况',img:datasetLink  },  
-        
+                    {rptName:'迭代缺陷每日趋势',category:'迭代级',ref:'xmIterationXmQuestionDayTrend',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
+                    {rptName:'迭代缺陷每日累积',category:'迭代级',ref:'xmIterationXmQuestionDayAccumulate',desc:'跟踪一段时间内，各种程度和类别的缺陷累积情况，监控缺陷的变化趋势',img:areaStack  },
+                    
                     //产品报表
                     {rptName:'需求每日趋势',category:'产品级,企业级',ref:'xmMenuDayTrend',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期变化趋势，识别需求工作情况',img:lineStack  },
                     {rptName:'需求每日累积',category:'产品级,企业级',ref:'xmMenuDayAccumulate',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期累积情况，识别需求工作的瓶颈',img:areaStack  },
@@ -187,7 +189,9 @@
                     {rptName:'需求年龄分布',category:'产品级,迭代级,企业级',ref:'xmMenuAgeDist',desc:'统计所有需求年龄分布情况（实时数据）',img:pieSimple  },
                     {rptName:'需求排行榜',category:'产品级,迭代级,企业级',ref:'xmMenuSort',desc:'需求提出人、负责人的用户故事数量排行（实时数据）',img:bar  },
                     {rptName:'产品工作项每日趋势',category:'产品级,企业级',ref:'xmProductWorkItemDayList',desc:'统计产品每日工作项数量分布情况',img:datasetLink  },  
-
+                    {rptName:'产品缺陷每日趋势',category:'产品级',ref:'xmQuestionDayTrend',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
+                    {rptName:'产品缺陷每日累积',category:'产品级',ref:'xmQuestionDayAccumulate',desc:'跟踪一段时间内，各种程度和类别的缺陷累积情况，监控缺陷的变化趋势',img:areaStack  },
+                    
                     //项目报表
                     {rptName:'任务每日趋势',category:'项目级,企业级',ref:'xmTaskDayTrend',desc:'跟踪未开始、执行中、已完成、已关闭状态的任务数量按日期变化趋势，识别任务工作情况',img:lineStack  },
                     {rptName:'任务每日累积',category:'项目级,企业级',ref:'xmTaskDayAccumulate',desc:'跟踪未开始、执行中、已完成、已关闭状态的任务数量按日期累积情况，识别任务工作的瓶颈',img:areaStack  },
@@ -213,9 +217,6 @@
                     {rptName:'缺陷负责人排行榜',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionHandlerUserSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
                     {rptName:'缺陷模块排行榜',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionFuncSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
                     {rptName:'缺陷需求排行榜',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionMenuSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
-
-                    {rptName:'缺陷每日趋势',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionDayTrend',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
-                    {rptName:'缺陷每日累积',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionDayAccumulate',desc:'跟踪一段时间内，各种程度和类别的缺陷累积情况，监控缺陷的变化趋势',img:areaStack  },
                     {rptName:'缺陷属性分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionAttDist',desc:'统计所有缺陷任意属性数量分布情况（实时数据）',img:pieSimple  },
                     {rptName:'缺陷年龄分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionAgeDist',desc:'统计所有缺陷按照年龄的分布情况，跟踪缺陷的生命周期和响应情况',img:pieSimple  },
 
