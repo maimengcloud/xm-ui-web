@@ -15,21 +15,24 @@
 							<el-select   v-model="groupBy"  @change="onXmQuestionSomeFieldsChange('groupBy',$event)" clearable>
 								<el-option v-for="i in this.groupBys" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>
-						</el-form-item>
-						
+						</el-form-item>    
+						<el-form-item label="归属项目">
+							<xm-project-select  v-if="!xmProject"  ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-product-id="xmProductCpd.id?xmProductCpd.id.id:null" @row-click="onProjectSelected"  @clear="onProjectClear"></xm-project-select>
+							<span v-else>{{xmProject.id}} <span v-if="xmProject.name"><br/>{{  xmProject.name  }} </span> </span>
+						</el-form-item> 
 						<el-form-item label="归属产品"  >
 							<xm-product-select v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
 							<span v-else>{{xmProductCpd.id}} <span v-if="xmProductCpd.productName"><br/>{{  xmProductCpd.productName  }} </span> </span>
 						</el-form-item>
 						<el-form-item label="归属迭代" v-if="xmIteration && xmIteration.id">
- 							<span>  {{xmIteration.id}}
+							<span>  {{xmIteration.id}}
 								<span v-if="xmIteration.iterationName"><br/>{{ xmIteration.iterationName  }} </span>
 							</span> 
 						</el-form-item>  
 						<el-form-item label="归属迭代" v-else-if="filters.product && filters.product.id">
 							<xm-iteration-select  ref="xmIterationSelect"  :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
 						</el-form-item> 
- 						<el-form-item label="缺陷状态" prop="bugStatus">
+						<el-form-item label="缺陷状态" prop="bugStatus">
 							<el-select   v-model="filters.bugStatus"  @change="onXmQuestionSomeFieldsChange('bugStatus',$event)" clearable>
 								<el-option v-for="i in this.dicts.bugStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>
@@ -64,7 +67,7 @@
 						<el-select v-model="filters.repRate" @change="onXmQuestionSomeFieldsChange('repRate',$event)" clearable>
 								<el-option v-for="i in dicts.bugRepRate" :label="i.name" :key="i.id" :value="i.id"></el-option>
 						</el-select>
-					</el-form-item>  
+					</el-form-item>
 					<el-form-item>
 						 <el-button type="primary" icon="el-icon-search" @click="searchXmQuestionAttDist">查询</el-button>
 					</el-form-item>  

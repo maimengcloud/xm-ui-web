@@ -10,14 +10,17 @@
 					</div>
 				</el-col>
 				<el-col :span="6" class="border">
-					<el-form :model="filters" class="padding">   
-						
+					<el-form :model="filters" class="padding">    
+						<el-form-item label="归属项目">
+							<xm-project-select  v-if="!xmProject"  ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-product-id="xmProductCpd.id?xmProductCpd.id.id:null" @row-click="onProjectSelected"  @clear="onProjectClear"></xm-project-select>
+							<span v-else>{{xmProject.id}} <span v-if="xmProject.name"><br/>{{  xmProject.name  }} </span> </span>
+						</el-form-item> 
 						<el-form-item label="归属产品"  >
 							<xm-product-select v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
 							<span v-else>{{xmProductCpd.id}} <span v-if="xmProductCpd.productName"><br/>{{  xmProductCpd.productName  }} </span> </span>
 						</el-form-item>
 						<el-form-item label="归属迭代" v-if="xmIteration && xmIteration.id">
- 							<span>  {{xmIteration.id}}
+							<span>  {{xmIteration.id}}
 								<span v-if="xmIteration.iterationName"><br/>{{ xmIteration.iterationName  }} </span>
 							</span> 
 						</el-form-item>  
