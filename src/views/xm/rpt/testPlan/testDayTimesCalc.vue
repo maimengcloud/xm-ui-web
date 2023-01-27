@@ -73,9 +73,9 @@
 					}
 				} 
 				if(productName){
-					return `产品【${productName}】缺陷每日趋势图`
+					return `产品【${productName}】测试用例每日执行次数统计`
 				}else{
-					return "产品缺陷每日趋势图"
+					return "测试用例每日执行次数统计"
 				}
 			},
 			xmProductCpd(){ 

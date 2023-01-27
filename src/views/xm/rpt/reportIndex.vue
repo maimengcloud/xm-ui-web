@@ -63,6 +63,7 @@
         <xm-test-plan-case-exec-status-dist ref="xmTestPlanCaseExecStatusDist" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-test-plan-case-exec-status-dist> 
         <xm-test-plan-case-user-dist ref="xmTestPlanCaseUserDist" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-test-plan-case-user-dist>
         <xm-test-day-times-calc ref="xmTestDayTimesCalc" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-test-day-times-calc>
+        <xm-test-case-to-plan-calc ref="xmTestCaseToPlanCalc" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-test-case-to-plan-calc>
 
 
     </section>
@@ -111,6 +112,7 @@
 	import xmTestPlanCaseExecStatusDist from './testPlan/testPlanCaseExecStatusDist'
 	import xmTestPlanCaseUserDist from './testPlan/testPlanCaseUserDist'
 	import xmTestDayTimesCalc from './testPlan/testDayTimesCalc'
+	import xmTestCaseToPlanCalc from './testPlan/testCaseToPlanCalc'
     
     import pieSimple from './images/pie-simple.png'
     import lineStack from './images/line-stack.png'
@@ -126,7 +128,7 @@
             xmIterationXmMenuDayTrend,xmIterationXmMenuDayAccumulate,xmIterationWorkItemDayList,xmIterationXmQuestionDayTrend,xmIterationXmQuestionDayAccumulate,
             
             xmTestPlanCaseExecStatusDist,xmTestPlanCaseUserDist,xmQuestionRetestDist,xmQuestionStateDist,
-            xmQuestionAskUserSort,xmQuestionHandlerUserSort,xmQuestionFuncSort,xmQuestionMenuSort,xmTestDayTimesCalc,
+            xmQuestionAskUserSort,xmQuestionHandlerUserSort,xmQuestionFuncSort,xmQuestionMenuSort,xmTestDayTimesCalc,xmTestCaseToPlanCalc
         
         },
         props:['xmProduct','xmIteration','xmProject','xmTestCasedb','xmTestPlan'],
