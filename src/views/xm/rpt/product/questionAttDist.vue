@@ -36,6 +36,16 @@
 						<el-form-item label="归属迭代" v-else-if="filters.product && filters.product.id">
 							<xm-iteration-select  ref="xmIterationSelect"  :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
 						</el-form-item> 
+						<el-form-item label="测试计划" v-if="xmTestPlan && xmTestPlan.id">
+							<span>  {{xmTestPlan.id}}
+								<span v-if="xmTestPlan.name"><br/>{{ xmTestPlan.name  }} </span>
+							</span> 
+						</el-form-item>  
+						<el-form-item label="测试计划" v-else-if="filters.product && filters.product.id">
+							<span v-if="filters.testPlan">{{ filters.testPlan.name }}</span>
+							<el-button v-if="filters.testPlan" type="text" @click="filters.testPlan=null" plain icon="el-icon-circle-close">清除</el-button>
+							<el-button v-if="!filters.testPlan" type="text" @click="$refs['xmTestPlanSelectRef'].open()" plain>选择计划</el-button>
+						</el-form-item> 
 						<el-form-item label="缺陷状态" prop="bugStatus">
 							<el-select   v-model="filters.bugStatus"  @change="onXmQuestionSomeFieldsChange('bugStatus',$event)" clearable>
 								<el-option v-for="i in this.dicts.bugStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>
@@ -77,7 +87,9 @@
 					</el-form-item>  
 					</el-form>
 				</el-col>
-			</el-row>
+			</el-row>			
+			<xm-test-plan-select  ref="xmTestPlanSelectRef" :casedb-id="xmTestCasedb?xmTestCasedb.id:null" :product-id="xmProduct?xmProduct.id:null" :project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @select="onXmTestPlanSelected" @clear="onXmTestPlanClear"></xm-test-plan-select >
+
         </el-dialog>
 	</section>
 </template>
@@ -92,11 +104,12 @@
 	import  XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';//项目选择
 	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//产品选择界面
 	import  XmIterationSelect from '@/views/xm/core/components/XmIterationSelect';//迭代选择界面
+	import  xmTestPlanSelect from '@/views/xm/core/xmTestPlan/XmTestPlanSelect';//计划选择器
 
 	export default { 
         
 		components: {   
-			XmProjectSelect,XmIterationSelect,XmProductSelect,
+			XmProjectSelect,XmIterationSelect,XmProductSelect,xmTestPlanSelect,
 		},
         props:['xmProject','xmProduct','xmIteration','xmTestCasedb','xmTestPlan',],
 		computed: {
@@ -183,6 +196,7 @@
                 filters:{
                     product:null,  
 					iteration:null,
+					testPlan:null, 
                 },
 				groupBy:'bug_status',
 				groupBys:[
@@ -229,9 +243,11 @@
 			}, 
 			open(params){
 				this.visible=true;
-				this.filters.product=params.xmProduct
-				this.filters.project=params.xmProject
-				this.filters.iteration=params.xmIteration 
+				this.filters.testPlan=this.xmTestPlan
+				this.filters.product=this.xmProduct
+				this.filters.project=this.xmProject
+				this.filters.iteration=this.xmIteration
+				this.filters.testCasedb=this.xmTestCasedb
 				
 				if((this.filters.product && this.filters.product.id) || ( this.filters.iteration && this.filters.iteration.id)){
 					this.searchXmQuestionAttDist()
@@ -315,6 +331,12 @@
 				if(this.filters.iteration){
 					params.linkIterationId=this.filters.iteration.id
 				}
+				if(this.filters.testPlan && this.filters.testPlan.id){
+					params.planId=this.filters.testPlan.id
+				}
+				if(this.filters.testCasedb && this.filters.testCasedb.id){
+					params.casedbId=this.filters.testCasedb.id
+				}
 				params.groupBy=this.groupBy 
 				getXmQuestionAttDist(params).then(res=>{
 					this.xmQuestionAttDists=res.data.data
@@ -344,7 +366,15 @@
 			
 			onIterationClear(){
 				this.filters.iteration=null
-			}
+			},
+
+			onXmTestPlanSelected(xmTestPlan){
+				this.filters.testPlan=xmTestPlan
+			},
+
+			onXmTestPlanClear(){
+				this.filters.testPlan=null
+			},
 		},//end method
 		mounted() { 
  			initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','priority','bugRepRate','bugReason'] ).then(res=>{
