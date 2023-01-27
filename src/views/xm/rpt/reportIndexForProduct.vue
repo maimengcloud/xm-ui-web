@@ -1,6 +1,6 @@
 <template>
 	<section>
-		 <report-index :xm-product="xmProduct"></report-index>
+		 <report-index :xm-product="xmProduct"  category="产品级"></report-index>
 	</section>
 </template>
 

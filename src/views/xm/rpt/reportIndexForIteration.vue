@@ -1,6 +1,6 @@
 <template>
 	<section>
-		 <report-index :xm-iteration="xmIteration" :xm-product="xmProduct"></report-index>
+		 <report-index :xm-iteration="xmIteration" :xm-product="xmProduct" category="迭代级"></report-index>
 	</section>
 </template>
 

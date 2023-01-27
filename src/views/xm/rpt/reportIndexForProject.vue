@@ -1,6 +1,6 @@
 <template>
 	<section>
-		 <report-index :xm-project="projectInfo"></report-index>
+		 <report-index :xm-project="projectInfo"  category="项目级"></report-index>
 	</section>
 </template>
 
