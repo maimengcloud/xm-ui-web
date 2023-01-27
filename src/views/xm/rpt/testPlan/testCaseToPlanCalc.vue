@@ -35,10 +35,9 @@
 						 <el-button type="primary" icon="el-icon-search" @click="searchXmTestPlanCaseExecStatusDist">查询</el-button>
 					</el-form-item>  
 					</el-form>
-				</el-col>
-				<xm-test-plan-select  ref="xmTestPlanSelectRef" :casedb-id="xmTestCasedb?xmTestCasedb.id:null" :product-id="xmProduct?xmProduct.id:null" :project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @select="onXmTestPlanSelected" @clear="onXmTestPlanClear"></xm-test-plan-select >
-
+				</el-col> 
 			</el-row>
+			<xm-test-plan-select  ref="xmTestPlanSelectRef" :casedb-id="xmTestCasedb?xmTestCasedb.id:null" :product-id="xmProduct?xmProduct.id:null" :project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @select="onXmTestPlanSelected" @clear="onXmTestPlanClear"></xm-test-plan-select >
         </el-dialog>
 
  
@@ -251,11 +250,8 @@
 				this.filters.product=this.xmProduct
 				this.filters.project=this.xmProject
 				this.filters.testCasedb=this.xmTestCasedb
-				
-				if(this.xmTestPlan && this.xmTestPlan.id){ 
-						this.searchXmTestPlanCaseExecStatusDist(); 
-					
-				}
+				 
+				this.searchXmTestPlanCaseExecStatusDist();  
 				
 			}
 		},//end method
