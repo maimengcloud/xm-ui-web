@@ -303,7 +303,7 @@
 				}
 				
 				if(this.filters.iteration){
-					params.iterationId=this.filters.iteration.id
+					params.linkIterationId=this.filters.iteration.id
 				}
 				getXmQuestionAttDist(params).then(res=>{
 					this.xmQuestionAttDists=res.data.data

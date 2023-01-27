@@ -230,7 +230,7 @@
 				}
 				
 				if(this.filters.iteration){
-					params.iterationId=this.filters.iteration.id
+					params.linkIterationId=this.filters.iteration.id
 				}
 				getXmQuestionAgeDist(params).then(res=>{
 					this.xmQuestionAgeDists=res.data.data
