@@ -24,7 +24,7 @@
 				</el-table-column>  
 				<el-table-column prop="status" label="状态" width="120" show-overflow-tooltip>
 				    <template slot-scope="scope"> 
-                        <mdp-select-dict-tag :dict="dicts['testPlanStatus']" v-model="scope.row.status" effect="dark" @change="editSomeFields(scope.row,'status',$event)"></mdp-select-dict-tag> 
+                        <mdp-select-dict-tag :dict="dicts['testPlanStatus']" v-model="scope.row.status" effect="dark" :disabled="true"></mdp-select-dict-tag> 
                    </template>
 				</el-table-column> 
 				<el-table-column prop="stime" label="开始时间"  width="120" show-overflow-tooltip>
@@ -60,7 +60,7 @@ export default {
     name:'xmTestPlanSelect',
     components: { 
     },
-    props:['xmTestCasedb'],
+    props:['casedbId','productId','projectId'],
     computed: {
         ...mapGetters(['userInfo']),
 
@@ -159,10 +159,15 @@ export default {
                 params.key=this.filters.key
             }
 
-            if(this.xmTestCasedb && this.xmTestCasedb.id){
-                params.casedbId=this.xmTestCasedb.id
+            if(this.projectId){
+                params.projectId=this.projectId
             }
-
+            if(this.casedbId){
+                params.casedbId=this.casedbId
+            } 
+            if(this.productId){
+                params.productId=this.productId
+            }
             this.load.list = true;
             listXmTestPlan(params).then((res) => {
                 var tips=res.data.tips;

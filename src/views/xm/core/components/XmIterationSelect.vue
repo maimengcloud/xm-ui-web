@@ -118,7 +118,7 @@
 				<el-pagination  layout="total, prev,  next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 
 			</el-row>
-			<el-link title="点击选中迭代" @click="referenceClick"  type="primary" slot="reference" icon="el-icon-connection"><font style="font-size:14px;"><slot name="title">{{editForm&&editForm.id?editForm.iterationName:'选择迭代'}}</slot></font></el-link> 
+			<el-link title="点击选中迭代" @click="referenceClick"  type="primary" slot="reference" icon="el-icon-connection"><font style="font-size:14px;"><slot name="title">{{editForm&&editForm.id?editForm.iterationName:'选择迭代'}} &nbsp;&nbsp;<el-button v-if="editForm&&editForm.id" type="text" plain icon="el-icon-circle-close" @click.stop="clearSelectIteration">清除</el-button></slot></font></el-link> 
 		</el-popover> 
 		
 	

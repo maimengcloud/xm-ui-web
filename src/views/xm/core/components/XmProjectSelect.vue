@@ -194,7 +194,7 @@
              <span class="title">
             <slot name="title">{{
                 editForm && editForm.id ? editForm.name: "选择项目"
-              }}</slot></span>
+              }}&nbsp;&nbsp;<el-button v-if="editForm&&editForm.id" type="text" plain icon="el-icon-circle-close" @click.stop="clearSelect">清除</el-button></slot></span>
               </el-link>
         </slot>
       </span>
