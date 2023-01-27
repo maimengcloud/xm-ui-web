@@ -21,6 +21,9 @@ export const getXmTestPlanCaseExecStatusDist = params => { return axios.get(`${b
 //查询执行结果分布
 export const getXmTestPlanCaseUserDist = params => { return axios.get(`${base}/xm/core/xmTestPlanCase/getXmTestPlanCaseUserDist`, { params: params }); };
 
+//查询每日执行测试次数
+export const getXmTestDayTimesList = params => { return axios.get(`${base}/xm/core/xmTestPlanCase/getXmTestDayTimesList`, { params: params }); };
+
 
 //删除一条测试计划与用例关系表 params={caseId:'测试用例编号 主键',planId:'计划编号 主键'}
 export const delXmTestPlanCase = params => { return axios.post(`${base}/xm/core/xmTestPlanCase/del`,params); };

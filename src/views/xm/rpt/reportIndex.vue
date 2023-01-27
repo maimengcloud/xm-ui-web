@@ -62,6 +62,7 @@
         <!--测试计划-->
         <xm-test-plan-case-exec-status-dist ref="xmTestPlanCaseExecStatusDist" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-test-plan-case-exec-status-dist> 
         <xm-test-plan-case-user-dist ref="xmTestPlanCaseUserDist" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-test-plan-case-user-dist>
+        <xm-test-day-times-calc ref="xmTestDayTimesCalc" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-test-day-times-calc>
 
 
     </section>
@@ -109,6 +110,7 @@
     
 	import xmTestPlanCaseExecStatusDist from './testPlan/testPlanCaseExecStatusDist'
 	import xmTestPlanCaseUserDist from './testPlan/testPlanCaseUserDist'
+	import xmTestDayTimesCalc from './testPlan/testDayTimesCalc'
     
     import pieSimple from './images/pie-simple.png'
     import lineStack from './images/line-stack.png'
@@ -124,7 +126,7 @@
             xmIterationXmMenuDayTrend,xmIterationXmMenuDayAccumulate,xmIterationWorkItemDayList,xmIterationXmQuestionDayTrend,xmIterationXmQuestionDayAccumulate,
             
             xmTestPlanCaseExecStatusDist,xmTestPlanCaseUserDist,xmQuestionRetestDist,xmQuestionStateDist,
-            xmQuestionAskUserSort,xmQuestionHandlerUserSort,xmQuestionFuncSort,xmQuestionMenuSort,
+            xmQuestionAskUserSort,xmQuestionHandlerUserSort,xmQuestionFuncSort,xmQuestionMenuSort,xmTestDayTimesCalc,
         
         },
         props:['xmProduct','xmIteration','xmProject','xmTestCasedb','xmTestPlan'],
@@ -194,19 +196,21 @@
                     {rptName:'项目结算工时每日趋势',category:'项目级,企业级',ref:'xmProjectWorkloadSetDayList',desc:'统计项目每日登记工时、结算工时数量分布情况',img:datasetLink  },
                     {rptName:'项目结算工时每月趋势',category:'项目级,企业级',ref:'xmProjectWorkloadSetMonthList',desc:'统计项目每月登记工时、结算工时数量分布情况',img:datasetLink  },
 
-                    //测试计划报表
+
+                    //测试计划报表 
+                     {rptName:'测试用例规划分析',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestCaseToPlanCalc',desc:'显示用例被规划到测试计划中的次数统计',img:bar  },
+ 
+                    {rptName:'测试用例执行状态分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestPlanCaseExecStatusDist',desc:'按测试用例执行结果统计，通过、失败、忽略、阻塞',img:pieSimple  },
+                    {rptName:'测试用例执行用户分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestPlanCaseUserDist',desc:'统计测试用例负责人用例执行情况',img:bar  },
+                    {rptName:'缺陷回归分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionRetestDist',desc:'统计项目中缺陷在回归测试中分布情况，跟踪缺陷的重新打开率；',img:pieSimple  },
+                    {rptName:'测试次数每日统计',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestDayTimesCalc',desc:'统计每日测试用例执行数量',img:bar  },
+                    {rptName:'缺陷状态分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionStateDist',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:pieSimple  },
+
                     {rptName:'缺陷排行榜',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
                     {rptName:'缺陷提出人排行榜',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionAskUserSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
                     {rptName:'缺陷负责人排行榜',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionHandlerUserSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
                     {rptName:'缺陷模块排行榜',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionFuncSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
                     {rptName:'缺陷需求排行榜',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionMenuSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
-
-                    {rptName:'测试用例执行状态分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestPlanCaseExecStatusDist',desc:'按测试用例执行结果统计，通过、失败、忽略、阻塞',img:pieSimple  },
-                    
-                    {rptName:'测试用例执行用户分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestPlanCaseUserDist',desc:'统计测试用例负责人用例执行情况',img:bar  },
-                    {rptName:'缺陷回归分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionRetestDist',desc:'统计项目中缺陷在回归测试中分布情况，跟踪缺陷的重新打开率；',img:pieSimple  },
-                    {rptName:'测试次数每日统计',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestDayTimesCalc',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
-                    {rptName:'缺陷状态分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionStateDist',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:pieSimple  },
 
                     {rptName:'缺陷每日趋势',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionDayTrend',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
                     {rptName:'缺陷每日累积',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionDayAccumulate',desc:'跟踪一段时间内，各种程度和类别的缺陷累积情况，监控缺陷的变化趋势',img:areaStack  },
