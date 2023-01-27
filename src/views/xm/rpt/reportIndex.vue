@@ -195,23 +195,23 @@
                     {rptName:'项目结算工时每月趋势',category:'项目级,企业级',ref:'xmProjectWorkloadSetMonthList',desc:'统计项目每月登记工时、结算工时数量分布情况',img:datasetLink  },
 
                     //测试计划报表
-                    {rptName:'缺陷排行榜',category:'测试计划级,项目级,产品级,迭代级,企业级',ref:'xmQuestionSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
-                    {rptName:'缺陷提出人排行榜',category:'测试计划级,项目级,产品级,迭代级,企业级',ref:'xmQuestionAskUserSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
-                    {rptName:'缺陷负责人排行榜',category:'测试计划级,项目级,产品级,迭代级,企业级',ref:'xmQuestionHandlerUserSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
-                    {rptName:'缺陷模块排行榜',category:'测试计划级,项目级,产品级,迭代级,企业级',ref:'xmQuestionFuncSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
-                    {rptName:'缺陷需求排行榜',category:'测试计划级,项目级,产品级,迭代级,企业级',ref:'xmQuestionMenuSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
+                    {rptName:'缺陷排行榜',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
+                    {rptName:'缺陷提出人排行榜',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionAskUserSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
+                    {rptName:'缺陷负责人排行榜',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionHandlerUserSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
+                    {rptName:'缺陷模块排行榜',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionFuncSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
+                    {rptName:'缺陷需求排行榜',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionMenuSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
 
-                    {rptName:'测试用例执行状态分布',category:'测试计划级,项目级,产品级,迭代级,企业级',ref:'xmTestPlanCaseExecStatusDist',desc:'按测试用例执行结果统计，通过、失败、忽略、阻塞',img:pieSimple  },
+                    {rptName:'测试用例执行状态分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestPlanCaseExecStatusDist',desc:'按测试用例执行结果统计，通过、失败、忽略、阻塞',img:pieSimple  },
                     
-                    {rptName:'测试用例执行用户分布',category:'测试计划级,项目级,产品级,迭代级,企业级',ref:'xmTestPlanCaseUserDist',desc:'统计测试用例负责人用例执行情况',img:bar  },
-                    {rptName:'缺陷回归分布',category:'测试计划级,项目级,产品级,迭代级,企业级',ref:'xmQuestionRetestDist',desc:'统计项目中缺陷在回归测试中分布情况，跟踪缺陷的重新打开率；',img:pieSimple  },
-                    {rptName:'测试次数每日统计',category:'测试计划级,项目级,产品级,迭代级,企业级',ref:'xmTestDayTimesCalc',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
-                    {rptName:'缺陷状态分布',category:'测试计划级,项目级,产品级,迭代级,企业级',ref:'xmQuestionStateDist',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:pieSimple  },
+                    {rptName:'测试用例执行用户分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestPlanCaseUserDist',desc:'统计测试用例负责人用例执行情况',img:bar  },
+                    {rptName:'缺陷回归分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionRetestDist',desc:'统计项目中缺陷在回归测试中分布情况，跟踪缺陷的重新打开率；',img:pieSimple  },
+                    {rptName:'测试次数每日统计',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestDayTimesCalc',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
+                    {rptName:'缺陷状态分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionStateDist',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:pieSimple  },
 
-                    {rptName:'缺陷每日趋势',category:'测试计划级,项目级,产品级,迭代级,企业级',ref:'xmQuestionDayTrend',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
-                    {rptName:'缺陷每日累积',category:'测试计划级,项目级,产品级,迭代级,企业级',ref:'xmQuestionDayAccumulate',desc:'跟踪一段时间内，各种程度和类别的缺陷累积情况，监控缺陷的变化趋势',img:areaStack  },
-                    {rptName:'缺陷属性分布',category:'测试计划级,项目级,产品级,迭代级,企业级',ref:'xmQuestionAttDist',desc:'统计所有缺陷任意属性数量分布情况（实时数据）',img:pieSimple  },
-                    {rptName:'缺陷年龄分布',category:'测试计划级,项目级,产品级,迭代级,企业级',ref:'xmQuestionAgeDist',desc:'统计所有缺陷按照年龄的分布情况，跟踪缺陷的生命周期和响应情况',img:pieSimple  },
+                    {rptName:'缺陷每日趋势',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionDayTrend',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
+                    {rptName:'缺陷每日累积',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionDayAccumulate',desc:'跟踪一段时间内，各种程度和类别的缺陷累积情况，监控缺陷的变化趋势',img:areaStack  },
+                    {rptName:'缺陷属性分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionAttDist',desc:'统计所有缺陷任意属性数量分布情况（实时数据）',img:pieSimple  },
+                    {rptName:'缺陷年龄分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionAgeDist',desc:'统计所有缺陷按照年龄的分布情况，跟踪缺陷的生命周期和响应情况',img:pieSimple  },
 
                     
                 ],
@@ -238,7 +238,7 @@
             if(this.xmIteration && this.xmIteration.id){
                 this.filters.category="迭代级"
             }else if(this.xmTestCasedb && this.xmTestCasedb.id){
-                this.filters.category="测试计划级"
+                this.filters.category="测试级"
             }else if(this.xmProject && this.xmProject.id){
                 this.filters.category="项目级"
             }else if(this.xmProduct && this.xmProduct.id){
