@@ -8,7 +8,7 @@
 						<div class="main" :id="id" style="width:100%;height:600px;margin:0 auto;"></div> 
 					</div>
 				</el-col>
-				<el-col :span="6" class="border padding">
+				<el-col :span="6" class="border">
 					<el-form   :model="filters"> 
 					<el-form-item label="归属项目" v-if="!xmProject">
 							 <xm-project-select  v-if="!xmProject"  ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProjectSelected"   @clear="onProjectClear"></xm-project-select>

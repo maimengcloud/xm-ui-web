@@ -8,7 +8,7 @@
 							style="width:100%;height:600px;margin:0 auto;"></div> 
 					</div>
 				</el-col>
-				<el-col :span="6" class="border padding">
+				<el-col :span="6" class="border">
 					<el-form :model="filters"> 
 						
 						<el-form-item label="归属产品"  >

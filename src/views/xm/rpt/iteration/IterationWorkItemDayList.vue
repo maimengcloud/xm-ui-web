@@ -8,8 +8,8 @@
 						<div class="main" id="iterationWorkItemDayList" style="width:100%;height:600px;margin:0 auto;"></div> 
 					</div>
 				</el-col>
-				<el-col :span="6" class="border padding">
-					<el-form  :model="filters">  
+				<el-col :span="6" class="border">
+					<el-form  :model="filters" class="padding">  
 					<el-form-item label="归属产品"  >
 						<xm-product-select v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
 						<span v-else>{{xmProductCpd.id}} <span v-if="xmProductCpd.productName"><br/>{{  xmProductCpd.productName  }} </span> </span>
