@@ -68,13 +68,13 @@
 		components: {   
 			XmProjectSelect,XmProductSelect,XmIterationSelect,xmTestPlanSelect,
 		},
-        props:['xmProject','xmProduct','xmTestCasedb','xmTestPlan'],
+        props:['xmProject','xmProduct','xmIteration','xmTestCasedb','xmTestPlan'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
 		    ]), 
 			xmTestCaseToPlanCalcListCpd(){
-				if(this.xmTestCaseToPlanCalcList.length==0){
+				if(!this.xmTestCaseToPlanCalcList || this.xmTestCaseToPlanCalcList.length==0){
 					return []
 				}else{   
 					var names=this.legendCpd;
@@ -122,9 +122,11 @@
 		data() {
 			return {
                 filters:{ 
+                    product:null, 
+                    project:null,
 					testPlan:null,
-					product:null,
-					project:null,
+					iteration:null,
+					testCasedb:null,
                 }, 
 				 
 				dicts:{testStepTcode:[]},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
@@ -262,6 +264,7 @@
 				this.filters.testPlan=this.xmTestPlan
 				this.filters.product=this.xmProduct
 				this.filters.project=this.xmProject
+				this.filters.iteration=this.xmIteration
 				this.filters.testCasedb=this.xmTestCasedb
 				 
 				this.searchXmTestPlanCaseExecStatusDist();  

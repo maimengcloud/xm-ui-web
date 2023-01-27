@@ -71,20 +71,20 @@
 		components: {   
 			XmProjectSelect,XmProductSelect,XmIterationSelect,xmTestPlanSelect,
 		},
-        props:['xmProduct','xmProject'],
+        props:['xmProject','xmProduct','xmIteration','xmTestCasedb','xmTestPlan'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
 		    ]), 
             datesCpd(){
-				if(this.xmTestDayTimesList.length==0){
+				if(!this.xmTestDayTimesList || this.xmTestDayTimesList.length==0){
 					return []
 				}else{ 
 					return this.xmTestDayTimesList.map(i=>i.execDate)
 				}
 			}, 
 			testDayTimesCpd(){
-				if(this.xmTestDayTimesList.length==0){
+				if(!this.xmTestDayTimesList || this.xmTestDayTimesList.length==0){
 					return []
 				}else{ 
 					return this.xmTestDayTimesList.map(i=>i.hadExec)
@@ -129,6 +129,9 @@
                     category:'', 
                     product:null, 
                     project:null,
+					testPlan:null,
+					iteration:null,
+					testCasedb:null,
                 },
 				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中... 
@@ -171,9 +174,11 @@
 			},
 			open(params){
 				this.visible=true;
-				this.filters.product=params.xmProduct
-				this.filters.project=params.xmProject
-				this.filters.Product=params.xmProduct 
+				this.filters.testPlan=this.xmTestPlan
+				this.filters.product=this.xmProduct
+				this.filters.project=this.xmProject
+				this.filters.iteration=this.xmIteration
+				this.filters.testCasedb=this.xmTestCasedb
 				if(this.$refs['xmProductSelect'])this.$refs['xmProductSelect'].clearSelect();
 				this.$nextTick(()=>{
 					this.getXmTestDayTimesList();
@@ -230,10 +235,11 @@
 			onIterationClear(){
 				this.filters.iteration=null
 			},
-			
+
 			onXmTestPlanSelected(xmTestPlan){
+				debugger;
 				this.filters.testPlan=xmTestPlan
-			},
+			}, 
 			
 			onXmTestPlanClear(){
 				this.filters.testPlan=null
