@@ -15,7 +15,11 @@
 							<el-select   v-model="groupBy"  @change="onXmQuestionSomeFieldsChange('groupBy',$event)" clearable>
 									<el-option v-for="i in this.groupBys" :label="i.name" :key="i.id" :value="i.id"></el-option>
 								</el-select>
-							</el-form-item>      
+							</el-form-item>       
+						
+							<el-form-item label="测试库" v-if="xmTestCasedb && xmTestCasedb.id" >
+								<span >{{xmTestCasedb.id}} <span v-if="xmTestCasedb.name"><br/>{{  xmTestCasedb.name  }} </span> </span>
+							</el-form-item>   
 							
 							<el-form-item label="归属项目">
 								<xm-project-select  v-if="!xmProject"  ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-product-id="xmProductCpd?xmProductCpd.id:null" @row-click="onProjectSelected"  @clear="onProjectClear"></xm-project-select>
@@ -95,7 +99,7 @@
 		components: {   
 			XmProjectSelect,XmIterationSelect,XmProductSelect,
 		},
-        props:['xmProduct','xmIteration','xmProject','initGroupBy'],
+        props:['xmProject','xmProduct','xmIteration','xmTestCasedb','xmTestPlan','initGroupBy'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'

@@ -45,15 +45,15 @@
         <xm-iteration-xm-question-day-accumulate :category="filters.category" ref="xmIterationXmQuestionDayAccumulate" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-iteration-xm-question-day-accumulate>
         <xm-question-day-trend :category="filters.category" ref="xmQuestionDayTrend" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-day-trend>
         <xm-question-day-accumulate :category="filters.category" ref="xmQuestionDayAccumulate" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-day-accumulate>
-        <xm-question-att-dist :category="filters.category" ref="xmQuestionAttDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-att-dist>
-        <xm-question-state-dist :category="filters.category" ref="xmQuestionStateDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-state-dist>
+        <xm-question-att-dist :category="filters.category" ref="xmQuestionAttDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-question-att-dist>
+        <xm-question-state-dist :category="filters.category" ref="xmQuestionStateDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-question-state-dist>
 
-        <xm-question-age-dist :category="filters.category" ref="xmQuestionAgeDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-age-dist>
-        <xm-question-sort :category="filters.category" ref="xmQuestionSort" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-sort>
-        <xm-question-ask-user-sort :category="filters.category" ref="xmQuestionAskUserSort" init-group-by="ask_userid" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-ask-user-sort>
-        <xm-question-handler-user-sort :category="filters.category" ref="xmQuestionHandlerUserSort" init-group-by="handler_userid"  :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-handler-user-sort>
-        <xm-question-func-sort :category="filters.category" ref="xmQuestionFuncSort" init-group-by="func_id"  :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-func-sort>
-        <xm-question-menu-sort :category="filters.category" ref="xmQuestionMenuSort" init-group-by="menu_id"  :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-menu-sort>
+        <xm-question-age-dist :category="filters.category" ref="xmQuestionAgeDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-question-age-dist>
+        <xm-question-sort :category="filters.category" ref="xmQuestionSort" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-question-sort>
+        <xm-question-ask-user-sort :category="filters.category" ref="xmQuestionAskUserSort" init-group-by="ask_userid" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-question-ask-user-sort>
+        <xm-question-handler-user-sort :category="filters.category" ref="xmQuestionHandlerUserSort" init-group-by="handler_userid"  :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-question-handler-user-sort>
+        <xm-question-func-sort :category="filters.category" ref="xmQuestionFuncSort" init-group-by="func_id"  :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-question-func-sort>
+        <xm-question-menu-sort :category="filters.category" ref="xmQuestionMenuSort" init-group-by="menu_id"  :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-question-menu-sort>
         
         <xm-question-retest-dist :category="filters.category" ref="xmQuestionRetestDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-retest-dist>
         <xm-product-work-item-day-list :category="filters.category" ref="xmProductWorkItemDayList" :xm-product="xmProduct" :xm-project="xmProject"></xm-product-work-item-day-list>
