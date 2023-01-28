@@ -288,8 +288,8 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//ä¿®æ
                 params['pkList']=[row].map(i=>{ return { caseId:i.caseId,  planId:i.planId}})
                 
 				if(fieldName=='execUserid'){
-					params.execUserid=$envent[0].userid
-					params.execUsername=$envent[0].username
+					params.execUserid=$event[0].userid
+					params.execUsername=$event[0].username
 				}else{
 					params[fieldName]=$event
 				}
