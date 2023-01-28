@@ -356,12 +356,16 @@ export default {
           if (tips.isOk) {
             this.pageInfo.total = res.data.total;
             this.pageInfo.count = false;
-            this.xmProjects = res.data.data;
-            if (this.linkIterationId) {
-              map.set(this.linkIterationId, this.xmProjects);
-            } else if (this.linkProductId) {
-              map.set(this.linkProductId, this.xmProjects);
-            }
+            this.xmProjects = res.data.data; 
+            
+            var key=""
+						if(this.linkIterationId){
+							key='xm-project-select-list-it-'+this.linkIterationId 
+							sessionStorage.setItem(key,JSON.stringify(this.xmProjects))
+						}else if(this.linkProductId){
+							key='xm-project-select-list-prd-'+this.linkProductId  
+							sessionStorage.setItem(key,JSON.stringify(this.xmProjects))
+						}
             if (
               this.autoSelect !== false &&
               this.xmProjects.length > 0 &&
@@ -434,10 +438,18 @@ export default {
     },
 
     initData() {
-      if (this.linkIterationId) {
-        var xmProjects = map.get(this.linkIterationId);
-        if (xmProjects) {
-          this.xmProjects = xmProjects;
+      
+      var key=""
+      if(this.linkIterationId){
+        key='xm-project-select-list-it-'+this.linkIterationId 
+      }else if(this.linkProductId){
+        key='xm-project-select-list-prd-'+this.linkProductId 
+      }
+
+      if(key){
+        var xmProjectStr=sessionStorage.getItem(key);
+        if(xmProjectStr && xmProjectStr!='null' && xmProjectStr!='undefined'){   
+          this.xmProjects = JSON.parse(xmProjectStr);
           if (this.projectVisible == false) {
             if (this.autoSelect !== false && this.xmProjects.length > 0) {
               var row = this.xmProjects[0];
@@ -447,21 +459,7 @@ export default {
           }
         } else {
           this.searchXmProjects();
-        }
-      } else if (this.linkProductId) {
-        var xmProjects = map.get(this.linkProductId);
-        if (xmProjects) {
-          this.xmProjects = xmProjects;
-          if (this.projectVisible == false) {
-            if (this.autoSelect !== false && this.xmProjects.length > 0) {
-              var row = this.xmProjects[0];
-              this.$refs.table.setCurrentRow(row);
-              this.rowClick(row);
-            }
-          }
-        } else {
-          this.searchXmProjects();
-        }
+        } 
       } else {
         this.searchXmProjects();
       }

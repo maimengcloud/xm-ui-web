@@ -284,7 +284,7 @@
 							key='xm-iteration-select-list-prd-'+this.productId 
 							sessionStorage.setItem(key,JSON.stringify(this.xmIterations))
 						}else if(this.linkProjectId){
-							key='xm-iteration-select-list-prj'+this.linkProjectId  
+							key='xm-iteration-select-list-prj-'+this.linkProjectId  
 							sessionStorage.setItem(key,JSON.stringify(this.xmIterations))
 						}
  
@@ -339,7 +339,7 @@
 				if(this.productId){
 					key='xm-iteration-select-list-prd-'+this.productId 
 				}else if(this.linkProjectId){
-					key='xm-iteration-select-list-prj'+this.linkProjectId 
+					key='xm-iteration-select-list-prj-'+this.linkProjectId 
 				}
 				
 				if(key){

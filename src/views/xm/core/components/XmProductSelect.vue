@@ -359,12 +359,17 @@ export default {
           if (tips.isOk) {
             this.pageInfo.total = res.data.total;
             this.pageInfo.count = false;
-            this.xmProducts = res.data.data;
-            if (this.iterationId) {
-              map.set(this.iterationId, this.xmProducts);
-            } else if (this.linkProjectId) {
-              map.set(this.linkProjectId, this.xmProducts);
-            }
+            this.xmProducts = res.data.data; 
+
+            var key=""
+						if(this.iterationId){
+							key='xm-product-select-list-it-'+this.iterationId 
+							sessionStorage.setItem(key,JSON.stringify(this.xmProducts))
+						}else if(this.linkProjectId){
+							key='xm-product-select-list-prj-'+this.linkProjectId  
+							sessionStorage.setItem(key,JSON.stringify(this.xmProducts))
+						}
+
             if (
               this.autoSelect !== false &&
               this.xmProducts.length > 0 &&
@@ -436,10 +441,17 @@ export default {
     },
 
     initData() {
-      if (this.iterationId) {
-        var xmProducts = map.get(this.iterationId);
-        if (xmProducts) {
-          this.xmProducts = xmProducts;
+      var key=""
+      if(this.iterationId){
+        key='xm-product-select-list-it-'+this.iterationId 
+      }else if(this.linkProjectId){
+        key='xm-product-select-list-prj-'+this.linkProjectId 
+      }
+
+      if(key){
+        var xmProductStr=sessionStorage.getItem(key);
+        if(xmProductStr && xmProductStr!='null' && xmProductStr!='undefined'){  
+          this.xmProducts = JSON.parse(xmProductStr);
           if (this.productVisible == false) {
             if (this.autoSelect !== false && this.xmProducts.length > 0) {
               var row = this.xmProducts[0];
@@ -449,21 +461,7 @@ export default {
           }
         } else {
           this.searchXmProducts();
-        }
-      } else if (this.linkProjectId) {
-        var xmProducts = map.get(this.linkProjectId);
-        if (xmProducts) {
-          this.xmProducts = xmProducts;
-          if (this.productVisible == false) {
-            if (this.autoSelect !== false && this.xmProducts.length > 0) {
-              var row = this.xmProducts[0];
-              this.$refs.table.setCurrentRow(row);
-              this.rowClick(row);
-            }
-          }
-        } else {
-          this.searchXmProducts();
-        }
+        } 
       } else {
         this.searchXmProducts();
       }
