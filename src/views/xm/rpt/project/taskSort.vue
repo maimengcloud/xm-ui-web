@@ -141,6 +141,8 @@
 				this.myChart = this.$echarts.init(document.getElementById("xmTaskSort")); 
 				this.myChart.setOption(      
 					{
+						
+						barMaxWidth: 100,
 						xAxis: {
 							type: 'category',
 							data: this.legendCpd

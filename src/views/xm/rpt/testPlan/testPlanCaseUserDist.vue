@@ -169,6 +169,27 @@
 				this.myChart = this.$echarts.init(document.getElementById("testPlanCaseUserDist")); 
 				this.myChart.setOption(      
 					{
+						title: {
+							text: '测试用例执行结果数量分布',
+							subtext: ''
+						},
+						tooltip: {
+							trigger: 'axis'
+						},
+						legend: {
+							data: ['已执行', '未执行']
+						},
+						toolbox: {
+							show: true,
+							feature: {
+							dataView: { show: true, readOnly: false },
+							magicType: { show: true, type: ['line', 'bar'] },
+							restore: { show: true },
+							saveAsImage: { show: true }
+							}
+						}, 
+						barMaxWidth: 100,
+						calculable: true,
 						xAxis: {
 							type: 'category',
 							data: this.legendCpd
@@ -179,20 +200,25 @@
 						series: [ 
 							{
 								name: '已执行',
-								type: 'bar',
-								barGap: 0, 
-								emphasis: {
-									focus: 'series'
-								},
-								data: this.hadExecCpd
+								type: 'bar', 
+								data: this.hadExecCpd, 
+								markPoint: {
+									data: [
+									{ type: 'max', name: 'Max' },
+									{ type: 'min', name: 'Min' }
+									]
+								}, 
 							},
 							{
 								name: '未执行',
-								type: 'bar', 
-								emphasis: {
-									focus: 'series'
-								},
-								data: this.notExecCpd
+								type: 'bar',  
+								data: this.notExecCpd,
+								markPoint: {
+									data: [
+									{ type: 'max', name: 'Max' },
+									{ type: 'min', name: 'Min' }
+									]
+								}, 
 							},
 						]
 					}

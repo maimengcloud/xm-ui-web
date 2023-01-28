@@ -141,6 +141,8 @@
 				this.myChart = this.$echarts.init(document.getElementById("taskDayTrend")); 
 				this.myChart.setOption(  
 					{	
+						
+						barMaxWidth: 100,
 						legend: {
 							right: 40,
 							data: ['待领取','执行中','已完成','已结算','已关闭']

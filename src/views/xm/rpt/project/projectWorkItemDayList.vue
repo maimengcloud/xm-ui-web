@@ -143,6 +143,8 @@
 						trigger: 'axis',
       					showContent: false
 					},
+					
+					barMaxWidth: 100,
 					legend: { 
 					},
 

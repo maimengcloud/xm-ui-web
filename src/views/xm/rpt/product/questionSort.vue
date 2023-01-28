@@ -209,6 +209,8 @@
 				this.myChart = this.$echarts.init(document.getElementById("xmQuestionSort")); 
 				this.myChart.setOption(   
 					{
+						
+						barMaxWidth: 100,
 						xAxis: {
 							type: 'category',
 							data: this.legendCpd

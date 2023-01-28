@@ -227,6 +227,8 @@
 						tooltip: {
 							trigger: 'item'
 						},
+						
+						barMaxWidth: 100,
 						legend: { 
 							top:'5%',
 							left: 'center',

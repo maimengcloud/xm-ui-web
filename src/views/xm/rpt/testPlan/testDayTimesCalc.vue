@@ -190,9 +190,19 @@
 				this.myChart = this.$echarts.init(document.getElementById("testDayTimesCalc")); 
 				this.myChart.setOption(  
 					{	
-						legend: {
-							right: 40,
-							data: ['新提出','执行中','已解决','已关闭']
+						title: {
+							text: this.dialogTitle, 
+							left: 'center'
+						}, 
+						legend: { 
+							top:'5%',
+							left: 'center',
+							data: ['次数']
+						},
+						
+						tooltip: {
+							trigger: 'item',
+							formatter:'{b} {c}次',
 						},
 						xAxis: {
 							type: 'category',
@@ -201,12 +211,30 @@
 						yAxis: {
 							type: 'value'
 						},
+						barMaxWidth: 100,
+						toolbox: {
+							show: true,
+							feature: {
+							dataView: { show: true, readOnly: false },
+							magicType: { show: true, type: ['line', 'bar'] },
+							restore: { show: true },
+							saveAsImage: { show: true }
+							}
+						},
+
+						calculable: true,
 						series: [ 
 							{
-								name:'已执行',
+								name:'次数',
 								data: this.testDayTimesCpd,
 								type: 'bar',
 								smooth: true,  
+								markPoint: {
+									data: [
+									{ type: 'max', name: 'Max' },
+									{ type: 'min', name: 'Min' }
+									]
+								}, 
 							}
 						]
 					}

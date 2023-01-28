@@ -162,6 +162,8 @@
 				this.myChart = this.$echarts.init(document.getElementById("menuDayTrend")); 
 				this.myChart.setOption(  
 					{	
+						
+						barMaxWidth: 100,
 						legend: {
 							right: 40,
 							data: ['未开始故事数','执行中故事数','已完成故事数','已关闭故事数']
