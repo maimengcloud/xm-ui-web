@@ -253,6 +253,10 @@
               </el-row>
             </div>
           </el-tab-pane>
+          
+					<el-tab-pane label="效能分析" name="效能" v-if="selProject && selProject.id"> 
+						<xm-report v-if="selProject && showPanel=='效能'" :xm-project="selProject" :xm-iteration="xmIteration" :xm-product="xmProduct" category="项目级"></xm-report>
+ 					</el-tab-pane> 
         </el-tabs> 
       </el-col>
     </el-row>
@@ -298,6 +302,7 @@ import XmProductProjectLinkMng from "../xmProductProjectLink/XmProductProjectLin
 import XmPlan from "../xmTask/XmPlan.vue";
 import xmGroupMng from "../xmGroup/XmGroupMng";
  
+import XmReport from "@/views/xm/rpt/reportIndex";
 import {
 	initDicts,
   getDefOptions,
@@ -455,6 +460,7 @@ export default {
     XmProjectOverview,
     XmProductProjectLinkMng, 
     XmPlan,
+    XmReport,
 	xmGroupMng,
   },
   mounted() {
