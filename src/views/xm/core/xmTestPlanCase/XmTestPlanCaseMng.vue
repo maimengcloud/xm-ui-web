@@ -34,24 +34,24 @@
                         </el-table-column>	
                         <el-table-column prop="caseStatus" label="用例状态" width="100" show-overflow-tooltip>
                             <template slot-scope="scope"> 
-                                <mdp-select-dict-tag :dict="dicts['testCaseStatus']" v-model="scope.row.caseStatus" effect="dark" @change="editSomeFields(scope.row,'caseStatus',$event)" :disabled="true"></mdp-select-dict-tag> 
+                                <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['testCaseStatus']" v-model="scope.row.caseStatus" effect="dark" @change="editSomeFields(scope.row,'caseStatus',$event)" :disabled="true"></mdp-select-dict-tag> 
                             </template>
                         </el-table-column>  
                         <template v-if="select!==true"> 
                             <el-table-column prop="execStatus" label="执行结果" width="120" show-overflow-tooltip>
                                 <template slot-scope="scope"> 
-                                    <mdp-select-dict-tag :dict="dicts['testStepTcode']" v-model="scope.row.execStatus" effect="dark" @change="editSomeFields(scope.row,'execStatus',$event)"></mdp-select-dict-tag> 
+                                    <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['testStepTcode']" v-model="scope.row.execStatus" effect="dark" @change="editSomeFields(scope.row,'execStatus',$event)"></mdp-select-dict-tag> 
                                 </template>
                             </el-table-column>
                             <el-table-column prop="execUsername" label="执行人姓名" min-width="120" >
                                 <template slot-scope="scope">  
-                                    <mdp-select-user-xm  userid-key="execUserid" username-key="execUsername" v-model="scope.row" :disabled="true"> 
+                                    <mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)" :product-id="xmProductCpd?xmProductCpd.id:null" :project-id="xmProject?xmProject.id:null"  userid-key="execUserid" username-key="execUsername" v-model="scope.row"  @change="editSomeFields(scope.row,'execUserid',$event)"> 
                                     </mdp-select-user-xm>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="priority" label="优先级" width="120" >
                                 <template slot-scope="scope">
-                                    <mdp-select-dict-tag :dict="dicts['priority']" v-model="scope.row.priority" @change="editSomeFields(scope.row,'priority',$event)"></mdp-select-dict-tag>  
+                                    <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['priority']" v-model="scope.row.priority" @change="editSomeFields(scope.row,'priority',$event)"></mdp-select-dict-tag>  
                                 </template>
                             </el-table-column>
                             <el-table-column prop="remark" label="执行备注" min-width="150" show-overflow-tooltip>
@@ -319,7 +319,13 @@ export default {
         }else{
             params['pkList']=[row].map(i=>{ return { caseId:i.caseId,  planId:i.planId}})
         }
-        params[fieldName]=$event
+        if(fieldName=='execUserid'){
+            params.execUserid=$event[0].userid
+            params.execUsername=$event[0].username
+        }else{
+            params[fieldName]=$event
+        }
+       
         var func = editSomeFieldsXmTestPlanCase
         func(params).then(res=>{
           let tips = res.data.tips;
@@ -334,6 +340,13 @@ export default {
           }
         }).catch((e)=>Object.assign(this.editForm,this.editFormBak))
       },
+      
+
+        selectVisible(row,visible){
+            if(visible==true){
+                this.rowClick(row);
+            }
+        },
         rowClick: function(row, event, column){
             this.editForm=row
             this.editFormBak={...row};

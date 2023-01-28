@@ -38,7 +38,7 @@
                         </el-table-column>  
                         <el-table-column prop="caseStatus" label="状态" width="100" show-overflow-tooltip>
                             <template slot-scope="scope"> 
-                                <mdp-select-dict-tag :dict="dicts['testCaseStatus']" v-model="scope.row.caseStatus" effect="dark" @change="editSomeFields(scope.row,'caseStatus',$event)"></mdp-select-dict-tag> 
+                                <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['testCaseStatus']" v-model="scope.row.caseStatus" effect="dark" @change="editSomeFields(scope.row,'caseStatus',$event)"></mdp-select-dict-tag> 
                             </template>
                         </el-table-column>      
                         <el-table-column prop="funcName" label="模块" min-width="150" show-overflow-tooltip>
@@ -53,7 +53,7 @@
                         </el-table-column>      
                         <el-table-column prop="cusername" label="负责人姓名" min-width="120" show-overflow-tooltip>
                             <template slot-scope="scope"> 
-                                <mdp-select-user-xm  userid-key="cuserid" username-key="cusername" v-model="scope.row" :disabled="true"> 
+                                <mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)"  userid-key="cuserid" username-key="cusername" :product-id="xmProductCpd?xmProductCpd.id:null" v-model="scope.row"  @change="editSomeFields(scope.row,'cuserid',$event)"> 
                                 </mdp-select-user-xm>
                             </template>
                         </el-table-column>   
@@ -236,6 +236,11 @@ export default {
             }).catch( err => this.load.list = false );
         },
 
+        selectVisible(row,visible){
+            if(visible==true){
+                this.rowClick(row);
+            }
+        },
         //显示编辑界面 XmTestCase 测试用例
         showEdit: function ( row,index ) {
             this.editFormVisible = true;
@@ -309,7 +314,13 @@ export default {
         }else{
             params['ids']=[row].map(i=>i.id)
         }
-        params[fieldName]=$event
+        if(fieldName=='cuserid'){
+            params.cuserid=$event[0].userid
+            params.cusername=$event[0].username
+        }else{
+            params[fieldName]=$event
+        }
+        
         var func = editSomeFieldsXmTestCase
         func(params).then(res=>{
           let tips = res.data.tips;
