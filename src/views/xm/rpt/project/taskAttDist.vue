@@ -1,7 +1,7 @@
 <template>
 	<section>
         <el-dialog fullscreen :title="(filters.project?'【'+filters.project.name+'】':'')+'任务属性分布'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
-			<el-row :gutter="5">
+			<el-row :gutter="5" v-if="visible">
 				<el-col :span="18"> 
 					<div>
 						<div class="main" id="xmTaskAttDist"
@@ -16,9 +16,9 @@
 								<el-option v-for="i in this.groupBys" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>
 						</el-form-item>     
-						
-						<el-form-item label="归属项目" v-if="!xmProject">
-							<xm-project-select  v-if="!xmProject"  ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProjectSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProjectClear"></xm-project-select>
+						<el-form-item label="归属项目" >
+							<xm-project-select v-if="!xmProject || !xmProject.id" ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProjectSelected"   @clear="onProjectClear"></xm-project-select>
+							<span v-else>{{xmProject.id}} <span v-if="xmProject.name"><br/>{{  xmProject.name  }} </span> </span> 
 						</el-form-item>    
 							 
  						<el-form-item label="任务状态" prop="taskState">
@@ -172,10 +172,10 @@
 			}, 
 			open(params){
 				this.visible=true;
-				this.filters.product=params.xmProduct
-				this.filters.project=params.xmProject
-				this.filters.Product=params.xmProduct 
-				
+				this.filters.product=this.xmProduct
+				this.filters.project=this.xmProject
+				this.filters.iteration=this.xmIteration 
+				this.searchXmTaskAttDist()
 			},
 			drawCharts() {
 				this.myChart = this.$echarts.init(document.getElementById("xmTaskAttDist")); 

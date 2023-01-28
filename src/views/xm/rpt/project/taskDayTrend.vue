@@ -2,7 +2,7 @@
 	<section>
         <el-dialog fullscreen :title="(filters.project?'【'+filters.project.name+'】':'')+'任务每日趋势'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
 			
-			<el-row :gutter="5">
+			<el-row :gutter="5" v-if="visible">
 				<el-col :span="18"> 
 					<div>
 						<div class="main" id="taskDayTrend"
@@ -12,9 +12,10 @@
 				</el-col>
 				<el-col :span="6" class="border">
 					<el-form   :model="filters" class="padding"> 
-						<el-form-item  label="归属项目" v-if="!xmProject" >
-							 <xm-project-select  v-if="!xmProject"  ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProjectSelected"   @clear="onProjectClear"></xm-project-select>
-  					  </el-form-item>  
+					<el-form-item label="归属项目" >
+						<xm-project-select v-if="!xmProject || !xmProject.id" ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProjectSelected"   @clear="onProjectClear"></xm-project-select>
+						<span v-else>{{xmProject.id}} <span v-if="xmProject.name"><br/>{{  xmProject.name  }} </span> </span> 
+					</el-form-item>  
 					<el-form-item label="日期区间">
 						<br>
 							<mdp-date-range v-model="filters" value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></mdp-date-range>
@@ -127,9 +128,9 @@
 			},
 			open(params){
 				this.visible=true;
-				this.filters.product=params.xmProduct
-				this.filters.project=params.xmProject
-				this.filters.Product=params.xmProduct 
+				this.filters.product=this.xmProduct
+				this.filters.project=this.xmProject
+				this.filters.iteration=this.xmIteration 
 				if(this.$refs['xmProjectSelect'])this.$refs['xmProjectSelect'].clearSelect();
 				this.$nextTick(()=>{
 					this.listXmProjectStateHis();

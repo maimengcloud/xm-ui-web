@@ -203,9 +203,7 @@
 				if(this.initGroupBy){
 					this.groupBy=this.initGroupBy
 				}
-				if((this.filters.product && this.filters.product.id) || ( this.filters.iteration && this.filters.iteration.id)){
-					this.searchXmQuestionSort()
-				}
+				this.searchXmQuestionSort()
 			},
 			drawCharts() {
 				this.myChart = this.$echarts.init(document.getElementById("xmQuestionSort")); 

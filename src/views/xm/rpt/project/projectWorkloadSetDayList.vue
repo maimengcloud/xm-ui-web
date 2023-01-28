@@ -2,7 +2,7 @@
 	<section>
         <el-dialog fullscreen :title="(filters.project?'【'+(filters.project.name?filters.project.name:filters.project.id)+'】':'')+'结算工时按日分布趋势图'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
  
-			<el-row :gutter="5">
+			<el-row :gutter="5" v-if="visible">
 				<el-col :span="18"> 
 					<div> 
 						<div class="main" :id="id" style="width:100%;height:600px;margin:0 auto;"></div> 
@@ -10,9 +10,10 @@
 				</el-col>
 				<el-col :span="6" class="border">
 					<el-form   :model="filters" class="padding"> 
-					<el-form-item label="归属项目" v-if="!xmProject">
-							 <xm-project-select  v-if="!xmProject"  ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProjectSelected"   @clear="onProjectClear"></xm-project-select>
-  					</el-form-item>  
+					<el-form-item label="归属项目" >
+						<xm-project-select v-if="!xmProject || !xmProject.id" ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProjectSelected"   @clear="onProjectClear"></xm-project-select>
+						<span v-else>{{xmProject.id}} <span v-if="xmProject.name"><br/>{{  xmProject.name  }} </span> </span> 
+					</el-form-item>  
 					<el-form-item label="人员编号">
 						<mdp-select-user-xm label="选择人员" :clearable="true" v-model="filters" userid-key="userid" username-key="username" :project-id="filters.project?filters.project.id:null"></mdp-select-user-xm>
 
@@ -122,9 +123,9 @@
 			},
 			open(params){
 				this.visible=true;
-				this.filters.product=params.xmProduct
-				this.filters.project=params.xmProject
-				this.filters.iteration=params.xmIteration
+				this.filters.product=this.xmProduct
+				this.filters.project=this.xmProject
+				this.filters.iteration=this.xmIteration 
 				this.xmProjectWorkloadSetDays=[] 
 				this.$nextTick(()=>{
 					if(this.$refs['xmProjectSelect'])this.$refs['xmProjectSelect'].clearSelect();

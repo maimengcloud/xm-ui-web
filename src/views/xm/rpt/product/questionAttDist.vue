@@ -248,10 +248,7 @@
 				this.filters.project=this.xmProject
 				this.filters.iteration=this.xmIteration
 				this.filters.testCasedb=this.xmTestCasedb
-				
-				if((this.filters.product && this.filters.product.id) || ( this.filters.iteration && this.filters.iteration.id)){
-					this.searchXmQuestionAttDist()
-				}
+				this.searchXmQuestionAttDist()
 			},
 			drawCharts() {
 				this.myChart = this.$echarts.init(document.getElementById("xmQuestionAttDist")); 
