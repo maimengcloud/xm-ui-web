@@ -351,7 +351,27 @@ export default {
       const tasksTreeData = treeTool.translateDataToTree(xmTasks,"parentTaskid","id");
       return tasksTreeData;
     },
+    toSearchCpd(){
+      var key={iterationId:'',projectId:'',productId:'',parentTaskid:''};
+      if(this.xmIteration&&this.xmIteration.id){
+        key.iterationId=this.xmIteration.id
+        key.productId=this.xmIteration.productId
+      }else{
+        key.iterationId='' 
+      }
+      if(this.xmProduct&&this.xmProduct.id){  
+        key.productId=this.xmProduct.id
+      }else{
+        key.productId=''
+      }
 
+      if(this.selProject&&this.selProject.id){ 
+        key.projectId=this.selProject.id
+      }else{
+        key.projectId=''
+      } 
+      return key.iterationId+key.projectId+key.productId+key.parentTaskid
+    }
   },
   props: [
     "selProject",
@@ -367,16 +387,16 @@ export default {
   ],
   watch: {
     selProject: function (oval, val) {
-      this.filters.selProject = this.selProject; 
-      this.searchXmTasks();
+      this.filters.selProject = this.selProject;  
     },  
     xmProduct: function () {
-      this.filters.product = this.xmProduct;
-      this.searchXmTasks();
+      this.filters.product = this.xmProduct; 
     },
-    xmIteration: function () {
+    xmIteration: function () { 
+    }, 
+    toSearchCpd:function(){ 
       this.searchXmTasks();
-    },
+    }
   },
   data() { 
     return {

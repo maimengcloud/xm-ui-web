@@ -130,6 +130,27 @@ export default {
       return tasksTreeData;
     },
 
+    toSearchCpd(){
+      var key={iterationId:'',projectId:'',productId:'',parentTaskid:''};
+      if(this.xmIteration&&this.xmIteration.id){
+        key.iterationId=this.xmIteration.id
+        key.productId=this.xmIteration.productId
+      }else{
+        key.iterationId='' 
+      }
+      if(this.xmProduct&&this.xmProduct.id){  
+        key.productId=this.xmProduct.id
+      }else{
+        key.productId=''
+      }
+
+      if(this.selProject&&this.selProject.id){ 
+        key.projectId=this.selProject.id
+      }else{
+        key.projectId=''
+      } 
+      return key.iterationId+key.projectId+key.productId+key.parentTaskid
+    }
   },
   props: [
     "selProject", "xmProduct","xmIteration"
@@ -140,12 +161,13 @@ export default {
       this.changeSelKey("");
     }, 
     xmProduct: function () {
-      this.filters.product = this.xmProduct;
-      this.getXmTasks();
+      this.filters.product = this.xmProduct; 
     },
-    xmIteration: function () {
-      this.getXmTasks();
+    xmIteration: function () { 
     },
+    toSearchCpd:function(){ 
+      this.searchXmTasks();
+    }
   },
   data() { 
     return {
