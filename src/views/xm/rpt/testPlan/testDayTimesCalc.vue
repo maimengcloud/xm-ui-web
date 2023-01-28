@@ -167,13 +167,10 @@
 				if(this.filters.testCasedb && this.filters.testCasedb.id){
 					params.casedbId=this.filters.testCasedb.id
 				}
-				if(params.productId || params.projectId || params.planId || params.casedbId || params.linkIterationId){
-					getXmTestDayTimesList(params).then(res=>{ 
+ 				getXmTestDayTimesList(params).then(res=>{ 
 					this.xmTestDayTimesList=res.data.tips.isOk?res.data.data:this.xmTestDayTimesList;
 				})
-				}else{
-					this.$message.error("请选择查询条件，项目、产品、迭代、测试计划最少选择一个")
-				}
+				 
 				
 			},
 			open(params){
