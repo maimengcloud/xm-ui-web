@@ -206,13 +206,9 @@
 				if(this.filters.testCasedb && this.filters.testCasedb.id){
 					params.casedbId=this.filters.testCasedb.id
 				}
-				if(params.productId || params.projectId || params.planId || params.casedbId || params.linkIterationId){
-					getXmTestPlanCaseExecStatusDist(params).then(res=>{
+ 					getXmTestPlanCaseExecStatusDist(params).then(res=>{
 						this.xmTestPlanCaseExecStatusDists=res.data.data
-					})
-				}else{
-					this.$message.error("请选择查询条件，项目、产品、迭代、测试计划最少选择一个")
-				} 
+					}) 
 			},
 			onProjectSelected(project){
 				this.filters.project=project
