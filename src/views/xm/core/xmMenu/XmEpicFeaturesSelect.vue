@@ -77,20 +77,41 @@
 				let xmMenus = JSON.parse(JSON.stringify(this.xmMenus || []));
 				let xmMenusTreeData = treeTool.translateDataToTree(xmMenus,"pmenuId","menuId");
 				 return xmMenusTreeData;
-			},
+			}, 
+			toSearchCpd(){
+				debugger;
+				var key={iterationId:'',projectId:'',productId:''};
+				if(this.xmIteration&&this.xmIteration.id){
+					key.iterationId=this.xmIteration.id
+					key.productId=this.xmIteration.productId
+				}else{
+					key.iterationId=''
+				}
+				if(this.xmProduct&&this.xmProduct.id){  
+					key.productId=this.xmProduct.id
+				}else{
+					key.productId=''
+				}
+				if(this.selProject&&this.selProject.id){ 
+					key.projectId=this.selProject.id
+				}else{
+					key.projectId=''
+				} 
+				return key.iterationId+key.projectId+key.productId
+			}
 		},
 		watch:{
 			xmIteration:function(){
 				this.filters.iterationFilterType="join-curr-iteration"
-				this.filters.iteration=this.xmIteration
-				this.getXmMenus()
+				this.filters.iteration=this.xmIteration 
 			},
-			"xmProduct.id":function(){
-					this.filters.product=this.xmProduct
-					this.getXmMenus()
+			xmProduct:function(){
+				this.filters.product=this.xmProduct 
 			},
-			selProject:function(){
-				this.getXmMenus();
+			selProject:function(){ 
+			},
+			toSearchCpd:function(){
+				this.searchXmMenus();
 			}
     	},
 		data() { 

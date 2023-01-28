@@ -141,7 +141,6 @@
 	import { listXmIteration,listXmIterationWithState, delXmIteration, batchDelXmIteration } from '@/api/xm/core/xmIteration';
 	import {  loadTasksToXmIterationState } from '@/api/xm/core/xmIterationState';
   
-	const map=new Map();
 	import { mapGetters } from 'vuex' 
 
 	import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
@@ -280,11 +279,15 @@
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
 						this.xmIterations = res.data.data;
+						var key=""
 						if(this.productId){
-							 map.set(this.productId,this.xmIterations)
+							key='xm-iteration-select-list-prd-'+this.productId 
+							sessionStorage.setItem(key,JSON.stringify(this.xmIterations))
 						}else if(this.linkProjectId){
-							 map.set(this.linkProjectId,this.xmIterations)
+							key='xm-iteration-select-list-prj'+this.linkProjectId  
+							sessionStorage.setItem(key,JSON.stringify(this.xmIterations))
 						}
+ 
 						if(this.autoSelect===true&&this.xmIterations.length>0){ 
 							if(this.autoSelect!==false&&this.xmIterations.length>0 && this.iterationVisible==false){ 
 								var row=this.xmIterations[0]; 
@@ -332,29 +335,23 @@
 				this.$emit("close")
 			}, 
 			initData(){
-				
+				var key=""
 				if(this.productId){
-					var xmIterations=map.get(this.productId);
-					if(xmIterations){
-						this.xmIterations=xmIterations;
+					key='xm-iteration-select-list-prd-'+this.productId 
+				}else if(this.linkProjectId){
+					key='xm-iteration-select-list-prj'+this.linkProjectId 
+				}
+				
+				if(key){
+					var xmIterationStr=sessionStorage.getItem(key);
+					if(xmIterationStr && xmIterationStr!='null' && xmIterationStr!='undefined'){ 
+						this.xmIterations=JSON.parse(xmIterationStr);
 						if(this.autoSelect!==false&&this.xmIterations.length>0 && this.iterationVisible==false){ 
 							var row=this.xmIterations[0]; 
 							this.$refs.table.setCurrentRow(row); 
 							this.rowClick(row)
 						}else{
 							this.clearSelectIteration()
-						}
-					}else{
-						this.searchXmIterations();
-					}
-				}else if(this.linkProjectId){
-					var xmIterations=map.get(this.linkProjectId);
-					if(xmIterations){
-						this.xmIterations=xmIterations;
-						if(this.autoSelect!==false&&this.xmIterations.length>0 && this.iterationVisible==false){ 
-							var row=this.xmIterations[0]; 
-							this.$refs.table.setCurrentRow(row); 
-							this.rowClick(row)
 						}
 					}else{
 						this.searchXmIterations();

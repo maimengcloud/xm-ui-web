@@ -221,11 +221,32 @@ import XmEpicFeatures from './XmEpicFeaturesSelect.vue';
 			xmMenusTreeData(){  
 				return this.xmMenus
  			},
+			
+			 toSearchCpd(){
+				var key={iterationId:'',projectId:'',productId:''};
+				if(this.xmIteration&&this.xmIteration.id){
+					key.iterationId=this.xmIteration.id
+					key.productId=this.xmIteration.productId
+				}else{
+					key.iterationId=''
+				}
+				if(this.xmProduct&&this.xmProduct.id){  
+					key.productId=this.xmProduct.id
+				}else{
+					key.productId=''
+				}
+				if(this.selProject&&this.selProject.id){ 
+					key.projectId=this.selProject.id
+				}else{
+					key.projectId=''
+				} 
+				return key.iterationId+key.projectId+key.productId
+			}
 		},
 		watch:{ 
 			visible:function(visible){
 				if(visible==true){
-					this.searchXmMenus();
+					//this.searchXmMenus();
 				}
 			},
 			"xmIteration"(){
@@ -234,17 +255,17 @@ import XmEpicFeatures from './XmEpicFeaturesSelect.vue';
 				}
 				if(this.xmIteration){
 					this.filters.iteration=this.xmIteration
-				}
-				this.searchXmMenus();
+				} 
 			},
 			
 			"xmProduct"(){
-				this.filters.product=this.xmProduct
-				this.searchXmMenus();
+				this.filters.product=this.xmProduct 
 			},
-			"selProject"(){ 
+			"selProject"(){  
+			},
+			toSearchCpd:function(){
 				this.searchXmMenus();
-			} 
+			}
 		},
 		data() {
 			const beginDate = new Date();

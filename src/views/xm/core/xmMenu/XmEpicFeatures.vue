@@ -3,7 +3,7 @@
 		<el-row>
 			<el-col :span="24">
 					<el-row >
-						<xm-product-select ref="xmProductSelect1" v-if="!((xmProduct && xmProduct.id) || (xmIteration && !xmIteration.id))" style="display:inline;"  :auto-select="true" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="onProductClearSelect" ></xm-product-select>
+						<xm-product-select ref="xmProductSelect1" v-if=" !xmProduct || !xmProduct.id" style="display:inline;"  :auto-select="true" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="onProductClearSelect" ></xm-product-select>
 						 <span style="float:right;">
   						<el-popover
 							placement="top-start"
@@ -136,7 +136,7 @@
  			<tag-dialog ref="tagDialog" :tagIds="filters.tags?filters.tags.map(i=>i.tagId):[]" :jump="true" @select-confirm="onTagSelected">
 			</tag-dialog> 
 			<el-dialog append-to-body width="60%" top="20px" :visible.sync="parentMenuVisible">
-				<xm-epic-features-select :xm-product="xmProduct" @select="onParentMenuSelected"></xm-epic-features-select>
+				<xm-epic-features-select v-if="parentMenuVisible" :xm-product="xmProduct?xmProduct:filters.product" @select="onParentMenuSelected"></xm-epic-features-select>
 			</el-dialog>
 	</section>
 </template>
@@ -167,7 +167,7 @@
 	import { mapGetters } from 'vuex'
 
 	export default {
-		props:['selProject','xmIteration','xmProduct','disabledMng'],
+		props:['selProject','xmProduct','disabledMng'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -180,18 +180,10 @@
 			},
 		},
 		watch:{
-			xmIteration:function(){
-				this.filters.iterationFilterType="join-curr-iteration"
-				this.filters.iteration=this.xmIteration
-				this.getXmMenus()
-			},
 			xmProduct:function(){
 					this.filters.product=this.xmProduct
 					this.getXmMenus()
 			},
-			selProject:function(){
-				this.getXmMenus();
-			}
     	},
 		data() {
 			const beginDate = new Date();
@@ -203,8 +195,6 @@
 					key: '',
 					product:null,
 					mmUser:null,
-					iterationFilterType:'',//join、not-join、''
-					taskFilterType:'',//join、not-join、''
 					tags:[],
 					status:'',
 					iteration:null,
@@ -229,17 +219,6 @@
 				sels: [],//列表选中数据
 				dicts:{
 					menuStatus:[
-
-							{id:"0", name:"初始"},
-							{id:"1", name:"待评审"},
-							{id:"2", name:"待设计"},
-							{id:"3", name:"待开发"},
-							{id:"4", name:"待SIT"},
-							{id:"5", name:"待UAT"},
-							{id:"6", name:"待上线"},
-							{id:"7", name:"运行中"},
-							{id:"8", name:"已下线"},
-							{id:"9", name:"已删除"},
 					],
 					dclass:[],
 				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
@@ -325,41 +304,7 @@
 
 				if(this.filters.mmUser){
 					params.mmUserid=this.filters.mmUser.userid;
-				}
-				if(this.filters.iterationFilterType){
-					params.iterationFilterType=this.filters.iterationFilterType
-					if(params.iterationFilterType==='not-join-any-iteration'){
-
-					}else if(params.iterationFilterType==='join-any-iteration'){
-
-					}else if(params.iterationFilterType==='not-join-curr-iteration'){
-						params.filterIterationId=this.filters.iteration.id
-					}else if(params.iterationFilterType==='join-curr-iteration'){
-						params.filterIterationId=this.filters.iteration.id
-					}
-					params.ntype="0"
-				}else{
-					if(this.filters.iteration){
-						params.iterationId=this.filters.iteration.id
-					}
-				}
-				if(this.xmIteration && this.xmIteration.id){
-					params.linkIterationId=this.xmIteration.id
-				}
-				if(this.filters.taskFilterType){
-					params.taskFilterType=this.filters.taskFilterType
-
-					if(params.taskFilterType==='not-join-curr-project'){
-						params.projectId=this.selProject.id
-					}
-					if(params.taskFilterType==='join-curr-project'){
-						params.projectId=this.selProject.id
-					}
-					params.ntype="0"
-				}
-				if(this.selProject && this.selProject.id){
-					params.linkProjectId=this.selProject.id
-				}
+				} 
 				if(this.filters.product){
 					params.productId=this.filters.product.id
 				}
@@ -392,12 +337,6 @@
 				if(this.filters.dclasss){
 					params.dclasss=this.filters.dclasss
 				}
-				if(this.filters.menuId){
-					params.menuId=this.filters.menuId
-				}
-				if(this.filters.productId){
-					params.productId=this.filters.productId
-				}
 				return params;
 			}, 
 			//获取列表 XmMenu xm_project_menu
@@ -416,10 +355,10 @@
 					}
 					params.orderBy= orderBys.join(",")
 				}
-				if( this.filters.product  && this.filters.product.id){
-					params.productId=this.filters.product.id
-				}
 				params=this.getParams(params); 
+				if(!params.productId){
+					return;
+				}
 				let callback= (res)=>{
 					var tips=res.data.tips;
 					if(tips.isOk){
@@ -432,11 +371,7 @@
 					this.load.list = false;
 				}
 				this.load.list = true;
-				if(!this.selProject){
-					listXmMenuWithState(params).then( callback ).catch( err => this.load.list = false );
-				}else{
-					listXmMenuWithPlan(params).then( callback ).catch( err => this.load.list = false );
-				}
+				listXmMenuWithState(params).then( callback ).catch( err => this.load.list = false );
 			},
 
 			//显示编辑界面 XmMenu xm_project_menu

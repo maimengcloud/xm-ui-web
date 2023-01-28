@@ -16,8 +16,8 @@
 									<el-row class="label-font-color"><span v-if="addForm.productName">归属产品：{{ addForm.productName}} &nbsp;&nbsp;|&nbsp;&nbsp;</span><span v-if="addForm.productId"> 产品编号：{{ addForm.productId }}&nbsp;&nbsp;|&nbsp;&nbsp;</span><span v-if="  addForm.iterationName ">迭代名称：{{addForm.iterationName}}&nbsp;&nbsp;|&nbsp;&nbsp;</span><span v-if="addForm.iterationId">迭代编号：{{addForm.iterationId}}</span></el-row>
 								</el-form-item>    
 						<el-row class="padding"> 
-								<el-col :span="8"> 
-									<mdp-field-x v-if="(!parentMenu || !parentMenu.menuId) && (!xmMenu || !xmMenu.pmenuId)" v-model="addForm.pmenuName" :label="addForm.dclass==='3'?'归属特性':(addForm.dclass==='2'?'归属史诗':'归属')" :icon="addForm.dclass==='2'?'el-icon-s-promotion':'el-icon-s-flag'" :color="addForm.dclass==='2'?'rgb(255, 153, 51)':'rgb(0, 153, 51)'">
+								<el-col :span="8" v-if="xmMenu.dclass!='1'"> 
+									<mdp-field-x v-if="(!parentMenu || !parentMenu.menuId) && (!xmMenu || !xmMenu.pmenuId) " v-model="addForm.pmenuName" :label="addForm.dclass==='3'?'归属特性':(addForm.dclass==='2'?'归属史诗':'归属')" :icon="addForm.dclass==='2'?'el-icon-s-promotion':'el-icon-s-flag'" :color="addForm.dclass==='2'?'rgb(255, 153, 51)':'rgb(0, 153, 51)'">
 										<el-button slot="oper"
 											@click="parentMenuSelectVisible=true"  
 											title="选择上级"

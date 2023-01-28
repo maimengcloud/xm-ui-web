@@ -440,7 +440,7 @@
 	import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
 
 	export default {
-		props:[ 'xmIteration','xmProduct','disabledMng','parentMenu','paddingTop','selProject'],
+		props:[ 'xmIteration','xmProduct','disabledMng','parentMenu','selProject'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -449,22 +449,42 @@
       		xmMenusTreeData() { 
 				 return this.xmMenus;
 			},
+			toSearchCpd(){
+				var key={iterationId:'',projectId:'',productId:'',pmenuId:''};
+				if(this.xmIteration&&this.xmIteration.id){
+					key.iterationId=this.xmIteration.id
+					key.productId=this.xmIteration.productId
+				}else{
+					key.iterationId=''
+				}
+				if(this.xmProduct&&this.xmProduct.id){  
+					key.productId=this.xmProduct.id
+				}else{
+					key.productId=''
+				}
+				if(this.selProject&&this.selProject.id){ 
+					key.projectId=this.selProject.id
+				}else{
+					key.projectId=''
+				}
+				if(this.parentMenu&&this.parentMenu.menuId){
+					key.pmenuId=this.parentMenu.menuId
+					key.productId=this.parentMenu.productId
+				}else{
+					key.pmenuId=''
+				}
+				return key.iterationId+key.projectId+key.productId+key.pmenuId
+			}
 		},
 		watch:{
 			xmIteration:function(){
 				this.filters.iterationFilterType="join-curr-iteration"
-				this.filters.iteration=this.xmIteration
-				this.getXmMenus()
+				this.filters.iteration=this.xmIteration 
 			},
 			xmProduct:function(){
-					this.filters.product=this.xmProduct
-					this.getXmMenus()
-			},
-			selProject:function(){
-				this.getXmMenus();
-			}
-			,
-			"parentMenu.menuId":function(){
+					this.filters.product=this.xmProduct 
+			}, 
+			toSearchCpd:function(){
 				this.searchXmMenus();
 			}
     	},
@@ -508,17 +528,6 @@
 				sels: [],//列表选中数据
 				dicts:{
 					menuStatus:[
-
-							{id:"0", name:"初始"},
-							{id:"1", name:"待评审"},
-							{id:"2", name:"待设计"},
-							{id:"3", name:"待开发"},
-							{id:"4", name:"待SIT"},
-							{id:"5", name:"待UAT"},
-							{id:"6", name:"待上线"},
-							{id:"7", name:"运行中"},
-							{id:"8", name:"已下线"},
-							{id:"9", name:"已删除"},
 					],
 					dclass:[],
 				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
