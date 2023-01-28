@@ -2,11 +2,11 @@
 	<section> 
 		<el-row>   
 			<el-col :span="7">
-				<xm-epic-features class="padding-right" :xm-product="xmProduct"  @row-click="onEpicFeaturesRowClick" :show-select="false" @product-select="onProductSelected"></xm-epic-features>
+				<xm-epic-features class="padding-right" :xm-product="xmProduct" :sel-project="selProject"  @row-click="onEpicFeaturesRowClick" :show-select="false" @product-select="onProductSelected"></xm-epic-features>
 			</el-col>
 			<el-col :span="17" >
-				<el-row v-if="filters.product && filters.product.id">    
-						<xm-iteration-select style="display:inline;"  v-if="!xmIteration||!xmIteration.id" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onIterationSelected" ref="xmIterationMng" :product-id="filters.product?filters.product.id:null"  @clear="onIterationClearSelect"></xm-iteration-select>
+				<el-row>    
+						<xm-iteration-select style="display:inline;"  v-if="(!xmIteration||!xmIteration.id) && filters.product" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onIterationSelected" ref="xmIterationMng" :product-id="filters.product?filters.product.id:null"  @clear="onIterationClearSelect"></xm-iteration-select>
 						 
 						<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable v-if="taskFilterType">
 							<el-option   value="not-join-any-project"  label="未分配过任务的需求"></el-option>  
@@ -138,7 +138,7 @@
 					
 					<el-button  style="float:right;" type="primary" v-if="multi"  v-on:click="multiSelectedConfirm">确认</el-button>
 				</el-row>   
-				<el-row v-if="filters.product && filters.product.id" ref="table">
+				<el-row  ref="table">
 					<el-table  element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"  class="menu-table"   :height="maxTableHeight" :data="xmMenusTreeData"   row-key="menuId"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column v-if="multi" type="selection" width="50"></el-table-column>  
 						
@@ -171,11 +171,9 @@
 							</template>
 						</el-table-column>
 						</template>
-					</el-table>
+					</el-table> 
 					<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
-					
-				</el-row>
-				<el-row v-else ref="table"></el-row>
+				</el-row> 
 			</el-col>  
 			
 			<el-drawer title="选择员工" :visible.sync="selectFiltersMmUserVisible" size="60%" append-to-body>

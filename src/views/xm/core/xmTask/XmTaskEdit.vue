@@ -507,7 +507,7 @@
 			<skill-mng v-if="skillVisible" :task-skills="taskSkills" :jump="true" @select-confirm="onTaskSkillsSelected"></skill-mng>
 		</el-drawer>
 
-		<el-drawer append-to-body title="需求选择"  :visible.sync="menuVisible" size="80%"   :close-on-click-modal="false">
+		<el-drawer append-to-body title="需求选择"  :visible.sync="menuVisible" size="90%"   :close-on-click-modal="false">
 			<xm-menu-select v-if="menuVisible" :is-select-menu="true" checkScope="3"  @selected="onMenuSelected" :xm-product="xmProductCpd" :sel-project="xmProjectCpd" :xm-iteration="xmIteration"></xm-menu-select>
 		</el-drawer>
 		
