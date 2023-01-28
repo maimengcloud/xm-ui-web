@@ -930,6 +930,34 @@ export default {
     tasksTreeData() {
       return this.xmTasks;
     },
+   
+    toSearchCpd(){
+      var key={iterationId:'',projectId:'',productId:'',parentTaskid:''};
+      if(this.xmIteration&&this.xmIteration.id){
+        key.iterationId=this.xmIteration.id
+        key.productId=this.xmIteration.productId
+      }else{
+        key.iterationId='' 
+      }
+      if(this.xmProduct&&this.xmProduct.id){  
+        key.productId=this.xmProduct.id
+      }else{
+        key.productId=''
+      }
+
+      if(this.selProject&&this.selProject.id){ 
+        key.projectId=this.selProject.id
+      }else{
+        key.projectId=''
+      }
+      if(this.parentTask&&this.parentTask.id){
+        key.parentTaskid=this.parentTask.id
+        key.projectId=this.parentTask.projectId
+      }else{
+        key.parentTaskid='' 
+      }
+      return key.iterationId+key.projectId+key.productId+key.parentTaskid
+    }
 
   },
   props: [
@@ -950,8 +978,7 @@ export default {
       this.filters.selProject = this.selProject;
       this.changeSelKey("");
     },
-    menuId: function (menuId) {
-      this.getXmTasks();
+    menuId: function (menuId) { 
     },
     timeVisible: function (timeVisible) {
       if (timeVisible == false) {
@@ -959,13 +986,14 @@ export default {
       }
     },
     xmProduct: function () {
-      this.filters.product = this.xmProduct;
-      this.getXmTasks();
+      this.filters.product = this.xmProduct; 
     },
-    xmIteration: function () {
-      this.getXmTasks();
+    xmIteration: function () { 
     },
-    "parentTask.id":function(){
+    parentTask:function(){ 
+    },
+    
+    toSearchCpd:function(){ 
       this.searchXmTasks();
     }
   },
