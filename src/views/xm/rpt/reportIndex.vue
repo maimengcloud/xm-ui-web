@@ -8,7 +8,7 @@
                     </el-select>
                 </el-row> 
                 <el-row  :style="{overflowX:'hidden',height:maxTableHeight+'px'}" ref="table">
-                         <el-card v-for="(p,i) in rptListCpd" :key="i" @click.native="intoInfo(p,i)" :class="{itemActive:p.isChecked}" shadow="always" style="margin-bottom:5px;">
+                         <el-card v-for="(p,i) in rptListCpd" :key="i" @click.native="intoInfo(p,i)" :class="{itemActive:p.isChecked,card:true,}" shadow="always">
                             <div slot="header" class="clearfix">
                                 {{ i+1 }}.<span>{{p.rptName}}</span>  <span><i v-if="p.isChecked" class="el-icon-success"></i></span>
                             </div>
@@ -339,7 +339,10 @@
   }
 
    
- 
+.card {
+    margin-bottom:5px;
+    cursor: pointer;
+}
 
 i {  
     position:absolute;   
