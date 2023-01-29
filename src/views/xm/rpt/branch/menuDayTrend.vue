@@ -158,12 +158,12 @@
 						}, 
 						
 						tooltip: {
-							trigger: 'item',
-							formatter:'{b} {c}次',
+							trigger: 'axis', 
 						},
 						barMaxWidth: 100,
 						toolbox: {
 							show: true,
+							right:"20px",
 							feature: {
 							dataView: { show: true, readOnly: false },
 							magicType: { show: true, type: ['line', 'bar'] },
@@ -174,7 +174,8 @@
 
 						calculable: true,
 						legend: {
-							right: 40,
+							top:'5%',
+							left: 'center',
 							data: ['未开始故事数','执行中故事数','已完成故事数','已关闭故事数']
 						},
 						xAxis: {

@@ -152,12 +152,12 @@
 					}, 
 					
 					tooltip: {
-						trigger: 'item',
-						formatter:'{b} {c}次',
+						trigger: 'axis', 
 					},
 					barMaxWidth: 100,
 					toolbox: {
 						show: true,
+						right:"20px",
 						feature: {
 						dataView: { show: true, readOnly: false },
 						magicType: { show: true, type: ['line', 'bar'] },
@@ -168,6 +168,8 @@
 
 					calculable: true,
 					legend: { 
+							top:'5%',
+							left: 'center',
 					},
 
 					dataset: {
@@ -221,7 +223,7 @@
 							type: 'pie',
 							id: 'pie',
 							radius: '30%',
-							center: ['50%', '25%'],
+							center: ['50%', '30%'],
 							emphasis: {
 								focus: 'self'
 							},

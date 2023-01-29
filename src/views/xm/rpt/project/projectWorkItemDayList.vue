@@ -172,7 +172,7 @@
     				grid: { top: '55%' },
 					series: [
 						{ 	name:'未关故事',
-							type: 'line',
+							type: 'line', 
         					seriesLayoutBy: 'row',
 							smooth:true, 
         					emphasis: { focus: 'series' }, 
@@ -213,7 +213,7 @@
 							type: 'pie',
 							id: 'pie',
 							radius: '30%',
-							center: ['50%', '25%'],
+							center: ['50%', '30%'],
 							emphasis: {
 								focus: 'self'
 							},

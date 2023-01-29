@@ -159,12 +159,12 @@
 						}, 
 						
 						tooltip: {
-							trigger: 'item',
-							formatter:'{b} {c}次',
+							trigger: 'axis', 
 						},
 						barMaxWidth: 100,
 						toolbox: {
 							show: true,
+							right:"20px",
 							feature: {
 							dataView: { show: true, readOnly: false },
 							magicType: { show: true, type: ['line', 'bar'] },
@@ -175,7 +175,8 @@
 
 						calculable: true,
 						legend: {
-							right: 40,
+							top:'5%',
+							left: 'center',
 							data: ['新提出','执行中','已解决','已关闭']
 						},
 						xAxis: {

@@ -164,8 +164,7 @@
 					}, 
 					
 					tooltip: {
-						trigger: 'item',
-						formatter:'{b} {c}次',
+						trigger: 'axis', 
 					},
 					barMaxWidth: 100,
 					toolbox: {
@@ -236,7 +235,7 @@
 							type: 'pie',
 							id: 'pie',
 							radius: '30%',
-							center: ['50%', '25%'],
+							center: ['50%', '30%'],
 							emphasis: {
 								focus: 'self'
 							},

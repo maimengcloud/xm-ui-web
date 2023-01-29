@@ -191,8 +191,13 @@
 							containLabel: true
 						},
 						toolbox: {
+							show: true,
+							right:"20px",
 							feature: {
-							saveAsImage: {}
+							dataView: { show: true, readOnly: false },
+							magicType: { show: true, type: ['line', 'bar'] },
+							restore: { show: true },
+							saveAsImage: { show: true }
 							}
 						},
 						xAxis: {
