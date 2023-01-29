@@ -171,7 +171,13 @@
 						series: [
 							{
 							data: this.xmTaskSortsCpd,
-							type: 'bar'
+							type: 'bar',
+							markPoint: {
+								data: [
+								{ type: 'max', name: 'Max' },
+								{ type: 'min', name: 'Min' }
+								]
+							}, 
 							}
 						]
 					}

@@ -178,17 +178,12 @@
 								name:'待领取',
 								data: this.taskUnstartCntCpd,
 								type: 'line',
-								smooth: true,  
-								itemStyle: {
-									normal: {
-										// 折点颜色样式
-										color: 'orange',
-										lineStyle: {
-											// 折线颜色样式
-											color: 'orange'
-										}
-									}
-								},
+								markPoint: {
+									data: [
+									{ type: 'max', name: 'Max' },
+									{ type: 'min', name: 'Min' }
+									]
+								}, 
 							},
 							
 							{
