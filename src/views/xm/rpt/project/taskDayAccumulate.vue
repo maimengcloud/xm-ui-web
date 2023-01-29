@@ -79,8 +79,10 @@
 				}else{ 
 					return this.xmProjectStateHiss.map(i=>i.taskFinishCnt)
 				}
-			},
-			
+			}, 
+			title(){
+				return "任务每日累积图"
+			}
         }, 
 		watch: {  
 			datesCpd(){
@@ -140,7 +142,8 @@
 				this.myChart.setOption(  
 					{
 						title: {
-							text: '任务累积图'
+							text: this.title,
+							left:"center"
 						}, 
 
 						tooltip: {
@@ -155,6 +158,8 @@
 						
 						barMaxWidth: 100,
 						legend: {
+							top:'5%',
+							left: 'center',
 							data: ['未开始', '执行中', '已完成', '已关闭']
 						},
 						grid: {
@@ -168,8 +173,7 @@
 							right:"20px",
 							feature: {
 							dataView: { show: true, readOnly: false },
-							magicType: { show: true, type: ['line', 'bar'] },
-							restore: { show: true },
+							magicType: { show: true, type: ['line', 'bar'] }, 
 							saveAsImage: { show: true }
 							}
 						},

@@ -89,13 +89,8 @@
 					return this.xmProductStateHiss.map(i=>i.menuFinishCnt)
 				}
 			},
-			title(){
-				if(this.xmIteration && this.xmIteration.id){
-					return (this.xmIteration?'迭代【'+this.xmIteration.iterationName+'】':'')+'需求每日累积图'
-				}else {
-					return (this.filters.product?'产品【'+this.filters.product.productName+'】':'')+'需求每日累积图'
-				}
-				
+			title(){ 
+				return  '企业需求每日累积图'  
 			},
 			xmProductCpd(){
 				if(this.xmIteration && this.xmIteration.id){
@@ -166,7 +161,7 @@
 				this.myChart.setOption(  
 					{
 						title: {
-							text: '需求累积图',
+							text: this.title,
 							left: 'center'
 						}, 
 
@@ -196,7 +191,7 @@
 							feature: {
 							dataView: { show: true, readOnly: false },
 							magicType: { show: true, type: ['line', 'bar'] },
-							restore: { show: true },
+							
 							saveAsImage: { show: true }
 							}
 						},

@@ -77,11 +77,7 @@
 				}
 			},
 			title(){
-				if(this.xmIteration && this.xmIteration.id){
-					return (this.xmIteration?'迭代【'+this.xmIteration.iterationName+'】':'')+'缺陷每日累积图'
-				}else {
-					return (this.filters.product?'产品【'+this.filters.product.productName+'】':'')+'缺陷每日累积图'
-				}
+				return '企业缺陷每日累积图'
 				
 			},
 			xmProductCpd(){
@@ -153,7 +149,7 @@
 				this.myChart.setOption(  
 					{
 						title: {
-							text: '缺陷累积图',
+							text: this.title,
 							left: 'center'
 						}, 
 
@@ -183,7 +179,7 @@
 							feature: {
 							dataView: { show: true, readOnly: false },
 							magicType: { show: true, type: ['line', 'bar'] },
-							restore: { show: true },
+							
 							saveAsImage: { show: true }
 							}
 						},

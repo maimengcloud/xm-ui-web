@@ -82,7 +82,9 @@
 					return this.xmProjectStateHiss.map(i=>i.taskFinishCnt)
 				}
 			},
-			
+			title(){
+				return "任务每日分布"
+			}
         }, 
 		watch: {  
 			datesCpd(){
@@ -155,7 +157,7 @@
 							feature: {
 							dataView: { show: true, readOnly: false },
 							magicType: { show: true, type: ['line', 'bar'] },
-							restore: { show: true },
+							
 							saveAsImage: { show: true }
 							}
 						},

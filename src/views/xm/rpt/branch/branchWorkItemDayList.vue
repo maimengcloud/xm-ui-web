@@ -52,11 +52,7 @@
 				]
 			},
 			title(){
-				if(this.xmIteration && this.xmIteration.id){
-					return (this.xmIteration?'迭代【'+this.xmIteration.iterationName+'】':'')+'工作项每日趋势图'
-				}else{
-					return "迭代工作项每日趋势图"
-				}
+				return "企业工作项每日趋势图"
 				
 			},
 			xmProductCpd(){
@@ -161,7 +157,7 @@
 						feature: {
 						dataView: { show: true, readOnly: false },
 						magicType: { show: true, type: ['line', 'bar'] },
-						restore: { show: true },
+						
 						saveAsImage: { show: true }
 						}
 					},

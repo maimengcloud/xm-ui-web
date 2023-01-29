@@ -54,6 +54,9 @@
 					['未关缺陷',...this.xmProjectStateHiss.map(i=>i.bugCnt-i.closedBugs)],
 					['已关缺陷',...this.xmProjectStateHiss.map(i=>i.closedBugs)]
 				]
+			},
+			title(){
+				return "项目工作项每日分布"
 			}
 			
         }, 
@@ -151,7 +154,7 @@
 						feature: {
 						dataView: { show: true, readOnly: false },
 						magicType: { show: true, type: ['line', 'bar'] },
-						restore: { show: true },
+						
 						saveAsImage: { show: true }
 						}
 					},
