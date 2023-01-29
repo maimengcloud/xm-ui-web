@@ -3,7 +3,7 @@
 		<el-row gutter="5">
             <el-col :span="4"> 
                 <el-row> 
-                    <el-select v-model="filters.category" clearable @change="onCategroySelect" style="width:100%;">
+                    <el-select v-model="filters.category" clearable @change="onCategroySelect" style="width:100%;" :disabled="category">
                         <el-option v-for="(item,index) in categorys" :label="item" :value="item" :key="index"></el-option>
                     </el-select>
                 </el-row> 
@@ -62,10 +62,10 @@
                 <xm-iteration-work-item-day-list  v-if="showRptRef=='xmIterationWorkItemDayList'" :category="filters.category" ref="xmIterationWorkItemDayList" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration"></xm-iteration-work-item-day-list>
             
                 <!--测试计划-->
-                <xm-test-plan-case-exec-status-dist  v-if="showRptRef=='xmTestPlanCaseExecStatusDist'" :category="filters.category" ref="xmTestPlanCaseExecStatusDist" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-test-plan-case-exec-status-dist> 
-                <xm-test-plan-case-user-dist  v-if="showRptRef=='xmTestPlanCaseUserDist'" :category="filters.category" ref="xmTestPlanCaseUserDist" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-test-plan-case-user-dist>
-                <xm-test-day-times-calc  v-if="showRptRef=='xmTestDayTimesCalc'" :category="filters.category" ref="xmTestDayTimesCalc" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-test-day-times-calc>
-                <xm-test-case-to-plan-calc  v-if="showRptRef=='xmTestCaseToPlanCalc'" :category="filters.category" ref="xmTestCaseToPlanCalc" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-test-case-to-plan-calc>
+                <xm-test-plan-case-exec-status-dist  v-if="showRptRef=='xmTestPlanCaseExecStatusDist'" :category="filters.category" ref="xmTestPlanCaseExecStatusDist" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan" :xm-iteration="xmIteration"></xm-test-plan-case-exec-status-dist> 
+                <xm-test-plan-case-user-dist  v-if="showRptRef=='xmTestPlanCaseUserDist'" :category="filters.category" ref="xmTestPlanCaseUserDist" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan" :xm-iteration="xmIteration"></xm-test-plan-case-user-dist>
+                <xm-test-day-times-calc  v-if="showRptRef=='xmTestDayTimesCalc'" :category="filters.category" ref="xmTestDayTimesCalc" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan" :xm-iteration="xmIteration"></xm-test-day-times-calc>
+                <xm-test-case-to-plan-calc  v-if="showRptRef=='xmTestCaseToPlanCalc'" :category="filters.category" ref="xmTestCaseToPlanCalc" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan" :xm-iteration="xmIteration"></xm-test-case-to-plan-calc>
                 
                 <!--企业级报表-->
                 <xm-branch-question-day-trend  v-if="showRptRef=='xmBranchQuestionDayTrend'" :category="filters.category" ref="xmBranchQuestionDayTrend" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-branch-question-day-trend>
