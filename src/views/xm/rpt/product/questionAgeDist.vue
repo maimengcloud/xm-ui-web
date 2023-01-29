@@ -150,15 +150,7 @@
 			},
 			legendCpd(){
 				 return ['0-2天','3-5天','6-7天','8-15天','16-30天','30天以上']
-			},
-			title(){
-				if(this.xmIteration && this.xmIteration.id){
-					return (this.xmIteration?'迭代【'+this.xmIteration.iterationName+'】':'')+'缺陷年龄数量分布'
-				}else {
-					return (this.filters.product?'产品【'+this.filters.product.productName+'】':'')+'缺陷年龄数量分布'
-				}
-				
-			},
+			}, 
 			xmProductCpd(){
 				if(this.xmIteration && this.xmIteration.id){
 					return {id:this.xmIteration.productId,productName:this.xmIteration.productName}
@@ -178,9 +170,11 @@
 		data() {
 			return {
                 filters:{
-                    product:null,  
+                    product:null, 
+                    project:null,
+					testPlan:null,
 					iteration:null,
-					testPlan:null, 
+					testCasedb:null,
                 }, 
 				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中... 

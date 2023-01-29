@@ -78,9 +78,11 @@
 			return {
                 filters:{
                     category:'', 
-                    product:null,
-                    iteration:null,
+                    product:null, 
                     project:null,
+					testPlan:null,
+					iteration:null,
+					testCasedb:null,
 					startBizDate:'',
 					endBizDate:'',
                 },

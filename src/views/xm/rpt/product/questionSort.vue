@@ -182,9 +182,11 @@
 		data() {
 			return {
                 filters:{
-                    product:null,  
+                    product:null, 
+                    project:null,
+					testPlan:null,
 					iteration:null,
-					testPlan:null, 
+					testCasedb:null,
                 },
 				groupBy:'handler_userid',
 				groupBys:[

@@ -118,9 +118,11 @@
 		data() {
 			return {
                 filters:{
-                    category:'', 
                     product:null, 
                     project:null,
+					testPlan:null,
+					iteration:null,
+					testCasedb:null,
                 },
 				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中... 

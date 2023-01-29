@@ -123,8 +123,11 @@
 		data() {
 			return {
                 filters:{
-                    product:null,  
+                    product:null, 
+                    project:null,
+					testPlan:null,
 					iteration:null,
+					testCasedb:null,
                 },
 				groupBy:'create_userid',
 				groupBys:[

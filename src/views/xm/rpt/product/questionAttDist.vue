@@ -210,9 +210,11 @@
 			return {
 				id:Math.floor(Math.random() * 10000000),
                 filters:{
-                    product:null,  
+                    product:null, 
+                    project:null,
+					testPlan:null,
 					iteration:null,
-					testPlan:null, 
+					testCasedb:null,
                 },
 				groupBy:'bug_status',
 				groupBys:[

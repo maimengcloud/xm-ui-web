@@ -148,8 +148,11 @@
 		data() {
 			return {
                 filters:{
-                    product:null,  
+                    product:null, 
+                    project:null,
+					testPlan:null,
 					iteration:null,
+					testCasedb:null,
                 },
 				groupBy:'proposer_id',
 				groupBys:[
