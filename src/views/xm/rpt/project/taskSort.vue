@@ -172,6 +172,9 @@
 							{
 							data: this.xmTaskSortsCpd,
 							type: 'bar',
+							label:{
+								show: true, 
+							},
 							markPoint: {
 								data: [
 								{ type: 'max', name: 'Max' },

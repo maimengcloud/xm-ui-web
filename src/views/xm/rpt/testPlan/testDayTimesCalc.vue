@@ -227,6 +227,9 @@
 								name:'次数',
 								data: this.testDayTimesCpd,
 								type: 'bar',
+								label:{
+									show: true, 
+								},								
 								smooth: true,  
 								markPoint: {
 									data: [

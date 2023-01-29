@@ -242,7 +242,10 @@
 						series: [
 							{
 							data: this.xmQuestionSortsCpd,
-							type: 'bar',
+							type: 'bar',								
+							label:{
+									show: true, 
+								},
 							markPoint: {
 									data: [
 									{ type: 'max', name: 'Max' },

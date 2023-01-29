@@ -177,81 +177,34 @@
 							{
 								name:'待领取',
 								data: this.taskUnstartCntCpd,
-								type: 'line',
-								markPoint: {
-									data: [
-									{ type: 'max', name: 'Max' },
-									{ type: 'min', name: 'Min' }
-									]
-								}, 
+								type: 'line',  
 							},
 							
 							{
 								name:'执行中',
 								data: this.taskExecCntCpd,
-								type: 'line',
-								smooth: true, 
-								itemStyle: {
-									normal: {
-										// 折点颜色样式
-										color: 'blue',
-										lineStyle: {
-											// 折线颜色样式
-											color: 'blue'
-										}
-									}
-								},
+								type: 'line',   
 							},
 							
 							{
 								name:'已完成',
 								data: this.taskFinishCntCpd,
 								type: 'line',
-								smooth: true, 
-								itemStyle: {
-									normal: {
-										// 折点颜色样式
-										color: 'green',
-										lineStyle: {
-											// 折线颜色样式
-											color: 'green'
-										}
-									}
-								},
+								smooth: true,  
 							},
 							
 							{
 								name:'已结算',
 								data: this.taskCloseCntCpd,
 								type: 'line',
-								smooth: true, 
-								itemStyle: {
-									normal: {
-										// 折点颜色样式
-										color: 'red',
-										lineStyle: {
-											// 折线颜色样式
-											color: 'red'
-										}
-									}
-								},
+								smooth: true,  
 							},
 							
 							{
 								name:'已关闭',
 								data: this.taskCloseCntCpd,
 								type: 'line',
-								smooth: true, 
-								itemStyle: {
-									normal: {
-										// 折点颜色样式
-										color: 'red',
-										lineStyle: {
-											// 折线颜色样式
-											color: 'red'
-										}
-									}
-								},
+								smooth: true,  
 							}
 						]
 					}

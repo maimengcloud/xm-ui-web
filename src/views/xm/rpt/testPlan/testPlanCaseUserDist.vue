@@ -207,6 +207,9 @@
 								name: '已执行',
 								type: 'bar', 
 								data: this.hadExecCpd, 
+								label:{
+									show: true, 
+								},
 								markPoint: {
 									data: [
 									{ type: 'max', name: 'Max' },
@@ -218,6 +221,9 @@
 								name: '未执行',
 								type: 'bar',  
 								data: this.notExecCpd,
+								label:{
+									show: true, 
+								},
 								markPoint: {
 									data: [
 									{ type: 'max', name: 'Max' },

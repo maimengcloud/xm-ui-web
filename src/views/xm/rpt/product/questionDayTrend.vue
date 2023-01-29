@@ -236,7 +236,6 @@
 								name:'已解决',
 								data: this.resolvedBugsCpd,
 								type: 'line',
-								smooth: true, 
 								itemStyle: {
 									normal: {
 										// 折点颜色样式

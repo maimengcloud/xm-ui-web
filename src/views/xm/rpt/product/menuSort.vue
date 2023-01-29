@@ -201,7 +201,10 @@
 						series: [
 							{
 							data: this.xmMenuSortsCpd,
-							type: 'bar'
+							type: 'bar', 						
+							label:{
+									show: true, 
+								},
 							}
 						]
 					}
